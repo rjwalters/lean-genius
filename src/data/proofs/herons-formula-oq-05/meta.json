@@ -59,7 +59,7 @@
     "assumptions": "None. Fully machine-verified.",
     "lineCount": 149,
     "theoremCount": 6,
-    "definitionCount": 6,
+    "definitionCount": 8,
     "originalContributions": [
       "cmDet4_eq: the Cayley–Menger determinant of four points in space equals 8·(6V)², where 6V is the scalar triple product — an exact polynomial identity in the six squared edge lengths",
       "cayley_menger_tetrahedron: 288·V² = cmDet4, recovering the tetrahedron volume from its six squared edge lengths",
@@ -146,7 +146,7 @@
     "lineCount": 149,
     "axiomCount": 0,
     "theoremCount": 6,
-    "definitionCount": 6,
+    "definitionCount": 8,
     "path": "Proofs/CayleyMengerHeronOQ05.lean",
     "sorries": 0
   },

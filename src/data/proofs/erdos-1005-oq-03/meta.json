@@ -9,7 +9,7 @@
     "axiomCount": 0,
     "path": "Proofs/Erdos1005ProblemOQ03.lean",
     "sorries": 0,
-    "definitionCount": 2,
+    "definitionCount": 3,
     "theoremCount": 7
   },
   "meta": {
@@ -40,7 +40,7 @@
     ],
     "assumptions": "None. The file is fully machine-checked with 0 sorries and 0 axiom declarations; #print axioms reports only the foundational propext / Classical.choice / Quot.sound for all seven theorems. No native_decide is used (so no Lean.ofReduceBool).",
     "theoremCount": 7,
-    "definitionCount": 2
+    "definitionCount": 3
   },
   "overview": {
     "historicalContext": "The Farey sequence F_n — all reduced fractions in [0,1] with denominator ≤ n, in increasing order — was popularized by John Farey (1816) and given its foundational proof by Cauchy. Its two pillars are the unimodular relation bc − ad = 1 for adjacent fractions a/b < c/d and the mediant (a+c)/(b+d), which is the fraction of smallest denominator strictly between them and the organizing operation of the Stern–Brocot tree. Erdős Problem #1005 asks for the longest run of consecutive 'similarly ordered' Farey fractions; any such run analysis presupposes an exact criterion for when two fractions are neighbours, which is precisely what this entry formalizes.",

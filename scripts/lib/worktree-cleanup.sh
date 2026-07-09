@@ -146,8 +146,10 @@ would_remove_own_worktree() {
 #
 # Idempotent: if the path does not exist (already removed), returns 0 quietly.
 # Applies structural guards 1-5; on any guard hit, preserves and returns 0.
-# Only when all guards pass does it `git worktree remove --force` (falling back
-# to `rm -rf` + `git worktree prune` if the git removal fails).
+# Only when all guards pass does it `git worktree remove` (no --force; if git
+# refuses because state changed since the guards ran, the worktree is
+# preserved — `rm -rf` + `git worktree prune` applies only to directories git
+# no longer registers as worktrees).
 remove_own_worktree() {
     local wt_path="$1"
 
@@ -226,15 +228,21 @@ remove_own_worktree() {
     fi
 
     # All guards passed: this worktree is the agent's own, idle, clean, and
-    # fully backed up. Remove it.
-    if git worktree remove "$wt_path" --force 2>/dev/null; then
+    # fully backed up. Remove it. No --force and no blind rm -rf fallback: if
+    # git refuses the removal (state changed between the guards and now), the
+    # worktree is preserved for the backstop janitor's next pass. rm -rf
+    # applies only to directories git no longer registers as worktrees.
+    local wt_list
+    wt_list="$(git worktree list --porcelain 2>/dev/null || true)"
+    if git worktree remove "$wt_path" 2>/dev/null; then
         _wc_log "removed: $wt_path"
-    else
-        # Fallback: directory may be a stale/orphaned worktree git no longer
-        # tracks. Remove on disk and prune the dangling reference.
+    elif ! grep -qxF "worktree $wt_real" <<< "$wt_list"; then
+        # Stale/orphaned dir git no longer tracks: remove on disk, prune ref.
         rm -rf "$wt_path" 2>/dev/null || true
         git worktree prune 2>/dev/null || true
-        _wc_log "removed (rm -rf fallback): $wt_path"
+        _wc_log "removed (orphaned dir): $wt_path"
+    else
+        _wc_log "preserve (git refused removal; state changed?): $wt_path"
     fi
     return 0
 }

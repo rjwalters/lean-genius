@@ -60,7 +60,7 @@
     "lineCount": 185,
     "assumptions": "0 axioms, 0 sorries. Self-contained over Mathlib: the odd-part decomposition (Nat.ordProj_mul_ordCompl_eq_self, Nat.ordCompl_le, Nat.ordCompl_pos), the Finset pigeonhole (Finset.exists_ne_map_eq_of_card_lt_of_maps_to), and order-theoretic packaging (IsAntichain, IsGreatest). The arithmetic of ⌈N/2⌉ = (N+1)/2 and N − ⌊N/2⌋ = ⌈N/2⌉ is discharged by omega across both parities. Badge is 'original' because the arbitrary-N extremal value and its uniform-parity proof are formalized from first principles; Mathlib does not contain this max-primitive-subset statement.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 6,
+    "theoremCount": 9,
     "definitionCount": 1
   },
   "overview": {
@@ -167,7 +167,7 @@
     "axiomCount": 0,
     "sorries": 0,
     "definitionCount": 1,
-    "theoremCount": 6
+    "theoremCount": 9
   },
   "sorries": []
 }

@@ -67,7 +67,7 @@
     "lineCount": 275,
     "assumptions": "0 explicit `axiom` declarations and 3 sorries. The concrete Selfridge examples (`selfridge_example_1`, `selfridge_example_2`, `lcm_comparison_96_104`) are discharged by `native_decide`, which depends on the `Lean.ofReduceBool` axiom (kernel/compiler reduction). See the Lean source for details.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 18,
+    "theoremCount": 22,
     "definitionCount": 4,
     "additionalFiles": [
       "Proofs/Erdos678Aristotle.lean"

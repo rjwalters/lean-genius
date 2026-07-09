@@ -388,4 +388,23 @@ theorem abelian_bounded_cliques {H : Type*} [CommGroup H] : BoundedCliques H := 
   rw [CommGroup.center_eq_top, Subgroup.index_top]
   exact one_ne_zero
 
+/-- **The hard direction holds unconditionally — and axiom-free — for finite groups.**
+    When `G` is finite the centre automatically has finite index (`[G:Z(G)] ≤ |G| < ∞`,
+    here via `Subgroup.index_ne_zero_of_finite`), so the forward implication of
+    Neumann's theorem — `ω(Γ(G)) finite ⟹ [G:Z(G)] finite` — is provable *without* the
+    BFC axiom `neumann_hard_direction`. The `BoundedCliques G` hypothesis is not used:
+    it is retained only so that the statement is a literal drop-in for the axiom's
+    signature in the finite case.
+
+    This pins down where the axiom's content actually lives: `neumann_hard_direction`
+    is substantive **only for infinite groups**. Every finite group satisfies the hard
+    direction for the trivial reason that all of its subgroups have finite index; the
+    BFC / coset-covering machinery Neumann (1976) invokes is needed precisely to handle
+    the infinite case, where `BoundedCliques` (rather than finiteness of `G`) is the
+    only source of the finite-index conclusion. Compare `abelian_bounded_cliques`, which
+    records the *easy* direction for the abelian case. -/
+theorem neumann_hard_direction_of_finite [Finite G] (_ : BoundedCliques G) :
+    (Subgroup.center G).index ≠ 0 :=
+  Subgroup.index_ne_zero_of_finite
+
 end Erdos1098OQ01OQ03

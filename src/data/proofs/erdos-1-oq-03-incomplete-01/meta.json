@@ -23,7 +23,7 @@
     "assumptions": "No assumptions. Fully machine-checked with only Lean/Mathlib's foundational axioms (propext, Classical.choice, Quot.sound). Reuses hasDistinctSubsetSums and erdos_1_counting_bound from Erdos1Problem (which compiles); the construction side is re-derived self-containedly because Erdos1WIP01.lean no longer builds against Mathlib v4.26.0.",
     "dateAdded": "2026-06-21",
     "lineCount": 222,
-    "theoremCount": 15,
+    "theoremCount": 13,
     "definitionCount": 2,
     "originalContributions": [
       "f (def): the Erdős #1 function as sInf of the set of valid bounds — total and decidability-free (uses Nat.sInf, no Decidable instance needed, unlike the Nat.find definition in the non-compiling OQ-03)",

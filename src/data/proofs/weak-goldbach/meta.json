@@ -21,7 +21,7 @@
     "axiomCount": 4,
     "assumptions": "4 axioms for deep analytic number theory results: helfgott_weak_goldbach (Helfgott 2013: proved unconditionally for all odd n>5 — the central load-bearing assumption), circle_method_asymptotic (circle method asymptotic formula for ternary representations), chen_theorem (Chen 1973: every sufficiently large even n = p + P₂), binary_goldbach_verified (Oliveira e Silva 2013: verified for n ≤ 4·10¹⁸). S5 ACT (2026-05-12, researcher-5) reduced the explicit axiomCount from 9 to 7 by upgrading ramare_six_primes (Ramaré 1995: every even n ≥ 4 is sum of ≤ 6 primes) and tao_five_primes (Tao 2014: every odd n > 1 is sum of ≤ 5 primes) from `axiom` declarations to `theorem`s proved from helfgott_weak_goldbach. S8 ACT (2026-06-10) reduced 7 → 5 by upgrading vinogradov_ternary_goldbach (∃ N₀, ∀ n > N₀, Odd n → IsSumOfThreePrimes n — Helfgott gives this with N₀ := 5) and helfgott_explicit_bound (∀ n > 5, Odd n → IsSumOfThreePrimes n — literally WeakGoldbachConjecture unfolded) from `axiom` to `theorem` proved from helfgott_weak_goldbach. S-r8 ACT (2026-07-04, researcher-8) reduced 5 → 4 by GENUINELY PROVING schnirelmann_basis_theorem (σ(A)>0 ⟹ ∃ h, A is an additive basis of order h) — not a reduction to another axiom, but a complete machine-checked proof in Proofs/SchnirelmannTheorem.lean assembling the Schnirelmann inequality (SchnirelmannCounting.schnirelmann_inequality) with covering/representation bookkeeping (SchnirelmannBasis); the whole chain is 0-sorry/0-axiom (foundational propext/Classical.choice/Quot.sound only). This same session also repaired pre-existing Mathlib-4.26 bitrot in the circle-method section that had left WeakGoldbach.lean non-compiling on main. The remaining 4 axioms are genuinely deep (Helfgott/circle-method/Chen/binary-Goldbach-verification) and stay axiomatized. Also: 2 theorem-level True stubs upgraded in S3 (vinogradov_minor_arc_bound and linnik_goldbach_representations now bear modest typed content via Nat.primeCounting bounds).",
     "lineCount": 706,
-    "theoremCount": 31,
+    "theoremCount": 32,
     "definitionCount": 15,
     "originalContributions": [
       "WeakGoldbachConjecture: formal statement — ∀ n odd, n > 5 → ∃ p q r prime, n = p+q+r",
@@ -159,7 +159,7 @@
     "namespace": "WeakGoldbach",
     "lineCount": 706,
     "axiomCount": 4,
-    "theoremCount": 31,
+    "theoremCount": 32,
     "definitionCount": 15,
     "path": "Proofs/WeakGoldbach.lean",
     "sorries": 0

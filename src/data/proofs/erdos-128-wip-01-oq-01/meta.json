@@ -11,7 +11,7 @@
     "lineCount": 148,
     "axiomCount": 0,
     "theoremCount": 5,
-    "definitionCount": 5,
+    "definitionCount": 6,
     "path": "Proofs/Erdos128WIP01OQ01.lean",
     "sorries": 0
   },
@@ -79,7 +79,7 @@
     "assumptions": "Machine-checked with `lake env lean Proofs/Erdos128WIP01OQ01.lean` (Lean v4.26.0, Mathlib pin): compiles with 0 errors. 0 sorries, 0 axiom declarations, no native_decide. #print axioms reports: triangleFree_of_hom depends on no axioms at all; C5_triangleFree and blowup_C5_triangleFree depend only on the standard foundational axioms [propext, Quot.sound] (the `decide` evaluation of C₅ over Fin 5 is the ordinary kernel decision procedure, NOT native_decide, so Lean.ofReduceBool is not used). Self-contained: the Graph objects are re-declared (the scaffold Erdos128Problem.lean does not build). Honest scope: the structural homomorphism-pullback fact and the triangle-freeness of the C₅-blow-up witnesses, NOT the open optimal-constant question (that these blow-ups achieve induced density > n²/50, and that 1/50 is optimal, remain open).",
     "lineCount": 148,
     "theoremCount": 5,
-    "definitionCount": 5,
+    "definitionCount": 6,
     "originalContributions": [
       "triangleFree_of_hom: triangle-freeness pulls back along graph homomorphisms -- if f : G -> H is a homomorphism and H is triangle-free then G is triangle-free; the distinctness of the three image vertices is supplied by H's irreflexivity. Generalizes the parent's hereditary property (the identity inclusion of an induced subgraph is a homomorphism).",
       "blowup / blowup_isHom: the blow-up of a base graph H along a class map c : Fin n -> Fin k (adj u v := H.adj (c u) (c v)); its class map is a graph homomorphism blowup H c -> H.",

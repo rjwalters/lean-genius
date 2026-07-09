@@ -61,11 +61,11 @@
     ],
     "dateAdded": "2026-07-08",
     "axiomCount": 0,
-    "lineCount": 410,
+    "lineCount": 1095,
     "assumptions": "None. Fully machine-checked: 0 sorries, 0 axiom declarations, no structure-encoded assumptions. Uses kernel `decide` (not `native_decide`) for the numeric check B 1 = 95, so it is `ofReduceBool`-free.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 37,
-    "definitionCount": 3
+    "theoremCount": 80,
+    "definitionCount": 7
   },
   "overview": {
     "historicalContext": "Euclid's argument for the infinitude of primes adapts to the arithmetic progression 3 (mod 4): if p₁,…,p_k are known primes ≡ 3 (mod 4), then N = 4·p₁⋯p_k − 1 (or the cleaner N = 4·(n+1)! − 1) is ≡ 3 (mod 4) and hence has a prime factor ≡ 3 (mod 4) larger than all inputs. This is the parent entry dirichlets-theorem-oq-02.\n\nBeyond mere infinitude, such a constructive argument certifies a *rate*: each step produces a new prime not much larger than a factorial of the previous one, giving an explicit — if wildly inefficient — upper bound on the k-th prime in the progression. The genuine growth is governed by the prime number theorem for arithmetic progressions (de la Vallée Poussin, 1896), which gives π(x; 4, 3) ∼ x/(2 ln x) and hence p_k ∼ 2k·ln k. This entry makes the certified elementary bound precise and honestly contrasts it with the truth.",
@@ -177,7 +177,7 @@
     "path": "Proofs/DirichletsTheoremOQ02OQ03.lean",
     "sorries": 0,
     "definitionCount": 7,
-    "theoremCount": 72
+    "theoremCount": 80
   },
   "sorries": 0,
   "status": "verified",

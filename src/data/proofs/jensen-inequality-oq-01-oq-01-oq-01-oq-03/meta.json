@@ -29,7 +29,7 @@
       "Lpnorm_eq_zero_iff: definiteness of the discrete ℓᵖ norm, ‖g‖_p = 0 ↔ g vanishes everywhere on the coordinate set, for p > 0 and nonnegative g."
     ],
     "assumptions": "None. Fully machine-checked: 0 axioms, 0 sorries, no native_decide. Self-contained, importing only Mathlib (Real.mul_rpow, Real.rpow_eq_zero_iff_of_nonneg, and the rpow library); does not depend on any other gallery file (the discrete ℓᵖ norm is re-declared in its own namespace).",
-    "theoremCount": 3,
+    "theoremCount": 4,
     "definitionCount": 1
   },
   "crossReferences": [
@@ -136,7 +136,7 @@
     "path": "Proofs/JensenInequalityOQ01OQ01OQ01OQ03.lean",
     "sorries": 0,
     "definitionCount": 1,
-    "theoremCount": 3,
+    "theoremCount": 4,
     "imports": [
       "Mathlib"
     ]

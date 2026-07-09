@@ -42,7 +42,7 @@
       "bounded_imp_surjective_coord: NECESSITY — for a nonempty lemniscate, boundedness forces the coordinate map to be surjective (every coordinate must be read by some factor). The sharp converse direction isolating 'no free coordinate' as a necessary condition. (It is NOT sufficient: f(z₀,z₁)=z₀z₁ reads both coordinates yet {|z₀z₁|<1} is unbounded, so ℂⁿ boundedness is strictly more fragile than in ℂ¹.)"
     ],
     "theoremCount": 14,
-    "definitionCount": 3
+    "definitionCount": 4
   },
   "overview": {
     "historicalContext": "Erdős Problem #1042 asks how many connected components the lemniscate {z : |f(z)| < 1} of a degree-n monic polynomial with roots in a closed set F ⊆ ℂ can have. Erdős–Herzog–Piranian (1958) showed the unit disc allows n components (f(z) = zⁿ + 1). Ghosh–Ramachandran (2024) resolved the one-variable problem in terms of the transfinite diameter of F. A natural follow-up (open question oq-02) asks whether any of this survives in several complex variables, where 'lemniscate' becomes the sublevel set {z ∈ ℂⁿ : |f(z)| < 1} of a multivariate polynomial and the zero locus of f is a hypersurface rather than a finite set of points.",
@@ -158,7 +158,7 @@
     "lineCount": 241,
     "axiomCount": 0,
     "theoremCount": 14,
-    "definitionCount": 3,
+    "definitionCount": 4,
     "path": "Proofs/Erdos1042OQ02.lean",
     "sorries": 0
   },

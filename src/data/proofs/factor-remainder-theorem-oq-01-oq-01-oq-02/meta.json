@@ -75,7 +75,7 @@
     "axiomCount": 0,
     "lineCount": 205,
     "assumptions": "None. All theorems fully proved with 0 axioms and 0 sorries (no native_decide). The base ring is ℚ throughout, used so that the generalized binomial coefficient Ring.choose and the division by m! in the Newton basis are available; #print axioms reports only [propext, Classical.choice, Quot.sound]. The Taylor → Newton change of basis and the diagonal leading-coefficient corollary do not use division and would generalize to any commutative ring, but are stated over ℚ for uniformity with the interpolation theorems.",
-    "theoremCount": 8,
+    "theoremCount": 9,
     "definitionCount": 0,
     "prerequisites": [
       "The forward difference operator Δ and its iterates (Mathlib.Algebra.Group.ForwardDiff)",
@@ -164,7 +164,7 @@
     "namespace": "FactorRemainderTheoremOQ01OQ01OQ02",
     "lineCount": 205,
     "axiomCount": 0,
-    "theoremCount": 8,
+    "theoremCount": 9,
     "definitionCount": 0,
     "path": "Proofs/FactorRemainderTheoremOQ01OQ01OQ02.lean",
     "sorries": 0

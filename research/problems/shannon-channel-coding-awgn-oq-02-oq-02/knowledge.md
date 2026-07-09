@@ -48,3 +48,30 @@ Lean file: `proofs/Proofs/ShannonChannelCodingAWGNOQ02OQ02.lean`
 
 - `μ[W₀ + W₁]` uses `Pi.add`, so the integrand prints as `(W₀ + W₁) x`, not `W₀ x + W₁ x`;
   `rw [integral_add ...]` fails to match until you `simp only [Pi.add_apply]` first.
+
+## Session 2026-07-08 (FRESH continuation) - Affine invariance of ρ
+
+**Mode**: FRESH (continued rich-knowledge problem, depth-over-breadth)
+**Outcome**: progress (2 theorems + 1 helper, VERIFIED 0 sorry / 0 axiom)
+
+### What I Did
+- Added `correlation_affine_invariant`: ρ[a·X+b, c·Y+d] = sign(a·c)·ρ[X,Y] for arbitrary a,b,c,d.
+- Added `correlation_affine_invariant_of_pos`: a,c>0 ⟹ ρ preserved exactly (scale-free property).
+- Added private helper `real_sign_eq_self_div_abs`: Real.sign x = x/|x| ∀x (incl 0 via 0/0=0).
+
+### Key Findings
+- The identity is UNCONDITIONAL — no non-degeneracy needed. Degenerate cases (Var=0) collapse to
+  0 = sign(ac)·0 automatically through the Lean division-by-zero convention.
+- Reuses the ±1-capstone machinery: cov[aX+b,cY+d]=ac·cov via covariance_add_const_left/right +
+  covariance_const_mul_left/right; σ[aX+b]=|a|·σ[X] via variance_eq_of_affine.
+- Packaging sign as x/|x| lets the final normalisation a·c/(|a|·|c|)=sign(ac) close by `ring`
+  (field inverse rearrangement) with zero nonzero-hypotheses — clean.
+
+### Files Modified
+- proofs/Proofs/ShannonChannelCodingAWGNOQ02OQ02.lean (842→908 lines, 36→38 theorems)
+- src/data/proofs/shannon-channel-coding-awgn-oq-02-oq-02/meta.json (counts + contribution)
+- src/data/research/problems/shannon-channel-coding-awgn-oq-02-oq-02.json (knowledge)
+
+### Next Steps
+- Orientation-reversing corollary (a>0, c<0 ⟹ ρ ↦ −ρ) if a further result needs it.
+- Extract cov[aX+b,cY+d]=ac·cov as a named reusable covariance-bilinearity lemma if reused.

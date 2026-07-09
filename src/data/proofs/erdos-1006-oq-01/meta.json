@@ -21,9 +21,9 @@
     "dateAdded": "2026-04-02",
     "axiomCount": 2,
     "assumptions": "2 axioms: chromatic_lt_girth_implies_robust (Fisher-Fraughnaugh-Langley-West 1997: χ(G) < girth(G) → G has robust orientation), nesetril_rodl_counterexample (Nešetřil-Rödl 1978: for every girth g≥3, there exists a graph with girth g that does NOT have a robust orientation). The Pretzel-Brightwell characterization (cover_graph_characterization) is now a proved theorem, not an axiom.",
-    "lineCount": 534,
-    "theoremCount": 12,
-    "definitionCount": 13,
+    "lineCount": 592,
+    "theoremCount": 14,
+    "definitionCount": 14,
     "originalContributions": [
       "admitsRobustAcyclicOrientation: predicate — G has an orientation that stays acyclic under any single edge reversal",
       "isCoverGraph / isCoverGraphOf: G is a cover graph of a poset P if G = Hasse diagram of P",
@@ -114,10 +114,10 @@
   },
   "leanFile": {
     "namespace": "Erdos1006OQ01",
-    "lineCount": 534,
+    "lineCount": 592,
     "axiomCount": 2,
-    "theoremCount": 12,
-    "definitionCount": 13,
+    "theoremCount": 14,
+    "definitionCount": 14,
     "path": "Proofs/Erdos1006OQ01.lean",
     "sorries": 0
   },

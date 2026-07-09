@@ -50,6 +50,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header, Imports, and Setup",
+      "startLine": 1,
+      "endLine": 43,
+      "summary": "Imports Mathlib and the parent LawOfCosinesOQ07, then the module docstring stating the goal 4·(mₐ²+m_b²+m_c²)=3·(a²+b²+c²) and its derivation as the three-fold cyclic sum of the parent's median_length formula (net side-square coefficient 2+2−1=3). Opens the parent namespace, declares the LawOfCosinesOQ07OQ02 namespace, and fixes the coordinate-free ambient setting: a real inner-product space V acting on an affine point space P via [NormedAddTorsor V P].",
+      "mathContext": "Ambient setting: points $a,b,c$ of a real inner-product affine space (NormedAddTorsor); medians are $\\operatorname{dist}$ to genuine midpoints, so the identity holds in every Euclidean affine space of any dimension."
+    },
+    {
       "id": "part1-sum-medians",
       "title": "Part I: Sum of Squared Medians",
       "startLine": 44,
@@ -115,13 +123,15 @@
   "mainTheorems": [
     {
       "name": "sum_sq_medians",
-      "type": "theorem",
-      "description": "Sum of squared medians: 4·(m_a² + m_b² + m_c²) = 3·(a² + b² + c²), where m_x is the median from vertex x to the opposite midpoint. Proved by summing the parent's median_length identity over the three vertices and closing with linear_combination."
+      "type": "main",
+      "description": "Sum of squared medians: 4·(m_a² + m_b² + m_c²) = 3·(a² + b² + c²), where m_x is the median from vertex x to the opposite midpoint. Proved by summing the parent's median_length identity over the three vertices and closing with linear_combination.",
+      "leanType": "(a b c : P) : 4 * (dist a (midpoint ℝ b c) ^ 2 + dist b (midpoint ℝ a c) ^ 2 + dist c (midpoint ℝ a b) ^ 2) = 3 * (dist a b ^ 2 + dist b c ^ 2 + dist c a ^ 2)"
     },
     {
       "name": "sum_sq_medians_three_quarters",
-      "type": "theorem",
-      "description": "The ¾-ratio form: the sum of the squared medians equals three quarters of the sum of the squared sides — a direct rescaling of sum_sq_medians."
+      "type": "supporting",
+      "description": "The ¾-ratio form: the sum of the squared medians equals three quarters of the sum of the squared sides — a direct rescaling of sum_sq_medians.",
+      "leanType": "(a b c : P) : dist a (midpoint ℝ b c) ^ 2 + dist b (midpoint ℝ a c) ^ 2 + dist c (midpoint ℝ a b) ^ 2 = 3 / 4 * (dist a b ^ 2 + dist b c ^ 2 + dist c a ^ 2)"
     }
   ],
   "sorries": 0

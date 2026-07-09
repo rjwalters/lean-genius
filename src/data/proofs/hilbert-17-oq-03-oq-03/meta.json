@@ -70,7 +70,7 @@
       }
     ],
     "assumptions": "0 axioms. #print axioms robinson_not_sos reports only propext, Classical.choice, Quot.sound. No sorryAx, no native_decide / Lean.ofReduceBool. The Robinson polynomial and the sum-of-squares predicate IsSOS (IsSOS p := ∃ m q, p = ∑ i, q i ^ 2) are defined directly in this file, matching the parent entry's sum-of-squares notion.",
-    "theoremCount": 25,
+    "theoremCount": 35,
     "definitionCount": 3,
     "additionalFiles": []
   },
@@ -82,7 +82,7 @@
     ],
     "structureCount": 0,
     "axiomCount": 0,
-    "theoremCount": 32,
+    "theoremCount": 35,
     "substantiveTheoremCount": 7,
     "computationalVerifications": 0,
     "lemmaCount": 31,

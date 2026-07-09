@@ -23,7 +23,7 @@
     "axiomCount": 0,
     "assumptions": "Machine-checked: `./proofs/scripts/docker-build.sh Proofs.BuffonsNeedleOQ02OQ02OQ01OQ01` builds green (Lean v4.26.0, Mathlib pin, 7743 jobs). 0 sorries, 0 axiom declarations, no native_decide; only the standard foundational axioms via Mathlib. Self-contained: the companion BuffonsNeedleOQ02OQ01.lean currently fails to build on the pinned Mathlib (Filter.Tendsto.div API drift), so the crossingFactor recurrence and its base lemmas are re-declared verbatim here. Honest scope: the exact closed-form solution of the two-step recurrence (telescoping products) plus positivity, the maximum, and concrete values derived from it.",
     "lineCount": 190,
-    "theoremCount": 10,
+    "theoremCount": 13,
     "definitionCount": 1,
     "originalContributions": [
       "crossingFactor_even: the even-dimension closed form alpha_{2m+2} = (2/pi) * prod_{j<m} (2j+2)/(2j+3), solving the two-step recurrence on the even subsequence by induction (empty product recovers alpha_2 = 2/pi, each step appends the recurrence factor)",
@@ -137,7 +137,7 @@
     "namespace": "BuffonsNeedleOQ02OQ02OQ01OQ01",
     "lineCount": 190,
     "axiomCount": 0,
-    "theoremCount": 10,
+    "theoremCount": 13,
     "definitionCount": 1,
     "path": "Proofs/BuffonsNeedleOQ02OQ02OQ01OQ01.lean",
     "sorries": 0

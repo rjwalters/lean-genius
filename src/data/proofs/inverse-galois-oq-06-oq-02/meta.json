@@ -21,9 +21,9 @@
     "dateAdded": "2026-07-02",
     "axiomCount": 0,
     "assumptions": "None. Every theorem in all seven files is fully machine-checked with 0 axiom declarations, 0 sorries, and no native_decide (the proofs depend only on Lean's foundational propext / Classical.choice / Quot.sound). These files do NOT discharge the parent entry's open axiom three_dvd_gal_card (producing the Frobenius permutation is a genuine Mathlib 4.26 gap — Dedekind's theorem for polynomial Galois groups); they verify the deterministic inputs that axiom consumes.",
-    "lineCount": 1045,
+    "lineCount": 225,
     "theoremCount": 64,
-    "definitionCount": 1,
+    "definitionCount": 2,
     "originalContributions": [
       "q_mod7_factor_type: q reduces mod 7 to (X-5)(X-6)·(X³+6X²+4X+1) — distinct irreducibles of degree type (1,1,3), squarefree (the arithmetic Dedekind input at p=7)",
       "q_mod11_factor_type: an independent second unramified prime — q reduces mod 11 to a (1,1,3) factor type, corroborating the same 3-cycle Frobenius conclusion",
@@ -127,7 +127,7 @@
     "lineCount": 225,
     "axiomCount": 0,
     "theoremCount": 64,
-    "definitionCount": 1,
+    "definitionCount": 2,
     "path": "Proofs/InverseGaloisOQ06OQ02.lean",
     "sorries": 0,
     "additionalFiles": [

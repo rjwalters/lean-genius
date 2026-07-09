@@ -75,7 +75,7 @@
       }
     ],
     "assumptions": "None. 0 axioms, 0 sorries (the theorems depend only on the foundational axioms propext, Classical.choice, Quot.sound; the single sharpness witness at n=2 uses kernel `decide`, NOT `native_decide`, so no `Lean.ofReduceBool` is introduced). The bound n ≤ 2φ(n)² is a classical elementary fact; the contribution is a clean, fully verified, 0-axiom formalization via a multiplicative invariant, together with the explicit totient-fiber finiteness that underpins Erdős #1004.",
-    "theoremCount": 9,
+    "theoremCount": 11,
     "definitionCount": 0,
     "structureCount": 0
   },
@@ -173,7 +173,7 @@
     "opens": ["Nat"],
     "structureCount": 0,
     "axiomCount": 0,
-    "theoremCount": 9,
+    "theoremCount": 11,
     "substantiveTheoremCount": 8,
     "computationalVerifications": 1,
     "lemmaCount": 2,

@@ -40,7 +40,7 @@
       "blocksAll_iff_connecting: every rich line of A meets B iff every one of the C(|A|,2) connecting lines meets B — replaces the quantifier over ALL lines in xichuan_counterexample by a finite family, the concrete reduction a future discharge of the axiom needs (axiom-free)"
     ],
     "theoremCount": 19,
-    "definitionCount": 3
+    "definitionCount": 2
   },
   "overview": {
     "historicalContext": "Erdős Problem #105 asks: given n non-collinear points A and an obstacle set B, must some line through ≥2 points of A avoid all of B? Erdős & Purdy conjectured YES for |B| = n-3; Xichuan (2024) disproved this. Hickerson had earlier shown failure already at n-2 obstacles, and Beck / Szemerédi-Trotter (1983) proved avoidability for |B| ≤ cn. The threshold function f(n) = largest avoidable obstacle count thus satisfies cn ≤ f(n) ≤ n-4. The single boundary case |B| = n-4 is the open question this entry studies.",
@@ -172,7 +172,7 @@
     "lineCount": 338,
     "axiomCount": 0,
     "theoremCount": 19,
-    "definitionCount": 3,
+    "definitionCount": 2,
     "path": "Proofs/Erdos105OQ01.lean",
     "sorries": 0
   },
