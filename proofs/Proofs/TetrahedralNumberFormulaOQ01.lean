@@ -137,6 +137,34 @@ theorem iterSum_one (d n : ℕ) :
     rw [← sum_simplex d n]
     exact Finset.sum_congr rfl fun j _ => ih j
 
+/-- **Dimension additivity of iterated summation.** Taking `d` further partial sums of
+the `e`-dimensional figurate numbers yields the `(d+e)`-dimensional ones:
+
+`iterSum d (P_e) n = P_{d+e}(n)`.
+
+This generalizes the headline `iterSum_one`, which is the `e = 0` case (`P_0 ≡ 1`): the
+figurate ladder is closed under iterated summation *started at any rung*, not only from the
+constant sequence. Iterating `d` summations shifts the dimension by exactly `d`. Proved by
+induction on `d` with the hockey stick `sum_simplex` as the single inductive step, exactly
+as for `iterSum_one`. -/
+theorem iterSum_simplexNumber (d e n : ℕ) :
+    iterSum d (simplexNumber e) n = simplexNumber (d + e) n := by
+  induction d generalizing n with
+  | zero => simp [iterSum]
+  | succ d ih =>
+    show partialSum (iterSum d (simplexNumber e)) n = simplexNumber (d + 1 + e) n
+    simp only [partialSum]
+    rw [show d + 1 + e = (d + e) + 1 from by ring, ← sum_simplex (d + e) n]
+    exact Finset.sum_congr rfl fun j _ => ih j
+
+/-- `iterSum_one` recovered as the `e = 0` rung of `iterSum_simplexNumber`: the `d`-fold
+iterated partial sum of the constant sequence `1 = P_0` is `P_d`. -/
+theorem iterSum_one' (d n : ℕ) :
+    iterSum d (fun _ => 1) n = simplexNumber d n := by
+  have h : (fun _ : ℕ => (1 : ℕ)) = simplexNumber 0 := by
+    funext k; simp [simplexNumber_zero_dim]
+  rw [h, iterSum_simplexNumber, Nat.add_zero]
+
 /-- **Division-free closed form (general dimension).** Clearing the denominator
 in `P_d(n) = (n+1)(n+2)⋯(n+d)/d!`:
 
