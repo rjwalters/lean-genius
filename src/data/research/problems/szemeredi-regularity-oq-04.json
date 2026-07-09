@@ -26,22 +26,27 @@
     "nextAction": "Reconstruct the energy-increment step (epsilon-irregular refinement raises partitionEnergy by >= delta) from split_energy_excess_bound, then assemble the outer AFKS loop using partitionEnergy_no_infinite_increments as termination certificate."
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: built the verified energy-INCREMENT engine (0 sorry/0 axiom, host-verified) complementing the existing termination engine. partitionEnergy refinement monotonicity + quantitative Cauchy-Schwarz gain now proven; strong AFKS lemma statement still open.",
+    "progressSummary": "PROGRESS: quantitative single-part energy-increment proven (partitionEnergy_single_split_gain, VERIFIED 0/0). Irregular partner ⇒ definite δ² partitionEnergy jump. Termination engine + monotonicity + quantitative increment now all in hand; remaining: bolt increment to termination for the AFKS step-count, and wire the irregularity witness.",
     "builtItems": [
       "edgeDensity_union_mul in SzemerediRegularityOQ04Energy.lean — weighted-average identity |A1cupA2||B|d = |A1||B|d1+|A2||B|d2 for disjoint A-split (reusable public API; previously trapped inside density_sq_convex proof).",
       "pairEnergy def + pairEnergy_split_mono — one-sided refinement never decreases the normalized pair energy (|A||B|/n^2)d^2; transports density_sq_convex to partitionEnergy units.",
       "pairEnergy_split_gain — quantitative energy increment: |d1-d2|>=delta gives gain >= (|A1||A2|/(|A1|+|A2|))(|B|/n^2)delta^2 (the AFKS Cauchy-Schwarz boost).",
-      "pairEnergy_row_split_mono — monotonicity summed over a row of B-parts (Finset.sum_le_sum)."
+      "pairEnergy_row_split_mono — monotonicity summed over a row of B-parts (Finset.sum_le_sum).",
+      "pairEnergy_row_split_gain (SzemerediRegularityOQ04Energy.lean): one irregular partner B₀∈Bs drives a definite row-sum energy gain; every other row term nonneg by split_mono, surplus at B₀ survives via Finset.single_le_sum + sum_sub_distrib",
+      "partitionEnergy_single_split_gain (SzemerediRegularityOQ04Bridge.lean): QUANTITATIVE energy-increment — refining A₁∪A₂ into A₁,A₂ with irregular partner B₀ (|d(A₁,B₀)-d(A₂,B₀)|≥δ) raises partitionEnergy by ≥ (|A₁||A₂|/(|A₁|+|A₂|))·(|B₀|/n²)·δ². Block decomposition: diag+col pure monotone, row carries the Cauchy-Schwarz surplus."
     ],
     "insights": [
       "partitionEnergy IS the standard size-weighted energy |Pi||Pj|/n^2 d^2 (SzemerediCore:63), NOT 1/k^2. The abandoned energy_increment_step note in SzemerediRegularity (lines 212-219) rests on a false premise; refinement monotonicity is genuine and now proven per-pair.",
-      "The weighted-average d(A1cupA2,B)=(|A1|d1+|A2|d2)/(|A1|+|A2|) plus split_energy_identity/excess_bound give the increment purely; scaling by |B|/n^2>=0 lifts density_sq_convex into the normalized energy."
+      "The weighted-average d(A1cupA2,B)=(|A1|d1+|A2|d2)/(|A1|+|A2|) plus split_energy_identity/excess_bound give the increment purely; scaling by |B|/n^2>=0 lifts density_sq_convex into the normalized energy.",
+      "The whole-partition energy JUMP reduces to a SINGLE strengthened block: only the row block against R needs the gain; diagonal and column blocks contribute nonneg increments by monotonicity, so linarith[h1,h2gain,h3] assembles exactly as the mono proof plus the gain atom."
     ],
     "mathlibGaps": [],
     "nextSteps": [
       "Assemble whole-partition refinement monotonicity: split one part A->A1|A2 across the full parts x parts product sum (2D: rows AND columns AND the diagonal (A,A) via double convexity).",
       "Combine pairEnergy_split_gain with exists_irregular_witness (2-sided A,B refinement) to get the eps^5 whole-partition energy jump, then feed energy_iteration_count_le for the AFKS bound.",
-      "State the strong-regularity conclusion: almost-all-pairs regular with arbitrary precision (Alon-Fischer-Krivelevich-Szegedy)."
+      "State the strong-regularity conclusion: almost-all-pairs regular with arbitrary precision (Alon-Fischer-Krivelevich-Szegedy).",
+      "Assemble the AFKS bound: instantiate energy_steps_bounded/no_infinite_energy_increments with gain = (|A₁||A₂|/(|A₁|+|A₂|))·(|B₀|/n²)·δ² to cap the number of refinement steps by ⌊1/gain⌋.",
+      "Connect exists_irregular_witness (SzemerediRegularityOQ01) to supply the B₀ and the density-deviation hypothesis hdev from an ε-irregular pair, closing the loop from irregularity to the δ²-gain."
     ],
     "markdown": "# Knowledge Base: szemeredi-regularity-oq-04\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
