@@ -202,6 +202,42 @@ theorem threeAPFree_summable_reciprocal
     simp only [Finset.mem_filter]; rintro ⟨_, h0⟩; exact hA0 h0
   exact finite_recip_sum_le _ hTAP hT0
 
+/-- **Erdős `k = 3` conjecture, contrapositive form.**  Any set `A ⊆ ℕ` (with `0 ∉ A`)
+whose reciprocal sum *diverges* is not 3-AP-free.  This is the direct contrapositive of
+`threeAPFree_summable_reciprocal`, and the form in which the Erdős conjecture is usually
+quoted ("a divergent reciprocal sum forces an arithmetic progression"). -/
+theorem not_threeAPFree_of_not_summable_reciprocal
+    {A : Set ℕ} (hA0 : 0 ∉ A) (hdiv : ¬ Summable (fun a : A => (1 : ℝ) / a)) :
+    ¬ ThreeAPFree A :=
+  fun hAP => hdiv (threeAPFree_summable_reciprocal hAP hA0)
+
+/-- **Erdős `k = 3` conjecture, explicit-progression form.**  Any set `A ⊆ ℕ` (with
+`0 ∉ A`) whose reciprocal sum diverges contains a *nontrivial* three-term arithmetic
+progression `a, a + d, a + 2d` with common difference `d > 0`.  This unpacks the abstract
+`¬ ThreeAPFree A` into concrete AP witnesses — the statement of the conjecture as it is
+usually phrased.  Rests on the single imported Bloom–Sisask assumption; no new axiom. -/
+theorem exists_nontrivial_threeAP_of_not_summable_reciprocal
+    {A : Set ℕ} (hA0 : 0 ∉ A) (hdiv : ¬ Summable (fun a : A => (1 : ℝ) / a)) :
+    ∃ a d : ℕ, 0 < d ∧ a ∈ A ∧ a + d ∈ A ∧ a + 2 * d ∈ A := by
+  have hnot : ¬ ThreeAPFree A := not_threeAPFree_of_not_summable_reciprocal hA0 hdiv
+  unfold ThreeAPFree at hnot
+  push_neg at hnot
+  obtain ⟨a, ha, b, hb, c, hc, hsum, hne⟩ := hnot
+  -- `hsum : a + c = b + b`, `hne : a ≠ c`; the middle term `b` is the average.
+  rcases lt_or_gt_of_ne hne with hlt | hgt
+  · -- `a < c`: progression starts at `a` with difference `b - a`.
+    refine ⟨a, b - a, by omega, ha, ?_, ?_⟩
+    · have h : a + (b - a) = b := by omega
+      rw [h]; exact hb
+    · have h : a + 2 * (b - a) = c := by omega
+      rw [h]; exact hc
+  · -- `c < a`: progression starts at `c` with difference `b - c`.
+    refine ⟨c, b - c, by omega, hc, ?_, ?_⟩
+    · have h : c + (b - c) = b := by omega
+      rw [h]; exact hb
+    · have h : c + 2 * (b - c) = a := by omega
+      rw [h]; exact ha
+
 #check @threeAPFree_summable_reciprocal
 #check @finite_recip_sum_le
 #check @fiber_sum_le
@@ -211,5 +247,6 @@ theorem threeAPFree_summable_reciprocal
 -- assumption `RothTheoremOQ02.rothNumberNat_bloom_sisask` — no new axiom, no `sorryAx`.
 #print axioms threeAPFree_summable_reciprocal
 #print axioms summable_recipMajorant
+#print axioms exists_nontrivial_threeAP_of_not_summable_reciprocal
 
 end RothTheoremOQ01Reciprocal
