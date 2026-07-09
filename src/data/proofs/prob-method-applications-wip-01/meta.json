@@ -162,6 +162,21 @@
       "targetId": "prob-method-expectation",
       "relationship": "related",
       "description": "Provides the counting (cardinality) form of the first moment existence principle"
+    },
+    {
+      "targetId": "prob-method-second-moment",
+      "relationship": "related",
+      "description": "The complementary pillar: the first-moment method proved here establishes mere existence (some object avoids the bad event), while the second-moment method upgrades this to concentration / almost-sure existence via Var/𝔼² bounds. Together they are the two basic moment tools of the probabilistic method."
+    },
+    {
+      "targetId": "prob-method-lovasz-local",
+      "relationship": "related",
+      "description": "The sharper existence tool: where the first-moment union bound needs the expected number of bad events < 1, the Lovász Local Lemma yields existence under only bounded local dependence even when many bad events are expected — the refinement of the crude counting bound used here."
+    },
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "related",
+      "description": "The application domain: this entry's Ramsey-style avoidance theorem is an instance of the probabilistic method's flagship result — Erdős's lower bound R(k,k) > 2^{k/2}, obtained by exactly this first-moment union bound over random 2-colourings avoiding a monochromatic clique."
     }
   ]
 }
