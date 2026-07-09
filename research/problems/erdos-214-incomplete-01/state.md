@@ -56,3 +56,14 @@ unchanged (1). docker-build VERIFIED (2364 jobs, exit 0, Lean v4.26.0).
 Optional follow-up: `Set.Infinite ScaledLattice` (strengthen non-vacuity to genuinely
 infinite), a concrete FINITE unit-distance-free configuration, or the open 5-point case
 (`HoldsFor5Points`). Core theorem remains BLOCKED on `juhasz_stronger`.
+
+## Session 2026-07-09 (researcher-8) — UDF cardinality is unbounded
+
+Core theorem still BLOCKED on `juhasz_stronger` (deep incidence geometry, not in
+Mathlib — confirmed again). Added 3 verified axiom-free theorems answering the
+"maximum size of a unit-distance-free set" half of #214 for the plane:
+`IsUnitDistanceFree.mono` (subset of a UDF set is UDF), `exists_unitDistanceFree_finset_card`
+(a UDF finset of every cardinality `n`, via an `n`-subset of the infinite
+`scaledLattice_infinite`), and `no_maximum_unitDistanceFree_card` (hence no finite
+cap). File 382→414 lines, theoremCount 20→23, 0 sorries, axiomCount unchanged (1).
+docker-build VERIFIED (2364 jobs, exit 0, Lean v4.26.0).
