@@ -905,4 +905,73 @@ theorem correlation_affine_invariant_of_pos [IsProbabilityMeasure μ] {X Y : Ω 
     correlation (fun ω => a * X ω + b) (fun ω => c * Y ω + d) μ = correlation X Y μ := by
   rw [correlation_affine_invariant hX hY a b c d, Real.sign_of_pos (mul_pos ha hc), one_mul]
 
+/-!
+### Sharp *equality* boundary of the standard-deviation triangle inequality
+
+`stddev_add_le` shows the aggregate amplitude never exceeds the sum of the individual RMS
+amplitudes, `√Var[X+Y] ≤ √Var[X] + √Var[Y]`.  When is this ceiling *attained*?  Expanding both
+sides through `variance_add`, equality holds **iff the single off-diagonal covariance attains its
+positive Cauchy–Schwarz extreme** `cov[X,Y] = √Var[X]·√Var[Y]` — equivalently (non-degenerate case)
+`ρ[X,Y] = 1`, i.e. `X` and `Y` are almost-everywhere affinely dependent with *positive* slope
+(perfect positive correlation).  This is the sharp *equality* companion of `stddev_add_le`, and the
+exact dual of the vanishing off-diagonal covariance that makes the *variances* add
+(`variance_add_eq_iff_covariance_zero`): there the powers add when the contributions are
+uncorrelated; here the *amplitudes* add precisely when they are perfectly positively correlated.
+-/
+
+/-- **Equality in the standard-deviation triangle inequality.**  For square-integrable `X, Y` the
+subadditivity `stddev_add_le` is an *equality*
+
+        √Var[X + Y] = √Var[X] + √Var[Y]
+
+if and only if the covariance attains its positive Cauchy–Schwarz extreme
+`cov[X,Y] = √Var[X]·√Var[Y]`.  Proved by squaring both nonnegative sides (`Real.sqrt_sq` /
+`Real.sq_sqrt`) and expanding `Var[X+Y]` via `variance_add`, so that the equality collapses to the
+single covariance condition.  No non-degeneracy hypothesis is needed. -/
+theorem stddev_add_eq_iff_covariance_eq_sqrt [IsFiniteMeasure μ] {X Y : Ω → ℝ}
+    (hX : MemLp X 2 μ) (hY : MemLp Y 2 μ) :
+    Real.sqrt (Var[X + Y; μ]) = Real.sqrt (Var[X; μ]) + Real.sqrt (Var[Y; μ])
+      ↔ cov[X, Y; μ] = Real.sqrt (Var[X; μ]) * Real.sqrt (Var[Y; μ]) := by
+  have hsX : Real.sqrt (Var[X; μ]) ^ 2 = Var[X; μ] := Real.sq_sqrt (variance_nonneg _ _)
+  have hsY : Real.sqrt (Var[Y; μ]) ^ 2 = Var[Y; μ] := Real.sq_sqrt (variance_nonneg _ _)
+  have hcnn : (0 : ℝ) ≤ Real.sqrt (Var[X; μ]) + Real.sqrt (Var[Y; μ]) := by positivity
+  have hkey : Real.sqrt (Var[X + Y; μ])
+        = Real.sqrt (Var[X; μ]) + Real.sqrt (Var[Y; μ])
+      ↔ Var[X + Y; μ] = (Real.sqrt (Var[X; μ]) + Real.sqrt (Var[Y; μ])) ^ 2 := by
+    constructor
+    · intro h; rw [← h, Real.sq_sqrt (variance_nonneg _ _)]
+    · intro h; rw [h, Real.sqrt_sq hcnn]
+  rw [hkey, variance_add hX hY]
+  constructor <;> intro h <;> nlinarith [hsX, hsY, h]
+
+/-- **Equality in the standard-deviation triangle inequality ⟺ ρ = 1 (non-degenerate).**  For
+non-degenerate `X, Y` the RMS amplitudes add, `√Var[X+Y] = √Var[X] + √Var[Y]`, exactly when the
+Pearson correlation is maximal, `ρ[X,Y] = 1`.  Normalises `stddev_add_eq_iff_covariance_eq_sqrt`
+through the definition of `correlation`, the positive Cauchy–Schwarz extreme `cov = σ_X·σ_Y` being
+`ρ = 1` after division by `σ_X·σ_Y ≠ 0`. -/
+theorem stddev_add_eq_iff_correlation_eq_one [IsFiniteMeasure μ] {X Y : Ω → ℝ}
+    (hX : MemLp X 2 μ) (hY : MemLp Y 2 μ) (hXnd : Var[X; μ] ≠ 0) (hYnd : Var[Y; μ] ≠ 0) :
+    Real.sqrt (Var[X + Y; μ]) = Real.sqrt (Var[X; μ]) + Real.sqrt (Var[Y; μ])
+      ↔ correlation X Y μ = 1 := by
+  have hsX : Real.sqrt (Var[X; μ]) ≠ 0 :=
+    Real.sqrt_ne_zero'.mpr (lt_of_le_of_ne (variance_nonneg _ _) (Ne.symm hXnd))
+  have hsY : Real.sqrt (Var[Y; μ]) ≠ 0 :=
+    Real.sqrt_ne_zero'.mpr (lt_of_le_of_ne (variance_nonneg _ _) (Ne.symm hYnd))
+  rw [stddev_add_eq_iff_covariance_eq_sqrt hX hY, correlation,
+    div_eq_one_iff_eq (mul_ne_zero hsX hsY)]
+
+/-- **RMS amplitudes add ⟺ perfect positive correlation (a.e. increasing affine dependence).**  For
+non-degenerate `X, Y`, the standard-deviation triangle inequality is an equality
+`√Var[X+Y] = √Var[X] + √Var[Y]` exactly when `X` is almost everywhere an *increasing* affine function
+of `Y`, `X =ᵐ a·Y + b` with `a > 0`.  Chains `stddev_add_eq_iff_correlation_eq_one` with the signed
+capstone `correlation_eq_one_iff_affine_pos`: the aggregate RMS amplitude attains the subadditive
+ceiling `∑σ` precisely in the perfectly positively correlated case — the sharp equality dual of the
+uncorrelated case (`awgn_two_symbol_power_eq_iff_covariance_zero`) that makes the *powers* add. -/
+theorem stddev_add_eq_iff_affine_pos [IsProbabilityMeasure μ] {X Y : Ω → ℝ}
+    (hX : MemLp X 2 μ) (hY : MemLp Y 2 μ) (hXnd : Var[X; μ] ≠ 0) (hYnd : Var[Y; μ] ≠ 0) :
+    Real.sqrt (Var[X + Y; μ]) = Real.sqrt (Var[X; μ]) + Real.sqrt (Var[Y; μ])
+      ↔ ∃ a b : ℝ, 0 < a ∧ X =ᵐ[μ] fun ω => a * Y ω + b := by
+  rw [stddev_add_eq_iff_correlation_eq_one hX hY hXnd hYnd,
+    correlation_eq_one_iff_affine_pos hX hY hXnd hYnd]
+
 end ShannonAWGNMultiSymbolPower
