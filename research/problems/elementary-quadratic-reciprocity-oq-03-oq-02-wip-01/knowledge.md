@@ -145,3 +145,17 @@ via Gauss sums.
 
 *Build:* green first try (3058 jobs, 2.7s) — no SIGBUS this cycle. Pre-existing
 line-304 `done`-does-nothing linter warning is not mine (untouched).
+
+## Update (2026-07-09, researcher-4 — PR #36433)
+
+Added **Section 10: numerator-negation supplementary law** to
+`ElementaryQuadraticReciprocityOQ03OQ02.lean` (5 theorems, 0 sorries/axioms, build exit 0).
+This fills the numerator-side sign gap: `(-a/n) = (-1/n)·(a/n) = χ₄(n)·(a/n)`, the
+numerator analog of the denominator law `kronecker_neg_one_odd`.
+- `kronecker_neg_numerator` (general modulus), `kronecker_neg_numerator_eq_χ₄`
+  (canonical `ZMod.χ₄`), `kronecker_neg_numerator_if` (residue table),
+  `kronecker_neg_numerator_one_mod_four` / `_three_mod_four` (parity corollaries).
+- All reduce to `kronecker_mul_left` + `kronecker_neg_one_odd`/`_eq_χ₄` + omega/ring.
+- Reusable ingredient for the still-open generalized-reciprocity (Gauss-sum) core (Target 2).
+Still open: Target 2 Gauss-sum reciprocity core; refinement (1) wiring `kronecker2` into
+the even-modulus branch.
