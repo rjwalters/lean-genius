@@ -16,7 +16,10 @@
       `ω` both FAIL the hypothesis (`log` sits exactly at the boundary,
       `ω` is bounded on prime powers). The hypothesis therefore isolates functions
       growing strictly faster than `log` on prime powers.
-  (3) The hypothesis forces plain unboundedness of `f` on prime powers.
+  (3) The hypothesis forces plain unboundedness of `f` on prime powers, and is a
+      **positive cone**: closed under positive scaling (`unboundedOnPrimePowers_smul`)
+      and under adding a function nonnegative on prime powers
+      (`unboundedOnPrimePowers_add_nonneg`).
   (4) **Strongly-additive reduction.** For strongly additive `f` the hypothesis
       collapses to `f(p)/log p` unbounded over primes — the counterpart of the
       parent file's completely-additive reduction. The cancellation differs: the
@@ -163,6 +166,49 @@ theorem unboundedOnPrimePowers_unbounded {f : ℕ → ℝ}
     _ = M * Real.log 2 := hval.symm
     _ ≤ M * Real.log ((p : ℝ) ^ k) := hchain
     _ < f (p ^ k) := hpk
+
+/-
+## Closure properties of the hypothesis class
+
+`UnboundedOnPrimePowers` is a *positive cone*: it is preserved by scaling with a
+positive constant and by adding any function that is nonnegative on prime powers.
+Together these say the hypothesis is robust — e.g. the witnesses `logSqWeight` and
+`bigOmega` can be positively combined and still satisfy it — and let one normalize
+a witness (`c = 1`) without loss of generality.
+-/
+
+/-- **Closure under positive scaling.** If `f` is unbounded on prime powers relative
+to `log`, so is `c • f` for any `c > 0`: apply the hypothesis at the shifted
+multiplier `M / c` and scale the resulting strict inequality by `c`. -/
+theorem unboundedOnPrimePowers_smul {f : ℕ → ℝ} (hf : UnboundedOnPrimePowers f)
+    {c : ℝ} (hc : 0 < c) : UnboundedOnPrimePowers (fun n => c * f n) := by
+  intro M
+  obtain ⟨p, k, hp, hk, hgt⟩ := hf (M / c)
+  refine ⟨p, k, hp, hk, ?_⟩
+  show c * f (p ^ k) > M * Real.log (p ^ k)
+  have hstep : c * ((M / c) * Real.log (p ^ k)) < c * f (p ^ k) :=
+    (mul_lt_mul_left hc).mpr hgt
+  have heq : c * ((M / c) * Real.log (p ^ k)) = M * Real.log (p ^ k) := by
+    have hc0 : c ≠ 0 := ne_of_gt hc
+    field_simp
+    ring
+  rwa [heq] at hstep
+
+/-- **Closure under adding a function nonnegative on prime powers.** If `f` is
+unbounded on prime powers and `g` is `≥ 0` at every prime power, then `f + g` is
+still unbounded on prime powers: the witness `(p, k)` for `f` works for `f + g`
+because `g (p ^ k) ≥ 0` only helps the strict inequality.  (Taking `g = bigOmega`
+or `g = logSqWeight`, both nonnegative, keeps any witness in the class.) -/
+theorem unboundedOnPrimePowers_add_nonneg {f g : ℕ → ℝ}
+    (hf : UnboundedOnPrimePowers f)
+    (hg : ∀ p k : ℕ, p.Prime → 1 ≤ k → 0 ≤ g (p ^ k)) :
+    UnboundedOnPrimePowers (fun n => f n + g n) := by
+  intro M
+  obtain ⟨p, k, hp, hk, hgt⟩ := hf M
+  refine ⟨p, k, hp, hk, ?_⟩
+  show f (p ^ k) + g (p ^ k) > M * Real.log (p ^ k)
+  have hgnn := hg p k hp hk
+  linarith
 
 /-
 ## (4) A strongly-additive reduction
