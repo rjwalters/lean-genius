@@ -325,4 +325,58 @@ theorem complement_contains_distinct_unit_square
   obtain ⟨d12, d23, d34, d41, d13, d24⟩ := hsq.distinct
   exact ⟨p₁, p₂, p₃, p₄, h1, h2, h3, h4, hsq, d12, d23, d34, d41, d13, d24⟩
 
+/-
+## Part 12: The coordinate distance is a genuine metric; the scaled lattice is infinite
+
+Two further axiom-free strengthenings, independent of the Juhász input.
+
+First, `Erdos214.dist` is `‖p - q‖`, so it inherits the two metric axioms missing from
+the earlier `dist_self` / `dist_comm` pair: non-negativity (`norm_nonneg`) and the
+triangle inequality (`norm_add_le`).  Together with `dist_self` and `dist_comm` this
+certifies `Erdos214.dist` really is a metric.
+
+Second, `scaledLattice_unitDistanceFree` exhibits a unit-distance-free set, but only
+guarantees it is non-empty.  Here we show `√2·ℤ²` is in fact *infinite*: the horizontal
+axis `{(√2·n, 0) : n ∈ ℤ}` already embeds `ℤ`.  So Problem #214's hypothesis is satisfied
+by an explicit infinite family, not merely a single configuration.
+-/
+
+/-- **Non-negativity of the coordinate distance.** A metric axiom: `dist p q = ‖p - q‖ ≥ 0`. -/
+theorem dist_nonneg (p q : Plane) : 0 ≤ dist p q := by
+  unfold dist
+  exact norm_nonneg _
+
+/-- **Triangle inequality for the coordinate distance.** The last metric axiom: writing
+`p - r = (p - q) + (q - r)` and applying `norm_add_le`.  With `dist_self`, `dist_comm`
+and `dist_nonneg` this shows `Erdos214.dist` is a genuine metric. -/
+theorem dist_triangle (p q r : Plane) : dist p r ≤ dist p q + dist q r := by
+  unfold dist
+  calc ‖p - r‖ = ‖(p - q) + (q - r)‖ := by rw [sub_add_sub_cancel]
+    _ ≤ ‖p - q‖ + ‖q - r‖ := norm_add_le _ _
+
+/-- The point `(√2·n, 0)` lies in the scaled lattice for every integer `n`
+(take lattice coordinates `a = n`, `b = 0`). -/
+theorem scaledLattice_horiz_mem (n : ℤ) :
+    (!₂[Real.sqrt 2 * (n : ℝ), 0] : Plane) ∈ ScaledLattice := by
+  refine ⟨n, 0, ?_, ?_⟩ <;>
+    simp [Matrix.cons_val_zero, Matrix.cons_val_one]
+
+/-- **The scaled lattice `√2·ℤ²` is infinite.** The horizontal embedding
+`n ↦ (√2·n, 0)` is injective (because `√2 ≠ 0`) and lands in the lattice, so the lattice
+contains a copy of `ℤ`.  This sharpens `scaledLattice_unitDistanceFree`: Problem #214's
+hypothesis is realised by an explicit *infinite* unit-distance-free set. -/
+theorem scaledLattice_infinite : ScaledLattice.Infinite := by
+  apply Set.infinite_of_injective_forall_mem
+    (f := fun n : ℤ => (!₂[Real.sqrt 2 * (n : ℝ), 0] : Plane))
+  · -- injectivity: recover `n` from the first coordinate `√2·n`
+    intro m n hmn
+    have hmn' : (!₂[Real.sqrt 2 * (m : ℝ), 0] : Plane)
+        = !₂[Real.sqrt 2 * (n : ℝ), 0] := hmn
+    have h0 : Real.sqrt 2 * (m : ℝ) = Real.sqrt 2 * (n : ℝ) := by
+      have hc := congrArg (fun x : Plane => x 0) hmn'
+      simpa [Matrix.cons_val_zero] using hc
+    have hs : (Real.sqrt 2 : ℝ) ≠ 0 := by positivity
+    exact_mod_cast mul_left_cancel₀ hs h0
+  · exact scaledLattice_horiz_mem
+
 end Erdos214
