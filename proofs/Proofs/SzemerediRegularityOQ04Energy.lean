@@ -228,4 +228,36 @@ theorem pairEnergy_row_split_mono (G : SimpleGraph V) [DecidableRel G.Adj]
   intro B _
   exact pairEnergy_split_mono G A₁ A₂ B hA
 
+/-- **Quantitative row form of the energy increment.**  If a distinguished part
+    `B₀ ∈ Bs` witnesses a density deviation `|d(A₁,B₀) − d(A₂,B₀)| ≥ δ` between the
+    two halves, then splitting the `A`-side and summing the energy contribution over
+    the whole row raises the total by at least the single-pair gain at `B₀`.  Every
+    other row term contributes a nonnegative increment (`pairEnergy_split_mono`), so
+    the definite gain at `B₀` survives to the summed statement.  This is the shape in
+    which one irregular partner drives the whole-partition energy jump. -/
+theorem pairEnergy_row_split_gain (G : SimpleGraph V) [DecidableRel G.Adj]
+    (A₁ A₂ : Finset V) (hA : Disjoint A₁ A₂) (Bs : Finset (Finset V))
+    (B₀ : Finset V) (hB₀ : B₀ ∈ Bs)
+    (hn₁ : 0 < (A₁.card : ℚ)) (hn₂ : 0 < (A₂.card : ℚ)) (hB : 0 < (B₀.card : ℚ))
+    (δ : ℚ) (hδ : 0 ≤ δ)
+    (hdev : |edgeDensity G A₁ B₀ - edgeDensity G A₂ B₀| ≥ δ) :
+    (Bs.sum fun B => pairEnergy G (A₁ ∪ A₂) B) +
+        (A₁.card : ℚ) * A₂.card / ((A₁.card : ℚ) + A₂.card) *
+          ((B₀.card : ℚ) / (Fintype.card V : ℚ) ^ 2) * δ ^ 2 ≤
+      Bs.sum fun B => pairEnergy G A₁ B + pairEnergy G A₂ B := by
+  -- Work with the per-term surplus `g B = (pairEnergy A₁ B + pairEnergy A₂ B) − pairEnergy (A₁∪A₂) B`.
+  have hnn : ∀ B ∈ Bs, (0 : ℚ) ≤
+      (pairEnergy G A₁ B + pairEnergy G A₂ B) - pairEnergy G (A₁ ∪ A₂) B := by
+    intro B _
+    linarith [pairEnergy_split_mono G A₁ A₂ B hA]
+  -- At `B₀` the surplus is at least the Cauchy–Schwarz gain.
+  have hgain : (A₁.card : ℚ) * A₂.card / ((A₁.card : ℚ) + A₂.card) *
+        ((B₀.card : ℚ) / (Fintype.card V : ℚ) ^ 2) * δ ^ 2 ≤
+      (pairEnergy G A₁ B₀ + pairEnergy G A₂ B₀) - pairEnergy G (A₁ ∪ A₂) B₀ := by
+    linarith [pairEnergy_split_gain G A₁ A₂ B₀ hA hn₁ hn₂ hB δ hδ hdev]
+  -- One term of a sum of nonnegatives is bounded by the whole sum.
+  have hsingle := Finset.single_le_sum hnn hB₀
+  rw [Finset.sum_sub_distrib] at hsingle
+  linarith
+
 end Szemeredi.RegularityOQ04Energy

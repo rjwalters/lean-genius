@@ -145,4 +145,60 @@ theorem partitionEnergy_single_split_mono (G : SimpleGraph V) [DecidableRel G.Ad
     Finset.sum_add_distrib]
   linarith [h1, h2, h3]
 
+/-- **Quantitative refinement increment of the gallery energy (energy-increment
+    step).**  Suppose the refined part `A₁ ∪ A₂` has an irregular partner `B₀ ∈ R`:
+    the two halves see densities differing by at least `δ`, i.e.
+    `|d(A₁,B₀) − d(A₂,B₀)| ≥ δ`.  Then refining the partition by replacing
+    `A₁ ∪ A₂` with its pieces `A₁, A₂` raises `partitionEnergy` by a *definite*
+    positive amount:
+
+    `partitionEnergy G (insert (A₁ ∪ A₂) R) + gain ≤
+        partitionEnergy G (insert A₁ (insert A₂ R))`,
+
+    where `gain = (|A₁||A₂|/(|A₁|+|A₂|))·(|B₀|/n²)·δ²`.  Every block of the
+    ordered-pair sum still moves in the right direction by `pairEnergy` monotonicity;
+    the row block against `R` carries the strict Cauchy–Schwarz surplus at `B₀`
+    (`pairEnergy_row_split_gain`).  This is the analytic heart of the strong
+    (Alon–Fischer–Krivelevich–Szegedy) regularity lemma: paired with the abstract
+    `[0,1]`-potential termination bound of `SzemerediRegularityOQ04`, the fixed
+    `gain > 0` forces the refinement loop to halt after at most `⌊1/gain⌋` steps. -/
+theorem partitionEnergy_single_split_gain (G : SimpleGraph V) [DecidableRel G.Adj]
+    (R : Finset (Finset V)) (A₁ A₂ B₀ : Finset V) (hdisj : Disjoint A₁ A₂)
+    (hA₁R : A₁ ∉ R) (hA₂R : A₂ ∉ R) (hne : A₁ ≠ A₂) (hAR : A₁ ∪ A₂ ∉ R)
+    (hB₀ : B₀ ∈ R)
+    (hn₁ : 0 < (A₁.card : ℚ)) (hn₂ : 0 < (A₂.card : ℚ)) (hB : 0 < (B₀.card : ℚ))
+    (δ : ℚ) (hδ : 0 ≤ δ)
+    (hdev : |edgeDensity G A₁ B₀ - edgeDensity G A₂ B₀| ≥ δ) :
+    partitionEnergy G (insert (A₁ ∪ A₂) R) +
+        (A₁.card : ℚ) * A₂.card / ((A₁.card : ℚ) + A₂.card) *
+          ((B₀.card : ℚ) / (Fintype.card V : ℚ) ^ 2) * δ ^ 2 ≤
+      partitionEnergy G (insert A₁ (insert A₂ R)) := by
+  -- A₁ is not in the smaller inserted family either.
+  have hA₁ : A₁ ∉ insert A₂ R := by
+    simp only [Finset.mem_insert, not_or]
+    exact ⟨hne, hA₁R⟩
+  -- Diagonal block: (A₁∪A₂,A₁∪A₂) ≤ the four sub-pairs (pure monotonicity).
+  have h1 : pairEnergy G (A₁ ∪ A₂) (A₁ ∪ A₂) ≤
+      pairEnergy G A₁ A₁ + pairEnergy G A₁ A₂ +
+        pairEnergy G A₂ A₁ + pairEnergy G A₂ A₂ := by
+    have a := pairEnergy_split_mono G A₁ A₂ (A₁ ∪ A₂) hdisj
+    have b := pairEnergy_split_mono_right G A₁ A₁ A₂ hdisj
+    have c := pairEnergy_split_mono_right G A₂ A₁ A₂ hdisj
+    linarith
+  -- Row block: the strict Cauchy–Schwarz surplus at the irregular partner B₀.
+  have h2 := pairEnergy_row_split_gain G A₁ A₂ hdisj R B₀ hB₀ hn₁ hn₂ hB δ hδ hdev
+  rw [Finset.sum_add_distrib] at h2
+  -- Column block: pure monotonicity again.
+  have h3 : R.sum (fun P => pairEnergy G P (A₁ ∪ A₂)) ≤
+      R.sum (fun P => pairEnergy G P A₁) + R.sum (fun P => pairEnergy G P A₂) := by
+    rw [← Finset.sum_add_distrib]
+    apply Finset.sum_le_sum
+    intro P _
+    exact pairEnergy_split_mono_right G P A₁ A₂ hdisj
+  -- Expand both energies to their block decompositions and combine.
+  rw [partitionEnergy_eq_double_sum, partitionEnergy_eq_double_sum]
+  simp only [Finset.sum_insert hAR, Finset.sum_insert hA₁, Finset.sum_insert hA₂R,
+    Finset.sum_add_distrib]
+  linarith [h1, h2, h3]
+
 end Szemeredi.RegularityOQ04Bridge
