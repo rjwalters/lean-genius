@@ -519,4 +519,65 @@ theorem kAPCount_indicator_univ {N : ℕ} [NeZero N] (k : ℕ) :
   simp only [indicatorZMod_univ]
   exact kAPCount_const_one k
 
+/-- **Every counted progression starts in `A`.**  For `k ≥ 1`, a pair `(x, d)` whose
+    length-`k` progression lies entirely in `A` has, in particular, its `i = 0` term
+    `x + 0·d = x` in `A`.  Hence the counted set embeds in `A ×ˢ univ`. -/
+theorem kAPCount_count_start_subset {N : ℕ} [NeZero N] {k : ℕ} (hk : 0 < k)
+    (A : Finset (ZMod N)) :
+    (Finset.univ.filter (fun p : ZMod N × ZMod N =>
+        ∀ i : Fin k, p.1 + i.val • p.2 ∈ A))
+      ⊆ A ×ˢ Finset.univ := by
+  classical
+  intro p hp
+  rw [Finset.mem_filter] at hp
+  have hx : p.1 ∈ A := by simpa using hp.2 ⟨0, hk⟩
+  exact Finset.mem_product.mpr ⟨hx, Finset.mem_univ _⟩
+
+/-- **Trivial upper bound on the `k`-AP count.**  Since every counted progression starts in
+    `A` (`kAPCount_count_start_subset`), the number of pairs `(x, d)` with `x + i·d ∈ A` for
+    all `i` is at most `#A · N`.  This is the loose companion to the diagonal/nondegenerate
+    split `kAPCount_count_split`: the total count never exceeds `#A` starting points times the
+    `N` available common differences. -/
+theorem kAPCount_count_le {N : ℕ} [NeZero N] {k : ℕ} (hk : 0 < k)
+    (A : Finset (ZMod N)) :
+    (Finset.univ.filter (fun p : ZMod N × ZMod N =>
+        ∀ i : Fin k, p.1 + i.val • p.2 ∈ A)).card ≤ A.card * N := by
+  classical
+  calc
+    (Finset.univ.filter (fun p : ZMod N × ZMod N =>
+        ∀ i : Fin k, p.1 + i.val • p.2 ∈ A)).card
+        ≤ (A ×ˢ Finset.univ).card :=
+          Finset.card_le_card (kAPCount_count_start_subset hk A)
+    _ = A.card * Fintype.card (ZMod N) := by
+          rw [Finset.card_product, Finset.card_univ]
+    _ = A.card * N := by rw [ZMod.card]
+
+/-- **Upper bound on the nondegenerate `k`-AP count.**  The `d ≠ 0` progressions counted in
+    `kAPCount_count_split` embed in `A ×ˢ (univ \ {0})` — they start in `A` and have a nonzero
+    common difference — so their number is at most `#A · (N − 1)`.  Together with
+    `kAPCount_count_split` this brackets the genuine (nondiagonal) `k`-AP count between `0` and
+    `#A · (N − 1)`. -/
+theorem kAPCount_nondeg_le {N : ℕ} [NeZero N] {k : ℕ} (hk : 0 < k)
+    (A : Finset (ZMod N)) :
+    (Finset.univ.filter (fun p : ZMod N × ZMod N =>
+        (∀ i : Fin k, p.1 + i.val • p.2 ∈ A) ∧ p.2 ≠ 0)).card
+      ≤ A.card * (N - 1) := by
+  classical
+  have hsub :
+      (Finset.univ.filter (fun p : ZMod N × ZMod N =>
+        (∀ i : Fin k, p.1 + i.val • p.2 ∈ A) ∧ p.2 ≠ 0))
+        ⊆ A ×ˢ (Finset.univ.erase 0) := by
+    intro p hp
+    rw [Finset.mem_filter] at hp
+    obtain ⟨-, hall, hd⟩ := hp
+    have hx : p.1 ∈ A := by simpa using hall ⟨0, hk⟩
+    exact Finset.mem_product.mpr ⟨hx, Finset.mem_erase.mpr ⟨hd, Finset.mem_univ _⟩⟩
+  calc
+    (Finset.univ.filter (fun p : ZMod N × ZMod N =>
+        (∀ i : Fin k, p.1 + i.val • p.2 ∈ A) ∧ p.2 ≠ 0)).card
+        ≤ (A ×ˢ (Finset.univ.erase 0)).card := Finset.card_le_card hsub
+    _ = A.card * (Finset.univ.erase (0 : ZMod N)).card := by rw [Finset.card_product]
+    _ = A.card * (N - 1) := by
+          rw [Finset.card_erase_of_mem (Finset.mem_univ _), Finset.card_univ, ZMod.card]
+
 end RothTheoremOQ03OQ01
