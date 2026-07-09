@@ -870,4 +870,72 @@ theorem trace_eq_add_compress_of_reducing {T : V →ₗ[𝕜] V}
     trace_starProjection_compress_eq_trace_compress H,
     trace_starProjection_compress_eq_trace_compress Hᗮ]
 
+/-! ## Spectral reading: trace = sum of eigenvalues
+
+The trace identities above are *symmetry-free* — they hold for any operator on
+any subspace.  The final step interprets them spectrally: for a **symmetric**
+operator the trace equals the sum of the eigenvalues (with multiplicity),
+because the eigenvector basis diagonalises the operator.  This is where symmetry
+finally buys the eigenvalue picture, turning the honest trace additivity
+`trace_eq_add_compress_of_reducing` into an additivity statement about the actual
+eigenvalue sums of the two compression blocks. -/
+
+omit [FiniteDimensional 𝕜 V] in
+/-- **Trace of a diagonalised operator = sum of its diagonal entries.**
+
+If `T` acts diagonally on a basis `b`, `T (b i) = d i • b i`, then its trace is
+the sum of the diagonal scalars `d i`.  A one-step consequence of
+`LinearMap.trace_eq_matrix_trace`: the matrix of `T` in `b` is diagonal with
+entries `d i`, whose matrix trace is `∑ i, d i`.  No symmetry or inner-product
+structure is used. -/
+theorem trace_eq_sum_of_apply_basis_smul {ι : Type*} [Fintype ι] [DecidableEq ι]
+    {T : V →ₗ[𝕜] V} (b : Module.Basis ι 𝕜 V) {d : ι → 𝕜}
+    (hb : ∀ i, T (b i) = d i • b i) :
+    LinearMap.trace 𝕜 V T = ∑ i, d i := by
+  rw [LinearMap.trace_eq_matrix_trace 𝕜 b]
+  simp only [Matrix.trace, Matrix.diag_apply, LinearMap.toMatrix_apply, hb, map_smul,
+    Finsupp.smul_apply, Module.Basis.repr_self, Finsupp.single_eq_same, smul_eq_mul, mul_one]
+
+/-- **Trace = sum of eigenvalues (symmetric operator).**
+
+For a symmetric operator `T` on an `n`-dimensional inner product space, the trace
+equals the sum of its `n` eigenvalues (with multiplicity):
+
+  `tr T = ∑ i, λ_i`.
+
+Immediate from `trace_eq_sum_of_apply_basis_smul` applied to the eigenvector
+basis, on which `T` acts by the eigenvalues (`apply_eigenvectorBasis`). -/
+theorem trace_eq_sum_eigenvalues {T : V →ₗ[𝕜] V} (hT : T.IsSymmetric) {n : ℕ}
+    (hVdim : Module.finrank 𝕜 V = n) :
+    LinearMap.trace 𝕜 V T = ∑ i, ((hT.eigenvalues hVdim i : 𝕜)) :=
+  trace_eq_sum_of_apply_basis_smul (hT.eigenvectorBasis hVdim).toBasis
+    (hT.apply_eigenvectorBasis hVdim)
+
+/-- **Eigenvalue-sum additivity over a reducing subspace.**
+
+The spectral capstone of the file.  If `H` reduces a symmetric operator `T`, then
+the sum of the eigenvalues of `T` splits as the sum of the eigenvalue sums of the
+two honest compression blocks `compress T H` and `compress T Hᗮ`:
+
+  `∑ λ_i(T) = ∑ λ_i(compress T H) + ∑ λ_i(compress T Hᗮ)`.
+
+Obtained by reading the symmetry-free honest trace additivity
+`trace_eq_add_compress_of_reducing` through the spectral identity
+`trace_eq_sum_eigenvalues` on each of the three symmetric operators `T`,
+`compress T H`, `compress T Hᗮ` (the latter two symmetric by
+`isSymmetric_compress`).  This is the eigenvalue-sum analogue of the multiplicity
+additivity `finrank_eigenspace_eq_add_compress_of_reducing`, and the trace-level
+shadow of the Poincaré separation `poincare_separation_compression`. -/
+theorem sum_eigenvalues_eq_add_of_reducing {T : V →ₗ[𝕜] V} (hT : T.IsSymmetric)
+    (H : Submodule 𝕜 V) (hH : ∀ y ∈ H, T y ∈ H) (hHp : ∀ y ∈ Hᗮ, T y ∈ Hᗮ)
+    {n nH nHp : ℕ} (hVdim : Module.finrank 𝕜 V = n)
+    (hHdim : Module.finrank 𝕜 H = nH) (hHpdim : Module.finrank 𝕜 Hᗮ = nHp) :
+    ∑ i, ((hT.eigenvalues hVdim i : 𝕜))
+      = ∑ i, (((isSymmetric_compress hT H).eigenvalues hHdim i : 𝕜))
+        + ∑ i, (((isSymmetric_compress hT Hᗮ).eigenvalues hHpdim i : 𝕜)) := by
+  rw [← trace_eq_sum_eigenvalues hT hVdim,
+    ← trace_eq_sum_eigenvalues (isSymmetric_compress hT H) hHdim,
+    ← trace_eq_sum_eigenvalues (isSymmetric_compress hT Hᗮ) hHpdim]
+  exact trace_eq_add_compress_of_reducing H hH hHp
+
 end CauchyInterlacing.PoincareCompression
