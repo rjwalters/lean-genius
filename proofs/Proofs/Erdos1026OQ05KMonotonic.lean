@@ -201,4 +201,82 @@ theorem minKMonotonicParts_bracket {k : ℕ} (hk : 0 < k) (seq : RealSeq n) :
       minKMonotonicParts k seq ≤ minMonotonicParts seq :=
   ⟨minKMonotonicParts_ge hk seq, minKMonotonicParts_le_minMonotonicParts hk seq⟩
 
+/-! ## The exact `k = 1` identity: `minKMonotonicParts 1 = minMonotonicParts`
+
+The bracket above only pins `minKMonotonicParts k ≤ minMonotonicParts` from one side. At
+`k = 1` this is an **equality**: a `1`-monotone piece — a subsequence covered by a *single*
+monotone run — is itself monotone, so `1`-monotone decompositions and ordinary monotone
+decompositions coincide. -/
+
+/-- **A `1`-monotone subsequence is monotone.**  If `sub` is `k`-monotone with `k = 1`, its
+single covering run `runs 0` is monotone and every index of `sub` is an index of that run.
+Since the run's index map is strictly monotone, the inclusion `sub ↪ run` is order-preserving,
+so the monotonicity (increasing or decreasing) of the run transfers verbatim to `sub`. This is
+the reverse of `IsMonotonic.isKMonotonic` at `k = 1`. -/
+theorem IsKMonotonic.isMonotonic_of_one {seq : RealSeq n} {sub : Subsequence n m}
+    (h : IsKMonotonic 1 seq sub) : IsMonotonic seq sub := by
+  obtain ⟨runs, hmono, hcov⟩ := h
+  set R := (runs 0).2 with hR
+  -- The covering index `j : Fin 1` is forced to be `0`, so every index of `sub` is an index of `R`.
+  have hcov0 : ∀ a : Fin m, ∃ b, R.indices b = sub.indices a := by
+    intro a
+    obtain ⟨j, b, hjb⟩ := hcov a
+    have hj0 : j = 0 := Subsingleton.elim _ _
+    subst hj0
+    exact ⟨b, hjb⟩
+  choose b hb using hcov0
+  -- The induced inclusion `b : Fin m → Fin p` is strictly monotone (order-reflecting run indices).
+  have hbmono : StrictMono b := by
+    intro a a' haa'
+    have h1 : R.indices (b a) < R.indices (b a') := by
+      rw [hb a, hb a']; exact sub.strictMono haa'
+    exact R.strictMono.lt_iff_lt.mp h1
+  rcases hmono 0 with hInc | hDec
+  · -- Increasing run ⇒ increasing subsequence.
+    left
+    intro a a' haa'
+    show seq (sub.indices a) < seq (sub.indices a')
+    rw [← hb a, ← hb a']
+    exact hInc (hbmono haa')
+  · -- Decreasing run ⇒ decreasing subsequence.
+    right
+    intro a a' haa'
+    rw [← hb a, ← hb a']
+    exact hDec (b a) (b a') (hbmono haa')
+
+/-- A `1`-monotone decomposition is exactly an ordinary monotone decomposition: each part,
+being `1`-monotone, is monotone (`IsKMonotonic.isMonotonic_of_one`); disjointness and covering
+carry over unchanged. Inverse of `monotonicToKMonotonic` at `k = 1`. -/
+def kMonotonicToMonotonic_one {seq : RealSeq n}
+    (D : KMonotonicDecomposition 1 n seq) : MonotonicDecomposition n seq where
+  numParts := D.numParts
+  parts := D.parts
+  monotonic := fun i => (D.kmonotonic i).isMonotonic_of_one
+  disjoint := D.disjoint
+  covering := D.covering
+
+/-- The reverse inequality to `minKMonotonicParts_le_minMonotonicParts` at `k = 1`: the optimal
+`1`-monotone decomposition is an ordinary monotone decomposition of the same size, so the monotone
+covering number does not exceed the `1`-monotone one. -/
+theorem minMonotonicParts_le_minKMonotonicParts_one (seq : RealSeq n) :
+    minMonotonicParts seq ≤ minKMonotonicParts 1 seq := by
+  classical
+  have hne : {p | ∃ D : KMonotonicDecomposition 1 n seq, D.numParts = p}.Nonempty :=
+    ⟨n, monotonicToKMonotonic Nat.one_pos (singletonDecomposition seq), rfl⟩
+  obtain ⟨D, hD⟩ := Nat.sInf_mem hne
+  have hEq : minKMonotonicParts 1 seq = D.numParts := hD.symm
+  rw [hEq]
+  unfold minMonotonicParts
+  apply Nat.sInf_le
+  exact ⟨kMonotonicToMonotonic_one D, rfl⟩
+
+/-- **Exact `k = 1` identity.**  `minKMonotonicParts 1 seq = minMonotonicParts seq`: allowing a
+single run per part is no different from requiring each part to be monotone. This pins the
+`k = 1` endpoint of the covering-number bracket `minKMonotonicParts_bracket` to an equality,
+completing the "non-increasing in `k`, pinned at the monotone covering number" picture. -/
+theorem minKMonotonicParts_one_eq_minMonotonicParts (seq : RealSeq n) :
+    minKMonotonicParts 1 seq = minMonotonicParts seq :=
+  le_antisymm (minKMonotonicParts_le_minMonotonicParts Nat.one_pos seq)
+    (minMonotonicParts_le_minKMonotonicParts_one seq)
+
 end Erdos1026OQ05KMonotonic
