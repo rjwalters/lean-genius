@@ -65,32 +65,6 @@
     "theoremCount": 7,
     "definitionCount": 0
   },
-  "references": [
-    {
-      "authors": "Smith, David J. and Vamanamurthy, Mavina K.",
-      "title": "How Small Is a Unit Ball?",
-      "year": "1989",
-      "venue": "Mathematics Magazine 62(2), 101–107"
-    },
-    {
-      "authors": "Ball, Keith",
-      "title": "An Elementary Introduction to Modern Convex Geometry",
-      "year": "1997",
-      "venue": "Flavors of Geometry, MSRI Publications 31, Cambridge University Press, 1–58"
-    },
-    {
-      "authors": "Artin, Emil",
-      "title": "The Gamma Function",
-      "year": "1964",
-      "venue": "Holt, Rinehart and Winston (English translation by Michael Butler)"
-    },
-    {
-      "authors": "The mathlib Community",
-      "title": "Real.Gamma, Real.exp_pi and the series e^π; Analysis.SpecialFunctions.Gamma",
-      "year": "2024",
-      "venue": "Mathlib4 (leanprover-community/mathlib4)"
-    }
-  ],
   "overview": {
     "historicalContext": "The volume ω_n = π^(n/2)/Γ(n/2+1) of the unit n-ball is a classical object in geometry. The fact that ω_n → 0 is surprising to many: as dimension increases, the unit ball concentrates all its volume near the equator and the total volume shrinks to 0. This is a key insight in the 'curse of dimensionality' in high-dimensional geometry.\n\nThe proof is most natural via the recurrence ω_{n+2} = (2π/(n+2))·ω_n, which shows that for large n, each step multiplies by a factor < 1, causing exponential decay. The cleanest formalization splits even and odd subsequences.",
     "problemStatement": "**Question**: Does ω_n → 0 as n → ∞?\n\n**Answer**: YES. For even indices, ω_{2k} = π^k/k! → 0 since π^k/k! are terms of the convergent series $e^\\pi$. For odd indices, ω_{2k+1} ≤ 2·ω_{2k} → 0. Since every n is either even or odd, ω_n → 0.",

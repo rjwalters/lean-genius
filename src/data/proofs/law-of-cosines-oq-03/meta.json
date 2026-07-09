@@ -48,26 +48,6 @@
       "Hyperbolic geometry basics: Poincaré disk or upper half-plane model"
     ]
   },
-  "references": [
-    {
-      "authors": [
-        "Ratcliffe, J.G."
-      ],
-      "title": "Foundations of Hyperbolic Manifolds",
-      "year": "2019",
-      "venue": "3rd ed., Graduate Texts in Mathematics 149, Springer",
-      "note": "Hyperboloid model of the hyperbolic plane and the hyperbolic laws of cosines and sines."
-    },
-    {
-      "authors": [
-        "Anderson, J.W."
-      ],
-      "title": "Hyperbolic Geometry",
-      "year": "2005",
-      "venue": "2nd ed., Springer Undergraduate Mathematics Series, Springer",
-      "note": "Hyperbolic trigonometry, including the laws of cosines and sines and AAA rigidity."
-    }
-  ],
   "conclusion": {
     "summary": "Hyperbolic law of cosines axiomatized via structure fields: both laws (first and second), hyperbolic Pythagorean theorem, angular defect > 0. Hyperbolic function identities (cosh²-sinh²=1, cosh≥1, parities) proved from Mathlib. 12 theorems, 3 structure-encoded axioms, 192 lines.",
     "implications": "The hyperbolic law of cosines is the fundamental computational tool for hyperbolic trigonometry, used to compute distances and angles in hyperbolic space. It is the basis for hyperbolic trigonometry tables, used in Thurston's geometrization program, and essential for studying hyperbolic 3-manifolds and Kleinian groups. The structure-encoding approach here is appropriate for an axiomatic development — deriving the law from a specific model (Poincaré disk, hyperboloid) would require substantially more infrastructure.",

@@ -112,50 +112,6 @@
       "Extremal set theory: intersecting families and Kleitman's bound"
     ]
   },
-  "sections": [
-    {
-      "id": "sec-header",
-      "title": "Header: Context and Results",
-      "startLine": 1,
-      "endLine": 47,
-      "summary": "Module docstring placing Erdős #19 OQ-02 in the intersecting-families world (Kleitman, Erdős–Ko–Rado, Frankl) as the k-wise generalization of Mathlib's Set.Intersecting. States the three structural facts: reduction/monotonicity, the Kleitman-style half-the-algebra cardinality bound, and sharpness via principal up-sets. Imports SetFamily.Intersecting and Finset/Fintype cardinality lemmas; opens Finset and fixes a BooleanAlgebra α."
-    },
-    {
-      "id": "sec-def",
-      "title": "The k-Wise Intersecting Definition",
-      "startLine": 49,
-      "endLine": 54,
-      "summary": "KWiseIntersecting k 𝒜: every nonempty subfamily t ⊆ 𝒜 of size at most k has meet t.inf id ≠ ⊥ — i.e. any ≤ k members share a common point in the set-family reading."
-    },
-    {
-      "id": "sec-monotone",
-      "title": "Structural Reductions",
-      "startLine": 56,
-      "endLine": 74,
-      "summary": "Three closure/monotonicity lemmas: subfamily (a subfamily of a k-wise intersecting family is k-wise intersecting), antitone (larger k is a stronger hypothesis — the property is antitone in k), and mem_ne_bot (for k ≥ 1 every member is ≠ ⊥, via the singleton subfamily)."
-    },
-    {
-      "id": "sec-pairwise",
-      "title": "Reduction to Pairwise Intersection",
-      "startLine": 76,
-      "endLine": 98,
-      "summary": "KWiseIntersecting.intersecting: a k-wise intersecting family with k ≥ 2 is intersecting in Mathlib's pairwise sense (no two members disjoint). The a = b case reduces to mem_ne_bot; a ≠ b uses the pair {a,b}, whose meet is a ⊓ b ≠ ⊥ — connecting the new k-wise notion to Set.Intersecting."
-    },
-    {
-      "id": "sec-cardbound",
-      "title": "Cardinality Bounds",
-      "startLine": 100,
-      "endLine": 115,
-      "summary": "KWiseIntersecting.card_le: combining the pairwise reduction with Mathlib's Set.Intersecting.card_le gives 2·|𝒜| ≤ |α| — a k-wise intersecting family (k ≥ 2) occupies at most half a finite Boolean algebra. kWiseIntersecting_subsets_card_le specializes to subsets of an n-set: 2·|𝒜| ≤ 2^n, the classical 2^{n-1}-member bound."
-    },
-    {
-      "id": "sec-sharpness",
-      "title": "Sharpness: Principal Up-Sets",
-      "startLine": 117,
-      "endLine": 156,
-      "summary": "Defines the principal up-set principalUp a = {x | a ≤ x} and proves principalUp_kWiseIntersecting: for a ≠ ⊥ it is k-wise intersecting for every k simultaneously (each subfamily's meet is ≥ a ≠ ⊥), so the reduction cannot be improved. principalUp_intersecting records the pairwise case, and exists_kWiseIntersecting concludes that every nontrivial finite Boolean algebra contains a nonempty k-wise intersecting family for all k."
-    }
-  ],
   "conclusion": {
     "summary": "k-Wise intersecting families of Boolean-algebra elements are defined and shown to be antitone in k and closed under subfamilies; for k ≥ 2 they reduce to Mathlib's pairwise Set.Intersecting, yielding the half-cardinality bound 2·|𝒜| ≤ |α| (and 2·|𝒜| ≤ 2ⁿ for subsets of an n-set). The bound is sharp: a principal up-set {x | a ≤ x} with a ≠ ⊥ is k-wise intersecting for every k. Fully verified, 0 axioms, 0 sorries.",
     "implications": "This adds the k-wise layer to Mathlib's intersecting-family API and pins down the precise sense in which it reduces to the pairwise theory. It is the large-intersection counterpart to the small-intersection (Erdős–Faber–Lovász) theme of the parent entry, packaged so that the extremal bound is inherited directly from Kleitman's theorem.",

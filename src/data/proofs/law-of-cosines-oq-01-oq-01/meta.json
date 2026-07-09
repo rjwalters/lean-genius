@@ -137,26 +137,6 @@
       "summary": "Two explicit verifications: the 90-90-90 spherical triangle (all sides and angles π/2) and the equilateral 90-degree variant, both reducing to 0 = 0 via cos(arccos(0)) = 0 and simp."
     }
   ],
-  "references": [
-    {
-      "authors": [
-        "Todhunter, I."
-      ],
-      "title": "Spherical Trigonometry, for the Use of Colleges and Schools",
-      "year": "1886",
-      "venue": "5th ed., Macmillan",
-      "note": "Classical reference for the spherical law of cosines, the polar triangle and the dual (supplemental) formulae."
-    },
-    {
-      "authors": [
-        "Coxeter, H.S.M."
-      ],
-      "title": "Non-Euclidean Geometry",
-      "year": "1998",
-      "venue": "6th ed., Mathematical Association of America",
-      "note": "Unified treatment of spherical and hyperbolic trigonometry and their dualities."
-    }
-  ],
   "conclusion": {
     "summary": "This proof establishes the dual spherical law of cosines — cos(C) = −cos(A)cos(B) + sin(A)sin(B)cos(c) — via a direct algebraic route through the Gram determinant, without using the polar triangle construction. All 22 theorems are proved from Mathlib's inner product space theory with zero axioms and zero sorries.",
     "implications": "The dual law completes the symmetry of spherical trigonometry: the standard law expresses a side in terms of sides and an angle, while the dual expresses an angle in terms of angles and a side. Together they form a duality that mirrors the relationship between a spherical triangle and its polar dual. The Gram determinant approach is more algebraically transparent than the traditional polar triangle construction and generalizes to higher-dimensional spherical geometry. The proof infrastructure (perpendicular projections, Gram determinant nonnegativity) is directly reusable for the spherical sine rule and for analogous results in hyperbolic geometry.",

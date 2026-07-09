@@ -115,26 +115,6 @@
       "summary": "Generalizes GCovering_z2_involutive to arbitrary cyclic deck groups ZMod p. The bridge lemma `GCovering.act_one_iterate` shows `(C.act 1)^[k] x = C.act ((k : ZMod p)) x` via induction (using `Function.iterate_succ_apply'` and `act_add`). The main result `GCovering_zmod_p_periodic` then follows from `ZMod.natCast_self : (p : ZMod p) = 0` and `act_zero`: iterating the generator p times yields the identity. `GCovering_zmod_p_periodic_two` recovers the original p = 2 involutivity statement, confirming the generalization is conservative. This is the algebraic backbone for lens-space coverings S^{2n-1} → L^{2n-1}(p) and the Yang-Borsuk theorem."
     }
   ],
-  "references": [
-    {
-      "authors": [
-        "Borsuk, K."
-      ],
-      "title": "Drei Sätze über die n-dimensionale euklidische Sphäre",
-      "year": "1933",
-      "venue": "Fundamenta Mathematicae 20, pp. 177–190",
-      "note": "Original antipodal (Borsuk-Ulam) theorem."
-    },
-    {
-      "authors": [
-        "Matoušek, J."
-      ],
-      "title": "Using the Borsuk-Ulam Theorem: Lectures on Topological Methods in Combinatorics and Geometry",
-      "year": "2003",
-      "venue": "Universitext, Springer",
-      "note": "Standard reference for the Borsuk-Ulam theorem, Z/2 and G-indices, and Dold's theorem."
-    }
-  ],
   "conclusion": {
     "summary": "This formalization makes the covering space argument in the Borsuk-Ulam proof fully explicit and algebraically transparent. The descent of odd maps — from $\\mathbb{R}^{n+1}$ to projective spaces — is identified as the key algebraic step and proved without sorries. The CoveringType abstraction isolates the essential categorical structure (projection, deck transformation, involutivity, fiber compatibility) needed for both classical and higher generalizations.",
     "implications": "The CoveringType framework demonstrates that the Borsuk-Ulam covering space argument decomposes into a purely algebraic component (descent, fully formalized here) and a topological component (the obstruction axiom). This separation suggests that higher categorical generalizations should similarly factor: the $\\infty$-categorical descent theory (well-developed via Lurie's work) paired with higher obstruction theory. The formalization connects to active research in equivariant stable homotopy theory, where the Hill-Hopkins-Ravenel norm machinery extends $\\mathbb{Z}/2$-equivariance to $\\mathbb{Z}/p$ and beyond. As Lean's algebraic topology library grows to include homotopy groups, fibration sequences, and spectral sequences, this CoveringType framework could serve as the foundation for machine-checked proofs of higher Borsuk-Ulam results.",

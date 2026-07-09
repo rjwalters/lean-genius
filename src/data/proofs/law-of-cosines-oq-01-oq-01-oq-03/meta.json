@@ -119,26 +119,6 @@
       "mathContext": "The standard law cos(c') = cos(a')cos(b') + sin(a')sin(b')cos(γ') becomes -cos(γ) = cos(α)cos(β) - sin(α)sin(β)cos(c) after substitution, giving cos(γ) = -cos(α)cos(β) + sin(α)sin(β)cos(c). The clean-hypothesis form retains only 8 hypotheses (3 unit + 3 cross non-deg + 2 polar non-deg) versus 12 in the original — the two polar non-degeneracies remain because tripleProduct ≠ 0 is not implied by pairwise cross non-deg alone."
     }
   ],
-  "references": [
-    {
-      "authors": [
-        "Todhunter, I."
-      ],
-      "title": "Spherical Trigonometry, for the Use of Colleges and Schools",
-      "year": "1886",
-      "venue": "5th ed., Macmillan",
-      "note": "Classical reference for the spherical law of cosines, the polar triangle and the dual (supplemental) formulae."
-    },
-    {
-      "authors": [
-        "Coxeter, H.S.M."
-      ],
-      "title": "Non-Euclidean Geometry",
-      "year": "1998",
-      "venue": "6th ed., Mathematical Association of America",
-      "note": "Unified treatment of spherical and hyperbolic trigonometry and their dualities."
-    }
-  ],
   "conclusion": {
     "summary": "The polar triangle construction provides a conceptually clean derivation of the dual spherical law of cosines as a symmetry of the standard law. The key identity dot(B×C, C×A) = -dot(projPerp A C, projPerp B C) bridges the cross product geometry of the polar vertices to the dihedral angle geometry of the original triangle.",
     "implications": "This establishes the polar triangle side and angle formulas in Lean 4 (fully proved, axiom-free). The Cauchy-Schwarz/projection-dot identity (projperp_dot_sinsincos) was eliminated in Session 3; the polar_angle_eq axiom was eliminated in Session 4 via the polar-of-polar reduction. The dual spherical law of cosines is now derivable axiom-free in this entry.",

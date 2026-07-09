@@ -98,28 +98,6 @@
       "summary": "Module summary comment recapping design choices. #check commands documenting the public API: InfiniteWalk, IsEulerWalk, HasOneWayInfiniteEulerPath, BiInfiniteWalk, step_ne."
     }
   ],
-  "references": [
-    {
-      "authors": [
-        "Diestel, R."
-      ],
-      "title": "Graph Theory",
-      "year": "2017",
-      "venue": "5th ed., Graduate Texts in Mathematics 173, Springer",
-      "note": "Infinite graphs and Eulerian tours via compactness/König's lemma."
-    },
-    {
-      "authors": [
-        "Erdős, P.",
-        "Grünwald, T.",
-        "Weiszfeld, E."
-      ],
-      "title": "On Euler lines of infinite graphs (Hungarian)",
-      "year": "1938",
-      "venue": "Matematikai és Fizikai Lapok 43, pp. 129–140",
-      "note": "The Erdős–Grünwald–Weiszfeld characterization of Euler lines in infinite graphs."
-    }
-  ],
   "conclusion": {
     "summary": "The ℕ-indexed InfiniteWalk provides a clean, sorry-free foundation for infinite Euler paths in Lean 4. The definitions are ready for use in the Erdős-Grünwald-Weiszfeld theorem formalization. Key simplifications: ℕ over Stream', split Euler condition, undirected edges via sameEdge without Sym2.",
     "implications": "These definitions serve as the semantic foundation for formalizing the Erdős-Grünwald-Weiszfeld theorem in infinite graph theory, which characterizes exactly when an infinite (locally finite, connected) graph has a one-way infinite Euler path. The BiInfiniteWalk (ℤ-indexed) extends this to two-way Euler paths, and the sameEdge approach provides a cleaner formalization than Sym2 for undirected graphs in Lean 4. The N-indexed approach over Stream' is a principled design choice: it is computationally transparent, avoids coinductive types, and aligns with Mathlib's finset-based summation over ℕ.",

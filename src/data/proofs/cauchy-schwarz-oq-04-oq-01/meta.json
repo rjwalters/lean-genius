@@ -3,38 +3,6 @@
   "title": "Weighted Cauchy-Schwarz and Titu's Lemma",
   "slug": "cauchy-schwarz-oq-04-oq-01",
   "description": "Proves (∑ wᵢaᵢbᵢ)² ≤ (∑ wᵢaᵢ²)(∑ wᵢbᵢ²) for positive weights, and Titu's lemma (Engel form): (∑ aᵢ)²/(∑ bᵢ) ≤ ∑ aᵢ²/bᵢ.",
-  "references": [
-    {
-      "authors": "Augustin-Louis Cauchy",
-      "title": "Cours d'analyse de l'École Royale Polytechnique",
-      "year": 1821,
-      "note": "The discrete Cauchy inequality (∑ aᵢbᵢ)² ≤ (∑ aᵢ²)(∑ bᵢ²), here weighted by positive wᵢ."
-    },
-    {
-      "authors": "Hermann Amandus Schwarz",
-      "title": "Über ein die Flächen kleinsten Flächeninhalts betreffendes Problem der Variationsrechnung (Acta Soc. Sci. Fenn.)",
-      "year": 1888,
-      "note": "The integral/inner-product form completing the Cauchy–Schwarz inequality."
-    },
-    {
-      "authors": "Titu Andreescu and Bogdan Enescu",
-      "title": "Mathematical Olympiad Treasures (2nd ed.)",
-      "year": 2011,
-      "note": "Birkhäuser. Titu's Lemma / Engel form (∑ aᵢ)²/∑ bᵢ ≤ ∑ aᵢ²/bᵢ as a special case of weighted Cauchy–Schwarz."
-    },
-    {
-      "authors": "G. H. Hardy, J. E. Littlewood and G. Pólya",
-      "title": "Inequalities (2nd ed.)",
-      "year": 1952,
-      "note": "Cambridge University Press. The classical theory of the Cauchy–Schwarz inequality and its weighted forms."
-    },
-    {
-      "authors": "The mathlib Community",
-      "title": "Mathlib4: Finset.inner_mul_le_norm_mul_norm and inner_mul_le_norm_mul_norm",
-      "year": 2024,
-      "note": "The finite-sum Cauchy–Schwarz lemma specialized to positive weights and the Engel form."
-    }
-  ],
   "meta": {
     "author": "Lean Genius",
     "date": "2026-04-04",

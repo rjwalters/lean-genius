@@ -111,43 +111,6 @@
       "leanType": "¬ ∃ f : Fin 3 → Fin 3, Function.Injective f ∧ ∀ x, f x ∈ (![{0,1}, {0,1}, {0,1}]) x"
     }
   ],
-  "sections": [
-    {
-      "id": "header",
-      "title": "Module Header and Setup",
-      "startLine": 3,
-      "endLine": 55,
-      "description": "Docstring framing the set-system formulation, the two practical faces added (direct necessity, deficiency obstruction), and the variable setup {ι α} [DecidableEq α] keeping the index type general."
-    },
-    {
-      "id": "biconditional",
-      "title": "The Biconditional and Sufficiency",
-      "startLine": 57,
-      "endLine": 73,
-      "description": "hall_marriage_iff (re-export of Mathlib's Hall biconditional) and exists_sdr_of_hall (the sufficiency direction extracted as a corollary)."
-    },
-    {
-      "id": "necessity",
-      "title": "Necessity, Proved Directly",
-      "startLine": 75,
-      "endLine": 96,
-      "description": "hall_condition_of_sdr and hall_condition_of_exists_sdr: the easy direction by the counting inequality #s = #(s.image f) ≤ #(s.biUnion t), compactness-free and valid for any index type."
-    },
-    {
-      "id": "deficiency",
-      "title": "The Deficiency Obstruction",
-      "startLine": 98,
-      "endLine": 105,
-      "description": "no_sdr_of_deficiency: a deficient sub-family certifies no transversal exists (the contrapositive of necessity, the impossibility certificate used in applications)."
-    },
-    {
-      "id": "witnesses",
-      "title": "Concrete Fin 3 Witnesses",
-      "startLine": 107,
-      "endLine": 135,
-      "description": "hall_satisfiable_example (transversal ![0,1,2] for {0,1},{1,2},{0,2}), hall_violating_deficiency, and hall_violating_example (t₀=t₁=t₂={0,1} has no transversal, via the deficiency theorem). All kernel decide, axiom-free."
-    }
-  ],
   "references": [
     {
       "authors": "Hall, Philip",

@@ -35,65 +35,6 @@
     ]
   },
   "sorries": 0,
-  "overview": {
-    "historicalContext": "The diagonal Beta value B(n+1,n+1) = 1/((2n+1)·C(2n,n)) is the total mass of the symmetric Euler Beta density, and its decay is governed by the central binomial coefficient C(2n,n), whose leading asymptotic 4ⁿ/√(πn) traces back to John Wallis's 1656 product for π and the Stirling–de Moivre factorial law n! ~ √(2πn)(n/e)ⁿ of around 1730. The parent entry proves the qualitative equivalence betaDiag n ~ √(πn)/((2n+1)·4ⁿ) as an Asymptotics.IsEquivalent statement, whose very first open question asks to make the rate effective. This file answers that question conservatively: rather than assume the Robbins refinement of Stirling's series (which Mathlib's own documentation notes is not yet formalised), it uses only the effective bounds Mathlib does provide — the genuine lower bound √π ≤ stirlingSeq n valid for all n ≥ 1, and the antitonicity of the Stirling sequence giving stirlingSeq n ≤ stirlingSeq 1 = e/√2. These two facts alone squeeze the correction factor into an explicit constant-factor interval [√(2π)/e, e²/(2π)] ≈ [0.922, 1.176], honest and uniform in n even though not asymptotically sharp. The result is a case study in extracting an effective, machine-checked envelope from the qualitative Stirling development that ships in Mathlib.",
-    "problemStatement": "Let $B(n+1,n+1) = \\mathrm{betaDiag}(n) = 1/((2n+1)\\,C(2n,n))$ and let $T(n) = \\sqrt{\\pi n}/((2n+1)\\,4^n)$ be its leading term. Define the correction $R(n) = \\mathrm{stirlingSeq}(n)^2/(\\sqrt\\pi\\,\\mathrm{stirlingSeq}(2n))$, so that $\\mathrm{betaDiag}(n) = T(n)\\cdot R(n)$. Prove the effective two-sided envelope $\\sqrt{2\\pi}/e \\le R(n) \\le e^2/(2\\pi)$ for every $n \\ge 1$, and conclude $(\\sqrt{2\\pi}/e)\\,T(n) \\le \\mathrm{betaDiag}(n) \\le (e^2/(2\\pi))\\,T(n)$.",
-    "proofStrategy": "Part I proves the exact identity $C(2n,n) = \\mathrm{stirlingSeq}(2n)/\\mathrm{stirlingSeq}(n)^2\\cdot 4^n/\\sqrt n$ by unfolding the definition $\\mathrm{stirlingSeq}(k) = k!/(\\sqrt{2k}(k/e)^k)$ and discharging the algebra with a linear_combination of the factorial identity and $\\sqrt n^2 = n$. Part II packages the correction factor $R(n)$ and derives the exact factorisation $\\mathrm{betaDiag}(n) = T(n)\\cdot R(n)$. Part III does the real work: the numerator $\\mathrm{stirlingSeq}(n)^2$ is bounded below by $\\pi$ (from $\\sqrt\\pi \\le \\mathrm{stirlingSeq}$) and above by $e^2/2$ (from $\\mathrm{stirlingSeq} \\le e/\\sqrt2$), while the denominator $\\sqrt\\pi\\,\\mathrm{stirlingSeq}(2n)$ is bounded the opposite way, giving the two constant envelopes. Part IV re-derives $R(n) \\to 1$ from $\\mathrm{stirlingSeq} \\to \\sqrt\\pi$, confirming the envelope is consistent with the parent asymptotic. Part V multiplies the $R$-envelope through the exact factorisation to obtain the effective bounds on $\\mathrm{betaDiag}$.",
-    "keyInsights": [
-      "The whole rate reduces to a single exact identity: $C(2n,n) = \\mathrm{stirlingSeq}(2n)/\\mathrm{stirlingSeq}(n)^2\\cdot 4^n/\\sqrt n$, which makes the correction factor $R(n)$ a pure ratio of Stirling values with every $4^n$, $\\sqrt n$ and $\\sqrt\\pi$ accounted for exactly.",
-      "Effectivity is bought with only two Mathlib facts: the lower bound $\\sqrt\\pi \\le \\mathrm{stirlingSeq}(n)$ (true for all $n \\ge 1$, not just in the limit) and the antitonicity that turns the first value $\\mathrm{stirlingSeq}(1) = e/\\sqrt2$ into a universal upper bound.",
-      "The bracketing is deliberately asymmetric: the lower envelope pairs the numerator's floor $\\pi$ against the denominator's ceiling $\\sqrt\\pi\\cdot e/\\sqrt2$, while the upper envelope pairs the numerator's ceiling $e^2/2$ against the denominator's floor $\\pi$ — a monotone-quotient argument on each side.",
-      "The honest cost of using only shipped Mathlib bounds is sharpness: the constants $\\sqrt{2\\pi}/e \\approx 0.922$ and $e^2/(2\\pi) \\approx 1.176$ are genuine constant factors, not $1 + O(1/n)$; the sharper form would need the still-unformalised Robbins refinement.",
-      "Part IV closes the loop by showing $R(n) \\to 1$, so the effective envelope is not just a bound but a bound that provably tightens toward the parent's asymptotic equivalence as $n \\to \\infty$."
-    ]
-  },
-  "sections": [
-    {
-      "id": "exact-stirling-identity",
-      "title": "Part I — The Exact Stirling Identity for the Central Binomial",
-      "startLine": 58,
-      "endLine": 124,
-      "summary": "centralBinom_stirlingSeq proves the exact identity C(2n,n)·√n·stirlingSeq(n)² = stirlingSeq(2n)·4ⁿ. The proof unfolds stirlingSeq k = k!/(√(2k)(k/e)ᵏ), pre-computes √(2·2n)=2√n and (2n/e)^{2n} = 4ⁿ·((n/e)ⁿ)², rewrites both sides as single fractions, and closes with a linear_combination of the factorial identity and √n²=n."
-    },
-    {
-      "id": "correction-factor",
-      "title": "Part II — The Explicit Correction Factor ratioR",
-      "startLine": 125,
-      "endLine": 153,
-      "summary": "Defines ratioR n = stirlingSeq(n)²/(√π·stirlingSeq(2n)) and proves the exact factorisation betaDiag_eq: betaDiag n = √(πn)/((2n+1)·4ⁿ)·ratioR n, making the correction to the leading term completely explicit via a linear_combination of the Part I identity."
-    },
-    {
-      "id": "effective-ratioR-bounds",
-      "title": "Part III — Effective Two-Sided Bounds on ratioR",
-      "startLine": 154,
-      "endLine": 233,
-      "summary": "stirlingSeq_le turns antitonicity into the universal upper bound stirlingSeq n ≤ e/√2. ratioR_ge brackets the numerator below by π and the denominator above by √π·e/√2 to give √(2π)/e ≤ ratioR n; ratioR_le brackets the numerator above by e²/2 and the denominator below by π to give ratioR n ≤ e²/(2π). Both hold for all n ≥ 1."
-    },
-    {
-      "id": "ratio-tends-to-one",
-      "title": "Part IV — The Ratio Tends to One",
-      "startLine": 234,
-      "endLine": 255,
-      "summary": "ratioR_tendsto_one shows ratioR n → 1 by feeding stirlingSeq → √π (and its composition with n ↦ 2n) through the quotient limit laws, then simplifying √π²/(√π·√π) = 1. This confirms the effective envelope is consistent with, and recovers, the parent's asymptotic equivalence."
-    },
-    {
-      "id": "effective-rate",
-      "title": "Part V — The Effective Two-Sided Rate for betaDiag",
-      "startLine": 256,
-      "endLine": 278,
-      "summary": "betaDiag_lower and betaDiag_upper multiply the ratioR envelope through the exact factorisation betaDiag_eq to obtain (√(2π)/e)·T n ≤ betaDiag n ≤ (e²/(2π))·T n for all n ≥ 1, using nonnegativity of the leading term T n = √(πn)/((2n+1)·4ⁿ) — the requested effective two-sided rate."
-    }
-  ],
-  "conclusion": {
-    "summary": "The entry answers the parent asymptotic's first open question by upgrading betaDiag n ~ √(πn)/((2n+1)·4ⁿ) to an explicit two-sided rate valid for every n ≥ 1. It isolates the correction factor ratioR n = stirlingSeq(n)²/(√π·stirlingSeq(2n)) via an exact central-binomial/Stirling identity, then uses only the effective Stirling facts Mathlib actually ships — √π ≤ stirlingSeq n and antitonicity giving stirlingSeq n ≤ e/√2 — to pin ratioR into the constant interval [√(2π)/e, e²/(2π)] ≈ [0.922, 1.176]. Multiplying through the exact factorisation yields the effective envelope on betaDiag, and a separate limit argument shows ratioR n → 1 so the envelope tightens toward the parent equivalence. Everything is proved with 0 axioms and 0 sorries.",
-    "implications": "The result gives a rigorous, uniform error bar on the diagonal Beta value usable wherever a guaranteed constant-factor estimate suffices — bounding the normalising constant of a symmetric Beta(n+1,n+1) density, or the peak of t^n(1-t)^n, without invoking any unproved refinement. It also demonstrates a general recipe: any factorial-ratio quantity can be given effective constant-factor bounds directly from Mathlib's shipped Stirling inequalities, deferring the sharper 1 + O(1/n) form to the sibling explicit-rate entry that telescopes a genuine tail bound. The deliberate honesty about scope — constant-factor, not asymptotically sharp — models the axiom-integrity discipline the gallery aims for.",
-    "openQuestions": [
-      "Can the constants √(2π)/e ≈ 0.922 and e²/(2π) ≈ 1.176 be tightened toward 1 using the second-order Stirling term, short of the full Robbins refinement?",
-      "Once the Robbins refinement (le_factorial_stirling) is formalised in Mathlib, can this envelope be sharpened to the optimal 1 + O(1/n) rate proved in the sibling explicit-rate entry?",
-      "Does the same shipped-bounds technique give effective constant-factor envelopes for off-diagonal Beta values B(a+1,b+1) with a ≠ b?",
-      "What is the smallest n beyond which the true correction ratioR n already lies within, say, 1% of 1, and can that threshold be certified inside Lean?"
-    ]
-  },
   "leanFile": {
     "path": "Proofs/BetaDiagEffectiveRate.lean",
     "lineCount": 278,

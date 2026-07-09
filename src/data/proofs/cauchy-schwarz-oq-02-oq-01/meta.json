@@ -3,38 +3,6 @@
   "title": "Parseval's Identity: Energy Conservation in Fourier Analysis",
   "slug": "cauchy-schwarz-oq-02-oq-01",
   "description": "Formalizes Parseval's identity — ∑|ĉₙ(f)|² = ∫|f|²dμ — as a consequence of the L² structure from CauchySchwarzOQ02. Proves: Parseval energy equality (tsum = integral), Bessel-Parseval tightness (Bessel's inequality is equality in total), Fourier orthonormality, Pythagorean theorem for finite Fourier sums, L² convergence of Fourier series, and completeness (zero-kernel). 10 theorems, 0 sorries.",
-  "references": [
-    {
-      "authors": "Marc-Antoine Parseval",
-      "title": "Mémoire sur les séries et sur l'intégration complète d'une équation aux différences partielles linéaires du second ordre",
-      "year": 1806,
-      "note": "The energy identity ∑|ĉₙ|² = ∫|f|² for Fourier coefficients, formalized in this entry."
-    },
-    {
-      "authors": "Friedrich Wilhelm Bessel",
-      "title": "Bessel's inequality (as developed in Fourier theory)",
-      "year": 1828,
-      "note": "The one-sided bound ∑|ĉₙ|² ≤ ∫|f|² that becomes equality (Parseval) on a complete orthonormal system."
-    },
-    {
-      "authors": "Walter Rudin",
-      "title": "Real and Complex Analysis (3rd ed.)",
-      "year": 1987,
-      "note": "McGraw-Hill. L² Fourier theory, orthonormal bases, and the Riesz–Fischer completeness behind Parseval."
-    },
-    {
-      "authors": "Elias M. Stein and Rami Shakarchi",
-      "title": "Fourier Analysis: An Introduction",
-      "year": 2003,
-      "note": "Princeton University Press. Parseval's identity and mean-square convergence of Fourier series."
-    },
-    {
-      "authors": "The mathlib Community",
-      "title": "Mathlib4: Mathlib.Analysis.InnerProductSpace.l2Space (Orthonormal, HilbertBasis)",
-      "year": 2024,
-      "note": "The L² inner-product structure and orthonormality used to state Parseval and Bessel tightness."
-    }
-  ],
   "meta": {
     "author": "Lean Genius",
     "date": "2026-04-03",

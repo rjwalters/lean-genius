@@ -3,38 +3,6 @@
   "title": "Buzano's Inequality",
   "slug": "cauchy-schwarz-oq-02-oq-04-oq-01",
   "description": "Buzano's inequality (M. L. Buzano, 1974), a genuine strengthening of Cauchy-Schwarz: for any unit vector e on an inner product space over an RCLike field (ℝ or ℂ), ‖⟪x, e⟫‖·‖⟪e, y⟫‖ ≤ (‖x‖·‖y‖ + ‖⟪x, y⟫‖)/2. The proof rests on a single geometric fact — the reflection y ↦ 2⟪e, y⟫·e − y through the line span(e) is an isometry — after which scalar Cauchy-Schwarz and the triangle inequality finish. Classical Cauchy-Schwarz is recovered as the special case e = x/‖x‖, witnessing that Buzano is strictly more general. Buzano's inequality is not in Mathlib. 7 theorems, 0 definitions, 0 axioms, 0 sorries.",
-  "references": [
-    {
-      "authors": "Maria Luisa Buzano",
-      "title": "Generalizzazione della diseguaglianza di Cauchy-Schwarz (Rend. Sem. Mat. Univ. e Politec. Torino 31)",
-      "year": 1974,
-      "note": "The original Buzano inequality strengthening Cauchy–Schwarz, formalized in this entry."
-    },
-    {
-      "authors": "Sever S. Dragomir",
-      "title": "Advances in Inequalities of the Schwarz, Triangle and Heisenberg Type in Inner Product Spaces",
-      "year": 2007,
-      "note": "Nova Science. Modern treatment of Buzano's inequality and inner-product refinements."
-    },
-    {
-      "authors": "Fuad Kittaneh",
-      "title": "Numerical radius inequalities for Hilbert space operators (Studia Mathematica 168)",
-      "year": 2005,
-      "note": "Applications of Buzano-type inequalities to numerical-radius bounds."
-    },
-    {
-      "authors": "Tsuyoshi Ando",
-      "title": "Operator-theoretic methods for matrix inequalities (Hokkaido University lecture notes)",
-      "year": 1998,
-      "note": "Inner-product reflection techniques of the kind used in the geometric proof here."
-    },
-    {
-      "authors": "The mathlib Community",
-      "title": "Mathlib4: RCLike inner product spaces and inner_mul_le_norm_mul_norm",
-      "year": 2024,
-      "note": "The RCLike (ℝ/ℂ) inner-product framework and Cauchy–Schwarz base used in the reflection argument."
-    }
-  ],
   "meta": {
     "author": "Researcher agent (lean-genius), formalized in Lean 4 over Mathlib",
     "date": "2026-06-21",

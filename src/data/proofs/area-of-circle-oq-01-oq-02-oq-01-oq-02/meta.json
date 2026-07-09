@@ -60,32 +60,6 @@
     "theoremCount": 16,
     "definitionCount": 5
   },
-  "references": [
-    {
-      "authors": "Osserman, Robert",
-      "title": "The isoperimetric inequality",
-      "year": "1978",
-      "venue": "Bulletin of the American Mathematical Society 84(6), 1182–1238"
-    },
-    {
-      "authors": "Ball, Keith",
-      "title": "An Elementary Introduction to Modern Convex Geometry",
-      "year": "1997",
-      "venue": "Flavors of Geometry, MSRI Publications 31, Cambridge University Press, 1–58"
-    },
-    {
-      "authors": "Smith, David J. and Vamanamurthy, Mavina K.",
-      "title": "How Small Is a Unit Ball?",
-      "year": "1989",
-      "venue": "Mathematics Magazine 62(2), 101–107"
-    },
-    {
-      "authors": "The mathlib Community",
-      "title": "EuclideanSpace.volume_ball and Real.Gamma; Analysis.SpecialFunctions.Gamma",
-      "year": "2024",
-      "venue": "Mathlib4 (leanprover-community/mathlib4)"
-    }
-  ],
   "overview": {
     "historicalContext": "The isoperimetric problem — among all closed curves of fixed length, which encloses the greatest area? — is among the oldest in mathematics, encoded in the legend of Queen Dido founding Carthage. The planar inequality $L^2 \\ge 4\\pi A$, with equality only for the circle, was given its first rigorous proofs by Weierstrass, Schwarz, and Hurwitz (1902, via Fourier series) in the 19th and early 20th centuries. The n-dimensional generalization $S^n \\ge n^n \\omega_n V^{n-1}$, with the optimal constant $n^n \\omega_n$ attained uniquely by the ball, is a cornerstone of geometric measure theory, provable via the Brunn–Minkowski inequality or spherical symmetrization. The constant $n^n\\omega_n$ specializes to $4\\pi$ in the plane and $36\\pi$ in space.",
     "problemStatement": "Can the isoperimetric inequality be formalized using the n-ball volume $V_n(r) = \\omega_n r^n$ and surface area $S_n(r) = n\\omega_n r^{n-1}$ definitions?",

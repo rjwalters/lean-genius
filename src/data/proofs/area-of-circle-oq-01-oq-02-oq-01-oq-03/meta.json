@@ -64,32 +64,6 @@
     "theoremCount": 8,
     "definitionCount": 1
   },
-  "references": [
-    {
-      "authors": "Smith, David J. and Vamanamurthy, Mavina K.",
-      "title": "How Small Is a Unit Ball?",
-      "year": "1989",
-      "venue": "Mathematics Magazine 62(2), 101–107"
-    },
-    {
-      "authors": "Ball, Keith",
-      "title": "An Elementary Introduction to Modern Convex Geometry",
-      "year": "1997",
-      "venue": "Flavors of Geometry, MSRI Publications 31, Cambridge University Press, 1–58"
-    },
-    {
-      "authors": "Artin, Emil",
-      "title": "The Gamma Function",
-      "year": "1964",
-      "venue": "Holt, Rinehart and Winston (English translation by Michael Butler)"
-    },
-    {
-      "authors": "The mathlib Community",
-      "title": "two-step recurrence via Real.Gamma_add_one; Analysis.SpecialFunctions.Gamma",
-      "year": "2024",
-      "venue": "Mathlib4 (leanprover-community/mathlib4)"
-    }
-  ],
   "overview": {
     "historicalContext": "The vanishing of unit ball volume in high dimensions was recognized in the early 20th century as part of the broader study of high-dimensional geometry. The formula $\\omega_n = \\pi^{n/2}/\\Gamma(n/2+1)$ itself goes back to Schläfli (1858) and the systematic study of higher-dimensional Euclidean geometry. The phenomenon that $\\omega_n \\to 0$ — despite each $\\omega_n$ being the volume of a 'unit' ball — is a striking manifestation of the 'curse of dimensionality,' a term coined by Richard Bellman in 1961. Paul Lévy formalized concentration of measure on the sphere in his 1922 monograph, showing that for high-dimensional spheres, any measurable set of measure $\\geq 1/2$ has an $\\varepsilon$-neighborhood of measure $\\geq 1 - e^{-cn\\varepsilon^2}$. Vitali Milman and Gideon Schechtman later developed asymptotic geometric analysis in the 1980s-90s, generalizing these ideas to convex bodies. The result is now fundamental in statistics (curse of dimensionality for nearest-neighbor methods), machine learning (dimensionality reduction), and physics (behavior of ideal gases in the microcanonical ensemble).",
     "problemStatement": "Does the unit n-ball volume $\\omega_n = \\pi^{n/2}/\\Gamma(n/2+1)$ converge to 0 as $n \\to \\infty$?",

@@ -3,38 +3,6 @@
   "title": "The Classical Limit (1+x/n)^n → exp(x)",
   "slug": "binomial-theorem-oq-03-oq-02",
   "description": "The fundamental limit characterization of the exponential function, proved from first principles: log'(1) = 1, so n·log(1+x/n) → x, and continuity of exp gives (1+x/n)^n → exp(x). Includes Euler's number as (1+1/n)^n → e, the reciprocal limit, and the compounding inequality.",
-  "references": [
-    {
-      "authors": "Jacob Bernoulli",
-      "title": "Quaestiones nonnullae de usuris (Acta Eruditorum)",
-      "year": 1683,
-      "note": "The compound-interest limit (1+1/n)^n underlying the constant e."
-    },
-    {
-      "authors": "Leonhard Euler",
-      "title": "Introductio in analysin infinitorum",
-      "year": 1748,
-      "note": "Develops e and the exponential function as a limit of (1+x/n)^n."
-    },
-    {
-      "authors": "Walter Rudin",
-      "title": "Principles of Mathematical Analysis (3rd ed.)",
-      "year": 1976,
-      "note": "McGraw-Hill. The exponential function and its limit and derivative characterizations."
-    },
-    {
-      "authors": "Tom M. Apostol",
-      "title": "Calculus, Volume 1 (2nd ed.)",
-      "year": 1967,
-      "note": "Wiley. log'(1)=1 and the continuity argument turning n·log(1+x/n)→x into (1+x/n)^n→e^x."
-    },
-    {
-      "authors": "The mathlib Community",
-      "title": "Mathlib4: Real.hasDerivAt_log, Real.exp_log and Filter.Tendsto machinery",
-      "year": 2024,
-      "note": "HasDerivAt(log,1,1) and continuity of exp, the three Mathlib ingredients of the proof."
-    }
-  ],
   "meta": {
     "author": "Euler (1748); limit definition formalized here",
     "sourceUrl": "https://en.wikipedia.org/wiki/Characterizations_of_the_exponential_function",
