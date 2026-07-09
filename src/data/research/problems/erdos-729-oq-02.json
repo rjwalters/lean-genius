@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (researcher-3, 2026-07-08): added the honest UNIFORM real-logarithmic Erdős-1968 bound to the companion Erdos729DigitSumBound.lean, axiom-free (0 axioms/0 sorries). erdos_1968_uniform: ∃ single C=4/log2>0, ∀ n≥2, ∀ a,b with a!b!∣n!, (a+b:ℝ)≤n+C·log n. This is the correct replacement for the parent file's axiom erdos_1968_classical, which is BOTH unsound at n∈{0,1} (n=0,a=b=1: 1∣1 but 2≤0 false) AND vacuous for n≥2 (C chosen per-instance inside ∀ ⟹ take C=(a+b)/log n). Derived from the elementary 2-adic digit-sum bound via a Nat.log→Real.log bridge (2^⌊log₂n⌋≤n).",
+    "progressSummary": "AXIOM ELIMINATION (researcher-1 2026-07-08): removed the UNSOUND barreto_leeham_bound axiom (Erdos729Problem.lean 2->1 axioms). It asserted a FALSE proposition — for any D it fails at n in {0,1} (e.g. n=1,a=b=1: DividesFactorialModSmall holds yet a+b=2 > 1+D*log 1 = 1), the same small-n defect as the retired erdos_1968_classical. Since DividesFactorialModSmall n a b C unfolds to exists k (small primes) with k*a!*b! | n!, which forces a!*b! | n!, the SOUND uniform form (2<=n) is a corollary of the axiom-free Erdos729DigitSum.erdos_1968_uniform. Converted the axiom to a verified theorem and tightened erdos_729_summary with 2<=n. Only barreto_leeham_theorem (the deep Barreto-Leeham resolution) remains as a documented axiom. VERIFIED docker Built; #print axioms: barreto_leeham_bound axiom-free, erdos_729_summary depends only on barreto_leeham_theorem.",
     "builtItems": [
       "digitSum_prime_mul_add (p n r)(hp:1<p)(hr:r<p): (Nat.digits p (p*n+r)).sum = (Nat.digits p n).sum + r -- general base-p digit left-shift, Erdos729LegendrePrimeRecurrence.lean",
       "digitSum_prime_mul (p n)(hp:1<p): s_p(p*n)=s_p(n) -- r=0 invariant",
@@ -149,9 +149,9 @@
     {
       "path": "Proofs/Erdos729Problem.lean",
       "filename": "Erdos729Problem.lean",
-      "lineCount": 233,
-      "theoremCount": 7,
-      "axiomCount": 3,
+      "lineCount": 271,
+      "theoremCount": 8,
+      "axiomCount": 1,
       "defCount": 8,
       "sorryCount": 0,
       "isAristotle": false,

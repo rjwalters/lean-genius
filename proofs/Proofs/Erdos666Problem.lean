@@ -215,6 +215,48 @@ Instantiating Erdős's conjecture at `ε = 1/4` would supply a threshold `N` mak
 theorem erdos_conjecture_false : ¬ErdosConjecture := fun hConj =>
   chung_no_threshold (hConj (1/4) (by norm_num))
 
+/-!
+### Part IV.5: The refutation holds on the whole interval `ε ≤ 1/4`
+
+Chung's axiom only names the single density `ε = 1/4`, but the counterexample it
+supplies refutes the conjecture for *every* smaller density as well: a graph that
+is `(1/4)`-dense and `C₆`-free is automatically `ε`-dense for any `ε ≤ 1/4`, so no
+threshold can work at any such `ε`.  Formally this is a monotonicity fact —
+`ConjectureAt` is monotone in `ε` — and it costs **no new axioms**, only the
+already-assumed `chung_no_threshold`.  The upshot: Erdős's conjecture fails not at
+an isolated bad density but robustly across the entire range `(0, 1/4]`.
+-/
+
+unseal EpsilonDenseSubgraph in
+/-- **`ε`-density is antitone in `ε`.**  A subgraph that is `ε`-dense is also
+`ε'`-dense for every `ε' ≤ ε`, since the required edge count `ε' · Eₙ ≤ ε · Eₙ`
+only decreases (the hypercube edge count `Eₙ = n·2ⁿ⁻¹` is nonnegative). -/
+theorem epsilonDense_antitone {n : ℕ} {ε ε' : ℝ} (hle : ε' ≤ ε)
+    {H : SimpleGraph (Fin (2^n))} (hH : EpsilonDenseSubgraph n ε H) :
+    EpsilonDenseSubgraph n ε' H :=
+  le_trans (mul_le_mul_of_nonneg_right hle (Nat.cast_nonneg _)) hH
+
+/-- **`DenseForcesC6` is monotone in `ε`.**  If every `ε'`-dense subgraph is forced
+to contain `C₆`, then so is every `ε`-dense subgraph for `ε ≥ ε'` (the `ε`-dense
+subgraphs form a subclass of the `ε'`-dense ones). -/
+theorem denseForcesC6_mono {n : ℕ} {ε ε' : ℝ} (hle : ε' ≤ ε)
+    (h : DenseForcesC6 n ε') : DenseForcesC6 n ε :=
+  fun H hH => h H (epsilonDense_antitone hle hH)
+
+/-- **`ConjectureAt` is monotone in `ε`.**  The same threshold `N` witnesses the
+conjecture at the larger density `ε` once it holds at `ε' ≤ ε`. -/
+theorem conjectureAt_mono {ε ε' : ℝ} (hle : ε' ≤ ε)
+    (h : ConjectureAt ε') : ConjectureAt ε :=
+  let ⟨N, hN⟩ := h
+  ⟨N, fun n hn => denseForcesC6_mono hle (hN n hn)⟩
+
+/-- **Chung's refutation extends to every `ε ≤ 1/4`.**  Were the conjecture to hold
+at some `ε ≤ 1/4`, monotonicity would push it up to `ε = 1/4`, contradicting
+`chung_no_threshold`.  So `ConjectureAt ε` fails for the whole interval `ε ≤ 1/4` —
+in particular for every positive density `0 < ε ≤ 1/4`. -/
+theorem chung_no_threshold_le {ε : ℝ} (hε : ε ≤ 1/4) : ¬ ConjectureAt ε :=
+  fun h => chung_no_threshold (conjectureAt_mono hε h)
+
 /-
 ## Part V: Chung's Result (1992)
 

@@ -67,6 +67,14 @@
   },
   "sections": [
     {
+      "id": "context-setup",
+      "title": "Context: The Retained-Axiom Gap and Honest Scope",
+      "startLine": 1,
+      "endLine": 52,
+      "summary": "Imports (Matrix multiplication/determinant, BigOperators) and the module docstring. Situates the file against PascalsHexagon.lean, whose Sylvester reduction sylvester_stdConic_of_isotropic carries a standing hC_sym hypothesis and whose residual axiom conic_implies_pascal_constraint is retained for the 'asymmetric and degenerate' cases. The parent's proof sketch lists 'replace C with symmetrized (C + Cᵀ)/2 (same zero set)' as its first outstanding step but never proves it — this file does, self-contained. States the honest scope: it removes the symmetry hypothesis from the reduction, not the hard indefinite-symmetric Sylvester direction, and reproduces the conic API locally because the parent is bit-rotted under toolchain 4.26.0. Opens the namespace; 0 sorries, 0 axiom declarations, no native_decide.",
+      "mathContext": "Reduce the general (possibly asymmetric) non-degenerate conic to the symmetric case via symmetrize C = (C + Cᵀ)/2."
+    },
+    {
       "id": "api",
       "title": "Minimal Conic API",
       "startLine": 53,
@@ -110,6 +118,16 @@
       "targetId": "pascals-hexagon-incomplete-01-oq-03",
       "relationship": "related",
       "description": "Sibling OQ-03 proves the definite half of the Sylvester dichotomy (positive-definite conics are never equivalent to stdConic). This entry removes the symmetry hypothesis; together they isolate the remaining work to the indefinite-symmetric Sylvester direction."
+    },
+    {
+      "targetId": "pascals-hexagon",
+      "relationship": "related",
+      "description": "The theorem this whole lineage targets: a hexagon inscribed in a conic has its three pairs of opposite sides meeting at collinear points. The Sylvester reduction refined here — normalizing an arbitrary non-degenerate conic to stdConic = diag(1,1,−1) — is the projective-normal-form step by which the general Pascal statement is reduced to the standard conic."
+    },
+    {
+      "targetId": "pascals-hexagon-incomplete-01-oq-03-oq-01",
+      "relationship": "related",
+      "description": "The sufficiency counterpart completing the projective-equivalence dichotomy: while this entry (with OQ-03) supplies the necessity side (definite conics are never equivalent to stdConic), OQ-03-OQ-01 proves indefinite diagonal conics ARE projectively equivalent to stdConic — closing the indefinite-symmetric Sylvester direction these entries isolate."
     }
   ],
   "leanFile": {

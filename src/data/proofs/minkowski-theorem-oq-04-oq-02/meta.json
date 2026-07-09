@@ -104,6 +104,14 @@
   },
   "sections": [
     {
+      "id": "setup",
+      "title": "Setup: Imports, Scope, and the Covolume-Threshold Goal",
+      "startLine": 1,
+      "endLine": 48,
+      "summary": "Imports Mathlib.Algebra.Module.ZLattice.Covolume and the parent Proofs.MinkowskiTheoremOQ04, and the module docstring. Positions the file as the child that recasts the parent's verified ℝ≥0∞-valued Blichfeldt engine (blichfeldt_general_lattice) into the geometry-of-numbers covolume-threshold form used in Cassels/Siegel and every number-theoretic application (Diophantine approximation, ideal-lattice bounds via the Minkowski embedding, whose covolume is 2^{-r₂}√|d_K|). Opens MeasureTheory/Set/Pointwise, namespace BlichfeldtTheorem with the full-rank dimension variable n (NeZero n). No new axioms.",
+      "mathContext": "ZLattice.covolume Λ volume = (volume (ZSpan.fundamentalDomain b)).toReal; the threshold vol(S) > k·covol(Λ) replaces the parent's ℝ≥0∞ form."
+    },
+    {
       "id": "covolume-bridge",
       "title": "The Covolume Bridge",
       "startLine": 49,
@@ -123,7 +131,7 @@
       "id": "minkowski-covolume",
       "title": "Minkowski's Convex Body Theorem for a General Lattice",
       "startLine": 129,
-      "endLine": 205,
+      "endLine": 211,
       "summary": "minkowski_lattice (convex, centrally-symmetric S with vol(S) > 2ⁿ·volume F ⇒ nonzero lattice point) via half-scaling T = (1/2)·S and blichfeldt_basic_lattice, and minkowski_lattice_covolume (the covolume-threshold restatement vol(S) > 2ⁿ·covol(Λ)).",
       "mathContext": "Minkowski's classical convex body theorem in its general-lattice form (Cassels III.2): the sharp volume threshold for forcing a nonzero lattice point in a symmetric convex body is 2ⁿ times the covolume. The half-scaling reduction to Blichfeldt is identical to the ℤⁿ case, with the covolume replacing 1."
     }
@@ -152,6 +160,16 @@
       "targetId": "minkowski-theorem-oq-02",
       "relationship": "related",
       "description": "Sibling Minkowski OQ (Dirichlet approximation); a consumer of covolume-parametric Minkowski for lattices other than ℤⁿ."
+    },
+    {
+      "targetId": "minkowski-theorem-oq-04-oq-03",
+      "relationship": "related",
+      "description": "The sharpness complement: this entry proves the Blichfeldt covolume threshold is SUFFICIENT (vol S > k·covol(Λ) ⇒ k+1 congruent points), while oq-04-oq-03 shows it is TIGHT — for every k there is a set of volume exactly k·covol with no k+1 congruent points, so the strict inequality cannot be weakened to ≥."
+    },
+    {
+      "targetId": "minkowski-theorem-oq-02-oq-01",
+      "relationship": "related",
+      "description": "A flagship application of the convex-body form proved here: Dirichlet's simultaneous approximation theorem falls out of Minkowski's theorem applied to a symmetric box against ℤⁿ, an axiom-free instance of the covolume-threshold machinery."
     }
   ],
   "leanFile": {
@@ -230,28 +248,32 @@
       "type": "core",
       "statement": "$\\mathrm{vol}(S) > k \\cdot \\mathrm{covol}(\\Lambda) \\Rightarrow \\exists\\, \\mathrm{pts} : \\mathrm{Fin}(k{+}1) \\hookrightarrow S,\\;\\; \\forall i,j,\\; \\mathrm{pts}\\,i - \\mathrm{pts}\\,j \\in \\Lambda$",
       "significance": "Blichfeldt's theorem for an arbitrary full-rank lattice in the geometry-of-numbers covolume form. Answers open question #2 of the parent entry. Reduces to the parent's verified blichfeldt_general_lattice through the covolume bridge natCast_mul_volume_fundamentalDomain.",
-      "description": "Covolume-threshold Blichfeldt for a general lattice Λ = span_ℤ(range b)."
+      "description": "Covolume-threshold Blichfeldt for a general lattice Λ = span_ℤ(range b).",
+      "leanType": "{n : ℕ} [NeZero n] (b : Module.Basis (Fin n) ℝ (Fin n → ℝ)) (k : ℕ) (s : Set (Fin n → ℝ)) (h_meas : MeasurableSet s) (h_vol : ENNReal.ofReal ((k:ℝ) * ZLattice.covolume (Submodule.span ℤ (Set.range b)) volume) < volume s) → ∃ pts : Fin (k+1) → Fin n → ℝ, Function.Injective pts ∧ (∀ i, pts i ∈ s) ∧ ∀ i j, pts i - pts j ∈ (Submodule.span ℤ (Set.range b) : Set (Fin n → ℝ))"
     },
     {
       "name": "minkowski_lattice_covolume",
       "type": "core",
       "statement": "$S$ convex, centrally symmetric, $\\mathrm{vol}(S) > 2^n \\cdot \\mathrm{covol}(\\Lambda) \\Rightarrow \\exists\\, p \\in S \\cap \\Lambda,\\; p \\ne 0$",
       "significance": "Minkowski's convex body theorem for an arbitrary full-rank lattice — the classical Cassels III.2 statement and the workhorse of algebraic-number-theory lattice bounds. The parent proves this only for ℤⁿ (covolume 1).",
-      "description": "Covolume-threshold Minkowski convex body theorem for a general lattice."
+      "description": "Covolume-threshold Minkowski convex body theorem for a general lattice.",
+      "leanType": "{n : ℕ} [NeZero n] (b : Module.Basis (Fin n) ℝ (Fin n → ℝ)) (s : Set (Fin n → ℝ)) (h_meas : MeasurableSet s) (h_symm : ∀ x ∈ s, -x ∈ s) (h_conv : Convex ℝ s) (h_vol : ENNReal.ofReal ((2:ℝ)^n * ZLattice.covolume (Submodule.span ℤ (Set.range b)) volume) < volume s) → ∃ p : (Submodule.span ℤ (Set.range b)).toAddSubgroup, p ≠ 0 ∧ (p : Fin n → ℝ) ∈ s"
     },
     {
       "name": "covolume_eq_toReal_volume_fundamentalDomain",
       "type": "supporting",
       "statement": "$\\mathrm{covol}(\\Lambda) = (\\mathrm{vol}(\\mathrm{ZSpan.fundamentalDomain}\\,b)).\\mathrm{toReal}$",
       "significance": "The bridge lemma identifying Mathlib's real-valued ZLattice.covolume with the toReal of the ℝ≥0∞-valued fundamental-domain volume that the parent's threshold uses. Requires finiteness of the fundamental-domain volume (boundedness).",
-      "description": "Identifies covolume with the toReal of the fundamental-domain volume."
+      "description": "Identifies covolume with the toReal of the fundamental-domain volume.",
+      "leanType": "{n : ℕ} [NeZero n] (b : Module.Basis (Fin n) ℝ (Fin n → ℝ)) → ZLattice.covolume (Submodule.span ℤ (Set.range b)) volume = (volume (ZSpan.fundamentalDomain b)).toReal"
     },
     {
       "name": "minkowski_lattice",
       "type": "core",
       "statement": "$S$ convex, centrally symmetric, $\\mathrm{vol}(S) > 2^n \\cdot \\mathrm{vol}(F) \\Rightarrow \\exists\\, p \\in S \\cap \\Lambda,\\; p \\ne 0$",
       "significance": "Minkowski's convex body theorem for a general lattice, fundamental-domain-volume form. Proved by half-scaling T = (1/2)·S and blichfeldt_basic_lattice, mirroring the parent's ℤⁿ reduction with the constant 1 replaced by volume F.",
-      "description": "General-lattice Minkowski via half-scaling to Blichfeldt."
+      "description": "General-lattice Minkowski via half-scaling to Blichfeldt.",
+      "leanType": "{n : ℕ} [NeZero n] (b : Module.Basis (Fin n) ℝ (Fin n → ℝ)) (s : Set (Fin n → ℝ)) (h_meas : MeasurableSet s) (h_symm : ∀ x ∈ s, -x ∈ s) (h_conv : Convex ℝ s) (h_vol : (2:ENNReal)^n * volume (ZSpan.fundamentalDomain b) < volume s) → ∃ p : (Submodule.span ℤ (Set.range b)).toAddSubgroup, p ≠ 0 ∧ (p : Fin n → ℝ) ∈ s"
     }
   ],
   "sorries": 0

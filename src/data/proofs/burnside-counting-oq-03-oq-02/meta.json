@@ -91,8 +91,8 @@
       "id": "header",
       "title": "Problem Statement and Results",
       "startLine": 1,
-      "endLine": 38,
-      "summary": "Module docstring: the parent's open question (generalize the cyclic necklace count to an arbitrary finite group) and the two results — (A) |Fix(g)| = k^cyc(g) and (B) ∑_g k^cyc(g) = (#distinct colorings)·|G|. Notes the weighted Pólya cycle-index theorem is out of scope.",
+      "endLine": 47,
+      "summary": "Module docstring: the parent's open question (generalize the cyclic necklace count to an arbitrary finite group) and the two results — (A) |Fix(g)| = k^cyc(g) and (B) ∑_g k^cyc(g) = (#distinct colorings)·|G|. Notes the weighted Pólya cycle-index theorem is out of scope. Also covers the imports and namespace setup (lines 39–47): imports Mathlib, opens MulAction/Finset, and fixes the group G acting on the position set X with k colors.",
       "mathContext": "$|\\mathrm{Fix}(g)| = k^{\\mathrm{cyc}(g)},\\ \\sum_g k^{\\mathrm{cyc}(g)} = \\#\\text{orbits}\\cdot|G|$"
     },
     {
@@ -131,7 +131,7 @@
       "id": "averaging",
       "title": "Section V: (B) Burnside Orbit-Counting",
       "startLine": 137,
-      "endLine": 158,
+      "endLine": 159,
       "summary": "sum_pow_cyc_eq_card_orbits_mul_card: applying Mathlib's Burnside identity to the coloring action and substituting (A) per term via Finset.sum_congr yields ∑_g k^cyc(g) = (#distinct colorings)·|G|.",
       "mathContext": "$\\sum_{g} k^{\\mathrm{cyc}(g)} = \\mathrm{Nat.card}(\\mathrm{ColorOrbits})\\cdot|G|$"
     }
@@ -147,16 +147,14 @@
   },
   "crossReferences": [
     {
-      "id": "xref-burnside-oq03-parent",
       "targetId": "burnside-counting-oq-03",
       "relationship": "extends",
-      "description": "Answers the parent's open question to generalize the cyclic necklace orbit-count to an arbitrary finite group. The parent proves |Fix(rotation r)| = k^{gcd(r,n)} for the cyclic group; this entry proves |Fix(g)| = k^{cyc(g)} for every element of an arbitrary finite group, with the cyclic value the special case cyc(rotation r) = gcd(r,n)."
+      "description": "Parent entry. This entry generalizes its cyclic necklace case to an arbitrary finite group G acting on the position set X, replacing rotation cycles by ⟨g⟩-orbits and recovering the full Cauchy–Frobenius–Burnside count."
     },
     {
-      "id": "xref-burnside-root",
       "targetId": "burnside-counting",
-      "relationship": "extends",
-      "description": "The root entry axiomatized concrete binary 4-necklace counts; this entry establishes the general orbit-counting identity Σ_g k^{cyc(g)} = (#orbits)·|G| from which such concrete counts follow as instances."
+      "relationship": "related",
+      "description": "Root entry of the Burnside orbit-counting development; this is the general-group instance of the same average-of-fixed-points principle."
     }
   ],
   "leanFile": {
@@ -167,5 +165,67 @@
     "definitionCount": 4,
     "theoremCount": 5
   },
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "Burnside, William",
+      "title": "Theory of Groups of Finite Order",
+      "year": "1911",
+      "venue": "Cambridge University Press, 2nd ed.",
+      "note": "The orbit-counting lemma popularly named after Burnside: the number of orbits equals the average number of fixed points, (1/|G|)∑_g |Fix(g)| — the identity sum_pow_cyc_eq_card_orbits_mul_card in its coloring form."
+    },
+    {
+      "authors": "Frobenius, Ferdinand Georg",
+      "title": "Über die Congruenz nach einem aus zwei endlichen Gruppen gebildeten Doppelmodul",
+      "year": "1887",
+      "venue": "Journal für die reine und angewandte Mathematik 101, 273–299",
+      "note": "An earlier statement of the orbit-counting formula (hence 'Cauchy–Frobenius lemma'); the result predates Burnside, who attributes it to Frobenius/Cauchy."
+    },
+    {
+      "authors": "Cauchy, Augustin-Louis",
+      "title": "Mémoire sur diverses propriétés remarquables des substitutions régulières ou irrégulières",
+      "year": "1845",
+      "venue": "Comptes Rendus, Œuvres complètes",
+      "note": "Cauchy's counting of substitutions with given cycle structure — the earliest ancestor of the Cauchy–Frobenius–Burnside orbit count, whose fixed-coloring version is card_fixedBy_eq_pow_cyc = k^(number of cycles)."
+    },
+    {
+      "authors": "Rotman, Joseph J.",
+      "title": "An Introduction to the Theory of Groups",
+      "year": "1995",
+      "venue": "Springer, Graduate Texts in Mathematics 148, 4th ed.",
+      "note": "Standard modern treatment of group actions, orbits, stabilizers, and the orbit-counting theorem used here (orbit–stabilizer and the fixed-point/quotient bijection fixedColoringEquiv)."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "sum_pow_cyc_eq_card_orbits_mul_card",
+      "type": "main",
+      "description": "The Cauchy–Frobenius–Burnside orbit count for colorings: ∑_{g∈G} k^{cyc(g)} = (number of color orbits)·|G|. Equivalently the number of distinct colorings up to symmetry is the average over G of k^{cyc(g)} — the general (arbitrary finite group) form of the necklace-counting identity.",
+      "leanType": "[Fintype G] [Finite X] : (∑ g : G, k ^ cyc (X := X) g) = Nat.card (ColorOrbits (G := G) (X := X) (k := k)) * Nat.card G"
+    },
+    {
+      "name": "card_fixedBy_eq_pow_cyc",
+      "type": "main",
+      "description": "Fixed-coloring count: the colorings fixed by g number exactly k^{cyc(g)}, where cyc(g) is the number of ⟨g⟩-orbits (cycles) of x ↦ g·x — a fixed coloring is precisely a free choice of one color per cycle.",
+      "leanType": "[Finite X] (g : G) : Nat.card (fixedBy (X → Fin k) g) = k ^ cyc (X := X) g"
+    },
+    {
+      "name": "fixedColoringEquiv",
+      "type": "supporting",
+      "description": "The key bijection behind the fixed-coloring count: a coloring fixed by g is constant on each ⟨g⟩-orbit, so it corresponds bijectively to an arbitrary function on the orbit quotient CycQuot g.",
+      "leanType": "(g : G) : {c : X → Fin k // g • c = c} ≃ (CycQuot (X := X) g → Fin k)"
+    },
+    {
+      "name": "const_on_zpowers",
+      "type": "supporting",
+      "description": "A g-fixed coloring is constant along the ⟨g⟩-orbit of every position: c(h·x) = c(x) for all h ∈ ⟨g⟩. This is what lets the coloring descend to the orbit quotient.",
+      "leanType": "{g : G} {c : X → Fin k} (hc : g • c = c) {h : G} (hh : h ∈ Subgroup.zpowers g) (x : X) : c (h • x) = c x"
+    },
+    {
+      "name": "zpowers_smul_eq_of_fixed",
+      "type": "supporting",
+      "description": "If g fixes a coloring c then so does every power of g: the stabilizer of c contains ⟨g⟩. The group-theoretic step underlying const_on_zpowers.",
+      "leanType": "{g : G} {c : X → Fin k} (hc : g • c = c) {h : G} (hh : h ∈ Subgroup.zpowers g) : h • c = c"
+    }
+  ]
 }

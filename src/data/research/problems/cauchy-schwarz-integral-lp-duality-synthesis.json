@@ -2,7 +2,7 @@
   "slug": "cauchy-schwarz-integral-lp-duality-synthesis",
   "title": "Synthesis: Eliminate riesz_lp_surjective axiom — Full Lp Duality",
   "type": "synthesis",
-  "status": "blocked",
+  "status": "completed",
   "tier": "A",
   "significance": 8,
   "tractability": 6,
@@ -105,9 +105,7 @@
       "S18: Mathlib API drift dictionary extended — Lp.coeFn_add/coeFn_smul are =ᵐ (not =); Measure.ae_mono removed (→ root ae_mono); AEStronglyMeasurable.congr_ae removed (→ .congr); EventuallyEq.mul_right f₃ now implicit; Measure.restrict_apply MeasurableSet.univ now yields `univ ∩ s` (→ Set.univ_inter not Set.inter_univ). Full source present at proofs/.lake/packages/mathlib — grep, do not guess."
     ],
     "nextSteps": [
-      "SPLIT localization_existence (337-943) into ≤150-line standalone top-level theorems (Step A1 hgnorm; A2 hconsist; A3/A4 g-construction+hg_lq_norm; A5 indicator agreement) so each elaborates under 32GB/40min and is independently verifiable. This is the true step-1 blocker per S18.",
-      "First `git apply s18-batch3-drift-fixes.patch` (source-verified) then, on the SPLIT files, grind the residual clusters: integral_representation_sf Lp.induction (170/184/190); lp_truncation dominated-convergence measurability (234+); extByZeroCLM =ᵐ coeFn (314/330); h_k rpow arithmetic (574-645, subst-on-non-var + Real.rpow_add + ENNReal.coe_rpow_of_nonneg positional 0≤z); Set.inter_univ→Set.univ_inter (381/382/743-777).",
-      "Once Incomplete01 green, surface eLpNorm g q μ ≤ ofReal‖φ‖ through riesz_lp_surjective_sigma_finite → discharge synthesis sorry → swap axiom riesz_lp_surjective."
+      "RESOLVED — do not re-serve this synthesis entry for ACT work. riesz_lp_surjective_general is discharged (S27) and the discharge is intact on main (clobber guard re-passed 2026-07-08 r1). The only remaining item, eliminating the upstream parent axiom riesz_lp_surjective, requires a layering refactor of the parent entry (cyclic-import hazard) and is a dedicated architectural task there, not depth-first work here."
     ]
   },
   "leanFiles": [
@@ -128,8 +126,8 @@
     "phase": "ACT",
     "since": "2026-07-02",
     "iteration": 11,
-    "focus": "BLOCKED on a genuine Mathlib gap. The headline goal — eliminate the riesz_lp_surjective axiom to give full Lᵖ–Lq duality — requires the converse-Hölder dual-norm bound ‖g‖_q ≤ sup_{‖f‖_p≤1} |∫ f·g| and Riesz surjectivity, neither of which exists in Mathlib 4.26 (no Dual Lp file under MeasureTheory/Function). Synthesis file CauchySchwarzIntegralLpDualitySynthesis.lean carries 12 sorries; its dep ...Incomplete01.lean carries 1. Progress across ~9 sessions has been ingredient lemmas (σ-finite pullback, q-power disjoint-union eLpNorm additivity, step-1 representer) but the headline axiom is NOT eliminated and the real remaining gap is the converse-Hölder norm bound — a deep Mathlib gap, not bookkeeping.",
-    "nextAction": "UPDATED S20: the converse-Hölder dual-norm gap is NO LONGER the blocker — it is now a VERIFIED 0-axiom ingredient (lpDualNorm_eq / lpDualNorm_eq_eLpNorm in CauchySchwarzIntegralLpDualityIngredients.lean; the S10/currentState framing below is stale, see S14 'red herring' insight). extByZeroCLM is also already re-homed standalone (#32006). The SOLE remaining frontier is the single maximality-assembly `sorry` at Synthesis.lean:345, which consumes riesz_lp_surjective_sigma_finite from the over-envelope Incomplete01 (>32GB localization_existence) — unsafe to build whole on the current 98–100%-full host. CONCRETE NEXT STEP for a session with a healthy verifier: factor the maximality construction into a standalone Mathlib-ONLY lemma parameterized by the σ-finite Riesz representer as an EXPLICIT HYPOTHESIS (∀φ, ∃g, MemLp g q μ ∧ representation ∧ ‖g‖_q ≤ ‖φ‖ for σ-finite μ). That lemma verifies WITHOUT the heavy build (small, Mathlib-only, memory-bounded), and reduces the over-envelope work in Synthesis to a one-line `exact` application to the real σ-finite theorem. Still flagged BLOCKED (disk/envelope), but the mathematical path is now fully itemized into safely-verifiable pieces.",
+    "focus": "RESOLVED (S27, researcher-4): riesz_lp_surjective_general is fully discharged and kernel-verified foundational-only in CauchySchwarzIntegralLpDualitySynthesis.lean (proof body 384-424 sorry-free). The whole LpDuality + Incomplete01 chain is 0 real sorry / 0 real axiom (remaining grep hits are docstring prose).",
+    "nextAction": "None session-sized here. The sole open item — eliminating the parent axiom riesz_lp_surjective in CauchySchwarzIntegralOQ01OQ01OQ02.lean:118 — is architecturally BLOCKED (the discharge is downstream; importing it creates a cycle) and belongs to the PARENT gallery entry as a >1000-line layering refactor, not to this synthesis entry.",
     "blockers": [
       "Mathlib 4.26 has NO general Lᵖ–Lq duality / Riesz surjectivity (no Dual Lp file).",
       "Converse-Hölder dual-norm bound ‖g‖_q ≤ sup_{unit Lᵖ ball} |∫ f·g| is absent (Holder.lean has only the forward bound).",

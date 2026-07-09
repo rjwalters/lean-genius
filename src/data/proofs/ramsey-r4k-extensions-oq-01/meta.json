@@ -198,6 +198,16 @@
       "targetId": "ramsey-r4k-oq-01",
       "relationship": "related",
       "description": "Sibling: off-diagonal R(4,k) = Θ(k³/(log k)^c) bounds (AKS upper, Mattheus-Verstraëte lower)"
+    },
+    {
+      "targetId": "prob-method-applications-wip-01",
+      "relationship": "related",
+      "description": "The abstract first-moment engine of which this R(k,k) > 2^{k/2} bound is the flagship instance: that entry proves the union-bound existence principle and a general Ramsey-style avoidance theorem (|cliques|·2^{|E|−m+1} < 2^{|E|} ⇒ a colouring with no monochromatic block exists), which specialises to exactly the counting argument formalized here."
+    },
+    {
+      "targetId": "prob-method-expectation",
+      "relationship": "related",
+      "description": "The first-moment / expectation principle underlying this proof: Erdős's 1947 bound is the founding application of the probabilistic method, obtained by showing the expected number of monochromatic K_k in a random 2-colouring is < 1 when n < 2^{k/2}."
     }
   ],
   "sorries": 0,

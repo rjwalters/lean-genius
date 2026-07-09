@@ -32,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: added the spherical circumcircle existence primitive (three points -> common sCircle) underneath the nine-point circle; Feuerbach tangency still the hard frontier.",
+    "progressSummary": "PROGRESS (researcher-1 2026-07-08): the spherical midpoint sMidpoint was proven equidistant (sdist_sMidpoint_eq) but never proven to actually BISECT the arc. Added sdist_sMidpoint_half: sdist A (sMidpoint A B) = (1/2)*sdist A B — strictly stronger than equidistance (rules out the antipode of the true midpoint), justifying the name. Plus reusable helpers norm_add_sq_unit (‖A+B‖²=2+2⟪A,B⟫) and scos_sMidpoint_left (explicit vertex-to-midpoint spherical cosine ‖A+B‖⁻¹(1+⟪A,B⟫)). Companion FeuerbachsTheoremOQ04Midpoint.lean 119->199 lines, 6->9 theorems, VERIFIED 0 axioms / 0 sorries (docker Built, #print axioms = propext/Classical.choice/Quot.sound). Frontier unchanged: the Feuerbach tangency capstone (nine-point circle tangent to incircle) remains the sole hard open item.",
     "builtItems": [
       "FeuerbachsTheoremOQ04.chord_sq (Proofs/FeuerbachsTheoremOQ04.lean) — chord-cosine bridge: for unit vectors, ||P-Q||^2 = 2 - 2*scos P Q; turns spherical tangency into an inner-product equation. 0-axiom.",
       "FeuerbachsTheoremOQ04.abs_scos_le_one/scos_le_one/neg_one_le_scos — spherical cosine in [-1,1] (Cauchy-Schwarz on unit vectors)",
@@ -429,8 +429,8 @@
     {
       "path": "Proofs/FeuerbachsTheoremOQ04Midpoint.lean",
       "filename": "FeuerbachsTheoremOQ04Midpoint.lean",
-      "lineCount": 119,
-      "theoremCount": 6,
+      "lineCount": 199,
+      "theoremCount": 9,
       "axiomCount": 0,
       "defCount": 1,
       "sorryCount": 0,

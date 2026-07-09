@@ -447,3 +447,54 @@ built green on retry attempt 4 after a sustained fleet SIGBUS/SIGSEGV write wind
   `Finset.biUnion`); the abstract atom gain already covers arbitrary finite index.
 - Wire `pairEnergy_prod_refinement_gain` + `exists_irregular_witness` (Bridge) into
   the whole-partition energy monotonicity feeding `afks_energy_iteration_count`.
+
+## Session 2026-07-08 (researcher-2) — Direct 2×2 ε⁴ increment from an irregular pair (no triangle detour)
+
+**Mode**: REVISIT (RICH) · **Outcome**: progress (2 theorems VERIFIED 0/0),
+branch research/szemeredi-oq04-prod-gain-r2
+
+### What I Did
+- `pairEnergy_prod_gain_of_irregular` (Bridge, PART XI): the clean capstone that
+  bypasses the entire one-sided A/B-side reduction (PARTS VI–X). The witness of
+  `exists_irregular_witness` gives `|d(A′,B′) − d(A,B)| > ε` measured **directly
+  against the coarse density** `d(A,B)` — which is exactly the mean identity the
+  2×2 variance-atom bound consumes. So refine BOTH coordinates at once into
+  `{A′,A∖A′}×{B′,B∖B′}` and feed `pairEnergy_prod_refinement_gain` verbatim
+  (`d := ε`), reading off the cell gain `(|A′||B′|/n²)·ε²`. No triangle detour, no
+  factor-½ tolerance loss, no mixed second-difference defect.
+- `pairEnergy_prod_gain_of_irregular_eps4` (Bridge, PART XI): floors the exact
+  cell gain to the AFKS-consumable `ε⁴·|A||B|/n²` via the witness size thresholds
+  `|A′|≥ε|A|`, `|B′|≥ε|B|` (`mul_le_mul` on the two size bounds, then scale by
+  `ε²/n² ≥ 0` through a 3-step `calc`/`ring`). This is the genuine ε⁴ energy jump
+  the strong-regularity iteration consumes — with none of the factor-¼ loss the
+  one-sided branches (S4/S5) incurred.
+
+### Key Findings
+- The one-sided machinery (S4–S10) was always a *detour*: it split the witness
+  deviation through a mixed density `d(A′,B)` because the increment lemmas then
+  available only consumed a whole-partner deviation. Once S7's
+  `pairEnergy_prod_refinement_gain` existed (consuming a deviation against the
+  whole *coarse* density), the witness plugs in with **zero** massaging — the
+  witness deviation IS a coarse-density deviation by definition of
+  `¬IsEpsilonRegular`. The two theorems are ~25 and ~20 lines.
+- `Finset.union_sdiff_of_subset hA' : A′ ∪ (A∖A′) = A` + `disjoint_sdiff_self_right`
+  turn the subset witness into an honest disjoint 2-split on each coordinate; the
+  gain lemma's hypothesis unions rewrite straight back to `A`,`B`.
+- Build: same `[7748/7748] … (1.2s)` zero-error elaboration then exit-135 SIGBUS at
+  the olean write; **succeeded on retry attempt 1** (`Build completed successfully
+  (7748 jobs)`). Purely the fleet-memory write race, not math.
+- **Worktree eaten again**: the sanctioned `.loom/worktrees/researcher-2-2` was
+  reclaimed by the janitor between claim and first write (clean + no persistent
+  process). Recreated off origin/main and committed a WIP stub immediately to make
+  it dirty/protected before doing real work.
+
+### Files Modified
+- proofs/Proofs/SzemerediRegularityOQ04Bridge.lean (+pairEnergy_prod_gain_of_irregular,
+  +pairEnergy_prod_gain_of_irregular_eps4; 19→21 theorems, 717→799 lines)
+- src/data/research/problems/szemeredi-regularity-oq-04.json (synced stale
+  Bridge/Energy leanFile counts: Bridge 301→799/8→21, Energy 264→533/5→11,def 0→1)
+
+### Next Steps
+- Sum the per-pair ε⁴ jump over all refined parts to get whole-partition energy
+  monotonicity, then feed `afks_energy_iteration_count` (N ≤ 2n²/ε²).
+- Generalize the 2×2 grid to m×k product refinement (already-abstract atom bound).

@@ -36,6 +36,18 @@
                                     needs the extra hypothesis `f.roots.card = f.natDegree`
                                     (complete splitting over `ℝ`).
 
+  Finally we isolate *why* faithfulness fixes the degeneracy, at the per-polynomial level:
+
+  * `isOpen_sublevelSet`            — `{x : |f(x)| < 1}` is open (preimage of `(-1,1)`).
+  * `sublevelMeasure_pos_of_root`   — any real root `r ∈ f.roots` lies in the open sublevel
+                                      set, forcing positive Lebesgue measure.
+  * `faithful_sublevelMeasure_pos`  — a faithful `f` of degree `≥ 1` splits completely, so it
+                                      has a real root: `0 < sublevelMeasure f`.  This is the
+                                      exact property `X² + 1` fails (degree `2`, no real root,
+                                      empty sublevel set) — the driver of `sublevelInf_eq_zero`.
+  * `sublevelInf'` / `sublevelInf'_le_two` — the faithful infimum object and its linear
+                                      witness bound `≤ 2`, now free of the rootless collapse.
+
   All results are fully machine-checked (0 axioms, 0 sorries).
 
   Reference: Erdős–Herzog–Piranian (1958); Tao, *Sublevel Sets of Logarithmic
@@ -223,5 +235,134 @@ theorem sublevelInf_eq_zero : sublevelInf = 0 :=
     (iInf_le_of_le (X ^ 2 + C 1)
       (iInf_le_of_le sq_add_one_admissible sublevelMeasure_sq_add_one.le))
     (zero_le _)
+
+/-! ### The faithful predicate (complete real splitting)
+
+The `sublevelInf = 0` degeneracy above shows `MonicRealRootedIn01` is too weak: it
+constrains only the real roots `f` happens to have, admitting the rootless `X² + 1`.
+The **faithful** version adds `f.roots.card = f.natDegree` — i.e. `f` splits completely
+into real linear factors, all roots in `[-1,1]`.  We introduce the faithful supremum
+object, verify the two exact witnesses (`X² − 1`, `X`) satisfy the stronger predicate so
+the `2√2` lower bound transfers, and confirm `X² + 1` is now correctly excluded. -/
+
+/-- **Faithful admissibility.**  `f` is monic, all its real roots lie in `[-1,1]`, *and*
+    it splits completely over `ℝ` (`f.roots.card = f.natDegree`).  This excludes monic
+    polynomials with non-real roots such as `X² + 1`, restoring the intended geometry. -/
+def MonicRealRootedIn01' (f : Polynomial ℝ) : Prop :=
+  MonicRealRootedIn01 f ∧ f.roots.card = f.natDegree
+
+/-- The extremal quadratic `X² − 1` is **faithfully** admissible: it splits as
+    `(X − 1)(X + 1)`, so its two real roots `±1 ∈ [-1,1]` exhaust its degree. -/
+theorem quadratic_admissible' : MonicRealRootedIn01' q := by
+  refine ⟨quadratic_admissible, ?_⟩
+  have h1 : q = (X - C (1 : ℝ)) * (X - C (-1 : ℝ)) := by
+    simp only [q, map_one, map_neg]; ring
+  have hne : (X - C (1 : ℝ)) * (X - C (-1 : ℝ)) ≠ 0 := by
+    rw [← h1]; exact quadratic_admissible.1.ne_zero
+  have hnd : q.natDegree = 2 := by simp only [q]; compute_degree!
+  have hrc : q.roots.card = 2 := by
+    rw [h1, Polynomial.roots_mul hne, Polynomial.roots_X_sub_C, Polynomial.roots_X_sub_C]
+    simp
+  rw [hrc, hnd]
+
+/-- The linear polynomial `X` is **faithfully** admissible: its single root `0 ∈ [-1,1]`
+    exhausts its degree `1`. -/
+theorem linear_admissible' : MonicRealRootedIn01' (X : Polynomial ℝ) := by
+  refine ⟨linear_admissible, ?_⟩
+  rw [Polynomial.roots_X, Multiset.card_singleton, natDegree_X]
+
+/-- The **faithful supremum** of sublevel-set measures, over monic polynomials that split
+    completely with all roots real in `[-1,1]`.  This is the object for which Tao's
+    `= 2√2` is the intended statement (the literal `sublevelSup` agrees on the lower bound
+    but its infimum companion degenerates; see `sublevelInf_eq_zero`). -/
+noncomputable def sublevelSup' : ℝ≥0∞ :=
+  ⨆ (f : Polynomial ℝ) (_ : MonicRealRootedIn01' f), sublevelMeasure f
+
+/-- **Faithful supremum lower bound: `2√2 ≤ sublevelSup'`.**  The lower bound survives the
+    strengthening: `X² − 1` splits completely, so it is faithfully admissible and still
+    attains sublevel measure `2√2`.  The machine-checkable half of Tao's `sublevelSup' = 2√2`
+    on the faithful object; the matching upper bound remains beyond Mathlib. -/
+theorem le_sublevelSup' : ENNReal.ofReal (2 * Real.sqrt 2) ≤ sublevelSup' :=
+  le_iSup_of_le q (le_iSup_of_le quadratic_admissible' sublevelMeasure_quadratic.ge)
+
+/-- **The faithful predicate excludes `X² + 1`.**  Unlike the literal `MonicRealRootedIn01`,
+    the faithful predicate rejects the rootless `X² + 1`: it has `0` real roots but degree
+    `2`, so `roots.card ≠ natDegree`.  This is exactly why the faithful infimum does *not*
+    collapse to `0` — the pathology witnessing `sublevelInf_eq_zero` is no longer admissible. -/
+theorem sq_add_one_not_admissible' :
+    ¬ MonicRealRootedIn01' (X ^ 2 + C 1 : Polynomial ℝ) := by
+  rintro ⟨-, hcard⟩
+  have hnd : (X ^ 2 + C 1 : Polynomial ℝ).natDegree = 2 := by compute_degree!
+  have hr0 : (X ^ 2 + C 1 : Polynomial ℝ).roots = 0 := by
+    rw [Multiset.eq_zero_iff_forall_notMem]
+    intro r hr
+    rw [Polynomial.mem_roots'] at hr
+    have hroot : r ^ 2 + 1 = 0 := by simpa using hr.2
+    nlinarith [sq_nonneg r]
+  rw [hr0, Multiset.card_zero, hnd] at hcard
+  exact absurd hcard (by norm_num)
+
+/-! ### Why faithfulness matters: a real root forces positive sublevel measure
+
+The `sublevelInf_eq_zero` degeneracy is driven entirely by the *rootless* witness
+`X² + 1`: with no real root, `|f|` is bounded away from `0`, its sublevel set is empty,
+and the measure vanishes.  The faithful predicate forbids this by demanding a full
+complement of real roots.  We isolate the mechanism at the *per-polynomial* level:
+the sublevel set is **open**, and any real root sits inside it, so a single root already
+forces positive Lebesgue measure.  Faithful polynomials of positive degree always have
+one, so — unlike the literal predicate — each faithful witness has positive measure. -/
+
+/-- **The sublevel set is open**: it is the preimage of the open interval `(-1,1)` under
+    the continuous evaluation map `x ↦ f(x)` (`|y| < 1 ↔ y ∈ (-1,1)`). -/
+theorem isOpen_sublevelSet (f : Polynomial ℝ) : IsOpen (sublevelSet f) := by
+  have hpre : sublevelSet f = (fun x => f.eval x) ⁻¹' Set.Ioo (-1 : ℝ) 1 := by
+    ext x
+    simp only [sublevelSet, Set.mem_setOf_eq, Set.mem_preimage, Set.mem_Ioo, abs_lt]
+  rw [hpre]
+  exact isOpen_Ioo.preimage f.continuous
+
+/-- **A single real root forces positive sublevel measure.**  If `r ∈ f.roots` then
+    `f(r) = 0`, so `r` lies in the *open* sublevel set `{x : |f(x)| < 1}`; a nonempty open
+    subset of `ℝ` has positive Lebesgue measure (`IsOpen.measure_pos` for the
+    open-positive `volume`). -/
+theorem sublevelMeasure_pos_of_root (f : Polynomial ℝ) {r : ℝ} (hr : r ∈ f.roots) :
+    0 < sublevelMeasure f := by
+  have hev : f.eval r = 0 := Polynomial.isRoot_of_mem_roots hr
+  have hmem : r ∈ sublevelSet f := by
+    simp only [sublevelSet, Set.mem_setOf_eq, hev, abs_zero]; norm_num
+  unfold sublevelMeasure
+  exact (isOpen_sublevelSet f).measure_pos volume ⟨r, hmem⟩
+
+/-- **Faithful admissibility of positive degree ⟹ positive sublevel measure.**  A
+    faithfully admissible `f` of degree `≥ 1` splits completely (`roots.card = natDegree`),
+    so its root multiset is nonempty: it has a real root `r ∈ [-1,1]`, and
+    `sublevelMeasure_pos_of_root` gives `0 < sublevelMeasure f`.  This is precisely the
+    property the *literal* predicate loses — the rootless `X² + 1` (degree `2`, no real
+    roots) is literally admissible with an empty sublevel set, forcing `sublevelInf_eq_zero`.
+    Faithfulness rules it out, so every faithful witness of positive degree contributes a
+    positive measure to the faithful infimum. -/
+theorem faithful_sublevelMeasure_pos (f : Polynomial ℝ)
+    (hf : MonicRealRootedIn01' f) (hdeg : 1 ≤ f.natDegree) :
+    0 < sublevelMeasure f := by
+  have hcard : 0 < f.roots.card := by rw [hf.2]; omega
+  obtain ⟨r, hr⟩ := Multiset.exists_mem_of_ne_zero (Multiset.card_pos.mp hcard)
+  exact sublevelMeasure_pos_of_root f hr
+
+/-- The **faithful infimum** of sublevel-set measures, over monic polynomials that split
+    completely with all roots real in `[-1,1]`.  In contrast to the literal `sublevelInf`,
+    which collapses to `0` via the rootless `X² + 1` (`sublevelInf_eq_zero`), every
+    positive-degree faithful witness has *positive* sublevel measure
+    (`faithful_sublevelMeasure_pos`); the exact faithful infimum `2^(4/3) − 1` still needs
+    logarithmic potential theory beyond Mathlib. -/
+noncomputable def sublevelInf' : ℝ≥0∞ :=
+  ⨅ (f : Polynomial ℝ) (_ : MonicRealRootedIn01' f), sublevelMeasure f
+
+/-- **Faithful infimum upper bound: `sublevelInf' ≤ 2`.**  The linear `X` is faithfully
+    admissible (`linear_admissible'`) with sublevel measure `2`, so the faithful infimum is
+    at most `2`.  Unlike the literal `sublevelInf_le_two`, this bound is *not* undercut to `0`
+    by a rootless witness; the true faithful infimum `2^(4/3) − 1 ≈ 1.52 < 2` lies below it
+    but beyond the elementary witnesses available here. -/
+theorem sublevelInf'_le_two : sublevelInf' ≤ ENNReal.ofReal 2 :=
+  iInf_le_of_le X (iInf_le_of_le linear_admissible' sublevelMeasure_linear.le)
 
 end Erdos1038WIP01

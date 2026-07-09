@@ -247,4 +247,31 @@ theorem max'_subsetSums_eq_sum {A : Finset ℕ} (hA : A.Nonempty) :
     (Finset.max'_le _ _ _ (fun s hs => subsetSums_le_sum s hs))
     (Finset.le_max' _ _ (sum_mem_subsetSums hA))
 
+/-- **Every subset sum dominates the minimum element.**  For a non-empty subset
+    `S ⊆ A` the sum bounds any one of its (non-negative) summands, and each summand
+    lies in `A`, so the sum is at least `A.min'` — the smallest element of `A`. -/
+theorem min'_le_subsetSums {A : Finset ℕ} (hA : A.Nonempty) :
+    ∀ s ∈ subsetSums A, A.min' hA ≤ s := by
+  intro s hs
+  unfold subsetSums nonemptySubsets at hs
+  rw [Finset.mem_image] at hs
+  obtain ⟨S, hS, rfl⟩ := hs
+  rw [Finset.mem_filter, Finset.mem_powerset] at hS
+  obtain ⟨hSsub, hSne⟩ := hS
+  obtain ⟨b, hb⟩ := Finset.nonempty_iff_ne_empty.mpr hSne
+  calc A.min' hA ≤ b := Finset.min'_le _ _ (hSsub hb)
+    _ ≤ S.sum id := Finset.single_le_sum (fun i _ => Nat.zero_le (id i)) hb
+
+/-- **The minimum subset sum is the minimum element.**  Dual to
+    `max'_subsetSums_eq_sum`: the smallest of the non-empty subset sums of a
+    non-empty set is exactly `A.min'` — attained by the singleton `{A.min'}`
+    (`subset_subsetSums`) and a lower bound for every subset sum
+    (`min'_le_subsetSums`).  Together with `max'_subsetSums_eq_sum` this pins down
+    *both* endpoints of the subset-sum range: `[A.min', ∑ A]`. -/
+theorem min'_subsetSums_eq_min' {A : Finset ℕ} (hA : A.Nonempty) :
+    (subsetSums A).min' (subsetSums_nonempty hA) = A.min' hA :=
+  le_antisymm
+    (Finset.min'_le _ _ (subset_subsetSums A (A.min'_mem hA)))
+    (Finset.le_min' _ _ _ (min'_le_subsetSums hA))
+
 end Erdos882OQ03

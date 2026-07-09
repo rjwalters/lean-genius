@@ -666,4 +666,24 @@ theorem primitive_solvable_subgroup_embeds_AGL1Z
   exact ⟨ψ.comp (Subgroup.inclusion hHle),
     hinj.comp (Subgroup.inclusion_injective hHle)⟩
 
+/-- **Corollary (Galois order bound).** A primitive solvable subgroup of
+    `S_p = Equiv.Perm (ZMod p)` has order dividing `p * (p - 1)`.
+
+    This is the classical numeric form of Galois's 1832 theorem: a solvable
+    transitive permutation group of prime degree `p` has order dividing
+    `p (p - 1) = |AGL(1, p)|`.  It is immediate from
+    `primitive_solvable_subgroup_embeds_AGL1Z`: that theorem provides an
+    injective group homomorphism `φ : H ↪ AGL(1, p)`, so Lagrange's theorem
+    (`Subgroup.card_dvd_of_injective`) gives `|H| ∣ |AGL(1, p)|`, and
+    `AGL1Z.nat_card_eq` evaluates the right-hand side as `p (p - 1)`.  No new
+    `sorry`, no axiom. -/
+theorem primitive_solvable_subgroup_card_dvd
+    (H : Subgroup (Equiv.Perm (ZMod p)))
+    (hPrim : MulAction.IsPreprimitive H (ZMod p))
+    (hSolv : IsSolvable H) :
+    Nat.card H ∣ p * (p - 1) := by
+  obtain ⟨φ, hφ⟩ := primitive_solvable_subgroup_embeds_AGL1Z H hPrim hSolv
+  have hdvd : Nat.card H ∣ Nat.card (AGL1Z p) := Subgroup.card_dvd_of_injective φ hφ
+  rwa [AGL1Z.nat_card_eq] at hdvd
+
 end AbelRuffiniGaloisExtensionsOQ06GaloisDirection

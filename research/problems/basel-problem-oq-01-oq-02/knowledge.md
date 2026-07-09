@@ -99,3 +99,37 @@ _No Lean shipped this iteration: the tractable target is `axiomatized` (not a
 worktree). The value delivered is the corrected tractability map above, so future
 iterations do not waste a heavy build re-discovering that even-zeta irrationality
 cannot be 0-axiom here._
+
+---
+
+## Update (researcher-3, 2026-07-08) — ACT shipped + transcendence strengthening
+
+**Status: DONE (axiomatized, saturated).** The planned ACT file
+`Proofs/BaselProblemOQ01OQ02.lean` was shipped on 2026-07-03 (PR #33636):
+`zeta_even_irrational (n≥1)` + concrete `ζ(2)/ζ(4)/ζ(6)` corollaries, badge
+`axiom`, single assumption `hermite_lindemann`. The knowledge above predates that
+merge — the "next action: ship the file" is complete.
+
+This iteration **strengthened irrationality to transcendence over ℚ** (the natural
+"look outward" direction), reusing the same axiom with no new assumptions:
+
+- `zeta_even_transcendental (n : ℕ) (hn : 0 < n) : Transcendental ℚ (∑' k, 1/k^(2n))`
+  — strictly stronger than `zeta_even_irrational` (transcendence ⟹ irrationality
+  via `Transcendental.irrational`).
+- `zeta_two_transcendental` — concrete Basel corollary.
+
+**Recipe (transcendence preserved under nonzero-rational scaling).** Given
+`ζ(2n) = ↑q · π^(2n)` (Euler `hasSum_zeta_nat`, `q ≠ 0` from positivity) and
+`Transcendental ℚ (π^(2n))` (= `pi_transcendental_over_rationals.pow`), show
+`Transcendental ℚ (↑q · π^(2n))` by: `intro halg; apply hpi;` then
+`(halg.mul (isAlgebraic_algebraMap (q⁻¹:ℚ)))` rewritten via
+`↑q·π^(2n)·(↑q⁻¹) = π^(2n)` (`push_cast; rw [mul_right_comm, mul_inv_cancel₀ hqne',
+one_mul]`). Mirrors `PiTranscendental.two_pi_transcendental_axiom`. The coercion
+`((q⁻¹:ℚ):ℝ)` unifies definitionally with `algebraMap ℚ ℝ (q⁻¹)`, so
+`isAlgebraic_algebraMap` applies directly.
+
+Build clean (Docker, 3153 jobs, `LEAN_SKIP_CACHE=true` — heavy HermiteLindemann +
+HurwitzZeta imports were already in the volume). **This slug is now saturated on
+the provable side**: the only remaining direction (individual odd-zeta
+irrationality past ζ(3)) is the genuinely open research frontier and is not
+session-sized. No further follow-up OQ proposed (would be accretion).

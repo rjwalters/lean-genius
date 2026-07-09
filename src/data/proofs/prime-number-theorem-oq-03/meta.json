@@ -83,10 +83,18 @@
   },
   "sections": [
     {
+      "id": "preamble",
+      "title": "Overview: the two-way estimate of log(N!)",
+      "startLine": 1,
+      "endLine": 52,
+      "summary": "Imports (von Mangoldt arithmetic function, Nat factorization, tactics) and the module docstring, which frames the elementary route to the Prime Number Theorem (Chebyshev → Mertens → Selberg–Erdős): the identity ∑_{m≤N} Λ(m)⌊N/m⌋ = log(N!) arises from estimating log(N!) two ways — analytically by Stirling (N log N − N + O(log N)) and arithmetically via log n = ∑_{d∣n} Λ(d) summed over n ≤ N with the order of summation exchanged. Lists the three headline results and the Mathlib inputs (vonMangoldt_sum, Nat.Ioc_filter_dvd_card_eq_div, Finset.sum_comm'), and notes the floor-weighted identity is absent from Mathlib.NumberTheory.Chebyshev. Opens the namespaces.",
+      "mathContext": "$\\sum_{m\\le N}\\Lambda(m)\\lfloor N/m\\rfloor = \\log(N!)$: equate Stirling's $N\\log N - N + O(\\log N)$ with the arithmetic expansion of $\\log(N!)=\\sum_{n\\le N}\\sum_{d\\mid n}\\Lambda(d)$."
+    },
+    {
       "id": "log-factorial",
       "title": "log(N!) as a sum of logarithms",
       "startLine": 53,
-      "endLine": 65,
+      "endLine": 66,
       "summary": "`log_factorial_eq_sum_log`: log(N!) = ∑_{n=1}^{N} log n. Proves N! = ∏_{n∈[1,N]} n by induction (prod_Icc_succ_top), casts to ℝ, and applies Real.log_prod since each factor is nonzero.",
       "mathContext": "Turning a factorial into an additive sum of logs is the analytic side of the elementary method; Stirling's formula then evaluates it as N log N − N + O(log N)."
     },
@@ -94,7 +102,7 @@
       "id": "summatory-identity",
       "title": "The von Mangoldt summatory identity",
       "startLine": 67,
-      "endLine": 102,
+      "endLine": 103,
       "summary": "`vonMangoldt_summatory`: ∑_{m=1}^{N} Λ(m)⌊N/m⌋ = log(N!). A calc chain runs the floor-weighted sum back to ∑_{d≤N} ∑_{n∈multiples} Λ(d) (constant inner sum, card = N/d via Nat.Ioc_filter_dvd_card_eq_div), exchanges order with Finset.sum_comm', then folds each ∑_{d∣n} Λ(d) into log n and reassembles log(N!).",
       "mathContext": "This is the exact arithmetic identity of Chebyshev and Mertens. The floor multiplicities ⌊N/m⌋ count, for each prime power m, how many integers ≤ N it divides."
     },
@@ -102,7 +110,7 @@
       "id": "mertens-bound",
       "title": "Upper estimate (easy half of Mertens)",
       "startLine": 104,
-      "endLine": 120,
+      "endLine": 122,
       "summary": "`log_factorial_le`: log(N!) ≤ N·∑_{m=1}^{N} Λ(m)/m. Substitutes the identity, distributes N over the sum, and compares term by term using ⌊N/m⌋ ≤ N/m (Nat.cast_div_le) and Λ(m) ≥ 0.",
       "mathContext": "Mertens' first theorem states ∑_{m≤N} Λ(m)/m = log N + O(1); this provides the lower bound on that sum (equivalently, the upper bound on log(N!) in terms of it), the direction that follows purely from ⌊N/m⌋ ≤ N/m."
     }

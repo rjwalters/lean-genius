@@ -48,11 +48,11 @@
       }
     ],
     "originalContributions": [
-      "turanNumber: axiomatized extremal graph function ex(n; H)",
-      "minDegree: minimum vertex degree δ(G) via Finset.inf'",
-      "janzer_disproof: Janzer's counterexample for even r ≥ 4",
-      "probabilistic_lower_bound: ex(n; H) ≥ c·n^{2-2/r+ε}",
-      "erdos_147: main theorem closing the problem at r = 4"
+      "turanNumber axiom: extremal graph function ex(n; H)",
+      "minDegree definition: minimum vertex degree δ(G) via Finset.inf'",
+      "janzer_disproof axiom: Janzer's counterexample for even r ≥ 4",
+      "probabilistic_lower_bound axiom: ex(n; H) ≥ c·n^{2-2/r+ε}",
+      "erdos_147 theorem: specializes the janzer_disproof axiom to r = 4 (statement only; the disproof itself is the axiom)"
     ],
     "axiomCount": 3,
     "lineCount": 101,

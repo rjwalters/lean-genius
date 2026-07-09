@@ -1,0 +1,86 @@
+[
+  {
+    "id": "ann-k33-params",
+    "proofId": "erdos-1018-oq-03",
+    "range": { "startLine": 65, "endLine": 69 },
+    "type": "definition",
+    "title": "Parameters of K₃,₃",
+    "content": "K₃,₃ is the complete bipartite graph with both parts of size 3. Every vertex is joined to all three vertices on the opposite side, so it is 3-regular: V = 6 and E = 3·6/2 = 9. Being bipartite it has no odd cycles, so its girth is 4 (the shortest cycle is a 4-cycle). Only these three numeric facts — V = 6, E = 9, girth ≥ 4 — are needed for the entire non-planarity argument; no adjacency structure is encoded.",
+    "mathContext": "$K_{3,3}$: $V = 6$, $E = \\tfrac{3\\cdot 6}{2} = 9$, bipartite $\\Rightarrow$ girth $\\ge 4$.",
+    "significance": "supporting",
+    "relatedConcepts": ["complete bipartite graph", "regular graph", "girth", "handshake lemma"],
+    "prerequisites": ["graph theory basics"]
+  },
+  {
+    "id": "ann-exceeds-bound",
+    "proofId": "erdos-1018-oq-03",
+    "range": { "startLine": 71, "endLine": 76 },
+    "type": "insight",
+    "title": "K₃,₃ Violates the Bipartite Planar Bound",
+    "content": "A bipartite planar graph (girth ≥ 4) obeys the sharper Euler bound E ≤ 2V − 4, tighter than the general planar bound E ≤ 3V − 6 because girth-4 faces need 4 edges instead of 3. For K₃,₃ this reads 9 ≤ 2·6 − 4 = 8 — false. This single strict inequality 9 > 8 is the whole reason K₃,₃ is non-planar; everything else is bookkeeping. Closed by `norm_num` after unfolding the parameters.",
+    "mathContext": "Bipartite planar bound $E \\le 2V - 4$; for $K_{3,3}$, $9 > 2\\cdot 6 - 4 = 8$.",
+    "significance": "key",
+    "relatedConcepts": ["Euler's formula", "planar graph edge bounds", "girth-4 face bound", "Kuratowski's theorem"],
+    "prerequisites": ["Euler's formula for planar graphs", "graph theory basics"]
+  },
+  {
+    "id": "ann-no-embedding",
+    "proofId": "erdos-1018-oq-03",
+    "range": { "startLine": 78, "endLine": 87 },
+    "type": "technique",
+    "title": "Non-Planarity Without Topology",
+    "content": "Non-planarity is derived purely arithmetically. For any hypothetical girth-4 2-cell embedding in the sphere (χ = 2), two constraints must hold simultaneously: Euler's relation V − E + F = 2 and the face-degree count 4F ≤ 2E (each face is bounded by ≥ 4 edges, each edge borders 2 faces). Substituting V = 6, E = 9 into Euler forces F = 5, but the face bound demands 4F ≤ 18, i.e. F ≤ 4. No natural number F satisfies both, so `omega` closes the goal by deriving `False`. The face count F is universally quantified — the contradiction rules out every possible embedding, not just a specific one.",
+    "mathContext": "$V - E + F = 2 \\Rightarrow F = 5$, but $4F \\le 2E = 18 \\Rightarrow F \\le 4$. Contradiction.",
+    "significance": "key",
+    "relatedConcepts": ["Euler characteristic", "2-cell embedding", "face-degree counting", "proof by contradiction"],
+    "prerequisites": ["Euler's formula for planar graphs", "linear arithmetic"]
+  },
+  {
+    "id": "ann-excess-obstruction",
+    "proofId": "erdos-1018-oq-03",
+    "range": { "startLine": 96, "endLine": 103 },
+    "type": "concept",
+    "title": "General Bipartite Edge-Excess Obstruction",
+    "content": "This generalizes the K₃,₃ instance to any V, E: the contrapositive of the girth-4 Euler bound. Whenever 2V < E + 4 (equivalently E > 2V − 4), the same pair of constraints — Euler V − E + F = 2 and 4F ≤ 2E — is inconsistent for every F, discharged by a single `omega` call over the integers. By Kuratowski, a non-planar bipartite graph must contain a subdivision of K₃,₃ (the only bipartite Kuratowski obstruction), so edge excess in the bipartite regime forces K₃,₃ specifically rather than K₅.",
+    "mathContext": "$2V < E + 4 \\iff E > 2V - 4$; with $F = 2 - V + E$ the bound $4F \\le 2E$ becomes $E \\le 2V - 4$, contradicting the excess.",
+    "significance": "key",
+    "relatedConcepts": ["extremal graph theory", "Kuratowski obstruction", "topological minor", "subdivision"],
+    "prerequisites": ["Euler's formula for planar graphs", "Kuratowski's theorem"]
+  },
+  {
+    "id": "ann-satisfies-excess",
+    "proofId": "erdos-1018-oq-03",
+    "range": { "startLine": 105, "endLine": 108 },
+    "type": "definition",
+    "title": "K₃,₃ as a Concrete Instance",
+    "content": "A sanity check certifying that K₃,₃ is a genuine instance of the general obstruction: 2·6 = 12 < 9 + 4 = 13. Instantiating `bipartite_excess_no_embedding` at V = 6, E = 9 recovers `k33_no_planar_bipartite_embedding`, confirming the general lemma subsumes the specific case.",
+    "mathContext": "$2\\cdot 6 = 12 < 13 = 9 + 4$, so $K_{3,3}$ satisfies the excess hypothesis.",
+    "significance": "technical",
+    "relatedConcepts": ["specialization", "instance checking"],
+    "prerequisites": ["graph theory basics"]
+  },
+  {
+    "id": "ann-superlinear",
+    "proofId": "erdos-1018-oq-03",
+    "range": { "startLine": 120, "endLine": 132 },
+    "type": "technique",
+    "title": "Super-Linear Density Beats Every Linear Threshold",
+    "content": "The asymptotic heart of the localization. Writing x^(1+ε) = x · x^ε via `Real.rpow_add`, and using that x^ε → ∞ as x → ∞ for ε > 0 (Mathlib's `tendsto_rpow_atTop`), the factor x^ε eventually exceeds any fixed slope c. Hence eventually c·x = x·c < x·x^ε = x^(1+ε). The `filter_upwards` combines the two eventual facts (c < x^ε and x > 0), and `mul_lt_mul_of_pos_left` finishes. This is why the density exponent 1 is the same for K₃,₃ as for K₅ — a linear extremal function is always eventually dominated by any n^(1+ε).",
+    "mathContext": "$x^{1+\\varepsilon} = x\\cdot x^{\\varepsilon}$ with $x^{\\varepsilon}\\to\\infty$, so eventually $c\\cdot x < x^{1+\\varepsilon}$ for every fixed $c$.",
+    "significance": "key",
+    "relatedConcepts": ["asymptotic density", "rpow asymptotics", "filter eventually", "Kostochka–Pyber threshold"],
+    "prerequisites": ["real analysis", "limits and filters", "power functions"]
+  },
+  {
+    "id": "ann-threshold-forms",
+    "proofId": "erdos-1018-oq-03",
+    "range": { "startLine": 134, "endLine": 156 },
+    "type": "insight",
+    "title": "Threshold Form and Its Specializations",
+    "content": "`dense_exceeds_k33_subdivision_threshold` packages the asymptotic fact into #1018 form: for any slope c and any ε > 0, all sufficiently large dense graphs (n^(1+ε) ≤ E) satisfy c·n < E, so they exceed the linear K₃,₃-subdivision threshold and must contain a K₃,₃ subdivision. It is specialized to the bipartite slope c = 2 (`dense_bipartite_forces_k33`) and the general subdivision slope c = 3 (`dense_forces_k33_subdivision`). The uniform quantification over c is the payoff: the threshold *exponent* is 1 in every regime, only the *constant* C_ε (scaling with c) changes between the K₅ and K₃,₃ obstructions.",
+    "mathContext": "For every slope $c$: $n^{1+\\varepsilon} \\le E \\Rightarrow c\\cdot n < E$ eventually. Bipartite $c = 2$, general $c = 3$.",
+    "significance": "key",
+    "relatedConcepts": ["extremal function", "density threshold", "topological subdivision", "Kostochka–Pyber localization"],
+    "prerequisites": ["real analysis", "extremal graph theory"]
+  }
+]

@@ -26,8 +26,8 @@
     "originalContributions": [
       "adjugate_reflexive: A * adj(A) * A = det(A) * A (1-reflexive property)",
       "adjugate_reflexive_sym: adj(A) * A * adj(A) = det(A) * adj(A)",
-      "cramer_solution: for invertible A, A⁻¹ * b via adjugate",
-      "singular_adjugate_action: what adj(A) * b computes when det(A) = 0"
+      "cramer_adjugate_solution: for invertible A, A⁻¹ * b via adjugate",
+      "adjugate_kernel_singular: what adj(A) * b computes when det(A) = 0"
     ]
   },
   "overview": {

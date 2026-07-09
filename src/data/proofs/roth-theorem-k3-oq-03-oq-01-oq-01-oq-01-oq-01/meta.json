@@ -140,6 +140,16 @@
       "targetId": "roth-theorem-k3-oq-03",
       "relationship": "specializes",
       "description": "Great-grandparent: Gowers norms and the k-AP counting operator for Roth's theorem."
+    },
+    {
+      "targetId": "roth-theorem-k3",
+      "relationship": "extends",
+      "description": "Root of the chain: Roth's theorem (Szemerédi k=3), where the k-AP counting operator Λ_k whose affine covariance is proved here is first defined. The affine invariance established here is the symmetry that lets the density-increment machinery of the root proof pass freely between a set and its affine images."
+    },
+    {
+      "targetId": "roth-theorem",
+      "relationship": "related",
+      "description": "The target theorem the whole Λ_k program serves: every subset of Z/NZ with no 3-term AP has density o(1). Affine covariance of Λ_k is one of the invariances underlying the Fourier/density-increment proof of that density bound."
     }
   ],
   "sorries": 0

@@ -529,6 +529,101 @@ theorem mem_center_of_coprime_index {G : Type*} [Group G] [Finite G] {p : ℕ}
   have hg : g ∈ Subgroup.centralizer {c} := htop ▸ Subgroup.mem_top g
   exact (Subgroup.mem_centralizer_iff.mp hg c (Set.mem_singleton c)).symm
 
+/-! ### Global structure: central Sylow-`p`, `p ∣ |Z(G)|`, and the internal direct product
+
+The single-element centrality criterion `mem_center_of_coprime_index` promotes to a statement
+about the *whole* Sylow `p`-subgroup.  Three global consequences follow.
+
+* **Central Sylow.**  When `gcd(m, p−1) = 1` every power of `c` is central, so `⟨c⟩ ≤ Z(G)`
+  (`zpowers_le_center_of_coprime_index`).
+* **Class-number divisibility.**  Lagrange applied to `⟨c⟩ ≤ Z(G)` forces `p ∣ |Z(G)|`
+  (`prime_dvd_card_center_of_coprime_index`): the centre is large — its order a multiple of `p`.
+* **Internal direct product.**  Since `p ∤ m`, Schur–Zassenhaus supplies a complement `H` of order
+  `m` to the normal subgroup `⟨c⟩` (`exists_pComplement`).  When `⟨c⟩` is central this complement is
+  itself normal, exhibiting `G` as the internal direct product `⟨c⟩ × H` of its central Sylow
+  `p`-subgroup and a normal `p`-complement (`exists_normal_pComplement_of_coprime_index`).  This is
+  the structural endgame: in the coprime-index regime the order-`p` part splits off as a *central*
+  direct factor — the elementary content of Burnside's normal `p`-complement theorem read here. -/
+
+/-- **Central Sylow: `⟨c⟩ ≤ Z(G)` under coprime index.**  Promotes the single-element criterion
+`mem_center_of_coprime_index` to the whole cyclic Sylow `p`-subgroup: if the index `m = [G:⟨c⟩]`
+is coprime to `p − 1`, then every power of `c` is central, i.e. `⟨c⟩ ≤ Z(G)`. -/
+theorem zpowers_le_center_of_coprime_index {G : Type*} [Group G] [Finite G] {p : ℕ}
+    [hp : Fact p.Prime] (m : ℕ)
+    (hcard : Nat.card G = p * m) (hpm : ¬ (p ∣ m))
+    (huniq : ∀ d : ℕ, d ∣ m → d % p = 1 → d = 1)
+    (c : G) (hc : orderOf c = p) (hcop : Nat.Coprime m (p - 1)) :
+    Subgroup.zpowers c ≤ Subgroup.center G :=
+  Subgroup.zpowers_le.mpr (mem_center_of_coprime_index m hcard hpm huniq c hc hcop)
+
+/-- **`p ∣ |Z(G)|` under coprime index.**  Because the order-`p` subgroup `⟨c⟩` sits inside the
+centre (`zpowers_le_center_of_coprime_index`), Lagrange's theorem forces `p = |⟨c⟩|` to divide the
+order of the centre.  In particular `Z(G)` is nontrivial and its order is a multiple of `p`. -/
+theorem prime_dvd_card_center_of_coprime_index {G : Type*} [Group G] [Finite G] {p : ℕ}
+    [hp : Fact p.Prime] (m : ℕ)
+    (hcard : Nat.card G = p * m) (hpm : ¬ (p ∣ m))
+    (huniq : ∀ d : ℕ, d ∣ m → d % p = 1 → d = 1)
+    (c : G) (hc : orderOf c = p) (hcop : Nat.Coprime m (p - 1)) :
+    p ∣ Nat.card (Subgroup.center G) := by
+  have hdvd := Subgroup.card_dvd_of_le
+    (zpowers_le_center_of_coprime_index m hcard hpm huniq c hc hcop)
+  rwa [Nat.card_zpowers, hc] at hdvd
+
+/-- **Schur–Zassenhaus `p`-complement.**  Since `p ∤ m`, the orders `p = |⟨c⟩|` and `m = [G:⟨c⟩]`
+are coprime, so the normal subgroup `⟨c⟩` admits a complement `H`: a subgroup with `⟨c⟩ ⊓ H = 1`
+and `⟨c⟩·H = G`.  Counting the complement gives `|H| = m`.  This is the `p`-complement existence
+statement; it needs only `p ∤ m`, not the coprime-index hypothesis. -/
+theorem exists_pComplement {G : Type*} [Group G] [Finite G] {p : ℕ}
+    [hp : Fact p.Prime] (m : ℕ)
+    (hcard : Nat.card G = p * m) (hpm : ¬ (p ∣ m))
+    (huniq : ∀ d : ℕ, d ∣ m → d % p = 1 → d = 1)
+    (c : G) (hc : orderOf c = p) :
+    ∃ H : Subgroup G, Subgroup.IsComplement' (Subgroup.zpowers c) H ∧ Nat.card H = m := by
+  haveI : (Subgroup.zpowers c).Normal := zpowers_sylow_normal m hcard hpm huniq c hc
+  have hNcard : Nat.card (Subgroup.zpowers c) = p := by rw [Nat.card_zpowers, hc]
+  have hNidx : (Subgroup.zpowers c).index = m := zpowers_index_eq m hcard c hc
+  have hcop : Nat.Coprime (Nat.card (Subgroup.zpowers c)) (Subgroup.zpowers c).index := by
+    rw [hNcard, hNidx]; exact hp.out.coprime_iff_not_dvd.mpr hpm
+  obtain ⟨H, hH⟩ := Subgroup.exists_right_complement'_of_coprime hcop
+  refine ⟨H, hH, ?_⟩
+  have hmul := hH.card_mul
+  rw [hNcard, hcard] at hmul
+  exact Nat.eq_of_mul_eq_mul_left hp.out.pos hmul
+
+/-- **Internal direct product `G = ⟨c⟩ × H`.**  Combining the central-Sylow result with the
+Schur–Zassenhaus complement: when `gcd(m, p−1) = 1`, the complement `H` of the (now central)
+subgroup `⟨c⟩` is itself *normal*, so `G` is the internal direct product of its central Sylow
+`p`-subgroup `⟨c⟩` and a normal `p`-complement `H` of order `m`.  A central normal Hall subgroup
+splits off as a direct factor — the structural endgame of the coprime-index analysis. -/
+theorem exists_normal_pComplement_of_coprime_index {G : Type*} [Group G] [Finite G] {p : ℕ}
+    [hp : Fact p.Prime] (m : ℕ)
+    (hcard : Nat.card G = p * m) (hpm : ¬ (p ∣ m))
+    (huniq : ∀ d : ℕ, d ∣ m → d % p = 1 → d = 1)
+    (c : G) (hc : orderOf c = p) (hcop : Nat.Coprime m (p - 1)) :
+    ∃ H : Subgroup G, H.Normal ∧ Subgroup.IsComplement' (Subgroup.zpowers c) H ∧
+      Nat.card H = m := by
+  obtain ⟨H, hHc, hHcard⟩ := exists_pComplement m hcard hpm huniq c hc
+  have hcen := zpowers_le_center_of_coprime_index m hcard hpm huniq c hc hcop
+  refine ⟨H, ⟨?_⟩, hHc, hHcard⟩
+  intro x hx g
+  -- Factor `g = n · h₀` with `n ∈ ⟨c⟩` (central) and `h₀ ∈ H`.
+  have hfact : ∃ n ∈ Subgroup.zpowers c, ∃ h' ∈ H, n * h' = g := by
+    obtain ⟨q, hq⟩ := (hHc.existsUnique g).exists
+    exact ⟨q.1, SetLike.mem_coe.mp q.1.2, q.2, SetLike.mem_coe.mp q.2.2, hq⟩
+  obtain ⟨n, hn_mem, h₀, hh₀_mem, hg⟩ := hfact
+  have hncen : n ∈ Subgroup.center G := hcen hn_mem
+  -- `n` central ⇒ conjugation by `n` is trivial.
+  have hcen_w : n * (h₀ * x * h₀⁻¹) * n⁻¹ = h₀ * x * h₀⁻¹ := by
+    have hcomm : n * (h₀ * x * h₀⁻¹) = (h₀ * x * h₀⁻¹) * n :=
+      (Subgroup.mem_center_iff.mp hncen (h₀ * x * h₀⁻¹)).symm
+    rw [hcomm]; group
+  have key : g * x * g⁻¹ = h₀ * x * h₀⁻¹ := by
+    rw [← hg, mul_inv_rev,
+      (by group : n * h₀ * x * (h₀⁻¹ * n⁻¹) = n * (h₀ * x * h₀⁻¹) * n⁻¹)]
+    exact hcen_w
+  rw [key]
+  exact H.mul_mem (H.mul_mem hh₀_mem hx) (H.inv_mem hh₀_mem)
+
 /-! ### The fixed prime `p = 5`
 
 The original Abel–Ruffini application only needs `p = 5`.  With the general
@@ -882,5 +977,306 @@ theorem mul_comm_of_card_fifteen {G : Type*} [Group G] [Finite G]
   exact mul_comm_of_prime_index_coprime (q := 3) (by norm_num)
     (hcard.trans (by norm_num)) (by norm_num)
     (huniq_of_lt (by norm_num) (by norm_num)) c hc (by norm_num) a b
+
+/-- **Abelian ⟹ cyclic, for order = product of two distinct primes.**  A finite group whose
+order is `p · q` with `p, q` *distinct* primes and in which every pair of elements commutes is
+cyclic.  Cauchy (`exists_prime_orderOf_dvd_card`) supplies commuting elements `c, d` of orders
+`p` and `q`; distinct primes are coprime (`Nat.coprime_primes`), so
+`orderOf_mul_eq_mul_orderOf_of_coprime` gives `orderOf (c * d) = p · q = |G|`, and
+`isCyclic_of_orderOf_eq_card` produces `c * d` as an explicit generator.  This is the finishing
+step of the order-`pq` classification: `mul_comm_of_prime_index_coprime` establishes
+commutativity, and this lemma converts commutativity into a concrete cyclic generator. -/
+theorem isCyclic_of_comm_card_eq_prime_mul_prime {G : Type*} [Group G] [Finite G] {p q : ℕ}
+    (hp : p.Prime) (hq : q.Prime) (hpq : p ≠ q) (hcard : Nat.card G = p * q)
+    (hcomm : ∀ a b : G, a * b = b * a) : IsCyclic G := by
+  haveI : Fintype G := Fintype.ofFinite G
+  haveI : Fact p.Prime := ⟨hp⟩
+  haveI : Fact q.Prime := ⟨hq⟩
+  obtain ⟨c, hc⟩ : ∃ x : G, orderOf x = p :=
+    exists_prime_orderOf_dvd_card p
+      (by rw [← Nat.card_eq_fintype_card, hcard]; exact dvd_mul_right p q)
+  obtain ⟨d, hd⟩ : ∃ x : G, orderOf x = q :=
+    exists_prime_orderOf_dvd_card q
+      (by rw [← Nat.card_eq_fintype_card, hcard]; exact dvd_mul_left q p)
+  have hcop : (orderOf c).Coprime (orderOf d) := by
+    rw [hc, hd]; exact (Nat.coprime_primes hp hq).mpr hpq
+  have horder : orderOf (c * d) = Nat.card G := by
+    rw [Commute.orderOf_mul_eq_mul_orderOf_of_coprime (hcomm c d) hcop, hc, hd, hcard]
+  exact isCyclic_of_orderOf_eq_card (c * d) horder
+
+/-- **Every group of order `15` is cyclic.**  The sharp classical classification of order-`15`
+groups: `mul_comm_of_card_fifteen` makes `G` abelian, and `15 = 3 · 5` is a product of two
+distinct primes, so `isCyclic_of_comm_card_eq_prime_mul_prime` yields an explicit generator (an
+element of order `15`, i.e. `G ≅ ℤ/15ℤ`).  This strengthens `mul_comm_of_card_fifteen` from
+mere commutativity to full cyclicity — the definitive statement that there is a *unique* group
+of order `15` up to isomorphism. -/
+theorem isCyclic_of_card_fifteen {G : Type*} [Group G] [Finite G]
+    (hcard : Nat.card G = 15) : IsCyclic G :=
+  isCyclic_of_comm_card_eq_prime_mul_prime (p := 3) (q := 5) (by norm_num) (by norm_num)
+    (by norm_num) (hcard.trans (by norm_num)) (fun a b => mul_comm_of_card_fifteen hcard a b)
+
+/-! ### General order-`pq` classification (the positive half, and its sharp converse)
+
+The order-`15` results above are the `p = 3, q = 5` instance of a general phenomenon: for two
+primes `p < q`, whether a group of order `pq` must be cyclic is governed *entirely* by the
+elementary arithmetic condition `p ∣ q − 1`.  The two theorems below package the positive half
+of the classical classification for arbitrary such `p, q`, and — via a one-line contrapositive
+— show the arithmetic condition is not merely sufficient but *sharp*.  No new group-theoretic
+machinery is needed: the Sylow-elimination engine of this file already supplies everything. -/
+
+/-- **General commutativity for order `p·q` (`p < q` primes, `p ∤ q − 1`).**  For two primes
+`p < q`, if `p` does not divide `q − 1` then every group of order `p·q` is abelian.  The Sylow
+`q`-subgroup is normal (its index `p` is the *smaller* prime, forcing `n_q = 1`); take a
+generator `c` of order `q`.  Because `p` is prime, `p ∤ (q − 1)` is exactly `Coprime p (q − 1)`,
+and `p < q` discharges both `q ∤ p` and the divisor-uniqueness hypothesis (`huniq_of_lt`).  Then
+`mul_comm_of_prime_index_coprime` applied to the normal cyclic subgroup `⟨c⟩` (of prime index
+`p`) yields commutativity.  This is the general engine behind `mul_comm_of_card_fifteen`. -/
+theorem mul_comm_of_card_eq_prime_mul_prime_of_not_dvd {G : Type*} [Group G] [Finite G]
+    {p q : ℕ} (hp : p.Prime) (hq : q.Prime) (hpq : p < q) (hndvd : ¬ p ∣ (q - 1))
+    (hcard : Nat.card G = p * q) (a b : G) : a * b = b * a := by
+  haveI : Fintype G := Fintype.ofFinite G
+  haveI : Fact q.Prime := ⟨hq⟩
+  obtain ⟨c, hc⟩ : ∃ x : G, orderOf x = q :=
+    exists_prime_orderOf_dvd_card q
+      (by rw [← Nat.card_eq_fintype_card, hcard]; exact dvd_mul_left q p)
+  -- Roles in `mul_comm_of_prime_index_coprime`: its `p` = q (= orderOf c), its `q` = p (index).
+  refine mul_comm_of_prime_index_coprime (p := q) (q := p) hp
+    (hcard.trans (Nat.mul_comm p q)) ?_ (huniq_of_lt hp.pos hpq) c hc ?_ a b
+  · -- `q ∤ p`: `q` is prime and `p < q`.
+    exact fun hqp => absurd hpq (Nat.not_lt.mpr (Nat.le_of_dvd hp.pos hqp))
+  · -- `Coprime p (q − 1)`, since `p` is prime and `p ∤ (q − 1)`.
+    exact (hp.coprime_iff_not_dvd).mpr hndvd
+
+/-- **Positive half of the order-`pq` classification.**  For primes `p < q` with `p ∤ q − 1`,
+every group of order `p·q` is cyclic — equivalently there is a *unique* group of order `pq`
+(namely `ℤ/pqℤ`).  Combines the commutativity engine
+`mul_comm_of_card_eq_prime_mul_prime_of_not_dvd` with the abelian-⟹-cyclic converter
+`isCyclic_of_comm_card_eq_prime_mul_prime`.  Recovers `isCyclic_of_card_fifteen`
+(`15 = 3·5`, `3 ∤ 4`) as the instance `p = 3, q = 5`. -/
+theorem isCyclic_of_card_eq_prime_mul_prime_of_not_dvd {G : Type*} [Group G] [Finite G]
+    {p q : ℕ} (hp : p.Prime) (hq : q.Prime) (hpq : p < q) (hndvd : ¬ p ∣ (q - 1))
+    (hcard : Nat.card G = p * q) : IsCyclic G :=
+  isCyclic_of_comm_card_eq_prime_mul_prime hp hq (ne_of_lt hpq) hcard
+    (mul_comm_of_card_eq_prime_mul_prime_of_not_dvd hp hq hpq hndvd hcard)
+
+/-- **Necessity: a non-cyclic group of order `pq` forces `p ∣ q − 1`.**  The exact converse of
+`isCyclic_of_card_eq_prime_mul_prime_of_not_dvd`: for primes `p < q`, if some group of order
+`p·q` fails to be cyclic then `p` must divide `q − 1` — the arithmetic condition that permits the
+nonabelian Frobenius group `ℤ/q ⋊ ℤ/p`.  This makes the classification *sharp*: `p ∤ q − 1` is
+equivalent to "every order-`pq` group is cyclic", not merely sufficient.  Proved as the
+contrapositive of the positive half, so no group construction is required — the sharp boundary
+is obtained purely from the divisibility dichotomy for the prime `p`. -/
+theorem dvd_sub_one_of_not_isCyclic_card_eq_prime_mul_prime {G : Type*} [Group G] [Finite G]
+    {p q : ℕ} (hp : p.Prime) (hq : q.Prime) (hpq : p < q)
+    (hcard : Nat.card G = p * q) (hnc : ¬ IsCyclic G) : p ∣ (q - 1) := by
+  by_contra hndvd
+  exact hnc (isCyclic_of_card_eq_prime_mul_prime_of_not_dvd hp hq hpq hndvd hcard)
+
+/-- **Every group of order `35` is cyclic** (`35 = 5·7`, `5 ∤ 6`).  Instance of the general
+order-`pq` classification with `p = 5, q = 7`, one step beyond the order-`15` case. -/
+theorem isCyclic_of_card_thirtyfive {G : Type*} [Group G] [Finite G]
+    (hcard : Nat.card G = 35) : IsCyclic G :=
+  isCyclic_of_card_eq_prime_mul_prime_of_not_dvd (p := 5) (q := 7)
+    (by norm_num) (by norm_num) (by norm_num) (by norm_num) (hcard.trans (by norm_num))
+
+/-- **Every group of order `33` is cyclic** (`33 = 3·11`, `3 ∤ 10`).  Instance with
+`p = 3, q = 11`; here `p = 3` matches the order-`21` prime but `3 ∤ 10` (unlike `3 ∣ 6`),
+so — in contrast to order `21` — the group is forced cyclic. -/
+theorem isCyclic_of_card_thirtythree {G : Type*} [Group G] [Finite G]
+    (hcard : Nat.card G = 33) : IsCyclic G :=
+  isCyclic_of_card_eq_prime_mul_prime_of_not_dvd (p := 3) (q := 11)
+    (by norm_num) (by norm_num) (by norm_num) (by norm_num) (hcard.trans (by norm_num))
+
+/-! ### Structural endgame: the internal direct product `G ≃* ⟨c⟩ × H` as a genuine isomorphism
+
+The results above are *predicates* on `G` (commutativity, cyclicity).  The theorem below upgrades
+the set-level splitting `exists_normal_pComplement_of_coprime_index` to a genuine group
+*isomorphism*, giving the sharpest structural form of the coprime-index analysis: in that regime
+`G` is not merely "abelian" or "an extension" but literally a **direct product** of its central
+Sylow `p`-subgroup with a normal `p`-complement. -/
+
+/-- **Internal direct product `G ≃* ⟨c⟩ × H`.**  Under the coprime-index hypotheses
+(`gcd(m, p−1) = 1`, `p ∤ m`), the central Sylow subgroup `⟨c⟩` (order `p`) and its normal
+`p`-complement `H` (order `m`) realise `G` as the *internal direct product* `⟨c⟩ × H`: the
+multiplication map `(k, h) ↦ k·h` is a group isomorphism `⟨c⟩ × H ≃* G`.
+
+The two ingredients are already in hand:
+* it is a **homomorphism** because `⟨c⟩ ≤ Z(G)` (`zpowers_le_center_of_coprime_index`), so the two
+  factors commute and `MonoidHom.noncommCoprod` assembles the multiplication map;
+* it is **bijective** because `⟨c⟩` and `H` are complementary
+  (`exists_normal_pComplement_of_coprime_index`), which is *definitionally*
+  `Function.Bijective (fun (k, h) ↦ k·h)` (`Subgroup.isComplement_iff_bijective`).
+
+`MulEquiv.ofBijective` then packages the two into `G ≃* ⟨c⟩ × H`.  This is the structural endgame:
+a central normal Hall subgroup splits off as a *direct* factor — the elementary content of the
+`p = 5` Abel–Ruffini analysis, now stated as a bona-fide isomorphism rather than a mere splitting.
+Concretely `G ≅ ℤ/p × H`. -/
+theorem exists_mulEquiv_prod_zpowers_of_coprime_index {G : Type*} [Group G] [Finite G] {p : ℕ}
+    [hp : Fact p.Prime] (m : ℕ)
+    (hcard : Nat.card G = p * m) (hpm : ¬ (p ∣ m))
+    (huniq : ∀ d : ℕ, d ∣ m → d % p = 1 → d = 1)
+    (c : G) (hc : orderOf c = p) (hcop : Nat.Coprime m (p - 1)) :
+    ∃ H : Subgroup G, Nat.card H = m ∧ Nonempty (G ≃* (Subgroup.zpowers c) × H) := by
+  obtain ⟨H, _hHnorm, hHc, hHcard⟩ :=
+    exists_normal_pComplement_of_coprime_index m hcard hpm huniq c hc hcop
+  have hcen := zpowers_le_center_of_coprime_index m hcard hpm huniq c hc hcop
+  -- `⟨c⟩` is central, so its elements commute with everything, in particular with `H`.
+  have hcomm : ∀ (k : Subgroup.zpowers c) (h : H),
+      Commute ((Subgroup.zpowers c).subtype k) (H.subtype h) := by
+    intro k h
+    have hkcen : (k : G) ∈ Subgroup.center G := hcen k.2
+    exact (Subgroup.mem_center_iff.mp hkcen (h : G)).symm
+  -- The multiplication homomorphism `⟨c⟩ × H → G`, `(k, h) ↦ k·h`.
+  let φ := (Subgroup.zpowers c).subtype.noncommCoprod H.subtype hcomm
+  -- Complementarity says exactly that this map is bijective.
+  have hbij : Function.Bijective φ :=
+    (Subgroup.isComplement_iff_bijective (Subgroup.zpowers c) H).mp hHc
+  exact ⟨H, hHcard, ⟨(MulEquiv.ofBijective φ hbij).symm⟩⟩
+
+/-- **Order `15` as an internal direct product** `G ≃* ℤ/5 × H` with `|H| = 3`.  The concrete
+`p = 5, m = 3` instance of `exists_mulEquiv_prod_zpowers_of_coprime_index`: Cauchy supplies an
+order-`5` element `c`, and `15 = 5·3` with `gcd(3, 4) = 1`, `5 ∤ 3` puts us in the coprime-index
+regime, so `G` splits as `⟨c⟩ × H`.  This is the isomorphism-level refinement of
+`mul_comm_of_card_fifteen` / `isCyclic_of_card_fifteen`. -/
+theorem exists_mulEquiv_prod_of_card_fifteen {G : Type*} [Group G] [Finite G]
+    (hcard : Nat.card G = 15) :
+    ∃ (c : G) (H : Subgroup G), Nat.card H = 3 ∧
+      Nonempty (G ≃* (Subgroup.zpowers c) × H) := by
+  haveI : Fact (Nat.Prime 5) := ⟨by norm_num⟩
+  haveI : Fintype G := Fintype.ofFinite G
+  obtain ⟨c, hc⟩ : ∃ x : G, orderOf x = 5 :=
+    exists_prime_orderOf_dvd_card 5 (by rw [← Nat.card_eq_fintype_card, hcard]; norm_num)
+  obtain ⟨H, hHcard, hHequiv⟩ := exists_mulEquiv_prod_zpowers_of_coprime_index (p := 5) (m := 3)
+    (hcard.trans (by norm_num)) (by norm_num) (huniq_of_lt (by norm_num) (by norm_num))
+    c hc (by norm_num)
+  exact ⟨c, H, hHcard, hHequiv⟩
+
+/-- **Cyclicity descends to the `p`-complement.**  Under the coprime-index hypotheses the
+internal direct product `G ≃* ⟨c⟩ × H` (`exists_mulEquiv_prod_zpowers_of_coprime_index`) collapses
+cyclicity of the whole group to that of the complement:
+
+> `G` is cyclic **iff** its normal `p`-complement `H` is cyclic.
+
+This is the sharpest structural consequence of the splitting.  The central Sylow-`p` factor `⟨c⟩` is
+*always* cyclic — it is the group generated by a single element `c` of order `p` — and its order `p`
+is coprime to `|H| = m` (because `p` is prime and `p ∤ m`).  `Group.isCyclic_prod_iff` therefore
+reduces `IsCyclic (⟨c⟩ × H)` to `IsCyclic ⟨c⟩ ∧ IsCyclic H ∧ Coprime p m`, of which only the middle
+conjunct is not automatic — so the product is cyclic exactly when `H` is.
+
+For order `p·q` (`m = q` prime) the complement has prime order and is automatically cyclic, so the
+right-hand side holds and one recovers the classical `pq`-classification (`isCyclic_of_card_fifteen`,
+`isCyclic_of_card_eq_prime_mul_prime_of_not_dvd`) *through the isomorphism*, rather than as a bespoke
+Sylow argument.  For composite `m` the equivalence localises the entire question of cyclicity of `G`
+onto the strictly smaller group `H`. -/
+theorem exists_pComplement_isCyclic_iff {G : Type*} [Group G] [Finite G] {p : ℕ}
+    [hp : Fact p.Prime] (m : ℕ)
+    (hcard : Nat.card G = p * m) (hpm : ¬ (p ∣ m))
+    (huniq : ∀ d : ℕ, d ∣ m → d % p = 1 → d = 1)
+    (c : G) (hc : orderOf c = p) (hcop : Nat.Coprime m (p - 1)) :
+    ∃ H : Subgroup G, Nat.card H = m ∧ Nonempty (G ≃* (Subgroup.zpowers c) × H) ∧
+      (IsCyclic G ↔ IsCyclic H) := by
+  obtain ⟨H, hHcard, ⟨e⟩⟩ :=
+    exists_mulEquiv_prod_zpowers_of_coprime_index m hcard hpm huniq c hc hcop
+  refine ⟨H, hHcard, ⟨e⟩, ?_⟩
+  -- `⟨c⟩` is cyclic and its order `p` is coprime to `|H| = m`.
+  have hzc : IsCyclic (Subgroup.zpowers c) :=
+    (Subgroup.isCyclic_iff_exists_zpowers_eq_top _).mpr ⟨c, rfl⟩
+  have hcardz : Nat.card (Subgroup.zpowers c) = p := by rw [Nat.card_zpowers, hc]
+  have hcopc : (Nat.card (Subgroup.zpowers c)).Coprime (Nat.card H) := by
+    rw [hcardz, hHcard]; exact (Nat.Prime.coprime_iff_not_dvd hp.1).mpr hpm
+  -- Transfer cyclicity across `e`, then peel off the always-cyclic `⟨c⟩` factor.
+  rw [e.isCyclic, Group.isCyclic_prod_iff]
+  exact ⟨fun ⟨_, hH, _⟩ => hH, fun hH => ⟨hzc, hH, hcopc⟩⟩
+
+/-- **Order `15` cyclicity as a complement equivalence.**  The `p = 5, m = 3` instance of
+`exists_pComplement_isCyclic_iff`: a group `G` of order `15` splits as `⟨c⟩ × H` with `|H| = 3` and
+`G` is cyclic *iff* the order-`3` complement `H` is.  Since `|H| = 3` is prime, `H` is automatically
+cyclic, so this recovers `isCyclic_of_card_fifteen` — but now exhibits *why* through the structural
+decomposition rather than a direct Sylow count. -/
+theorem exists_pComplement_isCyclic_iff_card_fifteen {G : Type*} [Group G] [Finite G]
+    (hcard : Nat.card G = 15) :
+    ∃ (c : G) (H : Subgroup G), Nat.card H = 3 ∧
+      Nonempty (G ≃* (Subgroup.zpowers c) × H) ∧ (IsCyclic G ↔ IsCyclic H) := by
+  haveI : Fact (Nat.Prime 5) := ⟨by norm_num⟩
+  haveI : Fintype G := Fintype.ofFinite G
+  obtain ⟨c, hc⟩ : ∃ x : G, orderOf x = 5 :=
+    exists_prime_orderOf_dvd_card 5 (by rw [← Nat.card_eq_fintype_card, hcard]; norm_num)
+  obtain ⟨H, hHcard, hHequiv, hHiff⟩ := exists_pComplement_isCyclic_iff (p := 5) (m := 3)
+    (hcard.trans (by norm_num)) (by norm_num) (huniq_of_lt (by norm_num) (by norm_num))
+    c hc (by norm_num)
+  exact ⟨c, H, hHcard, hHequiv, hHiff⟩
+
+/-- **Nilpotency descends to the `p`-complement.**  Running the internal direct product
+`G ≃* ⟨c⟩ × H` (`exists_mulEquiv_prod_zpowers_of_coprime_index`) through the theory of nilpotent
+groups collapses nilpotency of the whole group to that of the complement:
+
+> `G` is nilpotent **iff** its normal `p`-complement `H` is nilpotent.
+
+This is a genuinely different reduction from the cyclicity descent (`exists_pComplement_isCyclic_iff`):
+cyclicity is *not* recovered from nilpotency, and `H` may be nilpotent-but-not-cyclic for composite
+`m`, so this equivalence carries strictly weaker — hence more broadly applicable — structural
+information about `G`.
+
+The central Sylow-`p` factor `⟨c⟩` is a `p`-group (order `p`), hence **always** nilpotent
+(`IsPGroup.isNilpotent`).  The two directions then use complementary Mathlib facts about the direct
+product `⟨c⟩ × H`:
+
+* **`G` nilpotent ⟹ `H` nilpotent.**  Transport nilpotency across `e : G ≃* ⟨c⟩ × H`
+  (`nilpotent_of_mulEquiv`); `H` is the image of the surjective projection
+  `MonoidHom.snd : ⟨c⟩ × H →* H`, and the image of a nilpotent group is nilpotent
+  (`nilpotent_of_surjective`).
+* **`H` nilpotent ⟹ `G` nilpotent.**  A finite product of nilpotent groups is nilpotent
+  (`isNilpotent_prod`, with the always-nilpotent factor `⟨c⟩`), and nilpotency transports back across
+  `e.symm`.
+
+Combined with `IsNilpotent.to_isSolvable` this feeds the Abel–Ruffini solvability chain: whenever the
+`p`-complement is nilpotent (e.g. abelian, or itself a coprime-index tower), the ambient group `G` is
+solvable — the elementary structural engine behind the `p = 5` non-solvability dichotomy. -/
+theorem exists_pComplement_isNilpotent_iff {G : Type*} [Group G] [Finite G] {p : ℕ}
+    [hp : Fact p.Prime] (m : ℕ)
+    (hcard : Nat.card G = p * m) (hpm : ¬ (p ∣ m))
+    (huniq : ∀ d : ℕ, d ∣ m → d % p = 1 → d = 1)
+    (c : G) (hc : orderOf c = p) (hcop : Nat.Coprime m (p - 1)) :
+    ∃ H : Subgroup G, Nat.card H = m ∧ Nonempty (G ≃* (Subgroup.zpowers c) × H) ∧
+      (Group.IsNilpotent G ↔ Group.IsNilpotent H) := by
+  obtain ⟨H, hHcard, ⟨e⟩⟩ :=
+    exists_mulEquiv_prod_zpowers_of_coprime_index m hcard hpm huniq c hc hcop
+  refine ⟨H, hHcard, ⟨e⟩, ?_⟩
+  -- `⟨c⟩` is a `p`-group (order `p`), hence nilpotent.
+  have h_pg : IsPGroup p (Subgroup.zpowers c) :=
+    IsPGroup.iff_card.mpr ⟨1, by rw [pow_one, Nat.card_zpowers, hc]⟩
+  haveI hznil : Group.IsNilpotent (Subgroup.zpowers c) := h_pg.isNilpotent
+  constructor
+  · -- `G` nilpotent ⟹ `H` nilpotent: transport across `e`, then project onto `H`.
+    intro hG
+    haveI := hG
+    haveI : Group.IsNilpotent ((Subgroup.zpowers c) × H) := nilpotent_of_mulEquiv e
+    exact nilpotent_of_surjective (MonoidHom.snd (Subgroup.zpowers c) H)
+      (fun h => ⟨(1, h), rfl⟩)
+  · -- `H` nilpotent ⟹ `G` nilpotent: product of nilpotent factors, transport back across `e.symm`.
+    intro hH
+    haveI := hH
+    haveI : Group.IsNilpotent ((Subgroup.zpowers c) × H) := inferInstance
+    exact nilpotent_of_mulEquiv e.symm
+
+/-- **Order `15` nilpotency as a complement equivalence.**  The `p = 5, m = 3` instance of
+`exists_pComplement_isNilpotent_iff`: a group `G` of order `15` splits as `⟨c⟩ × H` with `|H| = 3`,
+and `G` is nilpotent *iff* the order-`3` complement `H` is.  Since `|H| = 3` is prime, `H` is
+abelian, hence nilpotent, so this exhibits *every* group of order `15` as nilpotent — consistent with
+the sharper `isCyclic_of_card_fifteen`, but reached through the direct-product decomposition rather
+than by classifying the group outright. -/
+theorem exists_pComplement_isNilpotent_iff_card_fifteen {G : Type*} [Group G] [Finite G]
+    (hcard : Nat.card G = 15) :
+    ∃ (c : G) (H : Subgroup G), Nat.card H = 3 ∧
+      Nonempty (G ≃* (Subgroup.zpowers c) × H) ∧
+        (Group.IsNilpotent G ↔ Group.IsNilpotent H) := by
+  haveI : Fact (Nat.Prime 5) := ⟨by norm_num⟩
+  haveI : Fintype G := Fintype.ofFinite G
+  obtain ⟨c, hc⟩ : ∃ x : G, orderOf x = 5 :=
+    exists_prime_orderOf_dvd_card 5 (by rw [← Nat.card_eq_fintype_card, hcard]; norm_num)
+  obtain ⟨H, hHcard, hHequiv, hHiff⟩ := exists_pComplement_isNilpotent_iff (p := 5) (m := 3)
+    (hcard.trans (by norm_num)) (by norm_num) (huniq_of_lt (by norm_num) (by norm_num))
+    c hc (by norm_num)
+  exact ⟨c, H, hHcard, hHequiv, hHiff⟩
 
 end AbelRuffiniSylowElim

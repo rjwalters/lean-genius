@@ -49,10 +49,10 @@
       "largeSetsFamily / largeSetsFamily_avoids_1 / largeSetsFamily_card_le_T: Frankl's (1977) r=1 lower-bound construction — the family of sets larger than (n+1)/2 is a valid 1-avoiding family, giving a verified lower bound |largeSetsFamily n| ≤ T(n,1)"
     ],
     "axiomCount": 1,
-    "lineCount": 467,
+    "lineCount": 578,
     "assumptions": "1 axiom: frankl_rodl_1987 (the deep Frankl–Rödl 1987 exponential bound — the affirmative answer to the main question). 0 sorries: the trivial case T(n,0)=2^{n-1} is fully machine-checked (#print axioms T_n_0 = [propext, Classical.choice, Quot.sound]) via a complement-pairing upper bound and a star-family witness. The unused opaque chromaticNumber axiom was removed; the geometric chromatic-number consequence is recorded as prose only since infinite unit-distance chromatic numbers are not yet in Mathlib.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 13,
+    "theoremCount": 19,
     "definitionCount": 8
   },
   "crossReferences": [
@@ -186,9 +186,9 @@
       "Finset"
     ],
     "namespace": "Erdos703",
-    "lineCount": 467,
+    "lineCount": 578,
     "axiomCount": 1,
-    "theoremCount": 13,
+    "theoremCount": 19,
     "definitionCount": 8,
     "path": "Proofs/Erdos703Problem.lean",
     "sorries": 0

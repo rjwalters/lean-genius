@@ -49,14 +49,14 @@
       "IsRamseyTriangle and AlmostAllTrianglesRamsey definitions",
       "shader_theorem axiom: right triangles are Ramsey",
       "right_345_ramsey: concrete example from shader_theorem",
-      "stripColoring construction and equilateral_not_monochromatic_strip",
+      "stripColoring construction and equilateral_not_monochromatic_strip axiom",
       "at_most_one_is_tight theorem from strip coloring",
       "Similar definition and similarity_preserves_ramsey axiom",
       "erdos_173_summary combining all results"
     ],
     "axiomCount": 4,
     "lineCount": 234,
-    "assumptions": "4 axioms: shader_theorem, equilateral_not_monochromatic_strip, erdos_173_conjecture, and 1 more. See Lean source for complete statements.",
+    "assumptions": "4 axioms: shader_theorem (right triangles are Ramsey — Shader 1976), equilateral_not_monochromatic_strip (strip coloring blocks a monochromatic equilateral triangle), erdos_173_conjecture (all but at most one triangle is Ramsey — the open conjecture), similarity_preserves_ramsey (Ramsey property is scale-invariant). See Lean source for complete statements.",
     "theoremCount": 3,
     "definitionCount": 12
   },

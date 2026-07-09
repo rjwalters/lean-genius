@@ -26,12 +26,15 @@
   * `inner_sq_le_gram` — the sharp Gram form
     `(Re⟪u,v⟫)² + (Im⟪u,v⟫)² ≤ ‖u‖²·‖v‖²`, combining both parts.
   * `robertson_uncertainty` — `¼‖⟪ψ,[A,B]ψ⟫‖² ≤ ‖(A−a)ψ‖²·‖(B−b)ψ‖²`.
+  * `schrodinger_uncertainty` — Schrödinger's sharpening, keeping the covariance term
+    `¼‖⟪ψ,[A,B]ψ⟫‖² + (Re⟪u,v⟫)² ≤ ‖(A−a)ψ‖²·‖(B−b)ψ‖²` (via the Gram form).
+  * `robertson_of_schrodinger` — Robertson recovered by dropping the covariance term.
   * `heisenberg_variance_form` — the same at `a = ⟨A⟩`, `b = ⟨B⟩` (variance form).
 
   All results are fully machine-checked (0 axioms, 0 sorries).
 
-  Reference: Heisenberg (1927); Robertson (1929); the abstract uncertainty
-  inequality, e.g. Reed–Simon, *Functional Analysis*, §VIII.
+  Reference: Heisenberg (1927); Robertson (1929); Schrödinger (1930); the abstract
+  uncertainty inequality, e.g. Reed–Simon, *Functional Analysis*, §VIII.
 -/
 
 import Mathlib
@@ -86,8 +89,8 @@ theorem inner_sq_le_gram (u v : E) :
       ≤ ‖u‖ ^ 2 * ‖v‖ ^ 2 := by
   have hnorm : ‖inner 𝕜 u v‖ ≤ ‖u‖ * ‖v‖ := norm_inner_le_norm u v
   have hid : ‖inner 𝕜 u v‖ ^ 2
-      = (RCLike.re (inner 𝕜 u v)) ^ 2 + (RCLike.im (inner 𝕜 u v)) ^ 2 :=
-    RCLike.norm_sq_eq_def' _
+      = (RCLike.re (inner 𝕜 u v)) ^ 2 + (RCLike.im (inner 𝕜 u v)) ^ 2 := by
+    rw [RCLike.norm_sq_eq_def]; ring
   have hsq : ‖inner 𝕜 u v‖ ^ 2 ≤ (‖u‖ * ‖v‖) ^ 2 := by
     nlinarith [hnorm, norm_nonneg (inner 𝕜 u v),
       mul_nonneg (norm_nonneg u) (norm_nonneg v)]
@@ -157,6 +160,52 @@ theorem robertson_uncertainty {A B : E →ₗ[𝕜] E} (hA : A.IsSymmetric)
   nlinarith [hnb, him, norm_nonneg (inner 𝕜 ψ (A (B ψ) - B (A ψ))),
     abs_nonneg (RCLike.im (inner 𝕜 u v)), sq_abs (RCLike.im (inner 𝕜 u v))]
 
+/-- **Schrödinger uncertainty relation.**  A genuine strengthening of Robertson: the
+right-hand side dominates the commutator term *together with* the symmetrized
+covariance term `Re⟪(A−a)ψ, (B−b)ψ⟫`,
+
+  `¼·‖⟪ψ,[A,B]ψ⟫‖² + (Re⟪(A−a)ψ,(B−b)ψ⟫)² ≤ ‖(A−a)ψ‖²·‖(B−b)ψ‖²`.
+
+Robertson (`robertson_uncertainty`) is the special case obtained by dropping the
+nonnegative `(Re…)²` covariance term.  At `a = ⟨A⟩`, `b = ⟨B⟩` the real part
+`Re⟪uₐ,v_b⟫` is the covariance `½⟪ψ,{A,B}ψ⟫ − ⟨A⟩⟨B⟩`, so this is Schrödinger's
+sharpening `Var(A)·Var(B) ≥ ¼|⟪[A,B]⟫|² + |Cov(A,B)|²` (Schrödinger 1930).
+
+The proof keeps the *full* Gram bound `(Re⟪u,v⟫)² + (Im⟪u,v⟫)² ≤ ‖u‖²·‖v‖²`
+(`inner_sq_le_gram`) rather than discarding the real part, then bounds
+`¼‖[A,B]‖² ≤ (Im⟪u,v⟫)²` exactly as in Robertson. -/
+theorem schrodinger_uncertainty {A B : E →ₗ[𝕜] E} (hA : A.IsSymmetric)
+    (hB : B.IsSymmetric) (ψ : E) (a b : ℝ) :
+    (1 / 4 : ℝ) * ‖inner 𝕜 ψ (A (B ψ) - B (A ψ))‖ ^ 2
+        + RCLike.re (inner 𝕜 (A ψ - (a : 𝕜) • ψ) (B ψ - (b : 𝕜) • ψ)) ^ 2
+      ≤ ‖A ψ - (a : 𝕜) • ψ‖ ^ 2 * ‖B ψ - (b : 𝕜) • ψ‖ ^ 2 := by
+  set u := A ψ - (a : 𝕜) • ψ with hu
+  set v := B ψ - (b : 𝕜) • ψ with hv
+  have hid : inner 𝕜 ψ (A (B ψ) - B (A ψ)) = inner 𝕜 u v - inner 𝕜 v u :=
+    inner_commutator_eq_sub hA hB ψ a b
+  have hconj : inner 𝕜 v u = (starRingEnd 𝕜) (inner 𝕜 u v) := (inner_conj_symm v u).symm
+  have hInorm : ‖(RCLike.I : 𝕜)‖ ≤ 1 := by
+    rcases eq_or_ne (RCLike.I : 𝕜) 0 with h | h
+    · rw [h, norm_zero]; norm_num
+    · rw [RCLike.norm_I_of_ne_zero h]
+  have h2 : ‖(2 : 𝕜)‖ = 2 := RCLike.norm_two
+  have hnb : ‖inner 𝕜 ψ (A (B ψ) - B (A ψ))‖ ≤ 2 * |RCLike.im (inner 𝕜 u v)| := by
+    rw [hid, hconj, RCLike.sub_conj, norm_mul, norm_mul, RCLike.norm_ofReal, h2]
+    nlinarith [hInorm, abs_nonneg (RCLike.im (inner 𝕜 u v))]
+  have hgram := inner_sq_le_gram (𝕜 := 𝕜) u v
+  nlinarith [hnb, hgram, norm_nonneg (inner 𝕜 ψ (A (B ψ) - B (A ψ))),
+    abs_nonneg (RCLike.im (inner 𝕜 u v)), sq_abs (RCLike.im (inner 𝕜 u v))]
+
+/-- **Robertson from Schrödinger.**  Dropping the nonnegative covariance term
+`(Re⟪(A−a)ψ,(B−b)ψ⟫)²` in `schrodinger_uncertainty` recovers `robertson_uncertainty`,
+confirming Schrödinger's relation is at least as strong. -/
+theorem robertson_of_schrodinger {A B : E →ₗ[𝕜] E} (hA : A.IsSymmetric)
+    (hB : B.IsSymmetric) (ψ : E) (a b : ℝ) :
+    (1 / 4 : ℝ) * ‖inner 𝕜 ψ (A (B ψ) - B (A ψ))‖ ^ 2
+      ≤ ‖A ψ - (a : 𝕜) • ψ‖ ^ 2 * ‖B ψ - (b : 𝕜) • ψ‖ ^ 2 := by
+  have h := schrodinger_uncertainty hA hB ψ a b
+  nlinarith [h, sq_nonneg (RCLike.re (inner 𝕜 (A ψ - (a : 𝕜) • ψ) (B ψ - (b : 𝕜) • ψ)))]
+
 /-- **Heisenberg uncertainty principle (variance form).**  The physically standard
 statement: instantiating `robertson_uncertainty` at the expectation values
 `⟨A⟩ = Re⟪ψ,Aψ⟫`, `⟨B⟩ = Re⟪ψ,Bψ⟫` makes each factor on the right the variance
@@ -173,5 +222,56 @@ theorem heisenberg_variance_form {A B : E →ₗ[𝕜] E} (hA : A.IsSymmetric)
         * ‖B ψ - ((RCLike.re (inner 𝕜 ψ (B ψ)) : ℝ) : 𝕜) • ψ‖ ^ 2 :=
   robertson_uncertainty hA hB ψ (RCLike.re (inner 𝕜 ψ (A ψ)))
     (RCLike.re (inner 𝕜 ψ (B ψ)))
+
+/-- **Anticommutator = symmetric part of the centred inner product.**  Dual to
+`inner_commutator_eq_sub`.  For symmetric `A, B` and real shifts `a, b`, with
+`u = (A−a)ψ`, `v = (B−b)ψ`,
+
+  `⟪u,v⟫ + ⟪v,u⟫ = ⟪ψ,(AB+BA)ψ⟫ − 2b·⟪ψ,Aψ⟫ − 2a·⟪ψ,Bψ⟫ + 2ab·⟪ψ,ψ⟫`.
+
+Unlike the commutator, the shifts do **not** cancel: the anticommutator
+expectation is genuinely centred.  This is the identity that turns the
+covariance term of `schrodinger_uncertainty` into the physical anticommutator
+`½⟪ψ,{A,B}ψ⟫`. -/
+theorem inner_anticommutator_eq_add {A B : E →ₗ[𝕜] E} (hA : A.IsSymmetric)
+    (hB : B.IsSymmetric) (ψ : E) (a b : ℝ) :
+    inner 𝕜 (A ψ - (a : 𝕜) • ψ) (B ψ - (b : 𝕜) • ψ)
+        + inner 𝕜 (B ψ - (b : 𝕜) • ψ) (A ψ - (a : 𝕜) • ψ)
+      = inner 𝕜 ψ (A (B ψ) + B (A ψ))
+        - (↑(2 * b) : 𝕜) * inner 𝕜 ψ (A ψ)
+        - (↑(2 * a) : 𝕜) * inner 𝕜 ψ (B ψ)
+        + (↑(2 * a * b) : 𝕜) * inner 𝕜 ψ ψ := by
+  have e1 : inner 𝕜 (A ψ) (B ψ) = inner 𝕜 ψ (A (B ψ)) := hA ψ (B ψ)
+  have e2 : inner 𝕜 (B ψ) (A ψ) = inner 𝕜 ψ (B (A ψ)) := hB ψ (A ψ)
+  have e3 : inner 𝕜 (A ψ) ψ = inner 𝕜 ψ (A ψ) := hA ψ ψ
+  have e4 : inner 𝕜 (B ψ) ψ = inner 𝕜 ψ (B ψ) := hB ψ ψ
+  simp only [inner_sub_left, inner_sub_right, inner_smul_left, inner_smul_right,
+    inner_add_right, RCLike.conj_ofReal]
+  rw [e1, e2, e3, e4]
+  push_cast
+  ring
+
+/-- **Covariance in anticommutator form.**  Taking real parts of
+`inner_anticommutator_eq_add` and using `⟪v,u⟫ = conj⟪u,v⟫` (so
+`Re⟪v,u⟫ = Re⟪u,v⟫`) gives the physical covariance:
+
+  `Re⟪(A−a)ψ,(B−b)ψ⟫ = ½·Re⟪ψ,(AB+BA)ψ⟫ − b·Re⟪ψ,Aψ⟫ − a·Re⟪ψ,Bψ⟫ + ab·Re⟪ψ,ψ⟫`.
+
+At `a = ⟨A⟩ = Re⟪ψ,Aψ⟫`, `b = ⟨B⟩ = Re⟪ψ,Bψ⟫` and a unit state `‖ψ‖ = 1`, the
+right-hand side is exactly the symmetrized covariance `½⟪ψ,{A,B}ψ⟫ − ⟨A⟩⟨B⟩`, so
+the covariance term appearing in `schrodinger_uncertainty` reads directly in
+anticommutator form. -/
+theorem re_inner_centred_eq_anticommutator {A B : E →ₗ[𝕜] E} (hA : A.IsSymmetric)
+    (hB : B.IsSymmetric) (ψ : E) (a b : ℝ) :
+    RCLike.re (inner 𝕜 (A ψ - (a : 𝕜) • ψ) (B ψ - (b : 𝕜) • ψ))
+      = (1 / 2 : ℝ) * RCLike.re (inner 𝕜 ψ (A (B ψ) + B (A ψ)))
+        - b * RCLike.re (inner 𝕜 ψ (A ψ))
+        - a * RCLike.re (inner 𝕜 ψ (B ψ))
+        + a * b * RCLike.re (inner 𝕜 ψ ψ) := by
+  have hAdd := inner_anticommutator_eq_add hA hB ψ a b
+  have hre := congrArg RCLike.re hAdd
+  rw [map_add, inner_re_symm (B ψ - (b : 𝕜) • ψ) (A ψ - (a : 𝕜) • ψ)] at hre
+  simp only [map_add, map_sub, RCLike.re_ofReal_mul] at hre
+  linarith [hre]
 
 end CauchySchwarzIntegralOQ04

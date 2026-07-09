@@ -95,6 +95,14 @@
   },
   "sections": [
     {
+      "id": "context-setup",
+      "title": "Context: From PGL to PΓL and the Scope of the FTPG",
+      "startLine": 1,
+      "endLine": 82,
+      "summary": "Imports (Real.Basic, matrix determinant/inverse) and the module docstring. Frames the file against the parent DesarguesTheoremOQ03, which proves only the LINEAR half of the Fundamental Theorem of Projective Geometry (over ℝ, an invertible M acts by a collineation because det[M·p,M·q,M·r]=det M·det[p,q,r]). This entry adds the two pieces the parent leaves open, over an ARBITRARY field K: (1) the semilinear Aut(K) twist, so the full collineation group is PΓL(3,K)=PGL(3,K)⋊Aut(K) — invisible over ℝ since Aut(ℝ) is trivial — and (2) frame rigidity, the FTPG's uniqueness engine. Sets linter.unusedVariables false, opens the namespace over a general Field K. Honest scope: the deep converse Collineations ⊆ PΓL(3,K) is left as the open contextual direction, NOT axiomatized; everything else is axiom-free, 0 sorries.",
+      "mathContext": "PΓL(3,K) = PGL(3,K) ⋊ Aut(K); over K=ℝ the Aut(ℝ)=1 factor collapses, so the semilinear part only appears for K with nontrivial automorphisms (ℂ, 𝔽_{pⁿ})."
+    },
+    {
       "id": "sec-plane",
       "title": "The Coordinatized Plane PG(2, K)",
       "startLine": 83,

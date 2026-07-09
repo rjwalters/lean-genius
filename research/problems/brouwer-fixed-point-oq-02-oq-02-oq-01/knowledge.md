@@ -78,3 +78,33 @@ Insight #4 above ("arbitrary separation is achievable") is now formalized in
 Lean gotcha (v4.26): `div_le_div_iff` was REMOVED. Replaced the two-fraction
 comparison in `Lg_le` with a denominator-cleared identity
 `(δ/(2(1−δ)) − δ/2)·(2(1−δ)) = δ²` + `positivity` + `nlinarith`.
+
+## Multi-step iteration bounds (researcher-2, 2026-07-08, PR pending)
+Closed the base entry's next steps ("iterating m maps"; "explicit query count";
+"convergence/existence") in new companion
+`proofs/Proofs/BrouwerFixedPointOQ02OQ02OQ01Iteration.lean` (imports the base entry,
+VERIFIED 0 axioms / 0 sorries, Docker green, first-try build).
+
+- `iterate_contraction (m x y) : |f^[m] x − f^[m] y| ≤ Lᵐ·|x−y|` — the m-fold iterate
+  of an L-contraction is an Lᵐ-contraction. Induction on m via `Function.iterate_succ'`
+  (f^[m+1] = f ∘ f^[m]), then hf + `mul_le_mul_of_nonneg_left`. Generalises the base
+  `contraction_comp` (2 maps) to m repeated maps.
+- `iterate_dist_tendsto` : for 0≤L<1, |f^[m] x − f^[m] y| → 0. `squeeze_zero` between
+  0 (abs_nonneg) and the vanishing Lᵐ·|x−y| (`tendsto_pow_atTop_nhds_zero_of_lt_one`
+  `.mul_const`).
+- `apriori_iteration_count` : ∀ε>0 ∃N ∀n≥N, |xₙ−x*|≤ε — finite iteration count reaches
+  any accuracy = the parent's O(log 1/ε) guarantee, from the a priori bound. The a priori
+  sequence Lⁿ/(1−L)·|x₁−x₀| → 0 (mul_const + `Tendsto.congr` reshape), eventually < ε via
+  `htend.eventually (Iio_mem_nhds hε)`, then `eventually_atTop.mp`, dominated by
+  `apriori_estimate`.
+- `iteration_converges` : xₙ → x* in ℝ. `tendsto_iff_dist_tendsto_zero` + `squeeze_zero`
+  with `Real.dist_eq` reducing dist to |·|, upper bound = apriori_estimate.
+
+Lean notes (v4.26): `Function.iterate_succ'` gives the OUTER-application form f∘f^[m]
+(needed so the contraction hf applies to the last f); `Tendsto.mul_const` yields
+`𝓝 (0*c)` — `rw [zero_mul]` then `Tendsto.congr (fun n => by ring)` to reshape the
+constant into the a-priori form. `squeeze_zero (hf) (hft) (g0)` infers g from hft, so
+provide the vanishing-bound Tendsto as a `have` first rather than a named `(g := …)` arg.
+
+This child is now fully closed on the elementary/asymptotic side: single-query lower
+bound (Adversary/Family/Tightness) + iteration convergence with computable stopping.

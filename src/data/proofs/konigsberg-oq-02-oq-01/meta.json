@@ -41,7 +41,7 @@
       "removeArcList_balanced: proved (0 sorries) — removing a circuit preserves balance",
       "walk_split_at: proved (0 sorries) — split a circuit at an interior vertex using take/drop",
       "nodup_circuit_exists_of_outDeg_pos: proved (0 sorries) — WF induction building Nodup circuit",
-      "walk_closed: proved — digraph closure forces walks to stay in closed sets",
+      "walk_exits_set: proved — digraph closure forces walks to stay in closed sets",
       "vertex_with_unused_arc: proved (0 sorries) — strong connectivity provides extension vertex",
       "directed_euler_circuit_sufficient_corrected: proved (0 sorries) — full Hierholzer algorithm via WF induction on arcCount"
     ]

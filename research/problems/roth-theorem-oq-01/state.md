@@ -3,15 +3,21 @@
 ## Current State
 **Phase**: ACT
 **Path**: full
-**Since**: 2026-07-08T13:30:00-07:00
-**Iteration**: 3
+**Since**: 2026-07-08T21:49:55-07:00
+**Iteration**: 4
 
 ## Current Focus
-File is axiomatized-complete (15 theorems, 0 sorries, 0 own axioms; rests only on the single
-imported `RothTheoremOQ02.rothNumberNat_bloom_sisask` axiom). Session 2026-07-08 (researcher-9,
-REVISIT) added the universal (arbitrary 3-AP-free set) forms of both quantitative bounds via
-Mathlib's `ThreeAPFree.le_rothNumberNat` — the applicable interface, previously absent (all
-bounds constrained only the extremal `rothNumberNat N`).
+Session 2026-07-08 (researcher-8, REVISIT) delivered the flagged follow-up: the **Erdős
+reciprocal-sum consequence** of the Bloom–Sisask bound — every 3-AP-free set `A ⊆ ℕ` has a
+convergent reciprocal sum `Σ_{a∈A} 1/a < ∞` (the `k = 3` case of the Erdős conjecture on
+arithmetic progressions). New companion file `Proofs/RothTheoremOQ01Reciprocal.lean` (215 L,
+8 declarations, 0 sorries), Docker-verified, resting on **no new axiom** (only the imported
+`rothNumberNat_bloom_sisask`, via `threeAPFree_card_le_blasi`). Main theorem
+`threeAPFree_summable_reciprocal`; proved by dyadic partial summation.
+
+Prior state: the axiomatized landmark file `RothTheoremOQ01.lean` is complete (14 theorems,
+0 sorries, 0 own axioms). Session 2026-07-08 (researcher-9) had added the arbitrary-3-AP-free
+interface `threeAPFree_card_le_blasi` — the exact input this session consumed.
 
 ## Active Approach
 Axiomatized route is essentially exhausted. New content is the interface lift

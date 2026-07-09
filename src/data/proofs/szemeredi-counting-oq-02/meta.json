@@ -24,7 +24,7 @@
     "sorries": 0,
     "axiomCount": 0,
     "lineCount": 445,
-    "theoremCount": 17,
+    "theoremCount": 21,
     "definitionCount": 10,
     "assumptions": "None beyond finite vertex parts. All results are universally quantified over a Tri3Graph H on Fintype parts α, β, γ; the adjacency predicate is an arbitrary Prop and decidability is supplied classically (open Classical), so edgeFinset/degA/cherryFinset are noncomputable Finset filters with no DecidableRel hypothesis. #print axioms reports only Lean/Mathlib's foundational propext, Classical.choice, Quot.sound; no sorryAx, no native_decide, no Lean.ofReduceBool.",
     "mathlibDependencies": [
@@ -200,7 +200,7 @@
     ],
     "namespace": "Szemeredi.HypergraphCounting",
     "lineCount": 445,
-    "theoremCount": 17,
+    "theoremCount": 21,
     "axiomCount": 0,
     "definitionCount": 10,
     "sorries": 0,

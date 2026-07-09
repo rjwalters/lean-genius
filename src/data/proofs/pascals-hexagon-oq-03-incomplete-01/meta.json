@@ -24,12 +24,12 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 1,
-    "lineCount": 158,
+    "lineCount": 213,
     "assumptions": "0 sorries; 0 literal `axiom` declarations. The three census theorems (card_sixCycles = 120, card_doubleThreeCycles = 40, card_tripleTranspositions = 15) and the anchor card_sym6 = 720 are discharged by `native_decide`, which trusts the Lean compiler and so depends on the `Lean.ofReduceBool` axiom (axiomCount = 1). Under the project axiom-integrity policy this makes the entry `axiomatized`. The geometric bijection from these conjugacy classes to the actual Steiner/Kirkman/Plücker/Salmon points and lines is NOT formalized here — only the combinatorial class sizes are certified; the projective concurrence (the open steiner_count_eq_20 / kirkman_count_eq_60 targets in oq-03) remains future work.",
     "mathlib_version": "4.26.0",
     "dateAdded": "2026-07-04",
-    "theoremCount": 11,
-    "definitionCount": 4,
+    "theoremCount": 15,
+    "definitionCount": 5,
     "originalContributions": [
       "Identifies the Conway–Ryba (Math. Intelligencer 34 (2012) 4–8) conjugacy-class indexing of the Hexagrammum Mysticum and certifies its three governing class sizes in Lean over the concrete group Equiv.Perm (Fin 6).",
       "FixedPointFree, IsSixCycle, IsDoubleThreeCycle, IsTripleTransposition: elementary decidable predicates characterising the three relevant conjugacy classes purely by group powers and fixed-point conditions (no cycleType API), each with a hand-supplied Decidable instance so the filter counts native-evaluate quickly.",
@@ -82,20 +82,42 @@
     {
       "id": "intro-docstring",
       "startLine": 1,
-      "endLine": 74,
-      "title": "§0: Lineage, Conway–Ryba Indexing, and Honest Scope"
+      "endLine": 63,
+      "title": "§0: Lineage, Conway–Ryba Indexing, and Honest Scope",
+      "summary": "Imports and the module docstring: the parent lineage (pascals-hexagon → oq-03 scaffold → this file), the Conway–Ryba (2012) indexing of the 95-point/95-line Hexagrammum by S₆ conjugacy classes, the predicate/size table (720, 120, 40, 15), and an explicit honest-scope disclaimer that only the class sizes — not the projective bijection — are certified, and that native_decide makes the file depend on Lean.ofReduceBool (not axiom-free).",
+      "mathContext": "6-cycles ↔ 60 Pascal lines + 60 Kirkman points; (3,3) ↔ 20 Steiner + 20 Cayley; (2,2,2) ↔ 15 Plücker + 15 Salmon (self-paired)."
     },
     {
       "id": "predicates",
-      "startLine": 76,
-      "endLine": 129,
-      "title": "Cycle-type predicates and their Decidable instances"
+      "startLine": 64,
+      "endLine": 104,
+      "title": "Cycle-type predicates and their Decidable instances",
+      "summary": "The concrete group is Equiv.Perm (Fin 6). FixedPointFree σ := ∀ i, σ i ≠ i, then each relevant conjugacy class is pinned by an elementary power/fixed-point predicate rather than the cycleType API: IsSixCycle (fpf, σ⁶=1, σ²≠1, σ³≠1), IsDoubleThreeCycle (fpf, σ³=1), IsTripleTransposition (fpf, σ²=1). Each carries a hand-supplied Decidable instance so the later Finset.filter counts native-evaluate quickly.",
+      "mathContext": "Fixed-point-free cycle types of Fin 6 are (6),(4,2),(3,3),(2,2,2); power conditions σ²≠1, σ³≠1, σⁿ=1 select each."
     },
     {
       "id": "census",
-      "startLine": 131,
-      "endLine": 156,
-      "title": "The three census theorems (120 / 40 / 15) and object counts"
+      "startLine": 105,
+      "endLine": 129,
+      "title": "The three census theorems: |Sym(6)| = 720 and class sizes 120 / 40 / 15",
+      "summary": "The anchor card_sym6 (|Sym(6)| = 720) and the three governing class-size theorems, each discharged by native_decide over Finset.univ.filter: card_sixCycles = 120 (Pascal/Kirkman), card_doubleThreeCycles = 40 (Steiner/Cayley), card_tripleTranspositions = 15 (Plücker/Salmon, self-paired).",
+      "mathContext": "|Sym(6)|=720; 120 six-cycles, 40 double-3-cycles, 15 triple-transpositions."
+    },
+    {
+      "id": "completeness",
+      "startLine": 130,
+      "endLine": 184,
+      "title": "Completeness of the fixed-point-free census (the inert (4,2) class, D₆ = 265)",
+      "summary": "Adds the fourth fixed-point-free cycle type (4,2) — IsFourTwoCycle (fpf, σ⁴=1, σ²≠1), card_fourTwoCycles = 90 — which indexes NO Hexagrammum object. fixedPointFree_iff_census proves the four classes exhaust every derangement of Fin 6, card_fixedPointFree = 265 = D₆ is the sixth derangement number, and fixedPointFree_census_sum (120+90+40+15=265) forces the classes to be disjoint and exhaustive.",
+      "mathContext": "Derangements of Fin 6: D₆ = 265 = 120 + 90 + 40 + 15; the 90-element (4,2) class is geometrically inert."
+    },
+    {
+      "id": "object-counts",
+      "startLine": 185,
+      "endLine": 213,
+      "title": "Hexagrammum object counts and the (95₃, 95₃) totals",
+      "summary": "The geometric object counts as arithmetic corollaries of the census under the Conway–Ryba 2:1 outer-automorphism pairing (self-paired at the (2,2,2) class): 60 Pascal lines, 60 Kirkman points (120/2), 20 Steiner points, 20 Cayley–Salmon lines (40/2), 15 Plücker lines and 15 Salmon points; and the configuration totals 60+20+15 = 95 points and 95 lines, i.e. a (95₃, 95₃) configuration.",
+      "mathContext": "Points: 60 Kirkman + 20 Steiner + 15 Salmon = 95; lines: 60 Pascal + 20 Cayley + 15 Plücker = 95."
     }
   ],
   "conclusion": {
@@ -122,10 +144,10 @@
       "Equiv"
     ],
     "namespace": "PascalsHexagonOQ03Incomplete01",
-    "lineCount": 158,
+    "lineCount": 213,
     "axiomCount": 0,
-    "theoremCount": 11,
-    "definitionCount": 4,
+    "theoremCount": 15,
+    "definitionCount": 5,
     "path": "Proofs/PascalsHexagonOQ03Incomplete01.lean",
     "sorries": 0
   },
@@ -139,6 +161,11 @@
       "targetId": "pascals-hexagon",
       "relationship": "ancestor",
       "description": "Parent entry establishing Pascal's Hexagon Theorem (Wiedijk #28), whose third open question asks whether the 60-Pascal-line configuration with Steiner and Kirkman counts can be formalized."
+    },
+    {
+      "targetId": "pascals-hexagon-oq-02",
+      "relationship": "related",
+      "description": "The projective-dual sibling: Brianchon's theorem (diagonals of a hexagon circumscribed about a conic are concurrent) is the point↔line dual of Pascal's theorem. The same S₆ symmetry that organizes the 60 Pascal lines catalogued here acts, dually, on the Brianchon configuration — the two are companion faces of the Hexagrammum Mysticum's combinatorics."
     }
   ],
   "mainTheorems": [

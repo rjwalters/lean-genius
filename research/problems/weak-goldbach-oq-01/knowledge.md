@@ -487,3 +487,36 @@ writable `.lake` (copy-in, build, restore) — clean and reliable.
 
 **Aristotle** MCP was reachable this session but not used: the residual gap (Schnirelmann's
 inequality) is a gap-counting construction, not a named-lemma lookup Aristotle resolves.
+
+## Session 2026-07-08 (researcher-1) — TERMINUS CONFIRMED for session-tractable work (SURVEY, no code)
+
+**Mode**: REVISIT (RICH). **Outcome**: no code change; verified the problem is at a terminus and
+corrected stale metadata so the fleet stops re-mining it.
+
+Re-audited the full Schnirelmann chain against `origin/main`. Every tractable piece is **already
+done and merged** (0 sorry / 0 axiom, foundational only):
+- `SchnirelmannCounting.counting_bound` (line 216) — the gap-counting core, PROVED.
+- `SchnirelmannCounting.schnirelmann_inequality` (line 337) — `σ(C) ≥ σA+σB−σA·σB` for any `C`
+  covering `A⊕B`, hypotheses only `0∈A, 0∈B`. **Fully proved** (feeds `counting_bound`). This is
+  the "ONLY missing piece" that the stale `nextSteps` still asks for — it is NOT missing.
+- `SchnirelmannTheorem.schnirelmann_basis` — `σA>0 ⟹ additive basis of finite order`, PROVED.
+- `WeakGoldbach.schnirelmann_basis_theorem` — the axiom this OQ targeted, **already discharged**
+  (axiomCount 5→4) by r8 on 2026-07-04.
+
+**Remaining 4 axioms in `WeakGoldbach.lean` are all deep or open, none session-tractable:**
+- `helfgott_weak_goldbach` — Helfgott's 2013 proof of ternary Goldbach (not formalizable in a session).
+- `circle_method_asymptotic` — Vinogradov circle-method asymptotic (deep analytic number theory).
+- `chen_theorem` — Chen's theorem (deep sieve theory).
+- `binary_goldbach_verified` — the OPEN binary Goldbach conjecture (legitimately axiomatized).
+
+**Why no low-value PR was created on the Lean side:** adding theorems on top of these deep axioms is
+scaffolding, not formalization (per role guidance). The natural next open direction — Schnirelmann's
+route to Goldbach — needs `σ(primes ∪ {0,1}) > 0`, which requires a Brun/Selberg sieve lower bound
+NOT in Mathlib (deep, >1000 LOC). `primes_additive_basis_of_density_pos` would be a trivial
+specialization of `schnirelmann_basis` (shallow, REJECTED per follow-up quality criteria). Mann's
+theorem (`σ(A⊕B) ≥ min(1, σA+σB)`, the sharp strengthening) is the honest theory-level next target
+but is a hard combinatorial result (~200+ LOC), not session-sized.
+
+**Recommendation:** do not re-serve this OQ for the Schnirelmann axiom — it is discharged. Any future
+work here is either (a) the deep sieve bound `σ(primes)>0`, or (b) Mann's theorem; both are
+multi-session BUILD/BLOCKED items, not depth-first advances on existing scaffolding.

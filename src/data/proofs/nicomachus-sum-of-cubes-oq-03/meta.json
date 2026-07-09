@@ -3,6 +3,22 @@
   "title": "Sum of the First n Odd Cubes: ∑ (2k−1)³ = n²(2n²−1)",
   "slug": "nicomachus-sum-of-cubes-oq-03",
   "description": "A fully machine-checked, self-contained proof of the odd-cube analogue of Nicomachus's theorem: the sum of the first n odd cubes equals n²(2n²−1), i.e. ∑_{k<n} (2k+1)³ = n²(2n²−1). The closed form carries a subtraction (2n²−1), which is hostile to `ring` over ℕ, so the engine of the proof is the subtraction-free repackaging ∑(2k+1)³ + n² = 2n⁴, proved by induction with a single polynomial `ring` identity spliced into the hypothesis by `omega`. The headline n²(2n²−1) form is then recovered over ℤ via push_cast. Mathlib has neither identity.",
+  "leanFile": {
+    "path": "Proofs/NicomachusOddCubes.lean",
+    "namespace": "NicomachusOddCubes",
+    "imports": [
+      "Mathlib.Algebra.BigOperators.Intervals",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "lineCount": 93,
+    "axiomCount": 0,
+    "theoremCount": 3,
+    "definitionCount": 0,
+    "sorries": 0
+  },
   "meta": {
     "author": "Classical (odd-cube companion to Nicomachus, c. 100 AD); formalized in Lean 4 with Mathlib",
     "sourceUrl": "https://en.wikipedia.org/wiki/Squared_triangular_number",
@@ -43,25 +59,33 @@
   },
   "sections": [
     {
+      "id": "preamble",
+      "title": "Overview, imports, and the subtraction-free strategy",
+      "startLine": 1,
+      "endLine": 47,
+      "summary": "Imports (Mathlib.Algebra.BigOperators.Intervals and Mathlib.Tactic) and the module docstring, which states the odd-cube analogue of Nicomachus's theorem (∑_{k<n} (2k+1)³ = n²(2n²−1)), checks the first three cases (n=1,2,3 → 1, 28, 153), and lays out the proof plan: because the closed form's −1 breaks `ring` over ℕ, prove the subtraction-free equivalent ∑(2k+1)³ + n² = 2n⁴ instead and recover the headline over ℤ. Opens the NicomachusOddCubes namespace and Finset.",
+      "mathContext": "$\\sum_{k<n}(2k+1)^3 = n^2(2n^2-1)$; strategy: prove $\\sum(2k+1)^3 + n^2 = 2n^4$ in $\\mathbb{N}$ (no truncated subtraction), then cast to $\\mathbb{Z}$."
+    },
+    {
       "id": "subtraction-free",
       "title": "Subtraction-free odd-cube identity",
-      "startLine": 56,
-      "endLine": 67,
+      "startLine": 48,
+      "endLine": 68,
       "summary": "The core lemma ∑_{k<n} (2k+1)³ + n² = 2n⁴, proved by induction. The base case is `rfl`. The step peels the top odd cube with sum_range_succ, then a single subtraction-free `ring` identity 2m⁴ + (2m+1)³ + (m+1)² = 2(m+1)⁴ + m² is combined with the inductive hypothesis by `omega` (which atomizes the power terms). No truncated ℕ subtraction ever appears."
     },
     {
       "id": "headline",
       "title": "Headline form over ℤ",
-      "startLine": 73,
-      "endLine": 82,
+      "startLine": 69,
+      "endLine": 83,
       "summary": "∑_{k<n} (2k+1)³ = n²(2n²−1). Casting the ℕ identity to ℤ with push_cast lets the closed form use honest subtraction; `linarith` isolates the sum as 2n⁴ − n² and a final `ring` recognizes n²(2n²−1) = 2n⁴ − n²."
     },
     {
       "id": "scaled-form",
       "title": "Scaled multiplicative form",
-      "startLine": 88,
-      "endLine": 91,
-      "summary": "4·∑(2k+1)³ + 4n² = 8n⁴, the subtraction-free core scaled by 4, derived in one `omega` step from the core lemma for callers who want a division-free product form."
+      "startLine": 84,
+      "endLine": 93,
+      "summary": "4·∑(2k+1)³ + 4n² = 8n⁴, the subtraction-free core scaled by 4, derived in one `omega` step from the core lemma for callers who want a division-free product form; closes the NicomachusOddCubes namespace."
     }
   ],
   "mainTheorems": [
@@ -128,6 +152,11 @@
       "proofId": "nicomachus-sum-of-cubes-oq-02",
       "relationship": "Sibling Faulhaber power-sum",
       "description": "The Faulhaber p=4 closed form ∑ k⁴ = n(n+1)(2n+1)(3n²+3n−1)/30. A companion entry sharing this one's exact 'clear the denominator/subtraction, then ring-and-omega induction' recipe."
+    },
+    {
+      "proofId": "odd-squares-sum-oq-01",
+      "relationship": "Odd-index power-sum companion (degree 2)",
+      "description": "The sum of the first n odd SQUARES, ∑_{k<n}(2k+1)² = n(2n−1)(2n+1)/3 — the degree-2 member of the same odd-index power-sum family as this degree-3 entry. Both dissolve the closed form's division/subtraction into a subtraction-free identity over ℕ (there 3∑+n = 4n³, here ∑+n² = 2n⁴) so the induction stays inside ℕ and closes by `ring`; together they trace the odd-index Faulhaber ladder from squares to cubes."
     },
     {
       "proofId": "arithmetic-series",

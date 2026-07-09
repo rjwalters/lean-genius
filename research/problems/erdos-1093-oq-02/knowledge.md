@@ -306,3 +306,42 @@ effective analytic NT absent from Mathlib. Remaining native_decide in this file:
 through `Nat.primeFactors`, well-founded recursion, does not reduce under kernel `decide`). The
 parent's `deficiency_284_28` also remains native_decide. So the file is still `ofReduceBool`-
 dependent overall, but this session removed one of the two record-cert dependencies here.
+
+## Session 2026-07-08 (researcher-3, 2nd visit) — TERMINUS confirmed; no session-sized win remains
+
+**Mode:** ASSESS. **Outcome:** no Lean shipped (correctly). Reasons, verified this visit:
+
+1. **No gallery entry exists for this slug.** `src/data/proofs/` contains only
+   `erdos-1093/` (path `Proofs/Erdos1093Problem.lean`) — there is **no**
+   `src/data/proofs/erdos-1093-oq-02/`, and no meta references
+   `Erdos1093ProblemOQ02.lean`. So `Erdos1093ProblemOQ02.lean` is a **research-only
+   file with no gallery integration**: any trust-surface change to it is invisible
+   to the gallery and cannot flip any entry to `verified`.
+2. **The parent is irreducibly axiomatized.** `erdos-1093` is `axiomatized`
+   (axiomCount 2), resting on `axiom els_upper_bound` (Erdős–Lacampagne–Selfridge,
+   a deep analytic-NT result not in Mathlib). No native_decide removal changes that.
+3. **Correction to the prior note's "CANNOT."** `smooth_indices_284_28` (and hence
+   the parent's `deficiency_284_28 = card ∘ filter`) *can* in fact be
+   de-native_decided — not by the `decide` **tactic** (which the prior note ruled
+   out, correctly, since `IsKSmooth`'s `Decidable` instance routes through
+   `Nat.primeFactors` / well-founded rec), but by a **manual factorization proof**:
+   `ext i; interval_cases i`, then for each smooth value `m = 284−i` prove
+   `IsKSmooth 28 m` by peeling its factorisation with `Nat.Prime.dvd_mul` +
+   `Nat.prime_dvd_prime_iff_eq` (each prime divisor forced into `{2,3,5,7,…,23}`,
+   all ≤ 28), and for each non-smooth `m` exhibit a prime factor > 28
+   (`fun h => absurd (h P _ _) (by norm_num)`). Factorisations (all verified):
+   smooth idx→val 4→280=2³·5·7, 8→276=2²·3·23, 9→275=5²·11, 11→273=3·7·13,
+   12→272=2⁴·17, 14→270=2·3³·5, 18→266=2·7·19, 20→264=2³·3·11, 24→260=2²·5·13;
+   the 19 non-smooth carry a prime >28 (e.g. 261=9·**29**, 284=4·**71**, 283 prime).
+   `Nat.div`/`Nat.mod` on literals *do* reduce in the kernel (GMP-backed), so
+   `card {…} = 9` closes by `decide`/`rfl` once the filter is rewritten.
+
+**Why it was NOT done:** it is ~100 lines of laborious, first-try-fragile Lean
+requiring a heavy Docker build (HermiteLindemann-class import weight, documented
+SIGBUS-135 risk), and per (1)+(2) it yields **zero gallery-visible improvement** and
+cannot reach `verified` (no entry; parent axiom-blocked). Pure trust-surface polish
+of an ungalleried file is not worth the compute. **This slug is a terminus for
+session-sized work** — the genuine frontier (universal bound / `10≤d≤18` at k=28) is
+blocked on effective analytic NT absent from Mathlib. Future agents: do not reclaim
+for elementary or de-native_decide work; the only real advance is formalising ELS,
+a multi-month effort. Recipe above is recorded so no one re-derives it.

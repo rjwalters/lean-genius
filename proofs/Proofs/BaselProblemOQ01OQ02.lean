@@ -107,6 +107,49 @@ theorem zeta_six_irrational : Irrational (∑' k : ℕ, 1 / (k : ℝ) ^ 6) := by
   have := zeta_even_irrational 3 (by norm_num)
   simpa using this
 
+/-- **Every even zeta value is transcendental over ℚ** — strictly stronger than
+    irrationality.
+
+    Since `ζ(2n) = qₙ · π^(2n)` with `qₙ ∈ ℚ∖{0}` and `π^(2n)` is transcendental
+    over ℚ (transcendence of π, `pi_transcendental_over_rationals`, lifted through
+    powers by `Transcendental.pow`), scaling by the nonzero rational `qₙ`
+    preserves transcendence: an algebraic `qₙ·π^(2n)` would make
+    `π^(2n) = qₙ⁻¹·(qₙ·π^(2n))` algebraic, contradicting transcendence of `π^(2n)`.
+    Transcendence over ℚ implies irrationality (`Transcendental.irrational`), so
+    this refines `zeta_even_irrational`.
+
+    **Assumption:** `hermite_lindemann` (transcendence of π). -/
+theorem zeta_even_transcendental (n : ℕ) (hn : 0 < n) :
+    Transcendental ℚ (∑' k : ℕ, 1 / (k : ℝ) ^ (2 * n)) := by
+  have hS := hasSum_zeta_nat (k := n) hn.ne'
+  -- Euler's closed form: the sum is a nonzero-rational multiple of π^(2n).
+  obtain ⟨q, hq⟩ :
+      ∃ q : ℚ, (∑' k : ℕ, 1 / (k : ℝ) ^ (2 * n)) = (q : ℝ) * π ^ (2 * n) := by
+    refine ⟨(-1) ^ (n + 1) * 2 ^ (2 * n - 1) * bernoulli (2 * n) / (2 * n).factorial, ?_⟩
+    rw [hS.tsum_eq]; push_cast; ring
+  have hpos : 0 < ∑' k : ℕ, 1 / (k : ℝ) ^ (2 * n) :=
+    hS.summable.tsum_pos (fun m => by positivity) 1 (by norm_num)
+  have hqne : q ≠ 0 := by
+    intro h0; rw [hq, h0] at hpos; simp at hpos
+  have hqne' : (q : ℝ) ≠ 0 := by exact_mod_cast hqne
+  -- π^(2n) is transcendental over ℚ.
+  have hpi : Transcendental ℚ (π ^ (2 * n)) :=
+    pi_transcendental_over_rationals.pow (by omega)
+  rw [hq]
+  -- Transcendence is preserved under scaling by the nonzero rational q:
+  -- if q·π^(2n) were algebraic then π^(2n) = q⁻¹·(q·π^(2n)) would be too.
+  intro halg
+  apply hpi
+  have hqinv : IsAlgebraic ℚ ((q⁻¹ : ℚ) : ℝ) := isAlgebraic_algebraMap (q⁻¹ : ℚ)
+  have hmul := halg.mul hqinv
+  rwa [show (q : ℝ) * π ^ (2 * n) * ((q⁻¹ : ℚ) : ℝ) = π ^ (2 * n) from by
+    push_cast; rw [mul_right_comm, mul_inv_cancel₀ hqne', one_mul]] at hmul
+
+/-- **ζ(2) = ∑' k, 1/k² is transcendental over ℚ** (hence irrational). -/
+theorem zeta_two_transcendental : Transcendental ℚ (∑' k : ℕ, 1 / (k : ℝ) ^ 2) := by
+  have := zeta_even_transcendental 1 one_pos
+  simpa using this
+
 /-!
 ## The open odd case (documentation only)
 

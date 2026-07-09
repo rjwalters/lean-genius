@@ -27,9 +27,9 @@
     "phase": "COMPLETED",
     "since": "2026-06-22T00:00:00-07:00",
     "iteration": 1,
-    "focus": "Added the infimum side: the sublevelInf object and a second exact witness (linear X, measure 2) bounding sublevelInf ≤ 2.",
+    "focus": "Added the faithful predicate MonicRealRootedIn01' (complete real splitting f.roots.card=f.natDegree) + sublevelSup'; transferred the 2√2 sup lower bound (le_sublevelSup') to the faithful object and proved X²+1 is excluded (sq_add_one_not_admissible'), so the literal-predicate sublevelInf_eq_zero degeneracy does not affect the faithful infimum.",
     "blockers": [],
-    "nextAction": "The two provable directions (2√2 ≤ sublevelSup, sublevelInf ≤ 2) are done. Tightening sublevelInf ≤ 2 toward the true ≤ 1.835 needs the polynomial (x+1)(x−1)^m and logarithmic potential theory beyond Mathlib.",
+    "nextAction": "The faithful sup lower bound 2√2 ≤ sublevelSup' is done. Remaining OPEN/blocked: the faithful infimum exact value 2^(4/3)−1 (needs logarithmic potential theory beyond Mathlib) and both matching upper bounds. A cheap next win: the linear witness X also gives sublevelInf' ≤ 2 under the faithful predicate (define sublevelInf', mirror linear_admissible').",
     "attemptCounts": {
       "total": 2,
       "currentApproach": 1,
@@ -37,7 +37,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE. First theorems for Erdős #1038 (the gallery file Erdos1038Problem is a stub: definitions only, all 'theorems' commented as prose). Formalizes the concrete extremal computation: the quadratic q = X²−1 is admissible (monic, roots ±1 ∈ [-1,1]), its sublevel set {x : |x²−1| < 1} = Ioo(-√2,√2) \\ {0}, and its Lebesgue measure is exactly 2√2 — the supremum value (Erdős–Herzog–Piranian 1958, Tao 2025). Erdos1038WIP01.lean, 6 defs + 9 theorems (172 lines), 0 axioms, 0 sorries, no native_decide. Now covers BOTH extremal quantities: sublevelSup (2√2 ≤ sup, quadratic witness) and sublevelInf (inf ≤ 2, linear witness). The full supremum bound over all f, and the tight infimum, need logarithmic potential theory (not attempted).",
+    "progressSummary": "PROGRESS. Faithful predicate MonicRealRootedIn01' in place with sup transfer (2*sqrt(2) <= sublevelSup'); this session adds the per-polynomial positivity mechanism: sublevel set is open, any real root forces positive measure, so faithful+deg>=1 => positive measure — exactly the property rootless X^2+1 fails, explaining sublevelInf_eq_zero. Faithful infimum object sublevelInf' + <=2 bound added. File 368 lines, 9 defs + 21 theorems, 0 axioms / 0 sorries, no native_decide. Strict faithful lower bound sublevelInf'>0 and exact 2^(4/3)-1 remain open (potential theory).",
     "builtItems": [
       "Erdos1038WIP01.lean: q := X²−1, eval_q (simp), 4 theorems, 0 axioms (propext/Classical.choice/Quot.sound), 0 sorries. Self-contained re-decl of MonicRealRootedIn01/sublevelSet/sublevelMeasure (stub-independent).",
       "quadratic_admissible: q is monic (monic_X_pow_sub_C 1 (n:=2)) with roots in [-1,1] (mem_roots' → r²−1=0 → nlinarith).",
@@ -46,21 +46,28 @@
       "sublevelMeasure_quadratic: = ENNReal.ofReal (2√2) (measure_diff_null removes {0}, Real.volume_Ioo, ring for √2−(−√2)=2√2).",
       "sublevelSup / le_sublevelSup: sublevelSup := ⨆ over admissible f of sublevelMeasure f; 2√2 ≤ sublevelSup via le_iSup_of_le q (le_iSup_of_le quadratic_admissible sublevelMeasure_quadratic.ge).",
       "linear_admissible / sublevelSet_linear / sublevelMeasure_linear: X is monic (monic_X) with root 0 ∈ [-1,1]; sublevelSet X = Ioo(-1,1) (abs_lt); measure = ENNReal.ofReal 2.",
-      "sublevelInf / sublevelInf_le_two: sublevelInf := ⨅ over admissible f of sublevelMeasure f; sublevelInf ≤ 2 via iInf_le_of_le X (iInf_le_of_le linear_admissible sublevelMeasure_linear.le)."
+      "sublevelInf / sublevelInf_le_two: sublevelInf := ⨅ over admissible f of sublevelMeasure f; sublevelInf ≤ 2 via iInf_le_of_le X (iInf_le_of_le linear_admissible sublevelMeasure_linear.le).",
+      "MonicRealRootedIn01' (faithful predicate = MonicRealRootedIn01 f ∧ f.roots.card = f.natDegree, i.e. complete real splitting) + sublevelSup' (⨆ over faithful f). quadratic_admissible'/linear_admissible' verify X²−1 (splits (X−1)(X+1) via roots_mul+roots_X_sub_C, card 2 = natDegree 2) and X (roots_X {0}, card 1 = natDegree 1) are faithfully admissible; le_sublevelSup' transfers the 2√2 lower bound to the faithful object. sq_add_one_not_admissible': X²+1 has 0 real roots but natDegree 2 → EXCLUDED, so the sublevelInf_eq_zero pathology is no longer admissible under the faithful predicate. All 0 axioms / 0 sorries, docker VERIFIED exit 0.",
+      "isOpen_sublevelSet (Erdos1038WIP01.lean): sublevel set is open via isOpen_Ioo.preimage f.continuous",
+      "sublevelMeasure_pos_of_root (Erdos1038WIP01.lean): any real root => 0 < sublevelMeasure f (IsOpen.measure_pos on volume)",
+      "faithful_sublevelMeasure_pos (Erdos1038WIP01.lean): MonicRealRootedIn01' f AND deg>=1 => 0 < sublevelMeasure f",
+      "sublevelInf' def + sublevelInf'_le_two (Erdos1038WIP01.lean): faithful infimum object and linear-witness <=2 bound, free of rootless collapse"
     ],
     "insights": [
       "x²−1 is the explicit extremizer for the Erdős #1038 supremum: |x²−1| < 1 ⟺ 0 < x² < 2 ⟺ x ∈ (-√2,√2)\\{0}, measure 2√2.",
       "Lean: |x²−1| < 1 splits via abs_lt into −1 < x²−1 ∧ x²−1 < 1 = 0 < x² ∧ x² < 2; the elementary form (0 < x² < 2) is certain, the √2 interval form needs Real.sq_sqrt and nlinarith with sq_nonneg(x±√2) to convert x² < 2 ↔ |x| < √2.",
       "Removing the isolated zero of x² (the point x=0 where x²−1 = −1, |−1| = 1 not < 1) is exactly the \\{0}; measure_diff_null (volume {0} = 0 by simp) discards it for the measure.",
-      "monic_X_pow_sub_C (1) (n:=2) (by norm_num) gives Monic (X²−C 1); roots via Polynomial.mem_roots' (a ∈ roots ↔ p ≠ 0 ∧ IsRoot)."
+      "monic_X_pow_sub_C (1) (n:=2) (by norm_num) gives Monic (X²−C 1); roots via Polynomial.mem_roots' (a ∈ roots ↔ p ≠ 0 ∧ IsRoot).",
+      "Per-polynomial positivity: the sublevel set {x:|f(x)|<1} is OPEN (preimage of Ioo(-1,1) under continuous eval), so any real root r (f(r)=0) lies inside it and forces positive Lebesgue measure via IsOpen.measure_pos. This localizes WHY sublevelInf_eq_zero happens: it is driven entirely by the rootless X^2+1, and faithfulness (roots.card=natDegree) forbids rootlessness.",
+      "Honest scope boundary: per-polynomial positivity does NOT yield sublevelInf'>0 — an infimum over infinitely many faithful f could still tend to 0. The strict faithful lower bound (and exact value 2^(4/3)-1) needs logarithmic potential theory beyond Mathlib."
     ],
     "mathlibGaps": [
       "The supremum BOUND (every admissible f has sublevel measure ≤ 2√2) requires logarithmic potential theory (Tao 2025) not in Mathlib — only the extremal witness is formalized here."
     ],
     "nextSteps": [
-      "Tighten sublevelInf ≤ 2 toward the true ≤ 1.835: the polynomial (x+1)(x−1)^m for m ≥ 3 witnesses inf < 2; formalize its sublevel measure as a sharper upper bound on the (open) infimum.",
-      "Products: MonicRealRootedIn01 is preserved under multiplication (monic × monic, roots union), giving a closure structure on admissible polynomials.",
-      "The general upper bound 2√2 over all admissible f (the hard analytic core, Tao's logarithmic-potential argument)."
+      "OPEN (needs potential theory): prove sublevelInf' > 0 (strict), a uniform positive lower bound over all faithful f — the 2^(4/3)-1 direction.",
+      "OPEN (needs potential theory): matching upper bound sublevelSup' = 2*sqrt(2) (the Tao 2025 side).",
+      "Elementary candidate: search for a faithful witness of measure < 2 (degree >= 3, Chebyshev-like) to improve sublevelInf'_le_two below 2."
     ]
   },
   "tags": [
