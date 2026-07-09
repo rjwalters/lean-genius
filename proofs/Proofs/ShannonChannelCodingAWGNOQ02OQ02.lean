@@ -1576,7 +1576,7 @@ theorem mrc_signal_sq_eq_iff {ι : Type*} (s : Finset ι) (a sig v : ι → ℝ)
         from (Finset.sum_congr rfl e3).symm,
       cauchy_schwarz_eq_iff s (fun i => a i * Real.sqrt (v i))
         (fun i => sig i / Real.sqrt (v i))]
-  dsimp only
+  try dsimp only
   refine forall_congr' fun i => imp_congr_right fun hi => forall_congr' fun j =>
     imp_congr_right fun hj => ?_
   have hxx : Real.sqrt (v i) * Real.sqrt (v i) = v i := Real.mul_self_sqrt (hv i hi).le
@@ -1605,6 +1605,94 @@ theorem mrc_matched_ray_eq {ι : Type*} (s : Finset ι) (c : ℝ) (sig v : ι �
   have hvi : v i ≠ 0 := (hv i hi).ne'
   have hvj : v j ≠ 0 := (hv j hj).ne'
   field_simp
-  ring
+  try ring
+
+/-! ### The covariance matrix is positive semidefinite (Gram matrix of L²)
+
+The weighted Bienaymé identity `variance_smul_sum'` expresses the variance of the linear
+combiner output as the **quadratic form** of the covariance matrix `Σᵢⱼ = cov[Wᵢ, Wⱼ]`:
+
+    aᵀΣa  =  ∑ᵢ∑ⱼ aᵢaⱼ·cov[Wᵢ, Wⱼ]  =  Var[∑ᵢ aᵢ·Wᵢ].
+
+Two structural consequences complete the second-order picture of a *correlated* symbol block,
+generalising the pairwise-uncorrelated power law (`variance_smul_sum_of_pairwise_uncorrelated`,
+where `Σ` is diagonal) to an arbitrary covariance matrix:
+
+* **Positive semidefiniteness** (`covariance_quadratic_form_nonneg`): `aᵀΣa ≥ 0` for *every*
+  gain vector, because the quadratic form *is* a variance.  This is the statement that `Σ` is a
+  genuine Gram matrix — the covariance is a positive-semidefinite bilinear form on the space of
+  square-integrable variables — the multivariate root of the covariance Cauchy–Schwarz inequality.
+
+* **Degeneracy locus** (`covariance_quadratic_form_eq_zero_iff`): `aᵀΣa = 0` *iff* the combined
+  output `∑ᵢ aᵢ·Wᵢ` is almost everywhere constant.  The kernel of `Σ` is exactly the set of gain
+  vectors producing a degenerate (a.e. constant) combination — the multivariate sharp boundary
+  generalising the two-variable `|ρ| = 1` / perfect-affine-dependence boundary
+  (`abs_correlation_eq_one_iff_affine`).
+
+The receiver-facing form (`awgn_weighted_power_eq_covariance_quadratic_form`) reads the identity
+as the **correlated-noise MRC power law**: for zero-mean contributions the output power equals the
+covariance quadratic form `aᵀΣa`, the exact generalisation of
+`awgn_weighted_multisymbol_power_of_uncorrelated` to a non-diagonal covariance matrix.
+-/
+
+/-- **Covariance matrix is positive semidefinite (`aᵀΣa ≥ 0`).**  For any deterministic gain
+vector `a : ι → ℝ` and finite family of square-integrable contributions, the covariance
+quadratic form is nonnegative:
+
+    0 ≤ ∑ᵢ∑ⱼ aᵢ·aⱼ·cov[Wᵢ, Wⱼ].
+
+The quadratic form of the covariance matrix `Σᵢⱼ = cov[Wᵢ, Wⱼ]` *is* the variance of the linear
+combiner output `∑ᵢ aᵢ·Wᵢ` (`variance_smul_sum'`), and variances are nonnegative
+(`variance_nonneg`).  This is the statement that `Σ` is a Gram matrix — covariance is a
+positive-semidefinite bilinear form on square-integrable variables — and it is the multivariate
+root of the covariance Cauchy–Schwarz inequality (recovered at `|s| = 2`). -/
+theorem covariance_quadratic_form_nonneg [IsFiniteMeasure μ] {ι : Type*}
+    {W : ι → Ω → ℝ} {s : Finset ι} (a : ι → ℝ) (hW : ∀ i ∈ s, MemLp (W i) 2 μ) :
+    0 ≤ ∑ i ∈ s, ∑ j ∈ s, a i * a j * cov[W i, W j; μ] := by
+  rw [← variance_smul_sum' a hW]
+  exact variance_nonneg _ _
+
+/-- **Degeneracy locus of the covariance matrix (`aᵀΣa = 0 ⟺ a.e. constant combiner`).**  The
+covariance quadratic form vanishes *iff* the weighted combination `∑ᵢ aᵢ·Wᵢ` is almost everywhere
+equal to its mean:
+
+    (∑ᵢ∑ⱼ aᵢ·aⱼ·cov[Wᵢ, Wⱼ] = 0)  ↔  (∑ᵢ aᵢ·Wᵢ =ᵐ constant).
+
+The quadratic form is the variance of the combiner (`variance_smul_sum'`), which vanishes exactly
+when the combiner is a.e. constant (`variance_eq_zero_iff`).  Hence the kernel of the covariance
+matrix `Σ` is precisely the set of gain vectors that collapse the block to a degenerate (a.e.
+constant) output — the multivariate sharp boundary generalising the two-variable
+perfect-affine-dependence boundary `abs_correlation_eq_one_iff_affine`. -/
+theorem covariance_quadratic_form_eq_zero_iff [IsFiniteMeasure μ] {ι : Type*}
+    {W : ι → Ω → ℝ} {s : Finset ι} (a : ι → ℝ) (hW : ∀ i ∈ s, MemLp (W i) 2 μ) :
+    (∑ i ∈ s, ∑ j ∈ s, a i * a j * cov[W i, W j; μ]) = 0 ↔
+      (∑ i ∈ s, a i • W i) =ᵐ[μ] fun _ => μ[∑ i ∈ s, a i • W i] := by
+  rw [← variance_smul_sum' a hW]
+  exact variance_eq_zero_iff (memLp_finset_sum' s fun i hi => (hW i hi).const_smul (a i))
+
+/-- **Correlated-noise weighted MRC power law (`output power = aᵀΣa`).**  If the receiver forms the
+weighted combination `∑ᵢ aᵢ·Wᵢ` of zero-mean, square-integrable contributions with deterministic
+gains `aᵢ`, then the output power (second moment) equals the covariance quadratic form:
+
+    E[(∑ᵢ aᵢ·Wᵢ)²] = ∑ᵢ∑ⱼ aᵢ·aⱼ·cov[Wᵢ, Wⱼ].
+
+This is the general *correlated-noise* generalisation of
+`awgn_weighted_multisymbol_power_of_uncorrelated` (where the off-diagonal covariances vanish and the
+form collapses to the diagonal `∑ᵢ aᵢ²·E[Wᵢ²]`): for an arbitrary covariance matrix `Σ`, the output
+power is the full quadratic form `aᵀΣa`.  Proof: the combiner is zero-mean (`sum_mean_zero`), so its
+second moment is its variance (`second_moment_eq_variance`), which the weighted Bienaymé identity
+`variance_smul_sum'` expands into the covariance double sum. -/
+theorem awgn_weighted_power_eq_covariance_quadratic_form [IsProbabilityMeasure μ] {ι : Type*}
+    {W : ι → Ω → ℝ} {s : Finset ι} (a : ι → ℝ) (hW : ∀ i ∈ s, MemLp (W i) 2 μ)
+    (hmean : ∀ i ∈ s, μ[W i] = 0) :
+    μ[(∑ i ∈ s, a i • W i) ^ 2] = ∑ i ∈ s, ∑ j ∈ s, a i * a j * cov[W i, W j; μ] := by
+  have hV : ∀ i ∈ s, MemLp (a i • W i) 2 μ := fun i hi => (hW i hi).const_smul (a i)
+  have hVmean : ∀ i ∈ s, μ[a i • W i] = 0 := by
+    intro i hi
+    simp only [Pi.smul_apply, smul_eq_mul]
+    rw [integral_const_mul, hmean i hi, mul_zero]
+  have hSum : MemLp (∑ i ∈ s, a i • W i) 2 μ := memLp_finset_sum' s hV
+  have hSum0 : μ[∑ i ∈ s, a i • W i] = 0 := sum_mean_zero hV hVmean
+  rw [second_moment_eq_variance hSum hSum0, variance_smul_sum' a hW]
 
 end ShannonAWGNMultiSymbolPower
