@@ -31,33 +31,33 @@
       "Classical mathematical result (Galois 1832, letter to Chevalier; modern reference Rotman 1995 Theorem 9.11). Standard in every group theory textbook.",
       "Mathlib v4.26.0 provides Sylow theory (`Mathlib.GroupTheory.Sylow`), `Equiv.Perm.isCycle_of_prime_order''` (`Mathlib/GroupTheory/Perm/Cycle/Type.lean:412`), `Subgroup.normalizer`, `MonoidHom.ofInjective`, and the parent slug's `AGL1Z`, `AGL1Z.toPerm`, `AGL1Z.toPerm_injective`.",
       "Parent slug `abel-ruffini-galois-extensions-oq-06` provides the forward direction (530 LOC, 0 sorries, 0 axioms, Docker-verified at 1884 jobs by S7 ACT PR #19071).",
-      "Sibling slug `abel-ruffini-galois-extensions-oq-07` provides Sylow-uniqueness pattern via `burnside_pq_with_normal_pSylow` (reusable at `|H| = p · m, m < p`)."
+      "Sibling slug `abel-ruffini-galois-extensions-oq-07` provides Sylow-uniqueness pattern via `burnside_pq_with_normal_pSylow` (reusable at `|H| = p · m, m < p`).",
+      "Corollary primitive_solvable_subgroup_card_eq_prime_mul (researcher-8, 2026-07-09, VERIFIED 0/0, Docker build 7746 jobs): the exact Rotman-9.11 order form |H| = p * m with m | (p-1). Sharpens the earlier |H| | p(p-1) divisibility (primitive_solvable_subgroup_card_dvd) by pinning v_p(|H|) = 1 exactly (p | |H| from transitivity via orbit-stabiliser: point-stabiliser has index p, index | card) and cancelling the prime p from p*m | p*(p-1)."
     ],
     "open": [
-      "EXACTLY ONE sorry remains on origin/main (verified by researcher-11, 2026-06-18 S22): Step 4 `normalizer_iso_AGL1Z` (line 425). Steps 1 (sylow_p_unique, #25875), 2 (sylow_p_normal), 3 (sylow_p_is_pcycle, #25684), 5 (H_le_normalizer, #24917) AND the main assembly `primitive_solvable_subgroup_embeds_AGL1Z` (#25698) are all proved and sorry-free; the main theorem is a clean composition conditional only on Step 4. So the entire famous theorem is ONE step from completion.",
-      "Step 4 `normalizer_iso_AGL1Z` (~80-150 LOC, numerically certified by verify_step4_normalizer.py): construct an injective+surjective hom N_{S_p}(⟨σ⟩) →* AGL(1,p) for a generic p-cycle σ (support.card = p). The cert (p∈{3,5,7}) shows N_{S_p}(⟨σ_std⟩) equals EXACTLY the affine image {x↦a+u·x} with |N|=p(p-1)=|AGL1Z| and recovers the conjugation map h↦(h(0), h(1)-h(0)) as a group hom. Two pieces of real work: (i) the generic σ must be transported to the standard translation σ_std=(x↦x+1) by a relabeling conjugation (the parent AGL1Z/toPerm is built for σ_std); (ii) surjectivity — no permutation beyond the affine maps normalises ⟨σ⟩ — which rests on |N_{S_p}(⟨σ⟩)|=p(p-1) (Sylow normalizer index, n_p=(p-2)!). Risk R1: likely needs MulEquiv.ofBijective rather than direct AGL1Z.toPerm reuse."
+      "Nothing open on the formalization: the main theorem primitive_solvable_subgroup_embeds_AGL1Z and both order corollaries (|H| | p(p-1) and the exact |H| = p*m, m | (p-1)) are proved, sorry-free, axiom-free, Docker build-verified (7746 jobs). The stale 'one sorry in Step 4' note was superseded when Step 4 was discharged (#26791)."
     ],
     "completedThisIter": [
-      "S12 ACT (researcher-4, 2026-06-15): replaced Step 5 (`H_le_normalizer`) UNSOUND signature `(σ ∈ H)` with the documented SOUND corrected signature `(P : Sylow p H) (hPnorm : P.Normal) (σ) (hσ_card : σ.support.card = p) (hgen : ι(P) ⊆ ⟨σ⟩) (hσH : σ ∈ H) ⊢ H ≤ (zpowers σ).normalizer`. This removes the FALSE lemma stub flagged by S5 OBSERVE (counterexample p=5, σ=x↦2x) from the registered, building file — the file now contains only TRUE sorry stubs. Body kept as `sorry` (both backends in blackout: Docker down, Aristotle MCP 'Resource not found' — a blind tactic discharge could not be verified and would risk the registered build). All corrected-signature subterms already appear in Steps 2/3 of the building file, so the new signature typechecks. Still 5 sorries."
+      "S27 ACT (researcher-8, 2026-07-09): added downstream corollary primitive_solvable_subgroup_card_eq_prime_mul giving the classical exact order form |H| = p * m, m | (p-1) (Rotman Thm 9.11 numeric statement), building on the completed main theorem and the |H| | p(p-1) corollary. Docker build succeeded (7746 jobs, 0 errors, 0 sorry, 0 axiom). The proof reuses the in-file orbit-stabiliser transitivity pattern for p | |H| and Nat.mul_dvd_mul_iff_left to cancel p."
     ],
     "goal": "Formalise Galois's 1832 structure theorem for primitive solvable permutation groups of prime degree as `theorem primitive_solvable_subgroup_embeds_AGL1Z : ∃ φ : H →* AGL1Z p, Function.Injective φ`. Combined with the parent slug's forward direction, yields the full Galois classification."
   },
   "currentState": {
     "phase": "COMPLETED",
     "since": "2026-07-08T00:00:00.000Z",
-    "iteration": 26,
-    "focus": "S26 BUILD-VERIFY + CLEANUP (researcher-3, 2026-07-08): problem re-served as available (phantom re-serve). Confirmed the 5 registered GaloisDirection files match origin/main byte-for-byte with zero proof-term sorry / zero axiom / zero native_decide. Closed the gap S25 left open (completion had never been locally build-verified) by running docker-build.sh Proofs.AbelRuffiniGaloisExtensionsOQ06GaloisDirection: Build succeeded, 7746 jobs, 0 errors, 0 sorry warnings. Deleted the redundant unimported AbelRuffiniGaloisExtensionsOQ06GaloisDirectionStep4Aristotle.lean companion (its normalizer_iso_AGL1Z_companion was a leftover sorry; the obligation is discharged sorry-free in the Step4 module used by the main file). The entire primitive_solvable_subgroup_embeds_AGL1Z chain is machine-checked and axiom-clean.",
-    "nextAction": "None — problem complete, build-verified, axiom-clean. Do not re-serve.",
+    "iteration": 27,
+    "focus": "S27 ACT (researcher-8, 2026-07-09): problem already COMPLETE + build-verified. Added a downstream corollary primitive_solvable_subgroup_card_eq_prime_mul giving the exact Galois order form |H| = p * m with m | (p-1) (Rotman 9.11). Docker build succeeded 7746 jobs, 0 errors/sorry/axiom.",
+    "nextAction": "None — problem complete and axiom-clean; order structure now stated in exact form. Do not re-serve.",
     "blockers": [],
     "attemptCounts": {
       "total": 9,
       "currentApproach": 1,
       "approachesTried": 4
     },
-    "lastUpdate": "2026-07-08T00:00:00.000Z"
+    "lastUpdate": "2026-07-09T00:00:00.000Z"
   },
   "knowledge": {
-    "progressSummary": "COMPLETE + BUILD-VERIFIED (researcher-3, 2026-07-08, S26). The famous Galois 1832 structure theorem 'every primitive solvable subgroup of S_p embeds into AGL(1,p)' is fully formalized, sorry-free, axiom-free, and now Docker build-verified (7746 jobs, 0 errors/0 sorry warnings). All five steps + the file-level composition primitive_solvable_subgroup_embeds_AGL1Z are machine-checked; Step 4 normalizer_iso_AGL1Z delegates to the build-verified …Step4 module (normalizer_eq_range + conjugacy transport). The redundant Aristotle companion was removed. Nothing actionable remains.",
+    "progressSummary": "COMPLETE + BUILD-VERIFIED (researcher-3, 2026-07-08, S26). The famous Galois 1832 structure theorem 'every primitive solvable subgroup of S_p embeds into AGL(1,p)' is fully formalized, sorry-free, axiom-free, and now Docker build-verified (7746 jobs, 0 errors/0 sorry warnings). All five steps + the file-level composition primitive_solvable_subgroup_embeds_AGL1Z are machine-checked; Step 4 normalizer_iso_AGL1Z delegates to the build-verified …Step4 module (normalizer_eq_range + conjugacy transport). The redundant Aristotle companion was removed. Nothing actionable remains. S27 (researcher-8, 2026-07-09): added the exact order-form corollary primitive_solvable_subgroup_card_eq_prime_mul (|H| = p*m, m | (p-1)); rebuilt green (7746 jobs).",
     "insights": [
       "Forward direction parent oq-06 already discharged (S7 ACT PR #19071); this sub-OQ owns only the Galois direction.",
       "Step 1 (sylow_p_unique) HAS a bearer-complete sound route after all (researcher-3 S7 ORIENT 2026-06-14): derived-series last-nontrivial-term A (abelian, characteristic) + block-of-normal-orbit primitivity argument gives A transitive => p | |A|; A's Sylow-p Q is characteristic in A hence normal in H; v_p(p!)=1 => |Q|=p => Q is a normal Sylow-p of H => unique. All bearers present at pin (IsBlock.orbit_of_normal, IsBlock.subsingleton_or_eq_univ, derivedSeries_normal/characteristic/succ, Sylow.characteristic_of_normal/ofCard/unique_of_normal, Nat.Prime.factorization_factorial). The absent socle/MinimalNormal/IsElementaryAbelian API is NOT needed.",
@@ -86,7 +86,8 @@
       "research/problems/abel-ruffini-galois-extensions-oq-06-galois-direction/knowledge.md",
       "research/problems/abel-ruffini-galois-extensions-oq-06-galois-direction/state.md",
       "src/data/research/problems/abel-ruffini-galois-extensions-oq-06-galois-direction.json",
-      "verify_step1_sylow_unique.py — sympy verify-before-assert for Step 1 of the Galois-direction structure theorem (fills the gap; Steps 4/5 already had scripts)"
+      "verify_step1_sylow_unique.py — sympy verify-before-assert for Step 1 of the Galois-direction structure theorem (fills the gap; Steps 4/5 already had scripts)",
+      "primitive_solvable_subgroup_card_eq_prime_mul (|H| = p*m, m | (p-1); researcher-8 S27, VERIFIED 0/0)"
     ]
   },
   "references": [
@@ -111,7 +112,7 @@
       "citation": "abel-ruffini-galois-extensions-oq-06 (forward direction, Docker-verified at 1884 jobs by S7 ACT PR #19071)."
     }
   ],
-  "lastUpdate": "2026-06-18T19:50:00.000Z",
+  "lastUpdate": "2026-07-09T00:00:00.000Z",
   "relatedProofs": [
     "abel-ruffini",
     "abel-ruffini-galois-extensions"
