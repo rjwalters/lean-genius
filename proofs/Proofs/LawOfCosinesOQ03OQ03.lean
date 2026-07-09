@@ -44,10 +44,14 @@ Two further consequences are formalized here:
 
 ## Status (0 sorries; structure-encoded geometric assumptions)
 
-The three second-law-of-cosines relations and the angular defect are encoded as
-structure fields (assumptions about a hyperbolic triangle, exactly as in the parent
-`law-of-cosines-oq-03`). All theorems below are derived from those assumptions with
-no additional axioms and no sorries.
+The three second-law-of-cosines relations are encoded as structure fields (assumptions
+about a hyperbolic triangle, exactly as in the parent `law-of-cosines-oq-03`), together
+with strict side positivity `a, b, c > 0`. All theorems below are derived from those
+assumptions with no additional axioms and no sorries.
+
+The angular defect `A + B + C < π` is **not** a structure field: it is proved as
+`HyperbolicTriangle.defect` from the three laws and side positivity, reducing the
+structural-assumption count from 7 to 6 (see PART 1b).
 
 ## References
 - Ratcliffe (2006): "Foundations of Hyperbolic Manifolds", Ch. 3 (AAA congruence)
@@ -66,9 +70,13 @@ open Real Set
 
 /-- A hyperbolic triangle, specified by its three side lengths `a, b, c` and the
     three opposite angles `A, B, C`. The geometric content is encoded in the three
-    **second laws of cosines** (one per angle) together with the angular defect
-    `A + B + C < π`. These are the same kind of structure-encoded assumptions used in
-    the parent `law-of-cosines-oq-03`. -/
+    **second laws of cosines** (one per angle). These are the same kind of
+    structure-encoded assumptions used in the parent `law-of-cosines-oq-03`.
+
+    The angular defect `A + B + C < π` is **not** assumed as a field: it is *derived*
+    from the three laws together with strict side positivity (`ha, hb, hc`) — see
+    `HyperbolicTriangle.defect` below. This drops the structural-assumption count from
+    7 to 6. -/
 structure HyperbolicTriangle where
   a : ℝ
   b : ℝ
@@ -85,8 +93,6 @@ structure HyperbolicTriangle where
   hA_lt : A < Real.pi
   hB_lt : B < Real.pi
   hC_lt : C < Real.pi
-  /-- Angular defect: the hyperbolic angle sum is strictly less than π. -/
-  defect : A + B + C < Real.pi
   /-- Second law of cosines at vertex A. -/
   lawA : Real.cos A = -Real.cos B * Real.cos C + Real.sin B * Real.sin C * Real.cosh a
   /-- Second law of cosines at vertex B. -/
@@ -106,6 +112,83 @@ theorem sin_B_pos (t : HyperbolicTriangle) : 0 < Real.sin t.B :=
 
 theorem sin_C_pos (t : HyperbolicTriangle) : 0 < Real.sin t.C :=
   Real.sin_pos_of_pos_of_lt_pi t.hC t.hC_lt
+
+-- ============================================================
+-- PART 1b: The angular defect is DERIVED, not assumed (7 → 6 assumptions)
+-- ============================================================
+
+/-- **Half-angle sign lemma.** If `cos P + cos Q > 0`, the half-sum and half-difference
+    cosines have a positive product. Immediate from the sum-to-product identity
+    `cos P + cos Q = 2 cos((P+Q)/2) cos((P-Q)/2)`. -/
+private theorem cos_half_prod_pos {P Q : ℝ} (h : 0 < Real.cos P + Real.cos Q) :
+    0 < Real.cos ((P + Q) / 2) * Real.cos ((P - Q) / 2) := by
+  have e := Real.cos_add_cos P Q
+  nlinarith [e, h]
+
+/-- **The angular defect is a theorem, not an axiom.** For three angles each in `(0, π)`,
+    the two numerator inequalities that side positivity forces (`cosh a, cosh c > 1`,
+    equivalently `sin·sin < cos + cos·cos`) already imply `A + B + C < π`.
+
+    Proof sketch. Writing `m = (A+B+C)/2`, the sum-to-product identity turns each numerator
+    inequality into `cos m · cos(half-difference) > 0`. Since `m ∈ [π/2, 3π/2)` forces
+    `cos m ≤ 0`, and the products are nonzero, `cos m < 0`; then both half-differences are
+    negative, forcing `A+B−C > π` and `B+C−A > π`, whose sum gives `B > π` — impossible. -/
+theorem defect_of_laws (A B C : ℝ)
+    (hA : 0 < A) (hB : 0 < B) (hC : 0 < C)
+    (hAlt : A < Real.pi) (hBlt : B < Real.pi) (hClt : C < Real.pi)
+    (hIC : Real.sin A * Real.sin B < Real.cos C + Real.cos A * Real.cos B)
+    (hIA : Real.sin B * Real.sin C < Real.cos A + Real.cos B * Real.cos C) :
+    A + B + C < Real.pi := by
+  by_contra hcon
+  push_neg at hcon  -- hcon : Real.pi ≤ A + B + C
+  -- Recast the two inequalities in `0 < cos P + cos Q` form.
+  have hPC : 0 < Real.cos (A + B) + Real.cos C := by rw [Real.cos_add]; linarith
+  have hPA : 0 < Real.cos (B + C) + Real.cos A := by rw [Real.cos_add]; linarith
+  -- Sum-to-product: positive products sharing the half-sum m = (A+B+C)/2.
+  have qC := cos_half_prod_pos hPC
+  have qA := cos_half_prod_pos hPA
+  rw [show (B + C + A) / 2 = (A + B + C) / 2 by ring] at qA
+  -- cos m ≤ 0 because m ∈ [π/2, 3π/2).
+  have hm_lo : Real.pi / 2 ≤ (A + B + C) / 2 := by linarith
+  have hm_hi : (A + B + C) / 2 ≤ Real.pi + Real.pi / 2 := by linarith
+  have hcm_le : Real.cos ((A + B + C) / 2) ≤ 0 :=
+    Real.cos_nonpos_of_pi_div_two_le_of_le hm_lo hm_hi
+  -- cos m ≠ 0 (else the product qC would vanish), hence cos m < 0.
+  have hcm_ne : Real.cos ((A + B + C) / 2) ≠ 0 := by
+    intro h0; rw [h0, zero_mul] at qC; exact lt_irrefl 0 qC
+  have hcm_neg : Real.cos ((A + B + C) / 2) < 0 := lt_of_le_of_ne hcm_le hcm_ne
+  -- Both half-differences are therefore negative.
+  have hu1_neg : Real.cos ((A + B - C) / 2) < 0 := by
+    by_contra h; push_neg at h; nlinarith [qC, hcm_neg, h]
+  have hu2_neg : Real.cos ((B + C - A) / 2) < 0 := by
+    by_contra h; push_neg at h; nlinarith [qA, hcm_neg, h]
+  -- Each negative half-difference cosine forces its argument past π/2.
+  have harg1_lo : -(Real.pi / 2) ≤ (A + B - C) / 2 := by linarith
+  have harg2_lo : -(Real.pi / 2) ≤ (B + C - A) / 2 := by linarith
+  have hd1 : Real.pi / 2 < (A + B - C) / 2 := by
+    by_contra h; push_neg at h
+    exact absurd (Real.cos_nonneg_of_neg_pi_div_two_le_of_le harg1_lo h) (not_le.mpr hu1_neg)
+  have hd2 : Real.pi / 2 < (B + C - A) / 2 := by
+    by_contra h; push_neg at h
+    exact absurd (Real.cos_nonneg_of_neg_pi_div_two_le_of_le harg2_lo h) (not_le.mpr hu2_neg)
+  -- Adding: π < A+B−C and π < B+C−A give π < B, contradicting B < π.
+  linarith [hd1, hd2, hBlt]
+
+/-- **The angular defect** `A + B + C < π`, derived (not assumed) from the three second
+    laws of cosines and strict side positivity. Since `cosh a, cosh c > 1` (each side is a
+    genuine positive length), the second-law numerators dominate, and `defect_of_laws`
+    closes the angle sum. This replaces the former `defect` structure field. -/
+theorem HyperbolicTriangle.defect (t : HyperbolicTriangle) :
+    t.A + t.B + t.C < Real.pi := by
+  have hcc : 1 < Real.cosh t.c := Real.one_lt_cosh.mpr t.hc.ne'
+  have hca : 1 < Real.cosh t.a := Real.one_lt_cosh.mpr t.ha.ne'
+  have hsAB : 0 < Real.sin t.A * Real.sin t.B := mul_pos (sin_A_pos t) (sin_B_pos t)
+  have hsBC : 0 < Real.sin t.B * Real.sin t.C := mul_pos (sin_B_pos t) (sin_C_pos t)
+  have hIC : Real.sin t.A * Real.sin t.B < Real.cos t.C + Real.cos t.A * Real.cos t.B := by
+    nlinarith [t.lawC, mul_lt_mul_of_pos_left hcc hsAB]
+  have hIA : Real.sin t.B * Real.sin t.C < Real.cos t.A + Real.cos t.B * Real.cos t.C := by
+    nlinarith [t.lawA, mul_lt_mul_of_pos_left hca hsBC]
+  exact defect_of_laws t.A t.B t.C t.hA t.hB t.hC t.hA_lt t.hB_lt t.hC_lt hIC hIA
 
 -- ============================================================
 -- PART 2: Inverting the second law — each side as a function of the angles
@@ -693,7 +776,6 @@ theorem exists_triangle_of_defect (A B C : ℝ)
             hc := Real.arcosh_pos hvc1
             hA := hA, hB := hB, hC := hC
             hA_lt := hAlt, hB_lt := hBlt, hC_lt := hClt
-            defect := hdef
             lawA := by rw [Real.cosh_arcosh hva1.le]; field_simp; ring
             lawB := by rw [Real.cosh_arcosh hvb1.le]; field_simp; ring
             lawC := by rw [Real.cosh_arcosh hvc1.le]; field_simp; ring }, rfl, rfl, rfl⟩
