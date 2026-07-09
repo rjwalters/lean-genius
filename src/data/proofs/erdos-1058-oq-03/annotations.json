@@ -1,0 +1,74 @@
+[
+  {
+    "id": "header-context",
+    "proofId": "erdos-1058-oq-03",
+    "range": { "startLine": 1, "endLine": 40 },
+    "type": "context",
+    "title": "Companion to Erdős #1058: Making the Technique Axiom-Free",
+    "content": "The parent file `Erdos1058Problem.lean` studies the primes dividing n!+1 for n between consecutive primes (Erdős–Stewart / Luca 2001), but its entire arithmetic content — the prime sequence `prime_seq`, the finiteness conjecture, and Luca's classification — is *axiomatized* (`opaque`/`axiom`), so no genuine divisibility fact is derived there. Open question oq-03 asks whether the underlying *technique* extends to other factorial-based expressions. This companion answers YES with 0 axioms / 0 sorries: the engine behind #1058 is Wilson's theorem, and it yields a complete characterization of when the shift n+1 divides n!+1 and its sibling n!−1. The file imports Mathlib, opens `Nat`, and works in the `Erdos1058OQ03` namespace.",
+    "mathContext": "Parent: divisors of $n!+1$ for $p_i < n < p_{i+1}$, axiomatized. This file: $(n+1)\\mid n!+1 \\iff (n+1)\\text{ prime}$, proved.",
+    "significance": "context",
+    "relatedConcepts": ["Wilson's theorem", "factorials", "Erdős problems", "axiom-free formalization"],
+    "prerequisites": ["number theory", "modular arithmetic"]
+  },
+  {
+    "id": "general-obstruction",
+    "proofId": "erdos-1058-oq-03",
+    "range": { "startLine": 42, "endLine": 52 },
+    "type": "technique",
+    "title": "General Obstruction: No Proper Divisor of n! Divides n!+1",
+    "content": "`not_dvd_factorial_add_one_of_dvd_factorial`: if 1 < d and d ∣ n!, then d does not divide n!+1 — otherwise d would divide their difference (n!+1) − n! = 1, forcing d = 1. Mechanized via `Nat.dvd_add_right` (d ∣ n! lets d ∣ n!+1 reduce to d ∣ 1) and `Nat.dvd_one`. This is the elementary reason every prime ≤ n is barred from dividing n!+1, which is exactly why Erdős–Stewart restrict attention to primes *near* n rather than small ones.",
+    "mathContext": "$1<d,\\ d\\mid n!,\\ d\\mid n!+1 \\Rightarrow d\\mid 1$, contradiction. So any prime factor of $n!+1$ exceeds $n$.",
+    "significance": "supporting",
+    "relatedConcepts": ["divisibility", "coprimality of consecutive integers", "gcd(n!, n!+1)=1"],
+    "prerequisites": ["divisibility in ℕ", "factorial"]
+  },
+  {
+    "id": "wilson-divisibility",
+    "proofId": "erdos-1058-oq-03",
+    "range": { "startLine": 54, "endLine": 65 },
+    "type": "lemma",
+    "title": "Wilson Divisibility for the +1 Expression",
+    "content": "`prime_dvd_factorial_pred_add_one`: for a prime p, p ∣ (p−1)!+1 — the classical statement of Wilson's theorem phrased for the factorial-based expression. The proof installs `Fact p.Prime`, moves to `ZMod p` via `ZMod.natCast_eq_zero_iff`, and applies `ZMod.wilsons_lemma` ((p−1)! ≡ −1), after which `ring` closes −1 + 1 = 0. This is the raw form of the engine; the iff-characterization below sharpens it.",
+    "mathContext": "Wilson: $(p-1)! \\equiv -1 \\pmod p$, hence $p \\mid (p-1)!+1$.",
+    "significance": "key",
+    "relatedConcepts": ["Wilson's theorem", "ZMod", "prime characterization"],
+    "prerequisites": ["Wilson's theorem", "modular arithmetic in ZMod"]
+  },
+  {
+    "id": "flagship-characterization",
+    "proofId": "erdos-1058-oq-03",
+    "range": { "startLine": 67, "endLine": 86 },
+    "type": "theorem",
+    "title": "Flagship: (n+1) ∣ n!+1 ⟺ n+1 Prime",
+    "content": "`succ_dvd_factorial_add_one_iff_prime` (n ≥ 1): the shift n+1 divides n!+1 *exactly when* n+1 is prime — the sharp, universal form of the parent's example-by-example computations, settling the divisibility for every n at once. The proof rewrites the goal through Wilson's *iff* form `Nat.prime_iff_fac_equiv_neg_one` (primality ⟺ (m−1)! ≡ −1 mod m), reduces to a ZMod congruence with `ZMod.natCast_eq_zero_iff`, and closes both directions with `linear_combination`. The composite obstruction `not_succ_dvd_factorial_add_one_of_not_prime` is then a one-line corollary: not prime ⟹ not dividing.",
+    "mathContext": "$(n+1)\\mid n!+1 \\iff (n+1)\\text{ is prime}$; contrapositive: $n+1$ composite $\\Rightarrow (n+1)\\nmid n!+1$.",
+    "significance": "critical",
+    "relatedConcepts": ["Wilson's theorem (iff form)", "primality test", "converse of Wilson"],
+    "prerequisites": ["Wilson's theorem", "ZMod", "the +1 Wilson divisibility"]
+  },
+  {
+    "id": "sibling-transfer",
+    "proofId": "erdos-1058-oq-03",
+    "range": { "startLine": 88, "endLine": 102 },
+    "type": "theorem",
+    "title": "Transfer to the Sibling n!−1",
+    "content": "`prime_dvd_factorial_pred_sub_one_iff`: for a prime p, p ∣ (p−1)!−1 ⟺ p = 2. Directly answers the parent's sibling question ('similar results for n!−1?'). Using `ZMod.wilsons_lemma` after `Nat.cast_sub` (guarded by (p−1)! ≥ 1), (p−1)!−1 ≡ −1 − 1 = −2 (mod p), so divisibility holds iff p ∣ 2 iff p = 2 (`Nat.prime_dvd_prime_iff_eq`). Odd primes fail because −2 ≢ 0. The same Wilson engine, a different but equally sharp answer — demonstrating the technique genuinely extends.",
+    "mathContext": "$(p-1)!-1 \\equiv -2 \\pmod p$, so $p\\mid (p-1)!-1 \\iff p\\mid 2 \\iff p=2$.",
+    "significance": "key",
+    "relatedConcepts": ["Wilson's theorem", "ZMod subtraction (Nat.cast_sub)", "sibling expressions"],
+    "prerequisites": ["Wilson's theorem", "casting subtraction into ZMod"]
+  },
+  {
+    "id": "prime-power-classification",
+    "proofId": "erdos-1058-oq-03",
+    "range": { "startLine": 104, "endLine": 151 },
+    "type": "technique",
+    "title": "Axiom-Free Prime-Power Classification of Small Values",
+    "content": "`eq_of_prime_dvd_of_isPrimePow` is the reusable tool: a prime power has a *unique* prime divisor, so exhibiting two distinct prime divisors refutes prime-power-ness (via `isPrimePow_nat_iff` and `Nat.prime_dvd_prime_iff_eq`). It classifies the small n!±1 values axiom-free: 4!+1=25=5² and 5!+1=121=11² are prime powers (positive witnesses through `isPrimePow_nat_iff`); 6!+1=721=7·103 and 5!−1=119=7·17 are NOT (two distinct prime divisors); and the sibling 3!−1=5 is a trivial prime power. All numeric facts use kernel `decide`, not `native_decide`, so the file stays axiom-free (no `Lean.ofReduceBool`).",
+    "mathContext": "$4!+1=5^2,\\ 5!+1=11^2$ prime powers; $6!+1=7\\cdot103,\\ 5!-1=7\\cdot17$ not; $3!-1=5$ prime. Uniqueness: $p,q\\mid r^k \\Rightarrow p=q=r$.",
+    "significance": "supporting",
+    "relatedConcepts": ["prime powers", "IsPrimePow", "unique prime divisor", "kernel decide vs native_decide"],
+    "prerequisites": ["prime powers", "decidability of divisibility"]
+  }
+]
