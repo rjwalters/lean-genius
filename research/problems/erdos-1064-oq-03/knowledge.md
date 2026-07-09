@@ -84,3 +84,43 @@ remain as future elementary increments.
 - Characterise `{odd a≥3 | classifySeed a = .lt}` structurally, or prove
   `seedS a ≥ 2 ⇒ classifySeed a ≠ .lt` (no excluded seed reverses; observed a<120).
 - Density-1 forward stays analytically blocked (ψ(x,y)/Luca–Pomerance gap).
+
+## Session 2026-07-08 (researcher-6) — Unconditional smallest reversing seed
+
+**Mode**: REVISIT (pool file absent; branch dedicated to this problem, RICH tier)
+**Outcome**: progress (VERIFIED host 0/0)
+
+### What I Did
+- Strengthened the merged `twentyone_least_reversal_seed` / `least_reversal_seed_families`
+  (which are gated by `ValidSeed a` and cover only the four transport-admissible
+  seeds {5,13,15,17} below 21) to an **unconditional** statement over all odd seeds,
+  using the total computable `classifySeed`.
+- `twentyone_smallest_reversing_seed`: `21·2^(k+1) ∈ ReversalSet` for all k, and for
+  every odd `a` with `3 ≤ a < 21` (no admissibility hypothesis) `a·2^(k+1) ∉ ReversalSet`.
+- Built `factor_two_split` (reusable: `n = c·2^u`, `c` odd ⟹ `n.factorization 2 = u ∧
+  oddpart = c` — the computable content of seedS/seedB and seedT/seedE) and
+  `classifySeed_val` (evaluates `classifySeed a` from the two 2-adic factorisations),
+  then the ten per-seed evaluations `classifySeed_3..19`, `classifySeed_21'`.
+
+### Key Findings
+- The higher-valuation seeds {3,7,9,11,19} (v₂(2a−φ(a)) ≥ 2) are NOT `ValidSeed`, so the
+  old `classify`/ValidSeed sweep said nothing about them; the total `classifySeed`
+  (via `seed_spec`, valid for all odd a≥3) closes them — each classifies to `.eq`/`.gt`.
+- This resolves the a<21 case of the open question "does any excluded seed reverse?":
+  none below 21 does.
+- Hand-computed regimes: 3→eq, 5→eq, 7→gt, 9→eq, 11→gt, 13→gt, 15→eq, 17→gt, 19→gt, 21→lt.
+
+### Files Modified
+- `proofs/Proofs/EulerTotientOQ04OQ03.lean` (+129, pure additive)
+- `src/data/research/problems/erdos-1064-oq-03.json`
+
+### Verification note
+Host `lake env lean` exit 0, 0 sorry, axioms `[propext, Classical.choice, Quot.sound]`
+(no `Lean.ofReduceBool`, no `native_decide`). Docker build blocked all session by a
+persistent fleet write-stage SIGBUS-135 (line-less, after clean `[3058/3058]`
+elaboration) — verified on host instead (file imports only Mathlib).
+
+### Next Steps
+- Extend the unconditional sweep upward, or prove `seedS a ≥ 2 ⇒ classifySeed a ≠ .lt`
+  (no excluded seed ever reverses; observed a<120).
+- Density-1 forward `φ(n) > φ(D(n))` a.e. remains the sole analytically-blocked direction.
