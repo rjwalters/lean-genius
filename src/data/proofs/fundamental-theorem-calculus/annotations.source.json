@@ -3,8 +3,9 @@
     "id": "ann-integral-function",
     "proofId": "fundamental-theorem-calculus",
     "anchor": {
-      "type": "section-doc",
-      "contains": "What This Proves"
+      "type": "declaration",
+      "name": "integralFunction",
+      "kind": "def"
     },
     "type": "definition",
     "title": "The Integral Function F(x)",
@@ -26,8 +27,9 @@
     "id": "ann-ftc-part1",
     "proofId": "fundamental-theorem-calculus",
     "anchor": {
-      "type": "section-doc",
-      "contains": "What This Proves"
+      "type": "declaration",
+      "name": "ftc_part1",
+      "kind": "theorem"
     },
     "type": "insight",
     "title": "FTC Part 1: Derivative of an Integral",
@@ -49,8 +51,9 @@
     "id": "ann-continuity-requirement",
     "proofId": "fundamental-theorem-calculus",
     "anchor": {
-      "type": "section-doc",
-      "contains": "What This Proves"
+      "type": "declaration",
+      "name": "ftc_part1_continuous",
+      "kind": "theorem"
     },
     "type": "concept",
     "title": "Continuity is Essential",
@@ -73,7 +76,7 @@
     "proofId": "fundamental-theorem-calculus",
     "anchor": {
       "type": "declaration",
-      "name": "ftc_part1",
+      "name": "ftc_part2",
       "kind": "theorem"
     },
     "type": "insight",
@@ -97,7 +100,7 @@
     "proofId": "fundamental-theorem-calculus",
     "anchor": {
       "type": "declaration",
-      "name": "ftc_part1",
+      "name": "ftc_part2_general",
       "kind": "theorem"
     },
     "type": "concept",
@@ -121,8 +124,8 @@
     "proofId": "fundamental-theorem-calculus",
     "anchor": {
       "type": "declaration",
-      "name": "ftc_part2",
-      "kind": "theorem"
+      "name": "IsAntiderivative",
+      "kind": "def"
     },
     "type": "definition",
     "title": "Antiderivative Definition",
@@ -143,8 +146,9 @@
     "id": "ann-uniqueness",
     "proofId": "fundamental-theorem-calculus",
     "anchor": {
-      "type": "block-comment",
-      "contains": "The Unity of Calculus"
+      "type": "declaration",
+      "name": "antiderivatives_differ_by_constant",
+      "kind": "theorem"
     },
     "type": "insight",
     "title": "Antiderivatives Differ by Constants",
@@ -167,7 +171,7 @@
     "proofId": "fundamental-theorem-calculus",
     "anchor": {
       "type": "declaration",
-      "name": "integral_is_antiderivative",
+      "name": "hasDerivAt_zero_implies_constant",
       "kind": "theorem"
     },
     "type": "technique",
@@ -191,7 +195,7 @@
     "proofId": "fundamental-theorem-calculus",
     "anchor": {
       "type": "block-comment",
-      "contains": "Part 2: The Integral of a Derivative"
+      "contains": "The Unity of Calculus"
     },
     "type": "insight",
     "title": "The Unity of Calculus",
