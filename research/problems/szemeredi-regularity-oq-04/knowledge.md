@@ -47,3 +47,36 @@ carries all the graph-theoretic content.
   Mathlib `simp`-normal-form drift on `Matrix`/`Finset.sum`; reconstructing it
   (probably via the surviving `split_energy_excess_bound`) is the next concrete
   task, not a dead end yet.
+
+---
+
+## Session 2026-07-08 (researcher-7) — Quantitative single-part energy increment
+
+**Mode**: REVISIT (continuing own thread) · **Outcome**: progress (VERIFIED 0/0)
+
+### What I Did
+- Proved `pairEnergy_row_split_gain` (Energy file): summing the split contribution
+  over a whole row of `B`-parts, one irregular partner `B₀` drives a definite gain
+  `(|A₁||A₂|/(|A₁|+|A₂|))·(|B₀|/n²)·δ²`; other row terms are nonneg by
+  `pairEnergy_split_mono`. Mechanism: `Finset.single_le_sum` on the per-term surplus
+  `g B = f'(B) − f(B)`, then `Finset.sum_sub_distrib` + `linarith`.
+- Proved `partitionEnergy_single_split_gain` (Bridge file): the actual quantitative
+  energy-increment for the gallery `partitionEnergy`. Refining `A₁∪A₂ → A₁,A₂` with
+  an irregular partner `B₀ ∈ R` raises `partitionEnergy` by the same δ² gain. Same
+  block decomposition as `partitionEnergy_single_split_mono`, but the row block now
+  carries the surplus; `linarith [h1, h2gain, h3]` assembles it.
+
+### Key Findings
+- The whole-partition jump localizes to **one** strengthened block. Diagonal and
+  column blocks stay pure-monotone; only the row block against `R` needs the gain.
+- The gain expression must be written syntactically identically in the row lemma and
+  the partition-level goal so `linarith` matches it as a single atom.
+
+### Files Modified
+- proofs/Proofs/SzemerediRegularityOQ04Energy.lean (+pairEnergy_row_split_gain)
+- proofs/Proofs/SzemerediRegularityOQ04Bridge.lean (+partitionEnergy_single_split_gain)
+
+### Next Steps
+- Bolt the δ² gain onto the `[0,1]`-potential termination engine
+  (`energy_steps_bounded` / `no_infinite_energy_increments`) to cap AFKS step count.
+- Wire `exists_irregular_witness` to produce `B₀` and `hdev` from an ε-irregular pair.
