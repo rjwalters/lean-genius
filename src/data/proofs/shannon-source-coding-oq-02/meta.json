@@ -40,10 +40,9 @@
       "Complete proof of Shannon coding Kraft validity via log-exp monotonicity",
       "Complete proof of Shannon coding upper bound L < H/ln2 + 1",
       "Tight sandwich bounds on optimal code length combining lower and upper bounds",
-      "Axiomatized optimal code monotonicity (exchange argument) and Huffman optimality"
+      "Complete proof of optimal-code monotonicity (p_i > p_j => l_i <= l_j) via the exchange/swap argument; only Huffman optimality itself remains axiomatized"
     ],
     "assumptions": [
-      "optimal_code_monotone: In an optimal code, more probable symbols get shorter codewords (provable by the exchange/swap argument)",
       "huffman_optimal: Among all prefix-free codes, Huffman achieves minimum average code length (provable by induction on alphabet size)"
     ],
     "dateAdded": "2026-03-23",
