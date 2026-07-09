@@ -181,4 +181,36 @@ theorem compress_eq_restrict_of_invariant {T : V →ₗ[𝕜] V} (H : Submodule 
   -- `ext` already reduces to the coerced (ambient-`V`) equality of the images.
   exact (coe_compress_of_invariant H hinv y).trans (LinearMap.restrict_coe_apply T hinv y).symm
 
+/-- **Converse: pointwise agreement forces invariance.**
+
+The orthogonal compression `compress T H` agrees pointwise with `T` — meaning
+`↑(compress T H y) = T ↑y` for every `y : H` — *iff* `H` is `T`-invariant.
+
+The forward direction is `coe_compress_of_invariant`.  Conversely, the image
+`compress T H y` is by construction a vector *of* `H`, so its ambient coercion
+lies in `H`; the pointwise agreement then rewrites that membership into
+`T ↑y ∈ H`.  Thus the projection error in the compression vanishes precisely on
+invariant subspaces — this pins the attainment locus of Poincaré separation from
+both sides. -/
+theorem invariant_iff_coe_compress_eq {T : V →ₗ[𝕜] V} (H : Submodule 𝕜 V) :
+    (∀ y ∈ H, T y ∈ H) ↔ ∀ y : H, ((compress T H y : H) : V) = T (y : V) := by
+  refine ⟨fun hinv y => coe_compress_of_invariant H hinv y, fun h y hy => ?_⟩
+  -- `↑(compress T H ⟨y, hy⟩)` is a coercion of an element of `H`, hence in `H`.
+  have hmem : ((compress T H ⟨y, hy⟩ : H) : V) ∈ H := Submodule.coe_mem _
+  rwa [h ⟨y, hy⟩] at hmem
+
+omit [FiniteDimensional 𝕜 V] in
+/-- **Operator-level converse.**  If the compression `compress T H` equals the
+restriction of `T` to `H` for *some* proof `hinv` that `T` maps `H` into itself,
+that already witnesses invariance; but the substantive converse is that the mere
+existence of an operator `S : H →ₗ[𝕜] H` lifting `T` pointwise
+(`∀ y, ↑(S y) = T ↑y`) already forces `H` to be invariant (once invariance
+holds, `invariant_iff_coe_compress_eq` identifies `S` with `compress T H`).
+This packages the converse into the "honest restriction" picture. -/
+theorem invariant_of_exists_lift {T : V →ₗ[𝕜] V} (H : Submodule 𝕜 V)
+    (S : H →ₗ[𝕜] H) (hS : ∀ y : H, ((S y : H) : V) = T (y : V)) :
+    ∀ y ∈ H, T y ∈ H := fun y hy => by
+  have hmem : ((S ⟨y, hy⟩ : H) : V) ∈ H := Submodule.coe_mem _
+  rwa [hS ⟨y, hy⟩] at hmem
+
 end CauchyInterlacing.PoincareCompression
