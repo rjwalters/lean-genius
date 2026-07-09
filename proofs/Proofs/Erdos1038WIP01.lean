@@ -224,4 +224,98 @@ theorem sublevelInf_eq_zero : sublevelInf = 0 :=
       (iInf_le_of_le sq_add_one_admissible sublevelMeasure_sq_add_one.le))
     (zero_le _)
 
+/-! ### The faithful predicate: `f` splits completely with all roots in `[-1,1]`
+
+The literal predicate `MonicRealRootedIn01` is unfaithful because it only constrains
+the real roots `f` *has*, so a monic with unreal roots (e.g. `X² + 1`) slips through and
+collapses the infimum to `0`.  The **faithful** predicate strengthens it with the
+splitting condition `f.roots.card = f.natDegree`: `f` has exactly `deg f` real roots
+(counted with multiplicity), i.e. `f` splits over `ℝ`.  Both exact witnesses computed
+above — the quadratic `X² − 1` and the linear `X` — satisfy it, so the supremum lower
+bound `2√2` transfers to the faithful object, while `X² + 1` is now correctly excluded. -/
+
+/-- The **faithful** admissibility predicate: monic, all roots real in `[-1,1]`, **and**
+    `f` splits completely over `ℝ` (`f.roots.card = f.natDegree`, so the multiset of real
+    roots accounts for the full degree). -/
+def MonicRealRootedIn01' (f : Polynomial ℝ) : Prop :=
+  MonicRealRootedIn01 f ∧ f.roots.card = f.natDegree
+
+/-- **The roots of `X² − 1` are `{1, −1}`.** -/
+theorem q_roots : q.roots = {1, -1} := by
+  have hq : q = (X - C 1) * (X - C (-1)) := by simp only [q, C_neg, C_1]; ring
+  rw [hq, roots_mul (by rw [← hq]; exact quadratic_admissible.1.ne_zero),
+    roots_X_sub_C, roots_X_sub_C]
+  rfl
+
+/-- **The quadratic `X² − 1` is faithfully admissible**: it splits over `ℝ` with two
+    real roots `±1`, so `roots.card = 2 = natDegree`. -/
+theorem quadratic_faithful : MonicRealRootedIn01' q := by
+  refine ⟨quadratic_admissible, ?_⟩
+  have hnd : q.natDegree = 2 := by simp only [q]; compute_degree!
+  rw [q_roots, hnd]
+  rfl
+
+/-- **The linear polynomial `X` is faithfully admissible**: its single real root `0`
+    accounts for the full degree, `roots.card = 1 = natDegree`. -/
+theorem linear_faithful : MonicRealRootedIn01' (X : Polynomial ℝ) := by
+  refine ⟨linear_admissible, ?_⟩
+  rw [roots_X, natDegree_X]
+  rfl
+
+/-- **The faithful predicate excludes `X² + 1`.**  It has no real roots (`roots.card = 0`)
+    but `natDegree = 2`, so the splitting condition fails — precisely the polynomial that
+    degenerated the literal infimum is ruled out here. -/
+theorem sq_add_one_not_faithful :
+    ¬ MonicRealRootedIn01' (X ^ 2 + C 1 : Polynomial ℝ) := by
+  rintro ⟨_, hcard⟩
+  have h0 : (X ^ 2 + C 1 : Polynomial ℝ).roots = 0 := by
+    by_contra h
+    obtain ⟨r, hr⟩ := Multiset.exists_mem_of_ne_zero h
+    rw [Polynomial.mem_roots'] at hr
+    have : r ^ 2 + 1 = 0 := by simpa using hr.2
+    nlinarith [sq_nonneg r]
+  have hnd : (X ^ 2 + C 1 : Polynomial ℝ).natDegree = 2 := by compute_degree!
+  rw [h0, Multiset.card_zero, hnd] at hcard
+  exact absurd hcard (by norm_num)
+
+/-- The **supremum of sublevel measures over faithfully admissible `f`** — the intended
+    formalization of the Erdős–Herzog–Piranian/Tao supremum (`= 2√2`). -/
+noncomputable def sublevelSup' : ℝ≥0∞ :=
+  ⨆ (f : Polynomial ℝ) (_ : MonicRealRootedIn01' f), sublevelMeasure f
+
+/-- **Faithful supremum lower bound: `2√2 ≤ sublevelSup'`.**  The quadratic `X² − 1` is
+    faithfully admissible with sublevel measure `2√2`, so the lower witness transfers
+    intact to the faithful object.  This is the machine-checkable half of the intended
+    `sublevelSup' = 2√2`. -/
+theorem le_sublevelSup' : ENNReal.ofReal (2 * Real.sqrt 2) ≤ sublevelSup' :=
+  le_iSup_of_le q (le_iSup_of_le quadratic_faithful sublevelMeasure_quadratic.ge)
+
+/-- **The faithful supremum is dominated by the literal one.**  Every faithfully
+    admissible `f` is admissible, so restricting the supremum to the smaller set can only
+    lower it: `sublevelSup' ≤ sublevelSup`. -/
+theorem sublevelSup'_le_sublevelSup : sublevelSup' ≤ sublevelSup := by
+  refine iSup_le fun f => iSup_le fun hf => ?_
+  exact le_iSup_of_le f (le_iSup_of_le hf.1 le_rfl)
+
+/-- The **infimum of sublevel measures over faithfully admissible `f`** — the intended
+    infimum object (`2^(4/3) − 1 ≤ · ≤ 1.835`, exact value open), no longer degenerated
+    by `X² + 1`. -/
+noncomputable def sublevelInf' : ℝ≥0∞ :=
+  ⨅ (f : Polynomial ℝ) (_ : MonicRealRootedIn01' f), sublevelMeasure f
+
+/-- **Faithful infimum upper bound: `sublevelInf' ≤ 2`.**  The linear `X` is faithfully
+    admissible with sublevel measure `2`.  Unlike `sublevelInf` (which collapses to `0`
+    via the excluded `X² + 1`), this bound is over the intended domain; it is genuine but
+    not claimed tight (the true faithful infimum is `≤ 1.835`). -/
+theorem sublevelInf'_le_two : sublevelInf' ≤ ENNReal.ofReal 2 :=
+  iInf_le_of_le X (iInf_le_of_le linear_faithful sublevelMeasure_linear.le)
+
+/-- **The literal infimum lies below the faithful one.**  Restricting the infimum to the
+    smaller faithful set can only raise it: `sublevelInf ≤ sublevelInf'`.  Combined with
+    `sublevelInf_eq_zero` this says `0 = sublevelInf ≤ sublevelInf'` — the faithful
+    predicate removes the spurious `0`. -/
+theorem sublevelInf_le_sublevelInf' : sublevelInf ≤ sublevelInf' := by
+  refine le_iInf fun f => le_iInf fun hf => ?_
+  exact iInf_le_of_le f (iInf_le_of_le hf.1 le_rfl)
+
 end Erdos1038WIP01

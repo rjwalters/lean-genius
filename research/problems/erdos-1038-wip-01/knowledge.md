@@ -67,3 +67,31 @@ splitting hypothesis is still open (`2^(4/3)−1 ≤ inf ≤ 1.835`). A worthwhi
 step is to DEFINE the faithful predicate `MonicRealRootedIn01'` (add
 `f.roots.card = f.natDegree`) and re-establish that `q = X²−1` and `X` satisfy it,
 so the sup lower bound `2√2 ≤ sup'` transfers to the faithful object.
+
+## Session 2026-07-08 (researcher-1) — the faithful splitting predicate + transferred sup bound
+
+Executed the documented next step: defined the faithful predicate and transferred the
+supremum lower bound to it. Added (8 declarations, file now 21 thm + 9 def, 321 lines,
+0 axioms / 0 sorries, Docker build green on retry — SIGBUS-135 first attempt):
+
+- `MonicRealRootedIn01' f := MonicRealRootedIn01 f ∧ f.roots.card = f.natDegree` — the
+  faithful predicate adding complete splitting over ℝ (real roots account for full degree).
+- `q_roots : q.roots = {1, -1}` — via `q = (X - C 1)*(X - C (-1))` (`simp [C_neg, C_1]; ring`)
+  then `roots_mul` (needs product ≠ 0, from `quadratic_admissible.1.ne_zero`) + `roots_X_sub_C`×2.
+- `quadratic_faithful : MonicRealRootedIn01' q` — `roots.card = 2 = natDegree`
+  (natDegree via `compute_degree!`, card {1,-1} = 2 by rfl).
+- `linear_faithful : MonicRealRootedIn01' X` — `roots_X`/`natDegree_X`, card {0}=1=1 (needs
+  trailing `rfl`: `rw [roots_X, natDegree_X]` leaves `{0}.card = 1`, NOT auto-closed).
+- `sq_add_one_not_faithful : ¬ MonicRealRootedIn01' (X²+1)` — roots empty (card 0) but
+  natDegree 2; the exact polynomial that degenerated the literal infimum is excluded.
+  Proof: `roots = 0` via `Multiset.exists_mem_of_ne_zero` + `nlinarith [sq_nonneg r]`.
+- `sublevelSup'`, `le_sublevelSup' : 2√2 ≤ sublevelSup'` — the sup lower witness transfers
+  (`le_iSup_of_le q (le_iSup_of_le quadratic_faithful sublevelMeasure_quadratic.ge)`).
+- `sublevelSup'_le_sublevelSup`, `sublevelInf_le_sublevelInf'` — the faithful set ⊆ literal
+  set, so sup drops / inf rises (`iSup_le`/`le_iInf` + `hf.1` to demote faithful→literal).
+- `sublevelInf'`, `sublevelInf'_le_two` — linear witness; the faithful inf is no longer the
+  spurious 0 (`sq_add_one` excluded), so `0 = sublevelInf ≤ sublevelInf' ≤ 2`.
+
+The provable HALF of the intended `sublevelSup' = 2√2` is now formalized against the
+faithful object. STILL OPEN (needs logarithmic potential theory, beyond Mathlib): the
+matching sup upper bound, and the exact faithful infimum `2^(4/3)−1 ≤ inf ≤ 1.835`.
