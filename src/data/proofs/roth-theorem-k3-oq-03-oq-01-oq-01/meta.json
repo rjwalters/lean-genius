@@ -130,6 +130,16 @@
       "targetId": "roth-theorem-k3",
       "relationship": "extends",
       "description": "Root entry: Roth's theorem (Szemerédi k=3), the density result whose modern proof drives the density-increment expansions that multilinearity of Λ_k powers."
+    },
+    {
+      "targetId": "roth-theorem-k3-oq-03-oq-01",
+      "relationship": "extends",
+      "description": "The immediate parent: foundational identities for the Gowers U^s norm and the k-AP counting operator Λ_k (degenerate cases, base evaluations). This entry adds the next structural layer — that Λ_k is additive and homogeneous in each slot separately."
+    },
+    {
+      "targetId": "roth-theorem-k3-oq-03-oq-01-oq-01-oq-01",
+      "relationship": "related",
+      "description": "The direct successor: the geometric symmetries of Λ_k (translation invariance, reflection, dilation). Multilinearity proved here and those symmetries are the two structural pillars that together drive the generalized von Neumann inequality bounding Λ_k by a Gowers norm."
     }
   ],
   "sorries": 0
