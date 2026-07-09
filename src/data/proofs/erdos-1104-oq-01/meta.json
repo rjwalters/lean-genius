@@ -67,7 +67,7 @@
     "assumptions": "0 axioms, 0 sorries. The Mycielskian and the full chromatic-increment theorem χ(M(G)) = χ(G)+1 are built from scratch over Mathlib's SimpleGraph API (fromRel, Colorable, CliqueFree). Badge is 'original' because Mathlib contains no Mycielskian construction and no chromatic-increment theorem; both inequalities and the iterated witness family are formalized here. The parent erdos-1104 entry remains 'axiomatized' (the asymptotic growth rate of f(n) is open); this entry is the verified constructive lower-bound engine, not the full asymptotic determination.",
     "mathlib_version": "4.26.0",
     "theoremCount": 27,
-    "definitionCount": 7
+    "definitionCount": 6
   },
   "overview": {
     "historicalContext": "That triangle-free graphs can have arbitrarily large chromatic number is one of the foundational surprises of graph colouring — local sparsity (no triangle) does not bound the global colouring complexity. Mycielski (1955) gave the cleanest constructive proof: a transformation M(G) that keeps a graph triangle-free while raising its chromatic number by exactly one. Iterating from K₂ produces K₂ → C₅ → the Grötzsch graph → … , triangle-free graphs of chromatic number 2, 3, 4, …. This constructive family is the engine behind the lower-bound side of Erdős #1104, which asks for the growth rate f(n) = max χ(G) over triangle-free G on n vertices (known to be Θ(√(n/log n)); exact constant open, lower bound Hefty–Horn–King–Pfender 2025, upper bound Davies–Illingworth 2022). Mathlib does not contain the Mycielskian.",
@@ -196,7 +196,7 @@
     "lineCount": 420,
     "axiomCount": 0,
     "sorries": 0,
-    "definitionCount": 7,
+    "definitionCount": 6,
     "theoremCount": 27
   },
   "sorries": []

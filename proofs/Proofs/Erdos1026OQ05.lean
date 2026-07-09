@@ -205,6 +205,27 @@ theorem minMonotonicParts_ge (seq : RealSeq n) :
   · rintro p ⟨D, rfl⟩
     exact monotonicDecomposition_numParts_ge seq D
 
+/-- Any monotonic decomposition of a *nonempty* sequence uses at least one part: the
+covering condition demands a part index for element `0`, and that index inhabits
+`Fin numParts`, forcing `numParts > 0`. -/
+theorem numParts_pos_of_pos (seq : RealSeq n) (D : MonotonicDecomposition n seq)
+    (hn : 0 < n) : 0 < D.numParts := by
+  obtain ⟨i, _, _, _⟩ := D.covering ⟨0, hn⟩
+  exact Nat.lt_of_le_of_lt (Nat.zero_le i.val) i.isLt
+
+/-- The minimum number of monotone parts of a nonempty sequence is at least `1`.
+This sharpens the lower bracket: unlike the division bound `n / max(LIS, LDS)` (which
+degenerates to `0` when the longest monotone run is long relative to `n`), positivity
+always holds — you cannot cover a nonempty sequence with zero monotone pieces. -/
+theorem minMonotonicParts_pos (seq : RealSeq n) (hn : 0 < n) :
+    0 < minMonotonicParts seq := by
+  have hne : {p | ∃ D : MonotonicDecomposition n seq, D.numParts = p}.Nonempty :=
+    ⟨n, singletonDecomposition seq, rfl⟩
+  obtain ⟨D, hD⟩ := Nat.sInf_mem hne
+  have hEq : minMonotonicParts seq = D.numParts := hD.symm
+  rw [hEq]
+  exact numParts_pos_of_pos seq D hn
+
 /-- **The optimal number of monotone parts is bracketed** in `[n / max(LIS, LDS), n]`.
 The lower bound is the elementary (Mirsky/Dilworth) half of Hanani's theorem; the matching
 `O(√n)` *upper* bound for the extremal Erdős–Szekeres sequences is the hard constructive

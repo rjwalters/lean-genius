@@ -45,6 +45,13 @@ three original orders `10 = 5·2`, `20 = 5·4`, `40 = 5·8` are recovered as the
 * `conj_mem_zpowers_sylow` — consequently every element normalizes `⟨c⟩`.
 * `zpowers_order5_normal` / `conj_mem_zpowers_order5` — the `p = 5`
   specialisations feeding the Abel–Ruffini `x⁵-4x+2` proof, now one-liners.
+* `mem_center_of_coprime_index` — class-equation centrality criterion: if the
+  index `m` is coprime to `p − 1`, the order-`p` element `c` is central.
+* `isSolvable_of_sylow_primePow_index` — solvability whenever `m = q^k`.
+* `isNilpotent_of_sylow_central_primePow_index` — the **sharp** strengthening: in
+  the coprime regime `gcd(q^k, p − 1) = 1` the central Sylow subgroup makes `G`
+  *nilpotent*, not merely solvable (the Abel–Ruffini orders `20, 40` sit on the
+  non-coprime side, where nilpotency fails: `F₂₀` is solvable but not nilpotent).
 -/
 
 namespace AbelRuffiniSylowElim
@@ -716,5 +723,164 @@ example {G : Type*} [Group G] [Finite G] (c : G) (hc : orderOf c = 5)
       have := Nat.le_of_dvd (by norm_num) hd
       interval_cases d <;> omega)
     c hc
+
+/-! ### Sharp strengthening: nilpotency in the coprime regime
+
+Solvability (`isSolvable_of_sylow_primePow_index`) holds for *every* prime-power
+index `m = q^k`.  In the special **coprime** regime `gcd(q^k, p − 1) = 1` the
+centrality criterion `mem_center_of_coprime_index` places `⟨c⟩` inside the centre,
+so the extension `1 → ⟨c⟩ → G → G ⧸ ⟨c⟩ → 1` is *central*.  A central extension of
+a nilpotent group is nilpotent (Mathlib's `isNilpotent_of_ker_le_center`), and the
+quotient `G ⧸ ⟨c⟩` is a `q`-group hence nilpotent; therefore `G` is **nilpotent**,
+not merely solvable.
+
+This is the sharp boundary separating the two structural conclusions.  The
+Abel–Ruffini orders `20 = 5·4` and `40 = 5·8` live in the *non*-coprime regime
+(`gcd(4, 4) = gcd(8, 4) = 4 ≠ 1`), where nilpotency genuinely fails — the metacyclic
+Frobenius group `F₂₀ = C₅ ⋊ C₄` of order `20` is solvable but **not** nilpotent
+(its Sylow `5`-subgroup is normal, but the Sylow `2`-subgroup is not).  The coprime
+hypothesis is exactly what upgrades "solvable" to "nilpotent" here. -/
+
+/-- **Nilpotency from a *central* normal Sylow `p`-subgroup with prime-power index.**
+
+Under the hypotheses of `zpowers_sylow_normal`, if additionally the index `m = q^k`
+is coprime to `p − 1`, then the order-`p` element `c` is central
+(`mem_center_of_coprime_index`), so `⟨c⟩ ≤ Z(G)` and `1 → ⟨c⟩ → G → G ⧸ ⟨c⟩ → 1` is a
+central extension of the `q`-group `G ⧸ ⟨c⟩`.  Hence `G` is nilpotent — a strict
+strengthening of `isSolvable_of_sylow_primePow_index` valid precisely in the coprime
+regime `gcd(q^k, p − 1) = 1`. -/
+theorem isNilpotent_of_sylow_central_primePow_index {G : Type*} [Group G] [Finite G]
+    {p q k : ℕ} [Fact p.Prime] [Fact q.Prime]
+    (hcard : Nat.card G = p * q ^ k) (hpm : ¬ (p ∣ q ^ k))
+    (huniq : ∀ d : ℕ, d ∣ q ^ k → d % p = 1 → d = 1)
+    (c : G) (hc : orderOf c = p) (hcop : Nat.Coprime (q ^ k) (p - 1)) :
+    Group.IsNilpotent G := by
+  haveI : (Subgroup.zpowers c).Normal := zpowers_sylow_normal (q ^ k) hcard hpm huniq c hc
+  have hcent : c ∈ Subgroup.center G :=
+    mem_center_of_coprime_index (q ^ k) hcard hpm huniq c hc hcop
+  have hle : Subgroup.zpowers c ≤ Subgroup.center G := Subgroup.zpowers_le.mpr hcent
+  have hidx : Nat.card (G ⧸ Subgroup.zpowers c) = q ^ k := by
+    rw [← Subgroup.index_eq_card]; exact zpowers_index_eq (q ^ k) hcard c hc
+  haveI : Group.IsNilpotent (G ⧸ Subgroup.zpowers c) := (IsPGroup.of_card hidx).isNilpotent
+  refine isNilpotent_of_ker_le_center (QuotientGroup.mk' (Subgroup.zpowers c)) ?_ inferInstance
+  rw [QuotientGroup.ker_mk']; exact hle
+
+/-! ### The fixed prime `p = 5`, nilpotency form -/
+
+/-- **Fixed prime `5` nilpotency** (`p = 5` specialisation of
+`isNilpotent_of_sylow_central_primePow_index`).  A finite group of order `5·q^k` with
+`5 ∤ q^k`, the divisor condition, an order-`5` element, and `q^k` coprime to `4 = 5 − 1`
+is nilpotent.  This is the nilpotency counterpart of `isSolvable_order5_primePow_index`,
+sharpened by the coprimality (oddness of `q^k`) hypothesis. -/
+theorem isNilpotent_order5_central_primePow_index {G : Type*} [Group G] [Finite G]
+    {q k : ℕ} [Fact q.Prime]
+    (hcard : Nat.card G = 5 * q ^ k) (hm5 : ¬ (5 ∣ q ^ k))
+    (huniq : ∀ d : ℕ, d ∣ q ^ k → d % 5 = 1 → d = 1)
+    (c : G) (hc : orderOf c = 5) (hcop : Nat.Coprime (q ^ k) 4) :
+    Group.IsNilpotent G :=
+  haveI : Fact (Nat.Prime 5) := ⟨by norm_num⟩
+  isNilpotent_of_sylow_central_primePow_index hcard hm5 huniq c hc (by simpa using hcop)
+
+/-- **Order `15` nilpotency (hence cyclicity).**  Any finite group of order `15`
+containing an element of order `5` is nilpotent: order `15 = 5·3¹`, `5 ∤ 3`, the
+divisor condition holds (`3 < 5`), and `3` is coprime to `4 = 5 − 1`, so the Sylow
+`5`-subgroup is central and the order-`3` quotient extension is central.  Together
+with the (automatic) normal Sylow `3`-subgroup this is the group-theoretic reason
+every group of order `15` is cyclic — the smallest coprime-regime instance, sitting
+strictly on the nilpotent side of the `20/40` non-nilpotent boundary. -/
+example {G : Type*} [Group G] [Finite G] (c : G) (hc : orderOf c = 5)
+    (hcard : Nat.card G = 15) : Group.IsNilpotent G :=
+  haveI : Fact (Nat.Prime 3) := ⟨by norm_num⟩
+  isNilpotent_order5_central_primePow_index (q := 3) (k := 1)
+    (hcard.trans (by norm_num)) (by norm_num)
+    (huniq_of_lt (by norm_num) (by norm_num)) c hc (by norm_num)
+
+/-! ### From central Sylow to abelian: the `G ⧸ ⟨c⟩` cyclic upgrade
+
+The nilpotency result above places the group on the nilpotent side of the boundary, but in
+the *prime-index* subcase (`k = 1`) one can say strictly more: `G` is **abelian**.  Once the
+centrality criterion `mem_center_of_coprime_index` puts `c` in `Z(G)`, the classical theorem
+"`G ⧸ Z(G)` cyclic ⟹ `G` abelian" (`commutative_of_cyclic_center_quotient`) applies through
+the intermediate central subgroup `⟨c⟩`, provided the quotient `G ⧸ ⟨c⟩` is cyclic.  When the
+index is a *prime* `q`, that quotient has prime order and is automatically cyclic.  This is
+the exact mechanism behind "every group of order `15` is cyclic": `15 = 5·3`, `gcd(3, 4) = 1`
+centralises the order-`5` element, and the order-`3` quotient is cyclic — giving
+commutativity, a strict strengthening of the order-`15` nilpotency example above. -/
+
+/-- **A central element generates a normal subgroup.**  If `c ∈ Z(G)` then every element of
+`⟨c⟩` is central, hence fixed by conjugation, so `⟨c⟩ ⊴ G`.  This is exactly what makes the
+coset space `G ⧸ ⟨c⟩` a *group* (rather than a bare quotient), a prerequisite for even stating
+that it is cyclic below. -/
+theorem zpowers_normal_of_mem_center {G : Type*} [Group G] {c : G}
+    (hc : c ∈ Subgroup.center G) : (Subgroup.zpowers c).Normal := by
+  refine ⟨fun n hn g => ?_⟩
+  have hcen : n ∈ Subgroup.center G := Subgroup.zpowers_le.mpr hc hn
+  rw [Subgroup.mem_center_iff] at hcen
+  have hfix : g * n * g⁻¹ = n := by rw [hcen g]; group
+  rw [hfix]; exact hn
+
+/-- **Central element with cyclic quotient ⟹ abelian.**  If `c ∈ Z(G)` and the quotient
+`G ⧸ ⟨c⟩` is cyclic, then `G` is commutative.  This routes Mathlib's
+`commutative_of_cyclic_center_quotient` through the quotient map `G → G ⧸ ⟨c⟩`, whose kernel
+`⟨c⟩` lies in the centre exactly because `c` is central (`Subgroup.zpowers_le`).  The `Normal`
+instance — needed for `G ⧸ ⟨c⟩` to carry a group structure — follows from centrality via
+`zpowers_normal_of_mem_center`. -/
+theorem mul_comm_of_center_zpowers_cyclic_quotient {G : Type*} [Group G] (c : G)
+    (hc : c ∈ Subgroup.center G) [(Subgroup.zpowers c).Normal]
+    [IsCyclic (G ⧸ Subgroup.zpowers c)] (a b : G) :
+    a * b = b * a := by
+  refine commutative_of_cyclic_center_quotient (QuotientGroup.mk' (Subgroup.zpowers c)) ?_ a b
+  rw [QuotientGroup.ker_mk']
+  exact Subgroup.zpowers_le.mpr hc
+
+/-- **Prime index ⟹ cyclic quotient.**  If `⟨c⟩` has order `p` and `Nat.card G = p·q` with
+`q` prime, then `G ⧸ ⟨c⟩` has order `q`, hence is cyclic.  (Lagrange:
+`|G| = |G ⧸ ⟨c⟩| · |⟨c⟩|` with `|⟨c⟩| = orderOf c = p`, cancel the `p`.) -/
+theorem isCyclic_quotient_zpowers_of_prime_index {G : Type*} [Group G] [Finite G]
+    (c : G) [(Subgroup.zpowers c).Normal] {p q : ℕ} (hc : orderOf c = p) (hq : q.Prime)
+    (hcard : Nat.card G = p * q) :
+    IsCyclic (G ⧸ Subgroup.zpowers c) := by
+  haveI : Fact q.Prime := ⟨hq⟩
+  apply isCyclic_of_prime_card (p := q)
+  have hlag : Nat.card G
+      = Nat.card (G ⧸ Subgroup.zpowers c) * Nat.card (Subgroup.zpowers c) :=
+    Subgroup.card_eq_card_quotient_mul_card_subgroup _
+  rw [Nat.card_zpowers, hc, hcard,
+    mul_comm (Nat.card (G ⧸ Subgroup.zpowers c)) p] at hlag
+  exact (Nat.eq_of_mul_eq_mul_left (hc ▸ orderOf_pos c) hlag).symm
+
+/-- **Coprime prime index ⟹ abelian.**  Under the `zpowers_sylow_normal` hypotheses, if the
+index `q = [G : ⟨c⟩]` is a *prime* coprime to `p − 1`, then `G` is commutative: `c` is central
+by `mem_center_of_coprime_index`, and the prime-order quotient `G ⧸ ⟨c⟩` is cyclic, so
+`mul_comm_of_center_zpowers_cyclic_quotient` applies.  This upgrades the nilpotency conclusion
+`isNilpotent_of_sylow_central_primePow_index` (in its `k = 1` subcase) from nilpotent to
+abelian. -/
+theorem mul_comm_of_prime_index_coprime {G : Type*} [Group G] [Finite G] {p q : ℕ}
+    [hp : Fact p.Prime] (hq : q.Prime)
+    (hcard : Nat.card G = p * q) (hpq : ¬ (p ∣ q))
+    (huniq : ∀ d : ℕ, d ∣ q → d % p = 1 → d = 1)
+    (c : G) (hc : orderOf c = p) (hcop : Nat.Coprime q (p - 1)) (a b : G) :
+    a * b = b * a := by
+  have hcent : c ∈ Subgroup.center G :=
+    mem_center_of_coprime_index q hcard hpq huniq c hc hcop
+  haveI : (Subgroup.zpowers c).Normal := zpowers_normal_of_mem_center hcent
+  haveI : IsCyclic (G ⧸ Subgroup.zpowers c) :=
+    isCyclic_quotient_zpowers_of_prime_index c hc hq hcard
+  exact mul_comm_of_center_zpowers_cyclic_quotient c hcent a b
+
+/-- **Every group of order `15` is abelian.**  Cauchy provides an order-`5` element `c`; with
+`15 = 5·3`, `3` prime, `5 ∤ 3`, and `gcd(3, 4) = 1`, `mul_comm_of_prime_index_coprime` gives
+commutativity.  (A finite abelian group of squarefree order `15` is then cyclic — the
+classical classification of order-`15` groups, here obtained by upgrading the order-`15`
+nilpotency example above to full commutativity.) -/
+theorem mul_comm_of_card_fifteen {G : Type*} [Group G] [Finite G]
+    (hcard : Nat.card G = 15) (a b : G) : a * b = b * a := by
+  haveI : Fact (Nat.Prime 5) := ⟨by norm_num⟩
+  haveI : Fintype G := Fintype.ofFinite G
+  obtain ⟨c, hc⟩ : ∃ x : G, orderOf x = 5 :=
+    exists_prime_orderOf_dvd_card 5 (by rw [← Nat.card_eq_fintype_card, hcard]; norm_num)
+  exact mul_comm_of_prime_index_coprime (q := 3) (by norm_num)
+    (hcard.trans (by norm_num)) (by norm_num)
+    (huniq_of_lt (by norm_num) (by norm_num)) c hc (by norm_num) a b
 
 end AbelRuffiniSylowElim

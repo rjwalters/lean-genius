@@ -3,6 +3,62 @@
   "title": "Similarity Invariants of Square Matrices: Determinant, Trace, Characteristic Polynomial",
   "slug": "matrix-similarity-invariants-oq-01",
   "description": "Two square matrices A, B over a commutative ring are similar if B = P·A·P⁻¹ for some invertible P. This entry packages similarity as a named relation, proves it is an equivalence relation, and collects the three classical similarity invariants — determinant, trace, and characteristic polynomial — into one statement, with the corollary that similar matrices share their eigenvalues (the multiset of characteristic-polynomial roots, over an integral domain). Mathlib proves each invariance separately (det_units_conj, trace_units_conj, charpoly_units_conj) but states neither the similarity relation nor a unified invariants theorem.",
+  "mainTheorems": [
+    {
+      "name": "Similar.invariants",
+      "type": "main",
+      "description": "The three classical invariants packaged together: similar matrices share their determinant, trace, and characteristic polynomial.",
+      "leanType": "(h : Similar A B) : B.det = A.det ∧ B.trace = A.trace ∧ B.charpoly = A.charpoly"
+    },
+    {
+      "name": "Similar.charpoly_eq",
+      "type": "main",
+      "description": "The master invariant: similar matrices have equal characteristic polynomials (via Matrix.charpoly_units_conj), which subsumes determinant and trace.",
+      "leanType": "(h : Similar A B) : B.charpoly = A.charpoly"
+    },
+    {
+      "name": "Similar.charpoly_roots_eq",
+      "type": "main",
+      "description": "Eigenvalue invariance: over an integral domain, similar matrices have the same multiset of characteristic-polynomial roots. congrArg Polynomial.roots applied to charpoly_eq.",
+      "leanType": "[IsDomain R] (h : Similar A B) : B.charpoly.roots = A.charpoly.roots"
+    },
+    {
+      "name": "similar_equivalence",
+      "type": "main",
+      "description": "Similarity is an equivalence relation on square matrices, bundling refl/symm/trans.",
+      "leanType": "Equivalence (Similar (n := n) (R := R))"
+    },
+    {
+      "name": "Similar.det_eq",
+      "type": "supporting",
+      "description": "Determinant is a similarity invariant (via Matrix.det_units_conj).",
+      "leanType": "(h : Similar A B) : B.det = A.det"
+    },
+    {
+      "name": "Similar.trace_eq",
+      "type": "supporting",
+      "description": "Trace is a similarity invariant (via Matrix.trace_units_conj).",
+      "leanType": "(h : Similar A B) : B.trace = A.trace"
+    },
+    {
+      "name": "Similar.refl",
+      "type": "supporting",
+      "description": "Reflexivity of similarity, witnessed by P = 1.",
+      "leanType": "(A : Matrix n n R) : Similar A A"
+    },
+    {
+      "name": "Similar.symm",
+      "type": "supporting",
+      "description": "Symmetry of similarity, witnessed by P⁻¹.",
+      "leanType": "(h : Similar A B) : Similar B A"
+    },
+    {
+      "name": "Similar.trans",
+      "type": "supporting",
+      "description": "Transitivity of similarity, composing conjugators as Q·P.",
+      "leanType": "(hab : Similar A B) (hbc : Similar B C) : Similar A C"
+    }
+  ],
   "meta": {
     "author": "classical linear algebra; formalized for lean-genius",
     "status": "verified",
@@ -65,7 +121,8 @@
       "Phrasing similarity through the units group (Matrix n n R)ˣ makes the invariance proofs immediate applications of Mathlib's conjugation lemmas, with no manual inverse bookkeeping",
       "The same units structure makes the equivalence-relation proof a short calculation: composition of conjugators and the unit inverse laws",
       "The characteristic polynomial subsumes determinant and trace (they are, up to sign, its extreme coefficients), and over a domain its roots are the eigenvalues — so charpoly invariance is the master invariant",
-      "Packaging the relation as a Setoid makes 'invariant of similarity' a precise, reusable notion for downstream canonical-form developments"
+      "Packaging the relation as a Setoid makes 'invariant of similarity' a precise, reusable notion for downstream canonical-form developments",
+      "The invariance is a commutative-ring phenomenon, not a field one: det, trace, and characteristic-polynomial invariance hold over an arbitrary CommRing R because conjugation is phrased through the units group (Matrix n n R)ˣ and det_units_conj / trace_units_conj / charpoly_units_conj are ring-level identities. Only the corollary that eigenvalues (the roots of χ) are preserved needs the extra [IsDomain R] hypothesis, since that is where the root multiset becomes well-behaved (of size deg χ) — visible in the Lean file as the sole typeclass added on Similar.charpoly_roots_eq."
     ],
     "prerequisites": [
       "Matrices over a commutative ring; the unit (invertible-matrix) group",
@@ -75,28 +132,44 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header and Setup",
+      "startLine": 1,
+      "endLine": 28,
+      "summary": "Module docstring stating the goal (which scalar quantities of a matrix are preserved under change of basis B = P·A·P⁻¹), imports, the MatrixSimilarityInvariantsOQ01 namespace, and open Matrix. Fixes the ambient data: a Fintype-indexed square matrix over a commutative ring R.",
+      "mathContext": "Setup: $A, B \\in \\mathrm{Matrix}\\,n\\,n\\,R$ over a commutative ring $R$; question — which scalars are invariant under $B = P A P^{-1}$?"
+    },
+    {
       "id": "relation",
-      "title": "The Similarity Relation",
-      "startLine": 28,
+      "title": "The Similarity Relation Is an Equivalence",
+      "startLine": 29,
       "endLine": 55,
-      "summary": "Similar A B := ∃ P : (Matrix n n R)ˣ, B = P·A·P⁻¹, shown reflexive, symmetric, and transitive (an equivalence relation / Setoid).",
-      "mathContext": "$A \\sim B \\iff \\exists P,\\ B = P A P^{-1}$, an equivalence relation."
+      "summary": "def Similar A B := ∃ P : (Matrix n n R)ˣ, B = P·A·P⁻¹; Similar.refl (P = 1), Similar.symm (P⁻¹), Similar.trans (Q·P with (Q·P)⁻¹ = P⁻¹·Q⁻¹) prove it reflexive/symmetric/transitive, bundled as similar_equivalence and the similarSetoid instance.",
+      "mathContext": "$A \\sim B \\iff \\exists P,\\ B = P A P^{-1}$, an equivalence relation (Setoid)."
     },
     {
-      "id": "invariants",
-      "title": "Determinant, Trace, Characteristic Polynomial",
-      "startLine": 57,
-      "endLine": 78,
-      "summary": "Destructuring the conjugator and applying det_units_conj / trace_units_conj / charpoly_units_conj shows each is a similarity invariant.",
-      "mathContext": "$A \\sim B \\Rightarrow \\det B = \\det A,\\ \\operatorname{tr}B = \\operatorname{tr}A,\\ \\chi_B = \\chi_A$."
+      "id": "det-trace",
+      "title": "Determinant and Trace Invariance",
+      "startLine": 56,
+      "endLine": 66,
+      "summary": "Similar.det_eq and Similar.trace_eq: destructure the unit conjugator P and apply Mathlib's det_units_conj / trace_units_conj, giving det B = det A and trace B = trace A directly. These are ring-level identities requiring no invertibility beyond P being a unit.",
+      "mathContext": "$A \\sim B \\Rightarrow \\det B = \\det A$ and $\\operatorname{tr} B = \\operatorname{tr} A$."
     },
     {
-      "id": "eigenvalues",
-      "title": "Eigenvalues and the Packaged Statement",
-      "startLine": 79,
+      "id": "charpoly-eigenvalues",
+      "title": "Characteristic Polynomial and Eigenvalues",
+      "startLine": 67,
+      "endLine": 79,
+      "summary": "Similar.charpoly_eq (via charpoly_units_conj) shows χ_B = χ_A; Similar.charpoly_roots_eq applies congrArg Polynomial.roots to conclude equal eigenvalue multisets — the only result needing [IsDomain R] so that the root multiset is well-behaved.",
+      "mathContext": "$A \\sim B \\Rightarrow \\chi_B = \\chi_A$, and over a domain $\\operatorname{roots}\\chi_B = \\operatorname{roots}\\chi_A$."
+    },
+    {
+      "id": "packaged",
+      "title": "The Packaged Invariants Statement",
+      "startLine": 80,
       "endLine": 84,
-      "summary": "Equal characteristic polynomials give equal root multisets (eigenvalues over a domain); the three invariants are collected into one theorem.",
-      "mathContext": "$A \\sim B \\Rightarrow \\operatorname{roots}\\chi_B = \\operatorname{roots}\\chi_A$."
+      "summary": "Similar.invariants collects determinant, trace, and characteristic-polynomial invariance into a single theorem — the unified 'similarity invariants' interface for downstream canonical-form work.",
+      "mathContext": "$A \\sim B \\Rightarrow (\\det B = \\det A) \\wedge (\\operatorname{tr} B = \\operatorname{tr} A) \\wedge (\\chi_B = \\chi_A)$."
     }
   ],
   "references": [

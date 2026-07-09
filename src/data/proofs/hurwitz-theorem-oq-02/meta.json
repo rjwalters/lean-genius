@@ -57,7 +57,7 @@
     "assumptions": "0 sorries, 0 axioms. The physics interpretation lives only in the docstrings; the machine-checked content is the numerical and group-theoretic skeleton: the 4-element types NDA and Force, the bijection forceOf : NDA ≃ Force (forceOf_bijective by decide), the dimension matches (gauge_dim_matches_imag, strong_gauge_dim by rfl), and the closure of unit quaternions (subgroup of ℍˣ) and unit complex numbers via map_mul/map_one/map_inv₀ of Quaternion.normSq and Complex.normSq. No physical claim is derived from algebra; only the count and gauge-dimension coincidences underlying the Dixon/Furey/Baez–Huerta program are formalized.",
     "lineCount": 232,
     "theoremCount": 15,
-    "definitionCount": 9,
+    "definitionCount": 7,
     "originalContributions": [
       "NDA: the four normed division algebras as a 4-element Fintype with dim (1,2,4,8), imagDim (0,1,3,7), level (0,1,2,3)",
       "dim_eq_imagDim_succ, dim_eq_two_pow: every dimension is imagDim+1 and a power of two",
@@ -170,7 +170,7 @@
     "lineCount": 232,
     "axiomCount": 0,
     "theoremCount": 15,
-    "definitionCount": 9,
+    "definitionCount": 7,
     "sorries": 0,
     "path": "Proofs/HurwitzTheoremOQ02.lean"
   },

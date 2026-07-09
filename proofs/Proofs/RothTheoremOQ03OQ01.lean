@@ -24,6 +24,9 @@
     * `kAPCount_diag_eq_sum_subsets` — the **generalized von Neumann telescoping**:
       `Λ_k(g,…,g) = ∑_{S⊆[k]} δ^{k−|S|}·Λ_k(i↦ if i∈S then g−δ·1 else 1)`, the full
       `2^k`-term multilinear expansion with the `δ^k` major term isolated at `S=∅`.
+    * `kAPCount_diag_eq_major_add_remainder` — the same expansion with the `S=∅`
+      summand evaluated: `Λ_k(g,…,g) = δ^k + ∑_{∅≠S⊆[k]} δ^{k−|S|}·Λ_k(…)`, the
+      "main `k`-AP count `δ^k` plus a balanced (Gowers-controlled) remainder" form.
 
   These are precisely the checks that pin the operators down as genuine
   averages `E_{x,d} ∏ᵢ fᵢ(x+i·d)` (the `(N⁻¹)²·N² = 1` normalization),
@@ -350,5 +353,32 @@ theorem kAPCount_diag_eq_sum_subsets {N : ℕ} [NeZero N] (k : ℕ)
     apply Finset.sum_congr rfl; intro x _
     rw [Finset.sum_comm]
   rw [hL, hR]
+
+/-- **Major term + balanced remainder.**  Separating the `S = ∅` summand of the von
+    Neumann expansion `kAPCount_diag_eq_sum_subsets` isolates the *major term* `δ^k`
+    from the *balanced remainder*.  The `S = ∅` term carries the scalar `δ` in every
+    slot, so it equals `δ^k · Λ_k(1,…,1) = δ^k` (`kAPCount_const_one`); every remaining
+    term is indexed by a *nonempty* `S`, hence has at least one mean-zero slot
+    `b = g − δ·1`.  With `g = 1_A` and `δ = |A|/N` this is exactly the
+    "main `k`-AP count plus a Gowers-controlled error" split that the density-increment
+    argument feeds into the generalized von Neumann inequality:
+
+        Λ_k(g,…,g) = δ^k + ∑_{∅ ≠ S ⊆ [k]} δ^{k−|S|} · Λ_k(i ↦ if i ∈ S then b else 1). -/
+theorem kAPCount_diag_eq_major_add_remainder {N : ℕ} [NeZero N] (k : ℕ)
+    (g : ZMod N → ℂ) (δ : ℂ) :
+    kAPCount k (fun _ : Fin k => g)
+      = δ ^ k
+        + ∑ S ∈ (Finset.univ.erase (∅ : Finset (Fin k))),
+            δ ^ (k - S.card) *
+              kAPCount k (fun i => if i ∈ S then (g - δ • (1 : ZMod N → ℂ)) else 1) := by
+  classical
+  rw [kAPCount_diag_eq_sum_subsets k g δ,
+      ← Finset.add_sum_erase Finset.univ _ (Finset.mem_univ (∅ : Finset (Fin k)))]
+  congr 1
+  -- The `S = ∅` term collapses to `δ ^ k`: no balanced slots, so all slots carry `1`.
+  have hfun : (fun i => if i ∈ (∅ : Finset (Fin k)) then (g - δ • (1 : ZMod N → ℂ))
+        else (1 : ZMod N → ℂ)) = (fun (_ : Fin k) (_ : ZMod N) => (1 : ℂ)) := by
+    funext i y; simp
+  rw [Finset.card_empty, Nat.sub_zero, hfun, kAPCount_const_one, mul_one]
 
 end RothTheoremOQ03OQ01

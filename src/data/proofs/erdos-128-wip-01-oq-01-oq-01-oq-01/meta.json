@@ -11,7 +11,7 @@
     "lineCount": 219,
     "axiomCount": 0,
     "theoremCount": 13,
-    "definitionCount": 8,
+    "definitionCount": 9,
     "path": "Proofs/Erdos128WIP01OQ01OQ01OQ01.lean",
     "sorries": 0
   },
@@ -39,7 +39,7 @@
     "assumptions": "Machine-checked with `lake env lean Proofs/Erdos128WIP01OQ01OQ01OQ01.lean` (Lean v4.26.0, Mathlib pin): compiles with 0 errors. 0 sorries, 0 axiom declarations, no native_decide. #print axioms reports: homFree_of_hom, hasHomCopy_mono, cliqueFree_of_hom, and hasHomCopy_completeGraph_iff depend on NO axioms at all; C5_homFree_three, C5_homFree, blowup_C5_homFree, and blowup_C5_cliqueFree depend only on the standard foundational axioms [propext, Classical.choice, Quot.sound] (the `decide` evaluation of C₅ over Fin 5 / the function space Fin 3 -> Fin 5 is the ordinary kernel decision procedure, NOT native_decide, so Lean.ofReduceBool is not used; maxRecDepth is raised for the C5_homFree_three decision only). Self-contained: the Graph objects are re-declared. Honest scope: the structural forbidden-subgraph-pullback / monotonicity facts, the complete-graph bridge, and the K_r-freeness of the C₅-blow-up witnesses, NOT the open optimal-constant question (that these blow-ups achieve induced density > n²/50, and that 1/50 is optimal, remain open).",
     "lineCount": 219,
     "theoremCount": 13,
-    "definitionCount": 8,
+    "definitionCount": 9,
     "originalContributions": [
       "homFree_of_hom: forbidden-subgraph freeness pulls back along graph homomorphisms, for EVERY fixed graph F. A homomorphic copy of F is a graph homomorphism phi : F -> G (no injectivity required); if f : G -> H is a homomorphism and H has no homomorphic copy of F then neither does G, because f . phi is a homomorphic copy of F in H. The proof is pure composition and needs no irreflexivity -- this is the general structural reason behind the parent's cliqueFree_of_hom, with the clique case's appeal to irreflexivity isolated entirely in the bridge.",
       "hasHomCopy_mono: homomorphic-copy containment is monotone along homomorphisms. A homomorphism g : F' -> F turns a homomorphic copy of F into one of F' by precomposition. This generalizes clique-order monotonicity (hasClique_mono), which is the special case of the inclusion homomorphism K_m -> K_r for m <= r.",

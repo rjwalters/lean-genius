@@ -23,7 +23,7 @@
     "assumptions": "None. The result depends only on the foundational axioms propext, Classical.choice, Quot.sound (verified via #print axioms). No `axiom` declarations, no structure-encoded assumptions, and crucially no `native_decide` — the spindle's non-3-colorability is proved by an elementary rhombus argument reduced to a 3⁴-case Fin 3 lemma (kernel `decide`), not by brute force over the 3⁷ colourings, and not by the compiler-trusting `Lean.ofReduceBool`.",
     "lineCount": 300,
     "theoremCount": 23,
-    "definitionCount": 6,
+    "definitionCount": 7,
     "originalContributions": [
       "chromatic_plane_ge_four: fully machine-checked χ(ℝ²) ≥ 4 — for every c : Plane → Fin 3 there exist points p, q at distance 1 with c p = c q (0 axioms)",
       "no_proper_3coloring_of_plane: the verified companion to the parent's axiomatized de Grey bound — no proper 3-coloring of the unit-distance graph on ℝ² exists",
@@ -128,7 +128,7 @@
     "lineCount": 300,
     "axiomCount": 0,
     "theoremCount": 23,
-    "definitionCount": 6,
+    "definitionCount": 7,
     "path": "Proofs/UnitDistanceIndependenceOQ01.lean",
     "sorries": 0
   },

@@ -20,7 +20,8 @@
       "kAPCount_update_zero (@[simp]): overwriting slot j with 0 gives Λ_k = 0 — one-liner off kAPCount_eq_zero_of_zero + Function.update_self; the additive unit of the slot module.",
       "Toolchain: Function.update_self (NOT update_same) is the v4.26 name for update f j v j = v; add_sub_cancel proves a + (b − a) = b here (works for the module ZMod N → ℂ).",
       "The full slot-telescoping Λ_k(g,…,g)=∑_{S⊆[k]}δ^{k−|S|}Λ_k(i↦if i∈S then b else 1) (b=g−δ·1) is obtained in ONE shot from Finset.prod_add on the inner product ∏ᵢ g(x+i·d)=∏ᵢ(b(x+i·d)+δ), rather than iterating kAPCount_update_split k times. S=∅ gives the δ^k major term (kAPCount_const_one).",
-      "Assembly: expand inner product on both sides to a canonical triple sum (N⁻¹)²∑ₓ∑_d∑_S, then reconcile via two Finset.sum_comm reorderings (∑_S∑ₓ∑_d → ∑ₓ∑_d∑_S). RHS if-slots collapse via Finset.prod_ite_mem + univ_inter; δ-power exponent k−|S| via Finset.card_sdiff_of_subset."
+      "Assembly: expand inner product on both sides to a canonical triple sum (N⁻¹)²∑ₓ∑_d∑_S, then reconcile via two Finset.sum_comm reorderings (∑_S∑ₓ∑_d → ∑ₓ∑_d∑_S). RHS if-slots collapse via Finset.prod_ite_mem + univ_inter; δ-power exponent k−|S| via Finset.card_sdiff_of_subset.",
+      "To peel the S=∅ major term off Finset.univ sum over subsets: rw [← Finset.add_sum_erase Finset.univ _ (Finset.mem_univ ∅)] turns ∑_{S:Finset (Fin k)} into F ∅ + ∑_{S∈univ.erase ∅}; then the empty-slot tuple (fun i => if i∈∅ then b else 1) equals the const-1 tuple by funext i y; simp, so kAPCount_const_one evaluates it to 1 and the term is δ^k."
     ],
     "builtItems": [
       "RothTheoremOQ03OQ01.lean: self-contained, 4 noncomputable defs (hypercubeShift, conjugateByWeight, gowersNorm, kAPCount) + 5 proved theorems, 0 axioms, 0 sorries.",
@@ -35,7 +36,8 @@
       "kAPCount_update_split: von Neumann slot-split identity Λ_k(update f j g) = δ·Λ_k(update f j 1) + Λ_k(update f j (g−δ·1)). 0 axioms (propext/Choice/Quot only), host lake env lean EXIT 0.",
       "kAPCount_update_sub: slotwise subtractivity.",
       "kAPCount_update_zero (@[simp]): zero slot annihilates the count (update form).",
-      "kAPCount_diag_eq_sum_subsets (generalized von Neumann telescoping, 2^k subset expansion)"
+      "kAPCount_diag_eq_sum_subsets (generalized von Neumann telescoping, 2^k subset expansion)",
+      "kAPCount_diag_eq_major_add_remainder: isolates the S=∅ major term of the von Neumann expansion — Λ_k(g,…,g) = δ^k + ∑_{∅≠S⊆[k]} δ^{k−|S|}·Λ_k(i↦ if i∈S then g−δ·1 else 1). S=∅ term collapses via kAPCount_const_one; proved with Finset.add_sum_erase + funext/simp. The \"main count δ^k + balanced (Gowers-controlled) remainder\" form. VERIFIED 0/0."
     ],
     "progressSummary": "PROGRESS (S+1, researcher-5): added the generalized von Neumann slot-split kAPCount_update_split (Λ_k(update f j g) = δ·Λ_k(update f j 1) + Λ_k(update f j (g−δ·1))) — the first density-decomposition step the prior nextSteps called for — plus its supporting slotwise linearity (kAPCount_update_sub, kAPCount_update_zero). All host-verified (lake env lean EXIT 0), 0 axioms/0 sorries (foundational trio only). score 13→16. [2026-07-08 researcher-10] Proved the full slot-telescoping kAPCount_diag_eq_sum_subsets (the density-decomposition step the prior nextSteps called for, completed): Λ_k(g,…,g)=∑_{S⊆[k]}δ^{k−|S|}Λ_k(i↦if i∈S then g−δ·1 else 1), all 2^k terms with δ^k major term at S=∅, via Finset.prod_add. VERIFIED 0/0 (docker-build green). File 354L/12 theorems.",
     "nextSteps": [

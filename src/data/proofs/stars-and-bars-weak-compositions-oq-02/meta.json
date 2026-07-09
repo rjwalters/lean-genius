@@ -17,7 +17,7 @@
     "lineCount": 208,
     "axiomCount": 0,
     "theoremCount": 6,
-    "definitionCount": 3,
+    "definitionCount": 4,
     "path": "Proofs/StarsAndBarsWeakCompositionsOQ02.lean",
     "sorries": 0
   },
@@ -57,7 +57,7 @@
     "assumptions": "0 axioms, 0 sorries, no native_decide. Both public theorems (card_boundedComposition_powerset, card_boundedComposition), the bijection shiftEquiv, and the supporting lemmas were verified with #print axioms to depend only on the foundational propext / Classical.choice / Quot.sound. The result is unconditional for all k, n, b ≥ 0. The new content beyond Mathlib is the shift bijection shiftEquiv and the two count theorems; Mathlib supplies the inclusion–exclusion principle (Finset.inclusion_exclusion_card_inf_compl) and, via the imported parent, the unrestricted stars-and-bars count. A Fintype instance on the bounded-composition subtype is supplied through the parent's Fintype instance (it is not auto-derivable, since the codomain ℕ is infinite). The closed form was cross-checked numerically: for (k,n,b) = (2,3,2) it evaluates to 2 (the compositions (1,2),(2,1)) and for (3,5,2) to 3 ((1,2,2),(2,1,2),(2,2,1)).",
     "mathlib_version": "4.26.0",
     "theoremCount": 6,
-    "definitionCount": 3
+    "definitionCount": 4
   },
   "overview": {
     "historicalContext": "Counting the nonnegative integer solutions of x₁ + ⋯ + x_k = n with each xᵢ ≤ b is the bounded version of the stars-and-bars problem. Without the upper bound the answer is the multichoose number C(n+k−1, n); the bound is what makes the problem genuinely combinatorial rather than a single binomial coefficient. The standard tool is inclusion–exclusion: a composition violates the bound at index i if xᵢ ≥ b+1, and subtracting b+1 from an over-budget part trades 'an index in violation' for 'a smaller composition'. Summing over which indices are forced to overflow, with the usual alternating signs, gives ∑ⱼ (−1)ʲ C(k, j) C(n − (b+1)j + k − 1, k − 1). The same formula is the coefficient of xⁿ in the generating function (1 + x + ⋯ + xᵇ)ᵏ = ((1 − x^{b+1})/(1 − x))ᵏ, whose numerator expands by the binomial theorem into the (−1)ʲ C(k,j) x^{(b+1)j} terms and whose denominator contributes the C(·+k−1, k−1) stars-and-bars coefficients.",

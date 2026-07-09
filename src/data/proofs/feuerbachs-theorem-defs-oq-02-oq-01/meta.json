@@ -31,7 +31,7 @@
     "axiomCount": 0,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries (only the standard foundational axioms propext / Classical.choice / Quot.sound, which do not count as assumptions). Inherits the coordinate API (Triangle, circumcenter, excenter_a/b/c, circumradius, exradius_a/b/c, area, side lengths) and the non-degeneracy lemma circumcenter_denom_ne_zero from FeuerbachsTheoremDefs.lean, and reuses the law-of-sines identity four_R_area_eq_abc from the sibling FeuerbachsTheoremDefsOQ02.lean; both are themselves 0-sorry, 0-axiom.",
     "lineCount": 594,
-    "theoremCount": 15,
+    "theoremCount": 42,
     "definitionCount": 0,
     "originalContributions": [
       "euler_OI_a_formula: Euler's circumcenter–excenter formula — dist²(O, Iₐ) = R² + 2·R·rₐ for the circumcenter O and the A-excenter Iₐ of an arbitrary non-degenerate triangle, the plus-sign sibling of the incenter law OI² = R² − 2Rr; euler_OI_b_formula and euler_OI_c_formula give the B- and C-excenter versions",
@@ -208,7 +208,7 @@
     "namespace": "FeuerbachExcenterEuler",
     "lineCount": 594,
     "axiomCount": 0,
-    "theoremCount": 15,
+    "theoremCount": 42,
     "definitionCount": 0,
     "path": "Proofs/FeuerbachsTheoremDefsOQ02OQ01.lean",
     "sorries": 0,

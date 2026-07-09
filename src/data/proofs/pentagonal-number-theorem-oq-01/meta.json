@@ -15,8 +15,8 @@
     "namespace": "PentagonalNumberTheoremOQ01",
     "lineCount": 1589,
     "axiomCount": 0,
-    "theoremCount": 91,
-    "definitionCount": 12,
+    "theoremCount": 98,
+    "definitionCount": 13,
     "path": "Proofs/PentagonalNumberTheoremOQ01.lean",
     "sorries": 0
   },
@@ -92,8 +92,8 @@
     "axiomCount": 0,
     "lineCount": 1589,
     "assumptions": "None counted: 0 axiom declarations, 0 sorries, no structure-encoded hypotheses. pentSeriesCoeff is a noncomputable def using Classical.choice (a foundational axiom that the project's axiom policy does not count toward axiomCount). The genFun bridges genFun_pent_eq_tprod, coeff_genFun_pent and the two composed tprod headlines coeff_tprod_pent, coeff_tprod_pent_eq_evenOdd_diff each #print axioms to [propext, Classical.choice, Quot.sound] — only the standard foundational axioms, none counted. Machine-verified — the file compiles cleanly under the docker Lean build against Mathlib (Built Proofs.PentagonalNumberTheoremOQ01, 7743 jobs, exit 0).",
-    "theoremCount": 91,
-    "definitionCount": 12
+    "theoremCount": 98,
+    "definitionCount": 13
   },
   "overview": {
     "historicalContext": "Euler discovered the pentagonal number theorem in 1740s correspondence with Goldbach and proved it in 1750: the infinite product ∏_{n≥1}(1-xⁿ) equals the lacunary series ∑_{k∈ℤ}(-1)ᵏ x^{k(3k-1)/2}. The exponents are the generalized pentagonal numbers (OEIS A001318), and the theorem yields Euler's celebrated recurrence for the partition function p(n). Franklin (1881) gave the bijective proof via a sign-reversing involution on partitions into distinct parts. Mathlib's 2025 Partition.GenFun (Weiyi Wang) now supplies the partition generating function with its proved product (genFun_eq_tprod) and coefficient (coeff_genFun) forms; this entry instantiates it at the Euler character to machine-check BOTH ends of Euler's identity (Part 6), leaving only Franklin's involution — the identity ∑(-1)^{#parts} = pentSeriesCoeff(n) — unformalized. The entry also supplies the index-set theory that any such formalization consumes.",

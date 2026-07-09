@@ -29,7 +29,7 @@
       "prod_rpow_inv: the supporting identity ∏ᵢ (xᵢ⁻¹)^{wᵢ} = (∏ᵢ xᵢ^{wᵢ})⁻¹, the reciprocal-distributes-over-the-weighted-geometric-mean fact that makes the second AM–GM application bracket G⁻¹."
     ],
     "assumptions": "None. Fully machine-checked: 0 axioms, 0 sorries, no native_decide. #print axioms reports only propext / Classical.choice / Quot.sound. Builds on the gallery parent JensenInequalityOQ01.lean (weighted_amgm_le, weighted_amgm_eq_iff) and the Mathlib rpow library.",
-    "theoremCount": 4,
+    "theoremCount": 5,
     "definitionCount": 0
   },
   "crossReferences": [
@@ -151,7 +151,7 @@
     "path": "Proofs/JensenInequalityOQ01OQ01OQ01OQ02.lean",
     "sorries": 0,
     "definitionCount": 0,
-    "theoremCount": 4,
+    "theoremCount": 5,
     "imports": [
       "Mathlib",
       "Proofs.JensenInequalityOQ01"

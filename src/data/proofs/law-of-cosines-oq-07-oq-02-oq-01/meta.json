@@ -115,23 +115,27 @@
   "mainTheorems": [
     {
       "name": "leibniz_centroid",
-      "type": "theorem",
-      "description": "Leibniz identity at the centroid: for any point p, dist(p,a)² + dist(p,b)² + dist(p,c)² = 3·dist(p,g)² + (dist(g,a)² + dist(g,b)² + dist(g,c)²), where g is the triangle centroid. The centroid minimises the sum of squared distances to the vertices."
+      "type": "main",
+      "description": "Leibniz identity at the centroid: for any point p, dist(p,a)² + dist(p,b)² + dist(p,c)² = 3·dist(p,g)² + (dist(g,a)² + dist(g,b)² + dist(g,c)²), where g is the triangle centroid. The centroid minimises the sum of squared distances to the vertices.",
+      "leanType": "(a b c p : P) : dist p a ^ 2 + dist p b ^ 2 + dist p c ^ 2 = 3 * dist p (centroid₃ a b c) ^ 2 + (dist (centroid₃ a b c) a ^ 2 + dist (centroid₃ a b c) b ^ 2 + dist (centroid₃ a b c) c ^ 2)"
     },
     {
       "name": "leibniz_identity",
-      "type": "theorem",
-      "description": "General Leibniz/Lagrange identity: for any base point g satisfying the balance ∑(vertex −ᵥ g) = 0, ∑ dist(p,vertex)² = 3·dist(p,g)² + ∑ dist(g,vertex)²."
+      "type": "supporting",
+      "description": "General Leibniz/Lagrange identity: for any base point g satisfying the balance ∑(vertex −ᵥ g) = 0, ∑ dist(p,vertex)² = 3·dist(p,g)² + ∑ dist(g,vertex)². The abstract engine that leibniz_centroid instantiates at the explicit centroid.",
+      "leanType": "(a b c p g : P) (hg : (a -ᵥ g) + (b -ᵥ g) + (c -ᵥ g) = (0 : V)) : dist p a ^ 2 + dist p b ^ 2 + dist p c ^ 2 = 3 * dist p g ^ 2 + (dist g a ^ 2 + dist g b ^ 2 + dist g c ^ 2)"
     },
     {
       "name": "centroid_sum_sq",
-      "type": "theorem",
-      "description": "Sum of squared distances from the centroid to the vertices, the p = g specialisation of the Leibniz identity."
+      "type": "supporting",
+      "description": "Sum of squared distances from the centroid to the vertices equals one third of the sum of the squared sides: ∑ dist(g,vertex)² = ⅓·∑ side². Derived from three vertex instances of leibniz_centroid plus metric symmetry.",
+      "leanType": "(a b c : P) : dist (centroid₃ a b c) a ^ 2 + dist (centroid₃ a b c) b ^ 2 + dist (centroid₃ a b c) c ^ 2 = (3⁻¹ : ℝ) * (dist a b ^ 2 + dist b c ^ 2 + dist c a ^ 2)"
     },
     {
       "name": "centroid₃_balance",
-      "type": "theorem",
-      "description": "Balance condition: the three displacement vectors from the vertices to the centroid sum to zero, (a −ᵥ g) + (b −ᵥ g) + (c −ᵥ g) = 0."
+      "type": "supporting",
+      "description": "Balance condition: the three displacement vectors from the vertices to the centroid sum to zero, (a −ᵥ g) + (b −ᵥ g) + (c −ᵥ g) = 0. This is what discharges the balance hypothesis of leibniz_identity.",
+      "leanType": "(a b c : P) : (a -ᵥ centroid₃ a b c) + (b -ᵥ centroid₃ a b c) + (c -ᵥ centroid₃ a b c) = (0 : V)"
     }
   ],
   "sorries": 0

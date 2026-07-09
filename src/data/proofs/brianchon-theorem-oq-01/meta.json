@@ -48,7 +48,7 @@
     "assumptions": "Inherits the single axiom conic_implies_pascal_constraint from PascalsHexagon.lean (the Cayley–Bacharach/Bézout fact underlying Pascal's theorem). This file introduces no new axiom, sorry, or native_decide: the dual reduction is fully machine-checked. leanFile.axiomCount is 0 because no axiom is declared in this file; meta.axiomCount is 1 to disclose the inherited assumption.",
     "mathlib_version": "4.26.0",
     "theoremCount": 2,
-    "definitionCount": 12
+    "definitionCount": 13
   },
   "overview": {
     "historicalContext": "Charles-Julien Brianchon (1783–1864) discovered this theorem in 1806 while a student at the École Polytechnique, publishing it in the Journal de l'École Polytechnique. It is the projective dual of Pascal's Hexagon Theorem (1639): where Pascal concerns six points lying *on* a conic and concludes that three intersection points are collinear, Brianchon concerns six lines *tangent to* a conic and concludes that three diagonals are concurrent. The two theorems are exchanged by the point↔line duality of the projective plane, which had only become a precise tool through the work of Poncelet and Gergonne in the early nineteenth century — making Brianchon's result one of the first major theorems discovered specifically through projective duality.",
@@ -153,7 +153,7 @@
     "axiomCount": 0,
     "sorries": 0,
     "theoremCount": 2,
-    "definitionCount": 12,
+    "definitionCount": 13,
     "imports": [
       "import Proofs.PascalsHexagon",
       "import Mathlib.LinearAlgebra.Matrix.Adjugate"

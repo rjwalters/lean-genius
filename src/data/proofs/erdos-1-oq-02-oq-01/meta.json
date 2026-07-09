@@ -76,8 +76,8 @@
     "lineCount": 209,
     "mathlib_version": "4.31.0",
     "assumptions": "None beyond Lean/Mathlib's standard foundations. Fully verified with 0 sorries and 0 axiom declarations. #print axioms reports only the ordinary foundational axioms propext / Classical.choice / Quot.sound for every result — no sorryAx, no Lean.ofReduceBool, no native_decide. Self-contained: restates the HasDistinctSubsetSums predicate and imports only Mathlib.",
-    "theoremCount": 7,
-    "definitionCount": 1
+    "theoremCount": 15,
+    "definitionCount": 2
   },
   "overview": {
     "historicalContext": "Erdős's distinct-subset-sums problem (#1) asks: if a finite set A ⊆ ℕ has all 2^|A| subset sums distinct, how large must its elements be? The powers of two {1,2,…,2^{n−1}} qualify with maximum 2^{n−1}, and Erdős conjectured max(A) ≥ c·2^{|A|} for an absolute constant c — offering money for a proof. The parent gallery entry (`erdos-1-oq-02`) formalizes the sharp analytic step toward this, the second-moment anticoncentration bound 2^{|A|} ≤ 3·√(Σaᵢ²) + 2.\n\nBefore any analysis, there is a purely combinatorial lower bound, essentially Moser's: the subset sums are 2^{|A|} distinct numbers in {0,…,ΣA}, so 2^{|A|} ≤ ΣA + 1, which with ΣA ≤ |A|·max(A) gives max(A) ≥ (2^{|A|} − 1)/|A|. This entry formalizes exactly that elementary bound.",

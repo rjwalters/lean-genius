@@ -40,6 +40,11 @@
       "targetId": "jensen-inequality-oq-01",
       "relationship": "extends",
       "description": "Sits on the same weighted power-mean ladder as the parent Jensen/AM–GM chain, but proves monotonicity in the exponent rather than a fixed rung, using Mathlib's rpow Jensen inequality directly instead of the AM–GM specialization."
+    },
+    {
+      "targetId": "amgm-inequality",
+      "relationship": "related",
+      "description": "The arithmetic-mean ≥ geometric-mean inequality is the M₀ ≤ M₁ rung of the same power-mean ladder — the geometric mean G = ∏ zᵢ^{wᵢ} is the r → 0 limit of M_r, so AM–GM is the boundary case of the monotonicity proved here as p → 0⁺ (one of this entry's open questions). Complementary named rung on the ladder this entry establishes wholesale."
     }
   ],
   "overview": {
@@ -50,7 +55,8 @@
       "Monotonicity in the exponent is not a new convexity fact but a change of variable on the existing rpow Jensen inequality: raising the data to the ratio exponent t = q/p ≥ 1 turns 'M_p ≤ M_q' into a single application of the convex-power Jensen bound.",
       "The exponent bookkeeping is the whole proof: p·t = q collapses ∑ wᵢ (zᵢ^p)^t to ∑ wᵢ zᵢ^q, and t·(1/q) = 1/p collapses (A^t)^{1/q} to A^{1/p}. Both are elementary rpow identities (Real.rpow_mul) valid because the base is nonnegative.",
       "The argument needs only 0 < p ≤ q, not p ≥ 1 or any normalization of the data; the weight normalization ∑ wᵢ = 1 is the only structural hypothesis, inherited from the Jensen inequality.",
-      "Specializing to (p, q) = (1, 2) recovers the weighted arithmetic-mean ≤ quadratic-mean inequality with no extra work, illustrating how the single monotonicity theorem subsumes the named two-rung inequalities."
+      "Specializing to (p, q) = (1, 2) recovers the weighted arithmetic-mean ≤ quadratic-mean inequality with no extra work, illustrating how the single monotonicity theorem subsumes the named two-rung inequalities.",
+      "Reframed measure-theoretically, the theorem is the nesting of Lᵖ spaces on a probability space: the weights wᵢ (nonnegative, summing to 1) define a discrete probability measure, and M_r = (∑ wᵢ zᵢ^r)^{1/r} is exactly the Lʳ norm ‖z‖_{Lʳ(w)}. Monotonicity M_p ≤ M_q for p ≤ q is then the standard inclusion ‖·‖_{Lᵖ} ≤ ‖·‖_{Lᵠ} that holds precisely because the total mass is 1 — the ∑ wᵢ = 1 hypothesis is not incidental but the defining feature of a probability measure that makes the norms nested."
     ]
   },
   "sections": [
@@ -134,13 +140,15 @@
   "mainTheorems": [
     {
       "name": "powerMean_le_powerMean",
-      "type": "theorem",
-      "description": "Weighted power-mean monotonicity: for nonnegative data z with nonnegative weights w summing to 1 and 0 < p ≤ q, the weighted power mean is nondecreasing in the exponent — (∑ᵢ wᵢ·zᵢ^p)^(1/p) ≤ (∑ᵢ wᵢ·zᵢ^q)^(1/q)."
+      "type": "main",
+      "description": "Weighted power-mean monotonicity: for nonnegative data z with nonnegative weights w summing to 1 and 0 < p ≤ q, the weighted power mean is nondecreasing in the exponent — (∑ᵢ wᵢ·zᵢ^p)^(1/p) ≤ (∑ᵢ wᵢ·zᵢ^q)^(1/q).",
+      "leanType": "(∑ i ∈ s, w i * z i ^ p) ^ (1 / p) ≤ (∑ i ∈ s, w i * z i ^ q) ^ (1 / q)"
     },
     {
       "name": "weighted_am_le_qm",
-      "type": "theorem",
-      "description": "Weighted arithmetic-mean ≤ quadratic-mean, the p=1, q=2 instance: ∑ᵢ wᵢ·zᵢ ≤ (∑ᵢ wᵢ·zᵢ²)^(1/2)."
+      "type": "supporting",
+      "description": "Weighted arithmetic-mean ≤ quadratic-mean, the p=1, q=2 instance: ∑ᵢ wᵢ·zᵢ ≤ (∑ᵢ wᵢ·zᵢ²)^(1/2).",
+      "leanType": "∑ i ∈ s, w i * z i ≤ (∑ i ∈ s, w i * z i ^ (2 : ℝ)) ^ (1 / 2 : ℝ)"
     }
   ],
   "sorries": 0

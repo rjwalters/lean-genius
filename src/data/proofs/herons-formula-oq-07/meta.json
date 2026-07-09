@@ -19,7 +19,8 @@
       "Squaring reduces the √3- and Area-containing statement to a pure polynomial inequality in a, b, c, avoiding all analysis except one Real.sqrt monotonicity step.",
       "The certificate (a²+b²+c²)² - 48·heronProduct = 2((a²-b²)²+(b²-c²)²+(c²-a²)²) is an identity in the squared side lengths, closed by ring, and simultaneously proves the inequality and its equality case.",
       "The squared inequality (a²+b²+c²)² ≥ 48·heronProduct needs no triangle hypothesis; nondegeneracy enters only to keep Area real.",
-      "Equality holds iff each summand vanishes, i.e. a² = b² = c², which for positive sides means the triangle is equilateral — so one SOS identity proves both the inequality and its sharpness."
+      "Equality holds iff each summand vanishes, i.e. a² = b² = c², which for positive sides means the triangle is equilateral — so one SOS identity proves both the inequality and its sharpness.",
+      "Dually, the inequality says the equilateral triangle maximizes area among all triangles with a fixed sum of squared sides a²+b²+c²: since 4√3·Area ≤ a²+b²+c² with equality only when equilateral, fixing the right-hand side caps the area, and the cap is attained exactly at the equilateral configuration — an extremal (isoperimetric-type) reading of the same certificate."
     ],
     "prerequisites": [
       "Heron's formula Area² = s(s-a)(s-b)(s-c)",
@@ -29,6 +30,12 @@
     "text": "This entry formalizes Weitzenböck's inequality a² + b² + c² ≥ 4√3·Area for triangles as an algebraic consequence of Heron's formula. Because both sides are non-negative, the inequality is equivalent to its square, which — using (4√3)² = 48 and Heron's Area² = s(s-a)(s-b)(s-c) — becomes (a²+b²+c²)² ≥ 48·s(s-a)(s-b)(s-c). This polynomial inequality is proved from an explicit sum-of-squares identity in the squared side lengths, which also delivers the equality case. Both the inequality and the equality characterization (equilateral) are machine-checked with 0 axioms and 0 sorries."
   },
   "mainTheorems": [
+    {
+      "name": "heronProduct_nonneg",
+      "type": "supporting",
+      "description": "For a nondegenerate triangle, Heron's product s(s-a)(s-b)(s-c) is non-negative. The strict triangle inequalities a<b+c, b<a+c, c<a+b are exactly s-a>0, s-b>0, s-c>0, so all four factors are positive; proved by iterated mul_nonneg with each factor discharged by linarith. This is the sole place the triangle hypotheses enter — it guarantees Area = √(heronProduct) is real, making the squaring step reversible.",
+      "leanType": "0 ≤ heronProduct a b c"
+    },
     {
       "name": "sq_sum_sub_heron",
       "type": "supporting",
@@ -40,6 +47,12 @@
       "type": "supporting",
       "description": "The squared Weitzenböck inequality (all reals, no triangle condition): 48·heronProduct ≤ (a²+b²+c²)².",
       "leanType": "48 * heronProduct a b c ≤ (a^2 + b^2 + c^2)^2"
+    },
+    {
+      "name": "weitzenbock_sq_eq_iff",
+      "type": "supporting",
+      "description": "The square-free equality condition: (a²+b²+c²)² = 48·heronProduct holds iff a² = b² and b² = c². Reads the SOS identity backwards so each summand (a²-b²)², (b²-c²)², (c²-a²)² must vanish. This is the algebraic pivot that weitzenbock_eq_iff upgrades to the geometric equilateral case, separating the square-free algebra from the final positivity step.",
+      "leanType": "(a^2 + b^2 + c^2)^2 = 48 * heronProduct a b c ↔ a^2 = b^2 ∧ b^2 = c^2"
     },
     {
       "name": "weitzenbock",
@@ -90,6 +103,11 @@
       "targetId": "herons-formula-oq-06",
       "relationship": "related",
       "description": "A sibling triangle inequality from Heron's formula (Euler's R ≥ 2r); both reduce a geometric inequality to a symmetric polynomial inequality with an explicit sum-of-squares certificate and full equality characterization."
+    },
+    {
+      "targetId": "herons-formula-oq-06-oq-02",
+      "relationship": "related",
+      "description": "Gerretsen's inequality s² ≤ 4R² + 4Rr + 3r² is another symmetric triangle inequality with the equilateral triangle as its unique equality case; like Weitzenböck it is settled algebraically and its sharpness is read off the equality condition, illustrating the same SOS-to-equilateral pattern in the (R, r, s) variables rather than the side lengths."
     }
   ],
   "references": [

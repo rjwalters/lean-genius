@@ -32,7 +32,7 @@
       "posMul_neg_norm: COSET CLOSURE — multiplying a positive Pell solution a ∈ Solution₁ 2 by a negative solution stays in the negative coset (norm (+1)·(−1)=−1), witnessing that the norm −1 solutions are exactly 'half' of the unit group of ℤ√2"
     ],
     "assumptions": "None. Fully machine-checked: 0 axioms, 0 sorries, no native_decide. Self-contained — imports only Mathlib.NumberTheory.Pell (for Pell.Solution₁ and the Zsqrtd ℤ√d API) and Mathlib.Tactic; does not depend on the parent proof file.",
-    "theoremCount": 7,
+    "theoremCount": 9,
     "definitionCount": 2
   },
   "crossReferences": [
@@ -107,7 +107,7 @@
     "path": "Proofs/PellEquationOQ06OQ01OQ02.lean",
     "sorries": 0,
     "definitionCount": 2,
-    "theoremCount": 7,
+    "theoremCount": 9,
     "imports": [
       "Mathlib.NumberTheory.Pell",
       "Mathlib.Tactic"

@@ -747,4 +747,241 @@ theorem abs_correlation_eq_one_iff_affine [IsProbabilityMeasure μ] {X Y : Ω �
   · intro h; rw [← sq_abs, h]; norm_num
   · intro h; rw [← Real.sqrt_sq_eq_abs, h, Real.sqrt_one]
 
+/-!
+### Signed capstone: distinguishing perfect positive from perfect negative correlation
+
+The capstone `abs_correlation_eq_one_iff_affine` locates the extremal case `|ρ| = 1` but is blind to
+the **sign** of the correlation.  The sharp refinement records that the sign of `ρ` is exactly the
+sign of the regression slope: when `X =ᵐ a·Y + b` with `a ≠ 0` and `Y` non-degenerate,
+
+    ρ[X, Y] = a / |a| = sign a,
+
+because `cov[X,Y] = a·Var[Y]`, `σ_X = |a|·σ_Y`, so the normalisation collapses to `a/|a|`.  Hence
+`ρ = +1` picks out the *increasing* affine relations (`a > 0`, perfect positive correlation) and
+`ρ = -1` the *decreasing* ones (`a < 0`, perfect negative correlation) — the two endpoints of the
+Cauchy–Schwarz interval `[-1, 1]` are structurally different, not merely `|ρ| = 1`.
+-/
+
+/-- **Variance under an a.e. affine change of variable.**  If `X =ᵐ a·Y + b` then
+`Var[X] = a²·Var[Y]`; the additive constant drops and the multiplicative slope scales the variance
+by `a²`.  Extracted from the equality-boundary computation so the signed capstones can reuse it. -/
+theorem variance_eq_of_affine [IsProbabilityMeasure μ] {X Y : Ω → ℝ}
+    (hY : MemLp Y 2 μ) (a b : ℝ) (h : X =ᵐ[μ] fun ω => a * Y ω + b) :
+    Var[X; μ] = a ^ 2 * Var[Y; μ] := by
+  have hsmul : (fun ω => a * Y ω) = a • Y := by
+    funext ω; rw [Pi.smul_apply, smul_eq_mul]
+  rw [variance_congr h, variance_add_const (hY.aestronglyMeasurable.const_mul a) b, hsmul,
+    variance_smul]
+
+/-- **Correlation of an a.e. affine pair is the sign of the slope.**  For non-degenerate `Y` and a
+nonzero slope `a`, if `X =ᵐ a·Y + b` then `ρ[X, Y] = a / |a|` (i.e. `+1` when `a > 0` and `-1` when
+`a < 0`).  This is the signed sharpening of `covariance_sq_eq_of_affine`: normalising the covariance
+`a·Var[Y]` by `σ_X·σ_Y = |a|·Var[Y]` cancels the magnitude of the slope and leaves only its sign. -/
+theorem correlation_eq_of_affine [IsProbabilityMeasure μ] {X Y : Ω → ℝ}
+    (hY : MemLp Y 2 μ) {a b : ℝ} (ha : a ≠ 0) (hYnd : Var[Y; μ] ≠ 0)
+    (h : X =ᵐ[μ] fun ω => a * Y ω + b) :
+    correlation X Y μ = a / |a| := by
+  have hYint : Integrable (fun ω => a * Y ω) μ := (hY.integrable one_le_two).const_mul a
+  have hcov : cov[X, Y; μ] = a * Var[Y; μ] := by
+    rw [covariance_congr_left h, covariance_add_const_left hYint b,
+      covariance_const_mul_left, covariance_self hY.aemeasurable]
+  have hsqrtX : Real.sqrt (Var[X; μ]) = |a| * Real.sqrt (Var[Y; μ]) := by
+    rw [variance_eq_of_affine hY a b h, Real.sqrt_mul (sq_nonneg a), Real.sqrt_sq_eq_abs]
+  have hs : Real.sqrt (Var[Y; μ]) * Real.sqrt (Var[Y; μ]) = Var[Y; μ] :=
+    Real.mul_self_sqrt (variance_nonneg _ _)
+  have haa : |a| ≠ 0 := abs_ne_zero.mpr ha
+  rw [correlation, hcov, hsqrtX, mul_assoc, hs]
+  field_simp
+
+/-- **ρ = 1 ⟺ a.e. increasing affine dependence (perfect positive correlation).**  For
+non-degenerate `X, Y` the correlation attains its maximum `+1` *exactly* when `X` is almost
+everywhere an affine function of `Y` with **positive** slope.  Refines
+`abs_correlation_eq_one_iff_affine`: it is the `+1` endpoint, distinguished from the `-1` endpoint by
+the sign of the regression slope. -/
+theorem correlation_eq_one_iff_affine_pos [IsProbabilityMeasure μ] {X Y : Ω → ℝ}
+    (hX : MemLp X 2 μ) (hY : MemLp Y 2 μ) (hXnd : Var[X; μ] ≠ 0) (hYnd : Var[Y; μ] ≠ 0) :
+    correlation X Y μ = 1 ↔ ∃ a b : ℝ, 0 < a ∧ X =ᵐ[μ] fun ω => a * Y ω + b := by
+  constructor
+  · intro h
+    have hsq : correlation X Y μ ^ 2 = 1 := by rw [h]; norm_num
+    obtain ⟨a, b, hab⟩ := (correlation_sq_eq_one_iff_affine hX hY hXnd hYnd).mp hsq
+    have ha : a ≠ 0 := by
+      rintro rfl
+      exact hXnd (by rw [variance_eq_of_affine hY 0 b hab]; ring)
+    have hval : correlation X Y μ = a / |a| := correlation_eq_of_affine hY ha hYnd hab
+    refine ⟨a, b, ?_, hab⟩
+    rcases ha.lt_or_gt with hneg | hpos
+    · rw [h, abs_of_neg hneg, div_neg, div_self ha] at hval; norm_num at hval
+    · exact hpos
+  · rintro ⟨a, b, ha, hab⟩
+    rw [correlation_eq_of_affine hY ha.ne' hYnd hab, abs_of_pos ha, div_self ha.ne']
+
+/-- **ρ = -1 ⟺ a.e. decreasing affine dependence (perfect negative correlation).**  For
+non-degenerate `X, Y` the correlation attains its minimum `-1` *exactly* when `X` is almost
+everywhere an affine function of `Y` with **negative** slope.  The `-1` endpoint companion of
+`correlation_eq_one_iff_affine_pos`; together they split `abs_correlation_eq_one_iff_affine` into its
+two structurally distinct extremes. -/
+theorem correlation_eq_neg_one_iff_affine_neg [IsProbabilityMeasure μ] {X Y : Ω → ℝ}
+    (hX : MemLp X 2 μ) (hY : MemLp Y 2 μ) (hXnd : Var[X; μ] ≠ 0) (hYnd : Var[Y; μ] ≠ 0) :
+    correlation X Y μ = -1 ↔ ∃ a b : ℝ, a < 0 ∧ X =ᵐ[μ] fun ω => a * Y ω + b := by
+  constructor
+  · intro h
+    have hsq : correlation X Y μ ^ 2 = 1 := by rw [h]; norm_num
+    obtain ⟨a, b, hab⟩ := (correlation_sq_eq_one_iff_affine hX hY hXnd hYnd).mp hsq
+    have ha : a ≠ 0 := by
+      rintro rfl
+      exact hXnd (by rw [variance_eq_of_affine hY 0 b hab]; ring)
+    have hval : correlation X Y μ = a / |a| := correlation_eq_of_affine hY ha hYnd hab
+    refine ⟨a, b, ?_, hab⟩
+    rcases ha.lt_or_gt with hneg | hpos
+    · exact hneg
+    · rw [h, abs_of_pos hpos, div_self ha] at hval; norm_num at hval
+  · rintro ⟨a, b, ha, hab⟩
+    rw [correlation_eq_of_affine hY ha.ne hYnd hab, abs_of_neg ha, div_neg, div_self ha.ne]
+
+/-!
+### Structural companion: affine invariance of the correlation coefficient
+
+The signed capstones locate `ρ = ±1` at the increasing/decreasing affine extremes.  The dual
+structural fact is that `ρ` is a *dimensionless* invariant: it is unchanged by any pair of
+orientation-preserving affine changes of units and merely flips sign under orientation-reversing
+ones.  Concretely, for arbitrary scales `a, c` and shifts `b, d`,
+
+    ρ[a·X + b, c·Y + d] = sign(a·c) · ρ[X, Y],
+
+because the additive shifts cancel (covariance and variance are translation-invariant) and the
+multiplicative scales cancel in magnitude against the standard deviations `σ[a·X+b] = |a|·σ[X]`,
+leaving only the sign of the slope product `a·c`.  This is the defining property that makes the
+Pearson coefficient a scale-free measure of linear association.
+-/
+
+/-- **Sign as a normalised quotient.**  `Real.sign x = x / |x|` for every real `x`, including
+`x = 0`, where both sides are `0` under the division-by-zero convention.  The scalar bridge used to
+package the affine-invariance normalisation. -/
+private theorem real_sign_eq_self_div_abs (x : ℝ) : Real.sign x = x / |x| := by
+  rcases lt_trichotomy x 0 with h | h | h
+  · rw [Real.sign_of_neg h, abs_of_neg h, div_neg, div_self h.ne]
+  · rw [h, Real.sign_zero, zero_div]
+  · rw [Real.sign_of_pos h, abs_of_pos h, div_self h.ne']
+
+/-- **Affine invariance of the correlation coefficient (up to the sign of the slopes).**
+For square-integrable `X, Y` and any affine reparametrisations `X' = a·X + b`, `Y' = c·Y + d`,
+
+    ρ[a·X + b, c·Y + d] = sign(a·c) · ρ[X, Y].
+
+The additive shifts `b, d` drop out because covariance and variance are translation-invariant, and
+the multiplicative scales `a, c` cancel in magnitude against the standard deviations
+`σ[a·X+b] = |a|·σ[X]`, leaving only the sign of the product `a·c`.  This is the defining
+*dimensionless* property of the Pearson coefficient: it is unchanged by orientation-preserving
+affine changes of units (`a·c > 0`) and merely flips sign under orientation-reversing ones
+(`a·c < 0`).  No non-degeneracy hypothesis is needed — the identity also holds in the degenerate
+cases via the division-by-zero convention. -/
+theorem correlation_affine_invariant [IsProbabilityMeasure μ] {X Y : Ω → ℝ}
+    (hX : MemLp X 2 μ) (hY : MemLp Y 2 μ) (a b c d : ℝ) :
+    correlation (fun ω => a * X ω + b) (fun ω => c * Y ω + d) μ
+      = Real.sign (a * c) * correlation X Y μ := by
+  have hIaX : Integrable (fun ω => a * X ω) μ := (hX.integrable one_le_two).const_mul a
+  have hIcY : Integrable (fun ω => c * Y ω) μ := (hY.integrable one_le_two).const_mul c
+  have hcov : cov[fun ω => a * X ω + b, fun ω => c * Y ω + d; μ] = a * c * cov[X, Y; μ] := by
+    rw [covariance_add_const_left hIaX b, covariance_const_mul_left,
+      covariance_add_const_right hIcY d, covariance_const_mul_right]; ring
+  have hpX : Real.sqrt (Var[fun ω => a * X ω + b; μ]) = |a| * Real.sqrt (Var[X; μ]) := by
+    rw [variance_eq_of_affine hX a b (Filter.EventuallyEq.refl _ _), Real.sqrt_mul (sq_nonneg a),
+      Real.sqrt_sq_eq_abs]
+  have hpY : Real.sqrt (Var[fun ω => c * Y ω + d; μ]) = |c| * Real.sqrt (Var[Y; μ]) := by
+    rw [variance_eq_of_affine hY c d (Filter.EventuallyEq.refl _ _), Real.sqrt_mul (sq_nonneg c),
+      Real.sqrt_sq_eq_abs]
+  simp only [correlation]
+  rw [hcov, hpX, hpY, real_sign_eq_self_div_abs, abs_mul]
+  ring
+
+/-- **Scale-and-shift invariance (orientation-preserving case).**  Correlation is *exactly*
+preserved by any pair of increasing affine reparametrisations (`a, c > 0`):
+`ρ[a·X + b, c·Y + d] = ρ[X, Y]`.  The dimensionless-invariance specialisation of
+`correlation_affine_invariant` with `sign(a·c) = 1` — the precise sense in which the Pearson
+coefficient is independent of the choice of units and origin. -/
+theorem correlation_affine_invariant_of_pos [IsProbabilityMeasure μ] {X Y : Ω → ℝ}
+    (hX : MemLp X 2 μ) (hY : MemLp Y 2 μ) {a c : ℝ} (ha : 0 < a) (hc : 0 < c) (b d : ℝ) :
+    correlation (fun ω => a * X ω + b) (fun ω => c * Y ω + d) μ = correlation X Y μ := by
+  rw [correlation_affine_invariant hX hY a b c d, Real.sign_of_pos (mul_pos ha hc), one_mul]
+
+/-!
+### Sharp equality boundary of the standard-deviation triangle inequality
+
+`stddev_add_le` states the L² triangle inequality `σ[X+Y] ≤ σ[X] + σ[Y]` for the aggregate
+standard deviation.  The results below pin down its **equality** boundary — the exact condition
+under which the ceiling is attained.  Squaring the (nonnegative) triangle inequality reduces the
+equality `σ[X+Y] = σ[X] + σ[Y]` to `cov[X,Y] = σ[X]·σ[Y]`, i.e. covariance attaining its
+Cauchy–Schwarz maximum, which for non-degenerate variables is exactly the perfect *positive*
+correlation `ρ = +1`.  This is the sharp companion of `variance_add_eq_iff_covariance_zero` (whose
+equality boundary is the *uncorrelated* case `cov = 0`), sitting at the opposite extreme of the
+Cauchy–Schwarz interval.
+-/
+
+/-- **Equality boundary of the standard-deviation triangle inequality (covariance form).**  For
+square-integrable `X, Y`, the L² triangle inequality `σ[X+Y] ≤ σ[X] + σ[Y]` of `stddev_add_le` is
+an *equality*
+
+        √Var[X + Y] = √Var[X] + √Var[Y]
+
+*if and only if* the covariance attains its Cauchy–Schwarz maximum `cov[X,Y] = √Var[X]·√Var[Y]`.
+No non-degeneracy hypothesis is needed: when e.g. `Y` is a.e. constant both sides read
+`σ[X] = σ[X]` and `cov = 0 = σ[X]·0`.  Squaring the nonnegative identity turns it into the linear
+comparison `Var[X]+Var[Y]+2cov = (√Var[X]+√Var[Y])²`, from which the covariance value is forced. -/
+theorem stddev_add_eq_iff_covariance_eq_sqrt [IsFiniteMeasure μ] {X Y : Ω → ℝ}
+    (hX : MemLp X 2 μ) (hY : MemLp Y 2 μ) :
+    Real.sqrt (Var[X + Y; μ]) = Real.sqrt (Var[X; μ]) + Real.sqrt (Var[Y; μ]) ↔
+      cov[X, Y; μ] = Real.sqrt (Var[X; μ]) * Real.sqrt (Var[Y; μ]) := by
+  set a := Real.sqrt (Var[X; μ]) with ha_def
+  set b := Real.sqrt (Var[Y; μ]) with hb_def
+  have hsx : a ^ 2 = Var[X; μ] := Real.sq_sqrt (variance_nonneg _ _)
+  have hsy : b ^ 2 = Var[Y; μ] := Real.sq_sqrt (variance_nonneg _ _)
+  constructor
+  · intro h
+    have h2 : Var[X + Y; μ] = (a + b) ^ 2 := by
+      rw [← h, Real.sq_sqrt (variance_nonneg (X + Y) μ)]
+    nlinarith [h2, variance_add hX hY, hsx, hsy]
+  · intro h
+    have h2 : Var[X + Y; μ] = (a + b) ^ 2 := by
+      nlinarith [variance_add hX hY, hsx, hsy, h]
+    rw [h2, Real.sqrt_sq (by positivity)]
+
+/-- **Equality boundary of the standard-deviation triangle inequality (correlation form).**  For
+non-degenerate `X, Y` the triangle inequality `σ[X+Y] ≤ σ[X] + σ[Y]` is an equality *exactly* when
+the correlation coefficient attains its maximum:
+
+        √Var[X + Y] = √Var[X] + √Var[Y]  ↔  ρ[X, Y] = 1.
+
+The covariance-form condition `cov = √Var[X]·√Var[Y]` of
+`stddev_add_eq_iff_covariance_eq_sqrt`, normalised through the definition of `correlation`; the two
+non-degeneracy hypotheses make the normalising denominator `σ[X]·σ[Y]` nonzero. -/
+theorem stddev_add_eq_iff_correlation_eq_one [IsFiniteMeasure μ] {X Y : Ω → ℝ}
+    (hX : MemLp X 2 μ) (hY : MemLp Y 2 μ) (hXnd : Var[X; μ] ≠ 0) (hYnd : Var[Y; μ] ≠ 0) :
+    Real.sqrt (Var[X + Y; μ]) = Real.sqrt (Var[X; μ]) + Real.sqrt (Var[Y; μ]) ↔
+      correlation X Y μ = 1 := by
+  have hax : Real.sqrt (Var[X; μ]) ≠ 0 :=
+    Real.sqrt_ne_zero'.mpr ((variance_nonneg X μ).lt_of_ne hXnd.symm)
+  have hay : Real.sqrt (Var[Y; μ]) ≠ 0 :=
+    Real.sqrt_ne_zero'.mpr ((variance_nonneg Y μ).lt_of_ne hYnd.symm)
+  rw [stddev_add_eq_iff_covariance_eq_sqrt hX hY, correlation,
+    div_eq_one_iff_eq (mul_ne_zero hax hay)]
+
+/-- **Equality boundary of the standard-deviation triangle inequality (perfect-positive-correlation
+capstone).**  For non-degenerate `X, Y` the L² triangle inequality `σ[X+Y] ≤ σ[X] + σ[Y]` is an
+equality *if and only if* `X` is almost everywhere an **increasing** affine function of `Y`:
+
+        √Var[X + Y] = √Var[X] + √Var[Y]  ↔  ∃ a b, 0 < a ∧ X =ᵐ a·Y + b.
+
+Chaining `stddev_add_eq_iff_correlation_eq_one` with `correlation_eq_one_iff_affine_pos`, this is
+the sharp structural boundary of `stddev_add_le`: the standard deviations of a sum add *precisely*
+in the perfectly-positively-correlated (fully-aligned) case, dual to
+`variance_add_eq_iff_covariance_zero` — whose boundary is the orthogonal `cov = 0` case — at the
+opposite endpoint of the Cauchy–Schwarz interval. -/
+theorem stddev_add_eq_iff_affine_pos [IsProbabilityMeasure μ] {X Y : Ω → ℝ}
+    (hX : MemLp X 2 μ) (hY : MemLp Y 2 μ) (hXnd : Var[X; μ] ≠ 0) (hYnd : Var[Y; μ] ≠ 0) :
+    Real.sqrt (Var[X + Y; μ]) = Real.sqrt (Var[X; μ]) + Real.sqrt (Var[Y; μ]) ↔
+      ∃ a b : ℝ, 0 < a ∧ X =ᵐ[μ] fun ω => a * Y ω + b := by
+  rw [stddev_add_eq_iff_correlation_eq_one hX hY hXnd hYnd,
+    correlation_eq_one_iff_affine_pos hX hY hXnd hYnd]
+
 end ShannonAWGNMultiSymbolPower

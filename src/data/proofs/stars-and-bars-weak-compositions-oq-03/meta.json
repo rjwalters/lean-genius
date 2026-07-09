@@ -16,7 +16,7 @@
     "lineCount": 124,
     "axiomCount": 0,
     "theoremCount": 3,
-    "definitionCount": 2,
+    "definitionCount": 1,
     "path": "Proofs/StarsAndBarsWeakCompositionsOQ03.lean",
     "sorries": 0
   },
@@ -55,7 +55,7 @@
     "assumptions": "0 axioms, 0 sorries, no native_decide. All named declarations (sum_sub_one, positiveCompositionEquivWeak, instFintypePositiveComposition, card_positiveComposition_eq_weak, card_positiveComposition) were verified with #print axioms to depend only on the foundational propext / Classical.choice / Quot.sound. The bijection positiveCompositionEquivWeak requires k ≤ n (otherwise the n − k target uses truncated subtraction and the positive side is empty); the closed-form count card_positiveComposition additionally requires 0 < k so that C(n − 1, k − 1) is the correct value (at n = 0 the truncated n − 1 would otherwise misfire). The Fintype instance on the positive-composition subtype is total: it uses the bijection when k ≤ n and an IsEmpty witness when k > n (a positive composition would force ∑ ≥ k > n). The C(n−1, k−1) form follows from the raw C((n−k)+k−1, n−k) by Nat.choose_symm on the index k−1 = (n−1) − (n−k).",
     "mathlib_version": "4.26.0",
     "theoremCount": 3,
-    "definitionCount": 2
+    "definitionCount": 1
   },
   "overview": {
     "historicalContext": "Compositions come in two flavours that stars and bars counts in parallel. A weak composition of n into k parts allows zero parts and is counted by C(n+k−1, n) — bars placed among the stars; a (strict) composition into k positive parts forbids zero parts and is counted by C(n−1, k−1) — bars placed in the k−1 internal gaps between n stars. The two pictures are not independent: subtracting one star from each of the k groups (equivalently, sliding each internal bar to absorb one star) turns a positive composition of n into a weak composition of n−k, and adding one star back inverts it. This add-1-to-each-part dictionary is the standard textbook reduction of 'positive solutions of x₁+⋯+x_k = n' to 'nonnegative solutions of y₁+⋯+y_k = n−k', and it is exactly the bijection formalised here.",

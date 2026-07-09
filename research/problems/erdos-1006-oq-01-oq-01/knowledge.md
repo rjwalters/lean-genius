@@ -49,3 +49,27 @@ graph (Hasse diagram) of some poset. File: `proofs/Proofs/Erdos1006OQ01.lean`.
   `nesetril_rodl_counterexample` (Nesetril-Rodl 1978) each need 1000+ lines of
   probabilistic / explicit extremal-graph machinery absent from Mathlib. They
   are out of scope for the `cover_graph_characterization` problem.
+
+## Soundness fix (this session)
+
+- **`nesetril_rodl_counterexample` was UNSOUND as originally stated.** Its
+  hypothesis phrased "girth ≥ g" as *"every closed walk has length 0 or ≥ g"*.
+  But any edge `u ~ v` gives the length-2 closed walk `u → v → u`, so for `g ≥ 3`
+  that condition forces the graph to be **edgeless** — and edgeless graphs admit
+  a robustly acyclic orientation. So no graph satisfied both the walk-girth
+  hypothesis and `¬admitsRobust`: the axiom asserted a *false existential*
+  (an inconsistent assumption, like the earlier `bringRadical_not_in_radicals`
+  removal, #35878).
+- **Fix (VERIFIED, this session):**
+  - proved `edgeless_admits_robust` — any graph with no edges admits a robust
+    orientation (generalises `empty_graph_robust` from `⊥`);
+  - proved `closedWalk_girth_formulation_unsound` — the closed-walk phrasing has
+    NO witness (case split: edgeless ⇒ robust; else a length-2 backtrack breaks
+    the walk bound). Documents *why* the old axiom was unsound;
+  - re-stated BOTH axioms using `SimpleGraph.egirth` (length of shortest
+    **cycle**, `⊤` if acyclic) — the correct girth invariant. The corrected
+    `nesetril_rodl_counterexample` is genuinely true & deep (high girth + high
+    chromatic number), so it stays axiomatized. `triangle_not_robust` still
+    discharges its `g = 3` base case (`K₃` has `egirth = 3`).
+- **Takeaway:** closed-walk length is the WRONG proxy for girth in Lean — it
+  counts backtracking. Use `egirth`/`girth` (cycles) for "no short cycles".

@@ -33,6 +33,12 @@
     `|A'| ≥ eps·|A| > 0`), so `edgeDensity_compl` applies uniformly and the two
     density gaps agree in absolute value.
 
+  * `isEpsilonRegular_mono` — **monotonicity in the parameter**: `eps₁ ≤ eps₂` and
+    ε-regularity at `eps₁` imply ε-regularity at `eps₂` (larger `eps` is a weaker
+    requirement).  Consequences: `irregularOrderedPairs_antitone` (the irregular-pair
+    set shrinks as `eps` grows) and `card_irregularOrderedPairs_antitone` (its count is
+    non-increasing in `eps`).
+
   All results are fully machine-checked (0 axioms, 0 sorries).
 
   Reference: Szemerédi (1975); Komlós–Simonovits (1996).
@@ -252,5 +258,44 @@ theorem even_card_irregularOrderedPairs (G : SimpleGraph V) [DecidableRel G.Adj]
     intro heq
     rw [Prod.swap_prod_mk, Prod.mk.injEq] at heq
     exact hne heq.2
+
+/-- **Monotonicity of ε-regularity in the parameter.**  Larger `eps` is a *weaker*
+    regularity requirement: if `(A, B)` is `eps₁`-regular and `eps₁ ≤ eps₂`, it is also
+    `eps₂`-regular.  Two effects both point the same way — raising the parameter shrinks
+    the class of witnesses that must be tested (a witness meeting `|A'| ≥ eps₂·|A|` a
+    fortiori meets `|A'| ≥ eps₁·|A|`) and simultaneously relaxes the density-gap bound
+    from `≤ eps₁` to `≤ eps₂`.  No sign hypothesis on the parameters is needed: the
+    threshold comparison only uses `Nat.cast_nonneg` of the cardinalities. -/
+theorem isEpsilonRegular_mono (G : SimpleGraph V) [DecidableRel G.Adj]
+    {eps₁ eps₂ : ℚ} (h : eps₁ ≤ eps₂) {A B : Finset V}
+    (hreg : IsEpsilonRegular G eps₁ A B) : IsEpsilonRegular G eps₂ A B := by
+  intro A' B' hA' hB' hcA' hcB'
+  -- Meeting the `eps₂` threshold implies meeting the smaller `eps₁` threshold.
+  have hA2 : (A'.card : ℚ) ≥ eps₁ * A.card :=
+    le_trans (mul_le_mul_of_nonneg_right h (Nat.cast_nonneg _)) hcA'
+  have hB2 : (B'.card : ℚ) ≥ eps₁ * B.card :=
+    le_trans (mul_le_mul_of_nonneg_right h (Nat.cast_nonneg _)) hcB'
+  exact le_trans (hreg A' B' hA' hB' hA2 hB2) h
+
+/-- **The irregular-pair set is antitone in `eps`.**  Since ε-regularity only weakens as
+    `eps` grows (`isEpsilonRegular_mono`), a pair that is irregular at the larger `eps₂`
+    was already irregular at the smaller `eps₁`; hence the ordered irregular pairs at
+    `eps₂` are a subset of those at `eps₁`. -/
+theorem irregularOrderedPairs_antitone (G : SimpleGraph V) [DecidableRel G.Adj]
+    {eps₁ eps₂ : ℚ} (h : eps₁ ≤ eps₂) (parts : Finset (Finset V)) :
+    irregularOrderedPairs G eps₂ parts ⊆ irregularOrderedPairs G eps₁ parts := by
+  intro x hx
+  simp only [irregularOrderedPairs, Finset.mem_filter, Finset.mem_product] at hx ⊢
+  obtain ⟨hmem, hne, hreg⟩ := hx
+  exact ⟨hmem, hne, fun hcon => hreg (isEpsilonRegular_mono G h hcon)⟩
+
+/-- **The irregular-pair count is monotone (non-increasing) in `eps`.**  Cardinality form
+    of `irregularOrderedPairs_antitone`: raising the regularity parameter can only reduce
+    the number of ordered irregular pairs — the quantitative statement behind "coarser
+    regularity is easier to satisfy". -/
+theorem card_irregularOrderedPairs_antitone (G : SimpleGraph V) [DecidableRel G.Adj]
+    {eps₁ eps₂ : ℚ} (h : eps₁ ≤ eps₂) (parts : Finset (Finset V)) :
+    (irregularOrderedPairs G eps₂ parts).card ≤ (irregularOrderedPairs G eps₁ parts).card :=
+  Finset.card_le_card (irregularOrderedPairs_antitone G h parts)
 
 end Szemeredi.Regularity.OQ01

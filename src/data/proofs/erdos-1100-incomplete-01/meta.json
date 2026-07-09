@@ -56,7 +56,7 @@
     "lineCount": 120,
     "assumptions": "None for the results proved here — fully verified from Mathlib with 0 axioms (only the standard propext / Classical.choice / Quot.sound; tauPerp_one uses kernel `decide`, not `native_decide`, so no Lean.ofReduceBool) and 0 sorries. The DEEP results of Erdős #1100 (Erdős–Hall, Erdős–Simonovits, the full τ⊥(n) ≥ ω(n) bound) remain axiomatized in the parent and are NOT addressed here.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 3,
+    "theoremCount": 7,
     "definitionCount": 2
   },
   "overview": {
@@ -136,7 +136,7 @@
     "namespace": "Erdos1100Coprime",
     "lineCount": 120,
     "axiomCount": 0,
-    "theoremCount": 3,
+    "theoremCount": 7,
     "definitionCount": 2,
     "path": "Proofs/Erdos1100Incomplete01.lean",
     "sorries": 0

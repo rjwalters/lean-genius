@@ -45,7 +45,7 @@
     "lineCount": 117,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries (only Mathlib's foundational propext / Classical.choice / Quot.sound — confirmed by #print axioms on all four theorems). The numerical sanity checks use decide (kernel reduction, no native_decide / Lean.ofReduceBool).",
     "mathlib_version": "4.26.0",
-    "theoremCount": 6,
+    "theoremCount": 7,
     "definitionCount": 1
   },
   "overview": {
@@ -136,7 +136,7 @@
     "namespace": "FibonacciIdentitiesOQ03OQ02OQ02",
     "lineCount": 117,
     "axiomCount": 0,
-    "theoremCount": 6,
+    "theoremCount": 7,
     "definitionCount": 1,
     "path": "Proofs/FibonacciIdentitiesOQ03OQ02OQ02.lean",
     "sorries": 0

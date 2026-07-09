@@ -60,7 +60,7 @@
     "axiomCount": 0,
     "assumptions": "None. Fully verified, 0 axioms, 0 sorries, and no native_decide: each fixed-point sum (80 for n=5, 156 for n=6) is discharged by kernel decide, so both headline theorems depend only on the standard foundational axioms propext, Classical.choice, Quot.sound (confirmed via #print axioms — in particular no Lean.ofReduceBool and no sorryAx).",
     "lineCount": 191,
-    "theoremCount": 8,
+    "theoremCount": 10,
     "definitionCount": 3
   },
   "overview": {
@@ -158,7 +158,7 @@
     "namespace": "BurnsideBracelets",
     "lineCount": 191,
     "axiomCount": 0,
-    "theoremCount": 8,
+    "theoremCount": 10,
     "definitionCount": 3,
     "path": "Proofs/BurnsideCountingOQ04OQ01OQ01.lean",
     "sorries": 0

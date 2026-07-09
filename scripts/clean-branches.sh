@@ -62,10 +62,18 @@ KEEP_NO_PR=false
 REMOTE=false
 
 # Age threshold (in days) for reclaiming scratch worktrees under
-# .loom/worktrees/* that have no merged/closed PR. A worktree older than this
-# (by mtime) with a clean tree and no unpushed commits is eligible for removal.
+# .loom/worktrees/* that have no merged/closed PR. A worktree with no activity
+# anywhere in its tree for this long, a clean tree, and no unpushed commits is
+# eligible for removal.
 # Overridable via the WORKTREE_MAX_AGE_DAYS environment variable.
 WORKTREE_MAX_AGE_DAYS="${WORKTREE_MAX_AGE_DAYS:-30}"
+
+# Idle window (in hours) treated as "this worktree is in use RIGHT NOW".
+# Claude-driven agents work in bursts and hold no persistent process inside
+# their worktree between tool calls, so process checks alone cannot see a live
+# session. Any file modified anywhere in the tree within this window preserves
+# the worktree unconditionally.
+WORKTREE_IDLE_HOURS="${WORKTREE_IDLE_HOURS:-6}"
 
 for arg in "$@"; do
     case $arg in
@@ -119,15 +127,20 @@ Remote cleanup (--remote):
   branches but origin has accumulated merged-PR branches.
 
 Worktree cleanup:
-  - .claude/worktrees/agent-* without a running claude process: REMOVE
+  ALL passes below share one guard contract (reclaim_worktree): a worktree
+  is PRESERVED if it is the current checkout, locked, has an active owning
+  process, has a live agent tmux session named after it, has activity
+  anywhere in its tree within WORKTREE_IDLE_HOURS (default 6), has a dirty
+  tree, carries commits that exist on no remote, or has an OPEN PR.
+  Only after every guard passes:
+  - .claude/worktrees/*: REMOVE once its branch is merged/closed/gone on
+    origin or it has no activity for WORKTREE_MAX_AGE_DAYS
   - .loom/worktrees/issue-* for closed GitHub issues: REMOVE
   - .loom/worktrees/temp-* (temporary rebase worktrees): REMOVE
   - .loom/worktrees/* (scratch: audit-*, auditor-*, mechanic-*,
-    researcher-*, enricher-*, …): REMOVE when the tree is clean, has no
-    unpushed commits, is not the current checkout, is not locked, has no
-    active owning process, AND its branch is merged/closed/gone on origin
-    OR its mtime exceeds WORKTREE_MAX_AGE_DAYS (default 30). Preserved
-    otherwise.
+    researcher-*, enricher-*, …): REMOVE when its branch is merged/closed/
+    gone on origin OR it has no activity anywhere in its tree for
+    WORKTREE_MAX_AGE_DAYS (default 30). Preserved otherwise.
   - git-registered worktrees OUTSIDE .loom/worktrees/ and .claude/worktrees/
     (e.g. loose dirs under \$HOME or /private/tmp created during data-loss
     incidents): discovered via 'git worktree list' (never by walking \$HOME),
@@ -140,6 +153,11 @@ Worktree cleanup:
 Environment:
   WORKTREE_MAX_AGE_DAYS   Age threshold (days) for reclaiming stale scratch
                           worktrees with no merged/closed PR (default 30).
+                          Measured recursively: activity anywhere in the
+                          tree counts, not just the root dir's mtime.
+  WORKTREE_IDLE_HOURS     Idle window (hours) treated as "in use right now";
+                          any file modified within it preserves the worktree
+                          unconditionally (default 6).
 
 HELPEOF
             exit 0
@@ -299,6 +317,7 @@ echo ""
 
 # Counters
 deleted_merged=0
+preserved_ahead_pr=0
 deleted_closed=0
 deleted_no_pr_even=0
 preserved_open=0
@@ -409,6 +428,21 @@ progress_interval=20
 # joined (no per-branch awk). Field 1 = branch, field 2 = resolved PR status.
 # The list is read from FD 3 (not stdin), so the interactive `read -r -p`
 # prompts inside the loop still consume from the terminal in non-force mode.
+# branch_safe_to_delete <branch>
+#
+# True when deleting the local ref loses nothing: the tip is contained in a
+# remote ref, OR git cherry finds no commit whose patch is absent from
+# origin/main. On any probe failure, errs toward "not safe" (preserve).
+branch_safe_to_delete() {
+    local br="$1"
+    local containing
+    containing=$(git branch -r --contains "$br" 2>/dev/null | grep -v '\->' | head -n 1 || true)
+    [[ -n "$containing" ]] && return 0
+    local unapplied
+    unapplied=$(git cherry origin/main "$br" 2>/dev/null | grep -c '^+' || true)
+    [[ "${unapplied:-1}" -eq 0 ]]
+}
+
 while IFS=$'\t' read -r branch pr_status <&3; do
     [[ -z "$branch" ]] && continue
     ((processed++)) || true
@@ -428,8 +462,21 @@ while IFS=$'\t' read -r branch pr_status <&3; do
 
     # PR status was resolved in the batch awk-join pass above (read from the
     # resolved TSV's second field). No per-branch awk spawn here.
+    # A merged/closed PR describes the commits GitHub saw at merge time — an
+    # agent may have kept committing to the same local branch afterwards, and
+    # `git branch -D` (forced) bypasses git's own not-merged safety. Squash
+    # merges mean a local tip is (almost) never literally contained in a
+    # remote ref, so containment alone would preserve everything: a branch is
+    # safe to delete when its tip IS on some remote ref (e.g. a backup push)
+    # OR every commit it carries is patch-equivalent to one already in
+    # origin/main (`git cherry` prints no '+' lines).
     case "$pr_status" in
         MERGED)
+            if ! branch_safe_to_delete "$branch"; then
+                ((preserved_ahead_pr++)) || true
+                warning "  [KEEP] $branch (PR merged but carries commits not on any remote)"
+                continue
+            fi
             ((deleted_merged++)) || true
             if [[ "$DRY_RUN" == true ]]; then
                 info "  [DELETE] $branch (PR merged)"
@@ -456,6 +503,11 @@ while IFS=$'\t' read -r branch pr_status <&3; do
             ;;
 
         CLOSED)
+            if ! branch_safe_to_delete "$branch"; then
+                ((preserved_ahead_pr++)) || true
+                warning "  [KEEP] $branch (PR closed but carries commits not on any remote)"
+                continue
+            fi
             ((deleted_closed++)) || true
             if [[ "$DRY_RUN" == true ]]; then
                 info "  [DELETE] $branch (PR closed)"
@@ -638,160 +690,11 @@ echo ""
 worktrees_removed=0
 worktrees_preserved=0
 
-# --- .claude/worktrees/agent-* ---
-
-header "  Checking .claude/worktrees/..."
-
-if [[ -d "$REPO_ROOT/.claude/worktrees" ]]; then
-    for wt_dir in "$REPO_ROOT/.claude/worktrees"/*/; do
-        [[ ! -d "$wt_dir" ]] && continue
-        wt_name=$(basename "$wt_dir")
-
-        # Check if there is an active claude process for this worktree
-        has_active_process=false
-        if pgrep -f "claude.*${wt_dir}" &>/dev/null; then
-            has_active_process=true
-        fi
-
-        if [[ "$has_active_process" == true ]]; then
-            ((worktrees_preserved++)) || true
-            info "    Preserving: .claude/worktrees/$wt_name (active claude process)"
-        else
-            ((worktrees_removed++)) || true
-            if [[ "$DRY_RUN" == true ]]; then
-                info "    [REMOVE] .claude/worktrees/$wt_name (no active process)"
-            elif [[ "$FORCE" == true ]]; then
-                git worktree remove "$wt_dir" --force 2>/dev/null && \
-                    success "    Removed: .claude/worktrees/$wt_name" || \
-                    { warning "    Failed to remove worktree, cleaning directory..."; rm -rf "$wt_dir"; }
-            else
-                echo -e "    ${YELLOW}.claude/worktrees/$wt_name${NC} (no active process)"
-                read -r -p "      Remove? [Y/n] " -n 1 CONFIRM
-                echo ""
-                if [[ ! $CONFIRM =~ ^[Nn]$ ]]; then
-                    git worktree remove "$wt_dir" --force 2>/dev/null && \
-                        success "    Removed: .claude/worktrees/$wt_name" || \
-                        { warning "    Failed to remove worktree, cleaning directory..."; rm -rf "$wt_dir"; }
-                else
-                    ((worktrees_removed--)) || true
-                    ((worktrees_preserved++)) || true
-                fi
-            fi
-        fi
-    done
-else
-    info "    No .claude/worktrees/ directory found"
-fi
-
-echo ""
-
-# --- .loom/worktrees/issue-* (closed issues) ---
-
-header "  Checking .loom/worktrees/issue-*..."
-
-for wt_dir in "$REPO_ROOT/.loom/worktrees"/issue-*/; do
-    [[ ! -d "$wt_dir" ]] && continue
-    wt_name=$(basename "$wt_dir")
-    issue_num="${wt_name#issue-}"
-
-    # Check if issue is closed
-    issue_state=$(gh issue view "$issue_num" --json state -q '.state' 2>/dev/null || echo "UNKNOWN")
-
-    if [[ "$issue_state" == "CLOSED" ]]; then
-        ((worktrees_removed++)) || true
-        if [[ "$DRY_RUN" == true ]]; then
-            info "    [REMOVE] .loom/worktrees/$wt_name (issue closed)"
-        elif [[ "$FORCE" == true ]]; then
-            git worktree remove "$wt_dir" --force 2>/dev/null && \
-                success "    Removed: .loom/worktrees/$wt_name (issue #$issue_num closed)" || \
-                { warning "    Failed git worktree remove, cleaning directory..."; rm -rf "$wt_dir"; }
-        else
-            echo -e "    ${YELLOW}.loom/worktrees/$wt_name${NC} (issue #$issue_num closed)"
-            read -r -p "      Remove? [Y/n] " -n 1 CONFIRM
-            echo ""
-            if [[ ! $CONFIRM =~ ^[Nn]$ ]]; then
-                git worktree remove "$wt_dir" --force 2>/dev/null && \
-                    success "    Removed: .loom/worktrees/$wt_name" || \
-                    { warning "    Fallback: rm -rf"; rm -rf "$wt_dir"; }
-            else
-                ((worktrees_removed--)) || true
-                ((worktrees_preserved++)) || true
-            fi
-        fi
-    else
-        ((worktrees_preserved++)) || true
-        info "    Preserving: .loom/worktrees/$wt_name (issue $issue_state)"
-    fi
-done
-
-echo ""
-
-# --- .loom/worktrees/temp-* (temporary rebase worktrees) ---
-
-header "  Checking .loom/worktrees/temp-*..."
-
-for wt_dir in "$REPO_ROOT/.loom/worktrees"/temp-*/; do
-    [[ ! -d "$wt_dir" ]] && continue
-    wt_name=$(basename "$wt_dir")
-
-    ((worktrees_removed++)) || true
-    if [[ "$DRY_RUN" == true ]]; then
-        info "    [REMOVE] .loom/worktrees/$wt_name (temporary)"
-    elif [[ "$FORCE" == true ]]; then
-        git worktree remove "$wt_dir" --force 2>/dev/null && \
-            success "    Removed: .loom/worktrees/$wt_name" || \
-            { warning "    Fallback: rm -rf"; rm -rf "$wt_dir"; }
-    else
-        echo -e "    ${YELLOW}.loom/worktrees/$wt_name${NC} (temporary)"
-        read -r -p "      Remove? [Y/n] " -n 1 CONFIRM
-        echo ""
-        if [[ ! $CONFIRM =~ ^[Nn]$ ]]; then
-            git worktree remove "$wt_dir" --force 2>/dev/null && \
-                success "    Removed: .loom/worktrees/$wt_name" || \
-                { warning "    Fallback: rm -rf"; rm -rf "$wt_dir"; }
-        else
-            ((worktrees_removed--)) || true
-            ((worktrees_preserved++)) || true
-        fi
-    fi
-done
-
-echo ""
-
-# --- .loom/worktrees/* (generic scratch sweep) ---
-#
-# The issue-* and temp-* passes above only cover two naming conventions. The
-# bulk of accumulated disk lives under workflow-scratch names that match
-# neither (audit-*, auditor-*, mechanic-*, researcher-*, enricher-*, …). This
-# generic pass reclaims them SAFELY, mirroring the .claude/worktrees/* pass:
-# a worktree is removed only when it is provably disposable.
-#
-# A worktree is REMOVED only when ALL of these hold:
-#   - it is NOT the current checkout
-#   - it is NOT locked (`git worktree list` does not flag it `locked`)
-#   - no active owning process (pgrep on the worktree path)
-#   - clean working tree (`git status --porcelain` empty)
-#   - no commits that exist on no remote. With an upstream, `@{u}..HEAD` must
-#     be empty. WITHOUT an upstream, HEAD must be reachable from some remote
-#     ref (`git branch -r --contains HEAD` non-empty) — "no upstream" is NOT
-#     treated as "nothing to lose", since a never-pushed branch can carry
-#     local-only commits.
-#   - its branch's PR is NOT OPEN (an OPEN PR is always preserved)
-#   - AND it is reclaimable: its branch's PR is MERGED/CLOSED, OR its upstream
-#     branch is gone on origin, OR its mtime exceeds WORKTREE_MAX_AGE_DAYS.
-# Anything failing a single guard is PRESERVED. Default stays interactive;
-# --force is non-interactive.
-#
-# Decision table for the reclaim path (after the structural guards pass):
-#   PR OPEN              + stale         => PRESERVE (open-PR guard)
-#   PR OPEN              + recent        => PRESERVE (open-PR guard)
-#   PR MERGED/CLOSED                     => REMOVE   (reason: PR <status>)
-#   no upstream + HEAD on no remote ref  => PRESERVE (unbacked local commits)
-#   no upstream + HEAD on a remote ref + stale  => REMOVE (reason: stale)
-#   no upstream + HEAD on a remote ref + recent => PRESERVE (unmerged, recent)
-#   upstream gone on origin              => REMOVE   (reason: upstream gone)
-#   upstream present + stale             => REMOVE   (reason: stale)
-#   upstream present + recent            => PRESERVE (unmerged, recent)
+# All Phase 4 passes route removals through reclaim_worktree below, so every
+# pass shares one guard contract. Claude-driven agents hold NO persistent
+# process inside their worktree between tool calls, so "no process right now"
+# never justifies removal on its own — that mistake repeatedly deleted live
+# agents' worktrees mid-session and drove them to park work under $HOME.
 
 # Resolve the current checkout's worktree path so we never remove ourselves.
 current_wt_path="$(git rev-parse --show-toplevel 2>/dev/null || echo "")"
@@ -814,32 +717,69 @@ is_locked_wt() {
     return 1
 }
 
-# reclaim_worktree <worktree_path> <display_label>
+# reclaim_do_remove <worktree_path> <display_label> <reason>
+#
+# Actually remove a worktree that passed every guard. No --force and no blind
+# rm -rf fallback: if git refuses the removal (state changed between the
+# guards and now — e.g. the owning agent just wrote a file), the worktree is
+# PRESERVED for a future run. rm -rf applies only to paths git does not
+# register as worktrees at all (orphaned directories), which the WIP guards
+# have already vetted.
+reclaim_do_remove() {
+    local wt_path="$1"
+    local label="$2"
+    local reason="$3"
+    local wt_real wt_list
+    wt_real="$(cd "$wt_path" 2>/dev/null && pwd -P || echo "$wt_path")"
+    wt_list="$(git worktree list --porcelain 2>/dev/null || true)"
+    if git worktree remove "$wt_path" 2>/dev/null; then
+        success "    Removed: $label ($reason)"
+    elif ! grep -qxF "worktree $wt_real" <<< "$wt_list"; then
+        rm -rf "$wt_path" 2>/dev/null || true
+        git worktree prune 2>/dev/null || true
+        success "    Removed orphaned dir: $label ($reason)"
+    else
+        warning "    git worktree remove refused (state changed?) — preserving: $label"
+        ((worktrees_removed--)) || true
+        ((worktrees_preserved++)) || true
+    fi
+}
+
+# reclaim_worktree <worktree_path> <display_label> [preset_reason]
 #
 # Shared guard + reclaim-eligibility + removal/report logic for a single
-# worktree. Used by BOTH the .loom/worktrees/* scratch pass and the new
-# "git-registered worktrees outside .loom/worktrees/" pass so the two share one
-# decision contract (mirrors the guards 1-5 in scripts/lib/worktree-cleanup.sh).
+# worktree. Used by EVERY Phase 4 pass (.claude/worktrees/*, issue-*, temp-*,
+# the .loom/worktrees/* scratch sweep, and the out-of-tree pass) so they all
+# share one decision contract (mirrors guards 1-5 in
+# scripts/lib/worktree-cleanup.sh).
 #
-# <display_label> is the human-facing name shown in log lines (e.g.
-# ".loom/worktrees/enricher-1" or "$HOME/lg-r1-wt").
+# <display_label> is the human-facing name shown in log lines. When
+# <preset_reason> is given (e.g. "issue #123 closed"), it substitutes for the
+# merged/gone/stale reclaim-eligibility triggers — the structural guards
+# ALWAYS apply regardless.
 #
 # Structural guards (a worktree is PRESERVED if ANY hold):
 #   - it is the current checkout
 #   - it is locked (`git worktree list` marks it `locked`)
 #   - it has an active owning process (`pgrep` on the worktree path)
+#   - a live agent tmux session is named after it (Claude-driven agents hold
+#     no persistent process inside their worktree between tool calls, so the
+#     pgrep guard alone cannot see a live session)
+#   - anything in its tree was modified within WORKTREE_IDLE_HOURS
 #   - it has a dirty working tree (`git status --porcelain` non-empty)
 #   - it carries commits on no remote (upstream set: `@{u}..HEAD` non-empty;
 #     no upstream: HEAD reachable from no remote ref)
 #   - its branch has an OPEN PR
-# Only after every guard passes is reclaim-eligibility checked: the branch's PR
-# is MERGED/CLOSED, OR its upstream branch is gone on origin, OR its mtime
-# exceeds WORKTREE_MAX_AGE_DAYS. Anything not eligible is preserved as
-# "(unmerged, recent)". Honors DRY_RUN / FORCE / interactive modes and updates
-# the worktrees_removed / worktrees_preserved counters in the caller's scope.
+# Only after every guard passes is reclaim-eligibility checked: a preset
+# trigger from the calling pass, the branch's PR MERGED/CLOSED, its upstream
+# gone on origin, OR no activity anywhere in its tree for
+# WORKTREE_MAX_AGE_DAYS. Anything not eligible is preserved as "(unmerged,
+# recent)". Honors DRY_RUN / FORCE / interactive modes and updates the
+# worktrees_removed / worktrees_preserved counters in the caller's scope.
 reclaim_worktree() {
     local wt_path="$1"
     local label="$2"
+    local preset_reason="${3:-}"
     local wt_real
     wt_real="$(cd "$wt_path" 2>/dev/null && pwd -P || echo "$wt_path")"
 
@@ -861,6 +801,43 @@ reclaim_worktree() {
     if pgrep -f "$wt_path" &>/dev/null; then
         ((worktrees_preserved++)) || true
         info "    Preserving: $label (active process)"
+        return 0
+    fi
+
+    # GUARD: never remove a worktree whose owning agent session is alive.
+    # The fleet runs each agent in a tmux session named after its worktree
+    # (researcher-3, enricher-1; sub-worktrees like enricher-1-2 belong to
+    # session enricher-1; some roles carry a -agent suffix: auditor-agent).
+    # A live session means the worktree is in use RIGHT NOW even though no
+    # process currently references its path.
+    if command -v tmux &>/dev/null; then
+        local wt_base sess
+        wt_base="$(basename "$wt_real")"
+        while [[ -n "$wt_base" ]]; do
+            for sess in "$wt_base" "${wt_base}-agent"; do
+                if tmux has-session -t "=$sess" 2>/dev/null; then
+                    ((worktrees_preserved++)) || true
+                    info "    Preserving: $label (live agent session '$sess')"
+                    return 0
+                fi
+            done
+            # Strip one trailing -<n> so sub-worktrees match their owner.
+            if [[ "$wt_base" =~ ^(.+)-[0-9]+$ ]]; then
+                wt_base="${BASH_REMATCH[1]}"
+            else
+                break
+            fi
+        done
+    fi
+
+    # GUARD: never remove a worktree with recent activity anywhere in its
+    # tree. A directory's own mtime does not change when files deeper in the
+    # tree are edited, and burst-driven agents leave no process between tool
+    # calls — recursive recency is the reliable "in use" signal. .git is
+    # included on purpose: commits, fetches and checkouts count as activity.
+    if [[ -n "$(find "$wt_real" -mmin -$(( WORKTREE_IDLE_HOURS * 60 )) -print -quit 2>/dev/null)" ]]; then
+        ((worktrees_preserved++)) || true
+        info "    Preserving: $label (activity within ${WORKTREE_IDLE_HOURS}h)"
         return 0
     fi
 
@@ -906,32 +883,31 @@ reclaim_worktree() {
     fi
 
     # Determine reclaim eligibility. Removed only if at least one of:
-    #   (a) the branch's PR is MERGED/CLOSED,
-    #   (b) the upstream branch is gone on origin, or
-    #   (c) the worktree mtime exceeds WORKTREE_MAX_AGE_DAYS.
+    #   (a) a preset trigger was supplied by the calling pass,
+    #   (b) the branch's PR is MERGED/CLOSED,
+    #   (c) the upstream branch is gone on origin, or
+    #   (d) no activity anywhere in the tree for WORKTREE_MAX_AGE_DAYS.
     local wt_branch reclaim_reason
     wt_branch=$(git -C "$wt_path" symbolic-ref --short HEAD 2>/dev/null || echo "")
-    reclaim_reason=""
+    reclaim_reason="$preset_reason"
 
     if [[ -n "$wt_branch" ]]; then
         local pr_status
         pr_status=$(get_pr_status "$wt_branch")
-        # GUARD: an OPEN PR must ALWAYS be preserved, regardless of mtime.
-        # Without this, a long-lived feature branch under active review
-        # whose dir mtime drifts past WORKTREE_MAX_AGE_DAYS would fall
-        # through to path (c) and be removed. Preserve before any mtime
-        # check.
+        # GUARD: an OPEN PR must ALWAYS be preserved, regardless of staleness
+        # or a preset trigger. Without this, a long-lived feature branch under
+        # active review would fall through to path (d) and be removed.
         if [[ "$pr_status" == "OPEN" ]]; then
             ((worktrees_preserved++)) || true
             info "    Preserving: $label (open PR)"
             return 0
         fi
-        if [[ "$pr_status" == "MERGED" || "$pr_status" == "CLOSED" ]]; then
+        if [[ -z "$reclaim_reason" && ( "$pr_status" == "MERGED" || "$pr_status" == "CLOSED" ) ]]; then
             reclaim_reason="PR $pr_status"
         fi
     fi
 
-    # (b) Upstream gone on origin: branch tracks origin but the remote ref
+    # (c) Upstream gone on origin: branch tracks origin but the remote ref
     # no longer exists (a fetch --prune would drop it).
     if [[ -z "$reclaim_reason" && -n "$wt_branch" ]]; then
         local upstream
@@ -941,14 +917,13 @@ reclaim_worktree() {
         fi
     fi
 
-    # (c) Stale by mtime.
+    # (d) Stale: no activity anywhere in the tree for WORKTREE_MAX_AGE_DAYS.
+    # The root dir's mtime is meaningless for this: it does not reflect deep
+    # edits (false-stale on live worktrees) and checkouts touch it (false-
+    # fresh on abandoned ones) — recency is measured recursively instead.
     if [[ -z "$reclaim_reason" ]]; then
-        local now_epoch wt_mtime age_days
-        now_epoch=$(date +%s)
-        wt_mtime=$(stat -f %m "$wt_path" 2>/dev/null || stat -c %Y "$wt_path" 2>/dev/null || echo "$now_epoch")
-        age_days=$(( (now_epoch - wt_mtime) / 86400 ))
-        if [[ "$age_days" -gt "$WORKTREE_MAX_AGE_DAYS" ]]; then
-            reclaim_reason="stale ${age_days}d > ${WORKTREE_MAX_AGE_DAYS}d"
+        if [[ -z "$(find "$wt_real" -mtime -"$WORKTREE_MAX_AGE_DAYS" -print -quit 2>/dev/null)" ]]; then
+            reclaim_reason="no activity in ${WORKTREE_MAX_AGE_DAYS}d"
         fi
     fi
 
@@ -962,17 +937,13 @@ reclaim_worktree() {
     if [[ "$DRY_RUN" == true ]]; then
         info "    [REMOVE] $label ($reclaim_reason)"
     elif [[ "$FORCE" == true ]]; then
-        git worktree remove "$wt_path" --force 2>/dev/null && \
-            success "    Removed: $label ($reclaim_reason)" || \
-            { warning "    Fallback: rm -rf"; rm -rf "$wt_path"; git worktree prune 2>/dev/null || true; }
+        reclaim_do_remove "$wt_path" "$label" "$reclaim_reason"
     else
         echo -e "    ${YELLOW}$label${NC} ($reclaim_reason)"
         read -r -p "      Remove? [Y/n] " -n 1 CONFIRM
         echo ""
         if [[ ! $CONFIRM =~ ^[Nn]$ ]]; then
-            git worktree remove "$wt_path" --force 2>/dev/null && \
-                success "    Removed: $label" || \
-                { warning "    Fallback: rm -rf"; rm -rf "$wt_path"; git worktree prune 2>/dev/null || true; }
+            reclaim_do_remove "$wt_path" "$label" "$reclaim_reason"
         else
             ((worktrees_removed--)) || true
             ((worktrees_preserved++)) || true
@@ -980,6 +951,103 @@ reclaim_worktree() {
     fi
     return 0
 }
+
+
+# --- .claude/worktrees/agent-* ---
+
+header "  Checking .claude/worktrees/..."
+
+# Removal requires a real reclaim trigger (merged/closed/gone PR or long
+# idleness) — never merely "no process running at scan time".
+if [[ -d "$REPO_ROOT/.claude/worktrees" ]]; then
+    for wt_dir in "$REPO_ROOT/.claude/worktrees"/*/; do
+        [[ ! -d "$wt_dir" ]] && continue
+        wt_name=$(basename "$wt_dir")
+        reclaim_worktree "${wt_dir%/}" ".claude/worktrees/$wt_name"
+    done
+else
+    info "    No .claude/worktrees/ directory found"
+fi
+
+echo ""
+
+# --- .loom/worktrees/issue-* (closed issues) ---
+
+header "  Checking .loom/worktrees/issue-*..."
+
+for wt_dir in "$REPO_ROOT/.loom/worktrees"/issue-*/; do
+    [[ ! -d "$wt_dir" ]] && continue
+    wt_name=$(basename "$wt_dir")
+    issue_num="${wt_name#issue-}"
+
+    # Check if issue is closed
+    issue_state=$(gh issue view "$issue_num" --json state -q '.state' 2>/dev/null || echo "UNKNOWN")
+
+    if [[ "$issue_state" == "CLOSED" ]]; then
+        # Closed issue is the reclaim trigger; reclaim_worktree still applies
+        # every structural guard (live session, recent activity, dirty tree,
+        # unpushed commits, open PR, …) before removing anything.
+        reclaim_worktree "${wt_dir%/}" ".loom/worktrees/$wt_name" "issue #$issue_num closed"
+    else
+        ((worktrees_preserved++)) || true
+        info "    Preserving: .loom/worktrees/$wt_name (issue $issue_state)"
+    fi
+done
+
+echo ""
+
+# --- .loom/worktrees/temp-* (temporary rebase worktrees) ---
+
+header "  Checking .loom/worktrees/temp-*..."
+
+for wt_dir in "$REPO_ROOT/.loom/worktrees"/temp-*/; do
+    [[ ! -d "$wt_dir" ]] && continue
+    wt_name=$(basename "$wt_dir")
+
+    # "temporary" is the reclaim trigger; the structural guards still protect
+    # an in-flight rebase (dirty tree, recent activity, live process).
+    reclaim_worktree "${wt_dir%/}" ".loom/worktrees/$wt_name" "temporary"
+done
+
+echo ""
+
+# --- .loom/worktrees/* (generic scratch sweep) ---
+#
+# The issue-* and temp-* passes above only cover two naming conventions. The
+# bulk of accumulated disk lives under workflow-scratch names that match
+# neither (audit-*, auditor-*, mechanic-*, researcher-*, enricher-*, …). This
+# generic pass reclaims them SAFELY, mirroring the .claude/worktrees/* pass:
+# a worktree is removed only when it is provably disposable.
+#
+# A worktree is REMOVED only when ALL of these hold:
+#   - it is NOT the current checkout
+#   - it is NOT locked (`git worktree list` does not flag it `locked`)
+#   - no active owning process (pgrep on the worktree path)
+#   - no live agent tmux session named after it
+#   - no activity anywhere in its tree within WORKTREE_IDLE_HOURS
+#   - clean working tree (`git status --porcelain` empty)
+#   - no commits that exist on no remote. With an upstream, `@{u}..HEAD` must
+#     be empty. WITHOUT an upstream, HEAD must be reachable from some remote
+#     ref (`git branch -r --contains HEAD` non-empty) — "no upstream" is NOT
+#     treated as "nothing to lose", since a never-pushed branch can carry
+#     local-only commits.
+#   - its branch's PR is NOT OPEN (an OPEN PR is always preserved)
+#   - AND it is reclaimable: its branch's PR is MERGED/CLOSED, OR its upstream
+#     branch is gone on origin, OR it has no activity anywhere in its tree
+#     for WORKTREE_MAX_AGE_DAYS (recursive — root mtime alone is meaningless).
+# Anything failing a single guard is PRESERVED. Default stays interactive;
+# --force is non-interactive.
+#
+# Decision table for the reclaim path (after the structural guards pass):
+#   PR OPEN              + stale         => PRESERVE (open-PR guard)
+#   PR OPEN              + recent        => PRESERVE (open-PR guard)
+#   PR MERGED/CLOSED                     => REMOVE   (reason: PR <status>)
+#   no upstream + HEAD on no remote ref  => PRESERVE (unbacked local commits)
+#   no upstream + HEAD on a remote ref + stale  => REMOVE (reason: stale)
+#   no upstream + HEAD on a remote ref + recent => PRESERVE (unmerged, recent)
+#   upstream gone on origin              => REMOVE   (reason: upstream gone)
+#   upstream present + stale             => REMOVE   (reason: stale)
+#   upstream present + recent            => PRESERVE (unmerged, recent)
 
 header "  Checking .loom/worktrees/* (scratch)..."
 
@@ -1109,7 +1177,7 @@ echo ""
 # =============================================================================
 
 total_deleted=$((deleted_merged + deleted_closed + deleted_no_pr_even))
-total_preserved=$((preserved_open + preserved_protected + preserved_ahead + preserved_no_pr))
+total_preserved=$((preserved_open + preserved_protected + preserved_ahead + preserved_ahead_pr + preserved_no_pr))
 
 header "============================================================"
 header "                       SUMMARY"
@@ -1130,6 +1198,7 @@ echo -e "    ${GREEN}Deleted (no PR, even):${NC}    $deleted_no_pr_even"
 echo -e "    ${BLUE}Preserved (PR open):${NC}      $preserved_open"
 echo -e "    ${BLUE}Preserved (protected):${NC}    $preserved_protected"
 echo -e "    ${YELLOW}Preserved (ahead, no PR):${NC} $preserved_ahead"
+echo -e "    ${YELLOW}Preserved (ahead of merged/closed PR):${NC} $preserved_ahead_pr"
 echo -e "    ${BLUE}Preserved (other):${NC}        $preserved_no_pr"
 if [[ $failed -gt 0 ]]; then
     echo -e "    ${RED}Failed:${NC}                   $failed"
