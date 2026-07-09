@@ -1022,6 +1022,105 @@ theorem nonRepresentable_of_mul_powerForm {p q n a b : ℕ} (hp : 0 < p) (hq : 0
   exact fun hrep => h (isRepresentable_mul_powerForm hp hq a b hrep)
 
 /-
+## Part IIf: The Degenerate ("Chain") Regime — Infinitude is Elementary (0-axiom)
+
+The deep axiom `erdos_lewin_infinite` below carries a `Nat.Coprime p q` hypothesis.
+That hypothesis is not cosmetic: it excludes exactly the *degenerate* pairs where the
+larger base is a power of the smaller (`p = q^k`), for which every power form
+`p^a q^b = q^{k a + b}` is a pure power of `q`. Powers of a common base form a
+divisibility **chain**, so no two of them can coexist in an antichain — a representing
+set collapses to a singleton and representability coincides with being a power form for
+*every* `n`, not merely below the `p + q` window. In this regime the "infinitely many
+non-representables" conclusion is completely elementary (every number that is not a
+power of `q` is non-representable), so the coprimality hypothesis of the deep theorem
+marks the precise boundary between the elementary and the genuinely hard regimes.
+-/
+
+/-- **Chain regime ⟹ representability collapses to power forms, unconditionally
+(0-axiom).** If every two power forms are divisibility-comparable then a representing
+set, being an antichain (`NoOneDividesAnother`), has at most one element; hence for
+**every** `n`, `IsRepresentable p q n ↔ IsPowerForm p q n`. Contrast the generic
+regime, where this equivalence is sharp and stops at `p + q`
+(`isRepresentable_iff_isPowerForm_below_p_add_q`). -/
+theorem isRepresentable_iff_isPowerForm_of_chain {p q : ℕ}
+    (hchain : ∀ a b, IsPowerForm p q a → IsPowerForm p q b → a ∣ b ∨ b ∣ a) (n : ℕ) :
+    IsRepresentable p q n ↔ IsPowerForm p q n := by
+  refine ⟨?_, isRepresentable_of_isPowerForm⟩
+  rintro ⟨S, hne, hpf, hac, hsum⟩
+  have hcard1 : S.card = 1 := by
+    rcases Nat.lt_or_ge S.card 2 with hc | hc
+    · have : 1 ≤ S.card := Finset.card_pos.mpr hne
+      omega
+    · exfalso
+      obtain ⟨a, b, ha, hb, hab⟩ := Finset.one_lt_card_iff.mp hc
+      rcases hchain a b (hpf a ha) (hpf b hb) with h | h
+      · exact hac a ha b hb hab h
+      · exact hac b hb a ha (Ne.symm hab) h
+  obtain ⟨x, rfl⟩ := Finset.card_eq_one.mp hcard1
+  rw [Finset.sum_singleton, id_eq] at hsum
+  rw [← hsum]
+  exact hpf x (Finset.mem_singleton_self x)
+
+/-- **When the larger base is a power of the smaller (`p = q^k`), the power forms are a
+divisibility chain (0-axiom).** Every power form `(q^k)^a · q^b = q^{k a + b}` is a pure
+power of `q`, and `q^i ∣ q^j ∨ q^j ∣ q^i` since the exponents are linearly ordered. -/
+theorem powerForm_chain_of_base_pow {q : ℕ} (k : ℕ) :
+    ∀ a b, IsPowerForm (q ^ k) q a → IsPowerForm (q ^ k) q b → a ∣ b ∨ b ∣ a := by
+  rintro a b ⟨ka, la, rfl⟩ ⟨kb, lb, rfl⟩
+  have ea : (q ^ k) ^ ka * q ^ la = q ^ (k * ka + la) := by rw [← pow_mul, ← pow_add]
+  have eb : (q ^ k) ^ kb * q ^ lb = q ^ (k * kb + lb) := by rw [← pow_mul, ← pow_add]
+  rw [ea, eb]
+  rcases le_total (k * ka + la) (k * kb + lb) with hle | hle
+  · exact Or.inl (pow_dvd_pow q hle)
+  · exact Or.inr (pow_dvd_pow q hle)
+
+/-- Every `(4,2)`-power form is either `1` or even: `4^a 2^b = 2^{2a+b}`, which is `1`
+exactly when `a = b = 0` and otherwise divisible by `2`. -/
+theorem isPowerForm_four_two_one_or_even {n : ℕ} (h : IsPowerForm 4 2 n) :
+    n = 1 ∨ 2 ∣ n := by
+  obtain ⟨a, b, rfl⟩ := h
+  rcases Nat.eq_zero_or_pos b with hb | hb
+  · rcases Nat.eq_zero_or_pos a with ha | ha
+    · subst ha; subst hb; left; norm_num
+    · subst hb; right
+      simp only [pow_zero, mul_one]
+      exact dvd_pow (by norm_num : (2 : ℕ) ∣ 4) ha.ne'
+  · right
+    exact (dvd_pow_self 2 hb.ne').mul_left (4 ^ a)
+
+/-- **Concrete degenerate pair `(4, 2)`: representable ⇔ power of `2` (0-axiom).**
+Since `4 = 2^2`, every power form `4^a 2^b = 2^{2a+b}` is a power of `2`, and the chain
+collapse (`isRepresentable_iff_isPowerForm_of_chain`) gives `IsRepresentable 4 2 n ↔
+IsPowerForm 4 2 n` for every `n`. Note `(4,2)` is *not* coprime, so the deep axiom
+`erdos_lewin_infinite` does not even apply here. -/
+theorem isRepresentable_four_two_iff (n : ℕ) :
+    IsRepresentable 4 2 n ↔ IsPowerForm 4 2 n :=
+  isRepresentable_iff_isPowerForm_of_chain
+    (powerForm_chain_of_base_pow (q := 2) 2) n
+
+/-- **Infinitely many non-representables for `(4, 2)` — elementary, 0-axiom.** Every odd
+number `2m + 3 ≥ 3` is neither `1` nor even, hence not a `(4,2)`-power form
+(`isPowerForm_four_two_one_or_even`), hence non-representable
+(`isRepresentable_four_two_iff`). The injection `m ↦ 2m + 3` embeds `ℕ` into
+`NonRepresentable 4 2`. This is precisely the conclusion of `erdos_lewin_infinite` — here
+obtained with no axiom, because the degenerate (non-coprime) pair sits outside the deep
+theorem's hypotheses. -/
+theorem infinite_nonRepresentable_four_two :
+    Set.Infinite (NonRepresentable 4 2) := by
+  refine Set.infinite_of_injective_forall_mem
+    (f := fun m : ℕ => 2 * m + 3) ?_ ?_
+  · intro a b hab
+    have : 2 * a + 3 = 2 * b + 3 := hab
+    omega
+  · intro m
+    have hnp : ¬ IsPowerForm 4 2 (2 * m + 3) := by
+      intro h
+      rcases isPowerForm_four_two_one_or_even h with h1 | he <;> omega
+    show (2 * m + 3) ∈ NonRepresentable 4 2
+    rw [NonRepresentable, Set.mem_setOf_eq, isRepresentable_four_two_iff]
+    exact hnp
+
+/-
 ## Part III: General Case (p,q) ≠ (2,3)
 -/
 

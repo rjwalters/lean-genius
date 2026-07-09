@@ -67,9 +67,9 @@
       "one_le_minSummandBound / minSummandBound_le_self: two-sided bound 1 ≤ minSummandBound n ≤ n for every n≥1 (0-axiom). Lower bound: every n≥1 is {2,3}-representable (case_2_3_all_representable) with summands ≥1, so Iio 1 ⊆ witness set, giving sSup ≥ sSup(Iio 1)=1. Upper bound: some summand of any representation is ≤n, so the threshold f<s≤n bounds the witness set above by n. Equality at the upper end holds exactly on the power forms (minSummandBound_powerForm), pinning minSummandBound n ∈ [1,n] and giving Erdős–Lewin's f(n) scaffolding genuine general content beyond the single point n=1"
     ],
     "axiomCount": 1,
-    "lineCount": 1503,
+    "lineCount": 1602,
     "assumptions": "1 axiom: erdos_lewin_infinite (Erdős-Lewin 1996, deep forward direction: {p,q}≠{2,3} ⟹ infinitely many non-representable numbers). The backward direction ({2,3} ⟹ finite, in fact NonRepresentable = {0}) is proved unconditionally (finite_nonRepresentable_of_two_three), and the EXISTENCE of a positive non-representable for every other coprime pair is also proved unconditionally (exists_positive_nonRepresentable_of_ne_two_three) — only the infinitude itself remains axiomatized.",
-    "theoremCount": 71,
+    "theoremCount": 76,
     "definitionCount": 7
   },
   "overview": {
@@ -265,9 +265,9 @@
       "Finset"
     ],
     "namespace": "Erdos1110",
-    "lineCount": 1503,
+    "lineCount": 1602,
     "axiomCount": 1,
-    "theoremCount": 71,
+    "theoremCount": 76,
     "definitionCount": 7,
     "path": "Proofs/Erdos1110Problem.lean",
     "sorries": 0

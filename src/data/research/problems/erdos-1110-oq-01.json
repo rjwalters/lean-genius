@@ -33,7 +33,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "2026-06-30 (researcher-3, S7): generalized the minSummandBound (Erdős–Lewin f(n)) scaffolding from the single point n=1 to the whole power-form monoid + a global two-sided bound. minSummandBound_powerForm: minSummandBound (3^k·2^l) = 3^k·2^l (witness set = Iio N, sSup N); one_le_minSummandBound + minSummandBound_le_self: 1 ≤ minSummandBound n ≤ n for every n≥1, with upper equality exactly on power forms. All 0-axiom (propext/Classical.choice/Quot.sound only; verified via #print axioms), file 0-sorry, 1-axiom (erdos_lewin_infinite unchanged). PR pending. EARLIER S6 (researcher-3): minSummandBound_one + multiplicative closure (×p, ×q, ×p^a q^b) + downward non-rep propagation, all 0-axiom. Deep axiom erdos_lewin_infinite is BLOCKED (closure is downward, cannot give infinitude; not session-sized across 7 sessions).",
+    "progressSummary": "PROGRESS (S8, researcher-5): closed the degenerate (chain / p=q^k, non-coprime) regime with 5 elementary 0-axiom theorems, incl. unconditional IsRepresentable 4 2 n <-> IsPowerForm 4 2 n and an axiom-free proof of infinitely many non-representables for (4,2). This isolates the coprimality hypothesis of the deep axiom as the elementary/hard boundary. Deep axiom (coprime case) still open. Docker build blocked by full host disk + fleet cache corruption; static-verified, verify in CI.",
     "builtItems": [
       "minSummandBound_powerForm (S7, researcher-3, 0-axiom): minSummandBound (3^k·2^l) = 3^k·2^l. Generalizes minSummandBound_one (k=l=0) to the entire power-form monoid. Witness set is exactly Iio N (N=3^k·2^l): singleton {N} represents N so any f<N admissible; any rep summing to N has summand s≤N so f<s≤N; sSup=N via csSup_Iio. On power forms the maximal min-summand threshold is N itself (antichain forced to trivial singleton).",
       "one_le_minSummandBound + minSummandBound_le_self (S7, researcher-3, 0-axiom): two-sided bound 1 ≤ minSummandBound n ≤ n for every n≥1. Lower: every n≥1 is {2,3}-representable (case_2_3_all_representable), summands ≥1, so Iio 1 ⊆ witness set ⟹ sSup ≥ sSup(Iio 1)=1 (csSup_le_csSup, BddAbove by n). Upper: any rep has summand s≤n, threshold f<s≤n bounds witness set above by n (csSup_le). Equality at upper end exactly on power forms; pins minSummandBound n ∈ [1,n], giving Erdős–Lewin f(n) scaffolding general content.",
@@ -57,7 +57,12 @@
       "isRepresentable_mul_powerForm: representable set closed under ×(p^a q^b), the full power-form monoid action generalizing the {2,3} doubling step, 0-axiom",
       "nonRepresentable_of_mul_powerForm: non-representability propagates DOWNWARD to power-form divisors (contrapositive of closure), 0-axiom",
       "Helpers noOneDividesAnother_image_mul_const / mul_const_injOn / sum_image_mul_const: c>0 generalizations of the c=2 doubling helpers",
-      "minSummandBound_one: minSummandBound 1 = 1 (0-axiom) via witness-set = Iio 1 + csSup_Iio (Erdos1110Problem.lean)"
+      "minSummandBound_one: minSummandBound 1 = 1 (0-axiom) via witness-set = Iio 1 + csSup_Iio (Erdos1110Problem.lean)",
+      "isRepresentable_iff_isPowerForm_of_chain (chain hypothesis => representable = power form for all n, 0-axiom, mirrors the below_p_add_q card<=1 argument)",
+      "powerForm_chain_of_base_pow (p=q^k => power forms are a divisibility chain via pow_mul/pow_add/pow_dvd_pow)",
+      "isPowerForm_four_two_one_or_even (every (4,2)-power form is 1 or even)",
+      "isRepresentable_four_two_iff (representable(4,2) <=> power of 2, unconditional; (4,2) not coprime so the deep axiom does not apply)",
+      "infinite_nonRepresentable_four_two (Set.Infinite via m |-> 2m+3 injection; the axiom's conclusion obtained WITHOUT any axiom in the degenerate regime)"
     ],
     "insights": [
       "The deep infinitude axiom has an elementary EXISTENCE shadow: every non-{2,3} coprime pair has a SMALL universal non-representable witness — 2 when q>=3, 3 when q=2. The witness is forced purely by which power forms lie below it: below 2 only 1 exists (both bases>=3), below 3 only {1,2} (q=2, p>=4), and neither lets an antichain hit the target. The (3,2) pair is exactly the exception because there 3=3^1 IS a power form.",
@@ -70,16 +75,15 @@
       "The {2,3} case realizes Yu-Chen density-zero exactly: NonRepresentable={0} has density 0 (not just below some bound). Provable 0-axiom by reducing HasDensity {0} 0 to 1/n->0 via Finset.filter_eq' on the singleton.",
       "Mathlib-4.26 gotcha: div_lt_iff renamed to div_lt_iff₀ (a/c<b iff a<b*c for 0<c); Finset.filter_eq' evaluates filter(.=a) to (if a in s then {a} else empty), sidestepping the Set-vs-Classical Decidable-instance mismatch that blocks rw on a hand-stated card lemma.",
       "The {2,3} doubling step is the c=2 instance of a general structural fact: the antichain relation is scale-invariant (c·a | c·b iff a | b for c>0), so multiplying a representation by p or q is again a representation. Representables form a monoid-action-closed set under the power forms.",
-      "Multiplicative closure runs the WRONG way for infinitude: non-rep propagates only to (smaller) power-form divisors, so it cannot manufacture infinitely many non-representables from one witness. Confirms the deep axiom is genuinely needed for the upward/infinitude direction."
+      "Multiplicative closure runs the WRONG way for infinitude: non-rep propagates only to (smaller) power-form divisors, so it cannot manufacture infinitely many non-representables from one witness. Confirms the deep axiom is genuinely needed for the upward/infinitude direction.",
+      "S8 (researcher-5): the coprimality hypothesis in the deep axiom erdos_lewin_infinite marks the exact boundary between the elementary and hard regimes. When the larger base is a power of the smaller (p=q^k), every power form p^a q^b = q^(k a + b) is a pure power of q; powers of a common base form a divisibility CHAIN, so a representing antichain collapses to a singleton and IsRepresentable p q n <-> IsPowerForm p q n holds UNCONDITIONALLY (all n, not just below the p+q window). In this degenerate (non-coprime) regime infinitude of non-representables is elementary."
     ],
     "mathlibGaps": [
       "Erdos-Lewin deep direction: {p,q}!={2,3} (p>q>=2 coprime) => infinitely many non-representable numbers. Not in Mathlib 4.26.",
       "Yu-Chen density-zero and coprime-non-representable results (2022). Not in Mathlib."
     ],
     "nextSteps": [
-      "Deep direction erdos_lewin_infinite (Erdos-Lewin 1996) remains the sole axiom; confirmed across 6 sessions as not session-sized and genuinely upward (closure cannot help).",
-      "minSummandBound now has base content: minSummandBound_one (minSummandBound 1 = 1, 0-axiom) proves the witness set at n=1 is Iio 1 (only {1} sums to 1) with sSup 1 via csSup_Iio. Next: a general lower bound minSummandBound n ≥ 1 for n ≥ 1, or the Yu-Chen asymptotic f(n) ≍ n/log n (deep).",
-      "Consider whether multiplicative closure + window characterization combine to characterize representability on higher windows [q·p^j, ...)."
+      "Degenerate/chain regime now fully characterized (0-axiom) as a complement to the generic windowed theory; the deep axiom erdos_lewin_infinite (coprime, non-{2,3}) remains the sole open direction, confirmed not session-sized across 7+ sessions. Possible next: generalize the (4,2) infinitude to all p=q^k (odd non-power-of-q witnesses), or the multiplicatively-independent lower-density bound f(n) ~ n/log n (deep, Yu-Chen)."
     ]
   },
   "tags": [
