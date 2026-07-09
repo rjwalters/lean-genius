@@ -113,4 +113,22 @@ theorem logConcave_root_antitone (p : ℕ → ℝ) (hp0 : p 0 = 1)
   have h1 : (0 : ℕ) < k + 1 := by omega
   simpa using rpow_cross (hpos k) (hpos (k + 1)) hk h1 hcore
 
+/-- **The full Maclaurin chain (abstract).** The shifted root sequence
+`k ↦ p_(k+1)^{1/(k+1)}` is `Antitone`. This upgrades the *consecutive* step
+`logConcave_root_antitone` to the *global* non-increasing chain
+`p_1^{1/1} ≥ p_2^{1/2} ≥ p_3^{1/3} ≥ ⋯`: for any `j ≤ k` one gets
+`p_(k+1)^{1/(k+1)} ≤ p_(j+1)^{1/(j+1)}`, not merely adjacent indices.
+
+Specialised to `p k = eₖ/C(n,k)`, this is Maclaurin's inequality in its usual
+full form `M_1 ≥ M_2 ≥ ⋯ ≥ M_n` — the statement one actually cites, of which the
+one-step lemma is only the inductive ingredient. The shift by one keeps the
+exponent `1/(k+1)` well-defined (avoiding the `k = 0`, `1/0` degeneracy). -/
+theorem logConcave_root_antitone_seq (p : ℕ → ℝ) (hp0 : p 0 = 1)
+    (hpos : ∀ j, 0 < p j)
+    (hlc : ∀ m, p m * p (m + 2) ≤ (p (m + 1)) ^ 2) :
+    Antitone (fun k : ℕ => p (k + 1) ^ ((1 : ℝ) / (k + 1))) := by
+  apply antitone_nat_of_succ_le
+  intro k
+  simpa using logConcave_root_antitone p hp0 hpos hlc (k + 1) (Nat.succ_pos k)
+
 end MaclaurinLogConcave
