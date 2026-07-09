@@ -29,26 +29,31 @@
     }
   },
   "knowledge": {
-    "progressSummary": "VERIFIED (docker-build.sh Proofs.TetrahedralNumberFormulaOQ01 clean, 3058 jobs, 0 sorries / 0 axioms). Generalizes the parent (fixed d=3) to ALL dimensions via a dimension-indexed hyper-tetrahedral (simplex) theory P_d(n)=C(n+d,d): figurate Pascal recurrence (simplexNumber_succ_succ), the general hockey-stick sum_simplex (sum P_d = P_{d+1}), the iterated-partial-sum characterization iterSum_one (d-fold summation of the constant 1 = P_d), and the division-free closed form d!*P_d(n)=ascFactorial(n+1,d)=prod(n+1+i). The d=2 instance of sum_simplex reproduces the parent's tetrahedral identity.",
+    "progressSummary": "SOLVED base + extended: two new verified faces (discrete Cauchy repeated-summation formula generalizing iterSum_one to arbitrary f; multiset-counting Sym-cardinality face). docker-build clean [3059/3059], 0/0. PR open.",
     "builtItems": [
       "simplexNumber d n := (n+d).choose d - the d-dimensional hyper-tetrahedral number (TetrahedralNumberFormulaOQ01.lean)",
       "sum_simplex: sum_{k<=n} simplexNumber d k = simplexNumber (d+1) n - general hockey stick, any dimension d (via Nat.sum_range_add_choose)",
       "iterSum_one: iterSum d (fun _=>1) n = simplexNumber d n - figurate ladder as d-fold iterated partial summation, induction on dimension",
       "simplexNumber_succ_succ: P_{d+1}(n+1)=P_{d+1}(n)+P_d(n+1) - figurate Pascal recurrence",
       "simplexNumber_eq_multichoose: P_d(n) = Nat.multichoose (n+1) d",
-      "factorial_mul_simplexNumber(_prod): d! P_d(n) = (n+1).ascFactorial d = prod_{i<d}(n+1+i) - division-free closed form generalizing 6*C(n+2,3)=n(n+1)(n+2)"
+      "factorial_mul_simplexNumber(_prod): d! P_d(n) = (n+1).ascFactorial d = prod_{i<d}(n+1+i) - division-free closed form generalizing 6*C(n+2,3)=n(n+1)(n+2)",
+      "iterSum_eq_simplexConv (TetrahedralNumberFormulaOQ01.lean): discrete Cauchy repeated-summation formula iterSum (d+1) f n = sum_{k<=n} P_d(n-k)*f(k), arbitrary f; strictly generalizes iterSum_one (f=1 case). VERIFIED 0/0.",
+      "partialSum_simplexConv: kernel dimension-raising engine (Ico-Ico triangular swap + sum_simplex hockey stick).",
+      "card_sym_fin_eq_simplexNumber: counting face |Sym (Fin (n+1)) d| = P_d(n) (stars and bars / weakly increasing d-tuples)."
     ],
     "insights": [
       "The hyper-tetrahedral / d-simplex number is exactly Mathlib Nat.multichoose (n+1) d = C(n+d,d); Mathlib gives the one-step hockey stick Nat.sum_range_add_choose : sum i in range(n+1),(i+d).choose d = (n+d+1).choose(d+1)",
       "The whole figurate ladder (1 -> linear -> triangular -> tetrahedral -> ...) is captured in one dimension-indexed statement: it is the d-fold iterate of the partial-summation operator applied to the constant sequence 1. Induction is on the DIMENSION d, with the hockey stick as the single inductive step - a genuinely different structure from the parent's induction on n at fixed d=3.",
-      "The cleared closed form is uniform in d via the ascending factorial: d!*C(n+d,d) = (n+1).ascFactorial d (Nat.ascFactorial_eq_factorial_mul_choose), with the explicit product from Nat.ascFactorial_eq_prod_range."
+      "The cleared closed form is uniform in d via the ascending factorial: d!*C(n+d,d) = (n+1).ascFactorial d (Nat.ascFactorial_eq_factorial_mul_choose), with the explicit product from Nat.ascFactorial_eq_prod_range.",
+      "The figurate numbers P_d are exactly the KERNEL of repeated discrete summation: iterating partialSum d+1 times against any f convolves f with P_d(n-k). Discrete analogue of Cauchy repeated integration (kernel (n-t)^d/d!).",
+      "Finset.sum_Ico_Ico_comm (a<=i<=j<b triangular swap) + Finset.sum_Ico_eq_sum_range cleanly reduce a nested partial-sum-of-convolution to a single hockey-stick collapse."
     ],
     "mathlibGaps": [
       "Mathlib has the one-step hockey stick and multichoose but no dimension-indexed figurate theory: no iterated-partial-sum characterization of simplex numbers, no figurate recurrence/closed form stated uniformly in the dimension d."
     ],
     "nextSteps": [
-      "Optional generalization: iterated summation of an arbitrary polynomial base sequence (not just constant 1) yields a shifted-binomial expansion - Norlund/finite-difference angle.",
-      "Optional: the multi-index simplex sum over 0<=i_1<=...<=i_k<=n of 1 = C(n+k,k) (nested-Finset form) as a second, combinatorial face of the same identity."
+      "Optional: Norlund/finite-difference expansion of iterSum on a polynomial base sequence now follows by combining iterSum_eq_simplexConv with a binomial expansion of P_d(n-k).",
+      "Optional: express card_sym as an explicit nested multi-index Finset sum over {0<=i1<=...<=id<=n} to make the weakly-increasing-tuple face literal."
     ],
     "markdown": "# Knowledge Base: tetrahedral-number-formula-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
