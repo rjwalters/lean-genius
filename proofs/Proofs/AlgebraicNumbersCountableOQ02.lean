@@ -8,11 +8,15 @@ import Proofs.CantorDiagonalization
 import Proofs.AlgebraicNumbersCountable
 
 /-
-# ℝ is Uncountable: Cantor's Diagonal Argument (1874)
+# ℝ is Uncountable: Cantor's Cardinality Argument (ℵ₀ < 2^ℵ₀ = 𝔠)
 
 ## Open Question (algebraic-numbers-countable-oq-02)
 
-Prove in Lean 4 that ℝ is uncountable (Cantor's diagonal argument, completing the 1874 paper).
+Prove in Lean 4 that ℝ is uncountable. This formalization takes the cardinality
+route: #ℝ = 𝔠 = 2^ℵ₀ > ℵ₀ (Mathlib bridge), the abstract form of Cantor's theorem.
+(Cantor's 1874 paper established ℝ uncountable via nested intervals; the *diagonal*
+digit construction is the later 1891 argument — formalized in the sibling entries
+`CantorDiagonalization` and `algebraic-numbers-countable-oq-02-oq-02`.)
 
 ## What This Proves
 
@@ -24,13 +28,15 @@ Prove in Lean 4 that ℝ is uncountable (Cantor's diagonal argument, completing 
 
 ## Proof Strategy
 
-**Cantor's diagonal argument** proves ℵ₀ < 2^ℵ₀ (no surjection from a set to its power set).
-Since #ℝ = 𝔠 = 2^ℵ₀ (Cardinal.mk_real) and 𝔠 > ℵ₀ (Cardinal.aleph0_lt_continuum),
-no injection ℝ → ℕ exists, i.e., ℝ is uncountable.
+**Cantor's theorem** gives ℵ₀ < 2^ℵ₀ (no surjection from a set to its power set); the
+diagonal argument is its concrete proof. Since #ℝ = 𝔠 = 2^ℵ₀ (Cardinal.mk_real) and
+𝔠 > ℵ₀ (Cardinal.aleph0_lt_continuum), no injection ℝ → ℕ exists, i.e., ℝ is uncountable.
+This file discharges ¬Countable ℝ by cardinal arithmetic; it does *not* run a diagonal
+digit construction (that is the sibling `CantorDiagonalization.lean`, over BinarySeq).
 
 **Connection to CantorDiagonalization**: The abstract gap ℵ₀ < 2^ℵ₀ (Cardinal.cantor ℵ₀)
 is the same theorem as no surjection ℕ → BinarySeq exists (CantorDiagonalization.lean).
-Both express Cantor's diagonal construction. The cardinality of BinarySeq = (ℕ → Bool) is
+Both express Cantor's 1891 diagonal construction. The cardinality of BinarySeq = (ℕ → Bool) is
 also 2^ℵ₀ = 𝔠 = #ℝ.
 
 **Corollary**: Since the algebraic reals are countable (AlgebraicNumbersCountable.lean)
@@ -48,6 +54,11 @@ This established that there are "more" transcendental numbers than algebraic one
 cardinality sense, even though transcendental numbers were historically much harder to identify
 explicitly (Liouville 1844 gave the first construction; Cantor's 1874 argument showed most
 reals must be transcendental, without explicitly naming any).
+
+Cantor's famous **diagonal argument** — the digit-construction that exhibits a real missing
+from any given enumeration — came later, in his **1891** paper. The present formalization
+uses neither the 1874 nested-interval method nor the 1891 diagonal directly; it routes through
+Mathlib's cardinal arithmetic (#ℝ = 2^ℵ₀ > ℵ₀), the abstract content common to both.
 
 ## Prerequisites
 
