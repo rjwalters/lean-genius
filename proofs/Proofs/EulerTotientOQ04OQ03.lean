@@ -791,4 +791,39 @@ theorem threeway_criterion_classifies :
     (∀ k, (13 * 2 ^ (k + 1)) ∈ ForwardSet) :=
   ⟨reversal_via_criterion, equality_via_criterion, forward_via_criterion⟩
 
+-- ===========================================================================
+-- A SECOND REVERSAL SEED: the reversal seed set is not the singleton `{21}`
+-- ---------------------------------------------------------------------------
+-- The criterion makes the per-seed reversal test `φ(a) < φ(e)·2^(t−1)` a finite
+-- computation on odd data, so we can hunt for reversal seeds beyond `a = 21`.
+-- The next one is `a = 55`: `2·55 − φ(55) = 70 = 2·35` (so `b = 35`), the landing
+-- constant `2·55 − φ(35) = 86 = 43·2^1` (so `e = 43`, `t = 1`), and
+-- `φ(55) = 40 < 42 = φ(43)·2^0`.  Hence `55·2^(k+1)` is a SECOND infinite reversal
+-- family, disjoint from `21·2^(k+1)` — the reversal phenomenon is not tied to a
+-- single seed.
+-- ===========================================================================
+
+theorem totient_55 : Nat.totient 55 = 40 := by decide
+theorem totient_35 : Nat.totient 35 = 24 := by decide
+theorem totient_43 : Nat.totient 43 = 42 := Nat.totient_prime (by norm_num)
+
+/-- **Second reversal family `55·2^(k+1)`:** odd data `a = 55, b = 35, e = 43, t = 1`,
+    and `φ(55) = 40 < 42 = φ(43)·2^0`, so the criterion returns "reversal" for all `k`.
+    This is a genuinely new infinite reversal family, distinct from `21·2^(k+1)`. -/
+theorem reversal_via_criterion_55 (k : ℕ) : (55 * 2 ^ (k + 1)) ∈ ReversalSet := by
+  rw [dblIter_reversal_iff (a := 55) (b := 35) (e := 43) (t := 1)
+        (by decide) (by decide) (by decide) (by norm_num)
+        (by norm_num [totient_55]) (by norm_num [totient_35]) k]
+  norm_num [totient_55, totient_43]
+
+/-- **The reversal seed set contains at least two distinct odd seeds.**  Both
+    `21·2^(k+1)` and `55·2^(k+1)` reverse for every `k`, and the seeds `21 ≠ 55`
+    are distinct odd numbers.  So `ReversalSet` is not exhausted by the single
+    Researcher-3 family `21·2^(k+1)`; reversal seeds form a genuinely larger set,
+    the smallest two being `21` and `55`. -/
+theorem two_distinct_reversal_families :
+    (∀ k, (21 * 2 ^ (k + 1)) ∈ ReversalSet) ∧
+    (∀ k, (55 * 2 ^ (k + 1)) ∈ ReversalSet) ∧ (21 : ℕ) ≠ 55 :=
+  ⟨reversal_via_criterion, reversal_via_criterion_55, by decide⟩
+
 end Erdos1064OQ03
