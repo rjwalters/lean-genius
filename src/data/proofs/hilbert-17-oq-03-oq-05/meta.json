@@ -1,8 +1,8 @@
 {
   "id": "hilbert-17-oq-03-oq-05",
-  "title": "Hilbert's 17th: The Sharp PSD Threshold of the Motzkin Family",
+  "title": "Hilbert's 17th: The Motzkin Family — Sharp PSD Threshold and SOS Failure",
   "slug": "hilbert-17-oq-03-oq-05",
-  "description": "The Motzkin polynomial M(x,y) = x⁴y² + x²y⁴ + 1 − 3x²y² is the canonical positive-semidefinite (PSD) polynomial that is not a sum of squares of polynomials; the sibling entries hilbert-17-oq-03-oq-01/-oq-02 establish its rational SOS certificate and its non-SOS-ness, which underlie the parent open question on the computational complexity of deciding SOS membership and on quantifying the PSD/SOS gap. This entry isolates a complementary, fully elementary fact: the coefficient 3 is sharp. For the one-parameter family Mₐ(x,y) = x⁴y² + x²y⁴ + 1 − c·x²y² we prove the exact threshold Mₐ is PSD on ℝ² ⟺ c ≤ 3. The Motzkin polynomial (c = 3) therefore sits exactly on the boundary of the PSD cone for this family — it is the largest coefficient for which non-negativity survives, and the unique value at which the family is PSD yet falls out of the SOS cone. The easy (⟸) direction is the AM–GM step x⁴y² + x²y⁴ + 1 ≥ 3x²y² (a genuine sum-of-squares certificate, found by nlinarith) dominating the deficit (3 − c)·x²y² ≥ 0; the (⟹) direction evaluates at (1,1) where Mₐ(1,1) = 3 − c. The result is stated both as a real two-variable function and as a genuine MvPolynomial (Fin 2) ℝ object, matching the parent's IsPositiveSemidefiniteMv predicate. Everything is 0-axiom.",
+  "description": "The Motzkin polynomial M(x,y) = x⁴y² + x²y⁴ + 1 − 3x²y² is the canonical positive-semidefinite (PSD) polynomial that is not a sum of squares of polynomials. This entry studies the one-parameter family Mₐ(x,y) = x⁴y² + x²y⁴ + 1 − c·x²y² and establishes two complementary facts. First, the sharp PSD threshold: Mₐ is PSD on ℝ² if and only if c ≤ 3, so 3 is the largest coefficient for which non-negativity survives (AM–GM for c ≤ 3; the point (1,1) witnesses failure for c > 3). Second — the deeper SOS side — every member with c > 0 fails to be a sum of squares of polynomials (motzkinPoly_not_sos): in any SOS decomposition the coefficient [x²y²] is a sum of real squares (≥ 0), whereas it equals −c < 0. Combined, for every 0 < c ≤ 3 the polynomial Mₐ is PSD-but-not-SOS (motzkinPoly_psd_not_sos), a genuine one-parameter family of witnesses to the PSD/SOS gap with the Motzkin polynomial (c = 3) at the extreme, PSD-boundary corner. The non-SOS proof reuses the elementary coefficient machinery of the sibling non-SOS entry (degree bound + pure-axis vanishing); everything is 0-axiom over MvPolynomial (Fin 2) ℝ.",
   "meta": {
     "author": "lean-genius researcher",
     "sourceUrl": "https://en.wikipedia.org/wiki/Hilbert%27s_seventeenth_problem",
@@ -73,14 +73,14 @@
     "additionalFiles": []
   },
   "leanFile": {
-    "lineCount": 142,
+    "lineCount": 345,
     "namespace": "Hilbert17OQ03OQ05",
     "opens": [
       "MvPolynomial"
     ],
     "structureCount": 0,
     "axiomCount": 0,
-    "theoremCount": 9,
+    "theoremCount": 21,
     "substantiveTheoremCount": 5,
     "computationalVerifications": 0,
     "lemmaCount": 0,
@@ -129,6 +129,24 @@
       "type": "theorem",
       "description": "Failure above the threshold: for c > 3 the value at (1,1) is 3 − c < 0, so the family is not PSD once c exceeds 3.",
       "leanType": "3 < c → motzkinFun c 1 1 < 0"
+    },
+    {
+      "name": "motzkinPoly_not_sos",
+      "type": "theorem",
+      "description": "The whole family is not SOS for c > 0: for every real c > 0, motzkinPoly c = X₀⁴X₁² + X₀²X₁⁴ + 1 − c·X₀²X₁² is not a sum of squares of polynomials. The [x²y²] coefficient of any SOS decomposition is a sum of real squares (≥ 0) but equals −c < 0. Taking c = 3 recovers the sibling entry's motzkin_not_sos. 0-axiom.",
+      "leanType": "0 < c → ¬ Hilbert17MotzkinNotSOS.IsSOS (motzkinPoly c)"
+    },
+    {
+      "name": "motzkinPoly_psd_not_sos",
+      "type": "theorem",
+      "description": "PSD-but-not-SOS across the family: for every 0 < c ≤ 3, motzkinPoly c is positive-semidefinite yet not a sum of squares of polynomials — a one-parameter family of witnesses to the PSD/SOS gap, with the Motzkin polynomial (c = 3) as the extreme PSD-boundary member.",
+      "leanType": "0 < c → c ≤ 3 → IsPSDMv (motzkinPoly c) ∧ ¬ Hilbert17MotzkinNotSOS.IsSOS (motzkinPoly c)"
+    },
+    {
+      "name": "degree_bound_gen",
+      "type": "theorem",
+      "description": "Generalised degree bound: if ∑ qᵢ² = p with totalDegree p ≤ 6, then every qᵢ has total degree ≤ 3 (the top homogeneous component of a sum of squares is itself a sum of squares, so it vanishes above the target degree).",
+      "leanType": "p.totalDegree ≤ 6 → (∑ i, q i ^ 2 = p) → (q j).totalDegree ≤ 3"
     }
   ],
   "overview": {
