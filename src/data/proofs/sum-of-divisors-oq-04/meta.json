@@ -83,7 +83,8 @@
       "**Two laws determine σ entirely.** Multiplicativity plus the prime-power geometric sum compute σ on any integer via its factorization; every numerical value in the base entry is an instance of these.",
       "**The closed geometric form.** σ(pⁱ) = (pⁱ⁺¹ − 1)/(p − 1) — stated here as the division-free identity σ(pⁱ)·(p − 1) = pⁱ⁺¹ − 1 over ℤ, proved by the ring lemma geom_sum_mul rather than re-deriving the telescoping sum.",
       "**Perfection is a σ equation.** Perfect n ⇔ σ(n) = 2n is the cleanest statement of the Greek definition: the proper divisors sum to n exactly when all divisors sum to 2n. (Note: a product of two distinct primes can be perfect — 6 = 2·3 with σ(6) = 12 — so multiplicativity alone does not forbid it.)",
-      "**General over generic, not specific.** Where the base entry checked σ(p) = p+1 for six chosen primes, sigma_one_prime proves it for the universally quantified prime — the difference between a table and a theorem."
+      "**General over generic, not specific.** Where the base entry checked σ(p) = p+1 for six chosen primes, sigma_one_prime proves it for the universally quantified prime — the difference between a table and a theorem.",
+      "**σ₀ and σ₁ are two slices of one framework.** τ = σ₀ (divisor count) and σ = σ₁ (divisor sum) are the k = 0 and k = 1 cases of σₖ(n) = Σ_{d∣n} dᵏ. Both are read off the same prime-power API (sigma_zero_apply_prime_pow, sigma_one_apply_prime_pow) and both inherit multiplicativity from the single fact isMultiplicative_sigma — so proving τ(p) = 2 and σ(p) = p+1 side by side exhibits the uniformity that gives the general σₖ its structure, of which the divisor count and divisor sum are the two most classical instances."
     ],
     "prerequisites": [
       "Mathlib's ArithmeticFunction.sigma and its prime-power API",
