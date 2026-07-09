@@ -3,6 +3,48 @@
   "title": "Shannon Entropy is a Concave Functional",
   "slug": "shannon-entropy-oq-04",
   "description": "The Shannon entropy H(p) = -∑ p(x) log p(x) is a concave function of the distribution p. Bridges the gallery's convention-based entropy to Mathlib's negMulLog and proves concavity on the non-negative orthant and on the probability simplex — the structural half of the maximum-entropy principle whose value half (H ≤ log n) lives in the parent.",
+  "mainTheorems": [
+    {
+      "name": "shannonEntropy_eq_sum_negMulLog",
+      "type": "key",
+      "description": "**Bridge lemma.** H(p) = ∑ₓ negMulLog(p x), identifying the file's convention-based summand (`if p x = 0 then 0 else p x·log(p x)`, negated) with Mathlib's Real.negMulLog(t) = −t·log t. The x=0 branch matches `negMulLog_zero`, the x≠0 branch matches the definition. This identification is what lets every convex-analysis lemma about negMulLog apply to entropy without special-casing the simplex boundary.",
+      "leanType": "{α : Type*} [Fintype α] [DecidableEq α] (p : α → ℝ) : shannonEntropy p = ∑ x : α, Real.negMulLog (p x)",
+      "startLine": 54,
+      "endLine": 62
+    },
+    {
+      "name": "concaveOn_finset_sum",
+      "type": "supporting",
+      "description": "**Finite sum of concave functions is concave.** A `Finset.induction` fold packaging Mathlib's `ConcaveOn.add` (which has no bundled Finset-sum form) into: if each g i is concave on a common convex set s, then p ↦ ∑_{i∈t} g i p is concave on s. The engine that turns entropy's coordinatewise concavity into concavity of the whole functional.",
+      "leanType": "{ι E : Type*} [AddCommGroup E] [Module ℝ E] {s : Set E} (hs : Convex ℝ s) (g : ι → E → ℝ) : ∀ t : Finset ι, (∀ i ∈ t, ConcaveOn ℝ s (g i)) → ConcaveOn ℝ s (fun x => ∑ i ∈ t, g i x)",
+      "startLine": 71,
+      "endLine": 85
+    },
+    {
+      "name": "convex_nonneg_orthant",
+      "type": "supporting",
+      "description": "**The non-negative orthant is convex.** {p | ∀ i, 0 ≤ p i} ⊆ (α → ℝ) is convex — the domain on which entropy's concavity is stated, since negMulLog is concave only on [0, ∞).",
+      "leanType": "{α : Type*} [Fintype α] : Convex ℝ {p : α → ℝ | ∀ i, 0 ≤ p i}",
+      "startLine": 92,
+      "endLine": 96
+    },
+    {
+      "name": "concaveOn_shannonEntropy",
+      "type": "core",
+      "description": "**Shannon entropy is concave (headline).** H is concave on the non-negative orthant. Proof: rewrite H as ∑ₓ negMulLog(p x); each coordinate map p ↦ negMulLog(p x) is Real.concaveOn_negMulLog precomposed with the linear projection `LinearMap.proj x` and restricted to the orthant (where every coordinate is ≥ 0), then `concaveOn_finset_sum` adds them.",
+      "leanType": "{α : Type*} [Fintype α] [DecidableEq α] : ConcaveOn ℝ {p : α → ℝ | ∀ i, 0 ≤ p i} shannonEntropy",
+      "startLine": 106,
+      "endLine": 125
+    },
+    {
+      "name": "concaveOn_shannonEntropy_stdSimplex",
+      "type": "core",
+      "description": "**Concavity on the probability simplex (textbook statement).** Restricts `concaveOn_shannonEntropy` to stdSimplex ℝ α = {p | (∀ i, 0 ≤ p i) ∧ ∑ i, p i = 1} via `ConcaveOn.subset` and `convex_stdSimplex`. This is the standard form used in coding, statistics, and thermodynamics.",
+      "leanType": "{α : Type*} [Fintype α] [DecidableEq α] : ConcaveOn ℝ (stdSimplex ℝ α) shannonEntropy",
+      "startLine": 130,
+      "endLine": 132
+    }
+  ],
   "meta": {
     "author": "Lean Genius",
     "sourceUrl": "https://en.wikipedia.org/wiki/Entropy_(information_theory)#Further_properties",
@@ -58,6 +100,13 @@
     ]
   },
   "sections": [
+    {
+      "id": "preamble",
+      "title": "Module header, imports, and namespace setup",
+      "summary": "Module docstring positioning the file as the structural half of the maximum-entropy open question: while the parent shannon-entropy proves the value bound H(p) ≤ log|α| with equality iff uniform, this child proves that the entropy functional H(p) = −∑ₓ p(x) log p(x) is concave — the reason the maximum sits at the barycentre of the simplex and the basis of every 'mixing increases entropy' argument. Outlines the clean route: bridge the ad-hoc 0 log 0 = 0 summand to Mathlib's Real.negMulLog and its Real.concaveOn_negMulLog, then sum. Lists the three headline results. `import Mathlib`, `namespace InformationTheory.EntropyConcavity`, `open Finset`.",
+      "startLine": 1,
+      "endLine": 40
+    },
     {
       "id": "definition-and-bridge",
       "title": "Definition and Bridge to negMulLog",
