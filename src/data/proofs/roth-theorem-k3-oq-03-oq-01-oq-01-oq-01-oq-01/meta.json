@@ -3,6 +3,40 @@
   "title": "Roth/Szemerédi OQ-03-OQ-01-OQ-01-OQ-01-OQ-01: Affine Covariance of the k-AP Counting Operator Λ_k",
   "slug": "roth-theorem-k3-oq-03-oq-01-oq-01-oq-01-oq-01",
   "description": "Affine covariance of the k-AP counting operator Λ_k(f₀,…,f_{k-1}) = E_{x,d} ∏ᵢ fᵢ(x+i·d): for any unit a ∈ (ZMod N)ˣ and translate t, replacing every fᵢ by y↦fᵢ(a·y+t) leaves the count unchanged (kAPCount_affine). The affine map φ(y)=a·y+t carries the progression {x+i·d} to {φ(x)+i·(a·d)}, and (x,d)↦(a·x+t, a·d) is a bijection of (ZMod N)² precisely because a is invertible. This exhibits the one-dimensional affine group GA(1,ZMod N)=(ZMod N)ˣ⋉ZMod N acting on Λ_k. Two corollaries: kAPCount_dilate (the genuinely new multiplicative dilation invariance, t=0) and kAPCount_translate_of_affine (recovers the parent's translation invariance, a=1). Directly answers the parent's first open question. 0-axiom verified.",
+  "mainTheorems": [
+    {
+      "name": "kAPCount_affine",
+      "type": "core",
+      "description": "**Affine covariance (headline).** For any unit a ∈ (ZMod N)ˣ and translate t, replacing every fᵢ by y ↦ fᵢ(a·y + t) leaves the count fixed: Λ_k(f₀(a·+t),…) = Λ_k(f₀,…). Proved by two `Fintype.sum_equiv` reindexings — the outer base-point average by x ↦ a·x+t and the inner common-difference average by d ↦ a·d, each a bijection because a is a unit — after which the pointwise identity a·(x+i·d)+t = (a·x+t)+i·(a·d) closes by `nsmul_eq_mul` and `ring`.",
+      "leanType": "(k : ℕ) (f : Fin k → ZMod N → ℂ) (a : (ZMod N)ˣ) (t : ZMod N) : kAPCount k (fun i y => f i ((a : ZMod N) * y + t)) = kAPCount k f",
+      "startLine": 92,
+      "endLine": 105
+    },
+    {
+      "name": "kAPCount_dilate",
+      "type": "key",
+      "description": "**Dilation invariance (the new multiplicative symmetry).** The t = 0 case of affine covariance: for any unit a, Λ_k(f₀(a·),…) = Λ_k(f₀,…). Not implied by the parent's translation invariance nor by reflection — e.g. a = −1 is the point reflection through the origin that keeps the slot order, distinct from the order-reversing i ↦ k−1−i. Follows from `kAPCount_affine` by `simpa`.",
+      "leanType": "(k : ℕ) (f : Fin k → ZMod N → ℂ) (a : (ZMod N)ˣ) : kAPCount k (fun i y => f i ((a : ZMod N) * y)) = kAPCount k f",
+      "startLine": 119,
+      "endLine": 122
+    },
+    {
+      "name": "kAPCount_translate_of_affine",
+      "type": "supporting",
+      "description": "**Translation invariance recovered.** The a = 1 case of affine covariance, confirming that affine covariance subsumes the parent's `kAPCount_translate`: Λ_k(f₀(·+t),…) = Λ_k(f₀,…). Follows from `kAPCount_affine` by `simpa`.",
+      "leanType": "(k : ℕ) (f : Fin k → ZMod N → ℂ) (t : ZMod N) : kAPCount k (fun i y => f i (y + t)) = kAPCount k f",
+      "startLine": 126,
+      "endLine": 130
+    },
+    {
+      "name": "mulUnit_apply",
+      "type": "supporting",
+      "description": "**Dilation bijection (computation rule).** The permutation `mulUnit a` of ZMod N (multiplication by a unit a, with inverse multiplication by a⁻¹) evaluates as `mulUnit a x = a·x`. This `Equiv` is the multiplicative part of the affine reindexing (x,d) ↦ (a·x+t, a·d); the additive part reuses `Equiv.addRight`.",
+      "leanType": "(a : (ZMod N)ˣ) (x : ZMod N) : mulUnit a x = (a : ZMod N) * x",
+      "startLine": 76,
+      "endLine": 77
+    }
+  ],
   "meta": {
     "author": "Lean Genius Researcher",
     "sourceUrl": "https://en.wikipedia.org/wiki/Gowers_norm",
@@ -76,6 +110,13 @@
   },
   "sections": [
     {
+      "id": "preamble",
+      "title": "Module header, ancestor imports, and setup",
+      "summary": "Module docstring tracing the four-generation Roth/Szemerédi lineage (great-grandparent defines Λ_k and its degenerate identities, grandparent proves multilinearity, parent proves translation and reflection symmetries) and stating what this file adds: the full affine covariance of Λ_k, exhibiting the one-dimensional affine group GA(1, ZMod N) = (ZMod N)ˣ ⋉ ZMod N acting by symmetries, with dilation invariance as the genuinely new multiplicative piece. Cites Gowers (2001) and Tao (2012). `import Proofs.RothTheoremOQ03OQ01OQ01OQ01`, `open Finset BigOperators`, `namespace RothTheoremOQ03OQ01`, `variable {N : ℕ} [NeZero N]`.",
+      "startLine": 1,
+      "endLine": 63
+    },
+    {
       "id": "mul-unit",
       "title": "Multiplication by a Unit is a Bijection",
       "summary": "mulUnit a: multiplication by a unit a ∈ (ZMod N)ˣ is a permutation of ZMod N, with inverse multiplication by a⁻¹ — the dilation part of the affine reindexing.",
@@ -109,6 +150,22 @@
       "Conjugate symmetry Λ_k(conj f₀,…,conj f_{k-1}) = conj Λ_k(f₀,…,f_{k-1}) and its interaction with affine covariance"
     ]
   },
+  "references": [
+    {
+      "authors": "Gowers, W. T.",
+      "title": "A new proof of Szemerédi's theorem",
+      "year": "2001",
+      "venue": "Geometric and Functional Analysis 11(3), 465–588",
+      "note": "Introduces the Gowers uniformity norms and the density-increment machinery in which the affine symmetries of the k-AP counting operator Λ_k are used to normalize progression counts"
+    },
+    {
+      "authors": "Tao, Terence",
+      "title": "Higher Order Fourier Analysis",
+      "year": "2012",
+      "venue": "Graduate Studies in Mathematics 142, American Mathematical Society",
+      "note": "Systematic treatment of Gowers norms and the generalized von Neumann inequality; the invariance of Λ_k under the affine group of ZMod N formalized here is a standing assumption there"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Proofs.RothTheoremOQ03OQ01OQ01OQ01"
