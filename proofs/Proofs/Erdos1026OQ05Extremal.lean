@@ -48,6 +48,7 @@ open scoped Classical
 namespace Erdos1026OQ05Extremal
 
 open Erdos1026OQ05
+open Erdos1026OQ05IncreasingIdentity
 
 variable {k : ℕ}
 
@@ -74,7 +75,8 @@ lemma sval_lt_of_same_block {i j : Fin (k * k)} (hlt : i.val < j.val)
     (hblk : i.val / k = j.val / k) : sval k j < sval k i := by
   have hi := Nat.div_add_mod i.val k
   have hj := Nat.div_add_mod j.val k
-  -- same quotient, `i < j` forces the remainders to increase
+  rw [hblk] at hi
+  -- same quotient block term, `i < j` forces the remainders to increase
   have hmod : i.val % k < j.val % k := by omega
   have hcast : (i.val % k : ℤ) < (j.val % k : ℤ) := by exact_mod_cast hmod
   unfold sval
@@ -89,11 +91,11 @@ lemma sval_lt_of_diff_block {i j : Fin (k * k)} (hk : 0 < k)
   have hri : (0 : ℤ) ≤ (i.val % k : ℕ) := by positivity
   have hrj : (j.val % k : ℤ) ≤ (k : ℤ) - 1 := by
     have hjm : j.val % k < k := Nat.mod_lt _ hk
-    have : (j.val % k : ℤ) < (k : ℤ) := by exact_mod_cast hjm
+    have hjm' : (j.val % k : ℤ) < (k : ℤ) := by exact_mod_cast hjm
     omega
   have hqlt : ((i.val / k : ℕ) : ℤ) + 1 ≤ ((j.val / k : ℕ) : ℤ) := by
-    have : i.val / k + 1 ≤ j.val / k := hblk
-    exact_mod_cast this
+    have hq : i.val / k + 1 ≤ j.val / k := hblk
+    exact_mod_cast hq
   have hk0 : (0 : ℤ) ≤ (k : ℤ) := by positivity
   unfold sval
   nlinarith [mul_le_mul_of_nonneg_right hqlt hk0, hri, hrj]
@@ -104,6 +106,7 @@ lemma sval_lt_of_same_col {i j : Fin (k * k)} (hlt : i.val < j.val)
     (hcol : i.val % k = j.val % k) : sval k i < sval k j := by
   have hi := Nat.div_add_mod i.val k
   have hj := Nat.div_add_mod j.val k
+  rw [hcol] at hi
   -- equal remainders, `i < j` forces the block terms `k·(·/k)` to increase
   have hblk : k * (i.val / k) < k * (j.val / k) := by omega
   have hcast : ((k * (i.val / k) : ℕ) : ℤ) < ((k * (j.val / k) : ℕ) : ℤ) := by
@@ -122,8 +125,8 @@ theorem staircase_injective (hk : 0 < k) : Function.Injective (staircase k) := b
   by_contra hne
   -- reduce to an equation of integer values, then compare via the block structure
   have hval : sval k i = sval k j := by
-    have : (sval k i : ℝ) = (sval k j : ℝ) := hij
-    exact_mod_cast this
+    have hr : (sval k i : ℝ) = (sval k j : ℝ) := hij
+    exact_mod_cast hr
   have hvne : i.val ≠ j.val := fun h => hne (Fin.ext h)
   rcases lt_trichotomy i.val j.val with hlt | heq | hgt
   · -- i before j
@@ -143,8 +146,7 @@ theorem staircase_injective (hk : 0 < k) : Function.Injective (staircase k) := b
 /-- Upper bound: any increasing subsequence hits each block at most once, so its length is
 at most the number of blocks, `k`. -/
 theorem staircase_LIS_le (hk : 0 < k) : LIS (staircase k) ≤ k := by
-  apply csSup_le ⟨0, Subsequence.mk (fun i => i.elim0) (fun a => a.elim0), by
-    intro a; exact a.elim0⟩
+  apply csSup_le ⟨0, Subsequence.mk Fin.elim0 (fun a => a.elim0), by intro a; exact a.elim0⟩
   rintro m ⟨sub, hInc⟩
   -- block of each chosen index
   have hblt : ∀ j : Fin m, (sub.indices j).val / k < k := by
@@ -156,7 +158,7 @@ theorem staircase_LIS_le (hk : 0 < k) : LIS (staircase k) ≤ k := by
     intro a b hab hblkeq
     have hidx : (sub.indices a).val < (sub.indices b).val := sub.strictMono hab
     have hbeq : (sub.indices a).val / k = (sub.indices b).val / k := by
-      have := congrArg Fin.val hblkeq; simpa [blk] using this
+      have hc := congrArg Fin.val hblkeq; simpa [blk] using hc
     -- same block ⇒ value decreases, contradicting the increasing subsequence
     have hdec : sval k (sub.indices b) < sval k (sub.indices a) :=
       sval_lt_of_same_block hidx hbeq
@@ -170,33 +172,40 @@ theorem staircase_LIS_le (hk : 0 < k) : LIS (staircase k) ≤ k := by
     rcases lt_or_gt_of_ne hne with h | h
     · exact hkey a b h hab
     · exact hkey b a h hab.symm
-  have := Fintype.card_le_of_injective blk hinj
-  simpa using this
+  have hcard := Fintype.card_le_of_injective blk hinj
+  simpa using hcard
 
-/-- Lower bound: the "first-column" subsequence `j ↦ j·k` (block index `j`, remainder `0`)
+/-- Lower bound: the "first-column" subsequence `j ↦ k·j` (block index `j`, remainder `0`)
 is strictly increasing of length `k`. -/
 theorem staircase_LIS_ge (hk : 0 < k) : k ≤ LIS (staircase k) := by
-  -- the witness subsequence
-  have hbound : ∀ j : Fin k, j.val * k < k * k := by
-    intro j; exact Nat.mul_lt_mul_right hk |>.mpr j.isLt
+  have hbound : ∀ j : Fin k, k * j.val < k * k := fun j => mul_lt_mul_of_pos_left j.isLt hk
   let sub : Subsequence (k * k) k :=
-    ⟨fun j => ⟨j.val * k, hbound j⟩, by
+    ⟨fun j => ⟨k * j.val, hbound j⟩, by
       intro a b hab
+      have hab' : a.val < b.val := hab
       simp only [Fin.mk_lt_mk]
-      exact Nat.mul_lt_mul_right hk |>.mpr hab⟩
+      exact mul_lt_mul_of_pos_left hab' hk⟩
   have hval : ∀ j : Fin k, sval k (sub.indices j) = (k : ℤ) * j.val := by
     intro j
-    have hd : (j.val * k) / k = j.val := Nat.mul_div_cancel _ hk
-    have hm : (j.val * k) % k = 0 := Nat.mul_mod_left _ _
-    simp only [sval, sub, hd, hm]
+    have hq : ((sub.indices j).val) / k = j.val := by
+      show (k * j.val) / k = j.val
+      exact Nat.mul_div_cancel_left j.val hk
+    have hr : ((sub.indices j).val) % k = 0 := by
+      have hdm := Nat.div_add_mod ((sub.indices j).val) k
+      rw [hq] at hdm
+      have hval2 : (sub.indices j).val = k * j.val := rfl
+      omega
+    unfold sval
+    rw [hq, hr]
     push_cast; ring
   have hInc : IsIncreasing (staircase k) sub := by
     intro a b hab
-    simp only [Function.comp_apply, staircase_apply, hval]
+    have hab' : a.val < b.val := hab
+    show (staircase k) (sub.indices a) < (staircase k) (sub.indices b)
+    rw [staircase_apply, staircase_apply, hval, hval]
+    have hkpos : (0 : ℤ) < k := by exact_mod_cast hk
     have hlt : (k : ℤ) * a.val < (k : ℤ) * b.val := by
-      have hab' : a.val < b.val := hab
       have hcab : (a.val : ℤ) < (b.val : ℤ) := by exact_mod_cast hab'
-      have hkpos : (0 : ℤ) < (k : ℤ) := by exact_mod_cast hk
       exact (mul_lt_mul_left hkpos).mpr hcab
     exact_mod_cast hlt
   exact len_le_LIS_of_increasing hInc
@@ -209,15 +218,14 @@ theorem staircase_LIS (hk : 0 < k) : LIS (staircase k) = k :=
 /-- Upper bound: any decreasing subsequence hits each column (remainder class) at most once,
 so its length is at most `k`. -/
 theorem staircase_LDS_le (hk : 0 < k) : LDS (staircase k) ≤ k := by
-  apply csSup_le ⟨0, Subsequence.mk (fun i => i.elim0) (fun a => a.elim0), by
-    intro a b hab; exact a.elim0⟩
+  apply csSup_le ⟨0, Subsequence.mk Fin.elim0 (fun a => a.elim0), by intro a b hab; exact a.elim0⟩
   rintro m ⟨sub, hDec⟩
   let col : Fin m → Fin k := fun j => ⟨(sub.indices j).val % k, Nat.mod_lt _ hk⟩
   have hkey : ∀ a b : Fin m, a < b → col a ≠ col b := by
     intro a b hab hcoleq
     have hidx : (sub.indices a).val < (sub.indices b).val := sub.strictMono hab
     have hceq : (sub.indices a).val % k = (sub.indices b).val % k := by
-      have := congrArg Fin.val hcoleq; simpa [col] using this
+      have hc := congrArg Fin.val hcoleq; simpa [col] using hc
     -- same column ⇒ value increases, contradicting the decreasing subsequence
     have hinc : sval k (sub.indices a) < sval k (sub.indices b) :=
       sval_lt_of_same_col hidx hceq
@@ -231,31 +239,41 @@ theorem staircase_LDS_le (hk : 0 < k) : LDS (staircase k) ≤ k := by
     rcases lt_or_gt_of_ne hne with h | h
     · exact hkey a b h hab
     · exact hkey b a h hab.symm
-  have := Fintype.card_le_of_injective col hinj
-  simpa using this
+  have hcard := Fintype.card_le_of_injective col hinj
+  simpa using hcard
 
 /-- Lower bound: the "first-block" subsequence `j ↦ j` (block `0`, remainder `j`) is
 strictly decreasing of length `k`. -/
 theorem staircase_LDS_ge (hk : 0 < k) : k ≤ LDS (staircase k) := by
   have hbound : ∀ j : Fin k, j.val < k * k := by
-    intro j; exact lt_of_lt_of_le j.isLt (Nat.le_mul_of_pos_left k hk)
+    intro j
+    have hkk : k ≤ k * k := le_mul_of_one_le_left (Nat.zero_le k) hk
+    exact lt_of_lt_of_le j.isLt hkk
   let sub : Subsequence (k * k) k :=
     ⟨fun j => ⟨j.val, hbound j⟩, by
       intro a b hab
+      have hab' : a.val < b.val := hab
       simp only [Fin.mk_lt_mk]
-      exact hab⟩
+      exact hab'⟩
   have hval : ∀ j : Fin k, sval k (sub.indices j) = -(j.val : ℤ) := by
     intro j
-    have hd : j.val / k = 0 := Nat.div_eq_of_lt j.isLt
-    have hm : j.val % k = j.val := Nat.mod_eq_of_lt j.isLt
-    simp only [sval, sub, hd, hm]
+    have hq : ((sub.indices j).val) / k = 0 := by
+      show j.val / k = 0
+      exact Nat.div_eq_of_lt j.isLt
+    have hr : ((sub.indices j).val) % k = j.val := by
+      show j.val % k = j.val
+      exact Nat.mod_eq_of_lt j.isLt
+    unfold sval
+    rw [hq, hr]
     push_cast; ring
   have hDec : IsDecreasing (staircase k) sub := by
     intro a b hab
-    simp only [staircase_apply, hval]
     have hab' : a.val < b.val := hab
-    have hcab : (a.val : ℤ) < (b.val : ℤ) := by exact_mod_cast hab'
-    have hlt : (-(b.val : ℤ)) < (-(a.val : ℤ)) := by linarith
+    show (staircase k) (sub.indices b) < (staircase k) (sub.indices a)
+    rw [staircase_apply, staircase_apply, hval, hval]
+    have hlt : (-(b.val : ℤ)) < (-(a.val : ℤ)) := by
+      have hcab : (a.val : ℤ) < (b.val : ℤ) := by exact_mod_cast hab'
+      linarith
     exact_mod_cast hlt
   exact len_le_LDS_of_decreasing hDec
 
