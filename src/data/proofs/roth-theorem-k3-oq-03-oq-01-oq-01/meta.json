@@ -70,6 +70,13 @@
   },
   "sections": [
     {
+      "id": "preamble",
+      "title": "Module header, parent import, and setup",
+      "summary": "Module docstring positioning the file within the Roth/Szemerédi Gowers-norm chain (parent Proofs/RothTheoremOQ03OQ01.lean defines Λ_k = kAPCount and the Gowers norm): the parent proves the constant/normalization/annihilation identities of Λ_k, and this file adds the key structural fact that Λ_k is multilinear — additive and homogeneous in each of its k slots — the property powering the generalized von Neumann inequality and density-increment arguments. Lists the four results (prod_update_factor, kAPCount_add_slot, kAPCount_smul_slot, gowersNorm_nonneg) and notes slots are addressed via Function.update. `import Proofs.RothTheoremOQ03OQ01`, `open Finset BigOperators`, `namespace RothTheoremOQ03OQ01`, `variable {N : ℕ} [NeZero N]`.",
+      "startLine": 1,
+      "endLine": 38
+    },
+    {
       "id": "engine",
       "title": "The Factorization Engine",
       "summary": "prod_update_factor: replacing slot j by v pulls v(x+j·d) out of the k-AP product, leaving the untouched factors over univ.erase j.",
