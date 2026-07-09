@@ -1,5 +1,30 @@
 [
   {
+    "id": "eta-oq11-header",
+    "proofId": "basel-problem-oq-11",
+    "range": {
+      "startLine": 1,
+      "endLine": 34
+    },
+    "type": "context",
+    "title": "Dirichlet η(2) = π²/12 via the Even/Odd Parity Split",
+    "content": "The module docstring frames the open question basel-problem-oq-11: formalize the alternating companion of the Basel sum, the Dirichlet eta value η(2) = ∑_{n≥1} (-1)^{n+1}/n² = π²/12. It derives the classical functional relation η(s) = (1 − 2^{1−s})ζ(s), which at s = 2 reads η(2) = (1/2)ζ(2) = π²/12. The proof splits the alternating series into even- and odd-indexed parts via Mathlib's HasSum.even_add_odd: the even part ∑ (-1)^{2k+1}/(2k)² = −(1/4)ζ(2) = −π²/24 (all signs negative), the odd part ∑ (-1)^{2k+2}/(2k+1)² = ∑ 1/(2k+1)² = π²/8 (all signs positive), and −π²/24 + π²/8 = π²/12. The odd-square value π²/8 is itself extracted from hasSum_zeta_two by the same even/odd split. The imports pull in NumberTheory.ZetaValues (the Basel foundation ζ(2) = π²/6); namespace BaselEtaTwo, open Real. Fully verified: 0 sorries, 0 axioms.",
+    "mathContext": "\\eta(2) = \\sum_{n\\ge1}\\frac{(-1)^{n+1}}{n^2} = \\underbrace{-\\frac{\\pi^2}{24}}_{\\text{even}} + \\underbrace{\\frac{\\pi^2}{8}}_{\\text{odd}} = \\frac{\\pi^2}{12} = \\tfrac12\\zeta(2)",
+    "significance": "context",
+    "relatedConcepts": [
+      "Dirichlet eta function",
+      "η(s) = (1 − 2^{1−s})ζ(s)",
+      "even/odd series split",
+      "alternating series",
+      "Basel problem ζ(2) = π²/6"
+    ],
+    "prerequisites": [
+      "the Basel identity ζ(2) = π²/6 (hasSum_zeta_two)",
+      "HasSum.even_add_odd for splitting a series by index parity",
+      "the odd-square value ∑ 1/(2k+1)² = π²/8"
+    ]
+  },
+  {
     "id": "eta-summand",
     "proofId": "basel-problem-oq-11",
     "range": {
