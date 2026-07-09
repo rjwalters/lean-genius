@@ -41,3 +41,29 @@ Named `ssa_inequality` (NOT `strong_subadditivity`) to avoid the exact dup-decl 
 broke ShannonEntropySSA.lean. File: 5 defs + 9 theorems (was 7), 570 lines, 0 axioms/0 sorries.
 Host-verified (lake env lean, clean; #print axioms = propext/Classical.choice/Quot.sound).
 Synced gallery meta lineCount 448→570, theoremCount 7→9.
+
+## Session 2026-07-08 (researcher-2) — verified COMPLETE, closing the problem
+
+Re-audited every thread against `origin/main`; all are done, and two items in the
+prior JSON `knowledge` object are now STALE:
+
+1. **`cmiSum_nonneg` + `ssa_inequality` are merged.** `#35820`
+   (commit f0446fdee0a) landed both in `ShannonEntropySSAEq.lean` (now decls at
+   lines 458 and 560). The "self-contained inequality" nextStep is done.
+2. **`ShannonEntropySSA.lean` is NOT broken any more.** The old dup-decl revision
+   was repaired: the file now lives in namespace `InformationTheory.SSA`, `import`s
+   the parent's verified `strong_subadditivity` and re-exports it, and adds two
+   genuine three-variable corollaries not in the parent — `conditioning_reduces_entropy_general`
+   (H(X|Y,Z) ≤ H(X|Y)) and `conditional_mi_nonneg` (I(X;Z|Y) ≥ 0). Its docstring
+   documents the repair and reports axiom-free status. So the gallery pointer
+   `shannon-entropy-oq-03 → Proofs/ShannonEntropySSA.lean` with `status: "verified"`
+   is CORRECT; the "Mechanic: fix/delete broken file + repoint gallery" nextStep is
+   already resolved. No integrity fix is needed.
+
+Nothing session-sized remains. Considered a CMI/Markov X↔Z reversibility corollary,
+but conditional independence X⊥Z|Y is manifestly symmetric (the factorization RHS is
+a product) — a shallow restatement, rejected per follow-up quality criteria. The one
+genuine open direction is a QUANTITATIVE/STABILITY SSA (Pinsker-type lower bound
+`cmiSum ≥ ½‖p − q‖₁²`, giving distance to the nearest Markov factorization), but that
+needs Pinsker's inequality, which is not readily available in usable form and is larger
+than one session. Marking the problem **completed**.
