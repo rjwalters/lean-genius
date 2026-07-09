@@ -246,8 +246,9 @@ noncomputable def recipBound : ℝ := ∑' k, recipMajorant k
 
 /-- The absolute reciprocal-sum constant is strictly positive (its `k = 0` term already is). -/
 theorem recipBound_pos : 0 < recipBound := by
-  have h0 : 0 < recipMajorant 0 :=
-    div_pos (by norm_num) (recipMajorant_denom_pos 0)
+  have h0 : 0 < recipMajorant 0 := by
+    unfold recipMajorant
+    exact div_pos (by norm_num) (recipMajorant_denom_pos 0)
   exact summable_recipMajorant.tsum_pos recipMajorant_nonneg 0 h0
 
 /-- **Uniform quantitative reciprocal bound.**  For *every* 3-AP-free set `A ⊆ ℕ` with
@@ -268,11 +269,10 @@ theorem threeAPFree_tsum_reciprocal_le
   refine (threeAPFree_summable_reciprocal hA hA0).tsum_le_of_sum_le (fun s => ?_)
   -- The finite index set `s : Finset A` maps to a finite 3-AP-free `T ⊆ ℕ` with `0 ∉ T`.
   set T : Finset ℕ := s.image Subtype.val with hT
-  have hinj : ∀ x ∈ s, ∀ y ∈ s, (Subtype.val x : ℕ) = Subtype.val y → x = y :=
-    fun x _ y _ h => Subtype.val_injective h
-  -- Reciprocal sum over `s` equals the reciprocal sum over its image `T`.
+  -- Reciprocal sum over `s` equals the reciprocal sum over its image `T`
+  -- (`Subtype.val` is injective, so `sum_image` applies with no loss).
   have hsum_eq : ∑ i ∈ s, (1 : ℝ) / (i : ℝ) = ∑ a ∈ T, (1 : ℝ) / (a : ℝ) := by
-    rw [hT, Finset.sum_image hinj]
+    rw [hT, Finset.sum_image (Subtype.val_injective.injOn)]
   rw [hsum_eq]
   have hTsub : (T : Set ℕ) ⊆ A := by
     intro x hx
