@@ -255,3 +255,80 @@ theorem finitely_many_for_fixed_k (k : ℕ) :
   obtain ⟨hn2k, hnsp, hndef⟩ := hn
   simp only [Set.mem_Iic]
   exact Nat.cast_le.mp ((hels n k hn2k hnsp hndef).trans (Nat.le_ceil _))
+
+/-
+## Section X: Structural Pigeonhole (the ELS mechanism)
+
+The deficiency of C(n,k) counts the k-smooth terms among n, n-1, …, n-k+1.
+A term is *not* k-smooth exactly when it carries a prime factor exceeding k
+(under n ≥ 2k every term is positive, so this dichotomy is genuine).
+
+The engine of Erdős–Lacampagne–Selfridge is the elementary observation that
+a prime p > k can divide **at most one** of the k consecutive integers
+n, n-1, …, n-k+1: consecutive multiples of p are p > k apart, wider than the
+window. Together with the complement identity `deficiency + (# non-smooth) = k`,
+this forces every non-smooth term to be "charged" to a distinct large prime,
+which is the counting heart behind the ELS bound n ≪ 2^k · √k.
+-/
+
+/-- A positive integer fails to be k-smooth precisely when it has a prime
+factor larger than k. (For m = 0 both sides hold; for m = 1 both fail.) -/
+theorem not_isKSmooth_iff_exists_large_prime {k m : ℕ} :
+    ¬ IsKSmooth k m ↔ ∃ p, p.Prime ∧ p ∣ m ∧ k < p := by
+  unfold IsKSmooth
+  push_neg
+  rfl
+
+/-- **Complement identity.** Splitting the window {n, …, n-k+1} into k-smooth
+terms (the deficiency) and non-smooth terms partitions all k indices. -/
+theorem deficiency_add_nonsmooth_eq (n k : ℕ) :
+    deficiency n k
+      + (Finset.filter (fun i => ¬ IsKSmooth k (n - i)) (Finset.range k)).card = k := by
+  unfold deficiency
+  have h := Finset.filter_card_add_filter_neg_card_eq_card
+    (s := Finset.range k) (p := fun i => IsKSmooth k (n - i))
+  rw [Finset.card_range] at h
+  exact h
+
+/-- Deficiency 1 is equivalent to exactly k-1 of the window terms being
+non-k-smooth. -/
+theorem deficiency_eq_one_iff_nonsmooth_eq (n k : ℕ) :
+    deficiency n k = 1 ↔
+      (Finset.filter (fun i => ¬ IsKSmooth k (n - i)) (Finset.range k)).card = k - 1 := by
+  have h := deficiency_add_nonsmooth_eq n k
+  constructor
+  · intro hd; omega
+  · intro hd; omega
+
+/-- **The ELS pigeonhole.** A prime p > k divides at most one of the k
+consecutive integers n, n-1, …, n-k+1. (Consecutive multiples of p are
+p > k apart, wider than the length-k window.) -/
+theorem at_most_one_multiple_of_large_prime {n k p : ℕ} (hkn : k ≤ n) (hp : k < p) :
+    (Finset.filter (fun i => p ∣ (n - i)) (Finset.range k)).card ≤ 1 := by
+  rw [Finset.card_le_one]
+  intro i hi j hj
+  rw [Finset.mem_filter, Finset.mem_range] at hi hj
+  obtain ⟨hik, hpi⟩ := hi
+  obtain ⟨hjk, hpj⟩ := hj
+  rcases le_total i j with hij | hij
+  · have hd : p ∣ (n - i) - (n - j) := Nat.dvd_sub hpi hpj
+    have heq : (n - i) - (n - j) = j - i := by omega
+    rw [heq] at hd
+    rcases Nat.eq_zero_or_pos (j - i) with h0 | hpos
+    · omega
+    · have := Nat.le_of_dvd hpos hd; omega
+  · have hd : p ∣ (n - j) - (n - i) := Nat.dvd_sub hpj hpi
+    have heq : (n - j) - (n - i) = i - j := by omega
+    rw [heq] at hd
+    rcases Nat.eq_zero_or_pos (i - j) with h0 | hpos
+    · omega
+    · have := Nat.le_of_dvd hpos hd; omega
+
+/-- Restatement of the pigeonhole lemma for two explicit indices: distinct
+indices in the window cannot share a common prime factor exceeding k. -/
+theorem no_shared_large_prime {n k p i j : ℕ} (hkn : k ≤ n) (hp : k < p)
+    (hi : i < k) (hj : j < k) (hpi : p ∣ (n - i)) (hpj : p ∣ (n - j)) : i = j := by
+  have h := at_most_one_multiple_of_large_prime (n := n) (k := k) (p := p) hkn hp
+  rw [Finset.card_le_one] at h
+  exact h i (Finset.mem_filter.mpr ⟨Finset.mem_range.mpr hi, hpi⟩)
+           j (Finset.mem_filter.mpr ⟨Finset.mem_range.mpr hj, hpj⟩)
