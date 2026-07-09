@@ -116,7 +116,14 @@
       "title": "Centered Form and Rational Excess",
       "summary": "choose_logConcavity_defect' (the identity at a centered index j) and choose_ratio_rat: C(n,k+1)²/(C(n,k)·C(n,k+2)) = 1 + (n+1)/((k+1)(n−k−1)) over ℚ, the explicit ultra-log-concavity excess over the geometric value 1.",
       "startLine": 154,
-      "endLine": 213
+      "endLine": 192
+    },
+    {
+      "id": "summary",
+      "title": "Signature Checks and Exact-Defect Summary",
+      "summary": "Closing #check signature confirmations of the headline results and a summary docstring recording the exact defect identity (C(n,k+1)² − C(n,k)·C(n,k+2))·(k+1)(n−k−1) = (n+1)·C(n,k)·C(n,k+2) and its rational-ratio form, noting the whole file rests only on Mathlib's Nat.choose_succ_right_eq with no new axioms; closes the namespace.",
+      "startLine": 194,
+      "endLine": 215
     }
   ],
   "conclusion": {
