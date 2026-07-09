@@ -52,7 +52,7 @@
     ]
   },
   "conclusion": {
-    "summary": "Fully verified and axiom-free: {1, √2, √3, √6} is ℚ-linearly independent (a + b√2 + c√3 + d√6 = 0 ⟹ a = b = c = d = 0). This is Besicovitch's theorem at n = 2, radicands {1, 2, 3, 6}, equivalently [ℚ(√2,√3):ℚ] = 4. The technical core sqrt3_not_in_Qsqrt2 (√3 ∉ ℚ(√2)) is the degree-doubling induction heart. 6 theorems, 0 axioms, 0 sorries, ~203 lines, irrationality inputs via an elementary divisor bound + finite case split (no kernel decide, no native_decide, no Lean.ofReduceBool).",
+    "summary": "Fully verified and axiom-free: {1, √2, √3, √6} is ℚ-linearly independent (a + b√2 + c√3 + d√6 = 0 ⟹ a = b = c = d = 0). This is Besicovitch's theorem at n = 2, radicands {1, 2, 3, 6}, equivalently [ℚ(√2,√3):ℚ] = 4. The technical core sqrt3_not_in_Qsqrt2 (√3 ∉ ℚ(√2)) is the degree-doubling induction heart. 11 theorems, 0 axioms, 0 sorries, ~203 lines, irrationality inputs via an elementary divisor bound + finite case split (no kernel decide, no native_decide, no Lean.ofReduceBool).",
     "implications": "This supplies the concrete n = 2 certificate for the general Besicovitch reduction, whose induction heart remains a sorry in the sibling sqrt5 file. The elementary conjugate-multiplication method (no field tower, no minimal polynomials) is reusable: the same regroup-and-conjugate step is the inductive engine for adjoining each successive prime square root, suggesting a path to the full theorem by iterating the degree-doubling lemma.",
     "openQuestions": [
       "Prove the n = 3 case: {1, √2, √3, √5, √6, √10, √15, √30} is ℚ-linearly independent (radicands dividing 30), the next instance of Besicovitch, requiring two nested conjugate steps.",

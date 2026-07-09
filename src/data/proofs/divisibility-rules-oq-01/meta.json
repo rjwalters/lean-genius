@@ -74,7 +74,7 @@
     }
   ],
   "conclusion": {
-    "summary": "This OQ-01 extension proves 41 theorems extending the base divisibility rules collection. The general dvd_iff_dvd_mod theorem provides a unified foundation for all last-k-digit rules, while the alternating sum and truncation methods cover divisibility by 7, 11, and 13. The casting out nines module provides both the arithmetic preservation theorems and a practical error-detection theorem.",
+    "summary": "This OQ-01 extension proves 42 theorems extending the base divisibility rules collection. The general dvd_iff_dvd_mod theorem provides a unified foundation for all last-k-digit rules, while the alternating sum and truncation methods cover divisibility by 7, 11, and 13. The casting out nines module provides both the arithmetic preservation theorems and a practical error-detection theorem.",
     "implications": "The generalization of last-k-digit rules to a single theorem demonstrates the power of modular arithmetic abstraction. The simultaneous coverage of divisibility by 7, 11, and 13 through the truncation/alternating-sum methods reflects the algebraic unity behind these seemingly disparate rules — all exploiting coprimality of 10 with the target divisor.",
     "openQuestions": [
       "Formalize the divisibility rule for 7 via alternating three-digit blocks (using 1000 ≡ -1 mod 7), unifying with the DivisibilityByThreeOQ02 approach",

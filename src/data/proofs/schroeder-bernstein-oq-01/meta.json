@@ -92,7 +92,7 @@
       "**`Function.Embedding.antisymm` is the load-bearing classical theorem.** Both `hasSBP_Type` (S2/S3) and `hasSBP_of_fullFaithful_forget` (S12) reduce to it via different bridges. The classical Schroeder-Bernstein is the irreducible mathematical content; the categorical lifts are tactical glue.",
       "**Six theorems / 353 LOC / 0 sorries / 0 axioms / build-verified at 3115 jobs.** The corpus is fully machine-checked at Mathlib v4.26.0; no structure-encoded assumptions per the project's Axiom Integrity Policy."
     ],
-    "text": "A six-theorem positive/negative corpus formalizing the categorical Schroeder-Bernstein property `HasSBP (C : Type*) [Category C]`. Three concrete cases (Type, Discrete α, ¬TopCat with explicit [0,1] vs (0,1) counterexample); two vacuous abstract sufficient conditions ([IsDiscrete C], [IsGroupoid C]); one genuinely non-vacuous abstract sufficient condition (fully-faithful concrete forgetful). 353 lines, 6 theorems, 0 sorries, 0 axioms, Mathlib v4.26.0.",
+    "text": "A six-theorem positive/negative corpus formalizing the categorical Schroeder-Bernstein property `HasSBP (C : Type*) [Category C]`. Three concrete cases (Type, Discrete α, ¬TopCat with explicit [0,1] vs (0,1) counterexample); two vacuous abstract sufficient conditions ([IsDiscrete C], [IsGroupoid C]); one genuinely non-vacuous abstract sufficient condition (fully-faithful concrete forgetful). 353 lines, 8 theorems, 0 sorries, 0 axioms, Mathlib v4.26.0.",
     "prerequisites": [
       "Lean 4 + Mathlib category theory: `Category`, `Mono`, `Iso`, `Functor.Full`, `Functor.Faithful`",
       "Concrete category framework: `HasForget`, `forget`, `(forget C).PreservesMonomorphisms`",
