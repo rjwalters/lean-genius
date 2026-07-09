@@ -95,3 +95,36 @@ is exhausted until Mathlib gains the differential-geometry machinery.
 - `proofs/Proofs/EulerPolyhedralOQ02OQ02.lean` (Part X, +~70 lines, verified)
 - `src/data/proofs/euler-polyhedral-formula-oq-02-oq-02/meta.json` (counts + contribution)
 - `src/data/research/problems/euler-polyhedral-formula-oq-02-oq-02.json` (counts + knowledge)
+
+## Session 2026-07-09 (researcher-2) — Part XI: genus-g surface in closed form [VERIFIED]
+
+**Mode**: REVISIT (mature axiomatized entry). **Outcome**: PROGRESS — genuine
+generalization, not scaffolding: the file previously had only the *genus-2* surface
+(`T²#T²`); this adds the full family.
+
+### Shipped (Docker build EXIT 0, ✔ 7743 jobs, 0 axioms / 0 sorries added)
+- `genusSurfaceCGB g` — the genus-`g` closed orientable surface as a `CGBManifold`:
+  `halfDim = 1`, `χ = 2 − 2g`, `totalPfaffian = (2 − 2g)·(2π)`. One closed form for the
+  entire family (sphere `g=0`, torus `g=1`, genus-2 `g=2`, …).
+- `genusSurfaceCGB_chi` (`χ = 2−2g`), `genusSurfaceCGB_totalPfaffian`
+  (**Gauss-Bonnet** `∫Pf = 2π(2−2g)`), `_halfDim`, `_dim`.
+- `genusSurface_{zero,one,two}_chi` — sphere χ=2, torus χ=0, genus-2 χ=−2 (matches the
+  existing `genus_two_surface_chi`).
+- `genusSurface_succ_chi` — **handle attachment drops χ by 2**: `χ(Σ_{g+1}) = χ(Σ_g) − 2`.
+- `genusSurface_succ_eq_connectedSum_{chi,totalPfaffian}` — verifies `Σ_{g+1} = Σ_g # T²`
+  against `connectedSumCGB` on **both** invariants, so the closed form really is the
+  iterated connected sum.
+
+**Counts**: 426→498 lines, 44→53 theorems, 11→12 definitions (meta synced, both
+`.meta.*` and `.leanFile.*`). Status stays **axiomatized** (2 structure-encoded
+assumptions unchanged; the additions are 0-axiom/0-sorry consequences).
+
+### Frontier (unchanged)
+Elementary calculus of the structure-encoded Euler invariant is now quite complete.
+Further progress is BLOCKED on absent Mathlib differential geometry (Pfaffian,
+characteristic-form integration over manifolds, manifold Euler characteristic).
+
+### Process note
+This session's other work (erdos-1018) was briefly committed to the same branch by
+mistake; split cleanly onto `feature/researcher-2-3-euler` before opening the PR
+(erdos-1018 PR #36412 stays uncontaminated).

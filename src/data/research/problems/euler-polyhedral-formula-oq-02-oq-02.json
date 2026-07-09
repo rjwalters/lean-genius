@@ -29,25 +29,29 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Created gallery entry: Chern-Gauss-Bonnet in higher dimensions, generalizing discrete (OQ-02) and smooth 2D (OQ-02-OQ-01) Gauss-Bonnet to ∫_M Pf(Ω)=(2π)^n·χ(M). Axiomatized (C-G-B identity structure-encoded since Mathlib lacks Pfaffian/manifold integration); surrounding combinatorics/algebra fully verified. 37 theorems, 0 sorries, 0 axiom decls, 2 structure assumptions. Offline-verified EXIT 0.",
+    "progressSummary": "PROGRESS (researcher-2, 2026-07-09): added Part XI, the genus-g orientable surface Σ_g in closed form (χ=2−2g, Gauss-Bonnet ∫Pf=2π(2−2g)), generalizing the prior single genus-2 instance to all genera; handle-attachment recurrence verified against connectedSumCGB. 1 def + 9 theorems, 0 new axioms/sorries. Core CGB identity remains structure-encoded (2 assumptions) — status axiomatized.",
     "builtItems": [
       "CGBManifold structure encoding the Chern-Gauss-Bonnet identity ∫_M Pf(Ω)=(2π)^n·χ(M) with derived even-dimensionality, normalized integral, χ=0⇒∫Pf=0, sign matching, and Euler-number integrality.",
       "Verified sphere Euler characteristics (sphereEulerChar), (2π)^n normalization lemmas (cgbConst), and the 2×2 Pfaffian/determinant identity (pf2_sq_eq_det2).",
       "Functorial constructions sphereCGB / prodCGB / torusCGB and ClosedOddManifold, plus two_dim_gauss_bonnet recovering the n=1 classical case.",
-      "connectedSumCGB (Part X) — connected-sum monoid on CGB manifolds: χ additive minus sphere (χ(M#N)=χM+χN−2), sphere = identity, T²#T² genus-2 surface has χ=−2 / ∫Pf=−4π (all 0-axiom-declaration, structure-encoded framework unchanged)."
+      "connectedSumCGB (Part X) — connected-sum monoid on CGB manifolds: χ additive minus sphere (χ(M#N)=χM+χN−2), sphere = identity, T²#T² genus-2 surface has χ=−2 / ∫Pf=−4π (all 0-axiom-declaration, structure-encoded framework unchanged).",
+      "EulerPolyhedralOQ02OQ02.lean Part XI: genusSurfaceCGB + 9 theorems (chi/totalPfaffian closed forms, sphere/torus/genus-2 instances, handle recurrence, connected-sum realization). Docker VERIFIED, 0-axiom/0-sorry added."
     ],
     "insights": [
       "χ(S^m)=1+(-1)^m gives 2 in even and 0 in odd dimension — the parity that makes the Pfaffian (an even-dimensional invariant) the correct curvature integrand for Chern-Gauss-Bonnet.",
       "The (2π)^n normalization is multiplicative ((2π)^{m+n}=(2π)^m(2π)^n), which is exactly what makes the C-G-B integral multiplicative under products of manifolds (χ(M×N)=χ(M)χ(N)).",
       "The 2×2 Pfaffian identity Pf²=det is the algebraic mechanism by which the higher-dimensional integrand reduces to the Gaussian curvature in the n=1 case, recovering classical Gauss-Bonnet ∫Pf=2πχ.",
-      "Closed odd-dimensional manifolds have χ=0 (Poincaré duality), so the even-dimensional Pfaffian carries no topological information there — encoded as ClosedOddManifold and realized by odd spheres S^{2k+1}."
+      "Closed odd-dimensional manifolds have χ=0 (Poincaré duality), so the even-dimensional Pfaffian carries no topological information there — encoded as ClosedOddManifold and realized by odd spheres S^{2k+1}.",
+      "The whole family of closed orientable surfaces collapses to a single closed-form CGB manifold genusSurfaceCGB g (halfDim 1, χ=2−2g, ∫Pf=2π(2−2g)); the genus-2 case previously present is just g=2. Each handle attachment (connected sum with T²) is the additive χ↦χ−2 law, verified against connectedSumCGB on both invariants."
     ],
     "mathlibGaps": [
       "No Pfaffian of a matrix/curvature form",
       "No integration of characteristic forms over manifolds",
       "No manifold Euler characteristic"
     ],
-    "nextSteps": [],
+    "nextSteps": [
+      "Elementary calculus of the structure-encoded Euler invariant is now quite complete (spheres, products, tori, odd-dim, connected sums, genus-g). Further progress needs Mathlib differential geometry (Pfaffian, characteristic-form integration, manifold χ) — BLOCKED at Mathlib v4.26."
+    ],
     "markdown": "# Knowledge Base: euler-polyhedral-formula-oq-02-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [],
