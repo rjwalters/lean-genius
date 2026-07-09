@@ -1087,4 +1087,68 @@ theorem isCyclic_of_card_thirtythree {G : Type*} [Group G] [Finite G]
   isCyclic_of_card_eq_prime_mul_prime_of_not_dvd (p := 3) (q := 11)
     (by norm_num) (by norm_num) (by norm_num) (by norm_num) (hcard.trans (by norm_num))
 
+/-! ### Structural endgame: the internal direct product `G ≃* ⟨c⟩ × H` as a genuine isomorphism
+
+The results above are *predicates* on `G` (commutativity, cyclicity).  The theorem below upgrades
+the set-level splitting `exists_normal_pComplement_of_coprime_index` to a genuine group
+*isomorphism*, giving the sharpest structural form of the coprime-index analysis: in that regime
+`G` is not merely "abelian" or "an extension" but literally a **direct product** of its central
+Sylow `p`-subgroup with a normal `p`-complement. -/
+
+/-- **Internal direct product `G ≃* ⟨c⟩ × H`.**  Under the coprime-index hypotheses
+(`gcd(m, p−1) = 1`, `p ∤ m`), the central Sylow subgroup `⟨c⟩` (order `p`) and its normal
+`p`-complement `H` (order `m`) realise `G` as the *internal direct product* `⟨c⟩ × H`: the
+multiplication map `(k, h) ↦ k·h` is a group isomorphism `⟨c⟩ × H ≃* G`.
+
+The two ingredients are already in hand:
+* it is a **homomorphism** because `⟨c⟩ ≤ Z(G)` (`zpowers_le_center_of_coprime_index`), so the two
+  factors commute and `MonoidHom.noncommCoprod` assembles the multiplication map;
+* it is **bijective** because `⟨c⟩` and `H` are complementary
+  (`exists_normal_pComplement_of_coprime_index`), which is *definitionally*
+  `Function.Bijective (fun (k, h) ↦ k·h)` (`Subgroup.isComplement_iff_bijective`).
+
+`MulEquiv.ofBijective` then packages the two into `G ≃* ⟨c⟩ × H`.  This is the structural endgame:
+a central normal Hall subgroup splits off as a *direct* factor — the elementary content of the
+`p = 5` Abel–Ruffini analysis, now stated as a bona-fide isomorphism rather than a mere splitting.
+Concretely `G ≅ ℤ/p × H`. -/
+theorem exists_mulEquiv_prod_zpowers_of_coprime_index {G : Type*} [Group G] [Finite G] {p : ℕ}
+    [hp : Fact p.Prime] (m : ℕ)
+    (hcard : Nat.card G = p * m) (hpm : ¬ (p ∣ m))
+    (huniq : ∀ d : ℕ, d ∣ m → d % p = 1 → d = 1)
+    (c : G) (hc : orderOf c = p) (hcop : Nat.Coprime m (p - 1)) :
+    ∃ H : Subgroup G, Nat.card H = m ∧ Nonempty (G ≃* (Subgroup.zpowers c) × H) := by
+  obtain ⟨H, _hHnorm, hHc, hHcard⟩ :=
+    exists_normal_pComplement_of_coprime_index m hcard hpm huniq c hc hcop
+  have hcen := zpowers_le_center_of_coprime_index m hcard hpm huniq c hc hcop
+  -- `⟨c⟩` is central, so its elements commute with everything, in particular with `H`.
+  have hcomm : ∀ (k : Subgroup.zpowers c) (h : H),
+      Commute ((Subgroup.zpowers c).subtype k) (H.subtype h) := by
+    intro k h
+    have hkcen : (k : G) ∈ Subgroup.center G := hcen k.2
+    exact (Subgroup.mem_center_iff.mp hkcen (h : G)).symm
+  -- The multiplication homomorphism `⟨c⟩ × H → G`, `(k, h) ↦ k·h`.
+  let φ := (Subgroup.zpowers c).subtype.noncommCoprod H.subtype hcomm
+  -- Complementarity says exactly that this map is bijective.
+  have hbij : Function.Bijective φ :=
+    (Subgroup.isComplement_iff_bijective (Subgroup.zpowers c) H).mp hHc
+  exact ⟨H, hHcard, ⟨(MulEquiv.ofBijective φ hbij).symm⟩⟩
+
+/-- **Order `15` as an internal direct product** `G ≃* ℤ/5 × H` with `|H| = 3`.  The concrete
+`p = 5, m = 3` instance of `exists_mulEquiv_prod_zpowers_of_coprime_index`: Cauchy supplies an
+order-`5` element `c`, and `15 = 5·3` with `gcd(3, 4) = 1`, `5 ∤ 3` puts us in the coprime-index
+regime, so `G` splits as `⟨c⟩ × H`.  This is the isomorphism-level refinement of
+`mul_comm_of_card_fifteen` / `isCyclic_of_card_fifteen`. -/
+theorem exists_mulEquiv_prod_of_card_fifteen {G : Type*} [Group G] [Finite G]
+    (hcard : Nat.card G = 15) :
+    ∃ (c : G) (H : Subgroup G), Nat.card H = 3 ∧
+      Nonempty (G ≃* (Subgroup.zpowers c) × H) := by
+  haveI : Fact (Nat.Prime 5) := ⟨by norm_num⟩
+  haveI : Fintype G := Fintype.ofFinite G
+  obtain ⟨c, hc⟩ : ∃ x : G, orderOf x = 5 :=
+    exists_prime_orderOf_dvd_card 5 (by rw [← Nat.card_eq_fintype_card, hcard]; norm_num)
+  obtain ⟨H, hHcard, hHequiv⟩ := exists_mulEquiv_prod_zpowers_of_coprime_index (p := 5) (m := 3)
+    (hcard.trans (by norm_num)) (by norm_num) (huniq_of_lt (by norm_num) (by norm_num))
+    c hc (by norm_num)
+  exact ⟨c, H, hHcard, hHequiv⟩
+
 end AbelRuffiniSylowElim

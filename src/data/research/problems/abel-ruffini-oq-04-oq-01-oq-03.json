@@ -34,7 +34,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (VERIFIED 0/0): full positive half of the classical order-pq classification (p<q primes, p∤q−1 ⟹ cyclic) proved for ARBITRARY primes — generalizing the previous order-15-only instance — together with its SHARP converse (non-cyclic ⟹ p∣q−1) obtained as a one-line contrapositive. Only the Frobenius-group WITNESS construction (order 21) and the density-1 Galois-obstruction forward direction remain open.",
+    "progressSummary": "PROGRESS (VERIFIED 0/0): internal direct product G ≃* ⟨c⟩ × H now a genuine group isomorphism (structural endgame). Order-pq cyclic classification (positive + sharp contrapositive converse) already complete. Remaining classical gap = CONSTRUCTIVE converse (exhibit nonabelian ℤ/q⋊ℤ/p when p∣q−1). Density-1 forward Galois obstruction remains the analytic terminus.",
     "builtItems": [
       "zpowers_sylow_normal in AbelRuffiniOQ04OQ01OQ03.lean — arbitrary-prime Sylow-elimination core: order p·m + p∤m + no-small-divisor ⇒ ⟨c⟩ (order-p) normal",
       "conj_mem_zpowers_sylow — every g normalizes ⟨c⟩ (general prime consequence)",
@@ -64,7 +64,9 @@
       "mul_comm_of_card_eq_prime_mul_prime_of_not_dvd (AbelRuffiniOQ04OQ01OQ03.lean): general commutativity for order pq, p<q primes, p∤q−1 — VERIFIED 0/0",
       "isCyclic_of_card_eq_prime_mul_prime_of_not_dvd: general positive half of order-pq classification, generalizes isCyclic_of_card_fifteen — VERIFIED 0/0",
       "dvd_sub_one_of_not_isCyclic_card_eq_prime_mul_prime: sharp converse (non-cyclic ⟹ p∣q−1) via contrapositive — VERIFIED 0/0",
-      "isCyclic_of_card_thirtyfive (35=5·7) and isCyclic_of_card_thirtythree (33=3·11): concrete instances beyond order 15 — VERIFIED 0/0"
+      "isCyclic_of_card_thirtyfive (35=5·7) and isCyclic_of_card_thirtythree (33=3·11): concrete instances beyond order 15 — VERIFIED 0/0",
+      "exists_mulEquiv_prod_zpowers_of_coprime_index (AbelRuffiniOQ04OQ01OQ03.lean): coprime-index regime ⟹ ∃H, |H|=m ∧ G ≃* ⟨c⟩ × H (structural endgame as isomorphism)",
+      "exists_mulEquiv_prod_of_card_fifteen: concrete order-15 instance G ≃* ℤ/5 × H, |H|=3"
     ],
     "insights": [
       "Generalizing the fixed prime 5 to a variable prime p is NOT a rename: the two number-theoretic steps change tactic. n_p ≡ 1 (mod p) ⇒ n_p = 1 needs Nat.mod_eq_of_lt hp.out.one_lt to evaluate 1 % p (omega cannot do variable-modulus mod); index cancellation [G:P]·p = p·m ⇒ [G:P] = m needs Nat.eq_of_mul_eq_mul_right (omega cannot cancel a variable multiplier).",
@@ -83,7 +85,8 @@
       "The single-element centrality criterion promotes cleanly to the whole Sylow-p subgroup and yields a genuine GLOBAL class-equation consequence p | |Z(G)| (centre nontrivial) without needing the full sum-over-conjugacy-classes packaging.",
       "Central normal Hall subgroup splits off as a direct factor: Schur-Zassenhaus complement + centrality => complement automatically normal (conjugation by the central factor is trivial), giving internal direct product — elementary content of Burnside normal p-complement in this cyclic-Sylow regime.",
       "Order-pq classification (p<q primes): cyclicity is governed ENTIRELY by whether p ∣ q−1. The Sylow-elimination engine (mem_center_of_coprime_index, mul_comm_of_prime_index_coprime) already supplies the positive half for ARBITRARY p,q — order 15 was just the p=3,q=5 instance.",
-      "The sharp CONVERSE (non-cyclic order-pq ⟹ p ∣ q−1) is a free one-line contrapositive of the sufficiency theorem — no Frobenius-group construction needed to state the sharp boundary. Constructing ℤ/q⋊ℤ/p to WITNESS non-cyclicity when p∣q−1 remains the only heavier open direction."
+      "The sharp CONVERSE (non-cyclic order-pq ⟹ p ∣ q−1) is a free one-line contrapositive of the sufficiency theorem — no Frobenius-group construction needed to state the sharp boundary. Constructing ℤ/q⋊ℤ/p to WITNESS non-cyclicity when p∣q−1 remains the only heavier open direction.",
+      "Internal direct product upgraded from set-level splitting to genuine MulEquiv: MonoidHom.noncommCoprod assembles (k,h)↦k·h as a hom (factors commute since ⟨c⟩≤Z(G)), and Subgroup.isComplement_iff_bijective makes complementarity DEFINITIONALLY the bijectivity of that map, so MulEquiv.ofBijective closes it in ~5 lines. Mathlib lacks a direct both-normal-complement ⟹ MulEquiv-to-product lemma, but noncommCoprod+isComplement_iff_bijective is the clean route."
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -93,7 +96,8 @@
       "Abelian regime is now complete through prime-index/order-15. A natural next follow-up: order 21 = 3·7 (nonabelian example exists) vs the coprime criterion — sharpness of the abelian conclusion when q ∤ (p-1) fails (e.g. 7 ≡ 1 mod 3 gives the nonabelian group of order 21).",
       "Package exists_normal_pComplement_of_coprime_index into a genuine MulEquiv G ≃* ⟨c⟩ × H (needs internal-direct-product MulEquiv from two complementary normal subgroups; Mathlib Complement.lean lacks a ready lemma, would build from commute_of_normal_of_disjoint).",
       "Consequence: under coprime index G is a (nontrivial-centre) group with G/Z abelian-ish? Investigate whether central Sylow-p + p-complement forces G nilpotent iff H nilpotent.",
-      "Construct the nonabelian Frobenius group ℤ/q ⋊ ℤ/p (via SemidirectProduct with a nontrivial hom ℤ/p → (ZMod q)ˣ of order p, exists when p ∣ q−1) to WITNESS the sharpness of dvd_sub_one_of_not_isCyclic — e.g. the order-21 group. Heavier (~150-300 lines): need order computation of the semidirect product and a non-commuting pair."
+      "Construct the nonabelian Frobenius group ℤ/q ⋊ ℤ/p (via SemidirectProduct with a nontrivial hom ℤ/p → (ZMod q)ˣ of order p, exists when p ∣ q−1) to WITNESS the sharpness of dvd_sub_one_of_not_isCyclic — e.g. the order-21 group. Heavier (~150-300 lines): need order computation of the semidirect product and a non-commuting pair.",
+      "CONSTRUCTIVE CONVERSE (the real remaining classical gap): when p∣(q−1), EXHIBIT a noncyclic group of order pq (Frobenius ℤ/q ⋊ ℤ/p) to make dvd_sub_one_of_not_isCyclic... genuinely sharp rather than contrapositive-only. Assessment: HARD-known, ~200-400 lines. Mathlib has SemidirectProduct (.card lemma = |N|·|G|) but N=ZMod q needs the Multiplicative(ZMod q) wrapper: φ:ZMod p →* MulAut(Multiplicative(ZMod q)) ≅ AddAut(ZMod q) ≅ (ZMod q)ˣ (via MulAutMultiplicative ∘ AddAutEquivUnits); element of order p in cyclic (ZMod q)ˣ exists since p∣q−1=totient q. Noncyclicity = manual non-commuting pair (no Mathlib lemma for nonabelian semidirect product). The DEFINITION of φ is the hard part (Aristotle skips defs), so not a quick delegate."
     ]
   },
   "tags": [
