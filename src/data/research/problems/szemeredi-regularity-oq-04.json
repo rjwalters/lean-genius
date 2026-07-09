@@ -57,7 +57,11 @@
       "partitionEnergy_prod_refinement_gain (SzemerediRegularityOQ04Assembly.lean): sharp whole-partition 2×2 gain — refining two distinct parts A,B into {A₁,A₂}×{B₁,B₂} raises partitionEnergy by (|A₁||B₁|/n²)·d², d=|d(A₁,B₁)−d(A,B)|. Lifts pairEnergy_prod_refinement_gain via ordered-pair block decomposition.",
       "partitionEnergy_prod_gain_eps4 (SzemerediRegularityOQ04Assembly.lean): AFKS-consumable ε⁴ floor of the sharp lift — ε-irregular pair refined on both coords raises whole-partition energy by ≥ ε⁴|A||B|/n², free of the one-sided factor-¼/⅛ loss.",
       "afks_sharp_energy_iteration_count (SzemerediRegularityOQ04Assembly.lean): SHARP AFKS iteration count N ≤ n²/(ε⁴·M). Feeds the no-loss floor δ=ε⁴·M/n² (M = min refined-pair mass |A||B|) into the [0,1]-potential termination engine partitionEnergy_iteration_bound (N≤1/δ) via one_div_div. Factor-¼-free counterpart of afks_energy_iteration_count (δ=ε²/(2n²), N≤2n²/ε²). [VERIFIED 0/0]",
-      "afks_sharp_energy_iteration_count_of_prod_witness (Assembly): end-to-end sharp certificate — derives the per-step hstep from an actual per-step ε-irregular product witness (parts n = insert A (insert B R), parts (n+1) = 2×2 grid, |A₁|≥ε|A|, |B₁|≥ε|B|, |d(A₁,B₁)−d(A,B)|≥ε, part masses ≥ m). Floors |A||B|≥m² via partitionEnergy_prod_gain_eps4 → N ≤ n²/(ε⁴·m²). Freshness stays hypothesis. [VERIFIED 0/0]"
+      "afks_sharp_energy_iteration_count_of_prod_witness (Assembly): end-to-end sharp certificate — derives the per-step hstep from an actual per-step ε-irregular product witness (parts n = insert A (insert B R), parts (n+1) = 2×2 grid, |A₁|≥ε|A|, |B₁|≥ε|B|, |d(A₁,B₁)−d(A,B)|≥ε, part masses ≥ m). Floors |A||B|≥m² via partitionEnergy_prod_gain_eps4 → N ≤ n²/(ε⁴·m²). Freshness stays hypothesis. [VERIFIED 0/0]",
+      "edgeDensity_biUnion_mul / edgeDensity_mul_biUnion (SzemerediRegularityOQ04Product.lean): general one-sided law of total density over an arbitrary disjoint Finset family, by Finset.induction peeling the 2-way edgeDensity_union_mul(_right) at each step",
+      "edgeDensity_prod_family_split (SzemerediRegularityOQ04Product.lean): general product law of total density |A||B|d(A,B)=ΣΣ|Aᵢ||Bⱼ|d(Aᵢ,Bⱼ) for arbitrary disjoint families {Aᵢ}_I,{Bⱼ}_J",
+      "prod_family_total_weight (SzemerediRegularityOQ04Product.lean): ΣΣ|Aᵢ||Bⱼ|=|A||B| via Finset.card_biUnion + Finset.sum_mul_sum",
+      "pairEnergy_prod_family_refinement_gain (SzemerediRegularityOQ04Product.lean): the full m×k product-refinement energy increment — pairEnergy A B + (|A_{i₀}||B_{j₀}|/n²)d² ≤ ΣΣ pairEnergy Aᵢ Bⱼ from a single deviating witness cell; VERIFIED 0/0, generalizes the 2×2 pairEnergy_prod_refinement_gain"
     ],
     "insights": [
       "partitionEnergy IS the standard size-weighted energy |Pi||Pj|/n^2 d^2 (SzemerediCore:63), NOT 1/k^2. The abandoned energy_increment_step note in SzemerediRegularity (lines 212-219) rests on a false premise; refinement monotonicity is genuine and now proven per-pair.",
@@ -79,14 +83,17 @@
       "Final /n² scaling: avoid convert (mis-pairs the + tree); prove goal=1/n²·raw via unfold+ring both sides then exact the scaled inequality.",
       "The sharp direct 2×2 gain (no factor-¼ loss) DOES lift to the whole partition cleanly: the ordered-pair double sum splits into R×R (untouched), A/B rows & cols vs R (pure pairEnergy_split_mono/_mono_right), and the {A,B}² 4-term block refining into 16 sub-cells — diagonal A²,B² and the (B,A) cross by monotonicity, only the single (A,B) cross carries the variance-atom gain. So the whole-partition floor ε⁴|A||B|/n² beats the one-sided partitionEnergy_gain_of_irregular_pair floor ε²/(8n²).",
       "The deployer's file-level dedup (PR #36107 closed as superseded) discarded a UNIQUE already-VERIFIED theorem (afks_sharp_energy_iteration_count) because the winning competing PR added the same Assembly file WITHOUT that theorem — file-basename dedup is lossy when two branches touch one file with different content. Recovered + extended it.",
-      "The sharp iteration count is a thin one_div_div wrapper over the generic δ engine; the genuine new content is the witness-driven certificate that packages partitionEnergy_prod_gain_eps4 into hstep, closing per-step-witness → sharp count N≤n²/(ε⁴m²) with the freshness the only remaining hypothesis."
+      "The sharp iteration count is a thin one_div_div wrapper over the generic δ engine; the genuine new content is the witness-driven certificate that packages partitionEnergy_prod_gain_eps4 into hstep, closing per-step-witness → sharp count N≤n²/(ε⁴m²) with the freshness the only remaining hypothesis.",
+      "The 2×2 product-refinement increment generalizes verbatim to an arbitrary m×k product of disjoint families: weighted_second_moment_atom_gain already handles arbitrary finite index, so only the general law of total density (mean identity) and total-weight identity are needed as new inputs. Both are Finset.induction/card_biUnion routine over the existing 2-way one-sided laws.",
+      "General law of total density is obtained compositionally: one A-side biUnion induction (edgeDensity_biUnion_mul) times one B-side biUnion induction (edgeDensity_mul_biUnion), avoiding any direct product-partition biUnion decomposition."
     ],
     "mathlibGaps": [],
     "nextSteps": [
       "Discharge the freshness hypotheses (A₁,A₂,B₁,B₂ distinct and ∉R) of afks_sharp_energy_iteration_count_of_prod_witness / partitionEnergy_prod_gain_eps4 from a nonempty-equipartition model to obtain a fully-internal ∃P′ capstone from ¬IsEpsilonRegular (the standing blocker, shared with the one-sided route).",
       "Bound the minimum refined-pair mass m in terms of an equipartition (parts of size ≈n/k) to turn afks_sharp_energy_iteration_count into a k-explicit tower-free bound N ≤ k²/ε⁴.",
       "Generalize 2×2 → m×k product refinement via Finset(Finset V) families + card_biUnion over a product partition.",
-      "State two-level AFKS conclusion with dependent tolerance E:ℕ→(0,1]."
+      "State two-level AFKS conclusion with dependent tolerance E:ℕ→(0,1].",
+      "Wire pairEnergy_prod_family_refinement_gain into a whole-partition energy monotonicity over an m×k equipartition-refinement to feed afks_sharp_energy_iteration_count with a k-explicit index, moving toward the tower-free N ≤ k²/ε⁴ bound."
     ],
     "markdown": "# Knowledge Base: szemeredi-regularity-oq-04\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
@@ -197,7 +204,18 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SzemerediRegularityOQ04Energy.lean"
+    },
+    {
+      "path": "Proofs/SzemerediRegularityOQ04Product.lean",
+      "filename": "SzemerediRegularityOQ04Product.lean",
+      "lineCount": 218,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SzemerediRegularityOQ04Product.lean"
     }
   ],
-  "lastUpdate": "2026-07-08T00:00:00Z"
+  "lastUpdate": "2026-07-09"
 }
