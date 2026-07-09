@@ -42,7 +42,8 @@
       "The iff is the right object: it subsumes both the irrationality of non-powers and the rationality of powers, where Mathlib and the gallery previously had only the forward half for nth roots.",
       "Bounding the perfect-power test (k ≤ k^n = m) is what makes the characterization decidable, replacing bespoke non-power lemmas with `decide`.",
       "The rpow inverse identities Real.rpow_inv_natCast_pow and Real.pow_rpow_inv_natCast are exactly what connects m^(1/n) back to m in both directions.",
-      "Using kernel `decide` rather than `native_decide` keeps the concrete instances axiom-free: native_decide would pull in Lean.ofReduceBool, whereas the bounded Finset search is small enough for the kernel to evaluate directly, so the entry truthfully reports 0 axioms."
+      "Using kernel `decide` rather than `native_decide` keeps the concrete instances axiom-free: native_decide would pull in Lean.ofReduceBool, whereas the bounded Finset search is small enough for the kernel to evaluate directly, so the entry truthfully reports 0 axioms.",
+      "The classical engine is the rational root theorem. Mathlib's irrational_nrt_of_notint_nrt is the formal shadow of the pen-and-paper argument: xⁿ − m is a *monic* integer polynomial, so by the rational root theorem any rational root is an integer dividing m. Thus m^(1/n) can be rational only when it equals some integer k with kⁿ = m — and the iff is precisely this dichotomy stated two-sidedly."
     ],
     "prerequisites": [
       "Irrationality (Irrational) and Mathlib's nth-root irrationality lemma irrational_nrt_of_notint_nrt",
@@ -59,6 +60,28 @@
       "Provide a global Decidable instance for Irrational (nthRoot n m) when n ≠ 0, mirroring Mathlib's Decidable (Irrational √n)."
     ]
   },
+  "references": [
+    {
+      "type": "theorem",
+      "citation": "Rational Root Theorem (Gauss). A rational root p/q (in lowest terms) of an integer polynomial aₙxⁿ + ⋯ + a₀ has p ∣ a₀ and q ∣ aₙ.",
+      "relevance": "The classical engine behind the result: xⁿ − m is monic, so any rational root is an integer dividing m. Hence m^(1/n) is rational only when it equals an integer k with kⁿ = m — exactly the dichotomy the iff formalizes, and precisely what Mathlib's irrational_nrt_of_notint_nrt packages."
+    },
+    {
+      "type": "book",
+      "citation": "Niven, I. (1956). Irrational Numbers. Carus Mathematical Monographs 11, Mathematical Association of America.",
+      "relevance": "Classic monograph developing the irrationality of nth roots of non-perfect-powers via the rational root theorem, the pen-and-paper counterpart of this formalization."
+    },
+    {
+      "type": "library",
+      "citation": "The Mathlib Community. \"Mathlib.NumberTheory.Real.Irrational\" — irrational_nrt_of_notint_nrt (forward nth-root direction) and irrational_sqrt_natCast_iff (the square-root iff this entry generalizes). (accessed 2026)",
+      "relevance": "Supplies the forward implication and the square-root-only equivalence that motivated closing the general-n iff gap."
+    },
+    {
+      "type": "library",
+      "citation": "The Mathlib Community. \"Mathlib.Analysis.SpecialFunctions.Pow\" — Real.rpow_inv_natCast_pow and Real.pow_rpow_inv_natCast, the rpow inverse-power identities. (accessed 2026)",
+      "relevance": "The (m^(1/n))ⁿ = m identity in both directions, connecting the real nth root back to m."
+    }
+  ],
   "leanFile": {
     "namespace": "Sqrt2IrrationalOQ03",
     "lineCount": 144,
@@ -120,9 +143,17 @@
   ],
   "sections": [
     {
+      "id": "preamble",
+      "title": "Overview, imports, and the open question",
+      "startLine": 1,
+      "endLine": 31,
+      "summary": "Module docstring framing the question inherited from the √2 entry — does m^(1/n) admit an iff characterization? — and recording that Mathlib packages the square-root case as an iff (irrational_sqrt_natCast_iff) but only a one-directional lemma (irrational_nrt_of_notint_nrt) for general nth roots. Imports the irrationality API and real rpow, then opens the namespace.",
+      "mathContext": "Goal: $\\mathrm{Irrational}(m^{1/n}) \\iff \\neg\\exists k,\\ k^n = m$ for $n\\neq 0$, the nth-root analogue of $\\mathrm{Irrational}(\\sqrt n)\\iff\\neg\\,\\mathrm{IsSquare}(n)$."
+    },
+    {
       "id": "nth-root",
       "title": "The nth root function and its power identity",
-      "startLine": 36,
+      "startLine": 32,
       "endLine": 49,
       "summary": "nthRoot n m = m^(1/n) via real rpow, with nonnegativity and the defining identity (nthRoot n m)^n = m for n ≠ 0 from Mathlib's rpow inverse-power lemmas.",
       "mathContext": "$x = m^{1/n}$, $x^n = m$ for $n\\neq 0$, $m\\ge 0$."
