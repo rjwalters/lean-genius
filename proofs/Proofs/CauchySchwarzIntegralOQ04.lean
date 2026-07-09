@@ -21,6 +21,10 @@
 
   * `abs_im_inner_le_norm_mul_norm` — `|Im⟪u,v⟫| ≤ ‖u‖·‖v‖`.
   * `im_inner_sq_le` — `(Im⟪u,v⟫)² ≤ ‖u‖²·‖v‖²`.
+  * `abs_re_inner_le_norm_mul_norm` / `re_inner_sq_le` — the real-part
+    (anticommutator / Schrödinger) companions.
+  * `inner_sq_le_gram` — the sharp Gram form
+    `(Re⟪u,v⟫)² + (Im⟪u,v⟫)² ≤ ‖u‖²·‖v‖²`, combining both parts.
   * `robertson_uncertainty` — `¼‖⟪ψ,[A,B]ψ⟫‖² ≤ ‖(A−a)ψ‖²·‖(B−b)ψ‖²`.
   * `heisenberg_variance_form` — the same at `a = ⟨A⟩`, `b = ⟨B⟩` (variance form).
 
@@ -53,6 +57,42 @@ theorem im_inner_sq_le (u v : E) :
   have h := abs_im_inner_le_norm_mul_norm (𝕜 := 𝕜) u v
   nlinarith [h, abs_nonneg (RCLike.im (inner 𝕜 u v)),
     sq_abs (RCLike.im (inner 𝕜 u v)), norm_nonneg u, norm_nonneg v]
+
+/-- **Real-part (Schrödinger) companion.**  Symmetric to `abs_im_inner_le_norm_mul_norm`:
+    the *real* part of the inner product is also bounded by the product of the norms,
+    `|Re⟪u,v⟫| ≤ ‖u‖·‖v‖`.  With `u = (A−⟨A⟩)ψ`, `v = (B−⟨B⟩)ψ` the real part is the
+    *anticommutator* term `½⟪ψ,{A,B}ψ⟫ − ⟨A⟩⟨B⟩` that appears in the sharper
+    Schrödinger uncertainty relation. -/
+theorem abs_re_inner_le_norm_mul_norm (u v : E) :
+    |RCLike.re (inner 𝕜 u v)| ≤ ‖u‖ * ‖v‖ :=
+  (RCLike.abs_re_le_norm _).trans (norm_inner_le_norm u v)
+
+/-- **Squared real-part inequality.**  `(Re⟪u,v⟫)² ≤ ‖u‖²·‖v‖²` — the anticommutator
+    counterpart of `im_inner_sq_le`. -/
+theorem re_inner_sq_le (u v : E) :
+    (RCLike.re (inner 𝕜 u v)) ^ 2 ≤ ‖u‖ ^ 2 * ‖v‖ ^ 2 := by
+  have h := abs_re_inner_le_norm_mul_norm (𝕜 := 𝕜) u v
+  nlinarith [h, abs_nonneg (RCLike.re (inner 𝕜 u v)),
+    sq_abs (RCLike.re (inner 𝕜 u v)), norm_nonneg u, norm_nonneg v]
+
+/-- **Full Gram inequality (the sharp Cauchy–Schwarz).**  Both parts together are
+    bounded: `(Re⟪u,v⟫)² + (Im⟪u,v⟫)² ≤ ‖u‖²·‖v‖²`, i.e. `‖⟪u,v⟫‖² ≤ ‖u‖²·‖v‖²`.
+    This is the two-dimensional Gram determinant refinement combining the
+    commutator (`Im`, Heisenberg) and anticommutator (`Re`, Schrödinger) terms —
+    strictly stronger than either `im_inner_sq_le` or `re_inner_sq_le` alone, and
+    the form that yields the *Schrödinger* uncertainty relation. -/
+theorem inner_sq_le_gram (u v : E) :
+    (RCLike.re (inner 𝕜 u v)) ^ 2 + (RCLike.im (inner 𝕜 u v)) ^ 2
+      ≤ ‖u‖ ^ 2 * ‖v‖ ^ 2 := by
+  have hnorm : ‖inner 𝕜 u v‖ ≤ ‖u‖ * ‖v‖ := norm_inner_le_norm u v
+  have hid : ‖inner 𝕜 u v‖ ^ 2
+      = (RCLike.re (inner 𝕜 u v)) ^ 2 + (RCLike.im (inner 𝕜 u v)) ^ 2 :=
+    RCLike.norm_sq_eq_def' _
+  have hsq : ‖inner 𝕜 u v‖ ^ 2 ≤ (‖u‖ * ‖v‖) ^ 2 := by
+    nlinarith [hnorm, norm_nonneg (inner 𝕜 u v),
+      mul_nonneg (norm_nonneg u) (norm_nonneg v)]
+  rw [hid, mul_pow] at hsq
+  exact hsq
 
 /-! ## The full Robertson uncertainty relation
 
