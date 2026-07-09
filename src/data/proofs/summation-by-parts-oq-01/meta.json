@@ -146,6 +146,11 @@
       "targetId": "geometric-series",
       "relationship": "foundation",
       "description": "The base geometric series ∑ rᵏ = (rⁿ−1)/(r−1); summation by parts expresses the weighted sum ∑ k·rᵏ through its partial sums."
+    },
+    {
+      "targetId": "arithmetic-series",
+      "relationship": "removable-singularity limit",
+      "description": "Gauss's triangular sum ∑_{k<n} k = n(n−1)/2 is exactly the r → 1 limit of this entry's closed form: the numerator r − n·rⁿ + (n−1)·rⁿ⁺¹ vanishes to order 2 at r = 1, matching the (r−1)² denominator, and the resulting value N''(1)/2 = n(n−1)/2 is the arithmetic series. So ∑ k·rᵏ interpolates between the geometric closed form (generic r) and the arithmetic/triangular sum (the excluded point r = 1)."
     }
   ],
   "sorries": 0,
