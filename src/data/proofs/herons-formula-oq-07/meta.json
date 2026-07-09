@@ -31,6 +31,12 @@
   },
   "mainTheorems": [
     {
+      "name": "heronProduct_nonneg",
+      "type": "supporting",
+      "description": "For a nondegenerate triangle, Heron's product s(s-a)(s-b)(s-c) is non-negative. The strict triangle inequalities a<b+c, b<a+c, c<a+b are exactly s-a>0, s-b>0, s-c>0, so all four factors are positive; proved by iterated mul_nonneg with each factor discharged by linarith. This is the sole place the triangle hypotheses enter — it guarantees Area = √(heronProduct) is real, making the squaring step reversible.",
+      "leanType": "0 ≤ heronProduct a b c"
+    },
+    {
       "name": "sq_sum_sub_heron",
       "type": "supporting",
       "description": "The Weitzenböck sum-of-squares identity: (a²+b²+c²)² - 48·heronProduct = 2((a²-b²)²+(b²-c²)²+(c²-a²)²), an identity for all reals.",
