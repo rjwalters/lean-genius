@@ -343,6 +343,39 @@ theorem constantConjecture_refuted_of_one_lt (c : ℝ) (hc : 1 < c) :
   have : c ≤ 1 := R3_lower_constant_le_one c hlower
   linarith
 
+/-- **Any conjectured constant `< 1/2` is refuted by the HHKP lower bound.**  The general
+    form of `pgm_conjecture_refuted` (the PGM constant `1/4` is just the `c = 1/4` instance):
+    a conjecture `R(3,k) ~ c·k²/log k` with `c < 1/2` has an upper half asserting a valid
+    first-order upper constant `c`, but `R3_upper_constant_ge_half` forces every valid upper
+    constant to be `≥ 1/2`.  The only Ramsey input is `hhkp_bound`. -/
+theorem constantConjecture_refuted_of_lt_half (c : ℝ) (hc : c < 1/2) :
+    ¬ constantConjecture c := by
+  intro h
+  have hupper : ∀ ε > 0, ∃ k₀ : ℕ, ∀ k : ℕ, k ≥ k₀ →
+      (R3 k : ℝ) ≤ (c + ε) * k^2 / log k := by
+    intro ε hε
+    obtain ⟨k₀, hk₀⟩ := h ε hε
+    exact ⟨k₀, fun k hk => (hk₀ k hk).2⟩
+  have : (1:ℝ)/2 ≤ c := R3_upper_constant_ge_half c hupper
+  linarith
+
+/-- **The exact constant, if it exists, lies in `[1/2, 1]`.**  Unifying headline of the
+    two-sided obstruction: any conjectured exact asymptotic constant `c` for `R(3,k)`
+    (`constantConjecture c`) must satisfy `1/2 ≤ c ≤ 1`.  The lower fence is HHKP
+    (`constantConjecture_refuted_of_lt_half`), the upper fence is Shearer
+    (`constantConjecture_refuted_of_one_lt`); the PGM value `1/4` is excluded by the former
+    and Erdős's conjectured `1/2` sits exactly on the lower fence, hence survives.  Both
+    Ramsey inputs (`hhkp_bound`, `shearer_upper_bound`) are used; no new axioms. -/
+theorem constantConjecture_forces_bracket (c : ℝ) (h : constantConjecture c) :
+    (1:ℝ)/2 ≤ c ∧ c ≤ 1 := by
+  refine ⟨?_, ?_⟩
+  · by_contra hlt
+    push_neg at hlt
+    exact constantConjecture_refuted_of_lt_half c hlt h
+  · by_contra hgt
+    push_neg at hgt
+    exact constantConjecture_refuted_of_one_lt c hgt h
+
 /- ## Part VII: Related Problems -/
 
 /-
