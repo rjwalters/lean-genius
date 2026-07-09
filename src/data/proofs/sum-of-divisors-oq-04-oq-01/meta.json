@@ -199,6 +199,50 @@
       "Give the exact deficiency 2·pᵏ − σ(pᵏ) = (pᵏ(p−2)+1)/(p−1) as a closed-form arithmetic function and characterise when it is minimal."
     ]
   },
+  "mainTheorems": [
+    {
+      "name": "sigma_one_prime_pow_deficient",
+      "type": "main",
+      "description": "Every prime power is strictly deficient: σ(pᵏ) < 2·pᵏ for all primes p and exponents k. The general law behind the base entry's case-by-case deficiency checks, derived from the closed geometric form sigma_one_prime_pow_mul.",
+      "leanType": "{p : ℕ} (hp : p.Prime) (k : ℕ) : sigma 1 (p ^ k) < 2 * p ^ k"
+    },
+    {
+      "name": "abundancy_prime_pow_lt",
+      "type": "main",
+      "description": "The sharp abundancy bound over ℚ: σ(pᵏ)/pᵏ < p/(p−1), with p/(p−1) the supremum of the abundancy index over the powers of p (approached as k → ∞).",
+      "leanType": "{p : ℕ} (hp : p.Prime) (k : ℕ) : (sigma 1 (p ^ k) : ℚ) / (p ^ k : ℚ) < (p : ℚ) / ((p : ℚ) - 1)"
+    },
+    {
+      "name": "pow_two_almost_perfect",
+      "type": "main",
+      "description": "Powers of two are almost perfect: σ(2ᵏ) + 1 = 2·2ᵏ, i.e. deficient by exactly one — the minimal possible positive deficiency, the extremal case of the deficiency law.",
+      "leanType": "(k : ℕ) : sigma 1 (2 ^ k) + 1 = 2 * 2 ^ k"
+    },
+    {
+      "name": "prime_pow_not_perfect",
+      "type": "supporting",
+      "description": "No prime power is perfect: ¬ Nat.Perfect (pᵏ), derived from the strict deficiency bound and the σ-form of perfection.",
+      "leanType": "{p : ℕ} (hp : p.Prime) (k : ℕ) : ¬ Nat.Perfect (p ^ k)"
+    },
+    {
+      "name": "abundancy_prime_pow_lt_two",
+      "type": "supporting",
+      "description": "The deficiency bound in abundancy form: σ(pᵏ)/pᵏ < 2 over ℚ, sharp because p/(p−1) ≤ 2 ⇔ p ≥ 2.",
+      "leanType": "{p : ℕ} (hp : p.Prime) (k : ℕ) : (sigma 1 (p ^ k) : ℚ) / (p ^ k : ℚ) < 2"
+    },
+    {
+      "name": "sigma_one_prime_pow_mul",
+      "type": "supporting",
+      "description": "The closed geometric form for k = 1: σ(pⁱ)·(p−1) = p^{i+1}−1 (division-free over ℤ). The engine from which the deficiency and abundancy bounds are read off.",
+      "leanType": "{p : ℕ} (hp : p.Prime) (i : ℕ) : (sigma 1 (p ^ i) : ℤ) * ((p : ℤ) - 1) = (p : ℤ) ^ (i + 1) - 1"
+    },
+    {
+      "name": "sigma_zero_prime_pow",
+      "type": "supporting",
+      "description": "Divisor count of a prime power: τ(pᵏ) = k+1 (generalising OQ-04's τ(p) = 2).",
+      "leanType": "{p : ℕ} (hp : p.Prime) (k : ℕ) : sigma 0 (p ^ k) = k + 1"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib"
