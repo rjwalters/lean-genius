@@ -294,4 +294,108 @@ theorem variance_sum_eq_diag_add_two_mul_lowerTriangle [IsFiniteMeasure μ] {ι 
     Finset.sum_add_distrib, Finset.sum_add_distrib, hUL]
   ring
 
+/-!
+### Sharp *inequality* boundary: the correlated case (subadditivity of standard deviation)
+
+The results above pin down exactly *when* the powers add (`Var[∑Wᵢ] = ∑Var[Wᵢ]` ⟺ total
+off-diagonal covariance vanishes).  When the contributions are **correlated** the equality
+fails, but a sharp two-sided *inequality* survives.  The engine is the Cauchy–Schwarz
+inequality for covariance,
+
+    cov[X, Y]² ≤ Var[X] · Var[Y],
+
+which — perhaps surprisingly — is **not** in Mathlib's probability layer (only the double-sum
+`variance_sum'` and independence-based `IndepFun.variance_sum` are).  We supply it here via the
+classical discriminant argument: the quadratic `t ↦ Var[X + t·Y] ≥ 0` is nonnegative for all
+`t`, so its discriminant `(2·cov)² − 4·Var[Y]·Var[X]` is `≤ 0`.
+
+From it follows the **triangle inequality for standard deviation** `σ[∑Wᵢ] ≤ ∑σ[Wᵢ]`
+(`σ = √Var`), the sharp *inequality* companion to the equality boundary above: correlated
+contributions can only *lose* power relative to the additive prediction bounded by the sum of
+the individual standard deviations — this is exactly the L² triangle (Minkowski) inequality on
+the centered contributions, and it holds with **no** independence or uncorrelatedness
+hypothesis at all.
+-/
+
+/-- **Cauchy–Schwarz inequality for covariance.**  For square-integrable `X, Y`,
+
+        cov[X, Y]² ≤ Var[X] · Var[Y].
+
+Proof by the classical discriminant argument: for every real `t` the variance of `X + t·Y` is
+nonnegative, giving a nonnegative quadratic `Var[Y]·t² + 2·cov[X,Y]·t + Var[X] ≥ 0` in `t`,
+whose discriminant is therefore `≤ 0`.  This foundational bound is absent from Mathlib's
+probability layer (which carries only `variance_sum'` and `IndepFun.variance_sum`), and is the
+engine behind the standard-deviation triangle inequality below. -/
+theorem covariance_sq_le_variance_mul_variance [IsFiniteMeasure μ] {X Y : Ω → ℝ}
+    (hX : MemLp X 2 μ) (hY : MemLp Y 2 μ) :
+    cov[X, Y; μ] ^ 2 ≤ Var[X; μ] * Var[Y; μ] := by
+  have hquad : ∀ t : ℝ,
+      0 ≤ Var[Y; μ] * (t * t) + 2 * cov[X, Y; μ] * t + Var[X; μ] := by
+    intro t
+    have h := variance_nonneg (X + t • Y) μ
+    rw [variance_add hX (hY.const_smul t), covariance_smul_right, variance_smul] at h
+    nlinarith [h]
+  have hdisc := discrim_le_zero hquad
+  rw [discrim] at hdisc
+  nlinarith [hdisc]
+
+/-- **Cauchy–Schwarz for covariance, root form.**  `|cov[X, Y]| ≤ √(Var[X] · Var[Y])`. -/
+theorem abs_covariance_le_sqrt [IsFiniteMeasure μ] {X Y : Ω → ℝ}
+    (hX : MemLp X 2 μ) (hY : MemLp Y 2 μ) :
+    |cov[X, Y; μ]| ≤ Real.sqrt (Var[X; μ] * Var[Y; μ]) := by
+  rw [← Real.sqrt_sq_eq_abs]
+  exact Real.sqrt_le_sqrt (covariance_sq_le_variance_mul_variance hX hY)
+
+/-- **Triangle inequality for standard deviation (two terms).**  For square-integrable `X, Y`,
+
+        √Var[X + Y] ≤ √Var[X] + √Var[Y].
+
+This is the sharp *inequality* boundary complementing `variance_add_eq_iff_covariance_zero`:
+equality of `Var[X+Y]` with `Var[X]+Var[Y]` requires `cov[X,Y]=0`, but the standard deviation of
+the sum is always at most the sum of the standard deviations — the L² triangle inequality on the
+centered variables, needing no independence hypothesis. -/
+theorem stddev_add_le [IsFiniteMeasure μ] {X Y : Ω → ℝ}
+    (hX : MemLp X 2 μ) (hY : MemLp Y 2 μ) :
+    Real.sqrt (Var[X + Y; μ]) ≤ Real.sqrt (Var[X; μ]) + Real.sqrt (Var[Y; μ]) := by
+  have hcov : cov[X, Y; μ] ≤ Real.sqrt (Var[X; μ]) * Real.sqrt (Var[Y; μ]) :=
+    calc cov[X, Y; μ] ≤ |cov[X, Y; μ]| := le_abs_self _
+      _ ≤ Real.sqrt (Var[X; μ] * Var[Y; μ]) := abs_covariance_le_sqrt hX hY
+      _ = Real.sqrt (Var[X; μ]) * Real.sqrt (Var[Y; μ]) :=
+          Real.sqrt_mul (variance_nonneg _ _) _
+  have hbound : Var[X + Y; μ] ≤ (Real.sqrt (Var[X; μ]) + Real.sqrt (Var[Y; μ])) ^ 2 := by
+    rw [variance_add hX hY]
+    have hsx : Real.sqrt (Var[X; μ]) ^ 2 = Var[X; μ] := Real.sq_sqrt (variance_nonneg _ _)
+    have hsy : Real.sqrt (Var[Y; μ]) ^ 2 = Var[Y; μ] := Real.sq_sqrt (variance_nonneg _ _)
+    nlinarith [hcov, hsx, hsy]
+  calc Real.sqrt (Var[X + Y; μ])
+      ≤ Real.sqrt ((Real.sqrt (Var[X; μ]) + Real.sqrt (Var[Y; μ])) ^ 2) :=
+        Real.sqrt_le_sqrt hbound
+    _ = Real.sqrt (Var[X; μ]) + Real.sqrt (Var[Y; μ]) :=
+        Real.sqrt_sq (by positivity)
+
+/-- **Triangle inequality for standard deviation (finite sum, capstone).**  For any finite
+family of square-integrable contributions,
+
+        σ[∑_{i ∈ s} Wᵢ] ≤ ∑_{i ∈ s} σ[Wᵢ]        (σ = √Var).
+
+This is the sharp *inequality* companion to
+`variance_sum_eq_iff_offDiag_covariance_zero`: the aggregate output standard deviation never
+exceeds the sum of the per-contribution standard deviations, whatever the correlations, with
+equality forced only in the fully-aligned (perfectly correlated) case.  For the AWGN power
+budget it bounds the aggregate output amplitude `√E[(∑Wᵢ)²]` of zero-mean contributions by the
+sum of the individual RMS amplitudes — a distribution-free ceiling requiring neither
+independence nor uncorrelatedness. -/
+theorem stddev_sum_le [IsFiniteMeasure μ] {ι : Type*} {W : ι → Ω → ℝ}
+    (hW : ∀ i, MemLp (W i) 2 μ) (s : Finset ι) :
+    Real.sqrt (Var[∑ i ∈ s, W i; μ]) ≤ ∑ i ∈ s, Real.sqrt (Var[W i; μ]) := by
+  classical
+  induction s using Finset.induction with
+  | empty => simp
+  | @insert a t ha ih =>
+      rw [Finset.sum_insert ha, Finset.sum_insert ha]
+      calc Real.sqrt (Var[W a + ∑ i ∈ t, W i; μ])
+          ≤ Real.sqrt (Var[W a; μ]) + Real.sqrt (Var[∑ i ∈ t, W i; μ]) :=
+            stddev_add_le (hW a) (memLp_finset_sum' t (fun i _ => hW i))
+        _ ≤ Real.sqrt (Var[W a; μ]) + ∑ i ∈ t, Real.sqrt (Var[W i; μ]) := by gcongr
+
 end ShannonAWGNMultiSymbolPower
