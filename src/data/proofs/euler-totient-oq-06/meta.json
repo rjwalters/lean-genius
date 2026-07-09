@@ -116,7 +116,8 @@
       "**The obstruction to 'always even' is exactly {1, 2}.** φ(1) = φ(2) = 1 are the only odd values; the biconditional `totient_odd_iff` makes this precise rather than merely asserting evenness for large n.",
       "**−1 is the witness of evenness.** In (ℤ/nℤ)ˣ the element −1 has order 2 whenever n > 2 (it is distinct from 1 and self-inverse), so Lagrange forces 2 ∣ φ(n). This is the structural heart behind `Nat.totient_even`.",
       "**The classification is just a contrapositive plus a finite check.** Once evenness for n > 2 is known, oddness forces n ≤ 2, and the three residual values 0, 1, 2 are decided outright — no further number theory is needed.",
-      "**φ 0 = 0 sits on the even side.** Treating n = 0 explicitly (it is even, not odd) is what makes `totient_even_iff : Even (φ n) ↔ n ≠ 1 ∧ n ≠ 2` correct across all naturals, including the degenerate argument."
+      "**φ 0 = 0 sits on the even side.** Treating n = 0 explicitly (it is even, not odd) is what makes `totient_even_iff : Even (φ n) ↔ n ≠ 1 ∧ n ≠ 2` correct across all naturals, including the degenerate argument.",
+      "**No multiplicative structure of φ is used.** The classification never invokes the product formula φ(n) = n·∏_{p∣n}(1 − 1/p) or the multiplicativity of φ; it rests entirely on the group-order identity |(ℤ/nℤ)ˣ| = φ(n) plus Lagrange applied to the order-2 element −1. Parity of φ is thus a fact about the group (ℤ/nℤ)ˣ, not about the arithmetic function — which is why it holds uniformly for every n > 2 regardless of factorization."
     ],
     "prerequisites": [
       "Euler's totient φ and the unit group (ℤ/nℤ)ˣ",
@@ -150,11 +151,28 @@
       "summary": "`totient_even_of_two_lt` (the headline `2 < n → Even (φ n)`, from `Nat.totient_even`), its divisibility restatement `two_dvd_totient_of_two_lt` via `Even.two_dvd`, and the `3 ≤ n` convenience form `even_totient_of_three_le`."
     },
     {
-      "id": "classification",
-      "title": "The Odd-Totient Classification",
+      "id": "odd-implies-small",
+      "title": "Odd Totient Forces n ≤ 2 (the Contrapositive)",
       "startLine": 58,
+      "endLine": 66,
+      "summary": "`le_two_of_odd_totient`: if φ(n) is odd then n ≤ 2. Proved by contradiction — assuming n > 2, `totient_even_of_two_lt` makes φ(n) even, and `Nat.not_odd_iff_even` contradicts oddness. This is precisely the contrapositive of the even direction, the bridge from the structural theorem to the finite classification.",
+      "mathContext": "$\\mathrm{Odd}(\\varphi(n)) \\Rightarrow n \\le 2$, contrapositive of $n > 2 \\Rightarrow \\mathrm{Even}(\\varphi(n))$."
+    },
+    {
+      "id": "odd-classification",
+      "title": "The Odd-Totient Classification: φ(n) odd ⟺ n ∈ {1,2}",
+      "startLine": 67,
+      "endLine": 76,
+      "summary": "`totient_odd_iff`: Odd (φ n) ↔ n = 1 ∨ n = 2. Forward direction uses `le_two_of_odd_totient` to bound n ≤ 2, then `interval_cases n` reduces to the three residues {0,1,2} each decided outright (`decide`); the reverse is φ(1) = φ(2) = 1 by `decide`. φ(0) = 0 is even, so it is correctly excluded.",
+      "mathContext": "$\\mathrm{Odd}(\\varphi(n)) \\iff n = 1 \\lor n = 2$; the only odd values are $\\varphi(1) = \\varphi(2) = 1$."
+    },
+    {
+      "id": "even-classification",
+      "title": "The Even-Totient Classification: φ(n) even ⟺ n ∉ {1,2}",
+      "startLine": 77,
       "endLine": 82,
-      "summary": "`le_two_of_odd_totient` (odd totient ⟹ n ≤ 2, contrapositive of the even theorem), `totient_odd_iff` (`Odd (φ n) ↔ n = 1 ∨ n = 2`, closed by `interval_cases`/`decide` on {0,1,2}), and `totient_even_iff` (`Even (φ n) ↔ n ≠ 1 ∧ n ≠ 2`, the De Morgan complement)."
+      "summary": "`totient_even_iff`: Even (φ n) ↔ n ≠ 1 ∧ n ≠ 2. A one-line De Morgan complement of `totient_odd_iff` via `Nat.not_odd_iff_even` and `not_or`. Correct across all naturals including n = 0 (φ(0) = 0 is even, and 0 ∉ {1,2}).",
+      "mathContext": "$\\mathrm{Even}(\\varphi(n)) \\iff n \\ne 1 \\land n \\ne 2$, the complement of the odd classification."
     }
   ],
   "crossReferences": [
