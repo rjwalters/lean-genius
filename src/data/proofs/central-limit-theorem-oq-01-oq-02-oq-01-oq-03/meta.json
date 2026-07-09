@@ -60,7 +60,8 @@
       "Because ψ is degree 2, ψ''' ≡ 0: all cumulants of order ≥ 3 vanish. This is the analytic signature of the normal distribution and, by Marcinkiewicz, characterises it among all distributions.",
       "The proof is pure calculus over ℂ — no probability measure is invoked. The casts from ℝ to ℂ are handled uniformly by HasDerivAt.ofReal_comp, so the complex-valued derivative reduces to real polynomial differentiation.",
       "This complements the siblings' algebraic CF identities: together with the convolution law φ_{μ₁,σ₁²}·φ_{μ₂,σ₂²} = φ_{μ₁+μ₂,σ₁²+σ₂²}, the additivity of cumulants under convolution is exactly κ₁,κ₂ adding and κ_{≥3} staying zero.",
-      "The ODE and the closed form are two views of the same fact. Integrating φ'/φ = iμ − σ²t with φ(0)=1 recovers φ(t) = exp(iμt − σ²t²/2); conversely differentiating that closed form gives the affine coefficient. So the CF ODE proved here is precisely the differential certificate that the log-characteristic-function is exactly quadratic — the same content as ψ''' ≡ 0 but expressed at the level of φ rather than its derivatives."
+      "The ODE and the closed form are two views of the same fact. Integrating φ'/φ = iμ − σ²t with φ(0)=1 recovers φ(t) = exp(iμt − σ²t²/2); conversely differentiating that closed form gives the affine coefficient. So the CF ODE proved here is precisely the differential certificate that the log-characteristic-function is exactly quadratic — the same content as ψ''' ≡ 0 but expressed at the level of φ rather than its derivatives.",
+      "Marcinkiewicz's theorem has a converse-companion due to Cramér (1936): if X and Y are independent and X+Y is Gaussian, then X and Y are each Gaussian. Where Marcinkiewicz forbids a polynomial cumulant generating function of degree > 2 (the ψ''' ≡ 0 direction verified here), Cramér forbids any non-Gaussian factor of a Gaussian. Together they make the normal law both cumulant-rigid and decomposition-rigid — the two-sided rigidity underlying the sibling convolution law φ_{μ₁,σ₁²}·φ_{μ₂,σ₂²} = φ_{μ₁+μ₂,σ₁²+σ₂²}, in which the Gaussian family is exactly closed under (and, by Cramér, not a proper enlargement of) additive convolution."
     ],
     "prerequisites": [
       "The parent's gaussianExponent definition ψ(t) = ↑(μt)·I − ↑(σ²t² /2)",
@@ -221,6 +222,13 @@
       "year": "1939",
       "venue": "Mathematische Zeitschrift 44, pp. 612–618",
       "note": "A cumulant generating function that is a polynomial must have degree ≤ 2 — characterising the Gaussian by the vanishing of higher cumulants."
+    },
+    {
+      "authors": "Harald Cramér",
+      "title": "Über eine Eigenschaft der normalen Verteilungsfunktion",
+      "year": "1936",
+      "venue": "Mathematische Zeitschrift 41, pp. 405–414",
+      "note": "Cramér's decomposition theorem: if X and Y are independent and X+Y is normal, then X and Y are each normal — the decomposition-rigidity converse-companion to Marcinkiewicz's cumulant-rigidity characterisation."
     },
     {
       "authors": "William Feller",
