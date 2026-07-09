@@ -59,7 +59,8 @@
       "The Gaussian exponent has an *affine* derivative ψ'(t) = iμ − σ²t. Equivalently the characteristic function obeys the first-order linear ODE φ' = (iμ − σ²t)φ — the affine coefficient is precisely what distinguishes the Gaussian.",
       "Because ψ is degree 2, ψ''' ≡ 0: all cumulants of order ≥ 3 vanish. This is the analytic signature of the normal distribution and, by Marcinkiewicz, characterises it among all distributions.",
       "The proof is pure calculus over ℂ — no probability measure is invoked. The casts from ℝ to ℂ are handled uniformly by HasDerivAt.ofReal_comp, so the complex-valued derivative reduces to real polynomial differentiation.",
-      "This complements the siblings' algebraic CF identities: together with the convolution law φ_{μ₁,σ₁²}·φ_{μ₂,σ₂²} = φ_{μ₁+μ₂,σ₁²+σ₂²}, the additivity of cumulants under convolution is exactly κ₁,κ₂ adding and κ_{≥3} staying zero."
+      "This complements the siblings' algebraic CF identities: together with the convolution law φ_{μ₁,σ₁²}·φ_{μ₂,σ₂²} = φ_{μ₁+μ₂,σ₁²+σ₂²}, the additivity of cumulants under convolution is exactly κ₁,κ₂ adding and κ_{≥3} staying zero.",
+      "The ODE and the closed form are two views of the same fact. Integrating φ'/φ = iμ − σ²t with φ(0)=1 recovers φ(t) = exp(iμt − σ²t²/2); conversely differentiating that closed form gives the affine coefficient. So the CF ODE proved here is precisely the differential certificate that the log-characteristic-function is exactly quadratic — the same content as ψ''' ≡ 0 but expressed at the level of φ rather than its derivatives."
     ],
     "prerequisites": [
       "The parent's gaussianExponent definition ψ(t) = ↑(μt)·I − ↑(σ²t² /2)",
@@ -72,25 +73,41 @@
       "id": "sec-header",
       "title": "Module Header and Imports",
       "startLine": 1,
-      "endLine": 50,
-      "summary": "Docstring explaining the CF ODE and cumulant structure. Imports the parent CentralLimitTheoremOQ01OQ02 (for gaussianExponent) and Mathlib; namespace CentralLimitTheoremOQ01OQ02OQ01OQ03.",
+      "endLine": 49,
+      "summary": "Docstring explaining the CF ODE and cumulant structure. Imports the parent CentralLimitTheoremOQ01OQ02 (for gaussianExponent) and Mathlib; opens Complex and the parent namespace; namespace CentralLimitTheoremOQ01OQ02OQ01OQ03.",
       "mathContext": "ψ(t) = iμt − σ²t² /2; φ(t) = exp(ψ(t)); cumulants κ_k = i^{-k}·ψ^{(k)}(0)."
     },
     {
-      "id": "sec-deriv",
-      "title": "Exponent Derivative and the Characteristic-Function ODE",
-      "startLine": 51,
-      "endLine": 78,
-      "summary": "gaussianExponent_hasDerivAt (ψ'(t) = iμ − σ²t) by termwise differentiation with ofReal_comp; its deriv form; and gaussianCharFn_hasDerivAt — the ODE φ'(t) = φ(t)·(iμ − σ²t) via HasDerivAt.cexp.",
-      "mathContext": "ψ'(t) = iμ − σ²t and φ'(t) = (iμ − σ²t)·φ(t): the affine logarithmic derivative of the Gaussian CF."
+      "id": "sec-exp-deriv",
+      "title": "The Affine Exponent Derivative ψ'(t) = iμ − σ²t",
+      "startLine": 50,
+      "endLine": 69,
+      "summary": "gaussianExponent_hasDerivAt differentiates ψ termwise — the linear part μt lifted to ℂ via HasDerivAt.ofReal_comp (times I) and the quadratic part σ²t²/2 via hasDerivAt_pow/const_mul/div_const — yielding ψ'(t) = iμ − σ²t. gaussianExponent_deriv records the same as a deriv equation. That ψ' is affine is the single structural fact driving everything downstream.",
+      "mathContext": "ψ'(t) = iμ − σ²t, an affine function of t — the hallmark of a degree-2 cumulant generating function."
     },
     {
-      "id": "sec-cumulants",
-      "title": "Cumulant Structure: κ₁, κ₂, and the Vanishing of κ_{≥3}",
+      "id": "sec-cf-ode",
+      "title": "The Characteristic-Function ODE φ' = φ·(iμ − σ²t)",
+      "startLine": 70,
+      "endLine": 78,
+      "summary": "gaussianCharFn_hasDerivAt applies the chain rule for the complex exponential (HasDerivAt.cexp) to ψ', giving the first-order linear ODE φ'(t) = φ(t)·(iμ − σ²t). The Gaussian CF is the unique solution with φ(0)=1, and its affine logarithmic derivative φ'/φ = iμ − σ²t is exactly what singles out the Gaussian among all characteristic functions.",
+      "mathContext": "φ'(t) = φ(t)·(iμ − σ²t), φ(0)=1; the affine logarithmic derivative characterises the Gaussian."
+    },
+    {
+      "id": "sec-cumulants-12",
+      "title": "First and Second Cumulants: κ₁ = μ, κ₂ = σ²",
       "startLine": 79,
+      "endLine": 99,
+      "summary": "gaussianExponent_deriv_zero reads ψ'(0)=iμ, so κ₁ = i^{-1}ψ'(0) = μ (the mean). gaussianExponent_deriv2 shows the second derivative of the affine ψ' is the constant −σ², and gaussianExponent_deriv2_zero reads ψ''(0)=−σ², so κ₂ = i^{-2}ψ''(0) = σ² (the variance). The first two cumulants recover exactly the two parameters of the Gaussian.",
+      "mathContext": "κ₁ = i^{-1}ψ'(0) = μ; ψ''(t) ≡ −σ², so κ₂ = i^{-2}ψ''(0) = σ²."
+    },
+    {
+      "id": "sec-cumulants-vanish",
+      "title": "Vanishing Higher Cumulants: κ_{≥3} = 0",
+      "startLine": 100,
       "endLine": 108,
-      "summary": "gaussianExponent_deriv_zero (ψ'(0)=iμ ⟹ κ₁=μ); gaussianExponent_deriv2 and _deriv2_zero (ψ''=−σ² ⟹ κ₂=σ²); gaussianExponent_deriv3 (ψ'''≡0 ⟹ κ_{≥3}=0).",
-      "mathContext": "κ₁=μ, κ₂=σ², κ_k=0 for k≥3 — the polynomial cumulant generating function unique to the Gaussian."
+      "summary": "gaussianExponent_deriv3 shows ψ'''(t) = 0: the second derivative −σ² is a constant (hasDerivAt_const), so its derivative — and every higher derivative — vanishes. Hence κ_k = i^{-k}ψ^{(k)}(0) = 0 for all k ≥ 3. A degree-2 (polynomial) cumulant generating function is, by Marcinkiewicz's theorem, the analytic signature of the normal distribution.",
+      "mathContext": "ψ''' ≡ 0 ⟹ κ_k = 0 for all k ≥ 3 — the polynomial CGF unique to the Gaussian (Marcinkiewicz)."
     }
   ],
   "crossReferences": [
