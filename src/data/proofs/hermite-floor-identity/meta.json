@@ -39,7 +39,8 @@
       "The real, possibly irrational argument is a red herring: x + k/n = (n·x + k)/n, and Mathlib's floor/division law ⌊a/n⌋ = ⌊a⌋/n collapses every real floor to an integer Euclidean quotient, so the entire identity is equivalent to a statement about integers and integer division.",
       "Once integerized, the identity ∑_{k<n}(a+k)/n = a is most cleanly proved not by splitting a into quotient and remainder but by an additive recurrence: shifting a by 1 shifts the whole sum by exactly 1, and the value at 0 is 0, so the sum is the identity function on ℤ.",
       "The shift recurrence is a reindexing trick: ∑_{k<n} f(k+1) and ∑_{k<n} f(k) differ only at the endpoints f(0) and f(n) (both equal the same range-(n+1) sum minus one boundary term), and for f(k) = (b+k)/n those endpoints differ by 1.",
-      "Euclidean division (Mathlib's `/` on ℤ) keeps a nonnegative remainder, so for a positive divisor it agrees with floor division; this is exactly what makes ⌊a/n⌋ = ⌊a⌋/n hold for negative a and lets the reduction handle negative ⌊n·x⌋."
+      "Euclidean division (Mathlib's `/` on ℤ) keeps a nonnegative remainder, so for a positive divisor it agrees with floor division; this is exactly what makes ⌊a/n⌋ = ⌊a⌋/n hold for negative a and lets the reduction handle negative ⌊n·x⌋.",
+      "Hermite's identity is the integer-part half of the exact linear evaluation ∑_{k=0}^{n-1}(x + k/n) = n·x + (n−1)/2 (the k/n terms sum to (1/n)·(n−1)n/2 = (n−1)/2). Splitting each term as ⌊x+k/n⌋ + {x+k/n} and summing, the floor half is ⌊n·x⌋ (this theorem) and the fractional half is {n·x} + (n−1)/2 (the companion sawtooth identity); since the two halves are forced to add up to n·x + (n−1)/2, either identity immediately determines the other."
     ],
     "prerequisites": [
       "The floor function ⌊·⌋ on ℝ and on ℤ (Int.floor)",
