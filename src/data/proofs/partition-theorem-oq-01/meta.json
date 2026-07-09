@@ -54,10 +54,10 @@
     ],
     "dateAdded": "2026-03-11",
     "mathlib_version": "4.26.0",
-    "axioms": 3,
-    "axiomCount": 3,
+    "axioms": 4,
+    "axiomCount": 4,
     "lineCount": 3552,
-    "assumptions": "3 axiom(s): rogers_ramanujan_first, rogers_ramanujan_second, schur_partition_identity_corrected. See Lean source for complete statements.",
+    "assumptions": "4 assumptions. (1) Three axiom declarations — rogers_ramanujan_first, rogers_ramanujan_second, schur_partition_identity_corrected — the deep Rogers-Ramanujan and Schur cardinality identities, which require q-series (Jacobi triple product) or bijective machinery not yet in Mathlib. (2) Lean.ofReduceBool: the computational-verification contributions (24 native_decide examples for n=0..7, 60+ for n=0..12) and 16 named concrete count/strict-subset theorems (rr1_count_*, schur_count_*, *_strict_subset_*_n, schurGapFull_ne_schurGap_9) are discharged via native_decide, which trusts the Lean compiler's kernel reduction and so adds the Lean.ofReduceBool axiom (#print axioms lists it). The ~140 structural containment/monotonicity theorems are native_decide-free (omega/Pairwise reasoning). leanFile.axiomCount remains 3 (literal axiom declarations only). See Lean source for complete statements.",
     "theoremCount": 143,
     "definitionCount": 40
   },
