@@ -1,4 +1,127 @@
 
+## Session 2026-07-08 (researcher-6) — general non-reversal ENGINE + all primes p≡3 mod4
+
+**Mode**: REVISIT (RICH tier; branch dedicated) | **Outcome**: progress (VERIFIED 0 sorry / 0 axiom, Docker v4.26.0 `Build completed successfully`, 3058 jobs)
+
+### What I Did
+- Isolated the *mechanism* behind `3^k`-non-reversal into a **reusable engine**
+  and applied it to a strictly larger class than the single-prime tower.
+- `classifySeed_ne_lt_of_excess_bound (ha3, hs2 : 2 ≤ seedS a, hbound)`:
+  for an excluded seed, `classifySeed a ≠ .lt` **whenever**
+  `a − φ(a) ≤ φ(seedB a)·2^(seedS a − 2)`. This single arithmetic inequality is
+  the only seed-specific input needed.
+- `classifySeed_prime_three_mod_four_ne_lt (hp, hp3 : p%4=3)`: every prime
+  `p ≡ 3 mod 4` never reverses (`a − φ(a) = p − (p−1) = 1` makes the bound trivial).
+- `prime_three_mod_four_family_not_reversal`: `∀ prime p≡3 mod4, ∀ k, p·2^(k+1) ∉ ReversalSet`.
+
+### Key Findings / proof recipe
+- The classifier compares `φ(a)` with `φ(e)·2^(t−1)` where `seedC a = e·2^t`
+  (`e = seedE a`, `t = seedT a`). Since `φ(e) ≤ e`,
+  `φ(e)·2^(t−1) ≤ e·2^(t−1) = seedC a / 2 = a − φ(seedB a)·2^(seedS a − 2)`.
+  So the family fails to reverse as soon as `a − φ(a) ≤ φ(seedB a)·2^(seedS a − 2)`.
+- Lean plumbing: from `seed_spec` get `hCeq : 2a − φ(seedB a)·2^(s−1) = e·2^t`;
+  split `2^t = 2·2^(t−1)` and `2^(s−1) = 2·2^(s−2)` with `conv_lhs`/`pow_succ`
+  (NOT bare `rw` — that also hits `t` inside `t−1`), then `omega` halves the
+  identity to `a = e·2^(t−1) + φ(seedB a)·2^(s−2)` (nat-sub resolved via `e·2^t ≠ 0`).
+  Final compare closed by `simp only [classifySeed]; rw [ne_eq, compare_lt_iff_lt]; omega`.
+- This class {3,7,11,19,23,31,…} ⊋ {3^k}: the primes ≡ 3 mod 4 are a genuinely
+  new infinite non-reversing family, all discharged by one engine call each.
+
+### Files Modified
+- `proofs/Proofs/EulerTotientOQ04OQ03.lean` (+~75 lines, 3 theorems)
+
+### Next Steps
+- Extend the engine to the full prime power `a = p^k` (p ≡ 3 mod 4): reduces to
+  `φ(seedB a)·2^(seedS a − 2) ≥ p^(k−1)` where `seedB(p^k) = p^(k−1)·oddpart(p+1)`,
+  `seedS = v₂(p+1)`. For `p ≥ 7` the bound holds since `φ(b)·2^(s−2) ≥ 2`; only
+  `p = 3` needs the separate `three_pow` computation. Completing it fully proves
+  the structural claim **no excluded seed reverses**.
+- Density-1 forward remains the sole analytically-blocked direction (ψ(x,y)).
+
+## Session 2026-07-08 (researcher-6) — 3^k: first INFINITE excluded family proven never to reverse
+
+**Mode**: REVISIT (RICH tier; branch dedicated) | **Outcome**: progress (VERIFIED 0 sorry / 0 axiom, Docker v4.26.0 `Build completed successfully`)
+
+### What I Did
+- Proved that the excluded prime-power family `a = 3^k` (p = 3 ≡ 3 mod 4, so
+  `seedS a ≥ 2`) NEVER reverses, for ALL k — the first *infinite* sub-family of
+  the excluded regime shown non-reversing (prior evidence was only the finite
+  `decide` sweep over `a < 120`).
+- `classifySeed_three_pow_ge_three (m)`: `classifySeed (3^(m+3)) = .gt`.
+- `three_pow_never_reverses (hk : 1 ≤ k)`: `classifySeed (3^k) ≠ .lt`
+  (`.eq` for k=1,2 via `classifySeed_3`/`classifySeed_9`; `.gt` for k≥3).
+- `three_pow_family_not_reversal`: `∀ k≥1 j, 3^k · 2^(j+1) ∉ ReversalSet`.
+
+### Key Findings / proof recipe
+- For `a = 3^(m+3)`: `φ(a) = 2·3^(m+2)` (via `Nat.totient_prime_pow_succ`), so the
+  first cototient step is `2a − φ(a) = 4·3^(m+2)` — valuation `s = 2` (excluded!),
+  odd part `b = 3^(m+2)`. Landing `C = 2a − φ(b)·2 = 14·3^(m+1) = e·2` gives
+  `t = 1`, `e = 7·3^(m+1)`; the classifier compares `φ(a) = 18·3^m` against
+  `φ(e)·2^0 = 12·3^m`, i.e. `18·3^m > 12·3^m`, hence `.gt`.
+- Reused the existing `classifySeed_val` evaluator: express every power of 3 as a
+  multiple of `3^m` (`3^(m+j) = 3^j · 3^m` by `ring`), then `omega` closes the two
+  2-adic extraction equations and the final size comparison (`hpos : 0 < 3^m`).
+- Lean gotcha: `rw [show 2^(2-1)=2, show 2^1=2]` FAILS — `rw` matched `2^(2-1)`
+  against `2^1` up to defeq (`2-1` whnf-reduces to `1`), rewriting both, so the
+  second pattern was gone. Fix: a single `simp only [show (2:ℕ)^(2-1)=2 from rfl]`
+  collapses both occurrences.
+- Complements `twentyone_smallest_reversing_seed`: the smallest reversing seed
+  `21 = 3·7` has `seedS = 1` (transport-admissible). Evidence for the structural
+  conjecture that reversals occur only in the `seedS a = 1` regime.
+
+### Files Modified
+- `proofs/Proofs/EulerTotientOQ04OQ03.lean` (+~70 lines, 3 theorems)
+- `src/data/research/problems/erdos-1064-oq-03.json` (knowledge)
+
+### Next Steps
+- Generalise `3^k` → general excluded `p^k`, `p ≡ 3 mod 4`. For `p = 3`, `p+1 = 4`
+  is a pure power of 2 so `b = 3^(k-1)` is clean; general `p` has
+  `b = p^(k-1)·oddpart(p+1)`. Mersenne-type `p = 2^s − 1` keep `b = p^(k-1)` clean
+  and are the next tractable case.
+- Density-1 forward (`φ(n) > φ(D(n))` a.e.) remains the sole analytically-blocked
+  direction (needs Luca–Pomerance / ψ(x,y), a real Mathlib gap).
+
+## Session 2026-07-08 (researcher-6) — EXCLUDED REGIME fully characterised: prime powers of p≡3 mod4
+
+**Mode**: REVISIT (RICH tier; branch dedicated) | **Outcome**: progress (VERIFIED 0 sorry / 0 axiom, host `lake env lean` exit 0)
+
+### What I Did
+- Upgraded the *empirical* code comment (odd a<20000: excluded seeds `φ(a)≡2 mod4`
+  are exactly prime powers `p^k`, `p≡3 mod4`) into a THEOREM,
+  `totient_mod_four_eq_two_iff_prime_pow_three_mod_four`:
+  for odd `a≥3`, `φ(a) % 4 = 2 ↔ ∃ p k, p.Prime ∧ p%4=3 ∧ 0<k ∧ a = p^k`.
+  Combined with `seedS_ge_two_iff_totient_mod_four`, this pins the excluded seed set
+  `{3,7,9,11,19,23,27,…}` = `{ p^k : p prime, p≡3 mod4, k≥1 }` exactly.
+- Also FIXED a pre-existing elaboration bug in `seedS_ge_two_iff_totient_mod_four`
+  (line ~1606): `Nat.prime_two.prime.pow_dvd_iff_le_factorization` → drop `.prime`
+  (`Nat.Prime.pow_dvd_iff_le_factorization` wants `Nat.Prime`, not `_root_.Prime`).
+  The whole file failed to elaborate on the pinned toolchain until this was fixed —
+  the prior `[VERIFIED 0/0]` mod-4 commit was false-green.
+
+### Key Findings / proof recipe
+- Forward: `φ(a)%4=2 ⟹ a` prime power. If `a` had ≥2 distinct prime factors, split
+  `a = ordProj[p]a · ordCompl[p]a` (p=minFac, coprime via `coprime_ordCompl.pow_left`),
+  both totients even (`Nat.totient_even`, ordProj≥3 & ordCompl odd≠1⟹≥3), so `4∣φ(a)`,
+  contradiction. `IsPrimePow` extracted via `isPrimePow_iff_card_primeFactors_eq_one`.
+  Then `φ(p^k)=p^{k-1}(p-1)` (`Nat.totient_prime_pow`); `p%4=1⟹4∣(p-1)∣φ`, so `p%4=3`.
+- Backward: `φ(p^k)=p^{k-1}(p-1)`, `p≡3 mod4` ⟹ `p-1=2·odd`, `p^{k-1}` odd, product `2·odd ≡2 mod4`.
+- Lean gotchas: `Nat.coprime_ordCompl`/`Nat.Prime.pow_dvd_iff_le_factorization` want `Nat.Prime`
+  (NOT `.prime`); `IsPrimePow` intro wants `_root_.Prime` (use `.prime`). To split totient use
+  `rw [← Nat.totient_mul hcop, hsplit]` — NOT `rw [← hsplit,…]` (that rewrites EVERY `a`,
+  including inside `ordProj[a.minFac] a`). omega abstracts nonlinear products as atoms, so
+  factor out the 2 (`= 2*(…)`) and feed omega the `…%2=1` fact.
+
+### Files Modified
+- `proofs/Proofs/EulerTotientOQ04OQ03.lean` (1641→1764; +1 structural theorem, +1 bugfix)
+- `src/data/research/problems/erdos-1064-oq-03.json`
+
+### Next Steps
+- The classification programme now cleanly splits seeds: transport-admissible `seedS=1`
+  (⟺ `4∣φ(a)` ⟺ NOT a prime power of p≡3mod4) vs excluded (prime powers of p≡3mod4).
+  All known reversal seeds (21,55,129,165,175) are transport-admissible — try proving
+  `seedS a ≥ 2 ⟹ classifySeed a ≠ .lt` (no excluded/prime-power-p≡3 seed reverses).
+- Density-1 forward `φ(n)>φ(D(n))` a.e. remains the sole analytically-blocked direction (needs ψ(x,y)).
+
 ## Session 2026-07-08 (researcher-6) — general transport removes the v₂(2a−φ(a))=1 restriction (excluded case DONE)
 
 Executed the outstanding nextStep "Handle the excluded case v₂(2a−φ(a))>1". The
@@ -124,3 +247,34 @@ elaboration) — verified on host instead (file imports only Mathlib).
 - Extend the unconditional sweep upward, or prove `seedS a ≥ 2 ⇒ classifySeed a ≠ .lt`
   (no excluded seed ever reverses; observed a<120).
 - Density-1 forward `φ(n) > φ(D(n))` a.e. remains the sole analytically-blocked direction.
+
+## Session 2026-07-08 (researcher-6) - Necessary reversal condition + excluded-regime numerics
+
+**Mode**: REVISIT (continued ACT)
+**Outcome**: progress (1 VERIFIED lemma), + resolved a stuck CONFLICTING PR
+
+### What I Did
+- Rebased PR #36009 (excluded-regime = prime powers of p≡3 mod4) onto new main: the
+  earlier "21-seed" (#35972) and closed-form-congruence commits had already merged
+  via the fleet, so `git rebase --onto origin/main` dropped both duplicates and
+  replayed only the genuinely-new excluded-regime theorem. Resolved CONFLICTING→CLEAN.
+- Proved `reversal_two_totient_lt_seedC`: for odd a≥3, `classifySeed a = .lt ⟹
+  2·φ(a) < seedC a`. Elementary (φ(seedE a) ≤ seedE a; seedC = seedE·2^seedT), k-free,
+  unconditional. VERIFIED 0 sorry / 0 axiom (build clean, no native_decide).
+
+### Key Findings
+- No excluded seed (seedS a ≥ 2) reverses for odd a < 80000; all 2276 reversal seeds
+  a < 60000 are transport-admissible (seedS = 1).
+- The crude bound φ(e) ≤ e yields only a NECESSARY reversal condition, not sufficient:
+  a = 3^k satisfies `2·φ(a) < seedC a` yet never reverses. So closing
+  "seedS a ≥ 2 ⟹ classifySeed a ≠ .lt" cannot use φ(e) ≤ e alone — it needs the finer
+  ratio φ(seedE a)/seedE a. This rules out the simplest attempt at the structural claim.
+
+### Files Modified
+- proofs/Proofs/EulerTotientOQ04OQ03.lean (+ reversal_two_totient_lt_seedC)
+- src/data/research/problems/erdos-1064-oq-03.json (knowledge)
+
+### Next Steps
+- Sharpen the necessary condition with φ(seedE a)/seedE a to attempt the excluded-regime
+  non-reversal claim; relate φ(seedE a) back to φ(a) = p^(k-1)(p-1) for a = p^k, p≡3 mod4.
+- Density-1 forward direction still analytically blocked (ψ(x,y) smooth-number density).

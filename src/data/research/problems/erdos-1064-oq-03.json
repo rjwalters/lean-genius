@@ -35,7 +35,7 @@
     }
   ],
   "knowledge": {
-    "progressSummary": "PROGRESS (researcher-6, VERIFIED 0/0): twentyone_smallest_reversing_seed — 21 is UNCONDITIONALLY the smallest odd reversing seed via the total computable classifySeed (no ValidSeed hypothesis), strengthening the merged ValidSeed-gated version and settling the excluded-seed (v2>=2) reversal question for all a<21. Density-1 forward remains the sole analytically-blocked direction.",
+    "progressSummary": "PROGRESS (researcher-6, VERIFIED 0/0): general non-reversal ENGINE for the excluded regime reduces no-reversal to a single per-seed arithmetic bound a-phi(a) <= phi(seedB a)*2^(seedS a-2); instantiated to prove the whole infinite class of primes p≡3 mod4 never reverses (widening beyond 3^k). Remaining: general prime-power a=p^k via the same engine (bound phi(seedB)*2^(s-2) >= p^(k-1)); density-1 forward remains the sole analytically-blocked direction.",
     "builtItems": [
       "dblIter (EulerTotientOQ04OQ03.lean) — the double cototient iterate D(n) = n − φ(n − φ(n)), the object of OQ-03.",
       "dblIter_prime — collapse lemma: for EVERY prime p, D(p) = p − 1 exactly (φ(p)=p−1 ⟹ p−φ(p)=1 ⟹ φ(1)=1 ⟹ D(p)=p−1).",
@@ -84,7 +84,10 @@
       "EulerTotientOQ04OQ03.lean: seedS/seedB/seedC/seedT/seedE (computable 2-adic extraction) + classifySeed a := compare (φ a) (φ(seedE a)·2^(seedT a −1))",
       "EulerTotientOQ04OQ03.lean: seed_spec — for a≥3, extracted (s,b,t,e) satisfy Odd b, Odd e, s≥1, t≥1, 2a−φ(a)=2^s·b, 2a−φ(b)·2^(s−1)=e·2^t (Nat.ordProj_mul_ordCompl_eq_self / not_dvd_ordCompl; C-even by s=1 vs s≥2 split, s=1∧b=1 ruled out)",
       "EulerTotientOQ04OQ03.lean: classifySeed_lt_iff/_eq_iff/_gt_iff + classifySeed_classifies — classifySeed correctly decides Reversal/Equality/Forward for every odd a≥3 [VERIFIED 0/0]",
-      "factor_two_split (reusable 2-adic split: n=c*2^u, c odd => factorization 2 = u and oddpart = c), classifySeed_val (evaluates classifySeed at a concrete seed from the two factorisations), classifySeed_3..19 + classifySeed_21, and twentyone_smallest_reversing_seed in EulerTotientOQ04OQ03.lean — VERIFIED host 0/0, axioms [propext,Classical.choice,Quot.sound], no native_decide"
+      "factor_two_split (reusable 2-adic split: n=c*2^u, c odd => factorization 2 = u and oddpart = c), classifySeed_val (evaluates classifySeed at a concrete seed from the two factorisations), classifySeed_3..19 + classifySeed_21, and twentyone_smallest_reversing_seed in EulerTotientOQ04OQ03.lean — VERIFIED host 0/0, axioms [propext,Classical.choice,Quot.sound], no native_decide",
+      "classifySeed_ne_lt_of_excess_bound (EulerTotientOQ04OQ03.lean:1908): reusable excluded-regime non-reversal engine, VERIFIED 0/0",
+      "classifySeed_prime_three_mod_four_ne_lt (EulerTotientOQ04OQ03.lean:1953): all primes p≡3 mod4 never reverse, VERIFIED 0/0",
+      "prime_three_mod_four_family_not_reversal (EulerTotientOQ04OQ03.lean:1976): family p*2^(k+1) not in ReversalSet for prime p≡3 mod4, VERIFIED 0/0"
     ],
     "insights": [
       "On primes the higher iterate is trivial: D(p) = p − 1 for all primes p, because the first cototient step p − φ(p) = 1 and φ(1) = 1. So φ(D(p)) = φ(p−1), and φ(p−1) < p−1 = φ(p) for every p ≥ 3 (with equality only at p = 2). This gives the forward direction on an infinite explicit family with a one-line reduction to Nat.totient_lt — no density machinery needed.",
@@ -107,7 +110,9 @@
       "The valid odd seeds below 21 are exactly {5,13,15,17}, classifying eq/gt/eq/gt; all invalid a<21 fail decidably on v2(2a-phi a)=1 or bSeed-odd, using only phi (no factorization). Hence 21 is the smallest odd reversal seed.",
       "The sub-21 sweep is kernel-decide-only: interval_cases + `try (exact absurd hv (by decide))` discharges the invalid seeds (validity touches only phi, not factorization), leaving 5,13,15,17 handled by the classify_* lemmas.",
       "Total decidable classifier: the k-free three-way criterion becomes a COMPUTABLE function classifySeed : ℕ → Ordering. From an odd seed a it extracts (s,b,t,e) by two 2-adic valuations — s=v₂(2a−φ(a)), b=oddpart, C=2a−φ(b)·2^(s−1), t=v₂(C), e=oddpart(C) — and compares φ(a) ⋛ φ(e)·2^(t−1). seed_spec proves the extraction meets every criterion hypothesis for ALL a≥3 (oddness of a not needed). The reversal seed set is the decidable predicate {a | classifySeed a = .lt}.",
-      "The total classifier classifySeed removes the ValidSeed hypothesis from the least-reversal-seed result: twentyone_smallest_reversing_seed proves 21 is UNCONDITIONALLY the smallest odd reversing seed, covering the higher-valuation excluded seeds {3,7,9,11,19} (v2(2a-phi a) >= 2) that the old ValidSeed-gated classify sweep {5,13,15,17} could not address."
+      "The total classifier classifySeed removes the ValidSeed hypothesis from the least-reversal-seed result: twentyone_smallest_reversing_seed proves 21 is UNCONDITIONALLY the smallest odd reversing seed, covering the higher-valuation excluded seeds {3,7,9,11,19} (v2(2a-phi a) >= 2) that the old ValidSeed-gated classify sweep {5,13,15,17} could not address.",
+      "General non-reversal engine (classifySeed_ne_lt_of_excess_bound): for an excluded seed (seedS a>=2), classifySeed a != .lt whenever a-phi(a) <= phi(seedB a)*2^(seedS a-2). Mechanism: phi(e)*2^(t-1) <= e*2^(t-1) = seedC/2 = a - phi(seedB a)*2^(seedS a-2); the single arithmetic bound is the only seed-specific input.",
+      "Every prime p ≡ 3 mod 4 is a non-reversing excluded seed: p-phi(p)=1 makes the excess bound trivial, so the engine gives classifySeed p != .lt for the ENTIRE infinite class {3,7,11,19,23,31,...} at once — strictly larger than the single-prime tower 3^k."
     ],
     "mathlibGaps": [
       "Kernel `decide` on Nat.totient of a seed (e.g. totient 21) blows the stack → SIGBUS (Lean exit 135, line-less); must prove totient values by factorisation (Nat.totient_mul + Nat.totient_prime). Reconfirms the file's existing note."
@@ -120,7 +125,8 @@
       "RESOLVED (twentyone_least_reversal_seed / least_reversal_seed_families): 21 is the smallest odd seed with classify a = .lt among valid seeds — the valid seeds a<21 are exactly {5,13,15,17} classifying eq/gt/eq/gt, discharged by a finite kernel-decide sweep. Next: characterise the FULL reversal-seed set {odd valid a : classify a = .lt} beyond its least element (is it an arithmetic-progression / residue pattern suggested by 21,55,...? a phi-only finite computation per seed now that classify is computable).",
       "Extend the computable classify to the excluded case v₂(2a-φa)>1 (bSeed a even): dblIter_transport_general already covers the mathematics, but the Ordering-valued classifier still assumes first-step valuation one.",
       "Prove/refute that NO excluded seed (v₂(2a−φ(a))≥2) ever reverses (observed a<120); would sharpen the reversal-set structure to v₂=1 seeds only",
-      "PARTIAL RESOLUTION of the excluded-seed question: no odd seed a<21 reverses (proven unconditionally via classifySeed, including v2>=2 seeds 3,7,9,11,19). Extend the finite unconditional sweep upward, or prove the general structural claim seedS a >= 2 => classifySeed a != .lt (no excluded seed ever reverses; observed a<120)."
+      "PARTIAL RESOLUTION of the excluded-seed question: no odd seed a<21 reverses (proven unconditionally via classifySeed, including v2>=2 seeds 3,7,9,11,19). Extend the finite unconditional sweep upward, or prove the general structural claim seedS a >= 2 => classifySeed a != .lt (no excluded seed ever reverses; observed a<120).",
+      "Extend the engine to the full prime-power case a=p^k (p≡3 mod4): reduces to phi(seedB a)*2^(seedS a-2) >= p^(k-1) where seedB(p^k)=p^(k-1)*oddpart(p+1), seedS=v2(p+1). For p>=7 the bound (p-1)*phi(b)*2^(s-2)>=p holds since phi(b)*2^(s-2)>=2; only p=3 needs the separate three_pow computation. Completing this would fully prove the structural claim NO excluded seed reverses."
     ]
   },
   "relatedProofs": [

@@ -1441,6 +1441,39 @@ theorem classifySeed_classifies {a : ℕ} (ha : Odd a) (ha3 : 3 ≤ a) (k : ℕ)
     (a * 2 ^ (k + 1) ∈ ForwardSet ↔ classifySeed a = Ordering.gt) :=
   ⟨classifySeed_lt_iff ha ha3 k, classifySeed_eq_iff ha ha3 k, classifySeed_gt_iff ha ha3 k⟩
 
+/-- **Necessary numeric condition for reversal.**  For odd `a ≥ 3`, if the whole
+    family `a·2^(k+1)` reverses (`classifySeed a = .lt`) then twice the seed's
+    totient falls strictly below the landing constant: `2·φ(a) < seedC a`.  The
+    classifier compares `φ(a)` with `φ(seedE a)·2^(seedT a − 1)`; since
+    `seedC a = seedE a · 2^(seedT a)` (from `seed_spec`) and `φ(seedE a) ≤ seedE a`,
+    the compared quantity is at most `seedC a / 2`, so reversal forces
+    `2·φ(a) < seedC a`.
+
+    This condition is *necessary but not sufficient*: the prime powers `a = 3^k`
+    (which are excluded seeds, `p = 3 ≡ 3 mod 4`) all satisfy `2·φ(a) < seedC a`
+    yet never reverse — brute-checked for odd `a < 80000`, no excluded seed
+    reverses at all.  Closing the structural claim "no excluded seed reverses"
+    therefore needs the finer ratio `φ(seedE a)/seedE a`, not merely the crude
+    bound `φ(e) ≤ e` used here. -/
+theorem reversal_two_totient_lt_seedC {a : ℕ} (ha3 : 3 ≤ a)
+    (h : classifySeed a = Ordering.lt) : 2 * Nat.totient a < seedC a := by
+  obtain ⟨_, _, _, ht1, _, hCeq⟩ := seed_spec ha3
+  -- Unfold the classifier and read off the strict inequality on totients.
+  simp only [classifySeed] at h
+  have hlt : Nat.totient a < Nat.totient (seedE a) * 2 ^ (seedT a - 1) :=
+    compare_lt_iff_lt.1 h
+  -- `seedC a = seedE a * 2^(seedT a)` and `2^(seedT a) = 2 * 2^(seedT a - 1)`.
+  have hC : seedC a = seedE a * 2 ^ seedT a := by unfold seedC; exact hCeq
+  have h2t : 2 ^ seedT a = 2 * 2 ^ (seedT a - 1) := by
+    conv_lhs => rw [show seedT a = (seedT a - 1) + 1 from by omega, pow_succ]
+    ring
+  have hle : Nat.totient (seedE a) ≤ seedE a := Nat.totient_le _
+  calc 2 * Nat.totient a
+      < 2 * (Nat.totient (seedE a) * 2 ^ (seedT a - 1)) := by omega
+    _ ≤ 2 * (seedE a * 2 ^ (seedT a - 1)) := by gcongr
+    _ = seedE a * 2 ^ seedT a := by rw [h2t]; ring
+    _ = seedC a := hC.symm
+
 -- ===========================================================================
 -- SMALLEST REVERSING ODD SEED:  a = 21
 -- ---------------------------------------------------------------------------
@@ -1603,7 +1636,7 @@ theorem seedS_ge_two_iff_totient_mod_four {a : ℕ} (ha : Odd a) (ha3 : 3 ≤ a)
   have hev : Nat.totient a % 2 = 0 := Nat.even_iff.1 (Nat.totient_even (by omega))
   have hne : 2 * a - Nat.totient a ≠ 0 := by omega
   have hdvd : (2 : ℕ) ^ 2 ∣ (2 * a - Nat.totient a) ↔ 2 ≤ seedS a :=
-    Nat.prime_two.prime.pow_dvd_iff_le_factorization hne
+    Nat.prime_two.pow_dvd_iff_le_factorization hne
   rw [← hdvd, show (2 : ℕ) ^ 2 = 4 from rfl]
   omega
 
@@ -1637,5 +1670,315 @@ theorem seedS_21_eq_one : seedS 21 = 1 :=
     first-step valuation `s = 2`. -/
 theorem seedS_three_ge_two : 2 ≤ seedS 3 :=
   (seedS_ge_two_iff_totient_mod_four (by decide) (by norm_num)).2 (by norm_num [totient_3])
+
+-- ---------------------------------------------------------------------------
+-- STRUCTURAL CHARACTERISATION OF THE EXCLUDED REGIME
+-- ---------------------------------------------------------------------------
+-- The congruence criterion `seedS_ge_two_iff_totient_mod_four` reduces the
+-- excluded regime (first-step valuation `≥ 2`) to `φ(a) ≡ 2 (mod 4)`.  The
+-- prior code comment noted — empirically, odd `a < 20000` — that these seeds
+-- are *exactly* the prime powers `p^k` of primes `p ≡ 3 (mod 4)`.  We now prove
+-- that classification unconditionally.
+--
+-- Proof idea (standard 2-adic count).  `φ` is multiplicative on coprime factors,
+-- and for `a ≥ 3` each factor `φ(p^e)` (p odd prime) is even.  Hence:
+--   • if `a` has ≥ 2 distinct prime factors, split `a = p^e · m` (coprime),
+--     both `φ(p^e)` and `φ(m)` even, so `4 ∣ φ(a)`, i.e. `φ(a) % 4 ≠ 2`;
+--   • so `φ(a) % 4 = 2` forces `a` to be a prime power `p^k`, where
+--     `φ(p^k) = p^(k-1)(p-1)` with `p^(k-1)` odd, so `φ(a) ≡ 2 (mod 4)` iff
+--     `v₂(p-1) = 1` iff `p ≡ 3 (mod 4)`.
+-- ---------------------------------------------------------------------------
+
+/-- **Excluded regime = prime powers of primes ≡ 3 (mod 4).**
+For every odd `a ≥ 3`, `φ(a) ≡ 2 (mod 4)` (equivalently `seedS a ≥ 2`, the
+regime *outside* the `seedS a = 1` transport machinery) holds exactly when `a`
+is a prime power `p^k` of a prime `p ≡ 3 (mod 4)`.  Combined with
+`seedS_ge_two_iff_totient_mod_four`, this pins down the excluded seed set
+`{3,7,9,11,19,23,27,…}` completely: it is `{ p^k : p prime, p ≡ 3 mod 4, k ≥ 1 }`. -/
+theorem totient_mod_four_eq_two_iff_prime_pow_three_mod_four
+    {a : ℕ} (ha : Odd a) (ha3 : 3 ≤ a) :
+    Nat.totient a % 4 = 2 ↔
+      ∃ p k, p.Prime ∧ p % 4 = 3 ∧ 0 < k ∧ a = p ^ k := by
+  have ha0 : a ≠ 0 := by omega
+  have ha1 : a ≠ 1 := by omega
+  have haodd : a % 2 = 1 := Nat.odd_iff.1 ha
+  constructor
+  · intro hφ
+    -- Step 1: `a` is a prime power (else `4 ∣ φ(a)`).
+    have hpp : IsPrimePow a := by
+      rw [isPrimePow_iff_card_primeFactors_eq_one]
+      by_contra hcard
+      have hne : a.primeFactors.Nonempty := nonempty_primeFactors.2 (by omega)
+      have h2 : 2 ≤ a.primeFactors.card := by
+        have := Finset.card_pos.2 hne; omega
+      -- smallest prime factor `p` and its `p`-part / `p`-free complement
+      have hpprime : (a.minFac).Prime := minFac_prime ha1
+      have hpdvd : a.minFac ∣ a := minFac_dvd a
+      have hpodd : Odd (a.minFac) := by
+        rcases hpprime.eq_two_or_odd' with h2' | ho
+        · exfalso; rw [h2'] at hpdvd; omega
+        · exact ho
+      have hp3 : 3 ≤ a.minFac := by
+        have := hpprime.two_le; have := Nat.odd_iff.1 hpodd; omega
+      have he : 0 < a.factorization (a.minFac) :=
+        hpprime.factorization_pos_of_dvd ha0 hpdvd
+      -- `ordProj = p^e ≥ 3`
+      have hprojge : 3 ≤ ordProj[a.minFac] a := by
+        calc 3 ≤ a.minFac := hp3
+          _ = a.minFac ^ 1 := (pow_one _).symm
+          _ ≤ a.minFac ^ (a.factorization (a.minFac)) :=
+                Nat.pow_le_pow_right (by omega) he
+      -- `ordCompl` divides `a` (odd), is `≠ 1` (else `a` a prime power), so `≥ 3`
+      have hcompl_dvd : ordCompl[a.minFac] a ∣ a := ordCompl_dvd a _
+      have hcompl_pos : 0 < ordCompl[a.minFac] a := ordCompl_pos _ ha0
+      have hcompl_odd : Odd (ordCompl[a.minFac] a) := by
+        rcases Nat.even_or_odd (ordCompl[a.minFac] a) with hev | ho
+        · exfalso
+          have : (2 : ℕ) ∣ a := dvd_trans hev.two_dvd hcompl_dvd
+          omega
+        · exact ho
+      have hcompl_ne : ordCompl[a.minFac] a ≠ 1 := by
+        intro h1'
+        have hall : a = ordProj[a.minFac] a := by
+          have := ordProj_mul_ordCompl_eq_self a (a.minFac)
+          rw [h1', mul_one] at this; exact this.symm
+        have hpp' : IsPrimePow a :=
+          ⟨a.minFac, a.factorization (a.minFac), hpprime.prime, he, hall.symm⟩
+        rw [isPrimePow_iff_card_primeFactors_eq_one] at hpp'
+        omega
+      have hcompl_ge : 3 ≤ ordCompl[a.minFac] a := by
+        obtain ⟨m, hm⟩ := hcompl_odd; omega
+      -- multiplicativity: `φ(a) = φ(ordProj)·φ(ordCompl)`, both even ⟹ `4 ∣ φ(a)`
+      have hcop : Nat.Coprime (ordProj[a.minFac] a) (ordCompl[a.minFac] a) :=
+        (Nat.coprime_ordCompl hpprime ha0).pow_left _
+      have hsplit : ordProj[a.minFac] a * ordCompl[a.minFac] a = a :=
+        ordProj_mul_ordCompl_eq_self a (a.minFac)
+      have hev1 : Even (Nat.totient (ordProj[a.minFac] a)) := Nat.totient_even (by omega)
+      have hev2 : Even (Nat.totient (ordCompl[a.minFac] a)) := Nat.totient_even (by omega)
+      have hφsplit : Nat.totient a
+          = Nat.totient (ordProj[a.minFac] a) * Nat.totient (ordCompl[a.minFac] a) := by
+        rw [← Nat.totient_mul hcop, hsplit]
+      have h4 : 4 ∣ Nat.totient a := by
+        rw [hφsplit]
+        obtain ⟨x, hx⟩ := hev1
+        obtain ⟨y, hy⟩ := hev2
+        exact ⟨x * y, by rw [hx, hy]; ring⟩
+      omega
+    -- Step 2: read off the prime `p` and show `p ≡ 3 (mod 4)`.
+    obtain ⟨p, k, hp, hk, hpk⟩ := (isPrimePow_nat_iff a).1 hpp
+    refine ⟨p, k, hp, ?_, hk, hpk.symm⟩
+    have hpdvd : p ∣ a := hpk ▸ dvd_pow_self p hk.ne'
+    have hpodd : Odd p := by
+      rcases hp.eq_two_or_odd' with h2' | ho
+      · exfalso; rw [h2'] at hpdvd; omega
+      · exact ho
+    have hpm2 : p % 2 = 1 := Nat.odd_iff.1 hpodd
+    rw [← hpk, Nat.totient_prime_pow hp hk] at hφ
+    by_contra hp3
+    have hp1 : p % 4 = 1 := by omega
+    obtain ⟨t, ht⟩ : (4 : ℕ) ∣ (p - 1) := by
+      have := hp.two_le; exact Nat.dvd_of_mod_eq_zero (by omega)
+    have hrw : p ^ (k - 1) * (p - 1) = 4 * (p ^ (k - 1) * t) := by rw [ht]; ring
+    rw [hrw] at hφ
+    omega
+  · rintro ⟨p, k, hp, hp3, hk, rfl⟩
+    have hp2 : 2 ≤ p := hp.two_le
+    rw [Nat.totient_prime_pow hp hk]
+    have hpodd : Odd p := Nat.odd_iff.2 (by omega)
+    have hu : Odd (p ^ (k - 1)) := hpodd.pow
+    have hpm1 : p - 1 = 2 * ((p - 1) / 2) := by omega
+    have hwodd : Odd ((p - 1) / 2) := Nat.odd_iff.2 (by omega)
+    have key : p ^ (k - 1) * (p - 1) = 2 * (p ^ (k - 1) * ((p - 1) / 2)) := by
+      conv_lhs => rw [hpm1]
+      ring
+    have hzodd : (p ^ (k - 1) * ((p - 1) / 2)) % 2 = 1 := Nat.odd_iff.1 (hu.mul hwodd)
+    rw [key]; omega
+
+-- ---------------------------------------------------------------------------
+-- AN INFINITE EXCLUDED FAMILY THAT NEVER REVERSES:  a = 3^k
+-- ---------------------------------------------------------------------------
+-- Every seed `a = 3^k` (k ≥ 1) is an excluded prime power (p = 3 ≡ 3 mod 4, so
+-- `seedS a ≥ 2` by `seedS_three_ge_two` / the prime-power characterisation).
+-- Prior structural work verified, by a finite `decide` sweep, that no excluded
+-- seed `a < 120` reverses.  Here we upgrade that to a genuine INFINITE family:
+-- the classifier evaluates on the whole `3^k` line to `.eq` (k = 1, 2) or `.gt`
+-- (k ≥ 3), never `.lt`.  Hence `3^k·2^(j+1)` never reverses for any k ≥ 1, j —
+-- the first *proven* infinite non-reversing family inside the excluded regime.
+--
+-- Mechanism for k ≥ 3 (write `a = 3^(m+3)`):  φ(a) = 2·3^(m+2), so the first
+-- cototient step is `2a − φ(a) = 4·3^(m+2)` (valuation `s = 2`, odd part
+-- `b = 3^(m+2)`).  The landing constant is `C = 2a − φ(b)·2 = 14·3^(m+1) = e·2`
+-- (so `t = 1`, `e = 7·3^(m+1)`), and the classifier compares
+-- `φ(a) = 18·3^m` against `φ(e)·2^0 = 12·3^m`, giving `.gt`.
+-- ---------------------------------------------------------------------------
+
+/-- **The excluded family `3^(m+3)` classifies as forward (`.gt`).**  For every
+    `m`, the seed `a = 3^(m+3)` has first-step data `s = 2`, `b = 3^(m+2)` and
+    landing data `t = 1`, `e = 7·3^(m+1)`; the classifier compares
+    `φ(a) = 18·3^m` with `φ(e) = 12·3^m`, so `classifySeed (3^(m+3)) = .gt`. -/
+theorem classifySeed_three_pow_ge_three (m : ℕ) :
+    classifySeed (3 ^ (m + 3)) = Ordering.gt := by
+  have hp : Nat.Prime 3 := by norm_num
+  have hpos : 0 < (3 : ℕ) ^ m := pow_pos (by norm_num) m
+  -- powers of three reduced to multiples of `3^m`
+  have e1 : (3 : ℕ) ^ (m + 1) = 3 * 3 ^ m := by ring
+  have e2 : (3 : ℕ) ^ (m + 2) = 9 * 3 ^ m := by ring
+  have e3 : (3 : ℕ) ^ (m + 3) = 27 * 3 ^ m := by ring
+  -- totients of the seed, the odd part `b = 3^(m+2)`, and the landing part `e`
+  have tφa : Nat.totient (3 ^ (m + 3)) = 3 ^ (m + 2) * 2 :=
+    Nat.totient_prime_pow_succ hp (m + 2)
+  have tφb : Nat.totient (3 ^ (m + 2)) = 3 ^ (m + 1) * 2 :=
+    Nat.totient_prime_pow_succ hp (m + 1)
+  have hcop : Nat.Coprime 7 (3 ^ (m + 1)) := (show Nat.Coprime 7 3 by decide).pow_right _
+  have tφe : Nat.totient (7 * 3 ^ (m + 1)) = 12 * 3 ^ m := by
+    rw [Nat.totient_mul hcop, show Nat.totient 7 = 6 from totient_7,
+        show Nat.totient (3 ^ (m + 1)) = 3 ^ m * 2 from Nat.totient_prime_pow_succ hp m]
+    ring
+  -- odd parts
+  have hob : Odd (3 ^ (m + 2)) := (show Odd 3 by decide).pow
+  have hoe : Odd (7 * 3 ^ (m + 1)) := (show Odd 7 by decide).mul (show Odd 3 by decide).pow
+  -- the two 2-adic extraction equations, in multiples of `3^m`
+  have hstep : 2 * 3 ^ (m + 3) - Nat.totient (3 ^ (m + 3)) = 3 ^ (m + 2) * 2 ^ 2 := by
+    rw [tφa, e3, e2, show (2 : ℕ) ^ 2 = 4 from by norm_num]; omega
+  have hCval : 2 * 3 ^ (m + 3) - Nat.totient (3 ^ (m + 2)) * 2 ^ (2 - 1)
+      = 7 * 3 ^ (m + 1) * 2 ^ 1 := by
+    rw [tφb, e3, e1]; simp only [show (2 : ℕ) ^ (2 - 1) = 2 from rfl]; omega
+  rw [classifySeed_val (s := 2) (b := 3 ^ (m + 2)) (t := 1) (e := 7 * 3 ^ (m + 1))
+      hob hoe hstep hCval, tφa, tφe, compare_gt_iff_gt,
+      show (2 : ℕ) ^ (1 - 1) = 1 from by norm_num, mul_one, e2]
+  omega
+
+/-- **The infinite excluded family `3^k` never reverses.**  For every `k ≥ 1`
+    the seed `a = 3^k` — an excluded prime power (`p = 3 ≡ 3 mod 4`, so
+    `seedS a ≥ 2`) — classifies to `.eq` (k = 1, 2) or `.gt` (k ≥ 3); in
+    particular `classifySeed (3^k) ≠ .lt`.  This is the first *infinite*
+    sub-family of the excluded regime proven never to reverse, upgrading the
+    prior finite `decide` sweep over `a < 120`. -/
+theorem three_pow_never_reverses {k : ℕ} (hk : 1 ≤ k) :
+    classifySeed (3 ^ k) ≠ Ordering.lt := by
+  rcases le_or_gt k 2 with h2 | h3
+  · interval_cases k
+    · rw [pow_one, classifySeed_3]; decide
+    · rw [show (3 : ℕ) ^ 2 = 9 from by norm_num, classifySeed_9]; decide
+  · obtain ⟨m, rfl⟩ : ∃ m, k = m + 3 := ⟨k - 3, by omega⟩
+    rw [classifySeed_three_pow_ge_three m]; decide
+
+/-- **The family `3^k · 2^(j+1)` never reverses the totient inequality.**  For
+    every `k ≥ 1` and `j`, `φ(n) ≥ φ(D(n))` throughout `n = 3^k·2^(j+1)`; i.e.
+    no member of this infinite excluded family lies in `ReversalSet`.  Combined
+    with `twentyone_smallest_reversing_seed` (smallest reversing seed `21 = 3·7`
+    has `seedS = 1`), this evidences the structural conjecture that reversals
+    occur only in the transport-admissible regime `seedS a = 1`. -/
+theorem three_pow_family_not_reversal {k : ℕ} (hk : 1 ≤ k) (j : ℕ) :
+    3 ^ k * 2 ^ (j + 1) ∉ ReversalSet := by
+  have ha : Odd (3 ^ k) := (show Odd 3 by decide).pow
+  have ha3 : 3 ≤ 3 ^ k := by
+    calc 3 = 3 ^ 1 := (pow_one 3).symm
+      _ ≤ 3 ^ k := Nat.pow_le_pow_right (by norm_num) hk
+  rw [classifySeed_lt_iff ha ha3 j]
+  exact three_pow_never_reverses hk
+
+-- ---------------------------------------------------------------------------
+-- A GENERAL NON-REVERSAL ENGINE FOR THE EXCLUDED REGIME
+-- ---------------------------------------------------------------------------
+-- The single excluded family `3^k` was shown never to reverse by an explicit
+-- per-seed computation.  Here we isolate the *mechanism* into a reusable engine
+-- and apply it to a genuinely larger class.
+--
+-- Key observation.  For an excluded seed (`seedS a ≥ 2`) the classifier compares
+-- `φ(a)` against `φ(e)·2^(t−1)` where the landing constant `C = seedC a` splits
+-- as `e·2^t` (`e = seedE a`, `t = seedT a`).  Because `φ(e) ≤ e`,
+--     φ(e)·2^(t−1) ≤ e·2^(t−1) = C/2 = a − φ(seedB a)·2^(seedS a − 2).
+-- So the family `a·2^(k+1)` fails to reverse as soon as
+--     a − φ(a) ≤ φ(seedB a)·2^(seedS a − 2).
+-- This single inequality is the *only* seed-specific fact needed.  For the base
+-- case `a = p` (a prime, so `a − φ(a) = 1`) it holds trivially, giving the whole
+-- infinite class of primes `p ≡ 3 (mod 4)` at once — a class strictly larger
+-- than the powers `3^k` of one fixed prime.
+-- ---------------------------------------------------------------------------
+
+/-- **General non-reversal engine (excluded regime).**  Let `a ≥ 3` be an
+    excluded seed (`seedS a ≥ 2`).  If the "excess" `a − φ(a)` is bounded by
+    `φ(seedB a)·2^(seedS a − 2)` then the whole family `a·2^(k+1)` never reverses:
+    `classifySeed a ≠ .lt`.
+
+    The proof uses only `φ(seedE a) ≤ seedE a`: the compared quantity
+    `φ(e)·2^(t−1)` is at most `e·2^(t−1) = seedC a / 2 = a − φ(seedB a)·2^(s−2)`,
+    which the hypothesis forces to be `≤ φ(a)`. -/
+theorem classifySeed_ne_lt_of_excess_bound {a : ℕ} (ha3 : 3 ≤ a)
+    (hs2 : 2 ≤ seedS a)
+    (hbound : a - Nat.totient a ≤ Nat.totient (seedB a) * 2 ^ (seedS a - 2)) :
+    classifySeed a ≠ Ordering.lt := by
+  obtain ⟨_, hoe, _, ht1, _, hCeq⟩ := seed_spec ha3
+  -- `hCeq : 2*a − φ(seedB a)·2^(seedS a − 1) = seedE a · 2^(seedT a)`
+  have hφa_le : Nat.totient a ≤ a := Nat.totient_le a
+  have hepos : seedE a ≠ 0 := by rcases hoe with ⟨m, hm⟩; omega
+  have hne : seedE a * 2 ^ seedT a ≠ 0 :=
+    mul_ne_zero hepos (pow_ne_zero _ (by norm_num))
+  -- split the two powers of two so the whole identity is divisible by 2
+  have h2t : 2 ^ seedT a = 2 * 2 ^ (seedT a - 1) := by
+    conv_lhs => rw [show seedT a = (seedT a - 1) + 1 from by omega, pow_succ]
+    ring
+  have h2s : 2 ^ (seedS a - 1) = 2 * 2 ^ (seedS a - 2) := by
+    conv_lhs => rw [show seedS a - 1 = (seedS a - 2) + 1 from by omega, pow_succ]
+    ring
+  have hZ : seedE a * 2 ^ seedT a = 2 * (seedE a * 2 ^ (seedT a - 1)) := by
+    rw [h2t]; ring
+  have hY : Nat.totient (seedB a) * 2 ^ (seedS a - 1)
+      = 2 * (Nat.totient (seedB a) * 2 ^ (seedS a - 2)) := by
+    rw [h2s]; ring
+  -- `2a = seedE·2^t + φ(seedB)·2^(s−1)`  (nat subtraction resolves via `hne`)
+  have hsum : 2 * a = seedE a * 2 ^ seedT a
+      + Nat.totient (seedB a) * 2 ^ (seedS a - 1) := by omega
+  -- halve: `a = seedE·2^(t−1) + φ(seedB)·2^(s−2)`
+  have haXW : a = seedE a * 2 ^ (seedT a - 1)
+      + Nat.totient (seedB a) * 2 ^ (seedS a - 2) := by rw [hZ, hY] at hsum; omega
+  -- hence `seedE·2^(t−1) ≤ φ(a)`, using the excess bound
+  have hXle : seedE a * 2 ^ (seedT a - 1) ≤ Nat.totient a := by omega
+  have htot : Nat.totient (seedE a) ≤ seedE a := Nat.totient_le _
+  have hle : Nat.totient (seedE a) * 2 ^ (seedT a - 1) ≤ Nat.totient a :=
+    calc Nat.totient (seedE a) * 2 ^ (seedT a - 1)
+        ≤ seedE a * 2 ^ (seedT a - 1) := by gcongr
+      _ ≤ Nat.totient a := hXle
+  -- the classifier compares `φ(a)` with a quantity `≤ φ(a)`, so it is never `.lt`
+  simp only [classifySeed]
+  rw [ne_eq, compare_lt_iff_lt]
+  omega
+
+/-- **No prime seed `p ≡ 3 (mod 4)` reverses.**  Every prime `p ≡ 3 (mod 4)` is
+    an excluded seed (`seedS p ≥ 2`), and `p − φ(p) = 1`, so the general engine
+    applies immediately: `classifySeed p ≠ .lt`.  This exhibits an infinite class
+    of non-reversing excluded seeds — the primes `3, 7, 11, 19, 23, 31, …` —
+    strictly larger than the single-prime tower `3^k`. -/
+theorem classifySeed_prime_three_mod_four_ne_lt
+    {p : ℕ} (hp : p.Prime) (hp3 : p % 4 = 3) :
+    classifySeed p ≠ Ordering.lt := by
+  have hp3' : 3 ≤ p := by omega
+  have hodd : Odd p := Nat.odd_iff.mpr (by omega)
+  have hφp : Nat.totient p = p - 1 := Nat.totient_prime hp
+  have hs2 : 2 ≤ seedS p :=
+    (seedS_ge_two_iff_totient_mod_four hodd hp3').2 (by rw [hφp]; omega)
+  -- excess `p − φ(p) = 1 ≤ φ(seedB p)·2^(seedS p − 2)`
+  have hbpos : 0 < seedB p := by rcases (seed_spec hp3').1 with ⟨m, hm⟩; omega
+  have hbound : p - Nat.totient p ≤ Nat.totient (seedB p) * 2 ^ (seedS p - 2) := by
+    have h1 : 1 ≤ Nat.totient (seedB p) * 2 ^ (seedS p - 2) :=
+      Nat.one_le_iff_ne_zero.mpr
+        (mul_ne_zero (Nat.totient_pos.mpr hbpos).ne' (pow_ne_zero _ (by norm_num)))
+    rw [hφp]; omega
+  exact classifySeed_ne_lt_of_excess_bound hp3' hs2 hbound
+
+/-- **The family `p·2^(k+1)` never reverses, for every prime `p ≡ 3 (mod 4)`.**
+    No member of this infinite family of excluded seeds lies in `ReversalSet`.
+    Together with `three_pow_family_not_reversal` (the tower `3^k`) this widens
+    the class of proven non-reversing excluded seeds to *all* primes `≡ 3 mod 4`,
+    evidencing the structural conjecture that reversals occur only in the
+    transport-admissible regime `seedS a = 1`. -/
+theorem prime_three_mod_four_family_not_reversal
+    {p : ℕ} (hp : p.Prime) (hp3 : p % 4 = 3) (k : ℕ) :
+    p * 2 ^ (k + 1) ∉ ReversalSet := by
+  have hp3' : 3 ≤ p := by omega
+  have hodd : Odd p := Nat.odd_iff.mpr (by omega)
+  rw [classifySeed_lt_iff hodd hp3' k]
+  exact classifySeed_prime_three_mod_four_ne_lt hp hp3
 
 end Erdos1064OQ03
