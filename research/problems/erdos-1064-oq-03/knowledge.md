@@ -1,4 +1,45 @@
 
+## Session 2026-07-08 (researcher-6) — EXCLUDED REGIME fully characterised: prime powers of p≡3 mod4
+
+**Mode**: REVISIT (RICH tier; branch dedicated) | **Outcome**: progress (VERIFIED 0 sorry / 0 axiom, host `lake env lean` exit 0)
+
+### What I Did
+- Upgraded the *empirical* code comment (odd a<20000: excluded seeds `φ(a)≡2 mod4`
+  are exactly prime powers `p^k`, `p≡3 mod4`) into a THEOREM,
+  `totient_mod_four_eq_two_iff_prime_pow_three_mod_four`:
+  for odd `a≥3`, `φ(a) % 4 = 2 ↔ ∃ p k, p.Prime ∧ p%4=3 ∧ 0<k ∧ a = p^k`.
+  Combined with `seedS_ge_two_iff_totient_mod_four`, this pins the excluded seed set
+  `{3,7,9,11,19,23,27,…}` = `{ p^k : p prime, p≡3 mod4, k≥1 }` exactly.
+- Also FIXED a pre-existing elaboration bug in `seedS_ge_two_iff_totient_mod_four`
+  (line ~1606): `Nat.prime_two.prime.pow_dvd_iff_le_factorization` → drop `.prime`
+  (`Nat.Prime.pow_dvd_iff_le_factorization` wants `Nat.Prime`, not `_root_.Prime`).
+  The whole file failed to elaborate on the pinned toolchain until this was fixed —
+  the prior `[VERIFIED 0/0]` mod-4 commit was false-green.
+
+### Key Findings / proof recipe
+- Forward: `φ(a)%4=2 ⟹ a` prime power. If `a` had ≥2 distinct prime factors, split
+  `a = ordProj[p]a · ordCompl[p]a` (p=minFac, coprime via `coprime_ordCompl.pow_left`),
+  both totients even (`Nat.totient_even`, ordProj≥3 & ordCompl odd≠1⟹≥3), so `4∣φ(a)`,
+  contradiction. `IsPrimePow` extracted via `isPrimePow_iff_card_primeFactors_eq_one`.
+  Then `φ(p^k)=p^{k-1}(p-1)` (`Nat.totient_prime_pow`); `p%4=1⟹4∣(p-1)∣φ`, so `p%4=3`.
+- Backward: `φ(p^k)=p^{k-1}(p-1)`, `p≡3 mod4` ⟹ `p-1=2·odd`, `p^{k-1}` odd, product `2·odd ≡2 mod4`.
+- Lean gotchas: `Nat.coprime_ordCompl`/`Nat.Prime.pow_dvd_iff_le_factorization` want `Nat.Prime`
+  (NOT `.prime`); `IsPrimePow` intro wants `_root_.Prime` (use `.prime`). To split totient use
+  `rw [← Nat.totient_mul hcop, hsplit]` — NOT `rw [← hsplit,…]` (that rewrites EVERY `a`,
+  including inside `ordProj[a.minFac] a`). omega abstracts nonlinear products as atoms, so
+  factor out the 2 (`= 2*(…)`) and feed omega the `…%2=1` fact.
+
+### Files Modified
+- `proofs/Proofs/EulerTotientOQ04OQ03.lean` (1641→1764; +1 structural theorem, +1 bugfix)
+- `src/data/research/problems/erdos-1064-oq-03.json`
+
+### Next Steps
+- The classification programme now cleanly splits seeds: transport-admissible `seedS=1`
+  (⟺ `4∣φ(a)` ⟺ NOT a prime power of p≡3mod4) vs excluded (prime powers of p≡3mod4).
+  All known reversal seeds (21,55,129,165,175) are transport-admissible — try proving
+  `seedS a ≥ 2 ⟹ classifySeed a ≠ .lt` (no excluded/prime-power-p≡3 seed reverses).
+- Density-1 forward `φ(n)>φ(D(n))` a.e. remains the sole analytically-blocked direction (needs ψ(x,y)).
+
 ## Session 2026-07-08 (researcher-6) — general transport removes the v₂(2a−φ(a))=1 restriction (excluded case DONE)
 
 Executed the outstanding nextStep "Handle the excluded case v₂(2a−φ(a))>1". The

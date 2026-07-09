@@ -1603,7 +1603,7 @@ theorem seedS_ge_two_iff_totient_mod_four {a : ℕ} (ha : Odd a) (ha3 : 3 ≤ a)
   have hev : Nat.totient a % 2 = 0 := Nat.even_iff.1 (Nat.totient_even (by omega))
   have hne : 2 * a - Nat.totient a ≠ 0 := by omega
   have hdvd : (2 : ℕ) ^ 2 ∣ (2 * a - Nat.totient a) ↔ 2 ≤ seedS a :=
-    Nat.prime_two.prime.pow_dvd_iff_le_factorization hne
+    Nat.prime_two.pow_dvd_iff_le_factorization hne
   rw [← hdvd, show (2 : ℕ) ^ 2 = 4 from rfl]
   omega
 
@@ -1637,5 +1637,128 @@ theorem seedS_21_eq_one : seedS 21 = 1 :=
     first-step valuation `s = 2`. -/
 theorem seedS_three_ge_two : 2 ≤ seedS 3 :=
   (seedS_ge_two_iff_totient_mod_four (by decide) (by norm_num)).2 (by norm_num [totient_3])
+
+-- ---------------------------------------------------------------------------
+-- STRUCTURAL CHARACTERISATION OF THE EXCLUDED REGIME
+-- ---------------------------------------------------------------------------
+-- The congruence criterion `seedS_ge_two_iff_totient_mod_four` reduces the
+-- excluded regime (first-step valuation `≥ 2`) to `φ(a) ≡ 2 (mod 4)`.  The
+-- prior code comment noted — empirically, odd `a < 20000` — that these seeds
+-- are *exactly* the prime powers `p^k` of primes `p ≡ 3 (mod 4)`.  We now prove
+-- that classification unconditionally.
+--
+-- Proof idea (standard 2-adic count).  `φ` is multiplicative on coprime factors,
+-- and for `a ≥ 3` each factor `φ(p^e)` (p odd prime) is even.  Hence:
+--   • if `a` has ≥ 2 distinct prime factors, split `a = p^e · m` (coprime),
+--     both `φ(p^e)` and `φ(m)` even, so `4 ∣ φ(a)`, i.e. `φ(a) % 4 ≠ 2`;
+--   • so `φ(a) % 4 = 2` forces `a` to be a prime power `p^k`, where
+--     `φ(p^k) = p^(k-1)(p-1)` with `p^(k-1)` odd, so `φ(a) ≡ 2 (mod 4)` iff
+--     `v₂(p-1) = 1` iff `p ≡ 3 (mod 4)`.
+-- ---------------------------------------------------------------------------
+
+/-- **Excluded regime = prime powers of primes ≡ 3 (mod 4).**
+For every odd `a ≥ 3`, `φ(a) ≡ 2 (mod 4)` (equivalently `seedS a ≥ 2`, the
+regime *outside* the `seedS a = 1` transport machinery) holds exactly when `a`
+is a prime power `p^k` of a prime `p ≡ 3 (mod 4)`.  Combined with
+`seedS_ge_two_iff_totient_mod_four`, this pins down the excluded seed set
+`{3,7,9,11,19,23,27,…}` completely: it is `{ p^k : p prime, p ≡ 3 mod 4, k ≥ 1 }`. -/
+theorem totient_mod_four_eq_two_iff_prime_pow_three_mod_four
+    {a : ℕ} (ha : Odd a) (ha3 : 3 ≤ a) :
+    Nat.totient a % 4 = 2 ↔
+      ∃ p k, p.Prime ∧ p % 4 = 3 ∧ 0 < k ∧ a = p ^ k := by
+  have ha0 : a ≠ 0 := by omega
+  have ha1 : a ≠ 1 := by omega
+  have haodd : a % 2 = 1 := Nat.odd_iff.1 ha
+  constructor
+  · intro hφ
+    -- Step 1: `a` is a prime power (else `4 ∣ φ(a)`).
+    have hpp : IsPrimePow a := by
+      rw [isPrimePow_iff_card_primeFactors_eq_one]
+      by_contra hcard
+      have hne : a.primeFactors.Nonempty := nonempty_primeFactors.2 (by omega)
+      have h2 : 2 ≤ a.primeFactors.card := by
+        have := Finset.card_pos.2 hne; omega
+      -- smallest prime factor `p` and its `p`-part / `p`-free complement
+      have hpprime : (a.minFac).Prime := minFac_prime ha1
+      have hpdvd : a.minFac ∣ a := minFac_dvd a
+      have hpodd : Odd (a.minFac) := by
+        rcases hpprime.eq_two_or_odd' with h2' | ho
+        · exfalso; rw [h2'] at hpdvd; omega
+        · exact ho
+      have hp3 : 3 ≤ a.minFac := by
+        have := hpprime.two_le; have := Nat.odd_iff.1 hpodd; omega
+      have he : 0 < a.factorization (a.minFac) :=
+        hpprime.factorization_pos_of_dvd ha0 hpdvd
+      -- `ordProj = p^e ≥ 3`
+      have hprojge : 3 ≤ ordProj[a.minFac] a := by
+        calc 3 ≤ a.minFac := hp3
+          _ = a.minFac ^ 1 := (pow_one _).symm
+          _ ≤ a.minFac ^ (a.factorization (a.minFac)) :=
+                Nat.pow_le_pow_right (by omega) he
+      -- `ordCompl` divides `a` (odd), is `≠ 1` (else `a` a prime power), so `≥ 3`
+      have hcompl_dvd : ordCompl[a.minFac] a ∣ a := ordCompl_dvd a _
+      have hcompl_pos : 0 < ordCompl[a.minFac] a := ordCompl_pos _ ha0
+      have hcompl_odd : Odd (ordCompl[a.minFac] a) := by
+        rcases Nat.even_or_odd (ordCompl[a.minFac] a) with hev | ho
+        · exfalso
+          have : (2 : ℕ) ∣ a := dvd_trans hev.two_dvd hcompl_dvd
+          omega
+        · exact ho
+      have hcompl_ne : ordCompl[a.minFac] a ≠ 1 := by
+        intro h1'
+        have hall : a = ordProj[a.minFac] a := by
+          have := ordProj_mul_ordCompl_eq_self a (a.minFac)
+          rw [h1', mul_one] at this; exact this.symm
+        have hpp' : IsPrimePow a :=
+          ⟨a.minFac, a.factorization (a.minFac), hpprime.prime, he, hall.symm⟩
+        rw [isPrimePow_iff_card_primeFactors_eq_one] at hpp'
+        omega
+      have hcompl_ge : 3 ≤ ordCompl[a.minFac] a := by
+        obtain ⟨m, hm⟩ := hcompl_odd; omega
+      -- multiplicativity: `φ(a) = φ(ordProj)·φ(ordCompl)`, both even ⟹ `4 ∣ φ(a)`
+      have hcop : Nat.Coprime (ordProj[a.minFac] a) (ordCompl[a.minFac] a) :=
+        (Nat.coprime_ordCompl hpprime ha0).pow_left _
+      have hsplit : ordProj[a.minFac] a * ordCompl[a.minFac] a = a :=
+        ordProj_mul_ordCompl_eq_self a (a.minFac)
+      have hev1 : Even (Nat.totient (ordProj[a.minFac] a)) := Nat.totient_even (by omega)
+      have hev2 : Even (Nat.totient (ordCompl[a.minFac] a)) := Nat.totient_even (by omega)
+      have hφsplit : Nat.totient a
+          = Nat.totient (ordProj[a.minFac] a) * Nat.totient (ordCompl[a.minFac] a) := by
+        rw [← Nat.totient_mul hcop, hsplit]
+      have h4 : 4 ∣ Nat.totient a := by
+        rw [hφsplit]
+        obtain ⟨x, hx⟩ := hev1
+        obtain ⟨y, hy⟩ := hev2
+        exact ⟨x * y, by rw [hx, hy]; ring⟩
+      omega
+    -- Step 2: read off the prime `p` and show `p ≡ 3 (mod 4)`.
+    obtain ⟨p, k, hp, hk, hpk⟩ := (isPrimePow_nat_iff a).1 hpp
+    refine ⟨p, k, hp, ?_, hk, hpk.symm⟩
+    have hpdvd : p ∣ a := hpk ▸ dvd_pow_self p hk.ne'
+    have hpodd : Odd p := by
+      rcases hp.eq_two_or_odd' with h2' | ho
+      · exfalso; rw [h2'] at hpdvd; omega
+      · exact ho
+    have hpm2 : p % 2 = 1 := Nat.odd_iff.1 hpodd
+    rw [← hpk, Nat.totient_prime_pow hp hk] at hφ
+    by_contra hp3
+    have hp1 : p % 4 = 1 := by omega
+    obtain ⟨t, ht⟩ : (4 : ℕ) ∣ (p - 1) := by
+      have := hp.two_le; exact Nat.dvd_of_mod_eq_zero (by omega)
+    have hrw : p ^ (k - 1) * (p - 1) = 4 * (p ^ (k - 1) * t) := by rw [ht]; ring
+    rw [hrw] at hφ
+    omega
+  · rintro ⟨p, k, hp, hp3, hk, rfl⟩
+    have hp2 : 2 ≤ p := hp.two_le
+    rw [Nat.totient_prime_pow hp hk]
+    have hpodd : Odd p := Nat.odd_iff.2 (by omega)
+    have hu : Odd (p ^ (k - 1)) := hpodd.pow
+    have hpm1 : p - 1 = 2 * ((p - 1) / 2) := by omega
+    have hwodd : Odd ((p - 1) / 2) := Nat.odd_iff.2 (by omega)
+    have key : p ^ (k - 1) * (p - 1) = 2 * (p ^ (k - 1) * ((p - 1) / 2)) := by
+      conv_lhs => rw [hpm1]
+      ring
+    have hzodd : (p ^ (k - 1) * ((p - 1) / 2)) % 2 = 1 := Nat.odd_iff.1 (hu.mul hwodd)
+    rw [key]; omega
 
 end Erdos1064OQ03
