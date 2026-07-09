@@ -16,23 +16,13 @@
       "probability",
       "intermediate"
     ],
-    "badge": "mathlib",
+    "badge": "verified",
     "sorries": 0,
     "mathlibDependencies": [
       {
-        "theorem": "MeasureTheory.Integral.Lebesgue",
-        "description": "Lebesgue integration for variance computation",
-        "module": "Mathlib.MeasureTheory.Integral.Lebesgue"
-      },
-      {
-        "theorem": "Probability.Variance",
-        "description": "Variance and covariance definitions",
-        "module": "Mathlib.Probability.Variance"
-      },
-      {
-        "theorem": "Combinatorics.SimpleGraph.Basic",
-        "description": "Graph definitions for threshold applications",
-        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+        "theorem": "Finset.sum / Finset.induction_on",
+        "description": "Finite big-operator and induction infrastructure used for the from-scratch sum manipulations (Chebyshev, Cauchy-Schwarz, Paley-Zygmund). No deep Mathlib probability theorem is used.",
+        "module": "Mathlib.Algebra.BigOperators.Basic"
       }
     ],
     "originalContributions": [
@@ -51,7 +41,7 @@
       "Random graphs G(n,p) and threshold functions",
       "Indicator random variables and covariance"
     ],
-    "assumptions": "0 sorries, 0 axioms. Fully verified.",
+    "assumptions": "0 sorries, 0 axioms. Fully verified. Self-contained discrete formalization over ℚ-valued Finset functions: Chebyshev, Paley-Zygmund, and the Cauchy-Schwarz helper are all proved from scratch (the finite Cauchy-Schwarz lemma by induction) — no deep Mathlib probability or measure-theory theorem does the core work.",
     "mathlib_version": "4.26.0",
     "theoremCount": 7,
     "definitionCount": 0
@@ -59,7 +49,7 @@
   "overview": {
     "historicalContext": "The second moment method extends the first moment method by incorporating variance to prove that random variables are concentrated near their expectation. While the first moment method can only guarantee that a maximum or minimum exists, the second moment method shows that typical outcomes are close to the mean — and in particular, that a positive-mean random variable is positive with substantial probability.\n\nChebyshev's inequality, published by Pafnuty Chebyshev in 1867, is the foundation: $\\Pr[|X - E[X]| \\geq t] \\leq \\operatorname{Var}[X]/t^2$. The inequality was proved using Chebyshev's elegant application of Markov's inequality to the squared deviation. Irénée-Jules Bienaymé had stated a version earlier (1853), so the result is sometimes called the Bienaymé-Chebyshev inequality.\n\nThe Paley-Zygmund inequality, due to Raymond Paley and Antoni Zygmund (1932), provides a complementary lower bound: for $X \\geq 0$, $\\Pr[X > 0] \\geq (E[X])^2/E[X^2]$. While Chebyshev bounds the probability of large deviations from above, Paley-Zygmund bounds the probability of positivity from below — exactly what combinatorial existence proofs require.\n\nThe second moment method became indispensable in the study of random graphs after Erdős and Rényi's foundational 1959 paper 'On Random Graphs I,' which introduced the $G(n,p)$ model. Their key insight was that many graph properties exhibit sharp thresholds: a property either holds with probability tending to 0 or to 1, with a sharp transition at a critical edge probability $p^*(n)$. The second moment method is the standard tool for establishing these thresholds. Bollobás, Friedgut, and others later developed the theory of sharp thresholds into a rich field connecting probability, combinatorics, and statistical physics.",
     "problemStatement": "Chebyshev's Inequality: For any random variable $X$ with finite variance, $\\Pr[|X - E[X]| \\geq t] \\leq \\operatorname{Var}[X] / t^2$.\n\nPaley-Zygmund Inequality: For a non-negative random variable $X$, $\\Pr[X > 0] \\geq (E[X])^2 / E[X^2]$.\n\nApplication: If the expected number of copies of a subgraph $H$ in a random graph $G(n,p)$ tends to infinity and the variance is controlled, then $G(n,p)$ contains $H$ with high probability.",
-    "text": "A 226-line formalization of the second moment method with 0 sorries, providing the concentration toolkit for probabilistic combinatorics. The file builds four layers: (1) a discrete Chebyshev inequality bounding the number of elements deviating from the mean by at least $t$ as $|s| \\cdot \\operatorname{Var}[f]/t^2$; (2) a qualitative Paley-Zygmund inequality proving that non-negative functions with positive sum have a positive element; (3) a quantitative existence theorem showing that if $E[X^2] \\cdot |s| \\leq 2(E[X])^2$, then at least half the sample space has $X > 0$; and (4) a quantitative Paley-Zygmund inequality showing that $|\\{a : f(a) \\geq \\theta\\mu\\}| \\geq (1-\\theta)^2 (\\sum f)^2 / \\sum f^2$ for threshold parameter $0 \\leq \\theta < 1$. Supporting helper lemmas include a finite Cauchy-Schwarz inequality $(\\sum f)^2 \\leq |s| \\cdot \\sum f^2$ proved by induction, and support/monotonicity lemmas for non-negative functions. The framework uses $\\mathbb{Q}$-valued functions on `Finset` for exact arithmetic, avoiding measure-theoretic overhead while capturing the essential probabilistic arguments.",
+    "text": "A 225-line formalization of the second moment method with 0 sorries, providing the concentration toolkit for probabilistic combinatorics. The file builds four layers: (1) a discrete Chebyshev inequality bounding the number of elements deviating from the mean by at least $t$ as $|s| \\cdot \\operatorname{Var}[f]/t^2$; (2) a qualitative Paley-Zygmund inequality proving that non-negative functions with positive sum have a positive element; (3) a quantitative existence theorem showing that if $E[X^2] \\cdot |s| \\leq 2(E[X])^2$, then at least half the sample space has $X > 0$; and (4) a quantitative Paley-Zygmund inequality showing that $|\\{a : f(a) \\geq \\theta\\mu\\}| \\geq (1-\\theta)^2 (\\sum f)^2 / \\sum f^2$ for threshold parameter $0 \\leq \\theta < 1$. Supporting helper lemmas include a finite Cauchy-Schwarz inequality $(\\sum f)^2 \\leq |s| \\cdot \\sum f^2$ proved by induction, and support/monotonicity lemmas for non-negative functions. The framework uses $\\mathbb{Q}$-valued functions on `Finset` for exact arithmetic, avoiding measure-theoretic overhead while capturing the essential probabilistic arguments.",
     "proofStrategy": "The formalization builds the second moment toolkit:\n\n1. **Variance definition**: $\\operatorname{Var}[X] = E[X^2] - (E[X])^2$ for finite probability spaces, with the Finset-based computation framework.\n\n2. **Chebyshev's inequality**: From Markov's inequality applied to $(X - E[X])^2$. This gives an upper bound on the probability of large deviations.\n\n3. **Paley-Zygmund inequality**: By Cauchy-Schwarz, $E[X]^2 = E[X \\cdot \\mathbf{1}_{X>0}]^2 \\leq E[X^2] \\cdot \\Pr[X > 0]$. Rearranging gives the lower bound on $\\Pr[X > 0]$.\n\n4. **Application to indicator sums**: For $X = \\sum_i X_i$ with indicators $X_i$, compute $\\operatorname{Var}[X] = \\sum_i \\operatorname{Var}[X_i] + \\sum_{i \\neq j} \\operatorname{Cov}[X_i, X_j]$. When the covariance sum is small relative to $(E[X])^2$, the second moment method yields strong concentration.",
     "keyInsights": [
       "The second moment method converts variance bounds into existence guarantees: low variance relative to the mean squared ensures positive probability",
