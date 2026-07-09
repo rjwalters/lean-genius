@@ -147,6 +147,16 @@
       "targetId": "basel-problem",
       "relationship": "extends",
       "description": "Root Basel entry ζ(2) = π²/6; this is the alternating (Dirichlet eta) companion η(2) = π²/12."
+    },
+    {
+      "targetId": "basel-problem-oq-09",
+      "relationship": "related — odd-square sibling reused",
+      "description": "The odd-square sum λ(2) = ∑ 1/(2k+1)² = π²/8 is the positive-sign companion this entry re-derives internally (hasSum_odd_zeta_two) and then feeds into the alternating combination −π²/24 + π²/8 = π²/12. Together with ζ(2) = π²/6 the weight-2 trio is ζ(2) : λ(2) : η(2) = 1 : ¾ : ½ (π²/6, π²/8, π²/12). This is the cross-link requested in this entry's open question 2."
+    },
+    {
+      "targetId": "basel-problem-oq-14",
+      "relationship": "related — degree-4 analog",
+      "description": "The degree-4 counterpart η(4) = ∑ (−1)ⁿ⁺¹/n⁴ = 7π⁴/720 applies this entry's exact even/odd + parity-sign template to ζ(4) = π⁴/90 via η(4) = (1 − 2⁻³)ζ(4) = (7/8)ζ(4). It is precisely the η(2m) generalization this entry's open question 1 asks for, at m = 2."
     }
   ],
   "references": [
