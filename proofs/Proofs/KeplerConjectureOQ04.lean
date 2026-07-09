@@ -636,6 +636,41 @@ theorem zeroDensity_not_symmetricConvexBody :
   exact absurd hge (not_le.mpr fccDensity_pos)
 
 /-!
+### General shape-class exclusion principles (subsuming the concrete `_not_` family)
+
+The concrete negative facts above (`tetrahedronDimer_not_ellipsoidLattice`,
+`zeroDensity_not_symmetricConvexBody`, and the `octahedron_/rhombicDodecahedron_/
+ellipsoidNonLattice_not_ellipsoidLattice` results proved in the later sections)
+are all instances of **two** general principles: the two STATEMENT axioms act as
+*density filters* on their shape classes.  `bezdek_kuperberg…` (an upper bound
+`≤ fccDensity`) excludes **every** density strictly above `fccDensity` from the
+ellipsoid-lattice class; `ulam_conjecture` (a lower bound `≥ fccDensity`) excludes
+**every** density strictly below `fccDensity` from the symmetric-convex-body class.
+Stating these once removes the per-body repetition and is the recommended tool for
+any future benchmark: a new packing `d` with `fccDensity < d.density` is
+`not_ellipsoidLattice_of_fcc_lt`-excluded by a single application. No new axioms. -/
+
+/-- **Ellipsoid-lattice exclusion principle.**  *Any* packing whose density
+strictly exceeds `fccDensity` is provably not an ellipsoid lattice packing — the
+Bezdek–Kuperberg ceiling `≤ fccDensity` cannot hold for it.  Generalizes
+`tetrahedronDimer_not_ellipsoidLattice` and the three `_not_ellipsoidLattice`
+benchmarks to a single principle. -/
+theorem not_ellipsoidLattice_of_fcc_lt {d : PackingDensity}
+    (h : fccDensity < d.density) : ¬ IsEllipsoidLatticePacking d := by
+  intro hE
+  exact absurd (bezdek_kuperberg_ellipsoid_lattice_upper_bound ⟨d, hE⟩) (not_le.mpr h)
+
+/-- **Symmetric-convex-body exclusion principle.**  *Any* packing whose density is
+strictly below `fccDensity` is provably not a centrally-symmetric convex body
+packing — the Ulam floor `≥ fccDensity` cannot hold for it.  Generalizes
+`zeroDensity_not_symmetricConvexBody` to a single principle (the density-`0`
+packing is the special case `fccDensity_pos`). -/
+theorem not_symmetricConvexBody_of_lt_fcc {d : PackingDensity}
+    (h : d.density < fccDensity) : ¬ IsSymmetricConvexBody3DPacking d := by
+  intro hS
+  exact absurd (ulam_conjecture ⟨d, hS⟩) (not_le.mpr h)
+
+/-!
 ## S9 — Regular octahedron: a denser shape benchmark above the tetrahedral dimer
 
 Extends the shape hierarchy upward with a third named non-spherical benchmark.
