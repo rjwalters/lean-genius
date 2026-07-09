@@ -18,10 +18,10 @@
   "currentState": {
     "phase": "OBSERVE",
     "since": "2026-03-30T11:35:21-07:00",
-    "iteration": 2,
-    "focus": "Added Part V general parity-vector residue-drop engine (Terras leading-coefficient law). Verified axiom-free via direct host lean (Docker corrupt).",
+    "iteration": 3,
+    "focus": "Part VIII parity forcing: certificate parity vector proven equal to the real Collatz orbit parity sequence at every interior step (affValid_orbit_parity + deriveVec_orbit_parity). Closes the forcing-direction thread. Build green (7743 jobs).",
     "blockers": [],
-    "nextAction": "Mechanize certificate generation (tactic) so parityVector_attainsBelow auto-discharges any residue-determined class.",
+    "nextAction": "Prove maximality/uniqueness of deriveVec's forced window (any AffValid v (2^b) r is a prefix of the derived vector).",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -54,7 +54,8 @@
       "attainsBelow_density_of_residues (CollatzStructuredOQ02OQ03.lean): general residue-class density floor — for 1≤M and any certified residue set R, |R|·(N-1) ≤ #{n∈[1,M·N] : AttainsBelow n}. Axiom-free.",
       "attainsBelow_density_lower_16_general: re-derives the 13/16 floor from the general lemma; residue count 13 via kernel `decide` (axiom-free), drop hypotheses via omega-checked congruences + Part II lemmas.",
       "CollatzStructuredOQ02OQ03.autoDropCert_colMin_lt: autoDropCert b r = true & n%2^b=r -> colMin n < n (general Part VII->Part III bridge, VERIFIED, no new axiom/decide)",
-      "pow_three_lt_two_pow_of_two_mul_lt / terras_attainsBelow_of_count (CollatzStructuredOQ02OQ03.lean): the Collatz 3/2 heuristic as a purely COMBINATORIAL drop criterion. The arithmetic core proves the count inequality 2*a < b implies the Terras power condition 3^a < 2^b via 3^a ≤ 4^a = 2^(2*a) < 2^b (Nat.pow_le_pow_left + pow_mul + pow_lt_pow_right₀, using only 3 ≤ 4 = 2²; no power evaluated). terras_attainsBelow_of_count wires it into the residue engine: a valid dyadic window with 2*(v.count true) < b (halvings more than double the triplings) certifies AttainsBelow by an omega-checkable count instead of a 3^a<2^b power comparison. Axiom-free, no decide."
+      "pow_three_lt_two_pow_of_two_mul_lt / terras_attainsBelow_of_count (CollatzStructuredOQ02OQ03.lean): the Collatz 3/2 heuristic as a purely COMBINATORIAL drop criterion. The arithmetic core proves the count inequality 2*a < b implies the Terras power condition 3^a < 2^b via 3^a ≤ 4^a = 2^(2*a) < 2^b (Nat.pow_le_pow_left + pow_mul + pow_lt_pow_right₀, using only 3 ≤ 4 = 2²; no power evaluated). terras_attainsBelow_of_count wires it into the residue engine: a valid dyadic window with 2*(v.count true) < b (halvings more than double the triplings) certifies AttainsBelow by an omega-checkable count instead of a 3^a<2^b power comparison. Axiom-free, no decide.",
+      "affValid_orbit_parity / affValid_parity_indep / deriveVec_orbit_parity (CollatzStructuredOQ02OQ03.lean Part VIII): parity FORCING — real orbit parity at each certified step equals the recorded bit v[i] (uniform in m), the residue-determined-parity corollary, and the auto-derived-vector transcript. Axiom-free; closes the standing forcing-direction nextStep. Build green (7743 jobs)."
     ],
     "insights": [
       "The odd residue class n ≡ 1 (mod 4), n ≥ 5, deterministically drops below itself in 3 Collatz steps: 4m+1 → 12m+4 → 6m+2 → 3m+1, with 3m+1 < 4m+1 iff m ≥ 1. First elementary family exercising the 3n+1 branch (even/powers-of-two only touch the n/2 branch).",
@@ -68,16 +69,17 @@
       "The four explicit density floors (3/4, 13/16, 7/8, 115/128) all instantiate ONE counting pattern: a finite certified residue set mod M gives lower density |R|/M. Abstracting it removes ~600 lines of per-level pairwise-disjointness bookkeeping.",
       "Disjointness across residue classes collapses to a single injectivity: (r,m) ↦ M·m+r is injective on R ×ˢ [1,N-1] because r<M is exactly the remainder of M·m+r mod M (Nat.add_mul_mod_self_left). No per-pair Disjoint witnesses needed.",
       "Kernel decide on autoDropCert (deriveVec/affOrbit over Nat with 2^b) is very memory-heavy; the file sits near the kernel memory ceiling, so each added autoDropCert `by decide` risks a deterministic line-less exit 135 (SIGBUS 128+7) independent of build concurrency. Prefer the general colMin bridge lemma over inline decide examples.",
-      "The Terras drop condition 3^a < 2^b has a slack combinatorial sufficient form 2*a < b (halvings at least double the triplings), provable with NO power evaluation via 3^a ≤ 4^a = 2^(2a) < 2^b. The integer constant 2 is not sharp (the true threshold is log₂3 ≈ 1.585): the gallery's tightest family 3 (mod 16) has a=2, b=4 with 2·2 = 4 = b failing the strict 2a<b, so its certification still needs the exact 3²=9<16=2^4 power check — but 2a<b removes the power obligation entirely for any window with genuine halving slack, converting terras_attainsBelow's drop hypothesis into an omega goal."
+      "The Terras drop condition 3^a < 2^b has a slack combinatorial sufficient form 2*a < b (halvings at least double the triplings), provable with NO power evaluation via 3^a ≤ 4^a = 2^(2a) < 2^b. The integer constant 2 is not sharp (the true threshold is log₂3 ≈ 1.585): the gallery's tightest family 3 (mod 16) has a=2, b=4 with 2·2 = 4 = b failing the strict 2a<b, so its certification still needs the exact 3²=9<16=2^4 power check — but 2a<b removes the power obligation entirely for any window with genuine halving slack, converting terras_attainsBelow's drop hypothesis into an omega goal.",
+      "FORCING DIRECTION (loop closed): affValid_orbit_parity proves the certificate's parity vector is the ACTUAL Collatz orbit parity sequence, not just its endpoint — collatz^[i](c*m+d)%2 = v[i].toNat for every interior step i<v.length and every m. affOrbit_realize alone only pins the window endpoint; a vector could in principle agree there while disagreeing at an interior step. Proof = induction on the AffValid derivation, replaying the same one-step collatz reduction affOrbit_realize uses (odd: 2c'm+d odd since c even, d odd; even: halve) and recursing into the tail at index j, with getElem_cons_zero/succ threading the bit. Corollary affValid_parity_indep: the parity at each step is independent of m (residue-determined). deriveVec_orbit_parity: the AUTO-derived vector deriveVec(2b+1)(2^b)r equals the true orbit parity sequence of every n≡r mod 2^b — no drop hypothesis needed (affValidB_deriveVec is unconditional), so forcing holds for ALL (b,r) whether or not the class drops."
     ],
     "mathlibGaps": [],
     "nextSteps": [
       "Mechanize certificate GENERATION: a tactic/decision procedure that, given a residue r mod 2^b, computes the forced parity vector v and AffValid certificate automatically (currently v and the AffValid chain are supplied by hand). This would let parityVector_attainsBelow discharge any residue-determined class fully automatically and could batch-prove the stable classes at a new level.",
-      "Prove the converse/forcing direction: that for n%2^b=r the ACTUAL Collatz parity sequence over the window equals the certificate's v (currently the certificate asserts the parities; tying it to forcedness would close the loop between Terras parity vectors and orbits).",
       "Refactor the existing mod32/mod128 hand chases (lines ~282-423) to route through affOrbit_realize via certificates, deleting the iterate_succ_apply' boilerplate (engine now exists; left untouched this iteration to minimize build surface).",
       "Tao axiom genuinely blocked (deep analytic, >>1000 lines).",
       "Combine attainsBelow_density_of_residues with the decidable dropCert engine: define goodResidues M = (range M).filter (dropCert-based predicate) and prove its card lower-bounds the density automatically — turning ANY new level into zero new proof.",
-      "Attempt the unconditional density→1 (Terras/Korec) as the real milestone toward tao_2019, rather than adding more finite residue levels (which is enumeration theater)."
+      "Attempt the unconditional density→1 (Terras/Korec) as the real milestone toward tao_2019, rather than adding more finite residue levels (which is enumeration theater).",
+      "With parity forcing in place (affValid_orbit_parity), the natural strengthening is a UNIQUENESS/COMPLETENESS statement: deriveVec produces the ONLY parity vector consistent with the orbit over its window (the forced window is maximal), i.e. any AffValid v (2^b) r has v a prefix of deriveVec's output. This would characterize residue-determined windows exactly rather than merely certifying particular ones."
     ],
     "markdown": "# Knowledge Base: collatz-structured-oq-02-oq-03\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
@@ -147,8 +149,8 @@
     {
       "path": "Proofs/CollatzStructuredOQ02OQ03.lean",
       "filename": "CollatzStructuredOQ02OQ03.lean",
-      "lineCount": 1908,
-      "theoremCount": 72,
+      "lineCount": 1994,
+      "theoremCount": 75,
       "axiomCount": 1,
       "defCount": 13,
       "sorryCount": 0,
