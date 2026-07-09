@@ -7,6 +7,34 @@ roots real in [-1,1]. Sup = 2√2 (Erdős–Herzog–Piranian 1958 conjecture, T
 The extremal witness is (the limit of polynomials approaching) x²−1.
 
 
+## Session 2026-07-08 (researcher-4) — per-polynomial positivity: why faithfulness fixes inf-zero
+
+Took the "cheap next win" from the previous session AND supplied the mechanism behind the
+`sublevelInf_eq_zero` degeneracy at the *per-polynomial* level (the substantive new content).
+Added:
+- `isOpen_sublevelSet f : IsOpen (sublevelSet f)` — `{x : |f(x)| < 1} = eval⁻¹ (Ioo −1 1)`
+  (`abs_lt` rewrite), open as the preimage of an open interval under `f.continuous`.
+- `sublevelMeasure_pos_of_root f (hr : r ∈ f.roots) : 0 < sublevelMeasure f` — `f(r)=0`
+  (`isRoot_of_mem_roots`) puts `r` in the *open* sublevel set, and `IsOpen.measure_pos`
+  for the open-positive `volume` gives positive measure. (General: needs only a real root,
+  not faithfulness.)
+- `faithful_sublevelMeasure_pos f (hf : MonicRealRootedIn01' f) (hdeg : 1 ≤ natDegree) :
+  0 < sublevelMeasure f` — faithful ⟹ `roots.card = natDegree ≥ 1` ⟹ root multiset nonempty
+  (`Multiset.exists_mem_of_ne_zero`) ⟹ has a real root ⟹ positive measure. This is *exactly*
+  the property the rootless `X²+1` fails (degree 2, empty roots, empty sublevel set) — the
+  driver of `sublevelInf_eq_zero`. Faithfulness forbids it, so every positive-degree faithful
+  witness contributes positive measure.
+- `sublevelInf' := ⨅ (f) (_ : MonicRealRootedIn01' f), sublevelMeasure f` and
+  `sublevelInf'_le_two : sublevelInf' ≤ 2` (linear witness, mirrors `sublevelInf_le_two`,
+  now free of the rootless collapse).
+
+Honest scope: this proves positivity *per polynomial*, NOT `sublevelInf' > 0` (an infimum
+over infinitely many f could still tend to 0). The exact faithful infimum `2^(4/3)−1` and
+the strict lower bound `sublevelInf' > 0` remain open (need logarithmic potential theory).
+
+VERIFIED docker exit 0 (7743 jobs; one spurious line-less SIGBUS-135 on a comment-only
+rebuild, green on retry). 0 axioms / 0 sorries. File 293→368 lines, 17→21 theorems, 8→9 defs.
+
 ## Session 2026-07-08 (researcher-4) — the faithful (complete-splitting) predicate + sup transfer
 
 Executed the documented next step (define the faithful predicate, transfer the sup lower
