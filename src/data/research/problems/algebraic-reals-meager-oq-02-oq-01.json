@@ -31,14 +31,17 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE + sharpened (PR #35731 pending): both halves of ℝ = L ⊔ Lᶜ shown dense via new reusable dense_of_conull. Two follow-up open questions logged (ℚ-equivariance; ℝⁿ transfer).",
+    "progressSummary": "COMPLETE + two structural sharpenings: (1) both Oxtoby pieces dense (PR #35731); (2) the decomposition is Aff(ℚ)-equivariant (this session). One follow-up (ℝⁿ transfer) still open.",
     "builtItems": [
       "isMeagre_compl_of_mem_residual in AlgebraicRealsMeagerOQ02OQ01.lean:73 — abstract duality: A∈residual α ⟹ IsMeagre Aᶜ (any TopologicalSpace), via rw[IsMeagre, compl_compl].",
       "nonLiouville_meagre:97 + nonLiouville_conull:103 — the non-Liouville reals Lᶜ are meagre and conull (volume (Lᶜ)ᶜ = 0).",
       "exists_meagre_conull:111 — headline: ∃ meagre S ⊆ ℝ with volume Sᶜ = 0 (a meagre set of full Lebesgue measure).",
       "real_symmetric_oxtoby:131 — ℝ = L ⊔ Lᶜ (union_compl_self + disjoint_compl_right), L comeagre-and-null, Lᶜ meagre-and-conull; oq01_resolution:143 packages it.",
       "dense_of_conull in AlgebraicRealsMeagerOQ02OQ01Dense.lean:72 — conull ⟹ Dense (IsOpenPosMeasure); μ implicit and absent from conclusion so callers must pass (μ := volume).",
-      "dense_liouville / dense_nonLiouville:96,106 — both Oxtoby pieces dense; real_symmetric_oxtoby_dense:129 packages ℝ as two disjoint dense sets (comeagre-null + meagre-conull). PR #35731, verified 0/0."
+      "dense_liouville / dense_nonLiouville:96,106 — both Oxtoby pieces dense; real_symmetric_oxtoby_dense:129 packages ℝ as two disjoint dense sets (comeagre-null + meagre-conull). PR #35731, verified 0/0.",
+      "liouville_add_rat_iff / liouville_rat_add_iff / liouville_neg_iff / liouville_mul_rat_iff / liouville_rat_mul_iff / liouville_rat_affine_iff in AlgebraicRealsMeagerOQ02OQ01Equivariant.lean — pointwise Aff(ℚ)-equivariance of Liouville, each a forall_congr' over the matching LiouvilleWith iff.",
+      "setOf_liouville_rat_affine_preimage / _compl_rat_affine_preimage / _rat_affine_image:130+ — set invariance of L and Lᶜ under rational affine maps.",
+      "oxtoby_rat_affine_equivariant — headline: every rational affine f fixes both Oxtoby pieces setwise, with the residual/null (L) and meagre/conull (Lᶜ) facts retained. VERIFIED 0 sorries, standard-triple axioms only (host lake env lean, EXIT 0)."
     ],
     "insights": [
       "The dual of a comeagre null set is its literal complement: Lᶜ is meagre (because L is comeagre) and conull (because L is null). No new construction needed — the Liouville numbers already encode both halves of the Oxtoby contrast.",
@@ -46,12 +49,14 @@
       "'Full Lebesgue measure' on ℝ (infinite measure space) is formalized as conullity: volume Sᶜ = 0. For S = Lᶜ this is volume L = 0 via compl_compl + volume_setOf_liouville.",
       "Sharp form of OQ-02: the single partition ℝ = L ⊔ Lᶜ simultaneously witnesses comeagre⇏conull (on L) and meagre⇏null (on Lᶜ); the two largeness notions are exactly complementary, not merely inequivalent.",
       "A conull set in any IsOpenPosMeasure space is dense: interior sᶜ = ∅ (null sets have empty interior, interior_eq_empty_of_null) so closure s = (interior sᶜ)ᶜ = univ. This is the measure-side mirror of dense_of_mem_residual.",
-      "Both halves of the symmetric Oxtoby decomposition ℝ = L ⊔ Lᶜ are dense: L by comeagreness (Baire), Lᶜ despite being MEAGRE by conullity. So the measure/category pathology is topologically ubiquitous, not confined to a nowhere-dense set."
+      "Both halves of the symmetric Oxtoby decomposition ℝ = L ⊔ Lᶜ are dense: L by comeagreness (Baire), Lᶜ despite being MEAGRE by conullity. So the measure/category pathology is topologically ubiquitous, not confined to a nowhere-dense set.",
+      "ℚ-equivariance follow-up RESOLVED: the classic predicate Liouville is Aff(ℚ)-invariant — Liouville (q·x+r) ↔ Liouville x for q,r∈ℚ, q≠0. Mechanism: Liouville x ↔ ∀p, LiouvilleWith p x (forall_liouvilleWith_iff), and each LiouvilleWith p already has add_rat_iff/mul_rat_iff/neg_iff in Mathlib; forall_congr'ing over p transports them verbatim to Liouville.",
+      "Set-level: f⁻¹'L = L for every rational affine f; since each such f is a bijection with rational affine inverse y↦q⁻¹y−q⁻¹r, also f''L=L (via Set.image_eq_preimage_of_inverse). Complementation gives the same for Lᶜ. So the whole Oxtoby decomposition ℝ=L⊔Lᶜ is a genuinely Aff(ℚ)-equivariant partition — the measure/category pathology is not tied to any base point or scale."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Follow-up (open): are L and Lᶜ each preserved as comeagre-null / meagre-conull under the ℚ-translation and nonzero-ℚ-scaling action on ℝ? Liouville x ⟺ Liouville (x+q) ⟺ Liouville (qx) for q∈ℚˣ would give a group-equivariant Oxtoby decomposition.",
-      "Follow-up (open): does the dense-two-piece decomposition transfer to ℝⁿ (product Liouville set) — a meagre, dense, conull subset of ℝⁿ?"
+      "Remaining follow-up (open): does the dense-two-piece decomposition transfer to ℝⁿ (product Liouville set) — a meagre, dense, conull subset of ℝⁿ?",
+      "Possible: package Aff(ℚ) as an actual MulAction / AddAction on ℝ and state the invariance as a group-action stabilizer, rather than a per-map iff."
     ]
   },
   "tags": [
