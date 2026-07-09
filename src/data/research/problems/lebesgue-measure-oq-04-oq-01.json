@@ -1,0 +1,71 @@
+{
+  "slug": "lebesgue-measure-oq-04-oq-01",
+  "title": "Formalize the Cantor Function (Devil's Staircase)",
+  "phase": "OBSERVE",
+  "status": "available",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\exists\\, F : [0,1] \\to [0,1] \\text{ continuous, monotone, surjective, constant on each removed middle-third interval, with } F' = 0 \\text{ Lebesgue-a.e., yet } F(1) - F(0) = 1.",
+    "plain": "The Cantor function, the 'devil's staircase,' is continuous and increasing on [0,1], climbing from 0 to 1, yet it is flat on every open middle-third interval removed in the Cantor construction. Its entire rise is carried on the Cantor set, a set of Lebesgue measure zero, so F' = 0 almost everywhere even though F increases by a full unit. It is the canonical singular continuous function and is currently absent from Mathlib.",
+    "whyMatters": [
+      "It is the standard counterexample separating monotone continuity from absolute continuity: the fundamental theorem of calculus fails since the integral of F' is 0 while F(1) - F(0) = 1.",
+      "It is the concrete witness of a nonzero singular measure supported on a Lebesgue-null set, seeding the theory of singular distributions and self-affine functions.",
+      "It completes the gallery's Cantor-set story: the parent proof shows the set is an uncountable null set; this builds the function whose entire variation lives on that null set."
+    ]
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [
+      "No construction of the Cantor function F : ℝ → ℝ (or on [0,1]) exists in Mathlib or this gallery.",
+      "No formal proof that such an F is continuous, monotone, and surjective onto [0,1], nor constant on each removed middle-third interval.",
+      "No formal proof that F' = 0 Lebesgue-almost-everywhere, nor the singularity statement that the integral of F' is 0 while F(1) - F(0) = 1."
+    ],
+    "goal": "Construct F and prove its defining properties (continuity, monotonicity, surjectivity onto [0,1], constancy on each removed middle-third interval), then establish F' = 0 Lebesgue-a.e. Stage one: construction plus continuity/monotonicity/surjectivity; stage two: the a.e.-derivative-zero result."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-07-09T16:43:21-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "measure-theory",
+    "cantor-set",
+    "lebesgue-measure",
+    "null-set",
+    "uncountable",
+    "cardinality",
+    "research"
+  ],
+  "relatedProofs": [
+    "lebesgue-measure-oq-04"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": [
+      "Mathlib.Topology.Instances.CantorSet",
+      "Mathlib.MeasureTheory.Measure.StieltjesFunction",
+      "Mathlib.Analysis.Calculus.Monotone",
+      "Mathlib.Topology.UniformSpace.UniformConvergence"
+    ]
+  },
+  "started": "2026-07-09T16:43:21-07:00",
+  "significance": 5,
+  "tractability": 5
+}

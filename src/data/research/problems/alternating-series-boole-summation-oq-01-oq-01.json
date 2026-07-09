@@ -1,0 +1,70 @@
+{
+  "slug": "alternating-series-boole-summation-oq-01-oq-01",
+  "title": "The Order-K Boole Summation Limit: Alternating-Series Remainder via Higher Forward Differences",
+  "phase": "OBSERVE",
+  "status": "available",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "For a null sequence $a\\to 0$ with convergent alternating series $\\lim_{m\\to\\infty}\\operatorname{altSum}(a,n,m)=S$, pass the finite order-$K$ Boole identity to the limit: $S=\\sum_{k=0}^{K-1}\\frac{(-1)^{k}}{2^{k+1}}(-1)^{n}(\\Delta^{k}a)_{n}-\\frac{(-1)^{K-1}}{2^{K}}T_{K}$, where $\\Delta^{k}a$ is the $k$-th forward difference, $\\operatorname{altSum}(b,n,m)=\\sum_{j=n}^{m-1}(-1)^{j}b_j$, and $T_{K}=\\lim_{m\\to\\infty}\\operatorname{altSum}(\\Delta^{K}a,n,m)$.",
+    "plain": "The parent entry passed Boole's summation identity to the limit at first order, tying the sum S of a convergent alternating series to the limit of its first forward-difference series. This problem does the same at every order K at once: carry the finite general-order identity boole_general to the limit m to infinity, expressing S through the limits of the higher forward-difference series and the Euler/Boole weights (-1)^k/2^{k+1}. The only analytic input is that each signed endpoint term vanishes for a null sequence; the new work is an induction on K and finite-sum bookkeeping.",
+    "whyMatters": [
+      "Boole summation is the alternating-series analogue of Euler-Maclaurin, whose practical remainder/acceleration payoff only appears at general order K; the parent's first-order result is just the base case.",
+      "It turns the finite order-K Boole engine into a genuine convergence and remainder tool inside Mathlib, expressing the value of a convergent alternating series through higher forward differences.",
+      "It supplies a reusable template for passing an exact finite summation identity, parameterized by an order K, to a Filter.Tendsto limit statement."
+    ]
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [
+      "The general-order limit statement: passing boole_general (order K) to the limit m to infinity to obtain the closed identity for arbitrary K.",
+      "Convergence of every intermediate higher forward-difference series altSum(Delta^k a, n, .) for 0 <= k <= K, so the boundary sum is well defined in the limit.",
+      "An unconditional (antitone null) version at general order via the alternating-series test, and identification of the remainder with Mathlib's two-sided alternating-series tail bounds."
+    ],
+    "goal": "Prove the order-K limit form of Boole's identity for a convergent alternating series of a null sequence: pass boole_general to m to infinity, establish existence of the K-th forward-difference series limit T_K, and derive the closed identity relating S, the boundary terms (Delta^k a)_n, and T_K with weights (-1)^k/2^{k+1}, plus an unconditional corollary for antitone null sequences."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-07-09T16:43:20-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "analysis",
+    "series",
+    "alternating-series",
+    "boole-summation",
+    "euler-maclaurin",
+    "limits",
+    "convergence"
+  ],
+  "relatedProofs": [
+    "alternating-series-boole-summation-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": [
+      "Mathlib.Analysis.SpecificLimits.Normed",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Topology.Algebra.InfiniteSum"
+    ]
+  },
+  "started": "2026-07-09T16:43:20-07:00",
+  "significance": 5,
+  "tractability": 5
+}

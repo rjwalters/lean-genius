@@ -1,0 +1,72 @@
+{
+  "slug": "erdos-1008-oq-02-oq-02",
+  "title": "Explicit Closed-Form ex(n; K₂,ₜ) from the Kővári–Sós–Turán Quadratic",
+  "phase": "OBSERVE",
+  "status": "available",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "For fixed $t \\ge 2$, a $K_{2,t}$-free graph $G$ on $n$ vertices with $m$ edges satisfies the Kővári–Sós–Turán quadratic $4m^2 \\le (t-1)\\,n^2(n-1) + 2nm$, whence $m \\le \\tfrac14\\,n\\bigl(1 + \\sqrt{\\,1 + 4(t-1)(n-1)\\,}\\bigr)$.",
+    "plain": "The parent entry solved the quadratic that bounds the edges of a C₄-free (K₂,₂-free) graph, turning $4m^2 \\le n^2(n-1) + 2nm$ into the explicit Reiman form $m \\le \\tfrac14 n(1+\\sqrt{4n-3})$. This problem asks for the same explicit form one step more general: for a $K_{2,t}$-free graph the Kővári–Sós–Turán count produces a quadratic $4m^2 \\le (t-1)n^2(n-1) + 2nm$ with the parameter $t-1$ in front, and we want the clean closed form $m \\le \\tfrac14 n(1 + \\sqrt{1 + 4(t-1)(n-1)})$. The goal is a single parametric Lean 4 lemma recovering the sharp upper root of this $t$-dependent quadratic and specializing back to $C_4$ at $t=2$.",
+    "whyMatters": [
+      "$K_{2,t}$-free extremal numbers are the next rung of the Zarankiewicz ladder above $C_4$: Kővári–Sós–Turán (1954) give $\\text{ex}(n;K_{2,t}) \\le \\tfrac12(\\sqrt{t-1}\\,n^{3/2}+n)$ and Füredi (1996) proved this asymptotically tight, $\\text{ex}(n;K_{2,t}) = \\tfrac12\\sqrt{t-1}\\,n^{3/2}(1+o(1))$.",
+      "A machine-checked solved quadratic gives the precise finite-$n$ constant rather than an asymptotic estimate.",
+      "It shows the parent's sqrt-free quadratic-solving mechanism (reiman_quadratic_solve) generalizes verbatim to a whole family of extremal problems, and it feeds the density thresholds governing Erdős #1008."
+    ]
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [
+      "The $t$-parametric quadratic $4m^2 \\le (t-1)n^2(n-1) + 2nm$ has not been solved to explicit closed form in Lean.",
+      "The general discriminant identity $s^2 = 1 + 4(t-1)(n-1)$ (reducing to $4n-3$ at $t=2$) is not yet formalized.",
+      "The counting derivation of the $K_{2,t}$ quadratic itself ($\\sum_v \\binom{\\deg v}{2} \\le (t-1)\\binom{n}{2}$) is outside the parent scope."
+    ],
+    "goal": "Formalize a parametric lemma kst_quadratic_solve generalizing reiman_quadratic_solve: for reals $m,n,s\\ge 0$ with $n\\ge 1$, $c = t-1 \\ge 1$, and $s^2 = 1 + 4c(n-1)$ with $4m^2 \\le c\\,n^2(n-1) + 2nm$, prove $4m \\le n(1+s)$; then specialize to $c=1$ to recover the Reiman bound and confirm the discriminant collapses to $4n-3$."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-07-09T16:43:20-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "erdos",
+    "graph-theory",
+    "extremal",
+    "cycles",
+    "zarankiewicz",
+    "kovari-sos-turan",
+    "reiman",
+    "c4-free"
+  ],
+  "relatedProofs": [
+    "erdos-1008-oq-02"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": [
+      "Mathlib.Analysis.SpecialFunctions.Sqrt",
+      "Mathlib.Tactic.Linarith",
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.DoubleCounting"
+    ]
+  },
+  "started": "2026-07-09T16:43:20-07:00",
+  "significance": 5,
+  "tractability": 5
+}

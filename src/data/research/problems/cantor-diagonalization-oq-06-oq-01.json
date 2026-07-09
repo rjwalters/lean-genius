@@ -1,0 +1,70 @@
+{
+  "slug": "cantor-diagonalization-oq-06-oq-01",
+  "title": "Explicit Diagonal Real Missing From Any Listed Enumeration",
+  "phase": "OBSERVE",
+  "status": "available",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\forall\\, f : \\mathbb{N} \\to \\mathbb{R},\\ \\exists\\, x \\in [0,1],\\ \\forall\\, n \\in \\mathbb{N},\\ x \\neq f(n),\\ \\text{where } x \\text{ is the explicit diagonal real whose } n\\text{-th digit differs from that of } f(n), \\text{ not deduced from } \\aleph_0 < \\#\\mathbb{R}.",
+    "plain": "Given any sequence f(0), f(1), f(2), … of real numbers, explicitly construct a specific real x (as a definable function of f) and prove directly that x ≠ f(n) for every n, because x was built to disagree with f(n) at digit position n. This is Cantor's constructive 1891 diagonal argument, replacing the parent entry's abstract route through the cardinal inequality ℵ₀ < #ℝ.",
+    "whyMatters": [
+      "The diagonal argument underlies Cantor's theorem, Turing's halting problem, Gödel's incompleteness, and Russell's paradox; a digit-level formalization exposes the reusable mechanism instead of hiding it in a cardinality lemma.",
+      "A constructive witness (an actual real x, not just an existence claim) is strictly stronger than the non-constructive cardinal statement and matches how the argument is taught.",
+      "It provides a reusable template for downstream diagonalizations in the gallery and beyond."
+    ]
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [
+      "An explicit, definable map diagonalReal : (ℕ → ℝ) → ℝ producing a witness with diagonalReal f ≠ f n for all n, proven by direct digit comparison rather than via cardinality.",
+      "A clean digit-extraction and digit-comparison lemma usable for the disagreement step (n-th binary or decimal digit of a real in [0,1]), handling expansion non-uniqueness."
+    ],
+    "goal": "Define the witness x as an explicit function of the enumeration f (e.g. a bit sequence b n = if nthDigit (f n) n = 0 then 1 else 0 summed into [0,1]) and prove x ≠ f n for every n by exhibiting the differing digit, with no appeal to Cardinal.not_countable_real or #ℝ = 𝔠."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-07-09T16:43:20-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "set-theory",
+    "cardinality",
+    "cantor",
+    "uncountability",
+    "real-numbers",
+    "extension",
+    "research"
+  ],
+  "relatedProofs": [
+    "cantor-diagonalization-oq-06"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": [
+      "Mathlib.Analysis.Real.Cardinality",
+      "Mathlib.Analysis.SpecificLimits.Basic",
+      "Mathlib.Topology.Algebra.InfiniteSum.Basic",
+      "Mathlib.Data.Nat.Digits"
+    ]
+  },
+  "started": "2026-07-09T16:43:20-07:00",
+  "significance": 5,
+  "tractability": 5
+}
