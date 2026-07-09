@@ -36,15 +36,27 @@
     "prerequisites": ["diagonal/off-diagonal split of a finite product", "the triangle-doubling lemma", "cancellation by a nonzero scalar"]
   },
   {
-    "id": "ann-cauchyschwarzoq05-corollaries",
+    "id": "ann-cauchyschwarzoq05-inequality",
     "proofId": "cauchy-schwarz-oq-05",
-    "range": { "startLine": 110, "endLine": 128 },
+    "range": { "startLine": 110, "endLine": 118 },
     "type": "tactic",
-    "title": "Cauchy-Schwarz and the equality case as corollaries",
-    "content": "Both corollaries fall straight out of the sum-of-squares form. cauchy_schwarz: the defect equals ∑_{i<j}(minor)² ≥ 0 by Finset.sum_nonneg and sq_nonneg, so (∑aᵢbᵢ)² ≤ (∑aᵢ²)(∑bᵢ²) is one linarith step. cauchy_schwarz_eq_iff: rewrite the equality (∑aᵢbᵢ)² = (∑aᵢ²)(∑bᵢ²) as defect = 0 (eq_comm + sub_eq_zero), substitute the identity to get ∑_{i<j}(minor)² = 0, then Finset.sum_eq_zero_iff_of_nonneg turns this into 'every (minor)² = 0', and pow_eq_zero_iff into 'every minor = 0'. The vanishing of all 2×2 minors is exactly proportionality (linear dependence) of a and b — the classical equality condition, obtained here with no separate residual-norm argument.",
-    "mathContext": "$(\\sum a_ib_i)^2 = (\\sum a_i^2)(\\sum b_i^2) \\iff \\forall\\, i<j,\\ a_ib_j - a_jb_i = 0$.",
-    "significance": "supporting",
-    "relatedConcepts": ["Finset.sum_nonneg", "Finset.sum_eq_zero_iff_of_nonneg", "pow_eq_zero_iff", "proportionality / linear dependence", "equality characterization"],
+    "title": "Cauchy–Schwarz as a One-Line Corollary",
+    "content": "cauchy_schwarz falls straight out of the sum-of-squares form of Lagrange's identity: the defect (∑aᵢ²)(∑bᵢ²) − (∑aᵢbᵢ)² equals ∑_{i<j}(aᵢbⱼ − aⱼbᵢ)², a sum of squares that is ≥ 0 by Finset.sum_nonneg and sq_nonneg, so (∑aᵢbᵢ)² ≤ (∑aᵢ²)(∑bᵢ²) is a single linarith step. This makes the inequality a transparent consequence of an equality — the classical 'sum of squares certifies the inequality' pattern, with the excess exhibited explicitly rather than bounded.",
+    "mathContext": "$(\\sum a_i^2)(\\sum b_i^2) - (\\sum a_ib_i)^2 = \\sum_{i<j}(a_ib_j - a_jb_i)^2 \\ge 0 \\;\\Rightarrow\\; (\\sum a_ib_i)^2 \\le (\\sum a_i^2)(\\sum b_i^2).$",
+    "significance": "key",
+    "relatedConcepts": ["Cauchy–Schwarz inequality", "Finset.sum_nonneg", "sum-of-squares certificate", "Lagrange's identity"],
+    "prerequisites": ["Lagrange's identity", "a sum of squares is nonnegative"]
+  },
+  {
+    "id": "ann-cauchyschwarzoq05-equality",
+    "proofId": "cauchy-schwarz-oq-05",
+    "range": { "startLine": 120, "endLine": 128 },
+    "type": "insight",
+    "title": "Equality Characterization: All 2×2 Minors Vanish",
+    "content": "cauchy_schwarz_eq_iff is the sharp result the sum-of-squares form buys for free. Rewriting the equality (∑aᵢbᵢ)² = (∑aᵢ²)(∑bᵢ²) as defect = 0 (eq_comm + sub_eq_zero) and substituting Lagrange's identity gives ∑_{i<j}(aᵢbⱼ − aⱼbᵢ)² = 0; Finset.sum_eq_zero_iff_of_nonneg turns this into 'every (minor)² = 0' and pow_eq_zero_iff into 'every minor aᵢbⱼ − aⱼbᵢ = 0'. The vanishing of all 2×2 minors is exactly proportionality (linear dependence) of the vectors a and b — the classical equality condition — obtained here pointwise with no separate residual-norm or projection argument.",
+    "mathContext": "$(\\sum a_ib_i)^2 = (\\sum a_i^2)(\\sum b_i^2) \\iff \\forall\\, i<j,\\ a_ib_j - a_jb_i = 0$ (i.e. $a \\parallel b$).",
+    "significance": "key",
+    "relatedConcepts": ["equality characterization", "proportionality / linear dependence", "Finset.sum_eq_zero_iff_of_nonneg", "pow_eq_zero_iff", "2×2 minors"],
     "prerequisites": ["Lagrange's identity", "sum of nonnegatives is zero iff each term is zero", "x² = 0 ↔ x = 0"]
   }
 ]
