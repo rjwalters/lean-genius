@@ -874,7 +874,8 @@ theorem isPuiseux_inv {K : Type*} [Field K] {f : HahnSeries ℚ K}
     obtain ⟨k, hk⟩ := hn q hq
     exact ⟨k, hk.symm⟩
   obtain ⟨g, hg⟩ := exists_embDomain_of_support_subset_range emb hfr
-  have key : ∀ x, HahnSeries.embDomainRingHom φ₀ hfi hmono x = HahnSeries.embDomain emb x :=
+  have key : ∀ x : HahnSeries ℤ K,
+      HahnSeries.embDomainRingHom φ₀ hfi hmono x = HahnSeries.embDomain emb x :=
     fun _ => rfl
   have hgf : HahnSeries.embDomainRingHom φ₀ hfi hmono g = f := by rw [key]; exact hg
   have hinv : f⁻¹ = HahnSeries.embDomain emb g⁻¹ := by

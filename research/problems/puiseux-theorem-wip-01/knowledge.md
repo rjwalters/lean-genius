@@ -124,3 +124,54 @@ SIGBUS risk — deferred, not attempted this session.
 **Files Modified:** proofs/Proofs/PuiseuxTheorem.lean (+import Summable; +Part IX:
 isPuiseux_algebraMap, puiseuxSubalgebra, mem_puiseuxSubalgebra, isPuiseux_inv_single;
 758→811 lines, 18→19 numbered theorems + def).
+
+## Session (researcher-3, 2026-07-09): Full inverse-closure → subfield (Part X)
+
+**Mode**: REVISIT (MODERATE, depth-first) · **Outcome**: progress
+(1 reusable HahnSeries lemma + 2 theorems + 1 def, VERIFIED 0-sorry/0-axiom,
+docker-build 3070 jobs clean on 2nd attempt).
+
+**Contribution — Part X: the Puiseux series form a `Subfield`.** This closes the
+exact gap flagged as the "real next step" by researcher-2: the general
+inverse-closure `IsPuiseuxSeries f → IsPuiseuxSeries f⁻¹` (Part IX only had the
+single-term base case `isPuiseux_inv_single`).
+
+1. `exists_embDomain_of_support_subset_range` — the missing plumbing lemma. For an
+   order embedding `emb : Γ ↪o Γ'` (`Γ` a `LinearOrder`), a Hahn series `f` with
+   `f.support ⊆ Set.range emb` is in the range of `HahnSeries.embDomain emb`:
+   witness `g.coeff k = f.coeff (emb k)`. The only non-formal step is PWO of the
+   preimage support, done by `Set.isPWO_iff_isWF` + `Set.isWF_iff_no_descending_seq`:
+   a descending seq in `emb ⁻¹' f.support` maps through `emb.strictMono.comp_strictAnti`
+   to a descending seq in the well-ordered `f.support`. Complements Mathlib's
+   `support_embDomain_subset` (forward) / `embDomain_injective`.
+2. `isPuiseux_inv` — factor `f` (ramification `n`) through the field hom
+   `φ = embDomainRingHom (φ₀ : ℤ →+ ℚ, k ↦ k/n)`. Reconstruction gives `f = φ g`,
+   then `f⁻¹ = (φ g)⁻¹ = φ (g⁻¹)` by `map_inv₀`, whose support ⊆ range emb = (1/n)ℤ,
+   so Puiseux with the SAME ramification `n`. `f = 0` needs no special case
+   (`g = 0`, `φ 0 = 0`, `0⁻¹ = 0`).
+3. `puiseuxSubfield (K) [Field K] : Subfield (HahnSeries ℚ K)` + `mem_puiseuxSubfield`
+   (`Iff.rfl`). Upgrades `puiseuxSubring`/`puiseuxSubalgebra` — "the Puiseux series
+   form a field" is now a machine-checked substructure fact.
+
+**Technique / gotchas:**
+- `embDomainRingHom [NonAssocSemiring R] (f : Γ →+ Γ') hfi hf` has `R` IMPLICIT —
+  writing `embDomainRingHom φ₀ hfi hmono x` with `x`'s type unpinned gives a stuck
+  `Zero ?R` typeclass error. Annotate `x : HahnSeries ℤ K` (or `(R := K)`).
+- The OrderEmbedding underlying `embDomainRingHom φ₀ hfi hmono` is literally
+  `⟨⟨φ₀, hfi⟩, hmono _ _⟩`; defining `emb` as that exact term makes
+  `embDomainRingHom φ₀ hfi hmono x = embDomain emb x` hold by `rfl`.
+- `φ₀ : ℤ →+ ℚ`, `k ↦ (k:ℚ)/(n:ℚ)`: `map_add'` via `push_cast; ring`; monotone via
+  `div_le_div_iff_of_pos_right hn0` + `Int.cast_le`; injectivity for free from the
+  order-iff (`le_antisymm`).
+- `Set.IsPWO.mono (fun k hk => hk)` transports the anonymous preimage-series support
+  into `emb ⁻¹' f.support` by defeq (both unfold to `{k | f.coeff (emb k) ≠ 0}`).
+- Build: clean elaboration `[3070/3070]`, ONE real error first pass (the implicit-R
+  stuck instance), fixed → clean 2nd attempt. No SIGBUS this session.
+
+**Deferred (unchanged):** full Newton–Puiseux algebraic closure `IsAlgClosed (PuiseuxField K)`
+still needs the Newton-polygon term-by-term convergence machinery absent from Mathlib
+(>1000-line foundational build). The subfield statement is the natural terminus of the
+"structural rounding-out" line — beyond it is only the deep convergence result.
+
+**Files Modified:** proofs/Proofs/PuiseuxTheorem.lean (+Part X: 3 theorems + 1 def;
+811→933 lines, 21→24 numbered theorems, 4→5 defs), meta.json counts synced.
