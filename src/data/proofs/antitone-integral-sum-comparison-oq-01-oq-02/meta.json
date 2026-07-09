@@ -158,6 +158,49 @@
       "targetId": "antitone-integral-sum-comparison-oq-01",
       "relationship": "extends",
       "description": "Parent integral-test entry; this continues the parent's harmonic-defect analysis (Hₙ − log(n+1) ∈ [0,1]) toward the open question on the limiting constant."
+    },
+    {
+      "targetId": "harmonic-divergence",
+      "relationship": "related — quantitative refinement",
+      "description": "The harmonic series diverges (Hₙ → ∞); this entry pins down the rate: Hₙ = log n + γ + o(1) with γ the Euler–Mascheroni constant. The bare divergence is the leading log n term, and the convergent defect Hₙ − log n → γ is the exact second-order correction — so this entry is the quantitative refinement of the divergence result."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "tendsto_harmonic_sub_log",
+      "type": "main",
+      "description": "The textbook asymptotic Hₙ ∼ log n + γ: the defect Hₙ − log n converges to the Euler–Mascheroni constant. Bridges Mathlib's Real.tendsto_harmonic_sub_log.",
+      "leanType": "Tendsto (fun n : ℕ ↦ (harmonic n : ℝ) - Real.log n) atTop (𝓝 Real.eulerMascheroniConstant)"
+    },
+    {
+      "name": "tendsto_harmonic_sub_log_add_one",
+      "type": "main",
+      "description": "The parent's exact defect sequence Hₙ − log(n+1) — bounded only in [0,1] by the parent — converges to γ, promoting the parent's bracketing to a limit.",
+      "leanType": "Tendsto (fun n : ℕ ↦ (harmonic n : ℝ) - Real.log (n + 1)) atTop (𝓝 Real.eulerMascheroniConstant)"
+    },
+    {
+      "name": "gamma_mem_Ioo",
+      "type": "core",
+      "description": "Two-sided nested enclosure: γ ∈ (Hₙ − log(n+1), Hₙ − log n) for every n ≥ 1, from Mathlib's eulerMascheroniSeq / eulerMascheroniSeq' monotone bounds.",
+      "leanType": "(n : ℕ) (hn : 1 ≤ n) : Real.eulerMascheroniConstant ∈ Set.Ioo ((harmonic n : ℝ) - Real.log (n + 1)) ((harmonic n : ℝ) - Real.log n)"
+    },
+    {
+      "name": "tendsto_bracket_width",
+      "type": "core",
+      "description": "The enclosure width log(n+1) − log n tends to 0, so the nested intervals pin γ to arbitrary precision — obtained by subtracting the two convergent bracket sequences.",
+      "leanType": "Tendsto (fun n : ℕ ↦ Real.log (n + 1) - Real.log n) atTop (𝓝 0)"
+    },
+    {
+      "name": "gamma_mem_Ioo_half_twoThirds",
+      "type": "supporting",
+      "description": "Numeric localization 1/2 < γ < 2/3, sharpening 0 < γ < 1, from Mathlib's one_half_lt_eulerMascheroniConstant and eulerMascheroniConstant_lt_two_thirds.",
+      "leanType": "Real.eulerMascheroniConstant ∈ Set.Ioo (1 / 2 : ℝ) (2 / 3)"
+    },
+    {
+      "name": "gamma_enclosure_six",
+      "type": "supporting",
+      "description": "Concrete rational bracket from the n = 6 enclosure (H₆ = 49/20): 49/20 − log 7 < γ < 49/20 − log 6.",
+      "leanType": "(49 / 20 : ℝ) - Real.log 7 < Real.eulerMascheroniConstant ∧ Real.eulerMascheroniConstant < (49 / 20 : ℝ) - Real.log 6"
     }
   ],
   "sorries": null
