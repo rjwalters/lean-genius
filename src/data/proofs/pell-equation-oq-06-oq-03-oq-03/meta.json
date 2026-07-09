@@ -30,7 +30,7 @@
       "rec_unique: the recurrence uₙ₊₂ = c·uₙ₊₁ − uₙ with two initial values determines an integer sequence uniquely, for any coefficient c — the abstract form of the parent's coordinate-specific uniqueness lemmas"
     ],
     "assumptions": "None. Fully machine-checked: 0 axioms, 0 sorries, no native_decide (the concrete d = 2 sanity checks use kernel `decide` on ℤ√2 arithmetic, not `native_decide`). Imports only Mathlib, using its Zsqrtd (ℤ√d) API: re_mul, im_mul, norm_def, norm_mul.",
-    "theoremCount": 8,
+    "theoremCount": 9,
     "definitionCount": 0
   },
   "crossReferences": [
@@ -129,7 +129,7 @@
     "path": "Proofs/PellEquationOQ06OQ03OQ03.lean",
     "sorries": 0,
     "definitionCount": 0,
-    "theoremCount": 8,
+    "theoremCount": 9,
     "imports": [
       "Mathlib"
     ]
