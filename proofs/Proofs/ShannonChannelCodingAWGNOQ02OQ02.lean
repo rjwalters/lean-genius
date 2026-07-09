@@ -905,6 +905,18 @@ theorem correlation_affine_invariant_of_pos [IsProbabilityMeasure μ] {X Y : Ω 
     correlation (fun ω => a * X ω + b) (fun ω => c * Y ω + d) μ = correlation X Y μ := by
   rw [correlation_affine_invariant hX hY a b c d, Real.sign_of_pos (mul_pos ha hc), one_mul]
 
+/-- **Scale-and-shift sign flip (orientation-reversing case).**  Correlation flips sign under any
+pair of affine reparametrisations whose slopes have *opposite* orientation (`a·c < 0`):
+`ρ[a·X + b, c·Y + d] = -ρ[X, Y]`.  The orientation-reversing counterpart of
+`correlation_affine_invariant_of_pos`, specialising `correlation_affine_invariant` with
+`sign(a·c) = -1`.  Together the two lemmas exhaust the non-degenerate dichotomy: an affine change
+of units preserves the Pearson coefficient exactly when it is orientation-preserving and negates
+it exactly when it is orientation-reversing (e.g. `ρ[X, -Y] = -ρ[X, Y]`). -/
+theorem correlation_affine_invariant_of_neg [IsProbabilityMeasure μ] {X Y : Ω → ℝ}
+    (hX : MemLp X 2 μ) (hY : MemLp Y 2 μ) {a c : ℝ} (hac : a * c < 0) (b d : ℝ) :
+    correlation (fun ω => a * X ω + b) (fun ω => c * Y ω + d) μ = -correlation X Y μ := by
+  rw [correlation_affine_invariant hX hY a b c d, Real.sign_of_neg hac, neg_one_mul]
+
 /-!
 ### Sharp equality boundary of the standard-deviation triangle inequality
 
@@ -983,5 +995,25 @@ theorem stddev_add_eq_iff_affine_pos [IsProbabilityMeasure μ] {X Y : Ω → ℝ
       ∃ a b : ℝ, 0 < a ∧ X =ᵐ[μ] fun ω => a * Y ω + b := by
   rw [stddev_add_eq_iff_correlation_eq_one hX hY hXnd hYnd,
     correlation_eq_one_iff_affine_pos hX hY hXnd hYnd]
+
+/-- **Strict standard-deviation triangle inequality (non-degenerate, imperfect correlation).**
+For non-degenerate `X, Y` the L² triangle inequality `σ[X+Y] ≤ σ[X] + σ[Y]` of `stddev_add_le` is
+*strict*
+
+        √Var[X + Y] < √Var[X] + √Var[Y]
+
+whenever the correlation coefficient falls short of its maximum `ρ[X, Y] ≠ 1`.  The strict
+companion of `stddev_add_le`: since equality holds *exactly* at `ρ = 1`
+(`stddev_add_eq_iff_correlation_eq_one`), any imperfect (or negative) correlation forces a genuine
+gap — the standard deviations of a sum are *strictly* sub-additive off the fully-aligned diagonal.
+Combined with the equality characterisation this pins the two-term triangle inequality to a sharp
+dichotomy: equality iff `ρ = 1`, strict inequality otherwise. -/
+theorem stddev_add_lt_of_correlation_ne_one [IsFiniteMeasure μ] {X Y : Ω → ℝ}
+    (hX : MemLp X 2 μ) (hY : MemLp Y 2 μ) (hXnd : Var[X; μ] ≠ 0) (hYnd : Var[Y; μ] ≠ 0)
+    (hρ : correlation X Y μ ≠ 1) :
+    Real.sqrt (Var[X + Y; μ]) < Real.sqrt (Var[X; μ]) + Real.sqrt (Var[Y; μ]) := by
+  refine lt_of_le_of_ne (stddev_add_le hX hY) ?_
+  intro heq
+  exact hρ ((stddev_add_eq_iff_correlation_eq_one hX hY hXnd hYnd).mp heq)
 
 end ShannonAWGNMultiSymbolPower
