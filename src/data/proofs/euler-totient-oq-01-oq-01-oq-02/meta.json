@@ -50,28 +50,43 @@
   "mainTheorems": [
     {
       "name": "unit_pow_carmichael",
-      "type": "theorem",
-      "description": "Carmichael's theorem: every unit of ℤ/nℤ is killed by λ(n), i.e. a ^ λ(n) = 1 — the universal-exponent statement underlying Carmichael's function, a sharpening of Euler's a ^ φ(n) = 1 (λ(n) is the exponent of the unit monoid)."
+      "type": "core",
+      "description": "Carmichael's theorem: every unit of ℤ/nℤ is killed by λ(n), i.e. a ^ λ(n) = 1 — the universal-exponent statement underlying Carmichael's function, a sharpening of Euler's a ^ φ(n) = 1 (λ(n) is the exponent of the unit monoid).",
+      "leanType": "(n : ℕ) (a : (ZMod n)ˣ) : a ^ carmichael n = 1",
+      "startLine": 44,
+      "endLine": 47
     },
     {
       "name": "carmichael_dvd_of_forall_pow_eq_one",
-      "type": "theorem",
-      "description": "Minimality of λ(n): any common exponent k of the unit group (a ^ k = 1 for every unit a) is a multiple of λ(n). With unit_pow_carmichael this makes λ(n) the least positive universal exponent."
+      "type": "core",
+      "description": "Minimality of λ(n): any common exponent k of the unit group (a ^ k = 1 for every unit a) is a multiple of λ(n). With unit_pow_carmichael this makes λ(n) the least positive universal exponent.",
+      "leanType": "(n : ℕ) {k : ℕ} (hk : ∀ a : (ZMod n)ˣ, a ^ k = 1) : carmichael n ∣ k",
+      "startLine": 52,
+      "endLine": 55
     },
     {
       "name": "exists_unit_orderOf_eq_carmichael",
-      "type": "theorem",
-      "description": "Attainment / sharpness: for n ≥ 1 there is a λ-primitive unit of ℤ/nℤ whose order is exactly λ(n), so the bound a ^ λ(n) = 1 is met by some element and cannot be lowered."
+      "type": "key",
+      "description": "Attainment / sharpness: for n ≥ 1 there is a λ-primitive unit of ℤ/nℤ whose order is exactly λ(n), so the bound a ^ λ(n) = 1 is met by some element and cannot be lowered.",
+      "leanType": "(n : ℕ) [NeZero n] : ∃ a : (ZMod n)ˣ, orderOf a = carmichael n",
+      "startLine": 60,
+      "endLine": 63
     },
     {
       "name": "carmichael_dvd_totient",
-      "type": "theorem",
-      "description": "λ refines φ: Carmichael's function divides Euler's totient, λ(n) ∣ φ(n), since the exponent of a finite group divides its order and (ZMod n)ˣ has order φ(n)."
+      "type": "key",
+      "description": "λ refines φ: Carmichael's function divides Euler's totient, λ(n) ∣ φ(n), since the exponent of a finite group divides its order and (ZMod n)ˣ has order φ(n).",
+      "leanType": "(n : ℕ) [NeZero n] : carmichael n ∣ n.totient",
+      "startLine": 68,
+      "endLine": 72
     },
     {
       "name": "unit_pow_totient",
-      "type": "theorem",
-      "description": "Euler's theorem recovered from Carmichael: since λ(n) ∣ φ(n) and a ^ λ(n) = 1, every unit satisfies a ^ φ(n) = 1 — the Fermat–Euler theorem as a corollary of the sharper Carmichael period."
+      "type": "supporting",
+      "description": "Euler's theorem recovered from Carmichael: since λ(n) ∣ φ(n) and a ^ λ(n) = 1, every unit satisfies a ^ φ(n) = 1 — the Fermat–Euler theorem as a corollary of the sharper Carmichael period.",
+      "leanType": "(n : ℕ) [NeZero n] (a : (ZMod n)ˣ) : a ^ n.totient = 1",
+      "startLine": 77,
+      "endLine": 80
     }
   ],
   "sorries": 0,
@@ -94,6 +109,14 @@
     ]
   },
   "sections": [
+    {
+      "id": "header",
+      "title": "Module Docstring and Imports",
+      "startLine": 1,
+      "endLine": 43,
+      "summary": "Module docstring framing Carmichael's function λ(n) as the exponent of (ℤ/nℤ)ˣ and this leaf's goal — the named theorem a^λ(n)=1 and the precise sense in which λ(n) is the sharp universal exponent (refining the Fermat–Euler a^φ(n)=1). Imports the parent chain (CarmichaelMultiplicative, supplying carmichael/λ) and Mathlib's monoid-exponent API; namespace EulerTotientOQ01OQ01OQ02, open CarmichaelMultiplicative.",
+      "mathContext": "λ(n) = Monoid.exponent (ℤ/nℤ)ˣ; Carmichael's theorem a^λ(n)=1 sharpens Euler's a^φ(n)=1 because λ(n) ∣ φ(n) and is often strictly smaller (e.g. λ(8)=2 < φ(8)=4)."
+    },
     {
       "id": "part1-carmichael-theorem",
       "title": "Part I: Carmichael's Theorem and Minimality",
