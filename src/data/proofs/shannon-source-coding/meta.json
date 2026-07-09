@@ -2,7 +2,7 @@
   "id": "shannon-source-coding",
   "title": "Shannon Source Coding Theorem",
   "slug": "shannon-source-coding",
-  "description": "Shannon's source coding theorem (1948): the entropy $H(X) = -\\sum_x p(x)\\log p(x)$ is the fundamental limit of lossless data compression. For an i.i.d. source, compression to rate $R > H(X)$ bits per symbol is achievable with vanishing error, while any code at rate $R < H(X)$ fails. Proved via the Asymptotic Equipartition Property (AEP), which shows that probability concentrates on a typical set of $\\approx 2^{nH}$ sequences. Currently a placeholder formalization with theorem stubs proving True.",
+  "description": "Shannon's source coding theorem (1948): the entropy $H(X) = -\\sum_x p(x)\\log p(x)$ is the fundamental limit of lossless data compression. For an i.i.d. source, compression to rate $R > H(X)$ bits per symbol is achievable with vanishing error, while any code at rate $R < H(X)$ fails. Proved via the Asymptotic Equipartition Property (AEP), which shows that probability concentrates on a typical set of $\\approx 2^{nH}$ sequences. Currently a scaffold: the four intended results are recorded as comments, with no Lean declarations yet (0 theorems, 0 proofs).",
   "meta": {
     "author": "Claude Shannon (1948), formalized in Lean 4",
     "sourceUrl": "https://en.wikipedia.org/wiki/Shannon%27s_source_coding_theorem",
