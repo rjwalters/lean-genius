@@ -128,6 +128,13 @@
   },
   "sections": [
     {
+      "id": "preamble",
+      "title": "Module Header, Imports, and Overview",
+      "summary": "Imports Mathlib; the docstring frames this leaf of fundamental-theorem-algebra-oq-04: the parent proved Gal(ℂ/ℝ) has order 2 and is cyclic (abstractly ≅ ℤ/2ℤ), but only via Classical.choice of an unnamed generator. This file answers the open question by constructing the explicit iso galoisGroupEquivZMod2 that names the generator — sending complex conjugation Complex.conjAe to Multiplicative.ofAdd 1 — resting on the structure theorem eq_one_or_conjAe (the only automorphisms are identity and conjugation). Opens Complex, scoped Classical; namespace FTAGaloisIso.",
+      "startLine": 1,
+      "endLine": 50
+    },
+    {
       "id": "setup",
       "title": "Setup: IsGalois ℝ ℂ and |Gal(ℂ/ℝ)| = 2",
       "summary": "Re-establishes IsAlgClosure ℝ ℂ and IsGalois ℝ ℂ (self-contained), and computes the order of the Galois group as 2.",
