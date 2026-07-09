@@ -40,7 +40,8 @@
       "rothNumber_le_window (trivial baseline r_k(N) <= N+1)",
       "strongRequiredBound_mono / requiredBound_mono (threshold hypotheses downward-closed in k)",
       "countingFunction_frequently_gt_of_divergent (contrapositive density lower bound)",
-      "rothNumber_two: r_2(N) = 1 exactly — the k-1 floor from rothNumber_ge_min is tight at k=2. Reuses containsAP_two_of_lt (two distinct elements ⇒ 2-AP) for the ≤1 direction."
+      "rothNumber_two: r_2(N) = 1 exactly — the k-1 floor from rothNumber_ge_min is tight at k=2. Reuses containsAP_two_of_lt (two distinct elements ⇒ 2-AP) for the ≤1 direction.",
+      "rothNumber_zero_length / rothNumber_one_length (Erdos3Problem.lean): exact Roth-number values r₀(N)=0 and r₁(N)=0. r₀: a 0-term AP is the empty progression ArithProg a d 0=∅, contained vacuously by every set, so IsAPFree ↑S 0 is False for all S → the filtered family is ∅ and its sup is 0 (Finset.filter_eq_empty_iff + Finset.sup_empty). r₁: ArithProg a d 1={a}, so 1-AP-free ⟺ empty → only ∅ qualifies, sup card = 0 (Finset.sup_le + card_pos). Completes the exact boundary ladder r₀=0,r₁=0,r₂=1, showing the general floor min(k-1,N+1) is attained for ALL k≤2. Axiom-free, 0 sorry. [elaboration-clean; olean-write pending host recovery]"
     ],
     "insights": [
       "File did not compile on main (enrichment merged without build): ArithProg map/omega injectivity false for d=0, missing Decidable for Set-membership filters, orphaned /-- docstrings.",
@@ -50,7 +51,8 @@
       "StrongRequiredBound and RequiredBound are downward-closed in k via rothNumber_mono; requiring the bound for all k>=3 equals requiring it for all sufficiently large k.",
       "HasDivergentSum A => counting function exceeds C*N/(log N)^{1+delta} infinitely often (contrapositive of summable_of_strongBound), a reusable quantitative density lower bound.",
       "rothNumber is monotone in the window N as well as in k: r_k(M) <= r_k(N) for M<=N via powerset_mono on the range(M+1) subset range(N+1) inclusion (rothNumber_mono_size). This is the monotonicity used implicitly when comparing r_k across dyadic scales 2^j <= 2^{j+1}.",
-      "Trivial baseline r_k(N) <= N+1 (rothNumber_le_window): the whole window {0..N} caps every AP-free subset's card via Finset.sup_le + card_range. Every published o(N/log N) bound is an improvement below this baseline; Erdos #3's open content is how far below it r_k can be forced."
+      "Trivial baseline r_k(N) <= N+1 (rothNumber_le_window): the whole window {0..N} caps every AP-free subset's card via Finset.sup_le + card_range. Every published o(N/log N) bound is an improvement below this baseline; Erdos #3's open content is how far below it r_k can be forced.",
+      "The exact Roth-number boundary is a 3-rung ladder r₀=0, r₁=0, r₂=1: the two degenerate rungs come from the progression-length semantics — a 0-AP is the EMPTY set (contained by everything → nothing is 0-AP-free → sup ∅ = 0) and a 1-AP is a SINGLETON (1-AP-free ⟺ empty). This makes rothNumber_ge_min's floor min(k-1,N+1) provably TIGHT for every k≤2, complementing rothNumber_two and confirming Erdős #3 carries zero arithmetic content below k=3 at the quantitative (Roth-number) level, not just the set level."
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -69,7 +71,7 @@
     "mathlib": []
   },
   "started": "2026-04-03T08:27:10.083Z",
-  "lastUpdate": "2026-07-08",
+  "lastUpdate": "2026-07-09",
   "significance": 8,
   "tractability": 4
 }

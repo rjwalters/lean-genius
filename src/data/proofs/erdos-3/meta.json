@@ -49,7 +49,8 @@
       "Formal proof that Erdos #3 implies Green-Tao",
       "arithProg_card: a genuine k-term AP (d > 0) has exactly k elements, via injectivity of i ↦ a + i·d on range k — a reusable counting fact turning AP-containment into cardinality lower bounds",
       "infinite_of_containsArbitrarilyLongAP: only infinite sets contain arbitrarily long APs (a finite set of size n cannot contain the (n+1)-element AP it would need), a sorry-free axiom-free sanity check on the conjecture's conclusion side",
-      "not_summable_one_div_nat_mul_log (Proofs/Erdos3LogHarmonic.lean): a self-contained, sorry-free, axiom-free Cauchy-condensation proof that the log-harmonic (Bertrand) series ∑ 1/(n·log n) diverges — no equivalent exists in Mathlib v4.26. This substantiates the counterexample profile behind the o(N/log N) threshold: a set at that density (e.g. the primes, counting function ~ N/log N) can still have a divergent reciprocal sum, so RequiredBound alone cannot force the AP conclusion and the strictly stronger StrongRequiredBound O(N/(log N)^{1+δ}) threshold is genuinely needed"
+      "not_summable_one_div_nat_mul_log (Proofs/Erdos3LogHarmonic.lean): a self-contained, sorry-free, axiom-free Cauchy-condensation proof that the log-harmonic (Bertrand) series ∑ 1/(n·log n) diverges — no equivalent exists in Mathlib v4.26. This substantiates the counterexample profile behind the o(N/log N) threshold: a set at that density (e.g. the primes, counting function ~ N/log N) can still have a divergent reciprocal sum, so RequiredBound alone cannot force the AP conclusion and the strictly stronger StrongRequiredBound O(N/(log N)^{1+δ}) threshold is genuinely needed",
+      "rothNumber_zero_length / rothNumber_one_length: exact Roth-number values r₀(N)=0 and r₁(N)=0 at the degenerate boundary — a 0-AP is the empty progression (contained by every set, so no set is 0-AP-free → sup over empty family = 0), a 1-AP is a single point (so 1-AP-free ⟺ empty). Together with rothNumber_two (r₂(N)=1) this pins the exact value for every length k≤2 and shows the general floor min(k-1,N+1) is attained across the whole no-arithmetic-content regime. Axiom-free, 0 sorry."
     ],
     "additionalFiles": [
       {
@@ -63,7 +64,7 @@
       }
     ],
     "axiomCount": 0,
-    "lineCount": 801,
+    "lineCount": 844,
     "prerequisites": [
       "Arithmetic progressions and their properties",
       "Series convergence and divergence (reciprocal sums)",
@@ -72,7 +73,7 @@
       "Extremal combinatorics (Ramsey-type reasoning)"
     ],
     "assumptions": "0 axioms. `euler_prime_sum_diverges` (Euler 1737, ∑ 1/p diverges) is now a proved theorem, discharged from Mathlib's `not_summable_one_div_on_primes`. 1 sorry remains in `required_bound_implies_conjecture` (the o(N/log N) threshold), which is threshold-critical: as hard as Erdős #3 itself. The strictly stronger (log N)^{1+δ} threshold reduction (`strong_required_bound_implies_conjecture`) is fully proved, sorry-free and axiom-free.",
-    "theoremCount": 26,
+    "theoremCount": 28,
     "definitionCount": 12
   },
   "overview": {
@@ -247,9 +248,9 @@
       "Finset"
     ],
     "namespace": "Erdos3",
-    "lineCount": 801,
+    "lineCount": 844,
     "axiomCount": 0,
-    "theoremCount": 26,
+    "theoremCount": 28,
     "definitionCount": 12,
     "path": "Proofs/Erdos3Problem.lean",
     "sorries": 1
