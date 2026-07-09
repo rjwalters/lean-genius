@@ -131,6 +131,11 @@
       "targetId": "conjugacy-class-equation-oq-01",
       "relationship": "extends",
       "description": "Parent entry; this answers its second open question — a nontrivial finite p-group has nontrivial center — from per-class divisibility in the class equation."
+    },
+    {
+      "targetId": "conjugacy-class-equation-oq-01-oq-01",
+      "relationship": "related — supplies the tool",
+      "description": "Sibling entry proving the class equation in index form |G| = |Z(G)| + Σ [G : C_G(gᵢ)]. That is precisely the identity this entry applies: for a p-group each nontrivial-class index [G : C_G(gᵢ)] is divisible by p, so p divides |Z(G)|, forcing the center to be nontrivial."
     }
   ],
   "conclusion": {
