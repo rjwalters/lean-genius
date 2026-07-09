@@ -190,7 +190,7 @@
     }
   ],
   "conclusion": {
-    "summary": "This module provides a comprehensive Sidon set library (537 lines, 16 theorems/lemmas, 10 definitions, 21 axioms, 0 sorries) for Erdos Problem #340 and related problems. The fully proved results include Sidon closure, difference injectivity, counting arguments, the pigeonhole lower bound, and the weak upper bound. The axiomatized content includes the greedy sequence, its known N^(1/3) growth bound, and the open N^(1/2-epsilon) conjecture.",
+    "summary": "This module provides a comprehensive Sidon set library (648 lines, 24 theorems/lemmas, 14 definitions, 0 axioms, 0 sorries) for Erdos Problem #340 and related problems. The fully proved results include Sidon closure, difference injectivity, counting arguments, the pigeonhole lower bound, and the weak upper bound. The axiomatized content includes the greedy sequence, its known N^(1/3) growth bound, and the open N^(1/2-epsilon) conjecture.",
     "implications": "**Theoretical Significance**: The Sidon set infrastructure is a foundation for additive combinatorics in Lean.\n\nThe counting technique (bijection with powersetCard 2, then pigeonhole) is a pattern that extends to B_h sequences (sets where all h-fold sums are distinct). The 80-year gap between the N^(1/3) lower bound and the N^(1/2-epsilon) conjecture for the greedy sequence remains one of the most tantalizing open problems in combinatorial number theory.",
     "openQuestions": [
       "Prove the N^(1/3) greedy growth bound rigorously (currently axiomatized)",
