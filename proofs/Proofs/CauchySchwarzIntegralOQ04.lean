@@ -223,4 +223,55 @@ theorem heisenberg_variance_form {A B : E →ₗ[𝕜] E} (hA : A.IsSymmetric)
   robertson_uncertainty hA hB ψ (RCLike.re (inner 𝕜 ψ (A ψ)))
     (RCLike.re (inner 𝕜 ψ (B ψ)))
 
+/-- **Anticommutator = symmetric part of the centred inner product.**  Dual to
+`inner_commutator_eq_sub`.  For symmetric `A, B` and real shifts `a, b`, with
+`u = (A−a)ψ`, `v = (B−b)ψ`,
+
+  `⟪u,v⟫ + ⟪v,u⟫ = ⟪ψ,(AB+BA)ψ⟫ − 2b·⟪ψ,Aψ⟫ − 2a·⟪ψ,Bψ⟫ + 2ab·⟪ψ,ψ⟫`.
+
+Unlike the commutator, the shifts do **not** cancel: the anticommutator
+expectation is genuinely centred.  This is the identity that turns the
+covariance term of `schrodinger_uncertainty` into the physical anticommutator
+`½⟪ψ,{A,B}ψ⟫`. -/
+theorem inner_anticommutator_eq_add {A B : E →ₗ[𝕜] E} (hA : A.IsSymmetric)
+    (hB : B.IsSymmetric) (ψ : E) (a b : ℝ) :
+    inner 𝕜 (A ψ - (a : 𝕜) • ψ) (B ψ - (b : 𝕜) • ψ)
+        + inner 𝕜 (B ψ - (b : 𝕜) • ψ) (A ψ - (a : 𝕜) • ψ)
+      = inner 𝕜 ψ (A (B ψ) + B (A ψ))
+        - (↑(2 * b) : 𝕜) * inner 𝕜 ψ (A ψ)
+        - (↑(2 * a) : 𝕜) * inner 𝕜 ψ (B ψ)
+        + (↑(2 * a * b) : 𝕜) * inner 𝕜 ψ ψ := by
+  have e1 : inner 𝕜 (A ψ) (B ψ) = inner 𝕜 ψ (A (B ψ)) := hA ψ (B ψ)
+  have e2 : inner 𝕜 (B ψ) (A ψ) = inner 𝕜 ψ (B (A ψ)) := hB ψ (A ψ)
+  have e3 : inner 𝕜 (A ψ) ψ = inner 𝕜 ψ (A ψ) := hA ψ ψ
+  have e4 : inner 𝕜 (B ψ) ψ = inner 𝕜 ψ (B ψ) := hB ψ ψ
+  simp only [inner_sub_left, inner_sub_right, inner_smul_left, inner_smul_right,
+    inner_add_right, RCLike.conj_ofReal]
+  rw [e1, e2, e3, e4]
+  push_cast
+  ring
+
+/-- **Covariance in anticommutator form.**  Taking real parts of
+`inner_anticommutator_eq_add` and using `⟪v,u⟫ = conj⟪u,v⟫` (so
+`Re⟪v,u⟫ = Re⟪u,v⟫`) gives the physical covariance:
+
+  `Re⟪(A−a)ψ,(B−b)ψ⟫ = ½·Re⟪ψ,(AB+BA)ψ⟫ − b·Re⟪ψ,Aψ⟫ − a·Re⟪ψ,Bψ⟫ + ab·Re⟪ψ,ψ⟫`.
+
+At `a = ⟨A⟩ = Re⟪ψ,Aψ⟫`, `b = ⟨B⟩ = Re⟪ψ,Bψ⟫` and a unit state `‖ψ‖ = 1`, the
+right-hand side is exactly the symmetrized covariance `½⟪ψ,{A,B}ψ⟫ − ⟨A⟩⟨B⟩`, so
+the covariance term appearing in `schrodinger_uncertainty` reads directly in
+anticommutator form. -/
+theorem re_inner_centred_eq_anticommutator {A B : E →ₗ[𝕜] E} (hA : A.IsSymmetric)
+    (hB : B.IsSymmetric) (ψ : E) (a b : ℝ) :
+    RCLike.re (inner 𝕜 (A ψ - (a : 𝕜) • ψ) (B ψ - (b : 𝕜) • ψ))
+      = (1 / 2 : ℝ) * RCLike.re (inner 𝕜 ψ (A (B ψ) + B (A ψ)))
+        - b * RCLike.re (inner 𝕜 ψ (A ψ))
+        - a * RCLike.re (inner 𝕜 ψ (B ψ))
+        + a * b * RCLike.re (inner 𝕜 ψ ψ) := by
+  have hAdd := inner_anticommutator_eq_add hA hB ψ a b
+  have hre := congrArg RCLike.re hAdd
+  rw [map_add, inner_re_symm (B ψ - (b : 𝕜) • ψ) (A ψ - (a : 𝕜) • ψ)] at hre
+  simp only [map_add, map_sub, RCLike.re_ofReal_mul] at hre
+  linarith [hre]
+
 end CauchySchwarzIntegralOQ04
