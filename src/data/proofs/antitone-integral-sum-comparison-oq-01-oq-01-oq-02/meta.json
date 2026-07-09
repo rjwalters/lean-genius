@@ -67,7 +67,7 @@
       "id": "setup",
       "title": "Imports, statement, and namespace",
       "startLine": 1,
-      "endLine": 37,
+      "endLine": 38,
       "summary": "Import Mathlib; docstring framing the open question (quantitative remainder rate vs. the parent's single uniform bound 1/(p−1)); open the namespace and the BigOperators / Finset / intervalIntegral scopes.",
       "mathContext": "Target: $\\sum_{n>N} 1/n^p \\le \\int_N^\\infty x^{-p}\\,dx = N^{1-p}/(p-1)$ for $p>1$, $N\\ge 1$."
     },
@@ -75,7 +75,7 @@
       "id": "tail-partial",
       "title": "The tail partial-sum bound",
       "startLine": 39,
-      "endLine": 94,
+      "endLine": 95,
       "summary": "pseries_tail_partial_le: every finite tail ∑_{i<m} 1/(N+1+i)ᵖ is bounded by N^{1−p}/(p−1) uniformly in m, via AntitoneOn.sum_le_integral on [N, N+m], integral_rpow, and dropping the nonneg far-endpoint term.",
       "mathContext": "$\\sum_{i<m} \\frac{1}{(N+1+i)^p} \\le \\int_N^{N+m} x^{-p}\\,dx = \\frac{N^{1-p}-(N+m)^{1-p}}{p-1} \\le \\frac{N^{1-p}}{p-1}$."
     },
@@ -83,7 +83,7 @@
       "id": "tail-tsum",
       "title": "The tail bound (passing to the limit)",
       "startLine": 96,
-      "endLine": 105,
+      "endLine": 106,
       "summary": "pseries_tail_tsum_le: feed the uniform partial-sum bound to Real.tsum_le_of_sum_range_le to bound the full tail tsum.",
       "mathContext": "$\\sum'_{i} \\frac{1}{(N+1+i)^p} \\le \\frac{N^{1-p}}{p-1}$."
     },
@@ -91,7 +91,7 @@
       "id": "remainder",
       "title": "The genuine remainder bound",
       "startLine": 107,
-      "endLine": 127,
+      "endLine": 128,
       "summary": "pseries_remainder_le: Summable.sum_add_tsum_nat_add identifies the shifted tail with the truncation error (∑'_n − ∑_{i≤N}); summability from Real.summable_one_div_nat_rpow.",
       "mathContext": "$\\left(\\sum'_n \\tfrac{1}{n^p}\\right) - \\left(\\sum_{i\\le N}\\tfrac{1}{i^p}\\right) \\le \\frac{N^{1-p}}{p-1}$."
     },
@@ -99,7 +99,7 @@
       "id": "explicit",
       "title": "The explicit 1/((p−1)·N^{p−1}) form",
       "startLine": 129,
-      "endLine": 142,
+      "endLine": 143,
       "summary": "pseries_tail_explicit: rewrite N^{1−p}/(p−1) as 1/((p−1)·N^{p−1}) via Real.rpow_neg and field_simp, exhibiting the O(N^{1−p}) decay.",
       "mathContext": "$\\frac{N^{1-p}}{p-1} = \\frac{1}{(p-1)\\,N^{p-1}}$."
     },
@@ -156,6 +156,11 @@
       "targetId": "antitone-integral-sum-comparison-oq-01-oq-01",
       "relationship": "extends",
       "description": "Parent entry; this answers its second open question, turning the integral test into a quantitative convergence rate for the p-series tail (∑_{n>N} 1/nᵖ ≤ N^{1−p}/(p−1))."
+    },
+    {
+      "targetId": "basel-problem",
+      "relationship": "related — exact value",
+      "description": "The Basel problem gives the exact sum ∑ 1/n² = π²/6; the p=2 witness here bounds the error 0 ≤ π²/6 − ∑_{n≤N} 1/n² ≤ 1/N when that sum is truncated to N terms, so this entry is the quantitative truncation companion to Basel's closed form."
     }
   ]
 }
