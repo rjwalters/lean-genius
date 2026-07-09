@@ -36,15 +36,27 @@
     "prerequisites": ["2×2 determinants in Mathlib", "the scalar Binet–Cauchy identity above"]
   },
   {
-    "id": "ann-cauchyschwarzoq05oq02-corollaries",
+    "id": "ann-cauchyschwarzoq05oq02-lagrange",
     "proofId": "cauchy-schwarz-oq-05-oq-02",
-    "range": { "startLine": 128, "endLine": 151 },
+    "range": { "startLine": 128, "endLine": 139 },
+    "type": "insight",
+    "title": "Lagrange's Identity as the Diagonal Corollary c := a, d := b",
+    "content": "lagrange_identity specializes the Binet–Cauchy identity at c := a, d := b — the diagonal case. After that substitution each factor (cᵢdⱼ − cⱼdᵢ) becomes the same minor (aᵢbⱼ − aⱼbᵢ), so every product of minors becomes a square: `∑ bᵢaᵢ = ∑ aᵢbᵢ` (Finset.sum_congr with mul_comm) fixes the one commuted dot product and `pow_two` folds x·x into x². The result is exactly the parent's statement (∑aᵢ²)(∑bᵢ²) − (∑aᵢbᵢ)² = ∑_{i<j}(aᵢbⱼ − aⱼbᵢ)² — Lagrange's identity recovered as the a=c, b=d specialization of the more general four-vector Binet–Cauchy identity.",
+    "mathContext": "$c:=a,\\ d:=b \\implies (a_ib_j - a_jb_i)(c_id_j - c_jd_i) = (a_ib_j - a_jb_i)^2$, giving $(\\sum a_i^2)(\\sum b_i^2) - (\\sum a_ib_i)^2 = \\sum_{i<j}(a_ib_j - a_jb_i)^2$.",
+    "significance": "key",
+    "relatedConcepts": ["Lagrange's identity", "diagonal specialization", "pow_two", "Binet–Cauchy identity"],
+    "prerequisites": ["the Binet–Cauchy identity above", "commutativity of the dot product"]
+  },
+  {
+    "id": "ann-cauchyschwarzoq05oq02-cauchyschwarz",
+    "proofId": "cauchy-schwarz-oq-05-oq-02",
+    "range": { "startLine": 141, "endLine": 151 },
     "type": "tactic",
-    "title": "Lagrange's identity and Cauchy–Schwarz on the diagonal c := a, d := b",
-    "content": "lagrange_identity specializes binet_cauchy at c := a, d := b. After that substitution each factor (cᵢdⱼ − cⱼdᵢ) becomes the same minor (aᵢbⱼ − aⱼbᵢ), so each product of minors is a square; `∑ bᵢaᵢ = ∑ aᵢbᵢ` (Finset.sum_congr with mul_comm) fixes the one commuted dot product and `pow_two` folds x*x into x². The result is exactly the parent's statement (∑aᵢ²)(∑bᵢ²) − (∑aᵢbᵢ)² = ∑_{i<j}(aᵢbⱼ − aⱼbᵢ)². cauchy_schwarz then reads the inequality straight off: the recovered defect is ∑_{i<j}(minor)² ≥ 0 by Finset.sum_nonneg and sq_nonneg, so (∑aᵢbᵢ)² ≤ (∑aᵢ²)(∑bᵢ²) in one linarith step.",
-    "mathContext": "$c:=a,\\ d:=b \\implies (a_ib_j - a_jb_i)(c_id_j - c_jd_i) = (a_ib_j - a_jb_i)^2 \\ge 0$.",
-    "significance": "supporting",
-    "relatedConcepts": ["diagonal specialization", "pow_two", "Finset.sum_nonneg", "sq_nonneg", "Cauchy–Schwarz inequality"],
-    "prerequisites": ["the Binet–Cauchy identity above", "sum of nonnegatives is nonnegative"]
+    "title": "Cauchy–Schwarz as a One-Line Corollary",
+    "content": "cauchy_schwarz reads the inequality straight off the recovered Lagrange identity: the defect (∑aᵢ²)(∑bᵢ²) − (∑aᵢbᵢ)² equals ∑_{i<j}(aᵢbⱼ − aⱼbᵢ)², a sum of squares that is ≥ 0 by Finset.sum_nonneg and sq_nonneg, so (∑aᵢbᵢ)² ≤ (∑aᵢ²)(∑bᵢ²) in one linarith step. Thus Cauchy–Schwarz descends here through two specializations of Binet–Cauchy — first to Lagrange's identity, then to the inequality — with the excess exhibited explicitly as a sum of squared minors rather than merely bounded.",
+    "mathContext": "$(\\sum a_i^2)(\\sum b_i^2) - (\\sum a_ib_i)^2 = \\sum_{i<j}(a_ib_j - a_jb_i)^2 \\ge 0 \\;\\Rightarrow\\; (\\sum a_ib_i)^2 \\le (\\sum a_i^2)(\\sum b_i^2).$",
+    "significance": "key",
+    "relatedConcepts": ["Cauchy–Schwarz inequality", "sum-of-squares certificate", "Finset.sum_nonneg", "sq_nonneg"],
+    "prerequisites": ["the recovered Lagrange identity", "a sum of squares is nonnegative"]
   }
 ]
