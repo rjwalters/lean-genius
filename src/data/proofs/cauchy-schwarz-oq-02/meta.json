@@ -26,9 +26,9 @@
     "originalContributions": [
       "holder_finite_nnreal: Hölder's inequality ∑ f·g ≤ (∑ f^p)^{1/p} · (∑ g^q)^{1/q}",
       "cauchy_schwarz_from_holder: Cauchy-Schwarz as Hölder with p=q=2",
-      "l2_pythagorean: ‖f+g‖² = ‖f‖² + ‖g‖² when ⟨f,g⟩ = 0 in L²",
-      "l2_parallelogram: ‖f+g‖² + ‖f-g‖² = 2‖f‖² + 2‖g‖²",
-      "l2_polarization: ⟨f,g⟩ = (‖f+g‖² - ‖f-g‖²)/4 (real polarization identity)",
+      "pythagorean_L2: ‖f+g‖² = ‖f‖² + ‖g‖² when ⟨f,g⟩ = 0 in L²",
+      "parallelogram_law_L2: ‖f+g‖² + ‖f-g‖² = 2‖f‖² + 2‖g‖²",
+      "polarization_identity: ⟨f,g⟩ = (‖f+g‖² - ‖f-g‖²)/4 (real polarization identity)",
       "weighted_cauchy_schwarz: (Σ w_i a_i)² ≤ (Σ w_i)(Σ w_i a_i²)"
     ],
     "sourceUrl": "https://en.wikipedia.org/wiki/Cauchy%E2%80%93Schwarz_inequality"

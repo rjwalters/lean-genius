@@ -55,8 +55,7 @@
       "instDecidableIsSidon: decidability of the Sidon predicate, enabling the greedy least-valid-extension via Nat.find",
       "sidon_insert_of_large + sidon_exists_extension: every finite Sidon set extends by a strictly larger element (explicit witness 2*sup(A)+1); the greedy rule never gets stuck",
       "greedyPair / greedySidonSeq: explicit recursive construction of the greedy Sidon sequence (replaces axiom greedySidonSeq)",
-      "greedySidonSeq_strictMono, greedySidonSeq_isSidon: now THEOREMS (previously axioms) derived from the explicit construction",
-      "erdos_340: formal statement of Erdos's conjecture (OPEN)"
+      "greedySidonSeq_strictMono, greedySidonSeq_isSidon: now THEOREMS (previously axioms) derived from the explicit construction"
     ],
     "dateAdded": "2026-03-22",
     "axiomCount": 0,

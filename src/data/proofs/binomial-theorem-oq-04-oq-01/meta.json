@@ -59,8 +59,8 @@
       "lowPart: filter elements below threshold m",
       "highPart: filter elements ≥ m, then shift down by m",
       "merge: combine low-part A and shifted B into A ∪ shift(B)",
-      "split_merge_inverse: split and merge are mutually inverse",
-      "vandermonde_bijective_proof: C(m+n,r) = Σ_k C(m,k)·C(n,r-k) via explicit bijection"
+      "merge_lowPart_highPart: split and merge are mutually inverse",
+      "vandermonde_combinatorial: C(m+n,r) = Σ_k C(m,k)·C(n,r-k) via explicit bijection"
     ]
   },
   "overview": {

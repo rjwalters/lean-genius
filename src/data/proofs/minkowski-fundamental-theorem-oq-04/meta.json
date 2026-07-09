@@ -50,11 +50,8 @@
       }
     ],
     "originalContributions": [
-      "piBasicFun_toMatrix_eq_transpose: e.toMatrix(b) = (Matrix.of b)ᵀ for the Pi standard basis",
-      "basis_matrix_det_ne_zero: det(Matrix.of b) ≠ 0 for any Module.Basis — proved from change-of-basis product",
-      "Lattice.toModuleBasis_matrix_eq: Matrix.of(L.toModuleBasis n) = L.basis — matrix preserved under conversion",
-      "toModuleBasis_latticeOfBasis: round-trip identity latticeOfBasis ∘ toModuleBasis = id",
-      "latticeOfBasis_toModuleBasis: round-trip identity toModuleBasis ∘ latticeOfBasis = id",
+      "basis_det_ne_zero: det(Matrix.of b) ≠ 0 for any Module.Basis — proved from change-of-basis product",
+      "Lattice.ofBasis_toModuleBasis: round-trip identity latticeOfBasis ∘ toModuleBasis = id",
       "covolume_ofBasis_eq_fundamentalDomain: covolume of custom lattice equals ZSpan fundamental domain volume",
       "instIsZLatticeCustom: ZSpan of custom lattice carries IsZLattice ℝ structure",
       "custom_vol_to_ennreal: volume conversion bridge between custom and ZSpan measure theories",
