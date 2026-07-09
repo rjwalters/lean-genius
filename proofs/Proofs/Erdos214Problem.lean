@@ -379,4 +379,36 @@ theorem scaledLattice_infinite : ScaledLattice.Infinite := by
     exact_mod_cast mul_left_cancel₀ hs h0
   · exact scaledLattice_horiz_mem
 
+/-- **Monotonicity of unit-distance-freeness.** A subset of a unit-distance-free
+set is unit-distance-free.  Immediate from the definition (`∀ p q ∈ S, …`); the
+only content is restricting the quantifier along `S ⊆ T`. -/
+theorem IsUnitDistanceFree.mono {S T : Set Plane}
+    (hT : IsUnitDistanceFree T) (hST : S ⊆ T) : IsUnitDistanceFree S :=
+  fun p q hp hq hpq => hT p q (hST hp) (hST hq) hpq
+
+/-- **Unit-distance-free sets of every finite size exist.** For each `n` there is
+an `n`-point unit-distance-free set.  Take any `n`-element subset of the infinite
+scaled lattice `√2·ℤ²` (`scaledLattice_infinite`); it is unit-distance-free as a
+subset of the unit-distance-free lattice (`scaledLattice_unitDistanceFree`).
+
+Consequently the maximum size of a unit-distance-free set in the plane is
+*unbounded* — see `no_maximum_unitDistanceFree_card`.  This answers the
+"maximum size" half of Problem #214 for the plane: there is no finite cap. -/
+theorem exists_unitDistanceFree_finset_card (n : ℕ) :
+    ∃ S : Finset Plane, S.card = n ∧ IsUnitDistanceFree (↑S : Set Plane) := by
+  obtain ⟨t, hts, htc⟩ := scaledLattice_infinite.exists_subset_card_eq n
+  exact ⟨t, htc, scaledLattice_unitDistanceFree.mono hts⟩
+
+/-- **No finite maximum unit-distance-free set.** There is no bound `N` on the
+cardinality of a unit-distance-free finite set: for any candidate `N`,
+`exists_unitDistanceFree_finset_card (N+1)` produces a unit-distance-free set of
+size `N+1 > N`. -/
+theorem no_maximum_unitDistanceFree_card :
+    ¬ ∃ N : ℕ, ∀ S : Finset Plane, IsUnitDistanceFree (↑S : Set Plane) → S.card ≤ N := by
+  rintro ⟨N, hN⟩
+  obtain ⟨S, hcard, hfree⟩ := exists_unitDistanceFree_finset_card (N + 1)
+  have h := hN S hfree
+  rw [hcard] at h
+  omega
+
 end Erdos214

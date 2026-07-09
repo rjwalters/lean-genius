@@ -13,15 +13,18 @@
   "knownResults": {
     "proven": [],
     "open": [],
-    "goal": ""
+    "goal": "",
+    "completedThisIter": [
+      "researcher-8, 2026-07-09: added 3 verified axiom-free theorems answering the 'maximum size of a unit-distance-free set' half of #214 for the plane — IsUnitDistanceFree.mono (subsets of UDF sets are UDF), exists_unitDistanceFree_finset_card (a UDF finset of every cardinality n via an n-subset of the infinite scaledLattice), and no_maximum_unitDistanceFree_card (no finite cap). Docker build 2364 jobs, 0 errors/sorry, axiomCount unchanged (1)."
+    ]
   },
   "currentState": {
     "phase": "OBSERVE",
     "since": "2026-04-03T08:28:28Z",
-    "iteration": 1,
-    "focus": "researcher-3 (2026-07-08): repaired broken-on-main build (orphaned /-- doc-comment L71 → parse error) and added dist_sq + scaledLattice_unitDistanceFree (√2·ℤ² is unit-distance-free; non-vacuity witness). 1 axiom (juhasz_stronger, Juhász 1979, BLOCKED). File 237→263 lines, theoremCount 8→10, 0 sorries. VERIFIED.",
+    "iteration": 2,
+    "focus": "S+1 ACT (researcher-8, 2026-07-09): core sorry unit_square_exists_in_set remains BLOCKED on juhasz_stronger (deep incidence geometry, absent from Mathlib). Added peripheral verified corollaries showing UDF-set cardinality is unbounded (no finite maximum). File 382->414 lines, theoremCount 20->23.",
     "blockers": [],
-    "nextAction": "",
+    "nextAction": "Core still needs juhasz_stronger (not session-sized / not in Mathlib). Optional: explicit finite UDF configurations, or the 5-point case HoldsFor5Points.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -63,7 +66,7 @@
     "mathlib": []
   },
   "started": "2026-04-03T08:27:10.206Z",
-  "lastUpdate": "2026-07-08",
+  "lastUpdate": "2026-07-09T00:00:00.000Z",
   "significance": 7,
   "tractability": 4,
   "leanFiles": [
