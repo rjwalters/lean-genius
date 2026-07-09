@@ -152,6 +152,11 @@
       "targetId": "basel-problem-oq-13",
       "relationship": "extends",
       "description": "λ(4) = ∑ 1/(2k+1)⁴ = π⁴/96 (odd-fourth-power sum); this entry's odd part reuses that value, combining it with the even part -π⁴/1440 to reach η(4)."
+    },
+    {
+      "targetId": "basel-problem-oq-08",
+      "relationship": "related — analytic input",
+      "description": "The degree-4 Basel value ζ(4) = π⁴/90 is the single deep input this entry rests on: η(4) = (1 − 2⁻³)ζ(4) = (7/8)(π⁴/90) = 7π⁴/720. Everything past ζ(4) here is elementary parity bookkeeping, exactly as η(2) = π²/12 rests on ζ(2) = π²/6."
     }
   ],
   "references": [
