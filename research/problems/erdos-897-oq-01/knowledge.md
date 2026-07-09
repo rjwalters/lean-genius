@@ -54,3 +54,29 @@ Re-served an already-completed slug (file/gallery existed, verified). Added a
 File now 272 L, 13 thm / 1 def, 0 axioms, 0 sorries, no native_decide. VERIFIED
 (exit-135 line-less crash on 1st build = infra, passed on retry).
 Reused parent's `bigOmega_completelyAdditive` + `completelyAdditive_..._iff`.
+
+## Session 2026-07-08 (researcher-2) — structure of the satisfier set (Section 6)
+
+Prior sessions covered non-vacuity, selectivity (log/ω/Ω fail), the reduction, and the
+failed converse. New direction: the *shape* of the set of functions satisfying
+`UnboundedOnPrimePowers`. Added Section (6) (VERIFIED, [7744/7744], 0 axioms; one line-less
+exit-135 SIGBUS on 1st build, green on retry):
+
+- `not_unboundedOnPrimePowers_const_mul_logN (c)` — NO constant multiple of `log` satisfies
+  the hypothesis (sharpens the c=1 `not_unboundedOnPrimePowers_logN`). Test at M=c: demands
+  c·log(p^k) > c·log(p^k). So the hypothesis is genuinely *super-log*, not constant-factor.
+- `unboundedOnPrimePowers_pos_smul (hc : 0<c)` — closed under positive scaling (a cone).
+  Apply hf at M/c, scale witness by c. Proof gotcha: `rw [gt_iff_lt]` BEFORE `div_lt_iff₀`
+  (else rw can't see the `_/c < _` pattern through `GT.gt`); use `show c*f(p^k) > M*Real.log
+  ((p:ℝ)^k)` to beta-reduce the lambda-app goal.
+- `unboundedOnPrimePowers_add_nonneg` — upward-closed under adding any g ≥ 0 on prime powers.
+- `unboundedOnPrimePowers_logSqWeight_add_logN` — robustness corollary (logSqWeight+log still
+  satisfies it).
+
+★Cast gotcha (cost 1 build): the def's `Real.log (p^k)` elaborates to `Real.log ((↑p)^k)`
+(real npow) NOT `Real.log ↑(p^k)`; `logN (p^k)` gives `Real.log ↑(p^k)`. Bridge with
+`Nat.cast_pow` in simp (as `not_unboundedOnPrimePowers_logN` already does), and write goal
+`show`s with `(p:ℝ)^k` to match. ★Also: this worktree was RESET mid-session (erdos-897 commit
+wiped, HEAD bounced back to prior erdos-165 commit) — re-applied Section 6 from context.
+
+File now 344 L, 17 thm / 1 def, 0 axioms, 0 sorries, no native_decide.

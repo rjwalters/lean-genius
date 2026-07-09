@@ -53,9 +53,9 @@
       "stronglyAdditive_unboundedOnPrimePowers_iff: a strongly-additive reduction collapsing UnboundedOnPrimePowers f to 'f(p)/log p unbounded over primes' — the strongly-additive counterpart of the parent's completely-additive reduction. Since f(p^k)=f(p) is constant in k, the binding case is k=1; the M<0 branch is handled by invoking the hypothesis at 0 (then f(p) > 0 ≥ M·log p)"
     ],
     "axiomCount": 0,
-    "lineCount": 214,
+    "lineCount": 344,
     "assumptions": "None. Fully machine-checked with 0 axioms and 0 sorries; proofs use no native_decide (so #print axioms shows only propext/Classical.choice/Quot.sound). Part I of Erdős #897 — whether the prime-power growth hypothesis forces limsup_n (f(n+1)-f(n))/log n = ∞ — remains OPEN and is NOT asserted; this entry proves only the verified surrounding theory (non-vacuity, selectivity, plain unboundedness, and the strongly-additive reduction).",
-    "theoremCount": 9,
+    "theoremCount": 17,
     "definitionCount": 1
   },
   "overview": {
@@ -129,11 +129,11 @@
       "Finset"
     ],
     "namespace": "Erdos897",
-    "lineCount": 272,
+    "lineCount": 344,
     "axiomCount": 0,
     "sorries": 0,
     "definitionCount": 1,
-    "theoremCount": 13
+    "theoremCount": 17
   },
   "crossReferences": [
     {

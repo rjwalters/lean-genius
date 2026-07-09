@@ -269,4 +269,76 @@ theorem unbounded_not_implies_unboundedOnPrimePowers :
   ⟨bigOmega, bigOmega_completelyAdditive.1, bigOmega_unbounded_on_primePowers,
     not_unboundedOnPrimePowers_bigOmega⟩
 
+/-
+## (6) Structure of the satisfier set: a super-`log`, positive cone
+
+The classical selectivity result (2) shows `log` itself fails the hypothesis. But
+that leaves open whether merely *scaling* `log` by a large constant could qualify. It
+cannot: the hypothesis is scale-invariant along `log`, so it is a genuinely
+*super-constant* phenomenon rather than a matter of beating `log` by a fixed factor.
+We record this sharpening together with the two closure properties that pin down the
+shape of the satisfier set: it is a positive cone (closed under multiplication by a
+positive scalar) that is upward-closed under adding any function which is nonnegative
+on prime powers.
+-/
+
+/-- **No constant multiple of `log` satisfies the hypothesis** — the sharp form of
+`not_unboundedOnPrimePowers_logN` (its `c = 1` case). Since `(c·log)(p^k) = c·log(p^k)`
+*exactly*, testing the hypothesis at the multiplier `M = c` demands `c·log(p^k) >
+c·log(p^k)`, impossible. So the Erdős #897 hypothesis is not a constant-factor
+phenomenon: it isolates functions that outgrow *every* scalar multiple of `log`, which
+is exactly why the super-`log` witness `logSqWeight` (value `(log p)²`, i.e. `log`
+times the unbounded factor `log p`) is required. -/
+theorem not_unboundedOnPrimePowers_const_mul_logN (c : ℝ) :
+    ¬ UnboundedOnPrimePowers (fun n => c * logN n) := by
+  intro h
+  obtain ⟨p, k, _hp, _hk, hlt⟩ := h c
+  simp only [logN, Nat.cast_pow] at hlt
+  exact lt_irrefl _ hlt
+
+/-- **Positive scaling closure.** If `f` satisfies the hypothesis then so does `c·f`
+for every `c > 0`: given a target `M`, apply the hypothesis for `f` at `M/c` and scale
+the resulting witness inequality by `c`. Hence the satisfier set is a *cone*. -/
+theorem unboundedOnPrimePowers_pos_smul {f : ℕ → ℝ}
+    (hf : UnboundedOnPrimePowers f) {c : ℝ} (hc : 0 < c) :
+    UnboundedOnPrimePowers (fun n => c * f n) := by
+  intro M
+  obtain ⟨p, k, hp, hk, hpk⟩ := hf (M / c)
+  refine ⟨p, k, hp, hk, ?_⟩
+  show c * f (p ^ k) > M * Real.log ((p : ℝ) ^ k)
+  rw [gt_iff_lt, div_mul_eq_mul_div, div_lt_iff₀ hc] at hpk
+  -- hpk : M * log ((↑p)^k) < f (p^k) * c
+  rw [gt_iff_lt, mul_comm c (f (p ^ k))]
+  exact hpk
+
+/-- **Upward closure under nonnegative additive perturbation.** If `f` satisfies the
+hypothesis and `g` is nonnegative on prime powers, then `f + g` also satisfies it: the
+same witness `(p, k)` works because `g (p^k) ≥ 0` can only help. The satisfier set is
+therefore upward-closed under adding any function `g ≥ 0` on prime powers (in
+particular any additive `g` that is nonnegative there). -/
+theorem unboundedOnPrimePowers_add_nonneg {f g : ℕ → ℝ}
+    (hf : UnboundedOnPrimePowers f)
+    (hg : ∀ p k : ℕ, p.Prime → 1 ≤ k → 0 ≤ g (p ^ k)) :
+    UnboundedOnPrimePowers (fun n => f n + g n) := by
+  intro M
+  obtain ⟨p, k, hp, hk, hpk⟩ := hf M
+  refine ⟨p, k, hp, hk, ?_⟩
+  have hg0 := hg p k hp hk
+  show f (p ^ k) + g (p ^ k) > M * Real.log ((p : ℝ) ^ k)
+  linarith
+
+/-- **Robustness corollary.** Adding the boundary function `log` to the super-`log`
+witness keeps it in the satisfier set: `logSqWeight + log` still satisfies the Erdős
+#897 hypothesis. This concretely illustrates upward closure — a satisfier stays a
+satisfier after a nonnegative additive shift, even by the very function (`log`) that
+sits exactly at the boundary. -/
+theorem unboundedOnPrimePowers_logSqWeight_add_logN :
+    UnboundedOnPrimePowers (fun n => logSqWeight n + logN n) := by
+  refine unboundedOnPrimePowers_add_nonneg logSqWeight_unboundedOnPrimePowers ?_
+  intro p k hp _hk
+  simp only [logN]
+  apply Real.log_nonneg
+  have h1 : 1 ≤ p ^ k := Nat.one_le_pow _ _ hp.pos
+  exact_mod_cast h1
+
 end Erdos897
