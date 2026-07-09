@@ -58,7 +58,7 @@
     ]
   },
   "conclusion": {
-    "summary": "Ceva's theorem is fully proved geometrically in ℝ² using affine coordinates: cevians concurrent iff Ceva condition holds. Both forward and converse directions proved for standard and general triangles. Applications to medians (centroid) and angle bisectors (incenter) verified. Routh's 1/7 formula for medial thirds proved. 39 theorems, 20 definitions, 907 lines, 0 axioms.",
+    "summary": "Ceva's theorem is fully proved geometrically in ℝ² using affine coordinates: cevians concurrent iff Ceva condition holds. Both forward and converse directions proved for standard and general triangles. Applications to medians (centroid) and angle bisectors (incenter) verified. Routh's 1/7 formula for medial thirds proved. 39 theorems, 26 definitions, 907 lines, 0 axioms.",
     "implications": "This formalization provides the missing geometric bridge between the algebraic Ceva condition and actual point concurrency in the plane. It also demonstrates that the affine invariance approach cleanly handles all non-degenerate triangles by reduction to a canonical form.",
     "openQuestions": [
       "Trigonometric form of Ceva: sin(∠BAD)/sin(∠DAC) · ... = 1 (see CevasTheoremSinRatio.lean)",

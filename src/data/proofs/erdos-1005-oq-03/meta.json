@@ -55,7 +55,7 @@
     ]
   },
   "conclusion": {
-    "summary": "A self-contained, 0-axiom, 0-sorry formalization (212 lines, 7 theorems, 2 definitions) of the Farey adjacency criterion. The core lemma shows any fraction strictly between two unimodular neighbours a/b < c/d has denominator at least b + d; this yields the equivalence 'adjacent in F_n ⇔ b + d > n', with the mediant (a+c)/(b+d) as the explicit witness when adjacency fails, entering the Farey sequence at order exactly b + d.",
+    "summary": "A self-contained, 0-axiom, 0-sorry formalization (212 lines, 7 theorems, 3 definitions) of the Farey adjacency criterion. The core lemma shows any fraction strictly between two unimodular neighbours a/b < c/d has denominator at least b + d; this yields the equivalence 'adjacent in F_n ⇔ b + d > n', with the mediant (a+c)/(b+d) as the explicit witness when adjacency fails, entering the Farey sequence at order exactly b + d.",
     "implications": "The criterion supplies the structural foundation Erdős #1005 (longest run of consecutive similarly ordered Farey fractions) implicitly relies on: every run is a chain of adjacent fractions, and adjacency is now reduced to a denominator-sum inequality. The intermediate_denom_ge bound is reusable infrastructure for Farey/Stern–Brocot formalizations and for continued-fraction best-approximation arguments, where the same q ≥ b + d inequality controls convergent denominators.",
     "openQuestions": [
       "Run lengths from the criterion: can the denominator-sum criterion be combined with a counting argument over consecutive mediants to recover the known bounds (1/12 − o(1))n ≤ f(n) ≤ n/4 + O(1) on the longest similarly ordered run?",

@@ -115,7 +115,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Fully verified (0 sorries, 0 axioms) bridge between the parent's hand-written cubic discriminant Δ = 18abcd − 4b³d + b²c² − 4ac³ − 27a²d² and Mathlib's intrinsic resultant/discriminant theory: Mathlib's Polynomial.discr of the cubic equals Δ, and the resultant of the cubic with its derivative is Res(f, f′) = −a·Δ. The resultant vanishes iff Δ = 0, i.e. iff two roots coincide. 190 lines, 8 theorems, 1 definition.",
+    "summary": "Fully verified (0 sorries, 0 axioms) bridge between the parent's hand-written cubic discriminant Δ = 18abcd − 4b³d + b²c² − 4ac³ − 27a²d² and Mathlib's intrinsic resultant/discriminant theory: Mathlib's Polynomial.discr of the cubic equals Δ, and the resultant of the cubic with its derivative is Res(f, f′) = −a·Δ. The resultant vanishes iff Δ = 0, i.e. iff two roots coincide. 190 lines, 12 theorems, 1 definition.",
     "implications": "This answers the parent OQ-01-OQ-01's second open question: the gallery now expresses the cubic discriminant as the resultant Res(f, f′), the eliminant of f and its derivative, and ties the parent's coefficient polynomial to Mathlib's basis-free Sylvester-determinant definition. The same construction (resultant_deriv) generalizes verbatim to higher degree.",
     "openQuestions": [
       "Lift the bridge to a general commutative ring and a symbolic leading coefficient, expressing Res(f, f′) = (−1)^{n(n−1)/2}·aₙ·discr for the cubic over an arbitrary base.",

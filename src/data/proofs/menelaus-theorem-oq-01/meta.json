@@ -54,7 +54,7 @@
     ]
   },
   "conclusion": {
-    "summary": "Menelaus's theorem is fully proved in ℝ² via affine coordinates: the transversal division points X, Y, Z are collinear iff the product of signed side ratios equals -1. The proof reduces to a single determinant factorisation (collinearDet X Y Z = (tuv + (1-t)(1-u)(1-v))·collinearDet A B C) discharged by `ring`, with non-degeneracy cancelling the area factor. Both directional corollaries and a concrete numeric witness are included. 5 theorems, 6 definitions, 139 lines, 0 axioms.",
+    "summary": "Menelaus's theorem is fully proved in ℝ² via affine coordinates: the transversal division points X, Y, Z are collinear iff the product of signed side ratios equals -1. The proof reduces to a single determinant factorisation (collinearDet X Y Z = (tuv + (1-t)(1-u)(1-v))·collinearDet A B C) discharged by `ring`, with non-degeneracy cancelling the area factor. Both directional corollaries and a concrete numeric witness are included. 5 theorems, 8 definitions, 139 lines, 0 axioms.",
     "implications": "Provides the collinearity counterpart to the gallery's Ceva concurrency formalizations, completing the classical Ceva/Menelaus duality. The determinant-factorisation technique is reusable for other ratio/collinearity results (e.g. Routh's theorem and the theorems of Desargues and Pappus).",
     "openQuestions": [
       "Signed/unsigned reconciliation: derive the unsigned |product| = 1 form and the precise external-segment parity statement",

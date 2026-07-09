@@ -123,7 +123,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Fully proves Routh's theorem for arbitrary cevian parameters d, e, f ∈ (0,1). The key computation is the polynomial identity for signedArea(P,Q,R)/signedArea(A,B,C), proved by field_simp + ring after explicit vertex formulas. All 6 cevian memberships are verified. 19 theorems, 3 definitions, 0 axioms, 0 sorries.",
+    "summary": "Fully proves Routh's theorem for arbitrary cevian parameters d, e, f ∈ (0,1). The key computation is the polynomial identity for signedArea(P,Q,R)/signedArea(A,B,C), proved by field_simp + ring after explicit vertex formulas. All 6 cevian memberships are verified. 19 theorems, 6 definitions, 0 axioms, 0 sorries.",
     "implications": "This result completes the formalization of classical planar geometry via cevian theory. The Routh formula generalizes Ceva's theorem (ratio = 0 case) and connects to other triangle area formulas. It provides a computational tool for polygon area calculations in lattice geometry.",
     "openQuestions": [
       "Can Routh's theorem be generalized to higher-dimensional simplices? For a d-simplex with cevians from each vertex to the opposite face, is there an analogous interior volume formula?",

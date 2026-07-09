@@ -137,7 +137,7 @@
     ]
   },
   "conclusion": {
-    "summary": "The headline representation theorem `sq_add_three_sq_of_prime_one_mod_three` is proved with 0 sorries and 0 axioms, completing the n = 3 Heegner-number case the parent deferred. The file is 341 lines, 7 theorems, 1 definition, and rests on the parent's Eisenstein EuclideanDomain plus Mathlib's Legendre-symbol / UFD machinery.",
+    "summary": "The headline representation theorem `sq_add_three_sq_of_prime_one_mod_three` is proved with 0 sorries and 0 axioms, completing the n = 3 Heegner-number case the parent deferred. The file is 341 lines, 9 theorems, 1 definition, and rests on the parent's Eisenstein EuclideanDomain plus Mathlib's Legendre-symbol / UFD machinery.",
     "implications": "The same template — maximal order with multiplicative norm, EuclideanDomain ⟹ UFD, splitting via reciprocity, norm realisation — now stands complete through n = 3, mirroring the n = 1 (Fermat two-squares) and n = 2 (parent zsqrtd-neg-two) cases.",
     "openQuestions": [
       "Port the construction to n = 7 and n = 11 (the next quadratic Heegner numbers): build ℤ[(1+√-n)/2] with norm form a² + ab + ((n+1)/4)b². The cyclotomic coincidence ℤ[ω] = ℤ[ζ₃] breaks (the n = 7 maximal order is not cyclotomic) and the unit group collapses to {±1}.",

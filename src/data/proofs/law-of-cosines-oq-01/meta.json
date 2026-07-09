@@ -141,7 +141,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Fully verified (0 sorries, 0 axioms) proof of the spherical law of cosines in 341 lines with 24 theorems and 4 definitions. The central technique is inner product decomposition relative to a unit reference direction: ⟨u,v⟩ = ⟨u,n⟩⟨v,n⟩ + ⟨u⊥,v⊥⟩, which directly yields the spherical law when translated to trigonometric notation via cos(arcLength) = ⟨u,v⟩ and ‖proj⊥‖ = sin(arcLength).",
+    "summary": "Fully verified (0 sorries, 0 axioms) proof of the spherical law of cosines in 341 lines with 24 theorems and 9 definitions. The central technique is inner product decomposition relative to a unit reference direction: ⟨u,v⟩ = ⟨u,n⟩⟨v,n⟩ + ⟨u⊥,v⊥⟩, which directly yields the spherical law when translated to trigonometric notation via cos(arcLength) = ⟨u,v⟩ and ‖proj⊥‖ = sin(arcLength).",
     "implications": "The spherical law of cosines is the foundational identity of spherical trigonometry. Combined with its dual (the law of cosines for angles), it allows solving any spherical triangle — the basis of celestial navigation, geodesy, and satellite positioning.\n\nThe formalization demonstrates that the inner product decomposition approach cleanly separates the algebraic core from the trigonometric interpretation, making the proof coordinate-free and generalizable to higher-dimensional spheres.",
     "openQuestions": [
       "Prove the dual spherical law of cosines for angles: cos(C) = -cos(A)cos(B) + sin(A)sin(B)cos(c)",
