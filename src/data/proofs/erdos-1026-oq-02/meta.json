@@ -46,6 +46,14 @@
   },
   "sections": [
     {
+      "id": "preamble",
+      "title": "Module Header, Imports, and Problem Framing",
+      "startLine": 1,
+      "endLine": 46,
+      "summary": "Imports Mathlib; the docstring frames erdos-1026-oq-02 — whether the Erdős–Szekeres monotonic-subsequence guarantees survive when monotonicity is relaxed to ε-approximate monotonicity (later values may dip below earlier ones by at most ε). It states the easy half proved here (approximate monotonicity is a genuine relaxation, so every classical length lower bound transfers) and the hard open direction (whether the slack ever yields strictly longer subsequences). Notes the framework re-states the minimal Subsequence interface rather than importing Erdos1026Problem.lean. Opens Finset; namespace Erdos1026OQ02.",
+      "mathContext": "$\\varepsilon$-approximate monotonicity: a subsequence whose later values dip below earlier ones by at most a fixed tolerance $\\varepsilon \\ge 0$."
+    },
+    {
       "id": "subsequence-interface",
       "title": "The Subsequence Interface and Exact Monotonicity",
       "startLine": 47,
