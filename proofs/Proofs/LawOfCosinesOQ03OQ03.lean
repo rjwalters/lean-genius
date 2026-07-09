@@ -225,6 +225,65 @@ theorem aaa_congruence (t₁ t₂ : HyperbolicTriangle)
   ⟨a_determined t₁ t₂ hA hB hC, b_determined t₁ t₂ hA hB hC, c_determined t₁ t₂ hA hB hC⟩
 
 -- ============================================================
+-- PART 4a: Side–angle order WITHIN one triangle (greater angle ⟹ greater side)
+-- ============================================================
+
+/-- **Isosceles ⟸ equal angles.** Within a single hyperbolic triangle, two equal
+    angles force the two opposite sides to be equal: the angle-only formulas for
+    `cosh a` and `cosh b` coincide when `A = B`, and `cosh` is injective on `[0, ∞)`.
+    The hyperbolic base-angles theorem, recovered from AAA-type inversion. -/
+theorem isosceles_of_angle_eq (t : HyperbolicTriangle) (h : t.A = t.B) : t.a = t.b := by
+  have hcosh : Real.cosh t.a = Real.cosh t.b := by
+    rw [cosh_a_eq t, cosh_b_eq t, h]
+  exact Real.cosh_strictMonoOn.injOn (mem_Ici.mpr t.ha.le) (mem_Ici.mpr t.hb.le) hcosh
+
+/-- **Greater angle, greater side (single triangle).** Within one hyperbolic triangle,
+    `A < B` forces `a < b`: the opposite side of the larger angle is strictly longer.
+    This is the hyperbolic analogue of the Euclidean side–angle inequality.
+
+    Proof: comparing the angle-only closed forms `cosh a` and `cosh b`, the sign of
+    `cosh b − cosh a` factors (via `sin²+cos² = 1`) as
+    `sin C · sin(B−A) · (cos C + cos(A+B))`.  The first factor is positive, the second
+    positive since `A < B`, and the third positive by the angular defect
+    (`angle_formula_gt_one`: `sin A sin B < cos C + cos A cos B`, i.e. `cos C + cos(A+B) > 0`).
+    Hence `cosh a < cosh b`, and `cosh` is strictly monotone on `[0, ∞)`. -/
+theorem side_lt_of_angle_lt (t : HyperbolicTriangle) (hAB : t.A < t.B) : t.a < t.b := by
+  have hsA := sin_A_pos t
+  have hsB := sin_B_pos t
+  have hsC := sin_C_pos t
+  -- Angular-defect fact: cos C + cos A cos B − sin A sin B > 0  (= cos C + cos (A+B) > 0).
+  have hf := angle_formula_gt_one t
+  rw [lt_div_iff₀ (mul_pos hsA hsB), one_mul] at hf
+  have hkey :
+      0 < Real.cos t.C + Real.cos t.A * Real.cos t.B - Real.sin t.A * Real.sin t.B := by
+    linarith
+  -- sin (B − A) > 0, in expanded form.
+  have hsub : 0 < Real.sin (t.B - t.A) :=
+    Real.sin_pos_of_pos_of_lt_pi (by linarith) (by linarith [t.hB_lt, t.hA])
+  have hsubcs : 0 < Real.sin t.B * Real.cos t.A - Real.cos t.B * Real.sin t.A := by
+    rw [← Real.sin_sub]; exact hsub
+  -- Compare cosh a and cosh b via the angle-only closed forms.
+  have hcosh : Real.cosh t.a < Real.cosh t.b := by
+    rw [cosh_a_eq t, cosh_b_eq t,
+        div_lt_div_iff₀ (mul_pos hsB hsC) (mul_pos hsA hsC)]
+    have pA := Real.sin_sq_add_cos_sq t.A
+    have pB := Real.sin_sq_add_cos_sq t.B
+    have hLpos :
+        0 < (Real.cos t.B + Real.cos t.A * Real.cos t.C) * (Real.sin t.B * Real.sin t.C)
+              - (Real.cos t.A + Real.cos t.B * Real.cos t.C) * (Real.sin t.A * Real.sin t.C) := by
+      have hkeyid :
+          (Real.cos t.B + Real.cos t.A * Real.cos t.C) * (Real.sin t.B * Real.sin t.C)
+            - (Real.cos t.A + Real.cos t.B * Real.cos t.C) * (Real.sin t.A * Real.sin t.C)
+            = Real.sin t.C * ((Real.sin t.B * Real.cos t.A - Real.cos t.B * Real.sin t.A)
+                * (Real.cos t.C + Real.cos t.A * Real.cos t.B - Real.sin t.A * Real.sin t.B)) := by
+        linear_combination (-(Real.sin t.C * Real.sin t.B * Real.cos t.B)) * pA
+          + (Real.sin t.C * Real.sin t.A * Real.cos t.A) * pB
+      rw [hkeyid]
+      exact mul_pos hsC (mul_pos hsubcs hkey)
+    linarith
+  exact (Real.cosh_strictMonoOn.lt_iff_lt (mem_Ici.mpr t.ha.le) (mem_Ici.mpr t.hb.le)).mp hcosh
+
+-- ============================================================
 -- PART 4b: Angle–side monotonicity — a larger opposite angle forces a shorter side
 -- ============================================================
 
