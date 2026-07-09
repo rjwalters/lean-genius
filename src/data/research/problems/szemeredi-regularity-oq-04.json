@@ -26,7 +26,7 @@
     "nextAction": "Reconstruct the energy-increment step (epsilon-irregular refinement raises partitionEnergy by >= delta) from split_energy_excess_bound, then assemble the outer AFKS loop using partitionEnergy_no_infinite_increments as termination certificate."
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: the SHARP direct 2×2 energy increment (no factor-¼ loss) now lifts to the whole partition (partitionEnergy_prod_refinement_gain + ε⁴ floor partitionEnergy_prod_gain_eps4, VERIFIED 0/0). Remaining blocker for a fully-internal capstone is witness-cell freshness, shared with the one-sided route.",
+    "progressSummary": "PROGRESS: the sharp no-loss 2×2 route is now COMPLETE end-to-end as an iteration certificate — per-pair ε⁴ gain (pairEnergy_prod_gain_of_irregular_eps4) → sharp whole-partition gain (partitionEnergy_prod_gain_eps4) → sharp termination count afks_sharp_energy_iteration_count (N≤n²/(ε⁴M)), all VERIFIED 0/0. Remaining blocker for a FULLY-INTERNAL ∃P′ capstone from ¬IsEpsilonRegular is unchanged: discharging witness-cell freshness (A₁,A₂,B₁,B₂ distinct and ∉R) from a nonempty-parts partition model (shared with the one-sided partitionEnergy_gain_of_irregular_pair).",
     "builtItems": [
       "edgeDensity_union_mul in SzemerediRegularityOQ04Energy.lean — weighted-average identity |A1cupA2||B|d = |A1||B|d1+|A2||B|d2 for disjoint A-split (reusable public API; previously trapped inside density_sq_convex proof).",
       "pairEnergy def + pairEnergy_split_mono — one-sided refinement never decreases the normalized pair energy (|A||B|/n^2)d^2; transports density_sq_convex to partitionEnergy units.",
@@ -55,7 +55,8 @@
       "pairEnergy_prod_gain_of_irregular: direct 2x2 energy increment from an irregular pair (no triangle detour) — refine both coordinates via the witness (A′,A\\A′,B′,B\\B′), gain (|A′||B′|/n²)·ε² [VERIFIED]",
       "pairEnergy_prod_gain_of_irregular_eps4: explicit ε⁴·|A||B|/n² energy jump from ¬IsEpsilonRegular, the AFKS-consumable floor (no factor-¼ loss of the one-sided branches) [VERIFIED]",
       "partitionEnergy_prod_refinement_gain (SzemerediRegularityOQ04Assembly.lean): sharp whole-partition 2×2 gain — refining two distinct parts A,B into {A₁,A₂}×{B₁,B₂} raises partitionEnergy by (|A₁||B₁|/n²)·d², d=|d(A₁,B₁)−d(A,B)|. Lifts pairEnergy_prod_refinement_gain via ordered-pair block decomposition.",
-      "partitionEnergy_prod_gain_eps4 (SzemerediRegularityOQ04Assembly.lean): AFKS-consumable ε⁴ floor of the sharp lift — ε-irregular pair refined on both coords raises whole-partition energy by ≥ ε⁴|A||B|/n², free of the one-sided factor-¼/⅛ loss."
+      "partitionEnergy_prod_gain_eps4 (SzemerediRegularityOQ04Assembly.lean): AFKS-consumable ε⁴ floor of the sharp lift — ε-irregular pair refined on both coords raises whole-partition energy by ≥ ε⁴|A||B|/n², free of the one-sided factor-¼/⅛ loss.",
+      "afks_sharp_energy_iteration_count (SzemerediRegularityOQ04Assembly.lean): the SHARP AFKS iteration count N ≤ n²/(ε⁴·M). Feeds the no-loss floor partitionEnergy_prod_gain_eps4 (δ=ε⁴·M/n², M=minimum refined-pair mass |A||B|) into the [0,1]-potential termination engine partitionEnergy_iteration_bound (N≤1/δ). Factor-¼-free counterpart of afks_energy_iteration_count (δ=ε²/(2n²), N≤2n²/ε²). [VERIFIED 0/0]"
     ],
     "insights": [
       "partitionEnergy IS the standard size-weighted energy |Pi||Pj|/n^2 d^2 (SzemerediCore:63), NOT 1/k^2. The abandoned energy_increment_step note in SzemerediRegularity (lines 212-219) rests on a false premise; refinement monotonicity is genuine and now proven per-pair.",
@@ -75,12 +76,13 @@
       "The ε-irregular witness deviation |d(A,B)−d(A,B)| is DIRECTLY against the coarse mean, so refining both coords simultaneously makes the witness cell a single variance atom — dodging the S5 mixed-second-difference defect entirely (no Cauchy–Schwarz on cross terms).",
       "Bool×Bool index + Fintype.sum_prod_type/sum_bool cleanly instantiates the abstract atom gain over 4 cells; linear_combination needs coeff −1 against edgeDensity_prod_split (whole=Σcells orientation).",
       "Final /n² scaling: avoid convert (mis-pairs the + tree); prove goal=1/n²·raw via unfold+ring both sides then exact the scaled inequality.",
-      "The sharp direct 2×2 gain (no factor-¼ loss) DOES lift to the whole partition cleanly: the ordered-pair double sum splits into R×R (untouched), A/B rows & cols vs R (pure pairEnergy_split_mono/_mono_right), and the {A,B}² 4-term block refining into 16 sub-cells — diagonal A²,B² and the (B,A) cross by monotonicity, only the single (A,B) cross carries the variance-atom gain. So the whole-partition floor ε⁴|A||B|/n² beats the one-sided partitionEnergy_gain_of_irregular_pair floor ε²/(8n²)."
+      "The sharp direct 2×2 gain (no factor-¼ loss) DOES lift to the whole partition cleanly: the ordered-pair double sum splits into R×R (untouched), A/B rows & cols vs R (pure pairEnergy_split_mono/_mono_right), and the {A,B}² 4-term block refining into 16 sub-cells — diagonal A²,B² and the (B,A) cross by monotonicity, only the single (A,B) cross carries the variance-atom gain. So the whole-partition floor ε⁴|A||B|/n² beats the one-sided partitionEnergy_gain_of_irregular_pair floor ε²/(8n²).",
+      "The sharp 2×2 route now has a complete termination certificate: the no-loss per-pair ε⁴ floor lifts to the whole partition (partitionEnergy_prod_gain_eps4) and then, under a minimum-refined-pair-mass hypothesis |A||B|≥M, feeds the same energy-iteration engine as the one-sided route to give N≤n²/(ε⁴M). The sharp bound beats the one-sided 2n²/ε² once refined pairs carry mass M>ε²n²/2. Termination engine partitionEnergy_iteration_bound takes a generic δ and returns N≤1/δ, so the only new content is the δ-positivity + one_div_div reshaping (δ=ε⁴M/n² ⇒ 1/δ=n²/(ε⁴M))."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Discharge the 10 freshness hypotheses of partitionEnergy_prod_refinement_gain from an equipartition/refinement model to obtain a fully-internal ∃P′ capstone from ¬IsEpsilonRegular (the remaining blocker, shared with partitionEnergy_gain_of_irregular_pair — witness cells A₁,A₂,B₁,B₂ must be certified distinct and ∉R).",
-      "Feed partitionEnergy_prod_gain_eps4 as the hstep of afks_energy_iteration_count with the SHARP floor to get N ≤ 2n²/(ε⁴·minmass) — the sharp iteration count from the no-loss route.",
+      "Discharge witness-cell freshness from a nonempty-parts / disjoint-partition model (A′⊆A, B′⊆B nonempty ⇒ all four cells distinct and disjoint from R-parts; handle the degenerate A′=A ⇒ A∖A′=∅ cell) to obtain a fully-internal ∃P′ sharp capstone from ¬IsEpsilonRegular — the remaining hard blocker.",
+      "Bound the minimum refined-pair mass M in terms of an equipartition (parts of size ≈n/k) to turn afks_sharp_energy_iteration_count into a k-explicit tower-free bound.",
       "Generalize 2×2 → m×k product refinement via Finset(Finset V) families + card_biUnion over a Finset.biUnion product partition.",
       "State two-level AFKS conclusion with dependent tolerance E:ℕ→(0,1]."
     ],
@@ -193,6 +195,11 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SzemerediRegularityOQ04Energy.lean"
+    },
+    {
+      "path": "Proofs/SzemerediRegularityOQ04Assembly.lean",
+      "lineCount": 234,
+      "theoremCount": 4
     }
   ],
   "lastUpdate": "2026-07-08T00:00:00Z"

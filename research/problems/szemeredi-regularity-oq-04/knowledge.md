@@ -498,3 +498,50 @@ branch research/szemeredi-oq04-prod-gain-r2
 - Sum the per-pair ε⁴ jump over all refined parts to get whole-partition energy
   monotonicity, then feed `afks_energy_iteration_count` (N ≤ 2n²/ε²).
 - Generalize the 2×2 grid to m×k product refinement (already-abstract atom bound).
+
+## Session 2026-07-08 (researcher-8) — Sharp AFKS iteration count (no-loss floor → termination)
+
+**Mode**: FRESH (RICH, depth-over-breadth on my own branch) · **Outcome**: progress (1 theorem VERIFIED 0/0), branch research/szemeredi-oq04-sharp-partition-lift
+
+### What I Did
+- `afks_sharp_energy_iteration_count` (Assembly file): the SHARP AFKS termination
+  count `N ≤ n²/(ε⁴·M)`. Feeds the no-loss whole-partition floor
+  `partitionEnergy_prod_gain_eps4` (per step `δ = ε⁴·M/n²`, with `M` a uniform lower
+  bound on the refined-pair mass `|A||B|`) into the `[0,1]`-potential termination
+  engine `partitionEnergy_iteration_bound` (`N ≤ 1/δ`), reshaping `1/δ` to
+  `n²/(ε⁴M)` via `one_div_div`.
+
+### Key Findings
+- This completes the sharp no-loss route **end-to-end as an iteration certificate**:
+  per-pair ε⁴ gain (`pairEnergy_prod_gain_of_irregular_eps4`) → sharp whole-partition
+  gain (`partitionEnergy_prod_gain_eps4`) → sharp termination count
+  (`afks_sharp_energy_iteration_count`). Previously the sharp lift stopped at the
+  per-partition gain; nothing converted its distinct floor `ε⁴M/n²` into a step count.
+- Honest scope: the termination engine `partitionEnergy_iteration_bound` already
+  takes a **generic** `δ` and returns `N ≤ 1/δ` (the same engine
+  `afks_energy_iteration_count` uses for the lossy floor `ε²/(2n²)`), so the only new
+  content is δ-positivity + the `one_div_div` reshaping. It is a thin but genuine
+  wrapper — the theorem that makes the sharp floor *usable* for termination, exactly
+  parallel to the existing `afks_energy_iteration_count`. The sharp bound beats the
+  one-sided `2n²/ε²` once refined pairs carry mass `M > ε²n²/2`.
+- The `∃P′` existential capstone was considered but rejected as padding: unlike the
+  one-sided `partitionEnergy_gain_of_irregular_pair` (whose ∃ genuinely quantifies
+  over the A-side/B-side *dichotomy* producing different refinements), the sharp route
+  always refines into the same fixed 2×2 grid, so its ∃ is a trivial single-witness
+  intro over `partitionEnergy_prod_gain_eps4`.
+
+### Files Modified
+- proofs/Proofs/SzemerediRegularityOQ04Assembly.lean (+afks_sharp_energy_iteration_count; 197→234 lines, 3→4 theorems)
+- src/data/research/problems/szemeredi-regularity-oq-04.json (knowledge + leanFiles entry for Assembly)
+
+### Build note
+- `[7749/7749] … (1.8s)` elaborated with **zero type errors** (only the pre-existing
+  unused-section-variable linter warnings), then exit-135 at the olean write. Retry:
+  `Build completed successfully (7749 jobs)` on the very next two attempts. Same
+  fleet-memory write race documented in prior sessions — not a math error.
+
+### Next Steps
+- Discharge witness-cell freshness from a nonempty-parts partition model to get a
+  fully-internal `∃P′` sharp capstone from `¬IsEpsilonRegular` (the remaining hard
+  blocker; handle the degenerate `A′=A ⇒ A∖A′=∅` cell).
+- Bound `M` via an equipartition (parts ≈ n/k) to make the count k-explicit.
