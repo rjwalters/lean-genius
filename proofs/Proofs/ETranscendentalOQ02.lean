@@ -1134,6 +1134,182 @@ theorem match_count_ge_linear_of_modulus (b : ℕ) (hb : 2 ≤ b) (x : ℝ)
   exact le_of_lt hmul
 
 -- ============================================================
+-- PART IV.10: THE CONSERVATION LAW
+-- ============================================================
+
+/-!
+## Digit-tuple frequencies form a probability distribution
+
+Every base-`b` digit lies in `[0, b)` (`nthDigit_nonneg`, `nthDigit_lt_base`), so
+each starting position `n` determines a *unique* `k`-tuple — the block of digits
+at offsets `0, …, k-1`. Hence, over `Finset.range N`, the `bᵏ` tuple-match filters
+(one per `s : Fin k → Fin b`) **partition** `range N`:
+
+* `sum_match_count_eq` — the exact conservation law `∑ₛ count(s, N) = N`, proved by
+  fibering `range N` over the digit-tuple map. No normality is assumed; it is a
+  pure combinatorial identity of the digit expansion.
+* `sum_matchFreq_eq_one` — dividing by `N` (`N ≥ 1`), the empirical frequencies
+  `matchFreq b x k s N` sum to `1`: at every window the tuple frequencies are a
+  genuine probability distribution on `Fin k → Fin b`.
+
+The pay-off is **conservation-closure** of normality (`matchFreq_tendsto_of_others`,
+`isNormalInBase_of_all_but_one`): because the frequencies sum to `1` and there are
+exactly `bᵏ` tuples each demanded to converge to `b^{-k}` (whose total is `1`), the
+equidistribution of any *one* tuple is forced by that of all the others. So to
+certify normality one may omit an arbitrary block of each length — the conservation
+law fills in the last frequency for free.
+-/
+
+/-- A `Fin b` digit equals a target `t` iff the underlying ℤ-valued `nthDigit`
+    equals `(t : ℤ)`. The pointwise bridge between the `Fin b`-valued digit and
+    the ℤ-valued form appearing in `IsNormalInBase`. -/
+private lemma nthDigitFin_eq_s_iff (b : ℕ) (hb : 0 < b) (n : ℕ) (x : ℝ) (t : Fin b) :
+    nthDigitFin b hb n x = t ↔ nthDigit b n x = (t : ℤ) := by
+  have hcast := nthDigitFin_intCast b hb n x
+  constructor
+  · intro h
+    rw [← hcast, h]
+  · intro h
+    apply Fin.ext
+    have h2 : ((nthDigitFin b hb n x : ℕ) : ℤ) = ((t : ℕ) : ℤ) := by
+      rw [hcast, h]
+    exact_mod_cast h2
+
+/-- The empirical frequency of the `k`-tuple `s` among the first `N` starting
+    positions of the base-`b` expansion of `x`. This is exactly the quantity whose
+    convergence to `b^{-k}` defines `IsNormalInBase`. -/
+noncomputable def matchFreq (b : ℕ) (x : ℝ) (k : ℕ) (s : Fin k → Fin b) (N : ℕ) : ℝ :=
+  (((Finset.range N).filter
+      (fun n => ∀ i : Fin k, nthDigit b (n + i.val) x = (s i : ℤ))).card : ℝ) / (N : ℝ)
+
+/-- **The conservation law.** Over the first `N` starting positions, the matching
+    counts of the `bᵏ` tuples sum to exactly `N`: each position `n` belongs to the
+    fiber of a *unique* tuple — the digit block it actually carries — so the
+    tuple-match filters partition `Finset.range N`. A pure combinatorial identity
+    of the digit expansion; no normality is assumed. -/
+theorem sum_match_count_eq (b : ℕ) (hb : 2 ≤ b) (x : ℝ) (k N : ℕ) :
+    ∑ s : Fin k → Fin b,
+      ((Finset.range N).filter
+        (fun n => ∀ i : Fin k, nthDigit b (n + i.val) x = (s i : ℤ))).card = N := by
+  classical
+  have hbpos : 0 < b := by omega
+  -- The fiber map: the digit block actually starting at `n`.
+  set F : ℕ → (Fin k → Fin b) := fun n i => nthDigitFin b hbpos (n + i.val) x with hF
+  -- A position matches `s` (in the ℤ form) iff its digit block *is* `s`.
+  have key : ∀ (n : ℕ) (s : Fin k → Fin b),
+      (F n = s) ↔ (∀ i : Fin k, nthDigit b (n + i.val) x = (s i : ℤ)) := by
+    intro n s
+    rw [funext_iff]
+    refine forall_congr' (fun i => ?_)
+    simp only [hF]
+    exact nthDigitFin_eq_s_iff b hbpos (n + i.val) x (s i)
+  -- Each match-filter equals the corresponding fiber.
+  have hfilter : ∀ s : Fin k → Fin b,
+      (Finset.range N).filter
+          (fun n => ∀ i : Fin k, nthDigit b (n + i.val) x = (s i : ℤ))
+        = (Finset.range N).filter (fun n => F n = s) := by
+    intro s
+    ext n
+    simp only [Finset.mem_filter]
+    exact and_congr_right (fun _ => (key n s).symm)
+  calc
+    ∑ s : Fin k → Fin b,
+        ((Finset.range N).filter
+          (fun n => ∀ i : Fin k, nthDigit b (n + i.val) x = (s i : ℤ))).card
+        = ∑ s : Fin k → Fin b,
+            ((Finset.range N).filter (fun n => F n = s)).card :=
+          Finset.sum_congr rfl (fun s _ => by rw [hfilter s])
+      _ = (Finset.range N).card :=
+          (Finset.card_eq_sum_card_fiberwise
+            (s := Finset.range N) (t := Finset.univ)
+            (f := F) (fun n _ => Finset.mem_univ (F n))).symm
+      _ = N := Finset.card_range N
+
+/-- **Frequencies form a probability distribution.** For `N ≥ 1` the empirical
+    frequencies of the `bᵏ` tuples sum to `1` — the normalised form of the
+    conservation law `sum_match_count_eq`. -/
+theorem sum_matchFreq_eq_one (b : ℕ) (hb : 2 ≤ b) (x : ℝ) (k N : ℕ) (hN : 0 < N) :
+    ∑ s : Fin k → Fin b, matchFreq b x k s N = 1 := by
+  have hNR : (N : ℝ) ≠ 0 := by exact_mod_cast hN.ne'
+  simp only [matchFreq]
+  rw [← Finset.sum_div, ← Nat.cast_sum, sum_match_count_eq b hb x k N]
+  exact div_self hNR
+
+/-- **Conservation-closure of normality.** Fix a length `k` and a distinguished
+    tuple `s₀`. If *every other* tuple `s ≠ s₀` has matching frequency converging
+    to `b^{-k}`, then so does `s₀`. Proof: the frequencies sum to `1` at every
+    window (`sum_matchFreq_eq_one`), so `matchFreq s₀ N = 1 - ∑_{s ≠ s₀} matchFreq s N`;
+    the finite sum on the right converges to `(bᵏ - 1)·b^{-k} = 1 - b^{-k}`, hence
+    the left side converges to `b^{-k}`. The equidistribution of one block is thus
+    *forced* by that of all the others. -/
+theorem matchFreq_tendsto_of_others (b : ℕ) (hb : 2 ≤ b) (x : ℝ) (k : ℕ)
+    (s₀ : Fin k → Fin b)
+    (hothers : ∀ s : Fin k → Fin b, s ≠ s₀ →
+      Tendsto (fun N => matchFreq b x k s N) atTop (nhds ((b : ℝ) ^ (-(k : ℤ))))) :
+    Tendsto (fun N => matchFreq b x k s₀ N) atTop (nhds ((b : ℝ) ^ (-(k : ℤ)))) := by
+  classical
+  have hbpos : (0 : ℝ) < (b : ℝ) := by exact_mod_cast (by omega : 0 < b)
+  have hbk_pos : (0 : ℝ) < (b : ℝ) ^ k := pow_pos hbpos k
+  have hbk_ne : (b : ℝ) ^ k ≠ 0 := ne_of_gt hbk_pos
+  have hzpow : (b : ℝ) ^ (-(k : ℤ)) = ((b : ℝ) ^ k)⁻¹ := by
+    rw [zpow_neg, zpow_natCast]
+  -- The sum over the remaining tuples converges.
+  have hsum_tendsto :
+      Tendsto (fun N => ∑ s ∈ Finset.univ.erase s₀, matchFreq b x k s N) atTop
+        (nhds (∑ _s ∈ Finset.univ.erase s₀, (b : ℝ) ^ (-(k : ℤ)))) :=
+    tendsto_finset_sum (Finset.univ.erase s₀)
+      (fun s hs => hothers s (Finset.ne_of_mem_erase hs))
+  -- There are exactly bᵏ - 1 other tuples.
+  have hcard : (Finset.univ.erase s₀ : Finset (Fin k → Fin b)).card = b ^ k - 1 := by
+    rw [Finset.card_erase_of_mem (Finset.mem_univ _), Finset.card_univ]
+    congr 1
+    simp [Fintype.card_pi, Fintype.card_fin, Finset.prod_const, Finset.card_univ]
+  have hconst : (∑ _s ∈ Finset.univ.erase s₀, (b : ℝ) ^ (-(k : ℤ)))
+      = ((b ^ k - 1 : ℕ) : ℝ) * (b : ℝ) ^ (-(k : ℤ)) := by
+    rw [Finset.sum_const, hcard, nsmul_eq_mul]
+  -- Frequency of s₀ is 1 minus the rest, eventually.
+  have heq : ∀ᶠ N in atTop, matchFreq b x k s₀ N
+      = 1 - ∑ s ∈ Finset.univ.erase s₀, matchFreq b x k s N := by
+    filter_upwards [eventually_ge_atTop 1] with N hN
+    have hsum1 : ∑ s : Fin k → Fin b, matchFreq b x k s N = 1 :=
+      sum_matchFreq_eq_one b hb x k N hN
+    rw [← Finset.add_sum_erase _ _ (Finset.mem_univ s₀)] at hsum1
+    linarith [hsum1]
+  -- Take the limit of `1 - (rest)`.
+  have htarget :
+      Tendsto (fun N => 1 - ∑ s ∈ Finset.univ.erase s₀, matchFreq b x k s N) atTop
+        (nhds (1 - ((b ^ k - 1 : ℕ) : ℝ) * (b : ℝ) ^ (-(k : ℤ)))) := by
+    have h := hsum_tendsto.const_sub (1 : ℝ)
+    rwa [hconst] at h
+  -- The forced limit value is exactly b^{-k}.
+  have hval : (1 : ℝ) - ((b ^ k - 1 : ℕ) : ℝ) * (b : ℝ) ^ (-(k : ℤ))
+      = (b : ℝ) ^ (-(k : ℤ)) := by
+    rw [hzpow]
+    have h1 : 1 ≤ b ^ k := Nat.one_le_pow _ _ (by omega)
+    have hcast : ((b ^ k - 1 : ℕ) : ℝ) = (b : ℝ) ^ k - 1 := by
+      rw [Nat.cast_sub h1]; push_cast; ring
+    rw [hcast, sub_mul, mul_inv_cancel₀ hbk_ne]
+    ring
+  rw [← hval]
+  exact Filter.Tendsto.congr' (heq.mono fun N h => h.symm) htarget
+
+/-- **Normality needs only "all but one block per length".** If, for every tuple
+    length `k`, all tuples except one distinguished `s₀ k` have matching frequency
+    converging to `b^{-k}`, then `x` is normal in base `b` — the omitted block's
+    frequency is supplied automatically by conservation
+    (`matchFreq_tendsto_of_others`). A convenient reduction of the normality test. -/
+theorem isNormalInBase_of_all_but_one (b : ℕ) (hb : 2 ≤ b) (x : ℝ)
+    (s₀ : ∀ k, Fin k → Fin b)
+    (h : ∀ k, ∀ s : Fin k → Fin b, s ≠ s₀ k →
+        Tendsto (fun N => matchFreq b x k s N) atTop (nhds ((b : ℝ) ^ (-(k : ℤ))))) :
+    IsNormalInBase b x := by
+  intro k s
+  by_cases hs : s = s₀ k
+  · subst hs
+    simpa only [matchFreq] using matchFreq_tendsto_of_others b hb x k (s₀ k) (h k)
+  · simpa only [matchFreq] using h k s hs
+
+-- ============================================================
 -- PART V: OPEN QUESTION
 -- ============================================================
 
