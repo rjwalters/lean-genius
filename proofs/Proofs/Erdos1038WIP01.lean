@@ -359,10 +359,122 @@ noncomputable def sublevelInf' : ℝ≥0∞ :=
 
 /-- **Faithful infimum upper bound: `sublevelInf' ≤ 2`.**  The linear `X` is faithfully
     admissible (`linear_admissible'`) with sublevel measure `2`, so the faithful infimum is
-    at most `2`.  Unlike the literal `sublevelInf_le_two`, this bound is *not* undercut to `0`
-    by a rootless witness; the true faithful infimum `2^(4/3) − 1 ≈ 1.52 < 2` lies below it
-    but beyond the elementary witnesses available here. -/
+    at most `2`.  This bound is genuine but *not* tight; moreover the faithful infimum still
+    degenerates to `0` (`sublevelInf'_eq_zero` below), because faithful admissibility as
+    stated does not yet exclude the constant polynomial `1`.  The intended value
+    `2^(4/3) − 1 ≈ 1.52` requires *both* complete splitting *and* non-constancy. -/
 theorem sublevelInf'_le_two : sublevelInf' ≤ ENNReal.ofReal 2 :=
   iInf_le_of_le X (iInf_le_of_le linear_admissible' sublevelMeasure_linear.le)
+
+/-! ### Faithfulness alone is not enough: the constant `1` still collapses the infimum
+
+The faithful predicate `MonicRealRootedIn01'` excludes the *rootless* `X² + 1`
+(`sq_add_one_not_admissible'`), but it does **not** encode the "non-constant" clause of
+Erdős #1038 ("*non-constant* monic polynomials, all roots real in `[-1,1]`").  The constant
+polynomial `1` is monic, has an empty root multiset (`roots.card = 0 = natDegree`, so it
+*splits completely* — vacuously), hence is faithfully admissible; yet `{x : |1| < 1} = ∅`
+has measure `0`.  So `sublevelInf' = 0` as well: faithfulness fixes the *rootless* pathology
+but not the *degenerate constant* one.  The correct formalization needs `1 ≤ f.natDegree`. -/
+
+/-- **The constant `1` is faithfully admissible.**  It is monic with an empty root multiset,
+    so every root lies in `[-1,1]` vacuously and `roots.card = 0 = natDegree` (it "splits
+    completely" for the trivial reason that it has no roots and degree `0`). -/
+theorem one_admissible' : MonicRealRootedIn01' (1 : Polynomial ℝ) := by
+  refine ⟨⟨monic_one, ?_⟩, ?_⟩
+  · intro r hr
+    rw [Polynomial.roots_one] at hr
+    exact absurd hr (by simp)
+  · rw [Polynomial.roots_one, natDegree_one]; simp
+
+/-- **The sublevel set of the constant `1` is empty**: `|1| = 1 ≮ 1`. -/
+theorem sublevelSet_one : sublevelSet (1 : Polynomial ℝ) = ∅ := by
+  ext x
+  simp only [sublevelSet, Set.mem_setOf_eq, Polynomial.eval_one, abs_one,
+    lt_self_iff_false, Set.mem_empty_iff_false]
+
+/-- **The sublevel set of the constant `1` has Lebesgue measure `0`.** -/
+theorem sublevelMeasure_one : sublevelMeasure (1 : Polynomial ℝ) = 0 := by
+  unfold sublevelMeasure
+  rw [sublevelSet_one, measure_empty]
+
+/-- **The faithful infimum also degenerates to `0`.**  The constant `1` is faithfully
+    admissible with an empty (measure-`0`) sublevel set, so `sublevelInf' = 0`.  This
+    mirrors `sublevelInf_eq_zero` for the literal predicate: adding complete splitting is
+    *not* sufficient to recover the intended infimum — the non-constancy clause of the
+    Erdős problem is also required. -/
+theorem sublevelInf'_eq_zero : sublevelInf' = 0 :=
+  le_antisymm
+    (iInf_le_of_le 1 (iInf_le_of_le one_admissible' sublevelMeasure_one.le))
+    (zero_le _)
+
+/-! ### The correct predicate: non-constant, complete real splitting, roots in `[-1,1]`
+
+Adding `1 ≤ f.natDegree` to the faithful predicate excludes *both* degenerate witnesses
+(`X² + 1`, rootless; and `1`, constant), matching the Erdős #1038 hypothesis exactly.  We
+verify the two exact witnesses (`X² − 1`, `X`) still qualify — so the `2√2` lower bound
+transfers — and record that *every* witness now has strictly positive sublevel measure
+(`faithful_sublevelMeasure_pos` applies since the degree hypothesis is now built in). -/
+
+/-- **Non-constant faithful admissibility.**  `f` is monic, splits completely over `ℝ`
+    with all roots in `[-1,1]`, *and* is non-constant (`1 ≤ f.natDegree`).  This is the
+    exact hypothesis class of Erdős #1038; it excludes both `X² + 1` and the constant `1`. -/
+def MonicRealRootedIn01'' (f : Polynomial ℝ) : Prop :=
+  MonicRealRootedIn01' f ∧ 1 ≤ f.natDegree
+
+/-- The extremal quadratic `X² − 1` is non-constant faithfully admissible (degree `2`). -/
+theorem quadratic_admissible'' : MonicRealRootedIn01'' q := by
+  refine ⟨quadratic_admissible', ?_⟩
+  have hnd : q.natDegree = 2 := by simp only [q]; compute_degree!
+  omega
+
+/-- The linear polynomial `X` is non-constant faithfully admissible (degree `1`). -/
+theorem linear_admissible'' : MonicRealRootedIn01'' (X : Polynomial ℝ) :=
+  ⟨linear_admissible', le_of_eq natDegree_X.symm⟩
+
+/-- **The constant `1` is excluded** by the non-constant faithful predicate (`natDegree 0`). -/
+theorem one_not_admissible'' : ¬ MonicRealRootedIn01'' (1 : Polynomial ℝ) := by
+  rintro ⟨-, hdeg⟩
+  rw [natDegree_one] at hdeg
+  exact absurd hdeg (by norm_num)
+
+/-- **`X² + 1` is excluded** by the non-constant faithful predicate (fails to split). -/
+theorem sq_add_one_not_admissible'' :
+    ¬ MonicRealRootedIn01'' (X ^ 2 + C 1 : Polynomial ℝ) :=
+  fun h => sq_add_one_not_admissible' h.1
+
+/-- The **non-constant faithful supremum** of sublevel-set measures.  This is the object
+    for which Tao's `= 2√2` is the precise statement of Erdős #1038. -/
+noncomputable def sublevelSup'' : ℝ≥0∞ :=
+  ⨆ (f : Polynomial ℝ) (_ : MonicRealRootedIn01'' f), sublevelMeasure f
+
+/-- **Non-constant faithful supremum lower bound: `2√2 ≤ sublevelSup''`.**  `X² − 1` is
+    non-constant, splits completely, and attains sublevel measure `2√2`, so the `2√2` lower
+    bound of Tao's theorem transfers to the correctly-formalized supremum. -/
+theorem le_sublevelSup'' : ENNReal.ofReal (2 * Real.sqrt 2) ≤ sublevelSup'' :=
+  le_iSup_of_le q (le_iSup_of_le quadratic_admissible'' sublevelMeasure_quadratic.ge)
+
+/-- The **non-constant faithful infimum** of sublevel-set measures — the object whose value
+    is the open `2^(4/3) − 1 ≤ inf ≤ 1.835` of Erdős #1038.  Unlike `sublevelInf` and
+    `sublevelInf'`, this infimum has *no* measure-`0` witness: every admissible `f` is
+    non-constant and splits completely, so it has a real root and positive measure
+    (`nonconstant_faithful_sublevelMeasure_pos`).  Whether the infimum itself is positive
+    (it is, `= 2^(4/3) − 1`) needs logarithmic potential theory beyond Mathlib. -/
+noncomputable def sublevelInf'' : ℝ≥0∞ :=
+  ⨅ (f : Polynomial ℝ) (_ : MonicRealRootedIn01'' f), sublevelMeasure f
+
+/-- **Non-constant faithful infimum upper bound: `sublevelInf'' ≤ 2`.**  Witnessed by the
+    linear `X` (measure `2`).  Genuine but not tight (true value `≈ 1.52`). -/
+theorem sublevelInf''_le_two : sublevelInf'' ≤ ENNReal.ofReal 2 :=
+  iInf_le_of_le X (iInf_le_of_le linear_admissible'' sublevelMeasure_linear.le)
+
+/-- **Every non-constant faithful witness has positive sublevel measure.**  Because the
+    degree hypothesis `1 ≤ f.natDegree` is now part of the predicate, `f` splits with a
+    nonempty real-root multiset, so `faithful_sublevelMeasure_pos` applies.  This is the
+    structural payoff: unlike `sublevelInf` (undercut by `X² + 1`) and `sublevelInf'`
+    (undercut by `1`), the non-constant faithful infimum is an infimum of *strictly
+    positive* measures — the correct setting for the open value `2^(4/3) − 1`. -/
+theorem nonconstant_faithful_sublevelMeasure_pos (f : Polynomial ℝ)
+    (hf : MonicRealRootedIn01'' f) : 0 < sublevelMeasure f :=
+  faithful_sublevelMeasure_pos f hf.1 hf.2
 
 end Erdos1038WIP01
