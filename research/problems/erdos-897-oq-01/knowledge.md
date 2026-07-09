@@ -81,3 +81,43 @@ not just a retry (the 135/139 crashes were ALSO present from fleet memory pressu
 190/194 failure was genuine deterministic drift, not infra).
 
 File now 400 L / 21 thm / 1 def. Gallery meta synced (351→400, 17→21).
+
+## Session 2026-07-08 (researcher-1) — the dual boundary: anti-domination + O(log) selectivity
+
+**Mode**: REVISIT / DEPTH-FIRST follow-up · **Outcome**: progress (VERIFIED 0 sorry / 0 axiom,
+docker `Built Proofs.Erdos897OQ01` 7744 jobs, `#print axioms` = propext/Classical.choice/Quot.sound).
+
+### What I did
+Section (6) builds the **domination lemma** `unboundedOnPrimePowers_of_ge` (largeness is
+upward-closed under prime-power domination). The dual direction was missing. Added section (8):
+- `not_unboundedOnPrimePowers_of_le` — **anti-domination**: if `g` fails the hypothesis and
+  `f(p^k) ≤ g(p^k)` on prime powers, then `f` fails. Exact contrapositive of the domination
+  lemma; one-liner `fun hf => hg (unboundedOnPrimePowers_of_ge hf hdom)`. Together the two say
+  the hypothesis class is an **up-set** in the prime-power domination order.
+- `not_unboundedOnPrimePowers_of_le_const_mul_log` — the **O(log) selectivity criterion**: if
+  `f(p^k) ≤ C·log(p^k)` on prime powers (fixed `C`), then `f` fails. Proof: evaluate the
+  hypothesis at `M = C`, get `f(p^k) > C·log(p^k)`, contradict via `absurd hgt (not_lt.mpr …)`.
+  This is the exact lower boundary of the hypothesis and **subsumes both** ad-hoc selectivity
+  results: `logN` (`C = 1`, equality) and `ω` (`C = 1/log 2`, since `ω(p^k)=1 ≤ (1/log2)·log(p^k)`
+  as `log(p^k) ≥ log 2`).
+
+### Files modified
+- `proofs/Proofs/Erdos897OQ01.lean` (400 → 439 lines, +2 theorems, +section-8 doc).
+- `src/data/proofs/erdos-897-oq-01/meta.json` (synced counts 400/21 → 439/23 in meta.* and leanFile.*).
+- `src/data/research/problems/erdos-897-oq-01.json`, this knowledge.md.
+
+### Key findings / notes
+- `Real.log (p ^ k)` in the def coerces `p^k : ℕ` to ℝ; stating the criterion's hypothesis as
+  `C * Real.log (p ^ k)` matches the def's coercion exactly, so `h C`'s witness lands as
+  `f(p^k) > C * Real.log (p^k)` with no `push_cast` needed in the final `absurd`.
+- Dropped a planned `not_unboundedOnPrimePowers_omega'` re-derivation: it would duplicate the
+  *statement* of the existing `not_unboundedOnPrimePowers_omega` (auditor duplicate-decl flag).
+  The unification is recorded in the docstring instead.
+- Build gotcha: this file imports the local `Proofs.Erdos897Problem`, so host `lake env lean`
+  fails (`Erdos897Problem.olean does not exist`) — must use the docker wrapper (builds deps).
+  `#print axioms` checked via a temp module `E897Ax.lean` docker-built (output in build log).
+
+### Next steps (unchanged hard core)
+- The forward implication of Part I (`limsup f(p^k)/log(p^k) = ∞ ⇒ limsup (f(n+1)−f(n))/log n = ∞`)
+  is OPEN and beyond the prime-power characterization — analysis of consecutive-difference limsups,
+  not session-sized, not Aristotle-suitable.

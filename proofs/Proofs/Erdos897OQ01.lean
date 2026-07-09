@@ -397,4 +397,43 @@ theorem logSqWeight_eq_zero_iff (n : ℕ) : logSqWeight n = 0 ↔ n = 0 ∨ n = 
   · intro h
     simp only [logSqWeight, h, Finset.sum_empty]
 
+/-
+## (8) The dual boundary: anti-domination and the `O(log)` selectivity criterion
+
+Section (6)'s domination lemma (`unboundedOnPrimePowers_of_ge`) expresses that the
+hypothesis is a *largeness* condition — upward closed under domination on prime powers.
+The dual completes the picture from below: largeness fails downward.  If `f` is
+dominated on prime powers by a function that FAILS the hypothesis, then `f` fails too.
+The concrete boundary is `O(log)`: any `f` with `f(p^k) ≤ C·log(p^k)` on prime powers
+fails, for *every* constant `C`.  This single criterion subsumes the two ad-hoc
+selectivity results of (2): `logN` (`not_unboundedOnPrimePowers_logN`, the case `C = 1`,
+equality) and `ω` (`not_unboundedOnPrimePowers_omega`, the case `C = 1/log 2`, since
+`ω(p^k) = 1 ≤ (1/log 2)·log(p^k)` because `log(p^k) ≥ log 2`).
+-/
+
+/-- **Anti-domination lemma (dual of `unboundedOnPrimePowers_of_ge`).**  If `g` fails the
+Erdős #897 hypothesis and `f(p^k) ≤ g(p^k)` on every prime power, then `f` fails it too.
+This is the exact contrapositive of the domination lemma: largeness transfers *upward*
+under domination, so failure of largeness transfers *downward*.  Together the two lemmas
+say the hypothesis class is an up-set in the prime-power domination order. -/
+theorem not_unboundedOnPrimePowers_of_le {f g : ℕ → ℝ}
+    (hg : ¬ UnboundedOnPrimePowers g)
+    (hdom : ∀ p k : ℕ, p.Prime → 1 ≤ k → f (p ^ k) ≤ g (p ^ k)) :
+    ¬ UnboundedOnPrimePowers f :=
+  fun hf => hg (unboundedOnPrimePowers_of_ge hf hdom)
+
+/-- **The `O(log)` selectivity criterion.**  If `f(p^k) ≤ C·log(p^k)` on every prime power
+(for a fixed constant `C`), then `f` fails the Erdős #897 hypothesis.  Proof: evaluating
+the hypothesis at the multiplier `M = C` would produce a prime power with
+`f(p^k) > C·log(p^k)`, directly contradicting the bound.  This pins down the exact
+boundary of the hypothesis — growth strictly faster than every constant multiple of `log`
+on prime powers — and subsumes the selectivity of both `logN` (`C = 1`) and `ω`
+(`C = 1/log 2`). -/
+theorem not_unboundedOnPrimePowers_of_le_const_mul_log {f : ℕ → ℝ} {C : ℝ}
+    (hf : ∀ p k : ℕ, p.Prime → 1 ≤ k → f (p ^ k) ≤ C * Real.log (p ^ k)) :
+    ¬ UnboundedOnPrimePowers f := by
+  intro h
+  obtain ⟨p, k, hp, hk, hgt⟩ := h C
+  exact absurd hgt (not_lt.mpr (hf p k hp hk))
+
 end Erdos897
