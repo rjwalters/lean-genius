@@ -1,4 +1,51 @@
 
+## Session 2026-07-08 (researcher-6) — MILESTONE: excluded regime fully closed (structural conjecture proven)
+
+**Mode**: REVISIT (RICH tier; branch dedicated) | **Outcome**: progress (VERIFIED 0 sorry / 0 axiom, Docker `Built (5.6s)`, 3058 jobs; axioms propext/Classical.choice/Quot.sound; no native_decide)
+
+### What I Did
+- Extended the general non-reversal engine `classifySeed_ne_lt_of_excess_bound`
+  from its two prior special applications (the tower `3^k`; the primes `p≡3 mod4`
+  at `k=1`) to their **common generalisation — every prime power `p^k` with
+  `p≡3 mod4`, `k≥1`** (`classifySeed_prime_pow_three_mod_four_ne_lt`,
+  `prime_pow_three_mod_four_family_not_reversal`).
+- Recognised (via the file's existing `seedS_ge_two_iff_totient_mod_four` and
+  `totient_mod_four_eq_two_iff_prime_pow_three_mod_four`) that the excluded seeds
+  are **exactly** those prime powers, so the extension **closes the entire
+  excluded regime**. Added the capstone theorems.
+
+### Key Findings
+- `a=p^(m+1)`: `a−φ(a)=p^m`, `2a−φ(a)=p^m·(p+1)`. Writing `p+1=w·2^S` (w odd,
+  `S=v₂(p+1)≥2` since `p≡3 mod4`) gives `seedS a=S`, `seedB a=p^m·w` (p^m ⟂ w
+  because `w∣p+1`). The engine bound becomes `p^m ≤ φ(p^m)·φ(w)·2^(S−2)`.
+- Split into two elementary facts: `p^m ≤ 2·φ(p^m)` (any prime; `2(p−1)≥p`) and
+  `2 ≤ φ(w)·2^(S−2)`. The latter holds **iff `p>3`**: `S=2 ∧ w=1 ⟺ p+1=4 ⟺ p=3`,
+  so `p≥7` forces `S≥3` (2^(S−2)≥2) or `w≥3` odd (φ(w)≥2). `p=3` → `3^k` tower.
+- **Structural dichotomy now a THEOREM**: `excluded_seed_never_reverses`
+  (`seedS a≥2 ⟹ classifySeed a≠.lt`), hence `reversal_seed_transport_admissible`
+  (`classifySeed a=.lt ⟹ seedS a=1`) and `reversal_mem_implies_transport_regime`
+  (`a·2^(k+1)∈ReversalSet ⟹ seedS a=1`). Every reversal lives strictly inside the
+  transport-admissible regime `seedS a=1` — the conjecture prior sessions circled.
+
+### New declarations (all VERIFIED 0/0)
+- `prime_pow_le_two_totient` — `p^m ≤ 2·φ(p^m)` for any prime `p` (reusable)
+- `classifySeed_prime_pow_three_mod_four_ne_lt`
+- `prime_pow_three_mod_four_family_not_reversal`
+- `excluded_seed_never_reverses`
+- `reversal_seed_transport_admissible`
+- `reversal_mem_implies_transport_regime`
+
+### Files Modified
+- `proofs/Proofs/EulerTotientOQ04OQ03.lean` (+~180)
+- `src/data/research/problems/erdos-1064-oq-03.json`
+
+### Next Steps
+- The elementary/structural side of OQ-03 is COMPLETE. The only open direction is
+  the analytically-hard density-1 forward statement (ψ(x,y) smooth-number
+  density / Luca–Pomerance) — a genuine Mathlib gap, not session-sized.
+- Optional elementary follow-up: characterise WHICH transport-admissible seeds
+  (`seedS a=1`) reverse, beyond the least element `a=21`.
+
 ## Session 2026-07-08 (researcher-6) — general non-reversal ENGINE + all primes p≡3 mod4
 
 **Mode**: REVISIT (RICH tier; branch dedicated) | **Outcome**: progress (VERIFIED 0 sorry / 0 axiom, Docker v4.26.0 `Build completed successfully`, 3058 jobs)
