@@ -128,7 +128,9 @@
     "summary": "The quintic Bernoulli endpoint a₅* is the unique real root of the residual cubic a³ + 5a² + 10a + 10, located in (−3, −2): 1 + 5a < (1+a)⁵ ↔ a ≠ 0 ∧ a₅* < a. This confirms the first step of the parent's predicted creep, a₃* = −3 < a₅* < −2, with the strict rise witnessed concretely at a = −29/10 (cubic holds, quintic fails). Every odd endpoint stays below −2 because (1+a)ⁿ = −1 beats the line at a = −2 for all odd n. Verified: 0 sorries, 0 axioms.",
     "implications": "Together with the parent's a₃* = −3 and the universal bound aₙ* < −2, this gives the first two terms of the monotone endpoint sequence and concrete evidence for the conjectured creep aₙ* ↑ −2. The strict-monotonicity-plus-IVT method (a sum-of-squares certificate for the divided difference, then the intermediate value theorem) is reusable for the higher odd cases, where the residual polynomial is likewise irreducible and the endpoint irrational.",
     "openQuestions": [
-      "Does the sequence of odd endpoints aₙ* admit the sharp asymptotic aₙ* = −2 − Θ(1/n), and can the residual polynomials' monotonicity be established uniformly in n rather than case by case?"
+      "Does the sequence of odd endpoints aₙ* admit the sharp asymptotic aₙ* = −2 − Θ(1/n), and can the residual polynomials' monotonicity be established uniformly in n rather than case by case?",
+      "The septic step: does the same residual-polynomial + sum-of-squares monotonicity + IVT method locate a₇* ∈ (a₅*, −2), confirming the next term of the creep, or does the degree-5 residual quintic resist an elementary positive-definite certificate for its divided difference?",
+      "Is every residual polynomial gₙ (degree n−2, defined by (1+a)ⁿ − (1+n·a) = a²·gₙ(a)) irreducible over ℚ, so that each odd endpoint aₙ* is irrational — as it is here for n = 5 (the cubic a³+5a²+10a+10 has no rational root) but not yet established uniformly in n?"
     ],
     "crossReferences": []
   },
