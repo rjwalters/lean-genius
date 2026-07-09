@@ -1,0 +1,228 @@
+{
+  "slug": "erdos-81-oq-01",
+  "title": "Improving the Upper Bound for Clique Partitions of Chordal Graphs",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Let f(n) = max { cp(G) : G chordal, |V(G)| = n }, where cp(G) is the minimum number of cliques needed to partition E(G). The Erdős–Ordman–Zalcstein bound gives f(n) ≤ (1/4 − ε)n², while the split graph K_{n/3} ∪ complement(K_{2n/3}) forces f(n) ≥ n²/6 + O(n). Conjecture: f(n) = n²/6 + O(n); equivalently, improve the upper bound to f(n) ≤ n²/6 + O(n).",
+    "plain": "A chordal graph is one where every cycle of four or more vertices has a chord. We cover its edges with cliques so each edge is used exactly once, and ask how few cliques are ever needed in the worst case. Some chordal graphs require about n²/6 cliques, and none need more than about n²/4. The conjecture is that the true worst case is n²/6 — pushing the upper bound down from n²/4 to n²/6.",
+    "whyMatters": [
+      "Pins down the leading constant for clique partitions of an entire natural graph class (chordal graphs).",
+      "Connects to sparse matrix factorization, elimination trees, and confluent graph drawing.",
+      "Closing the 1/4 vs 1/6 gap is the headline open case of Erdős Problem #81."
+    ]
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-07-09T15:22:58-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: erdos-81-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "combinatorics",
+    "graph-theory",
+    "chordal-graphs",
+    "clique-partitions",
+    "split-graphs"
+  ],
+  "relatedProofs": [
+    "erdos-8",
+    "erdos-81",
+    "erdos-810",
+    "erdos-811",
+    "erdos-812",
+    "erdos-813",
+    "erdos-814",
+    "erdos-815",
+    "erdos-816",
+    "erdos-816-oq-01",
+    "erdos-817",
+    "erdos-818",
+    "erdos-819"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-07-09T22:24:22.202Z",
+  "lastUpdate": "2026-07-09T22:24:22.264Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos810Problem.lean",
+      "filename": "Erdos810Problem.lean",
+      "lineCount": 214,
+      "theoremCount": 4,
+      "axiomCount": 1,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos810Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos811Problem.lean",
+      "filename": "Erdos811Problem.lean",
+      "lineCount": 170,
+      "theoremCount": 1,
+      "axiomCount": 3,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos811Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos812Problem.lean",
+      "filename": "Erdos812Problem.lean",
+      "lineCount": 158,
+      "theoremCount": 1,
+      "axiomCount": 3,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos812Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos813Problem.lean",
+      "filename": "Erdos813Problem.lean",
+      "lineCount": 119,
+      "theoremCount": 4,
+      "axiomCount": 3,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos813Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos814Problem.lean",
+      "filename": "Erdos814Problem.lean",
+      "lineCount": 293,
+      "theoremCount": 7,
+      "axiomCount": 3,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos814Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos815Problem.lean",
+      "filename": "Erdos815Problem.lean",
+      "lineCount": 255,
+      "theoremCount": 3,
+      "axiomCount": 3,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos815Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos816OQ01.lean",
+      "filename": "Erdos816OQ01.lean",
+      "lineCount": 162,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos816OQ01.lean"
+    },
+    {
+      "path": "Proofs/Erdos816Problem.lean",
+      "filename": "Erdos816Problem.lean",
+      "lineCount": 207,
+      "theoremCount": 2,
+      "axiomCount": 1,
+      "defCount": 9,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos816Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos817Aristotle.lean",
+      "filename": "Erdos817Aristotle.lean",
+      "lineCount": 156,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos817Aristotle.lean"
+    },
+    {
+      "path": "Proofs/Erdos817Problem.lean",
+      "filename": "Erdos817Problem.lean",
+      "lineCount": 581,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos817Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos818Aristotle.lean",
+      "filename": "Erdos818Aristotle.lean",
+      "lineCount": 114,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 3,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos818Aristotle.lean"
+    },
+    {
+      "path": "Proofs/Erdos818Problem.lean",
+      "filename": "Erdos818Problem.lean",
+      "lineCount": 354,
+      "theoremCount": 9,
+      "axiomCount": 1,
+      "defCount": 7,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos818Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos819Problem.lean",
+      "filename": "Erdos819Problem.lean",
+      "lineCount": 263,
+      "theoremCount": 4,
+      "axiomCount": 2,
+      "defCount": 10,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos819Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos81Problem.lean",
+      "filename": "Erdos81Problem.lean",
+      "lineCount": 291,
+      "theoremCount": 4,
+      "axiomCount": 4,
+      "defCount": 9,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos81Problem.lean"
+    }
+  ]
+}

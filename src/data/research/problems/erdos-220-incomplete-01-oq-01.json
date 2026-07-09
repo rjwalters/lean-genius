@@ -1,0 +1,77 @@
+{
+  "slug": "erdos-220-incomplete-01-oq-01",
+  "title": "The General Prime Squared-Gap Identity ∑gaps² = p − 2 and the Cauchy–Schwarz Equality Case",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "For every prime p, if 1 = a_1 < a_2 < ... < a_{φ(p)} = p-1 are the reduced residues mod p, then ∑_{k=1}^{φ(p)-1} (a_{k+1} - a_k)^2 = p - 2, attaining the Cauchy–Schwarz bound (n-2)^2 ≤ (φ(n)-1)·∑(a_{k+1}-a_k)^2 with equality at n = p.",
+    "plain": "For a prime p, the numbers coprime to p below it are exactly 1, 2, ..., p-1, so sorted consecutive residues differ by 1. Each of the p-2 gaps equals 1, so the sum of squared gaps is p-2. The goal is to prove this identity for ALL primes at once (the parent only checks p=7) and certify it as the equality case of the companion Cauchy–Schwarz lower bound.",
+    "whyMatters": [
+      "Turns an isolated numerical check (p=7) into a structural theorem quantified over all primes.",
+      "Certifies that primes are exactly the extremal inputs attaining the Cauchy–Schwarz lower bound of Erdős #220 with equality (all gaps equal 1).",
+      "Pins the sharp lower endpoint of the Montgomery–Vaughan squared-gap distribution."
+    ]
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-07-09T15:22:59-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: erdos-220-incomplete-01-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "number-theory",
+    "erdos",
+    "reduced-residues",
+    "totient",
+    "gap-distribution",
+    "cauchy-schwarz"
+  ],
+  "relatedProofs": [
+    "erdos-2",
+    "erdos-22",
+    "erdos-220",
+    "erdos-220-incomplete-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-07-09T22:24:22.179Z",
+  "lastUpdate": "2026-07-09T22:24:22.262Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos220Incomplete01.lean",
+      "filename": "Erdos220Incomplete01.lean",
+      "lineCount": 134,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos220Incomplete01.lean"
+    }
+  ]
+}

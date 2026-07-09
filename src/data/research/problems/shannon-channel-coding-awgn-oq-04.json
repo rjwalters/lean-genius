@@ -1,0 +1,72 @@
+{
+  "slug": "shannon-channel-coding-awgn-oq-04",
+  "title": "Operational Coding Theorem for the AWGN Channel — Random Gaussian Codebooks and the Sphere-Packing Converse",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "For the AWGN channel $Y = X + Z$ with $Z \\sim N(0,N)$ and power constraint $\\frac{1}{n}\\sum_i \\mathbb{E}[X_i^2] \\le P$, the operational capacity equals the information capacity $C(P,N) = \\tfrac12\\log(1+P/N)$: (achievability) if $R < C$ then random Gaussian codebooks with joint-typicality decoding give $P_e^{(n)} \\to 0$; (converse) if $R > C$ then $P_e^{(n)} \\not\\to 0$, via Fano's inequality and the sphere-packing bound $2^{nR} \\le (\\tfrac{P+N}{N})^{n/2}$.",
+    "plain": "The parent proof pins down the value of the AWGN capacity, C = (1/2)log(1+P/N). This problem asks to connect that number to actual communication: prove achievability (random Gaussian codebooks decode almost perfectly for rates below C, so a good code exists) and the converse (no code can beat C, because each transmitted point is blurred by noise into a small ball and only so many disjoint balls fit in the output region).",
+    "whyMatters": [
+      "Shannon's capacity is only a number until the coding theorem ties it to achievable operational rates.",
+      "The random-coding achievability and sphere-packing/Fano converse are the theorems practitioners actually cite; turbo, LDPC, and polar codes are benchmarked against this operational limit.",
+      "Formalizing it forces reusable Lean infrastructure: continuous jointly-typical sets, the AEP, Fano's inequality, and Gaussian-norm concentration."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "AWGN capacity value C(P,N) = (1/2)log(1+P/N) as an entropy difference (shannon-channel-coding-awgn, awgn_capacity_achieved and awgn_capacity_upper_bound).",
+      "Gaussian differential entropy h(N(mu,sigma^2)) = (1/2)log(2 pi e sigma^2) and the Gaussian max-entropy property at fixed variance (shannon-entropy-oq-01).",
+      "Discrete channel coding theorems for BSC and BEC as finite-alphabet templates (shannon-channel-coding-oq-02, shannon-channel-coding-bec)."
+    ],
+    "open": [
+      "Continuous-alphabet mutual information I(X;Y) and the identity I(X;Y) = h(Y) - h(Z) are prose-only in the parent.",
+      "The variance-of-a-sum relation E[Y^2] = P + N appears only as the converse hypothesis, not as a derived fact.",
+      "No Lean formalization of continuous jointly-typical sets, the random-coding error exponent, or Fano's inequality for continuous channels."
+    ],
+    "goal": "Formalize the operational coding theorem in two pieces: (1) achievability via random Gaussian codebooks and joint-typicality decoding with expected error to 0 for R < C, and (2) the converse via Fano plus the sphere-packing volume bound. A tractable first milestone is the geometric sphere-packing cardinality bound 2^{nR} <= ((P+N)/N)^{n/2}."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-07-09T15:23:00-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: shannon-channel-coding-awgn-oq-04\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "information-theory",
+    "probability",
+    "measure-theory",
+    "coding-theory",
+    "channel-capacity",
+    "concentration-of-measure"
+  ],
+  "relatedProofs": [
+    "shannon-channel-coding-awgn",
+    "shannon-entropy-oq-01",
+    "shannon-channel-coding-oq-02",
+    "shannon-channel-coding-bec"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-07-09T22:24:22.208Z",
+  "lastUpdate": "2026-07-09T22:24:22.266Z"
+}
