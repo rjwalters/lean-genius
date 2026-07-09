@@ -15,11 +15,6 @@
       "sum of divisors",
       "Mersenne primes",
       "Euclid's Elements"
-    ],
-    "prerequisites": [
-      "divisors of a natural number",
-      "the sum-of-divisors function σ",
-      "prime numbers"
     ]
   },
   {
@@ -38,11 +33,6 @@
       "Euclid's Elements",
       "Euler's contributions",
       "unsolved problems"
-    ],
-    "prerequisites": [
-      "Euclid's Elements and classical number theory",
-      "even vs. odd perfect numbers",
-      "the history of unsolved problems"
     ]
   },
   {
@@ -61,11 +51,6 @@
       "sum of divisors",
       "proper divisors",
       "number theory"
-    ],
-    "prerequisites": [
-      "the sum-of-divisors function σ(n)",
-      "proper vs. improper divisors",
-      "the identity σ(n) = 2n for perfect numbers"
     ]
   },
   {
@@ -84,11 +69,6 @@
       "Mersenne primes",
       "GIMPS",
       "prime search"
-    ],
-    "prerequisites": [
-      "exponentiation of 2 and 2^p − 1",
-      "primality of an integer",
-      "Mersenne primes"
     ]
   },
   {
@@ -107,11 +87,6 @@
       "geometric series",
       "divisor function",
       "powers of 2"
-    ],
-    "prerequisites": [
-      "geometric series 1 + 2 + … + 2^k",
-      "divisors of a prime power",
-      "the formula 2^{k+1} − 1"
     ]
   },
   {
@@ -186,7 +161,7 @@
       "startLine": 129,
       "endLine": 136
     },
-    "type": "concept",
+    "type": "context",
     "title": "First Perfect Number: 6",
     "content": "$6 = 2^1 \\times 3$ where $3 = 2^2 - 1$ is prime.\n\n**Verification**: Proper divisors of 6 are $1, 2, 3$. Their sum is $1 + 2 + 3 = 6$. ✓\n\nThe proof uses `native_decide` to verify that $3$ is prime, then applies Euclid's theorem.",
     "mathContext": "$6 = 2^1 \\cdot M_2 = 2 \\cdot 3$",
@@ -195,11 +170,6 @@
       "concrete examples",
       "native_decide",
       "verification"
-    ],
-    "prerequisites": [
-      "Euclid's construction 2^{p-1}(2^p − 1)",
-      "primality checking (native_decide)",
-      "verifying σ(n) = 2n"
     ]
   },
   {
@@ -209,7 +179,7 @@
       "startLine": 138,
       "endLine": 145
     },
-    "type": "concept",
+    "type": "context",
     "title": "Second Perfect Number: 28",
     "content": "$28 = 2^2 \\times 7$ where $7 = 2^3 - 1$ is prime.\n\n**Verification**: Proper divisors of 28 are $1, 2, 4, 7, 14$. Their sum is $1 + 2 + 4 + 7 + 14 = 28$. ✓",
     "mathContext": "$28 = 2^2 \\cdot M_3 = 4 \\cdot 7$",
@@ -217,11 +187,6 @@
     "relatedConcepts": [
       "concrete examples",
       "verification"
-    ],
-    "prerequisites": [
-      "Euclid's perfect-number construction",
-      "listing and summing proper divisors",
-      "Mersenne primes"
     ]
   },
   {
@@ -231,7 +196,7 @@
       "startLine": 147,
       "endLine": 154
     },
-    "type": "concept",
+    "type": "context",
     "title": "Third Perfect Number: 496",
     "content": "$496 = 2^4 \\times 31$ where $31 = 2^5 - 1$ is prime.\n\nThis is the largest perfect number the ancient Greeks knew. Nicomachus of Gerasa listed 6, 28, and 496 in his *Introduction to Arithmetic* (c. 100 CE).",
     "mathContext": "$496 = 2^4 \\cdot M_5 = 16 \\cdot 31$",
@@ -239,11 +204,6 @@
     "relatedConcepts": [
       "Greek mathematics",
       "Nicomachus"
-    ],
-    "prerequisites": [
-      "Euclid's perfect-number construction",
-      "Mersenne prime 2^5 − 1 = 31",
-      "early Greek number theory"
     ]
   },
   {
@@ -253,7 +213,7 @@
       "startLine": 156,
       "endLine": 163
     },
-    "type": "concept",
+    "type": "context",
     "title": "Fourth Perfect Number: 8128",
     "content": "$8128 = 2^6 \\times 127$ where $127 = 2^7 - 1$ is prime.\n\nDiscovered in antiquity, 8128 remained the largest known perfect number for over 1,000 years until the Renaissance.",
     "mathContext": "$8128 = 2^6 \\cdot M_7 = 64 \\cdot 127$",
@@ -261,11 +221,6 @@
     "relatedConcepts": [
       "mathematical history",
       "Renaissance mathematics"
-    ],
-    "prerequisites": [
-      "Euclid's perfect-number construction",
-      "Mersenne prime 2^7 − 1 = 127",
-      "the history of perfect numbers"
     ]
   },
   {
@@ -284,11 +239,6 @@
       "multiplicative functions",
       "arithmetic functions",
       "coprimality"
-    ],
-    "prerequisites": [
-      "multiplicativity of σ on coprime arguments",
-      "coprimality and gcd",
-      "σ of a prime and of a prime power"
     ]
   },
   {
@@ -307,11 +257,6 @@
       "unsolved problems",
       "number theory",
       "computational search"
-    ],
-    "prerequisites": [
-      "odd perfect numbers",
-      "lower bounds and prime-factor constraints",
-      "open problems in number theory"
     ]
   }
 ]

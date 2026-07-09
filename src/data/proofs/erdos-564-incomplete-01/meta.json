@@ -64,28 +64,60 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header: Tower-Growth Theory for Erdős #564",
+      "startLine": 1,
+      "endLine": 44,
+      "summary": "Docstring framing the file as the verified, 0-axiom growth theory of the tower function that makes the 'tower height' phrasing of Erdős #564 precise: the parent axiomatizes R and the EHR bounds 2^{cn²} < R₃(n) < 2^{2^n} and defines tower(k,n) but proves no growth theory. Enumerates the deliverables (height/base strict monotonicity, the linear and faithful-quadratic crux, the general height gap) and stresses that none of the open conjecture is resolved. Imports Mathlib and Proofs.Erdos564Problem, opens Erdos564, and enters namespace Erdos564.Incomplete01.",
+      "mathContext": "$2^{cn^2} < R_3(n) < 2^{2^n}$: the EHR bounds are one tower level apart; Erdős asks whether $R_3(n)$ reaches tower height 2."
+    },
+    {
       "id": "height-growth",
       "title": "Growth in Tower Height",
-      "startLine": 41,
-      "endLine": 70,
+      "startLine": 46,
+      "endLine": 68,
       "summary": "tower_succ records the recursion tower (k+1) n = 2 ^ tower k n. tower_lt_succ_height proves tower k n < tower (k+1) n from m < 2^m (Nat.lt_two_pow_self), with no positivity hypothesis. tower_strictMono_height upgrades this to strict monotonicity of k ↦ tower k n via strictMono_nat_of_lt_succ, and self_le_tower derives n ≤ tower k n from height-monotonicity at 0 ≤ k.",
       "mathContext": "$\\text{tower}(k,n) < \\text{tower}(k+1,n) = 2^{\\text{tower}(k,n)}$ since $m < 2^m$; hence $n = \\text{tower}(0,n) \\le \\text{tower}(k,n)$."
     },
     {
       "id": "base-growth",
       "title": "Growth in Tower Base and the Height-1-vs-2 Crux",
-      "startLine": 71,
-      "endLine": 98,
-      "summary": "tower_strictMono_base proves n ↦ tower k n is strictly monotone by induction on k (successor step composes the IH with strict monotonicity of 2^(·)); tower_mono_base is the non-strict corollary. tower_two_eq gives tower 2 n = 2^(2^n). The crux tower_one_lt_tower_two shows 2^n < 2^(2^n) for every n — the singly-exponential known lower bound is strictly below the doubly-exponential conjectured one.",
+      "startLine": 70,
+      "endLine": 109,
+      "summary": "tower_strictMono_base proves n ↦ tower k n is strictly monotone by induction on k (successor step composes the IH with strict monotonicity of 2^(·)); tower_mono_base is the non-strict corollary. tower_two_eq gives tower 2 n = 2^(2^n). The crux tower_one_lt_tower_two shows 2^n < 2^(2^n) for every n — the singly-exponential known lower bound is strictly below the doubly-exponential conjectured one — and tower_lt_of_height_lt names the general height gap tower j n < tower k n for j < k.",
       "mathContext": "$\\text{tower}(1,n) = 2^n < 2^{2^n} = \\text{tower}(2,n)$: the EHR lower bound is one tower level below the upper bound."
+    },
+    {
+      "id": "quadratic-crux",
+      "title": "The Faithful Quadratic Crux: 2^{n²} < tower 2 n",
+      "startLine": 111,
+      "endLine": 136,
+      "summary": "nsq_lt_two_pow_self proves n² < 2^n for n ≥ 5 (tight at n = 4, where 4² = 16 = 2⁴) by Nat.le_induction, the successor step clearing (m+1)² = m²+2m+1 < 2^m + 2^m = 2^{m+1} via nlinarith with 2m+1 ≤ m². ehr_lower_lt_tower_two then upgrades the linear crux to its faithful form: the genuine EHR lower bound has a QUADRATIC exponent, yet 2^{n²} is still a whole tower level below the conjectured 2^{2^n} = tower 2 n for every n ≥ 5.",
+      "mathContext": "$n^2 < 2^n\\ (n \\ge 5) \\Rightarrow 2^{n^2} < 2^{2^n} = \\text{tower}(2,n)$: the real quadratic-exponent lower bound is still one tower level short."
     },
     {
       "id": "examples",
       "title": "Concrete Sanity Checks",
-      "startLine": 99,
-      "endLine": 110,
-      "summary": "tower 2 3 = 256, tower 3 1 = 16 (both by decide), and 5 ≤ tower 4 5 instantiating self_le_tower.",
+      "startLine": 138,
+      "endLine": 147,
+      "summary": "tower 2 3 = 256 and tower 3 1 = 16 (both by decide), plus 5 ≤ tower 4 5 instantiating self_le_tower — small numeric anchors that pin the recursion down to concrete values.",
       "mathContext": "$\\text{tower}(2,3)=2^{2^3}=2^8=256$; $\\text{tower}(3,1)=2^{2^{2}}=2^4=16$."
+    },
+    {
+      "id": "ramsey-monotonicity",
+      "title": "Monotonicity of the Hypergraph Ramsey Property",
+      "startLine": 149,
+      "endLine": 190,
+      "summary": "The first theory of the property predicate HasHypergraphRamseyProperty itself, 0-axiom. hasHypergraphRamseyProperty_mono: more vertices preserve the property (restrict a colouring of Fin m' along Fin.castLEEmb, find the clique downstairs, push it back with Finset.map), so the set of good m is upward closed — what lets one speak of the least such m. hasHypergraphRamseyProperty_antitone_clique: a smaller target clique is easier (any n'-subset of a monochromatic n-clique is still monochromatic), so R k · is monotone in clique size.",
+      "mathContext": "$m \\le m' \\Rightarrow (\\text{prop } k\\,m\\,n \\to \\text{prop } k\\,m'\\,n)$ and $n' \\le n \\Rightarrow (\\text{prop } k\\,m\\,n \\to \\text{prop } k\\,m\\,n')$: threshold well-behavedness of $R_k(n)$."
+    },
+    {
+      "id": "triviality-boundary",
+      "title": "The Triviality Boundary: R_k(n) = n for n ≤ k",
+      "startLine": 192,
+      "endLine": 259,
+      "summary": "Pins down where the property starts. hasHypergraphRamseyProperty_clique_zero handles n = 0 (S = ∅). hasHypergraphRamseyProperty_clique_lt_uniformity: for n < k an n-clique has no k-subsets, so monochromaticity is vacuous. hasHypergraphRamseyProperty_diagonal_base: for n = k the unique k-subset is the clique itself, monochromatic for c S. The unified hasHypergraphRamseyProperty_of_clique_le_uniformity combines them: whenever n ≤ k (and n ≤ m) the property holds, i.e. R_k(n) = n on and below the diagonal — so the genuine content of R₃(n) lives strictly above it (n > 3). Ends with #print axioms confirming 0-axiom status.",
+      "mathContext": "$n \\le k \\Rightarrow \\text{HasHypergraphRamseyProperty } k\\,m\\,n$, i.e. $R_k(n) = n$ for $n \\le k$; substance appears only for $n > k = 3$."
     }
   ],
   "mainTheorems": [
@@ -160,6 +192,21 @@
       "proofId": "erdos-564",
       "relationship": "extends",
       "description": "Parent formalization of Erdős #564 (axiomatized R and EHR bounds, tower definition). This file supplies the verified growth theory of that tower and repairs six dangling /-- doc comments that made the parent fail to parse."
+    },
+    {
+      "proofId": "ramsey-r4k",
+      "relationship": "related",
+      "description": "The off-diagonal GRAPH (2-uniform) Ramsey number R(4,k): structural upper bound R(4,k) ≤ C(k+2,3) and cubic growth. Erdős #564 is the 3-uniform HYPERGRAPH analogue R₃(n); both entries are about pinning the growth rate of a Ramsey number between a known lower and upper bound, but one tower level higher in the hypergraph case."
+    },
+    {
+      "proofId": "ramsey-r4k-oq-01",
+      "relationship": "related",
+      "description": "Formalizes the AKS O(k³/log²k) upper bound and the Mattheus–Verstraëte (2024) lower bound for R(4,k) — the graph-Ramsey instance of exactly the phenomenon Erdős #564 asks about: closing the gap between the best known lower and upper bounds on a Ramsey number. The tower-height gap 2^n vs 2^{2^n} here is the hypergraph counterpart of the polynomial gap there."
+    },
+    {
+      "proofId": "lovasz-local-lemma",
+      "relationship": "related",
+      "description": "The probabilistic-method tool underlying Ramsey lower bounds: sparse dependence among unlikely 'bad monochromatic clique' events yields the existence of good colourings. Such probabilistic constructions are the standard route to the singly-exponential lower bound of Erdős #564 that this entry's tower_one_lt_tower_two / ehr_lower_lt_tower_two show still sits a full tower level below the conjecture."
     }
   ],
   "leanFile": {

@@ -28,6 +28,13 @@ Main results (all 0 sorries / 0 axioms, over an arbitrary vertex type):
   `bipartite_C9_free`.
 * `bipartite_cycle_length_ge_four` / `bipartite_cycle_length_even_ge_four` —
   every cycle length is even and at least 4.
+* `bipartite_girth_ge_of_forbidden` — girth lifting: forbidding every even cycle
+  of length `2m` for `2 ≤ m ≤ t` forces every remaining cycle to have length
+  `≥ 2t + 2`. Concrete corollaries `bipartite_C4_free_girth_ge_six` (C₄-free ⇒
+  girth ≥ 6) and `bipartite_C4C6_free_girth_ge_eight` (C₄,C₆-free ⇒ girth ≥ 8)
+  pin down why Erdős's next target in the C₄,C₆-free extremal problem is the C₈:
+  once the short even cycles are excluded, 8 is the smallest length still
+  admissible.
 
 References:
 - Erdős [Er75]: C₈ observation for the C₄,C₆-free extremal problem.
@@ -197,5 +204,62 @@ through odd ones. -/
 theorem bipartite_cycle_length_even_ge_four (hbip : IsBipartite G) {k : ℕ}
     (hcyc : HasCycleOfLength G k) : Even k ∧ 4 ≤ k :=
   ⟨bipartite_cycle_even hbip hcyc, bipartite_cycle_length_ge_four hbip hcyc⟩
+
+/-
+## Girth lifting under forbidden even cycles
+
+The parent problem forbids C₄ and C₆. Because every cycle length is even and
+≥ 4, excluding the short even cycles raises the girth: the admissible lengths
+are `{4, 6, 8, 10, ...}`, so knocking out `4` and `6` leaves `8` as the smallest
+survivor. This is exactly why, in a dense C₄,C₆-free bipartite graph, the next
+cycle Erdős looks for is a C₈.
+-/
+
+/-- **Girth lifting.** If a bipartite graph has no cycle of length `2 * m` for
+every `m` with `2 ≤ m ≤ t`, then every cycle it does contain has length at
+least `2 * t + 2`. (The even cycle lengths are `{4, 6, 8, ...}`; forbidding the
+first `t - 1` of them leaves `2t + 2` as the smallest admissible length.) -/
+theorem bipartite_girth_ge_of_forbidden (hbip : IsBipartite G) {t : ℕ}
+    (hforb : ∀ m, 2 ≤ m → m ≤ t → ¬ HasCycleOfLength G (2 * m))
+    {k : ℕ} (hcyc : HasCycleOfLength G k) : 2 * t + 2 ≤ k := by
+  have heven : Even k := bipartite_cycle_even hbip hcyc
+  have hfour : 4 ≤ k := bipartite_cycle_length_ge_four hbip hcyc
+  obtain ⟨s, hs⟩ := heven
+  by_contra hlt
+  push_neg at hlt
+  have hs2 : 2 ≤ s := by omega
+  have hst : s ≤ t := by omega
+  have hk2s : 2 * s = k := by omega
+  exact hforb s hs2 hst (by rw [hk2s]; exact hcyc)
+
+/-- A C₄-free bipartite graph has girth ≥ 6: every cycle has length at least 6. -/
+theorem bipartite_C4_free_girth_ge_six (hbip : IsBipartite G)
+    (h4 : ¬ HasCycleOfLength G 4) {k : ℕ}
+    (hcyc : HasCycleOfLength G k) : 6 ≤ k := by
+  have hforb : ∀ m, 2 ≤ m → m ≤ 2 → ¬ HasCycleOfLength G (2 * m) := by
+    intro m hm2 hm2'
+    have hm : m = 2 := by omega
+    subst hm
+    have e : (2 * 2 : ℕ) = 4 := by omega
+    rw [e]; exact h4
+  have := bipartite_girth_ge_of_forbidden hbip hforb hcyc
+  omega
+
+/-- **C₄,C₆-free ⇒ girth ≥ 8.** In a bipartite graph with no 4-cycle and no
+6-cycle, every cycle has length at least 8. This is the structural reason the
+smallest cycle Erdős's C₄,C₆-free extremal problem can hope to force is a C₈. -/
+theorem bipartite_C4C6_free_girth_ge_eight (hbip : IsBipartite G)
+    (h4 : ¬ HasCycleOfLength G 4) (h6 : ¬ HasCycleOfLength G 6) {k : ℕ}
+    (hcyc : HasCycleOfLength G k) : 8 ≤ k := by
+  have hforb : ∀ m, 2 ≤ m → m ≤ 3 → ¬ HasCycleOfLength G (2 * m) := by
+    intro m hm2 hm3
+    have hm : m = 2 ∨ m = 3 := by omega
+    rcases hm with hm | hm <;> subst hm
+    · have e : (2 * 2 : ℕ) = 4 := by omega
+      rw [e]; exact h4
+    · have e : (2 * 3 : ℕ) = 6 := by omega
+      rw [e]; exact h6
+  have := bipartite_girth_ge_of_forbidden hbip hforb hcyc
+  omega
 
 end Erdos1080OQ03

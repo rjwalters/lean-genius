@@ -74,6 +74,7 @@
     "cantor-diagonalization-oq-01-oq-01-oq-02-oq-01",
     "cantor-diagonalization-oq-01-oq-01-oq-02-oq-03",
     "cantor-diagonalization-oq-01-oq-01-oq-03",
+    "cantor-diagonalization-oq-01-oq-01-wip-01",
     "cantor-diagonalization-oq-01-oq-02",
     "cantor-diagonalization-oq-01-oq-03",
     "cantor-diagonalization-oq-02",
@@ -84,10 +85,13 @@
     "cantor-diagonalization-oq-03",
     "cantor-diagonalization-oq-03-oq-01",
     "cantor-diagonalization-oq-03-oq-01-incomplete-01",
+    "cantor-diagonalization-oq-03-oq-01-incomplete-01-oq-01",
+    "cantor-diagonalization-oq-03-oq-01-incomplete-01-oq-01-oq-03",
     "cantor-diagonalization-oq-03-oq-01-oq-01",
     "cantor-diagonalization-oq-03-oq-01-oq-02",
     "cantor-diagonalization-oq-03-oq-01-oq-03",
     "cantor-diagonalization-oq-03-oq-01-oq-04",
+    "cantor-diagonalization-oq-03-oq-02",
     "cantor-diagonalization-oq-04",
     "cantor-diagonalization-oq-04-oq-01",
     "cantor-diagonalization-oq-04-oq-01-oq-01",
@@ -194,6 +198,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorDiagonalizationOQ01OQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/CantorDiagonalizationOQ01OQ01Wip01.lean",
+      "filename": "CantorDiagonalizationOQ01OQ01Wip01.lean",
+      "lineCount": 186,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorDiagonalizationOQ01OQ01Wip01.lean"
     },
     {
       "path": "Proofs/CantorDiagonalizationOQ01OQ02.lean",
@@ -317,6 +332,28 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorDiagonalizationOQ03OQ01Incomplete01.lean"
     },
     {
+      "path": "Proofs/CantorDiagonalizationOQ03OQ01Incomplete01OQ01.lean",
+      "filename": "CantorDiagonalizationOQ03OQ01Incomplete01OQ01.lean",
+      "lineCount": 236,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorDiagonalizationOQ03OQ01Incomplete01OQ01.lean"
+    },
+    {
+      "path": "Proofs/CantorDiagonalizationOQ03OQ01Incomplete01OQ01OQ03.lean",
+      "filename": "CantorDiagonalizationOQ03OQ01Incomplete01OQ01OQ03.lean",
+      "lineCount": 85,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorDiagonalizationOQ03OQ01Incomplete01OQ01OQ03.lean"
+    },
+    {
       "path": "Proofs/CantorDiagonalizationOQ03OQ01OQ02.lean",
       "filename": "CantorDiagonalizationOQ03OQ01OQ02.lean",
       "lineCount": 276,
@@ -348,6 +385,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorDiagonalizationOQ03OQ01OQ04.lean"
+    },
+    {
+      "path": "Proofs/CantorDiagonalizationOQ03OQ02.lean",
+      "filename": "CantorDiagonalizationOQ03OQ02.lean",
+      "lineCount": 195,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorDiagonalizationOQ03OQ02.lean"
     },
     {
       "path": "Proofs/CantorDiagonalizationOQ04.lean",

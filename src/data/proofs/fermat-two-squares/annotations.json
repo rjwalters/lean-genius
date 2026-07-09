@@ -15,11 +15,6 @@
       "Mathlib",
       "sum of squares",
       "prime characterization"
-    ],
-    "prerequisites": [
-      "prime numbers",
-      "sums of two squares",
-      "the Lean/Mathlib library structure"
     ]
   },
   {
@@ -39,11 +34,6 @@
       "Fermat",
       "Euler",
       "Lagrange"
-    ],
-    "prerequisites": [
-      "the concept of a mathematical theorem versus a conjecture",
-      "prime numbers",
-      "Fermat's Last Theorem as historical context"
     ]
   },
   {
@@ -62,11 +52,6 @@
       "involutions",
       "combinatorial proof",
       "Zagier"
-    ],
-    "prerequisites": [
-      "involutions on finite sets",
-      "fixed points of maps",
-      "parity of set cardinality"
     ]
   },
   {
@@ -84,11 +69,6 @@
     "relatedConcepts": [
       "modular arithmetic",
       "characterization theorem"
-    ],
-    "prerequisites": [
-      "prime numbers",
-      "modular arithmetic mod 4",
-      "squares modulo an integer"
     ]
   },
   {
@@ -106,11 +86,6 @@
     "relatedConcepts": [
       "Fermat's original statement",
       "prime classification"
-    ],
-    "prerequisites": [
-      "congruence modulo 4",
-      "prime numbers",
-      "classification of odd primes"
     ]
   },
   {
@@ -120,7 +95,7 @@
       "startLine": 55,
       "endLine": 87
     },
-    "type": "tactic",
+    "type": "technique",
     "title": "The Prime 2: A Special Case",
     "content": "2 = 1² + 1² is trivially a sum of two squares.\n\nNote that 2 ≡ 2 (mod 4), so it's neither in the \"1 mod 4\" nor the \"3 mod 4\" category. The theorem correctly handles this edge case.",
     "mathContext": "2 is the only even prime, making it unique in many ways.",
@@ -128,11 +103,6 @@
     "relatedConcepts": [
       "special cases",
       "edge cases"
-    ],
-    "prerequisites": [
-      "the definition of a prime number",
-      "even and odd integers",
-      "congruence classes mod 4"
     ]
   },
   {
@@ -150,11 +120,6 @@
     "relatedConcepts": [
       "impossibility proof",
       "modular arithmetic"
-    ],
-    "prerequisites": [
-      "quadratic residues mod 4",
-      "modular arithmetic",
-      "proof by contradiction / impossibility arguments"
     ]
   },
   {
@@ -172,11 +137,6 @@
     "relatedConcepts": [
       "examples",
       "verification"
-    ],
-    "prerequisites": [
-      "perfect squares",
-      "arithmetic verification of equalities",
-      "primes congruent to 1 mod 4"
     ]
   },
   {
@@ -194,11 +154,6 @@
     "relatedConcepts": [
       "prime classification",
       "complete characterization"
-    ],
-    "prerequisites": [
-      "prime numbers",
-      "residue classes modulo 4",
-      "partitions of a set into disjoint cases"
     ]
   },
   {
@@ -217,11 +172,6 @@
       "Gaussian integers",
       "algebraic number theory",
       "quadratic reciprocity"
-    ],
-    "prerequisites": [
-      "the Gaussian integers Z[i]",
-      "quadratic residues (-1 as a residue mod p)",
-      "factorization and splitting of primes in a ring"
     ]
   }
 ]

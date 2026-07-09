@@ -69,7 +69,7 @@
       "Lebesgue measure on ℝ; conull (full measure) = complement is null",
       "Liouville numbers: residual (comeagre) and Lebesgue-null"
     ],
-    "lineCount": 178,
+    "lineCount": 176,
     "relatedProblems": [
       {
         "id": "algebraic-reals-meager-oq-02",
@@ -83,7 +83,9 @@
     "assumptions": "0 axioms. Relies only on Mathlib's Baire-category infrastructure (IsMeagre, residual), the Liouville residual/measure-zero results, and elementary complement identities. The ordinary foundational triple (propext / Classical.choice / Quot.sound) is inherited from Mathlib and does not count as an assumption.",
     "theoremCount": 8,
     "definitionCount": 0,
-    "additionalFiles": []
+    "additionalFiles": [
+      "Proofs/AlgebraicRealsMeagerOQ02OQ01Equivariant.lean"
+    ]
   },
   "overview": {
     "historicalContext": "Baire (1899) and Lebesgue (1902) gave two independent notions of 'smallness' for subsets of ℝ: meagre (category-small, a countable union of nowhere-dense sets) and null (measure-small). Oxtoby's 'Measure and Category' (1980) systematically contrasts them, and a recurring theme is that although the two σ-ideals share many formal properties (a duality principle), they are genuinely different: ℝ can be split into a meagre set and a null set whose union is everything. The classic witness is the Liouville numbers, comeagre yet null. The parent entry OQ-02 formalized that half — a comeagre null set. This entry records the mirror image, a meagre set of full measure, and the resulting complementary partition of ℝ.",

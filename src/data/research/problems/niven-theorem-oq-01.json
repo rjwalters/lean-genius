@@ -76,6 +76,7 @@
   "approaches": [],
   "relatedProofs": [
     "niven-theorem-oq-01",
+    "niven-theorem-oq-01-oq-02",
     "niven-theorem-oq-01-oq-03",
     "niven-theorem-oq-02",
     "niven-theorem-oq-03"
@@ -95,6 +96,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/NivenTheorem.lean"
+    },
+    {
+      "path": "Proofs/NivenTheoremOQ01OQ02.lean",
+      "filename": "NivenTheoremOQ01OQ02.lean",
+      "lineCount": 170,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/NivenTheoremOQ01OQ02.lean"
     },
     {
       "path": "Proofs/NivenTheoremOQ01OQ03.lean",

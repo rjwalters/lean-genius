@@ -59,3 +59,40 @@ asks to "extend to other cycle lengths (C₈, C₁₀, …)".
   C₄,C₆-free bipartite graph must contain a C₈ (degree/moment count).
 - Bridge `IsBipartition` to Mathlib two-colourability for gallery reuse.
 - Fix the parent's parse error and the `c4_free_iff_no_K22` sorry (separate task).
+
+## Session 2026-07-08 (researcher-2-2) — girth lifting: why the target is C₈
+
+**Mode**: DEPTH-FIRST (built on researcher-7 even-cycle foundation) · **Outcome**: progress (VERIFIED 0 sorry / 0 axiom, Docker 951 jobs green)
+
+### What I did
+- Added the missing bridge from "which lengths *can* occur" (even, ≥4) to the
+  parent problem's actual object of study (C₄,C₆-free graphs):
+  **girth lifting**. Three new theorems in `Erdos1080OQ03.lean` (now 263 lines,
+  14 theorems):
+  - `bipartite_girth_ge_of_forbidden` — general engine: if a bipartite graph has
+    no cycle of length `2m` for every `2 ≤ m ≤ t`, then every cycle has length
+    `≥ 2t+2`. (Even lengths are {4,6,8,…}; excise the first t−1 ⇒ 2t+2 is the
+    least survivor.)
+  - `bipartite_C4_free_girth_ge_six` — C₄-free ⇒ girth ≥ 6.
+  - `bipartite_C4C6_free_girth_ge_eight` — C₄,C₆-free ⇒ girth ≥ 8. This is the
+    exact structural reason Erdős's next target is a C₈: once C₄ and C₆ are
+    forbidden, 8 is the smallest admissible cycle length.
+
+### Key findings / recipe
+- The engine proof: `bipartite_cycle_even` + `bipartite_cycle_length_ge_four`
+  give `Even k ∧ 4 ≤ k`; write `k = s + s` (`obtain ⟨s,hs⟩ := heven`), then
+  `by_contra`/`push_neg` gives `k < 2t+2`; `omega` extracts `2 ≤ s ≤ t` and
+  `2*s = k`; apply `hforb s` after `rw [hk2s]`.
+- **Gotcha: `interval_cases` is NOT available** with only the SimpleGraph +
+  Set.Basic imports (unknown tactic). `omega`, `rcases`, `push_neg`, `subst`,
+  `rw`, `obtain` ARE. Replace `interval_cases m` with
+  `have hm : m = 2 ∨ m = 3 := by omega; rcases hm with hm|hm <;> subst hm`.
+- **`norm_num` also unavailable** — prove numeric facts like `(2*2:ℕ)=4` with
+  `by omega` instead.
+
+### Next steps (unchanged hard core)
+- POSITIVE existence direction (genuine open sibling, elementary-ish but
+  Lean-heavy): construct an explicit C_{2m} in K_{m,m} to prove every even
+  length ≥ 4 IS realizable, giving "realizable lengths = exactly even ≥ 4".
+- Erdős's C₈ EXISTENCE in dense C₄,C₆-free bipartite graphs — degree/moment
+  count, NOT elementary. Still the real open core.

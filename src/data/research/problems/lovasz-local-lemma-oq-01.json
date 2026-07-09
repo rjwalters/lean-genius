@@ -91,7 +91,23 @@
   ],
   "relatedProofs": [
     "lovasz-local-lemma",
+    "lovasz-local-lemma-oq-01",
+    "lovasz-local-lemma-oq-01-chain-rule",
+    "lovasz-local-lemma-oq-01-conditional-avoidance",
+    "lovasz-local-lemma-oq-01-denominator-recursion",
+    "lovasz-local-lemma-oq-01-denominator-step",
+    "lovasz-local-lemma-oq-01-dependency-split",
+    "lovasz-local-lemma-oq-01-euler-threshold",
+    "lovasz-local-lemma-oq-01-inclusion-exclusion",
+    "lovasz-local-lemma-oq-01-independence-bridge",
+    "lovasz-local-lemma-oq-01-induction-step",
+    "lovasz-local-lemma-oq-01-quantitative",
+    "lovasz-local-lemma-oq-01-subset-history-pos",
+    "lovasz-local-lemma-oq-01-symmetric-step",
+    "lovasz-local-lemma-oq-01-union-bound",
     "lovasz-local-lemma-oq-02",
+    "lovasz-local-lemma-oq-02-wip-01",
+    "lovasz-local-lemma-oq-04",
     "prob-method-lovasz-local"
   ],
   "references": {
@@ -106,8 +122,8 @@
     {
       "path": "Proofs/LovaszLocalLemma.lean",
       "filename": "LovaszLocalLemma.lean",
-      "lineCount": 365,
-      "theoremCount": 24,
+      "lineCount": 472,
+      "theoremCount": 27,
       "axiomCount": 0,
       "defCount": 2,
       "sorryCount": 0,
@@ -115,13 +131,200 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LovaszLocalLemma.lean"
     },
     {
+      "path": "Proofs/LovaszLocalLemmaOQ01.lean",
+      "filename": "LovaszLocalLemmaOQ01.lean",
+      "lineCount": 88,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LovaszLocalLemmaOQ01.lean"
+    },
+    {
+      "path": "Proofs/LovaszLocalLemmaOQ01BayesSplit.lean",
+      "filename": "LovaszLocalLemmaOQ01BayesSplit.lean",
+      "lineCount": 167,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LovaszLocalLemmaOQ01BayesSplit.lean"
+    },
+    {
+      "path": "Proofs/LovaszLocalLemmaOQ01ChainRule.lean",
+      "filename": "LovaszLocalLemmaOQ01ChainRule.lean",
+      "lineCount": 209,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LovaszLocalLemmaOQ01ChainRule.lean"
+    },
+    {
+      "path": "Proofs/LovaszLocalLemmaOQ01CondIndep.lean",
+      "filename": "LovaszLocalLemmaOQ01CondIndep.lean",
+      "lineCount": 140,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LovaszLocalLemmaOQ01CondIndep.lean"
+    },
+    {
+      "path": "Proofs/LovaszLocalLemmaOQ01ConditionalAvoidance.lean",
+      "filename": "LovaszLocalLemmaOQ01ConditionalAvoidance.lean",
+      "lineCount": 141,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LovaszLocalLemmaOQ01ConditionalAvoidance.lean"
+    },
+    {
+      "path": "Proofs/LovaszLocalLemmaOQ01DenominatorRecursion.lean",
+      "filename": "LovaszLocalLemmaOQ01DenominatorRecursion.lean",
+      "lineCount": 137,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LovaszLocalLemmaOQ01DenominatorRecursion.lean"
+    },
+    {
+      "path": "Proofs/LovaszLocalLemmaOQ01DenominatorStep.lean",
+      "filename": "LovaszLocalLemmaOQ01DenominatorStep.lean",
+      "lineCount": 169,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LovaszLocalLemmaOQ01DenominatorStep.lean"
+    },
+    {
+      "path": "Proofs/LovaszLocalLemmaOQ01DependencySplit.lean",
+      "filename": "LovaszLocalLemmaOQ01DependencySplit.lean",
+      "lineCount": 142,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LovaszLocalLemmaOQ01DependencySplit.lean"
+    },
+    {
+      "path": "Proofs/LovaszLocalLemmaOQ01EulerThreshold.lean",
+      "filename": "LovaszLocalLemmaOQ01EulerThreshold.lean",
+      "lineCount": 107,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LovaszLocalLemmaOQ01EulerThreshold.lean"
+    },
+    {
+      "path": "Proofs/LovaszLocalLemmaOQ01InclusionExclusion.lean",
+      "filename": "LovaszLocalLemmaOQ01InclusionExclusion.lean",
+      "lineCount": 94,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LovaszLocalLemmaOQ01InclusionExclusion.lean"
+    },
+    {
+      "path": "Proofs/LovaszLocalLemmaOQ01InductionStep.lean",
+      "filename": "LovaszLocalLemmaOQ01InductionStep.lean",
+      "lineCount": 146,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LovaszLocalLemmaOQ01InductionStep.lean"
+    },
+    {
+      "path": "Proofs/LovaszLocalLemmaOQ01Pairwise.lean",
+      "filename": "LovaszLocalLemmaOQ01Pairwise.lean",
+      "lineCount": 109,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LovaszLocalLemmaOQ01Pairwise.lean"
+    },
+    {
+      "path": "Proofs/LovaszLocalLemmaOQ01Quantitative.lean",
+      "filename": "LovaszLocalLemmaOQ01Quantitative.lean",
+      "lineCount": 115,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LovaszLocalLemmaOQ01Quantitative.lean"
+    },
+    {
+      "path": "Proofs/LovaszLocalLemmaOQ01StrongInduction.lean",
+      "filename": "LovaszLocalLemmaOQ01StrongInduction.lean",
+      "lineCount": 202,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LovaszLocalLemmaOQ01StrongInduction.lean"
+    },
+    {
+      "path": "Proofs/LovaszLocalLemmaOQ01SubsetHistoryPos.lean",
+      "filename": "LovaszLocalLemmaOQ01SubsetHistoryPos.lean",
+      "lineCount": 130,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LovaszLocalLemmaOQ01SubsetHistoryPos.lean"
+    },
+    {
+      "path": "Proofs/LovaszLocalLemmaOQ01SymmetricStep.lean",
+      "filename": "LovaszLocalLemmaOQ01SymmetricStep.lean",
+      "lineCount": 133,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LovaszLocalLemmaOQ01SymmetricStep.lean"
+    },
+    {
+      "path": "Proofs/LovaszLocalLemmaOQ01UnionBound.lean",
+      "filename": "LovaszLocalLemmaOQ01UnionBound.lean",
+      "lineCount": 85,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LovaszLocalLemmaOQ01UnionBound.lean"
+    },
+    {
       "path": "Proofs/LovaszLocalLemmaOQ02.lean",
       "filename": "LovaszLocalLemmaOQ02.lean",
-      "lineCount": 263,
+      "lineCount": 319,
       "theoremCount": 13,
       "axiomCount": 0,
       "defCount": 0,
-      "sorryCount": 3,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LovaszLocalLemmaOQ02.lean"
     },
@@ -135,6 +338,39 @@
       "sorryCount": 9,
       "isAristotle": true,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LovaszLocalLemmaOQ02Aristotle.lean"
+    },
+    {
+      "path": "Proofs/LovaszLocalLemmaOQ02Wip01.lean",
+      "filename": "LovaszLocalLemmaOQ02Wip01.lean",
+      "lineCount": 103,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LovaszLocalLemmaOQ02Wip01.lean"
+    },
+    {
+      "path": "Proofs/LovaszLocalLemmaOQ04.lean",
+      "filename": "LovaszLocalLemmaOQ04.lean",
+      "lineCount": 260,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LovaszLocalLemmaOQ04.lean"
+    },
+    {
+      "path": "Proofs/LovaszLocalLemmaOQ04Separation.lean",
+      "filename": "LovaszLocalLemmaOQ04Separation.lean",
+      "lineCount": 61,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LovaszLocalLemmaOQ04Separation.lean"
     }
   ]
 }

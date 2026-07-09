@@ -27,8 +27,14 @@
 
   * `sublevelMeasure_linear`      — `|{x : |x| < 1}| = 2`.
   * `sublevelInf`                 — the infimum of sublevel measures over admissible `f`.
-  * `sublevelInf_le_two`          — `sublevelInf ≤ 2` (linear witness; not claimed tight —
-                                    the true infimum is `≤ 1.835`, needing potential theory).
+  * `sublevelInf_le_two`          — `sublevelInf ≤ 2` (linear witness; not claimed tight).
+  * `sublevelInf_eq_zero`         — `sublevelInf = 0` (exact): the literal predicate only
+                                    constrains the roots `f` *has*, so the rootless monic
+                                    `X² + 1` is vacuously admissible with an empty sublevel
+                                    set.  This sharpens the `≤ 2` bound and pins down the
+                                    faithfulness gap — the *intended* infimum `2^(4/3) − 1`
+                                    needs the extra hypothesis `f.roots.card = f.natDegree`
+                                    (complete splitting over `ℝ`).
 
   All results are fully machine-checked (0 axioms, 0 sorries).
 
@@ -168,5 +174,54 @@ noncomputable def sublevelInf : ℝ≥0∞ :=
     available here. -/
 theorem sublevelInf_le_two : sublevelInf ≤ ENNReal.ofReal 2 :=
   iInf_le_of_le X (iInf_le_of_le linear_admissible sublevelMeasure_linear.le)
+
+/-! ### The literal predicate is not faithful on the infimum side: `sublevelInf = 0`
+
+`MonicRealRootedIn01 f` only constrains the real roots that `f` actually *has*
+(`∀ r ∈ f.roots, r ∈ [-1,1]`); it does **not** force `f` to split over `ℝ`.  A monic
+polynomial with no real roots — e.g. `X² + 1`, whose real-root multiset is empty — is
+therefore *vacuously* admissible, and its sublevel set `{x : |x² + 1| < 1}` is empty.
+
+Consequently the infimum object degenerates: `sublevelInf = 0`, strictly below the
+`≤ 2` linear bound above and far below the *intended* value `2^(4/3) − 1 ≈ 1.52`.  The
+intended infimum lives under the **faithful** hypothesis that `f` splits completely with
+all roots real in `[-1,1]` (`f.roots.card = f.natDegree`), which `X² + 1` fails.  This
+records the gap precisely rather than papering over it. -/
+
+/-- **`X² + 1` is (vacuously) admissible**: it is monic and has no real roots, so the
+    root condition holds vacuously. -/
+theorem sq_add_one_admissible : MonicRealRootedIn01 (X ^ 2 + C 1 : Polynomial ℝ) := by
+  refine ⟨by simpa using monic_X_pow_add_C (1 : ℝ) (two_ne_zero), ?_⟩
+  intro r hr
+  rw [Polynomial.mem_roots'] at hr
+  exfalso
+  have hroot : r ^ 2 + 1 = 0 := by simpa using hr.2
+  nlinarith [sq_nonneg r]
+
+/-- **The sublevel set of `X² + 1` is empty**: `|x² + 1| ≥ 1` for every real `x`. -/
+theorem sublevelSet_sq_add_one : sublevelSet (X ^ 2 + C 1 : Polynomial ℝ) = ∅ := by
+  ext x
+  simp only [sublevelSet, Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false, not_lt]
+  have hev : (X ^ 2 + C 1 : Polynomial ℝ).eval x = x ^ 2 + 1 := by simp
+  rw [hev, abs_of_nonneg (by positivity)]
+  nlinarith [sq_nonneg x]
+
+/-- **The sublevel set of `X² + 1` has Lebesgue measure `0`.** -/
+theorem sublevelMeasure_sq_add_one :
+    sublevelMeasure (X ^ 2 + C 1 : Polynomial ℝ) = 0 := by
+  unfold sublevelMeasure
+  rw [sublevelSet_sq_add_one, measure_empty]
+
+/-- **The infimum degenerates to `0` under the literal predicate.**  Because the monic
+    `X² + 1` has no real roots it is admissible with an empty (measure-`0`) sublevel set,
+    so `sublevelInf = 0`.  This sharpens `sublevelInf_le_two` and shows the literal
+    predicate is *not* the faithful formalization of "all roots real in `[-1,1]`": the
+    intended infimum `2^(4/3) − 1` requires the extra hypothesis `f.roots.card =
+    f.natDegree` (complete splitting), which excludes `X² + 1`. -/
+theorem sublevelInf_eq_zero : sublevelInf = 0 :=
+  le_antisymm
+    (iInf_le_of_le (X ^ 2 + C 1)
+      (iInf_le_of_le sq_add_one_admissible sublevelMeasure_sq_add_one.le))
+    (zero_le _)
 
 end Erdos1038WIP01

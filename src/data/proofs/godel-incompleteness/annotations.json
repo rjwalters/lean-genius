@@ -15,11 +15,6 @@
       "Hilbert's Program",
       "formal systems",
       "metamathematics"
-    ],
-    "prerequisites": [
-      "formal systems and axioms",
-      "consistency and completeness",
-      "Hilbert's Program"
     ]
   },
   {
@@ -38,11 +33,6 @@
       "formal syntax",
       "first-order logic",
       "Peano Arithmetic"
-    ],
-    "prerequisites": [
-      "well-formed formulas and formal syntax",
-      "first-order logic",
-      "Peano / first-order arithmetic"
     ]
   },
   {
@@ -61,11 +51,6 @@
       "proof",
       "derivation",
       "syntactic consequence"
-    ],
-    "prerequisites": [
-      "formal proofs and inference rules",
-      "the provability predicate ⊢φ",
-      "syntactic vs. semantic consequence"
     ]
   },
   {
@@ -84,11 +69,6 @@
       "encoding",
       "arithmetization",
       "metamathematics"
-    ],
-    "prerequisites": [
-      "encoding syntax as natural numbers",
-      "arithmetitization of metamathematics",
-      "a system reasoning about its own syntax"
     ]
   },
   {
@@ -169,11 +149,6 @@
       "fixed point",
       "Liar's Paradox",
       "diagonalization"
-    ],
-    "prerequisites": [
-      "self-reference and fixed points",
-      "the diagonal (fixed-point) lemma",
-      "expressible properties and Gödel codes"
     ]
   },
   {
@@ -224,7 +199,7 @@
       "startLine": 150,
       "endLine": 160
     },
-    "type": "tactic",
+    "type": "technique",
     "title": "G Is Not Provable",
     "content": "This is the heart of the argument. Assume for contradiction that $G$ is provable.\n\n1. By representability, $\\vdash\\text{Prov}(\\ulcorner G\\urcorner)$\n2. But $G \\iff \\neg\\text{Prov}(\\ulcorner G\\urcorner)$, so $\\vdash\\neg\\text{Prov}(\\ulcorner G\\urcorner)$\n3. We've proved both $\\text{Prov}(\\ulcorner G\\urcorner)$ and $\\neg\\text{Prov}(\\ulcorner G\\urcorner)$\n4. This contradicts consistency!\n\nTherefore, if the system is consistent, $G$ cannot be provable. But $G$ *says* \"I am not provable\"—so $G$ is true! A true sentence that cannot be proved.",
     "mathContext": "$\\text{Consistent}(F) \\implies \\neg\\vdash G$",
@@ -275,11 +250,6 @@
       "Hilbert",
       "formalism",
       "finitism"
-    ],
-    "prerequisites": [
-      "Hilbert's formalism and finitism",
-      "completeness and consistency of a system",
-      "the First and Second Incompleteness Theorems"
     ]
   },
   {
@@ -298,11 +268,6 @@
       "axiom extension",
       "ordinal analysis",
       "transfinite hierarchy"
-    ],
-    "prerequisites": [
-      "undecidable sentences (the Gödel sentence G)",
-      "extending a theory by new axioms",
-      "transfinite/ordinal hierarchies of theories"
     ]
   },
   {
@@ -321,11 +286,6 @@
       "mechanism",
       "Lucas-Penrose argument",
       "philosophy of mind"
-    ],
-    "prerequisites": [
-      "the Gödel sentence and its truth",
-      "the Lucas–Penrose argument",
-      "philosophy of mind (mechanism)"
     ]
   }
 ]

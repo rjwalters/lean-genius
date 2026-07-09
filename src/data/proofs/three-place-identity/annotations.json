@@ -3,8 +3,8 @@
     "id": "relative-identity-structure",
     "proofId": "three-place-identity",
     "range": {
-      "startLine": 46,
-      "endLine": 54
+      "startLine": 47,
+      "endLine": 55
     },
     "type": "definition",
     "title": "The RelativeIdentity Structure",
@@ -25,8 +25,8 @@
     "id": "mem-from-id",
     "proofId": "three-place-identity",
     "range": {
-      "startLine": 92,
-      "endLine": 107
+      "startLine": 93,
+      "endLine": 108
     },
     "type": "definition",
     "title": "Bridge D1: Existence as Distinguishability",
@@ -46,8 +46,8 @@
     "id": "mem-from-id-irrefl",
     "proofId": "three-place-identity",
     "range": {
-      "startLine": 109,
-      "endLine": 118
+      "startLine": 110,
+      "endLine": 119
     },
     "type": "insight",
     "title": "Automatic Foundation",
@@ -68,8 +68,8 @@
     "id": "id-from-mem",
     "proofId": "three-place-identity",
     "range": {
-      "startLine": 132,
-      "endLine": 144
+      "startLine": 133,
+      "endLine": 145
     },
     "type": "definition",
     "title": "Bridge D2: Identity from Membership Status",
@@ -89,10 +89,10 @@
     "id": "id-from-mem-iff",
     "proofId": "three-place-identity",
     "range": {
-      "startLine": 146,
-      "endLine": 153
+      "startLine": 147,
+      "endLine": 154
     },
-    "type": "tactic",
+    "type": "technique",
     "title": "Same Status Characterization",
     "content": "We prove Id∈(x, y, z) ↔ (y ∈ x ↔ z ∈ x). This elegant characterization shows that D2-identity is exactly biconditional membership: y and z are identified by x iff they have logically equivalent membership in x.",
     "mathContext": "The proof uses case analysis on whether y ∈ x. This characterization makes the connection to Quine explicit and simplifies later reasoning.",
@@ -109,10 +109,10 @@
     "id": "d2-preserves-transitivity",
     "proofId": "three-place-identity",
     "range": {
-      "startLine": 146,
-      "endLine": 153
+      "startLine": 147,
+      "endLine": 154
     },
-    "type": "tactic",
+    "type": "technique",
     "title": "Transitivity by Case Analysis",
     "content": "The transitivity proof is the most intricate. Given Id∈(x, y, z) and Id∈(x, z, w), we case-split on which disjunct holds for each. Two cases lead to contradictions (z is both member and non-member), and two cases give the result directly.",
     "mathContext": "The four cases: (both,both), (both,neither), (neither,both), (neither,neither). The middle two are impossible by consistency. This is a nice example of exhaustive case analysis in Lean.",
@@ -130,8 +130,8 @@
     "id": "foundation-axiom",
     "proofId": "three-place-identity",
     "range": {
-      "startLine": 238,
-      "endLine": 243
+      "startLine": 239,
+      "endLine": 244
     },
     "type": "definition",
     "title": "The Foundation (Regularity) Axiom",
@@ -151,8 +151,8 @@
     "id": "round-trip-theorem",
     "proofId": "three-place-identity",
     "range": {
-      "startLine": 249,
-      "endLine": 259
+      "startLine": 250,
+      "endLine": 260
     },
     "type": "insight",
     "title": "The Round-Trip Theorem",
@@ -173,8 +173,8 @@
     "id": "round-trip-foundation-use",
     "proofId": "three-place-identity",
     "range": {
-      "startLine": 265,
-      "endLine": 272
+      "startLine": 266,
+      "endLine": 273
     },
     "type": "insight",
     "title": "Why Foundation is Essential",
@@ -193,10 +193,10 @@
     "id": "tauto-proof",
     "proofId": "three-place-identity",
     "range": {
-      "startLine": 265,
-      "endLine": 281
+      "startLine": 266,
+      "endLine": 282
     },
-    "type": "tactic",
+    "type": "technique",
     "title": "The Power of tauto",
     "content": "The alternative proof using 'tauto' is remarkably short: just unfold definitions, introduce the Foundation hypothesis, and let the tautology checker handle the rest. This demonstrates that the core logic is purely propositional.",
     "mathContext": "The 'tauto' tactic in Lean handles classical propositional logic automatically. Once we have ¬(x ∈ x) as a hypothesis, the equivalence MemFromId ↔ mem is a propositional tautology.",
@@ -214,8 +214,8 @@
     "id": "universality-theorem",
     "proofId": "three-place-identity",
     "range": {
-      "startLine": 314,
-      "endLine": 325
+      "startLine": 315,
+      "endLine": 326
     },
     "type": "insight",
     "title": "The Universality Theorem",
@@ -236,8 +236,8 @@
     "id": "trivial-identity",
     "proofId": "three-place-identity",
     "range": {
-      "startLine": 389,
-      "endLine": 393
+      "startLine": 390,
+      "endLine": 394
     },
     "type": "definition",
     "title": "Example: Trivial Identity",
@@ -256,8 +256,8 @@
     "id": "discrete-identity",
     "proofId": "three-place-identity",
     "range": {
-      "startLine": 399,
-      "endLine": 403
+      "startLine": 400,
+      "endLine": 404
     },
     "type": "definition",
     "title": "Example: Discrete Identity",

@@ -72,6 +72,11 @@
   ],
   "relatedProofs": [
     "pythagorean-theorem",
+    "pythagorean-theorem-oq-03",
+    "pythagorean-theorem-oq-03-oq-02",
+    "pythagorean-theorem-oq-04",
+    "pythagorean-theorem-oq-04-oq-01",
+    "pythagorean-theorem-oq-05",
     "pythagorean-triples",
     "pythagorean-triples-oq-04"
   ],
@@ -91,15 +96,70 @@
   "tractability": 7,
   "leanFiles": [
     {
+      "path": "Proofs/PythagoreanTheorem.lean",
+      "filename": "PythagoreanTheorem.lean",
+      "lineCount": 215,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PythagoreanTheorem.lean"
+    },
+    {
+      "path": "Proofs/PythagoreanTheoremOQ03.lean",
+      "filename": "PythagoreanTheoremOQ03.lean",
+      "lineCount": 1432,
+      "theoremCount": 104,
+      "axiomCount": 0,
+      "defCount": 18,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PythagoreanTheoremOQ03.lean"
+    },
+    {
+      "path": "Proofs/PythagoreanTheoremOQ03OQ02.lean",
+      "filename": "PythagoreanTheoremOQ03OQ02.lean",
+      "lineCount": 191,
+      "theoremCount": 16,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PythagoreanTheoremOQ03OQ02.lean"
+    },
+    {
       "path": "Proofs/PythagoreanTheoremOQ04.lean",
       "filename": "PythagoreanTheoremOQ04.lean",
-      "lineCount": 148,
-      "theoremCount": 6,
+      "lineCount": 200,
+      "theoremCount": 11,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PythagoreanTheoremOQ04.lean"
+    },
+    {
+      "path": "Proofs/PythagoreanTheoremOQ04OQ01.lean",
+      "filename": "PythagoreanTheoremOQ04OQ01.lean",
+      "lineCount": 165,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PythagoreanTheoremOQ04OQ01.lean"
+    },
+    {
+      "path": "Proofs/PythagoreanTheoremOQ05.lean",
+      "filename": "PythagoreanTheoremOQ05.lean",
+      "lineCount": 444,
+      "theoremCount": 19,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PythagoreanTheoremOQ05.lean"
     }
   ]
 }

@@ -96,7 +96,7 @@
       "Topology"
     ],
     "namespace": "FactorialTelescopingConverges",
-    "lineCount": 84,
+    "lineCount": 85,
     "axiomCount": 0,
     "theoremCount": 4,
     "definitionCount": 0,
@@ -157,7 +157,7 @@
       "tendsto_one: convergence of the partial sums to 1, i.e. ∑_{k≥1} k/(k+1)! = 1, via a squeeze on the factorial tail"
     ],
     "axiomCount": 0,
-    "lineCount": 84,
+    "lineCount": 85,
     "assumptions": "0 axioms, 0 sorries, no native_decide. #print axioms reports only [propext, Classical.choice, Quot.sound] for term_telescope, sum_Icc, sum_lt_one, and tendsto_one. Compiled against Mathlib v4.26.0. The result is elementary/classical; the formalization is built from primitives (factorial_succ, sum_Icc_succ_top, squeeze_zero) rather than wrapping a single named Mathlib lemma.",
     "theoremCount": 4,
     "definitionCount": 0,

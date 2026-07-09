@@ -44,6 +44,7 @@
   ],
   "relatedProofs": [
     "three-place-identity",
+    "three-place-identity-oq-01",
     "three-place-identity-oq-02"
   ],
   "references": {
@@ -59,13 +60,24 @@
     {
       "path": "Proofs/ThreePlaceIdentity.lean",
       "filename": "ThreePlaceIdentity.lean",
-      "lineCount": 426,
+      "lineCount": 427,
       "theoremCount": 10,
       "axiomCount": 0,
       "defCount": 10,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ThreePlaceIdentity.lean"
+    },
+    {
+      "path": "Proofs/ThreePlaceIdentityOQ01.lean",
+      "filename": "ThreePlaceIdentityOQ01.lean",
+      "lineCount": 180,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ThreePlaceIdentityOQ01.lean"
     },
     {
       "path": "Proofs/ThreePlaceIdentityOQ02.lean",

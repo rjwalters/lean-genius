@@ -26,5 +26,34 @@
       "Unify Mersenne (n prime) and Fermat (n power of two) necessary conditions from a single parametrized lemma about factors of a^n ± 1."
     ],
     "progressSummary": "COMPLETE: verified 0 sorry / 0 axiom, gallery entry added, PR opened."
-  }
+  },
+  "leanFiles": [
+    {
+      "path": "Proofs/MersennePrimeExponent.lean",
+      "filename": "MersennePrimeExponent.lean",
+      "lineCount": 92,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MersennePrimeExponent.lean"
+    },
+    {
+      "path": "Proofs/MersennePrimeExponentOQ02.lean",
+      "filename": "MersennePrimeExponentOQ02.lean",
+      "lineCount": 127,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MersennePrimeExponentOQ02.lean"
+    }
+  ],
+  "relatedProofs": [
+    "mersenne-prime-exponent",
+    "mersenne-prime-exponent-oq-01",
+    "mersenne-prime-exponent-oq-02"
+  ]
 }

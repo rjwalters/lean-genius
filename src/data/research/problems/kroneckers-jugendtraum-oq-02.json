@@ -55,6 +55,7 @@
   ],
   "relatedProofs": [
     "kroneckers-jugendtraum",
+    "kroneckers-jugendtraum-oq-01",
     "kroneckers-jugendtraum-oq-02"
   ],
   "references": {
@@ -70,13 +71,35 @@
     {
       "path": "Proofs/KroneckersJugendtraum.lean",
       "filename": "KroneckersJugendtraum.lean",
-      "lineCount": 372,
+      "lineCount": 363,
       "theoremCount": 3,
       "axiomCount": 0,
-      "defCount": 9,
+      "defCount": 10,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KroneckersJugendtraum.lean"
+    },
+    {
+      "path": "Proofs/KroneckersJugendtraumOQ01.lean",
+      "filename": "KroneckersJugendtraumOQ01.lean",
+      "lineCount": 132,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KroneckersJugendtraumOQ01.lean"
+    },
+    {
+      "path": "Proofs/KroneckersJugendtraumRealQuadAbelian.lean",
+      "filename": "KroneckersJugendtraumRealQuadAbelian.lean",
+      "lineCount": 119,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KroneckersJugendtraumRealQuadAbelian.lean"
     },
     {
       "path": "Proofs/KroneckersJugendtraumStarkRankOne.lean",

@@ -67,7 +67,7 @@
   "assumptions": "The CubeDissection structure encodes the covering/tiling condition as the placeholder field covers_unit_cube : True; only containment in the unit cube and pairwise interior-disjointness are formalized. The achievability results (two_mem / three_mem / tri_has_three_collisions and the explicit constructions) are fully machine-checked with 0 axioms. The lower-bound half — and therefore the headline IsLeast / sInf / minimum statements that combine it — inherits exactly one axiom from the base Wiedijk #82 formalization, DissectionOfCubes.all_different_implies_long_chains_axiom, which stands in for the unformalized 3D geometric covering argument. #print axioms confirms this is the only non-foundational axiom in the dependency closure (axiomCount = 1; the Lean file itself declares 0 axioms). Whether the genuine geometric minimum is also 2, or whether Littlewood's cascade forces strictly more, remains open.",
   "axiomCount": 1,
   "lineCount": 263,
-  "theoremCount": 25,
+  "theoremCount": 26,
   "definitionCount": 4
  },
  "overview": {
@@ -149,7 +149,7 @@
   "namespace": "DissectionOfCubesOQ01OQ02",
   "lineCount": 263,
   "axiomCount": 0,
-  "theoremCount": 25,
+  "theoremCount": 26,
   "definitionCount": 4,
   "path": "Proofs/DissectionOfCubesOQ01OQ02.lean",
   "sorries": 0

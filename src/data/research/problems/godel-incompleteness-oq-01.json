@@ -67,7 +67,10 @@
     "pedagogical"
   ],
   "relatedProofs": [
-    "godel-incompleteness"
+    "godel-incompleteness",
+    "godel-incompleteness-oq-02",
+    "godel-incompleteness-oq-03",
+    "godel-incompleteness-oq-04"
   ],
   "references": {
     "papers": [
@@ -100,6 +103,28 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GodelIncompletenessOQ02.lean"
+    },
+    {
+      "path": "Proofs/GodelIncompletenessOQ03.lean",
+      "filename": "GodelIncompletenessOQ03.lean",
+      "lineCount": 241,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GodelIncompletenessOQ03.lean"
+    },
+    {
+      "path": "Proofs/GodelIncompletenessOQ04.lean",
+      "filename": "GodelIncompletenessOQ04.lean",
+      "lineCount": 177,
+      "theoremCount": 13,
+      "axiomCount": 1,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GodelIncompletenessOQ04.lean"
     }
   ]
 }

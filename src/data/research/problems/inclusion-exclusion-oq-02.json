@@ -56,7 +56,8 @@
     "inclusion-exclusion-oq-04-oq-01",
     "inclusion-exclusion-oq-04-oq-01-oq-01",
     "inclusion-exclusion-oq-04-oq-01-oq-02",
-    "inclusion-exclusion-oq-04-oq-03"
+    "inclusion-exclusion-oq-04-oq-03",
+    "inclusion-exclusion-oq-05-oq-01"
   ],
   "references": {
     "papers": [],
@@ -82,11 +83,11 @@
     {
       "path": "Proofs/InclusionExclusionBonferroniGeneral.lean",
       "filename": "InclusionExclusionBonferroniGeneral.lean",
-      "lineCount": 329,
-      "theoremCount": 13,
+      "lineCount": 285,
+      "theoremCount": 12,
       "axiomCount": 0,
-      "defCount": 7,
-      "sorryCount": 1,
+      "defCount": 5,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InclusionExclusionBonferroniGeneral.lean"
     },
@@ -144,6 +145,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InclusionExclusionOQ0301.lean"
+    },
+    {
+      "path": "Proofs/InclusionExclusionOQ05OQ01.lean",
+      "filename": "InclusionExclusionOQ05OQ01.lean",
+      "lineCount": 223,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InclusionExclusionOQ05OQ01.lean"
     },
     {
       "path": "Proofs/InclusionExclusionSecondBonferroni.lean",

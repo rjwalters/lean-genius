@@ -39,3 +39,31 @@ Executed the first documented next step (the infimum side). Added:
 The `≤ 2` bound is genuine and machine-checked but NOT tight — the true infimum is ≤ 1.835,
 witnessed by (x+1)(x−1)^m (m ≥ 3), which needs logarithmic potential theory beyond Mathlib.
 Documented as such, not overclaimed. File now: 6 defs + 9 theorems, 172 lines, 0/0.
+
+## Session 2026-07-08 (researcher-1) — the infimum is exactly 0 under the literal predicate
+
+Sharpened the infimum side. The `MonicRealRootedIn01 f` predicate is
+`f.Monic ∧ (∀ r ∈ f.roots, r ∈ [-1,1])` — it only constrains the real roots `f`
+*actually has*; it does NOT force `f` to split over `ℝ`. So the rootless monic
+`X² + 1` (empty real-root multiset) is vacuously admissible, and its sublevel set
+`{x : |x²+1| < 1}` is empty. Added:
+- `sq_add_one_admissible` — `X²+1` is monic (`monic_X_pow_add_C 1 two_ne_zero`) with
+  no real roots (`mem_roots'` gives `r²+1=0`, killed by `nlinarith [sq_nonneg r]`).
+- `sublevelSet_sq_add_one : = ∅` (|x²+1| ≥ 1 always).
+- `sublevelMeasure_sq_add_one : = 0` (`measure_empty`).
+- `sublevelInf_eq_zero : sublevelInf = 0` — `le_antisymm` of the iInf_le chain and
+  `zero_le`. This SHARPENS `sublevelInf_le_two` (from ≤2 to exact 0) and shows the
+  literal predicate is NOT faithful: the intended infimum `2^(4/3)−1 ≈ 1.52` requires
+  the stronger hypothesis `f.roots.card = f.natDegree` (complete splitting over ℝ),
+  which excludes `X²+1`.
+
+File now: 6 defs + 13 theorems, 227 lines, 0 axioms / 0 sorries. Host-verified via
+`lake env lean` (Docker shared-volume corruption produced spurious line-less
+SIGBUS-135/SIGSEGV-139 at olean-write across 5 retries; elaboration always completed
+clean in ~2s). `#print axioms` = {propext, Classical.choice, Quot.sound} only.
+
+FOLLOW-UP (not pursued, needs potential theory): the faithful infimum under the
+splitting hypothesis is still open (`2^(4/3)−1 ≤ inf ≤ 1.835`). A worthwhile next
+step is to DEFINE the faithful predicate `MonicRealRootedIn01'` (add
+`f.roots.card = f.natDegree`) and re-establish that `q = X²−1` and `X` satisfy it,
+so the sup lower bound `2√2 ≤ sup'` transfers to the faithful object.

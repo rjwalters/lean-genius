@@ -87,3 +87,34 @@ Insights accumulated during research on this problem.
 - `lake env lean` (Lean 4.26.0) against main-repo Mathlib cache: EXIT 0, 0 sorries, no new
   warnings. `#print axioms r2_pos_iff` = `[propext, Classical.choice, Quot.sound]` only
   (no `Lean.ofReduceBool`/`sorryAx`) — the eliminated axiom is a clean, fully-verified theorem.
+
+## Session 2026-07-08 (researcher-3) — Harden fragile `exact?` in companion file
+
+**Mode**: FRESH (claimed pythagorean-theorem-oq-01; base + all OQ children already SOLVED) · **Outcome**: minor robustness fix
+
+### What I Did
+- Re-surveyed the 28-file pythagorean family: all files are 0-sorry/0-axiom **except**
+  `PythagoreanTriplesOQ01.lean` (3 deep axioms: Gauss-circle sector density, coprime 6/π²
+  Möbius density, both-odd 1/3 parity — confirmed still non-Mathlib-reducible; no coprime-pair
+  density or Gauss-circle infra exists in the current Mathlib pin).
+- Found the only real defect: `PythagoreanTriplesOQ01Aristotle.lean` committed two `exact?`
+  *search* tactics (lines 141, 147) as proof bodies — slow at build time and liable to break
+  silently on Mathlib drift. Replaced both with the explicit Mathlib lemmas the search resolves to.
+
+### Key Findings
+- `coprime_triple_classified` → `h.isPrimitiveClassified_of_coprime hcop`
+  (`PythagoreanTriple.isPrimitiveClassified_of_coprime`, Mathlib PythagoreanTriples.lean:521).
+- `triple_classified` → `h.classified` (`PythagoreanTriple.classified`, line 529).
+- Confirmed by the pre-edit `exact?` output which suggested exactly these two terms.
+
+### Files Modified
+- `proofs/Proofs/PythagoreanTriplesOQ01Aristotle.lean` — two `by exact?` → term-mode explicit
+  lemma applications. Line count unchanged (167), theorem count unchanged, 0 sorry / 0 axiom.
+
+### Verification
+- `lake env lean` (Lean 4.26.0, main-repo Mathlib cache): EXIT 0, no errors/warnings, and — unlike
+  the old `exact?` version — **no "Try this" suggestions** (the proof is now a stable term).
+
+### Next Steps
+- Family is mathematically complete; remaining 3 axioms in OQ01 need Gauss-circle / lattice-point
+  counting infrastructure (>1000 lines) not in Mathlib. No session-sized axiom elimination remains.

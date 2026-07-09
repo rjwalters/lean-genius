@@ -20,7 +20,7 @@
     "badge": "verified",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 522,
+    "lineCount": 523,
     "assumptions": "None. The file introduces no axioms and no sorries; every theorem depends only on the standard foundational axioms propext / Classical.choice / Quot.sound (verified via #print axioms). The concrete crossover examples use kernel `decide` (not `native_decide`), so they introduce no Lean.ofReduceBool dependency. The open content of OQ-02 — whether the small-n/large-n gap can be closed for general r, i.e. the Erdős Matching Conjecture itself for r≥4 — is left unproved and unaxiomatized; only the regime-transition structure of the conjectured extremal value is established.",
     "dateAdded": "2026-06-27",
     "mathlib_version": "4.26.0",
@@ -169,7 +169,7 @@
       "Nat"
     ],
     "namespace": "Erdos1020OQ02",
-    "lineCount": 522,
+    "lineCount": 523,
     "axiomCount": 0,
     "theoremCount": 25,
     "path": "Proofs/Erdos1020OQ02.lean",

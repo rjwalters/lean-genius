@@ -20,7 +20,7 @@
     "dateAdded": "2026-07-03",
     "axiomCount": 0,
     "assumptions": "Fully verified: 0 sorries, 0 axiom declarations, no structure-encoded assumptions, no native_decide/decide (only the foundational propext/Classical.choice/Quot.sound from the Mathlib lemmas used). Scope: this entry assembles the ratio of the Erdős–Lovász dependency-graph induction step, combining the previously-verified numerator half (cond_failure_le_measure_of_indep_num, giving μ[Aᵢ ∩ N | C] ≤ μ(Aᵢ)) with an abstract denominator lower bound d ≤ μ[N | C] to deliver the step's conclusion μ[Aᵢ | N ∩ C] ≤ μ(Aᵢ)/d and, under the LLL hypothesis μ(Aᵢ) ≤ x·d, the invariant μ[Aᵢ | N ∩ C] ≤ x. It does NOT close the full LLL: the denominator lower bound d = ∏_{j∈S₁}(1 − xⱼ) is an explicit hypothesis, not supplied — producing it by well-founded recursion on |S₁| (iterating the denominator-step peel) and supplying the per-event bounds xₖ from a dependency structure remain the open OQ-01 targets. The numerator independence (IndepSet (A i) (⋂_{S₂} Aⱼᶜ) μ), the positive-measure hypotheses (μ(⋂_{S₂} Aⱼᶜ) ≠ 0, μ(N ∩ C) ≠ 0), the denominator lower bound (d ≤ μ[N | C], d ≠ 0), and the LLL budget (μ(Aᵢ) ≤ x·d) are stated explicitly as arguments; they are not axioms.",
-    "lineCount": 149,
+    "lineCount": 145,
     "theoremCount": 3,
     "definitionCount": 0,
     "verified": true,
@@ -45,7 +45,7 @@
       "LovaszLocalLemmaOQ01DenominatorStep"
     ],
     "namespace": "LovaszLocalLemmaOQ01InductionStep",
-    "lineCount": 149,
+    "lineCount": 145,
     "axiomCount": 0,
     "theoremCount": 3,
     "substantiveTheoremCount": 3,

@@ -137,6 +137,14 @@
       "endLine": 66
     },
     {
+      "name": "gaussianExponent_deriv",
+      "type": "supporting",
+      "description": "The deriv-form of the exponent derivative: deriv ψ t = iμ − σ²t.",
+      "leanType": "(μ σ_sq t : ℝ) → deriv (gaussianExponent μ σ_sq) t = ↑μ * Complex.I - ↑(σ_sq * t)",
+      "startLine": 67,
+      "endLine": 69
+    },
+    {
       "name": "gaussianExponent_deriv_zero",
       "type": "core",
       "description": "ψ'(0) = iμ: the first cumulant κ₁ = μ (the mean).",
@@ -151,6 +159,14 @@
       "leanType": "(μ σ_sq t : ℝ) → HasDerivAt (fun s : ℝ => (↑μ * Complex.I - ↑(σ_sq * s) : ℂ)) (-↑σ_sq) t",
       "startLine": 87,
       "endLine": 93
+    },
+    {
+      "name": "gaussianExponent_deriv2_zero",
+      "type": "core",
+      "description": "ψ''(0) = −σ²: the read-off at 0 giving the second cumulant κ₂ = σ² (the κ₂ analogue of gaussianExponent_deriv_zero).",
+      "leanType": "(μ σ_sq : ℝ) → deriv (fun s : ℝ => (↑μ * Complex.I - ↑(σ_sq * s) : ℂ)) 0 = -↑σ_sq",
+      "startLine": 97,
+      "endLine": 99
     },
     {
       "name": "gaussianExponent_deriv3",

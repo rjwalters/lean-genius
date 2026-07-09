@@ -42,9 +42,11 @@
     "cayley-hamilton-reduction",
     "cayley-hamilton-reduction-oq-01",
     "cayley-hamilton-reduction-oq-01-oq-02",
+    "cayley-hamilton-reduction-oq-01-oq-02-oq-01",
     "cayley-hamilton-reduction-oq-02",
     "cayley-hamilton-reduction-oq-02-oq-01",
-    "cayley-hamilton-reduction-oq-02-oq-01-wip-01"
+    "cayley-hamilton-reduction-oq-02-oq-01-wip-01",
+    "cayley-hamilton-reduction-oq-02-oq-03"
   ],
   "references": {
     "papers": [],
@@ -75,6 +77,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonReductionOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/CayleyHamiltonReductionOQ01OQ02OQ01.lean",
+      "filename": "CayleyHamiltonReductionOQ01OQ02OQ01.lean",
+      "lineCount": 192,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonReductionOQ01OQ02OQ01.lean"
     },
     {
       "path": "Proofs/CayleyHamiltonReductionOQ02.lean",
@@ -119,6 +132,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonReductionOQ02OQ01WIP01.lean"
+    },
+    {
+      "path": "Proofs/CayleyHamiltonReductionOQ02OQ03.lean",
+      "filename": "CayleyHamiltonReductionOQ02OQ03.lean",
+      "lineCount": 201,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonReductionOQ02OQ03.lean"
     }
   ]
 }

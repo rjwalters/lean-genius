@@ -67,7 +67,8 @@
     "erdos-1",
     "erdos-11",
     "erdos-116",
-    "erdos-1162"
+    "erdos-1162",
+    "erdos-1162-oq-04"
   ],
   "references": {
     "papers": [],
@@ -80,15 +81,26 @@
   "tractability": 5,
   "leanFiles": [
     {
-      "path": "research/problems/erdos-1162-oq-04/Erdos1162OQ04.lean",
+      "path": "Proofs/Erdos1162OQ04.lean",
       "filename": "Erdos1162OQ04.lean",
-      "lineCount": 227,
-      "axiomCount": 1,
-      "defCount": 1,
+      "lineCount": 204,
       "theoremCount": 7,
+      "axiomCount": 2,
+      "defCount": 2,
       "sorryCount": 0,
       "isAristotle": false,
-      "status": "candidate-unverified"
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1162OQ04.lean"
+    },
+    {
+      "path": "Proofs/Erdos1162Problem.lean",
+      "filename": "Erdos1162Problem.lean",
+      "lineCount": 222,
+      "theoremCount": 9,
+      "axiomCount": 1,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1162Problem.lean"
     }
   ],
   "statement": "Give the asymptotic for g(n) = number of subgroups of the alternating group A_n, the analog of Erdős #1162 for S_n. Answer: log g(n) = (1/16 + o(1)) n², same leading constant as S_n."

@@ -43,7 +43,8 @@
     "erdos-65",
     "erdos-659",
     "erdos-659-oq-01",
-    "erdos-659-oq-05"
+    "erdos-659-oq-05",
+    "erdos-659-oq-06"
   ],
   "references": {
     "papers": [],
@@ -89,10 +90,21 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos659OQ05.lean"
     },
     {
+      "path": "Proofs/Erdos659OQ06.lean",
+      "filename": "Erdos659OQ06.lean",
+      "lineCount": 200,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 15,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos659OQ06.lean"
+    },
+    {
       "path": "Proofs/Erdos659Problem.lean",
       "filename": "Erdos659Problem.lean",
-      "lineCount": 281,
-      "theoremCount": 5,
+      "lineCount": 388,
+      "theoremCount": 16,
       "axiomCount": 1,
       "defCount": 9,
       "sorryCount": 0,

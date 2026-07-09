@@ -78,7 +78,8 @@
   "relatedProofs": [
     "erdos-7",
     "erdos-72",
-    "erdos-729"
+    "erdos-729",
+    "erdos-729-oq-04"
   ],
   "references": {
     "papers": [],
@@ -91,6 +92,17 @@
   "tractability": 8,
   "leanFiles": [
     {
+      "path": "Proofs/Erdos729DigitSumBound.lean",
+      "filename": "Erdos729DigitSumBound.lean",
+      "lineCount": 202,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos729DigitSumBound.lean"
+    },
+    {
       "path": "Proofs/Erdos729LegendreGeneral.lean",
       "filename": "Erdos729LegendreGeneral.lean",
       "lineCount": 93,
@@ -100,6 +112,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos729LegendreGeneral.lean"
+    },
+    {
+      "path": "Proofs/Erdos729LegendreMultinomial.lean",
+      "filename": "Erdos729LegendreMultinomial.lean",
+      "lineCount": 157,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos729LegendreMultinomial.lean"
     },
     {
       "path": "Proofs/Erdos729LegendrePrimeRecurrence.lean",
@@ -126,24 +149,13 @@
     {
       "path": "Proofs/Erdos729Problem.lean",
       "filename": "Erdos729Problem.lean",
-      "lineCount": 235,
+      "lineCount": 233,
       "theoremCount": 7,
       "axiomCount": 3,
       "defCount": 8,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos729Problem.lean"
-    },
-    {
-      "path": "Proofs/Erdos729DigitSumBound.lean",
-      "filename": "Erdos729DigitSumBound.lean",
-      "lineCount": 201,
-      "theoremCount": 7,
-      "axiomCount": 0,
-      "defCount": 0,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos729DigitSumBound.lean"
     }
   ]
 }

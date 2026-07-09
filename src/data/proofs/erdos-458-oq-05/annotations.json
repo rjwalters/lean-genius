@@ -1,30 +1,5 @@
 [
   {
-    "id": "ann-erdos458-overview",
-    "proofId": "erdos-458-oq-05",
-    "range": {
-      "startLine": 1,
-      "endLine": 38
-    },
-    "type": "concept",
-    "title": "Overview: Axiom-Free Prime Values and Base Cases for Erdős #458",
-    "content": "The parent Erdos458Problem studies the open LCM inequality lcm(1,…,p_{k+1}−1) < p_k·lcm(1,…,p_k) (Erdős #458), with p_k = nthPrime k = Nat.nth Nat.Prime k. Two of its open questions are answered here: OQ-05 asks whether the prime-index VALUE facts (nthPrime 0 = 2, …) can be derived from the Nat.nth definition rather than asserted, and OQ-03 asks for verification of the conjecture at more values of k. This companion does both while ALSO removing the parent's native_decide dependency: every prime value p_0 … p_10 is obtained from the Nat.nth/Nat.count Galois bridge (Nat.nth_count) plus kernel decide — so no native_decide, hence no Lean.ofReduceBool, hence axiom-free. The base cases are extended from the parent's k = 1, 2 to k = 1, 2, 3, 4, each verified by kernel decide after rewriting the prime values to literals. Everything is self-contained (imports only Mathlib) and reproves lcm_upto and nthPrime so each result is independently 0-axiom checkable.",
-    "mathContext": "$\\operatorname{lcm}(1,\\dots,p_{k+1}-1) < p_k\\cdot\\operatorname{lcm}(1,\\dots,p_k)$ with $p_k = \\operatorname{Nat.nth}\\ \\operatorname{Nat.Prime}\\ k$. All base cases $k\\in\\{1,2,3,4\\}$ and values $p_0,\\dots,p_{10}$ are verified by kernel \\texttt{decide} (no \\texttt{native\\_decide}), so they carry no \\texttt{Lean.ofReduceBool} axiom.",
-    "significance": "key",
-    "relatedConcepts": [
-      "Erdős-458",
-      "Nat.nth_count",
-      "kernel-decide",
-      "native_decide-elimination",
-      "prime-counting-function"
-    ],
-    "prerequisites": [
-      "the parent Erdős #458 LCM inequality",
-      "Nat.nth / Nat.count",
-      "kernel decide vs native_decide"
-    ]
-  },
-  {
     "id": "ann-lcm-upto",
     "proofId": "erdos-458-oq-05",
     "range": {
@@ -134,30 +109,6 @@
     ]
   },
   {
-    "id": "ann-nthprime-one-to-nine",
-    "proofId": "erdos-458-oq-05",
-    "range": {
-      "startLine": 68,
-      "endLine": 131
-    },
-    "type": "theorem",
-    "title": "p₁ through p₉: the Uniform Recipe Repeated",
-    "content": "The nine theorems nthPrime_one … nthPrime_nine establish p_1 = 3, p_2 = 5, p_3 = 7, p_4 = 11, p_5 = 13, p_6 = 17, p_7 = 19, p_8 = 23, p_9 = 29 — each an exact copy of the p₀ = 2 template with two literals swapped. Every proof is three lines: show Nat.nth Nat.Prime k = n unfolds the definition, Nat.nth_count applied to a primality witness (show Nat.Prime n by decide) gives Nat.nth Nat.Prime (Nat.count Nat.Prime n) = n, and the count evaluation Nat.count Nat.Prime n = k (kernel decide, counting the primes below n) rewrites the index to k. The values p_5 … p_9 are new relative to the parent, which stopped at p_4. Because the primality witnesses and count evaluations are discharged by kernel decide rather than native_decide, all nine values are axiom-free (no Lean.ofReduceBool).",
-    "mathContext": "For each $n\\in\\{3,5,7,11,13,17,19,23,29\\}$: $\\operatorname{Nat.Prime}(n)$ and $\\operatorname{Nat.count}\\ \\operatorname{Nat.Prime}\\ n = k \\;\\Rightarrow\\; p_k = n$.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "Nat.nth_count",
-      "kernel-decide",
-      "prime-enumeration",
-      "proof-template"
-    ],
-    "prerequisites": [
-      "the p₀ = 2 template",
-      "Nat.nth_count",
-      "decidable primality and prime counting"
-    ]
-  },
-  {
     "id": "ann-nthprime-ten",
     "proofId": "erdos-458-oq-05",
     "range": {
@@ -191,30 +142,6 @@
       "decidable inequality",
       "finite case verification",
       "open conjecture instances"
-    ]
-  },
-  {
-    "id": "ann-erdos458-k1k2k3",
-    "proofId": "erdos-458-oq-05",
-    "range": {
-      "startLine": 150,
-      "endLine": 165
-    },
-    "type": "theorem",
-    "title": "Base Cases k = 1, 2, 3",
-    "content": "The three lemmas erdos458_k1, erdos458_k2, erdos458_k3 verify the Erdős #458 inequality for k = 1, 2, 3: 12 < 18 (lcm_upto 4 < 3·lcm_upto 3), 60 < 300 (lcm_upto 6 < 5·lcm_upto 5), and 2520 < 2940 (lcm_upto 10 < 7·lcm_upto 7). Each proof rewrites the two noncomputable prime values to literals with the nthPrime value theorems and then closes the resulting concrete inequality by kernel decide. Together with the heaviest case k = 4 (27720 < 304920) they are packaged into erdos458_base. Note how tight the k = 3 margin is (2520 < 2940) — a hint at why the general inequality is delicate and remains open.",
-    "mathContext": "$k=1:12<18,\\quad k=2:60<300,\\quad k=3:2520<2940$, each a decidable $<$ between literals after rewriting $p_k$ to its value.",
-    "significance": "key",
-    "relatedConcepts": [
-      "Erdős-458",
-      "kernel-decide",
-      "lcm_upto",
-      "finite-case-verification"
-    ],
-    "prerequisites": [
-      "the nthPrime value theorems",
-      "kernel decide on lcm_upto",
-      "the base-case reduction"
     ]
   },
   {

@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (Step 13, VERIFIED 0/0): B dominates every fixed POWER of C — C_pow_le_B_eventually ((C k)^p ≤ B k eventually, all p) and B_div_C_pow_diverges (m·(C k)^p ≤ B k eventually, all p,m), generalizing C_sq_le_B / B_div_C_diverges via the tetration lower bound 2↑↑k≤B k. Complements the counting-function side π(x;4,3)≥k+1 (#35706) and the value-side ratio divergence (#35694). Remaining: analytic terminus (2k·ln k truth) and a Tendsto-filter packaging.",
+    "progressSummary": "PROGRESS (Step 14, VERIFIED 0/0): packaged the p-th power domination as a Filter.Tendsto atTop statement — B k/(C k)^p → ∞ for every fixed p (tendsto_B_div_C_pow_atTop) with the classical ratio B/C→∞ corollary, resolving the \"Tendsto-filter packaging\" next-step. Analytic upper-bound terminus (2k·ln k) and ℝⁿ growth-rank hierarchy remain the only open directions.",
     "builtItems": [
       "exists_prime_three_mod_four_in_interval (DirichletsTheoremOQ02OQ03.lean:78) — certified interval form: ∀n ∃ prime p≡3 mod4, n<p≤4·(n+1)!−1.",
       "nextP3 + nextP3_le_of + nextP3_le_factorial (DirichletsTheoremOQ02OQ03.lean:113–134) — least prime ≡3 mod4 above n, its minimality, and the one-step factorial bound.",
@@ -59,7 +59,9 @@
       "primesCount3 + card_le_primesCount3 / primesCount3_mono / primesCount3_ge_of_doubly_exp / primesCount3_ge / primesCount3_unbounded in Proofs/DirichletsTheoremOQ02OQ03.lean Step 11 (5 thm, 0/0, PR #35706)",
       "two_pow_two_mul_le_tower2 (2^(2k+2) ≤ 2↑↑k for k≥5) in DirichletsTheoremOQ02OQ03.lean Step 13 — exponent-level tetration engine",
       "C_pow_le_B_eventually (∀p, ∃K, ∀k≥K, (C k)^p ≤ B k) in DirichletsTheoremOQ02OQ03.lean Step 13 — B dominates every fixed power of C, generalizing C_sq_le_B (p=2 case) via the tetration lower bound 2↑↑k≤B k",
-      "B_div_C_pow_diverges (∀p m, ∃K, ∀k≥K, m·(C k)^p ≤ B k) in DirichletsTheoremOQ02OQ03.lean Step 13 — B/C^p→∞ for all p, generalizing B_div_C_diverges (p=1 case)"
+      "B_div_C_pow_diverges (∀p m, ∃K, ∀k≥K, m·(C k)^p ≤ B k) in DirichletsTheoremOQ02OQ03.lean Step 13 — B/C^p→∞ for all p, generalizing B_div_C_diverges (p=1 case)",
+      "tendsto_B_div_C_pow_atTop (DirichletsTheoremOQ02OQ03.lean): Tendsto (fun k => (B k:ℝ)/(C k:ℝ)^p) atTop atTop for every fixed p — filter-level packaging of B_div_C_pow_diverges (0 axioms/0 sorries)",
+      "tendsto_B_div_C_atTop: classical ratio B k / C k → ∞ (p=1 instance)"
     ],
     "insights": [
       "The Euclid construction N=4·(n+1)!−1 certifies an INTERVAL, not just existence: a prime ≡3 (mod 4) always lies in (n, 4·(n+1)!−1]. The upper bound is p∣N⇒p≤N; the lower is the standard p∤(n+1)! coprimality twist.",
@@ -82,7 +84,8 @@
       "Counting-function side (π(x;4,3)) done: p3 k ≤ x ⟹ k+1 ≤ π(x;4,3) transfers the certified value bound p3 k ≤ 4^(2^k) into π(x;4,3) ≥ k+1 for x ≥ 4^(2^k) — an iterated-log lower bound, honestly isolating the analytic gap to the truth π(x;4,3) ∼ x/(2 ln x) (PR #35706).",
       "B/C ratio divergence (∀m ∃K ∀k≥K, m·C k ≤ B k) was completed on main by #35694 (C_succ_add_one, C_sq_le_B, B_div_C_diverges, quartic_le_two_pow) — do NOT rebuild; the exact quadratic recursion C(k+1)=(C k+1)·C k is there too.",
       "The Step-11 tetration lower bound 2↑↑k≤B k makes p-th power domination transparent: bound C side by (4^(2^k))^p=2^(2^(k+1)·p), B side below by 2^(2↑↑(k-1)), and reduce to the exponent comparison 2^(k+1)·p ≤ 2↑↑(k-1); the multiplier p is absorbed via p≤2^(k-1). No native_decide.",
-      "Arbitrary multiplier m folds in for free: m·(C k)^p ≤ (C k)^(p+1) once m≤C k (from C k≥k+3), so B_div_C_pow_diverges follows from C_pow_le_B_eventually(p+1) with no extra estimate."
+      "Arbitrary multiplier m folds in for free: m·(C k)^p ≤ (C k)^(p+1) once m≤C k (from C k≥k+3), so B_div_C_pow_diverges follows from C_pow_le_B_eventually(p+1) with no extra estimate.",
+      "The p-power domination upgrades cleanly from division-free ∀-∃ (m·(C k)^p ≤ B k eventually) to a first-class Filter.Tendsto atTop statement: unfold tendsto_atTop, take m=⌈M⌉₊, clear the positive denominator via le_div_iff₀. No analytic input needed — purely a repackaging of the certified eventual bounds."
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -106,6 +109,7 @@
     "dirichlets-theorem-oq-01-oq-01-oq-04",
     "dirichlets-theorem-oq-02",
     "dirichlets-theorem-oq-02-oq-01",
+    "dirichlets-theorem-oq-02-oq-03",
     "dirichlets-theorem-oq-03",
     "dirichlets-theorem-oq-03-oq-01",
     "dirichlets-theorem-oq-03-oq-01-oq-01",
@@ -187,6 +191,17 @@
       "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DirichletsTheoremOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/DirichletsTheoremOQ02OQ03.lean",
+      "filename": "DirichletsTheoremOQ02OQ03.lean",
+      "lineCount": 1064,
+      "theoremCount": 70,
+      "axiomCount": 0,
+      "defCount": 7,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DirichletsTheoremOQ02OQ03.lean"
     },
     {
       "path": "Proofs/DirichletsTheoremOQ03.lean",

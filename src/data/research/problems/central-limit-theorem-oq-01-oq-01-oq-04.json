@@ -93,6 +93,8 @@
     "central-limit-theorem",
     "central-limit-theorem-oq-01",
     "central-limit-theorem-oq-01-oq-01",
+    "central-limit-theorem-oq-01-oq-01-oq-01",
+    "central-limit-theorem-oq-01-oq-01-oq-03",
     "central-limit-theorem-oq-01-oq-01-oq-04",
     "central-limit-theorem-oq-01-oq-02",
     "central-limit-theorem-oq-01-oq-02-oq-01",
@@ -101,6 +103,7 @@
     "central-limit-theorem-oq-01-oq-03",
     "central-limit-theorem-oq-01-oq-04",
     "central-limit-theorem-oq-02",
+    "central-limit-theorem-oq-02-oq-03",
     "central-limit-theorem-oq-02-oq-04",
     "central-limit-theorem-oq-03",
     "central-limit-theorem-oq-04"
@@ -147,6 +150,28 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/CentralLimitTheoremOQ01OQ01OQ01.lean",
+      "filename": "CentralLimitTheoremOQ01OQ01OQ01.lean",
+      "lineCount": 272,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ01OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/CentralLimitTheoremOQ01OQ01OQ03.lean",
+      "filename": "CentralLimitTheoremOQ01OQ01OQ03.lean",
+      "lineCount": 421,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ01OQ01OQ03.lean"
     },
     {
       "path": "Proofs/CentralLimitTheoremOQ01OQ01OQ04.lean",
@@ -259,13 +284,24 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ02OQ02.lean"
     },
     {
+      "path": "Proofs/CentralLimitTheoremOQ02OQ03.lean",
+      "filename": "CentralLimitTheoremOQ02OQ03.lean",
+      "lineCount": 257,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ02OQ03.lean"
+    },
+    {
       "path": "Proofs/CentralLimitTheoremOQ02OQ04.lean",
       "filename": "CentralLimitTheoremOQ02OQ04.lean",
-      "lineCount": 808,
-      "theoremCount": 15,
+      "lineCount": 1985,
+      "theoremCount": 38,
       "axiomCount": 0,
       "defCount": 3,
-      "sorryCount": 8,
+      "sorryCount": 9,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ02OQ04.lean"
     },

@@ -73,7 +73,9 @@
   "relatedProofs": [
     "pascals-hexagon",
     "pascals-hexagon-incomplete-01",
-    "pascals-hexagon-incomplete-01-oq-03"
+    "pascals-hexagon-incomplete-01-oq-01",
+    "pascals-hexagon-incomplete-01-oq-03",
+    "pascals-hexagon-incomplete-01-oq-03-oq-01"
   ],
   "references": {
     "papers": [],
@@ -94,6 +96,17 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PascalsHexagonIncomplete01.lean"
     },
     {
+      "path": "Proofs/PascalsHexagonIncomplete01OQ01.lean",
+      "filename": "PascalsHexagonIncomplete01OQ01.lean",
+      "lineCount": 161,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PascalsHexagonIncomplete01OQ01.lean"
+    },
+    {
       "path": "Proofs/PascalsHexagonIncomplete01OQ03.lean",
       "filename": "PascalsHexagonIncomplete01OQ03.lean",
       "lineCount": 154,
@@ -103,6 +116,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PascalsHexagonIncomplete01OQ03.lean"
+    },
+    {
+      "path": "Proofs/PascalsHexagonIncomplete01OQ03OQ01.lean",
+      "filename": "PascalsHexagonIncomplete01OQ03OQ01.lean",
+      "lineCount": 365,
+      "theoremCount": 16,
+      "axiomCount": 0,
+      "defCount": 7,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PascalsHexagonIncomplete01OQ03OQ01.lean"
     }
   ]
 }
