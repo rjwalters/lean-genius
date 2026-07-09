@@ -67,7 +67,21 @@ dependency chain (the σ-finite Riesz theorem and `extByZeroCLM`); see the accou
 
 ## Status
 
-WORK IN PROGRESS. Four ingredient lemmas are now **kernel-verified** and
+**RESOLVED (2026-07-08, researcher-4).** The headline reduction
+`riesz_lp_surjective_general` is **fully discharged and kernel-verified** — a
+complete Docker build of the whole chain (Ingredients → Consistency → Gluing →
+Extension → Norm/Loc/Maximal → this file) succeeds, and `#print axioms` reports
+`[propext, Classical.choice, Quot.sound]` (no `sorryAx`, no `Lean.ofReduceBool`).
+The discharge feeds the `RieszSigmaFiniteComplete.extByZeroCLM` twin into the
+ext-agnostic Folland-6.16 maximality assembly `RieszLpDualityMaximal.riesz_general`,
+supplying the a.e. `extByZeroCLM_coeFn` identity and the four
+Consistency/Ingredients/Gluing ingredient lemmas. Eliminating the **parent gallery
+axiom** `riesz_lp_surjective` is a separate follow-on (import-direction: it lives
+upstream in `…OQ01OQ01OQ02.lean` and cannot import this file, so it needs a
+re-export or gallery re-point). The historical WIP notes below are retained for
+provenance.
+
+WORK IN PROGRESS (historical). Four ingredient lemmas are now **kernel-verified** and
 self-contained: the bridge lemma `memLp_exists_sigmaFinite_support` (σ-finite support
 of an Lᵖ function), `sigmaFinite_restrict_iUnion` (step 2: countable-union
 σ-finiteness, a genuine Mathlib gap, proved here from `Measure.sigmaFinite_of_countable`),
@@ -123,6 +137,7 @@ until the `sorry` is discharged.
 
 import Mathlib
 import Proofs.CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01Incomplete01
+import Proofs.CauchySchwarzIntegralLpDualityMaximal
 
 noncomputable section
 
@@ -372,18 +387,53 @@ theorem riesz_lp_surjective_general
     ∀ φ : Lp ℝ p μ →L[ℝ] ℝ,
     ∃ g : α → ℝ, MemLp g q μ ∧
       ∀ f : Lp ℝ p μ, φ f = ∫ a, (f : α → ℝ) a * g a ∂μ := by
-  sorry
+  intro φ
+  have hp0 : p ≠ 0 := (lt_of_lt_of_le zero_lt_one hp1.le).ne'
+  -- Feed the σ-finite-chain extension CLM (against which
+  -- `riesz_representer_on_sigmaFinite_set` produces its representation) into the
+  -- ext-agnostic Folland-6.16 maximality assembly `riesz_general`.
+  refine RieszLpDualityMaximal.riesz_general hp1 hptop hpq φ
+    (fun S hS => RieszSigmaFiniteComplete.extByZeroCLM hS hp0 hptop)
+    (fun S hS f => RieszSigmaFiniteComplete.extByZeroCLM_coeFn hS hp0 hptop f)
+    (fun S hS hSσ => riesz_representer_on_sigmaFinite_set hp1 hptop hpq hS hSσ φ)
+    ?_ ?_ ?_ ?_
+  · -- Hmono
+    intro S S' hS hS' hSS' gS gS' hgS hgS' hrepS hrepS'
+    exact RieszLpDualityConsistency.representer_eLpNorm_mono_of_subset hpq hS hS' hSS' φ
+      hgS hgS'
+      (RieszSigmaFiniteComplete.extByZeroCLM hS hp0 hptop)
+      (RieszSigmaFiniteComplete.extByZeroCLM_coeFn hS hp0 hptop)
+      (RieszSigmaFiniteComplete.extByZeroCLM hS' hp0 hptop)
+      (RieszSigmaFiniteComplete.extByZeroCLM_coeFn hS' hp0 hptop)
+      hrepS hrepS'
+  · -- Hcons
+    intro S S' hS hS' hSS' gS gS' hgS hgS' hrepS hrepS'
+    exact RieszLpDualityConsistency.representer_ae_eq_of_subset hpq hS hS' hSS' φ
+      hgS hgS'
+      (RieszSigmaFiniteComplete.extByZeroCLM hS hp0 hptop)
+      (RieszSigmaFiniteComplete.extByZeroCLM_coeFn hS hp0 hptop)
+      (RieszSigmaFiniteComplete.extByZeroCLM hS' hp0 hptop)
+      (RieszSigmaFiniteComplete.extByZeroCLM_coeFn hS' hp0 hptop)
+      hrepS hrepS'
+  · -- HsigU
+    exact fun S hSm hSσ => RieszLpDualityIngredients.sigmaFinite_restrict_iUnion hSm hSσ
+  · -- Hglue
+    exact fun hT hU hTU hq0 hqtop hg hle =>
+      RieszLpDualityGluing.eLpNorm_ae_zero_on_diff_of_le hT hU hTU hq0 hqtop hg hle
 
--- Axiom audit (2026-07-07, #35123). The five completed ingredient lemmas are
--- machine-checked with foundational axioms only (propext / Classical.choice /
--- Quot.sound); the headline `riesz_lp_surjective_general` still carries its one
--- HARD (not OPEN) maximality `sorry` and therefore reports `sorryAx`.
+-- Axiom audit (2026-07-08, researcher-4). The headline reduction
+-- `riesz_lp_surjective_general` is now DISCHARGED (the maximality `sorry` is gone)
+-- and machine-checked with foundational axioms only: a full Docker kernel build
+-- reports `depends on axioms: [propext, Classical.choice, Quot.sound]` — no
+-- `sorryAx`, no `Lean.ofReduceBool`. The five ingredient lemmas remain
+-- foundational-only as before.
 #print axioms RieszLpDualitySynthesis.memLp_exists_sigmaFinite_support
 #print axioms RieszLpDualitySynthesis.sigmaFinite_restrict_iUnion
 #print axioms RieszLpDualitySynthesis.eLpNorm_rpow_restrict_union
 #print axioms RieszLpDualitySynthesis.eLpNorm_rpow_restrict_iUnion
 #print axioms RieszLpDualitySynthesis.eLpNorm_rpow_restrict_mono
 #print axioms RieszLpDualitySynthesis.riesz_representer_on_sigmaFinite_set
+#print axioms RieszLpDualitySynthesis.riesz_lp_surjective_general
 
 end RieszLpDualitySynthesis
 
