@@ -166,6 +166,13 @@
         "theoremCount": 5,
         "definitionCount": 0,
         "description": "Erdős–Szekeres product bound n ≤ LIS·LDS derived from the Mirsky increasing-covering identity, plus the classical pigeonhole theorem (r·s<n ⟹ r<LIS ∨ s<LDS) and the >k² ⟹ monotone-run >k corollary."
+      },
+      {
+        "path": "Proofs/Erdos1026OQ05KMonotonic.lean",
+        "lineCount": 282,
+        "theoremCount": 10,
+        "definitionCount": 4,
+        "description": "k-monotone generalization: length bound m ≤ k·max(LIS,LDS), covering-number lower bound, and the sandwich n/(k·max) ≤ minKMonotonicParts k ≤ minMonotonicParts — with the EXACT k=1 identity minKMonotonicParts 1 = minMonotonicParts (a 1-monotone piece is monotone), pinning the k=1 endpoint of the bracket."
       }
     ]
   },
