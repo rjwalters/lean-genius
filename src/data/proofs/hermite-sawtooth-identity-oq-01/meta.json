@@ -76,7 +76,8 @@
       "**At fixed low order the multiplier $n^{1-m}$ is a rational coefficient, not a power.** For $m = 0, 1, 2$ it is $n, 1, 1/n$, so the identity stays inside elementary ℚ-arithmetic and avoids real exponentiation entirely.",
       "**The whole theorem is a power-sum identity in disguise.** Once $B_m$ is its explicit polynomial, the left side is a finite sum of $\\sum k^j$ for $j \\le m$; the Gauss and sum-of-squares formulas close $m = 1$ and $m = 2$ outright.",
       "**The $m = 1$ case is the parent sawtooth, lifted to polynomials.** With $n^{0} = 1$ it reads $\\sum_{k<n} B_1(x+k/n) = B_1(nx)$ — the same content as $\\sum\\{x+k/n\\} = \\{nx\\}+(n-1)/2$ once $B_1(y) = y - 1/2$ and $\\{y\\} = y - \\lfloor y\\rfloor$ are matched.",
-      "**Evaluation is `simp`-cheap.** `Polynomial.bernoulli m` evaluates to its closed form by a single `simp` on the definition, so the friction usually associated with the Bernoulli API never appears."
+      "**Evaluation is `simp`-cheap.** `Polynomial.bernoulli m` evaluates to its closed form by a single `simp` on the definition, so the friction usually associated with the Bernoulli API never appears.",
+      "**Why the multiplier is $n^{1-m}$, and where the elementary route stops.** Summing the Bernoulli generating function $t e^{yt}/(e^t-1)$ at $y = x + k/n$ over $k < n$ factors the exponential out and leaves the finite geometric series $\\sum_{k<n}(e^{t/n})^k = (e^t-1)/(e^{t/n}-1)$; the $(e^t-1)$ cancels, giving $t e^{xt}/(e^{t/n}-1)$, which after the substitution $s = t/n$ is $n\\cdot s e^{(nx)s}/(e^s-1) = \\sum_m n^{1-m} B_m(nx)\\, t^m/m!$. Matching the $t^m/m!$ coefficient is the general proof, and it is exactly the geometric-series step that makes the low orders $m \\le 2$ collapse to Gauss/Faulhaber power sums while $m \\ge 3$ needs the full generating function."
     ],
     "prerequisites": [
       "Bernoulli polynomials (Polynomial.bernoulli)",
