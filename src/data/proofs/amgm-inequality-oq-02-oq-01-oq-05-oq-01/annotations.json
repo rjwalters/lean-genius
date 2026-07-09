@@ -70,5 +70,17 @@
     "significance": "key",
     "relatedConcepts": ["equality locus", "sum-of-squares vanishing set", "Newton equality case", "degenerate configurations"],
     "prerequisites": ["Lean `nlinarith` / `by_contra` / `positivity` tactics", "vanishing of a sum of squares"]
+  },
+  {
+    "id": "ann-symmetric-means-form",
+    "proofId": "amgm-inequality-oq-02-oq-01-oq-05-oq-01",
+    "range": { "startLine": 105, "endLine": 124 },
+    "type": "theorem",
+    "title": "Maclaurin (Symmetric-Means) Form — the Literal Open-Question Statement",
+    "content": "newton_k2_symmetric_means restates the result in the normalized symmetric-means (Maclaurin) form the open question actually asks for: with S₁ = e₁/C(3,1) = e₁/3, S₂ = e₂/C(3,2) = e₂/3, S₃ = e₃/C(3,3) = e₃, it proves S₂² ≥ S₁·S₃. Because the denominators C(3,k) are constants, no positivity side-conditions are needed — this is the literal, sign-agnostic S₂² ≥ S₁S₃ statement over ALL reals. The proof factors the difference as (e₂² − 3e₁e₃)/9 and applies the already-proven newton_k2_allreals_three (e₂² ≥ 3e₁e₃). The file closes with #print axioms newton_k2_symmetric_means — a kernel-checked audit confirming dependence only on propext / Classical.choice / Quot.sound (no native_decide, no ofReduceBool), so the verified/0-axiom status is honest.",
+    "mathContext": "$S_2^2 \\ge S_1 S_3$ with $S_1=\\tfrac{e_1}{3}, S_2=\\tfrac{e_2}{3}, S_3=e_3$; equals $\\tfrac{e_2^2-3e_1e_3}{9}\\ge 0$ — Maclaurin's inequality at $k=2$, $n=3$, all reals.",
+    "significance": "key",
+    "relatedConcepts": ["Maclaurin's inequality", "symmetric means Sₖ", "Newton's inequalities", "#print axioms audit", "normalization by binomial coefficients"],
+    "prerequisites": ["newton_k2_allreals_three", "elementary symmetric polynomials", "#print axioms output"]
   }
 ]
