@@ -97,7 +97,8 @@
       "The rank-one Stark hypothesis is the geometric condition #(InfinitePlace K) = 2, not a property of any single L-function.",
       "Mathlib's regulator is defined as a lattice covolume / determinant of logarithms; the rank-one case is exactly where this determinant is 1×1 and equals a single logarithm.",
       "The witness unit ε is the unique generator of the unit group modulo torsion (fundSystem K), i.e. the fundamental unit — which is the Stark unit (up to roots of unity and sign) in the rank-one abelian setting.",
-      "This formalizes the linear-algebra collapse that makes 'L'(0,χ) is one logarithm of one unit' a meaningful statement; it does not address the open problem of computing that unit effectively."
+      "This formalizes the linear-algebra collapse that makes 'L'(0,χ) is one logarithm of one unit' a meaningful statement; it does not address the open problem of computing that unit effectively.",
+    "Rank one is a sharp classification, not a rare accident: rank K = 1 ⟺ #(InfinitePlace K) = 2 forces the signature (r₁, r₂) into exactly two shapes — real quadratic fields (2, 0) and mixed-signature cubic fields (1, 1) — so the rank-one abelian Stark conjecture, the best-tested case, covers precisely these two families of number fields and no others."
     ],
     "prerequisites": [
       "Dirichlet's unit theorem: the unit group of 𝓞_K is finite-torsion times free of rank r₁ + r₂ − 1.",
