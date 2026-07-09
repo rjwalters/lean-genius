@@ -183,6 +183,16 @@
       "targetId": "knights-tour-oblique-oq-01",
       "relationship": "complementary",
       "description": "Sibling studying the n×n generalization of the oblique minimum."
+    },
+    {
+      "targetId": "knights-tour-oblique-oq-01-oq-02",
+      "relationship": "complementary",
+      "description": "Extends the oblique lower bound to rectangular m×n boards (m, n ≥ 5), showing it is a corner phenomenon; the D₄ board symmetry exploited here degenerates to the smaller rectangle group when m ≠ n."
+    },
+    {
+      "targetId": "knights-tour-oblique-oq-04",
+      "relationship": "complementary",
+      "description": "The dual extremal sibling: OQ-04 targets the MAXIMUM oblique-turn count and the 2-regular structure of the oblique-turn graph. The order-16 D₄ × ℤ/2 action established here acts on the level sets of that same oblique count, so it constrains both the minimum (base file) and maximum (OQ-04) extremes symmetrically."
     }
   ]
 }
