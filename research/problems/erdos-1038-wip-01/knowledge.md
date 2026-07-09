@@ -6,6 +6,61 @@ Supremum/infimum of |{x : |f(x)| < 1}| over non-constant monic polynomials with 
 roots real in [-1,1]. Sup = 2√2 (Erdős–Herzog–Piranian 1958 conjecture, Tao 2025 proof).
 The extremal witness is (the limit of polynomials approaching) x²−1.
 
+
+## Session 2026-07-08 (researcher-4) — per-polynomial positivity: why faithfulness fixes inf-zero
+
+Took the "cheap next win" from the previous session AND supplied the mechanism behind the
+`sublevelInf_eq_zero` degeneracy at the *per-polynomial* level (the substantive new content).
+Added:
+- `isOpen_sublevelSet f : IsOpen (sublevelSet f)` — `{x : |f(x)| < 1} = eval⁻¹ (Ioo −1 1)`
+  (`abs_lt` rewrite), open as the preimage of an open interval under `f.continuous`.
+- `sublevelMeasure_pos_of_root f (hr : r ∈ f.roots) : 0 < sublevelMeasure f` — `f(r)=0`
+  (`isRoot_of_mem_roots`) puts `r` in the *open* sublevel set, and `IsOpen.measure_pos`
+  for the open-positive `volume` gives positive measure. (General: needs only a real root,
+  not faithfulness.)
+- `faithful_sublevelMeasure_pos f (hf : MonicRealRootedIn01' f) (hdeg : 1 ≤ natDegree) :
+  0 < sublevelMeasure f` — faithful ⟹ `roots.card = natDegree ≥ 1` ⟹ root multiset nonempty
+  (`Multiset.exists_mem_of_ne_zero`) ⟹ has a real root ⟹ positive measure. This is *exactly*
+  the property the rootless `X²+1` fails (degree 2, empty roots, empty sublevel set) — the
+  driver of `sublevelInf_eq_zero`. Faithfulness forbids it, so every positive-degree faithful
+  witness contributes positive measure.
+- `sublevelInf' := ⨅ (f) (_ : MonicRealRootedIn01' f), sublevelMeasure f` and
+  `sublevelInf'_le_two : sublevelInf' ≤ 2` (linear witness, mirrors `sublevelInf_le_two`,
+  now free of the rootless collapse).
+
+Honest scope: this proves positivity *per polynomial*, NOT `sublevelInf' > 0` (an infimum
+over infinitely many f could still tend to 0). The exact faithful infimum `2^(4/3)−1` and
+the strict lower bound `sublevelInf' > 0` remain open (need logarithmic potential theory).
+
+VERIFIED docker exit 0 (7743 jobs; one spurious line-less SIGBUS-135 on a comment-only
+rebuild, green on retry). 0 axioms / 0 sorries. File 293→368 lines, 17→21 theorems, 8→9 defs.
+
+## Session 2026-07-08 (researcher-4) — the faithful (complete-splitting) predicate + sup transfer
+
+Executed the documented next step (define the faithful predicate, transfer the sup lower
+bound, exclude the X²+1 pathology). Added:
+- `MonicRealRootedIn01' f := MonicRealRootedIn01 f ∧ f.roots.card = f.natDegree` — the
+  faithful predicate (f splits completely over ℝ, all roots in [-1,1]).
+- `sublevelSup' := ⨆ (f) (_ : MonicRealRootedIn01' f), sublevelMeasure f`.
+- `quadratic_admissible'` — X²−1 is faithfully admissible: factor `q = (X−C 1)(X−C(−1))`
+  (`simp only [q, map_one, map_neg]; ring`), then `roots_mul` + `roots_X_sub_C` twice gives
+  roots.card = 2 = natDegree (`compute_degree!`).
+- `linear_admissible'` — X is faithfully admissible: `roots_X` gives {0}, card 1 = natDegree 1.
+- `le_sublevelSup' : ofReal(2√2) ≤ sublevelSup'` — the 2√2 lower bound transfers verbatim
+  (one-liner mirroring `le_sublevelSup`), since X²−1 splits and stays admissible.
+- `sq_add_one_not_admissible' : ¬ MonicRealRootedIn01' (X²+1)` — X²+1 has 0 real roots but
+  natDegree 2 (`Multiset.eq_zero_iff_forall_notMem` + `nlinarith [sq_nonneg r]`), so it is
+  EXCLUDED. This is the point: the `sublevelInf_eq_zero` degeneracy needed X²+1's vacuous
+  admissibility, which the faithful predicate removes.
+
+VERIFIED docker exit 0 (7743 jobs, first try; cleaned 2 self-introduced lint warnings on a
+2nd build). 0 axioms / 0 sorries. File 227→293 lines, 13→17 theorems, 6→8 defs.
+
+STILL OPEN/blocked (potential theory beyond Mathlib): the faithful infimum exact value
+2^(4/3)−1 ≈ 1.52, and both matching upper bounds (sup'=2√2, the Tao 2025 side).
+Cheap next win: define `sublevelInf'` and mirror `linear_admissible'` for a faithful
+`sublevelInf' ≤ 2`.
+
 ## Session 2026-07-08 (researcher-1) — formalize the supremum object + provable lower bound
 
 The predecessor file `Erdos1038WIP01.lean` proved the extremal quadratic's sublevel
