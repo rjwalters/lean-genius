@@ -194,4 +194,97 @@ theorem partitionEnergy_prod_gain_eps4 (G : SimpleGraph V) [DecidableRel G.Adj]
       _ = (↑A₁.card : ℚ) * ↑B₁.card / (Fintype.card V : ℚ) ^ 2 * eps ^ 2 := by ring
   linarith [hgain, hfloor]
 
+-- ═══════════════════════════════════════════════════════════════════
+-- THE SHARP AFKS ITERATION COUNT (NO-LOSS FLOOR → TERMINATION)
+-- ═══════════════════════════════════════════════════════════════════
+
+/-- **Sharp AFKS energy-iteration count.**  The termination engine
+    `partitionEnergy_iteration_bound` bounds the number of refinement steps by
+    `1/δ` once every step raises `partitionEnergy` by a fixed `δ > 0`.  The lossy
+    one-sided route (`afks_energy_iteration_count`) can only supply the floor
+    `δ = ε²/(2n²)`, giving `N ≤ 2n²/ε²`.  The **sharp** 2×2 route earns the
+    no-loss floor `partitionEnergy_prod_gain_eps4`, which — once the refined pair
+    carries mass at least `M` (i.e. `|A||B| ≥ M`, guaranteed by a minimum-part-mass
+    hypothesis on the partition) — is `δ = ε⁴·M/n²`.  Feeding this into the same
+    `[0,1]`-potential engine yields the sharp iteration count
+
+    `N ≤ n² / (ε⁴·M)`,
+
+    the termination bound the factor-¼-free route delivers.  Unlike
+    `afks_energy_iteration_count`, whose floor is independent of the refined pair,
+    the sharp floor scales with the ε⁴ tolerance and the pair mass `M`; the two
+    bounds coincide in order of magnitude only when `M ≈ ε²n²/2`, and the sharp
+    bound is strictly better once the refined pairs are more massive than that. -/
+theorem afks_sharp_energy_iteration_count (G : SimpleGraph V) [DecidableRel G.Adj]
+    (parts : ℕ → Finset (Finset V)) (N : ℕ) (eps M : ℚ)
+    (hε : 0 < eps) (hM : 0 < M) (hcard : 0 < (Fintype.card V : ℚ))
+    (hcover : ∀ n, ∀ v : V, ∃ P ∈ parts n, v ∈ P)
+    (hdisjoint : ∀ n, ∀ P Q : Finset V, P ∈ parts n → Q ∈ parts n → P ≠ Q →
+      Disjoint P Q)
+    (hstep : ∀ n, n < N →
+      partitionEnergy G (parts n) + eps ^ 4 * M / (Fintype.card V : ℚ) ^ 2 ≤
+        partitionEnergy G (parts (n + 1))) :
+    (N : ℚ) ≤ (Fintype.card V : ℚ) ^ 2 / (eps ^ 4 * M) := by
+  have hδ : 0 < eps ^ 4 * M / (Fintype.card V : ℚ) ^ 2 :=
+    div_pos (mul_pos (by positivity) hM) (pow_pos hcard 2)
+  have hbound := Szemeredi.RegularityOQ04.partitionEnergy_iteration_bound G parts N
+    (eps ^ 4 * M / (Fintype.card V : ℚ) ^ 2) hδ hcover hdisjoint hstep
+  rwa [one_div_div] at hbound
+
+/-- **Sharp AFKS iteration count from a per-step irregular-product witness.**  This
+    closes the no-loss route into an end-to-end iteration certificate: rather than
+    postulate the per-step energy jump abstractly (as `afks_sharp_energy_iteration_count`
+    does through its `hstep`), we *derive* it from the datum an actual ε-irregular
+    pair supplies at each step.
+
+    Suppose that at each of the first `N` steps the partition `parts n` contains two
+    distinct parts `A, B` (with the rest `R`) that are refined into the sharp 2×2 grid
+    `{A₁, A₂} × {B₁, B₂}` — `parts (n+1) = insert A₁ (insert A₂ (insert B₁ (insert B₂ R)))`
+    — where the witness cell `A₁ × B₁` carries the ε-irregularity: `|A₁| ≥ ε|A|`,
+    `|B₁| ≥ ε|B|`, and `|d(A₁,B₁) − d(A,B)| ≥ ε`.  If, moreover, every refined part has
+    mass at least `m` (`|A|, |B| ≥ m`), then each step realizes the sharp no-loss floor
+    `ε⁴·m²/n²` (via `partitionEnergy_prod_gain_eps4`, flooring `|A||B| ≥ m²`), and hence
+
+    `N ≤ n² / (ε⁴·m²)`.
+
+    The freshness side-conditions (`A₁,A₂,B₁,B₂` distinct and `∉ R`) remain hypotheses,
+    exactly as they are in `partitionEnergy_prod_gain_eps4` and the one-sided route;
+    discharging them from a nonempty-equipartition model is the standing open blocker.
+    Everything downstream of the witness — flooring the size-dependent cell gain by the
+    uniform `ε⁴·m²/n²` and feeding it through the `[0,1]`-potential termination engine —
+    is here fully machine-checked. -/
+theorem afks_sharp_energy_iteration_count_of_prod_witness
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (parts : ℕ → Finset (Finset V)) (N : ℕ) (eps m : ℚ)
+    (hε : 0 < eps) (hm : 0 < m) (hcard : 0 < (Fintype.card V : ℚ))
+    (hcover : ∀ n, ∀ v : V, ∃ P ∈ parts n, v ∈ P)
+    (hdisjoint : ∀ n, ∀ P Q : Finset V, P ∈ parts n → Q ∈ parts n → P ≠ Q →
+      Disjoint P Q)
+    (hwit : ∀ n, n < N → ∃ R : Finset (Finset V), ∃ A B A₁ A₂ B₁ B₂ : Finset V,
+      parts n = insert A (insert B R) ∧
+      parts (n + 1) = insert A₁ (insert A₂ (insert B₁ (insert B₂ R))) ∧
+      A₁ ∪ A₂ = A ∧ B₁ ∪ B₂ = B ∧ Disjoint A₁ A₂ ∧ Disjoint B₁ B₂ ∧
+      A ∉ insert B R ∧ B ∉ R ∧
+      A₁ ∉ insert A₂ (insert B₁ (insert B₂ R)) ∧ A₂ ∉ insert B₁ (insert B₂ R) ∧
+      B₁ ∉ insert B₂ R ∧ B₂ ∉ R ∧
+      m ≤ (A.card : ℚ) ∧ m ≤ (B.card : ℚ) ∧
+      eps * A.card ≤ (A₁.card : ℚ) ∧ eps * B.card ≤ (B₁.card : ℚ) ∧
+      eps ≤ |edgeDensity G A₁ B₁ - edgeDensity G A B|) :
+    (N : ℚ) ≤ (Fintype.card V : ℚ) ^ 2 / (eps ^ 4 * m ^ 2) := by
+  refine afks_sharp_energy_iteration_count G parts N eps (m ^ 2) hε
+    (by positivity) hcard hcover hdisjoint ?_
+  intro n hn
+  obtain ⟨R, A, B, A₁, A₂, B₁, B₂, hpn, hpn1, hAu, hBu, hdA, hdB,
+    hAins, hBR, hA1, hA2, hB1, hB2, hmA, hmB, hcA, hcB, hdev⟩ := hwit n hn
+  rw [hpn, hpn1]
+  -- The exact size-dependent sharp gain from the ε-irregular product witness.
+  have hgain := partitionEnergy_prod_gain_eps4 G R A B A₁ A₂ B₁ B₂
+    hAu hBu hdA hdB hAins hBR hA1 hA2 hB1 hB2 eps hε.le hcA hcB hdev
+  -- Floor the pair mass `|A||B| ≥ m²`, so the uniform floor `ε⁴·m²/n²` is dominated.
+  have hmass : m ^ 2 ≤ (A.card : ℚ) * B.card := by nlinarith [hmA, hmB, hm.le]
+  have hfloor : eps ^ 4 * m ^ 2 / (Fintype.card V : ℚ) ^ 2 ≤
+      eps ^ 4 * ((A.card : ℚ) * B.card) / (Fintype.card V : ℚ) ^ 2 := by
+    gcongr
+  linarith [hgain, hfloor]
+
 end Szemeredi.RegularityOQ04Bridge
