@@ -33,20 +33,25 @@
   },
   "knowledge": {
     "phase": "ACT",
-    "progressSummary": "PROGRESS: repaired Mathlib-4.26 compile breakage (rpow/ceil imports + universe fix) and proved superlinear_forces_nonplanar from planar_linear_bound. Sorries 7→6 in both Erdos1018Problem.lean and its Stubs duplicate. Remaining 3 def-sorries blocked (no planarity in Mathlib).",
+    "progressSummary": "PROGRESS (researcher-2, 2026-07-09): eliminated both definition-sorries (isPlanar, containsSubdivision) by defining planarity via the Kuratowski characterization; kuratowski_theorem, K5_nonplanar, K33_nonplanar converted axioms->theorems in both main and stub files. Axioms 6->3 per file (aggregate 12->6), main-file sorries 3->1. Remaining: 3 deep literature axioms (kostochka_pyber(_explicit), planar_linear_bound) + 1 blocked sorry (sparse_hides_nonplanarity, C_ε growth lower bound).",
     "insights": [
       "The file was a broken gallery entry: it failed to compile under Mathlib 4.26 (HPow ℝ ℝ unsynthesized, unknown Nat.ceil, universe metavariable) despite meta claiming 260-line/7-sorry axiomatized status — a false-verified hazard for auditors.",
       "The universe metavariable came from a def whose body applies a Type*-polymorphic def while its own signature (: Prop) binds no universe; pinning the inner ∀ to Type removes the metavar without weakening the mathematics.",
-      "superlinear_forces_nonplanar is the conceptual heart of 'why the answer is YES': super-linear density n^(1+ε) exceeds the planar edge budget 3n-6, so density alone (via planar_linear_bound) already forces global non-planarity — the hard part is only the *small subgraph* localization (Kostochka-Pyber, still axiomatized)."
+      "superlinear_forces_nonplanar is the conceptual heart of 'why the answer is YES': super-linear density n^(1+ε) exceeds the planar edge budget 3n-6, so density alone (via planar_linear_bound) already forces global non-planarity — the hard part is only the *small subgraph* localization (Kostochka-Pyber, still axiomatized).",
+      "Planarity can be defined combinatorially via the Kuratowski characterization (isPlanar := no K5/K33 subdivision); this turns kuratowski_theorem/K5_nonplanar/K33_nonplanar from axioms into theorems WITHOUT needing Mathlib topological planarity. The equivalence with topological planarity is Kuratowski itself, taken as definition — honest, not a proof of Kuratowski.",
+      "containsSubdivision has a clean sorry-free definition: injective branch map phi:W->V + a G-path between phi a, phi b for each H-edge, with paths being IsPath, interiors avoiding branch vertices, and pairwise internal disjointness (Diestel topological-minor def). self_containsSubdivision (identity branch map, length-1 paths) gives K5/K33 non-planarity trivially.",
+      "Lean 4.26 auto-includes section instance vars [Fintype V][DecidableEq V] into defs mentioning V, breaking polymorphic reuse on induced-subgraph subtype ↥S (failed to synthesize DecidableEq ↥S); fix = `omit [Fintype V] [DecidableEq V] in` before each planarity def/theorem."
     ],
     "builtItems": [
       "Proved superlinear_forces_nonplanar in Proofs/Erdos1018Problem.lean (rpow crossover argument, ~45 lines)",
       "Compile repair to Proofs/Erdos1018Problem.lean and Proofs/Stubs/Erdos1018Problem.lean (imports + Type-pinned existsBoundingConstant)",
-      "Updated src/data/proofs/erdos-1018/meta.json (sorries 7→6, lineCount, imports, assumptions)"
+      "Updated src/data/proofs/erdos-1018/meta.json (sorries 7→6, lineCount, imports, assumptions)",
+      "Erdos1018Problem.lean: containsSubdivision + isPlanar real defs (def-sorries 2->0); kuratowski_theorem/K5_nonplanar/K33_nonplanar/self_containsSubdivision proved (axioms 6->3). Docker VERIFIED.",
+      "Mirrored the same transformation into Stubs/Erdos1018Problem.lean duplicate (axioms 6->3). Docker VERIFIED."
     ],
     "nextSteps": [
-      "Def-sorries (isPlanar etc.) require formalizing graph planarity in Mathlib — track as BLOCKED until upstream support exists.",
-      "erdos_1018_solved final step becomes provable once containsSubdivision/isPlanar are defined."
+      "sparse_hides_nonplanarity (C_ε -> infinity) needs a dense-graph lower-bound construction proving induced subgraphs are planar under the combinatorial def — still hard, likely BLOCKED without more subdivision theory.",
+      "planar_linear_bound (Euler 3n-6 edge bound for Kuratowski-planar graphs) is the remaining routine-looking axiom but requires Euler formula / discharging; assess if buildable."
     ]
   },
   "tags": [
