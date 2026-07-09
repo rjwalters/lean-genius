@@ -92,11 +92,42 @@
       "significance": "medium"
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "gaussian_moment_eq_gamma",
+      "type": "main",
+      "description": "The ladder identity: every even Gaussian moment is a half-integer Gamma value, ∫_ℝ x^{2n} e^{-x²} dx = Γ(n + 1/2) for all n. The half-line integral is ½ Γ(n + 1/2) via the u = x² substitution (integral_rpow_mul_exp_neg_rpow, matched through Real.rpow_natCast), doubled to the whole line by even symmetry (integral_comp_neg_Ioi). Extends the parent's single value Γ(1/2) = √π to the whole tower.",
+      "leanType": "(n : ℕ) : ∫ x : ℝ, x ^ (2 * n) * Real.exp (-x ^ 2) = Real.Gamma (n + 1 / 2)"
+    },
+    {
+      "name": "gaussian_moment_closed",
+      "type": "main",
+      "description": "The double-factorial closed form ∫_ℝ x^{2n} e^{-x²} dx = (2n−1)‼ · √π / 2ⁿ, combining the ladder identity with Mathlib's Real.Gamma_nat_add_half.",
+      "leanType": "(n : ℕ) : ∫ x : ℝ, x ^ (2 * n) * Real.exp (-x ^ 2) = (2 * n - 1)‼ * √π / 2 ^ n"
+    },
+    {
+      "name": "gaussian_moment_zero",
+      "type": "supporting",
+      "description": "Base case n = 0: ∫_ℝ e^{-x²} dx = √π — recovers the parent entry's Gaussian integral as the bottom rung of the ladder.",
+      "leanType": ": ∫ x : ℝ, Real.exp (-x ^ 2) = √π"
+    },
+    {
+      "name": "gaussian_moment_two",
+      "type": "supporting",
+      "description": "Base case n = 1: ∫_ℝ x² e^{-x²} dx = √π / 2 — the second even moment, the variance-type moment of the Gaussian weight.",
+      "leanType": ": ∫ x : ℝ, x ^ 2 * Real.exp (-x ^ 2) = √π / 2"
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "area-of-circle-oq-07-oq-03",
       "relationship": "parent",
       "description": "The parent identifies the single value Γ(1/2) = √π with the Gaussian integral ∫_ℝ e^{-x²} dx. This entry extends that to the full half-integer ladder, identifying every Γ(n + 1/2) with the even Gaussian moment ∫_ℝ x^{2n} e^{-x²} dx; gaussian_moment_zero recovers the parent's value as the n = 0 case."
+    },
+    {
+      "targetId": "area-of-circle",
+      "relationship": "ancestor",
+      "description": "Root of the OQ chain: the area πr² ultimately rests on the constant π, of which √π = Γ(1/2) (the n = 0 rung here) is the Gaussian avatar. This entry sits at the analytic end of that lineage, expressing the whole √π ladder Γ(n + 1/2) through Gaussian moments."
     }
   ],
   "references": [
