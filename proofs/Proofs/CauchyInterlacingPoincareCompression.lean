@@ -254,4 +254,51 @@ theorem hasEigenvalue_compress_eigenvalue_of_invariant
     ⟨Module.End.mem_eigenspace_iff.mpr hcoe, hne⟩
   exact Module.End.hasEigenvalue_of_hasEigenvector hev
 
+/-- **Full spectrum inclusion on an invariant subspace (no symmetry needed).**
+
+If `H` is `T`-invariant, then *every* eigenvalue of the orthogonal compression
+`compress T H` (viewed as an operator on `H`) is an eigenvalue of the ambient
+`T`.  Unlike `hasEigenvalue_compress_eigenvalue_of_invariant`, this is stated for
+an arbitrary eigenvalue `μ` and requires **no symmetry** of `T`: invariance alone
+makes the projection error vanish (`coe_compress_of_invariant`), so any
+compression-eigenvector `v : H` lifts to an ambient `T`-eigenvector `↑v ∈ V` for
+the same `μ`.
+
+This is the honest eigenvalue-level form of the attainment case: on an invariant
+block the compression is the restriction `T.restrict`
+(`compress_eq_restrict_of_invariant`), which loses no spectral information. -/
+theorem hasEigenvalue_of_hasEigenvalue_compress_of_invariant
+    {T : V →ₗ[𝕜] V} (H : Submodule 𝕜 V) (hinv : ∀ y ∈ H, T y ∈ H)
+    {μ : 𝕜} (hμ : Module.End.HasEigenvalue (compress T H) μ) :
+    Module.End.HasEigenvalue T μ := by
+  obtain ⟨v, hv⟩ := hμ.exists_hasEigenvector
+  -- `v : H` is a nonzero compression-eigenvector for `μ`.
+  have hcv : compress T H v = μ • v := Module.End.mem_eigenspace_iff.mp hv.1
+  have hne : (v : V) ≠ 0 := by
+    rw [Ne, Submodule.coe_eq_zero]; exact hv.2
+  -- Transport to `V`: invariance makes `↑(compress T H v) = T ↑v`.
+  have hcoe : T (v : V) = μ • (v : V) := by
+    have h := coe_compress_of_invariant H hinv v
+    rw [hcv] at h
+    simpa using h.symm
+  exact Module.End.hasEigenvalue_of_hasEigenvector
+    ⟨Module.End.mem_eigenspace_iff.mpr hcoe, hne⟩
+
+/-- **Spectrum containment on an invariant subspace.**
+
+Packaged as a set inclusion of spectra: on a `T`-invariant subspace `H` the
+spectrum of the compression is contained in the spectrum of `T`,
+`spectrum 𝕜 (compress T H) ⊆ spectrum 𝕜 T`.  In finite dimension the spectrum is
+exactly the eigenvalue set (`Module.End.hasEigenvalue_iff_mem_spectrum`), so this
+is the `spectrum`-level upgrade of
+`hasEigenvalue_of_hasEigenvalue_compress_of_invariant`: the sub-multiset /
+attainment statement promised by Poincaré separation on an invariant block,
+again with no symmetry hypothesis on `T`. -/
+theorem spectrum_compress_subset_of_invariant
+    {T : V →ₗ[𝕜] V} (H : Submodule 𝕜 V) (hinv : ∀ y ∈ H, T y ∈ H) :
+    spectrum 𝕜 (compress T H) ⊆ spectrum 𝕜 T := by
+  intro μ hμ
+  rw [← Module.End.hasEigenvalue_iff_mem_spectrum] at hμ ⊢
+  exact hasEigenvalue_of_hasEigenvalue_compress_of_invariant H hinv hμ
+
 end CauchyInterlacing.PoincareCompression
