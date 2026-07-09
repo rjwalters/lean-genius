@@ -138,7 +138,7 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization builds a complete structural framework for the K_r-clique removal process generalization: 3 axioms defining the process, 6 definitions encoding the key quantities, and 20 theorems establishing the exponent's properties, the conjecture structure, and exact numerical verifications. The key result `kRemoval_conjecture_implies_bfl` proves that the conjectured Θ-bound implies the refined BFL-type n^{α±ε} bound for all r ≥ 1.",
+    "summary": "This formalization builds a complete structural framework for the K_r-clique removal process generalization: 3 axioms defining the process, 6 definitions encoding the key quantities, and 21 theorems establishing the exponent's properties, the conjecture structure, and exact numerical verifications. The key result `kRemoval_conjecture_implies_bfl` proves that the conjectured Θ-bound implies the refined BFL-type n^{α±ε} bound for all r ≥ 1.",
     "implications": "The formalization establishes that the K_r-removal framework is internally consistent. The equivalence theorems (§§8-9) provide a clean characterization of what needs to be proved: an upper bound, a lower bound, or a limit convergence. These are now cleanly separated as Lean Props, making future proof attempts modular. The convergence `kRemovalExponent_near_two` is a concrete result: for any target gap δ > 0, the exponent exceeds 2-δ for r ≥ ⌈2/δ⌉, with an explicit N computed.",
     "openQuestions": [
       "For r ≥ 4, can the K_r-removal conjecture f_r(n) ≍ n^{2-2/(r+1)} be proved? The r=3 case (BFL 2015) uses delicate second-moment and differential-equations arguments. Does the r ≥ 4 case require fundamentally new tools, or does the BFL machinery generalize?",
