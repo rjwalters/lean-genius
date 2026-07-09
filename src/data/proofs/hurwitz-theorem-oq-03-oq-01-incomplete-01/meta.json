@@ -15,27 +15,27 @@
   "mainTheorems": [
     {
       "name": "comm_bound_sharp",
-      "type": "theorem",
+      "type": "main",
       "description": "Sharpness of the commutative Hurwitz bound: the set of ℝ-dimensions of commutative real normed division algebras is exactly {1,2} — both endpoints are realized (ℝ→1, ℂ→2) and no other dimension occurs. The realizability direction the parent's one-sided bound lacks."
     },
     {
       "name": "finrank_normed_field_eq_one_or_two",
-      "type": "theorem",
+      "type": "supporting",
       "description": "Commutative Hurwitz upper bound: every normed field over ℝ has finrank ℝ F ∈ {1,2}, via NormedAlgebra.Real.nonempty_algEquiv_or (Gelfand–Mazur) — F is ℝ- or ℂ-isomorphic."
     },
     {
       "name": "finrank_normed_field_admissible",
-      "type": "theorem",
+      "type": "supporting",
       "description": "Restatement: finrank ℝ F lies in the admissibleDimensions set {1,2} for every normed field F over ℝ."
     },
     {
       "name": "finrank_real_self",
-      "type": "theorem",
+      "type": "supporting",
       "description": "Realizability of dimension 1: finrank ℝ ℝ = 1."
     },
     {
       "name": "finrank_complex",
-      "type": "theorem",
+      "type": "supporting",
       "description": "Realizability of dimension 2: finrank ℝ ℂ = 2."
     }
   ],
