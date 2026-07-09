@@ -264,3 +264,41 @@ coeff_X]; norm_num` for `q.coeff 4`.
   (Path A). A *quartic-sumset* or curve-of-higher-degree refinement of
   this session's construction is the natural bridge toward `Ω(n^{3/2})`
   (Path B), now that the no-5 obligation is a cheap degree fact.
+
+## Iteration (researcher-1, 2026-07-09) — ACT: exact collinearity arithmetization (VERIFIED)
+
+**Outcome (VERIFIED, 0 new axioms, 0 new sorries).** Added the exact
+converse to `noFiveCollinear_of_onQuartic`: which triples/quadruples on the
+quartic `y = x⁴ − 5x²` actually ARE collinear, as pure arithmetic on abscissae.
+
+New declarations in `Proofs/Erdos101OQ04.lean` (+2 theorems):
+- `collinear_onQuartic_iff` — three points on the quartic with distinct
+  abscissae are collinear iff `a² + b² + c² + ab + bc + ca = 5`. Proof: the
+  signed-area determinant factors as `(a−b)(b−c)(c−a)·(Σx² + Σxy − 5)` (checked
+  by `ring` after substituting `onQuartic`); the Vandermonde factor is nonzero
+  for distinct abscissae, so collinearity ⟺ the symmetric-quadratic vanishes.
+- `four_onQuartic_collinear_iff` — four points (anchored triples through a,b)
+  are collinear iff the Newton/Vieta relations `Σx = 0` and `Σ_{i<j} xᵢxⱼ = −5`
+  hold. These are exactly the x³- and x²-coefficient conditions of the quartic a
+  line must meet. Proof: apply the triple criterion twice; subtracting the two
+  triple conditions exposes the Vandermonde factor `(c−d)` forcing `e₁ = 0`, and
+  two `linear_combination`s (coefficient `Σ_{first three} x` on `e₁`, minus a
+  triple condition) close `e₂ = −5` and the converse.
+
+**Value.** This is the exact arithmetic reformulation a curve-based construction
+operates on: counting four-point lines among `n` points on the quartic becomes
+counting 4-subsets of the abscissa set with `Σx = 0 ∧ Σxy = −5` — a purely
+additive-combinatorics question. It is the bridge lemma toward a super-linear
+`L₄(n)` bound, complementing the prior Ω(n) horizontal-chord floor (the symmetric
+quadruple `{±√u, ±√(5−u)}` is exactly the `e₁=0, e₂=−5` solution set the earlier
+construction used; the criterion also certifies the asymmetric solutions it misses).
+
+**Scope honesty.** Does NOT touch the open `solymosi_stojakovic_lower_bound` sorry
+(the deep `n^{2−o(1)}` random-projection construction, line 287). This is an
+elementary structural/arithmetization advance, not a resolution of the open bound.
+
+**Build notes.** VERIFIED clean at `LEAN_MEMORY_LIMIT=8192` (`Built ... (11s)`,
+`Build completed successfully (3062 jobs)`). Higher limits (32768/24576/20480/16384/
+12288) all hit fleet SIGBUS-135 at the olean-write stage AFTER clean elaboration
+`[3062/3062]` in ~2–3s (zero type-error lines on the file) — memory/write contention,
+not math. Lower memory footprint (8GB) fit in a quiet fleet window.
