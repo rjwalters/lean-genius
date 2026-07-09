@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE. Reducing-subspace block calculus fully built out: Poincaré separation, spectrum union, eigenspace/multiplicity additivity, trace additivity, eigenvalue-sum additivity, determinant factorization (#36233), and now the characteristic-polynomial factorization (PR #36265) that subsumes the trace and det identities. All symmetry-free, 0 axiom/0 sorry.",
+    "progressSummary": "COMPLETE. Charpoly factorization now lifted to its spectral (root-multiset) form: roots_charpoly_eq_add_compress_of_reducing + card variant, plus repair of the master identity proof broken by conj_apply left-association. All symmetry-free, 0 axiom/0 sorry, docker VERIFIED 7747 jobs.",
     "builtItems": [
       "poincare_separation_compression in CauchyInterlacingPoincareCompression.lean (#28084) — unconditional codimension-m Poincaré separation: given a symmetric T on V (dim n+m) and any subspace H (dim n), the descending eigenvalues of the explicit orthogonal compression compress T H interlace those of T as lam⟨k+m⟩ ≤ mu k ≤ lam⟨k⟩, with NO Rayleigh side hypothesis.",
       "compress / isSymmetric_compress / rayleigh_compress_eq in CauchyInterlacingCompression.lean (#27245) — define compress T H := P_H∘T∘ι_H, prove it symmetric, and discharge the Rayleigh-agreement identity for an arbitrary subspace via the orthogonal-projection adjoint identity.",
@@ -61,7 +61,10 @@
       "trace_eq_add_compress_of_reducing: tr_V T = tr_H(compress T H) + tr_Hᗮ(compress T Hᗮ) over a reducing subspace — honest per-block compression traces (CauchyInterlacingPoincareCompression.lean)",
       "spectrum_compress_eq_restrict_of_invariant — compress T H = T.restrict on invariant block ⟹ shared spectrum, routes containment through honest-restriction picture (VERIFIED 0/0)",
       "det_eq_mul_compress_of_reducing: determinant factorization det T = det(compress T H)·det(compress T Hᗮ) over a reducing subspace — multiplicative analogue of trace_eq_add_compress_of_reducing, via block-diagonal conjugation through Submodule.prodEquivOfIsCompl + LinearMap.det_conj + LinearMap.det_prodMap; symmetry-free, VERIFIED 0/0 (CauchyInterlacingPoincareCompression.lean)",
-      "charpoly_eq_mul_compress_of_reducing (CauchyInterlacingPoincareCompression.lean, PR #36265) — charpoly T = charpoly(compress T H)*charpoly(compress T Hᗮ) on a reducing subspace; polynomial master identity subsuming trace additivity + det factorization; symmetry-free"
+      "charpoly_eq_mul_compress_of_reducing (CauchyInterlacingPoincareCompression.lean, PR #36265) — charpoly T = charpoly(compress T H)*charpoly(compress T Hᗮ) on a reducing subspace; polynomial master identity subsuming trace additivity + det factorization; symmetry-free",
+      "roots_charpoly_eq_add_compress_of_reducing in CauchyInterlacingPoincareCompression.lean (eigenvalue-multiset additivity over reducing subspace, 0/0)",
+      "card_roots_charpoly_eq_add_compress_of_reducing (eigenvalue-count additivity via Multiset.card_add, 0/0)",
+      "Repaired charpoly_eq_mul_compress_of_reducing hT rewrite (removed spurious leading ← comp_assoc after conj_apply)"
     ],
     "insights": [
       "This slug duplicates work already merged under sibling cauchy-interlacing-theorem-oq-01-oq-02 (#28084). The Rayleigh-agreement hypothesis of the abstract poincare_separation is discharged by rayleigh_compress_eq, which is stated for an ARBITRARY submodule H (nothing uses codim=1), so the abstract theorem and the explicit compression join for any codimension m with no new work.",
@@ -78,12 +81,14 @@
       "Operator-theoretic root of all reducing-subspace results: H reduces T (both H, Hᗮ T-invariant) ⟺ T commutes with the orthogonal projection P_H (pointwise T(P_H v)=P_H(T v)). Symmetry-free — only the projection is self-adjoint.",
       "Ambient compression trace equals honest compression trace with NO reducing hypothesis: pure trace-conjugation identity (trace_comp_comm'); factoring P_H=subtypeL∘orthogonalProjection makes the H↪V bridge a one-line cyclic-trace move once π∘ι=id_H is discharged by orthogonalProjection_mem_subspace_eq_self.",
       "Simp loop gotcha: starProjection_apply and coe_orthogonalProjection_apply are exact mutual inverses (both @[simp], rfl) → include only ONE in a simp set or hit maxRecDepth.",
-      "Determinant/eigenvalue-PRODUCT additivity mirrors the trace/eigenvalue-SUM additivity: the same block-diagonal reconstruction on a reducing subspace yields det via det_conj+det_prodMap (mult) instead of trace map_add (additive). coe_compress_of_invariant makes each honest compression = T on its invariant block, killing off-diagonal terms."
+      "Determinant/eigenvalue-PRODUCT additivity mirrors the trace/eigenvalue-SUM additivity: the same block-diagonal reconstruction on a reducing subspace yields det via det_conj+det_prodMap (mult) instead of trace map_add (additive). coe_compress_of_invariant makes each honest compression = T on its invariant block, killing off-diagonal terms.",
+      "Passing charpoly_eq_mul_compress_of_reducing to roots (Polynomial.roots_mul, valid since charpoly is monic hence nonzero) yields eigenvalue-MULTISET additivity: (charpoly T).roots = (charpoly (compress T H)).roots + (charpoly (compress T Hᗮ)).roots — the with-multiplicity refinement of the set-level spectrum union.",
+      "Discovered origin/main charpoly_eq_mul_compress_of_reducing hT-proof was BROKEN: LinearEquiv.conj_apply unfolds to left-associated (↑e∘ₗf)∘ₗ↑e.symm, so the leading ← LinearMap.comp_assoc finds no right-associated pattern (rw fail at conj step). Fix = drop the leading ← comp_assoc, go straight to ← hconj."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "DONE: determinant factorization landed on main (#36233); charpoly factorization landed (PR #36265). The scalar (trace/det) and polynomial (charpoly) block factorizations over a reducing subspace are now all closed. No further session-sized follow-up in this direction.",
-      "Characteristic-polynomial factorization charpoly T = charpoly(compress T H)·charpoly(compress T Hᗮ) over a reducing subspace (finer than determinant; apply det factorization to T - X·id, needs compress commutes with scalar subtraction on each block — compress (T - c) H = compress T H - c on invariant H)."
+      "Under a Splits/algebraically-closed hypothesis, upgrade the roots-multiset card additivity to the genuine finrank identity finrank V = finrank H + finrank Hᗮ read on eigenvalue lists.",
+      "Push eigenvalue-multiset additivity toward a full Cauchy-interlacing consequence: interlacing of the sorted eigenvalue lists of T and its compression."
     ]
   },
   "tags": [
