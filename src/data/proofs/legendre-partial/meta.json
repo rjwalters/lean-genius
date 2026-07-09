@@ -30,9 +30,9 @@
       "Gap formula: (n+1)^2 - n^2 = 2n + 1"
     ],
     "dateAdded": "2025-12-31",
-    "axiomCount": 1,
+    "axiomCount": 2,
     "lineCount": 165,
-    "assumptions": "1 axiom(s) encoding mathematical hypotheses. See the Lean source for details.",
+    "assumptions": "2 assumptions. (1) axiom legendre_conjecture: the full open conjecture (for all n >= 1, there is a prime in (n^2, (n+1)^2)), stated as an axiom since it has been unproven since 1798. (2) Lean.ofReduceBool: introduced by native_decide, which discharges all 20 verified cases legendre_1..legendre_20 and thus trusts the compiler kernel reduction. leanFile.axiomCount is 1 (literal axiom declarations only); meta.axiomCount is 2 to also count the native_decide (ofReduceBool) dependency. 0 sorries.",
     "mathlib_version": "4.26.0",
     "theoremCount": 21,
     "definitionCount": 3,
