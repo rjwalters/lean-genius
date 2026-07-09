@@ -97,12 +97,19 @@
   },
   "crossReferences": [
     {
+      "targetId": "combinations-formula",
+      "relationship": "extends",
+      "description": "Root entry establishing the binomial coefficient C(n,k) = n!/(k!(n−k)!). This entry computes the weighted sums (moments) of a Pascal row: the zeroth moment is the total row sum ∑ C(n,k) = 2ⁿ, and it adds the first moment ∑ k·C(n,k) = n·2^{n−1} and second moment ∑ k²·C(n,k) = n(n+1)·2^{n−2}."
+    },
+    {
       "targetId": "combinations-formula-oq-01",
-      "relationship": "sibling — provides the row sum ∑ C(n,k) = 2^n and alternating sum ∑ (-1)^k C(n,k) = 0 that these moments complement"
+      "relationship": "sibling",
+      "description": "Provides the zeroth-moment identities of a Pascal row — the total row sum ∑ C(n,k) = 2ⁿ and the alternating sum ∑ (−1)ᵏ C(n,k) = 0 — that the first and second moments computed here complement."
     },
     {
       "targetId": "combinations-formula-oq-02",
-      "relationship": "ancestor — the core combinations formula entry providing binomial coefficient context"
+      "relationship": "related",
+      "description": "The core combinations-formula entry supplying the binomial-coefficient context (Pascal's rule, factorial form) on which the moment computations here rest."
     }
   ],
   "sorries": 0,
