@@ -79,6 +79,14 @@
   },
   "sections": [
     {
+      "id": "preamble",
+      "title": "Module Header, Imports, and Overview",
+      "startLine": 1,
+      "endLine": 47,
+      "summary": "Imports Mathlib; the docstring frames the complexity question left open by the parent (Proofs.GcdAlgorithmOQ02): bound the step count of Stein's binary GCD. It previews the master bound binaryGcdSteps a b ≤ Nat.size a + Nat.size b (every recursive branch strictly decreases the total bit length), its classical form ≤ 2·Nat.size(max a b) = O(log(max a b)) (Knuth TAOCP 4.5.2; Brent 1976), the order-tightness witness on the diagonal (2^k,2^k) using exactly k+1 steps, and the key bit-length fact size_div_two_succ_le. Opens namespace BinaryGcd, open Nat.",
+      "mathContext": "$\\texttt{binaryGcdSteps}\\,a\\,b \\le \\mathrm{size}\\,a + \\mathrm{size}\\,b \\le 2\\,\\mathrm{size}(\\max a\\,b) = O(\\log \\max(a,b))$."
+    },
+    {
       "id": "step-function",
       "title": "The Step-Count Function",
       "startLine": 48,
