@@ -193,6 +193,64 @@ theorem involution_conj_eq_self_or_inv {G : Type*} [Group G] [Finite G] {p : ℕ
     rw [hk] at hck
     rw [hck, zpow_neg_one]
 
+/-! ### From involutions to arbitrary automorphism order
+
+The involution step `involution_conj_eq_self_or_inv` handles `g` with `g * g = 1`:
+the conjugation exponent `k` (with `g c g⁻¹ = c ^ k`) then satisfies `k² ≡ 1 (mod p)`,
+so `k ≡ ±1`.  The genuine content is *automorphism-order-agnostic*: conjugation by `g`
+is an automorphism of the cyclic group `⟨c⟩`, i.e. an element of `Aut(⟨c⟩) ≅ (ℤ/p)ˣ`,
+and its order divides the order of `g`.  We make this precise below by iterating the
+conjugation: for **any** `g` with `g ^ n = 1`, the exponent obeys `k ^ n ≡ 1 (mod p)`
+(the involution lemma is exactly `n = 2`, where primality upgrades `k² ≡ 1` to `k ≡ ±1`). -/
+
+/-- **Conjugation iterates the exponent.**  If conjugation by `g` sends `c` to the
+power `c ^ k`, then conjugation by `g ^ j` sends `c` to `c ^ (k ^ j)`.  This is pure
+group theory — no finiteness, no Sylow hypotheses: conjugation is an automorphism, so
+it commutes with taking `ℤ`-powers, and iterating `j` times multiplies the exponent
+`j`-fold. -/
+theorem conj_pow_eq_zpow_pow {G : Type*} [Group G] (c g : G) {k : ℤ}
+    (hk : g * c * g⁻¹ = c ^ k) :
+    ∀ j : ℕ, g ^ j * c * (g ^ j)⁻¹ = c ^ (k ^ j) := by
+  intro j
+  induction j with
+  | zero => simp
+  | succ j ih =>
+    -- conjugation by `g` commutes with the `ℤ`-power `(k ^ j)`.
+    have hconj : g * (c ^ (k ^ j)) * g⁻¹ = (g * c * g⁻¹) ^ (k ^ j) := by
+      simpa [MulAut.conj_apply] using (map_zpow (MulAut.conj g) c (k ^ j))
+    calc g ^ (j + 1) * c * (g ^ (j + 1))⁻¹
+        = g * (g ^ j * c * (g ^ j)⁻¹) * g⁻¹ := by rw [pow_succ']; group
+      _ = g * (c ^ (k ^ j)) * g⁻¹ := by rw [ih]
+      _ = (g * c * g⁻¹) ^ (k ^ j) := hconj
+      _ = (c ^ k) ^ (k ^ j) := by rw [hk]
+      _ = c ^ (k ^ (j + 1)) := by rw [← zpow_mul, ← pow_succ']
+
+/-- **The conjugation exponent has modular order dividing `orderOf g`.**
+
+Under the hypotheses of `zpowers_sylow_normal`, conjugation by any `g` with `g ^ n = 1`
+sends `c` to `c ^ k` for a unique-mod-`p` exponent `k`, and that exponent satisfies
+`k ^ n ≡ 1 (mod p)`.  Equivalently, viewing conjugation as an element of `Aut(⟨c⟩) ≅
+(ℤ/p)ˣ`, its multiplicative order divides the order of `g`.  This is the automorphism-
+order-agnostic generalisation of `involution_conj_eq_self_or_inv`, which is the special
+case `n = 2`: there `k² ≡ 1 (mod p)` combines with the primality of `p` to force
+`k ≡ ±1`, i.e. `g c g⁻¹ ∈ {c, c⁻¹}`. -/
+theorem conj_exponent_pow_modEq_one {G : Type*} [Group G] [Finite G] {p : ℕ}
+    [Fact p.Prime] (m : ℕ)
+    (hcard : Nat.card G = p * m) (hpm : ¬ (p ∣ m))
+    (huniq : ∀ d : ℕ, d ∣ m → d % p = 1 → d = 1)
+    (c : G) (hc : orderOf c = p) {g : G} {n : ℕ} (hg : g ^ n = 1) :
+    ∃ k : ℤ, g * c * g⁻¹ = c ^ k ∧ k ^ n ≡ 1 [ZMOD (p : ℤ)] := by
+  obtain ⟨k, hk⟩ :=
+    Subgroup.mem_zpowers_iff.mp (conj_mem_zpowers_sylow m hcard hpm huniq c hc g)
+  refine ⟨k, hk.symm, ?_⟩
+  -- iterate the conjugation `n` times; `g ^ n = 1` collapses the left-hand side to `c`.
+  have hiter := conj_pow_eq_zpow_pow c g hk.symm n
+  rw [hg] at hiter
+  simp only [one_mul, inv_one, mul_one] at hiter
+  -- `hiter : c = c ^ (k ^ n)`, so `c ^ (k ^ n) = c ^ (1 : ℤ)`.
+  have hcc : c ^ (k ^ n) = c ^ (1 : ℤ) := by rw [zpow_one, ← hiter]
+  rwa [zpow_eq_zpow_iff_modEq, hc] at hcc
+
 /-- **Reusable sufficient condition for the divisor hypothesis `huniq`.** If the
 index `m` is smaller than the prime `p`, then the only divisor `d ∣ m` with
 `d ≡ 1 (mod p)` is `d = 1`: any such `d` satisfies `d ≤ m < p`, so `d % p = d`, and

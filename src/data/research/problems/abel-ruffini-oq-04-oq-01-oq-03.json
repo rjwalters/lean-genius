@@ -34,7 +34,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (solvability payoff, verified 0/0): added solvable_of_zpowers_normal (if ⟨c⟩ is a normal subgroup and the quotient G⧸⟨c⟩ is solvable, then G is solvable) plus the helper isSolvable_zpowers (a cyclic subgroup is abelian hence solvable). Combined with the existing zpowers_sylow_normal this is the positive counterpart of not_isSimpleGroup_of_sylow: the normal Sylow p-subgroup makes G an extension of a solvable group by a solvable group. Concrete order-10 capstone: any group of order 10 with an order-5 element is solvable (quotient has order 2, cyclic). Docker-built, 0 axioms/0 sorries, no native_decide.",
+    "progressSummary": "PROGRESS (verified 0/0): generalised the involution ±1 conjugation lemma to arbitrary automorphism order — for any g with g^n=1 the conjugation exponent k obeys k^n≡1 (mod p), via a reusable pure-group-theory iteration lemma conj_pow_eq_zpow_pow. Prime-power-index solvability engine already complete; the sole substantive remaining sharpening is the full G/C_G(c) ↪ (ℤ/p)ˣ embedding.",
     "builtItems": [
       "zpowers_sylow_normal in AbelRuffiniOQ04OQ01OQ03.lean — arbitrary-prime Sylow-elimination core: order p·m + p∤m + no-small-divisor ⇒ ⟨c⟩ (order-p) normal",
       "conj_mem_zpowers_sylow — every g normalizes ⟨c⟩ (general prime consequence)",
@@ -44,7 +44,9 @@
       "not_isSimpleGroup_order5 + capstone example — p=5 corollary and 'any group of order 40 with an order-5 element is not simple'",
       "isSolvable_zpowers in AbelRuffiniOQ04OQ01OQ03.lean — a cyclic subgroup ⟨c⟩ is solvable (any two powers of c commute ⇒ abelian ⇒ isSolvable_of_comm)",
       "solvable_of_zpowers_normal in AbelRuffiniOQ04OQ01OQ03.lean — ⟨c⟩ normal + G⧸⟨c⟩ solvable ⇒ G solvable, via Mathlib's extension lemma solvable_of_ker_le_range with f=subtype, g=mk' (ker mk' = range subtype = ⟨c⟩)",
-      "Order-10 solvability capstone example — order 10 = 5·2 with an order-5 element is solvable: zpowers_order5_normal gives normality, zpowers_index_eq gives quotient order 2, isCyclic_of_prime_card + IsCyclic.commutative make the quotient solvable"
+      "Order-10 solvability capstone example — order 10 = 5·2 with an order-5 element is solvable: zpowers_order5_normal gives normality, zpowers_index_eq gives quotient order 2, isCyclic_of_prime_card + IsCyclic.commutative make the quotient solvable",
+      "conj_pow_eq_zpow_pow (AbelRuffiniOQ04OQ01OQ03.lean): pure-group-theory iteration g^j c g^{-j}=c^(k^j) from g c g⁻¹=c^k, no finiteness/Sylow hyps",
+      "conj_exponent_pow_modEq_one (AbelRuffiniOQ04OQ01OQ03.lean): under zpowers_sylow_normal hyps, g^n=1 ⇒ ∃k, g c g⁻¹=c^k ∧ k^n≡1 [ZMOD p] — automorphism-order-agnostic generalisation of involution_conj_eq_self_or_inv (VERIFIED 0/0, PR pending)"
     ],
     "insights": [
       "Generalizing the fixed prime 5 to a variable prime p is NOT a rename: the two number-theoretic steps change tactic. n_p ≡ 1 (mod p) ⇒ n_p = 1 needs Nat.mod_eq_of_lt hp.out.one_lt to evaluate 1 % p (omega cannot do variable-modulus mod); index cancellation [G:P]·p = p·m ⇒ [G:P] = m needs Nat.eq_of_mul_eq_mul_right (omega cannot cancel a variable multiplier).",
@@ -53,12 +55,14 @@
       "IsSimpleGroup.eq_bot_or_eq_top_of_normal turns non-simplicity into a clean two-case refutation: ⟨c⟩=⊥ contradicts orderOf c=p>1 (via Subgroup.zpowers_eq_bot + orderOf_one), ⟨c⟩=⊤ contradicts index=m>1 (via Subgroup.index_top).",
       "The index [G:⟨c⟩]=m follows by pure counting (index_mul_card + Nat.eq_of_mul_eq_mul_right cancelling the prime p) with NO divisor hypothesis and NO normality — it just records that G⧸⟨c⟩ has order m.",
       "The quotient type G⧸(Subgroup.zpowers c) only has a Group instance once (zpowers c).Normal is in scope, so any theorem whose hypothesis mentions IsSolvable (G⧸⟨c⟩) must carry the Normal instance in its binder list (or establish it via haveI before the hypothesis is used). The clean reusable form takes [(Subgroup.zpowers c).Normal] as an instance argument rather than re-deriving it from Sylow hypotheses.",
-      "Solvability is the positive dual of non-simplicity here: ⟨c⟩ cyclic (abelian, solvable) + solvable quotient ⇒ G solvable by the standard extension lemma. For the Abel–Ruffini orders 10,20,40 the quotients have order 2,4,8 (all 2-groups, hence solvable), so those Galois groups are solvable — the structural reason x⁵-4x+2's group must instead be the non-solvable S₅ for radical-insolubility."
+      "Solvability is the positive dual of non-simplicity here: ⟨c⟩ cyclic (abelian, solvable) + solvable quotient ⇒ G solvable by the standard extension lemma. For the Abel–Ruffini orders 10,20,40 the quotients have order 2,4,8 (all 2-groups, hence solvable), so those Galois groups are solvable — the structural reason x⁵-4x+2's group must instead be the non-solvable S₅ for radical-insolubility.",
+      "Conjugation by any g on the normal cyclic ⟨c⟩ (order p) is an element of Aut(⟨c⟩)≅(ℤ/p)ˣ whose order divides ord(g): the exponent k with g c g⁻¹=c^k satisfies k^n≡1 (mod p) whenever g^n=1. The involution ±1 lemma is exactly the n=2 case, where primality upgrades k²≡1 to k≡±1."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Discharge the order-20 (quotient order 4) and order-40 (quotient order 8) capstones by proving the 2-power quotient solvable via IsPGroup.isNilpotent → IsSolvable (needs establishing IsPGroup 2 of the quotient).",
-      "Formalize the conjugation-action homomorphism G/C_G(c) ↪ (ZMod p)ˣ to sharpen the involution ±1 lemma to arbitrary automorphism order."
+      "Package the conjugation exponent as an explicit group hom G →* (ℤ/p)ˣ with kernel C_G(c), giving G/C_G(c) ↪ (ℤ/p)ˣ and hence [G:C_G(c)] ∣ p−1 (the sharp centraliser-index bound; conj_exponent_pow_modEq_one is the per-element shadow of this embedding).",
+      "The order-20/order-40 (indeed all prime-power-index) capstones are already fully discharged by isSolvable_of_sylow_primePow_index — that earlier nextStep is DONE; do not re-add.",
+      "Density-1 forward direction for the associated Galois obstruction remains analytically blocked (unchanged)."
     ]
   },
   "tags": [
