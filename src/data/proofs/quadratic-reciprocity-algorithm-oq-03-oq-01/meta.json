@@ -88,6 +88,24 @@
       "summary": "legendreSym_mul_eq_sign_gridTranspose: legendreSym q p · legendreSym p q = (sign (gridTranspose p q) : ℤ) for distinct odd primes, assembled from Mathlib's quadratic_reciprocity, the parent's sign_gridTranspose, the exponent bridge, and the ℤˣ → ℤ cast."
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "legendreSym_mul_eq_sign_gridTranspose",
+      "type": "core",
+      "description": "**The Zolotarev reciprocity headline.** For distinct odd primes p, q, the product of Legendre symbols legendreSym q p · legendreSym p q equals the ℤ-cast of the sign of the grid-transpose permutation of Fin (p·q). Assembled by rewriting the left side with Mathlib's legendreSym.quadratic_reciprocity, the right with the parent's sign_gridTranspose, reconciling the p/2 vs (p−1)/2 exponents via odd_div_two_eq, and pushing the ℤˣ → ℤ cast through the power. Exhibits the reciprocity factor (p/q)·(q/p) as a single explicit permutation sign.",
+      "leanType": "{p q : ℕ} [Fact p.Prime] [Fact q.Prime] (hp : p ≠ 2) (hq : q ≠ 2) (hpq : p ≠ q) : legendreSym q p * legendreSym p q = ((Equiv.Perm.sign (gridTranspose p q) : ℤˣ) : ℤ)",
+      "startLine": 59,
+      "endLine": 70
+    },
+    {
+      "name": "odd_div_two_eq",
+      "type": "supporting",
+      "description": "**The odd-exponent bridge.** For an odd natural n, integer division by two is unchanged by first subtracting one: n / 2 = (n − 1) / 2. Reconciles Mathlib's reciprocity exponent (p/2·q/2) with Milestone 2's inversion-count form ((p−1)/2·(q−1)/2). Proved by writing n = 2k+1 and discharging with omega.",
+      "leanType": "{n : ℕ} (hn : Odd n) : n / 2 = (n - 1) / 2",
+      "startLine": 45,
+      "endLine": 47
+    }
+  ],
   "conclusion": {
     "summary": "2 theorems, 0 definitions, 0 sorries, 0 axioms, no native_decide. For distinct odd primes p, q the product of Legendre symbols legendreSym q p · legendreSym p q equals (sign (gridTranspose p q) : ℤ), the sign of the parent's explicit grid-transpose permutation — the Zolotarev reciprocity headline in grid-transpose form. The arithmetic equality of the two ±1 factors is Mathlib's quadratic_reciprocity; the new content is the parent's combinatorial sign, which this entry ties to the Legendre product.",
     "implications": "Closes the Lean gap flagged in the parent's open questions: Milestone 2's grid-transpose sign is now connected to reciprocity itself. The result exhibits the reciprocity factor (p/q)·(q/p) as a single, concretely computable permutation sign, completing the conceptual arc of the Zolotarev route within the gallery (modulo an independent, Mathlib-free derivation, which remains open).",
@@ -108,6 +126,27 @@
     {
       "targetId": "quadratic-reciprocity-algorithm-oq-01",
       "relationship": "grandparent — the verified recursive Legendre/Jacobi algorithm jacobiAlgo"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Egor Ivanovich Zolotarev",
+      "title": "Nouvelle démonstration de la loi de réciprocité de Legendre",
+      "year": 1872,
+      "venue": "Nouvelles Annales de Mathématiques (2) 11, 354–362",
+      "note": "The permutation-sign proof of quadratic reciprocity this route formalizes: (a/p) is read as the sign of x ↦ a·x on the nonzero residues, and reciprocity falls out of computing a single grid-transpose sign in two ways."
+    },
+    {
+      "authors": "Carl Friedrich Gauss",
+      "title": "Disquisitiones Arithmeticae",
+      "year": 1801,
+      "note": "The first complete proof of the Law of Quadratic Reciprocity (Gauss's 'theorema aureum'), the theorem whose Zolotarev-style permutation-sign form this entry realizes as an explicit grid-transpose sign."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib4: legendreSym.quadratic_reciprocity (Mathlib.NumberTheory.LegendreSymbol.QuadraticReciprocity)",
+      "year": 2024,
+      "note": "legendreSym q p * legendreSym p q = (-1)^(p/2 · q/2) for distinct odd primes — the arithmetic ±1 factor this capstone equates with the combinatorial grid-transpose sign; consumed, not re-derived."
     }
   ],
   "sorries": 0
