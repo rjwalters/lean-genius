@@ -194,4 +194,41 @@ theorem partitionEnergy_prod_gain_eps4 (G : SimpleGraph V) [DecidableRel G.Adj]
       _ = (↑A₁.card : ℚ) * ↑B₁.card / (Fintype.card V : ℚ) ^ 2 * eps ^ 2 := by ring
   linarith [hgain, hfloor]
 
+-- ═══════════════════════════════════════════════════════════════════
+-- THE SHARP AFKS ITERATION COUNT (NO-LOSS FLOOR → TERMINATION)
+-- ═══════════════════════════════════════════════════════════════════
+
+/-- **Sharp AFKS energy-iteration count.**  The termination engine
+    `partitionEnergy_iteration_bound` bounds the number of refinement steps by
+    `1/δ` once every step raises `partitionEnergy` by a fixed `δ > 0`.  The lossy
+    one-sided route (`afks_energy_iteration_count`) can only supply the floor
+    `δ = ε²/(2n²)`, giving `N ≤ 2n²/ε²`.  The **sharp** 2×2 route earns the
+    no-loss floor `partitionEnergy_prod_gain_eps4`, which — once the refined pair
+    carries mass at least `M` (i.e. `|A||B| ≥ M`, guaranteed by a minimum-part-mass
+    hypothesis on the partition) — is `δ = ε⁴·M/n²`.  Feeding this into the same
+    `[0,1]`-potential engine yields the sharp iteration count
+
+    `N ≤ n² / (ε⁴·M)`,
+
+    the termination bound the factor-¼-free route delivers.  Unlike
+    `afks_energy_iteration_count`, whose floor is independent of the refined pair,
+    the sharp floor scales with the ε⁴ tolerance and the pair mass `M`; the two
+    bounds coincide in order of magnitude only when `M ≈ ε²n²/2`, and the sharp
+    bound is strictly better once the refined pairs are more massive than that. -/
+theorem afks_sharp_energy_iteration_count (G : SimpleGraph V) [DecidableRel G.Adj]
+    (parts : ℕ → Finset (Finset V)) (N : ℕ) (eps M : ℚ)
+    (hε : 0 < eps) (hM : 0 < M) (hcard : 0 < (Fintype.card V : ℚ))
+    (hcover : ∀ n, ∀ v : V, ∃ P ∈ parts n, v ∈ P)
+    (hdisjoint : ∀ n, ∀ P Q : Finset V, P ∈ parts n → Q ∈ parts n → P ≠ Q →
+      Disjoint P Q)
+    (hstep : ∀ n, n < N →
+      partitionEnergy G (parts n) + eps ^ 4 * M / (Fintype.card V : ℚ) ^ 2 ≤
+        partitionEnergy G (parts (n + 1))) :
+    (N : ℚ) ≤ (Fintype.card V : ℚ) ^ 2 / (eps ^ 4 * M) := by
+  have hδ : 0 < eps ^ 4 * M / (Fintype.card V : ℚ) ^ 2 :=
+    div_pos (mul_pos (by positivity) hM) (pow_pos hcard 2)
+  have hbound := Szemeredi.RegularityOQ04.partitionEnergy_iteration_bound G parts N
+    (eps ^ 4 * M / (Fintype.card V : ℚ) ^ 2) hδ hcover hdisjoint hstep
+  rwa [one_div_div] at hbound
+
 end Szemeredi.RegularityOQ04Bridge
