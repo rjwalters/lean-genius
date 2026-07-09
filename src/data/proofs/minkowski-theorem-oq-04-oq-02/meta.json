@@ -104,6 +104,14 @@
   },
   "sections": [
     {
+      "id": "setup",
+      "title": "Setup: Imports, Scope, and the Covolume-Threshold Goal",
+      "startLine": 1,
+      "endLine": 48,
+      "summary": "Imports Mathlib.Algebra.Module.ZLattice.Covolume and the parent Proofs.MinkowskiTheoremOQ04, and the module docstring. Positions the file as the child that recasts the parent's verified ℝ≥0∞-valued Blichfeldt engine (blichfeldt_general_lattice) into the geometry-of-numbers covolume-threshold form used in Cassels/Siegel and every number-theoretic application (Diophantine approximation, ideal-lattice bounds via the Minkowski embedding, whose covolume is 2^{-r₂}√|d_K|). Opens MeasureTheory/Set/Pointwise, namespace BlichfeldtTheorem with the full-rank dimension variable n (NeZero n). No new axioms.",
+      "mathContext": "ZLattice.covolume Λ volume = (volume (ZSpan.fundamentalDomain b)).toReal; the threshold vol(S) > k·covol(Λ) replaces the parent's ℝ≥0∞ form."
+    },
+    {
       "id": "covolume-bridge",
       "title": "The Covolume Bridge",
       "startLine": 49,
@@ -123,7 +131,7 @@
       "id": "minkowski-covolume",
       "title": "Minkowski's Convex Body Theorem for a General Lattice",
       "startLine": 129,
-      "endLine": 205,
+      "endLine": 211,
       "summary": "minkowski_lattice (convex, centrally-symmetric S with vol(S) > 2ⁿ·volume F ⇒ nonzero lattice point) via half-scaling T = (1/2)·S and blichfeldt_basic_lattice, and minkowski_lattice_covolume (the covolume-threshold restatement vol(S) > 2ⁿ·covol(Λ)).",
       "mathContext": "Minkowski's classical convex body theorem in its general-lattice form (Cassels III.2): the sharp volume threshold for forcing a nonzero lattice point in a symmetric convex body is 2ⁿ times the covolume. The half-scaling reduction to Blichfeldt is identical to the ℤⁿ case, with the covolume replacing 1."
     }
