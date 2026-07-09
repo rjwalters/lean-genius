@@ -15,7 +15,7 @@
       "first-principles",
       "classic"
     ],
-    "badge": "mathlib",
+    "badge": "original",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -182,10 +182,10 @@
   ],
   "mainTheorems": [
     {
-      "name": "sqrt2_exists",
+      "name": "sqrt2_irrational",
       "type": "core",
-      "description": "Existence of sqrt(2) from field axioms and completeness",
-      "leanType": "exists x : R, x > 0 and x * x = 2"
+      "description": "No coprime naturals a, b satisfy a² = 2b² — the arithmetic core of √2's irrationality, proved from hand-built even/odd/coprime definitions via infinite descent (no Mathlib number-theory theorem)",
+      "leanType": "∀ a b : ℕ, b > 0 → a * a = 2 * b * b → ¬Coprime a b"
     }
   ],
   "sorries": 0
