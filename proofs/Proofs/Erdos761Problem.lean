@@ -452,6 +452,55 @@ theorem cochromNumber_pos [Fintype V] [DecidableEq V] [Nonempty V]
   obtain ⟨c, _⟩ := (cochromNumber_le_iff G).mp (le_of_eq h0)
   exact (c (Classical.arbitrary V)).elim0
 
+-- ═══════════════════════════════════════════════════════════════════════
+-- THE δ ≤ 1 CHARACTERIZATION (structural heart of "δ(G) = 1 ⟺ forest")
+-- ═══════════════════════════════════════════════════════════════════════
+
+/-- **Characterization of `δ(G) ≤ 1`.** The dichromatic number is at most one
+    exactly when *every* orientation of `G` is acyclic — has no directed cycle.
+
+    With a single color the whole vertex set is one color class, so an acyclic
+    `1`-coloring is precisely a directed-cycle-free orientation: the color
+    constraints `c u = 0` / `c v = 0` are vacuous over `Fin 1`, collapsing
+    `colorClassEdge O c 0` to `O.dir`.
+
+    This is the structural heart of the folklore fact `δ(G) = 1 ⟺ G is a
+    forest`: a forest's every orientation is a DAG, while any undirected cycle
+    admits a cyclically-directed orientation. Combined with `dichromNumber_pos`,
+    a nonempty `G` has `δ(G) = 1` iff every orientation is acyclic. -/
+theorem dichromNumber_le_one_iff [Fintype V] [DecidableEq V] (G : SimpleGraph V)
+    [DecidableRel G.Adj] :
+    G.dichromNumber ≤ 1 ↔
+      ∀ O : Orientation G, ∀ v : V, ¬Relation.TransGen O.dir v v := by
+  rw [dichromNumber_le_iff]
+  constructor
+  · -- δ ≤ 1 ⟹ no orientation has a directed cycle: a cycle in `O.dir` lifts
+    -- to a monochromatic cycle of the (necessarily constant) 1-coloring.
+    intro h O v hcyc
+    obtain ⟨c, hc⟩ := h O
+    exact hc 0 v (Relation.TransGen.mono
+      (fun _ _ hab => ⟨Subsingleton.elim _ _, Subsingleton.elim _ _, hab⟩) hcyc)
+  · -- All orientations acyclic ⟹ the constant 1-coloring works everywhere:
+    -- a monochromatic cycle would be a directed cycle in `O.dir`.
+    intro h O
+    exact ⟨fun _ => 0, fun _ v hcyc =>
+      h O v (Relation.TransGen.mono (fun _ _ hab => hab.2.2) hcyc)⟩
+
+/-- **δ of the edgeless graph is `1`** (on a nonempty vertex set). Every
+    orientation of `⊥` is vacuously acyclic (it has no directed edges at all,
+    since `O.consistent` forces each direction to witness a `⊥`-edge), so
+    `dichromNumber_le_one_iff` gives `δ(⊥) ≤ 1`; `dichromNumber_pos` gives the
+    matching lower bound. This pins the minimum value the dichromatic number
+    attains, complementing the `δ(G) ≤ |V|` upper bound. -/
+theorem dichromNumber_bot [Fintype V] [DecidableEq V] [Nonempty V] :
+    (⊥ : SimpleGraph V).dichromNumber = 1 := by
+  refine le_antisymm ?_ (dichromNumber_pos _)
+  rw [dichromNumber_le_one_iff]
+  intro O _ hcyc
+  cases hcyc with
+  | single h => simpa using O.consistent _ _ h
+  | tail _ h => simpa using O.consistent _ _ h
+
 end ProvedProperties
 
 -- ═══════════════════════════════════════════════════════════════════════

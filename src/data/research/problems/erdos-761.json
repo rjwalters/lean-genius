@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (VERIFIED 0 sorry/2 open-axiom): added embedding monotonicity dichrom_mono_of_embedding (δ monotone under injective edge-preserving maps across vertex types) and its corollary dichrom_induce_le (δ(G[s]) ≤ δ(G)) — the induced-subgraph monotonicity directly underlying Question 2. 20 theorems, 2 open-conjecture axioms, 0 sorries.",
+    "progressSummary": "PROGRESS (VERIFIED 0 sorry/2 open-axiom): added dichromNumber_le_one_iff (δ(G)≤1 ⟺ every orientation acyclic — structural heart of δ=1⟺forest) and dichromNumber_bot (δ(⊥)=1, minimum value). 22 theorems, 2 open-conjecture axioms, 0 sorries.",
     "builtItems": [
       "dichrom_le_chrom: proved via Fintype.equivFin + ne_of_adj (axiom→theorem)",
       "cochrom_le_chrom: proved via Fintype.equivFin + injective coloring (axiom→theorem)",
@@ -64,7 +64,9 @@
       "dichromNumber_pos / cochromNumber_pos: nonempty V implies delta(G),zeta(G) >= 1 (Fin 0 admits no coloring).",
       "isCochromatic_of_injection / cochromNumber_le_iff (Erdos761Problem.lean): cochromatic analogs.",
       "dichrom_mono_of_embedding (Erdos761Problem.lean:301): injective edge-preserving f:W→V ⟹ H.dichromNumber ≤ G.dichromNumber, generalizing dichrom_mono across distinct vertex types.",
-      "dichrom_induce_le (Erdos761Problem.lean:357): δ(G.induce s) ≤ δ(G) for any s:Set V — induced-subgraph monotonicity, the structural fact underlying Question 2."
+      "dichrom_induce_le (Erdos761Problem.lean:357): δ(G.induce s) ≤ δ(G) for any s:Set V — induced-subgraph monotonicity, the structural fact underlying Question 2.",
+      "dichromNumber_le_one_iff (Erdos761Problem.lean): δ(G) ≤ 1 ↔ ∀ O, ∀ v, ¬TransGen O.dir v v. Proof rw[dichromNumber_le_iff] then TransGen.mono both directions across the Fin 1 Subsingleton collapse.",
+      "dichromNumber_bot (Erdos761Problem.lean): δ(⊥) = 1 on nonempty V — every orientation of the edgeless graph is vacuously acyclic (O.consistent forces no directed edges), giving ≤1 via le_one_iff, matched by dichromNumber_pos; pins the minimum attained value."
     ],
     "insights": [
       "dichrom_le_chrom proved: injective coloring via Fintype.equivFin gives |V| colors, injectivity + ne_of_adj yields acyclicity",
@@ -92,7 +94,8 @@
       "The sInf-based dichromNumber/cochromNumber definitions become usable specs once the defining color-count set is shown upward-closed: delta(G)<=k iff every orientation has an acyclic k-coloring (dichromNumber_le_iff), zeta(G)<=k iff a cochromatic k-coloring exists (cochromNumber_le_iff).",
       "Acyclic colorability is monotone along ANY injection Fin k into Fin k', not just k<=k': a monochromatic TransGen cycle for the composite coloring at color i pins every cycle vertex to a single original color class by injectivity, so it descends to a monochromatic cycle for the original coloring. Key reusable lemma hasAcyclicColoring_of_injection.",
       "Embedding monotonicity: an injective edge-preserving map H↪G forces δ(H) ≤ δ(G). Proven by extending an orientation O_H of H to O_G of G (copy O_H on image edges via the map, index-orient the rest) and pulling an acyclic O_G-coloring back along the map through Relation.TransGen.lift.",
-      "The pullback argument itself only consumes edge-preservation, not injectivity; injectivity is needed solely to keep the extended orientation well-defined under a strict (antisymmetric) reading of the loose Orientation structure used in this file. This isolates exactly where the subgraph hypothesis is used."
+      "The pullback argument itself only consumes edge-preservation, not injectivity; injectivity is needed solely to keep the extended orientation well-defined under a strict (antisymmetric) reading of the loose Orientation structure used in this file. This isolates exactly where the subgraph hypothesis is used.",
+      "δ(G) ≤ 1 collapses to a pure orientation property: with a single color the whole vertex set is one class, so colorClassEdge O c 0 is defeq-driven equal to O.dir (color constraints vacuous over Fin 1). Hence δ(G) ≤ 1 ⟺ every orientation of G is directed-cycle-free — the exact structural halfway point of the folklore δ(G)=1 ⟺ forest characterization, without needing the Mathlib IsAcyclic bridge yet."
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -101,7 +104,8 @@
       "With dichromNumber_le_iff available, characterize delta(G)=1 iff G acyclic (forest): every orientation of a forest is a DAG so 1-coloring suffices; conversely a cycle orients into a directed cycle. Needs a bridge to Mathlib IsAcyclic.",
       "Investigate the correct comparison between delta(G) and zeta(G); both now have _le_iff specs to reason about.",
       "Question 2 reduces to Question 1 via an Erdős #760 χ-vs-ζ bound; with dichrom_induce_le now available, formalizing that reduction (Q2 ⟹ Q1) would collapse the 2 axioms to 1 — but needs the #760 bound χ(G) ≤ f(ζ(G)), which is itself nontrivial.",
-      "Consider a spanning-subgraph corollary and a disjoint-union lower bound δ(G ⊔ H) = max(δ G, δ H) to further pin down how δ behaves under standard graph operations."
+      "Consider a spanning-subgraph corollary and a disjoint-union lower bound δ(G ⊔ H) = max(δ G, δ H) to further pin down how δ behaves under standard graph operations.",
+      "Complete the forest characterization: bridge dichromNumber_le_one_iff to Mathlib SimpleGraph.IsAcyclic — needs (a) a cycle ⟹ an orientation with a directed TransGen cycle, and (b) acyclic ⟹ every orientation is a DAG (topological/index argument, already have the index-orientation construction from acyclic_orientation_exists)."
     ],
     "markdown": "# Erdős #761 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nThe cochromatic number of $G$, denoted by $\\zeta(G)$, is the minimum number of colours needed to colour the vertices of $G$ such that each colour class induces either a complete graph or empty graph. The dichromatic number of $G$, denoted by $\\delta(G)$, is the minimum number $k$ of colours required such that, in any orientation of the edges of $G$, there is a $k$-colouring of the vertices of $G$ such that there are no monochromatic oriented cycles.\n\nMust a graph with large chromatic number have large dichromatic number? Must a graph with large cochromatic number contain a graph with large dichromatic number?\n\n\n\nThe first question is due to Erd\\H{o}s and Neumann-Lara. The second question is due to Erd\\H{o}s and Gimbel. A positive answer to the second question implies a positive answer to the first via the bound mentioned in [760].\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #760\n- Problem #762\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- ErGi93\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
