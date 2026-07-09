@@ -64,6 +64,7 @@
     "erdos-106",
     "erdos-1065",
     "erdos-1065-incomplete-01",
+    "erdos-1065-oq-01",
     "erdos-1065-oq-05"
   ],
   "references": {
@@ -108,6 +109,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1065Incomplete01.lean"
+    },
+    {
+      "path": "Proofs/Erdos1065OQ01.lean",
+      "filename": "Erdos1065OQ01.lean",
+      "lineCount": 86,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1065OQ01.lean"
     },
     {
       "path": "Proofs/Erdos1065Problem.lean",

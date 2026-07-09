@@ -1,54 +1,365 @@
 {
-    "slug": "birthday-problem-oq-02-oq-01-oq-02",
-    "title": "Non-Uniform Birthday Problem: Uniform Minimizes Two-Draw Collisions",
+  "slug": "birthday-problem-oq-02-oq-01-oq-02",
+  "title": "Non-Uniform Birthday Problem: Uniform Minimizes Two-Draw Collisions",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Prove that for every probability vector p on d outcomes (∑ᵢ pᵢ = 1, d > 0), the two-draw collision probability satisfies ∑ᵢ pᵢ² ≥ 1/d, with equality if and only if p is the uniform distribution pᵢ = 1/d. Equivalently, the no-collision probability 1 − ∑ᵢ pᵢ² is maximized uniquely at uniform.",
+    "plain": "Among all probability distributions on d outcomes, the uniform distribution minimizes the two-draw collision probability C(p) = ∑ pᵢ². Proves C(p) ≥ 1/d with equality iff p is uniform — the n=2 case of the Munford/Klamkin–Newman extremality. Real (non-uniform) birthday distributions only make collisions more likely.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [
+      "sum_sq_sub_one_div_card: the variance identity ∑ pᵢ² − 1/d = ∑ (pᵢ − 1/d)² for probability vectors — the engine of the whole result",
+      "one_div_card_le_sum_sq: 1/d ≤ ∑ pᵢ² (uniform minimizes the two-draw collision probability) — headline bound",
+      "sum_sq_eq_one_div_card_iff: equality ∑ pᵢ² = 1/d holds iff every pᵢ = 1/d — the explicit equality characterization, obtained directly rather than via a Cauchy–Schwarz black box",
+      "no_collision_le / no_collision_eq_iff: the no-collision probability 1 − ∑ pᵢ² is maximized (≤ 1 − 1/d) exactly at the uniform distribution"
+    ],
+    "open": [],
+    "goal": "Prove that for every probability vector p on d outcomes (∑ᵢ pᵢ = 1, d > 0), the two-draw collision probability satisfies ∑ᵢ pᵢ² ≥ 1/d, with equality if and only if p is the uniform distribution pᵢ = 1/d. Equivalently, the no-collision probability 1 − ∑ᵢ pᵢ² is maximized uniquely at uniform."
+  },
+  "currentState": {
     "phase": "COMPLETED",
-    "status": "completed",
-    "tier": "C",
-    "path": "full",
-    "problemStatement": {
-        "formal": "Prove that for every probability vector p on d outcomes (∑ᵢ pᵢ = 1, d > 0), the two-draw collision probability satisfies ∑ᵢ pᵢ² ≥ 1/d, with equality if and only if p is the uniform distribution pᵢ = 1/d. Equivalently, the no-collision probability 1 − ∑ᵢ pᵢ² is maximized uniquely at uniform.",
-        "plain": "Among all probability distributions on d outcomes, the uniform distribution minimizes the two-draw collision probability C(p) = ∑ pᵢ². Proves C(p) ≥ 1/d with equality iff p is uniform — the n=2 case of the Munford/Klamkin–Newman extremality. Real (non-uniform) birthday distributions only make collisions more likely.",
-        "whyMatters": []
+    "since": "2026-06-20T00:00:00Z",
+    "iteration": 1,
+    "focus": "Verified deliverable already complete in main: proofs/Proofs/BirthdayProblemOQ02OQ01OQ02.lean and gallery entry birthday-problem-oq-02-oq-01-oq-02 (status verified)."
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED and verified in main (140 lines, 7 theorems, 0 sorries, axiomCount 0, badge 'original'). Among all probability distributions on d outcomes, the uniform distribution minimizes the two-draw collision probability C(p) = ∑ pᵢ². Proves C(p) ≥ 1/d with equality iff p is uniform — the n=2 case of the Munford/Klamkin–Newman extremality. Real (non-uniform) birthday distributions only make collisions more likely.",
+    "builtItems": [
+      "sum_sq_sub_one_div_card: the variance identity ∑ pᵢ² − 1/d = ∑ (pᵢ − 1/d)² for probability vectors — the engine of the whole result",
+      "one_div_card_le_sum_sq: 1/d ≤ ∑ pᵢ² (uniform minimizes the two-draw collision probability) — headline bound",
+      "sum_sq_eq_one_div_card_iff: equality ∑ pᵢ² = 1/d holds iff every pᵢ = 1/d — the explicit equality characterization, obtained directly rather than via a Cauchy–Schwarz black box",
+      "no_collision_le / no_collision_eq_iff: the no-collision probability 1 − ∑ pᵢ² is maximized (≤ 1 − 1/d) exactly at the uniform distribution",
+      "Gallery entry src/data/proofs/birthday-problem-oq-02-oq-01-oq-02 (meta.json + annotations.json); Lean source proofs/Proofs/BirthdayProblemOQ02OQ01OQ02.lean."
+    ],
+    "insights": [
+      "The entire extremal result is a one-line consequence of a **variance identity**: ∑ pᵢ² − 1/d = ∑ (pᵢ − 1/d)², valid precisely because ∑ pᵢ = 1. This converts an optimization problem into a sum-of-squares nonnegativity statement.",
+      "Working with the *deviation form* ∑(pᵢ − 1/d)² rather than invoking Cauchy–Schwarz delivers the equality characterization for free: Finset.sum_eq_zero_iff_of_nonneg forces each pᵢ = 1/d. A Cauchy–Schwarz citation would give the bound but not, without extra work, the uniqueness of the minimizer.",
+      "C(p) = ∑ pᵢ² is exactly the probability that two independent draws coincide, so the bound 1/d ≤ C(p) says uniform birthdays are the *hardest* case for the birthday paradox: any seasonal bias only raises the collision probability.",
+      "The n = 2 case is self-contained Finset algebra over ℝ; the general n-draw statement (no-collision probability n!·eₙ(p) maximized at uniform) needs Maclaurin's inequality / Schur-concavity of the elementary symmetric polynomials on the simplex, which is not yet in Mathlib — documented as the genuine follow-up gate."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "probability",
+    "birthday-problem",
+    "extremal",
+    "variance-identity",
+    "combinatorics"
+  ],
+  "leanFiles": [
+    {
+      "path": "Proofs/BirthdayProblem.lean",
+      "filename": "BirthdayProblem.lean",
+      "lineCount": 403,
+      "theoremCount": 24,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblem.lean"
     },
-    "knownResults": {
-        "proven": [
-            "sum_sq_sub_one_div_card: the variance identity ∑ pᵢ² − 1/d = ∑ (pᵢ − 1/d)² for probability vectors — the engine of the whole result",
-            "one_div_card_le_sum_sq: 1/d ≤ ∑ pᵢ² (uniform minimizes the two-draw collision probability) — headline bound",
-            "sum_sq_eq_one_div_card_iff: equality ∑ pᵢ² = 1/d holds iff every pᵢ = 1/d — the explicit equality characterization, obtained directly rather than via a Cauchy–Schwarz black box",
-            "no_collision_le / no_collision_eq_iff: the no-collision probability 1 − ∑ pᵢ² is maximized (≤ 1 − 1/d) exactly at the uniform distribution"
-        ],
-        "open": [],
-        "goal": "Prove that for every probability vector p on d outcomes (∑ᵢ pᵢ = 1, d > 0), the two-draw collision probability satisfies ∑ᵢ pᵢ² ≥ 1/d, with equality if and only if p is the uniform distribution pᵢ = 1/d. Equivalently, the no-collision probability 1 − ∑ᵢ pᵢ² is maximized uniquely at uniform."
+    {
+      "path": "Proofs/BirthdayProblemAsymptotics.lean",
+      "filename": "BirthdayProblemAsymptotics.lean",
+      "lineCount": 85,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemAsymptotics.lean"
     },
-    "currentState": {
-        "phase": "COMPLETED",
-        "since": "2026-06-20T00:00:00Z",
-        "iteration": 1,
-        "focus": "Verified deliverable already complete in main: proofs/Proofs/BirthdayProblemOQ02OQ01OQ02.lean and gallery entry birthday-problem-oq-02-oq-01-oq-02 (status verified)."
+    {
+      "path": "Proofs/BirthdayProblemOQ01.lean",
+      "filename": "BirthdayProblemOQ01.lean",
+      "lineCount": 514,
+      "theoremCount": 53,
+      "axiomCount": 0,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ01.lean"
     },
-    "knowledge": {
-        "progressSummary": "COMPLETED and verified in main (140 lines, 7 theorems, 0 sorries, axiomCount 0, badge 'original'). Among all probability distributions on d outcomes, the uniform distribution minimizes the two-draw collision probability C(p) = ∑ pᵢ². Proves C(p) ≥ 1/d with equality iff p is uniform — the n=2 case of the Munford/Klamkin–Newman extremality. Real (non-uniform) birthday distributions only make collisions more likely.",
-        "builtItems": [
-            "sum_sq_sub_one_div_card: the variance identity ∑ pᵢ² − 1/d = ∑ (pᵢ − 1/d)² for probability vectors — the engine of the whole result",
-            "one_div_card_le_sum_sq: 1/d ≤ ∑ pᵢ² (uniform minimizes the two-draw collision probability) — headline bound",
-            "sum_sq_eq_one_div_card_iff: equality ∑ pᵢ² = 1/d holds iff every pᵢ = 1/d — the explicit equality characterization, obtained directly rather than via a Cauchy–Schwarz black box",
-            "no_collision_le / no_collision_eq_iff: the no-collision probability 1 − ∑ pᵢ² is maximized (≤ 1 − 1/d) exactly at the uniform distribution",
-            "Gallery entry src/data/proofs/birthday-problem-oq-02-oq-01-oq-02 (meta.json + annotations.json); Lean source proofs/Proofs/BirthdayProblemOQ02OQ01OQ02.lean."
-        ],
-        "insights": [
-            "The entire extremal result is a one-line consequence of a **variance identity**: ∑ pᵢ² − 1/d = ∑ (pᵢ − 1/d)², valid precisely because ∑ pᵢ = 1. This converts an optimization problem into a sum-of-squares nonnegativity statement.",
-            "Working with the *deviation form* ∑(pᵢ − 1/d)² rather than invoking Cauchy–Schwarz delivers the equality characterization for free: Finset.sum_eq_zero_iff_of_nonneg forces each pᵢ = 1/d. A Cauchy–Schwarz citation would give the bound but not, without extra work, the uniqueness of the minimizer.",
-            "C(p) = ∑ pᵢ² is exactly the probability that two independent draws coincide, so the bound 1/d ≤ C(p) says uniform birthdays are the *hardest* case for the birthday paradox: any seasonal bias only raises the collision probability.",
-            "The n = 2 case is self-contained Finset algebra over ℝ; the general n-draw statement (no-collision probability n!·eₙ(p) maximized at uniform) needs Maclaurin's inequality / Schur-concavity of the elementary symmetric polynomials on the simplex, which is not yet in Mathlib — documented as the genuine follow-up gate."
-        ],
-        "mathlibGaps": [],
-        "nextSteps": []
+    {
+      "path": "Proofs/BirthdayProblemOQ01OQ01.lean",
+      "filename": "BirthdayProblemOQ01OQ01.lean",
+      "lineCount": 281,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ01OQ01.lean"
     },
-    "tags": [
-        "probability",
-        "birthday-problem",
-        "extremal",
-        "variance-identity",
-        "combinatorics"
-    ]
+    {
+      "path": "Proofs/BirthdayProblemOQ01OQ01Aristotle.lean",
+      "filename": "BirthdayProblemOQ01OQ01Aristotle.lean",
+      "lineCount": 35,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ01OQ01Aristotle.lean"
+    },
+    {
+      "path": "Proofs/BirthdayProblemOQ01OQ01OQ03.lean",
+      "filename": "BirthdayProblemOQ01OQ01OQ03.lean",
+      "lineCount": 124,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ01OQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/BirthdayProblemOQ01OQ01OQ03Schur.lean",
+      "filename": "BirthdayProblemOQ01OQ01OQ03Schur.lean",
+      "lineCount": 99,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ01OQ01OQ03Schur.lean"
+    },
+    {
+      "path": "Proofs/BirthdayProblemOQ01OQ02.lean",
+      "filename": "BirthdayProblemOQ01OQ02.lean",
+      "lineCount": 264,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/BirthdayProblemOQ02.lean",
+      "filename": "BirthdayProblemOQ02.lean",
+      "lineCount": 301,
+      "theoremCount": 18,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ02.lean"
+    },
+    {
+      "path": "Proofs/BirthdayProblemOQ02OQ01.lean",
+      "filename": "BirthdayProblemOQ02OQ01.lean",
+      "lineCount": 230,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/BirthdayProblemOQ02OQ01OQ02.lean",
+      "filename": "BirthdayProblemOQ02OQ01OQ02.lean",
+      "lineCount": 141,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ02OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/BirthdayProblemOQ02OQ01OQ02OQ01.lean",
+      "filename": "BirthdayProblemOQ02OQ01OQ02OQ01.lean",
+      "lineCount": 190,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ02OQ01OQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/BirthdayProblemOQ02OQ01OQ02OQ01OQ01.lean",
+      "filename": "BirthdayProblemOQ02OQ01OQ02OQ01OQ01.lean",
+      "lineCount": 136,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ02OQ01OQ02OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/BirthdayProblemOQ02OQ01OQ02OQ02.lean",
+      "filename": "BirthdayProblemOQ02OQ01OQ02OQ02.lean",
+      "lineCount": 182,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ02OQ01OQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/BirthdayProblemOQ02OQ01OQ03.lean",
+      "filename": "BirthdayProblemOQ02OQ01OQ03.lean",
+      "lineCount": 213,
+      "theoremCount": 18,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ02OQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/BirthdayProblemOQ03.lean",
+      "filename": "BirthdayProblemOQ03.lean",
+      "lineCount": 369,
+      "theoremCount": 19,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ03.lean"
+    },
+    {
+      "path": "Proofs/BirthdayProblemOQ03OQ01.lean",
+      "filename": "BirthdayProblemOQ03OQ01.lean",
+      "lineCount": 246,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ03OQ01.lean"
+    },
+    {
+      "path": "Proofs/BirthdayProblemOQ03OQ01OQ01.lean",
+      "filename": "BirthdayProblemOQ03OQ01OQ01.lean",
+      "lineCount": 318,
+      "theoremCount": 41,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ03OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/BirthdayProblemOQ03OQ01OQ01OQ02.lean",
+      "filename": "BirthdayProblemOQ03OQ01OQ01OQ02.lean",
+      "lineCount": 217,
+      "theoremCount": 21,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ03OQ01OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/BirthdayProblemOQ03OQ01OQ01OQ03.lean",
+      "filename": "BirthdayProblemOQ03OQ01OQ01OQ03.lean",
+      "lineCount": 120,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ03OQ01OQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/BirthdayProblemOQ03OQ01OQ01OQ03OQ01.lean",
+      "filename": "BirthdayProblemOQ03OQ01OQ01OQ03OQ01.lean",
+      "lineCount": 163,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ03OQ01OQ01OQ03OQ01.lean"
+    },
+    {
+      "path": "Proofs/BirthdayProblemOQ03OQ01OQ01OQ03OQ03.lean",
+      "filename": "BirthdayProblemOQ03OQ01OQ01OQ03OQ03.lean",
+      "lineCount": 196,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ03OQ01OQ01OQ03OQ03.lean"
+    },
+    {
+      "path": "Proofs/BirthdayProblemOQ03OQ01OQ01OQ05.lean",
+      "filename": "BirthdayProblemOQ03OQ01OQ01OQ05.lean",
+      "lineCount": 78,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ03OQ01OQ01OQ05.lean"
+    },
+    {
+      "path": "Proofs/BirthdayProblemOQ03OQ01OQ01OQ05OQ01.lean",
+      "filename": "BirthdayProblemOQ03OQ01OQ01OQ05OQ01.lean",
+      "lineCount": 291,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ03OQ01OQ01OQ05OQ01.lean"
+    },
+    {
+      "path": "Proofs/BirthdayProblemOQ03OQ01OQ02.lean",
+      "filename": "BirthdayProblemOQ03OQ01OQ02.lean",
+      "lineCount": 2312,
+      "theoremCount": 56,
+      "axiomCount": 1,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ03OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/BirthdayProblemOQ03OQ03.lean",
+      "filename": "BirthdayProblemOQ03OQ03.lean",
+      "lineCount": 242,
+      "theoremCount": 20,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ03OQ03.lean"
+    }
+  ],
+  "relatedProofs": [
+    "birthday-problem",
+    "birthday-problem-oq-01",
+    "birthday-problem-oq-01-oq-01",
+    "birthday-problem-oq-02",
+    "birthday-problem-oq-02-oq-01",
+    "birthday-problem-oq-02-oq-01-oq-02",
+    "birthday-problem-oq-02-oq-01-oq-02-oq-01",
+    "birthday-problem-oq-02-oq-01-oq-02-oq-01-oq-01",
+    "birthday-problem-oq-02-oq-01-oq-02-oq-02",
+    "birthday-problem-oq-02-oq-01-oq-03",
+    "birthday-problem-oq-03",
+    "birthday-problem-oq-03-oq-01",
+    "birthday-problem-oq-03-oq-01-oq-01",
+    "birthday-problem-oq-03-oq-01-oq-01-oq-02",
+    "birthday-problem-oq-03-oq-01-oq-01-oq-03",
+    "birthday-problem-oq-03-oq-01-oq-01-oq-03-oq-01",
+    "birthday-problem-oq-03-oq-01-oq-01-oq-03-oq-03",
+    "birthday-problem-oq-03-oq-01-oq-01-oq-05",
+    "birthday-problem-oq-03-oq-01-oq-01-oq-05-oq-01",
+    "birthday-problem-oq-03-oq-01-oq-02",
+    "birthday-problem-oq-03-oq-03"
+  ]
 }

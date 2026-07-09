@@ -57,7 +57,11 @@
     "dirichlets-theorem-oq-01-oq-01-oq-04",
     "dirichlets-theorem-oq-02",
     "dirichlets-theorem-oq-02-oq-01",
-    "dirichlets-theorem-oq-03"
+    "dirichlets-theorem-oq-02-oq-03",
+    "dirichlets-theorem-oq-03",
+    "dirichlets-theorem-oq-03-oq-01",
+    "dirichlets-theorem-oq-03-oq-01-oq-01",
+    "dirichlets-theorem-oq-03-oq-01-oq-02"
   ],
   "references": {
     "papers": [],
@@ -136,6 +140,17 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DirichletsTheoremOQ02OQ01.lean"
     },
     {
+      "path": "Proofs/DirichletsTheoremOQ02OQ03.lean",
+      "filename": "DirichletsTheoremOQ02OQ03.lean",
+      "lineCount": 1064,
+      "theoremCount": 70,
+      "axiomCount": 0,
+      "defCount": 7,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DirichletsTheoremOQ02OQ03.lean"
+    },
+    {
       "path": "Proofs/DirichletsTheoremOQ03.lean",
       "filename": "DirichletsTheoremOQ03.lean",
       "lineCount": 140,
@@ -156,6 +171,39 @@
       "sorryCount": 6,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DirichletsTheoremOQ03Incomplete01.lean"
+    },
+    {
+      "path": "Proofs/DirichletsTheoremOQ03OQ01.lean",
+      "filename": "DirichletsTheoremOQ03OQ01.lean",
+      "lineCount": 145,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DirichletsTheoremOQ03OQ01.lean"
+    },
+    {
+      "path": "Proofs/DirichletsTheoremOQ03OQ01OQ01.lean",
+      "filename": "DirichletsTheoremOQ03OQ01OQ01.lean",
+      "lineCount": 145,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DirichletsTheoremOQ03OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/DirichletsTheoremOQ03OQ01OQ02.lean",
+      "filename": "DirichletsTheoremOQ03OQ01OQ02.lean",
+      "lineCount": 176,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DirichletsTheoremOQ03OQ01OQ02.lean"
     }
   ]
 }

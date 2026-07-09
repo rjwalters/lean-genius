@@ -1,69 +1,172 @@
 {
-    "slug": "erdos-1059-oq-01-oq-01",
-    "title": "Strong Selberg Density Axiom and Density at Factorial Points (Erdős 1059, OQ-01-01)",
+  "slug": "erdos-1059-oq-01-oq-01",
+  "title": "Strong Selberg Density Axiom and Density at Factorial Points (Erdős 1059, OQ-01-01)",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Can density_one_conjecture (natural density of qualifying primes = 1) be derived from selberg_density_axiom (≥1 qualifying prime per primorial interval)?",
+    "plain": "Investigates whether density_one_conjecture can be derived from selberg_density_axiom. Shows the weak axiom is provably insufficient, introduces a strong Selberg density axiom (qualifying fraction ≥ l/(l+1) at each level), and proves it implies density at factorial evaluation points. Identifies the precise mathematical gap for general x: factorial growth of interval sizes prevents aggregation of level-wise bounds.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [
+      "primesInLevel, qualifyingInLevel: interval-level counting functions for primes and qualifying primes in each primorial interval",
+      "strong_selberg_density: axiom capturing Selberg sieve's quantitative prediction — qualifying fraction ≥ l/(l+1) at each level",
+      "primesInLevel_pos: PROVED p(l) ≥ 1 for l ≥ 1 from Bertrand's postulate — was the axiom primes_growth_in_levels (p(l) ≥ l); axiom count reduced 2 → 1",
+      "qualifyingInLevel_pos: PROVED q(l) ≥ 1 for l ≥ 3 from strong axiom + primesInLevel_pos",
+      "strong_implies_weak: PROVED strong axiom recovers selberg_density_axiom",
+      "levelwise_density_bound: PROVED l/(l+1) ≥ k/(k+1) monotonicity for interval counts",
+      "levelwise_strict_surplus: PROVED per-level surplus ≥ 1 for l ≥ max(3, k+2)",
+      "density_at_levels: PROVED (main theorem) — level-sum density bound via sum splitting and surplus accumulation",
+      "Gap analysis: factorial growth of interval sizes prevents extending from factorial points to general x"
+    ],
+    "open": [
+      "The stated assumptions are encoded as named axioms (deep results out of current scope); see meta.json assumptions."
+    ],
+    "goal": "Can density_one_conjecture (natural density of qualifying primes = 1) be derived from selberg_density_axiom (≥1 qualifying prime per primorial interval)?"
+  },
+  "currentState": {
     "phase": "COMPLETED",
-    "status": "completed",
-    "tier": "B",
-    "path": "full",
-    "problemStatement": {
-        "formal": "Can density_one_conjecture (natural density of qualifying primes = 1) be derived from selberg_density_axiom (≥1 qualifying prime per primorial interval)?",
-        "plain": "Investigates whether density_one_conjecture can be derived from selberg_density_axiom. Shows the weak axiom is provably insufficient, introduces a strong Selberg density axiom (qualifying fraction ≥ l/(l+1) at each level), and proves it implies density at factorial evaluation points. Identifies the precise mathematical gap for general x: factorial growth of interval sizes prevents aggregation of level-wise bounds.",
-        "whyMatters": []
+    "since": "2026-04-12T00:00:00Z",
+    "iteration": 2,
+    "focus": "2026-07-08: eliminated the primes_growth_in_levels axiom (proved primesInLevel_pos p(l) >= 1 from Bertrand's postulate; downstream needs only positivity), reducing axiomCount 2 -> 1. Also repaired several latent build breaks that had been merged without Lean CI (density_one_at_factorials witness N0+1 and a sum_mul bridge; card>=1 rewrites via Finset.one_le_card; a ring_nf that left an unsolved <=). File now builds under Mathlib v4.26 (3068 jobs, 0 sorries, 1 axiom)."
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED (axiomatized) in main (496 lines, 12 theorems, 0 sorries, axiomCount 1, badge 'axiom'); the stated assumptions are isolated as named axioms per the axiom-integrity policy. Investigates whether density_one_conjecture can be derived from selberg_density_axiom. Shows the weak axiom is provably insufficient, introduces a strong Selberg density axiom (qualifying fraction ≥ l/(l+1) at each level), and proves it implies density at factorial evaluation points. Identifies the precise mathematical gap for general x: factorial growth of interval sizes prevents aggregation of level-wise bounds.",
+    "builtItems": [
+      "primesInLevel, qualifyingInLevel: interval-level counting functions for primes and qualifying primes in each primorial interval",
+      "strong_selberg_density: axiom capturing Selberg sieve's quantitative prediction — qualifying fraction ≥ l/(l+1) at each level",
+      "primesInLevel_pos: PROVED p(l) ≥ 1 for l ≥ 1 from Bertrand's postulate — was the axiom primes_growth_in_levels (p(l) ≥ l); axiom count reduced 2 → 1",
+      "qualifyingInLevel_pos: PROVED q(l) ≥ 1 for l ≥ 3 from strong axiom + primesInLevel_pos",
+      "strong_implies_weak: PROVED strong axiom recovers selberg_density_axiom",
+      "levelwise_density_bound: PROVED l/(l+1) ≥ k/(k+1) monotonicity for interval counts",
+      "levelwise_strict_surplus: PROVED per-level surplus ≥ 1 for l ≥ max(3, k+2)",
+      "density_at_levels: PROVED (main theorem) — level-sum density bound via sum splitting and surplus accumulation",
+      "Gap analysis: factorial growth of interval sizes prevents extending from factorial points to general x",
+      "Gallery entry src/data/proofs/erdos-1059-oq-01-oq-01 (meta.json + annotations.json); Lean source proofs/Proofs/Erdos1059OQ01OQ01.lean."
+    ],
+    "insights": [
+      "**Weak axiom is provably insufficient**: ≥1 qualifying prime per interval I(l) = (l!, (l+1)!] gives only C((N+3)!) ≥ N, not density 1. The qualifying-to-prime ratio from this bound is ≈ N/π((N+3)!) → 0.",
+      "**Strong axiom captures sieve content**: The Selberg sieve gives qualifying fraction ≈ 1 − O((l+1)/log(l!)) → 1 at each level. The axiom q(l)·(l+1) ≥ p(l)·l captures this with the clean bound l/(l+1).",
+      "**Surplus accumulation overcomes deficit**: Each high level contributes ≥1 unit of surplus to the density bound. The finite deficit from early levels is eventually absorbed.",
+      "**Factorial growth blocks general-x extension**: Between factorial points, the partial-interval deficit can be as large as p(l)·k (growing factorially), while cumulative surplus grows only linearly in the number of levels. Closing this gap requires within-interval sieve estimates.",
+      "**The strong axiom is the natural intermediate target**: Rather than attacking density 1 directly, the formalization identifies strong_selberg_density as a clean, believable axiom that could be proved from PNT + Brun-Titchmarsh + Selberg sieve, yielding both the main conjecture and density at factorial points."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "erdos",
+    "number-theory",
+    "primes",
+    "sieve-theory",
+    "natural-density",
+    "open-question",
+    "selberg-sieve"
+  ],
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1059OQ01.lean",
+      "filename": "Erdos1059OQ01.lean",
+      "lineCount": 567,
+      "theoremCount": 30,
+      "axiomCount": 1,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1059OQ01.lean"
     },
-    "knownResults": {
-        "proven": [
-            "primesInLevel, qualifyingInLevel: interval-level counting functions for primes and qualifying primes in each primorial interval",
-            "strong_selberg_density: axiom capturing Selberg sieve's quantitative prediction — qualifying fraction ≥ l/(l+1) at each level",
-            "primesInLevel_pos: PROVED p(l) ≥ 1 for l ≥ 1 from Bertrand's postulate — was the axiom primes_growth_in_levels (p(l) ≥ l); axiom count reduced 2 → 1",
-            "qualifyingInLevel_pos: PROVED q(l) ≥ 1 for l ≥ 3 from strong axiom + primesInLevel_pos",
-            "strong_implies_weak: PROVED strong axiom recovers selberg_density_axiom",
-            "levelwise_density_bound: PROVED l/(l+1) ≥ k/(k+1) monotonicity for interval counts",
-            "levelwise_strict_surplus: PROVED per-level surplus ≥ 1 for l ≥ max(3, k+2)",
-            "density_at_levels: PROVED (main theorem) — level-sum density bound via sum splitting and surplus accumulation",
-            "Gap analysis: factorial growth of interval sizes prevents extending from factorial points to general x"
-        ],
-        "open": [
-            "The stated assumptions are encoded as named axioms (deep results out of current scope); see meta.json assumptions."
-        ],
-        "goal": "Can density_one_conjecture (natural density of qualifying primes = 1) be derived from selberg_density_axiom (≥1 qualifying prime per primorial interval)?"
+    {
+      "path": "Proofs/Erdos1059OQ01OQ01.lean",
+      "filename": "Erdos1059OQ01OQ01.lean",
+      "lineCount": 497,
+      "theoremCount": 12,
+      "axiomCount": 1,
+      "defCount": 2,
+      "sorryCount": 5,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1059OQ01OQ01.lean"
     },
-    "currentState": {
-        "phase": "COMPLETED",
-        "since": "2026-04-12T00:00:00Z",
-        "iteration": 2,
-        "focus": "2026-07-08: eliminated the primes_growth_in_levels axiom (proved primesInLevel_pos p(l) >= 1 from Bertrand's postulate; downstream needs only positivity), reducing axiomCount 2 -> 1. Also repaired several latent build breaks that had been merged without Lean CI (density_one_at_factorials witness N0+1 and a sum_mul bridge; card>=1 rewrites via Finset.one_le_card; a ring_nf that left an unsolved <=). File now builds under Mathlib v4.26 (3068 jobs, 0 sorries, 1 axiom)."
+    {
+      "path": "Proofs/Erdos1059OQ02.lean",
+      "filename": "Erdos1059OQ02.lean",
+      "lineCount": 232,
+      "theoremCount": 7,
+      "axiomCount": 1,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1059OQ02.lean"
     },
-    "knowledge": {
-        "progressSummary": "COMPLETED (axiomatized) in main (496 lines, 12 theorems, 0 sorries, axiomCount 1, badge 'axiom'); the stated assumptions are isolated as named axioms per the axiom-integrity policy. Investigates whether density_one_conjecture can be derived from selberg_density_axiom. Shows the weak axiom is provably insufficient, introduces a strong Selberg density axiom (qualifying fraction ≥ l/(l+1) at each level), and proves it implies density at factorial evaluation points. Identifies the precise mathematical gap for general x: factorial growth of interval sizes prevents aggregation of level-wise bounds.",
-        "builtItems": [
-            "primesInLevel, qualifyingInLevel: interval-level counting functions for primes and qualifying primes in each primorial interval",
-            "strong_selberg_density: axiom capturing Selberg sieve's quantitative prediction — qualifying fraction ≥ l/(l+1) at each level",
-            "primesInLevel_pos: PROVED p(l) ≥ 1 for l ≥ 1 from Bertrand's postulate — was the axiom primes_growth_in_levels (p(l) ≥ l); axiom count reduced 2 → 1",
-            "qualifyingInLevel_pos: PROVED q(l) ≥ 1 for l ≥ 3 from strong axiom + primesInLevel_pos",
-            "strong_implies_weak: PROVED strong axiom recovers selberg_density_axiom",
-            "levelwise_density_bound: PROVED l/(l+1) ≥ k/(k+1) monotonicity for interval counts",
-            "levelwise_strict_surplus: PROVED per-level surplus ≥ 1 for l ≥ max(3, k+2)",
-            "density_at_levels: PROVED (main theorem) — level-sum density bound via sum splitting and surplus accumulation",
-            "Gap analysis: factorial growth of interval sizes prevents extending from factorial points to general x",
-            "Gallery entry src/data/proofs/erdos-1059-oq-01-oq-01 (meta.json + annotations.json); Lean source proofs/Proofs/Erdos1059OQ01OQ01.lean."
-        ],
-        "insights": [
-            "**Weak axiom is provably insufficient**: ≥1 qualifying prime per interval I(l) = (l!, (l+1)!] gives only C((N+3)!) ≥ N, not density 1. The qualifying-to-prime ratio from this bound is ≈ N/π((N+3)!) → 0.",
-            "**Strong axiom captures sieve content**: The Selberg sieve gives qualifying fraction ≈ 1 − O((l+1)/log(l!)) → 1 at each level. The axiom q(l)·(l+1) ≥ p(l)·l captures this with the clean bound l/(l+1).",
-            "**Surplus accumulation overcomes deficit**: Each high level contributes ≥1 unit of surplus to the density bound. The finite deficit from early levels is eventually absorbed.",
-            "**Factorial growth blocks general-x extension**: Between factorial points, the partial-interval deficit can be as large as p(l)·k (growing factorially), while cumulative surplus grows only linearly in the number of levels. Closing this gap requires within-interval sieve estimates.",
-            "**The strong axiom is the natural intermediate target**: Rather than attacking density 1 directly, the formalization identifies strong_selberg_density as a clean, believable axiom that could be proved from PNT + Brun-Titchmarsh + Selberg sieve, yielding both the main conjecture and density at factorial points."
-        ],
-        "mathlibGaps": [],
-        "nextSteps": []
+    {
+      "path": "Proofs/Erdos1059OQ02OQ01.lean",
+      "filename": "Erdos1059OQ02OQ01.lean",
+      "lineCount": 174,
+      "theoremCount": 10,
+      "axiomCount": 1,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1059OQ02OQ01.lean"
     },
-    "tags": [
-        "erdos",
-        "number-theory",
-        "primes",
-        "sieve-theory",
-        "natural-density",
-        "open-question",
-        "selberg-sieve"
-    ]
+    {
+      "path": "Proofs/Erdos1059OQ03.lean",
+      "filename": "Erdos1059OQ03.lean",
+      "lineCount": 46,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1059OQ03.lean"
+    },
+    {
+      "path": "Proofs/Erdos1059OQ04.lean",
+      "filename": "Erdos1059OQ04.lean",
+      "lineCount": 148,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1059OQ04.lean"
+    },
+    {
+      "path": "Proofs/Erdos1059OQ05.lean",
+      "filename": "Erdos1059OQ05.lean",
+      "lineCount": 100,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1059OQ05.lean"
+    },
+    {
+      "path": "Proofs/Erdos1059Problem.lean",
+      "filename": "Erdos1059Problem.lean",
+      "lineCount": 156,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1059Problem.lean"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-10",
+    "erdos-105",
+    "erdos-1059",
+    "erdos-1059-oq-01",
+    "erdos-1059-oq-01-oq-01",
+    "erdos-1059-oq-02",
+    "erdos-1059-oq-02-oq-01",
+    "erdos-1059-oq-03",
+    "erdos-1059-oq-04",
+    "erdos-1059-oq-05"
+  ]
 }

@@ -42,7 +42,9 @@
   "relatedProofs": [
     "erdos-1",
     "erdos-12",
-    "erdos-120"
+    "erdos-120",
+    "erdos-1207",
+    "erdos-1207-oq-03"
   ],
   "references": {
     "papers": [],
@@ -52,5 +54,29 @@
   "started": "2026-04-16T17:10:06.887Z",
   "lastUpdate": "2026-04-21T11:09:40.249Z",
   "significance": 7,
-  "tractability": 5
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1207OQ03.lean",
+      "filename": "Erdos1207OQ03.lean",
+      "lineCount": 218,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1207OQ03.lean"
+    },
+    {
+      "path": "Proofs/Erdos1207Problem.lean",
+      "filename": "Erdos1207Problem.lean",
+      "lineCount": 151,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1207Problem.lean"
+    }
+  ]
 }

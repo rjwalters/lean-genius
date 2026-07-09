@@ -1,59 +1,123 @@
 {
-    "slug": "infinitude-primes-4k1-oq-02",
-    "title": "Uniqueness of the Two-Squares Representation of a Prime",
+  "slug": "infinitude-primes-4k1-oq-02",
+  "title": "Uniqueness of the Two-Squares Representation of a Prime",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Let $p$ be prime and suppose $p = a^2 + b^2 = c^2 + d^2$ with $a,b,c,d \\in \\mathbb{N}$. Then the two representations agree up to order:\n\n$$(a = c \\wedge b = d) \\ \\vee\\ (a = d \\wedge b = c).$$",
+    "plain": "A prime that is a sum of two squares is so in exactly one way, up to order: if p = a² + b² = c² + d² with p prime, then {a, b} = {c, d} as unordered pairs. This is the uniqueness companion to the OQ-01 entry's existence theorem (an odd prime is a sum of two squares iff p ≡ 1 mod 4). The proof is fully elementary — Euler's argument via the two Brahmagupta–Fibonacci identities and Euclid's lemma — and uses no Gaussian-integer machinery. Mathlib supplies the existence half (Nat.Prime.sq_add_sq) but packages no uniqueness statement at the level of ℕ representations, so this fills a genuine gap. Verified, 0 axioms, 0 sorries.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [
+      "A self-contained, Gaussian-integer-free Lean proof of the uniqueness of the two-squares representation of a prime: two_squares_unique shows p = a²+b² = c²+d² (p prime) forces (a=c ∧ b=d) ∨ (a=d ∧ b=c). Mathlib has the existence theorem Nat.Prime.sq_add_sq but no uniqueness statement at the ℕ level, so this is a genuine gap-filler complementing sibling OQ-01's existence biconditional",
+      "Encodes Euler's classical argument in Lean: the two Brahmagupta–Fibonacci identities (brahmagupta_diff, brahmagupta_sum) expressing p² = (a²+b²)(c²+d²) as a sum of two squares in two ways, the divisibility identity (ad)²−(bc)² = p(d²−b²) (cross_factor_dvd), and Euclid's lemma to force one cofactor to vanish",
+      "A clean proportionality cancellation lemma pair_eq_of_cross: equal norms a²+b² = x²+y² together with the cross relation a·y = b·x force (a,b) = (x,y), proved by the identity a²(a²+b²) = x²(a²+b²) and cancellation — this is the step that upgrades a vanishing Brahmagupta cofactor to equality of the unordered pairs",
+      "An elementary positivity lemma pos_of_prime_eq_sq_add_sq (a prime is never a perfect square, so both legs are strictly positive), which is exactly what rules out the degenerate ±p branch where a Brahmagupta cofactor equals ±p",
+      "Corollaries packaging the result for the gallery: a Multiset-equality restatement (representation_unique_up_to_order) and the concrete fact that 2 = 1²+1² is the unique two-squares representation of 2 (two_repr_unique)"
+    ],
+    "open": [],
+    "goal": "Let $p$ be prime and suppose $p = a^2 + b^2 = c^2 + d^2$ with $a,b,c,d \\in \\mathbb{N}$. Then the two representations agree up to order:\n\n$$(a = c \\wedge b = d) \\ \\vee\\ (a = d \\wedge b = c).$$"
+  },
+  "currentState": {
     "phase": "COMPLETED",
-    "status": "completed",
-    "tier": "B",
-    "path": "full",
-    "problemStatement": {
-        "formal": "Let $p$ be prime and suppose $p = a^2 + b^2 = c^2 + d^2$ with $a,b,c,d \\in \\mathbb{N}$. Then the two representations agree up to order:\n\n$$(a = c \\wedge b = d) \\ \\vee\\ (a = d \\wedge b = c).$$",
-        "plain": "A prime that is a sum of two squares is so in exactly one way, up to order: if p = a² + b² = c² + d² with p prime, then {a, b} = {c, d} as unordered pairs. This is the uniqueness companion to the OQ-01 entry's existence theorem (an odd prime is a sum of two squares iff p ≡ 1 mod 4). The proof is fully elementary — Euler's argument via the two Brahmagupta–Fibonacci identities and Euclid's lemma — and uses no Gaussian-integer machinery. Mathlib supplies the existence half (Nat.Prime.sq_add_sq) but packages no uniqueness statement at the level of ℕ representations, so this fills a genuine gap. Verified, 0 axioms, 0 sorries.",
-        "whyMatters": []
+    "since": "2026-06-22T00:00:00Z",
+    "iteration": 1,
+    "focus": "Verified deliverable already complete in main: proofs/Proofs/InfinitudePrimes4k1OQ02.lean and gallery entry infinitude-primes-4k1-oq-02 (status verified)."
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED and verified in main (250 lines, 9 theorems, 0 sorries, axiomCount 0, badge 'original'). A prime that is a sum of two squares is so in exactly one way, up to order: if p = a² + b² = c² + d² with p prime, then {a, b} = {c, d} as unordered pairs. This is the uniqueness companion to the OQ-01 entry's existence theorem (an odd prime is a sum of two squares iff p ≡ 1 mod 4). The proof is fully elementary — Euler's argument via the two Brahmagupta–Fibonacci identities and Euclid's lemma — and uses no Gaussian-integer machinery. Mathlib supplies the existence half (Nat.Prime.sq_add_sq) but packages no uniqueness statement at the level of ℕ representations, so this fills a genuine gap. Verified, 0 axioms, 0 sorries.",
+    "builtItems": [
+      "A self-contained, Gaussian-integer-free Lean proof of the uniqueness of the two-squares representation of a prime: two_squares_unique shows p = a²+b² = c²+d² (p prime) forces (a=c ∧ b=d) ∨ (a=d ∧ b=c). Mathlib has the existence theorem Nat.Prime.sq_add_sq but no uniqueness statement at the ℕ level, so this is a genuine gap-filler complementing sibling OQ-01's existence biconditional",
+      "Encodes Euler's classical argument in Lean: the two Brahmagupta–Fibonacci identities (brahmagupta_diff, brahmagupta_sum) expressing p² = (a²+b²)(c²+d²) as a sum of two squares in two ways, the divisibility identity (ad)²−(bc)² = p(d²−b²) (cross_factor_dvd), and Euclid's lemma to force one cofactor to vanish",
+      "A clean proportionality cancellation lemma pair_eq_of_cross: equal norms a²+b² = x²+y² together with the cross relation a·y = b·x force (a,b) = (x,y), proved by the identity a²(a²+b²) = x²(a²+b²) and cancellation — this is the step that upgrades a vanishing Brahmagupta cofactor to equality of the unordered pairs",
+      "An elementary positivity lemma pos_of_prime_eq_sq_add_sq (a prime is never a perfect square, so both legs are strictly positive), which is exactly what rules out the degenerate ±p branch where a Brahmagupta cofactor equals ±p",
+      "Corollaries packaging the result for the gallery: a Multiset-equality restatement (representation_unique_up_to_order) and the concrete fact that 2 = 1²+1² is the unique two-squares representation of 2 (two_repr_unique)",
+      "Gallery entry src/data/proofs/infinitude-primes-4k1-oq-02 (meta.json + annotations.json); Lean source proofs/Proofs/InfinitudePrimes4k1OQ02.lean."
+    ],
+    "insights": [
+      "**Multiply the two representations**: the Brahmagupta–Fibonacci identity turns 'p = a²+b² = c²+d²' into 'p² is a sum of two squares in two ways', and the difference of those two ways is governed by the cross terms ad ± bc — this is the engine of the whole proof",
+      "**Euclid's lemma localizes the obstruction**: p ∣ (ad − bc)(ad + bc) because the product equals p(d²−b²); primality forces p into a single cofactor, and the square bounds (each cofactor² ≤ p²) then pin that cofactor to 0 or ±p",
+      "**Positivity kills the degenerate branch**: a prime is never a perfect square, so all four legs are strictly positive; that is exactly what makes ac + bd > 0 and ad + bc > 0, ruling out the ±p case where a companion square would have to vanish against positive entries",
+      "**Equal norm + cross relation ⇒ equal pairs**: the cancellation a²(a²+b²) = a²x² + (ay)² = a²x² + (bx)² = x²(a²+b²) shows a²=x², the cleanest way to upgrade a vanishing cross term (ad = bc or ac = bd) into genuine equality of the unordered pairs",
+      "**Uniqueness is the ℕ-shadow of unit-ambiguity in ℤ[i]**: the eightfold ambiguity (±a ±b and swap) is precisely the four units ±1, ±i times conjugation acting on the Gaussian prime π with π·π̄ = p; proving it elementarily avoids importing unique factorization in ℤ[i] entirely"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "number-theory",
+    "sums-of-two-squares",
+    "primes",
+    "uniqueness",
+    "brahmagupta-fibonacci",
+    "euclids-lemma",
+    "fermat"
+  ],
+  "leanFiles": [
+    {
+      "path": "Proofs/InfinitudePrimes4k1.lean",
+      "filename": "InfinitudePrimes4k1.lean",
+      "lineCount": 182,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InfinitudePrimes4k1.lean"
     },
-    "knownResults": {
-        "proven": [
-            "A self-contained, Gaussian-integer-free Lean proof of the uniqueness of the two-squares representation of a prime: two_squares_unique shows p = a²+b² = c²+d² (p prime) forces (a=c ∧ b=d) ∨ (a=d ∧ b=c). Mathlib has the existence theorem Nat.Prime.sq_add_sq but no uniqueness statement at the ℕ level, so this is a genuine gap-filler complementing sibling OQ-01's existence biconditional",
-            "Encodes Euler's classical argument in Lean: the two Brahmagupta–Fibonacci identities (brahmagupta_diff, brahmagupta_sum) expressing p² = (a²+b²)(c²+d²) as a sum of two squares in two ways, the divisibility identity (ad)²−(bc)² = p(d²−b²) (cross_factor_dvd), and Euclid's lemma to force one cofactor to vanish",
-            "A clean proportionality cancellation lemma pair_eq_of_cross: equal norms a²+b² = x²+y² together with the cross relation a·y = b·x force (a,b) = (x,y), proved by the identity a²(a²+b²) = x²(a²+b²) and cancellation — this is the step that upgrades a vanishing Brahmagupta cofactor to equality of the unordered pairs",
-            "An elementary positivity lemma pos_of_prime_eq_sq_add_sq (a prime is never a perfect square, so both legs are strictly positive), which is exactly what rules out the degenerate ±p branch where a Brahmagupta cofactor equals ±p",
-            "Corollaries packaging the result for the gallery: a Multiset-equality restatement (representation_unique_up_to_order) and the concrete fact that 2 = 1²+1² is the unique two-squares representation of 2 (two_repr_unique)"
-        ],
-        "open": [],
-        "goal": "Let $p$ be prime and suppose $p = a^2 + b^2 = c^2 + d^2$ with $a,b,c,d \\in \\mathbb{N}$. Then the two representations agree up to order:\n\n$$(a = c \\wedge b = d) \\ \\vee\\ (a = d \\wedge b = c).$$"
+    {
+      "path": "Proofs/InfinitudePrimes4k1OQ01.lean",
+      "filename": "InfinitudePrimes4k1OQ01.lean",
+      "lineCount": 94,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InfinitudePrimes4k1OQ01.lean"
     },
-    "currentState": {
-        "phase": "COMPLETED",
-        "since": "2026-06-22T00:00:00Z",
-        "iteration": 1,
-        "focus": "Verified deliverable already complete in main: proofs/Proofs/InfinitudePrimes4k1OQ02.lean and gallery entry infinitude-primes-4k1-oq-02 (status verified)."
+    {
+      "path": "Proofs/InfinitudePrimes4k1OQ02.lean",
+      "filename": "InfinitudePrimes4k1OQ02.lean",
+      "lineCount": 251,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InfinitudePrimes4k1OQ02.lean"
     },
-    "knowledge": {
-        "progressSummary": "COMPLETED and verified in main (250 lines, 9 theorems, 0 sorries, axiomCount 0, badge 'original'). A prime that is a sum of two squares is so in exactly one way, up to order: if p = a² + b² = c² + d² with p prime, then {a, b} = {c, d} as unordered pairs. This is the uniqueness companion to the OQ-01 entry's existence theorem (an odd prime is a sum of two squares iff p ≡ 1 mod 4). The proof is fully elementary — Euler's argument via the two Brahmagupta–Fibonacci identities and Euclid's lemma — and uses no Gaussian-integer machinery. Mathlib supplies the existence half (Nat.Prime.sq_add_sq) but packages no uniqueness statement at the level of ℕ representations, so this fills a genuine gap. Verified, 0 axioms, 0 sorries.",
-        "builtItems": [
-            "A self-contained, Gaussian-integer-free Lean proof of the uniqueness of the two-squares representation of a prime: two_squares_unique shows p = a²+b² = c²+d² (p prime) forces (a=c ∧ b=d) ∨ (a=d ∧ b=c). Mathlib has the existence theorem Nat.Prime.sq_add_sq but no uniqueness statement at the ℕ level, so this is a genuine gap-filler complementing sibling OQ-01's existence biconditional",
-            "Encodes Euler's classical argument in Lean: the two Brahmagupta–Fibonacci identities (brahmagupta_diff, brahmagupta_sum) expressing p² = (a²+b²)(c²+d²) as a sum of two squares in two ways, the divisibility identity (ad)²−(bc)² = p(d²−b²) (cross_factor_dvd), and Euclid's lemma to force one cofactor to vanish",
-            "A clean proportionality cancellation lemma pair_eq_of_cross: equal norms a²+b² = x²+y² together with the cross relation a·y = b·x force (a,b) = (x,y), proved by the identity a²(a²+b²) = x²(a²+b²) and cancellation — this is the step that upgrades a vanishing Brahmagupta cofactor to equality of the unordered pairs",
-            "An elementary positivity lemma pos_of_prime_eq_sq_add_sq (a prime is never a perfect square, so both legs are strictly positive), which is exactly what rules out the degenerate ±p branch where a Brahmagupta cofactor equals ±p",
-            "Corollaries packaging the result for the gallery: a Multiset-equality restatement (representation_unique_up_to_order) and the concrete fact that 2 = 1²+1² is the unique two-squares representation of 2 (two_repr_unique)",
-            "Gallery entry src/data/proofs/infinitude-primes-4k1-oq-02 (meta.json + annotations.json); Lean source proofs/Proofs/InfinitudePrimes4k1OQ02.lean."
-        ],
-        "insights": [
-            "**Multiply the two representations**: the Brahmagupta–Fibonacci identity turns 'p = a²+b² = c²+d²' into 'p² is a sum of two squares in two ways', and the difference of those two ways is governed by the cross terms ad ± bc — this is the engine of the whole proof",
-            "**Euclid's lemma localizes the obstruction**: p ∣ (ad − bc)(ad + bc) because the product equals p(d²−b²); primality forces p into a single cofactor, and the square bounds (each cofactor² ≤ p²) then pin that cofactor to 0 or ±p",
-            "**Positivity kills the degenerate branch**: a prime is never a perfect square, so all four legs are strictly positive; that is exactly what makes ac + bd > 0 and ad + bc > 0, ruling out the ±p case where a companion square would have to vanish against positive entries",
-            "**Equal norm + cross relation ⇒ equal pairs**: the cancellation a²(a²+b²) = a²x² + (ay)² = a²x² + (bx)² = x²(a²+b²) shows a²=x², the cleanest way to upgrade a vanishing cross term (ad = bc or ac = bd) into genuine equality of the unordered pairs",
-            "**Uniqueness is the ℕ-shadow of unit-ambiguity in ℤ[i]**: the eightfold ambiguity (±a ±b and swap) is precisely the four units ±1, ±i times conjugation acting on the Gaussian prime π with π·π̄ = p; proving it elementarily avoids importing unique factorization in ℤ[i] entirely"
-        ],
-        "mathlibGaps": [],
-        "nextSteps": []
+    {
+      "path": "Proofs/InfinitudePrimes4k1OQ02OQ01.lean",
+      "filename": "InfinitudePrimes4k1OQ02OQ01.lean",
+      "lineCount": 215,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InfinitudePrimes4k1OQ02OQ01.lean"
     },
-    "tags": [
-        "number-theory",
-        "sums-of-two-squares",
-        "primes",
-        "uniqueness",
-        "brahmagupta-fibonacci",
-        "euclids-lemma",
-        "fermat"
-    ]
+    {
+      "path": "Proofs/InfinitudePrimes4k1OQ03.lean",
+      "filename": "InfinitudePrimes4k1OQ03.lean",
+      "lineCount": 458,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 8,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InfinitudePrimes4k1OQ03.lean"
+    }
+  ],
+  "relatedProofs": [
+    "infinitude-primes",
+    "infinitude-primes-4k1",
+    "infinitude-primes-4k1-oq-01",
+    "infinitude-primes-4k1-oq-02",
+    "infinitude-primes-4k1-oq-02-oq-01"
+  ]
 }

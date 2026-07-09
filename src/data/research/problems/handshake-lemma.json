@@ -40,5 +40,22 @@
   "started": "2026-07-05",
   "lastUpdate": "2026-07-05",
   "significance": 5,
-  "tractability": 8
+  "tractability": 8,
+  "leanFiles": [
+    {
+      "path": "Proofs/HandshakeLemma.lean",
+      "filename": "HandshakeLemma.lean",
+      "lineCount": 95,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/HandshakeLemma.lean"
+    }
+  ],
+  "relatedProofs": [
+    "handshake-lemma",
+    "handshake-lemma-oq-02"
+  ]
 }

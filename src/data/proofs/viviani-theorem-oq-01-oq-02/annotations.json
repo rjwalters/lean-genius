@@ -1,283 +1,189 @@
 [
   {
-    "id": "viviani-oq0102-ann-header",
+    "id": "ann-overview",
     "proofId": "viviani-theorem-oq-01-oq-02",
     "range": {
       "startLine": 3,
       "endLine": 51
     },
     "type": "concept",
-    "title": "The unifying principle behind every Viviani theorem",
-    "content": "The header frames the whole file around one observation. A facet with unit outward normal $u$ at offset $c$ is the hyperplane $\\{x : \\langle u, x\\rangle = c\\}$, and the signed perpendicular distance from a point $P$ to it is $c - \\langle u, P\\rangle$. Summing over facets gives $\\sum_i (c_i - \\langle u_i, P\\rangle) = (\\sum_i c_i) - \\langle \\sum_i u_i, P\\rangle$, so the distance sum is constant in $P$ exactly when the outward unit normals cancel. The regular $n$-gon and the regular $n$-simplex are then the two most symmetric instances of the vanishing-normal condition.",
-    "mathContext": "$\\sum_i (c_i - \\langle u_i, P\\rangle) = \\big(\\sum_i c_i\\big) - \\big\\langle \\textstyle\\sum_i u_i, P\\big\\rangle$",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "hyperplane",
-      "signed distance",
-      "outward normal",
-      "Viviani's theorem"
-    ],
+    "title": "One Identity Behind Every Viviani Theorem",
+    "content": "Viviani's classical theorem says that inside an equilateral triangle the sum of perpendicular distances from any interior point to the three sides is constant (the altitude). This entry proves the **sharp generalization** to all dimensions — regular $n$-gons and regular $n$-simplices — and pins down the exact constant. The unifying observation: a facet with unit outward normal $u_i$ at offset $c_i$ contributes signed distance $c_i - \\langle u_i, P\\rangle$, so the total is $\\sum_i c_i - \\langle \\sum_i u_i, P\\rangle$. **Whenever the outward unit normals sum to zero**, the $P$-dependent term vanishes and the distance sum is the constant $\\sum_i c_i$. That single fact (`sum_signedDist_eq`) is the entire content of every Viviani-type theorem; the polygon ($n\\cdot$apothem) and simplex ($(n{+}1)\\cdot$inradius) results are corollaries, one via roots of unity summing to zero, the other via the centroid.",
+    "mathContext": "$\\sum_i (c_i - \\langle u_i,P\\rangle) = \\sum_i c_i - \\langle\\textstyle\\sum_i u_i, P\\rangle$; normals sum to $0 \\Rightarrow$ constant.",
+    "significance": "critical",
     "prerequisites": [
-      "real inner-product space",
-      "affine hyperplanes"
+      "inner product spaces",
+      "hyperplane distance",
+      "regular polytopes"
+    ],
+    "relatedConcepts": [
+      "Viviani's theorem",
+      "regular polygon",
+      "regular simplex",
+      "outward normals",
+      "roots of unity"
     ]
   },
   {
-    "id": "viviani-oq0102-ann-partA-doc",
-    "proofId": "viviani-theorem-oq-01-oq-02",
-    "range": {
-      "startLine": 58,
-      "endLine": 62
-    },
-    "type": "concept",
-    "title": "Part A: the abstract Viviani identity",
-    "content": "Part A works in an arbitrary real inner-product space $V$, with no reference to any particular figure. The signed perpendicular distance to a facet with unit normal $u$ at offset $c$ is $c - \\langle u, P\\rangle$; the entire remaining content of the file is showing that two classical figures satisfy the hypothesis $\\sum_i u_i = 0$.",
-    "mathContext": "$d_i(P) = c_i - \\langle u_i, P\\rangle$",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "inner-product space",
-      "facet normal"
-    ],
-    "prerequisites": [
-      "bilinearity of the inner product"
-    ]
-  },
-  {
-    "id": "viviani-oq0102-ann-sum-signeddist-eq",
+    "id": "ann-master-identity",
     "proofId": "viviani-theorem-oq-01-oq-02",
     "range": {
       "startLine": 64,
       "endLine": 72
     },
-    "type": "insight",
-    "title": "sum_signedDist_eq — the single algebraic identity",
-    "content": "This is the heart of the file. The proof is one `rw` chain: `Finset.sum_sub_distrib` splits the sum, `← sum_inner` pulls the linear part into $\\langle \\sum_i u_i, P\\rangle$, the hypothesis `hu : ∑ i, u i = 0` collapses it, and `inner_zero_left`/`sub_zero` finish. The distance sum equals $\\sum_i c_i$, visibly independent of $P$. Every Viviani-type constancy theorem is a corollary of this line.",
-    "mathContext": "$\\sum_i (c_i - \\langle u_i, P\\rangle) = \\sum_i c_i \\quad\\text{when}\\quad \\sum_i u_i = 0$",
-    "significance": "key",
+    "type": "theorem",
+    "title": "The Master Identity: Normals Summing to Zero ⇒ Constant Distance Sum",
+    "content": "The one theorem everything reduces to. In any real inner-product space, if the unit facet normals $u_i$ satisfy $\\sum_i u_i = 0$, then $\\sum_i (c_i - \\langle u_i, P\\rangle) = \\sum_i c_i$ for every $P$ — the distance sum is independent of the point. The proof is three rewrites: distribute the sum, pull the sum inside the inner product ($\\sum_i \\langle u_i, P\\rangle = \\langle \\sum_i u_i, P\\rangle$ by `sum_inner`), then $\\sum_i u_i = 0$ kills it via `inner_zero_left`. Its abstractness is the point — it is stated for an arbitrary finite index and arbitrary real inner-product space, so both the planar polygon and the high-dimensional simplex are the same theorem specialized.",
+    "mathContext": "$\\sum_i u_i = 0 \\Rightarrow \\sum_i(c_i - \\langle u_i,P\\rangle) = \\sum_i c_i$, all $P$.",
+    "significance": "critical",
+    "prerequisites": [
+      "real inner product spaces",
+      "signed distance to a hyperplane"
+    ],
     "relatedConcepts": [
-      "linearity of inner product",
       "sum_inner",
-      "Finset.sum_sub_distrib"
-    ],
-    "prerequisites": [
-      "Finset sums",
-      "additivity of ⟪·,·⟫ in the left argument"
+      "inner_zero_left",
+      "linearity of the inner product",
+      "hyperplane"
     ]
   },
   {
-    "id": "viviani-oq0102-ann-sum-signeddist-const",
-    "proofId": "viviani-theorem-oq-01-oq-02",
-    "range": {
-      "startLine": 74,
-      "endLine": 80
-    },
-    "type": "tactic",
-    "title": "Constancy form: equal sums at any two points",
-    "content": "A direct restatement: since $\\sum_i (c_i - \\langle u_i, P\\rangle) = \\sum_i c_i$ is point-free, the distance sums at any $P$ and $Q$ agree. Proved by rewriting both sides with `sum_signedDist_eq`. This is the shape most recognizable as 'Viviani's theorem': the perpendicular-distance sum does not depend on where you stand.",
-    "mathContext": "$\\sum_i (c_i - \\langle u_i, P\\rangle) = \\sum_i (c_i - \\langle u_i, Q\\rangle)$",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "point-independence",
-      "invariant"
-    ],
-    "prerequisites": [
-      "equational rewriting"
-    ]
-  },
-  {
-    "id": "viviani-oq0102-ann-partB-doc",
-    "proofId": "viviani-theorem-oq-01-oq-02",
-    "range": {
-      "startLine": 82,
-      "endLine": 85
-    },
-    "type": "concept",
-    "title": "Part B: modeling the plane as ℂ",
-    "content": "To reach the regular polygon's roots-of-unity normals, Part B models the Euclidean plane as $\\mathbb{C}$ equipped with the explicit real inner product `rdot`. Working in $\\mathbb{C}$ (rather than an abstract 2-dimensional space) makes the outward normals literally the powers $\\zeta^k$ of a primitive root of unity.",
-    "mathContext": "plane $\\cong \\mathbb{C}$, normals $= \\zeta^0, \\zeta^1, \\dots, \\zeta^{n-1}$",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "complex plane",
-      "roots of unity",
-      "regular polygon"
-    ],
-    "prerequisites": [
-      "complex numbers as ℝ²"
-    ]
-  },
-  {
-    "id": "viviani-oq0102-ann-rdot",
+    "id": "ann-rdot",
     "proofId": "viviani-theorem-oq-01-oq-02",
     "range": {
       "startLine": 87,
-      "endLine": 102
+      "endLine": 88
     },
     "type": "definition",
-    "title": "rdot: the real inner product on ℂ and its additivity",
-    "content": "`rdot z w = z.re * w.re + z.im * w.im` is the standard dot product under the identification $\\mathbb{C} \\cong \\mathbb{R}^2$. The key structural fact is `rdot_sum`: `rdot` is additive over finite sums in the left argument, proved by `Finset.induction` from the two-term `rdot_add_left`. This additivity is exactly what lets the vanishing normal sum kill the linear term in the polygon case.",
-    "mathContext": "$\\mathrm{rdot}(z,w) = \\Re z\\,\\Re w + \\Im z\\,\\Im w, \\quad \\mathrm{rdot}\\!\\big(\\textstyle\\sum_i f_i,\\, w\\big) = \\sum_i \\mathrm{rdot}(f_i, w)$",
+    "title": "The Plane as ℂ with Its Real Inner Product",
+    "content": "`rdot z w = z.re·w.re + z.im·w.im` is the standard Euclidean dot product on the plane, modeled as $\\mathbb C$. Using $\\mathbb C$ rather than $\\mathbb R^2$ lets the $n$ outward normals of a regular polygon be written as the $n$-th roots of unity $\\zeta^k$ — turning 'the normals sum to zero' into the clean algebraic fact $\\sum_k \\zeta^k = 0$. The small helper lemmas `rdot_add_left` and `rdot_sum` establish that `rdot` is additive in its left argument over finite sums, which is exactly the `sum_inner` step the master identity needs, transcribed to this concrete pairing.",
+    "mathContext": "$\\mathrm{rdot}(z,w) = \\operatorname{Re}(z)\\operatorname{Re}(w) + \\operatorname{Im}(z)\\operatorname{Im}(w) = \\langle z,w\\rangle_{\\mathbb R^2}$.",
     "significance": "supporting",
-    "relatedConcepts": [
-      "dot product",
-      "bilinearity",
-      "Finset.induction"
-    ],
     "prerequisites": [
-      "real/imaginary parts",
-      "induction over finite sets"
+      "complex numbers",
+      "real and imaginary parts"
+    ],
+    "relatedConcepts": [
+      "Euclidean dot product",
+      "ℂ as ℝ²",
+      "bilinearity"
     ]
   },
   {
-    "id": "viviani-oq0102-ann-sum-roots-zero",
+    "id": "ann-roots-sum-zero",
     "proofId": "viviani-theorem-oq-01-oq-02",
     "range": {
       "startLine": 104,
       "endLine": 109
     },
-    "type": "insight",
-    "title": "The n-th roots of unity sum to zero",
-    "content": "The polygon's vanishing-normal condition. Converting the `Fin n` sum to a range sum, `geom_sum_eq` evaluates $\\sum_{k=0}^{n-1} \\zeta^k = (\\zeta^n - 1)/(\\zeta - 1)$; since $\\zeta$ is a primitive $n$-th root, $\\zeta^n = 1$ makes the numerator vanish, while $\\zeta \\neq 1$ (from `IsPrimitiveRoot.ne_one`, valid because $n \\ge 2$) keeps the denominator nonzero. Hence the sum is $0$.",
-    "mathContext": "$\\sum_{k=0}^{n-1} \\zeta^k = \\dfrac{\\zeta^n - 1}{\\zeta - 1} = 0 \\quad (n \\ge 2,\\ \\zeta^n = 1,\\ \\zeta \\neq 1)$",
+    "type": "lemma",
+    "title": "The n-th Roots of Unity Sum to Zero",
+    "content": "For $n\\ge 2$ and $\\zeta$ a primitive $n$-th root of unity, $\\sum_{k=0}^{n-1}\\zeta^k = 0$ — the geometric heart of the polygon case, since these are exactly the outward normals. The proof is the finite geometric series $\\sum_{k<n}\\zeta^k = \\frac{\\zeta^n - 1}{\\zeta - 1}$ (`geom_sum_eq`, valid as $\\zeta\\neq 1$), whose numerator vanishes because $\\zeta^n = 1$. Geometrically: the vertices/normals of a regular polygon are symmetric about the center, so their vector sum is zero — the centroid condition in disguise.",
+    "mathContext": "$\\zeta^n = 1,\\ \\zeta\\neq 1 \\Rightarrow \\sum_{k<n}\\zeta^k = \\tfrac{\\zeta^n-1}{\\zeta-1} = 0$.",
     "significance": "key",
-    "relatedConcepts": [
-      "geometric series",
-      "primitive root of unity",
-      "geom_sum_eq"
-    ],
     "prerequisites": [
       "roots of unity",
-      "geometric-series formula"
+      "finite geometric series"
+    ],
+    "relatedConcepts": [
+      "primitive root of unity",
+      "geom_sum_eq",
+      "geometric series",
+      "central symmetry"
     ]
   },
   {
-    "id": "viviani-oq0102-ann-unit-norm",
+    "id": "ann-unit-normals",
     "proofId": "viviani-theorem-oq-01-oq-02",
     "range": {
       "startLine": 111,
       "endLine": 116
     },
-    "type": "tactic",
-    "title": "The normals are genuine unit vectors",
-    "content": "For $c - \\mathrm{rdot}(\\zeta^k, P)$ to be a true Euclidean perpendicular distance, each normal must have length one. Since $\\zeta^n = 1$ forces $\\|\\zeta\\| = 1$ (`Complex.norm_eq_one_of_pow_eq_one`), `norm_pow` gives $\\|\\zeta^k\\| = \\|\\zeta\\|^k = 1$. This justifies calling the constant 'n × apothem' rather than an arbitrary scaling.",
-    "mathContext": "$\\|\\zeta^k\\| = \\|\\zeta\\|^k = 1^k = 1$",
+    "type": "lemma",
+    "title": "The Root-of-Unity Normals Are Genuine Unit Vectors",
+    "content": "$\\|\\zeta^k\\| = 1$ for each $k$, so $c - \\mathrm{rdot}(\\zeta^k, P)$ really is a Euclidean perpendicular distance and not merely a linear functional. This legitimizes calling the polygon result a *distance*-sum theorem: $\\|\\zeta\\| = 1$ (a root of unity lies on the unit circle) gives $\\|\\zeta^k\\| = \\|\\zeta\\|^k = 1$. Without unit normals the identity would still hold algebraically but would lose its metric meaning.",
+    "mathContext": "$\\|\\zeta\\| = 1 \\Rightarrow \\|\\zeta^k\\| = \\|\\zeta\\|^k = 1$.",
     "significance": "supporting",
-    "relatedConcepts": [
-      "unit vector",
-      "norm of a power",
-      "apothem"
-    ],
     "prerequisites": [
       "complex modulus",
-      "‖·‖ multiplicativity"
+      "roots of unity on the unit circle"
+    ],
+    "relatedConcepts": [
+      "unit vector",
+      "norm_pow",
+      "unit circle",
+      "perpendicular distance"
     ]
   },
   {
-    "id": "viviani-oq0102-ann-polygon-main",
+    "id": "ann-polygon",
     "proofId": "viviani-theorem-oq-01-oq-02",
     "range": {
       "startLine": 118,
       "endLine": 128
     },
-    "type": "insight",
-    "title": "regularPolygon_viviani — the sharp constant n · apothem",
-    "content": "The main polygon theorem. Expanding $\\sum_k (a - \\mathrm{rdot}(\\zeta^k, P))$ via `Finset.sum_sub_distrib` and `← rdot_sum`, the normal sum $\\sum_k \\zeta^k = 0$ kills the $P$-dependent term (`rdot_zero_left`), and the constant part collapses via `Finset.sum_const`/`Fintype.card_fin`/`nsmul_eq_mul` to $n \\cdot a$. So for any point $P$, the sum of perpendicular distances to the $n$ sides of a regular $n$-gon with apothem $a$ is exactly $n a$.",
-    "mathContext": "$\\sum_{k} \\big(a - \\mathrm{rdot}(\\zeta^k, P)\\big) = n \\cdot a$",
-    "significance": "key",
-    "relatedConcepts": [
-      "regular polygon",
-      "apothem",
-      "roots of unity"
-    ],
+    "type": "theorem",
+    "title": "Regular n-Gon: Distance Sum = n × Apothem",
+    "content": "The sharp planar result: for a regular $n$-gon ($n\\ge 2$) with each side at distance $a$ (the apothem/inradius) from the center, the sum of perpendicular distances from *any* point $P$ to the $n$ sides is exactly $n\\cdot a$. It is `sum_signedDist_eq` instantiated with $u_k = \\zeta^k$ and $c_k = a$: the normals sum to zero (`sum_primitiveRoot_pow_eq_zero`), so the sum collapses to $\\sum_k a = n\\cdot a$ (`sum_const` over `Fin n`). The classical equilateral-triangle Viviani ($n=3$, sum $=$ altitude $= 3a$) is the special case.",
+    "mathContext": "$\\sum_{k<n}(a - \\mathrm{rdot}(\\zeta^k,P)) = n\\cdot a$ for $n\\ge 2$.",
+    "significance": "critical",
     "prerequisites": [
-      "Finset.sum_const",
-      "Fintype.card_fin"
+      "the master identity",
+      "roots of unity sum to zero"
+    ],
+    "relatedConcepts": [
+      "apothem",
+      "inradius",
+      "regular polygon",
+      "sum_signedDist_eq",
+      "roots of unity"
     ]
   },
   {
-    "id": "viviani-oq0102-ann-polygon-exists-const",
+    "id": "ann-polygon-exists",
     "proofId": "viviani-theorem-oq-01-oq-02",
     "range": {
       "startLine": 130,
-      "endLine": 145
+      "endLine": 137
     },
-    "type": "tactic",
-    "title": "Existence and point-independence for the polygon",
-    "content": "`regularPolygon_viviani_exists` witnesses the theorem concretely: the roots $\\exp(2\\pi i k / n)$ form a primitive $n$-th root system (`Complex.isPrimitiveRoot_exp`), so an actual regular $n$-gon attaining $n a$ exists. `regularPolygon_viviani_const` restates the sharp constant as point-independence — the distance sum is the same at any two points $P, Q$.",
-    "mathContext": "$\\zeta = \\exp(2\\pi i / n), \\quad \\sum_k(a - \\mathrm{rdot}(\\zeta^k,P)) = \\sum_k(a - \\mathrm{rdot}(\\zeta^k,Q))$",
+    "type": "theorem",
+    "title": "A Genuine Regular n-Gon Realizing the Constant Exists",
+    "content": "Guards against vacuity: an actual primitive $n$-th root — hence a genuine regular $n$-gon — attaining $n\\cdot a$ always exists, realized concretely by $\\zeta = \\exp(2\\pi i/n)$ (`Complex.isPrimitiveRoot_exp`). This turns the conditional 'if $\\zeta$ is a primitive root' into an unconditional existence statement, confirming the theorem is not vacuously true for lack of a valid configuration.",
+    "mathContext": "$\\exists\\,\\zeta = \\exp(2\\pi i/n)$ primitive with $\\sum_k(a-\\mathrm{rdot}(\\zeta^k,P)) = n\\cdot a$.",
     "significance": "supporting",
-    "relatedConcepts": [
-      "existence witness",
-      "Complex.exp",
-      "point-independence"
-    ],
     "prerequisites": [
-      "complex exponential",
-      "primitive roots via exp"
+      "the complex exponential",
+      "primitive roots of unity"
+    ],
+    "relatedConcepts": [
+      "Complex.isPrimitiveRoot_exp",
+      "existence",
+      "non-vacuity"
     ]
   },
   {
-    "id": "viviani-oq0102-ann-partC-doc",
-    "proofId": "viviani-theorem-oq-01-oq-02",
-    "range": {
-      "startLine": 147,
-      "endLine": 151
-    },
-    "type": "concept",
-    "title": "Part C: the regular simplex in arbitrary dimension",
-    "content": "Part C returns to an abstract real inner-product space $V$. The outward unit normal to the facet opposite vertex $v_i$ points along $g - v_i$ where $g$ is the centroid. The centroid identity $\\sum_i (g - v_i) = 0$ is the simplex analogue of $\\sum_k \\zeta^k = 0$, so the general principle of Part A applies with no dimension restriction.",
-    "mathContext": "normals $\\propto g - v_i, \\quad \\sum_i (g - v_i) = 0$",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "regular simplex",
-      "centroid",
-      "inradius"
-    ],
-    "prerequisites": [
-      "centroid of a point set",
-      "arbitrary-dimensional inner-product space"
-    ]
-  },
-  {
-    "id": "viviani-oq0102-ann-simplex-main",
+    "id": "ann-simplex",
     "proofId": "viviani-theorem-oq-01-oq-02",
     "range": {
       "startLine": 153,
       "endLine": 175
     },
-    "type": "insight",
-    "title": "regularSimplex_viviani — the sharp constant (n+1) · inradius",
-    "content": "The main simplex theorem, with the centroid encoded as $\\sum_i v_i = (n+1) \\bullet g$ and $R \\neq 0$ the common circumradius. First `hu` shows the normals sum to zero: $\\sum_i R^{-1} \\bullet (g - v_i) = R^{-1} \\bullet \\sum_i (g - v_i)$, and $\\sum_i (g - v_i) = (n+1)\\bullet g - \\sum_i v_i = 0$ by the centroid identity. Then `sum_signedDist_eq` gives the distance sum $= \\sum_i a$, which `Finset.sum_const`/`nsmul_eq_mul`/`push_cast`/`ring` collapse to $(n+1) a$. The $n+1$ facets of a regular $n$-simplex with inradius $a$ contribute total distance $(n+1) a$ from any point.",
-    "mathContext": "$\\sum_i \\big(a - \\langle R^{-1}\\!\\bullet(g - v_i), P\\rangle\\big) = (n+1)\\cdot a$",
-    "significance": "key",
+    "type": "theorem",
+    "title": "Regular n-Simplex: Distance Sum = (n+1) × Inradius",
+    "content": "The high-dimensional counterpart: for a simplex with vertices $v_i$, centroid $g$ (encoded by $\\sum_i v_i = (n{+}1)\\,g$) and circumradius $R\\neq 0$, the outward unit normal to the facet opposite $v_i$ is $R^{-1}(g - v_i)$. These sum to zero **because of the centroid**: $\\sum_i (g - v_i) = (n{+}1)g - (n{+}1)g = 0$. The master identity then gives the distance sum $= \\sum_i a = (n{+}1)\\cdot a$, the sharp constant $(n{+}1)\\times$ inradius. The polygon and simplex thus share one mechanism — normals summing to zero — realized by roots of unity in the plane and by the centroid in general dimension.",
+    "mathContext": "$\\sum_i(g - v_i) = (n{+}1)g - (n{+}1)g = 0 \\Rightarrow \\sum_i(a - \\langle R^{-1}(g-v_i),P\\rangle) = (n{+}1)a$.",
+    "significance": "critical",
+    "prerequisites": [
+      "the master identity",
+      "centroid of a simplex",
+      "inner product spaces"
+    ],
     "relatedConcepts": [
       "regular simplex",
-      "centroid identity",
+      "centroid",
       "inradius",
-      "Finset.smul_sum"
-    ],
-    "prerequisites": [
-      "scalar multiplication in normed spaces",
-      "centroid encoding ∑ vᵢ = (n+1)•g"
-    ]
-  },
-  {
-    "id": "viviani-oq0102-ann-simplex-const",
-    "proofId": "viviani-theorem-oq-01-oq-02",
-    "range": {
-      "startLine": 177,
-      "endLine": 184
-    },
-    "type": "tactic",
-    "title": "Point-independence for the simplex",
-    "content": "The constancy form for the simplex: rewriting both sides with `regularSimplex_viviani`, the perpendicular-distance sum to the $n+1$ facets is the same at any two points $P, Q$ — the arbitrary-dimensional Viviani statement in its most classical shape.",
-    "mathContext": "$\\sum_i (a - \\langle R^{-1}\\!\\bullet(g - v_i), P\\rangle) = \\sum_i (a - \\langle R^{-1}\\!\\bullet(g - v_i), Q\\rangle)$",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "point-independence",
-      "invariant"
-    ],
-    "prerequisites": [
-      "equational rewriting"
+      "sum_signedDist_eq",
+      "outward normal"
     ]
   }
 ]

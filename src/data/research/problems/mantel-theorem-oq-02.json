@@ -69,9 +69,11 @@
   "relatedProofs": [
     "mantel-theorem",
     "mantel-theorem-oq-01",
+    "mantel-theorem-oq-01-oq-02",
     "mantel-theorem-oq-02",
     "mantel-theorem-oq-03",
     "mantel-theorem-oq-03-oq-01",
+    "mantel-theorem-oq-03-oq-01-oq-02",
     "mantel-theorem-oq-04",
     "mantel-theorem-oq-04-oq-01",
     "mantel-theorem-oq-04-oq-02"
@@ -100,6 +102,17 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MantelTheorem.lean"
     },
     {
+      "path": "Proofs/MantelTheoremOQ01OQ02.lean",
+      "filename": "MantelTheoremOQ01OQ02.lean",
+      "lineCount": 265,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MantelTheoremOQ01OQ02.lean"
+    },
+    {
       "path": "Proofs/MantelTheoremOQ03.lean",
       "filename": "MantelTheoremOQ03.lean",
       "lineCount": 105,
@@ -120,6 +133,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MantelTheoremOQ03OQ01.lean"
+    },
+    {
+      "path": "Proofs/MantelTheoremOQ03OQ01OQ02.lean",
+      "filename": "MantelTheoremOQ03OQ01OQ02.lean",
+      "lineCount": 175,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MantelTheoremOQ03OQ01OQ02.lean"
     },
     {
       "path": "Proofs/MantelTheoremOQ04.lean",

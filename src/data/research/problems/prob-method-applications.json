@@ -56,7 +56,12 @@
   "relatedProofs": [
     "prob-method-applications",
     "prob-method-applications-oq-02-oq-01",
-    "prob-method-applications-oq-03"
+    "prob-method-applications-oq-02-oq-02",
+    "prob-method-applications-oq-03",
+    "prob-method-applications-wip-01",
+    "prob-method-applications-wip-01-oq-01",
+    "prob-method-applications-wip-01-oq-02",
+    "prob-method-applications-wip-01-oq-03"
   ],
   "references": {
     "papers": [],
@@ -90,6 +95,50 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ProbMethodApplicationsOQ03.lean"
+    },
+    {
+      "path": "Proofs/ProbMethodApplicationsWIP.lean",
+      "filename": "ProbMethodApplicationsWIP.lean",
+      "lineCount": 180,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ProbMethodApplicationsWIP.lean"
+    },
+    {
+      "path": "Proofs/ProbMethodApplicationsWIPOQ01.lean",
+      "filename": "ProbMethodApplicationsWIPOQ01.lean",
+      "lineCount": 136,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ProbMethodApplicationsWIPOQ01.lean"
+    },
+    {
+      "path": "Proofs/ProbMethodApplicationsWIPOQ02.lean",
+      "filename": "ProbMethodApplicationsWIPOQ02.lean",
+      "lineCount": 122,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ProbMethodApplicationsWIPOQ02.lean"
+    },
+    {
+      "path": "Proofs/ProbMethodApplicationsWIPOQ03.lean",
+      "filename": "ProbMethodApplicationsWIPOQ03.lean",
+      "lineCount": 339,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ProbMethodApplicationsWIPOQ03.lean"
     }
   ]
 }

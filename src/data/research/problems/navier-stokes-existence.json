@@ -192,6 +192,7 @@
     "navier-stokes",
     "navier-stokes-existence",
     "navier-stokes-oq-01",
+    "navier-stokes-oq-01-oq-01",
     "navier-stokes-oq-02"
   ],
   "references": {
@@ -215,6 +216,17 @@
       "sorryCount": 23,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/NavierStokes.lean"
+    },
+    {
+      "path": "Proofs/NavierStokesOQ0101.lean",
+      "filename": "NavierStokesOQ0101.lean",
+      "lineCount": 123,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/NavierStokesOQ0101.lean"
     }
   ]
 }

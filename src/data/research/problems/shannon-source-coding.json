@@ -47,12 +47,15 @@
   "relatedProofs": [
     "shannon-source-coding",
     "shannon-source-coding-oq-01",
+    "shannon-source-coding-oq-01-oq-03",
     "shannon-source-coding-oq-02",
     "shannon-source-coding-oq-03",
     "shannon-source-coding-oq-04",
     "shannon-source-coding-oq-04-incomplete-01",
     "shannon-source-coding-oq-06",
-    "shannon-source-coding-wip-01"
+    "shannon-source-coding-wip-01",
+    "shannon-source-coding-wip-01-oq-01",
+    "shannon-source-coding-wip-01-oq-02"
   ],
   "references": {
     "papers": [],
@@ -86,6 +89,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonSourceCodingOQ01.lean"
+    },
+    {
+      "path": "Proofs/ShannonSourceCodingOQ01OQ03.lean",
+      "filename": "ShannonSourceCodingOQ01OQ03.lean",
+      "lineCount": 91,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonSourceCodingOQ01OQ03.lean"
     },
     {
       "path": "Proofs/ShannonSourceCodingOQ02.lean",
@@ -163,6 +177,28 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonSourceCodingWIP01.lean"
+    },
+    {
+      "path": "Proofs/ShannonSourceCodingWIP01OQ01.lean",
+      "filename": "ShannonSourceCodingWIP01OQ01.lean",
+      "lineCount": 125,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonSourceCodingWIP01OQ01.lean"
+    },
+    {
+      "path": "Proofs/ShannonSourceCodingWIP01OQ02.lean",
+      "filename": "ShannonSourceCodingWIP01OQ02.lean",
+      "lineCount": 306,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonSourceCodingWIP01OQ02.lean"
     }
   ]
 }

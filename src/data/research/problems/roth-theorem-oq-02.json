@@ -119,11 +119,14 @@
     "roth-theorem",
     "roth-theorem-k3",
     "roth-theorem-k3-oq-01",
+    "roth-theorem-k3-oq-01-oq-01",
     "roth-theorem-k3-oq-02",
     "roth-theorem-k3-oq-03",
+    "roth-theorem-k3-oq-03-oq-01",
     "roth-theorem-k3-oq-03-oq-01-oq-01",
     "roth-theorem-k3-oq-03-oq-01-oq-01-oq-01",
     "roth-theorem-k3-oq-03-oq-01-oq-01-oq-01-oq-01",
+    "roth-theorem-oq-01",
     "szemeredi-theorem"
   ],
   "references": {
@@ -159,10 +162,10 @@
     {
       "path": "Proofs/RothTheorem.lean",
       "filename": "RothTheorem.lean",
-      "lineCount": 1402,
-      "theoremCount": 12,
+      "lineCount": 1555,
+      "theoremCount": 17,
       "axiomCount": 0,
-      "defCount": 4,
+      "defCount": 6,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/RothTheorem.lean"
@@ -179,11 +182,22 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/RothTheoremAristotle.lean"
     },
     {
+      "path": "Proofs/RothTheoremModulusDecay.lean",
+      "filename": "RothTheoremModulusDecay.lean",
+      "lineCount": 203,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/RothTheoremModulusDecay.lean"
+    },
+    {
       "path": "Proofs/RothTheoremOQ01.lean",
       "filename": "RothTheoremOQ01.lean",
-      "lineCount": 184,
-      "theoremCount": 6,
-      "axiomCount": 3,
+      "lineCount": 460,
+      "theoremCount": 15,
+      "axiomCount": 2,
       "defCount": 1,
       "sorryCount": 0,
       "isAristotle": false,
@@ -214,8 +228,8 @@
     {
       "path": "Proofs/RothTheoremOQ03OQ01.lean",
       "filename": "RothTheoremOQ03OQ01.lean",
-      "lineCount": 144,
-      "theoremCount": 4,
+      "lineCount": 355,
+      "theoremCount": 10,
       "axiomCount": 0,
       "defCount": 4,
       "sorryCount": 0,
@@ -258,11 +272,11 @@
     {
       "path": "Proofs/RothTheoremQuantitative.lean",
       "filename": "RothTheoremQuantitative.lean",
-      "lineCount": 307,
-      "theoremCount": 19,
-      "axiomCount": 0,
+      "lineCount": 435,
+      "theoremCount": 20,
+      "axiomCount": 4,
       "defCount": 2,
-      "sorryCount": 4,
+      "sorryCount": 2,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/RothTheoremQuantitative.lean"
     },

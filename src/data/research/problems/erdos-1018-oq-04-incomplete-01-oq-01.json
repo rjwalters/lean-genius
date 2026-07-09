@@ -17,7 +17,11 @@
     "focus": "Fully verified 0-axiom threshold result: C(n,2) > 3n−6 ⟺ n ≥ 5, sharp at n=5.",
     "blockers": [],
     "nextAction": "None — entry complete and gallery-published.",
-    "attemptCounts": { "total": 1, "currentApproach": 1, "approachesTried": 1 }
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
   },
   "knowledge": {
     "progressSummary": "COMPLETED 2026-06-28: Proved C(n,2) > 3n−6 ⟺ n ≥ 5 for n ≥ 3, fully verified (0 axioms, 0 sorries). Pascal recurrence C(n+1,2)=C(n,2)+n linearizes the induction so omega closes each step from base n=5. Sharpness: K₃ (3=3) and K₄ (6=6) meet the bound, K₅ (10>9) breaks it. Isolates the first-moment core of the parent's density argument as an axiom-free companion.",
@@ -51,8 +55,13 @@
     "Kuratowski, K. (1930). Sur le problème des courbes gauches en topologie."
   ],
   "relatedProofs": [
+    "erdos-1",
+    "erdos-10",
+    "erdos-101",
+    "erdos-1018",
+    "erdos-1018-oq-04",
     "erdos-1018-oq-04-incomplete-01",
-    "erdos-1018-oq-04"
+    "erdos-1018-oq-04-incomplete-01-oq-01"
   ],
   "tags": [
     "graph-theory",

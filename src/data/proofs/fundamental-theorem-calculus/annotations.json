@@ -20,11 +20,6 @@
       "definite integral",
       "area under curve",
       "accumulation function"
-    ],
-    "prerequisites": [
-      "the definite integral ∫ₐˣ f(t) dt",
-      "area under a curve",
-      "functions of a variable upper limit"
     ]
   },
   {
@@ -48,11 +43,6 @@
       "antiderivative",
       "HasDerivAt",
       "differentiability"
-    ],
-    "prerequisites": [
-      "derivatives and HasDerivAt",
-      "the integral as an accumulation function",
-      "continuity of the integrand"
     ]
   },
   {
@@ -76,11 +66,6 @@
       "continuity",
       "ContinuousAt",
       "limit definition"
-    ],
-    "prerequisites": [
-      "continuity at a point (ContinuousAt)",
-      "limits and average value on shrinking intervals",
-      "why discontinuities break differentiability of F"
     ]
   },
   {
@@ -104,11 +89,6 @@
       "antiderivative",
       "evaluation",
       "net change"
-    ],
-    "prerequisites": [
-      "antiderivatives",
-      "the definite integral as net change",
-      "evaluating F(b) − F(a)"
     ]
   },
   {
@@ -132,11 +112,6 @@
       "differentiability",
       "ContinuousOn",
       "interval conditions"
-    ],
-    "prerequisites": [
-      "differentiability on an interval",
-      "continuity/integrability of F′ (ContinuousOn)",
-      "ordered integration bounds a ≤ b"
     ]
   },
   {
@@ -159,11 +134,6 @@
       "derivative",
       "indefinite integral",
       "primitive function"
-    ],
-    "prerequisites": [
-      "the derivative F′ = f",
-      "indefinite integrals and the constant of integration",
-      "primitive / antiderivative"
     ]
   },
   {
@@ -187,11 +157,6 @@
       "mean value theorem",
       "constant function",
       "uniqueness"
-    ],
-    "prerequisites": [
-      "the mean value theorem",
-      "a function with zero derivative is constant",
-      "antiderivatives differ by a constant"
     ]
   },
   {
@@ -215,11 +180,6 @@
       "mean value theorem",
       "constant function",
       "convexity"
-    ],
-    "prerequisites": [
-      "the mean value theorem",
-      "constant functions",
-      "F′ = 0 ⟹ F constant"
     ]
   },
   {
@@ -244,11 +204,6 @@
       "Newton",
       "Leibniz",
       "calculus unification"
-    ],
-    "prerequisites": [
-      "FTC Parts 1 and 2",
-      "differentiation and integration as inverse operations",
-      "the history of Newton and Leibniz"
     ]
   }
 ]

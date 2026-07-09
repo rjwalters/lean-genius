@@ -53,7 +53,9 @@
     "seeker-selected"
   ],
   "relatedProofs": [
-    "prob-method-alteration"
+    "prob-method-alteration",
+    "prob-method-alteration-oq-01",
+    "prob-method-alteration-oq-03"
   ],
   "references": {
     "papers": [],
@@ -77,6 +79,17 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ProbMethodAlteration.lean"
     },
     {
+      "path": "Proofs/ProbMethodAlterationOQ01.lean",
+      "filename": "ProbMethodAlterationOQ01.lean",
+      "lineCount": 140,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ProbMethodAlterationOQ01.lean"
+    },
+    {
       "path": "Proofs/ProbMethodAlterationOQ02.lean",
       "filename": "ProbMethodAlterationOQ02.lean",
       "lineCount": 213,
@@ -86,6 +99,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ProbMethodAlterationOQ02.lean"
+    },
+    {
+      "path": "Proofs/ProbMethodAlterationOQ03.lean",
+      "filename": "ProbMethodAlterationOQ03.lean",
+      "lineCount": 235,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ProbMethodAlterationOQ03.lean"
     }
   ]
 }

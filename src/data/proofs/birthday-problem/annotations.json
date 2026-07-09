@@ -22,47 +22,24 @@
     ]
   },
   {
-    "id": "ann-crypto",
+    "id": "ann-formula",
     "proofId": "birthday-problem",
     "range": {
-      "startLine": 9,
-      "endLine": 63
+      "startLine": 140,
+      "endLine": 149
     },
     "type": "insight",
-    "title": "The Birthday Attack",
-    "content": "The Birthday Problem has serious implications for **cryptography**:\n\nA **birthday attack** exploits this mathematics to find hash collisions. For a hash function with $n$-bit output:\n- Naive collision search: $O(2^n)$ attempts\n- Birthday attack: $O(2^{n/2})$ attempts\n\nThis is why hash functions need outputs twice as long as the desired security level. A 256-bit hash provides only 128 bits of collision resistance.",
-    "mathContext": "For a hash function $H: \\{0,1\\}^* \\to \\{0,1\\}^n$, the birthday bound gives collision probability $> 50\\%$ after $\\approx 2^{n/2}$ random inputs. This is the square root of the output space, directly analogous to needing $\\sqrt{365} \\approx 19$ people (close to 23) for a birthday collision.",
+    "title": "The Birthday Formula",
+    "content": "**Birthday Problem Formula**:\n\n$$P(\\text{shared birthday among } n \\text{ people}) = 1 - \\frac{365 \\cdot 364 \\cdots (365-n+1)}{365^n}$$\n\nEquivalently:\n$$P(n) = 1 - \\prod_{k=0}^{n-1} \\frac{365-k}{365} = 1 - \\prod_{k=0}^{n-1} \\left(1 - \\frac{k}{365}\\right)$$\n\nThe product represents the probability that each successive person has a unique birthday.",
+    "mathContext": "$P(n) = 1 - \\frac{365!}{365^n (365-n)!}$",
     "significance": "key",
     "prerequisites": [
-      "birthday problem formula",
-      "hash function basics"
+      "Nat.descFactorial",
+      "rational arithmetic"
     ],
-    "relatedConcepts": [
-      "cryptography",
-      "hash functions",
-      "collision resistance"
-    ]
-  },
-  {
-    "id": "birthday-ann-counting-setup",
-    "proofId": "birthday-problem",
-    "range": {
-      "startLine": 77,
-      "endLine": 111
-    },
-    "type": "definition",
-    "significance": "key",
-    "title": "Days, Total Assignments, and Injective Counts",
-    "content": "The combinatorial scaffolding: a year has `numDays = 365` days, a birthday is a `Fin 365`, and an assignment of birthdays to `n` people is a function `Fin n -> Day`. There are `365^n` such assignments (`total_assignments`), of which the ones with *all distinct* birthdays are the injective functions, counted by the falling factorial `descFactorial 365 n` (`count_injective_functions`, `descFactorial_formula`).",
-    "mathContext": "$|\\mathrm{Fin}\\,n \\to \\mathrm{Day}| = 365^n$; distinct-birthday assignments $= |\\mathrm{Fin}\\,n \\hookrightarrow \\mathrm{Day}| = 365^{\\underline{n}} = 365 \\cdot 364 \\cdots (365-n+1)$.",
     "relatedConcepts": [
       "falling factorial",
-      "injective function",
-      "counting",
-      "cardinality"
-    ],
-    "prerequisites": [
-      "finite combinatorics"
+      "product formula"
     ]
   },
   {
@@ -85,111 +62,6 @@
       "injective functions",
       "falling factorial",
       "permutations"
-    ]
-  },
-  {
-    "id": "birthday-ann-prob-defs",
-    "proofId": "birthday-problem",
-    "range": {
-      "startLine": 118,
-      "endLine": 139
-    },
-    "type": "definition",
-    "significance": "key",
-    "title": "Probability Definitions: P(shared) = 1 − desc/total",
-    "content": "The probability that all `n` birthdays are distinct is the ratio of injective to total assignments (`prob_all_distinct`), and the probability of at least one shared birthday is its complement (`prob_shared_birthday`). Working in exact rationals `ℚ` avoids floating-point error, so every threshold below is a certified inequality.",
-    "mathContext": "$P_{\\text{distinct}}(n) = \\dfrac{365^{\\underline{n}}}{365^n} = \\prod_{k=0}^{n-1}\\frac{365-k}{365}$;  $P_{\\text{shared}}(n) = 1 - P_{\\text{distinct}}(n)$.",
-    "relatedConcepts": [
-      "complementary probability",
-      "rational arithmetic",
-      "product formula"
-    ],
-    "prerequisites": [
-      "probability theory"
-    ]
-  },
-  {
-    "id": "ann-formula",
-    "proofId": "birthday-problem",
-    "range": {
-      "startLine": 140,
-      "endLine": 149
-    },
-    "type": "insight",
-    "title": "The Birthday Formula",
-    "content": "**Birthday Problem Formula**:\n\n$$P(\\text{shared birthday among } n \\text{ people}) = 1 - \\frac{365 \\cdot 364 \\cdots (365-n+1)}{365^n}$$\n\nEquivalently:\n$$P(n) = 1 - \\prod_{k=0}^{n-1} \\frac{365-k}{365} = 1 - \\prod_{k=0}^{n-1} \\left(1 - \\frac{k}{365}\\right)$$\n\nThe product represents the probability that each successive person has a unique birthday.",
-    "mathContext": "$P(n) = 1 - \\frac{365!}{365^n (365-n)!}$",
-    "significance": "key",
-    "prerequisites": [
-      "Nat.descFactorial",
-      "rational arithmetic"
-    ],
-    "relatedConcepts": [
-      "falling factorial",
-      "product formula"
-    ]
-  },
-  {
-    "id": "birthday-ann-small-cases",
-    "proofId": "birthday-problem",
-    "range": {
-      "startLine": 150,
-      "endLine": 164
-    },
-    "type": "theorem",
-    "significance": "supporting",
-    "title": "Trivial Small Cases: P(0) = P(1) = 0",
-    "content": "With zero or one person there are no pairs, so a shared birthday is impossible: `prob_zero` and `prob_one` both give probability 0. These anchor the monotone increase of `prob_shared_birthday` toward 1.",
-    "mathContext": "$P_{\\text{shared}}(0) = P_{\\text{shared}}(1) = 0$.",
-    "relatedConcepts": [
-      "base case",
-      "degenerate case",
-      "probability"
-    ],
-    "prerequisites": [
-      "probability theory"
-    ]
-  },
-  {
-    "id": "ann-two-people",
-    "proofId": "birthday-problem",
-    "range": {
-      "startLine": 165,
-      "endLine": 171
-    },
-    "type": "concept",
-    "title": "Two People: P = 1/365",
-    "content": "With 2 people, the probability they share a birthday is:\n\n$$P(2) = 1 - \\frac{365 \\times 364}{365^2} = 1 - \\frac{364}{365} = \\frac{1}{365}$$\n\nThis makes intuitive sense: once person 1's birthday is fixed, person 2 has a 1/365 chance of matching.\n\nIn Lean: `prob_shared_birthday 2 = 1 / 365`",
-    "mathContext": "$P(2) = 1/365 \\approx 0.27\\%$",
-    "significance": "supporting",
-    "prerequisites": [
-      "birthday_problem_formula",
-      "Nat.descFactorial"
-    ],
-    "relatedConcepts": [
-      "base case",
-      "complement probability"
-    ]
-  },
-  {
-    "id": "birthday-ann-descfact-vanish",
-    "proofId": "birthday-problem",
-    "range": {
-      "startLine": 172,
-      "endLine": 178
-    },
-    "type": "theorem",
-    "significance": "supporting",
-    "title": "The Falling Factorial Vanishes Past 365 Days",
-    "content": "Once `n > 365` there are more people than days, so `descFactorial 365 n = 0` (`descFactorial_zero_of_gt`): no injective assignment exists. This is the arithmetic form of the pigeonhole principle that forces certainty in `prob_certain`.",
-    "mathContext": "$n > 365 \\Rightarrow 365^{\\underline{n}} = 0$, hence $P_{\\text{distinct}}(n) = 0$.",
-    "relatedConcepts": [
-      "pigeonhole principle",
-      "falling factorial",
-      "vanishing"
-    ],
-    "prerequisites": [
-      "finite combinatorics"
     ]
   },
   {
@@ -235,90 +107,46 @@
     ]
   },
   {
-    "id": "birthday-ann-companion-22",
+    "id": "ann-crypto",
     "proofId": "birthday-problem",
     "range": {
-      "startLine": 224,
-      "endLine": 257
+      "startLine": 9,
+      "endLine": 63
     },
-    "type": "theorem",
+    "type": "insight",
+    "title": "The Birthday Attack",
+    "content": "The Birthday Problem has serious implications for **cryptography**:\n\nA **birthday attack** exploits this mathematics to find hash collisions. For a hash function with $n$-bit output:\n- Naive collision search: $O(2^n)$ attempts\n- Birthday attack: $O(2^{n/2})$ attempts\n\nThis is why hash functions need outputs twice as long as the desired security level. A 256-bit hash provides only 128 bits of collision resistance.",
+    "mathContext": "For a hash function $H: \\{0,1\\}^* \\to \\{0,1\\}^n$, the birthday bound gives collision probability $> 50\\%$ after $\\approx 2^{n/2}$ random inputs. This is the square root of the output space, directly analogous to needing $\\sqrt{365} \\approx 19$ people (close to 23) for a birthday collision.",
     "significance": "key",
-    "title": "The 22-Person Companion: 23 Is the Exact Threshold",
-    "content": "Complementing the covered `birthday_23_exceeds_half`, this shows `prob_shared_birthday 22 < 1/2` (`birthday_22_below_half`) via a `native_decide` integer comparison of `2 * desc` against `total`. Together the two results pin 23 as the *exact* smallest group size whose shared-birthday probability exceeds one half — the classic surprising answer.",
-    "mathContext": "$P_{\\text{shared}}(22) < \\tfrac12 < P_{\\text{shared}}(23)$, so 23 is the least $n$ with $P_{\\text{shared}}(n) > \\tfrac12$.",
-    "relatedConcepts": [
-      "exact threshold",
-      "native_decide",
-      "sharp bound"
-    ],
     "prerequisites": [
-      "probability theory"
+      "birthday problem formula",
+      "hash function basics"
+    ],
+    "relatedConcepts": [
+      "cryptography",
+      "hash functions",
+      "collision resistance"
     ]
   },
   {
-    "id": "birthday-ann-counting-unit",
+    "id": "ann-two-people",
     "proofId": "birthday-problem",
     "range": {
-      "startLine": 258,
-      "endLine": 315
+      "startLine": 165,
+      "endLine": 171
     },
-    "type": "theorem",
+    "type": "context",
+    "title": "Two People: P = 1/365",
+    "content": "With 2 people, the probability they share a birthday is:\n\n$$P(2) = 1 - \\frac{365 \\times 364}{365^2} = 1 - \\frac{364}{365} = \\frac{1}{365}$$\n\nThis makes intuitive sense: once person 1's birthday is fixed, person 2 has a 1/365 chance of matching.\n\nIn Lean: `prob_shared_birthday 2 = 1 / 365`",
+    "mathContext": "$P(2) = 1/365 \\approx 0.27\\%$",
     "significance": "supporting",
-    "title": "Counting Reformulation and Unit-Interval Sanity",
-    "content": "`birthday_as_counting` re-expresses the probability directly in terms of cardinalities (favourable embeddings over total functions), tying the formula back to the classical `|A|/|Omega|` definition. `prob_in_unit_interval` verifies `0 <= P_shared(n) <= 1` for `n <= 365`, using `Nat.descFactorial_le_pow`. Worked examples confirm concrete values like `P_distinct(2) = 364/365`.",
-    "mathContext": "$P_{\\text{shared}}(n) = 1 - \\dfrac{|\\mathrm{Fin}\\,n \\hookrightarrow \\mathrm{Day}|}{|\\mathrm{Fin}\\,n \\to \\mathrm{Day}|}$; $0 \\le P_{\\text{shared}}(n) \\le 1$ for $n \\le 365$.",
-    "relatedConcepts": [
-      "classical probability",
-      "sample space",
-      "sanity check"
-    ],
     "prerequisites": [
-      "probability theory"
-    ]
-  },
-  {
-    "id": "birthday-ann-expected-pairs",
-    "proofId": "birthday-problem",
-    "range": {
-      "startLine": 317,
-      "endLine": 372
-    },
-    "type": "concept",
-    "significance": "key",
-    "title": "Expected Number of Shared Pairs (Linearity of Expectation)",
-    "content": "A second lens on the paradox: rather than the probability of *some* collision, count the *expected number* of colliding pairs. By linearity of expectation each of the `C(n,2)` pairs shares a birthday with probability `1/365`, so `E[pairs] = C(n,2)/365` (`expected_shared_pairs`). For 23 people this is `253/365 ≈ 0.693`; the expectation crosses 1 between 27 (`< 1`) and 28 (`> 1`), a different threshold from the 1/2-probability one.",
-    "mathContext": "$\\mathbb{E}[\\text{pairs}] = \\dbinom{n}{2}\\big/ 365 = \\dfrac{n(n-1)}{730}$; $\\mathbb{E}[23] = \\tfrac{253}{365}$, crossing 1 between $n=27$ and $n=28$.",
-    "relatedConcepts": [
-      "linearity of expectation",
-      "binomial coefficient",
-      "indicator variables",
-      "expected value"
+      "birthday_problem_formula",
+      "Nat.descFactorial"
     ],
-    "prerequisites": [
-      "probability theory",
-      "combinatorics"
-    ]
-  },
-  {
-    "id": "birthday-ann-threshold-99",
-    "proofId": "birthday-problem",
-    "range": {
-      "startLine": 373,
-      "endLine": 400
-    },
-    "type": "theorem",
-    "significance": "key",
-    "title": "The 99% Threshold at 57 People",
-    "content": "Extending the 1/2 result to a 99% confidence level: `birthday_57_exceeds_99_percent` proves `P_shared(57) > 99/100` and `birthday_56_below_99_percent` proves `P_shared(56) < 99/100`, so 57 is the exact group size needed for a 99% chance of a shared birthday. Both hinge on a single `native_decide` comparison of `100 * descFactorial 365 k` against `365^k` (relying on `Lean.ofReduceBool`), then rational manipulation.",
-    "mathContext": "$P_{\\text{shared}}(56) < \\tfrac{99}{100} < P_{\\text{shared}}(57)$: 57 people give a 99% chance of a collision.",
     "relatedConcepts": [
-      "confidence threshold",
-      "native_decide",
-      "sharp bound",
-      "rational inequality"
-    ],
-    "prerequisites": [
-      "probability theory"
+      "base case",
+      "complement probability"
     ]
   }
 ]

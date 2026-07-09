@@ -34,8 +34,38 @@
     "Dubroff–Fox–Xu entropy bound max(A) ≥ √(2/π)·2ⁿ/√n (erdos-1-oq-02).",
     "Conway–Guy upper bound max(A) ≤ 0.22009·2ⁿ."
   ],
-  "leanFiles": ["Proofs/Erdos1Wip01OQ02.lean"],
-  "relatedProofs": ["erdos-1-wip-01", "erdos-1-oq-01", "erdos-1-oq-02", "erdos-1"],
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1Wip01OQ02.lean",
+      "filename": "Erdos1Wip01OQ02.lean",
+      "lineCount": 252,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1Wip01OQ02.lean"
+    },
+    {
+      "path": "Proofs/Erdos1Wip01OQ03.lean",
+      "filename": "Erdos1Wip01OQ03.lean",
+      "lineCount": 167,
+      "theoremCount": 18,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1Wip01OQ03.lean"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-1-oq-01",
+    "erdos-1-oq-02",
+    "erdos-1-wip-01",
+    "erdos-1-wip-01-oq-02",
+    "erdos-1-wip-01-oq-03"
+  ],
   "references": [
     "Erdős, Problems in additive number theory (1955)",
     "Dubroff, Fox, Xu, A note on the Erdős distinct subset sums problem (2021)",

@@ -46,9 +46,12 @@
     "pythagorean-triples",
     "pythagorean-triples-oq-01",
     "pythagorean-triples-oq-02",
+    "pythagorean-triples-oq-02-oq-01",
+    "pythagorean-triples-oq-03",
     "pythagorean-triples-oq-04",
     "pythagorean-triples-oq-04-oq-01",
     "pythagorean-triples-oq-04-oq-01-oq-01",
+    "pythagorean-triples-oq-04-oq-04",
     "pythagorean-triples-oq-05",
     "pythagorean-triples-oq-06",
     "pythagorean-triples-oq-06-oq-01",
@@ -56,6 +59,7 @@
     "pythagorean-triples-oq-06-oq-01-oq-01-oq-01",
     "pythagorean-triples-oq-06-oq-01-oq-01-oq-02",
     "pythagorean-triples-oq-07",
+    "pythagorean-triples-oq-07-oq-01",
     "pythagorean-triples-oq-08",
     "pythagorean-triples-oq-08-oq-01",
     "pythagorean-triples-oq-09",
@@ -84,9 +88,9 @@
     {
       "path": "Proofs/PythagoreanTriplesOQ01.lean",
       "filename": "PythagoreanTriplesOQ01.lean",
-      "lineCount": 2486,
-      "theoremCount": 117,
-      "axiomCount": 7,
+      "lineCount": 2567,
+      "theoremCount": 118,
+      "axiomCount": 3,
       "defCount": 39,
       "sorryCount": 0,
       "isAristotle": false,
@@ -115,13 +119,24 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PythagoreanTriplesOQ02.lean"
     },
     {
+      "path": "Proofs/PythagoreanTriplesOQ02OQ01.lean",
+      "filename": "PythagoreanTriplesOQ02OQ01.lean",
+      "lineCount": 102,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PythagoreanTriplesOQ02OQ01.lean"
+    },
+    {
       "path": "Proofs/PythagoreanTriplesOQ03.lean",
       "filename": "PythagoreanTriplesOQ03.lean",
-      "lineCount": 175,
-      "theoremCount": 11,
+      "lineCount": 256,
+      "theoremCount": 13,
       "axiomCount": 0,
       "defCount": 2,
-      "sorryCount": 2,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PythagoreanTriplesOQ03.lean"
     },
@@ -159,6 +174,17 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PythagoreanTriplesOQ04OQ01OQ01.lean"
     },
     {
+      "path": "Proofs/PythagoreanTriplesOQ04OQ04.lean",
+      "filename": "PythagoreanTriplesOQ04OQ04.lean",
+      "lineCount": 171,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PythagoreanTriplesOQ04OQ04.lean"
+    },
+    {
       "path": "Proofs/PythagoreanTriplesOQ05.lean",
       "filename": "PythagoreanTriplesOQ05.lean",
       "lineCount": 76,
@@ -194,8 +220,8 @@
     {
       "path": "Proofs/PythagoreanTriplesOQ06OQ01OQ01.lean",
       "filename": "PythagoreanTriplesOQ06OQ01OQ01.lean",
-      "lineCount": 116,
-      "theoremCount": 11,
+      "lineCount": 176,
+      "theoremCount": 15,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 0,
@@ -234,6 +260,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PythagoreanTriplesOQ07.lean"
+    },
+    {
+      "path": "Proofs/PythagoreanTriplesOQ07OQ01.lean",
+      "filename": "PythagoreanTriplesOQ07OQ01.lean",
+      "lineCount": 134,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PythagoreanTriplesOQ07OQ01.lean"
     },
     {
       "path": "Proofs/PythagoreanTriplesOQ08.lean",

@@ -62,9 +62,13 @@
     "radix"
   ],
   "relatedProofs": [
+    "divisibility-by-3-oq-01",
+    "divisibility-by-three",
     "divisibility-by-three-oq-01",
     "divisibility-by-three-oq-01-oq-02",
-    "divisibility-by-three"
+    "divisibility-by-three-oq-01-oq-03",
+    "divisibility-by-three-oq-02",
+    "divisibility-by-three-oq-02-oq-01"
   ],
   "references": {
     "papers": [],
@@ -83,6 +87,71 @@
   "significance": 6,
   "tractability": 7,
   "leanFiles": [
-    "Proofs/DivisibilityBy3OQ01OQ03.lean"
+    {
+      "path": "Proofs/DivisibilityByThreeOQ01.lean",
+      "filename": "DivisibilityByThreeOQ01.lean",
+      "lineCount": 551,
+      "theoremCount": 56,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DivisibilityByThreeOQ01.lean"
+    },
+    {
+      "path": "Proofs/DivisibilityByThreeOQ01OQ02.lean",
+      "filename": "DivisibilityByThreeOQ01OQ02.lean",
+      "lineCount": 203,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DivisibilityByThreeOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/DivisibilityByThreeOQ01OQ02Aristotle.lean",
+      "filename": "DivisibilityByThreeOQ01OQ02Aristotle.lean",
+      "lineCount": 70,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 1,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DivisibilityByThreeOQ01OQ02Aristotle.lean"
+    },
+    {
+      "path": "Proofs/DivisibilityByThreeOQ01OQ03.lean",
+      "filename": "DivisibilityByThreeOQ01OQ03.lean",
+      "lineCount": 205,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DivisibilityByThreeOQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/DivisibilityByThreeOQ02.lean",
+      "filename": "DivisibilityByThreeOQ02.lean",
+      "lineCount": 433,
+      "theoremCount": 31,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DivisibilityByThreeOQ02.lean"
+    },
+    {
+      "path": "Proofs/DivisibilityByThreeOQ02OQ01.lean",
+      "filename": "DivisibilityByThreeOQ02OQ01.lean",
+      "lineCount": 66,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DivisibilityByThreeOQ02OQ01.lean"
+    }
   ]
 }

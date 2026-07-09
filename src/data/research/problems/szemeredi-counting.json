@@ -82,7 +82,9 @@
   ],
   "relatedProofs": [
     "szemeredi-counting",
-    "szemeredi-counting-oq-01"
+    "szemeredi-counting-oq-01",
+    "szemeredi-counting-oq-01-oq-01",
+    "szemeredi-counting-oq-02"
   ],
   "references": {
     "papers": [],
@@ -115,6 +117,28 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SzemerediCountingOQ01.lean"
+    },
+    {
+      "path": "Proofs/SzemerediCountingOQ01OQ01.lean",
+      "filename": "SzemerediCountingOQ01OQ01.lean",
+      "lineCount": 308,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 6,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SzemerediCountingOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/SzemerediCountingOQ02.lean",
+      "filename": "SzemerediCountingOQ02.lean",
+      "lineCount": 446,
+      "theoremCount": 21,
+      "axiomCount": 0,
+      "defCount": 9,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SzemerediCountingOQ02.lean"
     }
   ]
 }

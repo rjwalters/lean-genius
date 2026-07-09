@@ -63,7 +63,9 @@
   },
   "tags": [],
   "relatedProofs": [
-    "fermat-defect-one"
+    "fermat-defect-one",
+    "fermat-defect-one-oq-06",
+    "fermat-defect-one-oq-06-oq-01"
   ],
   "references": {
     "papers": [],
@@ -96,6 +98,17 @@
       "sorryCount": 5,
       "isAristotle": true,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FermatDefectOneAristotle.lean"
+    },
+    {
+      "path": "Proofs/FermatDefectOneBounded.lean",
+      "filename": "FermatDefectOneBounded.lean",
+      "lineCount": 104,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FermatDefectOneBounded.lean"
     },
     {
       "path": "Proofs/FermatDefectOneFamilies.lean",
@@ -140,6 +153,28 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FermatDefectOneOQ04.lean"
+    },
+    {
+      "path": "Proofs/FermatDefectOneOQ06.lean",
+      "filename": "FermatDefectOneOQ06.lean",
+      "lineCount": 277,
+      "theoremCount": 20,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FermatDefectOneOQ06.lean"
+    },
+    {
+      "path": "Proofs/FermatDefectOneOQ06OQ01.lean",
+      "filename": "FermatDefectOneOQ06OQ01.lean",
+      "lineCount": 186,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FermatDefectOneOQ06OQ01.lean"
     }
   ]
 }

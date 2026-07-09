@@ -1,57 +1,87 @@
 {
-    "slug": "erdos-897-oq-01",
-    "title": "Erdős #897 OQ-01 (Part I): Non-Vacuity, Selectivity, and a Strongly-Additive Reduction",
+  "slug": "erdos-897-oq-01",
+  "title": "Erdős #897 OQ-01 (Part I): Non-Vacuity, Selectivity, and a Strongly-Additive Reduction",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Let $f$ be additive with $\\limsup_{p,k} f(p^k)/\\log(p^k) = \\infty$. **Part I (OPEN)**: must $\\limsup_n (f(n+1)-f(n))/\\log n = \\infty$? This entry does not assert Part I. It proves the verified scaffolding: (1) the hypothesis is satisfiable (an explicit additive, indeed strongly additive, witness); (2) the classical examples $\\log$ and $\\omega$ fail the hypothesis; (3) the hypothesis forces $f$ unbounded above on prime powers; (4) for strongly additive $f$ the hypothesis reduces to $f(p)/\\log p$ unbounded over primes.",
+    "plain": "Verified, axiom-free surrounding theory for Part I of Erdős #897 (OPEN): if an additive f grows faster than log on prime powers (limsup f(p^k)/log(p^k) = ∞), must (f(n+1)-f(n))/log n also be unbounded? The forward implication is open and is NOT asserted. Instead this entry establishes the theory any analysis of Part I needs. (1) Non-vacuity: an explicit additive witness logSqWeight(n) = ∑_{p|n} (log p)² satisfies the hypothesis, so Part I is not vacuously true — and the witness is even strongly additive. (2) Selectivity: the parent file's flagship functions log and ω both FAIL the hypothesis (log sits at the boundary, ω is bounded on prime powers), so the hypothesis is a strict growth condition. (3) The hypothesis forces plain unboundedness of f on prime powers. (4) A strongly-additive reduction collapsing the hypothesis to a condition on the primes alone, mirroring the parent's completely-additive reduction. Verified, 0 axioms, 0 sorries, no native_decide.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [
+      "exists_additive_unboundedOnPrimePowers: the headline non-vacuity result — there is an additive function satisfying UnboundedOnPrimePowers, so Part I of Erdős #897 is not vacuously true. Witness: logSqWeight(n) = ∑_{p|n} (log p)².",
+      "logSqWeight_additive / logSqWeight_stronglyAdditive: the witness is additive (disjoint prime supports of coprime numbers split the sum) and in fact strongly additive (logSqWeight(p^k) = logSqWeight(p) = (log p)²), so it is governed by the strongly-additive reduction below.",
+      "not_unboundedOnPrimePowers_logN and not_unboundedOnPrimePowers_omega: selectivity of the hypothesis — the parent file's flagship additive functions log and ω both FAIL it. log sits exactly at the boundary (log(p^k)/log(p^k) = 1) and ω is bounded on prime powers (ω(p^k) = 1). The hypothesis therefore isolates functions growing strictly faster than log on prime powers.",
+      "unboundedOnPrimePowers_unbounded: the hypothesis forces plain unboundedness — for every B some prime power has f(p^k) > B, obtained by dialing the defining constant M against the uniform lower bound log(p^k) ≥ log 2.",
+      "stronglyAdditive_unboundedOnPrimePowers_iff: a strongly-additive reduction collapsing UnboundedOnPrimePowers f to 'f(p)/log p unbounded over primes', the strongly-additive counterpart of the parent file's completely-additive reduction. The cancellation is different: the value is constant in k, so the binding case is k = 1, and the M < 0 branch is handled by invoking the hypothesis at 0."
+    ],
+    "open": [],
+    "goal": "Let $f$ be additive with $\\limsup_{p,k} f(p^k)/\\log(p^k) = \\infty$. **Part I (OPEN)**: must $\\limsup_n (f(n+1)-f(n))/\\log n = \\infty$? This entry does not assert Part I. It proves the verified scaffolding: (1) the hypothesis is satisfiable (an explicit additive, indeed strongly additive, witness); (2) the classical examples $\\log$ and $\\omega$ fail the hypothesis; (3) the hypothesis forces $f$ unbounded above on prime powers; (4) for strongly additive $f$ the hypothesis reduces to $f(p)/\\log p$ unbounded over primes."
+  },
+  "currentState": {
     "phase": "COMPLETED",
-    "status": "completed",
-    "tier": "B",
-    "path": "full",
-    "problemStatement": {
-        "formal": "Let $f$ be additive with $\\limsup_{p,k} f(p^k)/\\log(p^k) = \\infty$. **Part I (OPEN)**: must $\\limsup_n (f(n+1)-f(n))/\\log n = \\infty$? This entry does not assert Part I. It proves the verified scaffolding: (1) the hypothesis is satisfiable (an explicit additive, indeed strongly additive, witness); (2) the classical examples $\\log$ and $\\omega$ fail the hypothesis; (3) the hypothesis forces $f$ unbounded above on prime powers; (4) for strongly additive $f$ the hypothesis reduces to $f(p)/\\log p$ unbounded over primes.",
-        "plain": "Verified, axiom-free surrounding theory for Part I of Erdős #897 (OPEN): if an additive f grows faster than log on prime powers (limsup f(p^k)/log(p^k) = ∞), must (f(n+1)-f(n))/log n also be unbounded? The forward implication is open and is NOT asserted. Instead this entry establishes the theory any analysis of Part I needs. (1) Non-vacuity: an explicit additive witness logSqWeight(n) = ∑_{p|n} (log p)² satisfies the hypothesis, so Part I is not vacuously true — and the witness is even strongly additive. (2) Selectivity: the parent file's flagship functions log and ω both FAIL the hypothesis (log sits at the boundary, ω is bounded on prime powers), so the hypothesis is a strict growth condition. (3) The hypothesis forces plain unboundedness of f on prime powers. (4) A strongly-additive reduction collapsing the hypothesis to a condition on the primes alone, mirroring the parent's completely-additive reduction. Verified, 0 axioms, 0 sorries, no native_decide.",
-        "whyMatters": []
+    "since": "2026-06-25T00:00:00Z",
+    "iteration": 1,
+    "focus": "Verified deliverable already complete in main: proofs/Proofs/Erdos897OQ01.lean and gallery entry erdos-897-oq-01 (status verified)."
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED and verified in main (229 lines, 9 theorems, 0 sorries, axiomCount 0, badge 'original'). Verified, axiom-free surrounding theory for Part I of Erdős #897 (OPEN): if an additive f grows faster than log on prime powers (limsup f(p^k)/log(p^k) = ∞), must (f(n+1)-f(n))/log n also be unbounded? The forward implication is open and is NOT asserted. Instead this entry establishes the theory any analysis of Part I needs. (1) Non-vacuity: an explicit additive witness logSqWeight(n) = ∑_{p|n} (log p)² satisfies the hypothesis, so Part I is not vacuously true — and the witness is even strongly additive. (2) Selectivity: the parent file's flagship functions log and ω both FAIL the hypothesis (log sits at the boundary, ω is bounded on prime powers), so the hypothesis is a strict growth condition. (3) The hypothesis forces plain unboundedness of f on prime powers. (4) A strongly-additive reduction collapsing the hypothesis to a condition on the primes alone, mirroring the parent's completely-additive reduction. Verified, 0 axioms, 0 sorries, no native_decide.",
+    "builtItems": [
+      "exists_additive_unboundedOnPrimePowers: the headline non-vacuity result — there is an additive function satisfying UnboundedOnPrimePowers, so Part I of Erdős #897 is not vacuously true. Witness: logSqWeight(n) = ∑_{p|n} (log p)².",
+      "logSqWeight_additive / logSqWeight_stronglyAdditive: the witness is additive (disjoint prime supports of coprime numbers split the sum) and in fact strongly additive (logSqWeight(p^k) = logSqWeight(p) = (log p)²), so it is governed by the strongly-additive reduction below.",
+      "not_unboundedOnPrimePowers_logN and not_unboundedOnPrimePowers_omega: selectivity of the hypothesis — the parent file's flagship additive functions log and ω both FAIL it. log sits exactly at the boundary (log(p^k)/log(p^k) = 1) and ω is bounded on prime powers (ω(p^k) = 1). The hypothesis therefore isolates functions growing strictly faster than log on prime powers.",
+      "unboundedOnPrimePowers_unbounded: the hypothesis forces plain unboundedness — for every B some prime power has f(p^k) > B, obtained by dialing the defining constant M against the uniform lower bound log(p^k) ≥ log 2.",
+      "stronglyAdditive_unboundedOnPrimePowers_iff: a strongly-additive reduction collapsing UnboundedOnPrimePowers f to 'f(p)/log p unbounded over primes', the strongly-additive counterpart of the parent file's completely-additive reduction. The cancellation is different: the value is constant in k, so the binding case is k = 1, and the M < 0 branch is handled by invoking the hypothesis at 0.",
+      "Gallery entry src/data/proofs/erdos-897-oq-01 (meta.json + annotations.json); Lean source proofs/Proofs/Erdos897OQ01.lean."
+    ],
+    "insights": [
+      "**Non-vacuity matters for open problems**: without an explicit witness, Part I could be vacuously true. logSqWeight certifies the hypothesis is genuinely satisfiable — and by a strongly additive function, the most structured class.",
+      "**The hypothesis is a strict growth condition**: log is the boundary (ratio identically 1) and ω is bounded on prime powers, so both flagship examples fail. The hypothesis selects functions growing strictly faster than log on prime powers.",
+      "**Constant-in-k is the key to the strongly-additive reduction**: unlike the completely-additive case where k cancels in a ratio, here the value does not depend on k, so the worst case is simply k = 1.",
+      "**Squaring the log is the cheapest super-log weight**: (log p)²/log p = log p → ∞ gives the required divergence with a one-line estimate, avoiding any heavier construction."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "erdos",
+    "number-theory",
+    "additive-functions",
+    "analytic-number-theory",
+    "arithmetic-functions",
+    "open-problem"
+  ],
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos897OQ01.lean",
+      "filename": "Erdos897OQ01.lean",
+      "lineCount": 273,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos897OQ01.lean"
     },
-    "knownResults": {
-        "proven": [
-            "exists_additive_unboundedOnPrimePowers: the headline non-vacuity result — there is an additive function satisfying UnboundedOnPrimePowers, so Part I of Erdős #897 is not vacuously true. Witness: logSqWeight(n) = ∑_{p|n} (log p)².",
-            "logSqWeight_additive / logSqWeight_stronglyAdditive: the witness is additive (disjoint prime supports of coprime numbers split the sum) and in fact strongly additive (logSqWeight(p^k) = logSqWeight(p) = (log p)²), so it is governed by the strongly-additive reduction below.",
-            "not_unboundedOnPrimePowers_logN and not_unboundedOnPrimePowers_omega: selectivity of the hypothesis — the parent file's flagship additive functions log and ω both FAIL it. log sits exactly at the boundary (log(p^k)/log(p^k) = 1) and ω is bounded on prime powers (ω(p^k) = 1). The hypothesis therefore isolates functions growing strictly faster than log on prime powers.",
-            "unboundedOnPrimePowers_unbounded: the hypothesis forces plain unboundedness — for every B some prime power has f(p^k) > B, obtained by dialing the defining constant M against the uniform lower bound log(p^k) ≥ log 2.",
-            "stronglyAdditive_unboundedOnPrimePowers_iff: a strongly-additive reduction collapsing UnboundedOnPrimePowers f to 'f(p)/log p unbounded over primes', the strongly-additive counterpart of the parent file's completely-additive reduction. The cancellation is different: the value is constant in k, so the binding case is k = 1, and the M < 0 branch is handled by invoking the hypothesis at 0."
-        ],
-        "open": [],
-        "goal": "Let $f$ be additive with $\\limsup_{p,k} f(p^k)/\\log(p^k) = \\infty$. **Part I (OPEN)**: must $\\limsup_n (f(n+1)-f(n))/\\log n = \\infty$? This entry does not assert Part I. It proves the verified scaffolding: (1) the hypothesis is satisfiable (an explicit additive, indeed strongly additive, witness); (2) the classical examples $\\log$ and $\\omega$ fail the hypothesis; (3) the hypothesis forces $f$ unbounded above on prime powers; (4) for strongly additive $f$ the hypothesis reduces to $f(p)/\\log p$ unbounded over primes."
-    },
-    "currentState": {
-        "phase": "COMPLETED",
-        "since": "2026-06-25T00:00:00Z",
-        "iteration": 1,
-        "focus": "Verified deliverable already complete in main: proofs/Proofs/Erdos897OQ01.lean and gallery entry erdos-897-oq-01 (status verified)."
-    },
-    "knowledge": {
-        "progressSummary": "COMPLETED and verified in main (229 lines, 9 theorems, 0 sorries, axiomCount 0, badge 'original'). Verified, axiom-free surrounding theory for Part I of Erdős #897 (OPEN): if an additive f grows faster than log on prime powers (limsup f(p^k)/log(p^k) = ∞), must (f(n+1)-f(n))/log n also be unbounded? The forward implication is open and is NOT asserted. Instead this entry establishes the theory any analysis of Part I needs. (1) Non-vacuity: an explicit additive witness logSqWeight(n) = ∑_{p|n} (log p)² satisfies the hypothesis, so Part I is not vacuously true — and the witness is even strongly additive. (2) Selectivity: the parent file's flagship functions log and ω both FAIL the hypothesis (log sits at the boundary, ω is bounded on prime powers), so the hypothesis is a strict growth condition. (3) The hypothesis forces plain unboundedness of f on prime powers. (4) A strongly-additive reduction collapsing the hypothesis to a condition on the primes alone, mirroring the parent's completely-additive reduction. Verified, 0 axioms, 0 sorries, no native_decide.",
-        "builtItems": [
-            "exists_additive_unboundedOnPrimePowers: the headline non-vacuity result — there is an additive function satisfying UnboundedOnPrimePowers, so Part I of Erdős #897 is not vacuously true. Witness: logSqWeight(n) = ∑_{p|n} (log p)².",
-            "logSqWeight_additive / logSqWeight_stronglyAdditive: the witness is additive (disjoint prime supports of coprime numbers split the sum) and in fact strongly additive (logSqWeight(p^k) = logSqWeight(p) = (log p)²), so it is governed by the strongly-additive reduction below.",
-            "not_unboundedOnPrimePowers_logN and not_unboundedOnPrimePowers_omega: selectivity of the hypothesis — the parent file's flagship additive functions log and ω both FAIL it. log sits exactly at the boundary (log(p^k)/log(p^k) = 1) and ω is bounded on prime powers (ω(p^k) = 1). The hypothesis therefore isolates functions growing strictly faster than log on prime powers.",
-            "unboundedOnPrimePowers_unbounded: the hypothesis forces plain unboundedness — for every B some prime power has f(p^k) > B, obtained by dialing the defining constant M against the uniform lower bound log(p^k) ≥ log 2.",
-            "stronglyAdditive_unboundedOnPrimePowers_iff: a strongly-additive reduction collapsing UnboundedOnPrimePowers f to 'f(p)/log p unbounded over primes', the strongly-additive counterpart of the parent file's completely-additive reduction. The cancellation is different: the value is constant in k, so the binding case is k = 1, and the M < 0 branch is handled by invoking the hypothesis at 0.",
-            "Gallery entry src/data/proofs/erdos-897-oq-01 (meta.json + annotations.json); Lean source proofs/Proofs/Erdos897OQ01.lean."
-        ],
-        "insights": [
-            "**Non-vacuity matters for open problems**: without an explicit witness, Part I could be vacuously true. logSqWeight certifies the hypothesis is genuinely satisfiable — and by a strongly additive function, the most structured class.",
-            "**The hypothesis is a strict growth condition**: log is the boundary (ratio identically 1) and ω is bounded on prime powers, so both flagship examples fail. The hypothesis selects functions growing strictly faster than log on prime powers.",
-            "**Constant-in-k is the key to the strongly-additive reduction**: unlike the completely-additive case where k cancels in a ratio, here the value does not depend on k, so the worst case is simply k = 1.",
-            "**Squaring the log is the cheapest super-log weight**: (log p)²/log p = log p → ∞ gives the required divergence with a one-line estimate, avoiding any heavier construction."
-        ],
-        "mathlibGaps": [],
-        "nextSteps": []
-    },
-    "tags": [
-        "erdos",
-        "number-theory",
-        "additive-functions",
-        "analytic-number-theory",
-        "arithmetic-functions",
-        "open-problem"
-    ]
+    {
+      "path": "Proofs/Erdos897Problem.lean",
+      "filename": "Erdos897Problem.lean",
+      "lineCount": 243,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos897Problem.lean"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-8",
+    "erdos-89",
+    "erdos-897",
+    "erdos-897-oq-01"
+  ]
 }

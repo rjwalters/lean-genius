@@ -47,7 +47,9 @@
   "relatedProofs": [
     "ramsey-r4k",
     "ramsey-r4k-extensions",
-    "ramsey-r4k-extensions-oq-01"
+    "ramsey-r4k-extensions-oq-01",
+    "ramsey-r4k-extensions-oq-03",
+    "ramsey-r4k-extensions-oq-03-oq-01"
   ],
   "references": {
     "papers": [],
@@ -63,13 +65,57 @@
     {
       "path": "Proofs/RamseyR4kExtensions.lean",
       "filename": "RamseyR4kExtensions.lean",
-      "lineCount": 1143,
-      "theoremCount": 74,
-      "axiomCount": 15,
+      "lineCount": 1295,
+      "theoremCount": 82,
+      "axiomCount": 9,
       "defCount": 13,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/RamseyR4kExtensions.lean"
+    },
+    {
+      "path": "Proofs/RamseyR4kExtensionsOQ03.lean",
+      "filename": "RamseyR4kExtensionsOQ03.lean",
+      "lineCount": 594,
+      "theoremCount": 22,
+      "axiomCount": 0,
+      "defCount": 6,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/RamseyR4kExtensionsOQ03.lean"
+    },
+    {
+      "path": "Proofs/RamseyR4kExtensionsOQ03Deletion.lean",
+      "filename": "RamseyR4kExtensionsOQ03Deletion.lean",
+      "lineCount": 760,
+      "theoremCount": 25,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/RamseyR4kExtensionsOQ03Deletion.lean"
+    },
+    {
+      "path": "Proofs/RamseyR4kExtensionsOQ03OQ01.lean",
+      "filename": "RamseyR4kExtensionsOQ03OQ01.lean",
+      "lineCount": 141,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/RamseyR4kExtensionsOQ03OQ01.lean"
+    },
+    {
+      "path": "Proofs/RamseyR4kExtensionsOQ03OQ02.lean",
+      "filename": "RamseyR4kExtensionsOQ03OQ02.lean",
+      "lineCount": 191,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/RamseyR4kExtensionsOQ03OQ02.lean"
     }
   ]
 }

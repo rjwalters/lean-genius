@@ -34,7 +34,11 @@
     "focus": "Shipped verified 0-axiom gallery entry.",
     "blockers": [],
     "nextAction": "None — complete.",
-    "attemptCounts": { "total": 1, "currentApproach": 1, "approachesTried": 1 }
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
   },
   "knowledge": {
     "progressSummary": "COMPLETED: created CantorDiagonalizationOQ01OQ01Wip01.lean (185 lines, 12 theorems, 2 definitions, 0 axioms). Complete structural characterization of the intermediate cardinals: every intermediate is an uncountable aleph, ℵ₁ is the least, and 𝔠 = ℵ_δ makes them exactly {ℵ_o : 0 < o < δ}.",
@@ -54,13 +58,29 @@
     "nextSteps": [],
     "markdown": "See research/problems/cantor-diagonalization-oq-01-oq-01-wip-01/knowledge.md"
   },
-  "tags": ["set-theory", "cardinals", "continuum-hypothesis", "aleph-hierarchy", "intermediate-cardinals"],
+  "tags": [
+    "set-theory",
+    "cardinals",
+    "continuum-hypothesis",
+    "aleph-hierarchy",
+    "intermediate-cardinals"
+  ],
   "relatedProofs": [
+    "cantor-diagonalization",
+    "cantor-diagonalization-oq-01",
     "cantor-diagonalization-oq-01-oq-01",
     "cantor-diagonalization-oq-01-oq-01-oq-03",
-    "cantor-diagonalization"
+    "cantor-diagonalization-oq-01-oq-01-wip-01"
   ],
-  "references": { "papers": [], "urls": [], "mathlib": ["Cardinal.aleph", "Cardinal.mem_range_aleph_iff", "Cardinal.aleph_one_le_continuum"] },
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": [
+      "Cardinal.aleph",
+      "Cardinal.mem_range_aleph_iff",
+      "Cardinal.aleph_one_le_continuum"
+    ]
+  },
   "started": "2026-07-02T00:00:00.000Z",
   "lastUpdate": "2026-07-02T00:00:00.000Z",
   "leanFiles": [

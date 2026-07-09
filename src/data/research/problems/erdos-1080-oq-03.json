@@ -12,11 +12,36 @@
   "problemStatement": "Erdős #1080 concerns C₄,C₆-free bipartite graphs; Erdős observed a dense such graph must still contain a C₈. OQ-03 asks to extend the analysis to other cycle lengths (C₈, C₁₀, …). What is the structural constraint on which cycle lengths can occur in a bipartite graph?",
   "currentState": "Structural foundation proved axiom-free (0 sorries): in ANY bipartite graph every cycle has EVEN length and length ≥ 4, so the realizable cycle lengths are exactly the even numbers ≥ 4 ({C₄, C₆, C₈, C₁₀, …}) and no odd cycle (C₅, C₇, C₉, …) ever occurs. This pins down the ambient set of cycle lengths the C₄/C₆ extremal story can extend through. The extremal direction proper (a dense C₄,C₆-free bipartite graph must contain a C₈, and analogous existence statements for longer even cycles) remains open and is not elementary.",
   "leanFiles": [
-    "proofs/Proofs/Erdos1080OQ03.lean"
+    {
+      "path": "Proofs/Erdos1080OQ03.lean",
+      "filename": "Erdos1080OQ03.lean",
+      "lineCount": 202,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1080OQ03.lean"
+    },
+    {
+      "path": "Proofs/Erdos1080Problem.lean",
+      "filename": "Erdos1080Problem.lean",
+      "lineCount": 336,
+      "theoremCount": 7,
+      "axiomCount": 2,
+      "defCount": 7,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1080Problem.lean"
+    }
   ],
   "relatedProofs": [
+    "erdos-1",
+    "erdos-10",
+    "erdos-108",
     "erdos-1080",
-    "erdos-1080-incomplete-01"
+    "erdos-1080-incomplete-01",
+    "erdos-1080-oq-03"
   ],
   "tags": [
     "combinatorics",

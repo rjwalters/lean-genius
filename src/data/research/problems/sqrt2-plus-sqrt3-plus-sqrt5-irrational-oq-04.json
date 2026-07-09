@@ -1,64 +1,116 @@
 {
-    "slug": "sqrt2-plus-sqrt3-plus-sqrt5-irrational-oq-04",
-    "title": "Multiquadratic Field ℚ(√2,√3,√5): Degree-8 Minimal Polynomial and its (ℤ/2ℤ)³ Sign-Flip Root Orbit",
+  "slug": "sqrt2-plus-sqrt3-plus-sqrt5-irrational-oq-04",
+  "title": "Multiquadratic Field ℚ(√2,√3,√5): Degree-8 Minimal Polynomial and its (ℤ/2ℤ)³ Sign-Flip Root Orbit",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Determine the multiquadratic field structure of $\\mathbb{Q}(\\sqrt2,\\sqrt3,\\sqrt5)$: the minimal polynomial of the primitive generator $\\alpha=\\sqrt2+\\sqrt3+\\sqrt5$, its root orbit under the sign-flip group, and the extension degree (conjecturally $8$ with Galois group $(\\mathbb{Z}/2\\mathbb{Z})^3$).",
+    "plain": "OQ-04 of the parent sqrt2-plus-sqrt3-plus-sqrt5-irrational entry asks for the multiquadratic field structure of ℚ(√2,√3,√5): that [ℚ(√2,√3,√5):ℚ] = 8 with Galois group (ℤ/2ℤ)³. Mathlib has no multiquadratic-tower API, so a complete field-theoretic computation (irreducibility of the degree-8 minimal polynomial, the Galois-group isomorphism) is out of reach self-contained. This entry establishes the verifiable algebraic core. The generator α = √2+√3+√5 satisfies the explicit monic degree-8 polynomial p(X) = X⁸ − 40X⁶ + 352X⁴ − 960X² + 576 — its minimal polynomial over ℚ. Proved elementarily (no field theory): a single sign-agnostic key identity shows that for ANY reals a,b,c with a²=2, b²=3, c²=5 one has p(a+b+c)=0, via three iterated squarings expressed as linear_combinations of the square hypotheses. This instantly yields all eight sign-variants ε₁√2+ε₂√3+ε₃√5 (εᵢ=±1) as roots — the (ℤ/2ℤ)³-orbit of α and the full root set, so p factors as ∏(X − (ε₁√2+ε₂√3+ε₃√5)). p is even (roots in ± pairs), and α is the strict maximum conjugate (a simple, largest root). Packaging p as a ℚ[X]-annihilator gives a VERIFIED field-theoretic upper bound [ℚ(α):ℚ] ≤ 8 via minpoly-divides-annihilator. 9 theorems, 2 definitions, 0 sorries, 0 axioms.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [
+      "key: the sign-agnostic heart — for ANY reals a,b,c with a²=2, b²=3, c²=5, the sum a+b+c is a root of p(X)=X⁸−40X⁶+352X⁴−960X²+576. Proved by three iterated squarings (σ²=2σc+2ab, σ⁴−20σ²−24=8σ·abc, then square using (abc)²=30), each a linear_combination of the square hypotheses, so the proof never commits to a sign of a,b,c",
+      "alpha_isRoot: √2+√3+√5 is a root of the explicit degree-8 polynomial p — its minimal polynomial over ℚ",
+      "sign_orbit_isRoot: every one of the eight sign-variants ε₁√2+ε₂√3+ε₃√5 (εᵢ²=1) is a root of p; these are the (ℤ/2ℤ)³-orbit of α and the full root set, exhibiting the conjectured Galois sign-flip action concretely",
+      "p_even / neg_isRoot: p(−X)=p(X), so the eight roots occur in ± pairs, consistent with the (ℤ/2ℤ)³ symmetry",
+      "alpha_strict_max: among the eight conjugates, flipping any sign to −1 strictly decreases the value, so α=√2+√3+√5 is the strict maximum — hence a simple root and the largest root of p",
+      "finrank_le_eight: VERIFIED field-theoretic upper bound [ℚ(√2+√3+√5):ℚ] ≤ 8, obtained by packaging p as the monic ℚ[X]-polynomial annihilatorPoly, showing aeval α annihilatorPoly = 0, so minpoly ℚ α ∣ annihilatorPoly and deg(minpoly) ≤ 8 = finrank ℚ ℚ⟮α⟯",
+      "annihilatorPoly_monic / annihilatorPoly_natDegree: the ℚ[X]-packaging X⁸−C40·X⁶+C352·X⁴−C960·X²+C576 is monic of degree exactly 8 (compute_degree!, monicity!)"
+    ],
+    "open": [],
+    "goal": "Determine the multiquadratic field structure of $\\mathbb{Q}(\\sqrt2,\\sqrt3,\\sqrt5)$: the minimal polynomial of the primitive generator $\\alpha=\\sqrt2+\\sqrt3+\\sqrt5$, its root orbit under the sign-flip group, and the extension degree (conjecturally $8$ with Galois group $(\\mathbb{Z}/2\\mathbb{Z})^3$)."
+  },
+  "currentState": {
     "phase": "COMPLETED",
-    "status": "completed",
-    "tier": "B",
-    "path": "full",
-    "problemStatement": {
-        "formal": "Determine the multiquadratic field structure of $\\mathbb{Q}(\\sqrt2,\\sqrt3,\\sqrt5)$: the minimal polynomial of the primitive generator $\\alpha=\\sqrt2+\\sqrt3+\\sqrt5$, its root orbit under the sign-flip group, and the extension degree (conjecturally $8$ with Galois group $(\\mathbb{Z}/2\\mathbb{Z})^3$).",
-        "plain": "OQ-04 of the parent sqrt2-plus-sqrt3-plus-sqrt5-irrational entry asks for the multiquadratic field structure of ℚ(√2,√3,√5): that [ℚ(√2,√3,√5):ℚ] = 8 with Galois group (ℤ/2ℤ)³. Mathlib has no multiquadratic-tower API, so a complete field-theoretic computation (irreducibility of the degree-8 minimal polynomial, the Galois-group isomorphism) is out of reach self-contained. This entry establishes the verifiable algebraic core. The generator α = √2+√3+√5 satisfies the explicit monic degree-8 polynomial p(X) = X⁸ − 40X⁶ + 352X⁴ − 960X² + 576 — its minimal polynomial over ℚ. Proved elementarily (no field theory): a single sign-agnostic key identity shows that for ANY reals a,b,c with a²=2, b²=3, c²=5 one has p(a+b+c)=0, via three iterated squarings expressed as linear_combinations of the square hypotheses. This instantly yields all eight sign-variants ε₁√2+ε₂√3+ε₃√5 (εᵢ=±1) as roots — the (ℤ/2ℤ)³-orbit of α and the full root set, so p factors as ∏(X − (ε₁√2+ε₂√3+ε₃√5)). p is even (roots in ± pairs), and α is the strict maximum conjugate (a simple, largest root). Packaging p as a ℚ[X]-annihilator gives a VERIFIED field-theoretic upper bound [ℚ(α):ℚ] ≤ 8 via minpoly-divides-annihilator. 9 theorems, 2 definitions, 0 sorries, 0 axioms.",
-        "whyMatters": []
+    "since": "2026-06-22T00:00:00Z",
+    "iteration": 1,
+    "focus": "Verified deliverable already complete in main: proofs/Proofs/Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ04.lean and gallery entry sqrt2-plus-sqrt3-plus-sqrt5-irrational-oq-04 (status verified)."
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED and verified in main (192 lines, 9 theorems, 0 sorries, axiomCount 0, badge 'original'). OQ-04 of the parent sqrt2-plus-sqrt3-plus-sqrt5-irrational entry asks for the multiquadratic field structure of ℚ(√2,√3,√5): that [ℚ(√2,√3,√5):ℚ] = 8 with Galois group (ℤ/2ℤ)³. Mathlib has no multiquadratic-tower API, so a complete field-theoretic computation (irreducibility of the degree-8 minimal polynomial, the Galois-group isomorphism) is out of reach self-contained. This entry establishes the verifiable algebraic core. The generator α = √2+√3+√5 satisfies the explicit monic degree-8 polynomial p(X) = X⁸ − 40X⁶ + 352X⁴ − 960X² + 576 — its minimal polynomial over ℚ. Proved elementarily (no field theory): a single sign-agnostic key identity shows that for ANY reals a,b,c with a²=2, b²=3, c²=5 one has p(a+b+c)=0, via three iterated squarings expressed as linear_combinations of the square hypotheses. This instantly yields all eight sign-variants ε₁√2+ε₂√3+ε₃√5 (εᵢ=±1) as roots — the (ℤ/2ℤ)³-orbit of α and the full root set, so p factors as ∏(X − (ε₁√2+ε₂√3+ε₃√5)). p is even (roots in ± pairs), and α is the strict maximum conjugate (a simple, largest root). Packaging p as a ℚ[X]-annihilator gives a VERIFIED field-theoretic upper bound [ℚ(α):ℚ] ≤ 8 via minpoly-divides-annihilator. 9 theorems, 2 definitions, 0 sorries, 0 axioms.",
+    "builtItems": [
+      "key: the sign-agnostic heart — for ANY reals a,b,c with a²=2, b²=3, c²=5, the sum a+b+c is a root of p(X)=X⁸−40X⁶+352X⁴−960X²+576. Proved by three iterated squarings (σ²=2σc+2ab, σ⁴−20σ²−24=8σ·abc, then square using (abc)²=30), each a linear_combination of the square hypotheses, so the proof never commits to a sign of a,b,c",
+      "alpha_isRoot: √2+√3+√5 is a root of the explicit degree-8 polynomial p — its minimal polynomial over ℚ",
+      "sign_orbit_isRoot: every one of the eight sign-variants ε₁√2+ε₂√3+ε₃√5 (εᵢ²=1) is a root of p; these are the (ℤ/2ℤ)³-orbit of α and the full root set, exhibiting the conjectured Galois sign-flip action concretely",
+      "p_even / neg_isRoot: p(−X)=p(X), so the eight roots occur in ± pairs, consistent with the (ℤ/2ℤ)³ symmetry",
+      "alpha_strict_max: among the eight conjugates, flipping any sign to −1 strictly decreases the value, so α=√2+√3+√5 is the strict maximum — hence a simple root and the largest root of p",
+      "finrank_le_eight: VERIFIED field-theoretic upper bound [ℚ(√2+√3+√5):ℚ] ≤ 8, obtained by packaging p as the monic ℚ[X]-polynomial annihilatorPoly, showing aeval α annihilatorPoly = 0, so minpoly ℚ α ∣ annihilatorPoly and deg(minpoly) ≤ 8 = finrank ℚ ℚ⟮α⟯",
+      "annihilatorPoly_monic / annihilatorPoly_natDegree: the ℚ[X]-packaging X⁸−C40·X⁶+C352·X⁴−C960·X²+C576 is monic of degree exactly 8 (compute_degree!, monicity!)",
+      "Gallery entry src/data/proofs/sqrt2-plus-sqrt3-plus-sqrt5-irrational-oq-04 (meta.json + annotations.json); Lean source proofs/Proofs/Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ04.lean."
+    ],
+    "insights": [
+      "Sign-agnosticism is the whole trick. Because the derivation of $p(a+b+c)=0$ only ever squares and only ever uses $a^2,b^2,c^2$ (never the signs of $a,b,c$), one lemma stated for arbitrary $a,b,c$ with $a^2=2,b^2=3,c^2=5$ simultaneously proves all eight conjugates $\\varepsilon_1\\sqrt2+\\varepsilon_2\\sqrt3+\\varepsilon_3\\sqrt5$ are roots. The $(\\mathbb{Z}/2\\mathbb{Z})^3$ Galois action falls out for free.",
+      "linear_combination over a polynomial ideal. Each squaring step is an identity modulo the ideal $(a^2-2,b^2-3,c^2-5)$. Supplying the explicit cofactors turns degree-8 algebra into three $\\texttt{linear\\_combination}$ calls, avoiding any $\\texttt{nlinarith}$ search on a degree-8 goal.",
+      "The polynomial is even — $p(-X)=p(X)$ — so its roots pair up as $\\pm$. The negate-all-signs element of $(\\mathbb{Z}/2\\mathbb{Z})^3$ realises exactly this involution on the orbit.",
+      "α is the strict maximum conjugate. Since each $\\sqrt k>0$ and $-\\sqrt k<\\sqrt k$, flipping any sign strictly lowers the sum, so $\\alpha=\\sqrt2+\\sqrt3+\\sqrt5$ is a simple root and the largest of the eight — a clean order-theoretic fingerprint of the all-plus orbit element.",
+      "Verified upper bound, honest about the open lower bound. Packaging $p$ as $\\texttt{annihilatorPoly}\\in\\mathbb{Q}[X]$ and dividing the minimal polynomial into it gives $[\\mathbb{Q}(\\alpha):\\mathbb{Q}]\\le 8$ as a fully checked theorem. The matching $=8$ needs irreducibility of $p$ over $\\mathbb{Q}$ (equivalently the multiquadratic linear-independence absent from Mathlib), which is left as the genuinely open part."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "algebra",
+    "field-theory",
+    "galois-theory",
+    "multiquadratic",
+    "minimal-polynomial",
+    "number-theory",
+    "research",
+    "open-problem"
+  ],
+  "leanFiles": [
+    {
+      "path": "Proofs/Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ01.lean",
+      "filename": "Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ01.lean",
+      "lineCount": 145,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ01.lean"
     },
-    "knownResults": {
-        "proven": [
-            "key: the sign-agnostic heart — for ANY reals a,b,c with a²=2, b²=3, c²=5, the sum a+b+c is a root of p(X)=X⁸−40X⁶+352X⁴−960X²+576. Proved by three iterated squarings (σ²=2σc+2ab, σ⁴−20σ²−24=8σ·abc, then square using (abc)²=30), each a linear_combination of the square hypotheses, so the proof never commits to a sign of a,b,c",
-            "alpha_isRoot: √2+√3+√5 is a root of the explicit degree-8 polynomial p — its minimal polynomial over ℚ",
-            "sign_orbit_isRoot: every one of the eight sign-variants ε₁√2+ε₂√3+ε₃√5 (εᵢ²=1) is a root of p; these are the (ℤ/2ℤ)³-orbit of α and the full root set, exhibiting the conjectured Galois sign-flip action concretely",
-            "p_even / neg_isRoot: p(−X)=p(X), so the eight roots occur in ± pairs, consistent with the (ℤ/2ℤ)³ symmetry",
-            "alpha_strict_max: among the eight conjugates, flipping any sign to −1 strictly decreases the value, so α=√2+√3+√5 is the strict maximum — hence a simple root and the largest root of p",
-            "finrank_le_eight: VERIFIED field-theoretic upper bound [ℚ(√2+√3+√5):ℚ] ≤ 8, obtained by packaging p as the monic ℚ[X]-polynomial annihilatorPoly, showing aeval α annihilatorPoly = 0, so minpoly ℚ α ∣ annihilatorPoly and deg(minpoly) ≤ 8 = finrank ℚ ℚ⟮α⟯",
-            "annihilatorPoly_monic / annihilatorPoly_natDegree: the ℚ[X]-packaging X⁸−C40·X⁶+C352·X⁴−C960·X²+C576 is monic of degree exactly 8 (compute_degree!, monicity!)"
-        ],
-        "open": [],
-        "goal": "Determine the multiquadratic field structure of $\\mathbb{Q}(\\sqrt2,\\sqrt3,\\sqrt5)$: the minimal polynomial of the primitive generator $\\alpha=\\sqrt2+\\sqrt3+\\sqrt5$, its root orbit under the sign-flip group, and the extension degree (conjecturally $8$ with Galois group $(\\mathbb{Z}/2\\mathbb{Z})^3$)."
+    {
+      "path": "Proofs/Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ02.lean",
+      "filename": "Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ02.lean",
+      "lineCount": 151,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 5,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ02.lean"
     },
-    "currentState": {
-        "phase": "COMPLETED",
-        "since": "2026-06-22T00:00:00Z",
-        "iteration": 1,
-        "focus": "Verified deliverable already complete in main: proofs/Proofs/Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ04.lean and gallery entry sqrt2-plus-sqrt3-plus-sqrt5-irrational-oq-04 (status verified)."
+    {
+      "path": "Proofs/Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ03.lean",
+      "filename": "Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ03.lean",
+      "lineCount": 163,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ03.lean"
     },
-    "knowledge": {
-        "progressSummary": "COMPLETED and verified in main (192 lines, 9 theorems, 0 sorries, axiomCount 0, badge 'original'). OQ-04 of the parent sqrt2-plus-sqrt3-plus-sqrt5-irrational entry asks for the multiquadratic field structure of ℚ(√2,√3,√5): that [ℚ(√2,√3,√5):ℚ] = 8 with Galois group (ℤ/2ℤ)³. Mathlib has no multiquadratic-tower API, so a complete field-theoretic computation (irreducibility of the degree-8 minimal polynomial, the Galois-group isomorphism) is out of reach self-contained. This entry establishes the verifiable algebraic core. The generator α = √2+√3+√5 satisfies the explicit monic degree-8 polynomial p(X) = X⁸ − 40X⁶ + 352X⁴ − 960X² + 576 — its minimal polynomial over ℚ. Proved elementarily (no field theory): a single sign-agnostic key identity shows that for ANY reals a,b,c with a²=2, b²=3, c²=5 one has p(a+b+c)=0, via three iterated squarings expressed as linear_combinations of the square hypotheses. This instantly yields all eight sign-variants ε₁√2+ε₂√3+ε₃√5 (εᵢ=±1) as roots — the (ℤ/2ℤ)³-orbit of α and the full root set, so p factors as ∏(X − (ε₁√2+ε₂√3+ε₃√5)). p is even (roots in ± pairs), and α is the strict maximum conjugate (a simple, largest root). Packaging p as a ℚ[X]-annihilator gives a VERIFIED field-theoretic upper bound [ℚ(α):ℚ] ≤ 8 via minpoly-divides-annihilator. 9 theorems, 2 definitions, 0 sorries, 0 axioms.",
-        "builtItems": [
-            "key: the sign-agnostic heart — for ANY reals a,b,c with a²=2, b²=3, c²=5, the sum a+b+c is a root of p(X)=X⁸−40X⁶+352X⁴−960X²+576. Proved by three iterated squarings (σ²=2σc+2ab, σ⁴−20σ²−24=8σ·abc, then square using (abc)²=30), each a linear_combination of the square hypotheses, so the proof never commits to a sign of a,b,c",
-            "alpha_isRoot: √2+√3+√5 is a root of the explicit degree-8 polynomial p — its minimal polynomial over ℚ",
-            "sign_orbit_isRoot: every one of the eight sign-variants ε₁√2+ε₂√3+ε₃√5 (εᵢ²=1) is a root of p; these are the (ℤ/2ℤ)³-orbit of α and the full root set, exhibiting the conjectured Galois sign-flip action concretely",
-            "p_even / neg_isRoot: p(−X)=p(X), so the eight roots occur in ± pairs, consistent with the (ℤ/2ℤ)³ symmetry",
-            "alpha_strict_max: among the eight conjugates, flipping any sign to −1 strictly decreases the value, so α=√2+√3+√5 is the strict maximum — hence a simple root and the largest root of p",
-            "finrank_le_eight: VERIFIED field-theoretic upper bound [ℚ(√2+√3+√5):ℚ] ≤ 8, obtained by packaging p as the monic ℚ[X]-polynomial annihilatorPoly, showing aeval α annihilatorPoly = 0, so minpoly ℚ α ∣ annihilatorPoly and deg(minpoly) ≤ 8 = finrank ℚ ℚ⟮α⟯",
-            "annihilatorPoly_monic / annihilatorPoly_natDegree: the ℚ[X]-packaging X⁸−C40·X⁶+C352·X⁴−C960·X²+C576 is monic of degree exactly 8 (compute_degree!, monicity!)",
-            "Gallery entry src/data/proofs/sqrt2-plus-sqrt3-plus-sqrt5-irrational-oq-04 (meta.json + annotations.json); Lean source proofs/Proofs/Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ04.lean."
-        ],
-        "insights": [
-            "Sign-agnosticism is the whole trick. Because the derivation of $p(a+b+c)=0$ only ever squares and only ever uses $a^2,b^2,c^2$ (never the signs of $a,b,c$), one lemma stated for arbitrary $a,b,c$ with $a^2=2,b^2=3,c^2=5$ simultaneously proves all eight conjugates $\\varepsilon_1\\sqrt2+\\varepsilon_2\\sqrt3+\\varepsilon_3\\sqrt5$ are roots. The $(\\mathbb{Z}/2\\mathbb{Z})^3$ Galois action falls out for free.",
-            "linear_combination over a polynomial ideal. Each squaring step is an identity modulo the ideal $(a^2-2,b^2-3,c^2-5)$. Supplying the explicit cofactors turns degree-8 algebra into three $\\texttt{linear\\_combination}$ calls, avoiding any $\\texttt{nlinarith}$ search on a degree-8 goal.",
-            "The polynomial is even — $p(-X)=p(X)$ — so its roots pair up as $\\pm$. The negate-all-signs element of $(\\mathbb{Z}/2\\mathbb{Z})^3$ realises exactly this involution on the orbit.",
-            "α is the strict maximum conjugate. Since each $\\sqrt k>0$ and $-\\sqrt k<\\sqrt k$, flipping any sign strictly lowers the sum, so $\\alpha=\\sqrt2+\\sqrt3+\\sqrt5$ is a simple root and the largest of the eight — a clean order-theoretic fingerprint of the all-plus orbit element.",
-            "Verified upper bound, honest about the open lower bound. Packaging $p$ as $\\texttt{annihilatorPoly}\\in\\mathbb{Q}[X]$ and dividing the minimal polynomial into it gives $[\\mathbb{Q}(\\alpha):\\mathbb{Q}]\\le 8$ as a fully checked theorem. The matching $=8$ needs irreducibility of $p$ over $\\mathbb{Q}$ (equivalently the multiquadratic linear-independence absent from Mathlib), which is left as the genuinely open part."
-        ],
-        "mathlibGaps": [],
-        "nextSteps": []
-    },
-    "tags": [
-        "algebra",
-        "field-theory",
-        "galois-theory",
-        "multiquadratic",
-        "minimal-polynomial",
-        "number-theory",
-        "research",
-        "open-problem"
-    ]
+    {
+      "path": "Proofs/Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ04.lean",
+      "filename": "Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ04.lean",
+      "lineCount": 193,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ04.lean"
+    }
+  ],
+  "relatedProofs": [
+    "sqrt2-plus-sqrt3-plus-sqrt5-irrational",
+    "sqrt2-plus-sqrt3-plus-sqrt5-irrational-oq-03",
+    "sqrt2-plus-sqrt3-plus-sqrt5-irrational-oq-04",
+    "sqrt2-plus-sqrt3-plus-sqrt5-irrational-oq-04-oq-01"
+  ]
 }
