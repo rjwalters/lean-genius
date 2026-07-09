@@ -33,6 +33,12 @@ As a corollary the increasing covering number dominates the monotone one
 (`minMonotonicParts_le_minIncreasingParts`), so the identity also re-derives the committed monotone
 upper bound `minMonotonicParts seq ≤ LDS seq`.
 
+The file also proves the exact **dual** identity `minDecreasingParts seq = LIS seq`
+(`minDecreasingParts_eq_LIS`) by transporting the increasing identity through the order-reversing map
+`x ↦ -x`, and combines the two to **close the monotone bracket to its sharp form**
+`minMonotonicParts seq ∈ [n / max(LIS, LDS), min(LIS, LDS)]` for distinct reals
+(`minMonotonicParts_le_min_LIS_LDS`).
+
 No axioms, no sorries.
 -/
 
@@ -326,6 +332,156 @@ theorem minMonotonicParts_le_LDS (seq : RealSeq n) (hinj : Function.Injective se
     minMonotonicParts seq ≤ LDS seq :=
   (minMonotonicParts_le_minIncreasingParts seq).trans
     (minIncreasingParts_eq_LDS seq hinj).le
+
+/-! ## The dual identity: `minDecreasingParts = LIS` by order-negation transport
+
+The increasing identity `minIncreasingParts = LDS` has an exact **dual**: the least number of
+strictly-*decreasing* subsequences covering a sequence of distinct reals equals `LIS`, the length of
+its longest strictly-*increasing* subsequence. Rather than re-run the whole Mirsky argument with the
+order reversed, we transport the increasing identity through the order-reversing map `x ↦ -x`:
+negating the sequence swaps increasing ↔ decreasing subsequences (and hence `LIS ↔ LDS`) and turns an
+increasing decomposition of `-seq` into a decreasing decomposition of `seq` with the same part count.
+So `minDecreasingParts seq = minIncreasingParts (negSeq seq) = LDS (negSeq seq) = LIS seq`.
+
+As a payoff the two identities together **close the monotone bracket to its sharp form**
+`minMonotonicParts seq ∈ [n / max(LIS, LDS), min(LIS, LDS)]` for distinct reals: covering by monotone
+parts is no more costly than covering by increasing parts *or* by decreasing parts. -/
+
+/-- The negated sequence `i ↦ -seq i`. Order reversal on the value axis. -/
+def negSeq (seq : RealSeq n) : RealSeq n := fun i => -seq i
+
+/-- Negating the sequence swaps *increasing* into *decreasing*: an increasing subsequence of `-seq`
+is exactly a decreasing subsequence of `seq`. -/
+lemma isIncreasing_negSeq_iff {seq : RealSeq n} {m : ℕ} {sub : Subsequence n m} :
+    IsIncreasing (negSeq seq) sub ↔ IsDecreasing seq sub := by
+  constructor
+  · intro h i j hij
+    have h2 : negSeq seq (sub.indices i) < negSeq seq (sub.indices j) := h hij
+    simpa [negSeq] using h2
+  · intro h i j hij
+    show negSeq seq (sub.indices i) < negSeq seq (sub.indices j)
+    simpa [negSeq] using h i j hij
+
+/-- Dually, a *decreasing* subsequence of `-seq` is exactly an *increasing* subsequence of `seq`. -/
+lemma isDecreasing_negSeq_iff {seq : RealSeq n} {m : ℕ} {sub : Subsequence n m} :
+    IsDecreasing (negSeq seq) sub ↔ IsIncreasing seq sub := by
+  constructor
+  · intro h i j hij
+    show seq (sub.indices i) < seq (sub.indices j)
+    simpa [negSeq] using h i j hij
+  · intro h i j hij
+    show negSeq seq (sub.indices j) < negSeq seq (sub.indices i)
+    simpa [negSeq] using h hij
+
+/-- Consequently `LDS (negSeq seq) = LIS seq`: the achievable decreasing lengths of `-seq` are
+exactly the achievable increasing lengths of `seq`. -/
+theorem LDS_negSeq (seq : RealSeq n) : LDS (negSeq seq) = LIS seq := by
+  have hset : {m | ∃ sub : Subsequence n m, IsDecreasing (negSeq seq) sub}
+            = {m | ∃ sub : Subsequence n m, IsIncreasing seq sub} := by
+    ext m
+    simp only [Set.mem_setOf_eq]
+    exact ⟨fun ⟨sub, h⟩ => ⟨sub, isDecreasing_negSeq_iff.mp h⟩,
+           fun ⟨sub, h⟩ => ⟨sub, isDecreasing_negSeq_iff.mpr h⟩⟩
+  unfold LDS LIS
+  rw [hset]
+
+/-- Negation is injective, so `negSeq seq` has distinct entries iff `seq` does. -/
+lemma negSeq_injective_iff {seq : RealSeq n} :
+    Function.Injective (negSeq seq) ↔ Function.Injective seq := by
+  constructor
+  · intro h a b hab
+    exact h (by simp only [negSeq, hab])
+  · intro h a b hab
+    simp only [negSeq, neg_inj] at hab
+    exact h hab
+
+/-- A decomposition of `seq` into strictly-*decreasing* covering subsequences (dual of
+`IncreasingDecomposition`). -/
+structure DecreasingDecomposition (n : ℕ) (seq : RealSeq n) where
+  numParts : ℕ
+  parts : Fin numParts → Σ m, Subsequence n m
+  decreasing : ∀ i, IsDecreasing seq (parts i).2
+  disjoint : ∀ i j k₁ k₂, i ≠ j →
+    (parts i).2.indices k₁ ≠ (parts j).2.indices k₂
+  covering : ∀ k : Fin n, ∃ i m hm, (parts i).2.indices ⟨m, hm⟩ = k
+
+/-- A decreasing decomposition of `seq` is an increasing decomposition of `-seq` (same parts). -/
+def DecreasingDecomposition.toIncreasingNeg {seq : RealSeq n}
+    (D : DecreasingDecomposition n seq) : IncreasingDecomposition n (negSeq seq) where
+  numParts := D.numParts
+  parts := D.parts
+  increasing := fun i => isIncreasing_negSeq_iff.mpr (D.decreasing i)
+  disjoint := D.disjoint
+  covering := D.covering
+
+/-- Conversely an increasing decomposition of `-seq` is a decreasing decomposition of `seq`. -/
+def IncreasingDecomposition.toDecreasingOfNeg {seq : RealSeq n}
+    (D : IncreasingDecomposition n (negSeq seq)) : DecreasingDecomposition n seq where
+  numParts := D.numParts
+  parts := D.parts
+  decreasing := fun i => isIncreasing_negSeq_iff.mp (D.increasing i)
+  disjoint := D.disjoint
+  covering := D.covering
+
+/-- Split into `n` singleton parts; obtained by transporting the singleton *increasing*
+decomposition of `-seq` (a single element is both increasing and decreasing). Makes the class
+nonempty with `numParts = n`. -/
+def singletonDecreasingDecomposition (seq : RealSeq n) : DecreasingDecomposition n seq :=
+  (singletonIncreasingDecomposition (negSeq seq)).toDecreasingOfNeg
+
+/-- The minimum number of strictly-decreasing parts needed to cover `seq`. -/
+noncomputable def minDecreasingParts (seq : RealSeq n) : ℕ :=
+  sInf {p | ∃ D : DecreasingDecomposition n seq, D.numParts = p}
+
+/-- Every decreasing decomposition is in particular a monotonic one. -/
+def DecreasingDecomposition.toMonotonic {seq : RealSeq n} (D : DecreasingDecomposition n seq) :
+    MonotonicDecomposition n seq where
+  numParts := D.numParts
+  parts := D.parts
+  monotonic := fun i => Or.inr (D.decreasing i)
+  disjoint := D.disjoint
+  covering := D.covering
+
+/-- The part-count-preserving bijection makes the two covering numbers agree. -/
+theorem minDecreasingParts_eq_minIncreasingParts_negSeq (seq : RealSeq n) :
+    minDecreasingParts seq = minIncreasingParts (negSeq seq) := by
+  have hset : {p | ∃ D : DecreasingDecomposition n seq, D.numParts = p}
+            = {p | ∃ D : IncreasingDecomposition n (negSeq seq), D.numParts = p} := by
+    ext p
+    simp only [Set.mem_setOf_eq]
+    exact ⟨fun ⟨D, hD⟩ => ⟨D.toIncreasingNeg, hD⟩,
+           fun ⟨D, hD⟩ => ⟨D.toDecreasingOfNeg, hD⟩⟩
+  unfold minDecreasingParts minIncreasingParts
+  rw [hset]
+
+/-- **The dual Mirsky/Dilworth min–max identity for sequences.** For a sequence of distinct reals,
+the minimum number of strictly-decreasing subsequences needed to cover it equals the length of the
+longest strictly-increasing subsequence. -/
+theorem minDecreasingParts_eq_LIS (seq : RealSeq n) (hinj : Function.Injective seq) :
+    minDecreasingParts seq = LIS seq := by
+  rw [minDecreasingParts_eq_minIncreasingParts_negSeq,
+      minIncreasingParts_eq_LDS (negSeq seq) (negSeq_injective_iff.mpr hinj),
+      LDS_negSeq]
+
+/-- Covering by *decreasing* parts is at least as costly as covering by *monotone* parts. -/
+theorem minMonotonicParts_le_minDecreasingParts (seq : RealSeq n) :
+    minMonotonicParts seq ≤ minDecreasingParts seq := by
+  apply le_csInf
+  · exact ⟨n, singletonDecreasingDecomposition seq, rfl⟩
+  · rintro p ⟨D, rfl⟩
+    exact Nat.sInf_le ⟨D.toMonotonic, rfl⟩
+
+/-- The dual identity gives the second half of the sharp monotone upper bound. -/
+theorem minMonotonicParts_le_LIS (seq : RealSeq n) (hinj : Function.Injective seq) :
+    minMonotonicParts seq ≤ LIS seq :=
+  (minMonotonicParts_le_minDecreasingParts seq).trans (minDecreasingParts_eq_LIS seq hinj).le
+
+/-- **Sharp monotone upper bound.** For distinct reals, covering by monotone parts costs at most
+`min (LIS, LDS)` — the two identities together close the monotone bracket to
+`minMonotonicParts seq ∈ [n / max (LIS, LDS), min (LIS, LDS)]`. -/
+theorem minMonotonicParts_le_min_LIS_LDS (seq : RealSeq n) (hinj : Function.Injective seq) :
+    minMonotonicParts seq ≤ min (LIS seq) (LDS seq) :=
+  le_min (minMonotonicParts_le_LIS seq hinj) (minMonotonicParts_le_LDS seq hinj)
 
 end Erdos1026OQ05IncreasingIdentity
 
