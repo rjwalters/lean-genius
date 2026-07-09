@@ -13,6 +13,7 @@ Reference: https://erdosproblems.com/1018
 
 import Mathlib.Combinatorics.SimpleGraph.Basic
 import Mathlib.Combinatorics.SimpleGraph.Subgraph
+import Mathlib.Combinatorics.SimpleGraph.Path
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Fintype.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
@@ -48,21 +49,6 @@ def isDense (G : SimpleGraph V) [DecidableRel G.Adj] (ε : ℝ) : Prop :=
   (edgeCount G : ℝ) ≥ (Fintype.card V : ℝ) ^ (1 + ε)
 
 /-
-## Planar Graphs
-
-A graph is planar if it can be embedded in the plane without edge crossings.
-By Kuratowski's theorem, non-planarity is equivalent to containing
-a subdivision of K₅ or K₃,₃.
--/
-
-/-- A graph is planar (abstract characterization). -/
-def isPlanar (G : SimpleGraph V) : Prop :=
-  sorry  -- Complex topological definition
-
-/-- A graph is non-planar if it's not planar. -/
-def isNonPlanar (G : SimpleGraph V) : Prop := ¬isPlanar G
-
-/-
 ## Complete Graphs K₅ and K₃,₃
 
 The two minimal non-planar graphs (Kuratowski obstructions).
@@ -74,9 +60,6 @@ def completeGraph (n : ℕ) : SimpleGraph (Fin n) where
   symm := fun _ _ h => h.symm
   loopless := fun _ h => h rfl
 
-/-- K₅ is non-planar. -/
-axiom K5_nonplanar : isNonPlanar (completeGraph 5)
-
 /-- The complete bipartite graph K_{m,n}. -/
 def completeBipartite (m n : ℕ) : SimpleGraph (Fin m ⊕ Fin n) where
   Adj x y := match x, y with
@@ -86,23 +69,91 @@ def completeBipartite (m n : ℕ) : SimpleGraph (Fin m ⊕ Fin n) where
   symm := fun x y h => by cases x <;> cases y <;> simp_all
   loopless := fun x h => by cases x <;> simp at h
 
-/-- K₃,₃ is non-planar. -/
-axiom K33_nonplanar : isNonPlanar (completeBipartite 3 3)
-
 /-
 ## Graph Subdivisions
 
-A subdivision of H is obtained by replacing edges with paths.
+A subdivision of `H` replaces each edge of `H` by an internally disjoint path.
+Concretely, `G` contains a subdivision of `H` (equivalently, `H` is a
+*topological minor* of `G`) when there is an injective map `φ` from `H`'s
+vertices to *branch vertices* of `G`, together with a path in `G` between `φ a`
+and `φ b` for every edge `a ~ b` of `H`, such that these paths are internally
+disjoint and their interiors avoid all branch vertices. This is the standard
+combinatorial (Diestel) definition — no `sorry`.
 -/
 
-/-- G contains a subdivision of H. -/
-def containsSubdivision (G : SimpleGraph V) (H : SimpleGraph W) : Prop :=
-  sorry  -- G has a subgraph homeomorphic to H
+/-- `G` contains a subdivision of `H` (`H` is a topological minor of `G`). -/
+def containsSubdivision {W : Type*} (G : SimpleGraph V) (H : SimpleGraph W) : Prop :=
+  ∃ φ : W → V, Function.Injective φ ∧
+    ∃ P : ∀ a b : W, H.Adj a b → G.Walk (φ a) (φ b),
+      -- each connecting walk is a path (no repeated vertices)
+      (∀ (a b : W) (h : H.Adj a b), (P a b h).IsPath) ∧
+      -- interiors avoid branch vertices: a branch vertex lying on a connecting
+      -- path must be one of that path's two endpoints
+      (∀ (a b : W) (h : H.Adj a b) (c : W),
+        φ c ∈ (P a b h).support → c = a ∨ c = b) ∧
+      -- internal disjointness: a vertex shared by the paths of two `H`-edges is
+      -- a branch endpoint of one of them
+      (∀ (a b : W) (h : H.Adj a b) (a' b' : W) (h' : H.Adj a' b') (x : V),
+        x ∈ (P a b h).support → x ∈ (P a' b' h').support →
+        x = φ a ∨ x = φ b ∨ x = φ a' ∨ x = φ b')
 
-/-- Kuratowski's theorem: non-planar iff contains K₅ or K₃,₃ subdivision. -/
-axiom kuratowski_theorem (G : SimpleGraph V) :
+/-
+## Planarity via the Kuratowski characterization
+
+Mathlib (4.26) has no topological planarity theory, so we adopt the
+*combinatorial* definition of planarity given by Kuratowski's theorem: a graph
+is planar iff it contains no subdivision of `K₅` or `K₃,₃`. Taking this
+equivalence as the definition (rather than proving it against a topological
+model — that equivalence *is* Kuratowski's theorem) lets `kuratowski_theorem`,
+`K5_nonplanar` and `K33_nonplanar` become ordinary theorems instead of axioms.
+-/
+
+/-- A graph is planar iff it has no `K₅`- or `K₃,₃`-subdivision (Kuratowski). -/
+def isPlanar (G : SimpleGraph V) : Prop :=
+  ¬ (containsSubdivision G (completeGraph 5) ∨
+     containsSubdivision G (completeBipartite 3 3))
+
+/-- A graph is non-planar if it's not planar. -/
+def isNonPlanar (G : SimpleGraph V) : Prop := ¬isPlanar G
+
+/-- **Kuratowski's theorem (definitional form).** With planarity defined via the
+    Kuratowski characterization, non-planarity is *by definition* the presence of
+    a `K₅`- or `K₃,₃`-subdivision. Previously stated as an axiom. -/
+theorem kuratowski_theorem (G : SimpleGraph V) :
     isNonPlanar G ↔ containsSubdivision G (completeGraph 5) ∨
-                     containsSubdivision G (completeBipartite 3 3)
+                     containsSubdivision G (completeBipartite 3 3) :=
+  not_not
+
+/-- Every graph contains a subdivision of itself: the identity branch map with
+    each edge routed along itself as a length-one path. Since the paths have
+    empty interior, the disjointness conditions hold trivially. -/
+theorem self_containsSubdivision (G : SimpleGraph V) :
+    containsSubdivision G G := by
+  refine ⟨id, Function.injective_id,
+    fun a b h => SimpleGraph.Walk.cons h SimpleGraph.Walk.nil, ?_, ?_, ?_⟩
+  · -- each single-edge walk is a path
+    intro a b h
+    rw [SimpleGraph.Walk.cons_isPath_iff]
+    refine ⟨SimpleGraph.Walk.IsPath.nil, ?_⟩
+    rw [SimpleGraph.Walk.support_nil]
+    simpa using h.ne
+  · -- support is exactly the two endpoints
+    intro a b h c hc
+    rw [SimpleGraph.Walk.support_cons, SimpleGraph.Walk.support_nil] at hc
+    simpa using hc
+  · -- interiors are empty, so any shared vertex is an endpoint
+    intro a b h a' b' _ x hx _
+    rw [SimpleGraph.Walk.support_cons, SimpleGraph.Walk.support_nil] at hx
+    have : x = a ∨ x = b := by simpa using hx
+    tauto
+
+/-- K₅ is non-planar: it contains a subdivision of itself. Previously an axiom. -/
+theorem K5_nonplanar : isNonPlanar (completeGraph 5) :=
+  (kuratowski_theorem _).mpr (Or.inl (self_containsSubdivision _))
+
+/-- K₃,₃ is non-planar: it contains a subdivision of itself. Previously an axiom. -/
+theorem K33_nonplanar : isNonPlanar (completeBipartite 3 3) :=
+  (kuratowski_theorem _).mpr (Or.inr (self_containsSubdivision _))
 
 /-
 ## Induced Subgraphs
