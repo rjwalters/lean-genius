@@ -1,0 +1,79 @@
+{
+  "slug": "erdos-1011-oq-02",
+  "title": "Is c = 1 (the 'natural' guess) in g(r) ~ c·r² log r?",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Determine whether g(r) = (1 + o(1)) \\cdot r^2 \\log r, i.e. whether the constant c with g(r) \\sim c \\cdot r^2 \\log r equals 1, where g(r) appears in the Simonovits asymptotic f_r(n) = n^2/4 - g(r) \\cdot n/2 + O(1).",
+    "plain": "In Erdős Problem #1011, f_r(n) is the least edge count forcing a triangle in an n-vertex graph with chromatic number at least r. Simonovits showed f_r(n) = n²/4 - g(r)·n/2 + O(1). The quantity g(r) grows like c·r² log r, but only the bounds 1/2 ≤ c ≤ 2 are known. This problem asks whether the natural guess c = 1 is correct.",
+    "whyMatters": [
+      "Fixes the last quantitative gap in a sixty-year-old extremal program relating edge count, chromatic number, and triangle existence.",
+      "The constant c is tied to the asymptotics of the off-diagonal Ramsey number R(3,k), so determining c sharpens both extremal graph theory and Ramsey theory.",
+      "Resolves a factor-of-four gap left open since Simonovits's 1966 work."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Simonovits asymptotic f_r(n) = n²/4 - g(r)·n/2 + O(1) (Simonovits, 1966).",
+      "Lower bound g(r) ≥ (1/2 - o(1))·r² log r (Davies & Illingworth, 2022).",
+      "Upper bound g(r) ≤ (2 + o(1))·r² log r (Hefetz, Horn, King & Pfender, 2025).",
+      "Exact small cases f_2, f_3, f_4 (Turán; Erdős-Gallai; Ren-Wang-Wang-Yang)."
+    ],
+    "open": [
+      "Whether the leading constant c in g(r) ~ c·r² log r equals 1.",
+      "Whether the truth is the lower value 1/2, the upper value 2, or some intermediate constant.",
+      "Any matching pair of bounds that would pin c exactly."
+    ],
+    "goal": "Formalize the conjecture c = 1 in Lean 4 alongside the surrounding bounds 1/2 ≤ c ≤ 2, so the claim is expressible and its consistency with known results is machine-checked. Resolving c itself is open research and out of scope."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-07-09T00:00:00Z",
+    "iteration": 1,
+    "focus": "Formalize the statement that g(r) ~ c·r² log r with c = 1 as a conjecture, bracketed by the known 1/2 and 2 bounds.",
+    "blockers": [],
+    "nextAction": "Survey Mathlib asymptotic (IsLittleO) and filter (liminf/limsup) tooling and mirror the g(r) definition from Proofs/Erdos1011Problem.lean.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Locate the g(r) and simonovits_asymptotic definitions in Proofs/Erdos1011Problem.lean.",
+      "State the lower and upper asymptotic bounds implying 1/2 ≤ liminf and limsup ≤ 2.",
+      "Express c = 1 as a midpoint conjecture using Filter and Asymptotics infrastructure."
+    ],
+    "markdown": "# Knowledge Base: erdos-1011-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\nThe constant c is the leading coefficient in g(r) ~ c·r² log r, where g(r) is the Simonovits quantity in f_r(n) = n²/4 - g(r)·n/2 + O(1). Known bounds give 1/2 ≤ c ≤ 2; the conjecture asks whether c = 1.\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "erdos",
+    "graph-theory",
+    "chromatic-number",
+    "triangles",
+    "turan-type",
+    "extremal-graph-theory",
+    "open-problem"
+  ],
+  "relatedProofs": [
+    "erdos-1011"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": [
+      "Mathlib.Analysis.Asymptotics.Asymptotics",
+      "Mathlib.Order.Filter.Basic"
+    ]
+  },
+  "started": "2026-07-09T00:00:00Z",
+  "significance": 5,
+  "leanFiles": []
+}

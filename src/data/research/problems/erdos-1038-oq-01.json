@@ -1,0 +1,110 @@
+{
+  "slug": "erdos-1038-oq-01",
+  "title": "What is the exact value of the infimum sublevel-set measure (Erdős #1038)?",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\inf_{f} \\left| \\{ x \\in \\mathbb{R} : |f(x)| < 1 \\} \\right| = ?, \\quad f(x) = \\prod_{i=1}^{n} (x - r_i),\\ r_i \\in [-1,1],\\ n \\ge 1, \\text{ with } 2^{4/3} - 1 \\approx 1.519 \\le \\inf_f \\le 1.835.",
+    "plain": "For monic polynomials whose roots all lie in [-1,1], the sublevel set {x : |f(x)| < 1} has some total length. Tao proved in 2025 that the largest possible length is 2√2. The smallest possible length — the infimum — remains open, known only to lie between about 1.519 and 1.835. The goal is its exact value.",
+    "whyMatters": [
+      "Completes the metric picture of polynomial sublevel sets started by Erdős–Herzog–Piranian (1958) and continued by Tao's 2025 supremum result.",
+      "Connects polynomial approximation on [-1,1] to logarithmic potential theory, equilibrium measures, and transfinite diameter.",
+      "Feeds into the sibling Erdős problems (#1039–#1046) on lemniscate geometry and disc containment."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Supremum equals 2√2 for monic polynomials with all roots in [-1,1] (Tao, 2025).",
+      "sup ≤ 2√2 for roots in {-1,1} and inf < 2 via families like (x+1)(x-1)^3 (Erdős–Herzog–Piranian, 1958).",
+      "Lower bound inf ≥ 2^(4/3) - 1 ≈ 1.519 from potential-theoretic estimates."
+    ],
+    "open": [
+      "The exact value of inf_f |{x : |f(x)| < 1}| within [1.519, 1.835].",
+      "Whether the infimum is attained by an explicit polynomial or only realized as a limit of a polynomial family."
+    ],
+    "goal": "Determine (or tightly bound) the exact value of the infimum, narrowing the [1.519, 1.835] gap with an explicit witness and formalizing the resulting measure estimate in Lean 4."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-07-09T00:00:00Z",
+    "iteration": 1,
+    "focus": "Understand the sublevel-set measure for monic polynomials with roots in [-1,1] and the source of the current infimum bounds 2^(4/3)-1 ≤ inf ≤ 1.835.",
+    "blockers": [],
+    "nextAction": "Survey explicit polynomial families (x+1)^a (x-1)^b and Chebyshev-type combinations to compute their sublevel-set measures and probe the upper bound.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [
+      "No logarithmic capacity, equilibrium measure, or transfinite diameter theory in Mathlib for potential-theoretic lower bounds."
+    ],
+    "nextSteps": [
+      "Compute |{x : |f(x)| < 1}| explicitly for the family (x+1)^a (x-1)^b and minimize over parameters.",
+      "Investigate whether a potential-theoretic argument can raise the lower bound above 2^(4/3) - 1.",
+      "Formalize a Lebesgue-measure estimate for the best explicit witness using MeasureTheory.volume over ENNReal."
+    ],
+    "markdown": "# Knowledge Base: erdos-1038-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\nThe infimum of interest is inf_f |{x ∈ ℝ : |f(x)| < 1}| over non-constant monic polynomials f with all roots in [-1,1]. Tao (2025) settled the supremum (2√2); the infimum is open with bounds 2^(4/3) - 1 ≈ 1.519 ≤ inf ≤ 1.835.\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "erdos",
+    "measure-theory",
+    "polynomials",
+    "potential-theory",
+    "real-analysis"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-10",
+    "erdos-103",
+    "erdos-1038"
+  ],
+  "references": {
+    "papers": [
+      "P. Erdős, G. Herzog, G. Piranian, Metric properties of polynomials, J. d'Analyse Math. 6 (1958), 125–148.",
+      "T. Tao, Sublevel set measure for monic polynomials, arXiv (2025).",
+      "T. Ransford, Potential Theory in the Complex Plane, Cambridge University Press (1995)."
+    ],
+    "urls": [
+      "https://erdosproblems.com/1038"
+    ],
+    "mathlib": [
+      "Mathlib.MeasureTheory.Measure.Lebesgue.Basic",
+      "Mathlib.Algebra.Polynomial.Monic",
+      "Mathlib.Topology.Instances.ENNReal"
+    ]
+  },
+  "started": "2026-07-09T00:00:00Z",
+  "significance": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1038Problem.lean",
+      "filename": "Erdos1038Problem.lean",
+      "lineCount": 94,
+      "theoremCount": 0,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1038Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos1038WIP01.lean",
+      "filename": "Erdos1038WIP01.lean",
+      "lineCount": 369,
+      "theoremCount": 21,
+      "axiomCount": 0,
+      "defCount": 9,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1038WIP01.lean"
+    }
+  ]
+}

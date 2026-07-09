@@ -1,0 +1,131 @@
+{
+  "slug": "erdos-1014-oq-03",
+  "title": "Does R(k,l+1) - R(k,l) have a meaningful asymptotic formula for fixed k",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{Fix } k \\ge 3. \\text{ Determine whether } \\Delta_l(k) := R(k,l+1) - R(k,l) \\text{ satisfies } \\Delta_l(k) \\sim g_k(l) \\text{ for some explicit } g_k \\text{ as } l \\to \\infty.",
+    "plain": "For a fixed first argument k, look at how much the Ramsey number R(k,l) jumps when l increases by one: the increment R(k,l+1) - R(k,l). This question asks whether that increment has a clean asymptotic formula (some explicit function g_k(l) it is asymptotically equal to) rather than growing erratically as l grows.",
+    "whyMatters": [
+      "An asymptotic for the increment is strictly stronger than the ratio-convergence statement of Erdős Problem #1014: it pins down the local growth rate of the Ramsey function, not just that it grows smoothly.",
+      "It would sharply constrain any conjectured closed form for R(k,l); for k=3 the expectation is Δ_l(3) ~ c·l/log l, matching R(3,l) ~ c·l²/log l.",
+      "It connects Ramsey growth to finite-difference/discrete-derivative techniques and gives a concrete quantitative target often easier to attack than a full closed-form asymptotic."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Erdős–Szekeres upper bound R(k,l) ≤ C(k+l-2, k-1), giving polynomial growth O(l^{k-1}) for fixed k (diagonal_ramsey_upper).",
+      "Recurrence R(k,l+1) ≤ R(k,l) + R(k-1,l+1), hence increment bound Δ_l(k) ≤ R(k-1,l+1); for k=3, Δ_l(3) ≤ l+1 (increment_bound_general, increment_bound_k3).",
+      "Tight order of magnitude R(3,l) = Θ(l²/log l) from AKS upper and Kim/Shearer lower bounds (R3_asymptotic_bounds).",
+      "Monotonicity R(k,l) ≤ R(k,l+1), so Δ_l(k) ≥ 0 (ramsey_monotone_left)."
+    ],
+    "open": [
+      "Whether Δ_l(3) = R(3,l+1) - R(3,l) has an asymptotic formula (conjecturally ~ c·l/log l); open because the implied constants in the Θ(l²/log l) bounds differ.",
+      "Whether any explicit g_k(l) describes Δ_l(k) for fixed k ≥ 4, where even the order of magnitude of R(k,l) is unknown.",
+      "Whether the increment is monotone or eventually smooth in l rather than oscillating."
+    ],
+    "goal": "Formalize the structural consequences: prove that a power-law asymptotic R(k,l) ~ c_k·l^{k-1}/(log l)^{k-2} would force Δ_l(k) ~ (k-1)·c_k·l^{k-2}/(log l)^{k-2}, and relate this increment asymptotic to the already-formalized ratio and difference reformulations of Erdős #1014."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-07-09T00:00:00Z",
+    "iteration": 1,
+    "focus": "Understand the increment Δ_l(k) = R(k,l+1) - R(k,l) and how a power-law asymptotic for R(k,l) transfers to an asymptotic for the increment.",
+    "blockers": [],
+    "nextAction": "Review the GrowthRatioHelpers real-analysis lemmas in Erdos1014Problem.lean and draft the finite-difference expansion for a power-law-with-log function.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Formalize the real-analysis lemma: g ~ c·l^a/(log l)^b implies g(l+1) - g(l) ~ a·c·l^{a-1}/(log l)^b.",
+      "Prove the conditional increment asymptotic Δ_l(k) ~ (k-1)·c_k·l^{k-2}/(log l)^{k-2} from the power-law hypothesis on R(k,l).",
+      "Relate the increment asymptotic to ratio_equiv_difference and ratio_from_asymptotics in the parent file.",
+      "Document the constant-matching obstruction that keeps the k=3 case open."
+    ],
+    "markdown": "# Knowledge Base: erdos-1014-oq-03\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\nThis is an open question spun off from Erdős Problem #1014. The parent asks whether R(k,l+1)/R(k,l) → 1; this asks the stronger question of whether the raw increment Δ_l(k) = R(k,l+1) - R(k,l) has a meaningful asymptotic formula for fixed k.\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "erdos",
+    "graph-theory",
+    "ramsey-theory",
+    "combinatorics",
+    "asymptotics",
+    "open"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-10",
+    "erdos-101",
+    "erdos-1014",
+    "erdos-1014-oq-01",
+    "erdos-1014-oq-02",
+    "erdos-1014-oq-04"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": [
+      "Mathlib.Analysis.Asymptotics.AsymptoticEquivalent",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Topology.Algebra.Order.Tendsto"
+    ]
+  },
+  "started": "2026-07-09T00:00:00Z",
+  "significance": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1014OQ01.lean",
+      "filename": "Erdos1014OQ01.lean",
+      "lineCount": 368,
+      "theoremCount": 7,
+      "axiomCount": 1,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1014OQ01.lean"
+    },
+    {
+      "path": "Proofs/Erdos1014OQ02.lean",
+      "filename": "Erdos1014OQ02.lean",
+      "lineCount": 187,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1014OQ02.lean"
+    },
+    {
+      "path": "Proofs/Erdos1014OQ04.lean",
+      "filename": "Erdos1014OQ04.lean",
+      "lineCount": 211,
+      "theoremCount": 2,
+      "axiomCount": 2,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1014OQ04.lean"
+    },
+    {
+      "path": "Proofs/Erdos1014Problem.lean",
+      "filename": "Erdos1014Problem.lean",
+      "lineCount": 484,
+      "theoremCount": 15,
+      "axiomCount": 12,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1014Problem.lean"
+    }
+  ]
+}
