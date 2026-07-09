@@ -39,9 +39,9 @@
     ],
     "axiomCount": 0,
     "sorries": 0,
-    "lineCount": 545,
-    "theoremCount": 12,
-    "definitionCount": 0,
+    "lineCount": 908,
+    "theoremCount": 38,
+    "definitionCount": 1,
     "badge": "mathlib",
     "originalContributions": [
       "awgn_multisymbol_power: E[(∑_{i∈s} Wᵢ)²] = ∑_{i∈s} E[Wᵢ²] — the heart of the entry. For a finite family of pairwise-independent, zero-mean, square-integrable contributions the aggregate second moment (output power) splits as the sum of the individual second moments. The proof combines the pairwise-independent variance-of-a-sum law (IndepFun.variance_sum) with the fact that the aggregate ∑ Wᵢ is again zero-mean (integral_finset_sum on the integrable parts), so every squared-mean term in Var[W] = E[W²] − (E[W])² vanishes and the variance identity collapses onto second moments — both for the sum and, term by term, for each Wᵢ.",
