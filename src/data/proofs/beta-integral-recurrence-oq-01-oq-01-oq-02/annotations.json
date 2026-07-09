@@ -1,5 +1,41 @@
 [
   {
+    "id": "ann-base-values",
+    "proofId": "beta-integral-recurrence-oq-01-oq-01-oq-02",
+    "range": { "startLine": 54, "endLine": 80 },
+    "type": "definition",
+    "title": "The Central Beta Sequence and its Base Values",
+    "content": "Defines the coefficient sequence centralBeta n = b(n) = (n!)²/(2n+1)! as a real sequence — the diagonal Euler Beta value B(n+1,n+1). The base values b(0)=1, b(1)=1/6, b(2)=1/30 are checked by norm_num over the factorial definition, and centralBeta_pos establishes 0 < b(n) for all n (numerator and denominator are products of positive factorials). These fix the initial data the recurrence propagates: y(0) = b(0) = 1 is the constant term of the generating function.",
+    "mathContext": "$b(n) = \\dfrac{(n!)^2}{(2n+1)!}$, with $b(0)=1,\\ b(1)=\\tfrac16,\\ b(2)=\\tfrac1{30}$, all $>0$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Euler Beta integral", "factorial ratios", "central binomial coefficient", "positivity"],
+    "prerequisites": ["factorials", "the diagonal Beta value B(n+1,n+1)"]
+  },
+  {
+    "id": "ann-reciprocal-beta-link",
+    "proofId": "beta-integral-recurrence-oq-01-oq-01-oq-02",
+    "range": { "startLine": 82, "endLine": 106 },
+    "type": "insight",
+    "title": "Reciprocal Central-Binomial Form and the Complex-Beta Link",
+    "content": "Two identifications tie the bare factorial sequence to its meaning. centralBeta_eq_reciprocal rewrites b(n) = 1/((2n+1)·C(2n,n)) using the factorial split (2n+1)! = (2n+1)·C(2n,n)·(n!)², matching the parent entry's betaIntegral_diag_central_binom — the reciprocal-central-binomial form makes the O(4⁻ⁿ) decay of b(n) manifest and explains the radius of convergence 4 of the generating function. centralBeta_eq_betaIntegral then confirms that, cast to ℂ, b(n) is exactly the Euler Beta integral value B(n+1,n+1) = ∫₀¹ (t(1−t))ⁿ dt, the identity that later licenses interchanging Σₙ b(n)xⁿ with the integral.",
+    "mathContext": "$b(n) = \\dfrac{1}{(2n+1)\\binom{2n}{n}} = B(n+1,n+1) = \\displaystyle\\int_0^1 (t(1-t))^n\\,dt.$",
+    "significance": "key",
+    "relatedConcepts": ["reciprocal central binomial coefficient", "Euler Beta integral", "radius of convergence", "factorial identity"],
+    "prerequisites": ["central binomial coefficient C(2n,n)", "Euler Beta integral B(a,b)"]
+  },
+  {
+    "id": "ann-ogf-overview",
+    "proofId": "beta-integral-recurrence-oq-01-oq-01-oq-02",
+    "range": { "startLine": 142, "endLine": 168 },
+    "type": "context",
+    "title": "Closed-Form Generating Function: Strategy Overview",
+    "content": "The bridge from the arithmetic recurrence to the analytic closed form. Using b(n) = ∫₀¹ (t(1−t))ⁿ dt and interchanging the sum with the integral collapses Σₙ b(n)xⁿ into a single geometric series in x·t(1−t), giving y(x) = ∫₀¹ dt/(1 − x·t(1−t)). This kernel integral is then evaluated in closed form (centralBeta_ogf_kernel_integral) by the fundamental theorem of calculus with antiderivative F(t) = (2/√(x(4−x)))·arctan((2xt−x)/√(x(4−x))), whose derivative reduces to the kernel via the collapse √(x(4−x))² + (2xt−x)² = 4x(1 − x·t(1−t)). The boundary evaluation F(1)−F(0) plus the trigonometric bridge arctan(x/√(x(4−x))) = arcsin(√x/2) yields y(x) = 4·arcsin(√x/2)/√(x(4−x)) on 0 < x < 4.",
+    "mathContext": "$y(x)=\\sum_n b(n)x^n=\\displaystyle\\int_0^1\\frac{dt}{1-x\\,t(1-t)}=\\frac{4\\arcsin(\\sqrt x/2)}{\\sqrt{x(4-x)}},\\ 0<x<4.$",
+    "significance": "context",
+    "relatedConcepts": ["sum-integral interchange", "geometric series", "fundamental theorem of calculus", "arcsine closed form"],
+    "prerequisites": ["interchange of sum and integral", "antiderivatives and the FTC"]
+  },
+  {
     "id": "ann-docstring",
     "proofId": "beta-integral-recurrence-oq-01-oq-01-oq-02",
     "range": { "startLine": 4, "endLine": 47 },
