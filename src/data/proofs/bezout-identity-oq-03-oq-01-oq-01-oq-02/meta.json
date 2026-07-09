@@ -50,7 +50,7 @@
     ],
     "dateAdded": "2026-06-23",
     "axiomCount": 0,
-    "lineCount": 148,
+    "lineCount": 149,
     "assumptions": "0 axioms, 0 sorries. Uses Nat.card throughout, so the statement is hypothesis-free: it is valid for every list of moduli (including those containing 0, where ℤ/0ℤ = ℤ is infinite and Nat.card = 0). Reuses the parent's crtKFold isomorphism and CRTProd product type from Proofs/BezoutIdentityOQ03OQ01OQ01.lean. NOTE: source-complete and reviewed step-by-step against Mathlib lemma signatures (Nat.card_congr, Nat.card_prod, Nat.card_zmod, Nat.card_unique); a local Docker kernel rebuild was unavailable at authoring time due to build-host contention, so the deployer build gate performs the authoritative kernel verification before merge.",
     "mathlib_version": "4.26.0",
     "theoremCount": 9,

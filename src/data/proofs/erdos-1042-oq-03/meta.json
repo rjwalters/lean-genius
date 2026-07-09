@@ -20,7 +20,7 @@
     "badge": "original",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 113,
+    "lineCount": 114,
     "assumptions": "None. All eight theorems are axiom-free and self-contained: the polynomial/lemniscate structures are re-declared locally so that nothing depends on the parent entry's axioms (transfiniteDiameter, ghosh_ramachandran_small_diameter, ghosh_ramachandran_diameter_one_examples). No native_decide is used. Kernel-verified against Mathlib v4.26.0 (`lake env lean`, exit 0); `#print axioms geometric_confinement` reports only `[propext, Classical.choice, Quot.sound]`. Mathlib lemmas used: continuous_finset_prod, norm_prod, Finset.prod_eq_zero, Finset.prod_le_prod, Finset.prod_const_one, Continuous.norm, dist_eq_norm, Bornology.isBounded_iUnion, Metric.isBounded_ball. Uses the modern norm ‖·‖ throughout (Complex.abs was removed in v4.26.0).",
     "dateAdded": "2026-06-23",
     "mathlib_version": "4.26.0",

@@ -39,7 +39,7 @@
     ],
     "dateAdded": "2026-06-27",
     "axiomCount": 2,
-    "lineCount": 399,
+    "lineCount": 471,
     "assumptions": "2 assumptions. (1) `oppermann_conjecture : OppermannConjecture` — the OPEN Oppermann conjecture, stated as an axiom; results downstream of it (e.g. `legendre_of_oppermann`) inherit it. (2) `Lean.ofReduceBool` — the n = 2..20 verifications use `native_decide`, which trusts the Lean compiler's kernel reduction. All structural theorems — including the Brocard mechanism (`oppermann_at_four_primes_two_gaps`, `oppermann_implies_four_primes`), the π-counting forms (`oppermann_at_iff_pi`, `oppermann_conjecture_iff_pi`, `oppermann_at_pi_total`, `oppermann_implies_pi_total`), and the Legendre/two-primes implications — are fully machine-checked with NO assumptions: #print axioms reports only propext, Classical.choice, Quot.sound.",
     "mathlib_version": "4.26.0",
     "theoremCount": 36,

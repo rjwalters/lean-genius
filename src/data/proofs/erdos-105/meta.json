@@ -60,7 +60,7 @@
       }
     ],
     "axiomCount": 2,
-    "lineCount": 305,
+    "lineCount": 306,
     "assumptions": "2 axioms: xichuan_counterexample (Xichuan: explicit counterexamples to the naive conjecture), beck_szemeredi_trotter_positive (Beck-Szemerédi-Trotter: with cn obstacles a rich line always exists). 0 sorries. The previous `axiom thresholdFunction : ℕ → ℕ` was replaced with a real `noncomputable def thresholdFunction (n : ℕ) : ℕ := sSup {m | …}` — defining f(n) concretely as the supremum of obstacle counts that can always be avoided. The conjectures about its asymptotic behaviour (cn ≤ f(n) ≤ n-4) remain open and are stated in `openProblem_exact_threshold`.",
     "theoremCount": 3,
     "definitionCount": 19
