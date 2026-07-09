@@ -35,9 +35,12 @@ import Mathlib.Combinatorics.SimpleGraph.Paths
 import Mathlib.Combinatorics.SimpleGraph.Connectivity.WalkCounting
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Real.Basic
+import Mathlib.Algebra.Order.Floor.Semiring
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Data.Set.Basic
 import Mathlib.Data.Set.Card
 import Mathlib.Data.Fintype.Card
+import Mathlib.Data.Nat.Lattice
 import Mathlib.Order.ConditionallyCompleteLattice.Basic
 
 open SimpleGraph Set
@@ -75,7 +78,7 @@ theorem bipartition_edges_between {V : Type*} (G : SimpleGraph V) (X Y : Set V)
     have hvx : v ∈ X := by
       have := G.symm hadj
       have hiff' := h.2.2 this
-      exact hiff'.mp huy
+      exact hiff'.mpr huy
     exact ⟨huy, hvx⟩
 
 /--
