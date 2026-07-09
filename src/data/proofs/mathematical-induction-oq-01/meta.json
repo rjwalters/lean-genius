@@ -128,7 +128,7 @@
     }
   ],
   "conclusion": {
-    "summary": "This file is a fully verified (0 sorries, 0 axioms) exploration of transfinite induction, connecting Lean 4's WellFounded infrastructure to classical ordinal induction. All 10 theorems are proved: the abstract WF principle, transfinite induction via Ordinal.induction, the zero/successor/limit trichotomy, course-of-values, weak induction recovery, the well-ordering principle, and derivation of induction from well-ordering. The Cantor normal form stub is the only non-trivial item left incomplete.",
+    "summary": "This file is a fully verified (0 sorries, 0 axioms) exploration of transfinite induction, connecting Lean 4's WellFounded infrastructure to classical ordinal induction. All 8 theorems are proved: the abstract WF principle, transfinite induction via Ordinal.induction, the zero/successor/limit trichotomy, course-of-values, weak induction recovery, the well-ordering principle, and derivation of induction from well-ordering. The Cantor normal form stub is the only non-trivial item left incomplete.",
     "implications": "Transfinite induction is foundational throughout set theory, proof theory, and computer science. In type theory, well-founded recursion is the basis for all structural recursion — every recursive definition in Lean is checked for well-foundedness. The equivalences proved here (strong ↔ weak induction, well-ordering ↔ induction) are standard logical toolkit items whose Lean formalizations clarify exactly what Mathlib infrastructure is needed for each direction.",
     "openQuestions": [
       "Can `cantor_normal_form_exists` be proved non-trivially by transfinite induction, constructing the Cantor normal form using `Ordinal.log` and `Ordinal.div` from Mathlib?",

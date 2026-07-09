@@ -146,7 +146,7 @@
     }
   ],
   "conclusion": {
-    "summary": "A 372-line formalization of pro-p Sylow theory for profinite groups with 10 proved theorems, 3 axioms, 5 definitions, and 0 sorries. The formalization bridges finite and infinite Sylow theory, showing that the classical Sylow theorems are a special case of the profinite theory when applied to finite discrete groups.",
+    "summary": "A 372-line formalization of pro-p Sylow theory for profinite groups with 9 proved theorems, 3 axioms, 4 definitions, and 0 sorries. The formalization bridges finite and infinite Sylow theory, showing that the classical Sylow theorems are a special case of the profinite theory when applied to finite discrete groups.",
     "implications": "Pro-p Sylow theory is foundational for: (1) **Galois cohomology**: the absolute Galois group Gal(k̄/k) is profinite, and its Sylow pro-p subgroups control p-adic representations; (2) **p-adic Lie groups**: pro-p groups of finite rank are p-adic analytic (Lazard's theorem); (3) **Class field theory**: the p-part of the Galois group of the maximal abelian extension is determined by the Sylow pro-p subgroup; (4) **Profinite group structure**: every profinite group decomposes into a system of Sylow pro-p subgroups, one for each prime.",
     "openQuestions": [
       "Formalize the full inverse limit construction: a Sylow pro-p subgroup P of G is the inverse limit of the Sylow p-subgroups of G/N as N ranges over open normal subgroups, with P mapping surjectively onto each finite Sylow p-subgroup.",

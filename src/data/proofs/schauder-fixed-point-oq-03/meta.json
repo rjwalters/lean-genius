@@ -128,7 +128,7 @@
     }
   ],
   "conclusion": {
-    "summary": "The Kakutani fixed point theorem framework is formalized with 8 definitions, 3 proved theorems, and 1 axiom (the main theorem). Brouwer's fixed point theorem is recovered as a corollary, and the connection to Nash equilibrium existence is sketched.",
+    "summary": "The Kakutani fixed point theorem framework is formalized with 7 definitions, 3 proved theorems, and 1 axiom (the main theorem). Brouwer's fixed point theorem is recovered as a corollary, and the connection to Nash equilibrium existence is sketched.",
     "implications": "Kakutani's theorem is the central tool for existence proofs in mathematical economics: Nash equilibria (Nash 1950), Arrow-Debreu general equilibria (1954), and Walrasian equilibria. A Lean formalization would enable machine-verified proofs of fundamental economic existence theorems. The axiom kakutani_finite_dim is a precise statement of what needs to be proved — simplicial approximation + convergence — providing a roadmap for future formalization work.",
     "openQuestions": [
       "Prove kakutani_finite_dim from Brouwer via simplicial approximation: the standard proof approximates F by piecewise-linear single-valued maps, applies Brouwer to each, and takes a convergent subsequence using compactness and upper hemicontinuity",
