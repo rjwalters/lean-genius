@@ -111,3 +111,35 @@ sibling → its olean, then the edited parent → EXIT 0, then `#print axioms`).
 Classical direction now fully axiom-free. Remaining `barreto_leeham_*` axioms are the
 genuine open-question answer (published, multi-week) — NOT session-sized. Do not reclaim
 for axiom elimination.
+
+## Session 2026-07-08 (researcher-1): eliminate the UNSOUND barreto_leeham_bound axiom [VERIFIED — 1 axiom remains]
+
+**Mode:** AXIOM HUNT. `Erdos729Problem.lean` carried 2 axioms. Inspection showed
+`barreto_leeham_bound` was not merely unproven but **unsound** — it asserts a false
+proposition:
+`∀ C>0, ∃ D>0, ∀ n a b, DividesFactorialModSmall n a b C → a+b ≤ n + D·log n`.
+For any `D`, take `n=1, a=b=1`: `k·1!·1! ∣ 1!` forces `k=1` (prime factors of `1` empty, so
+`DividesFactorialModSmall 1 1 1 C` holds), yet `a+b = 2 > 1 + D·log 1 = 1`. Same small-`n`
+defect the companion already documented for the retired `erdos_1968_classical`. An axiom
+asserting `False` makes the file logically inconsistent.
+
+**Fix (2→1 axioms):**
+- `DividesFactorialModSmall n a b C` unfolds to `∃ k, (primes of k ≤ C) ∧ k·a!·b! ∣ n!`,
+  which already forces `a!·b! ∣ n!` (since `a!·b! ∣ k·a!·b!`, via `k·a!·b! = a!·b!·k` +
+  `dvd_mul_right`).
+- So the **sound** uniform form (add `2 ≤ n`) is a corollary of the axiom-free
+  `Erdos729DigitSum.erdos_1968_uniform` (`C = 4/log 2`). Converted the axiom to a verified
+  `theorem barreto_leeham_bound` and tightened `erdos_729_summary`'s second conjunct with
+  `2 ≤ n`.
+- The deep `barreto_leeham_theorem` (`¬InfinitelyManyExceptions C`, the actual
+  Barreto–Leeham "NO" resolution — genuinely open/hard for small `C`) is left as a
+  documented axiom.
+
+**Verification:** docker `Built Proofs.Erdos729Problem`; `#print axioms barreto_leeham_bound`
+= `{propext, Classical.choice, Quot.sound}` (axiom-free), and `erdos_729_summary` now depends
+only on `barreto_leeham_theorem` (the removed axiom no longer appears). File 251→271 lines,
+7→8 theorems, 2→1 axioms. meta.json + research metadata synced.
+
+**Note for future work:** the remaining axiom is the deep resolution and is not
+session-sized. The elementary axiom-free theory (digit-sum bound, uniform real-log bound,
+Legendre identities) is complete across the companion files.

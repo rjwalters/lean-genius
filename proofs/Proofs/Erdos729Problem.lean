@@ -135,11 +135,30 @@ The answer is NO: the bound persists even modulo small primes.
 axiom barreto_leeham_theorem (C : ℝ) (hC : C > 0) :
     ¬InfinitelyManyExceptions C
 
-/-- Equivalently: for large n, a + b ≤ n + O(log n) even modulo small primes -/
-axiom barreto_leeham_bound (C : ℝ) (hC : C > 0) :
-    ∃ D : ℝ, D > 0 ∧ ∀ n a b : ℕ,
+/-- **The small-prime bound is axiom-free (sound uniform form).**  For every threshold
+    `C > 0` there is a single `D > 0` such that whenever the denominator of `C(n,·)` keeps
+    only primes `≤ C` (`DividesFactorialModSmall n a b C`) and `n ≥ 2`, the bound
+    `a + b ≤ n + D·log n` holds.
+
+    This was previously an `axiom`, but it is in fact a corollary of the elementary,
+    axiom-free `Erdos729DigitSum.erdos_1968_uniform`: `DividesFactorialModSmall n a b C`
+    unfolds to `∃ k, (small primes) ∧ k·a!·b! ∣ n!`, which already forces `a!·b! ∣ n!`
+    (as `a!·b! ∣ k·a!·b!`), so the plain factorial bound applies verbatim.  The `2 ≤ n`
+    hypothesis is required for soundness — the old axiom, stated for *all* `n`, was false
+    at `n ∈ {0, 1}` (e.g. `n = 1, a = b = 1`: the divisibility holds yet `a + b = 2 > 1 +
+    D·log 1 = 1` for every `D`), the same small-`n` defect noted for the retired
+    `erdos_1968_classical`. -/
+theorem barreto_leeham_bound (C : ℝ) (_hC : C > 0) :
+    ∃ D : ℝ, D > 0 ∧ ∀ n a b : ℕ, 2 ≤ n →
       DividesFactorialModSmall n a b C →
-      (a + b : ℝ) ≤ n + D * Real.log n
+      (a + b : ℝ) ≤ n + D * Real.log n := by
+  obtain ⟨D, hD, hbound⟩ := Erdos729DigitSum.erdos_1968_uniform
+  refine ⟨D, hD, fun n a b hn hmod => ?_⟩
+  obtain ⟨k, _hk, hdvd⟩ := hmod
+  -- `k·a!·b! ∣ n!` forces `a!·b! ∣ n!`, so the axiom-free uniform bound applies.
+  have hrw : k * a.factorial * b.factorial = a.factorial * b.factorial * k := by ring
+  rw [hrw] at hdvd
+  exact hbound n a b hn ((dvd_mul_right (a.factorial * b.factorial) k).trans hdvd)
 
 /-
 ## Part 6: The Proof Strategy
@@ -241,7 +260,8 @@ theorem erdos_729_summary :
     -- Answer: NO
     (∀ C : ℝ, C > 0 → ¬InfinitelyManyExceptions C) ∧
     -- The bound a + b ≤ n + O(log n) is intrinsic to factorial structure
-    (∀ C : ℝ, C > 0 → ∃ D : ℝ, D > 0 ∧ ∀ n a b : ℕ,
+    -- (sound uniform form, n ≥ 2; discharged axiom-free by barreto_leeham_bound)
+    (∀ C : ℝ, C > 0 → ∃ D : ℝ, D > 0 ∧ ∀ n a b : ℕ, 2 ≤ n →
       DividesFactorialModSmall n a b C →
       (a + b : ℝ) ≤ n + D * Real.log n) := by
   constructor
