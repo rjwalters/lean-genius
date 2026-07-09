@@ -609,6 +609,7 @@ theorem weylW_eq_root_word :
       = [[1, a], [0, 1]] · [[1, 0], [-a⁻¹, 1]] · [[1, a], [0, 1]] · [[0, -1], [1, 0]].
 
 Hence the whole split torus `T` lies in `⟨U, U⁻⟩`. -/
+set_option maxHeartbeats 800000 in
 theorem torusDiag_eq_root_word (a : (ZMod p)ˣ) :
     torusDiag a
       = unipotentUpper (a : ZMod p) * lowerUnipotent (-((a : ZMod p)⁻¹))
@@ -624,9 +625,7 @@ theorem torusDiag_eq_root_word (a : (ZMod p)ˣ) :
   rw [hinv]
   ext i j
   fin_cases i <;> fin_cases j <;>
-    simp only [Matrix.mul_apply, Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one,
-      Matrix.head_cons] <;>
-    field_simp <;> ring
+    simp [Matrix.mul_apply, Fin.sum_univ_two] <;> field_simp <;> ring
 
 /-- The two opposite root groups `U ∪ U⁻`, the Bruhat generators of `SL(2, p)`. -/
 def rootGroups : Set (Matrix.SpecialLinearGroup (Fin 2) (ZMod p)) :=
@@ -662,6 +661,7 @@ nonzero lies in `⟨U, U⁻⟩`, via the Bruhat factorization
 
 where `a = g₀₀`, `d = g₁₁`.  (The top-right entry checks out because
 `ad − bc = 1`.)  Since `u(·), w, diag(c)` all lie in `⟨U, U⁻⟩`, so does `g`. -/
+set_option maxHeartbeats 800000 in
 theorem mem_closure_of_lowerLeft_ne_zero
     (g : Matrix.SpecialLinearGroup (Fin 2) (ZMod p))
     (hc : (g : Matrix (Fin 2) (Fin 2) (ZMod p)) 1 0 ≠ 0) :
@@ -680,19 +680,18 @@ theorem mem_closure_of_lowerLeft_ne_zero
       val_torusDiag, Units.val_mk0, hv2]
     ext i j
     fin_cases i <;> fin_cases j <;>
-      simp only [Matrix.mul_apply, Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one,
-        Matrix.head_cons]
-    · field_simp <;> ring
-    · field_simp
+      simp [Matrix.mul_apply, Fin.sum_univ_two] <;>
+      field_simp <;>
       first
+        | ring
         | linear_combination hdet
         | linear_combination -hdet
         | linear_combination (A 1 0) * hdet
         | linear_combination -(A 1 0) * hdet
-    · field_simp <;> ring
-    · field_simp <;> ring
   have hword : g = unipotentUpper (A 0 0 * (A 1 0)⁻¹) * weylW * torusDiag (Units.mk0 (A 1 0) hc)
-      * unipotentUpper (A 1 1 * (A 1 0)⁻¹) := Subtype.ext key.symm
+      * unipotentUpper (A 1 1 * (A 1 0)⁻¹) := by
+    apply Subtype.ext
+    exact key.symm
   rw [hword]
   exact mul_mem (mul_mem (mul_mem (unipotentUpper_mem_closure_rootGroups _)
     weylW_mem_closure_rootGroups) (torusDiag_mem_closure_rootGroups _))
@@ -725,9 +724,7 @@ theorem closure_rootGroups_eq_top :
     have hbl : ((lowerUnipotent 1 * g : Matrix.SpecialLinearGroup (Fin 2) (ZMod p)) :
         Matrix (Fin 2) (Fin 2) (ZMod p)) 1 0 ≠ 0 := by
       rw [Matrix.SpecialLinearGroup.coe_mul, val_lowerUnipotent]
-      simp only [Matrix.mul_apply, Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one,
-        Matrix.head_cons, hc, mul_zero, add_zero]
-      exact hane
+      simpa [Matrix.mul_apply, Fin.sum_univ_two, hc] using hane
     have hmem : lowerUnipotent 1 * g ∈ Subgroup.closure (rootGroups (p := p)) :=
       mem_closure_of_lowerLeft_ne_zero _ hbl
     have hinv : lowerUnipotent (-1 : ZMod p) * lowerUnipotent 1 = 1 := by
