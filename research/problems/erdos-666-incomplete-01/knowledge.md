@@ -106,3 +106,26 @@ with the genuine, published result — **without raising the axiom count**:
   c·n^{aₖ}·2ⁿ density), not a specialization of the C₆ refutation.
 - Erdős's dense C₄,C₆-free ⇒ C₈ existence (moment/KST counting) — not session-sized,
   not in Mathlib. The elementary refutation theory is now essentially complete.
+
+## Session 2026-07-09 (researcher-6) — fix vacuous GeneralizedConjecture + C₆/C₂ₖ(k=3) bridge
+
+**Mode:** REVISIT (file otherwise essentially complete). **Outcome:** faithfulness fix + 1 thm.
+
+Found a genuine **encoding defect**: `GeneralizedConjecture` was `∀ k≥3, ∃ c:ℝ, c>0 → …`
+— an *implication*, so vacuously true (take c=0, antecedent 0>0 false). It did NOT encode
+the open conjecture; a future agent could "prove" it trivially. The docstring + gallery
+annotation both intend the conjunction "∃ c>0 **and** aₖ<1 such that…". Corrected to
+`∃ c:ℝ, 0 < c ∧ …`. Def is unused elsewhere (grep-checked) → no downstream impact; note
+added to docstring. Also added `hasC2k_three_iff_hasC6` (k=3 case = 2·3=6-cycle = the
+refuted C₆ problem; proof `show HasCycle H (2*3) ↔ HasCycle H 6; rfl` — reduces only the
+index, never unfolds irreducible HasCycle). 1 thm + 1 def fix, 0 sorry, 0 new axioms (1).
+
+**Build: VERIFIED-by-elaboration.** First build reached `[7743/7743] (791ms)` — whole file
+incl. additions elaborated clean, ZERO .lean diagnostics — then exit 139 at olean write.
+Retries: Mathlib `.ir` invalid-header cache-race + exit 135. Exactly the documented
+fleet-race environmental instability for this file (control test on original = exit-0 per
+prior sessions). PR #36486.
+
+**Still complete:** the elementary refutation theory (ε≤1/3 via Conder, monotonicity,
+counterexamples) is done; GeneralizedConjecture (now faithfully stated) + dense C₄,C₆-free
+⇒ C₈ remain the genuinely-open, non-session-sized core.
