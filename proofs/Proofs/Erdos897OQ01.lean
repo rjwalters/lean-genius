@@ -269,4 +269,37 @@ theorem unbounded_not_implies_unboundedOnPrimePowers :
   ⟨bigOmega, bigOmega_completelyAdditive.1, bigOmega_unbounded_on_primePowers,
     not_unboundedOnPrimePowers_bigOmega⟩
 
+/-
+## (6) The master domination lemma and a cone of witnesses
+
+`UnboundedOnPrimePowers` is a *largeness* condition, hence upward closed: if `f`
+satisfies it and `g` dominates `f` on prime powers (`g(p^k) ≥ f(p^k)`), then `g`
+satisfies it too — the same witnesses `(p,k)` work verbatim, since the comparison
+value `M·log(p^k)` does not depend on the function. This single lemma is the
+common source of the various closure properties of the class (positive scaling,
+adding a prime-power-nonnegative function); it also turns the single witness
+`logSqWeight` of (1) into an entire *cone* of witnesses: any `g ≥ logSqWeight` on
+prime powers is a satisfier.
+-/
+
+/-- **Domination lemma.** If `f` is unbounded on prime powers relative to `log` and
+`g(p^k) ≥ f(p^k)` for every prime power, then `g` is unbounded on prime powers too.
+The comparison value `M·log(p^k)` is independent of the function, so the same
+witness `(p,k)` transfers. -/
+theorem unboundedOnPrimePowers_of_ge {f g : ℕ → ℝ}
+    (hf : UnboundedOnPrimePowers f)
+    (hdom : ∀ p k : ℕ, p.Prime → 1 ≤ k → f (p ^ k) ≤ g (p ^ k)) :
+    UnboundedOnPrimePowers g := by
+  intro M
+  obtain ⟨p, k, hp, hk, hpk⟩ := hf M
+  exact ⟨p, k, hp, hk, lt_of_lt_of_le hpk (hdom p k hp hk)⟩
+
+/-- **A cone of witnesses.** Any function dominating `logSqWeight` on prime powers
+satisfies the Erdős #897 hypothesis. So non-vacuity (1) is not an isolated accident:
+the hypothesis holds for a whole family of functions, not just `logSqWeight`. -/
+theorem unboundedOnPrimePowers_of_ge_logSqWeight {g : ℕ → ℝ}
+    (hg : ∀ p k : ℕ, p.Prime → 1 ≤ k → logSqWeight (p ^ k) ≤ g (p ^ k)) :
+    UnboundedOnPrimePowers g :=
+  unboundedOnPrimePowers_of_ge logSqWeight_unboundedOnPrimePowers hg
+
 end Erdos897
