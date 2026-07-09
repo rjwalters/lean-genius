@@ -26,7 +26,7 @@
     "nextAction": "Reconstruct the energy-increment step (epsilon-irregular refinement raises partitionEnergy by >= delta) from split_energy_excess_bound, then assemble the outer AFKS loop using partitionEnergy_no_infinite_increments as termination certificate."
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (VERIFIED 0/0): supplied the variance atom bound Σwᵢxᵢ²−(Σwᵢ)μ²≥w₀d² (+its identity), the abstract analytic core the S5 note flagged as the genuine blocker for full AFKS closure. Bypasses the mixed-second-difference defect via variance≥single-atom-contribution. Remaining: instantiate over the m×k sub-cells of a two-coordinate refinement and feed afks_energy_iteration_count.",
+    "progressSummary": "PROGRESS S7: closed the increment analytic core — 2×2 law-of-total-density + variance-atom gain assemble the genuine ε⁴ energy increment (5 theorems VERIFIED 0/0, capstone pairEnergy_prod_refinement_gain built green).",
     "builtItems": [
       "edgeDensity_union_mul in SzemerediRegularityOQ04Energy.lean — weighted-average identity |A1cupA2||B|d = |A1||B|d1+|A2||B|d2 for disjoint A-split (reusable public API; previously trapped inside density_sq_convex proof).",
       "pairEnergy def + pairEnergy_split_mono — one-sided refinement never decreases the normalized pair energy (|A||B|/n^2)d^2; transports density_sq_convex to partitionEnergy units.",
@@ -42,7 +42,11 @@
       "irregular_witness_split_gap (SzemerediRegularityOQ04Witness.lean): |d(A',B')-d(A\\A',B')| + |d(A,B')-d(A,B\\B')| > eps from a witness deviation >eps, via abs_sub_le through d(A,B') then two edgeDensity_whole_between collapses. VERIFIED 0/0.",
       "irregular_witness_split_gap_disjunction (SzemerediRegularityOQ04Witness.lean): at least one coordinate carries a between-halves gap > eps/2 = exactly the hdev hypothesis of pairEnergy_split_gain (delta=eps/2). VERIFIED 0/0.",
       "weighted_variance_identity (Energy): Finset generalization of split_energy_identity — Σwᵢ(xᵢ−μ)²=Σwᵢxᵢ²−(Σwᵢ)μ² for weighted mean μ, VERIFIED 0/0",
-      "variance_atom_bound (Energy): single-atom deviation ≥d (weight ≥w₀) ⟹ Σwᵢxᵢ²−(Σwᵢ)μ²≥w₀d² — the analytic core dodging the S5 defect obstruction, VERIFIED 0/0"
+      "variance_atom_bound (Energy): single-atom deviation ≥d (weight ≥w₀) ⟹ Σwᵢxᵢ²−(Σwᵢ)μ²≥w₀d² — the analytic core dodging the S5 defect obstruction, VERIFIED 0/0",
+      "weighted_second_moment_atom_gain (SzemerediRegularityOQ04Energy.lean): atom gain in mean-identity form (Σwᵢ)μ²+w₀d²≤Σwᵢxᵢ² [VERIFIED]",
+      "edgeDensity_union_mul_right + edge_count_union_right: B-side (second-coordinate) weighted-average/edge-count identities [VERIFIED]",
+      "edgeDensity_prod_split: law of total density for a 2×2 refinement, |A||B|d(A,B)=Σ|Aᵢ||Bⱼ|d(Aᵢ,Bⱼ) [VERIFIED]",
+      "pairEnergy_prod_refinement_gain: the genuine ε⁴ 2×2 energy increment [VERIFIED — built green on retry attempt 4]"
     ],
     "insights": [
       "partitionEnergy IS the standard size-weighted energy |Pi||Pj|/n^2 d^2 (SzemerediCore:63), NOT 1/k^2. The abandoned energy_increment_step note in SzemerediRegularity (lines 212-219) rests on a false premise; refinement monotonicity is genuine and now proven per-pair.",
@@ -53,13 +57,15 @@
       "Three consecutive line-less exit-135 SIGBUS crashes were MASKING a real elaboration error (No goals to be solved at gcongr). docker-build --repair-cache (fresh olean force-refresh) let elaboration complete and surface the genuine error at 4.7s — SIGBUS retries alone would never have revealed it.",
       "The AFKS energy-increment lemmas (pairEnergy_split_gain, partitionEnergy_single_split_gain) consume a between-halves density gap |d(A1,B0)-d(A2,B0)|>=delta, but exists_irregular_witness produces a whole-vs-pair deviation |d(A',B')-d(A,B)|>eps. Different shapes; the missing link is a triangle-inequality bridge, now supplied by SzemerediRegularityOQ04Witness.",
       "Density convexity: d(A1 u A2,B) is the |A1|:|A2|-weighted mean of d(A1,B),d(A2,B), hence lies between them, so the whole is never farther from a half than the two halves are from each other (edgeDensity_whole_between). Upgrades a whole-vs-half gap into a half-vs-half gap of >= the same size.",
-      "The S5 mixed-second-difference (defect) obstruction is bypassed by treating the two-coordinate refinement as a weighted point distribution: the witness cell is one atom, and variance≥single-atom-contribution gives the energy gain directly, with no triangle-through-mixed-density detour."
+      "The S5 mixed-second-difference (defect) obstruction is bypassed by treating the two-coordinate refinement as a weighted point distribution: the witness cell is one atom, and variance≥single-atom-contribution gives the energy gain directly, with no triangle-through-mixed-density detour.",
+      "The ε-irregular witness deviation |d(A,B)−d(A,B)| is DIRECTLY against the coarse mean, so refining both coords simultaneously makes the witness cell a single variance atom — dodging the S5 mixed-second-difference defect entirely (no Cauchy–Schwarz on cross terms).",
+      "Bool×Bool index + Fintype.sum_prod_type/sum_bool cleanly instantiates the abstract atom gain over 4 cells; linear_combination needs coeff −1 against edgeDensity_prod_split (whole=Σcells orientation).",
+      "Final /n² scaling: avoid convert (mis-pairs the + tree); prove goal=1/n²·raw via unfold+ring both sides then exact the scaled inequality."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Instantiate variance_atom_bound over the m×k sub-cells of a simultaneous two-coordinate refinement (weights |Aᵢ||Bⱼ|/n², values d(Aᵢ,Bⱼ), mean d(A,B), witness atom (A′,B′) deviation ≥ε/2) → energy gain ≥ (|A′||B′|/n²)(ε/2)²; this is the true ε⁴ increment.",
-      "Wire that increment into afks_energy_iteration_count for the outer AFKS loop.",
-      "Consider upstreaming edgeDensity_whole_between (density convexity) as a clean general fact."
+      "Generalize 2×2 → m×k product refinement via Finset(Finset V) families + card_biUnion + edge_count over a Finset.biUnion product partition.",
+      "Wire pairEnergy_prod_refinement_gain + exists_irregular_witness into whole-partition energy monotonicity feeding afks_energy_iteration_count."
     ],
     "markdown": "# Knowledge Base: szemeredi-regularity-oq-04\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
