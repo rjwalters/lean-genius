@@ -708,6 +708,57 @@ theorem kronecker_eq_one_or_neg_one_of_coprime (a : ℤ) (n : ℕ) (hn : 0 < n)
   · exact Or.inl h1
   · exact Or.inr hm1
 
+-- ============================================================
+-- Section 10: Numerator-negation supplementary law
+-- ============================================================
+
+/-! The file already records how `(·/n)` behaves under the *denominator* sign
+(`kronecker_neg_one_odd`, `kronecker_neg_one_eq_χ₄`) and under numerator translation
+(`kronecker_mod_numerator`, `kronecker_periodic_numerator`).  The missing companion is
+the numerator *sign* law: negating the numerator multiplies the symbol by the value of
+the first supplementary character `(-1/n) = χ₄ n`.  This is the numerator-side analog of
+`kronecker_neg_two_eq_mul` and a direct consequence of first-argument multiplicativity,
+so it holds for the symbol exactly as defined (no `kronecker2` refinement needed). -/
+
+/-- **Numerator negation, general modulus.**  For any nonzero numerator `a` and any
+integer modulus `n`, `(-a/n) = (-1/n)·(a/n)`.  Instance of first-argument
+multiplicativity `kronecker_mul_left` applied to `-a = (-1)·a`. -/
+theorem kronecker_neg_numerator (a n : ℤ) (ha : a ≠ 0) :
+    kronecker (-a) n = kronecker (-1) n * kronecker a n := by
+  rw [show (-a : ℤ) = (-1) * a by ring]
+  exact kronecker_mul_left (-1) a n (mul_ne_zero (by norm_num) ha)
+
+/-- **Numerator negation as the `χ₄` character (odd modulus).**  For odd positive `n` and
+nonzero `a`, `(-a/n) = χ₄(n)·(a/n)`: negating the numerator twists the symbol by the first
+supplementary character, in the canonical `ZMod.χ₄` form Mathlib's reciprocity API uses.
+Combines `kronecker_neg_numerator` with `kronecker_neg_one_eq_χ₄`. -/
+theorem kronecker_neg_numerator_eq_χ₄ (a : ℤ) (n : ℕ) (hn : 0 < n) (hno : n % 2 = 1)
+    (ha : a ≠ 0) :
+    kronecker (-a) (n : ℤ) = ZMod.χ₄ (n : ZMod 4) * kronecker a (n : ℤ) := by
+  rw [kronecker_neg_numerator a (n : ℤ) ha, kronecker_neg_one_eq_χ₄ n hn hno]
+
+/-- **Numerator negation, residue-table form (odd modulus).**  For odd positive `n` and
+nonzero `a`, `(-a/n) = (a/n)` when `n ≡ 1 (mod 4)` and `-(a/n)` when `n ≡ 3 (mod 4)`. -/
+theorem kronecker_neg_numerator_if (a : ℤ) (n : ℕ) (hn : 0 < n) (hno : n % 2 = 1)
+    (ha : a ≠ 0) :
+    kronecker (-a) (n : ℤ) = (if n % 4 = 1 then 1 else -1) * kronecker a (n : ℤ) := by
+  rw [kronecker_neg_numerator a (n : ℤ) ha, kronecker_neg_one_odd n hn hno]
+
+/-- **Numerator is an even function of its sign when `n ≡ 1 (mod 4)`.**
+`(-a/n) = (a/n)`. -/
+theorem kronecker_neg_numerator_one_mod_four (a : ℤ) (n : ℕ) (hn4 : n % 4 = 1)
+    (ha : a ≠ 0) :
+    kronecker (-a) (n : ℤ) = kronecker a (n : ℤ) := by
+  rw [kronecker_neg_numerator_if a n (by omega) (by omega) ha, if_pos hn4, one_mul]
+
+/-- **Numerator is an odd function of its sign when `n ≡ 3 (mod 4)`.**
+`(-a/n) = -(a/n)`. -/
+theorem kronecker_neg_numerator_three_mod_four (a : ℤ) (n : ℕ) (hn4 : n % 4 = 3)
+    (ha : a ≠ 0) :
+    kronecker (-a) (n : ℤ) = - kronecker a (n : ℤ) := by
+  rw [kronecker_neg_numerator_if a n (by omega) (by omega) ha,
+    if_neg (by omega : ¬ n % 4 = 1), neg_one_mul]
+
 /-!
 ## Module note: what remains open
 
