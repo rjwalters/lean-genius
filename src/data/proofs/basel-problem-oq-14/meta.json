@@ -121,8 +121,8 @@
       "id": "eta",
       "title": "hasSum_eta_four / tsum_eta_four — η(4) = 7π⁴/720",
       "startLine": 69,
-      "endLine": 95,
-      "summary": "Even-indexed alternating terms sum to -π⁴/1440, odd-indexed to π⁴/96; HasSum.even_add_odd combines to 7π⁴/720, with a tsum corollary.",
+      "endLine": 113,
+      "summary": "Even-indexed alternating terms sum to -π⁴/1440, odd-indexed to π⁴/96; HasSum.even_add_odd combines to 7π⁴/720, with a tsum corollary. Closes with a summary table of the four results (even ζ(4), odd ζ(4), and the η(4) HasSum and tsum forms) and the 0-sorry / 0-axiom status.",
       "mathContext": "The Dirichlet eta value η(4) = (1 - 1/8)ζ(4) = 7π⁴/720."
     }
   ],
@@ -185,6 +185,11 @@
     {
       "id": "basel-problem-oq-14-oq-01",
       "question": "Abstract the parity split into η(2m) = (1 - 2^(1-2m)) ζ(2m) and derive η(2), η(4), η(6), ... uniformly from hasSum_zeta_nat.",
+      "significance": "medium"
+    },
+    {
+      "id": "basel-problem-oq-14-oq-02",
+      "question": "Cross-link the weight-4 family {ζ(4), λ(4), η(4)} and formalize the coordinate identity η(2m) = (1 − 2^{−(2m−1)})ζ(2m): at m=2, η(4) = λ(4) − 2^{−4}ζ(4) = (15/16 − 1/16)ζ(4) = (7/8)ζ(4) = 7π⁴/720, the numerator 7 arising precisely from 1 − 2^{−3} = 7/8.",
       "significance": "medium"
     }
   ],
