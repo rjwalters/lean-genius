@@ -59,8 +59,8 @@
       "id": "header",
       "title": "Open Question and the Sharp Answer",
       "startLine": 1,
-      "endLine": 65,
-      "summary": "Header stating OQ-05-OQ-04-OQ-01 and the resolution: the exact count is max(#K, ℵ₀) under the hypothesis that L is algebraically closed (the formalization of 'L contains the algebraic closure of K'), genuinely needed since L = K finite fails. Describes the algebraicClosure-based architecture: Mathlib's upper bound plus a two-part lower bound."
+      "endLine": 74,
+      "summary": "Header stating OQ-05-OQ-04-OQ-01 and the resolution: the exact count is max(#K, ℵ₀) under the hypothesis that L is algebraically closed (the formalization of 'L contains the algebraic closure of K'), genuinely needed since L = K finite fails. Describes the algebraicClosure-based architecture: Mathlib's upper bound plus a two-part lower bound. Also covers the namespace/open/universe/variable setup (lines 66–74) fixing the ambient extension L/K over a common universe."
     },
     {
       "id": "upper-bound",
@@ -94,7 +94,7 @@
       "id": "examples",
       "title": "Worked Instances: Both Regimes",
       "startLine": 145,
-      "endLine": 162,
+      "endLine": 165,
       "summary": "The algebraic numbers (ℂ over ℚ) number exactly ℵ₀ = max(ℵ₀, ℵ₀) via Cardinal.mkRat; the elements of ℂ algebraic over ℝ number exactly the continuum 𝔠 = max(𝔠, ℵ₀) via Cardinal.mk_real and aleph0_le_continuum — the sharp cardinal form of the parent's countable and uncountable examples."
     }
   ],
@@ -121,5 +121,79 @@
       "relationship": "ancestor — the core entry establishing countability of the algebraic numbers over ℚ"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "Cantor, Georg",
+      "title": "Über eine Eigenschaft des Inbegriffes aller reellen algebraischen Zahlen",
+      "year": "1874",
+      "venue": "Journal für die reine und angewandte Mathematik 77, 258–262",
+      "note": "The founding result that the real algebraic numbers are countable — the ℵ₀ (countable) regime of the exact formula max(#K, ℵ₀) proved here, recovered as the worked instance #{x : ℂ | IsAlgebraic ℚ x} = ℵ₀."
+    },
+    {
+      "authors": "Jech, Thomas",
+      "title": "Set Theory",
+      "year": "2003",
+      "venue": "Springer, 3rd millennium ed.",
+      "note": "Standard reference for the cardinal arithmetic behind the formula: for an infinite cardinal κ and a set of size ≤ κ of finite tuples, the union has size κ, giving max(#K, ℵ₀) as the count of algebraic elements."
+    },
+    {
+      "authors": "Lang, Serge",
+      "title": "Algebra",
+      "year": "2002",
+      "venue": "Springer, Graduate Texts in Mathematics 211, 3rd ed.",
+      "note": "Algebraic closures and their cardinality: an algebraic closure of an infinite field K has the same cardinality as K, and is countable when K is countable — the algebraic content underlying cardinalMk_algebraicClosure_eq_max."
+    },
+    {
+      "authors": "Morandi, Patrick",
+      "title": "Field and Galois Theory",
+      "year": "1996",
+      "venue": "Springer, Graduate Texts in Mathematics 167",
+      "note": "Construction and uniqueness of the algebraic closure, the object AlgebraicClosure K / algebraicClosure K L whose cardinality this entry pins to max(#K, ℵ₀)."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "cardinalMk_setOf_isAlgebraic_eq_max",
+      "type": "main",
+      "description": "The headline exact cardinality: for L/K with L algebraically closed, the algebraic elements number exactly max(#K, ℵ₀). Combines the set/closure identity with the closure cardinality formula.",
+      "leanType": "[IsAlgClosed L] : #{x : L | IsAlgebraic K x} = max (#K) ℵ₀"
+    },
+    {
+      "name": "cardinalMk_algebraicClosure_eq_max",
+      "type": "main",
+      "description": "Cardinality of the algebraic closure inside L: #(algebraicClosure K L) = max(#K, ℵ₀), obtained by antisymmetry from the upper bound and the two lower bounds (#K and ℵ₀).",
+      "leanType": "[IsAlgClosed L] : #(algebraicClosure K L) = max (#K) ℵ₀"
+    },
+    {
+      "name": "cardinalMk_algebraicClosure_type_eq_max",
+      "type": "main",
+      "description": "The type-level form: the abstract algebraic closure AlgebraicClosure K also has cardinality max(#K, ℵ₀), independent of any ambient field.",
+      "leanType": ": #(AlgebraicClosure K) = max (#K) ℵ₀"
+    },
+    {
+      "name": "cardinalMk_algebraicClosure_le",
+      "type": "supporting",
+      "description": "Upper bound: #(algebraicClosure K L) ≤ max(#K, ℵ₀) — algebraic elements are roots of K-polynomials, of which there are at most max(#K, ℵ₀).",
+      "leanType": ": #(algebraicClosure K L) ≤ max (#K) ℵ₀"
+    },
+    {
+      "name": "cardinalMk_le_algebraicClosure",
+      "type": "supporting",
+      "description": "Lower bound by the base field: #K ≤ #(algebraicClosure K L), via the injective structure map K → algebraicClosure K L.",
+      "leanType": ": #K ≤ #(algebraicClosure K L)"
+    },
+    {
+      "name": "aleph0_le_cardinalMk_algebraicClosure",
+      "type": "supporting",
+      "description": "Lower bound by ℵ₀: when L is algebraically closed the algebraic closure is infinite, so ℵ₀ ≤ #(algebraicClosure K L). Together with the previous lower bound this forces the max.",
+      "leanType": "[IsAlgClosed L] : ℵ₀ ≤ #(algebraicClosure K L)"
+    },
+    {
+      "name": "cardinalMk_setOf_eq_algebraicClosure",
+      "type": "supporting",
+      "description": "Bridge identity: the set {x : L | IsAlgebraic K x} of algebraic elements has the same cardinality as the subfield algebraicClosure K L, letting the cardinal formula transfer between the set and the closure.",
+      "leanType": ": #{x : L | IsAlgebraic K x} = #(algebraicClosure K L)"
+    }
+  ]
 }
