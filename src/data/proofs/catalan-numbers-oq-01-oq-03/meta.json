@@ -48,12 +48,7 @@
       "Nat.largeSchroder_ge_three_mul: 3·L(n+1) ≤ L(n+2) — each Schröder step grows by a factor of at least 3",
       "Nat.largeSchroder_ge_two_mul_three_pow: 2·3ⁿ ≤ L(n+1) — the closed exponential lower bound, exhibiting geometric growth with ratio 3"
     ],
-    "additionalFiles": [
-      {
-        "path": "Proofs/SchroderLinearRecurrenceAristotle.lean",
-        "description": "Companion file (NOT part of the verified entry) for the open order-two holonomic recurrence (n+3)·L(n+2) + n·L n = 3·(2n+3)·L(n+1). The headline recurrence largeSchroder_holonomic is proved unconditionally from a single convolution lemma largeSchroder_conv_holonomic via a routine linear_combination, so there is now exactly 1 sorry — the convolution lemma — isolating all the hard generating-function content. Its docstring records a concrete five-step, Mathlib-supported buildability roadmap (PowerSeries.catalanSeries template + PowerSeries.derivative/coeff_derivative)."
-      }
-    ],
+    "additionalFiles": [],
     "dateAdded": "2026-06-23",
     "lineCount": 95,
     "theoremCount": 4,
