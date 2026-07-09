@@ -605,5 +605,113 @@ theorem split_gap_not_regular_balanced (G : SimpleGraph V) [DecidableRel G.Adj]
   rw [hdevid, abs_div, show |(2 : ℚ)| = 2 by norm_num] at hbound
   -- `|d₁ − d₂|/2 ≥ δ/2 > ε`, contradicting `hbound`.
   linarith [hgap]
+-- ═══════════════════════════════════════════════════════════════════
+-- PART IX: THE TWO-LEVEL (BOTH-COORDINATE) B-SIDE CLOSURE
+-- ═══════════════════════════════════════════════════════════════════
+
+/-- **B-side energy jump via subset-promotion — the two-level closure.**  This
+    resolves the honest crux left open by Parts VI–VII: the one-sided reduction
+    `exists_onesided_deviation_of_irregular` hands its B-side branch a deviation
+    `|d(A', B') − d(A', B)| ≥ ε/2` measured against the *witness subset* `A'`,
+    which is **not** a part of the current partition — so the whole-partner
+    increment `partitionEnergy_Bside_gain_of_irregular` (which needs a genuine
+    part `A₀ ∈ R`) cannot fire directly.
+
+    The fix is a two-level refinement.  First split the part `A` into `A'` and
+    `A \ A'`; by refinement-monotonicity (`partitionEnergy_single_split_mono`)
+    this **never decreases** `partitionEnergy`, and it makes `A'` a genuine part
+    of the refined partition.  *Now* the B-side increment applies with `A₀ = A'`:
+    splitting `B` into `B', B \ B'` realizes the uniform floor
+    `(ε/2)² / (2n²) = ε² / (8n²)` on top of the (non-decreased) post-promotion
+    energy.  The net gain over the original partition is therefore at least the
+    full floor — no energy is lost in the promotion step.
+
+    This is the missing link that makes the *B-side* branch of an irregular pair
+    actually drive an energy increment, closing the coordinate that the plain
+    triangle reduction could not reach without refining both coordinates. -/
+theorem partitionEnergy_Bside_gain_via_promotion (G : SimpleGraph V)
+    [DecidableRel G.Adj]
+    (R : Finset (Finset V)) (A B A' B' : Finset V)
+    (hA' : A' ⊆ A) (hB' : B' ⊆ B)
+    (hA'_fresh : A' ∉ insert B R) (hcomp_fresh : A \ A' ∉ insert B R)
+    (hA_fresh : A ∉ insert B R) (hneA : A' ≠ A \ A')
+    (hB'_fresh : B' ∉ insert A' (insert (A \ A') R))
+    (hBcomp_fresh : B \ B' ∉ insert A' (insert (A \ A') R))
+    (hB_fresh : B ∉ insert A' (insert (A \ A') R)) (hneB : B' ≠ B \ B')
+    (hn₁ : 1 ≤ (B'.card : ℚ)) (hn₂ : 1 ≤ ((B \ B').card : ℚ))
+    (hA'card : 1 ≤ (A'.card : ℚ))
+    (eps : ℚ) (hε : 0 ≤ eps)
+    (hdev : |edgeDensity G A' B' - edgeDensity G A' B| ≥ eps / 2) :
+    partitionEnergy G (insert A (insert B R)) +
+        (eps / 2) ^ 2 / (2 * (Fintype.card V : ℚ) ^ 2) ≤
+      partitionEnergy G (insert B' (insert (B \ B') (insert A' (insert (A \ A') R)))) := by
+  have hdisjA : Disjoint A' (A \ A') := disjoint_sdiff_self_right
+  have hunionA : A' ∪ (A \ A') = A := Finset.union_sdiff_of_subset hA'
+  -- Step 1: split `A → A', A\A'`; refinement never decreases energy, and now `A'`
+  -- is a genuine part.
+  have hmono := partitionEnergy_single_split_mono G (insert B R) A' (A \ A')
+    hdisjA hA'_fresh hcomp_fresh hneA (by rw [hunionA]; exact hA_fresh)
+  rw [hunionA] at hmono
+  -- Reorder inserts: `B` becomes the split part, `A'` a present partner.
+  have hcomm : insert A' (insert (A \ A') (insert B R))
+      = insert B (insert A' (insert (A \ A') R)) := by
+    rw [Finset.insert_comm (A \ A') B R, Finset.insert_comm A' B (insert (A \ A') R)]
+  rw [hcomm] at hmono
+  -- Step 2: split `B → B', B\B'` against the now-present whole partner `A'`.
+  have hbside := partitionEnergy_Bside_gain_of_irregular G
+    (insert A' (insert (A \ A') R)) B A' B' hB' hB'_fresh hBcomp_fresh hneB hB_fresh
+    (Finset.mem_insert_self A' _) hn₁ hn₂ hA'card eps hε hdev
+  linarith [hmono, hbside]
+
+-- ═══════════════════════════════════════════════════════════════════
+-- PART X: THE UNIFIED AFKS ENERGY-INCREMENT STEP
+-- ═══════════════════════════════════════════════════════════════════
+
+/-- **An irregular pair always gains the uniform energy floor.**  Given an
+    ε-irregularity *witness* `(A', B')` for the pair of parts `(A, B)` — supplied
+    as the one-sided dichotomy `hdich` that `exists_onesided_deviation_of_irregular`
+    produces — refining the partition realizes an energy increment of at least
+    `(ε/2)² / (2n²) = ε² / (8n²)`, **whichever coordinate the irregularity
+    localizes to**:
+
+    * A-side branch (`|d(A', B) − d(A, B)| ≥ ε/2`): split the part `A` alone,
+      keeping the whole partner `B`; `partitionEnergy_Aside_gain_of_irregular`.
+    * B-side branch (`|d(A', B') − d(A', B)| ≥ ε/2`): promote `A'` to a part and
+      split `B`; `partitionEnergy_Bside_gain_via_promotion`.
+
+    The conclusion is existential in the refined partition `P'` because the two
+    branches produce different refinements, but both clear the *same* floor.  This
+    is the complete AFKS energy-increment step: combined with
+    `afks_energy_iteration_count` (which bounds the number of floor-clearing
+    refinements by `2n²/ε²`), it certifies that a graph admits only finitely many
+    genuine refinements before every relevant pair is ε-regular — the tower-free
+    finiteness at the heart of the strong regularity lemma. -/
+theorem partitionEnergy_gain_of_irregular_pair (G : SimpleGraph V)
+    [DecidableRel G.Adj]
+    (R : Finset (Finset V)) (A B A' B' : Finset V)
+    (hA' : A' ⊆ A) (hB' : B' ⊆ B)
+    (hA'_fresh : A' ∉ insert B R) (hcomp_fresh : A \ A' ∉ insert B R)
+    (hA_fresh : A ∉ insert B R) (hneA : A' ≠ A \ A')
+    (hB'_fresh : B' ∉ insert A' (insert (A \ A') R))
+    (hBcomp_fresh : B \ B' ∉ insert A' (insert (A \ A') R))
+    (hB_fresh : B ∉ insert A' (insert (A \ A') R)) (hneB : B' ≠ B \ B')
+    (hn₁ : 1 ≤ (A'.card : ℚ)) (hn₂ : 1 ≤ ((A \ A').card : ℚ))
+    (hBc : 1 ≤ (B.card : ℚ))
+    (hm₁ : 1 ≤ (B'.card : ℚ)) (hm₂ : 1 ≤ ((B \ B').card : ℚ))
+    (eps : ℚ) (hε : 0 ≤ eps)
+    (hdich : |edgeDensity G A' B - edgeDensity G A B| ≥ eps / 2 ∨
+             |edgeDensity G A' B' - edgeDensity G A' B| ≥ eps / 2) :
+    ∃ P', partitionEnergy G (insert A (insert B R)) +
+        (eps / 2) ^ 2 / (2 * (Fintype.card V : ℚ) ^ 2) ≤ partitionEnergy G P' := by
+  rcases hdich with hAside | hBside
+  · -- A-side: split the part `A`, keeping the whole partner `B ∈ insert B R`.
+    exact ⟨insert A' (insert (A \ A') (insert B R)),
+      partitionEnergy_Aside_gain_of_irregular G (insert B R) A B A'
+        hA' hA'_fresh hcomp_fresh hneA hA_fresh (Finset.mem_insert_self B R)
+        hn₁ hn₂ hBc eps hε hAside⟩
+  · -- B-side: promote `A'` to a part, then split `B`.
+    exact ⟨_, partitionEnergy_Bside_gain_via_promotion G R A B A' B'
+      hA' hB' hA'_fresh hcomp_fresh hA_fresh hneA hB'_fresh hBcomp_fresh hB_fresh hneB
+      hm₁ hm₂ hn₁ eps hε hBside⟩
 
 end Szemeredi.RegularityOQ04Bridge
