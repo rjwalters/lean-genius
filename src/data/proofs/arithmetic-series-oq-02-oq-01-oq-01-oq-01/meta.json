@@ -134,41 +134,41 @@
       "id": "sec-header",
       "title": "Module Header and Motivation",
       "startLine": 1,
-      "endLine": 63,
+      "endLine": 60,
       "summary": "States the open question (non-integer q-exponent extension), the q-binomial theorem (qBT), how it implies the parent q-Vandermonde by coefficient extraction, and the C(r-k,2)+C(k,2)-C(r,2) = -k(r-k) exponent arithmetic. References Kac-Cheung and Andrews."
     },
     {
       "id": "sec-exp-lemma",
       "title": "q-Exponent Arithmetic",
-      "startLine": 64,
-      "endLine": 74,
+      "startLine": 61,
+      "endLine": 69,
       "summary": "choose_two_succ: the triangular-number recurrence C(k+1,2) = C(k,2) + k, proved from Nat.choose_succ_succ and Nat.choose_one_right."
     },
     {
       "id": "sec-main-theorem",
       "title": "The Finite q-Binomial Theorem",
-      "startLine": 75,
-      "endLine": 158,
+      "startLine": 70,
+      "endLine": 149,
       "summary": "qBinomialTheorem: induction on n generalizing x. Peels the first factor with prod_range_succ', applies the IH at x·q, then closes the sum identity via sum_range_succ'/sum_range_succ reindexing, qBinom_succ_succ (q-Pascal), choose_two_succ, htop (top term vanishes by qBinom_eq_zero_of_lt), and ring."
     },
     {
       "id": "sec-q-one",
       "title": "Specialization q = 1",
-      "startLine": 159,
-      "endLine": 178,
+      "startLine": 150,
+      "endLine": 167,
       "summary": "qBinomialTheorem_q_one: at q=1 the product becomes (1+x)^n and [n,k]_1 = C(n,k), recovering the ordinary binomial theorem (1+x)^n = ∑_k C(n,k) x^k over ℤ."
     },
     {
       "id": "sec-q-pochhammer",
       "title": "q-Pochhammer Form",
-      "startLine": 179,
-      "endLine": 191,
+      "startLine": 168,
+      "endLine": 188,
       "summary": "Defines qPoch a q n = ∏_{i<n}(1 - a q^i) and proves qPoch_neg_eq: the product side equals the q-Pochhammer symbol (-x; q)_n, making the non-integer-exponent reading explicit."
     },
     {
       "id": "sec-checks",
       "title": "Small-Case Sanity Checks",
-      "startLine": 192,
+      "startLine": 189,
       "endLine": 222,
       "summary": "decide (not native_decide) checks: n=2,q=2,x=3 gives 4·7=28; n=3,q=1,x=1 gives (1+1)^3=8=∑C(3,k)."
     }
