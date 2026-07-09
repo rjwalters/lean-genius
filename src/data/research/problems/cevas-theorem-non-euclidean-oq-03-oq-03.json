@@ -1,0 +1,76 @@
+{
+  "slug": "cevas-theorem-non-euclidean-oq-03-oq-03",
+  "title": "Non-Degenerate Conic Brianchon from the Hexagon Ratio Algebra",
+  "phase": "OBSERVE",
+  "status": "available",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "If a hexagon $A_1B_1C_1A_2B_2C_2$ is circumscribed about a non-degenerate conic $\\mathcal{C}$, then its three principal diagonals are concurrent (Brianchon). Ratio-algebraically: the six tangent-contact side-measures of the circumscribed hexagon satisfy the closure reciprocity $P(\\mathrm{cfg}) \\cdot P'(\\mathrm{cfg}) = \\frac{bd}{dc}\\frac{ce}{ea}\\frac{af}{fb} \\cdot \\frac{dc}{ce}\\frac{ea}{af}\\frac{fb}{bd} = 1$, now for a genuine non-degenerate conic rather than the degenerate two-geodesic (Pappus) conic, uniformly for length, $\\sin$, and $\\sinh$ measures.",
+    "plain": "The source entry proved the algebraic core of Pappus-Brianchon only for the degenerate conic (two geodesics carrying the alternating hexagon vertices), which is the Pappus special case. This problem asks to lift that same telescoping ratio invariant to a genuine non-degenerate conic, so the six tangent-contact measures of a circumscribed hexagon still satisfy P*P' = 1 and the concurrence of the three principal diagonals is exactly Brianchon's theorem -- delivered uniformly for Euclidean, spherical (sin), and hyperbolic (sinh) measures.",
+    "whyMatters": [
+      "Brianchon's theorem (1810) is the projective dual of Pascal's hexagram and a cornerstone incidence result of conic geometry; the source entry deliberately handled only the degenerate (Pappus) case and left the genuine-conic Brianchon statement as explicit future work.",
+      "Because the closure reciprocity holds verbatim for sin and sinh measures, promoting it to a non-degenerate conic would yield the spherical and hyperbolic Brianchon theorems simultaneously from one verified ratio-algebraic engine."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "The hexagon closure relation ceva_dual_reciprocal (P*P' = 1) for the degenerate conic, formalized in cevas-theorem-non-euclidean-oq-03.",
+      "The abstract Ceva-Brianchon duality ceva_iff_dual and the multiplicative chaining laws cevaProduct_comp, dualProduct_comp, ceva_comp_of_ceva, plus spherical/hyperbolic closure instances via the parent's sin/sinh measure builders.",
+      "Non-Euclidean Menelaus (cevas-theorem-non-euclidean-oq-02), the transversal companion supplying the concurrence/collinearity criteria."
+    ],
+    "open": [
+      "No formalization of the six tangent-contact side-measures for a hexagon circumscribed about a genuine non-degenerate conic.",
+      "No proof that the closure reciprocity P*P' = 1 survives the passage from two geodesics (degenerate conic) to a genuine conic.",
+      "No Lean statement of Brianchon concurrence of the three principal diagonals for the non-degenerate case in any of the three constant-curvature geometries."
+    ],
+    "goal": "Define a NonDegenerateConicHexagon configuration whose six positive measures are the tangent-segment measures of a hexagon circumscribed about a conic, prove the closure relation P*P' = 1 for it by reusing the telescoping argument, and derive the Brianchon concurrence condition; then specialize verbatim to sin (sphere) and sinh (hyperbolic) via the parent's measure builders. Full projective incidence (points and lines) is a stretch goal."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-07-09T16:43:20-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "geometry",
+    "non-euclidean",
+    "projective-geometry",
+    "pappus",
+    "brianchon",
+    "ceva",
+    "ratio-algebra"
+  ],
+  "relatedProofs": [
+    "cevas-theorem-non-euclidean-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [
+      "https://en.wikipedia.org/wiki/Brianchon%27s_theorem",
+      "https://en.wikipedia.org/wiki/Pappus%27s_hexagon_theorem"
+    ],
+    "mathlib": [
+      "Mathlib.Tactic",
+      "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
+      "Mathlib.LinearAlgebra.Projectivization.Basic"
+    ]
+  },
+  "started": "2026-07-09T16:43:20-07:00",
+  "significance": 5,
+  "tractability": 5
+}

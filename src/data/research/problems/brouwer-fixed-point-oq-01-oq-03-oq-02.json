@@ -1,0 +1,69 @@
+{
+  "slug": "brouwer-fixed-point-oq-01-oq-03-oq-02",
+  "title": "Formalize the degree-theoretic proof in BorsukUlam",
+  "phase": "OBSERVE",
+  "status": "available",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{No continuous odd map } g : S^n \\to S^{n-1} \\text{ exists } (n \\ge 1); \\text{ equivalently, } \\nexists\\, g : S^n \\to \\mathbb{R}^n \\text{ continuous with } g(-x) = -g(x) \\text{ and } g(x) \\neq 0 \\text{ for all } x \\in S^n.",
+    "plain": "The n-dimensional Borsuk-Ulam theorem is proved in the gallery, but its topological heart is currently assumed as the axiom no_continuous_odd_nonzero_on_sphere: that no continuous odd map from the n-sphere to the (n-1)-sphere exists. This problem asks for a machine-checked proof of that single obstruction in Lean 4 / Mathlib so the axiom can be replaced by a theorem and the parent entry upgraded toward verified status.",
+    "whyMatters": [
+      "The odd-map obstruction is exactly where Borsuk-Ulam stops being elementary: n=1 needs only the IVT, but n>=2 requires that odd self-maps of the sphere have odd degree and are never null-homotopic.",
+      "Removing this axiom would turn Borsuk-Ulam, No-Retraction, and the equivalence chain to the Brouwer Fixed Point theorem from conditionally proved into fully machine-checked results.",
+      "A formal proof would establish reusable Mathlib-level infrastructure (odd maps, degree parity, or a Z/2 index) for future algebraic-topology formalizations."
+    ]
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [
+      "The axiom no_continuous_odd_nonzero_on_sphere in Proofs/BorsukUlam.lean is unproved for n >= 2.",
+      "Mathlib does not currently expose a ready-made 'odd maps have odd degree' or 'no odd map S^n -> S^{n-1}' lemma in directly usable form."
+    ],
+    "goal": "Prove no_continuous_odd_nonzero_on_sphere (equivalently, no continuous odd map S^n -> S^{n-1}) in Lean 4 with Mathlib for all n >= 1, and replace the axiom declaration in Proofs/BorsukUlam.lean with a theorem; the parent's derived corollaries already follow from it."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-07-09T16:43:20-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "topology",
+    "fixed-point",
+    "brouwer",
+    "borsuk-ulam",
+    "algebraic-topology",
+    "ham-sandwich"
+  ],
+  "relatedProofs": [
+    "brouwer-fixed-point-oq-01-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": [
+      "Mathlib.Topology.Homotopy.Basic",
+      "Mathlib.Analysis.InnerProductSpace.EuclideanDist",
+      "Mathlib.Analysis.InnerProductSpace.Basic",
+      "Mathlib.Topology.Algebra.Module.Basic"
+    ]
+  },
+  "started": "2026-07-09T16:43:20-07:00",
+  "significance": 5,
+  "tractability": 5
+}

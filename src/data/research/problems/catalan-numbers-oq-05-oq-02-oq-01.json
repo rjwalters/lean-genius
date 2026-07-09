@@ -1,0 +1,74 @@
+{
+  "slug": "catalan-numbers-oq-05-oq-02-oq-01",
+  "title": "Row sums of Catalan's triangle: Σₖ T(n,k) = C(2n+1, n)",
+  "phase": "OBSERVE",
+  "status": "available",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\sum_{k=0}^{n} T(n,k) = \\binom{2n+1}{n}, \\quad\\text{where}\\quad T(n,k) = \\binom{n+k}{k} - \\binom{n+k}{n+1}.",
+    "plain": "Catalan's triangle is a two-parameter array of ballot numbers T(n,k), each counting monotone lattice paths from (0,0) to (n,k) that never rise above the main diagonal; its diagonal entries T(n,n) are the Catalan numbers. This problem asks us to sum an entire row: prove that T(n,0) + T(n,1) + ... + T(n,n) collapses to the single central-binomial value C(2n+1, n), aggregating the reflection-principle counts across the row and tying the triangle back to the Catalan/central-binomial family. The task is to formalize this row-sum identity in Lean 4 on top of the parent's already-verified ballotNumber object and its closed form.",
+    "whyMatters": [
+      "Row sums close the loop between the Catalan triangle and the central-binomial sequence that generates it, showing that aggregating reflection-principle counts across a row reproduces C(2n+1, n).",
+      "It is the natural next structural fact after the parent established individual entries, their closed form, and the lattice-path recurrence.",
+      "Formalizing it exercises finite-sum manipulation of binomial coefficients (telescoping / hockey-stick aggregation), a recurring enumerative pattern with no dedicated Catalan-triangle instance in Mathlib."
+    ]
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [
+      "The closed evaluation of the full row sum Σ_{k=0}^{n} T(n,k) as C(2n+1, n) is not formalized in the gallery or Mathlib.",
+      "The bridge relating C(2n+1, n) to the succeeding Catalan number catalan (n+1) (the ballot-aggregation reading) is not yet recorded."
+    ],
+    "goal": "Prove in Lean 4 over ℕ the identity ∑ k in Finset.range (n+1), ballotNumber n k = (2*n+1).choose n, reusing the parent's ballotNumber definition and its closed form; a genuine bijective (Finset-of-paths) proof is out of scope."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-07-09T16:43:20-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "combinatorics",
+    "catalan-numbers",
+    "catalan-triangle",
+    "ballot-numbers",
+    "central-binomial",
+    "binomial-coefficients",
+    "reflection-principle",
+    "ballot-problem",
+    "lattice-paths",
+    "research"
+  ],
+  "relatedProofs": [
+    "catalan-numbers-oq-05-oq-02"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": [
+      "Mathlib.Data.Nat.Choose.Basic",
+      "Mathlib.Data.Nat.Choose.Sum",
+      "Mathlib.Data.Nat.Choose.Central",
+      "Mathlib.Combinatorics.Enumerative.Catalan",
+      "Mathlib.Algebra.BigOperators.Basic"
+    ]
+  },
+  "started": "2026-07-09T16:43:20-07:00",
+  "significance": 5,
+  "tractability": 5
+}

@@ -1,0 +1,77 @@
+{
+  "slug": "bezout-identity-oq-01-oq-02-oq-02",
+  "title": "Transitivity of SLₙ(ℤ) on Primitive Vectors",
+  "phase": "OBSERVE",
+  "status": "available",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\forall\\, v \\in \\mathbb{Z}^n \\text{ with } \\gcd(v_1,\\dots,v_n)=1,\\ \\exists\\, U \\in \\mathrm{SL}_n(\\mathbb{Z}) \\text{ such that } U \\cdot v = e_1 = (1,0,\\dots,0)^{\\top}.",
+    "plain": "The parent proof shows that for coprime integers a, b there is a 2×2 integer matrix of determinant 1 sending (a,b) to (1,0). This problem asks for the n-dimensional analogue: given any primitive integer vector v = (v_1,…,v_n) (coordinates with gcd 1), construct an n×n integer matrix U of determinant 1 — an element of SLₙ(ℤ) — carrying v to the first standard basis vector e_1 = (1,0,…,0). Equivalently, SLₙ(ℤ) acts transitively on primitive integer vectors, so every primitive vector extends to a ℤ-basis of ℤⁿ.",
+    "whyMatters": [
+      "Transitivity of SLₙ(ℤ) on primitive vectors is the statement that a primitive vector always completes to a unimodular basis of ℤⁿ — foundational for lattice arithmetic.",
+      "It underlies Smith normal form, the structure theory of finitely generated abelian groups, and the reduction theory of quadratic forms in n variables.",
+      "The n=2 case is the arithmetic seed of the modular group SL₂(ℤ); the general case is the natural next rung, tying Bézout's identity directly to lattice geometry.",
+      "An effective (computable) construction gives a reusable reduction tool inside Mathlib, beyond a pure existence argument."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "n=2 case: the parent proof bezout-identity-oq-01-oq-02 builds the explicit unimodular 2×2 reduction matrix, proves U·(a,b)=(gcd,0), det U = 1 for gcd ≠ 0, and packages coprime pairs as SL₂(ℤ) elements.",
+      "Bézout's identity via Mathlib's Int.gcd_eq_gcd_ab / Int.gcdA / Int.gcdB drives each 2-variable reduction step.",
+      "Classical existence over PIDs (a primitive vector extends to a basis) is standard, though not in the effective SpecialLinearGroup form this problem targets."
+    ],
+    "open": [
+      "An effective Lean construction of U ∈ SLₙ(ℤ) (not merely existence) carrying an arbitrary primitive v to e_1, generalizing bezoutMatrix to n coordinates.",
+      "A clean induction/recursion on n keeping the determinant exactly 1 at every step, matching the parent's sign convention.",
+      "Packaging the result as transitivity of the Matrix.SpecialLinearGroup (Fin n) ℤ action on primitive vectors in Mathlib-idiomatic form."
+    ],
+    "goal": "Formalize in Lean 4 over Mathlib that every primitive v ∈ ℤⁿ admits U ∈ SLₙ(ℤ) with U·v = e_1, via an explicit recursion that reduces the n-coordinate case to the parent's 2-coordinate bezoutMatrix, machine-verified with no new axioms."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-07-09T16:43:19-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "number-theory",
+    "bezout-identity",
+    "euclidean-algorithm",
+    "linear-algebra",
+    "special-linear-group",
+    "unimodular-matrix",
+    "gcd",
+    "research"
+  ],
+  "relatedProofs": [
+    "bezout-identity-oq-01-oq-02"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": [
+      "Mathlib.LinearAlgebra.Matrix.SpecialLinearGroup",
+      "Mathlib.RingTheory.Int.Basic",
+      "Mathlib.Data.Matrix.Basic",
+      "Mathlib.RingTheory.Coprime.Basic"
+    ]
+  },
+  "started": "2026-07-09T16:43:19-07:00",
+  "significance": 5,
+  "tractability": 5
+}

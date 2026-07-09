@@ -1,0 +1,69 @@
+{
+  "slug": "ballot-problem-oq-05-oq-02",
+  "title": "The Reflection-Principle Form of the Ballot Number, BN(a,b) = C(a+b,b) − C(a+b,b−1)",
+  "phase": "OBSERVE",
+  "status": "available",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\mathrm{BN}(a,b) = \\binom{a+b}{b} - \\binom{a+b}{b-1} \\quad (a \\ge 1), \\text{ equivalently } \\binom{a+b-1}{a-1} - \\binom{a+b-1}{a} = \\binom{a+b}{b} - \\binom{a+b}{b-1}.",
+    "plain": "The ballot number BN(a,b) counts sequences of a up-steps and b down-steps whose every partial sum stays strictly positive. The parent entry defines it as C(a+b-1,a-1) - C(a+b-1,a); this problem proves the alternative reflection-principle form C(a+b,b) - C(a+b,b-1) (André's derivation) and reconciles the two derivations of the ballot number in a single Lean file.",
+    "whyMatters": [
+      "The ballot number has two famous elementary derivations — the Dvoretzky–Motzkin cycle lemma and André's reflection principle — that produce different-looking closed forms; reconciling them is exactly showing the two derivations agree.",
+      "Formalizing the equality turns combinatorial folklore into a machine-checked binomial identity and completes the arithmetic layer of the ballot family alongside the parent's probability and Catalan corollaries.",
+      "It exercises the pure binomial-shift API (Pascal's rule and symmetry C(n,k) = C(n,n-k)) that recurs throughout the ballot/Catalan strand."
+    ]
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [
+      "The equality C(a+b-1,a-1) - C(a+b-1,a) = C(a+b,b) - C(a+b,b-1) has not been formalized in this repository.",
+      "The reflection-principle derivation and the cycle-lemma derivation of the ballot number have not been reconciled in a single Lean file."
+    ],
+    "goal": "Prove ballotNumber a b = C(a+b,b) - C(a+b,b-1) for a ≥ 1 (as a truncated natural-number identity), reusing the parent's ballotNumber definition, and assemble the reflection form together with the existing cycle-lemma/aggregate results so both derivations of BN(a,b) live in one file."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-07-09T16:43:21-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "probability",
+    "ballot-problem",
+    "cycle-lemma",
+    "combinatorics",
+    "catalan-numbers",
+    "binomial-coefficients",
+    "ballot-number"
+  ],
+  "relatedProofs": [
+    "ballot-problem-oq-05"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": [
+      "Mathlib.Data.Nat.Choose.Basic",
+      "Mathlib.Data.Nat.Choose.Central",
+      "Mathlib.Combinatorics.Catalan"
+    ]
+  },
+  "started": "2026-07-09T16:43:21-07:00",
+  "significance": 5,
+  "tractability": 5
+}

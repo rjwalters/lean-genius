@@ -1,0 +1,68 @@
+{
+  "slug": "de-moivre-oq-04-oq-01",
+  "title": "Which Powers of ω Are Primitive n-th Roots of Unity, and the Totient Count",
+  "phase": "OBSERVE",
+  "status": "available",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "For \\omega = \\cos(2\\pi/n) + i\\sin(2\\pi/n) and 0 \\le k < n, \\omega^k is a primitive n-th root of unity \\iff \\gcd(k,n) = 1; consequently \\#\\{\\, k \\in \\{0,\\dots,n-1\\} : \\omega^k \\text{ primitive} \\,\\} = \\varphi(n), where \\varphi is Euler's totient function.",
+    "plain": "The parent gallery proof shows \\omega = \\cos(2\\pi/n) + i\\sin(2\\pi/n) is a primitive n-th root of unity, so its powers \\omega^0,\\dots,\\omega^{n-1} cover all n solutions of z^n = 1. But only some of those powers are themselves generators: \\omega^k is primitive exactly when k is coprime to n. This problem asks us to prove that criterion and derive the corollary that the number of primitive n-th roots of unity equals \\varphi(n), Euler's totient.",
+    "whyMatters": [
+      "The totient count \\varphi(n) is the degree of the n-th cyclotomic polynomial \\Phi_n, making this the combinatorial backbone of cyclotomy and Gauss's constructibility criterion for regular polygons.",
+      "It bridges the parent entry's analytic result ('\\omega generates the roots of unity') to the arithmetic structure of the cyclic group \\mu_n and the theory of primitive roots modulo n.",
+      "It yields a self-contained geometric proof of a totient identity purely from De Moivre's formula, tightening the link between complex analysis and number theory."
+    ]
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [
+      "Package the coprimality criterion 'IsPrimitiveRoot ((omega n)^k) n iff Nat.Coprime k n' specifically for the trigonometric generator \\omega, reusing omega_isPrimitiveRoot from the parent proof.",
+      "Derive the totient count \\#\\{k < n : \\omega^k \\text{ primitive}\\} = \\varphi(n) as a formalized corollary tied to \\omega."
+    ],
+    "goal": "Formalize, on top of De Moivre OQ-04, that \\omega^k is primitive iff \\gcd(k,n) = 1 for 0 \\le k < n, and that the primitive n-th roots number exactly \\varphi(n), reusing omega and omega_isPrimitiveRoot from the parent proof."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-07-09T16:43:19-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "complex-analysis",
+    "trigonometry",
+    "de-moivre",
+    "roots-of-unity",
+    "primitive-roots",
+    "wiedijk-100"
+  ],
+  "relatedProofs": [
+    "de-moivre-oq-04"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": [
+      "Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots",
+      "Mathlib.RingTheory.RootsOfUnity.Complex",
+      "Mathlib.Data.Nat.Totient"
+    ]
+  },
+  "started": "2026-07-09T16:43:19-07:00",
+  "significance": 5,
+  "tractability": 5
+}

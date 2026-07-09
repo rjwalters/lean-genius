@@ -1,0 +1,74 @@
+{
+  "slug": "cayleys-theorem-oq-01-oq-02-oq-02",
+  "title": "The Outer Automorphism Exact Sequence 1 → Inn(G) → Aut(G) → Out(G) → 1",
+  "phase": "OBSERVE",
+  "status": "available",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "1 \\longrightarrow \\operatorname{Inn}(G) \\xrightarrow{\\iota} \\operatorname{Aut}(G) \\xrightarrow{\\pi} \\operatorname{Out}(G) \\longrightarrow 1, \\text{ where } \\operatorname{Inn}(G) = (\\operatorname{MulAut.conj})\\text{.range} \\trianglelefteq \\operatorname{Aut}(G),\\ \\operatorname{Out}(G) := \\operatorname{Aut}(G) / \\operatorname{Inn}(G),\\ \\ker \\pi = \\operatorname{im}\\iota = \\operatorname{Inn}(G), \\text{ and } G / Z(G) \\cong \\operatorname{Inn}(G).",
+    "plain": "Every group G has an automorphism group Aut(G). The inner automorphisms are the maps conj_g : x ↦ g·x·g⁻¹; the parent entry showed g ↦ conj_g has kernel Z(G), so Inn(G) ≅ G/Z(G). This follow-up formalizes that Inn(G) is a normal subgroup of Aut(G), so the quotient Out(G) = Aut(G)/Inn(G) is a group, and assembles the short exact sequence 1 → Inn(G) → Aut(G) → Out(G) → 1.",
+    "whyMatters": [
+      "Out(G) is a fundamental invariant measuring symmetries of G not realized by conjugation; it governs group extensions and the theory of complete groups (Z(G)=1 and Out(G)=1 give Aut(G) ≅ G).",
+      "The sequence promotes the parent's G/Z(G) ≅ Inn(G) from an isolated isomorphism into the first term of the canonical exact sequence organizing the automorphism tower.",
+      "Computations of Out(G) for simple groups (e.g. the exceptional Out(S₆)) are classification-level data that all rest on this exact sequence."
+    ]
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [
+      "Define Inn(G) as (MulAut.conj (G := G)).range : Subgroup (MulAut G) as a first-class object.",
+      "Prove Inn(G) is normal in Aut(G) via the identity φ ∘ conj_g ∘ φ⁻¹ = conj_(φ g).",
+      "Define Out(G) := MulAut G ⧸ (MulAut.conj).range and prove exactness: ker π = Inn(G), π surjective, ι injective."
+    ],
+    "goal": "Define Inn(G) = (MulAut.conj).range, prove Subgroup.Normal, define Out G := MulAut G ⧸ Inn G, and assemble the short exact sequence 1 → Inn(G) → Aut(G) → Out(G) → 1 with exactness at each term, reusing the parent's G/Z(G) ≅ Inn(G) to describe the first term."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-07-09T16:43:20-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "group-theory",
+    "cayley",
+    "permutation-group",
+    "regular-representation",
+    "conjugation",
+    "inner-automorphism",
+    "center",
+    "first-isomorphism-theorem",
+    "group-homomorphism",
+    "algebra",
+    "research"
+  ],
+  "relatedProofs": [
+    "cayleys-theorem-oq-01-oq-02"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": [
+      "Mathlib.Algebra.Group.End",
+      "Mathlib.GroupTheory.QuotientGroup.Basic",
+      "Mathlib.Algebra.Group.Subgroup.Basic"
+    ]
+  },
+  "started": "2026-07-09T16:43:20-07:00",
+  "significance": 5,
+  "tractability": 5
+}
