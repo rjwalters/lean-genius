@@ -1605,4 +1605,205 @@ theorem exists_irrational_not_normal_of_two_le {b : ℕ} (hb : 2 ≤ b) :
       liouvilleNumber_not_normal_base_two⟩
   · exact exists_irrational_not_normal h3
 
+-- ============================================================
+-- PART IX: BASE-2 BLOCK DISTRIBUTION — THE ALL-ZEROS k-TUPLE
+--          HAS DENSITY 1 (FIRST k-BLOCK FREQUENCY COMPUTATION)
+-- ============================================================
+
+/-!
+PART VIII computed a *single* digit frequency (`1` at density `0`). Here we
+compute the frequency of an entire length-`k` block for the first time: the
+all-zeros block `0…0` occupies density `1` in the base-`2` expansion of the
+Liouville constant, for every `k`. Equivalently, the `1`-digits are so sparse
+(only the factorial positions) that a random length-`k` window is all-zeros with
+probability tending to `1`.
+
+This is the *over-representation* counterpart to PART VIII's under-representation
+(digit `1` at density `0`): normality would demand the all-zeros block at density
+`2^{-k}`, but it actually occurs at density `1 > 2^{-k}`. It supplies the first
+application of the general `k`-tuple criterion `not_normal_of_match_freq_tendsto_ne`
+(all earlier applications were single-digit or the absence criterion), hence a
+structurally different proof of base-`2` non-normality.
+
+* `nthDigit_two_eq_zero_or_one` — every base-`2` digit is `0` or `1`.
+* `liouvilleNumber_two_zeros_bad_count_le` — at most `k·(log₂(N+k)+4)` windows
+  below `N` contain a `1` (cover each such window by the `1`-position inside it).
+* `liouvilleNumber_two_all_zeros_density_one` — the all-zeros `k`-window density
+  tends to `1`.
+* `liouvilleNumber_all_zeros_not_normal_base_two` — base-`2` non-normality, via
+  over-representation of the all-zeros block (`k ≥ 1`).
+-/
+
+/-- Every base-`2` digit is `0` or `1`: it is a residue modulo `2`. -/
+private lemma nthDigit_two_eq_zero_or_one (n : ℕ) (x : ℝ) :
+    nthDigit 2 n x = 0 ∨ nthDigit 2 n x = 1 := by
+  unfold nthDigit
+  simpa using Int.emod_two_eq_zero_or_one ⌊(2 : ℝ) ^ n * x⌋
+
+/-- **Count bound for windows containing a `1`.** The number of positions `n < N`
+    whose length-`k` window `[n, n+k)` contains a base-`2` digit `1` of the
+    Liouville constant is at most `k · (log₂(N+k) + 4)`. Proof: cover the bad
+    windows by the `1`-positions (`< N+k`), each of which lies in at most `k`
+    windows; the `1`-positions number `≤ log₂(N+k) + 4` by
+    `liouvilleNumber_two_one_count_le`. -/
+private lemma liouvilleNumber_two_zeros_bad_count_le (k N : ℕ) :
+    ((Finset.range N).filter
+      (fun n => ¬ ∀ i : Fin k,
+        nthDigit 2 (n + i.val) (liouvilleNumber (2 : ℝ)) = 0)).card
+      ≤ k * (Nat.log 2 (N + k) + 4) := by
+  classical
+  -- Cover each bad window by the `1`-position it contains.
+  have hsub : (Finset.range N).filter
+      (fun n => ¬ ∀ i : Fin k,
+        nthDigit 2 (n + i.val) (liouvilleNumber (2 : ℝ)) = 0)
+      ⊆ ((Finset.range (N + k)).filter
+          (fun j => nthDigit 2 j (liouvilleNumber (2 : ℝ)) = 1)).biUnion
+        (fun j => (Finset.range N).filter (fun n => ∃ i : Fin k, n + i.val = j)) := by
+    intro n hn
+    rw [Finset.mem_filter, Finset.mem_range] at hn
+    obtain ⟨hnN, hbad⟩ := hn
+    push_neg at hbad
+    obtain ⟨i, hi⟩ := hbad
+    have h1 : nthDigit 2 (n + i.val) (liouvilleNumber (2 : ℝ)) = 1 :=
+      (nthDigit_two_eq_zero_or_one (n + i.val) _).resolve_left hi
+    have hji : n + i.val < N + k := by have := i.isLt; omega
+    refine Finset.mem_biUnion.mpr ⟨n + i.val, ?_, ?_⟩
+    · rw [Finset.mem_filter, Finset.mem_range]; exact ⟨hji, h1⟩
+    · rw [Finset.mem_filter, Finset.mem_range]; exact ⟨hnN, i, rfl⟩
+  calc ((Finset.range N).filter
+        (fun n => ¬ ∀ i : Fin k,
+          nthDigit 2 (n + i.val) (liouvilleNumber (2 : ℝ)) = 0)).card
+      ≤ (((Finset.range (N + k)).filter
+            (fun j => nthDigit 2 j (liouvilleNumber (2 : ℝ)) = 1)).biUnion
+          (fun j => (Finset.range N).filter
+            (fun n => ∃ i : Fin k, n + i.val = j))).card :=
+        Finset.card_le_card hsub
+    _ ≤ ∑ _j ∈ (Finset.range (N + k)).filter
+            (fun j => nthDigit 2 j (liouvilleNumber (2 : ℝ)) = 1),
+          ((Finset.range N).filter (fun n => ∃ i : Fin k, n + i.val = _j)).card :=
+        Finset.card_biUnion_le
+    _ ≤ ∑ _j ∈ (Finset.range (N + k)).filter
+            (fun j => nthDigit 2 j (liouvilleNumber (2 : ℝ)) = 1), k := by
+        apply Finset.sum_le_sum
+        intro j _
+        have hsub2 : (Finset.range N).filter (fun n => ∃ i : Fin k, n + i.val = j)
+            ⊆ (Finset.univ : Finset (Fin k)).image (fun i => j - i.val) := by
+          intro n hn
+          rw [Finset.mem_filter] at hn
+          obtain ⟨i, hi⟩ := hn.2
+          exact Finset.mem_image.mpr ⟨i, Finset.mem_univ _, by omega⟩
+        calc ((Finset.range N).filter (fun n => ∃ i : Fin k, n + i.val = j)).card
+            ≤ ((Finset.univ : Finset (Fin k)).image (fun i => j - i.val)).card :=
+              Finset.card_le_card hsub2
+          _ ≤ (Finset.univ : Finset (Fin k)).card := Finset.card_image_le
+          _ = k := by rw [Finset.card_univ, Fintype.card_fin]
+    _ = ((Finset.range (N + k)).filter
+          (fun j => nthDigit 2 j (liouvilleNumber (2 : ℝ)) = 1)).card * k := by
+        rw [Finset.sum_const, smul_eq_mul]
+    _ ≤ (Nat.log 2 (N + k) + 4) * k := by
+        gcongr
+        exact liouvilleNumber_two_one_count_le (N + k)
+    _ = k * (Nat.log 2 (N + k) + 4) := Nat.mul_comm _ _
+
+/-- **The all-zeros length-`k` block has density `1`** in the base-`2` expansion
+    of the Liouville constant, for every `k`. The complementary "bad" windows
+    (those containing a `1`) have density `0` by
+    `liouvilleNumber_two_zeros_bad_count_le` squeezed against
+    `k·(log₂(N+k)+4)/N → 0`; the all-zeros windows are their complement in
+    `range N`, so their density tends to `1 - 0 = 1`. Normality would instead
+    force density `2^{-k}`. -/
+theorem liouvilleNumber_two_all_zeros_density_one (k : ℕ) :
+    Tendsto (fun N : ℕ =>
+      (((Finset.range N).filter
+        (fun n => ∀ i : Fin k,
+          nthDigit 2 (n + i.val) (liouvilleNumber (2 : ℝ)) = 0)).card : ℝ)
+        / (N : ℝ))
+      atTop (nhds 1) := by
+  classical
+  -- The upper bound `k·(log₂(N+k)+4)/N` tends to `0`.
+  have hUB : Tendsto (fun N : ℕ =>
+      ((k * (Nat.log 2 (N + k) + 4) : ℕ) : ℝ) / (N : ℝ)) atTop (nhds 0) := by
+    have hφ : Tendsto (fun N : ℕ => ((Nat.log 2 N : ℝ) + 5) / (N : ℝ))
+        atTop (nhds 0) := by
+      have h1 := tendsto_natLog_two_div_atTop_zero
+      have h2 : Tendsto (fun N : ℕ => (5 : ℝ) / (N : ℝ)) atTop (nhds 0) :=
+        tendsto_const_nhds.div_atTop tendsto_natCast_atTop_atTop
+      simpa [add_div] using h1.add h2
+    have hh : Tendsto (fun N : ℕ => (k : ℝ) * (((Nat.log 2 N : ℝ) + 5) / (N : ℝ)))
+        atTop (nhds 0) := by
+      simpa using (tendsto_const_nhds (x := (k : ℝ))).mul hφ
+    refine squeeze_zero' (Eventually.of_forall fun N => by positivity) ?_ hh
+    filter_upwards [eventually_ge_atTop (max 1 k)] with N hN
+    have hN1 : 1 ≤ N := le_trans (le_max_left 1 k) hN
+    have hNk : k ≤ N := le_trans (le_max_right 1 k) hN
+    have hlog : Nat.log 2 (N + k) ≤ Nat.log 2 N + 1 :=
+      calc Nat.log 2 (N + k) ≤ Nat.log 2 (N * 2) := Nat.log_mono_right (by omega)
+        _ = Nat.log 2 N + 1 := Nat.log_mul_base (by norm_num) (by omega)
+    have hbound : k * (Nat.log 2 (N + k) + 4) ≤ k * (Nat.log 2 N + 5) :=
+      Nat.mul_le_mul le_rfl (by omega)
+    calc ((k * (Nat.log 2 (N + k) + 4) : ℕ) : ℝ) / (N : ℝ)
+        ≤ ((k * (Nat.log 2 N + 5) : ℕ) : ℝ) / (N : ℝ) := by
+          have hbR : ((k * (Nat.log 2 (N + k) + 4) : ℕ) : ℝ)
+              ≤ ((k * (Nat.log 2 N + 5) : ℕ) : ℝ) := by exact_mod_cast hbound
+          gcongr
+      _ = (k : ℝ) * (((Nat.log 2 N : ℝ) + 5) / (N : ℝ)) := by push_cast; ring
+  -- Hence the bad-window density tends to `0`.
+  have hbad0 : Tendsto (fun N : ℕ =>
+      (((Finset.range N).filter
+        (fun n => ¬ ∀ i : Fin k,
+          nthDigit 2 (n + i.val) (liouvilleNumber (2 : ℝ)) = 0)).card : ℝ) / (N : ℝ))
+      atTop (nhds 0) :=
+    squeeze_zero (fun N => by positivity)
+      (fun N => by
+        gcongr
+        exact_mod_cast liouvilleNumber_two_zeros_bad_count_le k N) hUB
+  -- All-zeros windows are the complement, so their density is `1 - bad density`.
+  have hcongr : (fun N : ℕ =>
+      (((Finset.range N).filter
+        (fun n => ∀ i : Fin k,
+          nthDigit 2 (n + i.val) (liouvilleNumber (2 : ℝ)) = 0)).card : ℝ) / (N : ℝ))
+      =ᶠ[atTop] (fun N : ℕ => 1 -
+        (((Finset.range N).filter
+          (fun n => ¬ ∀ i : Fin k,
+            nthDigit 2 (n + i.val) (liouvilleNumber (2 : ℝ)) = 0)).card : ℝ) / (N : ℝ)) := by
+    filter_upwards [eventually_ge_atTop 1] with N hN
+    have hNne : (N : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
+    have hpart := Finset.filter_card_add_filter_neg_card_eq_card
+      (s := Finset.range N)
+      (p := fun n => ∀ i : Fin k,
+        nthDigit 2 (n + i.val) (liouvilleNumber (2 : ℝ)) = 0)
+    rw [Finset.card_range] at hpart
+    have hBLE : ((Finset.range N).filter
+        (fun n => ¬ ∀ i : Fin k,
+          nthDigit 2 (n + i.val) (liouvilleNumber (2 : ℝ)) = 0)).card ≤ N := by omega
+    have hA : ((Finset.range N).filter
+        (fun n => ∀ i : Fin k,
+          nthDigit 2 (n + i.val) (liouvilleNumber (2 : ℝ)) = 0)).card
+        = N - ((Finset.range N).filter
+          (fun n => ¬ ∀ i : Fin k,
+            nthDigit 2 (n + i.val) (liouvilleNumber (2 : ℝ)) = 0)).card := by omega
+    rw [hA, Nat.cast_sub hBLE, sub_div, div_self hNne]
+  exact Tendsto.congr' hcongr.symm (by simpa using Tendsto.const_sub 1 hbad0)
+
+/-- **The Liouville constant is not normal in base `2`, via the all-zeros block.**
+    For any `k ≥ 1`, the all-zeros length-`k` block occurs with density
+    `1 ≠ 2^{-k}` (`liouvilleNumber_two_all_zeros_density_one`), so the `k`-tuple
+    frequency criterion `not_normal_of_match_freq_tendsto_ne` forbids normality.
+    A structurally different proof from `liouvilleNumber_not_normal_base_two`
+    (which used a single under-represented digit): here an entire *block* is
+    over-represented, the first genuine `k`-block frequency computation in this
+    development. -/
+theorem liouvilleNumber_all_zeros_not_normal_base_two (k : ℕ) (hk : 1 ≤ k) :
+    ¬ IsNormalInBase 2 (liouvilleNumber (2 : ℝ)) := by
+  refine not_normal_of_match_freq_tendsto_ne 2 (by norm_num) (liouvilleNumber (2 : ℝ))
+    k (fun _ => 0) 1 ?_ ?_
+  · have h := liouvilleNumber_two_all_zeros_density_one k
+    have h0 : ((0 : Fin 2) : ℤ) = 0 := by decide
+    simpa only [h0] using h
+  · have h2 : (2 : ℝ) ^ (-(k : ℤ)) < 1 :=
+      zpow_lt_one_of_neg₀ (by norm_num) (by
+        have : (1 : ℤ) ≤ (k : ℤ) := by exact_mod_cast hk
+        omega)
+    exact h2.ne'
+
 end ETranscendentalOQ02
