@@ -28,7 +28,7 @@ import Proofs.Erdos1138OQ03
 
 namespace Erdos1138OQ03
 
-open Filter Topology
+open Filter Topology Asymptotics
 
 /-- For `x ≥ 25`, the normalised maximal prime gap is bounded by `x^(-0.475)`.
 
@@ -80,5 +80,52 @@ theorem bhp_gap_eventually_le_eps (ε : ℝ) (hε : 0 < ε) :
   have hx_pos : (0 : ℝ) < (x : ℝ) := by exact_mod_cast (lt_of_lt_of_le Nat.zero_lt_one hx1)
   rw [div_lt_iff₀ hx_pos] at hxlt
   exact le_of_lt hxlt
+
+/-- **BHP bound as a big-O statement.** The maximal prime gap is `O(x^0.525)`,
+    the Baker–Harman–Pintz bound packaged in Mathlib's asymptotics idiom.
+
+    This is a strengthening of `bhp_implies_gap_littleo`, which only records the
+    corollary at exponent `1` (sublinearity); here the actual BHP exponent `0.525`
+    is retained. -/
+theorem gap_isBigO_rpow :
+    (fun x : ℕ => (maxPrimeGap x : ℝ)) =O[atTop] (fun x : ℕ => (x : ℝ) ^ (0.525 : ℝ)) := by
+  rw [isBigO_iff]
+  refine ⟨1, ?_⟩
+  filter_upwards [eventually_ge_atTop 25] with x hx
+  have hnn : (0 : ℝ) ≤ (x : ℝ) ^ (0.525 : ℝ) := Real.rpow_nonneg (Nat.cast_nonneg x) _
+  rw [one_mul, Real.norm_eq_abs, Real.norm_eq_abs,
+    abs_of_nonneg (Nat.cast_nonneg (maxPrimeGap x)), abs_of_nonneg hnn]
+  exact baker_harman_pintz x hx
+
+/-- **Generalised sublinearity.** For every exponent `a > 0.525`, the normalised gap
+    `maxPrimeGap x / x^a` tends to `0`. This uses the full strength of the BHP exponent:
+    `bhp_implies_gap_littleo` is the `a = 1` case, but sublinearity in fact holds for any
+    exponent strictly above `0.525` — the envelope `x^(0.525 - a)` vanishes as soon as
+    `0.525 - a < 0`. -/
+theorem bhp_gap_div_rpow_littleo (a : ℝ) (ha : (0.525 : ℝ) < a) :
+    Tendsto (fun x : ℕ => (maxPrimeGap x : ℝ) / (x : ℝ) ^ a) atTop (𝓝 0) := by
+  have hpos : 0 < a - 0.525 := by linarith
+  -- Envelope: x^(-(a - 0.525)) → 0.
+  have h_env : Tendsto (fun x : ℕ => (x : ℝ) ^ (-(a - 0.525))) atTop (𝓝 0) :=
+    (tendsto_rpow_neg_atTop hpos).comp tendsto_natCast_atTop_atTop
+  -- Lower bound: the ratio is nonnegative everywhere.
+  have h_lo : ∀ x : ℕ, 0 ≤ (maxPrimeGap x : ℝ) / (x : ℝ) ^ a := fun x =>
+    div_nonneg (Nat.cast_nonneg _) (Real.rpow_nonneg (Nat.cast_nonneg _) _)
+  -- Upper bound: holds eventually (for x ≥ 25).
+  have h_hi : ∀ᶠ x : ℕ in atTop,
+      (maxPrimeGap x : ℝ) / (x : ℝ) ^ a ≤ (x : ℝ) ^ (-(a - 0.525)) := by
+    filter_upwards [eventually_ge_atTop 25] with x hx
+    have hx_pos : (0 : ℝ) < (x : ℝ) := by
+      have : (0 : ℕ) < x := lt_of_lt_of_le (by norm_num) hx
+      exact_mod_cast this
+    -- x^0.525 / x^a = x^(0.525 - a) = x^(-(a - 0.525))
+    have hdiv : (x : ℝ) ^ (0.525 : ℝ) / (x : ℝ) ^ a = (x : ℝ) ^ (-(a - 0.525)) := by
+      rw [← Real.rpow_sub hx_pos]; congr 1; ring
+    calc (maxPrimeGap x : ℝ) / (x : ℝ) ^ a
+        ≤ (x : ℝ) ^ (0.525 : ℝ) / (x : ℝ) ^ a := by
+          gcongr
+          exact baker_harman_pintz x hx
+      _ = (x : ℝ) ^ (-(a - 0.525)) := hdiv
+  exact squeeze_zero' (Eventually.of_forall h_lo) h_hi h_env
 
 end Erdos1138OQ03
