@@ -153,6 +153,62 @@ theorem zeta_two_transcendental : Transcendental ℚ (∑' k : ℕ, 1 / (k : ℝ
   have := zeta_even_transcendental 1 one_pos
   simpa using this
 
+/-- **Scaling by a nonzero rational preserves transcendence over ℚ.**
+
+    If `x` is transcendental over ℚ and `q ∈ ℚ∖{0}`, then `q·x` is transcendental:
+    were `q·x` algebraic, so would be `x = q⁻¹·(q·x)` (product of algebraics),
+    contradicting transcendence of `x`.  This is the reusable engine behind
+    `zeta_even_transcendental` and the ratio result below. -/
+theorem transcendental_ratCast_mul {x : ℝ} (hx : Transcendental ℚ x) {q : ℚ}
+    (hq : q ≠ 0) : Transcendental ℚ ((q : ℝ) * x) := by
+  intro halg
+  apply hx
+  have hqne' : (q : ℝ) ≠ 0 := by exact_mod_cast hq
+  have hqinv : IsAlgebraic ℚ ((q⁻¹ : ℚ) : ℝ) := isAlgebraic_algebraMap (q⁻¹ : ℚ)
+  have hmul := halg.mul hqinv
+  rwa [show (q : ℝ) * x * ((q⁻¹ : ℚ) : ℝ) = x from by
+    push_cast; rw [mul_right_comm, mul_inv_cancel₀ hqne', one_mul]] at hmul
+
+/-- **Ratios of distinct even zeta values are transcendental over ℚ.**
+
+    For `m < n`,
+    `ζ(2n)/ζ(2m) = (qₙ · π^(2n)) / (qₘ · π^(2m)) = (qₙ/qₘ) · π^(2(n−m))`
+    is a nonzero rational multiple of a *positive* even power of π, hence
+    transcendental over ℚ (`transcendental_ratCast_mul` applied to
+    `Transcendental.pow` of `π`).  Concretely `ζ(4)/ζ(2) = π²/15`,
+    `ζ(6)/ζ(4) = 2π²/21`, … are all transcendental.
+
+    Structurally this says the even zeta values are *multiplicatively
+    π-power-incommensurable over ℚ*: no two distinct ones are related by a mere
+    rational factor — their quotient always carries a leftover nonzero even power
+    of π.  (For `n < m` the ratio is the reciprocal, so the same conclusion holds
+    by symmetry.)
+
+    **Assumption:** `hermite_lindemann` (transcendence of π). -/
+theorem zeta_even_ratio_transcendental (n m : ℕ) (hm : 0 < m) (hmn : m < n) :
+    Transcendental ℚ
+      ((∑' k : ℕ, 1 / (k : ℝ) ^ (2 * n)) / (∑' k : ℕ, 1 / (k : ℝ) ^ (2 * m))) := by
+  obtain ⟨qn, hqn, hqn_eq⟩ := zeta_even_eq_rat_mul_pi_pow n (by omega)
+  obtain ⟨qm, hqm, hqm_eq⟩ := zeta_even_eq_rat_mul_pi_pow m hm
+  have hπ : (π : ℝ) ≠ 0 := Real.pi_ne_zero
+  -- Rewrite the ratio as `(qn/qm) · π^(2n − 2m)` with `2n − 2m ≥ 1`.
+  have hle : 2 * m ≤ 2 * n := by omega
+  have hratio :
+      (∑' k : ℕ, 1 / (k : ℝ) ^ (2 * n)) / (∑' k : ℕ, 1 / (k : ℝ) ^ (2 * m))
+        = ((qn / qm : ℚ) : ℝ) * π ^ (2 * n - 2 * m) := by
+    rw [hqn_eq, hqm_eq, mul_div_mul_comm, pow_sub₀ π hπ hle]
+    push_cast; ring
+  rw [hratio]
+  have hpi : Transcendental ℚ (π ^ (2 * n - 2 * m)) :=
+    pi_transcendental_over_rationals.pow (by omega)
+  exact transcendental_ratCast_mul hpi (div_ne_zero hqn hqm)
+
+/-- **ζ(4)/ζ(2) = π²/15 is transcendental over ℚ** — a concrete distinct-index ratio. -/
+theorem zeta_four_div_zeta_two_transcendental :
+    Transcendental ℚ ((∑' k : ℕ, 1 / (k : ℝ) ^ 4) / (∑' k : ℕ, 1 / (k : ℝ) ^ 2)) := by
+  have := zeta_even_ratio_transcendental 2 1 one_pos (by norm_num)
+  simpa using this
+
 /-!
 ## The open odd case (documentation only)
 
