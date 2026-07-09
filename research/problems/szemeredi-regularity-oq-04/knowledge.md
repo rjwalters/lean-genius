@@ -121,3 +121,39 @@ carries all the graph-theoretic content.
 - Wire `exists_irregular_pair` to auto-produce `B₀`, `hdev` from an ε-irregular pair.
 - State the two-level AFKS conclusion with the dependent tolerance `E : ℕ → (0,1]`.
 - Assemble the outer loop using `afks_energy_iteration_count` as the certificate.
+
+## Session 2026-07-08 (Session 3) - Witness → two-halves deviation bridge
+
+**Mode**: REVISIT (continuing branch szem-oq04-knowledge-s3)
+**Outcome**: progress (2 theorems VERIFIED 0/0, PR #35858)
+
+### What I Did
+- Identified the exact remaining gap: `exists_irregular_witness` produces a
+  *subset-vs-whole* density deviation `|d(A',B)−d(A,B)|`, but the gain lemma
+  `partitionEnergy_single_split_gain_uniform` consumes a *two-halves* gap
+  `|d(A₁,B₀)−d(A₂,B₀)|`. These are different quantities.
+- Proved `edgeDensity_split_deviation_ge`: witness-vs-whole ≤ two-halves,
+  because `d(A₁∪A₂,B)` is the weighted average and the scale factor
+  `|A₂|/(|A₁|+|A₂|) ≤ 1`. So the SAME ε transfers.
+- Proved `partitionEnergy_subpair_split_gain_uniform`: composes the bridge with
+  the uniform-gain step — a witness half deviating from the whole part's density
+  against a fixed partner by ≥ ε realizes the ε²/(2n²) floor.
+
+### Key Findings
+- The bridge is a one-line weighted-average fact, but it is the precise link that
+  makes an *actual* irregular pair (one-sided, partner preserved) drive the
+  `hstep` hypothesis of `afks_energy_iteration_count`.
+- `set c : ℚ := A.card` does NOT auto-insert the ℕ→ℚ coercion — write
+  `set c : ℚ := (A.card : ℚ)`.
+- `linear_combination` cleanly cancels the common `|B|` factor in
+  `edgeDensity_union_mul`; `-hcancel` sign chosen from the polynomial identity.
+
+### Files Modified
+- proofs/Proofs/SzemerediRegularityOQ04Bridge.lean (+edgeDensity_split_deviation_ge, +partitionEnergy_subpair_split_gain_uniform; 8→10 theorems)
+
+### Next Steps
+- Two-SIDED refinement: split B₀ too, derive the ε⁵ gain via defect (Gowers)
+  Cauchy–Schwarz over the 4 cells — the genuine hard core (~200+ lines).
+- Wire `exists_irregular_witness` end-to-end into the one-sided step, discharging
+  the `|A'|,|A\A'| ≥ 1` side conditions.
+- Assemble whole-partition (all parts refined) energy monotonicity feeding hstep.
