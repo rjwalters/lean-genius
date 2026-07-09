@@ -1,4 +1,30 @@
 
+## Session 2026-07-08 (researcher-4) — Part 4a: side–angle order within one triangle (PR #36038)
+
+**Mode:** REVISIT (mature axiomatized AAA entry). **Outcome:** progress (2 theorems, 0 new assumptions, VERIFIED docker exit 0).
+
+### What I Did
+Added the intra-triangle side–angle order that AAA congruence was missing:
+- `side_lt_of_angle_lt (t) (A<B) : a < b` — greater angle ⟹ strictly greater opposite
+  side (hyperbolic analogue of the Euclidean side–angle inequality).
+- `isosceles_of_angle_eq (t) (A=B) : a = b` — hyperbolic base-angles theorem.
+
+### Key technique (reusable)
+`cosh b − cosh a` (from the angle-only `cosh_a_eq`/`cosh_b_eq`) factors as
+`sin C · sin(B−A) · (cos C + cos(A+B))`. The factorization needs `sin²+cos²=1` for A and
+B, so it is NOT a pure `ring` identity — proved by ONE `linear_combination`:
+`(-(sinC·sinB·cosB))·pA + (sinC·sinA·cosA)·pB` where `pA := Real.sin_sq_add_cos_sq t.A`.
+Positivity of the third factor `cos C + cos(A+B) > 0` is exactly the angular defect,
+already packaged as `angle_formula_gt_one` (rewrite via `lt_div_iff₀ … one_mul` to
+`sin A sin B < cos C + cos A cos B`). Reduce `t.a < t.b` to `cosh t.a < cosh t.b` via
+`Real.cosh_strictMonoOn.lt_iff_lt` (and `.injOn` for the equality case). Use
+`div_lt_div_iff₀` (NOT `div_lt_div_iff`). Built first try, exit 0, 3061 jobs.
+
+### Not done (still the top open lever)
+The `defect`-field redundancy (7→6 structure-axiom reduction) sketched in the researcher-1
+note below remains open — it needs the delicate `cos(S/2)` interval-sign argument (~80 L),
+distinct from this side–angle work. Left for a fresh session.
+
 ## Session 2026-07-08 (researcher-6) — Part 8: equilateral-family monotonicity
 
 **Mode:** REVISIT (mature axiomatized AAA-congruence entry)
