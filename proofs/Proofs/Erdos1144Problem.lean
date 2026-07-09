@@ -208,6 +208,32 @@ theorem partialSum_trivial_bound {f : ℕ → ℤ} (hf : IsRademacherMultiplicat
     simp only [Finset.sum_const, nsmul_eq_mul, mul_one]
     exact_mod_cast (Finset.card_filter_le _ _).trans (le_of_eq (Finset.card_range N)))
 
+/-- **Sharp deterministic bound:** `|∑_{m ≤ N} f(m)| ≤ N - 1` for `N ≥ 1`.
+
+    The partial sum ranges over `{1, …, N-1}` — the `m = 0` term is excluded by the
+    `· ≥ 1` filter — so there are only `N - 1` unit terms, one fewer than the naive
+    `partialSum_trivial_bound` (`≤ N`). This bound is **tight**: the constant
+    function `f ≡ 1` attains `partialSum = N - 1` exactly (`partialSum_const_one`),
+    so `N - 1` is the best deterministic ceiling and no purely structural argument
+    can do better. The entire content of Erdős #1144 is the almost-sure collapse
+    from this linear ceiling down to the `√N (log N)^{1+o(1)}` scale
+    (`atherfold_upper_bound`) and the conjectured `√N` lower oscillation. -/
+theorem partialSum_sharp_bound {f : ℕ → ℤ} (hf : IsRademacherMultiplicative f)
+    {N : ℕ} (hN : 1 ≤ N) : |(partialSum f N : ℝ)| ≤ (N : ℝ) - 1 := by
+  have h_each : ∀ m ∈ ((Finset.range N).filter (fun n => n ≥ 1)), |(f m : ℝ)| ≤ 1 := by
+    intro m hm
+    rcases rademacher_values_pm1 hf (Finset.mem_filter.mp hm |>.2) with h | h <;> simp [h]
+  have h_bound : |(partialSum f N : ℝ)| ≤
+      ∑ _m ∈ ((Finset.range N).filter (fun n => n ≥ 1)), (1 : ℝ) :=
+    le_trans (mod_cast Finset.abs_sum_le_sum_abs _ _) (Finset.sum_le_sum h_each)
+  have hset : ((Finset.range N).filter (fun n => n ≥ 1)) = Finset.Ico 1 N := by
+    ext x
+    simp only [Finset.mem_filter, Finset.mem_range, Finset.mem_Ico]
+    omega
+  refine le_trans h_bound ?_
+  rw [Finset.sum_const, nsmul_eq_mul, mul_one, hset, Nat.card_Ico, Nat.cast_sub hN]
+  norm_num
+
 /-- The conjecture, if true, would mean the growth rate is exactly √N
 up to logarithmic factors: between C·√N (infinitely often, from conjecture)
 and C'·√N·(log N)^{1+ε} (eventually, from Atherfold). -/
