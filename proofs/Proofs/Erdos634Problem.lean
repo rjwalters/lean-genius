@@ -24,6 +24,18 @@
   - Beeson: proved 7 and 11 fail
   - Zhang (2025): recent progress on sufficient conditions
 
+  Formalization note (soundness):
+  - `IsDissectable` requires an *abstract* tiling witness `Tiles` (covering +
+    interior-disjointness) on top of area balance. Without it, area balance is
+    trivially satisfiable for every n ≥ 1 (see `Erdos634AreaCollapse.lean`), which
+    would make Beeson's `¬IsDissectable 7/11` axioms provably false. The `Tiles`
+    abstraction is the minimal change that keeps the positive constructions and
+    Beeson's negative results mutually consistent; Mathlib has no polygonal-tiling
+    API to define `Tiles` outright.
+  - `Similar` and `Congruent` are both stated on the *unordered* multiset of side
+    lengths, so `congruent_implies_similar` holds (an order-pinned `Similar` would
+    make it false, since congruence permits relabelling the vertices).
+
   Tags: geometry, dissection, congruent-triangles, open-problem
 -/
 
@@ -71,14 +83,23 @@ theorem congruent_trans {T₁ T₂ T₃ : Triangle} :
 A weaker notion than congruence.
 -/
 
-/-- Two triangles are similar if their side lengths are proportional. -/
+/-- Two triangles are similar if one side-length multiset is a positive scaling
+    of the other. Like `Congruent`, this is stated on the *unordered* multiset of
+    sides: geometric similarity is invariant under relabelling the vertices, so a
+    faithful predicate must not pin the correspondence to the `a/b/c` order. (The
+    earlier order-sensitive `T₂.a = k * T₁.a ∧ …` version was *not* implied by the
+    multiset-based `Congruent` — e.g. sides `(3,4,5)` vs `(4,3,5)` are congruent
+    but admit no single `k` for the fixed order — so `congruent_implies_similar`
+    below was unprovable as stated. This multiset form repairs that.) -/
 def Similar (T₁ T₂ : Triangle) : Prop :=
-  ∃ k : ℝ, k > 0 ∧ T₂.a = k * T₁.a ∧ T₂.b = k * T₁.b ∧ T₂.c = k * T₁.c
+  ∃ k : ℝ, k > 0 ∧
+    Multiset.ofList [T₂.a, T₂.b, T₂.c] =
+      Multiset.ofList [k * T₁.a, k * T₁.b, k * T₁.c]
 
 /-- Congruent triangles are similar (with k = 1). -/
-theorem congruent_implies_similar {T₁ T₂ : Triangle} :
-    Congruent T₁ T₂ → Similar T₁ T₂ := by
-  sorry
+theorem congruent_implies_similar {T₁ T₂ : Triangle}
+    (h : Congruent T₁ T₂) : Similar T₁ T₂ :=
+  ⟨1, one_pos, by simpa only [Congruent, one_mul] using h.symm⟩
 
 /-
 ## Part III: Triangle Dissection
@@ -107,9 +128,30 @@ structure Dissection (T : Triangle) (n : ℕ) where
 def IsCongruentDissection (T : Triangle) (n : ℕ) (D : Dissection T n) : Prop :=
   ∀ i j : Fin n, Congruent (D.pieces i) (D.pieces j)
 
-/-- **Definition**: n is dissectable if some triangle can be cut into n congruent triangles. -/
+/-- **The tiling condition (abstract).** `Tiles T n pieces` asserts that the `n`
+    triangular `pieces` genuinely *tile* `T`: they cover `T` and have pairwise
+    disjoint interiors. Mathlib has no polygonal-tiling API, so this predicate is
+    left **abstract** (declared, not defined).
+
+    This abstraction is not cosmetic — it is exactly what keeps the file
+    *consistent*. The companion `Erdos634AreaCollapse.lean` proves that the
+    area-balance condition alone (`Dissection` + `IsCongruentDissection`) is
+    satisfied for **every** `n ≥ 1`, so a dissectability predicate built from area
+    balance *only* would make Beeson's `¬IsDissectable 7` and `¬IsDissectable 11`
+    (below) provably false — an outright contradiction. Requiring the extra
+    abstract `Tiles` witness blocks that trivial equal-area construction, so the
+    positive constructions and Beeson's negative results can coexist without
+    inconsistency. -/
+axiom Tiles (T : Triangle) (n : ℕ) (pieces : Fin n → Triangle) : Prop
+
+/-- **Definition**: `n` is dissectable if some triangle can be cut into `n`
+    congruent triangles that genuinely tile it — area balance (`Dissection`),
+    mutual congruence (`IsCongruentDissection`), **and** the abstract `Tiles`
+    covering/disjointness witness. The `Tiles` conjunct is what makes this
+    compatible with the negative results of Part V. -/
 def IsDissectable (n : ℕ) : Prop :=
-  ∃ T : Triangle, ∃ D : Dissection T n, IsCongruentDissection T n D
+  ∃ T : Triangle, ∃ D : Dissection T n,
+    IsCongruentDissection T n D ∧ Tiles T n D.pieces
 
 /-
 ## Part IV: Known Positive Results
