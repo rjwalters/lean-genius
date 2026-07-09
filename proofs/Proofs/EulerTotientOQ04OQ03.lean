@@ -1794,4 +1794,88 @@ theorem totient_mod_four_eq_two_iff_prime_pow_three_mod_four
     have hzodd : (p ^ (k - 1) * ((p - 1) / 2)) % 2 = 1 := Nat.odd_iff.1 (hu.mul hwodd)
     rw [key]; omega
 
+-- ---------------------------------------------------------------------------
+-- AN INFINITE EXCLUDED FAMILY THAT NEVER REVERSES:  a = 3^k
+-- ---------------------------------------------------------------------------
+-- Every seed `a = 3^k` (k ≥ 1) is an excluded prime power (p = 3 ≡ 3 mod 4, so
+-- `seedS a ≥ 2` by `seedS_three_ge_two` / the prime-power characterisation).
+-- Prior structural work verified, by a finite `decide` sweep, that no excluded
+-- seed `a < 120` reverses.  Here we upgrade that to a genuine INFINITE family:
+-- the classifier evaluates on the whole `3^k` line to `.eq` (k = 1, 2) or `.gt`
+-- (k ≥ 3), never `.lt`.  Hence `3^k·2^(j+1)` never reverses for any k ≥ 1, j —
+-- the first *proven* infinite non-reversing family inside the excluded regime.
+--
+-- Mechanism for k ≥ 3 (write `a = 3^(m+3)`):  φ(a) = 2·3^(m+2), so the first
+-- cototient step is `2a − φ(a) = 4·3^(m+2)` (valuation `s = 2`, odd part
+-- `b = 3^(m+2)`).  The landing constant is `C = 2a − φ(b)·2 = 14·3^(m+1) = e·2`
+-- (so `t = 1`, `e = 7·3^(m+1)`), and the classifier compares
+-- `φ(a) = 18·3^m` against `φ(e)·2^0 = 12·3^m`, giving `.gt`.
+-- ---------------------------------------------------------------------------
+
+/-- **The excluded family `3^(m+3)` classifies as forward (`.gt`).**  For every
+    `m`, the seed `a = 3^(m+3)` has first-step data `s = 2`, `b = 3^(m+2)` and
+    landing data `t = 1`, `e = 7·3^(m+1)`; the classifier compares
+    `φ(a) = 18·3^m` with `φ(e) = 12·3^m`, so `classifySeed (3^(m+3)) = .gt`. -/
+theorem classifySeed_three_pow_ge_three (m : ℕ) :
+    classifySeed (3 ^ (m + 3)) = Ordering.gt := by
+  have hp : Nat.Prime 3 := by norm_num
+  have hpos : 0 < (3 : ℕ) ^ m := pow_pos (by norm_num) m
+  -- powers of three reduced to multiples of `3^m`
+  have e1 : (3 : ℕ) ^ (m + 1) = 3 * 3 ^ m := by ring
+  have e2 : (3 : ℕ) ^ (m + 2) = 9 * 3 ^ m := by ring
+  have e3 : (3 : ℕ) ^ (m + 3) = 27 * 3 ^ m := by ring
+  -- totients of the seed, the odd part `b = 3^(m+2)`, and the landing part `e`
+  have tφa : Nat.totient (3 ^ (m + 3)) = 3 ^ (m + 2) * 2 :=
+    Nat.totient_prime_pow_succ hp (m + 2)
+  have tφb : Nat.totient (3 ^ (m + 2)) = 3 ^ (m + 1) * 2 :=
+    Nat.totient_prime_pow_succ hp (m + 1)
+  have hcop : Nat.Coprime 7 (3 ^ (m + 1)) := (show Nat.Coprime 7 3 by decide).pow_right _
+  have tφe : Nat.totient (7 * 3 ^ (m + 1)) = 12 * 3 ^ m := by
+    rw [Nat.totient_mul hcop, show Nat.totient 7 = 6 from totient_7,
+        show Nat.totient (3 ^ (m + 1)) = 3 ^ m * 2 from Nat.totient_prime_pow_succ hp m]
+    ring
+  -- odd parts
+  have hob : Odd (3 ^ (m + 2)) := (show Odd 3 by decide).pow
+  have hoe : Odd (7 * 3 ^ (m + 1)) := (show Odd 7 by decide).mul (show Odd 3 by decide).pow
+  -- the two 2-adic extraction equations, in multiples of `3^m`
+  have hstep : 2 * 3 ^ (m + 3) - Nat.totient (3 ^ (m + 3)) = 3 ^ (m + 2) * 2 ^ 2 := by
+    rw [tφa, e3, e2, show (2 : ℕ) ^ 2 = 4 from by norm_num]; omega
+  have hCval : 2 * 3 ^ (m + 3) - Nat.totient (3 ^ (m + 2)) * 2 ^ (2 - 1)
+      = 7 * 3 ^ (m + 1) * 2 ^ 1 := by
+    rw [tφb, e3, e1]; simp only [show (2 : ℕ) ^ (2 - 1) = 2 from rfl]; omega
+  rw [classifySeed_val (s := 2) (b := 3 ^ (m + 2)) (t := 1) (e := 7 * 3 ^ (m + 1))
+      hob hoe hstep hCval, tφa, tφe, compare_gt_iff_gt,
+      show (2 : ℕ) ^ (1 - 1) = 1 from by norm_num, mul_one, e2]
+  omega
+
+/-- **The infinite excluded family `3^k` never reverses.**  For every `k ≥ 1`
+    the seed `a = 3^k` — an excluded prime power (`p = 3 ≡ 3 mod 4`, so
+    `seedS a ≥ 2`) — classifies to `.eq` (k = 1, 2) or `.gt` (k ≥ 3); in
+    particular `classifySeed (3^k) ≠ .lt`.  This is the first *infinite*
+    sub-family of the excluded regime proven never to reverse, upgrading the
+    prior finite `decide` sweep over `a < 120`. -/
+theorem three_pow_never_reverses {k : ℕ} (hk : 1 ≤ k) :
+    classifySeed (3 ^ k) ≠ Ordering.lt := by
+  rcases le_or_gt k 2 with h2 | h3
+  · interval_cases k
+    · rw [pow_one, classifySeed_3]; decide
+    · rw [show (3 : ℕ) ^ 2 = 9 from by norm_num, classifySeed_9]; decide
+  · obtain ⟨m, rfl⟩ : ∃ m, k = m + 3 := ⟨k - 3, by omega⟩
+    rw [classifySeed_three_pow_ge_three m]; decide
+
+/-- **The family `3^k · 2^(j+1)` never reverses the totient inequality.**  For
+    every `k ≥ 1` and `j`, `φ(n) ≥ φ(D(n))` throughout `n = 3^k·2^(j+1)`; i.e.
+    no member of this infinite excluded family lies in `ReversalSet`.  Combined
+    with `twentyone_smallest_reversing_seed` (smallest reversing seed `21 = 3·7`
+    has `seedS = 1`), this evidences the structural conjecture that reversals
+    occur only in the transport-admissible regime `seedS a = 1`. -/
+theorem three_pow_family_not_reversal {k : ℕ} (hk : 1 ≤ k) (j : ℕ) :
+    3 ^ k * 2 ^ (j + 1) ∉ ReversalSet := by
+  have ha : Odd (3 ^ k) := (show Odd 3 by decide).pow
+  have ha3 : 3 ≤ 3 ^ k := by
+    calc 3 = 3 ^ 1 := (pow_one 3).symm
+      _ ≤ 3 ^ k := Nat.pow_le_pow_right (by norm_num) hk
+  rw [classifySeed_lt_iff ha ha3 j]
+  exact three_pow_never_reverses hk
+
 end Erdos1064OQ03

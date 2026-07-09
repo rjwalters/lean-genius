@@ -1,4 +1,47 @@
 
+## Session 2026-07-08 (researcher-6) — 3^k: first INFINITE excluded family proven never to reverse
+
+**Mode**: REVISIT (RICH tier; branch dedicated) | **Outcome**: progress (VERIFIED 0 sorry / 0 axiom, Docker v4.26.0 `Build completed successfully`)
+
+### What I Did
+- Proved that the excluded prime-power family `a = 3^k` (p = 3 ≡ 3 mod 4, so
+  `seedS a ≥ 2`) NEVER reverses, for ALL k — the first *infinite* sub-family of
+  the excluded regime shown non-reversing (prior evidence was only the finite
+  `decide` sweep over `a < 120`).
+- `classifySeed_three_pow_ge_three (m)`: `classifySeed (3^(m+3)) = .gt`.
+- `three_pow_never_reverses (hk : 1 ≤ k)`: `classifySeed (3^k) ≠ .lt`
+  (`.eq` for k=1,2 via `classifySeed_3`/`classifySeed_9`; `.gt` for k≥3).
+- `three_pow_family_not_reversal`: `∀ k≥1 j, 3^k · 2^(j+1) ∉ ReversalSet`.
+
+### Key Findings / proof recipe
+- For `a = 3^(m+3)`: `φ(a) = 2·3^(m+2)` (via `Nat.totient_prime_pow_succ`), so the
+  first cototient step is `2a − φ(a) = 4·3^(m+2)` — valuation `s = 2` (excluded!),
+  odd part `b = 3^(m+2)`. Landing `C = 2a − φ(b)·2 = 14·3^(m+1) = e·2` gives
+  `t = 1`, `e = 7·3^(m+1)`; the classifier compares `φ(a) = 18·3^m` against
+  `φ(e)·2^0 = 12·3^m`, i.e. `18·3^m > 12·3^m`, hence `.gt`.
+- Reused the existing `classifySeed_val` evaluator: express every power of 3 as a
+  multiple of `3^m` (`3^(m+j) = 3^j · 3^m` by `ring`), then `omega` closes the two
+  2-adic extraction equations and the final size comparison (`hpos : 0 < 3^m`).
+- Lean gotcha: `rw [show 2^(2-1)=2, show 2^1=2]` FAILS — `rw` matched `2^(2-1)`
+  against `2^1` up to defeq (`2-1` whnf-reduces to `1`), rewriting both, so the
+  second pattern was gone. Fix: a single `simp only [show (2:ℕ)^(2-1)=2 from rfl]`
+  collapses both occurrences.
+- Complements `twentyone_smallest_reversing_seed`: the smallest reversing seed
+  `21 = 3·7` has `seedS = 1` (transport-admissible). Evidence for the structural
+  conjecture that reversals occur only in the `seedS a = 1` regime.
+
+### Files Modified
+- `proofs/Proofs/EulerTotientOQ04OQ03.lean` (+~70 lines, 3 theorems)
+- `src/data/research/problems/erdos-1064-oq-03.json` (knowledge)
+
+### Next Steps
+- Generalise `3^k` → general excluded `p^k`, `p ≡ 3 mod 4`. For `p = 3`, `p+1 = 4`
+  is a pure power of 2 so `b = 3^(k-1)` is clean; general `p` has
+  `b = p^(k-1)·oddpart(p+1)`. Mersenne-type `p = 2^s − 1` keep `b = p^(k-1)` clean
+  and are the next tractable case.
+- Density-1 forward (`φ(n) > φ(D(n))` a.e.) remains the sole analytically-blocked
+  direction (needs Luca–Pomerance / ψ(x,y), a real Mathlib gap).
+
 ## Session 2026-07-08 (researcher-6) — EXCLUDED REGIME fully characterised: prime powers of p≡3 mod4
 
 **Mode**: REVISIT (RICH tier; branch dedicated) | **Outcome**: progress (VERIFIED 0 sorry / 0 axiom, host `lake env lean` exit 0)
