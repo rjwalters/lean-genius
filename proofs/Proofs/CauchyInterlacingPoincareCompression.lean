@@ -1032,7 +1032,9 @@ theorem charpoly_eq_mul_compress_of_reducing {T : V →ₗ[𝕜] V}
   have hT :
       T = (Submodule.prodEquivOfIsCompl H Hᗮ hcompl).conj
             (LinearMap.prodMap (compress T H) (compress T Hᗮ)) := by
-    rw [LinearEquiv.conj_apply, ← LinearMap.comp_assoc, ← hconj, LinearMap.comp_assoc,
+    -- `LinearEquiv.conj_apply` unfolds to the *left*-associated `(↑e ∘ₗ f) ∘ₗ ↑e.symm`,
+    -- so (unlike the raw-form determinant proof) we do NOT lead with `← comp_assoc`.
+    rw [LinearEquiv.conj_apply, ← hconj, LinearMap.comp_assoc,
       LinearEquiv.comp_coe, LinearEquiv.symm_trans_self, LinearEquiv.refl_toLinearMap,
       LinearMap.comp_id]
   -- Read `charpoly T` through the conjugation (only the LHS `T`, not the `T`s inside
@@ -1053,5 +1055,47 @@ theorem spectrum_compress_eq_restrict_of_invariant {T : V →ₗ[𝕜] V}
     (H : Submodule 𝕜 V) (hinv : ∀ y ∈ H, T y ∈ H) :
     spectrum 𝕜 (compress T H) = spectrum 𝕜 (T.restrict hinv) := by
   rw [compress_eq_restrict_of_invariant H hinv]
+
+/-- **Eigenvalue-multiset additivity over a reducing subspace.**  Passing to roots (with
+multiplicity) turns the characteristic-polynomial master identity
+`charpoly_eq_mul_compress_of_reducing` into its spectral form: the multiset of roots of
+`charpoly T` (the eigenvalues of `T`, counted with algebraic multiplicity) is the
+**disjoint union** of the root multisets of the two compression blocks,
+
+  `(charpoly T).roots = (charpoly (compress T H)).roots + (charpoly (compress T Hᗮ)).roots`.
+
+This is the *with-multiplicity, root-level* refinement of the set-level spectrum equality
+`spectrum_eq_union_of_reducing` and the eigenspace multiplicity additivity
+`finrank_eigenspace_eq_add_compress_of_reducing`: it records not only which eigenvalues
+occur but exactly how many times each does, sorted blockwise.  (Over `𝕜 = ℂ` the charpoly
+splits, so these roots *are* the full eigenvalue list; for self-adjoint `T` over `ℝ` it
+already splits into real eigenvalues.)  Proof: `Polynomial.roots_mul`, valid because the
+product is `charpoly T`, which is monic and hence nonzero.  Symmetry-free. -/
+theorem roots_charpoly_eq_add_compress_of_reducing {T : V →ₗ[𝕜] V}
+    (H : Submodule 𝕜 V) (hH : ∀ y ∈ H, T y ∈ H) (hHp : ∀ y ∈ Hᗮ, T y ∈ Hᗮ) :
+    (LinearMap.charpoly T).roots =
+      (LinearMap.charpoly (compress T H)).roots
+        + (LinearMap.charpoly (compress T Hᗮ)).roots := by
+  rw [charpoly_eq_mul_compress_of_reducing H hH hHp]
+  refine Polynomial.roots_mul ?_
+  rw [← charpoly_eq_mul_compress_of_reducing H hH hHp]
+  exact (LinearMap.charpoly_monic T).ne_zero
+
+/-- **Eigenvalue-count additivity over a reducing subspace.**  The counting shadow of
+`roots_charpoly_eq_add_compress_of_reducing`: the number of eigenvalues of `T` counted with
+algebraic multiplicity splits as the sum over the two compression blocks,
+
+  `(charpoly T).roots.card
+      = (charpoly (compress T H)).roots.card + (charpoly (compress T Hᗮ)).roots.card`.
+
+(When the charpoly splits — e.g. over `ℂ`, or a self-adjoint operator over `ℝ` — each side
+is a genuine `finrank`, so this recovers `finrank V = finrank H + finrank Hᗮ` read on the
+eigenvalue lists.)  Immediate from the multiset additivity via `Multiset.card_add`. -/
+theorem card_roots_charpoly_eq_add_compress_of_reducing {T : V →ₗ[𝕜] V}
+    (H : Submodule 𝕜 V) (hH : ∀ y ∈ H, T y ∈ H) (hHp : ∀ y ∈ Hᗮ, T y ∈ Hᗮ) :
+    (LinearMap.charpoly T).roots.card =
+      (LinearMap.charpoly (compress T H)).roots.card
+        + (LinearMap.charpoly (compress T Hᗮ)).roots.card := by
+  rw [roots_charpoly_eq_add_compress_of_reducing H hH hHp, Multiset.card_add]
 
 end CauchyInterlacing.PoincareCompression
