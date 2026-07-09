@@ -94,6 +94,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header and Setup",
+      "startLine": 1,
+      "endLine": 32,
+      "summary": "Module docstring framing the acute–right–obtuse trichotomy as Euclid's Elements II.12/II.13 — the converse-and-refinement of Pythagoras where the sign of a²+b²−c² records whether the angle opposite c is acute, right, or obtuse, via the sign of cos C. Imports Mathlib, declares the LawOfCosinesOQ09 namespace, opens Real, and fixes the ambient reals a b c C.",
+      "mathContext": "Law of cosines $c^2 = a^2 + b^2 - 2ab\\cos C$; the classification of $C$ against $\\pi/2$ becomes the algebraic comparison of $c^2$ with $a^2+b^2$."
+    },
+    {
       "id": "cos-sign",
       "title": "Sign of cos C against π/2 on [0, π]",
       "summary": "Private helpers: cos C > 0 ↔ C < π/2, cos C = 0 ↔ C = π/2, cos C < 0 ↔ C > π/2, for C ∈ [0, π].",
