@@ -198,6 +198,44 @@ theorem exists_prime_gt (n : ℕ) : ∃ p, p.Prime ∧ n < p := by
   obtain ⟨p, hp, hpd⟩ := Nat.exists_prime_and_dvd hne
   exact ⟨p, hp, prime_dvd_factorial_add_one_gt hp hpd⟩
 
+/-! ## The least prime factor of `n! + 1`
+
+The engine `prime_dvd_factorial_add_one_gt` bounds *every* prime factor of `n!+1`
+from below by `n`; applied to the least prime factor it gives `(n!+1).minFac > n`.
+Combined with the Wilson flagship `succ_dvd_factorial_add_one_iff_prime`, this pins
+the least prime factor *exactly* at the primality boundary: `(n!+1).minFac = n+1`
+precisely when `n+1` is prime.  This is the elementary lower-bound core of "bounding
+the smallest prime factor of `n!+1`" (the matching *upper* bound / distinctness from
+`n+1` at composite `n+1` is the genuinely analytic part, out of elementary reach). -/
+
+/-- **The least prime factor of `n! + 1` exceeds `n`.**  For `n ≥ 1`, `n!+1 ≥ 2`, so its
+    least prime factor is a genuine prime dividing `n!+1`; the engine forces it above `n`.
+    Every prime factor of `n!+1` therefore lies in `(n, ∞)` — the quantitative form of the
+    factorial construction behind Euclid's theorem. -/
+theorem factorial_add_one_minFac_gt {n : ℕ} (hn : 1 ≤ n) : n < (n ! + 1).minFac := by
+  have hne : n ! + 1 ≠ 1 := by have := Nat.factorial_pos n; omega
+  exact prime_dvd_factorial_add_one_gt (Nat.minFac_prime hne) (Nat.minFac_dvd _)
+
+/-- **Wilson pins the least prime factor at the primality boundary.**  For `n ≥ 1`,
+    `(n!+1).minFac = n+1` if and only if `n+1` is prime.
+
+    (⇐) When `n+1` is prime, Wilson gives `(n+1) ∣ n!+1`, so `minFac ≤ n+1`; the engine
+    gives `minFac > n`; hence `minFac = n+1`.  (⇒) `minFac` is always prime, so if it
+    equals `n+1` then `n+1` is prime.  When `n+1` is composite the two facts instead give
+    `(n!+1).minFac ≥ n+2` (it exceeds `n` and cannot be the non-divisor `n+1`). -/
+theorem factorial_add_one_minFac_eq_succ_iff {n : ℕ} (hn : 1 ≤ n) :
+    (n ! + 1).minFac = n + 1 ↔ (n + 1).Prime := by
+  have hne : n ! + 1 ≠ 1 := by have := Nat.factorial_pos n; omega
+  constructor
+  · intro h
+    have hp := Nat.minFac_prime hne
+    rwa [h] at hp
+  · intro hp
+    have hdvd : (n + 1) ∣ n ! + 1 := (succ_dvd_factorial_add_one_iff_prime hn).mpr hp
+    have hle : (n ! + 1).minFac ≤ n + 1 := Nat.minFac_le_of_dvd (by omega) hdvd
+    have hgt : n < (n ! + 1).minFac := factorial_add_one_minFac_gt hn
+    omega
+
 /-! ## Twin coprimality of the sibling expressions -/
 
 /-- **The two siblings are coprime.**  For `n ≥ 2`, `gcd (n! - 1) (n! + 1) = 1`:
