@@ -296,6 +296,68 @@ theorem base_implies_behavior (c : ℝ) (hc : c > 1)
   · rw [← Real.exp_log hhn_pos, ← Real.exp_log hpow_u, Real.log_pow]
     exact Real.exp_le_exp.mpr hlog_u
 
+/-- **Converse of `base_implies_behavior`.** If `h(n)` has exponential behavior at base
+    `c > 1`, then the growth rate `log(h n)/n` actually *converges* to `log c`.
+
+    So `base_implies_behavior` is not a one-way street: exponential behavior at `c` is
+    equivalent to convergence of the growth rate to `log c` (packaged as
+    `exponential_behavior_iff_base` below). Proof: for each target radius `η`, continuity
+    of `Real.log` at `c` supplies an `ε ∈ (0, c)` with `log(c±ε)` within `η` of `log c`;
+    the behavior bounds `(c-ε)ⁿ ≤ h n ≤ (c+ε)ⁿ` then trap `growthRate n` inside
+    `[log(c-ε), log(c+ε)] ⊆ (log c - η, log c + η)` eventually. -/
+theorem behavior_implies_base (c : ℝ) (hc : c > 1)
+    (hbehav : ExponentialBehavior c) :
+    Filter.Tendsto growthRate atTop (nhds (Real.log c)) := by
+  rw [Metric.tendsto_atTop]
+  intro η hη
+  -- Continuity of log at c gives a radius d around c mapping into the η-ball around log c.
+  have hcont : ContinuousAt Real.log c := Real.continuousAt_log (ne_of_gt (by linarith))
+  obtain ⟨d, hd, hdlog⟩ := Metric.continuousAt_iff.mp hcont η hη
+  -- Pick ε small: within d of c (so log c±ε is η-close to log c) and inside (0, c).
+  set ε := min (d / 2) (c / 2) with hεdef
+  have hε_pos : 0 < ε := lt_min (by linarith) (by linarith)
+  have hε_lt_c : ε < c := lt_of_le_of_lt (min_le_right _ _) (by linarith)
+  have hcmε : 0 < c - ε := by linarith
+  have hεd : ε < d := lt_of_le_of_lt (min_le_left _ _) (by linarith)
+  obtain ⟨N, hN⟩ := hbehav ε hε_pos hε_lt_c
+  -- The two log-neighbourhood facts, from continuity applied to c ± ε.
+  have hdist_u : dist (Real.log (c + ε)) (Real.log c) < η :=
+    hdlog (by rw [Real.dist_eq]; have : c + ε - c = ε := by ring
+              rw [this, abs_of_pos hε_pos]; exact hεd)
+  have hdist_l : dist (Real.log (c - ε)) (Real.log c) < η :=
+    hdlog (by rw [Real.dist_eq]; have : c - ε - c = -ε := by ring
+              rw [this, abs_neg, abs_of_pos hε_pos]; exact hεd)
+  rw [Real.dist_eq] at hdist_u hdist_l
+  have hu : Real.log (c + ε) < Real.log c + η := by linarith [(abs_lt.mp hdist_u).2]
+  have hl : Real.log c - η < Real.log (c - ε) := by linarith [(abs_lt.mp hdist_l).1]
+  refine ⟨max N 1, fun n hn => ?_⟩
+  have hn_N : N ≤ n := le_of_max_le_left hn
+  have hn_1 : 1 ≤ n := le_of_max_le_right hn
+  have hn_pos : (0 : ℝ) < (n : ℝ) := Nat.cast_pos.mpr (by omega)
+  obtain ⟨hlow, hupp⟩ := hN n hn_N
+  -- Trap growthRate n between log(c-ε) and log(c+ε).
+  have hgr_l : Real.log (c - ε) ≤ growthRate n := by
+    unfold growthRate
+    rw [if_neg (show n ≠ 0 from by omega), le_div_iff₀ hn_pos]
+    have hlog := Real.log_le_log (by positivity) hlow
+    rwa [Real.log_pow, mul_comm] at hlog
+  have hgr_u : growthRate n ≤ Real.log (c + ε) := by
+    unfold growthRate
+    rw [if_neg (show n ≠ 0 from by omega), div_le_iff₀ hn_pos]
+    have hhn : (1 : ℝ) ≤ (h n : ℝ) := by exact_mod_cast h_pos n hn_1
+    have hlog := Real.log_le_log (by linarith) hupp
+    rwa [Real.log_pow, mul_comm] at hlog
+  rw [Real.dist_eq, abs_lt]
+  exact ⟨by linarith, by linarith⟩
+
+/-- **Exponential behavior at `c` ⟺ growth rate converges to `log c`.** Combining
+    `base_implies_behavior` with its converse `behavior_implies_base`, the two notions
+    coincide: `h(n) = c^{n + o(n)}` in the two-sided sense of `ExponentialBehavior` exactly
+    when `log(h n)/n → log c`. This turns the Part IV implication into a characterization. -/
+theorem exponential_behavior_iff_base (c : ℝ) (hc : c > 1) :
+    Filter.Tendsto growthRate atTop (nhds (Real.log c)) ↔ ExponentialBehavior c :=
+  ⟨base_implies_behavior c hc, behavior_implies_base c hc⟩
+
 /-
 ## Part V: Known Implications
 
