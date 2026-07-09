@@ -529,6 +529,101 @@ theorem mem_center_of_coprime_index {G : Type*} [Group G] [Finite G] {p : ℕ}
   have hg : g ∈ Subgroup.centralizer {c} := htop ▸ Subgroup.mem_top g
   exact (Subgroup.mem_centralizer_iff.mp hg c (Set.mem_singleton c)).symm
 
+/-! ### Global structure: central Sylow-`p`, `p ∣ |Z(G)|`, and the internal direct product
+
+The single-element centrality criterion `mem_center_of_coprime_index` promotes to a statement
+about the *whole* Sylow `p`-subgroup.  Three global consequences follow.
+
+* **Central Sylow.**  When `gcd(m, p−1) = 1` every power of `c` is central, so `⟨c⟩ ≤ Z(G)`
+  (`zpowers_le_center_of_coprime_index`).
+* **Class-number divisibility.**  Lagrange applied to `⟨c⟩ ≤ Z(G)` forces `p ∣ |Z(G)|`
+  (`prime_dvd_card_center_of_coprime_index`): the centre is large — its order a multiple of `p`.
+* **Internal direct product.**  Since `p ∤ m`, Schur–Zassenhaus supplies a complement `H` of order
+  `m` to the normal subgroup `⟨c⟩` (`exists_pComplement`).  When `⟨c⟩` is central this complement is
+  itself normal, exhibiting `G` as the internal direct product `⟨c⟩ × H` of its central Sylow
+  `p`-subgroup and a normal `p`-complement (`exists_normal_pComplement_of_coprime_index`).  This is
+  the structural endgame: in the coprime-index regime the order-`p` part splits off as a *central*
+  direct factor — the elementary content of Burnside's normal `p`-complement theorem read here. -/
+
+/-- **Central Sylow: `⟨c⟩ ≤ Z(G)` under coprime index.**  Promotes the single-element criterion
+`mem_center_of_coprime_index` to the whole cyclic Sylow `p`-subgroup: if the index `m = [G:⟨c⟩]`
+is coprime to `p − 1`, then every power of `c` is central, i.e. `⟨c⟩ ≤ Z(G)`. -/
+theorem zpowers_le_center_of_coprime_index {G : Type*} [Group G] [Finite G] {p : ℕ}
+    [hp : Fact p.Prime] (m : ℕ)
+    (hcard : Nat.card G = p * m) (hpm : ¬ (p ∣ m))
+    (huniq : ∀ d : ℕ, d ∣ m → d % p = 1 → d = 1)
+    (c : G) (hc : orderOf c = p) (hcop : Nat.Coprime m (p - 1)) :
+    Subgroup.zpowers c ≤ Subgroup.center G :=
+  Subgroup.zpowers_le.mpr (mem_center_of_coprime_index m hcard hpm huniq c hc hcop)
+
+/-- **`p ∣ |Z(G)|` under coprime index.**  Because the order-`p` subgroup `⟨c⟩` sits inside the
+centre (`zpowers_le_center_of_coprime_index`), Lagrange's theorem forces `p = |⟨c⟩|` to divide the
+order of the centre.  In particular `Z(G)` is nontrivial and its order is a multiple of `p`. -/
+theorem prime_dvd_card_center_of_coprime_index {G : Type*} [Group G] [Finite G] {p : ℕ}
+    [hp : Fact p.Prime] (m : ℕ)
+    (hcard : Nat.card G = p * m) (hpm : ¬ (p ∣ m))
+    (huniq : ∀ d : ℕ, d ∣ m → d % p = 1 → d = 1)
+    (c : G) (hc : orderOf c = p) (hcop : Nat.Coprime m (p - 1)) :
+    p ∣ Nat.card (Subgroup.center G) := by
+  have hdvd := Subgroup.card_dvd_of_le
+    (zpowers_le_center_of_coprime_index m hcard hpm huniq c hc hcop)
+  rwa [Nat.card_zpowers, hc] at hdvd
+
+/-- **Schur–Zassenhaus `p`-complement.**  Since `p ∤ m`, the orders `p = |⟨c⟩|` and `m = [G:⟨c⟩]`
+are coprime, so the normal subgroup `⟨c⟩` admits a complement `H`: a subgroup with `⟨c⟩ ⊓ H = 1`
+and `⟨c⟩·H = G`.  Counting the complement gives `|H| = m`.  This is the `p`-complement existence
+statement; it needs only `p ∤ m`, not the coprime-index hypothesis. -/
+theorem exists_pComplement {G : Type*} [Group G] [Finite G] {p : ℕ}
+    [hp : Fact p.Prime] (m : ℕ)
+    (hcard : Nat.card G = p * m) (hpm : ¬ (p ∣ m))
+    (huniq : ∀ d : ℕ, d ∣ m → d % p = 1 → d = 1)
+    (c : G) (hc : orderOf c = p) :
+    ∃ H : Subgroup G, Subgroup.IsComplement' (Subgroup.zpowers c) H ∧ Nat.card H = m := by
+  haveI : (Subgroup.zpowers c).Normal := zpowers_sylow_normal m hcard hpm huniq c hc
+  have hNcard : Nat.card (Subgroup.zpowers c) = p := by rw [Nat.card_zpowers, hc]
+  have hNidx : (Subgroup.zpowers c).index = m := zpowers_index_eq m hcard c hc
+  have hcop : Nat.Coprime (Nat.card (Subgroup.zpowers c)) (Subgroup.zpowers c).index := by
+    rw [hNcard, hNidx]; exact hp.out.coprime_iff_not_dvd.mpr hpm
+  obtain ⟨H, hH⟩ := Subgroup.exists_right_complement'_of_coprime hcop
+  refine ⟨H, hH, ?_⟩
+  have hmul := hH.card_mul
+  rw [hNcard, hcard] at hmul
+  exact Nat.eq_of_mul_eq_mul_left hp.out.pos hmul
+
+/-- **Internal direct product `G = ⟨c⟩ × H`.**  Combining the central-Sylow result with the
+Schur–Zassenhaus complement: when `gcd(m, p−1) = 1`, the complement `H` of the (now central)
+subgroup `⟨c⟩` is itself *normal*, so `G` is the internal direct product of its central Sylow
+`p`-subgroup `⟨c⟩` and a normal `p`-complement `H` of order `m`.  A central normal Hall subgroup
+splits off as a direct factor — the structural endgame of the coprime-index analysis. -/
+theorem exists_normal_pComplement_of_coprime_index {G : Type*} [Group G] [Finite G] {p : ℕ}
+    [hp : Fact p.Prime] (m : ℕ)
+    (hcard : Nat.card G = p * m) (hpm : ¬ (p ∣ m))
+    (huniq : ∀ d : ℕ, d ∣ m → d % p = 1 → d = 1)
+    (c : G) (hc : orderOf c = p) (hcop : Nat.Coprime m (p - 1)) :
+    ∃ H : Subgroup G, H.Normal ∧ Subgroup.IsComplement' (Subgroup.zpowers c) H ∧
+      Nat.card H = m := by
+  obtain ⟨H, hHc, hHcard⟩ := exists_pComplement m hcard hpm huniq c hc
+  have hcen := zpowers_le_center_of_coprime_index m hcard hpm huniq c hc hcop
+  refine ⟨H, ⟨?_⟩, hHc, hHcard⟩
+  intro x hx g
+  -- Factor `g = n · h₀` with `n ∈ ⟨c⟩` (central) and `h₀ ∈ H`.
+  have hfact : ∃ n ∈ Subgroup.zpowers c, ∃ h' ∈ H, n * h' = g := by
+    obtain ⟨q, hq⟩ := (hHc.existsUnique g).exists
+    exact ⟨q.1, SetLike.mem_coe.mp q.1.2, q.2, SetLike.mem_coe.mp q.2.2, hq⟩
+  obtain ⟨n, hn_mem, h₀, hh₀_mem, hg⟩ := hfact
+  have hncen : n ∈ Subgroup.center G := hcen hn_mem
+  -- `n` central ⇒ conjugation by `n` is trivial.
+  have hcen_w : n * (h₀ * x * h₀⁻¹) * n⁻¹ = h₀ * x * h₀⁻¹ := by
+    have hcomm : n * (h₀ * x * h₀⁻¹) = (h₀ * x * h₀⁻¹) * n :=
+      (Subgroup.mem_center_iff.mp hncen (h₀ * x * h₀⁻¹)).symm
+    rw [hcomm]; group
+  have key : g * x * g⁻¹ = h₀ * x * h₀⁻¹ := by
+    rw [← hg, mul_inv_rev,
+      (by group : n * h₀ * x * (h₀⁻¹ * n⁻¹) = n * (h₀ * x * h₀⁻¹) * n⁻¹)]
+    exact hcen_w
+  rw [key]
+  exact H.mul_mem (H.mul_mem hh₀_mem hx) (H.inv_mem hh₀_mem)
+
 /-! ### The fixed prime `p = 5`
 
 The original Abel–Ruffini application only needs `p = 5`.  With the general
