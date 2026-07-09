@@ -87,33 +87,50 @@
       "Orthonormality on the torus is a Fubini fact: the tensor structure of the character e_k = ∏ᵢ fourier(kᵢ) means the n-dimensional integral is literally the product of n one-dimensional integrals, so the multi-dimensional orthonormality reduces to Mathlib's 1-D orthonormality coordinate by coordinate — no new analytic estimate is needed, only the product-measure Fubini theorem.",
       "Mathlib records 1-D orthonormality only abstractly (orthonormal_fourier, an Orthonormal predicate in the Lp space); to use it under Fubini one needs the explicit integral ∫ fourier a · conj(fourier b) = δ_{a,b}, which ContinuousMap.inner_toLp delivers — the inner product literally IS that integral.",
       "On the unit circle (T = 1) the Lebesgue volume coincides with the normalised Haar probability measure (volume_eq_smul_haarAddCircle with ofReal 1 = 1), so the parent's volume-based coefficient and Mathlib's haar-based orthonormality are about the same integral.",
-      "The product of Kronecker deltas ∏ᵢ δ_{jᵢ,kᵢ} is the multi-index delta δ_{j,k}: two multi-indices agree iff they agree in every coordinate, and a single disagreement annihilates the product — the discrete shadow of the tensor structure."
+      "The product of Kronecker deltas ∏ᵢ δ_{jᵢ,kᵢ} is the multi-index delta δ_{j,k}: two multi-indices agree iff they agree in every coordinate, and a single disagreement annihilates the product — the discrete shadow of the tensor structure.",
+    "Orthonormality is only half of a Hilbert basis, and it is the easy half. This entry establishes ⟨e_j, e_k⟩ = δ_{j,k} — a pointwise integral computation that Fubini reduces to one dimension. The full Parseval/Plancherel identity additionally needs *completeness*: that the characters SPAN L²(Tⁿ), a density/approximation statement (Stone–Weierstrass on the torus lifted to a tensor Hilbert basis) not yet in Mathlib. Isolating orthonormality here pins down exactly what the follow-up open question must still supply, and why it is the genuinely harder direction."
     ]
   },
   "sections": [
     {
-      "id": "docstring",
+      "id": "sec-docstring",
       "title": "Module Docstring: Torus Character Orthonormality",
       "startLine": 1,
-      "endLine": 47,
-      "summary": "States the open question (orthonormality of the n-dimensional characters as the heart of Parseval) and the two-bridge strategy: Fubini for the product measure plus the 1-D orthogonality relation extracted from orthonormal_fourier. Notes that full Plancherel additionally needs completeness (a tensor Hilbert-basis construction not yet in Mathlib).",
-      "mathContext": "$\\int_{T^n} e_j(x)\\,\\overline{e_k(x)}\\,dx = \\delta_{j,k}$."
+      "endLine": 45,
+      "summary": "States the open question (orthonormality of the n-dimensional characters e_k(x) = ∏ᵢ fourier(kᵢ)(xᵢ) as the heart of Parseval) and the two-bridge strategy: Fubini for the product measure plus the 1-D orthogonality relation extracted from orthonormal_fourier. Notes that full Plancherel additionally needs completeness (a tensor Hilbert-basis construction not yet in Mathlib), and sets up imports/namespace/opens.",
+      "mathContext": "$\\int_{T^n} e_j(x)\\,\\overline{e_k(x)}\\,dx = \\delta_{j,k}$, reduced coordinatewise to the 1-D relation."
     },
     {
-      "id": "one-dimensional",
+      "id": "sec-one-dimensional",
       "title": "One-Dimensional Orthogonality (concrete integral)",
-      "startLine": 49,
-      "endLine": 73,
-      "summary": "char1d_integral: ∫_{AddCircle 1} fourier a · conj(fourier b) = δ_{a,b}, extracted from orthonormal_fourier via orthonormal_iff_ite and ContinuousMap.inner_toLp, with volume = haarAddCircle on the unit circle.",
-      "mathContext": "$\\int_{\\mathbb{R}/\\mathbb{Z}} e^{2\\pi i a x}\\,e^{-2\\pi i b x}\\,dx = \\delta_{a,b}$."
+      "startLine": 47,
+      "endLine": 65,
+      "summary": "char1d_integral: ∫_{AddCircle 1} fourier a · conj(fourier b) = δ_{a,b}. Extracted from Mathlib's abstract orthonormal_fourier (an Orthonormal predicate in Lp) by orthonormal_iff_ite and ContinuousMap.inner_toLp — the inner product literally IS the integral — after identifying volume with haarAddCircle on the unit circle (volume_eq_smul_haarAddCircle, T = 1).",
+      "mathContext": "$\\int_{\\mathbb{R}/\\mathbb{Z}} e^{2\\pi i a x}\\,e^{-2\\pi i b x}\\,dx = \\delta_{a,b}$; volume = haarAddCircle since T = 1."
     },
     {
-      "id": "n-dimensional",
-      "title": "n-Dimensional Orthonormality and the Fourier-Coefficient Form",
-      "startLine": 74,
+      "id": "sec-tensor-fubini",
+      "title": "Tensor Factorisation and Fubini",
+      "startLine": 67,
+      "endLine": 90,
+      "summary": "torusChar_orthonormal: the integrand factors pointwise into a product over coordinates (hpt, via map_prod and Finset.prod_mul_distrib on the tensor character), then integral_fintype_prod_volume_eq_prod (Fubini for the product measure) turns the torus integral into ∏ᵢ of one-dimensional integrals, each rewritten to δ_{jᵢ,kᵢ} by char1d_integral.",
+      "mathContext": "$\\int_{T^n}\\prod_i g_i(x_i) = \\prod_i \\int_{T} g_i$ (Fubini); each factor = $\\delta_{j_i,k_i}$."
+    },
+    {
+      "id": "sec-delta-collapse",
+      "title": "The Multi-Index Delta Collapse",
+      "startLine": 91,
+      "endLine": 96,
+      "summary": "The product of coordinate-wise Kronecker deltas ∏ᵢ δ_{jᵢ,kᵢ} collapses to the multi-index delta δ_{j,k}: if j = k every factor is 1; otherwise Function.ne_iff produces a coordinate i with jᵢ ≠ kᵢ, and Finset.prod_eq_zero annihilates the whole product. This closes torusChar_orthonormal.",
+      "mathContext": "$\\prod_i \\delta_{j_i,k_i} = \\delta_{j,k}$: one disagreeing coordinate zeroes the product."
+    },
+    {
+      "id": "sec-coefficient-form",
+      "title": "The Fourier-Coefficient Form",
+      "startLine": 98,
       "endLine": 108,
-      "summary": "torusChar_orthonormal: the torus orthonormality ∫_{Tⁿ} e_j conj(e_k) = δ_{j,k} via conj/product distribution, Fubini, char1d_integral, and the delta-product collapse; fourierCoeffND_torusChar: the same relation read through the parent's coefficient as fourierCoeffND (torusChar k) j = δ_{k,j}.",
-      "mathContext": "$\\prod_i \\delta_{j_i,k_i} = \\delta_{j,k}$; $\\widehat{e_k}(j) = \\delta_{k,j}$."
+      "summary": "fourierCoeffND_torusChar rephrases orthonormality through the parent's coefficient: fourierCoeffND (torusChar k) j = δ_{k,j}, i.e. the j-th Fourier coefficient of the character e_k is the Kronecker delta — the precise sense in which the characters form an orthonormal system read off by the Fourier transform.",
+      "mathContext": "$\\widehat{e_k}(j) = \\delta_{k,j}$: the characters are self-detecting under the Fourier coefficient."
     }
   ],
   "openQuestions": [
