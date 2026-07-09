@@ -499,6 +499,39 @@ theorem kronecker_two_periodic (n : ℕ) (hn : 0 < n) (hno : n % 2 = 1) :
   have h8 : (n + 8) % 8 = n % 8 := by omega
   rw [h8]
 
+/-- **Combined supplementary law `(-2/n)` at odd moduli (residue table).**
+    For odd positive `n`, `(-2/n) = 1` if `n ≡ 1, 3 (mod 8)` and `-1` if
+    `n ≡ 5, 7 (mod 8)`. This is the explicit `if`-form of the `-2` supplementary
+    character, completing the residue tables of all three nontrivial characters
+    mod `8` (the `-1` and `2` tables are `kronecker_neg_one_odd`,
+    `kronecker_two_odd`). It follows from `kronecker_eq_jacobi` and Mathlib's
+    `jacobiSym.at_neg_two` (`J(-2 | n) = χ₈' n`), unfolded via
+    `ZMod.χ₈'_nat_eq_if_mod_eight`. The residue classes `{1,3}` where `(-2/·) = 1`
+    are exactly those where the primitive character `χ₈'` is `+1`, distinct from
+    the `{1,7}` classes of `(2/·)`; the two mod-8 characters split the odd
+    residues differently. `sorry`-free, axiom-free. -/
+theorem kronecker_neg_two_odd (n : ℕ) (hn : 0 < n) (hno : n % 2 = 1) :
+    kronecker (-2) n = if n % 8 = 1 ∨ n % 8 = 3 then 1 else -1 := by
+  rw [kronecker_eq_jacobi (-2) n hn hno, jacobiSym.at_neg_two (Nat.odd_iff.mpr hno),
+    ZMod.χ₈'_nat_eq_if_mod_eight, if_neg (show ¬ n % 2 = 0 by omega)]
+
+/-- **The denominator character `(-2/·)` is periodic mod 8.**
+    For odd positive `n`, `(-2/(n+8)) = (-2/n)`. Together with `kronecker_mul_right`
+    this exhibits the combined supplementary character — the value `(-2/·)` as the
+    odd denominator varies — as a Dirichlet character modulo `8`, completing the
+    periodicity data for all three nontrivial characters (`(-1/·)` mod 4,
+    `(2/·)` mod 8, and now `(-2/·)` mod 8). Note the period is `8`, not `4`: unlike
+    `(-1/·)` the combined character carries the mod-8 part `χ₈`, so it is *not*
+    periodic mod 4. Immediate from `kronecker_neg_two_odd`, since `(n+8) % 8 = n % 8`.
+    `sorry`-free, axiom-free. -/
+theorem kronecker_neg_two_periodic (n : ℕ) (hn : 0 < n) (hno : n % 2 = 1) :
+    kronecker (-2) ((n : ℤ) + 8) = kronecker (-2) (n : ℤ) := by
+  have e : ((n : ℤ) + 8) = ((n + 8 : ℕ) : ℤ) := by push_cast; ring
+  rw [e, kronecker_neg_two_odd (n + 8) (by omega) (by omega),
+    kronecker_neg_two_odd n hn hno]
+  have h8 : (n + 8) % 8 = n % 8 := by omega
+  rw [h8]
+
 /-- **The numerator character `(·/n)` depends only on `a mod n`.**
     For odd positive `n`, `(a/n) = (a % n / n)`: the Kronecker symbol at a fixed
     odd modulus `n`, viewed as a function of the numerator, factors through
