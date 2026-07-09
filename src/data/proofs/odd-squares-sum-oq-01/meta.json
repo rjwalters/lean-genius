@@ -68,13 +68,13 @@
       "id": "integer-form",
       "title": "Division-free integer form (subtraction-free step)",
       "startLine": 46,
-      "endLine": 62,
+      "endLine": 59,
       "summary": "The exact ℕ identity 3·∑_{k<n} (2k+1)² + n = 4n³, proved by induction. Phrased additively it contains no truncated subtraction. The step peels the top odd square with sum_range_succ, reassociates so the inductive hypothesis 3·∑ + m = 4m³ appears verbatim, and a single `ring` closes the branch. The whole proof lives in ℕ — no casts to ℤ or ℚ."
     },
     {
       "id": "rational-closed-form",
       "title": "Rational closed form n(2n−1)(2n+1)/3",
-      "startLine": 64,
+      "startLine": 60,
       "endLine": 74,
       "summary": "The classical closed form ∑_{k<n} (2k+1)² = n(2n−1)(2n+1)/3 over ℚ. Base case is `simp` (empty sum). The inductive step peels the top term, rewrites by the hypothesis, and `push_cast; ring` discharges the polynomial identity — verifying (m(2m−1)(2m+1)/3) + (2m+1)² = (m+1)(2m+1)(2m+3)/3 in the field ℚ where division is genuine."
     }
@@ -105,7 +105,8 @@
       "**Clear the denominator additively.** Rewriting $\\sum = (4n^3 - n)/3$ as $3\\sum + n = 4n^3$ removes both the division *and* the subtraction, so the entire inductive step is a single `ring` call with no case split and no truncation hazard.",
       "**The step is one cubic identity.** After substituting the hypothesis, the goal collapses to $4m^3 + 3(2m+1)^2 + 1 = 4(m+1)^3$ — a fact about the single number $m$, independent of the sum.",
       "**Use ℚ for the headline form.** Division by $3$ is only honest in a field, so the classical $n(2n-1)(2n+1)/3$ form is stated and proved over $\\mathbb{Q}$, where `push_cast; ring` handles the casts and the cubic algebra in one stroke.",
-      "**Relation to the square-pyramidal sum.** The identity is exactly $\\sum_{j<2n} j^2 - 4\\sum_{k<n} k^2$, tying the odd-square sum to Mathlib's even-indexed power-sum machinery."
+      "**Relation to the square-pyramidal sum.** The identity is exactly $\\sum_{j<2n} j^2 - 4\\sum_{k<n} k^2$, tying the odd-square sum to Mathlib's even-indexed power-sum machinery.",
+      "**Shape the goal to fit the hypothesis.** After `sum_range_succ` the goal reads $3(\\sum_{k<m} + (2m+1)^2) + (m+1)$, in which the induction hypothesis's cluster $3\\sum_{k<m} + m$ is not yet syntactically present. A single `ring`-proved `have key` regroups the left side as $(3\\sum_{k<m} + m) + (3(2m+1)^2 + 1)$, exposing the cluster verbatim so `rw [key, ih]` fires; this 'regroup, then rewrite' move is why the entire step needs only two `ring` calls and no `omega` or case split."
     ],
     "prerequisites": [
       "Mathematical induction",
