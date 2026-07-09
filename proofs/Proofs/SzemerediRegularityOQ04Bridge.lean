@@ -385,4 +385,105 @@ theorem partitionEnergy_subpair_split_gain_uniform (G : SimpleGraph V)
   exact partitionEnergy_single_split_gain_uniform G R A₁ A₂ B₀ hdisj hA₁R hA₂R hne
     hAR hB₀ hn₁ hn₂ hB ε hε hdev2
 
+-- ═══════════════════════════════════════════════════════════════════
+-- PART VI: FROM ¬IsEpsilonRegular TO A ONE-SIDED DEVIATION
+-- ═══════════════════════════════════════════════════════════════════
+
+/-- **Irregularity witness extraction.**  If a pair `(A, B)` fails to be
+    `ε`-regular then, by the very definition of `IsEpsilonRegular`, there exist
+    subsets `A' ⊆ A`, `B' ⊆ B` meeting the size thresholds `|A'| ≥ ε|A|`,
+    `|B'| ≥ ε|B|` whose density deviates from `d(A, B)` by strictly more than
+    `ε`.  This is the definitional content of `¬ IsEpsilonRegular`, named for
+    reuse as the entry point of the energy-increment argument. -/
+theorem exists_irregular_witness (G : SimpleGraph V) [DecidableRel G.Adj]
+    (eps : ℚ) (A B : Finset V) (hirr : ¬ IsEpsilonRegular G eps A B) :
+    ∃ A' B' : Finset V, A' ⊆ A ∧ B' ⊆ B ∧
+      (A'.card : ℚ) ≥ eps * A.card ∧ (B'.card : ℚ) ≥ eps * B.card ∧
+      |edgeDensity G A' B' - edgeDensity G A B| > eps := by
+  unfold IsEpsilonRegular at hirr
+  push_neg at hirr
+  obtain ⟨A', B', hA', hB', hAc, hBc, hdev⟩ := hirr
+  exact ⟨A', B', hA', hB', hAc, hBc, hdev⟩
+
+/-- **Two-sided deviation splits into two one-sided deviations.**  The full
+    witness deviation `|d(A', B') − d(A, B)|` is at most the sum of
+
+    * the **B-side** deviation `|d(A', B') − d(A', B)|` — refining `B` against
+      the fixed sub-part `A'`, and
+    * the **A-side** deviation `|d(A', B) − d(A, B)|` — refining `A` against the
+      whole partner `B`.
+
+    A plain triangle inequality through the mixed density `d(A', B)`. -/
+theorem edgeDensity_two_sided_le (G : SimpleGraph V) [DecidableRel G.Adj]
+    (A A' B B' : Finset V) :
+    |edgeDensity G A' B' - edgeDensity G A B| ≤
+      |edgeDensity G A' B' - edgeDensity G A' B| +
+      |edgeDensity G A' B - edgeDensity G A B| :=
+  abs_sub_le _ _ _
+
+/-- **From an irregular pair to a one-sided deviation of size `≥ ε/2`.**  If
+    `(A, B)` is not `ε`-regular, its extracted witness yields *either*
+
+    * an **A-side** deviation `|d(A', B) − d(A, B)| ≥ ε/2` (partner `B` kept
+      whole — directly usable by `partitionEnergy_subpair_split_gain_uniform`
+      with `A₁ = A'`, `A₂ = A \ A'`), *or*
+    * a **B-side** deviation `|d(A', B') − d(A', B)| ≥ ε/2` (a refinement of `B`
+      against the fixed sub-part `A'` — the symmetric case requiring a second
+      refinement).
+
+    The witness deviation `> ε` is split by `edgeDensity_two_sided_le`, so at
+    least one summand carries `≥ ε/2`.  This is the structural reduction that
+    turns *two-sided* irregularity into the *one-sided* increment datum the
+    energy machinery consumes, at the cost of a factor `1/2` in the tolerance
+    (hence `1/4` in the energy floor). -/
+theorem exists_onesided_deviation_of_irregular (G : SimpleGraph V)
+    [DecidableRel G.Adj] (eps : ℚ) (A B : Finset V)
+    (hirr : ¬ IsEpsilonRegular G eps A B) :
+    ∃ A' B' : Finset V, A' ⊆ A ∧ B' ⊆ B ∧
+      (A'.card : ℚ) ≥ eps * A.card ∧ (B'.card : ℚ) ≥ eps * B.card ∧
+      (|edgeDensity G A' B - edgeDensity G A B| ≥ eps / 2 ∨
+       |edgeDensity G A' B' - edgeDensity G A' B| ≥ eps / 2) := by
+  obtain ⟨A', B', hA', hB', hAc, hBc, hdev⟩ :=
+    exists_irregular_witness G eps A B hirr
+  refine ⟨A', B', hA', hB', hAc, hBc, ?_⟩
+  have htri := edgeDensity_two_sided_le G A A' B B'
+  by_contra hcon
+  push_neg at hcon
+  obtain ⟨hAside, hBside⟩ := hcon
+  linarith [htri, hdev]
+
+/-- **A-side irregularity ⇒ uniform energy jump.**  Package the A-side branch of
+    `exists_onesided_deviation_of_irregular` into an actual `partitionEnergy`
+    increment.  If a witness sub-part `A' ⊆ A` (with complement `A \ A'` inside
+    `A`) deviates from the whole part's density against a fixed existing part
+    `B₀ ∈ R` by at least `ε/2`, then refining `A` into `A'` and `A \ A'` raises
+    `partitionEnergy` by the uniform floor `(ε/2)² / (2n²) = ε² / (8n²)`.
+
+    Composes `Finset.union_sdiff_of_subset` (to present `A` as the disjoint
+    union `A' ∪ (A \ A')`) with `partitionEnergy_subpair_split_gain_uniform`.
+    This is the first *end-to-end* link from a genuine irregular pair to a
+    concrete energy increment, closing the A-side case of the AFKS iteration. -/
+theorem partitionEnergy_Aside_gain_of_irregular (G : SimpleGraph V)
+    [DecidableRel G.Adj]
+    (R : Finset (Finset V)) (A B₀ A' : Finset V) (hA' : A' ⊆ A)
+    (hA'R : A' ∉ R) (hcompR : A \ A' ∉ R) (hne : A' ≠ A \ A') (hAR : A ∉ R)
+    (hB₀ : B₀ ∈ R)
+    (hn₁ : 1 ≤ (A'.card : ℚ)) (hn₂ : 1 ≤ ((A \ A').card : ℚ))
+    (hB : 1 ≤ (B₀.card : ℚ))
+    (eps : ℚ) (hε : 0 ≤ eps)
+    (hdev : |edgeDensity G A' B₀ - edgeDensity G A B₀| ≥ eps / 2) :
+    partitionEnergy G (insert A R) +
+        (eps / 2) ^ 2 / (2 * (Fintype.card V : ℚ) ^ 2) ≤
+      partitionEnergy G (insert A' (insert (A \ A') R)) := by
+  have hunion : A' ∪ (A \ A') = A := Finset.union_sdiff_of_subset hA'
+  have hdisj : Disjoint A' (A \ A') := disjoint_sdiff_self_right
+  -- Re-express the whole part `A` as its disjoint two-piece union, then feed the
+  -- one-sided subpair gain lemma with tolerance `ε/2`.
+  have hdev' : |edgeDensity G A' B₀ - edgeDensity G (A' ∪ (A \ A')) B₀| ≥ eps / 2 := by
+    rwa [hunion]
+  have hAR' : A' ∪ (A \ A') ∉ R := by rwa [hunion]
+  have hgain := partitionEnergy_subpair_split_gain_uniform G R A' (A \ A') B₀
+    hdisj hA'R hcompR hne hAR' hB₀ hn₁ hn₂ hB (eps / 2) (by linarith) hdev'
+  rwa [hunion] at hgain
+
 end Szemeredi.RegularityOQ04Bridge
