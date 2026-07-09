@@ -839,4 +839,70 @@ theorem correlation_eq_neg_one_iff_affine_neg [IsProbabilityMeasure μ] {X Y : �
   · rintro ⟨a, b, ha, hab⟩
     rw [correlation_eq_of_affine hY ha.ne hYnd hab, abs_of_neg ha, div_neg, div_self ha.ne]
 
+/-!
+### Structural companion: affine invariance of the correlation coefficient
+
+The signed capstones locate `ρ = ±1` at the increasing/decreasing affine extremes.  The dual
+structural fact is that `ρ` is a *dimensionless* invariant: it is unchanged by any pair of
+orientation-preserving affine changes of units and merely flips sign under orientation-reversing
+ones.  Concretely, for arbitrary scales `a, c` and shifts `b, d`,
+
+    ρ[a·X + b, c·Y + d] = sign(a·c) · ρ[X, Y],
+
+because the additive shifts cancel (covariance and variance are translation-invariant) and the
+multiplicative scales cancel in magnitude against the standard deviations `σ[a·X+b] = |a|·σ[X]`,
+leaving only the sign of the slope product `a·c`.  This is the defining property that makes the
+Pearson coefficient a scale-free measure of linear association.
+-/
+
+/-- **Sign as a normalised quotient.**  `Real.sign x = x / |x|` for every real `x`, including
+`x = 0`, where both sides are `0` under the division-by-zero convention.  The scalar bridge used to
+package the affine-invariance normalisation. -/
+private theorem real_sign_eq_self_div_abs (x : ℝ) : Real.sign x = x / |x| := by
+  rcases lt_trichotomy x 0 with h | h | h
+  · rw [Real.sign_of_neg h, abs_of_neg h, div_neg, div_self h.ne]
+  · rw [h, Real.sign_zero, zero_div]
+  · rw [Real.sign_of_pos h, abs_of_pos h, div_self h.ne']
+
+/-- **Affine invariance of the correlation coefficient (up to the sign of the slopes).**
+For square-integrable `X, Y` and any affine reparametrisations `X' = a·X + b`, `Y' = c·Y + d`,
+
+    ρ[a·X + b, c·Y + d] = sign(a·c) · ρ[X, Y].
+
+The additive shifts `b, d` drop out because covariance and variance are translation-invariant, and
+the multiplicative scales `a, c` cancel in magnitude against the standard deviations
+`σ[a·X+b] = |a|·σ[X]`, leaving only the sign of the product `a·c`.  This is the defining
+*dimensionless* property of the Pearson coefficient: it is unchanged by orientation-preserving
+affine changes of units (`a·c > 0`) and merely flips sign under orientation-reversing ones
+(`a·c < 0`).  No non-degeneracy hypothesis is needed — the identity also holds in the degenerate
+cases via the division-by-zero convention. -/
+theorem correlation_affine_invariant [IsProbabilityMeasure μ] {X Y : Ω → ℝ}
+    (hX : MemLp X 2 μ) (hY : MemLp Y 2 μ) (a b c d : ℝ) :
+    correlation (fun ω => a * X ω + b) (fun ω => c * Y ω + d) μ
+      = Real.sign (a * c) * correlation X Y μ := by
+  have hIaX : Integrable (fun ω => a * X ω) μ := (hX.integrable one_le_two).const_mul a
+  have hIcY : Integrable (fun ω => c * Y ω) μ := (hY.integrable one_le_two).const_mul c
+  have hcov : cov[fun ω => a * X ω + b, fun ω => c * Y ω + d; μ] = a * c * cov[X, Y; μ] := by
+    rw [covariance_add_const_left hIaX b, covariance_const_mul_left,
+      covariance_add_const_right hIcY d, covariance_const_mul_right]; ring
+  have hpX : Real.sqrt (Var[fun ω => a * X ω + b; μ]) = |a| * Real.sqrt (Var[X; μ]) := by
+    rw [variance_eq_of_affine hX a b (Filter.EventuallyEq.refl _ _), Real.sqrt_mul (sq_nonneg a),
+      Real.sqrt_sq_eq_abs]
+  have hpY : Real.sqrt (Var[fun ω => c * Y ω + d; μ]) = |c| * Real.sqrt (Var[Y; μ]) := by
+    rw [variance_eq_of_affine hY c d (Filter.EventuallyEq.refl _ _), Real.sqrt_mul (sq_nonneg c),
+      Real.sqrt_sq_eq_abs]
+  simp only [correlation]
+  rw [hcov, hpX, hpY, real_sign_eq_self_div_abs, abs_mul]
+  ring
+
+/-- **Scale-and-shift invariance (orientation-preserving case).**  Correlation is *exactly*
+preserved by any pair of increasing affine reparametrisations (`a, c > 0`):
+`ρ[a·X + b, c·Y + d] = ρ[X, Y]`.  The dimensionless-invariance specialisation of
+`correlation_affine_invariant` with `sign(a·c) = 1` — the precise sense in which the Pearson
+coefficient is independent of the choice of units and origin. -/
+theorem correlation_affine_invariant_of_pos [IsProbabilityMeasure μ] {X Y : Ω → ℝ}
+    (hX : MemLp X 2 μ) (hY : MemLp Y 2 μ) {a c : ℝ} (ha : 0 < a) (hc : 0 < c) (b d : ℝ) :
+    correlation (fun ω => a * X ω + b) (fun ω => c * Y ω + d) μ = correlation X Y μ := by
+  rw [correlation_affine_invariant hX hY a b c d, Real.sign_of_pos (mul_pos ha hc), one_mul]
+
 end ShannonAWGNMultiSymbolPower

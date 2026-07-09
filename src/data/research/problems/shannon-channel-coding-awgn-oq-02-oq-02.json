@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: signed correlation capstone (ρ=±1 ⟺ increasing/decreasing affine) VERIFIED 0/0, PR #35904",
+    "progressSummary": "PROGRESS: affine-invariance structural companion ρ[aX+b,cY+d]=sign(ac)·ρ[X,Y] VERIFIED 0/0 (+ orientation-preserving corollary); dual to signed ±1 boundary capstone",
     "builtItems": [
       "variance_sum_of_pairwise_uncorrelated (ShannonChannelCodingAWGNOQ02OQ02.lean:131): Var[∑ i∈s, Wi] = ∑ Var[Wi] from Set.Pairwise cov=0 + MemLp; [IsFiniteMeasure].",
       "variance_sum_of_pairwise_indep (:150): independence ⟹ uncorrelated ⟹ identity, via IndepFun.covariance_eq_zero — shows the sharp version subsumes IndepFun.variance_sum.",
@@ -51,7 +51,10 @@
       "abs_correlation_eq_one_iff_affine: |ρ|=1 ⟺ ∃a b, X=ᵐa·Y+b — normalised capstone via correlation_sq_eq_one_iff_affine + Real.sqrt_sq_eq_abs (ShannonChannelCodingAWGNOQ02OQ02.lean)",
       "variance_eq_of_affine (Var[X]=a²Var[Y]) in ShannonChannelCodingAWGNOQ02OQ02.lean",
       "correlation_eq_of_affine (ρ=a/|a|=sign a) in ShannonChannelCodingAWGNOQ02OQ02.lean",
-      "correlation_eq_one_iff_affine_pos + correlation_eq_neg_one_iff_affine_neg (signed capstones) in ShannonChannelCodingAWGNOQ02OQ02.lean"
+      "correlation_eq_one_iff_affine_pos + correlation_eq_neg_one_iff_affine_neg (signed capstones) in ShannonChannelCodingAWGNOQ02OQ02.lean",
+      "correlation_affine_invariant (ShannonChannelCodingAWGNOQ02OQ02.lean:879): ρ[a·X+b,c·Y+d]=sign(a·c)·ρ[X,Y] VERIFIED 0/0 — affine invariance, unconditional (degenerate cases via div-by-zero convention)",
+      "correlation_affine_invariant_of_pos (line 903): a,c>0 ⟹ ρ preserved exactly ρ[a·X+b,c·Y+d]=ρ[X,Y]",
+      "real_sign_eq_self_div_abs helper (line 861): Real.sign x = x/|x| ∀x incl 0"
     ],
     "insights": [
       "Bienaymé variance-of-a-sum needs only PAIRWISE UNCORRELATEDNESS (cov[Wi,Wj]=0 for i≠j), not pairwise independence: the off-diagonal covariances of Var[∑Wi]=∑i∑j cov[Wi,Wj] (Mathlib variance_sum´) are exactly what must vanish. Independence is strictly stronger (there exist uncorrelated dependent variables).",
@@ -64,7 +67,8 @@
       "Sharp EQUALITY case of covariance Cauchy–Schwarz (cov²=Var[X]·Var[Y]) is characterized by the regression-residual variance IDENTITY Var[Var[Y]·X − cov·Y] = Var[Y]·(Var[X]·Var[Y] − cov²): when Var[Y]≠0 the residual has zero variance (hence a.e. constant) exactly when C–S is tight. Dividing by Var[Y] exhibits X =ᵐ (cov/Var[Y])·Y + b — a.e. affine dependence with slope the regression coefficient. Classical equality-in-Cauchy–Schwarz ⟺ linear-dependence, specialised to the covariance inner product; sharp EQUALITY companion to the earlier stddev triangle INEQUALITY.",
       "The equality-boundary iff closes cleanly: forward (tightness⟹regression line) needs Var[Y]≠0, but converse (affine⟹tightness) is unconditional — a pure bilinear/variance-of-affine computation transported along =ᵐ via covariance_congr_left + variance_congr.",
       "Correlation-coefficient normalisation ρ=cov/(σX·σY) packages the whole second-order theory: |ρ|≤1 IS covariance Cauchy–Schwarz (no non-degeneracy needed — division-by-zero convention absorbs degenerate case), and |ρ|=1 ⟺ a.e. affine dependence IS the sharp equality boundary. Both non-degeneracy hypotheses genuinely needed for the |ρ|=1 iff since a degenerate variable gives ρ=0≠±1 while X=ᵐ0·Y+μ[X] still holds.",
-      "Signed sharp boundary: ρ = sign(a) when X =ᵐ a·Y+b, so ρ=+1 ⟺ increasing affine (a>0), ρ=−1 ⟺ decreasing affine (a<0); splits |ρ|=1⟺affine into two distinct endpoints."
+      "Signed sharp boundary: ρ = sign(a) when X =ᵐ a·Y+b, so ρ=+1 ⟺ increasing affine (a>0), ρ=−1 ⟺ decreasing affine (a<0); splits |ρ|=1⟺affine into two distinct endpoints.",
+      "Affine-invariance proof reuses the exact machinery of the ±1 capstones: cov[aX+b,cY+d]=ac·cov via covariance_add_const_left/right + covariance_const_mul_left/right; σ[aX+b]=|a|·σ[X] via variance_eq_of_affine+sqrt_mul+sqrt_sq_eq_abs; sign packaged as x/|x| so a·c/(|a|·|c|)=sign(a·c) closes by ring (field inverse rearrangement, no nonzero hyps needed)."
     ],
     "mathlibGaps": [
       "Mathlib has no pairwise-uncorrelated variance-sum lemma (only variance_sum´ double-sum form and IndepFun.variance_sum). Candidate upstream contribution: variance_sum under Set.Pairwise (cov=0).",
@@ -79,7 +83,9 @@
       "Converse affine⟹equality (X =ᵐ a·Y+b ⟹ cov²=Var·Var) for full iff — needs covariance_congr under a.e. equality (build from integral_congr_ae).",
       "Upstream covariance_congr_left to Mathlib (Probability/Moments/Covariance.lean) alongside variance_congr; would also give a covariance_congr_right by covariance_comm.",
       "Correlation-coefficient triangle/monotonicity: state ρ under sign of covariance, or the two-variance stddev triangle equality condition (perfect positive correlation ρ=+1) as the dual of the off-diagonal-cancellation boundary.",
-      "Consider affine-invariance of ρ: corr(aX+b, cY+d)=sign(ac)·corr(X,Y) as a structural companion."
+      "Consider affine-invariance of ρ: corr(aX+b, cY+d)=sign(ac)·corr(X,Y) as a structural companion.",
+      "Affine-invariance of covariance itself (cov[aX+b,cY+d]=ac·cov[X,Y]) is now proved inline — consider extracting as a named reusable lemma if a further correlation result needs it.",
+      "Consider corr sign-flip corollary for a>0,c<0 (orientation-reversing): ρ[aX+b,cY+d]=−ρ[X,Y] as the negative companion of correlation_affine_invariant_of_pos."
     ],
     "markdown": "# Knowledge Base: shannon-channel-coding-awgn-oq-02-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
