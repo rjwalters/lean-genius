@@ -297,4 +297,92 @@ theorem afks_energy_iteration_count (G : SimpleGraph V) [DecidableRel G.Adj]
     (ε ^ 2 / (2 * (Fintype.card V : ℚ) ^ 2)) hδ hcover hdisjoint hstep
   rwa [one_div_div] at hbound
 
+-- ═══════════════════════════════════════════════════════════════════
+-- PART V: FROM AN IRREGULARITY WITNESS TO THE TWO-HALVES DEVIATION
+-- ═══════════════════════════════════════════════════════════════════
+
+/-- **Sub-pair deviation dominated by the two-halves deviation.**  Split a part
+    `A = A₁ ∪ A₂` (disjoint, nonempty) against a fixed nonempty partner `B`.  The
+    density deviation of one half `A₁` from the *whole* part `A` is never larger
+    than the deviation *between the two halves*:
+
+    `|d(A₁,B) − d(A₁∪A₂,B)| ≤ |d(A₁,B) − d(A₂,B)|`.
+
+    Reason: `edgeDensity_union_mul` makes `d(A₁∪A₂,B)` the `|A₁|,|A₂|`-weighted
+    average of `d(A₁,B)` and `d(A₂,B)`, so
+    `d(A₁,B) − d(A,B) = (|A₂|/(|A₁|+|A₂|))·(d(A₁,B) − d(A₂,B))`, and the weight
+    `|A₂|/(|A₁|+|A₂|) ≤ 1`.
+
+    This is the missing bridge that converts an **ε-irregularity witness** — a
+    subset `A' ⊆ A` whose density against `B` deviates from `d(A,B)` by `≥ ε`
+    (`exists_irregular_witness`, in the one-sided form where the partner `B` is
+    kept whole) — into the *two-halves* deviation hypothesis `hdev` consumed by
+    `partitionEnergy_single_split_gain_uniform`.  Taking `A₂ = A \ A'` realizes
+    the split. -/
+theorem edgeDensity_split_deviation_ge (G : SimpleGraph V) [DecidableRel G.Adj]
+    (A₁ A₂ B : Finset V) (hA : Disjoint A₁ A₂)
+    (hAcard : 0 < ((A₁ ∪ A₂).card : ℚ)) (hBcard : 0 < (B.card : ℚ)) :
+    |edgeDensity G A₁ B - edgeDensity G (A₁ ∪ A₂) B| ≤
+      |edgeDensity G A₁ B - edgeDensity G A₂ B| := by
+  set c1 : ℚ := (A₁.card : ℚ) with hc1
+  set c2 : ℚ := (A₂.card : ℚ) with hc2
+  set b : ℚ := (B.card : ℚ) with hb
+  set d1 : ℚ := edgeDensity G A₁ B with hd1
+  set d2 : ℚ := edgeDensity G A₂ B with hd2
+  set dU : ℚ := edgeDensity G (A₁ ∪ A₂) B with hdU
+  have hcu : ((A₁ ∪ A₂).card : ℚ) = c1 + c2 := by
+    rw [hc1, hc2]; exact_mod_cast Finset.card_union_of_disjoint hA
+  have hsum_pos : 0 < c1 + c2 := by rw [← hcu]; exact hAcard
+  have hc1nn : 0 ≤ c1 := by rw [hc1]; positivity
+  have hc2nn : 0 ≤ c2 := by rw [hc2]; positivity
+  -- Weighted-average identity, with the common `|B|` factor cancelled.
+  have hmul := edgeDensity_union_mul G A₁ A₂ B hA
+  rw [hcu] at hmul
+  -- `hmul : (c1+c2)*b*dU = c1*b*d1 + c2*b*d2`.
+  have hb' : b ≠ 0 := ne_of_gt hBcard
+  have h2 : ((c1 + c2) * dU) * b = (c1 * d1 + c2 * d2) * b := by linear_combination hmul
+  have hcancel : (c1 + c2) * dU = c1 * d1 + c2 * d2 := mul_right_cancel₀ hb' h2
+  have key : (c1 + c2) * (d1 - dU) = c2 * (d1 - d2) := by linear_combination -hcancel
+  -- Take absolute values; the weight `c2 ≤ c1+c2` gives the bound.
+  have habs : (c1 + c2) * |d1 - dU| = c2 * |d1 - d2| := by
+    have h := congrArg abs key
+    rwa [abs_mul, abs_mul, abs_of_nonneg (le_of_lt hsum_pos),
+      abs_of_nonneg hc2nn] at h
+  have hfinal : (c1 + c2) * |d1 - dU| ≤ (c1 + c2) * |d1 - d2| := by
+    rw [habs]; nlinarith [abs_nonneg (d1 - d2), hc1nn]
+  exact le_of_mul_le_mul_left hfinal hsum_pos
+
+/-- **Irregularity witness ⇒ uniform energy jump.**  If refining `A₁ ∪ A₂` into
+    its halves produces a half `A₁` whose density against a fixed existing part
+    `B₀` deviates from the *whole part's* density by at least `ε` — exactly the
+    datum an ε-irregularity witness supplies (with `A₁` the witness subset `A'`,
+    `A₂ = A \ A'`, and `B₀` kept whole) — then the refinement realizes the uniform
+    energy floor `ε² / (2n²)`.
+
+    Composes `edgeDensity_split_deviation_ge` (witness-vs-whole deviation ⇒
+    two-halves deviation) with `partitionEnergy_single_split_gain_uniform`.  This
+    is the last link that lets an *actual* irregular pair — not a hand-supplied
+    two-halves gap — drive the `hstep` hypothesis of `afks_energy_iteration_count`,
+    closing the loop from irregularity to the explicit `2n²/ε²` refinement bound
+    on the one-sided (partner-preserving) refinement. -/
+theorem partitionEnergy_subpair_split_gain_uniform (G : SimpleGraph V)
+    [DecidableRel G.Adj]
+    (R : Finset (Finset V)) (A₁ A₂ B₀ : Finset V) (hdisj : Disjoint A₁ A₂)
+    (hA₁R : A₁ ∉ R) (hA₂R : A₂ ∉ R) (hne : A₁ ≠ A₂) (hAR : A₁ ∪ A₂ ∉ R)
+    (hB₀ : B₀ ∈ R)
+    (hn₁ : 1 ≤ (A₁.card : ℚ)) (hn₂ : 1 ≤ (A₂.card : ℚ)) (hB : 1 ≤ (B₀.card : ℚ))
+    (ε : ℚ) (hε : 0 ≤ ε)
+    (hdev : |edgeDensity G A₁ B₀ - edgeDensity G (A₁ ∪ A₂) B₀| ≥ ε) :
+    partitionEnergy G (insert (A₁ ∪ A₂) R) +
+        ε ^ 2 / (2 * (Fintype.card V : ℚ) ^ 2) ≤
+      partitionEnergy G (insert A₁ (insert A₂ R)) := by
+  have hcu : ((A₁ ∪ A₂).card : ℚ) = (A₁.card : ℚ) + A₂.card := by
+    exact_mod_cast Finset.card_union_of_disjoint hdisj
+  have hAcard : 0 < ((A₁ ∪ A₂).card : ℚ) := by rw [hcu]; linarith
+  have hBcard : 0 < (B₀.card : ℚ) := by linarith
+  have hbridge := edgeDensity_split_deviation_ge G A₁ A₂ B₀ hdisj hAcard hBcard
+  have hdev2 : |edgeDensity G A₁ B₀ - edgeDensity G A₂ B₀| ≥ ε := le_trans hdev hbridge
+  exact partitionEnergy_single_split_gain_uniform G R A₁ A₂ B₀ hdisj hA₁R hA₂R hne
+    hAR hB₀ hn₁ hn₂ hB ε hε hdev2
+
 end Szemeredi.RegularityOQ04Bridge
