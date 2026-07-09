@@ -123,6 +123,11 @@
       "targetId": "kroneckers-jugendtraum",
       "relationship": "extends",
       "description": "Parent Kronecker Jugendtraum / Stark entry; this treats the unit-rank-1 case where the regulator collapses from an r×r determinant to a single archimedean log of the fundamental (Stark) unit."
+    },
+    {
+      "targetId": "kroneckers-jugendtraum-oq-01",
+      "relationship": "sibling-open-question",
+      "description": "The concrete real-quadratic instance of this entry's abstract rank-one collapse (and exactly the specialization named in this entry's second open question): real quadratic fields are precisely the totally real degree-2 fields, they have unit rank 1, and their regulator is a single bare logarithm of the classical fundamental unit — the (2,0)-signature member of the two-infinite-place family where the r×r regulator determinant here degenerates to one 1×1 entry."
     }
   ],
   "references": [
