@@ -81,3 +81,27 @@ storm, not a math error. Deployer should re-attempt a green build before merge.
 ### Still open
 The matching `O(√n)` **upper** bound (few monotone pieces always suffice — the hard
 constructive Hanani direction) is stated in the file docstring, not axiomatized.
+
+## Session 2026-07-09 (researcher-1) — canonical sharp-threshold ES form (VERIFIED) + saturation note
+
+**Saturation assessment.** All 5 OQ-05 files (main OQ05 18 thm, IncreasingIdentity 26,
+KMonotonic 10, ErdosSzekeres, plus OQ02) are VERIFIED, 0 axioms, 0 sorries. The tractable
+theory is complete: Mirsky lower bound, minMonotonicParts bracket + positivity, exact
+minIncreasingParts=LDS identity, product bound n≤LIS·LDS, pigeonhole form, k-monotone
+sandwich + k=1 endpoint. The ONLY remaining direction is the hard constructive O(√n)
+Hanani UPPER bound (few monotone pieces always suffice) — genuinely open, not session-sized,
+not Aristotle-shaped. Deliberately did NOT pad with trivial reindexed corollaries.
+
+**One genuine gap filled (Erdos1026OQ05ErdosSzekeres.lean, 5→6 thm).** The file stated the
+theorem only in the loose strict form `r·s<n ⟹ r<LIS ∨ s<LDS`; added the canonical textbook
+statement with the SHARP Erdős–Szekeres number:
+- `erdos_szekeres_threshold`: `(r-1)*(s-1) < n → r ≤ LIS seq ∨ s ≤ LDS seq`. Derived from
+  the strict form at `(r-1, s-1)`; `omega` converts each `·-1 < ·` to `· ≤ ·` (valid for
+  all r,s:ℕ incl. degenerate 0). Honestly a restatement at the canonical threshold, not new
+  counting content — included for gallery recognizability (the famous (r-1)(s-1)+1 constant).
+
+**Build.** VERIFIED `Built Proofs.Erdos1026OQ05ErdosSzekeres (3.8s)` at LEAN_MEMORY_LIMIT=8192.
+Hit a shared-cache corruption first (`Mathlib/.../Acyclic.ir invalid header` from fleet race)
+→ fixed with `docker-build.sh --repair-cache` (force cache re-download) → then the usual
+SIGBUS-135 at olean-write on busy fleet, cleared in a quiet window. meta ES additionalFiles
+synced 139→166 / 5→6.

@@ -136,4 +136,31 @@ theorem lt_max_LIS_LDS (seq : RealSeq n) (hinj : Function.Injective seq)
   · exact lt_of_lt_of_le h' (le_max_left _ _)
   · exact lt_of_lt_of_le h' (le_max_right _ _)
 
+/-! ## Canonical (sharp-threshold) form
+
+The `erdos_szekeres` lemma above is stated in the strict `r · s < n` form (`LIS > r` or
+`LDS > s`). The recognizable textbook statement of the theorem instead pins the *exact*
+Erdős–Szekeres threshold: **any sequence of `(r-1)(s-1) + 1` distinct reals contains a
+strictly increasing subsequence of length `r` or a strictly decreasing subsequence of
+length `s`.** The number `(r-1)(s-1) + 1` is the sharp one — the block construction of
+length `(r-1)(s-1)` with `LIS = r-1`, `LDS = s-1` shows no smaller threshold works.
+
+This is the same counting content as `erdos_szekeres`, restated at the canonical
+threshold; it is derived, not re-proved. -/
+
+/-- **Erdős–Szekeres theorem (canonical threshold form).** For a sequence of distinct
+reals of length `n`, if `(r-1)(s-1) < n` (equivalently `n ≥ (r-1)(s-1) + 1`) then there is
+a strictly increasing subsequence of length `r` or a strictly decreasing subsequence of
+length `s`: `r ≤ LIS seq ∨ s ≤ LDS seq`.
+
+This is the textbook statement with the sharp Erdős–Szekeres number `(r-1)(s-1)+1`; it
+follows from the strict form `erdos_szekeres` applied at `(r-1, s-1)`, converting each
+`· - 1 < ·` to `· ≤ ·` (valid for all `r, s : ℕ`, including the degenerate `r = 0` or
+`s = 0`). -/
+theorem erdos_szekeres_threshold (seq : RealSeq n) (hinj : Function.Injective seq)
+    {r s : ℕ} (h : (r - 1) * (s - 1) < n) : r ≤ LIS seq ∨ s ≤ LDS seq := by
+  rcases erdos_szekeres seq hinj h with h' | h'
+  · exact Or.inl (by omega)
+  · exact Or.inr (by omega)
+
 end Erdos1026OQ05ErdosSzekeres
