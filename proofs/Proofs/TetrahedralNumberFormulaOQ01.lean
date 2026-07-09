@@ -1,5 +1,7 @@
 import Mathlib.Data.Nat.Choose.Sum
 import Mathlib.Data.Nat.Factorial.BigOperators
+import Mathlib.Algebra.BigOperators.Intervals
+import Mathlib.Data.Sym.Card
 import Mathlib.Tactic
 
 /-
@@ -36,15 +38,29 @@ we establish, with **0 sorries and 0 axioms**, a small self-contained theory:
   one-step engine;
 * `factorial_mul_simplexNumber` / `..._prod` : the division-free closed form
   `d! · P_d(n) = (n+1)^{(d)} = ∏_{i<d}(n+1+i)`, the general-dimension analogue of
-  the parent's `6·C(n+2,3) = n(n+1)(n+2)`.
+  the parent's `6·C(n+2,3) = n(n+1)(n+2)`;
+* `iterSum_eq_simplexConv` : **the discrete Cauchy formula for repeated
+  summation** — the `(d+1)`-fold iterated partial sum of an *arbitrary* sequence
+  `f` is its convolution with the simplex kernel,
+  `iterSum (d+1) f n = ∑_{k≤n} P_d(n-k)·f(k)`. This is the discrete analogue of
+  Cauchy's formula `∫₀ⁿ⋯∫₀ f = (1/d!)∫₀ⁿ (n-t)^d f(t) dt`, and it strictly
+  generalizes `iterSum_one`, which is the special case `f ≡ 1`. The one-step
+  engine is `partialSum_simplexConv` (kernel dimension-raising, via the `Ico`–`Ico`
+  triangular-sum swap plus the hockey stick);
+* `card_sym_fin_eq_simplexNumber` : **the counting face (stars and bars)** —
+  `|Sym (Fin (n+1)) d| = P_d(n)`, i.e. `P_d(n)` counts the size-`d` multisets over
+  `{0,…,n}`, equivalently the weakly increasing tuples `0 ≤ i₁ ≤ ⋯ ≤ i_d ≤ n`.
+  This gives the algebraic figurate numbers their direct combinatorial meaning.
 
 ## Novelty
 
-Mathlib supplies the one-step hockey stick (`Nat.sum_range_add_choose`) and the
-multiset coefficient (`Nat.multichoose`), but not the *dimension-indexed*
-figurate theory: neither the iterated-partial-sum characterization of simplex
-numbers (`iterSum_one`) nor the figurate recurrence and cleared closed form
-stated uniformly in `d`. The parent entry only handles the single dimension
+Mathlib supplies the one-step hockey stick (`Nat.sum_range_add_choose`), the
+multiset coefficient (`Nat.multichoose`), and the `Sym`-cardinality count, but
+not the *dimension-indexed* figurate theory: neither the iterated-partial-sum
+characterization of simplex numbers (`iterSum_one`), nor the discrete Cauchy
+repeated-summation formula (`iterSum_eq_simplexConv`) exhibiting the figurate
+numbers as the summation kernel, nor the figurate recurrence and cleared closed
+form stated uniformly in `d`. The parent entry only handles the single dimension
 `d = 3`; this file lifts the whole ladder to arbitrary dimension, with the
 `d = 2` instance (`sum_simplex 2 n`) reproducing the parent's tetrahedral
 identity.
@@ -136,6 +152,88 @@ theorem iterSum_one (d n : ℕ) :
     simp only [partialSum]
     rw [← sum_simplex d n]
     exact Finset.sum_congr rfl fun j _ => ih j
+
+/-- **Discrete simplex convolution.** The convolution of a sequence `f` with the
+`d`-dimensional simplex kernel:
+
+`(simplexConv d f) n = ∑_{k≤n} P_d(n-k) · f(k)`.
+
+This is the discrete analogue of the kernel `(x-t)^{d}/d!` appearing in Cauchy's
+formula for repeated integration: the figurate numbers `P_d` play the role of the
+integration kernel for repeated *summation*. -/
+def simplexConv (d : ℕ) (f : ℕ → ℕ) (n : ℕ) : ℕ :=
+  ∑ k ∈ range (n + 1), simplexNumber d (n - k) * f k
+
+/-- The dimension-`0` kernel is the identity for summation: convolving with the
+constant kernel `P_0 ≡ 1` is just the ordinary partial sum. -/
+theorem simplexConv_zero_dim (f : ℕ → ℕ) (n : ℕ) :
+    simplexConv 0 f n = partialSum f n := by
+  simp [simplexConv, partialSum]
+
+/-- **Kernel dimension-raising law.** Taking one more partial sum of a simplex
+convolution raises the kernel dimension by one:
+`∑_{j≤n} (simplexConv d f) j = simplexConv (d+1) f n`. This is the engine behind
+the discrete Cauchy formula; the triangular double sum is reorganised by the
+`Ico`–`Ico` swap and the inner sum collapsed by the hockey stick `sum_simplex`. -/
+theorem partialSum_simplexConv (d : ℕ) (f : ℕ → ℕ) (n : ℕ) :
+    partialSum (simplexConv d f) n = simplexConv (d + 1) f n := by
+  simp only [partialSum, simplexConv, Finset.range_eq_Ico]
+  rw [← Finset.sum_Ico_Ico_comm 0 (n + 1) (fun k j => simplexNumber d (j - k) * f k)]
+  apply Finset.sum_congr rfl
+  intro k hk
+  rw [Finset.mem_Ico] at hk
+  rw [← Finset.sum_mul]
+  congr 1
+  rw [Finset.sum_Ico_eq_sum_range]
+  have hlen : n + 1 - k = (n - k) + 1 := by omega
+  rw [hlen, ← sum_simplex d (n - k)]
+  apply Finset.sum_congr rfl
+  intro m _
+  congr 1
+  omega
+
+/-- **Discrete Cauchy formula for repeated summation.** The `(d+1)`-fold iterated
+partial sum of *any* sequence `f` is its convolution with the `d`-dimensional
+simplex kernel:
+
+`iterSum (d+1) f n = ∑_{k≤n} P_d(n-k) · f(k) = ∑_{k≤n} C(n-k+d, d) · f(k)`.
+
+This is the discrete analogue of Cauchy's formula for repeated integration
+`∫₀ⁿ⋯∫₀ f = (1/d!)∫₀ⁿ (n-t)^d f(t) dt`: iterating summation `d+1` times against a
+sequence is a single weighted sum whose weights are the figurate numbers `P_d`.
+The headline `iterSum_one` is exactly the special case `f ≡ 1` (see below): the
+`(d+1)`-fold sum of `1` is `∑_{k≤n} P_d(n-k) = P_{d+1}(n)`. Proved by induction on
+`d`, with `partialSum_simplexConv` as the one-step engine. -/
+theorem iterSum_eq_simplexConv (d : ℕ) (f : ℕ → ℕ) (n : ℕ) :
+    iterSum (d + 1) f n = simplexConv d f n := by
+  induction d generalizing n with
+  | zero =>
+    rw [simplexConv_zero_dim]
+    rfl
+  | succ d ih =>
+    rw [← partialSum_simplexConv]
+    show partialSum (iterSum (d + 1) f) n = partialSum (simplexConv d f) n
+    simp only [partialSum]
+    exact Finset.sum_congr rfl fun j _ => ih j
+
+/-- Consistency: the discrete Cauchy formula specialised to the constant sequence
+`f ≡ 1` recovers the iterated-summation characterisation `iterSum_one`, i.e. the
+convolution of `1` with the `d`-kernel is the `(d+1)`-dimensional simplex number
+`∑_{k≤n} P_d(n-k) = P_{d+1}(n)`. -/
+example (d n : ℕ) : simplexConv d (fun _ => 1) n = simplexNumber (d + 1) n := by
+  rw [← iterSum_eq_simplexConv, iterSum_one]
+
+/-- **Counting face (stars and bars).** The `d`-dimensional simplex number counts
+the size-`d` multisets drawn from the `n+1` symbols `{0, 1, …, n}` — equivalently
+the weakly increasing `d`-tuples `0 ≤ i₁ ≤ ⋯ ≤ i_d ≤ n`:
+
+`|Sym (Fin (n+1)) d| = P_d(n) = C(n+d, d)`.
+
+This gives the algebraic figurate numbers their direct combinatorial meaning,
+the second (counting) face of the hockey-stick identity. -/
+theorem card_sym_fin_eq_simplexNumber (d n : ℕ) :
+    Fintype.card (Sym (Fin (n + 1)) d) = simplexNumber d n := by
+  rw [Sym.card_sym_fin_eq_multichoose, simplexNumber_eq_multichoose]
 
 /-- **Division-free closed form (general dimension).** Clearing the denominator
 in `P_d(n) = (n+1)(n+2)⋯(n+d)/d!`:
