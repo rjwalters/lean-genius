@@ -157,3 +157,42 @@ carries all the graph-theoretic content.
 - Wire `exists_irregular_witness` end-to-end into the one-sided step, discharging
   the `|A'|,|A\A'| ≥ 1` side conditions.
 - Assemble whole-partition (all parts refined) energy monotonicity feeding hstep.
+
+## Session 2026-07-08 (Session 4) - ¬IsEpsilonRegular → one-sided deviation → A-side energy jump
+
+**Mode**: REVISIT (continuing branch szem-oq04-knowledge-s3)
+**Outcome**: progress (4 theorems VERIFIED 0/0)
+
+### What I Did
+- `exists_irregular_witness`: unfolds `¬ IsEpsilonRegular` via `push_neg` into an
+  actual witness `(A',B')` with the size thresholds and strict deviation `>ε`.
+  The named entry point every downstream docstring referenced but never defined.
+- `edgeDensity_two_sided_le`: `abs_sub_le` triangle through the mixed density
+  `d(A',B)`, splitting the two-sided witness deviation into a **B-side** term
+  `|d(A',B')−d(A',B)|` and an **A-side** term `|d(A',B)−d(A,B)|`.
+- `exists_onesided_deviation_of_irregular`: the structural reduction — from a
+  witness deviation `>ε`, at least one of the two one-sided terms is `≥ε/2`
+  (by-contra + `linarith` on the triangle bound). Turns two-sided irregularity
+  into one-sided at a factor-½ tolerance cost.
+- `partitionEnergy_Aside_gain_of_irregular`: closes the A-side branch fully —
+  presenting `A = A' ∪ (A\A')` via `Finset.union_sdiff_of_subset` and feeding
+  `partitionEnergy_subpair_split_gain_uniform`, an A-side deviation `≥ε/2`
+  realizes the uniform floor `(ε/2)²/(2n²) = ε²/(8n²)`. **First end-to-end
+  irregular-pair → concrete energy-increment link.**
+
+### Key Findings
+- The definitional witness is genuinely two-sided; the whole difficulty of
+  connecting irregularity to energy is that the energy machinery only sees
+  one-sided splits. The triangle-through-mixed-density trick is the clean bridge.
+- The A-side branch closes because `A', A\A'` are honest sibling parts of the
+  refined partition. The B-side branch needs a *second* refinement (split `B`
+  against the fixed sub-part `A'`, which is not itself a part) — the ε⁵ defect
+  Cauchy–Schwarz core, still ahead.
+
+### Files Modified
+- proofs/Proofs/SzemerediRegularityOQ04Bridge.lean (+4 theorems, 388→~470 lines)
+
+### Next Steps
+- B-side branch via two-level refinement + 4-cell defect Cauchy–Schwarz.
+- Outer AFKS loop assembly feeding `afks_energy_iteration_count`.
+- Discharge `|A'|,|A\A'|≥1`, `∉R` side conditions from `|A'|≥ε|A|>0` + equipartition.
