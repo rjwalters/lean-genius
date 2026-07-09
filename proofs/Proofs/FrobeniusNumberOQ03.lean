@@ -740,4 +740,75 @@ theorem frobenius_4_7_10 : frobeniusNumber3 4 7 10 = 13 := by
   have h := frobenius_three_ap (a := 4) (d := 3) (by norm_num) (by norm_num) (by decide)
   norm_num at h; exact h
 
+/-! ### S9 — Sharpness of the coprimality hypothesis
+
+Roberts' closed form `frobenius_three_ap` requires `gcd(a, d) = 1`. This
+hypothesis is **necessary**, not a convenience. If `g := gcd(a, d) ≥ 2` then `g`
+divides each of the three generators `a`, `a + d`, `a + 2·d`, hence every
+representable number; the non-representable set therefore contains the entire
+infinite arithmetic progression `{g·k + 1 : k}` (none of whose members is
+divisible by `g`) and is infinite. In particular the `sSup`-based
+`frobeniusNumber3` degenerates: there is no finite Frobenius number to compute
+when the generators share a common factor. -/
+
+/-- **Divisibility obstruction.** Every number representable by the AP triple
+    `(a, a + d, a + 2·d)` is divisible by `gcd(a, d)`, which divides each of the
+    three generators. -/
+theorem gcd_dvd_of_representable3_ap {a d m : ℕ}
+    (h : Representable3 a (a + d) (a + 2 * d) m) : Nat.gcd a d ∣ m := by
+  obtain ⟨x, y, z, rfl⟩ := h
+  have hga : Nat.gcd a d ∣ a := Nat.gcd_dvd_left a d
+  have hgd : Nat.gcd a d ∣ d := Nat.gcd_dvd_right a d
+  have hgb : Nat.gcd a d ∣ a + d := dvd_add hga hgd
+  have hgc : Nat.gcd a d ∣ a + 2 * d := dvd_add hga (hgd.mul_left 2)
+  exact dvd_add (dvd_add (hga.mul_right x) (hgb.mul_right y)) (hgc.mul_right z)
+
+/-- **Sharpness of the coprimality hypothesis in `frobenius_three_ap`.** If
+    `gcd(a, d) ≥ 2`, the set of numbers *not* representable by the AP triple
+    `(a, a + d, a + 2·d)` is infinite: it contains `g·k + 1` for every `k`
+    (none divisible by `g := gcd(a, d)`). Hence no finite Frobenius number
+    exists, and the coprimality hypothesis cannot be dropped. -/
+theorem non_representable3_ap_infinite_of_gcd_ne_one {a d : ℕ}
+    (hg : 2 ≤ Nat.gcd a d) :
+    { m : ℕ | ¬ Representable3 a (a + d) (a + 2 * d) m }.Infinite := by
+  have hinj : Function.Injective (fun k : ℕ => Nat.gcd a d * k + 1) := by
+    intro k j hkj
+    simp only at hkj
+    have hmul : Nat.gcd a d * k = Nat.gcd a d * j := by omega
+    exact Nat.eq_of_mul_eq_mul_left (by omega) hmul
+  have hmem : ∀ k : ℕ,
+      (fun k : ℕ => Nat.gcd a d * k + 1) k ∈
+        { m : ℕ | ¬ Representable3 a (a + d) (a + 2 * d) m } := by
+    intro k
+    simp only [Set.mem_setOf_eq]
+    intro hrep
+    have hdvd : Nat.gcd a d ∣ Nat.gcd a d * k + 1 :=
+      gcd_dvd_of_representable3_ap hrep
+    have hdvd2 : Nat.gcd a d ∣ Nat.gcd a d * k := dvd_mul_right _ _
+    have h1 : Nat.gcd a d ∣ 1 := (Nat.dvd_add_right hdvd2).mp hdvd
+    have hle : Nat.gcd a d ≤ 1 := Nat.le_of_dvd (by norm_num) h1
+    omega
+  exact Set.infinite_of_injective_forall_mem hinj hmem
+
+/-- Consequently, when `gcd(a, d) ≥ 2` the non-representable set is **not**
+    bounded above, so the `sSup`-based `frobeniusNumber3` has no genuine
+    Frobenius number to report. -/
+theorem not_bddAbove_non_representable3_ap_of_gcd_ne_one {a d : ℕ}
+    (hg : 2 ≤ Nat.gcd a d) :
+    ¬ BddAbove { m : ℕ | ¬ Representable3 a (a + d) (a + 2 * d) m } := by
+  intro hbdd
+  obtain ⟨B, hB⟩ := hbdd
+  have hsub : { m : ℕ | ¬ Representable3 a (a + d) (a + 2 * d) m } ⊆ Set.Iic B :=
+    fun m hm => hB hm
+  exact (non_representable3_ap_infinite_of_gcd_ne_one hg)
+    ((Set.finite_Iic B).subset hsub)
+
+/-- Concrete witness that coprimality is essential: for `(2, 4, 6)` (here
+    `a = d = 2`, so `gcd = 2`), the non-representable set is infinite — every
+    odd number is missing. -/
+theorem non_representable3_2_4_6_infinite :
+    { m : ℕ | ¬ Representable3 2 4 6 m }.Infinite := by
+  simpa using
+    non_representable3_ap_infinite_of_gcd_ne_one (a := 2) (d := 2) (by decide)
+
 end FrobeniusOQ03
