@@ -2,7 +2,7 @@
   "id": "erdos-1006-oq-01",
   "title": "Robustly Acyclic Orientations and Cover Graphs",
   "slug": "erdos-1006-oq-01",
-  "description": "Formalizes Erdős Problem #1006 (OQ-01): characterize which graphs admit robustly acyclic orientations. Proves the Pretzel-Brightwell characterization (1985) — a graph admits a robustly acyclic orientation iff it is a cover graph of some poset — with no axiom: the forward direction uses the reachability order (transitive closure of the orientation), the reverse is cover_graph_admits_robust. Still axiomatizes two deeper results: Nešetřil-Rödl counterexamples (1978) for all girths, and the Fisher-Fraughnaugh-Langley-West criterion (χ < girth implies robust). Also proves empty and bipartite graphs have robust orientations. 14 theorems, 2 axioms.",
+  "description": "Formalizes Erdős Problem #1006 (OQ-01): characterize which graphs admit robustly acyclic orientations. Proves the Pretzel-Brightwell characterization (1985) — a graph admits a robustly acyclic orientation iff it is a cover graph of some poset — with no axiom: the forward direction uses the reachability order (transitive closure of the orientation), the reverse is cover_graph_admits_robust. Still axiomatizes two deeper results: Nešetřil-Rödl counterexamples (1978) for all girths, and the Fisher-Fraughnaugh-Langley-West criterion (χ < girth implies robust). Also proves empty and bipartite graphs have robust orientations. 18 theorems, 2 axioms.",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-02-15",
@@ -104,7 +104,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Formalizes Erdős #1006 OQ-01: characterizes robustly acyclic orientations as cover graphs of posets. Proves the full Pretzel-Brightwell equivalence (1985) with no axiom — the forward direction via the reachability order, the reverse via cover_graph_admits_robust — along with the empty and bipartite special cases. Still axiomatizes the counterexample existence (Nešetřil-Rödl 1978) and the χ < girth criterion (FFLW 1997). 14 theorems, 467 lines, 2 axioms.",
+    "summary": "Formalizes Erdős #1006 OQ-01: characterizes robustly acyclic orientations as cover graphs of posets. Proves the full Pretzel-Brightwell equivalence (1985) with no axiom — the forward direction via the reachability order, the reverse via cover_graph_admits_robust — along with the empty and bipartite special cases. Still axiomatizes the counterexample existence (Nešetřil-Rödl 1978) and the χ < girth criterion (FFLW 1997). 18 theorems, 467 lines, 2 axioms.",
     "implications": "The Pretzel-Brightwell characterization is a striking bridge between orientation theory and order theory — it says that 'robustness under perturbation' in orientations is exactly captured by the poset structure of cover graphs. This has applications in scheduling (finding a robust ordering for job dependencies), lattice theory (identifying which graphs are Hasse diagrams), and database theory (stable acyclic transactions). The Nešetřil-Rödl result implies that the property is not monotone in girth alone — high-girth graphs can still fail to be cover graphs.",
     "openQuestions": [
       "Sharpen the characterization to a decidable recognizer: with [Fintype V] and DecidableEq, is admitsRobustAcyclicOrientation a DecidablePred? The reachOrder construction is computable, so the obstruction is quantifying over all orientations.",

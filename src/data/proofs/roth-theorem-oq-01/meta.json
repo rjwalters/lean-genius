@@ -134,7 +134,7 @@
     }
   ],
   "conclusion": {
-    "summary": "A 264-line Lean formalization of Bourgain's 1999 quantitative Roth bound rothNumberNat N ≤ C·N·(log log N/log N)^(1/2) for N ≥ 3. All 7 theorems are machine-checked; the file declares 0 axioms of its own. The single assumption is the imported Bloom–Sisask 2020 bound (OQ-02), from which Bourgain is derived by rpow monotonicity — the former standalone Bourgain axiom has been eliminated.",
+    "summary": "A 264-line Lean formalization of Bourgain's 1999 quantitative Roth bound rothNumberNat N ≤ C·N·(log log N/log N)^(1/2) for N ≥ 3. All 15 theorems are machine-checked; the file declares 0 axioms of its own. The single assumption is the imported Bloom–Sisask 2020 bound (OQ-02), from which Bourgain is derived by rpow monotonicity — the former standalone Bourgain axiom has been eliminated.",
     "implications": "Records the Bourgain 1999 landmark in the quantitative-Roth chain as a typed target and demonstrates that a weaker bound need not be axiomatized when a strictly stronger one is available: the entire content reduces to the explicit inequality N/(log N)^(1+c) ≤ C·N·(log log N/log N)^(1/2). The min-of-both-bounds statement formalizes OQ-02 ⟹ OQ-01 without comparing the unknown constants.",
     "openQuestions": [
       "Formalize Bourgain's proof itself (discrete Fourier analysis with Bohr-set density increment) to discharge the Bloom–Sisask assumption",

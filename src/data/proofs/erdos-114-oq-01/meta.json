@@ -128,7 +128,7 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures the structural mathematics of Tao's lemniscate threshold. The key theorem finite_reduction shows the full conjecture is equivalent to a finite verification problem. With 12 theorems proved and 12 axioms (all deep results or definitional), the file provides a clean framework for tracking progress on making N₀ explicit.",
+    "summary": "This formalization captures the structural mathematics of Tao's lemniscate threshold. The key theorem finite_reduction shows the full conjecture is equivalent to a finite verification problem. With 14 theorems proved and 12 axioms (all deep results or definitional), the file provides a clean framework for tracking progress on making N₀ explicit.",
     "implications": "**Theoretical Significance**\n\n1. **Finite-to-infinite bridge**: The finite reduction theorem is the key structural result, showing how an asymptotic theorem (Tao) plus finite verification yields a universal result\n\n2. **Computational path**: If N₀ is ever made explicit and is small enough, the conjecture could be resolved by computer verification of the gap cases\n\n3. **Historical progression**: The sequence Dolzhenko → Danchenko → Fryntov-Nazarov → Tao shows steady improvement toward the conjecture",
     "openQuestions": [
       "What is the explicit value of N₀? Can it be extracted from Tao's proof?",
