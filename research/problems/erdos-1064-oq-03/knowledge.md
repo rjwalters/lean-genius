@@ -165,3 +165,34 @@ elaboration) — verified on host instead (file imports only Mathlib).
 - Extend the unconditional sweep upward, or prove `seedS a ≥ 2 ⇒ classifySeed a ≠ .lt`
   (no excluded seed ever reverses; observed a<120).
 - Density-1 forward `φ(n) > φ(D(n))` a.e. remains the sole analytically-blocked direction.
+
+## Session 2026-07-08 (researcher-6) - Necessary reversal condition + excluded-regime numerics
+
+**Mode**: REVISIT (continued ACT)
+**Outcome**: progress (1 VERIFIED lemma), + resolved a stuck CONFLICTING PR
+
+### What I Did
+- Rebased PR #36009 (excluded-regime = prime powers of p≡3 mod4) onto new main: the
+  earlier "21-seed" (#35972) and closed-form-congruence commits had already merged
+  via the fleet, so `git rebase --onto origin/main` dropped both duplicates and
+  replayed only the genuinely-new excluded-regime theorem. Resolved CONFLICTING→CLEAN.
+- Proved `reversal_two_totient_lt_seedC`: for odd a≥3, `classifySeed a = .lt ⟹
+  2·φ(a) < seedC a`. Elementary (φ(seedE a) ≤ seedE a; seedC = seedE·2^seedT), k-free,
+  unconditional. VERIFIED 0 sorry / 0 axiom (build clean, no native_decide).
+
+### Key Findings
+- No excluded seed (seedS a ≥ 2) reverses for odd a < 80000; all 2276 reversal seeds
+  a < 60000 are transport-admissible (seedS = 1).
+- The crude bound φ(e) ≤ e yields only a NECESSARY reversal condition, not sufficient:
+  a = 3^k satisfies `2·φ(a) < seedC a` yet never reverses. So closing
+  "seedS a ≥ 2 ⟹ classifySeed a ≠ .lt" cannot use φ(e) ≤ e alone — it needs the finer
+  ratio φ(seedE a)/seedE a. This rules out the simplest attempt at the structural claim.
+
+### Files Modified
+- proofs/Proofs/EulerTotientOQ04OQ03.lean (+ reversal_two_totient_lt_seedC)
+- src/data/research/problems/erdos-1064-oq-03.json (knowledge)
+
+### Next Steps
+- Sharpen the necessary condition with φ(seedE a)/seedE a to attempt the excluded-regime
+  non-reversal claim; relate φ(seedE a) back to φ(a) = p^(k-1)(p-1) for a = p^k, p≡3 mod4.
+- Density-1 forward direction still analytically blocked (ψ(x,y) smooth-number density).

@@ -35,7 +35,7 @@
     }
   ],
   "knowledge": {
-    "progressSummary": "PROGRESS: excluded seed regime fully characterised as prime powers of primes ≡3 mod4 (VERIFIED); classification now splits transport-admissible vs excluded cleanly. Density-1 forward remains analytically blocked.",
+    "progressSummary": "PROGRESS: excluded regime characterised as prime powers of p≡3 mod4 (VERIFIED, merged); added necessary reversal condition 2φ(a)<seedC (VERIFIED). No excluded seed reverses (numeric a<80000); the crude φ(e)≤e bound proven insufficient to close it (fails for 3^k). Density-1 forward remains analytically blocked.",
     "builtItems": [
       "dblIter (EulerTotientOQ04OQ03.lean) — the double cototient iterate D(n) = n − φ(n − φ(n)), the object of OQ-03.",
       "dblIter_prime — collapse lemma: for EVERY prime p, D(p) = p − 1 exactly (φ(p)=p−1 ⟹ p−φ(p)=1 ⟹ φ(1)=1 ⟹ D(p)=p−1).",
@@ -87,7 +87,8 @@
       "factor_two_split (reusable 2-adic split: n=c*2^u, c odd => factorization 2 = u and oddpart = c), classifySeed_val (evaluates classifySeed at a concrete seed from the two factorisations), classifySeed_3..19 + classifySeed_21, and twentyone_smallest_reversing_seed in EulerTotientOQ04OQ03.lean — VERIFIED host 0/0, axioms [propext,Classical.choice,Quot.sound], no native_decide",
       "seedS_ge_two_iff_totient_mod_four + seedS_eq_one_iff_four_dvd_totient in EulerTotientOQ04OQ03.lean:~1600 (VERIFIED 0/0): for odd a>=3, seedS a>=2 <-> phi(a)=2 mod 4, and seedS a=1 <-> 4|phi(a); reads transport-admissible vs excluded regime off phi(a) mod 4 via Nat.Prime.pow_dvd_iff_le_factorization + omega. Sanity: seedS_21_eq_one, seedS_three_ge_two",
       "totient_mod_four_eq_two_iff_prime_pow_three_mod_four (EulerTotientOQ04OQ03.lean): odd a≥3 ⟹ (φ(a)%4=2 ↔ ∃p k, p.Prime ∧ p%4=3 ∧ 0<k ∧ a=p^k), VERIFIED 0/0",
-      "Fixed pre-existing false-green: seedS_ge_two_iff_totient_mod_four used Nat.prime_two.prime.pow_dvd_iff_le_factorization (wrong _root_.Prime), whole file failed to elaborate until .prime dropped"
+      "Fixed pre-existing false-green: seedS_ge_two_iff_totient_mod_four used Nat.prime_two.prime.pow_dvd_iff_le_factorization (wrong _root_.Prime), whole file failed to elaborate until .prime dropped",
+      "reversal_two_totient_lt_seedC (EulerTotientOQ04OQ03.lean): for odd a≥3, classifySeed a = .lt ⟹ 2·φ(a) < seedC a. Necessary condition for reversal, k-free/unconditional, via φ(seedE a) ≤ seedE a and seedC = seedE·2^seedT. VERIFIED 0/0."
     ],
     "insights": [
       "On primes the higher iterate is trivial: D(p) = p − 1 for all primes p, because the first cototient step p − φ(p) = 1 and φ(1) = 1. So φ(D(p)) = φ(p−1), and φ(p−1) < p−1 = φ(p) for every p ≥ 3 (with equality only at p = 2). This gives the forward direction on an infinite explicit family with a one-line reduction to Nat.totient_lt — no density machinery needed.",
@@ -112,7 +113,8 @@
       "Total decidable classifier: the k-free three-way criterion becomes a COMPUTABLE function classifySeed : ℕ → Ordering. From an odd seed a it extracts (s,b,t,e) by two 2-adic valuations — s=v₂(2a−φ(a)), b=oddpart, C=2a−φ(b)·2^(s−1), t=v₂(C), e=oddpart(C) — and compares φ(a) ⋛ φ(e)·2^(t−1). seed_spec proves the extraction meets every criterion hypothesis for ALL a≥3 (oddness of a not needed). The reversal seed set is the decidable predicate {a | classifySeed a = .lt}.",
       "The total classifier classifySeed removes the ValidSeed hypothesis from the least-reversal-seed result: twentyone_smallest_reversing_seed proves 21 is UNCONDITIONALLY the smallest odd reversing seed, covering the higher-valuation excluded seeds {3,7,9,11,19} (v2(2a-phi a) >= 2) that the old ValidSeed-gated classify sweep {5,13,15,17} could not address.",
       "Regime split seedS a=1 (transport-admissible) vs seedS a>=2 (excluded) is a closed-form congruence in phi(a) mod 4, NOT a valuation search: a odd => 2a=2 mod 4 and phi(a) even (a>=3), so 4 | (2a-phi(a)) <-> phi(a)=2 mod 4, and 4|(2a-phi(a)) is exactly 2<=v_2(2a-phi(a))=seedS a",
-      "Excluded regime (v₂(2a−φ(a))≥2, i.e. φ(a)≡2 mod4) = EXACTLY prime powers p^k of primes p≡3 mod4 — now a theorem, was only empirical (a<20000)"
+      "Excluded regime (v₂(2a−φ(a))≥2, i.e. φ(a)≡2 mod4) = EXACTLY prime powers p^k of primes p≡3 mod4 — now a theorem, was only empirical (a<20000)",
+      "The crude bound φ(e)≤e gives only a NECESSARY reversal condition 2φ(a)<seedC, NOT sufficient: a=3^k (excluded seeds, p=3≡3 mod4) all satisfy 2φ(a)<seedC yet never reverse. Confirmed no excluded seed (seedS≥2) reverses for odd a<80000, and all 2276 reversal seeds a<60000 are transport-admissible seedS=1. Closing no-excluded-seed-reverses needs the finer ratio φ(seedE a)/seedE a."
     ],
     "mathlibGaps": [
       "Kernel `decide` on Nat.totient of a seed (e.g. totient 21) blows the stack → SIGBUS (Lean exit 135, line-less); must prove totient values by factorisation (Nat.totient_mul + Nat.totient_prime). Reconfirms the file's existing note."
@@ -127,7 +129,8 @@
       "Prove/refute that NO excluded seed (v₂(2a−φ(a))≥2) ever reverses (observed a<120); would sharpen the reversal-set structure to v₂=1 seeds only",
       "PARTIAL RESOLUTION of the excluded-seed question: no odd seed a<21 reverses (proven unconditionally via classifySeed, including v2>=2 seeds 3,7,9,11,19). Extend the finite unconditional sweep upward, or prove the general structural claim seedS a >= 2 => classifySeed a != .lt (no excluded seed ever reverses; observed a<120).",
       "Formalize the classical characterization: for odd a>=3, phi(a)=2 mod 4 (excluded regime) <-> a=p^k with p prime, p=3 mod 4. Multiplicativity of totient: >=2 distinct odd primes => 4|phi; a=p^k => v_2(phi)=v_2(p-1). ~150 lines Mathlib totient_eq_prod / prime-power work (heavy build, defer until fleet SIGBUS clears)",
-      "Prove seedS a≥2 ⟹ classifySeed a ≠ .lt (no prime-power-of-p≡3mod4 seed reverses); all known reversal seeds 21,55,129,165,175 are transport-admissible seedS=1"
+      "Prove seedS a≥2 ⟹ classifySeed a ≠ .lt (no prime-power-of-p≡3mod4 seed reverses); all known reversal seeds 21,55,129,165,175 are transport-admissible seedS=1",
+      "Sharpen reversal_two_totient_lt_seedC using φ(seedE a)/seedE a (not φ(e)≤e) to attempt seedS a≥2 ⟹ classifySeed a ≠ .lt; the crude bound provably cannot close it (fails for 3^k). Likely needs relating φ(seedE a)·seedS-structure back to φ(a)=p^(k-1)(p-1) in the p^k, p≡3 mod4 regime."
     ]
   },
   "relatedProofs": [
