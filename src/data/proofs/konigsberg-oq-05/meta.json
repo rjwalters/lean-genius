@@ -44,6 +44,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header, Imports, and Setup",
+      "startLine": 1,
+      "endLine": 38,
+      "summary": "Module docstring framing the goal — sharpen Mathlib's Eulerian-trail degree facts (even_degree_iff, card_odd_degree) into the clean two-sided endpoint characterization, supplying the endpoint ⟹ odd converse the sibling KonigsbergOQ01 left open. Imports SimpleGraph.Trails and Algebra.Ring.Parity, opens the SimpleGraph namespace, and fixes the ambient finite simple graph G with [Fintype V] [DecidableEq V] [DecidableRel G.Adj].",
+      "mathContext": "Ambient setting: finite simple graph $G$ on a vertex type $V$ with decidable adjacency; Eulerian trail = a walk using every edge exactly once."
+    },
+    {
       "id": "open-trail",
       "title": "Open Trail: Odd-Degree Vertices Are Exactly the Endpoints",
       "startLine": 39,

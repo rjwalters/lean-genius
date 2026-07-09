@@ -110,6 +110,14 @@
   ],
   "sections": [
     {
+      "id": "context-setup",
+      "title": "Context: Jordan Block Counts Without a Jordan Basis",
+      "startLine": 1,
+      "endLine": 75,
+      "summary": "Imports (Eigenspace.Basic/Triangularizable, FiniteDimensional.Lemmas) and the module docstring. States the open question inherited from the parent chain (oq-01 JCF/minpoly → oq-01-oq-01 proved minpoly = ∏(X−μ)^{e_μ} with no Jordan basis): recover the Jordan block counts per size from the generalized-eigenspace dimension tower d_k(μ) = dim ker((f−μ)^k), again WITHOUT building a Jordan basis (which Mathlib 4.26.0 lacks). Records the classical formulas a_j = d_j − d_{j−1} (blocks of size ≥ j) and #{size = j} = 2d_j − d_{j−1} − d_{j+1}, whose non-negativity is exactly the concavity d_{k+2} + d_k ≤ 2d_{k+1} — the mathematical heart, provable Jordan-basis-free. Opens Module, namespace over a finite-dimensional K-space; 0 sorries, 0 axioms. Cites Axler Ch. 8 and Horn & Johnson §3.1 (Weyr characteristic).",
+      "mathContext": "d_k = dim ker((f−μ)^k); blocks of size ≥ j = d_j − d_{j−1}; #{size = j} = 2d_j − d_{j−1} − d_{j+1} ≥ 0 ⟺ tower concave (d_{k+2}+d_k ≤ 2d_{k+1})."
+    },
+    {
       "title": "The Nullity Tower",
       "startLine": 76,
       "endLine": 106,

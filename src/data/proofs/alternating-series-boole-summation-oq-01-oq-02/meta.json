@@ -93,9 +93,9 @@
       "id": "statement-and-strategy",
       "title": "The Sharp Remainder Bound and Its Bracketing",
       "startLine": 1,
-      "endLine": 37,
+      "endLine": 47,
       "mathContext": "$|L - S_m| \\le a_m$, with $L$ trapped between consecutive partial sums $S_m, S_{m+1}$ of width $a_m$.",
-      "summary": "The module docstring recalls the parent's qualitative convergence, states the quantitative gap it leaves open, and gives the deliverables: the sharp remainder bound |L − altSum a 0 m| ≤ a_m, the bracketing that makes it sharp, and the [0, a_0] localization. It describes the parity-splitting strategy over Mathlib's one-sided brackets and notes that nonnegativity of the terms is derived, not assumed."
+      "summary": "The module docstring recalls the parent's qualitative convergence, states the quantitative gap it leaves open, and gives the deliverables: the sharp remainder bound |L − altSum a 0 m| ≤ a_m, the bracketing that makes it sharp, and the [0, a_0] localization. It describes the parity-splitting strategy over Mathlib's one-sided brackets and notes that nonnegativity of the terms is derived, not assumed. (Section also covers the imports and namespace setup on lines 38–47: it imports Mathlib and the parent module Proofs.AlternatingSeriesBooleSummationOQ01, opens the parent namespace to reuse altSum/altSum_succ, and fixes the ambient antitone-null sequence a : ℕ → ℝ.)"
     },
     {
       "id": "term-nonneg-and-range",
@@ -139,7 +139,111 @@
     ]
   },
   "crossReferences": [
-    "alternating-series-boole-summation-oq-01",
-    "alternating-series-boole-summation"
+    {
+      "targetId": "alternating-series-boole-summation-oq-01",
+      "relationship": "extends",
+      "description": "Direct parent. It passes the finite Boole summation identity to the limit m → ∞, proving the alternating partial sums altSum a 0 m of an antitone null sequence converge to some L (altSum_tendsto_of_antitone) and satisfy the limit-form Boole identity, but leaves the rate open. This entry adds the sharp remainder bound |L − altSum a 0 m| ≤ a_m and the bracketing, reusing the parent's altSum, altSum_succ, and altSum_tendsto_of_antitone."
+    },
+    {
+      "targetId": "alternating-series-boole-summation",
+      "relationship": "related",
+      "description": "The grandparent development introduces the Boole/Euler summation framework in which the alternating series arises. This entry is the quantitative endpoint of that chain: sharp two-sided error control on the resulting alternating tail."
+    },
+    {
+      "targetId": "alternating-series-boole-summation-oq-01-oq-02-oq-02",
+      "relationship": "extended-by",
+      "description": "Child entry: it shows the first-order Boole transform preserves exactly this sharp aₘ remainder bound, so the acceleration does not degrade the error estimate proved here. Takes remainder_bound as its baseline invariant."
+    },
+    {
+      "targetId": "alternating-series-test-oq-01",
+      "relationship": "related",
+      "description": "The alternating-series (Leibniz) test itself — the convergence half of the criterion. This entry supplies the complementary quantitative half: given convergence, the sharp first-omitted-term remainder bound and the bracketing of L by consecutive partial sums."
+    },
+    {
+      "targetId": "leibniz-pi",
+      "relationship": "related",
+      "description": "Canonical application. The Leibniz series π/4 = 1 − 1/3 + 1/5 − ⋯ has antitone null terms aₙ = 1/(2n+1), so remainder_bound gives the concrete certified error |π/4 − Sₘ| ≤ 1/(2m+1) with π/4 bracketed between consecutive partial sums."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Knopp, Konrad",
+      "title": "Theory and Application of Infinite Series",
+      "year": "1990",
+      "venue": "Dover (repr. of 2nd English ed., Blackie & Son, 1951)",
+      "note": "Classic reference for the Leibniz alternating-series criterion and its remainder estimate: for a decreasing null sequence the truncation error never exceeds the first omitted term, with the limit bracketed between consecutive partial sums — exactly the remainder_bound / partial_bracket pair formalized here."
+    },
+    {
+      "authors": "Bromwich, Thomas J. I'Anson",
+      "title": "An Introduction to the Theory of Infinite Series",
+      "year": "1926",
+      "venue": "Macmillan, 2nd ed.",
+      "note": "Standard early treatment of alternating series, giving the two-sided bracketing of the sum by consecutive partial sums (the sharpness statement partial_bracket) and the resulting first-omitted-term error bound."
+    },
+    {
+      "authors": "Hardy, Godfrey Harold",
+      "title": "A Course of Pure Mathematics",
+      "year": "1908",
+      "venue": "Cambridge University Press",
+      "note": "Presents the alternating-series test and the remainder estimate for decreasing null sequences; the numerical usefulness of |L − S_m| ≤ a_m for series such as the Leibniz π/4 and log 2 is emphasized."
+    },
+    {
+      "authors": "Boole, George",
+      "title": "A Treatise on the Calculus of Finite Differences",
+      "year": "1860",
+      "venue": "Macmillan",
+      "note": "Origin of the Boole summation identity used by the parent entries to realize the alternating series as an m → ∞ limit; this entry supplies the quantitative remainder control that the finite Boole identity leaves open."
+    },
+    {
+      "authors": "Leibniz, Gottfried Wilhelm",
+      "title": "Letter to Johann Bernoulli (alternating-series criterion)",
+      "year": "1714",
+      "venue": "Historical origin",
+      "note": "The alternating-series convergence criterion and its use for the series π/4 = 1 − 1/3 + 1/5 − ⋯ are attributed to Leibniz; the sharp remainder bound formalized here is the quantitative refinement of that criterion."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "remainder_bound",
+      "type": "main",
+      "description": "The sharp alternating-series remainder bound: for an antitone null sequence with alternating sum L, every partial sum approximates L to within the m-th term, |L − altSum a 0 m| ≤ a_m. Proved by parity case analysis on m, turning Mathlib's one-sided brackets into a two-sided sandwich of width a_m via the successor identity altSum_succ.",
+      "leanType": "(ha : Antitone a) (ha0 : Tendsto a atTop (𝓝 0)) {L : ℝ} (hL : Tendsto (fun m => altSum a 0 m) atTop (𝓝 L)) (m : ℕ) : |L - altSum a 0 m| ≤ a m"
+    },
+    {
+      "name": "partial_bracket",
+      "type": "main",
+      "description": "Two-sided bracketing (the sharpness statement): consecutive partial sums straddle the limit, (altSum a 0 m − L)(altSum a 0 (m+1) − L) ≤ 0. Since consecutive sums differ by exactly a_m, L is trapped in an interval of width a_m and the remainder bound cannot be improved.",
+      "leanType": "(ha : Antitone a) {L : ℝ} (hL : Tendsto (fun m => altSum a 0 m) atTop (𝓝 L)) (m : ℕ) : (altSum a 0 m - L) * (altSum a 0 (m + 1) - L) ≤ 0"
+    },
+    {
+      "name": "sum_mem_Icc",
+      "type": "main",
+      "description": "Localization of the full alternating sum: taking m = 0 (where altSum a 0 0 = 0 and altSum a 0 1 = a_0) traps the whole series in [0, a_0].",
+      "leanType": "(ha : Antitone a) {L : ℝ} (hL : Tendsto (fun m => altSum a 0 m) atTop (𝓝 L)) : L ∈ Set.Icc (0 : ℝ) (a 0)"
+    },
+    {
+      "name": "term_nonneg",
+      "type": "supporting",
+      "description": "An antitone null sequence is nonnegative: each a m bounds the tail a j (j ≥ m), which tends to 0, so 0 ≤ a m by le_of_tendsto. This is what makes |L − S_m| ≤ a_m an honest absolute-value estimate.",
+      "leanType": "(ha : Antitone a) (ha0 : Tendsto a atTop (𝓝 0)) (m : ℕ) : 0 ≤ a m"
+    },
+    {
+      "name": "even_partial_le",
+      "type": "supporting",
+      "description": "Even partial sums lie below the limit, altSum a 0 (2k) ≤ L, by transporting Mathlib's Antitone.alternating_series_le_tendsto to the altSum form.",
+      "leanType": "(ha : Antitone a) {L : ℝ} (hL : Tendsto (fun m => altSum a 0 m) atTop (𝓝 L)) (k : ℕ) : altSum a 0 (2 * k) ≤ L"
+    },
+    {
+      "name": "le_odd_partial",
+      "type": "supporting",
+      "description": "Odd partial sums lie above the limit, L ≤ altSum a 0 (2k+1), by transporting Mathlib's Antitone.tendsto_le_alternating_series to the altSum form.",
+      "leanType": "(ha : Antitone a) {L : ℝ} (hL : Tendsto (fun m => altSum a 0 m) atTop (𝓝 L)) (k : ℕ) : L ≤ altSum a 0 (2 * k + 1)"
+    },
+    {
+      "name": "altSum_eq_range",
+      "type": "supporting",
+      "description": "Identifies the parent's altSum a 0 m with Mathlib's range-form partial sum ∑_{i<m} (-1)^i a_i — the shape in which the alternating-series brackets are stated.",
+      "leanType": "(m : ℕ) : altSum a 0 m = ∑ i ∈ range m, (-1 : ℝ) ^ i * a i"
+    }
   ]
 }

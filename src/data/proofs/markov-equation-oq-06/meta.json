@@ -60,6 +60,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header, Imports, and Setup",
+      "startLine": 1,
+      "endLine": 51,
+      "summary": "Module docstring contrasting this file with the parent MarkovEquation: the parent runs the Markov tree downward (Vieta-jump the largest coordinate to descend to (1,1,1)); this file runs it upward via the ascent move (a,b,c) ↦ (b,c,3bc−a) on a sorted triple, which strictly increases the top coordinate, producing the strictly growing sequence (1,1,1)→(1,1,2)→(1,2,5)→(2,5,29)→⋯ of distinct Markov triples and hence infinitude. Lists the file's results, imports Mathlib and the parent, opens the MarkovEquation namespace. (Mathlib has no Markov-equation development.)",
+      "mathContext": "Markov equation $x^2+y^2+z^2=3xyz$; the ascent Vieta-jumps the smallest coordinate $a\\mapsto 3bc-a$, and $3bc-a \\ge c(3b-1) \\ge 2c > c$ forces the top coordinate to strictly increase."
+    },
+    {
       "id": "sec-ascent",
       "title": "The Ascent Move",
       "startLine": 52,

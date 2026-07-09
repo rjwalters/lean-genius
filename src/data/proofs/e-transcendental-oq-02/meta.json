@@ -22,7 +22,7 @@
     ],
     "badge": "axiom",
     "sorries": 0,
-    "theoremCount": 74,
+    "theoremCount": 80,
     "mathlibDependencies": [
       {
         "theorem": "Real.exp_one_gt_d9",
@@ -70,11 +70,15 @@
       "Lemma match_count_le (this session, private): the x-general form of rational_match_count_le — if a k-tuple s is eventually missing past N₀, matching positions in Finset.range N number at most N₀ (Finset.card_le_card into Finset.range N₀).",
       "Theorem not_normal_of_eventually_missing_ktuple (this session): the sharp-boundary converse of normal_imp_disjunctive — if some k-tuple is eventually absent from x's base-b expansion, x is NOT normal in base b (frequency → 0 via match_count_le + tendsto_bounded_count_div_atTop_zero contradicts normality's frequency → b^(-k) > 0). Establishes normality is strictly stronger than disjunctivity.",
       "Theorem not_normal_of_eventually_missing_digit (this session): the k=1 corollary — a single eventually-absent digit forbids normality (the cleanest obstruction: a frequency-0 digit).",
-      "Theorem normal_imp_irrational_of_criterion (this session): re-derives normal ⇒ irrational from the non-normality criterion via rational_has_missing_ktuple_intCast, confirming the criterion is non-vacuous and subsumes the rational case."
+      "Theorem normal_imp_irrational_of_criterion (this session): re-derives normal ⇒ irrational from the non-normality criterion via rational_has_missing_ktuple_intCast, confirming the criterion is non-vacuous and subsumes the rational case.",
+      "Theorem liouvilleNumber_not_normal_base_two (this session): the Liouville constant is NOT normal in base 2 — the first application of the frequency criterion to a number whose non-normality is invisible to the missing-digit criterion (an irrational base-2 real omits no digit).",
+      "Theorem liouvilleNumber_two_one_density_zero (this session): the base-2 digit 1 of the Liouville constant has asymptotic density 0, not 1/2 — the decisive frequency anomaly, since digit 1 occurs exactly at the density-0 factorial positions.",
+      "Theorem exists_irrational_not_normal_of_two_le (this session): extends the sharpness of normal ⇒ irrational to all bases b ≥ 2 (base 2 via the digit-1 density anomaly, b ≥ 3 via a missing digit), strengthening exists_irrational_not_normal from b ≥ 3.",
+      "Lemmas two_pow_le_factorial_succ / liouvilleNumber_two_one_count_le / tendsto_natLog_two_div_atTop_zero (this session): the analytic core — 2^(k-1) ≤ k! forces the 1-positions below N to number ≤ Nat.log 2 N + 4, and Nat.log 2 N / N → 0 (via Real.log =o[atTop] id)."
     ],
     "dateAdded": "2026-05-04",
     "axiomCount": 1,
-    "lineCount": 1454,
+    "lineCount": 1608,
     "assumptions": "1 axiom (the main open conjecture): e_absolutely_normal — e is absolutely normal (open as of 2026). Session 13 discharged the normal_imp_irrational axiom: composing rational_has_missing_ktuple_intCast (the ℤ-valued lift of S12's Layer 4a missing-tuple), rational_match_count_le (the matching-position count is bounded by N₀ via Finset.card_le_card), and tendsto_bounded_count_div_atTop_zero (squeeze: 0 ≤ count_N/N ≤ N₀/N → 0). For rational q, normality forces frequency → b^(-k) > 0, but the bound forces it → 0; tendsto_nhds_unique closes the contradiction. Earlier history: rational-digits-periodic was discharged in Session 11 via the 3-layer recipe (Layer 1 eventually_periodic_iterate S8, Layer 2 ratResidue_eventually_periodic S9, Layer 3 floor_pow_mul_div S10 + nthDigit_succ_via_residue S11), then Session 12 added Layer 4a (Fin b cast bridge) and rational_has_missing_ktuple. 33 public theorems including first 9 decimal digits of e proved from exp_one bounds and now normal_imp_irrational fully axiom-free.",
     "mathlib_version": "4.26.0",
     "definitionCount": 6
@@ -207,9 +211,9 @@
       "Filter"
     ],
     "namespace": "ETranscendentalOQ02",
-    "lineCount": 1454,
+    "lineCount": 1608,
     "axiomCount": 1,
-    "theoremCount": 74,
+    "theoremCount": 80,
     "definitionCount": 6,
     "path": "Proofs/ETranscendentalOQ02.lean",
     "sorries": 0

@@ -19,7 +19,7 @@
       "disproved"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "erdosNumber": 1080,
     "erdosUrl": "https://erdosproblems.com/1080",
     "erdosProblemStatus": "disproved",
@@ -60,9 +60,9 @@
       "De Caen–Székely upper/lower bounds and Kővári-Sós-Turán are referenced in source comments; only LUW is formally axiomatized"
     ],
     "axiomCount": 2,
-    "lineCount": 335,
+    "lineCount": 470,
     "assumptions": "2 axioms: luw_superlinear (Lazebnik-Ustimenko-Woldar superlinear construction), erdos_c8_observation (Erdős C₈ observation). 1 sorry: c4_free_iff_no_K22 (C₄-free iff no K₂₂ subgraph).",
-    "theoremCount": 7,
+    "theoremCount": 10,
     "definitionCount": 7
   },
   "overview": {
@@ -264,12 +264,14 @@
       "Set"
     ],
     "namespace": "Erdos1080",
-    "lineCount": 335,
+    "lineCount": 470,
     "axiomCount": 2,
-    "theoremCount": 7,
+    "theoremCount": 10,
     "definitionCount": 7,
     "path": "Proofs/Erdos1080Problem.lean",
-    "sorries": 1
+    "sorries": 0
   },
-  "sorries": 1
+  "sorries": 0,
+  "status": "axiomatized",
+  "badge": "axiom"
 }

@@ -58,13 +58,13 @@
   "mainTheorems": [
     {
       "name": "regulator_eq_single_log_of_rank_eq_one",
-      "type": "theorem",
+      "type": "main",
       "description": "The rank-one regulator is a single logarithm: when rank K = 1, the regulator collapses from a determinant of logarithms to one archimedean term mult(w)·|log(w ε)| for the fundamental (Stark) unit ε — the linear-algebra fact behind the rank-one abelian Stark conjecture's claim that L'(0,χ) is a rational multiple of one log|ε|.",
       "leanType": "(K : Type*) [Field K] [NumberField K] (hrank : rank K = 1) : ∃ (w : InfinitePlace K) (ε : (𝓞 K)ˣ), regulator K = (mult w : ℝ) * |Real.log (w (ε : K))|"
     },
     {
       "name": "rank_eq_one_iff_card_infinitePlace_eq_two",
-      "type": "theorem",
+      "type": "supporting",
       "description": "Rank one ⟺ two infinite places: by Dirichlet's unit theorem the unit rank of K is #(InfinitePlace K) − 1, so the rank-one Stark hypothesis rank K = 1 holds exactly when K has two infinite places.",
       "leanType": "(K : Type*) [Field K] [NumberField K] : rank K = 1 ↔ Fintype.card (InfinitePlace K) = 2"
     }
@@ -123,6 +123,11 @@
       "targetId": "kroneckers-jugendtraum",
       "relationship": "extends",
       "description": "Parent Kronecker Jugendtraum / Stark entry; this treats the unit-rank-1 case where the regulator collapses from an r×r determinant to a single archimedean log of the fundamental (Stark) unit."
+    },
+    {
+      "targetId": "kroneckers-jugendtraum-oq-01",
+      "relationship": "sibling-open-question",
+      "description": "The concrete real-quadratic instance of this entry's abstract rank-one collapse (and exactly the specialization named in this entry's second open question): real quadratic fields are precisely the totally real degree-2 fields, they have unit rank 1, and their regulator is a single bare logarithm of the classical fundamental unit — the (2,0)-signature member of the two-infinite-place family where the r×r regulator determinant here degenerates to one 1×1 entry."
     }
   ],
   "references": [

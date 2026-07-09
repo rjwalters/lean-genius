@@ -1166,6 +1166,50 @@ theorem hasDensity_empty : HasDensity (∅ : Set ℕ) 0 := by
     Nat.cast_zero, zero_div, sub_zero, abs_zero]
   exact hε
 
+/- **Every finite set of naturals has natural density `0`** (unconditional, 0-axiom).
+The general fact behind `hasDensity_singleton_zero` and `hasDensity_empty`: the
+counting numerator `|A ∩ {0,…,n}|` never exceeds the fixed cardinality `|A|`, so the
+ratio is at most `|A|/n → 0`. Combined with `finite_nonRepresentable_of_two_three`
+this gives the `{2,3}` density-zero results directly, without computing the set. -/
+open scoped Classical in
+theorem hasDensity_zero_of_finite {A : Set ℕ} (hA : A.Finite) : HasDensity A 0 := by
+  intro ε hε
+  obtain ⟨N, hN⟩ := exists_nat_gt ((hA.toFinset.card : ℝ) / ε)
+  refine ⟨N + 1, fun n hn => ?_⟩
+  have hn0 : (0 : ℝ) < n := by exact_mod_cast (by omega : 0 < n)
+  have hsub : Finset.filter (· ∈ A) (Finset.range (n + 1)) ⊆ hA.toFinset := by
+    intro k hk
+    exact hA.mem_toFinset.mpr (Finset.mem_filter.mp hk).2
+  have hcardR : ((Finset.filter (· ∈ A) (Finset.range (n + 1))).card : ℝ)
+      ≤ (hA.toFinset.card : ℝ) := by exact_mod_cast Finset.card_le_card hsub
+  rw [sub_zero, abs_of_nonneg (by positivity), div_lt_iff₀ hn0]
+  have hCεn : (hA.toFinset.card : ℝ) < ε * n := by
+    have hle : ((N : ℕ) : ℝ) ≤ (n : ℝ) := by exact_mod_cast (by omega : (N : ℕ) ≤ n)
+    have hNn : (hA.toFinset.card : ℝ) / ε < n := lt_of_lt_of_le hN hle
+    rw [div_lt_iff₀ hε] at hNn
+    linarith [mul_comm (n : ℝ) ε]
+  linarith [hcardR]
+
+/- **Natural density is unique** (unconditional, 0-axiom). If a set has natural
+density `d₁` and also `d₂`, then `d₁ = d₂`. So `HasDensity A ·` is a genuine partial
+function — "the density of `A`" is well-defined whenever it exists. Proof: if the two
+densities differed, the counting ratio at a large `n` would sit within `|d₁−d₂|/2` of
+both, forcing `|d₁−d₂| < |d₁−d₂|`. -/
+open scoped Classical in
+theorem hasDensity_unique {A : Set ℕ} {d₁ d₂ : ℝ}
+    (h₁ : HasDensity A d₁) (h₂ : HasDensity A d₂) : d₁ = d₂ := by
+  by_contra hne
+  have hδpos : 0 < |d₁ - d₂| := abs_pos.mpr (sub_ne_zero.mpr hne)
+  obtain ⟨N₁, hN₁⟩ := h₁ (|d₁ - d₂| / 2) (by linarith)
+  obtain ⟨N₂, hN₂⟩ := h₂ (|d₁ - d₂| / 2) (by linarith)
+  have e1 := hN₁ (max N₁ N₂ + 1) (by omega)
+  have e2 := hN₂ (max N₁ N₂ + 1) (by omega)
+  set r := ((Finset.filter (· ∈ A) (Finset.range (max N₁ N₂ + 1 + 1))).card : ℝ)
+    / ((max N₁ N₂ + 1 : ℕ) : ℝ) with hr
+  have key : |d₁ - d₂| ≤ |d₁ - r| + |r - d₂| := abs_sub_le d₁ r d₂
+  rw [abs_sub_comm d₁ r] at key
+  linarith [e1, e2, key]
+
 /-- **The `{2,3}` coprime non-representables are empty (unconditional, 0-axiom).**
 
 `CoprimeNonRepresentable` is the Yu-Chen object whose infinitude is asserted "for

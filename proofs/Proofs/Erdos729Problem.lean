@@ -23,6 +23,7 @@
 -/
 
 import Mathlib
+import Proofs.Erdos729DigitSumBound
 
 namespace Erdos729
 
@@ -66,19 +67,30 @@ def DividesFactorial (n a b : ℕ) : Prop :=
 ## Part 2: Erdős's Classical Result (1968)
 
 If a!b! | n! then a + b ≤ n + O(log n).
+
+**De-axiomatized (researcher-1, 2026-07-08).** The previous
+`axiom erdos_1968_classical`, phrased as
+`∀ n a b, a!b! ∣ n! → ∃ C > 0, a+b ≤ n + C·log n` with `C` chosen *inside* the
+`∀`, was **unsound**: at `n ∈ {0,1}` one has `Real.log n = 0`, so the bound reads
+`a + b ≤ n`, refuted by `a = b = 1` (since `1!·1! ∣ 0!` and `1!·1! ∣ 1!`, yet
+`2 ≤ 0` and `2 ≤ 1` are false for every `C`). The sound, uniform statement
+(single `C`, `n ≥ 2`) is proved **axiom-free** as
+`Erdos729DigitSum.erdos_1968_uniform`, resting on the sharp 2-adic core
+`a + b ≤ n + s₂(a) + s₂(b)` (`Erdos729DigitSum.erdos_two_adic_bound`, from
+Legendre `v₂(n!) = n − s₂(n)` and valuation monotonicity). We re-export those
+results here instead of assuming the axiom, so this file is now axiom-free for
+the classical direction.
 -/
 
-/-- Erdős (1968): Classical upper bound on a + b -/
-axiom erdos_1968_classical (n a b : ℕ) (hdiv : DividesFactorial n a b) :
-    ∃ C : ℝ, C > 0 ∧ (a + b : ℝ) ≤ n + C * Real.log n
-
-/-- The proof uses only powers of 2 -/
+/-- The proof uses only powers of 2: the *sharp*, subtraction-free 2-adic bound
+    `a + b ≤ n + s₂(a) + s₂(b)`, where `s₂ m = (Nat.digits 2 m).sum` is the binary
+    digit sum. Axiom-free — the excess `a + b − n` never exceeds the total number
+    of 1-bits of `a` and `b`. (Re-exports `Erdos729DigitSum.erdos_two_adic_bound`;
+    the recognisable `n + O(log n)` shape is `Erdos729DigitSum.erdos_1968_uniform`.) -/
 theorem erdos_proof_via_powers_of_two (n a b : ℕ) (hdiv : DividesFactorial n a b) :
-    -- v_2(n!) = n - s_2(n) where s_2(n) is the binary digit sum
-    -- If a!b! | n!, then v_2(a!) + v_2(b!) ≤ v_2(n!)
-    -- This implies a + b ≤ n + O(log n)
-    ∃ C : ℝ, C > 0 ∧ (a + b : ℝ) ≤ n + C * Real.log n := by
-  exact erdos_1968_classical n a b hdiv
+    a + b ≤ n + (Nat.digits 2 a).sum + (Nat.digits 2 b).sum := by
+  have hdvd : a ! * b ! ∣ n ! := hdiv
+  exact Erdos729DigitSum.erdos_two_adic_bound n a b hdvd
 
 /-
 ## Part 3: The Relaxed Condition
@@ -123,11 +135,30 @@ The answer is NO: the bound persists even modulo small primes.
 axiom barreto_leeham_theorem (C : ℝ) (hC : C > 0) :
     ¬InfinitelyManyExceptions C
 
-/-- Equivalently: for large n, a + b ≤ n + O(log n) even modulo small primes -/
-axiom barreto_leeham_bound (C : ℝ) (hC : C > 0) :
-    ∃ D : ℝ, D > 0 ∧ ∀ n a b : ℕ,
+/-- **The small-prime bound is axiom-free (sound uniform form).**  For every threshold
+    `C > 0` there is a single `D > 0` such that whenever the denominator of `C(n,·)` keeps
+    only primes `≤ C` (`DividesFactorialModSmall n a b C`) and `n ≥ 2`, the bound
+    `a + b ≤ n + D·log n` holds.
+
+    This was previously an `axiom`, but it is in fact a corollary of the elementary,
+    axiom-free `Erdos729DigitSum.erdos_1968_uniform`: `DividesFactorialModSmall n a b C`
+    unfolds to `∃ k, (small primes) ∧ k·a!·b! ∣ n!`, which already forces `a!·b! ∣ n!`
+    (as `a!·b! ∣ k·a!·b!`), so the plain factorial bound applies verbatim.  The `2 ≤ n`
+    hypothesis is required for soundness — the old axiom, stated for *all* `n`, was false
+    at `n ∈ {0, 1}` (e.g. `n = 1, a = b = 1`: the divisibility holds yet `a + b = 2 > 1 +
+    D·log 1 = 1` for every `D`), the same small-`n` defect noted for the retired
+    `erdos_1968_classical`. -/
+theorem barreto_leeham_bound (C : ℝ) (_hC : C > 0) :
+    ∃ D : ℝ, D > 0 ∧ ∀ n a b : ℕ, 2 ≤ n →
       DividesFactorialModSmall n a b C →
-      (a + b : ℝ) ≤ n + D * Real.log n
+      (a + b : ℝ) ≤ n + D * Real.log n := by
+  obtain ⟨D, hD, hbound⟩ := Erdos729DigitSum.erdos_1968_uniform
+  refine ⟨D, hD, fun n a b hn hmod => ?_⟩
+  obtain ⟨k, _hk, hdvd⟩ := hmod
+  -- `k·a!·b! ∣ n!` forces `a!·b! ∣ n!`, so the axiom-free uniform bound applies.
+  have hrw : k * a.factorial * b.factorial = a.factorial * b.factorial * k := by ring
+  rw [hrw] at hdvd
+  exact hbound n a b hn ((dvd_mul_right (a.factorial * b.factorial) k).trans hdvd)
 
 /-
 ## Part 6: The Proof Strategy
@@ -201,16 +232,23 @@ theorem binomial_rigidity (n a b : ℕ) (hab : a + b = n) :
 ## Part 9: Main Problem Statement
 -/
 
-/-- Erdős Problem #729: Complete statement -/
+/-- Erdős Problem #729: Complete statement.
+
+    The classical bound is stated in its sound **uniform** form (a single
+    constant `C`, valid for `n ≥ 2`), discharged axiom-free by
+    `Erdos729DigitSum.erdos_1968_uniform`. The earlier per-instance `∃ C`
+    phrasing was unsound at small `n` (see Part 2). -/
 theorem erdos_729_statement :
-    -- Classical result: a!b! | n! implies a + b ≤ n + O(log n)
-    (∀ n a b : ℕ, DividesFactorial n a b →
-      ∃ C : ℝ, C > 0 ∧ (a + b : ℝ) ≤ n + C * Real.log n) ∧
+    -- Classical result (uniform, axiom-free): a!b! | n! implies a + b ≤ n + C·log n
+    (∃ C : ℝ, C > 0 ∧ ∀ n a b : ℕ, 2 ≤ n → DividesFactorial n a b →
+      (a + b : ℝ) ≤ n + C * Real.log n) ∧
     -- Extended result: bound persists modulo small primes
     (∀ C : ℝ, C > 0 → ¬InfinitelyManyExceptions C) := by
-  constructor
-  · exact erdos_1968_classical
-  · exact barreto_leeham_theorem
+  refine ⟨?_, barreto_leeham_theorem⟩
+  obtain ⟨C, hC, hbound⟩ := Erdos729DigitSum.erdos_1968_uniform
+  refine ⟨C, hC, fun n a b hn hdiv => ?_⟩
+  have hdvd : a ! * b ! ∣ n ! := hdiv
+  exact hbound n a b hn hdvd
 
 /-
 ## Part 10: Summary
@@ -222,7 +260,8 @@ theorem erdos_729_summary :
     -- Answer: NO
     (∀ C : ℝ, C > 0 → ¬InfinitelyManyExceptions C) ∧
     -- The bound a + b ≤ n + O(log n) is intrinsic to factorial structure
-    (∀ C : ℝ, C > 0 → ∃ D : ℝ, D > 0 ∧ ∀ n a b : ℕ,
+    -- (sound uniform form, n ≥ 2; discharged axiom-free by barreto_leeham_bound)
+    (∀ C : ℝ, C > 0 → ∃ D : ℝ, D > 0 ∧ ∀ n a b : ℕ, 2 ≤ n →
       DividesFactorialModSmall n a b C →
       (a + b : ℝ) ≤ n + D * Real.log n) := by
   constructor

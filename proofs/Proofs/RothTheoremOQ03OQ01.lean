@@ -24,6 +24,9 @@
     * `kAPCount_diag_eq_sum_subsets` — the **generalized von Neumann telescoping**:
       `Λ_k(g,…,g) = ∑_{S⊆[k]} δ^{k−|S|}·Λ_k(i↦ if i∈S then g−δ·1 else 1)`, the full
       `2^k`-term multilinear expansion with the `δ^k` major term isolated at `S=∅`.
+    * `kAPCount_diag_eq_major_add_remainder` — the same expansion with the `S=∅`
+      summand evaluated: `Λ_k(g,…,g) = δ^k + ∑_{∅≠S⊆[k]} δ^{k−|S|}·Λ_k(…)`, the
+      "main `k`-AP count `δ^k` plus a balanced (Gowers-controlled) remainder" form.
 
   These are precisely the checks that pin the operators down as genuine
   averages `E_{x,d} ∏ᵢ fᵢ(x+i·d)` (the `(N⁻¹)²·N² = 1` normalization),
@@ -76,6 +79,14 @@ noncomputable def kAPCount {N : ℕ} [NeZero N] (k : ℕ)
     (f : Fin k → ZMod N → ℂ) : ℂ :=
   ((N : ℂ)⁻¹) ^ 2 * ∑ x : ZMod N, ∑ d : ZMod N,
     ∏ i : Fin k, f i (x + i.val • d)
+
+/-- The complex indicator `1_A : ZMod N → ℂ` of a finite set `A ⊆ ZMod N`:
+    `1` on `A`, `0` off it.  Feeding `1_A` into every slot of `kAPCount`
+    turns the analytic operator `Λ_k` into a genuine combinatorial count
+    of arithmetic progressions lying inside `A`
+    (`kAPCount_indicator_eq_count`). -/
+noncomputable def indicatorZMod {N : ℕ} (A : Finset (ZMod N)) : ZMod N → ℂ :=
+  fun x => if x ∈ A then 1 else 0
 
 -- ============================================================
 -- Foundational identities
@@ -350,5 +361,88 @@ theorem kAPCount_diag_eq_sum_subsets {N : ℕ} [NeZero N] (k : ℕ)
     apply Finset.sum_congr rfl; intro x _
     rw [Finset.sum_comm]
   rw [hL, hR]
+
+/-- **Major term + balanced remainder.**  Separating the `S = ∅` summand of the von
+    Neumann expansion `kAPCount_diag_eq_sum_subsets` isolates the *major term* `δ^k`
+    from the *balanced remainder*.  The `S = ∅` term carries the scalar `δ` in every
+    slot, so it equals `δ^k · Λ_k(1,…,1) = δ^k` (`kAPCount_const_one`); every remaining
+    term is indexed by a *nonempty* `S`, hence has at least one mean-zero slot
+    `b = g − δ·1`.  With `g = 1_A` and `δ = |A|/N` this is exactly the
+    "main `k`-AP count plus a Gowers-controlled error" split that the density-increment
+    argument feeds into the generalized von Neumann inequality:
+
+        Λ_k(g,…,g) = δ^k + ∑_{∅ ≠ S ⊆ [k]} δ^{k−|S|} · Λ_k(i ↦ if i ∈ S then b else 1). -/
+theorem kAPCount_diag_eq_major_add_remainder {N : ℕ} [NeZero N] (k : ℕ)
+    (g : ZMod N → ℂ) (δ : ℂ) :
+    kAPCount k (fun _ : Fin k => g)
+      = δ ^ k
+        + ∑ S ∈ (Finset.univ.erase (∅ : Finset (Fin k))),
+            δ ^ (k - S.card) *
+              kAPCount k (fun i => if i ∈ S then (g - δ • (1 : ZMod N → ℂ)) else 1) := by
+  classical
+  rw [kAPCount_diag_eq_sum_subsets k g δ,
+      ← Finset.add_sum_erase Finset.univ _ (Finset.mem_univ (∅ : Finset (Fin k)))]
+  congr 1
+  -- The `S = ∅` term collapses to `δ ^ k`: no balanced slots, so all slots carry `1`.
+  have hfun : (fun i => if i ∈ (∅ : Finset (Fin k)) then (g - δ • (1 : ZMod N → ℂ))
+        else (1 : ZMod N → ℂ)) = (fun (_ : Fin k) (_ : ZMod N) => (1 : ℂ)) := by
+    funext i y; simp
+  rw [Finset.card_empty, Nat.sub_zero, hfun, kAPCount_const_one, mul_one]
+
+-- ============================================================
+-- Bridge to combinatorics: `kAPCount` of an indicator counts APs
+--
+-- All the identities above are analytic facts about the *operator*
+-- `Λ_k`.  This block ties `Λ_k` back to the combinatorial object it is
+-- designed to measure: feeding the indicator `1_A` into every slot,
+-- `Λ_k(1_A,…,1_A)` becomes exactly `(N⁻¹)²` times the number of pairs
+-- `(x,d)` whose length-`k` progression `x, x+d, …, x+(k−1)d` lies wholly
+-- inside `A`.  This is the concrete meaning of "the normalized `k`-AP
+-- count of `A`" that Roth's theorem (`k = 3`) is a statement about.
+-- ============================================================
+
+/-- The indicator of the whole group is the constant `1` function. -/
+@[simp] theorem indicatorZMod_univ {N : ℕ} [NeZero N] :
+    indicatorZMod (Finset.univ : Finset (ZMod N)) = fun _ => (1 : ℂ) := by
+  funext x
+  simp [indicatorZMod]
+
+/-- **Combinatorial bridge.**  The analytic count of the diagonal indicator
+    tuple is `(N⁻¹)²` times the number of `(x, d)` pairs for which the entire
+    length-`k` progression `x + i·d` (`0 ≤ i < k`) lies inside `A`:
+
+        Λ_k(1_A,…,1_A) = (N⁻¹)² · #{(x,d) : ∀ i, x + i·d ∈ A}.
+
+    Each inner product `∏ᵢ 1_A(x + i·d)` is `1` exactly when every term of the
+    progression hits `A` and `0` otherwise (`Finset.prod_boole`); summing these
+    indicators over all pairs `(x,d)` counts the progressions (`Finset.sum_boole`).
+    This is what makes `kAPCount` the *normalized `k`-AP density* of `A`: the
+    quantity Roth's theorem forces to be positive once `A` is dense. -/
+theorem kAPCount_indicator_eq_count {N : ℕ} [NeZero N] (k : ℕ)
+    (A : Finset (ZMod N)) :
+    kAPCount k (fun _ : Fin k => indicatorZMod A)
+      = ((N : ℂ)⁻¹) ^ 2 *
+          ((Finset.univ.filter
+              (fun p : ZMod N × ZMod N =>
+                ∀ i : Fin k, p.1 + i.val • p.2 ∈ A)).card : ℂ) := by
+  classical
+  simp only [kAPCount, indicatorZMod]
+  congr 1
+  -- Collapse the double sum into a single sum over pairs.
+  rw [← Finset.sum_product', Finset.univ_product_univ]
+  -- Each inner product of indicators is the indicator of "all terms hit `A`"
+  -- (`prod_boole`); summing those indicators over all pairs counts the
+  -- progressions lying inside `A` (`sum_boole`), and `∀ i ∈ univ` collapses to
+  -- the plain `∀ i` on the counted set.
+  simp [Finset.prod_boole, Finset.sum_boole]
+
+/-- Consistency check: the normalized `k`-AP count of the whole group is `1`,
+    recovering `kAPCount_const_one` through the combinatorial definition
+    (every pair `(x,d)` gives a progression inside `univ`). -/
+theorem kAPCount_indicator_univ {N : ℕ} [NeZero N] (k : ℕ) :
+    kAPCount k (fun _ : Fin k => indicatorZMod (Finset.univ : Finset (ZMod N)))
+      = 1 := by
+  simp only [indicatorZMod_univ]
+  exact kAPCount_const_one k
 
 end RothTheoremOQ03OQ01

@@ -938,4 +938,15 @@ theorem sum_eigenvalues_eq_add_of_reducing {T : V →ₗ[𝕜] V} (hT : T.IsSymm
     ← trace_eq_sum_eigenvalues (isSymmetric_compress hT Hᗮ) hHpdim]
   exact trace_eq_add_compress_of_reducing H hH hHp
 
+/-- **The compression spectrum is the honest-restriction spectrum on an invariant
+block.**  Since `compress T H = T.restrict hinv` on an invariant subspace
+(`compress_eq_restrict_of_invariant`), the two operators share a spectrum; the
+containment `spectrum_compress_subset_of_invariant` is thus the classical fact
+that a restriction to an invariant subspace has spectrum inside the ambient one,
+routed through the explicit orthogonal compression. -/
+theorem spectrum_compress_eq_restrict_of_invariant {T : V →ₗ[𝕜] V}
+    (H : Submodule 𝕜 V) (hinv : ∀ y ∈ H, T y ∈ H) :
+    spectrum 𝕜 (compress T H) = spectrum 𝕜 (T.restrict hinv) := by
+  rw [compress_eq_restrict_of_invariant H hinv]
+
 end CauchyInterlacing.PoincareCompression

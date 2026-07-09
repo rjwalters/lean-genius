@@ -79,6 +79,21 @@
       "targetId": "hurwitz-theorem",
       "relationship": "extends",
       "description": "The top-level Hurwitz entry states the {1,2,4,8} classification. This entry certifies exactness of the commutative subcase {1,2}."
+    },
+    {
+      "targetId": "hurwitz-theorem-oq-03-incomplete-01",
+      "relationship": "related",
+      "description": "Complements this entry's realizability endpoints: it verifies the 1-, 2- (Brahmagupta–Fibonacci), 4- (Euler) and 8-square (Degen) identities as universal ring identities. Those norm-multiplicativity identities are exactly the |xy| = |x||y| structure that makes ℝ, ℂ, ℍ and 𝕆 normed division algebras — i.e. the constructive engine realizing dimensions 4 and 8 that this entry leaves as an open question."
+    },
+    {
+      "targetId": "hurwitz-theorem-oq-03",
+      "relationship": "related",
+      "description": "Formalizes the n-square-identity form of Hurwitz's 1898 theorem (identities exist only for n ∈ {1,2,4,8}) and proves the 2- and 4-square identities. Provides the composition-algebra viewpoint dual to this entry's normed-field / finrank viewpoint."
+    },
+    {
+      "targetId": "hurwitz-theorem-oq-03-wip-01",
+      "relationship": "related",
+      "description": "The anticommuting-determinant obstruction toward the still-open even non-commutative case — the direction this entry explicitly does NOT touch. Its impossibility machinery is the counterpart to this entry's realizability results."
     }
   ],
   "overview": {
@@ -89,7 +104,8 @@
       "A dimension bound and a classification are different claims: the parent proves finrank ℝ F ≤-in-{1,2}, but sharpness additionally requires witnesses for each value. ℝ and ℂ are those witnesses.",
       "Gelfand-Mazur makes the commutative case an exact ℝ-or-ℂ dichotomy, so {1,2} is not just an upper bound but the precise set of achievable dimensions once realizability is added.",
       "The realizability endpoints are elementary (finrank of ℝ over ℝ and of ℂ over ℝ) yet are exactly what turns the parent's one-sided bound into a complete characterization of the commutative case.",
-      "None of this touches the non-commutative division-ring case (ℍ at dim 4, and the non-associative octonions at dim 8), which needs Clifford-algebra / Radon-Hurwitz machinery and remains the parent's open sorry."
+      "None of this touches the non-commutative division-ring case (ℍ at dim 4, and the non-associative octonions at dim 8), which needs Clifford-algebra / Radon-Hurwitz machinery and remains the parent's open sorry.",
+      "A formalization subtlety: the supporting lemma finrank_normed_field_eq_one_or_two is fully universe-polymorphic (F : Type*), but the bundled comm_bound_sharp quantifies over F : Type — fixing universe 0 so the ∀-statement is a single Prop rather than a universe-polymorphic family. The mathematical content is unchanged (every normed field over ℝ is ℝ or ℂ regardless of universe); only the packaging is universe-monomorphic."
     ]
   },
   "sections": [
@@ -97,25 +113,41 @@
       "id": "header",
       "title": "Module Header and Context",
       "startLine": 1,
-      "endLine": 41,
+      "endLine": 35,
       "summary": "Explains that the parent proves only the commutative UPPER bound finrank ℝ F ∈ {1,2} via Gelfand-Mazur and leaves the non-commutative case as a sorry; this file adds the realizability/sharpness direction so the commutative bound becomes exact.",
       "mathContext": "Hurwitz: real normed division algebras have dimension in $\\{1,2,4,8\\}$. Commutative case: Gelfand-Mazur $\\Rightarrow \\dim \\in \\{1,2\\}$."
     },
     {
+      "id": "admissible-def",
+      "title": "The admissible dimension set {1,2,4,8}",
+      "startLine": 36,
+      "endLine": 41,
+      "summary": "def admissibleDimensions : Set ℕ := {1,2,4,8}, defined identically to HurwitzOnlyIf.admissibleDimensions in the parent so the two files' statements align literally. Reproducing it (rather than importing the parent) keeps this companion self-contained.",
+      "mathContext": "$\\{1,2,4,8\\}$ — the dimensions of $\\mathbb R,\\mathbb C,\\mathbb H,\\mathbb O$, the target set of the Hurwitz classification."
+    },
+    {
       "id": "upper-bound",
       "title": "The Gelfand–Mazur Upper Bound",
-      "startLine": 43,
-      "endLine": 64,
-      "summary": "admissibleDimensions := {1,2,4,8}. finrank_normed_field_eq_one_or_two reproduces the parent's Gelfand-Mazur argument (F ≅ ℝ or ℂ ⇒ finrank 1 or 2); finrank_normed_field_admissible packages it into {1,2,4,8}.",
+      "startLine": 42,
+      "endLine": 56,
+      "summary": "finrank_normed_field_eq_one_or_two reproduces the parent's Gelfand-Mazur argument: NormedAlgebra.Real.nonempty_algEquiv_or gives F ≅ ℝ or ℂ, so transporting finrank across the linear equivalence yields 1 or 2. finrank_normed_field_admissible then packages this into the admissible set via omega.",
       "mathContext": "$F$ normed field over $\\mathbb{R} \\Rightarrow \\operatorname{finrank}_{\\mathbb R} F \\in \\{1,2\\} \\subseteq \\{1,2,4,8\\}$."
     },
     {
+      "id": "realizability",
+      "title": "Realizability of the endpoints ℝ and ℂ",
+      "startLine": 57,
+      "endLine": 64,
+      "summary": "finrank_real_self (finrank ℝ ℝ = 1, from CommSemiring.finrank_self) and finrank_complex (finrank ℝ ℂ = 2, from Complex.finrank_real_complex) are the concrete witnesses that dimensions 1 and 2 are actually attained by commutative real normed division algebras — the lower/realizability direction the parent's bound lacks.",
+      "mathContext": "$\\operatorname{finrank}_{\\mathbb R}\\mathbb R = 1$, $\\operatorname{finrank}_{\\mathbb R}\\mathbb C = 2$: both endpoints attained."
+    },
+    {
       "id": "sharpness",
-      "title": "Realizability and Sharpness",
-      "startLine": 66,
+      "title": "Sharpness: realized set is exactly {1,2}",
+      "startLine": 65,
       "endLine": 79,
-      "summary": "finrank_real_self (finrank ℝ ℝ = 1) and finrank_complex (finrank ℝ ℂ = 2) exhibit the endpoint algebras; comm_bound_sharp combines them with the upper bound to conclude the set of realized dimensions is exactly {1,2}.",
-      "mathContext": "$\\operatorname{finrank}_{\\mathbb R}\\mathbb R = 1$, $\\operatorname{finrank}_{\\mathbb R}\\mathbb C = 2$; both attained, none other $\\Rightarrow$ realized set $= \\{1,2\\}$."
+      "summary": "comm_bound_sharp bundles the two endpoint witnesses with the Gelfand-Mazur upper bound into a single statement, concluding the set of ℝ-dimensions of commutative real normed division algebras is exactly {1,2} — upgrading the parent's one-sided bound to a complete characterization of the commutative case.",
+      "mathContext": "Both endpoints attained and no other value occurs $\\Rightarrow$ realized set $= \\{1,2\\}$."
     }
   ],
   "conclusion": {

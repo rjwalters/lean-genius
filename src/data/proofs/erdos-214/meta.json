@@ -48,7 +48,11 @@
       "Connection to chromatic number of the plane",
       "BUILD REPAIR: the entry was broken on main — an orphaned /-- doc-comment (documenting nothing, followed by a block comment rather than a declaration) caused a parse error so the file never compiled. Converted to a plain /- block comment; the entry now builds and its theorems are genuinely machine-checked.",
       "dist_sq theorem: coordinate form of the plane distance for arbitrary points, dist p q = √((p₀-q₀)²+(p₁-q₁)²) (the general-point companion of dist_coords).",
-      "scaledLattice_unitDistanceFree theorem: the scaled lattice √2·ℤ² is unit-distance-free. Distinct lattice points are at squared distance 2·((a₁-a₂)²+(b₁-b₂)²); equal to 1 would force 2m=1 for an integer m. Exhibits an explicit INFINITE unit-distance-free set, showing Problem #214's hypothesis is non-vacuous (juhasz_stronger applies to a genuine family of sets)."
+      "scaledLattice_unitDistanceFree theorem: the scaled lattice √2·ℤ² is unit-distance-free. Distinct lattice points are at squared distance 2·((a₁-a₂)²+(b₁-b₂)²); equal to 1 would force 2m=1 for an integer m. Exhibits an explicit INFINITE unit-distance-free set, showing Problem #214's hypothesis is non-vacuous (juhasz_stronger applies to a genuine family of sets).",
+      "Metric helpers dist_self (dist p p = 0) and dist_comm (symmetry) — basic coordinate-distance facts previously absent.",
+      "isUnitSquare_of_isometry: any distance-preserving map carries a unit square to a unit square — the reusable geometric heart of the reduction unit_square_from_stronger (a congruent copy of the standard unit square is again a unit square precisely because the witness is an isometry).",
+      "IsUnitSquare.distinct: a unit square has four pairwise-distinct vertices (edges have length 1≠0, diagonals length √2≠0, and dist p p = 0), certifying ContainsUnitSquare is a genuinely non-degenerate 4-point statement.",
+      "complement_contains_distinct_unit_square: capstone — the complement of any unit-distance-free set contains a unit square on four PAIRWISE-DISTINCT points, sharpening the problem's 'four points' phrasing (combines erdos_214_solved with vertex-distinctness)."
     ],
     "relatedProblems": [
       {
@@ -81,9 +85,9 @@
       }
     ],
     "axiomCount": 1,
-    "lineCount": 263,
+    "lineCount": 382,
     "assumptions": "1 axiom: juhasz_stronger (Juhász 1979 — a unit-distance-free set's complement contains a congruent copy of ANY 4-point configuration). The original Problem #214 statement (juhasz_1979 : Erdos214Statement) is no longer a separate axiom: it is DERIVED from juhasz_stronger via the proved reduction unit_square_from_stronger (a unit square is a special 4-point configuration, transported into the complement by Juhász's isometry). 0 sorries. The problem's hypothesis is now shown non-vacuous: scaledLattice_unitDistanceFree proves √2·ℤ² is an explicit infinite unit-distance-free set (no assumptions).",
-    "theoremCount": 10,
+    "theoremCount": 20,
     "definitionCount": 13,
     "additionalFiles": [
       "Proofs/Erdos214ProblemAristotle.lean"
@@ -194,9 +198,9 @@
       "Real"
     ],
     "namespace": "Erdos214",
-    "lineCount": 263,
+    "lineCount": 382,
     "axiomCount": 1,
-    "theoremCount": 10,
+    "theoremCount": 20,
     "definitionCount": 13,
     "path": "Proofs/Erdos214Problem.lean",
     "sorries": 0,

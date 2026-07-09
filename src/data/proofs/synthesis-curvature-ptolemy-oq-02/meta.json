@@ -62,6 +62,14 @@
   },
   "sections": [
     {
+      "id": "context-setup",
+      "title": "Context: Discharging the Hyperbolic Ptolemy Conjecture",
+      "startLine": 1,
+      "endLine": 88,
+      "summary": "Imports (the parent PtolemysComplexProof, Arsinh) and the module docstring. The synthesis file SynthesisCurvaturePtolemy.lean unified the Euclidean (K=0) and spherical (K>0) Ptolemy theorems via curvatureSin K but left the hyperbolic case (K=-1) as a conjecture, remarking a full treatment needs the Poincaré-disk metric space (~800-1200 lines, blocked in Mathlib). This file discharges it as a fully verified theorem with no such machinery: the key observation is that every product in the Ptolemy relation shares the common conformal denominator √∏(1-‖zᵢ‖²), so clearing it reduces the hyperbolic inequality DIRECTLY to the Euclidean ptolemy_inequality. Includes an explicit honesty note: poincareDist is DEFINED by the standard closed form (2·arsinh of the conformal chord), not re-derived to be a genuine metric, and no metric axiom is used. Sets linter.unusedVariables false.",
+      "mathContext": "poincareChord z w = ‖z-w‖/√((1-‖z‖²)(1-‖w‖²)) = sinh(d_H/2) = curvatureSin(-1)(d_H/2); conformal-factor cancellation reduces K=-1 Ptolemy to the Euclidean case."
+    },
+    {
       "id": "conformal-chord",
       "title": "The Conformal Chord of the Poincaré Disk",
       "startLine": 89,

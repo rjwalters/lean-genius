@@ -140,5 +140,73 @@
       "relationship": "uses",
       "description": "Comaximality I ⊔ J = ⊤ is precisely the existence of a Bézout-type witness 1 = i + j with i ∈ I, j ∈ J. For the PID corollary this witness comes from IsCoprime a b, i.e. ∃ u v, u·a + v·b = 1 — Bézout's identity in disguise."
     }
+  ],
+  "references": [
+    {
+      "authors": "Atiyah, Michael F.; Macdonald, Ian G.",
+      "title": "Introduction to Commutative Algebra",
+      "year": "1969",
+      "venue": "Addison-Wesley",
+      "note": "Standard source for comaximal (coprime) ideals and the Chinese Remainder Theorem for rings and modules: for comaximal I, J one has IJ = I ∩ J and M/(I∩J)M ≅ M/IM × M/JM — exactly crtEquiv' and inf_smul_top here."
+    },
+    {
+      "authors": "Lang, Serge",
+      "title": "Algebra",
+      "year": "2002",
+      "venue": "Springer, Graduate Texts in Mathematics 211, 3rd ed.",
+      "note": "Module-theoretic Chinese Remainder Theorem and the structure of quotients by comaximal ideals; the PID specialisation crtEquivPID is the classical structure-theorem ingredient for finitely generated modules over a PID."
+    },
+    {
+      "authors": "Dummit, David S.; Foote, Richard M.",
+      "title": "Abstract Algebra",
+      "year": "2004",
+      "venue": "Wiley, 3rd ed.",
+      "note": "Textbook statement of CRT for rings and its extension to modules via comaximality, with the surjectivity-plus-kernel proof pattern (crtMap_surjective, ker_crtMap) used here."
+    },
+    {
+      "authors": "Bourbaki, Nicolas",
+      "title": "Commutative Algebra, Chapters 1–7",
+      "year": "1989",
+      "venue": "Springer",
+      "note": "Comprehensive treatment of ideals, comaximality, and localization; provides the general commutative-ring setting (no Noetherian or domain hypothesis) in which the module CRT isomorphism proved here holds."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "crtEquiv",
+      "type": "main",
+      "description": "The module Chinese Remainder Theorem: for comaximal ideals I ⊔ J = ⊤ and any R-module M, the canonical map induces an R-linear isomorphism M/(IM ⊓ JM) ≅ (M/IM) × (M/JM). Built from ker_crtMap and crtMap_surjective via the first isomorphism theorem for modules.",
+      "leanType": "(h : I ⊔ J = ⊤) : (M ⧸ (I • ⊤ ⊓ J • ⊤)) ≃ₗ[R] (M ⧸ I • ⊤) × (M ⧸ J • ⊤)"
+    },
+    {
+      "name": "crtEquiv'",
+      "type": "main",
+      "description": "The clean form using IM ⊓ JM = (I ⊓ J)M (inf_smul_top): M/((I ⊓ J)M) ≅ (M/IM) × (M/JM), matching the classical CRT quotient M/(I ∩ J).",
+      "leanType": "(h : I ⊔ J = ⊤) : (M ⧸ (I ⊓ J) • ⊤) ≃ₗ[R] (M ⧸ I • ⊤) × (M ⧸ J • ⊤)"
+    },
+    {
+      "name": "crtEquivPID",
+      "type": "main",
+      "description": "PID specialisation: coprime elements a, b generate comaximal principal ideals, so the module CRT applies to span{a} and span{b} — the ingredient behind the structure theorem for modules over a PID.",
+      "leanType": "{a b : R} (hab : IsCoprime a b) : (M ⧸ (span{a} ⊓ span{b}) • ⊤) ≃ₗ[R] (M ⧸ span{a} • ⊤) × (M ⧸ span{b} • ⊤)"
+    },
+    {
+      "name": "crtMap_surjective",
+      "type": "supporting",
+      "description": "Surjectivity of the canonical map M → M/IM × M/JM under comaximality: from i + j = 1 with i ∈ I, j ∈ J one lifts any target pair — the analytic heart of the isomorphism.",
+      "leanType": "(h : I ⊔ J = ⊤) : Function.Surjective (crtMap (M := M) I J)"
+    },
+    {
+      "name": "ker_crtMap",
+      "type": "supporting",
+      "description": "Kernel computation: the kernel of the canonical map M → M/IM × M/JM is IM ⊓ JM, giving the quotient on the left of the isomorphism.",
+      "leanType": ": LinearMap.ker (crtMap I J) = I • ⊤ ⊓ J • ⊤"
+    },
+    {
+      "name": "inf_smul_top",
+      "type": "supporting",
+      "description": "Comaximality identity for submodules: (I ⊓ J)M = IM ⊓ JM when I ⊔ J = ⊤, the module analogue of IJ = I ∩ J for comaximal ideals, converting crtEquiv into the clean crtEquiv'.",
+      "leanType": "(h : I ⊔ J = ⊤) : (I ⊓ J) • ⊤ = I • ⊤ ⊓ J • ⊤"
+    }
   ]
 }

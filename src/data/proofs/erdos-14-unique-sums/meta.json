@@ -28,8 +28,7 @@
       "uniqueSums / uniqueSums': set of sums representable in exactly one way",
       "nonUniqueCount: U(N) = |{1,...,N} \\ B| count of non-uniquely representable integers",
       "IsSidon: predicate — a+b = c+d implies {a,b}={c,d} (all pairwise sums distinct)",
-      "sidon_all_unique: Sidon sets have all sums in uniqueSums",
-      "sidon_implies_unique_sumset: Sidon ↔ uniqueSums A = sumset A"
+      "sidon_all_unique: Sidon sets have all sums in uniqueSums (sumset A ⊆ uniqueSums A)"
     ]
   },
   "overview": {

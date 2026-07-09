@@ -45,10 +45,9 @@
       }
     ],
     "originalContributions": [
-      "zeta_eq_cos_sin: ζₙ = cos(2π/n) + i·sin(2π/n) via Euler's formula",
-      "zeta_conj: conj(ζₙ) = ζₙ⁻¹ and zeta_add_inv: ζₙ + ζₙ⁻¹ = 2cos(2π/n)",
-      "zeta_pow: ζₙⁿ = 1 from Euler's formula and exp(2πi) = 1",
-      "complex_conj_order_two: conjugation has order 2 in Gal(ℚ(ζₙ)/ℚ) via -1 ∈ (ℤ/nℤ)*",
+      "exists_embedding_zeta_to_exp: ζₙ = cos(2π/n) + i·sin(2π/n) via Euler's formula",
+      "conjAut_zeta_eq_inv: conj(ζₙ) = ζₙ⁻¹ and zeta_add_inv: ζₙ + ζₙ⁻¹ = 2cos(2π/n)",
+      "conjAut_orderOf: conjugation has order 2 in Gal(ℚ(ζₙ)/ℚ) via -1 ∈ (ℤ/nℤ)*",
       "Chebyshev polynomial connection: Tₙ(cos θ) = cos(nθ) from Mathlib",
       "cos_algebraic_from_cyclotomic: cos(2π/n) is algebraic over ℚ"
     ],

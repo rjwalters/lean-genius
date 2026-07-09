@@ -38,6 +38,10 @@ file adds no axioms and no sorries.
 * `inner_sMidpoint_sub` — the midpoint lies on the perpendicular bisector: `⟪M, A − B⟫ = 0`.
 * `scos_sMidpoint_eq` / `sdist_sMidpoint_eq` — the midpoint is spherically equidistant from the
   two endpoints.
+* `norm_add_sq_unit` — `‖A+B‖² = 2 + 2⟪A,B⟫` for model points.
+* `scos_sMidpoint_left` — the explicit vertex-to-midpoint spherical cosine `‖A+B‖⁻¹(1+⟪A,B⟫)`.
+* `sdist_sMidpoint_half` — **the midpoint bisects the arc**: `sdist A (sMidpoint A B) = ½·sdist A B`,
+  the sharper fact (beyond equidistance) that justifies the name.
 * `sphericalNinePointCircle_exists` — **existence of the spherical nine-point circle**: the
   three side-midpoints of a spherical triangle lie on a common spherical circle.
 -/
@@ -99,6 +103,83 @@ theorem sdist_sMidpoint_eq (A B : E) (hA : OnSphere A) (hB : OnSphere B) :
   unfold scos at h
   unfold sdist
   rw [h]
+
+/-! ### The spherical midpoint bisects the arc
+
+`sdist_sMidpoint_eq` shows `M = sMidpoint A B` is *equidistant* from `A` and `B`, but a
+point equidistant from two others need not be their midpoint (the antipode of the true
+midpoint is equidistant too).  Here we prove the sharper fact that pins down the geometry
+and justifies the name: `M` bisects the arc, `sdist A M = ½ · sdist A B`.  The computation
+runs through the spherical cosine: `scos A M = ‖A+B‖⁻¹(1 + ⟪A,B⟫)` is nonnegative, so
+`sdist A M ≤ π/2`, and the double-angle identity `cos(2·sdist A M) = 2·(scos A M)² − 1`
+collapses to `⟪A,B⟫ = cos(sdist A B)`; injectivity of `cos` on `[0, π]` closes it. -/
+
+/-- **Squared norm of a spherical side.**  For two model points, `‖A + B‖² = 2 + 2⟪A,B⟫`
+(the parallelogram/polarisation expansion with `‖A‖ = ‖B‖ = 1`). -/
+theorem norm_add_sq_unit (A B : E) (hA : OnSphere A) (hB : OnSphere B) :
+    ‖A + B‖ ^ 2 = 2 + 2 * ⟪A, B⟫ := by
+  unfold OnSphere at hA hB
+  rw [← real_inner_self_eq_norm_sq, inner_add_left, inner_add_right, inner_add_right,
+      real_inner_self_eq_norm_sq, real_inner_self_eq_norm_sq, hA, hB, real_inner_comm B A]
+  ring
+
+/-- **Explicit spherical cosine from a vertex to the midpoint of its side.**
+`scos A (sMidpoint A B) = ‖A+B‖⁻¹ (1 + ⟪A,B⟫)`.  This closed form is the computational core
+of both the equidistance (`scos_sMidpoint_eq`) and the arc-bisection facts. -/
+theorem scos_sMidpoint_left (A B : E) (hA : OnSphere A) (_hB : OnSphere B) :
+    scos A (sMidpoint A B) = (‖A + B‖)⁻¹ * (1 + ⟪A, B⟫) := by
+  unfold scos sMidpoint
+  rw [real_inner_smul_right, inner_add_right, real_inner_self_eq_norm_sq]
+  unfold OnSphere at hA
+  rw [hA]; norm_num
+
+/-- **The spherical midpoint bisects the arc: `sdist A (sMidpoint A B) = ½ · sdist A B`.**
+For non-antipodal model points `A, B` the spherical midpoint `M = ‖A+B‖⁻¹•(A+B)` lies at
+spherical distance exactly half of `sdist A B` from `A` (equivalently, from `B`).  This is
+strictly stronger than equidistance (`sdist_sMidpoint_eq`) and is what genuinely justifies
+the name "midpoint": the equidistant locus of `A, B` also contains the antipode of the true
+midpoint, which this rules out (`sdist A M ≤ π/2`).  Proof: `scos A M = ‖A+B‖⁻¹(1+⟪A,B⟫) ≥ 0`
+gives `sdist A M ≤ π/2`; the double-angle identity turns `cos(2·sdist A M)` into `⟪A,B⟫ =
+cos(sdist A B)`, and `cos` is injective on `[0, π]`. -/
+theorem sdist_sMidpoint_half (A B : E) (hA : OnSphere A) (hB : OnSphere B)
+    (hAB : A + B ≠ 0) :
+    sdist A (sMidpoint A B) = sdist A B / 2 := by
+  set M := sMidpoint A B with hM
+  have hnormpos : 0 < ‖A + B‖ := by rw [norm_pos_iff]; exact hAB
+  have htle1 : ⟪A, B⟫ ≤ 1 := by
+    have := real_inner_le_norm A B
+    unfold OnSphere at hA hB; rw [hA, hB] at this; linarith
+  have hnsq : ‖A + B‖ ^ 2 = 2 + 2 * ⟪A, B⟫ := norm_add_sq_unit A B hA hB
+  have hden_pos : (0:ℝ) < 2 + 2 * ⟪A, B⟫ := by rw [← hnsq]; positivity
+  have h1t : (0:ℝ) ≤ 1 + ⟪A, B⟫ := by linarith
+  have hscos_val : scos A M = (‖A + B‖)⁻¹ * (1 + ⟪A, B⟫) := scos_sMidpoint_left A B hA hB
+  have hscos_nn : 0 ≤ scos A M := by rw [hscos_val]; positivity
+  have hscos_le1 : scos A M ≤ 1 := by
+    rw [hscos_val, inv_mul_le_iff₀ hnormpos, mul_one]
+    nlinarith [hnsq, hnormpos.le, mul_nonneg (sub_nonneg.mpr htle1) h1t]
+  have hcosM : Real.cos (sdist A M) = scos A M := by
+    unfold sdist scos
+    exact Real.cos_arccos (by rw [← scos]; linarith) (by rw [← scos]; exact hscos_le1)
+  have hsq2 : scos A M ^ 2 = (1 + ⟪A, B⟫) / 2 := by
+    rw [hscos_val, mul_pow, inv_pow, hnsq, inv_mul_eq_div, div_eq_iff hden_pos.ne']
+    ring
+  have hcos2 : Real.cos (2 * sdist A M) = ⟪A, B⟫ := by
+    rw [Real.cos_two_mul, hcosM, hsq2]; ring
+  have hcosAB : Real.cos (sdist A B) = ⟪A, B⟫ := by
+    unfold sdist; exact Real.cos_arccos (by linarith) htle1
+  have hMle : sdist A M ≤ Real.pi / 2 := by
+    unfold sdist
+    exact Real.arccos_le_pi_div_two.mpr
+      (by rw [show (⟪A, M⟫ : ℝ) = scos A M from rfl]; exact hscos_nn)
+  have h2M_mem : 2 * sdist A M ∈ Set.Icc 0 Real.pi := by
+    refine ⟨?_, by linarith [hMle]⟩
+    have : (0:ℝ) ≤ sdist A M := by unfold sdist; exact Real.arccos_nonneg _
+    linarith
+  have hAB_mem : sdist A B ∈ Set.Icc 0 Real.pi :=
+    ⟨Real.arccos_nonneg _, Real.arccos_le_pi _⟩
+  have hcoseq : Real.cos (2 * sdist A M) = Real.cos (sdist A B) := by rw [hcos2, hcosAB]
+  have hfin : 2 * sdist A M = sdist A B := Real.injOn_cos h2M_mem hAB_mem hcoseq
+  linarith [hfin]
 
 /-- **Existence of the spherical nine-point circle.**  Given a spherical triangle with
 vertices `A, B, C` whose sides are non-degenerate (no two endpoints antipodal), its three

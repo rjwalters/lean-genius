@@ -4,7 +4,7 @@
   "parentId": "roth-theorem-k3-oq-03",
   "status": "in-progress",
   "knowledge": {
-    "score": 16,
+    "score": 19,
     "insights": [
       "The parent OQ-03 defines gowersNorm and kAPCount constructively but proves NO algebraic properties of them — this child fills that gap with the foundational degenerate/normalization identities.",
       "kAPCount on a constant tuple (c,…,c) equals c^k: the inner product is c^k and the normalized double average (N^-1)^2 * sum_{x,d} c^k = c^k cancels N^2 against the (N^-1)^2 prefactor. The all-ones case gives Λ_k(1,…,1)=1, the total normalized k-AP mass.",
@@ -20,7 +20,11 @@
       "kAPCount_update_zero (@[simp]): overwriting slot j with 0 gives Λ_k = 0 — one-liner off kAPCount_eq_zero_of_zero + Function.update_self; the additive unit of the slot module.",
       "Toolchain: Function.update_self (NOT update_same) is the v4.26 name for update f j v j = v; add_sub_cancel proves a + (b − a) = b here (works for the module ZMod N → ℂ).",
       "The full slot-telescoping Λ_k(g,…,g)=∑_{S⊆[k]}δ^{k−|S|}Λ_k(i↦if i∈S then b else 1) (b=g−δ·1) is obtained in ONE shot from Finset.prod_add on the inner product ∏ᵢ g(x+i·d)=∏ᵢ(b(x+i·d)+δ), rather than iterating kAPCount_update_split k times. S=∅ gives the δ^k major term (kAPCount_const_one).",
-      "Assembly: expand inner product on both sides to a canonical triple sum (N⁻¹)²∑ₓ∑_d∑_S, then reconcile via two Finset.sum_comm reorderings (∑_S∑ₓ∑_d → ∑ₓ∑_d∑_S). RHS if-slots collapse via Finset.prod_ite_mem + univ_inter; δ-power exponent k−|S| via Finset.card_sdiff_of_subset."
+      "Assembly: expand inner product on both sides to a canonical triple sum (N⁻¹)²∑ₓ∑_d∑_S, then reconcile via two Finset.sum_comm reorderings (∑_S∑ₓ∑_d → ∑ₓ∑_d∑_S). RHS if-slots collapse via Finset.prod_ite_mem + univ_inter; δ-power exponent k−|S| via Finset.card_sdiff_of_subset.",
+      "To peel the S=∅ major term off Finset.univ sum over subsets: rw [← Finset.add_sum_erase Finset.univ _ (Finset.mem_univ ∅)] turns ∑_{S:Finset (Fin k)} into F ∅ + ∑_{S∈univ.erase ∅}; then the empty-slot tuple (fun i => if i∈∅ then b else 1) equals the const-1 tuple by funext i y; simp, so kAPCount_const_one evaluates it to 1 and the term is δ^k.",
+      "Combinatorial bridge (kAPCount_indicator_eq_count): feeding the complex indicator 1_A into every slot turns the analytic operator into a genuine count — Λ_k(1_A,…,1_A) = (N⁻¹)²·#{(x,d) : ∀ i, x+i·d ∈ A}, i.e. (N⁻¹)² times the number of length-k progressions x,x+d,…,x+(k−1)d lying wholly inside A. This is the concrete meaning of 'normalized k-AP density of A' that Roth's theorem (k=3) forces positive for dense A.",
+      "Proof recipe for indicator→count: simp only [kAPCount, indicatorZMod]; congr 1 (strip (N⁻¹)² prefactor); collapse the double average ∑_x∑_d to a single pair sum via `rw [← Finset.sum_product', Finset.univ_product_univ]` (sum_product' matches ∑x∈s∑y∈t f x y, avoids the (x,y).1 reconstruction that breaks Fintype.sum_prod_type); then `simp [Finset.prod_boole, Finset.sum_boole]` finishes (∏ of 0/1 indicators = indicator of ∀-condition, ∑ of that = card of the filtered pair set).",
+      "GOTCHA: `rw [Finset.sum_boole]` (and `rw`-ing any if-then-1-else-0 identity) FAILS 'did not find pattern' when the ite's Decidable instance is a concrete `decidableDforallFinset` (produced by prod_boole's bounded ∀ i∈univ) — rw won't unify the instance arg. Use `simp [Finset.sum_boole]` instead: simp is instance-robust AND simultaneously normalizes `∀ i ∈ univ` → `∀ i` so the counted filter predicate matches a plain-`∀ i` statement. Likewise hand-writing `if (∀ i ∈ univ, …) then 1 else 0` in a `have` fixes a DIFFERENT instance than prod_boole → later rw/exact mismatches; never restate the ite, let simp/library lemmas carry the instance."
     ],
     "builtItems": [
       "RothTheoremOQ03OQ01.lean: self-contained, 4 noncomputable defs (hypercubeShift, conjugateByWeight, gowersNorm, kAPCount) + 5 proved theorems, 0 axioms, 0 sorries.",
@@ -35,13 +39,17 @@
       "kAPCount_update_split: von Neumann slot-split identity Λ_k(update f j g) = δ·Λ_k(update f j 1) + Λ_k(update f j (g−δ·1)). 0 axioms (propext/Choice/Quot only), host lake env lean EXIT 0.",
       "kAPCount_update_sub: slotwise subtractivity.",
       "kAPCount_update_zero (@[simp]): zero slot annihilates the count (update form).",
-      "kAPCount_diag_eq_sum_subsets (generalized von Neumann telescoping, 2^k subset expansion)"
+      "kAPCount_diag_eq_sum_subsets (generalized von Neumann telescoping, 2^k subset expansion)",
+      "kAPCount_diag_eq_major_add_remainder: isolates the S=∅ major term of the von Neumann expansion — Λ_k(g,…,g) = δ^k + ∑_{∅≠S⊆[k]} δ^{k−|S|}·Λ_k(i↦ if i∈S then g−δ·1 else 1). S=∅ term collapses via kAPCount_const_one; proved with Finset.add_sum_erase + funext/simp. The \"main count δ^k + balanced (Gowers-controlled) remainder\" form. VERIFIED 0/0.",
+      "indicatorZMod: the complex indicator 1_A : ZMod N → ℂ of a finset A (1 on A, 0 off).",
+      "kAPCount_indicator_eq_count: Λ_k(1_A,…,1_A) = (N⁻¹)²·#{(x,d) : ∀ i, x+i·d ∈ A} — the analytic operator equals (N⁻¹)² times the combinatorial count of k-APs inside A. VERIFIED 0/0 (docker-build green).",
+      "indicatorZMod_univ (@[simp]): 1_univ = const 1; kAPCount_indicator_univ: Λ_k(1_univ,…) = 1, recovering kAPCount_const_one through the combinatorial definition (every pair gives a progression in univ)."
     ],
-    "progressSummary": "PROGRESS (S+1, researcher-5): added the generalized von Neumann slot-split kAPCount_update_split (Λ_k(update f j g) = δ·Λ_k(update f j 1) + Λ_k(update f j (g−δ·1))) — the first density-decomposition step the prior nextSteps called for — plus its supporting slotwise linearity (kAPCount_update_sub, kAPCount_update_zero). All host-verified (lake env lean EXIT 0), 0 axioms/0 sorries (foundational trio only). score 13→16. [2026-07-08 researcher-10] Proved the full slot-telescoping kAPCount_diag_eq_sum_subsets (the density-decomposition step the prior nextSteps called for, completed): Λ_k(g,…,g)=∑_{S⊆[k]}δ^{k−|S|}Λ_k(i↦if i∈S then g−δ·1 else 1), all 2^k terms with δ^k major term at S=∅, via Finset.prod_add. VERIFIED 0/0 (docker-build green). File 354L/12 theorems.",
+    "progressSummary": "PROGRESS (S+1, researcher-5): added the generalized von Neumann slot-split kAPCount_update_split (Λ_k(update f j g) = δ·Λ_k(update f j 1) + Λ_k(update f j (g−δ·1))) — the first density-decomposition step the prior nextSteps called for — plus its supporting slotwise linearity (kAPCount_update_sub, kAPCount_update_zero). All host-verified (lake env lean EXIT 0), 0 axioms/0 sorries (foundational trio only). score 13→16. [2026-07-08 researcher-10] Proved the full slot-telescoping kAPCount_diag_eq_sum_subsets (the density-decomposition step the prior nextSteps called for, completed): Λ_k(g,…,g)=∑_{S⊆[k]}δ^{k−|S|}Λ_k(i↦if i∈S then g−δ·1 else 1), all 2^k terms with δ^k major term at S=∅, via Finset.prod_add. VERIFIED 0/0 (docker-build green). File 354L/12 theorems. [2026-07-08 researcher-1] Added the COMBINATORIAL BRIDGE kAPCount_indicator_eq_count: Λ_k(1_A,…,1_A) = (N⁻¹)²·#{(x,d) : ∀ i, x+i·d ∈ A}, giving the analytic operator its combinatorial meaning as the normalized k-AP count of A (the quantity Roth forces positive for dense A), plus indicatorZMod def + univ consistency checks. VERIFIED 0/0 (docker-build green, no native_decide). File 448L/13 theorems/5 defs. score 16→19.",
     "nextSteps": [
-      "Prove the generalized von Neumann INEQUALITY: bound each balanced-remainder term |Λ_k(…,b,…)| (b mean-zero) by the Gowers U^{k−1} norm of the balanced slot (Cauchy–Schwarz/box-norm control; gowersNorm def already in file)",
-      "Connect kAPCount of an indicator 1_A to the actual count of 3-APs in a finset A ⊆ ZMod N",
-      "Repair parent RothTheoremOQ03.lean toolchain drift (Complex.abs → ‖·‖) so the files can merge"
+      "Prove the generalized von Neumann INEQUALITY: bound each balanced-remainder term |Λ_k(…,b,…)| (b = 1_A − δ·1 mean-zero) by the Gowers U^{k−1} norm of the balanced slot (Cauchy–Schwarz / box-norm control; gowersNorm def already in file). This is the one genuinely hard remaining step.",
+      "Split the pair count in kAPCount_indicator_eq_count into the trivial d=0 diagonal (contributes #A, giving density δ = |A|/N) plus the nontrivial d≠0 APs, connecting Λ_3(1_A) − δ to the count of nondegenerate 3-APs.",
+      "Repair parent RothTheoremOQ03.lean toolchain drift (Complex.abs → ‖·‖) so the files can merge."
     ]
   },
   "relatedProofs": [

@@ -18,8 +18,8 @@
   "currentState": {
     "phase": "COMPLETED",
     "since": "2026-06-22T00:00:00-07:00",
-    "iteration": 1,
-    "focus": "Formalized the a priori / a posteriori Banach error estimates for contraction iteration, plus Lipschitz composition.",
+    "iteration": 2,
+    "focus": "Added multi-step iteration bounds: f^[m] is L^m-contraction, convergence + computable stopping rule.",
     "blockers": [],
     "nextAction": "None — complete.",
     "attemptCounts": {
@@ -36,7 +36,8 @@
       "initial_dist: (1−L)·|x₀ − x*| ≤ |x₁ − x₀| — one-step distance estimate via triangle inequality + contraction on the first step.",
       "apriori_estimate: |xₙ − x*| ≤ Lⁿ/(1−L)·|x₁ − x₀| (combine iterate_dist + initial_dist).",
       "aposteriori_estimate: |xₙ₊₁ − x*| ≤ L/(1−L)·|xₙ₊₁ − xₙ| (triangle + contraction, clear denominator via le_div_iff₀ + nlinarith).",
-      "lipschitz_comp: |g(f x) − g(f y)| ≤ L₂L₁·|x − y|; contraction_comp: L₂L₁ < 1 ∧ composite is a contraction."
+      "lipschitz_comp: |g(f x) − g(f y)| ≤ L₂L₁·|x − y|; contraction_comp: L₂L₁ < 1 ∧ composite is a contraction.",
+      "BrouwerFixedPointOQ02OQ02OQ01Iteration.lean (researcher-2, PR pending): multi-step iteration bounds closing the base entry's next steps. iterate_contraction (f^[m] is an L^m-contraction), iterate_dist_tendsto (two-point spread -> 0 for 0<=L<1), apriori_iteration_count (for every eps>0 a finite iteration count N gives |x_n - x*|<=eps -- the parent's O(log 1/eps) guarantee), iteration_converges (x_n -> x* in R). VERIFIED 0 axioms / 0 sorries."
     ],
     "insights": [
       "Parent oq-02-oq-02 proves the bound |xₙ − x*| ≤ Lⁿ·|x₀ − x*| which is not directly usable (|x₀ − x*| unknown). The classical fix is the a priori estimate, expressing the bound via the computable first increment |x₁ − x₀|.",
@@ -47,9 +48,8 @@
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Convergence/existence: the iterates are Cauchy (|xₘ − xₙ| ≤ Lⁿ/(1−L)|x₁ − x₀|) so converge in ℝ to a fixed point — formalize existence from the a priori bound (currently x* is a hypothesis).",
-      "Turn the a priori estimate into an explicit query count: solve Lⁿ/(1−L)|x₁ − x₀| ≤ ε for n to recover the parent's O(log 1/ε) iteration bound with explicit constants.",
-      "Iterating m maps: chain contraction_comp to bound a composite of m contractions by the product of their constants."
+      "Existence of the fixed point itself (Cauchy completeness -> Banach fixed point) is the one remaining gap; currently x* is a hypothesis. Mathlib's ContractingWith.fixedPoint / Banach would supply it, or a self-contained Cauchy-sequence construction.",
+      "Iterating m DISTINCT maps (a Fin m or List family of contractions): composite is a (prod L_i)-contraction, generalising contraction_comp and iterate_contraction to heterogeneous families."
     ]
   },
   "tags": [

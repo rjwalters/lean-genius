@@ -45,7 +45,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (2026-06-30, researcher-4): S7 PROVES Roberts d=1 tight closed form frobenius_three_consecutive: frobeniusNumber3 n (n+1) (n+2) = ⌊(n-2)/2⌋·n+(n-1) for all n≥1, VERIFIED 0-axiom (only propext/Classical.choice/Quot.sound). Routed through S6 representable3_consecutive_iff. File 440→559 lines, 27→33 thm. Remaining outward: general Roberts 3-AP (S8).",
+    "progressSummary": "SOLVED + SHARP: general 3-AP Roberts closed form (S8) plus S9 sharpness showing gcd(a,d)=1 is necessary (gcd>=2 => infinite non-representable set, no finite Frobenius number). File 814 lines, 0-axiom. Remaining outward: general s-term Roberts, genus/Sylvester-sum count for AP triples.",
     "builtItems": [
       "FrobeniusOQ03.set_non_representable3_finite_of_coprime_ab (S4 ACT, PR #19830, build-pending shipped 2026-05-16T21:21:05Z, BUILD-VERIFY GREEN via researcher-1 S4 BUILD-VERIFY this PR 2026-05-25T09:28:06Z): Docker build ✔ [3059/3059] Built Proofs.FrobeniusNumberOQ03 (18s) at HEAD 8cae62447e1b..., Mathlib pin 2df2f0150c... (12-day-stable). The theorem proves { n : N | ~Representable3 a b c n }.Finite under Nat.Coprime a b + 1 <= a + 1 <= b via Set.Finite.subset (Set.finite_Iio ((a-1)*(b-1))) and the contrapositive of S3b's large_representable3_via_two_gen. 6-line proof body, 22-line docstring.",
       "FrobeniusOQ03.set_non_representable3_finite_of_coprime_ab (S4 ACT, this PR, build pending): theorem proving { n : ℕ | ¬ Representable3 a b c n }.Finite under Nat.Coprime a b + 1 ≤ a + 1 ≤ b, via Set.Finite.subset (Set.finite_Iio ((a-1)*(b-1))) and the contrapositive of S3b's large_representable3_via_two_gen. 6-line proof body, 22-line docstring. Pasted verbatim from S3g STATE-SYNC §7.1.",
@@ -69,7 +69,10 @@
       "research/problems/frobenius-number-oq-03/sessions/2026-05-16-s3g-statesync-postdrain-absorb-s3b-s3c-acts.md (S3g STATE-SYNC, this PR, ~390 lines, doc-only post-drain catch-up + 19-bearer drift recheck table at base 0a6466a8f0d + S4 Route 1 + S4a tight bound sketches + JSON delta plan + risk analysis).",
       "frobenius_three_consecutive (FrobeniusNumberOQ03.lean S7): Roberts d=1 closed form frobeniusNumber3 n (n+1) (n+2) = ⌊(n-2)/2⌋·n + (n-1) for all n≥1, VERIFIED 0-axiom",
       "not_representable3_roberts + representable3_above_roberts: the two directions (witness non-rep for n≥2; everything above representable via s=m/n) routed through representable3_consecutive_iff",
-      "frobenius_3_4_5 / frobenius_4_5_6 / frobenius_5_6_7: concrete instances 2,7,9"
+      "frobenius_3_4_5 / frobenius_4_5_6 / frobenius_5_6_7: concrete instances 2,7,9",
+      "gcd_dvd_of_representable3_ap (FrobeniusNumberOQ03.lean S9): Representable3 a (a+d) (a+2d) m -> gcd a d | m (divisibility obstruction)",
+      "non_representable3_ap_infinite_of_gcd_ne_one (FrobeniusNumberOQ03.lean S9): 2 <= gcd a d -> {m | not Representable3 a (a+d) (a+2d) m}.Infinite via Set.infinite_of_injective_forall_mem on k |-> g*k+1",
+      "not_bddAbove_non_representable3_ap_of_gcd_ne_one + non_representable3_2_4_6_infinite concrete witness (FrobeniusNumberOQ03.lean S9). File 743->814 lines, 39->43 thm, 0 sorries, 0 axioms, Docker [3059/3059]"
     ],
     "insights": [
       "The three-consecutive-integers case g(n, n+1, n+2) for n ≥ 3 is the cleanest concrete target: it admits the Roberts d=1 closed form ⌊(n-2)/2⌋·n + (n-1), validated numerically for n ∈ {3, …, 7}.",
@@ -83,7 +86,8 @@
       "The pinned Mathlib rev (2df2f0150c) has not moved across 9 calendar days of slug history (S1 2026-05-12 → S3g 2026-05-16). All 19 named bearers are stable; no upstream pin bump has occurred.",
       "Drain-wave race condition observed at S3f/S3b/S3c: STATE-SYNC PR (#19376) and its named-recipe ACT PR (#19412) ended up merging within 2 minutes of each other in reverse order (ACT merged FIRST at 03:51:29Z, STATE-SYNC merged 2 min later at 03:53:10Z). Despite this, the deliveries were conflict-free at file level since the ACT touched only the Lean file and the STATE-SYNC touched only state.md/JSON/sessions. The downstream S3c ACT (#19429) then partially absorbed both predecessors into state.md/JSON in its own merge, but left 8 cleanup items that this S3g STATE-SYNC closes. Pattern: when a STATE-SYNC names a paste-ready ACT, sibling pickers can race to ship the ACT before the STATE-SYNC merges — the ACT's iteration label rides on the STATE-SYNC's recipe and the resulting drift requires a follow-on STATE-SYNC to fully reconcile.",
       "Roberts witness g=(q+1)·n−1 (q=⌊(n-2)/2⌋) is the right end of the LAST gap; intervals [n·s,(n+2)·s] become contiguous at s=q+1 since n≤2(q+1)+1. n=1 is degenerate: g=0 IS representable, so not_representable3_roberts needs n≥2 while the main theorem handles n=1 via the empty non-rep set.",
-      "omega understands ℕ floor-division by the literal 2, so ⌊(n-2)/2⌋ bounds (2⌊(n-2)/2⌋ ∈ {n-2,n-3}) are discharged automatically; nonlinear products n·s, (n+2)·s are linked to ⌊(n-2)/2⌋·n by ring-identity `have`s as opaque atoms."
+      "omega understands ℕ floor-division by the literal 2, so ⌊(n-2)/2⌋ bounds (2⌊(n-2)/2⌋ ∈ {n-2,n-3}) are discharged automatically; nonlinear products n·s, (n+2)·s are linked to ⌊(n-2)/2⌋·n by ring-identity `have`s as opaque atoms.",
+      "S9 (2026-07-08, researcher-8): The coprimality gcd(a,d)=1 in frobenius_three_ap is NECESSARY, not cosmetic. If g:=gcd(a,d)>=2 then g divides all three AP generators a, a+d, a+2d, hence every representable number; the non-representable set contains the infinite progression {g*k+1} and is infinite — no finite Frobenius number exists."
     ],
     "mathlibGaps": [
       "No Mathlib.Combinatorics.NumericalSemigroup module exists at v4.26.0 — neither Frobenius-number generalizations beyond two coprime generators, nor Apéry-set machinery, nor the Brauer–Shockley identity.",
@@ -101,7 +105,9 @@
       "S7 (stretch, ~150 LOC): lift to the Roberts 3-AP formula `g(a, a+d, a+2d) = ⌊(a-2)/2⌋·a + (a-1)·d` for coprime `a, d`. Reuses S2/S3 infrastructure, generalizes S5/S6 via Apéry-set argument.",
       "S8+ (deferred): Fibonacci triples (Marín–Ramírez Alfonsín–Revuelta 2007), Mersenne triples (Cooper–Karikomi–Snabb), geometric sequences — each is a self-contained closed-form formalization referencing the S2–S3 foundation.",
       "S8: general Roberts 3-AP closed form g(a,a+d,a+2d)=⌊(a-2)/2⌋·a + (a-1)·d for gcd(a,d)=1 — generalize representable3_consecutive_iff to the arithmetic-progression interval criterion n·s + d·(remainder).",
-      "Parity reformulation: g even-n = (n²-2)/2, odd-n = (n-2)(n+1)/2 — needs nonlinear (subst n=2k) not omega."
+      "Parity reformulation: g even-n = (n²-2)/2, odd-n = (n-2)(n+1)/2 — needs nonlinear (subst n=2k) not omega.",
+      "Genus (Sylvester sum) closed form for the coprime AP triple: count |{m : not Representable3 a (a+d) (a+2d) m}| via representable3_ap_iff residue structure (t <= 2s excess criterion)",
+      "General s-term AP Roberts: g(a, a+d, ..., a+(s-1)d) via variadic collapse to a*s0 + d*t with t <= (s-1)*s0"
     ]
   },
   "tags": [

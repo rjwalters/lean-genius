@@ -381,6 +381,58 @@ theorem bourgain_factor_isLittleO_roth_factor :
     rw [e1, Real.sqrt_mul (div_pos hLL hL).le, Real.sqrt_sq hLL.le,
         div_div_eq_mul_div, div_one, ← Real.sqrt_eq_rpow]
 
+/-- **OQ-02's rate strictly dominates OQ-01's rate.** The Bloom–Sisask density factor
+`1 / (log N)^{1 + blasiConst}` is `o` of the Bourgain density factor
+`(log log N / log N)^{1/2}`:
+
+  `(fun N => 1 / (log N)^{1+c}) =o[atTop] (fun N => (log log N / log N)^{1/2})`.
+
+This supplies the *analytic domination* that `rothNumberNat_le_min_bourgain_blasi` explicitly
+stops short of: there the two upper bounds are only combined through `min`, with the docstring
+noting that the honest comparison of the two right-hand sides was **not** carried out (it would
+"require tracking the unknown constants"). At the level of the density *shapes* — after
+cancelling the common `N` — no constant-tracking is needed: the Bloom–Sisask saving beats the
+Bourgain saving outright. The ratio equals `1 / ((log N)^{1/2+c} · (log log N)^{1/2})`, whose
+denominator `→ ∞` (product of two `rpow`s of quantities tending to `∞`, since `1/2 + c > 0`).
+Depends only on `blasiConst_pos`, not on the Bloom–Sisask bound itself. -/
+theorem blasi_factor_isLittleO_bourgain_factor :
+    Asymptotics.IsLittleO Filter.atTop
+      (fun N : ℕ => 1 / Real.log N ^ (1 + RothTheoremOQ02.blasiConst))
+      (fun N : ℕ => (Real.log (Real.log N) / Real.log N) ^ ((1 : ℝ) / 2)) := by
+  set c := RothTheoremOQ02.blasiConst with hcdef
+  have hc_pos : 0 < c := RothTheoremOQ02.blasiConst_pos
+  refine (Asymptotics.isLittleO_iff_tendsto' ?_).mpr ?_
+  · -- `g N = 0 → f N = 0` is vacuous for `N ≥ 3` (there `g N > 0`).
+    filter_upwards [Filter.eventually_ge_atTop 3] with N hN h0
+    have hL : 0 < Real.log N := lt_trans one_pos (one_lt_logN_of_three_le hN)
+    have hLL : 0 < Real.log (Real.log N) := loglog_pos_of_three_le hN
+    exact absurd h0 (ne_of_gt (Real.rpow_pos_of_pos (div_pos hLL hL) _))
+  · -- The ratio `f N / g N = 1 / ((log N)^{1/2+c} · (log log N)^{1/2}) → 0`.
+    have hlogN : Filter.Tendsto (fun N : ℕ => Real.log N) Filter.atTop Filter.atTop :=
+      Real.tendsto_log_atTop.comp tendsto_natCast_atTop_atTop
+    have hloglogN : Filter.Tendsto (fun N : ℕ => Real.log (Real.log N))
+        Filter.atTop Filter.atTop := Real.tendsto_log_atTop.comp hlogN
+    have hD : Filter.Tendsto
+        (fun N : ℕ => Real.log N ^ ((1:ℝ)/2 + c) * Real.log (Real.log N) ^ ((1:ℝ)/2))
+        Filter.atTop Filter.atTop := by
+      have := ((tendsto_rpow_atTop (show (0:ℝ) < 1/2 + c by positivity)).comp hlogN).atTop_mul_atTop
+        ((tendsto_rpow_atTop (show (0:ℝ) < 1/2 by norm_num)).comp hloglogN)
+      simpa [Function.comp] using this
+    refine (hD.inv_tendsto_atTop).congr' ?_
+    filter_upwards [Filter.eventually_ge_atTop 3] with N hN
+    simp only [Pi.inv_apply]
+    have hL : 0 < Real.log N := lt_trans one_pos (one_lt_logN_of_three_le hN)
+    have hLL : 0 < Real.log (Real.log N) := loglog_pos_of_three_le hN
+    have hLsplit : Real.log N ^ (1 + c)
+        = Real.log N ^ ((1:ℝ)/2) * Real.log N ^ ((1:ℝ)/2 + c) := by
+      rw [← Real.rpow_add hL]; congr 1; ring
+    have hL12 : Real.log N ^ ((1:ℝ)/2) ≠ 0 := ne_of_gt (Real.rpow_pos_of_pos hL _)
+    have hL12c : Real.log N ^ ((1:ℝ)/2 + c) ≠ 0 := ne_of_gt (Real.rpow_pos_of_pos hL _)
+    have hM12 : Real.log (Real.log N) ^ ((1:ℝ)/2) ≠ 0 := ne_of_gt (Real.rpow_pos_of_pos hLL _)
+    rw [Real.div_rpow hLL.le hL.le, hLsplit]
+    field_simp
+    ring
+
 /-- **Bloom–Sisask density bound for an arbitrary 3-AP-free set.**
 
 Every three-term-AP-free finite set `s ⊆ [0, N)` (with `N ≥ 3`) has cardinality bounded by
@@ -438,6 +490,7 @@ theorem threeAPFree_card_le_bourgain
 #check loglog_pos_of_three_le
 #check loglog_cubed_div_log_tendsto_zero
 #check bourgain_factor_isLittleO_roth_factor
+#check blasi_factor_isLittleO_bourgain_factor
 #check threeAPFree_card_le_blasi
 #check threeAPFree_card_le_bourgain
 

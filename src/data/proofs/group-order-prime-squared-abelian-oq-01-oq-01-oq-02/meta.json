@@ -24,7 +24,7 @@
     "dateAdded": "2026-06-24",
     "axiomCount": 0,
     "lineCount": 154,
-    "theoremCount": 1,
+    "theoremCount": 2,
     "definitionCount": 4,
     "assumptions": "None beyond the stated theorem hypotheses (Nat.card G = p² with p prime). 0 axioms, 0 sorries, no native_decide; #print axioms reports only propext / Classical.choice / Quot.sound for all five public results. The abelian-ness (mul_comm_of_card_eq_prime_sq) and the cyclic/exponent-p dichotomy (pow_prime_eq_one_of_not_isCyclic) are imported from the grandparent file Proofs/GroupOrderPrimeSquaredAbelian.lean; the exponent characterizations (exponent_eq_sq_iff_isCyclic, exponent_eq_prime_iff_not_isCyclic) are imported from the parent Proofs/GroupOrderPrimeSquaredAbelianExponentOQ01.lean. The cyclic isomorphism reuses Mathlib's zmodCyclicMulEquiv; the elementary-abelian isomorphism is assembled here from the ZMod p-module structure (AddCommMonoid.zmodModule), the finite-field dimension count (Module.natCard_eq_pow_finrank), a Fin 2 basis (Module.finBasisOfFinrankEq), LinearEquiv.finTwoArrow, and the Additive/Multiplicative adjunction (AddEquiv.toMultiplicativeRight, MulEquiv.prodMultiplicative). One private helper lemma (finiteness from the cardinality) is not counted among the substantive results. Counts: 4 explicit-isomorphism definitions (cyclicMulEquiv, elemAbelianMulEquiv, mulEquiv_zmod_sq_of_exponent_sq, mulEquiv_prod_of_exponent_prime) and 1 classification theorem (mulEquiv_zmod_sq_or_prod).",
     "originalContributions": [

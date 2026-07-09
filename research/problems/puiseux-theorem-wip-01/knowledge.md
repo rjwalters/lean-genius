@@ -82,3 +82,45 @@ theorems, 640→758 lines.
 
 **Deferred (unchanged):** full algebraic closure `IsAlgClosed (PuiseuxField K)`
 still needs the Newton–Puiseux convergence machinery absent from Mathlib.
+
+## Session (researcher-2, 2026-07-08): K-Subalgebra + single-inverse closure
+
+**Mode**: REVISIT (MODERATE) · **Outcome**: progress (3 theorems/1 def VERIFIED 0/0),
+branch research/puiseux-wip01-subalgebra-r2
+
+**Contribution — Part IX: the Puiseux series form a `K`-subalgebra.** researcher-3
+gave the `Subring`; this upgrades it to `puiseuxSubalgebra (K) [CommRing K] :
+Subalgebra K (HahnSeries ℚ K)`. The only new ingredient is scalar closure
+`isPuiseux_algebraMap`: `algebraMap K (HahnSeries ℚ K) c = C c = single 0 c`
+(`HahnSeries.C_eq_algebraMap` (rfl) + `HahnSeries.C_apply`, `C` is `@[simps]` with
+`toFun := single 0`), which is `isPuiseux_single 0 c`. `mul_mem'/add_mem'` reuse the
+existing closure lemmas. `mem_puiseuxSubalgebra` is `Iff.rfl`.
+
+**Contribution — first inverse-closure fact.** `isPuiseux_inv_single [Field K]`:
+`(single m a)⁻¹ = single (-m) a⁻¹` (`HahnSeries.inv_single`) is again a single term,
+hence Puiseux. Base case of the full inverse-closure that would give a subfield.
+
+**Gotchas:**
+- `HahnSeries.inv_single` and the `Field (HahnSeries ℚ K)` instance live in
+  `Mathlib.RingTheory.HahnSeries.Summable`, which the file did NOT import (only
+  Basic/Multiplication/PowerSeries). Added the import. Without it: `inv_single`
+  reads as an unknown constant.
+- Build: clean elaboration `[3070/3070] (0.4–1.8s)` with zero type errors, then
+  exit-135 SIGBUS at olean write on attempts 1–3; **attempt 4 landed clean**
+  (`Build completed successfully`). The file's own knowledge already flagged code-135
+  as an intermittent write crash here, not a logic error — keep retrying.
+
+**Why full inverse-closure is blocked (the real next step).** For `f` supported on
+`(1/n)ℤ`, `f⁻¹` is too: the series supported on the subgroup `(1/n)ℤ ≅ ℤ` form a
+subFIELD of `HahnSeries ℚ K` (via `HahnSeries.embDomainRingHom` from the order
+embedding `ℤ ↪o ℚ`, `k ↦ k/n`, which is a field hom `HahnSeries ℤ K →+* HahnSeries ℚ K`;
+its range is inv-closed and `map_inv₀` transports the inverse). The one missing plumbing
+lemma is the *preimage reconstruction*: `support f ⊆ Set.range (emb) ⇒ ∃ g, embDomain emb g = f`.
+Mathlib has `support_embDomain_subset` and `embDomain_injective` but no surjectivity-onto-
+range / `comapDomain`, so `g` must be built by hand (coeff `g k = f.coeff (k/n)`, PWO via
+`IsPWO.image_of_monotone` through the order-iso). ~60–100 lines of Hahn surgery, high
+SIGBUS risk — deferred, not attempted this session.
+
+**Files Modified:** proofs/Proofs/PuiseuxTheorem.lean (+import Summable; +Part IX:
+isPuiseux_algebraMap, puiseuxSubalgebra, mem_puiseuxSubalgebra, isPuiseux_inv_single;
+758→811 lines, 18→19 numbered theorems + def).

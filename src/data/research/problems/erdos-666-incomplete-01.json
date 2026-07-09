@@ -18,10 +18,10 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-04-03T12:23:52.517Z",
-    "iteration": 1,
-    "focus": "De-axiomatized chung_c6free in the parent Erdos666Problem.lean (researcher-4, 2026-07-08): the existence axiom '∀ n≥3, ∃ H, ¬HasC6 H' carries no edge-count data, so the empty subgraph ⊥ (no edges ⇒ no cycle) proves it outright. Entry axiom count 2→1; the deep density content stays isolated in chung_no_threshold. docker-build verified.",
+    "iteration": 2,
+    "focus": "Strengthened Chung refutation from the single point ε=1/4 to the whole interval ε≤1/4 (researcher-2): density monotonicity (epsilonDense_antitone, denseForcesC6_mono, conjectureAt_mono) turns the axiom chung_no_threshold into chung_no_threshold_le : ε≤1/4 → ¬ConjectureAt ε. Zero new axioms. File 0 sorry, 1 axiom.",
     "blockers": [],
-    "nextAction": "The remaining axiom chung_no_threshold (a *dense* 1/4-density C6-free subgraph via Chung's explicit 4-partition of Qₙ) is the genuine deep content — de-axiomatizing it needs the combinatorial edge-partition construction, absent from Mathlib. Alternative: formalize hypercube edge/vertex-count lemmas (hypercubeEdges = n·2^(n-1)) as theorems.",
+    "nextAction": "Remaining structural gaps: (1) conder_better_bound still carries a True placeholder for the ε=1/3 density claim (needs Conder 3-coloring construction, a new deep axiom); (2) GeneralizedConjecture for C_{2k} remains open. The single axiom chung_no_threshold is genuinely deep (Chung 4-partition, not in Mathlib) — not eliminable.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -32,7 +32,9 @@
     "progressSummary": "COMPLETED: Discharged the lone sorry in erdos_conjecture_false and repaired the file so it actually compiles (it previously had 24 errors: nonexistent Nat.popcount, missing Real/edgeFinset imports, orphaned docstrings, a buggy HasCycle mod_lt, and a malformed conder_better_bound tuple). The disproof now follows from a single well-formed axiom chung_1992 (density form). 0 sorries, 1 axiom; #print axioms shows only propext/Classical.choice/Quot.sound + chung_1992.",
     "builtItems": [
       "Proved Erdos666.erdos_conjecture_false from chung_1992 (Proofs/Erdos666Problem.lean)",
-      "Repaired Hypercube, HasCycle, DenseSubgraph defs and imports so the file compiles (282 lines, 0 errors)"
+      "Repaired Hypercube, HasCycle, DenseSubgraph defs and imports so the file compiles (282 lines, 0 errors)",
+      "epsilonDense_antitone / denseForcesC6_mono / conjectureAt_mono: ConjectureAt is monotone in ε (density antitone, forcing/conjecture monotone) [VERIFIED]",
+      "chung_no_threshold_le : ε ≤ 1/4 → ¬ConjectureAt ε — Chung refutation extended from the point 1/4 to the whole interval (0,1/4], 0 new axioms [VERIFIED]"
     ],
     "insights": [
       "The old chung_1992 axiom (bare 4-partition, only H1/H2 disjointness, no edge counts) was insufficient AND malformed: it could not justify erdos_conjecture_false because the disproof needs a density lower bound on one part.",
@@ -42,6 +44,7 @@
     ],
     "mathlibGaps": [],
     "nextSteps": [
+      "Replace the True placeholder in conder_better_bound with a real ε=1/3 density statement (needs Conder 3-coloring = new deep axiom).",
       "Optional: formalize Chung's explicit 4-partition to eliminate the single remaining axiom (large, ~1000+ lines)."
     ]
   },
@@ -61,7 +64,7 @@
     "mathlib": []
   },
   "started": "2026-04-03T12:23:52.517Z",
-  "lastUpdate": "2026-07-08",
+  "lastUpdate": "2026-07-08T00:00:00Z",
   "significance": 7,
   "tractability": 6
 }

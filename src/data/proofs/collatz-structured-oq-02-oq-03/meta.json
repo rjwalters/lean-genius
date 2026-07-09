@@ -20,11 +20,11 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 1,
-    "lineCount": 1801,
+    "lineCount": 1820,
     "assumptions": "1 axiom: tao_2019 — the precise statement of Tao (2019, Forum Math. Pi), that for every f : ℕ → ℝ with f n → ∞ the set {n : 0 < n ∧ Col_min(n) < f n} has logarithmic density one. This is the deep analytic result the open question asks about; it is recorded, not proved, because its proof (3-adic transport/concentration estimates plus a Fourier-analytic input) is far beyond current Mathlib. No theorem in the file is derived from this axiom — the proven Parts II–III are independently machine-verified and depend only on the standard foundational axioms propext / Classical.choice / Quot.sound.",
     "dateAdded": "2026-06-25",
     "mathlib_version": "4.26.0",
-    "theoremCount": 64,
+    "theoremCount": 66,
     "definitionCount": 13,
     "originalContributions": [
       "attainsBelow_density_of_autoDropCert: fuses the general density lemma attainsBelow_density_of_residues with the turnkey autoDropCert engine, so the drop-below density floor at any 2^b level is (#auto-certified residues)·(N-1) with ZERO per-residue proof — the residue count is a decide, every drop hypothesis is autoDropCert_attainsBelow (axiom-free, no native_decide)"
@@ -137,9 +137,9 @@
       "Mathlib"
     ],
     "namespace": "CollatzStructuredOQ02OQ03",
-    "lineCount": 1801,
+    "lineCount": 1820,
     "axiomCount": 1,
-    "theoremCount": 64,
+    "theoremCount": 66,
     "path": "Proofs/CollatzStructuredOQ02OQ03.lean",
     "sorries": 0,
     "definitionCount": 13

@@ -197,6 +197,90 @@ carries all the graph-theoretic content.
 - Outer AFKS loop assembly feeding `afks_energy_iteration_count`.
 - Discharge `|A'|,|A\A'|≥1`, `∉R` side conditions from `|A'|≥ε|A|>0` + equipartition.
 
+## Session 2026-07-08 (researcher-8) — B-side energy increment + split-gap⇒irregular converse
+
+**Mode**: REVISIT (continuing own thread) · **Outcome**: progress (VERIFIED 0/0), branch research/szemeredi-oq04-bside-and-converse-r8
+
+### What I Did
+- Synced stale worktree to origin/main (was ~7 commits behind; #35858/#35862 had
+  already wired the A-side irregularity→deviation→energy-jump chain end-to-end,
+  incl. `partitionEnergy_Aside_gain_of_irregular`). Re-scoped to what was genuinely
+  missing.
+- `partitionEnergy_Bside_gain_of_irregular`: the symmetric mirror of the A-side
+  end-to-end lemma. `partitionEnergy` sums over *ordered* pairs, so refinement is
+  coordinate-agnostic — a witness sub-partner `B'⊆B` deviating from the whole
+  partner `B`'s density against a fixed part `A₀∈R` (`|d(A₀,B')−d(A₀,B)|≥ε/2`)
+  drives the uniform floor `ε²/(8n²)` when `B` splits into `B', B\B'`. Transport the
+  deviation via `edgeDensity_comm` to partner-second orientation, feed
+  `partitionEnergy_subpair_split_gain_uniform` with split part `B`, partner `A₀`.
+- `edgeDensity_balanced_union_sub`: balanced (`|A₁|=|A₂|`) union density is the
+  arithmetic mean of the halves, `d(A₁,B)−d(A₁∪A₂,B)=(d₁−d₂)/2`. Cancel `|B|` then
+  `|A₁|` out of `edgeDensity_union_mul` (two `mul_left_cancel₀` + `linear_combination`).
+- `split_gap_not_regular_balanced`: the CONVERSE of the energy machinery. A δ-gap
+  between two equal-size halves against `B₀` forces `(A₁∪A₂,B₀)` to fail
+  ε-regularity for `ε<δ/2`, `ε≤1/2` — witness `A₁` (half the union, deviation δ/2).
+
+### Key Findings
+- The two one-sided energy-increment branches (A-split, B-split) are the SAME
+  lemma up to relabelling which part is pulled out of `R`; no fresh analysis.
+- Energy-gain hypothesis ⟺ ε-irregularity, up to the constant 1/2 (both directions
+  now formalized).
+- **Honest crux for full closure**: the triangle reduction `edgeDensity_two_sided_le`
+  always leaves one branch measuring deviation against a SUBSET partner (`A'` or
+  `B'`), which the whole-partner increment lemmas cannot consume. A clean
+  unconditional dichotomy [split-A vs whole-B₀] ∨ [split-B₀ vs whole-A] does NOT
+  follow from the triangle; genuine closure needs the 2×2 defect-Cauchy–Schwarz
+  increment (refining both coordinates at once).
+
+### Files Modified
+- proofs/Proofs/SzemerediRegularityOQ04Bridge.lean (+3 theorems: 15→18; PARTS VII, VIII)
+
+### Next Steps
+- Prove the 2×2 defect-Cauchy–Schwarz energy increment (both coordinates).
+- State the two-level AFKS conclusion with dependent tolerance E:ℕ→(0,1].
+- Assemble the outer loop using afks_energy_iteration_count (N≤2n²/ε²).
+
+## Session 2026-07-08 (researcher-8) — two-level B-side closure + unified AFKS increment
+
+**Mode**: REVISIT (continuing own thread) · **Outcome**: progress (VERIFIED 0/0), branch research/szemeredi-oq04-bside-and-converse-r8, PR #35902
+
+### What I Did
+- `partitionEnergy_Bside_gain_via_promotion` (PART IX): resolves the honest crux
+  flagged the last two sessions — the B-side branch of
+  `exists_onesided_deviation_of_irregular` hands a deviation
+  `|d(A′,B′)−d(A′,B)|≥ε/2` measured against the witness **subset** `A′`, which is
+  not a part, so the whole-partner increment cannot fire. Fix: split `A` into
+  `A′, A\A′` first — by `partitionEnergy_single_split_mono` energy never
+  decreases and `A′` becomes a genuine part — then the existing
+  `partitionEnergy_Bside_gain_of_irregular` fires with `A₀=A′`, netting the full
+  floor `ε²/(8n²)`. Two `Finset.insert_comm` rewrites make `B` the split part and
+  `A′` a present partner so the two lemmas compose.
+- `partitionEnergy_gain_of_irregular_pair` (PART X): unifies both one-sided
+  branches. Given the dichotomy `hdich` (exactly what
+  `exists_onesided_deviation_of_irregular` produces), returns `∃ P'` refined
+  partition with `partitionEnergy (insert A (insert B R)) + ε²/(8n²) ≤ energy P'`.
+  A-side → split `A` (Aside lemma, `B₀=B`); B-side → promote-then-split
+  (PART IX). Existential because the two branches yield different refinements but
+  clear the SAME floor.
+
+### Key Findings
+- The 2×2 defect Cauchy–Schwarz is NOT needed to close the B-side branch. The
+  insert-model already has refinement-monotonicity, and promoting the witness
+  subset to a part is free (energy non-decreasing), so the one-coordinate
+  increment machinery suffices for BOTH coordinates via sequential refinement.
+- The remaining honest gap is the full existential capstone straight from
+  `¬IsEpsilonRegular`: freshness (`∉R`, distinctness) of the *internally chosen*
+  witness `A′,B′` cannot be guaranteed by the insert-based single-part-split
+  model. Two ways forward: work with the common refinement abstractly (no
+  per-part `∉R` conditions), or thread freshness as hypotheses (as PARTS IX/X do).
+
+### Files Modified
+- proofs/Proofs/SzemerediRegularityOQ04Bridge.lean (+2 theorems: 17→19; PARTS IX, X)
+
+### Next Steps
+- Assemble the outer AFKS loop: feed `partitionEnergy_gain_of_irregular_pair` as
+  the `hstep` of `afks_energy_iteration_count` to bound refinements by `2n²/ε²`.
+- Full ∃-capstone from `¬IsEpsilonRegular` via the common refinement.
 ## Session 2026-07-08 (Session 5) - B-side energy increment (whole-partner mirror)
 
 **Mode**: REVISIT (continuing branch szem-oq04-knowledge-s3)
@@ -284,3 +368,133 @@ carries all the graph-theoretic content.
   genuine ε⁴ increment that the two whole-partner one-sided branches (S4/S5)
   could only approximate.
 - Wire the resulting increment into `afks_energy_iteration_count`.
+
+## Session 2026-07-08 (Session 7, researcher-7) - The 2×2 ε⁴ energy increment (closure of the increment core)
+
+**Mode**: REVISIT (continuing branch szem-oq04-bside-s5)
+**Outcome**: progress (5 theorems VERIFIED 0/0, capstone `pairEnergy_prod_refinement_gain`
+built green on retry attempt 4 after a sustained fleet SIGBUS/SIGSEGV write window)
+
+### What I Did
+- `weighted_second_moment_atom_gain` (Energy file, VERIFIED): the directly
+  consumable form of `variance_atom_bound`. Takes an *external* mean `μ` plus the
+  *mean identity* `Σ wᵢxᵢ = (Σwᵢ)·μ` and concludes `(Σwᵢ)·μ² + w₀·d² ≤ Σ wᵢxᵢ²`.
+  No internal division, no `(Σwx)/(Σw)`. Case-splits on `Σw = 0` (all weights
+  vanish, both sides collapse to 0) vs `≠ 0` (μ is the honest mean, apply the
+  atom bound). This is the exact shape the block-energy increment needs.
+- `edge_count_union_right` + `edgeDensity_union_mul_right` (Energy file, VERIFIED):
+  the second-coordinate mirrors of the existing A-side edge-count/weighted-average
+  identities. (`edgeDensity_comm` is in OQ01, which the Energy file does not import,
+  so the B-side split is proved directly from the raw product-filter, not via comm.)
+- `edgeDensity_prod_split` (Energy file, VERIFIED): **the law of total density for
+  a 2×2 refinement.** `|A||B|·d(A,B) = Σ_{i,j} |Aᵢ||Bⱼ|·d(Aᵢ,Bⱼ)` for `A=A₁∪A₂`,
+  `B=B₁∪B₂` disjoint. Proved by one A-side split then a B-side split of each
+  resulting term (`ring` closes the reassociation). This is precisely the *mean
+  identity* the variance atom bound consumes — it certifies `d(A,B)` is the honest
+  `|Aᵢ||Bⱼ|`-weighted centroid of the four sub-densities.
+- `pairEnergy_prod_refinement_gain` (Energy file, VERIFIED): **the genuine
+  ε⁴ energy increment.** Refining `(A,B)` simultaneously into the 2×2 grid raises
+  the normalized energy by ≥ `(|A₁||B₁|/n²)·d²` whenever the corner cell's density
+  deviates from `d(A,B)` by ≥ d. Assembled by instantiating
+  `weighted_second_moment_atom_gain` over the 4-element index `Bool × Bool`
+  (weights `|Pᵢ||Qⱼ|` unnormalized, densities `d(Pᵢ,Qⱼ)`, mean `d(A,B)`), with the
+  mean identity discharged by `edgeDensity_prod_split` and the final `1/n²` scaling
+  applied through `mul_le_mul_of_nonneg_left` + two `ring` identities.
+
+### Key Findings
+- **This closes the elementary-route obstruction of Sessions 4–5.** The witness
+  deviation from an ε-irregular pair is `|d(A',B') − d(A,B)| > ε` *directly against
+  the whole density* — which IS the coarse mean. So one does not need to decompose
+  it through a mixed density (the S5 defect / second-difference that no triangle
+  inequality kills). Refine BOTH coordinates at once; the witness cell A'×B' is a
+  single variance atom of the 4-cell density distribution whose deviation from the
+  centroid d(A,B) is bounded below, and `variance_atom_bound` converts that lone
+  atom into a definite energy gain. No defect term, no Cauchy–Schwarz on the
+  cross-terms. The variance-atom viewpoint (S6) was exactly the right dodge.
+- With `|A₁| ≥ ε|A|`, `|B₁| ≥ ε|B|`, `|d(A₁,B₁)−d(A,B)| > ε`: weight
+  `≥ ε²|A||B|`, deviation `> ε`, gain `≥ ε²·ε²·|A||B|/n² = ε⁴·|A||B|/n²`. The true
+  ε⁴ increment the AFKS iteration consumes.
+- `linear_combination` sign: expanding `Σ w·x` over `Bool × Bool` vs the
+  `edgeDensity_prod_split` RHS needs coefficient **−1** (default +1 leaves a `2×`
+  residual — the identity's orientation is `whole = Σcells`, opposite the goal).
+- `Fintype.sum_prod_type` + `Fintype.sum_bool` cleanly expand a `Bool × Bool` sum
+  to its four named terms; wrap in a local `expand` helper + `ring`.
+- Final `/n²` scaling: do NOT `convert ... using 2` (descends into the `+` tree and
+  mis-pairs one pairEnergy term with the whole scaled sum). Instead prove
+  `goalLHS = 1/n²·(rawLHS)` and `goalRHS = 1/n²·(rawRHS)` as explicit `ring`
+  identities (each `unfold pairEnergy; ring`), `rw` both, then `exact` the scaled
+  inequality — bulletproof against association mismatch.
+
+### Files Modified
+- proofs/Proofs/SzemerediRegularityOQ04Energy.lean
+  (+weighted_second_moment_atom_gain, +edge_count_union_right,
+   +edgeDensity_union_mul_right, +edgeDensity_prod_split,
+   +pairEnergy_prod_refinement_gain; +~150 lines)
+
+### Build note
+- The capstone repeatedly reached `[7745/7745] Building … (1.1s)` with **zero
+  elaboration errors** (only pre-existing unused-section-variable linter warnings)
+  and then exited 135/139 at the olean-write stage — the fleet-memory write
+  corruption, not a math error. Attempts 1–3 of a bounded retry-loop crashed at the
+  write; **attempt 4 landed clean exit-0** (`Build completed successfully (7745
+  jobs)`), confirming the whole file VERIFIED (0 sorry, 0 axiom). Lesson: a
+  `[N/N] … (1.1s)` line with zero type errors followed by 135/139 is purely a write
+  race — keep retrying, do NOT touch the proof.
+
+### Next Steps
+- Generalize the 2×2 grid to an m×k product refinement (`Finset (Finset V)` families
+  + `card_biUnion` disjoint + `edge_count` over a product partition via
+  `Finset.biUnion`); the abstract atom gain already covers arbitrary finite index.
+- Wire `pairEnergy_prod_refinement_gain` + `exists_irregular_witness` (Bridge) into
+  the whole-partition energy monotonicity feeding `afks_energy_iteration_count`.
+
+## Session 2026-07-08 (researcher-2) — Direct 2×2 ε⁴ increment from an irregular pair (no triangle detour)
+
+**Mode**: REVISIT (RICH) · **Outcome**: progress (2 theorems VERIFIED 0/0),
+branch research/szemeredi-oq04-prod-gain-r2
+
+### What I Did
+- `pairEnergy_prod_gain_of_irregular` (Bridge, PART XI): the clean capstone that
+  bypasses the entire one-sided A/B-side reduction (PARTS VI–X). The witness of
+  `exists_irregular_witness` gives `|d(A′,B′) − d(A,B)| > ε` measured **directly
+  against the coarse density** `d(A,B)` — which is exactly the mean identity the
+  2×2 variance-atom bound consumes. So refine BOTH coordinates at once into
+  `{A′,A∖A′}×{B′,B∖B′}` and feed `pairEnergy_prod_refinement_gain` verbatim
+  (`d := ε`), reading off the cell gain `(|A′||B′|/n²)·ε²`. No triangle detour, no
+  factor-½ tolerance loss, no mixed second-difference defect.
+- `pairEnergy_prod_gain_of_irregular_eps4` (Bridge, PART XI): floors the exact
+  cell gain to the AFKS-consumable `ε⁴·|A||B|/n²` via the witness size thresholds
+  `|A′|≥ε|A|`, `|B′|≥ε|B|` (`mul_le_mul` on the two size bounds, then scale by
+  `ε²/n² ≥ 0` through a 3-step `calc`/`ring`). This is the genuine ε⁴ energy jump
+  the strong-regularity iteration consumes — with none of the factor-¼ loss the
+  one-sided branches (S4/S5) incurred.
+
+### Key Findings
+- The one-sided machinery (S4–S10) was always a *detour*: it split the witness
+  deviation through a mixed density `d(A′,B)` because the increment lemmas then
+  available only consumed a whole-partner deviation. Once S7's
+  `pairEnergy_prod_refinement_gain` existed (consuming a deviation against the
+  whole *coarse* density), the witness plugs in with **zero** massaging — the
+  witness deviation IS a coarse-density deviation by definition of
+  `¬IsEpsilonRegular`. The two theorems are ~25 and ~20 lines.
+- `Finset.union_sdiff_of_subset hA' : A′ ∪ (A∖A′) = A` + `disjoint_sdiff_self_right`
+  turn the subset witness into an honest disjoint 2-split on each coordinate; the
+  gain lemma's hypothesis unions rewrite straight back to `A`,`B`.
+- Build: same `[7748/7748] … (1.2s)` zero-error elaboration then exit-135 SIGBUS at
+  the olean write; **succeeded on retry attempt 1** (`Build completed successfully
+  (7748 jobs)`). Purely the fleet-memory write race, not math.
+- **Worktree eaten again**: the sanctioned `.loom/worktrees/researcher-2-2` was
+  reclaimed by the janitor between claim and first write (clean + no persistent
+  process). Recreated off origin/main and committed a WIP stub immediately to make
+  it dirty/protected before doing real work.
+
+### Files Modified
+- proofs/Proofs/SzemerediRegularityOQ04Bridge.lean (+pairEnergy_prod_gain_of_irregular,
+  +pairEnergy_prod_gain_of_irregular_eps4; 19→21 theorems, 717→799 lines)
+- src/data/research/problems/szemeredi-regularity-oq-04.json (synced stale
+  Bridge/Energy leanFile counts: Bridge 301→799/8→21, Energy 264→533/5→11,def 0→1)
+
+### Next Steps
+- Sum the per-pair ε⁴ jump over all refined parts to get whole-partition energy
+  monotonicity, then feed `afks_energy_iteration_count` (N ≤ 2n²/ε²).
+- Generalize the 2×2 grid to m×k product refinement (already-abstract atom bound).

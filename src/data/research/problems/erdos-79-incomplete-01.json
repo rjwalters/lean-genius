@@ -29,11 +29,25 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS (structural, 0 sorry, no new axioms): minimal-non-linearity is now a machine-checked isomorphism invariant, so Erdos #79 count up-to-iso is well-posed. Elementary scaffold at terminus; remaining content is genuine Ramsey theory.",
+    "builtItems": [
+      "Erdos79Incomplete01OQ01.isRamseySizeLinear_hereditary — heredity as a THEOREM from ramseyNumber_mono_left (was parent axiom)",
+      "Erdos79Incomplete01OQ01.isRamseySizeLinear_congr — iso-invariance as a THEOREM from ramseyNumber_congr_left (was companion hypothesis hcongr)",
+      "Erdos79Incomplete01OQ01.K4_is_minimal_from_single_diamond — K4 minimality from a SINGLE diamond K4−{0,1} + atomic Ramsey properties; #print axioms confirms NO dependence on ramsey_linear_hereditary or K4_subgraphs_linear",
+      "Erdos79Incomplete01OQ01.{ramseyNumber_mono_left, ramseyNumber_congr_left} — the two atomic primitive-level axioms (monotone/iso-invariant in first arg)",
+      "isMinimallyNonLinear_congr in Erdos79Incomplete01OQ01.lean: G-iso-G' then minimal-non-linear G implies minimal-non-linear G', 0 sorry, no new axioms",
+      "isRamseySizeSuperlinear_congr, comapIso (def), comap_self, comap_properSubgraph, minimalNonLinearGraphs_iso_closed in Erdos79Incomplete01OQ01.lean"
+    ],
+    "insights": [
+      "Size-linearity heredity (parent axiom ramsey_linear_hereditary) and iso-invariance (companion hypothesis hcongr) are NOT independent assumptions: each is a one-step consequence of the corresponding atomic property of the primitive ramseyNumber — monotonicity (G≤G⇒R(G,·)≤R(G,·)) and iso-invariance (G≃gG⇒R(G,·)=R(G,·)).",
+      "Same linearity constant C transfers under both operations: for H≤G, R(H,K)≤R(G,K)≤C·e(K); under G≃gG, R(G,K)=R(G,K) so the bound is verbatim. So heredity/iso-invariance of isRamseySizeLinear need no new constant, only mono/congr of R.",
+      "Iso-invariance of the WHOLE predicate isMinimallyNonLinear is derivable (0 sorry) from just the congruence axiom ramseyNumber_congr_left — monotonicity is not even needed. print axioms isMinimallyNonLinear_congr = [propext, Classical.choice, Quot.sound, ramseyNumber_congr_left]. Makes Erdos #79 well-posed as a count of graphs UP TO ISOMORPHISM despite the gallery using concrete graphs on the fixed vertex set N.",
+      "Subgraph transport across a graph iso e:G-iso-G' uses SimpleGraph.comap: proper subgraph H'<G' pulls back to comap e H' < G (monotone via e.map_rel_iff; proper via congrArg of the equality at preimages e.symm), and comap e H' iso H' via toEquiv:=e.toEquiv, map_rel_iff':=Iff.rfl."
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Elementary structural scaffold essentially complete: heredity, size-linearity iso-invariance, AND minimal-non-linearity iso-invariance all derived from the two atomic Ramsey properties (mono_left/congr_left). Remaining OPEN needs real Ramsey theory beyond Mathlib: R(K4-e,H)=O(e(H)) (single-diamond hypothesis h01) and K4 superlinearity K4_not_linear. No further elementary structural reductions apparent."
+    ],
     "markdown": "# Knowledge Base: erdos-79-incomplete-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [],

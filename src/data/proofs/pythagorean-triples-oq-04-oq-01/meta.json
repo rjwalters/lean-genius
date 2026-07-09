@@ -41,7 +41,8 @@
       "The whole inductive engine rests on one structural fact: the cofactor n / minFac n is strictly smaller and its prime factors still divide n, so the no-bad-prime hypothesis is preserved under peeling off a prime — exactly the shape strong induction needs",
       "Peeling the LEAST prime factor (rather than an arbitrary one) makes the recursion canonical and avoids any factorization bookkeeping; minFac supplies primality, divisibility, and the 1 < p needed for n/p < n in one package",
       "Fermat's prime case and the Brahmagupta–Fibonacci identity are exactly the base case and the inductive combiner of a single induction — the theorem is their closure, and the strong-induction proof is genuinely constructive, exhibiting the representation rather than merely asserting existence",
-      "The same fact drops out of Mathlib's Nat.eq_sq_add_sq_iff because the parity condition over primes ≡ 3 (mod 4) is vacuously true when there are none such; having both proofs documents that the constructive and characterization-based statements coincide"
+      "The same fact drops out of Mathlib's Nat.eq_sq_add_sq_iff because the parity condition over primes ≡ 3 (mod 4) is vacuously true when there are none such; having both proofs documents that the constructive and characterization-based statements coincide",
+      "The hypothesis 'no prime ≡ 3 (mod 4) divides n' is sufficient but not necessary — it captures only the bad-prime-free part of the full characterization. Concretely n = 9 = 3² is a sum of two squares (3² + 0²) yet 3 ∣ 9 with 3 ≡ 3 (mod 4), so this theorem does not reach it: the missing case is precisely a bad prime occurring to an EVEN power, which needs the even-power refinement (the Gaussian-integer valuation argument) rather than the plain multiplicativity used here"
     ],
     "prerequisites": [
       "Strong induction on the natural numbers (Nat.strongRecOn)",

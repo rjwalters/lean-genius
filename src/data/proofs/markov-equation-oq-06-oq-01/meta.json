@@ -41,6 +41,21 @@
       "targetId": "markov-equation",
       "relationship": "related",
       "description": "The grandparent development runs the Markov tree downward (descent decreases the coordinate sum); this entry quantifies the upward direction, showing the ascent grows the maximal coordinate geometrically."
+    },
+    {
+      "targetId": "markov-equation-oq-05",
+      "relationship": "related",
+      "description": "Supplies the structural fact behind the ascent step used here: with the first two coordinates fixed, the Vieta neighbor 3xy − z is the unique other solution. The successor top coordinate 3bc − a whose doubling this entry proves is exactly that neighbor, so the geometric growth is the quantitative shadow of the fiber-involution structure."
+    },
+    {
+      "targetId": "markov-equation-oq-03",
+      "relationship": "related",
+      "description": "Carries the same Vieta-jump machinery to the Markov–Hurwitz generalizations x²+y²+z² = kxyz; the doubling/geometric-growth argument here is the k = 3 quantitative instance of that broader jumping framework."
+    },
+    {
+      "targetId": "pell-equation-oq-06-oq-01",
+      "relationship": "related",
+      "description": "A cross-family instance of the same recursive-chain method: the negative Pell equation x² − 2y² = −1 is classified by an ascending Vieta-style chain, mirroring how the Markov ascent sequence generates all triples along one branch."
     }
   ],
   "overview": {
@@ -75,6 +90,26 @@
       "startLine": 74,
       "endLine": 93,
       "summary": "seq_top_ge_two_pow proves (2 : ℤ)^n ≤ (seq n).2.2 by induction from (seq 0).2.2 = 1, chaining 2^(n+1) = 2·2ⁿ ≤ 2·(seq n).2.2 ≤ (seq (n+1)).2.2 through the doubling step. seq_top_unbounded then uses pow_unbounded_of_one_lt (archimedeanity of ℤ) to show the top coordinates exceed every bound."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "seq_top_ge_two_pow",
+      "type": "main",
+      "description": "The geometric lower bound: the top coordinate of the n-th ascent triple is at least 2ⁿ. Proved by induction from (seq 0).top = 1 = 2⁰, chaining 2^(n+1) = 2·2ⁿ ≤ 2·(seq n).top ≤ (seq (n+1)).top through the doubling step.",
+      "leanType": "(n : ℕ) : (2 : ℤ) ^ n ≤ (seq n).2.2"
+    },
+    {
+      "name": "two_mul_top_le_succ",
+      "type": "supporting",
+      "description": "The doubling step: one ascent step at least doubles the top coordinate, 2·(seq n).top ≤ (seq (n+1)).top. On the parent's sorted Markov triple 1 ≤ a ≤ b ≤ c the successor's top is 3bc − a and 3bc − a − 2c ≥ 3c(b − 1) ≥ 0, discharged by one nlinarith with the nonnegative product c·(b − 1).",
+      "leanType": "(n : ℕ) : 2 * (seq n).2.2 ≤ (seq (n + 1)).2.2"
+    },
+    {
+      "name": "seq_top_unbounded",
+      "type": "supporting",
+      "description": "Unboundedness: the top coordinates exceed every bound — for every B there is n with B < (seq n).top. From the geometric bound via pow_unbounded_of_one_lt (archimedeanity of ℤ).",
+      "leanType": "(B : ℤ) : ∃ n, B < (seq n).2.2"
     }
   ],
   "conclusion": {

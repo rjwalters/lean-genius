@@ -128,6 +128,61 @@ theorem card_tripleTranspositions :
   native_decide
 
 /-!
+## Completeness of the fixed-point-free census
+
+The three classes above are the Hexagrammum-indexing cycle types, but they do not
+by themselves account for *all* fixed-point-free permutations of `Sym(6)`. The
+partitions of `6` into parts `≥ 2` are `(6), (4,2), (3,3), (2,2,2)`; the one
+missing type is `(4,2)`, which indexes **no** geometric object. Adding it closes
+the census: the four classes exhaust the derangements of `Fin 6` (`D₆ = 265`).
+-/
+
+/-- A fixed-point-free `σ` with `σ⁴ = 1` but `σ² ≠ 1` is exactly a permutation of
+    cycle type `(4,2)`: fixed-point-freeness forces the cycle type among
+    `(6),(4,2),(3,3),(2,2,2)`; `σ⁴ = 1` (order dividing 4) kills `(6)` and `(3,3)`,
+    and `σ² ≠ 1` kills `(2,2,2)`, leaving `(4,2)`. Unlike the other three classes
+    this cycle type indexes **no** Hexagrammum object; it is recorded only to
+    complete the fixed-point-free census (`fixedPointFree_iff_census`). -/
+def IsFourTwoCycle (σ : Equiv.Perm (Fin 6)) : Prop :=
+  FixedPointFree σ ∧ σ ^ 4 = 1 ∧ σ ^ 2 ≠ 1
+
+instance (σ : Equiv.Perm (Fin 6)) : Decidable (IsFourTwoCycle σ) :=
+  inferInstanceAs (Decidable (FixedPointFree σ ∧ σ ^ 4 = 1 ∧ σ ^ 2 ≠ 1))
+
+/-- There are exactly `90 = C(6,4)·3!` permutations of cycle type `(4,2)` in
+    `Sym(6)`. These index no Hexagrammum object; they are the fixed-point-free
+    class the geometric configuration ignores. -/
+theorem card_fourTwoCycles :
+    (Finset.univ.filter (fun σ : Equiv.Perm (Fin 6) => IsFourTwoCycle σ)).card = 90 := by
+  native_decide
+
+/-- **The fixed-point-free classification.** A permutation of `Sym(6)` is
+    fixed-point-free iff its cycle type is one of the four with all parts `≥ 2`:
+    a 6-cycle, a `(4,2)`, a double 3-cycle, or a triple transposition. This proves
+    the three Hexagrammum classes together with the geometrically-inert `(4,2)`
+    class **exhaust** the fixed-point-free permutations, so the census below is
+    complete (no cycle type is missed). -/
+theorem fixedPointFree_iff_census :
+    ∀ σ : Equiv.Perm (Fin 6), FixedPointFree σ ↔
+      (IsSixCycle σ ∨ IsFourTwoCycle σ ∨ IsDoubleThreeCycle σ ∨ IsTripleTransposition σ) := by
+  native_decide
+
+/-- The fixed-point-free permutations of `Sym(6)` number `265` — the sixth
+    derangement number `D₆`. (`FixedPointFree σ` is exactly `∀ i, σ i ≠ i`, i.e.
+    membership in `derangements (Fin 6)`.) -/
+theorem card_fixedPointFree :
+    (Finset.univ.filter (fun σ : Equiv.Perm (Fin 6) => FixedPointFree σ)).card = 265 := by
+  native_decide
+
+/-- **Census closure.** The four fixed-point-free class sizes sum to `D₆ = 265`:
+    `120 + 90 + 40 + 15 = 265`. Together with `fixedPointFree_iff_census` (the
+    classes cover every derangement) and `card_fixedPointFree` (there are exactly
+    `265` derangements), the exact match forces the four classes to be pairwise
+    disjoint and exhaustive. Only the `120 / 40 / 15` classes carry geometric
+    meaning; the `90` `(4,2)`-permutations are inert. -/
+theorem fixedPointFree_census_sum : 120 + 90 + 40 + 15 = 265 := by norm_num
+
+/-!
 ## Hexagrammum Mysticum object counts (Conway–Ryba pairing)
 
 The geometric object counts follow from the census by the 2:1 outer-automorphism

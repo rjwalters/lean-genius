@@ -24,11 +24,10 @@
     "theoremCount": 29,
     "definitionCount": 4,
     "originalContributions": [
-      "root_in_cauchy_interval: all real roots lie in (-cauchyBound p, cauchyBound p)",
-      "no_pos_roots_of_zero_variations: if signVariations(p.coeffList) = 0, no positive roots",
-      "pos_roots_in_interval: positive roots lie in (0, cauchyBound p)",
-      "lagrange_bound: alternative root bound via max|aᵢ/aₙ|^{1/(n-i)}",
-      "sign_variation_bridge: connect our signVariations to Mathlib's Polynomial.signVariations",
+      "all_roots_in_cauchy_interval: all real roots lie in (-cauchyBound p, cauchyBound p)",
+      "no_positive_roots_of_zero_sign_variations: if signVariations(p.coeffList) = 0, no positive roots",
+      "positive_roots_in_cauchy_interval: positive roots lie in (0, cauchyBound p)",
+      "lagrangeBound: alternative root bound via max|aᵢ/aₙ|^{1/(n-i)}",
       "Pedagogical examples: concrete polynomials with verified bounds"
     ]
   },

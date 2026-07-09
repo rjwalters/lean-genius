@@ -2468,6 +2468,132 @@ theorem noFiveCollinear_of_onQuartic (P : PlanarPointSet)
       _ ≤ q.natDegree := Polynomial.card_roots' q
   omega
 
+/-- Membership in the graph of a real polynomial: `y = Poly.eval x`. -/
+def onPolyGraph (Poly : Polynomial ℝ) (p : ℝ × ℝ) : Prop := p.2 = Poly.eval p.1
+
+/-- Two distinct points on a polynomial graph have distinct first coordinates
+(the graph is a function of `x`). -/
+theorem onPolyGraph_fst_ne {Poly : Polynomial ℝ} {u v : ℝ × ℝ}
+    (hu : onPolyGraph Poly u) (hv : onPolyGraph Poly v) (huv : u ≠ v) : u.1 ≠ v.1 := by
+  intro h1
+  apply huv
+  have h2 : u.2 = v.2 := by rw [hu, hv, h1]
+  exact Prod.ext h1 h2
+
+/-- **A polynomial graph of degree `2 ≤ d ≤ 4` is no-five-collinear.** If every point
+of `P` lies on the graph `y = Poly.eval x` of a polynomial with `2 ≤ deg Poly ≤ 4`,
+then `P` has no five collinear points. This is the structural generalisation of
+`noFiveCollinear_of_onQuartic`: the specific quartic `y = x⁴ − 5x²` is merely the
+degree-4 instance. A non-vertical line meets the graph where the degree-`d`
+polynomial `q = C(b₁−a₁)·Poly − C(b₂−a₂)·X − C(…)` vanishes; its leading coefficient
+`(b₁−a₁)·leadingCoeff Poly ≠ 0` (using `deg ≥ 2` so the linear correction cannot
+cancel the top term), so `q ≠ 0` and it has at most `deg ≤ 4` roots. Five collinear
+points would give five distinct roots — impossible. (The lower bound `deg ≥ 2` is
+essential: a line graph, `deg ≤ 1`, is entirely collinear.) -/
+theorem noFiveCollinear_of_onPolyGraph (Poly : Polynomial ℝ)
+    (h2 : 2 ≤ Poly.natDegree) (h4 : Poly.natDegree ≤ 4)
+    (P : PlanarPointSet) (hP : ∀ p ∈ P.points, onPolyGraph Poly p) :
+    NoFiveCollinear P := by
+  intro a b c d e ha hb hc hd he hab hac had hae hbc hbd hbe hcd hce hde
+  rintro ⟨hcol_c, hcol_d, hcol_e⟩
+  have qa : onPolyGraph Poly a := hP a ha
+  have qb : onPolyGraph Poly b := hP b hb
+  have qc : onPolyGraph Poly c := hP c hc
+  have qd : onPolyGraph Poly d := hP d hd
+  have qe : onPolyGraph Poly e := hP e he
+  have hA0 : b.1 - a.1 ≠ 0 := sub_ne_zero.mpr (onPolyGraph_fst_ne qb qa hab.symm)
+  set q : Polynomial ℝ :=
+      Polynomial.C (b.1 - a.1) * Poly
+        - Polynomial.C (b.2 - a.2) * Polynomial.X
+        - Polynomial.C ((b.1 - a.1) * a.2 - (b.2 - a.2) * a.1) with hq
+  -- Degree bound: `natDegree q ≤ 4`.
+  have hqdeg : q.natDegree ≤ 4 := by
+    rw [hq]
+    refine (Polynomial.natDegree_sub_le _ _).trans (max_le ?_ ?_)
+    · refine (Polynomial.natDegree_sub_le _ _).trans (max_le ?_ ?_)
+      · exact (Polynomial.natDegree_C_mul_le _ _).trans h4
+      · calc (Polynomial.C (b.2 - a.2) * Polynomial.X).natDegree
+              ≤ (Polynomial.X : Polynomial ℝ).natDegree := Polynomial.natDegree_C_mul_le _ _
+            _ = 1 := Polynomial.natDegree_X
+            _ ≤ 4 := by norm_num
+    · rw [Polynomial.natDegree_C]; norm_num
+  -- Nonzero: the leading coefficient at index `natDegree Poly (≥ 2)` survives.
+  have hpne : Poly ≠ 0 := fun h => by rw [h, Polynomial.natDegree_zero] at h2; omega
+  have hlead : Poly.leadingCoeff ≠ 0 := Polynomial.leadingCoeff_ne_zero.mpr hpne
+  have hne1 : ¬ (1 : ℕ) = Poly.natDegree := by omega
+  have hne0 : ¬ Poly.natDegree = 0 := by omega
+  have hcoeff : q.coeff Poly.natDegree = (b.1 - a.1) * Poly.leadingCoeff := by
+    rw [hq]
+    simp only [Polynomial.coeff_sub, Polynomial.coeff_C_mul, Polynomial.coeff_X,
+      Polynomial.coeff_C, if_neg hne1, if_neg hne0, mul_zero, sub_zero]
+    rw [Polynomial.leadingCoeff]
+  have hq0 : q ≠ 0 := by
+    intro h
+    rw [h, Polynomial.coeff_zero] at hcoeff
+    exact (mul_ne_zero hA0 hlead) hcoeff.symm
+  have hqeval : ∀ x : ℝ, q.eval x
+      = (b.1 - a.1) * Poly.eval x - (b.2 - a.2) * x
+        - ((b.1 - a.1) * a.2 - (b.2 - a.2) * a.1) := by
+    intro x
+    simp only [hq, Polynomial.eval_sub, Polynomial.eval_mul, Polynomial.eval_C,
+      Polynomial.eval_X]
+  have hisroot : ∀ p : ℝ × ℝ, onPolyGraph Poly p → collinear a b p → p.1 ∈ q.roots := by
+    intro p hpg hcol
+    rw [Polynomial.mem_roots hq0]
+    show q.eval p.1 = 0
+    rw [hqeval]
+    have hcol' : (b.1 - a.1) * (p.2 - a.2) = (p.1 - a.1) * (b.2 - a.2) := hcol
+    rw [hpg] at hcol'
+    linear_combination hcol'
+  have cab_a : collinear a b a := by unfold collinear; ring
+  have cab_b : collinear a b b := by unfold collinear; ring
+  have ra := hisroot a qa cab_a
+  have rb := hisroot b qb cab_b
+  have rc := hisroot c qc hcol_c
+  have rd := hisroot d qd hcol_d
+  have re := hisroot e qe hcol_e
+  have nab : a.1 ≠ b.1 := onPolyGraph_fst_ne qa qb hab
+  have nac : a.1 ≠ c.1 := onPolyGraph_fst_ne qa qc hac
+  have nad : a.1 ≠ d.1 := onPolyGraph_fst_ne qa qd had
+  have nae : a.1 ≠ e.1 := onPolyGraph_fst_ne qa qe hae
+  have nbc : b.1 ≠ c.1 := onPolyGraph_fst_ne qb qc hbc
+  have nbd : b.1 ≠ d.1 := onPolyGraph_fst_ne qb qd hbd
+  have nbe : b.1 ≠ e.1 := onPolyGraph_fst_ne qb qe hbe
+  have ncd : c.1 ≠ d.1 := onPolyGraph_fst_ne qc qd hcd
+  have nce : c.1 ≠ e.1 := onPolyGraph_fst_ne qc qe hce
+  have nde : d.1 ≠ e.1 := onPolyGraph_fst_ne qd qe hde
+  have hsub : ({a.1, b.1, c.1, d.1, e.1} : Finset ℝ) ⊆ q.roots.toFinset := by
+    intro x hx
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+    rw [Multiset.mem_toFinset]
+    rcases hx with rfl | rfl | rfl | rfl | rfl
+    exacts [ra, rb, rc, rd, re]
+  have hScard : ({a.1, b.1, c.1, d.1, e.1} : Finset ℝ).card = 5 := by
+    rw [Finset.card_insert_of_notMem]
+    · rw [Finset.card_insert_of_notMem]
+      · rw [Finset.card_insert_of_notMem]
+        · rw [Finset.card_insert_of_notMem]
+          · simp
+          · simp [nde]
+        · simp [ncd, nce]
+      · simp [nbc, nbd, nbe]
+    · simp [nab, nac, nad, nae]
+  have h5 : (5 : ℕ) ≤ q.natDegree :=
+    calc (5 : ℕ) = ({a.1, b.1, c.1, d.1, e.1} : Finset ℝ).card := hScard.symm
+      _ ≤ q.roots.toFinset.card := Finset.card_le_card hsub
+      _ ≤ Multiset.card q.roots := Multiset.toFinset_card_le _
+      _ ≤ q.natDegree := Polynomial.card_roots' q
+  omega
+
+/-- The specific quartic `y = x⁴ − 5x²` is the polynomial-graph instance with
+`Poly = X⁴ − C 5 · X²`. This exhibits `noFiveCollinear_of_onQuartic` as the degree-4
+case of `noFiveCollinear_of_onPolyGraph`. -/
+theorem onQuartic_iff_onPolyGraph (p : ℝ × ℝ) :
+    onQuartic p ↔
+      onPolyGraph (Polynomial.X ^ 4 - Polynomial.C 5 * Polynomial.X ^ 2) p := by
+  simp only [onQuartic, onPolyGraph, Polynomial.eval_sub, Polynomial.eval_pow,
+    Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_X]
+
 /-- **Unconditional linear lower bound** `L₄(n) = Ω(n)`.  For every `k ≥ 1`
 there is a no-five-collinear planar point set `P` on at most `4·k` points
 with `fourPointLineCount P ≥ k`.  Hence the maximum number of four-point

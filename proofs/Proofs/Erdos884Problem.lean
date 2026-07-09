@@ -291,7 +291,9 @@ private theorem pairwise_lt_getD_ge_diff {l : List ℕ} (hs : l.Pairwise (· < �
     {i j : ℕ} (hij : i ≤ j) (hj : j < l.length) :
     l.getD i 0 + (j - i) ≤ l.getD j 0 := by
   induction j with
-  | zero => omega
+  | zero =>
+    have hi0 : i = 0 := Nat.le_zero.mp hij
+    subst hi0; simp
   | succ k ih =>
     rcases eq_or_lt_of_le hij with rfl | hik
     · omega
@@ -338,10 +340,11 @@ theorem generalGap_telescope (n : ℕ) {i j : ℕ} (hij : i ≤ j) (hj : j < num
       -- Split Ico i (j+1) = Ico i j ∪ {j}
       have hsplit : Finset.Ico i (j + 1) = insert j (Finset.Ico i j) := by
         ext x; simp only [Finset.mem_Ico, Finset.mem_insert]; omega
-      rw [hsplit, Finset.sum_insert (by simp [Finset.mem_Ico]; omega)]
-      rw [ih hij' hj', add_comm]
-      -- d_{j+1} - d_i = (d_j - d_i) + (d_{j+1} - d_j)
-      exact generalGap_add_mid n hij' (Nat.le_succ j) (by omega)
+      rw [hsplit, Finset.sum_insert (by simp), ← ih hij' hj']
+      -- goal: d_{j+1} - d_i = (d_{j+1} - d_j) + (d_j - d_i)
+      rw [generalGap_add_mid n hij' (Nat.le_succ j) hj]
+      have hgc : generalGap n j (j + 1) = consecutiveGap n j := rfl
+      rw [hgc, add_comm]
 
 /-- Any interior consecutive gap is dominated by the general gap.
     d_{k+1} - d_k ≤ d_j - d_i for i ≤ k < j. -/
@@ -365,10 +368,7 @@ theorem reciprocal_gap_index_bound (n : ℕ) {i j : ℕ} (hn : n > 1) (hij : i <
   have hge := generalGap_ge_diff n (le_of_lt hij) hj
   have hgap_pos := generalGap_pos n i j hn hij hj
   have hji_pos : (0 : ℕ) < j - i := by omega
-  rw [div_le_div_iff (by exact_mod_cast hgap_pos : (0 : ℝ) < (generalGap n i j : ℝ))
-      (by exact_mod_cast hji_pos : (0 : ℝ) < ((j - i : ℕ) : ℝ))]
-  simp only [one_mul]
-  exact_mod_cast hge
+  exact one_div_le_one_div_of_le (by exact_mod_cast hji_pos) (by exact_mod_cast hge)
 
 /-- Consecutive bound: each pair's contribution 1/(d_j - d_i) is bounded by the
     reciprocal of the first consecutive gap 1/(d_{i+1} - d_i), since general gaps
@@ -380,10 +380,7 @@ theorem reciprocal_gap_consecutive_bound (n : ℕ) {i j : ℕ} (hn : n > 1) (hij
   have hge := gap_lower_bound n i j hij hj
   have hgap_pos := generalGap_pos n i j hn hij hj
   have hcons_pos := consecutiveGap_pos n i hn (by omega : i + 1 < numDivisors n)
-  rw [div_le_div_iff (by exact_mod_cast hgap_pos : (0 : ℝ) < (generalGap n i j : ℝ))
-      (by exact_mod_cast hcons_pos : (0 : ℝ) < (consecutiveGap n i : ℝ))]
-  simp only [one_mul]
-  exact_mod_cast hge
+  exact one_div_le_one_div_of_le (by exact_mod_cast hcons_pos) (by exact_mod_cast hge)
 
 /- ## Connections -/
 
@@ -408,14 +405,7 @@ private theorem numDivisors_ge_two (n : ℕ) (hn : n > 1) : numDivisors n ≥ 2 
 /-- getD past the end of a ℕ list returns 0 (the default). -/
 private theorem list_getD_zero_of_ge (l : List ℕ) (k : ℕ) (h : l.length ≤ k) :
     l.getD k 0 = 0 := by
-  induction l generalizing k with
-  | nil => simp [List.getD]
-  | cons a t ih =>
-    cases k with
-    | zero => simp at h
-    | succ k' =>
-      simp only [List.getD, List.get?]
-      exact ih (by simpa using h)
+  simp only [List.getD_eq_getElem?_getD, List.getElem?_eq_none h, Option.getD_none]
 
 /-- Out-of-bounds divisor access returns 0. -/
 private theorem divisor_eq_zero_of_ge (n k : ℕ) (hk : numDivisors n ≤ k) :
@@ -455,7 +445,7 @@ theorem allPairsSum_le_tau_mul_consecutive (n : ℕ) (hn : n > 1) :
     have hsub : Finset.Ioo i τ ⊆ Finset.Ico 1 τ := by
       intro j; simp only [Finset.mem_Ioo, Finset.mem_Ico]; omega
     have hcard : (Finset.Ico 1 τ).card = τ - 1 := by
-      have := Finset.card_Ico (α := ℕ) 1 τ; omega
+      have := Nat.card_Ico 1 τ; omega
     exact (Finset.card_le_card hsub).trans (le_of_eq hcard)
   -- Step 3: Last term vanishes
   have last_zero : (1 : ℝ) / ↑(consecutiveGap n (τ - 1)) = 0 := by
@@ -495,4 +485,84 @@ theorem allPairsSum_le_indexSum (n : ℕ) (hn : n > 1) :
   have ⟨hij, hjτ⟩ := Finset.mem_Ioo.mp hj
   exact reciprocal_gap_index_bound n hn hij hjτ
 
+/- ## Closed Form for the Index Sum -/
+
+/-- Inner reindexing: for a fixed lower index `a`, substituting `k = j - a` turns the
+    reciprocal-difference sum over `j ∈ (a, τ)` into a plain reciprocal sum over
+    `k ∈ (0, τ - a)`.  The map `j ↦ j - a` is a bijection onto `(0, τ - a)` with inverse
+    `k ↦ k + a`. -/
+private theorem inner_reindex (τ a : ℕ) (_ha : a ≤ τ) :
+    ∑ j ∈ Finset.Ioo a τ, (1 : ℝ) / ((j - a : ℕ) : ℝ)
+      = ∑ k ∈ Finset.Ioo 0 (τ - a), (1 : ℝ) / ((k : ℕ) : ℝ) := by
+  apply Finset.sum_nbij' (i := fun j => j - a) (j := fun k => k + a)
+  · intro j hj; rw [Finset.mem_Ioo] at hj ⊢; omega
+  · intro k hk; rw [Finset.mem_Ioo] at hk ⊢; omega
+  · intro j hj; rw [Finset.mem_Ioo] at hj; omega
+  · intro k _; omega
+  · intro j _; rfl
+
+/-- **Closed form of the index double sum.**  The triangular index sum reindexes, by the
+    substitution `k = j - i`, to a single harmonic-weighted sum:
+    `Σ_{0≤i<j<τ} 1/(j-i) = Σ_{k=1}^{τ-1} (τ-k)/k`.
+    The count of pairs `(i, j)` with `j - i = k` is exactly `τ - k`.  This is the identity
+    advertised (but not previously proved) in `allPairsSum_le_indexSum`; it converts the
+    two-index bound into a one-index harmonic estimate. -/
+theorem indexSum_eq_harmonic (τ : ℕ) :
+    ∑ i ∈ Finset.range τ, ∑ j ∈ Finset.Ioo i τ, (1 : ℝ) / ((j - i : ℕ) : ℝ)
+      = ∑ k ∈ Finset.Ioo 0 τ, ((τ - k : ℕ) : ℝ) / ((k : ℕ) : ℝ) := by
+  -- Step 1: inner reindex j ↦ k = j - i on each slice.
+  have step1 : ∀ i ∈ Finset.range τ,
+      ∑ j ∈ Finset.Ioo i τ, (1 : ℝ) / ((j - i : ℕ) : ℝ)
+        = ∑ k ∈ Finset.Ioo 0 (τ - i), (1 : ℝ) / ((k : ℕ) : ℝ) := by
+    intro i hi
+    rw [Finset.mem_range] at hi
+    exact inner_reindex τ i (le_of_lt hi)
+  rw [Finset.sum_congr rfl step1]
+  -- Step 2: swap summation order over the triangular region {(i,k) : k ≥ 1, i + k < τ}.
+  have hswap : ∀ (i k : ℕ),
+      i ∈ Finset.range τ ∧ k ∈ Finset.Ioo 0 (τ - i)
+        ↔ i ∈ Finset.range (τ - k) ∧ k ∈ Finset.Ioo 0 τ := by
+    intro i k
+    simp only [Finset.mem_range, Finset.mem_Ioo]
+    omega
+  rw [Finset.sum_comm' hswap]
+  -- Step 3: the inner summand is constant in i, so each slice contributes (τ - k)·(1/k).
+  apply Finset.sum_congr rfl
+  intro k _
+  rw [Finset.sum_const, Finset.card_range, nsmul_eq_mul, mul_one_div]
+
+/-- **Unconditional harmonic bound.**  Chaining `allPairsSum_le_indexSum` with the closed
+    form gives, with no dependence on the divisor structure, `allPairsSum n ≤ Σ_{k=1}^{τ-1} (τ-k)/k`
+    where `τ = τ(n)`. -/
+theorem allPairsSum_le_harmonic (n : ℕ) (hn : n > 1) :
+    allPairsSum n ≤
+      ∑ k ∈ Finset.Ioo 0 (numDivisors n), ((numDivisors n - k : ℕ) : ℝ) / ((k : ℕ) : ℝ) := by
+  calc allPairsSum n
+      ≤ ∑ i ∈ Finset.range (numDivisors n),
+          ∑ j ∈ Finset.Ioo i (numDivisors n), (1 : ℝ) / ((j - i : ℕ) : ℝ) :=
+        allPairsSum_le_indexSum n hn
+    _ = ∑ k ∈ Finset.Ioo 0 (numDivisors n),
+          ((numDivisors n - k : ℕ) : ℝ) / ((k : ℕ) : ℝ) :=
+        indexSum_eq_harmonic (numDivisors n)
+
+/-- **Explicit `O(τ log τ)` bound.**  Since `(τ-k)/k ≤ τ/k`, the harmonic bound is dominated
+    by `τ · Σ_{k=1}^{τ-1} 1/k = τ · H_{τ-1}`.  This is the fully unconditional quantitative
+    ceiling on the all-pairs divisor-gap sum: `allPairsSum n ≤ τ(n) · H_{τ(n)-1}`. -/
+theorem allPairsSum_le_tau_harmonic (n : ℕ) (hn : n > 1) :
+    allPairsSum n ≤
+      ((numDivisors n : ℕ) : ℝ) *
+        ∑ k ∈ Finset.Ioo 0 (numDivisors n), (1 : ℝ) / ((k : ℕ) : ℝ) := by
+  refine (allPairsSum_le_harmonic n hn).trans ?_
+  rw [Finset.mul_sum]
+  apply Finset.sum_le_sum
+  intro k _
+  rw [mul_one_div]
+  gcongr
+  exact Nat.cast_le.mpr (Nat.sub_le _ _)
+
 end Erdos884
+
+-- Axiom audit: the only axiom is the OPEN conjecture `erdos_884`; all supporting
+-- lemmas (including the new closed-form index sum) are foundational-only.
+#print axioms Erdos884.indexSum_eq_harmonic
+#print axioms Erdos884.allPairsSum_le_tau_harmonic

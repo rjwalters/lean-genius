@@ -1022,6 +1022,25 @@ theorem colMin_le_collatz (n : ℕ) : colMin n ≤ colMin (collatz n) := by
   obtain ⟨k, hk⟩ := colMin_mem_orbit (collatz n)
   exact Nat.sInf_le ⟨k + 1, by rw [Function.iterate_succ_apply]; exact hk⟩
 
+/-- The orbit minimum bounds **every** value on the orbit, not just the start:
+`colMin n ≤ collatz^[k] n` for all `k`.  The `k`-th iterate lies in the orbit set,
+so the infimum is `≤` it (`Nat.sInf_le`).  Generalises `colMin_le_self` (`k = 0`). -/
+theorem colMin_le_iterate (n k : ℕ) : colMin n ≤ collatz^[k] n :=
+  Nat.sInf_le ⟨k, rfl⟩
+
+/-- The orbit minimum is **non-increasing along the whole trajectory**:
+`colMin n ≤ colMin (collatz^[k] n)` for all `k`.  Each further step passes to a
+sub-orbit whose infimum can only grow (`colMin_le_collatz`), and iterating this gives
+the bound for every `k`.  Generalises `colMin_le_collatz` (`k = 1`); combined with
+`colMin_le_iterate` it shows the orbit minimum of any iterate is sandwiched:
+`colMin n ≤ colMin (collatz^[k] n) ≤ collatz^[k] n`. -/
+theorem colMin_le_colMin_iterate (n k : ℕ) : colMin n ≤ colMin (collatz^[k] n) := by
+  induction k with
+  | zero => simp
+  | succ k ih =>
+    rw [Function.iterate_succ_apply']
+    exact le_trans ih (colMin_le_collatz _)
+
 /-- **The orbit-minimum recursion** (the Bellman/dynamic-programming identity for
 `Col_min`): `colMin n = min n (colMin (collatz n))`.  The minimum over the orbit of
 `n` is either attained at `n` itself (step `0`) or somewhere in the orbit of its

@@ -16,7 +16,10 @@
       `ω` both FAIL the hypothesis (`log` sits exactly at the boundary,
       `ω` is bounded on prime powers). The hypothesis therefore isolates functions
       growing strictly faster than `log` on prime powers.
-  (3) The hypothesis forces plain unboundedness of `f` on prime powers.
+  (3) The hypothesis forces plain unboundedness of `f` on prime powers, and is a
+      **positive cone**: closed under positive scaling (`unboundedOnPrimePowers_smul`)
+      and under adding a function nonnegative on prime powers
+      (`unboundedOnPrimePowers_add_nonneg`).
   (4) **Strongly-additive reduction.** For strongly additive `f` the hypothesis
       collapses to `f(p)/log p` unbounded over primes — the counterpart of the
       parent file's completely-additive reduction. The cancellation differs: the
@@ -165,6 +168,48 @@ theorem unboundedOnPrimePowers_unbounded {f : ℕ → ℝ}
     _ < f (p ^ k) := hpk
 
 /-
+## Closure properties of the hypothesis class
+
+`UnboundedOnPrimePowers` is a *positive cone*: it is preserved by scaling with a
+positive constant and by adding any function that is nonnegative on prime powers.
+Together these say the hypothesis is robust — e.g. the witnesses `logSqWeight` and
+`bigOmega` can be positively combined and still satisfy it — and let one normalize
+a witness (`c = 1`) without loss of generality.
+-/
+
+/-- **Closure under positive scaling.** If `f` is unbounded on prime powers relative
+to `log`, so is `c • f` for any `c > 0`: apply the hypothesis at the shifted
+multiplier `M / c` and scale the resulting strict inequality by `c`. -/
+theorem unboundedOnPrimePowers_smul {f : ℕ → ℝ} (hf : UnboundedOnPrimePowers f)
+    {c : ℝ} (hc : 0 < c) : UnboundedOnPrimePowers (fun n => c * f n) := by
+  intro M
+  obtain ⟨p, k, hp, hk, hgt⟩ := hf (M / c)
+  refine ⟨p, k, hp, hk, ?_⟩
+  show c * f (p ^ k) > M * Real.log (p ^ k)
+  have hstep : c * ((M / c) * Real.log (p ^ k)) < c * f (p ^ k) :=
+    mul_lt_mul_of_pos_left hgt hc
+  have heq : c * ((M / c) * Real.log (p ^ k)) = M * Real.log (p ^ k) := by
+    have hc0 : c ≠ 0 := ne_of_gt hc
+    field_simp
+  rwa [heq] at hstep
+
+/-- **Closure under adding a function nonnegative on prime powers.** If `f` is
+unbounded on prime powers and `g` is `≥ 0` at every prime power, then `f + g` is
+still unbounded on prime powers: the witness `(p, k)` for `f` works for `f + g`
+because `g (p ^ k) ≥ 0` only helps the strict inequality.  (Taking `g = bigOmega`
+or `g = logSqWeight`, both nonnegative, keeps any witness in the class.) -/
+theorem unboundedOnPrimePowers_add_nonneg {f g : ℕ → ℝ}
+    (hf : UnboundedOnPrimePowers f)
+    (hg : ∀ p k : ℕ, p.Prime → 1 ≤ k → 0 ≤ g (p ^ k)) :
+    UnboundedOnPrimePowers (fun n => f n + g n) := by
+  intro M
+  obtain ⟨p, k, hp, hk, hgt⟩ := hf M
+  refine ⟨p, k, hp, hk, ?_⟩
+  show f (p ^ k) + g (p ^ k) > M * Real.log (p ^ k)
+  have hgnn := hg p k hp hk
+  linarith
+
+/-
 ## (4) A strongly-additive reduction
 
 For strongly additive `f`, `f(p^k) = f(p)` is constant in `k`, so the prime-power
@@ -268,5 +313,127 @@ theorem unbounded_not_implies_unboundedOnPrimePowers :
       ¬ UnboundedOnPrimePowers f :=
   ⟨bigOmega, bigOmega_completelyAdditive.1, bigOmega_unbounded_on_primePowers,
     not_unboundedOnPrimePowers_bigOmega⟩
+
+/-
+## (6) The master domination lemma and a cone of witnesses
+
+`UnboundedOnPrimePowers` is a *largeness* condition, hence upward closed: if `f`
+satisfies it and `g` dominates `f` on prime powers (`g(p^k) ≥ f(p^k)`), then `g`
+satisfies it too — the same witnesses `(p,k)` work verbatim, since the comparison
+value `M·log(p^k)` does not depend on the function. This single lemma is the
+common source of the various closure properties of the class (positive scaling,
+adding a prime-power-nonnegative function); it also turns the single witness
+`logSqWeight` of (1) into an entire *cone* of witnesses: any `g ≥ logSqWeight` on
+prime powers is a satisfier.
+-/
+
+/-- **Domination lemma.** If `f` is unbounded on prime powers relative to `log` and
+`g(p^k) ≥ f(p^k)` for every prime power, then `g` is unbounded on prime powers too.
+The comparison value `M·log(p^k)` is independent of the function, so the same
+witness `(p,k)` transfers. -/
+theorem unboundedOnPrimePowers_of_ge {f g : ℕ → ℝ}
+    (hf : UnboundedOnPrimePowers f)
+    (hdom : ∀ p k : ℕ, p.Prime → 1 ≤ k → f (p ^ k) ≤ g (p ^ k)) :
+    UnboundedOnPrimePowers g := by
+  intro M
+  obtain ⟨p, k, hp, hk, hpk⟩ := hf M
+  exact ⟨p, k, hp, hk, lt_of_lt_of_le hpk (hdom p k hp hk)⟩
+
+/-- **A cone of witnesses.** Any function dominating `logSqWeight` on prime powers
+satisfies the Erdős #897 hypothesis. So non-vacuity (1) is not an isolated accident:
+the hypothesis holds for a whole family of functions, not just `logSqWeight`. -/
+theorem unboundedOnPrimePowers_of_ge_logSqWeight {g : ℕ → ℝ}
+    (hg : ∀ p k : ℕ, p.Prime → 1 ≤ k → logSqWeight (p ^ k) ≤ g (p ^ k)) :
+    UnboundedOnPrimePowers g :=
+  unboundedOnPrimePowers_of_ge logSqWeight_unboundedOnPrimePowers hg
+
+/-
+## (7) Structural properties of the witness `logSqWeight`
+
+Beyond additivity and unboundedness, `logSqWeight` is a *prime-support functional*: a
+sum of nonnegative terms indexed by the prime divisors of `n`. That shape alone forces
+four structural facts — nonnegativity, determination by the prime support, monotonicity
+under divisibility, and an exact zero-set `{0, 1}` — which together explain why it is the
+natural *minimal* witness: every larger prime-support functional dominates it, feeding the
+cone of (6).
+-/
+
+/-- `logSqWeight` is nonnegative — it is a sum of squares. -/
+theorem logSqWeight_nonneg (n : ℕ) : 0 ≤ logSqWeight n :=
+  Finset.sum_nonneg (fun _ _ => sq_nonneg _)
+
+/-- **Prime-support determination.** `logSqWeight` depends only on the *set* of prime
+divisors: numbers with equal prime support have equal weight.  This is the structural
+root of strong additivity (`logSqWeight (p^k) = logSqWeight p`, since `p^k` and `p`
+share the prime support `{p}`). -/
+theorem logSqWeight_eq_of_primeFactors_eq {m n : ℕ}
+    (h : m.primeFactors = n.primeFactors) : logSqWeight m = logSqWeight n := by
+  simp only [logSqWeight, h]
+
+/-- **Monotonicity under divisibility.** If `m ∣ n` (with `n ≠ 0`) then
+`logSqWeight m ≤ logSqWeight n`: passing to a multiple only enlarges the prime support,
+and every term `(log p)²` is nonnegative. -/
+theorem logSqWeight_mono_of_dvd {m n : ℕ} (hn : n ≠ 0) (hmn : m ∣ n) :
+    logSqWeight m ≤ logSqWeight n :=
+  Finset.sum_le_sum_of_subset_of_nonneg
+    (Nat.primeFactors_mono hmn hn) (fun _ _ _ => sq_nonneg _)
+
+/-- **Exact zero-set.** `logSqWeight n = 0` iff `n` has no prime divisors, i.e. `n ∈ {0, 1}`.
+Every prime `p` contributes a strictly positive `(log p)²`, so any `n ≥ 2` has positive
+weight.  Combined with monotonicity this pins `logSqWeight` to the boundary of the positive
+cone: it is zero exactly on the units and grows off them. -/
+theorem logSqWeight_eq_zero_iff (n : ℕ) : logSqWeight n = 0 ↔ n = 0 ∨ n = 1 := by
+  rw [← Nat.primeFactors_eq_empty]
+  constructor
+  · intro h
+    by_contra hne
+    obtain ⟨p, hp⟩ := Finset.nonempty_of_ne_empty hne
+    have hpp : p.Prime := Nat.prime_of_mem_primeFactors hp
+    have hlogpos : 0 < Real.log p := Real.log_pos (by exact_mod_cast hpp.one_lt)
+    have hterm : 0 < (Real.log p) ^ 2 := pow_pos hlogpos 2
+    have hz : (Real.log p) ^ 2 = 0 :=
+      (Finset.sum_eq_zero_iff_of_nonneg (fun q _ => sq_nonneg _)).mp h p hp
+    exact absurd hz (ne_of_gt hterm)
+  · intro h
+    simp only [logSqWeight, h, Finset.sum_empty]
+
+/-
+## (8) The dual boundary: anti-domination and the `O(log)` selectivity criterion
+
+Section (6)'s domination lemma (`unboundedOnPrimePowers_of_ge`) expresses that the
+hypothesis is a *largeness* condition — upward closed under domination on prime powers.
+The dual completes the picture from below: largeness fails downward.  If `f` is
+dominated on prime powers by a function that FAILS the hypothesis, then `f` fails too.
+The concrete boundary is `O(log)`: any `f` with `f(p^k) ≤ C·log(p^k)` on prime powers
+fails, for *every* constant `C`.  This single criterion subsumes the two ad-hoc
+selectivity results of (2): `logN` (`not_unboundedOnPrimePowers_logN`, the case `C = 1`,
+equality) and `ω` (`not_unboundedOnPrimePowers_omega`, the case `C = 1/log 2`, since
+`ω(p^k) = 1 ≤ (1/log 2)·log(p^k)` because `log(p^k) ≥ log 2`).
+-/
+
+/-- **Anti-domination lemma (dual of `unboundedOnPrimePowers_of_ge`).**  If `g` fails the
+Erdős #897 hypothesis and `f(p^k) ≤ g(p^k)` on every prime power, then `f` fails it too.
+This is the exact contrapositive of the domination lemma: largeness transfers *upward*
+under domination, so failure of largeness transfers *downward*.  Together the two lemmas
+say the hypothesis class is an up-set in the prime-power domination order. -/
+theorem not_unboundedOnPrimePowers_of_le {f g : ℕ → ℝ}
+    (hg : ¬ UnboundedOnPrimePowers g)
+    (hdom : ∀ p k : ℕ, p.Prime → 1 ≤ k → f (p ^ k) ≤ g (p ^ k)) :
+    ¬ UnboundedOnPrimePowers f :=
+  fun hf => hg (unboundedOnPrimePowers_of_ge hf hdom)
+
+/-- **The `O(log)` selectivity criterion.**  If `f(p^k) ≤ C·log(p^k)` on every prime power
+(for a fixed constant `C`), then `f` fails the Erdős #897 hypothesis.  Proof: evaluating
+the hypothesis at the multiplier `M = C` would produce a prime power with
+`f(p^k) > C·log(p^k)`, directly contradicting the bound.  This pins down the exact
+boundary of the hypothesis — growth strictly faster than every constant multiple of `log`
+on prime powers — and subsumes the selectivity of both `logN` (`C = 1`) and `ω`
+(`C = 1/log 2`). -/
+theorem not_unboundedOnPrimePowers_of_le_const_mul_log {f : ℕ → ℝ} {C : ℝ}
+    (hf : ∀ p k : ℕ, p.Prime → 1 ≤ k → f (p ^ k) ≤ C * Real.log (p ^ k)) :
+    ¬ UnboundedOnPrimePowers f := by
+  intro h
+  obtain ⟨p, k, hp, hk, hgt⟩ := h C
+  exact absurd hgt (not_lt.mpr (hf p k hp hk))
 
 end Erdos897

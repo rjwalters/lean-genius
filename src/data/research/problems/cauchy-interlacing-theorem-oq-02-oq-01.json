@@ -58,7 +58,8 @@
       "trace_eq_add_starProjection_compress_of_reducing: trace additivity tr T = tr(P_H T P_H) + tr(P_Hᗮ T P_Hᗮ)",
       "private starProjection_eq_zero_iff_mem_orthogonal helper (P_H v=0 ↔ v∈Hᗮ) re-derived from starProjection_add_starProjection_orthogonal for v4.26.0 pin",
       "trace_starProjection_compress_eq_trace_compress: tr_V(P_H T P_H) = tr_H(compress T H) — cyclic-trace bridge across H↪V coercion via P_H=ι∘π, trace_comp_commized, π∘ι=id_H (CauchyInterlacingPoincareCompression.lean)",
-      "trace_eq_add_compress_of_reducing: tr_V T = tr_H(compress T H) + tr_Hᗮ(compress T Hᗮ) over a reducing subspace — honest per-block compression traces (CauchyInterlacingPoincareCompression.lean)"
+      "trace_eq_add_compress_of_reducing: tr_V T = tr_H(compress T H) + tr_Hᗮ(compress T Hᗮ) over a reducing subspace — honest per-block compression traces (CauchyInterlacingPoincareCompression.lean)",
+      "spectrum_compress_eq_restrict_of_invariant — compress T H = T.restrict on invariant block ⟹ shared spectrum, routes containment through honest-restriction picture (VERIFIED 0/0)"
     ],
     "insights": [
       "This slug duplicates work already merged under sibling cauchy-interlacing-theorem-oq-01-oq-02 (#28084). The Rayleigh-agreement hypothesis of the abstract poincare_separation is discharged by rayleigh_compress_eq, which is stated for an ARBITRARY submodule H (nothing uses codim=1), so the abstract theorem and the explicit compression join for any codimension m with no new work.",

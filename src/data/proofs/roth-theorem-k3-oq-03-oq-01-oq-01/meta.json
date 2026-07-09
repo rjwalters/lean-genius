@@ -104,6 +104,69 @@
       "Triangle inequality / genuine seminorm structure of the Gowers norm"
     ]
   },
+  "mainTheorems": [
+    {
+      "name": "kAPCount_add_slot",
+      "type": "main",
+      "description": "Additivity of Λ_k in a slot: replacing the j-th argument by a sum a + b splits the count as the sum of the two counts. This is one of the two multilinearity identities and the one invoked when expanding Λ_k along an additive decomposition 1_A = δ·1 + (1_A − δ). Proved by the factorization engine plus distributing the double average E_{x,d} through the split j-th factor (sum_add_distrib twice, mul_add).",
+      "leanType": "(k : ℕ) (f : Fin k → ZMod N → ℂ) (j : Fin k) (a b : ZMod N → ℂ) : kAPCount k (Function.update f j (a + b)) = kAPCount k (Function.update f j a) + kAPCount k (Function.update f j b)"
+    },
+    {
+      "name": "kAPCount_smul_slot",
+      "type": "main",
+      "description": "Homogeneity of Λ_k in a slot: scaling the j-th argument by c ∈ ℂ scales the count by c. Together with kAPCount_add_slot this establishes that Λ_k is multilinear (ℂ-linear in each of its k arguments separately). Proved by the factorization engine, then pulling c out through the double average with mul_left_comm and mul_sum twice.",
+      "leanType": "(k : ℕ) (f : Fin k → ZMod N → ℂ) (j : Fin k) (c : ℂ) (a : ZMod N → ℂ) : kAPCount k (Function.update f j (c • a)) = c * kAPCount k (Function.update f j a)"
+    },
+    {
+      "name": "prod_update_factor",
+      "type": "supporting",
+      "description": "The factorization engine underlying both multilinearity lemmas: replacing slot j of the tuple by v pulls the single factor v(x + j·d) clean out of the k-AP product, leaving the untouched factors over univ.erase j. Uses Finset.mul_prod_erase to isolate the j-th factor and Function.update_self / update_of_ne to evaluate the addressed slot versus the rest.",
+      "leanType": "(k : ℕ) (f : Fin k → ZMod N → ℂ) (j : Fin k) (v : ZMod N → ℂ) (x d : ZMod N) : (∏ i : Fin k, Function.update f j v i (x + i.val • d)) = v (x + j.val • d) * ∏ i ∈ univ.erase j, f i (x + i.val • d)"
+    },
+    {
+      "name": "gowersNorm_nonneg",
+      "type": "supporting",
+      "description": "The Gowers Uˢ norm is nonnegative, being defined as a genuine modulus ‖·‖. This is the first of the metric properties needed before the norm can control the error terms in the generalized von Neumann inequality. Immediate from norm_nonneg.",
+      "leanType": "(N s : ℕ) [NeZero N] (f : ZMod N → ℂ) : 0 ≤ gowersNorm N s f"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Gowers, W. Timothy",
+      "title": "A new proof of Szemerédi's theorem",
+      "year": "2001",
+      "venue": "Geometric and Functional Analysis (GAFA) 11(3), 465–588",
+      "note": "Introduces the Gowers uniformity norms and the generalized von Neumann inequality — the framework in which the multilinearity of the k-AP counting operator Λ_k proved here is the key structural input for controlling cross terms."
+    },
+    {
+      "authors": "Tao, Terence; Vu, Van H.",
+      "title": "Additive Combinatorics",
+      "year": "2006",
+      "venue": "Cambridge Studies in Advanced Mathematics 105, Cambridge University Press",
+      "note": "Standard textbook treatment of the counting operator Λ_k, the Gowers norms, and the generalized von Neumann inequality; its expansion of Λ_k along 1_A = δ·1 + (1_A − δ) is exactly the additivity + homogeneity established in this entry."
+    },
+    {
+      "authors": "Green, Ben; Tao, Terence",
+      "title": "The primes contain arbitrarily long arithmetic progressions",
+      "year": "2008",
+      "venue": "Annals of Mathematics 167(2), 481–547",
+      "note": "Uses the generalized von Neumann inequality to bound multilinear averages of Λ_k-type by Gowers norms; the slot-linearity identities formalized here are the algebraic step behind that bound."
+    },
+    {
+      "authors": "Roth, Klaus F.",
+      "title": "On certain sets of integers",
+      "year": "1953",
+      "venue": "Journal of the London Mathematical Society 28(1), 104–109",
+      "note": "The k = 3 case: sets of positive upper density contain a 3-term arithmetic progression — the root result whose modern Gowers-norm proof drives the density-increment expansions that this multilinearity powers."
+    },
+    {
+      "authors": "Szemerédi, Endre",
+      "title": "On sets of integers containing no k elements in arithmetic progression",
+      "year": "1975",
+      "venue": "Acta Arithmetica 27, 199–245",
+      "note": "The general k theorem; the k-AP counting operator Λ_k of this entry is the analytic proxy for counting the k-term progressions that Szemerédi's theorem asserts are present."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Proofs.RothTheoremOQ03OQ01"
@@ -130,6 +193,16 @@
       "targetId": "roth-theorem-k3",
       "relationship": "extends",
       "description": "Root entry: Roth's theorem (Szemerédi k=3), the density result whose modern proof drives the density-increment expansions that multilinearity of Λ_k powers."
+    },
+    {
+      "targetId": "roth-theorem-k3-oq-03-oq-01",
+      "relationship": "extends",
+      "description": "The immediate parent: foundational identities for the Gowers U^s norm and the k-AP counting operator Λ_k (degenerate cases, base evaluations). This entry adds the next structural layer — that Λ_k is additive and homogeneous in each slot separately."
+    },
+    {
+      "targetId": "roth-theorem-k3-oq-03-oq-01-oq-01-oq-01",
+      "relationship": "related",
+      "description": "The direct successor: the geometric symmetries of Λ_k (translation invariance, reflection, dilation). Multilinearity proved here and those symmetries are the two structural pillars that together drive the generalized von Neumann inequality bounding Λ_k by a Gowers norm."
     }
   ],
   "sorries": 0

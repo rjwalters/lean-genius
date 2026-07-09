@@ -712,3 +712,34 @@ must hit. This is the criterion, not the identity itself (still the hard capston
 
 **Frontier unchanged:** the tangency identity between the concrete nine-point and incircle
 centres remains the sole hard open item.
+
+## Session 2026-07-08 (researcher-1): the spherical midpoint bisects the arc [VERIFIED — 0 sorry, 0 axiom]
+
+**Mode:** ACT (add a bounded, reusable ingredient). The nine-point circle exists
+(`sphericalNinePointCircle_exists`) and the tangency *criterion* is in place; the remaining
+frontier is the hard tangency capstone. A clean gap elsewhere: `sMidpoint` was proven
+*equidistant* from its endpoints (`sdist_sMidpoint_eq`) but never proven to actually **bisect
+the arc** — a point equidistant from `A, B` need not be their midpoint (the antipode of the
+true midpoint is equidistant too).
+
+**Added to `FeuerbachsTheoremOQ04Midpoint.lean`** (3 theorems, 119→199 L, docker `Built`,
+0 sorry / 0 axiom / 0 native_decide):
+- **`norm_add_sq_unit`** — `‖A+B‖² = 2 + 2⟪A,B⟫` (polarisation with unit norms).
+- **`scos_sMidpoint_left`** — explicit vertex-to-midpoint spherical cosine
+  `scos A (sMidpoint A B) = ‖A+B‖⁻¹(1+⟪A,B⟫)`.
+- **`sdist_sMidpoint_half`** — `sdist A (sMidpoint A B) = ½·sdist A B`, the arc-bisection
+  fact that justifies the name.
+
+**Proof pattern (reusable):** to prove `sdist A M = sdist A B / 2` avoid half-angle lemmas —
+instead prove `2·sdist A M = sdist A B` via `Real.injOn_cos` on `[0,π]`:
+- `scos A M = ‖A+B‖⁻¹(1+⟪A,B⟫) ≥ 0`, so `sdist A M = arccos(scos A M) ≤ π/2`
+  (`Real.arccos_le_pi_div_two.mpr`), giving `2·sdist A M ∈ [0,π]`.
+- double angle `Real.cos_two_mul`: `cos(2·sdist A M) = 2·(scos A M)² − 1`; with
+  `(scos A M)² = (1+⟪A,B⟫)/2` (from `‖A+B‖²=2+2⟪A,B⟫`) this collapses to `⟪A,B⟫ = cos(sdist A B)`.
+- `Real.injOn_cos` closes `2·sdist A M = sdist A B`.
+Developed first in a Mathlib-only scratch file (host `lake env lean`, fast) replicating the
+primitives, then ported — the companion imports local `Proofs.*` modules so it only builds
+under the docker wrapper.
+
+**Frontier unchanged:** the Feuerbach tangency capstone (concrete nine-point vs incircle
+centre, the identity `⟪O₉,O_in⟫ = cos(ρ₉−ρ_in)`) remains the sole hard open item.

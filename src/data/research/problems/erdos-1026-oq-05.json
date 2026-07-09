@@ -58,13 +58,23 @@
     "insights": [
       "The covering condition of a MonotonicDecomposition is exactly a surjection from the disjoint union of the parts (Σ i, Fin (part i length)) onto Fin n; this converts the counting bound into Fintype.card_le_of_surjective + Fintype.card_sigma.",
       "A monotonic part has length ≤ max(LIS, LDS): increasing parts are ≤ LIS, decreasing ≤ LDS (le_csSup against the sup-of-achievable-lengths definition). This is the only use of monotonicity in the bound.",
-      "The resulting n ≤ numParts · max(LIS, LDS) is the Mirsky/Dilworth lower-bound half of Hanani's decomposition theorem; on Erdős–Szekeres extremal sequences (max(LIS,LDS) ≈ √n) it forces ≳ √n parts."
+      "The resulting n ≤ numParts · max(LIS, LDS) is the Mirsky/Dilworth lower-bound half of Hanani's decomposition theorem; on Erdős–Szekeres extremal sequences (max(LIS,LDS) ≈ √n) it forces ≳ √n parts.",
+      "Type-split refinement of the Mirsky counting bound: classifying each monotone part as increasing (charged LIS) vs decreasing (charged LDS) via Finset.filter on the IsIncreasing predicate yields n ≤ (#inc)·LIS + (#dec)·LDS, strictly sharper than numParts·max(LIS,LDS) since (#inc+#dec)=numParts and each budget ≤ max.",
+      "Tightness of the lower bracket: a StrictMono sequence has LIS=n (whole sequence is one increasing run, csSup_le + len_le_LIS) and minMonotonicParts=1 (single whole-sequence part decomposition witnesses ≤1; numParts_pos gives ≥1), so n/max(LIS,LDS)=n/n=1 is attained.",
+      "The increasing-only covering number satisfies an EXACT min-max identity minIncreasingParts = LDS (dual-Dilworth/Mirsky for sequences), sharper than the monotone bracket which is only [n/max(LIS,LDS), min(LIS,LDS)].",
+      "Lower bound LDS <= numParts needs NO distinctness (pure pigeonhole: a longest strictly-decreasing subsequence meets each increasing part at most once); only the upper bound (Mirsky rank colouring) needs injective/distinct values."
     ],
     "builtItems": [
       "monotonicDecomposition_numParts_lower_bound: n ≤ numParts · max(LIS, LDS) (Erdos1026OQ05.lean:131)",
       "monotonicDecomposition_numParts_ge: numParts ≥ n / max(LIS, LDS) via Nat.div_le_of_le_mul (Erdos1026OQ05.lean:159)",
       "len_le_max_of_monotonic + lis/lds_bddAbove + subsequence_length_le supporting lemmas",
-      "singletonDecomposition: existence witness giving numParts ≤ n; fin_one_strictMono (Erdos1026OQ05.lean:176)"
+      "singletonDecomposition: existence witness giving numParts ≤ n; fin_one_strictMono (Erdos1026OQ05.lean:176)",
+      "monotonicDecomposition_numParts_lower_bound_split: n ≤ (#inc parts)·LIS + (#dec parts)·LDS (Erdos1026OQ05.lean:259)",
+      "monotonicDecomposition_split_le_max: split bound ≤ numParts·max, so it refines the original (Erdos1026OQ05.lean:307)",
+      "LIS_eq_of_strictMono + wholeSubsequence/wholeDecomposition + minMonotonicParts_eq_one_of_strictMono: exact value 1 for strictly monotone seqs (Erdos1026OQ05.lean:341-362)",
+      "IncreasingDecomposition structure + minIncreasingParts (covering number) in Erdos1026OQ05IncreasingIdentity.lean",
+      "minIncreasingParts_eq_LDS : Function.Injective seq -> minIncreasingParts seq = LDS seq  (Erdos1026OQ05IncreasingIdentity.lean) [VERIFIED 0/0]",
+      "LDS_le_numParts (pigeonhole lower bound), mirskyIncreasingDecomposition (upper bound), minMonotonicParts_le_minIncreasingParts + re-derived minMonotonicParts_le_LDS"
     ],
     "mathlibGaps": [
       "No Hanani-style monotonic decomposition theorem in Mathlib; the parent file only states the structure. Dilworth is available for antichains but not directly wired to the LIS/LDS monotone-run decomposition.",
@@ -74,9 +84,11 @@
       "Attempt the Hanani upper bound: construct a monotonic decomposition into O(√n) parts (e.g. greedy patience-sorting / RSK column count), which would close the bracket to Θ(√n) for extremal sequences.",
       "Prove a Dilworth-type min-max identity for the minimal number of monotonic parts in terms of a partition invariant.",
       "Connect to the sum-optimization of Erdős #1026: does an optimal decomposition contain a part carrying Ω(1/√n) of the total sum?",
-      "Upper bound O(√n): construct an explicit monotone-piece decomposition achieving ~√n parts. Likely needs a greedy patience-sorting / Dilworth-antichain-cover argument; Mathlib lacks Dilworth chain-decomposition for this setting — assess buildability before attempting."
+      "Upper bound O(√n): construct an explicit monotone-piece decomposition achieving ~√n parts. Likely needs a greedy patience-sorting / Dilworth-antichain-cover argument; Mathlib lacks Dilworth chain-decomposition for this setting — assess buildability before attempting.",
+      "Analogous type-split for a Dilworth min-max identity: for increasing-only decompositions, min parts = LDS (patience sorting); the ≥ direction is elementary (a decreasing subseq forces distinct increasing parts), only the constructive ≤ needs patience sorting.",
+      "Dual identity minDecreasingParts = LIS by negation symmetry (negSeq swaps increasing/decreasing); a DecreasingDecomposition + negSeq transfer would close it in ~40 lines."
     ],
-    "progressSummary": "VERIFIED (PR #35677): Mirsky/Dilworth lower bound n ≤ numParts·max(LIS,LDS) proved axiom-free 0/0 (surjection from parts disjoint union onto Fin n + per-part length ≤ max(LIS,LDS)); division form + singletonDecomposition bracket numParts in [n/max(LIS,LDS), n]. The elementary lower-bound direction is DONE. Remaining open: constructive O(√n) upper bound (Hanani 1957) — genuinely hard, not elementary."
+    "progressSummary": "VERIFIED (this session): exact Mirsky/Dilworth min-max IDENTITY minIncreasingParts = LDS for distinct reals (self-contained companion Erdos1026OQ05IncreasingIdentity.lean, 0 sorry/0 axiom). Sharper than the monotone bracket. Remaining open: constructive O(sqrt n) Hanani upper bound (genuinely hard); dual minDecreasingParts=LIS is a cheap follow-up."
   },
   "tags": [
     "combinatorics",
