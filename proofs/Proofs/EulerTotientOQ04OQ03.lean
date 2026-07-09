@@ -1233,4 +1233,82 @@ theorem excluded_seeds_realize_equality_and_forward :
   ⟨mem_EqualitySet_three, mem_EqualitySet_nine,
    mem_ForwardSet_seven, mem_ForwardSet_twentyseven⟩
 
+-- ===========================================================================
+-- THE SMALLEST ODD REVERSAL SEED IS 21
+-- ---------------------------------------------------------------------------
+-- Now that `classify` is a genuine computable function on the single odd seed,
+-- we can settle a structural question the per-`k` families left open: *which*
+-- odd seed is the smallest whose transport family `a·2^(k+1)` reverses.  A seed
+-- `a` is admissible for the classifier ("valid") exactly when the transport
+-- hypotheses hold: `a` odd, the first cototient step `2a−φ(a)` has 2-adic
+-- valuation one (`bSeed a` odd), and the landing constant is nonzero and even.
+-- Sweeping the odd valid seeds below 21 shows only `5, 13, 15, 17` are valid,
+-- and they classify as `eq, gt, eq, gt` — none reverse — whereas `classify 21`
+-- is `.lt`.  Hence 21 is the least odd reversal seed.  The whole sweep stays
+-- kernel-`decide`-only (no `native_decide`, no `factorization` reduction): the
+-- validity test uses only `φ`, and the four surviving seeds are evaluated
+-- through the `landT_landE_of` rewriting helper.
+-- ===========================================================================
+
+/-- A seed `a` is *valid* for the transport classifier when it is odd, its first
+    cototient step `2a − φ(a)` has 2-adic valuation exactly one (equivalently
+    `bSeed a` is odd), and its landing constant is nonzero and even.  These are
+    precisely the side-conditions under which `classify a` faithfully decides the
+    regime of the family `a·2^(k+1)`. -/
+def ValidSeed (a : ℕ) : Prop :=
+  Odd a ∧ 2 ∣ coStep a ∧ Odd (bSeed a) ∧ landC a ≠ 0 ∧ 2 ∣ landC a
+
+instance : DecidablePred ValidSeed := fun a => by unfold ValidSeed; infer_instance
+
+/-- `classify 5 = .eq`: `b = 3`, `C = 8 = 1·2^3`, `t = 3`, `e = 1`, and
+    `φ(5) = 4 = 1·2^2 = φ(1)·2^(t−1)`. -/
+theorem classify_5 : classify 5 = Ordering.eq := by
+  have hb : bSeed 5 = 3 := by unfold bSeed coStep; norm_num [totient_5]
+  have hC : landC 5 = 8 := by unfold landC; norm_num [hb, totient_3]
+  obtain ⟨hT, hE⟩ := landT_landE_of (a := 5) (e := 1) (t := 3)
+    (by decide) (by norm_num [hC])
+  unfold classify
+  rw [hE, hT, totient_5, Nat.totient_one]
+  decide
+
+/-- `classify 17 = .gt`: `b = 9`, `C = 28 = 7·2^2`, `t = 2`, `e = 7`, and
+    `φ(7)·2^(t−1) = 6·2 = 12 < 16 = φ(17)`. -/
+theorem classify_17 : classify 17 = Ordering.gt := by
+  have hb : bSeed 17 = 9 := by unfold bSeed coStep; norm_num [totient_17]
+  have hC : landC 17 = 28 := by unfold landC; norm_num [hb, totient_9]
+  obtain ⟨hT, hE⟩ := landT_landE_of (a := 17) (e := 7) (t := 2)
+    (by decide) (by norm_num [hC])
+  unfold classify
+  rw [hE, hT, totient_17, totient_7]
+  decide
+
+/-- **21 is the smallest odd reversal seed (classifier form).**  `classify 21`
+    is `.lt`, while every valid seed `a < 21` is classified `.eq` or `.gt`.  The
+    only valid seeds below 21 are `5, 13, 15, 17`; all invalid `a < 21` fail the
+    validity test decidably (the sweep only touches `φ`, never `factorization`). -/
+theorem twentyone_least_reversal_seed :
+    classify 21 = Ordering.lt ∧
+    ∀ a, a < 21 → ValidSeed a → classify a ≠ Ordering.lt := by
+  refine ⟨classify_21, fun a ha hv => ?_⟩
+  interval_cases a <;>
+    try (exact absurd hv (by decide))
+  · rw [classify_5]; decide
+  · rw [classify_13]; decide
+  · rw [classify_15]; decide
+  · rw [classify_17]; decide
+
+/-- **21 is the smallest odd reversal seed (family form).**  The family
+    `21·2^(k+1)` reverses for every `k`, while for every valid odd seed `a < 21`
+    and every `k` the family `a·2^(k+1)` does *not* reverse.  This is the
+    structural sharpening promised once the per-seed test became computable:
+    among transport-admissible odd seeds, 21 is the least whose family lands in
+    the reversal regime `φ(D(n)) > φ(n)`. -/
+theorem least_reversal_seed_families :
+    (∀ k, 21 * 2 ^ (k + 1) ∈ ReversalSet) ∧
+    ∀ a, a < 21 → ValidSeed a → ∀ k, a * 2 ^ (k + 1) ∉ ReversalSet := by
+  refine ⟨decision_procedure_classifies.1, fun a ha hv k => ?_⟩
+  obtain ⟨ha_odd, hstep, hb, hC0, hCe⟩ := hv
+  rw [mem_ReversalSet_iff_classify ha_odd hstep hb hC0 hCe k]
+  exact twentyone_least_reversal_seed.2 a ha ⟨ha_odd, hstep, hb, hC0, hCe⟩
+
 end Erdos1064OQ03

@@ -35,7 +35,7 @@
     }
   ],
   "knowledge": {
-    "progressSummary": "PROGRESS (verified 0/0): the k-free three-way criterion is now both a COMPUTABLE decision procedure classify:ℕ→Ordering on the single odd seed AND (PR #35885) generalised past the v₂(2a−φ(a))=1 restriction via dblIter_transport_general, so it covers arbitrary first-step 2-adic valuation. Excluded seeds realise equality (3,9) and forward (7,27) but — brute a<120 — never reversal. Density-1 forward remains the sole analytically-blocked direction.",
+    "progressSummary": "PROGRESS (verified 0/0): the k-free three-way criterion is now both a COMPUTABLE decision procedure classify:ℕ→Ordering on the single odd seed AND (PR #35885) generalised past the v₂(2a−φ(a))=1 restriction via dblIter_transport_general, so it covers arbitrary first-step 2-adic valuation. NEW: 21 is proven the SMALLEST odd reversal seed via a kernel-decide sweep over the classifier — the only valid seeds <21 are 5,13,15,17 (eq/gt/eq/gt), so classify 21 = .lt is the least; both classifier-form (twentyone_least_reversal_seed) and set-form (least_reversal_seed_families) theorems, 0 native_decide. Excluded seeds realise equality (3,9) and forward (7,27) but — brute a<120 — never reversal. Density-1 forward remains the sole analytically-blocked direction.",
     "builtItems": [
       "dblIter (EulerTotientOQ04OQ03.lean) — the double cototient iterate D(n) = n − φ(n − φ(n)), the object of OQ-03.",
       "dblIter_prime — collapse lemma: for EVERY prime p, D(p) = p − 1 exactly (φ(p)=p−1 ⟹ p−φ(p)=1 ⟹ φ(1)=1 ⟹ D(p)=p−1).",
@@ -76,7 +76,11 @@
       "classify_21=.lt, classify_15=.eq, classify_13=.gt + decision_procedure_classifies: the single classifier reproduces reversal/equality/forward families with no per-k work, all via decide (0 native_decide).",
       "dblIter_transport_general (EulerTotientOQ04OQ03.lean): D(a·2^(k+1))=(2a−φ(b)·2^(s−1))·2^k for 2a−φ(a)=2^s·b, s≥1 — removes v₂=1 restriction",
       "dblIter_{reversal,equality,forward}_iff_general + dblIter_totient_values_general: k-free criterion for arbitrary first-step 2-adic valuation",
-      "New excluded-seed families: 3·2^(k+1),9·2^(k+1)∈EqualitySet; 7·2^(k+1),27·2^(k+1)∈ForwardSet (all v₂≥2, outside s=1 criterion)"
+      "New excluded-seed families: 3·2^(k+1),9·2^(k+1)∈EqualitySet; 7·2^(k+1),27·2^(k+1)∈ForwardSet (all v₂≥2, outside s=1 criterion)",
+      "ValidSeed predicate + DecidablePred instance (EulerTotientOQ04OQ03.lean): odd a, v2(2a-phi a)=1, landing constant nonzero&even — exactly the classifier side-conditions",
+      "classify_5 = .eq, classify_17 = .gt (EulerTotientOQ04OQ03.lean): concrete classifier evaluations via landT_landE_of rewriting (no native_decide)",
+      "twentyone_least_reversal_seed (EulerTotientOQ04OQ03.lean): classify 21 = .lt AND every valid seed a<21 classifies .eq/.gt — 21 is the least odd reversal seed",
+      "least_reversal_seed_families (EulerTotientOQ04OQ03.lean): set form — 21*2^(k+1) reverses for all k, no valid odd a<21 gives a reversal family"
     ],
     "insights": [
       "On primes the higher iterate is trivial: D(p) = p − 1 for all primes p, because the first cototient step p − φ(p) = 1 and φ(1) = 1. So φ(D(p)) = φ(p−1), and φ(p−1) < p−1 = φ(p) for every p ≥ 3 (with equality only at p = 2). This gives the forward direction on an infinite explicit family with a one-line reduction to Nat.totient_lt — no density machinery needed.",
@@ -95,7 +99,9 @@
       "k-INDEPENDENT THREE-WAY CRITERION (2026-07-08, r4): the double-iterate regime of every transport family n=a·2^(k+1) is decided by a single k-free comparison φ(a) vs φ(e)·2^(t−1), where the landing constant C=2a−φ(b)=e·2^t (e odd, t≥1). Both totients factor through the inert 2^k: φ(n)=φ(a)·2^k, φ(D(n))=φ(e)·2^(t−1)·2^k. The power of two carries NO information; the sign is fixed by the odd data (a,e,t) alone.",
       "Decision-procedure realisation of the k-free criterion: the odd seed a alone determines the family regime via computable extraction b=(2a-φa)/2, C=2a-φb, t=v₂(C)=(landC a).factorization 2, e=C/2^t=ordCompl[2](landC a) — no hand-supplied (e,t).",
       "Excluded case v₂(2a−φ(a))>1 is fully tractable: general transport gives landing C=2a−φ(b)·2^(s−1)=e·2^t, criterion reads φ(a)⋛φ(e)·2^(t−1)",
-      "Structural: among excluded seeds a<120 (v₂≥2) ONLY equality/forward regimes occur — no excluded seed reverses; all known reversal seeds (21,55,129,165,175) have v₂=1"
+      "Structural: among excluded seeds a<120 (v₂≥2) ONLY equality/forward regimes occur — no excluded seed reverses; all known reversal seeds (21,55,129,165,175) have v₂=1",
+      "The valid odd seeds below 21 are exactly {5,13,15,17}, classifying eq/gt/eq/gt; all invalid a<21 fail decidably on v2(2a-phi a)=1 or bSeed-odd, using only phi (no factorization). Hence 21 is the smallest odd reversal seed.",
+      "The sub-21 sweep is kernel-decide-only: interval_cases + `try (exact absurd hv (by decide))` discharges the invalid seeds (validity touches only phi, not factorization), leaving 5,13,15,17 handled by the classify_* lemmas."
     ],
     "mathlibGaps": [
       "Kernel `decide` on Nat.totient of a seed (e.g. totient 21) blows the stack → SIGBUS (Lean exit 135, line-less); must prove totient values by factorisation (Nat.totient_mul + Nat.totient_prime). Reconfirms the file's existing note."
@@ -104,7 +110,7 @@
       "Density-1 forward statement φ(n)>φ(D(n)) for almost all n remains the sole analytically-blocked open direction (needs Luca–Pomerance / ψ(x,y) density, a real Mathlib gap); the explicit families + criterion settle only the infinitely-often / structural questions.",
       "Turn the criterion into a genuine DECIDABLE classifier: given odd a, compute b=(2a−φ(a))/2 (requires v₂(2a−φ(a))=1), then the 2-adic split C=2a−φ(b)=e·2^t, and decide the regime by φ(a) vs φ(e)·2^(t−1). Formalising the v₂ extraction (t,e) as a computable function would give a decision procedure over all odd seeds.",
       "Characterise the reversal seed set {odd a : φ(a) < φ(e)·2^(t−1)} — a structural description of which odd seeds reverse (a=21 smallest) would be a new elementary result now that the per-seed test is k-free.",
-      "Reversal-seed enumeration: prove 21 is the smallest odd seed with classify a = .lt among valid seeds (a<21 either fail the v₂=1 transport hypothesis or classify to .eq/.gt) — a finite decide-sweep now that classify is computable.",
+      "RESOLVED (twentyone_least_reversal_seed / least_reversal_seed_families): 21 is the smallest odd seed with classify a = .lt among valid seeds — the valid seeds a<21 are exactly {5,13,15,17} classifying eq/gt/eq/gt, discharged by a finite kernel-decide sweep. Next: characterise the FULL reversal-seed set {odd valid a : classify a = .lt} beyond its least element (is it an arithmetic-progression / residue pattern suggested by 21,55,...? a phi-only finite computation per seed now that classify is computable).",
       "Extend the computable classify to the excluded case v₂(2a-φa)>1 (bSeed a even): dblIter_transport_general already covers the mathematics, but the Ordering-valued classifier still assumes first-step valuation one.",
       "Prove/refute that NO excluded seed (v₂(2a−φ(a))≥2) ever reverses (observed a<120); would sharpen the reversal-set structure to v₂=1 seeds only"
     ]
