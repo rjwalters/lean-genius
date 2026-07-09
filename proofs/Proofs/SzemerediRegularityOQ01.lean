@@ -169,4 +169,88 @@ theorem isEpsilonRegular_compl (G : SimpleGraph V) [DecidableRel G.Adj]
     rw [main A' B' hA' hB' hcA' hcB']
     exact h A' B' hA' hB' hcA' hcB'
 
+/-- **A fixed-point-free involution forces even cardinality.**  If `σ : α → α`
+    maps `S` to itself, is an involution on `S`, and has no fixed point on `S`,
+    then `S` splits into two-element orbits `{x, σ x}`, so `S.card` is even.
+    Proved by strong induction, removing one orbit at a time.  (General helper,
+    kept local so this file stays self-contained.) -/
+theorem even_card_of_fpf_involution {α : Type*} [DecidableEq α]
+    {S : Finset α} {σ : α → α}
+    (hσ_mem : ∀ x ∈ S, σ x ∈ S)
+    (hσ_inv : ∀ x ∈ S, σ (σ x) = x)
+    (hσ_ne : ∀ x ∈ S, σ x ≠ x) :
+    Even S.card := by
+  induction S using Finset.strongInduction with
+  | H S ih =>
+    by_cases hS : S = ∅
+    · subst hS; exact ⟨0, by simp⟩
+    · obtain ⟨a, ha⟩ := Finset.nonempty_of_ne_empty hS
+      have hσa_ne : σ a ≠ a := hσ_ne a ha
+      have hpair_sub : {a, σ a} ⊆ S := by
+        intro x hx
+        rcases Finset.mem_insert.mp hx with rfl | hx'
+        · exact ha
+        · rw [Finset.mem_singleton] at hx'; subst hx'; exact hσ_mem a ha
+      have hmem : ∀ x, x ∈ S \ {a, σ a} ↔ x ∈ S ∧ x ≠ a ∧ x ≠ σ a := fun x => by
+        rw [Finset.mem_sdiff, Finset.mem_insert, Finset.mem_singleton, not_or]
+      have hT_mem : ∀ x ∈ S \ {a, σ a}, σ x ∈ S \ {a, σ a} := by
+        intro x hx
+        rw [hmem] at hx ⊢
+        refine ⟨hσ_mem x hx.1, ?_, ?_⟩
+        · intro heq; apply hx.2.2; rw [← hσ_inv x hx.1, heq]
+        · intro heq; apply hx.2.1; rw [← hσ_inv x hx.1, heq, hσ_inv a ha]
+      have hT_inv : ∀ x ∈ S \ {a, σ a}, σ (σ x) = x :=
+        fun x hx => hσ_inv x (Finset.mem_sdiff.mp hx).1
+      have hT_ne : ∀ x ∈ S \ {a, σ a}, σ x ≠ x :=
+        fun x hx => hσ_ne x (Finset.mem_sdiff.mp hx).1
+      have hsub : S \ {a, σ a} ⊆ S := Finset.sdiff_subset
+      have hT_lt : S \ {a, σ a} ⊂ S := by
+        rw [Finset.ssubset_iff_of_subset hsub]
+        exact ⟨a, ha, by simp⟩
+      obtain ⟨k, hk⟩ := ih (S \ {a, σ a}) hT_lt hT_mem hT_inv hT_ne
+      have hcard_pair : ({a, σ a} : Finset α).card = 2 :=
+        Finset.card_pair hσa_ne.symm
+      have h2 : 2 ≤ S.card := by
+        rw [← hcard_pair]; exact Finset.card_le_card hpair_sub
+      have hcard : (S \ {a, σ a}).card = S.card - 2 := by
+        rw [Finset.card_sdiff, Finset.inter_eq_left.mpr hpair_sub, hcard_pair]
+      rw [hcard] at hk
+      exact ⟨k + 1, by omega⟩
+
+/-- The **ordered irregular pairs** of a partition: cross pairs `(P, Q)` with
+    `P ≠ Q` drawn from `parts` that fail ε-regularity. -/
+noncomputable def irregularOrderedPairs (G : SimpleGraph V) [DecidableRel G.Adj]
+    (eps : ℚ) (parts : Finset (Finset V)) : Finset (Finset V × Finset V) :=
+  (parts ×ˢ parts).filter (fun p => p.1 ≠ p.2 ∧ ¬IsEpsilonRegular G eps p.1 p.2)
+
+/-- **The number of ordered irregular pairs is even.**  By `irregularPairs_swap_mem`
+    together with `isEpsilonRegular_comm`, coordinate-swap `Prod.swap` is a
+    fixed-point-free involution on `irregularOrderedPairs` (fixed-point-free because
+    every member has `P ≠ Q`).  Hence the irregular pairs come in matched
+    `(P, Q)`/`(Q, P)` transpositions and their count is even — the quantitative
+    refinement of the swap-closure `irregularPairs_swap_mem`. -/
+theorem even_card_irregularOrderedPairs (G : SimpleGraph V) [DecidableRel G.Adj]
+    (eps : ℚ) (parts : Finset (Finset V)) :
+    Even (irregularOrderedPairs G eps parts).card := by
+  apply even_card_of_fpf_involution (σ := Prod.swap)
+  · -- swap preserves membership
+    intro x hx
+    obtain ⟨P, Q⟩ := x
+    simp only [irregularOrderedPairs, Finset.mem_filter, Finset.mem_product,
+      Prod.swap_prod_mk] at hx ⊢
+    obtain ⟨⟨hP, hQ⟩, hne, hreg⟩ := hx
+    refine ⟨⟨hQ, hP⟩, ?_, ?_⟩
+    · exact fun h => hne h.symm
+    · rw [isEpsilonRegular_comm]; exact hreg
+  · -- involution
+    intro x _; exact Prod.swap_swap x
+  · -- fixed-point-free: swap (P, Q) = (P, Q) would force P = Q
+    intro x hx
+    obtain ⟨P, Q⟩ := x
+    simp only [irregularOrderedPairs, Finset.mem_filter, Finset.mem_product] at hx
+    obtain ⟨_, hne, _⟩ := hx
+    intro heq
+    rw [Prod.swap_prod_mk, Prod.mk.injEq] at heq
+    exact hne heq.2
+
 end Szemeredi.Regularity.OQ01
