@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (UNVERIFIED - build infra down): generalized the parent (fixed d=3) to ALL dimensions. Built a dimension-indexed hyper-tetrahedral (simplex) theory P_d(n)=C(n+d,d): figurate Pascal recurrence, the general hockey-stick sum_simplex (sum P_d = P_{d+1}), the iterated-partial-sum characterization iterSum_one (d-fold summation of the constant 1 = P_d), and the division-free closed form d! P_d(n)=prod(n+1+i). 0 sorries, 0 axioms. Could NOT machine-check: Docker containerd metadata.db I/O error + host lake cache missing Batteries.CodeAction.Basic.olean and Mathlib.Tactic.Omega.olean (fleet-race corruption).",
+    "progressSummary": "VERIFIED (docker-build.sh Proofs.TetrahedralNumberFormulaOQ01 clean, 3058 jobs, 0 sorries / 0 axioms). Generalizes the parent (fixed d=3) to ALL dimensions via a dimension-indexed hyper-tetrahedral (simplex) theory P_d(n)=C(n+d,d): figurate Pascal recurrence (simplexNumber_succ_succ), the general hockey-stick sum_simplex (sum P_d = P_{d+1}), the iterated-partial-sum characterization iterSum_one (d-fold summation of the constant 1 = P_d), and the division-free closed form d!*P_d(n)=ascFactorial(n+1,d)=prod(n+1+i). The d=2 instance of sum_simplex reproduces the parent's tetrahedral identity.",
     "builtItems": [
       "simplexNumber d n := (n+d).choose d - the d-dimensional hyper-tetrahedral number (TetrahedralNumberFormulaOQ01.lean)",
       "sum_simplex: sum_{k<=n} simplexNumber d k = simplexNumber (d+1) n - general hockey stick, any dimension d (via Nat.sum_range_add_choose)",
@@ -47,7 +47,6 @@
       "Mathlib has the one-step hockey stick and multichoose but no dimension-indexed figurate theory: no iterated-partial-sum characterization of simplex numbers, no figurate recurrence/closed form stated uniformly in the dimension d."
     ],
     "nextSteps": [
-      "MACHINE-VERIFY once build infra recovers: ./proofs/scripts/docker-build.sh Proofs.TetrahedralNumberFormulaOQ01 (or lake env lean once Batteries.CodeAction.Basic.olean / Mathlib.Tactic.Omega.olean regenerated).",
       "Optional generalization: iterated summation of an arbitrary polynomial base sequence (not just constant 1) yields a shifted-binomial expansion - Norlund/finite-difference angle.",
       "Optional: the multi-index simplex sum over 0<=i_1<=...<=i_k<=n of 1 = C(n+k,k) (nested-Finset form) as a second, combinatorial face of the same identity."
     ],
@@ -82,6 +81,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/TetrahedralNumberFormula.lean"
+    },
+    {
+      "path": "Proofs/TetrahedralNumberFormulaOQ01.lean",
+      "filename": "TetrahedralNumberFormulaOQ01.lean",
+      "lineCount": 164,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/TetrahedralNumberFormulaOQ01.lean"
     }
   ]
 }
