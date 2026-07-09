@@ -231,4 +231,67 @@ theorem variance_add_eq_iff_covariance_zero [IsFiniteMeasure μ] {W₀ W₁ : Ω
   rw [variance_add h₀ h₁]
   constructor <;> intro h <;> linarith
 
+/-- **Canonical variance-of-a-sum decomposition (diagonal + twice the strict lower
+triangle).**  For any finite, linearly ordered family of square-integrable contributions,
+
+    Var[∑_{i ∈ s} Wᵢ] = ∑_{i ∈ s} Var[Wᵢ]  +  2 · ∑_{i ∈ s} ∑_{j ∈ s, j < i} cov[Wᵢ, Wⱼ].
+
+This is the exact, *quantitative* form of the aggregate-power identity: the excess of the
+true output power over the uncorrelated ("Bienaymé") baseline `∑ᵢ Var[Wᵢ]` is precisely
+*twice the sum of the pairwise covariances over unordered pairs*.  The factor of two comes
+from covariance symmetry (`covariance_comm`): each unordered pair `{i, j}` contributes both
+`cov[Wᵢ, Wⱼ]` and `cov[Wⱼ, Wᵢ]` to the full double sum of `variance_sum'`, and these are
+equal.  Specialising to `s = {0, 1}` recovers the two-symbol law `Var[W₀ + W₁] =
+Var[W₀] + Var[W₁] + 2·cov[W₀, W₁]`, and setting all off-diagonal covariances to zero
+recovers `variance_sum_of_pairwise_uncorrelated`.  This sharpens the qualitative
+`variance_sum_eq_iff_offDiag_covariance_zero` by giving the closed-form defect rather than
+just its vanishing criterion, and it halves the number of covariance terms that must be
+controlled (one per unordered pair, not per ordered pair). -/
+theorem variance_sum_eq_diag_add_two_mul_lowerTriangle [IsFiniteMeasure μ] {ι : Type*}
+    [LinearOrder ι] {W : ι → Ω → ℝ} {s : Finset ι} (hW : ∀ i ∈ s, MemLp (W i) 2 μ) :
+    Var[∑ i ∈ s, W i; μ]
+      = ∑ i ∈ s, Var[W i; μ]
+        + 2 * ∑ i ∈ s, ∑ j ∈ s with j < i, cov[W i, W j; μ] := by
+  -- The strict *upper* triangle equals the strict *lower* triangle, by covariance symmetry.
+  have hUL : ∑ i ∈ s, ∑ j ∈ s with i < j, cov[W i, W j; μ]
+      = ∑ i ∈ s, ∑ j ∈ s with j < i, cov[W i, W j; μ] := by
+    simp only [Finset.sum_filter]
+    rw [Finset.sum_comm]
+    refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
+    rw [covariance_comm]
+  -- Split each inner sum by trichotomy: diagonal `j = i` gives the variance, the two
+  -- off-diagonal parts give the lower and upper triangles.
+  have hsplit : ∀ i ∈ s, ∑ j ∈ s, cov[W i, W j; μ]
+      = Var[W i; μ]
+        + (∑ j ∈ s with j < i, cov[W i, W j; μ]
+           + ∑ j ∈ s with i < j, cov[W i, W j; μ]) := by
+    intro i hi
+    have hpt : ∀ j, cov[W i, W j; μ]
+        = (if j < i then cov[W i, W j; μ] else 0)
+          + (if j = i then cov[W i, W j; μ] else 0)
+          + (if i < j then cov[W i, W j; μ] else 0) := by
+      intro j
+      rcases lt_trichotomy j i with h | h | h
+      · simp [h, h.ne, lt_asymm h]
+      · simp [h]
+      · simp [h, h.ne', lt_asymm h]
+    calc ∑ j ∈ s, cov[W i, W j; μ]
+        = ∑ j ∈ s, ((if j < i then cov[W i, W j; μ] else 0)
+            + (if j = i then cov[W i, W j; μ] else 0)
+            + (if i < j then cov[W i, W j; μ] else 0)) :=
+          Finset.sum_congr rfl fun j _ => hpt j
+      _ = (∑ j ∈ s, if j < i then cov[W i, W j; μ] else 0)
+            + (∑ j ∈ s, if j = i then cov[W i, W j; μ] else 0)
+            + (∑ j ∈ s, if i < j then cov[W i, W j; μ] else 0) := by
+          rw [Finset.sum_add_distrib, Finset.sum_add_distrib]
+      _ = Var[W i; μ]
+            + (∑ j ∈ s with j < i, cov[W i, W j; μ]
+               + ∑ j ∈ s with i < j, cov[W i, W j; μ]) := by
+          rw [Finset.sum_ite_eq' s i (fun j => cov[W i, W j; μ]), if_pos hi,
+            covariance_self (hW i hi).aemeasurable, ← Finset.sum_filter, ← Finset.sum_filter]
+          ring
+  rw [variance_sum' hW, Finset.sum_congr rfl hsplit,
+    Finset.sum_add_distrib, Finset.sum_add_distrib, hUL]
+  ring
+
 end ShannonAWGNMultiSymbolPower
