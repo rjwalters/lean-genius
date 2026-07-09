@@ -155,10 +155,17 @@
     "additionalFiles": [
       {
         "path": "Proofs/Erdos1026OQ05IncreasingIdentity.lean",
-        "lineCount": 331,
-        "theoremCount": 17,
-        "definitionCount": 8,
+        "lineCount": 487,
+        "theoremCount": 26,
+        "definitionCount": 15,
         "description": "Exact Mirsky/Dilworth min-max identity: minimum number of strictly-increasing parts covering the sequence equals LDS (distinct reals)."
+      },
+      {
+        "path": "Proofs/Erdos1026OQ05ErdosSzekeres.lean",
+        "lineCount": 139,
+        "theoremCount": 5,
+        "definitionCount": 0,
+        "description": "Erdős–Szekeres product bound n ≤ LIS·LDS derived from the Mirsky increasing-covering identity, plus the classical pigeonhole theorem (r·s<n ⟹ r<LIS ∨ s<LDS) and the >k² ⟹ monotone-run >k corollary."
       }
     ]
   },
