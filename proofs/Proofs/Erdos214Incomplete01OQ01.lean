@@ -124,4 +124,75 @@ theorem scaledLattice_unitDistanceFree : IsUnitDistanceFree ScaledLattice :=
 theorem scaledLattice_nonempty : (0 : Plane) ∈ ScaledLattice := by
   refine ⟨0, 0, ?_, ?_⟩ <;> simp
 
+/-!
+## Strengthening: `√2·ℤ²` is free of an infinite family of distances
+
+`scaledLattice_unitDistanceFree` is the special case `n = 1` of a much stronger
+fact.  The squared distance between two lattice points is
+`2·((a-a')² + (b-b')²)`, an **even** integer, so it can never equal an **odd**
+integer.  Hence no two lattice points are at distance `√n` for *any* odd `n` — of
+which unit distance (`√1 = 1`) is merely the first instance.  This exhibits
+`√2·ℤ²` as simultaneously free of the infinite family of distances
+`{√1, √3, √5, √7, …}`, a genuine generalization of the non-vacuity witness.
+-/
+
+/-- **Squared lattice distances are even integers.**  For any two points of
+`ScaledLattice`, `dist p q ^ 2 = 2·m` for some integer `m ≥ 0` (namely
+`m = (a-a')² + (b-b')²`).  This is the structural fact underlying every
+"distance-free" statement about the lattice. -/
+theorem scaledLattice_dist_sq_even {p q : Plane}
+    (hp : p ∈ ScaledLattice) (hq : q ∈ ScaledLattice) :
+    ∃ m : ℤ, 0 ≤ m ∧ dist p q ^ 2 = 2 * (m : ℝ) := by
+  obtain ⟨a, b, hpa, hpb⟩ := hp
+  obtain ⟨a', b', hqa, hqb⟩ := hq
+  refine ⟨(a - a') ^ 2 + (b - b') ^ 2, by positivity, ?_⟩
+  rw [dist_eq_coords]
+  have hs : Real.sqrt 2 ^ 2 = 2 := Real.sq_sqrt (by norm_num)
+  have hx : (p 0 - q 0) ^ 2 = 2 * ((a : ℝ) - a') ^ 2 := by
+    rw [hpa, hqa]
+    have e : (Real.sqrt 2 * (a : ℝ) - Real.sqrt 2 * a') ^ 2
+        = Real.sqrt 2 ^ 2 * ((a : ℝ) - a') ^ 2 := by ring
+    rw [e, hs]
+  have hy : (p 1 - q 1) ^ 2 = 2 * ((b : ℝ) - b') ^ 2 := by
+    rw [hpb, hqb]
+    have e : (Real.sqrt 2 * (b : ℝ) - Real.sqrt 2 * b') ^ 2
+        = Real.sqrt 2 ^ 2 * ((b : ℝ) - b') ^ 2 := by ring
+    rw [e, hs]
+  have hnn : 0 ≤ (p 0 - q 0) ^ 2 + (p 1 - q 1) ^ 2 := by positivity
+  rw [Real.sq_sqrt hnn, hx, hy]
+  push_cast; ring
+
+/-- **`√2·ℤ²` avoids every odd square-root distance.**  For any odd natural `n`,
+no two points of `ScaledLattice` are at distance `√n`: the squared distance is
+even, but `n` is odd.  Taking `n = 1` recovers `scaledLattice_unitDistanceFree`.
+(No `p ≠ q` hypothesis is needed: for `p = q` the distance is `0 ≠ √n` since
+`n ≥ 1`.) -/
+theorem scaledLattice_dist_ne_sqrt_odd {p q : Plane}
+    (hp : p ∈ ScaledLattice) (hq : q ∈ ScaledLattice)
+    {n : ℕ} (hodd : Odd n) : dist p q ≠ Real.sqrt n := by
+  intro h
+  obtain ⟨m, _, hm⟩ := scaledLattice_dist_sq_even hp hq
+  have hsq : dist p q ^ 2 = (n : ℝ) := by
+    rw [h, Real.sq_sqrt (by positivity)]
+  rw [hsq] at hm
+  have hz : (n : ℤ) = 2 * m := by exact_mod_cast hm
+  obtain ⟨j, hj⟩ := hodd
+  subst hj
+  omega
+
+/-- **Concrete instance:** no two points of `√2·ℤ²` are at distance `√3`
+(`n = 3`, odd). -/
+theorem scaledLattice_dist_ne_sqrt_three {p q : Plane}
+    (hp : p ∈ ScaledLattice) (hq : q ∈ ScaledLattice) :
+    dist p q ≠ Real.sqrt 3 :=
+  scaledLattice_dist_ne_sqrt_odd hp hq (n := 3) (by decide)
+
+/-- `scaledLattice_unitDistanceFree` is the `n = 1` case of
+`scaledLattice_dist_ne_sqrt_odd` (`√1 = 1`), confirming the generalization
+subsumes the original non-vacuity witness. -/
+theorem scaledLattice_unitDistanceFree_of_odd : IsUnitDistanceFree ScaledLattice := by
+  intro p q hp hq _
+  have h := scaledLattice_dist_ne_sqrt_odd hp hq (n := 1) (by decide)
+  simpa [Real.sqrt_one] using h
+
 end Erdos214Incomplete01OQ01
