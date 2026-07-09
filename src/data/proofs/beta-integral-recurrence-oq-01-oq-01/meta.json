@@ -152,6 +152,11 @@
       "targetId": "beta-integral-recurrence-oq-01-oq-02",
       "relationship": "related",
       "description": "Sibling answering the parent's oq-02: where that entry evaluates the half-integer diagonal B(1/2,1/2) = π (π-driven), this entry evaluates the integer diagonal B(n+1,n+1) = 1/((2n+1)·C(2n,n)) (purely rational/combinatorial). Together they describe the full diagonal of the Beta function on the integer and half-integer lattices."
+    },
+    {
+      "targetId": "beta-integral-recurrence-oq-01-oq-01-oq-02",
+      "relationship": "extended-by",
+      "description": "The direct child studies the ordinary generating function Σₙ b(n)xⁿ of exactly the diagonal sequence b(n) = B(n+1,n+1) = 1/((2n+1)·C(2n,n)) that this entry puts in closed form. It builds on the central-binomial reciprocal form proved here, adds the contiguous recurrence (4n+6)·b(n+1) = (n+1)·b(n), and derives the OGF closed form 4·arcsin(√x/2)/√(x(4-x)) (value π/2 at x=2) from the Beta-integral representation b(n) = ∫₀¹ (t(1-t))ⁿ dt."
     }
   ],
   "mainTheorems": [
