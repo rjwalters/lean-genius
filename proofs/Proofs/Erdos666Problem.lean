@@ -359,14 +359,33 @@ theorem conder_counterexample (n : ℕ) (hn : n ≥ 3) :
 **Erdős's generalized conjecture:**
 For every k ≥ 3, there exist c > 0 and aₖ < 1 such that every subgraph
 with ≥ c · n^{aₖ} · 2ⁿ edges contains C_{2k}, where aₖ → 0 as k → ∞.
--/
+
+**Faithfulness note.**  The existential witness `c` must be *positive*, so the
+constraint `0 < c` is a **conjunct** of the witness, not an antecedent.  An earlier
+form wrote `∃ c : ℝ, c > 0 → …`, which is vacuously true (take `c = 0`: the
+antecedent `0 > 0` is false, so the implication holds with no content), and hence
+did **not** encode the open conjecture at all.  It is corrected here to
+`∃ c : ℝ, 0 < c ∧ …` so that a proof genuinely has to exhibit a positive constant.
+The generalization itself remains open. -/
 def GeneralizedConjecture : Prop :=
   ∀ k : ℕ, k ≥ 3 →
-    ∃ c : ℝ, c > 0 → ∃ aₖ : ℝ, 0 < aₖ ∧ aₖ < 1 ∧
+    ∃ c : ℝ, 0 < c ∧ ∃ aₖ : ℝ, 0 < aₖ ∧ aₖ < 1 ∧
       ∀ n : ℕ, n ≥ 10 →
         ∀ H : SimpleGraph (Fin (2^n)),
           (Nat.card H.edgeSet : ℝ) ≥ c * (n : ℝ)^aₖ * 2^n →
           HasC2k H k
+
+/-- **The `k = 3` case of the generalized conjecture is exactly the C₆ problem.**
+`HasC2k H 3` (a `2·3 = 6`-cycle) coincides with `HasC6 H`, so the generalized
+`C_{2k}` conjecture specialises at `k = 3` to Erdős's original — and refuted — C₆
+question.  (Proved by reducing the length index `2·3` to `6`; it does **not** unfold
+`HasCycle` itself, whose body is kept `irreducible` to avoid the documented
+elaborator stack overflow.) -/
+unseal HasC6 in
+theorem hasC2k_three_iff_hasC6 {V : Type*} (H : SimpleGraph V) :
+    HasC2k H 3 ↔ HasC6 H := by
+  show HasCycle H (2 * 3) ↔ HasCycle H 6
+  rfl
 
 /-
 **This generalization remains open.**
