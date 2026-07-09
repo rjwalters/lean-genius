@@ -73,7 +73,8 @@
       "**Parity, not the value of $a$, is decisive.** Even exponents render $(1+a)^n$ nonnegative everywhere, so they impose no left endpoint; only odd exponents can fail, and they fail only far enough left.",
       "**The per-exponent endpoints sit strictly below $-2$ and rise toward it.** For $n = 3$ the endpoint is $-3$; as the exponent grows the endpoint creeps up toward $-2$ but never reaches it — so $-2 = \\sup_n a_n^\\*$ is attained by no single $n$.",
       "**$-2$ is a uniform, not a pointwise, phenomenon.** It is exactly the threshold below which *some* exponent eventually violates Bernoulli; that is the precise sense in which the parent's domain $-2 \\le a$ is sharp.",
-      "**A power beats a line only at second order.** The first-order bound $1 + na$ is precisely what Bernoulli compares against, so refuting it requires the quadratic term $\\binom{n}{2}x^2$ — the first-order `one_add_mul_le_pow` is structurally too weak to produce the violating exponent."
+      "**A power beats a line only at second order.** The first-order bound $1 + na$ is precisely what Bernoulli compares against, so refuting it requires the quadratic term $\\binom{n}{2}x^2$ — the first-order `one_add_mul_le_pow` is structurally too weak to produce the violating exponent.",
+      "**Why $-2$ exactly: it is where the base crosses magnitude one.** At $a = -2$ the factor $1 + a = -1$ has $|1+a| = 1$, the boundary between bounded and unbounded powers. For $a < -2$ one has $|1+a| > 1$, so $(1+a)^n$ grows geometrically in magnitude while the line $1 + na$ grows only linearly; at odd $n$ the power dives to $-\\infty$ and overtakes the line. The uniform endpoint $-2$ is thus the exact threshold $|1+a| \\le 1$ below which a power can no longer be trapped above its tangent line."
     ],
     "prerequisites": [
       "The weak Bernoulli inequality one_add_mul_le_pow on −2 ≤ a",
@@ -151,6 +152,16 @@
       "targetId": "bernoulli-inequality-oq-01",
       "relationship": "extends",
       "description": "The grandparent proves strict Bernoulli for a > −1; this entry characterizes the admissible range for every fixed n, including the even-exponent case with no left endpoint"
+    },
+    {
+      "targetId": "bernoulli-inequality-oq-01-oq-01-oq-01-oq-01",
+      "relationship": "extended by",
+      "description": "Child entry pinning down a concrete odd endpoint: the quintic case a₅* ∈ (−3, −2). This entry shows every odd exponent has a true left endpoint strictly below −2 that rises toward it; the child computes the n = 5 endpoint explicitly — a first step on this entry's open question 1 (closed form / asymptotics of aₙ*)."
+    },
+    {
+      "targetId": "bernoulli-inequality-oq-01-oq-02",
+      "relationship": "related — reuses the second-order bound",
+      "description": "The dedicated second-order Bernoulli entry proves (1+a)ⁿ ≥ 1 + n·a + C(n,2)·a² and its equality case. This entry re-derives that quadratic bound inline as quad_bernoulli and uses it as the engine that makes an odd power overtake the line 1 + n·a for a < −2 — the first-order one_add_mul_le_pow being structurally too weak. The sibling is the quadratic bound's canonical home."
     }
   ],
   "leanFile": {
