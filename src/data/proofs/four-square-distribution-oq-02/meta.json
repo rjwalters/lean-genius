@@ -69,6 +69,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Docstring and Setup",
+      "startLine": 1,
+      "endLine": 55,
+      "summary": "Module docstring framing the four-square representation-type count: by Jacobi’s four-square theorem r₄(n) counts ordered signed representations, and the hyperoctahedral group B₄ = (ℤ/2)⁴ ⋊ S₄ (order 384) acts on them, so the number of representation types is the orbit count. Imports and MulAction setup; the file is organized into Part I (general orbit-counting bounds), Part II (|B₄| = 384), Part III (the four-square bounds).",
+      "mathContext": "r₄(n) = #(ordered signed 4-square representations) by Jacobi; B₄-orbits are representation types, and orbit-counting gives ⌈r₄(n)/384⌉ ≤ t(n) ≤ r₄(n)."
+    },
+    {
       "id": "orbit-bounds",
       "title": "General Orbit-Counting Bounds",
       "startLine": 56,
@@ -148,43 +156,67 @@
   "mainTheorems": [
     {
       "name": "fourSquare_numTypes_bounds",
-      "type": "theorem",
-      "description": "Flagship application: for S the finite set of ordered signed four-square representations of n (Nat.card S = r₄(n) by Jacobi) under the hyperoctahedral group B₄ of order 384, the number of representation types t(n) = #(B₄-orbits) satisfies r₄(n) ≤ 384·t(n) and t(n) ≤ r₄(n) — equivalently ⌈r₄(n)/384⌉ ≤ t(n) ≤ r₄(n). Instantiates the general orbit-counting bounds at |G| = 384."
+      "type": "core",
+      "description": "Flagship application: for S the finite set of ordered signed four-square representations of n (Nat.card S = r₄(n) by Jacobi) under the hyperoctahedral group B₄ of order 384, the number of representation types t(n) = #(B₄-orbits) satisfies r₄(n) ≤ 384·t(n) and t(n) ≤ r₄(n) — equivalently ⌈r₄(n)/384⌉ ≤ t(n) ≤ r₄(n). Instantiates the general orbit-counting bounds at |G| = 384.",
+      "leanType": "{G S : Type*} [Group G] [Finite S] (hG : Nat.card G = 384) [Finite G] [MulAction G S] : Nat.card S ≤ 384 * Nat.card (orbitRel.Quotient G S) ∧ Nat.card (orbitRel.Quotient G S) ≤ Nat.card S",
+      "startLine": 135,
+      "endLine": 141
     },
     {
       "name": "fourSquare_numTypes_ge",
-      "type": "theorem",
-      "description": "The lower bound in divided form: r₄(n) / 384 ≤ t(n), from the multiplicative bound via Nat.div_le_of_le_mul."
+      "type": "key",
+      "description": "The lower bound in divided form: r₄(n) / 384 ≤ t(n), from the multiplicative bound via Nat.div_le_of_le_mul.",
+      "leanType": "{G S : Type*} [Group G] [Finite S] (hG : Nat.card G = 384) [Finite G] [MulAction G S] : Nat.card S / 384 ≤ Nat.card (orbitRel.Quotient G S)",
+      "startLine": 144,
+      "endLine": 147
     },
     {
       "name": "card_hyperoctahedral_four",
-      "type": "theorem",
-      "description": "Order of the hyperoctahedral group B₄ = (ℤ/2)⁴ ⋊ S₄: its underlying set is S₄ × (ℤ/2)⁴, so |B₄| = 4!·2⁴ = 24·16 = 384 — the value of |G| in the four-square orbit-counting bound."
+      "type": "key",
+      "description": "Order of the hyperoctahedral group B₄ = (ℤ/2)⁴ ⋊ S₄: its underlying set is S₄ × (ℤ/2)⁴, so |B₄| = 4!·2⁴ = 24·16 = 384 — the value of |G| in the four-square orbit-counting bound.",
+      "leanType": "Nat.card (Equiv.Perm (Fin 4) × (Fin 4 → ZMod 2)) = 384",
+      "startLine": 114,
+      "endLine": 119
     },
     {
       "name": "numOrbits_bounds",
-      "type": "theorem",
-      "description": "The general orbit-counting double bound packaged: for a finite group G acting on a finite X, |X| ≤ |G|·t and t ≤ |X| where t = #orbits — i.e. |X|/|G| ≤ t ≤ |X|."
+      "type": "key",
+      "description": "The general orbit-counting double bound packaged: for a finite group G acting on a finite X, |X| ≤ |G|·t and t ≤ |X| where t = #orbits — i.e. |X|/|G| ≤ t ≤ |X|.",
+      "leanType": "{G X : Type*} [Group G] [MulAction G X] [Finite G] [Finite X] : Nat.card X ≤ Nat.card G * Nat.card (orbitRel.Quotient G X) ∧ Nat.card (orbitRel.Quotient G X) ≤ Nat.card X",
+      "startLine": 94,
+      "endLine": 97
     },
     {
       "name": "card_le_card_group_mul_numOrbits",
-      "type": "theorem",
-      "description": "Lower-bound engine: |X| ≤ |G|·(number of orbits), by decomposing X as the disjoint union of its orbits (selfEquivSigmaOrbits) and bounding each orbit's size by |G|."
+      "type": "core",
+      "description": "Lower-bound engine: |X| ≤ |G|·(number of orbits), by decomposing X as the disjoint union of its orbits (selfEquivSigmaOrbits) and bounding each orbit's size by |G|.",
+      "leanType": "{G X : Type*} [Group G] [MulAction G X] [Finite G] [Finite X] : Nat.card X ≤ Nat.card G * Nat.card (orbitRel.Quotient G X)",
+      "startLine": 76,
+      "endLine": 89
     },
     {
       "name": "numOrbits_le_card",
-      "type": "theorem",
-      "description": "Upper bound: the number of orbits (representation types) is at most |X|, since the orbit quotient map X → X/∼ is surjective."
+      "type": "core",
+      "description": "Upper bound: the number of orbits (representation types) is at most |X|, since the orbit quotient map X → X/∼ is surjective.",
+      "leanType": "{G X : Type*} [Group G] [MulAction G X] [Finite X] : Nat.card (orbitRel.Quotient G X) ≤ Nat.card X",
+      "startLine": 70,
+      "endLine": 72
     },
     {
       "name": "card_orbit_le",
-      "type": "theorem",
-      "description": "Each orbit has at most |G| elements, being the image of G under g ↦ g • a."
+      "type": "supporting",
+      "description": "Each orbit has at most |G| elements, being the image of G under g ↦ g • a.",
+      "leanType": "{G X : Type*} [Group G] [MulAction G X] [Finite G] (a : X) : Nat.card (orbit G a) ≤ Nat.card G",
+      "startLine": 62,
+      "endLine": 66
     },
     {
       "name": "numOrbits_pos",
-      "type": "theorem",
-      "description": "A nonempty finite X under G has at least one orbit (the orbit quotient is nonempty)."
+      "type": "supporting",
+      "description": "A nonempty finite X under G has at least one orbit (the orbit quotient is nonempty).",
+      "leanType": "{G X : Type*} [Group G] [MulAction G X] [Finite G] [Finite X] [Nonempty X] : 0 < Nat.card (orbitRel.Quotient G X)",
+      "startLine": 100,
+      "endLine": 103
     }
   ],
   "sorries": 0
