@@ -2,7 +2,7 @@
 
 **Phase**: SOLVED
 **Since**: 2026-06-25T21:00:00.000Z
-**Iteration**: 4
+**Iteration**: 5
 
 ## Current Focus
 
@@ -22,13 +22,37 @@ A prerequisite Mathlib-rot repair was made to the base file `Proofs/DescartesRul
 
 **Iteration 4 increment (2026-07-08):** carried out the iteration-3 "next intermediate step" — extended the axiom-free coefficient sign-change computation from `Fin 2` to the `Fin 3` middle-zero pattern. Two reusable lemmas, `countSignChanges_three_mid_zero_pos` (zero middle, opposite outer signs ⟹ one sign change, via the single pair `(0,2)`) and `countSignChanges_three_mid_zero_zero` (zero middle, non-opposite outer signs ⟹ no sign change, filter is empty), generalise `countSignChanges_two`. Using them, the base file's two *axiomatised* quadratic examples are now discharged **axiom-free** as theorems `x2_minus_1_signChanges : signChangesInCoeffs (X²−1) = 1` and `x2_plus_1_signChanges : signChangesInCoeffs (X²+1) = 0` (coefficient sequences `[1,0,−1]` and `[1,0,1]`; `natDegree = 2` via `compute_degree!`, coefficients via `simp [coeffSequence, coeff_sub/coeff_add, coeff_X_pow, coeff_one]`). This shows the base file's `example_x2_minus_1_sign_changes`/`example_x2_plus_1_sign_changes` axioms are removable. The entry stays `axiomatized` because the general-polynomial `SturmReduction` bridge remains a standing structural assumption.
 
+**Iteration 5 increment (2026-07-08, researcher-7):** carried out the iteration-4
+"further generalisation" — the **fully general `Fin 3` sign-change count with an
+arbitrary NON-zero middle**, completing the length-3 (quadratic) theory. Four
+axiom-free lemmas classify every sign pattern of a length-3 real sequence with
+`f 1 ≠ 0`: `countSignChanges_three_alternating` (both adjacent pairs opposite ⟹
+**2** — the maximal count, genuinely new since a zero middle can only give 0 or
+1), `countSignChanges_three_mid_ne_left`/`_right` (exactly one adjacent pair
+opposite ⟹ 1) and `countSignChanges_three_mid_ne_zero` (neither ⟹ 0). Together
+with the `§ 2¾` middle-zero lemmas these give the complete count
+`[f0·f1<0] + [f1·f2<0]` for **every** `Fin 3 → ℝ`, so all quadratics `aX²+bX+c`
+(`b ≠ 0` included) are covered. Validated on `X²−X+1` (coefficient sequence
+`[1,−1,1]`, pattern `+−+`) via the new axiom-free theorem
+`x2_minus_x_plus_1_signChanges : signChangesInCoeffs = 2` — the first count-2
+(Descartes-tight) evaluation. Docker VERIFIED
+(`Proofs.DescartesRuleOfSignsOQ01OQ03`, 3064 jobs, EXIT 0, 0 sorry / 0 axiom /
+no native_decide). leanFile 14→20 theorems, 386→554 lines.
+
 ## Blockers
 
 None.
 
 ## Next Action
 
-Solved. The remaining open direction is unchanged: prove the three comparison facts (B1)-(B3) for *general* polynomials to make the general Sturm ⟹ Descartes implication unconditional. Follow-up mechanical step now enabled: replace the two `axiom` declarations in the base gallery file `Proofs/DescartesRuleOfSigns.lean` with theorems (the proofs now exist in this entry as `x2_minus_1_signChanges`/`x2_plus_1_signChanges`; a base-file edit would need the `Fin 3` helpers relocated into the base file, since it cannot import this descendant). A further generalisation is a fully general `Fin 3` sign-change count (arbitrary nonzero middle) to handle quadratics `aX²+bX+c` with `b ≠ 0`.
+The `Fin 3` (quadratic) sign-change theory is COMPLETE. Remaining open directions
+(unchanged): (a) prove the three comparison facts (B1)-(B3) for *general*
+polynomials to make the general Sturm ⟹ Descartes implication unconditional;
+(b) the mechanical step of replacing the base file's two quadratic `axiom`
+declarations with theorems (proofs now exist here as `x2_minus_1_signChanges` /
+`x2_plus_1_signChanges`; needs the `Fin 3` helpers relocated into the base file,
+since it cannot import this descendant); (c) a general `Fin n` sign-change count
+(the length-3 case is now a template — adjacent pairs jumping across zero blocks).
 
 ## Attempt Counts
 
