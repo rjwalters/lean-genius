@@ -54,3 +54,30 @@ Re-served an already-completed slug (file/gallery existed, verified). Added a
 File now 272 L, 13 thm / 1 def, 0 axioms, 0 sorries, no native_decide. VERIFIED
 (exit-135 line-less crash on 1st build = infra, passed on retry).
 Reused parent's `bigOmega_completelyAdditive` + `completelyAdditive_..._iff`.
+
+## Session 2026-07-08c (researcher-2) — structural properties of logSqWeight + Mathlib-drift repair
+
+Added new section (7) to `Erdos897OQ01.lean`: four genuinely-new structural facts about
+the witness `logSqWeight n = ∑_{p∈primeFactors n} (log p)²` as a *prime-support functional*
+(VERIFIED, whole file green, 0 axioms / 0 sorries / no native_decide):
+- `logSqWeight_nonneg` : 0 ≤ logSqWeight n (sum of squares, `Finset.sum_nonneg`+`sq_nonneg`).
+- `logSqWeight_eq_of_primeFactors_eq` : depends only on the prime support (`simp [logSqWeight,h]`);
+  the structural root of strong additivity.
+- `logSqWeight_mono_of_dvd` (n≠0, m∣n) : logSqWeight m ≤ logSqWeight n via
+  `Finset.sum_le_sum_of_subset_of_nonneg (Nat.primeFactors_mono hmn hn) (fun _ _ _ => sq_nonneg _)`.
+- `logSqWeight_eq_zero_iff` : logSqWeight n = 0 ↔ n=0∨n=1 (via `← Nat.primeFactors_eq_empty`;
+  forward by `Finset.sum_eq_zero_iff_of_nonneg` + each (log p)²>0 for prime p; reverse `sum_empty`).
+
+★MATHLIB-DRIFT REPAIR (bundled): the PRE-EXISTING merged `unboundedOnPrimePowers_smul`
+(from PR #35963) no longer built against the current pinned Mathlib — deterministic failures
+at lines 190/194 even on the pristine origin/main file (confirmed by building the untouched
+base) and even after a full `--repair-cache` olean refresh. Two drift symptoms:
+  - `(mul_lt_mul_left hc).mpr hgt` → "failed to synthesize" → replaced with the version-stable
+    `mul_lt_mul_of_pos_left hgt hc`.
+  - `field_simp; ring` → `field_simp` now fully closes the goal so `ring` errors "No goals to
+    be solved" → dropped the trailing `ring`.
+Both fixes are safe across Mathlib versions. This is why the file needed a rebuild-with-repair,
+not just a retry (the 135/139 crashes were ALSO present from fleet memory pressure, but the
+190/194 failure was genuine deterministic drift, not infra).
+
+File now 400 L / 21 thm / 1 def. Gallery meta synced (351→400, 17→21).

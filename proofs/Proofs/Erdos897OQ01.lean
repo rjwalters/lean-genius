@@ -187,11 +187,10 @@ theorem unboundedOnPrimePowers_smul {f : ℕ → ℝ} (hf : UnboundedOnPrimePowe
   refine ⟨p, k, hp, hk, ?_⟩
   show c * f (p ^ k) > M * Real.log (p ^ k)
   have hstep : c * ((M / c) * Real.log (p ^ k)) < c * f (p ^ k) :=
-    (mul_lt_mul_left hc).mpr hgt
+    mul_lt_mul_of_pos_left hgt hc
   have heq : c * ((M / c) * Real.log (p ^ k)) = M * Real.log (p ^ k) := by
     have hc0 : c ≠ 0 := ne_of_gt hc
     field_simp
-    ring
   rwa [heq] at hstep
 
 /-- **Closure under adding a function nonnegative on prime powers.** If `f` is
@@ -347,5 +346,55 @@ theorem unboundedOnPrimePowers_of_ge_logSqWeight {g : ℕ → ℝ}
     (hg : ∀ p k : ℕ, p.Prime → 1 ≤ k → logSqWeight (p ^ k) ≤ g (p ^ k)) :
     UnboundedOnPrimePowers g :=
   unboundedOnPrimePowers_of_ge logSqWeight_unboundedOnPrimePowers hg
+
+/-
+## (7) Structural properties of the witness `logSqWeight`
+
+Beyond additivity and unboundedness, `logSqWeight` is a *prime-support functional*: a
+sum of nonnegative terms indexed by the prime divisors of `n`. That shape alone forces
+four structural facts — nonnegativity, determination by the prime support, monotonicity
+under divisibility, and an exact zero-set `{0, 1}` — which together explain why it is the
+natural *minimal* witness: every larger prime-support functional dominates it, feeding the
+cone of (6).
+-/
+
+/-- `logSqWeight` is nonnegative — it is a sum of squares. -/
+theorem logSqWeight_nonneg (n : ℕ) : 0 ≤ logSqWeight n :=
+  Finset.sum_nonneg (fun _ _ => sq_nonneg _)
+
+/-- **Prime-support determination.** `logSqWeight` depends only on the *set* of prime
+divisors: numbers with equal prime support have equal weight.  This is the structural
+root of strong additivity (`logSqWeight (p^k) = logSqWeight p`, since `p^k` and `p`
+share the prime support `{p}`). -/
+theorem logSqWeight_eq_of_primeFactors_eq {m n : ℕ}
+    (h : m.primeFactors = n.primeFactors) : logSqWeight m = logSqWeight n := by
+  simp only [logSqWeight, h]
+
+/-- **Monotonicity under divisibility.** If `m ∣ n` (with `n ≠ 0`) then
+`logSqWeight m ≤ logSqWeight n`: passing to a multiple only enlarges the prime support,
+and every term `(log p)²` is nonnegative. -/
+theorem logSqWeight_mono_of_dvd {m n : ℕ} (hn : n ≠ 0) (hmn : m ∣ n) :
+    logSqWeight m ≤ logSqWeight n :=
+  Finset.sum_le_sum_of_subset_of_nonneg
+    (Nat.primeFactors_mono hmn hn) (fun _ _ _ => sq_nonneg _)
+
+/-- **Exact zero-set.** `logSqWeight n = 0` iff `n` has no prime divisors, i.e. `n ∈ {0, 1}`.
+Every prime `p` contributes a strictly positive `(log p)²`, so any `n ≥ 2` has positive
+weight.  Combined with monotonicity this pins `logSqWeight` to the boundary of the positive
+cone: it is zero exactly on the units and grows off them. -/
+theorem logSqWeight_eq_zero_iff (n : ℕ) : logSqWeight n = 0 ↔ n = 0 ∨ n = 1 := by
+  rw [← Nat.primeFactors_eq_empty]
+  constructor
+  · intro h
+    by_contra hne
+    obtain ⟨p, hp⟩ := Finset.nonempty_of_ne_empty hne
+    have hpp : p.Prime := Nat.prime_of_mem_primeFactors hp
+    have hlogpos : 0 < Real.log p := Real.log_pos (by exact_mod_cast hpp.one_lt)
+    have hterm : 0 < (Real.log p) ^ 2 := pow_pos hlogpos 2
+    have hz : (Real.log p) ^ 2 = 0 :=
+      (Finset.sum_eq_zero_iff_of_nonneg (fun q _ => sq_nonneg _)).mp h p hp
+    exact absurd hz (ne_of_gt hterm)
+  · intro h
+    simp only [logSqWeight, h, Finset.sum_empty]
 
 end Erdos897
