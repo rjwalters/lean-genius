@@ -48,6 +48,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header, Imports, and Statement",
+      "startLine": 1,
+      "endLine": 34,
+      "summary": "Imports `Mathlib.Algebra.BigOperators.Intervals` (for the Gauss identity `sum_range_id_mul_two`) and `Mathlib.Tactic`, then frames the open question: the sum of the first n cubes equals the square of the nth triangular number, ∑_{k<n} k³ = (∑_{k<n} k)². The docstring records the strategy (induction with a case split so `ring` never meets a truncated ℕ subtraction) and the novelty — Mathlib has the triangular-number identity but not this cube identity. Opens `namespace NicomachusSumOfCubes` and `open Finset` so range-sums can be written unqualified.",
+      "mathContext": "$\\sum_{k<n} k^3 = \\left(\\sum_{k<n} k\\right)^2$; proved in $\\mathbb{N}$ with 0 axioms, 0 sorries."
+    },
+    {
       "id": "cube-lemma",
       "title": "The Cube Lemma (subtraction-free step)",
       "startLine": 36,
@@ -64,7 +72,7 @@
     {
       "id": "corollaries",
       "title": "First-n-cubes and closed-form corollaries",
-      "startLine": 68,
+      "startLine": 65,
       "endLine": 84,
       "summary": "Two consequences: the 1-indexed 'first n cubes' form over range (n+1) (the k=0 term vanishes), and the division-free closed form 4·∑k³ = (n·(n−1))² obtained by squaring the Gauss identity."
     }
