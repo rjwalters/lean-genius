@@ -81,7 +81,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Fully machine-verified constructive root localization: 24 theorems combining Descartes' Rule of Signs (signVariations) with the Cauchy bound to confine all roots to a computable interval. Includes the Lagrange alternative bound, negative root reduction, intermediate value root existence, and a RootCertificate structure for verified root isolation. 440 lines, 0 axioms, 0 sorries.",
+    "summary": "Fully machine-verified constructive root localization: 29 theorems combining Descartes' Rule of Signs (signVariations) with the Cauchy bound to confine all roots to a computable interval. Includes the Lagrange alternative bound, negative root reduction, intermediate value root existence, and a RootCertificate structure for verified root isolation. 440 lines, 0 axioms, 0 sorries.",
     "implications": "Constructive root bounds are the foundation for certified numerical algorithms. Root isolation (determining intervals containing exactly one root) is a subroutine in all real algebraic geometry software; the Descartes-Cauchy combination gives the first-pass interval before applying Sturm sequences or bisection. The formalization in Lean 4 makes these bounds available for verified algorithm analysis: any Lean 4 program that calls a root finder can carry a machine-checked certificate that its output lies in the correct interval. This connects formal mathematics to practical computer algebra, an active research area (certified CAS, computational real algebraic geometry).",
     "openQuestions": [
       "Formalize Sturm's theorem: exact root count in any interval [a,b] using the Sturm sequence p, p', Sturm(p) — this would give a complete decision procedure for real root isolation",
