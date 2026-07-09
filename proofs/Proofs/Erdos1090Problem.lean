@@ -561,6 +561,51 @@ theorem exists_hasRamseyProperty_card_eq_ramseyNumber (k : ℕ) (hk : k ≥ 3) :
   obtain ⟨A, hcard, hA⟩ := Nat.sInf_mem hne
   exact ⟨A, hcard, hA⟩
 
+/-- The plane `ℝ²` is infinite: `t ↦ (t, 0)` (via `EuclideanSpace.single`) injects `ℝ`. -/
+instance : Infinite Point :=
+  Infinite.of_injective (fun a : ℝ => EuclideanSpace.single (0 : Fin 2) a) (fun a b h => by
+    have hb : EuclideanSpace.single (0 : Fin 2) a = EuclideanSpace.single (0 : Fin 2) b := h
+    have h0 : (EuclideanSpace.single (0 : Fin 2) a) 0
+            = (EuclideanSpace.single (0 : Fin 2) b) 0 := by rw [hb]
+    simpa [EuclideanSpace.single_apply] using h0)
+
+/--
+**Every size above `R(k)` is realizable.**
+For `k ≥ 3` and any `n ≥ R(k)` there is a configuration of *exactly* `n` points with the
+Ramsey property.  Take the extremal witness of size `R(k)`
+(`exists_hasRamseyProperty_card_eq_ramseyNumber`) and pad it with fresh plane points, one at
+a time: the plane is infinite, so a point outside the current set always exists, and enlarging
+preserves the Ramsey property (`hasRamseyProperty_mono`).  Thus the property is not a knife-edge
+phenomenon at the threshold — it persists for all larger cardinalities.
+-/
+theorem exists_hasRamseyProperty_card_eq {k : ℕ} (hk : k ≥ 3) {n : ℕ}
+    (hn : ramseyNumber k ≤ n) :
+    ∃ A : Finset Point, A.card = n ∧ HasRamseyProperty A k := by
+  obtain ⟨A, hAcard, hA⟩ := exists_hasRamseyProperty_card_eq_ramseyNumber k hk
+  have hAn : A.card ≤ n := hAcard ▸ hn
+  clear hAcard hn
+  induction n, hAn using Nat.le_induction with
+  | base => exact ⟨A, rfl, hA⟩
+  | succ m _ ih =>
+    obtain ⟨B, hBcard, hB⟩ := ih
+    obtain ⟨p, hp⟩ := Infinite.exists_notMem_finset B
+    exact ⟨insert p B, by rw [Finset.card_insert_of_notMem hp, hBcard],
+      hasRamseyProperty_mono (Finset.subset_insert p B) hB⟩
+
+/--
+**Realizable cardinalities are exactly the ray `[R(k), ∞)`.**
+For `k ≥ 3`, a finite point set of size `n` with the Ramsey property exists *iff* `R(k) ≤ n`.
+The forward direction is `ramseyNumber_le_of_hasRamseyProperty` (any witness bounds the infimum
+from above); the reverse is the padding argument `exists_hasRamseyProperty_card_eq`.  This pins
+down the realizable-size set completely: it is the full up-set above the threshold, with no gaps.
+-/
+theorem hasRamseyProperty_realizable_card_iff {k : ℕ} (hk : k ≥ 3) (n : ℕ) :
+    (∃ A : Finset Point, A.card = n ∧ HasRamseyProperty A k) ↔ ramseyNumber k ≤ n := by
+  constructor
+  · rintro ⟨A, hcard, hA⟩
+    exact hcard ▸ ramseyNumber_le_of_hasRamseyProperty hA
+  · exact exists_hasRamseyProperty_card_eq hk
+
 /-
 **R(3) is Small:**
 The k = 3 case can be achieved with a small set of points.
