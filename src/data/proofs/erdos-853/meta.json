@@ -150,7 +150,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem 853 asks whether all even gap sizes eventually appear among prime gaps. The formalization is notably rich: 14 theorems proved from Mathlib with 0 sorries, including gap evenness, gap set monotonicity, r(x) monotonicity, and the logical equivalence between r(x)→∞ and gap completeness. Both weak and strong forms are stated, with connections to Maynard-Tao and Cramér.",
+    "summary": "Erdős Problem 853 asks whether all even gap sizes eventually appear among prime gaps. The formalization is notably rich: 33 theorems proved from Mathlib with 0 sorries, including gap evenness, gap set monotonicity, r(x) monotonicity, and the logical equivalence between r(x)→∞ and gap completeness. Both weak and strong forms are stated, with connections to Maynard-Tao and Cramér.",
     "implications": "**Theoretical Significance**: **Connections to Prime Number Theory**\n\n1. **Gap Completeness**: Proving $r(x) \\to \\infty$ would confirm that primes realize every possible even gap — a fundamental completeness result for prime distribution\n2. **Polignac's Conjecture**: The even stronger claim that every even gap appears infinitely often (Polignac 1849) implies the weak form of Problem 853\n**3. Cramér's Model**: The probabilistic model for primes predicts $r(x) \\sim (\\log x)^2$, consistent with the strong form\n4. **Maynard-Tao Sieve**: Modern sieve methods can produce many small gaps but struggle with arbitrary prescribed gaps\n5. **Hardy-Littlewood Conjectures**: The prime $k$-tuples conjecture would imply Polignac's conjecture and hence Problem 853.",
     "openQuestions": [
       "Is there a specific even gap size that never occurs as a prime gap (i.e., does r(x) stabilize at some finite value)?",
