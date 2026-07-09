@@ -55,9 +55,9 @@
       "GeneralizedConjecture: open question for C_{2k}"
     ],
     "axiomCount": 1,
-    "lineCount": 326,
+    "lineCount": 368,
     "assumptions": "1 axiom (Chung 1992): chung_no_threshold — no threshold N makes every (1/4)-dense subgraph of Qₙ contain C₆; a consequence of Chung's edge-partition of Qₙ into four C₆-free subgraphs, not available in Mathlib. The companion existence statement chung_c6free (for n ≥ 3, Qₙ has some C₆-free subgraph) was previously axiomatized but is now PROVED outright — it carries no edge-count data, so the empty subgraph ⊥ (no edges, hence no cycle) is an honest witness. The deep density content stays isolated in the single axiom chung_no_threshold.",
-    "theoremCount": 5,
+    "theoremCount": 9,
     "definitionCount": 13
   },
   "overview": {
@@ -171,9 +171,9 @@
       "SimpleGraph"
     ],
     "namespace": "Erdos666",
-    "lineCount": 326,
+    "lineCount": 368,
     "axiomCount": 1,
-    "theoremCount": 5,
+    "theoremCount": 9,
     "definitionCount": 13,
     "path": "Proofs/Erdos666Problem.lean",
     "sorries": 0
