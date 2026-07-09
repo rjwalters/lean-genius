@@ -228,4 +228,211 @@ theorem pairEnergy_row_split_mono (G : SimpleGraph V) [DecidableRel G.Adj]
   intro B _
   exact pairEnergy_split_mono G A₁ A₂ B hA
 
+-- ═══════════════════════════════════════════════════════════════════
+-- PART III: SYMMETRY AND THE COLUMN / DIAGONAL REFINEMENT INCREMENTS
+-- ═══════════════════════════════════════════════════════════════════
+
+/-- Edge counts are symmetric in the two sides: since `G.Adj` is symmetric,
+    the swap `(a, b) ↦ (b, a)` is a bijection between the adjacent pairs of
+    `A ×ˢ B` and those of `B ×ˢ A`.  Proved by rewriting each filtered card as
+    a double sum of indicator terms and commuting the sums. -/
+private theorem edge_count_comm (G : SimpleGraph V) [DecidableRel G.Adj]
+    (A B : Finset V) :
+    ((A.product B).filter (fun p => G.Adj p.1 p.2)).card =
+    ((B.product A).filter (fun p => G.Adj p.1 p.2)).card := by
+  rw [Finset.card_filter, Finset.card_filter, Finset.sum_product, Finset.sum_product]
+  conv_lhs => rw [Finset.sum_comm]
+  refine Finset.sum_congr rfl (fun b _ => Finset.sum_congr rfl (fun a _ => ?_))
+  by_cases hab : G.Adj a b
+  · simp [hab, G.symm hab]
+  · have hba : ¬ G.Adj b a := fun h => hab (G.symm h)
+    simp [hab, hba]
+
+/-- **Symmetry of edge density.**  `d(A, B) = d(B, A)`.  A self-contained proof
+    via `edge_count_comm` and `card_mul_edgeDensity`; avoids importing the heavy
+    `SzemerediCoreOQ01` companion. -/
+theorem edgeDensity_comm (G : SimpleGraph V) [DecidableRel G.Adj] (A B : Finset V) :
+    edgeDensity G A B = edgeDensity G B A := by
+  by_cases h : (A.card : ℚ) * B.card = 0
+  · unfold edgeDensity
+    rw [dif_pos h, dif_pos (by rw [mul_comm]; exact h)]
+  · have h1 := card_mul_edgeDensity G A B
+    have h2 := card_mul_edgeDensity G B A
+    have hc : (↑((A.product B).filter (fun p => G.Adj p.1 p.2)).card : ℚ)
+            = ↑((B.product A).filter (fun p => G.Adj p.1 p.2)).card := by
+      exact_mod_cast edge_count_comm G A B
+    have hkey : (A.card : ℚ) * B.card * edgeDensity G A B =
+        (A.card : ℚ) * B.card * edgeDensity G B A := by
+      rw [h1]; rw [show (A.card : ℚ) * B.card = (B.card : ℚ) * A.card from mul_comm _ _, h2]
+      exact hc
+    exact mul_left_cancel₀ h hkey
+
+/-- **Symmetry of pair energy.**  `pairEnergy G A B = pairEnergy G B A`.  Immediate
+    from `edgeDensity_comm` and commutativity of the size weight. -/
+theorem pairEnergy_comm (G : SimpleGraph V) [DecidableRel G.Adj] (A B : Finset V) :
+    pairEnergy G A B = pairEnergy G B A := by
+  unfold pairEnergy
+  rw [edgeDensity_comm G A B]; ring
+
+/-- **Column refinement monotonicity.**  Splitting the `B`-side of a pair into
+    disjoint `B₁, B₂` never decreases its normalized energy contribution.  This is
+    the transpose of `pairEnergy_split_mono`, obtained for free from `pairEnergy_comm`
+    plus the row (A-side) statement. -/
+theorem pairEnergy_col_split_mono (G : SimpleGraph V) [DecidableRel G.Adj]
+    (A B₁ B₂ : Finset V) (hB : Disjoint B₁ B₂) :
+    pairEnergy G A (B₁ ∪ B₂) ≤ pairEnergy G A B₁ + pairEnergy G A B₂ := by
+  rw [pairEnergy_comm G A (B₁ ∪ B₂), pairEnergy_comm G A B₁, pairEnergy_comm G A B₂]
+  exact pairEnergy_split_mono G B₁ B₂ A hB
+
+/-- **Diagonal (double-convexity) increment.**  Splitting *both* sides of the
+    diagonal pair `(A, A)` — the case where a part is refined against itself —
+    never decreases the total energy over the resulting `2 × 2` block:
+    `pairEnergy G A A ≤ Σ_{i,j∈{1,2}} pairEnergy G Aᵢ Aⱼ` where `A = A₁ ∪ A₂`.
+    Obtained by applying the row split once and then the column split to each half
+    (Cauchy–Schwarz in both coordinates). -/
+theorem pairEnergy_diag_split_mono (G : SimpleGraph V) [DecidableRel G.Adj]
+    (A₁ A₂ : Finset V) (hA : Disjoint A₁ A₂) :
+    pairEnergy G (A₁ ∪ A₂) (A₁ ∪ A₂) ≤
+      pairEnergy G A₁ A₁ + pairEnergy G A₁ A₂ +
+      pairEnergy G A₂ A₁ + pairEnergy G A₂ A₂ := by
+  have hrow := pairEnergy_split_mono G A₁ A₂ (A₁ ∪ A₂) hA
+  have hc1 := pairEnergy_col_split_mono G A₁ A₁ A₂ hA
+  have hc2 := pairEnergy_col_split_mono G A₂ A₁ A₂ hA
+  linarith
+
+-- ═══════════════════════════════════════════════════════════════════
+-- PART IV: WHOLE-PARTITION REFINEMENT MONOTONICITY
+-- ═══════════════════════════════════════════════════════════════════
+
+/-- The energy accumulated between a family `S` of "row" parts and a family `T` of
+    "column" parts: `Σ_{P∈S, Q∈T} pairEnergy G P Q`.  With `S = T = parts` this is
+    exactly `partitionEnergy` (below), and its bilinearity over disjoint unions is
+    what lets the local pairwise increments assemble into a whole-partition
+    statement. -/
+private noncomputable def blockEnergy (G : SimpleGraph V) [DecidableRel G.Adj]
+    (S T : Finset (Finset V)) : ℚ :=
+  S.sum (fun P => T.sum (fun Q => pairEnergy G P Q))
+
+/-- `partitionEnergy` is `blockEnergy` of the partition against itself (for
+    nonempty vertex sets, where the `1/n²` normaliser is meaningful). -/
+private theorem partitionEnergy_eq_block (G : SimpleGraph V) [DecidableRel G.Adj]
+    (parts : Finset (Finset V)) (hn : (Fintype.card V : ℚ) ≠ 0) :
+    partitionEnergy G parts = blockEnergy G parts parts := by
+  dsimp only [partitionEnergy]
+  rw [if_neg hn, Finset.sum_product]
+  rfl
+
+/-- Additivity of `blockEnergy` in the row family over a disjoint union. -/
+private theorem blockEnergy_union_left (G : SimpleGraph V) [DecidableRel G.Adj]
+    (S₁ S₂ T : Finset (Finset V)) (h : Disjoint S₁ S₂) :
+    blockEnergy G (S₁ ∪ S₂) T = blockEnergy G S₁ T + blockEnergy G S₂ T := by
+  unfold blockEnergy
+  rw [Finset.sum_union h]
+
+/-- Additivity of `blockEnergy` in the column family over a disjoint union. -/
+private theorem blockEnergy_union_right (G : SimpleGraph V) [DecidableRel G.Adj]
+    (S T₁ T₂ : Finset (Finset V)) (h : Disjoint T₁ T₂) :
+    blockEnergy G S (T₁ ∪ T₂) = blockEnergy G S T₁ + blockEnergy G S T₂ := by
+  unfold blockEnergy
+  rw [← Finset.sum_add_distrib]
+  apply Finset.sum_congr rfl
+  intro P _
+  rw [Finset.sum_union h]
+
+/-- A single row family reduces to a plain sum of pair energies. -/
+private theorem blockEnergy_singleton_left (G : SimpleGraph V) [DecidableRel G.Adj]
+    (A : Finset V) (T : Finset (Finset V)) :
+    blockEnergy G {A} T = T.sum (fun Q => pairEnergy G A Q) := by
+  unfold blockEnergy
+  rw [Finset.sum_singleton]
+
+/-- A single column family reduces to a plain sum of pair energies. -/
+private theorem blockEnergy_singleton_right (G : SimpleGraph V) [DecidableRel G.Adj]
+    (S : Finset (Finset V)) (B : Finset V) :
+    blockEnergy G S {B} = S.sum (fun P => pairEnergy G P B) := by
+  unfold blockEnergy
+  apply Finset.sum_congr rfl
+  intro P _
+  rw [Finset.sum_singleton]
+
+/-- A singleton-against-singleton block is a single pair energy. -/
+private theorem blockEnergy_pair (G : SimpleGraph V) [DecidableRel G.Adj]
+    (A B : Finset V) :
+    blockEnergy G {A} {B} = pairEnergy G A B := by
+  unfold blockEnergy
+  rw [Finset.sum_singleton, Finset.sum_singleton]
+
+/-- **Whole-partition refinement monotonicity.**  Replacing one part `A` of a
+    partition by a disjoint split `A = A₁ ∪ A₂` never decreases the size-weighted
+    `partitionEnergy`.  This is the increment half of the Alon–Fischer–Krivelevich–
+    Szegedy strong regularity lemma, assembled from the three local increments:
+    the `A × (rest)` **row** monotonicity, the `(rest) × A` **column** monotonicity,
+    and the diagonal `(A, A)` **double-convexity** — the term where `A` is refined
+    against itself.  Together with `partitionEnergy_le_one`, the strict form of this
+    inequality forces the AFKS refinement loop to terminate. -/
+theorem partitionEnergy_refine_mono (G : SimpleGraph V) [DecidableRel G.Adj]
+    (parts : Finset (Finset V)) (A A₁ A₂ : Finset V)
+    (hA : A ∈ parts) (hunion : A₁ ∪ A₂ = A) (hdisj : Disjoint A₁ A₂)
+    (h1r : A₁ ∉ parts.erase A) (h2r : A₂ ∉ parts.erase A) (h12 : A₁ ≠ A₂) :
+    partitionEnergy G parts ≤
+      partitionEnergy G (insert A₁ (insert A₂ (parts.erase A))) := by
+  set rest := parts.erase A with hrest
+  by_cases hn : (Fintype.card V : ℚ) = 0
+  · simp [partitionEnergy, hn]
+  -- normalized (nonempty) case: pass to `blockEnergy`
+  rw [partitionEnergy_eq_block G parts hn, partitionEnergy_eq_block G _ hn]
+  -- set-level rewrites turning inserts into disjoint unions
+  have hAr : A ∉ rest := by rw [hrest]; exact Finset.not_mem_erase A parts
+  have hd_A_rest : Disjoint ({A} : Finset (Finset V)) rest :=
+    Finset.disjoint_singleton_left.mpr hAr
+  have h12d : Disjoint ({A₁} : Finset (Finset V)) {A₂} :=
+    Finset.disjoint_singleton.mpr h12
+  have htp : Disjoint (({A₁} : Finset (Finset V)) ∪ {A₂}) rest := by
+    rw [Finset.disjoint_union_left]
+    exact ⟨Finset.disjoint_singleton_left.mpr h1r, Finset.disjoint_singleton_left.mpr h2r⟩
+  have hparts_eq : parts = ({A} : Finset (Finset V)) ∪ rest := by
+    rw [hrest, ← Finset.insert_eq]; exact (Finset.insert_erase hA).symm
+  have hnew_eq : insert A₁ (insert A₂ rest) =
+      (({A₁} : Finset (Finset V)) ∪ {A₂}) ∪ rest := by
+    rw [Finset.insert_eq A₁, Finset.insert_eq A₂, Finset.union_assoc]
+  rw [hparts_eq, hnew_eq]
+  -- expand both diagonal blockEnergies into the four sub-blocks
+  rw [blockEnergy_union_left G {A} rest (({A} : Finset (Finset V)) ∪ rest) hd_A_rest,
+      blockEnergy_union_right G {A} {A} rest hd_A_rest,
+      blockEnergy_union_right G rest {A} rest hd_A_rest,
+      blockEnergy_union_left G (({A₁} : Finset (Finset V)) ∪ {A₂}) rest
+        ((({A₁} : Finset (Finset V)) ∪ {A₂}) ∪ rest) htp,
+      blockEnergy_union_right G (({A₁} : Finset (Finset V)) ∪ {A₂})
+        (({A₁} : Finset (Finset V)) ∪ {A₂}) rest htp,
+      blockEnergy_union_right G rest (({A₁} : Finset (Finset V)) ∪ {A₂}) rest htp]
+  -- the three local increments
+  have hdiag : blockEnergy G {A} {A} ≤
+      blockEnergy G (({A₁} : Finset (Finset V)) ∪ {A₂}) (({A₁} : Finset (Finset V)) ∪ {A₂}) := by
+    rw [blockEnergy_pair,
+        blockEnergy_union_left G {A₁} {A₂} (({A₁} : Finset (Finset V)) ∪ {A₂}) h12d,
+        blockEnergy_union_right G {A₁} {A₁} {A₂} h12d,
+        blockEnergy_union_right G {A₂} {A₁} {A₂} h12d,
+        blockEnergy_pair, blockEnergy_pair, blockEnergy_pair, blockEnergy_pair, ← hunion]
+    have := pairEnergy_diag_split_mono G A₁ A₂ hdisj
+    linarith
+  have hrow : blockEnergy G {A} rest ≤
+      blockEnergy G (({A₁} : Finset (Finset V)) ∪ {A₂}) rest := by
+    rw [blockEnergy_union_left G {A₁} {A₂} rest h12d,
+        blockEnergy_singleton_left, blockEnergy_singleton_left, blockEnergy_singleton_left,
+        ← Finset.sum_add_distrib]
+    apply Finset.sum_le_sum
+    intro R _
+    rw [← hunion]
+    exact pairEnergy_split_mono G A₁ A₂ R hdisj
+  have hcol : blockEnergy G rest {A} ≤
+      blockEnergy G rest (({A₁} : Finset (Finset V)) ∪ {A₂}) := by
+    rw [blockEnergy_union_right G rest {A₁} {A₂} h12d,
+        blockEnergy_singleton_right, blockEnergy_singleton_right, blockEnergy_singleton_right,
+        ← Finset.sum_add_distrib]
+    apply Finset.sum_le_sum
+    intro R _
+    rw [← hunion]
+    exact pairEnergy_col_split_mono G R A₁ A₂ hdisj
+  linarith [hdiag, hrow, hcol]
+
 end Szemeredi.RegularityOQ04Energy
