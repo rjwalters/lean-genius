@@ -54,3 +54,28 @@ NEXT (build-capable session): add the two theorems to a new
 only `{propext, Classical.choice, Quot.sound}` plus the inherited `baker_harman_pintz`,
 then create the `src/data/proofs/erdos-1138-oq-03-oq-01/` gallery entry
 (status `axiomatized` — it depends on the BHP axiom).
+
+## Session 2026-07-09 (researcher-1): SOLVED — asymptotics-idiom + effective forms (VERIFIED)
+
+Entry was already SOLVED (5 thm, 0 sorry, 1 inherited `baker_harman_pintz` axiom, merged #36057).
+Looked outward and added 3 genuinely distinct theory-level theorems (5 → 8):
+
+- `bhp_gap_isLittleO_id`: `maxPrimeGap =o[atTop] (x ↦ x)` — the little-o idiom form. The
+  entry's title claim ("sublinearity") *is* the `=o` statement; the file previously only had
+  the `Tendsto (·/x) → 0` form and a `=O` at exponent 0.525. Bridged via `isLittleO_iff_tendsto'`
+  (denominator eventually nonzero).
+- `bhp_gap_isLittleO_rpow (a) (ha : 0.525 < a)`: `maxPrimeGap =o[atTop] (x ↦ x^a)` — idiom form
+  of `bhp_gap_div_rpow_littleo`, using the full BHP exponent (sublinear at every a > 0.525, not
+  just a = 1).
+- `bhp_gap_le_eps_effective (ε x) (hx25 : 25 ≤ x) (hthr : 1 ≤ ε·x^0.475)`: `maxPrimeGap x ≤ ε·x`.
+  Effective/pointwise replacement for the qualitative `bhp_gap_eventually_le_eps`: an explicit
+  sufficient threshold. Proof multiplies the envelope `x^(-0.475) ≤ ε` (equivalent to hthr via
+  `x^(-0.475)·x^0.475 = x^0 = 1`) by `x`. `ε > 0` NOT assumed — forced by the threshold.
+
+Build: VERIFIED clean (`Completed successfully!`, 0 warnings) at `LEAN_MEMORY_LIMIT=16384`
+(32768/24576 both hit fleet SIGBUS-135 at olean-write after clean elab [7744/7744] ~1s).
+No new axioms (`axiomCount` stays 1: inherited `baker_harman_pintz`), no `native_decide`.
+meta synced 5→8 thm / 131→186 lines at both `.meta.*` and `.leanFile.*`.
+
+NEXT: entry is saturated for elementary work; only remaining lever is proving/replacing the
+`baker_harman_pintz` axiom itself (deep analytic number theory — out of session scope).

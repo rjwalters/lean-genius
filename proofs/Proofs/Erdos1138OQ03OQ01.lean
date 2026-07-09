@@ -128,4 +128,59 @@ theorem bhp_gap_div_rpow_littleo (a : ℝ) (ha : (0.525 : ℝ) < a) :
       _ = (x : ℝ) ^ (-(a - 0.525)) := hdiv
   exact squeeze_zero' (Eventually.of_forall h_lo) h_hi h_env
 
+/-- **Sublinearity in the little-o idiom.** The maximal prime gap is `o(x)`.
+
+    This is the asymptotics-idiom repackaging of `bhp_implies_gap_littleo`: the entry's
+    title claim ("sublinearity") is exactly the statement `maxPrimeGap =o[atTop] id`, which
+    `bhp_implies_gap_littleo` records only as a `Tendsto (·/x) → 0`. The two are equivalent
+    via `isLittleO_iff_tendsto'` (the denominator `x` is eventually nonzero). -/
+theorem bhp_gap_isLittleO_id :
+    (fun x : ℕ => (maxPrimeGap x : ℝ)) =o[atTop] (fun x : ℕ => (x : ℝ)) := by
+  refine (isLittleO_iff_tendsto' ?_).mpr bhp_implies_gap_littleo
+  filter_upwards [eventually_ge_atTop 1] with x hx h0
+  have hxpos : (0 : ℝ) < (x : ℝ) := by exact_mod_cast Nat.lt_of_lt_of_le Nat.zero_lt_one hx
+  rw [h0] at hxpos
+  exact absurd hxpos (lt_irrefl 0)
+
+/-- **Sharp little-o at every exponent above `0.525`.** For any `a > 0.525`,
+    `maxPrimeGap =o[atTop] (x ↦ x^a)`. This is the little-o idiom form of
+    `bhp_gap_div_rpow_littleo`, using the full BHP exponent: sublinearity holds not just at
+    `a = 1` (`bhp_gap_isLittleO_id`) but for every exponent strictly above the BHP threshold. -/
+theorem bhp_gap_isLittleO_rpow (a : ℝ) (ha : (0.525 : ℝ) < a) :
+    (fun x : ℕ => (maxPrimeGap x : ℝ)) =o[atTop] (fun x : ℕ => (x : ℝ) ^ a) := by
+  refine (isLittleO_iff_tendsto' ?_).mpr (bhp_gap_div_rpow_littleo a ha)
+  filter_upwards [eventually_ge_atTop 1] with x hx h0
+  have hxpos : (0 : ℝ) < (x : ℝ) := by exact_mod_cast Nat.lt_of_lt_of_le Nat.zero_lt_one hx
+  have hrp : (0 : ℝ) < (x : ℝ) ^ a := Real.rpow_pos_of_pos hxpos a
+  rw [h0] at hrp
+  exact absurd hrp (lt_irrefl 0)
+
+/-- **Effective (pointwise) sublinearity.** A concrete sufficient condition replacing the
+    qualitative "eventually" of `bhp_gap_eventually_le_eps`: once `x ≥ 25` and
+    the explicit threshold `1 ≤ ε · x^0.475` holds, we already have `maxPrimeGap x ≤ ε · x`.
+
+    The threshold `1 ≤ ε · x^0.475` is exactly `x^(-0.475) ≤ ε`, i.e. the point at which the
+    envelope `maxPrimeGap x / x ≤ x^(-0.475)` has dropped below `ε`; it holds for all
+    sufficiently large `x` (since `x^0.475 → ∞`), recovering `bhp_gap_eventually_le_eps`.
+    (Positivity of `ε` is not assumed — it is forced by the threshold, as `x^0.475 > 0`.) -/
+theorem bhp_gap_le_eps_effective (ε : ℝ) (x : ℕ)
+    (hx25 : 25 ≤ x) (hthr : 1 ≤ ε * (x : ℝ) ^ (0.475 : ℝ)) :
+    (maxPrimeGap x : ℝ) ≤ ε * x := by
+  have hx_pos : (0 : ℝ) < (x : ℝ) := by
+    have : (0 : ℕ) < x := lt_of_lt_of_le (by norm_num) hx25
+    exact_mod_cast this
+  have hxneg_pos : (0 : ℝ) < (x : ℝ) ^ (-(0.475 : ℝ)) := Real.rpow_pos_of_pos hx_pos _
+  -- x^(-0.475) · x^0.475 = x^0 = 1, so multiplying the threshold by x^(-0.475) gives the bound.
+  have hmul : (x : ℝ) ^ (-(0.475 : ℝ)) * (x : ℝ) ^ (0.475 : ℝ) = 1 := by
+    rw [← Real.rpow_add hx_pos]; norm_num
+  have hneg : (x : ℝ) ^ (-(0.475 : ℝ)) ≤ ε := by
+    calc (x : ℝ) ^ (-(0.475 : ℝ))
+        = (x : ℝ) ^ (-(0.475 : ℝ)) * 1 := by ring
+      _ ≤ (x : ℝ) ^ (-(0.475 : ℝ)) * (ε * (x : ℝ) ^ (0.475 : ℝ)) :=
+          mul_le_mul_of_nonneg_left hthr (le_of_lt hxneg_pos)
+      _ = ε * ((x : ℝ) ^ (-(0.475 : ℝ)) * (x : ℝ) ^ (0.475 : ℝ)) := by ring
+      _ = ε := by rw [hmul]; ring
+  have hfinal : (maxPrimeGap x : ℝ) / x ≤ ε := le_trans (gap_div_le_rpow_neg x hx25) hneg
+  rwa [div_le_iff₀ hx_pos] at hfinal
+
 end Erdos1138OQ03
