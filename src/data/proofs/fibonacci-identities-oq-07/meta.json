@@ -57,6 +57,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Docstring and Imports",
+      "startLine": 1,
+      "endLine": 29,
+      "summary": "Imports Mathlib; module docstring framing the Fibonacci strong-divisibility characterisation Fₘ ∣ Fₙ ↔ m ∣ n (for m ≥ 3), the reverse direction being the new content over Mathlib's forward Nat.fib_dvd. Namespace FibonacciIdentitiesOQ07.",
+      "mathContext": "Goal: Fₘ ∣ Fₙ ⟺ m ∣ n for m ≥ 3; the m ≥ 3 hypothesis is necessary because F₁ = F₂ = 1 divide every Fibonacci number."
+    },
+    {
       "id": "reverse-divisibility",
       "title": "Reverse Divisibility (the new content)",
       "summary": "dvd_of_fib_dvd: for m ≥ 3, Fₘ ∣ Fₙ → m ∣ n, via fib_gcd and injectivity of fib on [2,∞).",
@@ -157,23 +165,35 @@
   "mainTheorems": [
     {
       "name": "fib_dvd_iff",
-      "type": "theorem",
-      "description": "Fibonacci divisibility characterisation (m ≥ 3): Fₘ ∣ Fₙ ↔ m ∣ n. The forward direction uses the gcd identity gcd(Fₘ, Fₙ) = F_{gcd(m,n)}; the reverse is the classical Fₘ ∣ F_{km}."
+      "type": "core",
+      "description": "Fibonacci divisibility characterisation (m ≥ 3): Fₘ ∣ Fₙ ↔ m ∣ n. The forward direction uses the gcd identity gcd(Fₘ, Fₙ) = F_{gcd(m,n)}; the reverse is the classical Fₘ ∣ F_{km}.",
+      "leanType": "{m n : ℕ} (hm : 3 ≤ m) : Nat.fib m ∣ Nat.fib n ↔ m ∣ n",
+      "startLine": 67,
+      "endLine": 68
     },
     {
       "name": "dvd_of_fib_dvd",
-      "type": "theorem",
-      "description": "Forward direction (m ≥ 3): Fₘ ∣ Fₙ ⟹ m ∣ n, via F_{gcd(m,n)} = gcd(Fₘ,Fₙ) = Fₘ forcing gcd(m,n) = m."
+      "type": "core",
+      "description": "Forward direction (m ≥ 3): Fₘ ∣ Fₙ ⟹ m ∣ n, via F_{gcd(m,n)} = gcd(Fₘ,Fₙ) = Fₘ forcing gcd(m,n) = m.",
+      "leanType": "{m n : ℕ} (hm : 3 ≤ m) (h : Nat.fib m ∣ Nat.fib n) : m ∣ n",
+      "startLine": 39,
+      "endLine": 59
     },
     {
       "name": "not_fib_dvd_of_not_dvd",
-      "type": "theorem",
-      "description": "Contrapositive convenience form (m ≥ 3): if m ∤ n then Fₘ ∤ Fₙ."
+      "type": "supporting",
+      "description": "Contrapositive convenience form (m ≥ 3): if m ∤ n then Fₘ ∤ Fₙ.",
+      "leanType": "{m n : ℕ} (hm : 3 ≤ m) (h : ¬ m ∣ n) : ¬ Nat.fib m ∣ Nat.fib n",
+      "startLine": 76,
+      "endLine": 78
     },
     {
       "name": "fib_dvd_iff_needs_three",
-      "type": "theorem",
-      "description": "Sharpness of the m ≥ 3 hypothesis: F₂ ∣ F₃ yet 2 ∤ 3 (F₂ = 1 divides everything), so the characterisation fails for m = 2 (and m = 1)."
+      "type": "key",
+      "description": "Sharpness of the m ≥ 3 hypothesis: F₂ ∣ F₃ yet 2 ∤ 3 (F₂ = 1 divides everything), so the characterisation fails for m = 2 (and m = 1).",
+      "leanType": "Nat.fib 2 ∣ Nat.fib 3 ∧ ¬ (2 ∣ 3)",
+      "startLine": 73,
+      "endLine": 73
     }
   ],
   "sorries": 0
