@@ -533,6 +533,34 @@ theorem ramseyNumber_mono {k k' : ℕ} (hk' : 3 ≤ k') (hkk : k' ≤ k) :
   refine Nat.sInf_le ⟨A, ?_, hasRamseyProperty_antitone hkk hA⟩
   simpa [ramseyNumber] using hcard
 
+/--
+**Upper bound from any witness.**
+Any finite set `A` that has the Ramsey property for `k` bounds the Ramsey number
+from above: `R(k) ≤ |A|`.  This is the upper-bound companion of
+`ramsey_lower_bound` — `A.card` lies in the set whose infimum defines `R(k)`, so
+`Nat.sInf_le` applies.  Every explicit construction (e.g. the Hales–Jewett set of
+`hunter_observation`) turns into a concrete bound on `R(k)` through this lemma.
+-/
+theorem ramseyNumber_le_of_hasRamseyProperty {A : Finset Point} {k : ℕ}
+    (hA : HasRamseyProperty A k) : ramseyNumber k ≤ A.card :=
+  Nat.sInf_le ⟨A, rfl, hA⟩
+
+/--
+**The Ramsey number is an attained minimum.**
+For `k ≥ 3` the defining set is nonempty (`hunter_observation` supplies a witness),
+so the infimum `R(k)` is *realized* by an actual optimal configuration: there is a
+finite `A` with `|A| = R(k)` that already has the Ramsey property.  Together with
+`ramsey_lower_bound` (`R(k) ≥ k`) this pins `R(k)` down as a genuine minimum rather
+than a mere infimum, and exhibits the extremal set attaining it.
+-/
+theorem exists_hasRamseyProperty_card_eq_ramseyNumber (k : ℕ) (hk : k ≥ 3) :
+    ∃ A : Finset Point, A.card = ramseyNumber k ∧ HasRamseyProperty A k := by
+  have hne : {n : ℕ | ∃ A : Finset Point, A.card = n ∧ HasRamseyProperty A k}.Nonempty := by
+    obtain ⟨A, hA⟩ := hunter_observation k hk
+    exact ⟨A.card, A, rfl, hA⟩
+  obtain ⟨A, hcard, hA⟩ := Nat.sInf_mem hne
+  exact ⟨A, hcard, hA⟩
+
 /-
 **R(3) is Small:**
 The k = 3 case can be achieved with a small set of points.
