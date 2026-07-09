@@ -22,7 +22,7 @@
     "erdosProblemStatus": "open",
     "mathlib_version": "4.26.0",
     "axiomCount": 0,
-    "assumptions": "No axioms. All 17 theorems are fully proved from Mathlib. The main open question (growth exponent α(k) for k ≥ 4) is stated as a definition, not an axiom. Open conjecture; supporting lemmas fully verified.",
+    "assumptions": "No axioms. All 18 theorems are fully proved from Mathlib. The main open question (growth exponent α(k) for k ≥ 4) is stated as a definition, not an axiom. Open conjecture; supporting lemmas fully verified.",
     "lineCount": 207,
     "relatedProblems": [
       {
@@ -34,7 +34,7 @@
     "definitionCount": 6
   },
   "overview": {
-    "text": "A formalization generalizing Erdős Problem #1097 from 3-term to k-term arithmetic progressions. Defines IsKAP (k-term AP predicate), D_k(A) (common differences of k-APs), and proves 17 theorems without any axioms or sorries. Key results: D_k is anti-monotone in k (more terms demanded → fewer common differences), D_k(A) ⊆ D_3(A) for k ≥ 3, negation symmetry, subset monotonicity, and the quadratic upper bound |D_k(A)| ≤ |A|². Also proves the connection to the k=3 case via an iff characterizing IsKAP with k=3. States the open question: what is the growth exponent α(k) such that max_{|A|=n} |D_k(A)| = Θ(n^{α(k)})?",
+    "text": "A formalization generalizing Erdős Problem #1097 from 3-term to k-term arithmetic progressions. Defines IsKAP (k-term AP predicate), D_k(A) (common differences of k-APs), and proves 18 theorems without any axioms or sorries. Key results: D_k is anti-monotone in k (more terms demanded → fewer common differences), D_k(A) ⊆ D_3(A) for k ≥ 3, negation symmetry, subset monotonicity, and the quadratic upper bound |D_k(A)| ≤ |A|². Also proves the connection to the k=3 case via an iff characterizing IsKAP with k=3. States the open question: what is the growth exponent α(k) such that max_{|A|=n} |D_k(A)| = Θ(n^{α(k)})?",
     "historicalContext": "Erdős #1097 asks about 3-term APs in ℤ: how large can D_3(A) be for an n-element set A? The natural generalization to k-term APs connects to several major threads in additive combinatorics. Szemerédi's theorem (1975) guarantees that any positive-density subset of ℤ contains k-term APs for every k, but says nothing about quantitative bounds on D_k. Gowers (2001) developed higher-order Fourier analysis ('uniformity norms') to give quantitative bounds on k-AP counts, and the resulting tools have been extended to study common difference distributions. For k=3, the exponent α(3) is bounded: the lower bound Ω(n^{1.778}) comes from explicit constructions (related to Behrend's construction for 3-AP-free sets), while the Katz-Tao upper bound gives O(n^{11/6}). For k ≥ 4, k-APs impose more constraints (a k-AP is also a 3-AP, and the additional terms constrain d further), so α(k) ≤ α(3). Whether α(k) is strictly decreasing, or whether α(k) → 1 as k → ∞, are open questions connecting AP theory to higher-order uniformity.",
     "problemStatement": "For $k \\geq 3$ and $A \\subseteq \\mathbb{Z}$ with $|A| = n$, define $D_k(A) = \\{d : \\exists a,\\; a, a+d, \\ldots, a+(k-1)d \\in A\\}$. What is the growth rate of $\\max_{|A|=n} |D_k(A)|$ as a function of $n$ and $k$?",
     "proofStrategy": "Define IsKAP as a universal quantifier over indices (∀ i < k, a + i*d ∈ A), which naturally supports induction on k. Prove anti-monotonicity by weakening the universal quantifier. Symmetry via the reversed AP base a + (k-1)d. The quadratic bound follows from D_k(A) ⊆ A - A.",
@@ -43,7 +43,7 @@
       "The optimal growth exponent α(k) is non-increasing in k, with α(3) ∈ [1.778, 11/6] from Erdős #1097",
       "For k > n, D_k(A) = {0} since only trivial APs fit, giving α(k) → 0 as k → ∞ for fixed n",
       "The connection to k=3 is exact: IsKAP with k=3 is equivalent to the IsThreeAP predicate from the parent formalization",
-      "All 17 theorems are axiom-free, including the monotonicity of the growth question across k values",
+      "All 18 theorems are axiom-free, including the monotonicity of the growth question across k values",
       "The negation symmetry d ∈ D_k(A) → -d ∈ D_k(A) uses a reversed AP base b = a+(k-1)d — requiring only omega+ring to verify the index algebra over ℤ, showcasing how cast-free formulations simplify proofs"
     ],
     "prerequisites": [
@@ -93,7 +93,7 @@
     }
   ],
   "conclusion": {
-    "summary": "A self-contained, axiom-free formalization of the k-term AP common differences problem. All 17 theorems are proved from Mathlib alone. The central open question — determining the growth exponent α(k) for k ≥ 4 — connects to Szemerédi's theorem and the broader program of quantitative arithmetic combinatorics.",
+    "summary": "A self-contained, axiom-free formalization of the k-term AP common differences problem. All 18 theorems are proved from Mathlib alone. The central open question — determining the growth exponent α(k) for k ≥ 4 — connects to Szemerédi's theorem and the broader program of quantitative arithmetic combinatorics.",
     "implications": "The anti-monotonicity theorem (|D_{k+1}| ≤ |D_k|) means bounds for k=3 from Erdős #1097 automatically yield upper bounds for all k ≥ 3. Conversely, lower bounds for large k would give information about the structure of sets with many common differences. This framework provides the foundation for Lean-based investigation of quantitative AP problems beyond the classical k=3 case.",
     "openQuestions": [
       "What is the growth exponent α(4)? Is it strictly less than α(3) ∈ [1.778, 11/6]?",

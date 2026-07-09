@@ -21,7 +21,7 @@
     "badge": "infrastructure",
     "sorries": 0,
     "axiomCount": 0,
-    "assumptions": "None. All 11 theorems are fully verified with 0 sorries and 0 axioms (only the foundational propext/Classical.choice/Quot.sound, confirmed via #print axioms — the parent's R/EHR-bound axioms and its bounds_gap_enormous sorry are NOT pulled in). This file resolves none of the open conjecture; it is the verified combinatorial scaffolding making the 'tower height' framing of Erdős #564 precise. The parent Erdos564Problem.lean retains its 3 axioms (R, the two EHR bounds) and 1 sorry (bounds_gap_enormous), all legitimately so for an open problem.",
+    "assumptions": "None. All 20 theorems are fully verified with 0 sorries and 0 axioms (only the foundational propext/Classical.choice/Quot.sound, confirmed via #print axioms — the parent's R/EHR-bound axioms and its bounds_gap_enormous sorry are NOT pulled in). This file resolves none of the open conjecture; it is the verified combinatorial scaffolding making the 'tower height' framing of Erdős #564 precise. The parent Erdos564Problem.lean retains its 3 axioms (R, the two EHR bounds) and 1 sorry (bounds_gap_enormous), all legitimately so for an open problem.",
     "originalContributions": [
       "tower_succ: the defining recursion tower (k+1) n = 2 ^ tower k n recorded as a rewrite lemma",
       "tower_lt_succ_height: each extra level strictly increases the tower — tower k n < tower (k+1) n for all k, n (via m < 2^m, no positivity hypothesis needed)",
@@ -223,7 +223,7 @@
     "sorries": 0
   },
   "conclusion": {
-    "summary": "Supplies the verified, 0-axiom growth theory of the iterated-exponential tower function underlying Erdős #564: strict monotonicity in height (tower_lt_succ_height, tower_strictMono_height) and base (tower_strictMono_base), the base lower bound (self_le_tower), and the crux tower_one_lt_tower_two (2^n < 2^{2^n}) that makes precise the one-tower-level gap between the EHR lower and upper bounds. All 11 theorems verify with 0 sorries and 0 axioms (the parent's R/EHR axioms and its sorry are not imported). Also repairs six dangling /-- doc comments that made the parent Erdos564Problem.lean fail to parse.",
+    "summary": "Supplies the verified, 0-axiom growth theory of the iterated-exponential tower function underlying Erdős #564: strict monotonicity in height (tower_lt_succ_height, tower_strictMono_height) and base (tower_strictMono_base), the base lower bound (self_le_tower), and the crux tower_one_lt_tower_two (2^n < 2^{2^n}) that makes precise the one-tower-level gap between the EHR lower and upper bounds. All 20 theorems verify with 0 sorries and 0 axioms (the parent's R/EHR axioms and its sorry are not imported). Also repairs six dangling /-- doc comments that made the parent Erdos564Problem.lean fail to parse.",
     "implications": "With the tower's growth theory in place, 'tower height' is now a rigorous comparison rather than notation, and the open conjecture (R₃ reaching tower height 2) can be stated and reasoned about precisely. The next infrastructural targets are monotonicity/Ramsey-property lemmas for the hypergraph Ramsey number itself, and proving the parent's arithmetic sorry bounds_gap_enormous.",
     "openQuestions": [
       "The conjecture itself remains OPEN ($500): is there c > 0 with R₃(n) ≥ 2^{2^{cn}} for large n?",

@@ -157,7 +157,7 @@
     }
   ],
   "conclusion": {
-    "summary": "The formalization captures Erdős Problem 677 on distinctness of LCM of consecutive integers, the stronger prime-factor conjecture, Thue–Siegel finiteness, and structural properties. New in this session: the conjecture is PROVED for k=1 and k=2, the key factorization formula is proved (v_p(M(n,k)) = max over i of v_p(n+i+1)), and a lower bound n+k ≤ M(n,k) is established. 0 sorries, 23 theorems.",
+    "summary": "The formalization captures Erdős Problem 677 on distinctness of LCM of consecutive integers, the stronger prime-factor conjecture, Thue–Siegel finiteness, and structural properties. New in this session: the conjecture is PROVED for k=1 and k=2, the key factorization formula is proved (v_p(M(n,k)) = max over i of v_p(n+i+1)), and a lower bound n+k ≤ M(n,k) is established. 0 sorries, 31 theorems.",
     "implications": "The factorization formula makes precise why the conjecture should hold: as n shifts by k, the set of p-adic valuations must change for at least one prime. The k=1 and k=2 resolved cases show the conjecture holds for small intervals. The general case remains open, with the Thue–Siegel theorem giving finiteness for each fixed k.",
     "openQuestions": [
       "Is M(m,k) ≠ M(n,k) for all m ≥ n+k and k ≥ 3?",

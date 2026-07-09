@@ -2,7 +2,7 @@
   "id": "weak-goldbach",
   "title": "Weak Goldbach Conjecture (Ternary Goldbach)",
   "slug": "weak-goldbach",
-  "description": "Formalizes the Weak Goldbach Conjecture (proved by Helfgott 2013): every odd integer >5 is a sum of three primes. Axiomatizes Helfgott's proof, the circle-method asymptotic, Chen's theorem, and Oliveira e Silva's binary Goldbach verification. Proves structural reductions: binary Goldbach implies ternary, Lévy's conjecture verified for small cases. Ramaré's 6-prime bound and Tao's 5-prime bound are theorems proved from helfgott_weak_goldbach (S5 axiom elimination); Vinogradov's 1937 theorem and Helfgott's explicit bound are theorems proved from helfgott_weak_goldbach (S8 axiom elimination); Schnirelmann's basis theorem (σ(A)>0 ⟹ A is an additive basis) is now proved outright in Proofs/SchnirelmannTheorem.lean (S-r8 axiom elimination). 31 theorems, 4 axioms.",
+  "description": "Formalizes the Weak Goldbach Conjecture (proved by Helfgott 2013): every odd integer >5 is a sum of three primes. Axiomatizes Helfgott's proof, the circle-method asymptotic, Chen's theorem, and Oliveira e Silva's binary Goldbach verification. Proves structural reductions: binary Goldbach implies ternary, Lévy's conjecture verified for small cases. Ramaré's 6-prime bound and Tao's 5-prime bound are theorems proved from helfgott_weak_goldbach (S5 axiom elimination); Vinogradov's 1937 theorem and Helfgott's explicit bound are theorems proved from helfgott_weak_goldbach (S8 axiom elimination); Schnirelmann's basis theorem (σ(A)>0 ⟹ A is an additive basis) is now proved outright in Proofs/SchnirelmannTheorem.lean (S-r8 axiom elimination). 32 theorems, 4 axioms.",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-02-15",
