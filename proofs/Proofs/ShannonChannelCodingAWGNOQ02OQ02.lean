@@ -288,4 +288,91 @@ theorem awgn_two_symbol_power_eq_iff_covariance_zero [IsProbabilityMeasure μ]
     second_moment_eq_variance h₁ hm₁]
   exact variance_add_eq_iff_covariance_zero h₀ h₁
 
+/-!
+### Quantitative defect and sign-definite monotonicity
+
+The `iff` results above pin the *exact boundary* — the output powers add precisely when the
+off-diagonal covariances cancel in aggregate.  The results below record the *signed* content
+behind that boundary.  The exact defect `Var[∑] − ∑Var` equals the total off-diagonal
+covariance, so when those covariances are **sign-definite** the AWGN output power is
+monotone: positive correlation *inflates* it (super-additive), negative correlation
+*deflates* it (sub-additive).  The two `iff` theorems are the "defect `= 0`" boundary
+between these two regimes.
+-/
+
+/-- **Exact variance defect.**  The gap between the variance of a sum and the sum of the
+variances is exactly the total off-diagonal covariance:
+
+    Var[∑_{i ∈ s} Wᵢ] − ∑_{i ∈ s} Var[Wᵢ] = ∑_{i ∈ s} ∑_{j ∈ s.erase i} cov[Wᵢ, Wⱼ].
+
+This is the signed strengthening of `variance_sum_eq_iff_offDiag_covariance_zero`, which is
+the special case "defect `= 0`". -/
+theorem variance_sum_sub_eq_offDiag_covariance [IsFiniteMeasure μ] {ι : Type*}
+    [DecidableEq ι] {W : ι → Ω → ℝ} {s : Finset ι} (hW : ∀ i ∈ s, MemLp (W i) 2 μ) :
+    Var[∑ i ∈ s, W i; μ] - ∑ i ∈ s, Var[W i; μ]
+      = ∑ i ∈ s, ∑ j ∈ s.erase i, cov[W i, W j; μ] := by
+  have hsplit : ∀ i ∈ s, ∑ j ∈ s, cov[W i, W j; μ]
+      = Var[W i; μ] + ∑ j ∈ s.erase i, cov[W i, W j; μ] := by
+    intro i hi
+    rw [← Finset.add_sum_erase s (fun j => cov[W i, W j; μ]) hi,
+      covariance_self (hW i hi).aemeasurable]
+  have key : ∑ i ∈ s, ∑ j ∈ s, cov[W i, W j; μ]
+      = (∑ i ∈ s, Var[W i; μ]) + ∑ i ∈ s, ∑ j ∈ s.erase i, cov[W i, W j; μ] := by
+    rw [← Finset.sum_add_distrib]
+    exact Finset.sum_congr rfl hsplit
+  rw [variance_sum' hW, key]; ring
+
+/-- **Positive correlation inflates output power (super-additivity).**  If every off-diagonal
+pair is *non-negatively* correlated, the variance of the sum is at least the sum of the
+variances:
+
+    ∑_{i ∈ s} Var[Wᵢ] ≤ Var[∑_{i ∈ s} Wᵢ]. -/
+theorem variance_sum_ge_of_nonneg_covariance [IsFiniteMeasure μ] {ι : Type*}
+    [DecidableEq ι] {W : ι → Ω → ℝ} {s : Finset ι} (hW : ∀ i ∈ s, MemLp (W i) 2 μ)
+    (hcov : ∀ i ∈ s, ∀ j ∈ s, i ≠ j → 0 ≤ cov[W i, W j; μ]) :
+    ∑ i ∈ s, Var[W i; μ] ≤ Var[∑ i ∈ s, W i; μ] := by
+  have hdef := variance_sum_sub_eq_offDiag_covariance hW
+  have hnn : 0 ≤ ∑ i ∈ s, ∑ j ∈ s.erase i, cov[W i, W j; μ] := by
+    refine Finset.sum_nonneg fun i hi => Finset.sum_nonneg fun j hj => ?_
+    rw [Finset.mem_erase] at hj
+    exact hcov i hi j hj.2 (Ne.symm hj.1)
+  linarith [hdef, hnn]
+
+/-- **Negative correlation deflates output power (sub-additivity).**  If every off-diagonal
+pair is *non-positively* correlated, the variance of the sum is at most the sum of the
+variances:
+
+    Var[∑_{i ∈ s} Wᵢ] ≤ ∑_{i ∈ s} Var[Wᵢ]. -/
+theorem variance_sum_le_of_nonpos_covariance [IsFiniteMeasure μ] {ι : Type*}
+    [DecidableEq ι] {W : ι → Ω → ℝ} {s : Finset ι} (hW : ∀ i ∈ s, MemLp (W i) 2 μ)
+    (hcov : ∀ i ∈ s, ∀ j ∈ s, i ≠ j → cov[W i, W j; μ] ≤ 0) :
+    Var[∑ i ∈ s, W i; μ] ≤ ∑ i ∈ s, Var[W i; μ] := by
+  have hdef := variance_sum_sub_eq_offDiag_covariance hW
+  have hnp : ∑ i ∈ s, ∑ j ∈ s.erase i, cov[W i, W j; μ] ≤ 0 := by
+    refine Finset.sum_nonpos fun i hi => Finset.sum_nonpos fun j hj => ?_
+    rw [Finset.mem_erase] at hj
+    exact hcov i hi j hj.2 (Ne.symm hj.1)
+  linarith [hdef, hnp]
+
+/-- **Positive correlation inflates AWGN output power (power form).**  For a finite family of
+*zero-mean* square-integrable contributions with non-negative pairwise covariances, the
+aggregate output power is at least the sum of the individual powers:
+
+    ∑_{i ∈ s} E[Wᵢ²] ≤ E[(∑_{i ∈ s} Wᵢ)²].
+
+This is `variance_sum_ge_of_nonneg_covariance` transported into second-moment language via
+the zero-mean bridge — the super-additive companion of the sharp boundary
+`awgn_multisymbol_power_eq_iff_offDiag_covariance_zero`. -/
+theorem awgn_multisymbol_power_ge_of_nonneg_covariance [IsProbabilityMeasure μ]
+    {ι : Type*} [DecidableEq ι] {W : ι → Ω → ℝ} {s : Finset ι}
+    (hW : ∀ i ∈ s, MemLp (W i) 2 μ) (hmean : ∀ i ∈ s, μ[W i] = 0)
+    (hcov : ∀ i ∈ s, ∀ j ∈ s, i ≠ j → 0 ≤ cov[W i, W j; μ]) :
+    ∑ i ∈ s, μ[(W i) ^ 2] ≤ μ[(∑ i ∈ s, W i) ^ 2] := by
+  have hSum : MemLp (∑ i ∈ s, W i) 2 μ := memLp_finset_sum' s hW
+  have hSum0 : μ[∑ i ∈ s, W i] = 0 := sum_mean_zero hW hmean
+  rw [second_moment_eq_variance hSum hSum0,
+    show (∑ i ∈ s, μ[(W i) ^ 2]) = ∑ i ∈ s, Var[W i; μ] from
+      Finset.sum_congr rfl fun i hi => second_moment_eq_variance (hW i hi) (hmean i hi)]
+  exact variance_sum_ge_of_nonneg_covariance hW hcov
+
 end ShannonAWGNMultiSymbolPower
