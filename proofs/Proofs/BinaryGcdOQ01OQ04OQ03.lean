@@ -245,4 +245,43 @@ theorem totalSteps_one_ge (N : ℕ) :
     _ ≤ ∑ b ∈ Finset.Icc 1 N, Nat.log 2 b :=
         Finset.sum_le_sum_of_subset hsub
 
+/-- **Average-level Ω(log N) lower bound (a = 1 row).** Dividing the total lower
+    bound `totalSteps_one_ge` by `N` and using `N ≤ 2·(N − ⌊N/2⌋)` (i.e. the upper
+    half `(⌊N/2⌋, N]` is at least half of `[1, N]`) gives an average-case lower
+    bound with an `N`-independent coefficient:
+
+      (∑_{b=1}^{N} binaryGcdSteps 1 b) / N ≥ (log₂ N − 1) / 2.
+
+    This is the rational-form counterpart of the integer total bound
+    `totalSteps_one_ge`, matching the *rational* `O(log N)` ceiling `avgSteps_le`
+    (which at `a = 1` reads `≤ 2·log₂ N + 2`). Together they sandwich the `a = 1`
+    average between `(log₂ N − 1)/2` and `2·log₂ N + 2` — an explicit `Θ(log N)` at
+    the average level, matching the *order* of Brent's average-case result. The
+    sharp `0.7050` leading constant remains out of reach (see file header). -/
+theorem avgSteps_one_ge (N : ℕ) (hN : 0 < N) :
+    ((Nat.log 2 N : ℚ) - 1) / 2 ≤ (totalSteps 1 N : ℚ) / (N : ℚ) := by
+  have hNQ : (0 : ℚ) < (N : ℚ) := by exact_mod_cast hN
+  rw [div_le_div_iff (by norm_num) hNQ]
+  -- reduce to the ℕ inequality  N · (log₂ N − 1) ≤ 2 · totalSteps 1 N
+  have key : N * (Nat.log 2 N - 1) ≤ 2 * totalSteps 1 N := by
+    have h2 : N ≤ 2 * (N - N / 2) := by omega
+    have hge := totalSteps_one_ge N
+    calc N * (Nat.log 2 N - 1)
+        ≤ (2 * (N - N / 2)) * (Nat.log 2 N - 1) := mul_le_mul_right' h2 _
+      _ = 2 * ((N - N / 2) * (Nat.log 2 N - 1)) := by ring
+      _ ≤ 2 * totalSteps 1 N := by omega
+  have keyQ : (N : ℚ) * ((Nat.log 2 N - 1 : ℕ) : ℚ) ≤ 2 * (totalSteps 1 N : ℚ) := by
+    exact_mod_cast key
+  -- bridge the ℕ truncated subtraction `log₂ N − 1` up to the ℚ subtraction
+  have hle : (Nat.log 2 N : ℚ) - 1 ≤ ((Nat.log 2 N - 1 : ℕ) : ℚ) := by
+    rcases Nat.eq_zero_or_pos (Nat.log 2 N) with h0 | h1
+    · rw [h0]; norm_num
+    · rw [Nat.cast_sub h1]; norm_num
+  have hNnn : (0 : ℚ) ≤ (N : ℚ) := le_of_lt hNQ
+  calc ((Nat.log 2 N : ℚ) - 1) * (N : ℚ)
+      ≤ ((Nat.log 2 N - 1 : ℕ) : ℚ) * (N : ℚ) := mul_le_mul_of_nonneg_right hle hNnn
+    _ = (N : ℚ) * ((Nat.log 2 N - 1 : ℕ) : ℚ) := by ring
+    _ ≤ 2 * (totalSteps 1 N : ℚ) := keyQ
+    _ = (totalSteps 1 N : ℚ) * 2 := by ring
+
 end BinaryGcdOQ01OQ04OQ03
