@@ -1,0 +1,102 @@
+{
+  "slug": "erdos-1044-oq-03",
+  "title": "Higher-Dimensional Boundary Measure of Polynomial Sublevel Sets",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\inf_{f \\in \\mathbb{C}[z_1,\\dots,z_d]} \\Lambda_d(f) = c_d > 0, \\text{ with } c_1 = 2, \\text{ where } \\Lambda_d(f) = \\max_C \\sigma_{2d-1}(\\partial C) \\text{ over bounded components } C \\text{ of } \\{|f| < 1\\}, \\text{ roots in } \\overline{\\mathbb{D}}^d; \\text{ the infimum is not attained and is approached by } \\prod_j (z_j^n - 1) \\text{ as } n \\to \\infty.",
+    "plain": "Tang's theorem says that in one complex variable, the shortest possible boundary length of a component of {|f| < 1} (over polynomials with roots in the unit disk) is exactly 2, approached but never attained. This problem asks the analogous question in several complex variables: for f(z_1,...,z_d), the sublevel set {|f| < 1} lives in C^d and its boundary is a real hypersurface of dimension 2d-1. Measuring boundary size by (2d-1)-dimensional Hausdorff measure, we conjecture the infimum over such polynomials is a positive dimensional constant c_d, not attained, and approached by tensor products of the extremal one-variable polynomials.",
+    "whyMatters": [
+      "Tests whether the sharp, unattained one-variable extremal phenomenon of Tang's theorem survives in higher dimensions, where sublevel-set geometry is far richer.",
+      "Polynomial sublevel sets and their boundaries are central objects in pluripotential theory, where log|f| is plurisubharmonic; sharp metric bounds connect to Bernstein-Markov measures, capacities of pluripolar sets, and the Bernstein-Walsh inequality.",
+      "Even establishing existence and positivity of the dimensional constant c_d would give the first genuinely multivariate analogue of Tang's result."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Tang's theorem (one variable): inf_f Lambda_1(f) = 2, not attained, approached by z^n - 1 (Proc. AMS 2021, doi:10.1090/proc/15470); formalized in this gallery as erdos-1044 via the axiom tang_infimum_eq_two.",
+      "Erdos-Herzog-Piranian (1958) introduced Lambda(f) and the level-set metric program.",
+      "Pluripotential foundations (Klimek 1991): {|f| < 1} = {log|f| < 0} governed by the plurisubharmonic potential log|f|; boundary contained in the real-analytic set {|f|^2 = 1}.",
+      "Federer's coarea formula and rectifiable-set theory provide the machinery to define the (2d-1)-Hausdorff boundary measure rigorously."
+    ],
+    "open": [
+      "The exact or even approximate value of c_d for any d >= 2.",
+      "Whether the infimum is finite and strictly positive at all in dimension d >= 2 (existence/positivity of c_d).",
+      "Whether the tensor-product family prod_j (z_j^n - 1) actually realizes the infimum in the limit.",
+      "Whether the 'not attained' phenomenon persists in higher dimensions."
+    ],
+    "goal": "Formalize a precise statement of the several-variable conjecture and prove the tractable structural pieces: (1) define the sublevel set and axiomatize the (2d-1)-Hausdorff boundary functional Lambda_d, mirroring the parent's maxBoundaryLength; (2) prove the compatibility/reduction lemma recovering Tang's constant 2 on one-variable slices/products; (3) state higher_dim_infimum_positive as an axiom with the d=1 specialization proved equal to Tang's statement."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-07-09T15:22:59-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: erdos-1044-oq-03\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "complex-analysis",
+    "polynomials",
+    "level-sets",
+    "boundary-length",
+    "pluripotential-theory",
+    "erdos"
+  ],
+  "relatedProofs": [
+    "erdos-1044",
+    "erdos-1042",
+    "erdos-1048",
+    "erdos-1040"
+  ],
+  "references": {
+    "papers": [
+      "Quanyu Tang, On the infimum of the length of the boundary of polynomial sublevel sets, Proc. Amer. Math. Soc. (2021), doi:10.1090/proc/15470",
+      "Paul Erdos, Fritz Herzog, George Piranian, Metric properties of polynomials, J. Analyse Math. 6 (1958), 125-148",
+      "Maciej Klimek, Pluripotential Theory, London Math. Soc. Monographs (1991)",
+      "Herbert Federer, Geometric Measure Theory, Springer (1969)",
+      "Igor Pritsker, Chebyshev polynomials on compact sets, Potential Anal. 40 (2014), 511-521"
+    ],
+    "urls": [
+      "https://erdosproblems.com/1044",
+      "https://leanprover-community.github.io/mathlib4_docs/"
+    ],
+    "mathlib": [
+      "Mathlib.Algebra.MvPolynomial.Basic",
+      "Mathlib.MeasureTheory.Measure.Hausdorff",
+      "Mathlib.MeasureTheory.Integral.Coarea",
+      "Mathlib.Topology.Connected.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Complex.Circle"
+    ]
+  },
+  "started": "2026-07-09T22:24:22.177Z",
+  "lastUpdate": "2026-07-09T22:24:22.261Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1044Problem.lean",
+      "filename": "Erdos1044Problem.lean",
+      "lineCount": 121,
+      "theoremCount": 3,
+      "axiomCount": 2,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1044Problem.lean"
+    }
+  ]
+}

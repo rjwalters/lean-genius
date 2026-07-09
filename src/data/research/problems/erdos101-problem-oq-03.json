@@ -1,0 +1,87 @@
+{
+  "slug": "erdos101-problem-oq-03",
+  "title": "Grünbaum Lower Bound — Constructing Point Sets with ≫ n^{3/2} Four-Point Lines",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "For a finite P \\subset \\mathbb{R}^2 with |P| = n and no 5 collinear, let f_4(P) = \\#\\{S \\in \\binom{P}{4} : S \\text{ collinear}\\}. Prove the lower bound: there is c > 0 such that for infinitely many n, some P_n with |P_n| = n and no 5 collinear satisfies f_4(P_n) \\ge c\\,n^{3/2}; i.e. \\max f_4 = \\Omega(n^{3/2}) via an explicit Grünbaum-style construction.",
+    "plain": "The parent proof gives upper bounds on how many lines pass through exactly four points of a no-five-collinear planar set. This problem asks for the complementary lower bound: build explicit point configurations containing on the order of n^{3/2} four-point lines, formalizing Grünbaum's construction.",
+    "whyMatters": [
+      "n^{3/2} is the historical heart of Erdős #101 ($100 prize): Erdős conjectured Θ(n^{3/2}) precisely because Grünbaum's construction matched it from below.",
+      "Provides the first proven, machine-checked lower bound to sit against the parent proof's n(n-1)/12 upper bound, sandwiching the extremal function.",
+      "Exercises constructive incidence geometry in Lean (explicit coordinates, counting collinear 4-tuples), a capability the gallery currently lacks, and is a stepping stone toward the harder Solymosi–Stojaković construction."
+    ]
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-07-09T15:22:59-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: erdos101-problem-oq-03\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "combinatorial-geometry",
+    "incidence-geometry",
+    "four-point-lines",
+    "collinearity",
+    "erdos-problems",
+    "lower-bound-construction"
+  ],
+  "relatedProofs": [
+    "erdos-101",
+    "erdos101-problem",
+    "erdos101-problem-oq-02"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-07-09T22:24:22.203Z",
+  "lastUpdate": "2026-07-09T22:24:22.264Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos101Problem.lean",
+      "filename": "Erdos101Problem.lean",
+      "lineCount": 759,
+      "theoremCount": 23,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos101Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos101ProblemOQ02.lean",
+      "filename": "Erdos101ProblemOQ02.lean",
+      "lineCount": 184,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos101ProblemOQ02.lean"
+    }
+  ]
+}

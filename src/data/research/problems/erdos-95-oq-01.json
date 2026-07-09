@@ -1,0 +1,238 @@
+{
+  "slug": "erdos-95-oq-01",
+  "title": "Necessity of the log n Factor in the Guth-Katz Distance Bound",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{For } n \\text{ points in } \\mathbb{R}^2 \\text{ with distance multiplicities } f(u_i), \\text{ Guth-Katz gives } \\sum_i f(u_i)^2 \\le C n^3 \\log n. \\text{ Is the } \\log n \\text{ necessary? The } \\sqrt{n}\\times\\sqrt{n} \\text{ lattice attains } \\sum_i f(u_i)^2 \\ge c\\, n^3 \\log n, \\text{ so it cannot be removed in general.}",
+    "plain": "The Guth-Katz theorem bounds the sum of squared distance-multiplicities of n planar points by about n^3 log n. We ask whether the extra log n factor is intrinsic. For the square integer grid it is: the grid actually achieves ~n^3 log n, so the log cannot be removed in general. The refined question is whether it disappears for configurations that avoid lattice-like additive structure.",
+    "whyMatters": [
+      "Pins down the exact extremal behavior of distance multiplicities, closing the gap between Erdos's n^{3+eps}, Guth-Katz's n^3 log n, and the possible n^3.",
+      "Sharpens the dual bound on distinct distances (t >> n/log n versus t >> n).",
+      "Bridges planar discrete geometry to classical analytic number theory via sums of two squares (r_2(m))."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Guth-Katz upper bound sum f(u_i)^2 <= C n^3 log n (Annals of Math 181, 2015); axiomatized as guth_katz_theorem in erdos-95.",
+      "Erdos n^{3+eps} conjecture derived from Guth-Katz (erdos_conjecture_proved, erdos-95, 0 sorries).",
+      "Cauchy-Schwarz bridge (n(n-1))^2 <= t * sum f(u_i)^2 giving t >> n/log n (sq_sum_multiplicities_le, erdos-95).",
+      "Ramanujan asymptotic sum_{m<=x} r_2(m)^2 ~ c x log x, source of the lattice's log factor.",
+      "Convex-position case sum f(u_i)^2 = O(n^3) with no log (Altman 1963; convex_polygon_case, erdos-95)."
+    ],
+    "open": [
+      "Whether sum f(u_i)^2 <= C n^3 (no log) holds for all non-lattice configurations, and how to make 'non-lattice' precise (bounded additive energy / general algebraic position).",
+      "Whether the log n in the general upper bound is unavoidable at the level of the worst-case constant."
+    ],
+    "goal": "Formalize the lattice lower bound: define the sqrt(n) x sqrt(n) integer lattice as a PointConfig and prove sum f(u_i)^2 >= c n^3 log n, establishing that the log n cannot be dropped from the general Guth-Katz bound. Companion: state the precise non-lattice removability conjecture as a Lean proposition."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-07-09T15:22:59-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: erdos-95-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "discrete-geometry",
+    "distinct-distances",
+    "incidence-geometry",
+    "polynomial-method",
+    "number-theory"
+  ],
+  "relatedProofs": [
+    "erdos-9",
+    "erdos-95",
+    "erdos-95-oq-04",
+    "erdos-950",
+    "erdos-951",
+    "erdos-952",
+    "erdos-953",
+    "erdos-954",
+    "erdos-955",
+    "erdos-956",
+    "erdos-957",
+    "erdos-958",
+    "erdos-959"
+  ],
+  "references": {
+    "papers": [
+      "L. Guth and N. H. Katz, On the Erdos distinct distances problem in the plane, Annals of Mathematics 181 (2015), 155-190.",
+      "P. Erdos, On sets of distances of n points, Amer. Math. Monthly 53 (1946), 248-250.",
+      "E. Altman, On a problem of P. Erdos, Amer. Math. Monthly 70 (1963), 148-157.",
+      "E. Grosswald, Representations of Integers as Sums of Squares, Springer (1985)."
+    ],
+    "urls": [
+      "https://erdosproblems.com/95"
+    ],
+    "mathlib": [
+      "Mathlib.Analysis.InnerProductSpace.EuclideanDist",
+      "Mathlib.NumberTheory.SumTwoSquares",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Data.Finset.Basic"
+    ]
+  },
+  "started": "2026-07-09T22:24:22.203Z",
+  "lastUpdate": "2026-07-09T22:24:22.264Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos950Problem.lean",
+      "filename": "Erdos950Problem.lean",
+      "lineCount": 226,
+      "theoremCount": 8,
+      "axiomCount": 2,
+      "defCount": 10,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos950Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos951Problem.lean",
+      "filename": "Erdos951Problem.lean",
+      "lineCount": 392,
+      "theoremCount": 17,
+      "axiomCount": 0,
+      "defCount": 9,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos951Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos952Problem.lean",
+      "filename": "Erdos952Problem.lean",
+      "lineCount": 360,
+      "theoremCount": 18,
+      "axiomCount": 2,
+      "defCount": 18,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos952Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos953Problem.lean",
+      "filename": "Erdos953Problem.lean",
+      "lineCount": 292,
+      "theoremCount": 13,
+      "axiomCount": 2,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos953Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos954Problem.lean",
+      "filename": "Erdos954Problem.lean",
+      "lineCount": 220,
+      "theoremCount": 18,
+      "axiomCount": 0,
+      "defCount": 9,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos954Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos955Problem.lean",
+      "filename": "Erdos955Problem.lean",
+      "lineCount": 193,
+      "theoremCount": 2,
+      "axiomCount": 2,
+      "defCount": 14,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos955Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos956Aristotle.lean",
+      "filename": "Erdos956Aristotle.lean",
+      "lineCount": 134,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos956Aristotle.lean"
+    },
+    {
+      "path": "Proofs/Erdos956Problem.lean",
+      "filename": "Erdos956Problem.lean",
+      "lineCount": 310,
+      "theoremCount": 14,
+      "axiomCount": 2,
+      "defCount": 13,
+      "sorryCount": 6,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos956Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos957Problem.lean",
+      "filename": "Erdos957Problem.lean",
+      "lineCount": 326,
+      "theoremCount": 6,
+      "axiomCount": 6,
+      "defCount": 9,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos957Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos958Problem.lean",
+      "filename": "Erdos958Problem.lean",
+      "lineCount": 201,
+      "theoremCount": 1,
+      "axiomCount": 2,
+      "defCount": 10,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos958Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos959Problem.lean",
+      "filename": "Erdos959Problem.lean",
+      "lineCount": 159,
+      "theoremCount": 7,
+      "axiomCount": 2,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos959Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos95OQ04.lean",
+      "filename": "Erdos95OQ04.lean",
+      "lineCount": 260,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos95OQ04.lean"
+    },
+    {
+      "path": "Proofs/Erdos95Problem.lean",
+      "filename": "Erdos95Problem.lean",
+      "lineCount": 301,
+      "theoremCount": 5,
+      "axiomCount": 2,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos95Problem.lean"
+    }
+  ]
+}

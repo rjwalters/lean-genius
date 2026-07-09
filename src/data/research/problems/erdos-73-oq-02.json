@@ -1,0 +1,260 @@
+{
+  "slug": "erdos-73-oq-02",
+  "title": "Improved Erdős–Pósa Bounds for Odd Cycles",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\exists\\, C > 0 \\;\\; \\forall\\, G,\\, k:\\quad \\nu_{\\mathrm{odd}}(G) \\le k \\;\\Longrightarrow\\; \\tau_{\\mathrm{odd}}(G) \\le C\\, k \\log k",
+    "plain": "A graph is bipartite exactly when it has no odd cycle. Two measures of non-bipartiteness are the odd-cycle packing number (max vertex-disjoint odd cycles) and the odd-cycle transversal number (fewest vertices whose deletion destroys all odd cycles). The Erdős–Pósa property says the transversal is bounded by a function of the packing number; the goal is to formalize the packing–transversal duality and sharpen the best known bounding function f(k) = O(k log k).",
+    "whyMatters": [
+      "The packing–transversal gap for odd cycles is the engine behind Reed's almost-bipartite theorem for Erdős Problem #73, so improving it improves the bipartite deficiency bound.",
+      "Odd-cycle Erdős–Pósa bounds control constants in fixed-parameter algorithms for Odd Cycle Transversal and Maximum Bipartite Subgraph.",
+      "Odd cycles are the canonical example separating cases where the Erdős–Pósa property holds (planar / highly connected) from where it fails entirely."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Erdős–Pósa theorem for cycles (Erdős & Pósa 1965): O(k log k) transversal for arbitrary cycles, order tight.",
+      "Reed's theorem / Erdős #73 (Reed 1999): k-independence condition implies bipartite plus O_k(1) vertices, f(k) ≤ 2^k.",
+      "Odd Erdős–Pósa in planar / highly connected graphs (Reed 1999; Rautenbach–Reed 2001; Thomassen 2001): f(k) = O(k log k)."
+    ],
+    "open": [
+      "Optimal growth rate of f(k) where odd-cycle Erdős–Pósa holds: is O(k log k) tight or does O(k) suffice?",
+      "Whether the Erdős #73 deficiency bound can be reduced from exponential 2^k toward polynomial/linear via improved transversal constants."
+    ],
+    "goal": "Formalize on the erdos-73 framework the odd-cycle packing–transversal chain: the trivial inequality ν_odd ≤ τ_odd, the identity τ_odd(G) = bipartiteDeficiency G, and an axiomatized Erdős–Pósa bound τ_odd(G) ≤ f(ν_odd(G)) with O(k log k) growth."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-07-09T15:22:58-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: erdos-73-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "graph-theory",
+    "structural-graph-theory",
+    "independent-sets",
+    "bipartite-graphs",
+    "erdos-posa"
+  ],
+  "relatedProofs": [
+    "erdos-73",
+    "erdos-106",
+    "erdos-47"
+  ],
+  "references": {
+    "papers": [
+      "Erdős, P. and Pósa, L., On independent circuits contained in a graph, Canad. J. Math. 17 (1965), 347–352.",
+      "Reed, B., Mangoes and Blueberries, Combinatorica 19(2) (1999), 267–296.",
+      "Rautenbach, D. and Reed, B., The Erdős–Pósa property for odd cycles in highly connected graphs, Combinatorica 21(2) (2001), 267–278.",
+      "Thomassen, C., The Erdős–Pósa property for odd cycles in graphs of large connectivity, Combinatorica 21(2) (2001), 321–333."
+    ],
+    "urls": [
+      "https://erdosproblems.com/73",
+      "https://en.wikipedia.org/wiki/Erd%C5%91s%E2%80%93P%C3%B3sa_theorem"
+    ],
+    "mathlib": [
+      "Mathlib.Combinatorics.SimpleGraph.Connectivity.WalkCounting",
+      "Mathlib.Combinatorics.SimpleGraph.Subgraph",
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Data.Finset.Card"
+    ]
+  },
+  "started": "2026-07-09T22:24:22.202Z",
+  "lastUpdate": "2026-07-09T22:24:22.263Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos730Problem.lean",
+      "filename": "Erdos730Problem.lean",
+      "lineCount": 149,
+      "theoremCount": 5,
+      "axiomCount": 1,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos730Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos731Problem.lean",
+      "filename": "Erdos731Problem.lean",
+      "lineCount": 440,
+      "theoremCount": 31,
+      "axiomCount": 1,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos731Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos732Problem.lean",
+      "filename": "Erdos732Problem.lean",
+      "lineCount": 317,
+      "theoremCount": 4,
+      "axiomCount": 3,
+      "defCount": 10,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos732Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos733LimitBounds.lean",
+      "filename": "Erdos733LimitBounds.lean",
+      "lineCount": 106,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos733LimitBounds.lean"
+    },
+    {
+      "path": "Proofs/Erdos733Problem.lean",
+      "filename": "Erdos733Problem.lean",
+      "lineCount": 287,
+      "theoremCount": 6,
+      "axiomCount": 2,
+      "defCount": 6,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos733Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos733RichLines.lean",
+      "filename": "Erdos733RichLines.lean",
+      "lineCount": 186,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos733RichLines.lean"
+    },
+    {
+      "path": "Proofs/Erdos734Problem.lean",
+      "filename": "Erdos734Problem.lean",
+      "lineCount": 207,
+      "theoremCount": 1,
+      "axiomCount": 2,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos734Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos735OQ04.lean",
+      "filename": "Erdos735OQ04.lean",
+      "lineCount": 244,
+      "theoremCount": 3,
+      "axiomCount": 1,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos735OQ04.lean"
+    },
+    {
+      "path": "Proofs/Erdos735OQ04Tetrahedron.lean",
+      "filename": "Erdos735OQ04Tetrahedron.lean",
+      "lineCount": 97,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos735OQ04Tetrahedron.lean"
+    },
+    {
+      "path": "Proofs/Erdos735Problem.lean",
+      "filename": "Erdos735Problem.lean",
+      "lineCount": 248,
+      "theoremCount": 5,
+      "axiomCount": 5,
+      "defCount": 16,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos735Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos736Problem.lean",
+      "filename": "Erdos736Problem.lean",
+      "lineCount": 445,
+      "theoremCount": 17,
+      "axiomCount": 0,
+      "defCount": 10,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos736Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos737Problem.lean",
+      "filename": "Erdos737Problem.lean",
+      "lineCount": 155,
+      "theoremCount": 4,
+      "axiomCount": 5,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos737Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos738Problem.lean",
+      "filename": "Erdos738Problem.lean",
+      "lineCount": 421,
+      "theoremCount": 10,
+      "axiomCount": 2,
+      "defCount": 10,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos738Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos739Problem.lean",
+      "filename": "Erdos739Problem.lean",
+      "lineCount": 130,
+      "theoremCount": 2,
+      "axiomCount": 2,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos739Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos73Aristotle.lean",
+      "filename": "Erdos73Aristotle.lean",
+      "lineCount": 127,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos73Aristotle.lean"
+    },
+    {
+      "path": "Proofs/Erdos73Problem.lean",
+      "filename": "Erdos73Problem.lean",
+      "lineCount": 315,
+      "theoremCount": 9,
+      "axiomCount": 3,
+      "defCount": 10,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos73Problem.lean"
+    }
+  ]
+}

@@ -1,0 +1,119 @@
+{
+  "slug": "erdos-620-oq-01",
+  "title": "Logarithmic Correction in the Erdős–Rogers Function f(n)",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "f(n) = \\min_{G\\ K_4\\text{-free on }n\\text{ vertices}} \\max\\{|S| : G[S]\\text{ triangle-free}\\}. \\ \\text{Known: } c\\,\\sqrt{n}\\sqrt{\\log n}/\\log\\log n \\le f(n) \\le C\\,\\sqrt{n}\\log n. \\ \\text{Open: is } f(n)=\\Theta(\\sqrt{n}\\log n) \\text{ or } \\Theta(\\sqrt{n}\\sqrt{\\log n})?",
+    "plain": "In any K4-free graph on n vertices, the largest triangle-free induced subgraph has guaranteed size f(n), known to grow like sqrt(n) times a factor between sqrt(log n) and log n. The open question is which logarithmic power is correct.",
+    "whyMatters": [
+      "The sqrt(n) base rate is settled; the entire remaining mystery is the logarithmic correction, a canonical 'which log power' problem in extremal combinatorics.",
+      "Resolving it would reveal the structure of extremal K4-free graphs and test whether the regularity-free Mubayi–Verstraëte (2024) blowup method is tight.",
+      "It connects to R(3,k)=Theta(k^2/log k) (Kim 1995) and the wider generalized Erdős–Rogers hierarchy f_{s,t}(n)."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Trivial lower bound f(n) >> sqrt(n) from independent sets (Erdős–Rogers 1962).",
+      "Shearer lower bound f(n) >> sqrt(n) sqrt(log n)/log log n (entropy method + dependent random choice).",
+      "Upper bounds: Bollobás–Hind n^{7/10+o(1)} (1991), Krivelevich n^{2/3}(log n)^{1/3} (1994), Wolfovitz sqrt(n)(log n)^{120} (2013), Mubayi–Verstraëte sqrt(n) log n (2024).",
+      "Parent gallery proof erdos-620 formalizes f(n), the two boundary axioms, triangleFree_implies_K4Free, and gap_analysis."
+    ],
+    "open": [
+      "The exact exponent alpha of the log correction f(n)=Theta(sqrt(n)(log n)^alpha), 1/2 <= alpha <= 1.",
+      "Whether the Mubayi–Verstraëte sqrt(n) log n upper bound can be improved to sqrt(n)(log n)^{1-eps}.",
+      "The structure of the extremal minimizing K4-free graphs."
+    ],
+    "goal": "Do not resolve the open question. Formalize in Lean: (1) the candidate growth classes sqrt(n) log n and sqrt(n) sqrt(log n); (2) a proof they are genuinely distinct since their ratio sqrt(log n) tends to infinity; and (3) a conditional dichotomy theorem — from the parent axioms plus a hypothesized improved upper bound f(n) <= C sqrt(n)(log n)^{1-eps}, derive f(n)=o(sqrt(n) log n), ruling out Theta(sqrt(n) log n)."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-07-09T15:22:58-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: erdos-620-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "graph-theory",
+    "ramsey-theory",
+    "induced-subgraphs",
+    "extremal-graph-theory"
+  ],
+  "relatedProofs": [
+    "erdos-620",
+    "ramseys-theorem",
+    "erdos-1010"
+  ],
+  "references": {
+    "papers": [
+      "P. Erdős and C. A. Rogers, The construction of certain graphs, 1962.",
+      "B. Bollobás and H. R. Hind, Graphs without large triangle-free subgraphs, Discrete Mathematics 87, 1991.",
+      "J. B. Shearer, A note on the independence number of triangle-free graphs, Discrete Mathematics 46, 1983.",
+      "G. Wolfovitz, K4-free graphs without large induced triangle-free subgraphs, Combinatorica 33, 2013.",
+      "D. Mubayi and J. Verstraëte, A note on the Erdős–Rogers function, 2024.",
+      "J. H. Kim, The Ramsey number R(3,t) has order of magnitude t^2/log t, RSA 7, 1995."
+    ],
+    "urls": [
+      "https://erdosproblems.com/620"
+    ],
+    "mathlib": [
+      "Mathlib.Combinatorics.SimpleGraph.Clique",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Analysis.Asymptotics.Asymptotics",
+      "Mathlib.Order.Filter.AtTopBot"
+    ]
+  },
+  "started": "2026-07-09T22:24:22.179Z",
+  "lastUpdate": "2026-07-09T22:24:22.263Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos620Aristotle.lean",
+      "filename": "Erdos620Aristotle.lean",
+      "lineCount": 60,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 4,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos620Aristotle.lean"
+    },
+    {
+      "path": "Proofs/Erdos620Problem.lean",
+      "filename": "Erdos620Problem.lean",
+      "lineCount": 284,
+      "theoremCount": 8,
+      "axiomCount": 2,
+      "defCount": 15,
+      "sorryCount": 4,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos620Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos620ProblemAristotle.lean",
+      "filename": "Erdos620ProblemAristotle.lean",
+      "lineCount": 54,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos620ProblemAristotle.lean"
+    }
+  ]
+}
