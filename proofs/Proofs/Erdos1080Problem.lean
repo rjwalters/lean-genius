@@ -33,7 +33,9 @@ References:
 import Mathlib.Combinatorics.SimpleGraph.Basic
 import Mathlib.Combinatorics.SimpleGraph.Connectivity.WalkCounting
 import Mathlib.Data.Nat.Basic
+import Mathlib.Data.Nat.Lattice
 import Mathlib.Data.Real.Basic
+import Mathlib.Data.Real.Archimedean
 import Mathlib.Data.Set.Basic
 import Mathlib.Data.Set.Card
 import Mathlib.Data.Fintype.Card
@@ -74,7 +76,7 @@ theorem bipartition_edges_between {V : Type*} (G : SimpleGraph V) (X Y : Set V)
     have hvx : v ∈ X := by
       have := G.symm hadj
       have hiff' := h.2.2 this
-      exact hiff'.mp huy
+      exact hiff'.mpr huy
     exact ⟨huy, hvx⟩
 
 /--
@@ -153,28 +155,23 @@ noncomputable def maxC4C6FreeEdges (n m : ℕ) : ℕ :=
   sSup {e : ℕ | ∃ (V : Type) (_ : Fintype V) (G : SimpleGraph V) (X Y : Set V),
     IsBipartition G X Y ∧ X.ncard = n ∧ Y.ncard = m ∧ C4C6Free G ∧ G.edgeSet.ncard = e}
 
-/--
-f(n,m) is achieved by some bipartite graph.
--/
 /-
 ## Part IV: De Caen-Székely Bounds (1992)
 
 The key result that disproves Erdős's conjecture.
 -/
 
-/--
+/-
 **De Caen-Székely Upper Bound:**
 f(n, ⌊n^(2/3)⌋) ≪ n^(10/9)
 
 More precisely: f(n,m) ≪ (nm)^(2/3) for n^(1/2) ≤ m ≤ n.
--/
-/--
+
 **De Caen-Székely Lower Bound:**
 f(n, ⌊n^(2/3)⌋) ≫ n^(58/57 + o(1))
 
 This shows that f(n, ⌊n^(2/3)⌋) grows faster than cn for any constant c.
--/
-/--
+
 **General Upper Bound:**
 For n^(1/2) ≤ m ≤ n: f(n,m) ≪ (nm)^(2/3).
 Also proved by Faudree and Simonovits.
@@ -183,7 +180,7 @@ Also proved by Faudree and Simonovits.
 ## Part V: Lazebnik-Ustimenko-Woldar Improvement (1994)
 -/
 
-/--
+/-
 **Lazebnik-Ustimenko-Woldar Lower Bound (1994):**
 f(n, ⌊n^(2/3)⌋) ≫ n^(16/15 + o(1))
 
@@ -287,12 +284,13 @@ axiom erdos_c8_observation :
 ## Part VIII: Related Extremal Results
 -/
 
-/--
+/-
 **Kővári-Sós-Turán Theorem:**
 The maximum number of edges in a bipartite graph with parts of size n
 and m that contains no K_{s,t} is at most
   (1/2) · (t-1)^(1/s) · m · n^(1-1/s) + (s-1)n/2.
 -/
+
 /--
 A bipartite graph with no C_4 is the same as a graph with no K_{2,2}.
 -/
@@ -303,7 +301,83 @@ theorem c4_free_iff_no_K22 {V : Type*} (G : SimpleGraph V) (X Y : Set V)
       a₁ ∈ X → a₂ ∈ X → a₁ ≠ a₂ →
       b₁ ∈ Y → b₂ ∈ Y → b₁ ≠ b₂ →
       ¬(G.Adj a₁ b₁ ∧ G.Adj a₁ b₂ ∧ G.Adj a₂ b₁ ∧ G.Adj a₂ b₂) := by
-  sorry
+  obtain ⟨hdisj, hcover, hadj_iff⟩ := h
+  -- A vertex in X and a vertex in Y are always distinct (the parts are disjoint).
+  have hXneY : ∀ {p q : V}, p ∈ X → q ∈ Y → p ≠ q := by
+    intro p q hp hq hpq; subst hpq; exact Set.disjoint_left.mp hdisj hp hq
+  constructor
+  · -- (→) No C₄ implies no K₂,₂: a K₂,₂ would be a 4-cycle.
+    intro hC4 a₁ a₂ b₁ b₂ ha₁ ha₂ hane hb₁ hb₂ hbne
+    rintro ⟨e11, e12, e21, e22⟩
+    apply hC4
+    -- The 4-cycle a₁ → b₁ → a₂ → b₂ → a₁.
+    refine ⟨a₁,
+      Walk.cons e11 (Walk.cons e21.symm (Walk.cons e22 (Walk.cons e12.symm Walk.nil))), ?_, rfl⟩
+    have n11 : a₁ ≠ b₁ := hXneY ha₁ hb₁
+    have n12 : a₁ ≠ b₂ := hXneY ha₁ hb₂
+    have n21 : a₂ ≠ b₁ := hXneY ha₂ hb₁
+    have n22 : a₂ ≠ b₂ := hXneY ha₂ hb₂
+    have n11' := n11.symm; have n12' := n12.symm
+    have n21' := n21.symm; have n22' := n22.symm
+    have hane' := hane.symm; have hbne' := hbne.symm
+    rw [Walk.cons_isCycle_iff]
+    refine ⟨?_, ?_⟩
+    · -- The remaining path b₁ → a₂ → b₂ → a₁ is a path (its support is nodup).
+      rw [Walk.isPath_def]
+      simp only [Walk.support_cons, Walk.support_nil, List.nodup_cons, List.mem_cons,
+        List.mem_singleton, List.not_mem_nil, List.nodup_nil, and_true, or_false]
+      tauto
+    · -- The extra edge s(a₁, b₁) is not among the path's edges.
+      simp only [Walk.edges_cons, Walk.edges_nil, List.mem_cons,
+        List.not_mem_nil, or_false, Sym2.eq_iff]
+      tauto
+  · -- (←) No K₂,₂ implies no C₄: a 4-cycle produces a K₂,₂ by bipartite alternation.
+    intro hK22
+    rintro ⟨v, w, hcyc, hlen⟩
+    -- A closed walk of length 4 has the shape v → x1 → x2 → x3 → v.
+    cases w with
+    | nil => simp only [Walk.length_nil] at hlen; omega
+    | cons h1 w1 =>
+      rename_i x1
+      cases w1 with
+      | nil => simp only [Walk.length_cons, Walk.length_nil] at hlen; omega
+      | cons h2 w2 =>
+        rename_i x2
+        cases w2 with
+        | nil => simp only [Walk.length_cons, Walk.length_nil] at hlen; omega
+        | cons h3 w3 =>
+          rename_i x3
+          cases w3 with
+          | nil => simp only [Walk.length_cons, Walk.length_nil] at hlen; omega
+          | cons h4 w4 =>
+            cases w4 with
+            | cons h5 w5 =>
+              simp only [Walk.length_cons] at hlen; omega
+            | nil =>
+              -- Now: h1 : Adj v x1, h2 : Adj x1 x2, h3 : Adj x2 x3, h4 : Adj x3 v.
+              rw [Walk.isCycle_def] at hcyc
+              obtain ⟨-, -, htail⟩ := hcyc
+              simp only [Walk.support_cons, Walk.support_nil, List.tail_cons, List.nodup_cons,
+                List.mem_cons, List.not_mem_nil, List.nodup_nil, not_or, and_true] at htail
+              -- htail bundles all the pairwise distinctness of x1, x2, x3, v.
+              have hne13 : x1 ≠ x3 := by tauto
+              have hne2v : x2 ≠ v := by tauto
+              -- v lies in X or Y; the cycle alternates parts either way.
+              have hv : v ∈ X ∪ Y := by rw [hcover]; exact Set.mem_univ v
+              rw [Set.mem_union] at hv
+              rcases hv with hvX | hvY
+              · -- v ∈ X : a's = {v, x2} ⊆ X, b's = {x1, x3} ⊆ Y
+                have hx1Y : x1 ∈ Y := (hadj_iff h1).mp hvX
+                have hx2X : x2 ∈ X := (hadj_iff h2.symm).mpr hx1Y
+                have hx3Y : x3 ∈ Y := (hadj_iff h3).mp hx2X
+                exact hK22 v x2 x1 x3 hvX hx2X hne2v.symm hx1Y hx3Y hne13
+                  ⟨h1, h4.symm, h2.symm, h3⟩
+              · -- v ∈ Y : a's = {x1, x3} ⊆ X, b's = {v, x2} ⊆ Y
+                have hx1X : x1 ∈ X := (hadj_iff h1.symm).mpr hvY
+                have hx2Y : x2 ∈ Y := (hadj_iff h2).mp hx1X
+                have hx3X : x3 ∈ X := (hadj_iff h3.symm).mpr hx2Y
+                exact hK22 x1 x3 v x2 hx1X hx3X hne13 hvY hx2Y hne2v.symm
+                  ⟨h1.symm, h2, h4, h3.symm⟩
 
 /-
 ## Part IX: Summary
