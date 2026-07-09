@@ -157,8 +157,8 @@ theorem staircase_LIS_le (hk : 0 < k) : LIS (staircase k) ≤ k := by
   have hkey : ∀ a b : Fin m, a < b → blk a ≠ blk b := by
     intro a b hab hblkeq
     have hidx : (sub.indices a).val < (sub.indices b).val := sub.strictMono hab
-    have hbeq : (sub.indices a).val / k = (sub.indices b).val / k := by
-      have hc := congrArg Fin.val hblkeq; simpa [blk] using hc
+    have hbeq : (sub.indices a).val / k = (sub.indices b).val / k :=
+      congrArg Fin.val hblkeq
     -- same block ⇒ value decreases, contradicting the increasing subsequence
     have hdec : sval k (sub.indices b) < sval k (sub.indices a) :=
       sval_lt_of_same_block hidx hbeq
@@ -206,7 +206,7 @@ theorem staircase_LIS_ge (hk : 0 < k) : k ≤ LIS (staircase k) := by
     have hkpos : (0 : ℤ) < k := by exact_mod_cast hk
     have hlt : (k : ℤ) * a.val < (k : ℤ) * b.val := by
       have hcab : (a.val : ℤ) < (b.val : ℤ) := by exact_mod_cast hab'
-      exact (mul_lt_mul_left hkpos).mpr hcab
+      exact mul_lt_mul_of_pos_left hcab hkpos
     exact_mod_cast hlt
   exact len_le_LIS_of_increasing hInc
 
@@ -224,8 +224,8 @@ theorem staircase_LDS_le (hk : 0 < k) : LDS (staircase k) ≤ k := by
   have hkey : ∀ a b : Fin m, a < b → col a ≠ col b := by
     intro a b hab hcoleq
     have hidx : (sub.indices a).val < (sub.indices b).val := sub.strictMono hab
-    have hceq : (sub.indices a).val % k = (sub.indices b).val % k := by
-      have hc := congrArg Fin.val hcoleq; simpa [col] using hc
+    have hceq : (sub.indices a).val % k = (sub.indices b).val % k :=
+      congrArg Fin.val hcoleq
     -- same column ⇒ value increases, contradicting the decreasing subsequence
     have hinc : sval k (sub.indices a) < sval k (sub.indices b) :=
       sval_lt_of_same_col hidx hceq
