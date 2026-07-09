@@ -441,4 +441,36 @@ theorem practical_mul {m n : ℕ} (hpm : IsPractical m) (hpn : IsPractical n) :
   rw [hAsum, hSrsum, hdecomp] at hunion
   exact hunion
 
+/-! ## The multiplicative submonoid of practical numbers
+
+`practical_mul` shows the practical numbers are closed under multiplication and
+`one_practical` supplies the unit, so they form a submonoid of `(ℕ, ×)`.  Packaging
+the closure as a genuine `Submonoid` makes Mathlib's monoid API available; in
+particular `pow_mem` upgrades the single infinite family `two_pow_practical` (`2^k`)
+to an infinite family `m^k` for *every* practical base `m`. -/
+
+/-- **Practical numbers form a multiplicative submonoid of `ℕ`.**  Unit: `1` is
+practical (`one_practical`); closure: a product of practicals is practical
+(`practical_mul`). -/
+def practicalSubmonoid : Submonoid ℕ where
+  carrier := {m | IsPractical m}
+  one_mem' := one_practical
+  mul_mem' := fun ha hb => practical_mul ha hb
+
+@[simp] theorem mem_practicalSubmonoid {m : ℕ} :
+    m ∈ practicalSubmonoid ↔ IsPractical m := Iff.rfl
+
+/-- **Every power of a practical number is practical.**  Since the practical numbers
+form a multiplicative submonoid, `m^k` is practical whenever `m` is.  This generalises
+`two_pow_practical` (the `m = 2` case) to an infinite family for *each* practical base,
+and strengthens the multiplicative generators `practical_two_pow_mul`. -/
+theorem practical_pow {m : ℕ} (hp : IsPractical m) (k : ℕ) : IsPractical (m ^ k) :=
+  mem_practicalSubmonoid.mp (pow_mem (mem_practicalSubmonoid.mpr hp) k)
+
+/-- **A second infinite family: every power of six is practical.**  Immediate from
+`practical_pow` and `six_practical`, illustrating that the submonoid structure turns any
+single verified practical number into an infinite family (here `6, 36, 216, …`). -/
+theorem six_pow_practical (k : ℕ) : IsPractical (6 ^ k) :=
+  practical_pow six_practical k
+
 end Erdos18OQ01

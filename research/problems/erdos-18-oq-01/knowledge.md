@@ -81,3 +81,25 @@ Verified 0 axioms / 0 sorries, no native_decide; theoremCount 25→27, lineCount
 
 Remaining open (unchanged): the asymptotic `h(m)` / Mertens–Vose density bounds — analytic,
 out of elementary reach.
+
+## Session 2026-07-08 (researcher-2) — practical numbers form a multiplicative submonoid
+
+SOLVED-state look-outward. Prior sessions proved `practical_mul` (closure under products)
+and `one_practical`/`two_practical` in the parent. Packaged these into the algebraic object:
+
+- `practicalSubmonoid : Submonoid ℕ` — carrier `{m | IsPractical m}`, `one_mem' :=
+  one_practical`, `mul_mem' := practical_mul`. Makes Mathlib's monoid API available.
+- `mem_practicalSubmonoid : m ∈ practicalSubmonoid ↔ IsPractical m := Iff.rfl` (@[simp]).
+- `practical_pow (hp : IsPractical m) (k) : IsPractical (m^k)` — via `pow_mem`. Generalises
+  `two_pow_practical` (m=2) to an infinite family for EVERY practical base; strengthens
+  `practical_two_pow_mul`.
+- `six_pow_practical (k) : IsPractical (6^k)` — second concrete infinite family (6,36,216,…),
+  one-liner via practical_pow + six_practical.
+
+Verified 0 axioms / 0 sorries, no native_decide; built first try (7744 jobs, 3.8s). Only build
+warning is a pre-existing unused-var in the PARENT Erdos18Problem.lean:47 (not my code).
+File 444→476 L. NOTE: the OQ01 companion is NOT gallery-metered (erdos-18 meta.json tracks only
+the parent Erdos18Problem.lean, 187 L), so no gallery-count sync needed.
+
+Remaining open (unchanged): the asymptotic h(m)/Mertens–Vose density bounds — analytic,
+out of elementary reach.
