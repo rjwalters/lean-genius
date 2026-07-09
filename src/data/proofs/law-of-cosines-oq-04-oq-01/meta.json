@@ -103,27 +103,6 @@
       "summary": "angle_bisector_length_inner: for the foot dividing BC in ratio c:b, (b+c)²‖A−D‖² = bc((b+c)² − a²)."
     }
   ],
-  "references": [
-    {
-      "authors": [
-        "Coxeter, H.S.M.",
-        "Greitzer, S.L."
-      ],
-      "title": "Geometry Revisited",
-      "year": "1967",
-      "venue": "New Mathematical Library 19, Mathematical Association of America",
-      "note": "Stewart's theorem and the cevian-length identities."
-    },
-    {
-      "authors": [
-        "Coxeter, H.S.M."
-      ],
-      "title": "Non-Euclidean Geometry",
-      "year": "1998",
-      "venue": "6th ed., Mathematical Association of America",
-      "note": "Unified treatment of spherical and hyperbolic trigonometry and their dualities."
-    }
-  ],
   "conclusion": {
     "summary": "Starting from a single bilinear lemma (the squared norm of a linear combination of two vectors), the entry establishes Stewart's theorem as a coordinate-free identity in an arbitrary real inner product space. The master identity ‖A−D‖² = (1−s)‖A−B‖² + s‖A−C‖² − s(1−s)‖B−C‖², with the cevian foot encoded as the affine combination D = (1−s)·B + s·C, specializes by substitution to the classical form b²m + c²n = a(d² + mn), to Apollonius' median theorem (s = 1/2), and to the internal angle-bisector length formula (the c:b segment ratio).",
     "implications": "Grounding Stewart's theorem in genuine inner-product geometry removes the side conditions that the scalar law-of-cosines derivation must carry. The segment relation m + n = a holds by construction rather than as a collinearity/sign hypothesis, and the abstract cosine parameter t of the parent entry is exposed as the real inner product ⟪A−B, A−C⟫. Because nothing depends on dimension, the same identity covers planar triangles, spatial-tetrahedron cevians, and arbitrary-dimensional configurations — a single algebraic fact replacing a family of case-specific geometric arguments. This is a model for how classical metric geometry lifts to inner-product spaces: the law of cosines becomes the polarization identity, and cevian results become substitutions into one bilinear expansion.",

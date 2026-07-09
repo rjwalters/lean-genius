@@ -3,64 +3,6 @@
   "title": "Prime Powers Are Deficient: Almost-Perfect Powers of Two and the Sharp Abundancy Bound",
   "slug": "sum-of-divisors-oq-04-oq-01",
   "description": "Qualitative classification of every prime power, axiom-free and once-and-for-all in p and k: σ(pᵏ) < 2·pᵏ (every prime power is strictly deficient, hence never perfect or abundant); σ(2ᵏ)+1 = 2·2ᵏ (powers of two are almost perfect — deficient by exactly one, the minimal positive deficiency); ¬ Perfect(pᵏ); and the sharp abundancy bound σ(pᵏ)/pᵏ < p/(p−1) ≤ 2 over ℚ, with p/(p−1) the supremum of the abundancy index over the powers of a fixed prime. Builds on OQ-04's integer identity σ(pⁱ)·(p−1) = pⁱ⁺¹−1, scaling the deficiency gap by p−1 into the elementary nonnegativity pᵏ·(p−2)+1 ≥ 1. No native_decide.",
-  "mainTheorems": [
-    {
-      "name": "sigma_one_prime_pow_mul",
-      "type": "key",
-      "description": "**The defining integer identity (engine).** σ(pⁱ)·(p−1) = pⁱ⁺¹−1 over ℤ, restated locally from OQ-04 (`sigma_one_apply_prime_pow` + `geom_sum_mul`). Every classification below reduces to this one identity by multiplying the target gap by the positive factor p−1.",
-      "leanType": "{p : ℕ} (hp : p.Prime) (i : ℕ) : (sigma 1 (p ^ i) : ℤ) * ((p : ℤ) - 1) = (p : ℤ) ^ (i + 1) - 1",
-      "startLine": 39,
-      "endLine": 43
-    },
-    {
-      "name": "sigma_one_prime_pow_deficient",
-      "type": "core",
-      "description": "**Every prime power is deficient.** σ(pᵏ) < 2·pᵏ for every prime p and exponent k, so no prime power is perfect or abundant. The deficiency gap 2pᵏ − σ(pᵏ), scaled by the positive factor p−1, equals pᵏ·(p−2)+1 ≥ 1 > 0 — an elementary nonnegativity closed by `nlinarith`.",
-      "leanType": "{p : ℕ} (hp : p.Prime) (k : ℕ) : sigma 1 (p ^ k) < 2 * p ^ k",
-      "startLine": 47,
-      "endLine": 63
-    },
-    {
-      "name": "pow_two_almost_perfect",
-      "type": "core",
-      "description": "**Powers of two are almost perfect.** σ(2ᵏ) + 1 = 2·2ᵏ: the divisor sum falls exactly one short of 2·2ᵏ, the minimal possible positive deficiency, so 2ᵏ is the least-deficient prime power. Immediate from the engine identity at p = 2.",
-      "leanType": "(k : ℕ) : sigma 1 (2 ^ k) + 1 = 2 * 2 ^ k",
-      "startLine": 68,
-      "endLine": 74
-    },
-    {
-      "name": "prime_pow_not_perfect",
-      "type": "key",
-      "description": "**No prime power is perfect.** ¬ Nat.Perfect(pᵏ). Connects the deficiency bound to the base entry's perfection predicate: perfection requires σ(n) = 2n via `Nat.perfect_iff_sum_divisors_eq_two_mul`, which `sigma_one_prime_pow_deficient` rules out; `omega` closes the contradiction.",
-      "leanType": "{p : ℕ} (hp : p.Prime) (k : ℕ) : ¬ Nat.Perfect (p ^ k)",
-      "startLine": 79,
-      "endLine": 85
-    },
-    {
-      "name": "abundancy_prime_pow_lt",
-      "type": "core",
-      "description": "**Sharp abundancy bound.** Over ℚ, the abundancy index σ(pᵏ)/pᵏ < p/(p−1). As k → ∞ the index increases to this bound, so p/(p−1) is its supremum over the powers of a fixed prime p. Same engine identity read over ℚ via `div_lt_div_iff₀`.",
-      "leanType": "{p : ℕ} (hp : p.Prime) (k : ℕ) : (sigma 1 (p ^ k) : ℚ) / (p ^ k : ℚ) < (p : ℚ) / ((p : ℚ) - 1)",
-      "startLine": 90,
-      "endLine": 104
-    },
-    {
-      "name": "abundancy_prime_pow_lt_two",
-      "type": "supporting",
-      "description": "**Abundancy below 2 (deficiency over ℚ).** σ(pᵏ)/pᵏ < 2, since p ≥ 2 forces the supremum p/(p−1) ≤ 2. The rational restatement of `sigma_one_prime_pow_deficient`.",
-      "leanType": "{p : ℕ} (hp : p.Prime) (k : ℕ) : (sigma 1 (p ^ k) : ℚ) / (p ^ k : ℚ) < 2",
-      "startLine": 108,
-      "endLine": 115
-    },
-    {
-      "name": "sigma_zero_prime_pow",
-      "type": "supporting",
-      "description": "**Divisor count of a prime power.** τ(pᵏ) = σ₀(pᵏ) = k + 1, a bonus structural identity generalizing OQ-04's τ(p) = 2. Direct from `sigma_zero_apply_prime_pow`.",
-      "leanType": "{p : ℕ} (hp : p.Prime) (k : ℕ) : sigma 0 (p ^ k) = k + 1",
-      "startLine": 119,
-      "endLine": 121
-    }
-  ],
   "meta": {
     "author": "classical (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Almost_perfect_number",

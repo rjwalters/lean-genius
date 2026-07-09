@@ -3,38 +3,6 @@
   "title": "Finite Rogers–Ramanujan (Schur) Identity via q-Gaussian Binomials",
   "slug": "combinations-formula-oq-03-oq-03",
   "description": "Formalizes the finite, polynomial heart of the Rogers–Ramanujan identities using the parent's q-Gaussian binomial library. Defines the Schur sum S_n(q) = ∑_j q^{j²}·[n-j choose j]_q over an arbitrary commutative ring and proves Schur's (1917) recurrence S_{n+2} = S_{n+1} + q^{n+1}·S_n — the finite mechanism whose n→∞ limit is the Rogers–Ramanujan series ∑_j q^{j²}/(q;q)_j. Specializing at q=1 gives S_n(1) = F_{n+1} (Fibonacci) and recovers the classical diagonal-of-Pascal identity ∑_j C(n-j,j) = F_{n+1}. 7 theorems, 1 definition, 0 sorries, 0 axioms — verified over CommRing.",
-  "references": [
-    {
-      "authors": "Leonard James Rogers",
-      "title": "Second Memoir on the Expansion of Certain Infinite Products (Proc. London Math. Soc. 25)",
-      "year": 1894,
-      "note": "The original Rogers–Ramanujan identities whose finite polynomial core is formalized here."
-    },
-    {
-      "authors": "Issai Schur",
-      "title": "Ein Beitrag zur additiven Zahlentheorie und zur Theorie der Kettenbrüche (Sitzungsber. Preuss. Akad. Wiss.)",
-      "year": 1917,
-      "note": "Schur's combinatorial proof and the recurrence S_{n+2}=S_{n+1}+q^{n+1}S_n proved in this entry."
-    },
-    {
-      "authors": "George E. Andrews",
-      "title": "The Theory of Partitions",
-      "year": 1976,
-      "note": "Cambridge University Press. Definitive treatment of the Rogers–Ramanujan identities and Gaussian binomials."
-    },
-    {
-      "authors": "George E. Andrews and Kimmo Eriksson",
-      "title": "Integer Partitions",
-      "year": 2004,
-      "note": "Cambridge University Press. Accessible account of the finite Rogers–Ramanujan (Schur) polynomials."
-    },
-    {
-      "authors": "The mathlib Community",
-      "title": "Mathlib4: q-Gaussian binomial library over a CommRing",
-      "year": 2024,
-      "note": "The parent's q-Gaussian binomial coefficients used to define the Schur sum S_n(q)."
-    }
-  ],
   "meta": {
     "author": "Lean Genius Researcher",
     "status": "verified",

@@ -110,27 +110,6 @@
       "mathContext": "With a Borel-cohomology layer, idx_localization is a 1-line consequence of the retraction X -> {x0} -> X. Everything else here is order arithmetic on WithTop Nat."
     }
   ],
-  "references": [
-    {
-      "authors": [
-        "Fadell, E.",
-        "Husseini, S."
-      ],
-      "title": "An ideal-valued cohomological index theory with applications to Borsuk-Ulam and Bourgin-Yang theorems",
-      "year": "1988",
-      "venue": "Ergodic Theory and Dynamical Systems 8*, pp. 73–85",
-      "note": "The Fadell-Husseini equivariant cohomological index and Borel-localization behaviour for non-free actions."
-    },
-    {
-      "authors": [
-        "tom Dieck, T."
-      ],
-      "title": "Transformation Groups",
-      "year": "1987",
-      "venue": "De Gruyter Studies in Mathematics 8, Walter de Gruyter",
-      "note": "Free G-actions, representation spheres and equivariant index theory."
-    }
-  ],
   "conclusion": {
     "summary": "The formalization resolves the open question OQ-02-OQ-04 in the negative: for non-free Z/p actions the equivariant cohomological index does NOT control vanishing. From 10 axioms (modelling the index in WithTop Nat with TOP = +infinity, plus monotonicity, the localization collapse, and the test-map scheme) we derive 11 machine-verified theorems. The free regime recovers the classical finite, dimension-sensitive Borsuk-Ulam obstruction; the non-free regime collapses to the constant +infinity, forbids equivariant maps to free spheres, and forces vanishing trivially via the fixed point -- so the genuine control passes to the (nonempty) fixed-point set.",
     "implications": "The dichotomy explains why combinatorial applications of Borsuk-Ulam (Kneser, Schrijver, Necklace Splitting) insist on FREE actions: freeness is exactly what keeps the index finite and discriminating. For non-free configuration spaces one must instead analyze the fixed-point stratum directly, as in equivariant obstruction theory. The formalization isolates the localization splitting H*(BG) -> H*_G(X) as the single highest-value Mathlib target: with it, the collapse is a one-line corollary.",

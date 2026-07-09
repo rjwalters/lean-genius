@@ -48,26 +48,6 @@
     "theoremCount": 12,
     "definitionCount": 2
   },
-  "references": [
-    {
-      "authors": "Ball, Keith",
-      "title": "An Elementary Introduction to Modern Convex Geometry",
-      "year": "1997",
-      "venue": "Flavors of Geometry, MSRI Publications 31, Cambridge University Press, 1–58"
-    },
-    {
-      "authors": "Artin, Emil",
-      "title": "The Gamma Function",
-      "year": "1964",
-      "venue": "Holt, Rinehart and Winston (English translation by Michael Butler)"
-    },
-    {
-      "authors": "The mathlib Community",
-      "title": "Real.Gamma and Real.Gamma_add_one relating S_n=2π^{n/2}/Γ(n/2) to V_n; Analysis.SpecialFunctions.Gamma",
-      "year": "2024",
-      "venue": "Mathlib4 (leanprover-community/mathlib4)"
-    }
-  ],
   "overview": {
     "historicalContext": "The closed forms for the volume of the unit n-ball, Vₙ = π^(n/2)/Γ(n/2+1), and the surface measure of the unit (n−1)-sphere, Sₙ = 2π^(n/2)/Γ(n/2), were obtained in the 19th century via Gaussian-integral techniques and the Gamma function (Liouville). They are linked by the elementary scaling identity Sₙ = n·Vₙ, the integral form of the divergence theorem applied to the radial vector field on the ball: the boundary of the n-ball of radius r has measure dVₙ(r)/dr, and at r=1 this is n·Vₙ. Equivalently, integrating shells, Vₙ = ∫₀¹ Sₙ rⁿ⁻¹ dr = Sₙ/n.\n\nThe parent entry (area-of-circle-oq-02) established the volume closed form Vₙ = π^(n/2)/Γ(n/2+1). A separate gallery file (area-of-circle-oq-01-oq-02-oq-01) defines a radius-dependent surface function differentially, nSphereArea n r = n·ωₙ·r^(n−1), as the derivative of the volume; with that definition Sₙ = n·Vₙ holds by construction and so contains no Gamma-theoretic content. The present entry instead gives the surface area its own independent Gamma closed form and proves Sₙ = n·Vₙ as a genuine theorem, namely a restatement of the Gamma functional equation Γ(n/2+1) = (n/2)·Γ(n/2).",
     "problemStatement": "Building on the closed form for the volume Vₙ of the unit n-ball, define the unit (n−1)-sphere surface measure by its own Gamma closed form Sₙ = 2π^(n/2)/Γ(n/2) and prove the surface-area relation Sₙ = n·Vₙ — the scaling/divergence-theorem identity underlying the Gamma-function formulas for sphere area.",

@@ -140,38 +140,6 @@
       "relationship": "related"
     }
   ],
-  "references": [
-    {
-      "authors": "Gabriel Lamé",
-      "title": "Note sur la limite du nombre des divisions dans la recherche du plus grand commun diviseur entre deux nombres entiers (Comptes Rendus Acad. Sci. 19)",
-      "year": 1844,
-      "note": "The original O(log) bound on the number of division steps in the Euclidean algorithm, formalized here."
-    },
-    {
-      "authors": "Donald E. Knuth",
-      "title": "The Art of Computer Programming, Vol. 2: Seminumerical Algorithms (3rd ed.)",
-      "year": 1997,
-      "note": "Addison-Wesley. §4.5.3 analyzes the Euclidean algorithm; the Fibonacci worst case matches the tight lower bound."
-    },
-    {
-      "authors": "John D. Dixon",
-      "title": "The number of steps in the Euclidean algorithm (Journal of Number Theory 2)",
-      "year": 1970,
-      "note": "Sharp average- and worst-case step counts, complementing the Θ(log) characterization."
-    },
-    {
-      "authors": "Eric Bach and Jeffrey Shallit",
-      "title": "Algorithmic Number Theory, Vol. 1: Efficient Algorithms",
-      "year": 1996,
-      "note": "MIT Press. GCD algorithm complexity and the Fibonacci extremal input."
-    },
-    {
-      "authors": "The mathlib Community",
-      "title": "Mathlib4: Nat.log and Nat.gcd recursion infrastructure",
-      "year": 2024,
-      "note": "⌊log₂⌋ bounds and well-founded gcd recursion used to state and prove the step-count characterization."
-    }
-  ],
   "meta": {
     "author": "Lean Genius Research",
     "date": "2026-06-27",

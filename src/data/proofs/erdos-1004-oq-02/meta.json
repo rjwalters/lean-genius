@@ -97,64 +97,6 @@
       "Erdős #1004 parent entry"
     ]
   },
-  "sections": [
-    {
-      "id": "header",
-      "title": "Background and strategy",
-      "startLine": 1,
-      "endLine": 41,
-      "summary": "Module docstring: situates the entry within Erdős #1004 (it supplies the finite-to-one structural fact the run question presupposes), states the bound φ(n)² ≥ n/2 with the odd refinement, and previews the multiplicative-invariant strategy via Nat.recOnPosPrimePosCoprime."
-    },
-    {
-      "id": "primepow-odd",
-      "title": "Odd prime-power core",
-      "startLine": 47,
-      "endLine": 64,
-      "summary": "primePow_odd_bound: pᵏ ≤ φ(pᵏ)² for odd primes p ≥ 3. Reduces via φ(p^(j+1)) = p^j(p−1) to the base inequality p ≤ (p−1)² (nlinarith), then scales by Q = p^j into a perfect square."
-    },
-    {
-      "id": "primepow-two",
-      "title": "General prime-power core",
-      "startLine": 66,
-      "endLine": 82,
-      "summary": "primePow_two_bound: pᵏ ≤ 2·φ(pᵏ)² for every prime p. Same reduction to the base inequality p ≤ 2(p−1)², tight at p = 2 — isolating the single factor-of-2 deficit at the prime 2."
-    },
-    {
-      "id": "invariant",
-      "title": "The multiplicative invariant",
-      "startLine": 84,
-      "endLine": 132,
-      "summary": "totient_invariant: the conjunction (Odd n → n ≤ φ(n)²) ∧ (n ≤ 2φ(n)²), proved for all n by Nat.recOnPosPrimePosCoprime. The conjunction is closed under coprime multiplication because a coprime product has at most one even factor, so the factor of 2 is never spent twice."
-    },
-    {
-      "id": "headline",
-      "title": "Headline bounds and sharpness",
-      "startLine": 134,
-      "endLine": 147,
-      "summary": "Projects the invariant into totient_sq_two_ge (n ≤ 2φ(n)²) and totient_sq_ge_of_odd (odd n). A kernel-decide example 2 = 2·φ(2)² certifies the constant 2 is optimal — no native_decide, hence no Lean.ofReduceBool."
-    },
-    {
-      "id": "fibers",
-      "title": "Finite-to-one fibers",
-      "startLine": 149,
-      "endLine": 162,
-      "summary": "totient_fiber_bound (φ(n)=v ⟹ n ≤ 2v²) and totient_fiber_finite ({n : φ(n)=v} finite, as a subset of Iic(2v²)) — the structural reason distinct-totient runs are a well-posed object."
-    },
-    {
-      "id": "real-form",
-      "title": "Real-analytic restatement",
-      "startLine": 164,
-      "endLine": 172,
-      "summary": "totient_ge_sqrt_half: √(n/2) ≤ φ(n), obtained from the integer bound by casting to ℝ and applying monotonicity of √ with Real.sqrt_sq."
-    },
-    {
-      "id": "effective",
-      "title": "Effective finite-to-one: enumeration and cardinality",
-      "startLine": 174,
-      "endLine": 230,
-      "summary": "totient_fiber_eq_filter expresses the (a priori infinite) fiber {n : φ(n)=v} as the coercion of the explicit Finset (Iic (2v²)).filter (φ · = v) — a decidable enumeration domain; totient_fiber_ncard_le bounds its cardinality by 2v²+1 (via Set.ncard_le_ncard into Iic and Nat.card_Iic); totient_fiber_zero pins the v=0 fiber to {0}, witnessing sharpness 1 = 2·0²+1."
-    }
-  ],
   "crossReferences": [
     {
       "targetId": "erdos-1004",

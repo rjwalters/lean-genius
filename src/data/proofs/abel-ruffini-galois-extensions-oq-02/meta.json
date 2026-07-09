@@ -163,23 +163,6 @@
       "Refine `quintic_card_intermediateField_eq_card_subgroup` to a concrete count by transporting the subgroup count across OQ-01's `galEquivS5` and computing the number of subgroups of S₅ (there are 156), giving the exact number of intermediate fields of the splitting field of X⁵ − 4X + 2."
     ]
   },
-  "crossReferences": [
-    {
-      "targetId": "abel-ruffini-galois-extensions-oq-01",
-      "relationship": "extends",
-      "description": "Concrete witness: OQ-01 builds the isomorphism (X⁵ − 4X + 2).Gal ≃* S₅. This entry's final section imports it and instantiates the Galois correspondence on that quintic's splitting field, so the subfield ↔ subgroup dictionary applies to a concrete unsolvable quintic."
-    },
-    {
-      "targetId": "abel-ruffini-galois-extensions",
-      "relationship": "extends",
-      "description": "Parent: the Abel–Ruffini program rests on 'solvable by radicals ⟺ solvable Galois group'. The Galois correspondence packaged here is the structural backbone of that equivalence — how subextensions of a radical tower become a subnormal series of the Galois group."
-    },
-    {
-      "targetId": "abel-ruffini",
-      "relationship": "ancestor",
-      "description": "Root entry: the Abel–Ruffini theorem. The intermediate-field ↔ subgroup bijection formalized here is the tool that translates radical solvability of a polynomial into solvability of its Galois group."
-    }
-  ],
   "references": [
     {
       "authors": "Galois, É.",

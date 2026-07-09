@@ -64,32 +64,6 @@
       }
     ]
   },
-  "references": [
-    {
-      "authors": "Hurwitz, Adolf",
-      "title": "Sur le problème des isopérimètres",
-      "year": "1901",
-      "venue": "Comptes Rendus de l'Académie des Sciences 132, 401–403"
-    },
-    {
-      "authors": "Osserman, Robert",
-      "title": "The isoperimetric inequality",
-      "year": "1978",
-      "venue": "Bulletin of the American Mathematical Society 84(6), 1182–1238"
-    },
-    {
-      "authors": "Hardy, G. H., Littlewood, J. E. and Pólya, G.",
-      "title": "Inequalities",
-      "year": "1934",
-      "venue": "Cambridge University Press (Wirtinger's inequality, §7.7)"
-    },
-    {
-      "authors": "The mathlib Community",
-      "title": "Fourier series and Parseval; Analysis.Fourier and inner-product spaces",
-      "year": "2024",
-      "venue": "Mathlib4 (leanprover-community/mathlib4)"
-    }
-  ],
   "overview": {
     "historicalContext": "Hurwitz's 1901 Fourier proof of the isoperimetric inequality C² ≥ 4πA reduces, coordinate by coordinate, to Wirtinger's inequality ∫₀²π f² ≤ ∫₀²π (f')² for mean-zero 2π-periodic functions. The parent chain (area-of-circle-oq-01-oq-02-oq-02-oq-01-oq-01) formalizes that inequality with all five analytic axioms now discharged 0-axiom (IFT, Cauchy–Schwarz, and the two Fourier axioms). What the inequality alone does not say is when equality holds — the rigidity statement that the only isoperimetric extremiser is the circle. This entry supplies the analytic heart of that rigidity: the spectral characterization of Wirtinger's equality case.",
     "problemStatement": "Let f : ℝ → ℝ be C¹ and 2π-periodic with zero mean (∫₀²π f = 0), and let cₙ be its real Fourier coefficients. Then ∫₀²π f² = ∫₀²π (f')² holds if and only if cₙ = 0 for every n ≠ ±1; equivalently, the extremisers are exactly the first harmonics f(t) = a cos t + b sin t. The concrete first harmonic has zero mean, energy ∫f² = π(a²+b²), and attains equality ∫f² = ∫(f')².",

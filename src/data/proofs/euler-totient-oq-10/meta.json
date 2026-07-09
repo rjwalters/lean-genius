@@ -3,38 +3,6 @@
   "title": "Menon's Identity: $\\sum_{\\gcd(k,n)=1}\\gcd(k-1,n)=\\varphi(n)\\,d(n)$",
   "slug": "euler-totient-oq-10",
   "description": "Formalizes Menon's identity (P. Kesava Menon, 1965), a classical arithmetic identity living over the unit group of ℤ/nℤ: summing gcd(k−1, n) over the residues k coprime to n yields φ(n)·d(n), where φ is Euler's totient and d(n) is the number of divisors of n. The proof is the slick counting argument, fully uniform in n with no factorization or multiplicativity bookkeeping. Indexing the sum by the units a ∈ (ℤ/nℤ)ˣ (so the summand is gcd((a−1).val, n)), three steps close it: (1) Divisor expansion — gcd(v, n) = ∑_{d∣n, d∣v} φ(d), obtained by applying Gauss's identity ∑_{e∣g} φ(e) = g to g = gcd(v,n), whose divisors are exactly the common divisors of v and n. (2) Swap of summation — Menon's sum becomes ∑_{d∣n} φ(d)·#{a ∈ (ℤ/nℤ)ˣ : d ∣ (a−1).val}. (3) Fibre count — the reduction homomorphism unitsMap : (ℤ/nℤ)ˣ → (ℤ/dℤ)ˣ is surjective (ZMod.unitsMap_surjective), and d ∣ (a−1).val ⟺ a ∈ ker(unitsMap); since for a surjective homomorphism of finite groups |G| = |H|·|ker| (Lagrange + first isomorphism theorem), each divisor d contributes φ(d)·|ker| = φ(n). Collapsing, ∑_{d∣n} φ(n) = φ(n)·d(n). This is genuinely new relative to Mathlib, which has Euler's totient and the unitsMap reduction but not Menon's identity. Fully machine-checked: 0 sorries, 0 axioms (only the foundational propext/Classical.choice/Quot.sound), no native_decide.",
-  "references": [
-    {
-      "authors": "P. Kesava Menon",
-      "title": "On the Sum Σ(a−1,n) with (a,n)=1 (Journal of the Indian Mathematical Society 29)",
-      "year": 1965,
-      "note": "The original Menon identity Σ_{gcd(k,n)=1} gcd(k−1,n) = φ(n)d(n), formalized in this entry."
-    },
-    {
-      "authors": "Tom M. Apostol",
-      "title": "Introduction to Analytic Number Theory",
-      "year": 1976,
-      "note": "Springer. Euler's totient, the divisor function, and arithmetic identities over ℤ/nℤ."
-    },
-    {
-      "authors": "László Tóth",
-      "title": "Menon's Identity and Arithmetical Sums Representing Functions of Several Variables (Rendiconti Sem. Mat. Univ. Politec. Torino 69)",
-      "year": 2011,
-      "note": "Modern generalizations and group-theoretic interpretation of Menon's identity."
-    },
-    {
-      "authors": "Paul J. McCarthy",
-      "title": "Introduction to Arithmetical Functions",
-      "year": 1986,
-      "note": "Springer. Menon-type identities in the theory of arithmetical functions."
-    },
-    {
-      "authors": "The mathlib Community",
-      "title": "Mathlib4: Nat.totient, Nat.ArithmeticFunction.sigma and ZMod unit-group infrastructure",
-      "year": 2024,
-      "note": "Totient, divisor count, and the unit group (ℤ/nℤ)ˣ used to sum gcd(k−1,n) over coprime residues."
-    }
-  ],
   "meta": {
     "author": "P. Kesava Menon (1965); the counting proof formalized in Lean 4 with Mathlib",
     "sourceUrl": "https://en.wikipedia.org/wiki/Menon%27s_identity",

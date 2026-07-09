@@ -108,39 +108,6 @@
       "description": "Sibling OQ exploring the complex-root-theory route to the parity result; this file instead pursues constructivity"
     }
   ],
-  "references": [
-    {
-      "authors": [
-        "Collins, G.E.",
-        "Akritas, A.G."
-      ],
-      "title": "Polynomial real root isolation using Descartes' rule of signs",
-      "year": "1976",
-      "venue": "Proc. ACM Symposium on Symbolic and Algebraic Computation (SYMSAC), pp. 272–275",
-      "note": "The Descartes/Vincent-based real-root isolation algorithm behind the computable sign-variation count."
-    },
-    {
-      "authors": [
-        "Basu, S.",
-        "Pollack, R.",
-        "Roy, M.-F."
-      ],
-      "title": "Algorithms in Real Algebraic Geometry",
-      "year": "2006",
-      "venue": "Algorithms and Computation in Mathematics 10, 2nd ed., Springer",
-      "note": "Standard algorithmic reference for sign variations, Sturm sequences, and real-root isolation (Vincent/VAS/VCA)."
-    },
-    {
-      "authors": [
-        "The mathlib community"
-      ],
-      "title": "Mathlib.Analysis.SpecialFunctions.Polynomials / Polynomial.signVariations",
-      "year": "2020",
-      "venue": "Mathlib4, Lean 4 mathematical library",
-      "url": "https://leanprover-community.github.io/mathlib4_docs/",
-      "note": "Mathlib's abstract signVariations and roots API that these entries bridge to a computable form."
-    }
-  ],
   "conclusion": {
     "summary": "YES, the bound side of Descartes' Rule can be made constructive. Mathlib's signVariations is noncomputable as a function of the polynomial, but its combinatorial core is a computable function on the coefficient list. This file builds that function (signVarList over ℚ), proves by rfl that it agrees with the abstract count, transports Descartes' upper bound to it, and extracts a decidable sound certificate of no positive roots — all with 0 axioms, examples checked by kernel decide.",
     "implications": "Separates the genuinely algorithmic part of Descartes' Rule (counting sign variations) from the genuinely noncomputable part (locating real roots, which needs Sturm). The signVarList / signVarList_coeffList pattern — a computable list mirror certified by rfl against a noncomputable polynomial-level definition — is reusable for other coefficient-driven polynomial invariants. The decidable no-positive-roots certificate is a small but genuinely constructive decision procedure: sound, terminating, and checkable.",

@@ -103,28 +103,6 @@
       "summary": "Recap table of the two verified instances and an explicit statement that the general theorem remains open and unaxiomatized. #check commands documenting the public results."
     }
   ],
-  "references": [
-    {
-      "authors": [
-        "Erdős, P.",
-        "Grünwald, T.",
-        "Weiszfeld, E."
-      ],
-      "title": "On Euler lines of infinite graphs (Hungarian)",
-      "year": "1938",
-      "venue": "Matematikai és Fizikai Lapok 43, pp. 129–140",
-      "note": "The Erdős–Grünwald–Weiszfeld characterization of Euler lines in infinite graphs."
-    },
-    {
-      "authors": [
-        "Diestel, R."
-      ],
-      "title": "Graph Theory",
-      "year": "2017",
-      "venue": "5th ed., Graduate Texts in Mathematics 173, Springer",
-      "note": "Infinite graphs and Eulerian tours via compactness/König's lemma."
-    }
-  ],
   "conclusion": {
     "summary": "For each of the two canonical locally finite graphs — the one-way ray on ℕ and the bi-infinite line on ℤ — both Erdős–Grünwald–Weiszfeld hypotheses (local finiteness + the degree-parity profile) and the EGW conclusion (an explicit Euler walk traversing every edge exactly once) are verified with 0 axioms and 0 sorries. A general lemma makes 'exactly once' precise: every edge is traversed at a unique step index.",
     "implications": "This pins down the verifiable core of the EGW theorem and exhibits, concretely, the two shapes an infinite Euler object can take (path vs. circuit) together with their classical parity signatures. It builds directly on the InfiniteWalk semantics of konigsberg-oq-03-oq-02, demonstrating that those definitions support genuine theorems and not just stubs. The local-finiteness and degree API is reusable for any future attack on the general theorem.",

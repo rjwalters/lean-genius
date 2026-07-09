@@ -118,38 +118,6 @@
       "description": "The classical Descartes rule of signs — root of the OQ chain studied here."
     }
   ],
-  "references": [
-    {
-      "authors": [
-        "Basu, S.",
-        "Pollack, R.",
-        "Roy, M.-F."
-      ],
-      "title": "Algorithms in Real Algebraic Geometry",
-      "year": "2006",
-      "venue": "Algorithms and Computation in Mathematics 10, 2nd ed., Springer",
-      "note": "Standard algorithmic reference for sign variations, Sturm sequences, and real-root isolation (Vincent/VAS/VCA)."
-    },
-    {
-      "authors": [
-        "Prasolov, V.V."
-      ],
-      "title": "Polynomials",
-      "year": "2004",
-      "venue": "Algorithms and Computation in Mathematics 11, Springer",
-      "note": "Modern reference covering Descartes' rule, the Budan–Fourier theorem, Sturm's theorem and root-localization bounds."
-    },
-    {
-      "authors": [
-        "The mathlib community"
-      ],
-      "title": "Mathlib.Analysis.SpecialFunctions.Polynomials / Polynomial.signVariations",
-      "year": "2020",
-      "venue": "Mathlib4, Lean 4 mathematical library",
-      "url": "https://leanprover-community.github.io/mathlib4_docs/",
-      "note": "Mathlib's abstract signVariations and roots API that these entries bridge to a computable form."
-    }
-  ],
   "conclusion": {
     "summary": "YES: the computable sign-variation count generalizes verbatim to any ordered field with decidable order, with the rfl bridge intact, because Mathlib's signVariations already lives at that generality and the count is purely combinatorial on signs. The substantive new result is that signVariations is invariant under any strictly monotone ring homomorphism (signVariations_map) — a fact not in Mathlib. Specializing to ℚ ↪ ℝ shows the kernel-reducible rational count equals the real polynomial's count, so it bounds the positive REAL roots, repairing the gap left by the parent (whose bound only constrained rational roots). All with 0 axioms; examples by kernel decide.",
     "implications": "Map-invariance of signVariations is reusable infrastructure: it lets any computable subfield (ℚ, computable algebraic reals) certify sign-variation facts about polynomials over a larger ordered field by pushing forward along an order embedding. It is also exactly the lemma needed to make the constructive Descartes bound a statement about real roots rather than coefficient-field roots. The trichotomy proof that a strict-mono ring hom preserves SignType.sign is a small lemma of independent use for any sign-driven polynomial invariant.",

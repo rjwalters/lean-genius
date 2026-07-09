@@ -116,26 +116,6 @@
       "mathContext": "The axioms can be proved from singular cohomology + Borel construction + transfer maps. Mathlib currently lacks all three, but they are constructible."
     }
   ],
-  "references": [
-    {
-      "authors": [
-        "Dold, A."
-      ],
-      "title": "Simple proofs of some Borsuk-Ulam results",
-      "year": "1983",
-      "venue": "Contemporary Mathematics 19, pp. 65–69",
-      "note": "Dold's numerical index for free G-spaces on spheres."
-    },
-    {
-      "authors": [
-        "Matoušek, J."
-      ],
-      "title": "Using the Borsuk-Ulam Theorem: Lectures on Topological Methods in Combinatorics and Geometry",
-      "year": "2003",
-      "venue": "Universitext, Springer",
-      "note": "Standard reference for the Borsuk-Ulam theorem, Z/2 and G-indices, and Dold's theorem."
-    }
-  ],
   "conclusion": {
     "summary": "The formalization axiomatizes Dold's 1983 cohomological index framework with 5 axioms and derives 11 machine-verified theorems: classical Borsuk-Ulam, Yang-Borsuk, lower bounds for Z/4, Z/6, Z/pq, and a unification showing the OQ02OQ01 buDim framework is a reparametrization of the Dold index.",
     "implications": "Dold's framework is the conceptual engine behind modern combinatorial topology applications of Borsuk-Ulam — including topological proofs of the Lovász-Kneser theorem (chromatic number of Kneser graphs), Schrijver's theorem, and the Necklace Splitting theorem. Full Lean formalization would provide machine-verified foundations for these combinatorial results. The gap analysis reveals transfer maps as the most leveraged Mathlib contribution: 200 lines unlocking one axiom that drives all composite-group bounds.",

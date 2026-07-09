@@ -73,28 +73,6 @@
       "summary": "Formalizes decidability of Eulerian circuit existence via balance checking, and documents the directed/undirected counting complexity gap."
     }
   ],
-  "references": [
-    {
-      "authors": [
-        "van Aardenne-Ehrenfest, T.",
-        "de Bruijn, N.G."
-      ],
-      "title": "Circuits and trees in oriented linear graphs",
-      "year": "1951",
-      "venue": "Simon Stevin 28, pp. 203–217",
-      "note": "With Smith and Tutte (1941), the BEST theorem counting directed Eulerian circuits via arborescences."
-    },
-    {
-      "authors": [
-        "Bondy, J.A.",
-        "Murty, U.S.R."
-      ],
-      "title": "Graph Theory",
-      "year": "2008",
-      "venue": "Graduate Texts in Mathematics 244, Springer",
-      "note": "Eulerian graphs, the in-degree/out-degree characterization and the BEST theorem."
-    }
-  ],
   "conclusion": {
     "summary": "This formalization establishes the BEST theorem framework in Lean 4 for counting directed Eulerian circuits. The theorem is axiomatized (requiring the Matrix Tree Theorem for a full proof) and verified on two concrete examples: $C_3$ (unique circuit) and bidirectional $K_3$ (6 circuits). The cycle exclusion argument for arborescence completeness on $K_3$ is a notable proof. The decision-vs-counting complexity gap is documented.",
     "implications": "The BEST theorem demonstrates that directed Eulerian circuit counting is polynomial, contrasting with the #P-completeness of undirected counting. This is one of the sharpest known complexity separations between directed and undirected graph problems. A full formalization would require the Matrix Tree Theorem, connecting to Kirchhoff's work and algebraic graph theory.",

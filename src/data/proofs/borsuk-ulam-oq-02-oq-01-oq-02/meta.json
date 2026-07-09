@@ -53,26 +53,6 @@
       "Equivariant Borsuk–Ulam lower bounds (background motivation)"
     ]
   },
-  "references": [
-    {
-      "authors": [
-        "tom Dieck, T."
-      ],
-      "title": "Transformation Groups",
-      "year": "1987",
-      "venue": "De Gruyter Studies in Mathematics 8, Walter de Gruyter",
-      "note": "Free G-actions, representation spheres and equivariant index theory."
-    },
-    {
-      "authors": [
-        "Matoušek, J."
-      ],
-      "title": "Using the Borsuk-Ulam Theorem: Lectures on Topological Methods in Combinatorics and Geometry",
-      "year": "2003",
-      "venue": "Universitext, Springer",
-      "note": "Standard reference for the Borsuk-Ulam theorem, Z/2 and G-indices, and Dold's theorem."
-    }
-  ],
   "conclusion": {
     "summary": "In the free-action regime the exotic-representation question is settled negatively and axiom-free: a complex Z/n-representation is free iff each prime-order subgroup acts freely (isFreeRep_iff_forall_prime), so freeness — and the equivariant lower bounds it produces — is governed entirely by the prime divisors of n. 7 theorems, 2 definitions, 144 lines, 0 axioms.",
     "implications": "This isolates the structural reason composite cyclic groups cannot outperform their prime subgroups via free representations, and does so without the parent's axiomatized buDim. It reframes a topological conjecture as a transparent number-theoretic localization, and supplies the concrete free-action criterion that any honest computation of cyclic equivariant indices must use.",

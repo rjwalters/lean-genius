@@ -116,50 +116,6 @@
       "description": "Parent: proves the Sierpiński block sum ∑_{n<2^m} oddCount n = 3^m; this entry derives its density and dimension consequences."
     }
   ],
-  "sections": [
-    {
-      "id": "header",
-      "title": "Two Asymptotic Consequences of the Sierpiński Count",
-      "startLine": 1,
-      "endLine": 41,
-      "summary": "Imports Mathlib and the grandparent LucasTheoremOQ01, opens Nat/Finset and LucasOddEntries, opens LucasSierpinskiDimension. The docstring sets up the program: from the block count 3^m and the total entry count ≈ 4^m/2, derive (1) the total/even entry counts, (2) odd density → 0 (almost all binomial coefficients are even), and (3) the exact box-counting dimension log₂ 3 with 1 < log₂ 3 < 2."
-    },
-    {
-      "id": "block-sum-engine",
-      "title": "Block-Sum Engine (Reproved Inline)",
-      "startLine": 43,
-      "endLine": 91,
-      "summary": "Self-contained re-derivation of the Sierpiński count from the grandparent's Glaisher formula: s2_step (digit-sum recursion for all n), s2_two_pow_add (leading-bit lemma s₂(2^m+k)=s₂(k)+1), sum_two_pow_s2 (∑ 2^(s₂ n) = 3^m via the doubling recursion), and sum_oddCount_eq_three_pow (∑_{n<2^m} oddCount n = 3^m)."
-    },
-    {
-      "id": "total-entries",
-      "title": "Total and Even Entry Counts",
-      "startLine": 93,
-      "endLine": 128,
-      "summary": "totalEntries m = ∑_{n<2^m}(n+1), the triangular number. sum_range_succ_mul_two doubles Gauss' sum to stay in ℕ; two_mul_totalEntries: 2·totalEntries m = 2^m(2^m+1). oddCount_le_row (odd entries ⊆ row) feeds Finset.sum_le_sum to give three_pow_le_totalEntries (3^m ≤ totalEntries m), so evenEntries_eq records the even count as totalEntries m − 3^m (a genuine nonnegative quantity)."
-    },
-    {
-      "id": "density",
-      "title": "Odd Density Tends to Zero",
-      "startLine": 130,
-      "endLine": 172,
-      "summary": "four_pow_div_two_le_totalEntries casts 2·totalEntries m = 4^m + 2^m ≥ 4^m to ℝ to give totalEntries m ≥ 4^m/2. oddDensity m = 3^m/totalEntries m; oddDensity_le squeezes it (gcongr on the denominator) below 3^m/(4^m/2) = 2·(3/4)^m. oddDensity_tendsto_zero then applies squeeze_zero with the geometric limit (3/4)^m → 0 — almost all binomial coefficients are even."
-    },
-    {
-      "id": "dimension",
-      "title": "The Exact Box-Counting Dimension log₂ 3",
-      "startLine": 174,
-      "endLine": 204,
-      "summary": "sierpinskiDimension = logb 2 3. boxCount_ratio_eq_dimension: log(3^m)/log(2^m) = log₂ 3 EXACTLY for every m ≥ 1, by Real.log_pow twice and cancelling the common factor m — no limit needed, the gasket is exactly self-similar. one_lt_sierpinskiDimension and sierpinskiDimension_lt_two give the strict fractal bounds 1 < log₂ 3 < 2 from log 2 < log 3 < log 4 = 2·log 2."
-    },
-    {
-      "id": "sanity",
-      "title": "Numerical Sanity Checks",
-      "startLine": 206,
-      "endLine": 218,
-      "summary": "Three kernel-decide checks: the first 4 rows have totalEntries 2 = 10 (9 odd, 1 even), the first 8 rows have totalEntries 3 = 36 (27 odd, 9 even), and 2·totalEntries 3 = 2³·9 = 72 — confirming the counts with no native_decide."
-    }
-  ],
   "conclusion": {
     "summary": "From the Sierpiński count 3^m and the total entry count 2^{m-1}(2^m+1), the entry proves the two classical asymptotic faces of Pascal's triangle mod 2: the density of odd binomial coefficients tends to 0 (almost all are even), and the box-counting exponent log(3^m)/log(2^m) equals the Sierpiński dimension log₂ 3 exactly for every m ≥ 1, with 1 < log₂ 3 < 2. All with 0 axioms and no native_decide.",
     "implications": "These are the quantitative endpoints of the Lucas-mod-2 story: the gasket has measure zero in the plane (density 0) yet positive dimension log₂ 3 > 1. The same template — replace the odd count 2^(s₂ n) by Fine's ∏(nᵢ+1) and the block sum 3^m by ((p(p+1)/2)/p²)·p^{2m} — would give the p-ary density and dimension log_p(p(p+1)/2).",

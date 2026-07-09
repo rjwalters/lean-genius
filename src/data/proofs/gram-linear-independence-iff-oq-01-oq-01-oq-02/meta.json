@@ -1,7 +1,6 @@
 {
   "id": "gram-linear-independence-iff-oq-01-oq-01-oq-02",
   "slug": "gram-linear-independence-iff-oq-01-oq-01-oq-02",
-  "description": "Derives the classical matrix form of Hadamard's inequality ‖det A‖ ≤ ∏ⱼ ‖colⱼ‖ for a square matrix over an RCLike field as a corollary of the parent Gramian bound. The bridge is gram(col A) = AᴴA together with det(gram(col A)) = ‖det A‖²: the columns' Gram matrix is the Hermitian product, so the abstract bound det(gram v) ≤ ∏ ‖vⱼ‖² transports to ‖det A‖² ≤ ∏ ‖colⱼ‖², and one monotone square root gives the norm form — plus the explicit ‖det A‖ ≤ ∏ⱼ √(∑ᵢ ‖Aᵢⱼ‖²) of Hadamard's original 1893 statement. Verified, zero axioms.",
   "leanFile": {
     "imports": [
       "Mathlib",

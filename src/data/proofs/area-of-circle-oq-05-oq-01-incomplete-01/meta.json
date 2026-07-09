@@ -37,26 +37,6 @@
     "definitionCount": 0,
     "mathlib_version": "4.26.0"
   },
-  "references": [
-    {
-      "authors": "Folland, Gerald B.",
-      "title": "Real Analysis: Modern Techniques and Their Applications",
-      "year": "1999",
-      "venue": "2nd ed., Wiley"
-    },
-    {
-      "authors": "Stein, Elias M. and Shakarchi, Rami",
-      "title": "Fourier Analysis: An Introduction",
-      "year": "2003",
-      "venue": "Princeton Lectures in Analysis I, Princeton University Press"
-    },
-    {
-      "authors": "The mathlib Community",
-      "title": "MeasureTheory Fubini and polar change of variables (integral_comp_polar); MeasureTheory.Integral",
-      "year": "2024",
-      "venue": "Mathlib4 (leanprover-community/mathlib4)"
-    }
-  ],
   "overview": {
     "historicalContext": "The Gaussian integral ∫_{-∞}^{∞} e^{-a x²} dx = √(π/a) (for a > 0) is fundamental across probability (the normal distribution with variance 1/(2a)), physics, and analysis. The classical polar-coordinate proof, due to Poisson, squares the integral, converts it to a double integral over ℝ², changes to polar coordinates, and separates the radial and angular parts. The parent entry AreaOfCircleOQ05OQ01 makes every step of this derivation explicit — but only for the unit Gaussian (a = 1). The scaled formula √(π/a) is available elsewhere in the gallery only by invoking Mathlib's integral_gaussian as a black box. This entry is the missing intersection: the explicit, step-by-step polar derivation carried through for an arbitrary scale a > 0.",
     "problemStatement": "**Open Question (Incomplete-01 from OQ-05-OQ-01)**: The parent file formalizes the explicit polar-coordinate proof that (∫ e^{-x²} dx)² = π only for the unit Gaussian (a = 1). The scaled formula ∫ e^{-a x²} dx = √(π/a) is proved elsewhere only via Mathlib's integral_gaussian black box. Can the explicit polar-coordinate derivation be carried through for arbitrary a > 0?\n\n**Answer**: YES. (∫ e^{-a x²} dx)² = ∫∫ e^{-a(x²+y²)} [Fubini] = ∫_polar r·e^{-a r²} [polar change of variables] = (1/(2a))·(2π) = π/a [radial × angular], hence ∫ e^{-a x²} dx = √(π/a).",

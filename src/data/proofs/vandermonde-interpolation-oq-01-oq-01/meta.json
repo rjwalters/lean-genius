@@ -59,50 +59,6 @@
       "ExistsUnique and LinearMap.map_add / map_smul for the well-posedness and linearity statements"
     ]
   },
-  "sections": [
-    {
-      "id": "sec-header",
-      "title": "Header and Setup",
-      "startLine": 1,
-      "endLine": 43,
-      "summary": "Module docstring framing the existence half of polynomial interpolation over a field F: with n distinct nodes v and target values r, the explicit Lagrange interpolant realizes the unique degree-<n interpolant, complementing the companion VandermondeInterpolationOQ01 which proved uniqueness via the Vandermonde determinant. Lists the results (realizer, degree bound, the-answer, well-posedness, reproduction). Imports Mathlib, opens Polynomial/Finset, and fixes F, n, nodes v, values r."
-    },
-    {
-      "id": "sec-prelim",
-      "title": "Preliminaries and the Lagrange Interpolant",
-      "startLine": 45,
-      "endLine": 55,
-      "summary": "Two small bridges from the global-injectivity / Fin n idiom to Mathlib's Lagrange API: injOn_univ (a globally injective node map is InjOn univ) and card_univ_fin (#univ = n). Defines interp v r := Lagrange.interpolate univ v r, the explicit Lagrange interpolant ∑ i, r i · ℓ_i."
-    },
-    {
-      "id": "sec-existence",
-      "title": "Existence and Degree Bound",
-      "startLine": 57,
-      "endLine": 88,
-      "summary": "eval_interp — the realizer: (interp v r).eval (v j) = r j at every node, via Lagrange.eval_interpolate_at_node. degree_interp_lt bounds the degree by n (Lagrange.degree_interpolate_lt + card_univ_fin), and after the two private degree ↔ natDegree bridges, natDegree_interp_lt gives natDegree < n for n ≥ 1 — the companion entry's framing."
-    },
-    {
-      "id": "sec-uniqueness",
-      "title": "The Interpolant Is the Answer",
-      "startLine": 90,
-      "endLine": 98,
-      "summary": "eq_interp_of_eval_eq: any polynomial p of degree < n whose values at the nodes match r equals the Lagrange interpolant, via Lagrange.eq_interpolate_of_eval_eq. This is the uniqueness engine reused by both well-posedness statements and by reproduction."
-    },
-    {
-      "id": "sec-wellposed",
-      "title": "Well-Posedness (Existence and Uniqueness)",
-      "startLine": 100,
-      "endLine": 115,
-      "summary": "existsUnique_interp (degree form) and existsUnique_interp_natDegree (natDegree form, n ≥ 1): there is a unique polynomial of degree/natDegree < n interpolating the data, and it is exactly the Lagrange interpolant — combining eval_interp/degree_interp_lt for existence with eq_interp_of_eval_eq for uniqueness."
-    },
-    {
-      "id": "sec-reproduction-linear",
-      "title": "Reproduction and Linearity",
-      "startLine": 117,
-      "endLine": 135,
-      "summary": "interp_eval_self: interpolating the values of a degree-<n polynomial returns that polynomial — interpolation is a left inverse to evaluation on degree-<n polynomials. interp_add and interp_smul record that the interpolant is F-linear in the value vector r (map_add / map_smul of Lagrange.interpolate)."
-    }
-  ],
   "crossReferences": [
     {
       "proofId": "vandermonde-interpolation-oq-01",

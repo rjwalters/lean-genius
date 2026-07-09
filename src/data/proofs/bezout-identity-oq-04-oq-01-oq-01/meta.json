@@ -3,38 +3,6 @@
   "title": "Smith Normal Form over PIDs: GCD Characterization via Mathlib",
   "slug": "bezout-identity-oq-04-oq-01-oq-01",
   "description": "Generalizes the Smith Normal Form theory from ℤ to arbitrary Principal Ideal Domains. The 1×2 invariant factor equals gcd(a,b) up to associates in any GCDMonoid. Unimodularity becomes IsUnit det. The key technique replaces the ±1 case split with a unit.inv_val cancellation argument.",
-  "references": [
-    {
-      "authors": "Henry J. S. Smith",
-      "title": "On systems of linear indeterminate equations and congruences (Phil. Trans. Royal Soc. 151)",
-      "year": 1861,
-      "note": "Introduces the Smith normal form and its invariant factors, generalized here from ℤ to arbitrary PIDs."
-    },
-    {
-      "authors": "Nathan Jacobson",
-      "title": "Basic Algebra I (2nd ed.)",
-      "year": 1985,
-      "note": "W. H. Freeman. Smith normal form and the structure theorem for modules over a PID."
-    },
-    {
-      "authors": "Serge Lang",
-      "title": "Algebra (Revised 3rd ed.), GTM 211",
-      "year": 2002,
-      "note": "Springer. Modules over principal ideal domains and invariant factors."
-    },
-    {
-      "authors": "David S. Dummit and Richard M. Foote",
-      "title": "Abstract Algebra (3rd ed.)",
-      "year": 2004,
-      "note": "Wiley. Smith normal form and the associated GCD characterization of invariant factors."
-    },
-    {
-      "authors": "The mathlib Community",
-      "title": "Mathlib4: GCDMonoid, IsPrincipalIdealRing and Matrix.SpecialLinearGroup",
-      "year": 2024,
-      "note": "The GCDMonoid abstraction and IsUnit det condition replacing the ℤ-specific ±1 case split."
-    }
-  ],
   "meta": {
     "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Smith_normal_form",
