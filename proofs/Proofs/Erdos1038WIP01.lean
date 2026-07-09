@@ -365,4 +365,62 @@ noncomputable def sublevelInf' : ℝ≥0∞ :=
 theorem sublevelInf'_le_two : sublevelInf' ≤ ENNReal.ofReal 2 :=
   iInf_le_of_le X (iInf_le_of_le linear_admissible' sublevelMeasure_linear.le)
 
+/-! ### An infinite faithful family attaining the bound `2` at every degree
+
+The linear witness `X` (measure `2`) is only the first member of a whole family
+realising the upper bound `sublevelInf' ≤ 2`.  For any centre `c ∈ [-1,1]` and any
+multiplicity `n ≥ 1`, the pure power `(X − c)^n` — a single root `c` of order `n`,
+hence a faithful monic polynomial of degree `n` with its root in `[-1,1]` — has
+sublevel set exactly the length-`2` interval `(c-1, c+1)` (because
+`|(x-c)^n| < 1 ↔ |x-c| < 1`), so its measure is `2` regardless of `n` or `c`.
+Thus the bound `2` is *attained*, not merely approached, by a faithful witness of
+**every** degree; the conjectured true infimum `2^(4/3) − 1` (if it is indeed below
+`2`) can therefore only be reached by polynomials with genuinely distinct roots, not
+by clustering a single root. -/
+
+/-- **Sublevel set of a pure power `(X − c)^n`** (`n ≥ 1`): the open interval
+    `(c-1, c+1)`.  Since `|(x-c)^n| = |x-c|^n` and `a^n < 1 ↔ a < 1` for `a ≥ 0`,
+    `n ≥ 1`, the condition `|f(x)| < 1` is just `|x - c| < 1`. -/
+theorem sublevelSet_translate_pow (c : ℝ) {n : ℕ} (hn : n ≠ 0) :
+    sublevelSet ((X - C c) ^ n) = Set.Ioo (c - 1) (c + 1) := by
+  ext x
+  simp only [sublevelSet, Set.mem_setOf_eq, eval_pow, eval_sub, eval_X, eval_C,
+    Set.mem_Ioo]
+  rw [abs_pow, pow_lt_one_iff_of_nonneg (abs_nonneg _) hn, abs_lt]
+  constructor <;> intro h <;> constructor <;> linarith [h.1, h.2]
+
+/-- **Sublevel measure of `(X − c)^n` is exactly `2`** for every centre `c` and
+    every multiplicity `n ≥ 1` — the length of `(c-1, c+1)`.  Generalises
+    `sublevelMeasure_linear` (`c = 0, n = 1`). -/
+theorem sublevelMeasure_translate_pow (c : ℝ) {n : ℕ} (hn : n ≠ 0) :
+    sublevelMeasure ((X - C c) ^ n) = ENNReal.ofReal 2 := by
+  unfold sublevelMeasure
+  rw [sublevelSet_translate_pow c hn, Real.volume_Ioo]
+  congr 1; ring
+
+/-- **`(X − c)^n` is faithfully admissible for `c ∈ [-1,1]`, `n ≥ 1`.**  It is monic
+    (a power of the monic `X − c`), its only root is `c ∈ [-1,1]` (with multiplicity
+    `n`), and it splits completely: `roots.card = n = natDegree`. -/
+theorem translate_pow_admissible' {c : ℝ} (hc : c ∈ Set.Icc (-1 : ℝ) 1) {n : ℕ}
+    (hn : n ≠ 0) : MonicRealRootedIn01' ((X - C c) ^ n) := by
+  have hmonic : ((X - C c) ^ n).Monic := (monic_X_sub_C c).pow n
+  refine ⟨⟨hmonic, ?_⟩, ?_⟩
+  · intro r hr
+    rw [Polynomial.roots_pow, Polynomial.roots_X_sub_C,
+      Multiset.mem_nsmul_of_ne_zero hn, Multiset.mem_singleton] at hr
+    rwa [hr]
+  · rw [Polynomial.roots_pow, Polynomial.roots_X_sub_C, Multiset.card_nsmul,
+      Multiset.card_singleton, mul_one, Polynomial.natDegree_pow,
+      Polynomial.natDegree_X_sub_C, mul_one]
+
+/-- **The bound `2` is attained at every degree.**  For each `n ≥ 1` the faithful
+    witness `(X - 0)^n = X^n` realises sublevel measure exactly `2`, so the faithful
+    infimum lies at or below `2` and this value is genuinely achieved (not merely a
+    limit) by a splitting polynomial of degree `n`. -/
+theorem sublevelInf'_le_two_attained (n : ℕ) (hn : n ≠ 0) :
+    sublevelInf' ≤ ENNReal.ofReal 2 :=
+  iInf_le_of_le ((X - C (0 : ℝ)) ^ n)
+    (iInf_le_of_le (translate_pow_admissible' (by norm_num) hn)
+      (sublevelMeasure_translate_pow 0 hn).le)
+
 end Erdos1038WIP01
