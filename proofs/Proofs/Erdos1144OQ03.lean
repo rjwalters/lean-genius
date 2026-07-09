@@ -59,14 +59,19 @@ strict `Filter.Frequently` cannot coexist. -/
 theorem eventually_le_not_frequently_lt {l : Filter ℕ} {S B : ℕ → ℝ}
     (h : ∀ᶠ N in l, S N ≤ B N) : ¬ ∃ᶠ N in l, B N < S N := by
   rw [Filter.not_frequently]
-  exact h.mono fun _ hN => not_lt.mpr hN
+  filter_upwards [h] with N hN
+  exact not_lt.mpr hN
 
 /-- **The reduction lemma for OQ-03.** A fixed-power upper bound
 `EventualPowerBound f K C` rules out `FrequentPowerExceedance f K C` at the *same*
 `K, C`: the ceiling cannot hold eventually while being broken infinitely often. -/
 theorem not_frequentExceedance_of_eventualBound (f : ℕ → ℤ) (K C : ℝ)
-    (h : EventualPowerBound f K C) : ¬ FrequentPowerExceedance f K C :=
-  eventually_le_not_frequently_lt h
+    (h : EventualPowerBound f K C) : ¬ FrequentPowerExceedance f K C := by
+  unfold EventualPowerBound at h
+  unfold FrequentPowerExceedance
+  rw [Filter.not_frequently]
+  filter_upwards [h] with N hN
+  exact not_lt.mpr hN
 
 /-- **OQ-03, correctly encoded.** *If* the extremal function `f` frequently exceeds
 `C·√N·(log N)^K` for **every** fixed exponent `K` and constant `C` — the deep extremal
