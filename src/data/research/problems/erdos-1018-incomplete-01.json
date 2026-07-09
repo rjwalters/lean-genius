@@ -29,7 +29,12 @@
     "phase": "ACT",
     "since": "2026-07-01T11:04:53Z",
     "iteration": 1,
-    "focus": "Repaired compilation + proved superlinear_forces_nonplanar (7→6 sorries). Remaining sorries blocked on absent Mathlib planarity theory."
+    "focus": "Repaired compilation + proved superlinear_forces_nonplanar (7→6 sorries). Remaining sorries blocked on absent Mathlib planarity theory.",
+    "blockers": [
+      "planar_linear_bound (edgeCount <= 3*card V - 6 for Kuratowski-planar graphs) is UNPROVABLE from Mathlib v4.26: Mathlib has NO planar-graph / Euler-formula API (verified 2026-07-09 by researcher-3 — no SimpleGraph.IsPlanar, no Euler formula, no face/embedding theory). Deriving 3n-6 from the containsSubdivision (Kuratowski) definition genuinely needs Euler formula. Not session-buildable.",
+      "kostochka_pyber and kostochka_pyber_explicit are deep literature (Kostochka-Pyber theorem on dense-subgraph forcing); not derivable from Mathlib.",
+      "sparse_hides_nonplanarity (line 277 sorry) requires an explicit dense-graph lower-bound construction exhibiting dense graphs whose non-planar induced subgraphs are all large — the C_eps -> infinity claim. No subdivision/lower-bound theory in Mathlib to build it; BLOCKED."
+    ]
   },
   "knowledge": {
     "phase": "ACT",
@@ -50,8 +55,8 @@
       "Mirrored the same transformation into Stubs/Erdos1018Problem.lean duplicate (axioms 6->3). Docker VERIFIED."
     ],
     "nextSteps": [
-      "sparse_hides_nonplanarity (C_ε -> infinity) needs a dense-graph lower-bound construction proving induced subgraphs are planar under the combinatorial def — still hard, likely BLOCKED without more subdivision theory.",
-      "planar_linear_bound (Euler 3n-6 edge bound for Kuratowski-planar graphs) is the remaining routine-looking axiom but requires Euler formula / discharging; assess if buildable."
+      "BLOCKED (2026-07-09 researcher-3 audit): all 3 remaining axioms + the 1 sorry require graph theory absent from Mathlib v4.26 (planar embeddings / Euler formula) or deep literature (Kostochka-Pyber). No session-sized progress available until Mathlib gains planar-graph theory. Do not re-serve as routine-actionable.",
+      "If Mathlib gains planar-graph / Euler-formula API: discharge planar_linear_bound (3n-6) first, then re-audit the crossover chain toward an axiom-free superlinear_forces_nonplanar."
     ]
   },
   "tags": [
