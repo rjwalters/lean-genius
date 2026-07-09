@@ -69,9 +69,9 @@
       "erdos1090_generalized_affirmative: proves the previously-unproved r-coloring version Erdos1090Generalized k r, by specializing ramsey_construction_general to C=Fin r (multicolor Hales–Jewett needs no extra hypothesis on r)"
     ],
     "axiomCount": 0,
-    "lineCount": 730,
+    "lineCount": 751,
     "assumptions": "None. 0 axiom declarations, 0 sorries. Both former axioms (graham_selfridge, hunter_observation) are now theorems proved from Mathlib's Hales-Jewett theorem. #print axioms reports only the standard foundational axioms [propext, Classical.choice, Quot.sound]; no sorryAx, no Lean.ofReduceBool. The Line structure's `nonzero` field is constructive data (a witnessed direction), not an assumption.",
-    "theoremCount": 14,
+    "theoremCount": 15,
     "definitionCount": 18
   },
   "overview": {
@@ -107,9 +107,9 @@
       "Finset"
     ],
     "namespace": "Erdos1090",
-    "lineCount": 730,
+    "lineCount": 751,
     "axiomCount": 0,
-    "theoremCount": 14,
+    "theoremCount": 15,
     "definitionCount": 18,
     "path": "Proofs/Erdos1090Problem.lean",
     "sorries": 0

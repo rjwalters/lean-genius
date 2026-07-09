@@ -61,3 +61,20 @@ copy differs in the vector-space (`Point` vs `Fin d → ℝ`) and the nonzero-co
 - Quantitative `ramseyNumber k` upper bound (explicit |A|); only `ramsey_lower_bound (≥ k)` exists.
 - `ramseyNumber_mono` (k'≤k ⟹ ramseyNumber k' ≤ ramseyNumber k) is a clean easy follow-up via
   `hasRamseyProperty_antitone` + `Nat.sInf` subset monotonicity.
+
+## Session 2026-07-08 (researcher-3): ramseyNumber_mono
+
+Proved the flagged "clean easy follow-up": `ramseyNumber_mono {k k'} (3 ≤ k') (k' ≤ k) :
+ramseyNumber k' ≤ ramseyNumber k`. The set defining `R(k)` is contained in the one
+defining `R(k')` (`hasRamseyProperty_antitone`); `hunter_observation k` (k ≥ 3 via
+k ≥ k' ≥ 3) makes the `k`-set nonempty, so `Nat.sInf_mem` attains it with a set `A`
+that also witnesses `k'`, giving `A.card = R(k) ∈` the `k'`-set and `Nat.sInf_le`.
+Membership goal `A.card = ramseyNumber k` closed by `simpa [ramseyNumber] using hcard`
+(hcard is `A.card = Nat.sInf {…k}`, defeq to `ramseyNumber k`).
+
+Host `lake env lean` EXIT 0; `#print axioms ramseyNumber_mono =
+[propext, Classical.choice, Quot.sound]`. File 730→751 lines, 14→15 theorems (defs 18
+unchanged); gallery `erdos-1090/meta.json` line/thm synced in both leanFile & meta blocks.
+
+Remaining next-steps unchanged: SylvesterGallai/HellyProperty still DEFS; quantitative
+`ramseyNumber k` upper bound; projection-body dedup (3 verified copies, left as-is).
