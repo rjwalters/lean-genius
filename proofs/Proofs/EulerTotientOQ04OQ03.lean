@@ -2303,4 +2303,64 @@ theorem reversal_mem_implies_transport_regime {a : ℕ} (ha : Odd a) (ha3 : 3 �
     (k : ℕ) (h : a * 2 ^ (k + 1) ∈ ReversalSet) : seedS a = 1 :=
   reversal_seed_transport_admissible ha ha3 ((classifySeed_lt_iff ha ha3 k).1 h)
 
+-- ----------------------------------------------------------------------------
+-- A Sophie–Germain–indexed EQUALITY family: `n = 3q·2^(k+1)` with `2q+1` prime
+-- ----------------------------------------------------------------------------
+
+/-- **Sophie–Germain equality family.**  For every prime `q ≥ 5` whose associate
+    `2q+1` is *also* prime (i.e. `q` a Sophie Germain prime), the seed `a = 3q`
+    lands the *entire* family `n = 3q·2^(k+1)` in the equality regime:
+    `φ(n) = φ(D(n))` for all `k`.
+
+    The mechanism is a clean collapse of the general criterion.  With `a = 3q`:
+
+    * `2a − φ(a) = 6q − 2(q−1) = 2·(2q+1)`, so `s = 1`, `b = 2q+1` (odd);
+    * the landing constant is `C = 2a − φ(b) = 6q − φ(2q+1)`, and because `2q+1`
+      is prime `φ(2q+1) = 2q`, hence `C = 4q = q·2²`, so `t = 2`, `e = q`;
+    * the classifier then compares `φ(a) = 2(q−1)` with `φ(e)·2^{t−1} = φ(q)·2
+      = (q−1)·2`, which are **equal**.
+
+    So the totient of the double iterate exactly balances the seed's totient
+    along the whole 2-power tower.  This is a genuine infinite family of *new*
+    equality seeds `3q ∈ {15, 33, 69, 87, 123, 159, …}` (one per Sophie Germain
+    prime), unifying the previously isolated numerical fact `classify 15 = eq`
+    into a parametric statement; the smallest instance `q = 5` recovers
+    `15·2^(k+1)` (`mem_EqualitySet_family`). -/
+theorem mem_EqualitySet_sophieGermain {q : ℕ} (hq : q.Prime) (hq5 : 5 ≤ q)
+    (hsg : (2 * q + 1).Prime) (k : ℕ) :
+    3 * q * 2 ^ (k + 1) ∈ EqualitySet := by
+  have hqodd : Odd q := hq.odd_of_ne_two (by omega)
+  have hcop : Nat.Coprime 3 q := (Nat.coprime_primes (by norm_num) hq).mpr (by omega)
+  have hφ3 : Nat.totient 3 = 2 := Nat.totient_prime (by norm_num)
+  have hφ3q : Nat.totient (3 * q) = 2 * (q - 1) := by
+    rw [Nat.totient_mul hcop, Nat.totient_prime hq, hφ3]
+  have hφ2q1 : Nat.totient (2 * q + 1) = 2 * q := by
+    rw [Nat.totient_prime hsg]; omega
+  have hodd3q : Odd (3 * q) := by
+    rcases hqodd with ⟨j, hj⟩; exact ⟨3 * j + 1, by omega⟩
+  have hodd2q1 : Odd (2 * q + 1) := ⟨q, by ring⟩
+  have hstep : 2 * (3 * q) - Nat.totient (3 * q) = 2 ^ 1 * (2 * q + 1) := by
+    have e1 : (2 : ℕ) ^ 1 = 2 := by norm_num
+    rw [hφ3q, e1]; omega
+  have hC : 2 * (3 * q) - Nat.totient (2 * q + 1) * 2 ^ (1 - 1) = q * 2 ^ 2 := by
+    have e1 : (2 : ℕ) ^ (1 - 1) = 1 := by norm_num
+    have e2 : (2 : ℕ) ^ 2 = 4 := by norm_num
+    rw [hφ2q1, e1, e2, mul_one]; omega
+  rw [dblIter_equality_iff_general hodd3q hodd2q1 hqodd (le_refl 1) (by norm_num)
+        hstep hC k, hφ3q, Nat.totient_prime hq]
+  have e3 : (2 : ℕ) ^ (2 - 1) = 2 := by norm_num
+  rw [e3]; ring
+
+/-- **Classifier value on Sophie–Germain seeds.**  Specialising the equality
+    family through `classifySeed_eq_iff`: every Sophie Germain seed `3q`
+    (`q, 2q+1` both prime, `q ≥ 5`) is classified `eq` by the total decision
+    procedure. -/
+theorem classifySeed_sophieGermain_eq {q : ℕ} (hq : q.Prime) (hq5 : 5 ≤ q)
+    (hsg : (2 * q + 1).Prime) : classifySeed (3 * q) = Ordering.eq := by
+  have hodd3q : Odd (3 * q) := by
+    have hqodd : Odd q := hq.odd_of_ne_two (by omega)
+    rcases hqodd with ⟨j, hj⟩; exact ⟨3 * j + 1, by omega⟩
+  exact (classifySeed_eq_iff hodd3q (by omega) 1).mp
+    (mem_EqualitySet_sophieGermain hq hq5 hsg 1)
+
 end Erdos1064OQ03
