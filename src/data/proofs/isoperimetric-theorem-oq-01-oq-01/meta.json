@@ -22,8 +22,8 @@
     "definitionCount": 3,
     "theoremCount": 9
   },
-  "lineCount": 221,
-  "theoremCount": 7,
+  "lineCount": 272,
+  "theoremCount": 9,
   "axiomCount": 0,
   "assumptions": [],
   "meta": {
@@ -83,7 +83,7 @@
     "lineCount": 272,
     "mathlib_version": "4.26.0",
     "assumptions": "0 axioms and 0 sorries by construction over ℝ. BUILD-CONFIRMED: machine-checked with `lake env lean` against the prebuilt Mathlib 4.26.0 olean cache (Docker engine was down fleet-wide, so docker-build.sh could not be used; the single file imports only Mathlib and has no sibling-proof dependencies, so a standalone compile is a complete check). Exit 0, no errors; `#print axioms` on isoperimetric_fourier / wirtinger / equality_implies_circle / hurwitzTerm_eq_zero reports only [propext, Classical.choice, Quot.sound] — no sorryAx, no Lean.ofReduceBool. Status promoted to 'verified'. The proof uses only elementary ℝ-algebra tactics (ring, nlinarith, linarith, le_antisymm, Finset.sum_nonneg). The Parseval bridge from the L²-integrals ∮(x'²+y'²) and ∮x dy to the coefficient sums E and Ar is the standard textbook reduction (Stein–Shakarchi, Ch. 4); it is documented, not re-derived — the formalized objects are the Fourier coefficients and the coefficient-level inequality, which is the mathematical heart of the method.",
-    "theoremCount": 7,
+    "theoremCount": 9,
     "definitionCount": 3
   },
   "overview": {
