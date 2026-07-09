@@ -35,13 +35,15 @@
       "not_unboundedOnPrimePowers_logN and not_unboundedOnPrimePowers_omega: selectivity of the hypothesis — the parent file's flagship additive functions log and ω both FAIL it. log sits exactly at the boundary (log(p^k)/log(p^k) = 1) and ω is bounded on prime powers (ω(p^k) = 1). The hypothesis therefore isolates functions growing strictly faster than log on prime powers.",
       "unboundedOnPrimePowers_unbounded: the hypothesis forces plain unboundedness — for every B some prime power has f(p^k) > B, obtained by dialing the defining constant M against the uniform lower bound log(p^k) ≥ log 2.",
       "stronglyAdditive_unboundedOnPrimePowers_iff: a strongly-additive reduction collapsing UnboundedOnPrimePowers f to 'f(p)/log p unbounded over primes', the strongly-additive counterpart of the parent file's completely-additive reduction. The cancellation is different: the value is constant in k, so the binding case is k = 1, and the M < 0 branch is handled by invoking the hypothesis at 0.",
-      "Gallery entry src/data/proofs/erdos-897-oq-01 (meta.json + annotations.json); Lean source proofs/Proofs/Erdos897OQ01.lean."
+      "Gallery entry src/data/proofs/erdos-897-oq-01 (meta.json + annotations.json); Lean source proofs/Proofs/Erdos897OQ01.lean.",
+      "Section (7) structural properties of logSqWeight (researcher-2, PR pending): logSqWeight_nonneg, logSqWeight_eq_of_primeFactors_eq (prime-support determination), logSqWeight_mono_of_dvd (divisor monotonicity), logSqWeight_eq_zero_iff (exact zero-set {0,1}). Characterizes the witness as a nonnegative, divisor-monotone, prime-support-determined functional vanishing exactly on the units. PLUS a bundled Mathlib-drift repair of the pre-existing unboundedOnPrimePowers_smul (mul_lt_mul_left -> mul_lt_mul_of_pos_left; dropped a now-redundant ring after field_simp) that had silently stopped building against current pinned Mathlib. Whole file VERIFIED green, 0 axioms / 0 sorries."
     ],
     "insights": [
       "**Non-vacuity matters for open problems**: without an explicit witness, Part I could be vacuously true. logSqWeight certifies the hypothesis is genuinely satisfiable — and by a strongly additive function, the most structured class.",
       "**The hypothesis is a strict growth condition**: log is the boundary (ratio identically 1) and ω is bounded on prime powers, so both flagship examples fail. The hypothesis selects functions growing strictly faster than log on prime powers.",
       "**Constant-in-k is the key to the strongly-additive reduction**: unlike the completely-additive case where k cancels in a ratio, here the value does not depend on k, so the worst case is simply k = 1.",
-      "**Squaring the log is the cheapest super-log weight**: (log p)²/log p = log p → ∞ gives the required divergence with a one-line estimate, avoiding any heavier construction."
+      "**Squaring the log is the cheapest super-log weight**: (log p)²/log p = log p → ∞ gives the required divergence with a one-line estimate, avoiding any heavier construction.",
+      "The merged Erdos897OQ01.lean had silently drifted out of buildability against current pinned Mathlib (unboundedOnPrimePowers_smul, lines 190/194): field_simp now closes the goal making a trailing ring error 'No goals', and (mul_lt_mul_left hc).mpr fails to synthesize. Confirmed genuine (not infra) by building the pristine origin/main file after a full --repair-cache. Version-stable replacements: mul_lt_mul_of_pos_left and dropping the redundant ring."
     ],
     "mathlibGaps": [],
     "nextSteps": []
