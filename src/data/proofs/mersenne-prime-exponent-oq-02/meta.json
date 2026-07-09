@@ -143,6 +143,11 @@
       "targetId": "mersenne-prime-exponent-oq-01",
       "relationship": "sibling-open-question",
       "description": "The +1 (Fermat) analogue: 2^n + 1 prime ⟹ n is a power of two, dual to the parent's Mersenne exponent condition. Where this entry restricts the factors of 2^p − 1 via orderOf 2 = p in ZMod q, the sibling restricts the exponent of 2^n + 1 via the dual elementary divisibility a + 1 ∣ a^d + 1 for odd d — the +1 counterpart of the a − 1 ∣ a^d − 1 mechanism underlying the Mersenne exponent result."
+    },
+    {
+      "targetId": "elementary-quadratic-reciprocity",
+      "relationship": "related",
+      "description": "Supplies the exact tool behind the q ≡ ±1 (mod 8) restriction: the second supplementary law of quadratic reciprocity, (2/q) = (−1)^((q²−1)/8), states that 2 is a quadratic residue mod q iff q ≡ ±1 (mod 8) — precisely the Mathlib fact ZMod.exists_sq_eq_two_iff this entry invokes after exhibiting 2 as an even power (hence a square) mod any prime factor q of 2^p − 1."
     }
   ],
   "conclusion": {
