@@ -1,5 +1,29 @@
 [
   {
+    "id": "eta4-header",
+    "proofId": "basel-problem-oq-14",
+    "range": {
+      "startLine": 1,
+      "endLine": 34
+    },
+    "type": "context",
+    "title": "Dirichlet η(4) = 7π⁴/720 via the Even/Odd Parity Split",
+    "content": "The module docstring frames the open question basel-problem-oq-14: formalize the alternating companion of the fourth zeta value, the Dirichlet eta value η(4) = ∑_{n≥1} (-1)^{n+1}/n⁴ = 7π⁴/720. It applies the functional relation η(s) = (1 − 2^{1−s})ζ(s), which at s = 4 reads η(4) = (1 − 1/8)ζ(4) = (7/8)(π⁴/90) = 7π⁴/720. The proof splits the alternating series by index parity via Mathlib's HasSum.even_add_odd: the even part ∑ (-1)^{2k+1}/(2k)⁴ = −(1/16)ζ(4) = −π⁴/1440 (all signs negative), the odd part ∑ (-1)^{2k+2}/(2k+1)⁴ = ∑ 1/(2k+1)⁴ = π⁴/96 (all signs positive), and −π⁴/1440 + π⁴/96 = 7π⁴/720. The odd-fourth-power value π⁴/96 is itself extracted from hasSum_zeta_four by the same even/odd split. Imports NumberTheory.ZetaValues (foundation ζ(4) = π⁴/90); namespace BaselEtaFour, open Real. Fully verified: 0 sorries, 0 axioms.",
+    "mathContext": "\\eta(4) = \\sum_{n\\ge1}\\frac{(-1)^{n+1}}{n^4} = \\underbrace{-\\frac{\\pi^4}{1440}}_{\\text{even}} + \\underbrace{\\frac{\\pi^4}{96}}_{\\text{odd}} = \\frac{7\\pi^4}{720} = \\Big(1-\\tfrac18\\Big)\\zeta(4)",
+    "significance": "context",
+    "relatedConcepts": [
+      "Dirichlet eta function",
+      "η(s) = (1 − 2^{1−s})ζ(s)",
+      "even/odd series split",
+      "ζ(4) = π⁴/90"
+    ],
+    "prerequisites": [
+      "the fourth zeta value ζ(4) = π⁴/90 (hasSum_zeta_four)",
+      "HasSum.even_add_odd for splitting a series by index parity",
+      "the odd-fourth-power value ∑ 1/(2k+1)⁴ = π⁴/96"
+    ]
+  },
+  {
     "id": "eta4-summand",
     "proofId": "basel-problem-oq-14",
     "range": {
