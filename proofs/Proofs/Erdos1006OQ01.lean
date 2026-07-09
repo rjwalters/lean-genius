@@ -431,70 +431,100 @@ theorem cover_graph_characterization [Fintype V] :
     letI : DecidableLT V := fun a b => Classical.propDecidable _
     exact cover_graph_admits_robust hP
 
+/-- **Cover graphs are triangle-free** (necessary condition, no axiom): any
+    graph containing three mutually adjacent vertices `a, b, c` admits *no*
+    robustly acyclic orientation.
+
+    This generalises `triangle_not_robust` (below, the special case `G = K₃`)
+    from the complete graph on `Fin 3` to an *arbitrary* ambient graph: only the
+    local triangle matters, the rest of `G` is irrelevant. The argument is the
+    same — any acyclic orientation gives the three vertices pairwise-distinct
+    ranks (adjacent vertices cannot share a rank), so they line up as a source
+    `x`, middle `y` and sink `z` with arcs `x → y`, `y → z`, `x → z`. The arc
+    `x → z` is then *dependent*: the alternate directed path `x → y → z` already
+    connects its endpoints, so reversing `x → z` closes the cycle `z → x → y →
+    z`. Hence no orientation is robust.
+
+    Via `cover_graph_characterization` (see `isCoverGraph_of_triangle`) this is
+    exactly the classical fact that the Hasse diagram of a poset is
+    triangle-free: three mutually covering pairs would force `x < y < z` with
+    `x ⋖ z`, impossible since `y` lies strictly between. -/
+theorem triangle_not_robust' {a b c : V}
+    (hab : G.Adj a b) (hbc : G.Adj b c) (hac : G.Adj a c) :
+    ¬ admitsRobustAcyclicOrientation G := by
+  rintro ⟨O, ⟨rank, hrank⟩, hdep⟩
+  -- Each present edge is oriented toward the higher rank.
+  have arc_of_lt : ∀ u v : V, G.Adj u v → rank u < rank v → O.arc u v := by
+    intro u v hadj hlt
+    rcases O.covers u v hadj with h | h
+    · exact h
+    · exact absurd (hrank _ _ h) (by omega)
+  -- Adjacent vertices get distinct ranks.
+  have rank_ne : ∀ u v : V, G.Adj u v → rank u ≠ rank v := by
+    intro u v hadj heq
+    rcases O.covers u v hadj with h | h <;>
+      exact absurd (hrank _ _ h) (by omega)
+  -- A directed 2-path `x → y → z` whose ends `x ~ z` are adjacent forces the
+  -- arc `x → z` to be dependent: the path `x → y → z` avoids `(x, z)`.
+  have triangle_dep : ∀ x y z : V, G.Adj x y → G.Adj y z → G.Adj x z →
+      rank x < rank y → rank y < rank z → O.hasDependentArc := by
+    intro x y z hxy hyz hxz h1 h2
+    refine ⟨x, z, arc_of_lt x z hxz (h1.trans h2), ?_⟩
+    refine Relation.TransGen.tail
+      (Relation.TransGen.single ⟨arc_of_lt x y hxy h1, ?_⟩)
+      ⟨arc_of_lt y z hyz h2, ?_⟩
+    · intro h; rw [Prod.mk.injEq] at h; exact (G.ne_of_adj hyz) h.2
+    · intro h; rw [Prod.mk.injEq] at h; exact (G.ne_of_adj hxy) h.1.symm
+  -- The three ranks are pairwise distinct, so they linearly order the vertices;
+  -- in every ordering we exhibit a transitive triangle and contradict robustness.
+  have d_ab := rank_ne a b hab
+  have d_bc := rank_ne b c hbc
+  have d_ac := rank_ne a c hac
+  rcases lt_trichotomy (rank a) (rank b) with hab' | hab' | hab'
+  · rcases lt_trichotomy (rank b) (rank c) with hbc' | hbc' | hbc'
+    · exact hdep (triangle_dep a b c hab hbc hac hab' hbc')
+    · exact absurd hbc' d_bc
+    · rcases lt_trichotomy (rank a) (rank c) with hac' | hac' | hac'
+      · exact hdep (triangle_dep a c b hac hbc.symm hab hac' hbc')
+      · exact absurd hac' d_ac
+      · exact hdep (triangle_dep c a b hac.symm hab hbc.symm hac' hab')
+  · exact absurd hab' d_ab
+  · rcases lt_trichotomy (rank a) (rank c) with hac' | hac' | hac'
+    · exact hdep (triangle_dep b a c hab.symm hac hbc hab' hac')
+    · exact absurd hac' d_ac
+    · rcases lt_trichotomy (rank b) (rank c) with hbc' | hbc' | hbc'
+      · exact hdep (triangle_dep b c a hbc hac.symm hab.symm hbc' hac')
+      · exact absurd hbc' d_bc
+      · exact hdep (triangle_dep c b a hbc.symm hab.symm hac.symm hbc' hab')
+
 /-- **Concrete girth-3 non-example** (proved, no axiom): the triangle `K₃`
     (the complete graph on `Fin 3`) admits *no* robustly acyclic orientation.
+    A one-line corollary of the general triangle-free obstruction
+    `triangle_not_robust'`: the three vertices `0, 1, 2` are mutually adjacent
+    in the complete graph.
 
     This is the smallest witness of the Nešetřil-Rödl phenomenon
     (`nesetril_rodl_counterexample` below, at `g = 3`): a triangle is not a
-    cover graph because *every* acyclic orientation of it is transitive.
-    Concretely, the three vertices get pairwise-distinct ranks (adjacent
-    vertices cannot share a rank), so they line up as a source `a`, middle `b`
-    and sink `c` with arcs `a → b`, `b → c`, `a → c`. The arc `a → c` is then
-    *dependent*: the alternate directed path `a → b → c` already connects its
-    endpoints, so reversing `a → c` closes the cycle `c → a → b → c`. Hence no
-    orientation is robust.
-
-    Via `cover_graph_characterization` this reproves directly that the triangle
-    is not the Hasse diagram of any poset. -/
+    cover graph because *every* acyclic orientation of it is transitive. Via
+    `cover_graph_characterization` this reproves directly that the triangle is
+    not the Hasse diagram of any poset. -/
 theorem triangle_not_robust :
-    ¬ admitsRobustAcyclicOrientation (⊤ : SimpleGraph (Fin 3)) := by
-  rintro ⟨O, ⟨rank, hrank⟩, hdep⟩
-  -- Distinct vertices of `Fin 3` are adjacent in the complete graph.
-  have adj : ∀ u v : Fin 3, u ≠ v → (⊤ : SimpleGraph (Fin 3)).Adj u v := by
-    intro u v h; simpa using h
-  -- Each edge is oriented toward the higher rank.
-  have arc_of_lt : ∀ u v : Fin 3, u ≠ v → rank u < rank v → O.arc u v := by
-    intro u v hne hlt
-    rcases O.covers u v (adj u v hne) with h | h
-    · exact h
-    · exact absurd (hrank _ _ h) (by omega)
-  -- Adjacent (hence distinct) vertices get distinct ranks.
-  have rank_ne : ∀ u v : Fin 3, u ≠ v → rank u ≠ rank v := by
-    intro u v hne heq
-    rcases O.covers u v (adj u v hne) with h | h <;>
-      exact absurd (hrank _ _ h) (by omega)
-  -- A transitive triangle `rank a < rank b < rank c` has a dependent arc `a → c`:
-  -- the path `a → b → c` avoids `(a, c)`, so reversing `a → c` closes a cycle.
-  have triangle_dep : ∀ a b c : Fin 3, a ≠ b → b ≠ c → a ≠ c →
-      rank a < rank b → rank b < rank c → O.hasDependentArc := by
-    intro a b c hab hbc hac h1 h2
-    refine ⟨a, c, arc_of_lt a c hac (h1.trans h2), ?_⟩
-    refine Relation.TransGen.tail
-      (Relation.TransGen.single ⟨arc_of_lt a b hab h1, ?_⟩)
-      ⟨arc_of_lt b c hbc h2, ?_⟩
-    · intro h; rw [Prod.mk.injEq] at h; exact hbc h.2
-    · intro h; rw [Prod.mk.injEq] at h; exact hab h.1.symm
-  -- The three ranks are pairwise distinct, so they linearly order the vertices;
-  -- in every ordering we exhibit a transitive triangle and contradict robustness.
-  have d01 := rank_ne 0 1 (by decide)
-  have d02 := rank_ne 0 2 (by decide)
-  have d12 := rank_ne 1 2 (by decide)
-  rcases lt_trichotomy (rank 0) (rank 1) with h01 | h01 | h01
-  · rcases lt_trichotomy (rank 1) (rank 2) with h12 | h12 | h12
-    · exact hdep (triangle_dep 0 1 2 (by decide) (by decide) (by decide) h01 h12)
-    · exact absurd h12 d12
-    · rcases lt_trichotomy (rank 0) (rank 2) with h02 | h02 | h02
-      · exact hdep (triangle_dep 0 2 1 (by decide) (by decide) (by decide) h02 h12)
-      · exact absurd h02 d02
-      · exact hdep (triangle_dep 2 0 1 (by decide) (by decide) (by decide) h02 h01)
-  · exact absurd h01 d01
-  · rcases lt_trichotomy (rank 1) (rank 2) with h12 | h12 | h12
-    · rcases lt_trichotomy (rank 0) (rank 2) with h02 | h02 | h02
-      · exact hdep (triangle_dep 1 0 2 (by decide) (by decide) (by decide) h01 h02)
-      · exact absurd h02 d02
-      · exact hdep (triangle_dep 1 2 0 (by decide) (by decide) (by decide) h12 h02)
-    · exact absurd h12 d12
-    · exact hdep (triangle_dep 2 1 0 (by decide) (by decide) (by decide) h12 h01)
+    ¬ admitsRobustAcyclicOrientation (⊤ : SimpleGraph (Fin 3)) :=
+  triangle_not_robust'
+    (show (⊤ : SimpleGraph (Fin 3)).Adj 0 1 by simp only [SimpleGraph.top_adj]; decide)
+    (show (⊤ : SimpleGraph (Fin 3)).Adj 1 2 by simp only [SimpleGraph.top_adj]; decide)
+    (show (⊤ : SimpleGraph (Fin 3)).Adj 0 2 by simp only [SimpleGraph.top_adj]; decide)
+
+/-- **The Hasse diagram of a poset is triangle-free.** Combining
+    `triangle_not_robust'` with `cover_graph_characterization`: a graph
+    containing three mutually adjacent vertices is not a cover graph, i.e. is not
+    the comparability-cover (Hasse) diagram of any partial order. This is the
+    classical necessary condition for cover graphs, here proved with no extra
+    axioms. -/
+theorem isCoverGraph_of_triangle [Fintype V] {a b c : V}
+    (hab : G.Adj a b) (hbc : G.Adj b c) (hac : G.Adj a c) :
+    ¬ isCoverGraph G := fun h =>
+  triangle_not_robust' hab hbc hac (cover_graph_characterization.mpr h)
 
 /-- **Edgeless graphs admit a robustly acyclic orientation.** With no arcs to
     place, the empty orientation (`arc := fun _ _ => False`) is vacuously acyclic
@@ -577,16 +607,23 @@ axiom nesetril_rodl_counterexample (g : ℕ) (hg : g ≥ 3) :
 7. `cover_graph_characterization` - Robust orientation ↔ cover graph
    (de-axiomatized: forward via the reachability order `reachOrder`,
     reverse via `cover_graph_admits_robust`)
-8. `triangle_not_robust` - The triangle K₃ admits no robustly acyclic
-   orientation (concrete girth-3 witness of Nešetřil-Rödl, no axiom)
-9. `edgeless_admits_robust` - Any graph with no edges admits a robust
-   orientation (generalises `empty_graph_robust` from `⊥`)
-10. `closedWalk_girth_formulation_unsound` - The "every closed walk has length
+8. `triangle_not_robust'` - **Cover graphs are triangle-free**: any graph with
+   three mutually adjacent vertices admits no robustly acyclic orientation
+   (necessary condition, no axiom; generalises `triangle_not_robust` to an
+   arbitrary ambient graph)
+9. `triangle_not_robust` - The triangle K₃ admits no robustly acyclic
+   orientation (concrete girth-3 witness of Nešetřil-Rödl, no axiom; now a
+   one-line corollary of `triangle_not_robust'`)
+10. `isCoverGraph_of_triangle` - The Hasse diagram of a poset is triangle-free
+    (combines `triangle_not_robust'` with `cover_graph_characterization`)
+11. `edgeless_admits_robust` - Any graph with no edges admits a robust
+    orientation (generalises `empty_graph_robust` from `⊥`)
+12. `closedWalk_girth_formulation_unsound` - The "every closed walk has length
     0 or ≥ g" phrasing of girth is unsound: a length-2 backtrack forces the
     graph edgeless, hence robust. Motivates the `egirth` (shortest-cycle)
     formalization of the two axioms below.
 
 ### Axiomatized (deep results, girth via `SimpleGraph.egirth`):
-11. `chromatic_lt_girth_implies_robust` - χ(G) < girth(G) suffices
-12. `nesetril_rodl_counterexample` - Counterexamples for all girths ≥ 3
+13. `chromatic_lt_girth_implies_robust` - χ(G) < girth(G) suffices
+14. `nesetril_rodl_counterexample` - Counterexamples for all girths ≥ 3
 -/
