@@ -819,6 +819,99 @@ theorem normal_imp_irrational_of_criterion (b : ℕ) (hb : 2 ≤ b) (x : ℝ)
   exact not_normal_of_eventually_missing_ktuple b hb (q : ℝ) k N₀ s hmiss hn
 
 -- ============================================================
+-- PART IV.7: FREQUENCY-MISMATCH CRITERION
+-- ============================================================
+
+/-!
+## From absence to frequency anomaly
+
+`not_normal_of_eventually_missing_ktuple` handles the extreme case of a tuple
+whose matching frequency is `0`. The results below generalise it to *any*
+frequency anomaly. If the matching frequency of a tuple `s` converges to a limit
+`L ≠ b^{-k}`, or merely stays *eventually bounded away* from `b^{-k}` on one
+side, then `x` cannot be normal in base `b`.
+
+The `tendsto`-form (`not_normal_of_match_freq_tendsto_ne`) is the exact converse
+of the definition, via uniqueness of limits. The one-sided `eventually` forms
+(`_eventually_le` / `_eventually_ge`) are strictly stronger: they never assume
+the frequency converges at all, only that it stays on the wrong side of a
+threshold separated from `b^{-k}` — capturing *under-* and *over-representation*,
+not just outright absence. The single-digit specialisation
+`not_normal_of_digit_freq_tendsto_ne` records the familiar statement "a digit
+occurring with density `≠ 1/b` forbids normality".
+-/
+
+/-- **Frequency-mismatch criterion (`k`-tuple form).** If the matching frequency
+    of the tuple `s` converges to a limit `L ≠ b^{-k}`, then `x` is not normal in
+    base `b`. Immediate from uniqueness of limits: normality forces the very same
+    frequency to converge to `b^{-k}`. Generalises
+    `not_normal_of_eventually_missing_ktuple`, which is the `L = 0` instance. -/
+theorem not_normal_of_match_freq_tendsto_ne (b : ℕ) (hb : 2 ≤ b) (x : ℝ)
+    (k : ℕ) (s : Fin k → Fin b) (L : ℝ)
+    (hlim : Tendsto
+        (fun N : ℕ =>
+          (((Finset.range N).filter
+            (fun n => ∀ i : Fin k, nthDigit b (n + i.val) x = (s i : ℤ))).card : ℝ)
+            / (N : ℝ))
+        atTop (nhds L))
+    (hne : L ≠ (b : ℝ) ^ (-(k : ℤ))) :
+    ¬ IsNormalInBase b x := by
+  intro hn
+  exact hne (tendsto_nhds_unique hlim (hn k s))
+
+/-- **Under-representation forbids normality.** If the matching frequency of `s`
+    is *eventually* at most some `c < b^{-k}`, then `x` is not normal — no
+    convergence of the frequency itself is assumed. Choosing `c` strictly between
+    `0` and `b^{-k}` recovers the eventually-missing obstruction. -/
+theorem not_normal_of_match_freq_eventually_le (b : ℕ) (hb : 2 ≤ b) (x : ℝ)
+    (k : ℕ) (s : Fin k → Fin b) (c : ℝ)
+    (hc : c < (b : ℝ) ^ (-(k : ℤ)))
+    (hbound : ∀ᶠ N in atTop,
+        (((Finset.range N).filter
+          (fun n => ∀ i : Fin k, nthDigit b (n + i.val) x = (s i : ℤ))).card : ℝ)
+          / (N : ℝ) ≤ c) :
+    ¬ IsNormalInBase b x := by
+  intro hn
+  have hle : (b : ℝ) ^ (-(k : ℤ)) ≤ c := le_of_tendsto (hn k s) hbound
+  linarith
+
+/-- **Over-representation forbids normality.** Dual of
+    `not_normal_of_match_freq_eventually_le`: if the matching frequency of `s` is
+    *eventually* at least some `c > b^{-k}`, then `x` is not normal. Again no
+    convergence of the frequency is assumed. -/
+theorem not_normal_of_match_freq_eventually_ge (b : ℕ) (hb : 2 ≤ b) (x : ℝ)
+    (k : ℕ) (s : Fin k → Fin b) (c : ℝ)
+    (hc : (b : ℝ) ^ (-(k : ℤ)) < c)
+    (hbound : ∀ᶠ N in atTop,
+        c ≤ (((Finset.range N).filter
+          (fun n => ∀ i : Fin k, nthDigit b (n + i.val) x = (s i : ℤ))).card : ℝ)
+          / (N : ℝ)) :
+    ¬ IsNormalInBase b x := by
+  intro hn
+  have hge : c ≤ (b : ℝ) ^ (-(k : ℤ)) := ge_of_tendsto (hn k s) hbound
+  linarith
+
+/-- **Single-digit frequency-mismatch criterion.** If a digit `d` occurs in the
+    base-`b` expansion of `x` with limiting frequency `L ≠ 1/b`, then `x` is not
+    normal in base `b`. The `k = 1` case of `not_normal_of_match_freq_tendsto_ne`,
+    recording the intuition that normality demands every digit at density `1/b`
+    (`b^{-1} = b⁻¹`). Generalises `not_normal_of_eventually_missing_digit`, which
+    is the `L = 0` instance. -/
+theorem not_normal_of_digit_freq_tendsto_ne (b : ℕ) (hb : 2 ≤ b) (x : ℝ)
+    (d : Fin b) (L : ℝ)
+    (hlim : Tendsto
+        (fun N : ℕ =>
+          (((Finset.range N).filter (fun n => nthDigit b n x = (d : ℤ))).card : ℝ)
+            / (N : ℝ))
+        atTop (nhds L))
+    (hne : L ≠ (b : ℝ)⁻¹) :
+    ¬ IsNormalInBase b x := by
+  refine not_normal_of_match_freq_tendsto_ne b hb x 1 (fun _ => d) L ?_ ?_
+  · simp only [Fin.forall_fin_one, Fin.val_zero, add_zero]
+    exact hlim
+  · rwa [Nat.cast_one, zpow_neg_one]
+
+-- ============================================================
 -- PART V: OPEN QUESTION
 -- ============================================================
 

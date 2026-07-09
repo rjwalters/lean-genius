@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SHARPNESS COMPLETE (verified 0/0 new): exhibited an explicit VERIFIED irrational non-normal number (base-b Liouville constant, b>=3) via a factorial-number-system digit computation, proving the converse of normal_imp_irrational fails (irrational_not_imp_normal). Open conjecture axiom e_absolutely_normal unchanged.",
+    "progressSummary": "PROGRESS: frequency-mismatch non-normality criterion added (tendsto-ne + one-sided eventual bounds + single-digit density≠1/b); necessary-condition theory for normality now complete. Core axiom e_absolutely_normal remains genuinely open.",
     "builtItems": [
       "normal_ktuple_infinitely_often (Proofs/ETranscendentalOQ02.lean): {n | s occurs at n}.Infinite for x normal in base b. Verified 0 sorry; axioms [propext, Classical.choice, Quot.sound].",
       "normal_imp_disjunctive (same file): every finite digit string appears at least once (corollary via Set.Infinite.nonempty).",
@@ -43,7 +43,10 @@
       "exists_factorial_window (Nat.find): forall n>=1 exists k, k!<=n<(k+1)! — ETranscendentalOQ02.lean",
       "liouvilleNumber_floor: exact integer part floor(b^n*liouvilleNumber b)=sum b^(n-i!) — ETranscendentalOQ02.lean",
       "liouvilleNumber_digit_le_one: nthDigit <=1 for n>=2 — ETranscendentalOQ02.lean",
-      "liouvilleNumber_not_normal (b>=3), exists_irrational_not_normal, irrational_not_imp_normal — ETranscendentalOQ02.lean"
+      "liouvilleNumber_not_normal (b>=3), exists_irrational_not_normal, irrational_not_imp_normal — ETranscendentalOQ02.lean",
+      "not_normal_of_match_freq_tendsto_ne (ETranscendentalOQ02.lean): tuple matching-frequency → L ≠ b^(-k) ⇒ ¬normal, via tendsto_nhds_unique",
+      "not_normal_of_match_freq_eventually_le / _eventually_ge: eventual one-sided frequency bound strictly away from b^(-k) ⇒ ¬normal (no convergence assumed), via le_of_tendsto / ge_of_tendsto",
+      "not_normal_of_digit_freq_tendsto_ne: single-digit density ≠ 1/b ⇒ ¬normal (k=1 specialization; b^(-1)=b⁻¹ bridge via Nat.cast_one+zpow_neg_one)"
     ],
     "insights": [
       "The stated target normal_imp_irrational was ALREADY a complete 0-sorry theorem (Session 13); OQ-02-OQ-06 as literally phrased was resolved. Added genuinely new theory instead of reclaiming.",
@@ -53,16 +56,16 @@
       "The count/Tendsto engine (match_count_le + tendsto_bounded_count_div_atTop_zero + tendsto_nhds_unique + zpow_pos) that discharged normal_imp_irrational is fully reusable for arbitrary x: only the missing-tuple hypothesis differs between the rational case and the general criterion.",
       "SHARPNESS RESOLVED: the base-b Liouville constant liouvilleNumber b = sum_{i>=0} b^(-i!) (Mathlib) is an explicit VERIFIED irrational non-normal number for every b>=3 — irrational does NOT imply normal (converse of normal_imp_irrational fails).",
       "Digit computation via the factorial number system: for k!<=n<(k+1)!, floor(b^n * liouvilleNumber b) = sum_{i=0}^{k} b^(n-i!); the tail b^n*remainder < 1 uses Mathlib remainder_lt prime and sub_one_div_inv_le_two giving < 2/b <= 2/3 (needs b>=3: the doubled 0!=1! leading term puts digit 2 at n=1 only).",
-      "Every base-b digit of liouvilleNumber b is 0 or 1 from position n>=2 on (residue b^(n-k!) % b in {0,1}: lower-index terms divisible by b, top term 1 iff n is a factorial), so digit 2 is eventually missing and not_normal_of_eventually_missing_digit applies."
+      "Every base-b digit of liouvilleNumber b is 0 or 1 from position n>=2 on (residue b^(n-k!) % b in {0,1}: lower-index terms divisible by b, top term 1 iff n is a factorial), so digit 2 is eventually missing and not_normal_of_eventually_missing_digit applies.",
+      "Frequency-mismatch criterion completes the sharp-boundary theory: absence (freq 0) was the extreme case; under-/over-representation (freq eventually bounded away from b^(-k) on either side) equally forbids normality, and needs NO convergence hypothesis — only le_of_tendsto/ge_of_tendsto against the definitional limit."
     ],
     "mathlibGaps": [
       "omega does not discharge variable-divisor Euclidean identities (a/T*T + a%T = a with T variable, nonlinear); use Nat.mod_add_div'/Nat.div_add_mod explicitly.",
       "Genuine irrational-AND-non-normal WITNESS (true sharpness of 'irrational ⇏ normal') still needs the real→digit bridge for a specific transcendental: computing nthDigit b n x = ⌊bⁿx⌋%b for an explicit series (e.g. Liouville ∑ b^(-k!)) requires summing the tail to isolate the k-th digit — a real-analysis construction not present. The abstract criterion is the tool; only the witness digit-computation is missing."
     ],
     "nextSteps": [
-      "Frequency-mismatch criterion: strengthen not_normal_of_eventually_missing_digit to digit-frequency != 1/b implies not normal (only the 0-frequency/absence case done).",
       "Quantitative disjunctivity: bound first-occurrence position of a fixed k-tuple via the normality convergence rate (only qualitative infinitude proved).",
-      "The open axiom e_absolutely_normal is genuinely open — not eliminable; the sharpness of normal_imp_irrational is now complete."
+      "The open axiom e_absolutely_normal is genuinely open — not eliminable. The non-normality theory (irrationality, disjunctivity, absence, and now full frequency-mismatch) is complete on the necessary-condition side."
     ],
     "markdown": "# Knowledge Base: e-transcendental-oq-02-oq-06\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
