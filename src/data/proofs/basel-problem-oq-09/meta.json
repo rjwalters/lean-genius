@@ -201,6 +201,11 @@
       "id": "basel-problem-oq-09-oq-01",
       "question": "Generalize the even/odd parity split to λ(2m) = ∑ 1/(2k+1)^{2m} = (1 - 2^{-2m}) ζ(2m) and derive λ(4) = π⁴/96 from hasSum_zeta_four.",
       "significance": "medium"
+    },
+    {
+      "id": "basel-problem-oq-09-oq-02",
+      "question": "Since ζ(2) = λ(2) + ¼ζ(2) forces ζ(2) = (4/3)λ(2) = (4/3)(π²/8) = π²/6, can this entry be turned around to derive the Basel value ζ(2) = π²/6 *from* the odd-square series λ(2) = π²/8, giving a self-contained 'odd squares ⟹ Basel' route independent of Mathlib's hasSum_zeta_two?",
+      "significance": "medium"
     }
   ],
   "sorries": 0
