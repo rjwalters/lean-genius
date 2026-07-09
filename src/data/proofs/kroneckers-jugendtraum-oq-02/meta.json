@@ -58,13 +58,13 @@
   "mainTheorems": [
     {
       "name": "regulator_eq_single_log_of_rank_eq_one",
-      "type": "theorem",
+      "type": "main",
       "description": "The rank-one regulator is a single logarithm: when rank K = 1, the regulator collapses from a determinant of logarithms to one archimedean term mult(w)·|log(w ε)| for the fundamental (Stark) unit ε — the linear-algebra fact behind the rank-one abelian Stark conjecture's claim that L'(0,χ) is a rational multiple of one log|ε|.",
       "leanType": "(K : Type*) [Field K] [NumberField K] (hrank : rank K = 1) : ∃ (w : InfinitePlace K) (ε : (𝓞 K)ˣ), regulator K = (mult w : ℝ) * |Real.log (w (ε : K))|"
     },
     {
       "name": "rank_eq_one_iff_card_infinitePlace_eq_two",
-      "type": "theorem",
+      "type": "supporting",
       "description": "Rank one ⟺ two infinite places: by Dirichlet's unit theorem the unit rank of K is #(InfinitePlace K) − 1, so the rank-one Stark hypothesis rank K = 1 holds exactly when K has two infinite places.",
       "leanType": "(K : Type*) [Field K] [NumberField K] : rank K = 1 ↔ Fintype.card (InfinitePlace K) = 2"
     }
