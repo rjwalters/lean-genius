@@ -108,11 +108,18 @@
   },
   "sections": [
     {
+      "id": "preamble",
+      "title": "Module Header, Imports, and Setup",
+      "startLine": 1,
+      "endLine": 37,
+      "summary": "The docstring frames the derived open question: isolate the axiom-free, sorry-free structural skeleton that makes the Linnik constant a well-defined critical exponent — upward-closure (ray), lower-boundedness by 0, the Ioi ⊆ admissible ⊆ Ici sandwich, and monotonicity under domination — all for an abstract growth function f over a base b ≥ 1, of which the Linnik setting (f = leastPrimeInAP, b = q) is one instance. Imports Mathlib; opens Real Set; namespace LinnikAdmissible with variable {I : Type*}."
+    },
+    {
       "id": "admissible-set",
       "title": "The Admissible-Exponent Set",
-      "startLine": 44,
+      "startLine": 38,
       "endLine": 60,
-      "summary": "Definition of `admissible f b`, boundedness below by 0, and upward closure via rpow-monotonicity."
+      "summary": "Definition of `admissible f b` (those L > 0 with f i ≤ c·(b i)^L uniformly), boundedness below by 0, and upward closure via rpow-monotonicity."
     },
     {
       "id": "critical-exponent",
