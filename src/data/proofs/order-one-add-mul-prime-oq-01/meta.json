@@ -3,6 +3,56 @@
   "title": "The Multiplicative Order of 1 + p·a modulo an Odd Prime Power",
   "slug": "order-one-add-mul-prime-oq-01",
   "description": "For an odd prime p and an integer a with p ∤ a, the element 1 + p·a is a unit of ZMod (p^(n+1)) and its multiplicative order is exactly p^n. This is the arithmetic engine behind the cyclicity of (ZMod p^k)ˣ: the principal units 1 + p·ℤ form a cyclic p-group of order p^n. This entry re-exports Mathlib's order computation (ZMod.orderOf_one_add_mul_prime) and packages its immediate structural consequences — that the order is independent of the residue a, that it is a power of p, that it equals 1 exactly modulo p itself — together with concrete axiom-free numeric instances such as orderOf (4 : ZMod 9) = 3.",
+  "mainTheorems": [
+    {
+      "name": "orderOf_one_add_mul_prime",
+      "type": "main",
+      "description": "Core order computation (re-export of ZMod.orderOf_one_add_mul_prime): for an odd prime p and p ∤ a, orderOf (1 + p·a) in ZMod (p^(n+1)) is exactly p^n.",
+      "leanType": "(hp : p.Prime) (hp2 : p ≠ 2) (a : ℤ) (ha : ¬ (p : ℤ) ∣ a) (n : ℕ) : orderOf (1 + p * a : ZMod (p ^ (n + 1))) = p ^ n"
+    },
+    {
+      "name": "orderOf_one_add_mul_prime_eq",
+      "type": "main",
+      "description": "Residue-independence: any two integers coprime to the odd prime p give elements 1 + p·a of the same order p^n.",
+      "leanType": "(hp : p.Prime) (hp2 : p ≠ 2) (a b : ℤ) (ha : ¬ (p : ℤ) ∣ a) (hb : ¬ (p : ℤ) ∣ b) (n : ℕ) : orderOf (1 + p * a : ZMod (p ^ (n + 1))) = orderOf (1 + p * b : ZMod (p ^ (n + 1)))"
+    },
+    {
+      "name": "exists_orderOf_eq_prime_pow",
+      "type": "main",
+      "description": "The order is a power of p, so 1 + p·a is a p-element of the unit group.",
+      "leanType": "(hp : p.Prime) (hp2 : p ≠ 2) (a : ℤ) (ha : ¬ (p : ℤ) ∣ a) (n : ℕ) : ∃ k, orderOf (1 + p * a : ZMod (p ^ (n + 1))) = p ^ k"
+    },
+    {
+      "name": "orderOf_eq_one_iff",
+      "type": "main",
+      "description": "The order equals 1 exactly when n = 0, i.e. modulo p itself (where 1 + p·a reduces to 1).",
+      "leanType": "(hp : p.Prime) (hp2 : p ≠ 2) (a : ℤ) (ha : ¬ (p : ℤ) ∣ a) (n : ℕ) : orderOf (1 + p * a : ZMod (p ^ (n + 1))) = 1 ↔ n = 0"
+    },
+    {
+      "name": "orderOf_one_add_prime",
+      "type": "supporting",
+      "description": "Textbook specialisation a = 1 (re-export of ZMod.orderOf_one_add_prime): orderOf (1 + p) modulo p^(n+1) is p^n.",
+      "leanType": "(hp : p.Prime) (hp2 : p ≠ 2) (n : ℕ) : orderOf (1 + p : ZMod (p ^ (n + 1))) = p ^ n"
+    },
+    {
+      "name": "orderOf_four_zmod_nine",
+      "type": "supporting",
+      "description": "Concrete instance (axiom-free, from the theorem): 1 + 3·1 = 4 has order 3 = 3^1 modulo 9 = 3².",
+      "leanType": "orderOf (4 : ZMod 9) = 3"
+    },
+    {
+      "name": "orderOf_four_zmod_twentyseven",
+      "type": "supporting",
+      "description": "Concrete instance: 4 has order 9 = 3² modulo 27 = 3³.",
+      "leanType": "orderOf (4 : ZMod 27) = 9"
+    },
+    {
+      "name": "orderOf_six_zmod_twentyfive",
+      "type": "supporting",
+      "description": "Concrete instance: 1 + 5·1 = 6 has order 5 = 5^1 modulo 25 = 5².",
+      "leanType": "orderOf (6 : ZMod 25) = 5"
+    }
+  ],
   "meta": {
     "author": "classical number theory; formalized for lean-genius",
     "status": "verified",
