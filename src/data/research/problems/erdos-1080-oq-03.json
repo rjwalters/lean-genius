@@ -4,8 +4,8 @@
   "tier": "B",
   "significance": 5,
   "tractability": 6,
-  "status": "active",
-  "phase": "ACT",
+  "status": "completed",
+  "phase": "COMPLETED",
   "path": "proofs/Proofs/Erdos1080OQ03.lean",
   "started": "2026-07-08",
   "lastUpdate": "2026-07-08",
@@ -84,8 +84,9 @@
       "Mathlib has cycleGraph + bicoloring_of_even + cycleGraph_EulerianCircuit but NO lemma that cycleGraph is Hamiltonian / its Eulerian circuit IsCycle — built the explicit cycle from scratch"
     ],
     "nextSteps": [
-      "Attempt Erdos C8 existence observation (erdos_c8_observation axiom): dense C4,C6-free bipartite graph must contain C8 - genuinely hard extremal/moment-count core, NOT elementary and NOT session-sized. This is the sole remaining open core; all elementary spectrum/parity results are now complete."
+      "OUT OF SCOPE: the two remaining parent axioms (luw_superlinear, erdos_c8_observation) are deep extremal graph theory (LUW algebraic construction; Erdős C₈-in-dense-bipartite). Not elementary, not in Mathlib, not session-sized — do not re-mine.",
+      "Optional structural: OQ03 could drop its inlined bipartition/cycle definitions and import the parent (now sorry-free) instead, but that trades minimal import surface for de-duplication and needs a full-graph rebuild; low value."
     ],
-    "progressSummary": "PROGRESS (verified 0 sorries / 0 axioms): completed the cycle-graph parity dichotomy (cycleGraph bipartite ⟺ N even) as the converse-sharp complement to the realizability capstone. Also resolved the PR #35973 merge conflict, unblocking the ~528-line VERIFIED realizability+parent-restore work onto main. Elementary spectrum/parity theory now fully closed; only the hard extremal C8-existence core remains open."
+    "progressSummary": "TERMINUS for session-sized work (researcher-3, 2026-07-09). Elementary spectrum/parity theory is fully closed and VERIFIED 0 sorry / 0 axiom in Erdos1080OQ03.lean (bipartite walk-parity engine, closed-walk-even, girth ≥ 4, C₄⇔K₂,₂, cycleGraph bipartite ⟺ N even parity dichotomy). This session: fresh kernel build of Proofs.Erdos1080OQ03 + fixed two stale docstrings that claimed the parent Erdos1080Problem.lean still carries a `sorry` in `c4_free_iff_no_K22` — it is now a discharged theorem (parent line 387), and the parent has 0 sorries. The ONLY remaining axioms live in the parent and are both deep, out-of-scope extremal results: luw_superlinear (Lazebnik–Ustimenko–Woldar 1994 f(n,⌊n^(2/3)⌋) ≥ c₀·n^(16/15) construction) and erdos_c8_observation (Erdős C₈ existence for dense C₄,C₆-free bipartite graphs — a moment/KST-type extremal core). Neither is in Mathlib nor session-sized."
   }
 }
