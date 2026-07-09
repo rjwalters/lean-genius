@@ -819,6 +819,127 @@ theorem normal_imp_irrational_of_criterion (b : ℕ) (hb : 2 ≤ b) (x : ℝ)
   exact not_normal_of_eventually_missing_ktuple b hb (q : ℝ) k N₀ s hmiss hn
 
 -- ============================================================
+-- PART IV.7: FREQUENCY-MISMATCH CRITERIA
+-- ============================================================
+
+/-!
+## Frequency-mismatch criteria for non-normality
+
+`not_normal_of_eventually_missing_ktuple` handles the *absence* obstruction
+(frequency `0 ≠ b^{-k}`). The criteria below cover the general
+frequency-mismatch phenomenon: a `k`-tuple whose empirical frequency
+converges to *any* wrong limit — or is merely *eventually* over- or
+under-represented — cannot occur in a normal number.
+
+The one-sided bounds (`_ge`, `_le`) are strictly more flexible than
+convergence: an *eventual* inequality suffices, and no limit need be
+identified in advance (over-representation, in particular, is invisible to the
+absence criterion). All follow from the single structural fact that normality
+pins the frequency limit to `b^{-k}` (`tendsto_tupleFreq_of_normal`), combined
+with uniqueness / order-closure of limits. The base is left free: these hold
+for every `b` (the normal regime being `b ≥ 2`).
+-/
+
+/-- Empirical frequency of the `k`-tuple `s` among the first `N` starting
+    positions of `x`'s base-`b` expansion — the quantity `IsNormalInBase`
+    constrains. -/
+noncomputable def tupleFreq (b : ℕ) (x : ℝ) (k : ℕ) (s : Fin k → Fin b) (N : ℕ) : ℝ :=
+  (((Finset.range N).filter
+    (fun n => ∀ i : Fin k, nthDigit b (n + i.val) x = (s i : ℤ))).card : ℝ) / (N : ℝ)
+
+/-- Unfolding lemma: in a number normal in base `b` the frequency of every
+    `k`-tuple converges to `b^{-k}`. This is `IsNormalInBase` restated through
+    `tupleFreq`, the shared hypothesis of all the criteria below. -/
+theorem tendsto_tupleFreq_of_normal (b : ℕ) (x : ℝ) (hn : IsNormalInBase b x)
+    (k : ℕ) (s : Fin k → Fin b) :
+    Tendsto (tupleFreq b x k s) atTop (nhds ((b : ℝ) ^ (-(k : ℤ)))) :=
+  hn k s
+
+/-- **Frequency-mismatch criterion.** If the frequency of some `k`-tuple `s`
+    converges to a limit `L ≠ b^{-k}`, then `x` is **not** normal in base `b`.
+    Strictly generalises `not_normal_of_eventually_missing_ktuple` (the `L = 0`
+    case): a wrong *positive* limiting frequency is just as fatal as absence.
+    Proof: normality forces the frequency to `b^{-k}`; uniqueness of limits then
+    equates `L` with `b^{-k}`, contradicting `hne`. -/
+theorem not_normal_of_freq_tendsto_ne (b : ℕ) (x : ℝ)
+    (k : ℕ) (s : Fin k → Fin b) (L : ℝ)
+    (hL : Tendsto (tupleFreq b x k s) atTop (nhds L))
+    (hne : L ≠ (b : ℝ) ^ (-(k : ℤ))) :
+    ¬ IsNormalInBase b x := fun hn =>
+  hne (tendsto_nhds_unique hL (tendsto_tupleFreq_of_normal b x hn k s))
+
+/-- **Over-representation criterion.** If the tuple `s` is *eventually*
+    represented with frequency at least `c`, and `c > b^{-k}`, then `x` is not
+    normal in base `b`. Only a one-sided *eventual* bound is required — no
+    convergence, and no exact limit. This obstruction (a tuple appearing *too
+    often*) is inaccessible to the absence criterion. Proof: order-closure of
+    limits pushes the eventual bound `c ≤ tupleFreq` through to `c ≤ b^{-k}`,
+    contradicting `hc`. -/
+theorem not_normal_of_eventually_freq_ge (b : ℕ) (x : ℝ)
+    (k : ℕ) (s : Fin k → Fin b) (c : ℝ)
+    (hev : ∀ᶠ N in atTop, c ≤ tupleFreq b x k s N)
+    (hc : (b : ℝ) ^ (-(k : ℤ)) < c) :
+    ¬ IsNormalInBase b x := by
+  intro hn
+  have hle : c ≤ (b : ℝ) ^ (-(k : ℤ)) :=
+    ge_of_tendsto (tendsto_tupleFreq_of_normal b x hn k s) hev
+  linarith
+
+/-- **Under-representation criterion.** If the tuple `s` is *eventually*
+    represented with frequency at most `c`, and `c < b^{-k}`, then `x` is not
+    normal in base `b`. The absence criterion is the extreme instance (`c → 0`).
+    Proof: order-closure of limits pushes `tupleFreq ≤ c` through to
+    `b^{-k} ≤ c`, contradicting `hc`. -/
+theorem not_normal_of_eventually_freq_le (b : ℕ) (x : ℝ)
+    (k : ℕ) (s : Fin k → Fin b) (c : ℝ)
+    (hev : ∀ᶠ N in atTop, tupleFreq b x k s N ≤ c)
+    (hc : c < (b : ℝ) ^ (-(k : ℤ))) :
+    ¬ IsNormalInBase b x := by
+  intro hn
+  have hge : (b : ℝ) ^ (-(k : ℤ)) ≤ c :=
+    le_of_tendsto (tendsto_tupleFreq_of_normal b x hn k s) hev
+  linarith
+
+/-- The single-digit matching count is the `k = 1` tuple count for the constant
+    tuple `fun _ => d`: the `Fin 1` quantifier collapses and `n + 0 = n`. -/
+private lemma tupleFreq_one_eq_digitFreq (b : ℕ) (x : ℝ) (d : Fin b) (N : ℕ) :
+    tupleFreq b x 1 (fun _ => d) N =
+      (((Finset.range N).filter (fun n => nthDigit b n x = (d : ℤ))).card : ℝ)
+        / (N : ℝ) := by
+  unfold tupleFreq
+  have hfilter :
+      ((Finset.range N).filter
+        (fun n => ∀ i : Fin 1, nthDigit b (n + i.val) x = ((fun _ => d) i : ℤ)))
+        = (Finset.range N).filter (fun n => nthDigit b n x = (d : ℤ)) := by
+    apply Finset.filter_congr
+    intro n _
+    rw [Fin.forall_fin_one]
+    simp
+  rw [hfilter]
+
+/-- **Single-digit frequency-mismatch criterion.** If a single digit `d` occurs
+    with frequency converging to `L ≠ 1/b`, then `x` is **not** normal in base
+    `b`. Strengthens `not_normal_of_eventually_missing_digit` (the `L = 0`
+    absence case) to *any* wrong limiting frequency — including a digit that is
+    strictly over-represented. The `k = 1` shadow of
+    `not_normal_of_freq_tendsto_ne`. -/
+theorem not_normal_of_digit_freq_ne (b : ℕ) (x : ℝ) (d : Fin b) (L : ℝ)
+    (hL : Tendsto
+      (fun N => (((Finset.range N).filter (fun n => nthDigit b n x = (d : ℤ))).card : ℝ)
+        / (N : ℝ)) atTop (nhds L))
+    (hne : L ≠ (b : ℝ)⁻¹) :
+    ¬ IsNormalInBase b x := by
+  apply not_normal_of_freq_tendsto_ne b x 1 (fun _ => d) L
+  · have heq : tupleFreq b x 1 (fun _ => d) =
+        (fun N => (((Finset.range N).filter
+          (fun n => nthDigit b n x = (d : ℤ))).card : ℝ) / (N : ℝ)) :=
+      funext (tupleFreq_one_eq_digitFreq b x d)
+    rw [heq]; exact hL
+  · have hb1 : (b : ℝ) ^ (-((1 : ℕ) : ℤ)) = (b : ℝ)⁻¹ := by
+      rw [Nat.cast_one, zpow_neg, zpow_one]
+    rw [hb1]; exact hne
+
+-- ============================================================
 -- PART V: OPEN QUESTION
 -- ============================================================
 
