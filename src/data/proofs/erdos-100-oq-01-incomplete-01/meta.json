@@ -42,7 +42,7 @@
     "originalContributions": [
       "card_le_floor_of_pos_int_le: the combinatorial core — a finite set S of reals that are positive integers, each <= D, has |S| <= floor(D), by injecting each value's natural-number form into {1, ..., floor(D)}",
       "card_le_of_pos_int_le: the same bound stated directly against D (|S| <= D for D >= 0, since floor(D) <= D)",
-      "distinct_distances_le_diam: the named integer-distance bridge (Erdős #100 <-> #89) — the distinct integer pairwise distances bounded by the diameter D number at most D, the exact step that turns the Guth-Katz distinct-distances lower bound into diam >= c n/log n"
+      "distinct_distances_le_diam: the named integer-distance bridge (Erdős #100 <-> #89) — the distinct integer pairwise distances, being positive integers bounded by the diameter D, number at most D; the exact step that turns the Guth-Katz distinct-distances lower bound into diam >= c n/log n"
     ]
   },
   "overview": {
@@ -54,7 +54,8 @@
       "The bound is a pure counting injection: each distinct integer distance is a distinct point of a length-floor(D) range.",
       "This single inequality is what upgrades a distinct-distances lower bound (Guth-Katz, c n/log n) into a diameter lower bound for integer-distance sets.",
       "The bridge is entirely independent of the hard explicit-construction sorry (Piepmeyer's 9-point witness) in the scaffold.",
-      "The cap #distinct ≤ diam is special to integer distances: for an arbitrary planar set the number of distinct distances is not constrained by the diameter (Guth-Katz shows it can grow like ~n/√(log n), far exceeding a fixed diameter). Integrality is exactly what forces the distances into {1, ..., floor(diam)}, which is why Erdős #100 admits a diameter lower bound while the general distinct-distances problem does not translate into one."
+      "The cap #distinct ≤ diam is special to integer distances: for an arbitrary planar set the number of distinct distances is not constrained by the diameter (Guth-Katz shows it can grow like ~n/√(log n), far exceeding a fixed diameter). Integrality is exactly what forces the distances into {1, ..., floor(diam)}, which is why Erdős #100 admits a diameter lower bound while the general distinct-distances problem does not translate into one.",
+      "The counting bound |S| ≤ floor(D) is combinatorially sharp: the set {1, 2, ..., floor(D)} of positive integers attains |S| = floor(D). So the bridge loses essentially nothing — any gap between the current diam ≥ c·n/log n bound and the conjectured diam ≫ n is inherited entirely from the distinct-distances side (the log-loss in Guth-Katz and the open question of whether integer-distance configurations can realize near-maximal distinct-distance counts), not from this inequality."
     ]
   },
   "sections": [
@@ -69,7 +70,7 @@
     {
       "id": "bridge",
       "title": "The Integer-Distance Bridge",
-      "summary": "distinct_distances_le_diam: the distinct integer distances bounded by the diameter number at most the diameter — the link to Erdős #89 and the Guth-Katz bound.",
+      "summary": "distinct_distances_le_diam: the distinct integer distances, being positive integers bounded by the diameter, number at most the diameter — the link to Erdős #89 and the Guth-Katz bound.",
       "startLine": 91,
       "endLine": 118,
       "mathContext": "Direct corollary of card_le_of_pos_int_le applied to the finite set of distinct integer distances."
