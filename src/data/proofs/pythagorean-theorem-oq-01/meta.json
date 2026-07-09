@@ -33,6 +33,9 @@
       "segments_sum: betweenness |AH| + |HB| = |AB| — the foot lies inside the hypotenuse, i.e. the dissection Area(T) = Area(T₁) + Area(T₂) at the level of the base.",
       "pythagorean_via_altitude: Einstein's route assembled — |AB|² = |AB|·(|AH| + |HB|) = |AB|·|AH| + |AB|·|HB| = |CA|² + |CB|², reconstructing Pythagoras from the altitude decomposition rather than from the bare polarization identity.",
       "einstein_matches_core: the altitude route (pythagorean_via_altitude) reproduces the one-line metric identity (pythagorean_core), confirming the similar-triangles decomposition is faithful."
+    ],
+    "additionalFiles": [
+      "Proofs/PythagoreanTheoremOQ06.lean"
     ]
   },
   "overview": {
@@ -79,7 +82,10 @@
     "opens": [
       "RealInnerProductSpace"
     ],
-    "sorries": 0
+    "sorries": 0,
+    "additionalFiles": [
+      "Proofs/PythagoreanTheoremOQ06.lean"
+    ]
   },
   "crossReferences": [
     {
