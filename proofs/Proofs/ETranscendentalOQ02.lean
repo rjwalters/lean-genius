@@ -1016,6 +1016,124 @@ theorem match_count_ge_linear_of_normal (b : ℕ) (hb : 2 ≤ b) (x : ℝ)
   exact le_of_lt hmul
 
 -- ============================================================
+-- PART IV.9: EFFECTIVE NORMALITY WITH AN EXPLICIT MODULUS
+-- ============================================================
+
+/-!
+## Effective first-occurrence bounds via a modulus of convergence
+
+`IsNormalInBase` is a bare `Tendsto` statement: it carries no *rate* of
+convergence, so — as flagged in `eventually_exists_match_lt_of_normal` — the
+position of the first occurrence of a tuple cannot be bounded by an explicit
+function of `k`. To obtain genuinely effective bounds one must *supply* a
+modulus of convergence.
+
+`EffectivelyNormalWithModulus b x M` asks for an explicit function
+`M : ℕ → ℝ → ℕ` such that, for every tuple length `k`, every tuple `s`, and every
+tolerance `ε > 0`, the matching frequency of `s` is within `ε` of `b^{-k}` for
+all windows `N ≥ M k ε`. This is exactly the `ε`–`N` form of the `Tendsto` in
+normality, so it *implies* `IsNormalInBase` (`isNormal_of_effectivelyNormal`);
+but it additionally *exposes* the threshold, which upgrades every "eventually"
+statement of PART IV.8 to an effective one:
+
+* `first_occurrence_lt_of_modulus` — the tuple `s` occurs at an *explicit*
+  position `< max (M k (b^{-k}/2)) 1`, a concrete function of the modulus and `k`.
+  This is the effective form of the (non-constructive)
+  `eventually_exists_match_lt_of_normal`.
+* `match_count_ge_linear_of_modulus` — for every `N ≥ max (M k (b^{-k}/2)) 1` the
+  occurrence count is at least `(b^{-k}/2)·N`, the effective (explicit-threshold)
+  form of `match_count_ge_linear_of_normal`.
+-/
+
+/-- **Effective normality with an explicit modulus of convergence.** A witness
+    that `x` is normal in base `b` *together with a rate*: for every tuple `s` of
+    length `k` and every tolerance `ε > 0`, the matching frequency of `s` lies
+    within `ε` of `b^{-k}` for all windows `N ≥ M k ε`. -/
+def EffectivelyNormalWithModulus (b : ℕ) (x : ℝ) (M : ℕ → ℝ → ℕ) : Prop :=
+  ∀ (k : ℕ) (s : Fin k → Fin b) (ε : ℝ), 0 < ε → ∀ N : ℕ, M k ε ≤ N →
+    |(((Finset.range N).filter
+        (fun n => ∀ i : Fin k, nthDigit b (n + i.val) x = (s i : ℤ))).card : ℝ)
+        / (N : ℝ) - (b : ℝ) ^ (-(k : ℤ))| < ε
+
+/-- **Effective normality implies normality.** The modulus form is precisely the
+    `ε`–`N` (`Metric.tendsto_atTop`) characterisation of the `Tendsto` defining
+    `IsNormalInBase`, so any number admitting a modulus of convergence is normal.
+    Records that `EffectivelyNormalWithModulus` is a genuine strengthening, not a
+    vacuous or incomparable notion. -/
+theorem isNormal_of_effectivelyNormal (b : ℕ) (x : ℝ) (M : ℕ → ℝ → ℕ)
+    (hM : EffectivelyNormalWithModulus b x M) : IsNormalInBase b x := by
+  intro k s
+  rw [Metric.tendsto_atTop]
+  intro ε hε
+  refine ⟨M k ε, fun N hN => ?_⟩
+  rw [Real.dist_eq]
+  exact hM k s ε hε N hN
+
+/-- **Effective first occurrence.** Given a modulus of normality, every tuple `s`
+    of length `k` occurs at an *explicit* position below `max (M k (b^{-k}/2)) 1`
+    — a concrete function of the modulus and `k`. This is the effective
+    strengthening of `eventually_exists_match_lt_of_normal`, whose window bound
+    was non-constructive (only "for all sufficiently large `N`"). Proof: at the
+    tolerance `ε = b^{-k}/2` the frequency at `N₁ := max (M k ε) 1` is within `ε`
+    of `b^{-k}`, hence `> b^{-k}/2 > 0`, so the matching count is positive and the
+    occurrence-extraction core produces a witness `< N₁`. -/
+theorem first_occurrence_lt_of_modulus (b : ℕ) (hb : 2 ≤ b) (x : ℝ)
+    (M : ℕ → ℝ → ℕ) (hM : EffectivelyNormalWithModulus b x M)
+    (k : ℕ) (s : Fin k → Fin b) :
+    ∃ n < max (M k ((b : ℝ) ^ (-(k : ℤ)) / 2)) 1,
+      ∀ i : Fin k, nthDigit b (n + i.val) x = (s i : ℤ) := by
+  have hbR : (0 : ℝ) < (b : ℝ) := by exact_mod_cast (by omega : 0 < b)
+  have hposk : (0 : ℝ) < (b : ℝ) ^ (-(k : ℤ)) := zpow_pos hbR _
+  set δ : ℝ := (b : ℝ) ^ (-(k : ℤ)) / 2 with hδdef
+  have hδpos : 0 < δ := by rw [hδdef]; exact div_pos hposk two_pos
+  set N₁ := max (M k δ) 1 with hN1def
+  have hN1pos : 0 < N₁ := lt_of_lt_of_le one_pos (le_max_right _ _)
+  have hN1R : (0 : ℝ) < (N₁ : ℝ) := by exact_mod_cast hN1pos
+  have hbound := hM k s δ hδpos N₁ (le_max_left _ _)
+  set c := ((Finset.range N₁).filter
+      (fun n => ∀ i : Fin k, nthDigit b (n + i.val) x = (s i : ℤ))).card with hc
+  have habs := abs_lt.mp hbound
+  have heq : (b : ℝ) ^ (-(k : ℤ)) - δ = δ := by rw [hδdef]; ring
+  have hcpos_real : 0 < (c : ℝ) / (N₁ : ℝ) := by
+    have hlow : (b : ℝ) ^ (-(k : ℤ)) - δ < (c : ℝ) / (N₁ : ℝ) := by linarith [habs.1]
+    rw [heq] at hlow; linarith
+  have hcR : (0 : ℝ) < (c : ℝ) := by
+    have := mul_pos hcpos_real hN1R
+    rwa [div_mul_cancel₀ _ hN1R.ne'] at this
+  have hcpos : 0 < c := by exact_mod_cast hcR
+  exact exists_match_lt_of_count_pos b x k s N₁ (hc ▸ hcpos)
+
+/-- **Effective density lower bound.** Given a modulus of normality, for *every*
+    window `N ≥ max (M k (b^{-k}/2)) 1` the occurrence count of the tuple `s` is
+    at least `(b^{-k}/2)·N`. This is the effective (explicit-threshold) form of
+    `match_count_ge_linear_of_normal`, which only held "eventually". -/
+theorem match_count_ge_linear_of_modulus (b : ℕ) (hb : 2 ≤ b) (x : ℝ)
+    (M : ℕ → ℝ → ℕ) (hM : EffectivelyNormalWithModulus b x M)
+    (k : ℕ) (s : Fin k → Fin b) (N : ℕ)
+    (hN : max (M k ((b : ℝ) ^ (-(k : ℤ)) / 2)) 1 ≤ N) :
+    ((b : ℝ) ^ (-(k : ℤ)) / 2) * (N : ℝ) ≤
+      (((Finset.range N).filter
+        (fun n => ∀ i : Fin k, nthDigit b (n + i.val) x = (s i : ℤ))).card : ℝ) := by
+  have hbR : (0 : ℝ) < (b : ℝ) := by exact_mod_cast (by omega : 0 < b)
+  have hposk : (0 : ℝ) < (b : ℝ) ^ (-(k : ℤ)) := zpow_pos hbR _
+  set δ : ℝ := (b : ℝ) ^ (-(k : ℤ)) / 2 with hδdef
+  have hδpos : 0 < δ := by rw [hδdef]; exact div_pos hposk two_pos
+  have hMN : M k δ ≤ N := le_trans (le_max_left _ _) hN
+  have hN0 : 0 < N := lt_of_lt_of_le one_pos (le_trans (le_max_right _ _) hN)
+  have hNR : (0 : ℝ) < (N : ℝ) := by exact_mod_cast hN0
+  have hbound := hM k s δ hδpos N hMN
+  set c := ((Finset.range N).filter
+      (fun n => ∀ i : Fin k, nthDigit b (n + i.val) x = (s i : ℤ))).card with hc
+  have habs := abs_lt.mp hbound
+  have heq : (b : ℝ) ^ (-(k : ℤ)) - δ = δ := by rw [hδdef]; ring
+  have hlow : δ < (c : ℝ) / (N : ℝ) := by
+    have h : (b : ℝ) ^ (-(k : ℤ)) - δ < (c : ℝ) / (N : ℝ) := by linarith [habs.1]
+    rwa [heq] at h
+  have hmul := mul_lt_mul_of_pos_right hlow hNR
+  rw [div_mul_cancel₀ _ hNR.ne'] at hmul
+  exact le_of_lt hmul
+
+-- ============================================================
 -- PART V: OPEN QUESTION
 -- ============================================================
 
