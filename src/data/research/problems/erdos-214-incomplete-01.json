@@ -1,85 +1,85 @@
 {
-  "slug": "erdos-214-incomplete-01",
-  "title": "Erdős Problem #214: Unit Distance Free Sets and Unit Squares",
-  "phase": "ACT",
-  "status": "active",
-  "tier": "A",
-  "path": "full",
-  "problemStatement": {
-    "formal": "",
-    "plain": "",
-    "whyMatters": []
-  },
-  "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": "",
-    "completedThisIter": [
-      "researcher-8, 2026-07-09: added 3 verified axiom-free theorems answering the 'maximum size of a unit-distance-free set' half of #214 for the plane — IsUnitDistanceFree.mono (subsets of UDF sets are UDF), exists_unitDistanceFree_finset_card (a UDF finset of every cardinality n via an n-subset of the infinite scaledLattice), and no_maximum_unitDistanceFree_card (no finite cap). Docker build 2364 jobs, 0 errors/sorry, axiomCount unchanged (1)."
-    ]
-  },
-  "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-04-03T08:28:28Z",
-    "iteration": 2,
-    "focus": "S+1 ACT (researcher-8, 2026-07-09): core sorry unit_square_exists_in_set remains BLOCKED on juhasz_stronger (deep incidence geometry, absent from Mathlib). Added peripheral verified corollaries showing UDF-set cardinality is unbounded (no finite maximum). File 382->414 lines, theoremCount 20->23.",
-    "blockers": [],
-    "nextAction": "Core still needs juhasz_stronger (not session-sized / not in Mathlib). Optional: explicit finite UDF configurations, or the 5-point case HoldsFor5Points.",
-    "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
-    }
-  },
-  "knowledge": {
-    "progressSummary": "AXIOMATIZED/BLOCKED on juhasz_stronger. Axiom-free scaffolding now includes: full metric axioms for Erdos214.dist, isometry-invariance + vertex-distinctness of unit squares, and infinitude of the √2·ℤ² witness. 0 sorries, 1 intended axiom.",
-    "builtItems": [
-      "Erdos214Problem.lean: dist_coords (coordinate distance formula), isUnitSquare_standard (the standard unit square is a unit square), unit_square_from_stronger (sorry eliminated, 0-axiom reduction)",
-      "Fixed Mathlib-4.26 build break: UnitDistanceGraph tuple set-builder → setOf on Prod",
-      "dist_nonneg, dist_triangle in Erdos214Problem.lean: the two metric axioms missing from dist_self/dist_comm (via norm_nonneg, norm_add_le + sub_add_sub_cancel) — Erdos214.dist certified a genuine metric",
-      "scaledLattice_horiz_mem + scaledLattice_infinite: √2·ℤ² is infinite (horizontal axis n↦(√2·n,0) embeds ℤ via Set.infinite_of_injective_forall_mem), sharpening scaledLattice_unitDistanceFree from non-empty to infinite"
-    ],
-    "insights": [
-      "erdos-214 (Juhász 1979, unit-distance-free sets): the 1 sorry was in unit_square_from_stronger (JuhaszStrongerTheorem → Erdos214Statement) — a pure logical reduction, NOT one of the 2 deep Juhász axioms.",
-      "Proved it: apply the stronger theorem to the standard unit square P=(0,0),(1,0),(1,1),(0,1) as a PointSet 4; the congruent copy in Sᶜ is again a unit square since the witnessing map is an isometry (dist-preserving), carrying P's 4 edges (=1) and 2 diagonals (=√2).",
-      "Key helper dist_coords: dist(!₂[a,b],!₂[c,d]) = √((a-c)²+(b-d)²) via EuclideanSpace.dist_eq + Fin.sum_univ_two + Real.dist_eq + sq_abs; concrete unit square checked by norm_num [Real.sqrt_one].",
-      "The file ALSO didn't compile on pinned Mathlib 4.26: UnitDistanceGraph used the tuple set-builder {(p,q) | ...} which no longer parses ('unknown identifier q'); rewrote as {pq | pq.1∈S ∧ ...}.",
-      "Coordinate extraction from !₂[a,b]: congrFun FAILS (WithLp.toLp wrapper not a syntactic pi type) — use congrArg (fun x => x 0) then simp [Matrix.cons_val_zero]",
-      "Root Mathlib dist is Dist.dist, NOT accessible as _root_.dist; prove metric facts directly from ‖p-q‖ (norm_nonneg/norm_add_le) rather than bridging to Mathlib dist"
-    ],
-    "mathlibGaps": [],
-    "nextSteps": [
-      "Remaining elementary follow-ups exhausted around definitions; core BLOCKED on juhasz_stronger (deep 1979 4-point theorem, not in Mathlib). Only substantial work left = formalizing that axiom."
-    ],
-    "markdown": "# Knowledge: erdos-214-incomplete-01\n\n## Research Notes\n\n*No research conducted yet. See problem.md for context.*\n\n## Known Facts\n\n- Lean file: `proofs/Proofs/`\n- Sorries: see problem.md\n\n## Approaches Tried\n\n*None yet.*\n"
-  },
-  "tags": [],
-  "relatedProofs": [
-    "erdos-2",
-    "erdos-21",
-    "erdos-214",
-    "erdos-214-incomplete-01-oq-01"
-  ],
-  "references": {
-    "papers": [],
-    "urls": [],
-    "mathlib": []
-  },
-  "started": "2026-04-03T08:27:10.206Z",
-  "lastUpdate": "2026-07-09T00:00:00.000Z",
-  "significance": 7,
-  "tractability": 4,
-  "leanFiles": [
-    {
-      "path": "Proofs/Erdos214Incomplete01OQ01.lean",
-      "filename": "Erdos214Incomplete01OQ01.lean",
-      "lineCount": 128,
-      "theoremCount": 5,
-      "axiomCount": 0,
-      "defCount": 3,
-      "sorryCount": 1,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos214Incomplete01OQ01.lean"
-    }
+ "slug": "erdos-214-incomplete-01",
+ "title": "Erdős Problem #214: Unit Distance Free Sets and Unit Squares",
+ "phase": "ACT",
+ "status": "active",
+ "tier": "A",
+ "path": "full",
+ "problemStatement": {
+  "formal": "",
+  "plain": "",
+  "whyMatters": []
+ },
+ "knownResults": {
+  "proven": [],
+  "open": [],
+  "goal": "",
+  "completedThisIter": [
+   "researcher-8, 2026-07-09: added 3 verified axiom-free theorems answering the 'maximum size of a unit-distance-free set' half of #214 for the plane — IsUnitDistanceFree.mono (subsets of UDF sets are UDF), exists_unitDistanceFree_finset_card (a UDF finset of every cardinality n via an n-subset of the infinite scaledLattice), and no_maximum_unitDistanceFree_card (no finite cap). Docker build 2364 jobs, 0 errors/sorry, axiomCount unchanged (1)."
   ]
+ },
+ "currentState": {
+  "phase": "OBSERVE",
+  "since": "2026-04-03T08:28:28Z",
+  "iteration": 2,
+  "focus": "S+1 ACT (researcher-8, 2026-07-09): core sorry unit_square_exists_in_set remains BLOCKED on juhasz_stronger (deep incidence geometry, absent from Mathlib). Added peripheral verified corollaries showing UDF-set cardinality is unbounded (no finite maximum). File 382->414 lines, theoremCount 20->23.",
+  "blockers": [],
+  "nextAction": "Core still needs juhasz_stronger (not session-sized / not in Mathlib). Optional: explicit finite UDF configurations, or the 5-point case HoldsFor5Points.",
+  "attemptCounts": {
+   "total": 0,
+   "currentApproach": 0,
+   "approachesTried": 0
+  }
+ },
+ "knowledge": {
+  "progressSummary": "AXIOMATIZED/BLOCKED on juhasz_stronger. Axiom-free scaffolding now includes: full metric axioms for Erdos214.dist, isometry-invariance + vertex-distinctness of unit squares, and infinitude of the √2·ℤ² witness. 0 sorries, 1 intended axiom.",
+  "builtItems": [
+   "Erdos214Problem.lean: dist_coords (coordinate distance formula), isUnitSquare_standard (the standard unit square is a unit square), unit_square_from_stronger (sorry eliminated, 0-axiom reduction)",
+   "Fixed Mathlib-4.26 build break: UnitDistanceGraph tuple set-builder → setOf on Prod",
+   "dist_nonneg, dist_triangle in Erdos214Problem.lean: the two metric axioms missing from dist_self/dist_comm (via norm_nonneg, norm_add_le + sub_add_sub_cancel) — Erdos214.dist certified a genuine metric",
+   "scaledLattice_horiz_mem + scaledLattice_infinite: √2·ℤ² is infinite (horizontal axis n↦(√2·n,0) embeds ℤ via Set.infinite_of_injective_forall_mem), sharpening scaledLattice_unitDistanceFree from non-empty to infinite"
+  ],
+  "insights": [
+   "erdos-214 (Juhász 1979, unit-distance-free sets): the 1 sorry was in unit_square_from_stronger (JuhaszStrongerTheorem → Erdos214Statement) — a pure logical reduction, NOT one of the 2 deep Juhász axioms.",
+   "Proved it: apply the stronger theorem to the standard unit square P=(0,0),(1,0),(1,1),(0,1) as a PointSet 4; the congruent copy in Sᶜ is again a unit square since the witnessing map is an isometry (dist-preserving), carrying P's 4 edges (=1) and 2 diagonals (=√2).",
+   "Key helper dist_coords: dist(!₂[a,b],!₂[c,d]) = √((a-c)²+(b-d)²) via EuclideanSpace.dist_eq + Fin.sum_univ_two + Real.dist_eq + sq_abs; concrete unit square checked by norm_num [Real.sqrt_one].",
+   "The file ALSO didn't compile on pinned Mathlib 4.26: UnitDistanceGraph used the tuple set-builder {(p,q) | ...} which no longer parses ('unknown identifier q'); rewrote as {pq | pq.1∈S ∧ ...}.",
+   "Coordinate extraction from !₂[a,b]: congrFun FAILS (WithLp.toLp wrapper not a syntactic pi type) — use congrArg (fun x => x 0) then simp [Matrix.cons_val_zero]",
+   "Root Mathlib dist is Dist.dist, NOT accessible as _root_.dist; prove metric facts directly from ‖p-q‖ (norm_nonneg/norm_add_le) rather than bridging to Mathlib dist"
+  ],
+  "mathlibGaps": [],
+  "nextSteps": [
+   "Remaining elementary follow-ups exhausted around definitions; core BLOCKED on juhasz_stronger (deep 1979 4-point theorem, not in Mathlib). Only substantial work left = formalizing that axiom."
+  ],
+  "markdown": "# Knowledge: erdos-214-incomplete-01\n\n## Research Notes\n\n*No research conducted yet. See problem.md for context.*\n\n## Known Facts\n\n- Lean file: `proofs/Proofs/`\n- Sorries: see problem.md\n\n## Approaches Tried\n\n*None yet.*\n"
+ },
+ "tags": [],
+ "relatedProofs": [
+  "erdos-2",
+  "erdos-21",
+  "erdos-214",
+  "erdos-214-incomplete-01-oq-01"
+ ],
+ "references": {
+  "papers": [],
+  "urls": [],
+  "mathlib": []
+ },
+ "started": "2026-04-03T08:27:10.206Z",
+ "lastUpdate": "2026-07-09T00:00:00.000Z",
+ "significance": 7,
+ "tractability": 4,
+ "leanFiles": [
+  {
+   "path": "Proofs/Erdos214Incomplete01OQ01.lean",
+   "filename": "Erdos214Incomplete01OQ01.lean",
+   "lineCount": 198,
+   "theoremCount": 9,
+   "axiomCount": 0,
+   "defCount": 3,
+   "sorryCount": 1,
+   "isAristotle": false,
+   "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos214Incomplete01OQ01.lean"
+  }
+ ]
 }
