@@ -188,6 +188,11 @@
       "targetId": "hilbert-17-oq-03-oq-01",
       "relationship": "complements",
       "description": "The analogous constructive rational-SOS certificate for the Motzkin polynomial. Together the two entries realize Artin's theorem for both canonical extremal examples — the bivariate Motzkin form and the ternary Robinson form — and this entry answers that one's open question of generalizing the SDP-certificate pipeline to Robinson."
+    },
+    {
+      "targetId": "hilbert-17-oq-01",
+      "relationship": "relates",
+      "description": "Pfister's theorem bounds the number of rational-function squares needed to represent a nonnegative form in n variables by 2ⁿ. For Robinson (n=3) that bound is 8, whereas the un-optimized certificate here uses 21 = 7×3 squares — quantifying the gap between this explicit witness and the theoretical minimum, and framing the entry's first open question."
     }
   ],
   "sections": [
