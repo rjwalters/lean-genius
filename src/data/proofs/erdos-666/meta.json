@@ -58,13 +58,14 @@
     "lineCount": 368,
     "assumptions": "1 axiom (Chung 1992): chung_no_threshold — no threshold N makes every (1/4)-dense subgraph of Qₙ contain C₆; a consequence of Chung's edge-partition of Qₙ into four C₆-free subgraphs, not available in Mathlib. The companion existence statement chung_c6free (for n ≥ 3, Qₙ has some C₆-free subgraph) was previously axiomatized but is now PROVED outright — it carries no edge-count data, so the empty subgraph ⊥ (no edges, hence no cycle) is an honest witness. The deep density content stays isolated in the single axiom chung_no_threshold.",
     "theoremCount": 9,
-    "definitionCount": 13
+    "definitionCount": 13,
+    "proofStrategy": "**Formalization Approach**\\n\\n1. **Hypercube Definition:** Qₙ defined on Fin(2ⁿ) - vertices x, y are adjacent iff their bitwise XOR is a power of two (exactly one differing bit, i.e. Hamming distance 1). Symmetry and looplessness are discharged from Nat.xor_comm and Nat.xor_self.\\n\\n2. **Cycle Definitions:**\\n   - HasCycle G k: injective k-sequence with cyclic adjacency\\n   - HasC4, HasC6, HasC2k: specific even cycle predicates\\n\\n3. **Density:**\\n   - EpsilonDenseSubgraph: at least ε·n·2ⁿ⁻¹ edges\\n\\n4. **Main Results:**\\n   - ErdosConjecture: the (false) original conjecture\\n   - erdos_conjecture_false: theorem showing it is false, fully proved (no sorry) from chung_no_threshold\\n   - conder_no_threshold axiom (ε = 1/3): no threshold N forces C₆ in every (1/3)-dense subgraph of Qₙ — the pigeonhole consequence of Conder 1993's 3-edge-colouring, the sharpest known refutation and the single deep input\\n   - chung_no_threshold theorem (ε = 1/4): now DERIVED from conder_no_threshold via monotonicity of ConjectureAt (1/4 ≤ 1/3), so no separate Chung axiom is needed; still consumed by erdos_conjecture_false\\n   - conjectureAt_mono / epsilonDense_antitone / denseForcesC6_mono: axiom-free monotonicity bookkeeping used to derive Chung from Conder and to spread each refutation across an interval\\n   - chung_no_threshold_le / conder_no_threshold_le: the refutation holds on the whole intervals ε ≤ 1/4 and (sharpest) ε ≤ 1/3\\n   - chung_c6free theorem (de-axiomatized): for n ≥ 3, Qₙ has a C₆-free subgraph — proved via the empty subgraph ⊥ (no edges ⇒ no C₆)\\n   - chung_counterexample / conder_counterexample: ε = 1/4 and ε = 1/3 C₆-free existence witnesses, both derived from chung_c6free\\n\\n5. **Why axioms:** Conder's explicit 3-edge-colouring construction is combinatorial and not available in Mathlib. It is captured by a single density axiom conder_no_threshold, whose ¬ ConjectureAt (1/3) arrow form avoids a Mathlib v4.26 elaborator stack overflow triggered by the bundled ∃ H, (edge bound) ∧ ¬ HasC6 H form. Definitions HasCycle/HasC6/EpsilonDenseSubgraph are marked @[irreducible] for the same reason (1 axiom, 0 sorries)."
   },
   "overview": {
     "historicalContext": "**Erdős Problem #666**\n\nErdős posed this problem in 1991, asking whether dense subgraphs of the n-dimensional hypercube must contain 6-cycles. The hypercube Qₙ has 2ⁿ vertices (binary strings of length n) and n·2ⁿ⁻¹ edges (vertices adjacent iff they differ in exactly one coordinate).\n\n**Resolution (1992-1993):**\nThe answer is NO, disproved independently by two groups:\n- **Chung (1992):** Constructed an explicit 4-partition of Qₙ's edges into C₆-free subgraphs\n- **Brouwer-Dejter-Thomassen (1993):** Independent 4-coloring construction avoiding C₄ and C₆\n\n**Further Improvement:**\nConder (1993) showed that only 3 colors suffice - the edges of Qₙ can be 3-colored with no monochromatic C₄ or C₆. This means subgraphs with 1/3 of all edges need not contain C₆.",
     "problemStatement": "**Problem Statement (Disproved)**\n\nLet Qₙ be the n-dimensional hypercube (2ⁿ vertices, n·2ⁿ⁻¹ edges).\n\n**Conjecture:** For every ε > 0, if n is sufficiently large, every subgraph of Qₙ with ≥ ε·n·2ⁿ⁻¹ edges contains C₆.\n\n**Answer:** NO\n\n**Counterexamples:**\n- ε = 1/4: Chung's 4-partition (1992)\n- ε = 1/3: Conder's 3-coloring (1993)\n\n**Generalized Conjecture (OPEN):** For C_{2k}, ∃ c > 0 and aₖ < 1 such that ≥ c·n^{aₖ}·2ⁿ edges forces C_{2k}, with aₖ → 0 as k → ∞.",
     "text": "Does every ε-dense subgraph of the n-hypercube Qₙ contain C₆? Answer: NO. Chung (1992) and Brouwer-Dejter-Thomassen (1993) showed Qₙ can be 4-partitioned into C₆-free subgraphs.",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Hypercube Definition:** Qₙ defined on Fin(2ⁿ) - vertices x, y are adjacent iff their bitwise XOR is a power of two (exactly one differing bit, i.e. Hamming distance 1). Symmetry and looplessness are discharged from Nat.xor_comm and Nat.xor_self.\n\n2. **Cycle Definitions:**\n   - HasCycle G k: injective k-sequence with cyclic adjacency\n   - HasC4, HasC6, HasC2k: specific even cycle predicates\n\n3. **Density:**\n   - EpsilonDenseSubgraph: at least ε·n·2ⁿ⁻¹ edges\n\n4. **Main Results:**\n   - ErdosConjecture: the (false) original conjecture\n   - erdos_conjecture_false: theorem showing it is false, fully proved (no sorry) from chung_no_threshold\n   - chung_no_threshold axiom: for ε = 1/4 no threshold N forces C₆ in every (1/4)-dense subgraph of Qₙ — the pigeonhole consequence of Chung's 4-partition, and exactly what the disproof consumes\n   - chung_c6free theorem (de-axiomatized): for n ≥ 3, Qₙ has a C₆-free subgraph — proved via the empty subgraph ⊥ (no edges ⇒ no C₆)\n   - chung_counterexample / conder_better_bound: ε = 1/4 and ε = 1/3 C₆-free witnesses, both derived from chung_c6free\n\n5. **Why axioms:** Chung's explicit 4-partition construction is combinatorial and not available in Mathlib. It is captured by a single density axiom chung_no_threshold, whose ¬ ConjectureAt (1/4) arrow form avoids a Mathlib v4.26 elaborator stack overflow triggered by the bundled ∃ H, (edge bound) ∧ ¬ HasC6 H form. Definitions HasCycle/HasC6/EpsilonDenseSubgraph are marked @[irreducible] for the same reason (1 axiom, 0 sorries).",
+    "proofStrategy": "**Formalization Approach**\\n\\n1. **Hypercube Definition:** Qₙ defined on Fin(2ⁿ) - vertices x, y are adjacent iff their bitwise XOR is a power of two (exactly one differing bit, i.e. Hamming distance 1). Symmetry and looplessness are discharged from Nat.xor_comm and Nat.xor_self.\\n\\n2. **Cycle Definitions:**\\n   - HasCycle G k: injective k-sequence with cyclic adjacency\\n   - HasC4, HasC6, HasC2k: specific even cycle predicates\\n\\n3. **Density:**\\n   - EpsilonDenseSubgraph: at least ε·n·2ⁿ⁻¹ edges\\n\\n4. **Main Results:**\\n   - ErdosConjecture: the (false) original conjecture\\n   - erdos_conjecture_false: theorem showing it is false, fully proved (no sorry) from chung_no_threshold\\n   - conder_no_threshold axiom (ε = 1/3): no threshold N forces C₆ in every (1/3)-dense subgraph of Qₙ — the pigeonhole consequence of Conder 1993's 3-edge-colouring, the sharpest known refutation and the single deep input\\n   - chung_no_threshold theorem (ε = 1/4): now DERIVED from conder_no_threshold via monotonicity of ConjectureAt (1/4 ≤ 1/3), so no separate Chung axiom is needed; still consumed by erdos_conjecture_false\\n   - conjectureAt_mono / epsilonDense_antitone / denseForcesC6_mono: axiom-free monotonicity bookkeeping used to derive Chung from Conder and to spread each refutation across an interval\\n   - chung_no_threshold_le / conder_no_threshold_le: the refutation holds on the whole intervals ε ≤ 1/4 and (sharpest) ε ≤ 1/3\\n   - chung_c6free theorem (de-axiomatized): for n ≥ 3, Qₙ has a C₆-free subgraph — proved via the empty subgraph ⊥ (no edges ⇒ no C₆)\\n   - chung_counterexample / conder_counterexample: ε = 1/4 and ε = 1/3 C₆-free existence witnesses, both derived from chung_c6free\\n\\n5. **Why axioms:** Conder's explicit 3-edge-colouring construction is combinatorial and not available in Mathlib. It is captured by a single density axiom conder_no_threshold, whose ¬ ConjectureAt (1/3) arrow form avoids a Mathlib v4.26 elaborator stack overflow triggered by the bundled ∃ H, (edge bound) ∧ ¬ HasC6 H form. Definitions HasCycle/HasC6/EpsilonDenseSubgraph are marked @[irreducible] for the same reason (1 axiom, 0 sorries).",
     "keyInsights": [
       "**Hypercube Structure:** Qₙ vertices are binary strings, adjacent iff Hamming distance = 1",
       "**Size:** |V| = 2ⁿ, |E| = n·2ⁿ⁻¹, degree = n (n-regular)",
@@ -85,71 +86,71 @@
       "title": "Hypercube Graph",
       "summary": "Definition of Qₙ via XOR, vertices, edges, regularity",
       "startLine": 36,
-      "endLine": 68,
+      "endLine": 81,
       "mathContext": "Formal definition: Definition of Qₙ via XOR, vertices, edges, regularity"
     },
     {
       "id": "cycles",
       "title": "Cycles in Graphs",
       "summary": "HasCycle, HasC4, HasC6, HasC2k definitions",
-      "startLine": 69,
-      "endLine": 97,
+      "startLine": 82,
+      "endLine": 115,
       "mathContext": "Formal definition: HasCycle, HasC4, HasC6, HasC2k definitions"
     },
     {
       "id": "density",
       "title": "Subgraphs and Density",
       "summary": "DenseSubgraph, EpsilonDenseSubgraph",
-      "startLine": 98,
-      "endLine": 118,
+      "startLine": 116,
+      "endLine": 140,
       "mathContext": "Mathematical content: DenseSubgraph, EpsilonDenseSubgraph"
     },
     {
       "id": "conjecture",
       "title": "Erdős's Conjecture (Disproved)",
       "summary": "ErdosConjecture, erdos_conjecture_false",
-      "startLine": 119,
-      "endLine": 141,
+      "startLine": 141,
+      "endLine": 296,
       "mathContext": "Mathematical content: ErdosConjecture, erdos_conjecture_false"
     },
     {
       "id": "chung",
       "title": "Chung's Result (1992)",
       "summary": "4-partition into C₆-free subgraphs",
-      "startLine": 142,
-      "endLine": 175,
+      "startLine": 297,
+      "endLine": 315,
       "mathContext": "Mathematical content: 4-partition into C₆-free subgraphs"
     },
     {
       "id": "bdt",
       "title": "Brouwer-Dejter-Thomassen (1993)",
       "summary": "Informal commentary on BDT independent 4-coloring result (no formal declarations in file)",
-      "startLine": 176,
-      "endLine": 178,
+      "startLine": 316,
+      "endLine": 322,
       "mathContext": "Informal commentary: BDT independent 4-coloring result (no formal declarations)"
     },
     {
       "id": "conder",
       "title": "Conder's Improvement (1993)",
-      "summary": "conder_better_bound: ε = 1/3 counterexample theorem derived from chung_c6free",
-      "startLine": 179,
-      "endLine": 201,
-      "mathContext": "Mathematical content: conder_better_bound theorem (3-coloring, ε = 1/3 counterexample)"
+      "summary": "conder_no_threshold (axiom, ε=1/3) with chung_no_threshold derived as a corollary; conder_no_threshold_le (interval ε≤1/3) and conder_counterexample (existence)",
+      "startLine": 323,
+      "endLine": 354,
+      "mathContext": "Mathematical content: Conder 1993 sharpened refutation — axiom conder_no_threshold (¬ConjectureAt 1/3), theorem conder_no_threshold_le (ε≤1/3 interval), theorem conder_counterexample (existence witness)"
     },
     {
       "id": "generalized",
       "title": "Generalized Conjecture",
       "summary": "GeneralizedConjecture: open question for C_{2k} in dense hypercube subgraphs",
-      "startLine": 203,
-      "endLine": 218,
+      "startLine": 355,
+      "endLine": 381,
       "mathContext": "Mathematical content: GeneralizedConjecture definition (open question for C_{2k})"
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "erdos_666_summary: combined theorem stating conjecture is false and C₆-free subgraphs exist",
-      "startLine": 232,
-      "endLine": 261,
+      "startLine": 382,
+      "endLine": 413,
       "mathContext": "Mathematical content: erdos_666_summary theorem"
     }
   ],
@@ -171,9 +172,9 @@
       "SimpleGraph"
     ],
     "namespace": "Erdos666",
-    "lineCount": 368,
+    "lineCount": 413,
     "axiomCount": 1,
-    "theoremCount": 9,
+    "theoremCount": 11,
     "definitionCount": 13,
     "path": "Proofs/Erdos666Problem.lean",
     "sorries": 0
@@ -195,5 +196,6 @@
       "description": "Related Erdős problem sharing themes: disproved, extremal-graph-theory, graph-theory"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "assumptions": "1 axiom (Conder 1993): conder_no_threshold — no threshold N makes every (1/3)-dense subgraph of Qₙ contain C₆; a consequence of Conder's 3-edge-colouring of Qₙ into C₄,C₆-free colour classes, not available in Mathlib. This is the single deep combinatorial input and the sharpest known refutation. Chung's earlier (1/4)-density result chung_no_threshold is now PROVED as a corollary of conder_no_threshold by monotonicity of ConjectureAt (since 1/4 ≤ 1/3), so the file rests on one axiom rather than two. The existence statement chung_c6free (for n ≥ 3, Qₙ has some C₆-free subgraph) is also proved outright — it carries no edge-count data, so the empty subgraph ⊥ is an honest witness. Refutation now holds on the whole interval (0, 1/3] via conder_no_threshold_le."
 }

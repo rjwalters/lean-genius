@@ -164,23 +164,74 @@ contains C₆.
 def ErdosConjecture : Prop :=
   ∀ ε : ℝ, ε > 0 → ConjectureAt ε
 
+/-!
+### Monotonicity of the conjecture in the density `ε`
+
+`ConjectureAt` is monotone in `ε`: strengthening the density hypothesis (larger
+`ε`) can only make the conjecture easier to satisfy.  Dually, a single
+counterexample at one density refutes the conjecture at every *smaller* density.
+These three lemmas are pure bookkeeping — no axioms — and are used below in two
+ways: to recover Chung's `1/4` refutation as a corollary of Conder's sharper
+`1/3` one (so the file needs a single deep axiom, not two), and to spread each
+refutation across an entire interval of densities (Part IV.5).
+-/
+
+unseal EpsilonDenseSubgraph in
+/-- **`ε`-density is antitone in `ε`.**  A subgraph that is `ε`-dense is also
+`ε'`-dense for every `ε' ≤ ε`, since the required edge count `ε' · Eₙ ≤ ε · Eₙ`
+only decreases (the hypercube edge count `Eₙ = n·2ⁿ⁻¹` is nonnegative). -/
+theorem epsilonDense_antitone {n : ℕ} {ε ε' : ℝ} (hle : ε' ≤ ε)
+    {H : SimpleGraph (Fin (2^n))} (hH : EpsilonDenseSubgraph n ε H) :
+    EpsilonDenseSubgraph n ε' H :=
+  le_trans (mul_le_mul_of_nonneg_right hle (Nat.cast_nonneg _)) hH
+
+/-- **`DenseForcesC6` is monotone in `ε`.**  If every `ε'`-dense subgraph is forced
+to contain `C₆`, then so is every `ε`-dense subgraph for `ε ≥ ε'` (the `ε`-dense
+subgraphs form a subclass of the `ε'`-dense ones). -/
+theorem denseForcesC6_mono {n : ℕ} {ε ε' : ℝ} (hle : ε' ≤ ε)
+    (h : DenseForcesC6 n ε') : DenseForcesC6 n ε :=
+  fun H hH => h H (epsilonDense_antitone hle hH)
+
+/-- **`ConjectureAt` is monotone in `ε`.**  The same threshold `N` witnesses the
+conjecture at the larger density `ε` once it holds at `ε' ≤ ε`. -/
+theorem conjectureAt_mono {ε ε' : ℝ} (hle : ε' ≤ ε)
+    (h : ConjectureAt ε') : ConjectureAt ε :=
+  let ⟨N, hN⟩ := h
+  ⟨N, fun n hn => denseForcesC6_mono hle (hN n hn)⟩
+
 /--
-**Chung's theorem (1992), refutation form.**
-For the density `ε = 1/4` there is *no* threshold `N` beyond which every
-`(1/4)`-dense subgraph of `Qₙ` contains a `C₆`.
+**Conder's theorem (1993), refutation form — the sharpest known counterexample.**
+For the density `ε = 1/3` there is *no* threshold `N` beyond which every
+`(1/3)`-dense subgraph of `Qₙ` contains a `C₆`.
 
-Chung edge-partitions `Qₙ` (for `n ≥ 3`) into four `C₆`-free subgraphs; by
-pigeonhole one part carries `≥ 1/4` of the `n·2ⁿ⁻¹` edges while remaining
-`C₆`-free. Hence for *every* candidate threshold `N`, taking `n = max N 3`
-produces a `(1/4)`-dense `C₆`-free subgraph — so `ConjectureAt (1/4)` fails.
-We axiomatize this consequence directly: the explicit `4`-partition construction
-is combinatorial and not available in Mathlib.
+Conder (1993) refined Chung's four-part construction to a proper `3`-edge-colouring
+of `Qₙ` (for `n ≥ 3`) in which no colour class contains a `C₄` or a `C₆`.  By
+pigeonhole one of the three colour classes carries `≥ 1/3` of the `n·2ⁿ⁻¹` edges
+while remaining `C₆`-free, so for *every* candidate threshold `N` (taking
+`n = max N 3`) there is a `(1/3)`-dense `C₆`-free subgraph — hence
+`ConjectureAt (1/3)` fails.  The explicit `3`-colouring is combinatorial and not
+available in Mathlib, so we axiomatize this consequence directly.
 
-This is stated in the arrow/negation form `¬ ConjectureAt (1/4)` (rather than the
+This is stated in the negation form `¬ ConjectureAt (1/3)` (rather than the
 mathematically-equivalent `∃ H, dense H ∧ ¬ HasC6 H`) because the latter's type
 triggers a Mathlib v4.26 elaborator stack overflow; see the header note.
+
+This is the **single** deep combinatorial input of the file: Chung's earlier `1/4`
+refutation (`chung_no_threshold`) is recovered from it by monotonicity, so we
+axiomatize only the strongest published result rather than each density separately.
 -/
-axiom chung_no_threshold : ¬ ConjectureAt (1/4)
+axiom conder_no_threshold : ¬ ConjectureAt (1/3)
+
+/--
+**Chung's theorem (1992), refutation form — now a corollary of Conder's.**
+`ConjectureAt (1/4)` fails.  Chung's original `4`-partition of `Qₙ` yields a
+`(1/4)`-dense `C₆`-free subgraph directly; here we obtain the same conclusion for
+free from the sharper `conder_no_threshold` via `conjectureAt_mono` (since
+`1/4 ≤ 1/3`).  Keeping this as a named theorem preserves every downstream use of
+`chung_no_threshold` while letting the file rest on Conder's single axiom.
+-/
+theorem chung_no_threshold : ¬ ConjectureAt (1/4) :=
+  fun h => conder_no_threshold (conjectureAt_mono (by norm_num : (1 : ℝ) / 4 ≤ 1 / 3) h)
 
 /-
 **C₆-free subgraphs of `Qₙ` exist (existence form).**
@@ -216,39 +267,16 @@ theorem erdos_conjecture_false : ¬ErdosConjecture := fun hConj =>
   chung_no_threshold (hConj (1/4) (by norm_num))
 
 /-!
-### Part IV.5: The refutation holds on the whole interval `ε ≤ 1/4`
+### Part IV.5: Each refutation holds on a whole interval of densities
 
-Chung's axiom only names the single density `ε = 1/4`, but the counterexample it
-supplies refutes the conjecture for *every* smaller density as well: a graph that
-is `(1/4)`-dense and `C₆`-free is automatically `ε`-dense for any `ε ≤ 1/4`, so no
-threshold can work at any such `ε`.  Formally this is a monotonicity fact —
-`ConjectureAt` is monotone in `ε` — and it costs **no new axioms**, only the
-already-assumed `chung_no_threshold`.  The upshot: Erdős's conjecture fails not at
-an isolated bad density but robustly across the entire range `(0, 1/4]`.
+A single counterexample at some density refutes the conjecture for *every* smaller
+density: a graph that is `ε₀`-dense and `C₆`-free is automatically `ε`-dense for any
+`ε ≤ ε₀`, so no threshold can work at any such `ε` (this is the monotonicity of
+`ConjectureAt` proved above).  Applying it to Conder's `1/3` axiom — and to the
+`1/4` corollary — spreads each refutation across an interval.  The upshot: Erdős's
+conjecture fails not at isolated bad densities but robustly across the entire range
+`(0, 1/3]`, with no new axioms beyond `conder_no_threshold`.
 -/
-
-unseal EpsilonDenseSubgraph in
-/-- **`ε`-density is antitone in `ε`.**  A subgraph that is `ε`-dense is also
-`ε'`-dense for every `ε' ≤ ε`, since the required edge count `ε' · Eₙ ≤ ε · Eₙ`
-only decreases (the hypercube edge count `Eₙ = n·2ⁿ⁻¹` is nonnegative). -/
-theorem epsilonDense_antitone {n : ℕ} {ε ε' : ℝ} (hle : ε' ≤ ε)
-    {H : SimpleGraph (Fin (2^n))} (hH : EpsilonDenseSubgraph n ε H) :
-    EpsilonDenseSubgraph n ε' H :=
-  le_trans (mul_le_mul_of_nonneg_right hle (Nat.cast_nonneg _)) hH
-
-/-- **`DenseForcesC6` is monotone in `ε`.**  If every `ε'`-dense subgraph is forced
-to contain `C₆`, then so is every `ε`-dense subgraph for `ε ≥ ε'` (the `ε`-dense
-subgraphs form a subclass of the `ε'`-dense ones). -/
-theorem denseForcesC6_mono {n : ℕ} {ε ε' : ℝ} (hle : ε' ≤ ε)
-    (h : DenseForcesC6 n ε') : DenseForcesC6 n ε :=
-  fun H hH => h H (epsilonDense_antitone hle hH)
-
-/-- **`ConjectureAt` is monotone in `ε`.**  The same threshold `N` witnesses the
-conjecture at the larger density `ε` once it holds at `ε' ≤ ε`. -/
-theorem conjectureAt_mono {ε ε' : ℝ} (hle : ε' ≤ ε)
-    (h : ConjectureAt ε') : ConjectureAt ε :=
-  let ⟨N, hN⟩ := h
-  ⟨N, fun n hn => denseForcesC6_mono hle (hN n hn)⟩
 
 /-- **Chung's refutation extends to every `ε ≤ 1/4`.**  Were the conjecture to hold
 at some `ε ≤ 1/4`, monotonicity would push it up to `ε = 1/4`, contradicting
@@ -257,12 +285,22 @@ in particular for every positive density `0 < ε ≤ 1/4`. -/
 theorem chung_no_threshold_le {ε : ℝ} (hε : ε ≤ 1/4) : ¬ ConjectureAt ε :=
   fun h => chung_no_threshold (conjectureAt_mono hε h)
 
+/-- **Conder's refutation extends to every `ε ≤ 1/3`** — the sharpest interval.
+Were the conjecture to hold at some `ε ≤ 1/3`, monotonicity would push it up to
+`ε = 1/3`, contradicting `conder_no_threshold`.  So `ConjectureAt ε` fails for the
+whole interval `ε ≤ 1/3`, strictly extending the `ε ≤ 1/4` range of
+`chung_no_threshold_le`.  In particular Erdős's conjecture fails for every positive
+density `0 < ε ≤ 1/3`. -/
+theorem conder_no_threshold_le {ε : ℝ} (hε : ε ≤ 1/3) : ¬ ConjectureAt ε :=
+  fun h => conder_no_threshold (conjectureAt_mono hε h)
+
 /-
 ## Part V: Chung's Result (1992)
 
-The deep combinatorial content — Chung's edge-partition of `Qₙ` into four
-`C₆`-free subgraphs — is captured by the axioms `chung_no_threshold` and
-`chung_c6free` in Part IV. Here we record the immediate ε = 1/4 counterexample
+The single deep combinatorial axiom of the file is `conder_no_threshold`
+(Conder's sharper `1/3` result); Chung's `1/4` refutation `chung_no_threshold` is
+derived from it in Part IV by monotonicity, and `chung_c6free` is proved outright
+from the empty subgraph. Here we record the immediate ε = 1/4 existence
 corollary.
 -/
 
@@ -287,24 +325,31 @@ with no monochromatic C₄ or C₆.
 
 **Conder's 3-coloring theorem (1993):** For n ≥ 3, the edges of Qₙ can be
 3-colored with no monochromatic C₄ or C₆. This improves Chung/BDT from 4
-colors to 3.
+colors to 3, pushing the refuting density from `1/4` up to `1/3`.
+
+The density content of Conder's improvement is exactly `conder_no_threshold`
+(`¬ ConjectureAt (1/3)`) and its interval form `conder_no_threshold_le`, both
+established in Part IV.  We record here only the honest *existence* corollary that
+Conder's construction supplies a `C₆`-free subgraph of `Qₙ` — the extra density
+`1/3 > 1/4` cannot be attached to the existence statement itself without the
+Mathlib v4.26 elaborator crash (see the header note), so it lives in the axiom.
+
+(The previous formulation of this corollary attached a vacuous `True` conjunct in
+place of the `1/3` density claim; that placeholder is removed — the real `1/3`
+content is now the axiom `conder_no_threshold` and the theorem
+`conder_no_threshold_le`.)
 -/
 
 /--
-**Improved bound: ε = 1/3:**
-With 3 colors, each color class has ~1/3 of edges but no C₆. The conclusion only
-needs existence of a C₆-free subgraph, which Chung's construction already gives.
--/
-theorem conder_better_bound (n : ℕ) (hn : n ≥ 3) :
-    ∃ H : SimpleGraph (Fin (2^n)),
-      -- H has ~1/3 of the edges (even denser than Chung's 1/4)
-      True ∧
-      -- H has no C₆
-      ¬HasC6 H := by
-  -- Conder's 3-coloring improves Chung's 4-coloring, but the conclusion
-  -- only needs existence of a C₆-free subgraph, which Chung already gives.
-  obtain ⟨H, h⟩ := chung_counterexample n hn
-  exact ⟨H, trivial, h⟩
+**Conder's ε = 1/3 counterexample (existence form).**
+Conder's `3`-colouring supplies, for every `n ≥ 3`, a `C₆`-free subgraph of `Qₙ`
+(one of the three colour classes, each carrying `~1/3` of all edges).  The bare
+existence statement carries no edge-count data, so it follows from the empty-graph
+witness already used for Chung; the `1/3` density content is the separate axiom
+`conder_no_threshold`. -/
+theorem conder_counterexample (n : ℕ) (hn : n ≥ 3) :
+    ∃ H : SimpleGraph (Fin (2^n)), ¬HasC6 H :=
+  chung_c6free n hn
 
 /-
 ## Part VIII: Erdős's Generalization

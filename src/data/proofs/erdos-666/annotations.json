@@ -240,7 +240,7 @@
     },
     "type": "concept",
     "title": "Chung's Partition (1992)",
-    "content": "**chung_no_threshold / chung_c6free:**\n\nFor n ≥ 3, Qₙ can be edge-partitioned into 4 subgraphs H₁, H₂, H₃, H₄ such that:\n1. Each Hᵢ is a subgraph of Qₙ\n2. The Hᵢ partition Qₙ's edges (disjoint union)\n3. Each Hᵢ is C₆-free\n\nEach part has approximately n·2ⁿ⁻¹/4 edges - a 1/4 fraction. This is captured by two axioms: chung_no_threshold (no threshold N forces C₆ in every (1/4)-dense subgraph) supplies the disproof, and chung_c6free (a C₆-free subgraph exists for n ≥ 3) supplies the corollaries. The split avoids a Mathlib v4.26 elaborator stack overflow on the bundled ∃ H, dense ∧ ¬C₆ form.",
+    "content": "**chung_no_threshold / chung_c6free:**\n\nFor n ≥ 3, Qₙ can be edge-partitioned into 4 subgraphs H₁, H₂, H₃, H₄ such that:\n1. Each Hᵢ is a subgraph of Qₙ\n2. The Hᵢ partition Qₙ's edges (disjoint union)\n3. Each Hᵢ is C₆-free\n\nEach part has approximately n·2ⁿ⁻¹/4 edges — a 1/4 fraction, giving the ε = 1/4 counterexample. Neither statement is an axiom here: chung_no_threshold (no threshold N forces C₆ in every (1/4)-dense subgraph) is DERIVED from the sharper Conder axiom conder_no_threshold (¬ ConjectureAt 1/3) by monotonicity, and chung_c6free (a C₆-free subgraph exists for n ≥ 3) is proved outright from the empty subgraph ⊥. The single deep axiom is conder_no_threshold; the ¬ ConjectureAt arrow form avoids a Mathlib v4.26 elaborator stack overflow on the bundled ∃ H, dense ∧ ¬C₆ form.",
     "mathContext": "Published in J. Graph Theory. The construction is explicit and algebraic, using properties of binary strings.",
     "significance": "key",
     "relatedConcepts": [
@@ -327,13 +327,13 @@
     "id": "ann-666-conder-bound",
     "proofId": "erdos-666",
     "range": {
-      "startLine": 220,
-      "endLine": 231
+      "startLine": 323,
+      "endLine": 354
     },
     "type": "concept",
     "title": "ε = 1/3 Counterexample",
-    "content": "**conder_better_bound:**\n\nFor n ≥ 3, there exists H ⊆ Qₙ with ~1/3 of all edges and no C₆.\n\nThis is a stronger counterexample than Chung's ε = 1/4.\n\n**Open question:** Is 3 optimal, or can we do even better with 2 colors?",
-    "mathContext": "The gap between ε = 1/3 and ε = 1/2 remains unexplored.",
+    "content": "**Conder (1993), ε = 1/3 — sharpest refutation.** conder_no_threshold : ¬ ConjectureAt (1/3) axiomatizes Conder's 3-edge-colouring (each colour class C₄,C₆-free, carrying ~1/3 of the edges), giving a (1/3)-dense C₆-free subgraph for every large n. conder_no_threshold_le then refutes the conjecture on the whole interval ε ≤ 1/3, strictly extending Chung's ε ≤ 1/4. Chung's own 1/4 result is recovered as the corollary chung_no_threshold by monotonicity, so the file needs only this one deep axiom. (A previous version stated a vacuous True-placeholder existence theorem here; the real 1/3 density content lives in the axiom + interval theorem.)",
+    "mathContext": "The refutation is now sharp on (0, 1/3]; the gap between ε = 1/3 and the trivial ε = 1/2 barrier remains unexplored.",
     "significance": "key",
     "relatedConcepts": [
       "Better bound",
