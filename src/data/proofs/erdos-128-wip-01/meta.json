@@ -94,20 +94,44 @@
   },
   "sections": [
     {
-      "id": "objects",
-      "title": "The Erdős #128 Objects (re-declared)",
-      "summary": "Graph, edgeCount (classical decidability), induce, hasTriangle, triangleFree.",
+      "id": "problem-framing",
+      "title": "Problem Statement and Scaffold Context",
+      "summary": "Docstring framing Erdős #128 ($250 OPEN: does > n²/50 edges on every induced subgraph on ≥ ⌊n/2⌋ vertices force a triangle?, with 1/50 conjectured optimal via C₅ blow-ups) and the known partial results. Explains why the file is self-contained — the scaffold Erdos128Problem.lean fails to build (missing DecidablePred, trailing docstrings) — and opens Classical for the edge-count filter's decidability.",
       "startLine": 1,
-      "endLine": 73,
-      "mathContext": "Re-declared because the scaffold fails to build (missing DecidablePred, trailing docstrings)."
+      "endLine": 47,
+      "mathContext": "Erdős #128: uniform local density > n²/50 on every ⌊n/2⌋-subgraph ⟹ triangle? (open); C₅ blow-ups are triangle-free at density ≈ 1/5 > 1/50."
     },
     {
-      "id": "monotonicity",
-      "title": "Hereditary Triangle-Freeness and Monotone Edge Count",
-      "summary": "hasTriangle_induce, triangleFree_induce, edgeCount_induce_le, triangleFree_of_no_edges.",
-      "startLine": 74,
+      "id": "graph-edgecount",
+      "title": "Graph Object and Edge Count",
+      "summary": "The Graph structure on Fin n (symmetric, irreflexive adjacency) and the noncomputable edgeCount = the cardinality of the filtered set of ordered pairs {(u,v) : u < v ∧ G.adj u v}. Re-declared with classical decidability for the filter predicate.",
+      "startLine": 48,
+      "endLine": 57,
+      "mathContext": "edgeCount G = #{(u,v) ∈ univ × univ : u < v ∧ G.adj u v}."
+    },
+    {
+      "id": "induce-triangle-defs",
+      "title": "Induced Subgraph, Triangles, and Triangle-Freeness",
+      "summary": "induce S restricts adjacency to (u ∈ S ∧ v ∈ S ∧ G.adj u v), preserving symmetry and irreflexivity; hasTriangle asserts three mutually distinct, mutually adjacent vertices; triangleFree is its negation. These are the objects the monotonicity theorems act on.",
+      "startLine": 59,
+      "endLine": 71,
+      "mathContext": "(G.induce S).adj u v ↔ u ∈ S ∧ v ∈ S ∧ G.adj u v; hasTriangle ↔ ∃ u≠v≠w all adjacent; triangleFree ↔ ¬hasTriangle."
+    },
+    {
+      "id": "hereditary",
+      "title": "Hereditary Triangle-Freeness",
+      "summary": "hasTriangle_induce: an induced triangle lifts to an ambient triangle by projecting the third component of the induced adjacency (a1.2.2 etc.). triangleFree_induce is its contrapositive — triangle-freeness passes to every induced subgraph, exactly why the extremal C₅-blow-up witnesses stay triangle-free at every scale.",
+      "startLine": 73,
+      "endLine": 84,
+      "mathContext": "(G.induce S).hasTriangle → G.hasTriangle; contrapositive: G.triangleFree → (G.induce S).triangleFree."
+    },
+    {
+      "id": "monotone-basecase",
+      "title": "Monotone Edge Count, Base Case, and Significance",
+      "summary": "edgeCount_induce_le: the induced edge set is a subset of the ambient edge set (same projection), so Finset.card_le_card gives (G.induce S).edgeCount ≤ G.edgeCount. triangleFree_of_no_edges: an edgeless graph is triangle-free. The closing significance docstring situates these two opposing monotonicities as the structural bedrock of any attack on the optimal 1/50 constant.",
+      "startLine": 86,
       "endLine": 117,
-      "mathContext": "Induced adjacency entails ambient adjacency; induced edge set is a subset; Finset.card_le_card."
+      "mathContext": "(G.induce S).edgeCount ≤ G.edgeCount via Finset.card_le_card; (∀ u v, ¬G.adj u v) ⟹ G.triangleFree."
     }
   ],
   "conclusion": {
