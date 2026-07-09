@@ -78,6 +78,14 @@
   },
   "sections": [
     {
+      "id": "module-header-and-setup",
+      "title": "Module Header, Imports & Setup",
+      "startLine": 1,
+      "endLine": 45,
+      "mathContext": "$\\cos x \\pm \\cos y$, $\\sin x \\pm \\sin y$ factored through the mean $\\tfrac{x+y}{2}$ and half-difference $\\tfrac{x-y}{2}$; triangle payoff $\\sin A+\\sin B+\\sin C = 4\\cos\\tfrac{A}{2}\\cos\\tfrac{B}{2}\\cos\\tfrac{C}{2}$.",
+      "summary": "The module docstring lays out the four sum-to-product (prosthaphaeresis) identities as the converse of the Werner product-to-sum family (cf. triangle-angle-sum-oq-04/oq-05), their derivation from the addition formulas via the mean/half-difference substitution, and the two substantive triangle half-angle product identities Mathlib does not record (proved in the general a+b+c=π/2 form, then specialised). It also states the verification status (0 sorries, 0 axioms, no native_decide). Imports pull in Trigonometric.Basic and the linear_combination tactic; `open Real` and `namespace TriangleAngleSumOQ06` establish the naming context shared by every result."
+    },
+    {
       "id": "sum-to-product",
       "title": "The Four Sum-to-Product (Prosthaphaeresis) Identities",
       "startLine": 46,
@@ -97,7 +105,7 @@
       "id": "worked-instance",
       "title": "Worked Instance",
       "startLine": 163,
-      "endLine": 173,
+      "endLine": 175,
       "mathContext": "$3\\sin\\tfrac{\\pi}{3} = 4\\cos^3\\tfrac{\\pi}{6}$.",
       "summary": "The equilateral triangle (A = B = C = π/3) instance of triangle_sin_sum, obtained by rewriting (π/3)/2 = π/6 — exhibiting the identity concretely without evaluating the surd values sin(π/3) = cos(π/6) = √3/2."
     }
