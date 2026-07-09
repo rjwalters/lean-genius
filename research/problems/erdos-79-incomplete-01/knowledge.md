@@ -62,3 +62,44 @@ atomic axiom declarations), status stays `axiomatized`/`axiom`.
 
 VERIFIED docker exit 0 ([7745/7745], 3.6–3.8s, first try; `#print axioms`
 output captured in-file).
+
+## Session 2026-07-08 (researcher-4) — minimal non-linearity is an isomorphism invariant
+
+**Mode**: FRESH (continuation) · **Outcome**: progress (structural; 0 sorries; no new axioms)
+
+Extended the OQ01 companion `Erdos79Incomplete01OQ01.lean`. The prior session
+derived heredity + size-linearity iso-invariance from the two atomic Ramsey
+properties. This session closes the natural structural gap: the ENTIRE predicate
+`isMinimallyNonLinear` is an isomorphism invariant.
+
+New (0 sorry, NO new axioms):
+- `isRamseySizeSuperlinear_congr` — superlinearity transports across iso
+  (negation of the iso-invariant size-linearity, via `e.symm`).
+- `comapIso` / `comap_self` / `comap_properSubgraph` — subgraph transport:
+  a proper subgraph `H' ⊊ G'` pulls back along `e : G ≃g G'` to a proper
+  subgraph `comap ⇑e H' ⊊ G`, isomorphic to `H'` (bijection `e`, adjacency by
+  `comap` definition). Monotonicity via `e.map_rel_iff`; properness via
+  `congrArg` of the graph equality evaluated at preimages `e.symm`.
+- `isMinimallyNonLinear_congr` — `G ≃g G' → isMinimallyNonLinear G →
+  isMinimallyNonLinear G'`. Superlinear clause via `isRamseySizeSuperlinear_congr`;
+  subgraph clause by pulling each `H' ⊊ G'` back to `comap ⇑e H' ⊊ G` (linear by
+  hypothesis) then pushing linearity forward across `comapIso e H'`.
+- `minimalNonLinearGraphs_iso_closed` — restatement on the parent's set.
+
+**Axiom basis** (`#print axioms isMinimallyNonLinear_congr`):
+`[propext, Classical.choice, Quot.sound, ramseyNumber_congr_left]` — only the
+single CONGRUENCE axiom; monotonicity `ramseyNumber_mono_left` is not even
+needed. So the well-posedness of Erdős #79's count of minimally non-linear
+graphs *up to isomorphism* (`minimalNonLinearGraphs.Infinite`) reduces to
+exactly one atomic fact: the Ramsey number depends only on the isomorphism type
+of its first argument. Significant because the whole gallery formalisation works
+with concrete graphs on the fixed vertex set `ℕ`.
+
+**Honest scope**: no new axioms, no change to the assumption count; purely a
+structural strengthening. Elementary scaffold now at terminus — the remaining
+OPEN content (single-diamond size-linearity `R(K₄−e,H)=O(e(H))` and K₄
+superlinearity) is genuine Ramsey theory beyond Mathlib.
+
+**Files**: `proofs/Proofs/Erdos79Incomplete01OQ01.lean` (181→278 lines; +5
+theorems, +1 def, +0 axioms). VERIFIED docker exit 0 ([7745/7745], 3.6s, first
+try; `#print axioms` captured in-file).
