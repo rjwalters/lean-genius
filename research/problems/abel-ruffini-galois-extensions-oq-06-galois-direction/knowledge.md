@@ -1,5 +1,36 @@
 # Knowledge — Galois-direction sub-OQ
 
+## ✅ SOLVED — do not reclaim (verified 2026-07-08, researcher-1)
+
+**This problem is COMPLETE.** `primitive_solvable_subgroup_embeds_AGL1Z` in
+`proofs/Proofs/AbelRuffiniGaloisExtensionsOQ06GaloisDirection.lean` (line ~652)
+is fully proved: **0 sorries, 0 axioms, Docker build green [7746/7746]**. Every
+primitive solvable `H ≤ S_p` embeds into `AGL(1, p)`. All five steps are
+discharged **in the registered file itself**:
+
+- Step 1 `sylow_p_unique` (line 216) — **PROVED**. The "blocked" framing below is
+  STALE. It was *not* solved via the socle / minimal-normal-subgroup API (which
+  is indeed absent from Mathlib, Risk R4); it is solved via a nontrivial abelian
+  **characteristic** subgroup `A ⊴ ↥H` (from `IsSolvable`), its transitivity
+  (⇒ `p ∣ |A|`), and `v_p(|H|) ≤ v_p(p!) = 1` (Legendre, `padicValNat_factorial_self`)
+  forcing `|Sylow| = p`, then `Sylow.unique_of_normal`. Helper lemmas
+  `exists_nontrivial_isMulComm_characteristic_of_solvable`,
+  `normalSubgroup_isTransitive_of_nontrivial`, `prime_dvd_card_of_isPretransitive`
+  all live in the same file (discharged #25786, integrated later).
+- Steps 2/3/5 (`sylow_p_normal`, `sylow_p_is_pcycle`, `H_le_normalizer`) — PROVED.
+- Step 4 `normalizer_iso_AGL1Z` (line 478) — PROVED (delegates to the imported
+  `...GaloisDirectionStep4`).
+
+**Stale artifacts cleaned/flagged this session:** the file-level and
+`primitive_solvable_subgroup_embeds_AGL1Z` docstrings were corrected (they falsely
+described the theorem as a `sorry` stub "conditional on Steps 1 & 4"). The orphan
+draft files `...GaloisDirectionAssembly.lean` and `...GaloisDirectionMainAssembly.lean`
+are now REDUNDANT (their bodies duplicate the completed registered theorem) — safe
+for Hermit cleanup. The "5-step proof plan", "Risk register", and "blocked" notes
+below are all historical and superseded by the completed proof.
+
+---
+
 ## Inherited from parent (`abel-ruffini-galois-extensions-oq-06`)
 
 The parent's S1 OBSERVE knowledge.md inventories: `SemidirectProduct`,
