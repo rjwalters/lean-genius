@@ -553,3 +553,68 @@ determined") because the set `S` appears only in the `Nonempty` argument, not th
 bind it to a `have hne : (… : Set ℕ).Nonempty` first. Docker daemon went down mid-session
 (host issue); the committed file is the exact content verified at exit 0 before a
 confirmatory `#print axioms` rebuild could run, so those `#print` lines were dropped.
+
+## Session 2026-07-09 (researcher-2) — ACT: Part II↔III bridge made an exact equivalence + colMin idempotence
+
+**Mode**: BUILD (RICH tier, score 42). Docker BOTH failed (transient containerd mount
+`read-only file system`, then meta.db `input/output error` — the documented host infra
+break); host olean cache was mid-rebuild by a fleet process (Ring/Basic.olean briefly
+missing) then healthy. **Verified offline** `LAKE_UNSAFE=1 ./bin/lake env lean
+Proofs/CollatzStructuredOQ02OQ03.lean` → clean (0 errors/warnings), and `#print axioms`
+on all four new theorems → `[propext, Classical.choice, Quot.sound]` only (no `tao_2019`,
+no `sorryAx`, no `Lean.ofReduceBool`).
+**Outcome**: progress — closes a real logical gap (converse of the Part II↔III bridge),
+axiom-free.
+
+### What I Did
+The bridge `attainsBelow_colMin_lt : AttainsBelow n → colMin n < n` was **one-directional**
+since Part III was written; the converse was never stated. Added the equivalence and its
+structural consequences (all in Part III, right after `attainsBelow_colMin_lt`):
+- `colMin_lt_iff_attainsBelow : colMin n < n ↔ AttainsBelow n`. The new (mp) direction:
+  `colMin n` is attained at some step `k` (`colMin_mem_orbit`); a strict drop below `n`
+  cannot happen at `k = 0` (which returns `n`), so `k > 0` and `⟨k, hkpos, hk ▸ h⟩` is the
+  `AttainsBelow` witness. So Tao's `Col_min < n` drop and the finite-stopping-time event
+  `AttainsBelow` are literally the **same predicate**.
+- `colMin_eq_self_iff : colMin n = n ↔ ¬ AttainsBelow n` — since `colMin n ≤ n` always
+  (`colMin_le_self`), equality means "never drops below itself" (a *valley*). `omega` off
+  the iff.
+- `colMin_eq_self_iff_forall_le : colMin n = n ↔ ∀ k, n ≤ collatz^[k] n` — the valley
+  condition on raw orbit values (via `colMin_le_iterate` + `colMin_mem_orbit`).
+- `colMin_idempotent : colMin (colMin n) = colMin n` — the orbit minimum is itself a valley
+  (`colMin_le_self` for `≤`; `colMin_le_colMin_iterate n k` rewritten by `hk : collatz^[k]n
+  = colMin n` for `≥`). Applying `colMin` twice adds nothing; `colMin n` is a fixed point.
+
+### Key Findings
+- The equivalence pins down the exact meaning of the elementary work: every Part II residue
+  family (evens, 1+4ℕ, 3+16ℕ, …, the 115/128 floor) proves `AttainsBelow`, which is now
+  *definitionally* `colMin < n` — the density floor is a floor on `{n : colMin n < n}`, i.e.
+  directly on Tao's `Col_min` sub-1 event at `f n = n`, not merely a sufficient condition.
+- **Valleys under Collatz.** `colMin n = n ↔ ¬AttainsBelow n` frames a self-minimal number
+  as a *record low never beaten*. `colMin_pow_two_eq_one` (powers of two → 1) shows they are
+  not valleys; under the Collatz conjecture the only positive valley is `1`. Idempotence says
+  the orbit-min operator lands on a valley in one shot: `colMin` is a retraction onto the
+  valley reached from `n`.
+
+### Honest status
+- Not new Collatz *mathematics* and NOT a density-floor push (floor unchanged at 115/128,
+  `tao_2019` stays BLOCKED). Value: completes the Part II↔III correspondence from one-way
+  bridge to an exact `iff`, and adds the idempotence/valley closure that was missing from the
+  otherwise-saturated colMin section. Low-LOC, load-bearing (the `iff` is the precise
+  statement the density work has been approximating).
+
+### Files Modified
+- proofs/Proofs/CollatzStructuredOQ02OQ03.lean (+4 thm 68→72, 1852→1908 lines; 1 axiom, 0 sorries)
+- src/data/proofs/collatz-structured-oq-02-oq-03/meta.json (counts 68→72 / 1852→1908, +1 highlight)
+- src/data/research/problems/collatz-structured-oq-02-oq-03.json (leanFiles counts synced 64/1802→72/1908)
+
+### GOTCHA / process note
+- Both docker paths dead this cycle (mount + meta.db I/O); host `.lake` is a symlink to the
+  MAIN repo's `.lake` and was briefly missing `Ring/Basic.olean` because a fleet process was
+  rebuilding oleans in place — retrying offline after ~1 min succeeded. `lean` (no `-o`)
+  writes no olean, so `#print axioms` must be appended to the file itself and elaborated
+  (then `git checkout --` to restore); a separate importing file fails with "olean does not
+  exist". Committed the .lean BEFORE building (worktree-eater guard).
+
+### Next Steps (unchanged, genuinely hard)
+- Terras natural-density-1 COUNT (fraction of determined-drop residues mod 2^b → 1) remains
+  the only real lever; `tao_2019` BLOCKED; dyadic floors past 115/128 diminishing returns.
