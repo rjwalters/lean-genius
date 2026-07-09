@@ -1905,4 +1905,90 @@ theorem autoDropCert_colMin_lt {b r : ℕ} (h : autoDropCert b r = true)
     {n : ℕ} (hn : n % 2 ^ b = r) : colMin n < n :=
   attainsBelow_colMin_lt (autoDropCert_attainsBelow h hn)
 
+/-! ## Part VIII: Parity forcing — the certificate *is* the orbit's parity sequence
+
+`affOrbit_realize` (Part V) proves only the **endpoint** of a certified window: after
+`v.length` steps the iterate of `c·m + d` is the realized affine value.  It says nothing
+about the *interior* parities — a priori a parity vector could disagree with the real
+Collatz orbit at some intermediate step yet still land on the correct endpoint.  The
+lemmas below close that gap (the standing "forcing direction" open thread): for a valid
+certificate `AffValid v c d`, the genuine Collatz orbit of **every** class member
+`c·m + d` exhibits exactly the recorded parity bit `v[i]` at each step `i < v.length`.
+
+So the Terras parity vector is not a mere bookkeeping fiction that happens to realize the
+drop — it is a faithful transcript of the orbit's own parity sequence, and that sequence
+is *residue-determined*: identical for every `m`.  This is the converse companion to the
+realization theorem, tying the certificate to the actual dynamics. -/
+
+/-- **Parity forcing.**  Along the window certified by `AffValid v c d`, the real Collatz
+orbit of every class member `c·m + d` has parity exactly the recorded bit `v[i]` at each
+step `i < v.length`: `collatz^[i] (c·m + d) % 2 = (v[i]).toNat`.  The certificate's
+asserted parities are the orbit's actual parities, uniformly in `m`.  (`affOrbit_realize`
+gives the endpoint; this gives every interior step, so the two together say the certified
+window is a completely faithful description of the residue class's dynamics.) -/
+theorem affValid_orbit_parity : ∀ {v : List Bool} {c d : ℕ}, AffValid v c d →
+    ∀ (m i : ℕ) (hi : i < v.length),
+      collatz^[i] (c * m + d) % 2 = (v[i]'hi).toNat := by
+  intro v c d hv
+  induction hv with
+  | nil => intro m i hi; simp only [List.length_nil] at hi; omega
+  | @odd v c d hc hd _ ih =>
+    intro m i hi
+    obtain ⟨c', rfl⟩ : ∃ c', c = 2 * c' := ⟨c / 2, by omega⟩
+    have hcm : 2 * c' * m = 2 * (c' * m) := by ring
+    cases i with
+    | zero =>
+      simp only [Function.iterate_zero, id_eq, List.getElem_cons_zero, Bool.toNat_true]
+      omega
+    | succ j =>
+      have hodd : (2 * c' * m + d) % 2 = 1 := by omega
+      have hstep : collatz (2 * c' * m + d) = (3 * (2 * c')) * m + (3 * d + 1) := by
+        rw [collatz_odd hodd]; ring
+      have hj : j < v.length := by simp only [List.length_cons] at hi; omega
+      rw [Function.iterate_succ_apply, hstep]
+      simpa [List.getElem_cons_succ] using ih m j hj
+  | @even v c d hc hd _ ih =>
+    intro m i hi
+    obtain ⟨c', rfl⟩ : ∃ c', c = 2 * c' := ⟨c / 2, by omega⟩
+    obtain ⟨d', rfl⟩ : ∃ d', d = 2 * d' := ⟨d / 2, by omega⟩
+    have hcm : 2 * c' * m = 2 * (c' * m) := by ring
+    cases i with
+    | zero =>
+      simp only [Function.iterate_zero, id_eq, List.getElem_cons_zero, Bool.toNat_false]
+      omega
+    | succ j =>
+      have he : (2 * c' * m + 2 * d') % 2 = 0 := by omega
+      have hstep : collatz (2 * c' * m + 2 * d') = c' * m + d' := by
+        rw [collatz_even he]; omega
+      have hj : j < v.length := by simp only [List.length_cons] at hi; omega
+      rw [Function.iterate_succ_apply, hstep]
+      have key := ih m j hj
+      rw [show (2 * c') / 2 = c' from by omega, show (2 * d') / 2 = d' from by omega] at key
+      simpa [List.getElem_cons_succ] using key
+
+/-- **Residue-determined parity.**  Since the forced parities depend only on the affine
+class `(c, d)` and not on the member, the Collatz orbit's parity at every certified step
+is the same for all `m`: the window's parity sequence is genuinely residue-determined,
+which is the structural content that makes the whole Terras approach work. -/
+theorem affValid_parity_indep {v : List Bool} {c d : ℕ} (hv : AffValid v c d)
+    (m m' i : ℕ) (hi : i < v.length) :
+    collatz^[i] (c * m + d) % 2 = collatz^[i] (c * m' + d) % 2 := by
+  rw [affValid_orbit_parity hv m i hi, affValid_orbit_parity hv m' i hi]
+
+/-- **The auto-derived vector is a faithful orbit transcript.**  For a power-of-two
+modulus `2^b`, the internally computed parity vector `deriveVec (2b+1) (2^b) r` is exactly
+the real Collatz parity sequence of every `n ≡ r (mod 2^b)` over its window — no drop
+hypothesis needed.  This closes the loop between the residue-determined Terras vector and
+the actual orbit (the standing "prove the ACTUAL parity sequence equals `v`" thread): the
+turnkey engine's derived certificate does not merely *land* the class below itself, it
+predicts each orbit parity along the way. -/
+theorem deriveVec_orbit_parity {b r : ℕ} {n : ℕ} (hn : n % 2 ^ b = r) (i : ℕ)
+    (hi : i < (deriveVec (2 * b + 1) (2 ^ b) r).length) :
+    collatz^[i] n % 2 = ((deriveVec (2 * b + 1) (2 ^ b) r)[i]'hi).toNat := by
+  have hval : AffValid (deriveVec (2 * b + 1) (2 ^ b) r) (2 ^ b) r :=
+    affValidB_sound (affValidB_deriveVec _ _ _)
+  obtain ⟨m, rfl⟩ : ∃ m, n = 2 ^ b * m + r :=
+    ⟨n / 2 ^ b, by have := Nat.div_add_mod n (2 ^ b); omega⟩
+  exact affValid_orbit_parity hval m i hi
+
 end CollatzStructuredOQ02OQ03
