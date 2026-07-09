@@ -449,6 +449,40 @@ theorem one_le_T (n r : ℕ) (hr : 1 ≤ r) : 1 ≤ T n r := by
     _ ≤ _ := Finset.le_sup hmem
 
 /--
+**When `r` exceeds the ground set, the forbidden intersection size is
+unattainable.** Every `A, B ⊆ [n]` satisfy `|A ∩ B| ≤ |A| ≤ n < r`, so the
+entire powerset `2^{[n]}` is (vacuously) an `r`-avoiding family. -/
+theorem full_powerset_avoids_r_of_lt (n r : ℕ) (h : n < r) :
+    avoidsRIntersection r ((Finset.range n).powerset) := by
+  intro A B hA _hB
+  rw [Finset.mem_powerset] at hA
+  have hle : (A ∩ B).card ≤ n :=
+    calc (A ∩ B).card ≤ A.card := Finset.card_le_card Finset.inter_subset_left
+      _ ≤ (Finset.range n).card := Finset.card_le_card hA
+      _ = n := Finset.card_range n
+  omega
+
+/--
+**Exact value `T(n,r) = 2ⁿ` for `r > n`.**
+Once the forbidden intersection size `r` exceeds the ground-set size `n`, no two
+subsets of `[n]` can meet in exactly `r` points (`|A ∩ B| ≤ n < r`), so the whole
+powerset is a valid `r`-avoiding family of size `2ⁿ`. Together with the ceiling
+`T_le_pow`, this pins the value exactly. This is the degenerate large-`r`
+boundary of `T`, complementing the trivial small case `T(n,0) = 2^{n-1}`.
+-/
+theorem T_eq_pow_of_lt (n r : ℕ) (h : n < r) : T n r = 2 ^ n := by
+  refine le_antisymm (T_le_pow n r) ?_
+  unfold T
+  have hmem : (Finset.range n).powerset ∈
+      ((Finset.range n).powerset.powerset).filter (avoidsRIntersection r) := by
+    rw [Finset.mem_filter]
+    exact ⟨Finset.mem_powerset.mpr (Finset.Subset.refl _),
+      full_powerset_avoids_r_of_lt n r h⟩
+  calc 2 ^ n = ((Finset.range n).powerset).card := by
+        rw [Finset.card_powerset, Finset.card_range]
+    _ ≤ _ := Finset.le_sup hmem
+
+/--
 **The `r = 1` large-set family is contained in `franklFurediOdd n 1`.**
 `largeSetsFamily n` filters on `|A| > (n+1)/2`, exactly the "large" disjunct of
 `franklFurediOdd n 1` (whose threshold `(n+1)/2` coincides). So the general-`r`
