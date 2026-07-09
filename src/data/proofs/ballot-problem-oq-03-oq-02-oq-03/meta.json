@@ -141,6 +141,11 @@
       "targetId": "ballot-problem-oq-03-oq-02",
       "relationship": "extends",
       "description": "Parent: the fully-proved unweighted general r×r LGV determinant lemma (lgv_lemma_rxr). This entry extends it to weighted/generating-function paths, proving the algebraic core over an arbitrary commutative ring and recovering the parent's counting determinant as the weight-1 case."
+    },
+    {
+      "targetId": "ballot-problem-oq-03-oq-02-oq-01",
+      "relationship": "sibling — builds on this core",
+      "description": "Sibling weighted-LGV entry proving multiplicativity of the LGV determinant under path-system composition. It explicitly builds on this entry's algebraic core (det_matrix_eq_signed_family_sum): the signed generating-function expansion proved here is the determinant identity whose product structure that entry exploits to compose path systems. The link is bidirectional — that entry already names this one as its weighted algebraic-core sibling."
     }
   ],
   "leanFile": {
