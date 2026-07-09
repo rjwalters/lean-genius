@@ -1,0 +1,121 @@
+{
+  "slug": "erdos-1-wip-01-oq-04",
+  "title": "Non-superincreasing DSS sets: Can the structural theory be extended to characterize all DSS sets, not just superincreasing ones?",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Characterize the family $\\mathcal{F}_{\\mathrm{DSS}} = \\{A \\subset \\mathbb{N} : \\forall S, T \\subseteq A,\\ \\sum_{s \\in S} s = \\sum_{t \\in T} t \\Rightarrow S = T\\}$ via an intrinsic combinatorial predicate $P(A)$ satisfying $P(A) \\iff A \\in \\mathcal{F}_{\\mathrm{DSS}}$, where $P$ is not merely the superincreasing condition $a_k > \\sum_{j<k} a_j$ nor a restatement of subset-sum injectivity.",
+    "plain": "A set of positive integers has distinct subset sums (DSS) when no two different subsets share a total. Superincreasing sets (each element bigger than the sum of the smaller ones, like 1,2,4,8) always have DSS, but the converse fails: {6,9,11,12,13} has DSS yet is not superincreasing. Can the structural theory be extended to characterize all DSS sets, through combinatorial properties beyond the sum bound and positivity, without directly invoking the subset-sum injectivity definition?",
+    "whyMatters": [
+      "The Erdős distinct-subset-sum problem carries a $500 prize and asks whether max(A) >= c*2^n for an absolute constant c; a real characterization of DSS sets would give a handle on the extremal (non-superincreasing) cases.",
+      "Optimal DSS constructions (Conway-Guy, max ~ 0.22*2^n) and the far-from-optimal powers of 2 (max = 2^(n-1)) are both superincreasing, so superincreasing-ness alone cannot explain optimality.",
+      "For n >= 4 the extremal maximum drops below 2^(n-1), so extremal DSS sets need not be superincreasing, limiting any argument that relies solely on the superincreasing extension lemma.",
+      "A verifiable sufficient class strictly larger than superincreasing would be a cleaner formalization target than raw subset-sum injectivity."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Superincreasing extension is sufficient for DSS (dss_superincreasing_extend, erdos-1-wip-01, verified).",
+      "Every DSS set consists of positive integers and cannot contain 0 (dss_elements_pos, not_dss_of_mem_zero).",
+      "DSS is hereditary and every singleton qualifies, so F_DSS is an independence system (dss_subset, dss_singleton).",
+      "Pigeonhole sum bound: 2^n <= sum(A) + 1, i.e. sum(A) >= 2^n - 1 (dss_sum_lower_bound, dss_sum_ge_pow_sub_one).",
+      "Counting bound max(A) >= (2^n - 1)/n and the Dubroff-Fox-Xu entropy bound max(A) >= sqrt(2/pi)*2^n/sqrt(n) (erdos-1 cluster)."
+    ],
+    "open": [
+      "Whether an intrinsic combinatorial predicate (not subset-sum injectivity restated) characterizes F_DSS exactly.",
+      "Whether a sufficient condition strictly weaker than superincreasing still certifies DSS and captures examples like {6,9,11,12,13}.",
+      "Whether the DSS independence system has additional axioms beyond hereditary, positivity, and the sum bound.",
+      "Whether such a characterization would sharpen the max-element bound toward the Erdős constant c."
+    ],
+    "goal": "OBSERVE-phase: catalogue small non-superincreasing DSS sets and formalize a candidate sufficient condition Q strictly weaker than superincreasing, proving Q(A) -> hasDistinctSubsetSums A together with a non-superincreasing witness satisfying Q."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-07-09T00:00:00Z",
+    "iteration": 1,
+    "focus": "Understand which combinatorial properties distinguish DSS from non-DSS sets beyond superincreasing, positivity, and the sum bound.",
+    "blockers": [],
+    "nextAction": "Enumerate small non-superincreasing DSS sets (e.g. {6,9,11,12,13}) and propose a relaxed sufficient predicate Q to formalize alongside a witness.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Enumerate n<=6 non-superincreasing DSS sets using Finset.powerset evaluation.",
+      "Draft a bounded-deficit relaxation of the superincreasing predicate and test it against enumerated sets.",
+      "Attempt a Lean lemma Q(A) -> hasDistinctSubsetSums A generalizing dss_superincreasing_extend.",
+      "Study F_DSS as an independence system to check for forbidden-configuration axioms."
+    ],
+    "markdown": "# Knowledge Base: erdos-1-wip-01-oq-04\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\nDSS = distinct subset sums (Erdős Problem #1). Superincreasing implies DSS but not conversely; {6,9,11,12,13} is a non-superincreasing DSS set. We seek an intrinsic combinatorial characterization (or a strictly-weaker sufficient condition) that does not restate subset-sum injectivity.\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "erdos",
+    "additive-combinatorics",
+    "subset-sums",
+    "extremal-combinatorics",
+    "structural-theory",
+    "combinatorics",
+    "number-theory"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-1-wip-01",
+    "erdos-1-wip-01-oq-02",
+    "erdos-1-wip-01-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": [
+      "Mathlib.Data.Finset.Powerset",
+      "Mathlib.Algebra.BigOperators.Basic",
+      "Mathlib.Data.Nat.Log"
+    ]
+  },
+  "started": "2026-07-09T00:00:00Z",
+  "significance": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1Wip01.lean",
+      "filename": "Erdos1Wip01.lean",
+      "lineCount": 320,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1Wip01.lean"
+    },
+    {
+      "path": "Proofs/Erdos1Wip01OQ02.lean",
+      "filename": "Erdos1Wip01OQ02.lean",
+      "lineCount": 252,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1Wip01OQ02.lean"
+    },
+    {
+      "path": "Proofs/Erdos1Wip01OQ03.lean",
+      "filename": "Erdos1Wip01OQ03.lean",
+      "lineCount": 167,
+      "theoremCount": 18,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1Wip01OQ03.lean"
+    }
+  ]
+}

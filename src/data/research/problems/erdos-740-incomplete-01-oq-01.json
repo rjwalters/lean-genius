@@ -1,0 +1,84 @@
+{
+  "slug": "erdos-740-incomplete-01-oq-01",
+  "title": "Formalize Rödl's theorem (𝔪 = ℵ₀, r = 3): a graph of chromatic number ℵ₀ contains a triangle-free subgraph of chromatic number ℵ₀ — the genuine positive result of #740.",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\forall\\, G,\\ \\chi(G) = \\aleph_0 \\implies \\exists\\, H \\subseteq G,\\ (\\text{$H$ triangle-free}) \\wedge \\chi(H) = \\aleph_0",
+    "plain": "Every simple graph whose chromatic number is countably infinite (ℵ₀) contains a triangle-free subgraph whose chromatic number is still ℵ₀. This is Rödl's theorem, the base case (𝔪 = ℵ₀, r = 3) of Erdős Problem #740, and the positive counterpart to the negative bipartite (r = ∞) boundary case settled in the parent gallery entry.",
+    "whyMatters": [
+      "It is the genuine positive content of Erdős #740, unlike the parent entry which only settles the negative r = ∞ boundary case.",
+      "Formalizing it turns the gallery's coverage of #740 from boundary-only into engagement with the hard direction.",
+      "It exercises Mathlib's infinite-graph and cardinal-valued chromatic-number machinery on a real combinatorial construction rather than an elementary bound.",
+      "It builds reusable infrastructure (triangle-freeness, cardinal-valued χ, subgraph extraction) for the wider Erdős–Hajnal program."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Bipartite (r = ∞) case of #740 fails: χ(bipartite) ≤ 2, so χ(G) > 2 admits no induced bipartite subgraph realizing χ(G) — parent entry erdos-740-incomplete-01.",
+      "Rödl (1977) proved on paper that a graph of chromatic number ℵ₀ contains a triangle-free subgraph of chromatic number ℵ₀.",
+      "Monotonicity of χ under graph homomorphisms and χ(G.induce s) ≤ χ(G) — Mathlib chromaticNumber_mono_of_hom and the parent's induce_chromaticNumber_le.",
+      "χ(Kₙ) = n via Mathlib chromaticNumber_top."
+    ],
+    "open": [
+      "The general Erdős #740 for arbitrary infinite 𝔪 and finite r ≥ 3 remains open.",
+      "No Lean formalization exists of Rödl's countable case or of the triangle-free subgraph extraction preserving infinite chromatic number."
+    ],
+    "goal": "Formalize in Lean 4 over Mathlib the single positive statement of Rödl's theorem for 𝔪 = ℵ₀, r = 3: every simple graph G with chromatic number ℵ₀ admits a triangle-free subgraph H with χ(H) = ℵ₀. Target this specific case only; the general infinite-cardinal and larger-r versions stay open."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-07-09T00:00:00Z",
+    "iteration": 1,
+    "focus": "Survey Mathlib's cardinal-valued chromatic-number and triangle-free (clique) infrastructure for infinite graphs, and frame Rödl's ℵ₀, r = 3 case.",
+    "blockers": [],
+    "nextAction": "Draft the Lean statement of Rödl's theorem and assess whether Mathlib's colorability/clique/cardinal APIs suffice for the χ = ℵ₀ lower bound after triangle removal.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "State Rödl's theorem in Lean: χ(G) = ℵ₀ implies existence of a triangle-free subgraph H with χ(H) = ℵ₀.",
+      "Identify a Mathlib-friendly predicate for triangle-freeness (no K₃ / no 3-clique) and lemmas for subgraph passage.",
+      "Assess the cardinal-valued χ lower bound (χ(H) ≥ ℵ₀) machinery available in Mathlib.",
+      "Evaluate Approach A (direct Rödl construction) vs Approach B (colorability/compactness reformulation)."
+    ],
+    "markdown": "# Knowledge Base: erdos-740-incomplete-01-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\nRödl's theorem (1977) is the base case 𝔪 = ℵ₀, r = 3 of Erdős #740: every graph of countably infinite chromatic number contains a triangle-free subgraph of countably infinite chromatic number. This is the positive counterpart to the parent entry's negative r = ∞ (bipartite) boundary result.\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "erdos",
+    "graph-theory",
+    "chromatic-number",
+    "bipartite",
+    "odd-cycles",
+    "induced-subgraph",
+    "research"
+  ],
+  "relatedProofs": [
+    "erdos-7",
+    "erdos-74",
+    "erdos-740",
+    "erdos-740-incomplete-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": [
+      "Mathlib.Combinatorics.SimpleGraph.Coloring",
+      "Mathlib.Combinatorics.SimpleGraph.Clique",
+      "Mathlib.SetTheory.Cardinal.Basic"
+    ]
+  },
+  "started": "2026-07-09T00:00:00Z",
+  "significance": 5,
+  "leanFiles": []
+}

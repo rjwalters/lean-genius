@@ -1,0 +1,104 @@
+{
+  "slug": "erdos-1144-oq-03",
+  "title": "Prove that the (log N)^{1+ε} factor in Atherfold's bound cannot be reduced to a bounded power of log N (the o(1) refinement)",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{Atherfold (2025): } \\Big|\\sum_{m \\le N} f(m)\\Big| \\ll \\sqrt{N}\\,(\\log N)^{1+o(1)} \\text{ a.s. Show: for no fixed } K < \\infty \\text{ does } \\Big|\\sum_{m \\le N} f(m)\\Big| \\ll \\sqrt{N}\\,(\\log N)^{K} \\text{ hold almost surely.}",
+    "plain": "Atherfold's 2025 theorem bounds the partial sums of a Rademacher random multiplicative function by sqrt(N) times (log N)^{1+o(1)}. This problem asks to show that the (log N)^{1+o(1)} correction cannot be tightened to (log N)^K for any fixed finite K, i.e. the o(1) in the exponent is a genuine feature of the extremal growth, not an artifact of the proof.",
+    "whyMatters": [
+      "Determines the exact order of the maximal fluctuations of random multiplicative functions, sharpening the pinch between the conjectured lower bound and Atherfold's upper bound.",
+      "Connects random multiplicative functions to log-correlated fields and multiplicative chaos, where a (log N)^1-type factor is the signature of a branching-random-walk maximum.",
+      "A negative answer confirms (log N)^{1+o(1)} as the true order of the maximum, complementing Harper's typical-size result sqrt(N)/(log log N)^{3/4+o(1)}."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Atherfold's almost-sure upper bound |S_f(N)| << sqrt(N)(log N)^{1+o(1)} (2025 preprint; axiomatized as atherfold_upper_bound in Proofs/Erdos1144Problem.lean).",
+      "Harper's typical-size theorem: S_f(N) has size sqrt(N)/(log log N)^{3/4+o(1)} (arXiv:1302.7208, 2013).",
+      "Wintner's classical O(N^{1/2+ε}) almost-sure bound (Duke Math. J. 11(2), 1944).",
+      "Growth-rate pinch theorem conjecture_and_atherfold_pinch (fully proved, 0 sorries) bounding |S_f(N)| between C1·sqrt(N) and C2·sqrt(N)(log N)^{1+ε}."
+    ],
+    "open": [
+      "Whether the (log N)^{1+o(1)} factor is optimal or can be reduced to a fixed power (log N)^K.",
+      "The matching maximal lower bound: a.s. existence of a subsequence N_k with |S_f(N_k)| >> sqrt(N_k)(log N_k)^{1-o(1)}.",
+      "The primary Erdős #1144 conjecture limsup |S_f(N)|/sqrt(N) = ∞ almost surely."
+    ],
+    "goal": "Formalize the o(1)-refinement in Lean 4: state precisely that no fixed K yields an a.s. bound |S_f(N)| << sqrt(N)(log N)^K, and build the reduction lemmas deriving a contradiction from such a bound using the (conditional) maximal fluctuation lower bound, mirroring the axiomatize-and-pinch architecture of the parent problem."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-07-09T00:00:00Z",
+    "iteration": 1,
+    "focus": "State the o(1)-refinement of Atherfold's bound in Lean 4 and identify the reduction to a maximal lower bound.",
+    "blockers": [],
+    "nextAction": "Survey Mathlib's Real.log / Real.rpow and Filter.atTop APIs and draft the 'no fixed K' statement plus an axiom for the maximal lower bound.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [
+      "No random multiplicative function or Rademacher random model infrastructure in Mathlib.",
+      "No multiplicative chaos or log-correlated field theory in Mathlib."
+    ],
+    "nextSteps": [
+      "Encode 'no fixed K gives |S_f(N)| <= C·sqrt(N)(log N)^K eventually' via a universal quantifier over K and C.",
+      "Add an axiom capturing an a.s. maximal lower bound of order sqrt(N)(log N)^{1-ε} along a subsequence.",
+      "Prove the reduction lemma: a bounded-power upper bound contradicts the maximal lower bound.",
+      "Cross-check the statement against the parent conjecture_and_atherfold_pinch pinch theorem."
+    ],
+    "markdown": "# Knowledge Base: erdos-1144-oq-03\n\nInsights accumulated during research on the o(1) refinement of Atherfold's bound.\n\n---\n\n## Problem Understanding\n\nAtherfold's a.s. upper bound |S_f(N)| << sqrt(N)(log N)^{1+o(1)} carries an exponent 1+o(1). The question is whether the o(1) can be dropped to give a fixed power K. Encoding requires quantifying over all K and C in Filter.atTop language.\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "erdos",
+    "number-theory",
+    "probability",
+    "analysis",
+    "multiplicative-functions",
+    "open"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-11",
+    "erdos-114",
+    "erdos-1144"
+  ],
+  "references": {
+    "papers": [
+      "T. Atherfold, 'Almost sure upper bounds for random multiplicative functions', 2025 (preprint).",
+      "A. J. Harper, 'Moments of random multiplicative functions and truncated characteristic polynomials', arXiv:1302.7208, 2013.",
+      "A. Wintner, 'Random factorizations and Riemann's hypothesis', Duke Math. J. 11(2), 1944."
+    ],
+    "urls": [
+      "https://erdosproblems.com/1144"
+    ],
+    "mathlib": [
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic — real logarithm for (log N)^K.",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real — Real.rpow for the exponent K and sqrt(N).",
+      "Mathlib.Order.Filter.AtTopBot — Filter.atTop for 'eventually' and 'infinitely often'."
+    ]
+  },
+  "started": "2026-07-09T00:00:00Z",
+  "significance": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1144Problem.lean",
+      "filename": "Erdos1144Problem.lean",
+      "lineCount": 227,
+      "theoremCount": 16,
+      "axiomCount": 1,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1144Problem.lean"
+    }
+  ]
+}

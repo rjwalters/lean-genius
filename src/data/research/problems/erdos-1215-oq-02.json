@@ -1,0 +1,94 @@
+{
+  "slug": "erdos-1215-oq-02",
+  "title": "For the restricted class of cyclotomic polynomials (with roots at roots of unity), is there a polynomial path-length bound?",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\exists\\, C : \\mathbb{R},\\ \\forall\\, n : \\mathbb{N},\\ \\text{for } P = \\Phi_n \\text{ (the } n\\text{-th cyclotomic polynomial)},\\ \\exists\\, \\gamma : [0,1] \\to \\{z \\in \\mathbb{C} : |P(z)| < 1\\},\\ \\gamma(0) = 0 \\wedge |P(\\gamma(1))| = 1 \\wedge \\operatorname{length}(\\gamma) \\le C \\cdot n.",
+    "plain": "Erdős #1215 asks whether every polynomial with P(0)=1 and all roots on the unit circle has a short path (length bounded by a constant times the degree) from the origin to the boundary of {|P|<1}, staying inside. Mac Lane (1953) showed NO in general via labyrinth polynomials. This restricts to the highly symmetric family of cyclotomic polynomials Φ_n, whose roots are the primitive n-th roots of unity, and asks whether their rigidity forces a polynomial-in-n path-length bound even though the general case fails.",
+    "whyMatters": [
+      "Cyclotomic polynomials are the most arithmetically important unit-circle-rooted family (Mahler measure, Lehmer's problem, Galois theory), so understanding their sublevel-set geometry links topology to number theory.",
+      "Mac Lane's labyrinth construction exploits the freedom to cluster roots; cyclotomic roots are rigidly equidistributed, so this sub-question probes the boundary between wild and tame polynomial lemniscates.",
+      "A positive answer would give the first natural sub-class of Erdős #1215 with a uniform path-length bound; a negative answer would show even cyclotomic geometry is topologically wild."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Mac Lane (1953) resolved the general Erdős #1215 negatively: for any simply-connected compact A ⊂ {|z|<1} there is P with P(0)=1, unit-circle roots, and |P|>2 on A, forcing arbitrarily long paths.",
+      "Mathlib provides cyclotomic polynomials Polynomial.cyclotomic with roots the primitive n-th roots of unity and degree φ(n).",
+      "Every monic polynomial with all roots on the unit circle (including all Φ_n) has Mahler measure exactly 1."
+    ],
+    "open": [
+      "Whether {|Φ_n(z)|<1} can host a Mac Lane-style labyrinth, or whether the symmetric spacing of primitive n-th roots of unity precludes it.",
+      "The exact target bound (linear C·n, logarithmic C·log n, or another function of n or φ(n)), left ambiguous by the original #1215 statement."
+    ],
+    "goal": "Formalize a precise Lean 4 statement of the cyclotomic-restricted path-length question and prove tractable building blocks (sublevel-set geometry for small n such as n = 1, 2, 3, 4, 6), rather than the full uniform theorem which needs analytic infrastructure not yet in Mathlib."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-07-09T00:00:00Z",
+    "iteration": 1,
+    "focus": "Understand the sublevel-set geometry of cyclotomic polynomials Φ_n and whether cyclotomic root rigidity rules out Mac Lane labyrinths.",
+    "blockers": [],
+    "nextAction": "Survey Mathlib cyclotomic-polynomial, complex-modulus, and interval-integral (arc-length) infrastructure and draft a precise formal statement of the restricted path-length bound.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [
+      "No developed theory of rectifiable paths with arc length in ℂ tied to polynomial sublevel sets.",
+      "No polynomial-lemniscate topology results (component counts, connectivity of {|P|=c})."
+    ],
+    "nextSteps": [
+      "Draft a Lean definition of the sublevel set {z : |Φ_n(z)| < 1} using Polynomial.eval and Complex.abs.",
+      "Compute and formalize the geometry of {|Φ_n(z)|<1} for small n (n = 1, 2, 3, 4, 6).",
+      "Investigate whether root equidistribution of primitive n-th roots of unity bounds the number of lemniscate components."
+    ],
+    "markdown": "# Knowledge Base: erdos-1215-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\nThis is a restriction of Erdős #1215 to cyclotomic polynomials Φ_n, whose roots are the primitive n-th roots of unity. The parent problem was resolved negatively by Mac Lane (1953) using labyrinth polynomials; the question here is whether the rigid, symmetric placement of cyclotomic roots precludes such labyrinths and yields a polynomial-in-n path-length bound.\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "erdos",
+    "complex-analysis",
+    "polynomial-theory",
+    "topology",
+    "unit-circle"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-12",
+    "erdos-121",
+    "erdos-1215"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": [
+      "Mathlib.RingTheory.Polynomial.Cyclotomic.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Complex.Circle",
+      "Mathlib.MeasureTheory.Integral.IntervalIntegral"
+    ]
+  },
+  "started": "2026-07-09T00:00:00Z",
+  "significance": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1215Problem.lean",
+      "filename": "Erdos1215Problem.lean",
+      "lineCount": 71,
+      "theoremCount": 1,
+      "axiomCount": 2,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1215Problem.lean"
+    }
+  ]
+}
