@@ -20,8 +20,8 @@
     "badge": "axiom",
     "axiomCount": 1,
     "sorries": 0,
-    "lineCount": 228,
-    "theoremCount": 16,
+    "lineCount": 259,
+    "theoremCount": 19,
     "definitionCount": 4,
     "dateAdded": "2026-07-04",
     "assumptions": "0 sorries and 0 `axiom` declarations. The structural core (§1 run reduction, §2 existence equivalences) is fully machine-verified with only the foundational Lean axioms (propext / Classical.choice / Quot.sound). The §3 record theorems (the length-3 run 5186, 5187, 5188 and the witnessed nonemptiness cke_two_nonempty) are discharged by `native_decide`, which additionally invokes `Lean.ofReduceBool` (kernel-trusted compiler reduction of Nat.totient); counted here as axiomCount 1 (meta), while leanFile.axiomCount is 0 (no literal axiom declarations). Does NOT resolve OQ-04: existence of a four-run is genuinely open (Erdős's strong conjecture, k = 3 slice); no example is known below 10^15.",
@@ -154,9 +154,9 @@
       "Set"
     ],
     "namespace": "Erdos1003.OQ04",
-    "lineCount": 228,
+    "lineCount": 259,
     "axiomCount": 0,
-    "theoremCount": 16,
+    "theoremCount": 19,
     "definitionCount": 4,
     "path": "Proofs/Erdos1003OQ04.lean",
     "sorries": 0
