@@ -1,0 +1,60 @@
+{
+  "slug": "cevas-theorem-non-euclidean-oq-03-oq-01",
+  "title": "Projective Pappus-Brianchon incidence from ratio reciprocity",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "For a hexagon with vertices alternating on two geodesics (the degenerate-conic Pappus configuration), derive collinearity of the three diagonal points X = AB \\cap DE, Y = BC \\cap EF, Z = CD \\cap FA by reducing it to the verified ratio reciprocity P(cfg) \\cdot P'(cfg) = 1 and the composition laws P(c_1 \\ast c_2) = P(c_1) P(c_2); uniformly for length, sin, and sinh measures.",
+    "plain": "The source entry proved the algebraic heart of non-Euclidean Pappus-Brianchon: the six hexagon side-measures telescope to P*P' = 1, and this chains multiplicatively under composition. But it stopped short of the geometric statement 'the three diagonal points of the hexagon are collinear'. This problem asks to build the combinatorics of lines and intersection points on top of the ratio reciprocity and recover the full projective incidence theorem (and dually, Brianchon), uniformly across Euclidean, spherical, and hyperbolic geometry.",
+    "whyMatters": [
+      "Pappus's theorem is a cornerstone of projective geometry, equivalent to commutativity of the coordinate field (Hessenberg) and the degenerate case of Pascal's hexagram.",
+      "Because the underlying reciprocity holds verbatim for sin and sinh measures, closing this gap yields spherical and hyperbolic Pappus-Brianchon incidence theorems from a single verified algebraic engine."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Ratio reciprocity ceva_dual_reciprocal: P(cfg) * P'(cfg) = 1 for every GeneralizedCevianConfig (source entry cevas-theorem-non-euclidean-oq-03).",
+      "Abstract Ceva-Brianchon duality ceva_iff_dual and multiplicative chaining laws cevaProduct_comp, dualProduct_comp, ceva_comp_of_ceva.",
+      "Spherical and hyperbolic closure instances via the parent's sin/sinh measure builders; non-Euclidean Menelaus (oq-02)."
+    ],
+    "open": [
+      "No Lean formalization of the incidence statement 'the three diagonal points are collinear' for the Pappus hexagon in any geometry.",
+      "The dictionary translating 'X, Y, Z collinear' into a product-of-ratios = 1 built from the six side-measures.",
+      "The projective dual (Brianchon) incidence statement and the point-line duality interchanging it with Pappus.",
+      "Extension from the degenerate conic (two geodesics) to a genuine non-degenerate conic (full Pascal/Brianchon)."
+    ],
+    "goal": "Formalize the degenerate-conic (Pappus) incidence theorem -- collinearity of the three diagonal points -- over an ordered field, proving it by reducing collinearity via a Menelaus criterion to a product of side-ratios that ceva_dual_reciprocal and the composition laws force to equal 1; deliver the spherical and hyperbolic instances by reusing the parent's sin/sinh builders. Full Brianchon and the non-degenerate conic are stretch goals."
+  },
+  "tags": [
+    "geometry",
+    "non-euclidean",
+    "projective-geometry",
+    "pappus",
+    "brianchon",
+    "ceva",
+    "ratio-algebra"
+  ],
+  "relatedProofs": [
+    "cevas-theorem-non-euclidean-oq-03",
+    "cevas-theorem-non-euclidean-oq-02",
+    "cevas-theorem-non-euclidean"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [
+      "https://en.wikipedia.org/wiki/Pappus%27s_hexagon_theorem",
+      "https://en.wikipedia.org/wiki/Brianchon%27s_theorem"
+    ],
+    "mathlib": [
+      "Mathlib.LinearAlgebra.Projectivization.Basic",
+      "Mathlib.LinearAlgebra.AffineSpace.Independent",
+      "Mathlib.LinearAlgebra.Matrix.Determinant.Basic",
+      "Mathlib.Tactic"
+    ]
+  },
+  "significance": 6,
+  "tractability": 5,
+  "category": "extension"
+}

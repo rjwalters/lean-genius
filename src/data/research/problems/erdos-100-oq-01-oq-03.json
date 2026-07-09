@@ -1,0 +1,50 @@
+{
+  "slug": "erdos-100-oq-01-oq-03",
+  "title": "Linear lower bound N = Omega(n) for collinear integer distance sets",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "For n distinct collinear points x_1 < ... < x_n with all pairwise distances |x_i - x_j| integers, the diameter D = x_n - x_1 = sum_{i<n} (x_{i+1} - x_i) >= n - 1, since each consecutive gap is a positive integer; hence D = Omega(n).",
+    "plain": "Erdos #100 asks whether n planar points with all integer pairwise distances must have diameter growing linearly in n. This sub-problem handles the collinear case: when the points lie on a line, the gaps between neighbors are positive integers, so the diameter is a sum of at least n-1 ones and is therefore at least n-1. The goal is to formalize this clean linear lower bound in Lean.",
+    "whyMatters": [
+      "Establishes the conjectured Omega(n) diameter bound in the one regime where it is provable, clarifying why the non-collinear case is genuinely harder.",
+      "Provides a self-contained, fully verifiable (sorry-free) lemma grounding the parent OQ-01 gap analysis in the collinear special case."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Guth-Katz (2015): >= cn/log n distinct distances for any planar n-point set, giving diam >= cn/log n for integer distance sets.",
+      "Anning-Erdos (1945): no infinite non-collinear integer distance set exists; collinear ones such as {0,...,n-1} are unbounded.",
+      "Elementary: on a line, integer pairwise distances force integer consecutive gaps, so the diameter sums n-1 positive integers to >= n-1."
+    ],
+    "open": [
+      "The full planar conjecture diam = Omega(n) for non-collinear integer distance sets (Erdos #100), i.e. closing the log n gap.",
+      "Sharper collinear strengthenings, e.g. binomial-type diameter when the distances themselves must be distinct."
+    ],
+    "goal": "Formalize in Lean, sorry-free, that any collinear n-point set with all pairwise distances integers has diameter >= n - 1, i.e. Omega(n)."
+  },
+  "tags": [
+    "discrete-geometry",
+    "erdos",
+    "distance-sets",
+    "guth-katz"
+  ],
+  "relatedProofs": ["erdos-100-oq-01"],
+  "references": {
+    "papers": [],
+    "urls": [
+      "https://erdosproblems.com/100"
+    ],
+    "mathlib": [
+      "Mathlib.Algebra.BigOperators.Basic",
+      "Mathlib.Order.Monotone.Basic",
+      "Mathlib.Data.Int.Order",
+      "Mathlib.Data.Finset.Card"
+    ]
+  },
+  "significance": 6,
+  "tractability": 6,
+  "category": "extension"
+}

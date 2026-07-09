@@ -1,0 +1,60 @@
+{
+  "slug": "alternating-series-boole-summation-oq-02-oq-01",
+  "title": "Higher-order Boole summation over normed real vector spaces",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "For a : ℕ → E with E a normed ℝ-vector space and Δ the forward difference, there exist Euler/tangent-number coefficients c_k with S(a,n,m) = Σ_{k<r} c_k((-1)^{n+k}Δ^k a_n − (-1)^{m+k}Δ^k a_m) + (-1)^r c_r S(Δ^r a,n,m) as an exact finite identity, and ‖S(a,n,m) − Σ_{k<r} c_k((-1)^{n+k}Δ^k a_n − (-1)^{m+k}Δ^k a_m)‖ ≤ |c_r| Σ_{j=n}^{m-1} ‖Δ^r a_j‖.",
+    "plain": "The parent gallery entry proves the first-order Boole summation identity — the alternating-series analogue of Euler–Maclaurin — over any normed real vector space. This problem asks whether the higher-order version, which iterates the finite difference r times with Euler-number coefficients, admits the same order-free formalization and whether its remainder bound in terms of the r-th total variation Σ‖Δ^r a_j‖ holds. Success would cover complex- and operator-valued alternating sums with sharper error control.",
+    "whyMatters": [
+      "Higher differences Δ^r a are much smaller than Δa for smooth sequences, giving sharper asymptotic estimates for complex Fourier and Dirichlet partial sums",
+      "Completes the order-free program: confirms whether the full Boole/Euler–Maclaurin alternating expansion ports to Banach-valued sequences",
+      "Yields a reusable arbitrary-order booleSum Lean API applicable to normed Dirichlet/Leibniz convergence tests and numerical series acceleration"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "First-order Boole identity and total-variation remainder bound over a normed ℝ-vector space — verified entry alternating-series-boole-summation-oq-02 (the r=1 base case, 0 sorries, 0 axioms)",
+      "Real-valued first-order Boole identity with monotonicity refinement — parent alternating-series-boole-summation",
+      "Classical higher-order Boole summation for real/complex sequences (Boole 1860, Nörlund) — established but not formalized in iterated order-free form"
+    ],
+    "open": [
+      "Whether the r-th order identity holds verbatim as an exact finite identity over an arbitrary normed ℝ-module, and the exact Euler/tangent-number coefficients c_k that make it so",
+      "Whether the higher-order remainder bound |c_r|Σ‖Δ^r a_j‖ is the sharpest natural order-free estimate",
+      "Whether induction on the window or induction on the order r is the cleaner formalization route"
+    ],
+    "goal": "Formalize over NormedSpace ℝ E the second-order Boole identity and its remainder bound as a concrete first target, then generalize to arbitrary order r by induction on the order; deliver the iterated finite difference Δ^r API and the coefficient recurrence."
+  },
+  "tags": [
+    "analysis",
+    "summation-by-parts",
+    "alternating-series",
+    "normed-space",
+    "generalization",
+    "total-variation",
+    "Boole-summation",
+    "Banach-space"
+  ],
+  "relatedProofs": [
+    "alternating-series-boole-summation-oq-02"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [
+      "https://en.wikipedia.org/wiki/Boole_summation",
+      "https://en.wikipedia.org/wiki/Euler_numbers"
+    ],
+    "mathlib": [
+      "Mathlib.Algebra.BigOperators.Intervals",
+      "Mathlib.Analysis.Normed.Group.Basic",
+      "Mathlib.Analysis.Normed.Module.Basic",
+      "Mathlib.Tactic.Module",
+      "Mathlib.Order.Basic"
+    ]
+  },
+  "significance": 6,
+  "tractability": 6,
+  "category": "generalization"
+}
