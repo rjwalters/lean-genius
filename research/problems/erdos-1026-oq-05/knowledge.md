@@ -40,6 +40,44 @@ minMonotonicParts` then `apply Nat.sInf_le` / `apply le_csInf` (conclusion unifi
 supplying the membership/nonempty witness as a separate `exact ⟨…⟩` goal. This deterministic
 error was observed and fixed; only the SIGBUS-clean rebuild remains.
 
+## Session 2026-07-09 (researcher-8) — Erdős–Szekeres extremal staircase (bracket is TIGHT)
+
+New companion `Proofs/Erdos1026OQ05Extremal.lean` (320 lines, 14 thm/lemma, 2 def, **0 axioms,
+0 sorries**). Prior work only *bounded* the covering number and never exhibited a sequence
+that *forces* many pieces. This session supplies the missing **extremal witness**.
+
+The classic staircase on `n = k²` points, `value(i) = k·(i/k) − (i%k)` (blocks of length `k`,
+increasing across blocks, strictly decreasing within each block):
+- `staircase_LIS : LIS = k`  (block map `i ↦ i/k` is injective on any increasing run ⇒ `≤ k`;
+  the `remainder-0` column `j ↦ k·j` is an increasing run of length `k` ⇒ `≥ k`).
+- `staircase_LDS : LDS = k`  (column map `i ↦ i%k` injective on any decreasing run ⇒ `≤ k`;
+  the first block `j ↦ j` is a decreasing run of length `k` ⇒ `≥ k`).
+- `staircase_injective` (value distinct — needed for the `min(LIS,LDS)` upper bound).
+- **`minMonotonicParts_staircase : minMonotonicParts (staircase k) = k`** — the general bracket
+  `[n/max(LIS,LDS), min(LIS,LDS)]` COLLAPSES: `k = k²/k ≤ mMP ≤ min(k,k) = k`. Reuses the two
+  existing bracket theorems (`minMonotonicParts_ge`, `minMonotonicParts_le_min_LIS_LDS`).
+- `minMonotonicParts_staircase_eq_sqrt` and `exists_sqrt_monotone_parts_needed`: for every
+  `n = k²` there is a sequence whose covering number is exactly `√n`.
+
+**Significance:** shows the two-sided bracket is TIGHT and that `Θ(√n)` monotone pieces are
+sometimes NECESSARY (lower-bound extremal side). Does NOT prove the hard universal Hanani
+*upper* bound (√n pieces always suffice for EVERY sequence) — still open.
+
+### Proof recipe (reusable)
+Three cancellation lemmas keep everything linear: same-block ⇒ value decreases (block term
+`k·(·/k)` cancels), diff-block ⇒ value increases (the `≥ k` block gap dominates the `< k`
+remainder penalty — the one `nlinarith` spot), same-column ⇒ value increases (compare the
+block terms directly, no quotient comparison). `Nat.div_add_mod` + `omega` after `rw [hblk]`
+/`rw [hcol]` (align the shared block/remainder atom first, else omega can't relate `k*q₁`,
+`k*q₂`). Upper bounds via `Fintype.card_le_of_injective` of a block/column map into `Fin k`;
+`csSup_le` with the empty-subsequence nonempty witness `Subsequence.mk Fin.elim0 (fun a => a.elim0)`.
+
+### ⚠️ BUILD STATUS: UNVERIFIED (2026-07-09)
+Elaboration is CLEAN — dependency `Erdos1026OQ05IncreasingIdentity` builds green, then the
+Extremal file crashes at olean-WRITE with exit 135 (SIGBUS) / 139 (SIGSEGV), 430ms–1.4s, **zero
+Lean type-error diagnostics** across 6 attempts (mem 24–32 GB). Classic fleet memory-pressure
+storm, not a math error. Deployer should re-attempt a green build before merge.
+
 ### Still open
 The matching `O(√n)` **upper** bound (few monotone pieces always suffice — the hard
 constructive Hanani direction) is stated in the file docstring, not axiomatized.
