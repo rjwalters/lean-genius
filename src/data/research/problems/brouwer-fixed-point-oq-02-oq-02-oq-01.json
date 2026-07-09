@@ -37,14 +37,16 @@
       "apriori_estimate: |xₙ − x*| ≤ Lⁿ/(1−L)·|x₁ − x₀| (combine iterate_dist + initial_dist).",
       "aposteriori_estimate: |xₙ₊₁ − x*| ≤ L/(1−L)·|xₙ₊₁ − xₙ| (triangle + contraction, clear denominator via le_div_iff₀ + nlinarith).",
       "lipschitz_comp: |g(f x) − g(f y)| ≤ L₂L₁·|x − y|; contraction_comp: L₂L₁ < 1 ∧ composite is a contraction.",
-      "BrouwerFixedPointOQ02OQ02OQ01Iteration.lean (researcher-2, PR pending): multi-step iteration bounds closing the base entry's next steps. iterate_contraction (f^[m] is an L^m-contraction), iterate_dist_tendsto (two-point spread -> 0 for 0<=L<1), apriori_iteration_count (for every eps>0 a finite iteration count N gives |x_n - x*|<=eps -- the parent's O(log 1/eps) guarantee), iteration_converges (x_n -> x* in R). VERIFIED 0 axioms / 0 sorries."
+      "BrouwerFixedPointOQ02OQ02OQ01Iteration.lean (researcher-2, PR pending): multi-step iteration bounds closing the base entry's next steps. iterate_contraction (f^[m] is an L^m-contraction), iterate_dist_tendsto (two-point spread -> 0 for 0<=L<1), apriori_iteration_count (for every eps>0 a finite iteration count N gives |x_n - x*|<=eps -- the parent's O(log 1/eps) guarantee), iteration_converges (x_n -> x* in R). VERIFIED 0 axioms / 0 sorries.",
+      "applyAll / lipschitz_comp_list / contraction_comp_list (BrouwerFixedPointOQ02OQ02OQ01.lean): GENERAL list-of-maps composition. applyAll folds an ordered list of (fᵢ,Lᵢ) pairs (head applied outermost). lipschitz_comp_list: if each fᵢ is Lᵢ-Lipschitz (Lᵢ≥0), the composite is Lipschitz with constant ∏Lᵢ (structural recursion on the list). contraction_comp_list: a NON-EMPTY family of contractions (0≤Lᵢ<1) composes to a contraction with ∏Lᵢ<1. Supporting list_prod_le_one / list_prod_lt_one (product of reals in [0,1] is ≤1 / in [0,1) over nonempty list is <1). Generalises the 2-map lipschitz_comp/contraction_comp. Axiom-free, 0 sorry, no decide."
     ],
     "insights": [
       "Parent oq-02-oq-02 proves the bound |xₙ − x*| ≤ Lⁿ·|x₀ − x*| which is not directly usable (|x₀ − x*| unknown). The classical fix is the a priori estimate, expressing the bound via the computable first increment |x₁ − x₀|.",
       "Key lemma initial_dist: |x₀ − x*| ≤ |x₀ − x₁| + |x₁ − x*| (triangle) and |x₁ − x*| = |f x₀ − f x*| ≤ L|x₀ − x*| give (1−L)|x₀ − x*| ≤ |x₁ − x₀|.",
       "A posteriori uses the same idea one step later: |xₙ₊₁ − x*| ≤ L|xₙ − x*| ≤ L(|xₙ − xₙ₊₁| + |xₙ₊₁ − x*|), so (1−L)|xₙ₊₁ − x*| ≤ L|xₙ₊₁ − xₙ|.",
       "Lean: rw [hfp, ← hx n] at h turns |f xₙ − f x*| ≤ L|xₙ − x*| into |xₙ₊₁ − x*| ≤ L|xₙ − x*| (hfp : f x* = x*; ← hx n : f xₙ → xₙ₊₁). Clear divisions with le_div_iff₀ + div_mul_eq_mul_div then nlinarith. Multiply a hypothesis by L≥0 via mul_le_mul_of_nonneg_left before nlinarith so it sees the product.",
-      "Composition: |g(f x) − g(f y)| ≤ L₂|f x − f y| ≤ L₂L₁|x − y|; L₂L₁ < 1 from 0 ≤ Lᵢ < 1 by nlinarith. Self-contained, no domain restriction needed (contraction stated on all of ℝ)."
+      "Composition: |g(f x) − g(f y)| ≤ L₂|f x − f y| ≤ L₂L₁|x − y|; L₂L₁ < 1 from 0 ≤ Lᵢ < 1 by nlinarith. Self-contained, no domain restriction needed (contraction stated on all of ℝ).",
+      "The 2-map Lipschitz composition law generalises verbatim to an ordered LIST of maps by bundling each map with its constant as a pair (fᵢ,Lᵢ):(ℝ→ℝ)×ℝ and folding via a structural def applyAll (head outermost, matching g∘f). The composite constant is exactly the list product ∏Lᵢ; contraction-ness (∏Lᵢ<1) needs non-emptiness plus the elementary product bound that a product of [0,1)-values is <1 (proved from: product of [0,1]-values ≤1). Structural recursion on the list (equation-compiler pattern | [] | p::rest) is cleaner than the induction tactic here because the ∀-mem hypotheses depend on the list."
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -311,10 +313,10 @@
     {
       "path": "Proofs/BrouwerFixedPointOQ02OQ02OQ01.lean",
       "filename": "BrouwerFixedPointOQ02OQ02OQ01.lean",
-      "lineCount": 128,
-      "theoremCount": 6,
+      "lineCount": 205,
+      "theoremCount": 10,
       "axiomCount": 0,
-      "defCount": 0,
+      "defCount": 1,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPointOQ02OQ02OQ01.lean"
@@ -440,5 +442,6 @@
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPointOQ04OQ04.lean"
     }
-  ]
+  ],
+  "lastUpdate": "2026-07-09"
 }
