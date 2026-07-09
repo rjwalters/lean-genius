@@ -81,6 +81,40 @@
       "summary": "markov_infinite assembles the pieces: the ascent sequence is injective (seq_injective) and every term lies in the Markov solution set (seq_mem_markov), so Set.infinite_of_injective_forall_mem yields that {p | IsMarkov p.1 p.2.1 p.2.2} is infinite — the Markov equation has infinitely many positive-integer solutions."
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "markov_infinite",
+      "type": "core",
+      "description": "**Infinitely many Markov triples.** The solution set {p | IsMarkov p.1 p.2.1 p.2.2} of x² + y² + z² = 3xyz is infinite. Obtained by feeding the injective ascent sequence (all of whose terms are Markov triples) to Set.infinite_of_injective_forall_mem — an explicit injection ℕ ↪ solution set, not a cardinality computation.",
+      "leanType": "{p : ℤ × ℤ × ℤ | IsMarkov p.1 p.2.1 p.2.2}.Infinite",
+      "startLine": 142,
+      "endLine": 144
+    },
+    {
+      "name": "ascent_spec",
+      "type": "key",
+      "description": "**One ascent step.** On a sorted Markov triple 1 ≤ a ≤ b ≤ c, the move (a,b,c) ↦ (b, c, 3bc − a) returns a sorted Markov triple with a strictly larger top coordinate: c < 3bc − a. The strict growth is the single positive product c·(3b − 2) = 3bc − 2c > 0, the arithmetic engine of the infinitude, discharged by nlinarith.",
+      "leanType": "{a b c : ℤ} (hM : IsMarkov a b c) (h1 : 1 ≤ a) (hab : a ≤ b) (hbc : b ≤ c) : IsMarkov b c (3 * b * c - a) ∧ 1 ≤ b ∧ b ≤ c ∧ c ≤ 3 * b * c - a ∧ c < 3 * b * c - a",
+      "startLine": 74,
+      "endLine": 84
+    },
+    {
+      "name": "markov_vieta_fst",
+      "type": "supporting",
+      "description": "**Vieta ascent move.** Jumping the first coordinate, x ↦ 3yz − x, preserves Markov triples — the parent's third-coordinate jump markov_vieta conjugated by the two transpositions markov_swap12, markov_swap23. Descent and ascent are the same jump at opposite ends of a sorted triple, so infinitude needs no new arithmetic.",
+      "leanType": "{x y z : ℤ} (h : IsMarkov x y z) : IsMarkov (3 * y * z - x) y z",
+      "startLine": 60,
+      "endLine": 62
+    },
+    {
+      "name": "seq_injective",
+      "type": "supporting",
+      "description": "**The ascent sequence is injective.** Because the top coordinate strictly increases along the sequence rooted at (1,1,1) (seq_top_strictMono), distinct indices give triples differing in that coordinate; StrictMono.injective delivers injectivity with no separate distinctness argument.",
+      "leanType": "Function.Injective seq",
+      "startLine": 129,
+      "endLine": 131
+    }
+  ],
   "conclusion": {
     "summary": "A 0-axiom, 0-sorry formalization (146 lines, 12 theorems, 2 definitions) proving that the Markov equation x² + y² + z² = 3xyz has infinitely many positive-integer solutions. Vieta-jumping the smallest coordinate of a sorted triple strictly increases its maximum; iterating from (1,1,1) yields an injective sequence of Markov triples, and Set.infinite_of_injective_forall_mem converts that injection into Set.Infinite.",
     "implications": "This completes the qualitative picture the parent development began: descent (markov_classification) shows the tree is connected down to the root, and ascent shows it is infinite upward. The explicit injective ascent sequence — reproducing the textbook head (1,1,1), (1,1,2), (1,2,5), (2,5,29) — is the elementary, axiom-free input underlying quantitative results such as Zagier's asymptotic count M(N) ∼ C(log N)² of Markov numbers below a bound. The template (conjugate a known jump to move a chosen coordinate, prove one sign inequality, iterate, read injectivity off strict monotonicity) transfers to other Vieta-jumping Diophantine families such as x² + y² + z² = kxyz.",
