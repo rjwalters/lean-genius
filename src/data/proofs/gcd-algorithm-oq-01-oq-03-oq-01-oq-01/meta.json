@@ -68,13 +68,62 @@
     }
   ],
   "sections": [
-    "Module Overview and References",
-    "Elementary Golden-Ratio Bounds",
-    "Geometric Lower Bound φⁿ ≤ fib(n+2)",
-    "The φ-Power Lower Bound on the Smaller Entry",
-    "The Closed-Form Logarithmic Bound (Lamé)",
-    "Making the Lamé Constant Explicit",
-    "Sanity Checks"
+    {
+      "id": "overview",
+      "title": "Module Overview and References",
+      "startLine": 1,
+      "endLine": 41,
+      "summary": "Docstring situating the file in the gcd-algorithm-oq-01-oq-03 lineage: the grandparent develops φ = (1+√5)/2 and Binet's formula, the parent proves Lamé minimality (fib(n+1) ≤ b when euclidSteps a b = n), and this file answers the parent's OQ-01 by turning the exact worst-case count into the closed-form logarithmic bound (n : ℝ) ≤ log_φ(b) + 1. States the five-step proof outline and cites Lamé (1844) and the two ancestor files. Imports Mathlib and the two ancestor proofs; opens the golden-ratio namespaces.",
+      "mathContext": "$\\text{euclidSteps}\\,a\\,b = n \\Rightarrow n \\le \\log_\\varphi(b) + 1$, the quantitative content of Lamé's 1844 analysis."
+    },
+    {
+      "id": "elementary-golden-ratio-bounds",
+      "title": "Elementary Golden-Ratio Bounds",
+      "startLine": 43,
+      "endLine": 60,
+      "summary": "PART I. Three basic estimates on φ used throughout: phi_gt_three_halves (3/2 < φ, from √5 > 2), one_lt_phi (1 < φ, needed for log-base positivity/monotonicity), and phi_lt_two (φ < 2, from √5 < 3). All discharged by unfolding goldenPhi and linarith/nlinarith against the √5 bounds.",
+      "mathContext": "$\\tfrac32 < \\varphi < 2$ and $1 < \\varphi$, from $2 < \\sqrt5 < 3$."
+    },
+    {
+      "id": "geometric-lower-bound",
+      "title": "Geometric Lower Bound φⁿ ≤ fib(n+2)",
+      "startLine": 62,
+      "endLine": 89,
+      "summary": "PART II. phi_pow_le_fib proves φⁿ ≤ fib(n+2) for all n by two-step (Nat.twoStepInduction) induction: base cases φ⁰ = 1 ≤ fib 2 and φ¹ = φ ≤ fib 3 = 2, and the step combines φ^(n+2) = φ^(n+1) + φⁿ (from φ² = φ+1) with fib(n+4) = fib(n+3) + fib(n+2) via add_le_add. This is the geometric engine linking φ-powers to Fibonacci growth.",
+      "mathContext": "$\\varphi^n \\le \\mathrm{fib}(n+2)$, proved by two-step induction on $\\varphi^2 = \\varphi + 1$."
+    },
+    {
+      "id": "phi-power-lower-bound",
+      "title": "The φ-Power Lower Bound on the Smaller Entry",
+      "startLine": 91,
+      "endLine": 106,
+      "summary": "PART III. phi_pow_le_smaller shows that if the Euclidean run on 0 < b < a takes n ≥ 1 steps then φ^(n-1) ≤ b, by combining the parent's minimality bound fib(n+1) ≤ b (fib_le_of_euclidSteps) with the geometric bound φⁿ ≤ fib(n+2). Rewriting n = m+1 turns the goal into φ^m ≤ fib(m+2) ≤ b.",
+      "mathContext": "$\\text{euclidSteps}\\,a\\,b = n \\ge 1 \\Rightarrow \\varphi^{\\,n-1} \\le b$."
+    },
+    {
+      "id": "closed-form-log-bound",
+      "title": "The Closed-Form Logarithmic Bound (Lamé)",
+      "startLine": 108,
+      "endLine": 132,
+      "summary": "PART IV. euclidSteps_le_logb is the headline: euclidSteps a b = n ⟹ (n : ℝ) ≤ log_φ(b) + 1. From φ^(n-1) ≤ b and monotonicity of log_φ (base φ > 1, Real.logb_le_logb_of_le), n-1 = log_φ(φ^(n-1)) ≤ log_φ(b); Real.logb_pow and Real.logb_self_eq_one collapse the left side and linarith finishes.",
+      "mathContext": "$n - 1 = \\log_\\varphi(\\varphi^{\\,n-1}) \\le \\log_\\varphi(b) \\Rightarrow n \\le \\log_\\varphi(b) + 1$."
+    },
+    {
+      "id": "lame-constant-explicit",
+      "title": "Making the Lamé Constant Explicit",
+      "startLine": 134,
+      "endLine": 181,
+      "summary": "PART V. Pins down the textbook constant. two_log_two_lt_three_log_phi proves 2·log 2 < 3·log φ (equivalently φ³ = 2φ+1 > 4). logb_two_phi_gt deduces log₂(φ) > 2/3, so 1/log₂(φ) < 3/2. euclidSteps_le_log2 converts the base-φ bound into bits: (n : ℝ) ≤ (3/2)·log₂(b) + 1 — the explicit (slightly loose) form of the classical ≈ 1.4404·log₂(b) Lamé bound.",
+      "mathContext": "$\\varphi^3 = 2\\varphi + 1 > 4 \\Rightarrow \\log_2\\varphi > \\tfrac23 \\Rightarrow n \\le \\tfrac32\\log_2 b + 1$."
+    },
+    {
+      "id": "sanity-checks",
+      "title": "Sanity Checks",
+      "startLine": 183,
+      "endLine": 199,
+      "summary": "PART VI. Two concrete instances anchoring the abstract bounds: φ³ ≤ fib 5 = 5 (an instance of phi_pow_le_fib), and 5 ≤ log_φ(fib 6) + 1 for the Fibonacci pair (fib 7, fib 6) = (13, 8), which takes exactly 5 Euclidean steps — the worst case, verified via the parent's euclidSteps_fib identity with no native_decide.",
+      "mathContext": "On $(\\mathrm{fib}\\,7, \\mathrm{fib}\\,6) = (13,8)$, $5$ steps and $5 \\le \\log_\\varphi(8) + 1$."
+    }
   ],
   "sorries": [],
   "overview": {
