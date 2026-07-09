@@ -84,6 +84,6 @@
       "Attempt Erdos C8 existence observation (erdos_c8_observation axiom): dense C4,C6-free bipartite graph must contain C8 - genuinely hard extremal/moment-count core, NOT elementary.",
       "If a clean Docker write window opens, confirm parent build green and flip erdos-1080 meta status toward axiomatized with 0 sorry."
     ],
-    "progressSummary": "PROGRESS: full bipartite cycle-length characterization (necessity + sufficiency) complete; extremal C8 existence still open"
+    "progressSummary": "PROGRESS: bipartite cycle-spectrum characterization complete; ALSO restored the previously-uncompilable parent Erdos1080Problem.lean (VERIFIED green Docker 1955 jobs exit 0, 0 sorries, 2 stated axioms) by erasing its c4_free_iff_no_K22 sorry via the OQ-03 companion proof + fixing 4 pre-existing breakages (orphan doc-comments, missing Floor/rpow/SupSet-ℕ imports, mp/mpr bug). Extremal C8 existence still open."
   }
 }
