@@ -827,6 +827,129 @@ theorem two_distinct_reversal_families :
   ⟨reversal_via_criterion, reversal_via_criterion_55, by decide⟩
 
 -- ===========================================================================
+-- THE PRIME-TRIPLE REVERSAL FAMILY COLLAPSES TO `{21, 55}`
+-- ---------------------------------------------------------------------------
+-- The two known reversal seeds `21 = 3·7` and `55 = 5·11` are both of the form
+-- `a = p·(2p+1)` for the two smallest Sophie-Germain primes `p = 3, 5` (with the
+-- extra property that `p+2` is also prime).  It is tempting to hope that this
+-- natural infinite candidate family — odd primes `p` with `p+2` and `2p+1` also
+-- prime — furnishes infinitely many reversal seeds, which would give a purely
+-- elementary proof that the reversal *seed* set is infinite.  It does NOT.
+--
+-- For such a `p` write `a = p·(2p+1)`.  Then (all coprimalities from primality):
+--     φ(a) = (p−1)·2p,
+--     first cototient step  2a − φ(a) = 2p(p+2)  (2-adic valuation 1, so
+--                                                  transport-admissible, b = p(p+2)),
+--     φ(b) = (p−1)(p+1) = p²−1,
+--     landing constant  C = 2a − φ(b) = 3p²+2p+1 = 2·e   with  e = (3p²+2p+1)/2,
+--                                                  and v₂(C) = 1 (t = 1).
+-- The `k`-free reversal criterion `dblIter_reversal_iff` says the family reverses
+-- iff  φ(a) < φ(e)·2^(t−1) = φ(e).  But `φ(e) ≤ e − 1 = (3p²+2p−1)/2` always, and
+--     (3p²+2p−1)/2 ≤ 2p(p−1)   ⟺   0 ≤ p²−6p+1   ⟺   p ≥ 6,
+-- so for every `p ≥ 7` we get `φ(e) ≤ φ(a)` and the family does NOT reverse — the
+-- forward/equality regime wins.  Only the two exceptional small primes `p = 3, 5`
+-- (below the quadratic threshold `3+2√2 ≈ 5.83`) reverse.  Hence this family
+-- yields exactly the two seeds `{21, 55}`, and the infinitude of the reversal seed
+-- set (if true) is genuinely harder than exhibiting one infinite candidate family.
+-- Note the crucial point: proving `φ(e) ≤ e−1` needs NO knowledge of the (wildly
+-- varying) factorisation of `e`, which is precisely what makes the bound uniform.
+-- ===========================================================================
+
+/-- **The prime-triple reversal family does not reverse for `p ≥ 7`.**  For an
+    odd prime `p` with `p+2` and `2p+1` also prime, the transport-admissible seed
+    `a = p·(2p+1)` has `φ(a) = 2p(p−1)` and landing constant `C = 3p²+2p+1 = 2e`;
+    reversal of the family `a·2^(k+1)` would require `φ(a) < φ(e)`, but
+    `φ(e) ≤ e−1 ≤ φ(a)` whenever `p ≥ 7` (equivalently `p²−6p+1 ≥ 0`).  So no
+    member of this natural infinite candidate family with `p ≥ 7` is a reversal
+    seed; the only reversing members are the two small exceptions `p = 3` (→ 21)
+    and `p = 5` (→ 55). -/
+theorem prime_triple_family_not_reversal {p : ℕ}
+    (hp : p.Prime) (hp2 : (p + 2).Prime) (hq : (2 * p + 1).Prime)
+    (hp7 : 7 ≤ p) (k : ℕ) :
+    p * (2 * p + 1) * 2 ^ (k + 1) ∉ ReversalSet := by
+  -- write the odd prime `p ≥ 7` as `p = 2j+1` with `j ≥ 3`
+  have hpodd : p % 2 = 1 := (hp.eq_two_or_odd).resolve_left (by omega)
+  obtain ⟨j, rfl⟩ : ∃ j, p = 2 * j + 1 := ⟨p / 2, by omega⟩
+  have hj3 : 3 ≤ j := by omega
+  -- coprimalities from distinct primality
+  have hcopa : Nat.Coprime (2 * j + 1) (2 * (2 * j + 1) + 1) :=
+    (Nat.coprime_primes hp hq).mpr (by omega)
+  have hcopb : Nat.Coprime (2 * j + 1) ((2 * j + 1) + 2) :=
+    (Nat.coprime_primes hp hp2).mpr (by omega)
+  -- φ(a) = 2j·(2·(2j+1)),  φ(b) = 2j·((2j+1)+1)
+  have hφa : Nat.totient ((2 * j + 1) * (2 * (2 * j + 1) + 1))
+      = 2 * j * (2 * (2 * j + 1)) := by
+    rw [Nat.totient_mul hcopa, Nat.totient_prime hp, Nat.totient_prime hq,
+        show (2 * j + 1) - 1 = 2 * j from by omega,
+        show 2 * (2 * j + 1) + 1 - 1 = 2 * (2 * j + 1) from by omega]
+  have hφb : Nat.totient ((2 * j + 1) * ((2 * j + 1) + 2))
+      = 2 * j * ((2 * j + 1) + 1) := by
+    rw [Nat.totient_mul hcopb, Nat.totient_prime hp, Nat.totient_prime hp2,
+        show (2 * j + 1) - 1 = 2 * j from by omega,
+        show (2 * j + 1) + 2 - 1 = (2 * j + 1) + 1 from by omega]
+  -- oddness of the three odd data
+  have ha_odd : Odd ((2 * j + 1) * (2 * (2 * j + 1) + 1)) :=
+    (Nat.odd_iff.mpr (by omega)).mul (Nat.odd_iff.mpr (by omega))
+  have hb_odd : Odd ((2 * j + 1) * ((2 * j + 1) + 2)) :=
+    (Nat.odd_iff.mpr (by omega)).mul (Nat.odd_iff.mpr (by omega))
+  have he_odd : Odd (6 * j ^ 2 + 8 * j + 3) := ⟨3 * j ^ 2 + 4 * j + 1, by ring⟩
+  -- transport data:  2a − φ(a) = 2b  and  2a − φ(b) = e·2¹
+  have hstep : 2 * ((2 * j + 1) * (2 * (2 * j + 1) + 1))
+      - Nat.totient ((2 * j + 1) * (2 * (2 * j + 1) + 1))
+      = 2 * ((2 * j + 1) * ((2 * j + 1) + 2)) := by
+    rw [hφa]
+    have h : 2 * ((2 * j + 1) * (2 * (2 * j + 1) + 1))
+        = 2 * ((2 * j + 1) * ((2 * j + 1) + 2)) + 2 * j * (2 * (2 * j + 1)) := by ring
+    omega
+  have hC : 2 * ((2 * j + 1) * (2 * (2 * j + 1) + 1))
+      - Nat.totient ((2 * j + 1) * ((2 * j + 1) + 2))
+      = (6 * j ^ 2 + 8 * j + 3) * 2 ^ 1 := by
+    rw [hφb]
+    have h : 2 * ((2 * j + 1) * (2 * (2 * j + 1) + 1))
+        = (6 * j ^ 2 + 8 * j + 3) * 2 ^ 1 + 2 * j * ((2 * j + 1) + 1) := by ring
+    omega
+  -- feed the k-free reversal criterion and refute the sign inequality
+  rw [dblIter_reversal_iff ha_odd hb_odd he_odd (le_refl 1) hstep hC k]
+  simp only [Nat.sub_self, pow_zero, mul_one]
+  rw [hφa]
+  -- goal: ¬ (2j·(2·(2j+1)) < φ(6j²+8j+3));  i.e. φ(e) ≤ φ(a)
+  push_neg
+  have he2 : 1 < 6 * j ^ 2 + 8 * j + 3 := by nlinarith [hj3]
+  have hφe : Nat.totient (6 * j ^ 2 + 8 * j + 3) < 6 * j ^ 2 + 8 * j + 3 :=
+    Nat.totient_lt _ he2
+  have hquad : 6 * j ^ 2 + 8 * j + 2 ≤ 2 * j * (2 * (2 * j + 1)) := by nlinarith [hj3]
+  omega
+
+/-- **The prime-triple family reverses exactly at `p ∈ {3, 5}`.**  For every odd
+    prime `p` with `p+2` and `2p+1` also prime, the family `p·(2p+1)·2^(k+1)`
+    lands in the reversal regime `φ(n) < φ(D(n))` iff `p = 3` (seed `21`) or
+    `p = 5` (seed `55`).  The `p ≥ 7` members are ruled out by
+    `prime_triple_family_not_reversal`; the two small cases are the known reversal
+    families.  Thus the natural Sophie-Germain-type candidate family contributes
+    exactly the two reversal seeds `21` and `55` — it does not, by itself, prove
+    the reversal seed set infinite. -/
+theorem prime_triple_reversal_iff {p : ℕ}
+    (hp : p.Prime) (hp2 : (p + 2).Prime) (hq : (2 * p + 1).Prime) (k : ℕ) :
+    p * (2 * p + 1) * 2 ^ (k + 1) ∈ ReversalSet ↔ (p = 3 ∨ p = 5) := by
+  constructor
+  · intro hmem
+    by_contra hne
+    push_neg at hne
+    obtain ⟨h3, h5⟩ := hne
+    -- an odd prime with `p+2, 2p+1` prime and `p ∉ {3,5}` must be `≥ 7`
+    have h2le := hp.two_le
+    have hp7 : 7 ≤ p := by
+      by_contra hlt
+      push_neg at hlt
+      interval_cases p <;> revert hp hp2 hq h3 h5 <;> decide
+    exact prime_triple_family_not_reversal hp hp2 hq hp7 k hmem
+  · rintro (rfl | rfl)
+    · rw [show (3 : ℕ) * (2 * 3 + 1) = 21 from by norm_num]
+      exact reversal_via_criterion k
+    · rw [show (5 : ℕ) * (2 * 5 + 1) = 55 from by norm_num]
+      exact reversal_via_criterion_55 k
+
+-- ===========================================================================
 -- A COMPUTABLE DECISION PROCEDURE FOR TRANSPORT FAMILIES
 -- ---------------------------------------------------------------------------
 -- The `k`-free criterion above still asks the caller to *supply* the odd data

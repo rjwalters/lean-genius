@@ -35,7 +35,7 @@
     }
   ],
   "knowledge": {
-    "progressSummary": "MILESTONE (researcher-6, VERIFIED 0/0): the STRUCTURAL side of Erdős 1064 OQ-03 is now COMPLETE. Proved that NO excluded seed (seedS≥2, = prime powers p≡3 mod4) ever reverses, hence every totient-inequality reversal occurs strictly in the transport-admissible regime seedS=1 (reversal_seed_transport_admissible / reversal_mem_implies_transport_regime). This converts the long-standing structural conjecture into a theorem. The ONLY remaining open part is the analytically-hard density-1 forward direction (ψ(x,y) smooth-number density), a genuine Mathlib gap.",
+    "progressSummary": "PROGRESS: Structural result on which admissible seeds reverse. The natural Sophie-Germain-type family a=p(2p+1) [p,p+2,2p+1 prime] reverses only at p=3,5 (seeds 21,55); every p≥7 member is non-reversing (proven, VERIFIED 0/0). Shows reversal-seed-set infinitude is genuinely harder than one candidate family. Excluded regime already fully closed; only open direction remains the analytically-hard density-1 forward ψ(x,y) statement (Mathlib gap, not session-sized).",
     "builtItems": [
       "dblIter (EulerTotientOQ04OQ03.lean) — the double cototient iterate D(n) = n − φ(n − φ(n)), the object of OQ-03.",
       "dblIter_prime — collapse lemma: for EVERY prime p, D(p) = p − 1 exactly (φ(p)=p−1 ⟹ p−φ(p)=1 ⟹ φ(1)=1 ⟹ D(p)=p−1).",
@@ -93,7 +93,9 @@
       "prime_pow_three_mod_four_family_not_reversal (EulerTotientOQ04OQ03.lean): p^k·2^(j+1)∉ReversalSet for all prime p≡3 mod4, k≥1, j. VERIFIED 0/0",
       "excluded_seed_never_reverses (EulerTotientOQ04OQ03.lean): seedS a≥2 ⟹ classifySeed a≠.lt for odd a≥3. VERIFIED 0/0",
       "reversal_seed_transport_admissible (EulerTotientOQ04OQ03.lean): classifySeed a=.lt ⟹ seedS a=1. VERIFIED 0/0",
-      "reversal_mem_implies_transport_regime (EulerTotientOQ04OQ03.lean): a·2^(k+1)∈ReversalSet ⟹ seedS a=1. VERIFIED 0/0"
+      "reversal_mem_implies_transport_regime (EulerTotientOQ04OQ03.lean): a·2^(k+1)∈ReversalSet ⟹ seedS a=1. VERIFIED 0/0",
+      "prime_triple_family_not_reversal in EulerTotientOQ04OQ03.lean: for p≥7 with p,p+2,2p+1 all prime, family p(2p+1)·2^(k+1) never reverses (φ(e)≤e−1≤φ(a) once p²−6p+1≥0; uniform since φ(e)≤e−1 needs no factorisation of e)",
+      "prime_triple_reversal_iff in EulerTotientOQ04OQ03.lean: the prime-triple family reverses iff p∈{3,5}, contributing exactly seeds {21,55}"
     ],
     "insights": [
       "On primes the higher iterate is trivial: D(p) = p − 1 for all primes p, because the first cototient step p − φ(p) = 1 and φ(1) = 1. So φ(D(p)) = φ(p−1), and φ(p−1) < p−1 = φ(p) for every p ≥ 3 (with equality only at p = 2). This gives the forward direction on an infinite explicit family with a one-line reduction to Nat.totient_lt — no density machinery needed.",
@@ -122,7 +124,8 @@
       "The full excluded prime-power case is now closed: EVERY prime power a=p^k with p≡3 mod4 (k≥1) never reverses. This subsumes both prior infinite families (3^k tower AND primes p≡3 mod4, k=1) as special slices.",
       "Uniform prime-power arithmetic: a=p^(m+1) gives a−φ(a)=p^m and 2a−φ(a)=p^m·(p+1); factoring p+1=w·2^S (w odd, S=v2(p+1)≥2) yields seedS=S, seedB=p^m·w. The engine bound becomes p^m≤φ(p^m)·φ(w)·2^(S−2).",
       "The bound splits into two elementary facts: p^m≤2·φ(p^m) (any prime p, via φ(p^m)=p^(m-1)(p-1) and 2(p-1)≥p) and 2≤φ(w)·2^(S−2). The latter holds precisely when p>3: S=2∧w=1 forces p+1=4 ⟹ p=3, so p≥7 gives either S≥3 (2^(S-2)≥2) or w≥3 odd (φ(w)≥2). p=3 is dispatched by the 3^k tower.",
-      "CAPSTONE (structural conjecture now proven): the excluded seeds (seedS a≥2) are EXACTLY prime powers p^k with p≡3 mod4 (seedS_ge_two_iff_totient_mod_four composed with totient_mod_four_eq_two_iff_prime_pow_three_mod_four, both already in the file). Since all such powers never reverse, NO excluded seed reverses — equivalently every reversing seed has seedS a=1 (transport-admissible). The long-conjectured structural dichotomy is a theorem."
+      "CAPSTONE (structural conjecture now proven): the excluded seeds (seedS a≥2) are EXACTLY prime powers p^k with p≡3 mod4 (seedS_ge_two_iff_totient_mod_four composed with totient_mod_four_eq_two_iff_prime_pow_three_mod_four, both already in the file). Since all such powers never reverse, NO excluded seed reverses — equivalently every reversing seed has seedS a=1 (transport-admissible). The long-conjectured structural dichotomy is a theorem.",
+      "Both known reversal seeds 21=3·7 and 55=5·11 are exactly a=p·(2p+1) for the two smallest Sophie-Germain primes p=3,5 (with p+2 also prime); this natural infinite candidate family does NOT give infinitely many reversal seeds."
     ],
     "mathlibGaps": [
       "Kernel `decide` on Nat.totient of a seed (e.g. totient 21) blows the stack → SIGBUS (Lean exit 135, line-less); must prove totient values by factorisation (Nat.totient_mul + Nat.totient_prime). Reconfirms the file's existing note."
