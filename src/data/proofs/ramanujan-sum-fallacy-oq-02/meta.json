@@ -53,7 +53,8 @@
       "**Averaging tames oscillation**: the partial sums $0,1,0,1,\\dots$ never converge, but their running averages do — Cesàro summation smooths the oscillation to its mean value $\\tfrac12$",
       "**Explicit error term**: the whole limit is controlled by the closed form $\\sigma_n = \\tfrac12 - (1-(-1)^n)/(4n)$, whose deviation from $\\tfrac12$ is $O(1/n)$ and killed by a squeeze",
       "**Strict extension, not contradiction**: assigning $\\tfrac12$ is legitimate under Cesàro summation precisely because it is a different (weaker) notion than ordinary convergence — the parent's fallacy is conflating the two",
-      "**Junk-value convention**: `cesaroMean` divides by $n$, returning $0$ at $n = 0$; the limit statement is unaffected since it only concerns the tail $n \\to \\infty$"
+      "**Junk-value convention**: `cesaroMean` divides by $n$, returning $0$ at $n = 0$; the limit statement is unaffected since it only concerns the tail $n \\to \\infty$",
+      "**The value ½ is forced by linearity + stability, not special to Cesàro.** For any summation method $M$ that is linear and stable (shift-invariant, $M(a_0,a_1,\\dots) = a_0 + M(a_1,a_2,\\dots)$), if $M$ assigns Grandi's series a value $S$ then $S = 1 + M(-1,1,-1,\\dots) = 1 - S$, so $S = \\tfrac12$ necessarily. This is exactly the tacit content of the classical manipulation $S = 1 - S$: it is not a fallacy once a linear, stable method is fixed — ordinary summation simply is not such a method on this series. It also explains why Cesàro and Abel (both linear and stable) must agree on ½, the second and third open questions below."
     ],
     "prerequisites": [
       "Real analysis (sequences, limits, filters)",
