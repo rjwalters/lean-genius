@@ -77,7 +77,7 @@
       "id": "by-parts",
       "title": "Re-derivation via Abel Summation by Parts",
       "startLine": 67,
-      "endLine": 81,
+      "endLine": 83,
       "summary": "sum_range_mul_geom_eq_byParts: the same sum equals (n−1)·Gₙ − ∑_{i<n−1} G_{i+1} with Gₘ = ∑_{j<m} rʲ, directly from Finset.sum_range_by_parts.",
       "mathContext": "The weight f k = k has constant forward differences f(k+1)−f k = 1, so smul_eq_mul + push_cast + ring reduce the Abel transform to a sum of geometric partial sums."
     }
@@ -116,6 +116,15 @@
       "year": "1997",
       "venue": "3rd ed., Addison-Wesley",
       "note": "Summation by parts and closed forms for weighted geometric sums via the finite-calculus operators."
+    },
+    {
+      "authors": [
+        "Wilf, H.S."
+      ],
+      "title": "generatingfunctionology",
+      "year": "2006",
+      "venue": "3rd ed., A K Peters",
+      "note": "The generating-function view of ∑ k·rᵏ as r·d/dr of the geometric series ∑ rᵏ = 1/(1−r), the calculus heuristic whose exact finite-field skeleton this entry proves."
     }
   ],
   "conclusion": {
