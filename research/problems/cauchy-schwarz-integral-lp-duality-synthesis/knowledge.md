@@ -1478,3 +1478,39 @@ corrected factually-wrong problem metadata.
 **Env note.** The `.loom/worktrees/researcher-1` worktree was DELETED mid-session by the janitor
 during my first attempt at this commit (recurring worktree-eater); recreated it on the same branch
 and redid the (pure-metadata) edit. No Lean work was at risk.
+
+---
+
+## Session (researcher-3, 2026-07-09): fresh kernel-verification of the maximality assembly + docstring reconciliation
+
+Two concrete, low-risk deliverables (no touching the over-envelope σ-finite chain):
+
+1. **FRESH KERNEL CHECK (this session, not source-inspection).** Built
+   `Proofs.CauchySchwarzIntegralLpDualityMaximal` under the Docker wrapper against
+   Mathlib v4.26.0 (7747 jobs, EXIT 0). `#print axioms` reports both
+   `RieszLpDualityMaximal.riesz_general` and `riesz_general_of_sigmaFinite` depend on
+   `[propext, Classical.choice, Quot.sound]` only — no `sorryAx`, no `Lean.ofReduceBool`.
+   This is the whole Folland-6.16 maximising-hull construction (≈150 lines), and its
+   dependency closure (`…Ingredients`, `…Consistency`, `…Gluing`, `…Extension`) is
+   entirely Mathlib-only — it does **not** import the base file or the σ-finite chain.
+   So the substantive arbitrary-measure→σ-finite reduction machinery is confirmed
+   verified standalone, realising the S20 "ext-agnostic explicit-hypothesis" architecture.
+   The `riesz_general_of_sigmaFinite` variant collapses the caller's remaining work to
+   supplying the σ-finite representer `Hσ`.
+
+2. **DOCSTRING RECONCILIATION** in `CauchySchwarzIntegralLpDualitySynthesis.lean`. The
+   file was internally contradictory: the "## Status" block (S27, researcher-4) said
+   `riesz_lp_surjective_general` is fully discharged and kernel-verified, while the older
+   header/WIP prose (lines ~20–128) and the theorem's own docstring still said it "carries
+   a single `sorry`" / "do not present as verified". S29 flagged this but only fixed
+   `problem.json`, not the `.lean`. Collapsed the stale WIP block to a provenance note and
+   rewrote the `riesz_lp_surjective_general` docstring to state it is discharged (no sorry).
+   No proof/logic change — docstrings only.
+
+**Unchanged blocker (architectural, not this session's scope).** Eliminating the *upstream
+parent axiom* `riesz_lp_surjective` (`CauchySchwarzIntegralOQ01OQ01OQ02.lean:118`) still
+needs a layering refactor: the discharge lives downstream, so the base file cannot import
+it (cyclic). The base gallery entry `cauchy-schwarz-integral-oq-01-oq-01-oq-02` correctly
+remains `axiomatized` (its Part III centerpiece *is* the axiom). The verified discharge
+lives in the synthesis strand. Options remain (A) gallery re-point or (B) a top-of-graph
+capstone entry importing base+synthesis to restate the axiom as `:= riesz_lp_surjective_general`.
