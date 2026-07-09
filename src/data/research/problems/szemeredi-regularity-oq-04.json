@@ -26,7 +26,7 @@
     "nextAction": "Reconstruct the energy-increment step (epsilon-irregular refinement raises partitionEnergy by >= delta) from split_energy_excess_bound, then assemble the outer AFKS loop using partitionEnergy_no_infinite_increments as termination certificate."
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: two complementary threads verified 0/0. (Bridge) B-side branch closed via monotonicity-promotion (PART IX); both one-sided branches unified into the AFKS energy-increment step ε²/(8n²) (PART X, ∃ refined partition). (Energy, S7) increment analytic core closed — 2×2 law-of-total-density + variance-atom gain assemble the genuine ε⁴ energy increment (capstone pairEnergy_prod_refinement_gain built green).",
+    "progressSummary": "PROGRESS: the SHARP direct 2×2 energy increment (no factor-¼ loss) now lifts to the whole partition (partitionEnergy_prod_refinement_gain + ε⁴ floor partitionEnergy_prod_gain_eps4, VERIFIED 0/0). Remaining blocker for a fully-internal capstone is witness-cell freshness, shared with the one-sided route.",
     "builtItems": [
       "edgeDensity_union_mul in SzemerediRegularityOQ04Energy.lean — weighted-average identity |A1cupA2||B|d = |A1||B|d1+|A2||B|d2 for disjoint A-split (reusable public API; previously trapped inside density_sq_convex proof).",
       "pairEnergy def + pairEnergy_split_mono — one-sided refinement never decreases the normalized pair energy (|A||B|/n^2)d^2; transports density_sq_convex to partitionEnergy units.",
@@ -53,7 +53,9 @@
       "edgeDensity_prod_split: law of total density for a 2×2 refinement, |A||B|d(A,B)=Σ|Aᵢ||Bⱼ|d(Aᵢ,Bⱼ) [VERIFIED]",
       "pairEnergy_prod_refinement_gain: the genuine ε⁴ 2×2 energy increment [VERIFIED — built green on retry attempt 4]",
       "pairEnergy_prod_gain_of_irregular: direct 2x2 energy increment from an irregular pair (no triangle detour) — refine both coordinates via the witness (A′,A\\A′,B′,B\\B′), gain (|A′||B′|/n²)·ε² [VERIFIED]",
-      "pairEnergy_prod_gain_of_irregular_eps4: explicit ε⁴·|A||B|/n² energy jump from ¬IsEpsilonRegular, the AFKS-consumable floor (no factor-¼ loss of the one-sided branches) [VERIFIED]"
+      "pairEnergy_prod_gain_of_irregular_eps4: explicit ε⁴·|A||B|/n² energy jump from ¬IsEpsilonRegular, the AFKS-consumable floor (no factor-¼ loss of the one-sided branches) [VERIFIED]",
+      "partitionEnergy_prod_refinement_gain (SzemerediRegularityOQ04Assembly.lean): sharp whole-partition 2×2 gain — refining two distinct parts A,B into {A₁,A₂}×{B₁,B₂} raises partitionEnergy by (|A₁||B₁|/n²)·d², d=|d(A₁,B₁)−d(A,B)|. Lifts pairEnergy_prod_refinement_gain via ordered-pair block decomposition.",
+      "partitionEnergy_prod_gain_eps4 (SzemerediRegularityOQ04Assembly.lean): AFKS-consumable ε⁴ floor of the sharp lift — ε-irregular pair refined on both coords raises whole-partition energy by ≥ ε⁴|A||B|/n², free of the one-sided factor-¼/⅛ loss."
     ],
     "insights": [
       "partitionEnergy IS the standard size-weighted energy |Pi||Pj|/n^2 d^2 (SzemerediCore:63), NOT 1/k^2. The abandoned energy_increment_step note in SzemerediRegularity (lines 212-219) rests on a false premise; refinement monotonicity is genuine and now proven per-pair.",
@@ -72,15 +74,15 @@
       "The S5 mixed-second-difference (defect) obstruction is bypassed by treating the two-coordinate refinement as a weighted point distribution: the witness cell is one atom, and variance≥single-atom-contribution gives the energy gain directly, with no triangle-through-mixed-density detour.",
       "The ε-irregular witness deviation |d(A,B)−d(A,B)| is DIRECTLY against the coarse mean, so refining both coords simultaneously makes the witness cell a single variance atom — dodging the S5 mixed-second-difference defect entirely (no Cauchy–Schwarz on cross terms).",
       "Bool×Bool index + Fintype.sum_prod_type/sum_bool cleanly instantiates the abstract atom gain over 4 cells; linear_combination needs coeff −1 against edgeDensity_prod_split (whole=Σcells orientation).",
-      "Final /n² scaling: avoid convert (mis-pairs the + tree); prove goal=1/n²·raw via unfold+ring both sides then exact the scaled inequality."
+      "Final /n² scaling: avoid convert (mis-pairs the + tree); prove goal=1/n²·raw via unfold+ring both sides then exact the scaled inequality.",
+      "The sharp direct 2×2 gain (no factor-¼ loss) DOES lift to the whole partition cleanly: the ordered-pair double sum splits into R×R (untouched), A/B rows & cols vs R (pure pairEnergy_split_mono/_mono_right), and the {A,B}² 4-term block refining into 16 sub-cells — diagonal A²,B² and the (B,A) cross by monotonicity, only the single (A,B) cross carries the variance-atom gain. So the whole-partition floor ε⁴|A||B|/n² beats the one-sided partitionEnergy_gain_of_irregular_pair floor ε²/(8n²)."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Wire pairEnergy_prod_gain_of_irregular_eps4 into whole-partition energy monotonicity (sum the per-pair ε⁴ jump over refined parts) feeding afks_energy_iteration_count (N≤2n²/ε²).",
-      "Full existential capstone from ¬IsEpsilonRegular directly: needs freshness of the INTERNALLY-chosen witness A′,B′, which the insert-model cannot guarantee — either work with the common refinement abstractly (dropping per-part ∉R conditions) or thread freshness as hypotheses",
-      "Assemble the outer AFKS loop: feed partitionEnergy_gain_of_irregular_pair as the hstep of afks_energy_iteration_count to bound refinements by 2n²/ε²",
-      "State two-level AFKS conclusion with dependent tolerance E:ℕ→(0,1]",
-      "Generalize 2×2 → m×k product refinement via Finset(Finset V) families + card_biUnion + edge_count over a Finset.biUnion product partition."
+      "Discharge the 10 freshness hypotheses of partitionEnergy_prod_refinement_gain from an equipartition/refinement model to obtain a fully-internal ∃P′ capstone from ¬IsEpsilonRegular (the remaining blocker, shared with partitionEnergy_gain_of_irregular_pair — witness cells A₁,A₂,B₁,B₂ must be certified distinct and ∉R).",
+      "Feed partitionEnergy_prod_gain_eps4 as the hstep of afks_energy_iteration_count with the SHARP floor to get N ≤ 2n²/(ε⁴·minmass) — the sharp iteration count from the no-loss route.",
+      "Generalize 2×2 → m×k product refinement via Finset(Finset V) families + card_biUnion over a Finset.biUnion product partition.",
+      "State two-level AFKS conclusion with dependent tolerance E:ℕ→(0,1]."
     ],
     "markdown": "# Knowledge Base: szemeredi-regularity-oq-04\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
