@@ -89,10 +89,18 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header: Even Zeta Values and Multiple Zeta Values",
+      "startLine": 1,
+      "endLine": 52,
+      "summary": "Imports (Mathlib's ZetaValues and Bernoulli APIs), the module docstring framing the open question — how multiple zeta values relate to single zeta values ζ(2k) — and the plan: extend the Basel value ζ(2)=π²/6 via Euler's even-zeta formula to ζ(6), ζ(8), prove the product-reduction relations among even zeta values, and record the double zeta value ζ(2,2). Then the namespace and Real/Nat/Finset opens.",
+      "mathContext": "$\\zeta(2k) = (-1)^{k+1}\\,\\tfrac{2^{2k-1}\\pi^{2k}B_{2k}}{(2k)!}$; goal: relate $\\zeta(s_1,\\dots,s_r)$ to single $\\zeta(2k)$."
+    },
+    {
       "id": "bernoulli",
       "title": "Bernoulli Numbers B₆ and B₈",
       "startLine": 53,
-      "endLine": 80,
+      "endLine": 81,
       "summary": "Computes B₆ = 1/42 and B₈ = -1/30 from the defining recursion bernoulli'_def, using bernoulli'_eq_zero_of_odd for B₅ = B₇ = 0, then converts to the bernoulli convention needed by Euler's formula.",
       "mathContext": "Mathlib stocks only B₂, B₃, B₄; these are the next two even Bernoulli numbers."
     },
@@ -100,7 +108,7 @@
       "id": "closed-forms",
       "title": "Closed Forms for ζ(6) and ζ(8)",
       "startLine": 82,
-      "endLine": 118,
+      "endLine": 119,
       "summary": "Instantiates Euler's hasSum_zeta_nat at k=3,4 to obtain ζ(6) = π⁶/945 and ζ(8) = π⁸/9450, and packages ζ(2),ζ(4),ζ(6),ζ(8) as tsum values.",
       "mathContext": "ζ(2k) = (-1)^{k+1}·2^{2k-1}·π^{2k}·B_{2k}/(2k)!."
     },
@@ -108,7 +116,7 @@
       "id": "product-relations",
       "title": "Product-Reduction Relations",
       "startLine": 120,
-      "endLine": 155,
+      "endLine": 156,
       "summary": "Five exact identities between the infinite series: ζ(2)²=(5/2)ζ(4), ζ(2)·ζ(4)=(7/4)ζ(6), ζ(2)³=(35/8)ζ(6), ζ(4)²=(7/6)ζ(8), ζ(2)·ζ(6)=(5/3)ζ(8).",
       "mathContext": "The single-variable shadow of the stuffle product on multiple zeta values."
     },
