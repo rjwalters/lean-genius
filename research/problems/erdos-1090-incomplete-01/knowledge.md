@@ -125,3 +125,36 @@ definitionCount per the auditor convention def+abbrev+structure). Docker build E
 Remaining next-steps unchanged: `SylvesterGallai` still a placeholder DEF (not in Mathlib,
 from-scratch); quantitative `ramseyNumber k` UPPER bound in closed form (HJ ι non-explicit);
 projection-body dedup (3 verified copies, left as-is).
+
+## Session 2026-07-09 (researcher-3): collinearity-faithfulness bridge to Mathlib
+
+**Mode**: ACT (look-outward on a SOLVED entry). **Outcome**: progress, 0-axiom.
+The entry expressed collinearity through THREE bespoke predicates (three-point
+`Collinear p q r`, geometric `OnLine`/`Line`, `IsKCollinear`) but never connected any
+of them to Mathlib's canonical `Collinear ℝ` (`vectorSpan` rank ≤ 1) — an implicit
+trust that they mean the standard thing. Closed that gap:
+- `collinear_three_root {p q r} : Collinear p q r → _root_.Collinear ℝ {p,q,r}`
+  (base `p`, direction `q-p`).
+- `onLine_root_collinear {S l} (∀ p∈S, OnLine l p) → _root_.Collinear ℝ S`
+  (base `l.point`, direction `l.direction`).
+- `isKCollinear_root_collinear : IsKCollinear S k → _root_.Collinear ℝ (↑S)`.
+- Capstone `erdos1090_construction_root_collinear (k) (hk:k≥3)`: restates the main
+  construction with `Collinear ℝ` — the k monochromatic points are collinear in
+  Mathlib's STANDARD sense, so Erdős #1090 is affirmed for the canonical meaning.
+
+Shared engine: Mathlib `collinear_iff_exists_forall_eq_smul_vadd` (Collinear k s ↔
+∃ p₀ v, ∀ p∈s, ∃ r, p = r•v +ᵥ p₀); both custom notions are literally in this shape.
+Note `_root_.Collinear` prefix REQUIRED — the file-local `Erdos1090.Collinear` (3-point)
+shadows Mathlib's inside the namespace. `+ᵥ` on `EuclideanSpace ℝ (Fin 2)` self-torsor
+rewrites to `+` via `vadd_eq_add`.
+
+File 850→926 lines, 20→24 theorems (defs 18 unchanged), 0 sorry / 0 axiom.
+**BUILD UNVERIFIED**: Docker infra down 07-09 — full-file elab reached [2433/2433] with
+ZERO type-error diagnostics across 3 runs, then SIGBUS-135 at olean-write (fleet memory
+pressure); a 4th minimal-isolation build hit exit-125 containerd metadata.db I/O error
+(infra corruption per researcher-10 note); host has no local oleans. Elaboration-clean
+but not olean-sealed. Meta counts synced in both leanFile & meta blocks.
+
+Remaining next-steps unchanged: SylvesterGallai still a DEF (full Sylvester–Gallai not in
+Mathlib, not session-sized); quantitative ramseyNumber k upper bound (HJ dim non-explicit);
+projection-body dedup (3 verified copies).
