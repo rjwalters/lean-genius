@@ -1080,6 +1080,62 @@ theorem attainsBelow_colMin_lt {n : ℕ} (h : AttainsBelow n) : colMin n < n := 
   refine lt_of_le_of_lt ?_ hlt
   exact Nat.sInf_le ⟨k, rfl⟩
 
+/-- **The bridge is an exact equivalence.**  The converse of `attainsBelow_colMin_lt`
+also holds: `colMin n < n` forces `AttainsBelow n`.  Since the orbit minimum is
+*attained* (`colMin_mem_orbit`), a strict drop of the minimum below the start must
+happen at a *positive* step — step `0` returns `n` itself.  So the finite-stopping-time
+event `AttainsBelow n` and the `Col_min` drop `colMin n < n` are the **same** predicate:
+`colMin n < n ↔ AttainsBelow n`.  This closes the Part II ↔ Part III loop, promoting the
+one-directional bridge to a definitional characterization of Tao's `Col_min < n` event. -/
+theorem colMin_lt_iff_attainsBelow {n : ℕ} : colMin n < n ↔ AttainsBelow n := by
+  refine ⟨fun h => ?_, attainsBelow_colMin_lt⟩
+  obtain ⟨k, hk⟩ := colMin_mem_orbit n
+  refine ⟨k, ?_, by rw [hk]; exact h⟩
+  rcases Nat.eq_zero_or_pos k with hk0 | hkpos
+  · rw [hk0, Function.iterate_zero_apply] at hk
+    omega
+  · exact hkpos
+
+/-- **Self-minimal characterization.**  Because `colMin n ≤ n` always, the orbit
+minimum equals the start exactly when `n` never drops below itself: `colMin n = n ↔
+¬ AttainsBelow n`.  Such an `n` is a *valley* — a record low never subsequently beaten.
+Under the Collatz conjecture the only positive valley is `1` (`colMin_pow_two_eq_one`
+shows powers of two are *not* valleys). -/
+theorem colMin_eq_self_iff {n : ℕ} : colMin n = n ↔ ¬ AttainsBelow n := by
+  rw [← colMin_lt_iff_attainsBelow]
+  have := colMin_le_self n
+  omega
+
+/-- The valley condition unwound to the trajectory: `n` is its own orbit minimum
+exactly when every iterate stays at or above `n`.  A direct restatement of
+`colMin_eq_self_iff` in terms of the raw orbit values, useful when the drop witness
+is more convenient than the negated `AttainsBelow`. -/
+theorem colMin_eq_self_iff_forall_le {n : ℕ} :
+    colMin n = n ↔ ∀ k, n ≤ collatz^[k] n := by
+  constructor
+  · intro h k
+    have := colMin_le_iterate n k
+    omega
+  · intro h
+    obtain ⟨k, hk⟩ := colMin_mem_orbit n
+    have hle := colMin_le_self n
+    have hk' := h k
+    rw [hk] at hk'
+    omega
+
+/-- **Idempotence / closure of the orbit minimum.**  Applying `colMin` twice gives
+nothing new: `colMin (colMin n) = colMin n`.  The orbit minimum is itself a valley —
+it appears on its own orbit (`colMin_mem_orbit`) as the global minimum, so it cannot
+descend further.  Equivalently, `colMin n` is a fixed point of `colMin`
+(`colMin_eq_self_iff` then says `¬ AttainsBelow (colMin n)`): the orbit minimum is the
+canonical valley reached from `n`. -/
+theorem colMin_idempotent (n : ℕ) : colMin (colMin n) = colMin n := by
+  obtain ⟨k, hk⟩ := colMin_mem_orbit n
+  refine Nat.le_antisymm (colMin_le_self _) ?_
+  have h := colMin_le_colMin_iterate n k
+  rw [hk] at h
+  exact h
+
 /-- Consequently the entire three-quarters family of Part II — the even numbers
 and the odd class `1 + 4ℕ` (`n ≥ 5`) — has orbit minimum strictly below the start,
 unconditionally and without Tao's axiom. -/
