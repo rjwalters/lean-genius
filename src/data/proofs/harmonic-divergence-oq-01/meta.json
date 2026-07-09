@@ -89,7 +89,7 @@
     ]
   },
   "conclusion": {
-    "summary": "This formalization provides a comprehensive Lean 4 treatment of the Euler-Mascheroni constant, including convergence, bounds, explicit convergence rates, rational exclusion, and Theisinger's integrality theorem for harmonic numbers. The 42 theorems cover the main analytical and number-theoretic aspects of γ accessible from Mathlib.",
+    "summary": "This formalization provides a comprehensive Lean 4 treatment of the Euler-Mascheroni constant, including convergence, bounds, explicit convergence rates, rational exclusion, and Theisinger's integrality theorem for harmonic numbers. The 52 theorems cover the main analytical and number-theoretic aspects of γ accessible from Mathlib.",
     "implications": "While the irrationality of γ remains open, this formalization establishes the best machine-verified bounds: 1/2 < γ < 2/3, with all simple rationals (denominator ≤ 6, most with denominator ≤ 4) excluded. The sandwich bound gives a practical convergence rate for numerical approximation. Theisinger's theorem shows harmonic numbers escape integers, related to γ's likely irrationality.",
     "openQuestions": [
       "Prove that γ is irrational (widely believed but open since Euler, 1734)",
