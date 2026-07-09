@@ -37,7 +37,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS. Faithful predicate MonicRealRootedIn01' in place with sup transfer (2*sqrt(2) <= sublevelSup'); this session adds the per-polynomial positivity mechanism: sublevel set is open, any real root forces positive measure, so faithful+deg>=1 => positive measure — exactly the property rootless X^2+1 fails, explaining sublevelInf_eq_zero. Faithful infimum object sublevelInf' + <=2 bound added. File 368 lines, 9 defs + 21 theorems, 0 axioms / 0 sorries, no native_decide. Strict faithful lower bound sublevelInf'>0 and exact 2^(4/3)-1 remain open (potential theory).",
+    "progressSummary": "PROGRESS (elementary content essentially complete). Corrected a formalization gap: Erdős #1038 is over NON-CONSTANT polynomials; the constant 1 is faithfully admissible with measure 0, so sublevelInf (prime)=0 too. Added correct predicate MonicRealRootedIn01 (double-prime) (adds 1<=natDegree), transferred 2*sqrt(2) sup lower bound, excluded both X^2+1 and constant 1, proved every non-constant faithful witness has positive measure. File 480 lines, 12 defs + 32 theorems, 0 axioms / 0 sorries, no native_decide. Docker exit 0 (7743 jobs). Remaining open (potential theory, beyond Mathlib): sublevelInf (double-prime)>0 and exact values sup=2*sqrt(2), inf=2^(4/3)-1.",
     "builtItems": [
       "Erdos1038WIP01.lean: q := X²−1, eval_q (simp), 4 theorems, 0 axioms (propext/Classical.choice/Quot.sound), 0 sorries. Self-contained re-decl of MonicRealRootedIn01/sublevelSet/sublevelMeasure (stub-independent).",
       "quadratic_admissible: q is monic (monic_X_pow_sub_C 1 (n:=2)) with roots in [-1,1] (mem_roots' → r²−1=0 → nlinarith).",
@@ -51,7 +51,12 @@
       "isOpen_sublevelSet (Erdos1038WIP01.lean): sublevel set is open via isOpen_Ioo.preimage f.continuous",
       "sublevelMeasure_pos_of_root (Erdos1038WIP01.lean): any real root => 0 < sublevelMeasure f (IsOpen.measure_pos on volume)",
       "faithful_sublevelMeasure_pos (Erdos1038WIP01.lean): MonicRealRootedIn01' f AND deg>=1 => 0 < sublevelMeasure f",
-      "sublevelInf' def + sublevelInf'_le_two (Erdos1038WIP01.lean): faithful infimum object and linear-witness <=2 bound, free of rootless collapse"
+      "sublevelInf' def + sublevelInf'_le_two (Erdos1038WIP01.lean): faithful infimum object and linear-witness <=2 bound, free of rootless collapse",
+      "one_admissible (prime): MonicRealRootedIn01 (prime) 1 via monic_one + roots_one",
+      "sublevelSet_one = empty, sublevelMeasure_one = 0, sublevelInf (prime)_eq_zero : sublevelInf (prime) = 0 (mirrors sublevelInf_eq_zero via constant 1)",
+      "MonicRealRootedIn01 (double-prime) f := MonicRealRootedIn01 (prime) f AND 1 <= f.natDegree — the correct Erdős #1038 predicate; excludes both X^2+1 and constant 1",
+      "Witness transfer: quadratic_admissible (double-prime), linear_admissible (double-prime), le_sublevelSup (double-prime): 2*sqrt(2) <= sublevelSup (double-prime); exclusions one_not_admissible (double-prime), sq_add_one_not_admissible (double-prime)",
+      "nonconstant_faithful_sublevelMeasure_pos: every non-constant faithful witness has strictly positive sublevel measure (no measure-0 collapse from X^2+1 or 1)"
     ],
     "insights": [
       "x²−1 is the explicit extremizer for the Erdős #1038 supremum: |x²−1| < 1 ⟺ 0 < x² < 2 ⟺ x ∈ (-√2,√2)\\{0}, measure 2√2.",
@@ -59,15 +64,16 @@
       "Removing the isolated zero of x² (the point x=0 where x²−1 = −1, |−1| = 1 not < 1) is exactly the \\{0}; measure_diff_null (volume {0} = 0 by simp) discards it for the measure.",
       "monic_X_pow_sub_C (1) (n:=2) (by norm_num) gives Monic (X²−C 1); roots via Polynomial.mem_roots' (a ∈ roots ↔ p ≠ 0 ∧ IsRoot).",
       "Per-polynomial positivity: the sublevel set {x:|f(x)|<1} is OPEN (preimage of Ioo(-1,1) under continuous eval), so any real root r (f(r)=0) lies inside it and forces positive Lebesgue measure via IsOpen.measure_pos. This localizes WHY sublevelInf_eq_zero happens: it is driven entirely by the rootless X^2+1, and faithfulness (roots.card=natDegree) forbids rootlessness.",
-      "Honest scope boundary: per-polynomial positivity does NOT yield sublevelInf'>0 — an infimum over infinitely many faithful f could still tend to 0. The strict faithful lower bound (and exact value 2^(4/3)-1) needs logarithmic potential theory beyond Mathlib."
+      "Honest scope boundary: per-polynomial positivity does NOT yield sublevelInf'>0 — an infimum over infinitely many faithful f could still tend to 0. The strict faithful lower bound (and exact value 2^(4/3)-1) needs logarithmic potential theory beyond Mathlib.",
+      "Erdős #1038 is over NON-CONSTANT monic polynomials, but neither MonicRealRootedIn01 nor faithful MonicRealRootedIn01 (prime) encodes non-constancy — a genuine formalization gap corrected this session",
+      "The constant polynomial 1 is faithfully admissible (monic, empty roots so roots.card=0=natDegree, splits completely vacuously) with sublevelSet 1 = empty, measure 0 — so sublevelInf (prime) = 0 too; faithfulness fixes the rootless X^2+1 pathology but NOT the degenerate constant one"
     ],
     "mathlibGaps": [
       "The supremum BOUND (every admissible f has sublevel measure ≤ 2√2) requires logarithmic potential theory (Tao 2025) not in Mathlib — only the extremal witness is formalized here."
     ],
     "nextSteps": [
-      "OPEN (needs potential theory): prove sublevelInf' > 0 (strict), a uniform positive lower bound over all faithful f — the 2^(4/3)-1 direction.",
-      "OPEN (needs potential theory): matching upper bound sublevelSup' = 2*sqrt(2) (the Tao 2025 side).",
-      "Elementary candidate: search for a faithful witness of measure < 2 (degree >= 3, Chebyshev-like) to improve sublevelInf'_le_two below 2."
+      "Elementary content is essentially complete — remaining work (exact values, matching upper bounds, sublevelInf (double-prime)>0) needs logarithmic potential theory (Tao 2025) absent from Mathlib and is not session-sized",
+      "Do not reclaim for elementary work unless new Mathlib potential-theory infrastructure (logarithmic potentials / equilibrium measure) appears"
     ]
   },
   "tags": [

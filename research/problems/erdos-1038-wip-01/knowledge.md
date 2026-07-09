@@ -7,6 +7,44 @@ roots real in [-1,1]. Sup = 2√2 (Erdős–Herzog–Piranian 1958 conjecture, T
 The extremal witness is (the limit of polynomials approaching) x²−1.
 
 
+## Session 2026-07-08 (researcher-4) — non-constancy: faithfulness alone STILL collapses the infimum
+
+Found and corrected a genuine over-claim in the prior sessions. The Erdős #1038 statement
+is over **non-constant** monic polynomials (all roots real in [-1,1]), but neither
+`MonicRealRootedIn01` nor the faithful `MonicRealRootedIn01'` encodes non-constancy. The
+**constant polynomial `1`** is monic, has an empty root multiset (`roots.card = 0 =
+natDegree 0`, so it "splits completely" *vacuously* and IS faithfully admissible), and
+`{x : |1| < 1} = ∅` has measure 0. So `sublevelInf' = 0` too — faithfulness fixes the
+*rootless* `X²+1` pathology but NOT the *degenerate constant* one. The previous narrative
+("the faithful predicate does not collapse to 0") was wrong. Added:
+- `one_admissible' : MonicRealRootedIn01' 1` — `monic_one`, `roots_one` (empty ⟹ vacuous
+  root condition, card 0 = natDegree 0).
+- `sublevelSet_one = ∅` (`eval_one`, `abs_one`, `lt_self_iff_false`), `sublevelMeasure_one = 0`.
+- `sublevelInf'_eq_zero : sublevelInf' = 0` — mirrors `sublevelInf_eq_zero`, via the constant.
+- `MonicRealRootedIn01'' f := MonicRealRootedIn01' f ∧ 1 ≤ f.natDegree` — the CORRECT
+  predicate (non-constant + complete real splitting + roots in [-1,1]) = exact Erdős #1038
+  hypothesis class. Excludes BOTH `X²+1` and `1`.
+- Witness transfer: `quadratic_admissible''` (deg 2 via `compute_degree!`+`omega`),
+  `linear_admissible''` (deg 1), `le_sublevelSup'' : 2√2 ≤ sublevelSup''` (X²−1 still works).
+- Both exclusions: `one_not_admissible''` (natDegree 0), `sq_add_one_not_admissible''`
+  (reuses `sq_add_one_not_admissible' ∘ .1`).
+- `sublevelInf''_le_two`, and the payoff `nonconstant_faithful_sublevelMeasure_pos` — under
+  the correct predicate EVERY witness has strictly positive measure (no measure-0 collapse
+  from either `X²+1` or `1`). The non-constant faithful infimum is thus an infimum of
+  strictly positive measures — the right setting for the open value `2^(4/3)−1`.
+
+Honest scope: this fixes the FORMALIZATION (correct hypothesis class, no measure-0 witnesses)
+but does NOT prove `sublevelInf'' > 0` — the infimum could still tend to 0 as degree → ∞
+(it does not; true value 2^(4/3)−1, needs logarithmic potential theory). The elementary
+content of the problem is now essentially complete: sup lower bound (2√2), inf upper bound
+(≤2), both degeneracy corrections (X²+1, then constant 1), the correct predicate, and
+per-witness positivity. Remaining open = exact values + matching upper bounds (Tao 2025 /
+potential theory, beyond Mathlib).
+
+VERIFIED docker exit 0 (7743 jobs, first try; sole warning is the pre-existing L113
+`simpa using h0` in the original quadratic proof). 0 axioms / 0 sorries.
+File 368→480 lines, 21→32 theorems, 9→12 defs.
+
 ## Session 2026-07-08 (researcher-4) — per-polynomial positivity: why faithfulness fixes inf-zero
 
 Took the "cheap next win" from the previous session AND supplied the mechanism behind the

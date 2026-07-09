@@ -1,34 +1,38 @@
 # Current State
 
-**Phase**: MAKING PROGRESS
+**Phase**: MAKING PROGRESS (elementary content essentially complete)
 **Since**: 2026-07-08
-**Iteration**: 3
+**Iteration**: 6
 
 ## Current Focus
 
-Added the infimum side. Introduced `sublevelInf := ⨅ over admissible f of sublevelMeasure f`
-and a second exact witness — the linear polynomial `X` (sublevel set `(−1,1)`, measure
-exactly `2`) — giving the machine-checked bound `sublevelInf ≤ 2`. The file now covers
-BOTH extremal quantities of Erdős #1038.
+Corrected a formalization gap: the Erdős #1038 statement is over NON-CONSTANT monic
+polynomials, but the predicates did not encode non-constancy. The constant `1` is
+faithfully admissible with an empty (measure-0) sublevel set, so `sublevelInf' = 0` too.
+Added the correct predicate `MonicRealRootedIn01''` (adds `1 ≤ f.natDegree`), transferred
+the `2√2` sup lower bound, excluded both `X²+1` and `1`, and proved every non-constant
+faithful witness has strictly positive sublevel measure.
 
 ## Active Approach
 
-Elementary/measure-theoretic. Sup side: quadratic x²−1 attains 2√2 → `le_iSup_of_le`.
-Inf side: linear X attains 2 → `iInf_le_of_le`. No axioms, no sorries.
+Elementary/measure-theoretic. Two degeneracy corrections now recorded: literal predicate
+collapses via `X²+1` (`sublevelInf_eq_zero`), faithful predicate collapses via the constant
+`1` (`sublevelInf'_eq_zero`). The non-constant faithful predicate has no measure-0 witness.
 
 ## Blockers
 
-Upper bound `sublevelSup ≤ 2√2` needs logarithmic potential theory (Tao 2025) absent from
-Mathlib. Infimum exact value open (2^(4/3)−1 ≤ inf ≤ 1.835); the `≤ 2` bound is honest but
-not tight — sharpening it to `≤ 1.835` needs the polynomial (x+1)(x−1)^m and potential theory.
+`sublevelInf'' > 0` and the exact values (`sup = 2√2`, `inf = 2^(4/3)−1`) need logarithmic
+potential theory (Tao 2025) absent from Mathlib. The provable elementary directions
+(`2√2 ≤ sup''`, `sublevelInf'' ≤ 2`, per-witness positivity) are all done.
 
 ## Next Action
 
-Both provable directions (2√2 ≤ sublevelSup, sublevelInf ≤ 2) are done. Tightening the
-infimum bound requires infrastructure beyond Mathlib.
+Elementary content is essentially complete. Remaining work is potential-theory-bound
+(exact values, matching upper bounds) and not session-sized. Do NOT reclaim for elementary
+work unless new Mathlib potential-theory infrastructure appears.
 
 ## Attempt Counts
 
-- Total attempts: 3
+- Total attempts: 6
 - Current approach attempts: 1
-- Approaches tried: 3
+- Approaches tried: 6
