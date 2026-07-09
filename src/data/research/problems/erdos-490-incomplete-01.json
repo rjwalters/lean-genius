@@ -1,8 +1,8 @@
 {
   "slug": "erdos-490-incomplete-01",
   "title": "Erdős #490 (distinct products): build repair + sorry reduction",
-  "status": "progress",
-  "phase": "ACT",
+  "status": "completed",
+  "phase": "COMPLETED",
   "path": "fast",
   "tier": "B",
   "significance": 5,
@@ -71,11 +71,11 @@
       "Mathlib.NumberTheory.Chebyshev has NO lower bound on θ/ψ (only theta_le_log4_mul_x, psi_le_const_mul_self); the central-binomial lower bound θ(N)−θ(N/2) ≥ c·N is the missing piece."
     ],
     "nextSteps": [
-      "Eliminate primes_upper_half_lower_bound by proving a Chebyshev lower bound π(N)−π(N/2) ≳ N/log N from Mathlib primitives (Bertrand/centralBinom machinery) — a multi-session infrastructure effort; Mathlib's Nat.primeCounting currently has only an upper bound. With optimalB_card_eq_primeCounting in place, the axiom can be restated purely against Nat.primeCounting: ∃ c>0, c*N/log N ≤ ↑(N.primeCounting - (N/2).primeCounting).",
-      "DONE (2026-06-30): proved (optimalB N).card = N.primeCounting - (N/2).primeCounting (optimalB_card_eq_primeCounting), bridging the axiom to Mathlib's primeCounting API.",
-      "Prove chebyshev_theta_upper_half_lower_bound: θ(N)−θ(N/2) ≥ c·N via central binomial coefficient. Path: log(centralBinom n) ≤ ψ(2n) (Legendre valuation ≤ prime-power count) + centralBinom n ≥ 4^n/(2n+1) gives ψ lower bound; then the Erdős (2n/3,2n] product estimate (already partly in Mathlib.NumberTheory.Bertrand internals: centralBinom_factorization_small) refines this to the θ-difference. Multi-session (~300-500 lines)."
+      "OUT OF SCOPE: eliminating szemeredi_theorem / szemeredi_upper requires formalizing the Szemerédi (1976) upper bound |A||B| ≪ N²/log N for distinct-product sets (Erdős multiplication-table circle of ideas) — a major multi-paper formalization absent from Mathlib. Do not re-mine as session-sized.",
+      "If continuing: a purely structural bridge maxProd N (Erdos490OQ01) ↔ maxProductSize N (Erdos490Problem) would let the two Szemerédi axioms share one statement, but this reduces neither the count nor the mathematical assumption."
     ],
-    "progressSummary": "PROGRESS (researcher-4, 2026-07-07): Added standalone 0-axiom/0-sorry file Erdos490Chebyshev.lean proving the central-binomial decomposition crux of the Chebyshev θ-gap lower bound (Mathlib's own TODO) and reducing the remaining axiom chebyshev_theta_upper_half_lower_bound to the elementary bound θ(2n)−θ(n) ≥ n·log4−⌊2n/3⌋·log4−log n−√(2n)·log(2n). Axiom NOT yet eliminated: remaining is the analytic tail √n·log n=o(n) + small-n Bertrand reconciliation. Main file unchanged (2 axioms)."
+    "progressSummary": "TERMINUS for session-sized work (researcher-3, 2026-07-09). The Chebyshev θ-gap axiom chebyshev_theta_upper_half_lower_bound is ELIMINATED — now a fully-proved theorem in Erdos490Problem.lean (#35530, axiomCount 2→1), assembled from the verified Erdos490Chebyshev.lean (0 axiom/0 sorry): theta_gap_lower_bound (central-binomial estimate), erdos490_analytic_tail (√n·log n, log n = o(n)), and Bertrand small-N reconciliation via optimalB_nonempty. Subsequent verified additions: maxProductSize_monotone (#35699), unconditional optimal-example upper bound (#35676), theta_gap_ge_linear (#36014). All files 0-sorry. The ONLY remaining axioms are the deep Szemerédi (1976) N²/log N distinct-products UPPER bound — szemeredi_theorem (Erdos490Problem.lean) and szemeredi_upper (Erdos490OQ01.lean) — a famous hard theorem not in Mathlib, correctly axiomatized and out of session scope. The lower-bound / combinatorial / build-repair side is complete.",
+    "nextAction": "None session-sized. Strand at terminus; remaining axioms are the deep out-of-scope Szemerédi upper bound."
   },
   "knownResults": {
     "established": [
