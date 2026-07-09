@@ -1,5 +1,26 @@
 [
   {
+    "id": "ann-isc-oq0102-setup",
+    "proofId": "antitone-integral-sum-comparison-oq-01-oq-02",
+    "range": { "startLine": 1, "endLine": 44 },
+    "type": "context",
+    "title": "From a Bounded Defect to Its Limit γ: the Open Question",
+    "content": "The module docstring frames the entry as the answer to the parent's open question. The parent file (AntitoneIntegralSumComparison, \"The Integral Test\") ran the antitone integral comparison on f(x) = 1/x to pin the harmonic defect aₙ = Hₙ − log(n+1) between two integrals, proving 0 ≤ aₙ ≤ 1 — boundedness, but not the limit. Since the defect is also monotone increasing, a bounded-monotone argument forces convergence, and the limit is the Euler–Mascheroni constant γ ≈ 0.5772. This file bridges the parent's setup to Mathlib's Real.eulerMascheroniConstant, then derives the textbook asymptotic Hₙ ∼ log n + γ, a two-sided bracket trapping γ, the bracket width → 0, the numeric bounds 1/2 < γ < 2/3, and a concrete rational enclosure at n = 6. `import Mathlib` supplies the Euler–Mascheroni development; the namespace opens the Filter, Topology, and Real scopes.",
+    "mathContext": "a_n = H_n - \\log(n+1) \\uparrow \\gamma,\\qquad H_n = \\log n + \\gamma + o(1),\\qquad \\gamma \\approx 0.5772",
+    "significance": "context",
+    "relatedConcepts": [
+      "Euler–Mascheroni constant",
+      "harmonic defect",
+      "monotone bounded convergence",
+      "integral test"
+    ],
+    "prerequisites": [
+      "the parent's bounded harmonic defect 0 ≤ Hₙ − log(n+1) ≤ 1",
+      "the monotone convergence theorem for bounded increasing sequences",
+      "Mathlib's Real.eulerMascheroniConstant"
+    ]
+  },
+  {
     "id": "ann-isc-oq0102-tendsto-add-one",
     "proofId": "antitone-integral-sum-comparison-oq-01-oq-02",
     "range": { "startLine": 45, "endLine": 48 },
@@ -14,7 +35,11 @@
       "monotone convergence",
       "integral test"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "harmonic numbers Hₙ = ∑_{k=1}^n 1/k",
+      "the natural logarithm and its growth",
+      "convergence of a real sequence to a limit"
+    ]
   },
   {
     "id": "ann-isc-oq0102-tendsto-log",
@@ -30,7 +55,10 @@
       "harmonic numbers",
       "logarithmic growth"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the limit Hₙ − log(n+1) → γ",
+      "log(n+1) − log n = log(1 + 1/n) → 0"
+    ]
   },
   {
     "id": "ann-isc-oq0102-brackets",
@@ -46,7 +74,11 @@
       "monotone sequences",
       "squeeze"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Mathlib's eulerMascheroniSeq / eulerMascheroniSeq' bracketing sequences",
+      "strict monotonicity of the lower and upper bracket sequences",
+      "the defining strict bounds on the Euler–Mascheroni constant"
+    ]
   },
   {
     "id": "ann-isc-oq0102-width",
@@ -62,7 +94,11 @@
       "rate of convergence",
       "limit arithmetic"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "both bracket sequences converge to γ",
+      "the limit of a difference is the difference of limits",
+      "the nested interval theorem"
+    ]
   },
   {
     "id": "ann-isc-oq0102-bounds",
@@ -77,7 +113,10 @@
       "explicit constants",
       "rational bounds"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the bracketing of γ between the two defect sequences",
+      "Mathlib's explicit estimates 1/2 < γ and γ < 2/3"
+    ]
   },
   {
     "id": "ann-isc-oq0102-enclosure-six",
@@ -93,6 +132,9 @@
       "explicit enclosure",
       "worked example"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the n = 6 instance of the two-sided bracket",
+      "the sixth harmonic number H₆ = 49/20"
+    ]
   }
 ]
