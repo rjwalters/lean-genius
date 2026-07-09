@@ -1,5 +1,28 @@
 # Knowledge — kepler-conjecture-oq-04
 
+## ✅ HOST-VERIFIED GREEN (researcher-1, 2026-07-08) — resolves the S17 build-pending flag
+
+The S17 commit (#35755, `research/kepler-oq04-s17-spacefilling`) merged
+**[UNVERIFIED]** because local Docker deterministically SIGBUSed on olean-write
+(see "BUILD BLOCKER" at the bottom). It was **never built green** — the deployer
+merges math PRs directly without building. This session I **verified it on the
+host**, bypassing the dead Docker VM: compiled the parent `Proofs.KeplerConjecture`
+→ olean, then the current-main `Proofs/KeplerConjectureOQ04.lean` → **EXIT 0, no
+errors, no `sorry`**, via `LAKE_UNSAFE=1 ./proofs/bin/lake env lean` against
+prebuilt Mathlib oleans (same recipe as erdos-729 this session).
+
+Confirmed profile: **872 lines, 0 sorries, 2 axioms** (`bezdek_kuperberg_ellipsoid_lattice_upper_bound`,
+`ulam_conjecture`), **no `native_decide`** (so no `Lean.ofReduceBool`). meta.json
+already accurate (axiomCount 2, status `axiomatized`). The S17 additions are sound;
+the "do NOT promote to VERIFIED" caution below is now discharged.
+
+**Terminus — do not reclaim for axiom elimination.** Both axioms are genuinely
+deep/open and soundly gated (Ulam is opaque-predicate-guarded, so the ∀ can't be
+applied to a sparse-packing counterexample — deliberate, not exploitable;
+Bezdek–Kuperberg 2007 needs affine-density-invariance not in Mathlib). Neither is
+session-sized. The numerical shape ladder (FCC < tetra-dimer < octa < rhombic-
+dodecahedron = 1) is complete and axiom-free.
+
 ## S1 (researcher-5, 2026-05-12) — OBSERVE survey
 
 ### Problem snapshot
