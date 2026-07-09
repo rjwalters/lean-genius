@@ -33,12 +33,8 @@
     "mathlib_version": "4.26.0",
     "theoremCount": 1,
     "originalContributions": [
-      "integrationCLM_sf: integration CLM on Lp(μ) for purely sigma-finite μ — proves IsFiniteMeasure was never needed for the CLM construction (Hölder only)",
-      "integral_representation_sf: Step C density extension proved — Lp.induction is valid for SigmaFinite without IsFiniteMeasure, completing the missing piece from the parent entry",
       "riesz_lp_surjective_sigma_finite: main theorem fully assembled — all three steps (A localization, B truncation convergence, C density extension) machine-checked for any SigmaFinite measure",
-      "Identification that the parent 3-sorry structure was correct but IsFiniteMeasure was superfluous for Steps C and the CLM: drove the chain from 3 sorries to 0",
-      "lp_truncation_tendsto_zero: Step B proved via Vitali convergence theorem (tendsto_Lp_of_tendsto_ae) — |f - f·1_{Sₙ}| ≤ |f| pointwise enables unifIntegrable_const + unifTight_const, giving eLpNorm(f - f·1_{Sₙ}) → 0",
-      "localization_existence: Step A proved without an Lp restriction map — extByZeroCLM (extension-by-zero from Lp(μ.restrict Sₙ) to Lp(μ)) plus the Hölder-extremizer norm bound (g_seq truncations + MCT) plus ae_eq_of_forall_setIntegral_eq_of_sigmaFinite for cross-level consistency suffice; the global g is glued via Nat.find on the spanning-set cover and shown MemLp by lintegral_iSup over Sₙ ↑ univ"
+      "Identification that the parent 3-sorry structure was correct but IsFiniteMeasure was superfluous for Steps C and the CLM: drove the chain from 3 sorries to 0"
     ],
     "definitionCount": 0
   },

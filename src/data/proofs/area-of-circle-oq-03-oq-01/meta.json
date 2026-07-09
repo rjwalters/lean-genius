@@ -26,8 +26,8 @@
     "definitionCount": 1,
     "originalContributions": [
       "inscribedArea: area of regular n-gon inscribed in circle of radius r = n·r²/2·sin(2π/n)",
-      "sin_lb: sin(x) ≥ x - x³/6 for x ≥ 0 (proved via MVT + half-angle identity chain)",
-      "inscribed_area_lower: Aₙ ≥ πr² - 2π³r²/(3n²) (lower bound from sin lower bound)",
+      "sin_ge_sub_cube_div_six: sin(x) ≥ x - x³/6 for x ≥ 0 (proved via MVT + half-angle identity chain)",
+      "inscribed_area_rate_bound: Aₙ ≥ πr² - 2π³r²/(3n²) (lower bound from sin lower bound)",
       "inscribed_area_upper: Aₙ ≤ πr² (inscribed area never exceeds circle area)",
       "inscribed_area_rate_bound: explicit O(1/n²) convergence rate 0 ≤ πr² - Aₙ ≤ 2π³r²/(3n²)",
       "inscribed_area_convergence_rate: absolute value form of the rate bound",

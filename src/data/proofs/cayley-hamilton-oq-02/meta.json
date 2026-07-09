@@ -24,11 +24,11 @@
     "theoremCount": 20,
     "definitionCount": 0,
     "originalContributions": [
-      "charpoly_reduces_eval: aeval A p = aeval A (p %ₘ charpoly A)",
-      "charpoly_degree_bound: deg(p mod charpoly) < n",
-      "power_reduction: A^k = aeval A (X^k mod charpoly A) — degree < n",
-      "poly_congr_eval: p ≡ q (mod charpoly) → aeval A p = aeval A q",
-      "partial_sum_reduction: finite polynomial sums reduce via Cayley-Hamilton"
+      "aeval_eq_aeval_modByMonic: aeval A p = aeval A (p %ₘ charpoly A)",
+      "degree_reduced_lt_dim: deg(p mod charpoly) < n",
+      "power_eq_aeval_mod: A^k = aeval A (X^k mod charpoly A) — degree < n",
+      "congruence: p ≡ q (mod charpoly) → aeval A p = aeval A q",
+      "partial_sum_reduces: finite polynomial sums reduce via Cayley-Hamilton"
     ]
   },
   "references": [
