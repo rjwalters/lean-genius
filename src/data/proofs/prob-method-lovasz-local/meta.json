@@ -1,8 +1,8 @@
 {
   "id": "prob-method-lovasz-local",
-  "title": "Lovasz Local Lemma",
+  "title": "Lovasz Local Lemma (Algebraic Core & Threshold Bounds)",
   "slug": "prob-method-lovasz-local",
-  "description": "If bad events are each unlikely and mostly independent, they can all be avoided. Crown jewel of the probabilistic method.",
+  "description": "The algebraic and threshold core underlying the Lovasz Local Lemma: if bad events are each unlikely and mostly independent, they can all be avoided. Crown jewel of the probabilistic method. This entry formalizes the rational-arithmetic skeleton (avoidance-product positivity, the T(d) threshold, k-SAT condition), not the measure-theoretic existence conclusion P[∩ Āᵢ] > 0.",
   "meta": {
     "author": "Erdos & Lovasz (1975), formalized in Lean 4",
     "sourceUrl": "https://en.wikipedia.org/wiki/Lov%C3%A1sz_local_lemma",
@@ -19,27 +19,22 @@
     "sorries": 0,
     "mathlibDependencies": [
       {
-        "theorem": "Combinatorics.SimpleGraph.Basic",
-        "description": "Dependency graph structure",
-        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+        "theorem": "Finset.prod_pos",
+        "description": "Positivity of finite products (avoidance-product bounds)",
+        "module": "Mathlib.Algebra.Order.BigOperators.Ring"
       },
       {
-        "theorem": "MeasureTheory.MeasurableSpace",
-        "description": "Measurable space foundations for events",
-        "module": "Mathlib.MeasureTheory.MeasurableSpace.Basic"
-      },
-      {
-        "theorem": "Topology.Algebra.InfiniteSum",
-        "description": "Infinite product convergence for probability bounds",
-        "module": "Mathlib.Topology.Algebra.InfiniteSum.Basic"
+        "theorem": "Finset.sum_nonneg",
+        "description": "Non-negativity of finite sums (Moser-Tardos expected-step bound)",
+        "module": "Mathlib.Algebra.Order.BigOperators.Group.Finset"
       }
     ],
     "originalContributions": [
-      "Dependency graph formalization for event families",
-      "Symmetric Lovasz Local Lemma with explicit bounds",
-      "General (asymmetric) Lovasz Local Lemma",
-      "Application to k-SAT satisfiability threshold",
-      "Connection to constructive Moser-Tardos framework"
+      "Combinatorial dependency-graph model (IsValidDepGraph / HasMaxDegree) for event families",
+      "Algebraic core of the symmetric Lovasz Local Lemma: avoidance-product positivity with explicit threshold bounds",
+      "Algebraic core of the general (asymmetric) Lovasz Local Lemma: product positivity and probability bounds from witness values x_i",
+      "Verification of the k-SAT satisfiability threshold condition 2^(-k)(2^(k-2)+1) ≤ 1",
+      "Moser-Tardos expected-step bound (non-negativity of Σ x_i/(1-x_i))"
     ],
     "dateAdded": "2026-03-21",
     "axiomCount": 0,
@@ -51,7 +46,7 @@
       "k-SAT satisfiability and clause independence",
       "Moser-Tardos resampling algorithm (constructive LLL)"
     ],
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "assumptions": "The formalized results are fully machine-checked (0 axioms, 0 sorries), but they cover the algebraic/threshold core only: avoidance-product positivity, the T(d) = d^d/(d+1)^(d+1) threshold and its bounds, the LLL condition-verification, and the k-SAT and Moser-Tardos arithmetic facts. The probabilistic existence conclusion P[∩ Āᵢ] > 0 (which requires a measure-theoretic model of events and independence) is NOT formalized here; the ℚ-valued avoidance products are the rational skeleton that would multiply the true probability bound in the full setting. The core also uses the simplified condition p(d+1) ≤ 1/3 as a stand-in for the exact ep(d+1) ≤ 1.",
     "mathlib_version": "4.26.0",
     "theoremCount": 29,
     "definitionCount": 3,
@@ -200,7 +195,7 @@
     }
   ],
   "conclusion": {
-    "summary": "The Lovasz Local Lemma formalizes the most powerful tool in the probabilistic method: when bad events are individually unlikely and their dependencies are sparse (captured by a dependency graph), all bad events can be simultaneously avoided. The symmetric form ep(d+1) <= 1 and the general asymmetric form with witness values are both formalized, along with a k-SAT satisfiability application.",
+    "summary": "The Lovasz Local Lemma is the most powerful tool in the probabilistic method: when bad events are individually unlikely and their dependencies are sparse (captured by a dependency graph), all bad events can be simultaneously avoided. This entry formalizes the algebraic and threshold core of both the symmetric form (with the simplified p(d+1) ≤ 1/3 condition standing in for the exact ep(d+1) ≤ 1) and the general asymmetric form with witness values x_i, along with the k-SAT satisfiability condition and the Moser-Tardos expected-step bound. The measure-theoretic existence conclusion P[∩ Āᵢ] > 0 is the intended target but is not itself formalized.",
     "implications": "This formalization provides:\n\n**1. Crown Jewel of the Probabilistic Method**\nThe LLL is the most sophisticated tool in the probabilistic method toolkit, and this formalization makes its subtle conditions machine-checkable.\n\n**2. k-SAT Threshold Bounds**\nThe satisfiability threshold for random k-SAT is a central problem in computational complexity, and the LLL provides the best unconditional lower bounds.\n\n**3. Sparse Dependency Framework**\nThe dependency graph abstraction is reusable across many applications in combinatorics, coding theory, and algorithm design.\n\n**4. Path to Constructive LLL**\nThe formalization establishes the non-constructive LLL as a foundation for future formalization of the Moser-Tardos constructive proof.\n\n**5. Applications Across Combinatorics**\nHypergraph coloring, Latin transversals, Ramsey theory, and many Erdos problems rely on the LLL.",
     "openQuestions": [
       "Formalize the full Moser-Tardos resampling algorithm with termination proof — currently only the expected step bound is stated",
@@ -243,10 +238,22 @@
   ],
   "mainTheorems": [
     {
-      "name": "lovasz_local_lemma",
+      "name": "symmetric_lll_complete",
       "type": "core",
-      "description": "If bad events have limited dependence and low probability, they can all be avoided simultaneously",
-      "leanType": "forall i, P(A_i) * e * (d+1) <= 1 -> P(none of A_i) > 0"
+      "description": "Capstone of the algebraic core: given event probabilities ≤ T(d) and dependency degree ≤ d, both the general-LLL witness condition and the strict positivity of the avoidance product (d/(d+1))^n hold. In the full probabilistic setting this positive rational factor lower-bounds P[∩ Āᵢ]; the measure-theoretic existence step itself is not formalized here.",
+      "leanType": "(hdeg : HasMaxDegree n adj d) → (∀ i, prob i ≤ lllThreshold d) → (∀ i, prob i ≤ 1/(d+1) * ∏_{j ∈ adj i} (1 - 1/(d+1))) ∧ 0 < ∏_{i} (1 - 1/(d+1))"
+    },
+    {
+      "name": "symmetric_lll_bound",
+      "type": "supporting",
+      "description": "Symmetric LLL algebraic kernel: if p(d+1) ≤ 1/3 (simplified stand-in for the exact 1/e), the avoidance factor (1-p)^n is strictly positive.",
+      "leanType": "(hp : 0 ≤ p) → (hpd : p * (d + 1) ≤ 1/3) → 0 < (1 - p)^n"
+    },
+    {
+      "name": "general_lll",
+      "type": "supporting",
+      "description": "General (asymmetric) LLL product positivity: if each witness x_i ∈ [0,1), then the avoidance product ∏(1-x_i) is strictly positive.",
+      "leanType": "(∀ i, 0 ≤ x i ∧ x i < 1) → 0 < ∏_{i} (1 - x i)"
     }
   ],
   "sorries": 0
