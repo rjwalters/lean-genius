@@ -45,13 +45,15 @@ namespace Erdos1144OQ03
 sufficiently large `N`.  `K = 1 + ε` is exactly Atherfold's ceiling; the OQ-03 question
 is whether any *fixed* `K` (in particular removing the `o(1)`, `K = 1`) can serve. -/
 def EventualPowerBound (f : ℕ → ℤ) (K C : ℝ) : Prop :=
-  ∀ᶠ N in atTop, |(partialSum f N : ℝ)| ≤ C * Real.sqrt (N : ℝ) * Real.log (N : ℝ) ^ K
+  ∀ᶠ (N : ℕ) in atTop,
+    |(partialSum f N : ℝ)| ≤ C * Real.sqrt (N : ℝ) * Real.log (N : ℝ) ^ K
 
 /-- **Frequent power-`K` exceedance**: `|∑_{m≤N} f(m)| > C·√N·(log N)^K` for infinitely
 many `N`.  The extremal-growth statement: the sums repeatedly break through the
 power-`K` ceiling. -/
 def FrequentPowerExceedance (f : ℕ → ℤ) (K C : ℝ) : Prop :=
-  ∃ᶠ N in atTop, C * Real.sqrt (N : ℝ) * Real.log (N : ℝ) ^ K < |(partialSum f N : ℝ)|
+  ∃ᶠ (N : ℕ) in atTop,
+    C * Real.sqrt (N : ℝ) * Real.log (N : ℝ) ^ K < |(partialSum f N : ℝ)|
 
 /-- **Generic reduction (filters).** An eventual pointwise upper bound `S ≤ B`
 contradicts frequently having `B < S`: `Filter.Eventually` and the corresponding
