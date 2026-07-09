@@ -486,11 +486,21 @@ theorem clustered_implies_large_disc (ε : ℝ) (hε : ε > 0) (hε' : ε < 1) :
 ## Random Polynomials
 -/
 
-/-- For random polynomials, the expected ρ is of order 1/√n. -/
-axiom random_polynomial_expected :
+/-- For random polynomials, the expected ρ is of order 1/√n.
+
+    NOTE: as *stated in Lean* this proposition is degenerate — the intended middle
+    term `Expected[rho(random poly of degree n)]` is only a comment, so the actual
+    statement collapses to `c₁/√n ≤ c₂/√n`, which is trivially true (take
+    `c₁ = c₂ = 1`). It therefore carries no genuine assumption and is discharged
+    here as a theorem rather than left as an `axiom`, removing a spurious entry
+    from the axiom list. The real content — that the *expected* order of magnitude
+    of `ρ` for a random degree-`n` polynomial is `Θ(1/√n)` — requires an
+    `Expected[·]` functional and remains unformalized. -/
+theorem random_polynomial_expected :
   ∃ c₁ > 0, ∃ c₂ > 0, ∀ n : ℕ, n ≥ 2 →
     c₁ / Real.sqrt n ≤ -- Expected[rho(random poly of degree n)]
-    c₂ / Real.sqrt n
+    c₂ / Real.sqrt n :=
+  ⟨1, one_pos, 1, one_pos, fun _ _ => le_refl _⟩
 
 /-
 ## The Open Question
