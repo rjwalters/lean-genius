@@ -50,12 +50,11 @@
       "StrongEdgeColoring: structure with color function and strong coloring constraint",
       "strongChromaticIndex G = sInf {k | ∃ coloring using < k colors}: χ'_s via infimum",
       "ErdosNesetrilConjecture: χ'_s(G) ≤ (5/4)Δ² universally quantified",
-      "conjecture_is_tight axiom: (5/4)Δ² is achievable for every Δ ≥ 2",
-      "Timeline axioms: trivial_bound, molloy_reed_1997, bruhn_joos_2018, bonamy_perrett_postle_2022, hurley_joannis_kang_2022",
-      "current_gap: 1.772 - 5/4 = 0.522 proved by norm_num",
-      "mahdian_c4_free and bipartite_bound axioms for special graph classes",
-      "cliqueNumber_LineSquare axiom with sleszynska_nowak_2015 and faron_postle_2019 bounds",
-      "StronglyIndependentEdges, IsInducedMatching, and partition characterization",
+      "conjecture_is_tight axiom: (5/4)Δ² is achievable for every Δ ≥ 2 (C₅ blow-up tightness)",
+      "hurley_joannis_kang_2022 axiom: current best upper bound χ'_s(G) ≤ 1.772Δ²",
+      "current_gap: 1.772 - 5/4 = 0.522 proved by norm_num (the one non-axiom quantitative result)",
+      "cliqueNumber_LineSquare axiom: opaque ℕ-valued clique number of L(G)² (notation ω_L²)",
+      "StronglyIndependentEdges and IsInducedMatching: induced-matching reformulation predicates",
       "erdos_149_summary: conjunction of best bound and tightness"
     ],
     "relatedProblems": [
@@ -75,7 +74,7 @@
     "historicalContext": "**Erdős Problem #149 (Strong Chromatic Index Conjecture)**\n\n**Origins:**\nErdős and Nešetřil conjectured in 1985 that the strong chromatic index of any graph with maximum degree $\\Delta$ satisfies $\\chi'_s(G) \\leq \\frac{5}{4}\\Delta^2$. A **strong edge coloring** assigns colors to edges so that any two edges within distance 2 in the line graph $L(G)$ receive different colors — equivalently, edges sharing a vertex or both touching a common vertex must be colored differently.\n\n**Why $\\frac{5}{4}\\Delta^2$?**\nThe **$C_5$ blow-up** construction achieves this bound exactly: replace each vertex of the 5-cycle $C_5$ with $\\Delta/2$ independent copies, connecting copies of adjacent vertices by complete bipartite graphs. The resulting graph has max degree $\\Delta$, and the edges of each 'blow-up' copy of a $C_5$-edge form a $K_{\\Delta/2, \\Delta/2}$, creating $\\frac{5}{4}\\Delta^2$ pairwise conflicting edges (forming a clique in $L(G)^2$). Since all these edges need distinct colors, $\\chi'_s \\geq \\frac{5}{4}\\Delta^2$.\n\n**Progress on Upper Bounds:**\n- **Trivial bound:** $\\chi'_s(G) \\leq 2\\Delta^2 - 2\\Delta + 1$ (each edge conflicts with at most $2\\Delta^2 - 2\\Delta$ others)\n- **Molloy and Reed (1997):** $1.998\\Delta^2$ for large $\\Delta$ — first to break the factor-2 barrier using the **Lovász Local Lemma**\n- **Bruhn and Joos (2018):** $1.93\\Delta^2$ — using the **entropy compression** method\n- **Bonamy, Perrett, and Postle (2022):** $1.835\\Delta^2$ — refined probabilistic coloring\n- **Hurley, de Joannis de Verclos, and Kang (2022):** $1.772\\Delta^2$ — current best, via the **cluster expansion** method from statistical physics\n\n**Related Structural Results:**\n- **Clique number of $L(G)^2$:** Faron-Postle (2019) showed $\\omega(L(G)^2) \\leq \\frac{4}{3}\\Delta^2$, improving Śleszyńska-Nowak (2015)'s $\\frac{3}{2}\\Delta^2$\n- **Special classes:** $C_4$-free graphs admit $O(\\Delta^2/\\log \\Delta)$ (Mahdian); bipartite graphs satisfy the conjecture with $c < \\frac{5}{4}$\n- **Chung-Gyárfás-Tuza-Trotter (1990):** If $|E(G)| \\geq \\frac{5}{4}\\Delta^2$, then $G$ has two strongly independent edges\n\n**Current Status:** The gap between the best bound ($1.772\\Delta^2$) and the conjecture ($\\frac{5}{4}\\Delta^2 = 1.25\\Delta^2$) is $0.522\\Delta^2$. The conjecture remains one of the most important open problems in graph coloring theory.",
     "problemStatement": "**Problem Statement (Open)**\n\nLet $G$ be a graph with maximum degree $\\Delta$.\n\n**Conjecture (Erdős-Nešetřil 1985):** $\\chi'_s(G) \\leq \\frac{5}{4}\\Delta^2$.\n\n**Where:** $\\chi'_s(G)$ = strong chromatic index = minimum colors for strong edge coloring (edges at distance $\\leq 2$ get different colors).\n\n**Status:** OPEN. Best bound: $1.772\\Delta^2$ (Hurley et al. 2022). Tight if true: the $C_5$ blow-up achieves $\\frac{5}{4}\\Delta^2$ exactly.",
     "text": "Is χ'_s(G) ≤ (5/4)Δ² for all graphs G with maximum degree Δ? This asks if every graph can be strongly edge-colored using at most (5/4)Δ² colors. OPEN - best bound is 1.772Δ² (Hurley-de Joannis de Verclos-Kang 2022).",
-    "proofStrategy": "**Formalization Approach**\n\nThe 217-line formalization captures the conjecture, its tightness, and the complete history of upper bounds:\n\n1. **Core Definitions (lines 39–57):** `maxDegree` via `Finset.sup`, `edgesAtDistance2` for edge proximity, `StrongEdgeColoring` as a structure with coloring + constraint, `strongChromaticIndex` via `sInf`.\n\n2. **Conjecture & Tightness (lines 64–82):** `ErdosNesetrilConjecture` quantified over all graph types. `conjecture_is_tight` and `c5_blowup_construction` axiomatize the extremal examples.\n\n3. **Upper Bound Timeline (lines 89–122):** Five axioms from trivial $2\\Delta^2$ through Hurley et al. $1.772\\Delta^2$. The theorem `current_gap` is the one non-axiom result: $1.772 - 5/4 = 0.522$ proved by `norm_num`.\n\n4. **Special Classes (lines 129–144):** Mahdian's $C_4$-free bound and bipartite bound.\n\n5. **Line Graph Square (lines 151–166):** Clique number approach as a relaxation of the full conjecture.\n\n6. **Combinatorial Structure (lines 173–199):** Strongly independent edges, induced matchings, and the partition characterization $\\chi'_s = \\text{min induced matching partition}$.\n\n7. **Summary (lines 208–215):** `erdos_149_summary` proved by exact tuple of best bound + tightness.",
+    "proofStrategy": "**Formalization Approach**\n\nThe 144-line formalization states the conjecture, axiomatizes its tightness and the current best bound, and sets up the induced-matching reformulation. The full history of intermediate upper bounds appears in the module docstring as mathematical context, not as declarations — only the current best bound is axiomatized:\n\n1. **Core Definitions (Part 1):** `maxDegree` via `Finset.sup`, `edgesAtDistance2` for edge proximity, `StrongEdgeColoring` as a structure with coloring + constraint, `strongChromaticIndex` via `sInf`.\n\n2. **Conjecture & Tightness (Part 2):** `ErdosNesetrilConjecture` quantified over all finite graph types. `conjecture_is_tight` axiomatizes the $C_5$ blow-up extremal example.\n\n3. **Upper Bound (Part 3):** `hurley_joannis_kang_2022` axiomatizes the current best $1.772\\Delta^2$ bound. The theorem `current_gap` is the one non-axiom quantitative result: $1.772 - 5/4 = 0.522$ proved by `norm_num`.\n\n4. **Line Graph Square (Part 5):** `cliqueNumber_LineSquare` is an opaque $\\mathbb{N}$-valued axiom modelling $\\omega(L(G)^2)$ (notation $\\omega_{L^2}$).\n\n5. **Combinatorial Structure (Parts 6–7):** `StronglyIndependentEdges` and `IsInducedMatching` define the induced-matching viewpoint on strong edge coloring.\n\n6. **Summary (Part 8):** `erdos_149_summary` bundles the best-bound and tightness axioms into a single statement. (Part 4, Special Graph Classes, is a docstring header only — no declarations.)",
     "keyInsights": [
       "**$C_5$ is the extremal structure:** The factor $\\frac{5}{4}$ comes from the 5-cycle: its blow-up $C_5[K_{\\Delta/2}]$ creates $5 \\cdot (\\Delta/2)^2 = \\frac{5}{4}\\Delta^2$ pairwise conflicting edges. The 5-cycle is the shortest odd cycle, and odd cycles are key to chromatic hardness. No other construction is known to beat this.",
       "**The factor-2 barrier:** The trivial bound $\\chi'_s \\leq 2\\Delta^2$ was a psychological barrier for decades. Molloy and Reed's 1997 breakthrough using the Lovász Local Lemma showed probabilistic methods could beat it, opening the door to all subsequent improvements.",
@@ -112,7 +111,7 @@
       "title": "Part 2: The Erdős-Nešetřil Conjecture (1985)",
       "startLine": 59,
       "endLine": 83,
-      "summary": "ErdosNesetrilConjecture: χ'_s(G) ≤ (5/4)Δ²; conjecture_is_tight: achievable for Δ ≥ 2; c5_blowup_construction: explicit extremal graph for even Δ",
+      "summary": "ErdosNesetrilConjecture: χ'_s(G) ≤ (5/4)Δ²; conjecture_is_tight axiom: achievable for Δ ≥ 2 via the C₅ blow-up (the construction is described in prose, not declared separately)",
       "mathContext": "Conjecture: $\\chi'_s(G) \\leq \\frac{5}{4}\\Delta^2$. Tight: the $C_5$-blowup achieves equality for even $\\Delta$."
     },
     {
@@ -120,16 +119,16 @@
       "title": "Part 3: Upper Bounds Progress History",
       "startLine": 84,
       "endLine": 123,
-      "summary": "Five bounds from trivial 2Δ² through Hurley et al. 1.772Δ²; current_gap theorem proved by norm_num: 1.772 - 5/4 = 0.522",
-      "mathContext": "$2\\Delta^2 \\to 1.998\\Delta^2 \\to 1.835\\Delta^2 \\to 1.772\\Delta^2$ (Hurley et al. 2022). Gap: $1.772 - 1.25 = 0.522$."
+      "summary": "Only the current best bound is a declaration: axiom hurley_joannis_kang_2022 (1.772Δ²); theorem current_gap proved by norm_num: 1.772 - 5/4 = 0.522. Earlier bounds (2Δ² → 1.998Δ² → 1.835Δ² → 1.772Δ²) appear as docstring context only. Part 4 (special classes) is a header with no declarations; Part 5 introduces the cliqueNumber_LineSquare axiom.",
+      "mathContext": "$2\\Delta^2 \\to 1.998\\Delta^2 \\to 1.835\\Delta^2 \\to 1.772\\Delta^2$ (Hurley et al. 2022, the only axiomatized bound). Gap: $1.772 - 1.25 = 0.522$."
     },
     {
       "id": "special",
-      "title": "Part 4: Special Graph Classes",
+      "title": "Parts 6–8: Induced Matchings and Summary",
       "startLine": 124,
       "endLine": 144,
-      "summary": "Mahdian's C₄-free bound O(Δ²/log Δ) and bipartite bound with constant < 5/4",
-      "mathContext": "$C_4$-free: $\\chi'_s = O(\\Delta^2/\\log\\Delta)$. Bipartite: strict improvement over $5/4$."
+      "summary": "Induced-matching reformulation: StronglyIndependentEdges and IsInducedMatching predicates, then theorem erdos_149_summary bundling the best bound and tightness axioms. (Mahdian's C₄-free and bipartite bounds are mentioned in the docstring/overview as context but are not declared in the source.)",
+      "mathContext": "Strong edge coloring $=$ partition of $E(G)$ into induced matchings. $C_4$-free ($\\chi'_s = O(\\Delta^2/\\log\\Delta)$) and bipartite bounds are historical context, not formalized here."
     }
   ],
   "conclusion": {
