@@ -26,6 +26,7 @@ References:
 
 import Mathlib.Analysis.InnerProductSpace.EuclideanDist
 import Mathlib.Analysis.InnerProductSpace.PiL2
+import Mathlib.Analysis.Convex.Radon
 import Mathlib.Combinatorics.HalesJewett
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Finset.Basic
@@ -564,6 +565,31 @@ def HellyProperty (d : ℕ) : Prop :=
     (∀ S ∈ F, Convex ℝ S) →
     (∀ G : Finset (Set Point), G ⊆ F → G.card = d + 1 → (⋂ S ∈ G, S).Nonempty) →
     (⋂ S ∈ F, S).Nonempty
+
+/-- **Helly's theorem in the plane — affirmative.**  `HellyProperty 2` holds for
+`Point = ℝ²`: any finite family `F` of at least `3` convex sets in the plane in which
+every `3`-element subfamily has a common point has a point common to *all* of `F`.
+
+This is exactly Mathlib's `Convex.helly_theorem_set` specialised to
+`Module.finrank ℝ ℝ² = 2`, so the placeholder threshold `d + 1 = 3` is the classical
+planar Helly number.  Note the ambient space is fixed to the plane, so `d = 2`
+(`= finrank ℝ Point`) is the *only* honest instance of the abstract `HellyProperty d`
+defined above: for `d < 2` pairwise/triple intersection is too weak to force a common
+point, and for `d > 2` the `(d+1)`-wise hypothesis is not what Helly consumes. -/
+theorem helly_planar : HellyProperty 2 := by
+  intro F hcard hconv hinter
+  have hfr : Module.finrank ℝ Point = 2 := by simp [Point]
+  -- Bridge the entry's `⋂ S ∈ F, S` notation to Mathlib's `⋂₀ (F : Set _)`.
+  have hbF : (⋂ S ∈ F, S) = ⋂₀ (F : Set (Set Point)) := by ext x; simp
+  rw [hbF]
+  refine Convex.helly_theorem_set (𝕜 := ℝ) ?_ hconv ?_
+  · -- `finrank + 1 ≤ #F` is exactly the `F.card ≥ 2 + 1` hypothesis.
+    rw [hfr]; exact hcard
+  · -- Every `(finrank + 1) = 3`-subfamily meets, from the entry-shaped `hinter`.
+    intro G hG hGcard
+    have hbG : (⋂₀ (G : Set (Set Point))) = ⋂ S ∈ G, S := by ext x; simp
+    rw [hbG]
+    exact hinter G hG (by rw [hfr] at hGcard; exact hGcard)
 
 /-
 ## Part X: Generalizations
