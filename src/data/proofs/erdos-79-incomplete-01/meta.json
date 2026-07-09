@@ -1,0 +1,156 @@
+{
+  "id": "erdos-79-incomplete-01",
+  "title": "Erdős #79 Companion: The Finite Check for K₄'s Minimality (Six Diamonds to One)",
+  "slug": "erdos-79-incomplete-01",
+  "description": "An axiom-free combinatorial companion to Erdős #79 that reduces the parent's sweeping subgraph hypothesis — 'every proper subgraph of K₄ is Ramsey size-linear', quantified over infinitely many graphs — first to a literal six-fold conjunction over K₄'s six edges, and then, using the proved edge-transitivity of K₄ (five explicit relabelling isomorphisms), to size-linearity of a SINGLE diamond K₄−e. The reduction to minimality invokes the parent's heredity axiom, and the six-to-one step is gated behind an explicit isomorphism-invariance hypothesis (not an axiom).",
+  "meta": {
+    "author": "Lean Genius Researcher",
+    "sourceUrl": "https://erdosproblems.com/79",
+    "date": "2026-07-08",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos79Incomplete01.lean",
+    "tags": [
+      "erdos",
+      "graph-theory",
+      "ramsey-theory",
+      "ramsey-size-linear",
+      "extremal-graph-theory",
+      "edge-transitivity",
+      "combinatorics"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 79,
+    "erdosUrl": "https://erdosproblems.com/79",
+    "erdosProblemStatus": "solved",
+    "axiomCount": 1,
+    "lineCount": 267,
+    "assumptions": "No `axiom` and no `sorry` are declared in this file (leanFile.axiomCount = 0, sorries = 0). The pure combinatorial results — `hdiamond_iff_six` (the literal six-fold reduction), the five relabelling isomorphisms `diamond_iso_02 … diamond_iso_23`, the relabelling engine `diamondEquiv`, `K4MinusEdge_comm`, `swap_lt_four`, `comp_lt_four` — are fully machine-checked and depend only on the foundational axioms propext / Classical.choice / Quot.sound. The reduction-to-minimality theorems (`K4_subgraphs_linear_of_edgeDeleted`, `K4_subgraphs_linear_of_single`, `K4_is_minimal_of_single`) additionally use the parent file's `ramsey_linear_hereditary` axiom (heredity of Ramsey size-linearity, imported from Erdos79Problem); this single imported assumption is why the entry is marked axiomatized. The six-to-one step is furthermore gated behind an EXPLICIT hypothesis `hcongr` (Ramsey size-linearity is invariant under graph isomorphism) — a stated hypothesis, not an axiom, which over the opaque `ramseyNumber` cannot be derived.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 14,
+    "definitionCount": 7,
+    "additionalFiles": []
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #79 (Erdős–Faudree–Rousseau–Schelp) asks whether infinitely many graphs are minimally non-Ramsey-size-linear: not Ramsey size-linear themselves, yet all of whose proper subgraphs are. Wigderson (2024) proved infinitely many exist non-constructively; K₄ remains the only explicit example. The parent formalization `Proofs/Erdos79Problem.lean` keeps the Ramsey number `ramseyNumber` opaque and packages the two hard facts about K₄ as axioms: `K4_not_linear` (K₄ is superlinear) and the sweeping `K4_subgraphs_linear` (every proper subgraph of K₄ is size-linear, quantified over infinitely many `H : SimpleGraph ℕ`). This companion attacks the second axiom's SHAPE: over the opaque `ramseyNumber` no specific graph's size-linearity is derivable, but the combinatorial reduction of the quantifier structure is fully provable.",
+    "problemStatement": "The parent's sweeping hypothesis `∀ H, isProperSubgraph H (completeGraphN 4) → isRamseySizeLinear H` is equivalent (using heredity) to size-linearity of the six edge-deleted graphs K₄−e, which — by K₄'s edge-transitivity — reduces further to size-linearity of a single diamond K₄−{0,1}, granted only that size-linearity is invariant under graph isomorphism.",
+    "text": "Every proper subgraph of K₄ omits one of its six edges, hence embeds in an edge-deleted graph K₄−e ('the diamond'). With the parent's heredity axiom this collapses the ∀-over-all-subgraphs hypothesis to the six diamonds; the six diamonds are pairwise graph-isomorphic (K₄ is edge-transitive), so the check collapses to one. This companion supplies both collapses in Lean: the literal six-fold conjunction and the five explicit relabelling isomorphisms.",
+    "proofStrategy": "Two reductions. (1) `hdiamond_iff_six`: the edge-deleted hypothesis `∀ p q, (K₄).Adj p q → isRamseySizeLinear (K4MinusEdge p q)` is proved equivalent to the explicit conjunction over the six edges {0,1},{0,2},{0,3},{1,2},{1,3},{2,3}. Forward is instantiation (each adjacency by `decide`); backward is `interval_cases` over p,q<4, closing the diagonal by the distinctness hypothesis and the reversed pairs by `K4MinusEdge_comm` (the deletion predicate is symmetric in p,q, so K4MinusEdge p q = K4MinusEdge q p literally). (2) `K4_subgraphs_linear_of_single`: all six diamonds are graph-isomorphic. The engine `diamondEquiv σ hσ p q : K4MinusEdge p q ≃g K4MinusEdge (σ p) (σ q)` builds a graph isomorphism from any permutation σ of ℕ preserving the predicate `· < 4` (adjacency is preserved because σ is injective, respects `<4` by hypothesis, and the deleted pair maps to the deleted pair). The five relabellings from the reference diamond K₄−{0,1} to each other edge are exhibited explicitly as single transpositions (1 2), (1 3) and 3-cycle-type products (0 1)(1 2), (0 1)(1 3), (0 2)(1 3), with `· < 4`-preservation via `swap_lt_four` and `comp_lt_four`. Composing with the parent's heredity axiom and the literal six-fold form, the whole subgraph axiom follows from size-linearity of one diamond plus an isomorphism-invariance hypothesis `hcongr`.",
+    "keyInsights": [
+      "Over the opaque `ramseyNumber`, no specific graph's size-linearity is derivable — so the only mathematics available here is COMBINATORIAL: reducing the quantifier structure of the parent's sweeping axiom. This companion makes that reduction as sharp as possible.",
+      "The parent's ∀-over-infinitely-many-subgraphs hypothesis is equivalent to a LITERAL six-fold conjunction (`hdiamond_iff_six`): every proper subgraph omits an edge and hence embeds in one of exactly six edge-deleted graphs. This is the 'concrete finite check' in closed form — no quantifier over graphs or vertices remains.",
+      "K₄ is EDGE-TRANSITIVE: its automorphism group S₄ acts transitively on the six edges, so the six diamonds K₄−e are pairwise graph-isomorphic. This is proved here by five explicit relabelling isomorphisms, collapsing the six-fold check to a single diamond.",
+      "The relabelling engine `diamondEquiv` is reusable: ANY permutation of ℕ preserving `· < 4` induces a graph isomorphism between edge-deleted K₄'s — the mechanism behind edge-transitivity, isolated as a lemma.",
+      "The symmetry `K4MinusEdge p q = K4MinusEdge q p` is a literal graph EQUALITY (not merely an isomorphism), since the edge-deletion predicate is symmetric in its two endpoints — this is what lets `interval_cases` finish the backward direction without any isomorphism.",
+      "The six-to-one collapse is stated honestly: it is gated behind an EXPLICIT hypothesis that size-linearity is isomorphism-invariant, which over the opaque `ramseyNumber` is a genuine assumption, not a theorem — so no hidden axiom is smuggled in."
+    ],
+    "prerequisites": [
+      "Graph theory: simple graphs, subgraphs, complete graphs, graph isomorphisms",
+      "Permutations and transpositions (Equiv.swap, Equiv.Perm)",
+      "Ramsey size-linearity (as modelled in the parent Erdos79Problem file)",
+      "Finite case analysis (interval_cases, decide)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "setup",
+      "title": "Setup: K₄ with One Edge Removed",
+      "startLine": 1,
+      "endLine": 66,
+      "summary": "Module docstring framing the goal: reduce the parent's sweeping `K4_subgraphs_linear` axiom to a concrete finite check. Defines K4MinusEdge p q — the complete graph on {0,1,2,3} with the single unordered edge {p,q} deleted (the 'diamond' when {p,q} is a real edge) — with its adjacency simp lemma and the containment K₄−e ≤ K₄."
+    },
+    {
+      "id": "missing-edge",
+      "title": "Every Proper Subgraph Omits an Edge",
+      "startLine": 68,
+      "endLine": 99,
+      "summary": "properSubgraph_missing_edge: a proper subgraph H ⊊ K₄ must fail to contain some edge of K₄ (else, being ≤ K₄, it would equal K₄). properSubgraph_le_K4MinusEdge: consequently H embeds in some edge-deleted K₄−e. K4MinusEdge_properSubgraph: each K₄−e is itself a proper subgraph of K₄."
+    },
+    {
+      "id": "edgedeleted-reduction",
+      "title": "First Reduction: ∀ H  ⟶  the Six Diamonds",
+      "startLine": 101,
+      "endLine": 127,
+      "summary": "K4_subgraphs_linear_of_edgeDeleted: using the parent's heredity axiom ramsey_linear_hereditary, the sweeping ∀-over-all-proper-subgraphs axiom follows from size-linearity of the six edge-deleted graphs. K4_is_minimal_of_edgeDeleted restates K₄'s minimality from this reduced hypothesis."
+    },
+    {
+      "id": "literal-six",
+      "title": "Making the Finite Check Literal",
+      "startLine": 129,
+      "endLine": 172,
+      "summary": "completeGraphN_adj (adjacency unfolding) and K4MinusEdge_comm (the deletion is symmetric in its endpoints, so K4MinusEdge p q = K4MinusEdge q p literally). hdiamond_iff_six: the edge-deleted hypothesis is equivalent to the explicit six-fold conjunction over the edges {0,1},{0,2},{0,3},{1,2},{1,3},{2,3} — the concrete finite check in closed form, proved by instantiation (forward) and interval_cases + K4MinusEdge_comm (backward)."
+    },
+    {
+      "id": "edge-transitivity",
+      "title": "Second Reduction: Six Diamonds to One (Edge-Transitivity)",
+      "startLine": 174,
+      "endLine": 244,
+      "summary": "diamondEquiv: any permutation of ℕ preserving `· < 4` induces a graph isomorphism K4MinusEdge p q ≃g K4MinusEdge (σ p) (σ q). swap_lt_four / comp_lt_four: transpositions of vertices <4 and their composites preserve `· < 4`. The five explicit relabelling isomorphisms diamond_iso_02 … diamond_iso_23 carry the reference diamond K₄−{0,1} onto each of the other five — witnessing S₄'s transitive action on the edges of K₄."
+    },
+    {
+      "id": "single-diamond",
+      "title": "The Sharp Reduction: One Diamond Suffices",
+      "startLine": 246,
+      "endLine": 267,
+      "summary": "K4_subgraphs_linear_of_single: granting only that Ramsey size-linearity is invariant under graph isomorphism (explicit hypothesis hcongr, not an axiom), the parent's subgraph axiom follows from size-linearity of the SINGLE diamond K₄−{0,1}, via the six-fold form and the five isomorphisms. K4_is_minimal_of_single packages K₄'s minimality from this single-diamond hypothesis."
+    }
+  ],
+  "conclusion": {
+    "summary": "This companion reduces the parent's sweeping subgraph hypothesis for Erdős #79 — 'every proper subgraph of K₄ is Ramsey size-linear', quantified over infinitely many graphs — to a concrete finite check, in two provable steps. First (`hdiamond_iff_six`), every proper subgraph omits one of K₄'s six edges and hence embeds in an edge-deleted graph K₄−e, collapsing the ∀-hypothesis (via the parent's heredity axiom) to a LITERAL six-fold conjunction. Second (`K4_subgraphs_linear_of_single`), the six diamonds K₄−e are pairwise graph-isomorphic — K₄ is edge-transitive — proved by five explicit relabelling isomorphisms built from a reusable engine `diamondEquiv`; granting an explicit isomorphism-invariance hypothesis this collapses the check to a SINGLE diamond.",
+    "implications": "The combinatorial content of the K₄ minimality claim is fully isolated from the (unformalizable, opaque) Ramsey-theoretic content: what remains to be assumed is size-linearity of ONE graph, K₄−{0,1}, plus the natural meta-principle that Ramsey size-linearity respects graph isomorphism. The relabelling engine `diamondEquiv` and the edge-transitivity witnesses are reusable for any edge-deletion argument on K₄, and the pattern (proper subgraph ⟶ finite family of maximal subgraphs ⟶ single representative up to symmetry) is the template for the analogous reduction on any vertex-/edge-transitive host graph, relevant to the search for further minimally non-Ramsey-size-linear graphs beyond K₄.",
+    "openQuestions": [
+      "Discharge the isomorphism-invariance hypothesis `hcongr` at the model level: prove that any reasonable constructive definition of `ramseyNumber` (replacing the opaque parameter) satisfies ramseyNumber (G) invariance under graph isomorphism, turning the six-to-one reduction into an unconditional theorem.",
+      "Extend the finite-check template to a candidate second example: for an edge-transitive graph G conjectured minimally non-Ramsey-size-linear, reduce 'all proper subgraphs size-linear' to a single maximal-subgraph representative.",
+      "Formalize a constructive lower bound witnessing K₄'s superlinearity (`K4_not_linear`) to complement this reduction of the subgraph half."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.Erdos79Problem"
+    ],
+    "opens": [
+      "SimpleGraph",
+      "Erdos79"
+    ],
+    "namespace": "Erdos79Incomplete01",
+    "lineCount": 267,
+    "axiomCount": 0,
+    "theoremCount": 14,
+    "definitionCount": 7,
+    "path": "Proofs/Erdos79Incomplete01.lean",
+    "sorries": 0,
+    "additionalFiles": []
+  },
+  "references": [
+    {
+      "authors": "Erdős, Paul; Faudree, Ralph; Rousseau, Cecil; Schelp, Richard",
+      "title": "Ramsey size linear graphs",
+      "year": "1993",
+      "venue": "Combinatorics, Probability and Computing, vol. 2, pp. 389–399",
+      "note": "Introduces Ramsey size-linear graphs and the minimality question underlying Erdős #79; K₄ is the motivating example."
+    },
+    {
+      "authors": "Wigderson, Yuval",
+      "title": "Ramsey size-linear graphs and related questions",
+      "year": "2024",
+      "venue": "preprint / erdosproblems.com/79",
+      "note": "Proves infinitely many minimally non-Ramsey-size-linear graphs exist (non-constructive). Axiomatized as `wigderson_theorem` in the parent file; not used here."
+    },
+    {
+      "authors": "Mathlib Community",
+      "title": "Mathlib.Combinatorics.SimpleGraph",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "note": "Provides SimpleGraph, graph isomorphisms (≃g), and the permutation machinery (Equiv.swap, Equiv.Perm) used to build the edge-transitivity relabellings."
+    }
+  ],
+  "sorries": 0,
+  "crossReferences": [
+    {
+      "targetId": "erdos-79",
+      "relationship": "extends",
+      "description": "Parent problem. This companion reduces the parent's sweeping `K4_subgraphs_linear` axiom (every proper subgraph of K₄ is Ramsey size-linear) to a concrete finite check — first a literal six-fold conjunction, then a single diamond via K₄'s edge-transitivity — using only the parent's heredity axiom and an explicit isomorphism-invariance hypothesis."
+    }
+  ]
+}
