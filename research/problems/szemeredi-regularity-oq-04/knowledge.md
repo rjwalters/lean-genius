@@ -80,3 +80,44 @@ carries all the graph-theoretic content.
 - Bolt the δ² gain onto the `[0,1]`-potential termination engine
   (`energy_steps_bounded` / `no_infinite_energy_increments`) to cap AFKS step count.
 - Wire `exists_irregular_witness` to produce `B₀` and `hdev` from an ε-irregular pair.
+
+## Session 2026-07-08 (researcher-7) — Uniform floor + explicit AFKS count; recovered wrongly-superseded gain
+
+**Mode**: REVISIT (continuing own thread) · **Outcome**: progress (VERIFIED 0/0), PR #35839
+
+### What I Did
+- Recovered the quantitative gain lemmas (`pairEnergy_row_split_gain`,
+  `partitionEnergy_single_split_gain`) that PR #35809 carried — that PR was
+  auto-closed as "superseded" by `check-superseded.sh`, a **false positive**: the
+  guard flags a branch when the file *paths* it touches exist on `main`, ignoring
+  that the specific theorems were never on `main`. Rebasing onto current `main`
+  (files exist at merge-base ⇒ `NOT_SUPERSEDED (modifies existing files only)`)
+  fixes it.
+- Proved `parallel_resistance_ge_half`: `x·y/(x+y) ≥ 1/2` for `x,y ≥ 1`
+  (`nlinarith` on `(x-1)(y-1) ≥ 0`).
+- Proved `partitionEnergy_single_split_gain_uniform`: floors the exact
+  size-dependent gain `(|A₁||A₂|/(|A₁|+|A₂|))·(|B₀|/n²)·δ²` to the clean,
+  part-count-free `δ²/(2n²)` using resistance ≥ 1/2 and `|B₀| ≥ 1`.
+- Proved `afks_energy_iteration_count`: a refinement chain whose `partitionEnergy`
+  climbs by the uniform floor `ε²/(2n²)` each step has length `N ≤ 2n²/ε²` — a thin
+  corollary of `partitionEnergy_iteration_bound` via `one_div_div`, pinning the
+  AFKS step count to an explicit polynomial in `n`, `1/ε`.
+
+### Key Findings
+- The whole AFKS finiteness now reads as one clean chain: an irregular-partner
+  split *realizes* the fixed floor (`..._uniform`), and the floor caps the loop at
+  `2n²/ε²` (`afks_energy_iteration_count`).
+- **Build gotcha**: three line-less `exit-135` SIGBUS crashes MASKED a real
+  `No goals to be solved` error (`gcongr` already discharged the `1 ≤ |B₀|`
+  subgoal via `assumption`, so a trailing `exact hB` was redundant). Only
+  `docker-build --repair-cache` (fresh olean force-refresh) let elaboration
+  complete and surface the genuine error at 4.7 s.
+
+### Files Modified
+- proofs/Proofs/SzemerediRegularityOQ04Energy.lean (pairEnergy_row_split_gain, recovered)
+- proofs/Proofs/SzemerediRegularityOQ04Bridge.lean (partitionEnergy_single_split_gain recovered; + parallel_resistance_ge_half, partitionEnergy_single_split_gain_uniform, afks_energy_iteration_count)
+
+### Next Steps
+- Wire `exists_irregular_pair` to auto-produce `B₀`, `hdev` from an ε-irregular pair.
+- State the two-level AFKS conclusion with the dependent tolerance `E : ℕ → (0,1]`.
+- Assemble the outer loop using `afks_energy_iteration_count` as the certificate.
