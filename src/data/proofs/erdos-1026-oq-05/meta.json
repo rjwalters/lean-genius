@@ -162,10 +162,10 @@
       },
       {
         "path": "Proofs/Erdos1026OQ05ErdosSzekeres.lean",
-        "lineCount": 139,
-        "theoremCount": 5,
+        "lineCount": 166,
+        "theoremCount": 6,
         "definitionCount": 0,
-        "description": "Erdős–Szekeres product bound n ≤ LIS·LDS derived from the Mirsky increasing-covering identity, plus the classical pigeonhole theorem (r·s<n ⟹ r<LIS ∨ s<LDS) and the >k² ⟹ monotone-run >k corollary."
+        "description": "Erdős–Szekeres product bound n ≤ LIS·LDS derived from the Mirsky increasing-covering identity, the classical pigeonhole theorem (r·s<n ⟹ r<LIS ∨ s<LDS), the >k² ⟹ monotone-run >k corollary, and the canonical sharp-threshold form ((r-1)(s-1)<n ⟹ r≤LIS ∨ s≤LDS)."
       },
       {
         "path": "Proofs/Erdos1026OQ05KMonotonic.lean",
