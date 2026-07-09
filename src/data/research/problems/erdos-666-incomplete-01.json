@@ -18,10 +18,10 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-04-03T12:23:52.517Z",
-    "iteration": 2,
-    "focus": "Strengthened Chung refutation from the single point ε=1/4 to the whole interval ε≤1/4 (researcher-2): density monotonicity (epsilonDense_antitone, denseForcesC6_mono, conjectureAt_mono) turns the axiom chung_no_threshold into chung_no_threshold_le : ε≤1/4 → ¬ConjectureAt ε. Zero new axioms. File 0 sorry, 1 axiom.",
+    "iteration": 3,
+    "focus": "Conder ε=1/3 sharpening (researcher-4): axiomatize the STRONGER conder_no_threshold (¬ConjectureAt 1/3) and DERIVE chung_no_threshold (1/4) from it by monotonicity — axiom count held at 1 (swap, not add). Added conder_no_threshold_le (interval ε≤1/3) and replaced the vacuous True-placeholder conder_better_bound with the honest conder_counterexample. 0 sorry, 1 axiom, #print axioms clean.",
     "blockers": [],
-    "nextAction": "Remaining structural gaps: (1) conder_better_bound still carries a True placeholder for the ε=1/3 density claim (needs Conder 3-coloring construction, a new deep axiom); (2) GeneralizedConjecture for C_{2k} remains open. The single axiom chung_no_threshold is genuinely deep (Chung 4-partition, not in Mathlib) — not eliminable.",
+    "nextAction": "Elementary refutation theory is essentially complete: refutation now sharp on (0,1/3] (conder_no_threshold_le). Remaining open: (1) GeneralizedConjecture for C_{2k} (genuinely different sparser density, not a C₆ specialization); (2) Erdős dense C₄,C₆-free ⇒ C₈ existence (moment/KST counting, not in Mathlib, not session-sized). The single axiom conder_no_threshold is genuinely deep (Conder 3-colouring) — not eliminable without ~1000+ lines.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,23 +29,29 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Discharged the lone sorry in erdos_conjecture_false and repaired the file so it actually compiles (it previously had 24 errors: nonexistent Nat.popcount, missing Real/edgeFinset imports, orphaned docstrings, a buggy HasCycle mod_lt, and a malformed conder_better_bound tuple). The disproof now follows from a single well-formed axiom chung_1992 (density form). 0 sorries, 1 axiom; #print axioms shows only propext/Classical.choice/Quot.sound + chung_1992.",
+    "progressSummary": "Refutation strengthened to Conder ε=1/3 with axiom count held at 1: conder_no_threshold (¬ConjectureAt 1/3) is the single deep axiom; chung_no_threshold (1/4) is now DERIVED from it by monotonicity (conjectureAt_mono, 1/4≤1/3). conder_no_threshold_le extends the refutation to the whole interval (0,1/3]. The prior True-placeholder conder_better_bound is replaced by the honest existence witness conder_counterexample. 0 sorries, 1 axiom; #print axioms shows only propext/Classical.choice/Quot.sound + Erdos666.conder_no_threshold.",
     "builtItems": [
       "Proved Erdos666.erdos_conjecture_false from chung_1992 (Proofs/Erdos666Problem.lean)",
       "Repaired Hypercube, HasCycle, DenseSubgraph defs and imports so the file compiles (282 lines, 0 errors)",
       "epsilonDense_antitone / denseForcesC6_mono / conjectureAt_mono: ConjectureAt is monotone in ε (density antitone, forcing/conjecture monotone) [VERIFIED]",
-      "chung_no_threshold_le : ε ≤ 1/4 → ¬ConjectureAt ε — Chung refutation extended from the point 1/4 to the whole interval (0,1/4], 0 new axioms [VERIFIED]"
+      "chung_no_threshold_le : ε ≤ 1/4 → ¬ConjectureAt ε — Chung refutation extended from the point 1/4 to the whole interval (0,1/4], 0 new axioms [VERIFIED]",
+      "conder_no_threshold : ¬ConjectureAt (1/3) — Conder 1993 3-edge-colouring axiom, the single deepest input, replacing chung_no_threshold [VERIFIED axiom]",
+      "chung_no_threshold : ¬ConjectureAt (1/4) — now a THEOREM derived from conder_no_threshold by monotonicity (axiom count held at 1) [VERIFIED]",
+      "conder_no_threshold_le : ε ≤ 1/3 → ¬ConjectureAt ε — refutation sharp on the whole interval (0,1/3], strictly beyond (0,1/4] [VERIFIED]",
+      "conder_counterexample — honest ε=1/3 existence witness replacing the vacuous True-placeholder conder_better_bound [VERIFIED]"
     ],
     "insights": [
       "The old chung_1992 axiom (bare 4-partition, only H1/H2 disjointness, no edge counts) was insufficient AND malformed: it could not justify erdos_conjecture_false because the disproof needs a density lower bound on one part.",
       "Restating Chung as its density consequence (for n>=3, exists C6-free subgraph with >= 1/4 of edges, packaged with its DecidableRel instance) makes the disproof a 3-line term: instantiate ε=1/4, take n = max N 3, the witness contradicts the conjecture.",
       "Hypercube adjacency 'popcount(x XOR y)=1' (Hamming dist 1) is equivalent to 'x XOR y is a power of two'; the latter avoids the nonexistent Nat.popcount and discharges symm/loopless via Nat.xor_comm / Nat.xor_self + pow_ne_zero.",
-      "HasCycle's Fin index (i+1)%k needs 0<k; derive it from the element i via lt_of_le_of_lt (Nat.zero_le _) i.2 instead of a hypothesis-free omega."
+      "HasCycle's Fin index (i+1)%k needs 0<k; derive it from the element i via lt_of_le_of_lt (Nat.zero_le _) i.2 instead of a hypothesis-free omega.",
+      "Axiom-count-neutral strengthening: when the file axiomatizes result A and a strictly stronger published result B implies A, axiomatize B and derive A as a theorem — net axioms unchanged, math strengthened. #print axioms on the derived A must list B (proof it is genuinely derived, not silently re-axiomatized)."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Replace the True placeholder in conder_better_bound with a real ε=1/3 density statement (needs Conder 3-coloring = new deep axiom).",
-      "Optional: formalize Chung's explicit 4-partition to eliminate the single remaining axiom (large, ~1000+ lines)."
+      "GeneralizedConjecture (C_{2k}) is open and genuinely distinct: its c·n^{aₖ}·2ⁿ density is much sparser than ε·n·2ⁿ⁻¹, so the C₆ refutation does not specialize to it.",
+      "Erdős dense C₄,C₆-free ⇒ C₈ existence (moment/KST counting) — the hard core, not in Mathlib, not session-sized.",
+      "Optional: formalize Conder's explicit 3-colouring to eliminate the single remaining axiom (large, ~1000+ lines)."
     ]
   },
   "tags": [
@@ -64,7 +70,7 @@
     "mathlib": []
   },
   "started": "2026-04-03T12:23:52.517Z",
-  "lastUpdate": "2026-07-08T00:00:00Z",
+  "lastUpdate": "2026-07-09",
   "significance": 7,
   "tractability": 6
 }
