@@ -871,11 +871,11 @@ theorem coLE_lt {x y : ℕ} : compareOfLessAndEq x y = Ordering.lt ↔ x < y :=
 
 /-- `compareOfLessAndEq` returns `.eq` exactly on equality. -/
 theorem coLE_eq {x y : ℕ} : compareOfLessAndEq x y = Ordering.eq ↔ x = y := by
-  unfold compareOfLessAndEq; split_ifs with h1 h2 <;> simp_all <;> omega
+  unfold compareOfLessAndEq; split_ifs with h1 h2 <;> (simp_all; try omega)
 
 /-- `compareOfLessAndEq` returns `.gt` exactly on the strict-greater relation. -/
 theorem coLE_gt {x y : ℕ} : compareOfLessAndEq x y = Ordering.gt ↔ y < x := by
-  unfold compareOfLessAndEq; split_ifs with h1 h2 <;> simp_all <;> omega
+  unfold compareOfLessAndEq; split_ifs with h1 h2 <;> (simp_all; try omega)
 
 /-- **Extraction is faithful.**  Under the decidable side-conditions on `a`
     (first cototient step even with odd quotient, landing constant nonzero and
@@ -889,7 +889,7 @@ theorem classify_data {a : ℕ} (hstep : 2 ∣ coStep a) (hC0 : landC a ≠ 0)
   refine ⟨?_, ?_, ?_, ?_⟩
   · -- `e = ordCompl[2] C` is odd: a prime never divides the complementary part
     exact Nat.odd_iff.2 (Nat.two_dvd_ne_zero.1
-      (Nat.not_dvd_ordCompl Nat.prime_two.prime hC0))
+      (Nat.not_dvd_ordCompl Nat.prime_two hC0))
   · -- `t = v₂(C) ≥ 1` since `2 ∣ C ≠ 0`
     exact Nat.prime_two.factorization_pos_of_dvd hC0 hCe
   · -- `2a − φ(a) = 2·bSeed a` because the step is even
