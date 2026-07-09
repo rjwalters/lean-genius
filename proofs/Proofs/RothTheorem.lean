@@ -1551,4 +1551,81 @@ theorem sqDiff_error_le {N : ℕ} [NeZero N] (A : Finset (ZMod N)) {M : ℝ}
     _ = M * (↑A.card * ↑N - (↑A.card) ^ 2) := by
         rw [parseval_nonzero A]; ring
 
+/-- **Circle-method lower bound for the square-difference count (real form).**
+The two-sided bound `sqDiff_error_le` immediately gives a one-sided *lower* bound
+on the (nonnegative real) count `SD(A)`:
+
+    SD(A)  ≥  |A|² − N⁻¹ · M · (|A|·N − |A|²).
+
+This is the operative direction for Sárközy's theorem: it guarantees that the
+square-difference count stays close to its `|A|²` main term, so a dense set is
+*forced* to contain many square differences.  Both `SD(A)` and `|A|²` are real,
+so the complex norm in `sqDiff_error_le` is just the absolute value, and the
+lower half of `|x| ≤ c` supplies the bound. -/
+theorem sqDiffCount_ge {N : ℕ} [NeZero N] (A : Finset (ZMod N)) {M : ℝ}
+    (hG : ∀ r : ZMod N, r ≠ 0 → ‖sqGaussSum r‖ ≤ M) :
+    (A.card : ℝ) ^ 2 - (↑N)⁻¹ * (M * (↑A.card * ↑N - (↑A.card) ^ 2))
+      ≤ (sqDiffCount A : ℝ) := by
+  have h := sqDiff_error_le A hG
+  have key : |(sqDiffCount A : ℝ) - (A.card : ℝ) ^ 2|
+      ≤ (↑N)⁻¹ * (M * (↑A.card * ↑N - (↑A.card) ^ 2)) := by
+    have e : ‖(sqDiffCount A : ℂ) - (↑A.card) ^ 2‖
+        = |(sqDiffCount A : ℝ) - (A.card : ℝ) ^ 2| := by
+      rw [show (sqDiffCount A : ℂ) - (↑A.card) ^ 2
+            = (((sqDiffCount A : ℝ) - (A.card : ℝ) ^ 2 : ℝ) : ℂ) by push_cast; ring,
+        Complex.norm_real, Real.norm_eq_abs]
+    rwa [e] at h
+  linarith [(abs_le.mp key).1]
+
+/-- **Square-difference-free sets have few solutions.**  If `A` contains no
+*nontrivial* square difference — no `x ∈ A` and `n` with `n² ≠ 0` and
+`x + n² ∈ A` — then every `(x, n)` counted by `SD(A)` must have `n² = 0`, so
+
+    SD(A)  ≤  |A| · #{n : n² = 0}.
+
+The only pairs surviving the `SD(A)` filter are the trivial ones `(x, n)` with
+`n² = 0` (for which `x + n² = x ∈ A` automatically); the freeness hypothesis
+kills every pair with `n² ≠ 0`.  The `#{n : n² = 0}` factor is `1` when `N` is
+squarefree (only `n = 0`) and larger otherwise. -/
+theorem sqDiffCount_le_of_free {N : ℕ} [NeZero N] (A : Finset (ZMod N))
+    (hfree : ∀ x ∈ A, ∀ n : ZMod N, n ^ 2 ≠ 0 → x + n ^ 2 ∉ A) :
+    sqDiffCount A ≤ A.card * (Finset.univ.filter (fun n : ZMod N => n ^ 2 = 0)).card := by
+  unfold sqDiffCount
+  calc ((A ×ˢ (Finset.univ : Finset (ZMod N))).filter
+          (fun p : ZMod N × ZMod N => p.1 + p.2 ^ 2 ∈ A)).card
+      ≤ (A ×ˢ (Finset.univ.filter (fun n : ZMod N => n ^ 2 = 0))).card := by
+        refine Finset.card_le_card (fun p hp => ?_)
+        rw [Finset.mem_filter, Finset.mem_product] at hp
+        obtain ⟨⟨hx, _⟩, hin⟩ := hp
+        rw [Finset.mem_product, Finset.mem_filter]
+        refine ⟨hx, Finset.mem_univ _, ?_⟩
+        by_contra hne
+        exact hfree p.1 hx p.2 hne hin
+    _ = A.card * (Finset.univ.filter (fun n : ZMod N => n ^ 2 = 0)).card :=
+        Finset.card_product _ _
+
+/-- **Sárközy density inequality (conditional on the Gauss-sum bound `M`).**
+Combining the circle-method lower bound `sqDiffCount_ge` with the
+square-difference-free upper bound `sqDiffCount_le_of_free` pins the size of any
+square-difference-free `A ⊆ ℤ/Nℤ`:
+
+    |A|²  ≤  |A| · #{n : n² = 0}  +  N⁻¹ · M · (|A|·N − |A|²).
+
+This is the finite Sárközy statement in fully abstracted form.  With the
+classical quadratic Gauss-sum bound `M = √(2N)` and `N` squarefree
+(`#{n : n² = 0} = 1`), the right side is `|A| + √(2N)·|A|·(N − |A|)/N ≲ |A|·√N`,
+forcing `|A| ≲ √N`, i.e. density `|A|/N → 0` — Sárközy's theorem.  Every step is
+0-axiom; the single remaining analytic input is the magnitude bound `M`. -/
+theorem sqDiffFree_density_bound {N : ℕ} [NeZero N] (A : Finset (ZMod N)) {M : ℝ}
+    (hG : ∀ r : ZMod N, r ≠ 0 → ‖sqGaussSum r‖ ≤ M)
+    (hfree : ∀ x ∈ A, ∀ n : ZMod N, n ^ 2 ≠ 0 → x + n ^ 2 ∉ A) :
+    (A.card : ℝ) ^ 2
+      ≤ (A.card : ℝ) * (Finset.univ.filter (fun n : ZMod N => n ^ 2 = 0)).card
+        + (↑N)⁻¹ * (M * (↑A.card * ↑N - (↑A.card) ^ 2)) := by
+  have hlow := sqDiffCount_ge A hG
+  have hupp : (sqDiffCount A : ℝ)
+      ≤ (A.card : ℝ) * (Finset.univ.filter (fun n : ZMod N => n ^ 2 = 0)).card := by
+    exact_mod_cast sqDiffCount_le_of_free A hfree
+  linarith
+
 end Szemeredi.Roth
