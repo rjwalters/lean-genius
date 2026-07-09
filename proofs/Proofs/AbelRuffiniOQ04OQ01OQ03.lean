@@ -441,6 +441,87 @@ theorem conjClass_card_dvd_sub_one {G : Type*} [Group G] [Finite G] {p : ℕ}
   rw [orbit_conjAct_card_eq_centralizer_index]
   exact centralizer_index_dvd_sub_one m hcard hpm huniq c hc
 
+/-! ### The class-equation arithmetic consequence: coprime index forces centrality
+
+The N/C bound `[G : C_G(c)] ∣ p − 1` gained its force from the automorphism group
+`Aut(⟨c⟩) ≅ (ℤ/p)ˣ` of order `p − 1`.  There is a *second*, orthogonal constraint on the
+same index coming from the subgroup lattice: since `c` commutes with its own powers,
+`⟨c⟩ ≤ C_G(c)`, so `[G : C_G(c)]` divides `[G : ⟨c⟩] = m`.  Combining the two:
+
+    `|conj class of c|  =  [G : C_G(c)]  ∣  gcd(m, p − 1)`.
+
+This is the sharp class-equation reading.  Its most striking consequence is a **centrality
+criterion**: whenever the index `m` and `p − 1` are *coprime*, the gcd is `1`, the
+conjugacy class of `c` is a singleton, and `c` is central.  Equivalently: an order-`p`
+element whose index is coprime to `p − 1` cannot be moved by conjugation — it lies in the
+centre `Z(G)`.  (This is the elementary transfer-theoretic phenomenon behind Burnside's
+normal `p`-complement theorem read for a single element: no automorphism of `⟨c⟩` of order
+dividing `p − 1` can be realised by conjugation when the available conjugating room `m` is
+coprime to `p − 1`.) -/
+
+/-- **`⟨c⟩` centralises `c`.**  Every power of `c` commutes with `c`, so the cyclic
+subgroup `⟨c⟩` is contained in the centralizer `C_G(c)`.  Pure group theory. -/
+theorem zpowers_le_centralizer {G : Type*} [Group G] (c : G) :
+    Subgroup.zpowers c ≤ Subgroup.centralizer {c} := by
+  intro x hx
+  rw [Subgroup.mem_centralizer_iff]
+  rintro y hy
+  rw [Set.mem_singleton_iff] at hy; subst hy
+  obtain ⟨k, rfl⟩ := Subgroup.mem_zpowers_iff.mp hx
+  exact (Commute.refl y).zpow_right k
+
+/-- **The centralizer index also divides `m`.**  Because `⟨c⟩ ≤ C_G(c)` and
+`[G : ⟨c⟩] = m`, the tower law gives `[G : C_G(c)] ∣ m`.  This is the lattice-side
+constraint on the conjugacy-class size, complementary to the automorphism-group bound
+`[G : C_G(c)] ∣ p − 1`.  Needs only the order hypothesis, not `huniq`. -/
+theorem centralizer_index_dvd_index_zpowers {G : Type*} [Group G] [Finite G] {p : ℕ}
+    [Fact p.Prime] (m : ℕ) (hcard : Nat.card G = p * m)
+    (c : G) (hc : orderOf c = p) :
+    (Subgroup.centralizer {c}).index ∣ m := by
+  have h := Subgroup.index_dvd_of_le (zpowers_le_centralizer c)
+  rwa [zpowers_index_eq m hcard c hc] at h
+
+/-- **Conjugacy class size divides `gcd(m, p − 1)`.**  Sharpens `conjClass_card_dvd_sub_one`:
+the size of the conjugacy class of `c` divides *both* the index `m` (lattice constraint) and
+`p − 1` (automorphism-group constraint), hence their gcd.  This is the tightest per-element
+bound the class equation supplies here. -/
+theorem conjClass_card_dvd_gcd {G : Type*} [Group G] [Finite G] {p : ℕ}
+    [hp : Fact p.Prime] (m : ℕ)
+    (hcard : Nat.card G = p * m) (hpm : ¬ (p ∣ m))
+    (huniq : ∀ d : ℕ, d ∣ m → d % p = 1 → d = 1)
+    (c : G) (hc : orderOf c = p) :
+    Nat.card (MulAction.orbit (ConjAct G) c) ∣ Nat.gcd m (p - 1) := by
+  rw [orbit_conjAct_card_eq_centralizer_index]
+  exact Nat.dvd_gcd (centralizer_index_dvd_index_zpowers m hcard c hc)
+    (centralizer_index_dvd_sub_one m hcard hpm huniq c hc)
+
+/-- **Centrality criterion: coprime index forces `c` central.**
+
+Under the hypotheses of `zpowers_sylow_normal`, if the index `m = [G : ⟨c⟩]` is *coprime*
+to `p − 1`, then the order-`p` element `c` lies in the centre `Z(G)`.  Indeed the
+conjugacy class of `c` has size dividing `gcd(m, p − 1) = 1`, so the class is a singleton,
+i.e. `C_G(c) = G`.  This is the class-equation punchline: the only way an order-`p` element
+can *avoid* being central is for its index to share a common factor with `p − 1`; the
+Abel–Ruffini orders `20 = 5·4`, `40 = 5·8` (with `gcd(4, 4) = 4`, `gcd(8, 4) = 4`) live
+precisely in the non-coprime regime where non-central order-`5` elements are possible. -/
+theorem mem_center_of_coprime_index {G : Type*} [Group G] [Finite G] {p : ℕ}
+    [hp : Fact p.Prime] (m : ℕ)
+    (hcard : Nat.card G = p * m) (hpm : ¬ (p ∣ m))
+    (huniq : ∀ d : ℕ, d ∣ m → d % p = 1 → d = 1)
+    (c : G) (hc : orderOf c = p) (hcop : Nat.Coprime m (p - 1)) :
+    c ∈ Subgroup.center G := by
+  have hgcd1 : Nat.gcd m (p - 1) = 1 := hcop
+  have hdvd : (Subgroup.centralizer {c}).index ∣ Nat.gcd m (p - 1) :=
+    Nat.dvd_gcd (centralizer_index_dvd_index_zpowers m hcard c hc)
+      (centralizer_index_dvd_sub_one m hcard hpm huniq c hc)
+  rw [hgcd1] at hdvd
+  have htop : Subgroup.centralizer {c} = ⊤ :=
+    Subgroup.index_eq_one.mp (Nat.dvd_one.mp hdvd)
+  rw [Subgroup.mem_center_iff]
+  intro g
+  have hg : g ∈ Subgroup.centralizer {c} := htop ▸ Subgroup.mem_top g
+  exact (Subgroup.mem_centralizer_iff.mp hg c (Set.mem_singleton c)).symm
+
 /-! ### The fixed prime `p = 5`
 
 The original Abel–Ruffini application only needs `p = 5`.  With the general
@@ -484,6 +565,29 @@ theorem not_isSimpleGroup_order5 {G : Type*} [Group G] [Finite G] (m : ℕ)
     ¬ IsSimpleGroup G :=
   haveI : Fact (Nat.Prime 5) := ⟨by norm_num⟩
   not_isSimpleGroup_of_sylow m hcard hm5 huniq hm c hc
+
+/-- **Fixed prime `5` centrality criterion** (`p = 5` specialisation of
+`mem_center_of_coprime_index`).  In a finite group of order `5·m` with `5 ∤ m`, the
+divisor condition, and an order-`5` element `c`, if `m` is coprime to `4 = 5 − 1` (i.e.
+`m` is odd), then `c` is central.  The order-`15` groups (`m = 3`) are the smallest
+instance: every order-`5` element of a group of order `15` lies in the centre — the
+group-theoretic reason all groups of order `15` are cyclic. -/
+theorem mem_center_order5_of_coprime_index {G : Type*} [Group G] [Finite G] (m : ℕ)
+    (hcard : Nat.card G = 5 * m) (hm5 : ¬ (5 ∣ m))
+    (huniq : ∀ d : ℕ, d ∣ m → d % 5 = 1 → d = 1)
+    (c : G) (hc : orderOf c = 5) (hcop : Nat.Coprime m 4) :
+    c ∈ Subgroup.center G :=
+  haveI : Fact (Nat.Prime 5) := ⟨by norm_num⟩
+  mem_center_of_coprime_index m hcard hm5 huniq c hc (by simpa using hcop)
+
+/-- **Order `15` centrality.** Any order-`5` element of a finite group of order `15` is
+central: order `15 = 5·3`, `5 ∤ 3`, the divisor condition holds (`3 < 5`), and `3` is
+coprime to `4`, so `mem_center_order5_of_coprime_index` applies.  (This is the crux of the
+classification of order-`15` groups as cyclic.) -/
+example {G : Type*} [Group G] [Finite G] (c : G) (hc : orderOf c = 5)
+    (hcard : Nat.card G = 15) : c ∈ Subgroup.center G :=
+  mem_center_order5_of_coprime_index 3 (hcard.trans (by norm_num)) (by norm_num)
+    (huniq_of_lt (by norm_num) (by norm_num)) c hc (by norm_num)
 
 /-! ### Recovering the three original orders `10, 20, 40`
 
