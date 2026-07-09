@@ -176,7 +176,7 @@
     },
     "type": "concept",
     "title": "Small Cases: f(1)=1, f(2)=2 (Concrete Verification)",
-    "content": "`f_one` proves $f(1) = 1$: the set $\\{1\\}$ has $2^1 = 2$ distinct subset sums ($0$ and $1$) with $\\max = 1$. `f_two_max` proves $f(2) = 2$: $\\{1, 2\\}$ has $\\max = 2$. These are the smallest cases of OEIS A005318 (the known values of $f(n)$: 1, 2, 3, 5, 11, 22, 44, 88, ...). For `f_one`, the proof manually checks the DSS condition using `Finset.subset_singleton_iff`. For `f_two_max`, the proof is trivial via `simp`.",
+    "content": "`f_one` proves $f(1) = 1$: the set $\\{1\\}$ has $2^1 = 2$ distinct subset sums ($0$ and $1$) with $\\max = 1$. `f_two_max` proves $f(2) = 2$: $\\{1, 2\\}$ has all $4$ subset sums distinct ($0,1,2,3$) with $\\max = 2$. These are the smallest cases of OEIS A005318 (the known values of $f(n)$: 1, 2, 3, 5, 11, 22, 44, 88, ...). For `f_one`, the proof manually checks the DSS condition using `Finset.subset_singleton_iff`. For `f_two_max`, the `hasDistinctSubsetSums` witness is discharged by `fin_cases` over the four subsets of $\\{1,2\\}$ followed by `decide`.",
     "mathContext": "The known optimal sets for small $n$ are: $f(1)$: $\\{1\\}$; $f(2)$: $\\{1, 2\\}$; $f(3)$: $\\{2, 3, 7\\}$; $f(4)$: $\\{3, 5, 6, 7\\}$; $f(5)$: $\\{6, 9, 11, 12, 13\\}$. The DFX lower bound $\\sqrt{2/\\pi} \\cdot 2^n/\\sqrt{n}$ gives for $n=1$: $\\approx 0.798$, so $f(1) \\geq 1$ \u2713; for $n=2$: $\\approx 1.13$, so $f(2) \\geq 2$ \u2713. The bound is tight up to the constant $\\sqrt{2/\\pi}$ vs the true constant $c \\approx \\sqrt{2/\\pi}$ for the Conway\u2013Guy sequence.",
     "significance": "supporting",
     "relatedConcepts": [
