@@ -28,7 +28,15 @@
     • `eq_of_prime_dvd_of_isPrimePow` — reusable: a prime-power has a unique prime
         divisor; used to *prove* (axiom-free) that `6! + 1 = 721 = 7·103` and
         `5! - 1 = 119 = 7·17` are **not** prime powers, alongside the prime-power
-        cases `4!+1 = 5²`, `5!+1 = 11²`, `3!-1 = 5`.
+        cases `4!+1 = 5²`, `5!+1 = 11²`, `7!+1 = 71²`, `3!-1 = 5`.
+    • `prime_dvd_factorial_add_one_gt` / `prime_dvd_factorial_sub_one_gt` — **the
+        engine**: every prime factor of `n! + 1` (resp. `n! - 1`) exceeds `n`, the
+        universal form of the divisor obstruction and the reason the technique can
+        localise attention to primes near `n`.
+    • `exists_prime_gt` — Euclid's theorem recovered *through* the factorial
+        construction: for every `n` there is a prime `p > n`.
+    • `coprime_factorial_sub_one_add_one` — the two siblings are coprime:
+        `gcd (n! - 1) (n! + 1) = 1` for `n ≥ 2`.
 
   Reference: https://erdosproblems.com/1058
 -/
@@ -147,5 +155,68 @@ theorem not_isPrimePow_five_factorial_sub_one : ¬ IsPrimePow (Nat.factorial 5 -
   have : (7 : ℕ) = 17 :=
     eq_of_prime_dvd_of_isPrimePow h (by norm_num) (by norm_num) h7 h17
   norm_num at this
+
+/-- The `+1` prime-power pattern resumes at `7`: `7! + 1 = 5041 = 71²`.  (It held at
+    `4!+1 = 5²` and `5!+1 = 11²`, failed at `6!+1 = 7·103`, and returns here.) -/
+theorem isPrimePow_seven_factorial_add_one : IsPrimePow (7 ! + 1) :=
+  (isPrimePow_nat_iff _).mpr ⟨71, 2, by norm_num, by norm_num, by decide⟩
+
+/-! ## The Euclid engine: every prime factor of `n! ± 1` exceeds `n`
+
+The single fact that makes the whole factorial technique work — and the reason
+Erdős–Stewart could restrict attention to primes *near* `n` — is that a prime
+dividing `n! + 1` (or `n! - 1`) must be larger than `n`.  This is the sharp,
+universally-quantified form of `not_dvd_factorial_add_one_of_dvd_factorial`, and it
+immediately re-proves Euclid's theorem through the factorial construction. -/
+
+/-- **The engine (for `n! + 1`).**  Any prime `p` dividing `n! + 1` satisfies
+    `n < p`: if `p ≤ n` then `p ∣ n!`, so `p` would divide `(n!+1) - n! = 1`. -/
+theorem prime_dvd_factorial_add_one_gt {p n : ℕ} (hp : p.Prime)
+    (hpd : p ∣ n ! + 1) : n < p := by
+  by_contra h
+  push_neg at h
+  exact not_dvd_factorial_add_one_of_dvd_factorial hp.one_lt
+    (Nat.dvd_factorial hp.pos h) hpd
+
+/-- **The engine transfers to the sibling `n! - 1`.**  Any prime `p` dividing
+    `n! - 1` also satisfies `n < p`: if `p ≤ n` then `p ∣ n!`, and since
+    `n! = (n! - 1) + 1`, `p` would divide `1`. -/
+theorem prime_dvd_factorial_sub_one_gt {p n : ℕ} (hp : p.Prime)
+    (hpd : p ∣ (n !) - 1) : n < p := by
+  by_contra h
+  push_neg at h
+  have hpdvd : p ∣ n ! := Nat.dvd_factorial hp.pos h
+  have hsplit : n ! = ((n !) - 1) + 1 := by have := Nat.factorial_pos n; omega
+  have h1 : p ∣ 1 := (Nat.dvd_add_right hpd).mp (hsplit ▸ hpdvd)
+  exact hp.one_lt.ne' (Nat.dvd_one.mp h1)
+
+/-- **Euclid's theorem via the factorial technique.**  For every `n` there is a
+    prime exceeding `n`: take any prime factor of `n! + 1` and apply the engine.
+    This is the classical use of the `n! + 1` construction to force new primes. -/
+theorem exists_prime_gt (n : ℕ) : ∃ p, p.Prime ∧ n < p := by
+  have hne : n ! + 1 ≠ 1 := by have := Nat.factorial_pos n; omega
+  obtain ⟨p, hp, hpd⟩ := Nat.exists_prime_and_dvd hne
+  exact ⟨p, hp, prime_dvd_factorial_add_one_gt hp hpd⟩
+
+/-! ## Twin coprimality of the sibling expressions -/
+
+/-- **The two siblings are coprime.**  For `n ≥ 2`, `gcd (n! - 1) (n! + 1) = 1`:
+    the gcd divides their difference `2`, but `2 ∣ n!` makes `n! + 1` odd, so the
+    gcd cannot be `2`.  Hence `n! - 1` and `n! + 1` share no prime factor. -/
+theorem coprime_factorial_sub_one_add_one {n : ℕ} (hn : 2 ≤ n) :
+    Nat.Coprime ((n !) - 1) ((n !) + 1) := by
+  have hd1 : Nat.gcd ((n !) - 1) ((n !) + 1) ∣ ((n !) - 1) := Nat.gcd_dvd_left _ _
+  have hd2 : Nat.gcd ((n !) - 1) ((n !) + 1) ∣ ((n !) + 1) := Nat.gcd_dvd_right _ _
+  have hg2 : Nat.gcd ((n !) - 1) ((n !) + 1) ∣ 2 := by
+    have hsplit : (n !) + 1 = ((n !) - 1) + 2 := by have := Nat.factorial_pos n; omega
+    exact (Nat.dvd_add_right hd1).mp (hsplit ▸ hd2)
+  have h2 : ¬ (2 : ℕ) ∣ ((n !) + 1) := by
+    have hdf : (2 : ℕ) ∣ n ! := Nat.dvd_factorial (by norm_num) hn
+    intro hc
+    have : (2 : ℕ) ∣ 1 := (Nat.dvd_add_right hdf).mp hc
+    norm_num at this
+  rcases (Nat.dvd_prime Nat.prime_two).mp hg2 with h1 | h2eq
+  · exact h1
+  · exact absurd (h2eq ▸ hd2) h2
 
 end Erdos1058OQ03
