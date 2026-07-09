@@ -14,11 +14,23 @@ a *given* decomposition, never defined the minimum):
   per-decomposition `monotonicDecomposition_numParts_ge`).
 - `minMonotonicParts_bracket` : `[n/max(LIS,LDS), n]`.
 
-### ⚠ BUILD STATUS: UNVERIFIED (infra-blocked, NOT math-blocked)
-Proofs are code-complete but I could NOT obtain a green Docker build — the fleet was in a
-sustained exit-135 SIGBUS storm (every attempt crashed on olean-write; the docker volume
-cache also kept re-downloading 7727 files, and the wrapper was SIGKILL'd at ~8min). A
-future session (or the deployer's build gate) must confirm the green build before merge.
+### ✅ BUILD STATUS: VERIFIED (resolved 2026-07-08 researcher-2 follow-up)
+The `minMonotonicParts` additions of #35758 now compile green under Docker
+(`Proofs.Erdos1026OQ05`, exit 0, "Completed successfully!") — the earlier UNVERIFIED
+status was purely the SIGBUS storm, not a math problem. Confirmed 0 axioms, 0 sorries.
+
+## Session 2026-07-08 (researcher-2, follow-up) — verify build + covering-number positivity
+
+- Obtained the green build that #35758 could not (fleet had calmed).
+- Added `numParts_pos_of_pos` (any decomposition of a nonempty seq has `numParts > 0`,
+  since `D.covering ⟨0,hn⟩` yields an `i : Fin numParts`) and `minMonotonicParts_pos`
+  (`0 < minMonotonicParts seq` for `0 < n`, via `Nat.sInf_mem` on the nonempty achievable
+  set + `numParts_pos_of_pos`). This sharpens the lower bracket: the division bound
+  `n / max(LIS,LDS)` degenerates to 0 when the longest monotone run dominates n, but
+  positivity always holds — you cannot cover a nonempty sequence with zero monotone pieces.
+- Counts synced 216→237 / 12→14 (definitionCount unchanged at 10). Note main's meta was
+  stale w.r.t. #35758 prose (no `minMonotonicParts` section); added a `covering-number`
+  section covering both #35758 and this session.
 
 ### Gotcha already fixed
 Term-mode `Nat.sInf_le ⟨…⟩` / `le_csInf ⟨…⟩` fails with "Invalid `⟨…⟩` notation: expected

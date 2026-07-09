@@ -21,11 +21,11 @@
     "badge": "verified",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 216,
+    "lineCount": 237,
     "assumptions": "None. The file introduces no axioms and no sorries; every theorem depends only on the standard foundational axioms propext / Classical.choice / Quot.sound. Only the lower-bound (Mirsky/Dilworth) direction of the decomposition problem is proved; the hard upper-bound direction of OQ-05 — that O(√n) monotone pieces always suffice (Hanani 1957) — is stated in prose as the remaining open direction, not assumed.",
     "dateAdded": "2026-07-08",
     "mathlib_version": "4.26.0",
-    "theoremCount": 12,
+    "theoremCount": 14,
     "definitionCount": 10
   },
   "overview": {
@@ -84,9 +84,17 @@
       "id": "existence-bracket",
       "title": "Existence of a Decomposition and the Bracket",
       "startLine": 167,
-      "endLine": 184,
+      "endLine": 182,
       "summary": "fin_one_strictMono: any function out of Fin 1 is vacuously strictly monotone. singletonDecomposition: splitting into n singleton parts is a valid monotonic decomposition, so the class is nonempty and numParts ≤ n. Together with the lower bound this brackets the optimal number of parts in [n / max(LIS, LDS), n].",
       "mathContext": "Optimal $\\mathrm{numParts} \\in [\\,n/\\max(\\mathrm{LIS},\\mathrm{LDS}),\\; n\\,]$."
+    },
+    {
+      "id": "covering-number",
+      "title": "The Covering Number minMonotonicParts and Its Positivity",
+      "startLine": 184,
+      "endLine": 237,
+      "summary": "minMonotonicParts seq := sInf {p | ∃ D, D.numParts = p} — the actual extremal invariant OQ-05 asks about, the minimum number of monotone parts (well-defined because singletonDecomposition always supplies a witness). minMonotonicParts_le (≤ n, singleton witness via Nat.sInf_le) and minMonotonicParts_ge (≥ n / max(LIS, LDS), via le_csInf over the per-decomposition lower bound) assemble into minMonotonicParts_bracket. numParts_pos_of_pos and minMonotonicParts_pos add positivity for nonempty sequences: the covering condition demands a part index for element 0, which inhabits Fin numParts, forcing numParts > 0 — a bound the division form n / max(LIS, LDS) misses when the longest monotone run is long relative to n.",
+      "mathContext": "$\\mathrm{minMonotonicParts}(\\mathrm{seq}) = \\inf\\{\\mathrm{numParts}(D)\\} \\in [\\,n/\\max(\\mathrm{LIS},\\mathrm{LDS}),\\; n\\,]$, and $\\mathrm{minMonotonicParts}(\\mathrm{seq}) > 0$ whenever $n > 0$."
     }
   ],
   "conclusion": {
@@ -138,9 +146,9 @@
       "Mathlib"
     ],
     "namespace": "Erdos1026OQ05",
-    "lineCount": 216,
+    "lineCount": 237,
     "axiomCount": 0,
-    "theoremCount": 12,
+    "theoremCount": 14,
     "path": "Proofs/Erdos1026OQ05.lean",
     "sorries": 0,
     "definitionCount": 10
@@ -150,6 +158,7 @@
     "Every monotonic decomposition of a length-n sequence uses at least n / max(LIS, LDS) parts (monotonicDecomposition_numParts_lower_bound / monotonicDecomposition_numParts_ge): the Mirsky/Dilworth lower-bound half of Hanani's theorem, proved axiom-free.",
     "The proof turns the covering condition into a surjection from the disjoint union of the parts onto Fin n, so n ≤ Σ part-lengths via Fintype.card_sigma; each monotonic part contributes at most max(LIS, LDS) because it is increasing (≤ LIS) or decreasing (≤ LDS).",
     "A singleton decomposition (each element its own vacuously-monotonic part) witnesses existence and the crude upper bound numParts ≤ n, bracketing the optimal number of parts in [n / max(LIS, LDS), n].",
-    "On the Erdős–Szekeres extremal sequences (longest monotone run ≈ √n) the bound forces ≳ √n parts, matching Hanani's O(√n) in order; the constructive matching upper bound is stated but left open and unaxiomatized (0 axioms, 0 sorries)."
+    "On the Erdős–Szekeres extremal sequences (longest monotone run ≈ √n) the bound forces ≳ √n parts, matching Hanani's O(√n) in order; the constructive matching upper bound is stated but left open and unaxiomatized (0 axioms, 0 sorries).",
+    "The extremal invariant itself is defined — minMonotonicParts := sInf of achievable part-counts — and bracketed in [n / max(LIS, LDS), n]; positivity (minMonotonicParts_pos) shows it is ≥ 1 for every nonempty sequence, a bound the division form n / max(LIS, LDS) misses when the longest monotone run dominates n."
   ]
 }
