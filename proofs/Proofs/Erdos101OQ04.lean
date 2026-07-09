@@ -2765,4 +2765,99 @@ theorem exists_isLowerBoundConstruction_linear (k : ℕ) (hk : 0 < k) :
   obtain ⟨P, hcard, hno5, hcount⟩ := quartic_linear_lower_bound k hk
   exact ⟨P, hcard, hno5, by exact_mod_cast hcount⟩
 
+/-! ### Exact collinearity criteria on the quartic (arithmetization)
+
+The `noFiveCollinear_of_onQuartic` engine says the quartic graph *forbids* five
+collinear points.  The two results below go the other way and pin down *exactly*
+which triples and quadruples on the quartic *are* collinear, turning the geometric
+collinearity test into pure arithmetic conditions on the abscissae.
+
+The mechanism is a single algebraic factorisation.  For three points on
+`y = x⁴ − 5x²` the signed-area determinant factors as
+
+    (b₁−a₁)(c₂−a₂) − (c₁−a₁)(b₂−a₂)
+      = (a₁−b₁)(b₁−c₁)(c₁−a₁) · (a₁²+b₁²+c₁²+a₁b₁+b₁c₁+c₁a₁ − 5),
+
+a Vandermonde factor (nonzero for distinct abscissae) times a symmetric quadratic.
+Collinearity of a triple therefore reduces to `Σx² + Σxy = 5`, and — anchoring two
+points — collinearity of a quadruple reduces to the two Newton/Vieta relations
+`Σx = 0` and `Σ_{i<j} xᵢxⱼ = −5` (the vanishing of the cubic and the value `−5` of
+the quadratic elementary symmetric polynomial, exactly the `x³`- and `x²`-coefficients
+of `x⁴ − 5x²` a line must meet).
+
+This is the combinatorial engine behind any curve-based four-point-line count:
+counting four-point lines among `n` points on the quartic becomes counting
+`4`-subsets of the abscissa set satisfying `Σx = 0 ∧ Σxy = −5`, a purely additive
+question.  It does not resolve the OPEN `Ω(n^{2−o(1)})` growth
+(`solymosi_stojakovic_lower_bound`), but it is the exact arithmetic reformulation a
+sharper construction operates on. -/
+
+/-- **Exact three-point collinearity criterion on the quartic.**
+Three points on the graph `y = x⁴ − 5x²` with pairwise-distinct abscissae are
+collinear iff `a₁² + b₁² + c₁² + a₁b₁ + b₁c₁ + c₁a₁ = 5`. -/
+theorem collinear_onQuartic_iff {a b c : ℝ × ℝ}
+    (ha : onQuartic a) (hb : onQuartic b) (hc : onQuartic c)
+    (hab : a.1 ≠ b.1) (hbc : b.1 ≠ c.1) (hca : c.1 ≠ a.1) :
+    collinear a b c ↔
+      a.1 ^ 2 + b.1 ^ 2 + c.1 ^ 2 + a.1 * b.1 + b.1 * c.1 + c.1 * a.1 = 5 := by
+  simp only [onQuartic] at ha hb hc
+  -- The determinant factors as Vandermonde × (symmetric quadratic − 5).
+  have key : (b.1 - a.1) * (c.2 - a.2) - (c.1 - a.1) * (b.2 - a.2)
+      = (a.1 - b.1) * (b.1 - c.1) * (c.1 - a.1) *
+          (a.1 ^ 2 + b.1 ^ 2 + c.1 ^ 2 + a.1 * b.1 + b.1 * c.1 + c.1 * a.1 - 5) := by
+    rw [ha, hb, hc]; ring
+  have hV : (a.1 - b.1) * (b.1 - c.1) * (c.1 - a.1) ≠ 0 :=
+    mul_ne_zero (mul_ne_zero (sub_ne_zero.mpr hab) (sub_ne_zero.mpr hbc))
+      (sub_ne_zero.mpr hca)
+  constructor
+  · intro hcol
+    have hEq : (b.1 - a.1) * (c.2 - a.2) = (c.1 - a.1) * (b.2 - a.2) := hcol
+    have hD : (a.1 - b.1) * (b.1 - c.1) * (c.1 - a.1) *
+        (a.1 ^ 2 + b.1 ^ 2 + c.1 ^ 2 + a.1 * b.1 + b.1 * c.1 + c.1 * a.1 - 5) = 0 := by
+      rw [← key]; linarith [hEq]
+    rcases mul_eq_zero.mp hD with h | h
+    · exact absurd h hV
+    · linarith [h]
+  · intro hcond
+    show (b.1 - a.1) * (c.2 - a.2) = (c.1 - a.1) * (b.2 - a.2)
+    have hzero : (b.1 - a.1) * (c.2 - a.2) - (c.1 - a.1) * (b.2 - a.2) = 0 := by
+      rw [key]
+      have : a.1 ^ 2 + b.1 ^ 2 + c.1 ^ 2 + a.1 * b.1 + b.1 * c.1 + c.1 * a.1 - 5 = 0 := by
+        linarith [hcond]
+      rw [this, mul_zero]
+    linarith [hzero]
+
+/-- **Vieta criterion for a four-point line on the quartic.**
+Four points on `y = x⁴ − 5x²` with pairwise-distinct abscissae are collinear
+(all four lie on one line, witnessed by the two anchored triples through `a, b`)
+iff their abscissae satisfy the Newton/Vieta relations `Σx = 0` and `Σ_{i<j} xᵢxⱼ = −5`.
+
+These are exactly the `x³`- and `x²`-coefficient conditions: a line `y = mx + e`
+meets the quartic where `x⁴ − 5x² − mx − e = 0`, whose four roots (for a genuine
+four-point line) have elementary symmetric sums `e₁ = 0` and `e₂ = −5`. -/
+theorem four_onQuartic_collinear_iff {a b c d : ℝ × ℝ}
+    (ha : onQuartic a) (hb : onQuartic b) (hc : onQuartic c) (hd : onQuartic d)
+    (hab : a.1 ≠ b.1) (hbc : b.1 ≠ c.1) (hca : c.1 ≠ a.1)
+    (hbd : b.1 ≠ d.1) (hda : d.1 ≠ a.1) (hcd : c.1 ≠ d.1) :
+    (collinear a b c ∧ collinear a b d) ↔
+      (a.1 + b.1 + c.1 + d.1 = 0 ∧
+       a.1 * b.1 + a.1 * c.1 + a.1 * d.1 + b.1 * c.1 + b.1 * d.1 + c.1 * d.1 = -5) := by
+  rw [collinear_onQuartic_iff ha hb hc hab hbc hca,
+      collinear_onQuartic_iff ha hb hd hab hbd hda]
+  constructor
+  · rintro ⟨habc, habd⟩
+    -- Subtracting the two triple conditions exposes the Vandermonde factor (c₁−d₁).
+    have hfac : (c.1 - d.1) * (a.1 + b.1 + c.1 + d.1) = 0 := by
+      linear_combination habc - habd
+    have he1 : a.1 + b.1 + c.1 + d.1 = 0 := by
+      rcases mul_eq_zero.mp hfac with h | h
+      · exact absurd (sub_eq_zero.mp h) hcd
+      · exact h
+    refine ⟨he1, ?_⟩
+    linear_combination (a.1 + b.1 + c.1) * he1 - habc
+  · rintro ⟨he1, he2⟩
+    refine ⟨?_, ?_⟩
+    · linear_combination (a.1 + b.1 + c.1) * he1 - he2
+    · linear_combination (a.1 + b.1 + d.1) * he1 - he2
+
 end Erdos101OQ04
