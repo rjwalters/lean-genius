@@ -283,6 +283,84 @@ theorem dichrom_mono [Fintype V] [DecidableEq V]
       (fun a b hab => ⟨hab.1, hab.2.1, Or.inl ⟨O_H.consistent a b hab.2.2, hab.2.2⟩⟩)
       hcycle)⟩
 
+/-- **Embedding monotonicity of the dichromatic number.** If `f : W → V` is an
+    injective vertex map carrying every `H`-edge to a `G`-edge (a subgraph
+    embedding of `H` into `G`), then `δ(H) ≤ δ(G)`.
+
+    This generalizes `dichrom_mono` (the special case `W = V`, `f = id`) to
+    arbitrary vertex types. The construction extends an orientation `O_H` of `H`
+    to one of `G` by copying `O_H` along `f` on the image edges and orienting all
+    remaining `G`-edges by the vertex index; an acyclic `k`-coloring of the
+    extension then pulls back along `f` (via `Relation.TransGen.lift`) to an
+    acyclic `k`-coloring of `O_H`.
+
+    Injectivity of `f` (`_hf`) is what makes this the *embedding* (subgraph) case:
+    it guarantees distinct `H`-edges have distinct `f`-images, so the extended
+    orientation is well-defined even under a strict (antisymmetric) reading of
+    `Orientation`. The core pullback argument itself uses only edge-preservation. -/
+theorem dichrom_mono_of_embedding {W : Type*} [Fintype W] [DecidableEq W]
+    [Fintype V] [DecidableEq V] (H : SimpleGraph W) (G : SimpleGraph V)
+    [DecidableRel H.Adj] [DecidableRel G.Adj]
+    (f : W → V) (_hf : Function.Injective f)
+    (hmap : ∀ u v, H.Adj u v → G.Adj (f u) (f v)) :
+    H.dichromNumber ≤ G.dichromNumber := by
+  unfold SimpleGraph.dichromNumber
+  apply csInf_le_csInf (nat_bddBelow _)
+  · -- The `G`-defining set is nonempty: the injective coloring works.
+    exact ⟨Fintype.card V, fun O => ⟨Fintype.equivFin V,
+      isAcyclicColoring_of_no_mono_edge O _ fun u v hdir heq =>
+        G.ne_of_adj (O.consistent u v hdir) ((Fintype.equivFin V).injective heq)⟩⟩
+  · -- `k` good for all `G`-orientations ⟹ `k` good for all `H`-orientations.
+    intro k hk O_H
+    classical
+    let ι := Fintype.equivFin V
+    -- `isImg a b`: the ordered pair `(a, b)` is the `f`-image of an `H`-edge.
+    let isImg : V → V → Prop := fun a b => ∃ u v, f u = a ∧ f v = b ∧ H.Adj u v
+    -- Extend `O_H` to `G`: copy `O_H` on image edges, index-orient the rest.
+    let O_G : Orientation G :=
+      { dir := fun a b =>
+          (∃ u v, f u = a ∧ f v = b ∧ H.Adj u v ∧ O_H.dir u v) ∨
+          (G.Adj a b ∧ ¬isImg a b ∧ ¬isImg b a ∧ (ι a).val < (ι b).val)
+        covers := fun a b hadj => by
+          by_cases hab : isImg a b
+          · obtain ⟨u, v, hu, hv, hHadj⟩ := hab
+            rcases O_H.covers u v hHadj with h | h
+            · exact Or.inl (Or.inl ⟨u, v, hu, hv, hHadj, h⟩)
+            · exact Or.inr (Or.inl ⟨v, u, hv, hu, hHadj.symm, h⟩)
+          · by_cases hba : isImg b a
+            · obtain ⟨u, v, hu, hv, hHadj⟩ := hba
+              rcases O_H.covers u v hHadj with h | h
+              · exact Or.inr (Or.inl ⟨u, v, hu, hv, hHadj, h⟩)
+              · exact Or.inl (Or.inl ⟨v, u, hv, hu, hHadj.symm, h⟩)
+            · have hne : (ι a).val ≠ (ι b).val :=
+                fun h => absurd (ι.injective (Fin.val_injective h)) (G.ne_of_adj hadj)
+              rcases lt_or_gt_of_ne hne with hlt | hgt
+              · exact Or.inl (Or.inr ⟨hadj, hab, hba, hlt⟩)
+              · exact Or.inr (Or.inr ⟨hadj.symm, hba, hab, hgt⟩)
+        consistent := fun a b hdir => by
+          rcases hdir with ⟨u, v, hu, hv, hHadj, _⟩ | ⟨h, _⟩
+          · rw [← hu, ← hv]; exact hmap u v hHadj
+          · exact h }
+    -- Pull back an acyclic `k`-coloring of `O_G` along `f`.
+    obtain ⟨c, hc⟩ := hk O_G
+    refine ⟨fun w => c (f w), fun i w hcycle => hc i (f w) ?_⟩
+    exact Relation.TransGen.lift f
+      (fun a b hab => ⟨hab.1, hab.2.1,
+        Or.inl ⟨a, b, rfl, rfl, O_H.consistent a b hab.2.2, hab.2.2⟩⟩)
+      hcycle
+
+/-- **Induced-subgraph monotonicity** — the structural fact underlying
+    Erdős #761 Question 2: passing to an induced subgraph can only decrease the
+    dichromatic number, `δ(G[s]) ≤ δ(G)`. Immediate from `dichrom_mono_of_embedding`
+    with the (injective) subtype coercion, whose edges are `G`-edges by definition
+    of `induce`. -/
+theorem dichrom_induce_le [Fintype V] [DecidableEq V] (G : SimpleGraph V)
+    [DecidableRel G.Adj] (s : Set V) [Fintype s]
+    [DecidableRel (G.induce s).Adj] :
+    (G.induce s).dichromNumber ≤ G.dichromNumber :=
+  dichrom_mono_of_embedding (G.induce s) G Subtype.val Subtype.val_injective
+    (fun _ _ h => h)
+
 -- ═══════════════════════════════════════════════════════════════════════
 -- MONOTONICITY IN THE COLOR COUNT + sInf CHARACTERIZATIONS
 -- ═══════════════════════════════════════════════════════════════════════
