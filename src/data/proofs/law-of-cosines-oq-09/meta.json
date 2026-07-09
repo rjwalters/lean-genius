@@ -3,6 +3,44 @@
   "title": "Acute–Right–Obtuse Trichotomy from the Law of Cosines",
   "slug": "law-of-cosines-oq-09",
   "description": "Euclid's Elements II.12 and II.13: the Law of Cosines c² = a² + b² - 2ab·cos C makes classifying a triangle's angle a purely algebraic comparison — C is acute, right, or obtuse exactly as a² + b² exceeds, equals, or falls below c². Proved from the sign of cos C on [0, π].",
+  "mainTheorems": [
+    {
+      "name": "angle_acute_iff",
+      "type": "main",
+      "description": "Acute case (Euclid II.13): with a, b > 0, C ∈ [0, π], and the Law of Cosines, the angle C is acute iff c² < a² + b².",
+      "leanType": "(ha : 0 < a) (hb : 0 < b) (hC0 : 0 ≤ C) (hCpi : C ≤ π) (hlc : c ^ 2 = a ^ 2 + b ^ 2 - 2 * a * b * Real.cos C) : C < π / 2 ↔ c ^ 2 < a ^ 2 + b ^ 2"
+    },
+    {
+      "name": "angle_right_iff",
+      "type": "main",
+      "description": "Right case (Pythagoras): under the same hypotheses, C is a right angle iff c² = a² + b². The boundary cos C = 0 of the trichotomy.",
+      "leanType": "(ha : 0 < a) (hb : 0 < b) (hC0 : 0 ≤ C) (hCpi : C ≤ π) (hlc : c ^ 2 = a ^ 2 + b ^ 2 - 2 * a * b * Real.cos C) : C = π / 2 ↔ c ^ 2 = a ^ 2 + b ^ 2"
+    },
+    {
+      "name": "angle_obtuse_iff",
+      "type": "main",
+      "description": "Obtuse case (Euclid II.12): under the same hypotheses, C is obtuse iff c² > a² + b².",
+      "leanType": "(ha : 0 < a) (hb : 0 < b) (hC0 : 0 ≤ C) (hCpi : C ≤ π) (hlc : c ^ 2 = a ^ 2 + b ^ 2 - 2 * a * b * Real.cos C) : π / 2 < C ↔ a ^ 2 + b ^ 2 < c ^ 2"
+    },
+    {
+      "name": "cos_pos_iff_lt",
+      "type": "supporting",
+      "description": "Sign helper (private): on [0, π], cos C > 0 iff C < π/2. Forward via Real.cos_nonpos_of_pi_div_two_le_of_le by contraposition, reverse via Real.cos_pos_of_mem_Ioo.",
+      "leanType": "(hC0 : 0 ≤ C) (hCpi : C ≤ π) : 0 < Real.cos C ↔ C < π / 2"
+    },
+    {
+      "name": "cos_eq_zero_iff_eq",
+      "type": "supporting",
+      "description": "Sign helper (private): on [0, π], cos C = 0 iff C = π/2, from injectivity of cos on [0, π] (Real.strictAntiOn_cos.injOn) and cos(π/2) = 0.",
+      "leanType": "(hC0 : 0 ≤ C) (hCpi : C ≤ π) : Real.cos C = 0 ↔ C = π / 2"
+    },
+    {
+      "name": "cos_neg_iff_gt",
+      "type": "supporting",
+      "description": "Sign helper (private): on [0, π], cos C < 0 iff C > π/2, via Real.cos_neg_of_pi_div_two_lt_of_lt.",
+      "leanType": "(hC0 : 0 ≤ C) (hCpi : C ≤ π) : Real.cos C < 0 ↔ π / 2 < C"
+    }
+  ],
   "meta": {
     "author": "Euclid (c. 300 BCE)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Law_of_cosines",
