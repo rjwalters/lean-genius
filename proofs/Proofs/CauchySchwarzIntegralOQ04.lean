@@ -97,6 +97,44 @@ theorem inner_sq_le_gram (u v : E) :
   rw [hid, mul_pow] at hsq
   exact hsq
 
+/-- **Saturation of the sharp Cauchy–Schwarz (Gram) bound — the minimum-uncertainty
+    condition.**  For *nonzero* centred vectors `u, v`, the Gram inequality
+    `inner_sq_le_gram` is an **equality**
+
+      `(Re⟪u,v⟫)² + (Im⟪u,v⟫)² = ‖u‖²·‖v‖²`
+
+    if and only if `u` and `v` are parallel, i.e. `v = r • u` for some scalar `r ≠ 0`.
+
+    With `u = (A−⟨A⟩)ψ`, `v = (B−⟨B⟩)ψ` this is precisely the equality case of the
+    Schrödinger uncertainty relation `schrodinger_uncertainty`: the states that
+    saturate the bound are the **minimum-uncertainty** (generalized coherent /
+    squeezed) states, characterized by the eigenvalue-type equation
+    `(B−⟨B⟩)ψ = r·(A−⟨A⟩)ψ`.  The Robertson bound `robertson_uncertainty` alone is
+    saturated by the further subclass with `r` purely imaginary (vanishing covariance
+    `Re⟪u,v⟫ = 0`), the classic `(B−⟨B⟩)ψ = iλ(A−⟨A⟩)ψ` condition.
+
+    This is the equality companion to `inner_sq_le_gram`, obtained from Mathlib's
+    Cauchy–Schwarz equality case `norm_inner_eq_norm_iff` after squaring. -/
+theorem gram_eq_iff_parallel {u v : E} (hu : u ≠ 0) (hv : v ≠ 0) :
+    (RCLike.re (inner 𝕜 u v)) ^ 2 + (RCLike.im (inner 𝕜 u v)) ^ 2
+      = ‖u‖ ^ 2 * ‖v‖ ^ 2 ↔ ∃ r : 𝕜, r ≠ 0 ∧ v = r • u := by
+  rw [← norm_inner_eq_norm_iff hu hv]
+  have hnormsq : (RCLike.re (inner 𝕜 u v)) ^ 2 + (RCLike.im (inner 𝕜 u v)) ^ 2
+      = ‖inner 𝕜 u v‖ ^ 2 := by rw [RCLike.norm_sq_eq_def]; ring
+  rw [hnormsq, show ‖u‖ ^ 2 * ‖v‖ ^ 2 = (‖u‖ * ‖v‖) ^ 2 from by ring]
+  constructor
+  · intro h
+    have h0 : (‖inner 𝕜 u v‖ - ‖u‖ * ‖v‖) * (‖inner 𝕜 u v‖ + ‖u‖ * ‖v‖) = 0 := by
+      linear_combination h
+    rcases mul_eq_zero.mp h0 with h1 | h2
+    · linarith
+    · have hn1 : 0 ≤ ‖inner 𝕜 u v‖ := norm_nonneg _
+      have hn2 : 0 ≤ ‖u‖ * ‖v‖ := mul_nonneg (norm_nonneg _) (norm_nonneg _)
+      have hz1 : ‖inner 𝕜 u v‖ = 0 := by linarith
+      have hz2 : ‖u‖ * ‖v‖ = 0 := by linarith
+      linarith
+  · intro h; rw [h]
+
 /-! ## The full Robertson uncertainty relation
 
 The lemmas above are the Cauchy–Schwarz core.  Here we assemble them into the
@@ -275,3 +313,5 @@ theorem re_inner_centred_eq_anticommutator {A B : E →ₗ[𝕜] E} (hA : A.IsSy
   linarith [hre]
 
 end CauchySchwarzIntegralOQ04
+
+#print axioms CauchySchwarzIntegralOQ04.gram_eq_iff_parallel

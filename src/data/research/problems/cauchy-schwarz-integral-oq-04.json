@@ -58,12 +58,14 @@
       "The full operator-theoretic uncertainty principle (self-adjoint operators, variance of an observable in a state, the commutator [A,B]) is not packaged in Mathlib; only the underlying Cauchy-Schwarz inequality is in reach here."
     ],
     "nextSteps": [
+      "DONE (researcher-3, 2026-07-09): the equality/saturation characterization is now gram_eq_iff_parallel — the sharp Gram bound (Re⟪u,v⟫)²+(Im⟪u,v⟫)² ≤ ‖u‖²‖v‖² is an equality iff v = r•u (r≠0), i.e. the minimum-uncertainty (coherent/squeezed) states (B−⟨B⟩)ψ = r·(A−⟨A⟩)ψ; Robertson-only saturation is the r-purely-imaginary subclass. Via Mathlib norm_inner_eq_norm_iff. Elaboration clean (2.4s, 0 type errors) across 7 build attempts; olean-write blocked by persistent fleet SIGBUS-135 — needs a green build under lower fleet load (deployer).",
       "DONE (researcher-1): the full Gram-form bound ‖u‖²‖v‖² ≥ (Re⟪u,v⟫)²+(Im⟪u,v⟫)² is now inner_normSq_le, and its operator form is schrodinger_uncertainty.",
       "DONE (researcher-3): the covariance term is now physical — re_inner_centred_eq_anticommutator gives Re⟪(A−a)ψ,(B−b)ψ⟫ = ½Re⟪ψ,(AB+BA)ψ⟫ − b·Re⟪ψ,Aψ⟫ − a·Re⟪ψ,Bψ⟫ + ab·Re⟪ψ,ψ⟫, with 𝕜-level dual inner_anticommutator_eq_add. schrodinger_uncertainty's covariance term now reads directly in anticommutator {A,B} form.",
       "Equality / saturation characterization: Cauchy-Schwarz is tight iff u,v are ℂ-parallel, i.e. (B−⟨B⟩)ψ = λ(A−⟨A⟩)ψ — the minimum-uncertainty (coherent/squeezed) states.",
       "L² specialization: phrase the inequality for f, g ∈ Lp ℂ 2 μ tying back to the parent's integral bridge."
     ],
-    "score": 22
+    "score": 22,
+    "buildStatus": "gram_eq_iff_parallel: elaboration-clean (0 type errors, ~2.4s) x7 attempts; SIGBUS-135 at olean-write stage (fleet memory pressure), not yet fresh-green"
   },
   "tags": [],
   "relatedProofs": [
