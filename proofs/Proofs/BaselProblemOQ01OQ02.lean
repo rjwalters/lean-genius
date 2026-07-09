@@ -169,6 +169,30 @@ theorem transcendental_ratCast_mul {x : ℝ} (hx : Transcendental ℚ x) {q : �
   rwa [show (q : ℝ) * x * ((q⁻¹ : ℚ) : ℝ) = x from by
     push_cast; rw [mul_right_comm, mul_inv_cancel₀ hqne', one_mul]] at hmul
 
+/-- **Structural ratio identity for even zeta values — axiom-free.**  For `m < n` the
+    quotient of two even zeta values is a *nonzero-rational* multiple of a *positive* even
+    power of π:
+    `ζ(2n)/ζ(2m) = (qₙ · π^(2n)) / (qₘ · π^(2m)) = (qₙ/qₘ) · π^(2(n−m))`,  with `2(n−m) ≥ 2`.
+
+    This is the unconditional skeleton beneath `zeta_even_ratio_transcendental` — it uses
+    only Euler's closed form (`zeta_even_eq_rat_mul_pi_pow`), **no** `hermite_lindemann`.
+    Mathematically it already records the key structural fact that the even zeta values are
+    *multiplicatively π-power-incommensurable over ℚ*: their quotient can never be a mere
+    rational number, because it always carries a leftover nonzero even power of π.
+    Transcendence enters only afterwards, exactly when `π^(2(n−m))` is declared transcendental
+    (mirroring how `zeta_even_eq_rat_mul_pi_pow` isolates the axiom for the single-value case). -/
+theorem zeta_even_ratio_eq_rat_mul_pi_pow (n m : ℕ) (hm : 0 < m) (hmn : m < n) :
+    ∃ q : ℚ, q ≠ 0 ∧
+      (∑' k : ℕ, 1 / (k : ℝ) ^ (2 * n)) / (∑' k : ℕ, 1 / (k : ℝ) ^ (2 * m))
+        = (q : ℝ) * π ^ (2 * n - 2 * m) := by
+  obtain ⟨qn, hqn, hqn_eq⟩ := zeta_even_eq_rat_mul_pi_pow n (by omega)
+  obtain ⟨qm, hqm, hqm_eq⟩ := zeta_even_eq_rat_mul_pi_pow m hm
+  have hπ : (π : ℝ) ≠ 0 := Real.pi_ne_zero
+  have hle : 2 * m ≤ 2 * n := by omega
+  refine ⟨qn / qm, div_ne_zero hqn hqm, ?_⟩
+  rw [hqn_eq, hqm_eq, mul_div_mul_comm, pow_sub₀ π hπ hle]
+  push_cast; ring
+
 /-- **Ratios of distinct even zeta values are transcendental over ℚ.**
 
     For `m < n`,
@@ -182,26 +206,16 @@ theorem transcendental_ratCast_mul {x : ℝ} (hx : Transcendental ℚ x) {q : �
     π-power-incommensurable over ℚ*: no two distinct ones are related by a mere
     rational factor — their quotient always carries a leftover nonzero even power
     of π.  (For `n < m` the ratio is the reciprocal, so the same conclusion holds
-    by symmetry.)
+    by symmetry.)  The nonzero-rational-multiple-of-π-power structure is the
+    axiom-free `zeta_even_ratio_eq_rat_mul_pi_pow`; only the final step uses the axiom.
 
     **Assumption:** `hermite_lindemann` (transcendence of π). -/
 theorem zeta_even_ratio_transcendental (n m : ℕ) (hm : 0 < m) (hmn : m < n) :
     Transcendental ℚ
       ((∑' k : ℕ, 1 / (k : ℝ) ^ (2 * n)) / (∑' k : ℕ, 1 / (k : ℝ) ^ (2 * m))) := by
-  obtain ⟨qn, hqn, hqn_eq⟩ := zeta_even_eq_rat_mul_pi_pow n (by omega)
-  obtain ⟨qm, hqm, hqm_eq⟩ := zeta_even_eq_rat_mul_pi_pow m hm
-  have hπ : (π : ℝ) ≠ 0 := Real.pi_ne_zero
-  -- Rewrite the ratio as `(qn/qm) · π^(2n − 2m)` with `2n − 2m ≥ 1`.
-  have hle : 2 * m ≤ 2 * n := by omega
-  have hratio :
-      (∑' k : ℕ, 1 / (k : ℝ) ^ (2 * n)) / (∑' k : ℕ, 1 / (k : ℝ) ^ (2 * m))
-        = ((qn / qm : ℚ) : ℝ) * π ^ (2 * n - 2 * m) := by
-    rw [hqn_eq, hqm_eq, mul_div_mul_comm, pow_sub₀ π hπ hle]
-    push_cast; ring
+  obtain ⟨q, hq, hratio⟩ := zeta_even_ratio_eq_rat_mul_pi_pow n m hm hmn
   rw [hratio]
-  have hpi : Transcendental ℚ (π ^ (2 * n - 2 * m)) :=
-    pi_transcendental_over_rationals.pow (by omega)
-  exact transcendental_ratCast_mul hpi (div_ne_zero hqn hqm)
+  exact transcendental_ratCast_mul (pi_transcendental_over_rationals.pow (by omega)) hq
 
 /-- **ζ(4)/ζ(2) = π²/15 is transcendental over ℚ** — a concrete distinct-index ratio. -/
 theorem zeta_four_div_zeta_two_transcendental :
