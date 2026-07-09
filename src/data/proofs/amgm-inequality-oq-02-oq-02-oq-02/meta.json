@@ -42,7 +42,8 @@
       "The equality case splits into an easy sufficiency direction (constant ⟹ equality) and a hard necessity direction (equality ⟹ constant). This entry closes the sufficiency direction cleanly and generally.",
       "The whole sufficiency argument reduces to two facts: the closed form eₖ(c,…,c) = C(n,k)·cᵏ and the rpow identity (cᵏ)^(1/k) = c for c ≥ 0.",
       "Working with the parent's exact definitions of elemSymm and maclaurinMean (rather than a restatement) makes the result a drop-in companion to the Maclaurin chain, usable wherever the parent's inequality is applied.",
-      "Maclaurin's means interpolate between the arithmetic mean M₁ = (∑xᵢ)/n and the geometric mean Mₙ = (∏xᵢ)^{1/n}, so the sufficiency direction proved here simultaneously realizes the 'equality holds when all inputs coincide' half of AM–GM and of every intermediate Newton inequality — one constant-input computation covers the whole chain."
+      "Maclaurin's means interpolate between the arithmetic mean M₁ = (∑xᵢ)/n and the geometric mean Mₙ = (∏xᵢ)^{1/n}, so the sufficiency direction proved here simultaneously realizes the 'equality holds when all inputs coincide' half of AM–GM and of every intermediate Newton inequality — one constant-input computation covers the whole chain.",
+      "The non-negativity hypothesis c ≥ 0 is essential, not cosmetic: the collapse Mₖ(c,…,c) = c hinges on the rpow identity (cᵏ)^(1/k) = c, which genuinely fails for c < 0 — e.g. ((−1)²)^(1/2) = 1^(1/2) = 1 ≠ −1. So the equality case is intrinsically tied to the same non-negativity that Maclaurin's inequality itself requires; over signed inputs the Maclaurin mean is not even well-defined as a real rpow."
     ],
     "historicalContext": "Colin Maclaurin stated his mean inequalities in *A Treatise of Algebra* (1748, posthumous), sharpening Newton's inequalities on the elementary symmetric functions of the roots of a polynomial. The equality analysis — that the chain of Maclaurin means is constant exactly when the inputs are equal — is the natural companion to the inequality and mirrors the AM ≥ GM equality case (AM = GM iff all terms equal), which is itself the extreme M₁ = Mₙ instance of this chain."
   },
@@ -141,28 +142,28 @@
       "id": "overview-setup",
       "title": "Overview and setup",
       "startLine": 1,
-      "endLine": 42,
+      "endLine": 43,
       "summary": "Header docstring stating the target: the parent `Proofs.AmgmInequalityOQ02` proves the Maclaurin chain Mₖ(x) ≥ Mₖ₊₁(x) and poses OQ-02 (equality case Mₖ = Mₖ₊₁ ⟺ inputs equal); this file settles the sufficiency (⟸) direction. Imports the parent (reusing its exact `elemSymm` and `maclaurinMean` definitions), opens `Finset Real`, and enters namespace `MaclaurinEquality`."
     },
     {
       "id": "elemsymm-const",
       "title": "Elementary symmetric polynomials on a constant input",
       "startLine": 44,
-      "endLine": 64,
+      "endLine": 65,
       "summary": "`elemSymm_const` computes eₖ(c,…,c) = C(n,k)·cᵏ. Each product over a k-subset is cᵏ (`Finset.prod_const` with the `|s| = k` membership fact from `mem_powersetCard`), and `Finset.card_powersetCard` counts the C(n,k) subsets; `nsmul_eq_mul` converts the constant sum to the product."
     },
     {
       "id": "maclaurinmean-const",
       "title": "Maclaurin means on a constant input",
       "startLine": 66,
-      "endLine": 88,
+      "endLine": 89,
       "summary": "`maclaurinMean_const` shows Mₖ(c,…,c) = c for c ≥ 0 and 1 ≤ k ≤ n. After substituting `elemSymm_const`, the factor C(n,k) cancels (`div_self`, positive by `Nat.choose_pos` for k ≤ n), leaving cᵏ; then (cᵏ)^(1/k) = c via `Real.rpow_natCast`, `Real.rpow_mul` (needs c ≥ 0), and `div_self` on k ≠ 0."
     },
     {
       "id": "chain-equality",
       "title": "Equality of the Maclaurin chain",
       "startLine": 90,
-      "endLine": 104,
+      "endLine": 105,
       "summary": "`maclaurin_eq_of_const` (consecutive step Mₖ = Mₖ₊₁) and `maclaurin_all_eq_of_const` (every pair of means Mⱼ = Mₖ) both rewrite each mean to c via `maclaurinMean_const`, collapsing the whole chain M₁ = ⋯ = Mₙ = c to a single value with no induction along the chain."
     },
     {
