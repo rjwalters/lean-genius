@@ -123,7 +123,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Formalizes the Cayley–Menger generalization of Heron's formula as exact polynomial identities in the squared edge lengths: cmDet3 = −4·(2·Area)² (so 16·Area² = −cmDet3, Heron) for a triangle, and cmDet4 = 8·(6·V)² (so 288·V² = cmDet4) for a tetrahedron. Realizability (cmDet4 ≥ 0) and the coplanarity degeneracy criterion are included. 6 theorems, 6 definitions, 0 axioms, 0 sorries.",
+    "summary": "Formalizes the Cayley–Menger generalization of Heron's formula as exact polynomial identities in the squared edge lengths: cmDet3 = −4·(2·Area)² (so 16·Area² = −cmDet3, Heron) for a triangle, and cmDet4 = 8·(6·V)² (so 288·V² = cmDet4) for a tetrahedron. Realizability (cmDet4 ≥ 0) and the coplanarity degeneracy criterion are included. 6 theorems, 8 definitions, 0 axioms, 0 sorries.",
     "implications": "The Cayley–Menger determinant is the foundation of distance geometry: it expresses Euclidean content purely in terms of pairwise distances and characterizes when a distance matrix is realizable. The same border-of-ones determinant pattern extends to every dimension, and the coplanarity criterion is the rank/degeneracy test underlying embeddings, molecular conformation, and multidimensional scaling.",
     "openQuestions": [
       "Formalize the general n-dimensional Cayley–Menger identity (−1)^(n+1)·2ⁿ·(n!)²·V² = det, rather than the n=2 and n=3 cases separately.",

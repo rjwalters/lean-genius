@@ -113,7 +113,7 @@
     }
   ],
   "conclusion": {
-    "summary": "6 theorems, 0 definitions, 0 sorries, 0 axioms, no native_decide. The number of length-k arithmetic progressions fitting in [n] is computed exactly as the triangular sum ∑_{d=1}^{n}(n - (k-1)d), and a telescoping-of-squares bound collapses it to 2(k-1)·|family| ≤ n² — at most n²/(2(k-1)) APs, twice as sharp as the base entry's open question asked. Feeding this through the verified Property B engine widens the van der Waerden lower bound's admissible range to n² < 2(k-1)·2^(k-1), giving W(k) ≳ √(2(k-1))·2^((k-1)/2).",
+    "summary": "7 theorems, 0 definitions, 0 sorries, 0 axioms, no native_decide. The number of length-k arithmetic progressions fitting in [n] is computed exactly as the triangular sum ∑_{d=1}^{n}(n - (k-1)d), and a telescoping-of-squares bound collapses it to 2(k-1)·|family| ≤ n² — at most n²/(2(k-1)) APs, twice as sharp as the base entry's open question asked. Feeding this through the verified Property B engine widens the van der Waerden lower bound's admissible range to n² < 2(k-1)·2^(k-1), giving W(k) ≳ √(2(k-1))·2^((k-1)/2).",
     "implications": "Resolves the base entry's open question oq-01 (sharpen the AP count to ~n²/(k-1)) and improves on it by a factor of 2 with an exact count. Demonstrates that the loose n² in the first-moment van der Waerden bound is genuinely improvable inside Lean by elementary lattice-point counting, and that the verified Property B engine accepts the sharper count unchanged.",
     "openQuestions": [
       "Track the lower-order term: vdwFilter_card_eq_sum is an equality, so the exact threshold (including the (N-cm)² remainder dropped in two_mul_sum_sq_le) could be stated, pinning the optimal constant rather than the ≤ n² bound.",

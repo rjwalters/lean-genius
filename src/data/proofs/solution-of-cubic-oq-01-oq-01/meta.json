@@ -125,7 +125,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Fully verified (0 sorries, 0 axioms) formalization of the general cubic discriminant Δ = 18abcd − 4b³d + b²c² − 4ac³ − 27a²d², its transformation Δ = a⁴·(−4p³ − 27q²) under the parent's Tschirnhaus shift, the bridge Δ = −108·a⁴·(q²/4 + p³/27) to the parent's Cardano discriminant, the shift-invariance of the repeated-root locus, and the symmetric root form a⁴·∏(xᵢ−xⱼ)² with the repeated-root criterion. 201 lines, 5 theorems, 2 definitions.",
+    "summary": "Fully verified (0 sorries, 0 axioms) formalization of the general cubic discriminant Δ = 18abcd − 4b³d + b²c² − 4ac³ − 27a²d², its transformation Δ = a⁴·(−4p³ − 27q²) under the parent's Tschirnhaus shift, the bridge Δ = −108·a⁴·(q²/4 + p³/27) to the parent's Cardano discriminant, the shift-invariance of the repeated-root locus, and the symmetric root form a⁴·∏(xᵢ−xⱼ)² with the repeated-root criterion. 201 lines, 6 theorems, 2 definitions.",
     "implications": "This closes the open question raised by the parent OQ-01: the gallery now has the general-cubic discriminant in coefficient form, tied both to the depressed discriminant and to Cardano's radicand. The identity Δ = a⁴·(monic discriminant) is the degree-3 instance of two general phenomena — translation invariance and a^(2n−2) scaling of the discriminant — and the root form connects to the splitting analysis in the sibling depressed-discriminant entry. Over ℝ the sign of Δ would further separate the three-real-roots and casus-irreducibilis regimes.",
     "openQuestions": [
       "Prove the sign trichotomy over ℝ: Δ > 0 ⟺ three distinct real roots, Δ < 0 ⟺ one real and two conjugate complex roots, connecting to the casus-irreducibilis sibling entry.",

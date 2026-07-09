@@ -119,7 +119,7 @@
     ]
   },
   "conclusion": {
-    "summary": "A self-contained, 0-axiom, 0-sorry formalization (237 lines, 17 theorems, 3 definitions) proving the classical structure theorem for the Markov equation: the positive solutions form a tree rooted at (1,1,1), with every triple reachable by Vieta jumping and transpositions. The descent inequality and the Vieta-jump involution are proved from scratch over ℤ; nothing is assumed beyond Mathlib's order and ring infrastructure.",
+    "summary": "A self-contained, 0-axiom, 0-sorry formalization (237 lines, 21 theorems, 2 definitions) proving the classical structure theorem for the Markov equation: the positive solutions form a tree rooted at (1,1,1), with every triple reachable by Vieta jumping and transpositions. The descent inequality and the Vieta-jump involution are proved from scratch over ℤ; nothing is assumed beyond Mathlib's order and ring infrastructure.",
     "implications": "The tree structure is the entry point to Markov theory: the Markov numbers it generates form the discrete part of the Lagrange spectrum below 3, and the still-open Markov uniqueness conjecture asks whether each Markov number determines its triple uniquely. The descent technique here (Vieta jumping) is the same method used in olympiad-famous problems and in the arithmetic of other ternary Diophantine equations.",
     "openQuestions": [
       "Markov uniqueness conjecture: is every Markov number the largest coordinate of exactly one Markov triple? This remains open and is not addressed here.",

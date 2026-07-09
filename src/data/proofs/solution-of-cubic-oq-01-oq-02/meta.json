@@ -126,7 +126,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Fully verified (0 sorries, 0 axioms) formalization of the real cubic discriminant test: three distinct real roots ⟹ Δ > 0, one real root and a non-real conjugate pair ⟹ Δ < 0, a repeated real root ⟹ Δ = 0. The all-real case is a positivity argument on the root form Δ = a⁴·∏(xᵢ−xⱼ)²; the conjugate-pair case collapses to the real polynomial identity Δ = −4a⁴n²((r−m)²+n²)², with a complex-root bridge certifying the parametrization. 228 lines, 8 theorems, 1 definition.",
+    "summary": "Fully verified (0 sorries, 0 axioms) formalization of the real cubic discriminant test: three distinct real roots ⟹ Δ > 0, one real root and a non-real conjugate pair ⟹ Δ < 0, a repeated real root ⟹ Δ = 0. The all-real case is a positivity argument on the root form Δ = a⁴·∏(xᵢ−xⱼ)²; the conjugate-pair case collapses to the real polynomial identity Δ = −4a⁴n²((r−m)²+n²)², with a complex-root bridge certifying the parametrization. 228 lines, 9 theorems, 1 definition.",
     "implications": "This answers the sign-trichotomy open question raised by the sibling discriminant entry OQ-01-OQ-01, completing the gallery's account of the cubic discriminant: the algebraic invariant over ℂ (sibling) and its real sign classification (here). It pins down the casus irreducibilis boundary (Δ > 0 ⟺ three real roots) at which Cardano's radicals are forced complex.",
     "openQuestions": [
       "Formalize the exhaustiveness step explicitly: every real cubic has either three real roots or one real root and a conjugate pair, upgrading the forward sign implications to a single decidable ⟺ classification.",

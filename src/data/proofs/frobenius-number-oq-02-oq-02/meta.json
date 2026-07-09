@@ -120,7 +120,7 @@
     ]
   },
   "conclusion": {
-    "summary": "Formalizes the combinatorial Gorenstein criterion for symmetric numerical semigroups. Abstractly: for any decidable predicate whose gap involution z ↦ F − z is symmetric on [0,F], exactly half of {0,…,F} are gaps (2·#gaps = F + 1), proved by matching the two halves via Finset.card_le_card_of_injOn. Concretely: the two-generator semigroup ⟨a,b⟩ is symmetric on its whole window (extending the parent's involution across n = 0 and n = g), so 2·#{non-representable n ≤ g} = g + 1 and — by Kunz's theorem — k[t^a,t^b] is Gorenstein. 6 theorems, 3 definitions, 162 lines, 0 axioms, 0 sorries.",
+    "summary": "Formalizes the combinatorial Gorenstein criterion for symmetric numerical semigroups. Abstractly: for any decidable predicate whose gap involution z ↦ F − z is symmetric on [0,F], exactly half of {0,…,F} are gaps (2·#gaps = F + 1), proved by matching the two halves via Finset.card_le_card_of_injOn. Concretely: the two-generator semigroup ⟨a,b⟩ is symmetric on its whole window (extending the parent's involution across n = 0 and n = g), so 2·#{non-representable n ≤ g} = g + 1 and — by Kunz's theorem — k[t^a,t^b] is Gorenstein. 8 theorems, 3 definitions, 162 lines, 0 axioms, 0 sorries.",
     "implications": [
       "Bridges the parent's representability involution to the numerical Gorenstein/type-one criterion, the combinatorial content of Kunz's duality.",
       "Provides a reusable abstract lemma: any numerical semigroup with a symmetric gap involution has genus (F+1)/2, applicable beyond two generators once symmetry is established.",

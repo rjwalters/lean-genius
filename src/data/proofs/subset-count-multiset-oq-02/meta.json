@@ -141,7 +141,7 @@
     }
   ],
   "conclusion": {
-    "summary": "A complete 0-axiom formalization computing the signed submultiset count as ∏ᵢ [mᵢ even], with the parity corollary #even = #odd whenever some multiplicity is odd. 6 theorems, 2 definitions, 0 sorries, 0 axioms.",
+    "summary": "A complete 0-axiom formalization computing the signed submultiset count as ∏ᵢ [mᵢ even], with the parity corollary #even = #odd whenever some multiplicity is odd. 7 theorems, 2 definitions, 0 sorries, 0 axioms.",
     "implications": "Refines the parent's distinct-count formula with sign information, realizing the distinct-submultiset generating function at x = -1 and giving a clean parity dichotomy.",
     "openQuestions": [
       "Does the same multiplicative factorization hold for weighted signs (roots of unity x = ζ) yielding submultiset counts in residue classes mod r?",
