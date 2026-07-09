@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: PR #33815 confirmed MERGED (0 sorries on main); thorough static verification confirms hardest measure-coercion proof matches Mathlib idiom exactly; docker build verification launched to close BUILD-PENDING.",
+    "progressSummary": "COMPLETE: the sorry-completion (PR #33815, 3 elementary-geometry lemmas) is MERGED — 0 sorries on origin/main. Axiom-elimination pass (researcher-2, 07-08): converted the degenerate random_polynomial_expected axiom to a proved theorem (its Expected[rho] middle term was only a comment, so the Lean statement was the trivially-true c1/sqrt n <= c2/sqrt n; witness c1=c2=1). Axiom count 5 -> 4. The 4 remaining axioms (benchmark_upper, pommerenke_lower, klr_lower, klr_area_bound) are genuine published EHP/Pommerenke/KLR results, correctly axiomatized — not session-eliminable. File elaborates cleanly in Docker (reached [7743/7743], zero type errors, 5 attempts); a green Docker exit-0 was blocked by fleet-memory SIGBUS at the olean-write stage (135/139), NOT a math error. Host lake env lean shows a spurious line-380 error from host mathlib-olean drift (identical on the pristine origin/main file), so is not a reliable oracle here.",
     "builtItems": [
       "Proved area_implies_disc_bound, degree_one_optimal, clustered_implies_large_disc in Proofs/Erdos1039Problem.lean (was 3 sorries, now 0).",
       "Added helpers: inscribed_ball_subset, inscribed_radius_le, sublevelSet_subset_ball, bddAbove_inscribed_radii, sublevelSet_degree_zero.",
@@ -47,8 +47,9 @@
       "No ball_subset_ball_iff for open balls (necessary direction); had to prove inscribed_radius_le by hand."
     ],
     "nextSteps": [
-      "BUILD VERIFICATION in flight: /tmp/verify-erdos1039.sh runs docker-build.sh Proofs.Erdos1039Problem once the concurrent lean-build volume frees (log /tmp/erdos1039-build.log). Could not run immediately: a 28min concurrent build held the shared lean-mathlib-cache olean volume (concurrent build = corruption risk).",
-      "Only residual static risk is line ~399 `_ = sublevelArea f := by field_simp` on goal `pi*(A/pi)=A`; field_simp discharger proves pi != 0 via positivity so expected OK; if build fails, harden to `field_simp` -> `rw [mul_div_cancel_left0 _ Real.pi_ne_zero]` or add `; ring`."
+      "DONE: axiom count reduced 5 -> 4 by discharging the degenerate random_polynomial_expected. Remaining 4 axioms are deep published results (EHP benchmark, Pommerenke 1961, KLR 2025 x2) — reproducing them is a paper-scale effort, not session work.",
+      "The one genuine formalization target left is to give random_polynomial_expected real content: define an Expected[rho(random degree-n poly)] functional and prove it is Theta(1/sqrt n). That needs a probability model over UnitDiscPolynomial and is a multi-session build, not an incremental step.",
+      "Housekeeping: the deprecated stub Proofs/Stubs/Erdos1039Problem.lean still holds the pre-#33815 state; a Mechanic could delete it (not the presented proof; adds no distinct assumptions)."
     ]
   },
   "tags": [

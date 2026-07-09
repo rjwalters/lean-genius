@@ -22,9 +22,9 @@
     "erdosUrl": "https://erdosproblems.com/1039",
     "erdosProblemStatus": "open",
     "relatedProblems": [],
-    "axiomCount": 5,
-    "lineCount": 533,
-    "assumptions": "5 axioms, all genuine published research results the proof correctly leaves unformalized (not overclaimed): benchmark_upper (Erdos-Herzog-Piranian benchmark rho(z^n-1) <= pi/(2n)), pommerenke_lower (Pommerenke 1961, rho >= 1/(2en^2)), klr_lower and klr_area_bound (Krishnapur-Lundberg-Ramachandran 2025, rho >> 1/(n*sqrt(log n))), and random_polynomial_expected. Formalizing any of these would require reproducing the source papers, so they are stated as axioms. The three elementary-geometry lemmas (area_implies_disc_bound, degree_one_optimal, clustered_implies_large_disc) were completed in PR #33815 and the main file Proofs/Erdos1039Problem.lean now has 0 sorries (533 lines). The deprecated stub Proofs/Stubs/Erdos1039Problem.lean still holds the pre-#33815 state (3 sorries, the same 5 axioms) and is no longer byte-identical to the main file; it is not the presented proof (proofRepoPath is the main file) and adds no distinct assumptions. Note: random_polynomial_expected is currently degenerate as stated (the intended Expected[rho] middle term is a comment, so the Lean statement reduces to the trivial c1/sqrt(n) <= c2/sqrt(n)); a future session could either encode an Expected functional or convert it to a proved trivial lemma.",
+    "axiomCount": 4,
+    "lineCount": 543,
+    "assumptions": "4 axioms, all genuine published research results the proof correctly leaves unformalized (not overclaimed): benchmark_upper (Erdos-Herzog-Piranian benchmark rho(z^n-1) <= pi/(2n)), pommerenke_lower (Pommerenke 1961, rho >= 1/(2en^2)), and klr_lower + klr_area_bound (Krishnapur-Lundberg-Ramachandran 2025, rho >> 1/(n*sqrt(log n))). Formalizing any of these would require reproducing the source papers, so they are stated as axioms. The three elementary-geometry lemmas (area_implies_disc_bound, degree_one_optimal, clustered_implies_large_disc) were completed in PR #33815 and the main file Proofs/Erdos1039Problem.lean has 0 sorries (543 lines). UPDATE: the former 5th axiom random_polynomial_expected was DEGENERATE — its intended Expected[rho] middle term was only a comment, so the Lean proposition collapsed to the trivially-true c1/sqrt(n) <= c2/sqrt(n); it has been converted to a proved theorem (witness c1=c2=1), removing a spurious entry from the axiom list (5 -> 4). The real Theta(1/sqrt n) expected-order claim needs an Expected functional and remains unformalized. The deprecated stub Proofs/Stubs/Erdos1039Problem.lean still holds the pre-#33815 state (3 sorries, the original 5 axioms) and is not the presented proof (proofRepoPath is the main file); it adds no distinct assumptions.",
     "mathlib_version": "4.29.0",
     "mathlibDependencies": [
       {
@@ -57,9 +57,9 @@
       "pommerenke_lower axiom: ρ(f) ≥ 1/(2en²) for any UnitDiscPolynomial (Pommerenke 1961)",
       "klr_lower axiom: ρ(f) ≥ c/(n√log n) (Krishnapur-Lundberg-Ramachandran 2025)",
       "klr_area_bound axiom: sublevelArea ≥ c/n² (area lower bound driving the KLR result)",
-      "random_polynomial_expected axiom: expected inscribed disc radius for random roots ≫ 1/n"
+      "random_polynomial_expected: now a proved theorem (degenerate as stated — c₁/√n ≤ c₂/√n, witness c₁=c₂=1); the genuine Θ(1/√n) expected-order claim needs an Expected functional and is unformalized"
     ],
-    "theoremCount": 14,
+    "theoremCount": 15,
     "definitionCount": 17,
     "additionalFiles": [
       "Proofs/Erdos1039Aristotle.lean",
@@ -242,9 +242,9 @@
     ],
     "opens": [],
     "namespace": "Erdos1039",
-    "lineCount": 533,
-    "axiomCount": 5,
-    "theoremCount": 14,
+    "lineCount": 543,
+    "axiomCount": 4,
+    "theoremCount": 15,
     "definitionCount": 17,
     "path": "Proofs/Erdos1039Problem.lean",
     "sorries": 0,
