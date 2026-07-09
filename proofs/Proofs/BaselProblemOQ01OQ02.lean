@@ -50,6 +50,29 @@ open Real
 
 namespace BaselProblemOQ01OQ02
 
+/-- **Euler's structure theorem for even zeta values — axiom-free.**  Every even zeta value is a
+    *nonzero rational* multiple of `π^(2n)`:  `∑' k, 1/k^(2n) = qₙ · π^(2n)` with `qₙ ∈ ℚ∖{0}`.
+
+    This is the axiom-free skeleton beneath the irrationality/transcendence results below: it uses
+    only Mathlib's Bernoulli closed form (`hasSum_zeta_nat`) together with strict positivity of the
+    series — **no** `hermite_lindemann`.  The single remaining step, from "rational multiple of
+    `π^(2n)`" to "irrational", is *exactly* where transcendence of π enters.  So this lemma marks
+    the sharp boundary between what is unconditional (the rational-multiple structure) and what
+    requires the deep transcendence input (irrationality of the value itself). -/
+theorem zeta_even_eq_rat_mul_pi_pow (n : ℕ) (hn : 0 < n) :
+    ∃ q : ℚ, q ≠ 0 ∧ (∑' k : ℕ, 1 / (k : ℝ) ^ (2 * n)) = (q : ℝ) * π ^ (2 * n) := by
+  have hS := hasSum_zeta_nat (k := n) hn.ne'
+  obtain ⟨q, hq⟩ :
+      ∃ q : ℚ, (∑' k : ℕ, 1 / (k : ℝ) ^ (2 * n)) = (q : ℝ) * π ^ (2 * n) := by
+    refine ⟨(-1) ^ (n + 1) * 2 ^ (2 * n - 1) * bernoulli (2 * n) / (2 * n).factorial, ?_⟩
+    rw [hS.tsum_eq]; push_cast; ring
+  -- The series is strictly positive (its k = 1 term is 1), forcing q ≠ 0.
+  have hpos : 0 < ∑' k : ℕ, 1 / (k : ℝ) ^ (2 * n) :=
+    hS.summable.tsum_pos (fun m => by positivity) 1 (by norm_num)
+  have hqne : q ≠ 0 := by
+    intro h0; rw [hq, h0] at hpos; simp at hpos
+  exact ⟨q, hqne, hq⟩
+
 /-- **Powers of π are irrational** (`m ≥ 1`).
 
     Mathlib provides `irrational_pi` but nothing about `π^m` for `m ≥ 2`
@@ -74,23 +97,11 @@ theorem pi_pow_irrational (m : ℕ) (hm : 0 < m) : Irrational (π ^ m) :=
     **Assumption:** `hermite_lindemann` (transcendence of π). -/
 theorem zeta_even_irrational (n : ℕ) (hn : 0 < n) :
     Irrational (∑' k : ℕ, 1 / (k : ℝ) ^ (2 * n)) := by
-  -- Euler's closed form: the sum is a rational multiple of π^(2n).
-  have hS := hasSum_zeta_nat (k := n) hn.ne'
-  obtain ⟨q, hq⟩ :
-      ∃ q : ℚ, (∑' k : ℕ, 1 / (k : ℝ) ^ (2 * n)) = (q : ℝ) * π ^ (2 * n) := by
-    refine ⟨(-1) ^ (n + 1) * 2 ^ (2 * n - 1) * bernoulli (2 * n) / (2 * n).factorial, ?_⟩
-    rw [hS.tsum_eq]; push_cast; ring
-  -- The series is strictly positive (its k = 1 term is 1), forcing q ≠ 0.
-  have hpos : 0 < ∑' k : ℕ, 1 / (k : ℝ) ^ (2 * n) :=
-    hS.summable.tsum_pos (fun m => by positivity) 1 (by norm_num)
-  have hqne : q ≠ 0 := by
-    intro h0
-    rw [hq, h0] at hpos
-    simp at hpos
-  -- π^(2n) is irrational; scaling by the nonzero rational q keeps it irrational.
-  have hpi : Irrational (π ^ (2 * n)) := pi_pow_irrational (2 * n) (by omega)
+  -- Euler's axiom-free structure: the sum is a nonzero-rational multiple of π^(2n).
+  obtain ⟨q, hqne, hq⟩ := zeta_even_eq_rat_mul_pi_pow n hn
   rw [hq]
-  exact hpi.ratCast_mul hqne
+  -- π^(2n) is irrational; scaling by the nonzero rational q keeps it irrational.
+  exact (pi_pow_irrational (2 * n) (by omega)).ratCast_mul hqne
 
 /-- **ζ(2) = ∑' k, 1/k² is irrational** (the classical Basel value). -/
 theorem zeta_two_irrational : Irrational (∑' k : ℕ, 1 / (k : ℝ) ^ 2) := by
@@ -121,16 +132,8 @@ theorem zeta_six_irrational : Irrational (∑' k : ℕ, 1 / (k : ℝ) ^ 6) := by
     **Assumption:** `hermite_lindemann` (transcendence of π). -/
 theorem zeta_even_transcendental (n : ℕ) (hn : 0 < n) :
     Transcendental ℚ (∑' k : ℕ, 1 / (k : ℝ) ^ (2 * n)) := by
-  have hS := hasSum_zeta_nat (k := n) hn.ne'
-  -- Euler's closed form: the sum is a nonzero-rational multiple of π^(2n).
-  obtain ⟨q, hq⟩ :
-      ∃ q : ℚ, (∑' k : ℕ, 1 / (k : ℝ) ^ (2 * n)) = (q : ℝ) * π ^ (2 * n) := by
-    refine ⟨(-1) ^ (n + 1) * 2 ^ (2 * n - 1) * bernoulli (2 * n) / (2 * n).factorial, ?_⟩
-    rw [hS.tsum_eq]; push_cast; ring
-  have hpos : 0 < ∑' k : ℕ, 1 / (k : ℝ) ^ (2 * n) :=
-    hS.summable.tsum_pos (fun m => by positivity) 1 (by norm_num)
-  have hqne : q ≠ 0 := by
-    intro h0; rw [hq, h0] at hpos; simp at hpos
+  -- Euler's axiom-free structure: the sum is a nonzero-rational multiple of π^(2n).
+  obtain ⟨q, hqne, hq⟩ := zeta_even_eq_rat_mul_pi_pow n hn
   have hqne' : (q : ℝ) ≠ 0 := by exact_mod_cast hqne
   -- π^(2n) is transcendental over ℚ.
   have hpi : Transcendental ℚ (π ^ (2 * n)) :=
