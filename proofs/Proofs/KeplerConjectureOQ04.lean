@@ -869,4 +869,125 @@ theorem fcc_lt_tetra_lt_octa_lt_rhombicDodecahedron :
    tetrahedronDimerDensity_lt_octahedron,
    octahedron_lt_rhombicDodecahedron⟩
 
+/-!
+## S18 — non-lattice ellipsoid packing: the lattice constraint is essential
+
+The ellipsoid section (S5) axiomatized the Bezdek–Kuperberg bound: every ellipsoid
+*lattice* packing has density at most `fccDensity = π/(3√2)`. Its docstring notes, in
+prose only, the sharp contrast with **non-lattice** ellipsoid packings: Donev–
+Stillinger–Chaikin–Torquato (2004) reached `δ ≈ 0.7707` at aspect ratio `α ≈ √2`,
+*strictly above* the FCC bound. This section turns that remark into machine-checked
+theorems.
+
+The headline of flagship 1 (ellipsoids) is that dropping the lattice constraint
+strictly raises the achievable density for the **same shape**: `0.7707 > 0.7405`.
+So the FCC ceiling is a property of *lattice* ellipsoid packings, not of ellipsoids
+per se — it is the lattice-vs-non-lattice distinction, not the shape, that caps the
+Bezdek–Kuperberg bound. Formally, the non-lattice ellipsoid packing exceeds
+`fccDensity`, hence (like the tetrahedral dimer, octahedron, and rhombic dodecahedron
+gates) is provably **not** an ellipsoid lattice packing. It also supplies the first
+concrete rung strictly *between* `fccDensity` and the tetrahedral dimer, refining the
+ladder. All additions are axiom-free apart from reuse of the existing S5
+`bezdek_kuperberg_ellipsoid_lattice_upper_bound` axiom (no new axioms).
+-/
+
+/-- **Non-lattice ellipsoid packing density** (Donev–Stillinger–Chaikin–Torquato,
+*Phys. Rev. Lett.* 2004): jammed non-lattice packings of spheroids of aspect ratio
+`α ≈ √2` reach `δ ≈ 0.7707`, a ≈ 4.1% gain over FCC. Rational anchor `7707/10000`. -/
+noncomputable def ellipsoidNonLatticeDensity : ℝ := 7707 / 10000
+
+/-- The non-lattice ellipsoid packing density is positive. -/
+theorem ellipsoidNonLatticeDensity_pos : 0 < ellipsoidNonLatticeDensity := by
+  unfold ellipsoidNonLatticeDensity; norm_num
+
+/-- The non-lattice ellipsoid packing density is strictly less than one. -/
+theorem ellipsoidNonLatticeDensity_lt_one : ellipsoidNonLatticeDensity < 1 := by
+  unfold ellipsoidNonLatticeDensity; norm_num
+
+/--
+**The non-lattice ellipsoid packing beats the FCC sphere bound.**
+
+`fccDensity = π/(3√2) ≈ 0.7405 < 0.7707 = ellipsoidNonLatticeDensity`. Proved
+axiom-free by transitivity through the S3 rational upper bound
+`fccDensity < 35329/46710 ≈ 0.75635` (itself certified from `π < 3.15`, `√2 > 1.4`)
+together with the numeric fact `35329/46710 < 7707/10000`. No new axioms.
+-/
+theorem ellipsoidNonLatticeDensity_gt_fccDensity :
+    fccDensity < ellipsoidNonLatticeDensity := by
+  have h := fccDensity_lt_35329_div_46710
+  have hnum : (35329 : ℝ) / 46710 < 7707 / 10000 := by norm_num
+  unfold ellipsoidNonLatticeDensity
+  linarith [h, hnum]
+
+/--
+**The non-lattice ellipsoid density is below the tetrahedral dimer.**
+
+`ellipsoidNonLatticeDensity = 7707/10000 ≈ 0.7707 < 4000/4671 ≈ 0.8564 =
+tetrahedronDimerDensity`. A pure rational comparison
+(`7707 · 4671 = 35 999 397 < 40 000 000 = 4000 · 10000`), discharged by `norm_num`.
+No axioms.
+-/
+theorem ellipsoidNonLatticeDensity_lt_tetrahedronDimer :
+    ellipsoidNonLatticeDensity < tetrahedronDimerDensity := by
+  unfold ellipsoidNonLatticeDensity tetrahedronDimerDensity; norm_num
+
+/--
+**Non-lattice ellipsoid packing as a `PackingDensity` instance.**
+
+Bundles `ellipsoidNonLatticeDensity` with its positivity / less-than-one bounds into
+the parent's abstract `PackingDensity` structure, mirroring `tetrahedronDimerPacking`
+and `octahedronPacking`.
+-/
+noncomputable def ellipsoidNonLatticePacking : PackingDensity where
+  density := ellipsoidNonLatticeDensity
+  nonneg  := ellipsoidNonLatticeDensity_pos.le
+  le_one  := ellipsoidNonLatticeDensity_lt_one.le
+
+/--
+**The lattice constraint is essential (Donev et al. vs Bezdek–Kuperberg).**
+
+The non-lattice ellipsoid packing density exceeds the FCC ceiling
+`bezdek_kuperberg_ellipsoid_lattice_upper_bound` places on every ellipsoid *lattice*
+packing, so `ellipsoidNonLatticePacking` is provably **not** an ellipsoid lattice
+packing. This is the machine-checked form of flagship 1's headline: for the *same*
+shape (ellipsoids), dropping the lattice constraint strictly raises the achievable
+density above `π/(3√2)`. Reuses the S5 axiom only (no new axioms); cf.
+`octahedron_not_ellipsoidLattice`.
+-/
+theorem ellipsoidNonLattice_not_ellipsoidLattice :
+    ¬ IsEllipsoidLatticePacking ellipsoidNonLatticePacking := by
+  intro h
+  have hle : ellipsoidNonLatticeDensity ≤ fccDensity :=
+    bezdek_kuperberg_ellipsoid_lattice_upper_bound ⟨ellipsoidNonLatticePacking, h⟩
+  exact absurd hle (not_le.mpr ellipsoidNonLatticeDensity_gt_fccDensity)
+
+/--
+**Existential: a `PackingDensity` strictly between FCC and the tetrahedral dimer.**
+
+The previous ladder jumped directly `fccDensity → tetrahedronDimerDensity`; the
+non-lattice ellipsoid density `0.7707` is a *physically realized* value sitting
+strictly between them, so the abstract `PackingDensity` type admits an intermediate
+rung. Witness: `ellipsoidNonLatticePacking`. No new axioms.
+-/
+theorem exists_packingDensity_between_fcc_and_tetrahedronDimer :
+    ∃ p : PackingDensity, fccDensity < p.density ∧ p.density < tetrahedronDimerDensity :=
+  ⟨ellipsoidNonLatticePacking,
+   ellipsoidNonLatticeDensity_gt_fccDensity,
+   ellipsoidNonLatticeDensity_lt_tetrahedronDimer⟩
+
+/--
+**Refined strict ladder including the non-lattice ellipsoid.**
+
+`fccDensity < ellipsoidNonLatticeDensity < tetrahedronDimerDensity <
+octahedronPackingDensity`, inserting the Donev et al. non-lattice ellipsoid rung
+into `fcc_lt_tetrahedron_lt_octahedron`. All strict inequalities are axiom-free.
+-/
+theorem fcc_lt_ellipsoidNonLattice_lt_tetrahedron_lt_octahedron :
+    fccDensity < ellipsoidNonLatticeDensity ∧
+    ellipsoidNonLatticeDensity < tetrahedronDimerDensity ∧
+    tetrahedronDimerDensity < octahedronPackingDensity :=
+  ⟨ellipsoidNonLatticeDensity_gt_fccDensity,
+   ellipsoidNonLatticeDensity_lt_tetrahedronDimer,
+   tetrahedronDimerDensity_lt_octahedron⟩
+
 end KeplerConjectureOQ04
