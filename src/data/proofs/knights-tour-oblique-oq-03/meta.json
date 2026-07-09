@@ -98,25 +98,25 @@
   "mainTheorems": [
     {
       "name": "reverseTour_applyD4Tour",
-      "type": "theorem",
+      "type": "main",
       "description": "reverseTour (applyD4Tour g t) = applyD4Tour g (reverseTour t): time-reversal commutes with every element of the dihedral board group D₄.",
       "leanType": "(g : Bool × Fin 4) (t : ClosedTour) : reverseTour (applyD4Tour g t) = applyD4Tour g (reverseTour t)"
     },
     {
       "name": "d4_reverse_leftInverse",
-      "type": "theorem",
+      "type": "supporting",
       "description": "reverseTour (applyD4Tour (d4Inv g) (reverseTour (applyD4Tour g t))) = t: the composite reversal-and-D₄ symmetry has an explicit two-sided-style inverse, from commutation + involutivity + the D₄ inverse.",
       "leanType": "(g : Bool × Fin 4) (t : ClosedTour) : reverseTour (applyD4Tour (d4Inv g) (reverseTour (applyD4Tour g t))) = t"
     },
     {
       "name": "d4_reverse_injective",
-      "type": "theorem",
+      "type": "supporting",
       "description": "Function.Injective (fun t => reverseTour (applyD4Tour g t)): each composite symmetry is injective, so D₄ together with reversal acts faithfully on ClosedTour (order-16 D₄ × ℤ/2).",
       "leanType": "(g : Bool × Fin 4) : Function.Injective (fun t => reverseTour (applyD4Tour g t))"
     },
     {
       "name": "reverseTour_applyD4Tour_orbit",
-      "type": "theorem",
+      "type": "supporting",
       "description": "∃ h, reverseTour (applyD4Tour g t) = applyD4Tour h (reverseTour t): reversal maps the D₄-orbit of t onto the D₄-orbit of reverseTour t.",
       "leanType": "(g : Bool × Fin 4) (t : ClosedTour) : ∃ h : Bool × Fin 4, reverseTour (applyD4Tour g t) = applyD4Tour h (reverseTour t)"
     }
