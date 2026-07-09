@@ -992,6 +992,57 @@ theorem det_eq_mul_compress_of_reducing {T : V →ₗ[𝕜] V}
     rw [LinearMap.det_conj]
   rw [key, LinearMap.det_prodMap]
 
+/-- **Characteristic-polynomial factorization over a reducing subspace.**
+
+The polynomial master identity of the reducing-subspace block decomposition: if `H`
+reduces `T` (both `H` and `Hᗮ` are `T`-invariant) then the characteristic polynomial of
+`T` factors as the product of the characteristic polynomials of its two honest compression
+blocks,
+
+  `charpoly T = charpoly (compress T H) · charpoly (compress T Hᗮ)`.
+
+This *subsumes* both scalar factorizations already proved on the reducing subspace: the
+trace additivity `trace_eq_add_compress_of_reducing` is the second-from-top coefficient of
+this identity, and the determinant factorization `det_eq_mul_compress_of_reducing` is its
+constant term (up to the sign `(-1)^{finrank V}`).  The proof mirrors
+`det_eq_mul_compress_of_reducing` exactly — the same block-diagonal conjugation
+`T = e.conj ((compress T H).prodMap (compress T Hᗮ))` through the orthogonal decomposition
+`e : (H × Hᗮ) ≃ₗ V` — but reads it through `LinearEquiv.charpoly_conj` (charpoly is
+conjugation-invariant) and `LinearMap.charpoly_prodMap` (the charpoly of a block-diagonal
+map is the product, `Matrix.charpoly_fromBlocks_zero₁₂`).  Symmetry-free. -/
+theorem charpoly_eq_mul_compress_of_reducing {T : V →ₗ[𝕜] V}
+    (H : Submodule 𝕜 V) (hH : ∀ y ∈ H, T y ∈ H) (hHp : ∀ y ∈ Hᗮ, T y ∈ Hᗮ) :
+    LinearMap.charpoly T =
+      LinearMap.charpoly (compress T H) * LinearMap.charpoly (compress T Hᗮ) := by
+  classical
+  have hcompl : IsCompl H Hᗮ :=
+    Submodule.isCompl_orthogonal_of_hasOrthogonalProjection
+  -- Same block-diagonal conjugation as `det_eq_mul_compress_of_reducing`:
+  -- `T ∘ₗ e = e ∘ₗ (compress T H).prodMap (compress T Hᗮ)`.
+  have hconj :
+      T ∘ₗ (Submodule.prodEquivOfIsCompl H Hᗮ hcompl : (H × Hᗮ) →ₗ[𝕜] V)
+        = (Submodule.prodEquivOfIsCompl H Hᗮ hcompl : (H × Hᗮ) →ₗ[𝕜] V)
+            ∘ₗ LinearMap.prodMap (compress T H) (compress T Hᗮ) := by
+    refine LinearMap.ext fun x => ?_
+    obtain ⟨h, k⟩ := x
+    simp only [LinearMap.comp_apply, LinearEquiv.coe_coe,
+      Submodule.coe_prodEquivOfIsCompl', LinearMap.prodMap_apply]
+    rw [coe_compress_of_invariant H hH h, coe_compress_of_invariant Hᗮ hHp k, map_add]
+  -- Package the conjugation as `T = e.conj (prodMap …)`.
+  have hT :
+      T = (Submodule.prodEquivOfIsCompl H Hᗮ hcompl).conj
+            (LinearMap.prodMap (compress T H) (compress T Hᗮ)) := by
+    rw [LinearEquiv.conj_apply, ← LinearMap.comp_assoc, ← hconj, LinearMap.comp_assoc,
+      LinearEquiv.comp_coe, LinearEquiv.symm_trans_self, LinearEquiv.refl_toLinearMap,
+      LinearMap.comp_id]
+  -- Read `charpoly T` through the conjugation (only the LHS `T`, not the `T`s inside
+  -- `compress`), then split the block-diagonal charpoly.
+  have key : LinearMap.charpoly T
+      = LinearMap.charpoly (LinearMap.prodMap (compress T H) (compress T Hᗮ)) := by
+    conv_lhs => rw [hT]
+    rw [LinearEquiv.charpoly_conj]
+  rw [key, LinearMap.charpoly_prodMap]
+
 /-- **The compression spectrum is the honest-restriction spectrum on an invariant
 block.**  Since `compress T H = T.restrict hinv` on an invariant subspace
 (`compress_eq_restrict_of_invariant`), the two operators share a spectrum; the
