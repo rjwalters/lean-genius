@@ -92,6 +92,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header, Imports, and Setup",
+      "startLine": 1,
+      "endLine": 53,
+      "summary": "Module docstring stating the general-multiplicity Blichfeldt principle: for a countable subgroup L acting on a measure space E with fundamental domain F and a null-measurable set s, k·μF < μs forces more than k lattice elements l sharing a common point z ∈ l +ᵥ s (equivalently k+1 points of s pairwise congruent mod L). Notes the k=1 case is Mathlib's exists_pair_mem_lattice_not_disjoint_vadd, contrasts the true Blichfeldt theorem (arbitrary bounded set, no 2ⁿ factor) with the parent's van der Corput form, and sketches the measure-theoretic pigeonhole proof. Imports the geometry-of-numbers and Lebesgue-integration modules, opens MeasureTheory/ENNReal/Pointwise, declares the Blichfeldt namespace.",
+      "mathContext": "Blichfeldt: $k\\cdot\\mu(F) < \\mu(s) \\Rightarrow \\exists$ more than $k$ lattice elements with a common point; the engine is the covering count $g(z)=\\sum'_l \\mathbf{1}_{l+\\!s}(z)$ integrating to $\\mu(s)$ over $F$."
+    },
+    {
       "id": "sec-extraction",
       "title": "Finite Extraction from an Over-Large tsum",
       "startLine": 54,
