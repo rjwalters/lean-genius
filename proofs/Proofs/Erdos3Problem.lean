@@ -432,6 +432,49 @@ theorem rothNumber_two (N : ℕ) : rothNumber 2 N = 1 := by
     have h := @rothNumber_ge_min 2 N
     rwa [show (2 - 1 : ℕ) = 1 from rfl, Nat.min_eq_left (by omega : (1 : ℕ) ≤ N + 1)] at h
 
+/-- **The Roth number vanishes at length `0`:** `r₀(N) = 0`.
+
+    A `0`-term progression is the *empty* progression (`ArithProg a d 0 = ∅`), which
+    every set contains vacuously, so *no* set is `0`-AP-free: the family
+    `rothNumber` maximises over is empty and its supremum is `0`.  This is the
+    degenerate bottom of the exact-value ladder `r₀(N) = 0`, `r₁(N) = 0`,
+    `r₂(N) = 1` (`rothNumber_one_length`, `rothNumber_two`), and it matches the
+    general floor `min (0-1) (N+1) = 0` exactly. `sorry`-free, axiom-free. -/
+theorem rothNumber_zero_length (N : ℕ) : rothNumber 0 N = 0 := by
+  unfold rothNumber
+  have hempty : ((Finset.range (N + 1)).powerset.filter
+      (fun S : Finset ℕ => IsAPFree (↑S : Set ℕ) 0)) = ∅ := by
+    rw [Finset.filter_eq_empty_iff]
+    intro S _ hfree
+    exact hfree ⟨0, 1, one_pos, by simp [ArithProg]⟩
+  rw [hempty]; simp
+
+/-- **The Roth number vanishes at length `1`:** `r₁(N) = 0`.
+
+    A `1`-term progression is a single point (`ArithProg a d 1 = {a}`), so a set is
+    `1`-AP-free exactly when it is empty; the only `1`-AP-free subset of the window
+    is `∅`, of cardinality `0`.  Together with `rothNumber_zero_length` and
+    `rothNumber_two` this pins the exact Roth number for every length `k ≤ 2` —
+    `0, 0, 1` — confirming the general floor `min (k-1) (N+1)` is *attained* across
+    the entire regime where Erdős #3 carries no arithmetic content. `sorry`-free,
+    axiom-free. -/
+theorem rothNumber_one_length (N : ℕ) : rothNumber 1 N = 0 := by
+  unfold rothNumber
+  refine Nat.le_antisymm ?_ (Nat.zero_le _)
+  apply Finset.sup_le
+  intro S hS
+  rw [Finset.mem_filter] at hS
+  by_contra hc
+  rw [not_le, Finset.card_pos] at hc
+  obtain ⟨a, ha⟩ := hc
+  refine hS.2 ⟨a, 1, one_pos, ?_⟩
+  intro x hx
+  rw [Finset.mem_coe, ArithProg, Finset.mem_image] at hx
+  obtain ⟨i, hi, rfl⟩ := hx
+  rw [Finset.mem_range] at hi
+  interval_cases i
+  simpa using ha
+
 /-- **Analytic core of the reduction.**
     If the counting function of `A` obeys `f_A(N) ≤ C · N / (log N)^{1+δ}` for all
     large `N` (`δ > 0`), then `∑_{a ∈ A} 1/a` converges. Proof by dyadic blocking:
