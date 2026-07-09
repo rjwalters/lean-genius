@@ -20,8 +20,8 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-07-08T19:45:20Z",
-    "iteration": 2,
-    "focus": "Verified the finiteness engine of the AFKS iteration (SzemerediRegularityOQ04.lean, 0 sorry/0 axiom): a bounded [0,1]-valued energy potential admits only finitely many delta-increment steps, instantiated on the gallery partitionEnergy. Next: reconstruct the energy-increment step lemma.",
+    "iteration": 3,
+    "focus": "Direct 2x2 ε⁴ energy increment from an irregular pair, bypassing the one-sided A/B-side triangle reduction: pairEnergy_prod_gain_of_irregular(_eps4) turn ¬IsEpsilonRegular into a definite pairEnergy jump ≥ ε⁴|A||B|/n² with no factor-¼ loss (VERIFIED 0/0). Next: sum over refined parts to feed afks_energy_iteration_count.",
     "blockers": [],
     "nextAction": "Reconstruct the energy-increment step (epsilon-irregular refinement raises partitionEnergy by >= delta) from split_energy_excess_bound, then assemble the outer AFKS loop using partitionEnergy_no_infinite_increments as termination certificate."
   },
@@ -51,7 +51,9 @@
       "weighted_second_moment_atom_gain (SzemerediRegularityOQ04Energy.lean): atom gain in mean-identity form (Σwᵢ)μ²+w₀d²≤Σwᵢxᵢ² [VERIFIED]",
       "edgeDensity_union_mul_right + edge_count_union_right: B-side (second-coordinate) weighted-average/edge-count identities [VERIFIED]",
       "edgeDensity_prod_split: law of total density for a 2×2 refinement, |A||B|d(A,B)=Σ|Aᵢ||Bⱼ|d(Aᵢ,Bⱼ) [VERIFIED]",
-      "pairEnergy_prod_refinement_gain: the genuine ε⁴ 2×2 energy increment [VERIFIED — built green on retry attempt 4]"
+      "pairEnergy_prod_refinement_gain: the genuine ε⁴ 2×2 energy increment [VERIFIED — built green on retry attempt 4]",
+      "pairEnergy_prod_gain_of_irregular: direct 2x2 energy increment from an irregular pair (no triangle detour) — refine both coordinates via the witness (A′,A\\A′,B′,B\\B′), gain (|A′||B′|/n²)·ε² [VERIFIED]",
+      "pairEnergy_prod_gain_of_irregular_eps4: explicit ε⁴·|A||B|/n² energy jump from ¬IsEpsilonRegular, the AFKS-consumable floor (no factor-¼ loss of the one-sided branches) [VERIFIED]"
     ],
     "insights": [
       "partitionEnergy IS the standard size-weighted energy |Pi||Pj|/n^2 d^2 (SzemerediCore:63), NOT 1/k^2. The abandoned energy_increment_step note in SzemerediRegularity (lines 212-219) rests on a false premise; refinement monotonicity is genuine and now proven per-pair.",
@@ -74,11 +76,11 @@
     ],
     "mathlibGaps": [],
     "nextSteps": [
+      "Wire pairEnergy_prod_gain_of_irregular_eps4 into whole-partition energy monotonicity (sum the per-pair ε⁴ jump over refined parts) feeding afks_energy_iteration_count (N≤2n²/ε²).",
       "Full existential capstone from ¬IsEpsilonRegular directly: needs freshness of the INTERNALLY-chosen witness A′,B′, which the insert-model cannot guarantee — either work with the common refinement abstractly (dropping per-part ∉R conditions) or thread freshness as hypotheses",
       "Assemble the outer AFKS loop: feed partitionEnergy_gain_of_irregular_pair as the hstep of afks_energy_iteration_count to bound refinements by 2n²/ε²",
       "State two-level AFKS conclusion with dependent tolerance E:ℕ→(0,1]",
-      "Generalize 2×2 → m×k product refinement via Finset(Finset V) families + card_biUnion + edge_count over a Finset.biUnion product partition.",
-      "Wire pairEnergy_prod_refinement_gain + exists_irregular_witness into whole-partition energy monotonicity feeding afks_energy_iteration_count."
+      "Generalize 2×2 → m×k product refinement via Finset(Finset V) families + card_biUnion + edge_count over a Finset.biUnion product partition."
     ],
     "markdown": "# Knowledge Base: szemeredi-regularity-oq-04\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
@@ -171,8 +173,8 @@
     {
       "path": "Proofs/SzemerediRegularityOQ04Bridge.lean",
       "filename": "SzemerediRegularityOQ04Bridge.lean",
-      "lineCount": 301,
-      "theoremCount": 8,
+      "lineCount": 799,
+      "theoremCount": 21,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 0,
@@ -182,8 +184,8 @@
     {
       "path": "Proofs/SzemerediRegularityOQ04Energy.lean",
       "filename": "SzemerediRegularityOQ04Energy.lean",
-      "lineCount": 264,
-      "theoremCount": 5,
+      "lineCount": 533,
+      "theoremCount": 11,
       "axiomCount": 0,
       "defCount": 1,
       "sorryCount": 0,
@@ -191,5 +193,5 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SzemerediRegularityOQ04Energy.lean"
     }
   ],
-  "lastUpdate": "2026-07-08T19:45:20Z"
+  "lastUpdate": "2026-07-08T00:00:00Z"
 }

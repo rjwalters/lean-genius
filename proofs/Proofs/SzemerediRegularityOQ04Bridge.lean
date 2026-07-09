@@ -714,4 +714,86 @@ theorem partitionEnergy_gain_of_irregular_pair (G : SimpleGraph V)
       hA' hB' hA'_fresh hcomp_fresh hA_fresh hneA hB'_fresh hBcomp_fresh hB_fresh hneB
       hm₁ hm₂ hn₁ eps hε hBside⟩
 
+-- ═══════════════════════════════════════════════════════════════════
+-- PART XI: THE DIRECT 2×2 ENERGY INCREMENT FROM AN IRREGULAR PAIR
+-- ═══════════════════════════════════════════════════════════════════
+
+/-- **Irregular pair ⇒ direct 2×2 energy increment (no triangle detour).**
+    This is the clean capstone that bypasses the one-sided A-side/B-side
+    reduction (PARTS VI–X) entirely.  Sessions 4–5 split the witness deviation
+    `|d(A′,B′) − d(A,B)| > ε` through a *mixed* density `d(A′,B)` via the triangle
+    inequality (`edgeDensity_two_sided_le`), keeping one coordinate whole; that
+    route loses a factor `½` in the tolerance (hence `¼` in the floor) and stumbles
+    on the mixed second-difference defect that no triangle inequality kills.
+
+    The witness deviation is, however, measured *directly against the coarse
+    density* `d(A,B)` — which is exactly the mean identity that the 2×2 variance
+    atom bound `pairEnergy_prod_refinement_gain` consumes.  So we refine **both**
+    coordinates simultaneously into the grid `{A′, A∖A′} × {B′, B∖B′}` and read off
+    the increment with no detour: the witness cell `A′×B′` is a single variance atom
+    of the four-cell density distribution whose deviation from the centroid `d(A,B)`
+    is `> ε`, contributing an energy gain of at least `(|A′||B′|/n²)·ε²`.
+
+    The unions `A′ ∪ (A∖A′) = A`, `B′ ∪ (B∖B′) = B` are honest disjoint splits
+    (`Finset.union_sdiff_of_subset`, `disjoint_sdiff_self_right`), so
+    `pairEnergy_prod_refinement_gain` applies verbatim with `d := ε`. -/
+theorem pairEnergy_prod_gain_of_irregular (G : SimpleGraph V) [DecidableRel G.Adj]
+    (eps : ℚ) (heps : 0 ≤ eps) (A B : Finset V)
+    (hirr : ¬ IsEpsilonRegular G eps A B) :
+    ∃ A' B' : Finset V, A' ⊆ A ∧ B' ⊆ B ∧
+      eps * A.card ≤ (A'.card : ℚ) ∧ eps * B.card ≤ (B'.card : ℚ) ∧
+      pairEnergy G A B +
+          (↑A'.card : ℚ) * ↑B'.card / (Fintype.card V : ℚ) ^ 2 * eps ^ 2 ≤
+        pairEnergy G A' B' + pairEnergy G A' (B \ B') +
+          pairEnergy G (A \ A') B' + pairEnergy G (A \ A') (B \ B') := by
+  obtain ⟨A', B', hA', hB', hAc, hBc, hdev⟩ := exists_irregular_witness G eps A B hirr
+  refine ⟨A', B', hA', hB', hAc, hBc, ?_⟩
+  have hunionA : A' ∪ (A \ A') = A := Finset.union_sdiff_of_subset hA'
+  have hunionB : B' ∪ (B \ B') = B := Finset.union_sdiff_of_subset hB'
+  have hdisjA : Disjoint A' (A \ A') := disjoint_sdiff_self_right
+  have hdisjB : Disjoint B' (B \ B') := disjoint_sdiff_self_right
+  have hdev' : eps ≤
+      |edgeDensity G A' B' - edgeDensity G (A' ∪ (A \ A')) (B' ∪ (B \ B'))| := by
+    rw [hunionA, hunionB]; exact le_of_lt hdev
+  have hgain := pairEnergy_prod_refinement_gain G A' (A \ A') B' (B \ B')
+    hdisjA hdisjB eps heps hdev'
+  rwa [hunionA, hunionB] at hgain
+
+/-- **Irregular pair ⇒ explicit `ε⁴` energy increment.**  The AFKS-consumable form
+    of `pairEnergy_prod_gain_of_irregular`: floor the size-dependent cell gain
+    `(|A′||B′|/n²)·ε²` to the clean, subset-free bound `ε⁴·|A||B|/n²` using the
+    witness size thresholds `|A′| ≥ ε|A|`, `|B′| ≥ ε|B|`.  This is the genuine
+    `ε⁴` energy jump that the strong-regularity iteration consumes: an `ε`-irregular
+    pair, refined simultaneously on both coordinates, raises `pairEnergy` by at
+    least `ε⁴·|A||B|/n²` — a definite positive amount whenever the pair carries
+    positive mass.  Combined with the `[0,1]`-potential termination engine
+    (`afks_energy_iteration_count`, `N ≤ 2n²/ε²`) this is the quantitative core of
+    the AFKS finiteness statement, now free of the factor-`¼` loss the one-sided
+    branches incurred. -/
+theorem pairEnergy_prod_gain_of_irregular_eps4 (G : SimpleGraph V)
+    [DecidableRel G.Adj]
+    (eps : ℚ) (heps : 0 ≤ eps) (A B : Finset V)
+    (hirr : ¬ IsEpsilonRegular G eps A B) :
+    ∃ A' B' : Finset V, A' ⊆ A ∧ B' ⊆ B ∧
+      pairEnergy G A B +
+          eps ^ 4 * (↑A.card * ↑B.card) / (Fintype.card V : ℚ) ^ 2 ≤
+        pairEnergy G A' B' + pairEnergy G A' (B \ B') +
+          pairEnergy G (A \ A') B' + pairEnergy G (A \ A') (B \ B') := by
+  obtain ⟨A', B', hA', hB', hAc, hBc, hgain⟩ :=
+    pairEnergy_prod_gain_of_irregular G eps heps A B hirr
+  refine ⟨A', B', hA', hB', ?_⟩
+  -- Floor the exact cell gain `(|A′||B′|/n²)·ε²` by `ε⁴·|A||B|/n²`, then chain.
+  have hcard : (eps * A.card) * (eps * B.card) ≤ (↑A'.card : ℚ) * ↑B'.card :=
+    mul_le_mul hAc hBc (by positivity) (by positivity)
+  have he2 : (0 : ℚ) ≤ eps ^ 2 / (Fintype.card V : ℚ) ^ 2 := by positivity
+  have hfloor : eps ^ 4 * (↑A.card * ↑B.card) / (Fintype.card V : ℚ) ^ 2
+      ≤ (↑A'.card : ℚ) * ↑B'.card / (Fintype.card V : ℚ) ^ 2 * eps ^ 2 :=
+    calc eps ^ 4 * (↑A.card * ↑B.card) / (Fintype.card V : ℚ) ^ 2
+        = (eps * A.card) * (eps * B.card) * (eps ^ 2 / (Fintype.card V : ℚ) ^ 2) := by
+          ring
+      _ ≤ (↑A'.card : ℚ) * ↑B'.card * (eps ^ 2 / (Fintype.card V : ℚ) ^ 2) :=
+          mul_le_mul_of_nonneg_right hcard he2
+      _ = (↑A'.card : ℚ) * ↑B'.card / (Fintype.card V : ℚ) ^ 2 * eps ^ 2 := by ring
+  linarith [hgain, hfloor]
+
 end Szemeredi.RegularityOQ04Bridge
