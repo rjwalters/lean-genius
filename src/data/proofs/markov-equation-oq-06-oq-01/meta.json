@@ -41,6 +41,21 @@
       "targetId": "markov-equation",
       "relationship": "related",
       "description": "The grandparent development runs the Markov tree downward (descent decreases the coordinate sum); this entry quantifies the upward direction, showing the ascent grows the maximal coordinate geometrically."
+    },
+    {
+      "targetId": "markov-equation-oq-05",
+      "relationship": "related",
+      "description": "Supplies the structural fact behind the ascent step used here: with the first two coordinates fixed, the Vieta neighbor 3xy − z is the unique other solution. The successor top coordinate 3bc − a whose doubling this entry proves is exactly that neighbor, so the geometric growth is the quantitative shadow of the fiber-involution structure."
+    },
+    {
+      "targetId": "markov-equation-oq-03",
+      "relationship": "related",
+      "description": "Carries the same Vieta-jump machinery to the Markov–Hurwitz generalizations x²+y²+z² = kxyz; the doubling/geometric-growth argument here is the k = 3 quantitative instance of that broader jumping framework."
+    },
+    {
+      "targetId": "pell-equation-oq-06-oq-01",
+      "relationship": "related",
+      "description": "A cross-family instance of the same recursive-chain method: the negative Pell equation x² − 2y² = −1 is classified by an ascending Vieta-style chain, mirroring how the Markov ascent sequence generates all triples along one branch."
     }
   ],
   "overview": {
