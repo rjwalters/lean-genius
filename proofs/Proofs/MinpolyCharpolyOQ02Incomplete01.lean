@@ -329,4 +329,52 @@ theorem commute_of_commonDiagonalizer {M N P : Matrix n n K}
     _ = P * (P⁻¹ * (N * M) * P) * P⁻¹ := by rw [hconj]
     _ = N * M := hcancel _
 
+/-! ### Necessity of the common-diagonalizer hypothesis
+
+`mul_of_commonDiagonalizer` requires `M` and `N` to share a single diagonalizer `P`;
+mere diagonalizability of each is not enough.  Explicit witnesses over `ℚ`: the swap
+`M = !![0,1;1,0]` (diagonalizable, eigenvalues `±1`) and the diagonal `N = !![1,0;0,-1]`.
+They do not commute, so by `commute_of_commonDiagonalizer` they share no diagonalizer —
+and indeed their product `M*N = !![0,-1;1,0]` is a rational `90°` rotation with
+eigenvalues `±i ∉ ℚ`, hence not diagonalizable over `ℚ`.  (The proof needs no eigenvalue
+theory: trace and determinant are similarity invariants, so a diagonal conjugate `D` of
+`M*N` would satisfy `D₀₀ + D₁₁ = 0` and `D₀₀·D₁₁ = 1`, forcing `D₀₀² = -1`, impossible
+over an ordered field.) -/
+theorem exists_diagonalizable_mul_not_diagonalizable :
+    ∃ M N : Matrix (Fin 2) (Fin 2) ℚ,
+      M.IsDiagonalizable ∧ N.IsDiagonalizable ∧ ¬ (M * N).IsDiagonalizable := by
+  refine ⟨!![0, 1; 1, 0], !![1, 0; 0, -1], ?_, ?_, ?_⟩
+  · -- `M` (the swap) is diagonalized by `P = !![1,1;1,-1]`.
+    refine ⟨!![1, 1; 1, -1], ?_, ?_⟩
+    · rw [Matrix.isUnit_iff_isUnit_det, Matrix.det_fin_two_of]; norm_num
+    · have hinv : (!![1, 1; 1, -1] : Matrix (Fin 2) (Fin 2) ℚ)⁻¹ = !![1/2, 1/2; 1/2, -1/2] :=
+        Matrix.inv_eq_right_inv (by rw [Matrix.one_fin_two]; norm_num [Matrix.mul_fin_two])
+      rw [hinv, show
+        (!![1/2, 1/2; 1/2, -1/2] : Matrix (Fin 2) (Fin 2) ℚ) * !![0, 1; 1, 0] * !![1, 1; 1, -1]
+          = !![1, 0; 0, -1] by norm_num [Matrix.mul_fin_two]]
+      intro i j hij
+      fin_cases i <;> fin_cases j <;> simp_all
+  · -- `N` is diagonal, hence diagonalizable.
+    refine Matrix.IsDiagonalizable.of_isDiag ?_
+    intro i j hij
+    fin_cases i <;> fin_cases j <;> simp_all
+  · -- `M*N = !![0,-1;1,0]` is not diagonalizable over `ℚ`.
+    rintro ⟨P, hP, hdiag⟩
+    have hMN : (!![0, 1; 1, 0] : Matrix (Fin 2) (Fin 2) ℚ) * !![1, 0; 0, -1] = !![0, -1; 1, 0] := by
+      norm_num [Matrix.mul_fin_two]
+    rw [hMN] at hdiag
+    set D := P⁻¹ * (!![0, -1; 1, 0] : Matrix (Fin 2) (Fin 2) ℚ) * P with hDdef
+    have htr : Matrix.trace D = 0 := by
+      rw [hDdef, Matrix.trace_conj' hP]; norm_num [Matrix.trace_fin_two_of]
+    have hdet : Matrix.det D = 1 := by
+      rw [hDdef, Matrix.det_conj' hP]; norm_num [Matrix.det_fin_two_of]
+    have h01 : D 0 1 = 0 := hdiag (by decide)
+    have h10 : D 1 0 = 0 := hdiag (by decide)
+    rw [Matrix.trace_fin_two] at htr
+    have hprod : D 0 0 * D 1 1 = 1 := by
+      rw [Matrix.det_fin_two, h01, h10] at hdet; simpa using hdet
+    have hD11 : D 1 1 = -D 0 0 := by linarith
+    rw [hD11] at hprod
+    nlinarith [sq_nonneg (D 0 0), hprod]
+
 end MinpolyCharpolyOQ02Incomplete01
