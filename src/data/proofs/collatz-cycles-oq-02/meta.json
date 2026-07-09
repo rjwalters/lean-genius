@@ -53,6 +53,13 @@
   },
   "sections": [
     {
+      "id": "preamble",
+      "title": "Module Header, Imports, and Scope",
+      "startLine": 1,
+      "endLine": 38,
+      "summary": "Imports Mathlib; the module docstring frames the general logarithmic lower bound on Collatz cycle length: from the halving constraint 3^J < 2^M it derives M > J·log₂3 (hence L = M+J > J·log₂6 ≈ 2.585·J), generalizing the finite ladder min_halvings_one_odd…four_odd. Honestly scopes this as the elementary logarithmic core of Eliahou's theorem, not the continued-fraction refinement giving the length ≥ 17,087,915 bound. Opens Real and namespace CollatzCyclesOQ02."
+    },
+    {
       "id": "log-bound",
       "title": "The Sharp Logarithmic Halving Bound",
       "startLine": 39,
