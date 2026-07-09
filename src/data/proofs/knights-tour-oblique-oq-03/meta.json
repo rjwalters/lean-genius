@@ -86,7 +86,8 @@
       "**Board symmetry and path symmetry are orthogonal.** D₄ acts on the geometry of the board (where the squares are), reversal acts on the dynamics of the walk (the order they are visited). Because one rewrites the list elements (map) and the other rewrites the list order (reverse), and map/reverse commute, the two group actions commute — the symmetry group of closed tours is the direct product D₄ × ℤ/2, of order 16.",
       "**Commutation is the whole story for invertibility.** Once the two actions commute, the composite symmetries form a group automatically: the inverse of 'reverse then apply g' is 'reverse then apply g⁻¹', because commuting lets the reversal pass through and the involution and D₄-inverse cancel. No separate bijectivity argument is needed.",
       "**Orbit refinement of the histogram.** D₄-invariance of obliqueCount (proven in the base file) means each histogram level is a union of D₄-orbits; commuting reversal means reversal permutes those orbits, so the level sets are closed under the larger order-16 group. This is the structural input the deferred reversal-invariance of the count plugs into.",
-      "**A clean island in a heavy lineage.** The base file relies on native_decide and an enumeration axiom; this commutation result needs none of that — it is a pure consequence of list algebra (map/reverse) and the already-proven group/involution lemmas, hence assumption-free."
+      "**A clean island in a heavy lineage.** The base file relies on native_decide and an enumeration axiom; this commutation result needs none of that — it is a pure consequence of list algebra (map/reverse) and the already-proven group/involution lemmas, hence assumption-free.",
+      "**What 'faithful' does and doesn't mean here.** d4_reverse_injective proves each of the 16 composite symmetries is an injective self-map of the finite type ClosedTour — i.e. every element of D₄ × ℤ/2 acts as a permutation (bijection) of the tour set, which is exactly the input the orbit-counting of the histogram consumes. Faithfulness in the strict group-theoretic sense — that the homomorphism D₄ × ℤ/2 → Sym(ClosedTour) has trivial kernel, so distinct group elements induce distinct permutations — is a stronger statement (it would need reversal distinguished as a permutation from every board isometry) and is not formalized in this file."
     ],
     "prerequisites": [
       "Closed knight's tours and the ClosedTour structure (base entry knights-tour-oblique)",
@@ -165,7 +166,8 @@
     "openQuestions": [
       "Complete the deferred capstone obliqueCount (reverseTour t) = obliqueCount t (the cyclic-list count invariances under rotate-by-one, reverse, and pointwise negation), which together with this commutation would give full D₄ × ℤ/2 invariance of the histogram.",
       "Use the order-16 action to sharpen the orbit-divisibility of obliqueDistribution(k) (e.g. when 16 ∣ the level size, modulo self-symmetric tours).",
-      "Classify the closed tours fixed by reversal (palindromic tours) and by combined reversal-D₄ elements, refining the count of self-symmetric tours."
+      "Classify the closed tours fixed by reversal (palindromic tours) and by combined reversal-D₄ elements, refining the count of self-symmetric tours.",
+      "Upgrade the per-element injectivity proved here to genuine faithfulness of the D₄ × ℤ/2 action — that the homomorphism to Sym(ClosedTour) has trivial kernel, so the 16 symmetries are pairwise distinct as permutations (equivalently, reversal coincides with no board isometry on the tour set)."
     ]
   },
   "crossReferences": [
