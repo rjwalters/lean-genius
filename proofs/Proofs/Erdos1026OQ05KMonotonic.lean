@@ -149,16 +149,16 @@ theorem kMonotonicDecomposition_numParts_ge {k : ℕ} (seq : RealSeq n)
 /-- Every monotone decomposition is a `k`-monotone decomposition for `k ≥ 1`: each monotone part is
 trivially a k-monotone part (via `IsMonotonic.isKMonotonic`), and the disjointness and covering data
 carry over unchanged. -/
-def MonotonicDecomposition.toKMonotonic {k : ℕ} (hk : 0 < k) {seq : RealSeq n}
+def monotonicToKMonotonic {k : ℕ} (hk : 0 < k) {seq : RealSeq n}
     (D : MonotonicDecomposition n seq) : KMonotonicDecomposition k n seq where
   numParts := D.numParts
   parts := D.parts
-  kmonotonic := fun i => (D.monotonic i).isKMonotonic hk
+  kmonotonic := fun i => IsMonotonic.isKMonotonic hk (D.monotonic i)
   disjoint := D.disjoint
   covering := D.covering
 
 /-- The **minimum number of k-monotone parts** needed to cover `seq`: the k-monotone covering number.
-Well-defined for `k ≥ 1` because `singletonDecomposition` (embedded via `toKMonotonic`) always
+Well-defined for `k ≥ 1` because `singletonDecomposition` (embedded via `monotonicToKMonotonic`) always
 supplies a k-monotone decomposition, so the achievable part-counts form a nonempty set. -/
 noncomputable def minKMonotonicParts (k : ℕ) (seq : RealSeq n) : ℕ :=
   sInf {p | ∃ D : KMonotonicDecomposition k n seq, D.numParts = p}
@@ -176,7 +176,7 @@ theorem minKMonotonicParts_le_minMonotonicParts {k : ℕ} (hk : 0 < k) (seq : Re
   rw [hEq]
   unfold minKMonotonicParts
   apply Nat.sInf_le
-  exact ⟨D.toKMonotonic hk, rfl⟩
+  exact ⟨monotonicToKMonotonic hk D, rfl⟩
 
 /-- The k-monotone covering number is at least `n / (k · max(LIS, LDS))` (`k ≥ 1`): the elementary
 counting lower bound holds for *every* k-monotone decomposition, hence for the optimal one. -/
@@ -184,7 +184,7 @@ theorem minKMonotonicParts_ge {k : ℕ} (hk : 0 < k) (seq : RealSeq n) :
     n / (k * max (LIS seq) (LDS seq)) ≤ minKMonotonicParts k seq := by
   unfold minKMonotonicParts
   apply le_csInf
-  · exact ⟨n, (singletonDecomposition seq).toKMonotonic hk, rfl⟩
+  · exact ⟨n, monotonicToKMonotonic hk (singletonDecomposition seq), rfl⟩
   · rintro p ⟨D, rfl⟩
     exact kMonotonicDecomposition_numParts_ge seq D
 
