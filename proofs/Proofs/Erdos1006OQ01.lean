@@ -431,21 +431,6 @@ theorem cover_graph_characterization [Fintype V] :
     letI : DecidableLT V := fun a b => Classical.propDecidable _
     exact cover_graph_admits_robust hP
 
-/-- **Concrete girth-3 non-example** (proved, no axiom): the triangle `K₃`
-    (the complete graph on `Fin 3`) admits *no* robustly acyclic orientation.
-
-    This is the smallest witness of the Nešetřil-Rödl phenomenon
-    (`nesetril_rodl_counterexample` below, at `g = 3`): a triangle is not a
-    cover graph because *every* acyclic orientation of it is transitive.
-    Concretely, the three vertices get pairwise-distinct ranks (adjacent
-    vertices cannot share a rank), so they line up as a source `a`, middle `b`
-    and sink `c` with arcs `a → b`, `b → c`, `a → c`. The arc `a → c` is then
-    *dependent*: the alternate directed path `a → b → c` already connects its
-    endpoints, so reversing `a → c` closes the cycle `c → a → b → c`. Hence no
-    orientation is robust.
-
-    Via `cover_graph_characterization` this reproves directly that the triangle
-    is not the Hasse diagram of any poset. -/
 /-- **Any triangle obstructs robust acyclicity.** If a graph `G` contains three
     pairwise-adjacent vertices `a, b, c` (a `K₃` subgraph), then `G` admits no robustly
     acyclic orientation. In any acyclic orientation the ranks of `a, b, c` are pairwise
@@ -507,9 +492,9 @@ theorem not_robust_of_triangle {a b c : V}
 theorem triangle_not_robust :
     ¬ admitsRobustAcyclicOrientation (⊤ : SimpleGraph (Fin 3)) :=
   not_robust_of_triangle
-    (by simpa using (by decide : (0 : Fin 3) ≠ 1))
-    (by simpa using (by decide : (1 : Fin 3) ≠ 2))
-    (by simpa using (by decide : (0 : Fin 3) ≠ 2))
+    (SimpleGraph.top_adj.mpr (by decide))
+    (SimpleGraph.top_adj.mpr (by decide))
+    (SimpleGraph.top_adj.mpr (by decide))
 
 /-- **Robust acyclic orientability forbids triangles.** A graph admitting a robustly
     acyclic orientation is triangle-free (`CliqueFree 3`): any `3`-clique would supply
@@ -517,7 +502,8 @@ theorem triangle_not_robust :
     global form of the local obstruction, and is consistent with
     `cover_graph_characterization`: cover graphs (Hasse diagrams) are triangle-free, since
     an edge `a–c` with a common neighbour of intermediate rank is never a covering pair. -/
-theorem cliqueFree_three_of_robust (h : admitsRobustAcyclicOrientation G) :
+theorem cliqueFree_three_of_robust [DecidableEq V]
+    (h : admitsRobustAcyclicOrientation G) :
     G.CliqueFree 3 := by
   intro s hs
   rw [SimpleGraph.is3Clique_iff] at hs
