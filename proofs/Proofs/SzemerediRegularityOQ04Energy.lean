@@ -329,4 +329,39 @@ theorem variance_atom_bound {ι : Type*} (s : Finset ι) (w x : ι → ℚ)
   rw [← hμ_def] at hvar
   linarith [hsingle, hatom, hvar]
 
+/-- **Atom gain in mean-identity form.**  The directly consumable increment form of
+    `variance_atom_bound`: instead of the internal weighted mean `(Σwx)/(Σw)`, it
+    takes an *external* candidate mean `μ` together with the *mean identity*
+    `Σ wᵢxᵢ = (Σ wᵢ)·μ` as a hypothesis, and concludes
+
+      `(Σ wᵢ)·μ² + w₀·d² ≤ Σ wᵢxᵢ²`.
+
+    This is exactly the shape a block-refinement energy increment needs: the
+    coarse energy of a pair is `(Σ wᵢ)·μ²` with `μ = d(A,B)` the whole density and
+    `Σ wᵢ = |A||B|/n²`; the refined energy is `Σ wᵢxᵢ²` over the sub-cells; and the
+    mean identity is the *law of total density* `Σ|Aᵢ||Bⱼ|d(Aᵢ,Bⱼ) = |A||B|d(A,B)`.
+    Discharging that identity turns a single deviating sub-cell into a definite
+    energy gain `w₀·d²`, with no division and no reference to the internal mean. -/
+theorem weighted_second_moment_atom_gain {ι : Type*} (s : Finset ι) (w x : ι → ℚ)
+    (hw : ∀ i ∈ s, 0 ≤ w i) (μ : ℚ)
+    (hmean : (∑ i ∈ s, w i * x i) = (∑ i ∈ s, w i) * μ)
+    (i₀ : ι) (hi₀ : i₀ ∈ s) (w₀ d : ℚ) (hw₀ : 0 ≤ w₀) (hd : 0 ≤ d)
+    (hwlb : w₀ ≤ w i₀) (hdev : d ≤ |x i₀ - μ|) :
+    (∑ i ∈ s, w i) * μ ^ 2 + w₀ * d ^ 2 ≤ ∑ i ∈ s, w i * x i ^ 2 := by
+  rcases eq_or_ne (∑ i ∈ s, w i) 0 with hW | hW
+  · -- Total weight zero ⇒ every weight vanishes; both sides collapse to `0`.
+    have hall : ∀ i ∈ s, w i = 0 :=
+      (Finset.sum_eq_zero_iff_of_nonneg hw).mp hW
+    have hw0 : w₀ = 0 := le_antisymm (hall i₀ hi₀ ▸ hwlb) hw₀
+    have hrhs : (∑ i ∈ s, w i * x i ^ 2) = 0 :=
+      Finset.sum_eq_zero (fun i hi => by rw [hall i hi]; ring)
+    rw [hW, hw0, hrhs]; simp
+  · -- Nonzero total weight ⇒ `μ` is the honest weighted mean; apply the atom bound.
+    have hμ : μ = (∑ j ∈ s, w j * x j) / (∑ j ∈ s, w j) := by
+      rw [hmean, eq_div_iff hW]; ring
+    have hkey := variance_atom_bound s w x hw hW i₀ hi₀ w₀ d hw₀ hd hwlb
+      (hμ ▸ hdev)
+    rw [← hμ] at hkey
+    linarith [hkey]
+
 end Szemeredi.RegularityOQ04Energy
