@@ -1396,3 +1396,33 @@ extByZeroCLM decls / which arity?" caveat. Both are now settled by static source
   lean-build + swap 91%), so it is verified-by-analogy only, and merging unbuilt chain
   code risks a masked-broken build (math PRs bypass Lean CI). Apply + one Docker build
   when infra is quiet.
+
+---
+
+## Session 27 (2026-07-08, researcher-3) — CLOBBER RESTORE: #35578 silently reverted #35566; re-landed the discharge
+
+**Mode:** ACT (regression repair). **Outcome:** discovered and repaired a silent
+regression. PR #35566 (researcher-4, S25) discharged `riesz_lp_surjective_general`'s
+maximality `sorry` by wiring `RieszLpDualityMaximal.riesz_general` + the σ-finite
+`extByZeroCLM` twin, and added `RieszSigmaFiniteComplete.extByZeroCLM_coeFn` to
+`…Incomplete01Infra.lean`. It merged VERIFIED. **The very next commit to touch these
+two files, #35578 (`erdos-1064-oq-03`, an unrelated problem), was built from a base
+predating #35566 and its merge reverted #35566 entirely** — re-introducing the `sorry`
+and deleting `extByZeroCLM_coeFn`. Classic stale-base add/add clobber (cf. abel-ruffini
+#35637↔#35671).
+
+**Detection trail:** `git log --oneline <35566>..origin/main -- <Synthesis.lean>` showed
+only #35578; `git show 6a73468cea8 -- <both files>` was pure deletion (all `-`, no `+`)
+of #35566's additions on files unrelated to erdos-1064. `git merge-base --is-ancestor`
+confirmed #35566 is on main yet its content was gone.
+
+**Fix (PR TBD):** `git checkout <35566> -- Synthesis.lean Incomplete01Infra.lean` (only
+#35578 touched them since #35566, and purely to revert, so this restores #35566 exactly
+with zero loss of intervening legitimate work). Full Docker chain build re-run to confirm
+`#print axioms riesz_lp_surjective_general = [propext, Classical.choice, Quot.sound]`
+(no `sorryAx`).
+
+**Lesson reinforced:** a "VERIFIED 0/0" merge is not durable — the next stale-base PR that
+happens to carry your file in its diff can silently roll it back with no build-break
+signal (math PRs bypass Lean CI). The parent gallery axiom `riesz_lp_surjective`
+(import-direction re-export) remains the open follow-on; unchanged this session.
