@@ -21,9 +21,9 @@
     ],
     "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 2,
-    "lineCount": 377,
-    "assumptions": "Two axioms: (1) bringJerrard_reduction — the full Bring-Jerrard reduction eliminating x³ and x² terms via quadratic/cubic Tschirnhaus substitutions (requires polynomial resultant theory not in Mathlib); (2) bringRadical_not_in_radicals — the Bring radical is not expressible in radicals (follows from Abel-Ruffini but requires connecting the generic Galois group argument). The linear Tschirnhaus transform (depressed quintic) and all Bring radical properties are fully proved.",
+    "axiomCount": 1,
+    "lineCount": 376,
+    "assumptions": "One axiom: bringJerrard_reduction — the full Bring-Jerrard reduction eliminating x³ and x² terms via quadratic/cubic Tschirnhaus substitutions (requires polynomial resultant theory not in Mathlib). The linear Tschirnhaus transform (depressed quintic) and all Bring radical properties are fully proved. (An earlier degenerate axiom, bringRadical_not_in_radicals, was removed as unsound — its 'expressible in radicals' predicate collapsed to True, making the negation false; the genuine, axiom-free conditional replacement lives in the sibling entry abel-ruffini-oq-04-oq-07-oq-02.)",
     "dateAdded": "2026-04-03",
     "mathlibDependencies": [
       {
@@ -67,7 +67,7 @@
       "startLine": 1,
       "endLine": 84,
       "summary": "Imports (Polynomial, ordered ring, IntermediateValue, Tactic) and module docstring. OQ-04-OQ-07 formalizes the Bring–Jerrard reduction of the quintic. Fully proved: the linear Tschirnhaus substitution y = x + a₄/5 eliminating the x⁴ term (forward and backward); Bring-radical uniqueness (x ↦ x⁵+x strictly monotone ⟹ at most one real root of x⁵+x+t=0); Bring-radical existence (continuity + coercivity + IVT ⟹ at least one root); and well-definedness of the Bring radical BR(t) as that unique real root. Axiomatized: the full reduction eliminating the x³ and x² terms (quadratic and cubic Tschirnhaus substitutions requiring auxiliary equations up to degree 6). The Bring radical gives a closed form for the Bring–Jerrard normal form y⁵+py+q=0 — expressible via hypergeometric/elliptic functions but, by Abel–Ruffini, not in radicals.",
-      "mathContext": "Status axiomatized (2 axioms): the linear depression step and Bring-radical analysis are machine-checked, but the higher Tschirnhaus eliminations are assumed pending algebraic infrastructure not yet in Mathlib. Part of the Abel–Ruffini family (OQ-04 A₅ simplicity, OQ-04-OQ-03 Galois solvability criterion)."
+      "mathContext": "Status axiomatized (1 axiom): the linear depression step and Bring-radical analysis are machine-checked, but the higher Tschirnhaus eliminations are assumed pending algebraic infrastructure not yet in Mathlib. Part of the Abel–Ruffini family (OQ-04 A₅ simplicity, OQ-04-OQ-03 Galois solvability criterion)."
     },
     {
       "id": "poly-defs",
@@ -120,7 +120,7 @@
       "title": "Bring Radical: Definition and Properties",
       "startLine": 296,
       "endLine": 377,
-      "summary": "Defines bringRadical t = the unique real root of x⁵+x+t=0. Proves: bringRadical_spec (satisfies equation), bringRadical_unique, bringRadical_anti_mono, bringRadical_zero, bringRadical_neg (odd function). Axiomatizes bringRadical_not_in_radicals. Summary theorem packages the main results.",
+      "summary": "Defines bringRadical t = the unique real root of x⁵+x+t=0. Proves: bringRadical_spec (satisfies equation), bringRadical_unique, bringRadical_anti_mono, bringRadical_zero, bringRadical_neg (odd function). (An earlier degenerate axiom bringRadical_not_in_radicals was removed as unsound; the genuine axiom-free replacement lives in the sibling entry OQ-04-OQ-07-OQ-02.) Summary theorem packages the main results.",
       "mathContext": "BR$(t)$ satisfies BR$(t)^5 + \\mathrm{BR}(t) + t = 0$, is strictly anti-monotone, odd, and BR$(0) = 0$. Not expressible by nested radicals (axiom).",
       "theorems": [
         "bringRadical_spec",
@@ -133,15 +133,15 @@
     }
   ],
   "conclusion": {
-    "summary": "Formalizes the linear Tschirnhaus transform and the Bring radical with 0 sorries. The full Bring-Jerrard reduction (Steps 2-3) and the non-expressibility-in-radicals claim are axiomatized (2 axioms). The Bring radical is shown to be well-defined, strictly anti-monotone, odd, and satisfying BR(0)=0.",
-    "implications": "**The Bring radical completes the Abel-Ruffini story constructively.** Galois theory (via Abel-Ruffini) says: no radical formula for the general quintic exists. The Bring-Jerrard reduction says: there IS a formula, using the Bring radical function instead of radicals. Together they establish that the quintic is solvable in the larger universe of 'Bring radical expressions' but not in the smaller universe of 'radical expressions'. This is a precise statement about the expressive power of different function classes.\n\n**Computational algebra systems** use the Bring radical as a canonical object. PARI/GP, Maple, and Mathematica include the Bring radical (often called the 'principal quintic form' solver) for numerical computation of quintic roots. The connection to hypergeometric functions ${}_{2}F_{1}(1/5, 2/5; 1; t)$ makes it computable via rapidly convergent series, providing a practical algorithm for quintic root-finding that bypasses the Galois impossibility.\n\n**The Klein icosahedron connection** (1884) is the deepest implication. The 60 vertices of the icosahedron are permuted by $A_5 \\cong I_{60}$ — and the icosahedral equation $z(z^{10} - 11z^5 - 1)^5$ appears in the ramification theory of the $j$-function. Bringing a quintic to Bring-Jerrard form and then applying this icosahedral substitution converts the quintic root problem to computing a modular invariant — a non-trivial but analytically tractable problem. This is what Hermite (1858) did explicitly, prefiguring the modern theory of modular forms.\n\n**Formalization frontier:** Closing the 2 axioms would require formalizing either (1) polynomial resultant theory (to construct the quadratic/cubic Tschirnhaus maps), or (2) the connection between the Bring radical and Galois theory (to prove non-expressibility in radicals without the degenerate True conjunct). Both would be significant Mathlib contributions: resultant theory generalizes the discriminant and is needed for algebraic number theory, while the radical expressibility connection would complete the Lean formalization of the fundamental theorem of algebra in its Galois form.",
+    "summary": "Formalizes the linear Tschirnhaus transform and the Bring radical with 0 sorries. The full Bring-Jerrard reduction (Steps 2-3) is axiomatized (1 axiom). The non-expressibility-in-radicals claim is handled honestly (axiom-free, conditional) in the sibling entry OQ-04-OQ-07-OQ-02; an earlier degenerate axiom encoding it here was removed. The Bring radical is shown to be well-defined, strictly anti-monotone, odd, and satisfying BR(0)=0.",
+    "implications": "**The Bring radical completes the Abel-Ruffini story constructively.** Galois theory (via Abel-Ruffini) says: no radical formula for the general quintic exists. The Bring-Jerrard reduction says: there IS a formula, using the Bring radical function instead of radicals. Together they establish that the quintic is solvable in the larger universe of 'Bring radical expressions' but not in the smaller universe of 'radical expressions'. This is a precise statement about the expressive power of different function classes.\n\n**Computational algebra systems** use the Bring radical as a canonical object. PARI/GP, Maple, and Mathematica include the Bring radical (often called the 'principal quintic form' solver) for numerical computation of quintic roots. The connection to hypergeometric functions ${}_{2}F_{1}(1/5, 2/5; 1; t)$ makes it computable via rapidly convergent series, providing a practical algorithm for quintic root-finding that bypasses the Galois impossibility.\n\n**The Klein icosahedron connection** (1884) is the deepest implication. The 60 vertices of the icosahedron are permuted by $A_5 \\cong I_{60}$ — and the icosahedral equation $z(z^{10} - 11z^5 - 1)^5$ appears in the ramification theory of the $j$-function. Bringing a quintic to Bring-Jerrard form and then applying this icosahedral substitution converts the quintic root problem to computing a modular invariant — a non-trivial but analytically tractable problem. This is what Hermite (1858) did explicitly, prefiguring the modern theory of modular forms.\n\n**Formalization frontier:** Closing the remaining axiom would require formalizing polynomial resultant theory (to construct the quadratic/cubic Tschirnhaus maps). The connection between the Bring radical and Galois theory — non-expressibility in radicals — is already handled axiom-free (as a conditional theorem) in the sibling entry OQ-04-OQ-07-OQ-02, replacing the earlier degenerate True-conjunct axiom. Resultant theory would be a significant Mathlib contribution: resultant theory generalizes the discriminant and is needed for algebraic number theory, while the radical expressibility connection would complete the Lean formalization of the fundamental theorem of algebra in its Galois form.",
     "openQuestions": [
       "Prove the full Bring-Jerrard reduction in Lean: formalize the quadratic and cubic Tschirnhaus substitutions using polynomial resultants and Mathlib's algebraic extensions.",
       "Replace the degenerate bringRadical_not_in_radicals axiom with a proper formalization of 'expressible in radicals' and prove the Bring radical is not of that form.",
       "Connect to Klein's icosahedron theory: BR(t) can be expressed via the hypergeometric function ₂F₁ or elliptic modular functions — formalize at least one such representation.",
       "Extend bringJerrard_summary to a complete solution procedure: given any monic quintic, describe the algorithm to express all 5 roots in terms of Bring radicals.",
       "**Formalize the Glasser-King hypergeometric formula**: $\\mathrm{BR}(t) = -\\frac{t}{4} \\cdot {}_4F_3\\left(\\frac{1}{5}, \\frac{2}{5}, \\frac{3}{5}, \\frac{4}{5}; \\frac{1}{2}, \\frac{3}{4}, \\frac{5}{4}; -\\frac{3125 t^4}{256}\\right)$. Mathlib's `Mathlib.Analysis.SpecialFunctions.Hypergeometric` provides ${}_pF_q$ definitions; the missing piece is verifying that this specific instantiation satisfies $\\mathrm{BR}(t)^5 + \\mathrm{BR}(t) + t = 0$ for $|t|$ in the convergence radius. Would give a concrete bridge between this entry's algebraic Bring radical and the broader theory of hypergeometric solutions to algebraic equations.",
-      "**Galois-theoretic axiom replacement**: The axiom `bringRadical_not_in_radicals` can be replaced with a proof once the Galois group of the generic Bring-Jerrard quintic $y^5 + y + t \\in \\mathbb{Q}(t)[y]$ is computed in Lean. The relevant fact: $\\mathrm{Gal}(y^5 + y + t / \\mathbb{Q}(t)) \\cong S_5$ (proved by Hilbert irreducibility — at almost all $t \\in \\mathbb{Q}$, the specialization $y^5 + y + t_0 \\in \\mathbb{Q}[y]$ has Galois group $S_5$, and this density forces the generic Galois group to be $S_5$). Combined with `abel-ruffini-oq-04-oq-03`'s solvability criterion, this gives the desired non-radical-expressibility.",
+      "**Galois-theoretic axiom replacement**: The non-radical-expressibility claim (formerly the degenerate axiom `bringRadical_not_in_radicals`, since removed; a conditional axiom-free version lives in the sibling entry OQ-04-OQ-07-OQ-02) can be fully proved once the Galois group of the generic Bring-Jerrard quintic $y^5 + y + t \\in \\mathbb{Q}(t)[y]$ is computed in Lean. The relevant fact: $\\mathrm{Gal}(y^5 + y + t / \\mathbb{Q}(t)) \\cong S_5$ (proved by Hilbert irreducibility — at almost all $t \\in \\mathbb{Q}$, the specialization $y^5 + y + t_0 \\in \\mathbb{Q}[y]$ has Galois group $S_5$, and this density forces the generic Galois group to be $S_5$). Combined with `abel-ruffini-oq-04-oq-03`'s solvability criterion, this gives the desired non-radical-expressibility.",
       "**Connect to motivic Galois theory**: The field $\\mathbb{Q}(t, \\mathrm{BR}(t))$ is the function field of an $S_5$-cover of $\\mathbb{P}^1 \\setminus \\{\\Delta = 0\\}$ (where $\\Delta(t) = -3125 t^4 - 256 \\cdot 5^5$ is the discriminant of $y^5 + y + t$). This cover corresponds to a *motive* in Voevodsky's category $\\mathrm{DM}(\\mathbb{Q})$, and the Bring radical is essentially a section of this motivic structure. Connecting BR$(t)$ to the motivic Galois group $\\mathrm{Gal}_{\\mathrm{mot}}$ would situate this entry in the broader framework where Schanuel's conjecture and the period conjecture (cited in `algebraic-numbers-countable`'s keyInsights) take their natural form."
     ]
   },
@@ -169,7 +169,7 @@
     {
       "targetId": "abel-ruffini-oq-04-oq-03",
       "relationship": "related",
-      "description": "Galois solvability criterion (iff): a polynomial is solvable by radicals iff its Galois group is solvable — the theoretical foundation for the axiom `bringRadical_not_in_radicals`. Closing that axiom would require connecting the generic Bring-Jerrard quintic's Galois group $S_5$ to the criterion in this entry."
+      "description": "Galois solvability criterion (iff): a polynomial is solvable by radicals iff its Galois group is solvable — the theoretical foundation for the non-radical-expressibility claim (formerly the degenerate axiom `bringRadical_not_in_radicals`, since removed; handled conditionally and axiom-free in the sibling entry OQ-04-OQ-07-OQ-02). Fully closing it would require connecting the generic Bring-Jerrard quintic's Galois group $S_5$ to the criterion in this entry."
     },
     {
       "targetId": "solution-of-cubic",
@@ -189,7 +189,7 @@
     {
       "targetId": "abel-ruffini-oq-04-oq-02-oq-02",
       "relationship": "related",
-      "description": "Alternating groups: $A_n$ solvable iff $n \\leq 4$ — the alternating-group version of the threshold. The axiom `bringRadical_not_in_radicals` in this file rests on the chain: the generic Bring-Jerrard quintic $y^5 + y - t$ has Galois group $S_5$ over $\\mathbb{Q}(t)$; $S_5$ is not solvable because $[S_5, S_5] = A_5$ and $A_5$ is simple and non-abelian (proved in `abel-ruffini-oq-04-oq-02-oq-02` as the threshold fact); by Galois's criterion, the roots cannot be expressed in radicals. The alternating group classification made precise that the Bring radical is the only viable 'next vocabulary' beyond degree-4 radical formulas."
+      "description": "Alternating groups: $A_n$ solvable iff $n \\leq 4$ — the alternating-group version of the threshold. The non-radical-expressibility claim (formerly the degenerate axiom `bringRadical_not_in_radicals`, since removed; handled axiom-free in the sibling entry OQ-04-OQ-07-OQ-02) rests on the chain: the generic Bring-Jerrard quintic $y^5 + y - t$ has Galois group $S_5$ over $\\mathbb{Q}(t)$; $S_5$ is not solvable because $[S_5, S_5] = A_5$ and $A_5$ is simple and non-abelian (proved in `abel-ruffini-oq-04-oq-02-oq-02` as the threshold fact); by Galois's criterion, the roots cannot be expressed in radicals. The alternating group classification made precise that the Bring radical is the only viable 'next vocabulary' beyond degree-4 radical formulas."
     },
     {
       "targetId": "fundamental-theorem-algebra",
@@ -218,8 +218,8 @@
       "Polynomial"
     ],
     "namespace": "BringJerrardReduction",
-    "lineCount": 377,
-    "axiomCount": 2,
+    "lineCount": 376,
+    "axiomCount": 1,
     "theoremCount": 12,
     "definitionCount": 4,
     "path": "Proofs/AbelRuffiniOQ04OQ07.lean",
