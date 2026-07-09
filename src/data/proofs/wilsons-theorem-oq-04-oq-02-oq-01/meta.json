@@ -105,7 +105,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Identified the invariant that survives the passage to non-abelian groups: while the ordered product of all elements is order-dependent in G, its image in the abelianization Gᵃᵇ is order-independent and equals the order-free Finset product ∏ x : G, of x. Proved order-independence, the abelian contrast, and the smallest noncommuting witness. 5 theorems, 0 axioms, 133 lines, fully machine-verified.",
+    "summary": "Identified the invariant that survives the passage to non-abelian groups: while the ordered product of all elements is order-dependent in G, its image in the abelianization Gᵃᵇ is order-independent and equals the order-free Finset product ∏ x : G, of x. Proved order-independence, the abelian contrast, and the smallest noncommuting witness. 7 theorems, 0 axioms, 133 lines, fully machine-verified.",
     "implications": "This makes precise the sense in which 'the product of all elements of a finite group' is meaningful without commutativity: it is a canonical element of the abelianization Gᵃᵇ = G/[G,G]. The abelian Gauss–Wilson computation is recovered as the special case where Gᵃᵇ = G. The proof also exposes a reusable pattern — apply a homomorphism into a commutative target before invoking permutation-invariance — for reasoning about ordered products in noncommutative structures.",
     "openQuestions": [
       "Compute ∏ x : G, Abelianization.of x explicitly in terms of the structure of Gᵃᵇ (e.g. via the Sylow-2 subgroup of Gᵃᵇ and the multiplicity |[G,G]| with which each abelianization class is hit).",

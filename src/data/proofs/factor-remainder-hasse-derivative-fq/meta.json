@@ -2,7 +2,7 @@
   "id": "factor-remainder-hasse-derivative-fq",
   "title": "Full Failure Profile of the Ordinary-Derivative Multiplicity Test over 𝔽_q",
   "slug": "factor-remainder-hasse-derivative-fq",
-  "description": "Over a characteristic-zero field, (X − a)ᵏ ∣ p iff p and its first k − 1 ordinary derivatives vanish at a. In positive characteristic this test fails — the sibling entry factor-remainder-theorem-oq-01-oq-02 repairs it with Hasse derivatives and records a single witness (derivative(X²) = 0 over ZMod 2). This entry pins down the FULL failure profile over an arbitrary characteristic-p field (hence every finite field 𝔽_q = 𝔽_{p^f}). Using Mathlib's identity derivative^[k] f = k! • hasseDeriv k f, it proves the exact threshold (k! : F) = 0 ↔ p ≤ k, deduces that the ordinary test is reliable exactly up to order p − 1 and identically blind from order p on, and generalizes the Xᵖ counterexample to the whole family X^{p^e}: the Hasse test returns the true multiplicity p^e while every positive-order ordinary derivative vanishes, overcounting without bound. 8 theorems, 0 axioms, 0 sorries.",
+  "description": "Over a characteristic-zero field, (X − a)ᵏ ∣ p iff p and its first k − 1 ordinary derivatives vanish at a. In positive characteristic this test fails — the sibling entry factor-remainder-theorem-oq-01-oq-02 repairs it with Hasse derivatives and records a single witness (derivative(X²) = 0 over ZMod 2). This entry pins down the FULL failure profile over an arbitrary characteristic-p field (hence every finite field 𝔽_q = 𝔽_{p^f}). Using Mathlib's identity derivative^[k] f = k! • hasseDeriv k f, it proves the exact threshold (k! : F) = 0 ↔ p ≤ k, deduces that the ordinary test is reliable exactly up to order p − 1 and identically blind from order p on, and generalizes the Xᵖ counterexample to the whole family X^{p^e}: the Hasse test returns the true multiplicity p^e while every positive-order ordinary derivative vanishes, overcounting without bound. 15 theorems, 0 axioms, 0 sorries.",
   "meta": {
     "author": "Lean Genius",
     "sourceUrl": "https://en.wikipedia.org/wiki/Hasse_derivative",
@@ -65,7 +65,7 @@
     ],
     "axiomCount": 0,
     "lineCount": 280,
-    "assumptions": "None. All 8 theorems fully proved with 0 axioms and 0 sorries (no native_decide); #print axioms reports only [propext, Classical.choice, Quot.sound]. Results assume the standard CharP F p with p prime (Part I/II hold over an arbitrary characteristic-p commutative ring; the agreement and X^{p^e} multiplicity results specialize to a field, which every 𝔽_q is). No assumption is encoded in any structure or typeclass beyond Mathlib's CharP.",
+    "assumptions": "None. All 15 theorems fully proved with 0 axioms and 0 sorries (no native_decide); #print axioms reports only [propext, Classical.choice, Quot.sound]. Results assume the standard CharP F p with p prime (Part I/II hold over an arbitrary characteristic-p commutative ring; the agreement and X^{p^e} multiplicity results specialize to a field, which every 𝔽_q is). No assumption is encoded in any structure or typeclass beyond Mathlib's CharP.",
     "theoremCount": 15,
     "definitionCount": 0,
     "prerequisites": [
@@ -139,7 +139,7 @@
     }
   ],
   "conclusion": {
-    "summary": "A fully verified (0 sorries, 0 axioms, no native_decide) file of 150 lines and 8 theorems giving the complete failure profile of the ordinary-derivative multiplicity test over an arbitrary characteristic-p field (every 𝔽_q). The exact threshold (k! : F) = 0 ↔ p ≤ k splits the order axis cleanly: the ordinary test is reliable (equivalent to the Hasse test) exactly at orders 0..p−1 and identically blind at every order ≥ p. The X^{p^e} family realizes the worst case — true multiplicity p^e at 0, yet every positive-order ordinary derivative vanishes, so the naive test overcounts without bound.",
+    "summary": "A fully verified (0 sorries, 0 axioms, no native_decide) file of 150 lines and 15 theorems giving the complete failure profile of the ordinary-derivative multiplicity test over an arbitrary characteristic-p field (every 𝔽_q). The exact threshold (k! : F) = 0 ↔ p ≤ k splits the order axis cleanly: the ordinary test is reliable (equivalent to the Hasse test) exactly at orders 0..p−1 and identically blind at every order ≥ p. The X^{p^e} family realizes the worst case — true multiplicity p^e at 0, yet every positive-order ordinary derivative vanishes, so the naive test overcounts without bound.",
     "implications": "This quantifies the qualitative breakdown recorded by the sibling Hasse entry: it is not a sporadic failure but a sharp cutoff at order p, uniform across every finite field. The reliable-up-to-(p−1) result justifies using ordinary derivatives for low-order multiplicity in characteristic p, while the blind-from-p result and the X^{p^e} family show exactly where and how badly the Hasse refinement becomes indispensable — e.g. for separability/inseparability detection where polynomials in Xᵖ are precisely the inseparable obstructions.",
     "openQuestions": [
       "Quantify the overcounting for a general polynomial: characterize, in terms of its p-adic structure, the gap between the multiplicity certified by the ordinary derivatives and the true (Hasse) multiplicity at a root.",

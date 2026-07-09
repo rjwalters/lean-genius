@@ -54,7 +54,7 @@
     ]
   },
   "conclusion": {
-    "summary": "Erdős #247 lacunary transcendence formalized: HasWeakGrowth/HasStrongGrowth predicates, 2^k and k! proved to satisfy strong growth, squareSeq (k²) shows the gap between conditions, Erdős 1975 theorem axiomatized. Two axiom-free proofs of factorial transcendence via Liouville number connection and direct Liouville proof. 22 theorems, 506 lines, 1 axiom.",
+    "summary": "Erdős #247 lacunary transcendence formalized: HasWeakGrowth/HasStrongGrowth predicates, 2^k and k! proved to satisfy strong growth, squareSeq (k²) shows the gap between conditions, Erdős 1975 theorem axiomatized. Two axiom-free proofs of factorial transcendence via Liouville number connection and direct Liouville proof. 27 theorems, 506 lines, 1 axiom.",
     "implications": "The key insight — the factorial lacunary sum equals liouvilleNumber 2 - 1/2 — shows that for the most natural example, Erdős's 1975 result is not needed at all. The file separates the Lean formalization into: (1) the Erdős 1975 result for general super-polynomial sequences (axiomatized), (2) Mathlib's Liouville theory for factorial sums (fully proved). The squareSeq gap example makes precise what 'open' means: Σ 1/2^{k²} satisfies the conjecture hypothesis but not Erdős's theorem, and its transcendence is unknown.",
     "openQuestions": [
       "Prove the full Erdős conjecture: if lim sup n_k/k = ∞ (weak growth), then Σ 1/2^{n_k} is transcendental",
