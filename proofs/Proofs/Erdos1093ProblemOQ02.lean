@@ -860,3 +860,133 @@ theorem oq02_frontier_exact (k : ℕ) :
     (16 ≤ k → Nat.factorial (k + 10) ≤ (Nat.factorial k) ^ 2) :=
   ⟨fun hk => factorial_sq_lt_add_ten_of_k_le_15 hk,
    fun hk => sharp_bound_permits_deficiency_ten k hk⟩
+
+/-
+## Section XVI: The window-floor bound and an unconditional (ELS-free) location bound on `n`
+
+Sections IX–X bounded the smooth window product from below using only that every
+smooth value **exceeds `k`** (floor `k + 1`).  But the smooth values live in the
+length-`k` window `n, n-1, …, n-k+1`, so the *true* floor is the window minimum
+`n - k + 1` — attained at the extreme index `i = k - 1` — which is `≥ k + 1` and
+grows with `n`.  Feeding this sharper floor into the same distinctness argument
+(`prod_range_add_le_prod_of_forall_ge`, already stated for an arbitrary floor `m`)
+gives a strictly stronger, **`n`-dependent** bound
+
+    `(n - k + 1).ascFactorial (deficiency n k) ≤ k!`,
+
+which at the boundary `n = 2k` reduces *exactly* to the Section X bound
+`(k+1).ascFactorial (deficiency n k) ≤ k!` and is strictly stronger for every
+`n > 2k`.
+
+Its qualitative payoff is new to this file: dropping to the crude power form
+`(n - k + 1)^{deficiency} ≤ k!` and reading it as a constraint on `n` yields an
+**unconditional location bound** — for any target deficiency `d`,
+
+    `d ≤ deficiency n k  ⟹  (n - k + 1)^d ≤ k!`,   i.e.   `n ≤ k - 1 + (k!)^{1/d}`.
+
+This is elementary and `ofReduceBool`-free; it does **not** use the axiomatized ELS
+bound `els_upper_bound` (`n ≪ 2^k √k`).  The two are complementary: ELS is uniform
+in `d` (it already bounds `n` from `d ≥ 1`, far more tightly for small `d`), whereas
+this bound is weak for small `d` but *sharpens as the demanded deficiency grows* —
+a record-breaking deficiency `d ≥ 10` forces `(n - k + 1)^{10} ≤ k!`.  Earlier
+sessions noted that the only location bound available was the axiomatized ELS
+estimate; this shows an unconditional, deficiency-graded location bound exists by
+purely elementary means.
+-/
+
+/-- **The smooth window product dominates `(n-k+1).ascFactorial (deficiency)`.**
+Sharper companion of `ascFactorial_le_smooth_window_prod`: the `deficiency n k`
+smooth values are distinct integers each `≥ n - k + 1` (the window minimum, hit at
+index `i = k - 1`), so their product is at least the product of the `deficiency`
+smallest possible distinct values above the floor `n - k + 1`. -/
+theorem windowFloor_ascFactorial_le_smooth_window_prod {n k : ℕ} (hn : 2 * k ≤ n) :
+    (n - k + 1).ascFactorial (deficiency n k) ≤
+      ∏ i ∈ (Finset.range k).filter (fun i => IsKSmooth k (n - i)), (n - i) := by
+  set S := (Finset.range k).filter (fun i => IsKSmooth k (n - i)) with hS
+  have hcard : deficiency n k = S.card := rfl
+  set T := S.image (fun i => n - i) with hT
+  have hinj : ∀ a ∈ S, ∀ b ∈ S, (fun i => n - i) a = (fun i => n - i) b → a = b := by
+    intro a ha b hb hab
+    simp only at hab
+    have hak : a < k := Finset.mem_range.mp (Finset.filter_subset _ _ ha)
+    have hbk : b < k := Finset.mem_range.mp (Finset.filter_subset _ _ hb)
+    omega
+  have hTcard : T.card = S.card := Finset.card_image_of_injOn (by
+    intro a ha b hb hab
+    exact hinj a (Finset.mem_coe.mp ha) b (Finset.mem_coe.mp hb) hab)
+  have hPeq : (∏ x ∈ T, x) = ∏ i ∈ S, (n - i) := Finset.prod_image hinj
+  have hTge : ∀ x ∈ T, n - k + 1 ≤ x := by
+    intro x hx
+    rw [hT, Finset.mem_image] at hx
+    obtain ⟨i, hiS, rfl⟩ := hx
+    have hik : i < k := Finset.mem_range.mp (Finset.filter_subset _ _ hiS)
+    omega
+  calc (n - k + 1).ascFactorial (deficiency n k)
+      = (n - k + 1).ascFactorial T.card := by rw [hcard, hTcard]
+    _ = ∏ j ∈ Finset.range T.card, (n - k + 1 + j) := by rw [Nat.ascFactorial_eq_prod_range]
+    _ ≤ ∏ x ∈ T, x := prod_range_add_le_prod_of_forall_ge T hTge
+    _ = ∏ i ∈ S, (n - i) := hPeq
+
+/-- **Window-floor ascending-factorial bound.**  For an admissible pair,
+
+    `(n - k + 1).ascFactorial (deficiency n k) ≤ k!`.
+
+This strictly improves the Section X bound `(k+1).ascFactorial (deficiency) ≤ k!`
+whenever `n > 2k` (the floor `n - k + 1` exceeds `k + 1`), and coincides with it at
+the boundary `n = 2k`.  It follows from `windowFloor_ascFactorial_le_smooth_window_prod`
+and `smooth_window_prod_dvd_factorial`. -/
+theorem windowFloor_ascFactorial_le_factorial {n k : ℕ} (hn : 2 * k ≤ n)
+    (h : NoSmallPrimeFactors n k) :
+    (n - k + 1).ascFactorial (deficiency n k) ≤ Nat.factorial k := by
+  have hlow := windowFloor_ascFactorial_le_smooth_window_prod (n := n) (k := k) hn
+  have hdvd := smooth_window_prod_dvd_factorial h
+  exact hlow.trans (Nat.le_of_dvd (Nat.factorial_pos k) hdvd)
+
+/-- **Window-floor power bound.**  For an admissible pair,
+
+    `(n - k + 1) ^ (deficiency n k) ≤ k!`.
+
+The crude power form of `windowFloor_ascFactorial_le_factorial`, obtained directly
+from `Finset.pow_card_le_prod` at the window floor.  Unlike the closed form it reads
+cleanly as a constraint on `n`. -/
+theorem windowFloor_pow_le_factorial {n k : ℕ} (hn : 2 * k ≤ n)
+    (h : NoSmallPrimeFactors n k) :
+    (n - k + 1) ^ deficiency n k ≤ Nat.factorial k := by
+  set S := (Finset.range k).filter (fun i => IsKSmooth k (n - i)) with hS
+  have hcard : deficiency n k = S.card := rfl
+  set P := ∏ i ∈ S, (n - i) with hP
+  have hlow : (n - k + 1) ^ S.card ≤ P := by
+    apply Finset.pow_card_le_prod
+    intro i hi
+    have hir : i < k := Finset.mem_range.mp (Finset.filter_subset _ _ hi)
+    omega
+  have hdvd : P ∣ Nat.factorial k := smooth_window_prod_dvd_factorial h
+  have hle : P ≤ Nat.factorial k := Nat.le_of_dvd (Nat.factorial_pos k) hdvd
+  calc (n - k + 1) ^ deficiency n k = (n - k + 1) ^ S.card := by rw [hcard]
+    _ ≤ P := hlow
+    _ ≤ Nat.factorial k := hle
+
+/-- **Unconditional (ELS-free) location bound.**  For an admissible pair and *any*
+target deficiency `d ≤ deficiency n k`,
+
+    `(n - k + 1) ^ d ≤ k!`,
+
+so `n ≤ k - 1 + (k!)^{1/d}`: demanding a deficiency of at least `d` caps how large
+`n` can be, purely elementarily.  The bound sharpens as the target `d` grows; for a
+record-breaking `d ≥ 10` it forces `(n - k + 1)^{10} ≤ k!`.  Independent of the
+axiomatized ELS bound `els_upper_bound`. -/
+theorem windowFloor_pow_le_factorial_of_le {n k d : ℕ} (hn : 2 * k ≤ n)
+    (h : NoSmallPrimeFactors n k) (hd : d ≤ deficiency n k) :
+    (n - k + 1) ^ d ≤ Nat.factorial k :=
+  (Nat.pow_le_pow_right (by omega) hd).trans (windowFloor_pow_le_factorial hn h)
+
+/-- **Boundary consistency.**  At `n = 2k` the window-floor bound
+`windowFloor_ascFactorial_le_factorial` is *definitionally* the Section X sharp bound
+`deficiency_ascFactorial_le_factorial`, confirming Section XVI strictly generalizes
+Section X (equal at the boundary, sharper above it). -/
+theorem windowFloor_eq_sharp_bound_at_boundary {k : ℕ} (hk : 1 ≤ k)
+    (h : NoSmallPrimeFactors (2 * k) k) :
+    (k + 1).ascFactorial (deficiency (2 * k) k) ≤ Nat.factorial k := by
+  have hbound := windowFloor_ascFactorial_le_factorial (n := 2 * k) (k := k) (by omega) h
+  have hfloor : 2 * k - k + 1 = k + 1 := by omega
+  rwa [hfloor] at hbound

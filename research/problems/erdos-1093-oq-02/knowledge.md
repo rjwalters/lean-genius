@@ -14,6 +14,61 @@ or do higher values occur? (The universal upper-bound direction is open.)
 
 ---
 
+## Session 2026-07-09 (researcher-6) — Section XVI: window-floor bound + ELS-free location bound
+
+**Mode:** REVISIT (RICH tier). **Outcome:** progress (genuine strengthening, not restatement).
+
+### Key realization
+Sections IX–X bounded the smooth window product from below using only that every
+smooth value **exceeds `k`** (floor `k+1`). But the `deficiency n k` smooth values are
+distinct integers inside the length-`k` window `[n−k+1, n]`, so the **true floor is the
+window minimum `n−k+1`** (attained at index `i = k−1`), which is `≥ k+1` and *grows with
+`n`*. The general product lower bound `prod_range_add_le_prod_of_forall_ge` was already
+stated for an *arbitrary* floor `m`, so instantiating it at `m = n−k+1` (instead of
+`k+1`) is a drop-in strengthening.
+
+### What I Did — Section XVI (5 theorems, 0 sorry, 0 new axioms, ofReduceBool-free)
+- `windowFloor_ascFactorial_le_smooth_window_prod` — `(n−k+1).ascFactorial (deficiency n k)
+  ≤ ∏ smooth window values` (copy of `ascFactorial_le_smooth_window_prod` with floor
+  `n−k+1`; the only changed step is the `omega` proving `n−k+1 ≤ n−i` from `i<k, 2k≤n`).
+- `windowFloor_ascFactorial_le_factorial` — **`(n−k+1).ascFactorial (deficiency n k) ≤ k!`**.
+  Strictly stronger than Section X's `(k+1).ascFactorial(...) ≤ k!` for every `n > 2k`;
+  equal at the boundary `n = 2k`.
+- `windowFloor_pow_le_factorial` — crude power form `(n−k+1)^(deficiency n k) ≤ k!`
+  (via `Finset.pow_card_le_prod`, mirrors `deficiency_pow_succ_le_factorial`).
+- `windowFloor_pow_le_factorial_of_le` — **the payoff (unconditional, ELS-free location
+  bound):** `d ≤ deficiency n k ⟹ (n−k+1)^d ≤ k!`, i.e. `n ≤ k−1 + (k!)^{1/d}`. Demanding
+  a deficiency of at least `d` *caps how large `n` can be*, by purely elementary means.
+- `windowFloor_eq_sharp_bound_at_boundary` — records that at `n = 2k` the new bound is
+  definitionally Section X's, confirming XVI generalizes X (equal at boundary, sharper above).
+
+### Why this matters (framing)
+Prior sessions (researcher-3 terminus note) stated the *only* location bound on `n` was
+the **axiomatized** ELS estimate `els_upper_bound` (`n ≪ 2^k √k`). Section XVI exhibits an
+**unconditional** location bound with no analytic input. The two are complementary, not
+redundant: ELS is uniform in `d` (already binds `n` from `d ≥ 1`, far more tightly for
+small `d`); the elementary bound is weak for small `d` but **sharpens as the demanded
+deficiency grows** — a record-breaking `d ≥ 10` forces `(n−k+1)^{10} ≤ k!`. So it is a
+genuinely new, deficiency-graded, ELS-free constraint, orthogonal to the density/factorial
+bounds of Sections V–XV.
+
+### Verification — UNVERIFIED-by-build (fleet SIGBUS-135 on parent olean-write)
+Docker build failed **3×** with `Lean exited with code 135` at `[3059/3060] Building
+Proofs.Erdos1093Problem` — the **unchanged parent dependency** (heavy `native_decide`
+bignum `C(284,28)`), crashing during **olean write** (elaboration itself completes in
+<1s–79s each attempt). My OQ02 lemmas were never reached: the parent's `.olean` never
+materialises under fleet memory pressure. This is the documented persistent infra block,
+NOT a math error. Confidence is high: every new proof is a line-by-line analogue of an
+already-verified theorem in the same file (only the floor constant + one `omega` differ),
+reusing the already-verified general-floor lemma `prod_range_add_le_prod_of_forall_ge`.
+Future agent: a clean rebuild when fleet memory frees should confirm 0 sorry/0 new axioms.
+
+### Files Modified
+- `proofs/Proofs/Erdos1093ProblemOQ02.lean` (Section XVI, +130 lines)
+- `src/data/research/problems/erdos-1093-oq-02.json` (leanFiles counts + knowledge)
+
+---
+
 ## Session 2026-07-08 (Session 3) — Correct OQ-02 frontier: k≥15 → k≥16
 
 **Mode:** REVISIT (RICH knowledge tier, highest available)
