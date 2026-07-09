@@ -329,4 +329,205 @@ theorem variance_atom_bound {ι : Type*} (s : Finset ι) (w x : ι → ℚ)
   rw [← hμ_def] at hvar
   linarith [hsingle, hatom, hvar]
 
+/-- **Atom gain in mean-identity form.**  The directly consumable increment form of
+    `variance_atom_bound`: instead of the internal weighted mean `(Σwx)/(Σw)`, it
+    takes an *external* candidate mean `μ` together with the *mean identity*
+    `Σ wᵢxᵢ = (Σ wᵢ)·μ` as a hypothesis, and concludes
+
+      `(Σ wᵢ)·μ² + w₀·d² ≤ Σ wᵢxᵢ²`.
+
+    This is exactly the shape a block-refinement energy increment needs: the
+    coarse energy of a pair is `(Σ wᵢ)·μ²` with `μ = d(A,B)` the whole density and
+    `Σ wᵢ = |A||B|/n²`; the refined energy is `Σ wᵢxᵢ²` over the sub-cells; and the
+    mean identity is the *law of total density* `Σ|Aᵢ||Bⱼ|d(Aᵢ,Bⱼ) = |A||B|d(A,B)`.
+    Discharging that identity turns a single deviating sub-cell into a definite
+    energy gain `w₀·d²`, with no division and no reference to the internal mean. -/
+theorem weighted_second_moment_atom_gain {ι : Type*} (s : Finset ι) (w x : ι → ℚ)
+    (hw : ∀ i ∈ s, 0 ≤ w i) (μ : ℚ)
+    (hmean : (∑ i ∈ s, w i * x i) = (∑ i ∈ s, w i) * μ)
+    (i₀ : ι) (hi₀ : i₀ ∈ s) (w₀ d : ℚ) (hw₀ : 0 ≤ w₀) (hd : 0 ≤ d)
+    (hwlb : w₀ ≤ w i₀) (hdev : d ≤ |x i₀ - μ|) :
+    (∑ i ∈ s, w i) * μ ^ 2 + w₀ * d ^ 2 ≤ ∑ i ∈ s, w i * x i ^ 2 := by
+  rcases eq_or_ne (∑ i ∈ s, w i) 0 with hW | hW
+  · -- Total weight zero ⇒ every weight vanishes; both sides collapse to `0`.
+    have hall : ∀ i ∈ s, w i = 0 :=
+      (Finset.sum_eq_zero_iff_of_nonneg hw).mp hW
+    have hw0 : w₀ = 0 := le_antisymm (hall i₀ hi₀ ▸ hwlb) hw₀
+    have hrhs : (∑ i ∈ s, w i * x i ^ 2) = 0 :=
+      Finset.sum_eq_zero (fun i hi => by rw [hall i hi]; ring)
+    rw [hW, hw0, hrhs]; simp
+  · -- Nonzero total weight ⇒ `μ` is the honest weighted mean; apply the atom bound.
+    have hμ : μ = (∑ j ∈ s, w j * x j) / (∑ j ∈ s, w j) := by
+      rw [hmean, eq_div_iff hW]; ring
+    have hkey := variance_atom_bound s w x hw hW i₀ hi₀ w₀ d hw₀ hd hwlb
+      (hμ ▸ hdev)
+    rw [← hμ] at hkey
+    linarith [hkey]
+
+-- ═══════════════════════════════════════════════════════════════════
+-- PART IV: THE LAW OF TOTAL DENSITY (2×2 SIMULTANEOUS REFINEMENT)
+-- ═══════════════════════════════════════════════════════════════════
+
+/-- Helper: edge counts from `A` are additive over a disjoint split of the
+    `B`-side.  Mirror of `edge_count_union`, splitting the *second* coordinate. -/
+private theorem edge_count_union_right (G : SimpleGraph V) [DecidableRel G.Adj]
+    (A B₁ B₂ : Finset V) (hB : Disjoint B₁ B₂) :
+    ((A.product (B₁ ∪ B₂)).filter (fun p => G.Adj p.1 p.2)).card =
+    ((A.product B₁).filter (fun p => G.Adj p.1 p.2)).card +
+    ((A.product B₂).filter (fun p => G.Adj p.1 p.2)).card := by
+  have h_prod : A.product (B₁ ∪ B₂) = A.product B₁ ∪ A.product B₂ := by
+    ext ⟨a, b⟩
+    constructor
+    · intro h
+      have hab := Finset.mem_product.mp h
+      rcases Finset.mem_union.mp hab.2 with hb | hb
+      · exact Finset.mem_union.mpr (Or.inl (Finset.mem_product.mpr ⟨hab.1, hb⟩))
+      · exact Finset.mem_union.mpr (Or.inr (Finset.mem_product.mpr ⟨hab.1, hb⟩))
+    · intro h
+      rcases Finset.mem_union.mp h with hab | hab <;> {
+        have := Finset.mem_product.mp hab
+        exact Finset.mem_product.mpr ⟨this.1, Finset.mem_union.mpr (by tauto)⟩ }
+  rw [h_prod, Finset.filter_union]
+  apply Finset.card_union_of_disjoint
+  apply Finset.disjoint_filter_filter
+  rw [Finset.disjoint_left]
+  intro x h₁ h₂
+  exact absurd (Finset.mem_product.mp h₂).2
+    (Finset.disjoint_left.mp hB (Finset.mem_product.mp h₁).2)
+
+/-- **Weighted-average identity, second coordinate.**  Mirror of
+    `edgeDensity_union_mul`: for a disjoint split `B₁, B₂` of the `B`-side,
+    `|A|·|B₁∪B₂|·d(A,B₁∪B₂) = |A|·|B₁|·d(A,B₁) + |A|·|B₂|·d(A,B₂)`. -/
+theorem edgeDensity_union_mul_right (G : SimpleGraph V) [DecidableRel G.Adj]
+    (A B₁ B₂ : Finset V) (hB : Disjoint B₁ B₂) :
+    (↑A.card : ℚ) * ↑(B₁ ∪ B₂).card * edgeDensity G A (B₁ ∪ B₂) =
+    ↑A.card * ↑B₁.card * edgeDensity G A B₁ +
+    ↑A.card * ↑B₂.card * edgeDensity G A B₂ := by
+  have h₁ := card_mul_edgeDensity G A B₁
+  have h₂ := card_mul_edgeDensity G A B₂
+  have h₃ := card_mul_edgeDensity G A (B₁ ∪ B₂)
+  have he : (↑((A.product (B₁ ∪ B₂)).filter (fun p => G.Adj p.1 p.2)).card : ℚ) =
+      ↑((A.product B₁).filter (fun p => G.Adj p.1 p.2)).card +
+      ↑((A.product B₂).filter (fun p => G.Adj p.1 p.2)).card := by
+    exact_mod_cast edge_count_union_right G A B₁ B₂ hB
+  rw [h₃, h₁, h₂]; exact he
+
+/-- **Law of total density for a 2×2 simultaneous refinement.**  When a pair is
+    refined on *both* coordinates into a disjoint `2×2` grid of sub-cells, the
+    whole edge-count-weighted density is exactly the sum of the four sub-cell
+    edge-count-weighted densities:
+
+      `|A||B|·d(A,B) = Σ_{i,j∈{1,2}} |Aᵢ||Bⱼ|·d(Aᵢ,Bⱼ)`,
+
+    with `A = A₁∪A₂`, `B = B₁∪B₂`.  Equivalently, `d(A,B)` is the `|Aᵢ||Bⱼ|`-weighted
+    mean of the four sub-densities.  This is the *mean identity* that the variance
+    atom bound consumes: it certifies that the coarse density `d(A,B)` is the
+    honest weighted centroid of the refined density distribution, so a single
+    sub-cell whose density deviates from `d(A,B)` is a genuine variance atom.
+    Proved by splitting the `A`-side (`edgeDensity_union_mul`) and then each
+    resulting term on the `B`-side (`edgeDensity_union_mul_right`). -/
+theorem edgeDensity_prod_split (G : SimpleGraph V) [DecidableRel G.Adj]
+    (A₁ A₂ B₁ B₂ : Finset V) (hA : Disjoint A₁ A₂) (hB : Disjoint B₁ B₂) :
+    (↑(A₁ ∪ A₂).card : ℚ) * ↑(B₁ ∪ B₂).card * edgeDensity G (A₁ ∪ A₂) (B₁ ∪ B₂) =
+      ↑A₁.card * ↑B₁.card * edgeDensity G A₁ B₁ +
+      ↑A₁.card * ↑B₂.card * edgeDensity G A₁ B₂ +
+      ↑A₂.card * ↑B₁.card * edgeDensity G A₂ B₁ +
+      ↑A₂.card * ↑B₂.card * edgeDensity G A₂ B₂ := by
+  rw [edgeDensity_union_mul G A₁ A₂ (B₁ ∪ B₂) hA,
+      edgeDensity_union_mul_right G A₁ B₁ B₂ hB,
+      edgeDensity_union_mul_right G A₂ B₁ B₂ hB]
+  ring
+
+-- ═══════════════════════════════════════════════════════════════════
+-- PART V: THE 2×2 SIMULTANEOUS-REFINEMENT ENERGY INCREMENT
+-- ═══════════════════════════════════════════════════════════════════
+
+/-- **The genuine ε⁴ energy increment.**  Refining a pair `(A, B)` *simultaneously*
+    on both coordinates into a disjoint `2×2` grid `{A₁,A₂}×{B₁,B₂}` raises the
+    normalized energy by at least `(|A₁||B₁|/n²)·d²` whenever the corner sub-cell
+    `(A₁,B₁)` has density deviating from the whole density `d(A,B)` by at least `d`:
+
+      `pairEnergy G A B + (|A₁||B₁|/n²)·d²
+         ≤ Σ_{i,j} pairEnergy G Aᵢ Bⱼ`.
+
+    Unlike the two one-sided branches of sessions 4–5 (which could only exploit a
+    deviation against a *whole* partner and stumbled on the mixed second-difference
+    defect), this bound uses the witness cell's deviation from the coarse density
+    *directly*, via the variance atom bound over the four sub-cells.  The mean
+    identity is discharged by `edgeDensity_prod_split` (the law of total density),
+    so `d(A,B)` is the honest `|Aᵢ||Bⱼ|`-weighted centroid and the corner cell is a
+    genuine variance atom.  For an ε-irregular witness `|A₁| ≥ ε|A|`, `|B₁| ≥ ε|B|`,
+    `|d(A₁,B₁) − d(A,B)| > ε`, this yields an energy jump `≥ ε⁴·|A||B|/n²` — the
+    increment the AFKS iteration consumes, with no defect term. -/
+theorem pairEnergy_prod_refinement_gain (G : SimpleGraph V) [DecidableRel G.Adj]
+    (A₁ A₂ B₁ B₂ : Finset V) (hA : Disjoint A₁ A₂) (hB : Disjoint B₁ B₂)
+    (d : ℚ) (hd : 0 ≤ d)
+    (hdev : d ≤ |edgeDensity G A₁ B₁ - edgeDensity G (A₁ ∪ A₂) (B₁ ∪ B₂)|) :
+    pairEnergy G (A₁ ∪ A₂) (B₁ ∪ B₂) +
+        (↑A₁.card : ℚ) * ↑B₁.card / (Fintype.card V : ℚ) ^ 2 * d ^ 2 ≤
+      pairEnergy G A₁ B₁ + pairEnergy G A₁ B₂ +
+        pairEnergy G A₂ B₁ + pairEnergy G A₂ B₂ := by
+  classical
+  -- Cell selectors over the 4-element index `Bool × Bool`.
+  set P : Bool → Finset V := fun b => cond b A₂ A₁ with hP
+  set Q : Bool → Finset V := fun b => cond b B₂ B₁ with hQ
+  set w : Bool × Bool → ℚ := fun p => ((P p.1).card : ℚ) * (Q p.2).card with hwdef
+  set x : Bool × Bool → ℚ := fun p => edgeDensity G (P p.1) (Q p.2) with hxdef
+  -- Sum-expansion helper over `Bool × Bool`.
+  have expand : ∀ f : Bool × Bool → ℚ,
+      (∑ p ∈ (Finset.univ : Finset (Bool × Bool)), f p)
+        = f (false, false) + f (false, true) + f (true, false) + f (true, true) := by
+    intro f
+    simp only [Fintype.sum_prod_type, Fintype.sum_bool]
+    ring
+  have hcardA : ((A₁ ∪ A₂).card : ℚ) = A₁.card + A₂.card := by
+    rw [Finset.card_union_of_disjoint hA]; push_cast; ring
+  have hcardB : ((B₁ ∪ B₂).card : ℚ) = B₁.card + B₂.card := by
+    rw [Finset.card_union_of_disjoint hB]; push_cast; ring
+  -- Total weight `Σw = |A₁∪A₂|·|B₁∪B₂|`.
+  have hW : (∑ p ∈ (Finset.univ : Finset (Bool × Bool)), w p)
+      = (↑(A₁ ∪ A₂).card : ℚ) * ↑(B₁ ∪ B₂).card := by
+    rw [expand w]
+    simp only [hwdef, hP, hQ, cond_true, cond_false]
+    rw [hcardA, hcardB]; ring
+  -- Mean identity `Σ w·x = (Σw)·d(A,B)` — the law of total density.
+  have hmean : (∑ p ∈ (Finset.univ : Finset (Bool × Bool)), w p * x p)
+      = (∑ p ∈ (Finset.univ : Finset (Bool × Bool)), w p) *
+          edgeDensity G (A₁ ∪ A₂) (B₁ ∪ B₂) := by
+    rw [hW, expand (fun p => w p * x p)]
+    simp only [hwdef, hxdef, hP, hQ, cond_true, cond_false]
+    linear_combination -(edgeDensity_prod_split G A₁ A₂ B₁ B₂ hA hB)
+  have hwnn : ∀ p ∈ (Finset.univ : Finset (Bool × Bool)), 0 ≤ w p := by
+    intro p _; simp only [hwdef]; positivity
+  have hdev' : d ≤ |x (false, false) - edgeDensity G (A₁ ∪ A₂) (B₁ ∪ B₂)| := by
+    simp only [hxdef, hP, hQ, cond_false]; exact hdev
+  have hwlb : ((A₁.card : ℚ) * B₁.card) ≤ w (false, false) :=
+    le_of_eq (by simp [hwdef, hP, hQ])
+  have hw₀nn : (0 : ℚ) ≤ (A₁.card : ℚ) * B₁.card := by positivity
+  -- Apply the abstract atom gain over the four sub-cells.
+  have hgain := weighted_second_moment_atom_gain (Finset.univ : Finset (Bool × Bool))
+    w x hwnn (edgeDensity G (A₁ ∪ A₂) (B₁ ∪ B₂)) hmean (false, false)
+    (Finset.mem_univ _) ((A₁.card : ℚ) * B₁.card) d hw₀nn hd hwlb hdev'
+  rw [hW, expand (fun p => w p * x p ^ 2)] at hgain
+  simp only [hwdef, hxdef, hP, hQ, cond_true, cond_false] at hgain
+  -- Scale the raw excess by `1/n² ≥ 0` and identify the `pairEnergy` terms.
+  have hn2 : (0 : ℚ) ≤ 1 / (Fintype.card V : ℚ) ^ 2 := by positivity
+  have hscaled := mul_le_mul_of_nonneg_left hgain hn2
+  have hL : pairEnergy G (A₁ ∪ A₂) (B₁ ∪ B₂) +
+        (↑A₁.card : ℚ) * ↑B₁.card / (Fintype.card V : ℚ) ^ 2 * d ^ 2
+      = 1 / (Fintype.card V : ℚ) ^ 2 *
+        ((↑(A₁ ∪ A₂).card : ℚ) * ↑(B₁ ∪ B₂).card *
+            edgeDensity G (A₁ ∪ A₂) (B₁ ∪ B₂) ^ 2 + ↑A₁.card * ↑B₁.card * d ^ 2) := by
+    unfold pairEnergy; ring
+  have hR : pairEnergy G A₁ B₁ + pairEnergy G A₁ B₂ +
+        pairEnergy G A₂ B₁ + pairEnergy G A₂ B₂
+      = 1 / (Fintype.card V : ℚ) ^ 2 *
+        ((↑A₁.card : ℚ) * ↑B₁.card * edgeDensity G A₁ B₁ ^ 2 +
+          ↑A₁.card * ↑B₂.card * edgeDensity G A₁ B₂ ^ 2 +
+          ↑A₂.card * ↑B₁.card * edgeDensity G A₂ B₁ ^ 2 +
+          ↑A₂.card * ↑B₂.card * edgeDensity G A₂ B₂ ^ 2) := by
+    unfold pairEnergy; ring
+  rw [hL, hR]
+  exact hscaled
+
 end Szemeredi.RegularityOQ04Energy
