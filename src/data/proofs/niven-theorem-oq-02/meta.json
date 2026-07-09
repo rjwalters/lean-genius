@@ -102,6 +102,24 @@
       "mathContext": "φ = π/2 − θ = ((n − 2m)/(2n))π, cos φ = sin θ ⇒ sin θ ∈ {0, ±1/2, ±1}."
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "sin_niven",
+      "type": "core",
+      "description": "**Niven's theorem for sine.** If θ is a rational multiple of π (θ = (m/n)·π, n ≠ 0) and sin θ is rational, then sin θ ∈ {0, ±1/2, ±1}. Proved by setting the complementary angle φ = π/2 − θ — itself a rational multiple of π with denominator 2n — and transporting the cosine classification through the co-function identity cos(π/2 − θ) = sin θ.",
+      "leanType": "(θ : ℝ) (m n : ℤ) (hn : n ≠ 0) (hθ : θ = (m / n : ℝ) * π) (hsin : ∃ r : ℚ, Real.sin θ = r) : Real.sin θ = 0 ∨ Real.sin θ = 1 / 2 ∨ Real.sin θ = -1 / 2 ∨ Real.sin θ = 1 ∨ Real.sin θ = -1",
+      "startLine": 75,
+      "endLine": 93
+    },
+    {
+      "name": "cos_niven",
+      "type": "supporting",
+      "description": "**Cosine Niven (restated helper).** If θ is a rational multiple of π and cos θ is rational, then cos θ ∈ {0, ±1/2, ±1}. The deep step — 2·cos θ is integral over ℤ — is delegated to Mathlib's Real.isIntegral_two_mul_cos_rat_mul_pi; the rational algebraic integer 2·cos θ is then forced into [−2, 2] by the cosine bounds and the five cases discharged by interval_cases. Restated locally so the sine corollary is self-contained.",
+      "leanType": "(θ : ℝ) (m n : ℤ) (hn : n ≠ 0) (hθ : θ = (m / n : ℝ) * π) (hcos : ∃ r : ℚ, Real.cos θ = r) : Real.cos θ = 0 ∨ Real.cos θ = 1 / 2 ∨ Real.cos θ = -1 / 2 ∨ Real.cos θ = 1 ∨ Real.cos θ = -1",
+      "startLine": 48,
+      "endLine": 71
+    }
+  ],
   "conclusion": {
     "summary": "The sine companion to Niven's theorem is presented in Lean 4 with zero sorries and zero axioms. The cosine classification is restated (delegating the algebraic-integer step to Mathlib) and the sine result is obtained as a one-rewrite corollary: the complementary angle φ = π/2 − θ is shown to be a rational multiple of π (denominator 2n), and the co-function identity cos(π/2 − θ) = sin θ transports the cosine classification to sin θ ∈ {0, ±1/2, ±1}.",
     "implications": "Together with the cosine entry this completes the trigonometric half of Niven's classification, and supplies the form most directly used to prove the irrationality of sin at rational-degree angles. The reduction also illustrates a reusable pattern: a co-function or shift identity that maps a rational multiple of π to another rational multiple of π lets a single classification theorem cover all three of sin, cos (and, with more care, tan).",
@@ -115,6 +133,27 @@
       "targetId": "niven-theorem-oq-01",
       "relationship": "extends",
       "description": "Parent cosine entry. This sine companion is exactly the follow-up requested in the cosine entry's open questions ('Formalize the sine and tangent companions … sin θ ∈ {0, ±1/2, ±1} via the π/2 shift'), reusing its algebraic-integer core through the restated cos_niven helper."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Ivan Niven",
+      "title": "Irrational Numbers",
+      "year": 1956,
+      "venue": "Carus Mathematical Monographs No. 11, Mathematical Association of America",
+      "note": "The source of Niven's theorem, which classifies the rational values of the trigonometric functions at rational multiples of π. The cosine form gives cos θ ∈ {0, ±1/2, ±1}; the sine form proved here follows via the π/2 shift."
+    },
+    {
+      "authors": "Alex Meiburg and Snir Broshi",
+      "title": "Mathlib4: Real.isIntegral_two_mul_cos_rat_mul_pi (Mathlib.NumberTheory.Niven)",
+      "year": 2025,
+      "note": "Mathlib's Niven formalization: for every rational q, the real number 2·cos(q·π) is integral over ℤ. This entry delegates that algebraic-integer step to it and derives the sine classification as a corollary of the restated cosine core."
+    },
+    {
+      "authors": "Wikipedia contributors",
+      "title": "Niven's theorem",
+      "year": 2024,
+      "note": "en.wikipedia.org/wiki/Niven's_theorem. States the classification of rational sine, cosine, and tangent at rational multiples of π, together with the standard corollaries such as the irrationality of sin of rational-degree angles."
     }
   ],
   "leanFile": {
