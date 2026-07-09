@@ -171,18 +171,27 @@
   "mainTheorems": [
     {
       "name": "gib_gelin_cesaro",
-      "type": "theorem",
-      "description": "Gibonacci Gelin–Cesàro identity (flagship): for the general Horadam/gibonacci sequence G a b n = a·F n + b·F(n−1) with discriminant μ = a² − ab − b², G(n−2)·G(n−1)·G(n+1)·G(n+2) − G(n)⁴ = −μ². Proved by combining the gibonacci Cassini and Catalan (r = 2) identities recentred at n; the sign factor (−1)^|n| cancels in the difference of squares, giving the index-independent constant −μ²."
+      "type": "core",
+      "description": "Gibonacci Gelin–Cesàro identity (flagship): for the general Horadam/gibonacci sequence G a b n = a·F n + b·F(n−1) with discriminant μ = a² − ab − b², G(n−2)·G(n−1)·G(n+1)·G(n+2) − G(n)⁴ = −μ². Proved by combining the gibonacci Cassini and Catalan (r = 2) identities recentred at n; the sign factor (−1)^|n| cancels in the difference of squares, giving the index-independent constant −μ².",
+      "leanType": "(a b n : ℤ) : gib a b (n - 2) * gib a b (n - 1) * gib a b (n + 1) * gib a b (n + 2) - gib a b n ^ 4 = -(a ^ 2 - a * b - b ^ 2) ^ 2",
+      "startLine": 47,
+      "endLine": 83
     },
     {
       "name": "fib_gelin_cesaro",
-      "type": "theorem",
-      "description": "Fibonacci Gelin–Cesàro: the seed (a, b) = (1, 0) has μ = 1, so F(n−2)·F(n−1)·F(n+1)·F(n+2) − F(n)⁴ = −1. Recovered by specialising gib_gelin_cesaro."
+      "type": "key",
+      "description": "Fibonacci Gelin–Cesàro: the seed (a, b) = (1, 0) has μ = 1, so F(n−2)·F(n−1)·F(n+1)·F(n+2) − F(n)⁴ = −1. Recovered by specialising gib_gelin_cesaro.",
+      "leanType": "(n : ℤ) : Int.fib (n - 2) * Int.fib (n - 1) * Int.fib (n + 1) * Int.fib (n + 2) - Int.fib n ^ 4 = -1",
+      "startLine": 87,
+      "endLine": 91
     },
     {
       "name": "lucas_gelin_cesaro",
-      "type": "theorem",
-      "description": "Lucas Gelin–Cesàro: the seed (a, b) = (1, 2) has discriminant μ = −5, so L(n−2)·L(n−1)·L(n+1)·L(n+2) − L(n)⁴ = −25. Recovered by specialising gib_gelin_cesaro."
+      "type": "key",
+      "description": "Lucas Gelin–Cesàro: the seed (a, b) = (1, 2) has discriminant μ = −5, so L(n−2)·L(n−1)·L(n+1)·L(n+2) − L(n)⁴ = −25. Recovered by specialising gib_gelin_cesaro.",
+      "leanType": "(n : ℤ) : lucas (n - 2) * lucas (n - 1) * lucas (n + 1) * lucas (n + 2) - lucas n ^ 4 = -25",
+      "startLine": 95,
+      "endLine": 100
     }
   ],
   "sorries": 0
