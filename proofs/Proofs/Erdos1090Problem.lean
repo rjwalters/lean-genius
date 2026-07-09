@@ -819,6 +819,82 @@ theorem erdos1090_higherDim_affirmative (d k : ℕ) : Erdos1090HigherDim d k := 
     rw [← ha, ← ha', hcol' a, hcol' a']
 
 /-
+## Part X¾: Faithfulness of the collinearity predicates
+
+The entry expresses collinearity through three *bespoke* predicates — the
+three-point `Collinear p q r`, the geometric `OnLine`/`Line`, and `IsKCollinear` —
+rather than through Mathlib's canonical `Collinear ℝ` (`vectorSpan` of rank `≤ 1`).
+A reader must therefore *trust* that these agree with the standard mathematical
+notion.  The lemmas below discharge that trust: every configuration that is
+collinear in the entry's sense is `Collinear ℝ` in Mathlib's sense, so nothing is
+lost in the translation.  The capstone `erdos1090_construction_root_collinear`
+re-states the main construction with `Collinear ℝ`, confirming that the `k`
+monochromatic points affirm Erdős #1090 for the *standard* meaning of "collinear",
+not merely for the file-local definition.
+
+The shared engine is Mathlib's
+`collinear_iff_exists_forall_eq_smul_vadd`: a set `s` is `Collinear ℝ` iff there is
+a base point `p₀` and a direction `v` with every `p ∈ s` of the form `r • v +ᵥ p₀`.
+Both `Collinear p q r` (base `p`, direction `q - p`) and `OnLine l` (base
+`l.point`, direction `l.direction`) are literally in this shape.
+-/
+
+/-- The entry's three-point `Collinear p q r` implies Mathlib's canonical
+`Collinear ℝ` on the triple `{p, q, r}` (base point `p`, direction `q - p`). -/
+theorem collinear_three_root {p q r : Point} (h : Collinear p q r) :
+    _root_.Collinear ℝ ({p, q, r} : Set Point) := by
+  obtain ⟨t, ht⟩ := h
+  rw [collinear_iff_exists_forall_eq_smul_vadd]
+  refine ⟨p, q - p, ?_⟩
+  intro x hx
+  simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hx
+  rcases hx with rfl | rfl | rfl
+  · exact ⟨0, by simp⟩
+  · exact ⟨1, by simp [vadd_eq_add]⟩
+  · refine ⟨t, ?_⟩
+    rw [vadd_eq_add, ← ht]
+    abel
+
+/-- A set all of whose points lie `OnLine` a common geometric `Line` is
+`Collinear ℝ` in Mathlib's canonical sense (base `l.point`, direction
+`l.direction ≠ 0`). -/
+theorem onLine_root_collinear {S : Set Point} {l : Line}
+    (hl : ∀ p ∈ S, OnLine l p) : _root_.Collinear ℝ S := by
+  rw [collinear_iff_exists_forall_eq_smul_vadd]
+  refine ⟨l.point, l.direction, ?_⟩
+  intro p hp
+  obtain ⟨t, ht⟩ := hl p hp
+  refine ⟨t, ?_⟩
+  rw [vadd_eq_add, add_comm]
+  exact ht
+
+/-- The entry's `IsKCollinear S k` implies Mathlib's canonical `Collinear ℝ`: the
+`k` points genuinely lie on one affine line in the standard sense.  (`IsKCollinear`
+additionally records the cardinality bound `k ≤ S.card`, which `Collinear ℝ` does
+not track.) -/
+theorem isKCollinear_root_collinear {S : Finset Point} {k : ℕ}
+    (h : IsKCollinear S k) : _root_.Collinear ℝ (↑S : Set Point) := by
+  obtain ⟨_, l, hl⟩ := h
+  exact onLine_root_collinear (fun p hp => hl p (Finset.mem_coe.mp hp))
+
+/-- **Erdős #1090 with Mathlib-canonical collinearity.**  A restatement of the main
+construction whose `k` monochromatic points are `Collinear ℝ` in Mathlib's standard
+sense — not merely in the entry's bespoke `IsKCollinear`.  For every `k ≥ 3` there is
+a finite `A ⊂ ℝ²` such that every `2`-coloring yields a monochromatic `S ⊆ A` with
+`k ≤ |S|` and `Collinear ℝ (↑S)`.  Immediate from `erdos1090_construction` together
+with `isKCollinear_root_collinear`; this is the faithful form of the affirmative
+answer to Erdős #1090. -/
+theorem erdos1090_construction_root_collinear (k : ℕ) (hk : k ≥ 3) :
+    ∃ A : Finset Point, ∀ c : Point → Bool,
+      ∃ S : Finset Point, S ⊆ A ∧ k ≤ S.card ∧
+        _root_.Collinear ℝ (↑S : Set Point) ∧
+        ∀ p q : Point, p ∈ S → q ∈ S → c p = c q := by
+  obtain ⟨A, hA⟩ := erdos1090_construction k hk
+  refine ⟨A, fun c => ?_⟩
+  obtain ⟨S, hSA, hKcol, hmono⟩ := hA c
+  exact ⟨S, hSA, hKcol.1, isKCollinear_root_collinear hKcol, hmono⟩
+
+/-
 ## Part XI: Main Results Summary
 -/
 
