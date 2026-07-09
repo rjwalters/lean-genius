@@ -70,5 +70,17 @@
     "significance": "key",
     "relatedConcepts": ["Finset.card_insert_of_not_mem", "Finset.card_pair", "Finset.Subset.antisymm", "collision via equal size"],
     "prerequisites": ["triDissection", "collidingCubes filter definition"]
+  },
+  {
+    "id": "diss-oq0102-nontrivial",
+    "proofId": "dissection-of-cubes-oq-01-oq-02",
+    "range": { "startLine": 251, "endLine": 263 },
+    "type": "theorem",
+    "title": "The Collision Spectrum Is Genuinely Nontrivial",
+    "content": "three_mem_collisionSpectrum records that 3 is attainable (the three-equal-cubes triDissection witness), and collisionSpectrum_nontrivial assembles the full picture: {2,3} ⊆ collisionSpectrum ∧ IsLeast collisionSpectrum 2. So the spectrum is not a single point — it contains a value (3) strictly above its minimum (2), confirming that the minimum-collision-count question has a genuine range of answers rather than a fixed value. This wraps the entry: the least collision count is exactly 2 (isLeast_collisionSpectrum), yet larger counts genuinely occur, so 2 is a sharp minimum of a nontrivial set.",
+    "mathContext": "$\\{2,3\\}\\subseteq \\mathrm{collisionSpectrum}$ and $\\mathrm{IsLeast}(\\mathrm{collisionSpectrum}, 2)$ — the minimum is $2$ but the spectrum extends above it.",
+    "significance": "supporting",
+    "relatedConcepts": ["collision spectrum", "IsLeast", "sharp minimum of a nontrivial set", "attainable values"],
+    "prerequisites": ["isLeast_collisionSpectrum", "tri_has_three_collisions"]
   }
 ]
