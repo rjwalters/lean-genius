@@ -79,28 +79,32 @@
       "title": "Problem Statement and the Cube-Root Identity",
       "summary": "Module docstring explaining the centered-cube sharpening and the depressed cubic m³ - m = c³; cubeRoot_cube: (x³)^(1/3) = x for x ≥ 0 via Real.pow_rpow_inv_natCast",
       "startLine": 1,
-      "endLine": 65
+      "endLine": 65,
+      "mathContext": "$(x^3)^{1/3} = x$ for $x \\ge 0$; the centered-cube identity $n(n-1)(n-2) = (n-1)^3 - (n-1)$ recasts the balance equation as a depressed cubic."
     },
     {
       "id": "sharp-threshold",
       "title": "The Sharp Two-Sided Bound",
       "summary": "birthday_triple_threshold_sharp: c + 1 ≤ n ≤ c + 1 + 1/(3c). Establishes c³ = L via rpow, recasts the balance as m³ - m = c³, derives the lower bound from m³ ≥ c³ and the upper bound by collapsing 3c(m-c) ≤ 1 to (m-c)² ≥ 0",
       "startLine": 67,
-      "endLine": 116
+      "endLine": 116,
+      "mathContext": "With $c = (6d^2\\ln 2)^{1/3}$ and $m = n-1$, the depressed cubic $m^3 - m = c^3$ yields $c + 1 \\le n \\le c + 1 + \\frac{1}{3c}$: the lower bound from $m^3 \\ge c^3$, the upper from $(m-c)^2 \\ge 0$."
     },
     {
       "id": "const-one",
       "title": "The Exact Lower-Order Constant",
       "summary": "birthday_triple_threshold_const_one: |n − (c + 1)| ≤ 1/(3c), exhibiting the exact constant term 1 and the vanishing remainder O(d^(-2/3)). Obtained from the two one-sided bounds of birthday_triple_threshold_sharp via abs_le, both branches closing by linarith.",
       "startLine": 118,
-      "endLine": 140
+      "endLine": 140,
+      "mathContext": "$|n - (c + 1)| \\le \\frac{1}{3c}$: the exact lower-order constant is $1$ with remainder $\\frac{1}{3c} = O(d^{-2/3})$, so $n = (6d^2\\ln 2)^{1/3} + 1 + o(1)$."
     },
     {
       "id": "summary-and-axioms",
       "title": "Summary and Axiom Verification",
       "summary": "Closing docstring recapping the three results and the centered-cube mechanism, followed by #print axioms on both main theorems. The audit reports only propext / Classical.choice / Quot.sound (no Lean.ofReduceBool, no sorryAx), substantiating the entry's 0-axiom / 0-sorry claim.",
       "startLine": 141,
-      "endLine": 162
+      "endLine": 162,
+      "mathContext": "Sharpens the parent's additive-error-$2$ bound $c \\le n \\le c + 2$ to the exact $n = c + 1 + o(1)$; $\\texttt{\\#print axioms}$ reports only propext / Classical.choice / Quot.sound."
     }
   ],
   "conclusion": {
