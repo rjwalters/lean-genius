@@ -46,8 +46,8 @@
       "Discharged the Legendre identity v_2(n!) = n - s_2(n) from Mathlib (removed legendre_identity axiom)"
     ],
     "axiomCount": 2,
-    "lineCount": 232,
-    "assumptions": "3 axioms: erdos_1968_classical, barreto_leeham_theorem, barreto_leeham_bound. 0 sorries. The Legendre identity v_2(n!) = n - s_2(n) (legendre_for_two) is now fully proved from Mathlib's sub_one_mul_padicValNat_factorial; the former legendre_identity axiom has been removed.",
+    "lineCount": 251,
+    "assumptions": "2 axioms: barreto_leeham_theorem, barreto_leeham_bound. 0 sorries. The classical Erdős 1968 bound is now proved axiom-free (re-exported from Erdos729DigitSum.erdos_1968_uniform); its former erdos_1968_classical axiom has been removed. The Legendre identity v_2(n!) = n - s_2(n) (legendre_for_two) is fully proved from Mathlib's sub_one_mul_padicValNat_factorial; the former legendre_identity axiom has been removed.",
     "mathlib_version": "4.26.0",
     "theoremCount": 7,
     "definitionCount": 8
@@ -56,7 +56,7 @@
     "historicalContext": "Erdős proved in 1968 that if $a!b! \\mid n!$ then $a + b \\leq n + O(\\log n)$, using an elegant argument based on Legendre's formula for $v_2(n!) = n - s_2(n)$, where $s_2(n)$ is the binary digit sum. Problem 729, posed later, asks whether this logarithmic bound can be defeated by \"ignoring\" small primes: specifically, whether there are infinitely many $(a, b, n)$ with $a + b > n + C\\log n$ such that $n!/(a!b!)$ has denominator divisible only by primes $\\leq C$. Barreto and Leeham resolved the problem negatively, showing that large primes alone carry sufficient information to enforce the bound. Their proof adapts the technique from Problem #728, extending it to show that for any prime $p > C$, the constraint $v_p(a!) + v_p(b!) \\leq v_p(n!)$ already implies $a + b \\leq n + O(\\log n)$. This reveals a fundamental rigidity in factorial arithmetic: the divisibility structure is controlled by all primes collectively, and no finite set of exceptions can weaken it.",
     "problemStatement": "Let $C > 0$ be a constant. Are there infinitely many integers $a, b, n$ with $a + b > n + C\\log n$ such that the denominator of $n!/(a!b!)$ contains only primes $\\leq C$?",
     "text": "Let C > 0. Are there infinitely many (a, b, n) with a + b > n + C·log n such that n!/(a!b!) has denominator with only small primes? Barreto-Leeham proved NO: the bound a + b ≤ n + O(log n) persists even ignoring small primes.",
-    "proofStrategy": "The formalization defines `DividesFactorial` and `DividesFactorialModSmall` (allowing small prime factors in the denominator), states `InfinitelyManyExceptions` as the open question, and axiomatizes both Erdős's 1968 result and the Barreto-Leeham resolution. Legendre's formula is stated via `factorialPadicVal` and the digit sum identity. The main theorem `erdos_729_statement` combines both results, and `erdos_729_summary` provides the complete answer.",
+    "proofStrategy": "The formalization defines `DividesFactorial` and `DividesFactorialModSmall` (allowing small prime factors in the denominator), states `InfinitelyManyExceptions` as the open question, and axiomatizes the Barreto-Leeham resolution. Erdős's 1968 bound is proved axiom-free (re-exported from `Erdos729DigitSum.erdos_1968_uniform`), and Legendre's formula (`legendre_formula`) is proved from Mathlib's `padicValNat_factorial`. The main theorem `erdos_729_statement` combines both results, and `erdos_729_summary` provides the complete answer.",
     "keyInsights": [
       "Legendre's formula $v_p(n!) = (n - s_p(n))/(p-1)$ connects factorial divisibility to base-$p$ digit sums, with the special case $v_2(n!) = n - s_2(n)$ being particularly clean",
       "If $a!b! \\mid n!$, then $v_p(a!) + v_p(b!) \\leq v_p(n!)$ for all primes $p$. Using just $p = 2$ and the digit sum identity gives $a + b \\leq n + s_2(a) + s_2(b) - s_2(n) \\leq n + O(\\log n)$",
@@ -75,16 +75,16 @@
       "title": "Basic Definitions",
       "startLine": 31,
       "endLine": 64,
-      "summary": "Defines `factorialPadicVal` via Legendre's formula $\\sum_{i \\geq 1} \\lfloor n/p^i \\rfloor$, axiomatizes `legendre_formula`, and defines `DividesFactorial n a b` as $a! \\cdot b! \\mid n!$.",
-      "mathContext": "Formal definition: Defines `factorialPadicVal` via Legendre's formula $\\sum_{i \\geq 1} \\lfloor n/p^i \\rfloor$, axiomatizes `legendre_formula`, and defines `DividesFactorial n a b` as $a! \\cdot b! \\mid n!$."
+      "summary": "Defines `factorialPadicVal` via Legendre's formula $\\sum_{i \\geq 1} \\lfloor n/p^i \\rfloor$, proves `legendre_formula`, and defines `DividesFactorial n a b` as $a! \\cdot b! \\mid n!$.",
+      "mathContext": "Formal definition: Defines `factorialPadicVal` via Legendre's formula $\\sum_{i \\geq 1} \\lfloor n/p^i \\rfloor$, proves `legendre_formula`, and defines `DividesFactorial n a b` as $a! \\cdot b! \\mid n!$."
     },
     {
       "id": "erdos-classical",
       "title": "Erdős's Classical Result (1968)",
       "startLine": 65,
       "endLine": 82,
-      "summary": "Axiomatizes `erdos_1968_classical`: $a!b! \\mid n! \\implies a + b \\leq n + O(\\log n)$. Proves `erdos_proof_via_powers_of_two` by forwarding to the axiom, documenting that the original proof uses only the $p = 2$ constraint.",
-      "mathContext": "Axiomatizes `erdos_1968_classical`: $a!b! \\implies a + b \\leq n + O(\\log n)$. Proves `erdos_proof_via_powers_of_two` by forwarding to the axiom, documenting that the original proof uses only the $p = 2$ constraint."
+      "summary": "Proves the classical Erdős 1968 bound axiom-free (`Erdos729DigitSum.erdos_1968_uniform`): $a!b! \\mid n! \\implies a + b \\leq n + O(\\log n)$. Proves `erdos_proof_via_powers_of_two` by forwarding to the axiom-free 2-adic bound, documenting that the original proof uses only the $p = 2$ constraint.",
+      "mathContext": "Proves the classical Erdős 1968 bound axiom-free (`Erdos729DigitSum.erdos_1968_uniform`): $a!b! \\implies a + b \\leq n + O(\\log n)$. Proves `erdos_proof_via_powers_of_two` by forwarding to the axiom-free 2-adic bound, documenting that the original proof uses only the $p = 2$ constraint."
     },
     {
       "id": "relaxed-condition",
@@ -139,8 +139,8 @@
       "title": "Main Problem Statement",
       "startLine": 185,
       "endLine": 199,
-      "summary": "Proves `erdos_729_statement`: combines `erdos_1968_classical` and `barreto_leeham_theorem` into a single conjunction, establishing both the classical bound and its robustness.",
-      "mathContext": "Verified: Proves `erdos_729_statement`: combines `erdos_1968_classical` and `barreto_leeham_theorem` into a single conjunction, establishing both the classical bound and its robustness."
+      "summary": "Proves `erdos_729_statement`: combines the axiom-free classical bound (`Erdos729DigitSum.erdos_1968_uniform`) and `barreto_leeham_theorem` into a single conjunction, establishing both the classical bound and its robustness.",
+      "mathContext": "Verified: Proves `erdos_729_statement`: combines the axiom-free classical bound (`Erdos729DigitSum.erdos_1968_uniform`) and `barreto_leeham_theorem` into a single conjunction, establishing both the classical bound and its robustness."
     },
     {
       "id": "summary",
