@@ -84,7 +84,8 @@
       "**Density ⟺ irrationality is the qualitative seed of equidistribution**: it says the irrational rotation x ↦ x + a is minimal, the dynamical statement that every other dirichlet-approximation entry quantifies — counting (oq-01), geometry of numbers (oq-03), or sharp lower bounds (oq-05)",
       "**The circle norm IS distance to the nearest integer**: on AddCircle 1, AddCircle.norm_eq specialises to ‖(x : AddCircle 1)‖ = |x − round x|, so a metric statement about the circle is literally a Diophantine statement about how close n·a gets to ℤ",
       "**Density is fed a PUNCTURED ball**: to extract a NONtrivial approximation one intersects the orbit with B(0,ε) ∖ {0}, not B(0,ε) — the removed point 0 is what forces the witness multiplier k to be nonzero, hence a genuine positive-integer approximation rather than the empty n = 0",
-      "**Rational vs irrational is a finite/dense dichotomy**: the same iff says a rational rotation has a finite orbit (q evenly spaced points), so density exactly detects irrationality — the topological mirror of the arithmetic fact that a/q ∈ ℤ has bounded denominators"
+      "**Rational vs irrational is a finite/dense dichotomy**: the same iff says a rational rotation has a finite orbit (q evenly spaced points), so density exactly detects irrationality — the topological mirror of the arithmetic fact that a/q ∈ ℤ has bounded denominators",
+      "**Topological existence, but no rate**: the witness n comes from density (DenseRange.exists_mem_open), not from the pigeonhole/box principle behind classical Dirichlet, so the theorem is purely qualitative — for each ε it yields SOME positive n with |n·a − round(n·a)| < ε but no bound on how large n must be. Recovering the effective rate (Dirichlet's n ≤ N giving error < 1/N) is precisely the quantitative content the sibling entries build on top of this topological seed"
     ],
     "prerequisites": [
       "Mathlib's AddCircle API: AddCircle.denseRange_zsmul_coe_iff (multiples dense on the length-p circle ⟺ a/p irrational), the normed-group structure on AddCircle, AddCircle.norm_eq (‖(x:AddCircle p)‖ = |x − round(p⁻¹x)·p|), AddCircle.norm_coe_eq_abs_iff, and AddCircle.coe_neg",
@@ -110,12 +111,28 @@
       "summary": "denseRange_iff_irrational specialises Mathlib's AddCircle.denseRange_zsmul_coe_iff to the unit circle AddCircle 1. The general lemma says the multiples of a are dense on the circle of length p iff a/p is irrational; at p = 1 the side condition a/1 = a collapses to Irrational a, giving the clean Kronecker statement that the orbit {n·a} is dense mod 1 exactly when a is irrational."
     },
     {
-      "id": "homogeneous-approximation",
-      "title": "Homogeneous Dirichlet Approximation from Orbit Density",
+      "id": "approximation-setup",
+      "title": "Corollary Setup: a Small Nonzero Point on the Circle",
       "startLine": 54,
-      "endLine": 106,
-      "mathContext": "For irrational $a$ and $\\varepsilon > 0$: $\\exists\\, n > 0,\\ |n a - \\operatorname{round}(n a)| < \\varepsilon$.",
-      "summary": "exists_pos_nat_mul_sub_round_lt turns density into a concrete approximation. A nonzero circle point ↑δ with δ = min(ε,1)/2 ∈ (0,1/2] has norm exactly δ (AddCircle.norm_coe_eq_abs_iff), so it populates the open punctured ball B(0,ε) ∖ {0}. DenseRange.exists_mem_open meets this ball at some ↑(k·a) with ‖↑(k·a)‖ < ε and ↑(k·a) ≠ 0, forcing k ≠ 0. Setting n = |k| > 0 and reading the circle norm back as distance to the nearest integer (AddCircle.norm_eq at period 1, ‖(x:AddCircle 1)‖ = |x − round x|) — with a short sign case-split via Nat.cast_natAbs / abs_choice / AddCircle.coe_neg / norm_neg to align n·a with k·a — yields |n·a − round(n·a)| < ε."
+      "endLine": 73,
+      "mathContext": "$\\delta = \\min(\\varepsilon,1)/2 \\in (0, 1/2]$, and $\\|(\\delta : \\mathbb{R}/\\mathbb{Z})\\| = \\delta$ since $0 \\le \\delta \\le 1/2$.",
+      "summary": "exists_pos_nat_mul_sub_round_lt opens by importing orbit density (denseRange_iff_irrational applied to ha) and manufacturing a concrete small witness point: δ = min(ε,1)/2 lies in (0, 1/2], and on that range the circle-norm of ↑δ equals δ exactly (AddCircle.norm_coe_eq_abs_iff, valid because |δ| ≤ 1/2). This pins a genuine nonzero point of the circle strictly inside distance ε of 0, the raw material the density argument will match."
+    },
+    {
+      "id": "punctured-ball-density",
+      "title": "Density Meets the Punctured Ball B(0,ε) ∖ {0}",
+      "startLine": 74,
+      "endLine": 90,
+      "mathContext": "$B(0,\\varepsilon)\\setminus\\{0\\}$ is open and nonempty; density yields $k$ with $\\|{\\uparrow}(k a)\\| < \\varepsilon$ and ${\\uparrow}(k a)\\neq 0$, forcing $k\\neq 0$.",
+      "summary": "The punctured ball B(0,ε) ∖ {0} is open (isOpen_ball.sdiff isClosed_singleton) and nonempty (↑δ lies in it, being within ε of 0 and nonzero). DenseRange.exists_mem_open then produces an orbit point ↑(k·a) inside it, so ‖↑(k·a)‖ < ε while ↑(k·a) ≠ 0. Removing 0 from the ball is exactly what forces the multiplier k ≠ 0 — without the puncture the trivial k = 0 would satisfy the ball condition and give no approximation."
+    },
+    {
+      "id": "norm-to-distance",
+      "title": "From Circle Norm to Distance-to-Nearest-Integer",
+      "startLine": 91,
+      "endLine": 105,
+      "mathContext": "$\\|({\\uparrow}(m a) : \\mathbb{R}/\\mathbb{Z})\\| = |m a - \\operatorname{round}(m a)|$ at period 1; take $n = |k| > 0$.",
+      "summary": "Set n = |k| > 0 (Int.natAbs_pos.mpr hk0). AddCircle.norm_eq at period 1 reads the circle-norm of ↑(n·a) back as |n·a − round(n·a)|, and a short sign case-split (Nat.cast_natAbs / abs_choice, with AddCircle.coe_neg / norm_neg absorbing the k < 0 case) identifies ‖↑(n·a)‖ with ‖↑(k·a)‖. Chaining these with the ball bound gives |n·a − round(n·a)| = ‖↑(k·a)‖ < ε, completing the homogeneous approximation."
     }
   ],
   "mainTheorems": [
