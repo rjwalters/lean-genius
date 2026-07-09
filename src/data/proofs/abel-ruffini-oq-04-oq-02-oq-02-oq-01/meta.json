@@ -33,7 +33,7 @@
       "Subgroup.card_eq_card_quotient_mul_card_subgroup (Lagrange, for |A₄/V₄|=3)"
     ],
     "assumptions": "None. 0 axiom declarations, 0 sorries, no native_decide. #print axioms on composition_series_A4, quotient_iso_zmod3, and v4_iso_zmod2_sq returns only propext, Classical.choice, Quot.sound (the three foundational axioms). Verified with lake env lean against Mathlib 4.26.0.",
-    "lineCount": 135,
+    "lineCount": 138,
     "theoremCount": 11,
     "definitionCount": 0,
     "originalContributions": [
@@ -76,7 +76,7 @@
   },
   "leanFile": {
     "namespace": "AbelRuffiniA4CompositionSeries",
-    "lineCount": 135,
+    "lineCount": 138,
     "axiomCount": 0,
     "theoremCount": 11,
     "definitionCount": 0,
