@@ -49,7 +49,7 @@
     "id": "ann-sos-identity",
     "proofId": "herons-formula-oq-07",
     "range": {
-      "startLine": 66,
+      "startLine": 67,
       "endLine": 85
     },
     "type": "tactic",
@@ -66,6 +66,29 @@
     "prerequisites": [
       "sum-of-squares positivity",
       "polynomial identities closed by `ring`"
+    ]
+  },
+  {
+    "id": "ann-sq-eq-iff",
+    "proofId": "herons-formula-oq-07",
+    "range": {
+      "startLine": 86,
+      "endLine": 102
+    },
+    "type": "insight",
+    "title": "The algebraic equality condition, before square roots",
+    "content": "Before touching any square root, the equality case is settled purely in the squared side lengths by `weitzenbock_sq_eq_iff`: (a²+b²+c²)² = 48·heronProduct ↔ a² = b² ∧ b² = c². The forward direction reads the *same* SOS identity `sq_sum_sub_heron` backwards — if the difference is zero then the sum of squares (a²-b²)²+(b²-c²)²+(c²-a²)² vanishes, so each `sq_nonneg` term is zero (`linarith`) and `sq_eq_zero_iff` extracts a²=b² and b²=c². The converse is a one-line `nlinarith` from the identity. This lemma is the algebraic pivot that the geometric equality case `weitzenbock_eq_iff` later upgrades — separating the square-free algebra (a²=b²=c²) from the positivity step (a=b=c) keeps each half clean.",
+    "mathContext": "$(a^2+b^2+c^2)^2 = 48\\cdot\\mathrm{heronProduct} \\iff a^2=b^2 \\wedge b^2=c^2$. Equality in the squared Weitzenböck inequality is exactly the vanishing of the SOS remainder $2\\big((a^2-b^2)^2+(b^2-c^2)^2+(c^2-a^2)^2\\big)$, forcing $a^2=b^2=c^2$; positivity of the sides is not yet needed here.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "equality case of an SOS inequality",
+      "sq_eq_zero_iff",
+      "vanishing sum of squares",
+      "separating algebra from positivity"
+    ],
+    "prerequisites": [
+      "a sum of squares is zero iff each term is zero",
+      "the SOS identity sq_sum_sub_heron"
     ]
   },
   {
