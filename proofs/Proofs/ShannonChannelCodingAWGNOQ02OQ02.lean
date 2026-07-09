@@ -542,4 +542,88 @@ theorem awgn_multisymbol_power_ge_of_nonneg_covariance [IsProbabilityMeasure μ]
       Finset.sum_congr rfl fun i hi => second_moment_eq_variance (hW i hi) (hmean i hi)]
   exact variance_sum_ge_of_nonneg_covariance hW hcov
 
+/-!
+### Sharp *equality* boundary: when Cauchy–Schwarz is tight (a.e. affine dependence)
+
+The covariance Cauchy–Schwarz inequality `cov[X, Y]² ≤ Var[X]·Var[Y]` proved above raises the
+sharp question of its **equality case**.  The answer is the classical one: equality holds *iff*
+`X` and `Y` are **almost-everywhere affinely dependent**.  The engine is the exact identity
+
+    Var[Var[Y]·X − cov[X,Y]·Y] = Var[Y]·(Var[X]·Var[Y] − cov[X,Y]²),
+
+so, when `Var[Y] ≠ 0`, the (unnormalised) regression residual `Var[Y]·X − cov[X,Y]·Y` has *zero
+variance* — hence is a.e. constant — exactly when Cauchy–Schwarz is tight.  Dividing through by
+`Var[Y]` exhibits `X` as an a.e. affine function of `Y` with the **regression slope**
+`cov[X,Y]/Var[Y]`.  This is the sharp equality companion to the inequality boundary `stddev_add_le`,
+and completes the second-order picture: vanishing off-diagonal covariance makes the powers *add*
+(`awgn_multisymbol_power_of_uncorrelated`), while perfect (affine) dependence makes Cauchy–Schwarz
+*tight*.
+-/
+
+/-- **Variance zero ⟺ a.e. constant.**  For a square-integrable random variable the variance
+vanishes exactly when the variable is almost everywhere equal to its mean.  This is the real-valued
+companion of Mathlib's `ProbabilityTheory.evariance_eq_zero_iff`, obtained by discharging the
+`⊤` branch of `ENNReal.toReal_eq_zero_iff` via `MemLp.evariance_ne_top`. -/
+theorem variance_eq_zero_iff [IsFiniteMeasure μ] {X : Ω → ℝ} (hX : MemLp X 2 μ) :
+    Var[X; μ] = 0 ↔ X =ᵐ[μ] fun _ => μ[X] := by
+  have hdef : Var[X; μ] = (evariance X μ).toReal := rfl
+  rw [hdef, ENNReal.toReal_eq_zero_iff, or_iff_left hX.evariance_ne_top,
+    evariance_eq_zero_iff hX.aemeasurable]
+
+/-- **Regression-residual variance identity.**  The variance of the unnormalised regression residual
+`Var[Y]·X − cov[X,Y]·Y` factors exactly through the Cauchy–Schwarz defect:
+
+    Var[Var[Y]·X − cov[X,Y]·Y] = Var[Y]·(Var[X]·Var[Y] − cov[X,Y]²).
+
+This is a pure second-moment identity (no independence hypothesis).  Because the left-hand side is a
+variance it is `≥ 0`, which re-derives `covariance_sq_le_variance_mul_variance` whenever `Var[Y] > 0`;
+its sharper role is to pin down the *equality* case below. -/
+theorem variance_regression_residual [IsFiniteMeasure μ] {X Y : Ω → ℝ}
+    (hX : MemLp X 2 μ) (hY : MemLp Y 2 μ) :
+    Var[Var[Y; μ] • X - cov[X, Y; μ] • Y; μ]
+      = Var[Y; μ] * (Var[X; μ] * Var[Y; μ] - cov[X, Y; μ] ^ 2) := by
+  rw [variance_sub (hX.const_smul _) (hY.const_smul _), variance_smul, variance_smul,
+    covariance_smul_left, covariance_smul_right]
+  ring
+
+/-- **Sharp equality boundary of covariance Cauchy–Schwarz.**  For square-integrable `X, Y` with `Y`
+non-degenerate (`Var[Y] ≠ 0`), the Cauchy–Schwarz inequality `covariance_sq_le_variance_mul_variance`
+is *tight* — `cov[X,Y]² = Var[X]·Var[Y]` — if and only if the regression residual
+`Var[Y]·X − cov[X,Y]·Y` is almost everywhere constant.  This is the exact equality companion to that
+inequality, obtained from the residual-variance identity `variance_regression_residual` together with
+`variance_eq_zero_iff`. -/
+theorem covariance_sq_eq_variance_mul_variance_iff [IsFiniteMeasure μ] {X Y : Ω → ℝ}
+    (hX : MemLp X 2 μ) (hY : MemLp Y 2 μ) (hYnd : Var[Y; μ] ≠ 0) :
+    cov[X, Y; μ] ^ 2 = Var[X; μ] * Var[Y; μ] ↔
+      (Var[Y; μ] • X - cov[X, Y; μ] • Y) =ᵐ[μ]
+        fun _ => μ[Var[Y; μ] • X - cov[X, Y; μ] • Y] := by
+  rw [← variance_eq_zero_iff ((hX.const_smul _).sub (hY.const_smul _)),
+    variance_regression_residual hX hY]
+  constructor
+  · intro h; rw [h]; ring
+  · intro h
+    rcases mul_eq_zero.mp h with h0 | h0
+    · exact absurd h0 hYnd
+    · linarith
+
+/-- **Equality in Cauchy–Schwarz ⟹ a.e. affine dependence (regression line).**  If `Y` is
+non-degenerate (`Var[Y] ≠ 0`) and Cauchy–Schwarz is tight, then `X` is almost everywhere an affine
+function of `Y`, with slope the regression coefficient `cov[X,Y]/Var[Y]`:
+
+    X =ᵐ (cov[X,Y]/Var[Y])·Y + b.
+
+This is the textbook "equality in Cauchy–Schwarz ⟺ linear dependence", specialised to the covariance
+inner product on centered square-integrable variables — the sharp structural consequence of the
+equality boundary `covariance_sq_eq_variance_mul_variance_iff`. -/
+theorem exists_affine_of_covariance_sq_eq [IsFiniteMeasure μ] {X Y : Ω → ℝ}
+    (hX : MemLp X 2 μ) (hY : MemLp Y 2 μ) (hYnd : Var[Y; μ] ≠ 0)
+    (h : cov[X, Y; μ] ^ 2 = Var[X; μ] * Var[Y; μ]) :
+    ∃ b : ℝ, X =ᵐ[μ] fun ω => (cov[X, Y; μ] / Var[Y; μ]) * Y ω + b := by
+  refine ⟨μ[Var[Y; μ] • X - cov[X, Y; μ] • Y] / Var[Y; μ], ?_⟩
+  have hae := (covariance_sq_eq_variance_mul_variance_iff hX hY hYnd).mp h
+  filter_upwards [hae] with ω hω
+  simp only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul] at hω ⊢
+  field_simp
+  linear_combination hω
+
 end ShannonAWGNMultiSymbolPower
