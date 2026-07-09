@@ -99,7 +99,7 @@
       "title": "The Abstract WZ Telescoping Engine",
       "summary": "wz_telescope: over any AddCommGroup, the WZ equation plus boundary conditions force equal consecutive windowed row sums.",
       "startLine": 59,
-      "endLine": 98,
+      "endLine": 99,
       "mathContext": "If $F(n{+}1,k)-F(n,k)=G(n,k{+}1)-G(n,k)$ for all $k$ and $G(n,0)=G(n,N)=0$, then $\\sum_{k<N}F(n{+}1,k)=\\sum_{k<N}F(n,k)$. Proof: $\\sum_{k<N}(G(n,k{+}1)-G(n,k))=G(n,N)-G(n,0)=0$ by telescoping."
     },
     {
@@ -107,7 +107,7 @@
       "title": "A Verified WZ Pair and its Certificate",
       "summary": "The normalized summand F(n,k)=C(n,k)/2ⁿ, the guarded mate G(n,k)=−C(n,k−1)/2ⁿ⁺¹, and the hand-checked WZ equation.",
       "startLine": 100,
-      "endLine": 151,
+      "endLine": 152,
       "mathContext": "Certificate $R(n,k)=-k/(2(n-k+1))$, mate $G=R\\cdot F$. The WZ equation $F(n{+}1,k)-F(n,k)=G(n,k{+}1)-G(n,k)$ is verified by cases: the $k=0$ boundary and Pascal's rule $\\binom{n+1}{k}=\\binom{n}{k-1}+\\binom{n}{k}$ for $k\\ge 1$."
     },
     {
@@ -157,6 +157,18 @@
       "citation": "Petkovšek, M., Wilf, H. S., & Zeilberger, D. (1996). A = B. A K Peters.",
       "type": "book",
       "note": "Textbook treatment of WZ pairs, Gosper's and Zeilberger's algorithms; ∑ₖ C(n,k) = 2ⁿ is a running example."
+    },
+    {
+      "key": "Gosper1978",
+      "citation": "Gosper, R. W. (1978). Decision procedure for indefinite hypergeometric summation. Proceedings of the National Academy of Sciences, 75(1), 40–42.",
+      "type": "article",
+      "note": "Gosper's algorithm for indefinite hypergeometric summation — the antidifference procedure underlying the search for a WZ mate that this entry's open question 2 asks to formalize."
+    },
+    {
+      "key": "Koepf1998",
+      "citation": "Koepf, W. (1998). Hypergeometric Summation: An Algorithmic Approach to Summation and Special Function Identities. Vieweg.",
+      "type": "book",
+      "note": "Standard algorithmic reference for Gosper's and Zeilberger's algorithms and the WZ certificate machinery, giving the computer-algebra pipeline whose certificate-check half is formalized here."
     }
   ],
   "leanFile": {
