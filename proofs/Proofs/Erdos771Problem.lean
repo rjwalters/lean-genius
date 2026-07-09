@@ -394,6 +394,53 @@ theorem m_eq_two_case (n : ℕ) (hn : n ≥ 2) :
   calc n - 2 = (Finset.Icc 3 n).card := by rw [Nat.card_Icc]; omega
     _ ≤ _ := Finset.le_sup hmem
 
+/-- **General interval lower bound.** The interval `{m+1,…,n}` avoids `m` (all of
+    its elements exceed `m`, so no nonempty subset sum can equal `m`) and has
+    `n - m` elements, hence `maxAvoidingSize n m ≥ n - m`. This unifies the `m = 1`
+    and `m = 2` special cases (they are the instances `m = 1, 2`). -/
+theorem interval_avoiding_lower (n m : ℕ) : maxAvoidingSize n m ≥ n - m := by
+  classical
+  unfold maxAvoidingSize
+  have hmem : Finset.Icc (m + 1) n ∈
+      (Finset.powerset (Icc_n n)).filter (fun S => AvoidSum S m) := by
+    rw [Finset.mem_filter, Finset.mem_powerset]
+    refine ⟨fun x hx => by rw [Finset.mem_Icc] at hx; rw [Icc_n, Finset.mem_Icc]; omega,
+      avoid_of_forall_lt _ m (fun a ha => by rw [Finset.mem_Icc] at ha; omega)⟩
+  calc n - m = (Finset.Icc (m + 1) n).card := by rw [Nat.card_Icc]; omega
+    _ ≤ _ := Finset.le_sup hmem
+
+/-- **Prime-multiples lower bound.** For any prime `p ∤ m`, the multiples of `p`
+    in `{1,…,n}` form an `m`-avoiding subset of size `⌊n/p⌋` (every subset sum is
+    a multiple of `p`, but `m` is not), hence `maxAvoidingSize n m ≥ ⌊n/p⌋`. This
+    feeds the verified construction lemmas `prime_multiples_avoid` /
+    `prime_multiples_size` directly into a lower bound on the `f`-defining
+    function `maxAvoidingSize`. -/
+theorem primeMultiples_avoiding_lower (p m n : ℕ) (hp : Nat.Prime p) (hpm : ¬p ∣ m) :
+    maxAvoidingSize n m ≥ n / p := by
+  classical
+  unfold maxAvoidingSize
+  have hsub : primeMutliples p n ⊆ Icc_n n := by
+    intro x hx; rw [primeMutliples, Finset.mem_filter] at hx; exact hx.1
+  have hmem : primeMutliples p n ∈
+      (Finset.powerset (Icc_n n)).filter (fun S => AvoidSum S m) := by
+    rw [Finset.mem_filter, Finset.mem_powerset]
+    exact ⟨hsub, prime_multiples_avoid p m n hp hpm⟩
+  calc n / p = (primeMutliples p n).card := (prime_multiples_size p n hp.pos).symm
+    _ ≤ _ := Finset.le_sup hmem
+
+/-- **Bertrand-quantitative lower bound.** For every `m ≥ 1` there is a prime
+    `m < p ≤ 2m` (Bertrand's postulate); it cannot divide `m` (a divisor of a
+    positive `m` is at most `m`), so the prime-multiples bound and Nat-division
+    antitonicity give `maxAvoidingSize n m ≥ ⌊n/(2m)⌋`. Unlike the interval bound,
+    this stays useful as `m` grows relative to `n`. -/
+theorem maxAvoidingSize_ge_div_two_mul (n m : ℕ) (hm : 1 ≤ m) :
+    maxAvoidingSize n m ≥ n / (2 * m) := by
+  obtain ⟨p, hp, hmp, hp2m⟩ := Nat.exists_prime_lt_and_le_two_mul m (by omega)
+  have hpm : ¬p ∣ m := fun hdvd => by
+    have := Nat.le_of_dvd (by omega) hdvd; omega
+  calc n / (2 * m) ≤ n / p := Nat.div_le_div_left hp2m hp.pos
+    _ ≤ maxAvoidingSize n m := primeMultiples_avoiding_lower p m n hp hpm
+
 /-- Small primes give good constructions. -/
 def smallPrimeConstruction (m n : ℕ) : Finset ℕ :=
   let p := Nat.minFac (m + 1)  -- A prime not dividing m
