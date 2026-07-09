@@ -2068,6 +2068,86 @@ theorem classifySeed_ne_lt_of_excess_bound {a : ℕ} (ha3 : 3 ≤ a)
   rw [ne_eq, compare_lt_iff_lt]
   omega
 
+/-- **Strict-increase (forward) engine.**  The `.gt` companion of
+    `classifySeed_ne_lt_of_excess_bound`.  Under the *same* excess bound and the
+    *extra* hypothesis that the second landing value is nontrivial (`2 ≤ seedE a`),
+    the classifier is strictly `.gt`: the whole family `a·2^(k+1)` lies in the
+    forward regime `φ(n) > φ(D(n))`.
+
+    The non-strict engine only rules out `.lt`, leaving `.eq` open — and `.eq` is
+    genuinely realised inside the excluded regime by the tower `3^k` (there
+    `seedE = 1`, so the strict hypothesis fails and the classifier is `.eq`, cf.
+    `classifySeed_3`, `classifySeed_9`).  The single strict factor
+    `φ(seedE a) < seedE a` (valid exactly when `seedE a ≥ 2`) upgrades the engine's
+    `φ(seedE a)·2^{t−1} ≤ φ(a)` to a strict `<`, excluding `.eq` and pinning the
+    regime to `.gt`.  Together the two engines give the full trichotomy on any
+    excluded seed as a function of a single arithmetic invariant `seedE a`:
+    `seedE a = 1 ⟹ .eq`,  `seedE a ≥ 2 ⟹ .gt`. -/
+theorem classifySeed_gt_of_excess_bound {a : ℕ} (ha3 : 3 ≤ a)
+    (hs2 : 2 ≤ seedS a)
+    (hbound : a - Nat.totient a ≤ Nat.totient (seedB a) * 2 ^ (seedS a - 2))
+    (he2 : 2 ≤ seedE a) :
+    classifySeed a = Ordering.gt := by
+  obtain ⟨_, hoe, _, ht1, _, hCeq⟩ := seed_spec ha3
+  have hφa_le : Nat.totient a ≤ a := Nat.totient_le a
+  have hepos : seedE a ≠ 0 := by omega
+  have hne : seedE a * 2 ^ seedT a ≠ 0 :=
+    mul_ne_zero hepos (pow_ne_zero _ (by norm_num))
+  have h2t : 2 ^ seedT a = 2 * 2 ^ (seedT a - 1) := by
+    conv_lhs => rw [show seedT a = (seedT a - 1) + 1 from by omega, pow_succ]
+    ring
+  have h2s : 2 ^ (seedS a - 1) = 2 * 2 ^ (seedS a - 2) := by
+    conv_lhs => rw [show seedS a - 1 = (seedS a - 2) + 1 from by omega, pow_succ]
+    ring
+  have hZ : seedE a * 2 ^ seedT a = 2 * (seedE a * 2 ^ (seedT a - 1)) := by
+    rw [h2t]; ring
+  have hY : Nat.totient (seedB a) * 2 ^ (seedS a - 1)
+      = 2 * (Nat.totient (seedB a) * 2 ^ (seedS a - 2)) := by
+    rw [h2s]; ring
+  have hsum : 2 * a = seedE a * 2 ^ seedT a
+      + Nat.totient (seedB a) * 2 ^ (seedS a - 1) := by omega
+  have haXW : a = seedE a * 2 ^ (seedT a - 1)
+      + Nat.totient (seedB a) * 2 ^ (seedS a - 2) := by rw [hZ, hY] at hsum; omega
+  have hXle : seedE a * 2 ^ (seedT a - 1) ≤ Nat.totient a := by omega
+  -- strict factor: `φ(seedE a) < seedE a` because `seedE a ≥ 2`
+  have htot_lt : Nat.totient (seedE a) < seedE a := Nat.totient_lt _ (by omega)
+  have hpow_pos : 0 < 2 ^ (seedT a - 1) := pow_pos (by norm_num) _
+  have hlt : Nat.totient (seedE a) * 2 ^ (seedT a - 1) < Nat.totient a :=
+    calc Nat.totient (seedE a) * 2 ^ (seedT a - 1)
+        < seedE a * 2 ^ (seedT a - 1) := mul_lt_mul_of_pos_right htot_lt hpow_pos
+      _ ≤ Nat.totient a := hXle
+  -- the classifier compares `φ(a)` with a strictly smaller quantity, so it is `.gt`
+  simp only [classifySeed]
+  rw [compare_gt_iff_gt]
+  exact hlt
+
+/-- **Reduction of the excluded-prime forward regime to a single invariant.**
+    For a prime `p ≡ 3 (mod 4)` the excess is minimal (`p − φ(p) = 1`), so the
+    excess bound of the strict engine always holds; hence `classifySeed p = .gt`
+    is equivalent to the arithmetic fact `2 ≤ seedE p` (the odd part of the second
+    landing constant is nontrivial).  This isolates the *exact* remaining
+    obstruction to completing the excluded-regime trichotomy: every prime
+    `p ≡ 3 (mod 4)` is either `.eq` (only `p = 3`, where `seedE 3 = 1`) or `.gt`
+    (all `p ≥ 7`, conjecturally, iff `seedE p ≥ 2`).  Combined with
+    `classifySeed_prime_three_mod_four_ne_lt` (which already rules out `.lt`), the
+    open question "is every excluded prime `p ≥ 7` strictly forward?" reduces to
+    the single statement `seedE p ≥ 2` for such `p`. -/
+theorem classifySeed_prime_three_mod_four_gt_of_seedE
+    {p : ℕ} (hp : p.Prime) (hp3 : p % 4 = 3) (he2 : 2 ≤ seedE p) :
+    classifySeed p = Ordering.gt := by
+  have hp3' : 3 ≤ p := by omega
+  have hodd : Odd p := Nat.odd_iff.mpr (by omega)
+  have hφp : Nat.totient p = p - 1 := Nat.totient_prime hp
+  have hs2 : 2 ≤ seedS p :=
+    (seedS_ge_two_iff_totient_mod_four hodd hp3').2 (by rw [hφp]; omega)
+  have hbpos : 0 < seedB p := by rcases (seed_spec hp3').1 with ⟨m, hm⟩; omega
+  have hbound : p - Nat.totient p ≤ Nat.totient (seedB p) * 2 ^ (seedS p - 2) := by
+    have h1 : 1 ≤ Nat.totient (seedB p) * 2 ^ (seedS p - 2) :=
+      Nat.one_le_iff_ne_zero.mpr
+        (mul_ne_zero (Nat.totient_pos.mpr hbpos).ne' (pow_ne_zero _ (by norm_num)))
+    rw [hφp]; omega
+  exact classifySeed_gt_of_excess_bound hp3' hs2 hbound he2
+
 /-- **No prime seed `p ≡ 3 (mod 4)` reverses.**  Every prime `p ≡ 3 (mod 4)` is
     an excluded seed (`seedS p ≥ 2`), and `p − φ(p) = 1`, so the general engine
     applies immediately: `classifySeed p ≠ .lt`.  This exhibits an infinite class

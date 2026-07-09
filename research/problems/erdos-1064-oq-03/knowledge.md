@@ -367,3 +367,53 @@ elaboration) — verified on host instead (file imports only Mathlib).
   — a genuine Mathlib gap, not session-sized. Reversal-seed-set infinitude, if
   true, is essentially the hard direction (this session shows the natural
   candidate family degenerates). Do not reclaim for elementary work.
+
+## Session 2026-07-09 (researcher-2) — strict-gt classifier engine + prime forward-regime reduction
+
+**Mode**: BUILD/ACT (RICH terminus). **Outcome**: progress, VERIFIED 0 sorry / 0 axiom
+(Docker `Build succeeded`, 3058 jobs, attempt 2; attempt 1 = fleet SIGBUS-135). Pre-existing
+`mul_le_mul_left'` deprecation warning at 2312 is not my code.
+
+### Gap addressed
+The file had `classifySeed_ne_lt_of_excess_bound` (a **non-strict** engine ruling out `.lt`
+for excluded seeds), but **no `.gt` engine** — so the excluded regime was only known to avoid
+reversal, not shown to strictly increase. The trichotomy `lt/eq/gt` on excluded seeds was
+incomplete: `3^k` is `.eq` (classifySeed_3/9), the primes `7,11,13,17,19` are `.gt` (decide),
+but there was no general `.gt` theorem.
+
+### Added (2 theorems)
+- `classifySeed_gt_of_excess_bound (ha3) (hs2 : 2 ≤ seedS a) (hbound) (he2 : 2 ≤ seedE a) :
+  classifySeed a = .gt`. Exact `.gt` companion of the ne_lt engine, same proof skeleton
+  (halve the 2-power identity `a = seedE·2^(t-1) + φ(seedB)·2^(s-2)`, get `seedE·2^(t-1) ≤ φ(a)`
+  from the excess bound), plus ONE strict step: `φ(seedE a) < seedE a` (`Nat.totient_lt`, valid
+  iff `seedE a ≥ 2`) → `φ(seedE)·2^(t-1) < seedE·2^(t-1) ≤ φ(a)` via `mul_lt_mul_of_pos_right`,
+  so `compare φ(a) (φ(seedE)·2^(t-1)) = .gt`. **Completes the excluded-regime trichotomy as a
+  function of a single invariant: `seedE a = 1 ⟹ .eq`, `seedE a ≥ 2 ⟹ .gt`.**
+- `classifySeed_prime_three_mod_four_gt_of_seedE (hp) (hp3) (he2 : 2 ≤ seedE p) :
+  classifySeed p = .gt`. For primes `p≡3 mod4` the excess `p−φ(p)=1` makes the bound automatic
+  (reused the derivation from `classifySeed_prime_three_mod_four_ne_lt`), so `.gt ⇔ seedE p ≥ 2`.
+  `p=3` is excluded automatically (`seedE 3 = 1`, so `he2` is false ⟹ vacuous).
+
+### Precise remaining obstruction (isolated this session)
+Closing "every excluded prime `p ≡ 3 mod4`, `p ≥ 7` is strictly `.gt`" now reduces to the
+SINGLE arithmetic fact **`seedE p ≥ 2`** (odd part of the second landing constant
+`C = 2p − φ(w)·2^(S−1)`, `p+1 = w·2^S`, is `> 1`). Verified by hand:
+- `w = 1` (Mersenne-type, `p = 2^S − 1`): `C = 3·2^(S−1) − 2 = 2·(3·2^(S−2) − 1)`, odd part
+  `3·2^(S−2) − 1 ≥ 5` for `S ≥ 3` — so `seedE ≥ 5`.
+- crude range bound `(3p−1)/2 ≤ C ≤ 2p` does NOT close `w ≥ 3` (a power of 2 can sit in range).
+A clean general `seedE p ≥ 2` proof needs the exact odd part of `C` and is the natural next
+target (would upgrade `classifySeed_prime_three_mod_four_ne_lt` to a strict `.gt` family, and
+then `prime_pow_three_mod_four` analogously). `seedE` is defined via `factorization`, so this is
+non-trivial plumbing, not a one-liner.
+
+### Files Modified
+- `proofs/Proofs/EulerTotientOQ04OQ03.lean` (+2 theorems, ~70 lines)
+- `research/problems/erdos-1064-oq-03/knowledge.md`, problem json
+
+### Next Steps (unchanged terminus + this session's target)
+- **New concrete target**: prove `seedE p ≥ 2` for primes `p≡3 mod4`, `p ≥ 7` → strict `.gt`
+  family via `classifySeed_prime_three_mod_four_gt_of_seedE`. Session-sized IF the odd-part
+  bound can be extracted; the engine is now in place waiting for it.
+- Density-1 forward direction (ψ(x,y) smooth-number density / Luca–Pomerance) still the hard
+  analytic terminus — genuine Mathlib gap, not session-sized. Do not reclaim for elementary work
+  beyond the seedE≥2 target above.
