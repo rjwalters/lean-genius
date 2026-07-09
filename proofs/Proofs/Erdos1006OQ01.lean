@@ -526,6 +526,62 @@ theorem isCoverGraph_of_triangle [Fintype V] {a b c : V}
     ¬ isCoverGraph G := fun h =>
   triangle_not_robust' hab hbc hac (cover_graph_characterization.mpr h)
 
+/-- **Robust acyclic orientability is subgraph-monotone (no axiom).** If `G`
+    admits a robustly acyclic orientation and `H ≤ G` is a subgraph on the same
+    vertex set (fewer edges), then `H` also admits one — restrict the orientation
+    of `G` to `H`'s edges.
+
+    The key point is that deleting edges only *removes* directed paths, so it can
+    never *create* a dependent arc: any `H`-arc that is dependent in the
+    restriction (an alternate `H`-path connects its endpoints) is already
+    dependent in `G` (that path is a fortiori a `G`-path), contradicting
+    robustness of the orientation of `G`. Acyclicity is inherited by reusing the
+    very same rank function.
+
+    This is the structural principle behind the triangle obstruction
+    `triangle_not_robust'`: every subgraph of a cover graph is again a cover
+    graph (via `cover_graph_characterization`), so *any* non-robust graph that
+    embeds as a subgraph is a certificate of non-robustness — see
+    `not_robust_of_subgraph`. That cover graphs are closed under subgraphs yet
+    have no finite forbidden-subgraph characterization (Nešetřil–Rödl) is exactly
+    why the class is hard to recognize; triangle-freeness is only the first,
+    smallest, obstruction. -/
+theorem admitsRobust_mono {G H : SimpleGraph V} (hHG : H ≤ G)
+    (hG : admitsRobustAcyclicOrientation G) :
+    admitsRobustAcyclicOrientation H := by
+  obtain ⟨O, ⟨rank, hrank⟩, hNoDep⟩ := hG
+  -- Restrict the arcs of `O` to those edges that survive in `H`.
+  refine ⟨⟨fun u v => O.arc u v ∧ H.Adj u v, ?_, ?_, ?_⟩, ⟨rank, ?_⟩, ?_⟩
+  · -- covers: an `H`-edge is a `G`-edge, oriented by `O`, and stays an `H`-edge.
+    intro u v hadj
+    rcases O.covers u v (hHG hadj) with h | h
+    · exact Or.inl ⟨h, hadj⟩
+    · exact Or.inr ⟨h, H.symm hadj⟩
+  · -- exclusive: inherited from `O`.
+    rintro u v ⟨⟨h1, _⟩, ⟨h2, _⟩⟩
+    exact O.exclusive u v ⟨h1, h2⟩
+  · -- respects: an arc of the restriction is an `H`-edge by construction.
+    rintro u v ⟨_, h⟩; exact h
+  · -- acyclic: the same rank witnesses it, since every restricted arc is an `O`-arc.
+    rintro u v ⟨h, _⟩; exact hrank u v h
+  · -- no dependent arc: lift a dependent restricted arc back to a dependent `O`-arc.
+    rintro ⟨u, v, ⟨harc, _⟩, hpath⟩
+    refine hNoDep ⟨u, v, harc, ?_⟩
+    induction hpath with
+    | single hr => exact Relation.TransGen.single ⟨hr.1.1, hr.2⟩
+    | tail _ hr ih => exact Relation.TransGen.tail ih ⟨hr.1.1, hr.2⟩
+
+/-- **Obstruction propagation (no axiom):** the contrapositive of
+    `admitsRobust_mono`. If some subgraph `H ≤ G` admits *no* robustly acyclic
+    orientation, then neither does `G`. This is the usable form of the
+    forbidden-subgraph principle: exhibiting any non-robust subgraph (e.g. a
+    triangle via `triangle_not_robust`) certifies that the whole graph is not a
+    cover graph. -/
+theorem not_robust_of_subgraph {G H : SimpleGraph V} (hHG : H ≤ G)
+    (hH : ¬ admitsRobustAcyclicOrientation H) :
+    ¬ admitsRobustAcyclicOrientation G :=
+  fun hG => hH (admitsRobust_mono hHG hG)
+
 /-- **Edgeless graphs admit a robustly acyclic orientation.** With no arcs to
     place, the empty orientation (`arc := fun _ _ => False`) is vacuously acyclic
     and has no dependent arc. This generalises `empty_graph_robust` from `⊥` to
@@ -616,6 +672,12 @@ axiom nesetril_rodl_counterexample (g : ℕ) (hg : g ≥ 3) :
    one-line corollary of `triangle_not_robust'`)
 10. `isCoverGraph_of_triangle` - The Hasse diagram of a poset is triangle-free
     (combines `triangle_not_robust'` with `cover_graph_characterization`)
+10a. `admitsRobust_mono` - **Robust orientability is subgraph-monotone**: `H ≤ G`
+    and `G` robust ⟹ `H` robust (restrict the orientation; deleting edges cannot
+    create a dependent arc). The structural principle behind the triangle
+    obstruction: every subgraph of a cover graph is a cover graph.
+10b. `not_robust_of_subgraph` - Contrapositive obstruction propagation: a
+    non-robust subgraph certifies the ambient graph is non-robust.
 11. `edgeless_admits_robust` - Any graph with no edges admits a robust
     orientation (generalises `empty_graph_robust` from `⊥`)
 12. `closedWalk_girth_formulation_unsound` - The "every closed walk has length
