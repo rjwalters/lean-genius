@@ -1,1 +1,110 @@
-[]
+[
+  {
+    "id": "ann-hilbert17-robinson-overview",
+    "proofId": "hilbert-17-oq-03-oq-06",
+    "range": { "startLine": 1, "endLine": 53 },
+    "type": "context",
+    "title": "From axiomatized existence to an explicit rational-SOS witness",
+    "content": "The file header frames the goal precisely against its parent entry. Hilbert's 17th problem (1900) asks whether every real polynomial that is nonnegative on all of ℝⁿ is a sum of squares of rational functions; Artin proved 'yes' in 1927 by real-closed-field model theory, and the parent entry hilbert-17 must axiomatize that general statement (artin_hilbert17). The parent also machine-checks the negative fact that the Robinson form is not a sum of squares of polynomials. What is genuinely new here is the positive side made explicit for this one polynomial: a concrete, 0-axiom certificate that Robinson is a sum of squares of rational functions. The docstring states the whole proof up front — a single polynomial identity multiplying R by 4x²+4y²+4z² — so the reader sees the certificate before any Lean machinery.",
+    "mathContext": "R(x,y,z) = x^6 + y^6 + z^6 - x^4y^2 - y^4z^2 - z^4x^2 - x^2y^4 - y^2z^4 - z^2x^4 + 3x^2y^2z^2 \\ge 0 \\text{ on } \\mathbb{R}^3, \\text{ but } R \\notin \\Sigma^2\\mathbb{R}[x,y,z]; \\text{ Artin: } R \\in \\Sigma^2\\mathbb{R}(x,y,z).",
+    "significance": "context",
+    "relatedConcepts": ["Hilbert's 17th problem", "Artin's theorem", "Robinson form", "sum of squares", "real closed fields"],
+    "prerequisites": ["real algebraic geometry", "positive polynomials"]
+  },
+  {
+    "id": "ann-hilbert17-robinson-def",
+    "proofId": "hilbert-17-oq-03-oq-06",
+    "range": { "startLine": 63, "endLine": 78 },
+    "type": "definition",
+    "title": "The Robinson form and its SOS multiplier",
+    "content": "The three indeterminates of ℝ[x,y,z] are introduced as local notation over MvPolynomial (Fin 3) ℝ, and robinson is defined term-for-term identically to the parent entry so the two files provably discuss the same polynomial. The Robinson form is a symmetric ternary sextic that is nonnegative everywhere — it equals Schur's expression a(a−b)(a−c) + b(b−a)(b−c) + c(c−a)(c−b) under a=x², b=y², c=z² — yet is not a polynomial sum of squares, the ternary analogue of the bivariate Motzkin polynomial. The multiplier 4x²+4y²+4z² is the auxiliary polynomial that, when multiplied against R, lifts the boundary form into the interior of the SOS cone where an explicit square decomposition exists.",
+    "mathContext": "\\text{multiplier} = 4x^2 + 4y^2 + 4z^2 = (2x)^2 + (2y)^2 + (2z)^2; \\quad R = \\sum_{\\text{cyc}} a(a-b)(a-c) \\text{ with } a=x^2, b=y^2, c=z^2.",
+    "significance": "key",
+    "relatedConcepts": ["Robinson form", "Schur's inequality", "Motzkin polynomial", "ternary sextic", "sum-of-squares cone"],
+    "prerequisites": ["multivariate polynomials", "symmetric polynomials"]
+  },
+  {
+    "id": "ann-hilbert17-robinson-predicates",
+    "proofId": "hilbert-17-oq-03-oq-06",
+    "range": { "startLine": 80, "endLine": 95 },
+    "type": "definition",
+    "title": "Sum-of-squares predicates over ℝ[x,y,z] and ℝ(x,y,z)",
+    "content": "Two predicates are defined: IsSumOfSquaresMv for polynomials (∃ finitely many qᵢ with p = Σ qᵢ²) and IsSumOfSquaresRF for elements of the rational function field. The field ℝ(x,y,z) is realized concretely as FractionRing (MvPolynomial (Fin 3) ℝ), and toRF is the canonical embedding ℝ[x,y,z] ↪ ℝ(x,y,z). Splitting the two notions is essential: the whole point of Hilbert's 17th is that R fails the first predicate (polynomial SOS) but satisfies the second (rational-function SOS). Existential quantification over the count m lets the witness carry any finite number of squares.",
+    "mathContext": "\\mathrm{IsSumOfSquaresMv}(p) \\iff \\exists m, q\\colon \\mathrm{Fin}\\,m \\to \\mathbb{R}[x,y,z],\\ p = \\sum_i q_i^2; \\quad \\mathbb{R}(x,y,z) = \\mathrm{Frac}\\,\\mathbb{R}[x,y,z].",
+    "significance": "supporting",
+    "relatedConcepts": ["sum of squares", "fraction field", "localization", "field of rational functions"],
+    "prerequisites": ["fraction field of an integral domain", "ring homomorphisms"]
+  },
+  {
+    "id": "ann-hilbert17-robinson-generators",
+    "proofId": "hilbert-17-oq-03-oq-06",
+    "range": { "startLine": 99, "endLine": 113 },
+    "type": "concept",
+    "title": "The certificate generators from the symmetry-reduced Gram factorization",
+    "content": "These five polynomials are the square roots that appear in the certificate, and their structure reveals how the certificate was found. Under the substitution u=x², v=y², w=z² the Gram feasibility problem splits by the S₃ × (ℤ/2)³ symmetry into an even parity block and an odd parity block. Q1 and Q2 span the rank-2 even block whose Gram factor is (2q₁−q₂)² + 3q₂², which is why Q2 appears with multiplicity three in qv. Ga, Gb, Gc are the three rank-1 odd blocks 2·xy(x²−y²), 2·yz(y²−z²), 2·zx(z²−x²) — the cyclic images of a single generator. The vector dv = ![2x, 2y, 2z] holds the three square roots of the multiplier.",
+    "mathContext": "\\text{even block: } (2q_1 - q_2)^2 + 3q_2^2; \\quad \\text{odd blocks: } (2xy(x^2-y^2))^2 \\text{ and cyclic}; \\quad qv = [Q_1, Q_2, Q_2, Q_2, G_a, G_b, G_c].",
+    "significance": "key",
+    "relatedConcepts": ["Gram matrix method", "semidefinite programming", "symmetry reduction", "representation theory of S₃", "sign symmetry"],
+    "prerequisites": ["semidefinite programming", "group actions on polynomials"]
+  },
+  {
+    "id": "ann-hilbert17-robinson-certificate",
+    "proofId": "hilbert-17-oq-03-oq-06",
+    "range": { "startLine": 115, "endLine": 122 },
+    "type": "insight",
+    "title": "The Positivstellensatz certificate, closed by ring",
+    "content": "This is the mathematical heart of the entry: an integer-coefficient polynomial identity asserting (4x²+4y²+4z²)·R = Q1² + 3Q2² + Ga² + Gb² + Gc². Because both sides are concrete polynomials with integer coefficients over a finite monomial support, the identity is decidable by expanding and comparing coefficients — exactly what the ring tactic does after unfolding the definitions. This one line carries the entire nonnegativity content: it certifies that R lies in the multiplier-shifted SOS cone. Everything downstream is bookkeeping that turns this polynomial identity into a rational-function SOS.",
+    "mathContext": "(4x^2 + 4y^2 + 4z^2)\\cdot R = Q_1^2 + 3Q_2^2 + G_a^2 + G_b^2 + G_c^2 \\quad (\\text{over } \\mathbb{Z}[x,y,z]).",
+    "significance": "key",
+    "relatedConcepts": ["Positivstellensatz", "sum-of-squares certificate", "ring tactic", "polynomial identity"],
+    "prerequisites": ["Positivstellensatz certificates", "decision procedures for polynomial identities"]
+  },
+  {
+    "id": "ann-hilbert17-robinson-sos-packaging",
+    "proofId": "hilbert-17-oq-03-oq-06",
+    "range": { "startLine": 124, "endLine": 137 },
+    "type": "technique",
+    "title": "Packaging the identity as sum-of-squares witnesses",
+    "content": "The bare polynomial identity is repackaged as the IsSumOfSquaresMv predicate. robinson_mul_isSumOfSquares supplies the witness ⟨7, qv⟩ and reduces Σ over Fin 7 via Fin.sum_univ_seven and Matrix.cons_val to exactly the seven summands of the certificate. multiplier_isSumOfSquares does the analogous thing for the multiplier with ⟨3, dv⟩, closing (2x)²+(2y)²+(2z)² by ring. Producing both witnesses is what enables the product-of-SOS step: a sum of squares times a sum of squares is again a sum of squares, the algebraic identity that will convert the polynomial certificate into a rational-function one.",
+    "mathContext": "\\Big(\\sum_i a_i^2\\Big)\\Big(\\sum_j b_j^2\\Big) = \\sum_{i,j} (a_i b_j)^2 \\quad (\\text{Brahmagupta–Fibonacci / Lagrange product identity}).",
+    "significance": "supporting",
+    "relatedConcepts": ["product of sums of squares", "Lagrange identity", "Fin.sum_univ", "witness construction"],
+    "prerequisites": ["finite sums in Lean", "existential witnesses"]
+  },
+  {
+    "id": "ann-hilbert17-robinson-nonzero",
+    "proofId": "hilbert-17-oq-03-oq-06",
+    "range": { "startLine": 141, "endLine": 152 },
+    "type": "technique",
+    "title": "Validating division by the multiplier in the field",
+    "content": "To divide by the multiplier inside ℝ(x,y,z) one must know it is nonzero there. multiplier_ne_zero shows 4x²+4y²+4z² ≠ 0 in ℝ[x,y,z] by evaluating at (1,0,0), where it takes the value 4 ≠ 0 — a nonzero polynomial cannot vanish identically. toRF_multiplier_ne_zero then transports this to the field: since the embedding ℝ[x,y,z] ↪ ℝ(x,y,z) is injective (IsFractionRing.injective), a nonzero polynomial maps to a nonzero element. This injectivity is precisely why the fraction field faithfully contains the polynomial ring, licensing the later field_simp.",
+    "mathContext": "\\mathrm{eval}_{(1,0,0)}(4x^2+4y^2+4z^2) = 4 \\ne 0 \\Rightarrow \\text{multiplier} \\ne 0; \\quad \\text{toRF injective} \\Rightarrow \\text{toRF(multiplier)} \\ne 0.",
+    "significance": "technical",
+    "relatedConcepts": ["polynomial evaluation", "injectivity of localization map", "IsFractionRing", "nonvanishing"],
+    "prerequisites": ["evaluation homomorphisms", "properties of fraction fields"]
+  },
+  {
+    "id": "ann-hilbert17-robinson-product-identity",
+    "proofId": "hilbert-17-oq-03-oq-06",
+    "range": { "startLine": 154, "endLine": 162 },
+    "type": "insight",
+    "title": "The 21-term product identity bridging polynomial to rational SOS",
+    "content": "product_identity is the concrete instance of the product-of-sums-of-squares law: Σ_{i<7, j<3} (qᵢ·dⱼ)² = ((4x²+4y²+4z²)·R)·(4x²+4y²+4z²). The left side multiplies the 7-square certificate for multiplier·R by the 3-square certificate for the multiplier, giving 7×3 = 21 polynomial squares; the right side is (multiplier·R)·multiplier = multiplier²·R. After Fintype.sum_prod_type flattens the product index and the definitions are unfolded, both sides are explicit polynomials and ring closes the identity. Dividing this by multiplier² is what will yield R as a sum of rational-function squares.",
+    "mathContext": "\\sum_{i<7,\\,j<3} (q_i d_j)^2 = (\\text{multiplier}\\cdot R)\\cdot \\text{multiplier} = \\text{multiplier}^2 \\cdot R.",
+    "significance": "key",
+    "relatedConcepts": ["product of sums of squares", "Fintype.sum_prod_type", "product index", "Positivstellensatz"],
+    "prerequisites": ["double sums over product types", "polynomial arithmetic"]
+  },
+  {
+    "id": "ann-hilbert17-robinson-main",
+    "proofId": "hilbert-17-oq-03-oq-06",
+    "range": { "startLine": 164, "endLine": 187 },
+    "type": "insight",
+    "title": "Hilbert's 17th for Robinson, constructively",
+    "content": "The headline theorem robinson_isSOS_ratFunc divides the product identity through by the multiplier's image a = toRF(multiplier) in ℝ(x,y,z). Setting a ≠ 0, it first proves that toRF(R) = Σ_{p : Fin 7 × Fin 3} (toRF(qv p.1 · dv p.2)/a)², pushing the ring homomorphism through the sum (map_sum), splitting the division (Finset.sum_div), and clearing denominators against product_identity with field_simp. It then reindexes Fin 7 × Fin 3 ≃ Fin 21 via finProdFinEquiv and Equiv.sum_comp to present the witness as a single Fin 21 family, concluding R = Σ (qᵢdⱼ / (4x²+4y²+4z²))² — a sum of 21 squares of rational functions. This is the explicit, 0-axiom instance of Artin's theorem that the parent entry could only assert as an axiom for this R.",
+    "mathContext": "R = \\sum_{i=1}^{7}\\sum_{j=1}^{3}\\left(\\frac{q_i\\, d_j}{4x^2+4y^2+4z^2}\\right)^2 \\in \\Sigma^2\\,\\mathbb{R}(x,y,z), \\quad 21 = 7\\times 3 \\text{ squares}.",
+    "significance": "key",
+    "relatedConcepts": ["Artin's theorem", "rational function SOS", "Equiv.sum_comp", "reindexing", "constructive existence"],
+    "prerequisites": ["field arithmetic in Lean", "reindexing sums by equivalences"]
+  }
+]

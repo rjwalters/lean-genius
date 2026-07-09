@@ -192,6 +192,13 @@
   ],
   "sections": [
     {
+      "id": "preamble",
+      "title": "Overview: the certificate stated up front",
+      "startLine": 1,
+      "endLine": 59,
+      "summary": "The module docstring frames the goal against the parent entry hilbert-17: Artin's general theorem (nonnegative ⇒ SOS of rational functions) must be axiomatized there, and the parent machine-checks that Robinson is not a polynomial SOS. This file supplies the missing positive side — the explicit 0-axiom rational-SOS certificate — and states it up front: (4x²+4y²+4z²)·R equals a sum of seven polynomial squares, the multiplier is itself SOS, and dividing through in ℝ(x,y,z) gives R = Σ(rational function)². Closes with `import Mathlib`, the namespace, and `open MvPolynomial`."
+    },
+    {
       "id": "definitions",
       "title": "Robinson, the multiplier, and the SOS predicates",
       "startLine": 60,
