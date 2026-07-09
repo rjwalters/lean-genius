@@ -1,0 +1,60 @@
+{
+  "slug": "desargues-theorem-oq-01-oq-03",
+  "title": "Desargues' theorem over free modules of rank 3 over non-commutative rings",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "For a (possibly non-commutative) division ring D and triangles in P^2(D) = P(D^3), formalize the forward Desargues implication: perspective from a point (AA', BB', CC' concurrent) implies perspective from a line (P = AB' cap A'B, Q = BC' cap B'C, R = CA' cap C'A collinear), using rank-3 free left D-modules and a determinant-free (or Dieudonné-determinant) argument.",
+    "plain": "The gallery already proves Desargues' theorem over any commutative ring using a polynomial determinant identity. This problem asks whether that can be pushed to non-commutative division rings (skew fields like the quaternions). Classically Desargues holds exactly in planes coordinatizable over a division ring, commutative or not, but the commutative determinant machinery breaks because non-commutative determinants are not multilinear or multiplicative.",
+    "whyMatters": [
+      "Non-commutative Desargues is the sharp half of the Hilbert/Artin characterization of Desarguesian planes, and the regime where Desargues holds while Pappus fails.",
+      "It forces a genuinely non-commutative linear-algebra toolkit (Dieudonné determinant or synthetic collineations), laying groundwork for skew projective geometry in Lean."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Desargues over any commutative ring K, forward and converse, fully verified in the gallery (desargues-theorem-oq-01, 0 sorries, 0 axioms).",
+      "Hilbert (1899): a projective plane is Desarguesian iff coordinatizable by a division ring (commutative or not).",
+      "Artin, Geometric Algebra (1957): coordinatization of P^n(D) over division rings and the Desargues/Pappus relationship.",
+      "Dieudonné (1943): a well-defined determinant for matrices over a non-commutative division ring."
+    ],
+    "open": [
+      "No Lean formalization of P^2(D) or Desargues over a non-commutative division ring exists in the gallery or Mathlib.",
+      "Which route is most tractable in Lean: Dieudonné-determinant identity, synthetic central-collineation argument, or direct noncomm_ring component computation.",
+      "Whether the converse (perspective from a line implies from a point) extends with a suitable non-degeneracy hypothesis."
+    ],
+    "goal": "Formalize the forward direction desargues_forward_D over a general division ring D on rank-3 free left modules, 0 sorries, specializing back to the commutative result when D is a Field. Converse and counterexamples are out of scope for the first milestone."
+  },
+  "tags": [
+    "projective-geometry",
+    "triangles",
+    "perspective",
+    "collinearity",
+    "concurrence",
+    "commutative-ring",
+    "linear-algebra",
+    "classic",
+    "research"
+  ],
+  "relatedProofs": ["desargues-theorem-oq-01"],
+  "references": {
+    "papers": [],
+    "urls": [
+      "https://en.wikipedia.org/wiki/Desargues%27s_theorem",
+      "https://en.wikipedia.org/wiki/Dieudonn%C3%A9_determinant",
+      "https://en.wikipedia.org/wiki/Non-Desarguesian_plane"
+    ],
+    "mathlib": [
+      "Mathlib.Algebra.Field.Basic",
+      "Mathlib.LinearAlgebra.Matrix.Rank",
+      "Mathlib.LinearAlgebra.Matrix.Determinant.Basic",
+      "Mathlib.Algebra.Quaternion",
+      "Mathlib.Tactic"
+    ]
+  },
+  "significance": 6,
+  "tractability": 5,
+  "category": "generalization"
+}

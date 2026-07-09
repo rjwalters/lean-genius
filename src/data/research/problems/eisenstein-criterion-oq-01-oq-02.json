@@ -1,0 +1,56 @@
+{
+  "slug": "eisenstein-criterion-oq-01-oq-02",
+  "title": "Degree of Q(n-th root of p): minimal polynomial X^n - p via Eisenstein",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "For prime p and n >= 1, X^n - p is the minimal polynomial over Q of the real n-th root p^{1/n}; hence [Q(p^{1/n}) : Q] = n.",
+    "plain": "Eisenstein's criterion already gives that X^n - p is irreducible over Q for every prime p and every exponent n. This problem draws the standard field-theoretic consequence: since X^n - p is monic, irreducible, and vanishes at p^{1/n}, it must be the minimal polynomial of p^{1/n} over Q, so the extension Q(p^{1/n})/Q has degree exactly n. Eisenstein thus produces an algebraic number of every prescribed degree.",
+    "whyMatters": [
+      "Bridges the gallery's irreducibility of X^n - p to the textbook corollary [Q(p^{1/n}):Q] = n, which the gallery has not yet formalized.",
+      "Gives an explicit uniform construction of algebraic numbers of arbitrarily large prescribed degree, foundational for Galois theory and field-tower computations."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "X^n - p is irreducible over Z (gallery eisenstein-criterion-oq-01, irreducible_X_pow_sub_C_prime).",
+      "Eisenstein's criterion in ideal form (irreducible_of_eisenstein).",
+      "Mathlib minimal-polynomial and field-degree API: minpoly, AdjoinRoot.powerBasis, IntermediateField.adjoin.finrank."
+    ],
+    "open": [
+      "No gallery entry states minpoly_Q(p^{1/n}) = X^n - p for general prime p and general n.",
+      "No gallery entry states [Q(p^{1/n}):Q] = n for the general family (only the concrete cube-root-of-3 irrationality case exists)."
+    ],
+    "goal": "Formalize in Lean 4, on top of the gallery Eisenstein entry and Mathlib, that X^n - p is the minimal polynomial over Q of p^{1/n} (prime p, n >= 1), and derive [Q(p^{1/n}):Q] = n, including at least one concrete instance such as [Q(sqrt 2):Q] = 2 or [Q(cbrt 2):Q] = 3."
+  },
+  "tags": [
+    "algebra",
+    "polynomials",
+    "irreducibility",
+    "number-theory",
+    "ring-theory",
+    "open-question"
+  ],
+  "relatedProofs": [
+    "eisenstein-criterion-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [
+      "https://en.wikipedia.org/wiki/Eisenstein%27s_criterion",
+      "https://en.wikipedia.org/wiki/Minimal_polynomial_(field_theory)"
+    ],
+    "mathlib": [
+      "Mathlib.FieldTheory.Minpoly.Field",
+      "Mathlib.RingTheory.AdjoinRoot",
+      "Mathlib.FieldTheory.IntermediateField.Adjoin",
+      "Mathlib.RingTheory.Polynomial.GaussLemma",
+      "Mathlib.RingTheory.Polynomial.Basic"
+    ]
+  },
+  "significance": 6,
+  "tractability": 6,
+  "category": "extension"
+}

@@ -1,0 +1,56 @@
+{
+  "slug": "shannon-channel-coding-awgn-oq-03-oq-01",
+  "title": "Capacity of parallel Gaussian channels via water-filling",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "For noise powers N_1,...,N_n > 0 and budget P >= 0, max_{P_i >= 0, sum P_i <= P} sum_i (1/2) log(1 + P_i/N_i) = sum_i (1/2) log(1 + P_i*/N_i), attained by the water-filling allocation P_i* = (mu - N_i)_+ where the water level mu >= 0 is the unique solution of sum_i (mu - N_i)_+ = P.",
+    "plain": "Given several independent noisy channels with noise levels N_i and a fixed total transmit power P to share among them, how should the power be split to maximise total data rate? The optimal answer is water-filling: pour power into a landscape whose floor heights are the noise levels until it reaches a common surface level mu, giving each channel power (mu - N_i)_+ and starving channels too noisy to be worth using. The task is to prove this allocation is optimal and that mu is uniquely fixed by the power budget.",
+    "whyMatters": [
+      "Water-filling is the canonical resource-allocation result of information theory and underlies practical multicarrier bit-loading (OFDM/DMT) in DSL, Wi-Fi and 4G/5G.",
+      "It is the multi-channel completion of the scalar Shannon-Hartley formula already in the gallery, and formalising it exercises constrained concave (KKT/Lagrange) optimisation in Lean."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Per-use AWGN capacity (1/2) log(1 + P/N) nats/use, verified axiom-free (gallery: shannon-channel-coding-awgn).",
+      "Bandlimited Shannon-Hartley C = B log2(1 + P/N) bits/s and its structural theory (gallery: shannon-channel-coding-awgn-oq-03), which explicitly defers this parallel-channel case.",
+      "The water-filling theorem is classical (Shannon 1949; Cover & Thomas, Elements of Information Theory, Thm 9.9.1); only the Lean formalization is open."
+    ],
+    "open": [
+      "A Lean 4 proof that P_i* = (mu - N_i)_+ maximises the parallel-channel rate under sum P_i <= P.",
+      "Existence and uniqueness of the water level mu solving sum_i (mu - N_i)_+ = P.",
+      "The closed-form optimum C = sum_i (1/2) log(max(mu, N_i)/N_i)."
+    ],
+    "goal": "Formalize the finite-dimensional water-filling theorem: define the parallel-channel rate over a finite family N_1,...,N_n, prove existence/uniqueness of the water level, prove KKT optimality of P_i* = (mu - N_i)_+, and derive the closed-form capacity. Scope is the finite optimisation statement; the continuous infinite-band limit is a separate follow-up."
+  },
+  "tags": [
+    "information-theory",
+    "channel-capacity",
+    "shannon-hartley",
+    "awgn",
+    "shannon",
+    "bandwidth",
+    "logarithm",
+    "analysis",
+    "coding-theory",
+    "research"
+  ],
+  "relatedProofs": ["shannon-channel-coding-awgn-oq-03"],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": [
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Analysis.Convex.SpecificFunctions.Basic",
+      "Mathlib.Algebra.Order.PosPart",
+      "Mathlib.Topology.Algebra.Order.IntermediateValue",
+      "Mathlib.Algebra.BigOperators.Basic"
+    ]
+  },
+  "significance": 6,
+  "tractability": 5,
+  "category": "extension"
+}

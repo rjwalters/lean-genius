@@ -1,0 +1,54 @@
+{
+  "slug": "combinations-formula-oq-03-oq-04",
+  "title": "Unimodality of Gaussian (q-)binomial coefficients",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "For all n and 0 \\le k \\le n, writing \\binom{n}{k}_q = \\sum_{i=0}^{k(n-k)} a_i q^i \\in \\mathbb{Z}[q] with a_i \\ge 0, the coefficient sequence (a_0,\\dots,a_{k(n-k)}) is unimodal: a_0 \\le a_1 \\le \\cdots \\le a_{\\lfloor k(n-k)/2\\rfloor} \\ge \\cdots \\ge a_{k(n-k)} (and symmetric, a_i = a_{k(n-k)-i}).",
+    "plain": "The Gaussian binomial coefficient is a polynomial in q whose non-negative integer coefficients sum to the ordinary binomial coefficient. For example the coefficients of the polynomial for (5 choose 2)_q are 1,1,2,2,2,1,1. Unimodality says the coefficients rise weakly to a single central peak and then fall, never dipping and recovering. The problem is to prove this rising-then-falling shape in Lean 4.",
+    "whyMatters": [
+      "Unimodality is a genuinely deep result (Sylvester 1878); the clean proofs use the sl_2 / hard Lefschetz structure on the cohomology of the complex Grassmannian, so a formalization would give Mathlib a nontrivial unimodality theorem and a reusable template.",
+      "It connects the gallery's existing division-free q-binomial development to algebraic combinatorics and representation theory, and exercises Lean's currently-thin support for polynomial coefficient extraction and unimodality reasoning."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Symmetry a_i = a_{k(n-k)-i} and \\binom{n}{k}_q = \\binom{n}{n-k}_q (gallery: combinations-formula-oq-03, qBinom_symm)",
+      "Non-negativity of the coefficients (Gauss; coefficients count subsets/lattice paths by area)",
+      "Sylvester's unimodality theorem (1878), via the sl_2-action on partitions in a k x (n-k) box",
+      "Hard Lefschetz for Grassmannians gives unimodality of the Betti numbers a_i",
+      "O'Hara's constructive combinatorial proof of unimodality (1990), the most formalization-friendly route"
+    ],
+    "open": [
+      "No Lean 4 / Mathlib formalization of Gaussian-binomial unimodality exists",
+      "Mathlib has no general Unimodal predicate for integer sequences, nor sl_2 / hard-Lefschetz infrastructure",
+      "The bridge from the recurrence-based qBinom to its explicit Polynomial-Z coefficient sequence is unformalized"
+    ],
+    "goal": "Formalize unimodality of the coefficient sequence of \\binom{n}{k}_q in Lean 4: realize it as a Polynomial Z with coefficients = area-enumeration, define a Unimodal predicate, and prove unimodality (ideally via O'Hara's combinatorial decomposition), with small-k (k=1,2) cases as first milestones."
+  },
+  "tags": [
+    "combinatorics",
+    "q-analogs",
+    "gaussian-binomial",
+    "number-theory",
+    "algebra",
+    "quantum-groups",
+    "finite-geometry"
+  ],
+  "relatedProofs": ["combinations-formula-oq-03"],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": [
+      "Mathlib.Data.Nat.Choose.Basic",
+      "Mathlib.Combinatorics.Partition",
+      "Mathlib.Algebra.Polynomial.Coeff",
+      "Mathlib.Data.Polynomial.Basic"
+    ]
+  },
+  "significance": 6,
+  "tractability": 5,
+  "category": "extension"
+}
