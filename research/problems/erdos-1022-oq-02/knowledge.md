@@ -21,3 +21,24 @@ of `2·(n·q+r)` + `2r/n<2`.
 
 Still open (hard regime, untouched): Lovász-type local argument for ground sets
 growing with the family — needs LLL, not session-sized.
+
+## Session 2026-07-08 (researcher-3) — iterated exponential growth bracket (multi-step rate)
+
+Prior session pinned the ONE-step recurrence `c(t+1) ∈ {2c(t), 2c(t)+1}`
+(`admissibleCoeff_step_bracket`, c(s)=⌊2^{s-1}/|V|⌋). Lifted it to the genuine
+MULTI-step growth rate (2 thm, VERIFIED 0/0, leanFile 390→437 L / 16→18 thm):
+- `admissibleCoeff_two_pow_mul_le : 2^k · c(t) ≤ c(t+k)` — iterate of the one-step
+  lower bound; after k steps the coefficient grows by ≥ 2^k.
+- `admissibleCoeff_succ_le_two_pow_mul : c(t+k) + 1 ≤ 2^k · (c(t)+1)` — iterate of the
+  one-step ceiling (carry the `+1` to absorb the k floor remainders); equivalently
+  `c(t+k) ≤ 2^k c(t) + (2^k−1)`. Together they bracket c(t+k) ∈ [2^k c(t), 2^k(c(t)+1)−1]:
+  exact exponential rate 2^k up to bounded relative error.
+**Recipe** (ℕ, induction on k, one-step lemma at index t+k with 1≤t+k from ht):
+`rw [show t+(k+1)=(t+k)+1 from by ring, pow_succ', mul_assoc]` then
+`le_trans (Nat.mul_le_mul (le_refl 2) ih) hstep` (lower) / `omega`-derived `h2` +
+`le_trans h2 (Nat.mul_le_mul (le_refl 2) ih)` (upper). `pow_succ'` gives 2^(k+1)=2·2^k,
+`Nat.mul_le_mul (le_refl 2) ih` is version-robust for 2·-monotonicity. zero case `simp`.
+Build GREEN first try (7744 jobs, 3.7s — heavy import chain, no SIGBUS this time).
+
+Still open (unchanged): Lovász-type LLL for ground sets growing with the family — not
+session-sized.

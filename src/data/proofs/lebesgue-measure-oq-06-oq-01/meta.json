@@ -69,7 +69,7 @@
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries. The file imports the parent LebesgueMeasureOQ06.lean (which declares one axiom, banach_tarski, for the full ball decomposition), but #print axioms confirms every result here depends only on hausdorff_free_subgroup — itself a fully proved theorem declared before that axiom — together with the foundational propext / Classical.choice / Quot.sound. No sorryAx and no Lean.ofReduceBool (the decide call is kernel reduction, not native_decide).",
     "mathlib_version": "4.26.0",
     "theoremCount": 6,
-    "definitionCount": 1
+    "definitionCount": 3
   },
   "overview": {
     "historicalContext": "Felix Hausdorff's 1914 *Grundzüge der Mengenlehre* contained the algebraic discovery that powers the Banach–Tarski paradox: the rotation group SO(3) contains a free subgroup of rank 2. Two rotations by arccos(1/3) about perpendicular axes generate a free group — no nontrivial reduced word in them is the identity — proved by an algebraic-number-theoretic argument (a nontrivial word applied to a test vector produces coordinates in ℤ[√2] whose residues mod 3 can never return to the start). This single fact, that F₂ embeds in SO(3), is what makes the sphere paradoxical: the paradoxical self-decomposition of the free group is transported, via the embedding, to a paradoxical decomposition of S². Tarski's 1938 theorem then frames the conceptual chain F₂ ↪ SO(3) ⟹ SO(3) non-amenable ⟹ B³ paradoxical. The parent gallery entry (lebesgue-measure-oq-06) proves Hausdorff's theorem, but records freeness through the *underlying linear equivalences*, forgetting that the generators are isometries. This entry restores that information and packages the embedding as group theory uses it — an injective homomorphism and an honest isomorphic subgroup — so the phrase 'SO(3) contains a copy of F₂' becomes a literal Lean statement.",
@@ -158,7 +158,7 @@
     "lineCount": 157,
     "axiomCount": 0,
     "theoremCount": 6,
-    "definitionCount": 1,
+    "definitionCount": 3,
     "path": "Proofs/LebesgueMeasureOQ06OQ01.lean",
     "sorries": 0
   },

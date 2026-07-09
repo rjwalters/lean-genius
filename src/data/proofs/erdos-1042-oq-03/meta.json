@@ -20,7 +20,7 @@
     "badge": "original",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 113,
+    "lineCount": 114,
     "assumptions": "None. All eight theorems are axiom-free and self-contained: the polynomial/lemniscate structures are re-declared locally so that nothing depends on the parent entry's axioms (transfiniteDiameter, ghosh_ramachandran_small_diameter, ghosh_ramachandran_diameter_one_examples). No native_decide is used. Kernel-verified against Mathlib v4.26.0 (`lake env lean`, exit 0); `#print axioms geometric_confinement` reports only `[propext, Classical.choice, Quot.sound]`. Mathlib lemmas used: continuous_finset_prod, norm_prod, Finset.prod_eq_zero, Finset.prod_le_prod, Finset.prod_const_one, Continuous.norm, dist_eq_norm, Bornology.isBounded_iUnion, Metric.isBounded_ball. Uses the modern norm ‖·‖ throughout (Complex.abs was removed in v4.26.0).",
     "dateAdded": "2026-06-23",
     "mathlib_version": "4.26.0",
@@ -36,7 +36,7 @@
       "geometric_confinement: capstone — every lemniscate is open, bounded, and confined to the unit-neighbourhood of the root set"
     ],
     "theoremCount": 8,
-    "definitionCount": 2
+    "definitionCount": 3
   },
   "overview": {
     "historicalContext": "Erdős Problem #1042 asks how many connected components the lemniscate {z : |f(z)| < 1} of a degree-n monic polynomial with roots in a closed set F can have. Erdős–Herzog–Piranian (1958) showed the unit disc allows n components (f(z) = zⁿ + 1). Ghosh–Ramachandran (2024) resolved the problem: if the transfinite diameter d(F) < 1 the count is at most (1-c)n, if d ≤ 1/4 and F is connected only 1 component occurs, while at d = 1 examples with n components persist — so the answer depends on the geometry of F, not the diameter alone. The parent gallery entry records these answers as axioms.",
@@ -135,7 +135,7 @@
     "lineCount": 114,
     "axiomCount": 0,
     "theoremCount": 8,
-    "definitionCount": 2,
+    "definitionCount": 3,
     "path": "Proofs/Erdos1042OQ03.lean",
     "sorries": 0
   },

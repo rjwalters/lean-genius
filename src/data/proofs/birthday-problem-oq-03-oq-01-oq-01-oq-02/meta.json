@@ -36,7 +36,7 @@
     "dateAdded": "2026-06-24",
     "lineCount": 216,
     "assumptions": "0 axioms, 0 sorries. Verified via #print axioms — only Lean's foundational propext, Classical.choice, Quot.sound. All concrete counts use kernel `decide` (NOT native_decide), so there is no Lean.ofReduceBool dependency. Self-contained over Mathlib; the parent's two-state recurrence is restated as Rpar (the parent file imports only Mathlib but is referenced here only conceptually).",
-    "theoremCount": 19,
+    "theoremCount": 25,
     "definitionCount": 4
   },
   "overview": {
@@ -130,7 +130,7 @@
     "namespace": "BirthdayKway",
     "lineCount": 216,
     "axiomCount": 0,
-    "theoremCount": 19,
+    "theoremCount": 25,
     "definitionCount": 4,
     "path": "Proofs/BirthdayProblemOQ03OQ01OQ01OQ02.lean",
     "sorries": 0

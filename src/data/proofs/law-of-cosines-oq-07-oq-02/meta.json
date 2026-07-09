@@ -116,12 +116,14 @@
     {
       "name": "sum_sq_medians",
       "type": "theorem",
-      "description": "Sum of squared medians: 4·(m_a² + m_b² + m_c²) = 3·(a² + b² + c²), where m_x is the median from vertex x to the opposite midpoint. Proved by summing the parent's median_length identity over the three vertices and closing with linear_combination."
+      "description": "Sum of squared medians: 4·(m_a² + m_b² + m_c²) = 3·(a² + b² + c²), where m_x is the median from vertex x to the opposite midpoint. Proved by summing the parent's median_length identity over the three vertices and closing with linear_combination.",
+      "leanType": "(a b c : P) : 4 * (dist a (midpoint ℝ b c) ^ 2 + dist b (midpoint ℝ a c) ^ 2 + dist c (midpoint ℝ a b) ^ 2) = 3 * (dist a b ^ 2 + dist b c ^ 2 + dist c a ^ 2)"
     },
     {
       "name": "sum_sq_medians_three_quarters",
       "type": "theorem",
-      "description": "The ¾-ratio form: the sum of the squared medians equals three quarters of the sum of the squared sides — a direct rescaling of sum_sq_medians."
+      "description": "The ¾-ratio form: the sum of the squared medians equals three quarters of the sum of the squared sides — a direct rescaling of sum_sq_medians.",
+      "leanType": "(a b c : P) : dist a (midpoint ℝ b c) ^ 2 + dist b (midpoint ℝ a c) ^ 2 + dist c (midpoint ℝ a b) ^ 2 = 3 / 4 * (dist a b ^ 2 + dist b c ^ 2 + dist c a ^ 2)"
     }
   ],
   "sorries": 0

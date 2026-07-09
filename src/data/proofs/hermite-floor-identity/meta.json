@@ -39,7 +39,8 @@
       "The real, possibly irrational argument is a red herring: x + k/n = (n·x + k)/n, and Mathlib's floor/division law ⌊a/n⌋ = ⌊a⌋/n collapses every real floor to an integer Euclidean quotient, so the entire identity is equivalent to a statement about integers and integer division.",
       "Once integerized, the identity ∑_{k<n}(a+k)/n = a is most cleanly proved not by splitting a into quotient and remainder but by an additive recurrence: shifting a by 1 shifts the whole sum by exactly 1, and the value at 0 is 0, so the sum is the identity function on ℤ.",
       "The shift recurrence is a reindexing trick: ∑_{k<n} f(k+1) and ∑_{k<n} f(k) differ only at the endpoints f(0) and f(n) (both equal the same range-(n+1) sum minus one boundary term), and for f(k) = (b+k)/n those endpoints differ by 1.",
-      "Euclidean division (Mathlib's `/` on ℤ) keeps a nonnegative remainder, so for a positive divisor it agrees with floor division; this is exactly what makes ⌊a/n⌋ = ⌊a⌋/n hold for negative a and lets the reduction handle negative ⌊n·x⌋."
+      "Euclidean division (Mathlib's `/` on ℤ) keeps a nonnegative remainder, so for a positive divisor it agrees with floor division; this is exactly what makes ⌊a/n⌋ = ⌊a⌋/n hold for negative a and lets the reduction handle negative ⌊n·x⌋.",
+      "Hermite's identity is one half of a clean decomposition. The uniformly sampled sum has the trivial exact value ∑_{k<n}(x + k/n) = n·x + (n−1)/2; splitting each term into integer and fractional parts, Hermite's floor identity ∑⌊x+k/n⌋ = ⌊nx⌋ and the companion sawtooth identity ∑{x+k/n} = {nx} + (n−1)/2 are exactly the two halves (since {y} = y − ⌊y⌋ and ⌊nx⌋ + {nx} = nx). The floor and fractional-part identities are therefore not independent facts but the ⌊·⌋/{·} projection of a single linear sum — which is also why both appear inside the Raabe/Bernoulli multiplication theorem ∑ Bₘ(x+k/n) = n^{1−m}·Bₘ(nx) as its m = 0, 1 faces."
     ],
     "prerequisites": [
       "The floor function ⌊·⌋ on ℝ and on ℤ (Int.floor)",
@@ -51,26 +52,42 @@
   "sections": [
     {
       "id": "preamble",
-      "title": "§0: Module Setup and Statement",
+      "title": "Statement and Two-Step Strategy",
       "startLine": 1,
-      "endLine": 38,
-      "summary": "Module docstring stating Hermite's identity, distinguishing it from the unrelated Hermite–Lindemann theorem / Hermite polynomials, outlining the two-step strategy (real→integer reduction, then integer induction), imports (full Mathlib for the floor/division and Finset APIs), and the namespace.",
+      "endLine": 33,
+      "summary": "Module docstring stating Hermite's identity ∑_{k<n}⌊x+k/n⌋ = ⌊nx⌋, distinguishing it from the unrelated Hermite–Lindemann theorem / Hermite polynomials, and outlining the two-step strategy: (1) real→integer reduction collapsing each real floor to an integer Euclidean quotient via ⌊a/n⌋ = ⌊a⌋/n, then (2) an integer Hermite sum proved by induction on a. Notes Euclidean division's nonnegative remainder is what makes step (1) valid for negative arguments.",
       "mathContext": "Targets $\\sum_{k=0}^{n-1}\\lfloor x + k/n\\rfloor = \\lfloor n x\\rfloor$ for real $x$ and $n \\ge 1$."
     },
     {
-      "id": "int-hermite-sum",
-      "title": "The Integer Hermite Sum",
+      "id": "imports-namespace",
+      "title": "Imports and Namespace",
+      "startLine": 34,
+      "endLine": 38,
+      "summary": "import Mathlib (the full floor/Euclidean-division and Finset APIs: Int.floor_div_natCast, Int.add_mul_ediv_right, Int.ediv_eq_zero_of_lt_abs, Finset.sum_range_succ/'), open Finset for range and ∑ notation, and the HermiteFloorIdentity namespace.",
+      "mathContext": "Working over ℝ and ℤ with Euclidean division `/` on ℤ (nonnegative remainder)."
+    },
+    {
+      "id": "shift-recurrence",
+      "title": "Integer Hermite Sum: The Shift Recurrence",
       "startLine": 40,
+      "endLine": 64,
+      "summary": "int_hermite_sum is stated (∑_{k<n}(a+k)/n = a, Euclidean division), and its engine `step` is proved: replacing b by b+1 increases the sum by exactly 1. Reindexing k ↦ k+1 matches the g(k+1) shape of Finset.sum_range_succ'; comparing it with Finset.sum_range_succ leaves only the endpoint quotients, which satisfy (b+0)/n = b/n and (b+n)/n = b/n+1 (Int.add_mul_ediv_right), so the difference is 1.",
+      "mathContext": "$\\sum_{k<n}((b+1)+k)/n = \\big(\\sum_{k<n}(b+k)/n\\big) + 1$, via reindexing and $(b+n)/n = b/n + 1$."
+    },
+    {
+      "id": "integer-induction",
+      "title": "Integer Hermite Sum: Two-Sided Induction",
+      "startLine": 65,
       "endLine": 83,
-      "summary": "int_hermite_sum: ∑_{k<n}(a + k)/n = a for any a : ℤ, n ≥ 1 (Euclidean division). The core is the shift recurrence `step`, proved by reindexing k ↦ k+1 with Finset.sum_range_succ' and Finset.sum_range_succ and computing the endpoint quotients (b+n)/n = b/n+1 (Int.add_mul_ediv_right) and (b+0)/n = b/n. Integer induction (Int.induction_on) then runs the recurrence both ways from the base value 0, whose summands k/n vanish for 0 ≤ k < n (Int.ediv_eq_zero_of_lt_abs).",
-      "mathContext": "$\\sum_{k=0}^{n-1}\\lfloor (a+k)/n\\rfloor = a$: shifting $a \\mapsto a+1$ adds exactly $1$ to the sum, and the sum is $0$ at $a = 0$, so it equals $a$."
+      "summary": "Int.induction_on runs the shift recurrence from the base a = 0 in both directions. Base: ∑_{k<n} k/n = 0 because each Euclidean quotient k/n vanishes for 0 ≤ k < n (Int.ediv_eq_zero_of_lt_abs). Positive arm: rw [step, ih]. Negative arm: apply step at −i−1 and reindex to pin the value one step lower. The map a ↦ ∑(a+k)/n is thus the unique unit-slope function through 0, i.e. the identity.",
+      "mathContext": "Base $\\sum_{k<n}k/n = 0$; recurrence propagates $a \\mapsto a$ over all of $\\mathbb{Z}$."
     },
     {
       "id": "real-identity",
       "title": "Hermite's Identity over the Reals",
       "startLine": 85,
       "endLine": 100,
-      "summary": "hermite_floor_identity: rewrites each term via x + k/n = (n·x + k)/n and Int.floor_div_natCast / Int.floor_add_natCast to the integer Euclidean quotient (⌊n·x⌋ + k)/n, then applies int_hermite_sum with a = ⌊n·x⌋ to conclude the sum equals ⌊n·x⌋.",
+      "summary": "hermite_floor_identity: each real term is rewritten x + k/n = (n·x + k)/n (field_simp), then Int.floor_div_natCast and Int.floor_add_natCast collapse ⌊x + k/n⌋ to the integer Euclidean quotient (⌊n·x⌋ + k)/n; applying int_hermite_sum with a = ⌊n·x⌋ concludes the sum equals ⌊n·x⌋.",
       "mathContext": "Each $\\lfloor x + k/n\\rfloor = (\\lfloor n x\\rfloor + k)/n$ (integer division), so the sum reduces to the integer Hermite sum at $a = \\lfloor n x\\rfloor$."
     }
   ],

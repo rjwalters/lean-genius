@@ -12,10 +12,10 @@
       "ProbabilityTheory"
     ],
     "namespace": "ShannonAWGNMultiSymbolPower",
-    "lineCount": 679,
+    "lineCount": 908,
     "axiomCount": 0,
-    "theoremCount": 28,
-    "definitionCount": 0,
+    "theoremCount": 38,
+    "definitionCount": 1,
     "path": "Proofs/ShannonChannelCodingAWGNOQ02OQ02.lean",
     "sorries": 0
   },
@@ -39,7 +39,7 @@
     ],
     "axiomCount": 0,
     "sorries": 0,
-    "lineCount": 291,
+    "lineCount": 545,
     "theoremCount": 12,
     "definitionCount": 0,
     "badge": "mathlib",
@@ -48,7 +48,9 @@
       "awgn_multisymbol_output_power: E[(∑_{i∈s} Wᵢ)²] = ∑_{i∈s} Pᵢ — the block-power restatement. Writing Pᵢ = E[Wᵢ²] for the power of the i-th contribution, the aggregate output power is the sum of the per-contribution powers: the n-symbol analogue of the parent's E[Y²] = P + N (which is the special case s = {signal, noise}).",
       "awgn_multisymbol_variance: Var[∑_{i∈s} Wᵢ] = ∑_{i∈s} Var[Wᵢ] for pairwise-independent Wᵢ — the Bienaymé identity recorded in channel notation (a direct application of IndepFun.variance_sum), making explicit that pairwise independence already annihilates every off-diagonal covariance in the expansion of the variance of a sum.",
       "sum_mean_zero: E[∑_{i∈s} Wᵢ] = 0 — the aggregate of zero-mean contributions is zero-mean, via linearity of the integral over a Finset (integral_finset_sum) on the square-integrable (hence integrable) parts. This is the lemma that lets the squared-mean term drop for the sum, not just for each summand.",
-      "second_moment_eq_variance: E[W²] = Var[W] for a zero-mean variable — the bridge identifying the engineering notion of 'power' with the probabilistic variance; the rewrite that turns the variance-of-a-sum law into a second-moment law once the means are zero."
+      "second_moment_eq_variance: E[W²] = Var[W] for a zero-mean variable — the bridge identifying the engineering notion of 'power' with the probabilistic variance; the rewrite that turns the variance-of-a-sum law into a second-moment law once the means are zero.",
+      "correlation_eq_one_iff_affine_pos / correlation_eq_neg_one_iff_affine_neg: the signed sharp boundary — ρ = +1 exactly when X is a.e. an increasing affine function of Y (positive slope, perfect positive correlation) and ρ = −1 exactly when the slope is negative (perfect negative correlation). Refines the capstone |ρ|=1 ⟺ affine dependence by splitting the two endpoints of the Cauchy–Schwarz interval [−1,1] according to the sign of the regression slope, via correlation_eq_of_affine (ρ = a/|a| = sign a when X =ᵐ a·Y+b) and variance_eq_of_affine (Var[X] = a²·Var[Y]).",
+      "correlation_affine_invariant: the dimensionless-invariance structural companion — ρ[a·X+b, c·Y+d] = sign(a·c)·ρ[X,Y] for arbitrary scales a,c and shifts b,d, holding unconditionally (even degenerate) via the division-by-zero convention. Additive shifts cancel (translation-invariance of covariance/variance), multiplicative scales cancel in magnitude against σ[a·X+b]=|a|·σ[X], leaving only the sign of the slope product; the orientation-preserving specialisation correlation_affine_invariant_of_pos (a,c>0) gives exact invariance ρ[a·X+b,c·Y+d]=ρ[X,Y]. This is the defining property that makes Pearson's ρ a scale-free measure of linear association — dual to the signed ±1 boundary theorems."
     ],
     "prerequisites": [
       "Variance of a sum of pairwise-independent variables: ProbabilityTheory.IndepFun.variance_sum (Var[∑ Xᵢ] = ∑ Var[Xᵢ])",
@@ -181,6 +183,6 @@
     }
   ],
   "sorries": [],
-  "lineCount": 679,
-  "theoremCount": 28
+  "lineCount": 908,
+  "theoremCount": 38
 }

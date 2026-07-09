@@ -9,8 +9,8 @@
     "axiomCount": 0,
     "path": "Proofs/Erdos1005ProblemOQ03OQ01.lean",
     "sorries": 0,
-    "definitionCount": 6,
-    "theoremCount": 19
+    "definitionCount": 7,
+    "theoremCount": 21
   },
   "meta": {
     "author": "Formalization original to Lean Genius (classical Farey/Stern–Brocot theory)",
@@ -43,8 +43,8 @@
       "den_recurrence / num_recurrence: the closed-form recurrence f = ⌊(n+b)/d⌋·d − b and e = ⌊(n+b)/d⌋·c − a (definitional), i.e. q_{i+1} = ⌊(n+q_{i−1})/q_i⌋·q_i − q_{i−1}, the iterable engine that walks the Farey sequence and generates every run"
     ],
     "assumptions": "None. The file is fully machine-checked with 0 sorries and 0 axiom declarations; #print axioms reports only the foundational propext / Classical.choice / Quot.sound for all theorems (and den_recurrence depends on no axioms at all). No native_decide is used (so no Lean.ofReduceBool).",
-    "theoremCount": 19,
-    "definitionCount": 6
+    "theoremCount": 21,
+    "definitionCount": 7
   },
   "overview": {
     "historicalContext": "The Farey sequence F_n — all reduced fractions in [0,1] with denominator ≤ n, in increasing order — has two classical pillars: the unimodular relation bc − ad = 1 for adjacent fractions a/b < c/d, and the explicit successor formula that, given two consecutive terms, produces the next. This successor rule (e = kc − a, f = kd − b with k = ⌊(n+b)/d⌋) is the standard way to enumerate F_n in linear time and is the discrete analogue of the continued-fraction algorithm. Erdős Problem #1005 asks for the longest run of consecutive 'similarly ordered' Farey fractions; the sibling entry settles when two fractions are adjacent, and this entry supplies the constructive other half — how to walk from one adjacency to the next.",

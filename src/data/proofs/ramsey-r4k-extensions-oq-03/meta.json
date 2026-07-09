@@ -18,9 +18,9 @@
     "badge": "original",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 312,
-    "theoremCount": 12,
-    "definitionCount": 5,
+    "lineCount": 593,
+    "theoremCount": 22,
+    "definitionCount": 6,
     "assumptions": "None counted. Every declaration depends only on the standard foundational axioms propext, Classical.choice, Quot.sound, confirmed by `#print axioms` on cliqueNeighbors_card_le, containing_card_le, ramsey_lll_lower_bound, RamseyLLLCondition_antitone and cliqueMonoProb_le_one; none of these are counted as assumptions. There are no `axiom` declarations, no structure-encoded hypotheses, no `sorry`, and no `native_decide`. The dependency-degree bound (cliqueNeighbors_card_le), the probability bounds, and the threshold monotonicity are all unconditional theorems. The Ramsey application ramsey_lll_lower_bound is a genuine conditional theorem: it takes the not-yet-in-Mathlib symmetric-LLL avoidance principle as an EXPLICIT Prop argument `hLLL : SymmetricLLLForRamsey` rather than as an axiom, so the file remains axiom-free while making the single missing ingredient fully transparent.",
     "mathlibDependencies": [
       {

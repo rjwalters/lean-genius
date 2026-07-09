@@ -89,7 +89,7 @@
     ],
     "dateAdded": "2026-06-16",
     "axiomCount": 1,
-    "lineCount": 175,
+    "lineCount": 182,
     "assumptions": "The file compiles cleanly against Mathlib (Lean v4.26.0). The finite checks (S_one, unhappy_cycle, T_absorbing, reachesT_below, and the 8-cycle splices) use native_decide, which introduces the Lean.ofReduceBool axiom — so the entry is axiomatized (axiomCount 1), not axiom-free. There are no literal axiom declarations and no sorries; the single assumption is trust in the Lean compiler's kernel reduction via native_decide.",
     "mathlib_version": "4.26.0",
     "theoremCount": 10,

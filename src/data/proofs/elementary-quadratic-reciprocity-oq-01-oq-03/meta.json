@@ -15,7 +15,7 @@
     "namespace": "ZolotarevCRT",
     "lineCount": 262,
     "axiomCount": 0,
-    "theoremCount": 9,
+    "theoremCount": 11,
     "definitionCount": 3,
     "path": "Proofs/ElementaryQuadraticReciprocityOQ01OQ03.lean",
     "sorries": 0
@@ -83,7 +83,7 @@
     "sorries": 0,
     "axiomCount": 0,
     "lineCount": 262,
-    "theoremCount": 9,
+    "theoremCount": 11,
     "defCount": 3,
     "assumptions": "None. The file has 0 axiom declarations, 0 sorries, no native_decide, and no assumption-carrying structures. All results are fully machine-checked against Mathlib v4.26.0 (#print axioms reports only propext / Classical.choice / Quot.sound). Honest scope: the file formalizes the STRUCTURAL CRT mechanism — the Zolotarev sign character decomposes (and, for odd moduli, multiplies) exactly as the Jacobi symbol does in its denominator. It does NOT close the loop to Jacobi VALUES; that requires the base case sign(ringMulPerm a on ℤ/p) = legendreSym p a, which combines the parent's units-level zolotarev_lemma with a fixed-point sign-restriction argument (multiplication fixes 0 ∈ ℤ/p). That base case is the remaining glue and is left as the next step.",
     "mathlib_version": "4.26.0",

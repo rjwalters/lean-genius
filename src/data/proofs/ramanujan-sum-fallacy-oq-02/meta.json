@@ -42,7 +42,7 @@
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
     "mathlib_version": "4.26.0",
     "theoremCount": 5,
-    "definitionCount": 3
+    "definitionCount": 4
   },
   "overview": {
     "historicalContext": "The parent entry, *Ramanujan Sum Fallacy*, shows that manipulations like $1 - 1 + 1 - 1 + \\cdots = \\tfrac12$ are fallacious under ordinary (tsum) summation — Grandi's series has no ordinary sum. Yet the value $\\tfrac12$ is not meaningless: it is the *Cesàro sum*, obtained by averaging partial sums. Ernesto Cesàro introduced this method in 1890 to assign consistent values to a large class of divergent series; Grandi's series (Guido Grandi, 1703) is its textbook example. G. H. Hardy's *Divergent Series* (1949) systematizes such summation methods. This entry answers the parent's open question OQ-02: *how would you define Cesàro summation in Lean and show Grandi's series really is Cesàro-summable to 1/2?*",
@@ -99,7 +99,7 @@
     "lineCount": 127,
     "axiomCount": 0,
     "theoremCount": 5,
-    "definitionCount": 3,
+    "definitionCount": 4,
     "path": "Proofs/RamanujanSumFallacyOQ02.lean",
     "sorries": 0
   },

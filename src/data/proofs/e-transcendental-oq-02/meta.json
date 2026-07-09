@@ -22,7 +22,7 @@
     ],
     "badge": "axiom",
     "sorries": 0,
-    "theoremCount": 61,
+    "theoremCount": 74,
     "mathlibDependencies": [
       {
         "theorem": "Real.exp_one_gt_d9",
@@ -74,10 +74,10 @@
     ],
     "dateAdded": "2026-05-04",
     "axiomCount": 1,
-    "lineCount": 1021,
+    "lineCount": 1454,
     "assumptions": "1 axiom (the main open conjecture): e_absolutely_normal — e is absolutely normal (open as of 2026). Session 13 discharged the normal_imp_irrational axiom: composing rational_has_missing_ktuple_intCast (the ℤ-valued lift of S12's Layer 4a missing-tuple), rational_match_count_le (the matching-position count is bounded by N₀ via Finset.card_le_card), and tendsto_bounded_count_div_atTop_zero (squeeze: 0 ≤ count_N/N ≤ N₀/N → 0). For rational q, normality forces frequency → b^(-k) > 0, but the bound forces it → 0; tendsto_nhds_unique closes the contradiction. Earlier history: rational-digits-periodic was discharged in Session 11 via the 3-layer recipe (Layer 1 eventually_periodic_iterate S8, Layer 2 ratResidue_eventually_periodic S9, Layer 3 floor_pow_mul_div S10 + nthDigit_succ_via_residue S11), then Session 12 added Layer 4a (Fin b cast bridge) and rational_has_missing_ktuple. 33 public theorems including first 9 decimal digits of e proved from exp_one bounds and now normal_imp_irrational fully axiom-free.",
     "mathlib_version": "4.26.0",
-    "definitionCount": 5
+    "definitionCount": 6
   },
   "overview": {
     "historicalContext": "In 1909, Émile Borel introduced the concept of a **normal number** and proved that almost every real number (in the sense of Lebesgue measure) is absolutely normal. His theorem is a remarkable fact: though normality is the 'generic' property, proving any specific constant is normal has proved extraordinarily difficult.\n\nFor Euler's constant e = 2.71828182845904523536..., we know:\n- e is irrational (Euler, 1737) — proved via continued fractions and factorial series\n- e is transcendental (Hermite, 1873) — not a root of any polynomial with integer coefficients\n- e has a regular continued fraction [2; 1, 2, 1, 1, 4, 1, 1, 6, 1, 1, 8, ...] with a transparent pattern\n- The first 5 × 10¹³ decimal digits of e have been computed; statistical tests detect no anomalies\n\nYet despite all this, we cannot prove e is normal in base 10, base 2, or ANY base. Indeed, no specific real number has ever been proved normal. Borel's theorem proves normality is generic without identifying a single example.\n\nThe irrationality measure of e is exactly 2 (the minimum possible for any irrational) — see e-transcendental-oq-03. This excellent rational approximability property comes from the predictable continued fraction, but paradoxically does not help prove normality.",
@@ -207,10 +207,10 @@
       "Filter"
     ],
     "namespace": "ETranscendentalOQ02",
-    "lineCount": 1218,
+    "lineCount": 1454,
     "axiomCount": 1,
-    "theoremCount": 69,
-    "definitionCount": 5,
+    "theoremCount": 74,
+    "definitionCount": 6,
     "path": "Proofs/ETranscendentalOQ02.lean",
     "sorries": 0
   },

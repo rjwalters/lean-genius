@@ -31,7 +31,7 @@
       "am_lt_qm_of_ne: the weighted AM < QM strictly for non-constant data — the strict r = 1, t = 2 instance, the sharp form of the classical QM–AM inequality."
     ],
     "assumptions": "None. Fully machine-checked: 0 axioms, 0 sorries, no native_decide. Depends only on Mathlib (strictConvexOn_rpow, Real.rpow_left_inj, Real.rpow_mul) and two merged gallery files: AmgmInequalityOQ03 (the weightedPowerMean definition and power_mean_monotone_pos) and JensenInequalityOQ01 (jensen_eq_iff, the equality case of strict Jensen).",
-    "theoremCount": 4,
+    "theoremCount": 5,
     "definitionCount": 0
   },
   "leanFile": {
@@ -40,7 +40,7 @@
     "path": "Proofs/PowerMeanEqualityOQ.lean",
     "sorries": 0,
     "definitionCount": 0,
-    "theoremCount": 4,
+    "theoremCount": 5,
     "imports": [
       "Mathlib",
       "Proofs.AmgmInequalityOQ03",

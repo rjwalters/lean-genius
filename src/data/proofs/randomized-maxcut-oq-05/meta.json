@@ -31,7 +31,7 @@
     "lineCount": 162,
     "assumptions": "No remaining sorries and no axioms beyond Lean/Mathlib foundations (propext, Classical.choice, Quot.sound). All results fully machine-checked.",
     "theoremCount": 9,
-    "definitionCount": 1
+    "definitionCount": 0
   },
   "overview": {
     "historicalContext": "The Max-Cut problem — partition a graph's vertices into two sides to maximize the number of crossing edges — is one of Karp's 21 NP-complete problems (1972). Trivially the cut can never exceed the total edge count, maxCut(G) ≤ |E(G)|, and the base randomized-maxcut entry formalizes exactly this bound. A cut that crosses *every* edge is the extreme case: it exists precisely when the two sides are independent sets, i.e. when the graph is bipartite. This is the graph-theoretic content of König's classical theory of bipartite graphs (1936) and the equivalence 'bipartite ⇔ 2-colorable ⇔ no odd cycle'. The concrete extremal instance is the complete bipartite graph K_{m,n}, whose bipartition cuts all m·n edges.",
@@ -123,7 +123,7 @@
     "lineCount": 162,
     "axiomCount": 0,
     "theoremCount": 9,
-    "definitionCount": 1,
+    "definitionCount": 0,
     "path": "Proofs/RandomizedMaxCutOQ05.lean",
     "sorries": 0
   },

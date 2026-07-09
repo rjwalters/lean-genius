@@ -30,7 +30,7 @@
     "dateAdded": "2026-06-23",
     "axiomCount": 0,
     "lineCount": 682,
-    "theoremCount": 25,
+    "theoremCount": 26,
     "definitionCount": 2,
     "assumptions": "None. Imports only Mathlib. Uses standard Mathlib group-theory API: Cauchy's theorem `exists_prime_orderOf_dvd_card`, `Commute.orderOf_mul_eq_mul_orderOf_of_coprime`, `isCyclic_of_orderOf_eq_card`, `mulEquivOfCyclicCardEq`, `zmodCyclicMulEquiv` (abelian thread); `card_sylow_modEq_one`, `Sylow.card_dvd_index`, `Sylow.normal_of_subsingleton`, `isNilpotent_of_finite_tfae`, `IsZGroup.of_squarefree` (cyclic case); `SemidirectProduct.congr`/`congr'`/`mulEquivProd`/`mulEquivSubgroup`, `MonoidHom.ofInjective`, `MulEquiv.subgroupCongr`, `MulAut.congr`, `IsCyclic.mulAutMulEquiv`, `ZMod.isCyclic_units_prime`, `Group.isCyclic_prod_iff`, `isCyclic_of_prime_card`, `Subgroup.isComplement'_of_coprime` (non-abelian Parts VI–IX). No `axiom` declarations, no structure-encoded assumptions, no `native_decide`. Kernel-verified on Mathlib v4.26.0: all 25 theorems and 2 definitions depend on exactly the standard `[propext, Classical.choice, Quot.sound]` triple (confirmed via `#print axioms pq_noncyclic_iso`; no `sorryAx`, no `Lean.ofReduceBool`).",
     "originalContributions": [
@@ -190,7 +190,7 @@
     "namespace": "LagrangeOQ01OQ01OQ02",
     "lineCount": 682,
     "axiomCount": 0,
-    "theoremCount": 25,
+    "theoremCount": 26,
     "definitionCount": 2,
     "path": "Proofs/LagrangeTheoremOQ01OQ01OQ02.lean",
     "sorries": 0,

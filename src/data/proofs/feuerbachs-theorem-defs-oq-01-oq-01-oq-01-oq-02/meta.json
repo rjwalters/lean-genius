@@ -27,7 +27,7 @@
     "axiomCount": 0,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries (only propext / Classical.choice / Quot.sound, confirmed by #print axioms). Inherits the coordinate API (circumcenter/orthocenter formulas, side-length lemmas, circumcenter_denom_ne_zero, and the triangle_345 computations) from FeuerbachsTheoremDefs.lean, which is itself 0-sorry, 0-axiom.",
     "lineCount": 272,
-    "theoremCount": 13,
+    "theoremCount": 18,
     "definitionCount": 0,
     "originalContributions": [
       "orthocenter_vertex_A_dist_sq (and B, C): the squared-distance form AH² = 4·dist²(O,A) − dist²(B,C), the distance from a vertex to the orthocenter in terms of the circumcenter and the opposite side — a quantity the nine-point-circle and Euler-line development never measures",
@@ -169,7 +169,7 @@
     "namespace": "FeuerbachsTheoremDefsOQ01OQ01OQ01OQ02",
     "lineCount": 272,
     "axiomCount": 0,
-    "theoremCount": 13,
+    "theoremCount": 18,
     "definitionCount": 0,
     "path": "Proofs/FeuerbachsTheoremDefsOQ01OQ01OQ01OQ02.lean",
     "sorries": 0,

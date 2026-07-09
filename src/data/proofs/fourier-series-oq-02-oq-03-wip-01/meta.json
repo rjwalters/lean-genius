@@ -31,7 +31,7 @@
       "Orthonormality of Fourier monomials"
     ],
     "mathlib_version": "4.26.0",
-    "definitionCount": 0
+    "definitionCount": 2
   },
   "overview": {
     "historicalContext": "The Fourier coefficient decay bound |ĉ_n(f)| ≤ (C/2)(T/(2|n|))^α for α-Hölder functions is classical (Zygmund, 'Trigonometric Series', 1959; Katznelson, 1968). Its constant 1/2 originates in the half-period translation trick: 2ĉ_n(f) = ∫(f(x) − f(x+T/(2n)))e_{-n}(x)dx, which is exact because e_{-n}(x+T/(2n)) = −e_{-n}(x). The parent gallery entry (fourier-series-oq-02-oq-03) formalizes structural properties of the bound expression and states, in prose, that 1/2 is sharp via extremal sawtooth functions, but never connects the constant to an actual Fourier coefficient nor exhibits a case of equality. This entry supplies the missing rigorous link and settles the optimality of 1/2 for the half-period method itself.",

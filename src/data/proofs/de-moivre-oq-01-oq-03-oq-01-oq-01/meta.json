@@ -58,7 +58,7 @@
     "axiomCount": 0,
     "lineCount": 162,
     "assumptions": "0 axioms, 0 sorries, no native_decide. All theorems depend only on the standard foundational axioms propext / Classical.choice / Quot.sound (verified via #print axioms on chebyshevCEnd, chebyshevCEnd_mul, chebyshevC_nest_eval_field_int, chebyshevC_comp_comm). chebyshevCEnd is noncomputable because the Chebyshev polynomial C is noncomputable; this is a definitional attribute, not a logical assumption.",
-    "theoremCount": 5,
+    "theoremCount": 7,
     "definitionCount": 1
   },
   "overview": {
@@ -151,7 +151,7 @@
     "namespace": "DeMoivreChebyshevMonoidHom",
     "lineCount": 162,
     "axiomCount": 0,
-    "theoremCount": 5,
+    "theoremCount": 7,
     "definitionCount": 1,
     "path": "Proofs/DeMoivreOQ01OQ03OQ01OQ01.lean",
     "sorries": 0

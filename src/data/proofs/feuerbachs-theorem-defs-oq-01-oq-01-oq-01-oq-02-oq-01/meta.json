@@ -29,7 +29,7 @@
     "axiomCount": 0,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries (only propext / Classical.choice / Quot.sound, confirmed by #print axioms on every theorem). Inherits the coordinate API (circumcenter/orthocenter/midpoint formulas, side-length lemmas, dist2/dist2_sq, eq_of_sq_eq_of_nonneg, dist2_nonneg, circumcenter_denom_ne_zero, and the triangle_345 computations) from FeuerbachsTheoremDefs.lean, which is itself 0-sorry, 0-axiom.",
     "lineCount": 347,
-    "theoremCount": 20,
+    "theoremCount": 25,
     "definitionCount": 0,
     "originalContributions": [
       "vertexA_orthocenter_vec (and B, C): the exact componentwise vector identity A − H = 2·(O − M_a), proved purely affinely (both sides equal 2O − B − C) with NO circle / equidistance hypothesis — the structural core showing the segment HA is parallel to OM_a and twice its length",
@@ -193,7 +193,7 @@
     "namespace": "FeuerbachsTheoremDefsOQ01OQ01OQ01OQ02OQ01",
     "lineCount": 347,
     "axiomCount": 0,
-    "theoremCount": 20,
+    "theoremCount": 25,
     "definitionCount": 0,
     "path": "Proofs/FeuerbachsTheoremDefsOQ01OQ01OQ01OQ02OQ01.lean",
     "sorries": 0,

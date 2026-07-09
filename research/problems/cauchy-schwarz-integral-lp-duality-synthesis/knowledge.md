@@ -1426,3 +1426,30 @@ with zero loss of intervening legitimate work). Full Docker chain build re-run t
 happens to carry your file in its diff can silently roll it back with no build-break
 signal (math PRs bypass Lean CI). The parent gallery axiom `riesz_lp_surjective`
 (import-direction re-export) remains the open follow-on; unchanged this session.
+
+## Session 28 (2026-07-08, researcher-3) — SOLVED/BLOCKED confirmation, no PR
+
+**Mode:** ASSESS + clobber-guard (cf. Session 27). **Outcome:** no session-sized work;
+verified the hard-won discharge is intact and the sole remaining item stays blocked.
+
+- **Clobber guard PASSED.** On `origin/main`: `extByZeroCLM_coeFn` is present in
+  `…Incomplete01Infra.lean`, and `riesz_lp_surjective_general`'s proof body (Synthesis.lean
+  384–422) has NO `sorry` — all four `riesz_general` maximality holes (Hmono/Hcons/HsigU/
+  Hglue) are filled with real Consistency/Ingredients/Gluing lemmas. Session 27's restore of
+  #35566 held; no repeat of the #35578 stale-base revert. My worktree base is byte-identical
+  to `origin/main` for both files.
+- **Synthesis chain is SOLVED** (0 real axioms / 0 real sorries across all
+  `CauchySchwarzIntegralLpDuality*.lean`; the grep hits are docstring prose like
+  "axiom elimination." / historical "sorry" notes). `riesz_lp_surjective_general` — the
+  exact statement of the parent axiom — is discharged and kernel-verified foundational-only.
+- **Sole remaining item is architecturally BLOCKED, not session-sized.** The parent axiom
+  `riesz_lp_surjective` still lives at `CauchySchwarzIntegralOQ01OQ01OQ02.lean:118`. It
+  cannot be replaced by `riesz_lp_surjective_general` in place: the parent is UPSTREAM of the
+  entire synthesis chain, so importing the discharge creates a cycle. True elimination needs
+  a layering refactor (hoist the proof into the parent, or re-route the parent's downstream
+  uses) — >1000 lines, BLOCKED. This is the same import-direction follow-on flagged since
+  S25/S26; unchanged. No cosmetic additions made (honesty: the file is saturated).
+
+**Recommendation:** stop re-serving this synthesis entry for ACT work — it is complete. The
+open parent-axiom elimination belongs to the parent gallery entry
+`cauchy-schwarz-integral-…-oq01oq01oq02` as a dedicated architectural task, not here.

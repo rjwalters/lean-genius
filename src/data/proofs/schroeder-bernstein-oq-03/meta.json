@@ -62,7 +62,7 @@
       "Bounded escape search = canonical escape depth (r8b, 2026-07-03): firstEscapeB f g L a := (List.range ((mRan L).length + 1)).findIdx (fun N => decide (f (fwdOrbit f g a N) ∉ mRan L)) — a plain total function (no Classical.choose, no proof argument, hence Computable-amenable) — and the bridge firstEscapeB_eq_escapeDepth proving firstEscapeB f g L a = escapeDepth f g L a (escape_exists' …) whenever the balance invariant licenses escape. Proof is List.findIdx_eq at index escapeDepth: the escape predicate is true there (escapeDepth_spec) and false at every earlier stage (escapeDepth_min), with escapeDepth_le placing escapeDepth inside the window. This is the flagged correctness keystone — it certifies the choice-free bounded scan reproduces the LEAST-depth pairing of the classical construction, so a scheduler may substitute firstEscapeB for escapeDepth verbatim. The remaining step to Computable σ is now the mechanical Primrec assembly of firstEscapeB (list_findIdx + list_range + fwdOrbit_computable + a list-membership Bool primrec). VERIFIED, 0-axiom."
     ],
     "openProblems": [],
-    "theoremCount": 174,
+    "theoremCount": 179,
     "definitionCount": 37,
     "additionalFiles": [
       "Proofs/SchroederBernsteinOQ03Aristotle.lean"
@@ -254,7 +254,7 @@
     "namespace": "MyhillIsomorphism",
     "lineCount": 3555,
     "axiomCount": 0,
-    "theoremCount": 174,
+    "theoremCount": 179,
     "definitionCount": 37,
     "sorries": 0,
     "path": "Proofs/SchroederBernsteinOQ03.lean",

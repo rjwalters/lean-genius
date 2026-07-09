@@ -23,7 +23,7 @@
     "assumptions": "2 axioms. (1) three_dvd_gal_card — 3 divides |Gal(q/ℚ)|. This follows from Dedekind's theorem applied to q mod 7 (which factors as (1-cycle)(1-cycle)(3-cycle)), implying the Galois group contains an element of order divisible by 3. Axiomatized because Mathlib lacks Dedekind's theorem for polynomial Galois groups. (2) Lean.ofReduceBool — several credited theorems are discharged by `native_decide` (perm_fin5_order5_order3_not_commute, perm_fin5_no_order_15, a5_card, resolvent_no_positive_root, resolvent_no_negative_root, resolvent_at_zero, and the Sylow subgroup-cardinality steps), which trusts the Lean compiler's kernel reduction (#print axioms lists Lean.ofReduceBool); these results are free of mathematical axioms but not axiom-free in the strict sense.",
     "lineCount": 2105,
     "theoremCount": 65,
-    "definitionCount": 7,
+    "definitionCount": 12,
     "originalContributions": [
       "q: the polynomial x⁵-5x⁴+10x³-10x²+25x-5 (translate of x⁵+20x+16)",
       "q_eisenstein: q satisfies Eisenstein's criterion at p=5 (PROVED, hence irreducible over ℚ)",
@@ -88,7 +88,7 @@
     "lineCount": 2105,
     "axiomCount": 1,
     "theoremCount": 65,
-    "definitionCount": 7,
+    "definitionCount": 12,
     "path": "Proofs/InverseGaloisA5.lean",
     "sorries": 0,
     "additionalFiles": [

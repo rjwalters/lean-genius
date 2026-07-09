@@ -12,7 +12,7 @@
     "lineCount": 48,
     "axiomCount": 0,
     "theoremCount": 1,
-    "definitionCount": 1,
+    "definitionCount": 2,
     "path": "Proofs/BritishFlagTheorem.lean",
     "sorries": 0
   },
@@ -43,7 +43,7 @@
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries. The rectangle is encoded by the parallelogram closure C = B + D − A and the orthogonality of edges B − A and D − A.",
     "mathlib_version": "4.26.0",
     "theoremCount": 1,
-    "definitionCount": 1
+    "definitionCount": 2
   },
   "overview": {
     "historicalContext": "The British Flag theorem is a classical result of elementary Euclidean geometry. Its name comes from the picture that results when the four squared-distance segments from an interior point are drawn to the corners of a rectangle: the diagonals and the connecting lines sketch a pattern resembling the Union Jack. Despite its elementary statement it is a recurring exercise in coordinate geometry and a clean illustration of how an orthogonality condition controls a metric identity. The identity holds more generally: the rectangle can be replaced by any right-angled configuration, and the same computation shows the invariant PA²+PC² − PB²−PD² equals twice the dot product of the two edge vectors at A, so the theorem is exactly the vanishing of that dot product. Higher-dimensional and Hilbert-space analogues (the 'parallelogram/orthogonality' version) follow by the identical polarization argument, making the British Flag theorem a low-dimensional instance of the general fact that squared-norm sums to opposite vertices of a box coincide.",

@@ -45,6 +45,13 @@ three original orders `10 = 5·2`, `20 = 5·4`, `40 = 5·8` are recovered as the
 * `conj_mem_zpowers_sylow` — consequently every element normalizes `⟨c⟩`.
 * `zpowers_order5_normal` / `conj_mem_zpowers_order5` — the `p = 5`
   specialisations feeding the Abel–Ruffini `x⁵-4x+2` proof, now one-liners.
+* `mem_center_of_coprime_index` — class-equation centrality criterion: if the
+  index `m` is coprime to `p − 1`, the order-`p` element `c` is central.
+* `isSolvable_of_sylow_primePow_index` — solvability whenever `m = q^k`.
+* `isNilpotent_of_sylow_central_primePow_index` — the **sharp** strengthening: in
+  the coprime regime `gcd(q^k, p − 1) = 1` the central Sylow subgroup makes `G`
+  *nilpotent*, not merely solvable (the Abel–Ruffini orders `20, 40` sit on the
+  non-coprime side, where nilpotency fails: `F₂₀` is solvable but not nilpotent).
 -/
 
 namespace AbelRuffiniSylowElim
@@ -441,6 +448,87 @@ theorem conjClass_card_dvd_sub_one {G : Type*} [Group G] [Finite G] {p : ℕ}
   rw [orbit_conjAct_card_eq_centralizer_index]
   exact centralizer_index_dvd_sub_one m hcard hpm huniq c hc
 
+/-! ### The class-equation arithmetic consequence: coprime index forces centrality
+
+The N/C bound `[G : C_G(c)] ∣ p − 1` gained its force from the automorphism group
+`Aut(⟨c⟩) ≅ (ℤ/p)ˣ` of order `p − 1`.  There is a *second*, orthogonal constraint on the
+same index coming from the subgroup lattice: since `c` commutes with its own powers,
+`⟨c⟩ ≤ C_G(c)`, so `[G : C_G(c)]` divides `[G : ⟨c⟩] = m`.  Combining the two:
+
+    `|conj class of c|  =  [G : C_G(c)]  ∣  gcd(m, p − 1)`.
+
+This is the sharp class-equation reading.  Its most striking consequence is a **centrality
+criterion**: whenever the index `m` and `p − 1` are *coprime*, the gcd is `1`, the
+conjugacy class of `c` is a singleton, and `c` is central.  Equivalently: an order-`p`
+element whose index is coprime to `p − 1` cannot be moved by conjugation — it lies in the
+centre `Z(G)`.  (This is the elementary transfer-theoretic phenomenon behind Burnside's
+normal `p`-complement theorem read for a single element: no automorphism of `⟨c⟩` of order
+dividing `p − 1` can be realised by conjugation when the available conjugating room `m` is
+coprime to `p − 1`.) -/
+
+/-- **`⟨c⟩` centralises `c`.**  Every power of `c` commutes with `c`, so the cyclic
+subgroup `⟨c⟩` is contained in the centralizer `C_G(c)`.  Pure group theory. -/
+theorem zpowers_le_centralizer {G : Type*} [Group G] (c : G) :
+    Subgroup.zpowers c ≤ Subgroup.centralizer {c} := by
+  intro x hx
+  rw [Subgroup.mem_centralizer_iff]
+  rintro y hy
+  rw [Set.mem_singleton_iff] at hy; subst hy
+  obtain ⟨k, rfl⟩ := Subgroup.mem_zpowers_iff.mp hx
+  exact (Commute.refl y).zpow_right k
+
+/-- **The centralizer index also divides `m`.**  Because `⟨c⟩ ≤ C_G(c)` and
+`[G : ⟨c⟩] = m`, the tower law gives `[G : C_G(c)] ∣ m`.  This is the lattice-side
+constraint on the conjugacy-class size, complementary to the automorphism-group bound
+`[G : C_G(c)] ∣ p − 1`.  Needs only the order hypothesis, not `huniq`. -/
+theorem centralizer_index_dvd_index_zpowers {G : Type*} [Group G] [Finite G] {p : ℕ}
+    [Fact p.Prime] (m : ℕ) (hcard : Nat.card G = p * m)
+    (c : G) (hc : orderOf c = p) :
+    (Subgroup.centralizer {c}).index ∣ m := by
+  have h := Subgroup.index_dvd_of_le (zpowers_le_centralizer c)
+  rwa [zpowers_index_eq m hcard c hc] at h
+
+/-- **Conjugacy class size divides `gcd(m, p − 1)`.**  Sharpens `conjClass_card_dvd_sub_one`:
+the size of the conjugacy class of `c` divides *both* the index `m` (lattice constraint) and
+`p − 1` (automorphism-group constraint), hence their gcd.  This is the tightest per-element
+bound the class equation supplies here. -/
+theorem conjClass_card_dvd_gcd {G : Type*} [Group G] [Finite G] {p : ℕ}
+    [hp : Fact p.Prime] (m : ℕ)
+    (hcard : Nat.card G = p * m) (hpm : ¬ (p ∣ m))
+    (huniq : ∀ d : ℕ, d ∣ m → d % p = 1 → d = 1)
+    (c : G) (hc : orderOf c = p) :
+    Nat.card (MulAction.orbit (ConjAct G) c) ∣ Nat.gcd m (p - 1) := by
+  rw [orbit_conjAct_card_eq_centralizer_index]
+  exact Nat.dvd_gcd (centralizer_index_dvd_index_zpowers m hcard c hc)
+    (centralizer_index_dvd_sub_one m hcard hpm huniq c hc)
+
+/-- **Centrality criterion: coprime index forces `c` central.**
+
+Under the hypotheses of `zpowers_sylow_normal`, if the index `m = [G : ⟨c⟩]` is *coprime*
+to `p − 1`, then the order-`p` element `c` lies in the centre `Z(G)`.  Indeed the
+conjugacy class of `c` has size dividing `gcd(m, p − 1) = 1`, so the class is a singleton,
+i.e. `C_G(c) = G`.  This is the class-equation punchline: the only way an order-`p` element
+can *avoid* being central is for its index to share a common factor with `p − 1`; the
+Abel–Ruffini orders `20 = 5·4`, `40 = 5·8` (with `gcd(4, 4) = 4`, `gcd(8, 4) = 4`) live
+precisely in the non-coprime regime where non-central order-`5` elements are possible. -/
+theorem mem_center_of_coprime_index {G : Type*} [Group G] [Finite G] {p : ℕ}
+    [hp : Fact p.Prime] (m : ℕ)
+    (hcard : Nat.card G = p * m) (hpm : ¬ (p ∣ m))
+    (huniq : ∀ d : ℕ, d ∣ m → d % p = 1 → d = 1)
+    (c : G) (hc : orderOf c = p) (hcop : Nat.Coprime m (p - 1)) :
+    c ∈ Subgroup.center G := by
+  have hgcd1 : Nat.gcd m (p - 1) = 1 := hcop
+  have hdvd : (Subgroup.centralizer {c}).index ∣ Nat.gcd m (p - 1) :=
+    Nat.dvd_gcd (centralizer_index_dvd_index_zpowers m hcard c hc)
+      (centralizer_index_dvd_sub_one m hcard hpm huniq c hc)
+  rw [hgcd1] at hdvd
+  have htop : Subgroup.centralizer {c} = ⊤ :=
+    Subgroup.index_eq_one.mp (Nat.dvd_one.mp hdvd)
+  rw [Subgroup.mem_center_iff]
+  intro g
+  have hg : g ∈ Subgroup.centralizer {c} := htop ▸ Subgroup.mem_top g
+  exact (Subgroup.mem_centralizer_iff.mp hg c (Set.mem_singleton c)).symm
+
 /-! ### The fixed prime `p = 5`
 
 The original Abel–Ruffini application only needs `p = 5`.  With the general
@@ -484,6 +572,29 @@ theorem not_isSimpleGroup_order5 {G : Type*} [Group G] [Finite G] (m : ℕ)
     ¬ IsSimpleGroup G :=
   haveI : Fact (Nat.Prime 5) := ⟨by norm_num⟩
   not_isSimpleGroup_of_sylow m hcard hm5 huniq hm c hc
+
+/-- **Fixed prime `5` centrality criterion** (`p = 5` specialisation of
+`mem_center_of_coprime_index`).  In a finite group of order `5·m` with `5 ∤ m`, the
+divisor condition, and an order-`5` element `c`, if `m` is coprime to `4 = 5 − 1` (i.e.
+`m` is odd), then `c` is central.  The order-`15` groups (`m = 3`) are the smallest
+instance: every order-`5` element of a group of order `15` lies in the centre — the
+group-theoretic reason all groups of order `15` are cyclic. -/
+theorem mem_center_order5_of_coprime_index {G : Type*} [Group G] [Finite G] (m : ℕ)
+    (hcard : Nat.card G = 5 * m) (hm5 : ¬ (5 ∣ m))
+    (huniq : ∀ d : ℕ, d ∣ m → d % 5 = 1 → d = 1)
+    (c : G) (hc : orderOf c = 5) (hcop : Nat.Coprime m 4) :
+    c ∈ Subgroup.center G :=
+  haveI : Fact (Nat.Prime 5) := ⟨by norm_num⟩
+  mem_center_of_coprime_index m hcard hm5 huniq c hc (by simpa using hcop)
+
+/-- **Order `15` centrality.** Any order-`5` element of a finite group of order `15` is
+central: order `15 = 5·3`, `5 ∤ 3`, the divisor condition holds (`3 < 5`), and `3` is
+coprime to `4`, so `mem_center_order5_of_coprime_index` applies.  (This is the crux of the
+classification of order-`15` groups as cyclic.) -/
+example {G : Type*} [Group G] [Finite G] (c : G) (hc : orderOf c = 5)
+    (hcard : Nat.card G = 15) : c ∈ Subgroup.center G :=
+  mem_center_order5_of_coprime_index 3 (hcard.trans (by norm_num)) (by norm_num)
+    (huniq_of_lt (by norm_num) (by norm_num)) c hc (by norm_num)
 
 /-! ### Recovering the three original orders `10, 20, 40`
 
@@ -612,5 +723,76 @@ example {G : Type*} [Group G] [Finite G] (c : G) (hc : orderOf c = 5)
       have := Nat.le_of_dvd (by norm_num) hd
       interval_cases d <;> omega)
     c hc
+
+/-! ### Sharp strengthening: nilpotency in the coprime regime
+
+Solvability (`isSolvable_of_sylow_primePow_index`) holds for *every* prime-power
+index `m = q^k`.  In the special **coprime** regime `gcd(q^k, p − 1) = 1` the
+centrality criterion `mem_center_of_coprime_index` places `⟨c⟩` inside the centre,
+so the extension `1 → ⟨c⟩ → G → G ⧸ ⟨c⟩ → 1` is *central*.  A central extension of
+a nilpotent group is nilpotent (Mathlib's `isNilpotent_of_ker_le_center`), and the
+quotient `G ⧸ ⟨c⟩` is a `q`-group hence nilpotent; therefore `G` is **nilpotent**,
+not merely solvable.
+
+This is the sharp boundary separating the two structural conclusions.  The
+Abel–Ruffini orders `20 = 5·4` and `40 = 5·8` live in the *non*-coprime regime
+(`gcd(4, 4) = gcd(8, 4) = 4 ≠ 1`), where nilpotency genuinely fails — the metacyclic
+Frobenius group `F₂₀ = C₅ ⋊ C₄` of order `20` is solvable but **not** nilpotent
+(its Sylow `5`-subgroup is normal, but the Sylow `2`-subgroup is not).  The coprime
+hypothesis is exactly what upgrades "solvable" to "nilpotent" here. -/
+
+/-- **Nilpotency from a *central* normal Sylow `p`-subgroup with prime-power index.**
+
+Under the hypotheses of `zpowers_sylow_normal`, if additionally the index `m = q^k`
+is coprime to `p − 1`, then the order-`p` element `c` is central
+(`mem_center_of_coprime_index`), so `⟨c⟩ ≤ Z(G)` and `1 → ⟨c⟩ → G → G ⧸ ⟨c⟩ → 1` is a
+central extension of the `q`-group `G ⧸ ⟨c⟩`.  Hence `G` is nilpotent — a strict
+strengthening of `isSolvable_of_sylow_primePow_index` valid precisely in the coprime
+regime `gcd(q^k, p − 1) = 1`. -/
+theorem isNilpotent_of_sylow_central_primePow_index {G : Type*} [Group G] [Finite G]
+    {p q k : ℕ} [Fact p.Prime] [Fact q.Prime]
+    (hcard : Nat.card G = p * q ^ k) (hpm : ¬ (p ∣ q ^ k))
+    (huniq : ∀ d : ℕ, d ∣ q ^ k → d % p = 1 → d = 1)
+    (c : G) (hc : orderOf c = p) (hcop : Nat.Coprime (q ^ k) (p - 1)) :
+    Group.IsNilpotent G := by
+  haveI : (Subgroup.zpowers c).Normal := zpowers_sylow_normal (q ^ k) hcard hpm huniq c hc
+  have hcent : c ∈ Subgroup.center G :=
+    mem_center_of_coprime_index (q ^ k) hcard hpm huniq c hc hcop
+  have hle : Subgroup.zpowers c ≤ Subgroup.center G := Subgroup.zpowers_le.mpr hcent
+  have hidx : Nat.card (G ⧸ Subgroup.zpowers c) = q ^ k := by
+    rw [← Subgroup.index_eq_card]; exact zpowers_index_eq (q ^ k) hcard c hc
+  haveI : Group.IsNilpotent (G ⧸ Subgroup.zpowers c) := (IsPGroup.of_card hidx).isNilpotent
+  refine isNilpotent_of_ker_le_center (QuotientGroup.mk' (Subgroup.zpowers c)) ?_ inferInstance
+  rw [QuotientGroup.ker_mk']; exact hle
+
+/-! ### The fixed prime `p = 5`, nilpotency form -/
+
+/-- **Fixed prime `5` nilpotency** (`p = 5` specialisation of
+`isNilpotent_of_sylow_central_primePow_index`).  A finite group of order `5·q^k` with
+`5 ∤ q^k`, the divisor condition, an order-`5` element, and `q^k` coprime to `4 = 5 − 1`
+is nilpotent.  This is the nilpotency counterpart of `isSolvable_order5_primePow_index`,
+sharpened by the coprimality (oddness of `q^k`) hypothesis. -/
+theorem isNilpotent_order5_central_primePow_index {G : Type*} [Group G] [Finite G]
+    {q k : ℕ} [Fact q.Prime]
+    (hcard : Nat.card G = 5 * q ^ k) (hm5 : ¬ (5 ∣ q ^ k))
+    (huniq : ∀ d : ℕ, d ∣ q ^ k → d % 5 = 1 → d = 1)
+    (c : G) (hc : orderOf c = 5) (hcop : Nat.Coprime (q ^ k) 4) :
+    Group.IsNilpotent G :=
+  haveI : Fact (Nat.Prime 5) := ⟨by norm_num⟩
+  isNilpotent_of_sylow_central_primePow_index hcard hm5 huniq c hc (by simpa using hcop)
+
+/-- **Order `15` nilpotency (hence cyclicity).**  Any finite group of order `15`
+containing an element of order `5` is nilpotent: order `15 = 5·3¹`, `5 ∤ 3`, the
+divisor condition holds (`3 < 5`), and `3` is coprime to `4 = 5 − 1`, so the Sylow
+`5`-subgroup is central and the order-`3` quotient extension is central.  Together
+with the (automatic) normal Sylow `3`-subgroup this is the group-theoretic reason
+every group of order `15` is cyclic — the smallest coprime-regime instance, sitting
+strictly on the nilpotent side of the `20/40` non-nilpotent boundary. -/
+example {G : Type*} [Group G] [Finite G] (c : G) (hc : orderOf c = 5)
+    (hcard : Nat.card G = 15) : Group.IsNilpotent G :=
+  haveI : Fact (Nat.Prime 3) := ⟨by norm_num⟩
+  isNilpotent_order5_central_primePow_index (q := 3) (k := 1)
+    (hcard.trans (by norm_num)) (by norm_num)
+    (huniq_of_lt (by norm_num) (by norm_num)) c hc (by norm_num)
 
 end AbelRuffiniSylowElim

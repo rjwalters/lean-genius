@@ -1014,5 +1014,431 @@ theorem decision_procedure_classifies :
         (by unfold coStep; norm_num [totient_13]) (by rw [hb13]; decide)
         (by rw [hC13]; decide) (by rw [hC13]; decide) k]
     exact classify_13
+-- ===========================================================================
+-- THE EXCLUDED CASE  v₂(2a − φ(a)) > 1  — GENERAL TRANSPORT AND CRITERION
+-- ---------------------------------------------------------------------------
+-- The transport lemma `dblIter_transport` and the three-way criterion above all
+-- require `2a − φ(a) = 2·b` with `b` odd, i.e. the first cototient step has
+-- 2-adic valuation EXACTLY `1`.  This excludes every seed with
+-- `v₂(2a − φ(a)) ≥ 2` (the smallest being `a = 3, 7, 9, 11, 27, …`).  We remove
+-- that restriction.
+--
+-- Write the first step as `2a − φ(a) = 2^s · b` with `b` odd and `s ≥ 1`.  Then
+-- along `n = a·2^(k+1)`:
+--   • `n − φ(n) = (2a − φ(a))·2^k = b·2^(k+s)` has valuation `k + s`, so
+--   • `φ(n − φ(n)) = φ(b)·2^(k+s−1)`, whence
+--   • `D(n) = a·2^(k+1) − φ(b)·2^(k+s−1) = (2a − φ(b)·2^(s−1))·2^k`.
+-- So the landing constant is `C = 2a − φ(b)·2^(s−1)` (for `s = 1` this is the old
+-- `2a − φ(b)`, recovering `dblIter_transport`).  Decomposing `C = e·2^t` (`e`
+-- odd, `t ≥ 1`) the criterion again reads off the regime from `φ(a) ⋛ φ(e)·2^(t−1)`.
+--
+-- A structural surprise the general criterion makes visible: among the excluded
+-- seeds `a < 120` only the EQUALITY and FORWARD regimes occur — no excluded seed
+-- reverses.  We realise both regimes explicitly (`a = 3, 9` equality; `a = 7, 27`
+-- forward), giving genuinely new infinite families outside the reach of the
+-- `s = 1` criterion.
+-- ===========================================================================
+
+/-- **General transport (arbitrary first-step 2-adic valuation).**  Drops the
+    `v₂(2a − φ(a)) = 1` restriction of `dblIter_transport`: with `a, b` odd,
+    `s ≥ 1`, and the first cototient step `2a − φ(a) = 2^s · b`, the double
+    iterate along `n = a·2^(k+1)` is `D(n) = (2a − φ(b)·2^(s−1)) · 2^k`.
+    For `s = 1` this is exactly `dblIter_transport`. -/
+theorem dblIter_transport_general {a b s : ℕ} (ha : Odd a) (hb : Odd b) (hs : 1 ≤ s)
+    (hstep : 2 * a - Nat.totient a = 2 ^ s * b) (k : ℕ) :
+    dblIter (a * 2 ^ (k + 1)) = (2 * a - Nat.totient b * 2 ^ (s - 1)) * 2 ^ k := by
+  -- odd ⇒ coprime to every power of two
+  have oddCop : ∀ (c m : ℕ), Odd c → Nat.Coprime c (2 ^ m) := by
+    intro c m hc
+    have h2 : ¬ (2 ∣ c) := by
+      intro hd
+      rw [Nat.dvd_iff_mod_eq_zero] at hd
+      have := Nat.odd_iff.mp hc; omega
+    exact ((Nat.prime_two.coprime_iff_not_dvd).mpr h2).symm.pow_right m
+  have hp2 : ∀ m : ℕ, Nat.totient (2 ^ (m + 1)) = 2 ^ m := by
+    intro m; rw [Nat.totient_prime_pow Nat.prime_two (Nat.succ_pos m)]; simp
+  -- φ(n) = φ(a)·2^k
+  have hφn : Nat.totient (a * 2 ^ (k + 1)) = Nat.totient a * 2 ^ k := by
+    rw [Nat.totient_mul (oddCop a (k + 1) ha), hp2 k]
+  -- first cototient step lands on b·2^(k+s)  (valuation k+s, not k+1)
+  have step1 : a * 2 ^ (k + 1) - Nat.totient a * 2 ^ k = b * 2 ^ (k + s) := by
+    have e1 : a * 2 ^ (k + 1) = (2 * a) * 2 ^ k := by rw [pow_succ]; ring
+    rw [e1, ← Nat.sub_mul, hstep, pow_add]; ring
+  -- φ(2^(k+s)) = 2^(k+s−1)  (k+s ≥ 1 since s ≥ 1)
+  have hφ2ks : Nat.totient (2 ^ (k + s)) = 2 ^ (k + s - 1) := by
+    obtain ⟨m, hm⟩ : ∃ m, k + s = m + 1 := ⟨k + s - 1, by omega⟩
+    rw [hm, Nat.totient_prime_pow Nat.prime_two (Nat.succ_pos m)]; simp
+  have hφstep : Nat.totient (b * 2 ^ (k + s)) = Nat.totient b * 2 ^ (k + s - 1) := by
+    rw [Nat.totient_mul (oddCop b (k + s) hb), hφ2ks]
+  unfold dblIter
+  rw [hφn, step1, hφstep]
+  -- a·2^(k+1) − φ(b)·2^(k+s−1) = (2a − φ(b)·2^(s−1))·2^k
+  have e1 : a * 2 ^ (k + 1) = (2 * a) * 2 ^ k := by rw [pow_succ]; ring
+  have e2 : Nat.totient b * 2 ^ (k + s - 1)
+      = (Nat.totient b * 2 ^ (s - 1)) * 2 ^ k := by
+    rw [show k + s - 1 = (s - 1) + k from by omega, pow_add]; ring
+  rw [e1, e2, ← Nat.sub_mul]
+
+/-- The `s = 1` restriction `dblIter_transport` is the special case of the general
+    lemma: with `2a − φ(a) = 2·b = 2^1·b`, the landing `2a − φ(b)·2^0 = 2a − φ(b)`. -/
+theorem dblIter_transport_of_general {a b : ℕ} (ha : Odd a) (hb : Odd b)
+    (hstep : 2 * a - Nat.totient a = 2 * b) (k : ℕ) :
+    dblIter (a * 2 ^ (k + 1)) = (2 * a - Nat.totient b) * 2 ^ k := by
+  have h := dblIter_transport_general ha hb (le_refl 1)
+    (by rw [pow_one]; exact hstep) k
+  simpa using h
+
+/-- **k-independent totient values, general first-step valuation.**  With
+    `2a − φ(a) = 2^s·b` (`s ≥ 1`, `b` odd) and the landing constant
+    `C = 2a − φ(b)·2^(s−1) = e·2^t` (`e` odd, `t ≥ 1`), both totients along
+    `n = a·2^(k+1)` factor through a common `2^k`:
+    `φ(n) = φ(a)·2^k` and `φ(D(n)) = φ(e)·2^(t−1)·2^k`. -/
+theorem dblIter_totient_values_general {a b e s t : ℕ}
+    (ha : Odd a) (hb : Odd b) (he : Odd e) (hs : 1 ≤ s) (ht : 1 ≤ t)
+    (hstep : 2 * a - Nat.totient a = 2 ^ s * b)
+    (hC : 2 * a - Nat.totient b * 2 ^ (s - 1) = e * 2 ^ t) (k : ℕ) :
+    Nat.totient (a * 2 ^ (k + 1)) = Nat.totient a * 2 ^ k ∧
+    Nat.totient (dblIter (a * 2 ^ (k + 1)))
+      = Nat.totient e * 2 ^ (t - 1) * 2 ^ k := by
+  have oddCop : ∀ (c m : ℕ), Odd c → Nat.Coprime c (2 ^ m) := by
+    intro c m hc
+    have h2 : ¬ (2 ∣ c) := by
+      intro hd
+      rw [Nat.dvd_iff_mod_eq_zero] at hd
+      have := Nat.odd_iff.mp hc; omega
+    exact ((Nat.prime_two.coprime_iff_not_dvd).mpr h2).symm.pow_right m
+  have hp2 : ∀ m : ℕ, Nat.totient (2 ^ (m + 1)) = 2 ^ m := by
+    intro m; rw [Nat.totient_prime_pow Nat.prime_two (Nat.succ_pos m)]; simp
+  have hφn : Nat.totient (a * 2 ^ (k + 1)) = Nat.totient a * 2 ^ k := by
+    rw [Nat.totient_mul (oddCop a (k + 1) ha), hp2 k]
+  refine ⟨hφn, ?_⟩
+  have hD : dblIter (a * 2 ^ (k + 1)) = e * 2 ^ (t + k) := by
+    rw [dblIter_transport_general ha hb hs hstep k, hC, pow_add]; ring
+  have hφe2 : Nat.totient (2 ^ (t + k)) = 2 ^ (t + k - 1) := by
+    obtain ⟨m, hm⟩ : ∃ m, t + k = m + 1 := ⟨t + k - 1, by omega⟩
+    rw [hm, Nat.totient_prime_pow Nat.prime_two (Nat.succ_pos m)]; simp
+  rw [hD, Nat.totient_mul (oddCop e (t + k) he), hφe2]
+  rw [show t + k - 1 = (t - 1) + k from by omega, pow_add, ← mul_assoc]
+
+/-- **General reversal criterion** (excluded case `v₂(2a − φ(a)) ≥ 1` arbitrary):
+    `φ(n) < φ(D(n))` for `n = a·2^(k+1)` iff `φ(a) < φ(e)·2^(t−1)`. -/
+theorem dblIter_reversal_iff_general {a b e s t : ℕ}
+    (ha : Odd a) (hb : Odd b) (he : Odd e) (hs : 1 ≤ s) (ht : 1 ≤ t)
+    (hstep : 2 * a - Nat.totient a = 2 ^ s * b)
+    (hC : 2 * a - Nat.totient b * 2 ^ (s - 1) = e * 2 ^ t) (k : ℕ) :
+    (a * 2 ^ (k + 1)) ∈ ReversalSet
+      ↔ Nat.totient a < Nat.totient e * 2 ^ (t - 1) := by
+  obtain ⟨h1, h2⟩ := dblIter_totient_values_general ha hb he hs ht hstep hC k
+  show Nat.totient (a * 2 ^ (k + 1))
+      < Nat.totient (dblIter (a * 2 ^ (k + 1))) ↔ _
+  rw [h1, h2]
+  have hpos : 0 < 2 ^ k := pow_pos (by norm_num) k
+  constructor
+  · intro h; exact lt_of_mul_lt_mul_right h (Nat.zero_le _)
+  · intro h; exact mul_lt_mul_of_pos_right h hpos
+
+/-- **General equality criterion.**  `φ(n) = φ(D(n))` for `n = a·2^(k+1)` iff
+    `φ(a) = φ(e)·2^(t−1)`. -/
+theorem dblIter_equality_iff_general {a b e s t : ℕ}
+    (ha : Odd a) (hb : Odd b) (he : Odd e) (hs : 1 ≤ s) (ht : 1 ≤ t)
+    (hstep : 2 * a - Nat.totient a = 2 ^ s * b)
+    (hC : 2 * a - Nat.totient b * 2 ^ (s - 1) = e * 2 ^ t) (k : ℕ) :
+    (a * 2 ^ (k + 1)) ∈ EqualitySet
+      ↔ Nat.totient a = Nat.totient e * 2 ^ (t - 1) := by
+  obtain ⟨h1, h2⟩ := dblIter_totient_values_general ha hb he hs ht hstep hC k
+  show Nat.totient (a * 2 ^ (k + 1))
+      = Nat.totient (dblIter (a * 2 ^ (k + 1))) ↔ _
+  rw [h1, h2]
+  have hpos : 0 < 2 ^ k := pow_pos (by norm_num) k
+  constructor
+  · intro h; exact Nat.eq_of_mul_eq_mul_right hpos h
+  · intro h; rw [h]
+
+/-- **General forward criterion.**  `φ(D(n)) < φ(n)` for `n = a·2^(k+1)` iff
+    `φ(e)·2^(t−1) < φ(a)`. -/
+theorem dblIter_forward_iff_general {a b e s t : ℕ}
+    (ha : Odd a) (hb : Odd b) (he : Odd e) (hs : 1 ≤ s) (ht : 1 ≤ t)
+    (hstep : 2 * a - Nat.totient a = 2 ^ s * b)
+    (hC : 2 * a - Nat.totient b * 2 ^ (s - 1) = e * 2 ^ t) (k : ℕ) :
+    (a * 2 ^ (k + 1)) ∈ ForwardSet
+      ↔ Nat.totient e * 2 ^ (t - 1) < Nat.totient a := by
+  obtain ⟨h1, h2⟩ := dblIter_totient_values_general ha hb he hs ht hstep hC k
+  show Nat.totient (dblIter (a * 2 ^ (k + 1)))
+      < Nat.totient (a * 2 ^ (k + 1)) ↔ _
+  rw [h1, h2]
+  have hpos : 0 < 2 ^ k := pow_pos (by norm_num) k
+  constructor
+  · intro h; exact lt_of_mul_lt_mul_right h (Nat.zero_le _)
+  · intro h; exact mul_lt_mul_of_pos_right h hpos
+
+-- --- Concrete new families from EXCLUDED seeds (v₂(2a − φ(a)) ≥ 2) ---
+
+theorem totient_3 : Nat.totient 3 = 2 := Nat.totient_prime (by norm_num)
+-- (`totient_7` is already proved above in the transport-families section.)
+theorem totient_9 : Nat.totient 9 = 6 := by decide
+theorem totient_27 : Nat.totient 27 = 18 := by decide
+
+/-- **Excluded equality family `3·2^(k+1)` (`s = 2`, `b = e = 1`, `t = 2`).**
+    Here `2·3 − φ(3) = 4 = 2^2·1` (valuation `2`, outside the `s = 1` criterion),
+    the landing constant is `2·3 − φ(1)·2^1 = 4 = 1·2^2`, and `φ(3) = 2 = φ(1)·2^1`,
+    so every member lies on the equality diagonal.  This is the bottom `e = 1`
+    excluded family. -/
+theorem mem_EqualitySet_three (k : ℕ) : 3 * 2 ^ (k + 1) ∈ EqualitySet := by
+  rw [dblIter_equality_iff_general (a := 3) (b := 1) (e := 1) (s := 2) (t := 2)
+        (by decide) (by decide) (by decide) (by norm_num) (by norm_num)
+        (by norm_num [totient_3]) (by norm_num [Nat.totient_one]) k]
+  norm_num [totient_3, Nat.totient_one]
+
+/-- **Excluded equality family `9·2^(k+1)` (`s = 2`, `b = 3`, `e = 7`, `t = 1`).**
+    `2·9 − φ(9) = 12 = 2^2·3` (valuation `2`), landing `2·9 − φ(3)·2^1 = 14 = 7·2^1`,
+    and `φ(9) = 6 = 6·2^0 = φ(7)·2^0`, so `9·2^(k+1)` is an equality family the
+    original `s = 1` criterion cannot express. -/
+theorem mem_EqualitySet_nine (k : ℕ) : 9 * 2 ^ (k + 1) ∈ EqualitySet := by
+  rw [dblIter_equality_iff_general (a := 9) (b := 3) (e := 7) (s := 2) (t := 1)
+        (by decide) (by decide) (by decide) (by norm_num) (by norm_num)
+        (by norm_num [totient_9]) (by norm_num [totient_3]) k]
+  norm_num [totient_9, totient_7]
+
+/-- **Excluded forward family `7·2^(k+1)` (`s = 3`, `b = 1`, `e = 5`, `t = 1`).**
+    A higher-valuation demonstrator: `2·7 − φ(7) = 8 = 2^3·1` (valuation `3`),
+    landing `2·7 − φ(1)·2^2 = 10 = 5·2^1`, and `φ(5)·2^0 = 4 < 6 = φ(7)`, so every
+    member is a forward point. -/
+theorem mem_ForwardSet_seven (k : ℕ) : 7 * 2 ^ (k + 1) ∈ ForwardSet := by
+  rw [dblIter_forward_iff_general (a := 7) (b := 1) (e := 5) (s := 3) (t := 1)
+        (by decide) (by decide) (by decide) (by norm_num) (by norm_num)
+        (by norm_num [totient_7]) (by norm_num [Nat.totient_one]) k]
+  norm_num [totient_7, totient_5]
+
+/-- **Excluded forward family `27·2^(k+1)` (`s = 2`, `b = 9`, `e = 21`, `t = 1`).**
+    `2·27 − φ(27) = 36 = 2^2·9` (valuation `2`), landing `2·27 − φ(9)·2^1 = 42 = 21·2^1`,
+    and `φ(21)·2^0 = 12 < 18 = φ(27)`, so `27·2^(k+1)` is a forward family outside
+    the `s = 1` criterion. -/
+theorem mem_ForwardSet_twentyseven (k : ℕ) : 27 * 2 ^ (k + 1) ∈ ForwardSet := by
+  rw [dblIter_forward_iff_general (a := 27) (b := 9) (e := 21) (s := 2) (t := 1)
+        (by decide) (by decide) (by decide) (by norm_num) (by norm_num)
+        (by norm_num [totient_27]) (by norm_num [totient_9]) k]
+  norm_num [totient_27, totient_21]
+
+/-- **The excluded case realises both the equality and forward regimes.**  The
+    seeds `3, 9` (equality) and `7, 27` (forward) all have `v₂(2a − φ(a)) ≥ 2`, so
+    they lie entirely outside the reach of the `s = 1` criterion
+    (`dblIter_*_iff`); the general criterion classifies them uniformly.  No
+    excluded seed `a < 120` reverses — among `v₂(2a − φ(a)) ≥ 2` only equality and
+    forward occur — so this pair of witnesses covers every excluded regime found. -/
+theorem excluded_seeds_realize_equality_and_forward :
+    (∀ k, 3 * 2 ^ (k + 1) ∈ EqualitySet) ∧
+    (∀ k, 9 * 2 ^ (k + 1) ∈ EqualitySet) ∧
+    (∀ k, 7 * 2 ^ (k + 1) ∈ ForwardSet) ∧
+    (∀ k, 27 * 2 ^ (k + 1) ∈ ForwardSet) :=
+  ⟨mem_EqualitySet_three, mem_EqualitySet_nine,
+   mem_ForwardSet_seven, mem_ForwardSet_twentyseven⟩
+
+-- ===========================================================================
+-- THE SMALLEST ODD REVERSAL SEED IS 21
+-- ---------------------------------------------------------------------------
+-- Now that `classify` is a genuine computable function on the single odd seed,
+-- we can settle a structural question the per-`k` families left open: *which*
+-- odd seed is the smallest whose transport family `a·2^(k+1)` reverses.  A seed
+-- `a` is admissible for the classifier ("valid") exactly when the transport
+-- hypotheses hold: `a` odd, the first cototient step `2a−φ(a)` has 2-adic
+-- valuation one (`bSeed a` odd), and the landing constant is nonzero and even.
+-- Sweeping the odd valid seeds below 21 shows only `5, 13, 15, 17` are valid,
+-- and they classify as `eq, gt, eq, gt` — none reverse — whereas `classify 21`
+-- is `.lt`.  Hence 21 is the least odd reversal seed.  The whole sweep stays
+-- kernel-`decide`-only (no `native_decide`, no `factorization` reduction): the
+-- validity test uses only `φ`, and the four surviving seeds are evaluated
+-- through the `landT_landE_of` rewriting helper.
+-- ===========================================================================
+
+/-- A seed `a` is *valid* for the transport classifier when it is odd, its first
+    cototient step `2a − φ(a)` has 2-adic valuation exactly one (equivalently
+    `bSeed a` is odd), and its landing constant is nonzero and even.  These are
+    precisely the side-conditions under which `classify a` faithfully decides the
+    regime of the family `a·2^(k+1)`. -/
+def ValidSeed (a : ℕ) : Prop :=
+  Odd a ∧ 2 ∣ coStep a ∧ Odd (bSeed a) ∧ landC a ≠ 0 ∧ 2 ∣ landC a
+
+instance : DecidablePred ValidSeed := fun a => by unfold ValidSeed; infer_instance
+
+/-- `classify 5 = .eq`: `b = 3`, `C = 8 = 1·2^3`, `t = 3`, `e = 1`, and
+    `φ(5) = 4 = 1·2^2 = φ(1)·2^(t−1)`. -/
+theorem classify_5 : classify 5 = Ordering.eq := by
+  have hb : bSeed 5 = 3 := by unfold bSeed coStep; norm_num [totient_5]
+  have hC : landC 5 = 8 := by unfold landC; norm_num [hb, totient_3]
+  obtain ⟨hT, hE⟩ := landT_landE_of (a := 5) (e := 1) (t := 3)
+    (by decide) (by norm_num [hC])
+  unfold classify
+  rw [hE, hT, totient_5, Nat.totient_one]
+  decide
+
+/-- `classify 17 = .gt`: `b = 9`, `C = 28 = 7·2^2`, `t = 2`, `e = 7`, and
+    `φ(7)·2^(t−1) = 6·2 = 12 < 16 = φ(17)`. -/
+theorem classify_17 : classify 17 = Ordering.gt := by
+  have hb : bSeed 17 = 9 := by unfold bSeed coStep; norm_num [totient_17]
+  have hC : landC 17 = 28 := by unfold landC; norm_num [hb, totient_9]
+  obtain ⟨hT, hE⟩ := landT_landE_of (a := 17) (e := 7) (t := 2)
+    (by decide) (by norm_num [hC])
+  unfold classify
+  rw [hE, hT, totient_17, totient_7]
+  decide
+
+/-- **21 is the smallest odd reversal seed (classifier form).**  `classify 21`
+    is `.lt`, while every valid seed `a < 21` is classified `.eq` or `.gt`.  The
+    only valid seeds below 21 are `5, 13, 15, 17`; all invalid `a < 21` fail the
+    validity test decidably (the sweep only touches `φ`, never `factorization`). -/
+theorem twentyone_least_reversal_seed :
+    classify 21 = Ordering.lt ∧
+    ∀ a, a < 21 → ValidSeed a → classify a ≠ Ordering.lt := by
+  refine ⟨classify_21, fun a ha hv => ?_⟩
+  interval_cases a <;>
+    try (exact absurd hv (by decide))
+  · rw [classify_5]; decide
+  · rw [classify_13]; decide
+  · rw [classify_15]; decide
+  · rw [classify_17]; decide
+
+/-- **21 is the smallest odd reversal seed (family form).**  The family
+    `21·2^(k+1)` reverses for every `k`, while for every valid odd seed `a < 21`
+    and every `k` the family `a·2^(k+1)` does *not* reverse.  This is the
+    structural sharpening promised once the per-seed test became computable:
+    among transport-admissible odd seeds, 21 is the least whose family lands in
+    the reversal regime `φ(D(n)) > φ(n)`. -/
+theorem least_reversal_seed_families :
+    (∀ k, 21 * 2 ^ (k + 1) ∈ ReversalSet) ∧
+    ∀ a, a < 21 → ValidSeed a → ∀ k, a * 2 ^ (k + 1) ∉ ReversalSet := by
+  refine ⟨decision_procedure_classifies.1, fun a ha hv k => ?_⟩
+  obtain ⟨ha_odd, hstep, hb, hC0, hCe⟩ := hv
+  rw [mem_ReversalSet_iff_classify ha_odd hstep hb hC0 hCe k]
+  exact twentyone_least_reversal_seed.2 a ha ⟨ha_odd, hstep, hb, hC0, hCe⟩
+-- ===========================================================================
+-- A TOTAL DECIDABLE CLASSIFIER FOR EVERY ODD SEED
+--
+-- The general criterion `dblIter_*_iff_general` decides the regime of the family
+-- `n = a·2^(k+1)` from data `(s, b, t, e)` that must be *supplied* by hand for
+-- each seed.  Here we make that data COMPUTABLE: `seedS/seedB/seedC/seedT/seedE`
+-- extract `(s, b, t, e)` from `a` by two 2-adic valuations, and `classifySeed a`
+-- reads off the regime.  `seed_spec` proves the extracted data satisfies every
+-- hypothesis of the general criterion for arbitrary odd `a ≥ 3`, so the three
+-- `classifySeed_*_iff` corollaries turn the whole trichotomy into a single
+-- decision procedure — the reversal seed set is `{a | classifySeed a = .lt}`.
+-- ===========================================================================
+
+/-- First-step 2-adic valuation `s = v₂(2a − φ(a))`. -/
+def seedS (a : ℕ) : ℕ := (2 * a - Nat.totient a).factorization 2
+
+/-- Odd part `b` of the first cototient step: `2a − φ(a) = 2^s · b`. -/
+def seedB (a : ℕ) : ℕ := (2 * a - Nat.totient a) / 2 ^ seedS a
+
+/-- Landing constant `C = 2a − φ(b)·2^(s−1)` (the double iterate `D(a·2^(k+1))`
+    equals `C·2^k`). -/
+def seedC (a : ℕ) : ℕ := 2 * a - Nat.totient (seedB a) * 2 ^ (seedS a - 1)
+
+/-- Second 2-adic valuation `t = v₂(C)`. -/
+def seedT (a : ℕ) : ℕ := (seedC a).factorization 2
+
+/-- Odd part `e` of the landing constant: `C = 2^t · e`. -/
+def seedE (a : ℕ) : ℕ := seedC a / 2 ^ seedT a
+
+/-- **Total classifier.**  Compares `φ(a)` with `φ(e)·2^(t−1)`; for every odd
+    `a ≥ 3` this decides which regime the whole family `n = a·2^(k+1)` lands in:
+    `lt` = reversal `φ(n) < φ(D(n))`, `eq` = equality, `gt` = forward. -/
+def classifySeed (a : ℕ) : Ordering :=
+  compare (Nat.totient a) (Nat.totient (seedE a) * 2 ^ (seedT a - 1))
+
+/-- **Correctness of the extraction.**  For odd `a ≥ 3` the computed data
+    `(seedS a, seedB a, seedT a, seedE a)` satisfies every hypothesis of the
+    general transport criterion: `b, e` are odd, `s, t ≥ 1`, and the two defining
+    2-adic factorisations hold.  (Oddness of `a` is not needed here — it enters
+    only through the family's coprimality in the criterion below.) -/
+theorem seed_spec {a : ℕ} (ha3 : 3 ≤ a) :
+    Odd (seedB a) ∧ Odd (seedE a) ∧ 1 ≤ seedS a ∧ 1 ≤ seedT a ∧
+    2 * a - Nat.totient a = 2 ^ seedS a * seedB a ∧
+    2 * a - Nat.totient (seedB a) * 2 ^ (seedS a - 1) = seedE a * 2 ^ seedT a := by
+  simp only [seedS, seedB, seedC, seedT, seedE]
+  have ha1 : 1 < a := by omega
+  have hφa_lt : Nat.totient a < a := Nat.totient_lt a ha1
+  obtain ⟨j, hj⟩ := Nat.totient_even (show 2 < a by omega)
+  have hφa_pos : 0 < Nat.totient a := Nat.totient_pos.mpr (by omega)
+  set m := 2 * a - Nat.totient a with hm
+  have hm_ne : m ≠ 0 := by omega
+  have hm_dvd : 2 ∣ m := ⟨a - j, by omega⟩
+  set s := m.factorization 2 with hs
+  set b := m / 2 ^ s with hb
+  have hs1 : 1 ≤ s := by
+    have h := Nat.prime_two.factorization_pos_of_dvd hm_ne hm_dvd
+    rw [← hs] at h; omega
+  -- 2^s · b = m  and  b odd, both from the 2-adic decomposition of m
+  have hsb : 2 ^ s * b = m := Nat.ordProj_mul_ordCompl_eq_self m 2
+  have hob : Odd b := by
+    have hnd : ¬ 2 ∣ b := Nat.not_dvd_ordCompl Nat.prime_two hm_ne
+    exact Nat.odd_iff.mpr (by omega)
+  -- 2^s = 2·2^(s−1) so b·2^(s−1) is exactly m/2
+  have h2s : 2 ^ s = 2 * 2 ^ (s - 1) := by
+    conv_lhs => rw [show s = (s - 1) + 1 from by omega, pow_succ]
+    ring
+  have hbpow : 2 * (b * 2 ^ (s - 1)) = m := by rw [← hsb, h2s]; ring
+  have hmul_le : Nat.totient b * 2 ^ (s - 1) ≤ b * 2 ^ (s - 1) := by
+    gcongr
+    exact Nat.totient_le b
+  have hterm_le : Nat.totient b * 2 ^ (s - 1) ≤ a - 1 := by omega
+  -- the landing term is even (hence C is even, with v₂ ≥ 1)
+  have hterm_dvd : 2 ∣ Nat.totient b * 2 ^ (s - 1) := by
+    rcases hs1.lt_or_eq with hs_gt | hs_eq
+    · exact (dvd_pow_self 2 (show s - 1 ≠ 0 by omega)).mul_left _
+    · -- s = 1: then b ≠ 1 (else m = 2 contradicts a ≥ 3), so b ≥ 3 and φ(b) is even
+      have hb_ne1 : b ≠ 1 := by
+        intro hb1
+        have hval : (2 : ℕ) ^ s * b = 2 := by rw [← hs_eq, hb1]; norm_num
+        rw [hsb] at hval; omega
+      have hb3 : 2 < b := by rcases hob with ⟨i, hi⟩; omega
+      rw [← hs_eq]
+      simpa using (Nat.totient_even hb3).two_dvd
+  set C := 2 * a - Nat.totient b * 2 ^ (s - 1) with hC
+  have hC_ne : C ≠ 0 := by omega
+  have hC_dvd : 2 ∣ C := by omega
+  set t := C.factorization 2 with ht
+  set e := C / 2 ^ t with he
+  have ht1 : 1 ≤ t := by
+    have h := Nat.prime_two.factorization_pos_of_dvd hC_ne hC_dvd
+    rw [← ht] at h; omega
+  have hst : 2 ^ t * e = C := Nat.ordProj_mul_ordCompl_eq_self C 2
+  have hoe : Odd e := by
+    have hnd : ¬ 2 ∣ e := Nat.not_dvd_ordCompl Nat.prime_two hC_ne
+    exact Nat.odd_iff.mpr (by omega)
+  have hCeq : C = e * 2 ^ t := by rw [← hst]; ring
+  exact ⟨hob, hoe, hs1, ht1, hsb.symm, hCeq⟩
+
+/-- **The classifier decides reversal.**  For odd `a ≥ 3`, `φ(n) < φ(D(n))` along
+    `n = a·2^(k+1)` iff `classifySeed a = .lt`. -/
+theorem classifySeed_lt_iff {a : ℕ} (ha : Odd a) (ha3 : 3 ≤ a) (k : ℕ) :
+    a * 2 ^ (k + 1) ∈ ReversalSet ↔ classifySeed a = Ordering.lt := by
+  obtain ⟨hob, hoe, hs1, ht1, hstep, hCeq⟩ := seed_spec ha3
+  rw [dblIter_reversal_iff_general ha hob hoe hs1 ht1 hstep hCeq k]
+  exact compare_lt_iff_lt.symm
+
+/-- **The classifier decides equality.** -/
+theorem classifySeed_eq_iff {a : ℕ} (ha : Odd a) (ha3 : 3 ≤ a) (k : ℕ) :
+    a * 2 ^ (k + 1) ∈ EqualitySet ↔ classifySeed a = Ordering.eq := by
+  obtain ⟨hob, hoe, hs1, ht1, hstep, hCeq⟩ := seed_spec ha3
+  rw [dblIter_equality_iff_general ha hob hoe hs1 ht1 hstep hCeq k]
+  exact compare_eq_iff_eq.symm
+
+/-- **The classifier decides the forward regime.** -/
+theorem classifySeed_gt_iff {a : ℕ} (ha : Odd a) (ha3 : 3 ≤ a) (k : ℕ) :
+    a * 2 ^ (k + 1) ∈ ForwardSet ↔ classifySeed a = Ordering.gt := by
+  obtain ⟨hob, hoe, hs1, ht1, hstep, hCeq⟩ := seed_spec ha3
+  rw [dblIter_forward_iff_general ha hob hoe hs1 ht1 hstep hCeq k]
+  exact compare_gt_iff_gt.symm
+
+/-- **Total trichotomy.**  For every odd `a ≥ 3` the computable `classifySeed a`
+    correctly decides the regime of the whole family `n = a·2^(k+1)` — a single
+    decision procedure covering all seeds, `k`-free and with no restriction on the
+    first-step 2-adic valuation.  In particular the reversal seed set is the
+    decidable predicate `{a | classifySeed a = Ordering.lt}`. -/
+theorem classifySeed_classifies {a : ℕ} (ha : Odd a) (ha3 : 3 ≤ a) (k : ℕ) :
+    (a * 2 ^ (k + 1) ∈ ReversalSet ↔ classifySeed a = Ordering.lt) ∧
+    (a * 2 ^ (k + 1) ∈ EqualitySet ↔ classifySeed a = Ordering.eq) ∧
+    (a * 2 ^ (k + 1) ∈ ForwardSet ↔ classifySeed a = Ordering.gt) :=
+  ⟨classifySeed_lt_iff ha ha3 k, classifySeed_eq_iff ha ha3 k, classifySeed_gt_iff ha ha3 k⟩
 
 end Erdos1064OQ03

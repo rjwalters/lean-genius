@@ -34,7 +34,7 @@
     "lineCount": 186,
     "assumptions": "0 axioms, 0 sorries. Only Lean's foundational axioms propext, Classical.choice, Quot.sound are used (verified via #print axioms — no Lean.ofReduceBool, no native_decide). The parent's deep o(1) estimate (Alexander 1966) is NOT used or imported: this leaf is self-contained over Mathlib and proves a purely elementary, fully constructive lower bound. The parent file Erdos858Problem.lean does not compile against the pinned Mathlib v4.26 (it imports the now-split module Mathlib.Algebra.BigOperators.Group.Finset), so the parent's definitions are restated here verbatim.",
     "theoremCount": 6,
-    "definitionCount": 4
+    "definitionCount": 6
   },
   "overview": {
     "historicalContext": "Erdős Problem #858 concerns sets A ⊆ {1,…,N} avoiding the multiplicative relation a·t = b with a,b ∈ A and the smallest prime factor of t exceeding a — a weakening of the primitive-set condition. Alexander (1966), and independently Erdős–Sárközi–Szemerédi (1968), proved the normalized reciprocal sum (1/log N)·Σ_{n∈A} 1/n is o(1) as N → ∞. The parent gallery entry (erdos-858) axiomatizes Alexander's deep estimate and develops the surrounding structural definitions, but leaves three open questions, including OQ-03: what is the structure of extremal sets achieving near-maximum sums? A natural first step is to pin down concrete valid families and quantify how large their (un-normalized) reciprocal sums can be — which is what this entry does, using the classical observation that the top half of an interval is primitive.",
@@ -130,7 +130,7 @@
     "lineCount": 186,
     "axiomCount": 0,
     "theoremCount": 6,
-    "definitionCount": 4,
+    "definitionCount": 6,
     "path": "Proofs/Erdos858OQ03.lean",
     "sorries": 0
   },

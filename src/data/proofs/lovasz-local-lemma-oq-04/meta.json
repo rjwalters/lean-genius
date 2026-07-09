@@ -22,7 +22,7 @@
     "axiomCount": 0,
     "assumptions": "0 axioms beyond Lean/Mathlib foundations (propext, Classical.choice, Quot.sound). The asymmetric LLL inequality P[A_i] ≤ x_i·∏(1-x_j) appears only as the antecedent of conditional theorems (predicate AsymLLL), not as an axiom: every result is a fully-proved implication. The probabilistic conclusion P[⋂ Āᵢ] ≥ ∏(1-x_i) is represented by its algebraic core (positivity of the avoidance product), matching the parent file's treatment.",
     "lineCount": 259,
-    "theoremCount": 15,
+    "theoremCount": 16,
     "definitionCount": 4,
     "additionalFiles": [],
     "originalContributions": [
@@ -149,7 +149,7 @@
     "namespace": "ProbMethod.LovaszLocal.OQ04",
     "lineCount": 259,
     "axiomCount": 0,
-    "theoremCount": 15,
+    "theoremCount": 16,
     "substantiveTheoremCount": 12,
     "duplicateTheorems": 0,
     "definitionCount": 4,

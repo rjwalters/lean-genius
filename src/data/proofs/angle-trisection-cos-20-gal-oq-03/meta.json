@@ -30,7 +30,7 @@
       "Main theorem: |Gal(8X³−6X+1/ℚ)| = 3"
     ],
     "theoremCount": 32,
-    "definitionCount": 0
+    "definitionCount": 4
   },
   "overview": {
     "historicalContext": "The impossibility of angle trisection by compass and straightedge was proved by Wantzel (1837), using the then-new theory of algebraic extensions. The key insight: a 60° angle cannot be trisected because 20° has cosine satisfying the irreducible cubic 8X³−6X−1 = 0, and [ℚ(cos(20°)):ℚ] = 3 is not a power of 2. Galois theory, developed by Évariste Galois before his death in 1832 (but published posthumously in 1846), gave a more conceptual framework: the Galois group of the minimal polynomial determines constructibility.\n\nThe polynomial 8X³−6X+1 is the minimal polynomial of cos(40°) = cos(2π/9) over ℚ. Its three roots are cos(40°), cos(80°), cos(160°), arising from the triple-angle identity cos(3·40°) = cos(120°) = −1/2. The Eisenstein irreducibility argument uses the shift Y=2X−2, which transforms the polynomial into Y³+6Y²+9Y+3 — Eisenstein at p=3. The analogous shift Y=2X+2 works for the cos(20°) polynomial 8X³−6X−1. Both shifts are discovered by looking at where the polynomial takes the value 0: the roots of 8X³−6X±1 are close to ±1/2, and centering the variable near these values produces the p-divisibility structure needed for Eisenstein.\n\nThis result is part of a family: the Galois groups of 8X³−6X−1 (cos(20°)/cos(π/9)), 8X³−6X+1 (cos(40°)/cos(2π/9)), and 8X³−4X²−4X+1 (cos(π/7)) all have order 3. In all three cases, the splitting field is a cyclic extension of degree 3 over ℚ, and the Galois group is ℤ/3ℤ. This is the minimal non-trivial case of the general pattern for cos(2π/p) with odd prime p: the Galois group is cyclic of order (p−1)/2 = 1, 3, 5, ... for p = 3, 7, 11, ...",
@@ -144,7 +144,7 @@
     "lineCount": 434,
     "axiomCount": 0,
     "theoremCount": 32,
-    "definitionCount": 0,
+    "definitionCount": 4,
     "path": "Proofs/AngleTrisectionCos20GalOQ03.lean",
     "sorries": 0
   },

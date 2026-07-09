@@ -387,4 +387,51 @@ theorem admissibleCoeff_step_bracket (hV : 0 < Fintype.card V) (t : ℕ) (ht : 1
         ≤ 2 * (firstMomentThreshold t / Fintype.card V) + 1 :=
   ⟨admissibleCoeff_ge_two_mul hV t ht, admissibleCoeff_le_two_mul_succ hV t ht⟩
 
+/-- **Iterated exponential lower bound (the growth rate over many steps).**
+    Iterating the one-step doubling `admissibleCoeff_ge_two_mul` `k` times gives the
+    genuine exponential growth law for the admissible coefficient:
+
+        `2^k · c(t)  ≤  c(t + k)`      (`c(s) = ⌊2^{s-1}/|V|⌋`).
+
+    Where `admissibleCoeff_ge_two_mul` only asserts "at least doubles per step", this
+    accumulates the doublings: after `k` steps the coefficient has grown by a factor of
+    at least `2^k`. Proof by induction on `k`, chaining the one-step bound at index
+    `t + k` (which is `≥ 1` since `t ≥ 1`) with the `2·`-monotonicity of the IH. -/
+theorem admissibleCoeff_two_pow_mul_le (hV : 0 < Fintype.card V) (t : ℕ) (ht : 1 ≤ t)
+    (k : ℕ) :
+    2 ^ k * (firstMomentThreshold t / Fintype.card V)
+      ≤ firstMomentThreshold (t + k) / Fintype.card V := by
+  induction k with
+  | zero => simp
+  | succ k ih =>
+      have hstep := admissibleCoeff_ge_two_mul hV (t + k) (by omega)
+      rw [show t + (k + 1) = (t + k) + 1 from by ring, pow_succ', mul_assoc]
+      exact le_trans (Nat.mul_le_mul (le_refl 2) ih) hstep
+
+/-- **Iterated exponential upper bound (the growth rate over many steps).**
+    The matching iterate of the one-step ceiling `admissibleCoeff_le_two_mul_succ`.
+    Carrying the `+1` through the recurrence to absorb the per-step floor remainders,
+
+        `c(t + k) + 1  ≤  2^k · (c(t) + 1)`,
+
+    equivalently `c(t + k) ≤ 2^k · c(t) + (2^k − 1)`: over `k` steps the coefficient
+    exceeds pure `2^k`-doubling by at most `2^k − 1`, the geometric sum of the `k`
+    truncated-division `±1` errors. Together with `admissibleCoeff_two_pow_mul_le` this
+    brackets `c(t + k)` between `2^k · c(t)` and `2^k · (c(t) + 1) − 1`, pinning the
+    multi-step growth to exact exponential rate `2^k` up to a bounded relative error.
+    Proof by induction on `k`, chaining the one-step ceiling at index `t + k` with the
+    `2·`-monotonicity of the IH. -/
+theorem admissibleCoeff_succ_le_two_pow_mul (hV : 0 < Fintype.card V) (t : ℕ) (ht : 1 ≤ t)
+    (k : ℕ) :
+    firstMomentThreshold (t + k) / Fintype.card V + 1
+      ≤ 2 ^ k * (firstMomentThreshold t / Fintype.card V + 1) := by
+  induction k with
+  | zero => simp
+  | succ k ih =>
+      have hstep := admissibleCoeff_le_two_mul_succ hV (t + k) (by omega)
+      rw [show t + (k + 1) = (t + k) + 1 from by ring, pow_succ', mul_assoc]
+      have h2 : firstMomentThreshold ((t + k) + 1) / Fintype.card V + 1
+          ≤ 2 * (firstMomentThreshold (t + k) / Fintype.card V + 1) := by omega
+      exact le_trans h2 (Nat.mul_le_mul (le_refl 2) ih)
+
 end Erdos1022OQ02

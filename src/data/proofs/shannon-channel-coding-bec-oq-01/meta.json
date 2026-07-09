@@ -48,7 +48,7 @@
     "assumptions": "0 axioms, 0 sorries. The file imports ShannonChannelCoding, ShannonEntropy, and ShannonChannelCodingBEC (all 0 axioms, 0 sorries) and reuses the general finite-alphabet channel API (DMChannel, InputDist, jointDist, channelMI, channelCapacity, chain_rule, channelMI_le_log_card) together with the entropy theorems entropy_le_log_card and entropy_of_uniform_eq_log_card; none lies on a path to any sorry. SCOPE: this entry formalizes the discrete capacity for the q-ary erasure channel exactly as stated — the conditional-entropy identity, the mutual-information identity, the converse bound, and the achievability by the uniform input are all proven. The mutual information and channel capacity are the file's grounded discrete quantities (mutualInformation / channelCapacity from the parent scaffold); the operational coding theorem (achievable rates via random codebooks and a Fano converse) is not formalized here, consistent with the parent BEC/BSC entries.",
     "dateAdded": "2026-06-18",
     "axiomCount": 0,
-    "lineCount": 276,
+    "lineCount": 277,
     "prerequisites": [
       "The binary erasure channel capacity C(BEC(p)) = (1 − p) log 2 (ShannonChannelCodingBEC.lean) — the q = 2 special case",
       "Discrete memoryless channels, mutual information, and channel capacity (ShannonChannelCoding.lean)",

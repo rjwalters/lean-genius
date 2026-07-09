@@ -79,7 +79,7 @@
     ],
     "assumptions": "None. 0 axioms, 0 sorries (the theorems depend only on the standard foundational axioms propext, Classical.choice, Quot.sound, which are not assumptions). The dimension's crossing factor αₙ = E_{S^{n-1}}|u₁| is carried as a real PARAMETER rather than re-deriving its spherical integral here; every result is stated and proved relative to a given α. The concrete values α₂ = 2/π and α₃ = 1/2 (used in the planar/spatial specializations) are the classically known spherical means; their evaluation lives in the needle-side files. The smooth/C¹ higher-dimensional case (depending on a kinematic-measure functional) is deliberately out of scope.",
     "theoremCount": 19,
-    "definitionCount": 3,
+    "definitionCount": 4,
     "structureCount": 1
   },
   "overview": {
@@ -139,7 +139,7 @@
     ],
     "path": "Proofs/BuffonsNoodleOQ03.lean",
     "sorries": 0,
-    "definitionCount": 3
+    "definitionCount": 4
   },
   "mainTheorems": [
     {
