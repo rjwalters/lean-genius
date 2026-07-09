@@ -69,7 +69,7 @@
     "axiomCount": 1,
     "lineCount": 1503,
     "assumptions": "1 axiom: erdos_lewin_infinite (Erdős-Lewin 1996, deep forward direction: {p,q}≠{2,3} ⟹ infinitely many non-representable numbers). The backward direction ({2,3} ⟹ finite, in fact NonRepresentable = {0}) is proved unconditionally (finite_nonRepresentable_of_two_three), and the EXISTENCE of a positive non-representable for every other coprime pair is also proved unconditionally (exists_positive_nonRepresentable_of_ne_two_three) — only the infinitude itself remains axiomatized.",
-    "theoremCount": 70,
+    "theoremCount": 71,
     "definitionCount": 7
   },
   "overview": {
@@ -267,7 +267,7 @@
     "namespace": "Erdos1110",
     "lineCount": 1503,
     "axiomCount": 1,
-    "theoremCount": 70,
+    "theoremCount": 71,
     "definitionCount": 7,
     "path": "Proofs/Erdos1110Problem.lean",
     "sorries": 0
