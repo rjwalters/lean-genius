@@ -33,7 +33,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (S15, researcher-9, 2026-06-27): Shipped the structural Lagrange obstruction (CubeRoot3IrrationalOQ04Mobius.lean, 0-sorry/0-axiom, verified): cbrt3 is the fixed point of no non-affine rational Mobius transformation, i.e. its continued fraction is NOT purely periodic. This is a single finite theorem replacing the open-ended per-quotient enumeration (a_0..a_12). Remaining: the Mathlib-CF-API bridge periodicity=>Mobius-fixed-point, plus the eventually-periodic preimage transport.",
+    "progressSummary": "PROGRESS: Half (a) machine-verified (∛3 not quadratic irrational, both minpoly-deg-3 and finrank-3 forms, 0/0). Half (b) Lagrange CF theorem remains the sole blocker (absent from Mathlib, upstream-scale).",
     "builtItems": [
       "proofs/Proofs/CubeRoot3IrrationalOQ04Helpers.lean (S14a, 694 LOC, 19 theorems, 0 axioms, 0 sorries): adds cbrt3_lt_one_eight_six_five_three_five_eight_over_one_two_nine_three_three_six_seven : cbrt3 < (1865358/1293367 : R), the 14th CF convergent upper bound (a_13 = 3). Proof = rw [cbrt3_lt_iff_three_lt_cube (by norm_num)]; norm_num. Cube sanity 1865358^3 = 6490625955773462712 > 6490625955771185589 = 3*1293367^3. Docker-verified 7744 jobs.",
       "Proofs/CubeRoot3IrrationalOQ04.lean (new, ~110 lines, 4 theorems): cbrt3_nonneg, one_le_cbrt3, cbrt3_lt_two, cbrt3_floor_eq_one — first partial quotient a_0 = 1 of the simple CF of cbrt3. 0 sorries, 0 axioms.",
@@ -57,7 +57,8 @@
       "Proofs/CubeRoot3IrrationalOQ04.lean — cbrt3_a11 : ⌊1/(1/(1/(1/(1/(1/(1/(1/(1/(1/(1/(cbrt3-1) - 2) - 3) - 1) - 4) - 1) - 5) - 1) - 1) - 6) - 2)⌋ = (5:Int) — twelfth partial quotient a_11 = 5, 22-step lt_div_iff₀/div_lt_iff₀/le_div_iff₀ chain on eleven-fold-nested fraction + floor antisymmetry. Requires set_option maxHeartbeats 6400000 in (2× S12b's 3_200_000). Main file 1747 → 1999 LOC (+252, +1 theorem; theoremCount 18 → 19). 0 sorries, 0 axioms (S13b ACT, researcher-1, 2026-06-10). The final propagated interval is x_11 ∈ (8/41, 1/5), 1/x_11 ∈ (5, 41/8) ⊂ (5, 6); floor identity by Int.le_floor / Int.floor_lt + le_antisymm. Build verified clean (7745 jobs, 193s).",
       "Created proofs/Proofs/CubeRoot3IrrationalOQ04Degree.lean: not_cube, irreducible_X_pow_three_sub_C, aeval_cbrt3, minpoly_cbrt3, natDegree_minpoly_cbrt3, cbrt3_not_quadratic (Half (a), build-pending unregistered).",
       "proofs/Proofs/CubeRoot3IrrationalOQ04Mobius.lean (NEW, 0-sorry/0-axiom, verified single-file lean v4.26.0): NoRatQuadratic (def); cbrt3_noRatQuadratic; mobius_fixed_point_quadratic (cleared-denominator fixed point => rational quadratic); not_mobius_fixed_point_of_noRatQuadratic; cbrt3_not_mobius_fixed_point (cbrt3 is no non-affine Mobius fixed point => CF not purely periodic); cbrt3_ne_mobius (division form); mobius_image_noRatQuadratic (non-degenerate rational Mobius image of a no-quadratic point is no-quadratic; det-elimination via (ad-bc)^2). Registered in Proofs.lean.",
-      "#print axioms on the headline theorems shows only [propext, Classical.choice, Quot.sound] -- no sorryAx, no ofReduceBool."
+      "#print axioms on the headline theorems shows only [propext, Classical.choice, Quot.sound] -- no sorryAx, no ofReduceBool.",
+      "Strengthened Half (a) to the field-theoretic form: isIntegral_cbrt3, finrank_adjoin_cbrt3 (Module.finrank ℚ ℚ⟮cbrt3⟯ = 3 via IntermediateField.adjoin.finrank + natDegree_minpoly_cbrt3), and finrank_adjoin_cbrt3_ne_two ([ℚ(∛3):ℚ]=3≠2). This is the sharp statement that ∛3 is not a quadratic irrational (a quadratic irrational generates a degree-2 extension). File now 9 thms / 99 lines, 0 sorry / 0 axiom, VERIFIED."
     ],
     "insights": [
       "S14a (2026-06-12): the upper-bound cubing-iff template (cbrt3_lt_iff_three_lt_cube + norm_num) is fully reproducible across convergents - per-step inputs are just the convergent p_n/q_n (from p_n = a_n*p_{n-1}+p_{n-2}, q_n = a_n*q_{n-1}+q_{n-2}) plus a Python sign(p^3 - 3q^3) check. For the 14th convergent (a_13 = 3): 1865358/1293367, p^3 - 3q^3 = +2277123 > 0 => upper bound. norm_num discharges the exact rational cube comparison with no heartbeat bump; helper-ACTs stay cheap, the cost is all in the main-ACT nested-fraction chain.",
@@ -90,7 +91,8 @@
       "S20: the no-rational-cube step (∀ b:ℚ, b³≠3) reduces to parent irrational_cbrt3 + cube injectivity Odd.strictMono_pow(Odd 3), avoiding a from-scratch valuation argument.",
       "S20: all bearers name-checked vs Mathlib v4.26.0 (X_pow_sub_C_irreducible_iff_of_prime, minpoly.eq_of_irreducible_of_monic returns p=minpoly, monic_X_pow_sub_C, natDegree_X_pow_sub_C, Odd.strictMono_pow). NOT machine-checked (Docker+Aristotle blackout live).",
       "S15 (researcher-9, 2026-06-27): replaced the per-quotient CF enumeration (a_0..a_12 grind) with the STRUCTURAL Lagrange obstruction. The algebraic heart of the easy direction of Lagrange's theorem: a Mobius fixed point x=(p x+q)/(r x+s) with r!=0 satisfies the quadratic r x^2+(s-p)x-q=0. Since cbrt3 satisfies NO nontrivial rational quadratic (cbrt3_not_quadratic), it is the fixed point of NO non-affine rational Mobius transformation -- equivalently, the CF of cbrt3 is NOT purely periodic. A single finite theorem in place of an infinite grind.",
-      "The per-quotient enumeration in CubeRoot3IrrationalOQ04.lean (next step was a_13=3) is enumeration theater: the CF is infinite + non-periodic, so prefix extension can never complete a non-periodicity proof. It should be retired in favor of the structural route."
+      "The per-quotient enumeration in CubeRoot3IrrationalOQ04.lean (next step was a_13=3) is enumeration theater: the CF is infinite + non-periodic, so prefix extension can never complete a non-periodicity proof. It should be retired in favor of the structural route.",
+      "S21 (2026-07-08, researcher-6): VERIFIED Half (a). CubeRoot3IrrationalOQ04Degree.lean (authored S20 under Docker blackout, never machine-checked) now builds clean via Docker (Proofs.CubeRoot3IrrationalOQ04Degree, 0 sorry / 0 axiom). minpoly ℚ ∛3 = X³−3 and cbrt3_not_quadratic confirmed correct as authored — all bearers (X_pow_sub_C_irreducible_iff_of_prime, minpoly.eq_of_irreducible_of_monic, Odd.strictMono_pow) typecheck."
     ],
     "mathlibGaps": [
       "No worked example of GenContFract.of applied to a cubic irrational anywhere in Mathlib at the pinned revision; only sqrt(n) and golden_ratio CF examples exist.",
@@ -106,7 +108,8 @@
       "S14+ (deferred, structural): Lagrange theorem on this slug as a generic obstacle to all-aᵢ formalization. The CF of cbrt3 is non-periodic because cbrt3 is cubic-irrational (degree 3); a Mathlib-side proof of Lagrange (eventually-periodic CF iff quadratic) would let cbrt3-OQ-04 conclude with a formal non-existence statement about closed-form a_i.",
       "STOP the per-quotient enumeration (a_13, a_14, ...) -- it cannot complete a non-periodicity proof. Pursue the structural route instead.",
       "CF-API bridge (purely-periodic case): prove that a purely-periodic IntFractPair.stream cbrt3 forces cbrt3 = (p cbrt3+q)/(r cbrt3+s) with r=q_{k-1}!=0, using the period continuant matrix (ContinuantsRecurrence + Determinant). Combined with cbrt3_not_mobius_fixed_point this yields: CF of cbrt3 is not purely periodic (formal, finite).",
-      "Eventually-periodic closure: add the preimage variant of mobius_image_noRatQuadratic (NoRatQuadratic of a non-degenerate Mobius IMAGE => NoRatQuadratic of the source), so the periodic tail being quadratic transports to cbrt3 being quadratic -- contradiction. Then the full non-periodicity statement follows."
+      "Eventually-periodic closure: add the preimage variant of mobius_image_noRatQuadratic (NoRatQuadratic of a non-degenerate Mobius IMAGE => NoRatQuadratic of the source), so the periodic tail being quadratic transports to cbrt3 being quadratic -- contradiction. Then the full non-periodicity statement follows.",
+      "Half (a) is DONE and machine-verified (both minpoly-degree and field-extension-degree forms). The full non-periodicity theorem still requires Half (b) = Lagrange's CF theorem (quadratic-irrational ⟺ eventually-periodic simple CF), CONFIRMED absent from Mathlib v4.26.0 — a standalone upstream-scale development, out of this slug's scope. No further elementary route exists for the OQ-04 target without it."
     ],
     "lastUpdated": "2026-06-10"
   },
@@ -329,8 +332,8 @@
     {
       "path": "Proofs/CubeRoot3IrrationalOQ04Degree.lean",
       "filename": "CubeRoot3IrrationalOQ04Degree.lean",
-      "lineCount": 84,
-      "theoremCount": 6,
+      "lineCount": 99,
+      "theoremCount": 9,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 0,
