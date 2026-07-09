@@ -990,3 +990,121 @@ theorem windowFloor_eq_sharp_bound_at_boundary {k : ℕ} (hk : 1 ≤ k)
   have hbound := windowFloor_ascFactorial_le_factorial (n := 2 * k) (k := k) (by omega) h
   have hfloor : 2 * k - k + 1 = k + 1 := by omega
   rwa [hfloor] at hbound
+
+/-
+## Section XVII: The effective location bound makes each fixed `k` a finite check — closing `k = 16`
+
+The window-floor location bound of Section XVI, `(n - k + 1)^d ≤ k!` for any
+`d ≤ deficiency n k`, is **effective**: it bounds `n` above by an *explicit*
+computable quantity, `n ≤ k - 1 + (k!)^{1/d}`.  Combined with the admissibility
+floor `n ≥ 2k`, this confines every admissible pair with `deficiency ≥ 1` to a
+**finite, explicit** window `2k ≤ n < k + k!` (`deficiency_ge_forces_bounded_n`).
+
+This corrects a pessimistic assessment recorded in earlier sessions — that "even
+fixed-`k` slices of OQ-02 are not decidable, because the ELS location axiom
+`els_upper_bound` has a non-effective constant."  The *elementary* window-floor
+bound supplies an effective constant with no analytic input, so each fixed-`k`
+slice **is** a finite (in principle decidable) check.  The demand sharpens with the
+target deficiency: ruling out a record-breaking `deficiency ≥ 10` at modulus `k`
+only requires inspecting the `n` with `(n - k + 1)^{10} ≤ k!` and `2k ≤ n`.
+
+We cash this out concretely at the current open frontier `k = 16`.  A deficiency
+`≥ 10` there forces `(n - 15)^{10} ≤ 16! < 22^{10}`, hence `n ≤ 36`; together with
+`n ≥ 32` this leaves only `n ∈ {32, 33, 34, 35, 36}`.  Every one of those five
+binomials `C(n,16)` is even, so none of the pairs is admissible.  Therefore no
+admissible pair at `k = 16` has deficiency exceeding `9`: the sharp factorial
+method left `k = 16` open (Section XV), but the *location* bound closes it.  The
+elementary resolution of OQ-02 now covers **all `k ≤ 16`**, moving the open
+frontier to `k ≥ 17` — one step past the `(k!)²`-method frontier of Section XV.
+Like everything since Section V the structural results are `ofReduceBool`-free;
+only the five concrete "`2 ∣ C(n,16)`" admissibility facts use `native_decide`
+(the naive `Nat.choose` recursion does not reduce under kernel `decide`),
+consistent with the file's existing record certificates. -/
+
+/-- **Effective, ELS-free finiteness of each fixed-`k` slice.**  An admissible pair
+with a positive deficiency has `n` in the finite, explicit range `2k ≤ n < k + k!`.
+The upper bound is purely elementary (the window-floor power bound with `d = 1`),
+so — unlike the axiomatized ELS estimate `els_upper_bound` — it gives an *effective*
+enclosure: for each fixed `k` only finitely many `n` can host any admissible
+deficiency example, making every fixed-`k` slice of OQ-02 a finite check.  (The
+enclosure sharpens as the demanded deficiency grows: `d ≤ deficiency n k` forces
+`(n - k + 1)^d ≤ k!`.) -/
+theorem deficiency_ge_forces_bounded_n {n k : ℕ} (hn : 2 * k ≤ n)
+    (h : NoSmallPrimeFactors n k) (hpos : 1 ≤ deficiency n k) :
+    2 * k ≤ n ∧ n < k + Nat.factorial k := by
+  refine ⟨hn, ?_⟩
+  have hpow : (n - k + 1) ^ 1 ≤ Nat.factorial k :=
+    windowFloor_pow_le_factorial_of_le hn h hpos
+  have hself : n - k + 1 ≤ Nat.factorial k := by simpa using hpow
+  omega
+
+/-- `16! < 22^10`, the numeric input that pins the `k = 16` window: `(n-15)^{10} ≤ 16!`
+forces `n - 15 < 22`.  `ofReduceBool`-free (`Nat.factorial` and `Nat.pow` on literals
+reduce under kernel `decide`). -/
+theorem factorial_16_lt_22_pow_ten : Nat.factorial 16 < 22 ^ 10 := by decide
+
+/-- For `32 ≤ n ≤ 36` the binomial `C(n,16)` is even, so `2` (a prime `≤ 16`) divides
+it — hence such a pair is *not* admissible.  Uses `native_decide` (⇒ `Lean.ofReduceBool`)
+because the naive `Nat.choose` recursion is infeasible for kernel `decide`. -/
+theorem two_dvd_choose_16_of_range {n : ℕ} (hlo : 32 ≤ n) (hhi : n ≤ 36) :
+    2 ∣ Nat.choose n 16 := by
+  interval_cases n <;> native_decide
+
+/-- The five small pairs left by the `k = 16` location window are all inadmissible:
+`2 ∣ C(n,16)` and `2 ≤ 16`, contradicting `NoSmallPrimeFactors n 16`. -/
+theorem not_admissible_k16_of_range {n : ℕ} (hlo : 32 ≤ n) (hhi : n ≤ 36) :
+    ¬ NoSmallPrimeFactors n 16 := by
+  intro h
+  have hdvd : 2 ∣ Nat.choose n 16 := two_dvd_choose_16_of_range hlo hhi
+  have := h 2 Nat.prime_two hdvd
+  omega
+
+/-- **The location bound closes `k = 16`.**  For an admissible pair with `k = 16`
+the deficiency never exceeds `9`.  A deficiency `≥ 10` would force, via the
+window-floor bound, `(n - 15)^{10} ≤ 16! < 22^{10}`, hence `n ≤ 36`; with the
+admissibility floor `n ≥ 32` this leaves only `n ∈ {32,…,36}`, none of which is
+admissible (`C(n,16)` is even).  This is exactly the case the `(k!)²` method of
+Section XV could not reach — the sharp factorial bound permits deficiency `10` at
+`k = 16` (`sharp_bound_permits_deficiency_ten`), but the *location* bound rules it
+out. -/
+theorem deficiency_le_nine_of_k_eq_16 {n : ℕ} (hn : 32 ≤ n)
+    (h : NoSmallPrimeFactors n 16) : deficiency n 16 ≤ 9 := by
+  by_contra hcon
+  push_neg at hcon
+  have hpow : (n - 16 + 1) ^ 10 ≤ Nat.factorial 16 :=
+    windowFloor_pow_le_factorial_of_le (k := 16) (d := 10) (by omega) h (by omega)
+  have hlt : (n - 16 + 1) ^ 10 < 22 ^ 10 := lt_of_le_of_lt hpow factorial_16_lt_22_pow_ten
+  have hfloor : n - 16 + 1 < 22 := by
+    by_contra hge
+    push_neg at hge
+    exact absurd (Nat.pow_le_pow_left hge 10) (not_le.mpr hlt)
+  exact not_admissible_k16_of_range (n := n) (by omega) (by omega) h
+
+/-- **Elementary resolution of OQ-02 for all `k ≤ 16`.**  Combines the sharp
+factorial bound for `k ≤ 15` (`deficiency_le_nine_of_k_le_15`) with the location
+bound at `k = 16` (`deficiency_le_nine_of_k_eq_16`).  Strictly extends the
+`k ≤ 15` reach of Section XV. -/
+theorem deficiency_le_nine_of_k_le_16 {n k : ℕ} (hn : 2 * k ≤ n)
+    (h : NoSmallPrimeFactors n k) (hk : k ≤ 16) : deficiency n k ≤ 9 := by
+  by_cases hk15 : k ≤ 15
+  · exact deficiency_le_nine_of_k_le_15 hn h hk15
+  · have hk16 : k = 16 := by omega
+    subst hk16
+    exact deficiency_le_nine_of_k_eq_16 (by omega) h
+
+/-- **Sharpened reduction to `k ≥ 17`.**  `MaximalDeficiencyIs 9` is equivalent to
+the open universal bound restricted to `k ≥ 17`: the cases `k ≤ 15` are discharged
+by the sharp factorial bound and `k = 16` by the location bound
+(`deficiency_le_nine_of_k_le_16`).  Strictly sharper than
+`maximalDeficiencyIs_nine_iff_kGe16`; the entire remaining open content of OQ-02
+now lives at `k ≥ 17`. -/
+theorem maximalDeficiencyIs_nine_iff_kGe17 :
+    MaximalDeficiencyIs 9 ↔
+      ∀ n k, 17 ≤ k → ValidDeficiencyExample n k → deficiency n k ≤ 9 := by
+  rw [maximalDeficiencyIs_nine_iff_upperBound]
+  constructor
+  · intro h n k _ hv; exact h n k hv
+  · intro h n k hv
+    by_cases hk : k ≤ 16
+    · exact deficiency_le_nine_of_k_le_16 hv.1 hv.2 hk
+    · exact h n k (by omega) hv
