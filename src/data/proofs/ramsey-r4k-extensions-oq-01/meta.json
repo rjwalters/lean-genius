@@ -3,6 +3,44 @@
   "title": "Erdős Probabilistic Lower Bound for Diagonal Ramsey Numbers: R(k,k) > 2^(k/2)",
   "slug": "ramsey-r4k-extensions-oq-01",
   "description": "A fully machine-checked, axiom-free formalization of Erdős's 1947 probabilistic lower bound for diagonal Ramsey numbers, the very first application of the probabilistic method. The headline result erdos_probabilistic_lower_bound proves that for k ≥ 3 and any n ≤ 2^⌊k/2⌋ there is a symmetric, irreflexive 2-colouring of K_n with no monochromatic k-clique of either colour — i.e. R(k,k) > 2^⌊k/2⌋. This is exactly the statement that the parent file Proofs/RamseyR4kExtensions.lean had stated as an `axiom`; it is now proved with 0 axioms via the counting (first-moment) form of the probabilistic method, with no measure theory. The general criterion erdos_ramsey_criterion shows R(k,k) > n whenever 2·C(n,k) < 2^C(k,2), and the reusable abstract lemma exists_avoiding_coloring captures the union-bound counting core.",
+  "mainTheorems": [
+    {
+      "name": "erdos_probabilistic_lower_bound",
+      "type": "main",
+      "description": "Erdős's 1947 diagonal Ramsey lower bound R(k,k) > 2^⌊k/2⌋: for k ≥ 3 and any n ≤ 2^⌊k/2⌋ there is a symmetric, irreflexive 2-colouring of Kₙ with no monochromatic k-clique of either colour. This is exactly the statement the parent file had assumed as an axiom, now proved with 0 axioms.",
+      "leanType": "(k : ℕ) (hk : 3 ≤ k) : ∀ n : ℕ, n ≤ 2 ^ (k / 2) → ∃ color : Fin n → Fin n → Bool, (∀ x y, color x y = color y x) ∧ (∀ x, color x x = false) ∧ (∀ s : Finset (Fin n), s.card = k → ¬ (∀ x y, x ∈ s → y ∈ s → x ≠ y → color x y = true)) ∧ (∀ s : Finset (Fin n), s.card = k → ¬ (∀ x y, x ∈ s → y ∈ s → x ≠ y → color x y = false))"
+    },
+    {
+      "name": "erdos_ramsey_criterion",
+      "type": "main",
+      "description": "The general counting criterion: whenever 2·C(n,k) < 2^C(k,2) there exists a symmetric irreflexive 2-colouring of Kₙ avoiding a monochromatic k-clique of both colours (so R(k,k) > n).",
+      "leanType": "(n k : ℕ) (h : 2 * n.choose k < 2 ^ (k.choose 2)) : ∃ color : Fin n → Fin n → Bool, (∀ x y, color x y = color y x) ∧ (∀ x, color x x = false) ∧ (∀ s : Finset (Fin n), s.card = k → ¬ (∀ x y, x ∈ s → y ∈ s → x ≠ y → color x y = true)) ∧ (∀ s : Finset (Fin n), s.card = k → ¬ (∀ x y, x ∈ s → y ∈ s → x ≠ y → color x y = false))"
+    },
+    {
+      "name": "erdos_diagonal_numeric",
+      "type": "supporting",
+      "description": "The arithmetic estimate feeding the criterion: for k ≥ 3 and n ≤ 2^⌊k/2⌋, the union-bound inequality 2·C(n,k) < 2^C(k,2) holds.",
+      "leanType": "(n k : ℕ) (hk : 3 ≤ k) (hn : n ≤ 2 ^ (k / 2)) : 2 * n.choose k < 2 ^ (k.choose 2)"
+    },
+    {
+      "name": "exists_good_coloring_sym2",
+      "type": "supporting",
+      "description": "Edge-set (Sym2) form of the criterion: under 2·C(n,k) < 2^C(k,2) there is a Bool-colouring of the edges of Kₙ with no monochromatic k-subset.",
+      "leanType": "(n k : ℕ) (h : 2 * n.choose k < 2 ^ (k.choose 2)) : ∃ c : Sym2 (Fin n) → Bool, ∀ S : Finset (Fin n), S.card = k → ¬ ∃ b, ∀ e ∈ S.offDiag.image Sym2.mk, c e = b"
+    },
+    {
+      "name": "exists_avoiding_coloring",
+      "type": "supporting",
+      "description": "The abstract union-bound (first-moment) core: given a family of 'bad' subsets whose total weight ∑ 2·2^(|E|−|W|) is below 2^|E|, there is a Bool-colouring making no bad set monochromatic. Reusable independently of Ramsey theory.",
+      "leanType": "(bad : Finset (Finset E)) (hbound : (∑ W ∈ bad, 2 * 2 ^ (Fintype.card E - W.card)) < 2 ^ Fintype.card E) : ∃ c : E → Bool, ∀ W ∈ bad, ¬ ∃ b, ∀ e ∈ W, c e = b"
+    },
+    {
+      "name": "card_const_on",
+      "type": "supporting",
+      "description": "Counting lemma: the number of Bool-colourings constant equal to b on a fixed set W is 2^(|E|−|W|); the per-bad-set term of the union bound.",
+      "leanType": "(W : Finset E) (b : Bool) : (univ.filter (fun c : E → Bool => ∀ e ∈ W, c e = b)).card = 2 ^ (Fintype.card E - W.card)"
+    }
+  ],
   "meta": {
     "author": "Lean Genius Researcher",
     "status": "verified",
