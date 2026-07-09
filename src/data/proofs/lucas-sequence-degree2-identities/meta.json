@@ -25,6 +25,14 @@
   },
   "sections": [
     {
+      "id": "module-header-and-setup",
+      "title": "Module Header & Setup",
+      "startLine": 1,
+      "endLine": 62,
+      "summary": "The import, module docstring, and namespace. The docstring frames the gallery gap: the specific Fibonacci/Lucas degree-2 identities are the (P,Q)=(1,−1) instance of a general fact about Lucas sequences U_n(P,Q), V_n(P,Q) for arbitrary integer parameters, governed by the single master identity Vₙ² − D·Uₙ² = 4·Qⁿ with discriminant D = P²−4Q. It tabulates the Fibonacci/Lucas, Pell, and (3,2) specializations, and lays out the elementary proof architecture that never leaves ℤ or invokes the Binet closed form: eliminate V via V_eq (Vₙ = 2Uₙ₊₁ − P·Uₙ), then close on the invariant quadratic form U_quad (the Lucas-sequence Cassini identity).",
+      "mathContext": "Master identity $V_n^2 - D\\,U_n^2 = 4Q^n$, $D = P^2 - 4Q$; sequences $U_{n+2} = P U_{n+1} - Q U_n$ with $U_0=0,U_1=1$ and $V_0=2,V_1=P$."
+    },
+    {
       "id": "definitions",
       "title": "Section I: The Two Lucas Sequences over ℤ",
       "startLine": 63,
