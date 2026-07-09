@@ -76,7 +76,8 @@
       "**Conjugation is the order-2 automorphism**: e^{iθ} ↦ e^{−iθ} swaps the two roots of the real quadratic X²−(2cos θ)X+1, while fixing its coefficient 2cos θ — exactly the ℚ(cos θ)-automorphism of ℚ(ζ) of order 2.",
       "**The ÷2 is genuine, not degenerate**: the bound [ℚ(ζ):ℚ(cos θ)] ≤ 2 is an equality precisely when the two roots are distinct, i.e. when sin θ ≠ 0. For cyclotomic angles 2π/n with n ≥ 3 this always holds.",
       "**Where Mathlib stops**: the element-level witness is complete, but turning it into the field-degree [ℚ(cos 2π/n):ℚ] = φ(n)/2 needs the degree of the maximal real subfield of ℚ(ζ_n), which Mathlib does not yet provide. The honest boundary is stated explicitly.",
-      "**Im(ζ) = sin θ as the distinctness oracle**: reducing 'roots distinct' to 'sin θ ≠ 0' converts an algebraic question into an elementary trigonometric positivity (0 < 2π/n < π)."
+      "**Im(ζ) = sin θ as the distinctness oracle**: reducing 'roots distinct' to 'sin θ ≠ 0' converts an algebraic question into an elementary trigonometric positivity (0 < 2π/n < π).",
+      "**φ(n)/2 is a concrete polynomial degree, not merely an abstract index**: since 2cos(2π/n) = ζ + ζ⁻¹ obeys the Chebyshev relation Tₙ(cos θ) = cos(nθ), the number cos 2π/n is a root of Tₙ − 1, whose minimal polynomial over ℚ is an irreducible factor of degree φ(n)/2. The verified degree-2 step is exactly the identity 2·(φ(n)/2) = φ(n) linking the cyclotomic degree down to this real-polynomial degree — the same cubic (φ(9)/2 = φ(7)/2 = 3) whose irreducibility forbids trisecting 120° and constructing the regular heptagon."
     ],
     "prerequisites": [
       "Complex exponential and Euler's formula",
