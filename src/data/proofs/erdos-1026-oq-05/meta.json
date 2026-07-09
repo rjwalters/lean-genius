@@ -173,6 +173,13 @@
         "theoremCount": 10,
         "definitionCount": 4,
         "description": "k-monotone generalization: length bound m ≤ k·max(LIS,LDS), covering-number lower bound, and the sandwich n/(k·max) ≤ minKMonotonicParts k ≤ minMonotonicParts — with the EXACT k=1 identity minKMonotonicParts 1 = minMonotonicParts (a 1-monotone piece is monotone), pinning the k=1 endpoint of the bracket."
+      },
+      {
+        "path": "Proofs/Erdos1026OQ05Extremal.lean",
+        "lineCount": 320,
+        "theoremCount": 14,
+        "definitionCount": 2,
+        "description": "Erdős–Szekeres extremal staircase on n=k²: LIS=LDS=k and value injective, collapsing the general bracket to minMonotonicParts=k=√n. Exhibits sequences forcing Θ(√n) monotone pieces (bracket is tight); the universal O(√n) upper bound stays open."
       }
     ]
   },
