@@ -18,9 +18,9 @@
     "type": "insight",
     "title": "Conjugation Maps ζ to the Other Root",
     "content": "conj_zeta proves conj(e^{iθ}) = e^{−iθ} via Complex.exp_conj (exp commutes with conjugation). zeta_mul gives the unit-circle product e^{iθ}·e^{−iθ} = 1; zeta_add gives the sum e^{iθ} + e^{−iθ} = 2cos θ (Complex.two_cos). quadratic_factor assembles these into (z − e^{iθ})(z − e^{−iθ}) = z² − (2cos θ)z + 1. The two roots are a complex-conjugate pair, so conjugation is exactly the swap of the two roots of this real quadratic.",
-    "mathContext": "$\\overline{e^{i\\theta}} = e^{-i\\theta}$; $e^{i\\theta}e^{-i\\theta}=1$, $e^{i\\theta}+e^{-i\\theta}=2\\cos\\theta$; hence $(z-e^{i\\theta})(z-e^{-i\\theta}) = z^2 - (2\\cos\\theta)z + 1$.",
+    "mathContext": "$\\overline{e^{i\\theta}} = e^{-i\\theta}$; $e^{i\\theta}e^{-i\\theta}=1$, $e^{i\\theta}+e^{-i\\theta}=2\\cos\\theta$; hence $(z-e^{i\\theta})(z-e^{-i\\theta}) = z^2 - (2\\cos\\theta)z + 1 = z^2 - \\mathrm{Tr}(\\zeta)z + \\mathrm{N}(\\zeta)$, the characteristic polynomial of $\\zeta$ over $\\mathbb{Q}(\\cos\\theta)$ (sum $=$ trace, product $=$ norm).",
     "significance": "key",
-    "relatedConcepts": ["Euler's formula", "complex conjugate roots", "Vieta's formulas", "minimal polynomial of ζ over ℝ"],
+    "relatedConcepts": ["Euler's formula", "complex conjugate roots", "Vieta's formulas", "trace and norm over a subfield", "minimal polynomial of ζ over ℝ"],
     "prerequisites": ["complex exponential", "exp_conj", "roots and coefficients of quadratics"]
   },
   {
