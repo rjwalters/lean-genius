@@ -140,6 +140,11 @@
       "id": "beta-integral-recurrence-oq-01-oq-01-oq-01",
       "question": "Prove the Wallis-product / asymptotic consequence: B(n+1,n+1) = 1/((2n+1)·C(2n,n)) ~ √(πn)/(2n+1)·4^(−n), exhibiting the exponential decay of the symmetric Beta normalization and its link to the central limit scaling of the Beta(n+1,n+1) density toward a Gaussian.",
       "significance": "medium"
+    },
+    {
+      "id": "beta-integral-recurrence-oq-01-oq-01-oq-02",
+      "question": "Generalize from the diagonal to the off-diagonal Beta value B(m+1,n+1) = m!·n!/(m+n+1)! and recover B(n+1,n+1) = 1/((2n+1)·C(2n,n)) as its symmetric special case; then read off the ordinary generating function Σ_n B(n+1,n+1) xⁿ in closed form.",
+      "significance": "medium"
     }
   ],
   "crossReferences": [
