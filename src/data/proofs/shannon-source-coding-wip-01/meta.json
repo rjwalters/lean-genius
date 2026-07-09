@@ -57,6 +57,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header and Overview",
+      "startLine": 1,
+      "endLine": 38,
+      "summary": "The module docstring frames the result as the equality boundary of entropy subadditivity: the gallery's ShannonEntropy file proves H(X,Y) ≤ H(X)+H(Y) for arbitrary joint laws, and this file proves equality holds exactly for independent (product) sources pXY(x,y)=pX(x)·pY(y) — the source-coding fact that n i.i.d. symbols carry n·H bits (foundation of the AEP and of the rate H in Shannon's source coding theorem). It fixes the negMulLog form H(p)=∑ₓ negMulLog(p x), names the engine Real.negMulLog_mul, lists the two results (entropy_eq_neg_sum, entropy_prod), and notes 0 axioms. Imports Mathlib, enters namespace ShannonSourceCodingWIP01, opens Real/Finset, and declares variables {α β} [Fintype α] [Fintype β].",
+      "mathContext": "$H(p_X \\otimes p_Y) = H(p_X) + H(p_Y)$ for product laws; engine $\\mathrm{negMulLog}(xy) = y\\,\\mathrm{negMulLog}\\,x + x\\,\\mathrm{negMulLog}\\,y$."
+    },
+    {
       "id": "definition",
       "title": "Entropy in negMulLog form and agreement with the standard definition",
       "startLine": 39,
