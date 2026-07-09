@@ -1,5 +1,6 @@
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
+import Mathlib.Analysis.SpecialFunctions.Arcosh
 import Mathlib.Tactic
 
 /-
@@ -627,5 +628,101 @@ theorem hyperbolic_law_of_sines (t : HyperbolicTriangle) :
   refine ⟨?_, ?_⟩
   · rw [div_eq_div_iff hA hB]; linear_combination law_of_sines_ab t
   · rw [div_eq_div_iff hB hC]; linear_combination law_of_sines_bc t
+
+-- ============================================================
+-- PART 10: Realizability — the defect condition A+B+C<π is SUFFICIENT
+-- ============================================================
+
+/-- **The defect inequality.** For any three angles in `(0, π)` with positive angular
+    defect `A + B + C < π`, the second-law numerator dominates: `sin A · sin B < cos C +
+    cos A · cos B`. This is the raw-real form of the inequality inside
+    `angle_formula_gt_one`, extracted so it can be applied to a *hypothetical* angle triple
+    (before any triangle is known to exist). Only `C > 0` and the defect are needed. -/
+theorem angle_ineq (A B C : ℝ) (hA : 0 < A) (hB : 0 < B) (hC : 0 < C)
+    (hdef : A + B + C < Real.pi) :
+    Real.sin A * Real.sin B < Real.cos C + Real.cos A * Real.cos B := by
+  have hAB_pos : (0 : ℝ) ≤ A + B := by linarith
+  have hpi : Real.pi - C ≤ Real.pi := by linarith
+  have hAB_lt : A + B < Real.pi - C := by linarith
+  have hlt : Real.cos (Real.pi - C) < Real.cos (A + B) :=
+    Real.cos_lt_cos_of_nonneg_of_le_pi hAB_pos hpi hAB_lt
+  rw [Real.cos_pi_sub, Real.cos_add] at hlt
+  linarith
+
+/-- **Realizability: positive defect is sufficient.** Every angle triple with each angle in
+    `(0, π)` and angle sum `< π` is realized by an actual hyperbolic triangle. This is the
+    converse to `HyperbolicTriangle.defect` (which shows the defect is *necessary*).
+
+    The construction is direct: because the three second laws are **decoupled** — the law at
+    a vertex constrains only that vertex's opposite side — each side is defined independently
+    by inverting its own law, `cosh a = (cos A + cos B cos C)/(sin B sin C)`, etc. The three
+    angle inequalities (all instances of `angle_ineq` with the angles permuted, since the
+    defect is symmetric) make each quotient exceed `1`, so `arcosh` returns a genuine positive
+    length. -/
+theorem exists_triangle_of_defect (A B C : ℝ)
+    (hA : 0 < A) (hB : 0 < B) (hC : 0 < C)
+    (hAlt : A < Real.pi) (hBlt : B < Real.pi) (hClt : C < Real.pi)
+    (hdef : A + B + C < Real.pi) :
+    ∃ t : HyperbolicTriangle, t.A = A ∧ t.B = B ∧ t.C = C := by
+  have hsA := Real.sin_pos_of_pos_of_lt_pi hA hAlt
+  have hsB := Real.sin_pos_of_pos_of_lt_pi hB hBlt
+  have hsC := Real.sin_pos_of_pos_of_lt_pi hC hClt
+  have hsAne := hsA.ne'
+  have hsBne := hsB.ne'
+  have hsCne := hsC.ne'
+  -- Three angle inequalities (the defect is symmetric in A, B, C).
+  have hIa : Real.sin B * Real.sin C < Real.cos A + Real.cos B * Real.cos C :=
+    angle_ineq B C A hB hC hA (by linarith)
+  have hIb : Real.sin A * Real.sin C < Real.cos B + Real.cos A * Real.cos C :=
+    angle_ineq A C B hA hC hB (by linarith)
+  have hIc : Real.sin A * Real.sin B < Real.cos C + Real.cos A * Real.cos B :=
+    angle_ineq A B C hA hB hC hdef
+  -- Each inverted side value exceeds 1.
+  have hva1 : 1 < (Real.cos A + Real.cos B * Real.cos C) / (Real.sin B * Real.sin C) := by
+    rw [lt_div_iff₀ (mul_pos hsB hsC), one_mul]; exact hIa
+  have hvb1 : 1 < (Real.cos B + Real.cos A * Real.cos C) / (Real.sin A * Real.sin C) := by
+    rw [lt_div_iff₀ (mul_pos hsA hsC), one_mul]; exact hIb
+  have hvc1 : 1 < (Real.cos C + Real.cos A * Real.cos B) / (Real.sin A * Real.sin B) := by
+    rw [lt_div_iff₀ (mul_pos hsA hsB), one_mul]; exact hIc
+  refine ⟨{ a := Real.arcosh ((Real.cos A + Real.cos B * Real.cos C) / (Real.sin B * Real.sin C))
+            b := Real.arcosh ((Real.cos B + Real.cos A * Real.cos C) / (Real.sin A * Real.sin C))
+            c := Real.arcosh ((Real.cos C + Real.cos A * Real.cos B) / (Real.sin A * Real.sin B))
+            A := A, B := B, C := C
+            ha := Real.arcosh_pos hva1
+            hb := Real.arcosh_pos hvb1
+            hc := Real.arcosh_pos hvc1
+            hA := hA, hB := hB, hC := hC
+            hA_lt := hAlt, hB_lt := hBlt, hC_lt := hClt
+            defect := hdef
+            lawA := by rw [Real.cosh_arcosh hva1.le]; field_simp; ring
+            lawB := by rw [Real.cosh_arcosh hvb1.le]; field_simp; ring
+            lawC := by rw [Real.cosh_arcosh hvc1.le]; field_simp; ring }, rfl, rfl, rfl⟩
+
+/-- **Full realizability (bijection characterization).** A triple of angles, each in
+    `(0, π)`, is realized by a hyperbolic triangle **iff** the angle sum is `< π`. The forward
+    direction is `HyperbolicTriangle.defect`; the converse is `exists_triangle_of_defect`.
+    Combined with the AAA congruence of PART 4, the map (angles) ↦ (triangle) is a bijection
+    between the open defect region `{(A,B,C) : 0 < A,B,C < π, A+B+C < π}` and congruence
+    classes of hyperbolic triangles — the exact hyperbolic replacement for the Euclidean
+    angle-sum identity `A + B + C = π`. -/
+theorem exists_iff_defect (A B C : ℝ)
+    (hA : 0 < A) (hB : 0 < B) (hC : 0 < C)
+    (hAlt : A < Real.pi) (hBlt : B < Real.pi) (hClt : C < Real.pi) :
+    (∃ t : HyperbolicTriangle, t.A = A ∧ t.B = B ∧ t.C = C) ↔ A + B + C < Real.pi := by
+  constructor
+  · rintro ⟨t, hta, htb, htc⟩
+    have h := t.defect; rw [hta, htb, htc] at h; exact h
+  · intro hdef
+    exact exists_triangle_of_defect A B C hA hB hC hAlt hBlt hClt hdef
+
+/-- **Existence of the equilateral family.** For every admissible common angle
+    `θ ∈ (0, π/3)`, a hyperbolic equilateral triangle with all three angles `θ` exists. This
+    specializes `exists_triangle_of_defect` to `A = B = C = θ`; the bound `θ < π/3` is exactly
+    the defect condition `3θ < π`, matching `equilateral_angle_lt_pi_third`. It shows the
+    equilateral results (PARTS 5, 7, 8) are non-vacuous across the whole range `(0, π/3)`. -/
+theorem exists_equilateral (θ : ℝ) (hθ : 0 < θ) (hθ3 : θ < Real.pi / 3) :
+    ∃ t : HyperbolicTriangle, t.A = θ ∧ t.B = θ ∧ t.C = θ := by
+  have hθpi : θ < Real.pi := by linarith [Real.pi_pos]
+  exact exists_triangle_of_defect θ θ θ hθ hθ hθ hθpi hθpi hθpi (by linarith)
 
 end HyperbolicAAA
