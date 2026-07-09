@@ -3,6 +3,40 @@
   "title": "The Closed Geometric-Product Form of σₖ for Every Exponent k",
   "slug": "sum-of-divisors-oq-07",
   "description": "Mathlib evaluates σₖ only in open form — a geometric sum on prime powers (sigma_apply_prime_pow) and a product of those sums over a factorization (sigma_eq_prod_primeFactors_sum_range_factorization_pow_mul). OQ-04 collapses the inner geometric series to closed form, but only for k = 1. This entry proves the closed geometric-product form for an arbitrary exponent k: σₖ(pⁱ)·(pᵏ−1) = p^{k(i+1)}−1 on prime powers, the two-prime product law, and the general σₖ(n)·∏_{p∣n}(pᵏ−1) = ∏_{p∣n}(p^{k(vₚ(n)+1)}−1), collapsing Mathlib's product-of-sums into a product of closed geometric quotients. Routes through geom_sum_mul, sigma_apply_prime_pow, isMultiplicative_sigma, and sigma_eq_prod_primeFactors_sum_range_factorization_pow_mul.",
+  "mainTheorems": [
+    {
+      "name": "geom_sigma_sum",
+      "type": "key",
+      "description": "**Geometric collapse over ℤ (the engine).** (∑_{j<i+1} p^{jk})·(pᵏ−1) = p^{k(i+1)}−1. This is Mathlib's `geom_sum_mul` applied at base x = pᵏ, re-indexed by `pow_mul` so the summand reads p^{jk} — the exact shape `sigma_apply_prime_pow` produces. Every closed form below reduces to this one identity.",
+      "leanType": "(k p i : ℕ) : (∑ j ∈ range (i + 1), (p : ℤ) ^ (j * k)) * ((p : ℤ) ^ k - 1) = (p : ℤ) ^ (k * (i + 1)) - 1",
+      "startLine": 43,
+      "endLine": 51
+    },
+    {
+      "name": "sigma_prime_pow_mul",
+      "type": "core",
+      "description": "**Closed geometric form on a prime power, every k.** σₖ(pⁱ)·(pᵏ−1) = p^{k(i+1)}−1, i.e. σₖ(pⁱ) = (p^{k(i+1)}−1)/(pᵏ−1). Generalizes OQ-04's `sigma_one_prime_pow_mul` (the k = 1 case) to arbitrary exponents; proved by rewriting σₖ(pⁱ) with `sigma_apply_prime_pow` and collapsing via `geom_sigma_sum`.",
+      "leanType": "{k p i : ℕ} (hp : p.Prime) : (sigma k (p ^ i) : ℤ) * ((p : ℤ) ^ k - 1) = (p : ℤ) ^ (k * (i + 1)) - 1",
+      "startLine": 56,
+      "endLine": 60
+    },
+    {
+      "name": "sigma_two_primes_pow_mul",
+      "type": "supporting",
+      "description": "**Closed form on a two-prime product pᵃ·qᵇ.** σₖ(pᵃqᵇ)·(pᵏ−1)(qᵏ−1) = (p^{k(a+1)}−1)(q^{k(b+1)}−1). Distinct primes give coprime prime powers, so σₖ factors by `isMultiplicative_sigma.map_mul_of_coprime` and each factor collapses by `sigma_prime_pow_mul`; the two are spliced with `linear_combination`.",
+      "leanType": "{k p q a b : ℕ} (hp : p.Prime) (hq : q.Prime) (hpq : p ≠ q) : (sigma k (p ^ a * q ^ b) : ℤ) * (((p : ℤ) ^ k - 1) * ((q : ℤ) ^ k - 1)) = ((p : ℤ) ^ (k * (a + 1)) - 1) * ((q : ℤ) ^ (k * (b + 1)) - 1)",
+      "startLine": 66,
+      "endLine": 78
+    },
+    {
+      "name": "sigma_mul_prod_primeFactors",
+      "type": "core",
+      "description": "**General closed geometric-product form (headline).** For n ≠ 0, σₖ(n)·∏_{p∣n}(pᵏ−1) = ∏_{p∣n}(p^{k(vₚ(n)+1)}−1). Starts from Mathlib's product-of-sums `sigma_eq_prod_primeFactors_sum_range_factorization_pow_mul`, distributes the ∏(pᵏ−1) factors with `Finset.prod_mul_distrib`, and collapses each factor with `geom_sigma_sum` — turning a product of open geometric sums into a product of closed quotients across the whole factorization.",
+      "leanType": "{k n : ℕ} (hn : n ≠ 0) : (sigma k n : ℤ) * ∏ p ∈ n.primeFactors, ((p : ℤ) ^ k - 1) = ∏ p ∈ n.primeFactors, ((p : ℤ) ^ (k * (n.factorization p + 1)) - 1)",
+      "startLine": 85,
+      "endLine": 93
+    }
+  ],
   "meta": {
     "author": "classical (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Divisor_function",
