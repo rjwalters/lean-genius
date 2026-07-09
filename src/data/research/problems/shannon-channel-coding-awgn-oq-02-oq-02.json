@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (VERIFIED 0/0): strict standard-deviation triangle inequality proved in both correlation form (σ[X+Y]<σ[X]+σ[Y] ⟺ ρ<1) and structural/affine form (⟺ X not a.e. increasing-affine in Y) — the strict companions of the equality boundary, completing the ≤ / = / < trichotomy of stddev_add_le. Remaining open: analytic upper-bound terminus and finite-family strict form.",
+    "progressSummary": "PROGRESS (VERIFIED 0/0): added the weighted-combining power law Var[∑aᵢWᵢ]=∑aᵢ²Var[Wᵢ] for pairwise-uncorrelated families (bilinear Bienaymé double-sum + uncorrelated diagonal + zero-mean output-power capstone) — the maximal-ratio-combining / matched-filter second-order identity, the aᵢ-weighted generalisation of the unweighted variance_sum_of_pairwise_uncorrelated stack.",
     "builtItems": [
       "variance_sum_of_pairwise_uncorrelated (ShannonChannelCodingAWGNOQ02OQ02.lean:131): Var[∑ i∈s, Wi] = ∑ Var[Wi] from Set.Pairwise cov=0 + MemLp; [IsFiniteMeasure].",
       "variance_sum_of_pairwise_indep (:150): independence ⟹ uncorrelated ⟹ identity, via IndepFun.covariance_eq_zero — shows the sharp version subsumes IndepFun.variance_sum.",
@@ -61,7 +61,10 @@
       "stddev_sum_eq_iff_pairwise_covariance_eq_sqrt (ShannonChannelCodingAWGNOQ02OQ02.lean): √Var[∑ᵢ∈s Wᵢ]=∑ᵢ√Var[Wᵢ] ↔ ∀i,j∈s cov[Wᵢ,Wⱼ]=√Var[Wᵢ]·√Var[Wⱼ]; no non-degeneracy hyp (diagonal tight). Multivariate lift of stddev_add_eq_iff_covariance_eq_sqrt, dual of variance_sum_eq_iff_offDiag_covariance_zero.",
       "stddev_sum_eq_iff_pairwise_correlation_eq_one (same file): for non-degenerate family, √Var[∑]=∑σ ↔ ∀i,j∈s ρ[Wᵢ,Wⱼ]=1 (all pairs perfectly positively correlated); normalises the covariance form via correlation def + div_eq_one_iff_eq. Multivariate capstone of stddev_add_eq_iff_correlation_eq_one.",
       "stddev_add_lt_iff_correlation_lt_one (ShannonChannelCodingAWGNOQ02OQ02.lean): σ[X+Y] < σ[X]+σ[Y] ⟺ ρ<1 for non-degenerate X,Y — strict form of stddev_add_le via lt_iff_le_and_ne + abs_correlation_le_one (ρ≤1) + stddev_add_eq_iff_correlation_eq_one",
-      "stddev_add_lt_iff_not_affine_pos (ShannonChannelCodingAWGNOQ02OQ02.lean): σ[X+Y] < σ[X]+σ[Y] ⟺ ¬∃a>0,b. X=ᵐa·Y+b — structural negation of stddev_add_eq_iff_affine_pos"
+      "stddev_add_lt_iff_not_affine_pos (ShannonChannelCodingAWGNOQ02OQ02.lean): σ[X+Y] < σ[X]+σ[Y] ⟺ ¬∃a>0,b. X=ᵐa·Y+b — structural negation of stddev_add_eq_iff_affine_pos",
+      "variance_smul_sum: Var[∑aᵢ•Wᵢ]=∑ᵢ∑ⱼ aᵢaⱼ·cov[Wᵢ,Wⱼ] (weighted Bienaymé double-sum, ShannonChannelCodingAWGNOQ02OQ02.lean:1186)",
+      "variance_smul_sum_of_pairwise_uncorrelated: Var[∑aᵢ•Wᵢ]=∑ᵢ aᵢ²·Var[Wᵢ] for pairwise-uncorrelated families — the MRC/matched-filter power law, a≡1 recovers variance_sum_of_pairwise_uncorrelated (line 1208)",
+      "awgn_weighted_multisymbol_power_of_uncorrelated: E[(∑aᵢ•Wᵢ)²]=∑ᵢ aᵢ²·E[Wᵢ²] for zero-mean uncorrelated symbols — physical weighted output power (line 1230)"
     ],
     "insights": [
       "Bienaymé variance-of-a-sum needs only PAIRWISE UNCORRELATEDNESS (cov[Wi,Wj]=0 for i≠j), not pairwise independence: the off-diagonal covariances of Var[∑Wi]=∑i∑j cov[Wi,Wj] (Mathlib variance_sum´) are exactly what must vanish. Independence is strictly stronger (there exist uncorrelated dependent variables).",
@@ -79,7 +82,8 @@
       "Sharp equality boundary of the stddev triangle inequality stddev_add_le: squaring the nonnegative identity σ[X+Y]=σ[X]+σ[Y] reduces it to the covariance attaining its Cauchy-Schwarz maximum cov[X,Y]=√Var[X]·√Var[Y]; NO non-degeneracy hypothesis needed (degenerate Y gives 0=σ[X]·0).",
       "The triangle-equality boundary sits at the OPPOSITE Cauchy-Schwarz endpoint from variance_add_eq_iff_covariance_zero: variances add iff cov=0 (orthogonal), but standard deviations add iff cov=σ[X]σ[Y] (perfectly positively correlated, ρ=+1).",
       "Multivariate stddev-triangle equality (√Var[∑Wᵢ]=∑σ[Wᵢ]) reduces via square+variance_sum'+Finset.sum_mul_sum to ∑ᵢ∑ⱼcov=∑ᵢ∑ⱼσᵢσⱼ; each summand obeys Cauchy–Schwarz cov≤σᵢσⱼ, so the two double sums are equal iff every ordered pair saturates it — Finset.sum_eq_sum_iff_of_le twice (nested).",
-      "Strict triangle inequality needs NO fresh analysis: it is purely lt_iff_le_and_ne applied to both sides of the equality boundary (stddev_add_le gives ≤ on the left, abs_correlation_le_one gives ρ≤1 on the right), then not_iff_not on the eq-iff. simp only [stddev_add_le hX hY, hρle, true_and, ne_eq, not_iff_not] discharges the whole reduction in one line."
+      "Strict triangle inequality needs NO fresh analysis: it is purely lt_iff_le_and_ne applied to both sides of the equality boundary (stddev_add_le gives ≤ on the left, abs_correlation_le_one gives ρ≤1 on the right), then not_iff_not on the eq-iff. simp only [stddev_add_le hX hY, hρle, true_and, ne_eq, not_iff_not] discharges the whole reduction in one line.",
+      "Weighted combining lifts the whole Bienaymé stack by bilinearity: covariance_smul_left/right push each aᵢ,aⱼ out of cov[aᵢWᵢ,aⱼWⱼ]=aᵢaⱼcov, and variance_smul gives the diagonal Var[aᵢWᵢ]=aᵢ²Var[Wᵢ]; no new analysis, just scalar-out rewrites — working in the a•W (smul) form (not fun ω=>a*W ω) aligns directly with Mathlib covariance_smul_*/variance_smul/MemLp.const_smul."
     ],
     "mathlibGaps": [
       "Mathlib has no pairwise-uncorrelated variance-sum lemma (only variance_sum´ double-sum form and IndepFun.variance_sum). Candidate upstream contribution: variance_sum under Set.Pairwise (cov=0).",
