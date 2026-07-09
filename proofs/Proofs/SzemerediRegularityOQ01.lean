@@ -298,4 +298,46 @@ theorem card_irregularOrderedPairs_antitone (G : SimpleGraph V) [DecidableRel G.
     (irregularOrderedPairs G eps₂ parts).card ≤ (irregularOrderedPairs G eps₁ parts).card :=
   Finset.card_le_card (irregularOrderedPairs_antitone G h parts)
 
+/-- **A partition is exactly as irregular for `Gᶜ` as for `G`.**  Lifting the per-pair
+    `isEpsilonRegular_compl` to the whole partition: for a positive parameter `eps` and a
+    family of *pairwise-disjoint, nonempty* parts (the standing hypotheses of a genuine
+    vertex partition), the ordered irregular pairs of the complement graph coincide with
+    those of `G`:
+
+        `irregularOrderedPairs Gᶜ eps parts = irregularOrderedPairs G eps parts`.
+
+    Every irregular pair `(P, Q)` has `P ≠ Q` with `P, Q ∈ parts`, so `P` and `Q` are
+    nonempty and disjoint — exactly the hypotheses under which `isEpsilonRegular_compl`
+    equates ε-regularity in `Gᶜ` and `G`.  The filter conditions defining the two sets are
+    therefore pointwise equivalent.  Consequence: ε-regularity of a partition is a
+    *self-complementary* property — a partition witnesses (ir)regularity for a graph iff it
+    does for the complement graph. -/
+theorem irregularOrderedPairs_compl (G : SimpleGraph V) [DecidableRel G.Adj]
+    (eps : ℚ) (heps : 0 < eps) (parts : Finset (Finset V))
+    (hne : ∀ P ∈ parts, P.Nonempty)
+    (hdisj : ∀ P ∈ parts, ∀ Q ∈ parts, P ≠ Q → Disjoint P Q) :
+    irregularOrderedPairs Gᶜ eps parts = irregularOrderedPairs G eps parts := by
+  ext x
+  obtain ⟨P, Q⟩ := x
+  simp only [irregularOrderedPairs, Finset.mem_filter, Finset.mem_product]
+  constructor
+  · rintro ⟨⟨hP, hQ⟩, hne', hreg⟩
+    refine ⟨⟨hP, hQ⟩, hne', ?_⟩
+    rwa [isEpsilonRegular_compl G eps heps (hne P hP) (hne Q hQ) (hdisj P hP Q hQ hne')] at hreg
+  · rintro ⟨⟨hP, hQ⟩, hne', hreg⟩
+    refine ⟨⟨hP, hQ⟩, hne', ?_⟩
+    rwa [← isEpsilonRegular_compl G eps heps (hne P hP) (hne Q hQ) (hdisj P hP Q hQ hne')] at hreg
+
+/-- **The irregular-pair count is complement-invariant.**  Cardinality form of
+    `irregularOrderedPairs_compl`: a graph and its complement have the *same* number of
+    ordered irregular pairs on any pairwise-disjoint, nonempty partition.  In particular the
+    `IsRegularPartition` threshold `card irregular ≤ eps·(#parts)²` holds for `G` iff it holds
+    for `Gᶜ`. -/
+theorem card_irregularOrderedPairs_compl (G : SimpleGraph V) [DecidableRel G.Adj]
+    (eps : ℚ) (heps : 0 < eps) (parts : Finset (Finset V))
+    (hne : ∀ P ∈ parts, P.Nonempty)
+    (hdisj : ∀ P ∈ parts, ∀ Q ∈ parts, P ≠ Q → Disjoint P Q) :
+    (irregularOrderedPairs Gᶜ eps parts).card = (irregularOrderedPairs G eps parts).card := by
+  rw [irregularOrderedPairs_compl G eps heps parts hne hdisj]
+
 end Szemeredi.Regularity.OQ01
