@@ -394,6 +394,37 @@ theorem abelian_bounded_cliques {H : Type*} [CommGroup H] : BoundedCliques H := 
   rw [CommGroup.center_eq_top, Subgroup.index_top]
   exact one_ne_zero
 
+/-- **Bounded cliques pass to subgroups (heredity of ω(Γ)).**  The non-commuting
+    graph `Γ(H)` of a subgroup `H ≤ G` is an *induced subgraph* of `Γ(G)`: the
+    inclusion `H ↪ G` is an injective homomorphism, so it carries every clique of
+    `Γ(H)` to a clique of `Γ(G)` of the same size.  Hence any uniform clique bound
+    for `G` is also one for `H`, i.e. `ω(Γ(H)) ≤ ω(Γ(G))`.
+
+    Combined with Neumann's theorem this is a genuine structural consequence: if
+    `[G : Z(G)]` is finite then `[H : Z(H)]` is finite for *every* subgroup `H ≤ G`
+    — finiteness of the central index is inherited downward. Axiom-free (it uses
+    only the easy transfer of cliques, not the BFC core). -/
+theorem boundedCliques_of_subgroup (H : Subgroup G) (h : BoundedCliques G) :
+    BoundedCliques H := by
+  obtain ⟨B, hB⟩ := h
+  refine ⟨B, fun S hS => ?_⟩
+  have hinj : Function.Injective (H.subtype) := H.subtype_injective
+  let e : H ↪ G := ⟨H.subtype, hinj⟩
+  have hclique : IsClique (S.map e) := by
+    intro a ha b hb hab
+    rw [Finset.mem_map] at ha hb
+    obtain ⟨a', ha', rfl⟩ := ha
+    obtain ⟨b', hb', rfl⟩ := hb
+    have hne : a' ≠ b' := fun heq => hab (by rw [heq])
+    have key := hS a' ha' b' hb' hne
+    intro hEq
+    apply key
+    apply hinj
+    rw [map_mul, map_mul]
+    exact hEq
+  rw [← Finset.card_map e]
+  exact hB _ hclique
+
 /-- **The hard direction holds unconditionally — and axiom-free — for finite groups.**
     When `G` is finite the centre automatically has finite index (`[G:Z(G)] ≤ |G| < ∞`,
     here via `Subgroup.index_ne_zero_of_finite`), so the forward implication of

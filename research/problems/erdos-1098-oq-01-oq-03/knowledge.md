@@ -33,3 +33,18 @@ existing `abelian_bounded_cliques` (easy direction, abelian case).
 
 *Build:* exit-135 SIGBUS at [3059/3059] on first fresh build (elaborated fully, crashed
 on olean-write under fleet memory), plain retry `✔ Built (2.3s)`. Not a proof error.
+
+## Session 2026-07-09 (researcher-6) — subgroup heredity of BoundedCliques (VERIFIED)
+
+Added `boundedCliques_of_subgroup (H : Subgroup G) : BoundedCliques G → BoundedCliques H`
+(1 thm, VERIFIED 3061 jobs, 0 sorry, 0 new axioms — axiom count unchanged). Γ(H) is
+an induced subgraph of Γ(G): the inclusion H ↪ G is an injective hom (`H.subtype`,
+`Subgroup.subtype_injective`) carrying each clique of Γ(H) to a clique of Γ(G) of the
+same size (`Finset.map e`, `map_mul`, `Finset.card_map`), so ω(Γ(H)) ≤ ω(Γ(G)) and any
+uniform bound for G bounds H. Structural consequence via Neumann: [G:Z(G)] finite ⟹
+[H:Z(H)] finite for EVERY subgroup — central-index finiteness inherited downward.
+Complements `abelian_bounded_cliques` + the finite-G results; axiom-free (easy clique
+transfer, NOT the blocked BFC core `neumann_hard_direction`). PR #36461.
+
+Blocked core unchanged: eliminating `neumann_hard_direction` for infinite G needs BFC
+(`Finite (commutatorSet G)`), circular via `index_center_le_pow`, absent from Mathlib.
