@@ -86,6 +86,24 @@
       "summary": "The main result. Builds the covering-count identity ∫_F (∑' l, 𝟙_{l+ᵥs}) dμ = μs via Tonelli and the fundamental-domain measure decomposition, runs the pigeonhole to find a point covered more than k times, and extracts the finite over-covering family."
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "exists_finset_lattice_common_vadd",
+      "type": "core",
+      "description": "**Blichfeldt's theorem (general multiplicity).** For a countable subgroup L acting on a measure space with additive fundamental domain F and a null-measurable set s, if k · μF < μs then some point z is covered by more than k translates of s by L: a finite T ⊆ L with k < #T and z ∈ l +ᵥ s for all l ∈ T. A measure-theoretic pigeonhole — Tonelli plus the fundamental-domain decomposition give ∫_F (∑' l, 𝟙_{l+ᵥs}) dμ = μs, so a uniform bound g ≤ k would force μs ≤ k·μF. At k = 1 this is Mathlib's exists_pair_mem_lattice_not_disjoint_vadd; the general-k form has no Mathlib counterpart.",
+      "leanType": "[AddGroup L] [Countable L] [AddAction L E] [MeasurableSpace L] [MeasurableVAdd L E] [VAddInvariantMeasure L E μ] (fund : IsAddFundamentalDomain L F μ) (hs : NullMeasurableSet s μ) {k : ℕ} (h : k • μ F < μ s) : ∃ T : Finset L, k < T.card ∧ ∃ z, ∀ l ∈ T, z ∈ (l +ᵥ s)",
+      "startLine": 101,
+      "endLine": 134
+    },
+    {
+      "name": "exists_finset_card_lt_of_lt_tsum",
+      "type": "supporting",
+      "description": "**Finite extraction from an over-large tsum.** If each term of a family f : ι → ℝ≥0∞ is ≤ 1 and the tsum exceeds a natural k, then more than k terms are nonzero. The combinatorial core of the pigeonhole: write the tsum as a supremum of finite partial sums (ENNReal.tsum_eq_iSup_sum), pick a finite set whose partial sum exceeds k, and filter to its nonzero support.",
+      "leanType": "{ι : Type*} [Countable ι] {f : ι → ℝ≥0∞} (hf : ∀ i, f i ≤ 1) {k : ℕ} (h : (k : ℝ≥0∞) < ∑' i, f i) : ∃ T : Finset ι, k < T.card ∧ ∀ i ∈ T, f i ≠ 0",
+      "startLine": 64,
+      "endLine": 84
+    }
+  ],
   "conclusion": {
     "summary": "Formalizes Blichfeldt's general-multiplicity theorem over Mathlib's abstract IsAddFundamentalDomain API: if a null-measurable set s has measure exceeding k times the covolume μF of a countable subgroup L, then some point is covered by a finite family of more than k translates of s by L — equivalently, s contains more than k points that are pairwise congruent modulo L. The proof is a measure-theoretic pigeonhole: Tonelli plus the fundamental-domain decomposition give ∫_F (∑' l, 𝟙_{l+ᵥs}) dμ = μs, so a uniform bound g ≤ k would force μs ≤ k·μF, a contradiction; a finite over-large subfamily is then extracted from the {0,1}-valued tsum. At k = 1 this is exactly Mathlib's exists_pair_mem_lattice_not_disjoint_vadd; the general-k form has no Mathlib counterpart. All results are 0-axiom and machine-checked.",
     "implications": "Blichfeldt's principle is one of the pillars of the geometry of numbers and the source from which van der Corput's k-fold refinement of Minkowski's convex-body theorem is derived. Casting it over the abstract fundamental-domain API rather than a concrete ℝⁿ lattice makes it apply to any countable subgroup with an invariant measure and collapse cleanly to Mathlib's two-point case. The entry also sharpens a common textbook conflation: the honest Blichfeldt theorem needs neither convexity, symmetry, nor a 2ⁿ factor and yields congruent points of s, whereas the parent's blichfeldt_statement (with those hypotheses and k+1 lattice points) is really van der Corput's theorem.",
@@ -105,6 +123,35 @@
       "targetId": "minkowski-fundamental-theorem-oq-02",
       "relationship": "related",
       "description": "Minkowski's Class Number Bound — a downstream application of geometry-of-numbers lattice-point counting to finite class groups, resting on the same volume-vs-covolume comparison packaged abstractly here."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Hans Frederick Blichfeldt",
+      "title": "A new principle in the geometry of numbers, with some applications",
+      "year": 1914,
+      "venue": "Transactions of the American Mathematical Society 15(3), 227–235",
+      "note": "The source of Blichfeldt's principle: a bounded measurable set of volume exceeding a lattice's covolume contains two points differing by a lattice vector; the k·covolume form gives k+1 pairwise-congruent points. This entry formalizes the general-k statement."
+    },
+    {
+      "authors": "Johannes G. van der Corput",
+      "title": "Verallgemeinerung einer Mordellschen Beweismethode in der Geometrie der Zahlen",
+      "year": 1936,
+      "venue": "Acta Arithmetica 1–2 (1935–1936)",
+      "note": "The k-fold refinement of Minkowski's convex-body theorem (k+1 lattice points in a symmetric convex body of volume > k·2ⁿ·covolume), derived from Blichfeldt's multiplicity principle — the theorem the parent's blichfeldt_statement actually states."
+    },
+    {
+      "authors": "Hermann Minkowski",
+      "title": "Geometrie der Zahlen",
+      "year": 1910,
+      "venue": "B. G. Teubner, Leipzig",
+      "note": "The founding text of the geometry of numbers and Minkowski's fundamental (convex-body) theorem, of which Blichfeldt's convexity-free volume pigeonhole is the strengthening."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib4: exists_pair_mem_lattice_not_disjoint_vadd (Mathlib.MeasureTheory.Group.GeometryOfNumbers)",
+      "year": 2024,
+      "note": "Mathlib's k = 1 Blichfeldt principle over the IsAddFundamentalDomain API, recovered as the special case of the general-k theorem proved here."
     }
   ]
 }
