@@ -36,8 +36,8 @@
       "neumann_full_theorem: the equivalence ω(Γ(G)) finite ⟺ [G:Z(G)] finite",
       "center_finiteIndex_iff_relIndex_core: ω(Γ(G)) finite ⟹ [G:Z(G)] finite iff Z(G) has finite index within the explicit finite-index core H = ⋂ₐ C_G(a); localizes the residual axiom to (center G).relIndex H, whose Mathlib endgame is Subgroup.index_center_le_pow gated on Finite (commutatorSet G)"
     ],
-    "lineCount": 440,
-    "theoremCount": 14,
+    "lineCount": 471,
+    "theoremCount": 15,
     "defCount": 3,
     "definitionCount": 3
   },
@@ -139,12 +139,12 @@
     }
   ],
   "leanFile": {
-    "lineCount": 440,
+    "lineCount": 471,
     "path": "Proofs/Erdos1098OQ01OQ03.lean",
     "axiomCount": 1,
     "sorries": 0,
     "definitionCount": 3,
-    "theoremCount": 14
+    "theoremCount": 15
   },
   "sorries": 0
 }
