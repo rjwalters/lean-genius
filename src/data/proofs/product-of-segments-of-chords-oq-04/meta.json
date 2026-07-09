@@ -82,7 +82,7 @@
     }
   ],
   "conclusion": {
-    "summary": "This file proves 9 theorems/lemmas and 1 definition with 0 sorries and 0 axioms (only the standard foundational axioms), establishing that the power of a point is a quadratic form whose pairwise differences are affine-linear, that the radical axis is a hyperplane perpendicular to the line of centers, and that three planar circles with non-collinear centers have a unique radical center.",
+    "summary": "This file proves 10 theorems/lemmas and 2 definitions with 0 sorries and 0 axioms (only the standard foundational axioms), establishing that the power of a point is a quadratic form whose pairwise differences are affine-linear, that the radical axis is a hyperplane perpendicular to the line of centers, and that three planar circles with non-collinear centers have a unique radical center.",
     "implications": "The result formalizes the classical bridge between the metric notion of power of a point and the linear/affine structure of radical axes and centers. The Part 1 results hold in any real inner product space, showing the radical hyperplane is a dimension-free phenomenon; the radical center is the plane-specific consequence of a 2×2 linear system being uniquely solvable exactly when the circle centers are non-collinear.",
     "openQuestions": [
       "Formalize the radical center as the common point of all three pairwise radical axes explicitly (that the O₁O₂, O₁O₃, and O₂O₃ radical axes are concurrent), and characterize when the radical center has positive power to all three (lies outside the circles), giving a common tangent length / common orthogonal circle.",
