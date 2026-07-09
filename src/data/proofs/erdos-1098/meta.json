@@ -201,7 +201,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #1098 is SOLVED. The formalization captures Neumann's 1976 result with 8 axioms, 12 theorems (5 with sorry), and 11 definitions across 319 lines. The key theorem `erdos_question_answered` uses the Neumann equivalence to answer YES: if Γ(G) has no infinite clique, clique sizes are uniformly bounded by [G : Z(G)]. The `abelian_no_edges` theorem is fully proved.",
+    "summary": "Erdős Problem #1098 is SOLVED. The formalization captures Neumann's 1976 result with 8 axioms, 14 theorems (5 with sorry), and 12 definitions across 319 lines. The key theorem `erdos_question_answered` uses the Neumann equivalence to answer YES: if Γ(G) has no infinite clique, clique sizes are uniformly bounded by [G : Z(G)]. The `abelian_no_edges` theorem is fully proved.",
     "implications": "**Theoretical Significance**: This problem beautifully connects group theory (center, index, cosets) with graph theory (clique number).\n\nThe coset structure of Z(G) completely determines the clique behavior of the non-commuting graph. Related concepts include commuting probability, BFC groups, and Schur's theorem connecting finite index centers to derived subgroup finiteness.",
     "openQuestions": [
       "Characterize groups with small clique number in Γ(G)",
