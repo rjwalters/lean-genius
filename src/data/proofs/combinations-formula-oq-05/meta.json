@@ -97,8 +97,19 @@
   },
   "crossReferences": [
     {
+      "targetId": "combinations-formula",
+      "relationship": "extends",
+      "description": "Root entry establishing the binomial coefficient C(n,k) = n!/(k!(n−k)!) and the total row sum ∑ₖ C(n,k) = 2ⁿ. This entry pairs that total with the alternating sum ∑ₖ (−1)ᵏ C(n,k) = 0 to split the row into equal even- and odd-index halves, each 2^{n−1}."
+    },
+    {
       "targetId": "combinations-formula-oq-02",
-      "relationship": "ancestor — the core combinations formula entry providing binomial coefficient context"
+      "relationship": "related",
+      "description": "Sibling entry on binomial coefficient identities; provides the core combinations-formula context (Pascal's rule and factorial form) that this entry's alternating-sum vanishing builds on."
+    },
+    {
+      "targetId": "combinations-formula-oq-04-oq-01",
+      "relationship": "related — companion Pascal-row property",
+      "description": "A different structural property of the same Pascal row: where this entry splits the row into equal even/odd halves via the alternating sum, the log-concavity companion pins the exact ultra-log-concavity defect C(n,k+1)²/(C(n,k)·C(n,k+2)) = 1 + (n+1)/((k+1)(n−k−1)). Together they characterize the additive (parity) and multiplicative (log-concave) structure of a binomial row."
     }
   ],
   "sorries": 0,
