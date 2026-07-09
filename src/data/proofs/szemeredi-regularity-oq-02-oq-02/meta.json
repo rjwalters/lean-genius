@@ -90,6 +90,32 @@
       "mathContext": "The partition decomposition e(A,B) = Σᵢⱼ e(A∩Pᵢ, B∩Pⱼ) and the parts-product identity Σᵢⱼ|Pᵢ||Pⱼ| = n² (both from the parent) convert per-pair ε|P||Q| into global ε·n²."
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "szemeredi_implies_fk_sharp",
+      "type": "core",
+      "description": "**Szemerédi ⟹ Frieze–Kannan, sharp constant.** Every ε-regular partition is an ε-cut-approximation (not merely 2ε). Answers the open question: the factor-of-2 in the parent's szemeredi_implies_fk is not tight — it improves to 1. Proof is the parent's summation verbatim but calls the sharp per-pair bound, so the summed error is ε·n² via the parts-product identity Σᵢⱼ|Pᵢ||Pⱼ| = n².",
+      "leanType": "(G : SimpleGraph V) [DecidableRel G.Adj] (eps : ℚ) (heps : 0 < eps) (parts : Finset (Finset V)) (hcover : ∀ v, ∃ P ∈ parts, v ∈ P) (hdisjoint : ∀ P Q, P ∈ parts → Q ∈ parts → P ≠ Q → Disjoint P Q) (hall_reg : ∀ P Q, P ∈ parts → Q ∈ parts → IsEpsilonRegular G eps P Q) : IsCutApproximation G eps parts",
+      "startLine": 173,
+      "endLine": 202
+    },
+    {
+      "name": "pair_cut_error_bound_sharp",
+      "type": "key",
+      "description": "**Sharp per-pair cut error bound.** For an ε-regular pair (P,Q) with A ⊆ P, B ⊆ Q, |e(A,B) − d(P,Q)·|A|·|B|| ≤ ε·|P|·|Q| — the tight constant, a factor-of-2 improvement over the parent's 2ε·|P|·|Q|. Large-subset case: ε-regularity gives the rate directly; small-subset case: e and d·|A|·|B| are each ≤ |A|·|B| ≤ ε·|P|·|Q|, and |x − y| ≤ max(x,y) for x,y ≥ 0 replaces the parent's sum bound.",
+      "leanType": "(G : SimpleGraph V) [DecidableRel G.Adj] (eps : ℚ) (heps : 0 < eps) (P Q A B : Finset V) (hA : A ⊆ P) (hB : B ⊆ Q) (hreg : IsEpsilonRegular G eps P Q) : |(((A.product B).filter (fun p => G.Adj p.1 p.2)).card : ℚ) - edgeDensity G P Q * A.card * B.card| ≤ eps * P.card * Q.card",
+      "startLine": 71,
+      "endLine": 160
+    },
+    {
+      "name": "sharp_recovers_original",
+      "type": "supporting",
+      "description": "**Sanity check: the sharp bound is stronger.** Since ε ≤ 2ε for ε ≥ 0, an ε-cut-approximation is in particular a 2ε-cut-approximation, so szemeredi_implies_fk_sharp recovers the parent's szemeredi_implies_fk — confirming the new theorem strictly generalizes the old.",
+      "leanType": "(G : SimpleGraph V) [DecidableRel G.Adj] (eps : ℚ) (heps : 0 < eps) (parts : Finset (Finset V)) (hcover : ...) (hdisjoint : ...) (hall_reg : ...) : IsCutApproximation G (2 * eps) parts",
+      "startLine": 207,
+      "endLine": 219
+    }
+  ],
   "conclusion": {
     "summary": "The factor-of-2 constant in the Szemerédi ⟹ Frieze-Kannan implication is improvable to 1: every ε-regular partition is in fact an ε-cut-approximation, not merely 2ε. The improvement is local — a single per-pair estimate in the small-subset case is tightened from bounding a difference of two nonnegative quantities by their sum (2ε|P||Q|) to bounding it by their maximum (ε|P||Q|). Proved with 0 sorries and 0 axioms, reusing the parent's partition-decomposition machinery unchanged.",
     "implications": "This answers szemeredi-regularity-oq-02-oq-02 definitively (the constant is 1, not 2) and corrects the parent entry's claim that 2 was sharp under this proof strategy. Constant 1 is optimal for this case analysis, since the large-subset case already forces the ε rate from ε-regularity. The sharp per-pair bound pair_cut_error_bound_sharp is the drop-in replacement any downstream use of the Szemerédi ⟹ FK bound should prefer.",
@@ -103,6 +129,29 @@
       "targetId": "szemeredi-regularity-oq-02",
       "relationship": "parent",
       "description": "Formalizes the FK weak regularity lemma and proves Szemerédi ⟹ FK with the 2ε constant (szemeredi_implies_fk), plus the partition decomposition (edge_count_partition_sum), the parts-product identity (parts_product_sum_eq_card_sq), and the tower-vs-singly-exponential parts-count comparison. This entry sharpens the constant from 2ε to ε, reusing that machinery, and corrects the parent's keyInsight that 2 was sharp."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Endre Szemerédi",
+      "title": "Regular partitions of graphs",
+      "year": 1978,
+      "venue": "Problèmes combinatoires et théorie des graphes (Colloq. Internat. CNRS 260), 399–401",
+      "note": "The Szemerédi regularity lemma and the per-pair ε-regularity condition whose cut-approximation strength this entry sharpens from 2ε to ε."
+    },
+    {
+      "authors": "Alan Frieze and Ravi Kannan",
+      "title": "Quick approximation to matrices and applications",
+      "year": 1999,
+      "venue": "Combinatorica 19(2), 175–220",
+      "note": "The Frieze–Kannan weak regularity lemma and the cut-norm / cut-approximation framework; the global condition that a Szemerédi ε-regular partition is shown here to satisfy with the optimal constant ε."
+    },
+    {
+      "authors": "László Lovász",
+      "title": "Large Networks and Graph Limits",
+      "year": 2012,
+      "venue": "AMS Colloquium Publications 60",
+      "note": "Modern treatment of the cut norm, weak regularity, and the relationship between Szemerédi and Frieze–Kannan regularity underlying the comparison sharpened in this entry."
     }
   ]
 }
