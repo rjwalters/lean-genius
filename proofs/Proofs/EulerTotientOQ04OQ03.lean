@@ -1441,4 +1441,201 @@ theorem classifySeed_classifies {a : ℕ} (ha : Odd a) (ha3 : 3 ≤ a) (k : ℕ)
     (a * 2 ^ (k + 1) ∈ ForwardSet ↔ classifySeed a = Ordering.gt) :=
   ⟨classifySeed_lt_iff ha ha3 k, classifySeed_eq_iff ha ha3 k, classifySeed_gt_iff ha ha3 k⟩
 
+-- ===========================================================================
+-- SMALLEST REVERSING ODD SEED:  a = 21
+-- ---------------------------------------------------------------------------
+-- The classifier `classifySeed` is a total computable function, so the reversal
+-- seed set `{odd a ≥ 3 | classifySeed a = .lt}` is a genuine decidable predicate.
+-- Here we settle its least element: `21` is the smallest odd seed whose family
+-- `21·2^(k+1)` reverses (`φ(n) < φ(D(n))` for all `k`); every odd seed
+-- `3 ≤ a < 21` classifies to `.eq` or `.gt`, so generates no reversal.  This is a
+-- finite `decide`-sweep enabled entirely by the computability of `classifySeed`
+-- (no `native_decide`: the two 2-adic valuations are evaluated through the
+-- factorisation-split helper below, so the whole result is kernel-checked).
+-- ---------------------------------------------------------------------------
+
+/-- **Factorisation split.**  If `n = c·2^u` with `c` odd then the 2-adic
+    valuation `n.factorization 2` is exactly `u` and the odd part
+    `n / 2^(n.factorization 2)` is exactly `c`.  This is the computable content
+    of `seedS/seedB` (applied to `2a − φ(a)`) and of `seedT/seedE` (applied to
+    the landing constant `seedC a`). -/
+theorem factor_two_split {n c u : ℕ} (hc : Odd c) (h : n = c * 2 ^ u) :
+    n.factorization 2 = u ∧ n / 2 ^ (n.factorization 2) = c := by
+  have hc0 : c ≠ 0 := by rintro rfl; exact absurd (Nat.odd_iff.1 hc) (by decide)
+  have hT : n.factorization 2 = u := by
+    rw [h, Nat.factorization_mul hc0 (pow_ne_zero u (by norm_num)), Finsupp.add_apply,
+        Nat.factorization_eq_zero_of_not_dvd (Nat.two_dvd_ne_zero.2 (Nat.odd_iff.1 hc)),
+        Nat.factorization_pow_self Nat.prime_two, zero_add]
+  refine ⟨hT, ?_⟩
+  rw [hT, h, Nat.mul_div_assoc c (dvd_refl (2 ^ u)), Nat.div_self (pow_pos (by norm_num) u),
+      mul_one]
+
+/-- **Evaluating `classifySeed` at a concrete seed.**  Given the two 2-adic
+    factorisations `2a − φ(a) = b·2^s` (with `b` odd) and the landing split
+    `2a − φ(b)·2^(s−1) = e·2^t` (with `e` odd), the classifier reduces to the
+    single comparison `φ(a) ⋛ φ(e)·2^(t−1)`.  All extraction steps are discharged
+    by `factor_two_split`. -/
+theorem classifySeed_val {a s b t e : ℕ} (hob : Odd b) (hoe : Odd e)
+    (hstep : 2 * a - Nat.totient a = b * 2 ^ s)
+    (hCval : 2 * a - Nat.totient b * 2 ^ (s - 1) = e * 2 ^ t) :
+    classifySeed a = compare (Nat.totient a) (Nat.totient e * 2 ^ (t - 1)) := by
+  have hS : seedS a = s := (factor_two_split hob hstep).1
+  have hB : seedB a = b := (factor_two_split hob hstep).2
+  have hSC : seedC a = e * 2 ^ t := by
+    show 2 * a - Nat.totient (seedB a) * 2 ^ (seedS a - 1) = e * 2 ^ t
+    rw [hB, hS]; exact hCval
+  have hT : seedT a = t := (factor_two_split hoe hSC).1
+  have hE : seedE a = e := (factor_two_split hoe hSC).2
+  show compare (Nat.totient a) (Nat.totient (seedE a) * 2 ^ (seedT a - 1))
+      = compare (Nat.totient a) (Nat.totient e * 2 ^ (t - 1))
+  rw [hE, hT]
+
+theorem totient_19 : Nat.totient 19 = 18 := Nat.totient_prime (by norm_num)
+
+-- The nine odd seeds `3 ≤ a < 21`: each classifies to `.eq` or `.gt`, never `.lt`.
+theorem classifySeed_3 : classifySeed 3 = Ordering.eq := by
+  rw [classifySeed_val (s := 2) (b := 1) (t := 2) (e := 1) (by decide) (by decide)
+      (by norm_num [totient_3]) (by norm_num [Nat.totient_one])]
+  rw [totient_3, Nat.totient_one]; decide
+
+theorem classifySeed_5 : classifySeed 5 = Ordering.eq := by
+  rw [classifySeed_val (s := 1) (b := 3) (t := 3) (e := 1) (by decide) (by decide)
+      (by norm_num [totient_5]) (by norm_num [totient_3])]
+  rw [totient_5, Nat.totient_one]; decide
+
+theorem classifySeed_7 : classifySeed 7 = Ordering.gt := by
+  rw [classifySeed_val (s := 3) (b := 1) (t := 1) (e := 5) (by decide) (by decide)
+      (by norm_num [totient_7]) (by norm_num [Nat.totient_one])]
+  rw [totient_7, totient_5]; decide
+
+theorem classifySeed_9 : classifySeed 9 = Ordering.eq := by
+  rw [classifySeed_val (s := 2) (b := 3) (t := 1) (e := 7) (by decide) (by decide)
+      (by norm_num [totient_9]) (by norm_num [totient_3])]
+  rw [totient_9, totient_7]; decide
+
+theorem classifySeed_11 : classifySeed 11 = Ordering.gt := by
+  rw [classifySeed_val (s := 2) (b := 3) (t := 1) (e := 9) (by decide) (by decide)
+      (by norm_num [totient_11]) (by norm_num [totient_3])]
+  rw [totient_11, totient_9]; decide
+
+theorem classifySeed_13 : classifySeed 13 = Ordering.gt := by
+  rw [classifySeed_val (s := 1) (b := 7) (t := 2) (e := 5) (by decide) (by decide)
+      (by norm_num [totient_13]) (by norm_num [totient_7])]
+  rw [totient_13, totient_5]; decide
+
+theorem classifySeed_15 : classifySeed 15 = Ordering.eq := by
+  rw [classifySeed_val (s := 1) (b := 11) (t := 2) (e := 5) (by decide) (by decide)
+      (by norm_num [totient_15]) (by norm_num [totient_11])]
+  rw [totient_15, totient_5]; decide
+
+theorem classifySeed_17 : classifySeed 17 = Ordering.gt := by
+  rw [classifySeed_val (s := 1) (b := 9) (t := 2) (e := 7) (by decide) (by decide)
+      (by norm_num [totient_17]) (by norm_num [totient_9])]
+  rw [totient_17, totient_7]; decide
+
+theorem classifySeed_19 : classifySeed 19 = Ordering.gt := by
+  rw [classifySeed_val (s := 2) (b := 5) (t := 1) (e := 15) (by decide) (by decide)
+      (by norm_num [totient_19]) (by norm_num [totient_5])]
+  rw [totient_19, totient_15]; decide
+
+/-- The smallest reversing seed, `a = 21`: `b = 15`, `C = 34 = 17·2`, `t = 1`,
+    `e = 17`, and `φ(21) = 12 < 16 = φ(17)·2^0`. -/
+theorem classifySeed_21' : classifySeed 21 = Ordering.lt := by
+  rw [classifySeed_val (s := 1) (b := 15) (t := 1) (e := 17) (by decide) (by decide)
+      (by norm_num [totient_21]) (by norm_num [totient_15])]
+  rw [totient_21, totient_17]; decide
+
+/-- **`21` is the smallest odd reversing seed.**  The family `21·2^(k+1)` reverses
+    (`φ(n) < φ(D(n))`) for every `k`, while for every odd `a` with `3 ≤ a < 21`
+    the family `a·2^(k+1)` never reverses.  Equivalently, `21` is the least element
+    of the decidable reversal seed set `{odd a ≥ 3 | classifySeed a = .lt}`.  The
+    proof is a finite `decide`-sweep over the nine odd seeds `3,5,…,19`, each
+    classified to `.eq`/`.gt` through the computable `classifySeed`. -/
+theorem twentyone_smallest_reversing_seed :
+    (∀ k, 21 * 2 ^ (k + 1) ∈ ReversalSet) ∧
+    (∀ a, Odd a → 3 ≤ a → a < 21 → ∀ k, a * 2 ^ (k + 1) ∉ ReversalSet) := by
+  refine ⟨fun k => (classifySeed_lt_iff (by decide) (by norm_num) k).mpr classifySeed_21',
+    fun a ha h3 hlt k => ?_⟩
+  rw [classifySeed_lt_iff ha h3 k]
+  interval_cases a <;>
+    first
+      | exact absurd ha (by decide)
+      | (rw [classifySeed_3]; decide)
+      | (rw [classifySeed_5]; decide)
+      | (rw [classifySeed_7]; decide)
+      | (rw [classifySeed_9]; decide)
+      | (rw [classifySeed_11]; decide)
+      | (rw [classifySeed_13]; decide)
+      | (rw [classifySeed_15]; decide)
+      | (rw [classifySeed_17]; decide)
+      | (rw [classifySeed_19]; decide)
+
+-- ---------------------------------------------------------------------------
+-- CLOSED-FORM CONGRUENCE FOR THE FIRST-STEP VALUATION REGIME
+-- ---------------------------------------------------------------------------
+-- The seed classifier splits odd seeds by `seedS a = v₂(2a − φ(a))`: the value
+-- `seedS a = 1` is the *transport-admissible* regime handled by the whole
+-- `dblIter_transport` machinery, while `seedS a ≥ 2` is the *excluded* regime
+-- (seeds 3,7,9,11,19,27,… — a = p^k with p ≡ 3 mod 4).  Prior work computed
+-- `seedS a` by an explicit 2-adic factorisation.  Here we give a closed-form
+-- *congruence* criterion: the regime is read directly off `φ(a) mod 4`.
+--
+--   a odd, a ≥ 3  ⟹  ( seedS a = 1  ↔  4 ∣ φ(a) )    and
+--                    ( seedS a ≥ 2  ↔  φ(a) ≡ 2 mod 4 ).
+--
+-- Reason: `a` odd ⟹ `2a ≡ 2 (mod 4)`, and `φ(a)` is even for `a ≥ 3`, so
+-- `4 ∣ (2a − φ(a)) ↔ φ(a) ≡ 2 (mod 4)`; the left side is `2 ≤ seedS a` by
+-- `Nat.Prime.pow_dvd_iff_le_factorization`.  (Empirically — brute-checked for
+-- odd a < 20000 — the excluded seeds `φ(a) ≡ 2 mod 4` are exactly the prime
+-- powers `p^k` with `p ≡ 3 mod 4`; that prime-power form is not formalised
+-- here.)  This closed form settles the regime without any valuation search.
+-- ---------------------------------------------------------------------------
+
+/-- **Excluded-regime congruence.**  For every odd `a ≥ 3`, the first cototient
+    step `2a − φ(a)` has 2-adic valuation `≥ 2` (the regime *outside* the
+    `seedS a = 1` transport machinery) exactly when `φ(a) ≡ 2 (mod 4)`.  Since
+    `a` is odd, `2a ≡ 2 (mod 4)`, so `4 ∣ (2a − φ(a)) ↔ φ(a) ≡ 2 (mod 4)`, and
+    `4 ∣ (2a − φ(a))` is `2 ≤ (2a − φ(a)).factorization 2 = seedS a`. -/
+theorem seedS_ge_two_iff_totient_mod_four {a : ℕ} (ha : Odd a) (ha3 : 3 ≤ a) :
+    2 ≤ seedS a ↔ Nat.totient a % 4 = 2 := by
+  have hφlt : Nat.totient a < a := Nat.totient_lt a (by omega)
+  have hodd : a % 2 = 1 := Nat.odd_iff.1 ha
+  have hev : Nat.totient a % 2 = 0 := Nat.even_iff.1 (Nat.totient_even (by omega))
+  have hne : 2 * a - Nat.totient a ≠ 0 := by omega
+  have hdvd : (2 : ℕ) ^ 2 ∣ (2 * a - Nat.totient a) ↔ 2 ≤ seedS a :=
+    Nat.prime_two.prime.pow_dvd_iff_le_factorization hne
+  rw [← hdvd, show (2 : ℕ) ^ 2 = 4 from rfl]
+  omega
+
+/-- **Transport-admissible congruence.**  For every odd `a ≥ 3`, the seed lies
+    in the transport-admissible regime `seedS a = 1` (first-step valuation
+    exactly one) exactly when `4 ∣ φ(a)`.  This is the negation of
+    `seedS_ge_two_iff_totient_mod_four` using `1 ≤ seedS a` and `Even (φ a)`. -/
+theorem seedS_eq_one_iff_four_dvd_totient {a : ℕ} (ha : Odd a) (ha3 : 3 ≤ a) :
+    seedS a = 1 ↔ 4 ∣ Nat.totient a := by
+  have hs1 : 1 ≤ seedS a := (seed_spec ha3).2.2.1
+  have hev : Nat.totient a % 2 = 0 := Nat.even_iff.1 (Nat.totient_even (by omega))
+  have key := seedS_ge_two_iff_totient_mod_four ha ha3
+  constructor
+  · intro h1
+    have hnot : ¬ (Nat.totient a % 4 = 2) := fun hc => by
+      have : 2 ≤ seedS a := key.2 hc; omega
+    omega
+  · intro h4
+    have hnot4 : ¬ (Nat.totient a % 4 = 2) := by omega
+    have hlt2 : ¬ (2 ≤ seedS a) := fun hc => hnot4 (key.1 hc)
+    omega
+
+/-- Sanity check of the congruence criterion at the smallest reversing seed:
+    `φ(21) = 12` is divisible by `4`, so `seedS 21 = 1` — the transport regime,
+    consistent with `classifySeed_21'` using first-step valuation `s = 1`. -/
+theorem seedS_21_eq_one : seedS 21 = 1 :=
+  (seedS_eq_one_iff_four_dvd_totient (by decide) (by norm_num)).2 (by norm_num [totient_21])
+
+/-- Sanity check at an excluded seed: `φ(3) = 2 ≡ 2 (mod 4)`, so `seedS 3 ≥ 2`
+    — outside the transport machinery, consistent with `classifySeed_3` using
+    first-step valuation `s = 2`. -/
+theorem seedS_three_ge_two : 2 ≤ seedS 3 :=
+  (seedS_ge_two_iff_totient_mod_four (by decide) (by norm_num)).2 (by norm_num [totient_3])
+
 end Erdos1064OQ03
