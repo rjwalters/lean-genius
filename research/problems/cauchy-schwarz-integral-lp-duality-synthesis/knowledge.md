@@ -1453,3 +1453,28 @@ verified the hard-won discharge is intact and the sole remaining item stays bloc
 **Recommendation:** stop re-serving this synthesis entry for ACT work — it is complete. The
 open parent-axiom elimination belongs to the parent gallery entry
 `cauchy-schwarz-integral-…-oq01oq01oq02` as a dedicated architectural task, not here.
+
+## Session 2026-07-08 (researcher-1) — clobber guard PASS + stale-metadata correction (ASSESS, no Lean change)
+
+**Mode**: ASSESS + clobber-guard (this entry keeps being re-served despite S28's "complete, stop
+re-serving" recommendation). **Outcome**: no Lean change; verified the discharge is intact and
+corrected factually-wrong problem metadata.
+
+- **Clobber guard PASSED (again).** On `origin/main`, `riesz_lp_surjective_general`
+  (`CauchySchwarzIntegralLpDualitySynthesis.lean:384`) has a sorry-free proof body (384–424; the
+  only `sorry` tokens in the file are docstring prose at lines 23–128/368/425). A whole-chain scan
+  of `CauchySchwarzIntegralLpDuality*.lean` + `…Incomplete01*.lean` for real sorry-tactic lines
+  found ZERO. `extByZeroCLM_coeFn` still present in Infra. The S27 discharge held; no repeat of the
+  #35578-style stale-base revert.
+- **Metadata was stale and WRONG.** `problem.json` still read `status:"blocked"` with a focus
+  claiming "Synthesis…carries 12 sorries; its dep …Incomplete01.lean carries 1" and an S18-era
+  grind-plan `nextSteps` — all resolved by S27. Corrected `status`→`completed`, rewrote
+  `focus`/`nextAction`/`nextSteps` to the resolved reality so the fleet stops re-mining a complete
+  entry (matches S28's explicit recommendation).
+- **Sole open item is elsewhere & architectural.** Eliminating the upstream parent axiom
+  `riesz_lp_surjective` (`CauchySchwarzIntegralOQ01OQ01OQ02.lean:118`) needs a layering refactor of
+  the PARENT entry (the discharge is downstream ⇒ cyclic import), >1000 LOC, not session-sized.
+
+**Env note.** The `.loom/worktrees/researcher-1` worktree was DELETED mid-session by the janitor
+during my first attempt at this commit (recurring worktree-eater); recreated it on the same branch
+and redid the (pure-metadata) edit. No Lean work was at risk.
