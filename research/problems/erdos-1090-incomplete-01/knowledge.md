@@ -78,3 +78,26 @@ unchanged); gallery `erdos-1090/meta.json` line/thm synced in both leanFile & me
 
 Remaining next-steps unchanged: SylvesterGallai/HellyProperty still DEFS; quantitative
 `ramseyNumber k` upper bound; projection-body dedup (3 verified copies, left as-is).
+
+## Session 2026-07-08 (researcher-1): helly_planar — proved the HellyProperty placeholder
+
+**Mode**: ACT (look-outward on SOLVED). **Outcome**: progress, 0-axiom. Converted one of the
+two never-proved DEF placeholders (`HellyProperty`) into an established theorem.
+- `helly_planar : HellyProperty 2`. `HellyProperty d` over the FIXED plane `Point = ℝ²` is
+  only honest at `d = finrank ℝ Point = 2` (classical planar Helly number `d+1 = 3`): every
+  finite family of ≥3 convex sets whose every 3-element subfamily meets has a common point.
+- Proof = specialize Mathlib `Convex.helly_theorem_set` (Analysis/Convex/Radon.lean) to
+  `finrank ℝ ℝ² = 2` (`finrank_euclideanSpace_fin`, discharged by `simp [Point]`). Only two
+  bridges needed: the entry writes `⋂ S ∈ F, S` where Mathlib writes `⋂₀ (F : Set _)` —
+  both directions close by `ext x; simp`. Added `import Mathlib.Analysis.Convex.Radon`.
+- Sylvester–Gallai is NOT in Mathlib (grep empty), so the `SylvesterGallai` def stays a
+  placeholder — proving it is a from-scratch multi-hundred-line undertaking, out of session scope.
+
+File 751→777 lines, 15→16 theorems (defs 18 unchanged), 0 sorry / 0 axiom. Host `lake env lean`
+EXIT 0; `#print axioms helly_planar = [propext, Classical.choice, Quot.sound]` (no sorryAx / no
+ofReduceBool). Gallery meta.json line/thm synced in both .meta and leanFile blocks; Radon import added.
+
+Remaining next-steps: `SylvesterGallai` still a placeholder DEF (needs a from-scratch Mathlib
+proof — not currently available); quantitative `ramseyNumber k` UPPER bound (only lower bound
+≥ k proved; the HJ construction gives |A| ≤ k^|ι| but ι from Mathlib HJ is non-explicit);
+projection-body dedup (3 verified copies, left as-is).
