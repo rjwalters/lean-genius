@@ -72,7 +72,7 @@
     "dateAdded": "2026-04-05",
     "axiomCount": 0,
     "lineCount": 220,
-    "assumptions": "0 assumptions. 0 `axiom` declarations, 0 sorries, and no `native_decide` in the presented file — fully kernel-checked. The A₄ case (previously discharged by `native_decide` on the derived series of S₄, which trusted `Lean.ofReduceBool`) is now a structural Klein-four argument: the commutator subgroup of A₄ lands in `V₄ = {g | g² = 1}`, which is abelian, so the second derived subgroup is trivial. The small cases use `inferInstance` (A₀, A₁), `isSolvable_of_comm` + `decide` (A₂, A₃), and the V₄ argument (A₄); the large cases use the exact-sequence reduction with Mathlib's `Equiv.Perm.not_solvable`. (The companion file `AbelRuffiniOQ04OQ02OQ02OQ06.lean` on the derived-length gap still carries 1 sorry; see `additionalFiles`.)",
+    "assumptions": "0 assumptions. 0 `axiom` declarations, 0 sorries, and no `native_decide` in the presented file — fully kernel-checked. The A₄ case (previously discharged by `native_decide` on the derived series of S₄, which trusted `Lean.ofReduceBool`) is now a structural Klein-four argument: the commutator subgroup of A₄ lands in `V₄ = {g | g² = 1}`, which is abelian, so the second derived subgroup is trivial. The small cases use `inferInstance` (A₀, A₁), `isSolvable_of_comm` + `decide` (A₂, A₃), and the V₄ argument (A₄); the large cases use the exact-sequence reduction with Mathlib's `Equiv.Perm.not_solvable`. (The companion file `AbelRuffiniOQ04OQ02OQ02OQ06.lean` on the derived-length gap is now fully proved with 0 sorries; see `additionalFiles`.)",
     "mathlib_version": "4.26.0",
     "theoremCount": 18,
     "definitionCount": 1,
@@ -267,12 +267,12 @@
     "additionalFiles": [
       {
         "path": "Proofs/AbelRuffiniOQ04OQ02OQ02OQ06.lean",
-        "lineCount": 244,
+        "lineCount": 232,
         "theorems": 11,
         "definitions": 0,
         "axioms": 0,
-        "sorries": 1,
-        "description": "OQ-04-OQ-02-OQ-02-OQ-06: Derived series length gap — A₄ has derived length exactly 2 (a4_derived1_ne_bot + a4_derived2_eq_bot) while A₅ is perfect and never reaches ⊥ (a5_perfect + a5_derived_never_bot). Quantifies the phase transition at n = 5 of the parent's solvability classification. Namespace AbelRuffiniOQ04OQ02OQ02OQ06; imports parent Proofs.AbelRuffiniOQ04OQ02OQ02. 1 remaining sorry in a4_derived2_eq_bot (commutator A4 is abelian)."
+        "sorries": 0,
+        "description": "OQ-04-OQ-02-OQ-02-OQ-06: Derived series length gap — A₄ has derived length exactly 2 (a4_derived1_ne_bot + a4_derived2_eq_bot) while A₅ is perfect and never reaches ⊥ (a5_perfect + a5_derived_never_bot). Quantifies the phase transition at n = 5 of the parent's solvability classification. Namespace AbelRuffiniOQ04OQ02OQ02OQ06; imports parent Proofs.AbelRuffiniOQ04OQ02OQ02. Fully proved (0 sorries) — the former a4_derived2_eq_bot sorry was discharged via the Klein-four argument in #29166."
       }
     ]
   },
