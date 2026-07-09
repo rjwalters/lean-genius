@@ -174,7 +174,25 @@
     }
   ],
   "crossReferences": [
-    "shannon-source-coding-oq-01",
-    "shannon-entropy"
+    {
+      "proofId": "shannon-source-coding-oq-01",
+      "relationship": "parent — general rate-distortion theory",
+      "description": "The parent Rate–Distortion Theory entry sets up the general operational R(D) as the minimum rate achieving expected distortion ≤ D. This entry instantiates it in the canonical binary case, giving the exact closed form R(D) = h(p) − h(D) for a Bernoulli(p) source under Hamming distortion, and verifies its structural properties (endpoints, nonnegativity, monotonicity, entropy bound)."
+    },
+    {
+      "proofId": "shannon-entropy",
+      "relationship": "prerequisite — binary entropy function",
+      "description": "The rate-distortion function is built entirely from the binary entropy h(p) = −p log p − (1−p) log(1−p), whose properties (concavity, maximum at 1/2, endpoint values h(0)=h(1)=0) supply the endpoint, monotonicity, and upper-bound facts proved here."
+    },
+    {
+      "proofId": "shannon-source-coding",
+      "relationship": "related — lossless limit",
+      "description": "The Shannon Source Coding Theorem gives the lossless compression limit H(p). Rate-distortion generalizes it to lossy compression: R(D) = h(p) − h(D) recovers the lossless rate R(0) = h(p) as the D → 0 endpoint, so the source coding theorem is the zero-distortion boundary of this curve."
+    },
+    {
+      "proofId": "shannon-channel-coding",
+      "relationship": "related — information-theoretic dual",
+      "description": "The Noisy Channel Coding Theorem characterizes the channel capacity C as a maximum of mutual information; rate-distortion is its source-side dual, characterizing R(D) as a minimum of mutual information. The binary symmetric channel capacity 1 − h(D) is the exact companion of the binary rate-distortion h(p) − h(D) formalized here."
+    }
   ]
 }
