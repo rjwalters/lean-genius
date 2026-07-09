@@ -44,6 +44,8 @@ import Mathlib.Combinatorics.SimpleGraph.Basic
 import Mathlib.Combinatorics.SimpleGraph.Paths
 import Mathlib.Combinatorics.SimpleGraph.Connectivity.WalkCounting
 import Mathlib.Combinatorics.SimpleGraph.Coloring
+import Mathlib.Combinatorics.SimpleGraph.Circulant
+import Mathlib.Combinatorics.SimpleGraph.ConcreteColorings
 import Mathlib.Data.Set.Basic
 
 open SimpleGraph Set
@@ -430,5 +432,175 @@ theorem c4Free_iff_no_K22 {X Y : Set V} (h : IsBipartition G X Y) :
         have hx3 : x3 ∈ X :=
           (mem_left_iff_not_right h x3).mpr (fun hx3Y => hx2nX ((h.2.2 g3).mpr hx3Y))
         exact hforbid x1 x3 v x2 hx1 hx3 h13 hvY hx2 h2v.symm ⟨g1.symm, g2, g4, g3.symm⟩
+
+/-! ### Realizability: every even length ≥ 4 actually occurs
+
+The results above are the *necessity* side of the cycle-length characterization:
+in a bipartite graph every cycle length is even and `≥ 4`.  This section supplies
+the matching *sufficiency* side — every even `k ≥ 4` really is the length of a
+cycle in some bipartite graph — closing the characterization into an iff.
+
+The witness for length `k` is Mathlib's cycle graph `cycleGraph k` on `Fin k`:
+* it is bipartite when `k` is even (`cycleGraph.bicoloring_of_even` gives a proper
+  `2`-colouring, hence `Colorable 2`, hence `IsBipartite` by the bridge above);
+* it contains the Hamiltonian `k`-cycle `0 → (k-1) → (k-2) → … → 1 → 0`, built
+  here as the descending path `descPath` closed by the wrap edge `0 → (k-1)`.
+
+Mathlib has `cycleGraph` and its bicolouring but no lemma that `cycleGraph k` is
+Hamiltonian, so the explicit cycle and its `IsCycle` proof are constructed from
+scratch. -/
+
+section Realizability
+
+open SimpleGraph
+
+variable (N : ℕ) [NeZero N]
+
+/-- The descending path `⟨j⟩ → ⟨j-1⟩ → … → ⟨1⟩ → ⟨0⟩` inside `cycleGraph N`
+(each step drops the index by one; consecutive indices differ by `1`, so they are
+adjacent in the cycle graph). -/
+def descPath : (j : ℕ) → (hj : j < N) → (cycleGraph N).Walk ⟨j, hj⟩ 0
+  | 0, _ => Walk.nil
+  | j + 1, h =>
+      Walk.cons (by
+          rw [cycleGraph_adj']
+          left
+          have hle : (⟨j, Nat.lt_of_succ_lt h⟩ : Fin N) ≤ ⟨j + 1, h⟩ :=
+            Fin.mk_le_mk.mpr (Nat.le_succ j)
+          rw [Fin.sub_val_of_le hle]; show j + 1 - j = 1; omega)
+        (descPath j (Nat.lt_of_succ_lt h))
+
+/-- The descending path from `⟨j⟩` has length `j`. -/
+theorem descPath_length : ∀ (j : ℕ) (hj : j < N),
+    (descPath N j hj).length = j := by
+  intro j
+  induction j with
+  | zero => intro hj; unfold descPath; rfl
+  | succ k ih =>
+      intro hj
+      unfold descPath
+      rw [Walk.length_cons, ih (Nat.lt_of_succ_lt hj)]
+
+/-- Every vertex on the descending path from `⟨j⟩` has index `≤ j`. -/
+theorem descPath_support_val_le : ∀ (j : ℕ) (hj : j < N) (x : Fin N),
+    x ∈ (descPath N j hj).support → x.val ≤ j := by
+  intro j
+  induction j with
+  | zero =>
+      intro hj x hx
+      unfold descPath at hx
+      rw [Walk.support_nil, List.mem_singleton] at hx
+      subst hx; simp
+  | succ k ih =>
+      intro hj x hx
+      unfold descPath at hx
+      rw [Walk.support_cons, List.mem_cons] at hx
+      rcases hx with h1 | h2
+      · subst h1; simp
+      · exact le_trans (ih (Nat.lt_of_succ_lt hj) x h2) (Nat.le_succ k)
+
+/-- The descending path is a genuine path: its vertices are distinct (each new
+index strictly exceeds every earlier one). -/
+theorem descPath_isPath : ∀ (j : ℕ) (hj : j < N),
+    (descPath N j hj).IsPath := by
+  intro j
+  induction j with
+  | zero => intro hj; unfold descPath; exact Walk.IsPath.nil
+  | succ k ih =>
+      intro hj
+      unfold descPath
+      rw [Walk.cons_isPath_iff]
+      refine ⟨ih (Nat.lt_of_succ_lt hj), ?_⟩
+      intro hmem
+      have hval : ((⟨k + 1, hj⟩ : Fin N) : ℕ) = k + 1 := rfl
+      have := descPath_support_val_le N k (Nat.lt_of_succ_lt hj) ⟨k + 1, hj⟩ hmem
+      omega
+
+/-- Every edge of the descending path joins two indices differing by exactly one
+(each edge is `s(⟨i+1⟩, ⟨i⟩)`). -/
+theorem descPath_edges_diff_one : ∀ (j : ℕ) (hj : j < N) (e : Sym2 (Fin N)),
+    e ∈ (descPath N j hj).edges → ∃ a b : Fin N, e = s(a, b) ∧ a.val = b.val + 1 := by
+  intro j
+  induction j with
+  | zero =>
+      intro hj e he
+      unfold descPath at he
+      rw [Walk.edges_nil] at he
+      exact absurd he (List.not_mem_nil)
+  | succ k ih =>
+      intro hj e he
+      unfold descPath at he
+      rw [Walk.edges_cons, List.mem_cons] at he
+      rcases he with h1 | h2
+      · exact ⟨_, _, h1, rfl⟩
+      · exact ih (Nat.lt_of_succ_lt hj) e h2
+
+/-- The wrap-around edge `s(0, N-1)` closing the cycle is **not** one of the
+descending-path edges: those all join indices differing by `1`, whereas `0` and
+`N-1` differ by `N-1 ≥ 2`. -/
+theorem closingEdge_not_mem (hN3 : 3 ≤ N) (hlast : N - 1 < N) :
+    s((0 : Fin N), ⟨N - 1, hlast⟩) ∉ (descPath N (N - 1) hlast).edges := by
+  intro he
+  obtain ⟨a, b, heq, hab⟩ := descPath_edges_diff_one N (N - 1) hlast _ he
+  rw [Sym2.eq_iff] at heq
+  rcases heq with ⟨h1, _h2⟩ | ⟨h1, h2⟩
+  · have ha0 : a.val = 0 := by rw [← h1]; simp
+    omega
+  · have hb0 : b.val = 0 := by rw [← h1]; simp
+    have haN : a.val = N - 1 := by rw [← h2]
+    omega
+
+/-- **`cycleGraph N` contains an `N`-cycle** (for `N ≥ 3`): the Hamiltonian cycle
+`0 → (N-1) → (N-2) → … → 1 → 0`. -/
+theorem cycleGraph_hasCycleOfLength (hN3 : 3 ≤ N) :
+    HasCycleOfLength (cycleGraph N) N := by
+  have hlast : N - 1 < N := by omega
+  have hz : ((0 : Fin N) : ℕ) = 0 := by simp
+  have hl : ((⟨N - 1, hlast⟩ : Fin N) : ℕ) = N - 1 := rfl
+  have hadj : (cycleGraph N).Adj (0 : Fin N) ⟨N - 1, hlast⟩ := by
+    rw [cycleGraph_adj']
+    left
+    have hlt : (0 : Fin N) < ⟨N - 1, hlast⟩ := by rw [Fin.lt_def, hz, hl]; omega
+    rw [Fin.coe_sub_iff_lt.mpr hlt, hz, hl]
+    omega
+  refine ⟨0, Walk.cons hadj (descPath N (N - 1) hlast), ?_, ?_⟩
+  · rw [Walk.cons_isCycle_iff]
+    exact ⟨descPath_isPath N (N - 1) hlast, closingEdge_not_mem N hN3 hlast⟩
+  · rw [Walk.length_cons, descPath_length N (N - 1) hlast]
+    omega
+
+omit [NeZero N] in
+/-- **`cycleGraph N` is bipartite when `N` is even** (its standard parity
+`2`-colouring). -/
+theorem cycleGraph_isBipartite_of_even (hEven : Even N) :
+    IsBipartite (cycleGraph N) := by
+  rw [isBipartite_iff_colorable_two]
+  have hc := (cycleGraph.bicoloring_of_even N hEven).colorable
+  rwa [Fintype.card_bool] at hc
+
+end Realizability
+
+/-- **Sufficiency.** Every even `k ≥ 4` is the length of a cycle in some bipartite
+graph — witnessed by the even cycle graph `cycleGraph k`. -/
+theorem bipartite_realizes_even_ge_four {k : ℕ} (hEven : Even k) (hk : 4 ≤ k) :
+    ∃ (V : Type) (G : SimpleGraph V), IsBipartite G ∧ HasCycleOfLength G k := by
+  haveI : NeZero k := ⟨by omega⟩
+  exact ⟨Fin k, cycleGraph k, cycleGraph_isBipartite_of_even k hEven,
+    cycleGraph_hasCycleOfLength k (by omega)⟩
+
+/-- **The bipartite cycle spectrum.**  A natural number `k` is the length of some
+cycle in some bipartite graph **iff** `k` is even and `≥ 4`.  The forward
+direction is the necessity engine (`bipartite_cycle_length_even_ge_four`); the
+backward direction is the explicit even-cycle-graph construction
+(`bipartite_realizes_even_ge_four`).  So the realizable cycle lengths of the
+bipartite world are exactly `{4, 6, 8, 10, …}`. -/
+theorem bipartite_cycle_spectrum (k : ℕ) :
+    (∃ (V : Type) (G : SimpleGraph V), IsBipartite G ∧ HasCycleOfLength G k) ↔
+      (Even k ∧ 4 ≤ k) := by
+  constructor
+  · rintro ⟨V, G, hbip, hcyc⟩
+    exact bipartite_cycle_length_even_ge_four hbip hcyc
+  · rintro ⟨hEven, hk⟩
+    exact bipartite_realizes_even_ge_four hEven hk
 
 end Erdos1080OQ03
