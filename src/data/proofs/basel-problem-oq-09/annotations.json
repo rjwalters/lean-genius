@@ -154,11 +154,11 @@
     "proofId": "basel-problem-oq-09",
     "range": {
       "startLine": 82,
-      "endLine": 121
+      "endLine": 124
     },
     "type": "theorem",
     "title": "The Odd-Square Series ∑ 1/(2k+1)² = π²/8",
-    "content": "hasSum_odd_squares is the headline result, assembled from the even part, odd summability, the even_add_odd recombination, and uniqueness. tsum_odd_squares and summable_odd_squares package it in tsum and Summable form for downstream reuse. The value π²/8 is exactly λ(2), the s = 2 case of the Dirichlet odd-index zeta λ(s) = ∑ 1/(2k+1)^s = (1 − 2^{−s})ζ(s); here (1 − 1/4)·π²/6 = (3/4)·π²/6 = π²/8.",
+    "content": "hasSum_odd_squares is the headline result, assembled from the even part, odd summability, the even_add_odd recombination, and uniqueness. tsum_odd_squares and summable_odd_squares package it in tsum and Summable form for downstream reuse, and odd_squares_value_pos records the elementary corollary π²/8 > 0 (by positivity), which the mass-distribution comparison π²/24 < π²/8 later depends on. The value π²/8 is exactly λ(2), the s = 2 case of the Dirichlet odd-index zeta λ(s) = ∑ 1/(2k+1)^s = (1 − 2^{−s})ζ(s); here (1 − 1/4)·π²/6 = (3/4)·π²/6 = π²/8.",
     "mathContext": "$\\displaystyle\\sum_{k=0}^{\\infty} \\frac{1}{(2k+1)^2} = 1 + \\frac19 + \\frac1{25} + \\cdots = \\frac{\\pi^2}{8} = \\lambda(2).$",
     "significance": "key",
     "relatedConcepts": [
