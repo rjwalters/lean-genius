@@ -2,7 +2,7 @@
   "id": "circumference-via-differentiation-oq-03",
   "title": "Riemannian dV/dr = A — Euclidean Witnesses (n = 2, 3)",
   "slug": "circumference-via-differentiation-oq-03",
-  "description": "Open Question 3 of `circumference-via-differentiation` asks whether the identity dV/dr = A (volume's derivative equals surface area) generalizes to Riemannian manifolds via the co-area formula. The literal Riemannian-manifold version is gated by four Mathlib gaps (no `injectivityRadius`, `expMap`, `geodesicBall`/`Sphere`/`Volume` family, no n-dim coarea). This file delivers the **R1 vector-space partial answer** at concrete Euclidean dimensions n = 2 and n = 3, recovering the parent theorem (circle circumference 2π r) and the n = 3 case (sphere surface 4π r²) intrinsically from Mathlib's `EuclideanSpace.volume_closedBall_fin_two`/`_fin_three` primitives via the `HasDerivWithinAt.congr` discharge. 5 theorems, 0 sorries, 0 axioms.",
+  "description": "Open Question 3 of `circumference-via-differentiation` asks whether the identity dV/dr = A (volume's derivative equals surface area) generalizes to Riemannian manifolds via the co-area formula. The literal Riemannian-manifold version is gated by four Mathlib gaps (no `injectivityRadius`, `expMap`, `geodesicBall`/`Sphere`/`Volume` family, no n-dim coarea). This file delivers the **R1 vector-space partial answer** at concrete Euclidean dimensions n = 2 and n = 3, recovering the parent theorem (circle circumference 2π r) and the n = 3 case (sphere surface 4π r²) intrinsically from Mathlib's `EuclideanSpace.volume_closedBall_fin_two`/`_fin_three` primitives via the `HasDerivWithinAt.congr` discharge. 6 theorems, 0 sorries, 0 axioms.",
   "meta": {
     "author": "Lean Genius",
     "status": "verified",
