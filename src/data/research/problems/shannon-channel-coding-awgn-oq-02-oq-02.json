@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (VERIFIED 0/0): added the weighted-combining power law Var[∑aᵢWᵢ]=∑aᵢ²Var[Wᵢ] for pairwise-uncorrelated families (bilinear Bienaymé double-sum + uncorrelated diagonal + zero-mean output-power capstone) — the maximal-ratio-combining / matched-filter second-order identity, the aᵢ-weighted generalisation of the unweighted variance_sum_of_pairwise_uncorrelated stack.",
+    "progressSummary": "PROGRESS (VERIFIED 0/0): maximal-ratio-combining (MRC) SNR optimality proved — the max output SNR of a linear combiner over an uncorrelated AWGN branch block equals the summed per-branch SNRs ∑sᵢ²/Var[Nᵢ] (Cauchy-Schwarz upper bound + matched-weight achievability + measure-theoretic capstone resting on the weighted power law). Ties the abstract variance-of-a-weighted-sum theory to the actual AWGN receiver-design theorem.",
     "builtItems": [
       "variance_sum_of_pairwise_uncorrelated (ShannonChannelCodingAWGNOQ02OQ02.lean:131): Var[∑ i∈s, Wi] = ∑ Var[Wi] from Set.Pairwise cov=0 + MemLp; [IsFiniteMeasure].",
       "variance_sum_of_pairwise_indep (:150): independence ⟹ uncorrelated ⟹ identity, via IndepFun.covariance_eq_zero — shows the sharp version subsumes IndepFun.variance_sum.",
@@ -64,7 +64,11 @@
       "stddev_add_lt_iff_not_affine_pos (ShannonChannelCodingAWGNOQ02OQ02.lean): σ[X+Y] < σ[X]+σ[Y] ⟺ ¬∃a>0,b. X=ᵐa·Y+b — structural negation of stddev_add_eq_iff_affine_pos",
       "variance_smul_sum: Var[∑aᵢ•Wᵢ]=∑ᵢ∑ⱼ aᵢaⱼ·cov[Wᵢ,Wⱼ] (weighted Bienaymé double-sum, ShannonChannelCodingAWGNOQ02OQ02.lean:1186)",
       "variance_smul_sum_of_pairwise_uncorrelated: Var[∑aᵢ•Wᵢ]=∑ᵢ aᵢ²·Var[Wᵢ] for pairwise-uncorrelated families — the MRC/matched-filter power law, a≡1 recovers variance_sum_of_pairwise_uncorrelated (line 1208)",
-      "awgn_weighted_multisymbol_power_of_uncorrelated: E[(∑aᵢ•Wᵢ)²]=∑ᵢ aᵢ²·E[Wᵢ²] for zero-mean uncorrelated symbols — physical weighted output power (line 1230)"
+      "awgn_weighted_multisymbol_power_of_uncorrelated: E[(∑aᵢ•Wᵢ)²]=∑ᵢ aᵢ²·E[Wᵢ²] for zero-mean uncorrelated symbols — physical weighted output power (line 1230)",
+      "mrc_signal_sq_le (ShannonChannelCodingAWGNOQ02OQ02.lean): (∑aᵢsigᵢ)²≤(∑aᵢ²vᵢ)(∑sigᵢ²/vᵢ) via Cauchy-Schwarz split fᵢ=aᵢ√vᵢ, gᵢ=sigᵢ/√vᵢ [VERIFIED 0/0]",
+      "mrc_snr_le (ShannonChannelCodingAWGNOQ02OQ02.lean): output SNR (∑aᵢsigᵢ)²/(∑aᵢ²vᵢ)≤∑sigᵢ²/vᵢ when noise power>0 [VERIFIED 0/0]",
+      "mrc_snr_matched (ShannonChannelCodingAWGNOQ02OQ02.lean): matched weights aᵢ=sigᵢ/vᵢ attain the bound, SNR=∑sigᵢ²/vᵢ [VERIFIED 0/0]",
+      "mrc_output_signal_sq_le_variance_mul (ShannonChannelCodingAWGNOQ02OQ02.lean): measure-theoretic MRC capstone (∑aᵢsigᵢ)²≤Var[∑aᵢ•Nᵢ]·(∑sigᵢ²/Var[Nᵢ]) for pairwise-uncorrelated positive-variance noise [VERIFIED 0/0]"
     ],
     "insights": [
       "Bienaymé variance-of-a-sum needs only PAIRWISE UNCORRELATEDNESS (cov[Wi,Wj]=0 for i≠j), not pairwise independence: the off-diagonal covariances of Var[∑Wi]=∑i∑j cov[Wi,Wj] (Mathlib variance_sum´) are exactly what must vanish. Independence is strictly stronger (there exist uncorrelated dependent variables).",
@@ -83,7 +87,9 @@
       "The triangle-equality boundary sits at the OPPOSITE Cauchy-Schwarz endpoint from variance_add_eq_iff_covariance_zero: variances add iff cov=0 (orthogonal), but standard deviations add iff cov=σ[X]σ[Y] (perfectly positively correlated, ρ=+1).",
       "Multivariate stddev-triangle equality (√Var[∑Wᵢ]=∑σ[Wᵢ]) reduces via square+variance_sum'+Finset.sum_mul_sum to ∑ᵢ∑ⱼcov=∑ᵢ∑ⱼσᵢσⱼ; each summand obeys Cauchy–Schwarz cov≤σᵢσⱼ, so the two double sums are equal iff every ordered pair saturates it — Finset.sum_eq_sum_iff_of_le twice (nested).",
       "Strict triangle inequality needs NO fresh analysis: it is purely lt_iff_le_and_ne applied to both sides of the equality boundary (stddev_add_le gives ≤ on the left, abs_correlation_le_one gives ρ≤1 on the right), then not_iff_not on the eq-iff. simp only [stddev_add_le hX hY, hρle, true_and, ne_eq, not_iff_not] discharges the whole reduction in one line.",
-      "Weighted combining lifts the whole Bienaymé stack by bilinearity: covariance_smul_left/right push each aᵢ,aⱼ out of cov[aᵢWᵢ,aⱼWⱼ]=aᵢaⱼcov, and variance_smul gives the diagonal Var[aᵢWᵢ]=aᵢ²Var[Wᵢ]; no new analysis, just scalar-out rewrites — working in the a•W (smul) form (not fun ω=>a*W ω) aligns directly with Mathlib covariance_smul_*/variance_smul/MemLp.const_smul."
+      "Weighted combining lifts the whole Bienaymé stack by bilinearity: covariance_smul_left/right push each aᵢ,aⱼ out of cov[aᵢWᵢ,aⱼWⱼ]=aᵢaⱼcov, and variance_smul gives the diagonal Var[aᵢWᵢ]=aᵢ²Var[Wᵢ]; no new analysis, just scalar-out rewrites — working in the a•W (smul) form (not fun ω=>a*W ω) aligns directly with Mathlib covariance_smul_*/variance_smul/MemLp.const_smul.",
+      "MRC (maximal-ratio-combining) optimality is a direct Cauchy-Schwarz consequence of the weighted power law: splitting aᵢsᵢ=(aᵢ√vᵢ)(sᵢ/√vᵢ) and applying Finset.sum_mul_sq_le_sq_mul_sq gives (∑aᵢsᵢ)²≤(∑aᵢ²vᵢ)(∑sᵢ²/vᵢ); the noise-power factor ∑aᵢ²vᵢ IS the output variance Var[∑aᵢNᵢ] from variance_smul_sum_of_pairwise_uncorrelated, so combiner optimality rests on the Bienaymé structure, not a fresh hypothesis.",
+      "The maximum output SNR of a linear combiner over an uncorrelated AWGN branch block equals the sum of per-branch SNRs ∑sᵢ²/vᵢ, attained exactly at matched weights aᵢ=sᵢ/vᵢ (both combined signal ∑(sᵢ/vᵢ)sᵢ and noise power ∑(sᵢ/vᵢ)²vᵢ collapse to S=∑sᵢ²/vᵢ, so SNR=S²/S=S) — the achievability half making mrc_snr_le sharp."
     ],
     "mathlibGaps": [
       "Mathlib has no pairwise-uncorrelated variance-sum lemma (only variance_sum´ double-sum form and IndepFun.variance_sum). Candidate upstream contribution: variance_sum under Set.Pairwise (cov=0).",
@@ -103,7 +109,9 @@
       "Consider corr sign-flip corollary for a>0,c<0 (orientation-reversing): ρ[aX+b,cY+d]=−ρ[X,Y] as the negative companion of correlation_affine_invariant_of_pos.",
       "Dual equality for the finite-sum triangle inequality stddev_sum_le: σ[∑Wᵢ]=∑σ[Wᵢ] iff all pairs are perfectly positively correlated (all centered contributions a.e. nonneg-proportional to a common direction) — needs an induction handling the shared-direction propagation.",
       "Affine form of the multivariate boundary: √Var[∑Wᵢ]=∑σ requires a COMMON increasing-affine template (all Wᵢ =ᵐ aᵢ·Y+bᵢ, aᵢ>0) — harder than pairwise, needs a shared regressor Y; the pairwise-correlation form is the clean stopping point.",
-      "Strict multivariate form: σ[∑Wᵢ] < ∑σ[Wᵢ] ⟺ NOT all pairs perfectly positively correlated — strict companion of stddev_sum_eq_iff_pairwise_correlation_eq_one, via lt_iff_le_and_ne on stddev_sum_le (needs the finite-family ρ≤1 pairwise ceiling, else just ≠-form)."
+      "Strict multivariate form: σ[∑Wᵢ] < ∑σ[Wᵢ] ⟺ NOT all pairs perfectly positively correlated — strict companion of stddev_sum_eq_iff_pairwise_correlation_eq_one, via lt_iff_le_and_ne on stddev_sum_le (needs the finite-family ρ≤1 pairwise ceiling, else just ≠-form).",
+      "MRC equality condition in variance form: (∑aᵢsigᵢ)²=Var[∑aᵢ•Nᵢ]·(∑sigᵢ²/Var[Nᵢ]) iff a is proportional to the matched vector sigᵢ/Var[Nᵢ] — the Cauchy-Schwarz equality case (vectors aᵢ√vᵢ ∥ sigᵢ/√vᵢ).",
+      "Correlated-noise MRC: replace diagonal ∑aᵢ²vᵢ by the full quadratic form aᵀΣa (Σ=covariance matrix); optimum SNR = sᵀΣ⁻¹s at a=Σ⁻¹s — needs a PD-matrix Cauchy-Schwarz / whitening argument, a genuine generalisation beyond the uncorrelated diagonal case."
     ],
     "markdown": "# Knowledge Base: shannon-channel-coding-awgn-oq-02-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },

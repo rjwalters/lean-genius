@@ -1244,4 +1244,112 @@ theorem awgn_weighted_multisymbol_power_of_uncorrelated [IsProbabilityMeasure μ
   refine Finset.sum_congr rfl fun i hi => ?_
   rw [second_moment_eq_variance (hW i hi) (hmean i hi)]
 
+/-! ### Maximal-ratio combining: the Cauchy–Schwarz SNR optimum
+
+The weighted power law `Var[∑ᵢ aᵢ·Wᵢ] = ∑ᵢ aᵢ²·Var[Wᵢ]` says the *output noise power*
+of a linear combiner over uncorrelated branches is the square-weighted sum of the branch
+noise variances.  Pairing it with a *deterministic signal* component `∑ᵢ aᵢ·sᵢ` yields the
+central receiver-design question for the AWGN channel: over all gain vectors `a`, how large
+can the output signal-to-noise ratio
+
+        SNR(a) = (∑ᵢ aᵢ·sᵢ)² / (∑ᵢ aᵢ²·vᵢ)
+
+be made, where `vᵢ > 0` is the `i`-th branch noise variance?  The answer is the classical
+**maximal-ratio-combining (MRC)** theorem: the supremum equals the sum of per-branch SNRs
+`∑ᵢ sᵢ²/vᵢ`, attained exactly at the *matched* weights `aᵢ = sᵢ/vᵢ`.  The mathematics is a
+single application of the finite-sum Cauchy–Schwarz inequality
+`Finset.sum_mul_sq_le_sq_mul_sq` to the split `aᵢ·sᵢ = (aᵢ√vᵢ)·(sᵢ/√vᵢ)`. -/
+
+/-- **MRC signal bound (Cauchy–Schwarz core).**  For deterministic gains `a`, signal
+amplitudes `sig`, and strictly positive branch noise variances `v`, the squared combined
+signal is bounded by the product of the output noise power `∑ aᵢ²vᵢ` and the summed
+per-branch SNRs `∑ sᵢ²/vᵢ`:
+
+        (∑ᵢ aᵢ·sᵢ)² ≤ (∑ᵢ aᵢ²·vᵢ) · (∑ᵢ sᵢ²/vᵢ).
+
+Proof: Cauchy–Schwarz `(∑ fᵢgᵢ)² ≤ (∑ fᵢ²)(∑ gᵢ²)` with `fᵢ = aᵢ·√vᵢ`, `gᵢ = sᵢ/√vᵢ`, so
+`fᵢgᵢ = aᵢsᵢ` (the `√vᵢ` cancels), `fᵢ² = aᵢ²vᵢ`, `gᵢ² = sᵢ²/vᵢ`. -/
+theorem mrc_signal_sq_le {ι : Type*} (s : Finset ι) (a sig v : ι → ℝ)
+    (hv : ∀ i ∈ s, 0 < v i) :
+    (∑ i ∈ s, a i * sig i) ^ 2
+      ≤ (∑ i ∈ s, a i ^ 2 * v i) * (∑ i ∈ s, sig i ^ 2 / v i) := by
+  have e1 : ∀ i ∈ s, (a i * Real.sqrt (v i)) * (sig i / Real.sqrt (v i)) = a i * sig i := by
+    intro i hi
+    have hne : Real.sqrt (v i) ≠ 0 := Real.sqrt_ne_zero'.mpr (hv i hi)
+    field_simp
+  have e2 : ∀ i ∈ s, (a i * Real.sqrt (v i)) ^ 2 = a i ^ 2 * v i := by
+    intro i hi; rw [mul_pow, Real.sq_sqrt (hv i hi).le]
+  have e3 : ∀ i ∈ s, (sig i / Real.sqrt (v i)) ^ 2 = sig i ^ 2 / v i := by
+    intro i hi; rw [div_pow, Real.sq_sqrt (hv i hi).le]
+  calc (∑ i ∈ s, a i * sig i) ^ 2
+      = (∑ i ∈ s, (a i * Real.sqrt (v i)) * (sig i / Real.sqrt (v i))) ^ 2 := by
+        rw [Finset.sum_congr rfl (fun i hi => (e1 i hi).symm)]
+    _ ≤ (∑ i ∈ s, (a i * Real.sqrt (v i)) ^ 2) * (∑ i ∈ s, (sig i / Real.sqrt (v i)) ^ 2) :=
+        Finset.sum_mul_sq_le_sq_mul_sq s _ _
+    _ = (∑ i ∈ s, a i ^ 2 * v i) * (∑ i ∈ s, sig i ^ 2 / v i) := by
+        rw [Finset.sum_congr rfl e2, Finset.sum_congr rfl e3]
+
+/-- **MRC upper bound on output SNR.**  Whenever the output noise power `∑ aᵢ²vᵢ` is
+strictly positive, the combiner's signal-to-noise ratio is at most the sum of the
+per-branch SNRs:
+
+        (∑ᵢ aᵢ·sᵢ)² / (∑ᵢ aᵢ²·vᵢ) ≤ ∑ᵢ sᵢ²/vᵢ.
+
+No gain vector `a` can beat the summed branch SNRs — the fundamental limit of linear
+combining over an uncorrelated AWGN block. -/
+theorem mrc_snr_le {ι : Type*} (s : Finset ι) (a sig v : ι → ℝ)
+    (hv : ∀ i ∈ s, 0 < v i) (hpos : 0 < ∑ i ∈ s, a i ^ 2 * v i) :
+    (∑ i ∈ s, a i * sig i) ^ 2 / (∑ i ∈ s, a i ^ 2 * v i)
+      ≤ ∑ i ∈ s, sig i ^ 2 / v i := by
+  rw [div_le_iff₀ hpos]
+  calc (∑ i ∈ s, a i * sig i) ^ 2
+      ≤ (∑ i ∈ s, a i ^ 2 * v i) * (∑ i ∈ s, sig i ^ 2 / v i) := mrc_signal_sq_le s a sig v hv
+    _ = (∑ i ∈ s, sig i ^ 2 / v i) * (∑ i ∈ s, a i ^ 2 * v i) := by ring
+
+/-- **MRC achievability (matched weights attain the bound).**  Setting the gains to the
+matched-filter values `aᵢ = sᵢ/vᵢ` makes the output SNR equal the summed per-branch SNRs,
+so the bound `mrc_snr_le` is sharp:
+
+        (∑ᵢ (sᵢ/vᵢ)·sᵢ)² / (∑ᵢ (sᵢ/vᵢ)²·vᵢ) = ∑ᵢ sᵢ²/vᵢ.
+
+Both the combined signal `∑ (sᵢ/vᵢ)·sᵢ` and the output noise power `∑ (sᵢ/vᵢ)²·vᵢ` collapse
+to `∑ sᵢ²/vᵢ`, so the ratio is `S²/S = S`.  Together with `mrc_snr_le` this identifies the
+maximum output SNR of a linear combiner as exactly `∑ᵢ sᵢ²/vᵢ`. -/
+theorem mrc_snr_matched {ι : Type*} (s : Finset ι) (sig v : ι → ℝ)
+    (hv : ∀ i ∈ s, 0 < v i) (hpos : 0 < ∑ i ∈ s, sig i ^ 2 / v i) :
+    (∑ i ∈ s, (sig i / v i) * sig i) ^ 2 / (∑ i ∈ s, (sig i / v i) ^ 2 * v i)
+      = ∑ i ∈ s, sig i ^ 2 / v i := by
+  have hnum : ∑ i ∈ s, (sig i / v i) * sig i = ∑ i ∈ s, sig i ^ 2 / v i := by
+    apply Finset.sum_congr rfl
+    intro i _
+    rw [div_mul_eq_mul_div, ← pow_two]
+  have hden : ∑ i ∈ s, (sig i / v i) ^ 2 * v i = ∑ i ∈ s, sig i ^ 2 / v i := by
+    apply Finset.sum_congr rfl
+    intro i hi
+    have hne : v i ≠ 0 := (hv i hi).ne'
+    field_simp
+  rw [hnum, hden, pow_two, mul_div_assoc, div_self hpos.ne', mul_one]
+
+/-- **MRC theorem in measure-theoretic form (capstone).**  Let `N : ι → Ω → ℝ` be a finite
+block of pairwise-uncorrelated, square-integrable noise branches with strictly positive
+variances, and let `sig i` be the deterministic per-branch signal amplitudes.  Then the
+squared combined signal is bounded by the *actual output noise variance*
+`Var[∑ᵢ aᵢ·Nᵢ]` times the summed per-branch SNRs:
+
+        (∑ᵢ aᵢ·sigᵢ)² ≤ Var[∑ᵢ aᵢ·Nᵢ] · (∑ᵢ sigᵢ²/Var[Nᵢ]).
+
+This is `mrc_signal_sq_le` with the noise power `∑ aᵢ²vᵢ` supplied by the weighted power law
+`variance_smul_sum_of_pairwise_uncorrelated` (`vᵢ = Var[Nᵢ]`): the Cauchy–Schwarz SNR bound
+is not a separate hypothesis but a *consequence* of the variance-of-a-weighted-sum identity,
+tying the combiner's optimality directly to the Bienaymé structure of uncorrelated noise. -/
+theorem mrc_output_signal_sq_le_variance_mul [IsFiniteMeasure μ] {ι : Type*}
+    {N : ι → Ω → ℝ} {s : Finset ι} (a sig : ι → ℝ)
+    (hN : ∀ i ∈ s, MemLp (N i) 2 μ)
+    (huncor : Set.Pairwise ↑s fun i j => cov[N i, N j; μ] = 0)
+    (hv : ∀ i ∈ s, 0 < Var[N i; μ]) :
+    (∑ i ∈ s, a i * sig i) ^ 2
+      ≤ Var[∑ i ∈ s, a i • N i; μ] * (∑ i ∈ s, sig i ^ 2 / Var[N i; μ]) := by
+  rw [variance_smul_sum_of_pairwise_uncorrelated a hN huncor]
+  exact mrc_signal_sq_le s a sig (fun i => Var[N i; μ]) hv
+
 end ShannonAWGNMultiSymbolPower
