@@ -168,7 +168,7 @@
     ]
   },
   "conclusion": {
-    "summary": "S2 ACT delivers the Eisenstein algebraic-infrastructure layer: structure + CommRing + norm with the four structural identities (`norm_zero`, `norm_one`, `norm_nonneg`, `norm_mul`) plus `norm_eq_zero_iff` and `norm_pos_of_ne_zero`. The file is 207 lines, 20 theorems, 2 definitions, 0 sorries, 0 axioms.",
+    "summary": "S2 ACT delivers the Eisenstein algebraic-infrastructure layer: structure + CommRing + norm with the four structural identities (`norm_zero`, `norm_one`, `norm_nonneg`, `norm_mul`) plus `norm_eq_zero_iff` and `norm_pos_of_ne_zero`. The file is 559 lines, 36 theorems, 4 definitions, 0 sorries, 0 axioms.",
     "implications": "**S3 unblocked**: the `EuclideanDomain Eisenstein` instance can now be built on top of `CommRing` + `norm_mul`. **S4-S5 unblocked**: the splitting argument `(-3/p) = (p/3)` via QR + `4p = (2a - b)² + 3 b²` parity case-split now has a well-defined target ring to work in. **n = 7, 11 (S6+)**: the same template generalizes to `ℤ[(1 + √-n)/2]` with norm form `a² + ab + ((n+1)/4) b²`.",
     "openQuestions": [
       "Build the EuclideanDomain Eisenstein instance via rounding-to-ℤ (S3, ~200 lines): the key step is the rounding-error bound `N(error) ≤ 1/4 < 1`.",

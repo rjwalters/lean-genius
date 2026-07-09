@@ -200,7 +200,7 @@
     "sum-of-squares"
   ],
   "conclusion": {
-    "summary": "The Fourier (Hurwitz–Wirtinger) proof of L² ≥ 4πA reduced to an explicit per-mode sum-of-squares identity, with Wirtinger's inequality, the isoperimetric inequality under arc-length normalization, and a complete equality characterization (only the circle saturates). 7 theorems, 3 definitions, 0 sorries, 0 axioms over ℝ.",
+    "summary": "The Fourier (Hurwitz–Wirtinger) proof of L² ≥ 4πA reduced to an explicit per-mode sum-of-squares identity, with Wirtinger's inequality, the isoperimetric inequality under arc-length normalization, and a complete equality characterization (only the circle saturates). 9 theorems, 3 definitions, 0 sorries, 0 axioms over ℝ.",
     "implications": "Supplies the analytic engine the parent assumed: the inequality L² ≥ 4πA (the κ = 0 case of L² ≥ 4πA − κA²) is no longer a hypothesis but a verified consequence of a sum-of-squares identity, and the circle is characterized as the unique optimizer. Establishes the Fourier method as a Lean-tractable technique for isoperimetric problems.",
     "openQuestions": [
       "Transport the sum-of-squares identity to the sphere (L² ≥ 4πA − A²) and hyperbolic plane (L² ≥ 4πA + A²) via the curved Wirtinger/symmetrization analogues.",
