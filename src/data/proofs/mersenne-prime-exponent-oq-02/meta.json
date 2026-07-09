@@ -101,6 +101,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header and Overview",
+      "startLine": 1,
+      "endLine": 47,
+      "summary": "Imports Mathlib and the module docstring stating the two classical congruence restrictions on a prime factor q of a Mersenne number 2^p − 1 (p an odd prime): q ≡ 1 (mod 2p) and q ≡ ±1 (mod 8), the restrictions that make trial division for Mersenne factors efficient (worked example 2¹¹ − 1 = 23·89). Sketches the ZMod q argument — orderOf 2 = p, Fermat gives p ∣ q−1, and 2 a quadratic residue gives the mod-8 class — and declares the namespace.",
+      "mathContext": "For a prime $q \\mid 2^p - 1$ with $p$ an odd prime: $q \\equiv 1 \\pmod{2p}$ and $q \\equiv \\pm 1 \\pmod 8$; the engine is $\\operatorname{ord}_q(2) = p$ in the field $\\mathbb{Z}/q$."
+    },
+    {
       "id": "shared",
       "title": "Casting the Divisibility and Oddness of Factors",
       "startLine": 48,
