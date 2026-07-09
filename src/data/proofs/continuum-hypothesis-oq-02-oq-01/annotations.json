@@ -4,11 +4,11 @@
     "proofId": "continuum-hypothesis-oq-02-oq-01",
     "range": {
       "startLine": 1,
-      "endLine": 89
+      "endLine": 68
     },
     "type": "concept",
     "title": "Discharging the Bounding-Number Axiom",
-    "content": "The module docstring sets the goal: the parent entry continuum-hypothesis-oq-02 left the lower bound ℵ₁ ≤ 𝔟 as an axiom (bounding_number_uncountable), remarking only that a proof 'requires constructing the diagonal function.' This file supplies exactly that, from Mathlib alone with no project-local axioms. Part 0 inlines the definitions to match the parent's conventions: eventuallyDominates f g (the ≤* preorder: f n ≤ g n for all large n), IsUnbounded F (no single g eventually dominates every member of F), and boundingNumber = ⨅_F (if IsUnbounded F then #F else 2^ℵ₀). The fallback continuum term in the infimum is what keeps 𝔟 ≤ 2^ℵ₀ and must be handled in the lower-bound proof.",
+    "content": "The module docstring sets the goal: the parent entry continuum-hypothesis-oq-02 left the lower bound ℵ₁ ≤ 𝔟 as an axiom (bounding_number_uncountable), remarking only that a proof 'requires constructing the diagonal function.' This file supplies exactly that, from Mathlib alone with no project-local axioms, via the classical Hausdorff diagonalization: a countable family {f₀,f₁,…} is dominated by its diagonal g(k) = max_{i≤k} fᵢ(k) + 1, so no countable family is unbounded, hence every unbounded family is uncountable and 𝔟 ≥ ℵ₁. The header also records the sharp general König constraint κ < cf(2^κ) and lists the exact Mathlib lemmas consumed (lt_cof_power, countable_iff_lt_aleph_one, Set.Countable.exists_eq_range, cantor, succ_aleph0, Finset.le_sup).",
     "mathContext": "The bounding number $\\mathfrak{b}$ is the least cardinality of a family in $(\\mathbb{N}\\to\\mathbb{N}, \\le^*)$ that no single function eventually dominates. The theorem $\\aleph_1 \\le \\mathfrak{b}$ asserts every such unbounded family is uncountable.",
     "significance": "key",
     "relatedConcepts": [
@@ -23,6 +23,21 @@
       "ℵ₁",
       "infimum of cardinals"
     ]
+  },
+  {
+    "id": "ann-choq0201-definitions",
+    "proofId": "continuum-hypothesis-oq-02-oq-01",
+    "range": {
+      "startLine": 70,
+      "endLine": 89
+    },
+    "type": "definition",
+    "title": "Part 0: Eventual Domination and the Bounding Number",
+    "content": "The three core definitions, inlined to match the parent's conventions. eventuallyDominates f g is the ≤* preorder: f n ≤ g n for all large n (f is eventually dominated by g). IsUnbounded F says no single g eventually dominates every member of the family F ⊆ ℕ → ℕ. boundingNumber 𝔟 = ⨅_F (if IsUnbounded F then #F else 2^ℵ₀) is the least cardinality of an unbounded family; the fallback continuum term 2^ℵ₀ on non-unbounded families is what keeps 𝔟 ≤ 2^ℵ₀ and must be handled in the lower-bound proof. These are exactly the cardinal-characteristic objects whose lower bound ℵ₁ ≤ 𝔟 the rest of the file establishes.",
+    "mathContext": "$f \\le^* g \\iff \\exists N,\\ \\forall n \\ge N,\\ f(n) \\le g(n)$; $\\ \\mathfrak{b} = \\min\\{\\,|F| : F \\subseteq \\mathbb{N}^{\\mathbb{N}} \\text{ unbounded in } \\le^*\\,\\}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["eventual domination", "bounding number", "unbounded family", "infimum of cardinals"],
+    "prerequisites": ["the ≤* preorder on ℕ → ℕ", "cardinality of a set", "Cardinal.{0}"]
   },
   {
     "id": "ann-choq0201-konig",

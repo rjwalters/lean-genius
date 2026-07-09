@@ -114,9 +114,9 @@
     {
       "id": "ch-oq0201-bounding",
       "title": "Part 3: ℵ₁ ≤ 𝔟 (De-Axiomatized)",
-      "summary": "aleph_one_le_two_pow_aleph0: ℵ₁ ≤ 2^ℵ₀ from Cantor via succ_aleph0. bounding_number_uncountable: ℵ₁ ≤ 𝔟 by le_ciInf over the two branches of the infimum (unbounded_uncountable / Cantor) — the parent's axiom, now a theorem. aleph0_lt_boundingNumber: ℵ₀ < 𝔟 as an immediate corollary.",
+      "summary": "aleph_one_le_two_pow_aleph0: ℵ₁ ≤ 2^ℵ₀ from Cantor via succ_aleph0. bounding_number_uncountable: ℵ₁ ≤ 𝔟 by le_ciInf over the two branches of the infimum (unbounded_uncountable / Cantor) — the parent's axiom, now a theorem. aleph0_lt_boundingNumber: ℵ₀ < 𝔟 as an immediate corollary. Closes the namespace and #check-exports the three key theorems.",
       "startLine": 158,
-      "endLine": 189,
+      "endLine": 194,
       "mathContext": "$\\mathfrak{b} = \\bigsqcap_F (\\cdots)$ is bounded below by $\\aleph_1$ term-by-term, giving $\\aleph_1 \\le \\mathfrak{b}$."
     }
   ],
