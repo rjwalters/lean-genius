@@ -7,7 +7,7 @@
     "namespace": "AmgmInequalityOQ02OQ01OQ05OQ01",
     "lineCount": 124,
     "axiomCount": 0,
-    "theoremCount": 4,
+    "theoremCount": 5,
     "definitionCount": 3,
     "path": "Proofs/AmgmInequalityOQ02OQ01OQ05OQ01.lean",
     "sorries": 0
@@ -33,7 +33,7 @@
     "axiomCount": 0,
     "assumptions": "0 axioms, 0 sorries. Green Docker build confirmed on the Mathlib v4.26 pin (docker-build.sh Proofs.AmgmInequalityOQ02OQ01OQ05OQ01 → exit 0, 7743 jobs, only builds through ring/linarith/nlinarith/positivity/norm_num — no native_decide, no custom axiom, so axiom-free in the project sense). The main inequality newton_k2_allreals_three is proved from first principles via the explicit SOS identity newton_k2_sos_identity (a pure `ring` identity), NOT delegated to any Mathlib inequality lemma — hence badge 'original'. Correctness note recorded during authoring: the equality locus is NOT the diagonal x = y = z; the honest characterization is 'all three pair products equal' (xy = yz = zx), e.g. x = 1, y = z = 0 attains equality without the variables being equal. newton_k2_equality_iff states the correct pair-product form.",
     "lineCount": 124,
-    "theoremCount": 4,
+    "theoremCount": 5,
     "definitionCount": 3,
     "originalContributions": [
       "newton_k2_allreals_three: Newton's k = 2 rung e₂² ≥ 3e₁e₃ for THREE arbitrary reals (no sign hypothesis) — a strict strengthening of the gallery's nonnegative NewtonLC.newton_ineq, which genuinely uses eₖ ≥ 0",

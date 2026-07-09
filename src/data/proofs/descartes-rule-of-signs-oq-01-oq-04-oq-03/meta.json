@@ -21,7 +21,7 @@
     "axiomCount": 0,
     "lineCount": 202,
     "assumptions": "None. All results proved from Mathlib. The worked examples are discharged by kernel `decide` (not `native_decide`), so the only axioms are the foundational propext / Classical.choice / Quot.sound (confirmed by #print axioms on signVariations_map, signVarList_eq_signVariations_ratCast, realRoots_countP_pos_le_signVarList).",
-    "theoremCount": 8,
+    "theoremCount": 9,
     "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
@@ -194,7 +194,7 @@
     "namespace": "DescartesConstructiveGeneral",
     "lineCount": 202,
     "axiomCount": 0,
-    "theoremCount": 8,
+    "theoremCount": 9,
     "definitionCount": 1,
     "path": "Proofs/DescartesRuleOfSignsOQ01OQ04OQ03.lean",
     "sorries": 0

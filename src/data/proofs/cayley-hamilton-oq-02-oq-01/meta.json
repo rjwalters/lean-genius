@@ -21,7 +21,7 @@
     "sorries": 0,
     "axiomCount": 0,
     "lineCount": 319,
-    "theoremCount": 18,
+    "theoremCount": 19,
     "definitionCount": 1,
     "assumptions": "Derives from Mathlib's Cayley–Hamilton theorem (Matrix.aeval_self_charpoly). All results are fully machine-checked over an arbitrary CommRing R (0 sorries, 0 axiom declarations, no structure-encoded assumptions). SCOPE: this file proves only the ALGEBRAIC core of Putzer's algorithm — the telescoping identity and ρₙ = 0. It does NOT prove the full analytic identity e^{tA} = ∑ₖ Pₖ(t)ρ_{k-1}; the ODE-coefficient construction and the matrix-valued ODE-uniqueness step are deferred future work, so the parent's open question is only partially answered.",
     "originalContributions": [
@@ -44,7 +44,7 @@
     "lineCount": 319,
     "axiomCount": 0,
     "sorries": 0,
-    "theoremCount": 18,
+    "theoremCount": 19,
     "definitionCount": 1
   },
   "overview": {
