@@ -42,6 +42,12 @@
       "leanType": "48 * heronProduct a b c ≤ (a^2 + b^2 + c^2)^2"
     },
     {
+      "name": "weitzenbock_sq_eq_iff",
+      "type": "supporting",
+      "description": "The square-free equality condition: (a²+b²+c²)² = 48·heronProduct holds iff a² = b² and b² = c². Reads the SOS identity backwards so each summand (a²-b²)², (b²-c²)², (c²-a²)² must vanish. This is the algebraic pivot that weitzenbock_eq_iff upgrades to the geometric equilateral case, separating the square-free algebra from the final positivity step.",
+      "leanType": "(a^2 + b^2 + c^2)^2 = 48 * heronProduct a b c ↔ a^2 = b^2 ∧ b^2 = c^2"
+    },
+    {
       "name": "weitzenbock",
       "type": "main",
       "description": "Weitzenböck's inequality: for any nondegenerate triangle, 4√3·Area ≤ a² + b² + c².",
