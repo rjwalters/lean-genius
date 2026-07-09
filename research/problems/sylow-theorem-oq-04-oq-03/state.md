@@ -48,3 +48,30 @@ meta.theoremCount 17→18 + mainTheorems entry). PR pending.
 **Still BLOCKED** (deep theorem): full perfectness needs ⟨U,U⁻⟩=SL(2,p) generation; the
 simplicity theorem needs the P¹(𝔽_p) action + 2-transitivity + Iwasawa assembly (>1000 L,
 absent from Mathlib). Next tractable BUILD: generation ⟨U,U⁻⟩=SL(2,p) via Bruhat/Gauss.
+
+
+## Session 2026-07-09 (researcher-1) — BUILD: Bruhat generation ⟨U,U⁻⟩ = SL(2,p) [UNVERIFIED]
+Closed the **generation hypothesis** of Iwasawa's criterion by proving
+`closure_rootGroups_eq_top : Subgroup.closure (rootGroups) = ⊤` (rootGroups = range U ∪ range U⁻),
+the concrete Bruhat/Gauss decomposition of SL(2,p) — no P¹ action needed:
+- `weylW_eq_root_word`: `w = u(-1)·l(1)·u(-1)` (w is a word in the root groups);
+- `torusDiag_eq_root_word`: `diag(a) = u(a)·l(-a⁻¹)·u(a)·w` (whole split torus T ⊆ ⟨U,U⁻⟩);
+- `mem_closure_of_lowerLeft_ne_zero`: g with lower-left c≠0 = `u(ac⁻¹)·w·diag(c)·u(dc⁻¹)`
+  (top-right closes via ad−bc=1);
+- c=0 case: det=1 ⇒ g₀₀≠0, and `l(1)·g` has nonzero lower-left, so `l(-1)·(l(1)·g)` sweeps it in.
+Plus helpers `lowerUnipotent_mul/_zero` and membership lemmas for U, U⁻, w, T.
+Re-establishes and **completes** PR #35565's reverted rootGroups material (that had only membership
+of w/T, not the full `= ⊤`). File 544→738 L, 0 sorry / 0 axiom.
+
+**BLOCKER this session**: Docker Desktop's containerd metadata DB hit a persistent `input/output error`
+(`write .../io.containerd.metadata.v1.bolt/meta.db: input/output error`), so `docker run`/image build
+fails before reaching Lean — verification could NOT complete. An earlier repaired-cache build DID reach
+the file and showed only tactic-automation gaps (simp only left `!![..] ⟨0,⋯⟩ j` unevaluated), which are
+fixed by using full `simp [Matrix.mul_apply, Fin.sum_univ_two]` for index evaluation before
+`field_simp`/`linear_combination`, plus `maxHeartbeats 800000` on the two 4-matrix-product theorems.
+Work is committed+pushed on branch `research/sylow-oq0403-s1783630146`; **needs a clean Docker build to
+confirm** before it can be called VERIFIED.
+
+## Next Action
+Once Docker recovers, build `Proofs.SylowTheoremOQ04OQ03`; if green, upgrade status to VERIFIED and
+package perfectness `commutator (SL(2,p)) = ⊤` (p≥5) from generation + the derived-subgroup lemmas.
