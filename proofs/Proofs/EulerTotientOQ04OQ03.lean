@@ -1570,4 +1570,72 @@ theorem twentyone_smallest_reversing_seed :
       | (rw [classifySeed_17]; decide)
       | (rw [classifySeed_19]; decide)
 
+-- ---------------------------------------------------------------------------
+-- CLOSED-FORM CONGRUENCE FOR THE FIRST-STEP VALUATION REGIME
+-- ---------------------------------------------------------------------------
+-- The seed classifier splits odd seeds by `seedS a = v₂(2a − φ(a))`: the value
+-- `seedS a = 1` is the *transport-admissible* regime handled by the whole
+-- `dblIter_transport` machinery, while `seedS a ≥ 2` is the *excluded* regime
+-- (seeds 3,7,9,11,19,27,… — a = p^k with p ≡ 3 mod 4).  Prior work computed
+-- `seedS a` by an explicit 2-adic factorisation.  Here we give a closed-form
+-- *congruence* criterion: the regime is read directly off `φ(a) mod 4`.
+--
+--   a odd, a ≥ 3  ⟹  ( seedS a = 1  ↔  4 ∣ φ(a) )    and
+--                    ( seedS a ≥ 2  ↔  φ(a) ≡ 2 mod 4 ).
+--
+-- Reason: `a` odd ⟹ `2a ≡ 2 (mod 4)`, and `φ(a)` is even for `a ≥ 3`, so
+-- `4 ∣ (2a − φ(a)) ↔ φ(a) ≡ 2 (mod 4)`; the left side is `2 ≤ seedS a` by
+-- `Nat.Prime.pow_dvd_iff_le_factorization`.  (Empirically — brute-checked for
+-- odd a < 20000 — the excluded seeds `φ(a) ≡ 2 mod 4` are exactly the prime
+-- powers `p^k` with `p ≡ 3 mod 4`; that prime-power form is not formalised
+-- here.)  This closed form settles the regime without any valuation search.
+-- ---------------------------------------------------------------------------
+
+/-- **Excluded-regime congruence.**  For every odd `a ≥ 3`, the first cototient
+    step `2a − φ(a)` has 2-adic valuation `≥ 2` (the regime *outside* the
+    `seedS a = 1` transport machinery) exactly when `φ(a) ≡ 2 (mod 4)`.  Since
+    `a` is odd, `2a ≡ 2 (mod 4)`, so `4 ∣ (2a − φ(a)) ↔ φ(a) ≡ 2 (mod 4)`, and
+    `4 ∣ (2a − φ(a))` is `2 ≤ (2a − φ(a)).factorization 2 = seedS a`. -/
+theorem seedS_ge_two_iff_totient_mod_four {a : ℕ} (ha : Odd a) (ha3 : 3 ≤ a) :
+    2 ≤ seedS a ↔ Nat.totient a % 4 = 2 := by
+  have hφlt : Nat.totient a < a := Nat.totient_lt a (by omega)
+  have hodd : a % 2 = 1 := Nat.odd_iff.1 ha
+  have hev : Nat.totient a % 2 = 0 := Nat.even_iff.1 (Nat.totient_even (by omega))
+  have hne : 2 * a - Nat.totient a ≠ 0 := by omega
+  have hdvd : (2 : ℕ) ^ 2 ∣ (2 * a - Nat.totient a) ↔ 2 ≤ seedS a :=
+    Nat.prime_two.prime.pow_dvd_iff_le_factorization hne
+  rw [← hdvd, show (2 : ℕ) ^ 2 = 4 from rfl]
+  omega
+
+/-- **Transport-admissible congruence.**  For every odd `a ≥ 3`, the seed lies
+    in the transport-admissible regime `seedS a = 1` (first-step valuation
+    exactly one) exactly when `4 ∣ φ(a)`.  This is the negation of
+    `seedS_ge_two_iff_totient_mod_four` using `1 ≤ seedS a` and `Even (φ a)`. -/
+theorem seedS_eq_one_iff_four_dvd_totient {a : ℕ} (ha : Odd a) (ha3 : 3 ≤ a) :
+    seedS a = 1 ↔ 4 ∣ Nat.totient a := by
+  have hs1 : 1 ≤ seedS a := (seed_spec ha3).2.2.1
+  have hev : Nat.totient a % 2 = 0 := Nat.even_iff.1 (Nat.totient_even (by omega))
+  have key := seedS_ge_two_iff_totient_mod_four ha ha3
+  constructor
+  · intro h1
+    have hnot : ¬ (Nat.totient a % 4 = 2) := fun hc => by
+      have : 2 ≤ seedS a := key.2 hc; omega
+    omega
+  · intro h4
+    have hnot4 : ¬ (Nat.totient a % 4 = 2) := by omega
+    have hlt2 : ¬ (2 ≤ seedS a) := fun hc => hnot4 (key.1 hc)
+    omega
+
+/-- Sanity check of the congruence criterion at the smallest reversing seed:
+    `φ(21) = 12` is divisible by `4`, so `seedS 21 = 1` — the transport regime,
+    consistent with `classifySeed_21'` using first-step valuation `s = 1`. -/
+theorem seedS_21_eq_one : seedS 21 = 1 :=
+  (seedS_eq_one_iff_four_dvd_totient (by decide) (by norm_num)).2 (by norm_num [totient_21])
+
+/-- Sanity check at an excluded seed: `φ(3) = 2 ≡ 2 (mod 4)`, so `seedS 3 ≥ 2`
+    — outside the transport machinery, consistent with `classifySeed_3` using
+    first-step valuation `s = 2`. -/
+theorem seedS_three_ge_two : 2 ≤ seedS 3 :=
+  (seedS_ge_two_iff_totient_mod_four (by decide) (by norm_num)).2 (by norm_num [totient_3])
+
 end Erdos1064OQ03
