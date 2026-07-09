@@ -37,12 +37,23 @@ For the extremal Erdős–Szekeres sequences, where the longest monotone run has
 theorem. The matching **upper** bound (that `O(√n)` pieces always *suffice*) is the hard
 constructive direction and is left open, stated but not axiomatized.
 
+This file additionally sharpens and complements the bound:
+* **Type-split lower bound** (`monotonicDecomposition_numParts_lower_bound_split`):
+  `n ≤ (#increasing parts) · LIS + (#decreasing parts) · LDS`, which charges increasing and
+  decreasing parts their own budgets instead of the common worst case `max(LIS, LDS)`. It is
+  strictly sharper — `monotonicDecomposition_split_le_max` shows it implies the max bound.
+* **Tightness of the lower bracket** (`minMonotonicParts_eq_one_of_strictMono`): a strictly
+  increasing sequence has `LIS = n` and needs exactly one monotone part, so the elementary
+  lower bound `n / max(LIS, LDS)` is attained and cannot be improved in general.
+
 The framework is self-contained: it re-states the minimal `Subsequence` / `LIS` / `LDS` /
 `MonotonicDecomposition` interface of `Erdos1026Problem.lean` rather than importing it, since
 that file depends on `Archive.Wiedijk100Theorems`. No axioms, no sorries.
 -/
 
 open Finset
+
+open scoped Classical
 
 namespace Erdos1026OQ05
 
@@ -233,5 +244,134 @@ direction, still open (stated, not axiomatized). -/
 theorem minMonotonicParts_bracket (seq : RealSeq n) :
     n / max (LIS seq) (LDS seq) ≤ minMonotonicParts seq ∧ minMonotonicParts seq ≤ n :=
   ⟨minMonotonicParts_ge seq, minMonotonicParts_le seq⟩
+
+/-!
+## Type-split lower bound (a sharpening)
+
+The bound `n ≤ numParts · max(LIS, LDS)` is wasteful: it charges *every* part the same
+worst-case length `max(LIS, LDS)`, even though an increasing part can only be as long as
+`LIS` and a decreasing part only as long as `LDS`. Splitting the parts by type gives the
+strictly sharper (and exact-counting) bound
+
+    n ≤ (#increasing parts) · LIS + (#decreasing parts) · LDS.
+
+Because `LIS · numInc + LDS · numDec ≤ max(LIS,LDS) · numParts`, this refinement recovers the
+earlier bound as a corollary while separating the increasing and decreasing budgets — useful
+whenever the two longest monotone runs have very different lengths (e.g. an almost-increasing
+sequence with tiny `LDS`).
+-/
+
+/-- Every monotonic decomposition uses at least `n` cells, split by part *type*:
+increasing parts contribute at most `LIS seq` each and decreasing parts at most `LDS seq`
+each. This is strictly sharper than `monotonicDecomposition_numParts_lower_bound` (see
+`monotonicDecomposition_split_le_max`), which it implies. -/
+theorem monotonicDecomposition_numParts_lower_bound_split
+    (seq : RealSeq n) (D : MonotonicDecomposition n seq) :
+    n ≤ (univ.filter (fun i => IsIncreasing seq (D.parts i).2)).card * LIS seq
+        + (univ.filter (fun i => ¬ IsIncreasing seq (D.parts i).2)).card * LDS seq := by
+  classical
+  -- The covering surjection gives `n ≤ Σ part lengths` (same counting step as the max bound).
+  have hcard : n ≤ ∑ i, (D.parts i).1 := by
+    let g : (Σ i : Fin D.numParts, Fin (D.parts i).1) → Fin n :=
+      fun p => (D.parts p.1).2.indices p.2
+    have hsurj : Function.Surjective g := by
+      intro k
+      obtain ⟨i, m, hm, hk⟩ := D.covering k
+      exact ⟨⟨i, ⟨m, hm⟩⟩, hk⟩
+    have h := Fintype.card_le_of_surjective g hsurj
+    rw [Fintype.card_fin, Fintype.card_sigma] at h
+    simpa using h
+  refine hcard.trans ?_
+  -- Split `Σ i, len i` into increasing parts and the rest.
+  rw [← Finset.sum_filter_add_sum_filter_not univ
+        (fun i => IsIncreasing seq (D.parts i).2) (fun i => (D.parts i).1)]
+  -- Increasing parts: each has length `≤ LIS seq`.
+  have hInc :
+      ∑ i ∈ univ.filter (fun i => IsIncreasing seq (D.parts i).2), (D.parts i).1
+        ≤ (univ.filter (fun i => IsIncreasing seq (D.parts i).2)).card * LIS seq := by
+    calc ∑ i ∈ univ.filter (fun i => IsIncreasing seq (D.parts i).2), (D.parts i).1
+        ≤ ∑ _i ∈ univ.filter (fun i => IsIncreasing seq (D.parts i).2), LIS seq := by
+          refine Finset.sum_le_sum (fun i hi => ?_)
+          rw [Finset.mem_filter] at hi
+          exact len_le_LIS_of_increasing hi.2
+      _ = (univ.filter (fun i => IsIncreasing seq (D.parts i).2)).card * LIS seq := by
+          rw [Finset.sum_const, smul_eq_mul]
+  -- Non-increasing parts are (by monotonicity) decreasing: each has length `≤ LDS seq`.
+  have hDec :
+      ∑ i ∈ univ.filter (fun i => ¬ IsIncreasing seq (D.parts i).2), (D.parts i).1
+        ≤ (univ.filter (fun i => ¬ IsIncreasing seq (D.parts i).2)).card * LDS seq := by
+    calc ∑ i ∈ univ.filter (fun i => ¬ IsIncreasing seq (D.parts i).2), (D.parts i).1
+        ≤ ∑ _i ∈ univ.filter (fun i => ¬ IsIncreasing seq (D.parts i).2), LDS seq := by
+          refine Finset.sum_le_sum (fun i hi => ?_)
+          rw [Finset.mem_filter] at hi
+          exact len_le_LDS_of_decreasing ((D.monotonic i).resolve_left hi.2)
+      _ = (univ.filter (fun i => ¬ IsIncreasing seq (D.parts i).2)).card * LDS seq := by
+          rw [Finset.sum_const, smul_eq_mul]
+  exact add_le_add hInc hDec
+
+/-- The type-split budget never exceeds the crude `numParts · max(LIS, LDS)` budget: charging
+increasing parts `LIS` and decreasing parts `LDS` is at most charging every part the max.
+Hence `monotonicDecomposition_numParts_lower_bound_split` implies (refines)
+`monotonicDecomposition_numParts_lower_bound`. -/
+theorem monotonicDecomposition_split_le_max
+    (seq : RealSeq n) (D : MonotonicDecomposition n seq) :
+    (univ.filter (fun i => IsIncreasing seq (D.parts i).2)).card * LIS seq
+        + (univ.filter (fun i => ¬ IsIncreasing seq (D.parts i).2)).card * LDS seq
+      ≤ D.numParts * max (LIS seq) (LDS seq) := by
+  classical
+  have hcount :
+      (univ.filter (fun i => IsIncreasing seq (D.parts i).2)).card
+        + (univ.filter (fun i => ¬ IsIncreasing seq (D.parts i).2)).card = D.numParts := by
+    have h := Finset.filter_card_add_filter_neg_card_eq_card
+      (s := (univ : Finset (Fin D.numParts))) (p := fun i => IsIncreasing seq (D.parts i).2)
+    simpa using h
+  calc (univ.filter (fun i => IsIncreasing seq (D.parts i).2)).card * LIS seq
+          + (univ.filter (fun i => ¬ IsIncreasing seq (D.parts i).2)).card * LDS seq
+      ≤ (univ.filter (fun i => IsIncreasing seq (D.parts i).2)).card * max (LIS seq) (LDS seq)
+          + (univ.filter (fun i => ¬ IsIncreasing seq (D.parts i).2)).card
+              * max (LIS seq) (LDS seq) := by
+        gcongr
+        · exact le_max_left _ _
+        · exact le_max_right _ _
+    _ = D.numParts * max (LIS seq) (LDS seq) := by
+        rw [← add_mul, hcount]
+
+/-!
+## Tightness of the lower bracket
+
+The bracket `minMonotonicParts seq ∈ [n / max(LIS,LDS), n]` has *both* ends attained. The
+crude upper end `n` is attained by any strictly-alternating (Erdős–Szekeres-extremal-like)
+sequence where every monotone run has length `≤ 2`; the *lower* end is attained by a strictly
+monotone sequence, for which one part suffices. We record the latter: a strictly increasing
+sequence needs exactly one monotone part, so the lower bound of the bracket cannot be improved
+to anything larger than `1` in general. -/
+
+/-- The whole index set as a single (identity) increasing subsequence. -/
+def wholeSubsequence (n : ℕ) : Subsequence n n := ⟨id, strictMono_id⟩
+
+/-- A strictly increasing sequence has `LIS = n`: the whole sequence is one increasing run. -/
+theorem LIS_eq_of_strictMono {seq : RealSeq n} (h : StrictMono seq) : LIS seq = n := by
+  refine le_antisymm (csSup_le ⟨n, wholeSubsequence n, h⟩ ?_)
+    (len_le_LIS_of_increasing (sub := wholeSubsequence n) h)
+  rintro m ⟨sub, -⟩
+  exact subsequence_length_le sub
+
+/-- A strictly increasing sequence is covered by a single monotone part. -/
+def wholeDecomposition {seq : RealSeq n} (h : StrictMono seq) :
+    MonotonicDecomposition n seq where
+  numParts := 1
+  parts := fun _ => ⟨n, wholeSubsequence n⟩
+  monotonic := fun _ => Or.inl h
+  disjoint := fun i j _ _ hij => absurd (Subsingleton.elim i j) hij
+  covering := fun k => ⟨0, k.val, k.isLt, Fin.eta k k.isLt⟩
+
+/-- **Lower bracket is tight.** A strictly increasing sequence of positive length needs
+exactly one monotone part. Since the division lower bound here reads `n / max(LIS,LDS) =
+n / n = 1`, this shows the elementary lower bound is attained — it cannot be improved. -/
+theorem minMonotonicParts_eq_one_of_strictMono {seq : RealSeq n} (h : StrictMono seq)
+    (hn : 0 < n) : minMonotonicParts seq = 1 := by
+  refine le_antisymm ?_ (minMonotonicParts_pos seq hn)
+  apply Nat.sInf_le
+  exact ⟨wholeDecomposition h, rfl⟩
 
 end Erdos1026OQ05
