@@ -23,9 +23,7 @@ References:
 - Luca [Lu01]: Complete solution (Math. Comp.)
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Nat.Factorial.Basic
+import Mathlib
 
 namespace Erdos1058
 
@@ -34,20 +32,37 @@ namespace Erdos1058
 -/
 
 /--
-**The prime sequence:**
-p₁ = 2, p₂ = 3, p₃ = 5, p₄ = 7, ...
-The n-th prime number.
--/
-axiom prime_seq : ℕ → ℕ
+**The prime sequence**, `pₙ =` the `n`-th prime.  **0-indexed** (Mathlib's
+`Nat.nth` convention): `p₀ = 2, p₁ = 3, p₂ = 5, p₃ = 7, p₄ = 11, …`.
 
-/--
-**Basic properties of the prime sequence:**
-p₁ = 2, and pₙ₊₁ > pₙ for all n.
--/
-/--
-**First few primes:**
-p₁ = 2, p₂ = 3, p₃ = 5, p₄ = 7, p₅ = 11.
--/
+Grounded on `Nat.nth Nat.Prime` rather than left as an opaque `axiom prime_seq :
+ℕ → ℕ`.  This is a genuine improvement: an uninterpreted function axiom carries no
+information (it could be `fun _ => 0`), which made `inPrimeInterval`,
+`onlyTwoPrimesDivide`, and hence the entire Erdős–Stewart statement *vacuous*.
+Anchoring `prime_seq` to the actual primes makes those statements refer to the real
+object of study, and eliminates one axiom from the file. -/
+noncomputable def prime_seq (n : ℕ) : ℕ := Nat.nth Nat.Prime n
+
+/-- Every term of `prime_seq` is prime (`Nat.prime_nth_prime`). -/
+theorem prime_seq_prime (n : ℕ) : Nat.Prime (prime_seq n) :=
+  Nat.prime_nth_prime n
+
+/-- **The prime sequence is strictly increasing**: `pₘ < pₙ ↔ m < n`, in particular
+`pₙ < pₙ₊₁` (this is the "`pₙ₊₁ > pₙ`" property the header promised). -/
+theorem prime_seq_strictMono : StrictMono prime_seq :=
+  Nat.nth_strictMono Nat.infinite_setOf_prime
+
+/-- **First few primes** (grounding the header's table), now proved rather than
+asserted: `p₀ = 2, p₁ = 3, p₂ = 5, p₃ = 7, p₄ = 11`. -/
+theorem prime_seq_zero : prime_seq 0 = 2 := Nat.nth_prime_zero_eq_two
+
+theorem prime_seq_one : prime_seq 1 = 3 := Nat.nth_prime_one_eq_three
+
+theorem prime_seq_two : prime_seq 2 = 5 := Nat.nth_prime_two_eq_five
+
+theorem prime_seq_three : prime_seq 3 = 7 := Nat.nth_prime_three_eq_seven
+
+theorem prime_seq_four : prime_seq 4 = 11 := Nat.nth_prime_four_eq_eleven
 /-
 ## Part II: The Problem Statement
 -/

@@ -42,3 +42,32 @@ The elementary factorial-technique content is now essentially complete: exact
 Wilson characterisation, sibling `n!-1`, the prime-factor-exceeds-`n` engine,
 Euclid infinitude, twin coprimality, and the prime-power data. The parent #1058
 core (Luca's finiteness classification) remains genuinely deep / axiomatized.
+
+## Session 2026-07-09 (researcher-7) — parent axiom elimination: ground prime_seq (3→2)
+
+**Mode**: AXIOM HUNT on the parent `Erdos1058Problem.lean` (OQ03 companion was already
+0-axiom/0-sorry and "essentially complete"). The parent carried **3 axioms**, one of which —
+`axiom prime_seq : ℕ → ℕ` — was an **opaque uninterpreted function** carrying zero information
+(it could be `fun _ => 0`). Because `inPrimeInterval` / `onlyTwoPrimesDivide` / `satisfiesCondition`
+are all defined in terms of it, the entire Erdős–Stewart statement was effectively **vacuous**.
+
+**Done (VERIFIED, docker `[7743/7743]` green first try):**
+- Replaced `axiom prime_seq : ℕ → ℕ` with `noncomputable def prime_seq (n) := Nat.nth Nat.Prime n`
+  (0-indexed: p₀=2). axiomCount **3→2**; the whole statement now refers to the *actual* primes.
+- Added 7 verified axiom-free theorems the header promised but never stated (impossible while
+  prime_seq was opaque): `prime_seq_prime` (`Nat.prime_nth_prime`), `prime_seq_strictMono`
+  (`Nat.nth_strictMono Nat.infinite_setOf_prime`, gives pₙ₊₁>pₙ), `prime_seq_zero..four`
+  (`Nat.nth_prime_zero_eq_two` … `_four_eq_eleven` = 2,3,5,7,11).
+
+**Key API (Mathlib pin v4.26.0):** `Nat.nth Nat.Prime` = n-th prime (0-indexed, `noncomputable`);
+`Nat.prime_nth_prime : Nat.Prime (nth Prime n)`; `Nat.nth_strictMono (hf : (setOf p).Infinite)`;
+`Nat.infinite_setOf_prime`; `Nat.nth_prime_{zero..four}_eq_{two..eleven}`. Switched file to
+`import Mathlib` (was 3 specific imports) to reach the Nth/PrimeCounting API.
+
+**Verification:** `#print axioms` of all new theorems = {propext, Classical.choice, Quot.sound}.
+Remaining 2 axioms (`erdos_stewart_conjecture_true`, `luca_theorem`) are the deep asserted
+Erdős–Stewart finiteness + Luca 2001 classification — out of scope. meta.json synced (axiomCount
+3→2, theoremCount 2→9, lineCount 165→180, assumptions + originalContributions updated).
+
+**Note:** this is the mislabeled/opaque-axiom pattern again (cf. erdos-659-oq-01 same session):
+an axiom that is either a routine fact or an uninterpreted placeholder → dischargeable/groundable.
