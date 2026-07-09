@@ -1,5 +1,30 @@
 [
   {
+    "id": "ann-oq0703-header",
+    "proofId": "algebraic-numbers-countable-oq-07-oq-03",
+    "range": {
+      "startLine": 1,
+      "endLine": 70
+    },
+    "type": "context",
+    "title": "Setup: Product Lebesgue Measure and the n-Dimensional Open Question",
+    "content": "The imports assemble exactly the three ingredients the argument needs and nothing more: `MeasureTheory.Constructions.Pi` supplies the finite-product measure on `Fin n → α` together with `volume_pi_pi`; `Measure.Lebesgue.Basic` and `Measure.Lebesgue.Complex` fix the one-dimensional factors as the Lebesgue measure on ℝ and the planar Lebesgue measure on ℂ; and the two local imports `AlgebraicNumbersCountable` and `AlgebraicRealsNull` bring in the one-dimensional inputs (countability and nullity of the algebraic reals / complex algebraic numbers) that this entry lifts to n dimensions. The module docstring states the parent's third open question verbatim and lays out the two-way split that structures the whole file: the *strong* measure statement (at least one algebraic coordinate ⇒ null, for every n, an uncountable null set once n ≥ 2) versus the *cardinality* statement (all coordinates algebraic ⇒ countable ⇒ null for n ≥ 1). Working in `Fin n → ℝ` rather than a bespoke ℝⁿ type is what lets `volume_pi_pi`, `countable_pi`, and `Function.update` apply directly. The `open MeasureTheory Set` and `namespace AlgebraicPointsNull` scope every subsequent lemma.",
+    "mathContext": "Ambient space: $(\\mathrm{Fin}\\,n \\to \\mathbb{R},\\ \\mathrm{volume})$ where $\\mathrm{volume}$ is the product Lebesgue measure, equal to the $n$-fold product $\\lambda^{\\otimes n}$. The open question asks to prove $\\mathrm{vol}\\{x \\mid \\exists i,\\ \\mathrm{IsAlgebraic}_\\mathbb{Q}\\,x_i\\}=0$ and $\\{x \\mid \\forall i,\\ \\mathrm{IsAlgebraic}_\\mathbb{Q}\\,x_i\\}$ countable, hence $\\forall^m x,\\ \\forall i,\\ \\mathrm{Transcendental}_\\mathbb{Q}\\,x_i$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "product Lebesgue measure",
+      "Fin n → α as ℝⁿ",
+      "volume_pi_pi",
+      "smallness trichotomy",
+      "open question generalization"
+    ],
+    "prerequisites": [
+      "Lebesgue measure on ℝ and ℂ",
+      "Finite product measures",
+      "Parent entries: algebraic-numbers-countable, algebraic-numbers-countable-oq-07"
+    ]
+  },
+  {
     "id": "ann-oq0703-cylinder-null",
     "proofId": "algebraic-numbers-countable-oq-07-oq-03",
     "range": {
