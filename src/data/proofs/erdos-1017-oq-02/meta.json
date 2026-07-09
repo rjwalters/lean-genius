@@ -54,33 +54,50 @@
       "The classical reason the Turán/EGP extremal graph is the BALANCED complete bipartite graph is the integer quarter-square extremality: ab is maximised at a = b given a + b = n, with maximum floor(n^2/4).",
       "Over the naturals the perfect-square gap (a-b)^2 must be exposed by a case split rather than subtraction, turning the AM-GM certificate into the elementary fact 0 <= d^2 (or 1 <= d^2 strictly).",
       "Combining the universal upper bound with equality at balance turns floor(n^2/4) from 'an upper bound' into 'the exact maximum', witnessed constructively by a = floor(n/2).",
-      "For even n the maximiser is unique (the gap (m-a)^2 is positive whenever a != m), pinning down K_{m,m} as the sole edge-maximiser; for odd n the two near-balanced splits K_{m,m+1} tie."
+      "For even n the maximiser is unique (the gap (m-a)^2 is positive whenever a != m), pinning down K_{m,m} as the sole edge-maximiser; for odd n the two near-balanced splits K_{m,m+1} tie.",
+      "One exact identity (a+b)^2 = 4·a·b + (a−b)^2 carries the whole theorem, and the floor in T(n) = ⌊n²/4⌋ is what splits the even and odd cases: when 4 | n² (even n = 2m) the floor is invisible, T(2m) = m² is attained cleanly, and after cancelling the factor 4 (Nat.lt_of_mul_lt_mul_left) the strict kernel gives a UNIQUE maximiser; for odd n = 2m+1 the identity leaves a remainder 1, so T(2m+1) = m(m+1) = ((2m+1)²−1)/4 rounds down and the two near-balanced splits tie rather than one strictly winning."
     ]
   },
   "sections": [
     {
-      "id": "header",
-      "title": "Background, turanBound, and Closed Forms",
-      "summary": "Docstring framing Erdős #1017 (EGP bound f ≤ ⌊n²/4⌋, balanced K_{⌊n/2⌋,⌈n/2⌉} as the triangle-free extremal example) and the gap this file fills (why the balanced split attains T). Re-declares turanBound n = n²/4 for self-containment and proves the parity closed forms turanBound_two_mul (T(2m) = m²) and turanBound_two_mul_add_one (T(2m+1) = m(m+1)).",
+      "id": "header-definition",
+      "title": "Background and turanBound Definition",
+      "summary": "Docstring framing Erdős #1017 (EGP bound f ≤ ⌊n²/4⌋, the balanced triangle-free K_{⌊n/2⌋,⌈n/2⌉} as extremal example) and the gap this file fills — WHY the balanced split attains T, which the companion files do not establish. Re-declares turanBound n = n²/4 for self-containment.",
       "startLine": 1,
-      "endLine": 62,
-      "mathContext": "T(n) = ⌊n²/4⌋ with T(2m) = m², T(2m+1) = m(m+1); the balanced complete bipartite graph realizes the EGP bound."
+      "endLine": 50,
+      "mathContext": "T(n) := ⌊n²/4⌋; the balanced complete bipartite graph realizes the EGP bound f ≤ T(n)."
+    },
+    {
+      "id": "closed-forms",
+      "title": "Parity Closed Forms of T",
+      "summary": "turanBound_two_mul (T(2m) = m²) via (2m)² = 4m², and turanBound_two_mul_add_one (T(2m+1) = m(m+1)) via (2m+1)² = 4·m(m+1)+1 and omega. These reduce the floor to an exact product on each parity class and are reused to prove equality at balance.",
+      "startLine": 52,
+      "endLine": 61,
+      "mathContext": "T(2m) = m², T(2m+1) = m(m+1) = ((2m+1)²−1)/4."
     },
     {
       "id": "amgm-kernel",
       "title": "Integer AM-GM Kernel",
-      "summary": "four_mul_mul_le_add_sq (4ab <= (a+b)^2) and its strict form four_mul_mul_lt_add_sq (a != b).",
+      "summary": "four_mul_mul_le_add_sq (4·a·b ≤ (a+b)²) and its strict form four_mul_mul_lt_add_sq (a ≠ b). The perfect-square gap (a−b)² is exposed by case-splitting a ≤ b / b ≤ a and writing the larger as smaller + d, reducing to 0 ≤ d² (resp. 1 ≤ d²) and discharged by nlinarith — no truncated subtraction.",
       "startLine": 63,
-      "endLine": 90,
-      "mathContext": "The square gap (a-b)^2 is exposed by case-splitting a <= b / b <= a and writing the larger as smaller + d, reducing to 0 <= d^2 (resp. 1 <= d^2)."
+      "endLine": 82,
+      "mathContext": "(a+b)² = 4·a·b + (a−b)²; so 4ab ≤ (a+b)², strict when a ≠ b (then (a−b)² ≥ 1)."
     },
     {
-      "id": "extremality",
-      "title": "Upper Bound, Equality at Balance, and Uniqueness",
-      "summary": "mul_compl_le_turanBound (a*(n-a) <= T(n)), balanced_mul_compl_eq_turanBound (equality at floor(n/2)), exists_balanced_max (T(n) is the maximum), even_unbalanced_lt (unique maximiser for even n).",
-      "startLine": 91,
+      "id": "upper-bound-balance",
+      "title": "Upper Bound and Equality at Balance",
+      "summary": "mul_compl_le_turanBound (a·(n−a) ≤ T(n) for every split a ≤ n), converting the floor bound via Nat.le_div_iff_mul_le and applying the kernel to a, n−a with a+(n−a)=n. balanced_mul_compl_eq_turanBound (⌊n/2⌋·(n−⌊n/2⌋) = T(n)) by a parity split reusing the closed forms; exists_balanced_max packages these into T(n) being the maximum, witnessed by a = ⌊n/2⌋.",
+      "startLine": 84,
+      "endLine": 116,
+      "mathContext": "a·(n−a) ≤ ⌊n²/4⌋ = T(n), with equality at a = ⌊n/2⌋; hence T(n) = max_a a·(n−a)."
+    },
+    {
+      "id": "uniqueness-significance",
+      "title": "Uniqueness for Even n and Significance",
+      "summary": "even_unbalanced_lt: for n = 2m the balanced split is the UNIQUE maximiser — any a ≠ m gives a·(2m−a) < m² = T(2m), via the strict kernel and cancelling the factor 4 with Nat.lt_of_mul_lt_mul_left. The closing docstring situates the extremality within the Erdős–Goodman–Pósa theorem: this is what makes the balanced complete bipartite graph THE extremal example.",
+      "startLine": 118,
       "endLine": 149,
-      "mathContext": "Nat.le_div_iff_mul_le converts the floor bound to the kernel; parity split plus the closed forms give equality at balance; Nat.lt_of_mul_lt_mul_left cancels the factor 4 for strict uniqueness."
+      "mathContext": "n = 2m, a ≠ m ⟹ a·(2m−a) < m² = T(2m); balanced K_{m,m} is the sole edge-maximiser (odd n: two near-balanced splits tie)."
     }
   ],
   "mainTheorems": [
