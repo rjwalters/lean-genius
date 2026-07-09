@@ -1,0 +1,87 @@
+{
+  "slug": "tetrahedral-number-formula-oq-01",
+  "title": "General Hockey-Stick Identity for Hyper-Tetrahedral Numbers",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "C",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "\\sum_{k=0}^{n} \\binom{k+d-2}{\\,d-1\\,} \\;=\\; \\binom{n+d-1}{\\,d\\,}\n\\qquad\\text{for all } d \\ge 1,\\; n \\ge 0.",
+    "plain": "The gallery already proves that the sum of the first `n` triangular numbers equals",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-07-09T15:01:52-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS (UNVERIFIED - build infra down): generalized the parent (fixed d=3) to ALL dimensions. Built a dimension-indexed hyper-tetrahedral (simplex) theory P_d(n)=C(n+d,d): figurate Pascal recurrence, the general hockey-stick sum_simplex (sum P_d = P_{d+1}), the iterated-partial-sum characterization iterSum_one (d-fold summation of the constant 1 = P_d), and the division-free closed form d! P_d(n)=prod(n+1+i). 0 sorries, 0 axioms. Could NOT machine-check: Docker containerd metadata.db I/O error + host lake cache missing Batteries.CodeAction.Basic.olean and Mathlib.Tactic.Omega.olean (fleet-race corruption).",
+    "builtItems": [
+      "simplexNumber d n := (n+d).choose d - the d-dimensional hyper-tetrahedral number (TetrahedralNumberFormulaOQ01.lean)",
+      "sum_simplex: sum_{k<=n} simplexNumber d k = simplexNumber (d+1) n - general hockey stick, any dimension d (via Nat.sum_range_add_choose)",
+      "iterSum_one: iterSum d (fun _=>1) n = simplexNumber d n - figurate ladder as d-fold iterated partial summation, induction on dimension",
+      "simplexNumber_succ_succ: P_{d+1}(n+1)=P_{d+1}(n)+P_d(n+1) - figurate Pascal recurrence",
+      "simplexNumber_eq_multichoose: P_d(n) = Nat.multichoose (n+1) d",
+      "factorial_mul_simplexNumber(_prod): d! P_d(n) = (n+1).ascFactorial d = prod_{i<d}(n+1+i) - division-free closed form generalizing 6*C(n+2,3)=n(n+1)(n+2)"
+    ],
+    "insights": [
+      "The hyper-tetrahedral / d-simplex number is exactly Mathlib Nat.multichoose (n+1) d = C(n+d,d); Mathlib gives the one-step hockey stick Nat.sum_range_add_choose : sum i in range(n+1),(i+d).choose d = (n+d+1).choose(d+1)",
+      "The whole figurate ladder (1 -> linear -> triangular -> tetrahedral -> ...) is captured in one dimension-indexed statement: it is the d-fold iterate of the partial-summation operator applied to the constant sequence 1. Induction is on the DIMENSION d, with the hockey stick as the single inductive step - a genuinely different structure from the parent's induction on n at fixed d=3.",
+      "The cleared closed form is uniform in d via the ascending factorial: d!*C(n+d,d) = (n+1).ascFactorial d (Nat.ascFactorial_eq_factorial_mul_choose), with the explicit product from Nat.ascFactorial_eq_prod_range."
+    ],
+    "mathlibGaps": [
+      "Mathlib has the one-step hockey stick and multichoose but no dimension-indexed figurate theory: no iterated-partial-sum characterization of simplex numbers, no figurate recurrence/closed form stated uniformly in the dimension d."
+    ],
+    "nextSteps": [
+      "MACHINE-VERIFY once build infra recovers: ./proofs/scripts/docker-build.sh Proofs.TetrahedralNumberFormulaOQ01 (or lake env lean once Batteries.CodeAction.Basic.olean / Mathlib.Tactic.Omega.olean regenerated).",
+      "Optional generalization: iterated summation of an arbitrary polynomial base sequence (not just constant 1) yields a shifted-binomial expansion - Norlund/finite-difference angle.",
+      "Optional: the multi-index simplex sum over 0<=i_1<=...<=i_k<=n of 1 = C(n+k,k) (nested-Finset form) as a second, combinatorial face of the same identity."
+    ],
+    "markdown": "# Knowledge Base: tetrahedral-number-formula-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "combinatorics",
+    "number-theory",
+    "figurate-numbers",
+    "binomial-coefficients",
+    "hockey-stick-identity",
+    "induction"
+  ],
+  "relatedProofs": [
+    "tetrahedral-number-formula"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-07-09T22:13:38.918Z",
+  "lastUpdate": "2026-07-09T22:13:39.047Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/TetrahedralNumberFormula.lean",
+      "filename": "TetrahedralNumberFormula.lean",
+      "lineCount": 128,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/TetrahedralNumberFormula.lean"
+    }
+  ]
+}
