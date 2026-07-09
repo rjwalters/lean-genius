@@ -774,17 +774,139 @@ def puiseuxSubalgebra (K : Type*) [CommRing K] : Subalgebra K (HahnSeries ℚ K)
 /-- **First inverse-closure fact: the inverse of a single-term series is Puiseux.**
 
 Over a field `K`, `(single m a)⁻¹ = single (-m) a⁻¹` (`HahnSeries.inv_single`), which is
-again a single term, hence a Puiseux series.  This is the base case of the (still open)
-full inverse-closure `IsPuiseuxSeries f → IsPuiseuxSeries f⁻¹` that would upgrade the
-subring/subalgebra to a subfield.  The general case needs a "series supported on the
-subgroup `(1/n)ℤ` form a subfield" reconstruction (via `HahnSeries.embDomainRingHom`
-from `ℤ ↪o ℚ`), which is not yet available in Mathlib. -/
+again a single term, hence a Puiseux series.  This is the base case of the full
+inverse-closure `IsPuiseuxSeries f → IsPuiseuxSeries f⁻¹`, which is now established in
+full generality below (`isPuiseux_inv`, Part X) and upgrades the subring/subalgebra to a
+genuine **subfield**. -/
 theorem isPuiseux_inv_single {K : Type*} [Field K] (m : ℚ) (a : K) :
     IsPuiseuxSeries (HahnSeries.single m a)⁻¹ := by
   rw [HahnSeries.inv_single]
   exact isPuiseux_single (-m) a⁻¹
 
 end Subalgebra
+
+/-! ### Part X: Full inverse-closure — the Puiseux series form a subfield
+
+Parts VIII/IX bundled the Puiseux series into a `Subring`/`K`-subalgebra of
+`HahnSeries ℚ K`.  The one closure property still missing for a **field** was inverse-
+closure: `IsPuiseuxSeries f → IsPuiseuxSeries f⁻¹`.  Part IX only handled the
+single-term base case (`isPuiseux_inv_single`).
+
+The general statement is exactly the algebraic reason "Puiseux series form a field": a
+series `f` supported on the subgroup `(1/n)ℤ ⊆ ℚ` is the image, under the domain-
+embedding ring homomorphism `HahnSeries.embDomainRingHom` induced by `ℤ ↪o ℚ, k ↦ k/n`,
+of a series `g : HahnSeries ℤ K`.  That homomorphism is an *injective field homomorphism*
+between two Hahn-series fields, so it transports inverses (`map_inv₀`): `f⁻¹ = φ(g⁻¹)` is
+again supported on `(1/n)ℤ`, hence Puiseux with the *same* ramification `n`.
+
+The single missing piece of plumbing is the preimage-reconstruction lemma
+`exists_embDomain_of_support_subset_range`: a Hahn series whose support lands inside the
+range of an order embedding is itself in the range of `embDomain`.  It is proved here by
+building the preimage series coefficient-wise (`g.coeff k = f.coeff (emb k)`) and checking
+its support is partially well-ordered, transporting a would-be descending sequence back
+through the order embedding to contradict well-ordering of `f.support`.
+-/
+
+section Subfield
+
+/-- **Preimage reconstruction for `embDomain`.**
+
+If the support of a Hahn series `f : HahnSeries Γ' R` is contained in the range of an
+order embedding `emb : Γ ↪o Γ'` (with `Γ` a linear order), then `f` is in the range of
+`HahnSeries.embDomain emb`: there is a `g : HahnSeries Γ R` with `embDomain emb g = f`.
+
+The witness is `g.coeff k = f.coeff (emb k)`; its support is `emb ⁻¹' f.support`, which is
+partially well-ordered because an infinite descending sequence there would map, through the
+strictly monotone `emb`, to one in the well-ordered `f.support`.  Mathlib has
+`support_embDomain_subset` (the forward inclusion) and `embDomain_injective`, but no such
+onto-its-range statement; this supplies it. -/
+theorem exists_embDomain_of_support_subset_range
+    {Γ Γ' R : Type*} [Zero R] [LinearOrder Γ] [PartialOrder Γ']
+    (emb : Γ ↪o Γ') {f : HahnSeries Γ' R} (hf : f.support ⊆ Set.range emb) :
+    ∃ g : HahnSeries Γ R, HahnSeries.embDomain emb g = f := by
+  have hpwo : (emb ⁻¹' f.support).IsPWO := by
+    rw [Set.isPWO_iff_isWF, Set.isWF_iff_no_descending_seq]
+    intro s hs hmem
+    exact (Set.isWF_iff_no_descending_seq.mp f.isPWO_support.isWF) (fun n => emb (s n))
+      (emb.strictMono.comp_strictAnti hs) hmem
+  refine ⟨{ coeff := fun k => f.coeff (emb k), isPWO_support' := hpwo.mono (fun k hk => hk) }, ?_⟩
+  ext b
+  by_cases hb : b ∈ Set.range emb
+  · obtain ⟨a, rfl⟩ := hb
+    rw [HahnSeries.embDomain_coeff]
+  · have hb0 : f.coeff b = 0 := by
+      by_contra hne
+      exact hb (hf ((HahnSeries.mem_support _ _).2 hne))
+    rw [HahnSeries.embDomain_notin_range hb, hb0]
+
+/-- **Full inverse-closure: the inverse of a Puiseux series is a Puiseux series.**
+
+If `IsPuiseuxSeries f` with ramification `n`, then `f⁻¹` is Puiseux with the *same*
+ramification `n`.  The proof factors `f` through the field homomorphism
+`φ = embDomainRingHom (k ↦ k/n) : HahnSeries ℤ K →+* HahnSeries ℚ K`: writing `f = φ g`
+via `exists_embDomain_of_support_subset_range`, we get `f⁻¹ = (φ g)⁻¹ = φ (g⁻¹)` by
+`map_inv₀`, whose support lies in the range of `ℤ ↪o ℚ, k ↦ k/n`, i.e. in `(1/n)ℤ`.
+
+This is the general case whose single-term instance was `isPuiseux_inv_single`, and it is
+exactly the closure needed to upgrade the subring/subalgebra to a subfield
+(`puiseuxSubfield`).  Note `f = 0` needs no special handling: then `g = 0`, `φ 0 = 0`, and
+`0⁻¹ = 0` is (vacuously) Puiseux. -/
+theorem isPuiseux_inv {K : Type*} [Field K] {f : HahnSeries ℚ K}
+    (hf : IsPuiseuxSeries f) : IsPuiseuxSeries f⁻¹ := by
+  obtain ⟨n, hn⟩ := hf
+  have hn0 : (0 : ℚ) < (n : ℚ) := by exact_mod_cast n.pos
+  -- the additive hom `ℤ →+ ℚ`, `k ↦ k / n`
+  let φ₀ : ℤ →+ ℚ :=
+    { toFun := fun k => (k : ℚ) / (n : ℚ)
+      map_zero' := by simp
+      map_add' := fun a b => by push_cast; ring }
+  have hmono : ∀ g g' : ℤ, φ₀ g ≤ φ₀ g' ↔ g ≤ g' := by
+    intro g g'
+    show (g : ℚ) / (n : ℚ) ≤ (g' : ℚ) / (n : ℚ) ↔ g ≤ g'
+    rw [div_le_div_iff_of_pos_right hn0, Int.cast_le]
+  have hfi : Function.Injective φ₀ := fun a b hab =>
+    le_antisymm ((hmono a b).1 hab.le) ((hmono b a).1 hab.ge)
+  -- the order embedding underlying `embDomainRingHom φ₀`
+  let emb : ℤ ↪o ℚ := ⟨⟨φ₀, hfi⟩, hmono _ _⟩
+  -- `f` is supported on the range of `emb = (1/n)ℤ`
+  have hfr : f.support ⊆ Set.range emb := by
+    intro q hq
+    obtain ⟨k, hk⟩ := hn q hq
+    exact ⟨k, hk.symm⟩
+  obtain ⟨g, hg⟩ := exists_embDomain_of_support_subset_range emb hfr
+  have key : ∀ x : HahnSeries ℤ K,
+      HahnSeries.embDomainRingHom φ₀ hfi hmono x = HahnSeries.embDomain emb x :=
+    fun _ => rfl
+  have hgf : HahnSeries.embDomainRingHom φ₀ hfi hmono g = f := by rw [key]; exact hg
+  have hinv : f⁻¹ = HahnSeries.embDomain emb g⁻¹ := by
+    rw [← hgf, ← map_inv₀ (HahnSeries.embDomainRingHom φ₀ hfi hmono) g, key]
+  rw [hinv]
+  refine ⟨n, fun q hq => ?_⟩
+  obtain ⟨k, hk⟩ := Set.image_subset_range _ _ (HahnSeries.support_embDomain_subset hq)
+  exact ⟨k, hk.symm⟩
+
+/-- **The Puiseux series form a subfield of `HahnSeries ℚ K`.**
+
+Upgrades `puiseuxSubring`/`puiseuxSubalgebra` (Parts VIII/IX) to a `Subfield`: the closure
+lemmas `isPuiseux_zero/one/add/mul/neg` together with the full inverse-closure
+`isPuiseux_inv` (Part X) supply every field-subobject axiom.  The carrier is again exactly
+`{f | IsPuiseuxSeries f}`, so this makes the informal "the Puiseux series form a field"
+a machine-checked substructure fact — the honest algebraic status of the fragment
+formalized in this file (short of full Newton–Puiseux algebraic closure). -/
+def puiseuxSubfield (K : Type*) [Field K] : Subfield (HahnSeries ℚ K) where
+  carrier := {f | IsPuiseuxSeries f}
+  zero_mem' := isPuiseux_zero
+  one_mem' := isPuiseux_one
+  add_mem' := fun ha hb => isPuiseux_add ha hb
+  mul_mem' := fun ha hb => isPuiseux_mul ha hb
+  neg_mem' := fun ha => isPuiseux_neg ha
+  inv_mem' := fun _ hx => isPuiseux_inv hx
+
+/-- Membership in the Puiseux subfield is definitionally the Puiseux condition. -/
+@[simp] theorem mem_puiseuxSubfield {K : Type*} [Field K] (y : HahnSeries ℚ K) :
+    y ∈ puiseuxSubfield K ↔ IsPuiseuxSeries y := Iff.rfl
+
+end Subfield
 
 /-! ═══════════════════════════════════════════════════════════════════════════════
 SUMMARY
