@@ -984,6 +984,42 @@ theorem stddev_add_eq_iff_affine_pos [IsProbabilityMeasure μ] {X Y : Ω → ℝ
   rw [stddev_add_eq_iff_correlation_eq_one hX hY hXnd hYnd,
     correlation_eq_one_iff_affine_pos hX hY hXnd hYnd]
 
+/-- **Strict standard-deviation triangle inequality (correlation form).**  For non-degenerate
+`X, Y` the L² triangle inequality `σ[X+Y] ≤ σ[X] + σ[Y]` of `stddev_add_le` is *strict* exactly
+when the correlation coefficient falls short of its ceiling:
+
+        √Var[X + Y] < √Var[X] + √Var[Y]  ↔  ρ[X, Y] < 1.
+
+The strict-inequality companion of the equality boundary `stddev_add_eq_iff_correlation_eq_one`.
+Since `stddev_add_le` supplies the `≤` and `abs_correlation_le_one` supplies `ρ ≤ 1`, both `<`
+reduce via `lt_iff_le_and_ne` to their respective `≠`, and the two `≠` correspond under the
+equality boundary — so the sum's standard deviation strictly undershoots the amplitude budget in
+every non-perfectly-aligned case. -/
+theorem stddev_add_lt_iff_correlation_lt_one [IsFiniteMeasure μ] {X Y : Ω → ℝ}
+    (hX : MemLp X 2 μ) (hY : MemLp Y 2 μ) (hXnd : Var[X; μ] ≠ 0) (hYnd : Var[Y; μ] ≠ 0) :
+    Real.sqrt (Var[X + Y; μ]) < Real.sqrt (Var[X; μ]) + Real.sqrt (Var[Y; μ]) ↔
+      correlation X Y μ < 1 := by
+  have hρle : correlation X Y μ ≤ 1 := (abs_le.mp (abs_correlation_le_one hX hY)).2
+  rw [lt_iff_le_and_ne, lt_iff_le_and_ne]
+  simp only [stddev_add_le hX hY, hρle, true_and, ne_eq, not_iff_not]
+  exact stddev_add_eq_iff_correlation_eq_one hX hY hXnd hYnd
+
+/-- **Strict standard-deviation triangle inequality (structural / affine form).**  For
+non-degenerate `X, Y` the triangle inequality is *strict*
+
+        √Var[X + Y] < √Var[X] + √Var[Y]
+
+*if and only if* `X` is **not** almost everywhere an increasing affine function of `Y`.  The strict
+companion of `stddev_add_eq_iff_affine_pos`: the aggregate standard deviation attains its ceiling
+precisely in the perfectly-positively-correlated (fully aligned) case, and undershoots it in every
+other configuration — the structural negation of that equality boundary. -/
+theorem stddev_add_lt_iff_not_affine_pos [IsProbabilityMeasure μ] {X Y : Ω → ℝ}
+    (hX : MemLp X 2 μ) (hY : MemLp Y 2 μ) (hXnd : Var[X; μ] ≠ 0) (hYnd : Var[Y; μ] ≠ 0) :
+    Real.sqrt (Var[X + Y; μ]) < Real.sqrt (Var[X; μ]) + Real.sqrt (Var[Y; μ]) ↔
+      ¬ ∃ a b : ℝ, 0 < a ∧ X =ᵐ[μ] fun ω => a * Y ω + b := by
+  rw [← stddev_add_eq_iff_affine_pos hX hY hXnd hYnd, lt_iff_le_and_ne]
+  simp only [stddev_add_le hX hY, true_and, ne_eq]
+
 /-!
 ### Multivariate sharp equality boundary of the standard-deviation triangle inequality
 
