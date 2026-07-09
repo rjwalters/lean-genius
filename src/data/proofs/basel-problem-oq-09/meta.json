@@ -162,6 +162,16 @@
       "targetId": "basel-problem-oq-11",
       "relationship": "related",
       "description": "The Dirichlet eta companion η(2) = π²/12 uses the same even/odd splitting machinery and reuses the odd-square value π²/8."
+    },
+    {
+      "targetId": "basel-problem-oq-13",
+      "relationship": "related — degree-4 analog",
+      "description": "The degree-4 counterpart ∑ 1/(2k+1)⁴ = π⁴/96 = λ(4) applies this entry's exact even/odd template to ζ(4) = π⁴/90 (even part = (1/16)ζ(4), odd part by uniqueness). It is precisely the λ(2m) generalization this entry's first open question asks for, at m = 2, so it is the direct realization of the reusable-split idiom advocated here."
+    },
+    {
+      "targetId": "basel-problem-oq-10",
+      "relationship": "related — odd-reciprocal companion",
+      "description": "Leibniz's series ∑ (−1)ᵏ/(2k+1) = π/4 sums over the same odd denominators 2k+1 but with alternating signs and first (rather than second) powers — the β(1) companion to this entry's λ(2). Together they illustrate how the odd-index reciprocals produce π/4 (alternating, linear) and π²/8 (positive, squared) from different Dirichlet L-functions on the same index set."
     }
   ],
   "references": [
