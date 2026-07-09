@@ -44,7 +44,8 @@
       "**Containment of structures replaces combination bookkeeping.** The TODO expects glue between `affineCombination` and `Finset.centerMass`, but the implication follows from a one-line containment: `convexHull 𝕜 T ⊆ affineSpan 𝕜 T`. A point outside the affine span is a fortiori outside the convex hull, so the convex-coefficient case never has to be examined directly.",
       "**Affine independence is exactly 'each point avoids the others' span'.** Mathlib's `AffineIndependent.notMem_affineSpan_diff` packages affine independence in precisely the shape the convex-independence characterization needs, so the two `iff`/lemma rewrites meet in the middle with no arithmetic.",
       "**Convex independence is extremality.** That no point lies in the convex hull of the others is the statement that every point is an extreme point of the hull — which is what `IsConvexPolyhedronVertices` demands of polyhedron vertices. For a simplex (affinely independent vertex set) this is automatic, which is why the regular tetrahedron of Erdős #660 needs no separate geometric argument.",
-      "**Generality comes for free.** The proof never uses anything beyond an ordered field structure, so the lemma holds over any `Field 𝕜` with a compatible `LinearOrder` (`IsStrictOrderedRing`), not just ℝ — matching the generality at which Mathlib states both `AffineIndependent` and `ConvexIndependent`."
+      "**Generality comes for free.** The proof never uses anything beyond an ordered field structure, so the lemma holds over any `Field 𝕜` with a compatible `LinearOrder` (`IsStrictOrderedRing`), not just ℝ — matching the generality at which Mathlib states both `AffineIndependent` and `ConvexIndependent`.",
+      "**The argument is pointwise in the vertices.** `notMem_affineSpan_diff` is applied one index at a time, so the proof actually establishes the stronger local fact that each individual affinely independent point avoids the hull of the others — extremality of that single vertex — with no reference to the rest of the set. Convex independence is just the ∀-packaging of these per-point certificates, which is exactly why the `notMem_convexHull_diff` corollary can certify one tetrahedron vertex as extreme in isolation rather than reasoning about all four at once."
     ],
     "prerequisites": [
       "Affine independence and affine spans",
@@ -55,12 +56,20 @@
   },
   "sections": [
     {
-      "id": "header",
+      "id": "docstring-context",
       "title": "Context: the Mathlib TODO and the Erdős #660 simplex",
       "startLine": 1,
-      "endLine": 38,
-      "summary": "Module docstring and setup: explains that certifying a simplex vertex set as convex-polyhedron vertices reduces to 'affinely independent ⟹ convex independent', the lemma Mathlib flags as a TODO, and that the proof avoids the anticipated affineCombination/centerMass glue. Opens the Affine scope and fixes a linearly ordered field 𝕜 and module E.",
+      "endLine": 29,
+      "summary": "Module docstring: certifying a simplex vertex set (e.g. the regular tetrahedron) as convex-polyhedron vertices reduces to 'affinely independent ⟹ convex independent', the implication Mathlib flags as a TODO in Analysis/Convex/Independent.lean. Records the anticipated affineCombination/centerMass route and announces the shorter affine-span route this file takes instead.",
       "mathContext": "An affinely independent set spans a simplex; all of its points are extreme, i.e. it is convex independent. The implication is the named Mathlib gap `AffineIndependent.convexIndependent`."
+    },
+    {
+      "id": "setup",
+      "title": "Imports and the ordered-field / module setup",
+      "startLine": 31,
+      "endLine": 38,
+      "summary": "import Mathlib, open scoped Affine, and the Erdos660 namespace. The variable block fixes a general algebraic setting — a Field 𝕜 carrying a compatible LinearOrder (IsStrictOrderedRing) acting on an AddCommGroup module E — rather than specializing to ℝ. This is exactly the generality at which Mathlib states both AffineIndependent and ConvexIndependent, and is why the resulting lemma is a genuine drop-in.",
+      "mathContext": "Assumptions: $[\\mathrm{Field}\\,\\mathbb{k}]\\,[\\mathrm{LinearOrder}\\,\\mathbb{k}]\\,[\\mathrm{IsStrictOrderedRing}\\,\\mathbb{k}]\\,[\\mathrm{AddCommGroup}\\,E]\\,[\\mathrm{Module}\\,\\mathbb{k}\\,E]$ — no reliance on $\\mathbb{k}=\\mathbb{R}$."
     },
     {
       "id": "main",
@@ -71,12 +80,20 @@
       "mathContext": "AffineIndependent 𝕜 p → ConvexIndependent 𝕜 p, proved without the affineCombination/centerMass bookkeeping the Mathlib TODO anticipates."
     },
     {
-      "id": "set-forms",
-      "title": "Set-indexed corollaries",
+      "id": "set-corollary",
+      "title": "Set-indexed corollary",
       "startLine": 55,
+      "endLine": 60,
+      "summary": "`convexIndependent_of_affineIndependent_set`: an affinely independent subset, taken as the coercion family `(↑) : s → E`, is convex independent. A one-line specialization of the main theorem to set-valued index types, the form in which polyhedron vertex sets are actually presented.",
+      "mathContext": "For $s \\subseteq E$ with $(\\uparrow) : s \\to E$ affinely independent, the family is convex independent."
+    },
+    {
+      "id": "notmem-corollary",
+      "title": "The notMem_convexHull certification form",
+      "startLine": 62,
       "endLine": 70,
-      "summary": "`convexIndependent_of_affineIndependent_set`: an affinely independent subset (coercion family `(↑) : s → E`) is convex independent. `notMem_convexHull_diff_of_affineIndependent_set`: for such an `s` and `x ∈ s`, `x ∉ convexHull 𝕜 (s \\ {x})` — the form directly usable to certify each vertex of a simplex as an extreme point.",
-      "mathContext": "Restatements for an affinely independent set, including the explicit `x ∉ convexHull 𝕜 (s \\ {x})` used to certify `IsConvexPolyhedronVertices` for simplex constructions."
+      "summary": "`notMem_convexHull_diff_of_affineIndependent_set`: for an affinely independent set `s` and `x ∈ s`, `x ∉ convexHull 𝕜 (s \\ {x})`. Unfolding `convexIndependent_set_iff_notMem_convexHull_diff` lands the result on the exact shape the simplex constructions consume — certifying each individual vertex as an extreme point of the hull.",
+      "mathContext": "$x \\notin \\mathrm{convexHull}\\,\\mathbb{k}\\,(s \\setminus \\{x\\})$ — the direct certificate that $x$ is an extreme point, i.e. the `IsConvexPolyhedronVertices` condition per vertex."
     }
   ],
   "mainTheorems": [

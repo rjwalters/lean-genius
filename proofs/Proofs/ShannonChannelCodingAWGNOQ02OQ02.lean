@@ -171,4 +171,64 @@ theorem awgn_multisymbol_power_of_uncorrelated [IsProbabilityMeasure μ] {ι : T
   refine Finset.sum_congr rfl fun i hi => ?_
   exact (second_moment_eq_variance (hW i hi) (hmean i hi)).symm
 
+/-!
+### Sharp necessity: what is the *exact* condition for power to add?
+
+The results above show that vanishing pairwise covariances are **sufficient** for the
+variance (equivalently, zero-mean power) to add.  Are they also **necessary**?  The
+Bienaymé expansion `Var[∑ Wᵢ] = ∑ᵢ ∑ⱼ cov[Wᵢ, Wⱼ]` (`variance_sum'`) answers this
+exactly: peeling off the diagonal `cov[Wᵢ, Wᵢ] = Var[Wᵢ]` leaves
+
+    Var[∑_{i ∈ s} Wᵢ] = ∑_{i ∈ s} Var[Wᵢ]  +  ∑_{i ∈ s} ∑_{j ∈ s, j ≠ i} cov[Wᵢ, Wⱼ],
+
+so additivity of variance holds **iff the total off-diagonal covariance vanishes** — a
+condition strictly weaker than pairwise uncorrelatedness (the individual covariances may
+cancel in aggregate without each being zero).  Thus, for a block of `n ≥ 3` contributions,
+pairwise uncorrelatedness is sufficient but *not* necessary for the powers to add; only
+the aggregate off-diagonal cancellation is.  For the two-symbol case the off-diagonal sum
+is `2·cov[W₀, W₁]`, so there additivity holds **iff** the single covariance is zero —
+uncorrelatedness is then exactly necessary and sufficient.
+-/
+
+/-- **Exact condition for variance additivity (sharp necessity).**  For any finite family
+of square-integrable random variables, the variance of the sum equals the sum of the
+variances *if and only if* the total off-diagonal covariance vanishes:
+
+    Var[∑_{i ∈ s} Wᵢ] = ∑_{i ∈ s} Var[Wᵢ]  ↔  ∑_{i ∈ s} ∑_{j ∈ s.erase i} cov[Wᵢ, Wⱼ] = 0.
+
+This is the sharp converse to `variance_sum_of_pairwise_uncorrelated`: pairwise
+uncorrelatedness (`cov[Wᵢ, Wⱼ] = 0` for all `i ≠ j`) forces the double sum to be zero and
+so is *sufficient*, but the identity holds under the strictly weaker hypothesis that the
+off-diagonal covariances merely *cancel in aggregate*. -/
+theorem variance_sum_eq_iff_offDiag_covariance_zero [IsFiniteMeasure μ] {ι : Type*}
+    [DecidableEq ι] {W : ι → Ω → ℝ} {s : Finset ι} (hW : ∀ i ∈ s, MemLp (W i) 2 μ) :
+    Var[∑ i ∈ s, W i; μ] = ∑ i ∈ s, Var[W i; μ] ↔
+      ∑ i ∈ s, ∑ j ∈ s.erase i, cov[W i, W j; μ] = 0 := by
+  have hsplit : ∀ i ∈ s, ∑ j ∈ s, cov[W i, W j; μ]
+      = Var[W i; μ] + ∑ j ∈ s.erase i, cov[W i, W j; μ] := by
+    intro i hi
+    rw [← Finset.add_sum_erase s (fun j => cov[W i, W j; μ]) hi,
+      covariance_self (hW i hi).aemeasurable]
+  have key : ∑ i ∈ s, ∑ j ∈ s, cov[W i, W j; μ]
+      = (∑ i ∈ s, Var[W i; μ]) + ∑ i ∈ s, ∑ j ∈ s.erase i, cov[W i, W j; μ] := by
+    rw [← Finset.sum_add_distrib]
+    exact Finset.sum_congr rfl hsplit
+  rw [variance_sum' hW, key]
+  constructor <;> intro h <;> linarith
+
+/-- **Two-symbol sharp boundary.**  For a *pair* of square-integrable contributions the
+output powers add if and only if the two are uncorrelated:
+
+    Var[W₀ + W₁] = Var[W₀] + Var[W₁]  ↔  cov[W₀, W₁] = 0.
+
+Here uncorrelatedness is genuinely *necessary* (not merely sufficient), because the single
+off-diagonal covariance cannot cancel against anything.  This is the exact second-order
+condition behind the two-term AWGN identity `E[(X + Z)²] = E[X²] + E[Z²]` of the parent
+file. -/
+theorem variance_add_eq_iff_covariance_zero [IsFiniteMeasure μ] {W₀ W₁ : Ω → ℝ}
+    (h₀ : MemLp W₀ 2 μ) (h₁ : MemLp W₁ 2 μ) :
+    Var[W₀ + W₁; μ] = Var[W₀; μ] + Var[W₁; μ] ↔ cov[W₀, W₁; μ] = 0 := by
+  rw [variance_add h₀ h₁]
+  constructor <;> intro h <;> linarith
+
 end ShannonAWGNMultiSymbolPower

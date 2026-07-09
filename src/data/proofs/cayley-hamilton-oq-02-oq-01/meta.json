@@ -2,7 +2,7 @@
   "id": "cayley-hamilton-oq-02-oq-01",
   "slug": "cayley-hamilton-oq-02-oq-01",
   "title": "Putzer's Algorithm: Algebraic Core (Telescoping Identity & Cayley–Hamilton Truncation)",
-  "description": "Establishes the purely algebraic scaffolding of Putzer's algorithm for the matrix exponential e^{tA} = ∑ₖ Pₖ(t)ρ_{k-1}, where ρₖ = (A-λₖI)…(A-λ₁I) is the ordered partial product of the eigenfactors. Proves the two identities that drive the (deferred) derivative computation Ṁ = A·M: the key telescoping identity A·ρₖ = ρ_{k+1} + λₖ·ρₖ, and the Cayley–Hamilton truncation ρₙ = 0 (when χ_A splits as ∏(X-λᵢ)). Defines ρ by an ordered recursion so no CommMonoid structure on matrices is required, and proves A commutes with every ρₖ. Also supplies the algebraic initial condition M(0)=I (putzer_sum_initial) and packages both IVP conditions — Ṁ=A·M and M(0)=I — into a single algebraic statement (putzer_ivp_charpoly). The remaining analytic layer (constructing the ODE coefficient functions Pₖ(t), differentiating the finite sum, and matrix-valued ODE uniqueness against NormedSpace.exp) is NOT included and is documented as future work. 16 lemmas, 1 definition, 0 axioms, 0 sorries.",
+  "description": "Establishes the purely algebraic scaffolding of Putzer's algorithm for the matrix exponential e^{tA} = ∑ₖ Pₖ(t)ρ_{k-1}, where ρₖ = (A-λₖI)…(A-λ₁I) is the ordered partial product of the eigenfactors. Proves the two identities that drive the (deferred) derivative computation Ṁ = A·M: the key telescoping identity A·ρₖ = ρ_{k+1} + λₖ·ρₖ, and the Cayley–Hamilton truncation ρₙ = 0 (when χ_A splits as ∏(X-λᵢ)). Defines ρ by an ordered recursion so no CommMonoid structure on matrices is required, and proves A commutes with every ρₖ. Also supplies the algebraic initial condition M(0)=I (putzer_sum_initial) and packages both IVP conditions — Ṁ=A·M and M(0)=I — into a single algebraic statement (putzer_ivp_charpoly). The remaining analytic layer (constructing the ODE coefficient functions Pₖ(t), differentiating the finite sum, and matrix-valued ODE uniqueness against NormedSpace.exp) is NOT included and is documented as future work. 18 lemmas, 1 definition, 0 axioms, 0 sorries.",
   "problemStatement": "Formalize Putzer's algorithm: given eigenvalues λ₁,…,λₙ of A, prove e^{tA} = ∑ₖ Pₖ(t)ρₖ where ρₖ = ∏_{i<k}(A-λᵢI) and Ṗₖ = λₖPₖ + Pₖ₋₁. This entry contributes the verified algebraic core; the analytic completion remains open.",
   "meta": {
     "author": "Lean Genius (researcher-15)",
@@ -20,8 +20,8 @@
     ],
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 292,
-    "theoremCount": 16,
+    "lineCount": 319,
+    "theoremCount": 18,
     "definitionCount": 1,
     "assumptions": "Derives from Mathlib's Cayley–Hamilton theorem (Matrix.aeval_self_charpoly). All results are fully machine-checked over an arbitrary CommRing R (0 sorries, 0 axiom declarations, no structure-encoded assumptions). SCOPE: this file proves only the ALGEBRAIC core of Putzer's algorithm — the telescoping identity and ρₙ = 0. It does NOT prove the full analytic identity e^{tA} = ∑ₖ Pₖ(t)ρ_{k-1}; the ODE-coefficient construction and the matrix-valued ODE-uniqueness step are deferred future work, so the parent's open question is only partially answered.",
     "originalContributions": [
@@ -41,10 +41,10 @@
   "leanFile": {
     "namespace": "PutzerMatrixExp",
     "path": "Proofs/CayleyHamiltonOQ02OQ01.lean",
-    "lineCount": 292,
+    "lineCount": 319,
     "axiomCount": 0,
     "sorries": 0,
-    "theoremCount": 16,
+    "theoremCount": 18,
     "definitionCount": 1
   },
   "overview": {

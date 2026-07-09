@@ -26,11 +26,23 @@
     "nextAction": "Reconstruct the energy-increment step (epsilon-irregular refinement raises partitionEnergy by >= delta) from split_energy_excess_bound, then assemble the outer AFKS loop using partitionEnergy_no_infinite_increments as termination certificate."
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS: built the verified energy-INCREMENT engine (0 sorry/0 axiom, host-verified) complementing the existing termination engine. partitionEnergy refinement monotonicity + quantitative Cauchy-Schwarz gain now proven; strong AFKS lemma statement still open.",
+    "builtItems": [
+      "edgeDensity_union_mul in SzemerediRegularityOQ04Energy.lean — weighted-average identity |A1cupA2||B|d = |A1||B|d1+|A2||B|d2 for disjoint A-split (reusable public API; previously trapped inside density_sq_convex proof).",
+      "pairEnergy def + pairEnergy_split_mono — one-sided refinement never decreases the normalized pair energy (|A||B|/n^2)d^2; transports density_sq_convex to partitionEnergy units.",
+      "pairEnergy_split_gain — quantitative energy increment: |d1-d2|>=delta gives gain >= (|A1||A2|/(|A1|+|A2|))(|B|/n^2)delta^2 (the AFKS Cauchy-Schwarz boost).",
+      "pairEnergy_row_split_mono — monotonicity summed over a row of B-parts (Finset.sum_le_sum)."
+    ],
+    "insights": [
+      "partitionEnergy IS the standard size-weighted energy |Pi||Pj|/n^2 d^2 (SzemerediCore:63), NOT 1/k^2. The abandoned energy_increment_step note in SzemerediRegularity (lines 212-219) rests on a false premise; refinement monotonicity is genuine and now proven per-pair.",
+      "The weighted-average d(A1cupA2,B)=(|A1|d1+|A2|d2)/(|A1|+|A2|) plus split_energy_identity/excess_bound give the increment purely; scaling by |B|/n^2>=0 lifts density_sq_convex into the normalized energy."
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Assemble whole-partition refinement monotonicity: split one part A->A1|A2 across the full parts x parts product sum (2D: rows AND columns AND the diagonal (A,A) via double convexity).",
+      "Combine pairEnergy_split_gain with exists_irregular_witness (2-sided A,B refinement) to get the eps^5 whole-partition energy jump, then feed energy_iteration_count_le for the AFKS bound.",
+      "State the strong-regularity conclusion: almost-all-pairs regular with arbitrary precision (Alon-Fischer-Krivelevich-Szegedy)."
+    ],
     "markdown": "# Knowledge Base: szemeredi-regularity-oq-04\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [
