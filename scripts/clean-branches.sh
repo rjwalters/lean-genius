@@ -317,6 +317,7 @@ echo ""
 
 # Counters
 deleted_merged=0
+preserved_ahead_pr=0
 deleted_closed=0
 deleted_no_pr_even=0
 preserved_open=0
@@ -427,6 +428,21 @@ progress_interval=20
 # joined (no per-branch awk). Field 1 = branch, field 2 = resolved PR status.
 # The list is read from FD 3 (not stdin), so the interactive `read -r -p`
 # prompts inside the loop still consume from the terminal in non-force mode.
+# branch_safe_to_delete <branch>
+#
+# True when deleting the local ref loses nothing: the tip is contained in a
+# remote ref, OR git cherry finds no commit whose patch is absent from
+# origin/main. On any probe failure, errs toward "not safe" (preserve).
+branch_safe_to_delete() {
+    local br="$1"
+    local containing
+    containing=$(git branch -r --contains "$br" 2>/dev/null | grep -v '\->' | head -n 1 || true)
+    [[ -n "$containing" ]] && return 0
+    local unapplied
+    unapplied=$(git cherry origin/main "$br" 2>/dev/null | grep -c '^+' || true)
+    [[ "${unapplied:-1}" -eq 0 ]]
+}
+
 while IFS=$'\t' read -r branch pr_status <&3; do
     [[ -z "$branch" ]] && continue
     ((processed++)) || true
@@ -446,8 +462,21 @@ while IFS=$'\t' read -r branch pr_status <&3; do
 
     # PR status was resolved in the batch awk-join pass above (read from the
     # resolved TSV's second field). No per-branch awk spawn here.
+    # A merged/closed PR describes the commits GitHub saw at merge time — an
+    # agent may have kept committing to the same local branch afterwards, and
+    # `git branch -D` (forced) bypasses git's own not-merged safety. Squash
+    # merges mean a local tip is (almost) never literally contained in a
+    # remote ref, so containment alone would preserve everything: a branch is
+    # safe to delete when its tip IS on some remote ref (e.g. a backup push)
+    # OR every commit it carries is patch-equivalent to one already in
+    # origin/main (`git cherry` prints no '+' lines).
     case "$pr_status" in
         MERGED)
+            if ! branch_safe_to_delete "$branch"; then
+                ((preserved_ahead_pr++)) || true
+                warning "  [KEEP] $branch (PR merged but carries commits not on any remote)"
+                continue
+            fi
             ((deleted_merged++)) || true
             if [[ "$DRY_RUN" == true ]]; then
                 info "  [DELETE] $branch (PR merged)"
@@ -474,6 +503,11 @@ while IFS=$'\t' read -r branch pr_status <&3; do
             ;;
 
         CLOSED)
+            if ! branch_safe_to_delete "$branch"; then
+                ((preserved_ahead_pr++)) || true
+                warning "  [KEEP] $branch (PR closed but carries commits not on any remote)"
+                continue
+            fi
             ((deleted_closed++)) || true
             if [[ "$DRY_RUN" == true ]]; then
                 info "  [DELETE] $branch (PR closed)"
@@ -1143,7 +1177,7 @@ echo ""
 # =============================================================================
 
 total_deleted=$((deleted_merged + deleted_closed + deleted_no_pr_even))
-total_preserved=$((preserved_open + preserved_protected + preserved_ahead + preserved_no_pr))
+total_preserved=$((preserved_open + preserved_protected + preserved_ahead + preserved_ahead_pr + preserved_no_pr))
 
 header "============================================================"
 header "                       SUMMARY"
@@ -1164,6 +1198,7 @@ echo -e "    ${GREEN}Deleted (no PR, even):${NC}    $deleted_no_pr_even"
 echo -e "    ${BLUE}Preserved (PR open):${NC}      $preserved_open"
 echo -e "    ${BLUE}Preserved (protected):${NC}    $preserved_protected"
 echo -e "    ${YELLOW}Preserved (ahead, no PR):${NC} $preserved_ahead"
+echo -e "    ${YELLOW}Preserved (ahead of merged/closed PR):${NC} $preserved_ahead_pr"
 echo -e "    ${BLUE}Preserved (other):${NC}        $preserved_no_pr"
 if [[ $failed -gt 0 ]]; then
     echo -e "    ${RED}Failed:${NC}                   $failed"
