@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 2A+0S. Iter 8: added dichrom_le_of_colorable and cochrom_le_of_colorable — the structural ℕ-valued δ(G), ζ(G) ≤ χ(G) bounds via SimpleGraph.Colorable. bipartite_dichrom_le_two is now a 1-line corollary. theoremCount 7→8. Both open conjectures remain as axioms.",
+    "progressSummary": "PROGRESS (VERIFIED 0 sorry/2 open-axiom): turned the sInf dichrom/cochrom definitions into usable specs via upward-closedness (dichromNumber_le_iff, cochromNumber_le_iff), added color-count monotonicity along injections, and positivity lower bounds. 18 theorems, 2 open-conjecture axioms, 0 sorries. Complements the existing chi upper bounds with the first lower bounds plus iff-characterizations.",
     "builtItems": [
       "dichrom_le_chrom: proved via Fintype.equivFin + ne_of_adj (axiom→theorem)",
       "cochrom_le_chrom: proved via Fintype.equivFin + injective coloring (axiom→theorem)",
@@ -58,7 +58,11 @@
       "Removed complete_dichrom (wrong formula) and odd_cycle_dichrom (True placeholder)",
       "proofs/Proofs/Erdos761Problem.lean: dichrom_le_of_colorable (lines 156-164)",
       "proofs/Proofs/Erdos761Problem.lean: cochrom_le_of_colorable (lines 169-176)",
-      "proofs/Proofs/Erdos761Problem.lean: bipartite_dichrom_le_two refactored to 1-line corollary (lines 180-183)"
+      "proofs/Proofs/Erdos761Problem.lean: bipartite_dichrom_le_two refactored to 1-line corollary (lines 180-183)",
+      "hasAcyclicColoring_of_injection / hasAcyclicColoring_mono in Erdos761Problem.lean: acyclic k-coloring lifts along injections / k<=k'.",
+      "dichromNumber_le_iff (Erdos761Problem.lean): delta(G)<=k iff for all O, HasAcyclicColoring O k, both directions via Nat.sInf_mem on the upward-closed set.",
+      "dichromNumber_pos / cochromNumber_pos: nonempty V implies delta(G),zeta(G) >= 1 (Fin 0 admits no coloring).",
+      "isCochromatic_of_injection / cochromNumber_le_iff (Erdos761Problem.lean): cochromatic analogs."
     ],
     "insights": [
       "dichrom_le_chrom proved: injective coloring via Fintype.equivFin gives |V| colors, injectivity + ne_of_adj yields acyclicity",
@@ -82,12 +86,16 @@
       "The bridge lemma proof uses pattern matching on TransGen: single case hits loopless, tail case hits color contradiction",
       "Session 2026-04-27 (researcher-3): file blocked by Mathlib drift — local `Orientation` structure name now collides with `Mathlib.LinearAlgebra.Orientation`. Build error at line 43 cascades to ~12 downstream errors. Drafted dichrom_le_of_colorable / cochrom_le_of_colorable as ~10-line generalizations of bipartite_dichrom_le_two but reverted code per drift policy. Documented suggested fix and post-fix research targets in knowledge.md.",
       "Iter 8 (researcher-1): dichrom_le_of_colorable lifts bipartite_dichrom_le_two from k=2 to arbitrary k via isAcyclicColoring_of_no_mono_edge applied to any G.Coloring (Fin k); δ(G) ≤ k whenever G.Colorable k",
-      "Iter 8: cochrom_le_of_colorable bounds ζ(G) ≤ k via the ¬G.Adj branch of IsCochromatic — proper colorings have independent color classes; gives the ℕ-valued ζ ≤ χ inequality"
+      "Iter 8: cochrom_le_of_colorable bounds ζ(G) ≤ k via the ¬G.Adj branch of IsCochromatic — proper colorings have independent color classes; gives the ℕ-valued ζ ≤ χ inequality",
+      "The sInf-based dichromNumber/cochromNumber definitions become usable specs once the defining color-count set is shown upward-closed: delta(G)<=k iff every orientation has an acyclic k-coloring (dichromNumber_le_iff), zeta(G)<=k iff a cochromatic k-coloring exists (cochromNumber_le_iff).",
+      "Acyclic colorability is monotone along ANY injection Fin k into Fin k', not just k<=k': a monochromatic TransGen cycle for the composite coloring at color i pins every cycle vertex to a single original color class by injectivity, so it descends to a monochromatic cycle for the original coloring. Key reusable lemma hasAcyclicColoring_of_injection."
     ],
     "mathlibGaps": [],
     "nextSteps": [
       "Prove dichrom_mono: needs orientation extension from H to G + TransGen monotonicity",
-      "Consider adding Orientation exclusivity (exactly one direction per edge, not at-least-one)"
+      "Consider adding Orientation exclusivity (exactly one direction per edge, not at-least-one)",
+      "With dichromNumber_le_iff available, characterize delta(G)=1 iff G acyclic (forest): every orientation of a forest is a DAG so 1-coloring suffices; conversely a cycle orients into a directed cycle. Needs a bridge to Mathlib IsAcyclic.",
+      "Investigate the correct comparison between delta(G) and zeta(G); both now have _le_iff specs to reason about."
     ],
     "markdown": "# Erdős #761 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nThe cochromatic number of $G$, denoted by $\\zeta(G)$, is the minimum number of colours needed to colour the vertices of $G$ such that each colour class induces either a complete graph or empty graph. The dichromatic number of $G$, denoted by $\\delta(G)$, is the minimum number $k$ of colours required such that, in any orientation of the edges of $G$, there is a $k$-colouring of the vertices of $G$ such that there are no monochromatic oriented cycles.\n\nMust a graph with large chromatic number have large dichromatic number? Must a graph with large cochromatic number contain a graph with large dichromatic number?\n\n\n\nThe first question is due to Erd\\H{o}s and Neumann-Lara. The second question is due to Erd\\H{o}s and Gimbel. A positive answer to the second question implies a positive answer to the first via the bound mentioned in [760].\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #760\n- Problem #762\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- ErGi93\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
