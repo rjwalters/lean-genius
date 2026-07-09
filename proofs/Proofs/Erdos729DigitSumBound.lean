@@ -30,6 +30,13 @@
   * `erdos_two_adic_bound`  — the digit-sum bound (★), axiom-free.
   * `digitSum_two_le_log`   — `s₂(m) ≤ Nat.log 2 m + 1` (digit sum ≤ bit count).
   * `erdos_two_adic_bound_log` — the logarithmic corollary of (★).
+  * `v2_choose_add_digitSum` — Kummer at `p = 2`, subtraction-free:
+                              `v₂(C(a+b,a)) + s₂(a+b) = s₂(a) + s₂(b)`.
+  * `digitSum_two_add_le`   — binary digit-sum subadditivity `s₂(a+b) ≤ s₂ a + s₂ b`
+                              (NOT a named Mathlib lemma).
+  * `excess_eq_v2_choose`   — the slack in (★) at `n = a+b` is the carry count.
+  * `choose_odd_iff_digitSum_add` — no-carry criterion: `C(a+b,a)` odd iff
+                              `s₂(a+b) = s₂ a + s₂ b`.
 
   None of these are named Mathlib lemmas. Bearer lemmas (Mathlib pin `v4.26.0`):
   `sub_one_mul_padicValNat_factorial`, `Nat.factorization_prime_le_iff_dvd`,
@@ -197,5 +204,89 @@ theorem erdos_1968_uniform :
     exact natLog_two_mul_log_two_le_log n (by omega)
   -- assemble:  a+b ≤ n + 2·⌊log₂ n⌋ + 2 ≤ n + 2L + 2L = n + 4L
   linarith
+
+-- ----------------------------------------------------------------------------
+-- Kummer at `p = 2`: the sharp carry content behind the bound (★).
+--
+-- The bound (★), `a + b ≤ n + s₂(a) + s₂(b)`, is obtained by dropping the
+-- nonnegative Legendre slack `v₂(n!) − v₂(a!) − v₂(b!) ≥ 0`.  At the extremal
+-- point `n = a + b` the divisibility `a!·b! ∣ (a+b)!` holds automatically, and
+-- that slack is *exactly* `v₂(C(a+b,a))` — Kummer's number of carries when `a`
+-- and `b` are added in base 2.  We compute it in closed digit-sum form and read
+-- off two facts that Mathlib does not carry as named lemmas: subadditivity of
+-- the binary digit sum, and the odd-binomial (no-carry) criterion.
+--
+-- Mathlib does have Kummer in digit form
+-- (`Nat.sub_one_mul_padicValNat_choose_eq_sub_sum_digits'`), but only with
+-- truncated ℕ-subtraction on the right.  The subtraction-free identity below is
+-- proved directly from this file's `v2_factorial`, so it is self-contained and
+-- immediately usable (its `omega` closers need no side conditions).
+-- ----------------------------------------------------------------------------
+
+/-- **Kummer's identity at `p = 2`, subtraction-free.**
+For all `a, b`, the 2-adic valuation of the binomial `C(a+b, a)` together with the
+binary digit sum of `a + b` recover the digit sums of the two parts:
+    `v₂(C(a+b, a)) + s₂(a+b) = s₂(a) + s₂(b)`.
+The summand `v₂(C(a+b,a))` is Kummer's count of carries in the base-2 addition
+`a + b`.  Proof: take `v₂` of the factorial identity `C(a+b,a)·a!·b! = (a+b)!`
+and substitute Legendre (`v2_factorial`); the truncated subtractions cancel under
+`omega` given `digit_sum_le`. -/
+theorem v2_choose_add_digitSum (a b : ℕ) :
+    padicValNat 2 (Nat.choose (a + b) a) + (Nat.digits 2 (a + b)).sum
+      = (Nat.digits 2 a).sum + (Nat.digits 2 b).sum := by
+  haveI : Fact (Nat.Prime 2) := ⟨Nat.prime_two⟩
+  have hchoose : Nat.choose (a + b) a ≠ 0 := (Nat.choose_pos (Nat.le_add_right a b)).ne'
+  -- The core factorial identity `C(a+b,a) · a! · b! = (a+b)!`.
+  have hkey : Nat.choose (a + b) a * a ! * b ! = (a + b)! := by
+    have h := Nat.choose_mul_factorial_mul_factorial (Nat.le_add_right a b)
+    rwa [Nat.add_sub_cancel_left] at h
+  -- `v₂` is additive over the product (all factors nonzero).
+  have hval : padicValNat 2 (Nat.choose (a + b) a) + padicValNat 2 (a !)
+      + padicValNat 2 (b !) = padicValNat 2 ((a + b)!) := by
+    have e2 : padicValNat 2 (Nat.choose (a + b) a * a !)
+        = padicValNat 2 (Nat.choose (a + b) a) + padicValNat 2 (a !) :=
+      padicValNat.mul hchoose (Nat.factorial_ne_zero a)
+    have e1 : padicValNat 2 (Nat.choose (a + b) a * a ! * b !)
+        = padicValNat 2 (Nat.choose (a + b) a * a !) + padicValNat 2 (b !) :=
+      padicValNat.mul (mul_ne_zero hchoose (Nat.factorial_ne_zero a)) (Nat.factorial_ne_zero b)
+    rw [hkey, e2] at e1
+    omega
+  rw [v2_factorial, v2_factorial, v2_factorial] at hval
+  have ha := Nat.digit_sum_le 2 a
+  have hb := Nat.digit_sum_le 2 b
+  have hab := Nat.digit_sum_le 2 (a + b)
+  omega
+
+/-- **Binary digit-sum subadditivity.**  `s₂(a+b) ≤ s₂(a) + s₂(b)`.  Immediate
+from the Kummer identity by dropping the nonnegative valuation term.  Not a named
+lemma in the pinned Mathlib. -/
+theorem digitSum_two_add_le (a b : ℕ) :
+    (Nat.digits 2 (a + b)).sum ≤ (Nat.digits 2 a).sum + (Nat.digits 2 b).sum := by
+  have h := v2_choose_add_digitSum a b
+  omega
+
+/-- **The slack in (★) is Kummer's carry count.**  At the extremal case
+`n = a + b` (where `a!·b! ∣ n!` holds automatically), the deficit between the
+digit-sum bound (★) value `n + s₂(a)+s₂(b)` and the actual `a+b` equals
+`s₂(a)+s₂(b) − s₂(a+b) = v₂(C(a+b,a))`, the number of binary carries. -/
+theorem excess_eq_v2_choose (a b : ℕ) :
+    (Nat.digits 2 a).sum + (Nat.digits 2 b).sum - (Nat.digits 2 (a + b)).sum
+      = padicValNat 2 (Nat.choose (a + b) a) := by
+  have h := v2_choose_add_digitSum a b
+  omega
+
+/-- **The no-carry criterion.**  The binomial `C(a+b,a)` is odd iff adding `a`
+and `b` in base 2 produces no carries iff the binary digit sums add exactly:
+    `¬ 2 ∣ C(a+b,a) ↔ s₂(a+b) = s₂(a) + s₂(b)`.
+This is the `p = 2` case of Kummer's carry count vanishing; the forward direction
+is the classical "central-binomial parity via 1-bits" fact. -/
+theorem choose_odd_iff_digitSum_add (a b : ℕ) :
+    ¬ 2 ∣ Nat.choose (a + b) a ↔
+      (Nat.digits 2 (a + b)).sum = (Nat.digits 2 a).sum + (Nat.digits 2 b).sum := by
+  haveI : Fact (Nat.Prime 2) := ⟨Nat.prime_two⟩
+  have hchoose : Nat.choose (a + b) a ≠ 0 := (Nat.choose_pos (Nat.le_add_right a b)).ne'
+  have hkey := v2_choose_add_digitSum a b
+  rw [dvd_iff_padicValNat_ne_zero hchoose, not_not]
+  omega
 
 end Erdos729DigitSum

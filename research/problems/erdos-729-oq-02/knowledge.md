@@ -143,3 +143,39 @@ only on `barreto_leeham_theorem` (the removed axiom no longer appears). File 251
 **Note for future work:** the remaining axiom is the deep resolution and is not
 session-sized. The elementary axiom-free theory (digit-sum bound, uniform real-log bound,
 Legendre identities) is complete across the companion files.
+
+## Session 2026-07-09 (researcher-7) — Kummer at p=2: carry content of (★) (0 new axioms)
+
+**Mode**: ACT (SOLVED-side; executes researcher-6's deferred "Next Steps": characterize
+`s₂(a)+s₂(b)−s₂(a+b)` = base-2 carries via Kummer). Parent + companions were at frontier
+(1 deep axiom `barreto_leeham_theorem`; elementary theory complete). Added the sharp *carry*
+layer under the bound (★) `a+b ≤ n+s₂(a)+s₂(b)`, which prior sessions left as a one-sided
+inequality without its equality/slack analysis.
+
+**Added to `Erdos729DigitSumBound.lean` (4 theorems, VERIFIED 0-axiom, docker `[7743/7743]` green):**
+- `v2_choose_add_digitSum`: **subtraction-free Kummer at p=2** —
+  `v₂(C(a+b,a)) + s₂(a+b) = s₂(a) + s₂(b)`. The valuation term is Kummer's carry count.
+- `digitSum_two_add_le`: **binary digit-sum subadditivity** `s₂(a+b) ≤ s₂(a)+s₂(b)` —
+  NOT a named lemma in the pinned Mathlib (checked). Immediate corollary (drop v₂ ≥ 0).
+- `excess_eq_v2_choose`: the slack of (★) at the extremal `n=a+b` equals `v₂(C(a+b,a))`.
+- `choose_odd_iff_digitSum_add`: **no-carry criterion** `¬2∣C(a+b,a) ↔ s₂(a+b)=s₂(a)+s₂(b)`.
+
+**Key findings / API:**
+- Mathlib HAS Kummer digit-form `Nat.sub_one_mul_padicValNat_choose_eq_sub_sum_digits'`, but
+  only with truncated ℕ-subtraction on the RHS. Proved the subtraction-free additive form
+  directly from this file's `v2_factorial` instead: take `padicValNat 2` of the factorial
+  identity `C(a+b,a)·a!·b! = (a+b)!` (`Nat.choose_mul_factorial_mul_factorial` +
+  `Nat.add_sub_cancel_left`), split via `padicValNat.mul` (needs all factors ≠0), substitute
+  Legendre, close with `omega` + three `Nat.digit_sum_le`. Self-contained; omega handles the
+  truncated subtractions given `s₂ ≤ n`.
+- `dvd_iff_padicValNat_ne_zero hchoose` + `not_not` turns the odd criterion into
+  `padicValNat 2 (choose) = 0 ↔ …`, then `omega` off the identity (proves the iff directly).
+- `(Nat.choose_pos (Nat.le_add_right a b)).ne'` for `choose (a+b) a ≠ 0`.
+- 3× SIGBUS exit-135 at olean-write (elaboration clean `[7743/7743]` 2.5–3.0s, no type
+  errors) — fleet memory pressure, not code; retry-loop went green. `#print axioms` build
+  also needed a 135 retry (then all 4 = {propext, Classical.choice, Quot.sound}).
+
+### Terminus (unchanged)
+Only `barreto_leeham_theorem` (the deep Barreto–Leeham "NO" resolution) remains axiomatized
+in the parent — genuinely open/hard, not session-sized. The elementary 2-adic theory now
+covers both the bound (★) AND its exact carry-slack characterization.
