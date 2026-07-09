@@ -1,0 +1,141 @@
+{
+  "id": "pythagorean-theorem-oq-01",
+  "title": "Pythagorean Theorem OQ-01: The Simplest Proof — Einstein's Similar-Triangles Argument",
+  "slug": "pythagorean-theorem-oq-01",
+  "description": "A machine-checked reconstruction of the proof Albert Einstein reportedly found as a boy, widely cited as one of the simplest: drop a single altitude from the right angle onto the hypotenuse and invoke one principle — the area of similar figures scales as the square of any linear dimension. The proof is isolated into three verified layers. Layer 1 (triArea_scale) proves the area–square law from Area = ½·base·height. Layer 2 (einstein_pythagorean) is the coordinate-free algebraic skeleton: given the three similar areas k·cA², k·cB², k·h² and the dissection Area(T) = Area(T₁) + Area(T₂), cancelling the shape constant k yields cA² + cB² = h². Layer 3 realises the altitude decomposition explicitly in a real inner-product space: the altitude foot H is constructed, proved perpendicular to the hypotenuse (foot_perp), and the two geometric-mean relations cA² = h·|AH|, cB² = h·|HB| together with betweenness |AH| + |HB| = h are verified, reconstructing h² = cA² + cB². 13 theorems, 0 axioms, 0 sorries.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-07-09",
+    "status": "verified",
+    "proofRepoPath": "Proofs/PythagoreanTheoremOQ01.lean",
+    "tags": [
+      "geometry",
+      "euclidean-geometry",
+      "inner-product",
+      "similar-triangles",
+      "einstein",
+      "geometric-mean",
+      "classic"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "dateAdded": "2026-07-09",
+    "axiomCount": 0,
+    "assumptions": "None. All theorems are fully machine-checked, depending only on propext, Classical.choice, and Quot.sound. Layer 3 works in a general real inner-product space; the right angle is supplied as the explicit hypothesis ⟪A − C, B − C⟫ = 0 and non-degeneracy as A ≠ B. Honesty note: once a Euclidean/inner-product model is fixed, the norm already encodes distance, so the one-line identity pythagorean_core (‖A−B‖² = ‖A−C‖² + ‖B−C‖²) is itself Pythagoras; Layer 3 does not claim foundational independence from it — its content is the verified geometric-mean/altitude decomposition. Layers 1 and 2 capture the parts of Einstein's reasoning genuinely independent of coordinates.",
+    "lineCount": 267,
+    "theoremCount": 13,
+    "definitionCount": 2,
+    "originalContributions": [
+      "einstein_pythagorean: the coordinate-free algebraic core of Einstein's proof — from areaWhole = k·h², areaA = k·cA², areaB = k·cB² and areaWhole = areaA + areaB with k ≠ 0, cancelling k gives cA² + cB² = h². This is the 'cancel the shape constant' step, verified with no geometry.",
+      "triArea_scale: the single geometric principle Einstein relies on — scaling every linear dimension of a triangle by r scales its area by exactly r² (triArea (r·b) (r·t) = r²·triArea b t), proved from Area = ½·base·height.",
+      "altitudeFoot / foot_perp: an explicit affine-combination construction of the foot H of the altitude from the right-angle vertex C onto the hypotenuse AB (H = A + (|CA|²/|AB|²)·(B − A)), together with a proof that C − H ⊥ A − B, so H is genuinely the altitude foot.",
+      "geometric_mean_A / geometric_mean_B: the two geometric-mean relations |CA|² = |AB|·|AH| and |CB|² = |AB|·|HB|, the numerical shadow of 'the two sub-triangles are similar to the whole', proved by computing |AH| = |CA|²/|AB| and |HB| = |CB|²/|AB| from the explicit foot.",
+      "segments_sum: betweenness |AH| + |HB| = |AB| — the foot lies inside the hypotenuse, i.e. the dissection Area(T) = Area(T₁) + Area(T₂) at the level of the base.",
+      "pythagorean_via_altitude: Einstein's route assembled — |AB|² = |AB|·(|AH| + |HB|) = |AB|·|AH| + |AB|·|HB| = |CA|² + |CB|², reconstructing Pythagoras from the altitude decomposition rather than from the bare polarization identity.",
+      "einstein_matches_core: the altitude route (pythagorean_via_altitude) reproduces the one-line metric identity (pythagorean_core), confirming the similar-triangles decomposition is faithful."
+    ]
+  },
+  "overview": {
+    "historicalContext": "The Pythagorean theorem has over 300 recorded proofs, and a recurring question — the one this entry addresses — is which is the *simplest*. A favourite candidate is the similar-triangles proof, in the streamlined form Albert Einstein is said to have discovered as a twelve-year-old (recounted in his Autobiographical Notes and popularized by Manfred Schroeder and others). Its economy comes from using no auxiliary square or rearrangement — only one altitude and one scaling principle. Drop the perpendicular from the right-angle vertex to the hypotenuse; it cuts the right triangle into two smaller triangles, each similar to the original. Because the area of similar figures is proportional to the square of any corresponding length with a common shape constant, the three areas are k·cA², k·cB², k·h²; additivity gives k·h² = k·cA² + k·cB², and the constant cancels. Euclid's Elements VI.31 is the classical ancestor of this argument (Pythagoras for arbitrary similar figures on the three sides), and the geometric-mean relations |CA|² = |AB|·|AH| are exactly Euclid's altitude-on-hypotenuse lemmas.",
+    "problemStatement": "Formalize the similar-triangles ('Einstein') proof of the Pythagorean theorem, separating the parts that are genuinely independent of coordinates (the area–square scaling law and the algebraic cancellation of the shape constant) from the metric altitude decomposition realised in a Euclidean model, and verify each with zero axioms and zero sorries.",
+    "text": "Einstein's proof rests on a single physical principle: area scales as the square of a linear dimension, with the same constant for all figures of the same shape. The altitude from the right angle to the hypotenuse partitions the right triangle T (legs cA, cB, hypotenuse h) into two triangles T₁, T₂, each similar to T; in T₁ the side playing the role of T's hypotenuse is the leg cA, in T₂ it is cB. Hence Area(T) = k·h², Area(T₁) = k·cA², Area(T₂) = k·cB² for a shared shape constant k, and dissection additivity Area(T) = Area(T₁) + Area(T₂) forces k·h² = k·cA² + k·cB². Cancelling the nonzero k gives h² = cA² + cB². The entry verifies this skeleton coordinate-free, then grounds the geometry: the altitude foot H is built as an explicit affine combination of A and B, proved perpendicular to the hypotenuse, and the two geometric-mean relations |CA|² = |AB|·|AH|, |CB|² = |AB|·|HB| together with betweenness |AH| + |HB| = |AB| are proved — the exact metric content of the two similar sub-triangles — reassembling |AB|² = |CA|² + |CB|².",
+    "proofStrategy": "Layer 1 proves triArea_scale by ring from triArea b t = b·t/2. Layer 2 proves einstein_pythagorean by substituting the three area expressions into the dissection identity and cancelling k with mul_left_cancel₀. Layer 3 works in a real inner-product space F. pythagorean_core expands ‖A − B‖² = ‖(A − C) − (B − C)‖² with norm_sub_sq_real and the right-angle hypothesis ⟪A − C, B − C⟫ = 0. altitudeFoot A B C := A + (‖A − C‖²/‖A − B‖²)·(B − A); foot_perp shows ⟪C − H, A − B⟫ = 0 by expanding the two inner products ⟪C − A, A − B⟫ = −‖A − C‖² and ⟪B − A, A − B⟫ = −‖A − B‖². dist_A_foot and dist_foot_B compute the segment lengths ‖A − H‖ = ‖A − C‖²/‖A − B‖ and ‖H − B‖ = ‖B − C‖²/‖A − B‖ via norm_smul, using pythagorean_core to see 1 − t = ‖B − C‖²/‖A − B‖² ≥ 0. geometric_mean_A/B and segments_sum are then field_simp/ring consequences, and pythagorean_via_altitude multiplies betweenness by ‖A − B‖ and substitutes the geometric means.",
+    "keyInsights": [
+      "Einstein's proof factors cleanly into a coordinate-free part and a metric part: the area–square scaling law (triArea_scale) and the shape-constant cancellation (einstein_pythagorean) need no geometry at all, while only the identification of the sub-triangles' similarity ratios is genuinely metric — this separation is what the formalization makes precise.",
+      "The two geometric-mean relations |CA|² = |AB|·|AH| and |CB|² = |AB|·|HB| are the numerical fingerprint of 'each sub-triangle is similar to the whole'; summing them (via betweenness |AH| + |HB| = |AB|) rebuilds Pythagoras — this is Euclid VI.31 / the altitude-on-hypotenuse lemma in checked form.",
+      "The altitude foot has a closed affine form H = A + (|CA|²/|AB|²)·(B − A) whose parameter t = |CA|²/|AB|² is exactly the similar-triangle ratio; everything about the decomposition follows by direct inner-product computation, with no appeal to Mathlib's orthogonal-projection machinery.",
+      "In a fixed inner-product model the norm already encodes Pythagoras (pythagorean_core is a one-line polarization identity), so no coordinate proof can be foundationally 'simpler' than that line; the value of the similar-triangles formalization is didactic and structural — it verifies the decomposition Einstein actually used, not a shortcut.",
+      "1 − t = |CB|²/|AB|² is where the right angle re-enters: proving the second segment length and betweenness both require ‖A − C‖² ≤ ‖A − B‖², i.e. pythagorean_core, so the metric layer is honestly a consequence of the polarization identity rather than an independent derivation."
+    ],
+    "prerequisites": [
+      "Real inner-product spaces: real_inner_self_eq_norm_sq, norm_sub_sq_real, inner_sub_left/right, real_inner_smul_left",
+      "Norms of scalar multiples (norm_smul, Real.norm_eq_abs) and basic field manipulation (field_simp, div_eq_iff)",
+      "The notion of the foot of an altitude and Euclid's altitude-on-hypotenuse (geometric-mean) relations",
+      "Similarity of figures and the principle that area scales as the square of a linear dimension"
+    ]
+  },
+  "conclusion": {
+    "summary": "A fully machine-verified, axiom-free formalization of Einstein's similar-triangles proof of the Pythagorean theorem — a leading answer to 'what is the simplest proof'. The argument is split into three verified layers: the area–square scaling law, the coordinate-free cancellation of the shape constant, and the explicit altitude/geometric-mean decomposition in a real inner-product space, which reassembles ‖A − B‖² = ‖A − C‖² + ‖B − C‖² and is shown to match the one-line metric identity. 13 theorems, 0 axioms, 0 sorries.",
+    "implications": "The entry documents, in checked form, exactly which parts of the 'simplest proof' are genuinely geometric and which are pure algebra: the area–square law and the shape-constant cancellation are coordinate-free, while only the similarity ratios of the two sub-triangles are metric. The reusable pieces — the explicit altitudeFoot construction, foot_perp, and the geometric-mean relations geometric_mean_A/B — are the altitude-on-hypotenuse lemmas of Euclid VI, useful for further Euclidean-geometry formalizations (e.g. the altitude, leg, and geometric-mean theorems as a family). It complements the gallery's inner-product Pythagorean entry (the polarization one-liner) and the flat-limit entry OQ-05 (the differential-geometric viewpoint) by supplying the classical similar-triangles viewpoint.",
+    "openQuestions": [
+      "Realise the shape constant k concretely: prove 'area of a right triangle = k·(hypotenuse)² for a fixed shape' directly from ½·base·height and similarity, closing the loop between Layer 1 and Layer 2 without reusing pythagorean_core.",
+      "Give a fully synthetic (axiomatic-geometry) version in which lengths are not defined via a coordinate norm, so that the similar-triangles argument becomes a genuinely independent proof of Pythagoras rather than a consequence of the polarization identity.",
+      "Formalize the other members of the altitude family — the leg theorem, the altitude (geometric-mean) theorem h_alt² = |AH|·|HB|, and Euclid VI.31 for arbitrary similar figures on the three sides — as corollaries of the altitudeFoot construction.",
+      "Compare, in checked form, the 'simplicity' of competing proofs (rearrangement/dissection, Garfield's trapezoid, the inner-product one-liner) by a common metric such as proof length or dependency depth."
+    ]
+  },
+  "leanFile": {
+    "namespace": "PythagoreanEinstein",
+    "lineCount": 267,
+    "axiomCount": 0,
+    "theoremCount": 13,
+    "definitionCount": 2,
+    "path": "Proofs/PythagoreanTheoremOQ01.lean",
+    "imports": [
+      "Mathlib.Analysis.InnerProductSpace.Basic",
+      "Mathlib.Analysis.InnerProductSpace.PiL2",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "RealInnerProductSpace"
+    ],
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "pythagorean-theorem",
+      "relationship": "extends",
+      "description": "The classical Euclidean theorem a² + b² = c², proved in the gallery via the inner-product polarization identity. This entry gives the similar-triangles ('Einstein') proof of the same identity, isolating the area–square scaling law and the altitude/geometric-mean decomposition, and shows the altitude route reproduces the polarization one-liner."
+    },
+    {
+      "targetId": "pythagorean-theorem-oq-05",
+      "relationship": "related",
+      "description": "OQ-05 gives the analytic/differential-geometric viewpoint (Pythagoras as the flat limit of the spherical and hyperbolic laws). OQ-01 gives the classical synthetic viewpoint (the similar-triangles proof), so the two entries present the metric-geometry and curvature-degeneration angles on the same theorem."
+    }
+  ],
+  "sections": [
+    {
+      "id": "area-square-law",
+      "title": "Layer 1: The area–square law for similar triangles",
+      "startLine": 1,
+      "endLine": 85,
+      "summary": "triArea b t = ½·base·height, and triArea_scale proves the one principle Einstein uses: scaling every linear dimension by r scales area by exactly r² (triArea (r·b) (r·t) = r²·triArea b t)."
+    },
+    {
+      "id": "algebraic-skeleton",
+      "title": "Layer 2: The algebraic skeleton — cancel the shape constant",
+      "startLine": 86,
+      "endLine": 107,
+      "summary": "einstein_pythagorean: given the three similar areas k·h², k·cA², k·cB² and the dissection Area(T) = Area(T₁) + Area(T₂), cancelling the nonzero shape constant k yields cA² + cB² = h². No coordinates are used."
+    },
+    {
+      "id": "pythagorean-core",
+      "title": "Layer 3a: The metric identity a Euclidean model already contains",
+      "startLine": 108,
+      "endLine": 124,
+      "summary": "pythagorean_core: for a right angle at C (⟪A − C, B − C⟫ = 0), ‖A − B‖² = ‖A − C‖² + ‖B − C‖², expanded from norm_sub_sq_real. This is the one-line polarization form of Pythagoras."
+    },
+    {
+      "id": "altitude-foot",
+      "title": "Layer 3b: The altitude foot and its perpendicularity",
+      "startLine": 125,
+      "endLine": 199,
+      "summary": "altitudeFoot A B C = A + (|CA|²/|AB|²)·(B − A) constructs the foot H explicitly; foot_perp proves C − H ⊥ A − B; dist_A_foot and dist_foot_B compute the two segment lengths |AH| = |CA|²/|AB| and |HB| = |CB|²/|AB|, the second using pythagorean_core to see 1 − t = |CB|²/|AB|² ≥ 0."
+    },
+    {
+      "id": "geometric-means",
+      "title": "Layer 3c: Geometric-mean relations, betweenness, and reassembly",
+      "startLine": 200,
+      "endLine": 248,
+      "summary": "geometric_mean_A/B prove |CA|² = |AB|·|AH| and |CB|² = |AB|·|HB| (the similar-sub-triangle fingerprint); segments_sum proves |AH| + |HB| = |AB|; pythagorean_via_altitude multiplies betweenness by |AB| and substitutes the geometric means to rebuild |AB|² = |CA|² + |CB|²."
+    },
+    {
+      "id": "capstone",
+      "title": "Capstone: the two routes agree",
+      "startLine": 249,
+      "endLine": 267,
+      "summary": "einstein_matches_core packages that the altitude route (pythagorean_via_altitude) and the polarization one-liner (pythagorean_core) prove the same identity, confirming the similar-triangles decomposition is faithful."
+    }
+  ],
+  "sorries": 0
+}
