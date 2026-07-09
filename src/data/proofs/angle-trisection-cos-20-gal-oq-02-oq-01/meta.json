@@ -153,6 +153,50 @@
       "description": "Root problem: impossibility of trisecting a general angle via the cubic minimal polynomial of cos 20°."
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "cyclotomic_roots_distinct",
+      "type": "main",
+      "description": "The two roots {ζ_n, ζ_n⁻¹} of X²−(2cos 2π/n)X+1 are distinct for every n ≥ 3, so the extension ℚ(cos 2π/n) ⊆ ℚ(ζ_n) is honestly degree 2 (not 1) — the source of the halving φ(n)/2. If the roots coincided, conjugation would fix ζ_n, contradicting cyclotomic_conj_ne_self.",
+      "leanType": "(n : ℕ) (hn : 3 ≤ n) : Complex.exp (((2 * Real.pi / n : ℝ) : ℂ) * I) ≠ Complex.exp (-((2 * Real.pi / n : ℝ) : ℂ) * I)"
+    },
+    {
+      "name": "cyclotomic_conj_ne_self",
+      "type": "main",
+      "description": "Complex conjugation moves the cyclotomic root ζ_n for every n ≥ 3 — the concrete nontrivial order-2 automorphism behind the index-2 step in [ℚ(cos 2π/n):ℚ] = φ(n)/2. Follows from conj_zeta_ne_self_iff and sin(2π/n) ≠ 0.",
+      "leanType": "(n : ℕ) (hn : 3 ≤ n) : (starRingEnd ℂ) (Complex.exp (((2 * Real.pi / n : ℝ) : ℂ) * I)) ≠ Complex.exp (((2 * Real.pi / n : ℝ) : ℂ) * I)"
+    },
+    {
+      "name": "conj_zeta",
+      "type": "core",
+      "description": "Complex conjugation sends ζ = e^{iθ} to the other root e^{−iθ}: the concrete order-2 automorphism action. Proved via Complex.exp_conj (exp commutes with conjugation).",
+      "leanType": "(θ : ℝ) : (starRingEnd ℂ) (Complex.exp ((θ : ℂ) * I)) = Complex.exp (-(θ : ℂ) * I)"
+    },
+    {
+      "name": "quadratic_factor",
+      "type": "core",
+      "description": "The quadratic factors over its conjugate-pair roots: (z − e^{iθ})(z − e^{−iθ}) = z² − (2cos θ)z + 1, using product e^{iθ}·e^{−iθ} = 1 and sum e^{iθ}+e^{−iθ} = 2cos θ.",
+      "leanType": "(x z : ℂ) : (z - Complex.exp (x * I)) * (z - Complex.exp (-x * I)) = z ^ 2 - (2 * Complex.cos x) * z + 1"
+    },
+    {
+      "name": "conj_zeta_ne_self_iff",
+      "type": "supporting",
+      "description": "Conjugation moves ζ = e^{iθ} iff sin θ ≠ 0 (iff the two roots are distinct) — reduces the algebraic distinctness question to elementary trigonometric positivity. Via Complex.conj_eq_iff_im and Im(e^{iθ}) = sin θ.",
+      "leanType": "(θ : ℝ) : (starRingEnd ℂ) (Complex.exp ((θ : ℂ) * I)) ≠ Complex.exp ((θ : ℂ) * I) ↔ Real.sin θ ≠ 0"
+    },
+    {
+      "name": "conj_two_cos",
+      "type": "supporting",
+      "description": "Conjugation fixes the real coefficient 2cos θ, so the quadratic genuinely lives over the real subfield ℚ(cos θ) — as the tower ℚ(cos θ) ⊆ ℚ(ζ) requires.",
+      "leanType": "(θ : ℝ) : (starRingEnd ℂ) (2 * (Real.cos θ : ℂ)) = 2 * (Real.cos θ : ℂ)"
+    },
+    {
+      "name": "sin_two_pi_div_pos",
+      "type": "supporting",
+      "description": "For n ≥ 3 the cyclotomic angle satisfies sin(2π/n) > 0, since 0 < 2π/n < π. The trigonometric positivity that makes the index-2 step sharp for every cyclotomic n.",
+      "leanType": "(n : ℕ) (hn : 3 ≤ n) : 0 < Real.sin (2 * Real.pi / n)"
+    }
+  ],
   "references": [
     {
       "key": "Stewart-Galois",
@@ -163,6 +207,16 @@
       "venue": "Chapman and Hall/CRC",
       "year": "2015",
       "note": "Maximal real subfield of a cyclotomic field and [ℚ(cos 2π/n):ℚ] = φ(n)/2"
+    },
+    {
+      "key": "Washington-Cyclotomic",
+      "authors": [
+        "L. C. Washington"
+      ],
+      "title": "Introduction to Cyclotomic Fields",
+      "venue": "Springer GTM 83, 2nd ed.",
+      "year": "1997",
+      "note": "The maximal real subfield ℚ(ζ_n)⁺ = ℚ(ζ_n + ζ_n⁻¹) = ℚ(cos 2π/n) and its index-2 relation to ℚ(ζ_n) via complex conjugation — the field-theoretic statement this entry realizes at the element level."
     }
   ],
   "leanFile": {
