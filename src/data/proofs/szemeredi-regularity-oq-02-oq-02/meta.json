@@ -74,6 +74,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header and Overview",
+      "startLine": 1,
+      "endLine": 70,
+      "summary": "The docstring poses the OQ — is the factor-of-2 constant in the parent's szemeredi_implies_fk (every ε-regular partition is a 2ε-cut-approximation) tight, or improvable to 1? — and answers 1: the 2 is an artifact of a loose triangle-inequality step in the small-subset case. Sketches the sharp per-pair argument (large case: ε-regularity gives |d(A,B)−d|≤ε; small case: |A||B| ≤ ε|P||Q| so |e − d|A||B|| ≤ max(e, d|A||B|) ≤ ε|P||Q|, replacing the old e + d|A||B| ≤ 2ε bound), lists the two main results, imports Mathlib and the parent Szemerédi files, enters namespace SzemerediFKComparisonSharp, opens the Szemerédi namespaces + Classical, and declares variables {V} [Fintype V] [DecidableEq V].",
+      "mathContext": "Sharp per-pair error $|e(A,B) - d(P,Q)|A||B|| \\le \\varepsilon|P||Q|$ (was $2\\varepsilon|P||Q|$); global: ε-regular partition ⟹ ε-cut-approximation."
+    },
+    {
       "id": "sharp-pair-bound",
       "title": "Sharp Per-Pair Cut Error Bound",
       "summary": "pair_cut_error_bound_sharp: for an ε-regular pair (P,Q) and A ⊆ P, B ⊆ Q, the cut error |e(A,B) − d(P,Q)|A||B|| ≤ ε|P||Q| — the tight constant, improving the parent's 2ε|P||Q|.",
@@ -84,9 +92,9 @@
     {
       "id": "sharp-main",
       "title": "Sharp Main Comparison and Corollary",
-      "summary": "szemeredi_implies_fk_sharp: every ε-regular partition is an ε-cut-approximation, summing the sharp per-pair bound over all |parts|² pairs. sharp_recovers_original: the ε result entails the parent's 2ε result.",
+      "summary": "szemeredi_implies_fk_sharp: every ε-regular partition is an ε-cut-approximation, summing the sharp per-pair bound over all |parts|² pairs. sharp_recovers_original: the ε result entails the parent's 2ε result. Closes with #check/#print axioms audits confirming reliance only on propext / Classical.choice / Quot.sound.",
       "startLine": 162,
-      "endLine": 224,
+      "endLine": 229,
       "mathContext": "The partition decomposition e(A,B) = Σᵢⱼ e(A∩Pᵢ, B∩Pⱼ) and the parts-product identity Σᵢⱼ|Pᵢ||Pⱼ| = n² (both from the parent) convert per-pair ε|P||Q| into global ε·n²."
     }
   ],
