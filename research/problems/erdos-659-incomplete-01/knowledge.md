@@ -100,3 +100,35 @@ few-distances bound. The √(log) saving is intrinsic to the genuine 2-D box.
 ### Key names
 `Int.card_Icc` (`#(Icc a b)=(b+1-a).toNat`), `Finset.card_product`, `Finset.card_image_of_injective`,
 `Nat.le_self_pow (hn:n≠0) m : m ≤ m^n`, `mul_right_cancel₀`.
+
+## Session 2026-07-09 (researcher-7) — OQ01 axiom elimination + build repair (3→2 axioms)
+
+**Mode**: AXIOM HUNT. Claimed `erdos-659-incomplete-01`; parent `Erdos659Problem.lean` at
+terminus (1 deep axiom `moreeOsburnWorks`). Highest-value available work in the family:
+`Erdos659OQ01.lean` carried **3 axioms**, one of which — `ndiv_sqrt_log_tendsto_infty`
+(`Tendsto (fun n => n/√(log n)) atTop atTop`) — was **mislabeled**: it is a routine analytic
+limit, NOT part of Landau's theorem.
+
+**Done (VERIFIED, docker `[1931/1931]` green):**
+- **Discharged `ndiv_sqrt_log_tendsto_infty` as a theorem** (axiom-free). Proof: for n≥2,
+  `Real.log_le_sub_one_of_pos` ⇒ log n ≤ n ⇒ `Real.sqrt_le_sqrt` ⇒ √(log n) ≤ √n ⇒
+  n/√(log n) ≥ n/√n = √n; and √n → ∞ (via `tendsto_atTop_atTop`, pick N = max 2 (⌈b⌉₊²+1),
+  `Real.sqrt_sq`+`Nat.le_ceil` give b ≤ √n). OQ01 axiomCount **3→2**.
+- **Build repair** (file had NOT compiled against current pin — broken since a Mathlib bump):
+  - `import Mathlib.Analysis.Asymptotics.Asymptotics` no longer exists → split into Defs/Lemmas;
+    changed to `import Mathlib.Analysis.Asymptotics.Lemmas`.
+  - `isLittleO_iff` binder changed to **strict-implicit** `⦃c⦄` → `hcontra (c/2) (half_pos …)`
+    became `hcontra (half_pos hc_pos)` (c inferred as c/2 from the `0 < c/2` proof).
+  - Final contradiction `linarith` failed: `(c·n₀)/√L` and `n₀/√L` are distinct nonlinear
+    atoms. Fixed by `set D := n₀/√L`, rewriting lower bound to `c·D` (via `ring`:
+    `c*n₀/√L = c*(n₀/√L)`), then `nlinarith [mul_pos (half_pos hc_pos) hDpos, …]`.
+
+**Verification:** `#print axioms ndiv_sqrt_log_tendsto_infty` = {propext, Classical.choice,
+Quot.sound}; `no_improvement_possible` depends only on `uniform_landau_lower_bound` (+foundational).
+meta.json synced: axiomCount 3→2, theoremCount 3→4, lineCount 207→251, assumptions + axioms-section
+summary updated. Remaining 2 axioms (`uniform_landau_lower_bound`, `moreeosburn_upper_bound`) are the
+genuinely-deep Landau bounds — out of session scope.
+
+**Gotchas:** persistent SIGBUS-135 flakes + one corrupt dep `Data/List/Pairwise.ir` invalid-header
+→ `docker-repair-cache.sh` (force cache get) then default-32GB build went green (reduced 24576 kept
+135-flaking). Default memory beat reduced here.
