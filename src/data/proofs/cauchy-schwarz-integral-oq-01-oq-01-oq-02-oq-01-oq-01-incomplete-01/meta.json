@@ -2,7 +2,7 @@
   "id": "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01-oq-01-incomplete-01",
   "title": "Lp Riesz Representation for Sigma-Finite Measures (Complete)",
   "slug": "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01-oq-01-incomplete-01",
-  "description": "Sigma-finite Lp Riesz representation theorem formalized in Lean 4: all three steps (A localization, B Lp truncation convergence, C density extension) with 0 sorries in this file. Step A (localization_existence, ~600 lines) was completed in PR #15581 via the Hölder extremizer construction; Step B uses Vitali's convergence theorem; Step C uses Lp.induction. NOTE (2026-06-24, #28788): this file transitively fails to compile against the pinned v4.26.0 toolchain because its imported foundation has 53 Mathlib-drift errors; status downgraded to formalized until the chain builds green.",
+  "description": "Sigma-finite Lp Riesz representation theorem formalized in Lean 4: all three steps (A localization, B Lp truncation convergence, C density extension) with 0 sorries in this file. Step A (localization_existence, ~600 lines) was completed in PR #15581 via the Hölder extremizer construction; Step B uses Vitali's convergence theorem; Step C uses Lp.induction. The earlier BUILD BROKEN note (#28788) is resolved: the imported foundation was repaired in #35112 and the file was migrated to Mathlib v4.26 in #35122, where the 1012-line monolith was split into a 47-line assembling file plus the Infra/Norm/Loc companions (same namespace RieszSigmaFiniteComplete, ~1118 lines / 17 declarations total, all 0-sorry / 0-axiom).",
   "leanFile": {
     "namespace": "RieszSigmaFiniteComplete",
     "lineCount": 47,
