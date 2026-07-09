@@ -63,6 +63,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Docstring and Import",
+      "startLine": 1,
+      "endLine": 34,
+      "summary": "Docstring framing Erdős #11 (OPEN: is every odd n > 1 a squarefree number plus a power of two?) and this file's three contributions — the DecidablePred instance the parent only promised, the k = 0 sufficient family, and the n = 1 boundary. Imports the parent Erdos11WIP01 (which supplies isSquarefreePlusPow2_iff and squarefreePlusPow2_of_witness); namespace Erdos11WIP01, open Finset.",
+      "mathContext": "IsSquarefreePlusPow2 n ⟺ ∃ k ∈ range (n+1), 2^k ≤ n ∧ Squarefree (n − 2^k); the parent's bounded characterization this file builds on."
+    },
+    {
       "id": "decidable",
       "title": "The Decidability Instance",
       "startLine": 35,
