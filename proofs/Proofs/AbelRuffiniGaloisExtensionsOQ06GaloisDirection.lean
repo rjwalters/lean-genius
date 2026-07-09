@@ -686,4 +686,47 @@ theorem primitive_solvable_subgroup_card_dvd
   have hdvd : Nat.card H ∣ Nat.card (AGL1Z p) := Subgroup.card_dvd_of_injective φ hφ
   rwa [AGL1Z.nat_card_eq] at hdvd
 
+/-- **Corollary (Galois exact order form, Rotman 9.11).** A primitive solvable
+    subgroup `H ≤ S_p = Equiv.Perm (ZMod p)` has order `p * m` for some divisor
+    `m ∣ (p - 1)`.
+
+    This sharpens `primitive_solvable_subgroup_card_dvd` (`|H| ∣ p (p-1)`): it
+    pins down that the prime `p` divides `|H|` *exactly once* and the cofactor
+    `m = |H| / p` is a divisor of `p - 1 = |(ℤ/pℤ)ˣ|` — the textbook form of
+    Galois's 1832 theorem (Rotman, *Galois Theory*, Thm 9.11: a solvable
+    transitive group of prime degree `p` has order `p·d` with `d ∣ p-1`).
+    Two ingredients:
+    * `p ∣ |H|`: `H` acts transitively on the `p`-element set `ZMod p`
+      (primitive ⇒ transitive), so the point-stabiliser has index `p`
+      (orbit–stabiliser) and `index ∣ card` (`Subgroup.index_dvd_card`);
+    * `|H| ∣ p (p-1)` from `primitive_solvable_subgroup_card_dvd`.
+    Writing `|H| = p * m` and cancelling the positive prime `p` from
+    `p * m ∣ p * (p-1)` yields `m ∣ (p-1)`.  No new `sorry`, no axiom. -/
+theorem primitive_solvable_subgroup_card_eq_prime_mul
+    (H : Subgroup (Equiv.Perm (ZMod p)))
+    (hPrim : MulAction.IsPreprimitive H (ZMod p))
+    (hSolv : IsSolvable H) :
+    ∃ m, m ∣ (p - 1) ∧ Nat.card H = p * m := by
+  have hp : p.Prime := Fact.out
+  -- `p ∣ |H|` via orbit–stabiliser on the transitive `H`-action on `ZMod p`.
+  haveI := hPrim
+  have huniv : MulAction.orbit H (0 : ZMod p) = Set.univ :=
+    MulAction.orbit_eq_univ H (0 : ZMod p)
+  have e : ZMod p ≃ H ⧸ MulAction.stabilizer H (0 : ZMod p) :=
+    ((Equiv.Set.univ (ZMod p)).symm.trans (Equiv.setCongr huniv.symm)).trans
+      (MulAction.orbitEquivQuotientStabilizer H (0 : ZMod p))
+  have hidx : (MulAction.stabilizer H (0 : ZMod p)).index = p := by
+    rw [Subgroup.index_eq_card, ← Nat.card_congr e, Nat.card_zmod]
+  have hpH : p ∣ Nat.card H := by
+    have hdvd := Subgroup.index_dvd_card
+      (H := MulAction.stabilizer H (0 : ZMod p))
+    rwa [hidx] at hdvd
+  -- `|H| ∣ p (p-1)` from the embedding into `AGL(1, p)`.
+  have hdvd : Nat.card H ∣ p * (p - 1) :=
+    primitive_solvable_subgroup_card_dvd H hPrim hSolv
+  obtain ⟨m, hm⟩ := hpH
+  refine ⟨m, ?_, hm⟩
+  rw [hm] at hdvd
+  exact (Nat.mul_dvd_mul_iff_left hp.pos).mp hdvd
+
 end AbelRuffiniGaloisExtensionsOQ06GaloisDirection
