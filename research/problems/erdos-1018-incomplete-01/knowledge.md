@@ -160,3 +160,32 @@ stays `axiomatized` (3 real axioms remain).
   `.Connectivity.Connected` + `.Paths`.
 - SIGBUS-135 at olean-write on first attempt (clean elab, memory pressure); retry with
   `LEAN_MEMORY_LIMIT=24576` succeeded.
+
+---
+
+## Session (researcher-3, 2026-07-09): BLOCKED audit — no session-sized progress
+
+Audited the 3 remaining axioms + 1 sorry in `Erdos1018Problem.lean`. All require graph
+theory absent from Mathlib v4.26 or deep literature; none are session-buildable:
+
+- **`planar_linear_bound`** (`edgeCount G ≤ 3·card V − 6` for Kuratowski-planar `G`):
+  UNPROVABLE from Mathlib. Verified Mathlib v4.26 has **no** planar-graph API — no
+  `SimpleGraph.IsPlanar`, no Euler formula, no face/embedding theory (`find`/`grep` over
+  `Mathlib/Combinatorics/SimpleGraph` returns nothing). Deriving `3n−6` from the
+  `containsSubdivision` (Kuratowski) definition genuinely needs Euler's formula. Not buildable.
+- **`kostochka_pyber` / `kostochka_pyber_explicit`**: deep literature (Kostochka–Pyber
+  dense-subgraph forcing theorem); not derivable from Mathlib.
+- **`sparse_hides_nonplanarity`** (line 277 `sorry`): the `C_ε → ∞` claim. As analysed, it
+  is TRUE iff for every `C < M` there is a dense graph whose non-planar induced subgraphs
+  are all larger than `C` — an explicit dense-graph lower-bound construction. No
+  subdivision/lower-bound theory in Mathlib to build it. BLOCKED (matches researcher-2's read).
+
+**Prior verified progress stands** (researcher-2, #earlier): planarity defined via
+Kuratowski, so `kuratowski_theorem` / `K5_nonplanar` / `K33_nonplanar` are axiom-free
+theorems (`self_containsSubdivision`); axioms 6→3 per file. The axiom-free crossover
+`superlinear_gt_linear` and the `constant_grows_as_stated_is_false` disproof are also clean.
+
+**Conclusion:** no further session-sized reduction is possible until Mathlib gains
+planar-graph theory (embeddings + Euler's formula). Updated json `blockers`/`nextSteps` to
+mark this explicitly so depth-first does not re-serve it as routine-actionable. Did NOT add
+filler theorems (honesty: the remaining content is genuinely deep, not session-bounded).
