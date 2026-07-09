@@ -151,7 +151,16 @@
     "theoremCount": 18,
     "path": "Proofs/Erdos1026OQ05.lean",
     "sorries": 0,
-    "definitionCount": 12
+    "definitionCount": 12,
+    "additionalFiles": [
+      {
+        "path": "Proofs/Erdos1026OQ05IncreasingIdentity.lean",
+        "lineCount": 331,
+        "theoremCount": 17,
+        "definitionCount": 8,
+        "description": "Exact Mirsky/Dilworth min-max identity: minimum number of strictly-increasing parts covering the sequence equals LDS (distinct reals)."
+      }
+    ]
   },
   "sorries": 0,
   "highlights": [

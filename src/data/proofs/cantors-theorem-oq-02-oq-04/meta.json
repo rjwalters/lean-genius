@@ -39,57 +39,6 @@
     "definitionCount": 2
   },
   "overview": {
-    "historicalContext": "Cantor's 1891 diagonal argument proved no set surjects onto its power set, founding the theory of cardinality. In 1969 William Lawvere, in \"Diagonal arguments and cartesian closed categories,\" recast the diagonal as a single fixed-point theorem: if A point-surjects onto the function space A → B, then every endomap of B has a fixed point. Contrapositively, a fixed-point-free map on B (like negation) forbids such a surjection — recovering Cantor, Russell's paradox, Gödel's incompleteness, and Tarski's undefinability of truth as one phenomenon. Running in parallel is the order-theoretic tradition: Knaster (1928) and Tarski (1955) showed every monotone map on a complete lattice has a (least and greatest) fixed point, and Dana Scott's denotational semantics (c. 1969–70) built the least-fixed-point of a Scott-continuous map on a pointed dcpo as the sup of its Kleene iterates fⁿ(⊥). Open question oq-04 asks how these two sources of fixed points — diagonal/Lawvere versus order/Scott–Tarski — relate. This entry gives a precise verified answer: they are incomparable, separated by Bool.",
-    "problemStatement": "oq-04 asks which types admit a Lawvere-style fixed-point theorem and how the diagonal source of fixed points relates to the order-theoretic one (a pointed dcpo satisfies a version via Scott's theorem). The formalization isolates two properties — the unrestricted FPP (every self-map has a fixed point, Lawvere's target) and the monotone FPP (every monotone self-map has a fixed point, the Knaster–Tarski/Scott form) — and asks whether one implies the other. Answer: no. Bool has the monotone FPP (it is a complete lattice) but not the unrestricted FPP, because the fixed-point-free map `not` is antitone, hence invisible to the order-completeness route.",
-    "proofStrategy": "Define both properties abstractly: HasFPP B (all self-maps) and HasMonotoneFPP B (all monotone self-maps on a preorder). Prove Lawvere's theorem in FPP form by diagonalization (hasFPP_of_pointSurjective), and the Cantor obstructions not_hasFPP_bool / not_hasFPP_prop from the fixed-point-free maps `not` and `Not` (the latter via iff_not_self). For the order side, hasMonotoneFPP_completeLattice instantiates Mathlib's OrderHom.lfp + map_lfp. The discriminator bool_monotoneFPP_but_not_FPP pairs HasMonotoneFPP Bool with ¬ HasFPP Bool, and not_not_monotone explains the gap: `not` reverses Bool's order, so it is antitone, not monotone. Finally no_pointSurjection_to_powerProp recovers Cantor's theorem from ¬ HasFPP Prop by contraposing Lawvere.",
-    "keyInsights": [
-      "Lawvere's theorem unifies the diagonal arguments: a single fixed-point-free map (negation) forbids point-surjectivity onto a function space, yielding Cantor, Russell, Gödel, and Tarski as one contrapositive.",
-      "The unrestricted FPP and the monotone FPP are genuinely independent — neither implies the other — with Bool the canonical separating example.",
-      "Restricting to monotone maps is exactly what lets order-completeness force fixed points: the very map (`not`) that breaks the unrestricted FPP is antitone, so it never threatened the monotone FPP.",
-      "Surjectivity (Lawvere) and order-completeness (Knaster–Tarski / Scott) are incomparable sufficient conditions for fixed points, reconciled — not subsumed — by the notion of monotonicity."
-    ],
-    "prerequisites": [
-      "Cantor's diagonal argument and the powerset theorem",
-      "Lawvere's fixed-point theorem and point-surjectivity",
-      "Complete lattices and the Knaster–Tarski least fixed point (Mathlib OrderHom.lfp)",
-      "Monotone vs antitone maps; the order structure on Bool and Prop"
-    ]
-  },
-  "sections": [
-    {
-      "id": "unrestricted-fpp",
-      "title": "The Unrestricted Fixed-Point Property (Lawvere)",
-      "startLine": 41,
-      "endLine": 76,
-      "summary": "Defines HasFPP, proves it for subsingletons and (via diagonalization) for any Lawvere-surjective target, and establishes the Cantor obstructions: Bool and Prop lack the unrestricted FPP because `not` and `Not` are fixed-point-free.",
-      "mathContext": "$\\mathrm{HasFPP}(B) \\iff \\forall f,\\ \\exists b,\\ f(b)=b;\\quad \\lnot\\,\\mathrm{HasFPP}(\\mathrm{Bool}),\\ \\lnot\\,\\mathrm{HasFPP}(\\mathrm{Prop})$"
-    },
-    {
-      "id": "monotone-fpp",
-      "title": "The Monotone Fixed-Point Property (Knaster–Tarski / Scott)",
-      "startLine": 78,
-      "endLine": 92,
-      "summary": "Defines HasMonotoneFPP for preorders and proves every complete lattice satisfies it via Mathlib's least fixed point OrderHom.lfp — the order-theoretic counterpart of Lawvere's theorem.",
-      "mathContext": "$\\mathrm{HasMonotoneFPP}(B) \\iff \\forall f : B\\to_o B,\\ \\exists b,\\ f(b)=b;\\quad f(f.\\mathrm{lfp}) = f.\\mathrm{lfp}$"
-    },
-    {
-      "id": "delineation",
-      "title": "Separating the Two Properties",
-      "startLine": 93,
-      "endLine": 126,
-      "summary": "Bool has the monotone FPP but not the unrestricted FPP; `not` is antitone (not monotone), explaining the gap; and Cantor's theorem is recovered as a corollary — no point-surjection A → (A → Prop).",
-      "mathContext": "$\\mathrm{HasMonotoneFPP}(\\mathrm{Bool}) \\wedge \\lnot\\,\\mathrm{HasFPP}(\\mathrm{Bool});\\quad \\nexists\\,\\varphi : A \\to (A \\to \\mathrm{Prop})\\ \\text{surjective}$"
-    }
-  ],
-  "leanFile": {
-    "path": "Proofs/CantorsTheoremOQ02OQ04.lean",
-    "lineCount": 126,
-    "axiomCount": 0,
-    "sorries": 0,
-    "definitionCount": 2,
-    "theoremCount": 8
-  },
-  "overview": {
     "historicalContext": "Cantor's 1891 diagonal argument showed that no surjection from a set onto its power set exists, the first proof of uncountability of the continuum. In 1969 F. William Lawvere ('Diagonal arguments and cartesian closed categories') recast this as a single abstract fixed-point theorem: in a cartesian closed category, if there is a point-surjective morphism A → Bᴬ then every endomorphism of B has a fixed point. Its contrapositive — a fixed-point-free endomap of B forbids any such surjection — uniformly yields Cantor's theorem, Russell's paradox, Gödel's incompleteness (via the fixed-point/diagonal lemma) and Tarski's undefinability of truth. A logically independent tradition produces fixed points from order rather than surjectivity: the Knaster–Tarski theorem (Knaster 1928 for power sets, Tarski 1955 in general) gives every monotone self-map of a complete lattice a (least and greatest) fixed point, and Dana Scott's domain theory together with the Kleene fixed-point theorem gives every Scott-continuous map of a pointed dcpo the least fixed point ⨆ₙ fⁿ(⊥), the semantic foundation of recursion. Open question oq-04 asks how these two sources of fixed points relate and which types admit a Lawvere-style theorem; this file answers it by separating the two properties with an explicit witness.",
     "problemStatement": "Open question oq-04 of the Lawvere branch (oq-02) of Cantor's theorem: which types admit a Lawvere-style fixed-point theorem, and how does the diagonal (Lawvere) source of fixed points relate to the order-theoretic (Knaster–Tarski / Scott–Kleene) one that pointed dcpos satisfy? Formally: distinguish the unrestricted fixed-point property $\\mathrm{HasFPP}(B) \\equiv \\forall f:B\\to B,\\,\\exists b,\\,f(b)=b$ (Lawvere's target) from the monotone fixed-point property $\\mathrm{HasMonotoneFPP}(B) \\equiv \\forall f:B\\to_o B,\\,\\exists b,\\,f(b)=b$ (the order/dcpo form), and decide whether either implies the other.",
     "proofStrategy": "Define both properties and prove they are independent by exhibiting a separating type. (1) HasFPP from Lawvere: hasFPP_of_pointSurjective diagonalizes a point-surjection φ : A → (A → B) — pick a with φ a = (x ↦ f (φ x x)), then φ a a is a fixed point of f. (2) The Cantor obstruction: not_hasFPP_bool and not_hasFPP_prop show Bool and Prop lack HasFPP because `not`/`Not` are fixed-point-free (the latter via iff_not_self). (3) HasMonotoneFPP from order: hasMonotoneFPP_completeLattice is one line over Mathlib's OrderHom.lfp/map_lfp (Knaster–Tarski). (4) Separation: bool_monotoneFPP_but_not_FPP combines (2) and (3) for Bool — a complete lattice with the monotone FPP but not the unrestricted one — and not_not_monotone certifies the structural reason: `not` is antitone, so it never enters the monotone route. (5) no_pointSurjection_to_powerProp recovers classical Cantor as the contrapositive of Lawvere applied to Prop.",
@@ -152,6 +101,14 @@
       "summary": "no_pointSurjection_to_powerProp: since Prop lacks the FPP, the contrapositive of Lawvere gives no point-surjection A → (A → Prop) — classical Cantor as a corollary."
     }
   ],
+  "leanFile": {
+    "path": "Proofs/CantorsTheoremOQ02OQ04.lean",
+    "lineCount": 126,
+    "axiomCount": 0,
+    "sorries": 0,
+    "definitionCount": 2,
+    "theoremCount": 8
+  },
   "conclusion": {
     "summary": "Two fixed-point properties must be distinguished. The *unrestricted* FPP (every self-map has a fixed point) is what Lawvere's theorem delivers from a point-surjection A→(A→B); it fails for Bool and Prop, the Cantor obstruction. The *monotone* FPP (every monotone self-map has a fixed point) is delivered by order completeness via Knaster–Tarski (Mathlib's OrderHom.lfp), and is the form a pointed dcpo satisfies through Scott–Kleene iteration. Bool witnesses that these are independent: it has the monotone FPP but not the unrestricted one, since the fixed-point-free `not` is antitone.",
     "significance": "Gives a precise, verified answer to 'which types admit Lawvere fixed-point theorems': it depends on the class of maps. Surjectivity (Lawvere) and order-completeness (Scott/Tarski) are incomparable sufficient conditions, reconciled by monotonicity.",
@@ -166,15 +123,95 @@
   },
   "crossReferences": [
     {
-      "relationship": "child-of",
-      "description": "Classification follow-up to the Lawvere fixed-point theorem branch",
-      "targetId": "cantors-theorem-oq-02"
+      "targetId": "cantors-theorem-oq-02",
+      "relationship": "extends",
+      "description": "Parent entry in the Lawvere fixed-point branch of Cantor's theorem. This entry answers its open question oq-04: characterizing which types admit a Lawvere-style fixed-point theorem and relating the diagonal (Lawvere) source of fixed points to the order-theoretic (Knaster–Tarski) one."
     },
     {
-      "relationship": "related-to",
-      "description": "Shares the diagonal-argument core of Cantor's theorem",
-      "targetId": "cantors-theorem"
+      "targetId": "cantors-theorem",
+      "relationship": "related",
+      "description": "Root entry: Cantor's theorem that no set surjects onto its power set. The diagonal obstruction here (not_hasFPP_bool / no_pointSurjection_to_powerProp) is the Lawvere-categorical reformulation of that classical diagonal argument."
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "Lawvere, F. William",
+      "title": "Diagonal arguments and cartesian closed categories",
+      "year": "1969",
+      "venue": "Lecture Notes in Mathematics 92, Springer, 134–145",
+      "note": "Source of Lawvere's fixed-point theorem: if some φ : A → (A → B) is point-surjective then every f : B → B has a fixed point (hasFPP_of_pointSurjective). The contrapositive is the diagonal obstruction unifying Cantor, Russell, and Gödel."
+    },
+    {
+      "authors": "Cantor, Georg",
+      "title": "Über eine elementare Frage der Mannigfaltigkeitslehre",
+      "year": "1891",
+      "venue": "Jahresbericht der Deutschen Mathematiker-Vereinigung 1, 75–78",
+      "note": "The diagonal argument in its original form; not_hasFPP_bool / not_hasFPP_prop are its Boolean/propositional shadow (negation is fixed-point-free), and no_pointSurjection_to_powerProp is the Lawvere packaging of 'no surjection A → (A → Prop)'."
+    },
+    {
+      "authors": "Tarski, Alfred",
+      "title": "A lattice-theoretical fixpoint theorem and its applications",
+      "year": "1955",
+      "venue": "Pacific Journal of Mathematics 5(2), 285–309",
+      "note": "Knaster–Tarski: every monotone self-map of a complete lattice has a (least) fixed point — the order-theoretic source of fixed points (hasMonotoneFPP_completeLattice) contrasted here with the diagonal/Lawvere source."
+    },
+    {
+      "authors": "Yanofsky, Noson S.",
+      "title": "A Universal Approach to Self-Referential Paradoxes, Incompleteness and Fixed Points",
+      "year": "2003",
+      "venue": "Bulletin of Symbolic Logic 9(3), 362–386",
+      "note": "Modern exposition placing Cantor's theorem, Russell's paradox, and Gödel incompleteness under the single Lawvere fixed-point umbrella — the conceptual frame for this entry's comparison of the diagonal and order-theoretic fixed-point properties."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "hasFPP_of_pointSurjective",
+      "type": "main",
+      "description": "Lawvere's fixed-point theorem (FPP form): if some φ : A → (A → B) is point-surjective (hits every g : A → B), then B has the unrestricted fixed-point property — every self-map of B has a fixed point.",
+      "leanType": "{A B : Type*} (φ : A → (A → B)) (hφ : ∀ g : A → B, ∃ a, φ a = g) : HasFPP B"
+    },
+    {
+      "name": "no_pointSurjection_to_powerProp",
+      "type": "main",
+      "description": "The contrapositive Cantor obstruction: since Prop has a fixed-point-free self-map (negation), no φ : A → (A → Prop) can be point-surjective — the Lawvere packaging of Cantor's 'no surjection onto the power set'.",
+      "leanType": "{A : Type*} (φ : A → (A → Prop)) : ¬ (∀ g : A → Prop, ∃ a, φ a = g)"
+    },
+    {
+      "name": "bool_monotoneFPP_but_not_FPP",
+      "type": "main",
+      "description": "The discriminating example separating the two fixed-point sources: Bool has the monotone (Knaster–Tarski) FPP but not the unrestricted (Lawvere/diagonal) FPP — the order-theoretic and diagonal fixed-point properties are genuinely different.",
+      "leanType": ": HasMonotoneFPP Bool ∧ ¬ HasFPP Bool"
+    },
+    {
+      "name": "hasMonotoneFPP_completeLattice",
+      "type": "supporting",
+      "description": "Knaster–Tarski: every complete lattice has the monotone fixed-point property, witnessed by the least fixed point f.lfp with f.map_lfp.",
+      "leanType": "(B : Type*) [CompleteLattice B] : HasMonotoneFPP B"
+    },
+    {
+      "name": "not_hasFPP_bool",
+      "type": "supporting",
+      "description": "The Cantor obstruction on Bool: negation not : Bool → Bool is fixed-point-free, so Bool lacks the unrestricted FPP.",
+      "leanType": ": ¬ HasFPP Bool"
+    },
+    {
+      "name": "not_hasFPP_prop",
+      "type": "supporting",
+      "description": "The Cantor obstruction on Prop: logical negation Not is fixed-point-free (no p with (¬p) = p), so Prop lacks the unrestricted FPP.",
+      "leanType": ": ¬ HasFPP Prop"
+    },
+    {
+      "name": "hasFPP_of_subsingleton",
+      "type": "supporting",
+      "description": "Baseline positive case: any nonempty subsingleton (e.g. a Unique type) has the FPP — with only one element every self-map fixes it.",
+      "leanType": "(B : Type*) [Subsingleton B] [Nonempty B] : HasFPP B"
+    },
+    {
+      "name": "not_not_monotone",
+      "type": "supporting",
+      "description": "Why the monotone/unrestricted gap is real: the fixed-point-free map not : Bool → Bool is not monotone, so it is invisible to Knaster–Tarski.",
+      "leanType": ": ¬ Monotone (fun b : Bool => !b)"
+    }
+  ]
 }

@@ -2,7 +2,7 @@
   "id": "shannon-channel-coding-awgn-oq-02-oq-02",
   "slug": "shannon-channel-coding-awgn-oq-02-oq-02",
   "title": "Multi-Symbol AWGN Output Power E[(∑Wᵢ)²] = ∑E[Wᵢ²] from the Variance of a Pairwise-Independent Sum",
-  "description": "Generalizes the parent two-term AWGN output-power identity E[(X+Z)²] = E[X²] + E[Z²] to a finite block of symbols: for pairwise-independent, zero-mean, square-integrable contributions Wᵢ (i ∈ s), the aggregate output power adds, E[(∑ᵢ Wᵢ)²] = ∑ᵢ E[Wᵢ²]. The proof is the variance-of-a-sum (Bienaymé) identity for pairwise-independent families — ProbabilityTheory.IndepFun.variance_sum, where the vanishing pairwise covariances collapse the double sum to the diagonal — specialized to zero mean via E[W²] = Var[W] (ProbabilityTheory.variance_eq_sub). Pairwise (not mutual) independence already suffices. 545 lines, 21 theorems, 0 axioms, 0 sorries.",
+  "description": "Generalizes the parent two-term AWGN output-power identity E[(X+Z)²] = E[X²] + E[Z²] to a finite block of symbols: for pairwise-independent, zero-mean, square-integrable contributions Wᵢ (i ∈ s), the aggregate output power adds, E[(∑ᵢ Wᵢ)²] = ∑ᵢ E[Wᵢ²]. The proof is the variance-of-a-sum (Bienaymé) identity for pairwise-independent families — ProbabilityTheory.IndepFun.variance_sum, where the vanishing pairwise covariances collapse the double sum to the diagonal — specialized to zero mean via E[W²] = Var[W] (ProbabilityTheory.variance_eq_sub). Pairwise (not mutual) independence already suffices. 1447 lines, 59 theorems, 0 axioms, 0 sorries.",
   "leanFile": {
     "imports": [
       "Mathlib"
@@ -12,9 +12,9 @@
       "ProbabilityTheory"
     ],
     "namespace": "ShannonAWGNMultiSymbolPower",
-    "lineCount": 1247,
+    "lineCount": 1447,
     "axiomCount": 0,
-    "theoremCount": 50,
+    "theoremCount": 59,
     "definitionCount": 1,
     "path": "Proofs/ShannonChannelCodingAWGNOQ02OQ02.lean",
     "sorries": 0
@@ -39,8 +39,8 @@
     ],
     "axiomCount": 0,
     "sorries": 0,
-    "lineCount": 1247,
-    "theoremCount": 50,
+    "lineCount": 1447,
+    "theoremCount": 59,
     "definitionCount": 1,
     "badge": "mathlib",
     "originalContributions": [
@@ -151,7 +151,7 @@
     }
   ],
   "conclusion": {
-    "summary": "The multi-symbol AWGN output-power identity E[(∑_{i∈s} Wᵢ)²] = ∑_{i∈s} E[Wᵢ²] is derived for arbitrary finite blocks of pairwise-independent, zero-mean, square-integrable contributions. The Bienaymé variance-of-a-sum law (IndepFun.variance_sum) gives Var[∑ Wᵢ] = ∑ Var[Wᵢ]; the aggregate is again zero-mean (sum_mean_zero via integral_finset_sum), so for zero-mean signals the second moment equals the variance (variance_eq_sub), yielding the block identity (awgn_multisymbol_power) and its named-power form ∑ Pᵢ (awgn_multisymbol_output_power). 234 lines, 10 theorems, 0 definitions, 0 axioms, 0 sorries; depends only on propext, Classical.choice, Quot.sound.",
+    "summary": "The multi-symbol AWGN output-power identity E[(∑_{i∈s} Wᵢ)²] = ∑_{i∈s} E[Wᵢ²] is derived for arbitrary finite blocks of pairwise-independent, zero-mean, square-integrable contributions. The Bienaymé variance-of-a-sum law (IndepFun.variance_sum) gives Var[∑ Wᵢ] = ∑ Var[Wᵢ]; the aggregate is again zero-mean (sum_mean_zero via integral_finset_sum), so for zero-mean signals the second moment equals the variance (variance_eq_sub), yielding the block identity (awgn_multisymbol_power) and its named-power form ∑ Pᵢ (awgn_multisymbol_output_power). 1447 lines, 59 theorems, 1 definition, 0 axioms, 0 sorries; depends only on propext, Classical.choice, Quot.sound.",
     "implications": "This lifts the parent's two-term output-power identity to n-symbol blocks, exposing that (a) pairwise — not mutual — independence already suffices for powers to add, and (b) the zero-mean assumption is what identifies power with variance, applied uniformly to the aggregate and each summand. The Finset formulation delivers the block-power budget as a single reusable identity for multi-symbol AWGN power constraints."
   },
   "crossReferences": [
@@ -183,6 +183,6 @@
     }
   ],
   "sorries": [],
-  "lineCount": 1247,
-  "theoremCount": 50
+  "lineCount": 1447,
+  "theoremCount": 59
 }

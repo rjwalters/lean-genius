@@ -44,7 +44,7 @@
     "dateAdded": "2025-12-27",
     "axiomCount": 0,
     "lineCount": 246,
-    "assumptions": "None. Fully verified with 0 axioms, 0 sorries, and 0 structure-encoded assumptions. All three Sylow theorems delegate to Mathlib's `Sylow` module: existence via `Sylow.exists`, conjugacy via `Sylow.equiv`, and counting via `Sylow.card_sylow_modEq_one`. Original contributions are pedagogical wrappers — `unique_sylow_normal` (unique Sylow subgroup is normal) and `cauchy_theorem` (Cauchy's theorem as corollary) provide accessible named statements composing Mathlib results.",
+    "assumptions": "None. Fully verified with 0 axioms, 0 sorries, and 0 structure-encoded assumptions. All three Sylow theorems delegate to Mathlib's `Sylow` module: existence via `Sylow.nonempty`, conjugacy via `MulAction.exists_smul_eq`, and counting via `card_sylow_modEq_one`. Original contributions are pedagogical wrappers — `sylow_normal_of_unique` (unique Sylow subgroup is normal) and `cauchy_from_sylow` (Cauchy's theorem as corollary) provide accessible named statements composing Mathlib results.",
     "mathlib_version": "4.26.0",
     "theoremCount": 10,
     "definitionCount": 1
@@ -52,7 +52,7 @@
   "overview": {
     "historicalContext": "Peter Ludwig Mejdell Sylow (1832-1918) was a Norwegian mathematician who spent most of his career as a high school teacher in Halden, proving these landmark theorems as a side pursuit. He published them in *Mathematische Annalen* (1872, vol. 5) — a single paper that transformed finite group theory.\n\nGeorg Frobenius (1849-1917) gave streamlined alternative proofs in 1887 and strengthened the counting theorem. William Burnside (1852-1927) deployed Sylow's theorems extensively, proving in 1904 that all groups of order p^a·q^b are solvable — a result later reproved by Feit-Thompson (1963) as part of the monumental Odd Order Theorem.\n\nThe theorems became a cornerstone of the Classification of Finite Simple Groups (CFSG), completed ~2004 by Aschbacher, Smith, and others: Sylow counting immediately eliminates most orders from being simple, while conjugacy ensures uniform subgroup structure within each prime family.",
     "problemStatement": "**The Three Sylow Theorems** for a group G of order n = p^k * m where p is prime and p does not divide m:\n\n1. **Existence**: G has a subgroup of order p^k (Sylow p-subgroup)\n2. **Conjugacy**: All Sylow p-subgroups are conjugate to each other\n3. **Counting**: The number n_p of Sylow p-subgroups satisfies: n_p divides m and n_p ≡ 1 (mod p)\n\nThis is Wiedijk's 100 Theorems #72.",
-    "text": "A 247-line formalization of the three Sylow theorems (Wiedijk #72) with 25 declarations, 0 sorries, 0 axioms. Sylow I (`sylow_existence`): delegates to Mathlib's `Sylow` type and `Sylow.nonempty` for groups of order $p^k \\cdot m$. Sylow II (`sylow_conjugacy`): all Sylow $p$-subgroups are conjugate via `Sylow.equiv_smul`. Sylow III (`sylow_counting`): the count $n_p$ satisfies $n_p \\mid m$ and $n_p \\equiv 1 \\pmod{p}$ via `Sylow.card_sylow_modEq_one`. Includes applications: groups of order $pq$ analyzed via Sylow counting, no simple group of order 12 (`no_simple_group_order_12`), and the classification of groups of order $p^2$ as abelian. Uses `Nat.Factorization` for prime decomposition.",
+    "text": "A 246-line formalization of the three Sylow theorems (Wiedijk #72) with 10 theorems and 1 definition, 0 sorries, 0 axioms. Sylow I (`sylow_existence`): delegates to Mathlib's `Sylow` type and `Sylow.nonempty` for groups of order $p^k \\cdot m$. Sylow II (`sylow_conjugacy`): all Sylow $p$-subgroups are conjugate via `MulAction.exists_smul_eq`. Sylow III (`sylow_count_mod_p`, `sylow_count_dvd_index`): the count $n_p$ satisfies $n_p \\mid [G:P]$ and $n_p \\equiv 1 \\pmod{p}$ via `card_sylow_modEq_one`. Includes application theorems `cauchy_from_sylow` (Cauchy's theorem) and `group_of_prime_order_cyclic` (prime-order groups are cyclic); classification of groups of order $pq$ and $p^2$ and simple-group obstructions are discussed in the module documentation. Uses `Nat.Factorization` for prime decomposition.",
     "proofStrategy": "**Sylow I (Existence)**:\nUse induction on |G| and analyze the class equation.\n\n**Sylow II (Conjugacy)**:\nLet P act on cosets G/Q by multiplication and use orbit-stabilizer.\n\n**Sylow III (Counting)**:\nP acts on the set of Sylow p-subgroups by conjugation; the only fixed point is P itself.",
     "keyInsights": [
       "**Sylow I via Class Equation:** $|G| = |Z(G)| + \\sum |\\text{Cl}(x)|$. If $p \\mid |Z(G)|$, Cauchy gives an order-$p$ element. Otherwise some conjugacy class has $p \\nmid |\\text{Cl}(x)|$, giving a proper subgroup $C_G(x)$ with $p^k \\mid |C_G(x)|$ for induction.",
@@ -144,7 +144,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Fully verified (0 sorries, 0 axioms) formalization of all three Sylow theorems with 10 theorems and 1 definition in 247 lines. The formalization covers existence (Sylow I), conjugacy (Sylow II), counting (Sylow III), the normality-uniqueness biconditional, Cauchy's theorem as a corollary, and prime-order cyclicity. Each theorem wraps Mathlib's Sylow API with pedagogical documentation and classical notation.",
+    "summary": "Fully verified (0 sorries, 0 axioms) formalization of all three Sylow theorems with 10 theorems and 1 definition in 246 lines. The formalization covers existence (Sylow I), conjugacy (Sylow II), counting (Sylow III), the normality-uniqueness biconditional, Cauchy's theorem as a corollary, and prime-order cyclicity. Each theorem wraps Mathlib's Sylow API with pedagogical documentation and classical notation.",
     "implications": "**Theoretical Significance**: The Sylow theorems are the primary structural tool for finite group theory, with applications cascading across algebra. **Classification**: For groups of order pq (p < q primes), Sylow III forces n_q = 1, giving a normal Sylow q-subgroup — this classifies all such groups as cyclic or semidirect products. Groups of order p² are always abelian (either ℤ/p² or (ℤ/p)²). **Simple group obstruction**: A finite simple group must have n_p > 1 for every prime p dividing its order, since n_p = 1 implies a normal (hence trivial or whole-group) Sylow subgroup.\n\nSylow counting eliminates most orders from admitting simple groups — the first step in the Classification of Finite Simple Groups (CFSG). **Burnside's p^a q^b theorem** (1904): every group of order p^a · q^b is solvable, proved using Sylow subgroups and character theory. This was later subsumed by the Feit-Thompson odd-order theorem (1963). **Representation theory**: Sylow subgroups control modular representation theory — the representation theory of G over a field of characteristic p is determined by the Sylow p-subgroup via the Brauer correspondence and Green's indecomposable modules.",
     "openQuestions": [
       "Formalize the classification of groups of small order using Sylow: every group of order $pq$ ($p < q$, $p \\nmid q-1$) is cyclic; every group of order $p^2$ is abelian ($\\mathbb{Z}/p^2$ or $(\\mathbb{Z}/p)^2$). These follow directly from Sylow III counting constraints.",
@@ -293,10 +293,10 @@
       "leanType": "(P Q : Sylow p G) -> exists g, P = g * Q * g^(-1)"
     },
     {
-      "name": "sylow_counting",
+      "name": "sylow_count_mod_p",
       "type": "key",
-      "description": "The number of Sylow p-subgroups divides |G|/p^k and is congruent to 1 mod p",
-      "leanType": "card (Sylow p G) % p = 1 and card (Sylow p G) | (card G / p^k)"
+      "description": "The number of Sylow p-subgroups is congruent to 1 mod p (`sylow_count_mod_p`) and divides the index [G:P] (`sylow_count_dvd_index`)",
+      "leanType": "Nat.card (Sylow p G) ≡ 1 [MOD p] and Nat.card (Sylow p G) | (P : Subgroup G).index"
     }
   ],
   "sorries": 0,

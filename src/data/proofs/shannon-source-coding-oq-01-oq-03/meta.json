@@ -105,6 +105,74 @@
       "Can the operational achievability (random coding / typicality) statement be formalized to connect this formula to actual block codes?"
     ]
   },
+  "mainTheorems": [
+    {
+      "name": "rateDistortion_nonneg",
+      "type": "main",
+      "description": "A rate is nonnegative: on the regime 0 ≤ D ≤ p ≤ 1/2 the binary entropy is increasing, so H(D) ≤ H(p) and R(p, D) = H(p) − H(D) ≥ 0. Reduces to binEntropy_strictMonoOn.monotoneOn on Set.Icc 0 2⁻¹ plus linarith.",
+      "leanType": "{p D : ℝ} (hD0 : 0 ≤ D) (hDp : D ≤ p) (hp : p ≤ 2⁻¹) : 0 ≤ rateDistortion p D"
+    },
+    {
+      "name": "rateDistortion_antitone_in_D",
+      "type": "main",
+      "description": "More allowed distortion needs less rate: R(p, ·) is decreasing in D on [0, p] with p ≤ 1/2, because binary entropy is increasing there. The shape of the rate–distortion curve is exactly the monotonicity of binEntropy on [0, 1/2].",
+      "leanType": "{p D₁ D₂ : ℝ} (h0 : 0 ≤ D₁) (h12 : D₁ ≤ D₂) (h2p : D₂ ≤ p) (hp : p ≤ 2⁻¹) : rateDistortion p D₂ ≤ rateDistortion p D₁"
+    },
+    {
+      "name": "rateDistortion_zero",
+      "type": "supporting",
+      "description": "Endpoint at zero distortion: R(p, 0) = H(p). Lossless coding requires the full source entropy rate. A simp consequence of binEntropy_zero.",
+      "leanType": "(p : ℝ) : rateDistortion p 0 = binEntropy p"
+    },
+    {
+      "name": "rateDistortion_self",
+      "type": "supporting",
+      "description": "Endpoint at distortion equal to the source bias: R(p, p) = 0. At distortion p the required rate drops to zero. Immediate from sub_self.",
+      "leanType": "(p : ℝ) : rateDistortion p p = 0"
+    },
+    {
+      "name": "rateDistortion_le_binEntropy",
+      "type": "supporting",
+      "description": "The rate never exceeds the source entropy: R(p, D) ≤ H(p) for any valid distortion 0 ≤ D ≤ 1, since H(D) ≥ 0 (binEntropy_nonneg).",
+      "leanType": "{p D : ℝ} (hD0 : 0 ≤ D) (hD1 : D ≤ 1) : rateDistortion p D ≤ binEntropy p"
+    },
+    {
+      "name": "rateDistortion_le_log_two",
+      "type": "supporting",
+      "description": "The binary rate is at most one bit (log 2 nats): R(p, D) ≤ log 2, chaining rateDistortion_le_binEntropy with binEntropy_le_log_two — a binary source carries at most one bit of entropy per symbol.",
+      "leanType": "{p D : ℝ} (hD0 : 0 ≤ D) (hD1 : D ≤ 1) : rateDistortion p D ≤ log 2"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Shannon, Claude E.",
+      "title": "Coding theorems for a discrete source with a fidelity criterion",
+      "year": "1959",
+      "venue": "IRE International Convention Record, vol. 7, part 4, 142–163",
+      "note": "The founding paper of rate–distortion theory; introduces R(D) as the minimum rate to reproduce a source within average distortion D, of which the binary/Hamming formula R(D) = h(p) − h(D) formalized here is the canonical worked example."
+    },
+    {
+      "authors": "Cover, Thomas M.; Thomas, Joy A.",
+      "title": "Elements of Information Theory",
+      "year": "2006",
+      "venue": "2nd ed., Wiley-Interscience (Chapter 10, Rate Distortion Theory)",
+      "note": "Standard textbook derivation of the Bernoulli-source rate–distortion function R(D) = H(p) − H(D) for 0 ≤ D ≤ min(p, 1−p), including the variational definition R(D) = inf I(X;X̂) whose closed-form this entry verifies structurally."
+    },
+    {
+      "authors": "Berger, Toby",
+      "title": "Rate Distortion Theory: A Mathematical Basis for Data Compression",
+      "year": "1971",
+      "venue": "Prentice-Hall",
+      "note": "Comprehensive monograph on rate–distortion theory; develops the convexity and monotonicity properties of R(D) that the endpoint, sign, and antitone results here instantiate for the binary source."
+    },
+    {
+      "authors": "Shannon, Claude E.",
+      "title": "A Mathematical Theory of Communication",
+      "year": "1948",
+      "venue": "Bell System Technical Journal 27, 379–423 and 623–656",
+      "note": "Introduces the entropy H(p) and the binary entropy function h that supply the H(p) and H(D) terms of the rate–distortion formula."
+    }
+  ],
   "crossReferences": [
     "shannon-source-coding-oq-01",
     "shannon-entropy"

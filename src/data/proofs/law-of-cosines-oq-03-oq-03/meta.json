@@ -17,9 +17,9 @@
     ],
     "axiomCount": 0,
     "sorries": 0,
-    "lineCount": 432,
-    "theoremCount": 26,
-    "definitionCount": 1
+    "lineCount": 728,
+    "theoremCount": 41,
+    "definitionCount": 2
   },
   "openQuestion": {
     "id": "law-of-cosines-oq-03-oq-03",
@@ -294,6 +294,18 @@
       "type": "theorem",
       "statement": "For two equilateral hyperbolic triangles with common angles θ₁ < θ₂, the second has the strictly shorter side: t₂.c < t₁.c.",
       "significance": "The monotone hyperbolic counterpart of the Euclidean fact that all equilateral triangles are similar: here each admissible common angle pins down a unique size, refining AAA congruence into a strict monotonicity along the equilateral family (via cosh injectivity on [0,∞))."
+    },
+    {
+      "name": "exists_triangle_of_defect",
+      "type": "theorem",
+      "statement": "For angles A,B,C each in (0,π) with A+B+C<π, there exists a HyperbolicTriangle t with t.A=A, t.B=B, t.C=C.",
+      "significance": "The converse to the angular-defect condition: positive defect is not only necessary but sufficient. Since the three second laws of cosines are decoupled (each constrains only its own opposite side), each side is realized independently by arcosh of the inverted law, made valid by the defect inequality. Every admissible angle triple is realized."
+    },
+    {
+      "name": "exists_iff_defect",
+      "type": "theorem",
+      "statement": "For angles each in (0,π): (∃ hyperbolic triangle with those angles) ↔ A+B+C<π.",
+      "significance": "Combined with AAA congruence (Part 4), this makes angles↦triangle a bijection between the open defect region {0<A,B,C<π, A+B+C<π} and congruence classes of hyperbolic triangles — the hyperbolic analogue of the Euclidean angle-sum law A+B+C=π (an identity there, a strict-inequality region here)."
     }
   ],
   "references": [
@@ -365,9 +377,9 @@
     ],
     "sorries": 0,
     "axiomCount": 7,
-    "lineCount": 432,
-    "theoremCount": 26,
-    "definitionCount": 1,
+    "lineCount": 728,
+    "theoremCount": 41,
+    "definitionCount": 2,
     "originalContributions": [
       "HyperbolicTriangle structure encoding the three second laws of cosines plus the angular defect",
       "cosh_c_eq / cosh_a_eq / cosh_b_eq: inversion of the second law giving each side as a function of the angles",
@@ -377,7 +389,9 @@
       "equilateral_cosh: closed form cosh(side) = cos θ/(1-cos θ) for the equilateral triangle",
       "side_antitone_in_angle / cosh_c_antitone_in_C: angle-side monotonicity — holding two angles fixed, increasing the third strictly shortens the opposite side (refines AAA congruence to a strict comparison)",
       "Equilateral corollaries (Part 7): equilateral_angle_lt_pi_third (an equilateral hyperbolic triangle has common angle < π/3, the sharp defect-driven counterpart of the Euclidean π/3) and equilateral_pi_four_cosh (the all-angles-π/4 equilateral triangle has every side arcosh(1+√2), i.e. cosh = 1+√2) — no new assumptions",
-      "Equilateral-family monotonicity (Part 8): equilateral_cosh_antitone and equilateral_side_antitone — along the one-parameter equilateral family, the side is a strictly decreasing function of the common angle θ ∈ (0, π/3). This sharpens AAA congruence (Part 4) into a strict order statement across the family, complementing the two-angles-fixed monotonicity of Part 4b."
+      "Equilateral-family monotonicity (Part 8): equilateral_cosh_antitone and equilateral_side_antitone — along the one-parameter equilateral family, the side is a strictly decreasing function of the common angle θ ∈ (0, π/3). This sharpens AAA congruence (Part 4) into a strict order statement across the family, complementing the two-angles-fixed monotonicity of Part 4b.",
+      "Realizability of hyperbolic triangles (Part 10): exists_triangle_of_defect — every angle triple with each angle in (0,π) and A+B+C<π is realized by an actual HyperbolicTriangle. The construction inverts each decoupled second law independently (cosh a = (cos A+cos B cos C)/(sin B sin C), etc.), with angle_ineq (a raw-real form of the Part-3 defect inequality, applied under the three cyclic permutations) guaranteeing each quotient exceeds 1 so that arcosh yields a genuine positive side. This is the converse of the structure-encoded defect field.",
+      "Bijection characterization and equilateral existence (Part 10): exists_iff_defect — an angle triple is realized iff A+B+C<π, so (with Part 4 AAA congruence) the map angles↦triangle is a bijection between the open defect region and congruence classes, the exact hyperbolic replacement for the Euclidean angle-sum identity A+B+C=π; and exists_equilateral — a hyperbolic equilateral triangle exists for every common angle θ∈(0,π/3), showing the equilateral results of Parts 5/7/8 are non-vacuous. No new assumptions."
     ],
     "proofStrategy": "Invert each second law of cosines (linear in cosh of the opposite side) via eq_div_iff + linear_combination to get cosh(side) as a ratio of angle functions. Prove the angle ratio exceeds 1 from the defect using cos(A+B) > cos(π-C) = -cos C (strict antitonicity of cos on [0,π]). Conclude AAA congruence by cosh injectivity on [0,∞). Specialize to the equilateral case for a closed form.",
     "openQuestions": [
