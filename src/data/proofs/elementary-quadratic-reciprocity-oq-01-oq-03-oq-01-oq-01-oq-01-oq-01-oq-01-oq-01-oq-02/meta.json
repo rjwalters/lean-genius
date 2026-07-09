@@ -45,22 +45,32 @@
   "sections": [
     {
       "title": "The grid transpose and its sign (the combinatorial gap)",
+      "startLine": 1,
+      "endLine": 371,
       "content": "gridTranspose m n is the row-major ↔ column-major reindexing of Fin (m*n); gridTranspose_apply / gridTranspose_val confirm it sends n·i+j to m·j+i. Supporting mixed-radix facts fpe_val, fpe_symm, fpe_divNat, fpe_modNat, finCongr_lt, encode_lt, and card_strict_pairs (#{(i,j) : i<j over Fin k} = C(k,2)) feed sign_gridTranspose: its sign is (-1)^(C(m,2)·C(n,2)), proved by sign_eq_prod_prod_Iio and a Finset.card_bij' bijection onto the inversion set."
     },
     {
       "title": "Parity bridge and the classical-form transpose sign",
+      "startLine": 372,
+      "endLine": 433,
       "content": "neg_one_pow_choose_two_mul_odd: for odd m,n, (-1)^(C(m,2)·C(n,2)) = (-1)^(((m-1)/2)·((n-1)/2)) — the elementary number-theory step turning the inversion count into the textbook reciprocity exponent (independent of sign_gridTranspose). sign_gridTranspose_odd: sign(gridTranspose m n) = (-1)^(((m-1)/2)·((n-1)/2)) for odd m,n."
     },
     {
       "title": "The three-transition skeleton",
+      "startLine": 434,
+      "endLine": 522,
       "content": "rowOrder = finProdFinEquiv and colOrder its mirror; gridTranspose = rowOrder⁻¹∘colOrder (gridTranspose_eq). transRC = colOrder⁻¹∘rowOrder is conjugate to gridTranspose (sign_transRC). quadratic_reciprocity_of_transition_signs: given any diagonal order D and the per-line hypotheses sign(rowOrder∘D⁻¹) = (q/p), sign(colOrder∘D⁻¹) = (p/q), the tautology τ_cd⁻¹∘τ_rd = τ_rc plus multiplicativity of sign and sign_gridTranspose_odd yield (q/p)·(p/q) = (-1)^((p-1)/2·(q-1)/2)."
     },
     {
       "title": "Per-line Zolotarev sign: discharging the transition-sign hypotheses",
+      "startLine": 523,
+      "endLine": 647,
       "content": "sign_addLeft_odd: translation x ↦ b+x of ℤ/n is even for odd n (order divides n, sign in order-2 group). sign_addLeft_mul: composing with a translation leaves the sign unchanged. sign_affineLine_eq_legendreSym: sign(x ↦ a·x + b on ℤ/p) = (A/p) for A ≡ a (mod p), via the parent's Frobenius identity. sign_prodCongrLeft_affineLine: a fiberwise-affine permutation of ℤ/p × ℤ/q has total sign the single Legendre symbol (A/p), since the q-fold product collapses (q odd)."
     },
     {
       "title": "Closing the gap: the concrete CRT order",
+      "startLine": 648,
+      "endLine": 817,
       "content": "arrEquiv : Fin p × Fin q ≃ ℤ/p × ℤ/q via ZMod.finEquiv; crtOrder is the diagonal order whose inverse is the Chinese-remainder map. sign_rowTransition / sign_colTransition conjugate crtOrder⁻¹∘rowOrder (resp. ∘colOrder) by arrEquiv (resp. arrEquiv∘swap) to realize each transition as prodCongrLeft of the affine line maps x ↦ q·x + j (resp. x ↦ p·x + i), discharging the hypotheses. zolotarev_quadratic_reciprocity assembles the unconditional law with D := crtOrder."
     }
   ],
