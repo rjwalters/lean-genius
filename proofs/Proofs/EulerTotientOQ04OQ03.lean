@@ -1310,5 +1310,135 @@ theorem least_reversal_seed_families :
   obtain ⟨ha_odd, hstep, hb, hC0, hCe⟩ := hv
   rw [mem_ReversalSet_iff_classify ha_odd hstep hb hC0 hCe k]
   exact twentyone_least_reversal_seed.2 a ha ⟨ha_odd, hstep, hb, hC0, hCe⟩
+-- ===========================================================================
+-- A TOTAL DECIDABLE CLASSIFIER FOR EVERY ODD SEED
+--
+-- The general criterion `dblIter_*_iff_general` decides the regime of the family
+-- `n = a·2^(k+1)` from data `(s, b, t, e)` that must be *supplied* by hand for
+-- each seed.  Here we make that data COMPUTABLE: `seedS/seedB/seedC/seedT/seedE`
+-- extract `(s, b, t, e)` from `a` by two 2-adic valuations, and `classifySeed a`
+-- reads off the regime.  `seed_spec` proves the extracted data satisfies every
+-- hypothesis of the general criterion for arbitrary odd `a ≥ 3`, so the three
+-- `classifySeed_*_iff` corollaries turn the whole trichotomy into a single
+-- decision procedure — the reversal seed set is `{a | classifySeed a = .lt}`.
+-- ===========================================================================
+
+/-- First-step 2-adic valuation `s = v₂(2a − φ(a))`. -/
+def seedS (a : ℕ) : ℕ := (2 * a - Nat.totient a).factorization 2
+
+/-- Odd part `b` of the first cototient step: `2a − φ(a) = 2^s · b`. -/
+def seedB (a : ℕ) : ℕ := (2 * a - Nat.totient a) / 2 ^ seedS a
+
+/-- Landing constant `C = 2a − φ(b)·2^(s−1)` (the double iterate `D(a·2^(k+1))`
+    equals `C·2^k`). -/
+def seedC (a : ℕ) : ℕ := 2 * a - Nat.totient (seedB a) * 2 ^ (seedS a - 1)
+
+/-- Second 2-adic valuation `t = v₂(C)`. -/
+def seedT (a : ℕ) : ℕ := (seedC a).factorization 2
+
+/-- Odd part `e` of the landing constant: `C = 2^t · e`. -/
+def seedE (a : ℕ) : ℕ := seedC a / 2 ^ seedT a
+
+/-- **Total classifier.**  Compares `φ(a)` with `φ(e)·2^(t−1)`; for every odd
+    `a ≥ 3` this decides which regime the whole family `n = a·2^(k+1)` lands in:
+    `lt` = reversal `φ(n) < φ(D(n))`, `eq` = equality, `gt` = forward. -/
+def classifySeed (a : ℕ) : Ordering :=
+  compare (Nat.totient a) (Nat.totient (seedE a) * 2 ^ (seedT a - 1))
+
+/-- **Correctness of the extraction.**  For odd `a ≥ 3` the computed data
+    `(seedS a, seedB a, seedT a, seedE a)` satisfies every hypothesis of the
+    general transport criterion: `b, e` are odd, `s, t ≥ 1`, and the two defining
+    2-adic factorisations hold.  (Oddness of `a` is not needed here — it enters
+    only through the family's coprimality in the criterion below.) -/
+theorem seed_spec {a : ℕ} (ha3 : 3 ≤ a) :
+    Odd (seedB a) ∧ Odd (seedE a) ∧ 1 ≤ seedS a ∧ 1 ≤ seedT a ∧
+    2 * a - Nat.totient a = 2 ^ seedS a * seedB a ∧
+    2 * a - Nat.totient (seedB a) * 2 ^ (seedS a - 1) = seedE a * 2 ^ seedT a := by
+  simp only [seedS, seedB, seedC, seedT, seedE]
+  have ha1 : 1 < a := by omega
+  have hφa_lt : Nat.totient a < a := Nat.totient_lt a ha1
+  obtain ⟨j, hj⟩ := Nat.totient_even (show 2 < a by omega)
+  have hφa_pos : 0 < Nat.totient a := Nat.totient_pos.mpr (by omega)
+  set m := 2 * a - Nat.totient a with hm
+  have hm_ne : m ≠ 0 := by omega
+  have hm_dvd : 2 ∣ m := ⟨a - j, by omega⟩
+  set s := m.factorization 2 with hs
+  set b := m / 2 ^ s with hb
+  have hs1 : 1 ≤ s := by
+    have h := Nat.prime_two.factorization_pos_of_dvd hm_ne hm_dvd
+    rw [← hs] at h; omega
+  -- 2^s · b = m  and  b odd, both from the 2-adic decomposition of m
+  have hsb : 2 ^ s * b = m := Nat.ordProj_mul_ordCompl_eq_self m 2
+  have hob : Odd b := by
+    have hnd : ¬ 2 ∣ b := Nat.not_dvd_ordCompl Nat.prime_two hm_ne
+    exact Nat.odd_iff.mpr (by omega)
+  -- 2^s = 2·2^(s−1) so b·2^(s−1) is exactly m/2
+  have h2s : 2 ^ s = 2 * 2 ^ (s - 1) := by
+    conv_lhs => rw [show s = (s - 1) + 1 from by omega, pow_succ]
+    ring
+  have hbpow : 2 * (b * 2 ^ (s - 1)) = m := by rw [← hsb, h2s]; ring
+  have hmul_le : Nat.totient b * 2 ^ (s - 1) ≤ b * 2 ^ (s - 1) := by
+    gcongr
+    exact Nat.totient_le b
+  have hterm_le : Nat.totient b * 2 ^ (s - 1) ≤ a - 1 := by omega
+  -- the landing term is even (hence C is even, with v₂ ≥ 1)
+  have hterm_dvd : 2 ∣ Nat.totient b * 2 ^ (s - 1) := by
+    rcases hs1.lt_or_eq with hs_gt | hs_eq
+    · exact (dvd_pow_self 2 (show s - 1 ≠ 0 by omega)).mul_left _
+    · -- s = 1: then b ≠ 1 (else m = 2 contradicts a ≥ 3), so b ≥ 3 and φ(b) is even
+      have hb_ne1 : b ≠ 1 := by
+        intro hb1
+        have hval : (2 : ℕ) ^ s * b = 2 := by rw [← hs_eq, hb1]; norm_num
+        rw [hsb] at hval; omega
+      have hb3 : 2 < b := by rcases hob with ⟨i, hi⟩; omega
+      rw [← hs_eq]
+      simpa using (Nat.totient_even hb3).two_dvd
+  set C := 2 * a - Nat.totient b * 2 ^ (s - 1) with hC
+  have hC_ne : C ≠ 0 := by omega
+  have hC_dvd : 2 ∣ C := by omega
+  set t := C.factorization 2 with ht
+  set e := C / 2 ^ t with he
+  have ht1 : 1 ≤ t := by
+    have h := Nat.prime_two.factorization_pos_of_dvd hC_ne hC_dvd
+    rw [← ht] at h; omega
+  have hst : 2 ^ t * e = C := Nat.ordProj_mul_ordCompl_eq_self C 2
+  have hoe : Odd e := by
+    have hnd : ¬ 2 ∣ e := Nat.not_dvd_ordCompl Nat.prime_two hC_ne
+    exact Nat.odd_iff.mpr (by omega)
+  have hCeq : C = e * 2 ^ t := by rw [← hst]; ring
+  exact ⟨hob, hoe, hs1, ht1, hsb.symm, hCeq⟩
+
+/-- **The classifier decides reversal.**  For odd `a ≥ 3`, `φ(n) < φ(D(n))` along
+    `n = a·2^(k+1)` iff `classifySeed a = .lt`. -/
+theorem classifySeed_lt_iff {a : ℕ} (ha : Odd a) (ha3 : 3 ≤ a) (k : ℕ) :
+    a * 2 ^ (k + 1) ∈ ReversalSet ↔ classifySeed a = Ordering.lt := by
+  obtain ⟨hob, hoe, hs1, ht1, hstep, hCeq⟩ := seed_spec ha3
+  rw [dblIter_reversal_iff_general ha hob hoe hs1 ht1 hstep hCeq k]
+  exact compare_lt_iff_lt.symm
+
+/-- **The classifier decides equality.** -/
+theorem classifySeed_eq_iff {a : ℕ} (ha : Odd a) (ha3 : 3 ≤ a) (k : ℕ) :
+    a * 2 ^ (k + 1) ∈ EqualitySet ↔ classifySeed a = Ordering.eq := by
+  obtain ⟨hob, hoe, hs1, ht1, hstep, hCeq⟩ := seed_spec ha3
+  rw [dblIter_equality_iff_general ha hob hoe hs1 ht1 hstep hCeq k]
+  exact compare_eq_iff_eq.symm
+
+/-- **The classifier decides the forward regime.** -/
+theorem classifySeed_gt_iff {a : ℕ} (ha : Odd a) (ha3 : 3 ≤ a) (k : ℕ) :
+    a * 2 ^ (k + 1) ∈ ForwardSet ↔ classifySeed a = Ordering.gt := by
+  obtain ⟨hob, hoe, hs1, ht1, hstep, hCeq⟩ := seed_spec ha3
+  rw [dblIter_forward_iff_general ha hob hoe hs1 ht1 hstep hCeq k]
+  exact compare_gt_iff_gt.symm
+
+/-- **Total trichotomy.**  For every odd `a ≥ 3` the computable `classifySeed a`
+    correctly decides the regime of the whole family `n = a·2^(k+1)` — a single
+    decision procedure covering all seeds, `k`-free and with no restriction on the
+    first-step 2-adic valuation.  In particular the reversal seed set is the
+    decidable predicate `{a | classifySeed a = Ordering.lt}`. -/
+theorem classifySeed_classifies {a : ℕ} (ha : Odd a) (ha3 : 3 ≤ a) (k : ℕ) :
+    (a * 2 ^ (k + 1) ∈ ReversalSet ↔ classifySeed a = Ordering.lt) ∧
+    (a * 2 ^ (k + 1) ∈ EqualitySet ↔ classifySeed a = Ordering.eq) ∧
+    (a * 2 ^ (k + 1) ∈ ForwardSet ↔ classifySeed a = Ordering.gt) :=
+  ⟨classifySeed_lt_iff ha ha3 k, classifySeed_eq_iff ha ha3 k, classifySeed_gt_iff ha ha3 k⟩
 
 end Erdos1064OQ03
