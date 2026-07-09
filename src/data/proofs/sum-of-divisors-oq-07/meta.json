@@ -82,7 +82,8 @@
       "**One geometric collapse, used everywhere.** Every closed form here is `geom_sum_mul` applied to the base x = pᵏ. The re-indexing lemma `geom_sigma_sum` packages that single collapse so the prime-power, two-prime, and full-factorization results each reduce to it.",
       "**Uniform in the exponent k.** OQ-04 proves the closed prime-power form only for k = 1 (sigma_one_prime_pow_mul); here pᵏ plays the role of the base, so the identical geometric identity holds for τ = σ₀, σ = σ₁, and every higher σₖ at once.",
       "**Division-free over ℤ.** The textbook formula σₖ(n) = ∏ (p^{k(vₚ+1)}−1)/(pᵏ−1) is stated as the cross-multiplied identity σₖ(n)·∏(pᵏ−1) = ∏(p^{k(vₚ+1)}−1), avoiding division and the need for pᵏ ≠ 1 side conditions while carrying the same content.",
-      "**Collapsing a product of sums into a product of quotients.** Mathlib evaluates σₖ(n) as a product of geometric *sums*; the general result replaces each inner sum by its closed geometric *quotient*, distributing the (pᵏ−1) denominators across the factorization."
+      "**Collapsing a product of sums into a product of quotients.** Mathlib evaluates σₖ(n) as a product of geometric *sums*; the general result replaces each inner sum by its closed geometric *quotient*, distributing the (pᵏ−1) denominators across the factorization.",
+      "**The divisor-count τ = σ₀ is the degenerate limit, not a special case.** At k = 0 the multiplier pᵏ−1 vanishes, so the identity σ₀(pⁱ)·(p⁰−1) = p⁰−1 reads 0 = 0 and carries no information: the geometric-quotient form genuinely excludes divisor counting. The true value τ(pⁱ) = i+1 is the k → 0 limit of (p^{k(i+1)}−1)/(pᵏ−1), which by L'Hôpital in k is (i+1)ln p / ln p = i+1 — so σ₀ sits at the removable singularity of the closed form the rest of the family enjoys, and must be evaluated arithmetically rather than geometrically."
     ],
     "prerequisites": [
       "Mathlib's ArithmeticFunction.sigma and its prime-power / factorization API",
@@ -95,7 +96,7 @@
       "id": "header",
       "title": "Module Header and Setup",
       "startLine": 1,
-      "endLine": 38,
+      "endLine": 39,
       "summary": "Module docstring framing the open-form gap (Mathlib's geometric sums, OQ-04's k = 1 collapse) and the closed geometric-product target, the Mathlib import, namespace, and ArithmeticFunction/Finset opens.",
       "mathContext": "$\\sigma_k(p^i) = \\sum_{j\\le i} p^{jk} = \\tfrac{p^{k(i+1)}-1}{p^k-1}$."
     },
@@ -103,7 +104,7 @@
       "id": "prime-power",
       "title": "Geometric Collapse and the Prime-Power Closed Form",
       "startLine": 40,
-      "endLine": 59,
+      "endLine": 60,
       "summary": "geom_sigma_sum (the geometric collapse (∑ p^{jk})·(pᵏ−1) = p^{k(i+1)}−1 over ℤ) and sigma_prime_pow_mul (the closed form σₖ(pⁱ)·(pᵏ−1) = p^{k(i+1)}−1 for every k).",
       "mathContext": "$(p^k-1)\\sigma_k(p^i) = p^{k(i+1)}-1$."
     },
