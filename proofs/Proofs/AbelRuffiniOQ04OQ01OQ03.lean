@@ -1015,4 +1015,76 @@ theorem isCyclic_of_card_fifteen {G : Type*} [Group G] [Finite G]
   isCyclic_of_comm_card_eq_prime_mul_prime (p := 3) (q := 5) (by norm_num) (by norm_num)
     (by norm_num) (hcard.trans (by norm_num)) (fun a b => mul_comm_of_card_fifteen hcard a b)
 
+/-! ### General order-`pq` classification (the positive half, and its sharp converse)
+
+The order-`15` results above are the `p = 3, q = 5` instance of a general phenomenon: for two
+primes `p < q`, whether a group of order `pq` must be cyclic is governed *entirely* by the
+elementary arithmetic condition `p ∣ q − 1`.  The two theorems below package the positive half
+of the classical classification for arbitrary such `p, q`, and — via a one-line contrapositive
+— show the arithmetic condition is not merely sufficient but *sharp*.  No new group-theoretic
+machinery is needed: the Sylow-elimination engine of this file already supplies everything. -/
+
+/-- **General commutativity for order `p·q` (`p < q` primes, `p ∤ q − 1`).**  For two primes
+`p < q`, if `p` does not divide `q − 1` then every group of order `p·q` is abelian.  The Sylow
+`q`-subgroup is normal (its index `p` is the *smaller* prime, forcing `n_q = 1`); take a
+generator `c` of order `q`.  Because `p` is prime, `p ∤ (q − 1)` is exactly `Coprime p (q − 1)`,
+and `p < q` discharges both `q ∤ p` and the divisor-uniqueness hypothesis (`huniq_of_lt`).  Then
+`mul_comm_of_prime_index_coprime` applied to the normal cyclic subgroup `⟨c⟩` (of prime index
+`p`) yields commutativity.  This is the general engine behind `mul_comm_of_card_fifteen`. -/
+theorem mul_comm_of_card_eq_prime_mul_prime_of_not_dvd {G : Type*} [Group G] [Finite G]
+    {p q : ℕ} (hp : p.Prime) (hq : q.Prime) (hpq : p < q) (hndvd : ¬ p ∣ (q - 1))
+    (hcard : Nat.card G = p * q) (a b : G) : a * b = b * a := by
+  haveI : Fintype G := Fintype.ofFinite G
+  haveI : Fact q.Prime := ⟨hq⟩
+  obtain ⟨c, hc⟩ : ∃ x : G, orderOf x = q :=
+    exists_prime_orderOf_dvd_card q
+      (by rw [← Nat.card_eq_fintype_card, hcard]; exact dvd_mul_left q p)
+  -- Roles in `mul_comm_of_prime_index_coprime`: its `p` = q (= orderOf c), its `q` = p (index).
+  refine mul_comm_of_prime_index_coprime (p := q) (q := p) hp
+    (hcard.trans (Nat.mul_comm p q)) ?_ (huniq_of_lt hp.pos hpq) c hc ?_ a b
+  · -- `q ∤ p`: `q` is prime and `p < q`.
+    exact fun hqp => absurd hpq (Nat.not_lt.mpr (Nat.le_of_dvd hp.pos hqp))
+  · -- `Coprime p (q − 1)`, since `p` is prime and `p ∤ (q − 1)`.
+    exact (hp.coprime_iff_not_dvd).mpr hndvd
+
+/-- **Positive half of the order-`pq` classification.**  For primes `p < q` with `p ∤ q − 1`,
+every group of order `p·q` is cyclic — equivalently there is a *unique* group of order `pq`
+(namely `ℤ/pqℤ`).  Combines the commutativity engine
+`mul_comm_of_card_eq_prime_mul_prime_of_not_dvd` with the abelian-⟹-cyclic converter
+`isCyclic_of_comm_card_eq_prime_mul_prime`.  Recovers `isCyclic_of_card_fifteen`
+(`15 = 3·5`, `3 ∤ 4`) as the instance `p = 3, q = 5`. -/
+theorem isCyclic_of_card_eq_prime_mul_prime_of_not_dvd {G : Type*} [Group G] [Finite G]
+    {p q : ℕ} (hp : p.Prime) (hq : q.Prime) (hpq : p < q) (hndvd : ¬ p ∣ (q - 1))
+    (hcard : Nat.card G = p * q) : IsCyclic G :=
+  isCyclic_of_comm_card_eq_prime_mul_prime hp hq (ne_of_lt hpq) hcard
+    (mul_comm_of_card_eq_prime_mul_prime_of_not_dvd hp hq hpq hndvd hcard)
+
+/-- **Necessity: a non-cyclic group of order `pq` forces `p ∣ q − 1`.**  The exact converse of
+`isCyclic_of_card_eq_prime_mul_prime_of_not_dvd`: for primes `p < q`, if some group of order
+`p·q` fails to be cyclic then `p` must divide `q − 1` — the arithmetic condition that permits the
+nonabelian Frobenius group `ℤ/q ⋊ ℤ/p`.  This makes the classification *sharp*: `p ∤ q − 1` is
+equivalent to "every order-`pq` group is cyclic", not merely sufficient.  Proved as the
+contrapositive of the positive half, so no group construction is required — the sharp boundary
+is obtained purely from the divisibility dichotomy for the prime `p`. -/
+theorem dvd_sub_one_of_not_isCyclic_card_eq_prime_mul_prime {G : Type*} [Group G] [Finite G]
+    {p q : ℕ} (hp : p.Prime) (hq : q.Prime) (hpq : p < q)
+    (hcard : Nat.card G = p * q) (hnc : ¬ IsCyclic G) : p ∣ (q - 1) := by
+  by_contra hndvd
+  exact hnc (isCyclic_of_card_eq_prime_mul_prime_of_not_dvd hp hq hpq hndvd hcard)
+
+/-- **Every group of order `35` is cyclic** (`35 = 5·7`, `5 ∤ 6`).  Instance of the general
+order-`pq` classification with `p = 5, q = 7`, one step beyond the order-`15` case. -/
+theorem isCyclic_of_card_thirtyfive {G : Type*} [Group G] [Finite G]
+    (hcard : Nat.card G = 35) : IsCyclic G :=
+  isCyclic_of_card_eq_prime_mul_prime_of_not_dvd (p := 5) (q := 7)
+    (by norm_num) (by norm_num) (by norm_num) (by norm_num) (hcard.trans (by norm_num))
+
+/-- **Every group of order `33` is cyclic** (`33 = 3·11`, `3 ∤ 10`).  Instance with
+`p = 3, q = 11`; here `p = 3` matches the order-`21` prime but `3 ∤ 10` (unlike `3 ∣ 6`),
+so — in contrast to order `21` — the group is forced cyclic. -/
+theorem isCyclic_of_card_thirtythree {G : Type*} [Group G] [Finite G]
+    (hcard : Nat.card G = 33) : IsCyclic G :=
+  isCyclic_of_card_eq_prime_mul_prime_of_not_dvd (p := 3) (q := 11)
+    (by norm_num) (by norm_num) (by norm_num) (by norm_num) (hcard.trans (by norm_num))
+
 end AbelRuffiniSylowElim
