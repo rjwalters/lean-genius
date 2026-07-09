@@ -125,3 +125,26 @@ Suggested S2 PR scope:
 - Rosales–García-Sánchez (Springer 2009) — algebraic / numerical-semigroup
   perspective; chapter 4 develops Apéry-set machinery.
 - Brauer–Shockley (1962) — `g(S) = max Ap(S, a) − a` identity.
+
+## Session 2026-07-08 (S9) - Sharpness of coprimality hypothesis
+
+**Mode**: REVISIT (pool file absent; selected by knowledge score, active/tractable)
+**Outcome**: progress (SOLVED-state outward extension, VERIFIED 0-axiom)
+
+### What I Did
+- Found S8 (general 3-AP Roberts closed form `frobenius_three_ap`) already merged (#33913); JSON progressSummary was stale at S7.
+- Added S9 sharpness section proving `gcd(a,d)=1` in `frobenius_three_ap` is NECESSARY.
+
+### Key Findings
+- If `g := gcd(a,d) >= 2`, then `g` divides all three generators `a, a+d, a+2d`, hence every representable number (`gcd_dvd_of_representable3_ap`).
+- The non-representable set then contains `{g*k+1 : k}` (injective, none divisible by g), so it is `Set.Infinite` and not `BddAbove` — no finite Frobenius number.
+- Concrete: `(2,4,6)` has infinitely many non-representable (all odds).
+
+### Files Modified
+- proofs/Proofs/FrobeniusNumberOQ03.lean (743 -> 814 lines, 39 -> 43 thm)
+- src/data/proofs/frobenius-number-oq-03/meta.json (count sync)
+- src/data/research/problems/frobenius-number-oq-03.json (knowledge)
+
+### Next Steps
+- Genus/Sylvester-sum count for coprime AP triples via `representable3_ap_iff`.
+- General s-term Roberts formula (variadic collapse).

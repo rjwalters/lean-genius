@@ -106,26 +106,6 @@
       "summary": "Discussion of the strict inclusion CRT axiom ⊊ formula conjecture (CRT fails for prime powers p^k). A trivial theorem `crt_axiom_vs_formula_conjecture` serves as a Lean anchor. The closing docstring summarizes all 10 theorems, 1 axiom, and 0 sorries, and explains why the CRT axiom is the minimal assumption for the semiprime case."
     }
   ],
-  "references": [
-    {
-      "authors": [
-        "Matoušek, J."
-      ],
-      "title": "Using the Borsuk-Ulam Theorem: Lectures on Topological Methods in Combinatorics and Geometry",
-      "year": "2003",
-      "venue": "Universitext, Springer",
-      "note": "Standard reference for the Borsuk-Ulam theorem, Z/2 and G-indices, and Dold's theorem."
-    },
-    {
-      "authors": [
-        "tom Dieck, T."
-      ],
-      "title": "Transformation Groups",
-      "year": "1987",
-      "venue": "De Gruyter Studies in Mathematics 8, Walter de Gruyter",
-      "note": "Free G-actions, representation spheres and equivariant index theory."
-    }
-  ],
   "conclusion": {
     "summary": "This file establishes $\\text{buDim}(pq, d) = \\max(\\text{buDim}(p,d), \\text{buDim}(q,d))$ for distinct primes $p, q$ using one axiom (CRT compatibility) and zero sorries. The lower bound is proved axiom-free from monotonicity. The CRT compatibility axiom is the minimal new assumption for the semiprime case, strictly weaker than the full formula conjecture. Ten theorems cover lower bounds, the equality, the formula conjecture for semiprimes, non-existence of exotic representations, and concrete cases for $n = 6, 10, 15$.",
     "implications": "The result clarifies the axiomatic structure of the BU dimension formula for cyclic groups. For the semiprime case, the CRT decomposition is the right tool — not the full machinery of Smith theory. This suggests a hierarchical proof strategy: prove the CRT axiom for semiprimes first, handle prime powers via Smith theory separately, and then combine for general squarefree $n$. The absence of exotic representations for $\\mathbb{Z}/pq\\mathbb{Z}$ suggests that if exotic behavior exists at all in the BU dimension framework, it must arise from prime power cyclic groups rather than from products of distinct primes.",

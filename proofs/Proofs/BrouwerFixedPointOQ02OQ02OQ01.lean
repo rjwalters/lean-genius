@@ -124,4 +124,82 @@ theorem contraction_comp (f g : ℝ → ℝ) (L1 L2 : ℝ)
     L2 * L1 < 1 ∧ ∀ x y, |g (f x) - g (f y)| ≤ (L2 * L1) * |x - y| :=
   ⟨by nlinarith, fun x y => lipschitz_comp f g L1 L2 hL2_0 hf hg x y⟩
 
+/-! ## Composing a whole family of maps
+
+The two-map law `contraction_comp` above is the base case of a general fact: composing
+an ordered *list* of maps `[f₀, f₁, …, f_{m-1}]`, with individual Lipschitz constants
+`[L₀, …, L_{m-1}]`, yields a map whose Lipschitz constant is the **product** `∏ Lᵢ`, and
+which is a contraction whenever the family is non-empty and every `Lᵢ < 1`.  Each map is
+bundled with its constant as a pair `(fᵢ, Lᵢ) : (ℝ → ℝ) × ℝ`; the composite applies the
+head last (outermost), matching `lipschitz_comp`'s `g ∘ f`. -/
+
+/-- Apply an ordered list of maps to `x`, head applied last (outermost). -/
+def applyAll : List ((ℝ → ℝ) × ℝ) → ℝ → ℝ
+  | [],        x => x
+  | p :: rest, x => p.1 (applyAll rest x)
+
+/-- A product of reals each in `[0, 1]` is at most `1`. -/
+theorem list_prod_le_one :
+    ∀ (Ls : List ℝ), (∀ L ∈ Ls, 0 ≤ L) → (∀ L ∈ Ls, L ≤ 1) → Ls.prod ≤ 1
+  | [], _, _ => by simp
+  | a :: rest, hpos, hle => by
+      rw [List.prod_cons]
+      have ha0 : 0 ≤ a := hpos a (by simp)
+      have hr0 : ∀ L ∈ rest, 0 ≤ L := fun L h => hpos L (List.mem_cons_of_mem _ h)
+      have hr1 : ∀ L ∈ rest, L ≤ 1 := fun L h => hle L (List.mem_cons_of_mem _ h)
+      have hrest := list_prod_le_one rest hr0 hr1
+      have ha1 : a ≤ 1 := hle a (by simp)
+      nlinarith [mul_nonneg ha0 (by linarith : (0:ℝ) ≤ 1 - rest.prod), ha1, hrest]
+
+/-- A product of reals each in `[0, 1)` over a **non-empty** list is `< 1`. -/
+theorem list_prod_lt_one :
+    ∀ (Ls : List ℝ), Ls ≠ [] → (∀ L ∈ Ls, 0 ≤ L) → (∀ L ∈ Ls, L < 1) → Ls.prod < 1
+  | [], hne, _, _ => absurd rfl hne
+  | a :: rest, _, hpos, hlt => by
+      rw [List.prod_cons]
+      have ha0 : 0 ≤ a := hpos a (by simp)
+      have ha1 : a < 1 := hlt a (by simp)
+      have hr0 : ∀ L ∈ rest, 0 ≤ L := fun L h => hpos L (List.mem_cons_of_mem _ h)
+      have hr1 : ∀ L ∈ rest, L ≤ 1 := fun L h => le_of_lt (hlt L (List.mem_cons_of_mem _ h))
+      have hrest_le := list_prod_le_one rest hr0 hr1
+      nlinarith [mul_le_mul_of_nonneg_left hrest_le ha0, ha1]
+
+/-- **Lipschitz composition law for a list of maps.**  If each `(fᵢ, Lᵢ)` in the list is
+    `Lᵢ`-Lipschitz with `Lᵢ ≥ 0`, then the composite `applyAll` is Lipschitz with constant
+    the product `∏ Lᵢ`.  Generalises `lipschitz_comp` from two maps to arbitrarily many. -/
+theorem lipschitz_comp_list :
+    ∀ (fL : List ((ℝ → ℝ) × ℝ)) (x y : ℝ),
+      (∀ p ∈ fL, 0 ≤ p.2) →
+      (∀ p ∈ fL, ∀ a b, |p.1 a - p.1 b| ≤ p.2 * |a - b|) →
+      |applyAll fL x - applyAll fL y| ≤ (fL.map Prod.snd).prod * |x - y|
+  | [], x, y, _, _ => by simp [applyAll]
+  | p :: rest, x, y, hpos, hlip => by
+      have hp0 : 0 ≤ p.2 := hpos p (by simp)
+      have hpl := hlip p (by simp)
+      have ih := lipschitz_comp_list rest x y
+        (fun q h => hpos q (List.mem_cons_of_mem _ h))
+        (fun q h => hlip q (List.mem_cons_of_mem _ h))
+      simp only [applyAll, List.map_cons, List.prod_cons]
+      calc |p.1 (applyAll rest x) - p.1 (applyAll rest y)|
+          ≤ p.2 * |applyAll rest x - applyAll rest y| := hpl _ _
+        _ ≤ p.2 * ((rest.map Prod.snd).prod * |x - y|) := mul_le_mul_of_nonneg_left ih hp0
+        _ = p.2 * (rest.map Prod.snd).prod * |x - y| := by ring
+
+/-- **A composite of a list of contractions is a contraction.**  For a non-empty family
+    where every `(fᵢ, Lᵢ)` is an `Lᵢ`-contraction (`0 ≤ Lᵢ < 1`), the composite `applyAll`
+    is a contraction with constant `∏ Lᵢ < 1`.  This is the structural fact behind
+    iterating several distinct maps, generalising `contraction_comp`. -/
+theorem contraction_comp_list (fL : List ((ℝ → ℝ) × ℝ)) (hne : fL ≠ [])
+    (hpos : ∀ p ∈ fL, 0 ≤ p.2) (hlt : ∀ p ∈ fL, p.2 < 1)
+    (hlip : ∀ p ∈ fL, ∀ a b, |p.1 a - p.1 b| ≤ p.2 * |a - b|) :
+    (fL.map Prod.snd).prod < 1 ∧
+      ∀ x y, |applyAll fL x - applyAll fL y| ≤ (fL.map Prod.snd).prod * |x - y| := by
+  have hne' : fL.map Prod.snd ≠ [] := by simpa using hne
+  have hpos' : ∀ L ∈ fL.map Prod.snd, 0 ≤ L := by
+    intro L hL; obtain ⟨p, hp, rfl⟩ := List.mem_map.mp hL; exact hpos p hp
+  have hlt' : ∀ L ∈ fL.map Prod.snd, L < 1 := by
+    intro L hL; obtain ⟨p, hp, rfl⟩ := List.mem_map.mp hL; exact hlt p hp
+  exact ⟨list_prod_lt_one _ hne' hpos' hlt',
+    fun x y => lipschitz_comp_list fL x y hpos hlip⟩
+
 end BrouwerOQ02OQ02OQ01

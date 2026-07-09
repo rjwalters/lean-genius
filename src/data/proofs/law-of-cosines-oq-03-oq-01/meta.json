@@ -97,26 +97,6 @@
       "mathContext": "The induced Riemannian metric on the spacelike tangent plane at the apex is the Euclidean form; the angle between the geodesics' unit initial velocities is arccos(cos C) = C, confirming C is the true interior angle."
     }
   ],
-  "references": [
-    {
-      "authors": [
-        "Ratcliffe, J.G."
-      ],
-      "title": "Foundations of Hyperbolic Manifolds",
-      "year": "2019",
-      "venue": "3rd ed., Graduate Texts in Mathematics 149, Springer",
-      "note": "Hyperboloid model of the hyperbolic plane and the hyperbolic laws of cosines and sines."
-    },
-    {
-      "authors": [
-        "Anderson, J.W."
-      ],
-      "title": "Hyperbolic Geometry",
-      "year": "2005",
-      "venue": "2nd ed., Springer Undergraduate Mathematics Series, Springer",
-      "note": "Hyperbolic trigonometry, including the laws of cosines and sines and AAA rigidity."
-    }
-  ],
   "conclusion": {
     "summary": "The hyperbolic law of cosines cosh c = cosh a cosh b − sinh a sinh b cos C is DERIVED from the hyperboloid model: the Minkowski inner product of two geodesic-polar endpoints issuing from the apex equals the right-hand side directly, the value is ≥ 1 so it is a genuine cosh, and the apex angle C is verified to be the true interior angle via unit initial velocities. The hyperbolic Pythagorean theorem is the right-angle case. 13 theorems, 6 definitions, 0 axioms, 0 sorries — eliminating the 3 structure-encoded axioms of the parent.",
     "implications": "This grounds hyperbolic trigonometry in a concrete model rather than postulates, the analogue for the law of cosines of computing the Euclidean law from coordinates. The same hyperboloid setup gives the law of sines and, via Gram determinants, the second (dual) law of cosines; it is the natural foundation for a model-based hyperbolic trigonometry library.",

@@ -29,6 +29,27 @@ sign of 2k+4-n from the range hypothesis).
 
 VERIFIED 0 axioms (propext/Quot.sound only) / 0 sorries, no native_decide. First-try build.
 
-## Remaining next step
-- Connect the recurrences to the parent's `threshold_diff` (the boundary difference
-  C(k+2,2)-C(k+1,2) is the single step at n=2k+2); joint Θ(n²) growth rate.
+## threshold_diff connection + Θ(n²) growth (researcher-2, 2026-07-08, PR #36084)
+Closed the documented remaining next step. 6 new theorems, VERIFIED 0 axioms / 0 sorries,
+no native_decide (Docker green, 7744 jobs).
+
+Boundary-difference bridge (parent `threshold_diff` = `C(k+2,2)-C(k+1,2)`, evaluated):
+- `choose_two_diff_succ (k) : C(k+2,2) - C(k+1,2) = k+1` — the parent's abstract RHS,
+  computed. Gotcha: `choose_two_succ (k+1)` yields `(k+1+1).choose 2`, which omega
+  atomizes separately from `(k+2).choose 2`; `rw [show k+1+1 = k+2 by omega] at h` first.
+- `edgeThreshold_boundary_step (k) : edgeThreshold (2k+3) k = edgeThreshold (2k+2) k + (k+1)`
+  — the n-recurrence's derivative `n-k-1` evaluated at n=2k+2 (via `edgeThreshold_succ_left`).
+- `threshold_diff_eq (k) : edgeThreshold (2k+3) k - edgeThreshold (2k+2) k = k+1` — closes
+  the loop: the abstract binomial difference and the recurrence both give k+1.
+
+Θ(n²) growth (quadratic sandwich):
+- `two_mul_edgeThreshold (h : k+2 ≤ n) : 2·edgeThreshold n k = (n-k-1)(n-k-2)+(k+2)(k+1)+2`
+  — subtraction-free doubled closed form (reuses `two_mul_choose_two`).
+- `edgeThreshold_quadratic_lower (h : k+2 ≤ n) : (n-k-1)(n-k-2) ≤ 2·edgeThreshold n k`.
+- `edgeThreshold_quadratic_sandwich (h : 2k+3 ≤ n) : (n-k-1)(n-k-2) ≤ 2·edgeThreshold n k
+  ≤ n(n-1)` — two-sided quadratic bound (upper reuses `edgeThreshold_le_choose_two`),
+  so the threshold grows like ½n², the same rate as C(n,2).
+
+The next step is now COMPLETE; no obvious further elementary arithmetic remains for this
+child (the n- and k-recurrences, non-degeneracy, boundary connection, and growth rate are
+all recorded). Deeper work belongs to the parent (Woodall's f(k) axioms).

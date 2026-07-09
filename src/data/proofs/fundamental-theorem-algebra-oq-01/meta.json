@@ -90,48 +90,6 @@
       "Algebraic closure, real-closed fields, and the Artin–Schreier theorem"
     ]
   },
-  "sections": [
-    {
-      "id": "question-and-answer",
-      "title": "The Open Question and Its Definitive Answer",
-      "startLine": 3,
-      "endLine": 62,
-      "summary": "The module docstring poses the parent entry's open question — can the FTA ever be proved by pure algebra, or is analysis inherently required? — and states the definitive answer: analysis is unavoidable, but the Artin–Schreier / Galois reduction pins its role to exactly two order/analytic facts about ℝ, namely (A) odd-degree real polynomials have a root and (B) complex numbers have square roots. Everything past those two inputs is pure algebra (Sylow + Galois).",
-      "mathContext": "The FTA is a statement about the specific field $\\mathbb{C}=\\mathbb{R}[i]$; it is false over $\\mathbb{Q}$ and finite fields, so any proof must consume a non-algebraic property of $\\mathbb{R}$."
-    },
-    {
-      "id": "ingredient-a",
-      "title": "Analytic Ingredient (A): Odd-Degree Real Root via IVT",
-      "startLine": 68,
-      "endLine": 121,
-      "summary": "root_of_odd_pos handles the positive-leading-coefficient case: a continuous odd-degree polynomial tends to +∞ at +∞ and −∞ at −∞ (obtained by reflecting through X ↦ −X), so Continuous.surjective forces a zero. odd_degree_real_root then covers all leading-coefficient signs by trichotomy, negating p when the leading coefficient is negative and ruling out the zero case (degree 0 is not odd). This is the irreducible Intermediate-Value-Theorem / order-completeness input.",
-      "mathContext": "An odd-degree $p\\in\\mathbb{R}[X]$ satisfies $p(x)\\to\\pm\\infty$ as $x\\to\\pm\\infty$; by continuity and the IVT it attains $0$."
-    },
-    {
-      "id": "ingredient-b",
-      "title": "Analytic Ingredient (B): Complex Square Roots via Polar Form",
-      "startLine": 123,
-      "endLine": 140,
-      "summary": "complex_has_sqrt builds a square root of any z ∈ ℂ as w = √‖z‖ · exp(i·arg z / 2), using only the real square root Real.sqrt and Complex.norm_mul_exp_arg_mul_I. The construction is deliberately non-circular: it never invokes the FTA, so (B) is a genuinely independent analytic ingredient rather than a corollary of the theorem being reduced.",
-      "mathContext": "$w=\\sqrt{\\lVert z\\rVert}\\,e^{i\\,\\arg z/2}$ satisfies $w^2=\\lVert z\\rVert\\,e^{i\\arg z}=z$."
-    },
-    {
-      "id": "obstruction",
-      "title": "The Algebraic Obstruction: These Facts Are Not Field-Theoretic",
-      "startLine": 142,
-      "endLine": 164,
-      "summary": "Two witnesses show neither ingredient follows from the field axioms alone. real_not_alg_closed: X² + 1 has no real root (by positivity), so ℝ satisfies the IVT yet is still not algebraically closed — exactly why i must be adjoined. cubic_no_root_zmod2 / cubic_poly_no_root_zmod2: the odd-degree cubic X³ + X + 1 has no root in 𝔽₂ (by decide, not native_decide), so 'odd degree ⇒ root' is special to ℝ, not universal.",
-      "mathContext": "$X^2+1$ has no root in $\\mathbb{R}$; the odd-degree $X^3+X+1$ has no root in $\\mathbb{F}_2$ — the two ingredients carry genuine analytic weight."
-    },
-    {
-      "id": "target-conclusion",
-      "title": "The Conclusion the Reduction Targets (from Mathlib)",
-      "startLine": 166,
-      "endLine": 176,
-      "summary": "fta_complex records the FTA itself — every non-constant complex polynomial has a root — as supplied by Mathlib's Complex.exists_root (proved there via Liouville's theorem). Given ingredients (A) and (B), the Artin–Schreier argument derives this by pure algebra; Mathlib instead derives it from complex analysis. Either route lets analysis enter, which is precisely the answer to the open question.",
-      "mathContext": "$\\forall p\\in\\mathbb{C}[X],\\ \\deg p>0 \\Rightarrow \\exists z,\\ p(z)=0$ (Complex.exists_root)."
-    }
-  ],
   "crossReferences": [
     {
       "targetId": "fundamental-theorem-algebra",
@@ -144,15 +102,6 @@
       "description": "That entry shows $\\mathbb{C}$ is the unique algebraic closure of $\\mathbb{R}$ with $[\\mathbb{C}:\\mathbb{R}]=2$; this entry explains why a single quadratic extension suffices and why the analytic facts about $\\mathbb{R}$ are needed to get there."
     }
   ],
-  "conclusion": {
-    "summary": "The open question 'is a purely algebraic proof of the FTA possible?' is answered definitively: no. Because the FTA fails over ℚ and finite fields, any proof must consume a property of ℝ beyond the field axioms. The Artin–Schreier / Galois reduction isolates that non-algebraic content to exactly two facts — (A) odd-degree real polynomials have a real root (formalized here via the IVT), and (B) every complex number has a square root (formalized non-circularly via polar form). The entry also exhibits the obstruction (X²+1 has no real root; X³+X+1 has no root in 𝔽₂) proving these facts are genuinely analytic, and connects to Mathlib's Complex.exists_root. All 7 theorems are machine-checked with 0 sorries, 0 axioms, and no native_decide.",
-    "implications": "This sharpens the folklore remark 'every proof of the FTA needs analysis' from a vague slogan into a precise, formally verified statement: analysis is required, and its role reduces to exactly two order/analytic inputs, after which the argument is pure Sylow + Galois theory. It clarifies that the analytic weight of the FTA is neither everywhere nor mysterious — it is concentrated in the order-completeness of ℝ (ingredient A) and the existence of real square roots (ingredient B), each demonstrably independent of the field axioms.",
-    "openQuestions": [
-      "Formalize the full Artin–Schreier reduction (that a real-closed field's ℝ[i] is algebraically closed given ingredients A and B) to obtain an end-to-end algebra-plus-two-analytic-facts proof of the FTA in Lean, independent of Mathlib's Liouville-based route.",
-      "Characterize precisely which ordered/real-closed field axioms are equivalent to ingredient (A), pinning down the minimal analytic hypothesis the FTA consumes.",
-      "Give a formal proof that ingredient (B) cannot be derived from (A) alone (or vice versa), making the '(A) and (B) are independent' claim itself machine-checked."
-    ]
-  },
   "references": [
     {
       "authors": "Artin, Emil; Schreier, Otto",

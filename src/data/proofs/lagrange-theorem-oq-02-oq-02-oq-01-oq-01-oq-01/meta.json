@@ -1,7 +1,6 @@
 {
   "id": "lagrange-theorem-oq-02-oq-02-oq-01-oq-01-oq-01",
   "slug": "lagrange-theorem-oq-02-oq-02-oq-01-oq-01-oq-01",
-  "description": "Generalises the orbit-stabilizer theorem — which Mathlib provides only for Fintype — to the instance-free Nat.card form: Nat.card (orbit G x) · Nat.card (stabilizer G x) = Nat.card G for any group action, with no Finite or Fintype hypothesis at all. The proof transports Mathlib's finiteness-free bijection orbitProdStabilizerEquivGroup through Nat.card; because Nat.card is total (0 on infinite types) and Nat.card_prod / Nat.card_congr are unconditional, no finiteness instance is ever needed — strictly more general than the parent's Finite Burnside lemma. A companion records the index form Nat.card (orbit G x) = Nat.card (G ⧸ stabilizer G x) (the orbit-counting half of Lagrange's theorem), and the original Fintype statement is recovered as a corollary. 0 sorries, 0 axioms.",
   "leanFile": {
     "imports": [
       "Mathlib.GroupTheory.GroupAction.Quotient",
@@ -21,48 +20,6 @@
   },
   "title": "The Orbit-Stabilizer Family over Nat.card",
   "description": "Lifts the orbit-stabilizer theorem off Mathlib's Fintype hypothesis to the totally instance-free Nat.card form Nat.card (orbit G x) · Nat.card (stabilizer G x) = Nat.card G — valid for any group action with NO finiteness assumption. The proof transports the finiteness-free bijection orbit G x × stabilizer G x ≃ G (orbitProdStabilizerEquivGroup) through Nat.card, which is total (it returns 0 on infinite types) and respects products and bijections unconditionally. Adds the index form Nat.card (orbit G x) = Nat.card (G ⧸ stabilizer G x) — the orbit-counting half of Lagrange's theorem — and recovers the classical Fintype statement as a corollary, confirming the generalisation subsumes it.",
-  "overview": {
-    "historicalContext": "The orbit-stabilizer theorem — that for a group G acting on a set, the size of any orbit times the size of the corresponding point stabilizer equals |G| — is a cornerstone of group-action theory and the action-theoretic face of Lagrange's theorem (|G| = [G : H]·|H|), which it recovers via the action of G on the cosets of a subgroup H. Lagrange's underlying insight dates to his 1770–71 Réflexions sur la résolution algébrique des équations, where counting the values a function takes under permutations of its variables prefigured the index/coset bookkeeping; the modern orbit-stabilizer formulation crystallised with the late-19th-century theory of permutation groups (Burnside, Frobenius) and underlies the Cauchy–Frobenius–Burnside counting lemma. Mathlib states orbit-stabilizer only under a Fintype hypothesis (card_orbit_mul_card_stabilizer_eq_card_group), even though its mathematical content — the bijection orbit G x × stabilizer G x ≃ G — carries no finiteness at all. This entry records the instance-free Nat.card form: Nat.card is Mathlib's total cardinality (Cardinal.toNat ∘ Cardinal.mk, equal to 0 on infinite types), so the classical identity becomes an unconditional theorem about all group actions.",
-    "problemStatement": "For a group G acting on a type X and a point x : X, prove Nat.card (orbit G x) · Nat.card (stabilizer G x) = Nat.card G and the index form Nat.card (orbit G x) = Nat.card (G ⧸ stabilizer G x), each with no Finite or Fintype hypothesis, and show the classical Fintype statement is recovered as a corollary — all with 0 axioms and 0 sorries.",
-    "proofStrategy": "Both identities are obtained by transporting a Mathlib finiteness-free equivalence through Nat.card. For the product form, rewrite Nat.card G via the bijection orbitProdStabilizerEquivGroup : orbit G x × stabilizer G x ≃ G using Nat.card_congr, then split the cardinality of the product with Nat.card_prod — a one-line proof. For the index form, transport orbitEquivQuotientStabilizer : orbit G x ≃ G ⧸ stabilizer G x directly through Nat.card_congr. Crucially, no finiteness instance is summoned anywhere: Nat.card is total and Nat.card_prod / Nat.card_congr hold unconditionally, so the result is strictly more general than even the parent's Finite Burnside form (which still needed Fintype G to collapse a finsum). The recovery corollary supplies the constructive Fintype instances and rewrites Nat.card to Fintype.card via Nat.card_eq_fintype_card, returning Mathlib's bundled lemma verbatim.",
-    "keyInsights": [
-      "The orbit-stabilizer theorem needs no finiteness: its entire content is the bijection orbit G x × stabilizer G x ≃ G, which Mathlib provides for any group action. Only the choice of cardinality functor (Fintype.card vs Nat.card) decides whether a finiteness instance is required.",
-      "Nat.card is the right tool for instance-free cardinality statements: being total (0 on infinite types) and compatible with products (Nat.card_prod) and bijections (Nat.card_congr) unconditionally, it turns the classical identity into a theorem that holds for every group action without hypotheses.",
-      "This is strictly more general than the parent entry's Finite Burnside lemma, which still needed Fintype G to collapse its finsum — here zero finiteness is used anywhere in the proof.",
-      "The index form Nat.card (orbit G x) = Nat.card (G ⧸ stabilizer G x) is the orbit-counting half of Lagrange's theorem: an orbit is in bijection with the cosets of its stabilizer, so orbit size equals stabilizer index.",
-      "Generalisation that subsumes: the classical Fintype statement is recovered verbatim as a corollary, so adopting the Nat.card form loses nothing and gains unconditional applicability downstream."
-    ]
-  },
-  "sections": [
-    {
-      "id": "context-docstring",
-      "title": "Context: lifting orbit-stabilizer off Fintype",
-      "startLine": 5,
-      "endLine": 55,
-      "summary": "Docstring situating the entry as oq-01 of the parent (Burnside over Finite): Mathlib states orbit-stabilizer only for Fintype, but its content is the finiteness-free bijection orbitProdStabilizerEquivGroup, so the Nat.card form needs no finiteness instance at all."
-    },
-    {
-      "id": "product-form",
-      "title": "Orbit-stabilizer product over Nat.card",
-      "startLine": 63,
-      "endLine": 75,
-      "summary": "card_orbit_mul_card_stabilizer_eq_card_group_nat: Nat.card (orbit G x) · Nat.card (stabilizer G x) = Nat.card G, proved by rewriting with orbitProdStabilizerEquivGroup (Nat.card_congr) and splitting via Nat.card_prod — no Finite/Fintype hypothesis."
-    },
-    {
-      "id": "index-form",
-      "title": "Orbit size equals stabilizer index",
-      "startLine": 77,
-      "endLine": 86,
-      "summary": "card_orbit_eq_card_quotient_stabilizer_nat: Nat.card (orbit G x) = Nat.card (G ⧸ stabilizer G x), the orbit-counting half of Lagrange's theorem, by transporting orbitEquivQuotientStabilizer through Nat.card_congr."
-    },
-    {
-      "id": "recovery-corollary",
-      "title": "Recovering the classical Fintype statement",
-      "startLine": 88,
-      "endLine": 97,
-      "summary": "card_orbit_mul_card_stabilizer_eq_card_group_recovered: supplying the Fintype instances and rewriting Nat.card to Fintype.card (Nat.card_eq_fintype_card) returns Mathlib's bundled orbit-stabilizer lemma verbatim, confirming the Nat.card form subsumes it."
-    }
-  ],
   "meta": {
     "author": "Lean Genius",
     "status": "verified",

@@ -41,7 +41,7 @@
       "removeArcList_balanced: proved (0 sorries) — removing a circuit preserves balance",
       "walk_split_at: proved (0 sorries) — split a circuit at an interior vertex using take/drop",
       "nodup_circuit_exists_of_outDeg_pos: proved (0 sorries) — WF induction building Nodup circuit",
-      "walk_closed: proved — digraph closure forces walks to stay in closed sets",
+      "walk_exits_set: proved — digraph closure forces walks to stay in closed sets",
       "vertex_with_unused_arc: proved (0 sorries) — strong connectivity provides extension vertex",
       "directed_euler_circuit_sufficient_corrected: proved (0 sorries) — full Hierholzer algorithm via WF induction on arcCount"
     ]
@@ -61,26 +61,6 @@
       "**walk_split_at enables circuit splicing**: Splitting a circuit W at an interior vertex u via List.take/drop produces two walks W₁ and W₂; Walk.splice then recombines them with an inserted sub-circuit, extending coverage without revisiting arcs."
     ]
   },
-  "references": [
-    {
-      "authors": [
-        "Hierholzer, C."
-      ],
-      "title": "Über die Möglichkeit, einen Linienzug ohne Wiederholung und ohne Unterbrechung zu umfahren",
-      "year": "1873",
-      "venue": "Mathematische Annalen 6 (1), pp. 30–32",
-      "note": "Hierholzer's constructive algorithm for Eulerian circuits."
-    },
-    {
-      "authors": [
-        "West, D.B."
-      ],
-      "title": "Introduction to Graph Theory",
-      "year": "2001",
-      "venue": "2nd ed., Prentice-Hall",
-      "note": "Textbook treatment of Eulerian circuits/paths in undirected and directed graphs."
-    }
-  ],
   "conclusion": {
     "summary": "Complete Hierholzer algorithm formalized with 0 sorries: corrects missing isStronglyConnected hypothesis in KonigsbergOQ02, proves all supporting lemmas (maximal trail circuit, Walk.splice, removeArcList balance/count, walk_split_at, vertex_with_unused_arc), and closes the main theorem via WF induction on arcCount.",
     "implications": [

@@ -55,8 +55,7 @@
       "instDecidableIsSidon: decidability of the Sidon predicate, enabling the greedy least-valid-extension via Nat.find",
       "sidon_insert_of_large + sidon_exists_extension: every finite Sidon set extends by a strictly larger element (explicit witness 2*sup(A)+1); the greedy rule never gets stuck",
       "greedyPair / greedySidonSeq: explicit recursive construction of the greedy Sidon sequence (replaces axiom greedySidonSeq)",
-      "greedySidonSeq_strictMono, greedySidonSeq_isSidon: now THEOREMS (previously axioms) derived from the explicit construction",
-      "erdos_340: formal statement of Erdos's conjecture (OPEN)"
+      "greedySidonSeq_strictMono, greedySidonSeq_isSidon: now THEOREMS (previously axioms) derived from the explicit construction"
     ],
     "dateAdded": "2026-03-22",
     "axiomCount": 0,
@@ -69,7 +68,7 @@
     ],
     "assumptions": "None. This file is fully axiom-free (0 axiom declarations, 0 structure-encoded assumptions, no native_decide; #print axioms reports only propext / Classical.choice / Quot.sound). Its previous sole axiom, the tight Erdos-Turan bound sidon_upper_bound (|A| <= sqrt(N) + sqrt(sqrt(N)) + 1), has been retired: every consumer now routes through the verified, axiom-free Erdos340.sidon_card_le_sqrt (the +2 form, proved in Erdos340SidonErdosTuran.lean by optimising the master window inequality). The greedy sequence and its values are genuine definitions/theorems, and Erdos's open growth conjecture N^(1/2-epsilon) appears only as commentary, never as an assumption.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 16,
+    "theoremCount": 24,
     "definitionCount": 14
   },
   "overview": {
@@ -213,7 +212,7 @@
     "namespace": "Erdos340",
     "lineCount": 648,
     "axiomCount": 0,
-    "theoremCount": 25,
+    "theoremCount": 24,
     "definitionCount": 14,
     "path": "Proofs/Erdos340GreedySidon.lean",
     "sorries": 0

@@ -14,8 +14,10 @@ extensions of the C₄/C₆ story are the longer even cycles.
 
 The bipartition / cycle-length definitions are inlined here (mirroring those in
 Erdos1080Problem.lean) so that this companion is self-contained and independently
-verifiable; the parent gallery file currently carries an unrelated `sorry` in
-`c4_free_iff_no_K22` and a malformed doc-comment, so it is not imported.
+verifiable, and to keep its import surface minimal (only the SimpleGraph modules it
+needs, not the parent's full-Mathlib import). The parent's `c4_free_iff_no_K22` — once
+a `sorry` placeholder — is now a discharged theorem there; the equivalence below is the
+independently-verified companion form.
 
 Main results (all 0 sorries / 0 axioms, over an arbitrary vertex type):
 * `bipartite_walk_parity` — the parity engine: along any walk the endpoint's
@@ -315,9 +317,9 @@ theorem isBipartite_iff_colorable_two : IsBipartite G ↔ G.Colorable 2 := by
 
 In a bipartition `(X, Y)`, a `4`-cycle is exactly a `K_{2,2}`: two distinct
 left vertices `a₁, a₂ ∈ X` and two distinct right vertices `b₁, b₂ ∈ Y` with all
-four cross edges present.  The two lemmas below establish this equivalence,
-discharging the `c4_free_iff_no_K22` placeholder that the parent problem file
-(`Erdos1080Problem.lean`) still carries as a `sorry`.
+four cross edges present.  The two lemmas below establish this equivalence, the
+companion form of the parent problem file's `c4_free_iff_no_K22`
+(`Erdos1080Problem.lean`, now a discharged theorem — formerly a `sorry` placeholder).
 
 Since the bipartition forces the cycle's vertices to alternate sides, a `4`-cycle
 must visit exactly two `X`-vertices and two `Y`-vertices; conversely a `K_{2,2}`

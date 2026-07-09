@@ -19,12 +19,12 @@
     "phase": "ACT",
     "since": "2026-07-03",
     "iteration": 4,
-    "focus": "Discharging schnirelmann_basis_theorem in WeakGoldbach.lean. The covering engine and the ENTIRE iteration bookkeeping are now verified in SchnirelmannBasis.lean (0 sorry / 0 axiom). Only Schnirelmann's inequality remains.",
+    "focus": "TERMINUS: all session-tractable Schnirelmann work complete and merged; remaining axioms are deep/open.",
     "blockers": [
       "Schnirelmann's inequality sigma(A+B) >= sA+sB-sA*sB is the delicate gap-counting step (Nathanson Thm 7.4 / Ruzsa); an explicit Mathlib TODO, ~120-180 LOC.",
       "Binary Goldbach itself is genuinely open and must stay axiomatized."
     ],
-    "nextAction": "Formalize Schnirelmann's inequality sigma(A+B) >= sA+sB-sA*sB (0 in A, 0 in B). Iterating it drives some sigma(sumsetPow A h) above 1/2, and isAdditiveBasis_of_sumsetPow_density_ge_half then discharges the axiom outright.",
+    "nextAction": "None session-tractable. See knowledge.md terminus note (2026-07-08).",
     "attemptCounts": {
       "total": 3,
       "currentApproach": 1,
@@ -75,7 +75,7 @@
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Formalize Schnirelmann's inequality sigma(A+B) >= sA+sB-sA*sB (the gap-counting core, Nathanson Thm 7.4) — now the ONLY missing piece; combine with isAdditiveBasis_of_sumsetPow_density_ge_half to discharge schnirelmann_basis_theorem."
+      "TERMINUS for session-tractable work (r1 2026-07-08): Schnirelmann inequality IS proved (SchnirelmannCounting.schnirelmann_inequality) and schnirelmann_basis_theorem is already discharged. Remaining WeakGoldbach axioms (helfgott/circle-method/chen/binary-verification) are all deep or the open conjecture. Only non-scaffolding directions left are the deep sieve bound sigma(primes)>0 or Mann theorem sigma(A+B)>=min(1,sA+sB) — both multi-session BUILD items, not depth-first advances."
     ]
   },
   "tags": [

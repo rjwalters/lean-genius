@@ -1,5 +1,6 @@
 import Mathlib.RingTheory.HahnSeries.Basic
 import Mathlib.RingTheory.HahnSeries.Multiplication
+import Mathlib.RingTheory.HahnSeries.Summable
 import Mathlib.RingTheory.PowerSeries.Basic
 import Mathlib.FieldTheory.IsAlgClosed.Basic
 import Mathlib.FieldTheory.IsAlgClosed.AlgebraicClosure
@@ -732,6 +733,58 @@ Confirms the subring's carrier is exactly the Puiseux condition. -/
     y ∈ puiseuxSubring K ↔ IsPuiseuxSeries y := Iff.rfl
 
 end Subring
+
+/-! ### Part IX: The Puiseux series form a `K`-subalgebra
+
+Part VIII bundled the closure lemmas into a `Subring` of `HahnSeries ℚ K`.  When
+the coefficient ring `K` is commutative the ambient `HahnSeries ℚ K` is a
+`K`-algebra (with `algebraMap K (HahnSeries ℚ K) = C = single 0`), and the Puiseux
+series form a `K`-**subalgebra**: they additionally contain every scalar `C c` and
+are closed under the `K`-action.  This is the honest statement that the objects the
+Newton–Puiseux algorithm manipulates form a `K`-algebra, not merely a ring — the
+scalar field `K` embeds into them as the constant series.
+-/
+
+section Subalgebra
+
+/-- The image `algebraMap K (HahnSeries ℚ K) c = C c = single 0 c` of a scalar is a
+Puiseux series (a single term at exponent `0`, ramification `1`). -/
+theorem isPuiseux_algebraMap {K : Type*} [CommRing K] (c : K) :
+    IsPuiseuxSeries (algebraMap K (HahnSeries ℚ K) c) := by
+  rw [← HahnSeries.C_eq_algebraMap, HahnSeries.C_apply]
+  exact isPuiseux_single 0 c
+
+/-- **The Puiseux series form a `K`-subalgebra of `HahnSeries ℚ K`.**
+
+Extends `puiseuxSubring` (Part VIII) with the scalar closure `algebraMap_mem'`: the
+constant series `C c = single 0 c` is Puiseux for every `c : K` (`isPuiseux_algebraMap`),
+and closure under `+`, `*` is inherited from `isPuiseux_add` / `isPuiseux_mul`.  The
+carrier is again exactly the Puiseux condition, so every concrete root constructed in
+this file is an element of this subalgebra. -/
+def puiseuxSubalgebra (K : Type*) [CommRing K] : Subalgebra K (HahnSeries ℚ K) where
+  carrier := {f | IsPuiseuxSeries f}
+  mul_mem' := fun ha hb => isPuiseux_mul ha hb
+  add_mem' := fun ha hb => isPuiseux_add ha hb
+  algebraMap_mem' := isPuiseux_algebraMap
+
+/-- Membership in the Puiseux subalgebra is definitionally the Puiseux condition. -/
+@[simp] theorem mem_puiseuxSubalgebra {K : Type*} [CommRing K] (y : HahnSeries ℚ K) :
+    y ∈ puiseuxSubalgebra K ↔ IsPuiseuxSeries y := Iff.rfl
+
+/-- **First inverse-closure fact: the inverse of a single-term series is Puiseux.**
+
+Over a field `K`, `(single m a)⁻¹ = single (-m) a⁻¹` (`HahnSeries.inv_single`), which is
+again a single term, hence a Puiseux series.  This is the base case of the (still open)
+full inverse-closure `IsPuiseuxSeries f → IsPuiseuxSeries f⁻¹` that would upgrade the
+subring/subalgebra to a subfield.  The general case needs a "series supported on the
+subgroup `(1/n)ℤ` form a subfield" reconstruction (via `HahnSeries.embDomainRingHom`
+from `ℤ ↪o ℚ`), which is not yet available in Mathlib. -/
+theorem isPuiseux_inv_single {K : Type*} [Field K] (m : ℚ) (a : K) :
+    IsPuiseuxSeries (HahnSeries.single m a)⁻¹ := by
+  rw [HahnSeries.inv_single]
+  exact isPuiseux_single (-m) a⁻¹
+
+end Subalgebra
 
 /-! ═══════════════════════════════════════════════════════════════════════════════
 SUMMARY

@@ -22,7 +22,12 @@ This file supplies that missing structural layer — all fully machine-checked
   * `subsetSums_card_bounds`  — the sandwich `|A| ≤ |subsetSums A| ≤ 2^|A| − 1`;
   * `subsetSums_le`           — every subset sum is `≤ n·|A|`;
   * `subsetSums_subset_Icc`   — **`subsetSums A ⊆ {1,…,n·|A|}`** (membership range);
-  * `subsetSums_singleton`    — `subsetSums {a} = {a}`.
+  * `subsetSums_singleton`    — `subsetSums {a} = {a}`;
+  * `subsetSums_insert`       — **insertion recursion** `subsetSums (insert a A) =
+                                 insert a (subsetSums A ∪ (subsetSums A).image (a+·))`;
+  * `subsetSums_card_insert_superincreasing` — the exact **doubling law**
+                                 `|subsetSums (insert a A)| = 2·|subsetSums A| + 1`
+                                 when `a > ∑ A` (the superincreasing / distinct-sum regime).
 
 The headline is downward closure: any subset of a valid set is valid — the
 standard "WLOG pass to a sub-configuration" tool for extremal arguments, and
@@ -246,5 +251,156 @@ theorem max'_subsetSums_eq_sum {A : Finset ℕ} (hA : A.Nonempty) :
   le_antisymm
     (Finset.max'_le _ _ _ (fun s hs => subsetSums_le_sum s hs))
     (Finset.le_max' _ _ (sum_mem_subsetSums hA))
+
+/-- **Every subset sum dominates the minimum element.**  For a non-empty subset
+    `S ⊆ A` the sum bounds any one of its (non-negative) summands, and each summand
+    lies in `A`, so the sum is at least `A.min'` — the smallest element of `A`. -/
+theorem min'_le_subsetSums {A : Finset ℕ} (hA : A.Nonempty) :
+    ∀ s ∈ subsetSums A, A.min' hA ≤ s := by
+  intro s hs
+  unfold subsetSums nonemptySubsets at hs
+  rw [Finset.mem_image] at hs
+  obtain ⟨S, hS, rfl⟩ := hs
+  rw [Finset.mem_filter, Finset.mem_powerset] at hS
+  obtain ⟨hSsub, hSne⟩ := hS
+  obtain ⟨b, hb⟩ := Finset.nonempty_iff_ne_empty.mpr hSne
+  calc A.min' hA ≤ b := Finset.min'_le _ _ (hSsub hb)
+    _ ≤ S.sum id := Finset.single_le_sum (fun i _ => Nat.zero_le (id i)) hb
+
+/-- **The minimum subset sum is the minimum element.**  Dual to
+    `max'_subsetSums_eq_sum`: the smallest of the non-empty subset sums of a
+    non-empty set is exactly `A.min'` — attained by the singleton `{A.min'}`
+    (`subset_subsetSums`) and a lower bound for every subset sum
+    (`min'_le_subsetSums`).  Together with `max'_subsetSums_eq_sum` this pins down
+    *both* endpoints of the subset-sum range: `[A.min', ∑ A]`. -/
+theorem min'_subsetSums_eq_min' {A : Finset ℕ} (hA : A.Nonempty) :
+    (subsetSums A).min' (subsetSums_nonempty hA) = A.min' hA :=
+  le_antisymm
+    (Finset.min'_le _ _ (subset_subsetSums A (A.min'_mem hA)))
+    (Finset.le_min' _ _ _ (min'_le_subsetSums hA))
+
+/-- **Insertion recursion for subset sums.**  For a fresh element `a ∉ A`, the
+    non-empty subsets of `insert a A` split into three disjoint families: those
+    avoiding `a` (contributing `subsetSums A`), the singleton `{a}` (contributing
+    `a`), and those of the form `insert a S'` with `S' ⊆ A` non-empty (contributing
+    `a + s` for `s ∈ subsetSums A`).  Hence
+
+    `subsetSums (insert a A) = insert a (subsetSums A ∪ (subsetSums A).image (a + ·))`.
+
+    This computes the subset-sum set of an explicit construction one generator at a
+    time — the recursive tool for analysing candidate lower-bound configurations. -/
+theorem subsetSums_insert {a : ℕ} {A : Finset ℕ} (ha : a ∉ A) :
+    subsetSums (insert a A)
+      = insert a (subsetSums A ∪ (subsetSums A).image (a + ·)) := by
+  ext s
+  simp only [Finset.mem_insert, Finset.mem_union, Finset.mem_image]
+  constructor
+  · intro hs
+    unfold subsetSums nonemptySubsets at hs
+    rw [Finset.mem_image] at hs
+    obtain ⟨S, hS, rfl⟩ := hs
+    rw [Finset.mem_filter, Finset.mem_powerset] at hS
+    obtain ⟨hSsub, hSne⟩ := hS
+    by_cases haS : a ∈ S
+    · -- `S` contains `a`; write `S = insert a S'` with `S' = S.erase a ⊆ A`.
+      have hSeq : S = insert a (S.erase a) := (Finset.insert_erase haS).symm
+      have haS' : a ∉ S.erase a := Finset.not_mem_erase a S
+      have hS'A : S.erase a ⊆ A := by
+        intro x hx
+        have hxS : x ∈ S := Finset.mem_of_mem_erase hx
+        have hxa : x ≠ a := Finset.ne_of_mem_erase hx
+        rcases Finset.mem_insert.mp (hSsub hxS) with h | h
+        · exact absurd h hxa
+        · exact h
+      have hsum : S.sum id = a + (S.erase a).sum id := by
+        simp [hSeq, Finset.sum_insert haS']
+      by_cases hS'e : (S.erase a).Nonempty
+      · -- non-empty remainder ⟹ a value of the shifted image `a + subsetSums A`
+        right; right
+        refine ⟨(S.erase a).sum id, ?_, hsum.symm⟩
+        unfold subsetSums nonemptySubsets
+        rw [Finset.mem_image]
+        refine ⟨S.erase a, ?_, rfl⟩
+        rw [Finset.mem_filter, Finset.mem_powerset]
+        exact ⟨hS'A, Finset.nonempty_iff_ne_empty.mp hS'e⟩
+      · -- empty remainder ⟹ the value is `a` itself
+        left
+        rw [Finset.not_nonempty_iff_eq_empty] at hS'e
+        rw [hsum, hS'e, Finset.sum_empty, Nat.add_zero]
+    · -- `S` avoids `a`, hence `S ⊆ A`
+      right; left
+      have hSA : S ⊆ A := by
+        intro x hx
+        rcases Finset.mem_insert.mp (hSsub hx) with h | h
+        · exact absurd (h ▸ hx) haS
+        · exact h
+      unfold subsetSums nonemptySubsets
+      rw [Finset.mem_image]
+      refine ⟨S, ?_, rfl⟩
+      rw [Finset.mem_filter, Finset.mem_powerset]
+      exact ⟨hSA, hSne⟩
+  · intro hs
+    rcases hs with rfl | h | ⟨t, ht, rfl⟩
+    · -- `s = a`: the singleton `{a}` is a non-empty subset of `insert a A`
+      exact subset_subsetSums (insert a A) (Finset.mem_insert_self a A)
+    · -- `s ∈ subsetSums A`: monotonicity along `A ⊆ insert a A`
+      exact subsetSums_mono (Finset.subset_insert a A) h
+    · -- `s = a + t` with `t ∈ subsetSums A`: adjoin `a` to a witness subset of `t`
+      unfold subsetSums nonemptySubsets at ht
+      rw [Finset.mem_image] at ht
+      obtain ⟨S', hS', rfl⟩ := ht
+      rw [Finset.mem_filter, Finset.mem_powerset] at hS'
+      obtain ⟨hS'A, hS'ne⟩ := hS'
+      have haS' : a ∉ S' := fun h => ha (hS'A h)
+      unfold subsetSums nonemptySubsets
+      rw [Finset.mem_image]
+      refine ⟨insert a S', ?_, ?_⟩
+      · rw [Finset.mem_filter, Finset.mem_powerset]
+        exact ⟨Finset.insert_subset_insert a hS'A, Finset.insert_ne_empty a S'⟩
+      · simp [Finset.sum_insert haS']
+
+/-- **Doubling law in the superincreasing regime.**  If a fresh element `a`
+    strictly exceeds the whole total `∑ A` (so `a` is larger than every subset sum),
+    then the three families of the insertion recursion are pairwise disjoint: the
+    old sums lie in `[1, ∑ A]`, the value `a` exceeds them all, and the shifted sums
+    `a + s` (with `s ≥ 1`) exceed even `a`.  Consequently the count exactly doubles
+    and gains one:
+
+    `|subsetSums (insert a A)| = 2 · |subsetSums A| + 1`.
+
+    Iterated from `∅`, this is precisely why a superincreasing sequence realises the
+    full `2^{|A|} − 1` distinct subset sums of `subsetSums_card_le` — the extremal
+    (distinct-subset-sum) side of the counting picture. -/
+theorem subsetSums_card_insert_superincreasing
+    {a : ℕ} {A : Finset ℕ} (ha : a ∉ A)
+    (hlo : ∀ x ∈ A, 1 ≤ x) (hgt : A.sum id < a) :
+    (subsetSums (insert a A)).card = 2 * (subsetSums A).card + 1 := by
+  -- `a` is above every old subset sum, so `a ∉ subsetSums A`.
+  have h_a_notin : a ∉ subsetSums A := fun h =>
+    absurd (subsetSums_le_sum a h) (not_le.mpr hgt)
+  -- the shift `a + ·` is injective, so the shifted image has the same cardinality.
+  have h_img_card : ((subsetSums A).image (a + ·)).card = (subsetSums A).card :=
+    Finset.card_image_of_injective _ (add_right_injective a)
+  -- old sums (`≤ ∑ A < a`) are disjoint from shifted sums (`= a + s ≥ a + 1`).
+  have h_disj : Disjoint (subsetSums A) ((subsetSums A).image (a + ·)) := by
+    rw [Finset.disjoint_left]
+    intro y hy hyimg
+    rw [Finset.mem_image] at hyimg
+    obtain ⟨s, _, rfl⟩ := hyimg
+    have hle : a + s ≤ A.sum id := subsetSums_le_sum (a + s) hy
+    omega
+  -- `a` is in neither family.
+  have h_a_notin_union :
+      a ∉ subsetSums A ∪ (subsetSums A).image (a + ·) := by
+    simp only [Finset.mem_union, not_or]
+    refine ⟨h_a_notin, ?_⟩
+    intro hmem
+    rw [Finset.mem_image] at hmem
+    obtain ⟨s, hs, hEq⟩ := hmem
+    have hs1 : 1 ≤ s := subsetSums_pos hlo s hs
+    omega
+  rw [subsetSums_insert ha, Finset.card_insert_of_not_mem h_a_notin_union,
+    Finset.card_union_of_disjoint h_disj, h_img_card]
+  ring
 
 end Erdos882OQ03

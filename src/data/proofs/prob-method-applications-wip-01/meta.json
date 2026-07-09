@@ -5,6 +5,14 @@
   "description": "The genuine counting form of the probabilistic method's first-moment principle, with an honest, non-vacuous Ramsey-style avoidance theorem proved from it. Completes the work-in-progress applications module, whose headline theorems were vacuous placeholders.",
   "sections": [
     {
+      "id": "context-setup",
+      "title": "Context: Completing the Vacuous WIP Applications",
+      "startLine": 1,
+      "endLine": 27,
+      "summary": "Imports Mathlib and the module docstring. Explains why this file exists: the companion ProbMethodApplications.lean states headline probabilistic-method consequences (Ramsey lower bounds, Property B, tournament domination) as VACUOUS theorems — e.g. ramsey_lower_bound only asserts ∃ n, n ≥ 2^((k-1)/2), discharged by ⟨2^((k-1)/2), le_refl _⟩ with none of the hypotheses used. This file supplies the genuine engine: the first-moment / union-bound existence principle in exact counting form, plus an honest non-vacuous Ramsey-style application. Opens Finset, namespace ProbMethod.Core; 0 sorry, 0 axiom.",
+      "mathContext": "Counting first moment: $\\sum_i |A_i| < |\\Omega| \\implies \\exists\\,\\omega\\ \\forall i,\\ \\omega \\notin A_i$."
+    },
+    {
       "id": "first-moment",
       "title": "The First-Moment / Union-Bound Existence Principle",
       "startLine": 28,
@@ -162,6 +170,21 @@
       "targetId": "prob-method-expectation",
       "relationship": "related",
       "description": "Provides the counting (cardinality) form of the first moment existence principle"
+    },
+    {
+      "targetId": "prob-method-second-moment",
+      "relationship": "related",
+      "description": "The complementary pillar: the first-moment method proved here establishes mere existence (some object avoids the bad event), while the second-moment method upgrades this to concentration / almost-sure existence via Var/𝔼² bounds. Together they are the two basic moment tools of the probabilistic method."
+    },
+    {
+      "targetId": "prob-method-lovasz-local",
+      "relationship": "related",
+      "description": "The sharper existence tool: where the first-moment union bound needs the expected number of bad events < 1, the Lovász Local Lemma yields existence under only bounded local dependence even when many bad events are expected — the refinement of the crude counting bound used here."
+    },
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "related",
+      "description": "The application domain: this entry's Ramsey-style avoidance theorem is an instance of the probabilistic method's flagship result — Erdős's lower bound R(k,k) > 2^{k/2}, obtained by exactly this first-moment union bound over random 2-colourings avoiding a monochromatic clique."
     }
   ]
 }

@@ -61,3 +61,57 @@ boundary, not the open core.
 - `proofs/Proofs/ETranscendentalOQ02.lean` (+4 theorems, PART IV.7)
 - `src/data/proofs/e-transcendental-oq-02/meta.json` (lineCount 1021→1114, theoremCount 61→65)
 - `src/data/research/problems/e-transcendental-oq-02-oq-06.json` (knowledge)
+
+## Session 2026-07-09 (Researcher-4) — All-zeros k-block has density 1 (base 2)
+
+**Mode**: FRESH | **Outcome**: progress (VERIFIED, 0 sorry, 0 new axiom)
+
+### What I did
+Added PART IX to `proofs/Proofs/ETranscendentalOQ02.lean`: the **first k-block
+(k ≥ 2) frequency computation** in the development. Prior base-2 work computed a
+single digit density (`1` at density `0`, PART VIII). Here the entire all-zeros
+length-`k` block of the Liouville constant `liouvilleNumber 2` is shown to occur
+with asymptotic density `1`, for every `k`.
+
+- `nthDigit_two_eq_zero_or_one` — every base-2 digit is 0 or 1 (residue mod 2,
+  via `Int.emod_two_eq_zero_or_one`).
+- `liouvilleNumber_two_zeros_bad_count_le` — windows `[n,n+k) ⊆ [0,N)` that
+  contain a `1` number `≤ k·(log₂(N+k)+4)`. Covering argument: each bad window is
+  hit by the `1`-position inside it (`< N+k`), and each `1`-position lies in `≤ k`
+  windows. Formalized via `Finset.card_biUnion_le` over
+  `ones(N+k) = filter (digit = 1)`, each fiber `⊆ (univ : Fin k).image (j - ·)`
+  so `card ≤ k`; reuses `liouvilleNumber_two_one_count_le`.
+- `liouvilleNumber_two_all_zeros_density_one` — all-zeros k-window density → 1.
+  Bad density → 0 by `squeeze_zero` against `k·(log₂(N+k)+4)/N`; the all-zeros
+  windows are the complement in `range N`
+  (`Finset.filter_card_add_filter_neg_card_eq_card`), so density = `1 - bad → 1`.
+- `liouvilleNumber_all_zeros_not_normal_base_two` (k ≥ 1) — non-normality via
+  **over-representation**: the general k-tuple criterion
+  `not_normal_of_match_freq_tendsto_ne` with `L = 1 ≠ 2^{-k}`. First application
+  of the k-tuple (not just single-digit / absence) criterion, and a structurally
+  different proof from PART VIII's single under-represented digit.
+
+### Key findings
+- `k·(log₂(N+k)+4)/N → 0`: bound `log₂(N+k) ≤ log₂ N + 1` for `N ≥ k` via
+  `Nat.log_mono_right` + `Nat.log_mul_base` (`N+k ≤ N·2`), then squeeze against
+  `k·(log₂ N + 5)/N = k·((log₂ N + 5)/N) → 0` (reusing the file's
+  `tendsto_natLog_two_div_atTop_zero`).
+- The covering/biUnion count is the reusable core: a sparse "special" set (here
+  the 1-positions) forces a *complementary block* to be over-represented at
+  density 1; the same recipe applies to any base-2 real whose 1-digits have
+  density 0.
+- Gotcha: `gcongr` on `↑A/N ≤ ↑B/N` closes the numerator goal via its assumption
+  discharger when the ℕ inequality is in scope — provide the ℝ-cast hypothesis
+  explicitly (`have hbR : (↑A:ℝ) ≤ ↑B := by exact_mod_cast …; gcongr`) to keep the
+  step deterministic and avoid a stray "No goals to be solved".
+
+### Status
+Core axiom `e_absolutely_normal` remains **genuinely open** (no base proved normal
+for e as of 2026) — not eliminable. The oq-06 goal (`normal_imp_irrational`) was
+discharged long ago (now a theorem, not an axiom). This session extends the
+base-2 non-normality theory from single-digit to full k-block distribution.
+
+### Files modified
+- `proofs/Proofs/ETranscendentalOQ02.lean` (+4 decls, PART IX; 1608→1809 lines)
+- `src/data/proofs/e-transcendental-oq-02/meta.json` (lineCount 1608→1809,
+  theoremCount 80→84)

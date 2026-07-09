@@ -260,4 +260,155 @@ theorem erdos_214_summary :
 def erdos_214_status_str : String :=
   "SOLVED (Juhász 1979) - Unit-distance-free sets have complements containing unit squares"
 
+/-
+## Part 11: Metric Helpers and Structural Facts about Unit Squares
+
+The reduction above (`unit_square_from_stronger`) rests on two geometric facts that
+were used *inline*: that an isometry carries a unit square to a unit square, and that
+`dist p p = 0`. Here we extract these as reusable, named results and derive two
+genuinely new structural consequences: every unit square has four pairwise-distinct
+vertices, and hence the complement of a unit-distance-free set contains a unit square
+on four *distinct* points — sharpening the problem's "four points" phrasing.
+-/
+
+/-- The coordinate distance vanishes exactly on the diagonal: `dist p p = 0`. -/
+theorem dist_self (p : Plane) : dist p p = 0 := by
+  unfold dist
+  rw [sub_self, norm_zero]
+
+/-- The coordinate distance is symmetric: `dist p q = dist q p`. -/
+theorem dist_comm (p q : Plane) : dist p q = dist q p := by
+  unfold dist
+  rw [← neg_sub q p, norm_neg]
+
+/-- **Isometry invariance of unit squares.** If `f` preserves distances then it maps
+any unit square to a unit square. This is the geometric heart of the reduction from
+Juhász's stronger 4-point theorem: a *congruent copy* of the standard unit square is
+again a unit square precisely because the witnessing map is distance-preserving. -/
+theorem isUnitSquare_of_isometry {f : Plane → Plane}
+    (hf : ∀ x y : Plane, dist (f x) (f y) = dist x y)
+    {p₁ p₂ p₃ p₄ : Plane} (h : IsUnitSquare p₁ p₂ p₃ p₄) :
+    IsUnitSquare (f p₁) (f p₂) (f p₃) (f p₄) := by
+  obtain ⟨h12, h23, h34, h41, h13, h24⟩ := h
+  refine ⟨?_, ?_, ?_, ?_, ?_, ?_⟩ <;> rw [hf]
+  exacts [h12, h23, h34, h41, h13, h24]
+
+/-- **A unit square has four pairwise-distinct vertices.** The four edges have length
+`1 ≠ 0` and the two diagonals have length `√2 ≠ 0`, and `dist p p = 0`, so no two of
+the six vertex pairs can coincide. This certifies that `ContainsUnitSquare` really is
+a statement about four genuinely distinct points, not a degenerate configuration. -/
+theorem IsUnitSquare.distinct {p₁ p₂ p₃ p₄ : Plane} (h : IsUnitSquare p₁ p₂ p₃ p₄) :
+    p₁ ≠ p₂ ∧ p₂ ≠ p₃ ∧ p₃ ≠ p₄ ∧ p₄ ≠ p₁ ∧ p₁ ≠ p₃ ∧ p₂ ≠ p₄ := by
+  obtain ⟨h12, h23, h34, h41, h13, h24⟩ := h
+  have hedge : ∀ p q : Plane, dist p q = 1 → p ≠ q := by
+    rintro p q hd rfl
+    rw [dist_self] at hd
+    norm_num at hd
+  have hdiag : ∀ p q : Plane, dist p q = Real.sqrt 2 → p ≠ q := by
+    rintro p q hd rfl
+    rw [dist_self] at hd
+    have : (0 : ℝ) < Real.sqrt 2 := Real.sqrt_pos.mpr (by norm_num)
+    linarith
+  exact ⟨hedge _ _ h12, hedge _ _ h23, hedge _ _ h34, hedge _ _ h41,
+    hdiag _ _ h13, hdiag _ _ h24⟩
+
+/-- **Capstone.** The complement of any unit-distance-free set contains a unit square
+on four *pairwise-distinct* points. Combines the solved statement `erdos_214_solved`
+with the vertex-distinctness of unit squares. -/
+theorem complement_contains_distinct_unit_square
+    (S : Set Plane) (hS : IsUnitDistanceFree S) :
+    ∃ p₁ p₂ p₃ p₄ : Plane,
+      p₁ ∈ Sᶜ ∧ p₂ ∈ Sᶜ ∧ p₃ ∈ Sᶜ ∧ p₄ ∈ Sᶜ ∧
+      IsUnitSquare p₁ p₂ p₃ p₄ ∧
+      p₁ ≠ p₂ ∧ p₂ ≠ p₃ ∧ p₃ ≠ p₄ ∧ p₄ ≠ p₁ ∧ p₁ ≠ p₃ ∧ p₂ ≠ p₄ := by
+  obtain ⟨p₁, p₂, p₃, p₄, h1, h2, h3, h4, hsq⟩ := erdos_214_solved S hS
+  obtain ⟨d12, d23, d34, d41, d13, d24⟩ := hsq.distinct
+  exact ⟨p₁, p₂, p₃, p₄, h1, h2, h3, h4, hsq, d12, d23, d34, d41, d13, d24⟩
+
+/-
+## Part 12: The coordinate distance is a genuine metric; the scaled lattice is infinite
+
+Two further axiom-free strengthenings, independent of the Juhász input.
+
+First, `Erdos214.dist` is `‖p - q‖`, so it inherits the two metric axioms missing from
+the earlier `dist_self` / `dist_comm` pair: non-negativity (`norm_nonneg`) and the
+triangle inequality (`norm_add_le`).  Together with `dist_self` and `dist_comm` this
+certifies `Erdos214.dist` really is a metric.
+
+Second, `scaledLattice_unitDistanceFree` exhibits a unit-distance-free set, but only
+guarantees it is non-empty.  Here we show `√2·ℤ²` is in fact *infinite*: the horizontal
+axis `{(√2·n, 0) : n ∈ ℤ}` already embeds `ℤ`.  So Problem #214's hypothesis is satisfied
+by an explicit infinite family, not merely a single configuration.
+-/
+
+/-- **Non-negativity of the coordinate distance.** A metric axiom: `dist p q = ‖p - q‖ ≥ 0`. -/
+theorem dist_nonneg (p q : Plane) : 0 ≤ dist p q := by
+  unfold dist
+  exact norm_nonneg _
+
+/-- **Triangle inequality for the coordinate distance.** The last metric axiom: writing
+`p - r = (p - q) + (q - r)` and applying `norm_add_le`.  With `dist_self`, `dist_comm`
+and `dist_nonneg` this shows `Erdos214.dist` is a genuine metric. -/
+theorem dist_triangle (p q r : Plane) : dist p r ≤ dist p q + dist q r := by
+  unfold dist
+  calc ‖p - r‖ = ‖(p - q) + (q - r)‖ := by rw [sub_add_sub_cancel]
+    _ ≤ ‖p - q‖ + ‖q - r‖ := norm_add_le _ _
+
+/-- The point `(√2·n, 0)` lies in the scaled lattice for every integer `n`
+(take lattice coordinates `a = n`, `b = 0`). -/
+theorem scaledLattice_horiz_mem (n : ℤ) :
+    (!₂[Real.sqrt 2 * (n : ℝ), 0] : Plane) ∈ ScaledLattice := by
+  refine ⟨n, 0, ?_, ?_⟩ <;>
+    simp [Matrix.cons_val_zero, Matrix.cons_val_one]
+
+/-- **The scaled lattice `√2·ℤ²` is infinite.** The horizontal embedding
+`n ↦ (√2·n, 0)` is injective (because `√2 ≠ 0`) and lands in the lattice, so the lattice
+contains a copy of `ℤ`.  This sharpens `scaledLattice_unitDistanceFree`: Problem #214's
+hypothesis is realised by an explicit *infinite* unit-distance-free set. -/
+theorem scaledLattice_infinite : ScaledLattice.Infinite := by
+  apply Set.infinite_of_injective_forall_mem
+    (f := fun n : ℤ => (!₂[Real.sqrt 2 * (n : ℝ), 0] : Plane))
+  · -- injectivity: recover `n` from the first coordinate `√2·n`
+    intro m n hmn
+    have hmn' : (!₂[Real.sqrt 2 * (m : ℝ), 0] : Plane)
+        = !₂[Real.sqrt 2 * (n : ℝ), 0] := hmn
+    have h0 : Real.sqrt 2 * (m : ℝ) = Real.sqrt 2 * (n : ℝ) := by
+      have hc := congrArg (fun x : Plane => x 0) hmn'
+      simpa [Matrix.cons_val_zero] using hc
+    have hs : (Real.sqrt 2 : ℝ) ≠ 0 := by positivity
+    exact_mod_cast mul_left_cancel₀ hs h0
+  · exact scaledLattice_horiz_mem
+
+/-- **Monotonicity of unit-distance-freeness.** A subset of a unit-distance-free
+set is unit-distance-free.  Immediate from the definition (`∀ p q ∈ S, …`); the
+only content is restricting the quantifier along `S ⊆ T`. -/
+theorem IsUnitDistanceFree.mono {S T : Set Plane}
+    (hT : IsUnitDistanceFree T) (hST : S ⊆ T) : IsUnitDistanceFree S :=
+  fun p q hp hq hpq => hT p q (hST hp) (hST hq) hpq
+
+/-- **Unit-distance-free sets of every finite size exist.** For each `n` there is
+an `n`-point unit-distance-free set.  Take any `n`-element subset of the infinite
+scaled lattice `√2·ℤ²` (`scaledLattice_infinite`); it is unit-distance-free as a
+subset of the unit-distance-free lattice (`scaledLattice_unitDistanceFree`).
+
+Consequently the maximum size of a unit-distance-free set in the plane is
+*unbounded* — see `no_maximum_unitDistanceFree_card`.  This answers the
+"maximum size" half of Problem #214 for the plane: there is no finite cap. -/
+theorem exists_unitDistanceFree_finset_card (n : ℕ) :
+    ∃ S : Finset Plane, S.card = n ∧ IsUnitDistanceFree (↑S : Set Plane) := by
+  obtain ⟨t, hts, htc⟩ := scaledLattice_infinite.exists_subset_card_eq n
+  exact ⟨t, htc, scaledLattice_unitDistanceFree.mono hts⟩
+
+/-- **No finite maximum unit-distance-free set.** There is no bound `N` on the
+cardinality of a unit-distance-free finite set: for any candidate `N`,
+`exists_unitDistanceFree_finset_card (N+1)` produces a unit-distance-free set of
+size `N+1 > N`. -/
+theorem no_maximum_unitDistanceFree_card :
+    ¬ ∃ N : ℕ, ∀ S : Finset Plane, IsUnitDistanceFree (↑S : Set Plane) → S.card ≤ N := by
+  rintro ⟨N, hN⟩
+  obtain ⟨S, hcard, hfree⟩ := exists_unitDistanceFree_finset_card (N + 1)
+  have h := hN S hfree
+  rw [hcard] at h
+  omega
+
 end Erdos214

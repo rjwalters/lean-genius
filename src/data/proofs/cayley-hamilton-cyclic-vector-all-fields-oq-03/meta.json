@@ -32,7 +32,7 @@
     "sorries": 0,
     "axiomCount": 0,
     "lineCount": 312,
-    "theoremCount": 8,
+    "theoremCount": 6,
     "definitionCount": 2,
     "assumptions": "No axioms or sorries. Uses Mathlib's LinearMap.toMatrix / toMatrixAlgEquiv, minpoly.algEquiv_eq, Matrix charpoly API, FiniteDimensional bases, and (for the Section V span bridge) basisOfLinearIndependentOfCardEqFinrank, Fintype.linearIndependent_iff, and the Polynomial natDegree API. The span bridge also imports the registered module-theoretic file CayleyHamiltonMinpolyOQ05OQ01OQ03 (NonderogatoryModule.cyclicSubspace / finiteSpan_le_cyclicSubspace). Registered in Proofs.lean and verified by the aggregate fleet build; all Mathlib bearers checked against the pinned rev (v4.26.0), and the Section V Krylov-independence argument mirrors the compiled matrix proof CyclicCommutant.krylov_linearIndependent. The PID-module half of OQ-03 is now formalized in the registered companion CayleyHamiltonCyclicVectorAllFieldsOQ03PID.lean (0 sorry / 0 axiom; PRs #25497, #25552), listed in additionalFiles.",
     "dateAdded": "2026-06-15",
@@ -97,6 +97,7 @@
     "additionalFiles": [
       "Proofs/CayleyHamiltonCyclicVectorAllFields.lean",
       "Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ03PID.lean",
+      "Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ03Converse.lean",
       "Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ03Bridge.lean",
       "Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ04WIP04.lean"
     ]

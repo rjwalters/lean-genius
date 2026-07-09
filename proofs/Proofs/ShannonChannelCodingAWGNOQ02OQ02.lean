@@ -543,6 +543,98 @@ theorem awgn_multisymbol_power_ge_of_nonneg_covariance [IsProbabilityMeasure μ]
   exact variance_sum_ge_of_nonneg_covariance hW hcov
 
 /-!
+### Sharp signed boundary: the aggregate off-diagonal covariance controls the defect *exactly*
+
+The two monotonicity results above are one-directional and demand *pointwise* sign-definiteness
+(every off-diagonal pair `≥ 0`, resp. `≤ 0`).  The exact defect identity
+`variance_sum_sub_eq_offDiag_covariance` upgrades them to sharp `iff`s controlled by the far
+weaker *aggregate* sign of the total off-diagonal covariance: the variance of the sum strictly
+undershoots the sum of the variances **iff** the off-diagonal covariances cancel to a strictly
+negative aggregate, and strictly overshoots it **iff** they cancel to a strictly positive
+aggregate — no hypothesis on the individual pairs.  Together with the `= 0` boundary
+`variance_sum_eq_iff_offDiag_covariance_zero` these close the additive `< / = / >` trichotomy of
+the variance defect, the additive counterpart of the multiplicative Cauchy–Schwarz `≤ / = / <`
+trichotomy at the standard-deviation level.
+-/
+
+/-- **Strict sub-additivity ⟺ net negative off-diagonal correlation.**  The variance of a sum is
+*strictly less* than the sum of the variances if and only if the total off-diagonal covariance is
+strictly negative:
+
+    Var[∑_{i ∈ s} Wᵢ] < ∑_{i ∈ s} Var[Wᵢ]  ↔  ∑_{i ∈ s} ∑_{j ∈ s.erase i} cov[Wᵢ, Wⱼ] < 0.
+
+The sharp strict companion of `variance_sum_eq_iff_offDiag_covariance_zero`, and the exact form of
+`variance_sum_le_of_nonpos_covariance`: pointwise non-positive covariances are *sufficient* for
+sub-additivity, but the precise condition for the *strict* inequality is only that they cancel to a
+strictly negative aggregate. -/
+theorem variance_sum_lt_iff_offDiag_covariance_neg [IsFiniteMeasure μ] {ι : Type*}
+    [DecidableEq ι] {W : ι → Ω → ℝ} {s : Finset ι} (hW : ∀ i ∈ s, MemLp (W i) 2 μ) :
+    Var[∑ i ∈ s, W i; μ] < ∑ i ∈ s, Var[W i; μ] ↔
+      ∑ i ∈ s, ∑ j ∈ s.erase i, cov[W i, W j; μ] < 0 := by
+  have h := variance_sum_sub_eq_offDiag_covariance hW
+  constructor <;> intro hlt <;> linarith
+
+/-- **Strict super-additivity ⟺ net positive off-diagonal correlation.**  The variance of a sum is
+*strictly greater* than the sum of the variances if and only if the total off-diagonal covariance is
+strictly positive:
+
+    ∑_{i ∈ s} Var[Wᵢ] < Var[∑_{i ∈ s} Wᵢ]  ↔  0 < ∑_{i ∈ s} ∑_{j ∈ s.erase i} cov[Wᵢ, Wⱼ].
+
+The sharp strict companion of `variance_sum_eq_iff_offDiag_covariance_zero`, and the exact form of
+`variance_sum_ge_of_nonneg_covariance`: pointwise non-negative covariances are *sufficient* for
+super-additivity, but the precise condition for the *strict* inequality is only that they cancel to a
+strictly positive aggregate. -/
+theorem variance_sum_gt_iff_offDiag_covariance_pos [IsFiniteMeasure μ] {ι : Type*}
+    [DecidableEq ι] {W : ι → Ω → ℝ} {s : Finset ι} (hW : ∀ i ∈ s, MemLp (W i) 2 μ) :
+    ∑ i ∈ s, Var[W i; μ] < Var[∑ i ∈ s, W i; μ] ↔
+      0 < ∑ i ∈ s, ∑ j ∈ s.erase i, cov[W i, W j; μ] := by
+  have h := variance_sum_sub_eq_offDiag_covariance hW
+  constructor <;> intro hlt <;> linarith
+
+/-- **AWGN output power strictly deflates ⟺ net negative off-diagonal correlation (power form).**
+For a finite family of *zero-mean* square-integrable contributions the aggregate output power is
+*strictly less* than the sum of the individual powers if and only if the total off-diagonal
+covariance is strictly negative:
+
+    E[(∑_{i ∈ s} Wᵢ)²] < ∑_{i ∈ s} E[Wᵢ²]  ↔  ∑_{i ∈ s} ∑_{j ∈ s.erase i} cov[Wᵢ, Wⱼ] < 0.
+
+The strict sub-additive companion of `awgn_multisymbol_power_eq_iff_offDiag_covariance_zero`,
+transported into second-moment language via the zero-mean bridge. -/
+theorem awgn_multisymbol_power_lt_iff_offDiag_covariance_neg [IsProbabilityMeasure μ]
+    {ι : Type*} [DecidableEq ι] {W : ι → Ω → ℝ} {s : Finset ι}
+    (hW : ∀ i ∈ s, MemLp (W i) 2 μ) (hmean : ∀ i ∈ s, μ[W i] = 0) :
+    μ[(∑ i ∈ s, W i) ^ 2] < ∑ i ∈ s, μ[(W i) ^ 2] ↔
+      ∑ i ∈ s, ∑ j ∈ s.erase i, cov[W i, W j; μ] < 0 := by
+  have hSum : MemLp (∑ i ∈ s, W i) 2 μ := memLp_finset_sum' s hW
+  have hSum0 : μ[∑ i ∈ s, W i] = 0 := sum_mean_zero hW hmean
+  rw [second_moment_eq_variance hSum hSum0,
+    show (∑ i ∈ s, μ[(W i) ^ 2]) = ∑ i ∈ s, Var[W i; μ] from
+      Finset.sum_congr rfl fun i hi => second_moment_eq_variance (hW i hi) (hmean i hi)]
+  exact variance_sum_lt_iff_offDiag_covariance_neg hW
+
+/-- **AWGN output power strictly inflates ⟺ net positive off-diagonal correlation (power form).**
+For a finite family of *zero-mean* square-integrable contributions the aggregate output power is
+*strictly greater* than the sum of the individual powers if and only if the total off-diagonal
+covariance is strictly positive:
+
+    ∑_{i ∈ s} E[Wᵢ²] < E[(∑_{i ∈ s} Wᵢ)²]  ↔  0 < ∑_{i ∈ s} ∑_{j ∈ s.erase i} cov[Wᵢ, Wⱼ].
+
+The strict super-additive companion of `awgn_multisymbol_power_eq_iff_offDiag_covariance_zero` and
+of `awgn_multisymbol_power_ge_of_nonneg_covariance`, transported into second-moment language via the
+zero-mean bridge. -/
+theorem awgn_multisymbol_power_gt_iff_offDiag_covariance_pos [IsProbabilityMeasure μ]
+    {ι : Type*} [DecidableEq ι] {W : ι → Ω → ℝ} {s : Finset ι}
+    (hW : ∀ i ∈ s, MemLp (W i) 2 μ) (hmean : ∀ i ∈ s, μ[W i] = 0) :
+    ∑ i ∈ s, μ[(W i) ^ 2] < μ[(∑ i ∈ s, W i) ^ 2] ↔
+      0 < ∑ i ∈ s, ∑ j ∈ s.erase i, cov[W i, W j; μ] := by
+  have hSum : MemLp (∑ i ∈ s, W i) 2 μ := memLp_finset_sum' s hW
+  have hSum0 : μ[∑ i ∈ s, W i] = 0 := sum_mean_zero hW hmean
+  rw [second_moment_eq_variance hSum hSum0,
+    show (∑ i ∈ s, μ[(W i) ^ 2]) = ∑ i ∈ s, Var[W i; μ] from
+      Finset.sum_congr rfl fun i hi => second_moment_eq_variance (hW i hi) (hmean i hi)]
+  exact variance_sum_gt_iff_offDiag_covariance_pos hW
+
+/-!
 ### Sharp *equality* boundary: when Cauchy–Schwarz is tight (a.e. affine dependence)
 
 The covariance Cauchy–Schwarz inequality `cov[X, Y]² ≤ Var[X]·Var[Y]` proved above raises the
@@ -983,5 +1075,405 @@ theorem stddev_add_eq_iff_affine_pos [IsProbabilityMeasure μ] {X Y : Ω → ℝ
       ∃ a b : ℝ, 0 < a ∧ X =ᵐ[μ] fun ω => a * Y ω + b := by
   rw [stddev_add_eq_iff_correlation_eq_one hX hY hXnd hYnd,
     correlation_eq_one_iff_affine_pos hX hY hXnd hYnd]
+
+/-- **Strict standard-deviation triangle inequality (correlation form).**  For non-degenerate
+`X, Y` the L² triangle inequality `σ[X+Y] ≤ σ[X] + σ[Y]` of `stddev_add_le` is *strict* exactly
+when the correlation coefficient falls short of its ceiling:
+
+        √Var[X + Y] < √Var[X] + √Var[Y]  ↔  ρ[X, Y] < 1.
+
+The strict-inequality companion of the equality boundary `stddev_add_eq_iff_correlation_eq_one`.
+Since `stddev_add_le` supplies the `≤` and `abs_correlation_le_one` supplies `ρ ≤ 1`, both `<`
+reduce via `lt_iff_le_and_ne` to their respective `≠`, and the two `≠` correspond under the
+equality boundary — so the sum's standard deviation strictly undershoots the amplitude budget in
+every non-perfectly-aligned case. -/
+theorem stddev_add_lt_iff_correlation_lt_one [IsFiniteMeasure μ] {X Y : Ω → ℝ}
+    (hX : MemLp X 2 μ) (hY : MemLp Y 2 μ) (hXnd : Var[X; μ] ≠ 0) (hYnd : Var[Y; μ] ≠ 0) :
+    Real.sqrt (Var[X + Y; μ]) < Real.sqrt (Var[X; μ]) + Real.sqrt (Var[Y; μ]) ↔
+      correlation X Y μ < 1 := by
+  have hρle : correlation X Y μ ≤ 1 := (abs_le.mp (abs_correlation_le_one hX hY)).2
+  rw [lt_iff_le_and_ne, lt_iff_le_and_ne]
+  simp only [stddev_add_le hX hY, hρle, true_and, ne_eq, not_iff_not]
+  exact stddev_add_eq_iff_correlation_eq_one hX hY hXnd hYnd
+
+/-- **Strict standard-deviation triangle inequality (structural / affine form).**  For
+non-degenerate `X, Y` the triangle inequality is *strict*
+
+        √Var[X + Y] < √Var[X] + √Var[Y]
+
+*if and only if* `X` is **not** almost everywhere an increasing affine function of `Y`.  The strict
+companion of `stddev_add_eq_iff_affine_pos`: the aggregate standard deviation attains its ceiling
+precisely in the perfectly-positively-correlated (fully aligned) case, and undershoots it in every
+other configuration — the structural negation of that equality boundary. -/
+theorem stddev_add_lt_iff_not_affine_pos [IsProbabilityMeasure μ] {X Y : Ω → ℝ}
+    (hX : MemLp X 2 μ) (hY : MemLp Y 2 μ) (hXnd : Var[X; μ] ≠ 0) (hYnd : Var[Y; μ] ≠ 0) :
+    Real.sqrt (Var[X + Y; μ]) < Real.sqrt (Var[X; μ]) + Real.sqrt (Var[Y; μ]) ↔
+      ¬ ∃ a b : ℝ, 0 < a ∧ X =ᵐ[μ] fun ω => a * Y ω + b := by
+  rw [← stddev_add_eq_iff_affine_pos hX hY hXnd hYnd, lt_iff_le_and_ne]
+  simp only [stddev_add_le hX hY, true_and, ne_eq]
+
+/-!
+### Multivariate sharp equality boundary of the standard-deviation triangle inequality
+
+The two-term equality boundary `stddev_add_eq_iff_covariance_eq_sqrt` pins down when
+`σ[X+Y] = σ[X] + σ[Y]`.  The results below lift it to the *finite-family* triangle inequality
+`stddev_sum_le` (`σ[∑Wᵢ] ≤ ∑σ[Wᵢ]`), identifying the exact condition under which the aggregate
+standard deviation attains its ceiling.
+
+The mechanism is uniform saturation of Cauchy–Schwarz.  Squaring the nonnegative identity
+`σ[∑Wᵢ] = ∑σ[Wᵢ]` gives `Var[∑Wᵢ] = (∑σ[Wᵢ])²`; expanding the left side by the double-sum
+`variance_sum'` and the right side by `Finset.sum_mul_sum` turns it into
+
+    ∑ᵢ∑ⱼ cov[Wᵢ, Wⱼ]  =  ∑ᵢ∑ⱼ σ[Wᵢ]·σ[Wⱼ].
+
+Every summand obeys the Cauchy–Schwarz bound `cov[Wᵢ, Wⱼ] ≤ σ[Wᵢ]·σ[Wⱼ]`
+(`abs_covariance_le_sqrt`), so the two double sums are equal *iff every term is* — a sum of
+nonnegative gaps vanishes iff each gap does (`Finset.sum_eq_sum_iff_of_le`).  Hence the aggregate
+standard deviations add precisely when *all pairs* saturate Cauchy–Schwarz, i.e. are perfectly
+positively correlated.  This is the multivariate dual, at the opposite Cauchy–Schwarz endpoint, of
+the vanishing-off-diagonal boundary `variance_sum_eq_iff_offDiag_covariance_zero`.
+-/
+
+/-- **Multivariate equality boundary of the standard-deviation triangle inequality (covariance
+form).**  For any finite family of square-integrable contributions the L² triangle inequality
+`σ[∑ᵢ Wᵢ] ≤ ∑ᵢ σ[Wᵢ]` of `stddev_sum_le` is an *equality*
+
+        √Var[∑ᵢ Wᵢ] = ∑ᵢ √Var[Wᵢ]
+
+*if and only if* every ordered pair saturates the covariance Cauchy–Schwarz bound,
+`cov[Wᵢ, Wⱼ] = √Var[Wᵢ]·√Var[Wⱼ]` for all `i, j ∈ s`.  No non-degeneracy hypothesis is needed
+(the diagonal condition `i = j` reads `Var[Wᵢ] = Var[Wᵢ]` and the Cauchy–Schwarz gap is tight
+there).  This is the finite-family lift of `stddev_add_eq_iff_covariance_eq_sqrt`, and the sharp
+dual — at the perfectly-correlated endpoint of the Cauchy–Schwarz interval — of the
+vanishing-off-diagonal boundary `variance_sum_eq_iff_offDiag_covariance_zero`. -/
+theorem stddev_sum_eq_iff_pairwise_covariance_eq_sqrt [IsFiniteMeasure μ] {ι : Type*}
+    {W : ι → Ω → ℝ} {s : Finset ι} (hW : ∀ i ∈ s, MemLp (W i) 2 μ) :
+    Real.sqrt (Var[∑ i ∈ s, W i; μ]) = ∑ i ∈ s, Real.sqrt (Var[W i; μ]) ↔
+      ∀ i ∈ s, ∀ j ∈ s,
+        cov[W i, W j; μ] = Real.sqrt (Var[W i; μ]) * Real.sqrt (Var[W j; μ]) := by
+  classical
+  have hsum_nonneg : 0 ≤ ∑ i ∈ s, Real.sqrt (Var[W i; μ]) :=
+    Finset.sum_nonneg fun i _ => Real.sqrt_nonneg _
+  -- Termwise Cauchy–Schwarz: every covariance is dominated by the product of standard deviations.
+  have hle_inner : ∀ i ∈ s, ∀ j ∈ s,
+      cov[W i, W j; μ] ≤ Real.sqrt (Var[W i; μ]) * Real.sqrt (Var[W j; μ]) := by
+    intro i hi j hj
+    calc cov[W i, W j; μ] ≤ |cov[W i, W j; μ]| := le_abs_self _
+      _ ≤ Real.sqrt (Var[W i; μ] * Var[W j; μ]) := abs_covariance_le_sqrt (hW i hi) (hW j hj)
+      _ = Real.sqrt (Var[W i; μ]) * Real.sqrt (Var[W j; μ]) :=
+          Real.sqrt_mul (variance_nonneg _ _) _
+  have hle_outer : ∀ i ∈ s, (∑ j ∈ s, cov[W i, W j; μ])
+      ≤ ∑ j ∈ s, Real.sqrt (Var[W i; μ]) * Real.sqrt (Var[W j; μ]) :=
+    fun i hi => Finset.sum_le_sum (fun j hj => hle_inner i hi j hj)
+  -- Reduce the (nonnegative) √-equality to the squared equality of the two double sums.
+  rw [show (Real.sqrt (Var[∑ i ∈ s, W i; μ]) = ∑ i ∈ s, Real.sqrt (Var[W i; μ]))
+        ↔ (Var[∑ i ∈ s, W i; μ] = (∑ i ∈ s, Real.sqrt (Var[W i; μ])) ^ 2) from
+      ⟨fun h => by rw [← h, Real.sq_sqrt (variance_nonneg _ _)],
+       fun h => by rw [h, Real.sqrt_sq hsum_nonneg]⟩,
+    variance_sum' hW, pow_two, Finset.sum_mul_sum,
+    Finset.sum_eq_sum_iff_of_le hle_outer]
+  -- Sum-of-nonnegative-gaps: the outer equality reduces to per-pair saturation.
+  constructor
+  · intro h i hi j hj
+    exact (Finset.sum_eq_sum_iff_of_le (fun j hj => hle_inner i hi j hj)).mp (h i hi) j hj
+  · intro h i hi
+    exact (Finset.sum_eq_sum_iff_of_le (fun j hj => hle_inner i hi j hj)).mpr
+      (fun j hj => h i hi j hj)
+
+/-- **Multivariate equality boundary of the standard-deviation triangle inequality (correlation
+form).**  For a finite family of *non-degenerate* square-integrable contributions
+(`Var[Wᵢ] ≠ 0` for all `i ∈ s`), the aggregate standard deviations add,
+
+        √Var[∑ᵢ Wᵢ] = ∑ᵢ √Var[Wᵢ],
+
+*if and only if* every pair is perfectly positively correlated, `ρ[Wᵢ, Wⱼ] = 1` for all
+`i, j ∈ s`.  This normalises `stddev_sum_eq_iff_pairwise_covariance_eq_sqrt` through the definition
+of the Pearson coefficient (each pair's covariance saturates Cauchy–Schwarz exactly when its
+correlation hits `+1`); the multivariate capstone of `stddev_add_eq_iff_correlation_eq_one`. -/
+theorem stddev_sum_eq_iff_pairwise_correlation_eq_one [IsFiniteMeasure μ] {ι : Type*}
+    {W : ι → Ω → ℝ} {s : Finset ι} (hW : ∀ i ∈ s, MemLp (W i) 2 μ)
+    (hnd : ∀ i ∈ s, Var[W i; μ] ≠ 0) :
+    Real.sqrt (Var[∑ i ∈ s, W i; μ]) = ∑ i ∈ s, Real.sqrt (Var[W i; μ]) ↔
+      ∀ i ∈ s, ∀ j ∈ s, correlation (W i) (W j) μ = 1 := by
+  rw [stddev_sum_eq_iff_pairwise_covariance_eq_sqrt hW]
+  have hden : ∀ i ∈ s, ∀ j ∈ s,
+      Real.sqrt (Var[W i; μ]) * Real.sqrt (Var[W j; μ]) ≠ 0 := fun i hi j hj =>
+    mul_ne_zero
+      (Real.sqrt_ne_zero'.mpr ((variance_nonneg _ _).lt_of_ne (hnd i hi).symm))
+      (Real.sqrt_ne_zero'.mpr ((variance_nonneg _ _).lt_of_ne (hnd j hj).symm))
+  refine ⟨fun h i hi j hj => ?_, fun h i hi j hj => ?_⟩
+  · rw [correlation, h i hi j hj, div_self (hden i hi j hj)]
+  · have hcorr := h i hi j hj
+    rw [correlation] at hcorr
+    exact (div_eq_one_iff_eq (hden i hi j hj)).mp hcorr
+
+/-- **Strict multivariate standard-deviation triangle inequality (covariance form).**  For any
+finite family of square-integrable contributions the L² triangle inequality
+`σ[∑ᵢ Wᵢ] ≤ ∑ᵢ σ[Wᵢ]` of `stddev_sum_le` is *strict*,
+
+        √Var[∑ᵢ Wᵢ] < ∑ᵢ √Var[Wᵢ],
+
+*if and only if* **some** ordered pair fails to saturate the covariance Cauchy–Schwarz bound,
+`cov[Wᵢ, Wⱼ] ≠ √Var[Wᵢ]·√Var[Wⱼ]`.  The strict companion of
+`stddev_sum_eq_iff_pairwise_covariance_eq_sqrt`: the aggregate standard deviation reaches its ceiling
+exactly when *every* pair is tight and undershoots it the moment a single pair slackens.  Together
+with `stddev_sum_le` (`≤`) and the equality boundary (`=`) this closes the `≤ / = / <` trichotomy of
+the finite-family triangle inequality at the covariance level. -/
+theorem stddev_sum_lt_iff_pairwise_covariance_ne_sqrt [IsFiniteMeasure μ] {ι : Type*}
+    {W : ι → Ω → ℝ} {s : Finset ι} (hW : ∀ i, MemLp (W i) 2 μ) :
+    Real.sqrt (Var[∑ i ∈ s, W i; μ]) < ∑ i ∈ s, Real.sqrt (Var[W i; μ]) ↔
+      ¬ ∀ i ∈ s, ∀ j ∈ s,
+        cov[W i, W j; μ] = Real.sqrt (Var[W i; μ]) * Real.sqrt (Var[W j; μ]) := by
+  rw [lt_iff_le_and_ne]
+  simp only [stddev_sum_le hW s, true_and, ne_eq, not_iff_not]
+  exact stddev_sum_eq_iff_pairwise_covariance_eq_sqrt (fun i _ => hW i)
+
+/-- **Strict multivariate standard-deviation triangle inequality (correlation form).**  For a finite
+family of *non-degenerate* square-integrable contributions (`Var[Wᵢ] ≠ 0` for all `i ∈ s`) the
+aggregate standard deviations add *strictly*,
+
+        √Var[∑ᵢ Wᵢ] < ∑ᵢ √Var[Wᵢ],
+
+*if and only if* the family is **not** fully perfectly-positively-correlated, i.e. some pair has
+`ρ[Wᵢ, Wⱼ] ≠ 1`.  The strict companion of `stddev_sum_eq_iff_pairwise_correlation_eq_one` and the
+multivariate capstone of the two-variable `stddev_add_lt_iff_correlation_lt_one`: perfect alignment
+of *every* pair is exactly the razor's edge where the triangle inequality becomes an equality, and
+any deviation from it makes the aggregate standard deviation strictly smaller than the sum. -/
+theorem stddev_sum_lt_iff_pairwise_correlation_ne_one [IsFiniteMeasure μ] {ι : Type*}
+    {W : ι → Ω → ℝ} {s : Finset ι} (hW : ∀ i, MemLp (W i) 2 μ)
+    (hnd : ∀ i ∈ s, Var[W i; μ] ≠ 0) :
+    Real.sqrt (Var[∑ i ∈ s, W i; μ]) < ∑ i ∈ s, Real.sqrt (Var[W i; μ]) ↔
+      ¬ ∀ i ∈ s, ∀ j ∈ s, correlation (W i) (W j) μ = 1 := by
+  rw [lt_iff_le_and_ne]
+  simp only [stddev_sum_le hW s, true_and, ne_eq, not_iff_not]
+  exact stddev_sum_eq_iff_pairwise_correlation_eq_one (fun i _ => hW i) hnd
+
+/-!
+### Weighted combining: output power of a scaled sum
+
+The results above treat the aggregate `∑ᵢ Wᵢ` as an unweighted superposition.  In the
+matched-filter / maximal-ratio-combining picture, each contribution enters the receiver
+scaled by a (deterministic) channel gain `aᵢ`, so the physically relevant output is the
+*weighted* sum `∑ᵢ aᵢ·Wᵢ`.  Bilinearity of covariance carries the Bienaymé machinery
+straight through the scaling: the general identity picks up an `aᵢ·aⱼ` on every
+covariance, and under pairwise uncorrelatedness the off-diagonal terms still vanish,
+leaving the **weighted power law**
+
+        Var[∑ᵢ aᵢ·Wᵢ] = ∑ᵢ aᵢ²·Var[Wᵢ].
+
+This is the exact statement that the received power of a linear combination of
+uncorrelated symbols is the `aᵢ²`-weighted sum of the individual powers — the second-order
+foundation of maximal-ratio combining and the SNR-scaling behaviour of a matched filter.
+-/
+
+/-- **Weighted Bienaymé identity (bilinear expansion).**  For any deterministic weights
+`a : ι → ℝ` and finite family of square-integrable contributions, the variance of the
+scaled sum expands as the `aᵢ·aⱼ`-weighted double sum of covariances:
+
+        Var[∑ᵢ aᵢ·Wᵢ] = ∑ᵢ ∑ⱼ aᵢ·aⱼ·cov[Wᵢ, Wⱼ].
+
+The weighted lift of `variance_sum'`: each covariance in the Bienaymé double sum is scaled
+by the product of the two weights, by bilinearity of covariance
+(`covariance_smul_left`/`covariance_smul_right`). -/
+theorem variance_smul_sum' [IsFiniteMeasure μ] {ι : Type*}
+    {W : ι → Ω → ℝ} {s : Finset ι} (a : ι → ℝ) (hW : ∀ i ∈ s, MemLp (W i) 2 μ) :
+    Var[∑ i ∈ s, a i • W i; μ]
+      = ∑ i ∈ s, ∑ j ∈ s, a i * a j * cov[W i, W j; μ] := by
+  have hV : ∀ i ∈ s, MemLp (a i • W i) 2 μ := fun i hi => (hW i hi).const_smul (a i)
+  rw [variance_sum' hV]
+  refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
+  rw [covariance_smul_left, covariance_smul_right]
+  ring
+
+/-- **Weighted power law (sharp, uncorrelated form).**  For deterministic weights
+`a : ι → ℝ` and a finite family of *pairwise-uncorrelated* square-integrable
+contributions, the variance of the weighted sum is the `aᵢ²`-weighted sum of the
+individual variances:
+
+        Var[∑ᵢ aᵢ·Wᵢ] = ∑ᵢ aᵢ²·Var[Wᵢ].
+
+The weighted generalisation of `variance_sum_of_pairwise_uncorrelated` (recovered at
+`a ≡ 1`): scaling preserves pairwise uncorrelatedness (`cov[aᵢWᵢ, aⱼWⱼ] = aᵢaⱼ·cov = 0`),
+so only the diagonal `Var[aᵢWᵢ] = aᵢ²·Var[Wᵢ]` (`variance_smul`) survives. This is the
+maximal-ratio-combining power identity: the output power of a linear combination of
+uncorrelated symbols is the square-weighted sum of their powers. -/
+theorem variance_smul_sum_of_pairwise_uncorrelated [IsFiniteMeasure μ] {ι : Type*}
+    {W : ι → Ω → ℝ} {s : Finset ι} (a : ι → ℝ) (hW : ∀ i ∈ s, MemLp (W i) 2 μ)
+    (huncor : Set.Pairwise ↑s fun i j => cov[W i, W j; μ] = 0) :
+    Var[∑ i ∈ s, a i • W i; μ] = ∑ i ∈ s, a i ^ 2 * Var[W i; μ] := by
+  have hV : ∀ i ∈ s, MemLp (a i • W i) 2 μ := fun i hi => (hW i hi).const_smul (a i)
+  have hVuncor : Set.Pairwise ↑s fun i j => cov[a i • W i, a j • W j; μ] = 0 := by
+    intro i hi j hj hij
+    rw [covariance_smul_left, covariance_smul_right, huncor hi hj hij, mul_zero, mul_zero]
+  rw [variance_sum_of_pairwise_uncorrelated hV hVuncor]
+  refine Finset.sum_congr rfl fun i _ => ?_
+  rw [variance_smul]
+
+/-- **Weighted multi-symbol AWGN output power (sharp).**  If the receiver forms the
+weighted combination `∑ᵢ aᵢ·Wᵢ` of *pairwise-uncorrelated*, zero-mean, square-integrable
+contributions with deterministic gains `aᵢ`, then the output second moment (power) is the
+`aᵢ²`-weighted sum of the per-contribution powers:
+
+        E[(∑ᵢ aᵢ·Wᵢ)²] = ∑ᵢ aᵢ²·E[Wᵢ²].
+
+The weighted companion of `awgn_multisymbol_power_of_uncorrelated`: each gain `aᵢ` scales
+the `i`-th symbol's power by `aᵢ²`, exactly the SNR-scaling of a matched filter /
+maximal-ratio combiner over an uncorrelated symbol block. -/
+theorem awgn_weighted_multisymbol_power_of_uncorrelated [IsProbabilityMeasure μ] {ι : Type*}
+    {W : ι → Ω → ℝ} {s : Finset ι} (a : ι → ℝ) (hW : ∀ i ∈ s, MemLp (W i) 2 μ)
+    (huncor : Set.Pairwise ↑s fun i j => cov[W i, W j; μ] = 0)
+    (hmean : ∀ i ∈ s, μ[W i] = 0) :
+    μ[(∑ i ∈ s, a i • W i) ^ 2] = ∑ i ∈ s, a i ^ 2 * μ[(W i) ^ 2] := by
+  have hV : ∀ i ∈ s, MemLp (a i • W i) 2 μ := fun i hi => (hW i hi).const_smul (a i)
+  have hVmean : ∀ i ∈ s, μ[a i • W i] = 0 := by
+    intro i hi
+    simp only [Pi.smul_apply, smul_eq_mul]
+    rw [integral_const_mul, hmean i hi, mul_zero]
+  have hSum : MemLp (∑ i ∈ s, a i • W i) 2 μ := memLp_finset_sum' s hV
+  have hSum0 : μ[∑ i ∈ s, a i • W i] = 0 := sum_mean_zero hV hVmean
+  rw [second_moment_eq_variance hSum hSum0,
+    variance_smul_sum_of_pairwise_uncorrelated a hW huncor]
+  refine Finset.sum_congr rfl fun i hi => ?_
+  rw [second_moment_eq_variance (hW i hi) (hmean i hi)]
+
+/-! ### Maximal-ratio combining: the Cauchy–Schwarz SNR optimum
+
+The weighted power law `Var[∑ᵢ aᵢ·Wᵢ] = ∑ᵢ aᵢ²·Var[Wᵢ]` says the *output noise power*
+of a linear combiner over uncorrelated branches is the square-weighted sum of the branch
+noise variances.  Pairing it with a *deterministic signal* component `∑ᵢ aᵢ·sᵢ` yields the
+central receiver-design question for the AWGN channel: over all gain vectors `a`, how large
+can the output signal-to-noise ratio
+
+        SNR(a) = (∑ᵢ aᵢ·sᵢ)² / (∑ᵢ aᵢ²·vᵢ)
+
+be made, where `vᵢ > 0` is the `i`-th branch noise variance?  The answer is the classical
+**maximal-ratio-combining (MRC)** theorem: the supremum equals the sum of per-branch SNRs
+`∑ᵢ sᵢ²/vᵢ`, attained exactly at the *matched* weights `aᵢ = sᵢ/vᵢ`.  The mathematics is a
+single application of the finite-sum Cauchy–Schwarz inequality
+`Finset.sum_mul_sq_le_sq_mul_sq` to the split `aᵢ·sᵢ = (aᵢ√vᵢ)·(sᵢ/√vᵢ)`. -/
+
+/-- **MRC signal bound (Cauchy–Schwarz core).**  For deterministic gains `a`, signal
+amplitudes `sig`, and strictly positive branch noise variances `v`, the squared combined
+signal is bounded by the product of the output noise power `∑ aᵢ²vᵢ` and the summed
+per-branch SNRs `∑ sᵢ²/vᵢ`:
+
+        (∑ᵢ aᵢ·sᵢ)² ≤ (∑ᵢ aᵢ²·vᵢ) · (∑ᵢ sᵢ²/vᵢ).
+
+Proof: Cauchy–Schwarz `(∑ fᵢgᵢ)² ≤ (∑ fᵢ²)(∑ gᵢ²)` with `fᵢ = aᵢ·√vᵢ`, `gᵢ = sᵢ/√vᵢ`, so
+`fᵢgᵢ = aᵢsᵢ` (the `√vᵢ` cancels), `fᵢ² = aᵢ²vᵢ`, `gᵢ² = sᵢ²/vᵢ`. -/
+theorem mrc_signal_sq_le {ι : Type*} (s : Finset ι) (a sig v : ι → ℝ)
+    (hv : ∀ i ∈ s, 0 < v i) :
+    (∑ i ∈ s, a i * sig i) ^ 2
+      ≤ (∑ i ∈ s, a i ^ 2 * v i) * (∑ i ∈ s, sig i ^ 2 / v i) := by
+  have e1 : ∀ i ∈ s, (a i * Real.sqrt (v i)) * (sig i / Real.sqrt (v i)) = a i * sig i := by
+    intro i hi
+    have hne : Real.sqrt (v i) ≠ 0 := Real.sqrt_ne_zero'.mpr (hv i hi)
+    field_simp
+  have e2 : ∀ i ∈ s, (a i * Real.sqrt (v i)) ^ 2 = a i ^ 2 * v i := by
+    intro i hi; rw [mul_pow, Real.sq_sqrt (hv i hi).le]
+  have e3 : ∀ i ∈ s, (sig i / Real.sqrt (v i)) ^ 2 = sig i ^ 2 / v i := by
+    intro i hi; rw [div_pow, Real.sq_sqrt (hv i hi).le]
+  calc (∑ i ∈ s, a i * sig i) ^ 2
+      = (∑ i ∈ s, (a i * Real.sqrt (v i)) * (sig i / Real.sqrt (v i))) ^ 2 := by
+        rw [Finset.sum_congr rfl (fun i hi => (e1 i hi).symm)]
+    _ ≤ (∑ i ∈ s, (a i * Real.sqrt (v i)) ^ 2) * (∑ i ∈ s, (sig i / Real.sqrt (v i)) ^ 2) :=
+        Finset.sum_mul_sq_le_sq_mul_sq s _ _
+    _ = (∑ i ∈ s, a i ^ 2 * v i) * (∑ i ∈ s, sig i ^ 2 / v i) := by
+        rw [Finset.sum_congr rfl e2, Finset.sum_congr rfl e3]
+
+/-- **MRC upper bound on output SNR.**  Whenever the output noise power `∑ aᵢ²vᵢ` is
+strictly positive, the combiner's signal-to-noise ratio is at most the sum of the
+per-branch SNRs:
+
+        (∑ᵢ aᵢ·sᵢ)² / (∑ᵢ aᵢ²·vᵢ) ≤ ∑ᵢ sᵢ²/vᵢ.
+
+No gain vector `a` can beat the summed branch SNRs — the fundamental limit of linear
+combining over an uncorrelated AWGN block. -/
+theorem mrc_snr_le {ι : Type*} (s : Finset ι) (a sig v : ι → ℝ)
+    (hv : ∀ i ∈ s, 0 < v i) (hpos : 0 < ∑ i ∈ s, a i ^ 2 * v i) :
+    (∑ i ∈ s, a i * sig i) ^ 2 / (∑ i ∈ s, a i ^ 2 * v i)
+      ≤ ∑ i ∈ s, sig i ^ 2 / v i := by
+  rw [div_le_iff₀ hpos]
+  calc (∑ i ∈ s, a i * sig i) ^ 2
+      ≤ (∑ i ∈ s, a i ^ 2 * v i) * (∑ i ∈ s, sig i ^ 2 / v i) := mrc_signal_sq_le s a sig v hv
+    _ = (∑ i ∈ s, sig i ^ 2 / v i) * (∑ i ∈ s, a i ^ 2 * v i) := by ring
+
+/-- **MRC achievability (matched weights attain the bound).**  Setting the gains to the
+matched-filter values `aᵢ = sᵢ/vᵢ` makes the output SNR equal the summed per-branch SNRs,
+so the bound `mrc_snr_le` is sharp:
+
+        (∑ᵢ (sᵢ/vᵢ)·sᵢ)² / (∑ᵢ (sᵢ/vᵢ)²·vᵢ) = ∑ᵢ sᵢ²/vᵢ.
+
+Both the combined signal `∑ (sᵢ/vᵢ)·sᵢ` and the output noise power `∑ (sᵢ/vᵢ)²·vᵢ` collapse
+to `∑ sᵢ²/vᵢ`, so the ratio is `S²/S = S`.  Together with `mrc_snr_le` this identifies the
+maximum output SNR of a linear combiner as exactly `∑ᵢ sᵢ²/vᵢ`. -/
+theorem mrc_snr_matched {ι : Type*} (s : Finset ι) (sig v : ι → ℝ)
+    (hv : ∀ i ∈ s, 0 < v i) (hpos : 0 < ∑ i ∈ s, sig i ^ 2 / v i) :
+    (∑ i ∈ s, (sig i / v i) * sig i) ^ 2 / (∑ i ∈ s, (sig i / v i) ^ 2 * v i)
+      = ∑ i ∈ s, sig i ^ 2 / v i := by
+  have hnum : ∑ i ∈ s, (sig i / v i) * sig i = ∑ i ∈ s, sig i ^ 2 / v i := by
+    apply Finset.sum_congr rfl
+    intro i _
+    rw [div_mul_eq_mul_div, ← pow_two]
+  have hden : ∑ i ∈ s, (sig i / v i) ^ 2 * v i = ∑ i ∈ s, sig i ^ 2 / v i := by
+    apply Finset.sum_congr rfl
+    intro i hi
+    have hne : v i ≠ 0 := (hv i hi).ne'
+    field_simp
+  rw [hnum, hden, pow_two, mul_div_assoc, div_self hpos.ne', mul_one]
+
+/-- **MRC theorem in measure-theoretic form (capstone).**  Let `N : ι → Ω → ℝ` be a finite
+block of pairwise-uncorrelated, square-integrable noise branches with strictly positive
+variances, and let `sig i` be the deterministic per-branch signal amplitudes.  Then the
+squared combined signal is bounded by the *actual output noise variance*
+`Var[∑ᵢ aᵢ·Nᵢ]` times the summed per-branch SNRs:
+
+        (∑ᵢ aᵢ·sigᵢ)² ≤ Var[∑ᵢ aᵢ·Nᵢ] · (∑ᵢ sigᵢ²/Var[Nᵢ]).
+
+This is `mrc_signal_sq_le` with the noise power `∑ aᵢ²vᵢ` supplied by the weighted power law
+`variance_smul_sum_of_pairwise_uncorrelated` (`vᵢ = Var[Nᵢ]`): the Cauchy–Schwarz SNR bound
+is not a separate hypothesis but a *consequence* of the variance-of-a-weighted-sum identity,
+tying the combiner's optimality directly to the Bienaymé structure of uncorrelated noise. -/
+theorem mrc_output_signal_sq_le_variance_mul [IsFiniteMeasure μ] {ι : Type*}
+    {N : ι → Ω → ℝ} {s : Finset ι} (a sig : ι → ℝ)
+    (hN : ∀ i ∈ s, MemLp (N i) 2 μ)
+    (huncor : Set.Pairwise ↑s fun i j => cov[N i, N j; μ] = 0)
+    (hv : ∀ i ∈ s, 0 < Var[N i; μ]) :
+    (∑ i ∈ s, a i * sig i) ^ 2
+      ≤ Var[∑ i ∈ s, a i • N i; μ] * (∑ i ∈ s, sig i ^ 2 / Var[N i; μ]) := by
+  rw [variance_smul_sum_of_pairwise_uncorrelated a hN huncor]
+  exact mrc_signal_sq_le s a sig (fun i => Var[N i; μ]) hv
+
+/-- **MRC diversity gain (monotonicity in the branch set).**  By `mrc_snr_le` and
+`mrc_snr_matched`, the *maximum* attainable output SNR of a linear combiner over a branch block
+`s` equals the summed per-branch SNRs `∑_{i∈s} sigᵢ²/vᵢ`.  This maximum is monotone under adding
+branches: for `s ⊆ t` with strictly positive branch noise variances,
+
+        ∑_{i∈s} sigᵢ²/vᵢ ≤ ∑_{i∈t} sigᵢ²/vᵢ.
+
+Combining over *more* branches can never lower the attainable SNR — the diversity-gain
+principle of maximal-ratio combining.  Each summand `sigᵢ²/vᵢ ≥ 0`, so this is exactly
+`Finset.sum_le_sum_of_subset_of_nonneg`. -/
+theorem mrc_max_snr_mono {ι : Type*} {s t : Finset ι} (hst : s ⊆ t) (sig v : ι → ℝ)
+    (hv : ∀ i ∈ t, 0 < v i) :
+    ∑ i ∈ s, sig i ^ 2 / v i ≤ ∑ i ∈ t, sig i ^ 2 / v i :=
+  Finset.sum_le_sum_of_subset_of_nonneg hst
+    (fun i hit _ => div_nonneg (sq_nonneg _) (hv i hit).le)
+
+/-- **Strict diversity gain from a signal-bearing branch.**  If `s ⊆ t` and some added branch
+`j ∈ t \ s` observes nonzero signal (`sig j ≠ 0`, `v j > 0`), the attainable SNR strictly
+increases:
+
+        ∑_{i∈s} sigᵢ²/vᵢ < ∑_{i∈t} sigᵢ²/vᵢ.
+
+The added term `sig j²/v j > 0` is a genuine gain, while the remaining new summands are `≥ 0`.
+Sharp companion to `mrc_max_snr_mono`: a branch improves diversity *exactly* when it carries
+signal — a noise-only branch (`sig = 0`) contributes nothing. -/
+theorem mrc_max_snr_lt_of_signal {ι : Type*} {s t : Finset ι} (hst : s ⊆ t) (sig v : ι → ℝ)
+    (hv : ∀ i ∈ t, 0 < v i) {j : ι} (hj : j ∈ t) (hjs : j ∉ s) (hsig : sig j ≠ 0) :
+    ∑ i ∈ s, sig i ^ 2 / v i < ∑ i ∈ t, sig i ^ 2 / v i := by
+  refine Finset.sum_lt_sum_of_subset hst hj hjs ?_ (fun i hit _ => div_nonneg (sq_nonneg _) (hv i hit).le)
+  have h2 : (0 : ℝ) < sig j ^ 2 := lt_of_le_of_ne (sq_nonneg _) (Ne.symm (pow_ne_zero 2 hsig))
+  exact div_pos h2 (hv j hj)
 
 end ShannonAWGNMultiSymbolPower

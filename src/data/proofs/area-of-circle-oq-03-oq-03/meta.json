@@ -35,26 +35,6 @@
       "exhaustion_error_small: general convergence principle via tendsto_pow_atTop_nhds_zero_of_lt_one"
     ]
   },
-  "references": [
-    {
-      "authors": "Archimedes (T. L. Heath, ed.)",
-      "title": "The Works of Archimedes: Measurement of a Circle",
-      "year": "1897",
-      "venue": "Cambridge University Press (reprint Dover, 2002)"
-    },
-    {
-      "authors": "Heath, Thomas L.",
-      "title": "A History of Greek Mathematics, Vol. II",
-      "year": "1921",
-      "venue": "Oxford University Press"
-    },
-    {
-      "authors": "Stein, Sherman K.",
-      "title": "Archimedes: What Did He Do Besides Cry Eureka?",
-      "year": "1999",
-      "venue": "Mathematical Association of America"
-    }
-  ],
   "overview": {
     "historicalContext": "The method of exhaustion traces from Eudoxus (c. 370 BCE) through Archimedes (c. 250 BCE) to Cavalieri (1635) and ultimately to Leibniz-Newton calculus.\n\n**Archimedes' *Quadrature of the Parabola* (c. 250 BCE)**: In Proposition 24, Archimedes proved that the area of any parabolic segment is 4/3 of the inscribed triangle. His proof: inscribe triangle $T_0$ with base equal to the chord; in each remaining curved region, inscribe another triangle (each with area exactly 1/4 of its parent — proved geometrically from properties of parabolas); total area $= T_0 \\cdot (1 + 1/4 + 1/16 + \\cdots) = T_0 \\cdot 4/3$. This is arguably the **first explicit use of an infinite series** in mathematics — 1800 years before Newton.\n\n**Archimedes' proof method**: He used *reductio ad absurdum* (double contradiction): assume Area $> 4T/3$, derive contradiction; assume Area $< 4T/3$, derive contradiction; therefore Area $= 4T/3$. He could not write 'take the limit' — instead he argued that the partial sums get arbitrarily close, so neither inequality can hold.\n\n**Ellipses and Cavalieri's Principle (1635)**: Bonaventura Cavalieri proved that if two figures have equal cross-sections at every height, their areas are equal. Applied to ellipses: the affine map $(x,y) \\mapsto (ax, by)$ sends the unit circle to the ellipse $x^2/a^2 + y^2/b^2 \\leq 1$, with Jacobian determinant $ab$, giving Area(ellipse) $= ab \\cdot \\pi$. This equals the change-of-variables formula from measure theory.\n\n**Why these three conics?**: The circle, ellipse, and parabola are the three bounded conic sections. Archimedes computed all their areas using exhaustion. For the hyperbola, the area $\\int_1^t (1/x)dx = \\ln t$ defines the natural logarithm — which Archimedes could not compute. So exhaustion for conics naturally stops at the parabola.",
     "problemStatement": "Can the method of exhaustion be generalized to other curves (ellipses, parabolas)? Specifically: (1) prove the ellipse area formula $\\pi ab$ using scaling from $\\pi r^2$; (2) prove Archimedes' parabolic segment area formula $A = (4/3)T$ via geometric series; (3) state and prove the general exhaustion convergence principle.",

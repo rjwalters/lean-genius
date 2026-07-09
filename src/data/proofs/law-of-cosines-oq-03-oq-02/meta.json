@@ -142,26 +142,6 @@
       "mathContext": "The right-angle case is the hyperbolic analogue of $\\sin A = a/c$ in Euclidean right triangles. The positivity of the ratio sinA/sinha follows from sin_pos_of_pos_of_lt_pi and sinh_pos_of_pos."
     }
   ],
-  "references": [
-    {
-      "authors": [
-        "Ratcliffe, J.G."
-      ],
-      "title": "Foundations of Hyperbolic Manifolds",
-      "year": "2019",
-      "venue": "3rd ed., Graduate Texts in Mathematics 149, Springer",
-      "note": "Hyperboloid model of the hyperbolic plane and the hyperbolic laws of cosines and sines."
-    },
-    {
-      "authors": [
-        "Anderson, J.W."
-      ],
-      "title": "Hyperbolic Geometry",
-      "year": "2005",
-      "venue": "2nd ed., Springer Undergraduate Mathematics Series, Springer",
-      "note": "Hyperbolic trigonometry, including the laws of cosines and sines and AAA rigidity."
-    }
-  ],
   "conclusion": {
     "summary": "The hyperbolic law of sines is axiomatized via 6 structure fields in HyperbolicSineTriangle. From the law we derive: the triple-ratio form, three cross-multiplication equalities, the isoceles criterion (a=b↔A=B), right-angle and equilateral specializations. The isoceles proof uses arccos injectivity (via cos_injOn_Icc) after ruling out the supplement case via the angular defect.",
     "implications": "The hyperbolic law of sines is the fundamental tool for computing angles from sides in hyperbolic geometry, dual to the law of cosines. Together with LawOfCosinesOQ03, it provides the complete hyperbolic trigonometry. The isoceles criterion mirrors the Euclidean case and is used in classifying hyperbolic triangles. The common ratio 1/(2R) identifies the circumradius R in hyperbolic space.",

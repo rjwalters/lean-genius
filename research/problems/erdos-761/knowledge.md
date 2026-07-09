@@ -235,3 +235,26 @@ under `lean4-arm64:v4.26.0`).
 ---
 
 *Generated from erdosproblems.com on 2026-01-15*
+
+## Session 2026-07-08 (Session N+1) - Embedding & induced-subgraph monotonicity
+
+**Mode**: REVISIT (branch already VERIFIED 0 sorry/2 open-axiom; pushed theory outward)
+**Outcome**: progress
+
+### What I Did
+- Added `dichrom_mono_of_embedding`: injective edge-preserving `f : W → V` with `∀ u v, H.Adj u v → G.Adj (f u) (f v)` gives `δ(H) ≤ δ(G)`. Generalizes `dichrom_mono` (same vertex type) to arbitrary vertex types.
+- Added corollary `dichrom_induce_le`: `δ(G.induce s) ≤ δ(G)` — induced-subgraph monotonicity, the structural fact Question 2 quantifies over.
+- Synced gallery meta (483 lines / 20 theorems) and knowledge.json.
+
+### Key Findings
+- Proof: extend `O_H` to `O_G` (copy `O_H` on image edges via `f`, index-orient the remaining `G`-edges), take an acyclic `k`-coloring of `O_G` (valid since `k` works for *all* `G`-orientations), pull it back along `f` with `Relation.TransGen.lift`.
+- The pullback consumes only edge-preservation; injectivity is used solely to keep the extended orientation well-defined under a strict-orientation reading (the file's `Orientation` is deliberately loose — no antisymmetry). This pinpoints exactly where the subgraph hypothesis enters.
+- `induce_adj` is definitional (`.rfl`), so the corollary's `hmap` is `fun _ _ h => h`.
+
+### Files Modified
+- proofs/Proofs/Erdos761Problem.lean (+~65 lines)
+- src/data/proofs/erdos-761/meta.json, src/data/research/problems/erdos-761.json
+
+### Next Steps
+- Formalize Q2 ⟹ Q1 via an Erdős #760 χ-vs-ζ bound (would collapse 2 axioms → 1; the #760 bound is itself nontrivial).
+- Disjoint-union behaviour `δ(G ⊔ H) = max(δ G, δ H)` and a spanning-subgraph corollary.

@@ -67,6 +67,10 @@
       {
         "id": "mersenne-prime-exponent",
         "relationship": "Parent entry. It constrains the EXPONENT (2^n − 1 prime ⟹ n prime); this entry constrains the FACTORS (prime divisors of 2^p − 1 for p an odd prime lie in fixed residue classes mod 2p and mod 8)."
+      },
+      {
+        "id": "mersenne-prime-exponent-oq-01",
+        "relationship": "Sibling open question — the +1 (Fermat) analogue: 2^n + 1 prime ⟹ n is a power of two, proved via the dual divisibility a + 1 ∣ a^d + 1 for odd d (this entry's Mersenne mechanism is the a − 1 ∣ a^d − 1 side)."
       }
     ],
     "axiomCount": 0,
@@ -85,7 +89,8 @@
       "**The order of 2 pins down the modulus.** The single fact orderOf (2 : ZMod q) = p carries the whole mod-2p restriction: it forces p ∣ q − 1 via Fermat, and the only extra ingredient is the trivial 2 ∣ q − 1 from q being odd. Primality of p is what collapses the order to exactly p (not a proper divisor).",
       "**p = 2 must be excluded, and the proof shows why.** The argument uses p odd twice: for coprimality of 2 and p (the mod-2p merge) and to write 2 as a square (the mod-8 residue). Both genuinely fail at p = 2, where 2^2 − 1 = 3 violates each restriction — so the odd-prime hypothesis is necessary, not cosmetic.",
       "**2 is a square mod q for free.** Because 2^p = 1 in ZMod q and p is odd, 2 = 2^{p+1} is an even power, hence a perfect square, with the square root written explicitly as 2^{(p+1)/2}. No Legendre-symbol computation is needed to see that 2 is a quadratic residue — the Mersenne relation supplies it.",
-      "**The mod-8 law is quadratic reciprocity's second supplement.** Converting 'IsSquare 2' to 'q ≡ ±1 (mod 8)' is exactly ZMod.exists_sq_eq_two_iff, the formal content of the second supplementary law; the Mersenne structure only has to deliver the residue hypothesis."
+      "**The mod-8 law is quadratic reciprocity's second supplement.** Converting 'IsSquare 2' to 'q ≡ ±1 (mod 8)' is exactly ZMod.exists_sq_eq_two_iff, the formal content of the second supplementary law; the Mersenne structure only has to deliver the residue hypothesis.",
+      "**The congruences are necessary filters, not sufficient conditions.** A prime satisfying both q ≡ 1 (mod 2p) and q ≡ ±1 (mod 8) need not divide 2^p − 1: for p = 11, the prime 199 has 199 ≡ 1 (mod 22) and 199 ≡ 7 (mod 8) yet 199 ∤ 2^11 − 1 = 23 · 89. The restrictions shrink the trial-division search space to the residue classes q = 2kp + 1 with q ≡ ±1 (mod 8), but each surviving candidate must still be tested for actual divisibility — this is exactly why they make Mersenne trial division efficient rather than deciding it outright."
     ],
     "prerequisites": [
       "Modular arithmetic and the finite field ZMod q for q prime",
@@ -95,6 +100,14 @@
     ]
   },
   "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and Overview",
+      "startLine": 1,
+      "endLine": 47,
+      "summary": "Imports Mathlib and the module docstring stating the two classical congruence restrictions on a prime factor q of a Mersenne number 2^p − 1 (p an odd prime): q ≡ 1 (mod 2p) and q ≡ ±1 (mod 8), the restrictions that make trial division for Mersenne factors efficient (worked example 2¹¹ − 1 = 23·89). Sketches the ZMod q argument — orderOf 2 = p, Fermat gives p ∣ q−1, and 2 a quadratic residue gives the mod-8 class — and declares the namespace.",
+      "mathContext": "For a prime $q \\mid 2^p - 1$ with $p$ an odd prime: $q \\equiv 1 \\pmod{2p}$ and $q \\equiv \\pm 1 \\pmod 8$; the engine is $\\operatorname{ord}_q(2) = p$ in the field $\\mathbb{Z}/q$."
+    },
     {
       "id": "shared",
       "title": "Casting the Divisibility and Oddness of Factors",
@@ -125,6 +138,16 @@
       "targetId": "mersenne-prime-exponent",
       "relationship": "extends",
       "description": "The parent entry constrains the exponent of a Mersenne prime; this entry constrains the prime factors of a (possibly composite) Mersenne number, giving the residue-class restrictions used in Mersenne trial division."
+    },
+    {
+      "targetId": "mersenne-prime-exponent-oq-01",
+      "relationship": "sibling-open-question",
+      "description": "The +1 (Fermat) analogue: 2^n + 1 prime ⟹ n is a power of two, dual to the parent's Mersenne exponent condition. Where this entry restricts the factors of 2^p − 1 via orderOf 2 = p in ZMod q, the sibling restricts the exponent of 2^n + 1 via the dual elementary divisibility a + 1 ∣ a^d + 1 for odd d — the +1 counterpart of the a − 1 ∣ a^d − 1 mechanism underlying the Mersenne exponent result."
+    },
+    {
+      "targetId": "elementary-quadratic-reciprocity",
+      "relationship": "related",
+      "description": "Supplies the exact tool behind the q ≡ ±1 (mod 8) restriction: the second supplementary law of quadratic reciprocity, (2/q) = (−1)^((q²−1)/8), states that 2 is a quadratic residue mod q iff q ≡ ±1 (mod 8) — precisely the Mathlib fact ZMod.exists_sq_eq_two_iff this entry invokes after exhibiting 2 as an even power (hence a square) mod any prime factor q of 2^p − 1."
     }
   ],
   "conclusion": {

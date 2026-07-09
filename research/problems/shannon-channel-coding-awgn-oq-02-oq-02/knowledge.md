@@ -75,3 +75,30 @@ Lean file: `proofs/Proofs/ShannonChannelCodingAWGNOQ02OQ02.lean`
 ### Next Steps
 - Orientation-reversing corollary (a>0, c<0 ⟹ ρ ↦ −ρ) if a further result needs it.
 - Extract cov[aX+b,cY+d]=ac·cov as a named reusable covariance-bilinearity lemma if reused.
+
+## Session 2026-07-08 (researcher-3) — MRC diversity gain (monotone max-SNR + sharp strict)
+
+**Mode**: ACT (look-outward on a near-terminus SOLVED entry). **Outcome**: progress, 0-axiom.
+Extended the maximal-ratio-combining (MRC) thread. The MRC theorem already present
+(`mrc_snr_le` + `mrc_snr_matched`) identifies the maximum attainable output SNR of a linear
+combiner over a branch block `s` as the summed per-branch SNRs `∑_{i∈s} sigᵢ²/vᵢ`. Added the
+*diversity-gain* behaviour of that maximum as the branch set grows:
+- `mrc_max_snr_mono (hst : s ⊆ t) (hv : ∀ i∈t, 0<v i)`: `∑_{s} sigᵢ²/vᵢ ≤ ∑_{t} sigᵢ²/vᵢ`.
+  One line: `Finset.sum_le_sum_of_subset_of_nonneg` with each summand `≥0` via
+  `div_nonneg (sq_nonneg _) (hv i _).le`. Combining over more branches never lowers attainable SNR.
+- `mrc_max_snr_lt_of_signal (hst : s ⊆ t) (hj : j∈t) (hjs : j∉s) (hsig : sig j ≠ 0)`: strict
+  `<`. `Finset.sum_lt_sum_of_subset` with the new term `sig j²/v j > 0`
+  (`lt_of_le_of_ne (sq_nonneg _) (Ne.symm (pow_ne_zero 2 hsig))` then `div_pos`) and the other
+  new summands `≥0`. Sharp companion: a branch improves diversity *exactly* when it carries
+  signal — a noise-only branch (`sig=0`) adds nothing.
+
+File 1447→1479 lines, 58→60 theorems (def 1 unchanged). Docker build EXIT 0 (two 135-SIGBUS
+retries at olean-write under fleet mem pressure; clean elab [7743/7743] each time — third try
+green), 0 sorry / 0 axiom. Gallery meta.json synced (stale 1355/54 and top-level 1247/50 both
+reconciled to 1479/60 across .meta/.leanFile/top-level blocks).
+
+### Next steps
+- MRC equality/uniqueness: `mrc_snr_le` is tight iff weights `aᵢ ∝ sigᵢ/vᵢ` (Cauchy–Schwarz
+  equality case) — genuinely new but needs the CS equality condition, likely nontrivial.
+- Higher-moment / fourth-moment budgets, or an explicit uncorrelated-but-dependent witness
+  (pairwise-independence gap is strict) — the remaining substantive, non-cosmetic directions.

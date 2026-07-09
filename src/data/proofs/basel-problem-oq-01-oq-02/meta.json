@@ -2,7 +2,7 @@
   "id": "basel-problem-oq-01-oq-02",
   "title": "Every Even Zeta Value ζ(2n) is Irrational — and the Odd Case ζ(2n+1) is Open",
   "slug": "basel-problem-oq-01-oq-02",
-  "description": "For every n ≥ 1 the even-argument zeta value ζ(2n) = ∑' k, 1/k^(2n) is irrational, the sharp arithmetic contrast to the parent Basel open question about ζ(7) / ζ(2n+1). Euler's formula writes ζ(2n) = qₙ·π^(2n) with qₙ ∈ ℚ, so ζ(2n) is irrational iff π^(2n) is; since irrationality does not lift through powers, this genuinely requires the transcendence of π (routed through the repository's hermite_lindemann axiom). Includes the reusable lemma that π^m is irrational for all m ≥ 1, and the concrete corollaries for ζ(2), ζ(4), ζ(6).",
+  "description": "For every n ≥ 1 the even-argument zeta value ζ(2n) = ∑' k, 1/k^(2n) is irrational, the sharp arithmetic contrast to the parent Basel open question about ζ(7) / ζ(2n+1). Euler's formula writes ζ(2n) = qₙ·π^(2n) with qₙ ∈ ℚ, so ζ(2n) is irrational iff π^(2n) is; since irrationality does not lift through powers, this genuinely requires the transcendence of π (routed through the repository's hermite_lindemann axiom). Includes the reusable lemma that π^m is irrational for all m ≥ 1, and the concrete corollaries for ζ(2), ζ(4), ζ(6). This entry additionally strengthens the headline to transcendence: zeta_even_transcendental shows every ζ(2n) is transcendental over ℚ (scaling the transcendental π^(2n) by the nonzero rational qₙ preserves transcendence), which refines and implies the irrationality result.",
   "meta": {
     "author": "Euler / Lindemann (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Particular_values_of_the_Riemann_zeta_function",
@@ -52,14 +52,16 @@
     "originalContributions": [
       "pi_pow_irrational: Irrational (π^m) for every m ≥ 1 — Mathlib has irrational_pi but nothing for powers of π (irrationality does not lift through powers); derived from the transcendence of π",
       "zeta_even_irrational: for every n ≥ 1, ζ(2n) = ∑' k, 1/k^(2n) is irrational — the general even-case irrationality result",
+      "zeta_even_transcendental: for every n ≥ 1, ζ(2n) = ∑' k, 1/k^(2n) is transcendental over ℚ — strictly stronger than irrationality; scaling the transcendental π^(2n) by the nonzero rational qₙ preserves transcendence",
+      "zeta_two_transcendental: the classical Basel value ζ(2)=π²/6 is transcendental over ℚ (hence irrational)",
       "zeta_two_irrational / zeta_four_irrational / zeta_six_irrational: the concrete Basel values ζ(2)=π²/6, ζ(4)=π⁴/90, ζ(6)=π⁶/945 are irrational",
       "The nonzero-ness of the rational coefficient qₙ is obtained for free from positivity of the series (ζ(2n) > 0), avoiding any Bernoulli-number vanishing lemma"
     ],
     "dateAdded": "2026-07-02",
-    "lineCount": 119,
+    "lineCount": 165,
     "assumptions": "Depends on the axiom hermite_lindemann (Lindemann–Weierstrass theorem, giving transcendence of π), imported via Proofs.PiTranscendental. Mathlib does not yet contain a complete Lindemann–Weierstrass development, and irrationality of π^(2n) provably requires transcendence of π (irrational_pi alone is insufficient, as irrationality does not lift through powers). Everything else is machine-checked with 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 5,
+    "theoremCount": 8,
     "definitionCount": 0
   },
   "overview": {
@@ -157,9 +159,9 @@
       "Real"
     ],
     "namespace": "BaselProblemOQ01OQ02",
-    "lineCount": 119,
+    "lineCount": 165,
     "axiomCount": 0,
-    "theoremCount": 5,
+    "theoremCount": 8,
     "definitionCount": 0,
     "path": "Proofs/BaselProblemOQ01OQ02.lean",
     "sorries": 0

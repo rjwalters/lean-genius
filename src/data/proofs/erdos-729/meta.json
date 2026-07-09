@@ -45,11 +45,11 @@
       "Defined relaxed divisibility allowing small prime factors",
       "Discharged the Legendre identity v_2(n!) = n - s_2(n) from Mathlib (removed legendre_identity axiom)"
     ],
-    "axiomCount": 2,
-    "lineCount": 251,
-    "assumptions": "2 axioms: barreto_leeham_theorem, barreto_leeham_bound. 0 sorries. The classical Erdős 1968 bound is now proved axiom-free (re-exported from Erdos729DigitSum.erdos_1968_uniform); its former erdos_1968_classical axiom has been removed. The Legendre identity v_2(n!) = n - s_2(n) (legendre_for_two) is fully proved from Mathlib's sub_one_mul_padicValNat_factorial; the former legendre_identity axiom has been removed.",
+    "axiomCount": 1,
+    "lineCount": 271,
+    "assumptions": "1 axiom: barreto_leeham_theorem (the deep Barreto-Leeham resolution ¬InfinitelyManyExceptions C, an external research result — genuinely open/hard for small C, left as a documented axiom). 0 sorries. The former barreto_leeham_bound axiom was UNSOUND (asserted a false proposition — failed at n∈{0,1}, e.g. n=1,a=b=1) and has been eliminated: its sound uniform form (2≤n) is now a verified theorem derived axiom-free from Erdos729DigitSum.erdos_1968_uniform via DividesFactorialModSmall ⟹ a!·b!∣n!. The classical Erdős 1968 bound is proved axiom-free (erdos_1968_uniform); its former erdos_1968_classical axiom was removed. The Legendre identity v_2(n!) = n - s_2(n) is proved from Mathlib; the former legendre_identity axiom was removed.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 7,
+    "theoremCount": 8,
     "definitionCount": 8
   },
   "overview": {
@@ -195,9 +195,9 @@
       "Real"
     ],
     "namespace": "Erdos729",
-    "lineCount": 251,
-    "axiomCount": 2,
-    "theoremCount": 7,
+    "lineCount": 271,
+    "axiomCount": 1,
+    "theoremCount": 8,
     "definitionCount": 8,
     "path": "Proofs/Erdos729Problem.lean",
     "sorries": 0

@@ -78,6 +78,14 @@
   },
   "sections": [
     {
+      "id": "module-header-and-setup",
+      "title": "Module Header, Imports & Setup",
+      "startLine": 1,
+      "endLine": 45,
+      "mathContext": "$\\cos x \\pm \\cos y$, $\\sin x \\pm \\sin y$ factored through the mean $\\tfrac{x+y}{2}$ and half-difference $\\tfrac{x-y}{2}$; triangle payoff $\\sin A+\\sin B+\\sin C = 4\\cos\\tfrac{A}{2}\\cos\\tfrac{B}{2}\\cos\\tfrac{C}{2}$.",
+      "summary": "The module docstring lays out the four sum-to-product (prosthaphaeresis) identities as the converse of the Werner product-to-sum family (cf. triangle-angle-sum-oq-04/oq-05), their derivation from the addition formulas via the mean/half-difference substitution, and the two substantive triangle half-angle product identities Mathlib does not record (proved in the general a+b+c=π/2 form, then specialised). It also states the verification status (0 sorries, 0 axioms, no native_decide). Imports pull in Trigonometric.Basic and the linear_combination tactic; `open Real` and `namespace TriangleAngleSumOQ06` establish the naming context shared by every result."
+    },
+    {
       "id": "sum-to-product",
       "title": "The Four Sum-to-Product (Prosthaphaeresis) Identities",
       "startLine": 46,
@@ -97,7 +105,7 @@
       "id": "worked-instance",
       "title": "Worked Instance",
       "startLine": 163,
-      "endLine": 173,
+      "endLine": 175,
       "mathContext": "$3\\sin\\tfrac{\\pi}{3} = 4\\cos^3\\tfrac{\\pi}{6}$.",
       "summary": "The equilateral triangle (A = B = C = π/3) instance of triangle_sin_sum, obtained by rewriting (π/3)/2 = π/6 — exhibiting the identity concretely without evaluating the surd values sin(π/3) = cos(π/6) = √3/2."
     }
@@ -163,6 +171,36 @@
       "type": "supporting",
       "description": "Sum-to-product for a sine difference: sin x − sin y = 2·cos((x+y)/2)·sin((x−y)/2).",
       "leanType": "(x y : ℝ) → sin x - sin y = 2 * cos ((x + y) / 2) * sin ((x - y) / 2)"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Abramowitz, Milton; Stegun, Irene A. (eds.)",
+      "title": "Handbook of Mathematical Functions",
+      "year": "1964",
+      "venue": "National Bureau of Standards, Applied Mathematics Series 55 (§4.3)",
+      "note": "Standard reference table for the sum-to-product (prosthaphaeresis) identities sin x ± sin y and cos x ± cos y formalized here as cos_add_cos, cos_sub_cos, sin_add_sin, sin_sub_sin."
+    },
+    {
+      "authors": "Loney, Sidney Luxton",
+      "title": "Plane Trigonometry",
+      "year": "1893",
+      "venue": "Cambridge University Press",
+      "note": "Classic text deriving the triangle identities for A + B + C = π, including sin A + sin B + sin C = 4·cos(A/2)cos(B/2)cos(C/2) and the cos-sum half-angle product proved here as triangle_sin_sum and triangle_cos_sum."
+    },
+    {
+      "authors": "Thoren, Victor E.",
+      "title": "Prosthaphaeresis Revisited",
+      "year": "1988",
+      "venue": "Historia Mathematica 15(1), 32–39",
+      "note": "Historical account of prosthaphaeresis — the sum-to-product formulas used by 16th-century astronomers (Tycho Brahe's circle) to convert multiplication into addition before logarithms; the identities cos_add_cos etc. are their modern statement."
+    },
+    {
+      "authors": "Zwillinger, Daniel (ed.)",
+      "title": "CRC Standard Mathematical Tables and Formulae",
+      "year": "2018",
+      "venue": "33rd ed., CRC Press",
+      "note": "Comprehensive reference tables for trigonometric sum-to-product and half-angle identities, including the triangle half-angle product forms."
     }
   ]
 }

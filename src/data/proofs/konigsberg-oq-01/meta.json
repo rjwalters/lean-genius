@@ -115,26 +115,6 @@
       "mathContext": "Epilogue; no new declarations. #checks confirm sqCircuit_isEulerian, pentCircuit_isEulerian, k4_not_eulerian, and regular_odd_no_euler typecheck."
     }
   ],
-  "references": [
-    {
-      "authors": [
-        "Euler, L."
-      ],
-      "title": "Solutio problematis ad geometriam situs pertinentis",
-      "year": "1736",
-      "venue": "Commentarii Academiae Scientiarum Petropolitanae 8, pp. 128–140",
-      "note": "The Seven Bridges of Königsberg, founding paper of graph theory; the even-degree criterion for Eulerian circuits."
-    },
-    {
-      "authors": [
-        "West, D.B."
-      ],
-      "title": "Introduction to Graph Theory",
-      "year": "2001",
-      "venue": "2nd ed., Prentice-Hall",
-      "note": "Textbook treatment of Eulerian circuits/paths in undirected and directed graphs."
-    }
-  ],
   "conclusion": {
     "summary": "Verifies Eulerian circuit existence for $C_4$ (explicit 4-edge circuit) and $C_5$ (explicit 5-edge circuit), and non-existence for $K_4$ (4 odd-degree vertices) and all odd-regular graphs with $|V| \\geq 3$. Proves general necessary conditions: Eulerian circuits require all-even degrees; Eulerian paths require $\\leq 2$ odd-degree vertices. 24 theorems, 8 definitions, 404 lines, no mathematical axioms in the main file (the concrete native_decide theorems depend on `Lean.ofReduceBool` via the compiler's kernel reduction). The companion HierholzerAlgorithm.lean axiomatizes the sufficiency direction (2 axioms) pending Hierholzer's algorithm formalization.",
     "implications": "This provides machine-verified concrete examples for Euler's theorem — the foundational result of graph theory. The combination of explicit circuit constructions (positive examples) with odd-degree counting arguments (negative examples) demonstrates both directions of the degree criterion. The `Walk.IsEulerian.card_odd_degree` lemma from Mathlib is the key bridge between the combinatorial structure and the algebraic degree counts.",

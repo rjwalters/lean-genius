@@ -55,11 +55,11 @@
     ],
     "dateAdded": "2025-12-29",
     "axiomCount": 0,
-    "lineCount": 758,
+    "lineCount": 811,
     "assumptions": "No axiom declarations, no sorries, no native_decide (all theorems depend only on propext/Classical.choice/Quot.sound). The two headline placeholders (puiseux_theorem, puiseux_is_algebraic_closure) were replaced by genuine, fully computed Hahn-series theorems puiseux_binomial_root and puiseux_binomial_ramification, which establish the binomial base case of Puiseux's theorem (every binomial Yⁿ = c·xᵐ has a Puiseux root of ramification n over an algebraically closed field). Four narrative theorems remain as String-literal descriptors carrying no formal content (curve_branches_are_puiseux, newton_polygon_tropicalization, galois_group_is_profinite_integers, char_zero_required); each merely asserts ∃ desc : String, desc = \"…\" and marks an informal application/connection rather than a machine-checked result. This is a rigorously verified FRAGMENT: the full Newton–Puiseux theorem for arbitrary polynomials over the Puiseux field (assembling binomial roots term by term, with its char-0 convergence argument) is not formalized here — the required infrastructure is absent from Mathlib. Badge remains 'wip' to reflect that the headline algebraic-closure theorem is not fully proven.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 18,
-    "definitionCount": 3
+    "theoremCount": 21,
+    "definitionCount": 4
   },
   "overview": {
     "historicalContext": "Newton discovered the algorithm for computing fractional power series roots of polynomials in 1676. Puiseux gave the first rigorous proof in 1850 that these series provide the algebraic closure of the Laurent series field, establishing that allowing fractional exponents suffices to solve all polynomial equations over formal power series (in characteristic 0). The study of algebraic curves via local parametrization goes back to Newton who introduced the Newton polygon method to compute the branches of an algebraic curve at a singular point. The formal algebraic closure result was refined in the 20th century by Hironaka and others in connection with resolution of singularities, and the characteristic-0 hypothesis is essential: in characteristic p, the Artin-Schreier phenomenon means p-th power extensions cannot be captured by Puiseux series.",
@@ -173,10 +173,10 @@
       "Polynomial"
     ],
     "namespace": "PuiseuxTheorem",
-    "lineCount": 758,
+    "lineCount": 811,
     "axiomCount": 0,
-    "theoremCount": 18,
-    "definitionCount": 3,
+    "theoremCount": 21,
+    "definitionCount": 4,
     "path": "Proofs/PuiseuxTheorem.lean",
     "sorries": 0
   },

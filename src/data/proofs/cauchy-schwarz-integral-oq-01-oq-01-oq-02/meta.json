@@ -4,7 +4,7 @@
   "slug": "cauchy-schwarz-integral-oq-01-oq-01-oq-02",
   "description": "Can the Riesz representation theorem (Lp)* ≅ Lq be derived from the eLpNorm Hölder inequality? Answer: partially — the embedding direction yes, surjectivity requires Radon-Nikodým.",
   "meta": {
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/CauchySchwarzIntegralOQ01OQ01OQ02.lean",
     "tags": [
       "functional-analysis",
@@ -13,13 +13,13 @@
       "holder-inequality",
       "hilbert-space"
     ],
-    "badge": "axiom",
+    "badge": "verified",
     "sorries": 0,
-    "axiomCount": 1,
-    "lineCount": 152,
-    "assumptions": "1 axiom: riesz_lp_surjective (the hard direction requiring Radon-Nikodym). L2 case fully proved via InnerProductSpace.toDual. Embedding direction proved via Hölder.",
+    "axiomCount": 0,
+    "lineCount": 166,
+    "assumptions": "0 axioms. The general Riesz surjectivity (hard direction) is discharged as a re-export of RieszLpDualitySynthesis.riesz_lp_surjective_general, which proves the identical statement for an arbitrary measure (no sigma-finiteness) via sigma-finite-support localization + Radon-Nikodym + the Folland-6.16 maximality assembly, kernel-verified with foundational axioms only (propext, Classical.choice, Quot.sound). L2 case via InnerProductSpace.toDual; embedding direction via Holder.",
     "dateAdded": "2026-03-26",
-    "theoremCount": 7,
+    "theoremCount": 8,
     "definitionCount": 0
   },
   "overview": {
@@ -107,9 +107,9 @@
     "imports": [
       "Mathlib"
     ],
-    "lineCount": 152,
-    "axiomCount": 1,
-    "theoremCount": 7,
+    "lineCount": 166,
+    "axiomCount": 0,
+    "theoremCount": 8,
     "definitionCount": 0,
     "mainTheorems": [
       {

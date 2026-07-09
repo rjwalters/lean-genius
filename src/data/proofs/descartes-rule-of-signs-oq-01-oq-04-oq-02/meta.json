@@ -105,26 +105,6 @@
       "description": "The classical Descartes Rule of Signs at the root of the OQ chain"
     }
   ],
-  "references": [
-    {
-      "authors": [
-        "Descartes, R."
-      ],
-      "title": "La Géométrie",
-      "year": "1637",
-      "venue": "Appendix to Discours de la méthode, Leiden",
-      "note": "Original statement of the rule of signs."
-    },
-    {
-      "authors": [
-        "Prasolov, V.V."
-      ],
-      "title": "Polynomials",
-      "year": "2004",
-      "venue": "Algorithms and Computation in Mathematics 11, Springer",
-      "note": "Modern reference covering Descartes' rule, the Budan–Fourier theorem, Sturm's theorem and root-localization bounds."
-    }
-  ],
   "conclusion": {
     "summary": "In the boundary cases the exact positive-root count is recovered without the parity refinement: signVariations = 0 gives 0 roots from Descartes' bound, and signVariations = 1 gives exactly one root from the bound (≤ 1) together with the Intermediate Value Theorem (≥ 1). The IVT existence argument — deflate by Xᵐ, then cross zero between the trailing sign at 0 and the leading sign at +∞ — is fully machine-checked with 0 sorries and 0 axioms. The only non-analytic input, that one sign variation forces opposite leading/trailing signs, is taken as an explicit combinatorial hypothesis.",
     "implications": "Shows the boundary cases of Descartes' Rule are strictly easier than the general parity refinement: they require only existence of a sign-change root, a completeness/IVT phenomenon, not the odd-multiplicity FTA argument the gallery has consistently left open. The deflate-then-IVT pattern (P = Xᵐ·Q with nonzero constant term, sign at 0 vs sign at +∞) is reusable for other sign-change root-existence facts. Reduces the open unconditional boundary count to a single, analysis-free combinatorial lemma about List.destutter.",

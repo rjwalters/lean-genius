@@ -22,8 +22,8 @@
     "dateAdded": "2026-04-02",
     "axiomCount": 0,
     "assumptions": "None. The S5 drift repair (Mathlib v4.26) replaces every `native_decide` with kernel `decide` plus a genuine application of Mathlib's additive Burnside lemma `AddAction.sum_card_fixedBy_eq_card_orbits_mul_card_addGroup`, so the file no longer depends on `Lean.ofReduceBool`. `#print axioms fixed_point_sum_binary_4` and `#print axioms binary_necklaces_4` report only the foundational trio [propext, Classical.choice, Quot.sound]. 0 literal `axiom` declarations, 0 sorries, no assumption-carrying structures.",
-    "lineCount": 429,
-    "theoremCount": 12,
+    "lineCount": 610,
+    "theoremCount": 19,
     "definitionCount": 9,
     "originalContributions": [
       "burnside_lemma: Burnside orbit-counting theorem from Mathlib (MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group)",
@@ -72,9 +72,9 @@
   },
   "leanFile": {
     "namespace": "BurnsideCounting",
-    "lineCount": 429,
+    "lineCount": 610,
     "axiomCount": 0,
-    "theoremCount": 12,
+    "theoremCount": 19,
     "definitionCount": 9,
     "path": "Proofs/BurnsideCounting.lean",
     "sorries": 0
@@ -135,6 +135,13 @@
       "statement": "$|(\\mathrm{Coloring}\\ 4\\ 2)/\\sim| = 6$",
       "significance": "**The headline application (now proved).** The number of distinct binary necklaces of length 4 is exactly 6: $\\{0000\\}, \\{1111\\}, \\{0001, 0010, 0100, 1000\\}, \\{0011, 0110, 1100, 1001\\}, \\{0101, 1010\\}, \\{0111, 1011, 1101, 1110\\}$. Matches OEIS A000029 (necklaces under rotation) at $n=4$. Discharged in S4 ACT (burnside-counting-oq-01) — the last of the 5 original axioms, making the file axiom-free.",
       "description": "Stated against `coloringSetoid` (= `AddAction.orbitRel (ZMod 4) (Coloring 4 2)`) and the computable `coloringQuotientFintype` instance (both derived, not axiomatized, since S2). S4 ACT originally discharged this by a single `native_decide` over the computable quotient. The S5 drift repair replaces that with a genuine application of Mathlib's additive Burnside lemma `AddAction.sum_card_fixedBy_eq_card_orbits_mul_card_addGroup`: `∑ a : ZMod 4, |Fix a| = |orbits| * |ZMod 4|`, where the fixed-point sum is 24 (`fixed_point_sum_binary_4`, whose subtypes are defeq to `fixedBy`) and `|ZMod 4| = 4`, so `|orbits| = 6` by arithmetic — kernel-checked with `decide` for the finite counts and no `Lean.ofReduceBool`. Previously stated as an axiom."
+    },
+    {
+      "name": "fixedBy_card_of_isUnit",
+      "type": "core",
+      "statement": "For a unit $r : \\mathbb{Z}/n\\mathbb{Z}$ (i.e. $\\gcd(r,n)=1$), $|\\mathrm{Fix}(r)| = k$",
+      "significance": "**General primitive-rotation fixed-point count.** Generalizes the hard-coded facts $|\\mathrm{Fix}(1)| = |\\mathrm{Fix}(3)| = 2$ used in `fixed_point_sum_binary_4` to arbitrary length $n$ and palette size $k$: whenever the rotation amount $r$ generates $\\mathbb{Z}/n\\mathbb{Z}$ (a unit, equivalently $\\gcd(r,n)=1$), the only fixed colorings are the $k$ constant ones. This is exactly the $\\gcd = 1$ case of the classical necklace fixed-point formula $|\\mathrm{Fix}(r)| = k^{\\gcd(r,n)}$, and feeds the general engine `sum_fixedBy_eq_card_necklaces_mul` with no `decide` cost for primitive rotations.",
+      "description": "Proved via two supporting lemmas. `isFixed_nsmul`: if $c$ is fixed by $r$ then it is fixed by every natural multiple $m \\cdot r$ (induction on $m$ using only the `AddAction` axioms). `isConstant_of_isFixedByRotation_one`: a coloring fixed by rotation $1$ satisfies $c(i)=c(i-1)$ around the whole $n$-cycle, hence is constant. For a unit $r$, some multiple $m \\cdot r = 1$ (take $m = (r^{-1}).\\mathrm{val}$), promoting fixed-by-$r$ to fixed-by-$1$; the reverse inclusion is immediate since constant colorings are fixed by every rotation. The count then follows from `constant_coloring_count` via `Equiv.subtypeEquivRight`. Kernel-checked, no `native_decide`, no `Lean.ofReduceBool`."
     }
   ],
   "references": [

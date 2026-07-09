@@ -27,6 +27,11 @@
     * `kAPCount_diag_eq_major_add_remainder` — the same expansion with the `S=∅`
       summand evaluated: `Λ_k(g,…,g) = δ^k + ∑_{∅≠S⊆[k]} δ^{k−|S|}·Λ_k(…)`, the
       "main `k`-AP count `δ^k` plus a balanced (Gowers-controlled) remainder" form.
+    * `kAPCount_count_split` / `kAPCount_indicator_eq_diag_add_nondeg` — the
+      diagonal / nondegenerate split of the combinatorial `k`-AP count (`k ≥ 1`):
+      `#{(x,d) : ∀ i, x+i·d ∈ A} = #A + #{(x,d) : d ≠ 0 ∧ …}`, giving
+      `Λ_k(1_A) = (N⁻¹)²·(#A + #nondegenerate)` — the trivial diagonal term
+      separated from the genuine `d ≠ 0` count Roth's theorem controls.
 
   These are precisely the checks that pin the operators down as genuine
   averages `E_{x,d} ∏ᵢ fᵢ(x+i·d)` (the `(N⁻¹)²·N² = 1` normalization),
@@ -79,6 +84,14 @@ noncomputable def kAPCount {N : ℕ} [NeZero N] (k : ℕ)
     (f : Fin k → ZMod N → ℂ) : ℂ :=
   ((N : ℂ)⁻¹) ^ 2 * ∑ x : ZMod N, ∑ d : ZMod N,
     ∏ i : Fin k, f i (x + i.val • d)
+
+/-- The complex indicator `1_A : ZMod N → ℂ` of a finite set `A ⊆ ZMod N`:
+    `1` on `A`, `0` off it.  Feeding `1_A` into every slot of `kAPCount`
+    turns the analytic operator `Λ_k` into a genuine combinatorial count
+    of arithmetic progressions lying inside `A`
+    (`kAPCount_indicator_eq_count`). -/
+noncomputable def indicatorZMod {N : ℕ} (A : Finset (ZMod N)) : ZMod N → ℂ :=
+  fun x => if x ∈ A then 1 else 0
 
 -- ============================================================
 -- Foundational identities
@@ -380,5 +393,130 @@ theorem kAPCount_diag_eq_major_add_remainder {N : ℕ} [NeZero N] (k : ℕ)
         else (1 : ZMod N → ℂ)) = (fun (_ : Fin k) (_ : ZMod N) => (1 : ℂ)) := by
     funext i y; simp
   rw [Finset.card_empty, Nat.sub_zero, hfun, kAPCount_const_one, mul_one]
+
+-- ============================================================
+-- Bridge to combinatorics: `kAPCount` of an indicator counts APs
+--
+-- All the identities above are analytic facts about the *operator*
+-- `Λ_k`.  This block ties `Λ_k` back to the combinatorial object it is
+-- designed to measure: feeding the indicator `1_A` into every slot,
+-- `Λ_k(1_A,…,1_A)` becomes exactly `(N⁻¹)²` times the number of pairs
+-- `(x,d)` whose length-`k` progression `x, x+d, …, x+(k−1)d` lies wholly
+-- inside `A`.  This is the concrete meaning of "the normalized `k`-AP
+-- count of `A`" that Roth's theorem (`k = 3`) is a statement about.
+-- ============================================================
+
+/-- The indicator of the whole group is the constant `1` function. -/
+@[simp] theorem indicatorZMod_univ {N : ℕ} [NeZero N] :
+    indicatorZMod (Finset.univ : Finset (ZMod N)) = fun _ => (1 : ℂ) := by
+  funext x
+  simp [indicatorZMod]
+
+/-- **Combinatorial bridge.**  The analytic count of the diagonal indicator
+    tuple is `(N⁻¹)²` times the number of `(x, d)` pairs for which the entire
+    length-`k` progression `x + i·d` (`0 ≤ i < k`) lies inside `A`:
+
+        Λ_k(1_A,…,1_A) = (N⁻¹)² · #{(x,d) : ∀ i, x + i·d ∈ A}.
+
+    Each inner product `∏ᵢ 1_A(x + i·d)` is `1` exactly when every term of the
+    progression hits `A` and `0` otherwise (`Finset.prod_boole`); summing these
+    indicators over all pairs `(x,d)` counts the progressions (`Finset.sum_boole`).
+    This is what makes `kAPCount` the *normalized `k`-AP density* of `A`: the
+    quantity Roth's theorem forces to be positive once `A` is dense. -/
+theorem kAPCount_indicator_eq_count {N : ℕ} [NeZero N] (k : ℕ)
+    (A : Finset (ZMod N)) :
+    kAPCount k (fun _ : Fin k => indicatorZMod A)
+      = ((N : ℂ)⁻¹) ^ 2 *
+          ((Finset.univ.filter
+              (fun p : ZMod N × ZMod N =>
+                ∀ i : Fin k, p.1 + i.val • p.2 ∈ A)).card : ℂ) := by
+  classical
+  simp only [kAPCount, indicatorZMod]
+  congr 1
+  -- Collapse the double sum into a single sum over pairs.
+  rw [← Finset.sum_product', Finset.univ_product_univ]
+  -- Each inner product of indicators is the indicator of "all terms hit `A`"
+  -- (`prod_boole`); summing those indicators over all pairs counts the
+  -- progressions lying inside `A` (`sum_boole`), and `∀ i ∈ univ` collapses to
+  -- the plain `∀ i` on the counted set.
+  simp [Finset.prod_boole, Finset.sum_boole]
+
+/-- **Diagonal / nondegenerate split of the `k`-AP count.**  For `k ≥ 1`, the pairs
+    `(x, d)` whose length-`k` progression `x + i·d` lies entirely in `A` split into the
+    *diagonal* `d = 0` (a constant progression `x, x, …, x`, which lies in `A` iff `x ∈ A`,
+    contributing exactly `#A` pairs) and the *nondegenerate* `d ≠ 0` progressions:
+
+        #{(x,d) : ∀ i, x + i·d ∈ A}
+          = #A  +  #{(x,d) : d ≠ 0 ∧ ∀ i, x + i·d ∈ A}.
+
+    This is the standard first step separating the trivial diagonal term from the genuine
+    (`d ≠ 0`) `k`-AP count that Roth's theorem controls. -/
+theorem kAPCount_count_split {N : ℕ} [NeZero N] {k : ℕ} (hk : 0 < k)
+    (A : Finset (ZMod N)) :
+    (Finset.univ.filter (fun p : ZMod N × ZMod N =>
+        ∀ i : Fin k, p.1 + i.val • p.2 ∈ A)).card
+      = A.card
+        + (Finset.univ.filter (fun p : ZMod N × ZMod N =>
+             (∀ i : Fin k, p.1 + i.val • p.2 ∈ A) ∧ p.2 ≠ 0)).card := by
+  classical
+  set P := Finset.univ.filter (fun p : ZMod N × ZMod N =>
+      ∀ i : Fin k, p.1 + i.val • p.2 ∈ A) with hP
+  -- Partition `P` according to whether the common difference `d = p.2` vanishes.
+  have hsplit :
+      (P.filter (fun p => p.2 = 0)).card + (P.filter (fun p => ¬ p.2 = 0)).card = P.card :=
+    Finset.filter_card_add_filter_neg_card_eq_card (fun p : ZMod N × ZMod N => p.2 = 0)
+  -- The diagonal slice `d = 0` is exactly `A ×ˢ {0}`.
+  have hdiag : P.filter (fun p => p.2 = 0) = A ×ˢ ({0} : Finset (ZMod N)) := by
+    ext p
+    simp only [hP, Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_product,
+      Finset.mem_singleton]
+    constructor
+    · rintro ⟨hall, h0⟩
+      simp only [h0, smul_zero, add_zero] at hall
+      exact ⟨hall ⟨0, hk⟩, h0⟩
+    · rintro ⟨hA, h0⟩
+      refine ⟨?_, h0⟩
+      intro i
+      simp only [h0, smul_zero, add_zero]
+      exact hA
+  have hdiagcard : (P.filter (fun p => p.2 = 0)).card = A.card := by
+    rw [hdiag, Finset.card_product, Finset.card_singleton, mul_one]
+  -- The `d ≠ 0` slice unfolds to the nondegenerate filter.
+  have hnondeg : P.filter (fun p => ¬ p.2 = 0)
+      = Finset.univ.filter (fun p : ZMod N × ZMod N =>
+          (∀ i : Fin k, p.1 + i.val • p.2 ∈ A) ∧ p.2 ≠ 0) := by
+    rw [hP, Finset.filter_filter]
+  rw [hnondeg, hdiagcard] at hsplit
+  omega
+
+/-- **Analytic form of the diagonal / nondegenerate split.**  Combining the combinatorial
+    bridge `kAPCount_indicator_eq_count` with `kAPCount_count_split`, the analytic `k`-AP
+    operator on the indicator of `A` decomposes (for `k ≥ 1`) into its lower-order diagonal
+    term `(N⁻¹)²·#A` and the normalized count of nondegenerate (`d ≠ 0`) progressions:
+
+        Λ_k(1_A,…,1_A) = (N⁻¹)² · (#A + #{(x,d) : d ≠ 0 ∧ ∀ i, x + i·d ∈ A}).
+
+    The diagonal term `(N⁻¹)²·#A = δ/N` (with density `δ = #A/N`) vanishes as `N → ∞`,
+    so the content of `Λ_k(1_A)` lives in the nondegenerate count — the quantity Roth's
+    theorem (`k = 3`) forces to be positive for dense `A`. -/
+theorem kAPCount_indicator_eq_diag_add_nondeg {N : ℕ} [NeZero N] {k : ℕ} (hk : 0 < k)
+    (A : Finset (ZMod N)) :
+    kAPCount k (fun _ : Fin k => indicatorZMod A)
+      = ((N : ℂ)⁻¹) ^ 2 *
+          ((A.card : ℂ) +
+            ((Finset.univ.filter (fun p : ZMod N × ZMod N =>
+                (∀ i : Fin k, p.1 + i.val • p.2 ∈ A) ∧ p.2 ≠ 0)).card : ℂ)) := by
+  rw [kAPCount_indicator_eq_count, kAPCount_count_split hk]
+  push_cast
+  ring
+
+/-- Consistency check: the normalized `k`-AP count of the whole group is `1`,
+    recovering `kAPCount_const_one` through the combinatorial definition
+    (every pair `(x,d)` gives a progression inside `univ`). -/
+theorem kAPCount_indicator_univ {N : ℕ} [NeZero N] (k : ℕ) :
+    kAPCount k (fun _ : Fin k => indicatorZMod (Finset.univ : Finset (ZMod N)))
+      = 1 := by
+  simp only [indicatorZMod_univ]
+  exact kAPCount_const_one k
 
 end RothTheoremOQ03OQ01

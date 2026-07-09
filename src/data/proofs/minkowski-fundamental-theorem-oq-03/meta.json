@@ -3,6 +3,26 @@
   "title": "Blichfeldt's Generalization of Minkowski's Fundamental Theorem",
   "slug": "minkowski-fundamental-theorem-oq-03",
   "description": "The general-multiplicity form of Blichfeldt's principle over Mathlib's abstract fundamental-domain API. If a null-measurable set s has volume exceeding k times the covolume μF of a countable subgroup L, then some point z is covered by more than k translates of s by L: there is a finite T ⊆ L with k < #T and z ∈ l +ᵥ s for every l ∈ T. Equivalently, s contains more than k points that are pairwise congruent modulo L. At k = 1 this is exactly Mathlib's exists_pair_mem_lattice_not_disjoint_vadd (Blichfeldt's two-point principle); Mathlib has no general-k version. This is the honest Blichfeldt theorem — an arbitrary bounded measurable set and no 2ⁿ factor — as opposed to the parent entry's blichfeldt_statement, which is really van der Corput's convex-body counting theorem.",
+  "leanFile": {
+    "path": "Proofs/MinkowskiFundamentalTheoremOQ03.lean",
+    "namespace": "Blichfeldt",
+    "imports": [
+      "Mathlib.MeasureTheory.Group.GeometryOfNumbers",
+      "Mathlib.MeasureTheory.Integral.Lebesgue.Add",
+      "Mathlib.MeasureTheory.Integral.Lebesgue.Basic"
+    ],
+    "opens": [
+      "MeasureTheory",
+      "ENNReal",
+      "Set",
+      "Filter"
+    ],
+    "lineCount": 136,
+    "axiomCount": 0,
+    "theoremCount": 2,
+    "definitionCount": 0,
+    "sorries": 0
+  },
   "meta": {
     "status": "verified",
     "proofRepoPath": "Proofs/MinkowskiFundamentalTheoremOQ03.lean",
@@ -71,6 +91,14 @@
     ]
   },
   "sections": [
+    {
+      "id": "header",
+      "title": "Module Header, Imports, and Setup",
+      "startLine": 1,
+      "endLine": 53,
+      "summary": "Module docstring stating the general-multiplicity Blichfeldt principle: for a countable subgroup L acting on a measure space E with fundamental domain F and a null-measurable set s, k·μF < μs forces more than k lattice elements l sharing a common point z ∈ l +ᵥ s (equivalently k+1 points of s pairwise congruent mod L). Notes the k=1 case is Mathlib's exists_pair_mem_lattice_not_disjoint_vadd, contrasts the true Blichfeldt theorem (arbitrary bounded set, no 2ⁿ factor) with the parent's van der Corput form, and sketches the measure-theoretic pigeonhole proof. Imports the geometry-of-numbers and Lebesgue-integration modules, opens MeasureTheory/ENNReal/Pointwise, declares the Blichfeldt namespace.",
+      "mathContext": "Blichfeldt: $k\\cdot\\mu(F) < \\mu(s) \\Rightarrow \\exists$ more than $k$ lattice elements with a common point; the engine is the covering count $g(z)=\\sum'_l \\mathbf{1}_{l+\\!s}(z)$ integrating to $\\mu(s)$ over $F$."
+    },
     {
       "id": "sec-extraction",
       "title": "Finite Extraction from an Over-Large tsum",

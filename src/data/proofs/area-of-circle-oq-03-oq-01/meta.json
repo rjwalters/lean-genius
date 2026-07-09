@@ -26,34 +26,14 @@
     "definitionCount": 1,
     "originalContributions": [
       "inscribedArea: area of regular n-gon inscribed in circle of radius r = n·r²/2·sin(2π/n)",
-      "sin_lb: sin(x) ≥ x - x³/6 for x ≥ 0 (proved via MVT + half-angle identity chain)",
-      "inscribed_area_lower: Aₙ ≥ πr² - 2π³r²/(3n²) (lower bound from sin lower bound)",
+      "sin_ge_sub_cube_div_six: sin(x) ≥ x - x³/6 for x ≥ 0 (proved via MVT + half-angle identity chain)",
+      "inscribed_area_rate_bound: Aₙ ≥ πr² - 2π³r²/(3n²) (lower bound from sin lower bound)",
       "inscribed_area_upper: Aₙ ≤ πr² (inscribed area never exceeds circle area)",
       "inscribed_area_rate_bound: explicit O(1/n²) convergence rate 0 ≤ πr² - Aₙ ≤ 2π³r²/(3n²)",
       "inscribed_area_convergence_rate: absolute value form of the rate bound",
       "inscribed_area_error_positive: the error πr² - Aₙ > 0 strictly for n≥3 and r>0"
     ]
   },
-  "references": [
-    {
-      "authors": "Archimedes (T. L. Heath, ed.)",
-      "title": "The Works of Archimedes: Measurement of a Circle",
-      "year": "1897",
-      "venue": "Cambridge University Press (reprint Dover, 2002)"
-    },
-    {
-      "authors": "Heath, Thomas L.",
-      "title": "A History of Greek Mathematics, Vol. II",
-      "year": "1921",
-      "venue": "Oxford University Press"
-    },
-    {
-      "authors": "The mathlib Community",
-      "title": "Real.sin bounds via MVT (Real.add_pow_le_pow_mul_pow_of_sq_le_sq style) and Taylor; Analysis.SpecialFunctions.Trigonometric",
-      "year": "2024",
-      "venue": "Mathlib4 (leanprover-community/mathlib4)"
-    }
-  ],
   "overview": {
     "historicalContext": "The quantitative question of how fast inscribed polygon areas converge to the circle is the rigorous heart of Archimedes' method for computing $\\pi$.\n\n**Archimedes (c. 250 BCE)**: In *Measurement of a Circle* (Proposition 3), Archimedes used inscribed and circumscribed regular 96-gons to prove $3 + 10/71 < \\pi < 3 + 1/7$. His method was essentially: compute the area of a regular $n$-gon exactly, and show it differs from $\\pi$ by less than a given bound. Doubling from 6-gon: $6 \\to 12 \\to 24 \\to 48 \\to 96$ sides.\n\n**Liu Hui (263 CE)**: Extended to 3072-gon, giving $\\pi \\approx 3.14159$.\n\n**Viète (1593)**: Expressed $2/\\pi$ as an infinite product using half-angle formulas for inscribed polygons:\n$$\\frac{2}{\\pi} = \\frac{\\sqrt{2}}{2} \\cdot \\frac{\\sqrt{2+\\sqrt{2}}}{2} \\cdot \\frac{\\sqrt{2+\\sqrt{2+\\sqrt{2}}}}{2} \\cdots$$\nThis is the first infinite product expression for $\\pi$, and it directly encodes the doubling process for inscribed polygon side-lengths.\n\n**The convergence rate**: The modern understanding is that $\\pi r^2 - A_n = O(1/n^2)$ because the inscribed polygon area $A_n = n \\cdot r^2/2 \\cdot \\sin(2\\pi/n)$ satisfies $\\sin(x) = x - x^3/6 + O(x^5)$, so $A_n = \\pi r^2 - 2\\pi^3 r^2/(3n^2) + O(1/n^4)$. The leading error is $2\\pi^3 r^2/(3n^2)$, making the convergence 'quadratic' in the number of sides. The explicit constant $2\\pi^3/3 \\approx 20.67$ means that to achieve precision $\\varepsilon$ (as a fraction of $\\pi r^2$), one needs roughly $n \\approx \\pi\\sqrt{2\\pi/(3\\varepsilon)}$ sides.",
     "problemStatement": "For a regular polygon with $n$ sides inscribed in a circle of radius $r$, the area is $A_n = \\frac{nr^2}{2}\\sin\\frac{2\\pi}{n}$. Prove the convergence rate: $0 \\leq \\pi r^2 - A_n \\leq \\frac{2\\pi^3 r^2}{3n^2}$ for all $n \\geq 1$ and $r \\geq 0$. Also prove the error is strictly positive for $n \\geq 3$ and $r > 0$.",

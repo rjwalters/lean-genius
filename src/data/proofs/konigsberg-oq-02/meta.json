@@ -52,36 +52,6 @@
       "Euler's theorem for undirected graphs (Wiedijk #53)"
     ]
   },
-  "references": [
-    {
-      "authors": [
-        "Euler, L."
-      ],
-      "title": "Solutio problematis ad geometriam situs pertinentis",
-      "year": "1736",
-      "venue": "Commentarii Academiae Scientiarum Petropolitanae 8, pp. 128–140",
-      "note": "The Seven Bridges of Königsberg, founding paper of graph theory; the even-degree criterion for Eulerian circuits."
-    },
-    {
-      "authors": [
-        "Bondy, J.A.",
-        "Murty, U.S.R."
-      ],
-      "title": "Graph Theory",
-      "year": "2008",
-      "venue": "Graduate Texts in Mathematics 244, Springer",
-      "note": "Eulerian graphs, the in-degree/out-degree characterization and the BEST theorem."
-    },
-    {
-      "authors": [
-        "West, D.B."
-      ],
-      "title": "Introduction to Graph Theory",
-      "year": "2001",
-      "venue": "2nd ed., Prentice-Hall",
-      "note": "Textbook treatment of Eulerian circuits/paths in undirected and directed graphs."
-    }
-  ],
   "conclusion": {
     "summary": "The directed Euler theorem is formalized with 2 axioms for the sufficiency directions. Necessity (balanced degrees → needed for Eulerian circuit/path) is fully proved. 35 theorems, 8 definitions, 813 lines.",
     "implications": "Directed Eulerian path theory is used in computational linguistics (de Bruijn sequences), bioinformatics (genome assembly via de Bruijn graphs), and Chinese Postman Problem algorithms. The formal characterization enables verified routing and traversal algorithms.",

@@ -39,11 +39,10 @@
       }
     ],
     "originalContributions": [
-      "Counting lemma for triangles in epsilon-regular triples",
-      "Triangle removal lemma from regularity + counting",
-      "Quantitative triangle removal with explicit gamma and proper R construction",
-      "General graph removal lemma framework",
-      "Connection between triangle removal and Roth's theorem"
+      "Counting lemma for triangles in epsilon-regular triples (counting_lemma, counting_lemma_lower_bound)",
+      "Quantitative triangle removal lemma with explicit gamma and a proper edge-removal set R satisfying |R| <= delta*n^2 (triangle_removal_quantitative)",
+      "Good/bad vertex decomposition and per-vertex density bounds underlying the counting argument (bad_vertices_small, perVertex_density_bound)",
+      "Regularity bridge exposing Mathlib's szemeredi_regularity as an epsilon-regular Finpartition (regularity_with_finpartition)"
     ],
     "dateAdded": "2026-03-21",
     "axiomCount": 0,
@@ -55,7 +54,7 @@
       "Roth's theorem on 3-term arithmetic progressions"
     ],
     "lineCount": 1230,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "assumptions": "0 axioms, 0 sorries. The core epsilon-regular partition is obtained from Mathlib's szemeredi_regularity theorem (badge: mathlib), not independently proved here; this file builds the triangle counting lemma and the quantitative triangle removal lemma on top of it.",
     "mathlib_version": "4.26.0",
     "theoremCount": 14,
     "definitionCount": 7

@@ -285,6 +285,28 @@ theorem A_le {k : ℕ} {a : Finset ℕ} (hcard : a.card = k) (ha : Admissible a)
     A k ≤ a.sup id :=
   Nat.sInf_le ⟨a, hcard, ha, rfl⟩
 
+/-- **One-step monotonicity.** `A(k) ≤ A(k+1)`: deleting one element from an optimal
+admissible `(k+1)`-set leaves an admissible `k`-set (admissibility passes to subsets,
+`Admissible.subset`) whose largest element is no larger (`Finset.sup_mono`), so its
+diameter — which is `≥ A(k)` — bounds `A(k+1)` from above. -/
+theorem A_le_A_succ (k : ℕ) : A k ≤ A (k + 1) := by
+  obtain ⟨a, hcard, ha, hsup⟩ := A_mem (k + 1)
+  have hne : a.Nonempty := by rw [← Finset.card_pos, hcard]; omega
+  obtain ⟨x, hx⟩ := hne
+  have hsub : a.erase x ⊆ a := fun y hy => Finset.mem_of_mem_erase hy
+  have hcard' : (a.erase x).card = k := by
+    rw [Finset.card_erase_of_mem hx, hcard, Nat.add_sub_cancel]
+  have ha' : Admissible (a.erase x) := ha.subset hsub
+  calc A k ≤ (a.erase x).sup id := A_le hcard' ha'
+    _ ≤ a.sup id := Finset.sup_mono hsub
+    _ = A (k + 1) := hsup
+
+/-- **`A` is monotone.** The minimal-diameter function `A(k)` is non-decreasing in `k`:
+a larger admissible tuple can only need a larger diameter. Immediate from the one-step
+bound `A_le_A_succ`. -/
+theorem A_monotone : Monotone A :=
+  monotone_nat_of_le_succ A_le_A_succ
+
 /-- **Trivial lower bound.** `A(k) ≥ k - 1`, since any `k` distinct naturals have maximum
 at least `k - 1`. -/
 theorem sub_one_le_A (k : ℕ) : k - 1 ≤ A k := by

@@ -34,26 +34,6 @@
       "cumulative_exhaustion_area: reproduces Archimedes' partial sum formula"
     ]
   },
-  "references": [
-    {
-      "authors": "Archimedes (T. L. Heath, ed.)",
-      "title": "The Works of Archimedes: Measurement of a Circle",
-      "year": "1897",
-      "venue": "Cambridge University Press (reprint Dover, 2002)"
-    },
-    {
-      "authors": "Heath, Thomas L.",
-      "title": "A History of Greek Mathematics, Vol. II",
-      "year": "1921",
-      "venue": "Oxford University Press"
-    },
-    {
-      "authors": "Stein, Sherman K.",
-      "title": "Archimedes: What Did He Do Besides Cry Eureka?",
-      "year": "1999",
-      "venue": "Mathematical Association of America"
-    }
-  ],
   "overview": {
     "historicalContext": "In Proposition 21 of the *Quadrature of the Parabola* (c. 250 BCE), Archimedes proved that when a triangle is inscribed in a parabolic segment, the two sub-triangles inscribed in the remaining segments have a total area equal to exactly 1/4 of the original triangle. This 1/4 ratio is the engine of his proof that the parabolic segment area equals 4/3 of the inscribed triangle.\n\nArchimedes' original geometric argument used properties of parabolas (tangent lines, midpoint properties) without coordinates. The coordinate proof — using y = x² and the signed area formula — makes the ratio transparent: the area depends cubically on the interval length, so halving the interval reduces area by 2³ = 8, and two such halves give 2/8 = 1/4.\n\nThis is a companion to the parent proof (AreaOfCircleOQ03OQ03) which proved the geometric series sum 1 + 1/4 + 1/16 + ... = 4/3 but did not prove *why* the ratio is 1/4. This file supplies that missing geometric fact.",
     "problemStatement": "Formalize the sub-triangle area ratios in Archimedes' parabolic exhaustion. Specifically: (1) prove that for y = x², the inscribed triangle at midpoint has area (b-a)³/8; (2) prove each sub-triangle has area (b-a)³/64 = 1/8 of parent; (3) prove two sub-triangles together contribute 1/4 of parent area.",

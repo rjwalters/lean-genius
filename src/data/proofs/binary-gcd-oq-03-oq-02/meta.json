@@ -23,7 +23,7 @@
     "axiomCount": 1,
     "lineCount": 2277,
     "dateAdded": "2026-05-03",
-    "theoremCount": 68,
+    "theoremCount": 67,
     "assumptions": "Depends on the `Lean.ofReduceBool` axiom: several credited theorems are discharged by `native_decide`, including hgcdShift_pos, the S17 counterexample family (hgcdMatrix_130_89_value, hgcdMatrix_130_89_row_alpha, hgcdMatrix_130_89_row_beta, hgcdMatrix_row_alpha_exceeds_max, hgcdMatrix_row_beta_negative, and the column-convention refutation hgcdMatrix_130_89_apply / hgcdMatrix_col_snd_exceeds_max) in BinaryGcdOQ03OQ02.lean and surveyRange_length (S24) in the companion BinaryGcdOQ03OQ02PathA.lean. `native_decide` relies on Lean compiler kernel reduction (`Lean.ofReduceBool`), so these results are not axiom-free. Hence axiomCount = 1; leanFile.axiomCount remains 0 since there are no literal `axiom` declarations. The original file is now 0-sorry (PR #26158 retired the false unconditional row-output bound by restricting `hgcdMatrix_row_output_le` to its true non-recursive regime); status is `axiomatized` solely on account of the `Lean.ofReduceBool` (native_decide) dependency.",
     "mathlibDependencies": [
       {

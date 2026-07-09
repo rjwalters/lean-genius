@@ -53,7 +53,8 @@
       "parityVector_attainsBelow: residue class drops below itself from a certificate v with realized c_k<M, d_k<r; new families reduce to a decidable certificate check (mod16/3 re-derived as validation example)",
       "attainsBelow_density_of_residues (CollatzStructuredOQ02OQ03.lean): general residue-class density floor — for 1≤M and any certified residue set R, |R|·(N-1) ≤ #{n∈[1,M·N] : AttainsBelow n}. Axiom-free.",
       "attainsBelow_density_lower_16_general: re-derives the 13/16 floor from the general lemma; residue count 13 via kernel `decide` (axiom-free), drop hypotheses via omega-checked congruences + Part II lemmas.",
-      "CollatzStructuredOQ02OQ03.autoDropCert_colMin_lt: autoDropCert b r = true & n%2^b=r -> colMin n < n (general Part VII->Part III bridge, VERIFIED, no new axiom/decide)"
+      "CollatzStructuredOQ02OQ03.autoDropCert_colMin_lt: autoDropCert b r = true & n%2^b=r -> colMin n < n (general Part VII->Part III bridge, VERIFIED, no new axiom/decide)",
+      "pow_three_lt_two_pow_of_two_mul_lt / terras_attainsBelow_of_count (CollatzStructuredOQ02OQ03.lean): the Collatz 3/2 heuristic as a purely COMBINATORIAL drop criterion. The arithmetic core proves the count inequality 2*a < b implies the Terras power condition 3^a < 2^b via 3^a ≤ 4^a = 2^(2*a) < 2^b (Nat.pow_le_pow_left + pow_mul + pow_lt_pow_right₀, using only 3 ≤ 4 = 2²; no power evaluated). terras_attainsBelow_of_count wires it into the residue engine: a valid dyadic window with 2*(v.count true) < b (halvings more than double the triplings) certifies AttainsBelow by an omega-checkable count instead of a 3^a<2^b power comparison. Axiom-free, no decide."
     ],
     "insights": [
       "The odd residue class n ≡ 1 (mod 4), n ≥ 5, deterministically drops below itself in 3 Collatz steps: 4m+1 → 12m+4 → 6m+2 → 3m+1, with 3m+1 < 4m+1 iff m ≥ 1. First elementary family exercising the 3n+1 branch (even/powers-of-two only touch the n/2 branch).",
@@ -66,7 +67,8 @@
       "ENGINE: separating the certificate (AffValid: parities forced, checked per step) from the realization (affOrbit_realize: one induction) is what generalizes the chase. The realization needs only that 2*c'*m is recognizably even — omega atomizes (2*c')*m as one nonlinear blob and loses the factor 2, so supply 2*c'*m=2*(c'*m) explicitly. With that, the whole engine is 6 theorems + 1 inductive and a new residue family is a (decidable) certificate, not a bespoke proof.",
       "The four explicit density floors (3/4, 13/16, 7/8, 115/128) all instantiate ONE counting pattern: a finite certified residue set mod M gives lower density |R|/M. Abstracting it removes ~600 lines of per-level pairwise-disjointness bookkeeping.",
       "Disjointness across residue classes collapses to a single injectivity: (r,m) ↦ M·m+r is injective on R ×ˢ [1,N-1] because r<M is exactly the remainder of M·m+r mod M (Nat.add_mul_mod_self_left). No per-pair Disjoint witnesses needed.",
-      "Kernel decide on autoDropCert (deriveVec/affOrbit over Nat with 2^b) is very memory-heavy; the file sits near the kernel memory ceiling, so each added autoDropCert `by decide` risks a deterministic line-less exit 135 (SIGBUS 128+7) independent of build concurrency. Prefer the general colMin bridge lemma over inline decide examples."
+      "Kernel decide on autoDropCert (deriveVec/affOrbit over Nat with 2^b) is very memory-heavy; the file sits near the kernel memory ceiling, so each added autoDropCert `by decide` risks a deterministic line-less exit 135 (SIGBUS 128+7) independent of build concurrency. Prefer the general colMin bridge lemma over inline decide examples.",
+      "The Terras drop condition 3^a < 2^b has a slack combinatorial sufficient form 2*a < b (halvings at least double the triplings), provable with NO power evaluation via 3^a ≤ 4^a = 2^(2a) < 2^b. The integer constant 2 is not sharp (the true threshold is log₂3 ≈ 1.585): the gallery's tightest family 3 (mod 16) has a=2, b=4 with 2·2 = 4 = b failing the strict 2a<b, so its certification still needs the exact 3²=9<16=2^4 power check — but 2a<b removes the power obligation entirely for any window with genuine halving slack, converting terras_attainsBelow's drop hypothesis into an omega goal."
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -96,7 +98,7 @@
     "mathlib": []
   },
   "started": "2026-03-30T18:39:05.245Z",
-  "lastUpdate": "2026-07-08",
+  "lastUpdate": "2026-07-09",
   "leanFiles": [
     {
       "path": "Proofs/CollatzStructured.lean",

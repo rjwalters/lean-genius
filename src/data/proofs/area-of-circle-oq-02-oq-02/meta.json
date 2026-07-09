@@ -55,32 +55,6 @@
     "theoremCount": 14,
     "definitionCount": 1
   },
-  "references": [
-    {
-      "authors": "Smith, David J. and Vamanamurthy, Mavina K.",
-      "title": "How Small Is a Unit Ball?",
-      "year": "1989",
-      "venue": "Mathematics Magazine 62(2), 101–107"
-    },
-    {
-      "authors": "Ball, Keith",
-      "title": "An Elementary Introduction to Modern Convex Geometry",
-      "year": "1997",
-      "venue": "Flavors of Geometry, MSRI Publications 31, Cambridge University Press, 1–58"
-    },
-    {
-      "authors": "Artin, Emil",
-      "title": "The Gamma Function",
-      "year": "1964",
-      "venue": "Holt, Rinehart and Winston (English translation by Michael Butler)"
-    },
-    {
-      "authors": "The mathlib Community",
-      "title": "Real.Gamma and even/odd subsequence bounds; Analysis.SpecialFunctions.Gamma",
-      "year": "2024",
-      "venue": "Mathlib4 (leanprover-community/mathlib4)"
-    }
-  ],
   "overview": {
     "historicalContext": "The volume of the unit ball in n-dimensional Euclidean space, Vₙ = π^(n/2)/Γ(n/2+1), was computed in closed form in the 19th century. One of its most counterintuitive features is its asymptotic behaviour: the sequence V₀ = 1, V₁ = 2, V₂ = π ≈ 3.14, V₃ ≈ 4.19, V₄ ≈ 4.93, V₅ ≈ 5.26 increases up to dimension five, then turns around and decreases to 0. The maximum sits at n = 5 because the ratio Vₙ/Vₙ₋₂ = 2π/n crosses 1 near n = 2π ≈ 6.28. As n grows the Gamma function in the denominator (super-exponential) overwhelms the π^(n/2) in the numerator (exponential), so Vₙ → 0. Geometrically this is the 'concentration of measure' phenomenon: in high dimensions almost all of the volume of the bounding cube [-1,1]ⁿ lies near its corners, and the inscribed ball becomes negligible.",
     "problemStatement": "Prove that the unit n-ball volume Vₙ = π^(n/2)/Γ(n/2+1) converges to 0 as n → ∞, and that the actual Lebesgue measure of the unit ball in EuclideanSpace ℝ (Fin n) does likewise.",

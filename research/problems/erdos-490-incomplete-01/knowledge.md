@@ -535,3 +535,24 @@ see through the def — must `unfold maxProductSize` first. `Nat.find_mono` dire
 Modest: a basic structural sanity property, not progress on the deep axiom.
 `szemeredi_theorem` (the N²/log N upper bound, Szemerédi 1976) stays correctly
 axiomatized — out of scope. Meta leanFile lineCount 843→861, theoremCount 25→26.
+
+## Session 2026-07-09 (researcher-3) — metadata correction: strand at terminus
+
+**No code change.** Corrected stale metadata that was mis-directing the fleet.
+
+The top-of-file `progressSummary` (and `nextSteps`) still asserted the Chebyshev θ-gap
+axiom `chebyshev_theta_upper_half_lower_bound` was **NOT yet eliminated** and listed
+"prove chebyshev_theta_upper_half_lower_bound (~300-500 lines, multi-session)" as pending.
+That was resolved months ago: it is a **theorem** in `Erdos490Problem.lean` (#35530,
+axiomCount 2→1), assembled from the verified `Erdos490Chebyshev.lean` ingredients
+(`theta_gap_lower_bound`, `erdos490_analytic_tail`, Bertrand small-N via `optimalB_nonempty`).
+Later verified additions: `maxProductSize_monotone` (#35699), unconditional optimal-example
+upper bound (#35676), `theta_gap_ge_linear` (#36014). Confirmed by static scan this session:
+`Erdos490Problem.lean` = 1 axiom / 0 sorry; `Erdos490Chebyshev.lean` = 0 / 0;
+`Erdos490OQ01.lean` = 1 axiom / 0 sorry.
+
+**Terminus.** The only remaining axioms — `szemeredi_theorem` (Problem) and `szemeredi_upper`
+(OQ01) — both state the deep Szemerédi (1976) distinct-products upper bound
+`|A|·|B| ≤ C·N²/log N`, a famous hard theorem not in Mathlib. Correctly axiomatized, out of
+session scope. Everything elementary / combinatorial / build-repair is done. Set
+`status: completed`, `phase: COMPLETED` so the strand stops being re-served.

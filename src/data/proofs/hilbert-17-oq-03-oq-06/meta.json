@@ -1,0 +1,228 @@
+{
+  "id": "hilbert-17-oq-03-oq-06",
+  "title": "Hilbert's 17th, Constructively: An Explicit Rational SOS Certificate for the Robinson Form",
+  "slug": "hilbert-17-oq-03-oq-06",
+  "description": "Hilbert's 17th problem asks whether every nonnegative real polynomial is a sum of squares of rational functions; Artin's affirmative answer is necessarily axiomatized in the parent entry (artin_hilbert17). The Robinson form R = x⁶ + y⁶ + z⁶ − x⁴y² − y⁴z² − z⁴x² − x²y⁴ − y²z⁴ − z²x⁴ + 3x²y²z² is the classical ternary-sextic counterpart of the Motzkin polynomial: nonnegative everywhere (Schur's inequality) yet not a sum of squares of polynomials (already machine-checked in the parent). What was missing is the explicit positive witness: a fully machine-checked certificate that Robinson IS a sum of squares of rational functions. This entry supplies it, with 0 axioms, mirroring the Motzkin rational-SOS entry (hilbert-17-oq-03-oq-01). The heart is one integer-coefficient polynomial identity (an SOS Positivstellensatz certificate): (4x² + 4y² + 4z²)·R = (2x⁴ − x²y² − x²z² − y⁴ + 2y²z² − z⁴)² + (y⁴ − z⁴ − x²y² + x²z²)² (three copies) + (2x³y − 2xy³)² + (2y³z − 2yz³)² + (2xz³ − 2x³z)², closed by ring. The multiplier 4x² + 4y² + 4z² = (2x)² + (2y)² + (2z)² is itself a sum of squares, so dividing through in the field of rational functions ℝ(x,y,z) and using that a product of two sums of squares is a sum of squares yields R = Σ (rational function)² — Artin's theorem made constructive for the second canonical example. The certificate was found by solving the associated semidefinite Gram-matrix feasibility problem; after the substitution u = x², v = y², w = z² the identity splits by symmetry into a rank-2 'even' block (2q₁ − q₂)² + 3q₂² and three rank-1 'odd' blocks (2·xy(x²−y²))² and its cyclic images.",
+  "meta": {
+    "author": "lean-genius researcher",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Hilbert%27s_seventeenth_problem",
+    "date": "2026-07-09",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Hilbert17RobinsonRationalSOS.lean",
+    "tags": [
+      "real-algebraic-geometry",
+      "sum-of-squares",
+      "hilbert-17",
+      "robinson-form",
+      "positivstellensatz",
+      "rational-functions",
+      "semidefinite-programming",
+      "constructive",
+      "multivariate-polynomials",
+      "artin-theorem"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-07-09",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "IsFractionRing.injective",
+        "description": "The map from a domain into its fraction field is injective — used to lift multiplier ≠ 0 in ℝ[x,y,z] to its image ≠ 0 in ℝ(x,y,z), validating the division step.",
+        "module": "Mathlib.RingTheory.Localization.FractionRing"
+      },
+      {
+        "theorem": "Fintype.sum_prod_type",
+        "description": "∑ over A × B equals the iterated sum ∑ₐ ∑ᵇ — organizes the 21 = 7×3 rational-function squares qᵢ·dⱼ/D as a product index.",
+        "module": "Mathlib.Algebra.BigOperators.Basic"
+      },
+      {
+        "theorem": "finProdFinEquiv",
+        "description": "The equivalence Fin m × Fin n ≃ Fin (m·n) — reindexes the Fin 7 × Fin 3 family of rational-function squares as a single Fin 21 family for the IsSumOfSquaresRF witness.",
+        "module": "Mathlib.Logic.Equiv.Fin"
+      },
+      {
+        "theorem": "Finset.sum_div",
+        "description": "(∑ aᵢ)/c = ∑ (aᵢ/c) — pulls the common denominator D² out of the sum of rational-function squares.",
+        "module": "Mathlib.Algebra.BigOperators.Field"
+      },
+      {
+        "theorem": "MvPolynomial.eval",
+        "description": "Evaluation of a multivariate polynomial — evaluating the multiplier at (1,0,0) gives 4 ≠ 0, proving multiplier ≠ 0.",
+        "module": "Mathlib.Algebra.MvPolynomial.Eval"
+      }
+    ],
+    "originalContributions": [
+      "multiplier_mul_robinson_eq: an explicit integer-coefficient SOS Positivstellensatz certificate (4x²+4y²+4z²)·R = Q1² + 3·Q2² + Ga² + Gb² + Gc², closed entirely by ring.",
+      "robinson_isSOS_ratFunc: the fully machine-checked, 0-axiom proof that the Robinson form is a sum of squares of rational functions — Artin's theorem realized constructively for the second canonical extremal example, replacing the parent's existence axiom artin_hilbert17 for this R.",
+      "The SOS multiplier and its square decomposition were obtained by solving the semidefinite Gram-matrix feasibility problem (alternating projection onto the affine constraint set and the PSD cone), then reduced to an exact rational certificate via the symmetry substitution u=x², v=y², w=z²: the even block factors as (2q₁−q₂)² + 3q₂² and the three odd blocks are the cyclic squares 2·xy(x²−y²).",
+      "Uses the elementary identity that a product of two sums of squares is a sum of squares ((∑aᵢ²)(∑bⱼ²) = ∑ᵢⱼ(aᵢbⱼ)²) together with the multiplier being SOS to convert the polynomial certificate into a rational-function SOS.",
+      "Discharges the open question raised by the Motzkin rational-SOS entry (hilbert-17-oq-03-oq-01): 'Generalize the SDP-certificate pipeline to the Robinson form.'"
+    ],
+    "axiomCount": 0,
+    "prerequisites": [
+      "Hilbert's 17th problem and Artin's theorem (nonnegative ⇒ SOS of rational functions).",
+      "The Robinson form as a canonical PSD-but-not-polynomial-SOS ternary sextic.",
+      "Sums of squares, the SOS cone, and SOS/SDP duality (Gram-matrix method).",
+      "Fraction field of a polynomial ring (ℝ(x,y,z) = FractionRing ℝ[x,y,z])."
+    ],
+    "lineCount": 191,
+    "relatedProblems": [
+      {
+        "id": "hilbert-17",
+        "relationship": "Parent: states Artin's theorem (axiomatized as artin_hilbert17) and proves that Robinson is not a polynomial SOS (robinson_not_sos). This entry discharges the positive side concretely for Robinson."
+      },
+      {
+        "id": "hilbert-17-oq-03-oq-01",
+        "relationship": "Sibling: the same construction for the Motzkin polynomial. This entry answers that entry's stated open question by extending the SDP-certificate pipeline to the Robinson ternary sextic."
+      },
+      {
+        "id": "hilbert-17-oq-01",
+        "relationship": "Sibling: the Pfister bound on the number of squares needed (2ⁿ). Here the rational-function representation of Robinson (n=3) uses 21 = 7×3 squares (un-optimized; the Pfister bound is 8)."
+      }
+    ],
+    "assumptions": "0 axioms. #print axioms reports only propext, Classical.choice, Quot.sound for every result, including robinson_isSOS_ratFunc. No sorryAx, no native_decide / Lean.ofReduceBool. The Robinson form is defined identically to the parent entry Hilbert17SumOfSquares.lean.",
+    "theoremCount": 7,
+    "definitionCount": 13,
+    "additionalFiles": []
+  },
+  "leanFile": {
+    "lineCount": 191,
+    "namespace": "Hilbert17RobinsonRationalSOS",
+    "opens": [
+      "MvPolynomial"
+    ],
+    "structureCount": 0,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "substantiveTheoremCount": 4,
+    "computationalVerifications": 0,
+    "lemmaCount": 0,
+    "imports": [
+      "Mathlib"
+    ],
+    "path": "Proofs/Hilbert17RobinsonRationalSOS.lean",
+    "sorries": 0,
+    "definitionCount": 13,
+    "additionalFiles": []
+  },
+  "sorries": 0,
+  "mainTheorems": [
+    {
+      "name": "multiplier_mul_robinson_eq",
+      "type": "theorem",
+      "description": "The SOS Positivstellensatz certificate: (4x²+4y²+4z²)·R = Q1² + Q2² + Q2² + Q2² + Ga² + Gb² + Gc² with integer-coefficient generators. Closed by ring.",
+      "leanType": "multiplier * robinson = Q1^2 + Q2^2 + Q2^2 + Q2^2 + Ga^2 + Gb^2 + Gc^2"
+    },
+    {
+      "name": "robinson_mul_isSumOfSquares",
+      "type": "theorem",
+      "description": "(4x²+4y²+4z²)·R is a sum of squares of polynomials (seven squares).",
+      "leanType": "IsSumOfSquaresMv (multiplier * robinson)"
+    },
+    {
+      "name": "multiplier_isSumOfSquares",
+      "type": "theorem",
+      "description": "The multiplier 4x²+4y²+4z² = (2x)²+(2y)²+(2z)² is itself a sum of squares.",
+      "leanType": "IsSumOfSquaresMv multiplier"
+    },
+    {
+      "name": "robinson_isSOS_ratFunc",
+      "type": "theorem",
+      "description": "Hilbert's 17th problem, constructively, for Robinson: R is a sum of squares of rational functions, R = Σ (qᵢ·dⱼ / (4x²+4y²+4z²))². The explicit 0-axiom witness for the second canonical example underlying the axiomatized general theorem artin_hilbert17.",
+      "leanType": "IsSumOfSquaresRF (toRF robinson)"
+    },
+    {
+      "name": "product_identity",
+      "type": "theorem",
+      "description": "The 21-term polynomial product identity Σ_{i<7,j<3} (qᵢ·dⱼ)² = ((4x²+4y²+4z²)·R)·(4x²+4y²+4z²), the bridge from the polynomial certificate to the rational-function representation.",
+      "leanType": "∑ p : Fin 7 × Fin 3, (qv p.1 * dv p.2)^2 = (multiplier * robinson) * multiplier"
+    }
+  ],
+  "overview": {
+    "historicalContext": "Hilbert's 17th problem (1900) asked whether every real polynomial that is nonnegative everywhere can be written as a sum of squares of rational functions. Emil Artin answered yes in 1927, using the theory of formally real / real-closed fields. The necessity of rational functions — rather than polynomials — is shown by explicit counterexamples. Beyond the bivariate Motzkin polynomial, the classical ternary example is the Robinson form R(x,y,z) = x⁶ + y⁶ + z⁶ − x⁴y² − y⁴z² − z⁴x² − x²y⁴ − y²z⁴ − z²x⁴ + 3x²y²z² (R. M. Robinson, 1969), a symmetric sextic that is nonnegative (it equals Schur's expression a(a−b)(a−c) + b(b−a)(b−c) + c(c−a)(c−b) with a=x², b=y², c=z²) yet is provably not a sum of squares of polynomials. The parent gallery entry hilbert-17 states Artin's theorem as an axiom and proves the Robinson non-polynomial-SOS fact; this entry supplies the missing positive, constructive content for Robinson.",
+    "problemStatement": "Exhibit and machine-check an explicit witness that the Robinson form R = x⁶ + y⁶ + z⁶ − x⁴y² − y⁴z² − z⁴x² − x²y⁴ − y²z⁴ − z²x⁴ + 3x²y²z² is a sum of squares of rational functions in $\\mathbb{R}(x,y,z)$, i.e. $R = \\sum_i g_i^2$ with each $g_i \\in \\mathbb{R}(x,y,z)$, with $0$ axioms. This is Artin's theorem made constructive for the second canonical instance known to fail polynomial SOS, replacing the parent entry's existence axiom $\\texttt{artin\\_hilbert17}$ for this $R$.",
+    "proofStrategy": "The core is a single integer-coefficient SOS Positivstellensatz certificate, closed entirely by $\\texttt{ring}$: the multiplier $4x^2 + 4y^2 + 4z^2$ times $R$ equals a sum of seven polynomial squares, $(2x^4 - x^2y^2 - x^2z^2 - y^4 + 2y^2z^2 - z^4)^2 + (y^4 - z^4 - x^2y^2 + x^2z^2)^2$ (three copies) $+ (2x^3y - 2xy^3)^2 + (2y^3z - 2yz^3)^2 + (2xz^3 - 2x^3z)^2$. The multiplier itself is a sum of squares, $4x^2 + 4y^2 + 4z^2 = (2x)^2 + (2y)^2 + (2z)^2$. Working in the fraction field $\\mathbb{R}(x,y,z) = \\mathrm{FractionRing}\\,\\mathbb{R}[x,y,z]$, one shows the multiplier is nonzero (evaluate at $(1,0,0)$ to get $4$) and its image in $\\mathbb{R}(x,y,z)$ is nonzero (using $\\texttt{IsFractionRing.injective}$). Then, using that a product of two sums of squares is a sum of squares — $(\\sum a_i^2)(\\sum b_j^2) = \\sum_{i,j}(a_ib_j)^2$ — the $7$-square certificate for $(\\text{multiplier})\\cdot R$ and the $3$-square certificate for the multiplier combine into a $21$-term polynomial identity $\\sum_{i<7,j<3}(q_i d_j)^2 = (\\text{multiplier}\\cdot R)\\cdot\\text{multiplier}$. Dividing by $\\text{multiplier}^2$ in the field and reindexing $\\mathrm{Fin}\\,7 \\times \\mathrm{Fin}\\,3 \\simeq \\mathrm{Fin}\\,21$ yields $R = \\sum_{i,j}(q_i d_j / (4x^2+4y^2+4z^2))^2$, a sum of $21$ squares of rational functions. The certificate was discovered by solving the semidefinite Gram-matrix feasibility problem numerically and then, exploiting the $S_3\\times(\\mathbb{Z}/2)^3$ symmetry via the substitution $u=x^2, v=y^2, w=z^2$, reducing to an exact rational boundary Gram factorization: a rank-2 even block $(2q_1-q_2)^2 + 3q_2^2$ plus three rank-1 odd blocks.",
+    "keyInsights": [
+      "Rational functions are genuinely necessary: the Robinson form is nonnegative everywhere yet is not a sum of squares of polynomials, so a polynomial SOS witness cannot exist — only the rational-function representation succeeds, which is exactly what makes Hilbert's 17th problem deeper than the polynomial case.",
+      "The whole construction reduces to one integer-coefficient polynomial identity that Lean closes by $\\texttt{ring}$: $(4x^2+4y^2+4z^2)\\cdot R = Q_1^2 + 3Q_2^2 + G_a^2 + G_b^2 + G_c^2$. Because the identity is over a known finite set of monomials with integer coefficients, verification is purely algebraic.",
+      "The symmetry substitution $u=x^2,\\,v=y^2,\\,w=z^2$ turns the ternary-sextic SDP into a symmetric quartic feasibility problem in $u,v,w$ whose solution splits into a rank-2 'even' block $(2q_1-q_2)^2 + 3q_2^2$ and three rank-1 'odd' blocks $uv(u-v)^2$ (and cyclic) $= (xy(x^2-y^2))^2$ — turning a boundary Gram matrix into an exact, small, rational certificate.",
+      "The auxiliary multiplier must itself be a sum of squares for the argument to work: $4x^2 + 4y^2 + 4z^2 = (2x)^2 + (2y)^2 + (2z)^2$. Combined with the product-of-SOS-is-SOS identity, this converts the polynomial certificate into a genuine rational-function SOS after dividing by the multiplier.",
+      "The result is $0$-axiom: $\\#\\texttt{print axioms}$ on $\\texttt{robinson\\_isSOS\\_ratFunc}$ reports only $\\texttt{propext}$, $\\texttt{Classical.choice}$, $\\texttt{Quot.sound}$ — no $\\texttt{sorryAx}$ and no $\\texttt{native\\_decide}$/$\\texttt{Lean.ofReduceBool}$ — so it replaces the parent's existence axiom $\\texttt{artin\\_hilbert17}$ for this $R$ with a fully machine-checked witness. The $21 = 7\\times 3$ squares are un-optimized; the Pfister bound for $n=3$ is $8$."
+    ]
+  },
+  "conclusion": {
+    "summary": "A 191-line, 0-sorry, 0-axiom formalization giving an explicit, machine-checked rational sum-of-squares certificate for the Robinson form: the constructive, positive side of Hilbert's 17th problem for the classical ternary-sextic example, complementing the parent's axiomatized general Artin theorem and mirroring the Motzkin rational-SOS entry.",
+    "implications": "Where the parent only asserts existence of a rational SOS (artin_hilbert17 as an axiom), this entry exhibits one for Robinson and verifies it with 0 axioms. It answers the Motzkin entry's stated open question of extending the SDP-certificate pipeline to the Robinson form, and demonstrates that a symmetry substitution (u=x², v=y², w=z²) reduces a boundary ternary-sextic SDP to an exact small rational Gram factorization.",
+    "openQuestions": [
+      "Minimize the number of rational-function squares: the construction uses 21 = 7×3; the Pfister bound for n=3 is 8, and the true minimum for Robinson over ℝ(x,y,z) could be certified directly.",
+      "Abstract a reusable 'symmetric SDP → exact rational SOS' pipeline (substitute squares of the variables, split by the sign-symmetry parity blocks, factor each block over ℚ) applicable to other extremal symmetric forms.",
+      "Certify a common multiplier / uniform denominator across the Motzkin and Robinson certificates, or a single template covering both bivariate and ternary extremal forms."
+    ]
+  },
+  "references": [
+    {
+      "title": "Hilbert's seventeenth problem — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Hilbert%27s_seventeenth_problem"
+    },
+    {
+      "title": "Positive polynomial (Robinson form) — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Positive_polynomial"
+    },
+    {
+      "title": "B. Reznick, Some concrete aspects of Hilbert's 17th problem (1996)",
+      "url": "https://www.ams.org/books/conm/253/"
+    },
+    {
+      "title": "Artin, Über die Zerlegung definiter Funktionen in Quadrate (1927)",
+      "url": "https://link.springer.com/article/10.1007/BF02952513"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "hilbert-17",
+      "relationship": "extends",
+      "description": "Parent: states Artin's theorem (every nonnegative real polynomial is a sum of squares of rational functions) but must axiomatize it, while proving that Robinson is not a polynomial SOS. This entry replaces the existence axiom artin_hilbert17 with an explicit, machine-checked rational SOS certificate for the Robinson form R."
+    },
+    {
+      "targetId": "hilbert-17-oq-03-oq-01",
+      "relationship": "complements",
+      "description": "The analogous constructive rational-SOS certificate for the Motzkin polynomial. Together the two entries realize Artin's theorem for both canonical extremal examples — the bivariate Motzkin form and the ternary Robinson form — and this entry answers that one's open question of generalizing the SDP-certificate pipeline to Robinson."
+    },
+    {
+      "targetId": "hilbert-17-oq-01",
+      "relationship": "relates",
+      "description": "Pfister's theorem bounds the number of rational-function squares needed to represent a nonnegative form in n variables by 2ⁿ. For Robinson (n=3) that bound is 8, whereas the un-optimized certificate here uses 21 = 7×3 squares — quantifying the gap between this explicit witness and the theoretical minimum, and framing the entry's first open question."
+    }
+  ],
+  "sections": [
+    {
+      "id": "preamble",
+      "title": "Overview: the certificate stated up front",
+      "startLine": 1,
+      "endLine": 59,
+      "summary": "The module docstring frames the goal against the parent entry hilbert-17: Artin's general theorem (nonnegative ⇒ SOS of rational functions) must be axiomatized there, and the parent machine-checks that Robinson is not a polynomial SOS. This file supplies the missing positive side — the explicit 0-axiom rational-SOS certificate — and states it up front: (4x²+4y²+4z²)·R equals a sum of seven polynomial squares, the multiplier is itself SOS, and dividing through in ℝ(x,y,z) gives R = Σ(rational function)². Closes with `import Mathlib`, the namespace, and `open MvPolynomial`."
+    },
+    {
+      "id": "definitions",
+      "title": "Robinson, the multiplier, and the SOS predicates",
+      "startLine": 60,
+      "endLine": 113,
+      "summary": "robinson = x⁶ + y⁶ + z⁶ − x⁴y² − y⁴z² − z⁴x² − x²y⁴ − y²z⁴ − z²x⁴ + 3x²y²z² (defined identically to the parent entry); multiplier = 4x² + 4y² + 4z²; the polynomial- and rational-function- sum-of-squares predicates IsSumOfSquaresMv and IsSumOfSquaresRF over ℝ(x,y,z) = FractionRing ℝ[x,y,z]; and the integer-coefficient generators Q1, Q2, Ga, Gb, Gc and the witness vectors qv (seven roots) and dv (three roots of the multiplier)."
+    },
+    {
+      "id": "certificate",
+      "title": "The polynomial SOS certificate",
+      "startLine": 115,
+      "endLine": 137,
+      "summary": "multiplier_mul_robinson_eq is the integer-coefficient identity (4x²+4y²+4z²)·R = Q1² + 3Q2² + Ga² + Gb² + Gc², closed by ring; robinson_mul_isSumOfSquares packages it as IsSumOfSquaresMv, and multiplier_isSumOfSquares shows the multiplier is (2x)²+(2y)²+(2z)²."
+    },
+    {
+      "id": "rational-corollary",
+      "title": "Artin for Robinson, constructively",
+      "startLine": 139,
+      "endLine": 191,
+      "summary": "multiplier_ne_zero / toRF_multiplier_ne_zero validate division by the multiplier in ℝ(x,y,z); product_identity is the 21-term polynomial identity Σ(qᵢdⱼ)² = (multiplier·R)·multiplier; robinson_isSOS_ratFunc divides through and reindexes Fin 7 × Fin 3 ≃ Fin 21 to conclude R = Σ (qᵢdⱼ/multiplier)², a sum of squares of rational functions."
+    }
+  ]
+}

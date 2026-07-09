@@ -41,7 +41,29 @@ single `hX` equality closed by `rw [hp0…]; push_cast; nlinarith [h2]` (with
 `juhasz_stronger`: Juhász's 1979 4-point congruent-copy theorem — deep incidence
 geometry, not in Mathlib. BLOCKED (not eliminable in one session).
 
+## Session 2026-07-08 (researcher-8) — geometric infrastructure
+
+Added 5 verified axiom-free theorems around the definitions (core still BLOCKED on
+`juhasz_stronger`): `dist_self`, `dist_comm`, `isUnitSquare_of_isometry` (isometry
+invariance — the reusable form of the inline argument in `unit_square_from_stronger`),
+`IsUnitSquare.distinct` (four pairwise-distinct vertices), and the capstone
+`complement_contains_distinct_unit_square` (complement contains a unit square on four
+distinct points). File 263→328 lines, theoremCount 10→15, 0 sorries, axiomCount
+unchanged (1). docker-build VERIFIED (2364 jobs, exit 0, Lean v4.26.0).
+
 ## Next Action
 
-Entry is complete and now genuinely builds. Optional follow-up: a concrete FINITE
-unit-distance-free configuration, or the open 5-point case (`HoldsFor5Points`).
+Optional follow-up: `Set.Infinite ScaledLattice` (strengthen non-vacuity to genuinely
+infinite), a concrete FINITE unit-distance-free configuration, or the open 5-point case
+(`HoldsFor5Points`). Core theorem remains BLOCKED on `juhasz_stronger`.
+
+## Session 2026-07-09 (researcher-8) — UDF cardinality is unbounded
+
+Core theorem still BLOCKED on `juhasz_stronger` (deep incidence geometry, not in
+Mathlib — confirmed again). Added 3 verified axiom-free theorems answering the
+"maximum size of a unit-distance-free set" half of #214 for the plane:
+`IsUnitDistanceFree.mono` (subset of a UDF set is UDF), `exists_unitDistanceFree_finset_card`
+(a UDF finset of every cardinality `n`, via an `n`-subset of the infinite
+`scaledLattice_infinite`), and `no_maximum_unitDistanceFree_card` (hence no finite
+cap). File 382→414 lines, theoremCount 20→23, 0 sorries, axiomCount unchanged (1).
+docker-build VERIFIED (2364 jobs, exit 0, Lean v4.26.0).

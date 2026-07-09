@@ -3,38 +3,6 @@
   "title": "Vandermonde's Identity: Combinatorial Bijection Proof",
   "slug": "binomial-theorem-oq-04-oq-01",
   "description": "Proves Vandermonde's convolution identity C(m+n,r) = Σ_k C(m,k)·C(n,r-k) via an explicit bijection rather than algebraic/generating function methods. Constructs the bijection between r-subsets of {0,...,m+n-1} and pairs (k-subsets of {0,...,m-1}) × ((r-k)-subsets of {0,...,n-1}), using a 'split by threshold m' map. Proves forward and inverse maps and bijectivity. 14 theorems, 4 definitions, 0 axioms.",
-  "references": [
-    {
-      "authors": "Zhu Shijie (Chu Shih-Chieh)",
-      "title": "Siyuan yujian (Jade Mirror of the Four Unknowns)",
-      "year": 1303,
-      "note": "Earliest known statement of the convolution now called the Chu–Vandermonde identity."
-    },
-    {
-      "authors": "Alexandre-Théophile Vandermonde",
-      "title": "Mémoire sur des irrationnelles de différents ordres (Hist. Acad. Roy. Sci.)",
-      "year": 1772,
-      "note": "The European statement of the convolution C(m+n,r)=Σ C(m,k)C(n,r−k)."
-    },
-    {
-      "authors": "Richard P. Stanley",
-      "title": "Enumerative Combinatorics, Volume 1 (2nd ed.)",
-      "year": 2011,
-      "note": "Cambridge University Press. Bijective proofs of binomial convolutions, the method used in this entry."
-    },
-    {
-      "authors": "Ronald L. Graham, Donald E. Knuth and Oren Patashnik",
-      "title": "Concrete Mathematics (2nd ed.)",
-      "year": 1994,
-      "note": "Addison-Wesley. §5.1 develops Vandermonde's convolution and its combinatorial meaning."
-    },
-    {
-      "authors": "The mathlib Community",
-      "title": "Mathlib4: Finset.card and explicit bijection (Equiv) infrastructure",
-      "year": 2024,
-      "note": "Finset cardinality and bijection lemmas supporting the split-by-threshold-m map."
-    }
-  ],
   "meta": {
     "author": "Lean Genius",
     "date": "2026-02-15",
@@ -59,8 +27,8 @@
       "lowPart: filter elements below threshold m",
       "highPart: filter elements ≥ m, then shift down by m",
       "merge: combine low-part A and shifted B into A ∪ shift(B)",
-      "split_merge_inverse: split and merge are mutually inverse",
-      "vandermonde_bijective_proof: C(m+n,r) = Σ_k C(m,k)·C(n,r-k) via explicit bijection"
+      "merge_lowPart_highPart: split and merge are mutually inverse",
+      "vandermonde_combinatorial: C(m+n,r) = Σ_k C(m,k)·C(n,r-k) via explicit bijection"
     ]
   },
   "overview": {

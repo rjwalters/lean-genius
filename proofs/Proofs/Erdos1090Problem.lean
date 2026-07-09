@@ -26,6 +26,7 @@ References:
 
 import Mathlib.Analysis.InnerProductSpace.EuclideanDist
 import Mathlib.Analysis.InnerProductSpace.PiL2
+import Mathlib.Analysis.Convex.Radon
 import Mathlib.Combinatorics.HalesJewett
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Finset.Basic
@@ -532,6 +533,79 @@ theorem ramseyNumber_mono {k k' : ℕ} (hk' : 3 ≤ k') (hkk : k' ≤ k) :
   refine Nat.sInf_le ⟨A, ?_, hasRamseyProperty_antitone hkk hA⟩
   simpa [ramseyNumber] using hcard
 
+/--
+**Upper bound from any witness.**
+Any finite set `A` that has the Ramsey property for `k` bounds the Ramsey number
+from above: `R(k) ≤ |A|`.  This is the upper-bound companion of
+`ramsey_lower_bound` — `A.card` lies in the set whose infimum defines `R(k)`, so
+`Nat.sInf_le` applies.  Every explicit construction (e.g. the Hales–Jewett set of
+`hunter_observation`) turns into a concrete bound on `R(k)` through this lemma.
+-/
+theorem ramseyNumber_le_of_hasRamseyProperty {A : Finset Point} {k : ℕ}
+    (hA : HasRamseyProperty A k) : ramseyNumber k ≤ A.card :=
+  Nat.sInf_le ⟨A, rfl, hA⟩
+
+/--
+**The Ramsey number is an attained minimum.**
+For `k ≥ 3` the defining set is nonempty (`hunter_observation` supplies a witness),
+so the infimum `R(k)` is *realized* by an actual optimal configuration: there is a
+finite `A` with `|A| = R(k)` that already has the Ramsey property.  Together with
+`ramsey_lower_bound` (`R(k) ≥ k`) this pins `R(k)` down as a genuine minimum rather
+than a mere infimum, and exhibits the extremal set attaining it.
+-/
+theorem exists_hasRamseyProperty_card_eq_ramseyNumber (k : ℕ) (hk : k ≥ 3) :
+    ∃ A : Finset Point, A.card = ramseyNumber k ∧ HasRamseyProperty A k := by
+  have hne : {n : ℕ | ∃ A : Finset Point, A.card = n ∧ HasRamseyProperty A k}.Nonempty := by
+    obtain ⟨A, hA⟩ := hunter_observation k hk
+    exact ⟨A.card, A, rfl, hA⟩
+  obtain ⟨A, hcard, hA⟩ := Nat.sInf_mem hne
+  exact ⟨A, hcard, hA⟩
+
+/-- The plane `ℝ²` is infinite: `t ↦ (t, 0)` (via `EuclideanSpace.single`) injects `ℝ`. -/
+instance : Infinite Point :=
+  Infinite.of_injective (fun a : ℝ => EuclideanSpace.single (0 : Fin 2) a) (fun a b h => by
+    have hb : EuclideanSpace.single (0 : Fin 2) a = EuclideanSpace.single (0 : Fin 2) b := h
+    have h0 : (EuclideanSpace.single (0 : Fin 2) a) 0
+            = (EuclideanSpace.single (0 : Fin 2) b) 0 := by rw [hb]
+    simpa [EuclideanSpace.single_apply] using h0)
+
+/--
+**Every size above `R(k)` is realizable.**
+For `k ≥ 3` and any `n ≥ R(k)` there is a configuration of *exactly* `n` points with the
+Ramsey property.  Take the extremal witness of size `R(k)`
+(`exists_hasRamseyProperty_card_eq_ramseyNumber`) and pad it with fresh plane points, one at
+a time: the plane is infinite, so a point outside the current set always exists, and enlarging
+preserves the Ramsey property (`hasRamseyProperty_mono`).  Thus the property is not a knife-edge
+phenomenon at the threshold — it persists for all larger cardinalities.
+-/
+theorem exists_hasRamseyProperty_card_eq {k : ℕ} (hk : k ≥ 3) {n : ℕ}
+    (hn : ramseyNumber k ≤ n) :
+    ∃ A : Finset Point, A.card = n ∧ HasRamseyProperty A k := by
+  obtain ⟨A, hAcard, hA⟩ := exists_hasRamseyProperty_card_eq_ramseyNumber k hk
+  have hAn : A.card ≤ n := hAcard ▸ hn
+  clear hAcard hn
+  induction n, hAn using Nat.le_induction with
+  | base => exact ⟨A, rfl, hA⟩
+  | succ m _ ih =>
+    obtain ⟨B, hBcard, hB⟩ := ih
+    obtain ⟨p, hp⟩ := Infinite.exists_notMem_finset B
+    exact ⟨insert p B, by rw [Finset.card_insert_of_notMem hp, hBcard],
+      hasRamseyProperty_mono (Finset.subset_insert p B) hB⟩
+
+/--
+**Realizable cardinalities are exactly the ray `[R(k), ∞)`.**
+For `k ≥ 3`, a finite point set of size `n` with the Ramsey property exists *iff* `R(k) ≤ n`.
+The forward direction is `ramseyNumber_le_of_hasRamseyProperty` (any witness bounds the infimum
+from above); the reverse is the padding argument `exists_hasRamseyProperty_card_eq`.  This pins
+down the realizable-size set completely: it is the full up-set above the threshold, with no gaps.
+-/
+theorem hasRamseyProperty_realizable_card_iff {k : ℕ} (hk : k ≥ 3) (n : ℕ) :
+    (∃ A : Finset Point, A.card = n ∧ HasRamseyProperty A k) ↔ ramseyNumber k ≤ n := by
+  constructor
+  · rintro ⟨A, hcard, hA⟩
+    exact hcard ▸ ramseyNumber_le_of_hasRamseyProperty hA
+  · exact exists_hasRamseyProperty_card_eq hk
+
 /-
 **R(3) is Small:**
 The k = 3 case can be achieved with a small set of points.
@@ -564,6 +638,31 @@ def HellyProperty (d : ℕ) : Prop :=
     (∀ S ∈ F, Convex ℝ S) →
     (∀ G : Finset (Set Point), G ⊆ F → G.card = d + 1 → (⋂ S ∈ G, S).Nonempty) →
     (⋂ S ∈ F, S).Nonempty
+
+/-- **Helly's theorem in the plane — affirmative.**  `HellyProperty 2` holds for
+`Point = ℝ²`: any finite family `F` of at least `3` convex sets in the plane in which
+every `3`-element subfamily has a common point has a point common to *all* of `F`.
+
+This is exactly Mathlib's `Convex.helly_theorem_set` specialised to
+`Module.finrank ℝ ℝ² = 2`, so the placeholder threshold `d + 1 = 3` is the classical
+planar Helly number.  Note the ambient space is fixed to the plane, so `d = 2`
+(`= finrank ℝ Point`) is the *only* honest instance of the abstract `HellyProperty d`
+defined above: for `d < 2` pairwise/triple intersection is too weak to force a common
+point, and for `d > 2` the `(d+1)`-wise hypothesis is not what Helly consumes. -/
+theorem helly_planar : HellyProperty 2 := by
+  intro F hcard hconv hinter
+  have hfr : Module.finrank ℝ Point = 2 := by simp [Point]
+  -- Bridge the entry's `⋂ S ∈ F, S` notation to Mathlib's `⋂₀ (F : Set _)`.
+  have hbF : (⋂ S ∈ F, S) = ⋂₀ (F : Set (Set Point)) := by ext x; simp
+  rw [hbF]
+  refine Convex.helly_theorem_set (𝕜 := ℝ) ?_ hconv ?_
+  · -- `finrank + 1 ≤ #F` is exactly the `F.card ≥ 2 + 1` hypothesis.
+    rw [hfr]; exact hcard
+  · -- Every `(finrank + 1) = 3`-subfamily meets, from the entry-shaped `hinter`.
+    intro G hG hGcard
+    have hbG : (⋂₀ (G : Set (Set Point))) = ⋂ S ∈ G, S := by ext x; simp
+    rw [hbG]
+    exact hinter G hG (by rw [hfr] at hGcard; exact hGcard)
 
 /-
 ## Part X: Generalizations

@@ -4,6 +4,25 @@
   "slug": "kroneckers-jugendtraum-oq-02",
   "description": "When a number field has unit rank 1 — the setting of the rank-one abelian Stark conjecture — its regulator collapses from an (r×r) determinant to a single archimedean logarithm of the fundamental (Stark) unit.",
   "proofRepoPath": "Proofs/KroneckersJugendtraumStarkRankOne.lean",
+  "leanFile": {
+    "path": "Proofs/KroneckersJugendtraumStarkRankOne.lean",
+    "imports": [
+      "Mathlib.NumberTheory.NumberField.Units.Regulator",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "NumberField",
+      "NumberField.Units",
+      "NumberField.InfinitePlace",
+      "scoped NumberField"
+    ],
+    "namespace": "KroneckersJugendtraumStarkRankOne",
+    "lineCount": 79,
+    "axiomCount": 0,
+    "theoremCount": 2,
+    "definitionCount": 0,
+    "sorries": 0
+  },
   "meta": {
     "author": "researcher-1",
     "date": "2026-06-25",
@@ -78,7 +97,8 @@
       "The rank-one Stark hypothesis is the geometric condition #(InfinitePlace K) = 2, not a property of any single L-function.",
       "Mathlib's regulator is defined as a lattice covolume / determinant of logarithms; the rank-one case is exactly where this determinant is 1×1 and equals a single logarithm.",
       "The witness unit ε is the unique generator of the unit group modulo torsion (fundSystem K), i.e. the fundamental unit — which is the Stark unit (up to roots of unity and sign) in the rank-one abelian setting.",
-      "This formalizes the linear-algebra collapse that makes 'L'(0,χ) is one logarithm of one unit' a meaningful statement; it does not address the open problem of computing that unit effectively."
+      "This formalizes the linear-algebra collapse that makes 'L'(0,χ) is one logarithm of one unit' a meaningful statement; it does not address the open problem of computing that unit effectively.",
+    "Rank one is a sharp classification, not a rare accident: rank K = 1 ⟺ #(InfinitePlace K) = 2 forces the signature (r₁, r₂) into exactly two shapes — real quadratic fields (2, 0) and mixed-signature cubic fields (1, 1) — so the rank-one abelian Stark conjecture, the best-tested case, covers precisely these two families of number fields and no others."
     ],
     "prerequisites": [
       "Dirichlet's unit theorem: the unit group of 𝓞_K is finite-torsion times free of rank r₁ + r₂ − 1.",
@@ -89,23 +109,23 @@
   "sections": [
     {
       "id": "context-hilbert-12-stark",
-      "title": "Hilbert's 12th & the Rank-One Stark Setting",
-      "startLine": 4,
-      "endLine": 41,
-      "summary": "The module docstring frames Hilbert's 12th problem (Kronecker's Jugendtraum) — explicit generators of abelian extensions, solved for ℚ (Kronecker–Weber) and imaginary quadratic fields (complex multiplication) — and the Stark conjectures' rank-one instance, where L'(0, χ) is predicted to be a rational multiple of a single log|ε| of a Stark unit. It scopes the file to the provable structural regulator-collapse fact, explicitly excluding the open problem of computing Stark units effectively, and lists the two main theorems and the proof strategy (Dirichlet rank characterization + Matrix.det_unique)."
+      "title": "Imports, Module Header & the Rank-One Stark Setting",
+      "startLine": 1,
+      "endLine": 49,
+      "summary": "Imports (NumberField.Units.Regulator, Tactic) and the module docstring, which frames Hilbert's 12th problem (Kronecker's Jugendtraum) — explicit generators of abelian extensions, solved for ℚ (Kronecker–Weber) and imaginary quadratic fields (complex multiplication) — and the Stark conjectures' rank-one instance, where L'(0, χ) is predicted to be a rational multiple of a single log|ε| of a Stark unit. Scopes the file to the provable structural regulator-collapse fact, excluding the open problem of computing Stark units effectively, and lists the two main theorems and the proof strategy (Dirichlet rank characterization + Matrix.det_unique). Then opens the NumberField namespaces, enters namespace KroneckersJugendtraumStarkRankOne, and declares the ambient variable (K : Type*) [Field K] [NumberField K]."
     },
     {
       "id": "rank-characterization",
       "title": "Rank One ⟺ Two Infinite Places",
       "startLine": 50,
-      "endLine": 56,
+      "endLine": 57,
       "summary": "rank_eq_one_iff_card_infinitePlace_eq_two: since rank K = #(InfinitePlace K) − 1 by Dirichlet's unit theorem, rank K = 1 holds exactly when K has two infinite places — the real quadratic (2,0) and mixed-signature cubic (1,1) fields where the rank-one Stark conjecture lives. Proved by `rw [rank]; omega`."
     },
     {
       "id": "regulator-collapse",
       "title": "The Rank-One Regulator is a Single Logarithm",
       "startLine": 58,
-      "endLine": 77,
+      "endLine": 79,
       "summary": "regulator_eq_single_log_of_rank_eq_one: when rank K = 1, the regulator collapses from a determinant of logarithms to mult(w)·|log(w ε)| for the fundamental (Stark) unit ε. Transports the Unique instance along equivFinRank and applies Matrix.det_unique to read off the single 1×1 entry."
     }
   ],
@@ -123,6 +143,11 @@
       "targetId": "kroneckers-jugendtraum",
       "relationship": "extends",
       "description": "Parent Kronecker Jugendtraum / Stark entry; this treats the unit-rank-1 case where the regulator collapses from an r×r determinant to a single archimedean log of the fundamental (Stark) unit."
+    },
+    {
+      "targetId": "kroneckers-jugendtraum-oq-01",
+      "relationship": "sibling-open-question",
+      "description": "The concrete real-quadratic instance of this entry's abstract rank-one collapse (and exactly the specialization named in this entry's second open question): real quadratic fields are precisely the totally real degree-2 fields, they have unit rank 1, and their regulator is a single bare logarithm of the classical fundamental unit — the (2,0)-signature member of the two-infinite-place family where the r×r regulator determinant here degenerates to one 1×1 entry."
     }
   ],
   "references": [

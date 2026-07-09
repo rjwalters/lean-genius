@@ -81,7 +81,8 @@
       "**Scaling the gap linearises the problem.** The deficiency gap 2·pᵏ − σ(pᵏ) is awkward directly, but multiplying by the positive p−1 and substituting the closed geometric identity reduces it to pᵏ·(p−2)+1 — a quantity manifestly ≥ 1 for every prime. One ring identity classifies the entire infinite family.",
       "**Powers of two are exactly one short.** σ(2ᵏ) = 2·2ᵏ − 1, the smallest possible positive deficiency: 2ᵏ is 'almost perfect'. This is the sharp endpoint of the deficiency bound and the reason powers of two are the only known almost-perfect numbers.",
       "**p/(p−1) is the supremum, not a perfect number.** The abundancy index σ(pᵏ)/pᵏ = (p − p⁻ᵏ)/(p−1) increases in k toward p/(p−1) but never reaches it; since p/(p−1) ≤ 2 for p ≥ 2, a prime power can approach but never attain perfection (abundancy 2).",
-      "**Deficiency over ℕ and abundancy over ℚ agree.** σ(pᵏ) < 2·pᵏ in ℕ and σ(pᵏ)/pᵏ < 2 in ℚ are the same fact in two registers; both follow from the single identity pᵏ⁺¹ − 1 < pᵏ⁺¹."
+      "**Deficiency over ℕ and abundancy over ℚ agree.** σ(pᵏ) < 2·pᵏ in ℕ and σ(pᵏ)/pᵏ < 2 in ℚ are the same fact in two registers; both follow from the single identity pᵏ⁺¹ − 1 < pᵏ⁺¹.",
+      "**Almost-perfection of 2ᵏ is the seed of every even perfect number.** The computation σ(2ᵏ) = 2ᵏ⁺¹ − 1 here is exactly the Mersenne number Mₖ₊₁; when it is prime, Euclid's construction 2ᵏ·Mₖ₊₁ is perfect, and Euler proved these are all the even perfect numbers. So the deficiency-by-one of a power of two is not a curiosity but the arithmetic engine of the Euclid–Euler theorem: perfection is manufactured by multiplying the almost-perfect 2ᵏ by its own prime deficiency σ(2ᵏ)."
     ],
     "prerequisites": [
       "Mathlib's ArithmeticFunction.sigma and its prime-power API",
@@ -95,7 +96,7 @@
       "id": "header",
       "title": "Module Header and the Defining Identity",
       "startLine": 1,
-      "endLine": 43,
+      "endLine": 44,
       "summary": "Module docstring framing the deficiency classification of prime powers, the Mathlib import, namespace, opens, and sigma_one_prime_pow_mul (OQ-04's integer identity σ(pⁱ)·(p−1) = pⁱ⁺¹−1, the engine for everything below).",
       "mathContext": "$\\sigma(p^i)\\,(p-1) = p^{i+1}-1$."
     },
@@ -103,7 +104,7 @@
       "id": "deficiency",
       "title": "Deficiency and Almost-Perfect Powers of Two",
       "startLine": 45,
-      "endLine": 84,
+      "endLine": 85,
       "summary": "sigma_one_prime_pow_deficient (σ(pᵏ) < 2·pᵏ for every prime power), pow_two_almost_perfect (σ(2ᵏ)+1 = 2·2ᵏ), and prime_pow_not_perfect (no prime power is perfect).",
       "mathContext": "$\\sigma(p^k) < 2p^k$, $\\sigma(2^k)+1 = 2\\cdot 2^k$, $\\neg\\,\\mathrm{Perfect}(p^k)$."
     },
@@ -131,6 +132,11 @@
       "targetId": "sum-of-divisors",
       "relationship": "extends",
       "description": "Generalises the base entry's native_decide deficiency checks on specific numbers to the universally quantified family of prime powers, 0-axiom"
+    },
+    {
+      "targetId": "perfect-numbers",
+      "relationship": "related — Euclid–Euler seed",
+      "description": "The almost-perfect identity σ(2ᵏ) = 2ᵏ⁺¹ − 1 proved here is precisely the Mersenne factor in the Euclid–Euler classification of even perfect numbers 2ᵏ(2ᵏ⁺¹ − 1): when 2ᵏ⁺¹ − 1 is prime, that construction is perfect. This entry supplies the σ-value of the 2ᵏ factor that the Euclid–Euler proof consumes; that entry closes the loop by showing multiplying it by the Mersenne prime attains σ(n) = 2n."
     }
   ],
   "conclusion": {
@@ -141,6 +147,50 @@
       "Give the exact deficiency 2·pᵏ − σ(pᵏ) = (pᵏ(p−2)+1)/(p−1) as a closed-form arithmetic function and characterise when it is minimal."
     ]
   },
+  "mainTheorems": [
+    {
+      "name": "sigma_one_prime_pow_deficient",
+      "type": "main",
+      "description": "Every prime power is strictly deficient: σ(pᵏ) < 2·pᵏ for all primes p and exponents k. The general law behind the base entry's case-by-case deficiency checks, derived from the closed geometric form sigma_one_prime_pow_mul.",
+      "leanType": "{p : ℕ} (hp : p.Prime) (k : ℕ) : sigma 1 (p ^ k) < 2 * p ^ k"
+    },
+    {
+      "name": "abundancy_prime_pow_lt",
+      "type": "main",
+      "description": "The sharp abundancy bound over ℚ: σ(pᵏ)/pᵏ < p/(p−1), with p/(p−1) the supremum of the abundancy index over the powers of p (approached as k → ∞).",
+      "leanType": "{p : ℕ} (hp : p.Prime) (k : ℕ) : (sigma 1 (p ^ k) : ℚ) / (p ^ k : ℚ) < (p : ℚ) / ((p : ℚ) - 1)"
+    },
+    {
+      "name": "pow_two_almost_perfect",
+      "type": "main",
+      "description": "Powers of two are almost perfect: σ(2ᵏ) + 1 = 2·2ᵏ, i.e. deficient by exactly one — the minimal possible positive deficiency, the extremal case of the deficiency law.",
+      "leanType": "(k : ℕ) : sigma 1 (2 ^ k) + 1 = 2 * 2 ^ k"
+    },
+    {
+      "name": "prime_pow_not_perfect",
+      "type": "supporting",
+      "description": "No prime power is perfect: ¬ Nat.Perfect (pᵏ), derived from the strict deficiency bound and the σ-form of perfection.",
+      "leanType": "{p : ℕ} (hp : p.Prime) (k : ℕ) : ¬ Nat.Perfect (p ^ k)"
+    },
+    {
+      "name": "abundancy_prime_pow_lt_two",
+      "type": "supporting",
+      "description": "The deficiency bound in abundancy form: σ(pᵏ)/pᵏ < 2 over ℚ, sharp because p/(p−1) ≤ 2 ⇔ p ≥ 2.",
+      "leanType": "{p : ℕ} (hp : p.Prime) (k : ℕ) : (sigma 1 (p ^ k) : ℚ) / (p ^ k : ℚ) < 2"
+    },
+    {
+      "name": "sigma_one_prime_pow_mul",
+      "type": "supporting",
+      "description": "The closed geometric form for k = 1: σ(pⁱ)·(p−1) = p^{i+1}−1 (division-free over ℤ). The engine from which the deficiency and abundancy bounds are read off.",
+      "leanType": "{p : ℕ} (hp : p.Prime) (i : ℕ) : (sigma 1 (p ^ i) : ℤ) * ((p : ℤ) - 1) = (p : ℤ) ^ (i + 1) - 1"
+    },
+    {
+      "name": "sigma_zero_prime_pow",
+      "type": "supporting",
+      "description": "Divisor count of a prime power: τ(pᵏ) = k+1 (generalising OQ-04's τ(p) = 2).",
+      "leanType": "{p : ℕ} (hp : p.Prime) (k : ℕ) : sigma 0 (p ^ k) = k + 1"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib"

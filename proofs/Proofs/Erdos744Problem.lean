@@ -169,6 +169,66 @@ theorem bipartitionNumber_eq_zero_iff {V : Type*} [Fintype V] [LinearOrder V]
       Finset.inf'_le _ (Finset.mem_univ c)
     omega
 
+/-
+# Part 3b: Structural properties of the bipartition number
+
+Elementary, axiom-free facts about `bipartitionNumber` as a combinatorial
+quantity. These do not touch the Rödl–Tuza content; they record how the
+intrinsic definition behaves under edge addition and against the total edge
+count. Monotonicity under edge addition is exactly the phenomenon Erdős's
+original intuition was about: he expected `f_k` to grow with the graph.
+-/
+
+/-- Adding edges can only increase the number of monochromatic edges of a fixed
+    2-coloring: if every edge of `G` is an edge of `H`, then the monochromatic
+    count for `G` is at most that for `H`, colouring-by-colouring. -/
+theorem monochromaticEdges_mono {V : Type*} [Fintype V] [LinearOrder V]
+    (G H : SimpleGraph' V) [DecidableRel G.Adj] [DecidableRel H.Adj]
+    (hsub : ∀ u v, G.Adj u v → H.Adj u v) (c : V → Bool) :
+    monochromaticEdges G c ≤ monochromaticEdges H c := by
+  unfold monochromaticEdges
+  apply Finset.card_le_card
+  intro p hp
+  simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hp ⊢
+  exact ⟨hp.1, hsub p.1 p.2 hp.2.1, hp.2.2⟩
+
+/-- **The bipartition number is monotone under edge addition.**
+    If every edge of `G` is an edge of `H` then `bipartitionNumber G ≤
+    bipartitionNumber H`: a supergraph is at least as far from bipartite. -/
+theorem bipartitionNumber_mono {V : Type*} [Fintype V] [LinearOrder V]
+    (G H : SimpleGraph' V) [DecidableRel G.Adj] [DecidableRel H.Adj]
+    (hsub : ∀ u v, G.Adj u v → H.Adj u v) :
+    bipartitionNumber G ≤ bipartitionNumber H := by
+  unfold bipartitionNumber
+  obtain ⟨c, -, hc⟩ :=
+    Finset.exists_mem_eq_inf' (Finset.univ_nonempty (α := V → Bool)) (monochromaticEdges H)
+  rw [hc]
+  calc (Finset.univ : Finset (V → Bool)).inf' Finset.univ_nonempty (monochromaticEdges G)
+      ≤ monochromaticEdges G c := Finset.inf'_le _ (Finset.mem_univ c)
+    _ ≤ monochromaticEdges H c := monochromaticEdges_mono G H hsub c
+
+/-- The number of edges of `G`, counted once per undirected edge via the ordered
+    pairs `u < v`. -/
+def edgeCount {V : Type*} [Fintype V] [LinearOrder V]
+    (G : SimpleGraph' V) [DecidableRel G.Adj] : ℕ :=
+  (Finset.univ.filter (fun p : V × V => p.1 < p.2 ∧ G.Adj p.1 p.2)).card
+
+/-- **The bipartition number never exceeds the total edge count.**
+    Deleting every edge trivially makes `G` bipartite, so at most `edgeCount G`
+    deletions are ever required. Concretely, the all-`true` colouring makes
+    every edge monochromatic, and the minimum can only do better. -/
+theorem bipartitionNumber_le_edgeCount {V : Type*} [Fintype V] [LinearOrder V]
+    (G : SimpleGraph' V) [DecidableRel G.Adj] :
+    bipartitionNumber G ≤ edgeCount G := by
+  unfold bipartitionNumber
+  calc (Finset.univ : Finset (V → Bool)).inf' Finset.univ_nonempty (monochromaticEdges G)
+      ≤ monochromaticEdges G (fun _ => true) := Finset.inf'_le _ (Finset.mem_univ _)
+    _ = edgeCount G := by
+        unfold monochromaticEdges edgeCount
+        congr 1
+        ext p
+        simp [Finset.mem_filter]
+
 /--
 **The f_k(n) Function**
 

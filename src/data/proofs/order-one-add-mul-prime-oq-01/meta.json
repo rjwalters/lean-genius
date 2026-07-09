@@ -120,6 +120,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header and Overview",
+      "startLine": 1,
+      "endLine": 37,
+      "summary": "Imports `Mathlib` and opens `namespace OrderOneAddMulPrimeOQ01`. The docstring states the problem — for an odd prime p and p ∤ a, the element 1 + p·a is a unit of ZMod (p^(n+1)) with multiplicative order exactly p^n — and explains why it matters: the principal units 1 + p·ℤ form the cyclic p-group of order p^n that, combined with the order-(p−1) part from reduction mod p, makes (ZMod p^k)ˣ cyclic for odd prime powers. It records that Mathlib proves the order computation (ZMod.orderOf_one_add_mul_prime) but does not package the structural consequences this file assembles, all axiom-free and without native_decide.",
+      "mathContext": "$\\operatorname{ord}_{p^{n+1}}(1 + p a) = p^{n}$ for $p$ an odd prime, $p \\nmid a$; the principal units $1 + p\\mathbb{Z}$ form a cyclic $p$-group of order $p^{n}$."
+    },
+    {
       "id": "core",
       "title": "The Order Computation",
       "startLine": 38,

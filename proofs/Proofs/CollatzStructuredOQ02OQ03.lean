@@ -1022,6 +1022,25 @@ theorem colMin_le_collatz (n : ℕ) : colMin n ≤ colMin (collatz n) := by
   obtain ⟨k, hk⟩ := colMin_mem_orbit (collatz n)
   exact Nat.sInf_le ⟨k + 1, by rw [Function.iterate_succ_apply]; exact hk⟩
 
+/-- The orbit minimum bounds **every** value on the orbit, not just the start:
+`colMin n ≤ collatz^[k] n` for all `k`.  The `k`-th iterate lies in the orbit set,
+so the infimum is `≤` it (`Nat.sInf_le`).  Generalises `colMin_le_self` (`k = 0`). -/
+theorem colMin_le_iterate (n k : ℕ) : colMin n ≤ collatz^[k] n :=
+  Nat.sInf_le ⟨k, rfl⟩
+
+/-- The orbit minimum is **non-increasing along the whole trajectory**:
+`colMin n ≤ colMin (collatz^[k] n)` for all `k`.  Each further step passes to a
+sub-orbit whose infimum can only grow (`colMin_le_collatz`), and iterating this gives
+the bound for every `k`.  Generalises `colMin_le_collatz` (`k = 1`); combined with
+`colMin_le_iterate` it shows the orbit minimum of any iterate is sandwiched:
+`colMin n ≤ colMin (collatz^[k] n) ≤ collatz^[k] n`. -/
+theorem colMin_le_colMin_iterate (n k : ℕ) : colMin n ≤ colMin (collatz^[k] n) := by
+  induction k with
+  | zero => simp
+  | succ k ih =>
+    rw [Function.iterate_succ_apply']
+    exact le_trans ih (colMin_le_collatz _)
+
 /-- **The orbit-minimum recursion** (the Bellman/dynamic-programming identity for
 `Col_min`): `colMin n = min n (colMin (collatz n))`.  The minimum over the orbit of
 `n` is either attained at `n` itself (step `0`) or somewhere in the orbit of its
@@ -1353,6 +1372,38 @@ families, where the halvings always outnumber the triplings: e.g. `3 (mod 16)` u
 `3^2 = 9 < 16 = 2^4`.) -/
 example : ¬ (leadCoeff [true, false, true, false, true, false] (2 ^ 3) < 2 ^ 3) := by
   decide
+
+/-- **The Collatz 3/2 heuristic as a purely combinatorial drop criterion.**  The Terras
+drop condition `3 ^ a < 2 ^ b` — the `a` triplings of a window must be overcome by its
+`b` halvings — is *implied* by the clean count inequality `2 * a < b`: twice as many
+halvings as triplings always suffice, with no exponentiation to evaluate.  The proof is
+the heuristic made exact, using only `3 ≤ 4 = 2²`:
+`3 ^ a ≤ 4 ^ a = 2 ^ (2 * a) < 2 ^ b`.  (The constant `2` is not sharp — the true
+threshold is `log₂ 3 ≈ 1.585` — but `2` is the cheapest integer bound that is provable
+without evaluating any power, and it already certifies every gallery family: `3 (mod 16)`
+has `a = 2, b = 4` with `2·2 < 4` failing by equality, so the sharper count `2·a ≤ b`
+with a strict-power check is what the gallery uses; `2·a < b` is the slack version that
+needs no power comparison at all.) -/
+theorem pow_three_lt_two_pow_of_two_mul_lt {a b : ℕ} (h : 2 * a < b) :
+    3 ^ a < 2 ^ b :=
+  calc 3 ^ a ≤ 4 ^ a := Nat.pow_le_pow_left (by norm_num) a
+    _ = 2 ^ (2 * a) := by rw [pow_mul]; norm_num
+    _ < 2 ^ b := pow_lt_pow_right₀ (by norm_num) h
+
+/-- **Count-only residue-drop corollary of the Terras engine.**  A valid residue-window
+`v` for the dyadic modulus `2 ^ b` (performing exactly its `b` halvings) certifies a drop
+below `r` as soon as it carries more than twice as many halvings as triplings —
+`2 * v.count true < b` — with the additive constant landing below `r`.  This removes the
+last arithmetic obligation from `terras_attainsBelow`: the drop hypothesis is now a pure
+count inequality (`omega`-checkable), not a power comparison `3 ^ a < 2 ^ b`.  Combined
+with `deriveVec`, a new residue class becomes a one-line certificate whenever its forced
+window is halving-dominated. -/
+theorem terras_attainsBelow_of_count {b r : ℕ} (v : List Bool) (hk : 0 < v.length)
+    (hcount : v.count false = b) (hval : AffValid v (2 ^ b) r)
+    (hcnt : 2 * v.count true < b)
+    (hd : (affOrbit v (2 ^ b, r)).2 < r)
+    {n : ℕ} (hn : n % 2 ^ b = r) : AttainsBelow n :=
+  terras_attainsBelow v hk hcount hval (pow_three_lt_two_pow_of_two_mul_lt hcnt) hd hn
 
 /-! ### Decidable certificates: the engine as a one-shot `by decide`
 

@@ -37,3 +37,66 @@ is the single axiom `juhasz_stronger`.
 
 - Lean: `proofs/Proofs/Erdos214Problem.lean` (namespace `Erdos214`)
 - [Ju79] Juhász (1979); [Er83c] Erdős (1983)
+
+## Session 2026-07-08 (researcher-8) — metric helpers + unit-square structure
+
+**Mode:** INFRASTRUCTURE (core still BLOCKED on `juhasz_stronger`; added verified,
+axiom-free geometric content around the definitions). VERIFIED, 0 sorry / axiom
+count unchanged (1: `juhasz_stronger`).
+
+### Added (all axiom-free, build green — 2364 jobs, exit 0)
+- `dist_self : dist p p = 0` and `dist_comm : dist p q = dist q p` — the two basic
+  coordinate-distance facts, previously absent. Proofs: `unfold dist; rw [sub_self,
+  norm_zero]` and `unfold dist; rw [← neg_sub q p, norm_neg]`.
+- `isUnitSquare_of_isometry`: a distance-preserving `f` maps a unit square to a unit
+  square. `obtain`+`refine ⟨…⟩ <;> rw [hf]; exacts [...]`. This is exactly the inline
+  argument used in `unit_square_from_stronger`, now a reusable named lemma.
+- `IsUnitSquare.distinct`: the 4 vertices are pairwise distinct. Two local helpers
+  `hedge : dist p q = 1 → p ≠ q` and `hdiag : dist p q = √2 → p ≠ q`, each via
+  `rintro p q hd rfl; rw [dist_self] at hd; …` (edge closed by `norm_num`, diagonal by
+  `Real.sqrt_pos.mpr (by norm_num)` + `linarith`).
+- `complement_contains_distinct_unit_square`: capstone — `Sᶜ` contains a unit square on
+  4 pairwise-distinct points. `erdos_214_solved` + `.distinct`.
+
+### Gotcha (reusable)
+- `IsUnitSquare` is a `def : Prop` (an `And`), so dot-notation `hsq.distinct` resolves
+  to `IsUnitSquare.distinct hsq` cleanly — no structure needed.
+- `rintro p q hd rfl` on a goal `∀ p q, dist p q = c → p ≠ q` intros the disequality's
+  equality argument and substitutes in one shot; then `rw [dist_self]` collapses the
+  hypothesis to `0 = c`.
+
+### Frontier
+Unchanged: `juhasz_stronger` (Juhász 1979 4-point congruent-copy theorem) is deep
+incidence geometry absent from Mathlib — BLOCKED. Remaining elementary follow-ups:
+`Set.Infinite ScaledLattice` (strengthen non-vacuity to genuinely infinite), or a
+concrete finite unit-distance-free configuration.
+
+## Session 2026-07-08 (researcher-8) — full metric axioms + infinitude of the √2·ℤ² witness
+
+**Mode:** INFRASTRUCTURE (core still BLOCKED on `juhasz_stronger`; added verified,
+axiom-free geometric content). VERIFIED, 0 sorry / axiom count unchanged (1).
+Build green (2364 jobs, exit 0). File 328→382 lines, 16→20 theorems.
+
+### Added (all axiom-free)
+- `dist_nonneg` : `0 ≤ dist p q` via `norm_nonneg`.
+- `dist_triangle` : `dist p r ≤ dist p q + dist q r` via
+  `sub_add_sub_cancel` (`(p-q)+(q-r)=p-r`) + `norm_add_le`. Together with the earlier
+  `dist_self`/`dist_comm` this certifies `Erdos214.dist` is a genuine metric.
+- `scaledLattice_horiz_mem` : `(√2·n, 0) ∈ ScaledLattice` for every `n : ℤ`.
+- `scaledLattice_infinite` : `ScaledLattice.Infinite` — the horizontal axis embeds `ℤ`
+  (`Set.infinite_of_injective_forall_mem`, injectivity from `mul_left_cancel₀` on `√2≠0`).
+  Sharpens `scaledLattice_unitDistanceFree` from non-empty to infinite.
+
+### Gotchas (reusable)
+- Root Mathlib `dist` is `Dist.dist` — **not** reachable as `_root_.dist` (unknown
+  identifier). Prove metric facts straight from `‖p - q‖` (`norm_nonneg`, `norm_add_le`)
+  instead of trying to bridge to Mathlib's `dist`.
+- Extracting a coordinate from `!₂[a, b]` (= `WithLp.toLp 2 ![a,b]`): `congrFun` FAILS
+  ("application type mismatch, expected ?m = ?m") because the `WithLp` wrapper is not a
+  syntactic pi type. Use `congrArg (fun x : Plane => x 0) h` then `simp [Matrix.cons_val_zero]`.
+
+### Frontier
+Unchanged: `juhasz_stronger` (Juhász 1979 congruent-4-point theorem) is deep incidence
+geometry absent from Mathlib — BLOCKED. The elementary scaffolding around the definitions
+is now essentially complete (metric axioms, isometry-invariance, vertex-distinctness,
+infinite witness). The only substantial remaining work is formalizing the axiom itself.

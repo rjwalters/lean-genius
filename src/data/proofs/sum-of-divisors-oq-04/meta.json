@@ -83,7 +83,8 @@
       "**Two laws determine σ entirely.** Multiplicativity plus the prime-power geometric sum compute σ on any integer via its factorization; every numerical value in the base entry is an instance of these.",
       "**The closed geometric form.** σ(pⁱ) = (pⁱ⁺¹ − 1)/(p − 1) — stated here as the division-free identity σ(pⁱ)·(p − 1) = pⁱ⁺¹ − 1 over ℤ, proved by the ring lemma geom_sum_mul rather than re-deriving the telescoping sum.",
       "**Perfection is a σ equation.** Perfect n ⇔ σ(n) = 2n is the cleanest statement of the Greek definition: the proper divisors sum to n exactly when all divisors sum to 2n. (Note: a product of two distinct primes can be perfect — 6 = 2·3 with σ(6) = 12 — so multiplicativity alone does not forbid it.)",
-      "**General over generic, not specific.** Where the base entry checked σ(p) = p+1 for six chosen primes, sigma_one_prime proves it for the universally quantified prime — the difference between a table and a theorem."
+      "**General over generic, not specific.** Where the base entry checked σ(p) = p+1 for six chosen primes, sigma_one_prime proves it for the universally quantified prime — the difference between a table and a theorem.",
+      "**σ₀ and σ₁ are two slices of one framework.** τ = σ₀ (divisor count) and σ = σ₁ (divisor sum) are the k = 0 and k = 1 cases of σₖ(n) = Σ_{d∣n} dᵏ. Both are read off the same prime-power API (sigma_zero_apply_prime_pow, sigma_one_apply_prime_pow) and both inherit multiplicativity from the single fact isMultiplicative_sigma — so proving τ(p) = 2 and σ(p) = p+1 side by side exhibits the uniformity that gives the general σₖ its structure, of which the divisor count and divisor sum are the two most classical instances."
     ],
     "prerequisites": [
       "Mathlib's ArithmeticFunction.sigma and its prime-power API",
@@ -117,6 +118,48 @@
       "mathContext": "$\\sigma(pq) = (p+1)(q+1)$ and $\\mathrm{Perfect}(n) \\iff \\sigma(n) = 2n$."
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "sigma_one_prime",
+      "type": "core",
+      "description": "**σ(p) = p + 1 for every prime p.** The general law behind the base entry's per-prime checks: a prime's only divisors are 1 and p. Extracted from sigma_one_apply_prime_pow at exponent 1.",
+      "leanType": "{p : ℕ} (hp : p.Prime) : sigma 1 p = p + 1",
+      "startLine": 33,
+      "endLine": 37
+    },
+    {
+      "name": "sigma_zero_prime",
+      "type": "supporting",
+      "description": "**τ(p) = σ₀(p) = 2 for every prime p.** A prime has exactly two divisors (1 and itself); the number-of-divisors function σ₀ evaluates to 2.",
+      "leanType": "{p : ℕ} (hp : p.Prime) : sigma 0 p = 2",
+      "startLine": 40,
+      "endLine": 43
+    },
+    {
+      "name": "sigma_one_prime_pow_mul",
+      "type": "core",
+      "description": "**Closed geometric form on prime powers:** σ(pⁱ)·(p−1) = pⁱ⁺¹−1 over ℤ, equivalently σ(pⁱ) = (pⁱ⁺¹−1)/(p−1). sigma_one_apply_prime_pow writes σ(pⁱ) as the open sum ∑_{k<i+1} pᵏ; geom_sum_mul collapses it. The multiplication-form avoids ℕ truncated division.",
+      "leanType": "{p : ℕ} (hp : p.Prime) (i : ℕ) : (sigma 1 (p ^ i) : ℤ) * ((p : ℤ) - 1) = (p : ℤ) ^ (i + 1) - 1",
+      "startLine": 48,
+      "endLine": 52
+    },
+    {
+      "name": "sigma_one_two_primes",
+      "type": "core",
+      "description": "**Multiplicativity on two distinct primes:** σ(p·q) = (p+1)(q+1). Distinct primes are coprime (coprime_primes), so σ factors via isMultiplicative_sigma.map_mul_of_coprime, and each factor is sigma_one_prime.",
+      "leanType": "{p q : ℕ} (hp : p.Prime) (hq : q.Prime) (hpq : p ≠ q) : sigma 1 (p * q) = (p + 1) * (q + 1)",
+      "startLine": 57,
+      "endLine": 60
+    },
+    {
+      "name": "perfect_iff_sigma_one",
+      "type": "core",
+      "description": "**Perfection in σ-form:** for n > 0, n is perfect iff σ(n) = 2n. Ties the divisor-sum function to the base entry's perfect numbers (σ(6)=12=2·6, σ(28)=56=2·28), via Nat.perfect_iff_sum_divisors_eq_two_mul and sigma_one_apply.",
+      "leanType": "{n : ℕ} (hn : 0 < n) : Nat.Perfect n ↔ sigma 1 n = 2 * n",
+      "startLine": 65,
+      "endLine": 67
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "sum-of-divisors",
@@ -127,6 +170,16 @@
       "targetId": "abundant-number-oq-03",
       "relationship": "related",
       "description": "The σ-form of perfection (σ(n) = 2n) sits beside the abundance condition (σ(n) > 2n) in the same divisor-sum classification of integers"
+    },
+    {
+      "targetId": "perfect-numbers",
+      "relationship": "related — perfection criterion",
+      "description": "The Euclid–Euler theorem classifies the even perfect numbers as 2^(p−1)(2^p−1) with 2^p−1 a Mersenne prime. Its arithmetic engine is exactly `perfect_iff_sigma_one` proved here — perfection is the equation σ(n) = 2n — together with the closed prime-power form `sigma_one_prime_pow_mul` that evaluates σ on the 2^(p−1) factor. This entry supplies the σ-side identities the Euclid–Euler proof consumes."
+    },
+    {
+      "targetId": "euler-totient",
+      "relationship": "related — sibling multiplicative function",
+      "description": "Euler's totient φ is the companion multiplicative arithmetic function to σ: both are read off Mathlib's prime-power API and both factor across coprime arguments via `IsMultiplicative.map_mul_of_coprime`. Where this entry gives σ(pⁱ)·(p−1) = p^{i+1}−1 and σ(pq) = (p+1)(q+1), the totient satisfies the parallel φ(pⁱ) = pⁱ−p^{i−1} and φ(pq) = (p−1)(q−1)."
     }
   ],
   "conclusion": {
@@ -167,6 +220,13 @@
       "year": "1976",
       "venue": "Springer Undergraduate Texts in Mathematics",
       "note": "Theorem 2.13 and surrounding: σ is multiplicative with σ(pᵃ) = (p^{a+1}−1)/(p−1)"
+    },
+    {
+      "authors": "McCarthy, Paul J.",
+      "title": "Introduction to Arithmetical Functions",
+      "year": "1986",
+      "venue": "Springer Universitext",
+      "note": "Monograph devoted to multiplicative arithmetical functions; develops σₖ, τ, and φ uniformly through their values on prime powers and the multiplicativity that this entry formalizes"
     }
   ],
   "sorries": 0

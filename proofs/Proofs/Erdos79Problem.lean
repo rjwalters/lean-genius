@@ -213,6 +213,58 @@ theorem minimal_form_antichain :
   exact ⟨fun hGH => hGsup (hHmin G hGH), fun hHG => hHsup (hGmin H hHG)⟩
 
 /-
+## Order-theoretic foundations
+
+The `isProperSubgraph` relation is exactly the strict order `<` on graphs, and
+`completeGraphN` is monotone.  These are the structural facts that make the
+"minimal element" language above well-posed: `minimal_form_antichain` is an
+instance of "minimal elements of a strict partial order are pairwise
+incomparable", and monotonicity places the complete graphs `K₀ ≤ K₁ ≤ K₂ ≤ ⋯`
+in a chain through which every proper subgraph of `K₄` is approached.
+-/
+
+/-- `isProperSubgraph` is irreflexive: no graph is a proper subgraph of itself. -/
+theorem isProperSubgraph_irrefl (G : SimpleGraph ℕ) : ¬ isProperSubgraph G G :=
+  fun h => h.2 rfl
+
+/-- `isProperSubgraph` is asymmetric: `H ⊏ G` rules out `G ⊏ H`.  (This is the
+    two-graph form of `minimal_form_antichain`'s incomparability, holding for *all*
+    graphs, not only minimal ones.) -/
+theorem isProperSubgraph_asymm {G H : SimpleGraph ℕ}
+    (h : isProperSubgraph H G) : ¬ isProperSubgraph G H :=
+  fun h' => h.2 (le_antisymm h.1 h'.1)
+
+/-- `isProperSubgraph` is transitive, so it is a strict partial order. -/
+theorem isProperSubgraph_trans {F G H : SimpleGraph ℕ}
+    (h1 : isProperSubgraph F G) (h2 : isProperSubgraph G H) :
+    isProperSubgraph F H := by
+  refine ⟨le_trans h1.1 h2.1, ?_⟩
+  intro hFH
+  exact h2.2 (le_antisymm h2.1 (hFH ▸ h1.1))
+
+/-- **Monotonicity of the complete graphs.**  `Kₘ ≤ Kₙ` whenever `m ≤ n`: adding
+    vertices only adds edges. -/
+theorem completeGraphN_mono {m n : ℕ} (h : m ≤ n) :
+    completeGraphN m ≤ completeGraphN n := by
+  intro u v huv
+  obtain ⟨hne, hu, hv⟩ := huv
+  exact ⟨hne, lt_of_lt_of_le hu h, lt_of_lt_of_le hv h⟩
+
+/-- `K₀` is the empty graph. -/
+theorem completeGraphN_zero : completeGraphN 0 = ⊥ := by
+  ext u v
+  simp only [SimpleGraph.bot_adj, iff_false]
+  rintro ⟨_, hu, _⟩
+  omega
+
+/-- `K₁` is the empty graph: a single vertex has no edges. -/
+theorem completeGraphN_one : completeGraphN 1 = ⊥ := by
+  ext u v
+  simp only [SimpleGraph.bot_adj, iff_false]
+  rintro ⟨hne, hu, hv⟩
+  omega
+
+/-
 ## Summary
 
 This file formalizes Erdős Problem #79 on minimally non-Ramsey-size-linear graphs.

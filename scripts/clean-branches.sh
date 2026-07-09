@@ -75,6 +75,15 @@ WORKTREE_MAX_AGE_DAYS="${WORKTREE_MAX_AGE_DAYS:-30}"
 # the worktree unconditionally.
 WORKTREE_IDLE_HOURS="${WORKTREE_IDLE_HOURS:-6}"
 
+# Rescue-then-reclaim window (hours) for git-registered worktrees OUTSIDE the
+# sanctioned .loom/.claude roots (loose dirs under $HOME or /private/tmp).
+# Without this, a clean stray whose branch has no PR waits WORKTREE_MAX_AGE_DAYS
+# and one carrying local-only commits is preserved forever. After this much
+# idleness a clean stray gets its local-only commits pushed to a backup/ ref on
+# origin (so nothing is ever lost) and is then reclaimed. Dirty or active
+# strays are still always preserved.
+OUT_OF_TREE_RESCUE_HOURS="${OUT_OF_TREE_RESCUE_HOURS:-24}"
+
 for arg in "$@"; do
     case $arg in
         --dry-run)
@@ -142,6 +151,11 @@ Worktree cleanup:
     gone on origin OR it has no activity anywhere in its tree for
     WORKTREE_MAX_AGE_DAYS (default 30). Preserved otherwise.
   - git-registered worktrees OUTSIDE .loom/worktrees/ and .claude/worktrees/
+    additionally get rescue-then-reclaim: once clean and idle everywhere in
+    the tree for OUT_OF_TREE_RESCUE_HOURS (default 24), local-only commits
+    are pushed to a backup/ ref on origin and the stray is reclaimed —
+    instead of waiting WORKTREE_MAX_AGE_DAYS (no PR) or forever (local-only
+    commits). Dirty or active strays are still always preserved. Other notes:
     (e.g. loose dirs under \$HOME or /private/tmp created during data-loss
     incidents): discovered via 'git worktree list' (never by walking \$HOME),
     verified to belong to THIS repo, then reclaimed under the SAME guards as
@@ -158,6 +172,9 @@ Environment:
   WORKTREE_IDLE_HOURS     Idle window (hours) treated as "in use right now";
                           any file modified within it preserves the worktree
                           unconditionally (default 6).
+  OUT_OF_TREE_RESCUE_HOURS  Idle window (hours) after which a clean out-of-
+                          tree stray is rescued (local-only commits pushed to
+                          a backup/ ref) and reclaimed (default 24).
 
 HELPEOF
             exit 0
@@ -1089,6 +1106,46 @@ echo ""
 
 header "  Checking git-registered worktrees outside .loom/worktrees/..."
 
+# rescue_out_of_tree <worktree_realpath>
+#
+# For out-of-tree strays only. When the stray is clean, has no owning process,
+# and has been idle everywhere in its tree for OUT_OF_TREE_RESCUE_HOURS, make
+# it reclaimable NOW instead of waiting out WORKTREE_MAX_AGE_DAYS (no-PR case)
+# or forever (local-only commits case): if HEAD is on no remote ref, push it to
+# refs/heads/backup/<branch>-<sha> first so the work survives on origin, then
+# echo a preset reclaim reason for reclaim_worktree. Echoes nothing (= use the
+# normal triggers) when the stray is dirty, active, unreadable, or the backup
+# push fails. In dry-run mode no push happens; the reason reflects intent.
+rescue_out_of_tree() {
+    local wt="$1"
+    [[ -n "$(git -C "$wt" status --porcelain 2>/dev/null)" ]] && return 0
+    pgrep -f "$wt" &>/dev/null && return 0
+    [[ -n "$(find "$wt" -mmin -$(( OUT_OF_TREE_RESCUE_HOURS * 60 )) -print -quit 2>/dev/null)" ]] && return 0
+
+    local sha br
+    sha=$(git -C "$wt" rev-parse HEAD 2>/dev/null || echo "")
+    [[ -z "$sha" ]] && return 0
+    br=$(git -C "$wt" symbolic-ref --short HEAD 2>/dev/null || echo "")
+
+    local on_remote
+    on_remote=$(git branch -r --contains "$sha" 2>/dev/null | grep -v '\->' | head -n 1 || true)
+    if [[ -n "$on_remote" ]]; then
+        echo "stray idle >${OUT_OF_TREE_RESCUE_HOURS}h, content on remote"
+        return 0
+    fi
+
+    if [[ "$DRY_RUN" == true ]]; then
+        echo "stray idle >${OUT_OF_TREE_RESCUE_HOURS}h, would rescue to backup ref"
+        return 0
+    fi
+
+    local ref="backup/${br:+${br##*/}-}${sha:0:11}"
+    if git push -q origin "${sha}:refs/heads/${ref}" 2>/dev/null; then
+        echo "stray idle >${OUT_OF_TREE_RESCUE_HOURS}h, rescued to ${ref}"
+    fi
+    return 0
+}
+
 # Canonical repo identity: the common git dir shared by all worktrees of this
 # repo. `git rev-parse --git-common-dir` resolves to <repo>/.git (or the shared
 # gitdir), identical for every worktree that belongs to this repository. We use
@@ -1136,7 +1193,8 @@ while IFS= read -r line; do
     fi
 
     out_of_tree_found=1
-    reclaim_worktree "$oot_real" "$oot_path"
+    stray_reason="$(rescue_out_of_tree "$oot_real")"
+    reclaim_worktree "$oot_real" "$oot_path" "$stray_reason"
 done < <(git worktree list --porcelain 2>/dev/null)
 
 if [[ "$out_of_tree_found" -eq 0 ]]; then

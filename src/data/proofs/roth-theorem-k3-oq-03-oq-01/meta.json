@@ -58,10 +58,10 @@
       "kAPCount_eq_zero_of_zero: a single zero slot annihilates the count — if f j = 0 then Λ_k(f₀,…,f_{k-1}) = 0, since the j-th factor of every product term vanishes"
     ],
     "axiomCount": 0,
-    "lineCount": 354,
+    "lineCount": 522,
     "assumptions": "0 axioms, 0 sorries. Only the foundational axioms propext / Classical.choice / Quot.sound are used; no native_decide, no sorryAx, no Lean.ofReduceBool. The operators are re-declared self-containedly in this file's namespace; the file imports Mathlib.",
-    "theoremCount": 12,
-    "definitionCount": 4
+    "theoremCount": 18,
+    "definitionCount": 5
   },
   "overview": {
     "historicalContext": "**Normalization identities for the counting operator.** In the Gowers-norm approach to Roth's and Szemerédi's theorems the central objects are the Gowers U^s uniformity norm ‖f‖_{U^s} and the normalized k-term arithmetic-progression count Λ_k(f₀,…,f_{k-1}) = E_{x,d ∈ ZMod N} ∏ᵢ fᵢ(x + i·d). Before any density-increment or generalized von Neumann argument can run, one needs the base identities that certify these are genuine normalized averages: constants map to powers, the all-ones tuple has count 1, a zero slot kills the count, and the norm of 0 is 0. The parent file `RothTheoremOQ03` defined the operators but recorded no algebraic properties; this entry supplies those foundational checks, fully machine-checked.",
@@ -142,10 +142,10 @@
       "BigOperators"
     ],
     "namespace": "RothTheoremOQ03OQ01",
-    "lineCount": 354,
+    "lineCount": 522,
     "axiomCount": 0,
-    "theoremCount": 12,
-    "definitionCount": 4,
+    "theoremCount": 18,
+    "definitionCount": 5,
     "path": "Proofs/RothTheoremOQ03OQ01.lean",
     "sorries": 0
   },

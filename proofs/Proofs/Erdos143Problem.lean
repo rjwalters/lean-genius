@@ -34,10 +34,6 @@ Co-authored-by: Aristotle (Harmonic) <aristotle-harmonic@harmonic.fun>
 
 import Mathlib
 
-
-/- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
-
-Unexpected axioms were added during verification: ['Erdos143.kll_theorem', 'harmonicSorry781341', 'Erdos143.well_separated_integers_primitive', 'Erdos143.erdos_1935_primitive']-/
 open Filter Set
 
 open scoped Topology
@@ -68,11 +64,14 @@ def Conjecture_i (A : Set ℝ) : Prop :=
 def Conjecture_ii (A : Set ℝ) : Prop :=
   Summable fun (x : A) => 1 / ((x : ℝ) * Real.log x)
 
+/-- The partial reciprocal sum ∑_{x∈A, 1<x<n} 1/x. Uses `finsum`, which is `0`
+    when the support is not finite, so it is well-defined for any `A : Set ℝ`. -/
+noncomputable def reciprocalPartialSum (A : Set ℝ) (n : ℝ) : ℝ :=
+  ∑ᶠ x ∈ (A ∩ Set.Ioo 1 n), 1 / x
+
 /-- **Conjecture (iii)**: The partial reciprocal sum is o(log n). STATUS: SOLVED -/
 def Conjecture_iii (A : Set ℝ) : Prop :=
-  ∀ ε > 0, ∃ N₀ : ℝ, ∀ n ≥ N₀, ∀ (partialSum : ℝ),
-    -- partialSum represents ∑_{x∈A, x<n} 1/x
-    partialSum ≤ ε * Real.log n
+  ∀ ε > 0, ∃ N₀ : ℝ, ∀ n ≥ N₀, reciprocalPartialSum A n ≤ ε * Real.log n
 
 /- ## Main Results -/
 

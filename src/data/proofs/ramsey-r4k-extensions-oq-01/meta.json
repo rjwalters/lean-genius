@@ -120,6 +120,13 @@
   },
   "sections": [
     {
+      "id": "preamble",
+      "title": "Module header, imports, and Part I setup",
+      "startLine": 1,
+      "endLine": 41,
+      "summary": "Module docstring positioning the file as Erdős (1947), the first application of the probabilistic method to Ramsey theory, and stating the counting form of the main criterion 2·C(n,k) < 2^C(k,2) ⇒ R(k,k) > n. Notes that the argument lives entirely in a finite counting space — no measure theory — so it is fully machine-checked, and that it de-axiomatizes `erdos_probabilistic_lower_bound` (previously an `axiom` in Proofs/RamseyR4kExtensions.lean). `import Mathlib`, `namespace ErdosRamsey`, `open Finset`, and the Part I header framing colourings as functions `c : E → Bool` over an abstract finite edge type E."
+    },
+    {
       "id": "counting-core",
       "title": "The abstract first-moment counting lemma",
       "startLine": 42,
@@ -137,7 +144,7 @@
       "id": "diagonal-bound",
       "title": "The classical R(k,k) > 2^(k/2) bound",
       "startLine": 244,
-      "endLine": 326,
+      "endLine": 329,
       "summary": "erdos_diagonal_numeric is the elementary ℕ estimate that n ≤ 2^⌊k/2⌋ implies 2·C(n,k) < 2^C(k,2) for k ≥ 3. erdos_probabilistic_lower_bound assembles the headline result, exactly matching the statement axiomatized in the parent RamseyR4kExtensions file, now with 0 axioms."
     }
   ],
@@ -198,6 +205,16 @@
       "targetId": "ramsey-r4k-oq-01",
       "relationship": "related",
       "description": "Sibling: off-diagonal R(4,k) = Θ(k³/(log k)^c) bounds (AKS upper, Mattheus-Verstraëte lower)"
+    },
+    {
+      "targetId": "prob-method-applications-wip-01",
+      "relationship": "related",
+      "description": "The abstract first-moment engine of which this R(k,k) > 2^{k/2} bound is the flagship instance: that entry proves the union-bound existence principle and a general Ramsey-style avoidance theorem (|cliques|·2^{|E|−m+1} < 2^{|E|} ⇒ a colouring with no monochromatic block exists), which specialises to exactly the counting argument formalized here."
+    },
+    {
+      "targetId": "prob-method-expectation",
+      "relationship": "related",
+      "description": "The first-moment / expectation principle underlying this proof: Erdős's 1947 bound is the founding application of the probabilistic method, obtained by showing the expected number of monochromatic K_k in a random 2-colouring is < 1 when n < 2^{k/2}."
     }
   ],
   "sorries": 0,

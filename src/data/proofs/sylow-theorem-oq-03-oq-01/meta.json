@@ -95,6 +95,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header, Overview, and Setup",
+      "startLine": 1,
+      "endLine": 59,
+      "summary": "Imports (SchurZassenhaus, Complement, GroupAction) and the docstring framing: the parent sylow-theorem-oq-03 formalizes the existence half (Mathlib's Subgroup.exists_right_complement'_of_coprime), and this file proves the conjugacy half's abelian base case — if N ⊴ G is abelian, finite, with order coprime to its index, any two complements are N-conjugate — the engine of the full solvable result by induction along a chief series. Sketches the four-step outline (complementTransversal → le_stabilizer_complementPoint → stabilizer = K → conjugacy via exists_smul_eq) over Mathlib's abelian transfer machinery (QuotientDiff, exists_smul_eq), lists the main results, enters namespace SchurZassenhausConjugacy, opens Subgroup/MulAction/MulOpposite/Pointwise, and declares variables {G} [Group G] {N K K₁ K₂}.",
+      "mathContext": "Existence half: N ⊴ G, gcd(|N|,[G:N])=1 ⟹ ∃ complement K (G = N ⋊ K). Conjugacy half (abelian N): any two complements are conjugate by an element of N."
+    },
+    {
       "id": "transversal",
       "title": "Section I: Complements as Points of QuotientDiff",
       "startLine": 60,
@@ -106,7 +114,7 @@
       "id": "conjugacy",
       "title": "Section II: Stabilizer = Complement, and Conjugacy",
       "startLine": 94,
-      "endLine": 139,
+      "endLine": 141,
       "summary": "stabilizer_complementPoint_eq upgrades the inclusion to equality by a cardinality argument (the stabilizer is also a complement, so both have order [G:N]). isComplement'_conj_of_isMulCommutative combines transitivity of the N-action (exists_smul_eq) with stabilizer_smul_eq_stabilizer_map_conj to conjugate any two complements by an element of N. exists_and_conj packages this with Mathlib's existence half.",
       "mathContext": "Every complement is a point-stabilizer; transitivity of the orbit makes all complements N-conjugate, so they form a single conjugacy class."
     }

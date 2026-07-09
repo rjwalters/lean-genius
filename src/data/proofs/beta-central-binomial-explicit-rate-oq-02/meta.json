@@ -47,6 +47,14 @@
   },
   "sections": [
     {
+      "id": "module-header-and-setup",
+      "title": "Module Header, Imports & Setup",
+      "startLine": 1,
+      "endLine": 75,
+      "summary": "Imports (Mathlib plus the parent Proofs.BetaCentralBinomialExplicitRate), the module docstring, and the open/namespace setup (open Filter Asymptotics, open scoped Topology Real Nat, namespace BetaDiagSecondOrder, open Stirling). The docstring frames the OQ-02 question — does the parent's first-order rate q n = 1 + O(1/n) extend to a genuine machine-checked asymptotic expansion log q n = c₁/n + c₂/n² + ⋯? — and states the answers proved: the sharp Stirling log-deviation bracket 1/(12j) − 1/(12j²) ≤ log stirlingSeq(j) − log√π ≤ 1/(12j), the second-order result |log q n − 1/(8n)| ≤ 1/(6n²) (so c₁ = 1/8), and the third-order sharpening to ≤ 1/(72n³) proving c₂ = 0. It also describes the engine: Mathlib's exact per-step series log_stirlingSeq_diff_hasSum, bounded two-sidedly and telescoped, fed through log q n = 2·S(n) − S(2n).",
+      "mathContext": "Target expansion $\\log q(n) = \\tfrac{1}{8n} + O(1/n^3)$ with $c_2 = 0$; engine is the exact series $\\log s(m{+}1) - \\log s(m{+}2) = \\sum_{k\\ge0}\\tfrac{1}{2k+3}x^{2k+2}$, $x = \\tfrac{1}{2m+3}$."
+    },
+    {
       "id": "sharp-per-step-bounds",
       "title": "Sharp Per-Step Bounds from the Exact Stirling Series",
       "startLine": 76,
@@ -71,7 +79,7 @@
       "id": "third-order-vanishing",
       "title": "The 1/n² Coefficient Vanishes: c₂ = 0",
       "startLine": 402,
-      "endLine": 593,
+      "endLine": 597,
       "summary": "diff_lower_cubic sharpens the lower per-step bound with a cubic telescoping correction (the inequality collapsing to 0 ≤ 7·t(t+1)+1); tel_cubic telescopes it; stirlingLogDev_lower_cubic and stirlingLogDev_bracket_cubic yield the cubic deviation bracket 1/(12j) − 1/(144 j³) ≤ S(j) ≤ 1/(12j), one order sharper on the lower side. correction_log_third_order then proves |log q(n) − 1/(8n)| ≤ 1/(72 n³): the 1/n² contributions cancel, so c₂ = 0. correction_log_isBigO_third_order gives the Landau form =O[atTop](1/n³) with constant 1/72."
     }
   ],

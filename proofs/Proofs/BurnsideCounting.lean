@@ -427,3 +427,184 @@ theorem binary_necklaces_4 :
       = Fintype.card (Quotient (AddAction.orbitRel (ZMod 4) (Coloring 4 2))) :=
         Fintype.card_congr (Equiv.refl _)
     _ = 6 := by omega
+
+/-! ## Part V: A Reusable Necklace-Count Engine
+
+The `binary_necklaces_4` proof hard-codes the Burnside orbit-count step for
+`(n, k) = (4, 2)`.  The lemma below factors out that step for **arbitrary**
+length `n ≥ 1` and palette size `k`: given the fixed-point sum
+`∑_{a : ZMod n} |Fix a|`, it returns `|necklaces| · n`.  Any concrete necklace
+count then reduces to evaluating one finite sum (by `decide`) and a single
+`omega`, with no `native_decide` and no `Lean.ofReduceBool` dependency.  As a
+demonstration we count the binary necklaces of length 3. -/
+
+/-- **General necklace-count engine.**  For any length `n ≥ 1` and palette
+    size `k`, the additive Burnside identity specializes to
+    `∑_{a : ZMod n} |Fix a| = |necklaces| · n`, where `|necklaces|` is the
+    number of rotation orbits of `Coloring n k` (counted with the computable
+    `coloringQuotientFintype`).  This packages the fixed-point-sum ⟹
+    orbit-count step so that any concrete `(n, k)` is a one-line corollary.
+
+    The proof is Mathlib's additive Burnside lemma
+    `AddAction.sum_card_fixedBy_eq_card_orbits_mul_card_addGroup` composed with
+    the `fixedBy ≃ {c // IsFixedByRotation}` bridge (defeq) and `|ZMod n| = n`;
+    it is kernel-checked with no native evaluation. -/
+theorem sum_fixedBy_eq_card_necklaces_mul (n k : ℕ) [NeZero n] :
+    (∑ a : ZMod n, Fintype.card { c : Coloring n k // IsFixedByRotation a c })
+      = @Fintype.card (Quotient (@coloringSetoid n k _))
+          (coloringQuotientFintype n k) * n := by
+  -- Pin BOTH quotient forms (goal's `coloringSetoid`, Burnside's `orbitRel`)
+  -- to the same computable instance so every `Fintype.card` agrees.
+  letI : Fintype (Quotient (@coloringSetoid n k _)) := coloringQuotientFintype n k
+  letI : Fintype (Quotient (AddAction.orbitRel (ZMod n) (Coloring n k))) :=
+    coloringQuotientFintype n k
+  have hb := AddAction.sum_card_fixedBy_eq_card_orbits_mul_card_addGroup
+    (ZMod n) (Coloring n k)
+  -- `fixedBy (Coloring n k) a` and `{c // IsFixedByRotation a c}` are defeq.
+  have hbridge : ∀ a : ZMod n,
+      Fintype.card (AddAction.fixedBy (Coloring n k) a) =
+        Fintype.card { c : Coloring n k // IsFixedByRotation a c } := fun a =>
+    Fintype.card_congr (Equiv.subtypeEquivRight fun _ => Iff.rfl)
+  have hcard : Fintype.card (ZMod n) = n := ZMod.card n
+  simp only [hbridge] at hb
+  rw [hcard] at hb
+  calc (∑ a : ZMod n, Fintype.card { c : Coloring n k // IsFixedByRotation a c })
+      = Fintype.card (Quotient (AddAction.orbitRel (ZMod n) (Coloring n k))) * n := hb
+    _ = @Fintype.card (Quotient (@coloringSetoid n k _))
+          (coloringQuotientFintype n k) * n := rfl
+
+/-- The fixed-point sum for binary 3-necklaces.
+    - |Fix(0)| = 8 (identity fixes all `2^3` colorings)
+    - |Fix(1)| = 2 (only the two constant colorings have period 1)
+    - |Fix(2)| = 2 (same as rotation by 1)
+    Sum = 12.  Kernel-evaluated by `decide` (each `IsFixedByRotation r` is
+    decidable and `Coloring 3 2 = Fin 3 → Fin 2` is finite). -/
+theorem fixed_point_sum_binary_3 :
+    Fintype.card { c : Coloring 3 2 // IsFixedByRotation 0 c } +
+    Fintype.card { c : Coloring 3 2 // IsFixedByRotation 1 c } +
+    Fintype.card { c : Coloring 3 2 // IsFixedByRotation 2 c } = 12 := by
+  decide
+
+/-- **Binary Necklaces of Length 3**: there are exactly 4 distinct binary
+    necklaces of length 3.  The rotation classes of `Coloring 3 2` are
+    `{000}`, `{001, 010, 100}`, `{011, 110, 101}`, `{111}`.
+
+    Mathematically this is Burnside's lemma: `(8 + 2 + 2) / 3 = 4`.  Derived
+    from the general engine `sum_fixedBy_eq_card_necklaces_mul`: the
+    fixed-point sum is `12` (kernel-`decide`) and `12 = |necklaces| * 3`, so
+    `|necklaces| = 4` by `omega`.  No quotient enumeration, no
+    `native_decide`. -/
+theorem binary_necklaces_3 :
+    @Fintype.card (Quotient (@coloringSetoid 3 2 _))
+      (coloringQuotientFintype 3 2) = 4 := by
+  have h := sum_fixedBy_eq_card_necklaces_mul 3 2
+  rw [show (∑ a : ZMod 3,
+      Fintype.card { c : Coloring 3 2 // IsFixedByRotation a c }) = 12 from by decide] at h
+  omega
+
+/-! ## Part VI: The Primitive-Rotation Fixed-Point Count
+
+The concrete facts `|Fix(1)| = |Fix(3)| = 2` used in `fixed_point_sum_binary_4`
+are the `(n, k) = (4, 2)` instances of a general theorem: when the rotation
+amount `r` is a **unit** of `ZMod n` (equivalently `gcd(r, n) = 1`, i.e. `r`
+generates the cyclic group), the only colorings fixed by `r` are the constant
+ones, so `|Fix(r)| = k`.  This is the `gcd = 1` case of the classical necklace
+fixed-point formula `|Fix(r)| = k ^ gcd(r, n)`; it feeds the general engine
+`sum_fixedBy_eq_card_necklaces_mul` and evaluates the primitive-rotation fixed
+sets with no `decide` cost. -/
+
+/-- Iterating a fixed rotation: if `c` is fixed by `r` then it is fixed by every
+    natural multiple `m • r`.  Proof by induction on `m` using only the
+    `AddAction` axioms (`zero_vadd`, `add_vadd`). -/
+theorem isFixed_nsmul {n k : ℕ} [NeZero n] {r : ZMod n} {c : Coloring n k}
+    (h : r +ᵥ c = c) : ∀ m : ℕ, (m • r) +ᵥ c = c := by
+  intro m
+  induction m with
+  | zero => rw [zero_nsmul, zero_vadd]
+  | succ m ih => rw [succ_nsmul, add_vadd, h, ih]
+
+/-- A coloring fixed by the rotation `1` is constant: rotation by `1` sends
+    position `i` to `i - 1`, so `c(i) = c(i-1)` for every `i`; iterating around
+    the `n`-cycle forces every position to agree with position `0`. -/
+theorem isConstant_of_isFixedByRotation_one {n k : ℕ} [NeZero n]
+    {c : Coloring n k} (h : IsFixedByRotation (1 : ZMod n) c) : IsConstant c := by
+  have hn : 0 < n := NeZero.pos n
+  have h' : rotateColoring n k 1 c = c := h
+  suffices hbase : ∀ m (hm : m < n), c ⟨m, hm⟩ = c ⟨0, hn⟩ by
+    intro i j
+    calc c i = c ⟨i.val, i.isLt⟩ := by rw [Fin.eta]
+      _ = c ⟨0, hn⟩ := hbase i.val i.isLt
+      _ = c ⟨j.val, j.isLt⟩ := (hbase j.val j.isLt).symm
+      _ = c j := by rw [Fin.eta]
+  rcases eq_or_ne n 1 with hn1 | hn1
+  · -- `n = 1`: only position `0` exists.
+    intro m hm
+    have : m = 0 := by omega
+    subst this
+    rfl
+  · haveI : Fact (1 < n) := ⟨by omega⟩
+    have hv1 : (1 : ZMod n).val = 1 := ZMod.val_one n
+    intro m
+    induction m with
+    | zero => intro hm; rfl
+    | succ m ih =>
+      intro hm
+      -- Rotation by `1` sends position `m + 1` to position `m`.
+      have hrot : rotatedIndex n 1 ⟨m + 1, hm⟩ = ⟨m, by omega⟩ := by
+        apply Fin.ext
+        simp only [rotatedIndex, Fin.val_mk, hv1]
+        have h1n : 1 % n = 1 := Nat.mod_eq_of_lt (by omega)
+        rw [h1n]
+        have he : (m + 1) + n - 1 = m + n := by omega
+        rw [he, Nat.add_mod_right, Nat.mod_eq_of_lt (by omega : m < n)]
+      have step : c ⟨m, by omega⟩ = c ⟨m + 1, hm⟩ := by
+        have hi := congrFun h' ⟨m + 1, hm⟩
+        rw [show rotateColoring n k 1 c ⟨m + 1, hm⟩
+              = c (rotatedIndex n 1 ⟨m + 1, hm⟩) from rfl, hrot] at hi
+        exact hi
+      rw [← step]
+      exact ih (by omega)
+
+/-- **Unit rotations fix only constant colorings.**  For a unit `r : ZMod n`
+    (equivalently `gcd(r, n) = 1`), a coloring is fixed by rotation by `r` iff it
+    is constant.  The forward direction promotes "fixed by `r`" to "fixed by
+    `1`" — since some multiple `m • r = 1` when `r` is a unit — and then applies
+    `isConstant_of_isFixedByRotation_one`; the reverse direction is immediate
+    because constant colorings are fixed by every rotation. -/
+theorem isFixedByRotation_unit_iff_isConstant {n k : ℕ} [NeZero n]
+    {r : ZMod n} (hr : IsUnit r) (c : Coloring n k) :
+    IsFixedByRotation r c ↔ IsConstant c := by
+  constructor
+  · intro hc
+    obtain ⟨u, rfl⟩ := hr
+    have hc' : (↑u : ZMod n) +ᵥ c = c := hc
+    obtain ⟨m, hm⟩ : ∃ m : ℕ, (m : ZMod n) = (↑u⁻¹ : ZMod n) :=
+      ⟨(↑u⁻¹ : ZMod n).val, ZMod.natCast_rightInverse _⟩
+    have key : (m • (↑u : ZMod n)) = 1 := by
+      rw [nsmul_eq_mul, hm, ← Units.val_mul, inv_mul_cancel, Units.val_one]
+    have h1 : (1 : ZMod n) +ᵥ c = c := by
+      have hfix := isFixed_nsmul hc' m
+      rwa [key] at hfix
+    exact isConstant_of_isFixedByRotation_one h1
+  · intro hconst
+    show r +ᵥ c = c
+    funext i
+    show rotateColoring n k r c i = c i
+    exact hconst _ i
+
+/-- **Primitive-rotation fixed-point count.**  For any length `n ≥ 1`, palette
+    size `k`, and unit rotation `r : ZMod n` (i.e. `gcd(r, n) = 1`), the number
+    of colorings fixed by `r` is exactly `k` — the `k` constant colorings.  This
+    is the `gcd = 1` case of `|Fix(r)| = k ^ gcd(r, n)` and generalizes the
+    hard-coded `|Fix(1)| = |Fix(3)| = 2` used for binary `4`-necklaces. -/
+theorem fixedBy_card_of_isUnit {n k : ℕ} [NeZero n] {r : ZMod n} (hr : IsUnit r) :
+    Fintype.card { c : Coloring n k // IsFixedByRotation r c } = k := by
+  rw [Fintype.card_congr
+    (Equiv.subtypeEquivRight (isFixedByRotation_unit_iff_isConstant hr))]
+  exact constant_coloring_count n k
+
+/-- Cross-check: for binary `4`-necklaces the primitive rotation by `1` fixes
+    exactly the `2` constant colorings, recovering the `|Fix(1)| = 2` entry of
+    `fixed_point_sum_binary_4` from the general formula. -/
+example : Fintype.card { c : Coloring 4 2 // IsFixedByRotation 1 c } = 2 :=
+  fixedBy_card_of_isUnit isUnit_one

@@ -78,3 +78,50 @@ unchanged); gallery `erdos-1090/meta.json` line/thm synced in both leanFile & me
 
 Remaining next-steps unchanged: SylvesterGallai/HellyProperty still DEFS; quantitative
 `ramseyNumber k` upper bound; projection-body dedup (3 verified copies, left as-is).
+
+## Session 2026-07-08 (researcher-1): helly_planar — proved the HellyProperty placeholder
+
+**Mode**: ACT (look-outward on SOLVED). **Outcome**: progress, 0-axiom. Converted one of the
+two never-proved DEF placeholders (`HellyProperty`) into an established theorem.
+- `helly_planar : HellyProperty 2`. `HellyProperty d` over the FIXED plane `Point = ℝ²` is
+  only honest at `d = finrank ℝ Point = 2` (classical planar Helly number `d+1 = 3`): every
+  finite family of ≥3 convex sets whose every 3-element subfamily meets has a common point.
+- Proof = specialize Mathlib `Convex.helly_theorem_set` (Analysis/Convex/Radon.lean) to
+  `finrank ℝ ℝ² = 2` (`finrank_euclideanSpace_fin`, discharged by `simp [Point]`). Only two
+  bridges needed: the entry writes `⋂ S ∈ F, S` where Mathlib writes `⋂₀ (F : Set _)` —
+  both directions close by `ext x; simp`. Added `import Mathlib.Analysis.Convex.Radon`.
+- Sylvester–Gallai is NOT in Mathlib (grep empty), so the `SylvesterGallai` def stays a
+  placeholder — proving it is a from-scratch multi-hundred-line undertaking, out of session scope.
+
+File 751→777 lines, 15→16 theorems (defs 18 unchanged), 0 sorry / 0 axiom. Host `lake env lean`
+EXIT 0; `#print axioms helly_planar = [propext, Classical.choice, Quot.sound]` (no sorryAx / no
+ofReduceBool). Gallery meta.json line/thm synced in both .meta and leanFile blocks; Radon import added.
+
+Remaining next-steps: `SylvesterGallai` still a placeholder DEF (needs a from-scratch Mathlib
+proof — not currently available); quantitative `ramseyNumber k` UPPER bound (only lower bound
+≥ k proved; the HJ construction gives |A| ≤ k^|ι| but ι from Mathlib HJ is non-explicit);
+projection-body dedup (3 verified copies, left as-is).
+
+## Session 2026-07-08 (researcher-3): realizable cardinalities = full ray [R(k),∞)
+
+**Mode**: ACT (look-outward on SOLVED). **Outcome**: progress, 0-axiom. Added a complete
+characterization of which finite-set *sizes* admit the Ramsey property.
+- `instance : Infinite Point` — the plane ℝ² is infinite (reused the `EuclideanSpace.single`
+  injection idiom from `Erdos105OQ01.lean`; needs the `have hb : … := h` beta-reduction
+  intermediate before `rw`, else the redex `(fun a => single a) a` blocks the rewrite).
+- `exists_hasRamseyProperty_card_eq (hk : k≥3) (hn : ramseyNumber k ≤ n)`: **padding** — every
+  size ≥ R(k) is realizable. Take the extremal witness (`exists_hasRamseyProperty_card_eq_ramseyNumber`,
+  from #36101) and `Nat.le_induction` up, inserting a fresh plane point each step
+  (`Infinite.exists_notMem_finset`), Ramsey property preserved by `hasRamseyProperty_mono`.
+- `hasRamseyProperty_realizable_card_iff (hk : k≥3) (n)`: **∃ A, |A|=n ∧ HasRamseyProperty A k ↔
+  R(k) ≤ n**. Forward = `ramseyNumber_le_of_hasRamseyProperty`; reverse = the padding lemma.
+  Pins the realizable-size set down as *exactly* the up-set [R(k),∞) — the property is not a
+  knife-edge at the threshold, it persists for all larger cardinalities with no gaps.
+
+File 805→850 lines, 18→20 theorems (defs 18 unchanged; the new `instance` is not counted in
+definitionCount per the auditor convention def+abbrev+structure). Docker build EXIT 0, 0 sorry /
+0 axiom. Gallery `erdos-1090/meta.json` line/thm synced in both .meta and .leanFile blocks.
+
+Remaining next-steps unchanged: `SylvesterGallai` still a placeholder DEF (not in Mathlib,
+from-scratch); quantitative `ramseyNumber k` UPPER bound in closed form (HJ ι non-explicit);
+projection-body dedup (3 verified copies, left as-is).

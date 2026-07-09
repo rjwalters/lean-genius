@@ -41,6 +41,14 @@
   },
   "sections": [
     {
+      "id": "module-header-and-setup",
+      "title": "Module Header & Graded Setup",
+      "startLine": 1,
+      "endLine": 63,
+      "summary": "Imports (graded algebra / graded modules / direct-sum decomposition), the module docstring, and the graded typeclass setup. The docstring states the open question inherited from the parent nakayama-lemma-oq-01: the graded analogue of Nakayama, R₊ M = M ⟹ M = 0 for the irrelevant ideal R₊ = ⨁_{i>0} Rᵢ. It explains why the graded case is *both* free of the finite-generation hypothesis and stronger than the local form: instead of the determinant/Jacobson-radical trick, a one-line minimal-degree argument (take the least degree d carrying a nonzero element x; x ∈ R₊ M writes x as a sum of degree-shifted products landing below d, all of which vanish by minimality — contradiction). The variable block fixes an internally ℕ-graded ring 𝒜 : ℕ → σA (GradedRing 𝒜) and an internal graded module 𝓜 : ℕ → σM over it (SetLike.GradedSMul 𝒜 𝓜 with DirectSum.Decomposition 𝓜), with graded pieces as additive submonoids.",
+      "mathContext": "Graded Nakayama: for $R = \\bigoplus_{i\\ge0} R_i$ and $M = \\bigoplus_n M_n$, if $R_+ M = M$ with $R_+ = \\bigoplus_{i>0}R_i$ the irrelevant ideal, then $M = 0$. Uses only $R_i \\cdot M_e \\subseteq M_{i+e}$ and the least nonzero degree."
+    },
+    {
       "id": "projection",
       "title": "The additive degree-d projection",
       "startLine": 64,

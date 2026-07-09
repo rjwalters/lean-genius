@@ -26,8 +26,8 @@
   },
   "currentState": {
     "phase": "SOLVED",
-    "since": "2026-06-25T21:00:00.000Z",
-    "iteration": 2,
+    "since": "2026-07-08T00:00:00.000Z",
+    "iteration": 4,
     "focus": "Solved as a verified, axiom-free reduction with an unconditional linear-polynomial validation.",
     "blockers": [],
     "nextAction": "Prove (B1)-(B3) for general polynomials to upgrade the reduction to an unconditional result.",
@@ -43,21 +43,29 @@
       "upper_bound_core / parity_core: omega-closed reduction skeleton over N (axiom-free)",
       "SturmReduction structure bridging Sturm's variation count to Descartes' coefficient sign-change count",
       "descartes_upper_bound_via_sturm, descartes_parity_via_sturm, descartes_rule_via_sturm",
-      "linear_positiveRoots, linear_sturm_count, linearReduction, linear_descartes_bound (axiom-free linear validation)"
+      "linear_positiveRoots, linear_sturm_count, linearReduction, linear_descartes_bound (axiom-free linear validation)",
+      "countSignChanges_three_mid_zero_pos / _zero: Fin 3 middle-zero sign-change counts (axiom-free), generalising countSignChanges_two",
+      "x2_minus_1_signChanges, x2_plus_1_signChanges: axiom-free evaluations discharging the base file's two quadratic sign-change axioms",
+      "countSignChanges_three_alternating (r7): both adjacent pairs opposite => count 2 (the maximal Fin 3 count, unreachable with a zero middle) — axiom-free",
+      "countSignChanges_three_mid_ne_left / _mid_ne_right (r7): exactly one adjacent pair opposite (nonzero middle) => count 1 — axiom-free",
+      "countSignChanges_three_mid_ne_zero (r7): nonzero middle, neither adjacent pair opposite => count 0 — axiom-free; the four nonzero-middle lemmas + the middle-zero pair complete the Fin 3 count for every length-3 real sequence",
+      "x2_minus_x_plus_1_signChanges (r7): axiom-free evaluation signChangesInCoeffs (X^2 - X + 1) = 2 (coefficient sequence [1,-1,1]) — the first count-2 (Descartes-tight) quadratic validation"
     ],
     "insights": [
       "The entire 'exact count => bound + parity' content reduces to two omega lemmas once the count is written as a non-increasing difference hi - lo; the inequality and the parity fall out of upper_bound_core and parity_core respectively.",
       "Isolating Sturm's theorem and the classical comparison estimates as explicit hypotheses in a SturmReduction structure makes the general implication transparently conditional (a reduction), keeping the descent to Descartes pure combinatorics.",
       "The bridge structure is inhabitable: for linear factors X - c the three comparison facts trivialise to 1 <= 1, Even 0, Even 0, giving an end-to-end axiom-free instance via linearReduction.",
-      "Gallery base file DescartesRuleOfSigns.lean had rotted against Mathlib 4.26.0 (Polynomial.card_roots_le_degree removed; Fin.castSucc_lt_succ arg now implicit; Multiset.countP_le_card needs explicit multiset) and required repair before any dependent could build."
+      "Gallery base file DescartesRuleOfSigns.lean had rotted against Mathlib 4.26.0 (Polynomial.card_roots_le_degree removed; Fin.castSucc_lt_succ arg now implicit; Multiset.countP_le_card needs explicit multiset) and required repair before any dependent could build.",
+      "The base file's axiomatised concrete counts (example_x2_minus_1_sign_changes = 1, example_x2_plus_1_sign_changes = 0) are removable: with a Fin 3 middle-zero sign-change lemma the coefficient sequences [1,0,-1] and [1,0,1] are counted axiom-free (natDegree via compute_degree!, coefficients via simp on coeffSequence/coeff_X_pow/coeff_one).",
+      "The full Fin 3 sign-change count is governed by the two ADJACENT pairs: count = [f0*f1<0] + [f1*f2<0] whenever the middle f1 is nonzero (the jump-over pair (0,2) is impossible once f1 != 0). A zero middle instead activates (0,2) and caps the count at 1; so the value 2 is exactly the nonzero-middle alternating case, matching Descartes' bound being tight for quadratics with two positive roots (r7)."
     ],
     "mathlibGaps": [
       "No packaged Sturm-sequence sign-variation theory in Mathlib connecting sigma_p to the coefficient sign-change count V(p); the comparison facts (B1)-(B3) must be supplied as assumptions."
     ],
     "nextSteps": [
-      "Prove (B1) sigma_p(0) <= V(p), (B2) Even(V(p) - sigma_p(0)), (B3) Even(sigma_p(B)) for general polynomials.",
-      "Extend the linear validation to split polynomials prod (X - c_i) with distinct positive roots.",
-      "Adapt the reduction skeleton to recover the Budan-Fourier theorem on arbitrary intervals [a, b]."
+      "Relocate the Fin 3 helpers into the base file DescartesRuleOfSigns.lean and replace its two example_x2_*_sign_changes axiom declarations with theorems (the proofs now exist in this entry).",
+      "Generalise to a full Fin 3 sign-change count (arbitrary nonzero middle term) for quadratics aX^2+bX+c with b != 0.",
+      "Prove (B1)-(B3) for general polynomials to make the general Sturm => Descartes implication unconditional."
     ]
   },
   "tags": [

@@ -3,38 +3,6 @@
   "title": "The Lindström-Gessel-Viennot Lemma",
   "slug": "combinations-formula-oq-01-oq-04",
   "description": "The LGV Lemma: determinants of binomial coefficient matrices count non-intersecting lattice path tuples, unifying classical combinatorial identities.",
-  "references": [
-    {
-      "authors": "Bernt Lindström",
-      "title": "On the Vector Representations of Induced Matroids (Bulletin of the London Mathematical Society 5)",
-      "year": 1973,
-      "note": "The determinant/non-intersecting-paths lemma, later named after Lindström, Gessel and Viennot."
-    },
-    {
-      "authors": "Ira Gessel and Gérard Viennot",
-      "title": "Binomial Determinants, Paths, and Hook Length Formulae (Advances in Mathematics 58)",
-      "year": 1985,
-      "note": "The combinatorial theory of binomial-coefficient determinants counting non-intersecting lattice paths, formalized here."
-    },
-    {
-      "authors": "Samuel Karlin and James McGregor",
-      "title": "Coincidence Probabilities (Pacific Journal of Mathematics 9)",
-      "year": 1959,
-      "note": "An early probabilistic form of the non-intersecting-path determinant identity."
-    },
-    {
-      "authors": "Martin Aigner and Günter M. Ziegler",
-      "title": "Proofs from THE BOOK (6th ed.)",
-      "year": 2018,
-      "note": "Springer. The Lindström–Gessel–Viennot lemma and its unification of classical binomial identities."
-    },
-    {
-      "authors": "The mathlib Community",
-      "title": "Mathlib4: Matrix.det and Finset path/binomial infrastructure",
-      "year": 2024,
-      "note": "Determinant expansion and binomial-coefficient matrices used to state the lemma."
-    }
-  ],
   "meta": {
     "author": "Lean Genius Research Team",
     "date": "2026-05-04",
