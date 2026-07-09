@@ -101,6 +101,14 @@
   },
   "sections": [
     {
+      "id": "module-header-and-setup",
+      "title": "Module Header & Setup",
+      "startLine": 1,
+      "endLine": 63,
+      "summary": "The module docstring, imports, and namespace/setup. The docstring frames the entry as the tripartite 3-uniform (3-graph) counting layer for the Nagle–Rödl–Schacht (2006) counting lemma, companion to the graph counting infrastructure in SzemerediCounting.lean and the hypergraph regularity definitions in SzemerediHypergraphCore.lean. It enumerates everything proved with 0 axioms / 0 sorries: the exact e(F)=1 main-term identity e(H) = d·|α||β||γ|, the Cauchy–Schwarz cherry inequality e(H)² ≤ |α|·∑ deg², the exact e(F)=2 cherry enumeration ∑ deg², supersaturation (density forces cherries), and the defect-equals-degree-variance identity that upgrades the cherry inequality to an equality and characterizes when regularity is tight. It also states the honest open frontier: the full ε-regular counting lemma for patterns with e(F) ≥ 2 needs relative (Gowers/Rödl–Skokan) regularity, which is not attempted.",
+      "mathContext": "Tripartite 3-graph on parts $\\alpha,\\beta,\\gamma$ with adjacency $\\mathrm{adj}\\,a\\,b\\,c$; base-case counting identity $e(H) = d\\,|\\alpha||\\beta||\\gamma|$ and cherry inequality $e(H)^2 \\le |\\alpha|\\sum_a \\deg(a)^2$."
+    },
+    {
       "id": "tri3graph-edgecount",
       "title": "Part I — Tripartite 3-Graphs and Their Edge Count",
       "startLine": 64,
@@ -136,7 +144,7 @@
       "id": "structural",
       "title": "Part V — Structural Lemmas",
       "startLine": 212,
-      "endLine": 249,
+      "endLine": 269,
       "summary": "edgeCount_mono (count monotone in adjacency), and the extreme cases: complete/empty tripartite 3-graphs with edgeCount_complete = vertexTriples, edgeCount_empty = 0, density_empty = 0.",
       "mathContext": "$0 = e(\\text{empty}) \\le e(H) \\le e(\\text{complete}) = |\\alpha||\\beta||\\gamma|$."
     },
@@ -144,7 +152,7 @@
       "id": "supersaturation",
       "title": "Part VI — Supersaturation: Density Forces Cherries",
       "startLine": 270,
-      "endLine": 347,
+      "endLine": 358,
       "summary": "cherryCount_ge_edgeCount (trivial second-moment floor e(H) ≤ cherryCount), density_mul_le_edgeCount (base-term identity as a hypothesis-free inequality), and the density engine cherry_supersaturation / cherryCount_ge_density_sq: a fixed density d forces d²·|α|·(|β||γ|)² cherries, with no positivity side conditions.",
       "mathContext": "$d(H)^2\\,(|\\alpha||\\beta||\\gamma|)^2 \\le |\\alpha|\\cdot \\mathrm{cherryCount}(H)$."
     },
@@ -152,7 +160,7 @@
       "id": "defect-variance",
       "title": "Part VII — The Cauchy–Schwarz Defect is the Degree Variance",
       "startLine": 359,
-      "endLine": 444,
+      "endLine": 445,
       "summary": "sum_sq_sub_eq_two_mul_defect (Lagrange's identity ∑_{a,b}(f a − f b)² = 2(|α|∑ f² − (∑ f)²)) specialised to the degree sequence gives card_mul_cherryCount_sub_edgeCount_sq: |α|·cherryCount(H) − e(H)² = ½∑_{a,b}(deg a − deg b)². The deficit is a manifest sum of squares, so card_mul_cherryCount_eq_edgeCount_sq_iff characterises tightness of the cherry inequality as first-coordinate regularity (all α-degrees equal).",
       "mathContext": "$|\\alpha|\\cdot\\mathrm{cherryCount}(H) - e(H)^2 = \\tfrac12\\sum_{a,b}(\\deg a-\\deg b)^2 \\ge 0$, with equality iff $H$ is degree-regular."
     }
