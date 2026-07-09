@@ -206,4 +206,124 @@ theorem exists_extremal_geomSet (n : ℕ) (hn : 1 ≤ n) :
   exact ⟨geomSet n, card_geomSet n, geomSet_hasDistinctSubsetSums n,
     hne, max'_geomSet hn hne⟩
 
+/-!
+## Section 5: superincreasing sets — the structural principle behind the construction
+
+Section 4 shows the *specific* set `{2⁰, …, 2^{n-1}}` has distinct subset sums, via
+uniqueness of binary expansions (`geomSum_injective`). But that distinctness is an
+instance of a single structural principle: a set is **superincreasing** when every
+element exceeds the sum of all strictly smaller elements, and *every* superincreasing
+set has distinct subset sums (this is the mechanism underlying knapsack/Merkle–Hellman
+constructions). The powers of two are simply the slowest-growing superincreasing set
+(each `2ⁱ = (2⁰ + ⋯ + 2^{i-1}) + 1`, meeting the superincreasing inequality with the
+least possible slack), which is exactly why they minimise the maximum and sit on the
+upper wall `M(n) ≤ 2^{n-1}` of Section 4.
+
+The distinctness proof here is fully self-contained (no `geomSum_injective`): strong
+induction peeling the largest element `m`. If two subsets `S, T` have equal sums then
+either both or neither contain `m` (recurse on `A \ {m}`), or exactly one does — say
+`m ∈ S`, `m ∉ T` — but then `Σ T ≤ Σ(A ∩ [0,m)) < m ≤ Σ S`, a contradiction.
+-/
+
+/-- `A` is **superincreasing**: every element exceeds the sum of all strictly smaller
+    elements of `A`. Equivalently, sorting `A = {a₁ < ⋯ < aₙ}`, one has
+    `aₖ > a₁ + ⋯ + a_{k-1}` for every `k`. -/
+def Superincreasing (A : Finset ℕ) : Prop :=
+  ∀ a ∈ A, (A.filter (· < a)).sum id < a
+
+/-- Superincreasing is hereditary: erasing an element keeps the property. -/
+theorem Superincreasing.erase {A : Finset ℕ} (h : Superincreasing A) (m : ℕ) :
+    Superincreasing (A.erase m) := by
+  intro a ha
+  have haA : a ∈ A := mem_of_mem_erase ha
+  have hsub : (A.erase m).filter (· < a) ⊆ A.filter (· < a) :=
+    filter_subset_filter _ (erase_subset _ _)
+  exact lt_of_le_of_lt (sum_le_sum_of_subset hsub) (h a haA)
+
+/-- **Superincreasing ⟹ distinct subset sums.** The key structural principle: because
+    each element dominates the sum of everything below it, a subset is determined by
+    its sum. Proof by strong induction, peeling the largest element. -/
+theorem Superincreasing.hasDistinctSubsetSums {A : Finset ℕ}
+    (h : Superincreasing A) : HasDistinctSubsetSums A := by
+  revert h
+  induction A using Finset.strongInduction with
+  | _ A ih =>
+    intro h S T hS hT hST
+    rcases A.eq_empty_or_nonempty with hA | hA
+    · subst hA
+      rw [subset_empty] at hS hT
+      rw [hS, hT]
+    · set m := A.max' hA with hm
+      have hmA : m ∈ A := A.max'_mem hA
+      -- any subset of `A` avoiding the maximum has sum strictly below `m`
+      have hlt : ∀ U : Finset ℕ, U ⊆ A → m ∉ U → U.sum id < m := by
+        intro U hU hmU
+        have hUsub : U ⊆ A.filter (· < m) := by
+          intro x hx
+          rw [mem_filter]
+          have hxle : x ≤ m := A.le_max' x (hU hx)
+          have hxne : x ≠ m := fun hxm => hmU (hxm ▸ hx)
+          exact ⟨hU hx, by omega⟩
+        exact lt_of_le_of_lt (sum_le_sum_of_subset hUsub) (h m hmA)
+      by_cases hmS : m ∈ S
+      · by_cases hmT : m ∈ T
+        · -- both contain `m`: recurse on the erased subsets
+          have hSe : S.erase m ⊆ A.erase m := by
+            intro x hx; rw [mem_erase] at hx ⊢; exact ⟨hx.1, hS hx.2⟩
+          have hTe : T.erase m ⊆ A.erase m := by
+            intro x hx; rw [mem_erase] at hx ⊢; exact ⟨hx.1, hT hx.2⟩
+          have hsum : (S.erase m).sum id = (T.erase m).sum id := by
+            have hs := Finset.sum_erase_add S id hmS
+            have ht := Finset.sum_erase_add T id hmT
+            simp only [id_eq] at hs ht hST ⊢
+            omega
+          have := ih (A.erase m) (erase_ssubset hmA) (h.erase m)
+            (S.erase m) (T.erase m) hSe hTe hsum
+          rw [← Finset.insert_erase hmS, ← Finset.insert_erase hmT, this]
+        · -- `m ∈ S`, `m ∉ T`: sums cannot be equal
+          exfalso
+          have h1 : T.sum id < m := hlt T hT hmT
+          have h2 : m ≤ S.sum id := by
+            have := Finset.single_le_sum (f := id) (fun i _ => Nat.zero_le i) hmS
+            simpa using this
+          omega
+      · by_cases hmT : m ∈ T
+        · exfalso
+          have h1 : S.sum id < m := hlt S hS hmS
+          have h2 : m ≤ T.sum id := by
+            have := Finset.single_le_sum (f := id) (fun i _ => Nat.zero_le i) hmT
+            simpa using this
+          omega
+        · -- neither contains `m`: recurse on `A \ {m}`
+          have hSe : S ⊆ A.erase m := subset_erase.mpr ⟨hS, hmS⟩
+          have hTe : T ⊆ A.erase m := subset_erase.mpr ⟨hT, hmT⟩
+          exact ih (A.erase m) (erase_ssubset hmA) (h.erase m) S T hSe hTe hST
+
+/-- The powers-of-two set is superincreasing: `2ⁱ` exceeds the sum
+    `2⁰ + ⋯ + 2^{i-1} = 2ⁱ − 1` of all smaller elements. -/
+theorem geomSet_superincreasing (n : ℕ) : Superincreasing (geomSet n) := by
+  intro a ha
+  rw [mem_geomSet] at ha
+  obtain ⟨i, _, rfl⟩ := ha
+  have hsub : (geomSet n).filter (· < 2 ^ i) ⊆ geomSet i := by
+    intro x hx
+    rw [mem_filter, mem_geomSet] at hx
+    obtain ⟨⟨j, _, rfl⟩, hlt⟩ := hx
+    rw [mem_geomSet]
+    refine ⟨j, ?_, rfl⟩
+    by_contra hji
+    push_neg at hji
+    exact absurd hlt (by simpa using Nat.pow_le_pow_right (by norm_num) hji)
+  have hpos : 0 < 2 ^ i := pow_pos (by norm_num) i
+  calc ((geomSet n).filter (· < 2 ^ i)).sum id
+      ≤ (geomSet i).sum id := sum_le_sum_of_subset hsub
+    _ = 2 ^ i - 1 := sum_geomSet i
+    _ < 2 ^ i := by omega
+
+/-- The Section 4 distinctness of the powers-of-two set is subsumed by the general
+    superincreasing principle: `geomSet_hasDistinctSubsetSums` also follows from
+    `geomSet_superincreasing` alone, with no appeal to `geomSum_injective`. -/
+example (n : ℕ) : HasDistinctSubsetSums (geomSet n) :=
+  (geomSet_superincreasing n).hasDistinctSubsetSums
+
 end Erdos1OQ02OQ01
