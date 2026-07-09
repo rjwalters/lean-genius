@@ -229,4 +229,79 @@ theorem edgeThreshold_le_succ_right (n k : ℕ) (h1 : k + 2 ≤ n) (h2 : n ≤ 2
   have hrec := edgeThreshold_succ_right n k h1
   omega
 
+/-! ## Connecting the `n`-recurrence to the parent's boundary difference
+
+The parent `Erdos1012OQ01.threshold_diff` records the jump across the Woodall boundary
+`n = 2k+2 → 2k+3` abstractly, as the binomial difference `C(k+2,2) − C(k+1,2)`.  The
+`n`-recurrence `edgeThreshold_succ_left` pins that single step down concretely: the
+boundary sits at `n = 2k+2`, where the discrete `n`-derivative `n − k − 1` evaluates to
+`k + 1`.  So the parent's boundary difference is *exactly* `k + 1`, and the two ways of
+computing it agree. -/
+
+/-- Pascal step for the second binomial coefficient: `C(k+2, 2) − C(k+1, 2) = k + 1`.
+    This is the parent's abstract `threshold_diff` right-hand side, evaluated. -/
+theorem choose_two_diff_succ (k : ℕ) :
+    (k + 2).choose 2 - (k + 1).choose 2 = k + 1 := by
+  have h : (k + 1 + 1).choose 2 = (k + 1).choose 2 + (k + 1) := choose_two_succ (k + 1)
+  rw [show k + 1 + 1 = k + 2 by omega] at h
+  omega
+
+/-- **The Woodall boundary step.**  Crossing the boundary `n = 2k+2 → 2k+3` raises the
+    threshold by exactly `k + 1` — the `n`-recurrence's discrete derivative `n − k − 1`
+    evaluated at `n = 2k+2`. -/
+theorem edgeThreshold_boundary_step (k : ℕ) :
+    edgeThreshold (2 * k + 3) k = edgeThreshold (2 * k + 2) k + (k + 1) := by
+  have h := edgeThreshold_succ_left (2 * k + 2) k (by omega)
+  rw [show 2 * k + 2 + 1 = 2 * k + 3 by omega] at h
+  omega
+
+/-- **The parent's boundary difference, evaluated concretely.**  The Woodall-boundary
+    jump `edgeThreshold (2k+3) k − edgeThreshold (2k+2) k` — which the parent
+    `threshold_diff` expresses as `C(k+2,2) − C(k+1,2)` — is exactly `k + 1`.  This closes
+    the loop between the abstract binomial difference and the `n`-recurrence: both routes
+    give `k + 1` (cf. `choose_two_diff_succ`). -/
+theorem threshold_diff_eq (k : ℕ) :
+    edgeThreshold (2 * k + 3) k - edgeThreshold (2 * k + 2) k = k + 1 := by
+  rw [edgeThreshold_boundary_step]; omega
+
+/-! ## Quadratic (Θ(n²)) growth of the threshold
+
+For fixed `k` the threshold grows quadratically in `n`.  Doubling it isolates the leading
+term `(n-k-1)(n-k-2)`, and it is sandwiched between that quadratic below and
+`n(n-1) = 2·C(n,2)` above — both degree-2 in `n` with leading coefficient 1.  So the
+threshold grows like `½n²`, the same rate as the complete graph. -/
+
+/-- Subtraction-free doubled form of the threshold for `n ≥ k+2`:
+    `2·edgeThreshold n k = (n-k-1)(n-k-2) + (k+2)(k+1) + 2`. -/
+theorem two_mul_edgeThreshold (n k : ℕ) (h : k + 2 ≤ n) :
+    2 * edgeThreshold n k = (n - k - 1) * (n - k - 2) + (k + 2) * (k + 1) + 2 := by
+  unfold edgeThreshold
+  have h1 : 2 * (n - k - 1).choose 2 = (n - k - 1) * (n - k - 2) := by
+    rw [two_mul_choose_two, show n - k - 1 - 1 = n - k - 2 by omega]
+  have h2 : 2 * (k + 2).choose 2 = (k + 2) * (k + 1) := by
+    rw [two_mul_choose_two, show k + 2 - 1 = k + 1 by omega]
+  omega
+
+/-- **Quadratic lower bound.**  For `n ≥ k+2`, the leading term already forces
+    `(n-k-1)(n-k-2) ≤ 2·edgeThreshold n k`. -/
+theorem edgeThreshold_quadratic_lower (n k : ℕ) (h : k + 2 ≤ n) :
+    (n - k - 1) * (n - k - 2) ≤ 2 * edgeThreshold n k := by
+  rw [two_mul_edgeThreshold n k h]; omega
+
+/-- **Θ(n²) growth sandwich.**  For fixed `k` and `n ≥ 2k+3`, the doubled threshold is
+    trapped between two quadratics in `n`:
+
+        (n-k-1)(n-k-2) ≤ 2·edgeThreshold n k ≤ n(n-1) = 2·C(n,2).
+
+    Both bounds are degree-2 in `n` with leading coefficient 1, so `edgeThreshold n k`
+    grows like `½n²` — the same asymptotic rate as the complete-graph edge count `C(n,2)`,
+    confirming the threshold is a genuinely quadratic (not vacuous, not linear) barrier. -/
+theorem edgeThreshold_quadratic_sandwich (n k : ℕ) (h : 2 * k + 3 ≤ n) :
+    (n - k - 1) * (n - k - 2) ≤ 2 * edgeThreshold n k ∧
+      2 * edgeThreshold n k ≤ n * (n - 1) := by
+  refine ⟨edgeThreshold_quadratic_lower n k (by omega), ?_⟩
+  have hle := edgeThreshold_le_choose_two n k h
+  have hd : 2 * n.choose 2 = n * (n - 1) := two_mul_choose_two n
+  omega
+
 end Erdos1012OQ01OQ02
