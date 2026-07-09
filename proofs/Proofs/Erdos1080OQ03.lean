@@ -309,4 +309,126 @@ theorem isBipartite_iff_colorable_two : IsBipartite G ↔ G.Colorable 2 := by
         · exact h0
         · exact absurd (h1.trans hv1.symm) hne
 
+/-! ### C₄-freeness ⇔ K₂,₂-freeness
+
+In a bipartition `(X, Y)`, a `4`-cycle is exactly a `K_{2,2}`: two distinct
+left vertices `a₁, a₂ ∈ X` and two distinct right vertices `b₁, b₂ ∈ Y` with all
+four cross edges present.  The two lemmas below establish this equivalence,
+discharging the `c4_free_iff_no_K22` placeholder that the parent problem file
+(`Erdos1080Problem.lean`) still carries as a `sorry`.
+
+Since the bipartition forces the cycle's vertices to alternate sides, a `4`-cycle
+must visit exactly two `X`-vertices and two `Y`-vertices; conversely a `K_{2,2}`
+closes up into the cycle `a₁-b₁-a₂-b₂-a₁`. -/
+
+/-- A `K_{2,2}` in a bipartite graph — two distinct `X`-vertices `a₁, a₂` each
+adjacent to two distinct `Y`-vertices `b₁, b₂` — yields a `4`-cycle
+`a₁-b₁-a₂-b₂-a₁`.  This is the "hard" content: assembling the explicit cycle and
+checking it really is a cycle (its four vertices are distinct because the two
+sides of a bipartition are disjoint). -/
+theorem hasCycleOfLength_four_of_K22 {X Y : Set V} (h : IsBipartition G X Y)
+    {a₁ a₂ b₁ b₂ : V} (ha₁ : a₁ ∈ X) (ha₂ : a₂ ∈ X) (hb₁ : b₁ ∈ Y) (hb₂ : b₂ ∈ Y)
+    (hane : a₁ ≠ a₂) (hbne : b₁ ≠ b₂)
+    (e11 : G.Adj a₁ b₁) (e12 : G.Adj a₁ b₂) (e21 : G.Adj a₂ b₁) (e22 : G.Adj a₂ b₂) :
+    HasCycleOfLength G 4 := by
+  -- Cross disequalities: an `X`-vertex and a `Y`-vertex are never equal.
+  have ha₁Y : a₁ ∉ Y := (mem_left_iff_not_right h a₁).mp ha₁
+  have ha₂Y : a₂ ∉ Y := (mem_left_iff_not_right h a₂).mp ha₂
+  have hab11 : a₁ ≠ b₁ := fun heq => ha₁Y (heq ▸ hb₁)
+  have hab12 : a₁ ≠ b₂ := fun heq => ha₁Y (heq ▸ hb₂)
+  have hab21 : a₂ ≠ b₁ := fun heq => ha₂Y (heq ▸ hb₁)
+  have hab22 : a₂ ≠ b₂ := fun heq => ha₂Y (heq ▸ hb₂)
+  -- The path `b₁ → a₂ → b₂ → a₁`, built bottom-up so each extension is a path.
+  have hp3 : (Walk.cons e12.symm Walk.nil : G.Walk b₂ a₁).IsPath :=
+    Walk.IsPath.nil.cons (by
+      simp only [Walk.support_nil, List.mem_singleton]; exact hab12.symm)
+  have hp2 : (Walk.cons e22 (Walk.cons e12.symm Walk.nil) : G.Walk a₂ a₁).IsPath :=
+    hp3.cons (by
+      simp only [Walk.support_cons, Walk.support_nil, List.mem_cons,
+        List.not_mem_nil, or_false]
+      push_neg; exact ⟨hab22, hane.symm⟩)
+  have hp1 : (Walk.cons e21.symm (Walk.cons e22 (Walk.cons e12.symm Walk.nil)) :
+      G.Walk b₁ a₁).IsPath :=
+    hp2.cons (by
+      simp only [Walk.support_cons, Walk.support_nil, List.mem_cons,
+        List.not_mem_nil, or_false]
+      push_neg; exact ⟨hab21.symm, hbne, hab11.symm⟩)
+  -- Consing the edge `a₁ → b₁` closes the path into a cycle, provided that edge
+  -- is not already used.
+  refine ⟨a₁, Walk.cons e11 (Walk.cons e21.symm (Walk.cons e22 (Walk.cons e12.symm
+    Walk.nil))), ?_, by simp [Walk.length_cons]⟩
+  rw [Walk.cons_isCycle_iff]
+  refine ⟨hp1, ?_⟩
+  have hEdge : ∀ {c d : V}, ¬(a₁ = c ∧ b₁ = d) → ¬(a₁ = d ∧ b₁ = c) →
+      s(a₁, b₁) ≠ s(c, d) := by
+    intro c d h1 h2 heq
+    rw [Sym2.eq_iff] at heq
+    rcases heq with hh | hh
+    · exact h1 hh
+    · exact h2 hh
+  simp only [Walk.edges_cons, Walk.edges_nil, List.mem_cons,
+    List.not_mem_nil, or_false]
+  push_neg
+  exact ⟨hEdge (fun hh => hab11 hh.1) (fun hh => hane hh.1),
+         hEdge (fun hh => hane hh.1) (fun hh => hab12 hh.1),
+         hEdge (fun hh => hab12 hh.1) (fun hh => hbne hh.2)⟩
+
+/-- **`C₄`-freeness ⇔ `K_{2,2}`-freeness** for a bipartite graph.  A bipartite
+graph has no `4`-cycle iff no two distinct left vertices share two distinct
+common neighbours — i.e. it contains no `K_{2,2}`.  This discharges the
+`c4_free_iff_no_K22` statement left open in `Erdos1080Problem.lean`. -/
+theorem c4Free_iff_no_K22 {X Y : Set V} (h : IsBipartition G X Y) :
+    ¬ HasCycleOfLength G 4 ↔
+      ∀ (a₁ a₂ b₁ b₂ : V), a₁ ∈ X → a₂ ∈ X → a₁ ≠ a₂ →
+        b₁ ∈ Y → b₂ ∈ Y → b₁ ≠ b₂ →
+        ¬(G.Adj a₁ b₁ ∧ G.Adj a₁ b₂ ∧ G.Adj a₂ b₁ ∧ G.Adj a₂ b₂) := by
+  constructor
+  · -- `C₄`-free ⇒ no `K_{2,2}`: a `K_{2,2}` would produce a `4`-cycle.
+    intro hC4 a₁ a₂ b₁ b₂ ha₁ ha₂ hane hb₁ hb₂ hbne
+    rintro ⟨e11, e12, e21, e22⟩
+    exact hC4 (hasCycleOfLength_four_of_K22 h ha₁ ha₂ hb₁ hb₂ hane hbne e11 e12 e21 e22)
+  · -- no `K_{2,2}` ⇒ `C₄`-free: a `4`-cycle would produce a `K_{2,2}`.
+    intro hforbid ⟨v, w, hcyc, hlen⟩
+    -- A closed walk of length `4` decomposes as four consecutive edges.
+    cases w with
+    | nil => simp at hlen
+    | @cons _ x1 _ g1 w1 =>
+    cases w1 with
+    | nil => simp at hlen
+    | @cons _ x2 _ g2 w2 =>
+    cases w2 with
+    | nil => simp at hlen
+    | @cons _ x3 _ g3 w3 =>
+    cases w3 with
+    | nil => simp at hlen
+    | @cons _ x4 _ g4 w4 =>
+    cases w4 with
+    | cons g5 w5 => simp only [Walk.length_cons] at hlen; omega
+    | nil =>
+      -- `w = v → x1 → x2 → x3 → v`; the four inner vertices are distinct.
+      have htail := (Walk.isCycle_def _).mp hcyc |>.2.2
+      simp only [Walk.support_cons, Walk.support_nil, List.tail_cons, List.nodup_cons,
+        List.mem_cons, List.not_mem_nil, List.nodup_nil, or_false,
+        and_true] at htail
+      push_neg at htail
+      obtain ⟨⟨_h12, h13, _h1v⟩, ⟨_h23, h2v⟩, _h3v⟩ := htail
+      have hv : v ∈ X ∪ Y := by rw [h.2.1]; exact Set.mem_univ v
+      rcases hv with hvX | hvY
+      · -- `v ∈ X`, so the walk alternates `X, Y, X, Y`.
+        have hx1 : x1 ∈ Y := (h.2.2 g1).mp hvX
+        have hx1nX : x1 ∉ X := (mem_right_iff_not_left h x1).mp hx1
+        have hx2 : x2 ∈ X :=
+          (mem_left_iff_not_right h x2).mpr (fun hx2Y => hx1nX ((h.2.2 g2).mpr hx2Y))
+        have hx3 : x3 ∈ Y := (h.2.2 g3).mp hx2
+        exact hforbid v x2 x1 x3 hvX hx2 h2v.symm hx1 hx3 h13 ⟨g1, g4.symm, g2.symm, g3⟩
+      · -- `v ∈ Y`, so the walk alternates `Y, X, Y, X`.
+        have hvnX : v ∉ X := (mem_right_iff_not_left h v).mp hvY
+        have hx1 : x1 ∈ X :=
+          (mem_left_iff_not_right h x1).mpr (fun hx1Y => hvnX ((h.2.2 g1).mpr hx1Y))
+        have hx2 : x2 ∈ Y := (h.2.2 g2).mp hx1
+        have hx2nX : x2 ∉ X := (mem_right_iff_not_left h x2).mp hx2
+        have hx3 : x3 ∈ X :=
+          (mem_left_iff_not_right h x3).mpr (fun hx3Y => hx2nX ((h.2.2 g3).mpr hx3Y))
+        exact hforbid x1 x3 v x2 hx1 hx3 h13 hvY hx2 h2v.symm ⟨g1.symm, g2, g4, g3.symm⟩
+
 end Erdos1080OQ03

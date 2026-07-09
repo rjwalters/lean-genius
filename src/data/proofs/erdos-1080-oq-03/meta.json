@@ -62,13 +62,25 @@
       "Walks in a graph and their length; closed walks and cycles",
       "Parity of natural numbers (Even / Odd)"
     ],
-    "lineCount": 265,
-    "theoremCount": 14,
+    "lineCount": 434,
+    "theoremCount": 17,
     "definitionCount": 3,
     "relatedProblems": [
       {
         "id": "erdos-1080",
         "relationship": "Parent: the C₄,C₆-free bipartite extremal problem f(n,m) and Erdős's observation that a dense such graph must contain a C₈; this entry establishes which cycle lengths can occur at all (even, ≥ 4), the ambient constraint for the OQ-03 extension."
+      }
+    ],
+    "mainTheorems": [
+      {
+        "name": "hasCycleOfLength_four_of_K22",
+        "statement": "In a bipartition (X,Y), two distinct X-vertices a₁,a₂ each adjacent to two distinct Y-vertices b₁,b₂ yield a 4-cycle a₁-b₁-a₂-b₂-a₁.",
+        "significance": "The constructive half of C₄ ⇔ K₂,₂: assembles the explicit cycle via cons_isCycle_iff, using bipartition disjointness for the four vertices' distinctness."
+      },
+      {
+        "name": "c4Free_iff_no_K22",
+        "statement": "For a bipartite graph with bipartition (X,Y): ¬HasCycleOfLength G 4 ↔ no two distinct X-vertices share two distinct common Y-neighbours (K₂,₂-freeness).",
+        "significance": "Discharges the c4_free_iff_no_K22 equivalence left as a sorry in the parent Erdos1080Problem.lean; the ⇐ direction decomposes a length-4 closed walk and reads off the alternating K₂,₂."
       }
     ]
   },
