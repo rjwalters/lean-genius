@@ -64,7 +64,7 @@
       "title": "Permitted Values: Pointwise Characterization",
       "startLine": 68,
       "endLine": 150,
-      "summary": "Defines IsPermittedValue κ := κ.IsRegular ∧ ℵ₀ < κ. Proves permitted_satisfies_konig (König), aleph_one_permitted (CH value), aleph_two_permitted (PFA value), aleph_succ_permitted (every successor aleph), permitted_unbounded (proper class), and not_permitted_of_le_aleph0 (Cantor obstruction converse: no countable cardinal is permitted). 6 theorems, 1 definition, 0 axioms, 0 sorries.",
+      "summary": "Defines IsPermittedValue κ := κ.IsRegular ∧ ℵ₀ < κ. Proves permitted_satisfies_konig (König), aleph_one_permitted (CH value), aleph_two_permitted (PFA value), aleph_succ_permitted (every successor aleph), permitted_unbounded (proper class), and not_permitted_of_le_aleph0 (Cantor obstruction converse: no countable cardinal is permitted). 10 theorems, 2 definitions, 0 axioms, 0 sorries.",
       "mathContext": "$\\mathsf{IsPermittedValue}(\\kappa) \\iff \\kappa$ is regular and $\\aleph_0 < \\kappa$. Concretely: $\\aleph_1, \\aleph_2, \\aleph_n, \\ldots, \\aleph_{\\omega+1}, \\aleph_{\\omega_1+1}, \\ldots$ are all permitted. The unbounded-class theorem $\\forall \\alpha\\, \\exists \\kappa\\, (\\aleph_\\alpha < \\kappa \\land \\mathsf{IsPermittedValue}(\\kappa))$ rules out any cardinal upper bound on $2^{\\aleph_0}$."
     },
     {
