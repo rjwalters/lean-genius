@@ -19,7 +19,7 @@
     "badge": "mathlib",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 192,
+    "lineCount": 205,
     "assumptions": "0 sorries, 0 axiom declarations (fully machine-checked). The uncountability core is derived via a Mathlib bridge rather than independently formalized: ¬ Countable ℝ follows from Cardinal.mk_real (#ℝ = 𝔠) and Cardinal.aleph0_lt_continuum (ℵ₀ < 𝔠), and the diagonal gap ℵ₀ < 2^ℵ₀ is Cardinal.cantor. This file supplies the Countable-typeclass reductio, the non-enumerability reformulations, and the transcendentals corollary (composed with the sibling AlgebraicNumbersCountable proof). Badge 'mathlib'.",
     "mathlib_version": "4.26.0",
     "dateAdded": "2026-04-04",
@@ -411,7 +411,7 @@
       "Cardinal"
     ],
     "namespace": "AlgebraicNumbersCountableOQ02",
-    "lineCount": 192,
+    "lineCount": 205,
     "axiomCount": 0,
     "theoremCount": 11,
     "definitionCount": 1,
