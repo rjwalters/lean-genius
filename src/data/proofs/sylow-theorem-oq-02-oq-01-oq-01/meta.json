@@ -87,6 +87,14 @@
   },
   "sections": [
     {
+      "id": "module-header-and-setup",
+      "title": "Module Header, Imports & Setup",
+      "startLine": 1,
+      "endLine": 62,
+      "summary": "The module docstring situates the leaf: OQ-02-OQ-01-OQ-01 sharpens the parent's `IsNilpotent G ↔ ∀ p P, (P : Subgroup G).Normal` from *normal* to *characteristic*, explaining why the two coincide for a Sylow subgroup (uniqueness of a normal Sylow forces automorphism-invariance) and enumerating the six main results plus the closing TFAE. Imports pull in Mathlib's nilpotency (GroupTheory.Nilpotent) and Sylow (GroupTheory.Sylow) machinery; the `SylowCharacteristic` namespace opens with the ambient hypotheses `variable {G : Type*} [Group G] [Finite G]` shared by every result, and the section closes with the docstring of the first re-derived criterion.",
+      "mathContext": "Setting: a finite group $G$. Characteristic (invariance under every $\\varphi \\in \\mathrm{Aut}(G)$) is strictly stronger than normal (invariance under inner automorphisms), yet the two coincide on Sylow subgroups — the theme the file formalizes."
+    },
+    {
       "id": "self-contained-criteria",
       "title": "Nilpotency Criteria (Self-Contained)",
       "startLine": 63,
