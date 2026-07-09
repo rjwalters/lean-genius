@@ -68,7 +68,7 @@
     ],
     "assumptions": "2 axioms, both confined to the SMOOTH curve generalization: smoothExpectedCrossings (the primitive expected-crossing functional for C¹ curves) and buffon_noodle_smooth_eq (its value equals 2L/(πd), the Barbier/Cauchy-Crofton result). The smooth case is axiomatized because a formal proof requires the kinematic measure on the space of lines in ℝ², not yet in Mathlib. The POLYGONAL case — including shape independence, scaling, additivity, Lipschitz continuity, the approximation-limit bridge, and the numerical examples — is fully machine-checked with 0 sorries. The per-segment crossing probability 2ℓ/(πd) is encoded as a definition (segmentCrossingProb), reflecting Buffon's Needle proved elsewhere; it is not an additional axiom.",
     "theoremCount": 19,
-    "definitionCount": 4,
+    "definitionCount": 5,
     "structureCount": 1
   },
   "overview": {
@@ -204,7 +204,7 @@
     ],
     "path": "Proofs/BuffonsNoodle.lean",
     "sorries": 0,
-    "definitionCount": 4
+    "definitionCount": 5
   },
   "mainTheorems": [
     {

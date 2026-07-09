@@ -23,7 +23,7 @@
     "axiomCount": 0,
     "assumptions": "0 axioms, 0 sorries (only propext, Classical.choice, Quot.sound — the standard foundational axioms — appear under #print axioms). The single hypothesis is n ≥ 1 (so that 2π/n is well-defined and nonzero; without it n = 0 yields 2π/0 = 0 with sin 0 = 0 rational). The deep algebraic-integer core is cited from Mathlib via the restated cosine helper; no assumptions are introduced by that delegation.",
     "lineCount": 210,
-    "theoremCount": 4,
+    "theoremCount": 5,
     "definitionCount": 0,
     "mathlib_version": "4.26.0",
     "mathlibDependencies": [
@@ -159,7 +159,7 @@
     "axiomCount": 0,
     "sorries": 0,
     "definitionCount": 0,
-    "theoremCount": 4
+    "theoremCount": 5
   },
   "sorries": 0
 }

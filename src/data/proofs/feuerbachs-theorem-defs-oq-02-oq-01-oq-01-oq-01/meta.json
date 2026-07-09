@@ -32,7 +32,7 @@
     "axiomCount": 0,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries (only the standard foundational axioms propext / Classical.choice / Quot.sound, which do not count as assumptions). Uses only the coordinate API (Point, Triangle, circumcenter, incenter, excenter_a/b/c, area, side_a/b/c, circumcenter_denom_ne_zero, triangle_345 and its side/incenter/circumcenter lemmas) from FeuerbachsTheoremDefs.lean, which is itself 0-sorry, 0-axiom. The squared side lengths, side/area positivity, the strict triangle inequalities (declared private in the parent), and Heron's identity are reproved locally; everything else after the coordinate definitions is a polynomial identity over ℝ closed by ring / field_simp / linear_combination / nlinarith.",
     "lineCount": 447,
-    "theoremCount": 4,
+    "theoremCount": 29,
     "definitionCount": 3,
     "originalContributions": [
       "tritangent_centroid_x and tritangent_centroid_y: the affine identity I.x+Iₐ.x+I_b.x+I_c.x = 4·O.x (and the y-analogue) for an arbitrary non-degenerate triangle — the circumcenter is four times nothing but the average of the four tritangent centers",
@@ -187,7 +187,7 @@
     "namespace": "FeuerbachTritangentCentroid",
     "lineCount": 447,
     "axiomCount": 0,
-    "theoremCount": 4,
+    "theoremCount": 29,
     "definitionCount": 3,
     "path": "Proofs/FeuerbachsTheoremDefsOQ02OQ01OQ01OQ01.lean",
     "sorries": 0,

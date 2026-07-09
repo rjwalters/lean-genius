@@ -54,7 +54,7 @@
       "Coxeter-Schlaefli determinant and Gram matrices"
     ],
     "mathlib_version": "4.26.0",
-    "definitionCount": 31
+    "definitionCount": 30
   },
   "overview": {
     "historicalContext": "Ludwig Schlaefli (1852) classified regular polytopes in all dimensions, extending Euclid's classification of the 5 Platonic solids. He discovered that dimension 4 is exceptional: it admits 6 regular polytopes, including the remarkable 24-cell which has no analog in any other dimension. For dimensions 5 and above, only three families survive: the simplex, hypercube, and cross-polytope. H.S.M. Coxeter later systematized this theory using reflection groups and Gram matrices, providing the algebraic framework used in this formalization.",
@@ -217,7 +217,7 @@
     "lineCount": 628,
     "axiomCount": 0,
     "theoremCount": 53,
-    "definitionCount": 31,
+    "definitionCount": 30,
     "mainTheorems": [
       {
         "name": "regular_4polytope_classification",

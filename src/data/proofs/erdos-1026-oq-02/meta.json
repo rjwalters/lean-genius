@@ -25,7 +25,7 @@
     "dateAdded": "2026-06-27",
     "mathlib_version": "4.26.0",
     "theoremCount": 8,
-    "definitionCount": 7
+    "definitionCount": 8
   },
   "overview": {
     "historicalContext": "Erdős Problem #1026 concerns monotonic subsequences. The Erdős–Szekeres theorem (1935) guarantees that every sequence of k²+1 distinct reals contains a monotonic subsequence of length k+1, and the optimization variant studies the maximum sum such a subsequence can carry. Exact monotonicity is brittle: a single out-of-order term breaks a long run. OQ-02 asks the robust question — does the picture survive when monotonicity is relaxed to tolerate a bounded amount of backtracking?",
@@ -128,7 +128,7 @@
     "theoremCount": 8,
     "path": "Proofs/Erdos1026OQ02.lean",
     "sorries": 0,
-    "definitionCount": 7
+    "definitionCount": 8
   },
   "sorries": 0,
   "highlights": [

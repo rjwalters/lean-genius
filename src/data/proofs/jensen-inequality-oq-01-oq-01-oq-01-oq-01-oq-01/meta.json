@@ -31,7 +31,7 @@
       "rpow_interp: the pointwise interpolation identity (w·x^p)^a·(w·x^r)^b = w^{a+b}·x^{a·p+b·r} for w, x > 0, the only rpow bookkeeping the argument requires."
     ],
     "assumptions": "None beyond Mathlib's foundational axioms. Fully machine-checked: 0 sorries, 0 axiom declarations, no native_decide; all three headline theorems depend only on [propext, Classical.choice, Quot.sound]. The file imports one other gallery entry (Proofs/JensenInequalityOQ01OQ01OQ01OQ01, the generalized Hölder inequality) to reuse its two-function Hölder lemma inner_le_holder_two.",
-    "theoremCount": 5,
+    "theoremCount": 6,
     "definitionCount": 1
   },
   "crossReferences": [
@@ -156,7 +156,7 @@
     "path": "Proofs/JensenInequalityOQ01OQ01OQ01OQ01OQ01.lean",
     "sorries": 0,
     "definitionCount": 1,
-    "theoremCount": 5,
+    "theoremCount": 6,
     "imports": [
       "Proofs.JensenInequalityOQ01OQ01OQ01OQ01",
       "Mathlib"

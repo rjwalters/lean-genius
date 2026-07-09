@@ -55,7 +55,7 @@
     "lineCount": 228,
     "assumptions": "None. All theorems fully proved from Mathlib with 0 axioms and 0 sorries. Depends only on the foundational axioms propext, Classical.choice, Quot.sound (verified via #print axioms); no native_decide, no Lean.ofReduceBool. The forward sign implications are proved unconditionally; the full ⟺ classification additionally uses that a real cubic's three roots are exhaustively either all real or one real plus a conjugate pair (the standard conjugate-root theorem), which is discussed in the docstring rather than re-formalized here.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 8,
+    "theoremCount": 9,
     "definitionCount": 1
   },
   "overview": {
@@ -145,7 +145,7 @@
     "namespace": "SolutionOfCubicOQ01OQ02",
     "lineCount": 228,
     "axiomCount": 0,
-    "theoremCount": 8,
+    "theoremCount": 9,
     "definitionCount": 1,
     "path": "Proofs/SolutionOfCubicOQ01OQ02.lean",
     "sorries": 0

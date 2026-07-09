@@ -58,7 +58,7 @@
     "lineCount": 126,
     "assumptions": "0 axioms, 0 sorries (#print axioms reports only propext, Classical.choice, Quot.sound — no Lean.ofReduceBool, no native_decide, no sorryAx). The only hypotheses are structural: membership in {1,…,2n} and the cardinality bound n+1, both part of each statement. Badge is 'original' because the coprimality dual, its sharpness witness, and the unifying both-pigeonholes statement are formalized from first principles; Mathlib does not contain this application.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 3,
+    "theoremCount": 5,
     "definitionCount": 0
   },
   "overview": {
@@ -152,7 +152,7 @@
     "axiomCount": 0,
     "sorries": 0,
     "definitionCount": 0,
-    "theoremCount": 3
+    "theoremCount": 5
   },
   "sorries": []
 }

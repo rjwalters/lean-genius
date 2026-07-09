@@ -20,7 +20,7 @@
     "sorries": 0,
     "lineCount": 191,
     "theoremCount": 13,
-    "definitionCount": 6
+    "definitionCount": 7
   },
   "openQuestion": {
     "id": "law-of-cosines-oq-03-oq-01",
@@ -159,7 +159,7 @@
     "axiomCount": 0,
     "lineCount": 191,
     "theoremCount": 13,
-    "definitionCount": 6,
+    "definitionCount": 7,
     "assumptions": "0 axioms and 0 sorries over ℝ. Build-confirmed with `lake env lean` against the prebuilt Mathlib 4.26.0 olean cache (Docker engine was down fleet-wide, so docker-build.sh could not be used; the file imports only Mathlib and has no sibling-proof dependencies, so a standalone compile is a complete check). Exit 0, no errors; `#print axioms` on cosh_hdist_geo / mink_geo_ge_one / apex_angle / hyperbolic_pythagoras / geo_tangent_x reports only [propext, Classical.choice, Quot.sound] — no sorryAx, no Lean.ofReduceBool. The vertex-at-apex placement is documented as without loss of generality (transitivity of the isometry group O⁺(2,1) on the hyperboloid), not re-derived; this is a standard normalization, and the open question asks to derive the law for a triangle, which up to congruence is the apex configuration.",
     "originalContributions": [
       "Minkowski form `mink` and hyperboloid sheet `OnHyp` as a from-scratch model of the hyperbolic plane",

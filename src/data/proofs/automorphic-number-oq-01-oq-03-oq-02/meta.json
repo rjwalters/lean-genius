@@ -25,7 +25,7 @@
     "axiomCount": 0,
     "lineCount": 215,
     "theoremCount": 18,
-    "definitionCount": 5,
+    "definitionCount": 6,
     "assumptions": "None. 0 axioms, 0 sorries, no native_decide, no decide. #print axioms confirms every named result (tendsto_e5, tendsto_e6, reductions_determine, red10_e5_ne, TenAdic.idem_iff, red10_e5_idem) depends only on the standard foundational axioms propext / Classical.choice / Quot.sound — no Lean.ofReduceBool, no sorryAx. Builds on the verified parent entry AutomorphicNumberOQ01 (reusing the componentwise idempotent equivalences idemProd / idemCongr in spirit; the idempotent characterization is reproved directly here for ℤ_[p]). The 10-adic integers are modelled as the product ℤ_[2] × ℤ_[5], which is canonically isomorphic to the inverse limit lim_k ZMod (10^k) by CRT.",
     "mathlibDependencies": [
       {
@@ -80,7 +80,7 @@
     "lineCount": 215,
     "axiomCount": 0,
     "theoremCount": 18,
-    "definitionCount": 5,
+    "definitionCount": 6,
     "path": "Proofs/AutomorphicNumberOQ01OQ03OQ02.lean",
     "sorries": 0
   },

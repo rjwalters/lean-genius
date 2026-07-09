@@ -13,7 +13,7 @@
     "lineCount": 117,
     "axiomCount": 0,
     "theoremCount": 4,
-    "definitionCount": 4,
+    "definitionCount": 5,
     "path": "Proofs/Erdos128WIP01.lean",
     "sorries": 0
   },
@@ -72,7 +72,7 @@
     "assumptions": "Machine-checked: `./proofs/scripts/docker-build.sh Proofs.Erdos128WIP01` builds green (Lean v4.26.0, Mathlib pin, 7743 jobs). 0 sorries, 0 axiom declarations, no native_decide; only the standard foundational axioms (propext / Classical.choice / Quot.sound) via Mathlib (Classical.choice from `open Classical` for the edge-count filter's decidability does not count as an assumption). Self-contained: the scaffold Erdos128Problem.lean currently fails to build (a missing DecidablePred instance for edgeCount and trailing docstring parse errors), so the objects Graph, edgeCount, induce, hasTriangle, triangleFree are re-declared. Honest scope: the foundational monotonicity structure, not the open optimal-constant question.",
     "lineCount": 117,
     "theoremCount": 4,
-    "definitionCount": 4,
+    "definitionCount": 5,
     "originalContributions": [
       "hasTriangle_induce: a triangle in an induced subgraph is a triangle of the ambient graph (induced adjacency entails ambient adjacency)",
       "triangleFree_induce: triangle-freeness is HEREDITARY -- every induced subgraph of a triangle-free graph is triangle-free; the structural reason the extremal C5-blow-up witnesses are triangle-free",

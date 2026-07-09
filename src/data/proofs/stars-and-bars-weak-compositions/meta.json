@@ -15,7 +15,7 @@
     "lineCount": 104,
     "axiomCount": 0,
     "theoremCount": 3,
-    "definitionCount": 3,
+    "definitionCount": 2,
     "path": "Proofs/StarsAndBarsWeakCompositions.lean",
     "sorries": 0
   },
@@ -54,7 +54,7 @@
     "assumptions": "0 axioms, 0 sorries, no native_decide. All three named theorems (count_toMultiset, card_toMultiset, card_weakComposition) and the bijection weakCompositionEquivSym were verified with #print axioms to depend only on the foundational propext / Classical.choice / Quot.sound. Mathlib records only the multiset form of stars and bars (Sym.card_sym_eq_choose); the function/tuple form C(n+k−1, n) and the bijection weakCompositionEquivSym to Sym (Fin k) n are the original content here. The Fintype instance on the weak-composition subtype is supplied through that bijection (it is not auto-derivable because the codomain ℕ is infinite). The result is unconditional for all k, n ≥ 0.",
     "mathlib_version": "4.26.0",
     "theoremCount": 3,
-    "definitionCount": 3
+    "definitionCount": 2
   },
   "overview": {
     "historicalContext": "Stars and bars is one of the foundational counting principles of enumerative combinatorics, usually attributed to William Feller. The question — in how many ways can n indistinguishable balls be placed into k distinguishable boxes — is the same as counting the nonnegative integer solutions of x₁ + ⋯ + x_k = n. The picture that names the method: draw the n balls as stars in a row and separate them into k groups with k−1 bars; every arrangement of n stars and k−1 bars in a line is one solution, and there are C(n + k − 1, n) ways to choose which n of the n + (k−1) symbols are stars. The same count answers 'how many multisets of size n can be drawn from a k-element alphabet' — the multichoose number — and it is the weak (parts allowed to be zero) counterpart of the count of ordered positive compositions, C(n−1, k−1).",

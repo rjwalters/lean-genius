@@ -29,8 +29,8 @@
       "Mean E[Xᵢ]=n·pᵢ and cross moment E[XᵢXⱼ]=n(n−1)pᵢpⱼ reduced to the (n−1)-trial multinomial by one absorption bijection",
       "Covariance Cov(Xᵢ,Xⱼ) = −n·pᵢ·pⱼ (negative correlation from the simplex constraint ∑Xᵢ=n)"
     ],
-    "theoremCount": 7,
-    "definitionCount": 4
+    "theoremCount": 11,
+    "definitionCount": 3
   },
   "overview": {
     "historicalContext": "The multinomial distribution was introduced by Jakob Bernoulli in his posthumous Ars Conjectandi (1713) as a natural generalization of the binomial to multiple outcomes. Pierre-Simon Laplace further developed its theory in Théorie analytique des probabilités (1812), deriving the multinomial theorem and using it to analyze games of chance with more than two outcomes. In the 20th century, the multinomial became central to categorical data analysis, information theory (Shannon entropy for discrete distributions), and maximum likelihood estimation for categorical models. The multinomial theorem — the key algebraic identity $(p_1+\\cdots+p_k)^n = \\sum \\binom{n}{k_1,\\ldots,k_r} \\prod p_i^{k_i}$ — simultaneously serves as both the probability normalization proof and a combinatorial identity, making it the elegant bridge between combinatorics and probability theory in this formalization.",
@@ -188,10 +188,10 @@
     "namespace": "BinomialTheoremOQ02OQ01OQ01",
     "lineCount": 707,
     "axiomCount": 0,
-    "theoremCount": 7,
+    "theoremCount": 11,
     "substantiveTheoremCount": 6,
     "duplicateTheorems": 0,
-    "definitionCount": 4,
+    "definitionCount": 3,
     "path": "Proofs/BinomialTheoremOQ02OQ01OQ01.lean",
     "sorries": 0,
     "additionalFiles": []

@@ -28,7 +28,7 @@
     "axiomCount": 0,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries (only the standard foundational axioms propext / Classical.choice / Quot.sound, which do not count as assumptions). Reuses the closed-form perpendicular foot `foot` and its difference identity `foot_diff` from the parent SimsonLineTheorem.lean (itself 0-sorry, 0-axiom); the unit-circle helper lemmas (conj z = z⁻¹, the real/imaginary bridges) are re-derived locally. Circumcircle normalised to the unit circle (Complex.normSq = 1) without loss of generality.",
     "lineCount": 194,
-    "theoremCount": 5,
+    "theoremCount": 9,
     "definitionCount": 0,
     "originalContributions": [
       "simson_angle_doubling: the master angle-doubling identity (D P)²·P·conj((D Q)²·Q) = |C−A|⁴·|P−B|²·|Q−B|²/16, where D X = foot bc X − foot ab X is the Simson direction. The right-hand side is a manifestly nonnegative real, so the left-hand side has argument 0 (mod 2π), i.e. 2·arg(D P / D Q) ≡ arg(Q/P): the Simson line of P makes with that of Q an angle equal to half the central angle of arc PQ",
@@ -155,7 +155,7 @@
     "namespace": "SimsonLineTheoremOQ01OQ01",
     "lineCount": 194,
     "axiomCount": 0,
-    "theoremCount": 5,
+    "theoremCount": 9,
     "definitionCount": 0,
     "sorries": 0,
     "path": "Proofs/SimsonLineTheoremOQ01OQ01.lean",
