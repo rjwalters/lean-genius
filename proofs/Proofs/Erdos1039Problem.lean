@@ -191,6 +191,75 @@ theorem bounds_gap (n : ℕ) (hn : n ≥ 3) (c : ℝ) (hc : 0 < c) (hc' : c < Re
     mul_le_mul_of_nonneg_left hsqrt_ge_1 (show (0 : ℝ) ≤ Real.pi * (n : ℝ) by positivity)]
 
 /-
+## The KLR–Conjecture Gap
+
+The comparison lemmas above (`klr_better_than_pommerenke`, `bounds_gap`) place the KLR
+bound below the benchmark and above Pommerenke.  The results here pin down *how far*
+KLR is from the conjectured optimal rate `c/n`:
+
+* `klrBound_lt_conjecturedBound` — for every fixed constant `c > 0` the KLR bound
+  `c/(n√log n)` is **strictly below** the conjectured `c/n` (for `n ≥ 3`).
+* `conjecturedBound_div_klrBound` — the *exact* multiplicative gap is `√log n`.
+* `conjecturedBound_div_klrBound_tendsto_atTop` — that gap is **unbounded**.
+
+So closing EHP is not a matter of tuning the KLR constant: the KLR lower bound is
+asymptotically infinitely far (up to constants) from the conjecture.  These are
+unconditional facts about the bound *functions* and use none of the deep axioms.
+-/
+
+/-- For `n ≥ 3`, the KLR bound `c/(n√log n)` is strictly below the conjectured `c/n`. -/
+theorem klrBound_lt_conjecturedBound (c : ℝ) (hc : 0 < c) (n : ℕ) (hn : n ≥ 3) :
+    klrBound c n < conjecturedBound c n := by
+  simp only [klrBound, conjecturedBound]
+  have hn_pos : (0 : ℝ) < (n : ℝ) := by exact_mod_cast show 0 < n by omega
+  have hlog_gt_1 : 1 < Real.log (n : ℝ) := by
+    rw [show (1 : ℝ) = Real.log (Real.exp 1) from (Real.log_exp 1).symm]
+    refine Real.log_lt_log (Real.exp_pos 1) ?_
+    have hexp : Real.exp 1 < 3 := by linarith [Real.exp_one_lt_d9]
+    have h3 : (3 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn
+    linarith
+  have hlog_pos : 0 < Real.log (n : ℝ) := by linarith
+  have hsqrt_pos : 0 < Real.sqrt (Real.log (n : ℝ)) := Real.sqrt_pos.mpr hlog_pos
+  have hsqrt_gt_1 : 1 < Real.sqrt (Real.log (n : ℝ)) :=
+    (Real.lt_sqrt (by norm_num)).mpr (by simpa using hlog_gt_1)
+  rw [div_lt_div_iff₀ (mul_pos hn_pos hsqrt_pos) hn_pos]
+  nlinarith [mul_lt_mul_of_pos_left hsqrt_gt_1 (mul_pos hc hn_pos)]
+
+/-- The exact multiplicative gap between the conjectured and KLR bounds is `√log n`
+    (for `c > 0`, `n ≥ 2`). -/
+theorem conjecturedBound_div_klrBound (c : ℝ) (hc : 0 < c) (n : ℕ) (hn : n ≥ 2) :
+    conjecturedBound c n / klrBound c n = Real.sqrt (Real.log n) := by
+  have hn_pos : (0 : ℝ) < (n : ℝ) := by exact_mod_cast show 0 < n by omega
+  have hlog_pos : 0 < Real.log (n : ℝ) :=
+    Real.log_pos (by exact_mod_cast show 1 < n by omega)
+  have hsqrt_pos : 0 < Real.sqrt (Real.log (n : ℝ)) := Real.sqrt_pos.mpr hlog_pos
+  have h1 : (n : ℝ) ≠ 0 := hn_pos.ne'
+  have h2 : c ≠ 0 := hc.ne'
+  have h3 : Real.sqrt (Real.log (n : ℝ)) ≠ 0 := hsqrt_pos.ne'
+  simp only [conjecturedBound, klrBound]
+  field_simp
+  ring
+
+/-- The multiplicative gap `conjecturedBound / klrBound` is unbounded — it grows like
+    `√log n → ∞`.  Hence KLR does not reach the conjectured rate even up to constants. -/
+theorem conjecturedBound_div_klrBound_tendsto_atTop (c : ℝ) (hc : 0 < c) :
+    Filter.Tendsto (fun n : ℕ => conjecturedBound c n / klrBound c n)
+      Filter.atTop Filter.atTop := by
+  have hsqrt_atTop : Filter.Tendsto Real.sqrt Filter.atTop Filter.atTop := by
+    rw [Filter.tendsto_atTop_atTop]
+    intro b
+    refine ⟨b ^ 2 + 1, fun x hx => ?_⟩
+    calc b ≤ |b| := le_abs_self b
+      _ = Real.sqrt (b ^ 2) := (Real.sqrt_sq_eq_abs b).symm
+      _ ≤ Real.sqrt x := Real.sqrt_le_sqrt (by nlinarith)
+  have hcomp : Filter.Tendsto (fun n : ℕ => Real.sqrt (Real.log n))
+      Filter.atTop Filter.atTop :=
+    hsqrt_atTop.comp (Real.tendsto_log_atTop.comp tendsto_natCast_atTop_atTop)
+  refine hcomp.congr' ?_
+  filter_upwards [Filter.eventually_ge_atTop 2] with n hn
+  exact (conjecturedBound_div_klrBound c hc n hn).symm
+
+/-
 ## Lemniscate Properties
 -/
 
