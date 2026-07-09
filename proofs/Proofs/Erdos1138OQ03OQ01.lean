@@ -156,13 +156,14 @@ theorem bhp_gap_isLittleO_rpow (a : ℝ) (ha : (0.525 : ℝ) < a) :
   exact absurd hrp (lt_irrefl 0)
 
 /-- **Effective (pointwise) sublinearity.** A concrete sufficient condition replacing the
-    qualitative "eventually" of `bhp_gap_eventually_le_eps`: for `ε > 0`, once `x ≥ 25` and
+    qualitative "eventually" of `bhp_gap_eventually_le_eps`: once `x ≥ 25` and
     the explicit threshold `1 ≤ ε · x^0.475` holds, we already have `maxPrimeGap x ≤ ε · x`.
 
     The threshold `1 ≤ ε · x^0.475` is exactly `x^(-0.475) ≤ ε`, i.e. the point at which the
     envelope `maxPrimeGap x / x ≤ x^(-0.475)` has dropped below `ε`; it holds for all
-    sufficiently large `x` (since `x^0.475 → ∞`), recovering `bhp_gap_eventually_le_eps`. -/
-theorem bhp_gap_le_eps_effective (ε : ℝ) (hε : 0 < ε) (x : ℕ)
+    sufficiently large `x` (since `x^0.475 → ∞`), recovering `bhp_gap_eventually_le_eps`.
+    (Positivity of `ε` is not assumed — it is forced by the threshold, as `x^0.475 > 0`.) -/
+theorem bhp_gap_le_eps_effective (ε : ℝ) (x : ℕ)
     (hx25 : 25 ≤ x) (hthr : 1 ≤ ε * (x : ℝ) ^ (0.475 : ℝ)) :
     (maxPrimeGap x : ℝ) ≤ ε * x := by
   have hx_pos : (0 : ℝ) < (x : ℝ) := by
