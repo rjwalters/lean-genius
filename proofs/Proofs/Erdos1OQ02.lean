@@ -514,9 +514,22 @@ theorem f_one : ∃ (A : Finset ℕ), A.card = 1 ∧ hasDistinctSubsetSums A ∧
   rcases hS with rfl | rfl <;> rcases hT with rfl | rfl <;> simp_all
 
 /-- f(2) = 2: The set {1,2} has 4 distinct subset sums (0,1,2,3).
-    The subsets are ∅ (sum 0), {1} (sum 1), {2} (sum 2), {1,2} (sum 3). -/
-theorem f_two_max : ∃ (A : Finset ℕ), A.card = 2 ∧ A.sup id = 2 := by
-  exact ⟨{1, 2}, by simp, by simp⟩
+    The subsets are ∅ (sum 0), {1} (sum 1), {2} (sum 2), {1,2} (sum 3), so it
+    has distinct subset sums with maximum element 2.
+
+    Strengthened to carry the `hasDistinctSubsetSums` witness (matching `f_one`):
+    the previous statement only asserted `card = 2 ∧ sup = 2`, weaker than the
+    `f(2) = 2` extremal claim in the docstring and the OEIS A005318 framing.  The
+    `hasDistinctSubsetSums {1,2}` obligation is discharged by enumerating the four
+    subsets of `{1,2}` (`fin_cases` over the powerset) and deciding each of the
+    16 subset-pair sum comparisons. -/
+theorem f_two_max :
+    ∃ (A : Finset ℕ), A.card = 2 ∧ hasDistinctSubsetSums A ∧ A.sup id = 2 := by
+  refine ⟨{1, 2}, by decide, ?_, by decide⟩
+  intro S T hS hT heq
+  have hS' : S ∈ ({1, 2} : Finset ℕ).powerset := Finset.mem_powerset.mpr hS
+  have hT' : T ∈ ({1, 2} : Finset ℕ).powerset := Finset.mem_powerset.mpr hT
+  fin_cases hS' <;> fin_cases hT' <;> revert heq <;> decide
 
 /-! ## Conclusion
 
