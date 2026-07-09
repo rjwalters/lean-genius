@@ -421,6 +421,78 @@ theorem genus_two_surface_totalPfaffian :
   show (0 : ℝ) + 0 - 2 * cgbConst 1 = -(4 * π)
   rw [cgbConst_one]; ring
 
+-- ============================================================================
+-- Part XI: The genus-g orientable surface Σ_g in closed form
+-- ============================================================================
+
+/-- The genus-`g` closed orientable surface `Σ_g` as a Chern-Gauss-Bonnet manifold.
+    It is the `g`-fold connected sum of tori (`Σ_0 = S²`, `Σ_{g+1} = Σ_g # T²`), and we
+    record its classical Euler characteristic `χ(Σ_g) = 2 − 2g` together with the
+    Gauss-Bonnet total curvature `∫_Σ Pf(Ω) = 2π·(2 − 2g)`. This packages the entire
+    family of closed orientable surfaces into one closed form; the sphere (`g = 0`),
+    torus (`g = 1`) and the genus-2 surface (`g = 2`, cf. `genus_two_surface_chi`) are
+    the small instances. The `# T²` recurrence is verified against `connectedSumCGB`
+    below. -/
+def genusSurfaceCGB (g : ℕ) : CGBManifold where
+  halfDim := 1
+  chi := 2 - 2 * (g : ℤ)
+  totalPfaffian := (2 - 2 * (g : ℝ)) * cgbConst 1
+  chern_gauss_bonnet := by push_cast; ring
+
+/-- Every `Σ_g` is a surface (`halfDim = 1`, dimension 2). -/
+@[simp] theorem genusSurfaceCGB_halfDim (g : ℕ) : (genusSurfaceCGB g).halfDim = 1 := rfl
+
+/-- `dim Σ_g = 2`. -/
+theorem genusSurfaceCGB_dim (g : ℕ) : (genusSurfaceCGB g).dim = 2 := rfl
+
+/-- **Euler characteristic of the genus-`g` surface**: `χ(Σ_g) = 2 − 2g`. -/
+theorem genusSurfaceCGB_chi (g : ℕ) : (genusSurfaceCGB g).chi = 2 - 2 * (g : ℤ) := rfl
+
+/-- **Gauss-Bonnet for `Σ_g`**: `∫_Σ Pf(Ω) = 2π·(2 − 2g)` — the total curvature of a
+    genus-`g` surface, negative for `g ≥ 2` (hyperbolic), zero for the torus, positive
+    for the sphere. -/
+theorem genusSurfaceCGB_totalPfaffian (g : ℕ) :
+    (genusSurfaceCGB g).totalPfaffian = 2 * π * (2 - 2 * (g : ℝ)) := by
+  show (2 - 2 * (g : ℝ)) * cgbConst 1 = 2 * π * (2 - 2 * (g : ℝ))
+  rw [cgbConst_one]; ring
+
+/-- `Σ_0` is the sphere `S²`: `χ = 2`. -/
+theorem genusSurface_zero_chi : (genusSurfaceCGB 0).chi = 2 := by
+  rw [genusSurfaceCGB_chi]; norm_num
+
+/-- `Σ_1` is the torus `T²`: `χ = 0`. -/
+theorem genusSurface_one_chi : (genusSurfaceCGB 1).chi = 0 := by
+  rw [genusSurfaceCGB_chi]; norm_num
+
+/-- `Σ_2` is the genus-2 surface: `χ = −2`, matching `genus_two_surface_chi`. -/
+theorem genusSurface_two_chi : (genusSurfaceCGB 2).chi = -2 := by
+  rw [genusSurfaceCGB_chi]; norm_num
+
+/-- **Attaching a handle drops `χ` by 2**: `χ(Σ_{g+1}) = χ(Σ_g) − 2`. This is the
+    connected-sum-with-a-torus law `χ(M # T²) = χ(M) + χ(T²) − 2 = χ(M) − 2`, iterated. -/
+theorem genusSurface_succ_chi (g : ℕ) :
+    (genusSurfaceCGB (g + 1)).chi = (genusSurfaceCGB g).chi - 2 := by
+  rw [genusSurfaceCGB_chi, genusSurfaceCGB_chi]; push_cast; ring
+
+/-- `Σ_{g+1}` realizes the connected sum `Σ_g # T²` on the Euler characteristic:
+    it agrees with `connectedSumCGB (genusSurfaceCGB g) (torusCGB 1)`. -/
+theorem genusSurface_succ_eq_connectedSum_chi (g : ℕ) :
+    (genusSurfaceCGB (g + 1)).chi
+      = (connectedSumCGB (genusSurfaceCGB g) (torusCGB 1) rfl).chi := by
+  have ht : (torusCGB 1).chi = 0 := rfl
+  rw [connectedSumCGB_chi, genusSurfaceCGB_chi, genusSurfaceCGB_chi, ht]
+  push_cast; ring
+
+/-- `Σ_{g+1}` also realizes `Σ_g # T²` on the total Pfaffian curvature: each handle
+    removes exactly `2·(2π) = 4π` of curvature, matching Gauss-Bonnet. -/
+theorem genusSurface_succ_eq_connectedSum_totalPfaffian (g : ℕ) :
+    (genusSurfaceCGB (g + 1)).totalPfaffian
+      = (connectedSumCGB (genusSurfaceCGB g) (torusCGB 1) rfl).totalPfaffian := by
+  have ht : (torusCGB 1).totalPfaffian = 0 := rfl
+  rw [connectedSumCGB_totalPfaffian, genusSurfaceCGB_totalPfaffian,
+    genusSurfaceCGB_totalPfaffian, ht, genusSurfaceCGB_halfDim, cgbConst_one]
+  push_cast; ring
+
 end ChernGaussBonnet
 
 end
