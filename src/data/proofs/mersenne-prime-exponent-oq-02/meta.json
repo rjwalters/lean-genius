@@ -67,6 +67,10 @@
       {
         "id": "mersenne-prime-exponent",
         "relationship": "Parent entry. It constrains the EXPONENT (2^n − 1 prime ⟹ n prime); this entry constrains the FACTORS (prime divisors of 2^p − 1 for p an odd prime lie in fixed residue classes mod 2p and mod 8)."
+      },
+      {
+        "id": "mersenne-prime-exponent-oq-01",
+        "relationship": "Sibling open question — the +1 (Fermat) analogue: 2^n + 1 prime ⟹ n is a power of two, proved via the dual divisibility a + 1 ∣ a^d + 1 for odd d (this entry's Mersenne mechanism is the a − 1 ∣ a^d − 1 side)."
       }
     ],
     "axiomCount": 0,
@@ -125,6 +129,11 @@
       "targetId": "mersenne-prime-exponent",
       "relationship": "extends",
       "description": "The parent entry constrains the exponent of a Mersenne prime; this entry constrains the prime factors of a (possibly composite) Mersenne number, giving the residue-class restrictions used in Mersenne trial division."
+    },
+    {
+      "targetId": "mersenne-prime-exponent-oq-01",
+      "relationship": "sibling-open-question",
+      "description": "The +1 (Fermat) analogue: 2^n + 1 prime ⟹ n is a power of two, dual to the parent's Mersenne exponent condition. Where this entry restricts the factors of 2^p − 1 via orderOf 2 = p in ZMod q, the sibling restricts the exponent of 2^n + 1 via the dual elementary divisibility a + 1 ∣ a^d + 1 for odd d — the +1 counterpart of the a − 1 ∣ a^d − 1 mechanism underlying the Mersenne exponent result."
     }
   ],
   "conclusion": {
