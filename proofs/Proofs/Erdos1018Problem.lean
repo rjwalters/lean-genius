@@ -13,7 +13,8 @@ Reference: https://erdosproblems.com/1018
 
 import Mathlib.Combinatorics.SimpleGraph.Basic
 import Mathlib.Combinatorics.SimpleGraph.Subgraph
-import Mathlib.Combinatorics.SimpleGraph.Path
+import Mathlib.Combinatorics.SimpleGraph.Connectivity.Connected
+import Mathlib.Combinatorics.SimpleGraph.Paths
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Fintype.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
@@ -81,6 +82,7 @@ disjoint and their interiors avoid all branch vertices. This is the standard
 combinatorial (Diestel) definition — no `sorry`.
 -/
 
+omit [Fintype V] [DecidableEq V] in
 /-- `G` contains a subdivision of `H` (`H` is a topological minor of `G`). -/
 def containsSubdivision {W : Type*} (G : SimpleGraph V) (H : SimpleGraph W) : Prop :=
   ∃ φ : W → V, Function.Injective φ ∧
@@ -108,14 +110,17 @@ model — that equivalence *is* Kuratowski's theorem) lets `kuratowski_theorem`,
 `K5_nonplanar` and `K33_nonplanar` become ordinary theorems instead of axioms.
 -/
 
+omit [Fintype V] [DecidableEq V] in
 /-- A graph is planar iff it has no `K₅`- or `K₃,₃`-subdivision (Kuratowski). -/
 def isPlanar (G : SimpleGraph V) : Prop :=
   ¬ (containsSubdivision G (completeGraph 5) ∨
      containsSubdivision G (completeBipartite 3 3))
 
+omit [Fintype V] [DecidableEq V] in
 /-- A graph is non-planar if it's not planar. -/
 def isNonPlanar (G : SimpleGraph V) : Prop := ¬isPlanar G
 
+omit [Fintype V] [DecidableEq V] in
 /-- **Kuratowski's theorem (definitional form).** With planarity defined via the
     Kuratowski characterization, non-planarity is *by definition* the presence of
     a `K₅`- or `K₃,₃`-subdivision. Previously stated as an axiom. -/
@@ -124,6 +129,7 @@ theorem kuratowski_theorem (G : SimpleGraph V) :
                      containsSubdivision G (completeBipartite 3 3) :=
   not_not
 
+omit [Fintype V] [DecidableEq V] in
 /-- Every graph contains a subdivision of itself: the identity branch map with
     each edge routed along itself as a length-one path. Since the paths have
     empty interior, the disjointness conditions hold trivially. -/
