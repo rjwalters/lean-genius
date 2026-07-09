@@ -24,7 +24,7 @@
     "axiomCount": 0,
     "assumptions": "None. Fully machine-verified over any RCLike Hilbert space. The Mathlib inputs are Buzano's inequality from the parent entry (CauchySchwarzBuzano.buzano_inequality), the adjoint inner-product identities (ContinuousLinearMap.adjoint_inner_right), the operator-norm bound (ContinuousLinearMap.le_opNorm), the adjoint norm isometry (LinearIsometryEquiv.norm_map), and routine Real.sqrt / norm algebra. The pointwise Kittaneh inequality and all of its corollaries are original derivations with no structure-encoded assumptions.",
     "lineCount": 152,
-    "theoremCount": 6,
+    "theoremCount": 7,
     "definitionCount": 0,
     "mathlibDependencies": [
       {
@@ -100,7 +100,7 @@
     "namespace": "CauchySchwarzKittaneh",
     "lineCount": 152,
     "axiomCount": 0,
-    "theoremCount": 6,
+    "theoremCount": 7,
     "definitionCount": 0,
     "path": "Proofs/CauchySchwarzOQ02OQ04OQ01OQ01.lean",
     "sorries": 0,

@@ -24,7 +24,7 @@
     "assumptions": "No assumptions. Every theorem is fully machine-checked. The structural engine crt_combine is pure integer arithmetic (no coprimality hypothesis needed). The two recurrence facts delegate to Mathlib's numDerangements_add_two (additive) and numDerangements_succ (multiplicative). Only the foundational axioms propext, Classical.choice, Quot.sound are used — the value sanity checks use plain `decide` (no native_decide, so no Lean.ofReduceBool).",
     "dateAdded": "2026-07-04",
     "lineCount": 164,
-    "theoremCount": 4,
+    "theoremCount": 5,
     "definitionCount": 0,
     "originalContributions": [
       "crt_combine (PROVED, STRUCTURAL ENGINE): for any integers a, u and any n, if (n−1) ∣ a and n ∣ (a − u) then n(n−1) ∣ (a + u·(n−1)). Combinatorics-free CRT fusion; holds for every n including the degenerate n = 0, 1, with no coprimality hypothesis.",
@@ -166,7 +166,7 @@
     "namespace": "DerangementsConvergenceOQ04OQ03",
     "lineCount": 164,
     "axiomCount": 0,
-    "theoremCount": 4,
+    "theoremCount": 5,
     "substantiveTheoremCount": 3,
     "duplicateTheorems": 0,
     "definitionCount": 0,
