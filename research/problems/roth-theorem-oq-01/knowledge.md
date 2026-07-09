@@ -322,3 +322,36 @@ The headline Bloom–Sisask consequence — the **Erdős reciprocal-sum theorem 
 the derivation needs a dyadic-block partial-summation argument + p-series convergence
 (`Real.summable_one_div_nat_rpow`, valid since `1+c>1`), ~100–200 LOC of `Finset.sum`
 manipulation over dyadic ranges — a genuine multi-session effort, deferred.
+
+## Session 2026-07-08 (researcher-3) — REVISIT: analytic domination OQ-02 ≻ OQ-01
+
+**Mode**: REVISIT (add verified content). The from-scratch quantitative proof stays BLOCKED
+(Bohr-set/Fourier infra), 0 own axioms already. Deliverable: close the gap the existing
+`rothNumberNat_le_min_bourgain_blasi` docstring explicitly flags — it combines the Bourgain and
+Bloom–Sisask bounds only via `min`, noting the honest comparison of the two RHS "was not carried
+out (would require tracking the unknown constants)".
+
+**Added `blasi_factor_isLittleO_bourgain_factor`** (14→15 theorems, 459→513 L):
+`(fun N => 1/(log N)^{1+blasiConst}) =o[atTop] (fun N => (log log N/log N)^{1/2})`.
+At the *density-shape* level (common `N` cancelled) no constant-tracking is needed: the ratio
+equals `1/((log N)^{1/2+c}·(log log N)^{1/2})`, and its denominator `→ ∞`.
+- Proof: `Asymptotics.isLittleO_iff_tendsto'` (vacuous `g=0→f=0` for `N≥3`); denominator `→ ∞`
+  via `((tendsto_rpow_atTop (0<1/2+c)).comp hlogN).atTop_mul_atTop ((tendsto_rpow_atTop (0<1/2)).comp hloglogN)`;
+  `Filter.Tendsto.inv_tendsto_atTop` gives `→ 0`; `congr'` the reciprocal to the literal ratio
+  `f/g` via `Real.div_rpow` + `Real.rpow_add` split `L^(1+c)=L^{1/2}·L^{1/2+c}` + `field_simp; ring`.
+- Depends only on `blasiConst_pos` (not the BS bound), so as axiom-free as that constant's
+  positivity (`Exists.choose_spec.1` of the imported axiom).
+
+### Lean names (v4.26)
+- `tendsto_rpow_atTop {y} (hy : 0<y) : Tendsto (·^y) atTop atTop` — **root-level**, not `Real.`.
+- `Filter.Tendsto.atTop_mul_atTop` (Order/Filter/AtTopBot/Monoid) — product of two `→ atTop`.
+- `Filter.Tendsto.inv_tendsto_atTop : Tendsto f l atTop → Tendsto f⁻¹ l (𝓝 0)` (use `Pi.inv_apply`
+  before the pointwise congr' equality).
+
+### Build note (BLOCKING for green exit-0, not for correctness)
+File **fully elaborates with 0 type-errors** — all 5 `#print axioms` audits emit and every `#check`
+prints — but `docker-build.sh Proofs.RothTheoremOQ01` exited **code-135 (SIGBUS) ~15×** at the
+olean-write stage under persistent fleet memory starvation (crash point varied: 1.2s cache-read vs
+post-full-elaboration write; the dependency `RothTheoremOQ02` and the *main-branch* `OQ01` both
+built green in the same window, confirming environmental, not code). Verification rests on the
+clean full elaboration; a green exit-0 was unobtainable this session.

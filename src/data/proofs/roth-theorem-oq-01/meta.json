@@ -36,8 +36,8 @@
       "threeAPFree_summable_reciprocal (companion file RothTheoremOQ01Reciprocal.lean): the genuine headline consequence of the Bloom–Sisask bound — every 3-AP-free set A ⊆ ℕ has a CONVERGENT reciprocal sum Σ_{a∈A} 1/a < ∞ (the k=3 case of the Erdős conjecture on arithmetic progressions). Proved by dyadic partial summation: the k-th block A ∩ [2^k,2^{k+1}) is 3-AP-free with elements < 2^{k+1}, so threeAPFree_card_le_blasi bounds its reciprocal contribution by 2/((k+1)·log2)^{1+c}, and Σ_k of that converges (p-series, exponent 1+c > 1). Supporting: recipMajorant (dyadic majorant), summable_recipMajorant, fiber_sum_le (per-block bound), finite_recip_sum_le (uniform partial-sum bound). This is strictly stronger than the qualitative r₃(N)=o(N); it needs a full power-of-log saving. Rests on exactly the single imported axiom rothNumberNat_bloom_sisask — no new axiom."
     ],
     "dateAdded": "2026-07-02",
-    "lineCount": 459,
-    "theoremCount": 14,
+    "lineCount": 512,
+    "theoremCount": 15,
     "definitionCount": 1,
     "additionalFiles": [
       "Proofs/RothTheoremOQ02.lean",
@@ -80,9 +80,9 @@
       "Proofs.RothTheoremOQ02"
     ],
     "namespace": "RothTheoremOQ01",
-    "lineCount": 459,
+    "lineCount": 512,
     "axiomCount": 0,
-    "theoremCount": 14,
+    "theoremCount": 15,
     "definitionCount": 1,
     "path": "Proofs/RothTheoremOQ01.lean",
     "sorries": 0,
