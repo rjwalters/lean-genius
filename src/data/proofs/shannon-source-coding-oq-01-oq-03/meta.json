@@ -75,25 +75,33 @@
       "id": "overview-and-scope",
       "title": "Overview: Discharging Open Question #3",
       "startLine": 1,
-      "endLine": 39,
+      "endLine": 43,
       "mathContext": "$R(D) = h(p) - h(D)$ for $0 \\le D \\le \\min(p, 1-p)$; regime $0 \\le D \\le p \\le \\tfrac12$.",
-      "summary": "The docstring states the goal — turn the parent's commented binary rate–distortion formula into a concrete verified object on Mathlib's Real.binEntropy — fixes the working regime 0 ≤ D ≤ p ≤ 1/2, and notes base-independence (entropy in nats) and the symmetry h(1−p) = h(p) covering p ≥ 1/2."
+      "summary": "Imports (Mathlib's BinaryEntropy and Tactic), the header docstring stating the goal — turn the parent's commented binary rate–distortion formula into a concrete verified object on Mathlib's Real.binEntropy — the working regime 0 ≤ D ≤ p ≤ 1/2, base-independence (entropy in nats) and the symmetry h(1−p) = h(p) covering p ≥ 1/2, and the namespace/open Real preamble."
     },
     {
       "id": "definition-and-endpoints",
       "title": "Definition and Endpoint Values",
-      "startLine": 49,
-      "endLine": 60,
+      "startLine": 45,
+      "endLine": 55,
       "mathContext": "$R(p, D) = H(p) - H(D)$; $R(p,0) = H(p)$, $R(p,p) = 0$.",
-      "summary": "rateDistortion p D = binEntropy p − binEntropy D, with the two endpoints: R(p, 0) = H(p) (lossless coding) and R(p, p) = 0 (distortion equal to the source bias)."
+      "summary": "The noncomputable definition rateDistortion p D = binEntropy p − binEntropy D (lines 45–47), followed by its two endpoints: rateDistortion_zero gives R(p, 0) = H(p) (lossless coding) and rateDistortion_self gives R(p, p) = 0 (distortion equal to the source bias), both discharged by simp."
     },
     {
-      "id": "structural-properties",
-      "title": "Nonnegativity, Monotonicity, and Bounds",
-      "startLine": 62,
-      "endLine": 89,
-      "mathContext": "$R(p,D) \\ge 0$, decreasing in $D$, and $R(p,D) \\le H(p) \\le \\log 2$.",
-      "summary": "rateDistortion_nonneg and rateDistortion_antitone_in_D follow from the monotonicity of binEntropy on [0, 1/2]; rateDistortion_le_binEntropy and rateDistortion_le_log_two bound the rate by the source entropy and by one bit."
+      "id": "nonnegativity-and-monotonicity",
+      "title": "Nonnegativity and Monotonicity in Distortion",
+      "startLine": 57,
+      "endLine": 76,
+      "mathContext": "$R(p,D) \\ge 0$ and $R(p, \\cdot)$ decreasing in $D$ on $0 \\le D \\le p \\le \\tfrac12$.",
+      "summary": "rateDistortion_nonneg (R(p, D) ≥ 0) and rateDistortion_antitone_in_D (decreasing in D) both reduce, via binEntropy_strictMonoOn.monotoneOn on Set.Icc 0 2⁻¹ plus linarith, to the increasingness of binary entropy on [0, 1/2] — the sign and shape of the rate–distortion curve are corollaries of one monotonicity fact."
+    },
+    {
+      "id": "upper-bounds",
+      "title": "Upper Bounds: Source Entropy and One Bit",
+      "startLine": 78,
+      "endLine": 90,
+      "mathContext": "$R(p,D) \\le H(p) \\le \\log 2$.",
+      "summary": "rateDistortion_le_binEntropy bounds the rate by the source entropy (H(D) ≥ 0 via binEntropy_nonneg) and rateDistortion_le_log_two chains that with binEntropy_le_log_two to cap it at one bit (log 2 nats), closing the namespace."
     }
   ],
   "conclusion": {
