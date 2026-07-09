@@ -26,12 +26,15 @@
   * `inner_sq_le_gram` — the sharp Gram form
     `(Re⟪u,v⟫)² + (Im⟪u,v⟫)² ≤ ‖u‖²·‖v‖²`, combining both parts.
   * `robertson_uncertainty` — `¼‖⟪ψ,[A,B]ψ⟫‖² ≤ ‖(A−a)ψ‖²·‖(B−b)ψ‖²`.
+  * `schrodinger_uncertainty` — Schrödinger's sharpening, keeping the covariance term
+    `¼‖⟪ψ,[A,B]ψ⟫‖² + (Re⟪u,v⟫)² ≤ ‖(A−a)ψ‖²·‖(B−b)ψ‖²` (via the Gram form).
+  * `robertson_of_schrodinger` — Robertson recovered by dropping the covariance term.
   * `heisenberg_variance_form` — the same at `a = ⟨A⟩`, `b = ⟨B⟩` (variance form).
 
   All results are fully machine-checked (0 axioms, 0 sorries).
 
-  Reference: Heisenberg (1927); Robertson (1929); the abstract uncertainty
-  inequality, e.g. Reed–Simon, *Functional Analysis*, §VIII.
+  Reference: Heisenberg (1927); Robertson (1929); Schrödinger (1930); the abstract
+  uncertainty inequality, e.g. Reed–Simon, *Functional Analysis*, §VIII.
 -/
 
 import Mathlib
@@ -86,8 +89,8 @@ theorem inner_sq_le_gram (u v : E) :
       ≤ ‖u‖ ^ 2 * ‖v‖ ^ 2 := by
   have hnorm : ‖inner 𝕜 u v‖ ≤ ‖u‖ * ‖v‖ := norm_inner_le_norm u v
   have hid : ‖inner 𝕜 u v‖ ^ 2
-      = (RCLike.re (inner 𝕜 u v)) ^ 2 + (RCLike.im (inner 𝕜 u v)) ^ 2 :=
-    RCLike.norm_sq_eq_def' _
+      = (RCLike.re (inner 𝕜 u v)) ^ 2 + (RCLike.im (inner 𝕜 u v)) ^ 2 := by
+    rw [RCLike.norm_sq_eq_def]; ring
   have hsq : ‖inner 𝕜 u v‖ ^ 2 ≤ (‖u‖ * ‖v‖) ^ 2 := by
     nlinarith [hnorm, norm_nonneg (inner 𝕜 u v),
       mul_nonneg (norm_nonneg u) (norm_nonneg v)]
@@ -156,6 +159,52 @@ theorem robertson_uncertainty {A B : E →ₗ[𝕜] E} (hA : A.IsSymmetric)
   have him := im_inner_sq_le (𝕜 := 𝕜) u v
   nlinarith [hnb, him, norm_nonneg (inner 𝕜 ψ (A (B ψ) - B (A ψ))),
     abs_nonneg (RCLike.im (inner 𝕜 u v)), sq_abs (RCLike.im (inner 𝕜 u v))]
+
+/-- **Schrödinger uncertainty relation.**  A genuine strengthening of Robertson: the
+right-hand side dominates the commutator term *together with* the symmetrized
+covariance term `Re⟪(A−a)ψ, (B−b)ψ⟫`,
+
+  `¼·‖⟪ψ,[A,B]ψ⟫‖² + (Re⟪(A−a)ψ,(B−b)ψ⟫)² ≤ ‖(A−a)ψ‖²·‖(B−b)ψ‖²`.
+
+Robertson (`robertson_uncertainty`) is the special case obtained by dropping the
+nonnegative `(Re…)²` covariance term.  At `a = ⟨A⟩`, `b = ⟨B⟩` the real part
+`Re⟪uₐ,v_b⟫` is the covariance `½⟪ψ,{A,B}ψ⟫ − ⟨A⟩⟨B⟩`, so this is Schrödinger's
+sharpening `Var(A)·Var(B) ≥ ¼|⟪[A,B]⟫|² + |Cov(A,B)|²` (Schrödinger 1930).
+
+The proof keeps the *full* Gram bound `(Re⟪u,v⟫)² + (Im⟪u,v⟫)² ≤ ‖u‖²·‖v‖²`
+(`inner_sq_le_gram`) rather than discarding the real part, then bounds
+`¼‖[A,B]‖² ≤ (Im⟪u,v⟫)²` exactly as in Robertson. -/
+theorem schrodinger_uncertainty {A B : E →ₗ[𝕜] E} (hA : A.IsSymmetric)
+    (hB : B.IsSymmetric) (ψ : E) (a b : ℝ) :
+    (1 / 4 : ℝ) * ‖inner 𝕜 ψ (A (B ψ) - B (A ψ))‖ ^ 2
+        + RCLike.re (inner 𝕜 (A ψ - (a : 𝕜) • ψ) (B ψ - (b : 𝕜) • ψ)) ^ 2
+      ≤ ‖A ψ - (a : 𝕜) • ψ‖ ^ 2 * ‖B ψ - (b : 𝕜) • ψ‖ ^ 2 := by
+  set u := A ψ - (a : 𝕜) • ψ with hu
+  set v := B ψ - (b : 𝕜) • ψ with hv
+  have hid : inner 𝕜 ψ (A (B ψ) - B (A ψ)) = inner 𝕜 u v - inner 𝕜 v u :=
+    inner_commutator_eq_sub hA hB ψ a b
+  have hconj : inner 𝕜 v u = (starRingEnd 𝕜) (inner 𝕜 u v) := (inner_conj_symm v u).symm
+  have hInorm : ‖(RCLike.I : 𝕜)‖ ≤ 1 := by
+    rcases eq_or_ne (RCLike.I : 𝕜) 0 with h | h
+    · rw [h, norm_zero]; norm_num
+    · rw [RCLike.norm_I_of_ne_zero h]
+  have h2 : ‖(2 : 𝕜)‖ = 2 := RCLike.norm_two
+  have hnb : ‖inner 𝕜 ψ (A (B ψ) - B (A ψ))‖ ≤ 2 * |RCLike.im (inner 𝕜 u v)| := by
+    rw [hid, hconj, RCLike.sub_conj, norm_mul, norm_mul, RCLike.norm_ofReal, h2]
+    nlinarith [hInorm, abs_nonneg (RCLike.im (inner 𝕜 u v))]
+  have hgram := inner_sq_le_gram (𝕜 := 𝕜) u v
+  nlinarith [hnb, hgram, norm_nonneg (inner 𝕜 ψ (A (B ψ) - B (A ψ))),
+    abs_nonneg (RCLike.im (inner 𝕜 u v)), sq_abs (RCLike.im (inner 𝕜 u v))]
+
+/-- **Robertson from Schrödinger.**  Dropping the nonnegative covariance term
+`(Re⟪(A−a)ψ,(B−b)ψ⟫)²` in `schrodinger_uncertainty` recovers `robertson_uncertainty`,
+confirming Schrödinger's relation is at least as strong. -/
+theorem robertson_of_schrodinger {A B : E →ₗ[𝕜] E} (hA : A.IsSymmetric)
+    (hB : B.IsSymmetric) (ψ : E) (a b : ℝ) :
+    (1 / 4 : ℝ) * ‖inner 𝕜 ψ (A (B ψ) - B (A ψ))‖ ^ 2
+      ≤ ‖A ψ - (a : 𝕜) • ψ‖ ^ 2 * ‖B ψ - (b : 𝕜) • ψ‖ ^ 2 := by
+  have h := schrodinger_uncertainty hA hB ψ a b
+  nlinarith [h, sq_nonneg (RCLike.re (inner 𝕜 (A ψ - (a : 𝕜) • ψ) (B ψ - (b : 𝕜) • ψ)))]
 
 /-- **Heisenberg uncertainty principle (variance form).**  The physically standard
 statement: instantiating `robertson_uncertainty` at the expectation values
