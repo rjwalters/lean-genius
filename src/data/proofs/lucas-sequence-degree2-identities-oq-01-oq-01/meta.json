@@ -25,6 +25,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header, Imports, and Setup",
+      "startLine": 1,
+      "endLine": 48,
+      "summary": "Imports Mathlib.Tactic and the three parent Lucas-sequence files (base identities, OQ-01 doubling, OQ-02), then the module docstring: the parent OQ-01 doubling formulas U₂ₙ=Uₙ·Vₙ, V₂ₙ=Vₙ²−2Qⁿ are extended one rung to the tripling formulas U₃ₙ=Uₙ(Vₙ²−Qⁿ), V₃ₙ=Vₙ(Vₙ²−3Qⁿ), derived from the bilinear addition laws at the split 3n=2n+n with no Binet/√D. Reopens the LucasSequenceDegree2Identities namespace and the OQ02 namespace supplying the addition/doubling lemmas.",
+      "mathContext": "Two-parameter Lucas sequences $U_n(P,Q),V_n(P,Q)$; the tripling layer descends algebraically from the degree-2 master identity $V_n^2 - D\\,U_n^2 = 4Q^n$ ($D=P^2-4Q$), uniform in $(P,Q)$."
+    },
+    {
       "id": "tripling-formulas",
       "title": "Section I: The General Tripling Formulas",
       "startLine": 49,
