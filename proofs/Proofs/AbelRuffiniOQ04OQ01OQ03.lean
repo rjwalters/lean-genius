@@ -403,6 +403,44 @@ theorem not_isSimpleGroup_of_sylow {G : Type*} [Group G] [Finite G] {p : ℕ}
     rw [ht, Subgroup.index_top] at hidx
     omega
 
+/-! ### Conjugacy-class-size form of the N/C bound
+
+The index `[G : C_G(c)]` is, by the orbit–stabilizer theorem, exactly the size of the
+conjugacy class of `c`: conjugation makes `G` act on itself (`MulAction (ConjAct G) G`),
+the orbit of `c` is its conjugacy class, and the stabilizer is the centralizer `C_G(c)`.
+So the N/C bound `[G:C_G(c)] ∣ p−1` translates verbatim into a bound on the number of
+conjugates of `c`:
+
+    `|conjugacy class of c|  =  [G : C_G(c)]  ∣  p − 1`.
+
+This is the class-equation-facing reading of the same fact: in a group of order `p·m`
+with a normal Sylow `p`-subgroup `⟨c⟩`, every order-`p` element sits in a conjugacy class
+whose size divides `p − 1` (hence `≤ p − 1`). -/
+
+/-- **Orbit–stabilizer identity: the conjugacy class of `c` has size `[G : C_G(c)]`.**
+The orbit of `c` under the conjugation action `ConjAct G ↷ G` is its conjugacy class, and
+by the orbit–stabilizer theorem its cardinality is the index of the stabilizer, which is
+the centralizer `C_G(c)`.  Pure group theory — no finiteness or order hypothesis. -/
+theorem orbit_conjAct_card_eq_centralizer_index {G : Type*} [Group G] (c : G) :
+    Nat.card (MulAction.orbit (ConjAct G) c) = (Subgroup.centralizer {c}).index := by
+  rw [Nat.card_congr (MulAction.orbitEquivQuotientStabilizer (ConjAct G) c),
+    ← Subgroup.index_eq_card, Subgroup.centralizer_eq_comap_stabilizer c,
+    Subgroup.index_comap_of_surjective _ (ConjAct.toConjAct (G := G)).surjective]
+
+/-- **N/C bound, conjugacy-class form.**  Under the hypotheses of `zpowers_sylow_normal`,
+the number of conjugates of the order-`p` element `c` — the size of its conjugacy class,
+i.e. the orbit of `c` under the conjugation action — divides `p − 1`.  This is the
+class-equation-facing restatement of `centralizer_index_dvd_sub_one` via the
+orbit–stabilizer theorem: `|conj class of c| = [G : C_G(c)] ∣ p − 1`. -/
+theorem conjClass_card_dvd_sub_one {G : Type*} [Group G] [Finite G] {p : ℕ}
+    [hp : Fact p.Prime] (m : ℕ)
+    (hcard : Nat.card G = p * m) (hpm : ¬ (p ∣ m))
+    (huniq : ∀ d : ℕ, d ∣ m → d % p = 1 → d = 1)
+    (c : G) (hc : orderOf c = p) :
+    Nat.card (MulAction.orbit (ConjAct G) c) ∣ p - 1 := by
+  rw [orbit_conjAct_card_eq_centralizer_index]
+  exact centralizer_index_dvd_sub_one m hcard hpm huniq c hc
+
 /-! ### The fixed prime `p = 5`
 
 The original Abel–Ruffini application only needs `p = 5`.  With the general
