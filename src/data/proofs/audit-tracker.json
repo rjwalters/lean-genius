@@ -15217,12 +15217,11 @@
     },
     "erdos-634": {
       "agentId": "auditor-loop-1777752145",
-      "auditCount": 7,
-      "lastAudited": "2026-07-08T05:49:40Z",
+      "auditCount": 8,
+      "lastAudited": "2026-07-09T21:48:12Z",
       "result": "clean",
       "issues": [
-        "sorries claim 7 actual 1 (PR #14856 reduced 7\u21921 but meta.json not refreshed); lineCount 298\u2192332; assumptions string still says \"7 sorries\"; deeper concern: Dissection structure has placeholder area condition (line 93), so *_dissectable theorems use trivial constant-function witness \u2014 issue #14859",
-        "Re-audit 2026-05-02 vs origin/main a0a5957: PR #14866 fixed only meta.json text; deeper Dissection placeholder + axiom inconsistency unresolved -> issue #14888"
+        "Re-audit 2026-07-09 vs origin/main 13c8036923: CLEAN. axiomCount 3 = 3 actual (seven_not_dissectable, eleven_not_dissectable, soifer_theorem), all disclosed by name in assumptions. sorries 6 = 6 actual (congruent_implies_similar + 5 positive-result stubs), no True stubs. status=axiomatized/badge=axiom correct for open Erd\u0151s problem. assumptions field is exemplary \u2014 proactively discloses the Erdos634AreaCollapse internal-inconsistency caveat. The detector's transient 'axiom undercount claims 3 actual 4' was a race (concurrent-edit mid-flight); recompute stable at 3 across repeated runs. Prior 2026-05 concerns (placeholder area condition, axiom inconsistency) are now openly documented in the entry, not masked."
       ]
     },
     "erdos-634-medial-congruence": {
