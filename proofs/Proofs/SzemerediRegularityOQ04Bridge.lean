@@ -486,4 +486,45 @@ theorem partitionEnergy_Aside_gain_of_irregular (G : SimpleGraph V)
     hdisj hA'R hcompR hne hAR' hB₀ hn₁ hn₂ hB (eps / 2) (by linarith) hdev'
   rwa [hunion] at hgain
 
+/-- **B-side irregularity ⇒ uniform energy jump** (second-coordinate mirror of
+    `partitionEnergy_Aside_gain_of_irregular`).  Symmetric to the A-side branch:
+    if a witness sub-part `B' ⊆ B` (with complement `B \ B'` inside `B`) deviates
+    from the whole part's density *measured against a fixed existing part*
+    `A₀ ∈ R` by at least `ε/2` — i.e. `|d(A₀, B') − d(A₀, B)| ≥ ε/2`, the datum the
+    `d(A, B')`-intermediate triangle decomposition of an irregular pair produces on
+    the `B`-coordinate — then refining `B` into `B'` and `B \ B'` raises
+    `partitionEnergy` by the uniform floor `(ε/2)² / (2n²) = ε² / (8n²)`.
+
+    Because `partitionEnergy_subpair_split_gain_uniform` splits the *first*
+    coordinate, the deviation is flipped onto that coordinate via the gallery's
+    `edgeDensity_comm` (`d(A₀, ·) = d(·, A₀)`); the split part `B` then plays the
+    role of `A₁ ∪ A₂` against the fixed partner `A₀`.  Together with
+    `partitionEnergy_Aside_gain_of_irregular` this closes *both* one-sided branches
+    of an irregular pair whose deviating coordinate is refined against a genuine
+    whole part of the partition. -/
+theorem partitionEnergy_Bside_gain_of_irregular (G : SimpleGraph V)
+    [DecidableRel G.Adj]
+    (R : Finset (Finset V)) (B A₀ B' : Finset V) (hB' : B' ⊆ B)
+    (hB'R : B' ∉ R) (hcompR : B \ B' ∉ R) (hne : B' ≠ B \ B') (hBR : B ∉ R)
+    (hA₀ : A₀ ∈ R)
+    (hn₁ : 1 ≤ (B'.card : ℚ)) (hn₂ : 1 ≤ ((B \ B').card : ℚ))
+    (hA : 1 ≤ (A₀.card : ℚ))
+    (eps : ℚ) (hε : 0 ≤ eps)
+    (hdev : |edgeDensity G A₀ B' - edgeDensity G A₀ B| ≥ eps / 2) :
+    partitionEnergy G (insert B R) +
+        (eps / 2) ^ 2 / (2 * (Fintype.card V : ℚ) ^ 2) ≤
+      partitionEnergy G (insert B' (insert (B \ B') R)) := by
+  have hunion : B' ∪ (B \ B') = B := Finset.union_sdiff_of_subset hB'
+  have hdisj : Disjoint B' (B \ B') := disjoint_sdiff_self_right
+  -- Flip the deviation onto the first coordinate (the one the split lemma refines)
+  -- via density symmetry, and present `B` as its disjoint two-piece union.
+  have hdev' : |edgeDensity G B' A₀ - edgeDensity G (B' ∪ (B \ B')) A₀| ≥ eps / 2 := by
+    rw [hunion, Szemeredi.Regularity.OQ01.edgeDensity_comm G B' A₀,
+      Szemeredi.Regularity.OQ01.edgeDensity_comm G B A₀]
+    exact hdev
+  have hBR' : B' ∪ (B \ B') ∉ R := by rwa [hunion]
+  have hgain := partitionEnergy_subpair_split_gain_uniform G R B' (B \ B') A₀
+    hdisj hB'R hcompR hne hBR' hA₀ hn₁ hn₂ hA (eps / 2) (by linarith) hdev'
+  rwa [hunion] at hgain
+
 end Szemeredi.RegularityOQ04Bridge

@@ -196,3 +196,47 @@ carries all the graph-theoretic content.
 - B-side branch via two-level refinement + 4-cell defect Cauchy–Schwarz.
 - Outer AFKS loop assembly feeding `afks_energy_iteration_count`.
 - Discharge `|A'|,|A\A'|≥1`, `∉R` side conditions from `|A'|≥ε|A|>0` + equipartition.
+
+## Session 2026-07-08 (Session 5) - B-side energy increment (whole-partner mirror)
+
+**Mode**: REVISIT (continuing branch szem-oq04-knowledge-s3)
+**Outcome**: progress (1 theorem VERIFIED 0/0)
+
+### What I Did
+- `partitionEnergy_Bside_gain_of_irregular`: the exact second-coordinate mirror of
+  `partitionEnergy_Aside_gain_of_irregular`. A witness sub-part `B' ⊆ B` whose
+  density against a fixed WHOLE part `A₀ ∈ R` deviates from the whole part's
+  density by `≥ ε/2` (`|d(A₀,B') − d(A₀,B)| ≥ ε/2`) realizes the uniform floor
+  `ε²/(8n²)` when `B` is refined into `B', B∖B'`.
+- Since `partitionEnergy_subpair_split_gain_uniform` splits the FIRST coordinate,
+  the deviation is flipped onto it with `edgeDensity_comm` (2 rewrites) so `B`
+  plays the `A₁∪A₂` role against partner `A₀`; then reuse the verified subpair
+  lemma verbatim. ~30 lines.
+
+### Key Findings
+- **The two whole-partner one-sided branches are now both discharged**
+  (A-side against whole B; B-side against whole A). This is the complete
+  "refine the deviating coordinate against a genuine whole part" toolkit.
+- **What still blocks full closure**: neither of the two single-triangle
+  decompositions of the witness deviation `|d(A',B')−d(A,B)|` gives *both* legs
+  against whole parts — each yields one whole-partner leg (GOOD) and one
+  sub-part-partner leg (BAD):
+    * through `d(A',B)`: A-leg `|d(A',B)−d(A,B)|` vs whole B (GOOD), B-leg
+      `|d(A',B')−d(A',B)|` vs sub-part A' (BAD).
+    * through `d(A,B')`: B-leg `|d(A,B')−d(A,B)|` vs whole A (GOOD), A-leg
+      `|d(A',B')−d(A,B')|` vs sub-part B' (BAD).
+  The obstruction is the mixed second difference (defect)
+  `d(A',B')−d(A',B)−d(A,B')+d(A,B)`; killing it is exactly the 4-cell defect
+  Cauchy–Schwarz. So full closure genuinely requires the simultaneous
+  refinement of BOTH coordinates (4 cells) + a variance/second-moment bound
+  `Σ wᵢ xᵢ² ≥ (Σwᵢ)μ² + w₀d²` — the hard analytic core, NOT reducible to
+  triangle inequalities. Confirmed dead-end for the elementary route.
+
+### Files Modified
+- proofs/Proofs/SzemerediRegularityOQ04Bridge.lean (+partitionEnergy_Bside_gain_of_irregular)
+
+### Next Steps
+- 4-cell simultaneous refinement: abstract variance atom bound
+  `Σ wᵢ xᵢ² − (Σwᵢ)μ² ≥ w₀·d²` (one atom of weight ≥ w₀ deviating ≥ d from mean),
+  then instantiate over the 4 sub-cells to get the true ε⁴ energy increment.
+- Outer AFKS loop assembly feeding `afks_energy_iteration_count`.
