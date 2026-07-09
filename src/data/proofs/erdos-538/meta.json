@@ -143,7 +143,7 @@
     }
   ],
   "conclusion": {
-    "summary": "The formalization captures Erdős Problem 538 with Erdős's upper bound O(r·log N / log log N) fully proved from Mertens' second theorem (axiom) and a double counting inequality (proved via fiber decomposition). 17 theorems/lemmas including exp(1)<3 bound, log bounds, harmonic sum bounds, and the main calc chain. 1 axiom (Mertens' second theorem), 0 sorries.",
+    "summary": "The formalization captures Erdős Problem 538 with Erdős's upper bound O(r·log N / log log N) fully proved from Mertens' second theorem (axiom) and a double counting inequality (proved via fiber decomposition). 22 theorems/lemmas including exp(1)<3 bound, log bounds, harmonic sum bounds, and the main calc chain. 1 axiom (Mertens' second theorem), 0 sorries.",
     "implications": "**Theoretical Significance**: The optimal bound would reveal the precise trade-off between multiplicative structure constraints and additive density.\n\nThe double counting technique via Mertens' theorem exemplifies how prime distribution results (analytic number theory) yield combinatorial bounds (additive combinatorics). The multiplicative energy perspective connects to modern tools like the Balog-Szemerédi-Gowers theorem.",
     "openQuestions": [
       "Is $r \\cdot \\log N / \\log\\log N$ the optimal bound, or can it be improved?",
