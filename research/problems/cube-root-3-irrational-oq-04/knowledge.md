@@ -965,3 +965,30 @@ S18/S19 mapped the non-periodicity question into Half (a) "∛3 is not a quadrat
 ### Next steps
 1. When Docker returns: build `CubeRoot3IrrationalOQ04Degree.lean`, fix any glue (likely candidates: the `Set.range` membership term in `not_cube`, the `algebraMap ℚ ℝ 3` normalization in `aeval_cbrt3`), then it can be registered as a standalone gallery result.
 2. Half (b) (Lagrange CF theorem) remains the only blocker to the full non-periodicity theorem; it is an upstream-Mathlib-scale contribution, out of this slug's scope.
+
+---
+
+## Session 2026-07-08 (Session 21, researcher-6) — Half (a) VERIFIED + strengthened to field degree
+
+**Mode**: REVISIT (RICH, phase ACT). **Outcome**: progress — the long-pending Half (a) file is now machine-checked, and strengthened.
+
+S20 authored `CubeRoot3IrrationalOQ04Degree.lean` under a Docker/Aristotle blackout — it was UNREGISTERED and had never actually compiled. This session **built it** (`./proofs/scripts/docker-build.sh Proofs.CubeRoot3IrrationalOQ04Degree` → `✔ Built … (3.0s)`, `=== Build succeeded ===`). The S20 proofs were correct as authored — no glue fixes were needed for the original 6 theorems (`not_cube`, `irreducible_X_pow_three_sub_C`, `aeval_cbrt3`, `minpoly_cbrt3`, `natDegree_minpoly_cbrt3`, `cbrt3_not_quadratic`). Files are auto-discovered by the Lake `globs` directive, so no `Proofs.lean` registration is required.
+
+**Strengthening added this session** (rebuilt clean, 0 sorry / 0 axiom):
+- `isIntegral_cbrt3 : IsIntegral ℚ cbrt3` — anonymous constructor `⟨X³−C 3, monic_X_pow_sub_C …, aeval_cbrt3⟩`.
+- `finrank_adjoin_cbrt3 : Module.finrank ℚ ℚ⟮cbrt3⟯ = 3` — via `IntermediateField.adjoin.finrank isIntegral_cbrt3` + `natDegree_minpoly_cbrt3`.
+- `finrank_adjoin_cbrt3_ne_two : Module.finrank ℚ ℚ⟮cbrt3⟯ ≠ 2`.
+
+This upgrades Half (a) from "minpoly has degree 3" to the sharp field-theoretic statement "**`[ℚ(∛3) : ℚ] = 3`**", which is the rigorous meaning of "∛3 is not a quadratic irrational" (a quadratic irrational generates a degree-2 extension of ℚ).
+
+**Gotcha**: `K⟮x⟯` adjoin notation is `scoped IntermediateField` — needs `open scoped IntermediateField` (first build failed "expected token" at the `⟮` char without it).
+
+File: 9 theorems / 99 lines. Synced `lineCount 84→99` (was off-by-one even before) and `theoremCount 6→9` across all 11 gallery metas that reference this file.
+
+### Status
+Half (a) machine-verified. Half (b) = Lagrange's CF theorem, **confirmed absent from Mathlib v4.26.0** (re-confirmed S18/S19/S20), is the sole remaining blocker for the full OQ-04 non-periodicity theorem — an upstream-Mathlib-scale contribution, out of scope. Problem stays phase ACT.
+
+### Files Modified
+- `proofs/Proofs/CubeRoot3IrrationalOQ04Degree.lean` (+3 thms, +`open scoped IntermediateField`)
+- 11 `src/data/research/problems/cube-root-3-irrational*.json` (Degree block lineCount/theoremCount sync)
+- this knowledge.md + the problem json knowledge fields
