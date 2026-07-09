@@ -626,4 +626,54 @@ theorem exists_affine_of_covariance_sq_eq [IsFiniteMeasure μ] {X Y : Ω → ℝ
   field_simp
   linear_combination hω
 
+/-- **Covariance is preserved under a.e. equality of the left argument.**  If `X =ᵐ X'` then their
+covariances against any common `Y` agree.  This is the covariance companion of
+`ProbabilityTheory.variance_congr` (which Mathlib provides but has no covariance analogue); it is
+proved directly from the defining integral via `integral_congr_ae`, and is exactly what lets the
+affine-dependence *converse* below accept an arbitrary a.e. representative of `X`. -/
+theorem covariance_congr_left {X X' Y : Ω → ℝ} (h : X =ᵐ[μ] X') :
+    cov[X, Y; μ] = cov[X', Y; μ] := by
+  have hmean : μ[X] = μ[X'] := integral_congr_ae h
+  simp only [covariance]
+  refine integral_congr_ae ?_
+  filter_upwards [h] with ω hω
+  rw [hω, hmean]
+
+/-- **Affine dependence ⟹ Cauchy–Schwarz is tight — converse of `exists_affine_of_covariance_sq_eq`.**
+If `X` is almost everywhere an affine function of `Y`, `X =ᵐ a·Y + b`, then the covariance
+Cauchy–Schwarz inequality is an *equality*: `cov[X,Y]² = Var[X]·Var[Y]`.  Unlike the forward
+direction this needs **no** non-degeneracy hypothesis on `Y` — it is a direct bilinear computation
+(`cov[X,Y] = a·Var[Y]` and `Var[X] = a²·Var[Y]`) transported along the a.e. identity via
+`covariance_congr_left` and `variance_congr`. -/
+theorem covariance_sq_eq_of_affine [IsProbabilityMeasure μ] {X Y : Ω → ℝ}
+    (hY : MemLp Y 2 μ) (a b : ℝ) (h : X =ᵐ[μ] fun ω => a * Y ω + b) :
+    cov[X, Y; μ] ^ 2 = Var[X; μ] * Var[Y; μ] := by
+  have hYint : Integrable (fun ω => a * Y ω) μ := (hY.integrable one_le_two).const_mul a
+  have hcov : cov[X, Y; μ] = a * Var[Y; μ] := by
+    rw [covariance_congr_left h, covariance_add_const_left hYint b,
+      covariance_const_mul_left, covariance_self hY.aemeasurable]
+  have hvar : Var[X; μ] = a ^ 2 * Var[Y; μ] := by
+    have hsmul : (fun ω => a * Y ω) = a • Y := by
+      funext ω; rw [Pi.smul_apply, smul_eq_mul]
+    rw [variance_congr h, variance_add_const (hY.aestronglyMeasurable.const_mul a) b, hsmul,
+      variance_smul]
+  rw [hcov, hvar]; ring
+
+/-- **Sharp equality boundary of covariance Cauchy–Schwarz — full iff form.**  For square-integrable
+`X, Y` with `Y` non-degenerate (`Var[Y] ≠ 0`), `cov[X,Y]² = Var[X]·Var[Y]` holds *exactly* when `X`
+is almost everywhere an affine function of `Y`.  Combines the forward direction
+`exists_affine_of_covariance_sq_eq` (tightness ⟹ regression line) with the converse
+`covariance_sq_eq_of_affine` (affine ⟹ tightness), giving the complete structural characterisation
+of the equality case: **Cauchy–Schwarz is tight iff `X` and `Y` are a.e. affinely dependent.** -/
+theorem covariance_sq_eq_variance_mul_variance_iff_affine [IsProbabilityMeasure μ] {X Y : Ω → ℝ}
+    (hX : MemLp X 2 μ) (hY : MemLp Y 2 μ) (hYnd : Var[Y; μ] ≠ 0) :
+    cov[X, Y; μ] ^ 2 = Var[X; μ] * Var[Y; μ] ↔
+      ∃ a b : ℝ, X =ᵐ[μ] fun ω => a * Y ω + b := by
+  constructor
+  · intro h
+    obtain ⟨b, hb⟩ := exists_affine_of_covariance_sq_eq hX hY hYnd h
+    exact ⟨cov[X, Y; μ] / Var[Y; μ], b, hb⟩
+  · rintro ⟨a, b, hab⟩
+    exact covariance_sq_eq_of_affine hY a b hab
+
 end ShannonAWGNMultiSymbolPower

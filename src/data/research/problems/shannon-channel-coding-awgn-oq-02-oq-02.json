@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: sharp EQUALITY boundary of covariance Cauchy–Schwarz VERIFIED (629 lines, 25 thm, 0/0) — tightness ⟺ a.e. affine dependence (regression line). Second-order picture complete: uncorrelatedness ⟹ powers add; monotone under covariance sign; affine dependence ⟹ C–S tight.",
+    "progressSummary": "PROGRESS: sharp Cauchy–Schwarz equality boundary now a FULL IFF (tightness ⟺ a.e. affine dependence). Added converse covariance_sq_eq_of_affine + missing covariance_congr_left. 679 lines, 28 thm, 0/0.",
     "builtItems": [
       "variance_sum_of_pairwise_uncorrelated (ShannonChannelCodingAWGNOQ02OQ02.lean:131): Var[∑ i∈s, Wi] = ∑ Var[Wi] from Set.Pairwise cov=0 + MemLp; [IsFiniteMeasure].",
       "variance_sum_of_pairwise_indep (:150): independence ⟹ uncorrelated ⟹ identity, via IndepFun.covariance_eq_zero — shows the sharp version subsumes IndepFun.variance_sum.",
@@ -41,7 +41,10 @@
       "variance_eq_zero_iff (real-valued Var=0 ⟺ a.e. constant, from Mathlib evariance_eq_zero_iff via ENNReal.toReal_eq_zero_iff + MemLp.evariance_ne_top)",
       "variance_regression_residual identity Var[Var[Y]·X − cov·Y] = Var[Y]·(Var[X]·Var[Y] − cov²) via variance_sub/variance_smul/covariance_smul + ring",
       "covariance_sq_eq_variance_mul_variance_iff (Var[Y]≠0): cov²=Var[X]·Var[Y] ⟺ residual a.e. constant — sharp equality boundary of C–S",
-      "exists_affine_of_covariance_sq_eq: tight C–S ⟹ X =ᵐ (cov/Var[Y])·Y + b (regression line)"
+      "exists_affine_of_covariance_sq_eq: tight C–S ⟹ X =ᵐ (cov/Var[Y])·Y + b (regression line)",
+      "covariance_congr_left (ShannonChannelCodingAWGNOQ02OQ02.lean): cov a.e.-congruent in left arg — covariance analogue of Mathlib variance_congr (not in Mathlib), proved from defining integral via integral_congr_ae",
+      "covariance_sq_eq_of_affine: CONVERSE of exists_affine_of_covariance_sq_eq — X =ᵐ a·Y+b ⟹ cov²=Var·Var, no non-degeneracy needed (bilinear cov=a·Var[Y], Var=a²·Var[Y])",
+      "covariance_sq_eq_variance_mul_variance_iff_affine: FULL IFF capstone — Cauchy–Schwarz tight ⟺ X,Y a.e. affinely dependent (629→679 lines, 25→28 thm, 0 sorry/0 axiom)"
     ],
     "insights": [
       "Bienaymé variance-of-a-sum needs only PAIRWISE UNCORRELATEDNESS (cov[Wi,Wj]=0 for i≠j), not pairwise independence: the off-diagonal covariances of Var[∑Wi]=∑i∑j cov[Wi,Wj] (Mathlib variance_sum´) are exactly what must vanish. Independence is strictly stronger (there exist uncorrelated dependent variables).",
@@ -51,7 +54,8 @@
       "VERIFIED (0 sorry/0 axiom, Docker build clean): variance-of-sum additivity holds iff total off-diagonal covariance ∑ᵢ∑_{j∈s.erase i} cov[Wᵢ,Wⱼ]=0 — strictly weaker than pairwise-uncorrelatedness (covariances may cancel in aggregate). For n=2 the single off-diagonal term cannot cancel, so uncorrelatedness is exactly necessary and sufficient there.",
       "Canonical variance-of-sum defect equals exactly 2 times the strict-lower-triangle pairwise covariance sum; the factor 2 is covariance_comm symmetry between the two ordered copies of each unordered pair. Sharpens the qualitative offDiag-vanishing iff to a closed-form defect and halves the covariance terms to control.",
       "Cauchy–Schwarz for covariance (cov[X,Y]²≤Var[X]·Var[Y]) is ABSENT from Mathlib probability layer; proved via discrim_le_zero applied to the nonnegative quadratic t↦Var[X+t•Y]=Var[Y]·t²+2cov·t+Var[X]. This is the engine for the standard-deviation triangle inequality.",
-      "Sharp EQUALITY case of covariance Cauchy–Schwarz (cov²=Var[X]·Var[Y]) is characterized by the regression-residual variance IDENTITY Var[Var[Y]·X − cov·Y] = Var[Y]·(Var[X]·Var[Y] − cov²): when Var[Y]≠0 the residual has zero variance (hence a.e. constant) exactly when C–S is tight. Dividing by Var[Y] exhibits X =ᵐ (cov/Var[Y])·Y + b — a.e. affine dependence with slope the regression coefficient. Classical equality-in-Cauchy–Schwarz ⟺ linear-dependence, specialised to the covariance inner product; sharp EQUALITY companion to the earlier stddev triangle INEQUALITY."
+      "Sharp EQUALITY case of covariance Cauchy–Schwarz (cov²=Var[X]·Var[Y]) is characterized by the regression-residual variance IDENTITY Var[Var[Y]·X − cov·Y] = Var[Y]·(Var[X]·Var[Y] − cov²): when Var[Y]≠0 the residual has zero variance (hence a.e. constant) exactly when C–S is tight. Dividing by Var[Y] exhibits X =ᵐ (cov/Var[Y])·Y + b — a.e. affine dependence with slope the regression coefficient. Classical equality-in-Cauchy–Schwarz ⟺ linear-dependence, specialised to the covariance inner product; sharp EQUALITY companion to the earlier stddev triangle INEQUALITY.",
+      "The equality-boundary iff closes cleanly: forward (tightness⟹regression line) needs Var[Y]≠0, but converse (affine⟹tightness) is unconditional — a pure bilinear/variance-of-affine computation transported along =ᵐ via covariance_congr_left + variance_congr."
     ],
     "mathlibGaps": [
       "Mathlib has no pairwise-uncorrelated variance-sum lemma (only variance_sum´ double-sum form and IndepFun.variance_sum). Candidate upstream contribution: variance_sum under Set.Pairwise (cov=0).",
@@ -63,7 +67,8 @@
       "Further sharp boundary: does the identity extend to L² limits / countable pairwise-uncorrelated families (Var of a series)? Would need dominated-convergence for covariance.",
       "Equality condition for the std-deviation triangle inequality: √Var[∑Wᵢ]=∑√Var[Wᵢ] iff the centered contributions are a.e. nonneg-proportional (perfect positive correlation) — the sharp boundary of stddev_sum_le, dual to the off-diagonal-cancellation equality condition already proven.",
       "Correlation coefficient ρ = cov/(σX·σY): |ρ| ≤ 1 immediate from covariance_sq_le_variance_mul_variance; state |ρ|=1 ⟺ a.e. affine dependence as normalised capstone.",
-      "Converse affine⟹equality (X =ᵐ a·Y+b ⟹ cov²=Var·Var) for full iff — needs covariance_congr under a.e. equality (build from integral_congr_ae)."
+      "Converse affine⟹equality (X =ᵐ a·Y+b ⟹ cov²=Var·Var) for full iff — needs covariance_congr under a.e. equality (build from integral_congr_ae).",
+      "Upstream covariance_congr_left to Mathlib (Probability/Moments/Covariance.lean) alongside variance_congr; would also give a covariance_congr_right by covariance_comm."
     ],
     "markdown": "# Knowledge Base: shannon-channel-coding-awgn-oq-02-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
