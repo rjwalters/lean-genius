@@ -301,4 +301,129 @@ theorem spectrum_compress_subset_of_invariant
   rw [← Module.End.hasEigenvalue_iff_mem_spectrum] at hμ ⊢
   exact hasEigenvalue_of_hasEigenvalue_compress_of_invariant H hinv hμ
 
+/-! ## Reducing subspaces: the spectrum splits as a union of compression spectra
+
+`spectrum_compress_subset_of_invariant` gives the *one-sided* inclusion
+`spectrum 𝕜 (compress T H) ⊆ spectrum 𝕜 T` on any invariant `H`.  The sharper
+structural question is *when the ambient spectrum is recovered completely* from
+compressions.  The clean answer: exactly when `H` **reduces** `T`, i.e. both `H`
+and its orthogonal complement `Hᗮ` are `T`-invariant.  Then
+
+  `spectrum 𝕜 T = spectrum 𝕜 (compress T H) ∪ spectrum 𝕜 (compress T Hᗮ)`,
+
+the block-diagonal spectral decomposition: every eigenvalue of `T` is captured by
+one of the two compression blocks, and nothing else appears — the two-block
+*equality* (attainment) form of Poincaré separation on a reducing subspace, still
+with **no symmetry hypothesis** on `T`.
+
+The mechanism is a projection argument: an ambient eigenvector `v ≠ 0`,
+`T v = μ • v`, splits as `v = a + (v - a)` with `a := P_H v ∈ H` and
+`v - a ∈ Hᗮ`.  Feeding the split into the eigen-equation gives
+`T a - μ • a = μ • (v - a) - T (v - a)`, whose left side lies in `H` (invariance
+of `H`) and whose right side lies in `Hᗮ` (invariance of `Hᗮ`); as `H ⊓ Hᗮ = ⊥`,
+both sides vanish, so `a` and `v - a` are themselves eigenvectors of `T` for `μ`.
+Whichever is nonzero lies in an invariant block, so `μ` is an eigenvalue of that
+block's compression (`compress T H = T.restrict` there,
+`compress_eq_restrict_of_invariant`). -/
+
+/-- **An ambient eigenvector inside an invariant subspace is a compression
+eigenvector.**
+
+If `H` is `T`-invariant and `w ∈ H` is a nonzero ambient eigenvector,
+`T w = μ • w`, then `μ` is an eigenvalue of the orthogonal compression
+`compress T H` (with eigenvector `⟨w, hwH⟩ : H`).  On the invariant block the
+compression coincides with `T` on `H` (`coe_compress_of_invariant`), so the
+eigen-equation transfers verbatim.  No symmetry of `T` is used. -/
+theorem hasEigenvalue_compress_of_mem_of_invariant
+    {T : V →ₗ[𝕜] V} (H : Submodule 𝕜 V) (hinv : ∀ y ∈ H, T y ∈ H)
+    {μ : 𝕜} {w : V} (hwH : w ∈ H) (hw : w ≠ 0) (hTw : T w = μ • w) :
+    Module.End.HasEigenvalue (compress T H) μ := by
+  -- The compression acts by `T` on the invariant block, so it fixes `w`'s class.
+  have hcoe : ((compress T H ⟨w, hwH⟩ : H) : V) = μ • w := by
+    rw [coe_compress_of_invariant H hinv ⟨w, hwH⟩]; exact hTw
+  have hev : compress T H ⟨w, hwH⟩ = μ • (⟨w, hwH⟩ : H) :=
+    Subtype.ext (by rw [hcoe, Submodule.coe_smul])
+  have hne : (⟨w, hwH⟩ : H) ≠ 0 := by
+    simp only [Ne, Submodule.mk_eq_zero]; exact hw
+  exact Module.End.hasEigenvalue_of_hasEigenvector
+    ⟨Module.End.mem_eigenspace_iff.mpr hev, hne⟩
+
+/-- **Every eigenvalue of `T` is captured by one compression block of a reducing
+pair.**
+
+If both `H` and its orthogonal complement `Hᗮ` are `T`-invariant (i.e. `H`
+reduces `T`), then every eigenvalue `μ` of `T` is an eigenvalue of either
+`compress T H` or `compress T Hᗮ`.
+
+Proof: an eigenvector `v ≠ 0` (`T v = μ • v`) splits as `v = a + (v - a)` with
+`a := P_H v ∈ H` and `v - a ∈ Hᗮ`.  The eigen-equation gives
+`T a - μ • a = μ • (v - a) - T (v - a)`; the left side lies in `H`, the right side
+in `Hᗮ`, and `H ⊓ Hᗮ = ⊥`, so both vanish — `a` and `v - a` are eigenvectors of
+`T`.  Whichever is nonzero lies in an invariant block, and
+`hasEigenvalue_compress_of_mem_of_invariant` promotes it to that block's
+compression.  No symmetry of `T` is used. -/
+theorem hasEigenvalue_compress_or_orthogonal_of_reducing
+    {T : V →ₗ[𝕜] V} (H : Submodule 𝕜 V)
+    (hH : ∀ y ∈ H, T y ∈ H) (hHp : ∀ y ∈ Hᗮ, T y ∈ Hᗮ)
+    {μ : 𝕜} (hμ : Module.End.HasEigenvalue T μ) :
+    Module.End.HasEigenvalue (compress T H) μ ∨
+      Module.End.HasEigenvalue (compress T Hᗮ) μ := by
+  obtain ⟨v, hv⟩ := hμ.exists_hasEigenvector
+  have hTv : T v = μ • v := Module.End.mem_eigenspace_iff.mp hv.1
+  have hvne : v ≠ 0 := hv.2
+  -- Orthogonal split `v = a + (v - a)`, `a ∈ H`, `v - a ∈ Hᗮ`.
+  set a := H.starProjection v with ha_def
+  have haH : a ∈ H := H.starProjection_apply_mem v
+  have hbHp : v - a ∈ Hᗮ := H.sub_starProjection_mem_orthogonal v
+  have hva : a + (v - a) = v := by abel
+  -- The eigen-equation, split across `H` and `Hᗮ`.
+  have hsplit : T a - μ • a = μ • (v - a) - T (v - a) := by
+    have key : T a + T (v - a) = μ • a + μ • (v - a) := by
+      rw [← map_add, ← smul_add, hva, hTv]
+    rw [sub_eq_sub_iff_add_eq_add, key]; abel
+  -- The common value lies in `H ⊓ Hᗮ = ⊥`, hence is `0`.
+  have hmemH : T a - μ • a ∈ H := H.sub_mem (hH a haH) (H.smul_mem μ haH)
+  have hmemHp : T a - μ • a ∈ Hᗮ := by
+    rw [hsplit]; exact Hᗮ.sub_mem (Hᗮ.smul_mem μ hbHp) (hHp _ hbHp)
+  have hzero : T a - μ • a = 0 := by
+    have hmem : T a - μ • a ∈ H ⊓ Hᗮ := Submodule.mem_inf.mpr ⟨hmemH, hmemHp⟩
+    rw [H.inf_orthogonal_eq_bot] at hmem
+    exact (Submodule.mem_bot 𝕜).mp hmem
+  have hTa : T a = μ • a := sub_eq_zero.mp hzero
+  have hTb : T (v - a) = μ • (v - a) := by
+    have hz2 : μ • (v - a) - T (v - a) = 0 := by rw [← hsplit]; exact hzero
+    exact (sub_eq_zero.mp hz2).symm
+  -- At least one component is nonzero; feed it into the invariant block.
+  by_cases hacase : a = 0
+  · right
+    have hb_ne : v - a ≠ 0 := by rw [hacase, sub_zero]; exact hvne
+    exact hasEigenvalue_compress_of_mem_of_invariant Hᗮ hHp hbHp hb_ne hTb
+  · left
+    exact hasEigenvalue_compress_of_mem_of_invariant H hH haH hacase hTa
+
+/-- **Spectral decomposition over a reducing subspace.**
+
+If `H` reduces `T` — both `H` and `Hᗮ` are `T`-invariant — then the spectrum of
+`T` is exactly the union of the spectra of the two orthogonal compressions:
+
+  `spectrum 𝕜 T = spectrum 𝕜 (compress T H) ∪ spectrum 𝕜 (compress T Hᗮ)`.
+
+The `⊇` inclusion is `spectrum_compress_subset_of_invariant` applied to each
+block; the `⊆` inclusion is `hasEigenvalue_compress_or_orthogonal_of_reducing`.
+This is the equality (two-block attainment) form of Poincaré separation on a
+reducing subspace, again with **no symmetry hypothesis** on `T`. -/
+theorem spectrum_eq_union_of_reducing
+    {T : V →ₗ[𝕜] V} (H : Submodule 𝕜 V)
+    (hH : ∀ y ∈ H, T y ∈ H) (hHp : ∀ y ∈ Hᗮ, T y ∈ Hᗮ) :
+    spectrum 𝕜 T = spectrum 𝕜 (compress T H) ∪ spectrum 𝕜 (compress T Hᗮ) := by
+  apply Set.Subset.antisymm
+  · intro μ hμ
+    rw [← Module.End.hasEigenvalue_iff_mem_spectrum] at hμ
+    rcases hasEigenvalue_compress_or_orthogonal_of_reducing H hH hHp hμ with h | h
+    · exact Set.mem_union_left _ (Module.End.hasEigenvalue_iff_mem_spectrum.mp h)
+    · exact Set.mem_union_right _ (Module.End.hasEigenvalue_iff_mem_spectrum.mp h)
+  · exact Set.union_subset
+      (spectrum_compress_subset_of_invariant H hH)
+      (spectrum_compress_subset_of_invariant Hᗮ hHp)
+
 end CauchyInterlacing.PoincareCompression
