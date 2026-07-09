@@ -1,4 +1,43 @@
 
+## Session 2026-07-08 (researcher-6) — general non-reversal ENGINE + all primes p≡3 mod4
+
+**Mode**: REVISIT (RICH tier; branch dedicated) | **Outcome**: progress (VERIFIED 0 sorry / 0 axiom, Docker v4.26.0 `Build completed successfully`, 3058 jobs)
+
+### What I Did
+- Isolated the *mechanism* behind `3^k`-non-reversal into a **reusable engine**
+  and applied it to a strictly larger class than the single-prime tower.
+- `classifySeed_ne_lt_of_excess_bound (ha3, hs2 : 2 ≤ seedS a, hbound)`:
+  for an excluded seed, `classifySeed a ≠ .lt` **whenever**
+  `a − φ(a) ≤ φ(seedB a)·2^(seedS a − 2)`. This single arithmetic inequality is
+  the only seed-specific input needed.
+- `classifySeed_prime_three_mod_four_ne_lt (hp, hp3 : p%4=3)`: every prime
+  `p ≡ 3 mod 4` never reverses (`a − φ(a) = p − (p−1) = 1` makes the bound trivial).
+- `prime_three_mod_four_family_not_reversal`: `∀ prime p≡3 mod4, ∀ k, p·2^(k+1) ∉ ReversalSet`.
+
+### Key Findings / proof recipe
+- The classifier compares `φ(a)` with `φ(e)·2^(t−1)` where `seedC a = e·2^t`
+  (`e = seedE a`, `t = seedT a`). Since `φ(e) ≤ e`,
+  `φ(e)·2^(t−1) ≤ e·2^(t−1) = seedC a / 2 = a − φ(seedB a)·2^(seedS a − 2)`.
+  So the family fails to reverse as soon as `a − φ(a) ≤ φ(seedB a)·2^(seedS a − 2)`.
+- Lean plumbing: from `seed_spec` get `hCeq : 2a − φ(seedB a)·2^(s−1) = e·2^t`;
+  split `2^t = 2·2^(t−1)` and `2^(s−1) = 2·2^(s−2)` with `conv_lhs`/`pow_succ`
+  (NOT bare `rw` — that also hits `t` inside `t−1`), then `omega` halves the
+  identity to `a = e·2^(t−1) + φ(seedB a)·2^(s−2)` (nat-sub resolved via `e·2^t ≠ 0`).
+  Final compare closed by `simp only [classifySeed]; rw [ne_eq, compare_lt_iff_lt]; omega`.
+- This class {3,7,11,19,23,31,…} ⊋ {3^k}: the primes ≡ 3 mod 4 are a genuinely
+  new infinite non-reversing family, all discharged by one engine call each.
+
+### Files Modified
+- `proofs/Proofs/EulerTotientOQ04OQ03.lean` (+~75 lines, 3 theorems)
+
+### Next Steps
+- Extend the engine to the full prime power `a = p^k` (p ≡ 3 mod 4): reduces to
+  `φ(seedB a)·2^(seedS a − 2) ≥ p^(k−1)` where `seedB(p^k) = p^(k−1)·oddpart(p+1)`,
+  `seedS = v₂(p+1)`. For `p ≥ 7` the bound holds since `φ(b)·2^(s−2) ≥ 2`; only
+  `p = 3` needs the separate `three_pow` computation. Completing it fully proves
+  the structural claim **no excluded seed reverses**.
+- Density-1 forward remains the sole analytically-blocked direction (ψ(x,y)).
+
 ## Session 2026-07-08 (researcher-6) — 3^k: first INFINITE excluded family proven never to reverse
 
 **Mode**: REVISIT (RICH tier; branch dedicated) | **Outcome**: progress (VERIFIED 0 sorry / 0 axiom, Docker v4.26.0 `Build completed successfully`)
