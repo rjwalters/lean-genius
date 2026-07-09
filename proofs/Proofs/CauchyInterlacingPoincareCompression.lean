@@ -938,6 +938,60 @@ theorem sum_eigenvalues_eq_add_of_reducing {T : V →ₗ[𝕜] V} (hT : T.IsSymm
     ← trace_eq_sum_eigenvalues (isSymmetric_compress hT Hᗮ) hHpdim]
   exact trace_eq_add_compress_of_reducing H hH hHp
 
+/-- **Determinant factorization over a reducing subspace.**
+
+The multiplicative analogue of `trace_eq_add_compress_of_reducing`: if `H` reduces
+`T` (both `H` and `Hᗮ` are `T`-invariant) then the determinant of `T` factors as
+the product of the determinants of its two honest compression blocks,
+
+  `det T = det (compress T H) · det (compress T Hᗮ)`.
+
+On a reducing subspace `T` is block-diagonal: under the linear equivalence
+`H × Hᗮ ≃ V` supplied by the orthogonal decomposition
+(`Submodule.prodEquivOfIsCompl` for the complement `Hᗮ`), `T` is conjugate to the
+product map `(compress T H).prodMap (compress T Hᗮ)` — each honest compression
+coincides with `T` on its invariant block (`coe_compress_of_invariant`), so no
+off-diagonal error survives.  Conjugation preserves the determinant
+(`LinearMap.det_conj`) and the determinant of a product map is the product of the
+determinants (`LinearMap.det_prodMap`).  Symmetry-free; the determinant /
+eigenvalue-product analogue of the trace / eigenvalue-sum additivity
+`trace_eq_add_compress_of_reducing` and `sum_eigenvalues_eq_add_of_reducing`, and
+the multiplicative shadow of the multiplicity additivity
+`finrank_eigenspace_eq_add_compress_of_reducing`. -/
+theorem det_eq_mul_compress_of_reducing {T : V →ₗ[𝕜] V}
+    (H : Submodule 𝕜 V) (hH : ∀ y ∈ H, T y ∈ H) (hHp : ∀ y ∈ Hᗮ, T y ∈ Hᗮ) :
+    LinearMap.det T =
+      LinearMap.det (compress T H) * LinearMap.det (compress T Hᗮ) := by
+  classical
+  -- `Hᗮ` is a complement of `H`, giving the orthogonal decomposition `H × Hᗮ ≃ V`.
+  have hcompl : IsCompl H Hᗮ :=
+    Submodule.isCompl_orthogonal_of_hasOrthogonalProjection
+  -- On the reducing subspace, `T` conjugates to the block-diagonal product map:
+  -- `T ∘ₗ e = e ∘ₗ (compress T H).prodMap (compress T Hᗮ)`.
+  have hconj :
+      T ∘ₗ (Submodule.prodEquivOfIsCompl H Hᗮ hcompl : (H × Hᗮ) →ₗ[𝕜] V)
+        = (Submodule.prodEquivOfIsCompl H Hᗮ hcompl : (H × Hᗮ) →ₗ[𝕜] V)
+            ∘ₗ LinearMap.prodMap (compress T H) (compress T Hᗮ) := by
+    refine LinearMap.ext fun x => ?_
+    obtain ⟨h, k⟩ := x
+    simp only [LinearMap.comp_apply, LinearEquiv.coe_coe,
+      Submodule.coe_prodEquivOfIsCompl', LinearMap.prodMap_apply]
+    rw [coe_compress_of_invariant H hH h, coe_compress_of_invariant Hᗮ hHp k, map_add]
+  -- Solve for `T` as the explicit conjugate `e ∘ₗ prodMap ∘ₗ e.symm`.
+  have hT :
+      T = (Submodule.prodEquivOfIsCompl H Hᗮ hcompl : (H × Hᗮ) →ₗ[𝕜] V)
+            ∘ₗ LinearMap.prodMap (compress T H) (compress T Hᗮ)
+            ∘ₗ ((Submodule.prodEquivOfIsCompl H Hᗮ hcompl).symm : V →ₗ[𝕜] (H × Hᗮ)) := by
+    rw [← LinearMap.comp_assoc, ← hconj, LinearMap.comp_assoc, LinearEquiv.comp_coe,
+      LinearEquiv.symm_trans_self, LinearEquiv.refl_toLinearMap, LinearMap.comp_id]
+  -- Read `det T` through the conjugation (only the LHS `T`, not the `T`s inside
+  -- `compress`), then split the product-map determinant.
+  have key : LinearMap.det T
+      = LinearMap.det (LinearMap.prodMap (compress T H) (compress T Hᗮ)) := by
+    conv_lhs => rw [hT]
+    rw [LinearMap.det_conj]
+  rw [key, LinearMap.det_prodMap]
+
 /-- **The compression spectrum is the honest-restriction spectrum on an invariant
 block.**  Since `compress T H = T.restrict hinv` on an invariant subspace
 (`compress_eq_restrict_of_invariant`), the two operators share a spectrum; the
