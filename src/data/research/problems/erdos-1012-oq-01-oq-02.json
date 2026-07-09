@@ -21,10 +21,10 @@
   "currentState": {
     "phase": "COMPLETED",
     "since": "2026-06-22T00:00:00-07:00",
-    "iteration": 1,
-    "focus": "Formalized closed form, n-recurrence, and monotonicity of edgeThreshold.",
+    "iteration": 2,
+    "focus": "Connected n-recurrence to parent threshold_diff; established Theta(n^2) growth sandwich.",
     "blockers": [],
-    "nextAction": "None — complete.",
+    "nextAction": "None -- complete.",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -43,7 +43,9 @@
       "edgeThreshold_le_choose_two: NON-DEGENERACY — for n≥2k+3, edgeThreshold n k ≤ C(n,2). The required edge count never exceeds the complete graph's, so the long-cycle hypothesis edgeCount G ≥ edgeThreshold n k is satisfiable rather than vacuous. Doubled gap 2(C(n,2)−edgeThreshold) = 2k(k+2)+2c(k+1)≥0 (c=n−(2k+3)), closed by nlinarith.",
       "edgeThreshold_add_surplus_eq_choose_two: exact surplus identity C(n,2) = edgeThreshold n k + (k(k+2) + (n-(2k+3))(k+1)) for n ≥ 2k+3 — upgrades the ≤ bound edgeThreshold_le_choose_two to an equality with an explicit nonnegative gap.",
       "edgeThreshold_lt_choose_two: strict non-degeneracy — edgeThreshold n k < C(n,2) for n ≥ 2k+3 except at the single degenerate point (k,n)=(0,3) where edgeThreshold 3 0 = C(3,2) = 3.",
-      "edgeThreshold_succ_right + edgeThreshold_succ_right_le + edgeThreshold_le_succ_right (researcher-1): recurrence and convexity in k. Subtraction-free identity edgeThreshold n (k+1) + n = edgeThreshold n k + (2k+4) (signed k-derivative 2k+4-n), giving the U-shape: threshold non-increasing in k while n≥2k+4, non-decreasing once n≤2k+4, minimized near k=(n-4)/2."
+      "edgeThreshold_succ_right + edgeThreshold_succ_right_le + edgeThreshold_le_succ_right (researcher-1): recurrence and convexity in k. Subtraction-free identity edgeThreshold n (k+1) + n = edgeThreshold n k + (2k+4) (signed k-derivative 2k+4-n), giving the U-shape: threshold non-increasing in k while n≥2k+4, non-decreasing once n≤2k+4, minimized near k=(n-4)/2.",
+      "edgeThreshold_boundary_step + threshold_diff_eq + choose_two_diff_succ (researcher-2, PR #36084): connect the n-recurrence to the parent's threshold_diff. The Woodall-boundary jump edgeThreshold(2k+3)k - edgeThreshold(2k+2)k, which threshold_diff expresses abstractly as C(k+2,2)-C(k+1,2), is exactly k+1 = the discrete n-derivative n-k-1 at n=2k+2.",
+      "two_mul_edgeThreshold + edgeThreshold_quadratic_lower + edgeThreshold_quadratic_sandwich (researcher-2, PR #36084): Theta(n^2) growth. Doubled closed form 2*edgeThreshold n k = (n-k-1)(n-k-2)+(k+2)(k+1)+2, and the two-sided quadratic sandwich (n-k-1)(n-k-2) <= 2*edgeThreshold n k <= n(n-1)=2*C(n,2) for n>=2k+3, so the threshold grows like n^2/2 -- the same asymptotic rate as the complete-graph edge count. VERIFIED 0 axioms / 0 sorries, no native_decide."
     ],
     "insights": [
       "The threshold's discrete derivative in n is exactly n-k-1: C((n-k-1)+1,2) - C(n-k-1,2) = n-k-1. This is the structural reason the edge requirement tightens with each added vertex and f(k) is a well-defined minimum.",
@@ -52,11 +54,12 @@
       "Weak monotonicity proved by `induction hnm with | refl | @step m h ih` on the ≤ proof (Nat.le.rec); the step case applies the n-recurrence and omega (treating edgeThreshold terms as atoms, n-k-1 ≥ 0).",
       "Non-degeneracy needs no division: double both sides via 2·C(m,2)=m·(m-1), substitute n=2k+3+c to eliminate all truncated subtraction, and the gap becomes the manifestly nonnegative polynomial 2k(k+2)+2c(k+1). nlinarith closes it; omega then divides the doubled inequality back by 2.",
       "The threshold-vs-complete-graph surplus is exactly k(k+2)+(n-(2k+3))(k+1); it vanishes only at (k,n)=(0,3), so away from that corner the long-cycle edge hypothesis has strict room above the threshold (not forced to K_n). Proven by halving the parent's doubled polynomial identity and cancelling 2 via Nat.eq_of_mul_eq_mul_left.",
-      "k-direction complements the n-direction: both binomials C(n-k-1,2) and C(k+2,2) move oppositely as k grows, so the discrete k-derivative 2k+4-n is signed (unlike the always-positive n-derivative n-k-1). Stating it additively (LHS+n = RHS+(2k+4)) keeps it subtraction-free in ℕ; the two monotonicity branches then follow by omega from the recurrence + the sign of 2k+4-n."
+      "k-direction complements the n-direction: both binomials C(n-k-1,2) and C(k+2,2) move oppositely as k grows, so the discrete k-derivative 2k+4-n is signed (unlike the always-positive n-derivative n-k-1). Stating it additively (LHS+n = RHS+(2k+4)) keeps it subtraction-free in ℕ; the two monotonicity branches then follow by omega from the recurrence + the sign of 2k+4-n.",
+      "choose_two_succ(k+1) produces (k+1+1).choose 2, which omega treats as a distinct atom from (k+2).choose 2; normalize with `rw [show k+1+1 = k+2 by omega] at h` before omega. Same k-successor atom gotcha as the parent's choose_two_succ note."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Connect the n-recurrence to the parent's threshold_diff (the boundary difference C(k+2,2)-C(k+1,2) is the single step at n=2k+2)."
+      "COMPLETE: n-recurrence, k-recurrence (convexity), non-degeneracy vs C(n,2), boundary connection to threshold_diff, and Theta(n^2) growth are all recorded. No obvious further elementary arithmetic remains for this child; deeper work belongs to the parent Erdos1012OQ01 (Woodall f(k) axioms)."
     ]
   },
   "tags": [
