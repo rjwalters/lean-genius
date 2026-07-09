@@ -67,6 +67,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header and Overview",
+      "summary": "The docstring frames the result as iterating the parent's pairwise additivity H(pX ⊗ pY) = H(pX) + H(pY) to the n-fold i.i.d. product p^⊗n(x) = ∏ᵢ p(xᵢ), giving H(p^⊗n) = n·H(p) — the source-coding statement that a block of n i.i.d. symbols carries n·H(p) bits (backbone of the AEP and the rate H in Shannon's source coding theorem). Explains the induction along the tuple recursion Fin.consEquiv, the companion normalisation ∑ₓ ∏ᵢ p(xᵢ) = (∑ₐ p a)^n, lists the three results (entropy_prod, sum_prodDist, entropy_pow), imports Mathlib, enters namespace ShannonSourceCodingWIP01OQ01, opens Real/Finset, and declares variables {α} [Fintype α].",
+      "startLine": 1,
+      "endLine": 46,
+      "mathContext": "$H(p^{\\otimes n}) = n \\cdot H(p)$ for $\\sum_a p(a) = 1$; iterated from pairwise $H(p_X \\otimes p_Y) = H(p_X) + H(p_Y)$ along $\\mathrm{Fin.consEquiv}$."
+    },
+    {
       "id": "entropy-and-additivity",
       "title": "Entropy in negMulLog form and pairwise additivity",
       "startLine": 47,
