@@ -253,5 +253,53 @@ theorem erdos490_analytic_tail :
   have e2 := hX2 (2 * (n : ℝ)) hn2
   nlinarith [e1, e2, hL]
 
+/-- **Chebyshev θ-gap: eventual linear lower bound (0 axioms, 0 sorries).**
+The two hard halves are now in place — the combinatorial central-binomial estimate
+`theta_gap_lower_bound` (`θ(2n) − θ(n) ≥ n·log4 − ⌊2n/3⌋·log4 − log n − √(2n)·log(2n)`,
+with nat `⌊·⌋` and `Nat.sqrt`) and the analytic tail `erdos490_analytic_tail`
+(`c·n ≤ n·log4 − (2n/3)·log4 − log n − √(2n)·log(2n)` eventually). Combining them gives
+the Chebyshev-strength statement in clean form:
+
+  `∃ c > 0, ∀ large n,  c·n ≤ θ(2n) − θ(n).`
+
+The bridge is a term-by-term comparison: `⌊2n/3⌋ ≤ 2n/3` (`Nat.cast_div_le`) and
+`Nat.sqrt (2n) ≤ √(2n)` (`Real.nat_sqrt_le_real_sqrt`), both multiplied by nonnegative
+logs, so the *nat* right-hand side of `theta_gap_lower_bound` is at least the *real*
+right-hand side of `erdos490_analytic_tail`. Hence `c·n ≤ (real RHS) ≤ (nat RHS) ≤
+θ(2n) − θ(n)`. Only the reindexing `(2n, n) ↦ (N, ⌊N/2⌋)` and a finite small-`N`
+reconciliation (a prime in `(N/2, N]` by Bertrand) now separate this from the axiom
+`chebyshev_theta_upper_half_lower_bound` in `Erdos490Problem.lean`. -/
+theorem theta_gap_ge_linear :
+    ∃ c : ℝ, 0 < c ∧ ∃ N₀ : ℕ, ∀ n : ℕ, N₀ ≤ n →
+      c * (n : ℝ) ≤ Chebyshev.theta ((2 * n : ℕ) : ℝ) - Chebyshev.theta ((n : ℕ) : ℝ) := by
+  obtain ⟨c, hc, N₀, hN₀⟩ := erdos490_analytic_tail
+  refine ⟨c, hc, max N₀ 4, fun n hn => ?_⟩
+  have hn4 : 4 ≤ n := le_trans (le_max_right _ _) hn
+  have hnN0 : N₀ ≤ n := le_trans (le_max_left _ _) hn
+  -- analytic tail: `c·n ≤ (real RHS)`
+  have htail := hN₀ n hnN0
+  -- combinatorial bound: `(nat RHS) ≤ θ(2n) − θ(n)`
+  have hgap := theta_gap_lower_bound n hn4
+  -- bridge: `(real RHS) ≤ (nat RHS)`, since the nat floors only enlarge the RHS
+  have hnpos : 1 ≤ n := by omega
+  have hL : (0 : ℝ) ≤ Real.log 4 := (Real.log_pos (by norm_num)).le
+  have hlog2n : (0 : ℝ) ≤ Real.log (2 * (n : ℝ)) := by
+    apply Real.log_nonneg
+    have hn1 : (1 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hnpos
+    linarith
+  have hfloor : ((2 * n / 3 : ℕ) : ℝ) ≤ 2 * (n : ℝ) / 3 := by
+    have h := Nat.cast_div_le (α := ℝ) (m := 2 * n) (n := 3)
+    push_cast at h
+    linarith
+  have hsqrt : (Nat.sqrt (2 * n) : ℝ) ≤ Real.sqrt (2 * (n : ℝ)) := by
+    rw [show (2 * (n : ℝ)) = ((2 * n : ℕ) : ℝ) by push_cast; ring]
+    exact Real.nat_sqrt_le_real_sqrt
+  have t1 : ((2 * n / 3 : ℕ) : ℝ) * Real.log 4 ≤ (2 * (n : ℝ) / 3) * Real.log 4 :=
+    mul_le_mul_of_nonneg_right hfloor hL
+  have t2 : (Nat.sqrt (2 * n) : ℝ) * Real.log (2 * (n : ℝ))
+      ≤ Real.sqrt (2 * (n : ℝ)) * Real.log (2 * (n : ℝ)) :=
+    mul_le_mul_of_nonneg_right hsqrt hlog2n
+  linarith [htail, hgap, t1, t2]
+
 end Erdos490Cheb
 
