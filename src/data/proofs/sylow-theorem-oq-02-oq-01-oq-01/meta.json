@@ -156,6 +156,56 @@
       "note": "Chapter 10: nilpotent groups, normality and characteristicity of Sylow subgroups."
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "nilpotent_tfae",
+      "type": "main",
+      "description": "The headline four-way equivalence for a finite group G: nilpotent ⟺ every Sylow subgroup is normal ⟺ every Sylow subgroup is characteristic ⟺ every Sylow count is one. Inserts the new characteristic tier into the parent's normal/counting equivalence. (Ambient: {G : Type*} [Group G] [Finite G].)",
+      "leanType": "[Group.IsNilpotent G, ∀ (p : ℕ) (_hp : Fact p.Prime) (P : Sylow p G), (P : Subgroup G).Normal, ∀ (p : ℕ) (_hp : Fact p.Prime) (P : Sylow p G), (P : Subgroup G).Characteristic, ∀ (p : ℕ) (_hp : Fact p.Prime), Nat.card (Sylow p G) = 1].TFAE"
+    },
+    {
+      "name": "sylow_characteristic_iff_normal",
+      "type": "main",
+      "description": "The technical heart: for a Sylow p-subgroup of a finite group, Characteristic ↔ Normal. Forward is the generic normal_of_characteristic; the reverse uses that a normal Sylow subgroup is unique, so it is invariant under every automorphism — collapsing the normal/characteristic gap for Sylow subgroups.",
+      "leanType": "(p : ℕ) [Fact p.Prime] (P : Sylow p G) : (P : Subgroup G).Characteristic ↔ (P : Subgroup G).Normal"
+    },
+    {
+      "name": "nilpotent_iff_forall_sylow_characteristic",
+      "type": "main",
+      "description": "The characteristic-tier biconditional: G is nilpotent iff every Sylow p-subgroup is characteristic. Combines the parent's nilpotent ⇔ all-Sylow-normal with sylow_characteristic_iff_normal.",
+      "leanType": "Group.IsNilpotent G ↔ ∀ (p : ℕ) (_hp : Fact p.Prime) (P : Sylow p G), (P : Subgroup G).Characteristic"
+    },
+    {
+      "name": "sylow_characteristic_of_nilpotent",
+      "type": "supporting",
+      "description": "In a finite nilpotent group every Sylow p-subgroup is characteristic — the headline nilpotent ⇒ normal composed with characteristic_of_normal.",
+      "leanType": "(h : Group.IsNilpotent G) (p : ℕ) [Fact p.Prime] (P : Sylow p G) : (P : Subgroup G).Characteristic"
+    },
+    {
+      "name": "sylow_map_aut_eq_of_nilpotent",
+      "type": "supporting",
+      "description": "The explicit automorphism-invariance form: in a nilpotent group each Sylow subgroup is fixed setwise by every automorphism φ : G ≃* G, via Subgroup.characteristic_iff_map_eq.",
+      "leanType": "(h : Group.IsNilpotent G) (p : ℕ) [Fact p.Prime] (P : Sylow p G) (φ : G ≃* G) : (P : Subgroup G).map φ.toMonoidHom = (P : Subgroup G)"
+    },
+    {
+      "name": "nilpotent_of_forall_sylow_characteristic",
+      "type": "supporting",
+      "description": "The converse: if every Sylow p-subgroup is characteristic then G is nilpotent (characteristic ⇒ normal, then the parent's normality criterion).",
+      "leanType": "(h : ∀ (p : ℕ) (_hp : Fact p.Prime) (P : Sylow p G), (P : Subgroup G).Characteristic) : Group.IsNilpotent G"
+    },
+    {
+      "name": "nilpotent_iff_forall_sylow_normal",
+      "type": "supporting",
+      "description": "The parent's normal-tier biconditional, reused here: G is nilpotent iff every Sylow p-subgroup is normal.",
+      "leanType": "Group.IsNilpotent G ↔ ∀ (p : ℕ) (_hp : Fact p.Prime) (P : Sylow p G), (P : Subgroup G).Normal"
+    },
+    {
+      "name": "nilpotent_iff_forall_card_sylow_eq_one",
+      "type": "supporting",
+      "description": "The counting-tier biconditional: G is nilpotent iff each prime p has exactly one Sylow p-subgroup.",
+      "leanType": "Group.IsNilpotent G ↔ ∀ (p : ℕ) (_hp : Fact p.Prime), Nat.card (Sylow p G) = 1"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.GroupTheory.Nilpotent",
