@@ -121,8 +121,8 @@
       "id": "eta",
       "title": "hasSum_eta_two / tsum_eta_two — η(2) = π²/12",
       "startLine": 75,
-      "endLine": 96,
-      "summary": "Even-indexed alternating terms sum to -π²/24, odd-indexed to π²/8; HasSum.even_add_odd combines to π²/12, with a tsum corollary.",
+      "endLine": 114,
+      "summary": "Even-indexed alternating terms sum to -π²/24, odd-indexed to π²/8; HasSum.even_add_odd combines to π²/12, with a tsum corollary. Closes with a summary table of the four results (even ζ(2), odd ζ(2), and the η(2) HasSum and tsum forms) and the 0-sorry / 0-axiom status.",
       "mathContext": "The Dirichlet eta value η(2) = (1/2)ζ(2) = π²/12."
     }
   ],
@@ -190,6 +190,11 @@
     {
       "id": "basel-problem-oq-11-oq-01",
       "question": "Generalize the even/odd parity split to η(2m) = (1 - 2^(1-2m)) ζ(2m) and derive η(4) = 7π⁴/720 from hasSum_zeta_four.",
+      "significance": "medium"
+    },
+    {
+      "id": "basel-problem-oq-11-oq-02",
+      "question": "Cross-link the weight-2 trio ζ(2) : λ(2) : η(2) = 1 : ¾ : ½ (values π²/6, π²/8, π²/12; here η(2) = ½ζ(2) since 1 − 2^{1−2} = ½) and connect η(2) = π²/12 to eta's role as the alternating-series continuation η(s) = (1 − 2^{1−s})ζ(s) of ζ across its s = 1 pole on Re(s) > 0.",
       "significance": "medium"
     }
   ],
