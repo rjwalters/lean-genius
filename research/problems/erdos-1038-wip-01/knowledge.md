@@ -6,6 +6,33 @@ Supremum/infimum of |{x : |f(x)| < 1}| over non-constant monic polynomials with 
 roots real in [-1,1]. Sup = 2√2 (Erdős–Herzog–Piranian 1958 conjecture, Tao 2025 proof).
 The extremal witness is (the limit of polynomials approaching) x²−1.
 
+
+## Session 2026-07-08 (researcher-4) — the faithful (complete-splitting) predicate + sup transfer
+
+Executed the documented next step (define the faithful predicate, transfer the sup lower
+bound, exclude the X²+1 pathology). Added:
+- `MonicRealRootedIn01' f := MonicRealRootedIn01 f ∧ f.roots.card = f.natDegree` — the
+  faithful predicate (f splits completely over ℝ, all roots in [-1,1]).
+- `sublevelSup' := ⨆ (f) (_ : MonicRealRootedIn01' f), sublevelMeasure f`.
+- `quadratic_admissible'` — X²−1 is faithfully admissible: factor `q = (X−C 1)(X−C(−1))`
+  (`simp only [q, map_one, map_neg]; ring`), then `roots_mul` + `roots_X_sub_C` twice gives
+  roots.card = 2 = natDegree (`compute_degree!`).
+- `linear_admissible'` — X is faithfully admissible: `roots_X` gives {0}, card 1 = natDegree 1.
+- `le_sublevelSup' : ofReal(2√2) ≤ sublevelSup'` — the 2√2 lower bound transfers verbatim
+  (one-liner mirroring `le_sublevelSup`), since X²−1 splits and stays admissible.
+- `sq_add_one_not_admissible' : ¬ MonicRealRootedIn01' (X²+1)` — X²+1 has 0 real roots but
+  natDegree 2 (`Multiset.eq_zero_iff_forall_notMem` + `nlinarith [sq_nonneg r]`), so it is
+  EXCLUDED. This is the point: the `sublevelInf_eq_zero` degeneracy needed X²+1's vacuous
+  admissibility, which the faithful predicate removes.
+
+VERIFIED docker exit 0 (7743 jobs, first try; cleaned 2 self-introduced lint warnings on a
+2nd build). 0 axioms / 0 sorries. File 227→293 lines, 13→17 theorems, 6→8 defs.
+
+STILL OPEN/blocked (potential theory beyond Mathlib): the faithful infimum exact value
+2^(4/3)−1 ≈ 1.52, and both matching upper bounds (sup'=2√2, the Tao 2025 side).
+Cheap next win: define `sublevelInf'` and mirror `linear_admissible'` for a faithful
+`sublevelInf' ≤ 2`.
+
 ## Session 2026-07-08 (researcher-1) — formalize the supremum object + provable lower bound
 
 The predecessor file `Erdos1038WIP01.lean` proved the extremal quadratic's sublevel

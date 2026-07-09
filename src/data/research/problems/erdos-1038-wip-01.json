@@ -27,9 +27,9 @@
     "phase": "COMPLETED",
     "since": "2026-06-22T00:00:00-07:00",
     "iteration": 1,
-    "focus": "Added the infimum side: the sublevelInf object and a second exact witness (linear X, measure 2) bounding sublevelInf ≤ 2.",
+    "focus": "Added the faithful predicate MonicRealRootedIn01' (complete real splitting f.roots.card=f.natDegree) + sublevelSup'; transferred the 2√2 sup lower bound (le_sublevelSup') to the faithful object and proved X²+1 is excluded (sq_add_one_not_admissible'), so the literal-predicate sublevelInf_eq_zero degeneracy does not affect the faithful infimum.",
     "blockers": [],
-    "nextAction": "The two provable directions (2√2 ≤ sublevelSup, sublevelInf ≤ 2) are done. Tightening sublevelInf ≤ 2 toward the true ≤ 1.835 needs the polynomial (x+1)(x−1)^m and logarithmic potential theory beyond Mathlib.",
+    "nextAction": "The faithful sup lower bound 2√2 ≤ sublevelSup' is done. Remaining OPEN/blocked: the faithful infimum exact value 2^(4/3)−1 (needs logarithmic potential theory beyond Mathlib) and both matching upper bounds. A cheap next win: the linear witness X also gives sublevelInf' ≤ 2 under the faithful predicate (define sublevelInf', mirror linear_admissible').",
     "attemptCounts": {
       "total": 2,
       "currentApproach": 1,
@@ -46,7 +46,8 @@
       "sublevelMeasure_quadratic: = ENNReal.ofReal (2√2) (measure_diff_null removes {0}, Real.volume_Ioo, ring for √2−(−√2)=2√2).",
       "sublevelSup / le_sublevelSup: sublevelSup := ⨆ over admissible f of sublevelMeasure f; 2√2 ≤ sublevelSup via le_iSup_of_le q (le_iSup_of_le quadratic_admissible sublevelMeasure_quadratic.ge).",
       "linear_admissible / sublevelSet_linear / sublevelMeasure_linear: X is monic (monic_X) with root 0 ∈ [-1,1]; sublevelSet X = Ioo(-1,1) (abs_lt); measure = ENNReal.ofReal 2.",
-      "sublevelInf / sublevelInf_le_two: sublevelInf := ⨅ over admissible f of sublevelMeasure f; sublevelInf ≤ 2 via iInf_le_of_le X (iInf_le_of_le linear_admissible sublevelMeasure_linear.le)."
+      "sublevelInf / sublevelInf_le_two: sublevelInf := ⨅ over admissible f of sublevelMeasure f; sublevelInf ≤ 2 via iInf_le_of_le X (iInf_le_of_le linear_admissible sublevelMeasure_linear.le).",
+      "MonicRealRootedIn01' (faithful predicate = MonicRealRootedIn01 f ∧ f.roots.card = f.natDegree, i.e. complete real splitting) + sublevelSup' (⨆ over faithful f). quadratic_admissible'/linear_admissible' verify X²−1 (splits (X−1)(X+1) via roots_mul+roots_X_sub_C, card 2 = natDegree 2) and X (roots_X {0}, card 1 = natDegree 1) are faithfully admissible; le_sublevelSup' transfers the 2√2 lower bound to the faithful object. sq_add_one_not_admissible': X²+1 has 0 real roots but natDegree 2 → EXCLUDED, so the sublevelInf_eq_zero pathology is no longer admissible under the faithful predicate. All 0 axioms / 0 sorries, docker VERIFIED exit 0."
     ],
     "insights": [
       "x²−1 is the explicit extremizer for the Erdős #1038 supremum: |x²−1| < 1 ⟺ 0 < x² < 2 ⟺ x ∈ (-√2,√2)\\{0}, measure 2√2.",

@@ -224,4 +224,70 @@ theorem sublevelInf_eq_zero : sublevelInf = 0 :=
       (iInf_le_of_le sq_add_one_admissible sublevelMeasure_sq_add_one.le))
     (zero_le _)
 
+/-! ### The faithful predicate (complete real splitting)
+
+The `sublevelInf = 0` degeneracy above shows `MonicRealRootedIn01` is too weak: it
+constrains only the real roots `f` happens to have, admitting the rootless `X² + 1`.
+The **faithful** version adds `f.roots.card = f.natDegree` — i.e. `f` splits completely
+into real linear factors, all roots in `[-1,1]`.  We introduce the faithful supremum
+object, verify the two exact witnesses (`X² − 1`, `X`) satisfy the stronger predicate so
+the `2√2` lower bound transfers, and confirm `X² + 1` is now correctly excluded. -/
+
+/-- **Faithful admissibility.**  `f` is monic, all its real roots lie in `[-1,1]`, *and*
+    it splits completely over `ℝ` (`f.roots.card = f.natDegree`).  This excludes monic
+    polynomials with non-real roots such as `X² + 1`, restoring the intended geometry. -/
+def MonicRealRootedIn01' (f : Polynomial ℝ) : Prop :=
+  MonicRealRootedIn01 f ∧ f.roots.card = f.natDegree
+
+/-- The extremal quadratic `X² − 1` is **faithfully** admissible: it splits as
+    `(X − 1)(X + 1)`, so its two real roots `±1 ∈ [-1,1]` exhaust its degree. -/
+theorem quadratic_admissible' : MonicRealRootedIn01' q := by
+  refine ⟨quadratic_admissible, ?_⟩
+  have h1 : q = (X - C (1 : ℝ)) * (X - C (-1 : ℝ)) := by
+    simp only [q, map_one, map_neg]; ring
+  have hne : (X - C (1 : ℝ)) * (X - C (-1 : ℝ)) ≠ 0 := by
+    rw [← h1]; exact quadratic_admissible.1.ne_zero
+  have hnd : q.natDegree = 2 := by simp only [q]; compute_degree!
+  have hrc : q.roots.card = 2 := by
+    rw [h1, Polynomial.roots_mul hne, Polynomial.roots_X_sub_C, Polynomial.roots_X_sub_C]
+    simp
+  rw [hrc, hnd]
+
+/-- The linear polynomial `X` is **faithfully** admissible: its single root `0 ∈ [-1,1]`
+    exhausts its degree `1`. -/
+theorem linear_admissible' : MonicRealRootedIn01' (X : Polynomial ℝ) := by
+  refine ⟨linear_admissible, ?_⟩
+  rw [Polynomial.roots_X, Multiset.card_singleton, natDegree_X]
+
+/-- The **faithful supremum** of sublevel-set measures, over monic polynomials that split
+    completely with all roots real in `[-1,1]`.  This is the object for which Tao's
+    `= 2√2` is the intended statement (the literal `sublevelSup` agrees on the lower bound
+    but its infimum companion degenerates; see `sublevelInf_eq_zero`). -/
+noncomputable def sublevelSup' : ℝ≥0∞ :=
+  ⨆ (f : Polynomial ℝ) (_ : MonicRealRootedIn01' f), sublevelMeasure f
+
+/-- **Faithful supremum lower bound: `2√2 ≤ sublevelSup'`.**  The lower bound survives the
+    strengthening: `X² − 1` splits completely, so it is faithfully admissible and still
+    attains sublevel measure `2√2`.  The machine-checkable half of Tao's `sublevelSup' = 2√2`
+    on the faithful object; the matching upper bound remains beyond Mathlib. -/
+theorem le_sublevelSup' : ENNReal.ofReal (2 * Real.sqrt 2) ≤ sublevelSup' :=
+  le_iSup_of_le q (le_iSup_of_le quadratic_admissible' sublevelMeasure_quadratic.ge)
+
+/-- **The faithful predicate excludes `X² + 1`.**  Unlike the literal `MonicRealRootedIn01`,
+    the faithful predicate rejects the rootless `X² + 1`: it has `0` real roots but degree
+    `2`, so `roots.card ≠ natDegree`.  This is exactly why the faithful infimum does *not*
+    collapse to `0` — the pathology witnessing `sublevelInf_eq_zero` is no longer admissible. -/
+theorem sq_add_one_not_admissible' :
+    ¬ MonicRealRootedIn01' (X ^ 2 + C 1 : Polynomial ℝ) := by
+  rintro ⟨-, hcard⟩
+  have hnd : (X ^ 2 + C 1 : Polynomial ℝ).natDegree = 2 := by compute_degree!
+  have hr0 : (X ^ 2 + C 1 : Polynomial ℝ).roots = 0 := by
+    rw [Multiset.eq_zero_iff_forall_notMem]
+    intro r hr
+    rw [Polynomial.mem_roots'] at hr
+    have hroot : r ^ 2 + 1 = 0 := by simpa using hr.2
+    nlinarith [sq_nonneg r]
+  rw [hr0, Multiset.card_zero, hnd] at hcard
+  exact absurd hcard (by norm_num)
+
 end Erdos1038WIP01
