@@ -231,4 +231,61 @@ theorem variance_add_eq_iff_covariance_zero [IsFiniteMeasure μ] {W₀ W₁ : Ω
   rw [variance_add h₀ h₁]
   constructor <;> intro h <;> linarith
 
+/-!
+### Sharp necessity in *power* (second-moment) language
+
+Everything above the two `variance_..._iff_...` results is stated for the *variance*
+`Var[∑ Wᵢ]`, but the file is named for the AWGN output **power** `E[(∑ Wᵢ)²]`.  For
+*zero-mean* contributions the two coincide (`second_moment_eq_variance`), so the sharp
+necessity results transport verbatim into second-moment language.  These are the capstone
+statements: the exact condition for the AWGN output **powers** to add.
+-/
+
+/-- **Exact condition for AWGN output power to add (sharp necessity, power form).**  For a
+finite family of *zero-mean* square-integrable contributions, the aggregate output power
+equals the sum of the individual powers *if and only if* the total off-diagonal covariance
+vanishes:
+
+    E[(∑_{i ∈ s} Wᵢ)²] = ∑_{i ∈ s} E[Wᵢ²]  ↔  ∑_{i ∈ s} ∑_{j ∈ s.erase i} cov[Wᵢ, Wⱼ] = 0.
+
+This is `variance_sum_eq_iff_offDiag_covariance_zero` transported into second-moment
+language via the zero-mean bridge, giving the sharp converse of
+`awgn_multisymbol_power_of_uncorrelated`: pairwise uncorrelatedness is *sufficient* for the
+powers to add, but the exact condition is the strictly weaker aggregate off-diagonal
+cancellation. -/
+theorem awgn_multisymbol_power_eq_iff_offDiag_covariance_zero [IsProbabilityMeasure μ]
+    {ι : Type*} [DecidableEq ι] {W : ι → Ω → ℝ} {s : Finset ι}
+    (hW : ∀ i ∈ s, MemLp (W i) 2 μ) (hmean : ∀ i ∈ s, μ[W i] = 0) :
+    μ[(∑ i ∈ s, W i) ^ 2] = ∑ i ∈ s, μ[(W i) ^ 2] ↔
+      ∑ i ∈ s, ∑ j ∈ s.erase i, cov[W i, W j; μ] = 0 := by
+  have hSum : MemLp (∑ i ∈ s, W i) 2 μ := memLp_finset_sum' s hW
+  have hSum0 : μ[∑ i ∈ s, W i] = 0 := sum_mean_zero hW hmean
+  rw [second_moment_eq_variance hSum hSum0,
+    show (∑ i ∈ s, μ[(W i) ^ 2]) = ∑ i ∈ s, Var[W i; μ] from
+      Finset.sum_congr rfl fun i hi => second_moment_eq_variance (hW i hi) (hmean i hi)]
+  exact variance_sum_eq_iff_offDiag_covariance_zero hW
+
+/-- **Two-symbol AWGN output power, sharp boundary (power form).**  For a *pair* of
+zero-mean square-integrable contributions the output powers add if and only if the two are
+uncorrelated:
+
+    E[(W₀ + W₁)²] = E[W₀²] + E[W₁²]  ↔  cov[W₀, W₁] = 0.
+
+This is the exact sharp boundary behind the parent file's two-term AWGN identity
+`E[(X + Z)²] = E[X²] + E[Z²]`: for the two-symbol case the single off-diagonal covariance
+cannot cancel against anything, so uncorrelatedness is genuinely *necessary* — not merely
+sufficient — for the powers to add. -/
+theorem awgn_two_symbol_power_eq_iff_covariance_zero [IsProbabilityMeasure μ]
+    {W₀ W₁ : Ω → ℝ} (h₀ : MemLp W₀ 2 μ) (h₁ : MemLp W₁ 2 μ)
+    (hm₀ : μ[W₀] = 0) (hm₁ : μ[W₁] = 0) :
+    μ[(W₀ + W₁) ^ 2] = μ[W₀ ^ 2] + μ[W₁ ^ 2] ↔ cov[W₀, W₁; μ] = 0 := by
+  have hsum : MemLp (W₀ + W₁) 2 μ := h₀.add h₁
+  have hsum0 : μ[W₀ + W₁] = 0 := by
+    simp only [Pi.add_apply]
+    rw [integral_add (h₀.integrable one_le_two) (h₁.integrable one_le_two), hm₀, hm₁,
+      add_zero]
+  rw [second_moment_eq_variance hsum hsum0, second_moment_eq_variance h₀ hm₀,
+    second_moment_eq_variance h₁ hm₁]
+  exact variance_add_eq_iff_covariance_zero h₀ h₁
+
 end ShannonAWGNMultiSymbolPower
