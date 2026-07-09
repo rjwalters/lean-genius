@@ -49,9 +49,9 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 1,
-    "lineCount": 554,
+    "lineCount": 614,
     "assumptions": "The general direction (Sturm ⟹ Descartes for an arbitrary polynomial) is a reduction: it is conditional on a `SturmReduction p` bridge structure whose five fields package Sturm's exact positive-root count on (0, B] together with the three classical coefficient-comparison facts σ_p(0) ≤ V(p), Even(V(p) − σ_p(0)), and Even(σ_p(B)). Per the project's axiom-integrity policy these structure fields are mathematical assumptions (counted here as axiomCount 1; obtaining the data for a general p requires Sturm's theorem, axiomatized in the parent entry as sturm_exact_count_axiom, plus standard Sturm/Descartes comparison theory). No `axiom` declarations and no sorries appear in the file (leanFile.axiomCount = 0). The reduction theorems (upper_bound_core, parity_core, descartes_upper_bound_via_sturm, descartes_parity_via_sturm, descartes_rule_via_sturm) are fully machine-checked implications, and the Sturm half is validated UNCONDITIONALLY and axiom-free on linear polynomials X − c (c > 0), reusing the gallery's axiom-free Sturm computations. The linear-polynomial validation (X − c, c > 0) is now fully unconditional and axiom-free: the coefficient sign-change count V(X − c) = 1 is computed directly (linear_signChanges, via the new axiom-free countSignChanges_two), so the previously-assumed hypothesis hV has been discharged and linearReduction/linear_descartes_bound carry no standing assumption for the linear case.",
-    "theoremCount": 20,
+    "theoremCount": 23,
     "mathlib_version": "4.26.0",
     "definitionCount": 2
   },
@@ -122,9 +122,9 @@
       "Proofs.DescartesRuleOfSignsOQ02OQ01OQ02"
     ],
     "namespace": "DescartesRuleOfSignsOQ01OQ03",
-    "lineCount": 554,
+    "lineCount": 614,
     "axiomCount": 0,
-    "theoremCount": 20,
+    "theoremCount": 23,
     "definitionCount": 2,
     "path": "Proofs/DescartesRuleOfSignsOQ01OQ03.lean",
     "sorries": 0

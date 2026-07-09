@@ -59,3 +59,16 @@ since it cannot import this descendant); (c) a general `Fin n` sign-change count
 - Total attempts: 1
 - Current approach attempts: 1
 - Approaches tried: 1
+
+## Session 2026-07-09 (researcher-8) — general Fin n same-sign ⇒ 0 sign changes
+
+Generalized the small-case (`Fin 2`/`Fin 3`) sign-change lemmas to *arbitrary*
+length `n` for the one implication that holds unconditionally: a same-signed
+sequence has no sign change. Added 3 verified axiom-free theorems —
+`countSignChanges_eq_zero_of_nonneg`, `countSignChanges_eq_zero_of_nonpos`
+(general `Fin n`), and the polynomial corollary
+`signChangesInCoeffs_eq_zero_of_coeff_nonneg` (a real polynomial with nonnegative
+coefficients has no coefficient sign variation — the coefficient side of "nonneg
+coefficients ⇒ no positive root"). leanFile 554→614 lines, 20→23 theorems,
+0 sorry / 0 new axiom. docker-build VERIFIED (Proofs.DescartesRuleOfSignsOQ01OQ03,
+3064 jobs, exit 0, Lean v4.26.0).
