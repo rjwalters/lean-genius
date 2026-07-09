@@ -21,8 +21,8 @@
     ],
     "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 3,
-    "assumptions": "3 axioms: uniform_landau_lower_bound (Landau's theorem gives c·n/√(log n) lower bound uniformly over all n-point sets with the 4-point property), moreeosburn_upper_bound (Moree-Osburn lattice achieves the upper bound, parent problem result), ndiv_sqrt_log_tendsto_infty (n/√(log n) → ∞, standard analysis fact missing from Mathlib for this exact form). All reduce to Landau's quantitative theorem for binary quadratic forms and the Moree-Osburn 2006 result. Consequence theorems (no_improvement_possible, bound_is_tight) are fully proved from these axioms.",
+    "axiomCount": 2,
+    "assumptions": "2 axioms: uniform_landau_lower_bound (Landau's theorem gives c·n/√(log n) lower bound uniformly over all n-point sets with the 4-point property), moreeosburn_upper_bound (Moree-Osburn lattice achieves the upper bound, parent problem result). Both reduce to Landau's quantitative theorem for binary quadratic forms and the Moree-Osburn 2006 result. The former third axiom ndiv_sqrt_log_tendsto_infty (n/√(log n) → ∞) was discharged as a theorem — it is a routine analytic limit, not part of Landau's theorem. Consequence theorems (no_improvement_possible, bound_is_tight) are fully proved from these axioms.",
     "erdosNumber": 659,
     "erdosUrl": "https://erdosproblems.com/659",
     "originalContributions": [
@@ -33,8 +33,8 @@
       "achievesImprovedBound: formal definition of 'improvement' via little-o",
       "familyFourPointProperty: formal definition of 4-point property for families"
     ],
-    "lineCount": 207,
-    "theoremCount": 3,
+    "lineCount": 251,
+    "theoremCount": 4,
     "defCount": 5,
     "definitionCount": 5
   },
@@ -72,7 +72,7 @@
     {
       "id": "axioms",
       "title": "Axioms",
-      "summary": "Three axioms: Landau lower bound (uniform), Moree-Osburn upper bound, log growth",
+      "summary": "Two axioms: Landau lower bound (uniform), Moree-Osburn upper bound. The former log-growth axiom (n/√(log n) → ∞) is now a proved theorem.",
       "startLine": 96,
       "endLine": 130,
       "mathContext": "uniform_landau_lower_bound reduces to Landau 1908 + Moree-Osburn classification"
@@ -111,12 +111,12 @@
     }
   ],
   "leanFile": {
-    "lineCount": 207,
+    "lineCount": 251,
     "path": "Proofs/Erdos659OQ01.lean",
-    "axiomCount": 3,
+    "axiomCount": 2,
     "sorries": 0,
     "definitionCount": 5,
-    "theoremCount": 3,
+    "theoremCount": 4,
     "additionalFiles": [
       "Proofs/Erdos659OQ01OQ02.lean"
     ]

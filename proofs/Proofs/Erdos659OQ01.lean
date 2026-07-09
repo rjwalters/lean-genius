@@ -31,10 +31,13 @@ must have at least c·n/√(log n) distinct distances for some uniform constant 
 
 ## Sorries
 
-0 sorries (fully axiomatized). The three axioms capture:
+0 sorries. Two axioms remain (both genuinely deep, capturing Landau's theorem):
 - The structural constraint from the 4-point property (Moree-Osburn classification)
-- Landau's quantitative lower bound for quadratic forms
-- The uniformity of the Landau constant over all relevant forms
+- Landau's quantitative lower/upper bounds for quadratic forms
+
+The former "Axiom 3" (`n/√(log n) → ∞`) has been **discharged as a theorem** — it is
+a routine analytic limit, not part of Landau's theorem, so it does not belong as an
+assumption.
 
 ## Tags
 
@@ -45,7 +48,7 @@ lower-bounds, optimality
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Data.Real.Sqrt
-import Mathlib.Analysis.Asymptotics.Asymptotics
+import Mathlib.Analysis.Asymptotics.Lemmas
 import Mathlib.Order.Filter.AtTopBot.Basic
 import Mathlib.Topology.MetricSpace.Basic
 
@@ -114,11 +117,43 @@ axiom moreeosburn_upper_bound :
     ∀ n : ℕ, n > 1 →
       (distinctDistances (A n) : ℝ) ≤ C * (n : ℝ) / Real.sqrt (Real.log n)
 
-/-- **Axiom 3 (Log-growth of n/√(log n))**:
-    The function n/√(log n) grows to infinity (is not bounded), ensuring the bound
-    n/√(log n) → ∞ and the ratio test is non-degenerate. -/
-axiom ndiv_sqrt_log_tendsto_infty :
-    Tendsto (fun n : ℕ => (n : ℝ) / Real.sqrt (Real.log n)) atTop atTop
+/-- **Log-growth of `n/√(log n)` — proved, no longer an axiom.**
+    The function `n/√(log n)` grows to infinity, ensuring the bound `n/√(log n) → ∞`
+    and the ratio test is non-degenerate.  This is a routine analytic fact (it does
+    NOT require Landau's theorem), so it is discharged here from Mathlib rather than
+    assumed.  Proof: for `n ≥ 2`, `log n ≤ n` gives `√(log n) ≤ √n`, hence
+    `n/√(log n) ≥ n/√n = √n`, and `√n → ∞`. -/
+theorem ndiv_sqrt_log_tendsto_infty :
+    Tendsto (fun n : ℕ => (n : ℝ) / Real.sqrt (Real.log n)) atTop atTop := by
+  rw [tendsto_atTop_atTop]
+  intro b
+  refine ⟨max 2 (⌈b⌉₊ ^ 2 + 1), fun n hn => ?_⟩
+  have hn2 : 2 ≤ n := le_trans (le_max_left _ _) hn
+  have hnceil : ⌈b⌉₊ ^ 2 + 1 ≤ n := le_trans (le_max_right _ _) hn
+  have hn1R : (1 : ℝ) < n := by exact_mod_cast (by omega : 1 < n)
+  have hnRpos : (0 : ℝ) < n := by linarith
+  have hlogpos : 0 < Real.log n := Real.log_pos hn1R
+  have hsqrtlogpos : 0 < Real.sqrt (Real.log n) := Real.sqrt_pos.mpr hlogpos
+  have hlogle : Real.log n ≤ (n : ℝ) := by
+    have := Real.log_le_sub_one_of_pos hnRpos; linarith
+  -- `b ≤ √n`, choosing `n ≥ ⌈b⌉₊² + 1`
+  have hble : b ≤ Real.sqrt n := by
+    have hpow : (⌈b⌉₊ : ℝ) ^ 2 ≤ (n : ℝ) := by
+      have h1 : ⌈b⌉₊ ^ 2 ≤ n := by omega
+      calc (⌈b⌉₊ : ℝ) ^ 2 = ((⌈b⌉₊ ^ 2 : ℕ) : ℝ) := by push_cast; ring
+        _ ≤ (n : ℝ) := by exact_mod_cast h1
+    calc b ≤ (⌈b⌉₊ : ℝ) := Nat.le_ceil b
+      _ = Real.sqrt ((⌈b⌉₊ : ℝ) ^ 2) := (Real.sqrt_sq (by positivity)).symm
+      _ ≤ Real.sqrt n := Real.sqrt_le_sqrt hpow
+  -- `√n ≤ n / √(log n)` since `√(log n) ≤ √n`
+  have hsqle : Real.sqrt (Real.log n) ≤ Real.sqrt n := Real.sqrt_le_sqrt hlogle
+  have hkey : Real.sqrt n ≤ (n : ℝ) / Real.sqrt (Real.log n) := by
+    rw [le_div_iff₀ hsqrtlogpos]
+    calc Real.sqrt n * Real.sqrt (Real.log n)
+        ≤ Real.sqrt n * Real.sqrt n :=
+          mul_le_mul_of_nonneg_left hsqle (Real.sqrt_nonneg _)
+      _ = (n : ℝ) := Real.mul_self_sqrt (by positivity)
+  linarith
 
 -- ============================================================
 -- SECTION III: Main Results
@@ -142,8 +177,9 @@ theorem no_improvement_possible :
   obtain ⟨c, hc_pos, hlandau⟩ := uniform_landau_lower_bound
   -- achievesImprovedBound means distances / (n/√(log n)) → 0
   rw [achievesImprovedBound, isLittleO_iff] at hcontra
-  -- Apply with the constant c/2
-  have hsmall := hcontra (c / 2) (half_pos hc_pos)
+  -- Apply with the constant c/2 (`c` is strict-implicit in `isLittleO_iff`,
+  -- inferred here from the positivity proof `half_pos hc_pos : 0 < c/2`)
+  have hsmall := hcontra (half_pos hc_pos)
   -- For large enough n, distinctDistances(A n) ≤ (c/2) · n/√(log n)
   rw [Filter.eventually_atTop] at hsmall
   obtain ⟨N₀, hN₀⟩ := hsmall
@@ -173,8 +209,16 @@ theorem no_improvement_possible :
     have h1 : |(distinctDistances (A n₀) : ℝ)| ≤ c / 2 * |(n₀ : ℝ) / Real.sqrt (Real.log n₀)| := hupper
     rw [abs_of_nonneg (by positivity), abs_of_pos hdenom_pos] at h1
     linarith
-  -- Contradiction: c · d ≤ distinctDistances ≤ (c/2) · d, but c · d > (c/2) · d
-  linarith
+  -- Rewrite the lower bound as `c · D` with `D = n₀ / √(log n₀) > 0`, so both
+  -- bounds are expressed over the same positive factor `D` (linarith alone cannot
+  -- relate `(c·n₀)/√L` and `n₀/√L`, which are distinct nonlinear atoms).
+  set D : ℝ := (n₀ : ℝ) / Real.sqrt (Real.log n₀) with hD_def
+  have hDpos : 0 < D := hdenom_pos
+  have hlower' : c * D ≤ (distinctDistances (A n₀) : ℝ) := by
+    have heq : c * (n₀ : ℝ) / Real.sqrt (Real.log n₀) = c * D := by rw [hD_def]; ring
+    rw [heq] at hlower; exact hlower
+  -- Contradiction: `c·D ≤ d ≤ (c/2)·D` with `c, D > 0` forces `(c/2)·D ≤ 0`.
+  nlinarith [mul_pos (half_pos hc_pos) hDpos, hlower', hupper']
 
 /-- **Corollary**: The answer to OQ-01 is "No" — the bound is sharp. -/
 theorem erdos_659_oq01 :
