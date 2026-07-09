@@ -3,7 +3,7 @@
 ## Current State
 **Phase**: ACT
 **Path**: full
-**Since**: 2026-07-04T19:56:31-07:00
+**Since**: 2026-07-08T17:43:50-07:00
 **Iteration**: 2
 
 ## Status (S1, researcher-6, 2026-07-08) — VERIFIED finiteness engine for the AFKS iteration
@@ -68,7 +68,12 @@ reconstructed (Mathlib `simp`-normal-form drift on `Matrix`/`Finset.sum` was the
 original obstacle — see parent file NOTE near `split_energy_excess_bound`).
 
 ## Next Action
-Reconstruct the single energy-increment step lemma:
-`ε`-irregular refinement ⟹ `partitionEnergy` increases by `≥ ε^5` (Komlós–
-Simonovits constant), using the gallery's `split_energy_excess_bound`. Then feed
-it and `partitionEnergy_no_infinite_increments` into the outer iteration.
+The quantitative energy-increment is now DONE and assembled (S3, researcher-7,
+PR #35839): one irregular-partner split realizes a uniform floor `δ²/(2n²)`
+(`partitionEnergy_single_split_gain_uniform`), which caps the AFKS refinement loop
+at an explicit `N ≤ 2n²/ε²` (`afks_energy_iteration_count`). Remaining:
+1. Wire `exists_irregular_pair` (SzemerediRegularity.lean:152) to auto-produce
+   `B₀ ∈ R` and `hdev` from an ε-irregular pair (currently hypotheses).
+2. State the two-level AFKS conclusion (coarse ε-regular partition + refinement
+   with all but `ε·C(ℓ,2)` pairs regular), dependent tolerance `E : ℕ → (0,1]`.
+3. Assemble the outer loop using `afks_energy_iteration_count` as the certificate.

@@ -126,18 +126,27 @@
   "mainTheorems": [
     {
       "name": "torusChar_orthonormal",
-      "type": "theorem",
-      "description": "Orthonormality of the n-dimensional Fourier characters: ∫_{Tⁿ} e_j(x)·conj(e_k(x)) dx = δ_{j,k}. The tensor character splits into a coordinate product, Fubini factors the integral into 1-D integrals (each char1d_integral), and the product of Kronecker deltas collapses to the multi-index delta."
+      "type": "core",
+      "description": "Orthonormality of the n-dimensional Fourier characters: ∫_{Tⁿ} e_j(x)·conj(e_k(x)) dx = δ_{j,k}. The tensor character splits into a coordinate product, Fubini factors the integral into 1-D integrals (each char1d_integral), and the product of Kronecker deltas collapses to the multi-index delta.",
+      "leanType": "{n : ℕ} (j k : MultiIndex n) : ∫ x : Torus n, torusChar j x * conj (torusChar k x) = if j = k then 1 else 0",
+      "startLine": 75,
+      "endLine": 96
     },
     {
       "name": "char1d_integral",
-      "type": "theorem",
-      "description": "One-dimensional orthogonality in concrete-integral form: ∫_{AddCircle 1} fourier a(x)·conj(fourier b(x)) dx = δ_{a,b}, making Mathlib's orthonormal_fourier explicit as an integral against volume (= Haar probability measure at T=1)."
+      "type": "key",
+      "description": "One-dimensional orthogonality in concrete-integral form: ∫_{AddCircle 1} fourier a(x)·conj(fourier b(x)) dx = δ_{a,b}, making Mathlib's orthonormal_fourier explicit as an integral against volume (= Haar probability measure at T=1).",
+      "leanType": "(a b : ℤ) : ∫ x : AddCircle (1 : ℝ), fourier a x * conj (fourier b x) = if a = b then 1 else 0",
+      "startLine": 54,
+      "endLine": 65
     },
     {
       "name": "fourierCoeffND_torusChar",
-      "type": "theorem",
-      "description": "Orthonormality restated via the parent's coefficient: the j-th Fourier coefficient of the character e_k is δ_{j,k} (fourierCoeffND (torusChar k) j = δ_{j,k}) — the characters are an orthonormal system read off by the Fourier transform."
+      "type": "key",
+      "description": "Orthonormality restated via the parent's coefficient: the j-th Fourier coefficient of the character e_k is δ_{j,k} (fourierCoeffND (torusChar k) j = δ_{j,k}) — the characters are an orthonormal system read off by the Fourier transform.",
+      "leanType": "{n : ℕ} (j k : MultiIndex n) : fourierCoeffND (torusChar k) j = if k = j then 1 else 0",
+      "startLine": 103,
+      "endLine": 106
     }
   ],
   "crossReferences": [

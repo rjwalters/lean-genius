@@ -38,6 +38,7 @@
 -/
 import Mathlib
 import Proofs.SzemerediRegularityOQ04Energy
+import Proofs.SzemerediRegularityOQ04
 import Proofs.SzemerediRegularityOQ01
 
 namespace Szemeredi.RegularityOQ04Bridge
@@ -144,5 +145,156 @@ theorem partitionEnergy_single_split_mono (G : SimpleGraph V) [DecidableRel G.Ad
   simp only [Finset.sum_insert hAR, Finset.sum_insert hA₁, Finset.sum_insert hA₂R,
     Finset.sum_add_distrib]
   linarith [h1, h2, h3]
+
+/-- **Quantitative refinement increment of the gallery energy (energy-increment
+    step).**  Suppose the refined part `A₁ ∪ A₂` has an irregular partner `B₀ ∈ R`:
+    the two halves see densities differing by at least `δ`, i.e.
+    `|d(A₁,B₀) − d(A₂,B₀)| ≥ δ`.  Then refining the partition by replacing
+    `A₁ ∪ A₂` with its pieces `A₁, A₂` raises `partitionEnergy` by a *definite*
+    positive amount:
+
+    `partitionEnergy G (insert (A₁ ∪ A₂) R) + gain ≤
+        partitionEnergy G (insert A₁ (insert A₂ R))`,
+
+    where `gain = (|A₁||A₂|/(|A₁|+|A₂|))·(|B₀|/n²)·δ²`.  Every block of the
+    ordered-pair sum still moves in the right direction by `pairEnergy` monotonicity;
+    the row block against `R` carries the strict Cauchy–Schwarz surplus at `B₀`
+    (`pairEnergy_row_split_gain`).  This is the analytic heart of the strong
+    (Alon–Fischer–Krivelevich–Szegedy) regularity lemma: paired with the abstract
+    `[0,1]`-potential termination bound of `SzemerediRegularityOQ04`, the fixed
+    `gain > 0` forces the refinement loop to halt after at most `⌊1/gain⌋` steps. -/
+theorem partitionEnergy_single_split_gain (G : SimpleGraph V) [DecidableRel G.Adj]
+    (R : Finset (Finset V)) (A₁ A₂ B₀ : Finset V) (hdisj : Disjoint A₁ A₂)
+    (hA₁R : A₁ ∉ R) (hA₂R : A₂ ∉ R) (hne : A₁ ≠ A₂) (hAR : A₁ ∪ A₂ ∉ R)
+    (hB₀ : B₀ ∈ R)
+    (hn₁ : 0 < (A₁.card : ℚ)) (hn₂ : 0 < (A₂.card : ℚ)) (hB : 0 < (B₀.card : ℚ))
+    (δ : ℚ) (hδ : 0 ≤ δ)
+    (hdev : |edgeDensity G A₁ B₀ - edgeDensity G A₂ B₀| ≥ δ) :
+    partitionEnergy G (insert (A₁ ∪ A₂) R) +
+        (A₁.card : ℚ) * A₂.card / ((A₁.card : ℚ) + A₂.card) *
+          ((B₀.card : ℚ) / (Fintype.card V : ℚ) ^ 2) * δ ^ 2 ≤
+      partitionEnergy G (insert A₁ (insert A₂ R)) := by
+  -- A₁ is not in the smaller inserted family either.
+  have hA₁ : A₁ ∉ insert A₂ R := by
+    simp only [Finset.mem_insert, not_or]
+    exact ⟨hne, hA₁R⟩
+  -- Diagonal block: (A₁∪A₂,A₁∪A₂) ≤ the four sub-pairs (pure monotonicity).
+  have h1 : pairEnergy G (A₁ ∪ A₂) (A₁ ∪ A₂) ≤
+      pairEnergy G A₁ A₁ + pairEnergy G A₁ A₂ +
+        pairEnergy G A₂ A₁ + pairEnergy G A₂ A₂ := by
+    have a := pairEnergy_split_mono G A₁ A₂ (A₁ ∪ A₂) hdisj
+    have b := pairEnergy_split_mono_right G A₁ A₁ A₂ hdisj
+    have c := pairEnergy_split_mono_right G A₂ A₁ A₂ hdisj
+    linarith
+  -- Row block: the strict Cauchy–Schwarz surplus at the irregular partner B₀.
+  have h2 := pairEnergy_row_split_gain G A₁ A₂ hdisj R B₀ hB₀ hn₁ hn₂ hB δ hδ hdev
+  rw [Finset.sum_add_distrib] at h2
+  -- Column block: pure monotonicity again.
+  have h3 : R.sum (fun P => pairEnergy G P (A₁ ∪ A₂)) ≤
+      R.sum (fun P => pairEnergy G P A₁) + R.sum (fun P => pairEnergy G P A₂) := by
+    rw [← Finset.sum_add_distrib]
+    apply Finset.sum_le_sum
+    intro P _
+    exact pairEnergy_split_mono_right G P A₁ A₂ hdisj
+  -- Expand both energies to their block decompositions and combine.
+  rw [partitionEnergy_eq_double_sum, partitionEnergy_eq_double_sum]
+  simp only [Finset.sum_insert hAR, Finset.sum_insert hA₁, Finset.sum_insert hA₂R,
+    Finset.sum_add_distrib]
+  linarith [h1, h2, h3]
+
+-- ═══════════════════════════════════════════════════════════════════
+-- PART IV: UNIFORM GAIN FLOOR AND THE EXPLICIT AFKS ITERATION COUNT
+-- ═══════════════════════════════════════════════════════════════════
+
+/-- **Parallel-resistance floor.**  The quantity `x·y / (x + y)` (the harmonic
+    half-sum appearing as the Cauchy–Schwarz factor in the AFKS gain) is at least
+    `1/2` once both `x, y ≥ 1`.  This is what lets the *size-dependent* energy
+    increment be replaced by a *size-independent* floor: no matter how a part is
+    split, the two nonempty halves contribute a resistance factor `≥ 1/2`.
+
+    Proof: `x·y/(x+y) ≥ 1/2 ⟺ 2xy ≥ x + y`, and `2xy - x - y ≥ 0` follows from
+    `(x-1)(y-1) ≥ 0` together with `x + y ≥ 2`. -/
+theorem parallel_resistance_ge_half {x y : ℚ} (hx : 1 ≤ x) (hy : 1 ≤ y) :
+    (1 : ℚ) / 2 ≤ x * y / (x + y) := by
+  have hxy : 0 < x + y := by linarith
+  rw [le_div_iff₀ hxy]
+  nlinarith [mul_nonneg (by linarith : (0 : ℚ) ≤ x - 1) (by linarith : (0 : ℚ) ≤ y - 1)]
+
+/-- **Uniform (size-independent) energy-increment step.**  This is
+    `partitionEnergy_single_split_gain` with its `A`-side sizes bounded below by
+    `1`: the exact, size-dependent gain
+    `(|A₁||A₂|/(|A₁|+|A₂|))·(|B₀|/n²)·δ²` is floored to the clean, part-count-free
+    quantity `δ² / (2n²)`.
+
+    The two flooring steps are: the parallel-resistance factor
+    `|A₁||A₂|/(|A₁|+|A₂|) ≥ 1/2` (`parallel_resistance_ge_half`, using
+    `|A₁|,|A₂| ≥ 1`) and `|B₀|/n² ≥ 1/n²` (using `|B₀| ≥ 1`).  Since `B₀` is a
+    subset of `V`, `1 ≤ |B₀| ≤ n` forces `n > 0`, so the degenerate weight cannot
+    vanish.
+
+    The point of the uniform floor is that a *single* `δ = ε` now yields the same
+    increment at every refinement step regardless of the current part sizes — this
+    is exactly the hypothesis shape the abstract `[0,1]`-potential termination
+    bound requires, and it is what produces the explicit `2n²/ε²` step count
+    below. -/
+theorem partitionEnergy_single_split_gain_uniform (G : SimpleGraph V)
+    [DecidableRel G.Adj]
+    (R : Finset (Finset V)) (A₁ A₂ B₀ : Finset V) (hdisj : Disjoint A₁ A₂)
+    (hA₁R : A₁ ∉ R) (hA₂R : A₂ ∉ R) (hne : A₁ ≠ A₂) (hAR : A₁ ∪ A₂ ∉ R)
+    (hB₀ : B₀ ∈ R)
+    (hn₁ : 1 ≤ (A₁.card : ℚ)) (hn₂ : 1 ≤ (A₂.card : ℚ)) (hB : 1 ≤ (B₀.card : ℚ))
+    (ε : ℚ) (hε : 0 ≤ ε)
+    (hdev : |edgeDensity G A₁ B₀ - edgeDensity G A₂ B₀| ≥ ε) :
+    partitionEnergy G (insert (A₁ ∪ A₂) R) +
+        ε ^ 2 / (2 * (Fintype.card V : ℚ) ^ 2) ≤
+      partitionEnergy G (insert A₁ (insert A₂ R)) := by
+  -- The exact size-dependent increment.
+  have hgain := partitionEnergy_single_split_gain G R A₁ A₂ B₀ hdisj hA₁R hA₂R hne
+    hAR hB₀ (by linarith) (by linarith) (by linarith) ε hε hdev
+  -- `1 ≤ |B₀| ≤ n` gives `n > 0`.
+  have hBcard : (B₀.card : ℚ) ≤ (Fintype.card V : ℚ) := by
+    exact_mod_cast Finset.card_le_univ B₀
+  have hnpos : 0 < (Fintype.card V : ℚ) := by linarith
+  -- Parallel-resistance and `B₀`-weight floors, applied to the exact gain.
+  have hres : (1 : ℚ) / 2 ≤ (A₁.card : ℚ) * A₂.card / ((A₁.card : ℚ) + A₂.card) :=
+    parallel_resistance_ge_half hn₁ hn₂
+  have hfloor : ε ^ 2 / (2 * (Fintype.card V : ℚ) ^ 2) ≤
+      (A₁.card : ℚ) * A₂.card / ((A₁.card : ℚ) + A₂.card) *
+        ((B₀.card : ℚ) / (Fintype.card V : ℚ) ^ 2) * ε ^ 2 := by
+    rw [show ε ^ 2 / (2 * (Fintype.card V : ℚ) ^ 2)
+          = (1 : ℚ) / 2 * ((1 : ℚ) / (Fintype.card V : ℚ) ^ 2) * ε ^ 2 from by ring]
+    gcongr
+  linarith [hgain, hfloor]
+
+/-- **Explicit AFKS iteration count (energy-increment finiteness).**  Let
+    `parts : ℕ → Finset (Finset V)` be a sequence of covering, pairwise-disjoint
+    partitions whose `partitionEnergy` climbs by at least the *uniform* floor
+    `ε² / (2n²)` at each of the first `N` refinement steps.  Then
+
+    `N ≤ 2n² / ε²`.
+
+    Combined with `partitionEnergy_single_split_gain_uniform` — which certifies
+    that one irregular-partner split *does* realize that floor — this is the
+    complete tower-free finiteness statement behind the strong (AFKS) regularity
+    lemma: a graph on `n` vertices admits at most `2n²/ε²` genuine energy-increment
+    refinements before every relevant pair is `ε`-regular.  It is a thin corollary
+    of the abstract `[0,1]`-potential bound `partitionEnergy_iteration_bound`, but
+    it is the corollary that pins the count to an explicit polynomial in `n` and
+    `1/ε` rather than the opaque `1/δ` of the abstract engine. -/
+theorem afks_energy_iteration_count (G : SimpleGraph V) [DecidableRel G.Adj]
+    (parts : ℕ → Finset (Finset V)) (N : ℕ) (ε : ℚ) (hε : 0 < ε)
+    (hcard : 0 < (Fintype.card V : ℚ))
+    (hcover : ∀ n, ∀ v : V, ∃ P ∈ parts n, v ∈ P)
+    (hdisjoint : ∀ n, ∀ P Q : Finset V, P ∈ parts n → Q ∈ parts n → P ≠ Q →
+      Disjoint P Q)
+    (hstep : ∀ n, n < N →
+      partitionEnergy G (parts n) + ε ^ 2 / (2 * (Fintype.card V : ℚ) ^ 2) ≤
+        partitionEnergy G (parts (n + 1))) :
+    (N : ℚ) ≤ 2 * (Fintype.card V : ℚ) ^ 2 / ε ^ 2 := by
+  have hδ : 0 < ε ^ 2 / (2 * (Fintype.card V : ℚ) ^ 2) :=
+    div_pos (pow_pos hε 2) (mul_pos (by norm_num) (pow_pos hcard 2))
+  have hbound := Szemeredi.RegularityOQ04.partitionEnergy_iteration_bound G parts N
+    (ε ^ 2 / (2 * (Fintype.card V : ℚ) ^ 2)) hδ hcover hdisjoint hstep
+  rwa [one_div_div] at hbound
 
 end Szemeredi.RegularityOQ04Bridge

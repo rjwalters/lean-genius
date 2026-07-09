@@ -2,7 +2,7 @@
   "id": "shannon-channel-coding-awgn-oq-02-oq-02",
   "slug": "shannon-channel-coding-awgn-oq-02-oq-02",
   "title": "Multi-Symbol AWGN Output Power E[(∑Wᵢ)²] = ∑E[Wᵢ²] from the Variance of a Pairwise-Independent Sum",
-  "description": "Generalizes the parent two-term AWGN output-power identity E[(X+Z)²] = E[X²] + E[Z²] to a finite block of symbols: for pairwise-independent, zero-mean, square-integrable contributions Wᵢ (i ∈ s), the aggregate output power adds, E[(∑ᵢ Wᵢ)²] = ∑ᵢ E[Wᵢ²]. The proof is the variance-of-a-sum (Bienaymé) identity for pairwise-independent families — ProbabilityTheory.IndepFun.variance_sum, where the vanishing pairwise covariances collapse the double sum to the diagonal — specialized to zero mean via E[W²] = Var[W] (ProbabilityTheory.variance_eq_sub). Pairwise (not mutual) independence already suffices. 291 lines, 12 theorems, 0 axioms, 0 sorries.",
+  "description": "Generalizes the parent two-term AWGN output-power identity E[(X+Z)²] = E[X²] + E[Z²] to a finite block of symbols: for pairwise-independent, zero-mean, square-integrable contributions Wᵢ (i ∈ s), the aggregate output power adds, E[(∑ᵢ Wᵢ)²] = ∑ᵢ E[Wᵢ²]. The proof is the variance-of-a-sum (Bienaymé) identity for pairwise-independent families — ProbabilityTheory.IndepFun.variance_sum, where the vanishing pairwise covariances collapse the double sum to the diagonal — specialized to zero mean via E[W²] = Var[W] (ProbabilityTheory.variance_eq_sub). Pairwise (not mutual) independence already suffices. 545 lines, 21 theorems, 0 axioms, 0 sorries.",
   "leanFile": {
     "imports": [
       "Mathlib"
@@ -12,9 +12,9 @@
       "ProbabilityTheory"
     ],
     "namespace": "ShannonAWGNMultiSymbolPower",
-    "lineCount": 378,
+    "lineCount": 629,
     "axiomCount": 0,
-    "theoremCount": 16,
+    "theoremCount": 25,
     "definitionCount": 0,
     "path": "Proofs/ShannonChannelCodingAWGNOQ02OQ02.lean",
     "sorries": 0
@@ -181,6 +181,6 @@
     }
   ],
   "sorries": [],
-  "lineCount": 378,
-  "theoremCount": 16
+  "lineCount": 629,
+  "theoremCount": 25
 }

@@ -54,7 +54,7 @@
     "lineCount": 179,
     "assumptions": "None. All 7 theorems fully proved with 0 axioms and 0 sorries (no native_decide; the proofs are real analysis via Real.add_one_le_exp, exp/log algebra, pow-monotonicity, and nlinarith). #print axioms on the main results reports only [propext, Classical.choice, Quot.sound]. Probabilities are modeled as real-valued functions (the standard first-moment idiom of the sibling entries), not via a measure space. The loss term is modeled linearly as c·k·p with c a positive constant; deriving the genuine loss coefficient from the conditional model, the union bound over m edges, and the final √(k/log k) asymptotic remain open (see open questions).",
     "mathlib_version": "4.26.0",
-    "theoremCount": 7,
+    "theoremCount": 8,
     "definitionCount": 3,
     "dateAdded": "2026-06-30",
     "relatedProblems": [
@@ -177,7 +177,7 @@
     "axiomCount": 0,
     "sorries": 0,
     "definitionCount": 3,
-    "theoremCount": 7
+    "theoremCount": 8
   },
   "references": [
     {

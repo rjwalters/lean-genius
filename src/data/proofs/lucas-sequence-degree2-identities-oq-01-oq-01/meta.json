@@ -41,6 +41,48 @@
       "mathContext": "The $(P,Q)=(1,-1)$ and $(2,-1)$ instances of the general tripling laws."
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "U_three_mul",
+      "type": "core",
+      "description": "**Index-tripling for U.** U₃ₙ = Uₙ·(Vₙ² − Qⁿ) for the general Lucas sequence of parameters (P,Q). From the bilinear addition law 2·U₃ₙ = U₂ₙ·Vₙ + V₂ₙ·Uₙ at the split 3n = 2n + n, substituting the doubling formulas U₂ₙ = Uₙ·Vₙ, V₂ₙ = Vₙ² − 2Qⁿ and cancelling the factor 2.",
+      "leanType": "(P Q : ℤ) (n : ℕ) : U P Q (3 * n) = U P Q n * ((V P Q n) ^ 2 - Q ^ n)",
+      "startLine": 55,
+      "endLine": 64
+    },
+    {
+      "name": "V_three_mul",
+      "type": "core",
+      "description": "**Index-tripling for V.** V₃ₙ = Vₙ·(Vₙ² − 3Qⁿ). From the companion bilinear law 2·V₃ₙ = V₂ₙ·Vₙ + D·U₂ₙ·Uₙ, substituting the doubling formulas and eliminating D·Uₙ² via the master identity Vₙ² − D·Uₙ² = 4Qⁿ (linear_combination), then cancelling the factor 2.",
+      "leanType": "(P Q : ℤ) (n : ℕ) : V P Q (3 * n) = V P Q n * ((V P Q n) ^ 2 - 3 * Q ^ n)",
+      "startLine": 71,
+      "endLine": 82
+    },
+    {
+      "name": "fib_tripling",
+      "type": "key",
+      "description": "**Fibonacci tripling.** F₃ₙ = Fₙ·(Lₙ² − (−1)ⁿ), the (P,Q) = (1,−1) instance of U_three_mul relating Fibonacci and Lucas numbers.",
+      "leanType": "(n : ℕ) : U 1 (-1) (3 * n) = U 1 (-1) n * ((V 1 (-1) n) ^ 2 - (-1 : ℤ) ^ n)",
+      "startLine": 87,
+      "endLine": 89
+    },
+    {
+      "name": "lucas_tripling",
+      "type": "supporting",
+      "description": "**Lucas tripling.** L₃ₙ = Lₙ·(Lₙ² − 3(−1)ⁿ), the (P,Q) = (1,−1) instance of V_three_mul.",
+      "leanType": "(n : ℕ) : V 1 (-1) (3 * n) = V 1 (-1) n * ((V 1 (-1) n) ^ 2 - 3 * (-1 : ℤ) ^ n)",
+      "startLine": 92,
+      "endLine": 94
+    },
+    {
+      "name": "pell_tripling",
+      "type": "supporting",
+      "description": "**Pell tripling.** U₃ₙ = Uₙ·(Vₙ² − (−1)ⁿ), the (P,Q) = (2,−1) instance of U_three_mul for the Pell sequence.",
+      "leanType": "(n : ℕ) : U 2 (-1) (3 * n) = U 2 (-1) n * ((V 2 (-1) n) ^ 2 - (-1 : ℤ) ^ n)",
+      "startLine": 97,
+      "endLine": 99
+    }
+  ],
   "conclusion": {
     "summary": "A fully verified (0 sorries, 0 axioms, kernel decide only — no native_decide) 108-line file with 5 theorems establishing the general Lucas-sequence tripling formulas U₃ₙ = Uₙ·(Vₙ² − Qⁿ), V₃ₙ = Vₙ·(Vₙ² − 3·Qⁿ) for the two-parameter Lucas sequences over ℤ. Neither needs a new induction: tripling is the bilinear addition law at 3n = 2n + n composed with the doubling formulas — U is closed by ring, V by a single linear_combination over the master invariant Vₙ² − (P²−4Q)·Uₙ² = 4·Qⁿ. Fibonacci/Lucas (F₃ₙ = Fₙ·(Lₙ²−(−1)ⁿ), L₃ₙ = Lₙ·(Lₙ²−3(−1)ⁿ)) and Pell tripling are corollaries. #print axioms reports only [propext, Classical.choice, Quot.sound].",
     "implications": "Answers the doubling entry's first open question (the tripling formulas). Combined with doubling, tripling extends the index-multiplication toolkit: U and V at 2n and 3n are now polynomials in Uₙ, Vₙ, Qⁿ, giving the ternary fast-exponentiation step and, via U₃ₙ = Uₙ·(Vₙ² − Qⁿ), the divisibility Uₙ ∣ U₃ₙ — the next case toward the strong divisibility property Uₙ ∣ U_{kn} and gcd(Uₘ,Uₙ) = U_{gcd(m,n)}.",

@@ -84,3 +84,34 @@ Mathlib planarity/lower-bound theory (same blocker as `sparse_hides_nonplanarity
   Left as-is; only the axiom line changed in each.
 - Stub build hit reproducible exit-135 twice (line-less) then built on the 3rd try
   under 3 concurrent lean-builds — volume corruption, not a code error.
+
+## Session 2026-07-08 (researcher-3): terminus confirmed — remaining theorem-sorry is LOGICALLY INDEPENDENT [ASSESS, no code change]
+
+**Mode**: ASSESS. **Outcome**: NOTHING TRACTABLE — do not reclaim without building
+Mathlib planarity theory. Sharpened the prior "blocked on planarity" note into a
+precise independence argument so future agents stop probing this sorry.
+
+**The one remaining theorem-sorry `sparse_hides_nonplanarity` (line ~220) is independent
+of this file's axiom system — it can be neither proved nor disproved here:**
+- Its inner hypothesis is `H(ε,C) := ∀ V G, isDense G ε → hasSmallNonPlanarSubgraph G C`
+  ("every dense graph has a nonplanar induced subgraph on ≤ C vertices").
+- To PROVE `sparse_hides_nonplanarity` (`∀M ∃ε₀>0 ∀ε<ε₀ ∀C, H(ε,C)→C≥M`) one must
+  **refute** `H(ε,C)` for every `C<M`, i.e. exhibit a *dense* graph all of whose
+  induced ≤C subgraphs are **planar**. But `isPlanar` is an opaque `sorry`-def and the
+  only positive facts in the file are the NON-planarity axioms (`K5_nonplanar`,
+  `K33_nonplanar`) — there is **no way to ever prove `isPlanar G` for any G**, so `H`
+  is irrefutable in this system ⇒ the theorem is unprovable.
+- To DISPROVE it one must instead *prove* `H(ε,C)` for some small `C<M`; but `H` ranges
+  over ALL dense graphs including small ones (`card V < N`), and `kostochka_pyber` only
+  covers `card V ≥ N`, so `H` is also unprovable ⇒ the theorem is not disprovable.
+- Net: `sparse_hides_nonplanarity` is logically independent. Unlike the 2026-07-08
+  `constant_grows` fix (that axiom was provably *false* because its body ignored `C`),
+  this one has no honest machine-checked replacement. Leave the sorry; it is a faithful
+  statement of an open direction, not a defect.
+
+**Def-sorries `isPlanar`/`containsSubdivision` unchanged** (still need topological
+planarity / graph-minor theory, ~1000+ L, absent from Mathlib 4.26). A combinatorial
+redefinition of planarity via the Kuratowski characterization would trivialize
+`kuratowski_theorem`/`K5_nonplanar`/`K33_nonplanar` into definitional facts — that is a
+redefinition, NOT an honest axiom elimination (Axiom Integrity Policy), so it was
+deliberately NOT done. Recommend status: blocked.
