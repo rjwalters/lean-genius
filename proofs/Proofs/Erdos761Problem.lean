@@ -283,6 +283,175 @@ theorem dichrom_mono [Fintype V] [DecidableEq V]
       (fun a b hab => ⟨hab.1, hab.2.1, Or.inl ⟨O_H.consistent a b hab.2.2, hab.2.2⟩⟩)
       hcycle)⟩
 
+/-- **Embedding monotonicity of the dichromatic number.** If `f : W → V` is an
+    injective vertex map carrying every `H`-edge to a `G`-edge (a subgraph
+    embedding of `H` into `G`), then `δ(H) ≤ δ(G)`.
+
+    This generalizes `dichrom_mono` (the special case `W = V`, `f = id`) to
+    arbitrary vertex types. The construction extends an orientation `O_H` of `H`
+    to one of `G` by copying `O_H` along `f` on the image edges and orienting all
+    remaining `G`-edges by the vertex index; an acyclic `k`-coloring of the
+    extension then pulls back along `f` (via `Relation.TransGen.lift`) to an
+    acyclic `k`-coloring of `O_H`.
+
+    Injectivity of `f` (`_hf`) is what makes this the *embedding* (subgraph) case:
+    it guarantees distinct `H`-edges have distinct `f`-images, so the extended
+    orientation is well-defined even under a strict (antisymmetric) reading of
+    `Orientation`. The core pullback argument itself uses only edge-preservation. -/
+theorem dichrom_mono_of_embedding {W : Type*} [Fintype W] [DecidableEq W]
+    [Fintype V] [DecidableEq V] (H : SimpleGraph W) (G : SimpleGraph V)
+    [DecidableRel H.Adj] [DecidableRel G.Adj]
+    (f : W → V) (_hf : Function.Injective f)
+    (hmap : ∀ u v, H.Adj u v → G.Adj (f u) (f v)) :
+    H.dichromNumber ≤ G.dichromNumber := by
+  unfold SimpleGraph.dichromNumber
+  apply csInf_le_csInf (nat_bddBelow _)
+  · -- The `G`-defining set is nonempty: the injective coloring works.
+    exact ⟨Fintype.card V, fun O => ⟨Fintype.equivFin V,
+      isAcyclicColoring_of_no_mono_edge O _ fun u v hdir heq =>
+        G.ne_of_adj (O.consistent u v hdir) ((Fintype.equivFin V).injective heq)⟩⟩
+  · -- `k` good for all `G`-orientations ⟹ `k` good for all `H`-orientations.
+    intro k hk O_H
+    classical
+    let ι := Fintype.equivFin V
+    -- `isImg a b`: the ordered pair `(a, b)` is the `f`-image of an `H`-edge.
+    let isImg : V → V → Prop := fun a b => ∃ u v, f u = a ∧ f v = b ∧ H.Adj u v
+    -- Extend `O_H` to `G`: copy `O_H` on image edges, index-orient the rest.
+    let O_G : Orientation G :=
+      { dir := fun a b =>
+          (∃ u v, f u = a ∧ f v = b ∧ H.Adj u v ∧ O_H.dir u v) ∨
+          (G.Adj a b ∧ ¬isImg a b ∧ ¬isImg b a ∧ (ι a).val < (ι b).val)
+        covers := fun a b hadj => by
+          by_cases hab : isImg a b
+          · obtain ⟨u, v, hu, hv, hHadj⟩ := hab
+            rcases O_H.covers u v hHadj with h | h
+            · exact Or.inl (Or.inl ⟨u, v, hu, hv, hHadj, h⟩)
+            · exact Or.inr (Or.inl ⟨v, u, hv, hu, hHadj.symm, h⟩)
+          · by_cases hba : isImg b a
+            · obtain ⟨u, v, hu, hv, hHadj⟩ := hba
+              rcases O_H.covers u v hHadj with h | h
+              · exact Or.inr (Or.inl ⟨u, v, hu, hv, hHadj, h⟩)
+              · exact Or.inl (Or.inl ⟨v, u, hv, hu, hHadj.symm, h⟩)
+            · have hne : (ι a).val ≠ (ι b).val :=
+                fun h => absurd (ι.injective (Fin.val_injective h)) (G.ne_of_adj hadj)
+              rcases lt_or_gt_of_ne hne with hlt | hgt
+              · exact Or.inl (Or.inr ⟨hadj, hab, hba, hlt⟩)
+              · exact Or.inr (Or.inr ⟨hadj.symm, hba, hab, hgt⟩)
+        consistent := fun a b hdir => by
+          rcases hdir with ⟨u, v, hu, hv, hHadj, _⟩ | ⟨h, _⟩
+          · rw [← hu, ← hv]; exact hmap u v hHadj
+          · exact h }
+    -- Pull back an acyclic `k`-coloring of `O_G` along `f`.
+    obtain ⟨c, hc⟩ := hk O_G
+    refine ⟨fun w => c (f w), fun i w hcycle => hc i (f w) ?_⟩
+    exact Relation.TransGen.lift f
+      (fun a b hab => ⟨hab.1, hab.2.1,
+        Or.inl ⟨a, b, rfl, rfl, O_H.consistent a b hab.2.2, hab.2.2⟩⟩)
+      hcycle
+
+/-- **Induced-subgraph monotonicity** — the structural fact underlying
+    Erdős #761 Question 2: passing to an induced subgraph can only decrease the
+    dichromatic number, `δ(G[s]) ≤ δ(G)`. Immediate from `dichrom_mono_of_embedding`
+    with the (injective) subtype coercion, whose edges are `G`-edges by definition
+    of `induce`. -/
+theorem dichrom_induce_le [Fintype V] [DecidableEq V] (G : SimpleGraph V)
+    [DecidableRel G.Adj] (s : Set V) [Fintype s]
+    [DecidableRel (G.induce s).Adj] :
+    (G.induce s).dichromNumber ≤ G.dichromNumber :=
+  dichrom_mono_of_embedding (G.induce s) G Subtype.val Subtype.val_injective
+    (fun _ _ h => h)
+
+-- ═══════════════════════════════════════════════════════════════════════
+-- MONOTONICITY IN THE COLOR COUNT + sInf CHARACTERIZATIONS
+-- ═══════════════════════════════════════════════════════════════════════
+
+/-- Relabelling colors along any injection `Fin k ↪ Fin k'` preserves acyclicity.
+    A monochromatic cycle for `f ∘ c` at color `i` lives entirely in the single
+    `c`-class `f⁻¹(i)` (injectivity pins every vertex of the cycle to one preimage),
+    so it would be a monochromatic cycle for `c` — contradicting acyclicity of `c`. -/
+theorem hasAcyclicColoring_of_injection {G : SimpleGraph V} {O : Orientation G}
+    {k k' : ℕ} (f : Fin k → Fin k') (hf : Function.Injective f)
+    (h : HasAcyclicColoring O k) : HasAcyclicColoring O k' := by
+  obtain ⟨c, hc⟩ := h
+  refine ⟨fun v => f (c v), ?_⟩
+  intro i v hcycle
+  -- The cycle's basepoint fixes the color: f (c v) = i.
+  have hi : f (c v) = i := by
+    cases hcycle with
+    | single h => exact h.1
+    | tail _ h => exact h.2.1
+  -- Push the cycle down to color `c v` for `c` itself, then invoke acyclicity of `c`.
+  exact hc (c v) v (Relation.TransGen.mono
+    (fun a b hab => ⟨hf (hab.1.trans hi.symm), hf (hab.2.1.trans hi.symm), hab.2.2⟩) hcycle)
+
+/-- Acyclic colorability only improves with more colors: an acyclic `k`-coloring
+    lifts to an acyclic `k'`-coloring whenever `k ≤ k'`. -/
+theorem hasAcyclicColoring_mono {G : SimpleGraph V} {O : Orientation G}
+    {k k' : ℕ} (hle : k ≤ k') (h : HasAcyclicColoring O k) : HasAcyclicColoring O k' :=
+  hasAcyclicColoring_of_injection (Fin.castLE hle) (Fin.castLE_injective hle) h
+
+/-- The defining set of `dichromNumber` is upward closed, so `sInf` obeys a clean
+    specification: `δ(G) ≤ k` **iff** every orientation admits an acyclic
+    `k`-coloring. This upgrades the one-directional `csInf_le` bounds above into a
+    usable characterization (both directions). -/
+theorem dichromNumber_le_iff [Fintype V] [DecidableEq V] (G : SimpleGraph V)
+    [DecidableRel G.Adj] {k : ℕ} :
+    G.dichromNumber ≤ k ↔ ∀ O : Orientation G, HasAcyclicColoring O k := by
+  unfold SimpleGraph.dichromNumber
+  refine ⟨fun hle O => ?_, fun h => Nat.sInf_le h⟩
+  have hne : {k | ∀ O : Orientation G, HasAcyclicColoring O k}.Nonempty :=
+    ⟨Fintype.card V, fun O => ⟨Fintype.equivFin V, isAcyclicColoring_of_no_mono_edge O _
+      (fun u v hdir heq =>
+        G.ne_of_adj (O.consistent u v hdir) ((Fintype.equivFin V).injective heq))⟩⟩
+  exact hasAcyclicColoring_mono hle (Nat.sInf_mem hne O)
+
+/-- [Lower bound] For a nonempty vertex set, `δ(G) ≥ 1`: the color count `0`
+    is impossible since it would require a coloring into the empty type `Fin 0`. -/
+theorem dichromNumber_pos [Fintype V] [DecidableEq V] [Nonempty V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] : 0 < G.dichromNumber := by
+  rw [Nat.pos_iff_ne_zero]
+  intro h0
+  obtain ⟨O, _⟩ := acyclic_orientation_exists G
+  obtain ⟨c, _⟩ := (dichromNumber_le_iff G).mp (le_of_eq h0) O
+  exact (c (Classical.arbitrary V)).elim0
+
+/-- Relabelling colors along any injection `Fin k ↪ Fin k'` preserves the
+    cochromatic condition: each color class of `f ∘ c` is either empty (when the
+    color is outside the range of `f`) or equal to a color class of `c`. -/
+theorem isCochromatic_of_injection {G : SimpleGraph V} {k k' : ℕ}
+    (f : Fin k → Fin k') (hf : Function.Injective f)
+    {c : V → Fin k} (hc : IsCochromatic G c) : IsCochromatic G (f ∘ c) := by
+  intro i
+  by_cases hi : ∃ j, f j = i
+  · obtain ⟨j, rfl⟩ := hi
+    rcases hc j with hclq | hind
+    · exact Or.inl fun u v hu hv huv => hclq u v (hf hu) (hf hv) huv
+    · exact Or.inr fun u v hu hv huv => hind u v (hf hu) (hf hv) huv
+  · exact Or.inl fun u v hu _ _ => (hi ⟨c u, hu⟩).elim
+
+/-- The defining set of `cochromNumber` is upward closed, giving the clean
+    characterization: `ζ(G) ≤ k` **iff** a cochromatic `k`-coloring exists. -/
+theorem cochromNumber_le_iff [Fintype V] [DecidableEq V] (G : SimpleGraph V)
+    [DecidableRel G.Adj] {k : ℕ} :
+    G.cochromNumber ≤ k ↔ ∃ c : V → Fin k, IsCochromatic G c := by
+  unfold SimpleGraph.cochromNumber
+  refine ⟨fun hle => ?_, fun h => Nat.sInf_le h⟩
+  have hne : {k | ∃ c : V → Fin k, IsCochromatic G c}.Nonempty :=
+    ⟨Fintype.card V, Fintype.equivFin V, fun i => Or.inl fun u v hu hv huv =>
+      absurd ((Fintype.equivFin V).injective (hu.trans hv.symm)) huv⟩
+  obtain ⟨c, hc⟩ := Nat.sInf_mem hne
+  exact ⟨Fin.castLE hle ∘ c,
+    isCochromatic_of_injection (Fin.castLE hle) (Fin.castLE_injective hle) hc⟩
+
+/-- [Lower bound] For a nonempty vertex set, `ζ(G) ≥ 1`: a cochromatic coloring
+    into `Fin 0` is impossible. -/
+theorem cochromNumber_pos [Fintype V] [DecidableEq V] [Nonempty V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] : 0 < G.cochromNumber := by
+  rw [Nat.pos_iff_ne_zero]
+  intro h0
+  obtain ⟨c, _⟩ := (cochromNumber_le_iff G).mp (le_of_eq h0)
+  exact (c (Classical.arbitrary V)).elim0
+
 end ProvedProperties
 
 -- ═══════════════════════════════════════════════════════════════════════

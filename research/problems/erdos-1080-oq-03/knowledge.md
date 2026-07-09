@@ -120,3 +120,80 @@ type mismatches L77, synth-fail L153, multiple orphaned /-- doc-comments L158/17
 181/192, token errors L211, plus c4_free_iff_no_K22 sorry L306 + erdos_c8_observation
 axiom) — a large multi-error repair job (Mechanic/Doctor), NOT a single doc-comment fix
 as the old nextStep #3 implied; separate gallery entry, left for a repair agent.
+
+## Session 2026-07-08 (researcher-10) — realizability: the bipartite cycle spectrum is EXACTLY even ≥ 4
+
+**Mode**: DEPTH-FIRST follow-up (SOLVED necessity → add sufficiency) · **Outcome**: progress (VERIFIED 0 sorry / 0 axiom, host `lake env lean` exit 0)
+
+### What I did
+Added the *sufficiency* (converse) side of the cycle-length characterization,
+turning the file's "bipartite ⇒ even ≥ 4" necessity results into a full iff.
+New in `Erdos1080OQ03.lean` (594 → 606 lines):
+- `descPath` — Nat-structural descending walk `⟨j⟩→⟨j-1⟩→…→⟨0⟩` in `cycleGraph N`.
+- `descPath_length` / `descPath_support_val_le` / `descPath_isPath` /
+  `descPath_edges_diff_one` — its length (=j), index bound (≤j), path-ness, and
+  edge invariant (every edge joins indices differing by 1).
+- `closingEdge_not_mem` — the wrap edge `s(0,N-1)` is not a descPath edge (0,N-1
+  differ by ≥2 for N≥3), so consing it closes a genuine cycle.
+- `cycleGraph_hasCycleOfLength` (N≥3) — explicit Hamiltonian N-cycle via
+  `cons_isCycle_iff`.
+- `cycleGraph_isBipartite_of_even` — even N ⇒ bipartite, via
+  `cycleGraph.bicoloring_of_even` + `Coloring.colorable` + `Fintype.card_bool`
+  + the file's `isBipartite_iff_colorable_two` bridge.
+- `bipartite_realizes_even_ge_four` and the capstone
+  `bipartite_cycle_spectrum : (∃ bipartite G with cycle length k) ↔ (Even k ∧ 4≤k)`.
+
+### Key findings / gotchas (reusable)
+- **omega cannot see through `Fin.val ⟨j, proof⟩`** — it atomizes `(⟨j,_⟩:Fin N).val`
+  as opaque (shown as `↑↑⟨j,⋯⟩`), knowing only `<N`, NOT `=j`. Symptom: `rw
+  [Fin.le_def]; omega` fails with counterexample `a-c≥1`. Fixes: (a) use
+  `Fin.mk_le_mk.mpr (Nat.le_succ j)` instead of `Fin.le_def; omega`; (b) after
+  `rw [Fin.sub_val_of_le hle]` use `show j+1-j=1` (DEFEQ forces `.val` to reduce)
+  then omega on pure nats; (c) feed omega a `have : ((⟨k+1,hj⟩:Fin N):ℕ)=k+1 := rfl`.
+- **Recurse on a plain `Nat`, not on `Fin N`**: `def descPath : (j:ℕ)→(hj:j<N)→
+  Walk ⟨j,hj⟩ 0` is STRUCTURAL (sorry-free). The `∀ m : Fin N` form goes
+  well-founded, and its termination obligation was silently discharged by
+  `sorryAx` (invisible until `#print axioms`) — `termination_by/decreasing_by`
+  did NOT fix it and broke the body omegas. Mathlib's `cycleGraph_EulerianCircuit`
+  dodges this only because its `Fin (n+3)` literal shape stays structural.
+- **Wrap-edge value**: `((0:Fin N) - ⟨N-1⟩).val = 1` via `Fin.coe_sub_iff_lt.mpr`
+  (needs `0 < ⟨N-1⟩`), then rewrite the two `.val`s by rfl-facts and omega.
+  `Fin.coe_sub` is `↑(a-b)=((n-b)+a)%n` (NOT `(a+(n-b))%n`); `fin_omega` failed
+  on both wrap and descending-step goals.
+- **`#print axioms` is mandatory** — the file elaborated with 0 *errors* yet
+  carried `sorryAx` from an error-recovered `by` block. A green Docker
+  `[N/N]` + "0 errors" does NOT certify axiom-freeness.
+- **SIGBUS cache corruption** (`*.olean.private, invalid header`) makes omega/aesop
+  fail spuriously AND emits false `sorryAx`; repair with `find .lake -name
+  '*.olean.private' -delete` of the corrupt one + `lake exe cache get` (but do
+  NOT bulk-delete all `.private` — 3 weren't re-cached → "missing data file";
+  clear their `.hash` and re-`cache get`).
+
+### Next steps (unchanged hard core)
+- The C₄,C₆-free extremal C₈ EXISTENCE (Erdős's actual observation) — degree/
+  moment counting, genuinely hard, still the open core. Realizability is
+  orthogonal (it's about SOME bipartite graph, not the constrained extremal ones).
+
+## Session 2026-07-08 (researcher-10) — cycle-graph parity dichotomy + unblock PR #35973
+
+**Mode**: REVISIT / DEPTH-FIRST follow-up · **Outcome**: progress (VERIFIED 0 sorry / 0 axiom, host `lake env lean` exit 0, `#print axioms` = propext/Classical.choice/Quot.sound only)
+
+### What I did
+1. **Unblocked shipping**: PR #35973 (realizability capstone + parent restore, ~528 lines VERIFIED) was CONFLICTING/DIRTY after #35906 (C4-free ⇔ no K22) merged to main. Merged origin/main in; both conflicts (Erdos1080OQ03.lean, erdos-1080-oq-03.json) were purely additive with my branch a strict superset → resolved `--ours`, pushed. PR now MERGEABLE/CLEAN.
+2. **New math** (converse sharpness): added the missing direction of the cycle-graph parity result.
+   - `cycleGraph_not_isBipartite_of_odd` (N≥3, Odd N) — one-liner: `bipartite_odd_cycle_free hbip hOdd (cycleGraph_hasCycleOfLength N hN3)`. An odd cycleGraph IS an odd cycle, forbidden in any bipartite graph.
+   - `cycleGraph_isBipartite_iff_even` (N≥3) — `IsBipartite (cycleGraph N) ↔ Even N`, via `Nat.even_or_odd` case split + `absurd` on the odd obstruction, backward = `cycleGraph_isBipartite_of_even`.
+   This upgrades the one-directional `cycleGraph_isBipartite_of_even` into the sharp iff, closing the parity dichotomy of the cycle graphs.
+
+### Files modified
+- `proofs/Proofs/Erdos1080OQ03.lean` (606 → 626 lines, +2 theorems).
+- `src/data/proofs/erdos-1080-oq-03/meta.json` — synced stale counts (434/17/3 → 626/28/4; the realizability capstone had never re-synced them).
+- `src/data/research/problems/erdos-1080-oq-03.json`, this knowledge.md.
+
+### Key findings / notes
+- The whole ELEMENTARY spectrum+parity theory is now closed: necessity (bipartite ⇒ even ≥4), sufficiency/realizability (every even ≥4 occurs), girth lifting (C4,C6-free ⇒ girth ≥8), C4-free ⇔ no K22, Colorable-2 bridge, AND now cycleGraph bipartite ⟺ N even.
+- Only remaining open core: Erdős's dense C4,C6-free ⇒ C8 existence (moment/KST counting) — genuinely hard, not session-sized, not Aristotle-suitable (open).
+- Host `lake env lean` (after `lake exe cache get`) verifies this file's import set fine; no Docker needed.
+
+### Next steps
+- Extremal C8 existence (hard, open) — the sole remaining target; needs degree/moment counting infrastructure absent from Mathlib.
