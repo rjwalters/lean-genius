@@ -53,7 +53,8 @@
       "**Constant differences collapse the correction.** Abel summation expresses $\\sum k r^k$ via the forward differences of the weight $k$; since these are all $1$, the abstract correction term degenerates to a plain sum of geometric partial sums — the structural reason the closed form exists.",
       "**Field, not analysis.** The identity needs no norm and no convergence hypothesis: it is an exact polynomial-over-$(r-1)^2$ identity valid for every $r\\neq 1$ in any field. The familiar $r/(1-r)^2$ is just its $n\\to\\infty$ shadow when $|r|<1$.",
       "**A genuine gap.** Mathlib packages the geometric closed form `geom_sum_eq` and the arithmetic sum `sum_range_id` separately but not their product $\\sum k r^k$; this entry supplies the missing finite identity that the gallery's infinite `geometric-series-oq-06` silently assumes.",
-      "**Differentiating the geometric series.** Over $\\mathbb{R}$ with $|r|<1$, $\\sum_k k\\,r^k = r\\frac{d}{dr}\\sum_k r^k = r\\frac{d}{dr}\\frac{1}{1-r} = \\frac{r}{(1-r)^2}$: the weighted sum is the term-by-term derivative of the geometric series. The finite identity proved here is the exact algebraic skeleton of that calculus heuristic, recovering it in any field without ever invoking differentiation or convergence."
+      "**Differentiating the geometric series.** Over $\\mathbb{R}$ with $|r|<1$, $\\sum_k k\\,r^k = r\\frac{d}{dr}\\sum_k r^k = r\\frac{d}{dr}\\frac{1}{1-r} = \\frac{r}{(1-r)^2}$: the weighted sum is the term-by-term derivative of the geometric series. The finite identity proved here is the exact algebraic skeleton of that calculus heuristic, recovering it in any field without ever invoking differentiation or convergence.",
+      "**The excluded $r=1$ point is a removable singularity, and its value is the triangular number.** The hypothesis $r\\neq 1$ looks like a genuine exclusion, but the numerator $N(r)=r-n r^n+(n-1)r^{n+1}$ vanishes at $r=1$ to order exactly $2$ ($N(1)=N'(1)=0$, $N''(1)=n(n-1)$), matching the $(r-1)^2$ denominator. So $\\lim_{r\\to1}\\sum_{k<n} k r^k = N''(1)/2 = n(n-1)/2 = \\sum_{k<n} k$, recovering Mathlib's `sum_range_id`. The two Mathlib lemmas this entry bridges — `geom_sum_eq` (needs $r\\neq1$) and the triangular sum — are the generic point and the removable singularity of one arithmetico-geometric family."
     ]
   },
   "sections": [
@@ -69,14 +70,14 @@
       "id": "closed-form",
       "title": "The Closed Form by Induction",
       "startLine": 50,
-      "endLine": 66,
+      "endLine": 64,
       "summary": "sum_range_mul_geom: ∑_{k<n} k·rᵏ = (r − n·rⁿ + (n−1)·rⁿ⁺¹)/(r−1)² for r ≠ 1, proved by induction with field_simp + ring on the step.",
       "mathContext": "The inductive step absorbs the new term m·rᵐ by the polynomial identity n·rⁿ(r−1)² = n·rⁿ⁺² − 2n·rⁿ⁺¹ + n·rⁿ."
     },
     {
       "id": "by-parts",
       "title": "Re-derivation via Abel Summation by Parts",
-      "startLine": 67,
+      "startLine": 65,
       "endLine": 83,
       "summary": "sum_range_mul_geom_eq_byParts: the same sum equals (n−1)·Gₙ − ∑_{i<n−1} G_{i+1} with Gₘ = ∑_{j<m} rʲ, directly from Finset.sum_range_by_parts.",
       "mathContext": "The weight f k = k has constant forward differences f(k+1)−f k = 1, so smul_eq_mul + push_cast + ring reduce the Abel transform to a sum of geometric partial sums."
