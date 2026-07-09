@@ -807,4 +807,68 @@ theorem trace_eq_add_starProjection_compress_of_reducing {T : V →ₗ[𝕜] V}
   rw [starProjection_compress_add_orthogonal_op_eq_of_reducing H hH hHp] at h
   exact h
 
+/-- **Ambient-compression trace = honest compression trace (cyclic-trace bridge).**
+
+The ambient compression `P_H ∘ T ∘ P_H : V → V` and the honest compression
+`compress T H : H → H` carry the *same* trace, across the `H ↪ V` coercion:
+
+  `tr_V (P_H T P_H) = tr_H (compress T H)`.
+
+Factor the self-adjoint projection as `P_H = ι ∘ π` with `ι := H.subtype : H → V`
+the inclusion and `π := orthogonalProjection H : V → H`.  Then
+`P_H T P_H = ι ∘ (compress T H) ∘ π` because `compress T H = π ∘ T ∘ ι`, so the
+cyclic property of the trace (`LinearMap.trace_comp_comm'`) moves the outer `ι`
+to the right, producing `(compress T H ∘ π) ∘ ι = compress T H ∘ (π ∘ ι)`.  The
+inner `π ∘ ι = id_H` because the orthogonal projection fixes vectors already in
+`H` (`orthogonalProjection_mem_subspace_eq_self`), leaving exactly
+`tr_H (compress T H)`.  No symmetry of `T` and no reducing hypothesis is used —
+this is a pure trace-conjugation identity valid for any operator and any
+subspace. -/
+theorem trace_starProjection_compress_eq_trace_compress {T : V →ₗ[𝕜] V}
+    (H : Submodule 𝕜 V) :
+    LinearMap.trace 𝕜 V
+        (H.starProjection.toLinearMap ∘ₗ T ∘ₗ H.starProjection.toLinearMap)
+      = LinearMap.trace 𝕜 H (compress T H) := by
+  set ι : H →ₗ[𝕜] V := H.subtype with hι
+  set π : V →ₗ[𝕜] H := (H.orthogonalProjection : V →L[𝕜] H).toLinearMap with hπ
+  -- Operator identity: the ambient compression is the conjugate `ι (compress) π`.
+  have hop : H.starProjection.toLinearMap ∘ₗ T ∘ₗ H.starProjection.toLinearMap
+      = ι ∘ₗ ((compress T H) ∘ₗ π) := by
+    ext v
+    simp only [ι, π, LinearMap.comp_apply, ContinuousLinearMap.coe_coe,
+      Submodule.starProjection_apply, compress_apply, Submodule.subtype_apply,
+      Submodule.coe_orthogonalProjection_apply]
+  -- The projection is a left inverse of the inclusion on `H`.
+  have hπι : π ∘ₗ ι = LinearMap.id := by
+    ext y
+    simp only [ι, π, LinearMap.comp_apply, ContinuousLinearMap.coe_coe,
+      Submodule.subtype_apply, Submodule.orthogonalProjection_mem_subspace_eq_self,
+      LinearMap.id_coe, id_eq]
+  rw [hop, LinearMap.trace_comp_comm' ((compress T H) ∘ₗ π) ι,
+    LinearMap.comp_assoc, hπι, LinearMap.comp_id]
+
+/-- **Honest trace additivity over a reducing subspace.**
+
+Upgrade of `trace_eq_add_starProjection_compress_of_reducing` from the ambient
+compressions to the honest per-block compression operators: if `H` reduces `T`
+then the trace of `T` splits as the sum of the traces of the two honest
+compressions `compress T H : H → H` and `compress T Hᗮ : Hᗮ → Hᗮ`,
+
+  `tr_V T = tr_H (compress T H) + tr_{Hᗮ} (compress T Hᗮ)`.
+
+Obtained from the ambient block-diagonal trace split
+`trace_eq_add_starProjection_compress_of_reducing` by identifying each ambient
+compression trace with its honest compression trace via the cyclic-trace bridge
+`trace_starProjection_compress_eq_trace_compress`.  This is the trace analogue,
+now over the *honest* compression operators, of the multiplicity additivity
+`finrank_eigenspace_eq_add_compress_of_reducing`.  Symmetry-free. -/
+theorem trace_eq_add_compress_of_reducing {T : V →ₗ[𝕜] V}
+    (H : Submodule 𝕜 V) (hH : ∀ y ∈ H, T y ∈ H) (hHp : ∀ y ∈ Hᗮ, T y ∈ Hᗮ) :
+    LinearMap.trace 𝕜 V T =
+      LinearMap.trace 𝕜 H (compress T H) +
+        LinearMap.trace 𝕜 (Hᗮ) (compress T Hᗮ) := by
+  rw [trace_eq_add_starProjection_compress_of_reducing H hH hHp,
+    trace_starProjection_compress_eq_trace_compress H,
+    trace_starProjection_compress_eq_trace_compress Hᗮ]
+
 end CauchyInterlacing.PoincareCompression
