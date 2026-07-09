@@ -95,7 +95,8 @@
       "reversal_seed_transport_admissible (EulerTotientOQ04OQ03.lean): classifySeed a=.lt ⟹ seedS a=1. VERIFIED 0/0",
       "reversal_mem_implies_transport_regime (EulerTotientOQ04OQ03.lean): a·2^(k+1)∈ReversalSet ⟹ seedS a=1. VERIFIED 0/0",
       "prime_triple_family_not_reversal in EulerTotientOQ04OQ03.lean: for p≥7 with p,p+2,2p+1 all prime, family p(2p+1)·2^(k+1) never reverses (φ(e)≤e−1≤φ(a) once p²−6p+1≥0; uniform since φ(e)≤e−1 needs no factorisation of e)",
-      "prime_triple_reversal_iff in EulerTotientOQ04OQ03.lean: the prime-triple family reverses iff p∈{3,5}, contributing exactly seeds {21,55}"
+      "prime_triple_reversal_iff in EulerTotientOQ04OQ03.lean: the prime-triple family reverses iff p∈{3,5}, contributing exactly seeds {21,55}",
+      "Strict-gt classifier engine (2026-07-09 researcher-2, VERIFIED 0/0): added classifySeed_gt_of_excess_bound (the missing .gt companion of the ne_lt engine — same excess bound + 2≤seedE a ⟹ .gt via strict φ(seedE)<seedE), completing the excluded-regime trichotomy as a function of seedE (=1⟹eq, ≥2⟹gt); and classifySeed_prime_three_mod_four_gt_of_seedE reducing the excluded-prime forward regime to the single fact seedE p≥2. Docker Build succeeded 3058 jobs (attempt 2)."
     ],
     "insights": [
       "On primes the higher iterate is trivial: D(p) = p − 1 for all primes p, because the first cototient step p − φ(p) = 1 and φ(1) = 1. So φ(D(p)) = φ(p−1), and φ(p−1) < p−1 = φ(p) for every p ≥ 3 (with equality only at p = 2). This gives the forward direction on an infinite explicit family with a one-line reduction to Nat.totient_lt — no density machinery needed.",
