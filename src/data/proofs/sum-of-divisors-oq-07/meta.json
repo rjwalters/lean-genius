@@ -136,6 +136,32 @@
       "State the multiplicativity of σₖ(n)/n^k (the higher-order abundancy index) as in OQ-05's k = 1 case."
     ]
   },
+  "mainTheorems": [
+    {
+      "name": "sigma_mul_prod_primeFactors",
+      "type": "main",
+      "description": "The general closed geometric-product form of σₖ for every exponent k: σₖ(n)·∏_{p∣n}(pᵏ−1) = ∏_{p∣n}(p^{k(vₚ(n)+1)}−1). Collapses Mathlib's product-of-sums evaluation into a product of closed geometric quotients, stated division-free over ℤ. Proved from sigma_eq_prod_primeFactors_sum_range_factorization_pow_mul via Finset.prod_mul_distrib and geom_sigma_sum on each factor.",
+      "leanType": "{k n : ℕ} (hn : n ≠ 0) : (sigma k n : ℤ) * ∏ p ∈ n.primeFactors, ((p : ℤ) ^ k - 1) = ∏ p ∈ n.primeFactors, ((p : ℤ) ^ (k * (n.factorization p + 1)) - 1)"
+    },
+    {
+      "name": "sigma_prime_pow_mul",
+      "type": "main",
+      "description": "The closed prime-power form for every exponent k: σₖ(pⁱ)·(pᵏ−1) = p^{k(i+1)}−1 (OQ-04 proves only the k = 1 case). Rewrites σₖ(pⁱ) as its open geometric sum (sigma_apply_prime_pow), casts to ℤ, and applies geom_sigma_sum.",
+      "leanType": "{k p i : ℕ} (hp : p.Prime) : (sigma k (p ^ i) : ℤ) * ((p : ℤ) ^ k - 1) = (p : ℤ) ^ (k * (i + 1)) - 1"
+    },
+    {
+      "name": "geom_sigma_sum",
+      "type": "supporting",
+      "description": "The geometric collapse over ℤ, re-indexed to the σₖ summand shape: (∑_{j<i+1} p^{jk})·(pᵏ−1) = p^{k(i+1)}−1. The single application of geom_sum_mul (base x = pᵏ) that every closed form in this entry reduces to.",
+      "leanType": "(k p i : ℕ) : (∑ j ∈ range (i + 1), (p : ℤ) ^ (j * k)) * ((p : ℤ) ^ k - 1) = (p : ℤ) ^ (k * (i + 1)) - 1"
+    },
+    {
+      "name": "sigma_two_primes_pow_mul",
+      "type": "supporting",
+      "description": "The two-prime product law: σₖ(pᵃqᵇ)·(pᵏ−1)(qᵏ−1) = (p^{k(a+1)}−1)(q^{k(b+1)}−1). Distinct primes give coprime prime powers, so isMultiplicative_sigma.map_mul_of_coprime splits σₖ and linear_combination assembles the two prime-power identities.",
+      "leanType": "{k p q a b : ℕ} (hp : p.Prime) (hq : q.Prime) (hpq : p ≠ q) : (sigma k (p ^ a * q ^ b) : ℤ) * (((p : ℤ) ^ k - 1) * ((q : ℤ) ^ k - 1)) = ((p : ℤ) ^ (k * (a + 1)) - 1) * ((q : ℤ) ^ (k * (b + 1)) - 1)"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib"
