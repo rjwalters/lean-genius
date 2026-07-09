@@ -2,20 +2,24 @@
   Primitive Solvable Permutation Groups of Prime Degree — Galois Direction
   (sub-OQ-06)
 
-  This file scaffolds the **Galois direction** of the AGL(1, p) classification:
+  This file proves the **Galois direction** of the AGL(1, p) classification:
   every primitive solvable subgroup `H ≤ S_p` embeds into the affine group
   `AGL(1, p) = ℤ/pℤ ⋊ (ℤ/pℤ)ˣ`. The forward direction (that AGL(1, p)
   itself is solvable, primitive, faithful, and of order p(p-1)) is supplied
   by the parent file `Proofs.AbelRuffiniGaloisExtensionsOQ06` (530 LOC,
   0 sorries, 0 axioms, Docker-verified by parent S7 ACT PR #19071).
 
-  ## S2 ORIENT status (researcher-1, 2026-06-04)
+  ## Status: COMPLETE — 0 sorries, 0 axioms (Docker-verified)
 
-  This iteration is the S2 ORIENT scaffold: file-level theorem stub plus
-  the 5-step proof skeleton (Sylow uniqueness → P normal → P is p-cycle
-  → N_{S_p}(P) ≅ AGL(1, p) → H ≤ N_{S_p}(P)), each step exposed as its
-  own intermediate lemma stub with `sorry`. Discharge of the stubs is
-  deferred to S3-S6 ACT iterations per `research/problems/.../state.md`.
+  All five steps of the proof skeleton (Sylow uniqueness → P normal → P is
+  p-cycle → N_{S_p}(P) ≅ AGL(1, p) → H ≤ N_{S_p}(P)) are discharged in this
+  file, and the file-level theorem `primitive_solvable_subgroup_embeds_AGL1Z`
+  composes them unconditionally. Step 1 (`sylow_p_unique`) — historically the
+  hard blocker, once thought to require a socle/minimal-normal API absent from
+  Mathlib — is proved instead via a nontrivial abelian *characteristic*
+  subgroup of the solvable `H` together with the `v_p(|H|) = v_p(p!) = 1`
+  cardinality bound. See the `primitive_solvable_subgroup_embeds_AGL1Z`
+  docstring below for the full route.
 
   ## Mathlib bearer audit (S1 OBSERVE, re-verified at lake-pinned SHA
   `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`)
@@ -626,29 +630,29 @@ theorem H_le_normalizer
   -- Close: Subgroup.le_normalizer_of_normal_subgroupOf.
   exact Subgroup.le_normalizer_of_normal_subgroupOf hle
 
-/-- **Main theorem (file-level stub).** Every primitive solvable subgroup
-    of `S_p = Equiv.Perm (ZMod p)` embeds into `AGL(1, p)`.
+/-- **Main theorem (COMPLETE — 0 sorry, 0 axiom).** Every primitive solvable
+    subgroup of `S_p = Equiv.Perm (ZMod p)` embeds into `AGL(1, p)`.
 
-    Discharge plan: compose
-    `sylow_p_unique` → `sylow_p_normal` → `sylow_p_is_pcycle` →
-    `normalizer_iso_AGL1Z` → `H_le_normalizer`. See `problem.md` §"Proof
-    plan" for the classical (Galois 1832 / Rotman 9.11) recipe.
-
-    **DISCHARGED (researcher-11, S22 ACT, 2026-06-18).** The body below is the
-    pure-wiring composition of the five step lemmas — it carries no `sorry` of
-    its own, so the file-level theorem is now conditional ONLY on the two
-    remaining open steps (`sylow_p_unique`, Step 1; `normalizer_iso_AGL1Z`,
-    Step 4). Once those land the whole classification closes with no further
-    assembly work. Route:
+    This is the full Galois-direction classification (Galois 1832 / Rotman 9.11):
+    a solvable transitive group of prime degree `p` is (conjugate into) the
+    affine group `AGL(1, p)`. All five steps are now discharged **in this file**
+    (no remaining `sorry`, no axiom), so the theorem holds unconditionally:
     - pick a Sylow-`p` subgroup `P` of `↥H` (`Nonempty (Sylow p ↥H)`, `↥H` finite);
-    - `P ⊴ ↥H` from Step 2 (`sylow_p_normal`, itself conditional on Step 1);
-    - extract the generating `p`-cycle `σ` and its data from Step 3
-      (`sylow_p_is_pcycle`, fully proved);
-    - `H ≤ N_{S_p}(⟨σ⟩)` from Step 5 (`H_le_normalizer`, fully proved);
-    - the injective `ψ : N_{S_p}(⟨σ⟩) →* AGL(1,p)` from Step 4
-      (`normalizer_iso_AGL1Z`);
+    - `sylow_p_unique` (Step 1) — `P` is the *unique* Sylow-`p` of `↥H`, proved
+      via a nontrivial abelian characteristic subgroup `A ⊴ ↥H` (from solvability),
+      its transitivity (⇒ `p ∣ |A|`), and `v_p(|H|) = v_p(p!) = 1` forcing
+      `|P| = p`. (This route replaces the earlier — abandoned — plan that needed a
+      socle/minimal-normal-subgroup API absent from Mathlib.)
+    - `sylow_p_normal` (Step 2) — unique Sylow ⇒ normal;
+    - `sylow_p_is_pcycle` (Step 3) — extract the generating `p`-cycle `σ`, with
+      `σ ∈ H`;
+    - `H_le_normalizer` (Step 5) — `H ≤ N_{S_p}(⟨σ⟩)`;
+    - `normalizer_iso_AGL1Z` (Step 4) — `N_{S_p}(⟨σ⟩) ≅ AGL(1, p)`;
     - the embedding is `ψ ∘ inclusion(H ≤ N)`, injective as a composite of
-      injectives (`Subgroup.inclusion_injective`). -/
+      injectives (`Subgroup.inclusion_injective`).
+
+    History: assembled researcher-11 S22 (2026-06-18); Steps 1/4 subsequently
+    discharged, closing the whole classification. -/
 theorem primitive_solvable_subgroup_embeds_AGL1Z
     (H : Subgroup (Equiv.Perm (ZMod p)))
     (_hPrim : MulAction.IsPreprimitive H (ZMod p))
