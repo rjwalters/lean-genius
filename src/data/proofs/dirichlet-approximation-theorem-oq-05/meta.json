@@ -63,7 +63,8 @@
       "**The norm form of ℤ[φ] is the whole engine**: q²(p/q − φ)(p/q − ψ) = p² − pq − q² is exactly the norm of the algebraic integer p − qφ, and it is a nonzero integer precisely because φ is irrational — turning a transcendence-flavoured lower bound into the trivial fact that a nonzero integer has absolute value ≥ 1",
       "**Conjugates do the work**: bounding |φ − p/q| from below is hard directly, but multiplying by the conjugate factor |ψ − p/q| produces the integer norm; the only remaining task is to bound the (harmless) conjugate factor from above, which the triangle inequality and |φ − ψ| = √5 handle",
       "**No continued fractions needed**: the sharp constant 1/√5 requires the Fibonacci convergents of φ = [1;1,1,…], but mere badly-approximability — some c > 0 — falls out of the norm-form argument with the explicit (non-optimal) c = 1/4",
-      "**This is the dual of the whole family**: every other dirichlet-approximation entry produces good approximations (upper bounds on |α − p/q|); this is the first lower bound, showing the exponent is sharp and φ is the extremal worst-case real number"
+      "**This is the dual of the whole family**: every other dirichlet-approximation entry produces good approximations (upper bounds on |α − p/q|); this is the first lower bound, showing the exponent is sharp and φ is the extremal worst-case real number",
+      "**The argument is not special to φ — every quadratic irrational is badly approximable**: for any real quadratic irrational α with integer minimal polynomial ax² + bx + c, the norm form a·p² + b·pq + c·q² is a nonzero integer for q > 0, and the identical conjugate-factor argument yields some constant c > 0 with |α − p/q| ≥ c/q². φ (monic x² − x − 1, norm p² − pq − q²) is merely the cleanest instance. This is exactly the degree-2 case of Liouville's theorem, obtained here with no derivatives or mean-value estimate"
     ],
     "prerequisites": [
       "Mathlib's Real.goldenRatio API: the Vieta relations goldenRatio_add_goldenConj (φ+ψ=1), goldenRatio_mul_goldenConj (φψ=−1), goldenRatio_sub_goldenConj (φ−ψ=√5), and irrationality goldenRatio_irrational, goldenConj_irrational",
@@ -73,12 +74,20 @@
   },
   "sections": [
     {
-      "id": "overview-and-norm-form",
-      "title": "The Norm-Form Identity of ℤ[φ]",
+      "id": "overview-setup",
+      "title": "Overview and Golden-Ratio Setup",
       "startLine": 1,
+      "endLine": 49,
+      "mathContext": "$\\varphi + \\psi = 1,\\ \\varphi\\psi = -1,\\ \\varphi - \\psi = \\sqrt5$ — the Vieta data of $x^2 - x - 1$ used throughout.",
+      "summary": "Module docstring: contrasts the family's existence/upper-bound results with the sharpness lower bound proved here and sketches the elementary norm-form argument. Imports Mathlib, opens Real, and records the Mathlib goldenRatio API the file rests on (goldenRatio_add_goldenConj, goldenRatio_mul_goldenConj, goldenRatio_sub_goldenConj, goldenRatio_irrational, goldenConj_irrational, and Irrational.ne_rational) — no continued-fraction machinery is invoked."
+    },
+    {
+      "id": "norm-form-identity",
+      "title": "The Norm-Form Identity of ℤ[φ]",
+      "startLine": 51,
       "endLine": 66,
       "mathContext": "$q^2\\left(\\tfrac pq - \\varphi\\right)\\left(\\tfrac pq - \\psi\\right) = p^2 - pq - q^2 \\in \\mathbb{Z}$, with $\\varphi+\\psi = 1,\\ \\varphi\\psi = -1$.",
-      "summary": "The docstring contrasts the family's existence/upper-bound results with the sharpness lower bound proved here, and sketches the elementary norm-form argument. norm_form_identity then proves the core algebraic fact: since φ and ψ are the roots of x² − x − 1, the product (p/q − φ)(p/q − ψ) equals (p² − pq − q²)/q². The proof reduces (p/q − φ)(p/q − ψ) to (p/q)² − (p/q) − 1 by linear_combination over the two Vieta relations φ+ψ = 1 and φψ = −1, then clears denominators."
+      "summary": "norm_form_identity proves the core algebraic fact: since φ and ψ are the roots of x² − x − 1, the product (p/q − φ)(p/q − ψ) equals (p² − pq − q²)/q². The proof reduces (p/q − φ)(p/q − ψ) to (p/q)² − (p/q) − 1 by linear_combination over the two Vieta relations φ+ψ = 1 and φψ = −1, then clears denominators with field_simp. This is the value of the ℤ[φ]-norm form at p − qφ."
     },
     {
       "id": "non-vanishing",
@@ -89,12 +98,20 @@
       "summary": "norm_form_ne_zero shows the integer p² − pq − q² never vanishes when q > 0. If it were zero, the norm-form identity would force (p/q − φ)(p/q − ψ) = 0, so p/q = φ or p/q = ψ; but Irrational.ne_rational says the irrational φ (resp. ψ) is never equal to the rational p/q, a contradiction. This is the only place irrationality enters, and it is exactly what makes the integer norm nonzero — hence ≥ 1 in absolute value."
     },
     {
-      "id": "badly-approximable",
-      "title": "The Lower Bound: φ is Badly Approximable",
-      "startLine": 83,
+      "id": "integer-norm-bound",
+      "title": "From Norm ≥ 1 to the Product Bound A·B·q² ≥ 1",
+      "startLine": 82,
+      "endLine": 113,
+      "mathContext": "$|p^2-pq-q^2|\\ge 1 \\Rightarrow A\\,B\\,q^2 \\ge 1$, where $A=|p/q-\\varphi|,\\ B=|p/q-\\psi|$.",
+      "summary": "goldenRatio_badly_approximable opens with c = 1/4 and abbreviations A = |p/q − φ|, B = |p/q − ψ|. Combining norm_form_ne_zero with abs_pos and omega gives |p² − pq − q²| ≥ 1 as a real number; the norm-form identity rewrites A·B as |p² − pq − q²|/q² (via ← abs_mul, hid, abs_div), so cancelling q² yields the key product bound A·B·q² ≥ 1 — the whole quantitative content packed into one inequality."
+    },
+    {
+      "id": "casesplit-conjugate",
+      "title": "Case Split: Bounding the Conjugate Factor to Finish",
+      "startLine": 114,
       "endLine": 141,
-      "mathContext": "$\\dfrac{1/4}{q^2} \\le \\left|\\varphi - \\dfrac pq\\right|$ for all $p \\in \\mathbb{Z},\\ q > 0$.",
-      "summary": "goldenRatio_badly_approximable assembles the bound with explicit constant c = 1/4. From norm_form_ne_zero, |p² − pq − q²| ≥ 1, so |φ − p/q|·|ψ − p/q|·q² ≥ 1. A case split on |φ − p/q| finishes: if ≥ 1 the inequality (1/4)/q² ≤ 1/4 ≤ 1 is immediate; if < 1, the triangle inequality bounds the conjugate factor |ψ − p/q| ≤ |φ − p/q| + |φ − ψ| = |φ − p/q| + √5 < 4 (since √5 < 3), and nlinarith combines this with the product bound to conclude |φ − p/q| ≥ 1/(4q²)."
+      "mathContext": "If $A<1$ then $B \\le A + \\sqrt5 < 4$, and $A\\,B\\,q^2\\ge1$ forces $A \\ge \\dfrac{1}{4q^2}$.",
+      "summary": "The goal's |φ − p/q| is rewritten to A (abs_sub_comm), then split on whether A ≥ 1. If A ≥ 1 the bound is trivial since (1/4)/q² ≤ 1/4 ≤ 1. If A < 1, the triangle inequality bounds the conjugate factor B ≤ A + |φ − ψ| = A + √5 < 4 (using √5 < 3 via Real.sq_sqrt), and nlinarith combines B < 4 with A·B·q² ≥ 1 to conclude A ≥ 1/(4q²). The conjugate factor B is the only 'harmless' quantity that needs an upper bound."
     }
   ],
   "mainTheorems": [

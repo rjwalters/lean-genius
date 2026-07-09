@@ -116,7 +116,8 @@
       "**The obstruction to coprime totients is the shared factor 2.** Once both arguments exceed 2, evenness of both totients is automatic, so 2 is a guaranteed common divisor — coprimality is impossible without an argument in {1, 2}.",
       "**The biconditional only implies the shared factor; the gcd bound makes it explicit.** Mathlib states 'coprime ⟺ some argument ∈ {1,2}', but `two_le_gcd_totient_of_three_le` records the quantitative floor gcd ≥ 2 that the abstract iff leaves implicit.",
       "**Coprimality of m and n is irrelevant.** φ 9 and φ 15 are not coprime even though 9 and 15 are themselves coprime — the totient destroys coprimality of the arguments because parity is a uniform obstruction independent of the prime factorizations.",
-      "**The {1, 2} escape hatch is exactly the odd-totient set.** φ is odd only at 1 and 2 (where it equals 1), so the coprime case is precisely when one argument hits the unique odd-totient values — tying this result to the parity classification of euler-totient-oq-06."
+      "**The {1, 2} escape hatch is exactly the odd-totient set.** φ is odd only at 1 and 2 (where it equals 1), so the coprime case is precisely when one argument hits the unique odd-totient values — tying this result to the parity classification of euler-totient-oq-06.",
+      "**The bound gcd ≥ 2 is sharp — 2 is the exact universal common factor.** The floor is attained: φ(3) = φ(4) = 2, so gcd(φ 3, φ 4) = 2. Thus for m, n ≥ 3 the totients always share the factor 2 but need share nothing more; no larger constant works uniformly. The obstruction to coprimality is precisely parity and nothing deeper, which is why the whole result rests on totient_even alone, never touching the arguments' prime factorizations."
     ],
     "prerequisites": [
       "Euler's totient φ and the unit group (ℤ/nℤ)ˣ",
@@ -140,14 +141,31 @@
       "title": "Module Overview, Imports, and Namespace",
       "startLine": 1,
       "endLine": 41,
-      "summary": "Module docstring framing the goal — characterise coprimality of two totients and extract the shared-factor consequence — with imports (`Mathlib.Data.Nat.Totient`, `Mathlib.Tactic`), the contents list, and the namespace opening `Nat` (so `φ` denotes `Nat.totient`). Includes `totient_coprime_iff`, the re-exported Mathlib biconditional."
+      "summary": "Module docstring framing the goal — characterise coprimality of two totients and extract the shared-factor consequence — with imports (`Mathlib.Data.Nat.Totient`, `Mathlib.Tactic`), the contents list, and the namespace opening `Nat` (so `φ` denotes `Nat.totient`)."
     },
     {
-      "id": "gcd-form-and-consequences",
-      "title": "gcd Form and Shared-Factor Consequences",
+      "id": "characterisation",
+      "title": "The Coprimality Characterisation (iff Forms)",
       "startLine": 42,
+      "endLine": 56,
+      "summary": "`totient_coprime_iff` re-exports Mathlib's `Nat.totient_coprime_totient_iff` — φ(m) and φ(n) are coprime iff at least one argument lies in {1, 2} — as the flagship statement, and `gcd_totient_eq_one_iff` spells the same fact with an explicit gcd (Nat.Coprime is definitionally gcd = 1).",
+      "mathContext": "$(\\varphi m,\\varphi n)=1 \\iff m\\in\\{1,2\\} \\lor n\\in\\{1,2\\}$; equivalently $\\gcd(\\varphi m,\\varphi n)=1$."
+    },
+    {
+      "id": "shared-factor",
+      "title": "The Shared Factor 2 for m, n ≥ 3",
+      "startLine": 57,
+      "endLine": 73,
+      "summary": "`two_dvd_gcd_totient_of_three_le`: for m, n ≥ 3 both totients are even (Nat.totient_even), so 2 ∣ gcd(φ m, φ n) via Nat.dvd_gcd. `two_le_gcd_totient_of_three_le` upgrades this to the quantitative floor 2 ≤ gcd (Nat.le_of_dvd on the positive gcd) — the explicit shared structure the abstract biconditional leaves implicit.",
+      "mathContext": "$m,n\\ge 3 \\Rightarrow 2 \\mid \\gcd(\\varphi m,\\varphi n)$, hence $\\gcd(\\varphi m,\\varphi n)\\ge 2$."
+    },
+    {
+      "id": "non-coprimality",
+      "title": "Headline: Totients of m, n ≥ 3 Are Never Coprime",
+      "startLine": 74,
       "endLine": 82,
-      "summary": "`gcd_totient_eq_one_iff` (the gcd-form of the characterization), `two_dvd_gcd_totient_of_three_le` (`2 ∣ gcd(φ m, φ n)` for m, n ≥ 3 via `Nat.dvd_gcd` and `Nat.totient_even`), `two_le_gcd_totient_of_three_le` (the lower bound `2 ≤ gcd` via `Nat.le_of_dvd`), and `not_coprime_totient_of_three_le` (the headline never-coprime implication via `Nat.not_coprime_of_dvd_of_dvd`)."
+      "summary": "`not_coprime_totient_of_three_le`: for m, n ≥ 3, φ(m) and φ(n) are never coprime, since they share the factor 2 (Nat.not_coprime_of_dvd_of_dvd with one_lt_two). This is the genuinely informative half of the characterisation, stated as a clean implication.",
+      "mathContext": "$m,n\\ge 3 \\Rightarrow \\neg\\,(\\varphi m).\\mathrm{Coprime}\\,(\\varphi n)$."
     },
     {
       "id": "worked-examples",

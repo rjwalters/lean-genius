@@ -13,7 +13,7 @@
     "lineCount": 384,
     "axiomCount": 0,
     "theoremCount": 19,
-    "definitionCount": 3,
+    "definitionCount": 4,
     "path": "Proofs/SphericalLawOfCosinesOQ03OQ01.lean",
     "sorries": 0
   },
@@ -50,7 +50,7 @@
       "hyp_dual_law_cross_product_form: the dual law expressed entirely via Lorentzian scalar triple products and spacelike cross-product norms"
     ],
     "theoremCount": 19,
-    "definitionCount": 3
+    "definitionCount": 4
   },
   "overview": {
     "historicalContext": "The hyperbolic plane H² is modelled on the upper sheet of the two-sheeted hyperboloid {⟨x,x⟩ = −1} in Minkowski 3-space ℝ^{2,1}, where the Lorentzian inner product ⟨u,v⟩ = u₁v₁ + u₂v₂ − u₃v₃ plays the role the Euclidean dot product plays on the sphere S². Just as spherical trigonometry has a side law of cosines cos c = cos a·cos b + sin a·sin b·cos C and a dual (angles) law cos C = −cos A·cos B + sin A·sin B·cos c, hyperbolic trigonometry has a first law cosh c = cosh a·cosh b − sinh a·sinh b·cos C and a second (dual) law cos C = −cos A·cos B + sin A·sin B·cosh c. The two geometries are linked by the formal substitution a ↦ ia of the metric: cos(ia) = cosh a, sin(ia) = i·sinh a. This entry is OQ-01 of spherical-law-of-cosines-oq-03 (the spherical dual law), which explicitly asked whether the radical-free clearing strategy carries over to a Lorentzian structure. It does — and the derivation also pins down precisely which functions stay circular: the interior angles, which in hyperbolic geometry are ordinary Euclidean angles realised as the angle between the spacelike normals to the sides' geodesic planes.",

@@ -13,7 +13,7 @@
     "namespace": "Erdos866Wip01",
     "lineCount": 113,
     "axiomCount": 0,
-    "theoremCount": 4,
+    "theoremCount": 5,
     "definitionCount": 1,
     "path": "Proofs/Erdos866Wip01.lean",
     "sorries": 0
@@ -72,7 +72,7 @@
       "Guarantees N k g: a clean Prop capturing the threshold semantics of g_k(N) — every A of size ≥ N+g forces a configuration — making the lower bound expressible without choosing a specific minimal-threshold encoding.",
       "not_guarantees_zero and g_k_ge_one: the threshold reformulation g_k(N) ≥ 1 for all k ≥ 3 — a guarantee threshold of 0 is refuted by the odd-numbers witness, so any valid threshold is at least 1."
     ],
-    "theoremCount": 4,
+    "theoremCount": 5,
     "definitionCount": 1
   },
   "overview": {

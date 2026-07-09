@@ -23,7 +23,7 @@
     "assumptions": "2 axioms encoding the genuine analytic inputs to the forward direction of Littlewood's theorem, cleanly separated by their RH footprint. (P) perron_approx_error — RH-FREE: truncated Perron inversion writes M(n) as a shifted-contour integral of x^s/(s·ζ(s)) along Re s = 1/2+ε up to a truncation error that is unconditionally O(n^{1/2+ε}); the contour value is kept opaque (perronIntegral) so the factorization is genuine, not a relabelling of the conclusion. (Z) perron_integral_bound_of_rh — CARRIES RH: under the Riemann Hypothesis the conditional critical-strip estimate |1/ζ(1/2+ε+it)| ≪_ε |t|^ε (Titchmarsh Thm 14.2) bounds the shifted-contour integral itself by O(n^{1/2+ε}). Both require analytic machinery (a truncated Perron formula for L-series summatory functions; a conditional 1/ζ growth bound via Borel–Carathéodory + Hadamard three-circles) not yet in Mathlib. The main result rh_implies_mertens_eps_bound is NOT axiomatized directly — it is the machine-checked triangle-inequality Assembly |M(n)| ≤ |M(n) − I(n)| + |I(n)| ≤ (C₁+C₂)·n^{1/2+ε}. Crucially, no √x bound is assumed: #print axioms lists only propext, Classical.choice, Quot.sound and the two stated axioms — no native_decide, so no Lean.ofReduceBool dependency, and the opaque perronIntegral contributes no axiom.",
     "lineCount": 169,
     "theoremCount": 6,
-    "definitionCount": 3,
+    "definitionCount": 2,
     "originalContributions": [
       "The correct axiom boundary for RH ⟹ M(x)=O(x^{1/2+ε}): factors through Perron's formula (P)+(Z) instead of the believed-false √x bound used by sibling oq-03, eliminating the false premise",
       "perronIntegral: an opaque abstraction of the truncated contour integral of x^s/(s·ζ(s)) along Re s = 1/2+ε, kept opaque so neither analytic axiom is derivable from the other — the Perron factorization is genuine",
@@ -68,7 +68,7 @@
     "lineCount": 169,
     "axiomCount": 2,
     "theoremCount": 6,
-    "definitionCount": 3,
+    "definitionCount": 2,
     "path": "Proofs/RiemannHypothesisConsequencesOQ01.lean",
     "sorries": 0
   },

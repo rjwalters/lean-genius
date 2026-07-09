@@ -25,7 +25,7 @@
     "assumptions": "None. The result is stated and proved with no axioms and no sorries. The deep mathematical content — that no elliptic curve over ℚ of rank 2 has conductor below 389 (Cremona's exhaustive computation) — is supplied as an explicit hypothesis `hcremona : ∀ E', rk E' = 2 → 389 ≤ cond E'` to the headline theorem, not as an axiom. The headline theorem therefore formalizes the implication 'Cremona's classification ⟹ 389a1 is minimal'. `#print axioms` reports the headline theorem depends on no axioms; the registry summary uses only propext/Classical.choice/Quot.sound (the standard foundational trio, which do not count).",
     "lineCount": 215,
     "theoremCount": 13,
-    "definitionCount": 6,
+    "definitionCount": 7,
     "originalContributions": [
       "IsMinConductorForRank: an abstract predicate capturing 'minimal conductor among curves of a fixed rank', over an arbitrary curve carrier with conductor and rank functions",
       "isMinConductorForRank_of_lb: the master derivation turning a classification lower bound into a genuine minimality statement",
@@ -121,7 +121,7 @@
     "sorries": 0,
     "axiomCount": 0,
     "theoremCount": 13,
-    "definitionCount": 6,
+    "definitionCount": 7,
     "lineCount": 215
   },
   "sorries": 0

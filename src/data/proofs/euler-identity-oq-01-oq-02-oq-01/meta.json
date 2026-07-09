@@ -55,7 +55,7 @@
     "axiomCount": 0,
     "lineCount": 130,
     "assumptions": "None. All theorems fully proved with 0 axioms and 0 sorries (no native_decide). #print axioms on euler_formula, hasSum_euler, and euler_identity reports only [propext, Classical.choice, Quot.sound]. The core derivation (hasSum_euler, euler_formula) uses only the exponential series and even/odd resummation; Complex.cos/sin are invoked solely in the closing identification lemmas, Pythagoras, and Euler's identity.",
-    "theoremCount": 7,
+    "theoremCount": 9,
     "definitionCount": 2,
     "prerequisites": [
       "The complex exponential and its power series e^w = Σ wⁿ/n!",
@@ -145,7 +145,7 @@
     "namespace": "EulerIdentityOQ01OQ02OQ01",
     "lineCount": 130,
     "axiomCount": 0,
-    "theoremCount": 7,
+    "theoremCount": 9,
     "definitionCount": 2,
     "path": "Proofs/EulerIdentityOQ01OQ02OQ01.lean",
     "sorries": 0

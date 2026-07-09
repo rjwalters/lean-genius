@@ -181,4 +181,77 @@ theorem compress_eq_restrict_of_invariant {T : V →ₗ[𝕜] V} (H : Submodule 
   -- `ext` already reduces to the coerced (ambient-`V`) equality of the images.
   exact (coe_compress_of_invariant H hinv y).trans (LinearMap.restrict_coe_apply T hinv y).symm
 
+/-- **Converse: pointwise agreement forces invariance.**
+
+The orthogonal compression `compress T H` agrees pointwise with `T` — meaning
+`↑(compress T H y) = T ↑y` for every `y : H` — *iff* `H` is `T`-invariant.
+
+The forward direction is `coe_compress_of_invariant`.  Conversely, the image
+`compress T H y` is by construction a vector *of* `H`, so its ambient coercion
+lies in `H`; the pointwise agreement then rewrites that membership into
+`T ↑y ∈ H`.  Thus the projection error in the compression vanishes precisely on
+invariant subspaces — this pins the attainment locus of Poincaré separation from
+both sides. -/
+theorem invariant_iff_coe_compress_eq {T : V →ₗ[𝕜] V} (H : Submodule 𝕜 V) :
+    (∀ y ∈ H, T y ∈ H) ↔ ∀ y : H, ((compress T H y : H) : V) = T (y : V) := by
+  refine ⟨fun hinv y => coe_compress_of_invariant H hinv y, fun h y hy => ?_⟩
+  -- `↑(compress T H ⟨y, hy⟩)` is a coercion of an element of `H`, hence in `H`.
+  have hmem : ((compress T H ⟨y, hy⟩ : H) : V) ∈ H := Submodule.coe_mem _
+  rwa [h ⟨y, hy⟩] at hmem
+
+omit [FiniteDimensional 𝕜 V] in
+/-- **Operator-level converse.**  If the compression `compress T H` equals the
+restriction of `T` to `H` for *some* proof `hinv` that `T` maps `H` into itself,
+that already witnesses invariance; but the substantive converse is that the mere
+existence of an operator `S : H →ₗ[𝕜] H` lifting `T` pointwise
+(`∀ y, ↑(S y) = T ↑y`) already forces `H` to be invariant (once invariance
+holds, `invariant_iff_coe_compress_eq` identifies `S` with `compress T H`).
+This packages the converse into the "honest restriction" picture. -/
+theorem invariant_of_exists_lift {T : V →ₗ[𝕜] V} (H : Submodule 𝕜 V)
+    (S : H →ₗ[𝕜] H) (hS : ∀ y : H, ((S y : H) : V) = T (y : V)) :
+    ∀ y ∈ H, T y ∈ H := fun y hy => by
+  have hmem : ((S ⟨y, hy⟩ : H) : V) ∈ H := Submodule.coe_mem _
+  rwa [hS ⟨y, hy⟩] at hmem
+
+/-- **Spectrum inclusion on an invariant subspace (attainment case).**
+
+If `H` is `T`-invariant, every eigenvalue of the orthogonal compression
+`compress T H` is an eigenvalue of the ambient operator `T`.  Concretely, the
+`k`-th descending eigenvalue `μ_k := (isSymmetric_compress hT H).eigenvalues hHdim k`
+of the compression satisfies `Module.End.HasEigenvalue T μ_k`, realised by the
+included eigenvector `↑(bH k) ∈ V` (the compression's eigenvector viewed in the
+ambient space).
+
+This is the pointwise form of the sub-multiset relationship in the attainment
+(invariant-subspace) case: on an invariant `H` the compression coincides with
+the honest restriction `T.restrict` (`compress_eq_restrict_of_invariant`), so it
+loses no spectral information and its spectrum `{μ_k}` is contained in the
+spectrum of `T`.  The Poincaré interlacing bound `μ_k ≤ λ_k` therefore
+degenerates onto the ambient spectrum on such a block. -/
+theorem hasEigenvalue_compress_eigenvalue_of_invariant
+    {T : V →ₗ[𝕜] V} (hT : T.IsSymmetric) {n : ℕ}
+    (H : Submodule 𝕜 V) (hHdim : Module.finrank 𝕜 H = n)
+    (hinv : ∀ y ∈ H, T y ∈ H) (k : Fin n) :
+    Module.End.HasEigenvalue T
+      (((isSymmetric_compress hT H).eigenvalues hHdim k : 𝕜)) := by
+  set hTH := isSymmetric_compress hT H with hTH_def
+  set bH := hTH.eigenvectorBasis hHdim with hbH_def
+  set mu := hTH.eigenvalues hHdim with hmu_def
+  -- The compression acts diagonally on its own eigenvector basis.
+  have hcomp : compress T H (bH k) = (mu k : 𝕜) • bH k :=
+    hTH.apply_eigenvectorBasis hHdim k
+  -- Transport to `V` via invariance: `↑(compress T H y) = T ↑y`.
+  have hcoe : T ((bH k : V)) = (mu k : 𝕜) • ((bH k : V)) := by
+    have e1 := coe_compress_of_invariant H hinv (bH k)
+    rw [hcomp] at e1
+    simpa using e1.symm
+  -- The included eigenvector is nonzero (a unit vector of an orthonormal basis).
+  have hne : (bH k : V) ≠ 0 := by
+    rw [Ne, Submodule.coe_eq_zero]
+    exact bH.orthonormal.ne_zero k
+  -- Assemble the eigenvector, then the eigenvalue.
+  have hev : Module.End.HasEigenvector T ((mu k : 𝕜)) ((bH k : V)) :=
+    ⟨Module.End.mem_eigenspace_iff.mpr hcoe, hne⟩
+  exact Module.End.hasEigenvalue_of_hasEigenvector hev
+
 end CauchyInterlacing.PoincareCompression

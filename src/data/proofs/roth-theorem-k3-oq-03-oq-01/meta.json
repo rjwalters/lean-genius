@@ -58,9 +58,9 @@
       "kAPCount_eq_zero_of_zero: a single zero slot annihilates the count — if f j = 0 then Λ_k(f₀,…,f_{k-1}) = 0, since the j-th factor of every product term vanishes"
     ],
     "axiomCount": 0,
-    "lineCount": 214,
+    "lineCount": 354,
     "assumptions": "0 axioms, 0 sorries. Only the foundational axioms propext / Classical.choice / Quot.sound are used; no native_decide, no sorryAx, no Lean.ofReduceBool. The operators are re-declared self-containedly in this file's namespace; the file imports Mathlib.",
-    "theoremCount": 8,
+    "theoremCount": 12,
     "definitionCount": 4
   },
   "overview": {
@@ -142,9 +142,9 @@
       "BigOperators"
     ],
     "namespace": "RothTheoremOQ03OQ01",
-    "lineCount": 255,
+    "lineCount": 354,
     "axiomCount": 0,
-    "theoremCount": 11,
+    "theoremCount": 12,
     "definitionCount": 4,
     "path": "Proofs/RothTheoremOQ03OQ01.lean",
     "sorries": 0

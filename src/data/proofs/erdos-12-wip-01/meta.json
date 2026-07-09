@@ -66,25 +66,33 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Docstring and Import",
+      "startLine": 1,
+      "endLine": 34,
+      "summary": "Imports Mathlib; module docstring framing Erdős #12 (how large can a divisibility-free set A ⊆ ℕ be — no distinct a, b, c ∈ A with b, c > a and a ∣ (b + c)?), noting the 2026 resolution of the density questions and the still-open reciprocal-sum question (iii), and stating this leaf isolates the elementary LOCAL obstruction beneath the hard density theorems. Namespace Erdos12WIP01.",
+      "mathContext": "Erdős #12: bound |A| for divisibility-free A ⊆ ℕ. This file proves the local structure (at most one larger multiple, no antipodal pair mod a) that seeds the density-zero results."
+    },
+    {
       "id": "definition",
       "title": "The Divisibility-Free Predicate",
-      "startLine": 39,
+      "startLine": 35,
       "endLine": 46,
-      "summary": "IsDivisibilityFree A: no distinct a, b, c ∈ A with a < b, a < c and a ∣ (b + c). Matches the erdos-12 gallery definition.",
+      "summary": "IsDivisibilityFree A: no distinct a, b, c ∈ A with a < b, a < c and a ∣ (b + c). Matches the erdos-12 gallery definition. IsDivisibilityFree.mono: the property is inherited by subsets.",
       "mathContext": "$A$ is divisibility-free iff $\\forall a,b,c \\in A$ distinct with $a < b, a < c$, $a \\nmid (b+c)$."
     },
     {
       "id": "obstruction",
       "title": "The Local Obstruction",
       "startLine": 47,
-      "endLine": 78,
-      "summary": "no_two_larger_multiples (two distinct larger multiples of a are impossible), unique_larger_multiple, largerMultiples_subsingleton, and the residue form no_antipodal_pair; plus subset closure IsDivisibilityFree.mono.",
+      "endLine": 79,
+      "summary": "no_two_larger_multiples (two distinct larger multiples of a are impossible), unique_larger_multiple, largerMultiples_subsingleton, and the residue form no_antipodal_pair.",
       "mathContext": "If $a \\mid b$ and $a \\mid c$ with $b, c > a$ distinct, then $a \\mid (b+c)$ — forbidden. Hence the larger multiples of $a$ in $A$ form a subsingleton, and no two larger elements satisfy $b + c \\equiv 0 \\pmod a$."
     },
     {
       "id": "witness",
       "title": "A Concrete Witness",
-      "startLine": 79,
+      "startLine": 81,
       "endLine": 90,
       "summary": "divFree_456: {4, 5, 6} is divisibility-free, shown by a finite case split (the only nontrivial check is 4 ∤ 5 + 6 = 11).",
       "mathContext": "$\\{4,5,6\\}$ is divisibility-free: the single live constraint is $4 \\nmid 11$."
@@ -103,22 +111,42 @@
     {
       "name": "no_two_larger_multiples",
       "type": "core",
-      "description": "For a ∈ A in a divisibility-free set, no two distinct elements of A larger than a are both multiples of a."
+      "description": "For a ∈ A in a divisibility-free set, no two distinct elements of A larger than a are both multiples of a.",
+      "leanType": "(h : IsDivisibilityFree A) {a b c : ℕ} (ha : a ∈ A) (hb : b ∈ A) (hc : c ∈ A) (hab : a < b) (hac : a < c) (hbc : b ≠ c) (hdb : a ∣ b) (hdc : a ∣ c) : False",
+      "startLine": 51,
+      "endLine": 55
     },
     {
       "name": "unique_larger_multiple",
       "type": "core",
-      "description": "Each a ∈ A has at most one larger multiple in A (any two coincide)."
+      "description": "Each a ∈ A has at most one larger multiple in A (any two coincide).",
+      "leanType": "(h : IsDivisibilityFree A) {a b c : ℕ} (ha : a ∈ A) (hb : b ∈ A) (hc : c ∈ A) (hab : a < b) (hac : a < c) (hdb : a ∣ b) (hdc : a ∣ c) : b = c",
+      "startLine": 59,
+      "endLine": 63
+    },
+    {
+      "name": "largerMultiples_subsingleton",
+      "type": "supporting",
+      "description": "The set {b ∈ A : a < b ∧ a ∣ b} of larger multiples of a fixed a ∈ A is a subsingleton — the 'at most one larger multiple' fact packaged as a Set.Subsingleton.",
+      "leanType": "(h : IsDivisibilityFree A) {a : ℕ} (ha : a ∈ A) : {b | b ∈ A ∧ a < b ∧ a ∣ b}.Subsingleton",
+      "startLine": 67,
+      "endLine": 70
     },
     {
       "name": "no_antipodal_pair",
       "type": "supporting",
-      "description": "No two distinct elements of A larger than a sum to 0 mod a — the residue-level form of the obstruction."
+      "description": "No two distinct elements of A larger than a sum to 0 mod a — the residue-level form of the obstruction.",
+      "leanType": "(h : IsDivisibilityFree A) {a b c : ℕ} (ha : a ∈ A) (hb : b ∈ A) (hc : c ∈ A) (hab : a < b) (hac : a < c) (hbc : b ≠ c) : (b + c) % a ≠ 0",
+      "startLine": 74,
+      "endLine": 79
     },
     {
       "name": "divFree_456",
       "type": "supporting",
-      "description": "The concrete set {4, 5, 6} is divisibility-free, witnessing non-vacuous satisfiability."
+      "description": "The concrete set {4, 5, 6} is divisibility-free, witnessing non-vacuous satisfiability.",
+      "leanType": "IsDivisibilityFree ({4, 5, 6} : Set ℕ)",
+      "startLine": 84,
+      "endLine": 88
     }
   ],
   "crossReferences": [

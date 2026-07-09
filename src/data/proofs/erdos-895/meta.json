@@ -49,8 +49,8 @@
     "lineCount": 544,
     "assumptions": "No axioms. 2 sorries remain: the genuinely-open positive direction `barber_theorem` (Barber's SAT-verified n ≥ 18 result) and its dependent `erdos895_sat_verified`. The previously-listed third sorry, `counterexample_17` over Fin 17, was FALSE under the file's loose additive-triple predicate (Z3 exhaustive UNSAT) and has been replaced by the machine-verified, 0-axiom distinct-vertex counterexample `counterexample_fin18` over Fin 18 (re-exported from the companion `Erdos895CounterexampleFin18.lean`, proven by kernel `decide`).",
     "mathlib_version": "4.26.0",
-    "theoremCount": 13,
-    "definitionCount": 13,
+    "theoremCount": 18,
+    "definitionCount": 16,
     "additionalFiles": [
       "Proofs/Erdos895Aristotle.lean",
       "Proofs/Erdos895ProblemAristotle.lean"
@@ -186,8 +186,8 @@
     "namespace": null,
     "lineCount": 544,
     "axiomCount": 0,
-    "theoremCount": 13,
-    "definitionCount": 13,
+    "theoremCount": 18,
+    "definitionCount": 16,
     "sorries": 2,
     "path": "Proofs/Erdos895Problem.lean",
     "additionalFiles": [

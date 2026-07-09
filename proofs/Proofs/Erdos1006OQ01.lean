@@ -510,21 +510,73 @@ theorem cliqueFree_three_of_robust [DecidableEq V]
   obtain ⟨a, b, c, hab, hac, hbc, -⟩ := hs
   exact not_robust_of_triangle hab hbc hac h
 
-/-- Fisher-Fraughnaugh-Langley-West (1997): If the chromatic number of G
-    is less than its girth, then G admits a robustly acyclic orientation. -/
+/-- **Edgeless graphs admit a robustly acyclic orientation.** With no arcs to
+    place, the empty orientation (`arc := fun _ _ => False`) is vacuously acyclic
+    and has no dependent arc. This generalises `empty_graph_robust` from `⊥` to
+    *any* graph whose adjacency relation happens to be empty, and is the fact
+    behind the soundness analysis below: a non-robustly-orientable graph must
+    contain an edge. -/
+theorem edgeless_admits_robust {V : Type*} {G : SimpleGraph V}
+    (h : ∀ u v, ¬ G.Adj u v) : admitsRobustAcyclicOrientation G := by
+  refine ⟨⟨fun _ _ => False, ?_, ?_, ?_⟩, ?_, ?_⟩
+  · intro u v hadj; exact absurd hadj (h u v)
+  · intro _ _; tauto
+  · intro _ _ hf; exact hf.elim
+  · exact ⟨fun _ => 0, fun _ _ hf => hf.elim⟩
+  · rintro ⟨_, _, hf, _⟩; exact hf.elim
+
+/-- **The closed-walk phrasing of "girth ≥ g" is unsound as a counterexample
+    hypothesis.** One might try to state Nešetřil-Rödl by asking for a graph in
+    which every closed walk has length `0` or `≥ g`. But *any* edge `u ~ v`
+    yields the length-`2` closed walk `u → v → u`, so for `g ≥ 3` that condition
+    forces the graph to be edgeless — and edgeless graphs *do* admit a robustly
+    acyclic orientation (`edgeless_admits_robust`). Hence no graph satisfies both
+    the walk condition and `¬ admitsRobustAcyclicOrientation`: the closed-walk
+    "girth" is the wrong invariant (it forbids backtracking, not merely short
+    cycles). An earlier version of this file used exactly this unsound phrasing
+    for `nesetril_rodl_counterexample`; the corrected statement below measures
+    girth with `SimpleGraph.egirth` (shortest *cycle*). -/
+theorem closedWalk_girth_formulation_unsound (g : ℕ) (hg : g ≥ 3) :
+    ¬ ∃ (V : Type) (_ : Fintype V) (_ : DecidableEq V) (G : SimpleGraph V),
+      (∀ (u : V) (w : G.Walk u u), w.length = 0 ∨ w.length ≥ g) ∧
+      ¬ admitsRobustAcyclicOrientation G := by
+  rintro ⟨V, _, _, G, hwalk, hnr⟩
+  by_cases he : ∀ u v, ¬ G.Adj u v
+  · exact hnr (edgeless_admits_robust he)
+  · push_neg at he
+    obtain ⟨u, v, huv⟩ := he
+    have hlen : (Walk.cons huv (Walk.cons (G.symm huv) Walk.nil)).length = 2 := rfl
+    rcases hwalk u (Walk.cons huv (Walk.cons (G.symm huv) Walk.nil)) with h0 | hge
+    · rw [hlen] at h0; exact absurd h0 (by norm_num)
+    · rw [hlen] at hge; omega
+
+/-- Fisher-Fraughnaugh-Langley-West (1997): if the chromatic number of `G` is
+    less than its girth, then `G` admits a robustly acyclic orientation. Girth
+    is measured by `SimpleGraph.egirth` (shortest *cycle*, `⊤` if acyclic); the
+    hypothesis `χ < g ≤ egirth G` is the faithful "few colours, no short cycles"
+    condition. Deep result, no Mathlib counterpart, so left as an axiom. -/
 axiom chromatic_lt_girth_implies_robust [Fintype V]
     (χ : ℕ) (g : ℕ)
     (hchi : ∃ (_ : G.Coloring (Fin χ)), True)
-    (hgirth_bound : ∀ (u : V) (w : G.Walk u u), w.length ≥ g)
+    (hgirth_bound : (g : ℕ∞) ≤ G.egirth)
     (hlt : χ < g) :
     admitsRobustAcyclicOrientation G
 
-/-- Nešetřil-Rödl (1978): For every g ≥ 3, there exists a graph with girth g
-    that does NOT admit a robustly acyclic orientation. -/
+/-- **Nešetřil-Rödl (1978), corrected formalization:** for every `g ≥ 3` there
+    is a finite graph whose extended girth is at least `g` — no cycle shorter
+    than `g` — that nonetheless admits *no* robustly acyclic orientation
+    (equivalently, by `cover_graph_characterization`, is not the Hasse diagram
+    of any poset). Girth is `SimpleGraph.egirth` (length of the shortest
+    *cycle*), the correct invariant: the closed-walk phrasing is unsound
+    (`closedWalk_girth_formulation_unsound`).
+
+    This is a deep extremal/probabilistic result — graphs of simultaneously high
+    girth and high chromatic number — with no Mathlib counterpart, so it is left
+    as an axiom. Its base case `g = 3` is discharged unconditionally by
+    `triangle_not_robust` (the triangle `K₃` has `egirth = 3`). -/
 axiom nesetril_rodl_counterexample (g : ℕ) (hg : g ≥ 3) :
   ∃ (V : Type) (_ : Fintype V) (_ : DecidableEq V) (G : SimpleGraph V),
-    (∀ (u : V) (w : G.Walk u u), w.length = 0 ∨ w.length ≥ g) ∧
-    ¬admitsRobustAcyclicOrientation G
+    (g : ℕ∞) ≤ G.egirth ∧ ¬ admitsRobustAcyclicOrientation G
 
 /-
 ## Summary
@@ -541,8 +593,14 @@ axiom nesetril_rodl_counterexample (g : ℕ) (hg : g ≥ 3) :
     reverse via `cover_graph_admits_robust`)
 8. `triangle_not_robust` - The triangle K₃ admits no robustly acyclic
    orientation (concrete girth-3 witness of Nešetřil-Rödl, no axiom)
+9. `edgeless_admits_robust` - Any graph with no edges admits a robust
+   orientation (generalises `empty_graph_robust` from `⊥`)
+10. `closedWalk_girth_formulation_unsound` - The "every closed walk has length
+    0 or ≥ g" phrasing of girth is unsound: a length-2 backtrack forces the
+    graph edgeless, hence robust. Motivates the `egirth` (shortest-cycle)
+    formalization of the two axioms below.
 
-### Axiomatized (deep results):
-9. `chromatic_lt_girth_implies_robust` - χ(G) < girth(G) suffices
-10. `nesetril_rodl_counterexample` - Counterexamples for all girths ≥ 3
+### Axiomatized (deep results, girth via `SimpleGraph.egirth`):
+11. `chromatic_lt_girth_implies_robust` - χ(G) < girth(G) suffices
+12. `nesetril_rodl_counterexample` - Counterexamples for all girths ≥ 3
 -/

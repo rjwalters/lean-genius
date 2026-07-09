@@ -67,7 +67,8 @@
     "erdos-10",
     "erdos-103",
     "erdos-1036",
-    "erdos-1036-oq-01"
+    "erdos-1036-oq-01",
+    "erdos-1036-oq-03"
   ],
   "references": {
     "papers": [],
@@ -78,6 +79,17 @@
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
+    {
+      "path": "Proofs/Erdos1036HypergraphOQ03.lean",
+      "filename": "Erdos1036HypergraphOQ03.lean",
+      "lineCount": 218,
+      "theoremCount": 7,
+      "axiomCount": 1,
+      "defCount": 5,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1036HypergraphOQ03.lean"
+    },
     {
       "path": "Proofs/Erdos1036OQ01.lean",
       "filename": "Erdos1036OQ01.lean",

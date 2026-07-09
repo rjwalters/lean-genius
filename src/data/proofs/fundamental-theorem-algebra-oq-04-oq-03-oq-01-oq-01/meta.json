@@ -52,6 +52,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Docstring and Cardinality Helper",
+      "startLine": 1,
+      "endLine": 57,
+      "summary": "Module docstring: over any base field K and degree-2 Galois extension L, Gal(L/K) ≃ Multiplicative (ZMod 2); nothing uses order/real-closedness, only finrank K L = 2 and IsGalois. Imports; opens; the cardinality helper card_multiplicative_zmod_two (|Multiplicative (ZMod 2)| = 2) used to build the isomorphism.",
+      "mathContext": "Target: Gal(L/K) ≃* Multiplicative (ZMod 2) for every quadratic Galois extension; specialising K=ℝ, L=ℂ recovers Gal(ℂ/ℝ) ≃* ZMod 2."
+    },
+    {
       "id": "card-helper",
       "title": "Cardinality helper for Multiplicative (ZMod 2)",
       "summary": "card_multiplicative_zmod_two: the target group Multiplicative (ZMod 2) has exactly two elements.",
@@ -120,33 +128,51 @@
   "mainTheorems": [
     {
       "name": "galEquivZMod2",
-      "type": "definition",
-      "description": "Flagship generalized isomorphism: for every quadratic Galois extension (any base field K with finrank K L = 2 and IsGalois K L), Gal(L/K) ≃* Multiplicative (ZMod 2). Built from mulEquivOfPrimeCardEq since both groups have prime cardinality 2 — no order structure, real-closedness, or identity of the base field is used."
+      "type": "core",
+      "description": "Flagship generalized isomorphism: for every quadratic Galois extension (any base field K with finrank K L = 2 and IsGalois K L), Gal(L/K) ≃* Multiplicative (ZMod 2). Built from mulEquivOfPrimeCardEq since both groups have prime cardinality 2 — no order structure, real-closedness, or identity of the base field is used.",
+      "leanType": "(K L : Type*) [Field K] [Field L] [Algebra K L] [FiniteDimensional K L] [IsGalois K L] (h : finrank K L = 2) : (L ≃ₐ[K] L) ≃* Multiplicative (ZMod 2)",
+      "startLine": 89,
+      "endLine": 91
     },
     {
       "name": "card_gal_eq_two",
-      "type": "theorem",
-      "description": "|Gal(L/K)| = 2 for a quadratic Galois extension: the automorphism group of a Galois extension has cardinality equal to the degree (IsGalois.card_aut_eq_finrank with finrank K L = 2)."
+      "type": "core",
+      "description": "|Gal(L/K)| = 2 for a quadratic Galois extension: the automorphism group of a Galois extension has cardinality equal to the degree (IsGalois.card_aut_eq_finrank with finrank K L = 2).",
+      "leanType": "(K L : Type*) [Field K] [Field L] [Algebra K L] [FiniteDimensional K L] [IsGalois K L] (h : finrank K L = 2) : Nat.card (L ≃ₐ[K] L) = 2",
+      "startLine": 74,
+      "endLine": 75
     },
     {
       "name": "isCyclic_gal",
-      "type": "theorem",
-      "description": "Gal(L/K) is cyclic for a quadratic Galois extension, since a finite group of prime order (here 2) is cyclic."
+      "type": "supporting",
+      "description": "Gal(L/K) is cyclic for a quadratic Galois extension, since a finite group of prime order (here 2) is cyclic.",
+      "leanType": "(K L : Type*) [Field K] [Field L] [Algebra K L] [FiniteDimensional K L] [IsGalois K L] (h : finrank K L = 2) : IsCyclic (L ≃ₐ[K] L)",
+      "startLine": 78,
+      "endLine": 79
     },
     {
       "name": "gal_mul_comm",
-      "type": "theorem",
-      "description": "Gal(L/K) is commutative, obtained by transporting mul_comm across the isomorphism galEquivZMod2 (equivalently, a group of prime order is abelian)."
+      "type": "supporting",
+      "description": "Gal(L/K) is commutative, obtained by transporting mul_comm across the isomorphism galEquivZMod2 (equivalently, a group of prime order is abelian).",
+      "leanType": "(K L : Type*) [Field K] [Field L] [Algebra K L] [FiniteDimensional K L] [IsGalois K L] (h : finrank K L = 2) (a b : L ≃ₐ[K] L) : a * b = b * a",
+      "startLine": 95,
+      "endLine": 97
     },
     {
       "name": "galCyclicEquiv",
-      "type": "definition",
-      "description": "Identification with Mathlib's canonical cyclic-structure iso (parent OQ[1]): zmodCyclicMulEquiv gives Multiplicative (ZMod (Nat.card G)) ≃* G for cyclic G; rewriting Nat.card = 2 realizes the abstract IsCyclic structure as Multiplicative (ZMod 2) on the nose."
+      "type": "key",
+      "description": "Identification with Mathlib's canonical cyclic-structure iso (parent OQ[1]): zmodCyclicMulEquiv gives Multiplicative (ZMod (Nat.card G)) ≃* G for cyclic G; rewriting Nat.card = 2 realizes the abstract IsCyclic structure as Multiplicative (ZMod 2) on the nose.",
+      "leanType": "(K L : Type*) [Field K] [Field L] [Algebra K L] [FiniteDimensional K L] [IsGalois K L] (h : finrank K L = 2) : Multiplicative (ZMod 2) ≃* (L ≃ₐ[K] L)",
+      "startLine": 106,
+      "endLine": 109
     },
     {
       "name": "complex_gal_equiv_zmod2",
-      "type": "definition",
-      "description": "Base case recovered: Gal(ℂ/ℝ) ≃* Multiplicative (ZMod 2), obtained as the K = ℝ, L = ℂ instance of the general galEquivZMod2 (via Complex.finrank_real_complex), confirming the generalization subsumes the concrete parent leaf."
+      "type": "key",
+      "description": "Base case recovered: Gal(ℂ/ℝ) ≃* Multiplicative (ZMod 2), obtained as the K = ℝ, L = ℂ instance of the general galEquivZMod2 (via Complex.finrank_real_complex), confirming the generalization subsumes the concrete parent leaf.",
+      "leanType": "(ℂ ≃ₐ[ℝ] ℂ) ≃* Multiplicative (ZMod 2)",
+      "startLine": 135,
+      "endLine": 136
     }
   ],
   "sorries": 0

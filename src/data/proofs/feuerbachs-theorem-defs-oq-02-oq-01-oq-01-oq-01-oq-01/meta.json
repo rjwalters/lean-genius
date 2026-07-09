@@ -32,7 +32,7 @@
     "axiomCount": 0,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries (only the standard foundational axioms propext / Classical.choice / Quot.sound, which do not count as assumptions). Uses only the coordinate API (Point, Triangle, circumcenter, incenter, excenter_a/b/c, circumradius, area, side_a/b/c, dist2, dist2_sq, circumcenter_denom_ne_zero, triangle_345 with its side/incenter/circumcenter/circumradius lemmas) from FeuerbachsTheoremDefs.lean, which is itself 0-sorry, 0-axiom. The squared side lengths, side/area positivity, the strict triangle inequalities (declared private in the parent), the circumcenter equidistance lemmas, and the weighted-norm master identity are reproved locally; everything after the coordinate definitions is closed by ring / field_simp / linear_combination / nlinarith and the real square-root lemmas Real.sq_sqrt / Real.sqrt_sq.",
     "lineCount": 553,
-    "theoremCount": 9,
+    "theoremCount": 34,
     "definitionCount": 1,
     "originalContributions": [
       "excentral_dist_a_sq / _b_sq / _c_sq: the squared excentral circumradius — dist²(O', Iₐ) = dist²(O', I_b) = dist²(O', I_c) = 4R² for the single point O' = 2O − I, so O' is equidistant from all three excenters and is therefore the circumcenter of the excentral triangle",
@@ -193,7 +193,7 @@
     "namespace": "FeuerbachExcentralCircumradius",
     "lineCount": 553,
     "axiomCount": 0,
-    "theoremCount": 9,
+    "theoremCount": 34,
     "definitionCount": 1,
     "path": "Proofs/FeuerbachsTheoremDefsOQ02OQ01OQ01OQ01OQ01.lean",
     "sorries": 0,

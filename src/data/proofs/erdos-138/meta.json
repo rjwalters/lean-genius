@@ -60,7 +60,7 @@
     "assumptions": "8 axiom(s) and 1 sorry(s). Axioms: W_is_nonempty (van der Waerden's theorem — pinned-Mathlib v4.26.0 lacks Combinatorics.exists_mono_homothetic_copy, so this is a foundational assumption); berlekamp_lower_bound, gowers_upper_bound, kozik_shabanov_lower_bound (literature bounds); W_three=9, W_four=35, W_five=178, W_six=1132 (exact small values from exhaustive search / SAT). The lone sorry is the main_conjecture_implies_exponential filter-limit implication. The bound W(k+1) − W(k) ≥ k underlying the difference-variant result is proven from W_is_nonempty without further assumptions, via the AlphaProof Nexus coloring-extension argument.",
     "mathlib_version": "4.26.0",
     "theoremCount": 23,
-    "definitionCount": 12,
+    "definitionCount": 13,
     "additionalFiles": [
       "Proofs/Stubs/Erdos138Aristotle.lean"
     ]
@@ -159,7 +159,7 @@
     "lineCount": 877,
     "axiomCount": 8,
     "theoremCount": 23,
-    "definitionCount": 12,
+    "definitionCount": 13,
     "path": "Proofs/Erdos138Problem.lean",
     "sorries": 0,
     "additionalFiles": [

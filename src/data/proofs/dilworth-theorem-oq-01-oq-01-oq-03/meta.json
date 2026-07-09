@@ -57,8 +57,8 @@
     "lineCount": 226,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries (only the foundational propext, Classical.choice, Quot.sound are used, none of which count as assumptions). The abstract results hold for any finite PartialOrder; the sequence form holds for any LinearOrder codomain.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 11,
-    "definitionCount": 6
+    "theoremCount": 12,
+    "definitionCount": 4
   },
   "overview": {
     "historicalContext": "Mirsky's theorem (1971) is the chain/antichain transpose of Dilworth's: the minimum number of antichains covering a finite poset equals the longest chain. Erdős and Szekeres (1935) proved that any sequence of more than r·s real numbers contains a monotone subsequence — a non-decreasing one of length r+1 or a strictly decreasing one of length s+1. The two are linked by a classical observation: order the positions of a sequence by the dominance order (i precedes j when i ≤ j and the value does not decrease); chains become non-decreasing subsequences and antichains become strictly decreasing ones, so Erdős–Szekeres is the pigeonhole consequence of covering the poset by chains-worth of antichains. This entry makes that bridge precise on top of the imported Mirsky decomposition.",
@@ -159,8 +159,8 @@
     "namespace": "DilworthTheoremOQ01 / SeqPos",
     "lineCount": 226,
     "axiomCount": 0,
-    "theoremCount": 11,
-    "definitionCount": 6,
+    "theoremCount": 12,
+    "definitionCount": 4,
     "path": "Proofs/DilworthErdosSzekeresOQ010103.lean",
     "sorries": 0
   },

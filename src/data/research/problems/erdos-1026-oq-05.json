@@ -12,11 +12,47 @@
   "problemStatement": "Extend Erdős #1026 from single monotonic subsequences to decompositions of the whole sequence into monotonic pieces (Hanani 1957). How many monotonic parts must such a decomposition use?",
   "currentState": "Elementary lower-bound half proved axiom-free: every monotonic decomposition uses at least n / max(LIS, LDS) parts. The constructive matching upper bound (O(√n) parts always suffice) is left open.",
   "leanFiles": [
-    "proofs/Proofs/Erdos1026OQ05.lean"
+    {
+      "path": "Proofs/Erdos1026OQ02.lean",
+      "filename": "Erdos1026OQ02.lean",
+      "lineCount": 171,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1026OQ02.lean"
+    },
+    {
+      "path": "Proofs/Erdos1026OQ05.lean",
+      "filename": "Erdos1026OQ05.lean",
+      "lineCount": 217,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1026OQ05.lean"
+    },
+    {
+      "path": "Proofs/Erdos1026Problem.lean",
+      "filename": "Erdos1026Problem.lean",
+      "lineCount": 329,
+      "theoremCount": 6,
+      "axiomCount": 1,
+      "defCount": 11,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1026Problem.lean"
+    }
   ],
   "relatedProofs": [
+    "erdos-1",
+    "erdos-10",
+    "erdos-102",
     "erdos-1026",
-    "erdos-1026-oq-02"
+    "erdos-1026-oq-02",
+    "erdos-1026-oq-05"
   ],
   "knowledge": {
     "insights": [

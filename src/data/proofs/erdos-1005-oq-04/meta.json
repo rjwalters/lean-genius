@@ -9,7 +9,7 @@
     "axiomCount": 0,
     "path": "Proofs/Erdos1005ProblemOQ04.lean",
     "sorries": 0,
-    "definitionCount": 11,
+    "definitionCount": 12,
     "theoremCount": 13
   },
   "meta": {
@@ -40,7 +40,7 @@
     ],
     "assumptions": "None. The file is fully machine-checked with 0 sorries and 0 axiom declarations; #print axioms reports only the foundational propext / Classical.choice / Quot.sound. No native_decide is used (so no Lean.ofReduceBool); the only `decide` calls are on concrete decidable integer/coprimality facts about fixed small fractions.",
     "theoremCount": 13,
-    "definitionCount": 11
+    "definitionCount": 12
   },
   "overview": {
     "historicalContext": "Erdős Problem #1005 asks for the longest run f(n) of consecutive 'similarly ordered' Farey fractions of order n, where a_k/b_k and a_l/b_l are similarly ordered when (a_k − a_l)(b_k − b_l) ≥ 0. Mayer (1942) first observed that consecutive Farey fractions tend to be similarly ordered and proved f(n) → ∞; Erdős (1943) strengthened this to linear growth, and van Doorn (2025) established (1/12 − o(1))n ≤ f(n) ≤ n/4 + O(1). A recurring subtlety in the definition is that 'a run of length k is similarly ordered' is read as a PAIRWISE condition over all pairs in the run — because the relation, while symmetric and reflexive, is not transitive, so requiring only adjacent pairs would be a different and weaker condition. OQ-04 asks exactly whether this distinction matters.",

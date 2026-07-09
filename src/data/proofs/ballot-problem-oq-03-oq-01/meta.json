@@ -22,8 +22,8 @@
     "dateAdded": "2026-04-02",
     "axiomCount": 1,
     "assumptions": "Relies on `Lean.ofReduceBool` (Lean compiler kernel-reduction trust): the advertised Catalan-number, ballot-sequence-count, and LGV-determinant example computations are discharged by `native_decide` (22 `example` blocks). The symbolic LGV/Lindström-Gessel-Viennot machinery (Crossing Lemma, Lindström involution, path_count, lgv_lemma_2x2, Vandermonde identity) is proved without `native_decide`. No `sorry`, no literal `axiom` declarations.",
-    "lineCount": 2922,
-    "theoremCount": 138,
+    "lineCount": 2963,
+    "theoremCount": 142,
     "definitionCount": 32,
     "originalContributions": [
       "northBeforeEast: key function counting North steps before the k-th East step (y-coordinate when entering column k)",
@@ -213,9 +213,9 @@
   },
   "leanFile": {
     "namespace": "LatticePathLGV",
-    "lineCount": 2922,
+    "lineCount": 2963,
     "axiomCount": 0,
-    "theoremCount": 138,
+    "theoremCount": 142,
     "definitionCount": 32,
     "path": "Proofs/BallotProblemOQ03.lean",
     "sorries": 0

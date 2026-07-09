@@ -35,7 +35,7 @@
     "axiomCount": 0,
     "assumptions": "None. Fully machine-verified (every theorem depends only on propext, Classical.choice, Quot.sound). Complex.isAlgClosed is used only to EXHIBIT roots in the witness and Cardano theorems; the characterization theorems (origamiField_isLeast, origamiField_le_of_closed) do not depend on it. The geometric equivalence between the Huzita–Justin fold operations and the algebraic operations {+,−,×,÷,√,∛} is the modelling assumption, stated in prose and inherited from the parent; it is not re-derived.",
     "lineCount": 294,
-    "theoremCount": 18,
+    "theoremCount": 19,
     "definitionCount": 2,
     "originalContributions": [
       "IsOrigami: an inductive closure of ℚ ⊆ ℂ under field operations plus square-root and cube-root extraction, modelling the Huzita–Justin origami numbers directly as a generation principle",
@@ -56,7 +56,7 @@
     "axiomCount": 0,
     "sorries": 0,
     "definitionCount": 2,
-    "theoremCount": 18
+    "theoremCount": 19
   },
   "sections": [
     {

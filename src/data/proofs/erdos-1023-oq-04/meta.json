@@ -66,20 +66,44 @@
   },
   "sections": [
     {
-      "id": "definition-bounds",
-      "title": "Definition and the Two-Sided Bracket",
-      "summary": "unionFreeMax (= C(n, floor(n/2))), positivity, the upper bound F(n) ≤ 2^n (central_le_pow), the key lower bound 2^n ≤ (n+1)·F(n) (pow_le_succ_mul_central), the combined bracket, and its real form.",
+      "id": "sec-header",
+      "title": "Background: F(n) = C(n, ⌊n/2⌋) and the Stirling-Free Goal",
+      "summary": "Docstring framing Erdős #1023 (union-free maximum F(n), the middle-layer optimality theorem of Erdős–Kleitman giving F(n) = C(n,⌊n/2⌋)) and the goal: replace the parent's Stirling-based asymptotic axiom by elementary, machine-checked growth brackets. Notes the imports (Choose.Sum/Bounds/Central) and namespace.",
       "startLine": 1,
-      "endLine": 96,
-      "mathContext": "Average the binomial identity ∑_{m≤n} C(n,m) = 2^n against the maximal central column (Nat.choose_le_middle) to get the lower bound; the upper bound is one term of the same sum."
+      "endLine": 49,
+      "mathContext": "F(n) = C(n,⌊n/2⌋) ~ √(2/π)·2ⁿ/√n (Stirling, parent axiom); here only the polynomial-factor brackets, no Stirling."
     },
     {
-      "id": "divergence",
-      "title": "Even Subsequence and Divergence",
-      "summary": "unionFreeMax_two_mul (F(2n) = centralBinom n), two_mul_le_unionFreeMax_two_mul (2n ≤ F(2n)), unionFreeMax_unbounded (F(n) → ∞), and concrete values F(0..6) = 1,1,2,3,6,10,20.",
-      "startLine": 97,
+      "id": "sec-definition",
+      "title": "Definition and Positivity",
+      "summary": "unionFreeMax n := Nat.choose n (n/2) (taking the Erdős–Kleitman value as the definition), the simp lemma unionFreeMax_def, and unionFreeMax_pos (F(n) > 0 since ⌊n/2⌋ ≤ n, i.e. the empty set is always available).",
+      "startLine": 51,
+      "endLine": 61,
+      "mathContext": "F(n) = C(n,⌊n/2⌋) > 0 via Nat.choose_pos (⌊n/2⌋ ≤ n)."
+    },
+    {
+      "id": "sec-bracket",
+      "title": "The Two-Sided Growth Bracket 2ⁿ/(n+1) ≤ F(n) ≤ 2ⁿ",
+      "summary": "central_le_pow (F(n) ≤ 2ⁿ, the central column is one term of the binomial sum). The key lower bound pow_le_succ_mul_central (2ⁿ ≤ (n+1)·F(n)): average the identity ∑_{m≤n} C(n,m) = 2ⁿ against the maximal central column via Nat.choose_le_middle. unionFreeMax_bracket combines both, and pow_div_succ_le_central gives the real form 2ⁿ/(n+1) ≤ F(n).",
+      "startLine": 63,
+      "endLine": 96,
+      "mathContext": "2ⁿ = ∑_{m≤n} C(n,m) ≤ (n+1)·C(n,⌊n/2⌋), so 2ⁿ/(n+1) ≤ F(n) ≤ 2ⁿ — growth up to a polynomial factor, no Stirling."
+    },
+    {
+      "id": "sec-divergence",
+      "title": "Even Subsequence and Divergence F(n) → ∞",
+      "summary": "unionFreeMax_two_mul (F(2n) = C(2n,n) = centralBinom n), two_mul_le_unionFreeMax_two_mul (2n ≤ F(2n) via C(2n,n) ≥ C(2n,1) = 2n), and unionFreeMax_unbounded (∀ M, ∃ n, M ≤ F(n), witnessed by n = 2M). Divergence is proved purely over ℕ with no real analysis.",
+      "startLine": 98,
+      "endLine": 116,
+      "mathContext": "F(2n) = centralBinom n ≥ C(2n,1) = 2n (Nat.choose_le_centralBinom), so F(2M) ≥ 2M ≥ M ⟹ unbounded."
+    },
+    {
+      "id": "sec-values",
+      "title": "Concrete Values and a Sanity Check",
+      "summary": "Kernel-decide evaluations F(0..6) = 1, 1, 2, 3, 6, 10, 20 (the central binomial coefficients), and a check of the lower bracket at n = 6: 2⁶ = 64 ≤ 7·20 = 140 discharged by pow_le_succ_mul_central 6.",
+      "startLine": 118,
       "endLine": 133,
-      "mathContext": "F(2n) = C(2n,n) = centralBinom n ≥ C(2n,1) = 2n via Nat.choose_le_centralBinom, giving unboundedness over ℕ with no real analysis."
+      "mathContext": "F(n) = C(n,⌊n/2⌋): 1,1,2,3,6,10,20 for n = 0..6; bracket at n=6: 64 ≤ 140."
     }
   ],
   "mainTheorems": [

@@ -56,7 +56,10 @@
   "relatedProofs": [
     "pythagorean-theorem",
     "pythagorean-theorem-oq-03",
-    "pythagorean-theorem-oq-03-oq-02"
+    "pythagorean-theorem-oq-03-oq-02",
+    "pythagorean-theorem-oq-04",
+    "pythagorean-theorem-oq-04-oq-01",
+    "pythagorean-theorem-oq-05"
   ],
   "references": {
     "papers": [],
@@ -102,13 +105,35 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PythagoreanTheoremOQ03OQ02.lean"
     },
     {
-      "path": "Proofs/PythagoreanTheoremOQ05.lean",
-      "filename": "PythagoreanTheoremOQ05.lean",
-      "lineCount": 375,
-      "theoremCount": 15,
+      "path": "Proofs/PythagoreanTheoremOQ04.lean",
+      "filename": "PythagoreanTheoremOQ04.lean",
+      "lineCount": 200,
+      "theoremCount": 11,
       "axiomCount": 0,
       "defCount": 0,
-      "sorryCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PythagoreanTheoremOQ04.lean"
+    },
+    {
+      "path": "Proofs/PythagoreanTheoremOQ04OQ01.lean",
+      "filename": "PythagoreanTheoremOQ04OQ01.lean",
+      "lineCount": 165,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PythagoreanTheoremOQ04OQ01.lean"
+    },
+    {
+      "path": "Proofs/PythagoreanTheoremOQ05.lean",
+      "filename": "PythagoreanTheoremOQ05.lean",
+      "lineCount": 444,
+      "theoremCount": 19,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PythagoreanTheoremOQ05.lean"
     }

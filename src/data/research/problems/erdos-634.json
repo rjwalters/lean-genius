@@ -52,7 +52,9 @@
     "erdos-6",
     "erdos-63",
     "erdos-634",
-    "erdos-634-medial-congruence"
+    "erdos-634-medial-congruence",
+    "erdos-634-medial-congruence-oq-01",
+    "erdos-634-medial-congruence-oq-02"
   ],
   "references": [
     "Erdős Problem #634, https://www.erdosproblems.com/634",
@@ -65,6 +67,17 @@
   "significance": 7,
   "tractability": 6,
   "leanFiles": [
+    {
+      "path": "Proofs/Erdos634AreaCollapse.lean",
+      "filename": "Erdos634AreaCollapse.lean",
+      "lineCount": 173,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos634AreaCollapse.lean"
+    },
     {
       "path": "Proofs/Erdos634Aristotle.lean",
       "filename": "Erdos634Aristotle.lean",
@@ -86,6 +99,39 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos634MedialCongruence.lean"
+    },
+    {
+      "path": "Proofs/Erdos634MedialCongruenceOQ01.lean",
+      "filename": "Erdos634MedialCongruenceOQ01.lean",
+      "lineCount": 177,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos634MedialCongruenceOQ01.lean"
+    },
+    {
+      "path": "Proofs/Erdos634MedialCongruenceOQ02.lean",
+      "filename": "Erdos634MedialCongruenceOQ02.lean",
+      "lineCount": 200,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos634MedialCongruenceOQ02.lean"
+    },
+    {
+      "path": "Proofs/Erdos634MedialCoveringOQ02.lean",
+      "filename": "Erdos634MedialCoveringOQ02.lean",
+      "lineCount": 187,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos634MedialCoveringOQ02.lean"
     },
     {
       "path": "Proofs/Erdos634Problem.lean",

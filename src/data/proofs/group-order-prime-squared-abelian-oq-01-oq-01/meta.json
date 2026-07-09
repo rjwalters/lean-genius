@@ -22,7 +22,7 @@
     "dateAdded": "2026-06-20",
     "axiomCount": 0,
     "lineCount": 135,
-    "theoremCount": 6,
+    "theoremCount": 8,
     "definitionCount": 0,
     "assumptions": "None beyond the stated theorem hypotheses (Nat.card G = p² with p prime). 0 axioms, 0 sorries, no native_decide. The structural dichotomy (isCyclic_or_exponent_p, pow_prime_eq_one_of_not_isCyclic) is imported from the parent file Proofs/GroupOrderPrimeSquaredAbelian.lean; the exponent computation and its sharpness are proved here from the exponent API (Monoid.order_dvd_exponent, Monoid.exponent_dvd_of_forall_pow_eq_one) and Lagrange. Two private helper lemmas (finite/nontrivial from the cardinality) are not counted among the 6 substantive theorems.",
     "originalContributions": [

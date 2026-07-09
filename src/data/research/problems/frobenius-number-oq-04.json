@@ -44,11 +44,13 @@
   "relatedProofs": [
     "frobenius-number",
     "frobenius-number-oq-01",
+    "frobenius-number-oq-01-oq-01",
     "frobenius-number-oq-01-oq-03",
     "frobenius-number-oq-01-oq-03-oq-01",
     "frobenius-number-oq-01-oq-04",
     "frobenius-number-oq-02",
     "frobenius-number-oq-02-oq-01",
+    "frobenius-number-oq-02-oq-02",
     "frobenius-number-oq-03",
     "frobenius-number-oq-04"
   ],
@@ -80,6 +82,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FrobeniusNumberOQ01.lean"
+    },
+    {
+      "path": "Proofs/FrobeniusNumberOQ01OQ01.lean",
+      "filename": "FrobeniusNumberOQ01OQ01.lean",
+      "lineCount": 289,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FrobeniusNumberOQ01OQ01.lean"
     },
     {
       "path": "Proofs/FrobeniusNumberOQ01OQ03.lean",
@@ -137,10 +150,32 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FrobeniusNumberOQ02OQ01.lean"
     },
     {
+      "path": "Proofs/FrobeniusNumberOQ02OQ02.lean",
+      "filename": "FrobeniusNumberOQ02OQ02.lean",
+      "lineCount": 163,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FrobeniusNumberOQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/FrobeniusNumberOQ02OQ02Hypersurface.lean",
+      "filename": "FrobeniusNumberOQ02OQ02Hypersurface.lean",
+      "lineCount": 93,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FrobeniusNumberOQ02OQ02Hypersurface.lean"
+    },
+    {
       "path": "Proofs/FrobeniusNumberOQ03.lean",
       "filename": "FrobeniusNumberOQ03.lean",
-      "lineCount": 441,
-      "theoremCount": 27,
+      "lineCount": 744,
+      "theoremCount": 39,
       "axiomCount": 0,
       "defCount": 2,
       "sorryCount": 0,

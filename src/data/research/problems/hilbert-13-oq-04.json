@@ -88,6 +88,8 @@
   "relatedProofs": [
     "hilbert-13",
     "hilbert-13-oq-02",
+    "hilbert-13-oq-02-oq-01",
+    "hilbert-13-oq-03",
     "hilbert-13-oq-04"
   ],
   "references": {
@@ -108,8 +110,8 @@
     {
       "path": "Proofs/Hilbert13GeneralSpaces.lean",
       "filename": "Hilbert13GeneralSpaces.lean",
-      "lineCount": 481,
-      "theoremCount": 9,
+      "lineCount": 541,
+      "theoremCount": 10,
       "axiomCount": 6,
       "defCount": 8,
       "sorryCount": 0,
@@ -126,6 +128,28 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert13OQ02.lean"
+    },
+    {
+      "path": "Proofs/Hilbert13OQ02OQ01.lean",
+      "filename": "Hilbert13OQ02OQ01.lean",
+      "lineCount": 164,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert13OQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/Hilbert13OQ03.lean",
+      "filename": "Hilbert13OQ03.lean",
+      "lineCount": 214,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert13OQ03.lean"
     },
     {
       "path": "Proofs/Hilbert13Superposition.lean",

@@ -819,6 +819,321 @@ theorem normal_imp_irrational_of_criterion (b : ℕ) (hb : 2 ≤ b) (x : ℝ)
   exact not_normal_of_eventually_missing_ktuple b hb (q : ℝ) k N₀ s hmiss hn
 
 -- ============================================================
+-- PART IV.7: FREQUENCY-MISMATCH CRITERION
+-- ============================================================
+
+/-!
+## From absence to frequency anomaly
+
+`not_normal_of_eventually_missing_ktuple` handles the extreme case of a tuple
+whose matching frequency is `0`. The results below generalise it to *any*
+frequency anomaly. If the matching frequency of a tuple `s` converges to a limit
+`L ≠ b^{-k}`, or merely stays *eventually bounded away* from `b^{-k}` on one
+side, then `x` cannot be normal in base `b`.
+
+The `tendsto`-form (`not_normal_of_match_freq_tendsto_ne`) is the exact converse
+of the definition, via uniqueness of limits. The one-sided `eventually` forms
+(`_eventually_le` / `_eventually_ge`) are strictly stronger: they never assume
+the frequency converges at all, only that it stays on the wrong side of a
+threshold separated from `b^{-k}` — capturing *under-* and *over-representation*,
+not just outright absence. The single-digit specialisation
+`not_normal_of_digit_freq_tendsto_ne` records the familiar statement "a digit
+occurring with density `≠ 1/b` forbids normality".
+-/
+
+/-- **Frequency-mismatch criterion (`k`-tuple form).** If the matching frequency
+    of the tuple `s` converges to a limit `L ≠ b^{-k}`, then `x` is not normal in
+    base `b`. Immediate from uniqueness of limits: normality forces the very same
+    frequency to converge to `b^{-k}`. Generalises
+    `not_normal_of_eventually_missing_ktuple`, which is the `L = 0` instance. -/
+theorem not_normal_of_match_freq_tendsto_ne (b : ℕ) (hb : 2 ≤ b) (x : ℝ)
+    (k : ℕ) (s : Fin k → Fin b) (L : ℝ)
+    (hlim : Tendsto
+        (fun N : ℕ =>
+          (((Finset.range N).filter
+            (fun n => ∀ i : Fin k, nthDigit b (n + i.val) x = (s i : ℤ))).card : ℝ)
+            / (N : ℝ))
+        atTop (nhds L))
+    (hne : L ≠ (b : ℝ) ^ (-(k : ℤ))) :
+    ¬ IsNormalInBase b x := by
+  intro hn
+  exact hne (tendsto_nhds_unique hlim (hn k s))
+
+/-- **Under-representation forbids normality.** If the matching frequency of `s`
+    is *eventually* at most some `c < b^{-k}`, then `x` is not normal — no
+    convergence of the frequency itself is assumed. Choosing `c` strictly between
+    `0` and `b^{-k}` recovers the eventually-missing obstruction. -/
+theorem not_normal_of_match_freq_eventually_le (b : ℕ) (hb : 2 ≤ b) (x : ℝ)
+    (k : ℕ) (s : Fin k → Fin b) (c : ℝ)
+    (hc : c < (b : ℝ) ^ (-(k : ℤ)))
+    (hbound : ∀ᶠ N in atTop,
+        (((Finset.range N).filter
+          (fun n => ∀ i : Fin k, nthDigit b (n + i.val) x = (s i : ℤ))).card : ℝ)
+          / (N : ℝ) ≤ c) :
+    ¬ IsNormalInBase b x := by
+  intro hn
+  have hle : (b : ℝ) ^ (-(k : ℤ)) ≤ c := le_of_tendsto (hn k s) hbound
+  linarith
+
+/-- **Over-representation forbids normality.** Dual of
+    `not_normal_of_match_freq_eventually_le`: if the matching frequency of `s` is
+    *eventually* at least some `c > b^{-k}`, then `x` is not normal. Again no
+    convergence of the frequency is assumed. -/
+theorem not_normal_of_match_freq_eventually_ge (b : ℕ) (hb : 2 ≤ b) (x : ℝ)
+    (k : ℕ) (s : Fin k → Fin b) (c : ℝ)
+    (hc : (b : ℝ) ^ (-(k : ℤ)) < c)
+    (hbound : ∀ᶠ N in atTop,
+        c ≤ (((Finset.range N).filter
+          (fun n => ∀ i : Fin k, nthDigit b (n + i.val) x = (s i : ℤ))).card : ℝ)
+          / (N : ℝ)) :
+    ¬ IsNormalInBase b x := by
+  intro hn
+  have hge : c ≤ (b : ℝ) ^ (-(k : ℤ)) := ge_of_tendsto (hn k s) hbound
+  linarith
+
+/-- **Single-digit frequency-mismatch criterion.** If a digit `d` occurs in the
+    base-`b` expansion of `x` with limiting frequency `L ≠ 1/b`, then `x` is not
+    normal in base `b`. The `k = 1` case of `not_normal_of_match_freq_tendsto_ne`,
+    recording the intuition that normality demands every digit at density `1/b`
+    (`b^{-1} = b⁻¹`). Generalises `not_normal_of_eventually_missing_digit`, which
+    is the `L = 0` instance. -/
+theorem not_normal_of_digit_freq_tendsto_ne (b : ℕ) (hb : 2 ≤ b) (x : ℝ)
+    (d : Fin b) (L : ℝ)
+    (hlim : Tendsto
+        (fun N : ℕ =>
+          (((Finset.range N).filter (fun n => nthDigit b n x = (d : ℤ))).card : ℝ)
+            / (N : ℝ))
+        atTop (nhds L))
+    (hne : L ≠ (b : ℝ)⁻¹) :
+    ¬ IsNormalInBase b x := by
+  refine not_normal_of_match_freq_tendsto_ne b hb x 1 (fun _ => d) L ?_ ?_
+  · simp only [Fin.forall_fin_one, Fin.val_zero, add_zero]
+    exact hlim
+  · rwa [Nat.cast_one, zpow_neg_one]
+
+-- ============================================================
+-- PART IV.8: QUANTITATIVE DISJUNCTIVITY
+-- ============================================================
+
+/-!
+## From "infinitely often" to a positive density
+
+`normal_ktuple_infinitely_often` shows a normal number contains every tuple at
+*infinitely many* positions, and `normal_imp_disjunctive` extracts a single
+occurrence *somewhere*. Both are purely qualitative. The results below sharpen
+them using the fact that normality pins the matching frequency to the strictly
+positive value `b^{-k}`:
+
+* `exists_match_lt_of_count_pos` is the pure-`Finset` bridge: a positive matching
+  count over `range N` yields an explicit occurrence *below* `N`.
+* `eventually_exists_match_lt_of_normal` upgrades disjunctivity to an
+  effective-flavoured form — for a normal `x`, the tuple `s` occurs *before every
+  sufficiently large window* `N`, not merely somewhere. (The bare definition of
+  normality carries no convergence *rate*, so the position of the first
+  occurrence cannot be bounded by an explicit function of `k`; but "occurs before
+  every large `N`" is the strongest unconditional statement, and it pins the
+  first occurrence below any effective threshold at which the count is known
+  positive.)
+* `match_count_ge_linear_of_normal` is the density statement: the number of
+  occurrences of `s` below `N` is eventually at least `(b^{-k}/2)·N`, so the
+  occurrence set has positive lower density (in fact density exactly `b^{-k}`).
+  This strictly strengthens `normal_ktuple_infinitely_often`.
+-/
+
+/-- **Occurrence-extraction core.** If the count of tuple-`s` matches over
+    `Finset.range N` is positive, an explicit matching position `< N` exists.
+    The pure-`Finset` bridge underlying the quantitative statements below;
+    carries no normality hypothesis. -/
+theorem exists_match_lt_of_count_pos (b : ℕ) (x : ℝ) (k : ℕ) (s : Fin k → Fin b)
+    (N : ℕ)
+    (hpos : 0 < ((Finset.range N).filter
+        (fun n => ∀ i : Fin k, nthDigit b (n + i.val) x = (s i : ℤ))).card) :
+    ∃ n < N, ∀ i : Fin k, nthDigit b (n + i.val) x = (s i : ℤ) := by
+  obtain ⟨n, hn⟩ := Finset.card_pos.mp hpos
+  rw [Finset.mem_filter, Finset.mem_range] at hn
+  exact ⟨n, hn.1, hn.2⟩
+
+/-- **The matching count is eventually positive.** For a number normal in base
+    `b`, the number of positions below `N` at which the tuple `s` matches is
+    positive for all sufficiently large `N`. Proof: normality forces the
+    frequency `count/N → b^{-k} > 0`, so eventually `count/N > 0`, whence
+    (using `N ≥ 1`) `count > 0`. -/
+theorem eventually_match_count_pos_of_normal (b : ℕ) (hb : 2 ≤ b) (x : ℝ)
+    (hn : IsNormalInBase b x) (k : ℕ) (s : Fin k → Fin b) :
+    ∀ᶠ N in atTop, 0 < ((Finset.range N).filter
+        (fun n => ∀ i : Fin k, nthDigit b (n + i.val) x = (s i : ℤ))).card := by
+  have hbR : (0 : ℝ) < (b : ℝ) := by exact_mod_cast (by omega : 0 < b)
+  have hposk : (0 : ℝ) < (b : ℝ) ^ (-(k : ℤ)) := zpow_pos hbR _
+  have hev : ∀ᶠ N in atTop, (0 : ℝ) <
+      (((Finset.range N).filter
+        (fun n => ∀ i : Fin k, nthDigit b (n + i.val) x = (s i : ℤ))).card : ℝ)
+        / (N : ℝ) :=
+    (hn k s).eventually_const_lt hposk
+  filter_upwards [hev, eventually_ge_atTop 1] with N hN _
+  set c := ((Finset.range N).filter
+      (fun n => ∀ i : Fin k, nthDigit b (n + i.val) x = (s i : ℤ))).card with hc
+  rcases Nat.eq_zero_or_pos c with h0 | hpos
+  · exfalso; rw [h0] at hN; simp at hN
+  · exact hpos
+
+/-- **Effective disjunctivity.** For a number normal in base `b`, the tuple `s`
+    occurs at some position *below* `N` for every sufficiently large `N`. This
+    strengthens `normal_imp_disjunctive` (one occurrence somewhere) to a bound
+    relative to every large window. Immediate from
+    `eventually_match_count_pos_of_normal` and the occurrence-extraction core. -/
+theorem eventually_exists_match_lt_of_normal (b : ℕ) (hb : 2 ≤ b) (x : ℝ)
+    (hn : IsNormalInBase b x) (k : ℕ) (s : Fin k → Fin b) :
+    ∀ᶠ N in atTop,
+      ∃ n < N, ∀ i : Fin k, nthDigit b (n + i.val) x = (s i : ℤ) := by
+  filter_upwards [eventually_match_count_pos_of_normal b hb x hn k s] with N hN
+  exact exists_match_lt_of_count_pos b x k s N hN
+
+/-- **Positive lower density of occurrences.** For a number normal in base `b`,
+    the number of positions below `N` at which the tuple `s` matches is eventually
+    at least `(b^{-k}/2)·N`. Hence the occurrence set has positive lower density
+    (in fact density exactly `b^{-k}`), strictly strengthening the qualitative
+    `normal_ktuple_infinitely_often`. Proof: normality gives `count/N → b^{-k}`,
+    so eventually `count/N > b^{-k}/2`; clearing the (positive) denominator yields
+    the linear bound. -/
+theorem match_count_ge_linear_of_normal (b : ℕ) (hb : 2 ≤ b) (x : ℝ)
+    (hn : IsNormalInBase b x) (k : ℕ) (s : Fin k → Fin b) :
+    ∀ᶠ N : ℕ in atTop,
+      ((b : ℝ) ^ (-(k : ℤ)) / 2) * (N : ℝ) ≤
+        (((Finset.range N).filter
+          (fun n => ∀ i : Fin k, nthDigit b (n + i.val) x = (s i : ℤ))).card : ℝ) := by
+  have hbR : (0 : ℝ) < (b : ℝ) := by exact_mod_cast (by omega : 0 < b)
+  have hposk : (0 : ℝ) < (b : ℝ) ^ (-(k : ℤ)) := zpow_pos hbR _
+  have hhalf : (b : ℝ) ^ (-(k : ℤ)) / 2 < (b : ℝ) ^ (-(k : ℤ)) := by linarith
+  have hev : ∀ᶠ N in atTop, (b : ℝ) ^ (-(k : ℤ)) / 2 <
+      (((Finset.range N).filter
+        (fun n => ∀ i : Fin k, nthDigit b (n + i.val) x = (s i : ℤ))).card : ℝ)
+        / (N : ℝ) :=
+    (hn k s).eventually_const_lt hhalf
+  filter_upwards [hev, eventually_gt_atTop 0] with N hN hN0
+  have hNR : (0 : ℝ) < (N : ℝ) := by exact_mod_cast hN0
+  have hmul := mul_lt_mul_of_pos_right hN hNR
+  rw [div_mul_cancel₀ _ hNR.ne'] at hmul
+  exact le_of_lt hmul
+
+-- ============================================================
+-- PART IV.9: EFFECTIVE NORMALITY WITH AN EXPLICIT MODULUS
+-- ============================================================
+
+/-!
+## Effective first-occurrence bounds via a modulus of convergence
+
+`IsNormalInBase` is a bare `Tendsto` statement: it carries no *rate* of
+convergence, so — as flagged in `eventually_exists_match_lt_of_normal` — the
+position of the first occurrence of a tuple cannot be bounded by an explicit
+function of `k`. To obtain genuinely effective bounds one must *supply* a
+modulus of convergence.
+
+`EffectivelyNormalWithModulus b x M` asks for an explicit function
+`M : ℕ → ℝ → ℕ` such that, for every tuple length `k`, every tuple `s`, and every
+tolerance `ε > 0`, the matching frequency of `s` is within `ε` of `b^{-k}` for
+all windows `N ≥ M k ε`. This is exactly the `ε`–`N` form of the `Tendsto` in
+normality, so it *implies* `IsNormalInBase` (`isNormal_of_effectivelyNormal`);
+but it additionally *exposes* the threshold, which upgrades every "eventually"
+statement of PART IV.8 to an effective one:
+
+* `first_occurrence_lt_of_modulus` — the tuple `s` occurs at an *explicit*
+  position `< max (M k (b^{-k}/2)) 1`, a concrete function of the modulus and `k`.
+  This is the effective form of the (non-constructive)
+  `eventually_exists_match_lt_of_normal`.
+* `match_count_ge_linear_of_modulus` — for every `N ≥ max (M k (b^{-k}/2)) 1` the
+  occurrence count is at least `(b^{-k}/2)·N`, the effective (explicit-threshold)
+  form of `match_count_ge_linear_of_normal`.
+-/
+
+/-- **Effective normality with an explicit modulus of convergence.** A witness
+    that `x` is normal in base `b` *together with a rate*: for every tuple `s` of
+    length `k` and every tolerance `ε > 0`, the matching frequency of `s` lies
+    within `ε` of `b^{-k}` for all windows `N ≥ M k ε`. -/
+def EffectivelyNormalWithModulus (b : ℕ) (x : ℝ) (M : ℕ → ℝ → ℕ) : Prop :=
+  ∀ (k : ℕ) (s : Fin k → Fin b) (ε : ℝ), 0 < ε → ∀ N : ℕ, M k ε ≤ N →
+    |(((Finset.range N).filter
+        (fun n => ∀ i : Fin k, nthDigit b (n + i.val) x = (s i : ℤ))).card : ℝ)
+        / (N : ℝ) - (b : ℝ) ^ (-(k : ℤ))| < ε
+
+/-- **Effective normality implies normality.** The modulus form is precisely the
+    `ε`–`N` (`Metric.tendsto_atTop`) characterisation of the `Tendsto` defining
+    `IsNormalInBase`, so any number admitting a modulus of convergence is normal.
+    Records that `EffectivelyNormalWithModulus` is a genuine strengthening, not a
+    vacuous or incomparable notion. -/
+theorem isNormal_of_effectivelyNormal (b : ℕ) (x : ℝ) (M : ℕ → ℝ → ℕ)
+    (hM : EffectivelyNormalWithModulus b x M) : IsNormalInBase b x := by
+  intro k s
+  rw [Metric.tendsto_atTop]
+  intro ε hε
+  refine ⟨M k ε, fun N hN => ?_⟩
+  rw [Real.dist_eq]
+  exact hM k s ε hε N hN
+
+/-- **Effective first occurrence.** Given a modulus of normality, every tuple `s`
+    of length `k` occurs at an *explicit* position below `max (M k (b^{-k}/2)) 1`
+    — a concrete function of the modulus and `k`. This is the effective
+    strengthening of `eventually_exists_match_lt_of_normal`, whose window bound
+    was non-constructive (only "for all sufficiently large `N`"). Proof: at the
+    tolerance `ε = b^{-k}/2` the frequency at `N₁ := max (M k ε) 1` is within `ε`
+    of `b^{-k}`, hence `> b^{-k}/2 > 0`, so the matching count is positive and the
+    occurrence-extraction core produces a witness `< N₁`. -/
+theorem first_occurrence_lt_of_modulus (b : ℕ) (hb : 2 ≤ b) (x : ℝ)
+    (M : ℕ → ℝ → ℕ) (hM : EffectivelyNormalWithModulus b x M)
+    (k : ℕ) (s : Fin k → Fin b) :
+    ∃ n < max (M k ((b : ℝ) ^ (-(k : ℤ)) / 2)) 1,
+      ∀ i : Fin k, nthDigit b (n + i.val) x = (s i : ℤ) := by
+  have hbR : (0 : ℝ) < (b : ℝ) := by exact_mod_cast (by omega : 0 < b)
+  have hposk : (0 : ℝ) < (b : ℝ) ^ (-(k : ℤ)) := zpow_pos hbR _
+  set δ : ℝ := (b : ℝ) ^ (-(k : ℤ)) / 2 with hδdef
+  have hδpos : 0 < δ := by rw [hδdef]; exact div_pos hposk two_pos
+  set N₁ := max (M k δ) 1 with hN1def
+  have hN1pos : 0 < N₁ := lt_of_lt_of_le one_pos (le_max_right _ _)
+  have hN1R : (0 : ℝ) < (N₁ : ℝ) := by exact_mod_cast hN1pos
+  have hbound := hM k s δ hδpos N₁ (le_max_left _ _)
+  set c := ((Finset.range N₁).filter
+      (fun n => ∀ i : Fin k, nthDigit b (n + i.val) x = (s i : ℤ))).card with hc
+  have habs := abs_lt.mp hbound
+  have heq : (b : ℝ) ^ (-(k : ℤ)) - δ = δ := by rw [hδdef]; ring
+  have hcpos_real : 0 < (c : ℝ) / (N₁ : ℝ) := by
+    have hlow : (b : ℝ) ^ (-(k : ℤ)) - δ < (c : ℝ) / (N₁ : ℝ) := by linarith [habs.1]
+    rw [heq] at hlow; linarith
+  have hcR : (0 : ℝ) < (c : ℝ) := by
+    have := mul_pos hcpos_real hN1R
+    rwa [div_mul_cancel₀ _ hN1R.ne'] at this
+  have hcpos : 0 < c := by exact_mod_cast hcR
+  exact exists_match_lt_of_count_pos b x k s N₁ (hc ▸ hcpos)
+
+/-- **Effective density lower bound.** Given a modulus of normality, for *every*
+    window `N ≥ max (M k (b^{-k}/2)) 1` the occurrence count of the tuple `s` is
+    at least `(b^{-k}/2)·N`. This is the effective (explicit-threshold) form of
+    `match_count_ge_linear_of_normal`, which only held "eventually". -/
+theorem match_count_ge_linear_of_modulus (b : ℕ) (hb : 2 ≤ b) (x : ℝ)
+    (M : ℕ → ℝ → ℕ) (hM : EffectivelyNormalWithModulus b x M)
+    (k : ℕ) (s : Fin k → Fin b) (N : ℕ)
+    (hN : max (M k ((b : ℝ) ^ (-(k : ℤ)) / 2)) 1 ≤ N) :
+    ((b : ℝ) ^ (-(k : ℤ)) / 2) * (N : ℝ) ≤
+      (((Finset.range N).filter
+        (fun n => ∀ i : Fin k, nthDigit b (n + i.val) x = (s i : ℤ))).card : ℝ) := by
+  have hbR : (0 : ℝ) < (b : ℝ) := by exact_mod_cast (by omega : 0 < b)
+  have hposk : (0 : ℝ) < (b : ℝ) ^ (-(k : ℤ)) := zpow_pos hbR _
+  set δ : ℝ := (b : ℝ) ^ (-(k : ℤ)) / 2 with hδdef
+  have hδpos : 0 < δ := by rw [hδdef]; exact div_pos hposk two_pos
+  have hMN : M k δ ≤ N := le_trans (le_max_left _ _) hN
+  have hN0 : 0 < N := lt_of_lt_of_le one_pos (le_trans (le_max_right _ _) hN)
+  have hNR : (0 : ℝ) < (N : ℝ) := by exact_mod_cast hN0
+  have hbound := hM k s δ hδpos N hMN
+  set c := ((Finset.range N).filter
+      (fun n => ∀ i : Fin k, nthDigit b (n + i.val) x = (s i : ℤ))).card with hc
+  have habs := abs_lt.mp hbound
+  have heq : (b : ℝ) ^ (-(k : ℤ)) - δ = δ := by rw [hδdef]; ring
+  have hlow : δ < (c : ℝ) / (N : ℝ) := by
+    have h : (b : ℝ) ^ (-(k : ℤ)) - δ < (c : ℝ) / (N : ℝ) := by linarith [habs.1]
+    rwa [heq] at h
+  have hmul := mul_lt_mul_of_pos_right hlow hNR
+  rw [div_mul_cancel₀ _ hNR.ne'] at hmul
+  exact le_of_lt hmul
+
+-- ============================================================
 -- PART V: OPEN QUESTION
 -- ============================================================
 
@@ -884,12 +1199,14 @@ theorem exists_factorial_window {n : ℕ} (hn : 1 ≤ n) :
     exact Nat.not_lt.mp hmin
 
 open scoped Nat in
-/-- **Exact floor of `bⁿ · (base-b Liouville constant)`.**
+/-- **Exact floor of `bⁿ · (base-b Liouville constant)`** (any base `b ≥ 2`).
 For `k ! ≤ n < (k+1)!` the value `bⁿ · liouvilleNumber b` has integer part
 `∑_{i=0}^{k} b^(n - i!)`: the partial sum contributes an integer (all exponents
-`n - i!` are non-negative) and the remainder tail is `< 1` (Mathlib's
-`remainder_lt'` gives `bⁿ · remainder < 2/b ≤ 2/3 < 1` when `b ≥ 3`). -/
-theorem liouvilleNumber_floor {b : ℕ} (hb : 3 ≤ b) {k n : ℕ}
+`n - i!` are non-negative) and the remainder tail is `< 1`. Mathlib's *strict*
+`remainder_lt'` gives `remainder < 2 / b^((k+1)!)`, and `2·bⁿ ≤ b^((k+1)!)`
+(as `n + 1 ≤ (k+1)!`), so `bⁿ · remainder < 1` even in the tight base-`2` case
+where `2·bⁿ = b^(n+1)` meets the bound with equality. -/
+theorem liouvilleNumber_floor {b : ℕ} (hb : 2 ≤ b) {k n : ℕ}
     (hk_le : k ! ≤ n) (hk_lt : n < (k + 1)!) :
     ⌊(b : ℝ) ^ n * liouvilleNumber (b : ℝ)⌋
       = ∑ i ∈ Finset.range (k + 1), (b : ℤ) ^ (n - i !) := by
@@ -912,26 +1229,28 @@ theorem liouvilleNumber_floor {b : ℕ} (hb : 3 ≤ b) {k n : ℕ}
     mul_nonneg (by positivity) (le_of_lt (LiouvilleNumber.remainder_pos hb1 k))
   have hrem_lt : (b : ℝ) ^ n * LiouvilleNumber.remainder (b : ℝ) k < 1 := by
     have hR := LiouvilleNumber.remainder_lt' k hb1
-    have hbn : (0 : ℝ) ≤ (b : ℝ) ^ n := by positivity
-    -- Tail bound: remainder ≤ 2 / b^((k+1)!).
-    have hstep : LiouvilleNumber.remainder (b : ℝ) k ≤ 2 / (b : ℝ) ^ (k + 1)! := by
+    have hbn : (0 : ℝ) < (b : ℝ) ^ n := by positivity
+    -- *Strict* tail bound: remainder < 2 / b^((k+1)!) (from the strict `remainder_lt'`).
+    have hstep : LiouvilleNumber.remainder (b : ℝ) k < 2 / (b : ℝ) ^ (k + 1)! := by
       calc LiouvilleNumber.remainder (b : ℝ) k
-          ≤ (1 - 1 / (b : ℝ))⁻¹ * (1 / (b : ℝ) ^ (k + 1)!) := le_of_lt hR
+          < (1 - 1 / (b : ℝ))⁻¹ * (1 / (b : ℝ) ^ (k + 1)!) := hR
         _ ≤ 2 * (1 / (b : ℝ) ^ (k + 1)!) := by
             gcongr; exact sub_one_div_inv_le_two hb2R
         _ = 2 / (b : ℝ) ^ (k + 1)! := by rw [mul_one_div]
-    -- Polynomial gap: 2·bⁿ < b^((k+1)!) since (k+1)! ≥ n+1 and b ≥ 3.
-    have hexp : 2 * (b : ℝ) ^ n < (b : ℝ) ^ (k + 1)! := by
+    -- *Non-strict* polynomial gap: 2·bⁿ ≤ b^((k+1)!) since (k+1)! ≥ n+1 and b ≥ 2.
+    -- (For b = 2 the first step is an equality — this is why the tail bound must
+    -- carry the strictness instead.)
+    have hexp : 2 * (b : ℝ) ^ n ≤ (b : ℝ) ^ (k + 1)! := by
       calc 2 * (b : ℝ) ^ n
-          < (b : ℝ) * (b : ℝ) ^ n := by
-            apply mul_lt_mul_of_pos_right _ (by positivity)
-            exact_mod_cast (by omega : (2 : ℕ) < b)
+          ≤ (b : ℝ) * (b : ℝ) ^ n := by
+            apply mul_le_mul_of_nonneg_right _ (by positivity)
+            exact_mod_cast (by omega : (2 : ℕ) ≤ b)
         _ = (b : ℝ) ^ (n + 1) := by rw [pow_succ, mul_comm]
         _ ≤ (b : ℝ) ^ (k + 1)! := pow_le_pow_right₀ hb1.le (by omega)
-    have key : (b : ℝ) ^ n * (2 / (b : ℝ) ^ (k + 1)!) < 1 := by
-      rw [← mul_div_assoc, div_lt_one (by positivity)]
+    have key : (b : ℝ) ^ n * (2 / (b : ℝ) ^ (k + 1)!) ≤ 1 := by
+      rw [← mul_div_assoc, div_le_one (by positivity)]
       linarith [hexp]
-    exact lt_of_le_of_lt (mul_le_mul_of_nonneg_left hstep hbn) key
+    exact lt_of_lt_of_le (mul_lt_mul_of_pos_left hstep hbn) key
   -- Assemble: bⁿ·x = P + (small tail), so the floor is P.
   have hsplit : (b : ℝ) ^ n * liouvilleNumber (b : ℝ)
       = (P : ℝ) + (b : ℝ) ^ n * LiouvilleNumber.remainder (b : ℝ) k := by
@@ -945,7 +1264,7 @@ open scoped Nat in
 /-- **Every base-b digit of the Liouville constant (from position 2 on) is 0 or 1.**
 Consequently it is never equal to `2`. This is the digit obstruction that
 forbids normality. -/
-theorem liouvilleNumber_digit_le_one {b : ℕ} (hb : 3 ≤ b) {k n : ℕ}
+theorem liouvilleNumber_digit_le_one {b : ℕ} (hb : 2 ≤ b) {k n : ℕ}
     (hk_le : k ! ≤ n) (hk_lt : n < (k + 1)!) (hn : 2 ≤ n) :
     (⌊(b : ℝ) ^ n * liouvilleNumber (b : ℝ)⌋) % (b : ℤ) ≤ 1 := by
   rw [liouvilleNumber_floor hb hk_le hk_lt, Finset.sum_range_succ]
@@ -993,7 +1312,7 @@ theorem liouvilleNumber_not_normal {b : ℕ} (hb : 3 ≤ b) :
     (⟨2, h2b⟩ : Fin b) 2 ?_
   intro n hn
   obtain ⟨k, hk_le, hk_lt⟩ := exists_factorial_window (by omega : 1 ≤ n)
-  have hdig := liouvilleNumber_digit_le_one hb hk_le hk_lt (by omega : 2 ≤ n)
+  have hdig := liouvilleNumber_digit_le_one hb2 hk_le hk_lt (by omega : 2 ≤ n)
   have hval : ((⟨2, h2b⟩ : Fin b) : ℤ) = 2 := by simp
   rw [hval]
   unfold nthDigit
@@ -1017,5 +1336,119 @@ theorem irrational_not_imp_normal :
   intro h
   obtain ⟨x, hx_irr, hx_not⟩ := exists_irrational_not_normal (b := 3) (by norm_num)
   exact hx_not (h 3 (by norm_num) x hx_irr)
+
+-- ============================================================
+-- PART VII: BASE-2 DIGIT STRUCTURE OF THE LIOUVILLE CONSTANT
+-- ============================================================
+
+/-!
+The `b ≥ 3` witness above rules out normality via a *missing* digit (`2` never
+occurs). That obstruction is unavailable in **base 2**: an irrational real must
+use both digits `0` and `1` infinitely often, so no digit is eventually absent.
+Base-2 non-normality is therefore genuinely a job for the *frequency* criterion
+(`not_normal_of_digit_freq_tendsto_ne`), not the absence criterion — the digit
+`1` occurs, but only with density `0`.
+
+The results below pin down the exact base-`b` digit structure of the Liouville
+constant (`liouvilleNumber_window_digit`) and specialise it to base `2`
+(`liouvilleNumber_base_two_one_iff`): from position `2` on, the digit `1` occurs
+**exactly at the factorial positions** `n = k !`, everything else being `0`.
+This is the decisive structural input for base-`2` sharpness; what remains is the
+purely analytic fact that the factorial positions have density `0`
+(see the closing note).
+-/
+
+open scoped Nat in
+/-- **Exact base-`b` digit of the Liouville constant at a window position**
+    (any base `b ≥ 2`). If `k ! ≤ n < (k+1)!` and `n ≥ 2`, then the `n`-th
+    base-`b` digit of `liouvilleNumber b` is `1` when `n = k !` and `0`
+    otherwise. Strengthens `liouvilleNumber_digit_le_one` from the bound `≤ 1`
+    to the exact value, and shows every digit of the Liouville constant is `0`
+    or `1` in every base. -/
+theorem liouvilleNumber_window_digit {b : ℕ} (hb : 2 ≤ b) {k n : ℕ}
+    (hk_le : k ! ≤ n) (hk_lt : n < (k + 1)!) (hn : 2 ≤ n) :
+    nthDigit b n (liouvilleNumber (b : ℝ)) = if n = k ! then 1 else 0 := by
+  unfold nthDigit
+  rw [liouvilleNumber_floor hb hk_le hk_lt, Finset.sum_range_succ]
+  -- Lower-index terms are all divisible by `b` (their exponents are ≥ 1).
+  have hdvd : (b : ℤ) ∣ ∑ i ∈ Finset.range k, (b : ℤ) ^ (n - i !) := by
+    apply Finset.dvd_sum
+    intro i hi
+    have hi_lt_k : i < k := Finset.mem_range.mp hi
+    have hik : i ! < n := by
+      rcases Nat.eq_zero_or_pos i with h0 | hp
+      · rw [h0, Nat.factorial_zero]; omega
+      · calc i ! < k ! := (Nat.factorial_lt hp).mpr hi_lt_k
+          _ ≤ n := hk_le
+    exact dvd_pow_self (b : ℤ) (by omega : n - i ! ≠ 0)
+  obtain ⟨c, hc⟩ := hdvd
+  rw [hc, add_comm, Int.add_mul_emod_self_left]
+  -- Only the top term `b^(n - k!)` survives: residue `1` if `n = k!`, else `0`.
+  rcases eq_or_lt_of_le hk_le with heq | hlt
+  · -- n = k!
+    have hz : n - k ! = 0 := by omega
+    rw [hz, pow_zero, if_pos heq.symm]
+    exact Int.emod_eq_of_lt (by norm_num) (by exact_mod_cast (by omega : (1 : ℕ) < b))
+  · -- k! < n : the exponent is ≥ 1, so `b` divides the term.
+    obtain ⟨d, hd⟩ := dvd_pow_self (b : ℤ) (by omega : n - k ! ≠ 0)
+    rw [if_neg (by omega : n ≠ k !), hd, Int.mul_emod_right]
+
+open scoped Nat in
+/-- **Base-2 digit structure of the Liouville constant.** From position `2`
+    onwards, the digit `1` of `liouvilleNumber 2` occurs exactly at the
+    factorial positions: `nthDigit 2 n (liouvilleNumber 2) = 1 ↔ n = k !` for
+    some `k`. Every other digit (from position `2` on) is `0`. -/
+theorem liouvilleNumber_base_two_one_iff {n : ℕ} (hn : 2 ≤ n) :
+    nthDigit 2 n (liouvilleNumber (2 : ℝ)) = 1 ↔ ∃ k, k ! = n := by
+  obtain ⟨k, hk_le, hk_lt⟩ := exists_factorial_window (by omega : 1 ≤ n)
+  have hcast : ((2 : ℕ) : ℝ) = (2 : ℝ) := by norm_num
+  rw [← hcast, liouvilleNumber_window_digit (b := 2) (by norm_num) hk_le hk_lt hn]
+  constructor
+  · intro h
+    split_ifs at h with he
+    · exact ⟨k, he.symm⟩
+    · exact absurd h (by norm_num)
+  · rintro ⟨j, hj⟩
+    -- The factorial window is unique: `n = j !` forces `k = j`, so `n = k !`.
+    have hj2 : 2 ≤ j := by
+      by_contra hlt
+      push_neg at hlt
+      interval_cases j
+      · rw [Nat.factorial_zero] at hj; omega
+      · rw [Nat.factorial_one] at hj; omega
+    have hjpos : 0 < j := by omega
+    have hkj : k = j := by
+      rcases lt_trichotomy k j with h | h | h
+      · -- k < j : (k+1)! ≤ j! = n < (k+1)!, contradiction
+        have h1 : (k + 1)! ≤ j ! := Nat.factorial_le (by omega)
+        rw [hj] at h1; omega
+      · exact h
+      · -- j < k : (j+1)! ≤ k! ≤ n = j! < (j+1)!, contradiction
+        have h1 : (j + 1)! ≤ k ! := Nat.factorial_le (by omega)
+        have h2 : j ! < (j + 1)! := (Nat.factorial_lt hjpos).mpr (Nat.lt_succ_self j)
+        omega
+    rw [if_pos (by rw [hkj, hj])]
+
+/-!
+### Remaining step for base-2 sharpness
+
+`liouvilleNumber_base_two_one_iff` reduces base-`2` non-normality of the
+Liouville constant to a single analytic fact: the factorial positions
+`{n : ∃ k, k ! = n}` have **natural density `0`**, i.e.
+
+  `Tendsto (fun N => (#{n < N | nthDigit 2 n L = 1} : ℝ) / N) atTop (𝓝 0)`.
+
+Given that, `not_normal_of_digit_freq_tendsto_ne 2 (by norm_num) L 1 0 …`
+(frequency `0 ≠ 2⁻¹`) yields `¬ IsNormalInBase 2 L`, completing
+`exists_irrational_not_normal` down to base `2` and giving the frequency
+criterion its first genuine application (the absence criterion is provably
+powerless here, since an irrational base-2 number omits no digit).
+
+The density fact is elementary but not free in Lean: the `1`-positions inject
+into `{k | k ! < N}`, whose cardinality is `≤ Nat.log 2 N + O(1)` (as
+`k ! ≥ 2^(k-1)`), and `Nat.log 2 N / N → 0`. Formalising `Nat.log 2 N / N → 0`
+(≈ `Real.log`-is-`o(id)` transported through `Nat.pow_log_le_self`) is the next
+session's target.
+-/
 
 end ETranscendentalOQ02

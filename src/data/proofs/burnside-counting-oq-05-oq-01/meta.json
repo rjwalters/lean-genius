@@ -58,8 +58,8 @@
     "axiomCount": 0,
     "assumptions": "None. Fully verified, 0 axioms, 0 sorries. Depends only on the standard foundational axioms propext, Classical.choice, Quot.sound.",
     "lineCount": 249,
-    "theoremCount": 12,
-    "definitionCount": 7
+    "theoremCount": 13,
+    "definitionCount": 6
   },
   "overview": {
     "historicalContext": "The dihedral group D_n acting on a cycle of n beads has its symmetries split into rotations and reflections, and the Burnside (Cauchy–Frobenius) lemma averages the number of colorings each fixes. The rotation contributions are the gcd-counts k^gcd(n,r) (cf. oq-03); the reflection contributions depend on the parity of n. The odd case (oq-05) is uniform: every reflection axis passes through one vertex and the opposite edge-midpoint, fixing one bead and giving k^((n+1)/2). The even case, formalized here, is genuinely two-typed: half the reflection axes pass through two opposite vertices, half through two opposite edge-midpoints, and the two types fix different numbers of colorings. This dichotomy is exactly what makes the even-n necklace count more subtle than a single power of k.",
@@ -163,8 +163,8 @@
     "namespace": "BurnsideCountingOQ05OQ01",
     "lineCount": 249,
     "axiomCount": 0,
-    "theoremCount": 12,
-    "definitionCount": 7,
+    "theoremCount": 13,
+    "definitionCount": 6,
     "path": "Proofs/BurnsideCountingOQ05OQ01.lean",
     "sorries": 0
   },

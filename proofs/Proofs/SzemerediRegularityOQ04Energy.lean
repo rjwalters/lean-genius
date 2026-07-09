@@ -228,4 +228,105 @@ theorem pairEnergy_row_split_mono (G : SimpleGraph V) [DecidableRel G.Adj]
   intro B _
   exact pairEnergy_split_mono G A₁ A₂ B hA
 
+/-- **Quantitative row form of the energy increment.**  If a distinguished part
+    `B₀ ∈ Bs` witnesses a density deviation `|d(A₁,B₀) − d(A₂,B₀)| ≥ δ` between the
+    two halves, then splitting the `A`-side and summing the energy contribution over
+    the whole row raises the total by at least the single-pair gain at `B₀`.  Every
+    other row term contributes a nonnegative increment (`pairEnergy_split_mono`), so
+    the definite gain at `B₀` survives to the summed statement.  This is the shape in
+    which one irregular partner drives the whole-partition energy jump. -/
+theorem pairEnergy_row_split_gain (G : SimpleGraph V) [DecidableRel G.Adj]
+    (A₁ A₂ : Finset V) (hA : Disjoint A₁ A₂) (Bs : Finset (Finset V))
+    (B₀ : Finset V) (hB₀ : B₀ ∈ Bs)
+    (hn₁ : 0 < (A₁.card : ℚ)) (hn₂ : 0 < (A₂.card : ℚ)) (hB : 0 < (B₀.card : ℚ))
+    (δ : ℚ) (hδ : 0 ≤ δ)
+    (hdev : |edgeDensity G A₁ B₀ - edgeDensity G A₂ B₀| ≥ δ) :
+    (Bs.sum fun B => pairEnergy G (A₁ ∪ A₂) B) +
+        (A₁.card : ℚ) * A₂.card / ((A₁.card : ℚ) + A₂.card) *
+          ((B₀.card : ℚ) / (Fintype.card V : ℚ) ^ 2) * δ ^ 2 ≤
+      Bs.sum fun B => pairEnergy G A₁ B + pairEnergy G A₂ B := by
+  -- Work with the per-term surplus `g B = (pairEnergy A₁ B + pairEnergy A₂ B) − pairEnergy (A₁∪A₂) B`.
+  have hnn : ∀ B ∈ Bs, (0 : ℚ) ≤
+      (pairEnergy G A₁ B + pairEnergy G A₂ B) - pairEnergy G (A₁ ∪ A₂) B := by
+    intro B _
+    linarith [pairEnergy_split_mono G A₁ A₂ B hA]
+  -- At `B₀` the surplus is at least the Cauchy–Schwarz gain.
+  have hgain : (A₁.card : ℚ) * A₂.card / ((A₁.card : ℚ) + A₂.card) *
+        ((B₀.card : ℚ) / (Fintype.card V : ℚ) ^ 2) * δ ^ 2 ≤
+      (pairEnergy G A₁ B₀ + pairEnergy G A₂ B₀) - pairEnergy G (A₁ ∪ A₂) B₀ := by
+    linarith [pairEnergy_split_gain G A₁ A₂ B₀ hA hn₁ hn₂ hB δ hδ hdev]
+  -- One term of a sum of nonnegatives is bounded by the whole sum.
+  have hsingle := Finset.single_le_sum hnn hB₀
+  rw [Finset.sum_sub_distrib] at hsingle
+  linarith
+
+-- ═══════════════════════════════════════════════════════════════════
+-- PART III: THE VARIANCE ATOM BOUND (n-cell energy excess)
+-- ═══════════════════════════════════════════════════════════════════
+
+/-- **Weighted-mean square identity (n cells).**  For nonnegative weights `w` on a
+    finite index set `s`, the size-weighted second moment about the weighted mean
+    `μ = (Σ wᵢxᵢ)/(Σ wᵢ)` splits as
+    `Σ wᵢ(xᵢ − μ)² = Σ wᵢxᵢ² − (Σ wᵢ)·μ²`.
+    This is the Finset generalization of `split_energy_identity` (the two-cell
+    case): the excess of the second moment over the mean-squared is exactly the
+    weighted variance.  The only hypothesis is `Σ wᵢ ≠ 0` (so `μ` is well defined). -/
+theorem weighted_variance_identity {ι : Type*} (s : Finset ι) (w x : ι → ℚ)
+    (hW : (∑ i ∈ s, w i) ≠ 0) :
+    (∑ i ∈ s, w i * (x i - (∑ j ∈ s, w j * x j) / (∑ j ∈ s, w j)) ^ 2) =
+      (∑ i ∈ s, w i * x i ^ 2) -
+        (∑ i ∈ s, w i) * ((∑ j ∈ s, w j * x j) / (∑ j ∈ s, w j)) ^ 2 := by
+  set μ : ℚ := (∑ j ∈ s, w j * x j) / (∑ j ∈ s, w j) with hμ_def
+  -- `μ` is the honest weighted mean: `(Σ wⱼ)·μ = Σ wⱼxⱼ`.
+  have hμ : (∑ i ∈ s, w i) * μ = ∑ i ∈ s, w i * x i := by
+    rw [hμ_def]; field_simp
+  -- Expand the variance sum termwise, then collect the three sub-sums.
+  have hexp : (∑ i ∈ s, w i * (x i - μ) ^ 2) =
+      (∑ i ∈ s, w i * x i ^ 2) - 2 * μ * (∑ i ∈ s, w i * x i) +
+        μ ^ 2 * (∑ i ∈ s, w i) := by
+    rw [Finset.mul_sum, Finset.mul_sum, ← Finset.sum_sub_distrib,
+        ← Finset.sum_add_distrib]
+    exact Finset.sum_congr rfl (fun i _ => by ring)
+  rw [hexp, ← hμ]; ring
+
+/-- **The variance atom bound.**  If a single cell `i₀` carries weight at least
+    `w₀ ≥ 0` and its value `x i₀` deviates from the weighted mean by at least
+    `d ≥ 0`, then the weighted second-moment excess dominates `w₀·d²`:
+    `Σ wᵢxᵢ² − (Σ wᵢ)·μ² ≥ w₀·d²`.
+
+    This is the analytic core of the AFKS energy increment beyond the two-cell
+    Cauchy–Schwarz `split_energy_excess_bound`.  When an ε-irregular pair is
+    refined *simultaneously* on both coordinates into a family of sub-cells, the
+    witness sub-cell is one atom of the resulting weighted distribution of
+    densities whose deviation from the mean is bounded below; this lemma converts
+    that single-atom deviation into a definite energy gain, with no reliance on
+    triangle inequalities through mixed densities. -/
+theorem variance_atom_bound {ι : Type*} (s : Finset ι) (w x : ι → ℚ)
+    (hw : ∀ i ∈ s, 0 ≤ w i) (hW : (∑ i ∈ s, w i) ≠ 0)
+    (i₀ : ι) (hi₀ : i₀ ∈ s) (w₀ d : ℚ) (hw₀ : 0 ≤ w₀) (hd : 0 ≤ d)
+    (hwlb : w₀ ≤ w i₀)
+    (hdev : d ≤ |x i₀ - (∑ j ∈ s, w j * x j) / (∑ j ∈ s, w j)|) :
+    w₀ * d ^ 2 ≤
+      (∑ i ∈ s, w i * x i ^ 2) -
+        (∑ i ∈ s, w i) * ((∑ j ∈ s, w j * x j) / (∑ j ∈ s, w j)) ^ 2 := by
+  set μ : ℚ := (∑ j ∈ s, w j * x j) / (∑ j ∈ s, w j) with hμ_def
+  -- Every variance term is nonnegative, so the whole sum dominates the `i₀` term.
+  have hnn : ∀ i ∈ s, (0 : ℚ) ≤ w i * (x i - μ) ^ 2 :=
+    fun i hi => mul_nonneg (hw i hi) (sq_nonneg _)
+  have hsingle : w i₀ * (x i₀ - μ) ^ 2 ≤ ∑ i ∈ s, w i * (x i - μ) ^ 2 :=
+    Finset.single_le_sum hnn hi₀
+  -- The `i₀` term itself dominates `w₀·d²`.
+  have hsq : d ^ 2 ≤ (x i₀ - μ) ^ 2 := by
+    calc d ^ 2 ≤ |x i₀ - μ| ^ 2 :=
+          sq_le_sq' (by linarith [abs_nonneg (x i₀ - μ)]) hdev
+      _ = (x i₀ - μ) ^ 2 := sq_abs _
+  have hatom : w₀ * d ^ 2 ≤ w i₀ * (x i₀ - μ) ^ 2 := by
+    calc w₀ * d ^ 2 ≤ w i₀ * d ^ 2 := mul_le_mul_of_nonneg_right hwlb (sq_nonneg d)
+      _ ≤ w i₀ * (x i₀ - μ) ^ 2 :=
+          mul_le_mul_of_nonneg_left hsq (le_trans hw₀ hwlb)
+  -- Combine with the variance identity.
+  have hvar := weighted_variance_identity s w x hW
+  rw [← hμ_def] at hvar
+  linarith [hsingle, hatom, hvar]
+
 end Szemeredi.RegularityOQ04Energy

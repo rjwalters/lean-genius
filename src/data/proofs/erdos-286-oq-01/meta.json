@@ -100,6 +100,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Docstring and Import",
+      "startLine": 1,
+      "endLine": 38,
+      "summary": "Imports Mathlib; module docstring framing this child of Erdős #286 (unit fractions in short intervals) and stating the small-k picture it pins down denominator-free: k = 2 impossibility (no_two_distinct_unit_fractions), k = 3 existence (repr_236) and uniqueness ({2,3,6}, three_distinct_unit_fractions_eq_one), combined in three_distinct_iff — so 1 has no 2-term distinct Egyptian representation and a unique 3-term one. Namespace Erdos286OQ01, open Finset; notes all results are 0-axiom (no sorry/axiom/native_decide).",
+      "mathContext": "1 = Σ 1/nᵢ with distinct nᵢ: no k = 2 solution, unique k = 3 solution {2,3,6}; k = 3 is the smallest term count admitting a representation."
+    },
+    {
       "id": "k2",
       "title": "k = 2: No Two Distinct Unit Fractions Sum to 1",
       "startLine": 39,

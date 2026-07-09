@@ -22,8 +22,8 @@
     "dateAdded": "2026-04-21",
     "axiomCount": 0,
     "assumptions": "1 sorry: hurwitz_only_if_ring, scoped (via by_cases + hurwitz_only_if_ring_comm) to the strictly NON-COMMUTATIVE case of Frobenius' theorem. Everything up to and including the positive-definite symmetric bilinear form on Im A is now VERIFIED (0 sorries): Frobenius Steps 1-2 (minpoly_natDegree_le_two, exists_quadratic, exists_real_shift_sq_scalar, eq_smul_one_of_sq_eq_nonneg_smul) give the quadratic + completing-the-square structure; the imaginary summand Im A is packaged as an honest ℝ-submodule (imaginarySubmodule = ker realPart, with isImaginary_add / isImaginary_smul closure and the real-part functional realPart : A →ₗ[ℝ] ℝ); and imaginaryBilin realises the inner product B(x,y) = -(x*y+y*x)/2, proved symmetric, positive semi-definite, and positive-definite (imaginaryBilin_self_eq_zero_iff). The quaternion-generating mechanism is also VERIFIED: isImaginary_mul_of_anticomm shows the product of two anticommuting imaginary elements is imaginary, and mul_anticomm_left/right show it anticommutes with both factors — so two B-orthogonal imaginary units generate a quaternion triple. The SINGLE remaining sorry is the Radon-Hurwitz / Frobenius dimension count itself: that these Clifford relations force finrank ℝ (Im A) ∈ {0,1,3}, hence finrank ℝ A ∈ {1,2,4} ⊆ {1,2,4,8}. This last step (no 4th independent anticommuting imaginary unit can exist in an associative division ring) is the genuinely open formalisation gap; Mathlib currently lacks the Clifford-algebra representation machinery to discharge it directly. The commutative subcase (hurwitz_field_case, via Gelfand-Mazur) is axiom-free.",
-    "lineCount": 793,
-    "theoremCount": 32,
+    "lineCount": 973,
+    "theoremCount": 41,
     "definitionCount": 7,
     "originalContributions": [
       "admissibleDimensions: Def {1,2,4,8} — the four admissible finranks",
@@ -177,7 +177,7 @@
     "namespace": "HurwitzOnlyIf",
     "lineCount": 973,
     "axiomCount": 0,
-    "theoremCount": 39,
+    "theoremCount": 41,
     "definitionCount": 7,
     "path": "Proofs/HurwitzOnlyIf.lean",
     "sorries": 1

@@ -21,7 +21,7 @@
     "badge": "axiom",
     "sorries": 2,
     "axiomCount": 2,
-    "theoremCount": 17,
+    "theoremCount": 18,
     "lineCount": 623,
     "defCount": 4,
     "assumptions": "2 axioms: (1) wirtinger_ac — Wirtinger inequality for Lipschitz/AC 2π-periodic functions with zero mean: ∫f² ≤ ∫(f')²; (2) exists_lip_nice_reparam — arc-length reparametrization for Lipschitz curves with positive speed a.e., giving constant-speed and zero-mean reparametrization. The smooth→Lipschitz embedding (lip_x/lip_y) is fully proved via contDiff_periodic_lipschitz. The derivative-squared integrability facts hdx_int/hdy_int are now proved (norm_deriv_le_of_lipschitz + measurable_deriv + Measure.integrableOn_of_bounded), so wirtinger_sum_sq_bound_lip is sorry-free. 2 technical sorries remain, both inside the main theorem: harea_zero (area=0 from circumference=0) and hf_int (integrability of xy'−yx' for Lipschitz curves).",
@@ -60,7 +60,7 @@
       }
     ],
     "dateAdded": "2026-05-03",
-    "definitionCount": 4
+    "definitionCount": 5
   },
   "overview": {
     "historicalContext": "Hurwitz (1901) proved the isoperimetric inequality for smooth curves using Fourier series. The Wirtinger inequality is the key analytical ingredient: for a zero-mean 2π-periodic smooth function f, ∫₀²π f² ≤ ∫₀²π (f')². The natural regularity level for the isoperimetric inequality is Lipschitz (or even rectifiable) curves, since these include all piecewise-smooth curves (polygons, convex bodies). For Lipschitz curves, Rademacher's theorem guarantees differentiability a.e., so the arc-length and Green's theorem formulas remain valid as Lebesgue integrals. The Wirtinger inequality extends to W^{1,2}(S¹) and hence to all Lipschitz functions. Maz'ya (1985) and Federer (1969) contain the foundational measure-theoretic machinery for this generalization.",
@@ -183,9 +183,9 @@
     "namespace": "LipschitzIsoperimetric",
     "lineCount": 623,
     "axiomCount": 2,
-    "theoremCount": 17,
+    "theoremCount": 18,
     "lemmaCount": 1,
-    "definitionCount": 4,
+    "definitionCount": 5,
     "substantiveTheoremCount": 6,
     "sorries": 2,
     "path": "Proofs/AreaOfCircleOQ01OQ03OQ02.lean",

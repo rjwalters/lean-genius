@@ -67,10 +67,10 @@ The squared distance on the Moree–Osburn lattice is the binary quadratic form
 `x² + 2y²` (discriminant `-8`). The three lemmas below verify that it is a genuine
 positive-definite form: symmetric, non-negative, and vanishing only on the diagonal.
 The last property (`latticeDistSq_eq_zero_iff`) is exactly what guarantees the
-truncated lattice consists of *distinct* points, so that `moreeOsburnLattice n`
-realises `n` honest points with positive pairwise distances. These are fully
-verified (no axioms, no sorries) and are independent of the deep analytic input
-(`moreeOsburnWorks`). -/
+truncated lattice consists of *distinct* points, so that `moreeOsburnLattice k`
+realises `(2k+1)²` honest points with positive pairwise distances (this is what
+`moreeOsburnLattice_card` proves). These are fully verified (no axioms, no sorries)
+and are independent of the deep analytic input (`moreeOsburnWorks`). -/
 
 /-- The squared lattice distance is symmetric in its two points. -/
 theorem latticeDistSq_symm (a₁ b₁ a₂ b₂ : ℤ) :
@@ -108,53 +108,87 @@ theorem latticeDistSq_eq_zero_iff (a₁ b₁ a₂ b₂ : ℤ) :
 noncomputable def latticeBox (k : ℕ) : Finset (ℤ × ℤ) :=
   (Finset.Icc (-k : ℤ) k) ×ˢ (Finset.Icc (-k : ℤ) k)
 
-/-- The Moree-Osburn lattice: points of the form (a, b√2) for integers a,b.
-    This lattice has the remarkable property of avoiding many regular
-    geometric configurations while having few distinct distances.
+/-- The Moree–Osburn lattice truncated to the box `[-k, k] × [-k, k]`: the points
+    `(a, b√2)` with `|a|, |b| ≤ k`. This is a genuine 2-D configuration of
+    `(2k+1)²` distinct points (see `moreeOsburnLattice_card`); the irrationality of
+    `√2` makes it avoid the regular configurations that force only two distances,
+    while Landau's theorem for `x²+2y²` keeps its distinct-distance count small
+    relative to its size.
 
-    We truncate to approximately n points by choosing k ≈ √(n/4) and taking
-    the box [-k, k] × [-k, k] which has (2k+1)² points. -/
-noncomputable def moreeOsburnLattice (n : ℕ) : Finset (ℝ × ℝ) :=
-  let k := Nat.sqrt (n / 4)  -- Approximate side length to get ~n points
-  let box := latticeBox k
-  box.image (fun ⟨a, b⟩ => latticePoint a b)
+    The family is indexed by the **box side `k`**, not by a target point count. An
+    earlier version indexed by `n` and asserted `card = n`, which is false: the box
+    always has `(2k+1)²` points, so no single truncation realises an arbitrary `n`
+    (e.g. `k = √(n/4)` gives `1` point for `n = 2, 3` and `9` points for `n = 4`).
+    That false `card = n` clause used to sit inside the deep axiom below. -/
+noncomputable def moreeOsburnLattice (k : ℕ) : Finset (ℝ × ℝ) :=
+  (latticeBox k).image (fun p => latticePoint p.1 p.2)
+
+/-- `latticePoint` is injective: the first coordinate is `a`, and the second,
+    `b · √2`, determines `b` because `√2 ≠ 0`. Hence the truncated lattice has as
+    many points as the integer box `[-k, k]²`. -/
+theorem latticePoint_injective :
+    Function.Injective (fun p : ℤ × ℤ => latticePoint p.1 p.2) := by
+  rintro ⟨a, b⟩ ⟨c, d⟩ h
+  simp only [latticePoint, Prod.mk.injEq] at h
+  obtain ⟨h1, h2⟩ := h
+  have hs : (Real.sqrt 2) ≠ 0 := (by positivity : (0 : ℝ) < Real.sqrt 2).ne'
+  have hbd : b = d := by
+    have : (b : ℝ) = (d : ℝ) := mul_right_cancel₀ hs h2
+    exact_mod_cast this
+  have hac : a = c := by exact_mod_cast h1
+  subst hac; subst hbd; rfl
+
+/-- **The truncated lattice has exactly `(2k+1)²` points** — a *verified theorem*,
+    previously bundled into the deep axiom as a false `card = n` clause. The count is
+    the cardinality of the integer box `[-k, k]²` because `latticePoint` is injective. -/
+theorem moreeOsburnLattice_card (k : ℕ) :
+    (moreeOsburnLattice k).card = (2 * k + 1) ^ 2 := by
+  rw [moreeOsburnLattice, Finset.card_image_of_injective _ latticePoint_injective,
+    latticeBox, Finset.card_product, Int.card_Icc]
+  have h : ((k : ℤ) + 1 - (-(k : ℤ))).toNat = 2 * k + 1 := by omega
+  rw [h]; ring
 
 /--
-  **Main Result (Axiom)**: The Moree-Osburn lattice achieves the desired properties.
+  **Deep geometric input** (Moree–Osburn 2006; Landau's theorem for `x²+2y²`).
+  For the box-truncated lattice `moreeOsburnLattice k` — which has `m = (2k+1)²`
+  points, all at positive pairwise distance (`latticeDistSq_eq_zero_iff`) — two facts
+  hold that are genuinely deep and not currently in Mathlib:
+  1. the **4-point property**: no 4-point subset collapses to only two distances;
+  2. **few distances**: the number of distinct distances is at most `m / √(log m)`,
+     in the set's *own* size `m`, via Landau's asymptotic for the form `x²+2y²`
+     (the number of integers `≤ N` of the form `x²+2y²` is `O(N/√(log N))`).
 
-  The proof that this lattice works requires:
-  1. Showing the 4-point property holds (no 4-point subset has only 2 distances)
-  2. Counting distinct distances using algebraic number theory arguments
-
-  The key insight is that (a₁, b₁√2) and (a₂, b₂√2) have distance
-  √((a₁-a₂)² + 2(b₁-b₂)²), and the number of integers representable as
-  x² + 2y² up to N is O(N/√(log N)) by Landau's theorem.
+  The cardinality claim is no longer part of this axiom — it is the verified theorem
+  `moreeOsburnLattice_card`. Only the two deep geometric facts remain axiomatised.
 -/
 axiom moreeOsburnWorks :
-  ∀ n : ℕ, n > 0 →
-    let S := moreeOsburnLattice n
-    S.card = n ∧
-    fourPointProperty S ∧
-    (distinctDistances S : ℝ) ≤ n / sqrt (log n)
+  ∀ k : ℕ, 0 < k →
+    fourPointProperty (moreeOsburnLattice k) ∧
+    (distinctDistances (moreeOsburnLattice k) : ℝ)
+      ≤ (moreeOsburnLattice k).card / sqrt (log ((moreeOsburnLattice k).card))
 
-/-- **Erdős Problem 659**: There exists a family of point sets with the
-    4-point property and few distinct distances.
+/-- **Erdős Problem 659** (answer: **YES**). There is a family of *arbitrarily large*
+    planar point sets `A k`, each with the 4-point property (every 4 points determine
+    at least 3 distinct distances) yet with few distinct distances — at most
+    `m / √(log m)` in the set's own size `m`. The witnessing family is the
+    box-truncated Moree–Osburn lattice, whose size `(2k+1)² → ∞`.
 
-    Answer: YES (constructive via Moree-Osburn lattice) -/
+    The construction and the "few distances" bound are honest in the set's own
+    cardinality `m`: `moreeOsburnLattice_card` proves `m = (2k+1)²` (so the family is
+    unbounded), and the deep geometric content is isolated in `moreeOsburnWorks`. -/
 theorem erdos_659 : ∃ A : ℕ → Finset (ℝ × ℝ),
-    (∀ n > 0, (A n).card = n ∧ fourPointProperty (A n)) ∧
-    ∃ C > 0, ∀ n > 1, (distinctDistances (A n) : ℝ) ≤ C * n / sqrt (log n) := by
-  use moreeOsburnLattice
-  constructor
-  · intro n hn
-    exact ⟨(moreeOsburnWorks n hn).1, (moreeOsburnWorks n hn).2.1⟩
-  · use 1
-    constructor
-    · norm_num
-    · intro n hn
-      have h := (moreeOsburnWorks n (by omega : n > 0)).2.2
-      simp only [one_mul]
-      exact h
+    (∀ N : ℕ, ∃ k, N ≤ (A k).card) ∧
+    (∀ k > 0, fourPointProperty (A k)) ∧
+    (∀ k > 0, (distinctDistances (A k) : ℝ)
+      ≤ (A k).card / sqrt (log ((A k).card))) := by
+  refine ⟨moreeOsburnLattice, ?_, ?_, ?_⟩
+  · intro N
+    refine ⟨N, ?_⟩
+    rw [moreeOsburnLattice_card]
+    calc N ≤ 2 * N + 1 := by omega
+      _ ≤ (2 * N + 1) ^ 2 := Nat.le_self_pow (by norm_num) _
+  · intro k hk; exact (moreeOsburnWorks k hk).1
+  · intro k hk; exact (moreeOsburnWorks k hk).2
 
 /-- The six 4-point configurations with only 2 distances.
     Five contain squares or equilateral triangles.

@@ -89,7 +89,9 @@
     "perfect-numbers",
     "perfect-numbers-oq-02",
     "perfect-numbers-oq-03",
-    "perfect-numbers-oq-05"
+    "perfect-numbers-oq-05",
+    "perfect-numbers-oq-05-oq-01",
+    "perfect-numbers-oq-06"
   ],
   "references": {
     "papers": [
@@ -154,6 +156,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PerfectNumbersOQ05.lean"
+    },
+    {
+      "path": "Proofs/PerfectNumbersOQ05OQ01.lean",
+      "filename": "PerfectNumbersOQ05OQ01.lean",
+      "lineCount": 264,
+      "theoremCount": 16,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PerfectNumbersOQ05OQ01.lean"
     },
     {
       "path": "Proofs/PerfectNumbersOQ06.lean",

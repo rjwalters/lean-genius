@@ -117,3 +117,31 @@ line 304 `done` does nothing — not mine, untouched.
   moduli, re-prove `kronecker_mul_right` for the refined def.
 - Target 2: generalized reciprocity for fundamental discriminants (Gauss sums).
 Key API: jacobiSym.trichotomy / eq_one_or_neg_one / eq_zero_iff_not_coprime[NeZero].
+
+## Session 2026-07-08 (researcher-3) — (-2/·) supplementary character completed
+
+The three nontrivial supplementary characters mod 8 had asymmetric coverage:
+`(-1/·)` and `(2/·)` each had an explicit residue-table `if`-form
+(`kronecker_neg_one_odd`, `kronecker_two_odd`) AND a periodicity lemma
+(`kronecker_neg_one_periodic` mod 4, `kronecker_two_periodic` mod 8), but the
+combined character `(-2/·)` had only the abstract bridges (`= χ₈'`, `= (-1/·)·(2/·)`).
+Filled the gap (2 thm, VERIFIED 0/0, leanFile 676→709 L / 44→46 thm):
+
+- `kronecker_neg_two_odd (n hn hno)`: `(-2/n) = if n%8=1∨n%8=3 then 1 else -1`.
+  One-liner mirroring `kronecker_two_odd`: `kronecker_eq_jacobi` +
+  `jacobiSym.at_neg_two` (`J(-2|n)=χ₈' n`) + `ZMod.χ₈'_nat_eq_if_mod_eight` +
+  `if_neg` on the even branch. Note the `+1` classes are `{1,3} mod 8` (where χ₈'
+  is +1), DISTINCT from the `{1,7}` classes of `(2/·)` — the two mod-8 characters
+  split the odd residues differently.
+- `kronecker_neg_two_periodic (n hn hno)`: `(-2/(n+8)) = (-2/n)`. Mirrors
+  `kronecker_two_periodic`; period is 8 (NOT 4) because the character carries the
+  mod-8 part χ₈, so unlike `(-1/·)` it is not periodic mod 4.
+
+Every one of the three supplementary characters now has: value-table + periodicity
++ canonical-χ bridge — the complete Dirichlet-character data the Gauss-sum route
+(Target 2) consumes. Still open (unchanged, NOT session-sized): (1) wire `kronecker2`
+into the def for the classical symbol at even moduli; (2) generalized reciprocity
+via Gauss sums.
+
+*Build:* green first try (3058 jobs, 2.7s) — no SIGBUS this cycle. Pre-existing
+line-304 `done`-does-nothing linter warning is not mine (untouched).

@@ -25,7 +25,7 @@
     "assumptions": "0 axioms, 0 sorries (depends only on propext, Classical.choice, Quot.sound). Builds on Mathlib's Gaussian Fourier transform (GaussianFourier.integral_cexp_neg_mul_sq_add_real_mul_I), the parametric differentiation-under-the-integral lemma (hasDerivAt_integral_of_dominated_loc_of_deriv_le), and the Gaussian integrability lemmas integrable_exp_neg_mul_sq / integrable_mul_exp_neg_mul_sq.",
     "mathlib_version": "4.26.0",
     "dateAdded": "2026-06-22",
-    "theoremCount": 9,
+    "theoremCount": 11,
     "definitionCount": 0
   },
   "overview": {
@@ -127,7 +127,7 @@
     "namespace": "GaussianHermiteFourier",
     "lineCount": 301,
     "axiomCount": 0,
-    "theoremCount": 9,
+    "theoremCount": 11,
     "definitionCount": 0,
     "mainTheorems": [
       {

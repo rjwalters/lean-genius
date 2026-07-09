@@ -21,7 +21,7 @@
     "sorries": 0,
     "axiomCount": 0,
     "lineCount": 135,
-    "theoremCount": 10,
+    "theoremCount": 11,
     "definitionCount": 1,
     "assumptions": "None. 0 axioms, 0 sorries, no native_decide. All `decide` calls are kernel decisions on concrete finite data (the idempotent count of ZMod 1, and the union {2} ∪ {5} for the prime factors of 10). Results depend only on the standard foundational axioms propext / Classical.choice / Quot.sound; Classical.choice / Quot.sound enter via Nat.card / Real-free Fintype reasoning. Builds on the verified parent entry AutomorphicNumberOQ01.lean, reusing its idem_card_prime_pow, idemCongr, and idemProd.",
     "mathlibDependencies": [
@@ -77,7 +77,7 @@
     "namespace": "AutomorphicNumberOQ01OQ01",
     "lineCount": 135,
     "axiomCount": 0,
-    "theoremCount": 10,
+    "theoremCount": 11,
     "definitionCount": 1,
     "path": "Proofs/AutomorphicNumberOQ01OQ01.lean",
     "sorries": 0

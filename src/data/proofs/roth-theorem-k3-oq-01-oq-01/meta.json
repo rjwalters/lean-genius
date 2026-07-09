@@ -15,7 +15,7 @@
     "buildStatus": "verified: ./proofs/scripts/docker-build.sh Proofs.RothTheoremModulusDecay completed successfully on 2026-07-02 (✔ [7743/7743] Built Proofs.RothTheoremModulusDecay), confirming the pending build the prior session could not obtain. The file has 0 sorries, 0 axiom declarations, 7 theorems / 0 definitions, and uses no native_decide/decide — all proofs are ordinary Mathlib real-analysis tactics (induction, calc, rpow/log/sqrt lemmas, linarith/nlinarith/norm_num/positivity), so the axiom trail is the standard propext/Classical.choice/Quot.sound.",
     "theoremCount": 7,
     "definitionCount": 0,
-    "lineCount": 201,
+    "lineCount": 202,
     "tags": [
       "additive-combinatorics",
       "szemeredi",
@@ -114,7 +114,7 @@
   ],
   "leanFile": {
     "path": "Proofs/RothTheoremModulusDecay.lean",
-    "lineCount": 201,
+    "lineCount": 202,
     "axiomCount": 0,
     "sorries": 0,
     "theoremCount": 7,

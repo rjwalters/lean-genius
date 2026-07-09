@@ -7,10 +7,68 @@
   "tier": "B",
   "significance": 5,
   "tractability": 6,
-  "tags": ["polynomials", "hasse-derivative", "positive-characteristic", "finite-fields", "multiplicity"],
+  "tags": [
+    "polynomials",
+    "hasse-derivative",
+    "positive-characteristic",
+    "finite-fields",
+    "multiplicity"
+  ],
   "problemStatement": "Pin down exactly where the ordinary iterated-derivative multiplicity test (X-a)^k ∣ p ↔ p,p',...,p^(k-1) vanish at a) breaks down over a characteristic-p field, and — the reliability complement added 2026-06-30 — exactly where it remains CORRECT.",
-  "relatedProofs": ["factor-remainder-theorem-oq-01-oq-02", "factor-remainder-theorem"],
-  "leanFiles": ["proofs/Proofs/FactorRemainderHasseDerivativeFq.lean"],
+  "relatedProofs": [
+    "factor-remainder-hasse-derivative-fq",
+    "factor-remainder-hasse-derivative-fq-oq-01",
+    "factor-remainder-hasse-derivative-fq-oq-01-oq-01",
+    "factor-remainder-hasse-derivative-fq-oq-02",
+    "factor-remainder-theorem",
+    "factor-remainder-theorem-oq-01-oq-02"
+  ],
+  "leanFiles": [
+    {
+      "path": "Proofs/FactorRemainderHasseDerivativeFq.lean",
+      "filename": "FactorRemainderHasseDerivativeFq.lean",
+      "lineCount": 281,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FactorRemainderHasseDerivativeFq.lean"
+    },
+    {
+      "path": "Proofs/FactorRemainderHasseDerivativeFqOQ01.lean",
+      "filename": "FactorRemainderHasseDerivativeFqOQ01.lean",
+      "lineCount": 191,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FactorRemainderHasseDerivativeFqOQ01.lean"
+    },
+    {
+      "path": "Proofs/FactorRemainderHasseDerivativeFqOQ01OQ01.lean",
+      "filename": "FactorRemainderHasseDerivativeFqOQ01OQ01.lean",
+      "lineCount": 199,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FactorRemainderHasseDerivativeFqOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/FactorRemainderHasseDerivativeFqOQ02.lean",
+      "filename": "FactorRemainderHasseDerivativeFqOQ02.lean",
+      "lineCount": 171,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FactorRemainderHasseDerivativeFqOQ02.lean"
+    }
+  ],
   "lastUpdate": "2026-06-30",
   "currentState": "VERIFIED 0-axiom, 0-sorry. Original failure profile (orders ≥ p blind; X^{p^e} overcount) plus new Part IV reliability profile shipped in PR #31634.",
   "knowledge": {

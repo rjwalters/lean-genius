@@ -23,7 +23,7 @@
     "assumptions": "4 assumptions: 2 axioms (scaled_area — Area(tP)=t²A; scaled_boundary — |∂(tP)|=t·B for t≥1), 1 structure-encoded assumption (the SimpleLatticePolygon.pick_relation field — Pick's formula A=i+B/2-1, carried as data so every polygon value is a genuine lattice polygon; this replaces a previously free-standing axiom picks_theorem that was logically inconsistent because the structure admitted non-Pick polygons, see #23117/#24682), plus 1 opaque constant (scaledPolygon — the integer dilation tP, opaque since its concrete construction is not needed for the theorem). picks_theorem is now a theorem derived from the pick_relation field. The rectangle and triangle Ehrhart polynomials are proved with 0 axioms via Finset combinatorics.",
     "lineCount": 324,
     "theoremCount": 25,
-    "definitionCount": 7,
+    "definitionCount": 6,
     "originalContributions": [
       "rectangle_ehrhart: L(R_{a,b},t) = (ta+1)(tb+1) via Finset.card_product (0 axioms)",
       "triangle_ehrhart_double: 2·L(Δ_n,t) = (tn+1)(tn+2) via Nat.antidiagonal biUnion + Gauss sum (0 axioms)",
@@ -133,7 +133,7 @@
     "path": "Proofs/PicksTheoremOQ01OQ02.lean",
     "lineCount": 324,
     "theoremCount": 25,
-    "definitionCount": 7,
+    "definitionCount": 6,
     "axiomCount": 2,
     "sorries": 0
   },

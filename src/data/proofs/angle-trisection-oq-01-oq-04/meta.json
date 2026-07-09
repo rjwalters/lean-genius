@@ -57,7 +57,7 @@
     "lineCount": 172,
     "assumptions": "None — fully verified from Mathlib with 0 axioms (only propext / Classical.choice / Quot.sound) and 0 sorries. Crucially, no native_decide is used: small totients are computed with kernel `decide` and the general facts via structural totient lemmas, so this entry does NOT depend on Lean.ofReduceBool (unlike the parent). The full Gauss–Wantzel equivalence (constructible ⇔ n = 2^a·distinct Fermat primes) as a single biconditional, and the parent's 3 geometric axioms, remain out of scope.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 22,
+    "theoremCount": 24,
     "definitionCount": 1
   },
   "references": [
@@ -174,7 +174,7 @@
     "namespace": "AngleTrisectionGaussWantzel",
     "lineCount": 172,
     "axiomCount": 0,
-    "theoremCount": 22,
+    "theoremCount": 24,
     "definitionCount": 1,
     "path": "Proofs/AngleTrisectionOQ01OQ04.lean",
     "sorries": 0

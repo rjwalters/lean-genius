@@ -20,7 +20,7 @@
     "buildStatus": "broken",
     "assumptions": "BUILD BROKEN (2026-06-24, issue #28788): this file does NOT currently compile against the pinned toolchain leanprover/lean4:v4.26.0 — Mathlib API drift produces 53 errors (`Real.HolderTriple.one_lt_of_lt` removed, `Function.sign` removed, `MeasureTheory.Measure.withDensityᵥ_apply` renamed, plus ~dozen unsolved-goals / application-type-mismatch sites). The file was last green ~2026-04 before a Mathlib bump; no automated gate built it, so the drift rotted silently. There are 0 literal `sorry` tactics and 0 `axiom` declarations, but the formalization is not currently machine-checked, so status was downgraded verified→formalized pending repair. Mathematical content (riesz_lp_surjective_from_rn via signedMeasureOfFunctional + holder_extremizer_lq_bound + rn_deriv_memLq_from_trunc + integral_representation) is unchanged; dead-path theorems (truncated_rn_deriv_lq_bound, rn_deriv_memLq) removed 2026-04-23.",
     "dateAdded": "2026-04-13",
-    "theoremCount": 11,
+    "theoremCount": 18,
     "definitionCount": 3
   },
   "overview": {
@@ -153,7 +153,7 @@
     ],
     "lineCount": 1094,
     "axiomCount": 0,
-    "theoremCount": 11,
+    "theoremCount": 18,
     "definitionCount": 3,
     "mainTheorems": [
       {

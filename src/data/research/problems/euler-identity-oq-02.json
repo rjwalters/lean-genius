@@ -66,6 +66,7 @@
     "euler-identity-oq-01-oq-02-oq-01",
     "euler-identity-oq-01-oq-03",
     "euler-identity-oq-01-oq-04",
+    "euler-identity-oq-02",
     "euler-identity-oq-05"
   ],
   "references": {
@@ -176,12 +177,23 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerIdentityOQ01OQ04.lean"
     },
     {
+      "path": "Proofs/EulerIdentityOQ02.lean",
+      "filename": "EulerIdentityOQ02.lean",
+      "lineCount": 133,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerIdentityOQ02.lean"
+    },
+    {
       "path": "Proofs/EulerIdentityOQ05.lean",
       "filename": "EulerIdentityOQ05.lean",
-      "lineCount": 146,
-      "theoremCount": 9,
+      "lineCount": 201,
+      "theoremCount": 15,
       "axiomCount": 0,
-      "defCount": 1,
+      "defCount": 2,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerIdentityOQ05.lean"

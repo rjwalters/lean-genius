@@ -1,60 +1,148 @@
 {
-    "slug": "antitone-integral-sum-comparison-oq-01-oq-01-oq-02",
-    "title": "Explicit Remainder Bound for the p-Series Tail",
+  "slug": "antitone-integral-sum-comparison-oq-01-oq-01-oq-02",
+  "title": "Explicit Remainder Bound for the p-Series Tail",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "From the antitone integral comparison, derive an explicit error/remainder bound for the p-series tail: for p > 1 and N ≥ 1, ∑_{n>N} 1/nᵖ ≤ N^{1−p}/(p−1) = 1/((p−1)·N^{p−1}).",
+    "plain": "Answers the parent's second open question by turning the integral test into a quantitative rate of convergence. Running the same antitone comparison for 1/xᵖ, but starting at x = N instead of x = 1, sharply bounds the p-series tail: ∑_{n>N} 1/nᵖ ≤ ∫_N^∞ x^{−p} dx = N^{1−p}/(p−1) = 1/((p−1)·N^{p−1}). The tail is identified with the genuine truncation error (∑'_n − ∑_{n≤N}) via Summable.sum_add_tsum_nat_add, and the Basel exponent p=2 yields the clean estimate ∑_{n>N} 1/n² ≤ 1/N. 4 theorems, 2 worked witnesses, 0 definitions, 0 sorries, 0 axioms.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [
+      "pseries_tail_partial_le: every finite tail ∑_{i<m} 1/(N+1+i)ᵖ is bounded by N^{1−p}/(p−1), uniformly in m — the antitone integral test (AntitoneOn.sum_le_integral) applied to 1/xᵖ on [N, N+m], with the integral computed by integral_rpow and bounded using (N+m)^{1−p} ≥ 0",
+      "pseries_tail_tsum_le: passing the uniform partial-sum bound to the limit via Real.tsum_le_of_sum_range_le gives ∑'_{i} 1/(N+1+i)ᵖ ≤ N^{1−p}/(p−1)",
+      "pseries_remainder_le: identifies the tail with the truncation error (∑'_n 1/nᵖ) − (∑_{n≤N} 1/nᵖ) via Summable.sum_add_tsum_nat_add, giving the genuine remainder bound",
+      "pseries_tail_explicit: rewrites the bound in the textbook form 1/((p−1)·N^{p−1}) (Real.rpow_neg), exhibiting the O(N^{1−p}) decay",
+      "Worked witnesses: the Basel-exponent rate ∑_{n>N} 1/n² ≤ 1/N for all N ≥ 1, and the concrete truncation-error statement for ∑ 1/n²"
+    ],
+    "open": [],
+    "goal": "From the antitone integral comparison, derive an explicit error/remainder bound for the p-series tail: for p > 1 and N ≥ 1, ∑_{n>N} 1/nᵖ ≤ N^{1−p}/(p−1) = 1/((p−1)·N^{p−1})."
+  },
+  "currentState": {
     "phase": "COMPLETED",
-    "status": "completed",
-    "tier": "B",
-    "path": "full",
-    "problemStatement": {
-        "formal": "From the antitone integral comparison, derive an explicit error/remainder bound for the p-series tail: for p > 1 and N ≥ 1, ∑_{n>N} 1/nᵖ ≤ N^{1−p}/(p−1) = 1/((p−1)·N^{p−1}).",
-        "plain": "Answers the parent's second open question by turning the integral test into a quantitative rate of convergence. Running the same antitone comparison for 1/xᵖ, but starting at x = N instead of x = 1, sharply bounds the p-series tail: ∑_{n>N} 1/nᵖ ≤ ∫_N^∞ x^{−p} dx = N^{1−p}/(p−1) = 1/((p−1)·N^{p−1}). The tail is identified with the genuine truncation error (∑'_n − ∑_{n≤N}) via Summable.sum_add_tsum_nat_add, and the Basel exponent p=2 yields the clean estimate ∑_{n>N} 1/n² ≤ 1/N. 4 theorems, 2 worked witnesses, 0 definitions, 0 sorries, 0 axioms.",
-        "whyMatters": []
+    "since": "2026-06-23T00:00:00Z",
+    "iteration": 1,
+    "focus": "Verified deliverable already complete in main: proofs/Proofs/AntitoneIntegralSumComparisonOQ01OQ01OQ02.lean and gallery entry antitone-integral-sum-comparison-oq-01-oq-01-oq-02 (status verified)."
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED and verified in main (161 lines, 4 theorems, 0 sorries, axiomCount 0, badge 'original'). Answers the parent's second open question by turning the integral test into a quantitative rate of convergence. Running the same antitone comparison for 1/xᵖ, but starting at x = N instead of x = 1, sharply bounds the p-series tail: ∑_{n>N} 1/nᵖ ≤ ∫_N^∞ x^{−p} dx = N^{1−p}/(p−1) = 1/((p−1)·N^{p−1}). The tail is identified with the genuine truncation error (∑'_n − ∑_{n≤N}) via Summable.sum_add_tsum_nat_add, and the Basel exponent p=2 yields the clean estimate ∑_{n>N} 1/n² ≤ 1/N. 4 theorems, 2 worked witnesses, 0 definitions, 0 sorries, 0 axioms.",
+    "builtItems": [
+      "pseries_tail_partial_le: every finite tail ∑_{i<m} 1/(N+1+i)ᵖ is bounded by N^{1−p}/(p−1), uniformly in m — the antitone integral test (AntitoneOn.sum_le_integral) applied to 1/xᵖ on [N, N+m], with the integral computed by integral_rpow and bounded using (N+m)^{1−p} ≥ 0",
+      "pseries_tail_tsum_le: passing the uniform partial-sum bound to the limit via Real.tsum_le_of_sum_range_le gives ∑'_{i} 1/(N+1+i)ᵖ ≤ N^{1−p}/(p−1)",
+      "pseries_remainder_le: identifies the tail with the truncation error (∑'_n 1/nᵖ) − (∑_{n≤N} 1/nᵖ) via Summable.sum_add_tsum_nat_add, giving the genuine remainder bound",
+      "pseries_tail_explicit: rewrites the bound in the textbook form 1/((p−1)·N^{p−1}) (Real.rpow_neg), exhibiting the O(N^{1−p}) decay",
+      "Worked witnesses: the Basel-exponent rate ∑_{n>N} 1/n² ≤ 1/N for all N ≥ 1, and the concrete truncation-error statement for ∑ 1/n²",
+      "Gallery entry src/data/proofs/antitone-integral-sum-comparison-oq-01-oq-01-oq-02 (meta.json + annotations.json); Lean source proofs/Proofs/AntitoneIntegralSumComparisonOQ01OQ01OQ02.lean."
+    ],
+    "insights": [
+      "Starting the integral comparison at N rather than 1 converts the parent's single uniform bound 1/(p−1) into the N-dependent tail estimate N^{1−p}/(p−1)",
+      "The right Riemann sum of a decreasing function underestimates the integral, so the tail partial sums are bounded by ∫_N^{N+m} x^{−p}, whose limit ∫_N^∞ x^{−p} = N^{1−p}/(p−1) is finite for p > 1",
+      "Slack only enters at the single step (N+m)^{1−p} ≥ 0 (dropping the value at the far endpoint); the resulting bound has the correct order N^{1−p}",
+      "Summable.sum_add_tsum_nat_add is the bridge from 'tail of a shifted series' to 'truncation error of the original series', making the bound a genuine remainder estimate",
+      "For p = 2 the bound collapses to ∑_{n>N} 1/n² ≤ 1/N — the textbook rate for truncating the Basel series"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "analysis",
+    "integral-test",
+    "p-series",
+    "remainder-bound",
+    "rate-of-convergence",
+    "tail-estimate",
+    "tsum",
+    "convergence"
+  ],
+  "leanFiles": [
+    {
+      "path": "Proofs/AntitoneIntegralSumComparison.lean",
+      "filename": "AntitoneIntegralSumComparison.lean",
+      "lineCount": 142,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AntitoneIntegralSumComparison.lean"
     },
-    "knownResults": {
-        "proven": [
-            "pseries_tail_partial_le: every finite tail ∑_{i<m} 1/(N+1+i)ᵖ is bounded by N^{1−p}/(p−1), uniformly in m — the antitone integral test (AntitoneOn.sum_le_integral) applied to 1/xᵖ on [N, N+m], with the integral computed by integral_rpow and bounded using (N+m)^{1−p} ≥ 0",
-            "pseries_tail_tsum_le: passing the uniform partial-sum bound to the limit via Real.tsum_le_of_sum_range_le gives ∑'_{i} 1/(N+1+i)ᵖ ≤ N^{1−p}/(p−1)",
-            "pseries_remainder_le: identifies the tail with the truncation error (∑'_n 1/nᵖ) − (∑_{n≤N} 1/nᵖ) via Summable.sum_add_tsum_nat_add, giving the genuine remainder bound",
-            "pseries_tail_explicit: rewrites the bound in the textbook form 1/((p−1)·N^{p−1}) (Real.rpow_neg), exhibiting the O(N^{1−p}) decay",
-            "Worked witnesses: the Basel-exponent rate ∑_{n>N} 1/n² ≤ 1/N for all N ≥ 1, and the concrete truncation-error statement for ∑ 1/n²"
-        ],
-        "open": [],
-        "goal": "From the antitone integral comparison, derive an explicit error/remainder bound for the p-series tail: for p > 1 and N ≥ 1, ∑_{n>N} 1/nᵖ ≤ N^{1−p}/(p−1) = 1/((p−1)·N^{p−1})."
+    {
+      "path": "Proofs/AntitoneIntegralSumComparisonOQ01OQ01.lean",
+      "filename": "AntitoneIntegralSumComparisonOQ01OQ01.lean",
+      "lineCount": 204,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AntitoneIntegralSumComparisonOQ01OQ01.lean"
     },
-    "currentState": {
-        "phase": "COMPLETED",
-        "since": "2026-06-23T00:00:00Z",
-        "iteration": 1,
-        "focus": "Verified deliverable already complete in main: proofs/Proofs/AntitoneIntegralSumComparisonOQ01OQ01OQ02.lean and gallery entry antitone-integral-sum-comparison-oq-01-oq-01-oq-02 (status verified)."
+    {
+      "path": "Proofs/AntitoneIntegralSumComparisonOQ01OQ01OQ02.lean",
+      "filename": "AntitoneIntegralSumComparisonOQ01OQ01OQ02.lean",
+      "lineCount": 162,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AntitoneIntegralSumComparisonOQ01OQ01OQ02.lean"
     },
-    "knowledge": {
-        "progressSummary": "COMPLETED and verified in main (161 lines, 4 theorems, 0 sorries, axiomCount 0, badge 'original'). Answers the parent's second open question by turning the integral test into a quantitative rate of convergence. Running the same antitone comparison for 1/xᵖ, but starting at x = N instead of x = 1, sharply bounds the p-series tail: ∑_{n>N} 1/nᵖ ≤ ∫_N^∞ x^{−p} dx = N^{1−p}/(p−1) = 1/((p−1)·N^{p−1}). The tail is identified with the genuine truncation error (∑'_n − ∑_{n≤N}) via Summable.sum_add_tsum_nat_add, and the Basel exponent p=2 yields the clean estimate ∑_{n>N} 1/n² ≤ 1/N. 4 theorems, 2 worked witnesses, 0 definitions, 0 sorries, 0 axioms.",
-        "builtItems": [
-            "pseries_tail_partial_le: every finite tail ∑_{i<m} 1/(N+1+i)ᵖ is bounded by N^{1−p}/(p−1), uniformly in m — the antitone integral test (AntitoneOn.sum_le_integral) applied to 1/xᵖ on [N, N+m], with the integral computed by integral_rpow and bounded using (N+m)^{1−p} ≥ 0",
-            "pseries_tail_tsum_le: passing the uniform partial-sum bound to the limit via Real.tsum_le_of_sum_range_le gives ∑'_{i} 1/(N+1+i)ᵖ ≤ N^{1−p}/(p−1)",
-            "pseries_remainder_le: identifies the tail with the truncation error (∑'_n 1/nᵖ) − (∑_{n≤N} 1/nᵖ) via Summable.sum_add_tsum_nat_add, giving the genuine remainder bound",
-            "pseries_tail_explicit: rewrites the bound in the textbook form 1/((p−1)·N^{p−1}) (Real.rpow_neg), exhibiting the O(N^{1−p}) decay",
-            "Worked witnesses: the Basel-exponent rate ∑_{n>N} 1/n² ≤ 1/N for all N ≥ 1, and the concrete truncation-error statement for ∑ 1/n²",
-            "Gallery entry src/data/proofs/antitone-integral-sum-comparison-oq-01-oq-01-oq-02 (meta.json + annotations.json); Lean source proofs/Proofs/AntitoneIntegralSumComparisonOQ01OQ01OQ02.lean."
-        ],
-        "insights": [
-            "Starting the integral comparison at N rather than 1 converts the parent's single uniform bound 1/(p−1) into the N-dependent tail estimate N^{1−p}/(p−1)",
-            "The right Riemann sum of a decreasing function underestimates the integral, so the tail partial sums are bounded by ∫_N^{N+m} x^{−p}, whose limit ∫_N^∞ x^{−p} = N^{1−p}/(p−1) is finite for p > 1",
-            "Slack only enters at the single step (N+m)^{1−p} ≥ 0 (dropping the value at the far endpoint); the resulting bound has the correct order N^{1−p}",
-            "Summable.sum_add_tsum_nat_add is the bridge from 'tail of a shifted series' to 'truncation error of the original series', making the bound a genuine remainder estimate",
-            "For p = 2 the bound collapses to ∑_{n>N} 1/n² ≤ 1/N — the textbook rate for truncating the Basel series"
-        ],
-        "mathlibGaps": [],
-        "nextSteps": []
+    {
+      "path": "Proofs/AntitoneIntegralSumComparisonOQ01OQ01OQ02OQ01.lean",
+      "filename": "AntitoneIntegralSumComparisonOQ01OQ01OQ02OQ01.lean",
+      "lineCount": 195,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AntitoneIntegralSumComparisonOQ01OQ01OQ02OQ01.lean"
     },
-    "tags": [
-        "analysis",
-        "integral-test",
-        "p-series",
-        "remainder-bound",
-        "rate-of-convergence",
-        "tail-estimate",
-        "tsum",
-        "convergence"
-    ]
+    {
+      "path": "Proofs/AntitoneIntegralSumComparisonOQ01OQ02.lean",
+      "filename": "AntitoneIntegralSumComparisonOQ01OQ02.lean",
+      "lineCount": 125,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AntitoneIntegralSumComparisonOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/AntitoneIntegralSumComparisonOQ01OQ02OQ02.lean",
+      "filename": "AntitoneIntegralSumComparisonOQ01OQ02OQ02.lean",
+      "lineCount": 157,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AntitoneIntegralSumComparisonOQ01OQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/AntitoneIntegralSumComparisonOQ01OQ02OQ02OQ01.lean",
+      "filename": "AntitoneIntegralSumComparisonOQ01OQ02OQ02OQ01.lean",
+      "lineCount": 96,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AntitoneIntegralSumComparisonOQ01OQ02OQ02OQ01.lean"
+    }
+  ],
+  "relatedProofs": [
+    "antitone-integral-sum-comparison-oq-01",
+    "antitone-integral-sum-comparison-oq-01-oq-01",
+    "antitone-integral-sum-comparison-oq-01-oq-01-oq-02",
+    "antitone-integral-sum-comparison-oq-01-oq-01-oq-02-oq-01",
+    "antitone-integral-sum-comparison-oq-01-oq-02",
+    "antitone-integral-sum-comparison-oq-01-oq-02-oq-02",
+    "antitone-integral-sum-comparison-oq-01-oq-02-oq-02-oq-01"
+  ]
 }

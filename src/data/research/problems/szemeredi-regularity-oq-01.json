@@ -26,6 +26,7 @@
   "relatedProofs": [
     "szemeredi-regularity",
     "szemeredi-regularity-oq-02",
+    "szemeredi-regularity-oq-02-oq-02",
     "szemeredi-regularity-oq-03"
   ],
   "leanFiles": [
@@ -43,8 +44,8 @@
     {
       "path": "Proofs/SzemerediRegularityOQ01.lean",
       "filename": "SzemerediRegularityOQ01.lean",
-      "lineCount": 115,
-      "theoremCount": 7,
+      "lineCount": 173,
+      "theoremCount": 8,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 0,
@@ -63,6 +64,17 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SzemerediRegularityOQ02.lean"
     },
     {
+      "path": "Proofs/SzemerediRegularityOQ02OQ02.lean",
+      "filename": "SzemerediRegularityOQ02OQ02.lean",
+      "lineCount": 230,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SzemerediRegularityOQ02OQ02.lean"
+    },
+    {
       "path": "Proofs/SzemerediRegularityOQ03.lean",
       "filename": "SzemerediRegularityOQ03.lean",
       "lineCount": 252,
@@ -72,6 +84,39 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SzemerediRegularityOQ03.lean"
+    },
+    {
+      "path": "Proofs/SzemerediRegularityOQ04.lean",
+      "filename": "SzemerediRegularityOQ04.lean",
+      "lineCount": 149,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SzemerediRegularityOQ04.lean"
+    },
+    {
+      "path": "Proofs/SzemerediRegularityOQ04Bridge.lean",
+      "filename": "SzemerediRegularityOQ04Bridge.lean",
+      "lineCount": 301,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SzemerediRegularityOQ04Bridge.lean"
+    },
+    {
+      "path": "Proofs/SzemerediRegularityOQ04Energy.lean",
+      "filename": "SzemerediRegularityOQ04Energy.lean",
+      "lineCount": 264,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SzemerediRegularityOQ04Energy.lean"
     }
   ]
 }

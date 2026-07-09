@@ -81,7 +81,9 @@
     "divisor-functions"
   ],
   "relatedProofs": [
-    "abundant-number-oq-02"
+    "abundant-number-oq-01-oq-02",
+    "abundant-number-oq-02",
+    "abundant-number-oq-02-oq-01"
   ],
   "references": {
     "papers": [],
@@ -103,6 +105,17 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbundantNumberOQ01.lean"
     },
     {
+      "path": "Proofs/AbundantNumberOQ0102.lean",
+      "filename": "AbundantNumberOQ0102.lean",
+      "lineCount": 104,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbundantNumberOQ0102.lean"
+    },
+    {
       "path": "Proofs/AbundantNumberOQ02.lean",
       "filename": "AbundantNumberOQ02.lean",
       "lineCount": 116,
@@ -116,7 +129,7 @@
     {
       "path": "Proofs/AbundantNumberOQ02OQ01.lean",
       "filename": "AbundantNumberOQ02OQ01.lean",
-      "lineCount": 113,
+      "lineCount": 128,
       "theoremCount": 14,
       "axiomCount": 0,
       "defCount": 0,
@@ -125,48 +138,103 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbundantNumberOQ02OQ01.lean"
     },
     {
-      "path": "Proofs/AbundantNumberOQ02OQ01Minimality.lean",
-      "filename": "AbundantNumberOQ02OQ01Minimality.lean",
-      "lineCount": 145,
-      "theoremCount": 5,
-      "axiomCount": 0,
-      "defCount": 0,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbundantNumberOQ02OQ01Minimality.lean"
-    },
-    {
-      "path": "Proofs/AbundantNumberOQ02OQ01LowerBound.lean",
-      "filename": "AbundantNumberOQ02OQ01LowerBound.lean",
-      "lineCount": 194,
-      "theoremCount": 6,
-      "axiomCount": 0,
-      "defCount": 0,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbundantNumberOQ02OQ01LowerBound.lean"
-    },
-    {
-      "path": "Proofs/AbundantNumberOQ02OQ01Squarefree.lean",
-      "filename": "AbundantNumberOQ02OQ01Squarefree.lean",
-      "lineCount": 428,
-      "theoremCount": 29,
+      "path": "Proofs/AbundantNumberOQ02OQ01Capstone.lean",
+      "filename": "AbundantNumberOQ02OQ01Capstone.lean",
+      "lineCount": 81,
+      "theoremCount": 3,
       "axiomCount": 0,
       "defCount": 1,
-      "sorryCount": 0,
+      "sorryCount": 1,
       "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbundantNumberOQ02OQ01Squarefree.lean"
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbundantNumberOQ02OQ01Capstone.lean"
+    },
+    {
+      "path": "Proofs/AbundantNumberOQ02OQ01ExponentBound.lean",
+      "filename": "AbundantNumberOQ02OQ01ExponentBound.lean",
+      "lineCount": 199,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbundantNumberOQ02OQ01ExponentBound.lean"
     },
     {
       "path": "Proofs/AbundantNumberOQ02OQ01GeneralBound.lean",
       "filename": "AbundantNumberOQ02OQ01GeneralBound.lean",
-      "lineCount": 173,
-      "theoremCount": 3,
+      "lineCount": 296,
+      "theoremCount": 7,
       "axiomCount": 0,
       "defCount": 0,
-      "sorryCount": 0,
+      "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbundantNumberOQ02OQ01GeneralBound.lean"
+    },
+    {
+      "path": "Proofs/AbundantNumberOQ02OQ01LowerBound.lean",
+      "filename": "AbundantNumberOQ02OQ01LowerBound.lean",
+      "lineCount": 195,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbundantNumberOQ02OQ01LowerBound.lean"
+    },
+    {
+      "path": "Proofs/AbundantNumberOQ02OQ01Minimality.lean",
+      "filename": "AbundantNumberOQ02OQ01Minimality.lean",
+      "lineCount": 152,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbundantNumberOQ02OQ01Minimality.lean"
+    },
+    {
+      "path": "Proofs/AbundantNumberOQ02OQ01OmegaSevenPrimes.lean",
+      "filename": "AbundantNumberOQ02OQ01OmegaSevenPrimes.lean",
+      "lineCount": 306,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbundantNumberOQ02OQ01OmegaSevenPrimes.lean"
+    },
+    {
+      "path": "Proofs/AbundantNumberOQ02OQ01SevenPrimeExponents.lean",
+      "filename": "AbundantNumberOQ02OQ01SevenPrimeExponents.lean",
+      "lineCount": 473,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbundantNumberOQ02OQ01SevenPrimeExponents.lean"
+    },
+    {
+      "path": "Proofs/AbundantNumberOQ02OQ01Squarefree.lean",
+      "filename": "AbundantNumberOQ02OQ01Squarefree.lean",
+      "lineCount": 429,
+      "theoremCount": 29,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbundantNumberOQ02OQ01Squarefree.lean"
+    },
+    {
+      "path": "Proofs/AbundantNumberOQ02OQ01Unconditional.lean",
+      "filename": "AbundantNumberOQ02OQ01Unconditional.lean",
+      "lineCount": 267,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbundantNumberOQ02OQ01Unconditional.lean"
     }
   ]
 }

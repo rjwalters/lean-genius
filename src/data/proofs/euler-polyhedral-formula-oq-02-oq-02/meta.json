@@ -46,7 +46,7 @@
     "assumptions": "0 sorries; 0 axiom declarations; 2 structure-encoded assumptions. (1) CGBManifold.chern_gauss_bonnet encodes the Chern-Gauss-Bonnet identity ∫_M Pf(Ω) = (2π)^n·χ(M); Mathlib v4.26.0 has no Pfaffian of a curvature form, no integration of characteristic forms over manifolds, and no manifold Euler characteristic, so the identity is taken as a field rather than derived. (2) ClosedOddManifold.chi_zero encodes the Poincaré-duality fact that closed odd-dimensional manifolds have χ=0. All 37 theorems are then derived; the sphere Euler characteristics, normalization-constant lemmas, and the 2×2 Pfaffian identity are independently verified (depend only on propext/Classical.choice/Quot.sound). #print axioms confirms no sorryAx and no Lean.ofReduceBool.",
     "mathlib_version": "4.26.0",
     "theoremCount": 44,
-    "definitionCount": 9
+    "definitionCount": 11
   },
   "overview": {
     "historicalContext": "Chern (1944-45) generalized the Gauss-Bonnet theorem to closed oriented even-dimensional Riemannian manifolds, expressing χ(M) as the integral of the Pfaffian of the curvature form. This entry connects that higher-dimensional theorem back to the discrete (OQ-02) and smooth 2D (OQ-02-OQ-01) Gauss-Bonnet theorems already in the gallery.",
@@ -156,7 +156,7 @@
     "lineCount": 426,
     "axiomCount": 0,
     "theoremCount": 44,
-    "definitionCount": 9,
+    "definitionCount": 11,
     "path": "Proofs/EulerPolyhedralOQ02OQ02.lean",
     "sorries": 0
   },

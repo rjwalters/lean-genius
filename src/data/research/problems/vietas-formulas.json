@@ -43,11 +43,15 @@
   ],
   "relatedProofs": [
     "vietas-formulas",
+    "vietas-formulas-oq-01",
     "vietas-formulas-oq-02",
     "vietas-formulas-oq-03",
     "vietas-formulas-oq-03-oq-01",
+    "vietas-formulas-oq-03-oq-03",
     "vietas-formulas-oq-03-oq-05",
-    "vietas-formulas-oq-04"
+    "vietas-formulas-oq-04",
+    "vietas-formulas-oq-04-oq-01",
+    "vietas-formulas-oq-05"
   ],
   "references": {
     "papers": [],
@@ -72,6 +76,17 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/VietasFormulas.lean"
     },
     {
+      "path": "Proofs/VietasFormulasOQ01.lean",
+      "filename": "VietasFormulasOQ01.lean",
+      "lineCount": 213,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/VietasFormulasOQ01.lean"
+    },
+    {
       "path": "Proofs/VietasFormulasOQ02.lean",
       "filename": "VietasFormulasOQ02.lean",
       "lineCount": 205,
@@ -92,6 +107,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/VietasFormulasOQ03.lean"
+    },
+    {
+      "path": "Proofs/VietasFormulasOQ0303.lean",
+      "filename": "VietasFormulasOQ0303.lean",
+      "lineCount": 137,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/VietasFormulasOQ0303.lean"
     },
     {
       "path": "Proofs/VietasFormulasOQ03OQ01.lean",
@@ -125,6 +151,28 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/VietasFormulasOQ04.lean"
+    },
+    {
+      "path": "Proofs/VietasFormulasOQ04OQ01.lean",
+      "filename": "VietasFormulasOQ04OQ01.lean",
+      "lineCount": 141,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/VietasFormulasOQ04OQ01.lean"
+    },
+    {
+      "path": "Proofs/VietasFormulasOQ05.lean",
+      "filename": "VietasFormulasOQ05.lean",
+      "lineCount": 131,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/VietasFormulasOQ05.lean"
     }
   ]
 }

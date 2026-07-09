@@ -14,11 +14,6 @@
       "Mathlib",
       "Lean 4",
       "formalization"
-    ],
-    "prerequisites": [
-      "the statement of Fermat's Last Theorem",
-      "Mathlib's FLT modules (FLT.Basic, FLT.Four)",
-      "basic ring theory of the integers"
     ]
   },
   {
@@ -37,11 +32,6 @@
       "history of mathematics",
       "number theory",
       "elliptic curves"
-    ],
-    "prerequisites": [
-      "Fermat's Last Theorem and its exponents",
-      "infinite descent for the n = 4 case",
-      "the elliptic-curve / modularity machinery"
     ]
   },
   {
@@ -60,11 +50,6 @@
       "Diophantine equations",
       "integer solutions",
       "Fermat"
-    ],
-    "prerequisites": [
-      "Diophantine equations aⁿ + bⁿ = cⁿ",
-      "nonzero integer solutions",
-      "the definition FermatLastTheoremFor n"
     ]
   },
   {
@@ -84,11 +69,6 @@
       "Frey",
       "algebraic geometry",
       "conductor"
-    ],
-    "prerequisites": [
-      "elliptic curves over ℚ",
-      "the Frey construction y² = x(x − aᵖ)(x + bᵖ)",
-      "conductor and arithmetic invariants"
     ]
   },
   {
@@ -98,7 +78,7 @@
       "startLine": 85,
       "endLine": 88
     },
-    "type": "tactic",
+    "type": "technique",
     "title": "Semi-stability of Frey Curves",
     "content": "An elliptic curve is **semi-stable** if at every prime of bad reduction, the reduction is multiplicative (nodes, not cusps). Frey curves are semi-stable, which is crucial because Wiles' modularity theorem applies specifically to semi-stable curves.",
     "mathContext": "Semi-stability is a technical condition on how the curve reduces modulo primes. The Frey curve has multiplicative reduction at the primes dividing $abc$, and good reduction elsewhere.",
@@ -129,11 +109,6 @@
       "L-functions",
       "Taniyama-Shimura-Weil",
       "Langlands program"
-    ],
-    "prerequisites": [
-      "modular forms of weight 2",
-      "L-functions of elliptic curves",
-      "the modularity (Taniyama–Shimura–Weil) theorem"
     ]
   },
   {
@@ -195,11 +170,6 @@
       "infinite descent",
       "Pythagorean triples",
       "Fermat"
-    ],
-    "prerequisites": [
-      "infinite descent",
-      "Pythagorean triples",
-      "the n = 4 case"
     ]
   },
   {
@@ -218,11 +188,6 @@
       "Eisenstein integers",
       "unique factorization",
       "algebraic integers"
-    ],
-    "prerequisites": [
-      "the Eisenstein integers ℤ[ω]",
-      "unique factorization domains",
-      "descent in a ring of algebraic integers"
     ]
   },
   {
@@ -232,7 +197,7 @@
       "startLine": 158,
       "endLine": 170
     },
-    "type": "tactic",
+    "type": "technique",
     "title": "Reduction to Primes",
     "content": "If FLT holds for exponent $n$, it holds for all multiples of $n$. Why? If $a^{nm} + b^{nm} = c^{nm}$, then $(a^m)^n + (b^m)^n = (c^m)^n$, contradicting FLT for $n$.",
     "mathContext": "This means we only need to prove FLT for n=4 and all odd primes. Since every n ≥ 3 is divisible by 4 or an odd prime, this covers everything.",
@@ -241,11 +206,6 @@
       "reduction",
       "prime factorization",
       "exponentiation"
-    ],
-    "prerequisites": [
-      "exponent laws for powers",
-      "reduction of FLT to prime exponents",
-      "prime factorization of n"
     ]
   },
   {

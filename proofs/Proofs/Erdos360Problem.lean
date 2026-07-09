@@ -282,6 +282,239 @@ theorem f_4 : f 4 = 2 := by
   show sInf (ValidPartitionSizes 4) = 2
   omega
 
+/-- f(3) = 2: the whole ground set `{1,2}` sums to 3, so `1` and `2` must be
+    separated; the partition `{{1}, {2}}` is optimal. -/
+theorem f_3 : f 3 = 2 := by
+  -- `2` is achievable: the partition `{{1}, {2}}`.
+  have hne : ({1} : Finset ℕ) ≠ ({2} : Finset ℕ) := by
+    intro h
+    have h1 : (1 : ℕ) ∈ ({2} : Finset ℕ) := h ▸ Finset.mem_singleton_self 1
+    rw [Finset.mem_singleton] at h1
+    exact absurd h1 (by norm_num)
+  have hmem2 : (2 : ℕ) ∈ ValidPartitionSizes 3 := by
+    refine ⟨{{1}, {2}}, ?_, ?_, ?_, ?_, ?_⟩
+    · rw [Finset.card_insert_of_notMem (by rw [Finset.mem_singleton]; exact hne),
+        Finset.card_singleton]
+    · intro P hP x hx
+      rw [Finset.mem_insert, Finset.mem_singleton] at hP
+      rcases hP with rfl | rfl <;>
+        (rw [Finset.mem_singleton] at hx; subst hx; omega)
+    · intro P Q hP hQ hPQ
+      rw [Finset.mem_insert, Finset.mem_singleton] at hP hQ
+      rcases hP with rfl | rfl <;> rcases hQ with rfl | rfl
+      · exact absurd rfl hPQ
+      · rw [Finset.disjoint_left]; intro a ha
+        rw [Finset.mem_singleton] at ha; subst ha; decide
+      · rw [Finset.disjoint_left]; intro a ha
+        rw [Finset.mem_singleton] at ha; subst ha; decide
+      · exact absurd rfl hPQ
+    · intro x hx1 hx2
+      interval_cases x
+      · exact ⟨{1}, Finset.mem_insert_self _ _, Finset.mem_singleton_self _⟩
+      · exact ⟨{2}, Finset.mem_insert_of_mem (Finset.mem_singleton_self _),
+          Finset.mem_singleton_self _⟩
+    · intro P hP
+      rw [Finset.mem_insert, Finset.mem_singleton] at hP
+      rcases hP with rfl | rfl
+      · intro T hT
+        have hb : T.sum id ≤ ({1} : Finset ℕ).sum id :=
+          Finset.sum_le_sum_of_subset (f := id) hT
+        have hval : ({1} : Finset ℕ).sum id = 1 := by simp
+        omega
+      · intro T hT
+        have hb : T.sum id ≤ ({2} : Finset ℕ).sum id :=
+          Finset.sum_le_sum_of_subset (f := id) hT
+        have hval : ({2} : Finset ℕ).sum id = 2 := by simp
+        omega
+  -- `0` is not achievable: the empty partition cannot cover `1`.
+  have hmem0 : (0 : ℕ) ∉ ValidPartitionSizes 3 := by
+    rintro ⟨parts, hcard, _, _, hcov, _⟩
+    rw [Finset.card_eq_zero] at hcard
+    subst hcard
+    obtain ⟨P, hP, _⟩ := hcov 1 (by norm_num) (by norm_num)
+    exact absurd hP (Finset.notMem_empty P)
+  -- `1` is not achievable: a single class covering `{1,2}` contains `{1,2}` → 3.
+  have hmem1 : (1 : ℕ) ∉ ValidPartitionSizes 3 := by
+    rintro ⟨parts, hcard, _, _, hcov, hsf⟩
+    rw [Finset.card_eq_one] at hcard
+    obtain ⟨P, hPeq⟩ := hcard
+    subst hPeq
+    obtain ⟨Q1, hQ1, h1P⟩ := hcov 1 (by norm_num) (by norm_num)
+    obtain ⟨Q2, hQ2, h2P⟩ := hcov 2 (by norm_num) (by norm_num)
+    rw [Finset.mem_singleton] at hQ1 hQ2
+    rw [hQ1] at h1P
+    rw [hQ2] at h2P
+    have hfree : IsNSumFree 3 P := hsf P (Finset.mem_singleton_self P)
+    have hsub : ({1, 2} : Finset ℕ) ⊆ P := by
+      intro x hx
+      rw [Finset.mem_insert, Finset.mem_singleton] at hx
+      rcases hx with rfl | rfl
+      · exact h1P
+      · exact h2P
+    have hval : ({1, 2} : Finset ℕ).sum id = 3 := by
+      rw [Finset.sum_pair (by norm_num : (1 : ℕ) ≠ 2)]; norm_num
+    exact hfree {1, 2} hsub hval
+  have hle : sInf (ValidPartitionSizes 3) ≤ 2 := Nat.sInf_le hmem2
+  have hmem : sInf (ValidPartitionSizes 3) ∈ ValidPartitionSizes 3 :=
+    Nat.sInf_mem ⟨2, hmem2⟩
+  have hne0 : sInf (ValidPartitionSizes 3) ≠ 0 := fun h => hmem0 (h ▸ hmem)
+  have hne1 : sInf (ValidPartitionSizes 3) ≠ 1 := fun h => hmem1 (h ▸ hmem)
+  show sInf (ValidPartitionSizes 3) = 2
+  omega
+
+/-- f(5) = 2: `{1,4}` and `{2,3}` each sum to 5, so no single class works; the
+    partition `{{1,2}, {3,4}}` is 5-sum-free (checked by enumerating subsets). -/
+theorem f_5 : f 5 = 2 := by
+  have hne : ({1, 2} : Finset ℕ) ≠ ({3, 4} : Finset ℕ) := by
+    intro h
+    have h1 : (1 : ℕ) ∈ ({3, 4} : Finset ℕ) := h ▸ Finset.mem_insert_self 1 {2}
+    rw [Finset.mem_insert, Finset.mem_singleton] at h1
+    omega
+  have hmem2 : (2 : ℕ) ∈ ValidPartitionSizes 5 := by
+    refine ⟨{{1, 2}, {3, 4}}, ?_, ?_, ?_, ?_, ?_⟩
+    · rw [Finset.card_insert_of_notMem (by rw [Finset.mem_singleton]; exact hne),
+        Finset.card_singleton]
+    · intro P hP x hx
+      rw [Finset.mem_insert, Finset.mem_singleton] at hP
+      rcases hP with rfl | rfl <;>
+        (rw [Finset.mem_insert, Finset.mem_singleton] at hx
+         rcases hx with rfl | rfl <;> omega)
+    · intro P Q hP hQ hPQ
+      rw [Finset.mem_insert, Finset.mem_singleton] at hP hQ
+      rcases hP with rfl | rfl <;> rcases hQ with rfl | rfl
+      · exact absurd rfl hPQ
+      · rw [Finset.disjoint_left]; intro a ha
+        rw [Finset.mem_insert, Finset.mem_singleton] at ha
+        rcases ha with rfl | rfl <;> decide
+      · rw [Finset.disjoint_left]; intro a ha
+        rw [Finset.mem_insert, Finset.mem_singleton] at ha
+        rcases ha with rfl | rfl <;> decide
+      · exact absurd rfl hPQ
+    · intro x hx1 hx2
+      interval_cases x
+      · exact ⟨{1, 2}, by decide, by decide⟩
+      · exact ⟨{1, 2}, by decide, by decide⟩
+      · exact ⟨{3, 4}, by decide, by decide⟩
+      · exact ⟨{3, 4}, by decide, by decide⟩
+    · intro P hP
+      rw [Finset.mem_insert, Finset.mem_singleton] at hP
+      rcases hP with rfl | rfl <;>
+        (intro T hT
+         rw [← Finset.mem_powerset] at hT
+         fin_cases hT <;> decide)
+  have hmem0 : (0 : ℕ) ∉ ValidPartitionSizes 5 := by
+    rintro ⟨parts, hcard, _, _, hcov, _⟩
+    rw [Finset.card_eq_zero] at hcard
+    subst hcard
+    obtain ⟨P, hP, _⟩ := hcov 1 (by norm_num) (by norm_num)
+    exact absurd hP (Finset.notMem_empty P)
+  -- `1` is not achievable: a single class covering `{1,…,4}` contains `{1,4}` → 5.
+  have hmem1 : (1 : ℕ) ∉ ValidPartitionSizes 5 := by
+    rintro ⟨parts, hcard, _, _, hcov, hsf⟩
+    rw [Finset.card_eq_one] at hcard
+    obtain ⟨P, hPeq⟩ := hcard
+    subst hPeq
+    obtain ⟨Q1, hQ1, h1P⟩ := hcov 1 (by norm_num) (by norm_num)
+    obtain ⟨Q4, hQ4, h4P⟩ := hcov 4 (by norm_num) (by norm_num)
+    rw [Finset.mem_singleton] at hQ1 hQ4
+    rw [hQ1] at h1P
+    rw [hQ4] at h4P
+    have hfree : IsNSumFree 5 P := hsf P (Finset.mem_singleton_self P)
+    have hsub : ({1, 4} : Finset ℕ) ⊆ P := by
+      intro x hx
+      rw [Finset.mem_insert, Finset.mem_singleton] at hx
+      rcases hx with rfl | rfl
+      · exact h1P
+      · exact h4P
+    have hval : ({1, 4} : Finset ℕ).sum id = 5 := by
+      rw [Finset.sum_pair (by norm_num : (1 : ℕ) ≠ 4)]; norm_num
+    exact hfree {1, 4} hsub hval
+  have hle : sInf (ValidPartitionSizes 5) ≤ 2 := Nat.sInf_le hmem2
+  have hmem : sInf (ValidPartitionSizes 5) ∈ ValidPartitionSizes 5 :=
+    Nat.sInf_mem ⟨2, hmem2⟩
+  have hne0 : sInf (ValidPartitionSizes 5) ≠ 0 := fun h => hmem0 (h ▸ hmem)
+  have hne1 : sInf (ValidPartitionSizes 5) ≠ 1 := fun h => hmem1 (h ▸ hmem)
+  show sInf (ValidPartitionSizes 5) = 2
+  omega
+
+/-- f(6) = 2: `{1,5}`, `{2,4}` and `{1,2,3}` each sum to 6, so no single class
+    works; the partition `{{1,2}, {3,4,5}}` is 6-sum-free. -/
+theorem f_6 : f 6 = 2 := by
+  have hne : ({1, 2} : Finset ℕ) ≠ ({3, 4, 5} : Finset ℕ) := by
+    intro h
+    have h1 : (1 : ℕ) ∈ ({3, 4, 5} : Finset ℕ) := h ▸ Finset.mem_insert_self 1 {2}
+    rw [Finset.mem_insert, Finset.mem_insert, Finset.mem_singleton] at h1
+    omega
+  have hmem2 : (2 : ℕ) ∈ ValidPartitionSizes 6 := by
+    refine ⟨{{1, 2}, {3, 4, 5}}, ?_, ?_, ?_, ?_, ?_⟩
+    · rw [Finset.card_insert_of_notMem (by rw [Finset.mem_singleton]; exact hne),
+        Finset.card_singleton]
+    · intro P hP x hx
+      rw [Finset.mem_insert, Finset.mem_singleton] at hP
+      rcases hP with rfl | rfl
+      · rw [Finset.mem_insert, Finset.mem_singleton] at hx
+        rcases hx with rfl | rfl <;> omega
+      · rw [Finset.mem_insert, Finset.mem_insert, Finset.mem_singleton] at hx
+        rcases hx with rfl | rfl | rfl <;> omega
+    · intro P Q hP hQ hPQ
+      rw [Finset.mem_insert, Finset.mem_singleton] at hP hQ
+      rcases hP with rfl | rfl <;> rcases hQ with rfl | rfl
+      · exact absurd rfl hPQ
+      · rw [Finset.disjoint_left]; intro a ha
+        rw [Finset.mem_insert, Finset.mem_singleton] at ha
+        rcases ha with rfl | rfl <;> decide
+      · rw [Finset.disjoint_left]; intro a ha
+        rw [Finset.mem_insert, Finset.mem_insert, Finset.mem_singleton] at ha
+        rcases ha with rfl | rfl | rfl <;> decide
+      · exact absurd rfl hPQ
+    · intro x hx1 hx2
+      interval_cases x
+      · exact ⟨{1, 2}, by decide, by decide⟩
+      · exact ⟨{1, 2}, by decide, by decide⟩
+      · exact ⟨{3, 4, 5}, by decide, by decide⟩
+      · exact ⟨{3, 4, 5}, by decide, by decide⟩
+      · exact ⟨{3, 4, 5}, by decide, by decide⟩
+    · intro P hP
+      rw [Finset.mem_insert, Finset.mem_singleton] at hP
+      rcases hP with rfl | rfl <;>
+        (intro T hT
+         rw [← Finset.mem_powerset] at hT
+         fin_cases hT <;> decide)
+  have hmem0 : (0 : ℕ) ∉ ValidPartitionSizes 6 := by
+    rintro ⟨parts, hcard, _, _, hcov, _⟩
+    rw [Finset.card_eq_zero] at hcard
+    subst hcard
+    obtain ⟨P, hP, _⟩ := hcov 1 (by norm_num) (by norm_num)
+    exact absurd hP (Finset.notMem_empty P)
+  -- `1` is not achievable: a single class covering `{1,…,5}` contains `{1,5}` → 6.
+  have hmem1 : (1 : ℕ) ∉ ValidPartitionSizes 6 := by
+    rintro ⟨parts, hcard, _, _, hcov, hsf⟩
+    rw [Finset.card_eq_one] at hcard
+    obtain ⟨P, hPeq⟩ := hcard
+    subst hPeq
+    obtain ⟨Q1, hQ1, h1P⟩ := hcov 1 (by norm_num) (by norm_num)
+    obtain ⟨Q5, hQ5, h5P⟩ := hcov 5 (by norm_num) (by norm_num)
+    rw [Finset.mem_singleton] at hQ1 hQ5
+    rw [hQ1] at h1P
+    rw [hQ5] at h5P
+    have hfree : IsNSumFree 6 P := hsf P (Finset.mem_singleton_self P)
+    have hsub : ({1, 5} : Finset ℕ) ⊆ P := by
+      intro x hx
+      rw [Finset.mem_insert, Finset.mem_singleton] at hx
+      rcases hx with rfl | rfl
+      · exact h1P
+      · exact h5P
+    have hval : ({1, 5} : Finset ℕ).sum id = 6 := by
+      rw [Finset.sum_pair (by norm_num : (1 : ℕ) ≠ 5)]; norm_num
+    exact hfree {1, 5} hsub hval
+  have hle : sInf (ValidPartitionSizes 6) ≤ 2 := Nat.sInf_le hmem2
+  have hmem : sInf (ValidPartitionSizes 6) ∈ ValidPartitionSizes 6 :=
+    Nat.sInf_mem ⟨2, hmem2⟩
+  have hne0 : sInf (ValidPartitionSizes 6) ≠ 0 := fun h => hmem0 (h ▸ hmem)
+  have hne1 : sInf (ValidPartitionSizes 6) ≠ 1 := fun h => hmem1 (h ▸ hmem)
+  show sInf (ValidPartitionSizes 6) = 2
+  omega
+
 /-
 ## Connection to Subset Sums and Ramsey Theory
 

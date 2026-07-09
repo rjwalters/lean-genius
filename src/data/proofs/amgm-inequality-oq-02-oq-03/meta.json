@@ -27,7 +27,7 @@
     ],
     "dateAdded": "2026-03-30",
     "axiomCount": 0,
-    "lineCount": 238,
+    "lineCount": 242,
     "assumptions": "0 axioms, 0 sorries. newton_lc now delegates to NewtonLogConcavity.newton_log_concavity_proved (proved from first principles in AmgmInequalityOQ02OQ02.lean via NewtonInductiveStep.lean — both axiom-free, 0-sorry, no native_decide), so the entire Maclaurin chain in this file is axiom-free and no longer inherits the newton_log_concavity axiom from AmgmInequalityOQ02.lean. The maclaurin_step axiom was already eliminated here (maclaurin_step_proved). NOTE: UNVERIFIED this session — build host unavailable (disk ~97% full, zombie containers); the one-line axiom→theorem delegation is a defeq-identical drop-in checked by inspection against the pinned Mathlib 4.26.0 source, pending rebuild confirmation.",
     "mathlib_version": "4.26.0",
     "theoremCount": 7,

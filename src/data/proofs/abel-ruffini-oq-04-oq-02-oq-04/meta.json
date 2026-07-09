@@ -8,7 +8,7 @@
     "axiomCount": 0,
     "sorries": 0,
     "definitionCount": 2,
-    "theoremCount": 6
+    "theoremCount": 5
   },
   "meta": {
     "status": "verified",
@@ -25,7 +25,7 @@
     "axiomCount": 0,
     "assumptions": "0 literal `axiom` declarations and 0 sorries. Every result depends only on the foundational axioms propext, Classical.choice, Quot.sound (not counted), as confirmed by `#print axioms` on isSolvable and S5_not_isSolvable_but_dihedral_is. No `native_decide` is used (the `decide` calls are kernel-evaluated on finite ZMod 2 / Fin 5 data), so `Lean.ofReduceBool` is NOT introduced. Built on Mathlib's `DihedralGroup`, `solvable_of_ker_le_range`, and `Equiv.Perm.fin_5_not_solvable`.",
     "lineCount": 113,
-    "theoremCount": 6,
+    "theoremCount": 5,
     "definitionCount": 2,
     "mathlib_version": "4.26.0",
     "dateAdded": "2026-06-27"

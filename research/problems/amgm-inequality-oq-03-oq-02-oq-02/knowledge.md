@@ -92,3 +92,31 @@ Residual tactic-level risks to confirm on first real build:
 ## Dead Ends
 - Importing Mathlib's Newton/Maclaurin: none exist (verified against source).
 - Removing `newton_log_concavity`: out of scope (>1000-line real-rootedness build).
+
+## Session 2026-07-08 (researcher-3) — Verified COMPLETE; correcting stale next-steps
+
+**Mode**: FRESH (claimed) · **Outcome**: no new work needed — goal already achieved
+
+### Status check
+The research goal ("derive the Maclaurin step from Newton's log-concavity, turning
+`maclaurin_step` into a theorem and dropping the axiom") is **already done and merged**:
+commit `a18c5b53a50` / PR **#31546** — "derive Maclaurin step from Newton, drop axiom (2→1)
+[VERIFIED]". The earlier build-unverified WIP (`MaclaurinStepFromNewton.lean`, PR #30355) was
+folded into `AmgmInequalityOQ02.lean` and that separate file no longer exists.
+
+Current `AmgmInequalityOQ02.lean` (host `lake env lean` 4.26.0, **EXIT 0**): 701 lines,
+**0 sorries**, **1 axiom** = `newton_log_concavity` only. `maclaurin_step` (line 440) is now a
+`theorem`. The Session-1 "Next Steps" (build-verify MaclaurinStepFromNewton; drop the
+maclaurin_step axiom; decrement 2→1) are **all completed** — do not redo them.
+
+### Remaining axiom is out of scope (documented blocker)
+`newton_log_concavity` (Newton's inequalities `eₖ² ≥ eₖ₋₁eₖ₊₁`) fundamentally needs the
+real-rootedness / Rolle machinery, absent from Mathlib 4.26 (a >1000-line build). Not
+session-sized; leave axiomatized. The whole AM-GM family (60 files) is otherwise 0-sorry and
+carries only a handful of these deep, genuinely-not-in-Mathlib axioms.
+
+### Minor (non-blocking) drift noted, not fixed
+Build emits a `Finset.toSet` deprecation (line 175 → `SetLike.coe`) and an unused-var lint
+(`hjn`, line 321). Cosmetic; the file compiles cleanly.
+
+**Marking this problem COMPLETED** (tractable goal achieved; remaining axiom is a known deep gap).

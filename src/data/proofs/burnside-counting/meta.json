@@ -23,7 +23,7 @@
     "axiomCount": 0,
     "assumptions": "None. The S5 drift repair (Mathlib v4.26) replaces every `native_decide` with kernel `decide` plus a genuine application of Mathlib's additive Burnside lemma `AddAction.sum_card_fixedBy_eq_card_orbits_mul_card_addGroup`, so the file no longer depends on `Lean.ofReduceBool`. `#print axioms fixed_point_sum_binary_4` and `#print axioms binary_necklaces_4` report only the foundational trio [propext, Classical.choice, Quot.sound]. 0 literal `axiom` declarations, 0 sorries, no assumption-carrying structures.",
     "lineCount": 429,
-    "theoremCount": 9,
+    "theoremCount": 12,
     "definitionCount": 9,
     "originalContributions": [
       "burnside_lemma: Burnside orbit-counting theorem from Mathlib (MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group)",
@@ -74,7 +74,7 @@
     "namespace": "BurnsideCounting",
     "lineCount": 429,
     "axiomCount": 0,
-    "theoremCount": 9,
+    "theoremCount": 12,
     "definitionCount": 9,
     "path": "Proofs/BurnsideCounting.lean",
     "sorries": 0

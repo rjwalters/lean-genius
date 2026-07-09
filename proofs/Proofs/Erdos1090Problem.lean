@@ -511,6 +511,27 @@ theorem ramsey_lower_bound (k : ℕ) (hk : k ≥ 3) : ramseyNumber k ≥ k := by
   rw [ge_iff_le, ← hcard]
   exact hasRamseyProperty_card_ge A k hA
 
+/--
+**Monotonicity of the Ramsey number in `k`:**
+The minimal Ramsey-witnessing size grows with the demand: for `3 ≤ k' ≤ k`,
+`R(k') ≤ R(k)`.  Requiring *more* monochromatic collinear points cannot make the
+threshold smaller.  Concretely the set defining `R(k)` is contained in the one
+defining `R(k')` (`hasRamseyProperty_antitone`), and `hunter_observation` makes the
+`k`-set nonempty, so its infimum is attained by a set `A` that — having the property
+for `k` — *a fortiori* has it for `k'`.  Hence `A.card = R(k)` lies in the
+`k'`-defining set and `R(k') = sInf ≤ R(k)`.
+-/
+theorem ramseyNumber_mono {k k' : ℕ} (hk' : 3 ≤ k') (hkk : k' ≤ k) :
+    ramseyNumber k' ≤ ramseyNumber k := by
+  have hk : 3 ≤ k := le_trans hk' hkk
+  have hne : {n : ℕ | ∃ A : Finset Point, A.card = n ∧ HasRamseyProperty A k}.Nonempty := by
+    obtain ⟨A, hA⟩ := hunter_observation k hk
+    exact ⟨A.card, A, rfl, hA⟩
+  obtain ⟨A, hcard, hA⟩ := Nat.sInf_mem hne
+  -- `A` attains `R(k)` and, by downward monotonicity in `k`, also witnesses `k'`.
+  refine Nat.sInf_le ⟨A, ?_, hasRamseyProperty_antitone hkk hA⟩
+  simpa [ramseyNumber] using hcard
+
 /-
 **R(3) is Small:**
 The k = 3 case can be achieved with a small set of points.

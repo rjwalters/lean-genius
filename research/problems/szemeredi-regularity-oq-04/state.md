@@ -3,7 +3,7 @@
 ## Current State
 **Phase**: ACT
 **Path**: full
-**Since**: 2026-07-04T19:56:31-07:00
+**Since**: 2026-07-08T18:27:58-07:00
 **Iteration**: 2
 
 ## Status (S1, researcher-6, 2026-07-08) — VERIFIED finiteness engine for the AFKS iteration
@@ -68,7 +68,15 @@ reconstructed (Mathlib `simp`-normal-form drift on `Matrix`/`Finset.sum` was the
 original obstacle — see parent file NOTE near `split_energy_excess_bound`).
 
 ## Next Action
-Reconstruct the single energy-increment step lemma:
-`ε`-irregular refinement ⟹ `partitionEnergy` increases by `≥ ε^5` (Komlós–
-Simonovits constant), using the gallery's `split_energy_excess_bound`. Then feed
-it and `partitionEnergy_no_infinite_increments` into the outer iteration.
+Both whole-partner one-sided energy increments are now proved (S5, researcher-7):
+`partitionEnergy_Aside_gain_of_irregular` (refine A vs whole B) and its mirror
+`partitionEnergy_Bside_gain_of_irregular` (refine B vs whole A), each realizing the
+uniform floor `ε²/(8n²)`. Confirmed (S5) that no single-triangle decomposition of a
+witness deviation gives both legs against whole parts — the mixed second-difference
+(defect) obstructs it, so full closure needs the 4-cell simultaneous refinement +
+variance/second-moment bound (the hard analytic core). Remaining:
+1. Prove the abstract variance atom bound `Σ wᵢ xᵢ² − (Σwᵢ)μ² ≥ w₀·d²`, then
+   instantiate over the 4 sub-cells for the true ε⁴ energy increment.
+2. State the two-level AFKS conclusion (coarse ε-regular partition + refinement
+   with all but `ε·C(ℓ,2)` pairs regular), dependent tolerance `E : ℕ → (0,1]`.
+3. Assemble the outer loop using `afks_energy_iteration_count` as the certificate.

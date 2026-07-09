@@ -50,7 +50,8 @@
   "relatedProofs": [
     "erdos-2",
     "erdos-21",
-    "erdos-214"
+    "erdos-214",
+    "erdos-214-incomplete-01-oq-01"
   ],
   "references": {
     "papers": [],
@@ -60,5 +61,18 @@
   "started": "2026-04-03T08:27:10.206Z",
   "lastUpdate": "2026-07-08",
   "significance": 7,
-  "tractability": 4
+  "tractability": 4,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos214Incomplete01OQ01.lean",
+      "filename": "Erdos214Incomplete01OQ01.lean",
+      "lineCount": 128,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos214Incomplete01OQ01.lean"
+    }
+  ]
 }

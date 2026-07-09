@@ -74,7 +74,8 @@
       "**The degree-four constant is exactly −μ².** Where the Fibonacci Gelin–Cesàro constant is the bare −1, the Gibonacci version is −μ² with μ = a²−ab−b² the same discriminant that controls the parent's Cassini/Catalan/Vajda identities. Fibonacci is μ=1 (−1); Lucas is μ=−5 (−25): the Lucas discriminant 5 reappears, squared.",
       "**The odd sign factor cancels by difference of squares.** Cassini and the Catalan r=2 instance carry the same magnitude (−1)^|n|·μ with opposite signs; pairing them as (X−s)(X+s) annihilates the index-dependent term s=(−1)^|n|μ, which is precisely why the answer is a clean constant rather than a sign-alternating quantity.",
       "**No new induction — the parent's Gibonacci infrastructure suffices.** The whole proof is a difference of squares over two instances of the parent's gib_cassini and gib_catalan plus the parity sign-flip; the Gibonacci lift of Gelin–Cesàro needs nothing beyond what the parent already built for Vajda.",
-      "**Faithful parallel of the Fibonacci proof.** The argument mirrors the parent's fib_gelin_cesaro line for line, with gib in place of Int.fib and the constant μ in place of 1 — demonstrating that the Gibonacci generalisation is structural, not ad hoc."
+      "**Faithful parallel of the Fibonacci proof.** The argument mirrors the parent's fib_gelin_cesaro line for line, with gib in place of Int.fib and the constant μ in place of 1 — demonstrating that the Gibonacci generalisation is structural, not ad hoc.",
+      "**Gelin–Cesàro is literally the square of Cassini's defect.** The degree-two Cassini and Catalan (r=2) identities carry the index-dependent defect ±(−1)^|n|·μ; the degree-four Gelin–Cesàro constant is exactly −(that defect)² = −μ², so the whole product hierarchy is powers of the single discriminant μ = a²−ab−b². That μ is (minus) the value on the seed (a,b) of the quadratic form attached to the characteristic polynomial x²−x−1, whose discriminant is 5 — the field discriminant of ℚ(√5). This is why the Lucas seed (1,2) gives μ = −5 and the Lucas constant is −25 = −5²: the discriminant, squared."
     ],
     "prerequisites": [
       "The parent's Gibonacci Cassini (gib_cassini), Gibonacci Catalan (gib_catalan), and the parity sign-flip lemma (sign_flip)",
@@ -87,25 +88,41 @@
       "id": "header",
       "title": "Module Header and Setup",
       "startLine": 1,
-      "endLine": 49,
-      "summary": "Module docstring deriving the Gibonacci Gelin–Cesàro identity G(n−2)G(n−1)G(n+1)G(n+2) − G(n)⁴ = −μ² with μ = a²−ab−b², explaining the difference-of-squares cancellation of the sign factor and the Fibonacci/Lucas specialisations; import Mathlib and the parent module, open Int and FibonacciIdentitiesOQ04OQ01.",
+      "endLine": 37,
+      "summary": "Module docstring recalling the Fibonacci Gelin–Cesàro identity (proved in the parent as a difference of squares) and stating the lift to the two-parameter Gibonacci family G a b n = a·Fₙ + b·Fₙ₋₁ with discriminant μ = a²−ab−b², giving G(n−2)G(n−1)G(n+1)G(n+2) − G(n)⁴ = −μ²; previews the Fibonacci (μ=1) and Lucas (μ=−5) specialisations. Imports Mathlib and the parent module, opens Int and FibonacciIdentitiesOQ04OQ01.",
       "mathContext": "$G(n-2)G(n-1)G(n+1)G(n+2) - G(n)^4 = -(a^2-ab-b^2)^2$ over $\\mathbb{Z}$."
     },
     {
-      "id": "gib-gelin-cesaro",
-      "title": "The Gibonacci Gelin–Cesàro Identity",
-      "startLine": 51,
-      "endLine": 90,
-      "summary": "gib_gelin_cesaro: recentred Gibonacci Cassini and the Gibonacci Catalan r=2 instance give the two factors G(n)²±(−1)^|n|μ; their product is the difference of squares (G(n)²)²−((−1)^|n|μ)² = G(n)⁴−μ², closed by a calc and one linear_combination after squaring away the sign.",
+      "id": "ingredients",
+      "title": "The Flagship Statement and Its Two Ingredient Factors",
+      "startLine": 39,
+      "endLine": 62,
+      "summary": "gib_gelin_cesaro is stated, then the proof assembles the two ingredients: the parent's gib_cassini recentred at base n−1 (hA) and the gib_catalan r=2 instance at base n−2 (hB), with Int.fib 2 = 1 clearing the Fᵣ² factor. The sign lemma sign_flip aligns the parities: (−1)^|n−1| = −(−1)^|n| (hs1) and (−1)^|n−2| = (−1)^|n| (hs2), rewritten into hA and hB.",
+      "mathContext": "Cassini: G(n−1)G(n+1) = G(n)² + (−1)^|n|μ;  Catalan r=2: G(n−2)G(n+2) = G(n)² − (−1)^|n|μ."
+    },
+    {
+      "id": "difference-of-squares",
+      "title": "Difference of Squares and Conclusion",
+      "startLine": 63,
+      "endLine": 83,
+      "summary": "The two outer-product forms hP, hQ (symmetric about G(n)²) are extracted by linear_combination; he2 squares the sign factor away (((−1)^|n|)² = 1). A calc reorders the four-factor product into (G(n)²−s)(G(n)²+s) with s = (−1)^|n|μ, substitutes, and one linear_combination of he2 closes the goal at −μ².",
       "mathContext": "$(G(n)^2-(-1)^{|n|}\\mu)(G(n)^2+(-1)^{|n|}\\mu) = G(n)^4-\\mu^2$."
     },
     {
-      "id": "fib-lucas-corollaries",
-      "title": "Fibonacci and Lucas Specialisations",
-      "startLine": 92,
+      "id": "fib-corollary",
+      "title": "Fibonacci Specialisation",
+      "startLine": 85,
+      "endLine": 91,
+      "summary": "fib_gelin_cesaro: the seed (a,b) = (1,0) has μ = 1, so gib 1 0 = Int.fib and the master identity collapses (by simpa) to the classical F(n−2)F(n−1)F(n+1)F(n+2) − F(n)⁴ = −1.",
+      "mathContext": "$F_{n-2}F_{n-1}F_{n+1}F_{n+2}-F_n^4=-1$ (μ = 1)."
+    },
+    {
+      "id": "lucas-corollary",
+      "title": "Lucas Specialisation",
+      "startLine": 93,
       "endLine": 102,
-      "summary": "fib_gelin_cesaro (seed (1,0), μ=1) recovers the Fibonacci identity = −1; lucas_gelin_cesaro (seed (1,2), μ=−5) gives the Lucas identity = −25, each obtained by specialising the master result.",
-      "mathContext": "$F_{n-2}F_{n-1}F_{n+1}F_{n+2}-F_n^4=-1;\\quad L_{n-2}L_{n-1}L_{n+1}L_{n+2}-L_n^4=-25$."
+      "summary": "lucas_gelin_cesaro: the seed (a,b) = (1,2) has discriminant μ = −5, so (by norm_num + simpa [lucas]) L(n−2)L(n−1)L(n+1)L(n+2) − L(n)⁴ = −25 = −(−5)², the Lucas/√5 discriminant appearing squared.",
+      "mathContext": "$L_{n-2}L_{n-1}L_{n+1}L_{n+2}-L_n^4=-25$ (μ = −5)."
     }
   ],
   "crossReferences": [
@@ -171,18 +188,27 @@
   "mainTheorems": [
     {
       "name": "gib_gelin_cesaro",
-      "type": "theorem",
-      "description": "Gibonacci Gelin–Cesàro identity (flagship): for the general Horadam/gibonacci sequence G a b n = a·F n + b·F(n−1) with discriminant μ = a² − ab − b², G(n−2)·G(n−1)·G(n+1)·G(n+2) − G(n)⁴ = −μ². Proved by combining the gibonacci Cassini and Catalan (r = 2) identities recentred at n; the sign factor (−1)^|n| cancels in the difference of squares, giving the index-independent constant −μ²."
+      "type": "core",
+      "description": "Gibonacci Gelin–Cesàro identity (flagship): for the general Horadam/gibonacci sequence G a b n = a·F n + b·F(n−1) with discriminant μ = a² − ab − b², G(n−2)·G(n−1)·G(n+1)·G(n+2) − G(n)⁴ = −μ². Proved by combining the gibonacci Cassini and Catalan (r = 2) identities recentred at n; the sign factor (−1)^|n| cancels in the difference of squares, giving the index-independent constant −μ².",
+      "leanType": "(a b n : ℤ) : gib a b (n - 2) * gib a b (n - 1) * gib a b (n + 1) * gib a b (n + 2) - gib a b n ^ 4 = -(a ^ 2 - a * b - b ^ 2) ^ 2",
+      "startLine": 47,
+      "endLine": 83
     },
     {
       "name": "fib_gelin_cesaro",
-      "type": "theorem",
-      "description": "Fibonacci Gelin–Cesàro: the seed (a, b) = (1, 0) has μ = 1, so F(n−2)·F(n−1)·F(n+1)·F(n+2) − F(n)⁴ = −1. Recovered by specialising gib_gelin_cesaro."
+      "type": "key",
+      "description": "Fibonacci Gelin–Cesàro: the seed (a, b) = (1, 0) has μ = 1, so F(n−2)·F(n−1)·F(n+1)·F(n+2) − F(n)⁴ = −1. Recovered by specialising gib_gelin_cesaro.",
+      "leanType": "(n : ℤ) : Int.fib (n - 2) * Int.fib (n - 1) * Int.fib (n + 1) * Int.fib (n + 2) - Int.fib n ^ 4 = -1",
+      "startLine": 87,
+      "endLine": 91
     },
     {
       "name": "lucas_gelin_cesaro",
-      "type": "theorem",
-      "description": "Lucas Gelin–Cesàro: the seed (a, b) = (1, 2) has discriminant μ = −5, so L(n−2)·L(n−1)·L(n+1)·L(n+2) − L(n)⁴ = −25. Recovered by specialising gib_gelin_cesaro."
+      "type": "key",
+      "description": "Lucas Gelin–Cesàro: the seed (a, b) = (1, 2) has discriminant μ = −5, so L(n−2)·L(n−1)·L(n+1)·L(n+2) − L(n)⁴ = −25. Recovered by specialising gib_gelin_cesaro.",
+      "leanType": "(n : ℤ) : lucas (n - 2) * lucas (n - 1) * lucas (n + 1) * lucas (n + 2) - lucas n ^ 4 = -25",
+      "startLine": 95,
+      "endLine": 100
     }
   ],
   "sorries": 0

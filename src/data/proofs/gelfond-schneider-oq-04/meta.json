@@ -55,7 +55,7 @@
       "irrational_log_three_div_log_two: log 3 / log 2 is irrational, proved unconditionally (no Gelfond-Schneider assumption) — a rational value p/d would give 2^p = 3^d for positive integers, impossible since 2^p is even and 3^d is odd.",
       "transcendental_log_three_div_log_two: log₂ 3 is transcendental, obtained by feeding the irrationality into the dichotomy at the algebraic bases 2 and 3 — the dichotomy upgrades irrationality to transcendence for free."
     ],
-    "theoremCount": 3,
+    "theoremCount": 5,
     "definitionCount": 0
   },
   "overview": {
@@ -154,7 +154,7 @@
     "namespace": "GelfondSchneiderOQ04",
     "lineCount": 187,
     "axiomCount": 1,
-    "theoremCount": 3,
+    "theoremCount": 5,
     "definitionCount": 0,
     "path": "Proofs/GelfondSchneiderOQ04.lean",
     "sorries": 0

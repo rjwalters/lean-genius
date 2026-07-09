@@ -41,7 +41,8 @@
       "The sawtooth identity carries no more content than the floor identity — it is the *complement* of it inside the exact arithmetic sum ∑_{k<n}(x + k/n) = n·x + (n−1)/2. Proving both makes the floor/fractional decomposition of a uniformly sampled arithmetic progression fully explicit.",
       "The (n−1)/2 term is precisely the average of the offsets 0, 1/n, …, (n−1)/n rescaled: ∑_{k<n} k/n = (n−1)/2, a Gauss sum. It is x-independent, so the entire x-dependence of the sawtooth sum lives in the single term {n·x}.",
       "At x = 0 the identity reads ∑_{k=0}^{n-1} {k/n} = (n−1)/2, the equidistribution/average statement for the n-th roots-of-unity phases on the sawtooth — the seed of Dedekind-sum reciprocity.",
-      "Unfolding `Int.fract` to `y − ⌊y⌋` up front reduces an analytic-looking statement about a discontinuous sawtooth to pure finite-sum algebra plus one appeal to the parent's integer identity."
+      "Unfolding `Int.fract` to `y − ⌊y⌋` up front reduces an analytic-looking statement about a discontinuous sawtooth to pure finite-sum algebra plus one appeal to the parent's integer identity.",
+      "The constant (n−1)/2 is exactly the bookkeeping that homogenizes the multiplication law. Passing to the balanced (odd) sawtooth ((y)) = {y} − 1/2 (for y ∉ ℤ), the identity becomes ∑_{k<n} ((x+k/n)) = ({n·x} + (n−1)/2) − n·(1/2) = {n·x} − 1/2 = ((n·x)) — a constant-free distribution relation, because the n copies of the −1/2 recentering absorb the (n−1)/2 down to the single −1/2 of ((n·x)). Since ((·)) is precisely the building block of Dedekind sums s(h,k) = ∑_{r<k} ((r/k))·((hr/k)), this entry supplies the n-fold multiplication formula for exactly the function whose reciprocity is the subject of the open questions."
     ],
     "prerequisites": [
       "HermiteFloorIdentity.hermite_floor_identity (the parent floor identity ∑ ⌊x + k/n⌋ = ⌊n·x⌋)",
@@ -52,28 +53,44 @@
   },
   "sections": [
     {
+      "id": "docstring",
+      "title": "Statement, Strategy, and Main Results",
+      "startLine": 1,
+      "endLine": 29,
+      "summary": "Module docstring recalling the parent's floor identity and stating this entry's target — the sawtooth companion ∑_{k<n}{x+k/n} = {n·x} + (n−1)/2 (the parent's open question OQ-03 #1) — with the value = exact − floor derivation spelled out and the two specialisations (x = 0 and n·x ∈ ℤ) previewed under a Main results list.",
+      "mathContext": "Targets $\\sum_{k=0}^{n-1}\\{x + k/n\\} = \\{nx\\} + (n-1)/2$ for real $x$ and $n \\ge 1$."
+    },
+    {
+      "id": "imports-namespace",
+      "title": "Imports and Namespace",
+      "startLine": 30,
+      "endLine": 35,
+      "summary": "import Mathlib and the parent Proofs.HermiteFloorIdentity (whose hermite_floor_identity is the single external ingredient), open Finset for range and ∑, and the HermiteFloorIdentityOQ03 namespace.",
+      "mathContext": "Depends only on the parent floor identity plus Mathlib's Int.fract / Finset APIs."
+    },
+    {
       "id": "sec-gauss",
       "title": "Real Gauss Sum",
-      "startLine": 40,
-      "endLine": 47,
-      "summary": "Lemma sum_range_cast: ∑_{k<m} (k : ℝ) = m(m−1)/2 for every m, by induction on m (Finset.sum_range_succ then push_cast; ring). Supplies the x-independent (n−1)/2 term.",
-      "mathContext": "The Gauss sum $\\sum_{k=0}^{m-1} k = \\frac{m(m-1)}{2}$, cast to $\\mathbb{R}$ so it composes with the division by $n$ appearing in the linear part of the sawtooth sum."
+      "startLine": 37,
+      "endLine": 45,
+      "summary": "Lemma sum_range_cast: ∑_{k<m} (k : ℝ) = m(m−1)/2 for every m, by induction on m (Finset.sum_range_succ then push_cast; ring). Proved directly over ℝ (not by casting the ℕ result) so it composes with the /n in the linear part; supplies the x-independent (n−1)/2 term.",
+      "mathContext": "The Gauss sum $\\sum_{k=0}^{m-1} k = \\frac{m(m-1)}{2}$, cast to $\\mathbb{R}$ so it composes with the division by $n$ in the linear part of the sawtooth sum."
     },
     {
       "id": "sec-main",
       "title": "The Sawtooth Companion Identity",
-      "startLine": 49,
-      "endLine": 64,
-      "summary": "Theorem hermite_fract_identity: ∑_{k<n} {x + k/n} = {n·x} + (n−1)/2 for n ≥ 1. Unfolds Int.fract, splits the sum, evaluates the constant/linear/floor parts (the last via the parent's Hermite floor identity), and closes with field_simp; ring.",
+      "startLine": 47,
+      "endLine": 60,
+      "summary": "Theorem hermite_fract_identity: ∑_{k<n} {x + k/n} = {n·x} + (n−1)/2 for n ≥ 1. Unfolds Int.fract, splits the sum (sum_sub_distrib, sum_add_distrib), evaluates the constant part n·x, the linear part (n−1)/2 via sum_range_cast, and the floor part ⌊n·x⌋ via the parent's Hermite floor identity (Int.cast_sum to move the sum inside the cast), then closes with field_simp; ring.",
       "mathContext": "$\\sum_{k=0}^{n-1}\\{x+k/n\\} = \\big(nx + \\tfrac{n-1}{2}\\big) - \\lfloor nx\\rfloor = \\{nx\\} + \\tfrac{n-1}{2}$, using $\\sum_{k<n}\\lfloor x+k/n\\rfloor=\\lfloor nx\\rfloor$."
     },
     {
       "id": "sec-corollaries",
       "title": "Specialisations",
-      "startLine": 66,
+      "startLine": 62,
       "endLine": 77,
-      "summary": "hermite_fract_sum_at_zero: at x = 0, ∑_{k<n} {k/n} = (n−1)/2. hermite_fract_sum_of_mul_int: if {n·x} = 0 (n·x integral) then the sawtooth sum is exactly (n−1)/2.",
-      "mathContext": "The x = 0 case $\\sum_{k=0}^{n-1}\\{k/n\\}=\\frac{n-1}{2}$ is the average of the offsets; the integral-$nx$ case is where the x-dependent term vanishes."
+      "summary": "hermite_fract_sum_at_zero: at x = 0 (Int.fract_zero), ∑_{k<n} {k/n} = (n−1)/2, the classical average of the offsets. hermite_fract_sum_of_mul_int: when {n·x} = 0 (n·x integral) the sawtooth sum is exactly (n−1)/2, one-lined by rewriting with the main identity.",
+      "mathContext": "$\\sum_{k=0}^{n-1}\\{k/n\\}=\\frac{n-1}{2}$ (offset average); integral $nx \\Rightarrow \\sum\\{x+k/n\\}=\\frac{n-1}{2}$."
     }
   ],
   "conclusion": {

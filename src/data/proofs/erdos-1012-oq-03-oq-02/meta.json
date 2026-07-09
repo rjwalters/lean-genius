@@ -63,7 +63,7 @@
         "module": "Mathlib.Data.Finset.Max"
       }
     ],
-    "theoremCount": 7,
+    "theoremCount": 10,
     "relatedProblems": [
       {
         "id": "erdos-1012-oq-03",
@@ -74,7 +74,7 @@
         "relationship": "Root: Erdős Problem #1012 (Long Cycles in Dense Graphs)."
       }
     ],
-    "definitionCount": 4
+    "definitionCount": 5
   },
   "overview": {
     "historicalContext": "The handshake lemma — that the degree sum of a graph equals twice the number of edges — is the oldest result in graph theory, implicit in Euler's 1736 Königsberg paper. Its directed form splits into two halves (out-degrees and in-degrees), each recovering the arc count. For tournaments (orientations of complete graphs, studied by H. G. Landau in 1953 for animal-dominance ranking models), the degree sequence is the *score sequence*, and the elementary identity that scores sum to n(n−1)/2 is the entry point to Landau's theorem characterising score sequences.",
@@ -211,8 +211,8 @@
     "namespace": "Erdos1012OQ03OQ02",
     "lineCount": 191,
     "axiomCount": 0,
-    "theoremCount": 7,
-    "definitionCount": 4,
+    "theoremCount": 10,
+    "definitionCount": 5,
     "sorries": 0,
     "path": "Proofs/Erdos1012OQ03OQ02.lean"
   }

@@ -58,5 +58,12 @@
       "Relate ker q^{k-1}(M) to the socle / maximal submodule q*K[X]/(q^k) explicitly"
     ],
     "markdown": "# Knowledge: cayley-hamilton-minpoly-oq-04-backward-incomplete-01-oq-02\n\n## Session 2026-07-03 (Session 1) - Prime-power minimal polynomial case\n\n**Mode**: FRESH\n**Outcome**: completed (0 axioms, 0 sorries, verified)\n\n### What I Did\n- Formalized the cyclic-vector characterization for mu = q^k (q irreducible): v cyclic <-> q^{k-1}(M)v != 0.\n- Hard direction via the parent's Bezout lemma gcd_aeval_mulVec_eq_zero + dvd_prime_pow (divisors of q^k are associates of q^j, j<=k).\n- Easy direction via a natDegree bound on q^{k-1}.\n- Assembled the iff; built successfully under Docker; created gallery entry + annotations.\n\n### Key Findings\n- Generalizes sibling -oq-01: k=1 gives q^{k-1}=1, so the criterion collapses to v != 0.\n- Cyclic locus is {0}^c minus the proper subspace ker q^{k-1}(M).\n\n### Files Modified\n- proofs/Proofs/CayleyHamiltonMinpolyOQ04BackwardIncomplete01OQ02.lean\n- src/data/proofs/cayley-hamilton-minpoly-oq-04-backward-incomplete-01-oq-02/ (meta.json, annotations.json, index.ts)\n\n### Next Steps\n- CRT assembly for arbitrary minimal polynomials; finite-field count of the prime-power block.\n"
-  }
+  },
+  "relatedProofs": [
+    "cayley-hamilton",
+    "cayley-hamilton-minpoly",
+    "cayley-hamilton-minpoly-oq-04",
+    "cayley-hamilton-minpoly-oq-04-backward-incomplete-01",
+    "cayley-hamilton-minpoly-oq-04-backward-incomplete-01-oq-02"
+  ]
 }

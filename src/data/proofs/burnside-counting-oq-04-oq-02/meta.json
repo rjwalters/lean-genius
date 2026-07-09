@@ -59,7 +59,7 @@
     "assumptions": "None. Fully verified, 0 axioms, 0 sorries, and no native_decide: the fixed-point sums are discharged by kernel decide, so every headline depends only on the standard foundational axioms propext, Classical.choice, Quot.sound (confirmed via #print axioms — in particular no Lean.ofReduceBool and no sorryAx).",
     "lineCount": 219,
     "theoremCount": 12,
-    "definitionCount": 3
+    "definitionCount": 5
   },
   "overview": {
     "historicalContext": "Burnside's lemma counts the orbits of a finite group action as the average number of fixed points. For the cyclic rotation group ℤ/nℤ acting on the beads of an n-cycle it yields the necklace numbers; adjoining the n reflections gives the dihedral group D_n and the bracelet numbers (OEIS A000029: 2, 3, 4, 6, 8, 13, 18, 30, …). The parent burnside-counting-oq-04 proves the abstract index-2 folding identity but recovers the length-4 bracelet count only conditionally; the sibling oq-04-oq-01 builds a concrete D₄ action and makes that count unconditional, but hard-wired to n = 4. Its own first open question asks to generalise the construction to D_n and recover b(5), b(6) — which this entry does.",
@@ -169,7 +169,7 @@
     "lineCount": 219,
     "axiomCount": 0,
     "theoremCount": 12,
-    "definitionCount": 3,
+    "definitionCount": 5,
     "path": "Proofs/BurnsideCountingOQ04OQ02.lean",
     "sorries": 0
   },

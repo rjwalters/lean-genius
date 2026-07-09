@@ -1,159 +1,175 @@
 [
   {
-    "id": "aoc-oq05-scope",
+    "id": "ann-moments-overview",
     "proofId": "area-of-circle-oq-05-incomplete-01-oq-01",
     "range": {
       "startLine": 1,
       "endLine": 31
     },
     "type": "concept",
-    "title": "Scope: the first moments of the standard normal",
-    "content": "The parent `AreaOfCircleOQ05Incomplete01` derived the normal density `(1/√(2π))·exp(-x²/2)` from the Gaussian integral `∫ exp(-x²) = √π`, and asked (OQ-01) for the moments `E[X^{2k}] = (2k-1)!!`, `E[X^{2k+1}] = 0`. This file settles the structurally central cases — mean, variance, second moment — over Mathlib's `gaussianReal 0 1`, bridges the abstract measure to the parent's concrete density integral, and records the moment-generating function `M_X(t) = exp(t²/2)` whose Taylor coefficients encode the full even-moment sequence. Everything is kernel-checked with 0 axioms and no `native_decide`; the general even-moment formula is the remaining strand.",
-    "mathContext": "Standard normal $N(0,1)$: $E[X^{2k}] = (2k-1)!! = \\tfrac{(2k)!}{2^k k!}$, $E[X^{2k+1}] = 0$.",
-    "significance": "supporting",
+    "title": "Moments of the Standard Normal",
+    "content": "Once the Gaussian integral $\\int e^{-x^2}\\,dx=\\sqrt\\pi$ (the parent 'area-of-circle' strand) fixes the normalization, the shape of $\\mathcal N(0,1)$ is captured by its **moments** $\\mathbb E[X^k]$. The odd moments vanish by symmetry and the even moments follow the double factorial: $\\mathbb E[X^{2k}]=(2k-1)!!$. This file settles the structurally decisive first cases — mean $0$, variance $1$, second moment $\\mathbb E[X^2]=1$ — and records the moment-generating function $\\exp(t^2/2)$ that encodes the whole sequence, answering the first strand of the parent's open question OQ-01.",
+    "mathContext": "$\\mathbb E[X^{2k}]=(2k-1)!!$, $\\mathbb E[X^{2k+1}]=0$; here $k\\le 1$ plus the MGF.",
+    "significance": "key",
+    "prerequisites": [
+      "expectation and variance",
+      "the Gaussian integral"
+    ],
     "relatedConcepts": [
-      "standard normal distribution",
       "moments",
-      "double factorial",
-      "Gaussian integral"
-    ],
-    "prerequisites": [
-      "probability measures",
-      "Lebesgue integration"
+      "normal distribution",
+      "Gaussian integral",
+      "moment-generating function"
     ]
   },
   {
-    "id": "mathlib-imports",
-    "proofId": "area-of-circle-oq-05-incomplete-01-oq-01",
-    "range": {
-      "startLine": 33,
-      "endLine": 40
-    },
-    "type": "context",
-    "title": "Mathlib Probability Infrastructure",
-    "content": "The formalization rests on two Mathlib modules: `Probability.Distributions.Gaussian.Real` supplies the measure `gaussianReal 0 1`, its density `gaussianPDFReal`, and the closed-form results `integral_id_gaussianReal`, `variance_id_gaussianReal`, and `mgf_id_gaussianReal`; `Probability.Moments.Variance` supplies `variance_eq_integral`, the bridge from `Var[X]` to `∫(x-E[X])²`. Working inside the `AreaOfCircleOQ05Incomplete01OQ01` namespace with `open MeasureTheory Real` and `open scoped ProbabilityTheory` keeps the statements in elementary integral notation.",
-    "mathContext": "$\\mathrm{gaussianReal}\\,0\\,1 = N(0,1)$; $\\mathrm{Var}[X] = \\int (x-\\mathbb{E}[X])^2\\,d\\mu$.",
-    "significance": "context",
-    "relatedConcepts": [
-      "gaussianReal",
-      "gaussianPDFReal",
-      "mgf",
-      "variance_eq_integral"
-    ],
-    "prerequisites": [
-      "Mathlib measure-theoretic probability",
-      "Bochner integral notation"
-    ]
-  },
-  {
-    "id": "aoc-oq05-def",
+    "id": "ann-stdnormal-def",
     "proofId": "area-of-circle-oq-05-incomplete-01-oq-01",
     "range": {
       "startLine": 42,
-      "endLine": 47
+      "endLine": 44
     },
     "type": "definition",
-    "title": "The standard normal as a Gaussian measure",
-    "content": "`stdNormal` is defined as Mathlib's `ProbabilityTheory.gaussianReal 0 1` — the Gaussian measure with mean `0` and variance `1`. The accompanying `IsProbabilityMeasure` instance (proved by unfolding and `infer_instance`) records that it is a genuine probability measure, so every moment integral below is against total mass 1. Working in the measure framework rather than the raw density lets the proofs reuse Mathlib's Gaussian lemmas directly.",
-    "mathContext": "$\\text{stdNormal} := \\mathcal{N}(0,1)$, with $\\int_{\\mathbb{R}} d\\,\\text{stdNormal} = 1$.",
-    "significance": "key",
-    "relatedConcepts": [
-      "Gaussian measure",
-      "probability measure",
-      "gaussianReal"
-    ],
+    "title": "The Standard Normal Measure",
+    "content": "`stdNormal := gaussianReal 0 1` reuses Mathlib's Gaussian *measure* with mean `0` and variance `1`, rather than re-deriving the density. Working at the level of the measure (not the density) is what gives direct access to the library's moment API — `integral_id_gaussianReal`, `variance_id_gaussianReal`, `mgf_id_gaussianReal`. The accompanying `IsProbabilityMeasure` instance (total mass 1) is inherited automatically via `infer_instance`, so all expectations are genuine averages.",
+    "mathContext": "$\\mathcal N(0,1)$ as a probability measure on $\\mathbb R$.",
+    "significance": "supporting",
     "prerequisites": [
       "measure theory",
-      "probability distributions"
+      "probability measures"
+    ],
+    "relatedConcepts": [
+      "gaussianReal",
+      "probability measure",
+      "IsProbabilityMeasure"
     ]
   },
   {
-    "id": "aoc-oq05-mean-var",
+    "id": "ann-stdnormal-mean",
     "proofId": "area-of-circle-oq-05-incomplete-01-oq-01",
     "range": {
       "startLine": 49,
-      "endLine": 58
+      "endLine": 52
     },
     "type": "theorem",
-    "title": "Mean 0 and variance 1",
-    "content": "`stdNormal_mean` (`E[X] = 0`) and `stdNormal_variance` (`Var[X] = 1`) are direct specializations of Mathlib's Gaussian facts `integral_id_gaussianReal` and `variance_id_gaussianReal`. They are the defining first- and second-order data of the standard normal, and — because the mean is `0` — they are exactly what collapses the variance into the raw second moment in the next step.",
-    "mathContext": "$E[X] = \\int x\\,d\\mathcal{N}(0,1) = 0$;\\ \\ $\\operatorname{Var}[X] = 1$.",
-    "significance": "key",
-    "relatedConcepts": [
-      "expectation",
-      "variance",
-      "standard normal distribution"
-    ],
+    "title": "Mean = 0 (the Base Odd Moment)",
+    "content": "$\\mathbb E[X]=\\int x\\,d\\mathcal N(0,1)=0$ is a one-line specialization of `integral_id_gaussianReal` at $\\mu=0$. It plays a double role downstream: it is the $k=0$ case of the vanishing odd moments $\\mathbb E[X^{2k+1}]=0$, and — crucially — it is what makes the variance integral $\\int(x-\\mathbb E[X])^2$ collapse to the raw second moment $\\int x^2$ in the next lemma.",
+    "mathContext": "$\\mathbb E[X]=\\mu=0$.",
+    "significance": "supporting",
     "prerequisites": [
-      "expectation and variance",
-      "Gaussian measures"
+      "expectation"
+    ],
+    "relatedConcepts": [
+      "first moment",
+      "symmetry of the density"
     ]
   },
   {
-    "id": "aoc-oq05-second-moment",
+    "id": "ann-stdnormal-variance",
+    "proofId": "area-of-circle-oq-05-incomplete-01-oq-01",
+    "range": {
+      "startLine": 54,
+      "endLine": 58
+    },
+    "type": "theorem",
+    "title": "Variance = 1",
+    "content": "$\\mathrm{Var}[X]=1$ specializes `variance_id_gaussianReal` at variance parameter $v=1$; the trailing `simp` discharges the cast of the parameter. The Lean notation `Var[id ; stdNormal]` is the variance of the identity random variable under the measure. This is the raw material for the second moment: for a centered distribution, variance and second moment coincide.",
+    "mathContext": "$\\mathrm{Var}[X]=v=1$.",
+    "significance": "supporting",
+    "prerequisites": [
+      "variance"
+    ],
+    "relatedConcepts": [
+      "variance",
+      "variance_id_gaussianReal"
+    ]
+  },
+  {
+    "id": "ann-stdnormal-second-moment",
     "proofId": "area-of-circle-oq-05-incomplete-01-oq-01",
     "range": {
       "startLine": 60,
       "endLine": 68
     },
-    "type": "insight",
-    "title": "Second moment E[X²] = 1 via variance = mean-square",
-    "content": "`stdNormal_second_moment` derives `∫ x² = 1` from `Var[X] = E[X²] − (E[X])²`: rewriting the variance as an integral (`variance_eq_integral`) and substituting `E[X] = 0` collapses `Var[X] = 1` directly to the raw second moment. This is the `k = 1` case of the general even-moment formula, since `(2·1−1)!! = 1`.",
-    "mathContext": "$\\operatorname{Var}[X] = E[X^2] - (E[X])^2$, and $E[X] = 0 \\Rightarrow E[X^2] = \\operatorname{Var}[X] = 1 = 1!!$.",
-    "significance": "key",
+    "type": "theorem",
+    "title": "Second Moment E[X²] = 1 via a Vanishing Mean",
+    "content": "The first genuinely *even* moment. The key move needs no new integral: `variance_eq_integral` rewrites $\\mathrm{Var}[X]=\\int(x-\\mathbb E[X])^2$, and substituting the just-proved $\\mathbb E[X]=0$ collapses the integrand $(x-0)^2=x^2$, so $\\int x^2=\\mathrm{Var}[X]=1$. This is the identity 'for a mean-zero variable the variance IS the second moment', and it is why $\\mathbb E[X^2]$ falls out for free rather than requiring a separate Gaussian moment integral.",
+    "mathContext": "$\\mathbb E[X^2]=\\int(x-0)^2\\,d\\mathcal N(0,1)=\\mathrm{Var}[X]=1$.",
+    "significance": "critical",
+    "prerequisites": [
+      "variance",
+      "expectation"
+    ],
     "relatedConcepts": [
       "second moment",
-      "variance identity",
-      "double factorial"
-    ],
-    "prerequisites": [
-      "variance-mean-square identity"
+      "variance_eq_integral",
+      "centered random variable"
     ]
   },
   {
-    "id": "aoc-oq05-concrete",
+    "id": "ann-gaussianpdf-std",
     "proofId": "area-of-circle-oq-05-incomplete-01-oq-01",
     "range": {
       "startLine": 70,
-      "endLine": 92
+      "endLine": 77
     },
-    "type": "tactic",
-    "title": "Bridging the measure to the parent's concrete density",
-    "content": "Two theorems tie the abstract measure back to the parent's explicit integral. `gaussianPDFReal_std` proves Mathlib's `gaussianPDFReal 0 1` equals the parent's density `(1/√(2π))·exp(-x²/2)` (by `push_cast`/`ring_nf`). `stdNormal_second_moment_concrete` then rewrites the measure integral `∫ x² ∂stdNormal` as a density integral via `integral_gaussianReal_eq_integral_smul` and applies `integral_congr_ae` with that density identity, yielding the concrete `∫ x²·(1/√(2π))·exp(-x²/2) = 1`. This makes the result usable in the parent's idiom without re-deriving anything.",
-    "mathContext": "$\\int x^2 \\, d\\mathcal{N}(0,1) = \\int x^2 \\cdot \\tfrac{1}{\\sqrt{2\\pi}} e^{-x^2/2}\\,dx = 1.$",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "probability density function",
-      "change of representation",
-      "integral_congr_ae",
-      "gaussianPDFReal"
-    ],
+    "type": "lemma",
+    "title": "Matching Mathlib's Density to the Concrete Bell Curve",
+    "content": "Identifies Mathlib's abstract `gaussianPDFReal 0 1 x` with the parent file's explicit density $\\frac{1}{\\sqrt{2\\pi}}e^{-x^2/2}$. Unfolding the library definition and normalizing ($\\mu=0$, $\\sigma^2=1$) via `push_cast`/`ring_nf` collapses the general $\\frac{1}{\\sigma\\sqrt{2\\pi}}e^{-(x-\\mu)^2/(2\\sigma^2)}$ to the standard form. This equation is the hinge that lets abstract measure-level results be restated in the parent's elementary Lebesgue-integral idiom.",
+    "mathContext": "$\\text{gaussianPDFReal }0\\ 1\\ x = \\frac{1}{\\sqrt{2\\pi}}e^{-x^2/2}$.",
+    "significance": "key",
     "prerequisites": [
-      "densities vs measures",
-      "Lebesgue integration"
+      "Gaussian density"
+    ],
+    "relatedConcepts": [
+      "gaussianPDFReal",
+      "probability density function",
+      "normalization constant"
     ]
   },
   {
-    "id": "aoc-oq05-mgf",
+    "id": "ann-second-moment-concrete",
+    "proofId": "area-of-circle-oq-05-incomplete-01-oq-01",
+    "range": {
+      "startLine": 79,
+      "endLine": 92
+    },
+    "type": "theorem",
+    "title": "Second Moment in the Concrete Density Idiom",
+    "content": "Transports $\\mathbb E[X^2]=1$ from the abstract measure to the parent's concrete integral $\\int x^2\\cdot\\frac{1}{\\sqrt{2\\pi}}e^{-x^2/2}\\,dx=1$. The bridge is `integral_gaussianReal_eq_integral_smul`, the `withDensity` change-of-measure law rewriting any $\\int f\\,d\\mathcal N(0,1)$ as the density-weighted Lebesgue integral $\\int \\text{pdf}(x)\\cdot f(x)\\,dx$. Combined with `gaussianPDFReal_std` (to name the density) and a pointwise `integral_congr_ae` + `ring`, the abstract second moment becomes the classical textbook integral.",
+    "mathContext": "$\\int x^2\\cdot\\tfrac{1}{\\sqrt{2\\pi}}e^{-x^2/2}\\,dx=1$.",
+    "significance": "critical",
+    "prerequisites": [
+      "Lebesgue integral",
+      "densities and change of measure"
+    ],
+    "relatedConcepts": [
+      "withDensity",
+      "change of measure",
+      "integral_gaussianReal_eq_integral_smul"
+    ]
+  },
+  {
+    "id": "ann-stdnormal-mgf",
     "proofId": "area-of-circle-oq-05-incomplete-01-oq-01",
     "range": {
       "startLine": 94,
-      "endLine": 104
+      "endLine": 103
     },
-    "type": "insight",
-    "title": "The moment-generating function exp(t²/2)",
-    "content": "`stdNormal_mgf` shows the MGF is `t ↦ exp(t²/2)` (from Mathlib's `mgf_id_gaussianReal`). This single object encodes every moment: expanding `exp(t²/2) = ∑ t^{2k}/(2^k k!)` and matching against `∑ E[X^n] t^n/n!` gives `E[X^{2k}] = (2k)!/(2^k k!) = (2k-1)!!` and `E[X^{2k+1}] = 0`. The MGF is thus the compact generator of the full moment sequence OQ-01 asks for — differentiating it (or an integration-by-parts recursion) yields the general formula left as the remaining strand.",
-    "mathContext": "$M_X(t) = e^{t^2/2} = \\sum_{k\\ge 0} \\frac{t^{2k}}{2^k k!}$, so $E[X^{2k}] = \\frac{(2k)!}{2^k k!} = (2k-1)!!$.",
-    "significance": "key",
-    "relatedConcepts": [
-      "moment-generating function",
-      "Taylor series",
-      "even moments",
-      "double factorial"
-    ],
+    "type": "theorem",
+    "title": "Moment-Generating Function exp(t²/2)",
+    "content": "The MGF $M_X(t)=\\mathbb E[e^{tX}]=\\exp(t^2/2)$, from `mgf_id_gaussianReal` specialized to $\\mu=0,v=1$. This single function encodes *every* moment at once: its power series $\\sum_k \\frac{t^{2k}}{2^k k!}$ has no odd-power terms (so all odd moments vanish) and coefficient extraction gives $\\mathbb E[X^{2k}]=\\frac{(2k)!}{2^k k!}=(2k-1)!!$. It reduces the remaining strand of OQ-01 — the general even-moment formula — to Taylor-coefficient bookkeeping.",
+    "mathContext": "$M_X(t)=\\exp(t^2/2)=\\sum_{k\\ge0}\\frac{t^{2k}}{2^k k!}$, giving $\\mathbb E[X^{2k}]=(2k-1)!!$.",
+    "significance": "critical",
     "prerequisites": [
       "moment-generating functions",
       "power series"
+    ],
+    "relatedConcepts": [
+      "moment-generating function",
+      "double factorial",
+      "Taylor coefficients",
+      "even moments"
     ]
   }
 ]

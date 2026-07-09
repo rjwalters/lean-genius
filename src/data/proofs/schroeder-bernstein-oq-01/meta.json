@@ -79,7 +79,7 @@
     "mathlib_version": "4.26.0",
     "assumptions": "None. Fully verified with 0 axioms, 0 sorries, and 0 structure-encoded assumptions. Build-verified at Mathlib pin 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67 (v4.26.0) at 3115 jobs.",
     "theoremCount": 8,
-    "definitionCount": 1
+    "definitionCount": 3
   },
   "overview": {
     "historicalContext": "The classical Schroeder-Bernstein theorem (Cantor 1887; Schroeder 1898; Bernstein 1898) — mutual injections between sets yield a bijection — has a natural categorical generalization: a category $\\mathcal{C}$ has the **Schroeder-Bernstein property** (SBP) if for every pair $X, Y \\in \\mathcal{C}$, mutual monomorphisms $X \\hookrightarrow Y$ and $Y \\hookrightarrow X$ imply $X \\cong Y$. The set-theoretic theorem says $\\mathbf{Set}$ has SBP.\n\nClassical results catalogue where SBP holds and fails. **Holds**: complete Boolean algebras (Sikorski 1948), σ-complete lattices, Hilbert spaces (trivially). **Fails**: groups (Bumby 1965), Banach spaces (Gowers 1996, solving Banach's 1932 problem), commutative rings, topological spaces (the [0,1] vs (0,1) example formalized here).\n\nBanaschewski and Brummer (1986) gave a categorical sufficient condition based on a 'retraction condition' — every monic admits a section in a suitable factorisation system — and conjectured that a complete characterization should exist. To this day, **no necessary-and-sufficient categorical axiom for SBP is known**: this is the source of OQ-01.\n\nThis entry contributes to the characterization program by mapping out where SBP can be machine-verified at the categorical level. Three concrete instance theorems (`hasSBP_Type`, `hasSBP_Discrete`, `not_hasSBP_TopCat`) anchor the corpus; three abstract sufficient conditions (`hasSBP_of_isDiscrete`, `hasSBP_of_isGroupoid`, `hasSBP_of_fullFaithful_forget`) locate the difficulty: the first two are vacuous (their hypotheses force every monic to be iso); the third — using the fully-faithful concrete category framework — is the first genuinely non-vacuous member, but its hypothesis is narrow (essentially restricts $\\mathcal{C}$ to a full subcategory of $\\mathbf{Type}$).",
@@ -222,7 +222,7 @@
     "lineCount": 353,
     "axiomCount": 0,
     "theoremCount": 8,
-    "definitionCount": 1,
+    "definitionCount": 3,
     "path": "Proofs/SchroederBernsteinOQ01.lean",
     "sorries": 0
   },

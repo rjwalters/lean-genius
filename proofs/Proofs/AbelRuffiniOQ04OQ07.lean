@@ -345,22 +345,21 @@ theorem bringRadical_neg (t : ℝ) : bringRadical (-t) = -(bringRadical t) := by
 -- PART 7: Algebraic Significance
 -- ============================================================
 
-/-- The Bring radical is not expressible in radicals.
-    By Abel-Ruffini (AbelRuffini.lean), the general quintic has Galois group S₅,
-    which is not solvable. The Bring-Jerrard form y⁵ + y + t = 0 is a "generic"
-    quintic, so its roots (= Bring radicals) are not expressible by radicals
-    for generic t.
+/- **The Bring radical is not expressible in radicals.**
 
-    We axiomatize this connection; a full proof would require:
-    (a) showing the generic polynomial y⁵ + y − t has Galois group S₅ over ℚ(t)
-    (b) applying Abel-Ruffini to conclude.
-    Both are deep results beyond current gallery scope. -/
-axiom bringRadical_not_in_radicals :
-    ¬ ∃ (F : ℝ → ℝ),
-      (∀ t : ℝ, F t = bringRadical t) ∧
-      -- F is expressible by field operations and nth roots
-      -- (formal statement of "expressible in radicals" would go here)
-      True
+    An earlier version of this entry axiomatized this claim as
+    `bringRadical_not_in_radicals`. That axiom was **degenerate and unsound**: its
+    "expressible in radicals" predicate had been left as a literal `True`, so the
+    statement `¬ ∃ F, (∀ t, F t = bringRadical t) ∧ True` is in fact *false*
+    (witnessed by `F := bringRadical`). Asserting its negation made the file
+    inconsistent. The axiom has therefore been removed.
+
+    The genuine, machine-checked replacement lives in the sibling entry
+    `AbelRuffiniOQ04OQ07OQ02.lean`, which connects the analytically defined
+    `bringRadical (↑t)` to Mathlib's algebraic radical-solvability notion
+    (`IsSolvableByRad`) and states the Abel–Ruffini conclusion as an honest
+    conditional theorem (`bringRadical_not_solvableByRad`) reduced to exactly its
+    open hypotheses — with no axioms and no sorries. See that file for details. -/
 
 /-- **Summary Theorem**: The Bring-Jerrard reduction and Bring radical satisfy:
     1. Every real t has a unique real root of x⁵ + x + t = 0

@@ -11,8 +11,7 @@
     "proofRepoPath": "Proofs/BrouwerFixedPointOQ02.lean",
     "additionalFiles": [
       "Proofs/BrouwerFixedPointOQ02Ext.lean",
-      "Proofs/BrouwerFixedPointOQ02Stability.lean",
-      "Proofs/BrouwerFixedPointOQ02OQ03.lean"
+      "Proofs/BrouwerFixedPointOQ02Stability.lean"
     ],
     "tags": [
       "topology",
@@ -232,16 +231,7 @@
     "sorries": 0,
     "additionalFiles": [
       "Proofs/BrouwerFixedPointOQ02Ext.lean",
-      "Proofs/BrouwerFixedPointOQ02Stability.lean",
-      {
-        "path": "Proofs/BrouwerFixedPointOQ02OQ03.lean",
-        "lineCount": 214,
-        "theorems": 5,
-        "definitions": 3,
-        "axioms": 0,
-        "sorries": 1,
-        "description": "Companion file for the sibling open question OQ-02-OQ-03 (Newton's method quadratic convergence). Establishes the one-step quadratic bound |xₙ₊₁ − x*| ≤ M/(2m) · |xₙ − x*|² for C² functions via Mathlib's Taylor remainder, with the explicit error formula xₙ₊₁ − x* = f''(ξ)/(2f'(xₙ)) · (x* − xₙ)². One remaining sorry in newton_convergence_rate (iterated 2^n-rate induction step). Namespace NewtonMethod."
-      }
+      "Proofs/BrouwerFixedPointOQ02Stability.lean"
     ]
   },
   "sorries": 0

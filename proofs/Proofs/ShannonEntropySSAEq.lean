@@ -445,4 +445,126 @@ theorem strong_subadditivity_eq_iff {α β γ : Type*}
   · intro heq; linear_combination -hdef - heq
   · intro hcmi; linear_combination -hdef - hcmi
 
+-- ═══════════════════════════════════════════════════════════════
+-- PART IV: Strong subadditivity itself (the inequality), self-contained
+-- ═══════════════════════════════════════════════════════════════
+
+/-- **The conditional mutual information is nonnegative: `0 ≤ cmiSum pXYZ`.**
+    Equivalently `I(X;Z|Y) ≥ 0`.  This is the SSA *inequality* in relative-entropy
+    form, and it needs only `pXYZ ≥ 0` — no normalization `∑ p = 1`.  The proof is the
+    Gibbs/KL bound termwise (`p log(p/q) ≥ p − q`) summed against the reference
+    kernel `q = p_{XY} p_{YZ} / p_Y`, whose per-`y` mass matches that of `p`
+    (`∑_{x,z} q = ∑_{x,z} p`), so the linear lower bound telescopes to `0`. -/
+theorem cmiSum_nonneg {α β γ : Type*}
+    [Fintype α] [Fintype β] [Fintype γ]
+    [DecidableEq α] [DecidableEq β] [DecidableEq γ]
+    {pXYZ : α × β × γ → ℝ} (hp : ∀ xyz, 0 ≤ pXYZ xyz) :
+    0 ≤ cmiSum pXYZ := by
+  set q := fun x y z => (∑ z' : γ, pXYZ (x, y, z')) * (∑ x' : α, pXYZ (x', y, z)) /
+    (∑ x' : α, ∑ z' : γ, pXYZ (x', y, z')) with hq_def
+  have hq_nn : ∀ x y z, 0 ≤ q x y z := fun x y z => by
+    simp only [hq_def]
+    exact div_nonneg
+      (mul_nonneg (Finset.sum_nonneg fun z' _ => hp _) (Finset.sum_nonneg fun x' _ => hp _))
+      (Finset.sum_nonneg fun x' _ => Finset.sum_nonneg fun z' _ => hp _)
+  have hmarg_pos : ∀ x y z, pXYZ (x, y, z) ≠ 0 →
+      0 < (∑ z' : γ, pXYZ (x, y, z')) ∧ 0 < (∑ x' : α, pXYZ (x', y, z)) ∧
+      0 < (∑ x' : α, ∑ z' : γ, pXYZ (x', y, z')) := by
+    intro x y z hne
+    have hpos : 0 < pXYZ (x, y, z) := lt_of_le_of_ne (hp _) (Ne.symm hne)
+    have hpXY : 0 < ∑ z', pXYZ (x, y, z') :=
+      lt_of_lt_of_le hpos (Finset.single_le_sum (fun z' _ => hp (x, y, z')) (Finset.mem_univ z))
+    have hpYZ : 0 < ∑ x', pXYZ (x', y, z) :=
+      lt_of_lt_of_le hpos (Finset.single_le_sum (fun x' _ => hp (x', y, z)) (Finset.mem_univ x))
+    have hpY : 0 < ∑ x' : α, ∑ z' : γ, pXYZ (x', y, z') :=
+      lt_of_lt_of_le hpXY (Finset.single_le_sum
+        (fun x' _ => Finset.sum_nonneg fun z' _ => hp (x', y, z')) (Finset.mem_univ x))
+    exact ⟨hpXY, hpYZ, hpY⟩
+  have hq_pos_of : ∀ x y z, pXYZ (x, y, z) ≠ 0 → 0 < q x y z := by
+    intro x y z hne
+    obtain ⟨hpXY, hpYZ, hpY⟩ := hmarg_pos x y z hne
+    simp only [hq_def]; exact div_pos (mul_pos hpXY hpYZ) hpY
+  have hq_sum_y : ∀ y, ∑ x : α, ∑ z : γ, q x y z = ∑ x, ∑ z, pXYZ (x, y, z) := by
+    intro y
+    simp only [hq_def]
+    by_cases hpy : (∑ x' : α, ∑ z' : γ, pXYZ (x', y, z')) = 0
+    · have hall : ∀ x z, pXYZ (x, y, z) = 0 := by
+        have h2 := (Finset.sum_eq_zero_iff_of_nonneg
+          (fun x _ => Finset.sum_nonneg fun z _ => hp (x, y, z))).mp hpy
+        intro x z
+        exact (Finset.sum_eq_zero_iff_of_nonneg
+          (fun z _ => hp (x, y, z))).mp (h2 x (Finset.mem_univ x)) z (Finset.mem_univ z)
+      simp [hall]
+    · have hD : (∑ x' : α, ∑ z' : γ, pXYZ (x', y, z')) ≠ 0 := hpy
+      have step1 : ∀ x : α, (∑ z : γ,
+            (∑ z' : γ, pXYZ (x, y, z')) * (∑ x' : α, pXYZ (x', y, z))
+              / (∑ x' : α, ∑ z' : γ, pXYZ (x', y, z')))
+          = (∑ z' : γ, pXYZ (x, y, z')) * (∑ z : γ, ∑ x' : α, pXYZ (x', y, z))
+              / (∑ x' : α, ∑ z' : γ, pXYZ (x', y, z')) := by
+        intro x
+        rw [← Finset.sum_div, ← Finset.mul_sum]
+      simp_rw [step1]
+      rw [← Finset.sum_div, ← Finset.sum_mul]
+      rw [show (∑ z : γ, ∑ x' : α, pXYZ (x', y, z)) = ∑ x' : α, ∑ z : γ, pXYZ (x', y, z) from
+        Finset.sum_comm]
+      rw [mul_div_assoc, div_self hD, mul_one]
+  -- Rewrite cmiSum's summand into relative-entropy `p · log(p / q)` form.
+  have hcmi_q : cmiSum pXYZ = ∑ x : α, ∑ y : β, ∑ z : γ,
+      (if pXYZ (x, y, z) = 0 then (0 : ℝ)
+       else pXYZ (x, y, z) * Real.log (pXYZ (x, y, z) / q x y z)) := by
+    unfold cmiSum
+    refine Finset.sum_congr rfl (fun x _ => Finset.sum_congr rfl
+      (fun y _ => Finset.sum_congr rfl (fun z _ => ?_)))
+    by_cases hpxyz : pXYZ (x, y, z) = 0
+    · simp [hpxyz]
+    · rw [if_neg hpxyz, if_neg hpxyz]
+      obtain ⟨hpXY, hpYZ, hpY⟩ := hmarg_pos x y z hpxyz
+      have hlog_eq : pXYZ (x, y, z) * (∑ x' : α, ∑ z' : γ, pXYZ (x', y, z')) /
+          ((∑ z' : γ, pXYZ (x, y, z')) * (∑ x' : α, pXYZ (x', y, z))) =
+          pXYZ (x, y, z) / q x y z := by
+        simp only [hq_def]
+        field_simp
+      rw [hlog_eq]
+  rw [hcmi_q]
+  -- Termwise Gibbs bound `p − q ≤ p log(p/q)` (with the zero convention).
+  have hbound : ∀ x y z, pXYZ (x, y, z) - q x y z ≤
+      (if pXYZ (x, y, z) = 0 then (0 : ℝ)
+       else pXYZ (x, y, z) * Real.log (pXYZ (x, y, z) / q x y z)) := by
+    intro x y z
+    by_cases hpxyz : pXYZ (x, y, z) = 0
+    · rw [if_pos hpxyz]; have := hq_nn x y z; linarith
+    · rw [if_neg hpxyz]
+      have hpos : 0 < pXYZ (x, y, z) := lt_of_le_of_ne (hp _) (Ne.symm hpxyz)
+      exact kl_lb hpos (hq_pos_of x y z hpxyz)
+  -- The reference kernel has the same total mass as `p`, so `∑ (p − q) = 0`.
+  have hq_eq_p : ∑ x : α, ∑ y : β, ∑ z : γ, q x y z
+      = ∑ x : α, ∑ y : β, ∑ z : γ, pXYZ (x, y, z) := by
+    rw [Finset.sum_comm]
+    conv_rhs => rw [Finset.sum_comm]
+    exact Finset.sum_congr rfl fun y _ => hq_sum_y y
+  have hsum_pq : ∑ x : α, ∑ y : β, ∑ z : γ, (pXYZ (x, y, z) - q x y z) = 0 := by
+    simp only [Finset.sum_sub_distrib]
+    linarith [hq_eq_p]
+  calc (0 : ℝ) = ∑ x : α, ∑ y : β, ∑ z : γ, (pXYZ (x, y, z) - q x y z) := hsum_pq.symm
+    _ ≤ ∑ x : α, ∑ y : β, ∑ z : γ,
+          (if pXYZ (x, y, z) = 0 then (0 : ℝ)
+           else pXYZ (x, y, z) * Real.log (pXYZ (x, y, z) / q x y z)) :=
+      Finset.sum_le_sum fun x _ => Finset.sum_le_sum fun y _ =>
+        Finset.sum_le_sum fun z _ => hbound x y z
+
+/-- **Strong subadditivity of Shannon entropy (the inequality), self-contained.**
+    `H(X,Y,Z) + H(Y) ≤ H(X,Y) + H(Y,Z)` for any nonnegative weight `pXYZ`.
+    Combines `ssa_deficit_eq_cmi` (deficit = `I(X;Z|Y)`) with `cmiSum_nonneg`.  Unlike
+    the version in the parent `ShannonEntropy.lean`, this needs no normalization and
+    lives in the same self-contained file as the equality characterization. -/
+theorem ssa_inequality {α β γ : Type*}
+    [Fintype α] [Fintype β] [Fintype γ]
+    [DecidableEq α] [DecidableEq β] [DecidableEq γ]
+    {pXYZ : α × β × γ → ℝ} (hp : ∀ xyz, 0 ≤ pXYZ xyz) :
+    shannonEntropy' pXYZ + shannonEntropy' (marginalY_3 pXYZ)
+      ≤ shannonEntropy' (marginalXY pXYZ) + shannonEntropy' (marginalYZ pXYZ) := by
+  have hdef := ssa_deficit_eq_cmi (pXYZ := pXYZ) hp
+  have hnn := cmiSum_nonneg (pXYZ := pXYZ) hp
+  linarith
+
 end InformationTheory

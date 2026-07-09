@@ -124,7 +124,8 @@
       "**Euler's identity is multiplicativity of a norm**: the four bilinear forms z₁,…,z₄ are exactly the components of the quaternion product, so the identity says N(q)N(q') = N(qq') for the quaternion norm N(x₁+x₂i+x₃j+x₄k) = x₁²+x₂²+x₃²+x₄² — the sign pattern is the quaternion multiplication table, not an accident",
       "**Closure is the real theorem, the ring equation is just its certificate**: Mathlib stops at the polynomial identity for four squares; the mathematically load-bearing statement is that sums of four squares form a multiplicative submonoid, which is what actually reduces Lagrange's theorem to the prime case",
       "**The four-square closure was the missing sibling of a two-square one**: Mathlib packages exactly this closure for two squares (sq_add_sq_mul) but never for four; IsSumFourSq.mul is the faithful four-square analogue, with witnesses produced mechanically rather than guessed",
-      "**Witness-explicit existence**: IsSumFourSq.mul does not merely assert a·b is a sum of four squares — it returns the representation, so e.g. 21 = 3·7 is certified as 0²+4²+2²+1² with no search, illustrating how Euler's reduction is constructive"
+      "**Witness-explicit existence**: IsSumFourSq.mul does not merely assert a·b is a sum of four squares — it returns the representation, so e.g. 21 = 3·7 is certified as 0²+4²+2²+1² with no search, illustrating how Euler's reduction is constructive",
+      "**Four is sharp — three squares are not multiplicatively closed**: the file proves the converse boundary. 3 = 1²+1²+1² and 5 = 0²+1²+2² are sums of three squares, but 15 = 3·5 ≡ 7 (mod 8) is not (every square is 0, 1, or 4 mod 8, so no three of them sum to 7). Hence no three-square analogue of Euler's identity can exist — this mod-8 obstruction is exactly why Lagrange's reduction needs four squares rather than three, a miniature of Legendre's three-square theorem"
     ],
     "prerequisites": [
       "Euler's four-square identity as a polynomial identity over a commutative ring (Mathlib's euler_four_squares / sum_four_sq_mul_sum_four_sq, discharged by ring)",
@@ -135,9 +136,17 @@
   },
   "sections": [
     {
+      "id": "overview",
+      "title": "Overview: the Identity, Its Role, and the Mathlib Gap",
+      "startLine": 1,
+      "endLine": 52,
+      "summary": "Imports and module docstring. States Euler's four-square identity with all four explicit bilinear forms, explains that it is the algebraic engine reducing Lagrange's four-square theorem to the prime case (the sums of four squares are closed under multiplication), and delineates the gap this file fills: Mathlib has the two-square closure sq_add_sq_mul but no four-square analogue and no packaged multiplicative-monoid structure.",
+      "mathContext": "$(x_1^2+\\cdots+x_4^2)(y_1^2+\\cdots+y_4^2) = z_1^2+\\cdots+z_4^2$ with the $z_i$ the four quaternion-product bilinear forms; the engine behind Lagrange's four-square theorem."
+    },
+    {
       "id": "four-square-identity",
       "title": "Euler's Four-Square Identity",
-      "startLine": 56,
+      "startLine": 53,
       "endLine": 64,
       "mathContext": "$(x_1^2+x_2^2+x_3^2+x_4^2)(y_1^2+y_2^2+y_3^2+y_4^2) = z_1^2+z_2^2+z_3^2+z_4^2$ with $z_i$ the four bilinear forms.",
       "summary": "four_square_identity restates the bilinear identity over an arbitrary commutative ring and discharges it by ring, making the file self-contained. The four right-hand-side forms are the components of the Hamilton quaternion product, so the identity is the multiplicativity N(q)N(q')=N(qq') of the quaternion norm."
@@ -157,6 +166,14 @@
       "endLine": 143,
       "mathContext": "Two-square sums embed into four-square sums; $21 = 3\\cdot 7 = 0^2+4^2+2^2+1^2$ via the closure theorem.",
       "summary": "isSumFourSq_of_isSumTwoSq pads a two-square sum with two zeros. The examples certify 3 = 1²+1²+1²+0² and 7 = 2²+1²+1²+1², then obtain a four-square representation of 21 = 3·7 by applying IsSumFourSq.mul — witnesses are produced mechanically, not guessed — and a numeric check confirms the resulting forms (0,4,2,1) sum to 21."
+    },
+    {
+      "id": "sharpness-three-squares",
+      "title": "Sharpness: Three Squares Are Not Multiplicatively Closed",
+      "startLine": 146,
+      "endLine": 200,
+      "summary": "Proves the count 'four' is sharp — no three-square analogue of Euler's identity can exist. IsSumThreeSq is defined over ℤ; sq_zmod_eight (every square in ZMod 8 is 0, 1, or 4, by decide) drives sum_three_sq_ne_fifteen_zmod_eight (no three squares sum to 15 mod 8), whence fifteen_not_isSumThreeSq (15 is not a sum of three integer squares). Since 3 and 5 are sums of three squares but 15 = 3·5 is not, not_isSumThreeSq_mul_closed concludes that sums of three squares are not closed under multiplication.",
+      "mathContext": "Every square is $0,1,4 \\pmod 8$, so no three sum to $7$; hence $15 = 3\\cdot 5 \\not\\in$ three-squares though $3,5$ are — three-square sums are not multiplicatively closed."
     }
   ],
   "conclusion": {

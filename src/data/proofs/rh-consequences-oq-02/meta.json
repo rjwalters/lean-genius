@@ -22,7 +22,7 @@
     "dateAdded": "2026-07-04",
     "axiomCount": 1,
     "assumptions": "1 axiom encoding the classical analytic input: rh_implies_short_interval_prime — under RH there is an absolute constant C > 0 such that every interval (x, x + C·√x·log x] with x ≥ 2 contains a prime. This is the standard short-interval consequence of RH (via the explicit formula and zero-free / zero-density estimates), whose analytic machinery is not yet in Mathlib. Everything downstream is machine-checked: rh_implies_prime_gap_bound derives the consecutive-gap statement p_{n+1} - p_n = O(√p_n·log p_n) by an elementary order-preserving-enumeration argument (the next prime after p_n is at most any prime exceeding p_n). No native_decide is used, so the proof carries no Lean.ofReduceBool dependency. The unconditional companion primeGap_le_nthPrime (gap ≤ p_n, from Bertrand's postulate) uses NO axioms.",
-    "lineCount": 192,
+    "lineCount": 197,
     "theoremCount": 7,
     "definitionCount": 3,
     "buildStatus": "build-pending",
@@ -103,7 +103,7 @@
   },
   "leanFile": {
     "namespace": "RHConsequencesOQ02",
-    "lineCount": 192,
+    "lineCount": 197,
     "axiomCount": 1,
     "theoremCount": 7,
     "definitionCount": 3,

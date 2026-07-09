@@ -43,9 +43,11 @@
   ],
   "relatedProofs": [
     "fundamental-theorem-algebra",
+    "fundamental-theorem-algebra-oq-01",
     "fundamental-theorem-algebra-oq-04",
     "fundamental-theorem-algebra-oq-04-oq-03",
     "fundamental-theorem-algebra-oq-04-oq-03-oq-01",
+    "fundamental-theorem-algebra-oq-04-oq-03-oq-01-oq-01",
     "fundamental-theorem-algebra-oq-04-oq-03-oq-01-oq-02",
     "fundamental-theorem-algebra-oq-04-oq-04",
     "fundamental-theorem-algebra-oq-06",
@@ -74,6 +76,17 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FundamentalTheoremAlgebra.lean"
     },
     {
+      "path": "Proofs/FundamentalTheoremAlgebraOQ01.lean",
+      "filename": "FundamentalTheoremAlgebraOQ01.lean",
+      "lineCount": 177,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FundamentalTheoremAlgebraOQ01.lean"
+    },
+    {
       "path": "Proofs/FundamentalTheoremAlgebraOQ02.lean",
       "filename": "FundamentalTheoremAlgebraOQ02.lean",
       "lineCount": 126,
@@ -98,8 +111,8 @@
     {
       "path": "Proofs/FundamentalTheoremAlgebraOQ04OQ03.lean",
       "filename": "FundamentalTheoremAlgebraOQ04OQ03.lean",
-      "lineCount": 137,
-      "theoremCount": 5,
+      "lineCount": 197,
+      "theoremCount": 9,
       "axiomCount": 0,
       "defCount": 1,
       "sorryCount": 0,
@@ -116,6 +129,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FundamentalTheoremAlgebraOQ04OQ03OQ01.lean"
+    },
+    {
+      "path": "Proofs/FundamentalTheoremAlgebraOQ04OQ03OQ01OQ01.lean",
+      "filename": "FundamentalTheoremAlgebraOQ04OQ03OQ01OQ01.lean",
+      "lineCount": 143,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FundamentalTheoremAlgebraOQ04OQ03OQ01OQ01.lean"
     },
     {
       "path": "Proofs/FundamentalTheoremAlgebraOQ04OQ03OQ01OQ02.lean",

@@ -47,7 +47,8 @@
     "erdos-101",
     "erdos-1014",
     "erdos-1014-oq-01",
-    "erdos-1014-oq-02"
+    "erdos-1014-oq-02",
+    "erdos-1014-oq-04"
   ],
   "references": {
     "papers": [],
@@ -62,7 +63,7 @@
     {
       "path": "Proofs/Erdos1014OQ01.lean",
       "filename": "Erdos1014OQ01.lean",
-      "lineCount": 366,
+      "lineCount": 368,
       "theoremCount": 7,
       "axiomCount": 1,
       "defCount": 1,
@@ -80,6 +81,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1014OQ02.lean"
+    },
+    {
+      "path": "Proofs/Erdos1014OQ04.lean",
+      "filename": "Erdos1014OQ04.lean",
+      "lineCount": 211,
+      "theoremCount": 2,
+      "axiomCount": 2,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1014OQ04.lean"
     },
     {
       "path": "Proofs/Erdos1014Problem.lean",

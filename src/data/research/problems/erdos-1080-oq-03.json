@@ -12,11 +12,36 @@
   "problemStatement": "Erdős #1080 concerns C₄,C₆-free bipartite graphs; Erdős observed a dense such graph must still contain a C₈. OQ-03 asks to extend the analysis to other cycle lengths (C₈, C₁₀, …). What is the structural constraint on which cycle lengths can occur in a bipartite graph?",
   "currentState": "Structural foundation proved axiom-free (0 sorries): in ANY bipartite graph every cycle has EVEN length and length ≥ 4, so the realizable cycle lengths are exactly the even numbers ≥ 4 ({C₄, C₆, C₈, C₁₀, …}) and no odd cycle (C₅, C₇, C₉, …) ever occurs. This pins down the ambient set of cycle lengths the C₄/C₆ extremal story can extend through. The extremal direction proper (a dense C₄,C₆-free bipartite graph must contain a C₈, and analogous existence statements for longer even cycles) remains open and is not elementary.",
   "leanFiles": [
-    "proofs/Proofs/Erdos1080OQ03.lean"
+    {
+      "path": "Proofs/Erdos1080OQ03.lean",
+      "filename": "Erdos1080OQ03.lean",
+      "lineCount": 266,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1080OQ03.lean"
+    },
+    {
+      "path": "Proofs/Erdos1080Problem.lean",
+      "filename": "Erdos1080Problem.lean",
+      "lineCount": 336,
+      "theoremCount": 7,
+      "axiomCount": 2,
+      "defCount": 7,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1080Problem.lean"
+    }
   ],
   "relatedProofs": [
+    "erdos-1",
+    "erdos-10",
+    "erdos-108",
     "erdos-1080",
-    "erdos-1080-incomplete-01"
+    "erdos-1080-incomplete-01",
+    "erdos-1080-oq-03"
   ],
   "tags": [
     "combinatorics",
@@ -32,7 +57,8 @@
       "In a bipartite graph every cycle has even length: along any walk the endpoint's part (X or Y) is determined by the parity of the walk length (each edge crosses parts), so a closed walk returns to the starting part only after an even number of steps. This is the odd-cycle-free half of König's characterization.",
       "The result needs no C₄/C₆-freeness and no finiteness — it holds for an arbitrary vertex type and any bipartition, so it is the ambient structural constraint underneath the whole #1080 extremal problem: the only candidate cycle lengths are even, which is exactly why the family is C₄, C₆, C₈, C₁₀, … and why C₅/C₇/C₉ never appear.",
       "Combined with IsCycle.three_le_length (a cycle has ≥ 3 edges), evenness sharpens the lower bound to length ≥ 4, so the shortest possible cycle is a C₄ and the realizable lengths are exactly {4, 6, 8, 10, …}.",
-      "The parent gallery file Erdos1080Problem.lean does not currently compile: it has a malformed doc-comment (a /-- … -/ block at ~line 156 with no following declaration, which derails the parser) and an unrelated `sorry` in c4_free_iff_no_K22 (its meta.json honestly records sorries:1, status:null). This companion therefore inlines the three needed definitions rather than importing the parent, keeping the contribution independently verifiable."
+      "The parent gallery file Erdos1080Problem.lean does not currently compile: it has a malformed doc-comment (a /-- … -/ block at ~line 156 with no following declaration, which derails the parser) and an unrelated `sorry` in c4_free_iff_no_K22 (its meta.json honestly records sorries:1, status:null). This companion therefore inlines the three needed definitions rather than importing the parent, keeping the contribution independently verifiable.",
+      "A 4-cycle in a bipartite graph is exactly a K_{2,2}: bipartite alternation forces the four cycle vertices to split 2-2 across the parts, so C4-freeness ⇔ no two distinct left vertices share two distinct common neighbours. Proved as c4Free_iff_no_K22 (Erdos1080OQ03.lean), discharging the c4_free_iff_no_K22 sorry left open in the parent Erdos1080Problem.lean."
     ],
     "builtItems": [
       "bipartite_walk_parity (Erdos1080OQ03.lean) — parity engine: for a walk u→v, (u∈X → (Even length ↔ v∈X)) ∧ (u∈Y → (Even length ↔ v∈Y)); proved by induction on the walk.",
@@ -40,17 +66,20 @@
       "bipartite_cycle_even — every cycle length in a bipartite graph is even (main structural theorem).",
       "bipartite_odd_cycle_free + concrete bipartite_C5_free / bipartite_C7_free / bipartite_C9_free — no odd cycle occurs.",
       "bipartite_cycle_length_ge_four and the summary bipartite_cycle_length_even_ge_four — every cycle length is even and ≥ 4.",
-      "mem_left_iff_not_right / mem_right_iff_not_left — X and Y are literal complements under a bipartition (pure partition algebra)."
+      "mem_left_iff_not_right / mem_right_iff_not_left — X and Y are literal complements under a bipartition (pure partition algebra).",
+      "hasCycleOfLength_four_of_K22 (Erdos1080OQ03.lean:329): a K_{2,2} closes into the explicit cycle a1-b1-a2-b2-a1; built via cons_isCycle_iff (path + edge-not-reused) avoiding manual edge-nodup.",
+      "c4Free_iff_no_K22 (Erdos1080OQ03.lean:380): ¬HasCycleOfLength G 4 ⇔ K_{2,2}-free, via a 5-level Walk.@cons decomposition of the length-4 closed walk + IsCycle.support.tail.Nodup for vertex distinctness.",
+      "PR #35906: verified c4Free_iff_no_K22 + hasCycleOfLength_four_of_K22 (Docker 979 jobs exit 0, 0 sorries/0 axioms)"
     ],
     "mathlibGaps": [
       "No off-the-shelf 'bipartite ⇒ even cycle' lemma against this file's own IsBipartition definition (Mathlib has SimpleGraph.Colorable / two-colourings and odd-girth machinery, but not directly against an ad-hoc bipartition predicate); the walk-parity induction is short enough to build locally.",
       "The extremal existence direction (dense C₄,C₆-free bipartite graph must contain C₈) needs a degree/edge-counting argument (Kővári–Sós–Turán-style) not present here and not elementary."
     ],
     "nextSteps": [
-      "Attempt Erdős's C₈ observation: a bipartite graph on n vertices with one part of size ⌊n^(2/3)⌋ and ≥ cn edges (already C₄,C₆-free) must contain a C₈ — via a moment/degree count. This is the genuinely hard extremal core.",
-      "Bridge this file's IsBipartition to Mathlib's two-colourability so the even-cycle fact can be reused across the gallery's graph-theory entries.",
-      "Fix the parent Erdos1080Problem.lean parse error (malformed doc-comment) and, separately, discharge or reformulate the c4_free_iff_no_K22 sorry (K_{2,2}-freeness ⇔ C₄-freeness for bipartite graphs)."
+      "Bridge the local c4Free_iff_no_K22 into the parent Erdos1080Problem.lean to actually erase its sorry (needs fixing that file's malformed doc-comment / parse issue first).",
+      "Attempt Erdős's C₈ existence observation: a dense C4,C6-free bipartite graph must contain a C8 (genuinely hard extremal/moment-count core — not elementary).",
+      "Realizability/sharpness: exhibit that every even length ≥4 actually occurs (cycleGraph 2n is bipartite with a 2n-cycle), complementing the 'only even ≥4' exclusion."
     ],
-    "progressSummary": "PROGRESS (structural, verified 0 sorries / 0 axioms): proved bipartite graphs have only even cycles, of length ≥ 4, characterising the admissible cycle lengths as {C₄, C₆, C₈, …} and excluding all odd cycles — the ambient constraint for the OQ-03 'other cycle lengths' extension. Extremal C₈-existence core remains open (not elementary)."
+    "progressSummary": "PROGRESS (verified 0 sorries / 0 axioms): discharged the c4_free_iff_no_K22 equivalence (C4-free ⇔ K_{2,2}-free) for bipartite graphs in the verified companion, plus the Mathlib Colorable-2 bridge (prior session). Remaining open: C8 existence extremal core (hard)."
   }
 }

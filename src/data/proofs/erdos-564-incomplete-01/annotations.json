@@ -197,7 +197,11 @@
       "concrete evaluation",
       "tower function"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "iterated exponentials / Knuth up-arrow notation",
+      "Lean's decide tactic for closed decidable goals",
+      "the tower recursion tower (k+1) n = 2 ^ tower k n"
+    ]
   },
   {
     "id": "ann-ramsey-monotonicity",

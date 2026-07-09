@@ -61,7 +61,7 @@
     "axiomCount": 0,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries (only the standard foundational axioms propext / Classical.choice / Quot.sound, which do not count as assumptions). Inherits the coordinate API (Triangle, circumcenter, incenter, circumradius, inradius, area, side lengths) and the non-degeneracy lemma circumcenter_denom_ne_zero from FeuerbachsTheoremDefs.lean, which is itself 0-sorry, 0-axiom.",
     "lineCount": 386,
-    "theoremCount": 7,
+    "theoremCount": 28,
     "definitionCount": 0,
     "originalContributions": [
       "euler_OI_formula: Euler's theorem (1765) — dist²(O, I) = R² − 2·R·r for the circumcenter O and incenter I of an arbitrary non-degenerate triangle, the single most famous metric relation between the two centers",
@@ -182,7 +182,7 @@
     "namespace": "FeuerbachEulerOI",
     "lineCount": 386,
     "axiomCount": 0,
-    "theoremCount": 7,
+    "theoremCount": 28,
     "definitionCount": 0,
     "path": "Proofs/FeuerbachsTheoremDefsOQ02.lean",
     "sorries": 0,

@@ -59,22 +59,90 @@
   },
   "leanFiles": [
     {
-      "path": "research/problems/desargues-theorem-oq-02-oq-03/lean/DesarguesTheoremOQ02OQ03.lean",
-      "filename": "DesarguesTheoremOQ02OQ03.lean",
-      "lineCount": 288,
-      "theoremCount": 9,
+      "path": "Proofs/DesarguesTheorem.lean",
+      "filename": "DesarguesTheorem.lean",
+      "lineCount": 448,
+      "theoremCount": 14,
       "axiomCount": 0,
-      "defCount": 1,
+      "defCount": 14,
       "sorryCount": 0,
       "isAristotle": false,
-      "verified": true,
-      "note": "VERIFIED via Docker (Lean v4.26.0, 2026-07-04): builds cleanly, 0 errors/warnings, 0 sorry, 0 axiom, 0 native_decide (Part-V witnesses use ordinary kernel-checked decide). Fixed two build-blocking elaboration bugs: Dep's ring R appears only inside its ∃-binder, so R is now pinned (R := R) in cross_dep and desargues statements."
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DesarguesTheorem.lean"
+    },
+    {
+      "path": "Proofs/DesarguesTheoremOQ01.lean",
+      "filename": "DesarguesTheoremOQ01.lean",
+      "lineCount": 286,
+      "theoremCount": 16,
+      "axiomCount": 0,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DesarguesTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/DesarguesTheoremOQ01OQ01.lean",
+      "filename": "DesarguesTheoremOQ01OQ01.lean",
+      "lineCount": 298,
+      "theoremCount": 29,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DesarguesTheoremOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/DesarguesTheoremOQ02.lean",
+      "filename": "DesarguesTheoremOQ02.lean",
+      "lineCount": 333,
+      "theoremCount": 35,
+      "axiomCount": 0,
+      "defCount": 21,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DesarguesTheoremOQ02.lean"
+    },
+    {
+      "path": "Proofs/DesarguesTheoremOQ03.lean",
+      "filename": "DesarguesTheoremOQ03.lean",
+      "lineCount": 151,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DesarguesTheoremOQ03.lean"
+    },
+    {
+      "path": "Proofs/DesarguesTheoremOQ03OQ01.lean",
+      "filename": "DesarguesTheoremOQ03OQ01.lean",
+      "lineCount": 302,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DesarguesTheoremOQ03OQ01.lean"
+    },
+    {
+      "path": "Proofs/DesarguesTheoremOQ04.lean",
+      "filename": "DesarguesTheoremOQ04.lean",
+      "lineCount": 416,
+      "theoremCount": 23,
+      "axiomCount": 0,
+      "defCount": 9,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DesarguesTheoremOQ04.lean"
     }
   ],
   "relatedProofs": [
     "desargues-theorem",
     "desargues-theorem-oq-01",
+    "desargues-theorem-oq-01-oq-01",
     "desargues-theorem-oq-02",
+    "desargues-theorem-oq-03",
+    "desargues-theorem-oq-03-oq-01",
     "desargues-theorem-oq-04"
   ],
   "references": [

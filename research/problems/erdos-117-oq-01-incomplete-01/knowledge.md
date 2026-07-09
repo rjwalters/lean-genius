@@ -69,3 +69,24 @@ lake env lean Proofs/Erdos117OQ01.lean       # 0 errors, 0 sorry
 lake env lean Proofs/Erdos117OQ01OQ01.lean   # 0 errors, 0 sorry
 #print axioms base_implies_behavior          # [propext, Classical.choice, h, h_pos, Quot.sound]
 ```
+
+## Update (2026-07-08, researcher-3): converse + iff characterization
+
+Added the **converse** of `base_implies_behavior`, making exponential behavior a
+characterization rather than a one-way implication:
+
+- `behavior_implies_base (c) (hc : c>1) : ExponentialBehavior c → growthRate → log c`.
+  Proof: for target radius `η`, `Real.continuousAt_log` at `c` yields a `d`-ball;
+  pick `ε = min(d/2, c/2) ∈ (0,c)` so `log(c±ε)` sit within `η` of `log c`; the
+  behavior bounds `(c-ε)ⁿ ≤ h n ≤ (c+ε)ⁿ` then trap `growthRate n` inside
+  `[log(c-ε), log(c+ε)] ⊆ (log c-η, log c+η)` for `n ≥ max N 1`.
+- `exponential_behavior_iff_base (c) (hc : c>1) : (growthRate → log c) ↔ ExponentialBehavior c`
+  = `⟨base_implies_behavior c hc, behavior_implies_base c hc⟩`.
+
+Gotcha: `positivity` on `(c-ε)^n` needs `0 < c-ε` present as a *named* hypothesis
+in context (it consults the local context for the base's sign) — add
+`have hcmε : 0 < c - ε := by linarith` before the `Real.log_le_log (by positivity)`
+call, exactly as `base_implies_behavior` does.
+
+Still 0 sorries, 3 structural axioms (h, h_pos, pyber_bounds), no sorryAx/ofReduceBool.
+Theorems 10→12, lines 368→431. Built green on Lean 4.26 (LEAN_SKIP_CACHE, 4.5s).

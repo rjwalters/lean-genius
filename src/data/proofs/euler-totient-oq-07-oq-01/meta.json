@@ -12,7 +12,8 @@
       "**The guaranteed factor of 2 splits off exactly.** Parity gives `2 ∣ gcd`; the identity `gcd(φ m, φ n) = 2 · gcd(φ m / 2, φ n / 2)` says nothing is lost or added by removing it — the residual gcd is precisely that of the halved totients. This reduces every sharpness question to a parity-free problem.",
       "**Coprimality of the halves — not the size of a totient — controls equality.** gcd = 2 iff φ(m)/2 and φ(n)/2 are coprime. The seeker's guess that gcd = 2 forces a totient to equal 2 confuses a sufficient condition (φ(n) = 2 ⟹ φ(n)/2 = 1, trivially coprime) with the actual necessary-and-sufficient one.",
       "**Explicit counterexample m = 5, n = 7.** φ(5) = 4, φ(7) = 6, both ≥ 4, yet gcd = 2 because the halves 2 and 3 are coprime. No argument here lies in {3, 4, 6}, so the naive strengthening of the parent bound is false.",
-      "**gcd ≥ 4 is the same as a common factor among the halves.** The jump from the universal floor 2 to 4 happens exactly when φ(m)/2 and φ(n)/2 stop being coprime, giving a clean criterion for the gcd exceeding the parity minimum."
+      "**gcd ≥ 4 is the same as a common factor among the halves.** The jump from the universal floor 2 to 4 happens exactly when φ(m)/2 and φ(n)/2 stop being coprime, giving a clean criterion for the gcd exceeding the parity minimum.",
+      "**The sharp bound lives in the 2-adic valuation of φ, not the size of φ.** The half φ(k)/2 is odd exactly when φ(k) ≡ 2 (mod 4), which by the oq-06 classification is the case k ∈ {4, pᵏ, 2pᵏ with p ≡ 3 mod 4}. Pairing two such arguments keeps the halves' shared 2-part empty, so gcd stays at 2 regardless of how large the totients are; the gcd only reaches 4 once some argument contributes a factor 4 to its totient. This locates the whole sharpness question inside v₂(φ m), v₂(φ n) — and once the even factor is split off, every remaining question is a one-line `omega` on 2·gcd(halves), so no further number theory is needed."
     ],
     "prerequisites": [
       "Euler's totient φ and the parity fact φ(n) even for n > 2",
@@ -32,28 +33,43 @@
   "mainTheorems": [
     {
       "name": "gcd_totient_eq_two_mul_gcd_half",
-      "type": "theorem",
-      "description": "The exact factorisation (structural heart): for m, n ≥ 3 the shared factor 2 splits off cleanly, gcd(φ m, φ n) = 2 · gcd(φ m / 2, φ n / 2), reducing every question about the factor 2 to the halved totients where the parity obstruction is gone."
+      "type": "core",
+      "description": "The exact factorisation (structural heart): for m, n ≥ 3 the shared factor 2 splits off cleanly, gcd(φ m, φ n) = 2 · gcd(φ m / 2, φ n / 2), reducing every question about the factor 2 to the halved totients where the parity obstruction is gone.",
+      "leanType": "{m n : ℕ} (hm : 3 ≤ m) (hn : 3 ≤ n) : Nat.gcd (φ m) (φ n) = 2 * Nat.gcd (φ m / 2) (φ n / 2)",
+      "startLine": 57,
+      "endLine": 64
     },
     {
       "name": "gcd_totient_eq_two_iff",
-      "type": "theorem",
-      "description": "Characterisation of equality gcd = 2: for m, n ≥ 3, gcd(φ m, φ n) = 2 iff the halved totients φ m / 2 and φ n / 2 are coprime — the correct dividing line for the sharp lower bound (not 'one totient equals 2')."
+      "type": "core",
+      "description": "Characterisation of equality gcd = 2: for m, n ≥ 3, gcd(φ m, φ n) = 2 iff the halved totients φ m / 2 and φ n / 2 are coprime — the correct dividing line for the sharp lower bound (not 'one totient equals 2').",
+      "leanType": "{m n : ℕ} (hm : 3 ≤ m) (hn : 3 ≤ n) : Nat.gcd (φ m) (φ n) = 2 ↔ Nat.gcd (φ m / 2) (φ n / 2) = 1",
+      "startLine": 76,
+      "endLine": 78
     },
     {
       "name": "four_le_gcd_totient_iff",
-      "type": "theorem",
-      "description": "Characterisation of gcd ≥ 4: for m, n ≥ 3 the gcd exceeds the universal bound 2 (reaching ≥ 4) iff the halved totients share a common factor ≥ 2."
+      "type": "key",
+      "description": "Characterisation of gcd ≥ 4: for m, n ≥ 3 the gcd exceeds the universal bound 2 (reaching ≥ 4) iff the halved totients share a common factor ≥ 2.",
+      "leanType": "{m n : ℕ} (hm : 3 ≤ m) (hn : 3 ≤ n) : 4 ≤ Nat.gcd (φ m) (φ n) ↔ 2 ≤ Nat.gcd (φ m / 2) (φ n / 2)",
+      "startLine": 83,
+      "endLine": 85
     },
     {
       "name": "exists_gcd_two_with_large_totients",
-      "type": "theorem",
-      "description": "Refutes the candidate conjecture that gcd(φ m, φ n) = 2 forces one totient to equal 2: the pair m = 5, n = 7 gives gcd(φ5, φ7) = gcd(4, 6) = 2 with both totients ≥ 4, since the halves 2 and 3 are coprime. Equality is controlled by coprimality of the halves, per gcd_totient_eq_two_iff."
+      "type": "key",
+      "description": "Refutes the candidate conjecture that gcd(φ m, φ n) = 2 forces one totient to equal 2: the pair m = 5, n = 7 gives gcd(φ5, φ7) = gcd(4, 6) = 2 with both totients ≥ 4, since the halves 2 and 3 are coprime. Equality is controlled by coprimality of the halves, per gcd_totient_eq_two_iff.",
+      "leanType": "∃ m n : ℕ, 3 ≤ m ∧ 3 ≤ n ∧ Nat.gcd (φ m) (φ n) = 2 ∧ 4 ≤ φ m ∧ 4 ≤ φ n",
+      "startLine": 93,
+      "endLine": 95
     },
     {
       "name": "gcd_totient_div_two",
-      "type": "theorem",
-      "description": "Dividing the gcd of the totients by 2 recovers the gcd of the halves exactly (no rounding): gcd(φ m, φ n) / 2 = gcd(φ m / 2, φ n / 2) for m, n ≥ 3."
+      "type": "supporting",
+      "description": "Dividing the gcd of the totients by 2 recovers the gcd of the halves exactly (no rounding): gcd(φ m, φ n) / 2 = gcd(φ m / 2, φ n / 2) for m, n ≥ 3.",
+      "leanType": "{m n : ℕ} (hm : 3 ≤ m) (hn : 3 ≤ n) : Nat.gcd (φ m) (φ n) / 2 = Nat.gcd (φ m / 2) (φ n / 2)",
+      "startLine": 68,
+      "endLine": 70
     }
   ],
   "sorries": 0,
@@ -103,24 +119,43 @@
   "sections": [
     {
       "id": "header-overview",
-      "title": "Module Overview, Imports, and Namespace",
+      "title": "Open Question and Headline Result",
       "startLine": 1,
-      "endLine": 53,
-      "summary": "Module docstring stating the goal — sharpen the parent's 2 ≤ gcd(φ m, φ n) floor — and the resolution: the factor of 2 splits off exactly, so gcd = 2·gcd(halves). Explains that the seeker's candidate conjecture is refuted by m = 5, n = 7, lists the contents, and imports `Mathlib.Data.Nat.Totient` and `Mathlib.Tactic`, opening the `Nat` namespace so `φ` denotes `Nat.totient`."
+      "endLine": 44,
+      "summary": "Module docstring stating the goal — sharpen the parent's 2 ≤ gcd(φ m, φ n) floor and decide when equality holds — and the seeker's candidate strengthening (gcd ≥ 4 unless a totient equals 2). Announces the resolution: the factor of 2 splits off exactly, gcd = 2·gcd(halves), so coprimality of the halves (not the size of a totient) governs equality, refuted concretely by m = 5, n = 7. Lists the five contributions and the two Mathlib inputs Nat.totient_even and Nat.gcd_mul_left.",
+      "mathContext": "Sharpen 2 ∣ gcd(φ m, φ n) (m,n ≥ 3); is gcd = 2 only when some φ = 2? Answer: gcd = 2·gcd(φ m/2, φ n/2)."
     },
     {
       "id": "factorisation",
-      "title": "The Exact Factorisation and Its Corollaries",
-      "startLine": 54,
-      "endLine": 100,
-      "summary": "The structural heart: `gcd_totient_eq_two_mul_gcd_half` proves gcd(φ m, φ n) = 2·gcd(φ m/2, φ n/2) by rewriting each even totient as 2·(half) and pulling the factor out with `Nat.gcd_mul_left`. The corollaries `gcd_totient_div_two`, `gcd_totient_eq_two_iff`, and `four_le_gcd_totient_iff` follow by `omega`, and `exists_gcd_two_with_large_totients` exhibits the counterexample m = 5, n = 7 refuting the naive strengthening."
+      "title": "The Exact Factorisation",
+      "startLine": 46,
+      "endLine": 64,
+      "summary": "The structural heart, gcd_totient_eq_two_mul_gcd_half: for m, n ≥ 3 both totients are even (Nat.totient_even), so each is rewritten as 2·(φ/2) via Nat.mul_div_cancel' and the common factor is pulled out with Nat.gcd_mul_left, yielding gcd(φ m, φ n) = 2·gcd(φ m/2, φ n/2). Namespace setup and open Nat (so φ = Nat.totient) precede it.",
+      "mathContext": "gcd(φ m, φ n) = gcd(2·(φ m/2), 2·(φ n/2)) = 2·gcd(φ m/2, φ n/2)."
+    },
+    {
+      "id": "corollaries",
+      "title": "Corollaries by omega",
+      "startLine": 66,
+      "endLine": 85,
+      "summary": "Each sharpness question becomes a one-line omega on 2·G (G = gcd of halves): gcd_totient_div_two (gcd/2 = G, no rounding), gcd_totient_eq_two_iff (gcd = 2 ↔ G = 1, i.e. the halves are coprime — the correct dividing line), and four_le_gcd_totient_iff (gcd ≥ 4 ↔ G ≥ 2, the halves share a factor). All the number theory is concentrated in the even-splitting step above.",
+      "mathContext": "2·G = 2 ↔ G = 1; 4 ≤ 2·G ↔ 2 ≤ G; (2·G)/2 = G."
+    },
+    {
+      "id": "refutation",
+      "title": "Refutation of the Candidate Conjecture",
+      "startLine": 87,
+      "endLine": 95,
+      "summary": "exists_gcd_two_with_large_totients exhibits m = 5, n = 7 with gcd(φ 5, φ 7) = gcd(4, 6) = 2 while both totients are ≥ 4, so neither argument lies in {3, 4, 6}. Coprimality of the halves 2 and 3 — not the size of any totient — is what forces gcd = 2, exactly as gcd_totient_eq_two_iff predicts. The concrete conditions are checked by kernel decide.",
+      "mathContext": "φ 5 = 4, φ 7 = 6, gcd(4,6) = 2, halves 2 and 3 coprime; both totients ≥ 4."
     },
     {
       "id": "worked-examples",
       "title": "Worked Examples",
-      "startLine": 101,
+      "startLine": 97,
       "endLine": 117,
-      "summary": "Kernel-`decide` evaluations illustrating the factorisation: the equality cases (m,n) = (3,4) and the counterexample (5,7) with gcd = 2 and coprime halves, and the larger cases (5,5) with gcd = 4 = 2·2 and (7,9) with gcd = 6 = 2·3 where the halves share a common factor."
+      "summary": "Kernel-decide evaluations of the factorisation in action: the equality case (m,n) = (3,4) with halves 1,1 coprime ⇒ gcd = 2; the refuting witness (5,7) with halves 2,3 coprime ⇒ gcd = 2; and the larger cases (5,5) with halves 2,2 ⇒ gcd = 4 = 2·2 and (7,9) with halves 3,3 ⇒ gcd = 6 = 2·3, where the halves share a common factor.",
+      "mathContext": "gcd(φ3,φ4)=2, gcd(φ5,φ7)=2, gcd(φ5,φ5)=2·2=4, gcd(φ7,φ9)=2·3=6."
     }
   ],
   "meta": {

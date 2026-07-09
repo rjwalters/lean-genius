@@ -78,17 +78,32 @@
     ]
   },
   "relatedProofs": [
-    "erdos-728-factorial-divisibility"
+    "erdos-7",
+    "erdos-72",
+    "erdos-728",
+    "erdos-728-factorial-divisibility",
+    "erdos-728-factorial-divisibility-oq-04"
   ],
   "leanFiles": [
     {
+      "path": "Proofs/Erdos728FactorialDivisibility.lean",
+      "filename": "Erdos728FactorialDivisibility.lean",
+      "lineCount": 1417,
+      "theoremCount": 56,
+      "axiomCount": 0,
+      "defCount": 29,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos728FactorialDivisibility.lean"
+    },
+    {
       "path": "Proofs/Erdos728FactorialDivisibilityOQ04.lean",
       "filename": "Erdos728FactorialDivisibilityOQ04.lean",
-      "lineCount": 163,
-      "theoremCount": 7,
+      "lineCount": 258,
+      "theoremCount": 11,
       "axiomCount": 0,
       "defCount": 0,
-      "sorryCount": 0,
+      "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos728FactorialDivisibilityOQ04.lean"
     }

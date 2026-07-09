@@ -10,13 +10,15 @@
     "status": "verified",
     "proofRepoPath": "Proofs/AlgebraicRealsMeagerOQ02OQ01.lean",
     "tags": [
-      "measure-theory",
       "baire-category",
+      "higher-dimensional",
+      "lebesgue-measure",
       "liouville-numbers",
       "meagre",
-      "residual",
-      "lebesgue-measure",
+      "measure-theory",
+      "product-measure",
       "real-analysis",
+      "residual",
       "sharp-boundary"
     ],
     "badge": "mathlib",
@@ -61,7 +63,8 @@
       "nonLiouville_conull: PROVED the non-Liouville reals are conull — volume (Lᶜ)ᶜ = volume L = 0 — i.e. of full Lebesgue measure",
       "exists_meagre_conull: PROVED the headline dual Oxtoby statement — there exists a meagre subset of ℝ of full Lebesgue measure, the mirror of the parent's comeagre null set",
       "real_symmetric_oxtoby: PROVED the symmetric decomposition ℝ = L ⊔ Lᶜ (disjoint, union = univ) with L comeagre-and-null and Lᶜ meagre-and-conull, the sharp form of OQ-02 exhibiting the two largeness notions as exactly complementary",
-      "Synthesis (no new mathematics): reuses Mathlib's Liouville residual/measure-zero facts and complementation to complete the OQ-02 measure/category contrast in the dual direction the parent leaves implicit"
+      "Synthesis (no new mathematics): reuses Mathlib's Liouville residual/measure-zero facts and complementation to complete the OQ-02 measure/category contrast in the dual direction the parent leaves implicit",
+      "productLiouville / product_symmetric_oxtoby (ℝⁿ transfer): PROVED the symmetric Oxtoby decomposition transfers verbatim to finite-dimensional real space ℝ^ι. The product Liouville set Lⁿ = {x : ι → ℝ | ∀ i, Liouville (xᵢ)} = ⋂ i, (eval i)⁻¹ L is comeagre (each coordinate cylinder is residual via tendsto_residual_of_isOpenMap on the open surjection eval i; finite intersection of residual is residual) and Lebesgue-null (Lⁿ ⊆ (eval i)⁻¹ L, null by Measure.pi_eval_preimage_null), its complement (Lⁿ)ᶜ meagre and conull, and — via dense_of_conull and the pi.isOpenPosMeasure instance — BOTH pieces dense. Resolves the sole open follow-up (ℝⁿ transfer) left by the equivariance session"
     ],
     "axiomCount": 0,
     "prerequisites": [
@@ -69,7 +72,7 @@
       "Lebesgue measure on ℝ; conull (full measure) = complement is null",
       "Liouville numbers: residual (comeagre) and Lebesgue-null"
     ],
-    "lineCount": 178,
+    "lineCount": 176,
     "relatedProblems": [
       {
         "id": "algebraic-reals-meager-oq-02",
@@ -83,7 +86,10 @@
     "assumptions": "0 axioms. Relies only on Mathlib's Baire-category infrastructure (IsMeagre, residual), the Liouville residual/measure-zero results, and elementary complement identities. The ordinary foundational triple (propext / Classical.choice / Quot.sound) is inherited from Mathlib and does not count as an assumption.",
     "theoremCount": 8,
     "definitionCount": 0,
-    "additionalFiles": []
+    "additionalFiles": [
+      "Proofs/AlgebraicRealsMeagerOQ02OQ01Equivariant.lean",
+      "Proofs/AlgebraicRealsMeagerOQ02OQ01Product.lean"
+    ]
   },
   "overview": {
     "historicalContext": "Baire (1899) and Lebesgue (1902) gave two independent notions of 'smallness' for subsets of ℝ: meagre (category-small, a countable union of nowhere-dense sets) and null (measure-small). Oxtoby's 'Measure and Category' (1980) systematically contrasts them, and a recurring theme is that although the two σ-ideals share many formal properties (a duality principle), they are genuinely different: ℝ can be split into a meagre set and a null set whose union is everything. The classic witness is the Liouville numbers, comeagre yet null. The parent entry OQ-02 formalized that half — a comeagre null set. This entry records the mirror image, a meagre set of full measure, and the resulting complementary partition of ℝ.",

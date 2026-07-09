@@ -25,7 +25,7 @@
     "mathlib_version": "4.26.0",
     "axiomCount": 0,
     "assumptions": "No axioms and no sorries: all theorems are fully machine-checked from Mathlib (depends only on propext / Classical.choice / Quot.sound). This is a partial result addressing the first-moment regime of OQ-02; the open conjecture of Erdős #1022 (whether c_t → ∞ for arbitrarily large ground sets) is NOT resolved here.",
-    "lineCount": 351,
+    "lineCount": 437,
     "relatedProblems": [
       {
         "id": "erdos-1022",
@@ -40,7 +40,7 @@
         "relationship": "Builds on: Erdős 1963 uniform first-moment theorem (reuses Mono, card_mono, exists_zero_of_sum_lt_card)"
       }
     ],
-    "theoremCount": 14,
+    "theoremCount": 18,
     "definitionCount": 3
   },
   "overview": {
@@ -129,10 +129,10 @@
     }
   ],
   "leanFile": {
-    "lineCount": 391,
+    "lineCount": 437,
     "structureCount": 0,
     "axiomCount": 0,
-    "theoremCount": 16,
+    "theoremCount": 18,
     "lemmaCount": 0,
     "imports": [
       "Mathlib",

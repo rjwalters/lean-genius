@@ -20,7 +20,7 @@
     "dateAdded": "2026-07-03",
     "axiomCount": 0,
     "assumptions": "Fully verified: 0 sorries, 0 axiom declarations, no structure-encoded assumptions, no native_decide/decide (only the foundational propext/Classical.choice/Quot.sound from the Mathlib lemmas used; #print axioms on all five theorems lists exactly those three). Scope: this entry supplies the reduction from the SYMMETRIC (uniform value x, degree bound d) LLL budget to the ASYMMETRIC per-block budget consumed by the committed induction-step invariant cond_failure_le_x, and threads it through to obtain the induction step in symmetric form. It does NOT close the full LLL: the denominator lower bound ∏_{S₁}(1 − x) ≤ μ[⋂_{S₁} Aⱼᶜ | ⋂_{S₂} Aⱼᶜ] is an explicit hypothesis (hd), not supplied — producing it by well-founded recursion on |S₁| remains the open OQ-01 target, as does the global strong induction assembling the per-event invariant into the avoidance conclusion μ(⋂ Aᵢᶜ) > 0. The neighbour count bound (|S₁| ≤ d), the independence (IndepSet (A i) (⋂_{S₂} Aⱼᶜ) μ), the positive-measure hypotheses (μ(⋂_{S₂} Aⱼᶜ) ≠ 0, μ((⋂_{S₁} Aⱼᶜ) ∩ (⋂_{S₂} Aⱼᶜ)) ≠ 0), the denominator lower bound (∏_{S₁}(1 − x) ≤ μ[N | C], ≠ 0), and the uniform budget (μ(Aᵢ) ≤ x·(1 − x)^d) are stated explicitly as arguments; they are not axioms.",
-    "lineCount": 133,
+    "lineCount": 132,
     "theoremCount": 5,
     "definitionCount": 0,
     "verified": true,
@@ -44,7 +44,7 @@
       "LovaszLocalLemmaOQ01InductionStep"
     ],
     "namespace": "LovaszLocalLemmaOQ01SymmetricStep",
-    "lineCount": 133,
+    "lineCount": 132,
     "axiomCount": 0,
     "theoremCount": 5,
     "substantiveTheoremCount": 5,

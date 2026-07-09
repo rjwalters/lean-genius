@@ -15,8 +15,8 @@
     "axiomCount": 0,
     "sorries": 0,
     "lineCount": 181,
-    "theoremCount": 7,
-    "definitionCount": 3
+    "theoremCount": 9,
+    "definitionCount": 4
   },
   "openQuestion": {
     "id": "erdos-11-oq-03",
@@ -202,8 +202,8 @@
     "axiomCount": 0,
     "lineCount": 181,
     "assumptions": "0 axioms. Re-declares the sibling API self-contained (IsSquarefreePlusPow2, isSquarefreePlusPow2_iff, SquarefreeCheck, squarefree_iff_check) and uses standard Mathlib lemmas (Nat.le_log_iff_pow_le, Nat.lt_two_pow_self, Finset.card_le_card, Finset.filter_nonempty_iff). The verified range uses kernel decide only; #print axioms shows just propext / Classical.choice / Quot.sound — no Lean.ofReduceBool.",
-    "theoremCount": 7,
-    "definitionCount": 3
+    "theoremCount": 9,
+    "definitionCount": 4
   },
   "sorries": 0
 }

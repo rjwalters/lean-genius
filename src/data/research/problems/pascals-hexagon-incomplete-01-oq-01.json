@@ -23,5 +23,58 @@
       "Alternatively, submit exists_scaledCongr_stdConic_of_isotropic to Aristotle once reachable — the only remaining content is the IsometryEquiv→matrix bridge."
     ],
     "progressSummary": "PROGRESS: discharged Sylvester step 4 by adding diag_pm_one_congr_stdConic (verified, 0-axiom) — the permutation/sign correction carrying any indefinite ±1 diagonal onto c•stdConic. The remaining sorry in exists_scaledCongr_stdConic_of_isotropic is now reduced to a single obstacle: the IsometryEquiv→matrix congruence bridge across the finrank=3 cast. File typechecks (lake env lean), no new axioms."
-  }
+  },
+  "leanFiles": [
+    {
+      "path": "Proofs/PascalsHexagonIncomplete01.lean",
+      "filename": "PascalsHexagonIncomplete01.lean",
+      "lineCount": 153,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PascalsHexagonIncomplete01.lean"
+    },
+    {
+      "path": "Proofs/PascalsHexagonIncomplete01OQ01.lean",
+      "filename": "PascalsHexagonIncomplete01OQ01.lean",
+      "lineCount": 161,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PascalsHexagonIncomplete01OQ01.lean"
+    },
+    {
+      "path": "Proofs/PascalsHexagonIncomplete01OQ03.lean",
+      "filename": "PascalsHexagonIncomplete01OQ03.lean",
+      "lineCount": 154,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PascalsHexagonIncomplete01OQ03.lean"
+    },
+    {
+      "path": "Proofs/PascalsHexagonIncomplete01OQ03OQ01.lean",
+      "filename": "PascalsHexagonIncomplete01OQ03OQ01.lean",
+      "lineCount": 365,
+      "theoremCount": 16,
+      "axiomCount": 0,
+      "defCount": 7,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PascalsHexagonIncomplete01OQ03OQ01.lean"
+    }
+  ],
+  "relatedProofs": [
+    "pascals-hexagon",
+    "pascals-hexagon-incomplete-01",
+    "pascals-hexagon-incomplete-01-oq-01",
+    "pascals-hexagon-incomplete-01-oq-03",
+    "pascals-hexagon-incomplete-01-oq-03-oq-01"
+  ]
 }

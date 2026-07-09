@@ -8,7 +8,7 @@
     ],
     "opens": [],
     "namespace": "Erdos1017OQ03",
-    "lineCount": 271,
+    "lineCount": 273,
     "axiomCount": 0,
     "theoremCount": 13,
     "definitionCount": 1,
@@ -34,7 +34,7 @@
     "dateAdded": "2026-06-22",
     "axiomCount": 0,
     "assumptions": "Machine-checked: `./proofs/scripts/docker-build.sh Proofs.Erdos1017OQ03` builds green (Lean v4.26.0, Mathlib pin, 7743 jobs). 0 sorries, 0 axiom declarations, no native_decide; only the standard foundational axioms via Mathlib. Self-contained: the Turán bound T(n) = n^2/4 is re-declared (the companion Erdos1017OQ01.lean carries 2 axioms egp_theorem and k4free_partition_number, which are not imported or used here). Honest scope: elementary closed-form, monotonicity, and envelope arithmetic of the extremal bound, not the open clique-partition question itself.",
-    "lineCount": 271,
+    "lineCount": 273,
     "theoremCount": 13,
     "definitionCount": 1,
     "originalContributions": [

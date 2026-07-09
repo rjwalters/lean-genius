@@ -18,27 +18,32 @@
     {
       "name": "isTriangular_iff_isSquare",
       "type": "theorem",
-      "description": "The 8n+1 perfect-square test: a natural number n is a triangular number T(k) = k(k+1)/2 if and only if 8n+1 is a perfect square. The headline characterization, proved unconditionally via the identity (2k+1)² = 8·T(k)+1."
+      "description": "The 8n+1 perfect-square test: a natural number n is a triangular number T(k) = k(k+1)/2 if and only if 8n+1 is a perfect square. The headline characterization, proved unconditionally via the identity (2k+1)² = 8·T(k)+1.",
+      "leanType": "(n : ℕ) : IsTriangular n ↔ IsSquare (8 * n + 1)"
     },
     {
       "name": "eq_tri_of_eight_mul_add_one",
       "type": "theorem",
-      "description": "Exact recovery of the triangular index: if 8n+1 = (2k+1)² then n = T(k) — the index is determined uniquely."
+      "description": "Exact recovery of the triangular index: if 8n+1 = (2k+1)² then n = T(k) — the index is determined uniquely.",
+      "leanType": "(n k : ℕ) (h : 8 * n + 1 = (2 * k + 1) ^ 2) : n = tri k"
     },
     {
       "name": "sq_two_mul_add_one",
       "type": "lemma",
-      "description": "Defining identity: the odd square (2k+1)² equals 8·T(k) + 1."
+      "description": "Defining identity: the odd square (2k+1)² equals 8·T(k) + 1.",
+      "leanType": "(k : ℕ) : (2 * k + 1) ^ 2 = 8 * tri k + 1"
     },
     {
       "name": "tri_strictMono",
       "type": "lemma",
-      "description": "T is strictly monotone, so the triangular index is unique when it exists."
+      "description": "T is strictly monotone, so the triangular index is unique when it exists.",
+      "leanType": "StrictMono tri"
     },
     {
       "name": "two_mul_tri",
       "type": "lemma",
-      "description": "Twice a triangular number is k(k+1) — the halving in T(k) = k(k+1)/2 is exact over ℕ."
+      "description": "Twice a triangular number is k(k+1) — the halving in T(k) = k(k+1)/2 is exact over ℕ.",
+      "leanType": "(k : ℕ) : 2 * tri k = k * (k + 1)"
     }
   ],
   "title": "Triangular Numbers and the 8n+1 Perfect-Square Test",

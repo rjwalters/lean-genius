@@ -45,10 +45,15 @@
   ],
   "relatedProofs": [
     "sum-of-divisors",
+    "sum-of-divisors-oq-01",
+    "sum-of-divisors-oq-01-oq-01",
+    "sum-of-divisors-oq-02",
+    "sum-of-divisors-oq-03",
     "sum-of-divisors-oq-04",
     "sum-of-divisors-oq-04-oq-01",
     "sum-of-divisors-oq-05",
     "sum-of-divisors-oq-06",
+    "sum-of-divisors-oq-06-oq-01",
     "sum-of-divisors-oq-07"
   ],
   "references": {
@@ -71,15 +76,81 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SumOfDivisors.lean"
     },
     {
+      "path": "Proofs/SumOfDivisorsOQ01.lean",
+      "filename": "SumOfDivisorsOQ01.lean",
+      "lineCount": 134,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SumOfDivisorsOQ01.lean"
+    },
+    {
+      "path": "Proofs/SumOfDivisorsOQ01Assembly.lean",
+      "filename": "SumOfDivisorsOQ01Assembly.lean",
+      "lineCount": 138,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SumOfDivisorsOQ01Assembly.lean"
+    },
+    {
+      "path": "Proofs/SumOfDivisorsOQ01OQ01.lean",
+      "filename": "SumOfDivisorsOQ01OQ01.lean",
+      "lineCount": 202,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SumOfDivisorsOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/SumOfDivisorsOQ01SpecialPrime.lean",
+      "filename": "SumOfDivisorsOQ01SpecialPrime.lean",
+      "lineCount": 83,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SumOfDivisorsOQ01SpecialPrime.lean"
+    },
+    {
+      "path": "Proofs/SumOfDivisorsOQ01SquarePacking.lean",
+      "filename": "SumOfDivisorsOQ01SquarePacking.lean",
+      "lineCount": 120,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SumOfDivisorsOQ01SquarePacking.lean"
+    },
+    {
       "path": "Proofs/SumOfDivisorsOQ02.lean",
       "filename": "SumOfDivisorsOQ02.lean",
-      "lineCount": 162,
+      "lineCount": 229,
       "theoremCount": 7,
       "axiomCount": 0,
       "defCount": 0,
-      "sorryCount": 4,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SumOfDivisorsOQ02.lean"
+    },
+    {
+      "path": "Proofs/SumOfDivisorsOQ03.lean",
+      "filename": "SumOfDivisorsOQ03.lean",
+      "lineCount": 119,
+      "theoremCount": 4,
+      "axiomCount": 1,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SumOfDivisorsOQ03.lean"
     },
     {
       "path": "Proofs/SumOfDivisorsOQ04.lean",
@@ -124,6 +195,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SumOfDivisorsOQ06.lean"
+    },
+    {
+      "path": "Proofs/SumOfDivisorsOQ06OQ01.lean",
+      "filename": "SumOfDivisorsOQ06OQ01.lean",
+      "lineCount": 87,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SumOfDivisorsOQ06OQ01.lean"
     },
     {
       "path": "Proofs/SumOfDivisorsOQ07.lean",

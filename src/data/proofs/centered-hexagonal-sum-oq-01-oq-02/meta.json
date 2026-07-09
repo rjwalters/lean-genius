@@ -44,7 +44,7 @@
     ],
     "dateAdded": "2026-07-02",
     "axiomCount": 0,
-    "lineCount": 149,
+    "lineCount": 148,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries. Uses only structural Mathlib cardinality lemmas (Finset.card_biUnion, Finset.card_sdiff, Finset.card_product, Finset.card_range) with omega, ring, and simp; no native_decide and no structure-encoded hypotheses. #print axioms reports only the foundational propext, Classical.choice, Quot.sound for the main theorem, none of which count as assumptions.",
     "mathlib_version": "4.26.0",
     "theoremCount": 9,

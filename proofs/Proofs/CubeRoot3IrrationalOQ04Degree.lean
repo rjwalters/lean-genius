@@ -38,6 +38,7 @@ import Mathlib
 import Proofs.CubeRoot3Irrational
 
 open Polynomial CubeRoot3Irrational
+open scoped IntermediateField
 
 namespace CubeRoot3IrrationalOQ04Degree
 
@@ -79,5 +80,20 @@ not 2). This is Half (a) of the non-periodicity factorization; the remaining
 Half (b), Lagrange's continued-fraction theorem, is absent from Mathlib. -/
 theorem cbrt3_not_quadratic : (minpoly ℚ cbrt3).natDegree ≠ 2 := by
   rw [natDegree_minpoly_cbrt3]; decide
+
+/-- `∛3` is integral over `ℚ` (a root of the monic `X³ − 3`). -/
+theorem isIntegral_cbrt3 : IsIntegral ℚ cbrt3 :=
+  ⟨X ^ 3 - C (3 : ℚ), monic_X_pow_sub_C (3 : ℚ) (by norm_num), aeval_cbrt3⟩
+
+/-- **The field extension `ℚ(∛3) / ℚ` has degree 3.** This is the field-theoretic
+form of "`∛3` has algebraic degree 3": `[ℚ(∛3) : ℚ] = deg (minpoly ℚ ∛3) = 3`. -/
+theorem finrank_adjoin_cbrt3 : Module.finrank ℚ ℚ⟮cbrt3⟯ = 3 := by
+  rw [IntermediateField.adjoin.finrank isIntegral_cbrt3, natDegree_minpoly_cbrt3]
+
+/-- **`ℚ(∛3) / ℚ` is not a quadratic extension** (`[ℚ(∛3) : ℚ] = 3 ≠ 2`). A
+quadratic irrational generates a degree-2 extension of `ℚ`, so this is the sharp
+field-theoretic statement that `∛3` is not a quadratic irrational. -/
+theorem finrank_adjoin_cbrt3_ne_two : Module.finrank ℚ ℚ⟮cbrt3⟯ ≠ 2 := by
+  rw [finrank_adjoin_cbrt3]; decide
 
 end CubeRoot3IrrationalOQ04Degree

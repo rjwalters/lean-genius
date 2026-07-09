@@ -261,7 +261,9 @@ theorem totalSteps_one_ge (N : ℕ) :
 theorem avgSteps_one_ge (N : ℕ) (hN : 0 < N) :
     ((Nat.log 2 N : ℚ) - 1) / 2 ≤ (totalSteps 1 N : ℚ) / (N : ℚ) := by
   have hNQ : (0 : ℚ) < (N : ℚ) := by exact_mod_cast hN
-  rw [div_le_div_iff (by norm_num) hNQ]
+  -- clear both denominators: goal becomes  (log₂ N − 1)·N ≤ (totalSteps 1 N)·2
+  rw [le_div_iff₀ hNQ, div_mul_eq_mul_div,
+    div_le_iff₀ (show (0 : ℚ) < 2 by norm_num)]
   -- reduce to the ℕ inequality  N · (log₂ N − 1) ≤ 2 · totalSteps 1 N
   have key : N * (Nat.log 2 N - 1) ≤ 2 * totalSteps 1 N := by
     have h2 : N ≤ 2 * (N - N / 2) := by omega

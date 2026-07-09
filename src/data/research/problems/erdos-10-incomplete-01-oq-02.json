@@ -6,7 +6,7 @@
   "tier": "B",
   "significance": 6,
   "tractability": 6,
-  "path": "fast",
+  "path": "Proofs/Erdos10Incomplete01OQ02.lean",
   "started": "2026-07-02T18:00:00.000Z",
   "lastUpdate": "2026-07-02T19:00:00.000Z",
   "problemStatement": {
@@ -61,9 +61,12 @@
     }
   ],
   "relatedProofs": [
-    "erdos-10-oq-01-incomplete-01",
+    "erdos-1",
+    "erdos-10",
     "erdos-10-incomplete-01",
-    "erdos-10"
+    "erdos-10-incomplete-01-oq-01",
+    "erdos-10-incomplete-01-oq-02",
+    "erdos-10-oq-01-incomplete-01"
   ],
   "tags": [
     "erdos",
@@ -73,5 +76,39 @@
     "parity",
     "seeker-selected"
   ],
-  "path": "Proofs/Erdos10Incomplete01OQ02.lean"
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos10Incomplete01.lean",
+      "filename": "Erdos10Incomplete01.lean",
+      "lineCount": 151,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos10Incomplete01.lean"
+    },
+    {
+      "path": "Proofs/Erdos10Incomplete01OQ01.lean",
+      "filename": "Erdos10Incomplete01OQ01.lean",
+      "lineCount": 113,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos10Incomplete01OQ01.lean"
+    },
+    {
+      "path": "Proofs/Erdos10Incomplete01OQ02.lean",
+      "filename": "Erdos10Incomplete01OQ02.lean",
+      "lineCount": 150,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos10Incomplete01OQ02.lean"
+    }
+  ]
 }

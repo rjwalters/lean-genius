@@ -34,7 +34,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (solvability payoff, verified 0/0): added solvable_of_zpowers_normal (if ⟨c⟩ is a normal subgroup and the quotient G⧸⟨c⟩ is solvable, then G is solvable) plus the helper isSolvable_zpowers (a cyclic subgroup is abelian hence solvable). Combined with the existing zpowers_sylow_normal this is the positive counterpart of not_isSimpleGroup_of_sylow: the normal Sylow p-subgroup makes G an extension of a solvable group by a solvable group. Concrete order-10 capstone: any group of order 10 with an order-5 element is solvable (quotient has order 2, cyclic). Docker-built, 0 axioms/0 sorries, no native_decide.",
+    "progressSummary": "PROGRESS: class-equation centrality criterion — conjClass size ∣ gcd(m,p-1) and coprime index ⇒ c central (5 theorems + order-15 example, VERIFIED 0 sorry / 0 axiom).",
     "builtItems": [
       "zpowers_sylow_normal in AbelRuffiniOQ04OQ01OQ03.lean — arbitrary-prime Sylow-elimination core: order p·m + p∤m + no-small-divisor ⇒ ⟨c⟩ (order-p) normal",
       "conj_mem_zpowers_sylow — every g normalizes ⟨c⟩ (general prime consequence)",
@@ -44,7 +44,17 @@
       "not_isSimpleGroup_order5 + capstone example — p=5 corollary and 'any group of order 40 with an order-5 element is not simple'",
       "isSolvable_zpowers in AbelRuffiniOQ04OQ01OQ03.lean — a cyclic subgroup ⟨c⟩ is solvable (any two powers of c commute ⇒ abelian ⇒ isSolvable_of_comm)",
       "solvable_of_zpowers_normal in AbelRuffiniOQ04OQ01OQ03.lean — ⟨c⟩ normal + G⧸⟨c⟩ solvable ⇒ G solvable, via Mathlib's extension lemma solvable_of_ker_le_range with f=subtype, g=mk' (ker mk' = range subtype = ⟨c⟩)",
-      "Order-10 solvability capstone example — order 10 = 5·2 with an order-5 element is solvable: zpowers_order5_normal gives normality, zpowers_index_eq gives quotient order 2, isCyclic_of_prime_card + IsCyclic.commutative make the quotient solvable"
+      "Order-10 solvability capstone example — order 10 = 5·2 with an order-5 element is solvable: zpowers_order5_normal gives normality, zpowers_index_eq gives quotient order 2, isCyclic_of_prime_card + IsCyclic.commutative make the quotient solvable",
+      "conj_pow_eq_zpow_pow (AbelRuffiniOQ04OQ01OQ03.lean): pure-group-theory iteration g^j c g^{-j}=c^(k^j) from g c g⁻¹=c^k, no finiteness/Sylow hyps",
+      "conj_exponent_pow_modEq_one (AbelRuffiniOQ04OQ01OQ03.lean): under zpowers_sylow_normal hyps, g^n=1 ⇒ ∃k, g c g⁻¹=c^k ∧ k^n≡1 [ZMOD p] — automorphism-order-agnostic generalisation of involution_conj_eq_self_or_inv (VERIFIED 0/0, PR pending)",
+      "conjNormal_ker_eq_centralizer (AbelRuffiniOQ04OQ01OQ03.lean:276): kernel of the conjugation action G →* Aut(⟨c⟩) equals the centralizer C_G(c); no finiteness needed, only normality of ⟨c⟩",
+      "conjNormal_ker_index_dvd_sub_one (AbelRuffiniOQ04OQ01OQ03.lean:308): index of that kernel divides p−1 via IsCyclic.card_mulAut (|Aut(⟨c⟩)|=φ(p)=p−1), first-iso + Lagrange; Normal taken as instance binder so the statement is well-formed",
+      "centralizer_index_dvd_sub_one (AbelRuffiniOQ04OQ01OQ03.lean:334): the sharp N/C bound [G:C_G(c)] ∣ p−1 for a normal cyclic Sylow ⟨c⟩ of prime order p",
+      "zpowers_le_centralizer (⟨c⟩ ≤ C_G(c)) in AbelRuffiniOQ04OQ01OQ03.lean",
+      "centralizer_index_dvd_index_zpowers ([G:C_G(c)] ∣ m via index_dvd_of_le + zpowers_index_eq)",
+      "conjClass_card_dvd_gcd (|conjClass c| ∣ gcd(m,p-1) via Nat.dvd_gcd of the two bounds)",
+      "mem_center_of_coprime_index (Coprime m (p-1) ⇒ c ∈ center G)",
+      "mem_center_order5_of_coprime_index + order-15 centrality example (all VERIFIED 0 sorry/0 axiom)"
     ],
     "insights": [
       "Generalizing the fixed prime 5 to a variable prime p is NOT a rename: the two number-theoretic steps change tactic. n_p ≡ 1 (mod p) ⇒ n_p = 1 needs Nat.mod_eq_of_lt hp.out.one_lt to evaluate 1 % p (omega cannot do variable-modulus mod); index cancellation [G:P]·p = p·m ⇒ [G:P] = m needs Nat.eq_of_mul_eq_mul_right (omega cannot cancel a variable multiplier).",
@@ -53,12 +63,18 @@
       "IsSimpleGroup.eq_bot_or_eq_top_of_normal turns non-simplicity into a clean two-case refutation: ⟨c⟩=⊥ contradicts orderOf c=p>1 (via Subgroup.zpowers_eq_bot + orderOf_one), ⟨c⟩=⊤ contradicts index=m>1 (via Subgroup.index_top).",
       "The index [G:⟨c⟩]=m follows by pure counting (index_mul_card + Nat.eq_of_mul_eq_mul_right cancelling the prime p) with NO divisor hypothesis and NO normality — it just records that G⧸⟨c⟩ has order m.",
       "The quotient type G⧸(Subgroup.zpowers c) only has a Group instance once (zpowers c).Normal is in scope, so any theorem whose hypothesis mentions IsSolvable (G⧸⟨c⟩) must carry the Normal instance in its binder list (or establish it via haveI before the hypothesis is used). The clean reusable form takes [(Subgroup.zpowers c).Normal] as an instance argument rather than re-deriving it from Sylow hypotheses.",
-      "Solvability is the positive dual of non-simplicity here: ⟨c⟩ cyclic (abelian, solvable) + solvable quotient ⇒ G solvable by the standard extension lemma. For the Abel–Ruffini orders 10,20,40 the quotients have order 2,4,8 (all 2-groups, hence solvable), so those Galois groups are solvable — the structural reason x⁵-4x+2's group must instead be the non-solvable S₅ for radical-insolubility."
+      "Solvability is the positive dual of non-simplicity here: ⟨c⟩ cyclic (abelian, solvable) + solvable quotient ⇒ G solvable by the standard extension lemma. For the Abel–Ruffini orders 10,20,40 the quotients have order 2,4,8 (all 2-groups, hence solvable), so those Galois groups are solvable — the structural reason x⁵-4x+2's group must instead be the non-solvable S₅ for radical-insolubility.",
+      "Conjugation by any g on the normal cyclic ⟨c⟩ (order p) is an element of Aut(⟨c⟩)≅(ℤ/p)ˣ whose order divides ord(g): the exponent k with g c g⁻¹=c^k satisfies k^n≡1 (mod p) whenever g^n=1. The involution ±1 lemma is exactly the n=2 case, where primality upgrades k²≡1 to k≡±1.",
+      "The sharp N/C refinement of the ±1 involution lemma: conjugation on a normal cyclic ⟨c⟩ of prime order p factors through Aut(⟨c⟩)≅(ℤ/p)ˣ of order p−1, so C_G(c) has index dividing p−1 (Noether first-iso + Lagrange). The involution lemma is the order-2 special case; this is the full automorphism-group constraint.",
+      "Class-equation sharpening: the conjugacy-class size of an order-p element c divides gcd(m, p-1), not merely p-1 — because ⟨c⟩ ≤ C_G(c) forces [G:C_G(c)] ∣ [G:⟨c⟩]=m (lattice constraint), on top of the automorphism-group constraint [G:C_G(c)] ∣ p-1.",
+      "Centrality criterion (class-equation punchline): if the index m=[G:⟨c⟩] is COPRIME to p-1, then gcd(m,p-1)=1, the conjugacy class of c is a singleton, C_G(c)=⊤, and c ∈ Z(G). This is the elementary transfer-theoretic core of Burnside normal-p-complement, specialised to one element. The Abel-Ruffini orders 20=5·4, 40=5·8 sit in the NON-coprime regime (gcd(4,4)=gcd(8,4)=4), which is exactly why non-central order-5 elements are possible there.",
+      "Smallest coprime instance p=5,m=3 (order 15): gcd(3,4)=1 ⇒ every order-5 element is central — the group-theoretic reason all order-15 groups are cyclic. Verified as an example."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Discharge the order-20 (quotient order 4) and order-40 (quotient order 8) capstones by proving the 2-power quotient solvable via IsPGroup.isNilpotent → IsSolvable (needs establishing IsPGroup 2 of the quotient).",
-      "Formalize the conjugation-action homomorphism G/C_G(c) ↪ (ZMod p)ˣ to sharpen the involution ±1 lemma to arbitrary automorphism order."
+      "Density-1 forward direction for the associated Galois obstruction remains analytically blocked (unchanged).",
+      "Class equation is now essentially complete at the single-element level (size ∣ gcd(m,p-1), coprime ⇒ central). A genuine next step would be the GLOBAL class equation: sum over all conjugacy classes = |G|, deriving e.g. that the number of order-p elements is ≡ 0 mod something, or a normal-p-complement statement for the whole group — but that needs summing over class representatives (Mathlib ConjClasses.card_eq / class equation), a heavier packaging.",
+      "Alternative: state the contrapositive — a non-central order-p element forces gcd(m,p-1)>1, i.e. p-1 shares a prime factor with the index; specialise to conclude structural facts about which orders p·m admit nonabelian groups."
     ]
   },
   "tags": [
@@ -93,6 +109,7 @@
     "abel-ruffini-oq-04-oq-01-oq-01",
     "abel-ruffini-oq-04-oq-01-oq-01-oq-01",
     "abel-ruffini-oq-04-oq-01-oq-02",
+    "abel-ruffini-oq-04-oq-01-oq-03",
     "abel-ruffini-oq-04-oq-01-oq-04",
     "abel-ruffini-oq-04-oq-01-oq-04-oq-01",
     "abel-ruffini-oq-04-oq-02",
@@ -370,17 +387,6 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffiniGaloisExtensionsOQ06GaloisDirectionStep4.lean"
     },
     {
-      "path": "Proofs/AbelRuffiniGaloisExtensionsOQ06GaloisDirectionStep4Aristotle.lean",
-      "filename": "AbelRuffiniGaloisExtensionsOQ06GaloisDirectionStep4Aristotle.lean",
-      "lineCount": 48,
-      "theoremCount": 1,
-      "axiomCount": 0,
-      "defCount": 0,
-      "sorryCount": 4,
-      "isAristotle": true,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffiniGaloisExtensionsOQ06GaloisDirectionStep4Aristotle.lean"
-    },
-    {
       "path": "Proofs/AbelRuffiniGaloisExtensionsOQ07.lean",
       "filename": "AbelRuffiniGaloisExtensionsOQ07.lean",
       "lineCount": 1974,
@@ -489,6 +495,28 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffiniOQ04OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/AbelRuffiniOQ04OQ01OQ03.lean",
+      "filename": "AbelRuffiniOQ04OQ01OQ03.lean",
+      "lineCount": 579,
+      "theoremCount": 20,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffiniOQ04OQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/AbelRuffiniOQ04OQ01OQ03OQ01.lean",
+      "filename": "AbelRuffiniOQ04OQ01OQ03OQ01.lean",
+      "lineCount": 216,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffiniOQ04OQ01OQ03OQ01.lean"
     },
     {
       "path": "Proofs/AbelRuffiniOQ04OQ01OQ04.lean",

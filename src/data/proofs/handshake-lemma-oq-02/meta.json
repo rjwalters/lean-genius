@@ -90,7 +90,8 @@
       "**Necessity needs no sorting.** The classical Erdős–Gallai inequality is stated for the top-k prefix of a sorted sequence, but the underlying fact is a statement about an arbitrary vertex subset A. Proving the subset form first cleanly separates the genuine combinatorics (a double count) from the order-statistics bookkeeping that merely matches A to the sorted prefix.",
       "**The count is edges-inside-A plus edges-crossing.** Splitting each degree along A vs Aᶜ turns the degree sum on A into (twice the internal edges, bounded by |A|(|A|−1)) plus (the A–Aᶜ cut, counted from the complement side). The two bounds correspond exactly to the two terms k(k−1) and ∑ min(dᵢ,k).",
       "**The min is where both viewpoints meet.** From the complement side each cross contribution |N(w)∩A| is simultaneously ≤ w's total degree and ≤ the size of A; the tighter of the two is min(deg w, |A|), which is precisely the summand in the Erdős–Gallai tail.",
-      "**Adjacency symmetry is the only nontrivial rewrite.** The cross-edge equality ∑_{v∈A}|N(v)∩Aᶜ| = ∑_{w∈Aᶜ}|N(w)∩A| is a Fubini swap of adjacency indicators; symmetry of the edge relation is what makes counting from either side give the same total."
+      "**Adjacency symmetry is the only nontrivial rewrite.** The cross-edge equality ∑_{v∈A}|N(v)∩Aᶜ| = ∑_{w∈Aᶜ}|N(w)∩A| is a Fubini swap of adjacency indicators; symmetry of the edge relation is what makes counting from either side give the same total.",
+    "**This is only the necessity half of Erdős–Gallai, and it is the easy half.** The full theorem is a biconditional: a non-increasing sequence with even sum is the degree sequence of some simple graph IFF it satisfies ∑_{i≤k} dᵢ ≤ k(k−1) + ∑_{i>k} min(dᵢ,k) for every k. This file proves the forward (necessity) direction — that a graph's degrees must satisfy the inequalities — by a direct double count. The converse (sufficiency) is a genuine graph construction (Havel–Hakimi reduction or a majorization/threshold-graph argument) of a different character entirely, and is not formalized here; separating necessity out is what makes the combinatorial content a one-page count."
     ],
     "prerequisites": [
       "Simple graphs, vertex degrees, and neighbour finsets (Mathlib SimpleGraph)",
@@ -101,28 +102,44 @@
   },
   "sections": [
     {
-      "id": "setup",
-      "title": "Neighbours Inside a Subset and the Degree Split",
+      "id": "sec-header",
+      "title": "Module Header and Setup",
       "startLine": 1,
-      "endLine": 66,
+      "endLine": 43,
+      "mathContext": "Goal: $\\sum_{v\\in A}\\deg v \\le |A|(|A|-1) + \\sum_{w\\in A^c}\\min(\\deg w, |A|)$ for every vertex subset $A$.",
+      "summary": "Module docstring framing Erdős–Gallai and its place relative to the parent handshake lemma (HandshakeLemma.even_sum_degrees), the import of Mathlib, and the namespace/open/variable setup (a finite SimpleGraph G with decidable adjacency)."
+    },
+    {
+      "id": "sec-degree-split",
+      "title": "Neighbours Inside a Subset and the Degree Split",
+      "startLine": 44,
+      "endLine": 64,
       "mathContext": "$\\deg v = |N(v)\\cap A| + |N(v)\\cap A^c|$",
-      "summary": "Module docstring framing Erdős–Gallai and the necessity milestone, the import of Mathlib, the helper definition nbrIn (neighbours of v inside a finset s), and degree_eq_nbr_add_nbr_compl: partitioning the neighbour finset along A and its complement writes a vertex degree as inside-A plus outside-A neighbour counts."
+      "summary": "The helper definition nbrIn v s (neighbours of v inside a finset s) and degree_eq_nbr_add_nbr_compl: partitioning the neighbour finset along A and its complement writes a vertex degree as its inside-A plus outside-A neighbour counts."
     },
     {
-      "id": "bounds",
-      "title": "The Inside Bound and the Cross Double-Count",
-      "startLine": 67,
-      "endLine": 130,
-      "mathContext": "$\\sum_{v\\in A}|N(v)\\cap A|\\le |A|(|A|-1),\\quad \\sum_{v\\in A}|N(v)\\cap A^c| = \\sum_{w\\in A^c}|N(w)\\cap A|$",
-      "summary": "card_nbrIn_le bounds a vertex's A-internal neighbours by |A|−1 (looplessness), and sum_cross_swap proves the adjacency-symmetry double-count that re-expresses the A–Aᶜ cut from the complement side, where each contribution is at most min(deg w, |A|)."
+      "id": "sec-inside-bound",
+      "title": "The Inside Bound (Looplessness)",
+      "startLine": 65,
+      "endLine": 80,
+      "mathContext": "$|N(v)\\cap A|\\le |A|-1$ for $v\\in A$, so $\\sum_{v\\in A}|N(v)\\cap A|\\le |A|(|A|-1)$.",
+      "summary": "card_nbrIn_le bounds a vertex v ∈ A's A-internal neighbours by |A|−1: v is not its own neighbour (looplessness), so its inside-A neighbours miss at least v itself. Summed over A this gives the k(k−1) term."
     },
     {
-      "id": "main",
+      "id": "sec-cross-swap",
+      "title": "The Cross Double-Count (Adjacency Symmetry)",
+      "startLine": 81,
+      "endLine": 99,
+      "mathContext": "$\\sum_{v\\in A}|N(v)\\cap A^c| = \\sum_{w\\in A^c}|N(w)\\cap A|$, each term $\\le \\min(\\deg w, |A|)$.",
+      "summary": "sum_cross_swap proves the adjacency-symmetry double-count re-expressing the A–Aᶜ cut from the complement side (a Fubini swap of the symmetric edge relation), where each contribution |N(w)∩A| is at most both deg w and |A|, hence ≤ min(deg w, |A|) — the Erdős–Gallai tail summand."
+    },
+    {
+      "id": "sec-main",
       "title": "The Erdős–Gallai Necessity Inequality",
-      "startLine": 131,
+      "startLine": 100,
       "endLine": 145,
       "mathContext": "$\\sum_{v\\in A}\\deg v \\le |A|(|A|-1) + \\sum_{w\\in A^c}\\min(\\deg w, |A|)$",
-      "summary": "erdos_gallai_necessity assembles the degree split, the inside bound, and the cross bound into the subset-general Erdős–Gallai inequality, closed by omega. A #print axioms confirms dependence only on the foundational propext / Classical.choice / Quot.sound."
+      "summary": "erdos_gallai_necessity assembles the degree split, the inside bound, and the cross double-count into the subset-general Erdős–Gallai inequality, closed by omega. A #print axioms confirms dependence only on the foundational propext / Classical.choice / Quot.sound."
     }
   ],
   "crossReferences": [

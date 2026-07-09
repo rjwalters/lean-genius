@@ -71,8 +71,8 @@
     "lineCount": 221,
     "assumptions": "0 axioms (only propext / Classical.choice / Quot.sound, the ordinary foundational axioms, appear in #print axioms; no Lean.ofReduceBool, no sorryAx). 0 sorries. The signed-distance sum identity needs only A + B + C = π; the circumradius certification additionally uses R ≥ 0, and the genuine-triangle reading takes A, B, C > 0. Builds on the parent file Proofs/CarnotTheorem.lean (itself axiom-free). Note: local Docker kernel build was unavailable this session, so verification used host single-file elaboration (lake env lean) against Mathlib v4.26.0; the entry is gated by the deployer build before merge.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 8,
-    "definitionCount": 7
+    "theoremCount": 15,
+    "definitionCount": 8
   },
   "overview": {
     "historicalContext": "Carnot's theorem (Lazare Carnot, 1803) states that the sum of the signed distances from the circumcenter of a triangle to its three sides equals R + r, the sum of the circumradius and the inradius — with a side's contribution counted negative when the circumcenter lies on the far side of that side, as happens at an obtuse angle. The parent gallery entries formalize only the equivalent angle identity cos A + cos B + cos C = 1 + r/R, living in a bespoke trigonometric encoding with no actual triangle, circumcenter, or distances. The parent explicitly left open whether the genuinely metric statement — with an explicit circumcenter and real perpendicular distances over EuclideanSpace ℝ (Fin 2) — could be formalized. This entry does exactly that.",
@@ -216,8 +216,8 @@
     "namespace": "CarnotTheoremOQ01OQ01OQ01",
     "lineCount": 221,
     "axiomCount": 0,
-    "theoremCount": 8,
-    "definitionCount": 7,
+    "theoremCount": 15,
+    "definitionCount": 8,
     "sorries": 0,
     "path": "Proofs/CarnotTheoremOQ01OQ01OQ01.lean"
   },

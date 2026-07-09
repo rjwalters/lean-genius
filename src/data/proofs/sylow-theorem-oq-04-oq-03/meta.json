@@ -24,9 +24,9 @@
     "dateAdded": "2026-07-04",
     "axiomCount": 0,
     "assumptions": "No assumptions: 0 `axiom` declarations, 0 sorries, 0 structure-encoded hypotheses, no `native_decide` (so no `Lean.ofReduceBool`). `#print axioms` for `torusHom_conj_unipotent` and `card_torus_range` reports only the ordinary foundational axioms `propext`, `Classical.choice`, `Quot.sound`. Every result is machine-checked from Mathlib. The parent simplicity theorem for PSL(2, p) remains open; this entry proves only the verified unipotent-subgroup and split-torus infrastructure and makes no claim about the open question itself.",
-    "lineCount": 265,
-    "theoremCount": 17,
-    "definitionCount": 4,
+    "lineCount": 544,
+    "theoremCount": 33,
+    "definitionCount": 7,
     "originalContributions": [
       "unipotentUpper: the matrix [[1,t],[0,1]] packaged as a determinant-1 element of SL(2, ZMod p)",
       "unipotentUpper_mul: additivity [[1,s],[0,1]]·[[1,t],[0,1]] = [[1,s+t],[0,1]], giving an abelian one-parameter subgroup",
@@ -38,6 +38,12 @@
     ]
   },
   "mainTheorems": [
+    {
+      "name": "exists_lowerUnipotent_isCommutator",
+      "type": "theorem",
+      "description": "For every prime p ≥ 5, every lower unipotent lowerUnipotent s is a commutator g·h·g⁻¹·h⁻¹. Conjugating exists_unipotent_isCommutator by the Weyl element w (which sends U to U⁻ via weylW_conj_unipotent) transports the upper-root-group commutator identity to the opposite root group. Together with the upper case this places BOTH root groups U and U⁻ inside the derived subgroup [SL(2,p), SL(2,p)] — the two halves of the perfectness input to Iwasawa's simplicity criterion (recall ⟨U, U⁻⟩ = SL(2,p)).",
+      "leanType": "(hp : 5 ≤ p) → (s : ZMod p) → ∃ g h : Matrix.SpecialLinearGroup (Fin 2) (ZMod p), g * h * g⁻¹ * h⁻¹ = lowerUnipotent s"
+    },
     {
       "name": "exists_unipotent_isCommutator",
       "type": "main",
@@ -248,12 +254,12 @@
     }
   ],
   "leanFile": {
-    "lineCount": 520,
+    "lineCount": 544,
     "path": "Proofs/SylowTheoremOQ04OQ03.lean",
     "axiomCount": 0,
     "sorries": 0,
     "definitionCount": 7,
-    "theoremCount": 24
+    "theoremCount": 33
   },
   "sorries": 0
 }

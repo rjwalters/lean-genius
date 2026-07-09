@@ -62,7 +62,8 @@
       "The defect d is absorbed by literally adding d new universal candidates: every set is allowed to use any of the d dummies, so a partial SDR for t becomes a full SDR for the d-enlarged family, and vice versa.",
       "Injectivity does the bookkeeping for free: because the enlarged SDR is injective and there are only d dummies, at most d indices can be 'wasted' on a dummy — this is exactly the bound #rejected ≤ d without any separate counting.",
       "Working in α ⊕ Fin d keeps the construction fully constructive and finite: the dummies are an honest Fin d, the neighbourhood card computation is a disjoint union, and the converse is a single inter/sdiff partition.",
-      "The d = 0 case collapses the dummy type Fin 0 to the empty type, forcing rejected = ∅ and recovering Mathlib's SDR theorem — a built-in consistency check that the defect biconditional really generalises the marriage theorem."
+      "The d = 0 case collapses the dummy type Fin 0 to the empty type, forcing rejected = ∅ and recovering Mathlib's SDR theorem — a built-in consistency check that the defect biconditional really generalises the marriage theorem.",
+    "This is the canonical 'pad and black-box' reduction: rather than reprove Hall's hard (augmenting-path) direction with a defect built in, one enlarges the graph by d universal vertices so the deficiency is absorbed, then invokes the EXACT marriage theorem unchanged. The whole nontrivial content is delegated to Mathlib's all_card_le_biUnion_card_iff_exists_injective; everything else is disjoint-union bookkeeping. The same padding derives deficiency versions of König and other matching theorems, and the biconditional is sharp — instantiating d at the true deficiency maxₛ(#s − #(s.biUnion t))₊ recovers Ore's exact defect formula for the largest partial SDR."
     ],
     "prerequisites": [
       "Hall's marriage theorem and systems of distinct representatives (Finset.all_card_le_biUnion_card_iff_exists_injective)",
@@ -82,25 +83,44 @@
   },
   "sections": [
     {
-      "id": "header-imports",
+      "id": "sec-header",
       "title": "Module Header and Imports",
       "startLine": 1,
-      "endLine": 55,
-      "summary": "Imports, an expository docstring contrasting Mathlib's exact (d = 0) marriage theorem with Ore's defect form, and the namespace/variable setup (Fintype ι, DecidableEq, Nonempty α)."
+      "endLine": 54,
+      "summary": "Imports, an expository docstring contrasting Mathlib's exact (d = 0) marriage theorem with Ore's defect form and sketching the α ⊕ Fin d padding reduction, plus the namespace/variable setup (Fintype ι, DecidableEq ι/α, Nonempty α — representatives are drawn from α).",
+      "mathContext": "Relaxed Hall: ∀ s, #s ≤ #(s.biUnion t) + d ⟺ a partial SDR missing at most d indices (Ore's deficiency form)."
     },
     {
-      "id": "defect-hall",
-      "title": "The Deficiency Biconditional",
+      "id": "sec-statement-setup",
+      "title": "Statement and the Padding Setup α ⊕ Fin d",
       "startLine": 56,
-      "endLine": 177,
-      "summary": "defect_hall — the relaxed Hall condition iff a partial SDR missing at most d indices. Forward: the α ⊕ Fin d reduction, disjoint-union neighbourhood count, Mathlib's marriage theorem, and reading off rejected/e. Converse: the inter/sdiff counting split."
+      "endLine": 73,
+      "summary": "The defect_hall biconditional statement, then the reduction gadget: the d universal dummies D = image Sum.inr (with #D = d) living on the right of α ⊕ Fin d, and the enlarged family t' i = (t i).image Sum.inl ∪ D in which every set additionally admits all d dummies.",
+      "mathContext": "t'(i) = inl(t i) ∪ D with #D = d: the d-defect family, padded so relaxed Hall for t becomes ordinary Hall for t'."
     },
     {
-      "id": "defect-hall-zero",
-      "title": "The d = 0 Specialisation",
+      "id": "sec-forward",
+      "title": "Forward: Enlarged Hall ⟹ Partial SDR",
+      "startLine": 74,
+      "endLine": 157,
+      "summary": "The forward direction. First the ordinary Hall condition for t' (hall'): the enlarged neighbourhood s.biUnion t' = inl(s.biUnion t) ⊎ D is a disjoint union, so #s ≤ #(s.biUnion t) + d = #(s.biUnion t') by the relaxed hypothesis. Mathlib's marriage theorem (all_card_le_biUnion_card_iff_exists_injective) yields an injective f : ι → α ⊕ Fin d; the indices f sends to a dummy are rejected (≤ d of them, since f injects them into the d dummies) and the rest give the representative e via Sum.elim.",
+      "mathContext": "s.biUnion t' = inl(s.biUnion t) ⊎ D, so #(s.biUnion t') = #(s.biUnion t) + d; #rejected ≤ #D = d by injectivity of f."
+    },
+    {
+      "id": "sec-converse",
+      "title": "Converse: Partial SDR ⟹ Relaxed Hall",
+      "startLine": 158,
+      "endLine": 176,
+      "summary": "The converse by an elementary counting split s = (s ∩ rejected) ⊎ (s \\ rejected): the intersection has ≤ #rejected ≤ d elements, and e injects s \\ rejected into s.biUnion t (each is represented, and e is injective off rejected), so #s ≤ d + #(s.biUnion t) by omega.",
+      "mathContext": "#s = #(s ∩ rejected) + #(s \\ rejected) ≤ d + #(s.biUnion t)."
+    },
+    {
+      "id": "sec-zero",
+      "title": "The d = 0 Specialisation (Marriage Theorem)",
       "startLine": 178,
       "endLine": 198,
-      "summary": "defect_hall_zero — recovering the classical system-of-distinct-representatives theorem from the defect form (rejected = ∅, injective on all of ι)."
+      "summary": "defect_hall_zero recovers the classical system-of-distinct-representatives theorem: taking d = 0 forces #rejected ≤ 0, so rejected = ∅ and e is injective on all of ι (Set.injOn_univ), giving a full SDR — a built-in consistency check that the defect form generalises the marriage theorem.",
+      "mathContext": "d = 0 ⟹ rejected = ∅ ⟹ full injective SDR: ∀ s, #s ≤ #(s.biUnion t) ⟺ ∃ injective e, e i ∈ t i."
     }
   ],
   "crossReferences": [
@@ -143,13 +163,19 @@
   "mainTheorems": [
     {
       "name": "defect_hall",
-      "type": "theorem",
-      "description": "Hall's theorem with defect d (Ore's deficiency form): a finite family of finite sets t : ι → Finset α satisfies the relaxed Hall condition ∀ s, #s ≤ #(s.biUnion t) + d if and only if there is a partial system of distinct representatives leaving at most d indices unmatched — a set `rejected` with #rejected ≤ d and an assignment e that is injective off `rejected` with e i ∈ t i for every i ∉ rejected. Proved by adjoining d universal dummy elements (living in α ⊕ Fin d), applying ordinary Hall to the enlarged family, and counting how many indices are absorbed by dummies."
+      "type": "core",
+      "description": "Hall's theorem with defect d (Ore's deficiency form): a finite family of finite sets t : ι → Finset α satisfies the relaxed Hall condition ∀ s, #s ≤ #(s.biUnion t) + d if and only if there is a partial system of distinct representatives leaving at most d indices unmatched — a set `rejected` with #rejected ≤ d and an assignment e that is injective off `rejected` with e i ∈ t i for every i ∉ rejected. Proved by adjoining d universal dummy elements (living in α ⊕ Fin d), applying ordinary Hall to the enlarged family, and counting how many indices are absorbed by dummies.",
+      "leanType": "{ι α : Type*} [Fintype ι] [DecidableEq ι] [DecidableEq α] [Nonempty α] (t : ι → Finset α) (d : ℕ) : (∀ s : Finset ι, #s ≤ #(s.biUnion t) + d) ↔ ∃ (e : ι → α) (rejected : Finset ι), #rejected ≤ d ∧ Set.InjOn e (↑rejectedᶜ) ∧ ∀ i ∉ rejected, e i ∈ t i",
+      "startLine": 62,
+      "endLine": 176
     },
     {
       "name": "defect_hall_zero",
-      "type": "theorem",
-      "description": "Marriage theorem (no defect): specialising defect_hall to d = 0 recovers the classical Hall statement — the Hall condition ∀ s, #s ≤ #(s.biUnion t) is equivalent to the existence of a full system of distinct representatives (an injective e with e i ∈ t i for all i). Follows because #rejected ≤ 0 forces `rejected = ∅`, collapsing the partial SDR to a total one."
+      "type": "key",
+      "description": "Marriage theorem (no defect): specialising defect_hall to d = 0 recovers the classical Hall statement — the Hall condition ∀ s, #s ≤ #(s.biUnion t) is equivalent to the existence of a full system of distinct representatives (an injective e with e i ∈ t i for all i). Follows because #rejected ≤ 0 forces `rejected = ∅`, collapsing the partial SDR to a total one.",
+      "leanType": "{ι α : Type*} [Fintype ι] [DecidableEq ι] [DecidableEq α] [Nonempty α] (t : ι → Finset α) : (∀ s : Finset ι, #s ≤ #(s.biUnion t)) ↔ ∃ e : ι → α, Function.Injective e ∧ ∀ i, e i ∈ t i",
+      "startLine": 181,
+      "endLine": 196
     }
   ],
   "sorries": 0
