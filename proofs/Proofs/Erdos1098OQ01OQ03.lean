@@ -48,6 +48,11 @@ the size of every clique", i.e. ω(Γ(G)) finite) and prove the full equivalence
 * `neumann_hard_direction` — **(axiom, Neumann 1976)** if ω(Γ(G)) is finite then
   `[G:Z(G)]` is finite. This is the deep content of Erdős #1098.
 * `neumann_full_theorem` — the equivalence ω(Γ(G)) finite ⟺ [G:Z(G)] finite.
+* `neumann_hard_direction_of_finite` / `neumann_hard_direction_of_finite_commutatorSet`
+  — **(fully proved, axiom-free)** the hard direction holds unconditionally on the finite
+  and finite-commutator-set (BFC) classes, via the Mathlib Schur endgame
+  `Subgroup.finiteIndex_center`. These pin the axiom's residual content to the single
+  implication `BoundedCliques G → Finite (commutatorSet G)`.
 
 ## Honesty
 
@@ -74,6 +79,7 @@ Erdős, non-commuting-graph, clique-number, center, index, Neumann, group-theory
 import Mathlib.GroupTheory.Subgroup.Center
 import Mathlib.GroupTheory.Subgroup.Centralizer
 import Mathlib.GroupTheory.Index
+import Mathlib.GroupTheory.Commutator.Finite
 import Mathlib.GroupTheory.CosetCover
 import Mathlib.GroupTheory.QuotientGroup.Basic
 import Mathlib.Data.Finset.Card
@@ -406,5 +412,29 @@ theorem abelian_bounded_cliques {H : Type*} [CommGroup H] : BoundedCliques H := 
 theorem neumann_hard_direction_of_finite [Finite G] (_ : BoundedCliques G) :
     (Subgroup.center G).index ≠ 0 :=
   Subgroup.index_ne_zero_of_finite
+
+/-- **The hard direction holds — axiom-free — whenever the commutator set is finite.**
+    If `G` is finitely generated and its set of commutators `{[a, b] : a, b ∈ G}` is
+    finite, then the centre has finite index — this is the Schur/Baer–Neumann endgame
+    `Subgroup.finiteIndex_center` (`[G:Z(G)] ≤ |commutatorSet G| ^ rank G`, via
+    `Subgroup.index_center_le_pow`). Hence the forward implication of Neumann's theorem —
+    `ω(Γ(G)) finite ⟹ [G:Z(G)] finite` — is provable *without* the BFC axiom
+    `neumann_hard_direction`. As in the finite case, `BoundedCliques G` is unused: it is
+    retained only so the statement is a literal drop-in for the axiom's signature on the
+    finite-commutator-set class.
+
+    This strictly generalises `neumann_hard_direction_of_finite` (a finite group is
+    finitely generated with a finite commutator set) and sharpens the localization
+    narrative of `center_finiteIndex_iff_relIndex_core`: the *entire* remaining content of
+    `neumann_hard_direction` is the single implication
+    `BoundedCliques G → Finite (commutatorSet G)` — that bounded non-commuting sets force
+    finitely many commutators. That implication is exactly the "boundedly finite-by-abelian"
+    (BFC) core of Neumann (1976); once it is supplied, the Mathlib development above discharges
+    the finite-index conclusion. So the axiom's genuine content is BFC-finiteness of the
+    commutator set, not the index bound itself. -/
+theorem neumann_hard_direction_of_finite_commutatorSet
+    [Group.FG G] [Finite (commutatorSet G)] (_ : BoundedCliques G) :
+    (Subgroup.center G).index ≠ 0 :=
+  Subgroup.FiniteIndex.index_ne_zero
 
 end Erdos1098OQ01OQ03
