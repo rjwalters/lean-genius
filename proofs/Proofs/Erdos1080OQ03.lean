@@ -43,6 +43,7 @@ References:
 import Mathlib.Combinatorics.SimpleGraph.Basic
 import Mathlib.Combinatorics.SimpleGraph.Paths
 import Mathlib.Combinatorics.SimpleGraph.Connectivity.WalkCounting
+import Mathlib.Combinatorics.SimpleGraph.Coloring
 import Mathlib.Data.Set.Basic
 
 open SimpleGraph Set
@@ -261,5 +262,51 @@ theorem bipartite_C4C6_free_girth_ge_eight (hbip : IsBipartite G)
       rw [e]; exact h6
   have := bipartite_girth_ge_of_forbidden hbip hforb hcyc
   omega
+
+/-! ### Bridge to Mathlib's two-colourability
+
+`IsBipartite` (this file's ad-hoc predicate) coincides with Mathlib's
+`SimpleGraph.Colorable 2`.  This lets the even-cycle / girth results above be
+transported to any graph the wider gallery presents as `2`-colourable, and
+conversely lets Mathlib's colouring API act on graphs built here. -/
+
+/-- **`IsBipartite G ↔ G.Colorable 2`.**  A bipartition `(X, Y)` is exactly a
+proper `2`-colouring: colour `X` with `0` and `Y` with `1`; conversely the two
+colour classes of a `2`-colouring form a bipartition (edges are bichromatic, so
+they cross). -/
+theorem isBipartite_iff_colorable_two : IsBipartite G ↔ G.Colorable 2 := by
+  have fin2 : ∀ x : Fin 2, x = 0 ∨ x = 1 := by decide
+  constructor
+  · rintro ⟨X, Y, h⟩
+    classical
+    refine ⟨Coloring.mk (fun v => if v ∈ X then (0 : Fin 2) else 1) ?_⟩
+    intro u v huv
+    have hiff : u ∈ X ↔ v ∈ Y := h.2.2 huv
+    by_cases hu : u ∈ X
+    · have hvnotX : v ∉ X := fun hvx => (mem_left_iff_not_right h v).mp hvx (hiff.mp hu)
+      simp only [if_pos hu, if_neg hvnotX]; decide
+    · have hvX : v ∈ X := (mem_left_iff_not_right h v).mpr (fun hvy => hu (hiff.mpr hvy))
+      simp only [if_neg hu, if_pos hvX]; decide
+  · rintro ⟨c⟩
+    refine ⟨{v | c v = 0}, {v | c v = 1}, ?_, ?_, ?_⟩
+    · rw [Set.disjoint_left]
+      rintro v hv0 hv1
+      simp only [Set.mem_setOf_eq] at hv0 hv1
+      rw [hv0] at hv1; exact absurd hv1 (by decide)
+    · ext v
+      simp only [Set.mem_union, Set.mem_setOf_eq, Set.mem_univ, iff_true]
+      exact fin2 (c v)
+    · intro u v huv
+      have hne : c u ≠ c v := c.valid huv
+      simp only [Set.mem_setOf_eq]
+      constructor
+      · intro hu0
+        rcases fin2 (c v) with h0 | h1
+        · exact absurd (hu0.trans h0.symm) hne
+        · exact h1
+      · intro hv1
+        rcases fin2 (c u) with h0 | h1
+        · exact h0
+        · exact absurd (h1.trans hv1.symm) hne
 
 end Erdos1080OQ03

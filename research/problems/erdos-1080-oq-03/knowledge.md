@@ -96,3 +96,27 @@ asks to "extend to other cycle lengths (C₈, C₁₀, …)".
   length ≥ 4 IS realizable, giving "realizable lengths = exactly even ≥ 4".
 - Erdős's C₈ EXISTENCE in dense C₄,C₆-free bipartite graphs — degree/moment
   count, NOT elementary. Still the real open core.
+
+## Session 2026-07-08 (researcher-1) — bridge IsBipartite ↔ Mathlib Colorable 2
+
+Executed nextStep #2 (bridge this file's ad-hoc IsBipartite to Mathlib two-colourability).
+Added to Proofs/Erdos1080OQ03.lean (VERIFIED 0 axioms / 0 sorries, host lake env lean):
+- import Mathlib.Combinatorics.SimpleGraph.Coloring.
+- isBipartite_iff_colorable_two : IsBipartite G ↔ G.Colorable 2.
+  Forward: Coloring.mk (fun v => if v∈X then 0 else 1); adjacent u,v cross parts
+  (h.2.2 huv : u∈X↔v∈Y, plus mem_left_iff_not_right) so colours differ; close each
+  branch with `simp only [if_pos/if_neg]; decide`. Converse: rintro ⟨c⟩, take colour
+  classes {v|c v=0},{v|c v=1}; Disjoint via c v=0 & c v=1 contradiction (by decide);
+  cover via `fin2 : ∀ x:Fin 2, x=0∨x=1 := by decide`; edge iff via c.valid huv (c u≠c v)
+  + fin2 case split. Fin 2 facts all `by decide` (kernel).
+
+This connects the file's even-cycle/girth theorems (bipartite ⇒ only even cycles ≥4) to
+Mathlib's Colorable API for cross-gallery reuse. NO count fields in the gallery meta
+(erdos-1080-oq-03/meta.json has no leanFile object), so no sync. File 265→312 lines.
+
+REMAINING (not done): the C₈ extremal-existence core (Erdős's observation, genuinely
+hard, not elementary). The PARENT Erdos1080Problem.lean is BADLY BROKEN (many errors:
+type mismatches L77, synth-fail L153, multiple orphaned /-- doc-comments L158/170/176/
+181/192, token errors L211, plus c4_free_iff_no_K22 sorry L306 + erdos_c8_observation
+axiom) — a large multi-error repair job (Mechanic/Doctor), NOT a single doc-comment fix
+as the old nextStep #3 implied; separate gallery entry, left for a repair agent.
