@@ -192,6 +192,14 @@
   ],
   "sections": [
     {
+      "id": "module-header-and-setup",
+      "title": "Module Header, Imports & Setup",
+      "startLine": 1,
+      "endLine": 59,
+      "summary": "The module docstring frames the entry: the parent `hilbert-17` axiomatizes Artin's theorem (`artin_hilbert17`) and machine-checks that the Robinson form is NOT a polynomial sum of squares; this file supplies the missing 0-axiom positive witness that it IS a sum of squares of rational functions, mirroring the Motzkin rational-SOS entry. It states the central Positivstellensatz certificate `(4x²+4y²+4z²)·R = Σ(seven squares)`, notes the multiplier is itself a sum of squares, and records how the certificate was found (semidefinite feasibility, then symmetry reduction via u=x², v=y², w=z² into a rank-2 even block plus three rank-1 odd blocks). `import Mathlib`, the `Hilbert17RobinsonRationalSOS` namespace, `open MvPolynomial`, `noncomputable section`, and the `x`/`y`/`z` notations for `X 0`/`X 1`/`X 2` establish the working context.",
+      "mathContext": "Setting: $\\mathbb{R}[x,y,z] = \\mathrm{MvPolynomial}\\,(\\mathrm{Fin}\\,3)\\,\\mathbb{R}$ with $x,y,z = X_0,X_1,X_2$; goal $R \\in \\Sigma\\,\\mathbb{R}(x,y,z)^2$ via the multiplier identity."
+    },
+    {
       "id": "definitions",
       "title": "Robinson, the multiplier, and the SOS predicates",
       "startLine": 60,

@@ -1,1 +1,74 @@
-[]
+[
+  {
+    "id": "ann-overview",
+    "proofId": "hilbert-17-oq-03-oq-06",
+    "range": { "startLine": 1, "endLine": 53 },
+    "type": "concept",
+    "title": "Hilbert's 17th, Robinson, and a Constructive Witness",
+    "content": "Hilbert's 17th problem asks whether every polynomial that is nonnegative on all of ℝⁿ is a sum of squares of *rational functions*. Artin proved yes (1927), but the general proof uses real-closed-field model theory and is necessarily axiomatized in the parent entry (`artin_hilbert17`). The Robinson form R is the ternary-sextic analogue of the Motzkin polynomial: nonnegative everywhere yet provably NOT a sum of squares of polynomials (that negative fact is machine-checked in the parent `Hilbert17RobinsonNotSOS`). This entry supplies the missing *positive* witness — an explicit, 0-axiom certificate that R nevertheless IS a sum of squares of rational functions — turning Artin's abstract existence statement into a concrete construction for this second canonical extremal example.",
+    "mathContext": "$R = x^6+y^6+z^6-x^4y^2-y^4z^2-z^4x^2-x^2y^4-y^2z^4-z^2x^4+3x^2y^2z^2 \\ge 0$ everywhere (Schur / AM-GM), yet $R \\notin \\Sigma\\mathbb{R}[x,y,z]^2$; Hilbert's 17th asks for $R \\in \\Sigma\\,\\mathbb{R}(x,y,z)^2$.",
+    "significance": "context",
+    "relatedConcepts": ["Hilbert's 17th problem", "Artin's theorem", "Robinson form", "Motzkin polynomial", "positive semidefinite polynomials"],
+    "prerequisites": ["nonnegative polynomials", "sums of squares", "real closed fields"]
+  },
+  {
+    "id": "ann-robinson-multiplier",
+    "proofId": "hilbert-17-oq-03-oq-06",
+    "range": { "startLine": 68, "endLine": 78 },
+    "type": "definition",
+    "title": "The Robinson Form and the SOS Multiplier",
+    "content": "`robinson` is defined over `MvPolynomial (Fin 3) ℝ` exactly as in the parent entry, so the two files agree definitionally. `multiplier = 4x² + 4y² + 4z²` is the auxiliary polynomial by which R is scaled: because R lies on the *boundary* of the SOS cone, no polynomial identity `R = Σ qᵢ²` exists, but a scaled identity `(multiplier)·R = Σ qᵢ²` does. The multiplier is chosen to itself be a sum of squares — `(2x)²+(2y)²+(2z)²` — which is exactly what lets the polynomial certificate be converted into a *rational-function* SOS after dividing through.",
+    "mathContext": "$\\text{multiplier} = 4x^2+4y^2+4z^2 = (2x)^2+(2y)^2+(2z)^2 \\in \\Sigma\\mathbb{R}[x,y,z]^2$.",
+    "significance": "key",
+    "relatedConcepts": ["MvPolynomial", "boundary of the SOS cone", "Positivstellensatz multiplier", "denominator in Artin's theorem"],
+    "prerequisites": ["multivariate polynomials over ℝ", "sum-of-squares cone"]
+  },
+  {
+    "id": "ann-sos-predicates",
+    "proofId": "hilbert-17-oq-03-oq-06",
+    "range": { "startLine": 80, "endLine": 95 },
+    "type": "definition",
+    "title": "Sum-of-Squares Predicates over ℝ[x,y,z] and ℝ(x,y,z)",
+    "content": "Two predicates make the statement precise. `IsSumOfSquaresMv p` says a polynomial p equals a finite sum ∑ qᵢ² of squares of polynomials. `IsSumOfSquaresRF r` says an element of the rational function field is a finite sum of squares of rational functions. The field `RF = FractionRing (MvPolynomial (Fin 3) ℝ)` is Mathlib's construction of ℝ(x,y,z), and `toRF = algebraMap` is the canonical embedding ℝ[x,y,z] ↪ ℝ(x,y,z). Separating the two predicates is what makes the polynomial-vs-rational distinction — the entire content of Hilbert's 17th — explicit in the formalization.",
+    "mathContext": "$\\mathrm{IsSumOfSquaresMv}\\,p \\iff \\exists m,\\,q:\\mathrm{Fin}\\,m\\to\\mathbb{R}[x,y,z],\\ p=\\sum_i q_i^2$; $\\mathbb{R}(x,y,z)=\\mathrm{FractionRing}\\,\\mathbb{R}[x,y,z]$.",
+    "significance": "supporting",
+    "relatedConcepts": ["FractionRing", "fraction field of a polynomial ring", "algebraMap", "sum of squares in a field"],
+    "prerequisites": ["localization / fraction fields", "ring homomorphisms"]
+  },
+  {
+    "id": "ann-generators",
+    "proofId": "hilbert-17-oq-03-oq-06",
+    "range": { "startLine": 99, "endLine": 113 },
+    "type": "definition",
+    "title": "The Certificate Generators from Symmetry Reduction",
+    "content": "The explicit square-roots of the certificate. `Q1` and `Q2` are the two members of the rank-2 'even' block that survives the substitution u=x², v=y², w=z², and `Ga, Gb, Gc = 2·xy(x²−y²)` (and its two cyclic images) are three rank-1 'odd' blocks. The vector `qv = ![Q1, Q2, Q2, Q2, Ga, Gb, Gc]` gives the seven roots of (multiplier)·R — note Q2 appears with multiplicity three, encoding the coefficient 3 in the even block (2q₁−q₂)²+3q₂². The vector `dv = ![2x, 2y, 2z]` gives the three roots of the multiplier. This exact rational Gram factorization was recovered from a numerically-solved semidefinite feasibility problem by exploiting the S₃×(ℤ/2)³ symmetry of R.",
+    "mathContext": "Even block $(2q_1-q_2)^2+3q_2^2$ with $q_1,q_2$ built from $u=x^2,v=y^2,w=z^2$; odd blocks $G_a^2=(2\\,xy(x^2-y^2))^2$ and cyclic. $qv:\\mathrm{Fin}\\,7$, $dv:\\mathrm{Fin}\\,3$.",
+    "significance": "key",
+    "relatedConcepts": ["Gram matrix / SDP feasibility", "symmetry reduction", "rank-1 and rank-2 blocks", "S₃ × (ℤ/2)³ symmetry", "boundary certificate"],
+    "prerequisites": ["semidefinite programming for SOS", "invariant theory of finite groups"]
+  },
+  {
+    "id": "ann-certificate",
+    "proofId": "hilbert-17-oq-03-oq-06",
+    "range": { "startLine": 115, "endLine": 137 },
+    "type": "insight",
+    "title": "The Positivstellensatz Certificate, Closed by ring",
+    "content": "`multiplier_mul_robinson_eq` is the mathematical heart: the single integer-coefficient identity (4x²+4y²+4z²)·R = Q1² + 3·Q2² + Ga² + Gb² + Gc². Because every coefficient is an integer and both sides are concrete polynomials over a fixed finite monomial support, the identity is closed entirely by `ring` after unfolding the definitions — no analysis, no inequalities. `robinson_mul_isSumOfSquares` repackages it as `IsSumOfSquaresMv` (seven squares via `Fin.sum_univ_seven`), and `multiplier_isSumOfSquares` records that the multiplier is `(2x)²+(2y)²+(2z)²`. These are the two SOS facts that feed the rational-function corollary.",
+    "mathContext": "$(4x^2+4y^2+4z^2)\\cdot R = Q_1^2 + Q_2^2 + Q_2^2 + Q_2^2 + G_a^2 + G_b^2 + G_c^2$, an identity in $\\mathbb{Z}[x,y,z]$ verified by `ring`.",
+    "significance": "key",
+    "relatedConcepts": ["SOS Positivstellensatz", "ring tactic", "polynomial identity verification", "IsSumOfSquaresMv"],
+    "prerequisites": ["the ring tactic", "sum-of-squares certificates"]
+  },
+  {
+    "id": "ann-rational-sos",
+    "proofId": "hilbert-17-oq-03-oq-06",
+    "range": { "startLine": 154, "endLine": 188 },
+    "type": "insight",
+    "title": "From Polynomial Certificate to Rational SOS: Artin Constructively",
+    "content": "The corollary converts the scaled polynomial identity into a genuine rational-function SOS. The product-of-two-sums-of-squares identity gives the 21-term `product_identity`: Σ_{i<7,j<3}(qᵢdⱼ)² = (multiplier·R)·multiplier, again closed by `ring`. Dividing both sides by multiplier² inside ℝ(x,y,z) — legitimate because `toRF multiplier ≠ 0`, checked by evaluating at (1,0,0) and using `IsFractionRing.injective` — yields R = Σ (qᵢdⱼ / multiplier)². Reindexing Fin 7 × Fin 3 ≃ Fin 21 via `finProdFinEquiv` presents it as a sum of 21 squares of rational functions, establishing `robinson_isSOS_ratFunc` with 0 axioms. This is Artin's theorem made fully constructive for R, replacing the parent's existence axiom.",
+    "mathContext": "$\\left(\\sum_i q_i^2\\right)\\left(\\sum_j d_j^2\\right)=\\sum_{i,j}(q_id_j)^2$; divide by $m^2$ in $\\mathbb{R}(x,y,z)$: $R=\\sum_{i,j}\\left(\\dfrac{q_id_j}{4x^2+4y^2+4z^2}\\right)^2$, a sum of $21$ rational squares.",
+    "significance": "key",
+    "relatedConcepts": ["product of sums of squares", "Artin's theorem", "IsFractionRing.injective", "finProdFinEquiv", "field_simp"],
+    "prerequisites": ["arithmetic in a fraction field", "reindexing finite sums", "Brahmagupta–Fibonacci / Lagrange identity"]
+  }
+]
