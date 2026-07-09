@@ -131,6 +131,22 @@
       "leanType": "(a b : ℕ) (h : a ≠ b) : 4 * (a * b) < (a + b) ^ 2",
       "startLine": 75,
       "endLine": 82
+    },
+    {
+      "name": "turanBound_two_mul",
+      "type": "supporting",
+      "description": "**Even closed form.** T(2m) = m². The parity closed form of the Turán bound reused to prove equality at the balanced split for even n.",
+      "leanType": "(m : ℕ) : turanBound (2 * m) = m ^ 2",
+      "startLine": 53,
+      "endLine": 55
+    },
+    {
+      "name": "turanBound_two_mul_add_one",
+      "type": "supporting",
+      "description": "**Odd closed form.** T(2m+1) = m(m+1). The parity closed form reused to prove equality at the balanced split for odd n.",
+      "leanType": "(m : ℕ) : turanBound (2 * m + 1) = m * (m + 1)",
+      "startLine": 58,
+      "endLine": 61
     }
   ],
   "conclusion": {
