@@ -56,7 +56,9 @@
       "Boundedness alone (the parent's result) does not give a limit; monotonicity of the same defect sequence is the extra ingredient that upgrades the integral-test bound to convergence",
       "The shift from log(n+1) to log n changes the individual terms but not the limit, since the bracket width log(n+1) − log n = log(1 + 1/n) → 0 — and this is exactly why Hₙ − log n and Hₙ − log(n+1) define the same constant γ",
       "γ is squeezed between an increasing sequence (Hₙ − log(n+1)) and a decreasing sequence (Hₙ − log n); the two parent-style sequences are a nested-interval scheme that determines γ to any precision",
-      "The integral test thus does more than decide convergence of ∑ 1/n — it manufactures the precise growth correction Hₙ = log n + γ + o(1)"
+      "The integral test thus does more than decide convergence of ∑ 1/n — it manufactures the precise growth correction Hₙ = log n + γ + o(1)",
+      "The nested brackets compute γ to any prescribed accuracy (gamma_enclosure_six is one rung of an effective enclosure), yet whether γ is even irrational remains unknown — a striking case where a constant is fully computable while its most basic arithmetic nature has resisted proof since Euler",
+      "Nothing in the argument is special to f(x) = 1/x: any antitone f with divergent integral ∫₁^∞ f produces its own convergent defect ∑_{k≤n} f(k) − ∫₁ⁿ f, a 'generalized Euler constant' — γ is simply the instance f(x) = 1/x, and the child entry packages the general statement"
     ],
     "prerequisites": [
       "Harmonic numbers and the integral-test defect from the parent entry",
@@ -163,6 +165,16 @@
       "targetId": "harmonic-divergence",
       "relationship": "related — quantitative refinement",
       "description": "The harmonic series diverges (Hₙ → ∞); this entry pins down the rate: Hₙ = log n + γ + o(1) with γ the Euler–Mascheroni constant. The bare divergence is the leading log n term, and the convergent defect Hₙ − log n → γ is the exact second-order correction — so this entry is the quantitative refinement of the divergence result."
+    },
+    {
+      "targetId": "antitone-integral-sum-comparison-oq-01-oq-02-oq-02",
+      "relationship": "extended by",
+      "description": "Child entry answering this file's open question #2: it packages the analogous defect for an arbitrary antitone summand f with divergent integral, proving ∑_{k≤n} f(k) − ∫₁ⁿ f converges to a 'generalized Euler constant'. This entry is the concrete instance f(x) = 1/x whose limit is γ."
+    },
+    {
+      "targetId": "p-series-convergence-oq-01",
+      "relationship": "related — same method",
+      "description": "The p-series test ∑ 1/nᵖ converges iff p > 1 is proved by the same antitone integral comparison against ∫ 1/xᵖ; its boundary case p = 1 is exactly the divergent harmonic series whose defect this entry resolves. The methods are two sides of the same integral-test coin — p > 1 gives convergence, p = 1 gives the γ correction."
     }
   ],
   "mainTheorems": [
