@@ -491,7 +491,7 @@ theorem not_robust_of_triangle {a b c : V}
     `⊤`). -/
 theorem triangle_not_robust :
     ¬ admitsRobustAcyclicOrientation (⊤ : SimpleGraph (Fin 3)) :=
-  not_robust_of_triangle
+  not_robust_of_triangle (a := 0) (b := 1) (c := 2)
     (SimpleGraph.top_adj.mpr (by decide))
     (SimpleGraph.top_adj.mpr (by decide))
     (SimpleGraph.top_adj.mpr (by decide))
