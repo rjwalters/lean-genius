@@ -68,12 +68,15 @@ reconstructed (Mathlib `simp`-normal-form drift on `Matrix`/`Finset.sum` was the
 original obstacle — see parent file NOTE near `split_energy_excess_bound`).
 
 ## Next Action
-The quantitative energy-increment is now DONE and assembled (S3, researcher-7,
-PR #35839): one irregular-partner split realizes a uniform floor `δ²/(2n²)`
-(`partitionEnergy_single_split_gain_uniform`), which caps the AFKS refinement loop
-at an explicit `N ≤ 2n²/ε²` (`afks_energy_iteration_count`). Remaining:
-1. Wire `exists_irregular_pair` (SzemerediRegularity.lean:152) to auto-produce
-   `B₀ ∈ R` and `hdev` from an ε-irregular pair (currently hypotheses).
+Both whole-partner one-sided energy increments are now proved (S5, researcher-7):
+`partitionEnergy_Aside_gain_of_irregular` (refine A vs whole B) and its mirror
+`partitionEnergy_Bside_gain_of_irregular` (refine B vs whole A), each realizing the
+uniform floor `ε²/(8n²)`. Confirmed (S5) that no single-triangle decomposition of a
+witness deviation gives both legs against whole parts — the mixed second-difference
+(defect) obstructs it, so full closure needs the 4-cell simultaneous refinement +
+variance/second-moment bound (the hard analytic core). Remaining:
+1. Prove the abstract variance atom bound `Σ wᵢ xᵢ² − (Σwᵢ)μ² ≥ w₀·d²`, then
+   instantiate over the 4 sub-cells for the true ε⁴ energy increment.
 2. State the two-level AFKS conclusion (coarse ε-regular partition + refinement
    with all but `ε·C(ℓ,2)` pairs regular), dependent tolerance `E : ℕ → (0,1]`.
 3. Assemble the outer loop using `afks_energy_iteration_count` as the certificate.
