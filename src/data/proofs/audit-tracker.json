@@ -9218,9 +9218,10 @@
     },
     "erdos-1036": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-05-03T22:09:22Z",
-      "result": "issues-fixed"
+      "auditCount": 4,
+      "lastAudited": "2026-07-09T06:05:27Z",
+      "result": "clean",
+      "issues": []
     },
     "erdos-1036-oq-01": {
       "auditCount": 1,
@@ -10576,9 +10577,11 @@
     },
     "erdos-1167": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-05-03T22:46:05Z",
-      "result": "clean"
+      "auditCount": 4,
+      "lastAudited": "2026-07-09T06:05:27Z",
+      "result": "clean",
+      "issues": [],
+      "note": "2026-07-09 audit CLEAN: 2 axioms (erdos_1167_conjecture OPEN, erdos_rado_theorem); the apparent 3rd axiom is comment prose (\"axiom count from 3 to 2\"); infinite_ramsey now genuinely proved."
     },
     "erdos-1168": {
       "auditCount": 3,
@@ -11350,10 +11353,11 @@
       "result": "clean"
     },
     "erdos-171": {
-      "auditCount": 3,
+      "auditCount": 4,
       "issues": [],
-      "lastAudited": "2026-05-03T21:14:45Z",
-      "result": "clean"
+      "lastAudited": "2026-07-09T06:05:27Z",
+      "result": "issues-fixed",
+      "note": "2026-07-09 audit: FIXED originalContributions+proofStrategy that mislabeled proved theorems moser_spindle and isbell_upper_bound as \"Axiom\" (real axioms are isbell_coloring + de_grey_graph). Bumped meta.axiomCount 2->3 to disclose Lean.ofReduceBool (native_decide in moser_not_3_colorable discharges substantive chi>=4 lower bound); leanFile.axiomCount stays 2 (literal)."
     },
     "erdos-172": {
       "auditCount": 4,
@@ -11977,9 +11981,11 @@
     },
     "erdos-246": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-05-03T21:14:46Z",
-      "result": "clean"
+      "auditCount": 4,
+      "lastAudited": "2026-07-09T06:05:27Z",
+      "result": "issues-fixed",
+      "issues": [],
+      "note": "2026-07-09 audit: FIXED originalContributions bullet that called axiom greedyRepresentation a \"definition\" (it is an axiom; docstring says implementation axiomatized). 4 axioms correctly counted+disclosed in assumptions."
     },
     "erdos-247": {
       "agentId": "auditor-cycle-20-batch",
@@ -12002,9 +12008,11 @@
     },
     "erdos-248": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-05-03T21:14:46Z",
-      "result": "clean"
+      "auditCount": 4,
+      "lastAudited": "2026-07-09T06:05:27Z",
+      "result": "clean",
+      "issues": [],
+      "note": "2026-07-09 audit CLEAN: 9 native_decide all on trivial small-number facts (omega(6)=2, omega(1+k)<=2k); substantive erdos_248 is an axiom, so no ofReduceBool disclosure required."
     },
     "erdos-249": {
       "auditCount": 4,
@@ -29703,5 +29711,5 @@
     }
   },
   "version": 1,
-  "lastUpdated": "2026-07-09T05:46:53Z"
+  "lastUpdated": "2026-07-09T06:05:27Z"
 }
