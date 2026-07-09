@@ -152,6 +152,16 @@
       "targetId": "minkowski-theorem-oq-02",
       "relationship": "related",
       "description": "Sibling Minkowski OQ (Dirichlet approximation); a consumer of covolume-parametric Minkowski for lattices other than ℤⁿ."
+    },
+    {
+      "targetId": "minkowski-theorem-oq-04-oq-03",
+      "relationship": "related",
+      "description": "The sharpness complement: this entry proves the Blichfeldt covolume threshold is SUFFICIENT (vol S > k·covol(Λ) ⇒ k+1 congruent points), while oq-04-oq-03 shows it is TIGHT — for every k there is a set of volume exactly k·covol with no k+1 congruent points, so the strict inequality cannot be weakened to ≥."
+    },
+    {
+      "targetId": "minkowski-theorem-oq-02-oq-01",
+      "relationship": "related",
+      "description": "A flagship application of the convex-body form proved here: Dirichlet's simultaneous approximation theorem falls out of Minkowski's theorem applied to a symmetric box against ℤⁿ, an axiom-free instance of the covolume-threshold machinery."
     }
   ],
   "leanFile": {
