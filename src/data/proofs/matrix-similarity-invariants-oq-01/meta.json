@@ -3,6 +3,62 @@
   "title": "Similarity Invariants of Square Matrices: Determinant, Trace, Characteristic Polynomial",
   "slug": "matrix-similarity-invariants-oq-01",
   "description": "Two square matrices A, B over a commutative ring are similar if B = P·A·P⁻¹ for some invertible P. This entry packages similarity as a named relation, proves it is an equivalence relation, and collects the three classical similarity invariants — determinant, trace, and characteristic polynomial — into one statement, with the corollary that similar matrices share their eigenvalues (the multiset of characteristic-polynomial roots, over an integral domain). Mathlib proves each invariance separately (det_units_conj, trace_units_conj, charpoly_units_conj) but states neither the similarity relation nor a unified invariants theorem.",
+  "mainTheorems": [
+    {
+      "name": "Similar.invariants",
+      "type": "main",
+      "description": "The three classical invariants packaged together: similar matrices share their determinant, trace, and characteristic polynomial.",
+      "leanType": "(h : Similar A B) : B.det = A.det ∧ B.trace = A.trace ∧ B.charpoly = A.charpoly"
+    },
+    {
+      "name": "Similar.charpoly_eq",
+      "type": "main",
+      "description": "The master invariant: similar matrices have equal characteristic polynomials (via Matrix.charpoly_units_conj), which subsumes determinant and trace.",
+      "leanType": "(h : Similar A B) : B.charpoly = A.charpoly"
+    },
+    {
+      "name": "Similar.charpoly_roots_eq",
+      "type": "main",
+      "description": "Eigenvalue invariance: over an integral domain, similar matrices have the same multiset of characteristic-polynomial roots. congrArg Polynomial.roots applied to charpoly_eq.",
+      "leanType": "[IsDomain R] (h : Similar A B) : B.charpoly.roots = A.charpoly.roots"
+    },
+    {
+      "name": "similar_equivalence",
+      "type": "main",
+      "description": "Similarity is an equivalence relation on square matrices, bundling refl/symm/trans.",
+      "leanType": "Equivalence (Similar (n := n) (R := R))"
+    },
+    {
+      "name": "Similar.det_eq",
+      "type": "supporting",
+      "description": "Determinant is a similarity invariant (via Matrix.det_units_conj).",
+      "leanType": "(h : Similar A B) : B.det = A.det"
+    },
+    {
+      "name": "Similar.trace_eq",
+      "type": "supporting",
+      "description": "Trace is a similarity invariant (via Matrix.trace_units_conj).",
+      "leanType": "(h : Similar A B) : B.trace = A.trace"
+    },
+    {
+      "name": "Similar.refl",
+      "type": "supporting",
+      "description": "Reflexivity of similarity, witnessed by P = 1.",
+      "leanType": "(A : Matrix n n R) : Similar A A"
+    },
+    {
+      "name": "Similar.symm",
+      "type": "supporting",
+      "description": "Symmetry of similarity, witnessed by P⁻¹.",
+      "leanType": "(h : Similar A B) : Similar B A"
+    },
+    {
+      "name": "Similar.trans",
+      "type": "supporting",
+      "description": "Transitivity of similarity, composing conjugators as Q·P.",
+      "leanType": "(hab : Similar A B) (hbc : Similar B C) : Similar A C"
+    }
+  ],
   "meta": {
     "author": "classical linear algebra; formalized for lean-genius",
     "status": "verified",

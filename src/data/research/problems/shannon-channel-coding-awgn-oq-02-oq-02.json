@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: affine-invariance structural companion ρ[aX+b,cY+d]=sign(ac)·ρ[X,Y] VERIFIED 0/0 (+ orientation-preserving corollary); dual to signed ±1 boundary capstone",
+    "progressSummary": "PROGRESS: proved the sharp equality boundary of the standard-deviation triangle inequality (σ[X+Y]=σ[X]+σ[Y] ⟺ cov=√Var·√Var ⟺ ρ=+1 ⟺ increasing-affine), 3 theorems VERIFIED 0 sorry/0 axiom; dual endpoint to variance_add_eq_iff_covariance_zero.",
     "builtItems": [
       "variance_sum_of_pairwise_uncorrelated (ShannonChannelCodingAWGNOQ02OQ02.lean:131): Var[∑ i∈s, Wi] = ∑ Var[Wi] from Set.Pairwise cov=0 + MemLp; [IsFiniteMeasure].",
       "variance_sum_of_pairwise_indep (:150): independence ⟹ uncorrelated ⟹ identity, via IndepFun.covariance_eq_zero — shows the sharp version subsumes IndepFun.variance_sum.",
@@ -54,7 +54,10 @@
       "correlation_eq_one_iff_affine_pos + correlation_eq_neg_one_iff_affine_neg (signed capstones) in ShannonChannelCodingAWGNOQ02OQ02.lean",
       "correlation_affine_invariant (ShannonChannelCodingAWGNOQ02OQ02.lean:879): ρ[a·X+b,c·Y+d]=sign(a·c)·ρ[X,Y] VERIFIED 0/0 — affine invariance, unconditional (degenerate cases via div-by-zero convention)",
       "correlation_affine_invariant_of_pos (line 903): a,c>0 ⟹ ρ preserved exactly ρ[a·X+b,c·Y+d]=ρ[X,Y]",
-      "real_sign_eq_self_div_abs helper (line 861): Real.sign x = x/|x| ∀x incl 0"
+      "real_sign_eq_self_div_abs helper (line 861): Real.sign x = x/|x| ∀x incl 0",
+      "stddev_add_eq_iff_covariance_eq_sqrt (ShannonChannelCodingAWGNOQ02OQ02.lean): σ[X+Y]=σ[X]+σ[Y] ↔ cov[X,Y]=√Var[X]·√Var[Y], no non-degeneracy hyp; proof squares both sides (Real.sq_sqrt / Real.sqrt_sq) and closes with nlinarith on variance_add.",
+      "stddev_add_eq_iff_correlation_eq_one (same file): non-degenerate normalisation, σ[X+Y]=σ[X]+σ[Y] ↔ ρ[X,Y]=1 via div_eq_one_iff_eq.",
+      "stddev_add_eq_iff_affine_pos (same file): capstone σ[X+Y]=σ[X]+σ[Y] ↔ ∃a b, 0<a ∧ X=ᵐ a·Y+b (perfect positive correlation / increasing affine), chaining correlation_eq_one_iff_affine_pos."
     ],
     "insights": [
       "Bienaymé variance-of-a-sum needs only PAIRWISE UNCORRELATEDNESS (cov[Wi,Wj]=0 for i≠j), not pairwise independence: the off-diagonal covariances of Var[∑Wi]=∑i∑j cov[Wi,Wj] (Mathlib variance_sum´) are exactly what must vanish. Independence is strictly stronger (there exist uncorrelated dependent variables).",
@@ -68,7 +71,9 @@
       "The equality-boundary iff closes cleanly: forward (tightness⟹regression line) needs Var[Y]≠0, but converse (affine⟹tightness) is unconditional — a pure bilinear/variance-of-affine computation transported along =ᵐ via covariance_congr_left + variance_congr.",
       "Correlation-coefficient normalisation ρ=cov/(σX·σY) packages the whole second-order theory: |ρ|≤1 IS covariance Cauchy–Schwarz (no non-degeneracy needed — division-by-zero convention absorbs degenerate case), and |ρ|=1 ⟺ a.e. affine dependence IS the sharp equality boundary. Both non-degeneracy hypotheses genuinely needed for the |ρ|=1 iff since a degenerate variable gives ρ=0≠±1 while X=ᵐ0·Y+μ[X] still holds.",
       "Signed sharp boundary: ρ = sign(a) when X =ᵐ a·Y+b, so ρ=+1 ⟺ increasing affine (a>0), ρ=−1 ⟺ decreasing affine (a<0); splits |ρ|=1⟺affine into two distinct endpoints.",
-      "Affine-invariance proof reuses the exact machinery of the ±1 capstones: cov[aX+b,cY+d]=ac·cov via covariance_add_const_left/right + covariance_const_mul_left/right; σ[aX+b]=|a|·σ[X] via variance_eq_of_affine+sqrt_mul+sqrt_sq_eq_abs; sign packaged as x/|x| so a·c/(|a|·|c|)=sign(a·c) closes by ring (field inverse rearrangement, no nonzero hyps needed)."
+      "Affine-invariance proof reuses the exact machinery of the ±1 capstones: cov[aX+b,cY+d]=ac·cov via covariance_add_const_left/right + covariance_const_mul_left/right; σ[aX+b]=|a|·σ[X] via variance_eq_of_affine+sqrt_mul+sqrt_sq_eq_abs; sign packaged as x/|x| so a·c/(|a|·|c|)=sign(a·c) closes by ring (field inverse rearrangement, no nonzero hyps needed).",
+      "Sharp equality boundary of the stddev triangle inequality stddev_add_le: squaring the nonnegative identity σ[X+Y]=σ[X]+σ[Y] reduces it to the covariance attaining its Cauchy-Schwarz maximum cov[X,Y]=√Var[X]·√Var[Y]; NO non-degeneracy hypothesis needed (degenerate Y gives 0=σ[X]·0).",
+      "The triangle-equality boundary sits at the OPPOSITE Cauchy-Schwarz endpoint from variance_add_eq_iff_covariance_zero: variances add iff cov=0 (orthogonal), but standard deviations add iff cov=σ[X]σ[Y] (perfectly positively correlated, ρ=+1)."
     ],
     "mathlibGaps": [
       "Mathlib has no pairwise-uncorrelated variance-sum lemma (only variance_sum´ double-sum form and IndepFun.variance_sum). Candidate upstream contribution: variance_sum under Set.Pairwise (cov=0).",
@@ -85,7 +90,9 @@
       "Correlation-coefficient triangle/monotonicity: state ρ under sign of covariance, or the two-variance stddev triangle equality condition (perfect positive correlation ρ=+1) as the dual of the off-diagonal-cancellation boundary.",
       "Consider affine-invariance of ρ: corr(aX+b, cY+d)=sign(ac)·corr(X,Y) as a structural companion.",
       "Affine-invariance of covariance itself (cov[aX+b,cY+d]=ac·cov[X,Y]) is now proved inline — consider extracting as a named reusable lemma if a further correlation result needs it.",
-      "Consider corr sign-flip corollary for a>0,c<0 (orientation-reversing): ρ[aX+b,cY+d]=−ρ[X,Y] as the negative companion of correlation_affine_invariant_of_pos."
+      "Consider corr sign-flip corollary for a>0,c<0 (orientation-reversing): ρ[aX+b,cY+d]=−ρ[X,Y] as the negative companion of correlation_affine_invariant_of_pos.",
+      "Dual equality for the finite-sum triangle inequality stddev_sum_le: σ[∑Wᵢ]=∑σ[Wᵢ] iff all pairs are perfectly positively correlated (all centered contributions a.e. nonneg-proportional to a common direction) — needs an induction handling the shared-direction propagation.",
+      "Consider the strict-inequality companion: σ[X+Y] < σ[X]+σ[Y] whenever ρ<1 (non-degenerate), the strict form of stddev_add_le."
     ],
     "markdown": "# Knowledge Base: shannon-channel-coding-awgn-oq-02-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
