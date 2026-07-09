@@ -984,4 +984,99 @@ theorem stddev_add_eq_iff_affine_pos [IsProbabilityMeasure μ] {X Y : Ω → ℝ
   rw [stddev_add_eq_iff_correlation_eq_one hX hY hXnd hYnd,
     correlation_eq_one_iff_affine_pos hX hY hXnd hYnd]
 
+/-!
+### Multivariate sharp equality boundary of the standard-deviation triangle inequality
+
+The two-term equality boundary `stddev_add_eq_iff_covariance_eq_sqrt` pins down when
+`σ[X+Y] = σ[X] + σ[Y]`.  The results below lift it to the *finite-family* triangle inequality
+`stddev_sum_le` (`σ[∑Wᵢ] ≤ ∑σ[Wᵢ]`), identifying the exact condition under which the aggregate
+standard deviation attains its ceiling.
+
+The mechanism is uniform saturation of Cauchy–Schwarz.  Squaring the nonnegative identity
+`σ[∑Wᵢ] = ∑σ[Wᵢ]` gives `Var[∑Wᵢ] = (∑σ[Wᵢ])²`; expanding the left side by the double-sum
+`variance_sum'` and the right side by `Finset.sum_mul_sum` turns it into
+
+    ∑ᵢ∑ⱼ cov[Wᵢ, Wⱼ]  =  ∑ᵢ∑ⱼ σ[Wᵢ]·σ[Wⱼ].
+
+Every summand obeys the Cauchy–Schwarz bound `cov[Wᵢ, Wⱼ] ≤ σ[Wᵢ]·σ[Wⱼ]`
+(`abs_covariance_le_sqrt`), so the two double sums are equal *iff every term is* — a sum of
+nonnegative gaps vanishes iff each gap does (`Finset.sum_eq_sum_iff_of_le`).  Hence the aggregate
+standard deviations add precisely when *all pairs* saturate Cauchy–Schwarz, i.e. are perfectly
+positively correlated.  This is the multivariate dual, at the opposite Cauchy–Schwarz endpoint, of
+the vanishing-off-diagonal boundary `variance_sum_eq_iff_offDiag_covariance_zero`.
+-/
+
+/-- **Multivariate equality boundary of the standard-deviation triangle inequality (covariance
+form).**  For any finite family of square-integrable contributions the L² triangle inequality
+`σ[∑ᵢ Wᵢ] ≤ ∑ᵢ σ[Wᵢ]` of `stddev_sum_le` is an *equality*
+
+        √Var[∑ᵢ Wᵢ] = ∑ᵢ √Var[Wᵢ]
+
+*if and only if* every ordered pair saturates the covariance Cauchy–Schwarz bound,
+`cov[Wᵢ, Wⱼ] = √Var[Wᵢ]·√Var[Wⱼ]` for all `i, j ∈ s`.  No non-degeneracy hypothesis is needed
+(the diagonal condition `i = j` reads `Var[Wᵢ] = Var[Wᵢ]` and the Cauchy–Schwarz gap is tight
+there).  This is the finite-family lift of `stddev_add_eq_iff_covariance_eq_sqrt`, and the sharp
+dual — at the perfectly-correlated endpoint of the Cauchy–Schwarz interval — of the
+vanishing-off-diagonal boundary `variance_sum_eq_iff_offDiag_covariance_zero`. -/
+theorem stddev_sum_eq_iff_pairwise_covariance_eq_sqrt [IsFiniteMeasure μ] {ι : Type*}
+    {W : ι → Ω → ℝ} {s : Finset ι} (hW : ∀ i ∈ s, MemLp (W i) 2 μ) :
+    Real.sqrt (Var[∑ i ∈ s, W i; μ]) = ∑ i ∈ s, Real.sqrt (Var[W i; μ]) ↔
+      ∀ i ∈ s, ∀ j ∈ s,
+        cov[W i, W j; μ] = Real.sqrt (Var[W i; μ]) * Real.sqrt (Var[W j; μ]) := by
+  classical
+  have hsum_nonneg : 0 ≤ ∑ i ∈ s, Real.sqrt (Var[W i; μ]) :=
+    Finset.sum_nonneg fun i _ => Real.sqrt_nonneg _
+  -- Termwise Cauchy–Schwarz: every covariance is dominated by the product of standard deviations.
+  have hle_inner : ∀ i ∈ s, ∀ j ∈ s,
+      cov[W i, W j; μ] ≤ Real.sqrt (Var[W i; μ]) * Real.sqrt (Var[W j; μ]) := by
+    intro i hi j hj
+    calc cov[W i, W j; μ] ≤ |cov[W i, W j; μ]| := le_abs_self _
+      _ ≤ Real.sqrt (Var[W i; μ] * Var[W j; μ]) := abs_covariance_le_sqrt (hW i hi) (hW j hj)
+      _ = Real.sqrt (Var[W i; μ]) * Real.sqrt (Var[W j; μ]) :=
+          Real.sqrt_mul (variance_nonneg _ _) _
+  have hle_outer : ∀ i ∈ s, (∑ j ∈ s, cov[W i, W j; μ])
+      ≤ ∑ j ∈ s, Real.sqrt (Var[W i; μ]) * Real.sqrt (Var[W j; μ]) :=
+    fun i hi => Finset.sum_le_sum (fun j hj => hle_inner i hi j hj)
+  -- Reduce the (nonnegative) √-equality to the squared equality of the two double sums.
+  rw [show (Real.sqrt (Var[∑ i ∈ s, W i; μ]) = ∑ i ∈ s, Real.sqrt (Var[W i; μ]))
+        ↔ (Var[∑ i ∈ s, W i; μ] = (∑ i ∈ s, Real.sqrt (Var[W i; μ])) ^ 2) from
+      ⟨fun h => by rw [← h, Real.sq_sqrt (variance_nonneg _ _)],
+       fun h => by rw [h, Real.sqrt_sq hsum_nonneg]⟩,
+    variance_sum' hW, pow_two, Finset.sum_mul_sum,
+    Finset.sum_eq_sum_iff_of_le hle_outer]
+  -- Sum-of-nonnegative-gaps: the outer equality reduces to per-pair saturation.
+  constructor
+  · intro h i hi j hj
+    exact (Finset.sum_eq_sum_iff_of_le (fun j hj => hle_inner i hi j hj)).mp (h i hi) j hj
+  · intro h i hi
+    exact (Finset.sum_eq_sum_iff_of_le (fun j hj => hle_inner i hi j hj)).mpr
+      (fun j hj => h i hi j hj)
+
+/-- **Multivariate equality boundary of the standard-deviation triangle inequality (correlation
+form).**  For a finite family of *non-degenerate* square-integrable contributions
+(`Var[Wᵢ] ≠ 0` for all `i ∈ s`), the aggregate standard deviations add,
+
+        √Var[∑ᵢ Wᵢ] = ∑ᵢ √Var[Wᵢ],
+
+*if and only if* every pair is perfectly positively correlated, `ρ[Wᵢ, Wⱼ] = 1` for all
+`i, j ∈ s`.  This normalises `stddev_sum_eq_iff_pairwise_covariance_eq_sqrt` through the definition
+of the Pearson coefficient (each pair's covariance saturates Cauchy–Schwarz exactly when its
+correlation hits `+1`); the multivariate capstone of `stddev_add_eq_iff_correlation_eq_one`. -/
+theorem stddev_sum_eq_iff_pairwise_correlation_eq_one [IsFiniteMeasure μ] {ι : Type*}
+    {W : ι → Ω → ℝ} {s : Finset ι} (hW : ∀ i ∈ s, MemLp (W i) 2 μ)
+    (hnd : ∀ i ∈ s, Var[W i; μ] ≠ 0) :
+    Real.sqrt (Var[∑ i ∈ s, W i; μ]) = ∑ i ∈ s, Real.sqrt (Var[W i; μ]) ↔
+      ∀ i ∈ s, ∀ j ∈ s, correlation (W i) (W j) μ = 1 := by
+  rw [stddev_sum_eq_iff_pairwise_covariance_eq_sqrt hW]
+  have hden : ∀ i ∈ s, ∀ j ∈ s,
+      Real.sqrt (Var[W i; μ]) * Real.sqrt (Var[W j; μ]) ≠ 0 := fun i hi j hj =>
+    mul_ne_zero
+      (Real.sqrt_ne_zero'.mpr ((variance_nonneg _ _).lt_of_ne (hnd i hi).symm))
+      (Real.sqrt_ne_zero'.mpr ((variance_nonneg _ _).lt_of_ne (hnd j hj).symm))
+  refine ⟨fun h i hi j hj => ?_, fun h i hi j hj => ?_⟩
+  · rw [correlation, h i hi j hj, div_self (hden i hi j hj)]
+  · have hcorr := h i hi j hj
+    rw [correlation] at hcorr
+    exact (div_eq_one_iff_eq (hden i hi j hj)).mp hcorr
+
 end ShannonAWGNMultiSymbolPower
