@@ -181,4 +181,45 @@ theorem compress_eq_restrict_of_invariant {T : V →ₗ[𝕜] V} (H : Submodule 
   -- `ext` already reduces to the coerced (ambient-`V`) equality of the images.
   exact (coe_compress_of_invariant H hinv y).trans (LinearMap.restrict_coe_apply T hinv y).symm
 
+/-- **Spectrum inclusion on an invariant subspace (attainment case).**
+
+If `H` is `T`-invariant, every eigenvalue of the orthogonal compression
+`compress T H` is an eigenvalue of the ambient operator `T`.  Concretely, the
+`k`-th descending eigenvalue `μ_k := (isSymmetric_compress hT H).eigenvalues hHdim k`
+of the compression satisfies `Module.End.HasEigenvalue T μ_k`, realised by the
+included eigenvector `↑(bH k) ∈ V` (the compression's eigenvector viewed in the
+ambient space).
+
+This is the pointwise form of the sub-multiset relationship in the attainment
+(invariant-subspace) case: on an invariant `H` the compression coincides with
+the honest restriction `T.restrict` (`compress_eq_restrict_of_invariant`), so it
+loses no spectral information and its spectrum `{μ_k}` is contained in the
+spectrum of `T`.  The Poincaré interlacing bound `μ_k ≤ λ_k` therefore
+degenerates onto the ambient spectrum on such a block. -/
+theorem hasEigenvalue_compress_eigenvalue_of_invariant
+    {T : V →ₗ[𝕜] V} (hT : T.IsSymmetric) {n : ℕ}
+    (H : Submodule 𝕜 V) (hHdim : Module.finrank 𝕜 H = n)
+    (hinv : ∀ y ∈ H, T y ∈ H) (k : Fin n) :
+    Module.End.HasEigenvalue T
+      (((isSymmetric_compress hT H).eigenvalues hHdim k : 𝕜)) := by
+  set hTH := isSymmetric_compress hT H with hTH_def
+  set bH := hTH.eigenvectorBasis hHdim with hbH_def
+  set mu := hTH.eigenvalues hHdim with hmu_def
+  -- The compression acts diagonally on its own eigenvector basis.
+  have hcomp : compress T H (bH k) = (mu k : 𝕜) • bH k :=
+    hTH.apply_eigenvectorBasis hHdim k
+  -- Transport to `V` via invariance: `↑(compress T H y) = T ↑y`.
+  have hcoe : T ((bH k : V)) = (mu k : 𝕜) • ((bH k : V)) := by
+    have e1 := coe_compress_of_invariant H hinv (bH k)
+    rw [hcomp] at e1
+    simpa using e1.symm
+  -- The included eigenvector is nonzero (a unit vector of an orthonormal basis).
+  have hne : (bH k : V) ≠ 0 := by
+    rw [Ne, Submodule.coe_eq_zero]
+    exact bH.orthonormal.ne_zero k
+  -- Assemble the eigenvector, then the eigenvalue.
+  have hev : Module.End.HasEigenvector T ((mu k : 𝕜)) ((bH k : V)) :=
+    ⟨Module.End.mem_eigenspace_iff.mpr hcoe, hne⟩
+  exact Module.End.hasEigenvalue_of_hasEigenvector hev
+
 end CauchyInterlacing.PoincareCompression
