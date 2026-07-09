@@ -38,7 +38,8 @@
       "The sawtooth identity is not independent of Hermite's floor identity — it is its mirror image. Writing {y} = y − ⌊y⌋, summing termwise turns ∑{x + k/n} into (exact sum) − (floor sum), where the floor sum is precisely Hermite's identity and the exact sum is elementary.",
       "The only genuinely new arithmetic is the average of the offsets: ∑_{k<n} k/n = (n−1)/2, the discrete average 1/2 of the sawtooth over its n−1 nonzero samples. This is why the additive constant is (n−1)/2.",
       "Casting `Finset.sum_range_id` (which yields the ℕ-quotient n(n−1)/2) into ℝ obstructs `ring` because natural-number division is not a ring operation; proving the Gauss sum directly over ℝ by induction removes the obstruction entirely.",
-      "Re-centring by 1/2 reveals a **multiplication (distribution) relation**. For the sawtooth s(x) = {x} − 1/2, the identity ∑_{k<n}{x+k/n} = {nx} + (n−1)/2 rearranges to ∑_{k<n} s(x + k/n) = s(nx): summing the sawtooth over the n translates x + k/n reproduces the sawtooth at nx. This is exactly the Kubert distribution relation that the Bernoulli polynomials B₁ and the Hurwitz zeta function also satisfy, the same structural identity underlying Dedekind sums — so this elementary floor computation is a first instance of a deep family of multiplication formulas."
+      "Re-centring by 1/2 reveals a **multiplication (distribution) relation**. For the sawtooth s(x) = {x} − 1/2, the identity ∑_{k<n}{x+k/n} = {nx} + (n−1)/2 rearranges to ∑_{k<n} s(x + k/n) = s(nx): summing the sawtooth over the n translates x + k/n reproduces the sawtooth at nx. This is exactly the Kubert distribution relation that the Bernoulli polynomials B₁ and the Hurwitz zeta function also satisfy, the same structural identity underlying Dedekind sums — so this elementary floor computation is a first instance of a deep family of multiplication formulas.",
+      "Both sides are discontinuous, yet their difference is constant — by exact jump cancellation. As x increases through one unit, {n·x} drops by 1 at n points (the n-fold sawtooth has n jumps per unit), while ∑_{k<n}{x+k/n} also drops by 1 at exactly those same n points: each summand {x+k/n} jumps once, where x+k/n crosses an integer, and those n jump locations x = m/n are precisely where n·x ∈ ℤ. The jump sets coincide, so ∑{x+k/n} − {n·x} is a piecewise-constant, slope-0 continuous function — hence a constant, pinned to (n−1)/2 by any single value. This is the analytic shadow of the algebraic value = exact − floor derivation: Hermite's floor identity is exactly the statement that the two families of floor-jumps match."
     ],
     "prerequisites": [
       "The fractional-part function {·} = Int.fract and the identity {y} = y − ⌊y⌋",
@@ -50,26 +51,42 @@
   "sections": [
     {
       "id": "preamble",
-      "title": "§0: Module Setup and Statement",
+      "title": "Statement and value = exact − floor Strategy",
       "startLine": 1,
-      "endLine": 43,
-      "summary": "Module docstring stating the companion sawtooth identity ∑_{k<n}{x + k/n} = {nx} + (n−1)/2, the value = exact − floor strategy, the note that the parent's two lemmas are reproduced for self-containment, imports (full Mathlib), and the namespace.",
+      "endLine": 38,
+      "summary": "Module docstring stating the companion sawtooth identity ∑_{k<n}{x + k/n} = {nx} + (n−1)/2 as the fractional-part twin of Hermite's floor identity (its parent's open question oq-01), and the one-line value = exact − floor strategy: subtract Hermite's floor sum from the un-floored sum, leaving the triangular-number term (n−1)/2. Notes the parent's two lemmas are reproduced for standalone kernel-checkability.",
       "mathContext": "Targets $\\sum_{k=0}^{n-1}\\{x + k/n\\} = \\{nx\\} + (n-1)/2$ for real $x$ and $n \\ge 1$."
     },
     {
-      "id": "parent-helpers",
-      "title": "Parent Helpers (Reproduced)",
+      "id": "imports-namespace",
+      "title": "Imports and Namespace",
+      "startLine": 39,
+      "endLine": 43,
+      "summary": "import Mathlib (Int.fract and the floor/Finset APIs: Finset.sum_sub_distrib, sum_add_distrib, sum_range_succ, nsmul_eq_mul), open Finset for range and ∑, and the HermiteFloorIdentityOQ01 namespace.",
+      "mathContext": "Working over ℝ with {·} = Int.fract y = y − ⌊y⌋."
+    },
+    {
+      "id": "helper-int-sum",
+      "title": "Parent Helper: Integer Hermite Sum",
       "startLine": 45,
+      "endLine": 88,
+      "summary": "int_hermite_sum reproduced verbatim as a private helper: ∑_{k<n}(a+k)/n = a over ℤ (Euclidean division), proved via the shift recurrence `step` (reindex k ↦ k+1, endpoint quotients differ by 1) and two-sided integer induction from the vanishing base ∑ k/n = 0. Copied so the file elaborates standalone.",
+      "mathContext": "$\\sum_{k<n}(a+k)/n = a$ over $\\mathbb{Z}$ (shift recurrence + integer induction)."
+    },
+    {
+      "id": "helper-floor-identity",
+      "title": "Parent Helper: Hermite's Floor Identity",
+      "startLine": 90,
       "endLine": 100,
-      "summary": "The two theorems of the parent entry, copied verbatim as private helpers so the file elaborates standalone: int_hermite_sum (∑_{k<n}(a+k)/n = a over ℤ, by shift-recurrence integer induction) and hermite_floor_identity (∑_{k<n}⌊x + k/n⌋ = ⌊n·x⌋ over ℝ, by the real→integer reduction).",
-      "mathContext": "Provides $\\sum_{k<n}\\lfloor x + k/n\\rfloor = \\lfloor nx\\rfloor$, the floor sum subtracted off below."
+      "summary": "hermite_floor_identity reproduced as a private helper: ∑_{k<n}⌊x + k/n⌋ = ⌊n·x⌋ over ℝ, each real floor collapsed to the integer Euclidean quotient (⌊n·x⌋+k)/n (Int.floor_div_natCast, Int.floor_add_natCast) and finished by int_hermite_sum. This is the floor sum subtracted off in the main proof.",
+      "mathContext": "$\\sum_{k<n}\\lfloor x + k/n\\rfloor = \\lfloor nx\\rfloor$ over $\\mathbb{R}$."
     },
     {
       "id": "sawtooth-identity",
       "title": "The Companion Sawtooth Identity",
       "startLine": 102,
       "endLine": 142,
-      "summary": "sum_div_eq: ∑_{k<n} k/n = (n−1)/2, a real-valued Gauss sum proved by induction to avoid ℕ-division. hermite_fract_sum: expands {y} = y − ⌊y⌋, splits the sum into exact and floor parts, evaluates the exact part as n·x + (n−1)/2 and the floor part as ⌊n·x⌋ (Hermite), then closes by ring after unfolding {n·x}.",
+      "summary": "sum_div_eq: ∑_{k<n} k/n = (n−1)/2, a real-valued Gauss sum proved by induction to avoid ℕ-division under the cast. hermite_fract_sum: expands {y} = y − ⌊y⌋ (Int.fract), splits the sum (sum_sub_distrib) into exact and floor parts, evaluates the exact part as n·x + (n−1)/2 (sum_add_distrib, sum_const, sum_div_eq) and the floor part as ⌊n·x⌋ (the reproduced Hermite identity, cast to ℝ), then closes by ring after unfolding {n·x}.",
       "mathContext": "$\\sum\\{x+k/n\\} = (nx + (n-1)/2) - \\lfloor nx\\rfloor = \\{nx\\} + (n-1)/2$."
     }
   ],
