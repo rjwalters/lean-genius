@@ -36,6 +36,14 @@
   },
   "sections": [
     {
+      "id": "module-header-and-setup",
+      "title": "Module Header, Imports & Setup",
+      "startLine": 1,
+      "endLine": 89,
+      "summary": "Imports (Euclidean space, Lebesgue/Haar measure, volume of balls, convex-set measure) plus the module docstring and the `open MeasureTheory Metric Set`, `noncomputable section`, `namespace BrouwerAnalytic` setup. The docstring poses the open question — can the companion's three singular-homology axioms for the No-Retraction Theorem be replaced by Mathlib analysis tools via Milnor's measure-theoretic route? — and states the answer: yes for the measure-theoretic scaffolding, 0-axiom, with one precisely-isolated remaining analytic gap. It gives the obstruction (a retraction would map the positive-volume ball onto the measure-zero sphere while a Jacobian/degree argument forces volume preservation), a table mapping each homology axiom to its proved analytic replacement, and an honesty note that continuity alone does not forbid a volume-collapsing surjection — the smooth degree input `hvol` is genuinely needed.",
+      "mathContext": "Milnor's obstruction: a retraction $r : B^n \\to S^{n-1}$ has $\\mathrm{vol}(r(B^n)) = 0$ (sphere is Lebesgue-null) yet a diffeomorphism family forces $\\mathrm{vol}(f_t(B^n))$ constant, contradicting $\\mathrm{vol}(B^n) > 0$; the isolated gap is $\\mathrm{vol}(r(B^n)) = \\mathrm{vol}(B^n)$."
+    },
+    {
       "id": "geometry",
       "title": "Geometry: ball, sphere, and retractions",
       "startLine": 90,
@@ -71,7 +79,7 @@
       "id": "homotopy",
       "title": "Milnor's straight-line homotopy",
       "startLine": 190,
-      "endLine": 226,
+      "endLine": 229,
       "summary": "straightLine f_t = (1-t)·id + t·r with continuous endpoints (f_0 = id, f_1 = r) and the fact that f_t fixes the sphere for every t. This is the family whose volume t ↦ vol(f_t(B^n)) Milnor proves is polynomial in t.",
       "mathContext": "Lays out the analytic program end to end; the polynomiality/degree bookkeeping is the remaining gap named in no_retraction_of_volume_preserved."
     }
