@@ -1291,7 +1291,7 @@ theorem matchFreq_tendsto_of_others (b : ℕ) (hb : 2 ≤ b) (x : ℝ) (k : ℕ)
     rw [hcast, sub_mul, mul_inv_cancel₀ hbk_ne]
     ring
   rw [← hval]
-  exact Filter.Tendsto.congr' heq.symm htarget
+  exact Filter.Tendsto.congr' (heq.mono fun N h => h.symm) htarget
 
 /-- **Normality needs only "all but one block per length".** If, for every tuple
     length `k`, all tuples except one distinguished `s₀ k` have matching frequency
