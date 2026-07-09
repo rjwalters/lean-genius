@@ -23,7 +23,7 @@
     "erdosNumber": 79,
     "erdosUrl": "https://erdosproblems.com/79",
     "erdosProblemStatus": "solved",
-    "axiomCount": 1,
+    "axiomCount": 3,
     "lineCount": 267,
     "assumptions": "No `axiom` and no `sorry` are declared in this file (leanFile.axiomCount = 0, sorries = 0). The pure combinatorial results — `hdiamond_iff_six` (the literal six-fold reduction), the five relabelling isomorphisms `diamond_iso_02 … diamond_iso_23`, the relabelling engine `diamondEquiv`, `K4MinusEdge_comm`, `swap_lt_four`, `comp_lt_four` — are fully machine-checked and depend only on the foundational axioms propext / Classical.choice / Quot.sound. The reduction-to-minimality theorems (`K4_subgraphs_linear_of_edgeDeleted`, `K4_subgraphs_linear_of_single`, `K4_is_minimal_of_single`) additionally use the parent file's `ramsey_linear_hereditary` axiom (heredity of Ramsey size-linearity, imported from Erdos79Problem); this single imported assumption is why the entry is marked axiomatized. The six-to-one step is furthermore gated behind an EXPLICIT hypothesis `hcongr` (Ramsey size-linearity is invariant under graph isomorphism) — a stated hypothesis, not an axiom, which over the opaque `ramseyNumber` cannot be derived.",
     "mathlib_version": "4.26.0",
@@ -120,7 +120,9 @@
     "definitionCount": 7,
     "path": "Proofs/Erdos79Incomplete01.lean",
     "sorries": 0,
-    "additionalFiles": []
+    "additionalFiles": [
+      "Proofs/Erdos79Incomplete01OQ01.lean"
+    ]
   },
   "references": [
     {

@@ -29,11 +29,22 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "STRUCTURAL: heredity (parent axiom) and iso-invariance (companion hypothesis) are now DERIVED theorems, grounded in the two atomic properties of the primitive ramseyNumber (monotonicity + iso-invariance). Flagship K4_is_minimal_from_single_diamond depends (verified via #print axioms) only on these two + K4_not_linear, not on ramsey_linear_hereditary/K4_subgraphs_linear. Does NOT reduce assumption count (real content R(K4−e,H)=O(e(H)) needs Ramsey theory absent from Mathlib); the value is structural grounding + two new proved lemmas. 0 sorries.",
+    "builtItems": [
+      "Erdos79Incomplete01OQ01.isRamseySizeLinear_hereditary — heredity as a THEOREM from ramseyNumber_mono_left (was parent axiom)",
+      "Erdos79Incomplete01OQ01.isRamseySizeLinear_congr — iso-invariance as a THEOREM from ramseyNumber_congr_left (was companion hypothesis hcongr)",
+      "Erdos79Incomplete01OQ01.K4_is_minimal_from_single_diamond — K4 minimality from a SINGLE diamond K4−{0,1} + atomic Ramsey properties; #print axioms confirms NO dependence on ramsey_linear_hereditary or K4_subgraphs_linear",
+      "Erdos79Incomplete01OQ01.{ramseyNumber_mono_left, ramseyNumber_congr_left} — the two atomic primitive-level axioms (monotone/iso-invariant in first arg)"
+    ],
+    "insights": [
+      "Size-linearity heredity (parent axiom ramsey_linear_hereditary) and iso-invariance (companion hypothesis hcongr) are NOT independent assumptions: each is a one-step consequence of the corresponding atomic property of the primitive ramseyNumber — monotonicity (G≤G⇒R(G,·)≤R(G,·)) and iso-invariance (G≃gG⇒R(G,·)=R(G,·)).",
+      "Same linearity constant C transfers under both operations: for H≤G, R(H,K)≤R(G,K)≤C·e(K); under G≃gG, R(G,K)=R(G,K) so the bound is verbatim. So heredity/iso-invariance of isRamseySizeLinear need no new constant, only mono/congr of R."
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Elementary content essentially closed: the axiom scaffold is now grounded in the two canonical Ramsey-number properties, with heredity+iso-invariance derived. Remaining OPEN (needs real Ramsey theory beyond Mathlib): the single diamond hypothesis h01 = isRamseySizeLinear (K4−{0,1}), i.e. R(K4−e, H)=O(e(H)), and K4 superlinearity K4_not_linear.",
+      "Possible micro-follow-up: also derive a monotonicity/congruence statement for the SECOND Ramsey argument, or show K4_subgraphs_linear (sweeping) fully reduces to h01 alone under mono+congr (already essentially done via K4_subgraphs_linear_of_single)."
+    ],
     "markdown": "# Knowledge Base: erdos-79-incomplete-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [],
