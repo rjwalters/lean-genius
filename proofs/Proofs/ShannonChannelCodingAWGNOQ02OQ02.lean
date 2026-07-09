@@ -905,4 +905,83 @@ theorem correlation_affine_invariant_of_pos [IsProbabilityMeasure μ] {X Y : Ω 
     correlation (fun ω => a * X ω + b) (fun ω => c * Y ω + d) μ = correlation X Y μ := by
   rw [correlation_affine_invariant hX hY a b c d, Real.sign_of_pos (mul_pos ha hc), one_mul]
 
+/-!
+### Sharp equality boundary of the standard-deviation triangle inequality
+
+`stddev_add_le` states the L² triangle inequality `σ[X+Y] ≤ σ[X] + σ[Y]` for the aggregate
+standard deviation.  The results below pin down its **equality** boundary — the exact condition
+under which the ceiling is attained.  Squaring the (nonnegative) triangle inequality reduces the
+equality `σ[X+Y] = σ[X] + σ[Y]` to `cov[X,Y] = σ[X]·σ[Y]`, i.e. covariance attaining its
+Cauchy–Schwarz maximum, which for non-degenerate variables is exactly the perfect *positive*
+correlation `ρ = +1`.  This is the sharp companion of `variance_add_eq_iff_covariance_zero` (whose
+equality boundary is the *uncorrelated* case `cov = 0`), sitting at the opposite extreme of the
+Cauchy–Schwarz interval.
+-/
+
+/-- **Equality boundary of the standard-deviation triangle inequality (covariance form).**  For
+square-integrable `X, Y`, the L² triangle inequality `σ[X+Y] ≤ σ[X] + σ[Y]` of `stddev_add_le` is
+an *equality*
+
+        √Var[X + Y] = √Var[X] + √Var[Y]
+
+*if and only if* the covariance attains its Cauchy–Schwarz maximum `cov[X,Y] = √Var[X]·√Var[Y]`.
+No non-degeneracy hypothesis is needed: when e.g. `Y` is a.e. constant both sides read
+`σ[X] = σ[X]` and `cov = 0 = σ[X]·0`.  Squaring the nonnegative identity turns it into the linear
+comparison `Var[X]+Var[Y]+2cov = (√Var[X]+√Var[Y])²`, from which the covariance value is forced. -/
+theorem stddev_add_eq_iff_covariance_eq_sqrt [IsFiniteMeasure μ] {X Y : Ω → ℝ}
+    (hX : MemLp X 2 μ) (hY : MemLp Y 2 μ) :
+    Real.sqrt (Var[X + Y; μ]) = Real.sqrt (Var[X; μ]) + Real.sqrt (Var[Y; μ]) ↔
+      cov[X, Y; μ] = Real.sqrt (Var[X; μ]) * Real.sqrt (Var[Y; μ]) := by
+  set a := Real.sqrt (Var[X; μ]) with ha_def
+  set b := Real.sqrt (Var[Y; μ]) with hb_def
+  have hsx : a ^ 2 = Var[X; μ] := Real.sq_sqrt (variance_nonneg _ _)
+  have hsy : b ^ 2 = Var[Y; μ] := Real.sq_sqrt (variance_nonneg _ _)
+  constructor
+  · intro h
+    have h2 : Var[X + Y; μ] = (a + b) ^ 2 := by
+      rw [← h, Real.sq_sqrt (variance_nonneg (X + Y) μ)]
+    nlinarith [h2, variance_add hX hY, hsx, hsy]
+  · intro h
+    have h2 : Var[X + Y; μ] = (a + b) ^ 2 := by
+      nlinarith [variance_add hX hY, hsx, hsy, h]
+    rw [h2, Real.sqrt_sq (by positivity)]
+
+/-- **Equality boundary of the standard-deviation triangle inequality (correlation form).**  For
+non-degenerate `X, Y` the triangle inequality `σ[X+Y] ≤ σ[X] + σ[Y]` is an equality *exactly* when
+the correlation coefficient attains its maximum:
+
+        √Var[X + Y] = √Var[X] + √Var[Y]  ↔  ρ[X, Y] = 1.
+
+The covariance-form condition `cov = √Var[X]·√Var[Y]` of
+`stddev_add_eq_iff_covariance_eq_sqrt`, normalised through the definition of `correlation`; the two
+non-degeneracy hypotheses make the normalising denominator `σ[X]·σ[Y]` nonzero. -/
+theorem stddev_add_eq_iff_correlation_eq_one [IsFiniteMeasure μ] {X Y : Ω → ℝ}
+    (hX : MemLp X 2 μ) (hY : MemLp Y 2 μ) (hXnd : Var[X; μ] ≠ 0) (hYnd : Var[Y; μ] ≠ 0) :
+    Real.sqrt (Var[X + Y; μ]) = Real.sqrt (Var[X; μ]) + Real.sqrt (Var[Y; μ]) ↔
+      correlation X Y μ = 1 := by
+  have hax : Real.sqrt (Var[X; μ]) ≠ 0 :=
+    Real.sqrt_ne_zero'.mpr ((variance_nonneg X μ).lt_of_ne hXnd.symm)
+  have hay : Real.sqrt (Var[Y; μ]) ≠ 0 :=
+    Real.sqrt_ne_zero'.mpr ((variance_nonneg Y μ).lt_of_ne hYnd.symm)
+  rw [stddev_add_eq_iff_covariance_eq_sqrt hX hY, correlation,
+    div_eq_one_iff_eq (mul_ne_zero hax hay)]
+
+/-- **Equality boundary of the standard-deviation triangle inequality (perfect-positive-correlation
+capstone).**  For non-degenerate `X, Y` the L² triangle inequality `σ[X+Y] ≤ σ[X] + σ[Y]` is an
+equality *if and only if* `X` is almost everywhere an **increasing** affine function of `Y`:
+
+        √Var[X + Y] = √Var[X] + √Var[Y]  ↔  ∃ a b, 0 < a ∧ X =ᵐ a·Y + b.
+
+Chaining `stddev_add_eq_iff_correlation_eq_one` with `correlation_eq_one_iff_affine_pos`, this is
+the sharp structural boundary of `stddev_add_le`: the standard deviations of a sum add *precisely*
+in the perfectly-positively-correlated (fully-aligned) case, dual to
+`variance_add_eq_iff_covariance_zero` — whose boundary is the orthogonal `cov = 0` case — at the
+opposite endpoint of the Cauchy–Schwarz interval. -/
+theorem stddev_add_eq_iff_affine_pos [IsProbabilityMeasure μ] {X Y : Ω → ℝ}
+    (hX : MemLp X 2 μ) (hY : MemLp Y 2 μ) (hXnd : Var[X; μ] ≠ 0) (hYnd : Var[Y; μ] ≠ 0) :
+    Real.sqrt (Var[X + Y; μ]) = Real.sqrt (Var[X; μ]) + Real.sqrt (Var[Y; μ]) ↔
+      ∃ a b : ℝ, 0 < a ∧ X =ᵐ[μ] fun ω => a * Y ω + b := by
+  rw [stddev_add_eq_iff_correlation_eq_one hX hY hXnd hYnd,
+    correlation_eq_one_iff_affine_pos hX hY hXnd hYnd]
+
 end ShannonAWGNMultiSymbolPower
