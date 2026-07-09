@@ -230,28 +230,32 @@
       "type": "core",
       "statement": "$\\mathrm{vol}(S) > k \\cdot \\mathrm{covol}(\\Lambda) \\Rightarrow \\exists\\, \\mathrm{pts} : \\mathrm{Fin}(k{+}1) \\hookrightarrow S,\\;\\; \\forall i,j,\\; \\mathrm{pts}\\,i - \\mathrm{pts}\\,j \\in \\Lambda$",
       "significance": "Blichfeldt's theorem for an arbitrary full-rank lattice in the geometry-of-numbers covolume form. Answers open question #2 of the parent entry. Reduces to the parent's verified blichfeldt_general_lattice through the covolume bridge natCast_mul_volume_fundamentalDomain.",
-      "description": "Covolume-threshold Blichfeldt for a general lattice Λ = span_ℤ(range b)."
+      "description": "Covolume-threshold Blichfeldt for a general lattice Λ = span_ℤ(range b).",
+      "leanType": "{n : ℕ} [NeZero n] (b : Module.Basis (Fin n) ℝ (Fin n → ℝ)) (k : ℕ) (s : Set (Fin n → ℝ)) (h_meas : MeasurableSet s) (h_vol : ENNReal.ofReal ((k:ℝ) * ZLattice.covolume (Submodule.span ℤ (Set.range b)) volume) < volume s) → ∃ pts : Fin (k+1) → Fin n → ℝ, Function.Injective pts ∧ (∀ i, pts i ∈ s) ∧ ∀ i j, pts i - pts j ∈ (Submodule.span ℤ (Set.range b) : Set (Fin n → ℝ))"
     },
     {
       "name": "minkowski_lattice_covolume",
       "type": "core",
       "statement": "$S$ convex, centrally symmetric, $\\mathrm{vol}(S) > 2^n \\cdot \\mathrm{covol}(\\Lambda) \\Rightarrow \\exists\\, p \\in S \\cap \\Lambda,\\; p \\ne 0$",
       "significance": "Minkowski's convex body theorem for an arbitrary full-rank lattice — the classical Cassels III.2 statement and the workhorse of algebraic-number-theory lattice bounds. The parent proves this only for ℤⁿ (covolume 1).",
-      "description": "Covolume-threshold Minkowski convex body theorem for a general lattice."
+      "description": "Covolume-threshold Minkowski convex body theorem for a general lattice.",
+      "leanType": "{n : ℕ} [NeZero n] (b : Module.Basis (Fin n) ℝ (Fin n → ℝ)) (s : Set (Fin n → ℝ)) (h_meas : MeasurableSet s) (h_symm : ∀ x ∈ s, -x ∈ s) (h_conv : Convex ℝ s) (h_vol : ENNReal.ofReal ((2:ℝ)^n * ZLattice.covolume (Submodule.span ℤ (Set.range b)) volume) < volume s) → ∃ p : (Submodule.span ℤ (Set.range b)).toAddSubgroup, p ≠ 0 ∧ (p : Fin n → ℝ) ∈ s"
     },
     {
       "name": "covolume_eq_toReal_volume_fundamentalDomain",
       "type": "supporting",
       "statement": "$\\mathrm{covol}(\\Lambda) = (\\mathrm{vol}(\\mathrm{ZSpan.fundamentalDomain}\\,b)).\\mathrm{toReal}$",
       "significance": "The bridge lemma identifying Mathlib's real-valued ZLattice.covolume with the toReal of the ℝ≥0∞-valued fundamental-domain volume that the parent's threshold uses. Requires finiteness of the fundamental-domain volume (boundedness).",
-      "description": "Identifies covolume with the toReal of the fundamental-domain volume."
+      "description": "Identifies covolume with the toReal of the fundamental-domain volume.",
+      "leanType": "{n : ℕ} [NeZero n] (b : Module.Basis (Fin n) ℝ (Fin n → ℝ)) → ZLattice.covolume (Submodule.span ℤ (Set.range b)) volume = (volume (ZSpan.fundamentalDomain b)).toReal"
     },
     {
       "name": "minkowski_lattice",
       "type": "core",
       "statement": "$S$ convex, centrally symmetric, $\\mathrm{vol}(S) > 2^n \\cdot \\mathrm{vol}(F) \\Rightarrow \\exists\\, p \\in S \\cap \\Lambda,\\; p \\ne 0$",
       "significance": "Minkowski's convex body theorem for a general lattice, fundamental-domain-volume form. Proved by half-scaling T = (1/2)·S and blichfeldt_basic_lattice, mirroring the parent's ℤⁿ reduction with the constant 1 replaced by volume F.",
-      "description": "General-lattice Minkowski via half-scaling to Blichfeldt."
+      "description": "General-lattice Minkowski via half-scaling to Blichfeldt.",
+      "leanType": "{n : ℕ} [NeZero n] (b : Module.Basis (Fin n) ℝ (Fin n → ℝ)) (s : Set (Fin n → ℝ)) (h_meas : MeasurableSet s) (h_symm : ∀ x ∈ s, -x ∈ s) (h_conv : Convex ℝ s) (h_vol : (2:ENNReal)^n * volume (ZSpan.fundamentalDomain b) < volume s) → ∃ p : (Submodule.span ℤ (Set.range b)).toAddSubgroup, p ≠ 0 ∧ (p : Fin n → ℝ) ∈ s"
     }
   ],
   "sorries": 0
