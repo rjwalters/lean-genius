@@ -163,6 +163,88 @@ theorem K4_is_minimal_from_single_diamond
     isMinimallyNonLinear (completeGraphN 4) :=
   K4_is_minimal_of_single' K4_not_linear h01
 
+/- ## Iso-invariance of superlinearity and of minimal non-linearity
+
+   Erdős #79 asks whether there are infinitely many minimally non-linear graphs
+   *up to isomorphism* (`erdos_79_question := minimalNonLinearGraphs.Infinite`),
+   yet the whole gallery formalisation works with concrete graphs on the fixed
+   vertex set `ℕ`.  For that count to be meaningful, the defining predicate
+   `isMinimallyNonLinear` must be an isomorphism invariant.  We prove it is —
+   grounded, like heredity and iso-invariance of size-linearity above, in the
+   two atomic Ramsey properties alone (via `isRamseySizeLinear_congr`), with no
+   new axioms. -/
+
+/-- **Superlinearity is iso-invariant.**  The negation of an iso-invariant
+    predicate is iso-invariant: transport size-linearity back along `e.symm`. -/
+theorem isRamseySizeSuperlinear_congr {G G' : SimpleGraph ℕ} (e : G ≃g G')
+    (h : isRamseySizeSuperlinear G) : isRamseySizeSuperlinear G' :=
+  fun h' => h (isRamseySizeLinear_congr e.symm h')
+
+/-- Relabelling `H'` by the isomorphism `e : G ≃g G'` (i.e. `SimpleGraph.comap ⇑e H'`)
+    produces a graph isomorphic to `H'`: the bijection is `e` itself, and
+    adjacency matches by the very definition of `comap`. -/
+def comapIso {G G' : SimpleGraph ℕ} (e : G ≃g G') (H' : SimpleGraph ℕ) :
+    SimpleGraph.comap ⇑e H' ≃g H' where
+  toEquiv := e.toEquiv
+  map_rel_iff' := Iff.rfl
+
+/-- Pulling `G'` itself back along `e : G ≃g G'` returns `G`: `comap ⇑e G' = G`.
+    This is just the defining property of an isomorphism. -/
+theorem comap_self {G G' : SimpleGraph ℕ} (e : G ≃g G') :
+    SimpleGraph.comap ⇑e G' = G := by
+  ext a b
+  simp only [SimpleGraph.comap_adj]
+  exact e.map_rel_iff
+
+/-- A proper subgraph `H' ⊊ G'` pulls back along `e : G ≃g G'` to a proper
+    subgraph `comap ⇑e H' ⊊ G`.  Monotone (edges of `H'` map to edges of `G`)
+    and proper (`comap ⇑e` is injective, so `comap ⇑e H' = G = comap ⇑e G'`
+    would force `H' = G'`). -/
+theorem comap_properSubgraph {G G' H' : SimpleGraph ℕ} (e : G ≃g G')
+    (hH' : isProperSubgraph H' G') :
+    isProperSubgraph (SimpleGraph.comap ⇑e H') G := by
+  refine ⟨?_, ?_⟩
+  · -- monotonicity: comap ⇑e H' ≤ G
+    intro a b hab
+    rw [SimpleGraph.comap_adj] at hab
+    exact e.map_rel_iff.mp (hH'.1 hab)
+  · -- properness: if `comap ⇑e H' = G` then `H' = G'`, contradicting `hH'.2`
+    intro hEq
+    apply hH'.2
+    ext a' b'
+    -- evaluate `hEq` at the preimages `e.symm a', e.symm b'`
+    have key := congrArg (fun g : SimpleGraph ℕ => g.Adj (e.symm a') (e.symm b')) hEq
+    simp only [SimpleGraph.comap_adj, RelIso.apply_symm_apply] at key
+    -- `key : H'.Adj a' b' = G.Adj (e.symm a') (e.symm b')`
+    -- and `hmap : G'.Adj a' b' ↔ G.Adj (e.symm a') (e.symm b')`
+    have hmap := e.map_rel_iff (a := e.symm a') (b := e.symm b')
+    simp only [RelIso.apply_symm_apply] at hmap
+    rw [iff_of_eq key]
+    exact hmap.symm
+
+/-- **Minimal non-linearity is an isomorphism invariant.**  If `G ≃g G'` and
+    `G` is minimally non-Ramsey-size-linear, then so is `G'`.  Both clauses
+    transport: superlinearity via `isRamseySizeSuperlinear_congr`, and
+    "every proper subgraph is linear" by pulling each proper subgraph `H' ⊊ G'`
+    back to a proper subgraph `comap ⇑e H' ⊊ G` (linear by hypothesis) and
+    pushing linearity forward across the iso `comap ⇑e H' ≃g H'`.  Derived from
+    the two atomic Ramsey properties only — no new axioms. -/
+theorem isMinimallyNonLinear_congr {G G' : SimpleGraph ℕ} (e : G ≃g G')
+    (h : isMinimallyNonLinear G) : isMinimallyNonLinear G' := by
+  obtain ⟨hsuper, hsub⟩ := h
+  refine ⟨isRamseySizeSuperlinear_congr e hsuper, ?_⟩
+  intro H' hH'
+  have hlin : isRamseySizeLinear (SimpleGraph.comap ⇑e H') :=
+    hsub _ (comap_properSubgraph e hH')
+  exact isRamseySizeLinear_congr (comapIso e H') hlin
+
+/-- The invariant set `minimalNonLinearGraphs` is closed under isomorphism:
+    membership depends only on the isomorphism type.  A direct restatement of
+    `isMinimallyNonLinear_congr` on the parent's set `minimalNonLinearGraphs`. -/
+theorem minimalNonLinearGraphs_iso_closed {G G' : SimpleGraph ℕ} (e : G ≃g G')
+    (hG : G ∈ minimalNonLinearGraphs) : G' ∈ minimalNonLinearGraphs :=
+  isMinimallyNonLinear_congr e hG
+
 /- Verified axiom basis (`#print axioms K4_is_minimal_from_single_diamond`):
 
      [propext, Classical.choice, Quot.sound,
@@ -177,5 +259,20 @@ theorem K4_is_minimal_from_single_diamond
    `ramseyNumber` is `opaque`, so it is irreducible but does not itself appear
    in `#print axioms`. -/
 -- #print axioms K4_is_minimal_from_single_diamond
+
+/- Iso-invariance of minimal non-linearity has an even leaner basis
+   (`#print axioms isMinimallyNonLinear_congr`):
+
+     [propext, Classical.choice, Quot.sound,
+      Erdos79Incomplete01OQ01.ramseyNumber_congr_left]
+
+   i.e. only the single ATOMIC *congruence* property of the Ramsey number
+   (monotonicity `ramseyNumber_mono_left` is not even needed) plus the ordinary
+   foundational axioms.  So "minimally non-linear" being an isomorphism
+   invariant — the well-posedness of Erdős #79's count of such graphs up to
+   isomorphism (`minimalNonLinearGraphs.Infinite`) — reduces to nothing more
+   than: the Ramsey number depends only on the isomorphism type of its first
+   argument. -/
+-- #print axioms isMinimallyNonLinear_congr
 
 end Erdos79Incomplete01OQ01
