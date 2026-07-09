@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: multivariate sharp equality boundary of the stddev triangle inequality proved (covariance + correlation forms), VERIFIED 0 sorry/0 axiom — completes the finite-family analog of the 2-variable stddev_add_eq boundary.",
+    "progressSummary": "PROGRESS (VERIFIED 0/0): strict standard-deviation triangle inequality proved in both correlation form (σ[X+Y]<σ[X]+σ[Y] ⟺ ρ<1) and structural/affine form (⟺ X not a.e. increasing-affine in Y) — the strict companions of the equality boundary, completing the ≤ / = / < trichotomy of stddev_add_le. Remaining open: analytic upper-bound terminus and finite-family strict form.",
     "builtItems": [
       "variance_sum_of_pairwise_uncorrelated (ShannonChannelCodingAWGNOQ02OQ02.lean:131): Var[∑ i∈s, Wi] = ∑ Var[Wi] from Set.Pairwise cov=0 + MemLp; [IsFiniteMeasure].",
       "variance_sum_of_pairwise_indep (:150): independence ⟹ uncorrelated ⟹ identity, via IndepFun.covariance_eq_zero — shows the sharp version subsumes IndepFun.variance_sum.",
@@ -59,7 +59,9 @@
       "stddev_add_eq_iff_correlation_eq_one (same file): non-degenerate normalisation, σ[X+Y]=σ[X]+σ[Y] ↔ ρ[X,Y]=1 via div_eq_one_iff_eq.",
       "stddev_add_eq_iff_affine_pos (same file): capstone σ[X+Y]=σ[X]+σ[Y] ↔ ∃a b, 0<a ∧ X=ᵐ a·Y+b (perfect positive correlation / increasing affine), chaining correlation_eq_one_iff_affine_pos.",
       "stddev_sum_eq_iff_pairwise_covariance_eq_sqrt (ShannonChannelCodingAWGNOQ02OQ02.lean): √Var[∑ᵢ∈s Wᵢ]=∑ᵢ√Var[Wᵢ] ↔ ∀i,j∈s cov[Wᵢ,Wⱼ]=√Var[Wᵢ]·√Var[Wⱼ]; no non-degeneracy hyp (diagonal tight). Multivariate lift of stddev_add_eq_iff_covariance_eq_sqrt, dual of variance_sum_eq_iff_offDiag_covariance_zero.",
-      "stddev_sum_eq_iff_pairwise_correlation_eq_one (same file): for non-degenerate family, √Var[∑]=∑σ ↔ ∀i,j∈s ρ[Wᵢ,Wⱼ]=1 (all pairs perfectly positively correlated); normalises the covariance form via correlation def + div_eq_one_iff_eq. Multivariate capstone of stddev_add_eq_iff_correlation_eq_one."
+      "stddev_sum_eq_iff_pairwise_correlation_eq_one (same file): for non-degenerate family, √Var[∑]=∑σ ↔ ∀i,j∈s ρ[Wᵢ,Wⱼ]=1 (all pairs perfectly positively correlated); normalises the covariance form via correlation def + div_eq_one_iff_eq. Multivariate capstone of stddev_add_eq_iff_correlation_eq_one.",
+      "stddev_add_lt_iff_correlation_lt_one (ShannonChannelCodingAWGNOQ02OQ02.lean): σ[X+Y] < σ[X]+σ[Y] ⟺ ρ<1 for non-degenerate X,Y — strict form of stddev_add_le via lt_iff_le_and_ne + abs_correlation_le_one (ρ≤1) + stddev_add_eq_iff_correlation_eq_one",
+      "stddev_add_lt_iff_not_affine_pos (ShannonChannelCodingAWGNOQ02OQ02.lean): σ[X+Y] < σ[X]+σ[Y] ⟺ ¬∃a>0,b. X=ᵐa·Y+b — structural negation of stddev_add_eq_iff_affine_pos"
     ],
     "insights": [
       "Bienaymé variance-of-a-sum needs only PAIRWISE UNCORRELATEDNESS (cov[Wi,Wj]=0 for i≠j), not pairwise independence: the off-diagonal covariances of Var[∑Wi]=∑i∑j cov[Wi,Wj] (Mathlib variance_sum´) are exactly what must vanish. Independence is strictly stronger (there exist uncorrelated dependent variables).",
@@ -76,7 +78,8 @@
       "Affine-invariance proof reuses the exact machinery of the ±1 capstones: cov[aX+b,cY+d]=ac·cov via covariance_add_const_left/right + covariance_const_mul_left/right; σ[aX+b]=|a|·σ[X] via variance_eq_of_affine+sqrt_mul+sqrt_sq_eq_abs; sign packaged as x/|x| so a·c/(|a|·|c|)=sign(a·c) closes by ring (field inverse rearrangement, no nonzero hyps needed).",
       "Sharp equality boundary of the stddev triangle inequality stddev_add_le: squaring the nonnegative identity σ[X+Y]=σ[X]+σ[Y] reduces it to the covariance attaining its Cauchy-Schwarz maximum cov[X,Y]=√Var[X]·√Var[Y]; NO non-degeneracy hypothesis needed (degenerate Y gives 0=σ[X]·0).",
       "The triangle-equality boundary sits at the OPPOSITE Cauchy-Schwarz endpoint from variance_add_eq_iff_covariance_zero: variances add iff cov=0 (orthogonal), but standard deviations add iff cov=σ[X]σ[Y] (perfectly positively correlated, ρ=+1).",
-      "Multivariate stddev-triangle equality (√Var[∑Wᵢ]=∑σ[Wᵢ]) reduces via square+variance_sum'+Finset.sum_mul_sum to ∑ᵢ∑ⱼcov=∑ᵢ∑ⱼσᵢσⱼ; each summand obeys Cauchy–Schwarz cov≤σᵢσⱼ, so the two double sums are equal iff every ordered pair saturates it — Finset.sum_eq_sum_iff_of_le twice (nested)."
+      "Multivariate stddev-triangle equality (√Var[∑Wᵢ]=∑σ[Wᵢ]) reduces via square+variance_sum'+Finset.sum_mul_sum to ∑ᵢ∑ⱼcov=∑ᵢ∑ⱼσᵢσⱼ; each summand obeys Cauchy–Schwarz cov≤σᵢσⱼ, so the two double sums are equal iff every ordered pair saturates it — Finset.sum_eq_sum_iff_of_le twice (nested).",
+      "Strict triangle inequality needs NO fresh analysis: it is purely lt_iff_le_and_ne applied to both sides of the equality boundary (stddev_add_le gives ≤ on the left, abs_correlation_le_one gives ρ≤1 on the right), then not_iff_not on the eq-iff. simp only [stddev_add_le hX hY, hρle, true_and, ne_eq, not_iff_not] discharges the whole reduction in one line."
     ],
     "mathlibGaps": [
       "Mathlib has no pairwise-uncorrelated variance-sum lemma (only variance_sum´ double-sum form and IndepFun.variance_sum). Candidate upstream contribution: variance_sum under Set.Pairwise (cov=0).",
@@ -95,8 +98,8 @@
       "Affine-invariance of covariance itself (cov[aX+b,cY+d]=ac·cov[X,Y]) is now proved inline — consider extracting as a named reusable lemma if a further correlation result needs it.",
       "Consider corr sign-flip corollary for a>0,c<0 (orientation-reversing): ρ[aX+b,cY+d]=−ρ[X,Y] as the negative companion of correlation_affine_invariant_of_pos.",
       "Dual equality for the finite-sum triangle inequality stddev_sum_le: σ[∑Wᵢ]=∑σ[Wᵢ] iff all pairs are perfectly positively correlated (all centered contributions a.e. nonneg-proportional to a common direction) — needs an induction handling the shared-direction propagation.",
-      "Consider the strict-inequality companion: σ[X+Y] < σ[X]+σ[Y] whenever ρ<1 (non-degenerate), the strict form of stddev_add_le.",
-      "Affine form of the multivariate boundary: √Var[∑Wᵢ]=∑σ requires a COMMON increasing-affine template (all Wᵢ =ᵐ aᵢ·Y+bᵢ, aᵢ>0) — harder than pairwise, needs a shared regressor Y; the pairwise-correlation form is the clean stopping point."
+      "Affine form of the multivariate boundary: √Var[∑Wᵢ]=∑σ requires a COMMON increasing-affine template (all Wᵢ =ᵐ aᵢ·Y+bᵢ, aᵢ>0) — harder than pairwise, needs a shared regressor Y; the pairwise-correlation form is the clean stopping point.",
+      "Strict multivariate form: σ[∑Wᵢ] < ∑σ[Wᵢ] ⟺ NOT all pairs perfectly positively correlated — strict companion of stddev_sum_eq_iff_pairwise_correlation_eq_one, via lt_iff_le_and_ne on stddev_sum_le (needs the finite-family ρ≤1 pairwise ceiling, else just ≠-form)."
     ],
     "markdown": "# Knowledge Base: shannon-channel-coding-awgn-oq-02-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
