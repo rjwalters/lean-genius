@@ -826,4 +826,193 @@ theorem two_distinct_reversal_families :
     (∀ k, (55 * 2 ^ (k + 1)) ∈ ReversalSet) ∧ (21 : ℕ) ≠ 55 :=
   ⟨reversal_via_criterion, reversal_via_criterion_55, by decide⟩
 
+-- ===========================================================================
+-- A COMPUTABLE DECISION PROCEDURE FOR TRANSPORT FAMILIES
+-- ---------------------------------------------------------------------------
+-- The `k`-free criterion above still asks the caller to *supply* the odd data
+-- `(b, e, t)` describing the family.  Here we make the extraction AUTOMATIC:
+-- from the single odd seed `a` we COMPUTE, by ordinary `Nat` arithmetic,
+--     b = (2a − φ(a))/2,   C = 2a − φ(b),   t = v₂(C),   e = C / 2^t,
+-- and package the entire three-way regime of the family `a·2^(k+1)` as one
+-- decidable `Ordering`-valued function
+--     classify a  =  compare  φ(a)  (φ(e)·2^(t−1)).
+-- The only inputs are decidable facts about `a` alone — that the first cototient
+-- step has 2-adic valuation exactly one (`Odd (bSeed a)`) and that the landing
+-- constant is nonzero and even.  Membership of the whole family in each regime is
+-- thereby reduced to a finite computation on `a`, with no per-`k` work and no
+-- hand-supplied `(e, t)`.  This is the decision procedure promised by the
+-- transport programme; the reversal seeds `21`, `55` are then read off by
+-- evaluating `classify`.
+-- ===========================================================================
+
+/-- Doubled first cototient step `2a − φ(a)` (equal to `2·bSeed a` on valid seeds). -/
+def coStep (a : ℕ) : ℕ := 2 * a - Nat.totient a
+
+/-- The intermediate odd seed `b = (2a − φ(a))/2`. -/
+def bSeed (a : ℕ) : ℕ := coStep a / 2
+
+/-- The landing constant `C = 2a − φ(b)`; transport gives `D(a·2^(k+1)) = C·2^k`. -/
+def landC (a : ℕ) : ℕ := 2 * a - Nat.totient (bSeed a)
+
+/-- 2-adic valuation `t` of the landing constant, writing `C = e·2^t` with `e` odd. -/
+def landT (a : ℕ) : ℕ := (landC a).factorization 2
+
+/-- Odd part `e` of the landing constant, `C = e·2^t`. -/
+def landE (a : ℕ) : ℕ := ordCompl[2] (landC a)
+
+/-- **The computable three-way classifier.**  Compares `φ(a)` with `φ(e)·2^(t−1)`
+    and returns `.lt` (reversal), `.eq` (equality) or `.gt` (forward). -/
+def classify (a : ℕ) : Ordering :=
+  compareOfLessAndEq (Nat.totient a) (Nat.totient (landE a) * 2 ^ (landT a - 1))
+
+/-- `compareOfLessAndEq` returns `.lt` exactly on the strict-less relation. -/
+theorem coLE_lt {x y : ℕ} : compareOfLessAndEq x y = Ordering.lt ↔ x < y :=
+  Batteries.compareOfLessAndEq_eq_lt
+
+/-- `compareOfLessAndEq` returns `.eq` exactly on equality. -/
+theorem coLE_eq {x y : ℕ} : compareOfLessAndEq x y = Ordering.eq ↔ x = y := by
+  unfold compareOfLessAndEq; split_ifs with h1 h2 <;> (simp_all; try omega)
+
+/-- `compareOfLessAndEq` returns `.gt` exactly on the strict-greater relation. -/
+theorem coLE_gt {x y : ℕ} : compareOfLessAndEq x y = Ordering.gt ↔ y < x := by
+  unfold compareOfLessAndEq; split_ifs with h1 h2 <;> (simp_all; try omega)
+
+/-- **Extraction is faithful.**  Under the decidable side-conditions on `a`
+    (first cototient step even with odd quotient, landing constant nonzero and
+    even) the computed data `(bSeed a, landE a, landT a)` satisfies exactly the
+    hypotheses required by the `k`-free transport criterion. -/
+theorem classify_data {a : ℕ} (hstep : 2 ∣ coStep a) (hC0 : landC a ≠ 0)
+    (hCe : 2 ∣ landC a) :
+    Odd (landE a) ∧ 1 ≤ landT a ∧
+      2 * a - Nat.totient a = 2 * bSeed a ∧
+      2 * a - Nat.totient (bSeed a) = landE a * 2 ^ landT a := by
+  refine ⟨?_, ?_, ?_, ?_⟩
+  · -- `e = ordCompl[2] C` is odd: a prime never divides the complementary part
+    exact Nat.odd_iff.2 (Nat.two_dvd_ne_zero.1
+      (Nat.not_dvd_ordCompl Nat.prime_two hC0))
+  · -- `t = v₂(C) ≥ 1` since `2 ∣ C ≠ 0`
+    exact Nat.prime_two.factorization_pos_of_dvd hC0 hCe
+  · -- `2a − φ(a) = 2·bSeed a` because the step is even
+    show 2 * a - Nat.totient a = 2 * bSeed a
+    have h2 : coStep a = 2 * bSeed a := by
+      simp only [bSeed]; exact (Nat.mul_div_cancel' hstep).symm
+    exact h2
+  · -- `C = e·2^t` is the ordProj/ordCompl split of the landing constant
+    show landC a = landE a * 2 ^ landT a
+    rw [mul_comm]
+    exact (Nat.ordProj_mul_ordCompl_eq_self (landC a) 2).symm
+
+/-- **Decision procedure — reversal branch.**  For any odd seed `a` whose first
+    cototient step has 2-adic valuation one and whose landing constant is nonzero
+    and even, the *whole* family `a·2^(k+1)` is a reversal family iff the
+    computable classifier returns `.lt`. -/
+theorem mem_ReversalSet_iff_classify {a : ℕ} (ha : Odd a) (hstep : 2 ∣ coStep a)
+    (hb : Odd (bSeed a)) (hC0 : landC a ≠ 0) (hCe : 2 ∣ landC a) (k : ℕ) :
+    a * 2 ^ (k + 1) ∈ ReversalSet ↔ classify a = Ordering.lt := by
+  obtain ⟨he, ht, hst, hC⟩ := classify_data hstep hC0 hCe
+  unfold classify
+  rw [coLE_lt]
+  exact dblIter_reversal_iff ha hb he ht hst hC k
+
+/-- **Decision procedure — equality branch.**  `a·2^(k+1)` lies on the equality
+    diagonal for all `k` iff `classify a = .eq`. -/
+theorem mem_EqualitySet_iff_classify {a : ℕ} (ha : Odd a) (hstep : 2 ∣ coStep a)
+    (hb : Odd (bSeed a)) (hC0 : landC a ≠ 0) (hCe : 2 ∣ landC a) (k : ℕ) :
+    a * 2 ^ (k + 1) ∈ EqualitySet ↔ classify a = Ordering.eq := by
+  obtain ⟨he, ht, hst, hC⟩ := classify_data hstep hC0 hCe
+  unfold classify
+  rw [coLE_eq]
+  exact dblIter_equality_iff ha hb he ht hst hC k
+
+/-- **Decision procedure — forward branch.**  `a·2^(k+1)` is a forward family for
+    all `k` iff `classify a = .gt`. -/
+theorem mem_ForwardSet_iff_classify {a : ℕ} (ha : Odd a) (hstep : 2 ∣ coStep a)
+    (hb : Odd (bSeed a)) (hC0 : landC a ≠ 0) (hCe : 2 ∣ landC a) (k : ℕ) :
+    a * 2 ^ (k + 1) ∈ ForwardSet ↔ classify a = Ordering.gt := by
+  obtain ⟨he, ht, hst, hC⟩ := classify_data hstep hC0 hCe
+  unfold classify
+  rw [coLE_gt]
+  exact dblIter_forward_iff ha hb he ht hst hC k
+
+-- --- Evaluating the classifier at concrete seeds (no `native_decide`) ---
+
+/-- Helper: if the landing constant factors as `C = e·2^t` with `e` odd and
+    `t ≥ 1`, then the computed valuation/odd-part are exactly `t` and `e`. -/
+theorem landT_landE_of {a e t : ℕ} (he : Odd e)
+    (h : landC a = e * 2 ^ t) : landT a = t ∧ landE a = e := by
+  have he0 : e ≠ 0 := by rintro rfl; exact absurd (Nat.odd_iff.1 he) (by decide)
+  have hT : landT a = t := by
+    unfold landT
+    rw [h, Nat.factorization_mul he0 (pow_ne_zero t (by norm_num)), Finsupp.add_apply,
+        Nat.factorization_eq_zero_of_not_dvd (Nat.two_dvd_ne_zero.2 (Nat.odd_iff.1 he)),
+        Nat.factorization_pow_self Nat.prime_two, zero_add]
+  refine ⟨hT, ?_⟩
+  show landC a / 2 ^ landT a = e
+  rw [hT, h, Nat.mul_div_assoc e (dvd_refl (2 ^ t)), Nat.div_self (pow_pos (by norm_num) t),
+      mul_one]
+
+theorem totient_11 : Nat.totient 11 = 10 := Nat.totient_prime (by norm_num)
+theorem totient_7 : Nat.totient 7 = 6 := Nat.totient_prime (by norm_num)
+
+/-- The classifier evaluated at `a = 21` returns `.lt` (reversal), computing
+    `b = 15`, `C = 34 = 17·2^1`, `t = 1`, `e = 17`, and `φ(21) = 12 < 16 = φ(17)`. -/
+theorem classify_21 : classify 21 = Ordering.lt := by
+  have hb : bSeed 21 = 15 := by unfold bSeed coStep; norm_num [totient_21]
+  have hC : landC 21 = 34 := by unfold landC; norm_num [hb, totient_15]
+  obtain ⟨hT, hE⟩ := landT_landE_of (a := 21) (e := 17) (t := 1)
+    (by decide) (by norm_num [hC])
+  unfold classify
+  rw [hE, hT, totient_21, totient_17]
+  decide
+
+/-- The classifier evaluated at `a = 15` returns `.eq` (equality diagonal):
+    `b = 11`, `C = 20 = 5·2^2`, `t = 2`, `e = 5`, and `φ(15) = 8 = 4·2 = φ(5)·2^1`. -/
+theorem classify_15 : classify 15 = Ordering.eq := by
+  have hb : bSeed 15 = 11 := by unfold bSeed coStep; norm_num [totient_15]
+  have hC : landC 15 = 20 := by unfold landC; norm_num [hb, totient_11]
+  obtain ⟨hT, hE⟩ := landT_landE_of (a := 15) (e := 5) (t := 2)
+    (by decide) (by norm_num [hC])
+  unfold classify
+  rw [hE, hT, totient_15, totient_5]
+  decide
+
+/-- The classifier evaluated at `a = 13` returns `.gt` (forward):
+    `b = 7`, `C = 20 = 5·2^2`, `t = 2`, `e = 5`, and `φ(5)·2^1 = 8 < 12 = φ(13)`. -/
+theorem classify_13 : classify 13 = Ordering.gt := by
+  have hb : bSeed 13 = 7 := by unfold bSeed coStep; norm_num [totient_13]
+  have hC : landC 13 = 20 := by unfold landC; norm_num [hb, totient_7]
+  obtain ⟨hT, hE⟩ := landT_landE_of (a := 13) (e := 5) (t := 2)
+    (by decide) (by norm_num [hC])
+  unfold classify
+  rw [hE, hT, totient_13, totient_5]
+  decide
+
+/-- **The decision procedure decides all three regimes.**  Running the single
+    computable classifier on the seeds `21`, `15`, `13` (with all side-conditions
+    discharged by `decide`) reproduces the reversal, equality and forward families
+    with no hand-supplied `(e, t)` data — the extraction is fully automatic. -/
+theorem decision_procedure_classifies :
+    (∀ k, (21 * 2 ^ (k + 1)) ∈ ReversalSet) ∧
+    (∀ k, (15 * 2 ^ (k + 1)) ∈ EqualitySet) ∧
+    (∀ k, (13 * 2 ^ (k + 1)) ∈ ForwardSet) := by
+  have hb21 : bSeed 21 = 15 := by unfold bSeed coStep; norm_num [totient_21]
+  have hb15 : bSeed 15 = 11 := by unfold bSeed coStep; norm_num [totient_15]
+  have hb13 : bSeed 13 = 7 := by unfold bSeed coStep; norm_num [totient_13]
+  have hC21 : landC 21 = 34 := by unfold landC; norm_num [hb21, totient_15]
+  have hC15 : landC 15 = 20 := by unfold landC; norm_num [hb15, totient_11]
+  have hC13 : landC 13 = 20 := by unfold landC; norm_num [hb13, totient_7]
+  refine ⟨fun k => ?_, fun k => ?_, fun k => ?_⟩
+  · rw [mem_ReversalSet_iff_classify (a := 21) (by decide)
+        (by unfold coStep; norm_num [totient_21]) (by rw [hb21]; decide)
+        (by rw [hC21]; decide) (by rw [hC21]; decide) k]
+    exact classify_21
+  · rw [mem_EqualitySet_iff_classify (a := 15) (by decide)
+        (by unfold coStep; norm_num [totient_15]) (by rw [hb15]; decide)
+        (by rw [hC15]; decide) (by rw [hC15]; decide) k]
+    exact classify_15
+  · rw [mem_ForwardSet_iff_classify (a := 13) (by decide)
+        (by unfold coStep; norm_num [totient_13]) (by rw [hb13]; decide)
+        (by rw [hC13]; decide) (by rw [hC13]; decide) k]
+    exact classify_13
+
 end Erdos1064OQ03
