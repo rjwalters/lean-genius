@@ -45,7 +45,8 @@
       "The decisive feature of the Erdős #76 extremal coloring is not the cardinality split but the triangle-freeness of the between-class (cross) graph: a triangle-free color class contributes zero monochromatic triangles, so it can be 'sacrificed' for free.",
       "Triangle-freeness of a complete multipartite graph is governed entirely by the number of parts: a 3-clique is three pairwise adjacent vertices, i.e. three vertices in three pairwise distinct parts. With ≤ 2 parts the pigeonhole principle forbids this; with ≥ 3 parts a transversal triangle always exists.",
       "Hence the threshold is sharp at 2: the cross class is triangle-free exactly in the two-color regime. For k ≥ 3 colors, devoting one color to the cross edges of a k-partition fails because that color class itself contains triangles, so the 2-color extremal mechanism does not generalize.",
-      "Re-declaring the multipartite graph locally as a SimpleGraph keeps the contribution fully axiom-free and lets the result reuse Mathlib's CliqueFree / IsNClique API directly, making 'triangle-free' literally graph-theoretic rather than ad hoc."
+      "Re-declaring the multipartite graph locally as a SimpleGraph keeps the contribution fully axiom-free and lets the result reuse Mathlib's CliqueFree / IsNClique API directly, making 'triangle-free' literally graph-theoretic rather than ad hoc.",
+      "The dichotomy is the r = 2 slice of a clique-number identity: a clique in a complete multipartite graph is exactly a transversal (at most one vertex per part), so its clique number equals the number of parts, ω(multipartiteGraph part) = |image part|. Triangle-freeness (ω < 3) is just the ≤ 2-parts case; the identical injective-on-cliques argument gives CliqueFree (r+1) ⟺ the partition uses ≤ r parts for every r, with r = 2 the instance relevant to Erdős #76."
     ],
     "prerequisites": [
       "SimpleGraph basics and the clique API: SimpleGraph.CliqueFree, IsNClique (clique + cardinality), IsClique as Set.Pairwise Adj",
@@ -55,6 +56,14 @@
   },
   "sections": [
     {
+      "id": "overview",
+      "title": "Overview: Why the 2-Color Extremal Coloring Does Not Generalize",
+      "startLine": 1,
+      "endLine": 52,
+      "summary": "Module docstring stating Erdős #76 OQ-02 (does the 2-color extremal coloring extend to k colors?) and the answer this file gives: no. The decisive fact behind the balanced 2-coloring is that its cross class K_{n/2,n/2} is triangle-free; the natural k-color analogue devotes one color to the cross-part edges of a k-partition, and this file proves that cross class is triangle-free iff the partition uses ≤ 2 parts — so the mechanism is strictly two-color. Imports Mathlib, opens Finset and SimpleGraph.",
+      "mathContext": "The extremal #76 red class $K_{n/2,n/2}$ is triangle-free; the k-color analogue's cross class is triangle-free $\\iff$ at most 2 parts, so it fails for $k \\ge 3$."
+    },
+    {
       "id": "model",
       "title": "§I: The Cross-Part Color Class as a Complete Multipartite Graph",
       "startLine": 53,
@@ -63,12 +72,20 @@
       "mathContext": "For $\\beta = \\mathrm{Fin}\\,2$ this is the complete bipartite graph $K_{n/2,n/2}$ (the red class of the #76 balanced coloring); for $\\geq 3$ parts it is a general complete multipartite graph."
     },
     {
-      "id": "dichotomy",
-      "title": "§II: The Triangle / Part-Count Dichotomy",
+      "id": "triangle-iff-three-parts",
+      "title": "§II.a: A Transversal Triangle Exists iff ≥ 3 Parts",
       "startLine": 71,
+      "endLine": 118,
+      "summary": "not_cliqueFree_three_iff: multipartiteGraph part contains a triangle (¬ CliqueFree 3) iff the image of part has at least 3 values. The forward direction reads three pairwise-distinct parts off a 3-clique (the part map is injective on any clique, since same-part vertices are non-adjacent); the reverse builds a transversal triangle from three witnesses in three distinct parts.",
+      "mathContext": "$\\neg\\,\\mathrm{CliqueFree}\\;3 \\iff |\\mathrm{image}\\;\\mathit{part}| \\ge 3$: a triangle is a transversal of three distinct parts."
+    },
+    {
+      "id": "trianglefree-iff-two-parts",
+      "title": "§II.b: Triangle-Free iff ≤ 2 Parts",
+      "startLine": 119,
       "endLine": 143,
-      "summary": "not_cliqueFree_three_iff (a triangle exists iff ≥ 3 parts) and its repackaging cliqueFree_three_iff (triangle-free iff ≤ 2 parts).",
-      "mathContext": "A triangle is three vertices in three pairwise distinct parts; the part map is injective on any clique, so a triangle exists $\\iff |\\,\\mathrm{image}\\;\\mathit{part}\\,| \\geq 3$."
+      "summary": "cliqueFree_three_iff: the contrapositive repackaging — multipartiteGraph part is CliqueFree 3 (triangle-free) iff the image of part has at most 2 values. This is the exact structural statement that pins the triangle-free cross class to the two-color regime.",
+      "mathContext": "$\\mathrm{CliqueFree}\\;3 \\iff |\\mathrm{image}\\;\\mathit{part}| \\le 2$, the negation of §II.a."
     },
     {
       "id": "separation",
