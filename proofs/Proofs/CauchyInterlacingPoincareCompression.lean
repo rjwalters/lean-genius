@@ -654,4 +654,157 @@ theorem finrank_eigenspace_eq_add_compress_of_reducing {T : V →ₗ[𝕜] V}
     finrank_eigenspace_compress_eq_of_invariant H hH μ,
     finrank_eigenspace_compress_eq_of_invariant Hᗮ hHp μ]
 
+/-! ## The operator-theoretic root: reducing ⟺ commuting with the projection
+
+Every reducing-subspace result above (the spectrum union, the eigenspace direct
+sum, the multiplicity additivity) is a shadow of a single operator identity: `H`
+reduces `T` **iff** `T` commutes with the orthogonal projection `P_H`.  This
+section proves that characterisation and derives the block-diagonal
+reconstruction
+
+  `P_H T P_H + P_{Hᗮ} T P_{Hᗮ} = T`
+
+on a reducing subspace, together with its trace corollary.  Everything is
+symmetry-free — the projection `P_H := H.starProjection` is self-adjoint by
+construction, but the *operator* `T` is arbitrary. -/
+
+/-- Local characterisation of the kernel of an orthogonal projection: `P_H v = 0`
+iff `v ∈ Hᗮ`.  (Re-derived from the reconstruction identity
+`P_H v + P_{Hᗮ} v = v` so the section depends only on lemmas available at this
+Mathlib pin.) -/
+private theorem starProjection_eq_zero_iff_mem_orthogonal {H : Submodule 𝕜 V}
+    {v : V} : H.starProjection v = 0 ↔ v ∈ Hᗮ := by
+  have hadd : H.starProjection v + Hᗮ.starProjection v = v :=
+    H.starProjection_add_starProjection_orthogonal v
+  constructor
+  · intro h
+    rw [h, zero_add] at hadd
+    rw [← hadd]; exact Hᗮ.starProjection_apply_mem v
+  · intro hv
+    rw [Submodule.starProjection_eq_self_iff.mpr hv] at hadd
+    have h2 : H.starProjection v + v = 0 + v := by rw [zero_add]; exact hadd
+    exact add_right_cancel h2
+
+/-- **Reducing ⟹ commuting.**  If both `H` and `Hᗮ` are `T`-invariant then `T`
+commutes pointwise with the orthogonal projection `P_H := H.starProjection`:
+
+  `T (P_H v) = P_H (T v)`  for every `v`.
+
+Split `v = P_H v + P_{Hᗮ} v` with `P_H v ∈ H` and `P_{Hᗮ} v ∈ Hᗮ`.  Invariance
+sends `T (P_H v) ∈ H` and `T (P_{Hᗮ} v) ∈ Hᗮ`, so applying `P_H` to
+`T v = T (P_H v) + T (P_{Hᗮ} v)` keeps the first term (it already lies in `H`) and
+kills the second (it lies in `Hᗮ`), leaving exactly `T (P_H v)`. -/
+theorem commute_starProjection_of_reducing {T : V →ₗ[𝕜] V} (H : Submodule 𝕜 V)
+    (hH : ∀ y ∈ H, T y ∈ H) (hHp : ∀ y ∈ Hᗮ, T y ∈ Hᗮ) (v : V) :
+    T (H.starProjection v) = H.starProjection (T v) := by
+  set a := H.starProjection v with ha_def
+  set b := Hᗮ.starProjection v with hb_def
+  have hab : a + b = v := H.starProjection_add_starProjection_orthogonal v
+  have haH : a ∈ H := H.starProjection_apply_mem v
+  have hbHp : b ∈ Hᗮ := Hᗮ.starProjection_apply_mem v
+  have hTaH : T a ∈ H := hH a haH
+  have hTbHp : T b ∈ Hᗮ := hHp b hbHp
+  have hTv : T v = T a + T b := by rw [← hab, map_add]
+  rw [hTv, map_add, Submodule.starProjection_eq_self_iff.mpr hTaH,
+    starProjection_eq_zero_iff_mem_orthogonal.mpr hTbHp, add_zero]
+
+/-- **Commuting ⟹ reducing.**  If `T` commutes with the orthogonal projection
+`P_H` (pointwise, `T (P_H v) = P_H (T v)` for all `v`), then both `H` and `Hᗮ`
+are `T`-invariant, i.e. `H` reduces `T`.
+
+For `y ∈ H`, `P_H y = y`, so `P_H (T y) = T (P_H y) = T y`, hence `T y ∈ H`.  For
+`y ∈ Hᗮ`, `P_H y = 0`, so `P_H (T y) = T (P_H y) = 0`, hence `T y ∈ Hᗮ`. -/
+theorem reducing_of_commute_starProjection {T : V →ₗ[𝕜] V} (H : Submodule 𝕜 V)
+    (hcomm : ∀ v, T (H.starProjection v) = H.starProjection (T v)) :
+    (∀ y ∈ H, T y ∈ H) ∧ (∀ y ∈ Hᗮ, T y ∈ Hᗮ) := by
+  refine ⟨fun y hy => ?_, fun y hy => ?_⟩
+  · have h : H.starProjection (T y) = T y := by
+      rw [← hcomm y, Submodule.starProjection_eq_self_iff.mpr hy]
+    exact Submodule.starProjection_eq_self_iff.mp h
+  · have h : H.starProjection (T y) = 0 := by
+      rw [← hcomm y, starProjection_eq_zero_iff_mem_orthogonal.mpr hy, map_zero]
+    exact starProjection_eq_zero_iff_mem_orthogonal.mp h
+
+/-- **Reducing subspaces are exactly the projection-commutants (characterisation).**
+
+The operator-theoretic heart of every reducing-subspace result in this file: a
+subspace `H` reduces `T` — both `H` and `Hᗮ` are `T`-invariant — *iff* `T`
+commutes with the orthogonal projection `P_H := H.starProjection`:
+
+  `(∀ y ∈ H, T y ∈ H) ∧ (∀ y ∈ Hᗮ, T y ∈ Hᗮ)  ↔  ∀ v, T (P_H v) = P_H (T v)`.
+
+Forward is `commute_starProjection_of_reducing`, backward is
+`reducing_of_commute_starProjection`.  No symmetry of `T` is used; the only
+self-adjointness in play is that of the projection itself.  This is the textbook
+"`H` reduces `T` ⟺ `PT = TP`" for a self-adjoint projection `P = P_H`. -/
+theorem reducing_iff_commute_starProjection {T : V →ₗ[𝕜] V} (H : Submodule 𝕜 V) :
+    ((∀ y ∈ H, T y ∈ H) ∧ (∀ y ∈ Hᗮ, T y ∈ Hᗮ)) ↔
+      ∀ v, T (H.starProjection v) = H.starProjection (T v) :=
+  ⟨fun h => commute_starProjection_of_reducing H h.1 h.2,
+    reducing_of_commute_starProjection H⟩
+
+/-- **Block-diagonal reconstruction (pointwise).**
+
+On a reducing subspace the two orthogonal compressions reassemble `T` exactly:
+
+  `P_H (T (P_H v)) + P_{Hᗮ} (T (P_{Hᗮ} v)) = T v`  for every `v`.
+
+Using `commute_starProjection_of_reducing` on each block, `P_H (T (P_H v))`
+collapses to `P_H (P_H (T v)) = P_H (T v)` (idempotence of the projection), and
+likewise for `Hᗮ`; the two pieces sum to `T v` by
+`starProjection_add_starProjection_orthogonal`.  (That `Hᗮ` also reduces `T` uses
+`Hᗮᗮ = H`.)  This is the operator-level statement whose diagonal blocks are the
+compressions `compress T H` and `compress T Hᗮ`, and whose spectral shadow is
+`spectrum_eq_union_of_reducing`. -/
+theorem starProjection_compress_add_orthogonal_eq_of_reducing {T : V →ₗ[𝕜] V}
+    (H : Submodule 𝕜 V) (hH : ∀ y ∈ H, T y ∈ H) (hHp : ∀ y ∈ Hᗮ, T y ∈ Hᗮ)
+    (v : V) :
+    H.starProjection (T (H.starProjection v)) +
+        Hᗮ.starProjection (T (Hᗮ.starProjection v)) = T v := by
+  have hcH := commute_starProjection_of_reducing H hH hHp v
+  -- `Hᗮ` also reduces `T`: `Hᗮ` is invariant and `(Hᗮ)ᗮ = H` is invariant.
+  have hHpp : ∀ y ∈ Hᗮᗮ, T y ∈ Hᗮᗮ := by rw [H.orthogonal_orthogonal]; exact hH
+  have hcHp := commute_starProjection_of_reducing Hᗮ hHp hHpp v
+  rw [hcH, hcHp,
+    Submodule.starProjection_eq_self_iff.mpr (H.starProjection_apply_mem (T v)),
+    Submodule.starProjection_eq_self_iff.mpr (Hᗮ.starProjection_apply_mem (T v))]
+  exact H.starProjection_add_starProjection_orthogonal (T v)
+
+/-- **Block-diagonal reconstruction (operator form).**
+
+The operator identity behind `starProjection_compress_add_orthogonal_eq_of_reducing`:
+on a reducing subspace the ambient compressions `P_H ∘ T ∘ P_H` and
+`P_{Hᗮ} ∘ T ∘ P_{Hᗮ}` sum to `T` as endomorphisms of `V`. -/
+theorem starProjection_compress_add_orthogonal_op_eq_of_reducing {T : V →ₗ[𝕜] V}
+    (H : Submodule 𝕜 V) (hH : ∀ y ∈ H, T y ∈ H) (hHp : ∀ y ∈ Hᗮ, T y ∈ Hᗮ) :
+    (H.starProjection.toLinearMap ∘ₗ T ∘ₗ H.starProjection.toLinearMap) +
+        (Hᗮ.starProjection.toLinearMap ∘ₗ T ∘ₗ Hᗮ.starProjection.toLinearMap) = T := by
+  ext v
+  simp only [LinearMap.add_apply, LinearMap.comp_apply, ContinuousLinearMap.coe_coe]
+  exact starProjection_compress_add_orthogonal_eq_of_reducing H hH hHp v
+
+/-- **Trace additivity over a reducing subspace.**
+
+Taking the trace of the block-diagonal reconstruction
+(`starProjection_compress_add_orthogonal_op_eq_of_reducing`) gives that the trace
+of `T` splits as the sum of the traces of its two ambient compression blocks:
+
+  `tr T = tr (P_H T P_H) + tr (P_{Hᗮ} T P_{Hᗮ})`.
+
+The concrete invariant-level form of the block-diagonal picture, and the trace
+analogue of the multiplicity additivity `finrank_eigenspace_eq_add_of_reducing`.
+Symmetry-free. -/
+theorem trace_eq_add_starProjection_compress_of_reducing {T : V →ₗ[𝕜] V}
+    (H : Submodule 𝕜 V) (hH : ∀ y ∈ H, T y ∈ H) (hHp : ∀ y ∈ Hᗮ, T y ∈ Hᗮ) :
+    LinearMap.trace 𝕜 V T =
+      LinearMap.trace 𝕜 V
+          (H.starProjection.toLinearMap ∘ₗ T ∘ₗ H.starProjection.toLinearMap) +
+        LinearMap.trace 𝕜 V
+          (Hᗮ.starProjection.toLinearMap ∘ₗ T ∘ₗ Hᗮ.starProjection.toLinearMap) := by
+  have h := (LinearMap.trace 𝕜 V).map_add
+    (H.starProjection.toLinearMap ∘ₗ T ∘ₗ H.starProjection.toLinearMap)
+    (Hᗮ.starProjection.toLinearMap ∘ₗ T ∘ₗ Hᗮ.starProjection.toLinearMap)
+  rw [starProjection_compress_add_orthogonal_op_eq_of_reducing H hH hHp] at h
+  exact h
+
 end CauchyInterlacing.PoincareCompression
