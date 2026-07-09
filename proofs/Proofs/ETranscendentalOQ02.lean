@@ -1199,12 +1199,14 @@ theorem exists_factorial_window {n : ℕ} (hn : 1 ≤ n) :
     exact Nat.not_lt.mp hmin
 
 open scoped Nat in
-/-- **Exact floor of `bⁿ · (base-b Liouville constant)`.**
+/-- **Exact floor of `bⁿ · (base-b Liouville constant)`** (any base `b ≥ 2`).
 For `k ! ≤ n < (k+1)!` the value `bⁿ · liouvilleNumber b` has integer part
 `∑_{i=0}^{k} b^(n - i!)`: the partial sum contributes an integer (all exponents
-`n - i!` are non-negative) and the remainder tail is `< 1` (Mathlib's
-`remainder_lt'` gives `bⁿ · remainder < 2/b ≤ 2/3 < 1` when `b ≥ 3`). -/
-theorem liouvilleNumber_floor {b : ℕ} (hb : 3 ≤ b) {k n : ℕ}
+`n - i!` are non-negative) and the remainder tail is `< 1`. Mathlib's *strict*
+`remainder_lt'` gives `remainder < 2 / b^((k+1)!)`, and `2·bⁿ ≤ b^((k+1)!)`
+(as `n + 1 ≤ (k+1)!`), so `bⁿ · remainder < 1` even in the tight base-`2` case
+where `2·bⁿ = b^(n+1)` meets the bound with equality. -/
+theorem liouvilleNumber_floor {b : ℕ} (hb : 2 ≤ b) {k n : ℕ}
     (hk_le : k ! ≤ n) (hk_lt : n < (k + 1)!) :
     ⌊(b : ℝ) ^ n * liouvilleNumber (b : ℝ)⌋
       = ∑ i ∈ Finset.range (k + 1), (b : ℤ) ^ (n - i !) := by
@@ -1227,26 +1229,28 @@ theorem liouvilleNumber_floor {b : ℕ} (hb : 3 ≤ b) {k n : ℕ}
     mul_nonneg (by positivity) (le_of_lt (LiouvilleNumber.remainder_pos hb1 k))
   have hrem_lt : (b : ℝ) ^ n * LiouvilleNumber.remainder (b : ℝ) k < 1 := by
     have hR := LiouvilleNumber.remainder_lt' k hb1
-    have hbn : (0 : ℝ) ≤ (b : ℝ) ^ n := by positivity
-    -- Tail bound: remainder ≤ 2 / b^((k+1)!).
-    have hstep : LiouvilleNumber.remainder (b : ℝ) k ≤ 2 / (b : ℝ) ^ (k + 1)! := by
+    have hbn : (0 : ℝ) < (b : ℝ) ^ n := by positivity
+    -- *Strict* tail bound: remainder < 2 / b^((k+1)!) (from the strict `remainder_lt'`).
+    have hstep : LiouvilleNumber.remainder (b : ℝ) k < 2 / (b : ℝ) ^ (k + 1)! := by
       calc LiouvilleNumber.remainder (b : ℝ) k
-          ≤ (1 - 1 / (b : ℝ))⁻¹ * (1 / (b : ℝ) ^ (k + 1)!) := le_of_lt hR
+          < (1 - 1 / (b : ℝ))⁻¹ * (1 / (b : ℝ) ^ (k + 1)!) := hR
         _ ≤ 2 * (1 / (b : ℝ) ^ (k + 1)!) := by
             gcongr; exact sub_one_div_inv_le_two hb2R
         _ = 2 / (b : ℝ) ^ (k + 1)! := by rw [mul_one_div]
-    -- Polynomial gap: 2·bⁿ < b^((k+1)!) since (k+1)! ≥ n+1 and b ≥ 3.
-    have hexp : 2 * (b : ℝ) ^ n < (b : ℝ) ^ (k + 1)! := by
+    -- *Non-strict* polynomial gap: 2·bⁿ ≤ b^((k+1)!) since (k+1)! ≥ n+1 and b ≥ 2.
+    -- (For b = 2 the first step is an equality — this is why the tail bound must
+    -- carry the strictness instead.)
+    have hexp : 2 * (b : ℝ) ^ n ≤ (b : ℝ) ^ (k + 1)! := by
       calc 2 * (b : ℝ) ^ n
-          < (b : ℝ) * (b : ℝ) ^ n := by
-            apply mul_lt_mul_of_pos_right _ (by positivity)
-            exact_mod_cast (by omega : (2 : ℕ) < b)
+          ≤ (b : ℝ) * (b : ℝ) ^ n := by
+            apply mul_le_mul_of_nonneg_right _ (by positivity)
+            exact_mod_cast (by omega : (2 : ℕ) ≤ b)
         _ = (b : ℝ) ^ (n + 1) := by rw [pow_succ, mul_comm]
         _ ≤ (b : ℝ) ^ (k + 1)! := pow_le_pow_right₀ hb1.le (by omega)
-    have key : (b : ℝ) ^ n * (2 / (b : ℝ) ^ (k + 1)!) < 1 := by
-      rw [← mul_div_assoc, div_lt_one (by positivity)]
+    have key : (b : ℝ) ^ n * (2 / (b : ℝ) ^ (k + 1)!) ≤ 1 := by
+      rw [← mul_div_assoc, div_le_one (by positivity)]
       linarith [hexp]
-    exact lt_of_le_of_lt (mul_le_mul_of_nonneg_left hstep hbn) key
+    exact lt_of_lt_of_le (mul_lt_mul_of_pos_left hstep hbn) key
   -- Assemble: bⁿ·x = P + (small tail), so the floor is P.
   have hsplit : (b : ℝ) ^ n * liouvilleNumber (b : ℝ)
       = (P : ℝ) + (b : ℝ) ^ n * LiouvilleNumber.remainder (b : ℝ) k := by
@@ -1260,7 +1264,7 @@ open scoped Nat in
 /-- **Every base-b digit of the Liouville constant (from position 2 on) is 0 or 1.**
 Consequently it is never equal to `2`. This is the digit obstruction that
 forbids normality. -/
-theorem liouvilleNumber_digit_le_one {b : ℕ} (hb : 3 ≤ b) {k n : ℕ}
+theorem liouvilleNumber_digit_le_one {b : ℕ} (hb : 2 ≤ b) {k n : ℕ}
     (hk_le : k ! ≤ n) (hk_lt : n < (k + 1)!) (hn : 2 ≤ n) :
     (⌊(b : ℝ) ^ n * liouvilleNumber (b : ℝ)⌋) % (b : ℤ) ≤ 1 := by
   rw [liouvilleNumber_floor hb hk_le hk_lt, Finset.sum_range_succ]
@@ -1308,7 +1312,7 @@ theorem liouvilleNumber_not_normal {b : ℕ} (hb : 3 ≤ b) :
     (⟨2, h2b⟩ : Fin b) 2 ?_
   intro n hn
   obtain ⟨k, hk_le, hk_lt⟩ := exists_factorial_window (by omega : 1 ≤ n)
-  have hdig := liouvilleNumber_digit_le_one hb hk_le hk_lt (by omega : 2 ≤ n)
+  have hdig := liouvilleNumber_digit_le_one hb2 hk_le hk_lt (by omega : 2 ≤ n)
   have hval : ((⟨2, h2b⟩ : Fin b) : ℤ) = 2 := by simp
   rw [hval]
   unfold nthDigit
@@ -1332,5 +1336,119 @@ theorem irrational_not_imp_normal :
   intro h
   obtain ⟨x, hx_irr, hx_not⟩ := exists_irrational_not_normal (b := 3) (by norm_num)
   exact hx_not (h 3 (by norm_num) x hx_irr)
+
+-- ============================================================
+-- PART VII: BASE-2 DIGIT STRUCTURE OF THE LIOUVILLE CONSTANT
+-- ============================================================
+
+/-!
+The `b ≥ 3` witness above rules out normality via a *missing* digit (`2` never
+occurs). That obstruction is unavailable in **base 2**: an irrational real must
+use both digits `0` and `1` infinitely often, so no digit is eventually absent.
+Base-2 non-normality is therefore genuinely a job for the *frequency* criterion
+(`not_normal_of_digit_freq_tendsto_ne`), not the absence criterion — the digit
+`1` occurs, but only with density `0`.
+
+The results below pin down the exact base-`b` digit structure of the Liouville
+constant (`liouvilleNumber_window_digit`) and specialise it to base `2`
+(`liouvilleNumber_base_two_one_iff`): from position `2` on, the digit `1` occurs
+**exactly at the factorial positions** `n = k !`, everything else being `0`.
+This is the decisive structural input for base-`2` sharpness; what remains is the
+purely analytic fact that the factorial positions have density `0`
+(see the closing note).
+-/
+
+open scoped Nat in
+/-- **Exact base-`b` digit of the Liouville constant at a window position**
+    (any base `b ≥ 2`). If `k ! ≤ n < (k+1)!` and `n ≥ 2`, then the `n`-th
+    base-`b` digit of `liouvilleNumber b` is `1` when `n = k !` and `0`
+    otherwise. Strengthens `liouvilleNumber_digit_le_one` from the bound `≤ 1`
+    to the exact value, and shows every digit of the Liouville constant is `0`
+    or `1` in every base. -/
+theorem liouvilleNumber_window_digit {b : ℕ} (hb : 2 ≤ b) {k n : ℕ}
+    (hk_le : k ! ≤ n) (hk_lt : n < (k + 1)!) (hn : 2 ≤ n) :
+    nthDigit b n (liouvilleNumber (b : ℝ)) = if n = k ! then 1 else 0 := by
+  unfold nthDigit
+  rw [liouvilleNumber_floor hb hk_le hk_lt, Finset.sum_range_succ]
+  -- Lower-index terms are all divisible by `b` (their exponents are ≥ 1).
+  have hdvd : (b : ℤ) ∣ ∑ i ∈ Finset.range k, (b : ℤ) ^ (n - i !) := by
+    apply Finset.dvd_sum
+    intro i hi
+    have hi_lt_k : i < k := Finset.mem_range.mp hi
+    have hik : i ! < n := by
+      rcases Nat.eq_zero_or_pos i with h0 | hp
+      · rw [h0, Nat.factorial_zero]; omega
+      · calc i ! < k ! := (Nat.factorial_lt hp).mpr hi_lt_k
+          _ ≤ n := hk_le
+    exact dvd_pow_self (b : ℤ) (by omega : n - i ! ≠ 0)
+  obtain ⟨c, hc⟩ := hdvd
+  rw [hc, add_comm, Int.add_mul_emod_self_left]
+  -- Only the top term `b^(n - k!)` survives: residue `1` if `n = k!`, else `0`.
+  rcases eq_or_lt_of_le hk_le with heq | hlt
+  · -- n = k!
+    have hz : n - k ! = 0 := by omega
+    rw [hz, pow_zero, if_pos heq.symm]
+    exact Int.emod_eq_of_lt (by norm_num) (by exact_mod_cast (by omega : (1 : ℕ) < b))
+  · -- k! < n : the exponent is ≥ 1, so `b` divides the term.
+    obtain ⟨d, hd⟩ := dvd_pow_self (b : ℤ) (by omega : n - k ! ≠ 0)
+    rw [if_neg (by omega : n ≠ k !), hd, Int.mul_emod_right]
+
+open scoped Nat in
+/-- **Base-2 digit structure of the Liouville constant.** From position `2`
+    onwards, the digit `1` of `liouvilleNumber 2` occurs exactly at the
+    factorial positions: `nthDigit 2 n (liouvilleNumber 2) = 1 ↔ n = k !` for
+    some `k`. Every other digit (from position `2` on) is `0`. -/
+theorem liouvilleNumber_base_two_one_iff {n : ℕ} (hn : 2 ≤ n) :
+    nthDigit 2 n (liouvilleNumber (2 : ℝ)) = 1 ↔ ∃ k, k ! = n := by
+  obtain ⟨k, hk_le, hk_lt⟩ := exists_factorial_window (by omega : 1 ≤ n)
+  have hcast : ((2 : ℕ) : ℝ) = (2 : ℝ) := by norm_num
+  rw [← hcast, liouvilleNumber_window_digit (b := 2) (by norm_num) hk_le hk_lt hn]
+  constructor
+  · intro h
+    split_ifs at h with he
+    · exact ⟨k, he.symm⟩
+    · exact absurd h (by norm_num)
+  · rintro ⟨j, hj⟩
+    -- The factorial window is unique: `n = j !` forces `k = j`, so `n = k !`.
+    have hj2 : 2 ≤ j := by
+      by_contra hlt
+      push_neg at hlt
+      interval_cases j
+      · rw [Nat.factorial_zero] at hj; omega
+      · rw [Nat.factorial_one] at hj; omega
+    have hjpos : 0 < j := by omega
+    have hkj : k = j := by
+      rcases lt_trichotomy k j with h | h | h
+      · -- k < j : (k+1)! ≤ j! = n < (k+1)!, contradiction
+        have h1 : (k + 1)! ≤ j ! := Nat.factorial_le (by omega)
+        rw [hj] at h1; omega
+      · exact h
+      · -- j < k : (j+1)! ≤ k! ≤ n = j! < (j+1)!, contradiction
+        have h1 : (j + 1)! ≤ k ! := Nat.factorial_le (by omega)
+        have h2 : j ! < (j + 1)! := (Nat.factorial_lt hjpos).mpr (Nat.lt_succ_self j)
+        omega
+    rw [if_pos (by rw [hkj, hj])]
+
+/-!
+### Remaining step for base-2 sharpness
+
+`liouvilleNumber_base_two_one_iff` reduces base-`2` non-normality of the
+Liouville constant to a single analytic fact: the factorial positions
+`{n : ∃ k, k ! = n}` have **natural density `0`**, i.e.
+
+  `Tendsto (fun N => (#{n < N | nthDigit 2 n L = 1} : ℝ) / N) atTop (𝓝 0)`.
+
+Given that, `not_normal_of_digit_freq_tendsto_ne 2 (by norm_num) L 1 0 …`
+(frequency `0 ≠ 2⁻¹`) yields `¬ IsNormalInBase 2 L`, completing
+`exists_irrational_not_normal` down to base `2` and giving the frequency
+criterion its first genuine application (the absence criterion is provably
+powerless here, since an irrational base-2 number omits no digit).
+
+The density fact is elementary but not free in Lean: the `1`-positions inject
+into `{k | k ! < N}`, whose cardinality is `≤ Nat.log 2 N + O(1)` (as
+`k ! ≥ 2^(k-1)`), and `Nat.log 2 N / N → 0`. Formalising `Nat.log 2 N / N → 0`
+(≈ `Real.log`-is-`o(id)` transported through `Nat.pow_log_le_self`) is the next
+session's target.
+-/
 
 end ETranscendentalOQ02
