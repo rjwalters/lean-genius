@@ -20,23 +20,35 @@
   "mainTheorems": [
     {
       "name": "hasTriangle_induce",
-      "type": "theorem",
-      "description": "A triangle in an induced subgraph is a triangle of the ambient graph: (G.induce S).hasTriangle → G.hasTriangle, since induced adjacency entails ambient adjacency."
+      "type": "core",
+      "description": "A triangle in an induced subgraph is a triangle of the ambient graph: (G.induce S).hasTriangle → G.hasTriangle, since induced adjacency entails ambient adjacency.",
+      "leanType": "{n : ℕ} (G : Graph n) (S : Finset (Fin n)) (h : (G.induce S).hasTriangle) : G.hasTriangle",
+      "startLine": 75,
+      "endLine": 78
     },
     {
       "name": "triangleFree_induce",
-      "type": "theorem",
-      "description": "Triangle-freeness is hereditary: every induced subgraph of a triangle-free graph is triangle-free — the contrapositive of hasTriangle_induce, and why the C5-blow-up extremal witnesses stay triangle-free."
+      "type": "core",
+      "description": "Triangle-freeness is hereditary: every induced subgraph of a triangle-free graph is triangle-free — the contrapositive of hasTriangle_induce, and why the C5-blow-up extremal witnesses stay triangle-free.",
+      "leanType": "{n : ℕ} (G : Graph n) (S : Finset (Fin n)) (hG : G.triangleFree) : (G.induce S).triangleFree",
+      "startLine": 82,
+      "endLine": 84
     },
     {
       "name": "edgeCount_induce_le",
-      "type": "theorem",
-      "description": "The edge count is monotone under taking induced subgraphs: (G.induce S).edgeCount ≤ G.edgeCount, since inducing only deletes edges."
+      "type": "core",
+      "description": "The edge count is monotone under taking induced subgraphs: (G.induce S).edgeCount ≤ G.edgeCount, since inducing only deletes edges.",
+      "leanType": "{n : ℕ} (G : Graph n) (S : Finset (Fin n)) : (G.induce S).edgeCount ≤ G.edgeCount",
+      "startLine": 88,
+      "endLine": 93
     },
     {
       "name": "triangleFree_of_no_edges",
-      "type": "theorem",
-      "description": "Degenerate base case: a graph whose adjacency is everywhere false is triangle-free."
+      "type": "supporting",
+      "description": "Degenerate base case: a graph whose adjacency is everywhere false is triangle-free.",
+      "leanType": "{n : ℕ} (G : Graph n) (hG : ∀ u v, ¬ G.adj u v) : G.triangleFree",
+      "startLine": 97,
+      "endLine": 100
     }
   ],
   "description": "Supplies the first theorems for Erdős Problem #128 ($250, OPEN: if every induced subgraph on >= floor(n/2) vertices has more than n^2/50 edges, must G contain a triangle?). The scaffold Erdos128Problem.lean sets up the objects (Graph, edgeCount, induce, hasTriangle, triangleFree, denseSubgraphs) and records the known partial results (EFRS 1/16, Krivelevich, Razborov 27/1024, Norin-Yepremyan) as prose but proves no theorems, and currently fails to build (a missing DecidablePred instance for the edge-count filter and trailing docstrings). This entry, self-contained (re-declaring the objects with classical decidability), proves the two monotonicity properties of the induced-subgraph operation that any analysis uses: a triangle in an induced subgraph is a triangle of the ambient graph (hasTriangle_induce); hence triangle-freeness is hereditary (triangleFree_induce) -- exactly why the extremal C5-blow-up witnesses are triangle-free; the edge count is monotone, an induced subgraph has no more edges than the whole graph (edgeCount_induce_le); and a graph with no edges is triangle-free (triangleFree_of_no_edges). 4 theorems, 4 definitions + 1 structure, 0 sorries, 0 axioms.",
