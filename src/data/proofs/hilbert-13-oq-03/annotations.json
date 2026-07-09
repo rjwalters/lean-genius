@@ -90,5 +90,17 @@
       "continuity of coordinate projections",
       "Function.ne_iff"
     ]
+  },
+  {
+    "id": "ann-h13oq03-bundled-sternfeld",
+    "proofId": "hilbert-13-oq-03",
+    "range": { "startLine": 183, "endLine": 213 },
+    "type": "insight",
+    "title": "The Bundled Necessary Condition, and the Sternfeld Gap",
+    "content": "feature_must_separate_points is the strongest necessary statement at this generality: if the inner feature map kaFeature φ coeff admits a continuous outer representation for EVERY continuous f, then the feature map must itself be injective — the inner family must separate the points of the cube (via feature_injective_of_universal composed with separates_of_pi). The closing remark draws the honest boundary: injectivity of the inner feature map (equivalently each φ_p injective plus the coefficient combination separating points) is NECESSARY but NOT SUFFICIENT. Sternfeld (1985) proved that a continuous outer reconstruction for all continuous f requires a strictly stronger UNIFORM separation condition (no two distinct points may be asymptotically merged); mere injectivity permits the outer functions to demand unbounded oscillation and lose continuity. So this entry pins down the FLOOR of the requirements — point separation — while the exact admissibility threshold is the deeper Sternfeld criterion, deliberately not formalized here. The #check block lists the seven exported results.",
+    "mathContext": "$(\\forall f\\ \\text{cont.},\\ \\mathrm{OuterRepresentable}(\\Psi,f)) \\Rightarrow \\Psi=\\mathrm{kaFeature}\\ \\varphi\\ \\mathrm{coeff}\\ \\text{injective}$. Necessary (point separation) but not sufficient — Sternfeld's uniform separation is the true threshold.",
+    "significance": "key",
+    "relatedConcepts": ["Kolmogorov–Arnold representation", "Hilbert's 13th problem", "Sternfeld's uniform separation (1985)", "necessity vs. sufficiency", "point-separating maps"],
+    "prerequisites": ["feature_injective_of_universal", "separates_of_pi", "continuity of the outer reconstruction"]
   }
 ]
