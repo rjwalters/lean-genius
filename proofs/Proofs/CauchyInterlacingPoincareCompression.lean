@@ -535,4 +535,123 @@ theorem finrank_eigenspace_eq_add_of_reducing {T : V →ₗ[𝕜] V} (H : Submod
   rwa [eigenspace_inf_reducing_disjoint H μ, finrank_bot, add_zero,
     ← eigenspace_eq_sup_inf_of_reducing H hH hHp μ] at h
 
+/-! ## Blockwise eigenspaces: exact multiplicity of a compression on an invariant block
+
+The results above compare *ambient* eigenspaces (`eigenspace T μ ⊓ H` etc.).  The
+final step identifies those pieces with the eigenspaces of the compression
+operators themselves, turning the multiplicity bookkeeping into an honest
+statement about `compress T H` as an operator on `H`.
+
+On a `T`-invariant subspace `H`, the coercion `H → V` carries the `μ`-eigenspace
+of the compression `compress T H` isomorphically onto `eigenspace T μ ⊓ H`: a
+compression-eigenvector `v : H` lifts to the ambient `T`-eigenvector `↑v ∈ H`
+(`coe_compress_of_invariant`), and conversely every ambient `μ`-eigenvector lying
+in `H` is a compression-eigenvector (`compress T H = T` on the invariant block).
+Taking dimensions gives the *exact* blockwise multiplicity, and combining the two
+blocks of a reducing pair yields the with-multiplicity spectral decomposition:
+
+  `dim (eigenspace T μ)
+     = dim (eigenspace (compress T H) μ) + dim (eigenspace (compress T Hᗮ) μ)`,
+
+the multiplicity-aware refinement of `spectrum_eq_union_of_reducing`.  Everything
+remains symmetry-free. -/
+
+/-- **The compression's `μ`-eigenspace maps onto `eigenspace T μ ⊓ H` on an
+invariant block.**
+
+If `H` is `T`-invariant, the coercion `H.subtype : H → V` sends the `μ`-eigenspace
+of `compress T H` exactly onto `eigenspace T μ ⊓ H`:
+
+  `(eigenspace (compress T H) μ).map H.subtype = eigenspace T μ ⊓ H`.
+
+Forward: a compression-eigenvector `v` transports to `T ↑v = μ • ↑v` via
+`coe_compress_of_invariant`, and `↑v ∈ H` automatically.  Backward: an ambient
+`μ`-eigenvector `w ∈ H` gives `compress T H ⟨w,·⟩ = μ • ⟨w,·⟩`, again because the
+compression acts by `T` on the invariant block.  No symmetry of `T` is used. -/
+theorem map_eigenspace_compress_eq_inf_of_invariant {T : V →ₗ[𝕜] V}
+    (H : Submodule 𝕜 V) (hinv : ∀ y ∈ H, T y ∈ H) (μ : 𝕜) :
+    (Module.End.eigenspace (compress T H) μ).map H.subtype
+      = Module.End.eigenspace T μ ⊓ H := by
+  apply le_antisymm
+  · rintro w hw
+    obtain ⟨v, hv, rfl⟩ := Submodule.mem_map.mp hw
+    have hcv : compress T H v = μ • v := Module.End.mem_eigenspace_iff.mp hv
+    have hcoe : T (v : V) = μ • (v : V) := by
+      have h := coe_compress_of_invariant H hinv v
+      rw [hcv] at h; simpa using h.symm
+    exact Submodule.mem_inf.mpr ⟨Module.End.mem_eigenspace_iff.mpr hcoe, v.2⟩
+  · intro w hw
+    obtain ⟨hwE, hwH⟩ := Submodule.mem_inf.mp hw
+    have hTw : T w = μ • w := Module.End.mem_eigenspace_iff.mp hwE
+    have hcoe : ((compress T H ⟨w, hwH⟩ : H) : V) = μ • w := by
+      rw [coe_compress_of_invariant H hinv ⟨w, hwH⟩]; exact hTw
+    have hev : compress T H ⟨w, hwH⟩ = μ • (⟨w, hwH⟩ : H) :=
+      Subtype.ext (by rw [hcoe, Submodule.coe_smul])
+    exact Submodule.mem_map.mpr
+      ⟨⟨w, hwH⟩, Module.End.mem_eigenspace_iff.mpr hev, rfl⟩
+
+/-- **Exact blockwise multiplicity on an invariant subspace.**
+
+On a `T`-invariant `H`, the algebraic multiplicity of `μ` for the compression
+`compress T H` equals the dimension of the ambient eigenspace *intersected with
+the block*:
+
+  `dim (eigenspace (compress T H) μ) = dim (eigenspace T μ ⊓ H)`.
+
+Immediate from `map_eigenspace_compress_eq_inf_of_invariant` via the injective
+coercion `H.subtype` (`Submodule.equivMapOfInjective`), which is a linear
+isomorphism onto its image. -/
+theorem finrank_eigenspace_compress_eq_of_invariant {T : V →ₗ[𝕜] V}
+    (H : Submodule 𝕜 V) (hinv : ∀ y ∈ H, T y ∈ H) (μ : 𝕜) :
+    Module.finrank 𝕜 (Module.End.eigenspace (compress T H) μ)
+      = Module.finrank 𝕜 (Module.End.eigenspace T μ ⊓ H : Submodule 𝕜 V) := by
+  have e := (Submodule.equivMapOfInjective H.subtype
+    (LinearMap.ker_eq_bot.mp (Submodule.ker_subtype H))
+    (Module.End.eigenspace (compress T H) μ)).finrank_eq
+  rw [map_eigenspace_compress_eq_inf_of_invariant H hinv μ] at e
+  exact e
+
+/-- **Multiplicity monotonicity of a compression on an invariant subspace.**
+
+The multiplicity-level refinement of `spectrum_compress_subset_of_invariant`: on a
+`T`-invariant `H` the algebraic multiplicity of every `μ` for the compression is
+bounded by its ambient multiplicity,
+
+  `dim (eigenspace (compress T H) μ) ≤ dim (eigenspace T μ)`.
+
+Combine `finrank_eigenspace_compress_eq_of_invariant` with the trivial inclusion
+`eigenspace T μ ⊓ H ≤ eigenspace T μ`.  This is the honest "sub-multiset" form of
+the spectrum inclusion — no eigenvalue's multiplicity can grow under compression
+onto an invariant block. -/
+theorem finrank_eigenspace_compress_le_of_invariant {T : V →ₗ[𝕜] V}
+    (H : Submodule 𝕜 V) (hinv : ∀ y ∈ H, T y ∈ H) (μ : 𝕜) :
+    Module.finrank 𝕜 (Module.End.eigenspace (compress T H) μ)
+      ≤ Module.finrank 𝕜 (Module.End.eigenspace T μ) := by
+  rw [finrank_eigenspace_compress_eq_of_invariant H hinv μ]
+  exact Submodule.finrank_mono inf_le_left
+
+/-- **With-multiplicity spectral decomposition over a reducing subspace.**
+
+The multiplicity-aware capstone: if `H` reduces `T` (both `H` and `Hᗮ` are
+`T`-invariant), then for every `μ` the algebraic multiplicity of `μ` for `T` is
+the *sum* of its multiplicities for the two compression blocks,
+
+  `dim (eigenspace T μ)
+     = dim (eigenspace (compress T H) μ) + dim (eigenspace (compress T Hᗮ) μ)`.
+
+This is the eigenspace-level refinement of `spectrum_eq_union_of_reducing`: the
+set-level union is upgraded to an exact multiplicity identity.  Immediate from
+`finrank_eigenspace_eq_add_of_reducing` (multiplicity additivity over the ambient
+blocks) rewritten through `finrank_eigenspace_compress_eq_of_invariant` on each
+block.  Symmetry-free. -/
+theorem finrank_eigenspace_eq_add_compress_of_reducing {T : V →ₗ[𝕜] V}
+    (H : Submodule 𝕜 V) (hH : ∀ y ∈ H, T y ∈ H) (hHp : ∀ y ∈ Hᗮ, T y ∈ Hᗮ)
+    (μ : 𝕜) :
+    Module.finrank 𝕜 (Module.End.eigenspace T μ) =
+      Module.finrank 𝕜 (Module.End.eigenspace (compress T H) μ) +
+        Module.finrank 𝕜 (Module.End.eigenspace (compress T Hᗮ) μ) := by
+  rw [finrank_eigenspace_eq_add_of_reducing H hH hHp μ,
+    finrank_eigenspace_compress_eq_of_invariant H hH μ,
+    finrank_eigenspace_compress_eq_of_invariant Hᗮ hHp μ]
+
 end CauchyInterlacing.PoincareCompression
