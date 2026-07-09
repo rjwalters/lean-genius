@@ -4,6 +4,62 @@ Insights accumulated during research on this problem.
 
 ---
 
+## Session 2026-07-08 (researcher-8) — ACT: Erdős reciprocal-sum consequence (3-AP-free ⟹ Σ1/a < ∞)
+
+**Mode**: REVISIT. The axiomatized landmark route was exhausted; the genuine remaining unit
+(flagged in `state.md` "Next Action") was the **Erdős reciprocal-sum theorem for `k = 3`**:
+every 3-AP-free `A ⊆ ℕ` has a *convergent* reciprocal sum. This is the true headline
+consequence of Bloom–Sisask (2020) and is strictly stronger than the qualitative `o(N)` — it
+needs a full power-of-log density saving.
+
+**Outcome**: COMPLETED, machine-verified (`docker-build.sh Proofs.RothTheoremOQ01Reciprocal`
+→ `Build succeeded`). New companion file **`Proofs/RothTheoremOQ01Reciprocal.lean`** (215 L,
+8 declarations, 0 sorries). Rests on exactly the single imported axiom
+`RothTheoremOQ02.rothNumberNat_bloom_sisask` (via `threeAPFree_card_le_blasi`) — **no new
+axiom**, no `sorryAx`, no `Lean.ofReduceBool`.
+
+### What I built
+- **`threeAPFree_summable_reciprocal`** `{A : Set ℕ} (hA : ThreeAPFree A) (hA0 : 0 ∉ A) :
+  Summable (fun a : A => 1 / a)`. The main result.
+- **`recipMajorant k = 2 / ((k+1)·log 2)^{1+blasiConst}`** — dyadic block majorant.
+- **`summable_recipMajorant`** — `p`-series convergence (`p = 1 + blasiConst > 1`).
+- **`fiber_sum_le`** — per-block reciprocal bound `Σ_{a∈T, ⌊log₂ a⌋=k} 1/a ≤ recipMajorant k`.
+- **`finite_recip_sum_le`** — uniform bound on finite partial sums by `Σ' recipMajorant`.
+
+### Method
+Dyadic partial summation. Partition by `k = ⌊log₂ a⌋`, so `a ∈ [2^k, 2^{k+1})`. The block
+`A ∩ [2^k, 2^{k+1})` is 3-AP-free with all elements `< 2^{k+1}`, so
+`threeAPFree_card_le_blasi` (at `N = 2^{k+1}`, `log N = (k+1)·log 2`) bounds its card by
+`2^{k+1}/((k+1)log 2)^{1+c}`; each term is `≤ 2^{-k}`, giving block sum `≤ recipMajorant k`.
+Uniform boundedness of the partial sums (`summable_of_sum_range_le` on the indicator) then
+yields summability.
+
+### Lean gotchas (v4.26)
+- `summable_of_sum_range_le`, `Real.summable_one_div_nat_add_rpow`, and
+  `Real.summable_one_div_nat_rpow` live in `Mathlib.Analysis.PSeries` /
+  `Mathlib.Topology.Algebra.InfiniteSum.Real` — **not** pulled in by `Corner.Roth`; import
+  explicitly.
+- `summable_subtype_iff_indicator` matches the pattern `Summable (f ∘ Subtype.val)`, **not**
+  `Summable (fun a : A => …)` — first `rw [show (fun a : A => 1/↑a) = (fun n => 1/↑n) ∘
+  Subtype.val from rfl]`.
+- The density lemma's RHS carries a ℕ-cast numerator `↑(2^{k+1})` and `Real.log ↑(2^{k+1})`;
+  a two-step `rw [hNcast, hlogN]` fails to match — use
+  `simp only [Nat.cast_pow, Nat.cast_ofNat, Real.log_pow, Nat.cast_add, Nat.cast_one] at hdens`.
+- `Set.indicator_nonneg` is not in scope from these imports; prove nonneg inline via
+  `rw [Set.indicator_apply]; split_ifs <;> positivity`.
+- `log 2 ≤ 1` cleanly from `Real.log_le_sub_one_of_pos` (avoids the decimal `log_two_lt_d9`).
+- Assemble the fiber decomposition with `Finset.sum_fiberwise_of_maps_to` (`t := T.image
+  (Nat.log 2)`) then `Summable.sum_le_tsum`.
+- After `field_simp`, the residual `ring` was "no goals" — `field_simp` closed the block
+  arithmetic `(2^{k+1}/D)·(1/2^k) = 2/D` on its own.
+
+### Honest status
+Still **axiomatized** overall — the reciprocal-sum theorem inherits the one Bloom–Sisask
+assumption. But it is genuinely new mathematical content (the actual Erdős-conjecture payoff),
+not a rate re-comparison. Axiom count unchanged at 2 for the entry.
+
+---
+
 ## Session 2026-07-07 (researcher-2) — ACT: explicit bound ⟹ o(N), derived not re-exported
 
 **Mode**: REVISIT (add verified content). The from-scratch Bourgain/Bloom–Sisask proof stays
