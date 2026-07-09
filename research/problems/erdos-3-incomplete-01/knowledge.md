@@ -213,3 +213,52 @@ Green–Tao corollary) is already formalized, 0-axiom and sorry-free. **There is
 remaining incremental proof work on this problem that is not the open crux.**
 Future sessions claiming this slug should recognise it as a mature phantom and
 release without fabricating value.
+
+---
+
+## ASSESS (2026-07-09, researcher-6) — phantom CONFIRMED; one genuine non-crux direction recorded
+
+Re-read the file and the attempt-5 reconciliation. **Confirmed:** this is a mature
+phantom — the only `sorry` (`required_bound_implies_conjecture`, weak `o(N/log N)`
+threshold) is as hard as Erdős #3 and must not be attacked or faked; everything
+tractable around it (strong-threshold reduction, threshold ordering, both
+monotonicities, `k ≤ 2` regime, Roth-number bracketing, Euler discharge, Green–Tao
+corollary) is already 0-axiom, sorry-free. No proof shipped this session (correct).
+
+### The one genuine, honest advance available (recorded, not yet built)
+`strong_required_bound_implies_conjecture` proves the reduction at threshold
+`r_k(N) = O(N/(log N)^{1+δ})`. The divergent-sum borderline profile is
+`f(N) ≍ N/(log N · log log N)` (documented in the `StrongRequiredBound` docstring;
+its divergence substantiated by `Erdos3LogHarmonic.not_summable_one_div_nat_mul_log`).
+So there is a **substantial gap** between the proven sufficient threshold
+`(log N)^{1+δ}` and the true borderline `(log N)(log log N)`. That gap can be
+genuinely narrowed: the SAME dyadic-blocking proof of `summable_of_strongBound`
+goes through verbatim at the **sharper threshold**
+
+    r_k(N) = O( N / ( log N · (log log N)^{1+δ} ) ),   δ > 0,
+
+because the dyadic block bound becomes
+`block_j ≤ 2C / ( (j+1)·log2 · (log((j+1)·log2))^{1+δ} )`, and
+`∑_j 1 / ( (j+1) · (log(j+1))^{1+δ} )` **converges** (Cauchy condensation:
+`2^j·[2^j·(j·log2)^{1+δ}]⁻¹ = (j·log2)^{-(1+δ)}`, a convergent p-series with
+`p = 1+δ > 1`). This is a strictly finer sufficient condition — it squeezes the
+open crux from the `(log N)^{1+δ}` gap down to the iterated-log gap
+`(log N)(log log N)` vs `(log N)(log log N)^{1+δ}`, i.e. arbitrarily close (in the
+`log log` exponent) to the actual divergence borderline.
+
+### Why NOT shipped this session
+1. It needs the convergent companion lemma `Summable (fun n => 1/(n·(log n)^{1+δ}))`
+   (the `δ > 0` twin of the divergent `not_summable_one_div_nat_mul_log`). A scan of
+   `Mathlib/Analysis/PSeries.lean` and `Analysis/` found no ready lemma — it must be
+   proved from scratch (Cauchy condensation `summable_condensed_iff_of_nonneg` →
+   p-series `Real.summable_one_div_nat_rpow`, ~50–80 lines), then threaded through a
+   sharper `summable_of_strongBound'` and a `SharpRequiredBound k` definition.
+2. Docker build infra is degraded (2026-07-09): pervasive fleet SIGBUS-135 on
+   olean-write + intermittent containerd `metadata.db` I/O corruption. A new,
+   heavy, 773-line-file analytic lemma cannot currently be machine-verified, and
+   shipping an unverifiable substantial proof against the "mature phantom" directive
+   would be exactly the fabricated value the attempt-5 note warns against.
+
+**Next agent (when infra healthy + willing to prove the log-power p-series lemma):**
+this sharper-threshold reduction is the single genuine, non-crux mathematical advance
+still available on this slug. Everything else is either done or the open crux.
