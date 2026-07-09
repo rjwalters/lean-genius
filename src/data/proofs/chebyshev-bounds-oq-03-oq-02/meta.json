@@ -60,7 +60,7 @@
       "psi_sub_theta_isBigO_sqrt: (ψ − θ) =O[atTop] √ — the O(√x) statement itself, sharpening Mathlib's O(√x·log x)"
     ],
     "axiomCount": 0,
-    "lineCount": 157,
+    "lineCount": 158,
     "assumptions": "None. All theorems fully proved with 0 axioms and 0 sorries (no native_decide); only the standard [propext, Classical.choice, Quot.sound] are used. The bound is stated with an explicit (non-optimal) constant log 4 + 12 ≈ 13.4; sharpening the constant is not attempted. SCOPE: this bounds only the prime-power correction ψ − θ; it does not address the size of ψ or θ individually or the transfer to π(x).",
     "theoremCount": 4,
     "definitionCount": 0,

@@ -21,7 +21,7 @@
     "dateAdded": "2026-07-02",
     "axiomCount": 0,
     "assumptions": "None. Every theorem in all seven files is fully machine-checked with 0 axiom declarations, 0 sorries, and no native_decide (the proofs depend only on Lean's foundational propext / Classical.choice / Quot.sound). These files do NOT discharge the parent entry's open axiom three_dvd_gal_card (producing the Frobenius permutation is a genuine Mathlib 4.26 gap — Dedekind's theorem for polynomial Galois groups); they verify the deterministic inputs that axiom consumes.",
-    "lineCount": 1045,
+    "lineCount": 225,
     "theoremCount": 64,
     "definitionCount": 1,
     "originalContributions": [

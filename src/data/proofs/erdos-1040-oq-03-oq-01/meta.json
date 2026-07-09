@@ -21,7 +21,7 @@
     "badge": "original",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 137,
+    "lineCount": 138,
     "assumptions": "None. All nine theorems are axiom-free and self-contained: the RootedPoly/eval/lem framing of the parent is re-declared locally so nothing depends on the parent entry's open transfinite-diameter question. No native_decide is used (so no Lean.ofReduceBool). Build NOT kernel-verified this session (Docker daemon unavailable, as in prior sessions); all Mathlib signatures (Complex.volume_ball, Fin.prod_const, norm_pow, pow_lt_one_iff_of_nonneg, norm_nonneg, ENNReal.ofReal_coe_nnreal, NNReal.coe_real_pi, NNReal.pi_ne_zero, ENNReal.coe_ne_zero, ENNReal.coe_ne_top, ENNReal.mul_lt_mul_right, dist_eq_norm, Metric.mem_ball) were checked against Mathlib v4.26.0 source. The deployer build-gate is the final check before merge.",
     "dateAdded": "2026-06-23",
     "mathlib_version": "4.26.0",
