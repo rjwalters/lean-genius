@@ -883,4 +883,41 @@ theorem mul_comm_of_card_fifteen {G : Type*} [Group G] [Finite G]
     (hcard.trans (by norm_num)) (by norm_num)
     (huniq_of_lt (by norm_num) (by norm_num)) c hc (by norm_num) a b
 
+/-- **Abelian ⟹ cyclic, for order = product of two distinct primes.**  A finite group whose
+order is `p · q` with `p, q` *distinct* primes and in which every pair of elements commutes is
+cyclic.  Cauchy (`exists_prime_orderOf_dvd_card`) supplies commuting elements `c, d` of orders
+`p` and `q`; distinct primes are coprime (`Nat.coprime_primes`), so
+`orderOf_mul_eq_mul_orderOf_of_coprime` gives `orderOf (c * d) = p · q = |G|`, and
+`isCyclic_of_orderOf_eq_card` produces `c * d` as an explicit generator.  This is the finishing
+step of the order-`pq` classification: `mul_comm_of_prime_index_coprime` establishes
+commutativity, and this lemma converts commutativity into a concrete cyclic generator. -/
+theorem isCyclic_of_comm_card_eq_prime_mul_prime {G : Type*} [Group G] [Finite G] {p q : ℕ}
+    (hp : p.Prime) (hq : q.Prime) (hpq : p ≠ q) (hcard : Nat.card G = p * q)
+    (hcomm : ∀ a b : G, a * b = b * a) : IsCyclic G := by
+  haveI : Fintype G := Fintype.ofFinite G
+  haveI : Fact p.Prime := ⟨hp⟩
+  haveI : Fact q.Prime := ⟨hq⟩
+  obtain ⟨c, hc⟩ : ∃ x : G, orderOf x = p :=
+    exists_prime_orderOf_dvd_card p
+      (by rw [← Nat.card_eq_fintype_card, hcard]; exact dvd_mul_right p q)
+  obtain ⟨d, hd⟩ : ∃ x : G, orderOf x = q :=
+    exists_prime_orderOf_dvd_card q
+      (by rw [← Nat.card_eq_fintype_card, hcard]; exact dvd_mul_left q p)
+  have hcop : (orderOf c).Coprime (orderOf d) := by
+    rw [hc, hd]; exact (Nat.coprime_primes hp hq).mpr hpq
+  have horder : orderOf (c * d) = Nat.card G := by
+    rw [Commute.orderOf_mul_eq_mul_orderOf_of_coprime (hcomm c d) hcop, hc, hd, hcard]
+  exact isCyclic_of_orderOf_eq_card (c * d) horder
+
+/-- **Every group of order `15` is cyclic.**  The sharp classical classification of order-`15`
+groups: `mul_comm_of_card_fifteen` makes `G` abelian, and `15 = 3 · 5` is a product of two
+distinct primes, so `isCyclic_of_comm_card_eq_prime_mul_prime` yields an explicit generator (an
+element of order `15`, i.e. `G ≅ ℤ/15ℤ`).  This strengthens `mul_comm_of_card_fifteen` from
+mere commutativity to full cyclicity — the definitive statement that there is a *unique* group
+of order `15` up to isomorphism. -/
+theorem isCyclic_of_card_fifteen {G : Type*} [Group G] [Finite G]
+    (hcard : Nat.card G = 15) : IsCyclic G :=
+  isCyclic_of_comm_card_eq_prime_mul_prime (p := 3) (q := 5) (by norm_num) (by norm_num)
+    (by norm_num) (hcard.trans (by norm_num)) (fun a b => mul_comm_of_card_fifteen hcard a b)
+
 end AbelRuffiniSylowElim

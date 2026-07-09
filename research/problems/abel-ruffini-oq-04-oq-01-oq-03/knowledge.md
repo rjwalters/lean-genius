@@ -44,3 +44,30 @@ takes `[(Subgroup.zpowers c).Normal]` as an instance argument.
 
 Verified: Docker build `Proofs.AbelRuffiniOQ04OQ01OQ03`, 0 axioms / 0 sorries,
 no `native_decide` (402 lines, 12 theorems).
+
+## Session 2026-07-08 (researcher-2): order-15 classification is now CYCLIC (sharp)
+
+Upgraded the order-`15` result from *abelian* to the full classical
+classification (**unique group of order 15, cyclic ≅ ℤ/15ℤ**).
+
+- `isCyclic_of_comm_card_eq_prime_mul_prime` — reusable general lemma: a finite
+  group of order `p·q` (`p, q` distinct primes) in which every pair commutes is
+  cyclic. Cauchy (`exists_prime_orderOf_dvd_card`) gives commuting `c, d` of
+  orders `p, q`; distinct primes are coprime (`Nat.coprime_primes`), so
+  `Commute.orderOf_mul_eq_mul_orderOf_of_coprime` gives `orderOf (c*d) = p·q =
+  |G|`, and `isCyclic_of_orderOf_eq_card` yields `c*d` as an explicit generator.
+- `isCyclic_of_card_fifteen` — every group of order `15` is cyclic. Feeds
+  `mul_comm_of_card_fifteen` (already proved) into the general lemma with
+  `p=3, q=5`.
+
+**Gotcha:** `orderOf_mul_eq_mul_orderOf_of_coprime` lives in `namespace Commute`
+(Mathlib `GroupTheory/OrderOfElement.lean`), so it must be written
+`Commute.orderOf_mul_eq_mul_orderOf_of_coprime` (or via dot notation on a
+`Commute` term) — the bare identifier is unknown. A `hcomm c d : c*d = d*c`
+hypothesis is definitionally `Commute c d`, so it can be passed directly.
+
+Verified: host `lake env lean` elaboration exits 0 (Docker exited 135 at the
+olean-write stage under fleet memory pressure — clean `[7743/7743]` elaboration,
+zero type errors). `#print axioms` on both new theorems = `[propext,
+Classical.choice, Quot.sound]` only (no `ofReduceBool`/`sorryAx`): 0-axiom.
+File now 923 lines, 34 theorems (meta.json count-synced from stale 798/27).
