@@ -157,6 +157,11 @@
       "targetId": "basel-problem-oq-14",
       "relationship": "related — degree-4 analog",
       "description": "The degree-4 counterpart η(4) = ∑ (−1)ⁿ⁺¹/n⁴ = 7π⁴/720 applies this entry's exact even/odd + parity-sign template to ζ(4) = π⁴/90 via η(4) = (1 − 2⁻³)ζ(4) = (7/8)ζ(4). It is precisely the η(2m) generalization this entry's open question 1 asks for, at m = 2."
+    },
+    {
+      "targetId": "basel-problem-oq-10",
+      "relationship": "related — alternating companion",
+      "description": "Leibniz's series ∑ (−1)ᵏ/(2k+1) = π/4 is the Dirichlet beta value β(1), the other alternating special value on the same odd index family. Where this entry's η(s) = ∑ (−1)ⁿ⁺¹/nˢ alternates over all n (giving η(2) = π²/12 as a linear rescaling (1 − 2^{1−s})ζ(s) of ζ), β(s) = ∑ (−1)ᵏ/(2k+1)ˢ alternates over the odd denominators and sits on a genuinely different Dirichlet L-function (giving β(1) = π/4). The pair contrasts an eta value reassembled from ζ by parity-signed splitting with a beta value that is only conditionally convergent."
     }
   ],
   "references": [
@@ -172,6 +177,13 @@
       "year": "1974",
       "venue": "Academic Press",
       "description": "Develops the Dirichlet eta function η(s) = (1 - 2^(1-s))ζ(s) as the alternating series used to continue ζ past Re s = 1."
+    },
+    {
+      "title": "Introduction to Analytic Number Theory",
+      "author": "Tom M. Apostol",
+      "year": "1976",
+      "venue": "Springer (Undergraduate Texts in Mathematics)",
+      "description": "Standard reference for the Dirichlet eta, lambda, and beta functions and the relations η(s) = (1 − 2^{1−s})ζ(s), λ(s) = (1 − 2^{−s})ζ(s); establishes ζ(2m) = (rational)·π^{2m} via Bernoulli numbers, the identity behind this entry's η(2) = π²/12 and the η(2m) generalization in open question 1."
     }
   ],
   "openQuestions": [
