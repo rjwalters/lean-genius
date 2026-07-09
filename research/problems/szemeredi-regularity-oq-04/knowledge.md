@@ -197,6 +197,90 @@ carries all the graph-theoretic content.
 - Outer AFKS loop assembly feeding `afks_energy_iteration_count`.
 - Discharge `|A'|,|A\A'|≥1`, `∉R` side conditions from `|A'|≥ε|A|>0` + equipartition.
 
+## Session 2026-07-08 (researcher-8) — B-side energy increment + split-gap⇒irregular converse
+
+**Mode**: REVISIT (continuing own thread) · **Outcome**: progress (VERIFIED 0/0), branch research/szemeredi-oq04-bside-and-converse-r8
+
+### What I Did
+- Synced stale worktree to origin/main (was ~7 commits behind; #35858/#35862 had
+  already wired the A-side irregularity→deviation→energy-jump chain end-to-end,
+  incl. `partitionEnergy_Aside_gain_of_irregular`). Re-scoped to what was genuinely
+  missing.
+- `partitionEnergy_Bside_gain_of_irregular`: the symmetric mirror of the A-side
+  end-to-end lemma. `partitionEnergy` sums over *ordered* pairs, so refinement is
+  coordinate-agnostic — a witness sub-partner `B'⊆B` deviating from the whole
+  partner `B`'s density against a fixed part `A₀∈R` (`|d(A₀,B')−d(A₀,B)|≥ε/2`)
+  drives the uniform floor `ε²/(8n²)` when `B` splits into `B', B\B'`. Transport the
+  deviation via `edgeDensity_comm` to partner-second orientation, feed
+  `partitionEnergy_subpair_split_gain_uniform` with split part `B`, partner `A₀`.
+- `edgeDensity_balanced_union_sub`: balanced (`|A₁|=|A₂|`) union density is the
+  arithmetic mean of the halves, `d(A₁,B)−d(A₁∪A₂,B)=(d₁−d₂)/2`. Cancel `|B|` then
+  `|A₁|` out of `edgeDensity_union_mul` (two `mul_left_cancel₀` + `linear_combination`).
+- `split_gap_not_regular_balanced`: the CONVERSE of the energy machinery. A δ-gap
+  between two equal-size halves against `B₀` forces `(A₁∪A₂,B₀)` to fail
+  ε-regularity for `ε<δ/2`, `ε≤1/2` — witness `A₁` (half the union, deviation δ/2).
+
+### Key Findings
+- The two one-sided energy-increment branches (A-split, B-split) are the SAME
+  lemma up to relabelling which part is pulled out of `R`; no fresh analysis.
+- Energy-gain hypothesis ⟺ ε-irregularity, up to the constant 1/2 (both directions
+  now formalized).
+- **Honest crux for full closure**: the triangle reduction `edgeDensity_two_sided_le`
+  always leaves one branch measuring deviation against a SUBSET partner (`A'` or
+  `B'`), which the whole-partner increment lemmas cannot consume. A clean
+  unconditional dichotomy [split-A vs whole-B₀] ∨ [split-B₀ vs whole-A] does NOT
+  follow from the triangle; genuine closure needs the 2×2 defect-Cauchy–Schwarz
+  increment (refining both coordinates at once).
+
+### Files Modified
+- proofs/Proofs/SzemerediRegularityOQ04Bridge.lean (+3 theorems: 15→18; PARTS VII, VIII)
+
+### Next Steps
+- Prove the 2×2 defect-Cauchy–Schwarz energy increment (both coordinates).
+- State the two-level AFKS conclusion with dependent tolerance E:ℕ→(0,1].
+- Assemble the outer loop using afks_energy_iteration_count (N≤2n²/ε²).
+
+## Session 2026-07-08 (researcher-8) — two-level B-side closure + unified AFKS increment
+
+**Mode**: REVISIT (continuing own thread) · **Outcome**: progress (VERIFIED 0/0), branch research/szemeredi-oq04-bside-and-converse-r8, PR #35902
+
+### What I Did
+- `partitionEnergy_Bside_gain_via_promotion` (PART IX): resolves the honest crux
+  flagged the last two sessions — the B-side branch of
+  `exists_onesided_deviation_of_irregular` hands a deviation
+  `|d(A′,B′)−d(A′,B)|≥ε/2` measured against the witness **subset** `A′`, which is
+  not a part, so the whole-partner increment cannot fire. Fix: split `A` into
+  `A′, A\A′` first — by `partitionEnergy_single_split_mono` energy never
+  decreases and `A′` becomes a genuine part — then the existing
+  `partitionEnergy_Bside_gain_of_irregular` fires with `A₀=A′`, netting the full
+  floor `ε²/(8n²)`. Two `Finset.insert_comm` rewrites make `B` the split part and
+  `A′` a present partner so the two lemmas compose.
+- `partitionEnergy_gain_of_irregular_pair` (PART X): unifies both one-sided
+  branches. Given the dichotomy `hdich` (exactly what
+  `exists_onesided_deviation_of_irregular` produces), returns `∃ P'` refined
+  partition with `partitionEnergy (insert A (insert B R)) + ε²/(8n²) ≤ energy P'`.
+  A-side → split `A` (Aside lemma, `B₀=B`); B-side → promote-then-split
+  (PART IX). Existential because the two branches yield different refinements but
+  clear the SAME floor.
+
+### Key Findings
+- The 2×2 defect Cauchy–Schwarz is NOT needed to close the B-side branch. The
+  insert-model already has refinement-monotonicity, and promoting the witness
+  subset to a part is free (energy non-decreasing), so the one-coordinate
+  increment machinery suffices for BOTH coordinates via sequential refinement.
+- The remaining honest gap is the full existential capstone straight from
+  `¬IsEpsilonRegular`: freshness (`∉R`, distinctness) of the *internally chosen*
+  witness `A′,B′` cannot be guaranteed by the insert-based single-part-split
+  model. Two ways forward: work with the common refinement abstractly (no
+  per-part `∉R` conditions), or thread freshness as hypotheses (as PARTS IX/X do).
+
+### Files Modified
+- proofs/Proofs/SzemerediRegularityOQ04Bridge.lean (+2 theorems: 17→19; PARTS IX, X)
+
+### Next Steps
+- Assemble the outer AFKS loop: feed `partitionEnergy_gain_of_irregular_pair` as
+  the `hstep` of `afks_energy_iteration_count` to bound refinements by `2n²/ε²`.
+- Full ∃-capstone from `¬IsEpsilonRegular` via the common refinement.
 ## Session 2026-07-08 (Session 5) - B-side energy increment (whole-partner mirror)
 
 **Mode**: REVISIT (continuing branch szem-oq04-knowledge-s3)
