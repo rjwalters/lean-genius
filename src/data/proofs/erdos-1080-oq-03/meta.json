@@ -52,6 +52,8 @@
       "bipartite_odd_cycle_free (+ concrete bipartite_C5_free, bipartite_C7_free, bipartite_C9_free): PROVED a bipartite graph contains no cycle of odd length — the odd-cycle-free direction of König's bipartite characterization.",
       "bipartite_cycle_length_ge_four and the summary bipartite_cycle_length_even_ge_four: PROVED every cycle length is even AND at least 4, so the admissible cycle lengths are exactly {4, 6, 8, 10, …} and the shortest possible cycle is a C₄.",
       "mem_left_iff_not_right / mem_right_iff_not_left: PROVED the pure partition algebra that X and Y are literal complements under a bipartition.",
+      "bipartite_girth_ge_of_forbidden: PROVED girth lifting — if a bipartite graph has no cycle of length 2m for every m with 2 ≤ m ≤ t, then every cycle it contains has length ≥ 2t + 2. Since the admissible lengths are {4, 6, 8, …}, forbidding the first t−1 of them leaves 2t+2 as the smallest survivor.",
+      "bipartite_C4_free_girth_ge_six / bipartite_C4C6_free_girth_ge_eight: PROVED the concrete corollaries a C₄-free bipartite graph has girth ≥ 6 and a C₄,C₆-free bipartite graph has girth ≥ 8 — the exact structural reason Erdős's next target in the C₄,C₆-free extremal problem is a C₈ (once C₄ and C₆ are excluded, 8 is the smallest still-admissible length).",
       "Self-contained: inlines the bipartition/cycle definitions from the parent Erdos1080Problem.lean (which currently carries a malformed doc-comment and an unrelated sorry in c4_free_iff_no_K22, meta.json sorries:1/status:null) so the result is independently verified, 0 sorries / 0 axioms."
     ],
     "axiomCount": 0,
@@ -60,8 +62,8 @@
       "Walks in a graph and their length; closed walks and cycles",
       "Parity of natural numbers (Even / Odd)"
     ],
-    "lineCount": 201,
-    "theoremCount": 11,
+    "lineCount": 263,
+    "theoremCount": 14,
     "definitionCount": 3,
     "relatedProblems": [
       {
@@ -79,7 +81,8 @@
       "**Every edge flips both side and parity.** Along any walk, crossing an edge moves between the two parts and adds 1 to the length, so 'same part as the start' is synchronized with 'even length'. This single invariant is the whole content.",
       "**Closed ⇒ even.** A cycle is a closed walk, so it returns to its starting part; by the invariant that requires an even number of edges. No finiteness and no C₄/C₆-freeness are used — the fact is about bipartiteness alone.",
       "**Even and ≥ 4 pins the spectrum.** With a cycle's length ≥ 3 (Mathlib) plus evenness, the realizable cycle lengths are exactly {4, 6, 8, 10, …}; the shortest cycle is a C₄ and odd cycles (C₅, C₇, C₉, …) are impossible.",
-      "**Structural backdrop for OQ-03.** The extension 'to other cycle lengths' can only ever be about longer EVEN cycles; this entry makes that ambient constraint explicit and machine-checked before the hard extremal existence questions are attacked."
+      "**Structural backdrop for OQ-03.** The extension 'to other cycle lengths' can only ever be about longer EVEN cycles; this entry makes that ambient constraint explicit and machine-checked before the hard extremal existence questions are attacked.",
+      "**Girth lifting explains the C₈ target.** Because the admissible lengths are {4, 6, 8, …}, forbidding C₄ and C₆ leaves 8 as the smallest length still available: bipartite_C4C6_free_girth_ge_eight proves every cycle in a C₄,C₆-free bipartite graph has length ≥ 8. So Erdős's next target being a C₈ is not arbitrary — it is the forced girth floor, and the general bipartite_girth_ge_of_forbidden shows the floor rises to 2t+2 as more short even cycles are excluded."
     ],
     "prerequisites": [
       "Bipartite graphs, bipartitions, and the edge-crossing condition",
@@ -117,41 +120,49 @@
       "id": "overview",
       "title": "Overview and definitions",
       "startLine": 1,
-      "endLine": 63,
+      "endLine": 70,
       "summary": "File docstring, imports, and the inlined definitions IsBipartition (disjoint parts covering the vertex set with edges crossing), IsBipartite, and HasCycleOfLength. Explains why the parent Erdos1080Problem.lean is not imported (malformed doc-comment + unrelated sorry) so this companion is self-contained.",
       "mathContext": "IsBipartition G X Y := Disjoint X Y ∧ X ∪ Y = univ ∧ ∀ ⦃u v⦄, G.Adj u v → (u ∈ X ↔ v ∈ Y)."
     },
     {
       "id": "partition-algebra",
       "title": "Partition side algebra",
-      "startLine": 64,
-      "endLine": 96,
+      "startLine": 71,
+      "endLine": 103,
       "summary": "mem_left_iff_not_right and mem_right_iff_not_left: under a bipartition the two parts are literal complements (z ∈ X ↔ z ∉ Y). Pure set-theoretic content from disjointness plus covering the whole vertex set.",
       "mathContext": "From Disjoint X Y and X ∪ Y = univ: z ∈ X ↔ z ∉ Y."
     },
     {
       "id": "parity-engine",
       "title": "The parity engine",
-      "startLine": 97,
-      "endLine": 132,
+      "startLine": 104,
+      "endLine": 139,
       "summary": "bipartite_walk_parity, proved by induction on the walk: for a walk u→v, if u is on the left then v is on the left iff the length is even, and symmetrically for the right. Each edge crosses X↔Y, flipping both parity (Nat.even_add_one) and side.",
       "mathContext": "(u∈X → (Even w.length ↔ v∈X)) ∧ (u∈Y → (Even w.length ↔ v∈Y))."
     },
     {
       "id": "even-cycles",
       "title": "Even cycles and no odd cycles",
-      "startLine": 133,
-      "endLine": 172,
+      "startLine": 140,
+      "endLine": 180,
       "summary": "bipartite_closed_walk_even (closed walk ⇒ even length), the main theorem bipartite_cycle_even (every cycle length is even), and bipartite_odd_cycle_free with the concrete instances bipartite_C5_free, bipartite_C7_free, bipartite_C9_free.",
       "mathContext": "A cycle is a closed walk; the parity invariant forces even length, so odd cycles cannot occur."
     },
     {
       "id": "length-lower-bound",
       "title": "Cycle length ≥ 4",
-      "startLine": 173,
-      "endLine": 200,
+      "startLine": 181,
+      "endLine": 207,
       "summary": "bipartite_cycle_length_ge_four combines Mathlib's IsCycle.three_le_length (length ≥ 3) with evenness to conclude length ≥ 4; the summary bipartite_cycle_length_even_ge_four packages 'even and ≥ 4', so the admissible cycle lengths are exactly {4, 6, 8, 10, …}.",
       "mathContext": "3 ≤ length and Even length ⟹ 4 ≤ length."
+    },
+    {
+      "id": "girth-lifting",
+      "title": "Girth lifting under forbidden even cycles",
+      "startLine": 208,
+      "endLine": 262,
+      "summary": "bipartite_girth_ge_of_forbidden: if a bipartite graph has no cycle of length 2m for every m with 2 ≤ m ≤ t, then every cycle has length ≥ 2t + 2. Proof: a cycle length is even (=2s) and ≥ 4 (so s ≥ 2); were it < 2t + 2 then 2 ≤ s ≤ t, contradicting the hypothesis at m = s. Concrete corollaries bipartite_C4_free_girth_ge_six (C₄-free ⇒ girth ≥ 6) and bipartite_C4C6_free_girth_ge_eight (C₄,C₆-free ⇒ girth ≥ 8) discharge the hypothesis by case analysis on the forbidden m.",
+      "mathContext": "Even lengths are {4, 6, 8, …}; excluding 2·2,…,2·t leaves 2t+2 as the least admissible. C₄,C₆-free ⇒ girth ≥ 8, so the smallest cycle Erdős's extremal problem can force is a C₈."
     }
   ]
 }
