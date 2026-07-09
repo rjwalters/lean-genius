@@ -84,6 +84,11 @@
       "targetId": "amgm-inequality",
       "relationship": "ancestor",
       "description": "AM ≥ GM is the extreme instance M₁ ≥ Mₙ of the Maclaurin chain; its equality case (AM = GM iff all equal) is the endpoint of the characterization begun here."
+    },
+    {
+      "targetId": "cauchy-schwarz",
+      "relationship": "related — necessity-direction tool",
+      "description": "The hard necessity direction of the equality case (this entry's open question) reduces at its first non-trivial step to Cauchy–Schwarz: M₁(x) = M₂(x) ⟺ n·∑xᵢ² = (∑xᵢ)², which is exactly the equality condition of Cauchy–Schwarz (equivalently ∑_{i,j}(xᵢ − xⱼ)² = 0 forcing all coordinates equal). The Cauchy–Schwarz entry supplies the base-case engine for the converse this entry leaves open."
     }
   ],
   "mainTheorems": [
