@@ -174,6 +174,75 @@ theorem countSignChanges_two {f : Fin 2 → ℝ} (h : f 0 * f 1 < 0) :
         | exact absurd hk0 (by decide)
         | exact absurd hk1 (by decide)
 
+/- ## § 2¾. Three-term coefficient sign-change counts (verified, axiom-free)
+
+Quadratics `a·X² + b·X + c` produce a length-3 coefficient sequence.  For the
+degree-2 examples the gallery's base file *axiomatised* (`example_x2_minus_1_sign_changes`,
+`example_x2_plus_1_sign_changes`) the middle coefficient of the coefficient sequence is
+`0`, so the count is governed entirely by the signs of the two outer entries:
+
+* opposite outer signs (`f 0 · f 2 < 0`) — exactly one sign change (across the zero);
+* equal or vanishing outer signs (`0 ≤ f 0 · f 2`) — no sign change at all.
+
+We prove both, extending `countSignChanges_two` from `Fin 2` to the `Fin 3`
+middle-zero pattern.  These discharge the base file's two quadratic sign-change
+axioms with fully machine-checked, axiom-free evaluations (see § 4). -/
+
+/-- **One sign change across a zero.**  If `f : Fin 3 → ℝ` has a zero middle entry
+(`f 1 = 0`) and outer entries of opposite sign (`f 0 · f 2 < 0`), then `f` has exactly
+one sign change — the pair `(0, 2)` jumping over the vanishing middle term.  Axiom-free. -/
+theorem countSignChanges_three_mid_zero_pos {f : Fin 3 → ℝ}
+    (hmid : f 1 = 0) (h : f 0 * f 2 < 0) :
+    DescartesRuleOfSigns.countSignChanges f = 1 := by
+  have h0 : f 0 ≠ 0 := fun he => by rw [he, zero_mul] at h; exact lt_irrefl 0 h
+  have h2 : f 2 ≠ 0 := fun he => by rw [he, mul_zero] at h; exact lt_irrefl 0 h
+  unfold DescartesRuleOfSigns.countSignChanges
+  rw [Finset.card_eq_one]
+  refine ⟨(0, 2), ?_⟩
+  ext ⟨i, j⟩
+  simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_singleton,
+    decide_eq_true_eq, DescartesRuleOfSigns.SignChangeBetween,
+    DescartesRuleOfSigns.oppositeSign, Prod.mk.injEq]
+  constructor
+  · rintro ⟨hij, hi0, hj0, -, -⟩
+    have hi1 : i ≠ 1 := by rintro rfl; exact hi0 hmid
+    have hj1 : j ≠ 1 := by rintro rfl; exact hj0 hmid
+    fin_cases i <;> fin_cases j <;>
+      first
+        | exact ⟨rfl, rfl⟩
+        | (exfalso; revert hij hi1 hj1; decide)
+  · rintro ⟨rfl, rfl⟩
+    refine ⟨by decide, h0, h2, ?_, h⟩
+    intro k hk0 hk2
+    fin_cases k <;>
+      first
+        | exact hmid
+        | exact absurd hk0 (by decide)
+        | exact absurd hk2 (by decide)
+
+/-- **No sign change with a zero middle and non-opposite outer entries.**  If `f 1 = 0`
+and the outer entries do not have strictly opposite signs (`0 ≤ f 0 · f 2` — covering
+equal signs *and* a vanishing outer entry), then `f` has no sign change.  Axiom-free. -/
+theorem countSignChanges_three_mid_zero_zero {f : Fin 3 → ℝ}
+    (hmid : f 1 = 0) (h : 0 ≤ f 0 * f 2) :
+    DescartesRuleOfSigns.countSignChanges f = 0 := by
+  unfold DescartesRuleOfSigns.countSignChanges
+  rw [Finset.card_eq_zero]
+  apply Finset.filter_eq_empty_iff.mpr
+  rintro ⟨i, j⟩ -
+  simp only [decide_eq_true_eq, DescartesRuleOfSigns.SignChangeBetween,
+    DescartesRuleOfSigns.oppositeSign]
+  rintro ⟨hij, hi0, hj0, -, hopp⟩
+  have hi1 : i ≠ 1 := by rintro rfl; exact hi0 hmid
+  have hj1 : j ≠ 1 := by rintro rfl; exact hj0 hmid
+  have hij02 : i = 0 ∧ j = 2 := by
+    fin_cases i <;> fin_cases j <;>
+      first
+        | exact ⟨rfl, rfl⟩
+        | (exfalso; revert hij hi1 hj1; decide)
+  obtain ⟨rfl, rfl⟩ := hij02
+  exact absurd hopp (not_lt.mpr h)
+
 /- ## § 3. Axiom-free validation of the Sturm half on linear polynomials
 
 For `p = X − c` with `c > 0`, the gallery already proves (axiom-free) that the
@@ -259,5 +328,59 @@ theorem linear_descartes_bound (hc : 0 < c) :
   descartes_upper_bound_via_sturm (linearReduction c hc)
 
 end Linear
+
+/- ## § 4. De-axiomatizing the base file's quadratic sign-change examples
+
+The gallery's base file `DescartesRuleOfSigns` states the two concrete counts
+`signChangesInCoeffs (X² − 1) = 1` and `signChangesInCoeffs (X² + 1) = 0` as `axiom`
+declarations (the classically-decided filter in `countSignChanges` does not reduce under
+`decide`).  With the `Fin 3` machinery of § 2¾ we now discharge both **axiom-free**,
+showing those base axioms are removable. -/
+
+section Quadratic
+
+/-- **`X² − 1` has exactly one coefficient sign change, computed axiom-free.**  The
+coefficient sequence is `[1, 0, −1]`: a zero middle with opposite outer signs, hence one
+sign change.  This is exactly the statement of the base file's `example_x2_minus_1_sign_changes`
+axiom, now proved. -/
+theorem x2_minus_1_signChanges :
+    signChangesInCoeffs (X ^ 2 - 1 : ℝ[X]) = 1 := by
+  have hne : (X ^ 2 - 1 : ℝ[X]) ≠ 0 := by
+    intro h
+    have : (X ^ 2 - 1 : ℝ[X]).coeff 2 = 0 := by rw [h]; simp
+    simp [coeff_sub, coeff_X_pow, coeff_one] at this
+  have hdeg : (X ^ 2 - 1 : ℝ[X]).natDegree = 2 := by compute_degree!
+  unfold signChangesInCoeffs
+  rw [dif_neg hne, hdeg]
+  apply countSignChanges_three_mid_zero_pos
+  · simp [DescartesRuleOfSigns.coeffSequence, coeff_sub, coeff_X_pow, coeff_one]
+  · have e0 : DescartesRuleOfSigns.coeffSequence (X ^ 2 - 1 : ℝ[X]) 2 0 = 1 := by
+      simp [DescartesRuleOfSigns.coeffSequence, coeff_sub, coeff_X_pow, coeff_one]
+    have e2 : DescartesRuleOfSigns.coeffSequence (X ^ 2 - 1 : ℝ[X]) 2 2 = -1 := by
+      simp [DescartesRuleOfSigns.coeffSequence, coeff_sub, coeff_X_pow, coeff_one]
+    rw [e0, e2]; norm_num
+
+/-- **`X² + 1` has no coefficient sign change, computed axiom-free.**  The coefficient
+sequence is `[1, 0, 1]`: a zero middle with equal outer signs, hence no sign change.  This
+is exactly the statement of the base file's `example_x2_plus_1_sign_changes` axiom, now
+proved. -/
+theorem x2_plus_1_signChanges :
+    signChangesInCoeffs (X ^ 2 + 1 : ℝ[X]) = 0 := by
+  have hne : (X ^ 2 + 1 : ℝ[X]) ≠ 0 := by
+    intro h
+    have : (X ^ 2 + 1 : ℝ[X]).coeff 2 = 0 := by rw [h]; simp
+    simp [coeff_add, coeff_X_pow, coeff_one] at this
+  have hdeg : (X ^ 2 + 1 : ℝ[X]).natDegree = 2 := by compute_degree!
+  unfold signChangesInCoeffs
+  rw [dif_neg hne, hdeg]
+  apply countSignChanges_three_mid_zero_zero
+  · simp [DescartesRuleOfSigns.coeffSequence, coeff_add, coeff_X_pow, coeff_one]
+  · have e0 : DescartesRuleOfSigns.coeffSequence (X ^ 2 + 1 : ℝ[X]) 2 0 = 1 := by
+      simp [DescartesRuleOfSigns.coeffSequence, coeff_add, coeff_X_pow, coeff_one]
+    have e2 : DescartesRuleOfSigns.coeffSequence (X ^ 2 + 1 : ℝ[X]) 2 2 = 1 := by
+      simp [DescartesRuleOfSigns.coeffSequence, coeff_add, coeff_X_pow, coeff_one]
+    rw [e0, e2]; norm_num
+
+end Quadratic
 
 end DescartesRuleOfSignsOQ01OQ03
