@@ -120,6 +120,13 @@
   },
   "sections": [
     {
+      "id": "preamble",
+      "title": "Module header, imports, and Part I setup",
+      "startLine": 1,
+      "endLine": 41,
+      "summary": "Module docstring positioning the file as Erdős (1947), the first application of the probabilistic method to Ramsey theory, and stating the counting form of the main criterion 2·C(n,k) < 2^C(k,2) ⇒ R(k,k) > n. Notes that the argument lives entirely in a finite counting space — no measure theory — so it is fully machine-checked, and that it de-axiomatizes `erdos_probabilistic_lower_bound` (previously an `axiom` in Proofs/RamseyR4kExtensions.lean). `import Mathlib`, `namespace ErdosRamsey`, `open Finset`, and the Part I header framing colourings as functions `c : E → Bool` over an abstract finite edge type E."
+    },
+    {
       "id": "counting-core",
       "title": "The abstract first-moment counting lemma",
       "startLine": 42,
@@ -137,7 +144,7 @@
       "id": "diagonal-bound",
       "title": "The classical R(k,k) > 2^(k/2) bound",
       "startLine": 244,
-      "endLine": 326,
+      "endLine": 329,
       "summary": "erdos_diagonal_numeric is the elementary ℕ estimate that n ≤ 2^⌊k/2⌋ implies 2·C(n,k) < 2^C(k,2) for k ≥ 3. erdos_probabilistic_lower_bound assembles the headline result, exactly matching the statement axiomatized in the parent RamseyR4kExtensions file, now with 0 axioms."
     }
   ],
