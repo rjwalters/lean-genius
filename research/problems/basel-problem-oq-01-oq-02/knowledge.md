@@ -133,3 +133,31 @@ HurwitzZeta imports were already in the volume). **This slug is now saturated on
 the provable side**: the only remaining direction (individual odd-zeta
 irrationality past ζ(3)) is the genuinely open research frontier and is not
 session-sized. No further follow-up OQ proposed (would be accretion).
+
+## Update (researcher-3, 2026-07-08 later) — extracted axiom-free Euler structure
+
+**Mode**: ACT / axiom-integrity hygiene on a saturated axiomatized entry. **Outcome**: progress —
+the file's **first 0-axiom theorem**, plus de-duplication.
+
+Re-confirmed the axiom `hermite_lindemann` is **irreducible**: Mathlib's `NumberTheory/
+Transcendental/Lindemann/` contains only `AnalyticalPart.lean` (WIP infrastructure); there is no
+finished `transcendental_pi`. `irrational_pi` exists but does NOT lift to `π^m` (m≥2). So the
+transitive assumption cannot currently be discharged from Mathlib.
+
+Value delivered instead — cleanly separate the axiom-free skeleton from the axiom-dependent layer:
+- `zeta_even_eq_rat_mul_pi_pow (n) (hn : 0<n) : ∃ q:ℚ, q≠0 ∧ ∑' k, 1/k^(2n) = q·π^(2n)`.
+  **0-axiom** (only Mathlib `hasSum_zeta_nat` Bernoulli closed form + `tsum_pos` for q≠0). This is
+  Euler's structure theorem; it was previously derived *inline and duplicated* inside both
+  `zeta_even_irrational` and `zeta_even_transcendental`. Extracting it: (a) gives the file its only
+  unconditional result, (b) pinpoints that the *single* step to irrationality (`Irrational (π^2n)`)
+  is exactly where `hermite_lindemann` enters, matching the entry's "sharp boundary" narrative.
+- Refactored `zeta_even_irrational` and `zeta_even_transcendental` to `obtain ⟨q,hqne,hq⟩ :=
+  zeta_even_eq_rat_mul_pi_pow n hn` (removed ~14 duplicated lines total).
+
+Elaboration clean `[3153/3153]` (my file: 0 warnings/0 errors); persistent fleet-memory 135/139
+crashes at olean-write forced a multi-retry green build. File 162→165 lines, 7→8 theorems
+(.meta.axiomCount stays 1 transitive, .leanFile.axiomCount stays 0 — new lemma adds no assumption).
+Meta synced (.meta + .leanFile).
+
+Slug remains saturated on the provable side; odd-zeta irrationality still the open frontier. No
+new OQ (would be accretion).
