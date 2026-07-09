@@ -75,9 +75,8 @@ theorem simplexNumber_one_dim (n : ℕ) : simplexNumber 1 n = n + 1 := by
 `n+1` symbols. -/
 theorem simplexNumber_eq_multichoose (d n : ℕ) :
     simplexNumber d n = Nat.multichoose (n + 1) d := by
-  rw [simplexNumber, Nat.multichoose_eq]
-  congr 1
-  omega
+  have hidx : n + 1 + d - 1 = n + d := by omega
+  rw [simplexNumber, Nat.multichoose_eq, hidx]
 
 /-- **Figurate Pascal recurrence.** The `(d+1)`-dimensional simplex number obeys
 `P_{d+1}(n+1) = P_{d+1}(n) + P_d(n+1)`: growing the "size" argument by one adds a
