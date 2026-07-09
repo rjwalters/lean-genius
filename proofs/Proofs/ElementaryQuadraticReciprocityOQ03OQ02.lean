@@ -659,6 +659,55 @@ theorem kronecker_sq_mem (a n : ℤ) :
     kronecker a n ^ 2 = 0 ∨ kronecker a n ^ 2 = 1 := by
   rcases kronecker_trichotomy a n with h | h | h <;> rw [h] <;> norm_num
 
+/-- **Normalization at numerator `1`.**  `(1/n) = 1` for *every* modulus `n`
+(including the special moduli `0, ±1`): the constant `1` numerator is a square
+everywhere, so it is fixed by the character.  Together with the numerator
+multiplicativity `kronecker_mul_left` and periodicity `kronecker_mod_numerator`,
+this is the identity-normalization axiom exhibiting `(·/n)` as a genuine (real)
+Dirichlet character in the numerator. -/
+theorem kronecker_one_left (n : ℤ) : kronecker 1 n = 1 := by
+  rcases eq_or_ne n 0 with rfl | hn0
+  · simp [kronecker, kronecker0]
+  · rw [kronecker_eq_sign_jacobi 1 n hn0]
+    simp [kroneckerNeg1, jacobiSym.one_left]
+
+/-- **Normalization at modulus `1`.**  `(a/1) = 1` for every numerator `a`: the
+trivial modulus is the identity of the second argument (the base case of the
+second-argument multiplicativity `kronecker_mul_right`). -/
+theorem kronecker_one_right (a : ℤ) : kronecker a 1 = 1 := by
+  simp [kronecker]
+
+/-- **Support of the character: the symbol vanishes exactly on non-coprime pairs.**
+For odd positive `n`, `(a/n) = 0 ↔ gcd(a, n) ≠ 1`.  This pins the zero set of the
+Dirichlet character `(·/n)` — it is supported precisely on the units of `ℤ/nℤ` —
+substantiating the `kronecker_sq_mem` remark that `(a/n)² = 0` "on non-coprime
+pairs".  Proved by reducing to the Jacobi symbol
+(`jacobiSym.eq_zero_iff_not_coprime`). -/
+theorem kronecker_eq_zero_iff (a : ℤ) (n : ℕ) (hn : 0 < n) (hno : n % 2 = 1) :
+    kronecker a n = 0 ↔ Int.gcd a n ≠ 1 := by
+  rw [kronecker_eq_jacobi a n hn hno]
+  haveI : NeZero n := ⟨hn.ne'⟩
+  exact jacobiSym.eq_zero_iff_not_coprime
+
+/-- **The character is nonzero on units.**  For odd positive `n`, if `gcd(a, n) = 1`
+then `(a/n) ≠ 0`; the contrapositive of `kronecker_eq_zero_iff`. -/
+theorem kronecker_ne_zero_of_coprime (a : ℤ) (n : ℕ) (hn : 0 < n) (hno : n % 2 = 1)
+    (h : Int.gcd a n = 1) : kronecker a n ≠ 0 := by
+  intro hz
+  exact (kronecker_eq_zero_iff a n hn hno).mp hz h
+
+/-- **On units the character takes values `±1`.**  Combining the trichotomy with the
+support characterization: for odd positive `n` with `gcd(a, n) = 1`,
+`(a/n) ∈ {1, -1}`.  This is the concrete statement that `(·/n)` restricts to a
+`{±1}`-valued (quadratic) character on `(ℤ/nℤ)ˣ`. -/
+theorem kronecker_eq_one_or_neg_one_of_coprime (a : ℤ) (n : ℕ) (hn : 0 < n)
+    (hno : n % 2 = 1) (h : Int.gcd a n = 1) :
+    kronecker a n = 1 ∨ kronecker a n = -1 := by
+  rcases kronecker_trichotomy a n with h0 | h1 | hm1
+  · exact absurd h0 (kronecker_ne_zero_of_coprime a n hn hno h)
+  · exact Or.inl h1
+  · exact Or.inr hm1
+
 /-!
 ## Module note: what remains open
 
