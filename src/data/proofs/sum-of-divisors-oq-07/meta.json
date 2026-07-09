@@ -127,6 +127,16 @@
       "targetId": "sum-of-divisors",
       "relationship": "extends",
       "description": "Extends the base entry's divisor-sum properties to the full divisor-power family σₖ in closed geometric-product form"
+    },
+    {
+      "targetId": "sum-of-divisors-oq-04-oq-01",
+      "relationship": "related — k = 1 abundancy specialization",
+      "description": "OQ-04-OQ-01 uses the k = 1 closed prime-power form to pin the abundancy index σ(pᵏ)/pᵏ strictly below p/(p−1) and classify every prime power as deficient. This entry supplies the general-k closed form σₖ(pⁱ)·(pᵏ−1) = p^{k(i+1)}−1 of which that k = 1 bound is the specialization, setting up the higher-order abundancy index σₖ(n)/nᵏ."
+    },
+    {
+      "targetId": "sum-of-divisors-oq-05",
+      "relationship": "related — abundancy multiplicativity",
+      "description": "OQ-05 proves the abundancy index σ(n)/n is multiplicative (the k = 1 case). This entry's open question asks for the same for the higher-order index σₖ(n)/nᵏ, and its general closed product form σₖ(n)·∏_{p∣n}(pᵏ−1) = ∏_{p∣n}(p^{k(vₚ(n)+1)}−1) is the evaluation on which that multiplicativity rests."
     }
   ],
   "conclusion": {
