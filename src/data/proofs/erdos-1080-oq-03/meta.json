@@ -54,7 +54,12 @@
       "mem_left_iff_not_right / mem_right_iff_not_left: PROVED the pure partition algebra that X and Y are literal complements under a bipartition.",
       "bipartite_girth_ge_of_forbidden: PROVED girth lifting — if a bipartite graph has no cycle of length 2m for every m with 2 ≤ m ≤ t, then every cycle it contains has length ≥ 2t + 2. Since the admissible lengths are {4, 6, 8, …}, forbidding the first t−1 of them leaves 2t+2 as the smallest survivor.",
       "bipartite_C4_free_girth_ge_six / bipartite_C4C6_free_girth_ge_eight: PROVED the concrete corollaries a C₄-free bipartite graph has girth ≥ 6 and a C₄,C₆-free bipartite graph has girth ≥ 8 — the exact structural reason Erdős's next target in the C₄,C₆-free extremal problem is a C₈ (once C₄ and C₆ are excluded, 8 is the smallest still-admissible length).",
-      "Self-contained: inlines the bipartition/cycle definitions from the parent Erdos1080Problem.lean (which currently carries a malformed doc-comment and an unrelated sorry in c4_free_iff_no_K22, meta.json sorries:1/status:null) so the result is independently verified, 0 sorries / 0 axioms."
+      "Self-contained: inlines the bipartition/cycle definitions from the parent Erdos1080Problem.lean (which currently carries a malformed doc-comment and an unrelated sorry in c4_free_iff_no_K22, meta.json sorries:1/status:null) so the result is independently verified, 0 sorries / 0 axioms.",
+      "cycleGraph_isCycles: PROVED cycleGraph N is a 2-regular graph (SimpleGraph.IsCycles) for N ≥ 3 — every vertex has exactly two neighbours v-1, v+1, derived from Mathlib's cycleGraph_degree_three_le.",
+      "cycleGraph_cycle_length_eq: PROVED every cycle in cycleGraph N is Hamiltonian with length exactly N (N ≥ 3) — a cycle in a 2-regular graph uses both edges at each vertex (IsCycle.adj_toSubgraph_iff_of_isCycles), so its support is closed under · + 1 and hence spans all of Fin N; supporting lemma eq_univ_of_succ_closed shows a successor-closed nonempty subset of Fin N is everything.",
+      "cycleGraph_hasCycleOfLength_iff / cycleGraph_egirth / cycleGraph_girth: PROVED cycleGraph N contains a cycle of length k iff k = N, equivalently its (extended) girth is exactly N (N ≥ 3) — the general fact underlying the sharpness result.",
+      "bipartite_girth_lifting_sharp: PROVED the girth-lifting lower bound is SHARP — for every t ≥ 1, cycleGraph(2t+2) is bipartite, C_{2m}-free for 2 ≤ m ≤ t, yet contains a (2t+2)-cycle, so 2t+2 in bipartite_girth_ge_of_forbidden is attained, not just a bound.",
+      "bipartite_C4C6_free_girth_eight_sharp: PROVED the t=3 instance — a bipartite C4,C6-free graph of girth exactly 8 (cycleGraph 8) exists, showing Erdős's 'next target is C8' is genuinely optimal."
     ],
     "axiomCount": 0,
     "prerequisites": [
@@ -62,8 +67,8 @@
       "Walks in a graph and their length; closed walks and cycles",
       "Parity of natural numbers (Even / Odd)"
     ],
-    "lineCount": 628,
-    "theoremCount": 28,
+    "lineCount": 794,
+    "theoremCount": 36,
     "definitionCount": 4,
     "relatedProblems": [
       {

@@ -37,6 +37,14 @@ Main results (all 0 sorries / 0 axioms, over an arbitrary vertex type):
   pin down why Erdős's next target in the C₄,C₆-free extremal problem is the C₈:
   once the short even cycles are excluded, 8 is the smallest length still
   admissible.
+* `cycleGraph_girth` / `cycleGraph_egirth` — the even cycle graph `cycleGraph N`
+  has girth exactly `N` (every cycle in it is Hamiltonian, since it is `2`-regular),
+  equivalently `cycleGraph_hasCycleOfLength_iff`: it contains a cycle of length `k`
+  iff `k = N`.
+* `bipartite_girth_lifting_sharp` / `bipartite_C4C6_free_girth_eight_sharp` — the
+  SHARPNESS side of girth lifting: the lower bound `2t + 2` is attained by
+  `cycleGraph (2t + 2)`, and in particular a bipartite C₄,C₆-free graph of girth
+  exactly `8` (namely `cycleGraph 8`) exists, so Erdős's C₈ target is optimal.
 
 References:
 - Erdős [Er75]: C₈ observation for the C₄,C₆-free extremal problem.
@@ -768,7 +776,7 @@ theorem bipartite_girth_lifting_sharp (t : ℕ) (ht : 1 ≤ t) :
       (∀ m, 2 ≤ m → m ≤ t → ¬ HasCycleOfLength G (2 * m)) ∧
       HasCycleOfLength G (2 * t + 2) := by
   refine ⟨Fin (2 * t + 2), cycleGraph (2 * t + 2), ?_, ?_, ?_⟩
-  · exact cycleGraph_isBipartite_of_even (2 * t + 2) ⟨t + 1, by ring⟩
+  · exact cycleGraph_isBipartite_of_even (2 * t + 2) ⟨t + 1, by omega⟩
   · intro m hm2 hmt
     rw [cycleGraph_hasCycleOfLength_iff (by omega)]
     omega
@@ -783,10 +791,10 @@ theorem bipartite_C4C6_free_girth_eight_sharp :
     ∃ (V : Type) (G : SimpleGraph V),
       IsBipartite G ∧ ¬ HasCycleOfLength G 4 ∧ ¬ HasCycleOfLength G 6 ∧
       HasCycleOfLength G 8 := by
-  obtain ⟨V, G, hbip, hforb, hc8⟩ := bipartite_girth_lifting_sharp 3 (by norm_num)
+  obtain ⟨V, G, hbip, hforb, hc8⟩ := bipartite_girth_lifting_sharp 3 (by omega)
   refine ⟨V, G, hbip, ?_, ?_, ?_⟩
-  · have := hforb 2 (by norm_num) (by norm_num); simpa using this
-  · have := hforb 3 (by norm_num) (by norm_num); simpa using this
+  · have := hforb 2 (by omega) (by omega); simpa using this
+  · have := hforb 3 (by omega) (by omega); simpa using this
   · simpa using hc8
 
 end Sharpness
