@@ -2,7 +2,7 @@
   "id": "erdos-1012-oq-02-oq-01",
   "title": "Erdős #1012 OQ-02-OQ-01: Necessity of the Bipartite Exception in Bondy's Vertex-Pancyclicity Theorem",
   "slug": "erdos-1012-oq-02-oq-01",
-  "description": "Proves that the bipartite exception branch of Bondy's vertex-pancyclicity theorem (axiomatized in the parent OQ-02) is genuinely necessary, not vacuous. The complete bipartite graph K_{V,W} is triangle-free, hence no vertex lies on a 3-cycle, hence it is neither pancyclic nor vertex-pancyclic; and it realizes exactly the structural predicate (∃ A B, A ∪ B = univ ∧ Disjoint A B ∧ ∀ a∈A b∈B, Adj a b) appearing in the parent's bondy_vertex_pancyclic axiom. So the '≥ n²/4+1 edges' hypothesis cannot be weakened to drop the exception. 5 theorems, 5 definitions, 0 axioms, 0 sorries.",
+  "description": "Proves that the bipartite exception branch of Bondy's vertex-pancyclicity theorem (axiomatized in the parent OQ-02) is genuinely necessary, not vacuous. The complete bipartite graph K_{V,W} is triangle-free, hence no vertex lies on a 3-cycle, hence it is neither pancyclic nor vertex-pancyclic; and it realizes exactly the structural predicate (∃ A B, A ∪ B = univ ∧ Disjoint A B ∧ ∀ a∈A b∈B, Adj a b) appearing in the parent's bondy_vertex_pancyclic axiom. So the '≥ n²/4+1 edges' hypothesis cannot be weakened to drop the exception. 9 theorems, 5 definitions, 0 axioms, 0 sorries.",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-06-27",

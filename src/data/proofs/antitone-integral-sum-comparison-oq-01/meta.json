@@ -2,7 +2,7 @@
   "id": "antitone-integral-sum-comparison-oq-01",
   "title": "The Integral Test: Sum–Integral Comparison for Antitone Functions",
   "slug": "antitone-integral-sum-comparison-oq-01",
-  "description": "Packages the two one-sided Mathlib bounds for antitone functions into the single two-sided integral-test sandwich ∑_{i<a} f(x₀+i+1) ≤ ∫_{x₀}^{x₀+a} f ≤ ∑_{i<a} f(x₀+i), then applies it to f(x)=1/x on [1,1+n] to derive the classical logarithmic bounds on the harmonic numbers: log(n+1) ≤ Hₙ and H_{n+1} ≤ 1 + log(n+1). Together these trap Hₙ − log(n+1) in [0,1], the boundedness behind the Euler–Mascheroni constant and the logarithmic divergence of the harmonic series. 5 theorems, 1 definition, 0 sorries, 0 axioms.",
+  "description": "Packages the two one-sided Mathlib bounds for antitone functions into the single two-sided integral-test sandwich ∑_{i<a} f(x₀+i+1) ≤ ∫_{x₀}^{x₀+a} f ≤ ∑_{i<a} f(x₀+i), then applies it to f(x)=1/x on [1,1+n] to derive the classical logarithmic bounds on the harmonic numbers: log(n+1) ≤ Hₙ and H_{n+1} ≤ 1 + log(n+1). Together these trap Hₙ − log(n+1) in [0,1], the boundedness behind the Euler–Mascheroni constant and the logarithmic divergence of the harmonic series. 8 theorems, 1 definition, 0 sorries, 0 axioms.",
   "references": [
     {
       "authors": "Walter Rudin",
