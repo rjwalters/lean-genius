@@ -2,7 +2,7 @@
   "id": "cevas-theorem-oq-02-oq-01-oq-03",
   "title": "Ceva's Theorem: Geometric Interpretation of Weight Parameters",
   "slug": "cevas-theorem-oq-02-oq-01-oq-03",
-  "description": "Formal proof of the geometric meaning of weight parameters in Ceva's theorem: the weight pair (α, β) encoding where a cevian point D divides side BC, with ratio BD/DC = β/α. Proves 18 theorems (0 sorries, 0 axioms) covering division ratios, midpoint characterization, centroid/incenter weight conditions, and the closer-to-B criterion.",
+  "description": "Formal proof of the geometric meaning of weight parameters in Ceva's theorem: the weight pair (α, β) encoding where a cevian point D divides side BC, with ratio BD/DC = β/α. Proves 19 theorems (0 sorries, 0 axioms) covering division ratios, midpoint characterization, centroid/incenter weight conditions, and the closer-to-B criterion.",
   "meta": {
     "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Ceva%27s_theorem",
@@ -55,7 +55,7 @@
     ],
     "dateAdded": "2026-04-04",
     "lineCount": 296,
-    "assumptions": "0 axioms, 0 sorries. All 18 theorems fully proved from Mathlib arithmetic lemmas.",
+    "assumptions": "0 axioms, 0 sorries. All 19 theorems fully proved from Mathlib arithmetic lemmas.",
     "theoremCount": 19,
     "definitionCount": 0
   },
@@ -142,7 +142,7 @@
     }
   ],
   "conclusion": {
-    "summary": "The weight parameters (α, β) in Ceva's theorem have a precise geometric meaning: the point D = (αB + βC)/(α+β) on side BC satisfies BD/DC = β/α. Equal weights give the midpoint (centroid case); angle bisector weights give the incenter. The Ceva balance condition αDαEαF = βDβEβF is exactly equivalent to the classical Ceva product (BD/DC)(CE/EA)(AF/FB) = 1. All 18 theorems are proved axiom-free from Mathlib arithmetic.",
+    "summary": "The weight parameters (α, β) in Ceva's theorem have a precise geometric meaning: the point D = (αB + βC)/(α+β) on side BC satisfies BD/DC = β/α. Equal weights give the midpoint (centroid case); angle bisector weights give the incenter. The Ceva balance condition αDαEαF = βDβEβF is exactly equivalent to the classical Ceva product (BD/DC)(CE/EA)(AF/FB) = 1. All 19 theorems are proved axiom-free from Mathlib arithmetic.",
     "implications": "The weight formulation of Ceva's theorem is more than syntactic convenience — it encodes division ratios directly. This gives a unified framework for all triangle centers expressible as concurrent cevians: the centroid (equal weights), incenter (side-length weights), symmedian point (squared side-length weights), and many others. Scale invariance of weights (c·α, c·β give the same point as α, β) means only the ratio α:β matters, connecting weight parameters to projective coordinates on the side BC.",
     "openQuestions": [
       "Can the same weight-parameter framework extend to non-Euclidean (spherical or hyperbolic) Ceva's theorem, and does the geometric interpretation BD/DC = β/α hold in those settings?",

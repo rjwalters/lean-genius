@@ -52,7 +52,7 @@
     ]
   },
   "conclusion": {
-    "summary": "The bipartite exception in Bondy's vertex-pancyclicity theorem is necessary: the complete bipartite graph is triangle-free (no vertex on a 3-cycle), hence not pancyclic and not vertex-pancyclic, while realizing exactly the exception's structural predicate. 5 theorems, 203 lines, 0 axioms, 0 sorries.",
+    "summary": "The bipartite exception in Bondy's vertex-pancyclicity theorem is necessary: the complete bipartite graph is triangle-free (no vertex on a 3-cycle), hence not pancyclic and not vertex-pancyclic, while realizing exactly the exception's structural predicate. 9 theorems, 203 lines, 0 axioms, 0 sorries.",
     "implications": "Confirms the sharpness of the n²/4+1 edge threshold by exhibiting the unique extremal obstruction concretely in Lean. The getVert-based 'short closed walk ⟹ triangle' technique is reusable for ruling out short cycles in any graph defined by an adjacency predicate. Complements the parent OQ-02 by populating its previously-opaque bipartite disjunct.",
     "openQuestions": [
       "Prove the exact extremal edge count |E(K_{m,m})| = m² = ⌊(2m)²/4⌋ via an edgeFinset ≃ V × W bijection or degree-sum argument, quantifying the sharpness numerically",

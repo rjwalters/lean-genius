@@ -88,7 +88,7 @@
     ]
   },
   "conclusion": {
-    "summary": "The pointwise Kittaneh inequality ‖⟪T x, x⟫‖² ≤ (‖T‖² + ‖T²‖)/2 is verified for every bounded operator on an RCLike Hilbert space, as a direct consequence of Buzano's inequality applied to (T x, T†x) against the unit vector x. The trivial numerical-radius bound ‖⟪T x, x⟫‖ ≤ ‖T‖ is recovered, and the nilpotent case sharpens to ‖T‖/√2. 6 theorems, 152 lines, 0 axioms, 0 sorries.",
+    "summary": "The pointwise Kittaneh inequality ‖⟪T x, x⟫‖² ≤ (‖T‖² + ‖T²‖)/2 is verified for every bounded operator on an RCLike Hilbert space, as a direct consequence of Buzano's inequality applied to (T x, T†x) against the unit vector x. The trivial numerical-radius bound ‖⟪T x, x⟫‖ ≤ ‖T‖ is recovered, and the nilpotent case sharpens to ‖T‖/√2. 7 theorems, 152 lines, 0 axioms, 0 sorries.",
     "implications": "This answers the parent Buzano entry's open question about the operator/numerical-range consequence of Buzano. It connects the elementary reflection-isometry proof of Buzano to a celebrated 2003 numerical-radius inequality, and supplies the pointwise core from which the supremum statement w(T)² ≤ ½(‖T‖² + ‖T²‖) follows. It also dovetails with the OQ-02 → OQ-04 operator-norm / numerical-radius lineage, strengthening the w(T) ≤ ‖T‖ bound proved there.",
     "openQuestions": [
       "Promote the pointwise bound to the supremum form w(T)² ≤ ½(‖T‖² + ‖T²‖) by taking the supremum over unit vectors, using the gallery's numerical-radius definition",
