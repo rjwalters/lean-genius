@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: frequency-mismatch non-normality criterion added (tendsto-ne + one-sided eventual bounds + single-digit density≠1/b); necessary-condition theory for normality now complete. Core axiom e_absolutely_normal remains genuinely open.",
+    "progressSummary": "PROGRESS: quantitative disjunctivity added (VERIFIED 0 sorry / axiom unchanged) — occurrence count grows at least linearly ((b^{-k}/2)*N), upgrading infinitely-often to positive lower density, plus an effective before-every-window occurrence statement. Frequency-mismatch criterion (nextStep #1) was completed by merged #35802; the duplicate #35800 was closed. Open axiom e_absolutely_normal genuinely open.",
     "builtItems": [
       "normal_ktuple_infinitely_often (Proofs/ETranscendentalOQ02.lean): {n | s occurs at n}.Infinite for x normal in base b. Verified 0 sorry; axioms [propext, Classical.choice, Quot.sound].",
       "normal_imp_disjunctive (same file): every finite digit string appears at least once (corollary via Set.Infinite.nonempty).",
@@ -46,7 +46,11 @@
       "liouvilleNumber_not_normal (b>=3), exists_irrational_not_normal, irrational_not_imp_normal — ETranscendentalOQ02.lean",
       "not_normal_of_match_freq_tendsto_ne (ETranscendentalOQ02.lean): tuple matching-frequency → L ≠ b^(-k) ⇒ ¬normal, via tendsto_nhds_unique",
       "not_normal_of_match_freq_eventually_le / _eventually_ge: eventual one-sided frequency bound strictly away from b^(-k) ⇒ ¬normal (no convergence assumed), via le_of_tendsto / ge_of_tendsto",
-      "not_normal_of_digit_freq_tendsto_ne: single-digit density ≠ 1/b ⇒ ¬normal (k=1 specialization; b^(-1)=b⁻¹ bridge via Nat.cast_one+zpow_neg_one)"
+      "not_normal_of_digit_freq_tendsto_ne: single-digit density ≠ 1/b ⇒ ¬normal (k=1 specialization; b^(-1)=b⁻¹ bridge via Nat.cast_one+zpow_neg_one)",
+      "exists_match_lt_of_count_pos (ETranscendentalOQ02.lean:947): pure-Finset bridge, positive match count over range N yields an explicit occurrence < N",
+      "eventually_match_count_pos_of_normal (ETranscendentalOQ02.lean:961): match count eventually positive for a normal number",
+      "eventually_exists_match_lt_of_normal (ETranscendentalOQ02.lean:984): effective disjunctivity — tuple occurs before every large window N (strengthens normal_imp_disjunctive)",
+      "match_count_ge_linear_of_normal (ETranscendentalOQ02.lean:998): occurrence count eventually >= (b^{-k}/2)*N, i.e. positive lower density (strengthens normal_ktuple_infinitely_often)"
     ],
     "insights": [
       "The stated target normal_imp_irrational was ALREADY a complete 0-sorry theorem (Session 13); OQ-02-OQ-06 as literally phrased was resolved. Added genuinely new theory instead of reclaiming.",
@@ -57,15 +61,17 @@
       "SHARPNESS RESOLVED: the base-b Liouville constant liouvilleNumber b = sum_{i>=0} b^(-i!) (Mathlib) is an explicit VERIFIED irrational non-normal number for every b>=3 — irrational does NOT imply normal (converse of normal_imp_irrational fails).",
       "Digit computation via the factorial number system: for k!<=n<(k+1)!, floor(b^n * liouvilleNumber b) = sum_{i=0}^{k} b^(n-i!); the tail b^n*remainder < 1 uses Mathlib remainder_lt prime and sub_one_div_inv_le_two giving < 2/b <= 2/3 (needs b>=3: the doubled 0!=1! leading term puts digit 2 at n=1 only).",
       "Every base-b digit of liouvilleNumber b is 0 or 1 from position n>=2 on (residue b^(n-k!) % b in {0,1}: lower-index terms divisible by b, top term 1 iff n is a factorial), so digit 2 is eventually missing and not_normal_of_eventually_missing_digit applies.",
-      "Frequency-mismatch criterion completes the sharp-boundary theory: absence (freq 0) was the extreme case; under-/over-representation (freq eventually bounded away from b^(-k) on either side) equally forbids normality, and needs NO convergence hypothesis — only le_of_tendsto/ge_of_tendsto against the definitional limit."
+      "Frequency-mismatch criterion completes the sharp-boundary theory: absence (freq 0) was the extreme case; under-/over-representation (freq eventually bounded away from b^(-k) on either side) equally forbids normality, and needs NO convergence hypothesis — only le_of_tendsto/ge_of_tendsto against the definitional limit.",
+      "Quantitative disjunctivity (nextStep #2): normality pins the tuple frequency to b^{-k} > 0, which upgrades the qualitative normal_ktuple_infinitely_often (Set.Infinite) to a positive LOWER DENSITY — the occurrence count below N is eventually >= (b^{-k}/2)*N. The bare Tendsto definition carries no convergence RATE, so the position of the first occurrence cannot be bounded by an explicit function of k; the strongest unconditional statement is that s occurs before every sufficiently large window N.",
+      "Filter.Tendsto.eventually_const_lt (hv : u < v) (h : Tendsto f l (nhds v)) : eventually u < f — the clean way to turn a Tendsto-to-positive-limit into an eventual strict positivity; eventually_gt_of_tendsto_gt does NOT exist in Mathlib v4.26."
     ],
     "mathlibGaps": [
       "omega does not discharge variable-divisor Euclidean identities (a/T*T + a%T = a with T variable, nonlinear); use Nat.mod_add_div'/Nat.div_add_mod explicitly.",
       "Genuine irrational-AND-non-normal WITNESS (true sharpness of 'irrational ⇏ normal') still needs the real→digit bridge for a specific transcendental: computing nthDigit b n x = ⌊bⁿx⌋%b for an explicit series (e.g. Liouville ∑ b^(-k!)) requires summing the tail to isolate the k-th digit — a real-analysis construction not present. The abstract criterion is the tool; only the witness digit-computation is missing."
     ],
     "nextSteps": [
-      "Quantitative disjunctivity: bound first-occurrence position of a fixed k-tuple via the normality convergence rate (only qualitative infinitude proved).",
-      "The open axiom e_absolutely_normal is genuinely open — not eliminable. The non-normality theory (irrationality, disjunctivity, absence, and now full frequency-mismatch) is complete on the necessary-condition side."
+      "Effective/rate-based first-occurrence bounds require ADDING an explicit normality-modulus hypothesis (the definition has no rate); consider defining EffectivelyNormalWithModulus and proving a first-occurrence bound M(k,s).",
+      "The open axiom e_absolutely_normal is genuinely open — not eliminable. Sharpness of normal_imp_irrational (Liouville witness) and the frequency-mismatch + quantitative-disjunctivity theory are now complete."
     ],
     "markdown": "# Knowledge Base: e-transcendental-oq-02-oq-06\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
@@ -117,8 +123,8 @@
     {
       "path": "Proofs/ETranscendentalOQ02.lean",
       "filename": "ETranscendentalOQ02.lean",
-      "lineCount": 1022,
-      "theoremCount": 42,
+      "lineCount": 1115,
+      "theoremCount": 46,
       "axiomCount": 1,
       "defCount": 3,
       "sorryCount": 0,

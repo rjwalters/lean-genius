@@ -912,6 +912,110 @@ theorem not_normal_of_digit_freq_tendsto_ne (b : ℕ) (hb : 2 ≤ b) (x : ℝ)
   · rwa [Nat.cast_one, zpow_neg_one]
 
 -- ============================================================
+-- PART IV.8: QUANTITATIVE DISJUNCTIVITY
+-- ============================================================
+
+/-!
+## From "infinitely often" to a positive density
+
+`normal_ktuple_infinitely_often` shows a normal number contains every tuple at
+*infinitely many* positions, and `normal_imp_disjunctive` extracts a single
+occurrence *somewhere*. Both are purely qualitative. The results below sharpen
+them using the fact that normality pins the matching frequency to the strictly
+positive value `b^{-k}`:
+
+* `exists_match_lt_of_count_pos` is the pure-`Finset` bridge: a positive matching
+  count over `range N` yields an explicit occurrence *below* `N`.
+* `eventually_exists_match_lt_of_normal` upgrades disjunctivity to an
+  effective-flavoured form — for a normal `x`, the tuple `s` occurs *before every
+  sufficiently large window* `N`, not merely somewhere. (The bare definition of
+  normality carries no convergence *rate*, so the position of the first
+  occurrence cannot be bounded by an explicit function of `k`; but "occurs before
+  every large `N`" is the strongest unconditional statement, and it pins the
+  first occurrence below any effective threshold at which the count is known
+  positive.)
+* `match_count_ge_linear_of_normal` is the density statement: the number of
+  occurrences of `s` below `N` is eventually at least `(b^{-k}/2)·N`, so the
+  occurrence set has positive lower density (in fact density exactly `b^{-k}`).
+  This strictly strengthens `normal_ktuple_infinitely_often`.
+-/
+
+/-- **Occurrence-extraction core.** If the count of tuple-`s` matches over
+    `Finset.range N` is positive, an explicit matching position `< N` exists.
+    The pure-`Finset` bridge underlying the quantitative statements below;
+    carries no normality hypothesis. -/
+theorem exists_match_lt_of_count_pos (b : ℕ) (x : ℝ) (k : ℕ) (s : Fin k → Fin b)
+    (N : ℕ)
+    (hpos : 0 < ((Finset.range N).filter
+        (fun n => ∀ i : Fin k, nthDigit b (n + i.val) x = (s i : ℤ))).card) :
+    ∃ n < N, ∀ i : Fin k, nthDigit b (n + i.val) x = (s i : ℤ) := by
+  obtain ⟨n, hn⟩ := Finset.card_pos.mp hpos
+  rw [Finset.mem_filter, Finset.mem_range] at hn
+  exact ⟨n, hn.1, hn.2⟩
+
+/-- **The matching count is eventually positive.** For a number normal in base
+    `b`, the number of positions below `N` at which the tuple `s` matches is
+    positive for all sufficiently large `N`. Proof: normality forces the
+    frequency `count/N → b^{-k} > 0`, so eventually `count/N > 0`, whence
+    (using `N ≥ 1`) `count > 0`. -/
+theorem eventually_match_count_pos_of_normal (b : ℕ) (hb : 2 ≤ b) (x : ℝ)
+    (hn : IsNormalInBase b x) (k : ℕ) (s : Fin k → Fin b) :
+    ∀ᶠ N in atTop, 0 < ((Finset.range N).filter
+        (fun n => ∀ i : Fin k, nthDigit b (n + i.val) x = (s i : ℤ))).card := by
+  have hbR : (0 : ℝ) < (b : ℝ) := by exact_mod_cast (by omega : 0 < b)
+  have hposk : (0 : ℝ) < (b : ℝ) ^ (-(k : ℤ)) := zpow_pos hbR _
+  have hev : ∀ᶠ N in atTop, (0 : ℝ) <
+      (((Finset.range N).filter
+        (fun n => ∀ i : Fin k, nthDigit b (n + i.val) x = (s i : ℤ))).card : ℝ)
+        / (N : ℝ) :=
+    (hn k s).eventually_const_lt hposk
+  filter_upwards [hev, eventually_ge_atTop 1] with N hN _
+  set c := ((Finset.range N).filter
+      (fun n => ∀ i : Fin k, nthDigit b (n + i.val) x = (s i : ℤ))).card with hc
+  rcases Nat.eq_zero_or_pos c with h0 | hpos
+  · exfalso; rw [h0] at hN; simp at hN
+  · exact hpos
+
+/-- **Effective disjunctivity.** For a number normal in base `b`, the tuple `s`
+    occurs at some position *below* `N` for every sufficiently large `N`. This
+    strengthens `normal_imp_disjunctive` (one occurrence somewhere) to a bound
+    relative to every large window. Immediate from
+    `eventually_match_count_pos_of_normal` and the occurrence-extraction core. -/
+theorem eventually_exists_match_lt_of_normal (b : ℕ) (hb : 2 ≤ b) (x : ℝ)
+    (hn : IsNormalInBase b x) (k : ℕ) (s : Fin k → Fin b) :
+    ∀ᶠ N in atTop,
+      ∃ n < N, ∀ i : Fin k, nthDigit b (n + i.val) x = (s i : ℤ) := by
+  filter_upwards [eventually_match_count_pos_of_normal b hb x hn k s] with N hN
+  exact exists_match_lt_of_count_pos b x k s N hN
+
+/-- **Positive lower density of occurrences.** For a number normal in base `b`,
+    the number of positions below `N` at which the tuple `s` matches is eventually
+    at least `(b^{-k}/2)·N`. Hence the occurrence set has positive lower density
+    (in fact density exactly `b^{-k}`), strictly strengthening the qualitative
+    `normal_ktuple_infinitely_often`. Proof: normality gives `count/N → b^{-k}`,
+    so eventually `count/N > b^{-k}/2`; clearing the (positive) denominator yields
+    the linear bound. -/
+theorem match_count_ge_linear_of_normal (b : ℕ) (hb : 2 ≤ b) (x : ℝ)
+    (hn : IsNormalInBase b x) (k : ℕ) (s : Fin k → Fin b) :
+    ∀ᶠ N : ℕ in atTop,
+      ((b : ℝ) ^ (-(k : ℤ)) / 2) * (N : ℝ) ≤
+        (((Finset.range N).filter
+          (fun n => ∀ i : Fin k, nthDigit b (n + i.val) x = (s i : ℤ))).card : ℝ) := by
+  have hbR : (0 : ℝ) < (b : ℝ) := by exact_mod_cast (by omega : 0 < b)
+  have hposk : (0 : ℝ) < (b : ℝ) ^ (-(k : ℤ)) := zpow_pos hbR _
+  have hhalf : (b : ℝ) ^ (-(k : ℤ)) / 2 < (b : ℝ) ^ (-(k : ℤ)) := by linarith
+  have hev : ∀ᶠ N in atTop, (b : ℝ) ^ (-(k : ℤ)) / 2 <
+      (((Finset.range N).filter
+        (fun n => ∀ i : Fin k, nthDigit b (n + i.val) x = (s i : ℤ))).card : ℝ)
+        / (N : ℝ) :=
+    (hn k s).eventually_const_lt hhalf
+  filter_upwards [hev, eventually_gt_atTop 0] with N hN hN0
+  have hNR : (0 : ℝ) < (N : ℝ) := by exact_mod_cast hN0
+  have hmul := mul_lt_mul_of_pos_right hN hNR
+  rw [div_mul_cancel₀ _ hNR.ne'] at hmul
+  exact le_of_lt hmul
+
+-- ============================================================
 -- PART V: OPEN QUESTION
 -- ============================================================
 
