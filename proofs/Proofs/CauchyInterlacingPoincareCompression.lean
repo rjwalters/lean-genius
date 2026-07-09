@@ -348,6 +348,43 @@ theorem hasEigenvalue_compress_of_mem_of_invariant
   exact Module.End.hasEigenvalue_of_hasEigenvector
     ⟨Module.End.mem_eigenspace_iff.mpr hev, hne⟩
 
+/-- **Projection of an eigenvector across a reducing pair (the core mechanism).**
+
+If `H` reduces `T` (both `H` and `Hᗮ` are `T`-invariant) and `T v = μ • v`, then
+the two orthogonal components `a := P_H v ∈ H` and `v - a ∈ Hᗮ` are *themselves*
+eigenvectors of `T` for the same `μ`:
+
+  `T (P_H v) = μ • P_H v`  and  `T (v - P_H v) = μ • (v - P_H v)`.
+
+Proof (symmetry-free): the eigen-equation `T v = μ • v` rearranges to
+`T a - μ • a = μ • (v - a) - T (v - a)`.  The left side lies in `H` (invariance of
+`H`), the right side lies in `Hᗮ` (invariance of `Hᗮ`); since `H ⊓ Hᗮ = ⊥`, both
+vanish.  This is the projection argument underlying every reducing-subspace
+statement below, factored out for reuse. -/
+theorem starProjection_eigenvector_of_reducing {T : V →ₗ[𝕜] V} (H : Submodule 𝕜 V)
+    (hH : ∀ y ∈ H, T y ∈ H) (hHp : ∀ y ∈ Hᗮ, T y ∈ Hᗮ)
+    {μ : 𝕜} {v : V} (hTv : T v = μ • v) :
+    T (H.starProjection v) = μ • H.starProjection v ∧
+      T (v - H.starProjection v) = μ • (v - H.starProjection v) := by
+  set a := H.starProjection v with ha_def
+  have haH : a ∈ H := H.starProjection_apply_mem v
+  have hbHp : v - a ∈ Hᗮ := H.sub_starProjection_mem_orthogonal v
+  have hva : a + (v - a) = v := by abel
+  have hsplit : T a - μ • a = μ • (v - a) - T (v - a) := by
+    have key : T a + T (v - a) = μ • a + μ • (v - a) := by
+      rw [← map_add, ← smul_add, hva, hTv]
+    rw [sub_eq_sub_iff_add_eq_add, key]; abel
+  have hmemH : T a - μ • a ∈ H := H.sub_mem (hH a haH) (H.smul_mem μ haH)
+  have hmemHp : T a - μ • a ∈ Hᗮ := by
+    rw [hsplit]; exact Hᗮ.sub_mem (Hᗮ.smul_mem μ hbHp) (hHp _ hbHp)
+  have hzero : T a - μ • a = 0 := by
+    have hmem : T a - μ • a ∈ H ⊓ Hᗮ := Submodule.mem_inf.mpr ⟨hmemH, hmemHp⟩
+    rw [H.inf_orthogonal_eq_bot] at hmem
+    exact (Submodule.mem_bot 𝕜).mp hmem
+  refine ⟨sub_eq_zero.mp hzero, ?_⟩
+  have hz2 : μ • (v - a) - T (v - a) = 0 := by rw [← hsplit]; exact hzero
+  exact (sub_eq_zero.mp hz2).symm
+
 /-- **Every eigenvalue of `T` is captured by one compression block of a reducing
 pair.**
 
@@ -371,32 +408,15 @@ theorem hasEigenvalue_compress_or_orthogonal_of_reducing
   obtain ⟨v, hv⟩ := hμ.exists_hasEigenvector
   have hTv : T v = μ • v := Module.End.mem_eigenspace_iff.mp hv.1
   have hvne : v ≠ 0 := hv.2
-  -- Orthogonal split `v = a + (v - a)`, `a ∈ H`, `v - a ∈ Hᗮ`.
-  set a := H.starProjection v with ha_def
-  have haH : a ∈ H := H.starProjection_apply_mem v
-  have hbHp : v - a ∈ Hᗮ := H.sub_starProjection_mem_orthogonal v
-  have hva : a + (v - a) = v := by abel
-  -- The eigen-equation, split across `H` and `Hᗮ`.
-  have hsplit : T a - μ • a = μ • (v - a) - T (v - a) := by
-    have key : T a + T (v - a) = μ • a + μ • (v - a) := by
-      rw [← map_add, ← smul_add, hva, hTv]
-    rw [sub_eq_sub_iff_add_eq_add, key]; abel
-  -- The common value lies in `H ⊓ Hᗮ = ⊥`, hence is `0`.
-  have hmemH : T a - μ • a ∈ H := H.sub_mem (hH a haH) (H.smul_mem μ haH)
-  have hmemHp : T a - μ • a ∈ Hᗮ := by
-    rw [hsplit]; exact Hᗮ.sub_mem (Hᗮ.smul_mem μ hbHp) (hHp _ hbHp)
-  have hzero : T a - μ • a = 0 := by
-    have hmem : T a - μ • a ∈ H ⊓ Hᗮ := Submodule.mem_inf.mpr ⟨hmemH, hmemHp⟩
-    rw [H.inf_orthogonal_eq_bot] at hmem
-    exact (Submodule.mem_bot 𝕜).mp hmem
-  have hTa : T a = μ • a := sub_eq_zero.mp hzero
-  have hTb : T (v - a) = μ • (v - a) := by
-    have hz2 : μ • (v - a) - T (v - a) = 0 := by rw [← hsplit]; exact hzero
-    exact (sub_eq_zero.mp hz2).symm
+  -- Orthogonal split `v = a + (v - a)`, `a ∈ H`, `v - a ∈ Hᗮ`; both are
+  -- eigenvectors for `μ` by the reducing-pair projection mechanism.
+  have haH : H.starProjection v ∈ H := H.starProjection_apply_mem v
+  have hbHp : v - H.starProjection v ∈ Hᗮ := H.sub_starProjection_mem_orthogonal v
+  obtain ⟨hTa, hTb⟩ := starProjection_eigenvector_of_reducing H hH hHp hTv
   -- At least one component is nonzero; feed it into the invariant block.
-  by_cases hacase : a = 0
+  by_cases hacase : H.starProjection v = 0
   · right
-    have hb_ne : v - a ≠ 0 := by rw [hacase, sub_zero]; exact hvne
+    have hb_ne : v - H.starProjection v ≠ 0 := by rw [hacase, sub_zero]; exact hvne
     exact hasEigenvalue_compress_of_mem_of_invariant Hᗮ hHp hbHp hb_ne hTb
   · left
     exact hasEigenvalue_compress_of_mem_of_invariant H hH haH hacase hTa
@@ -425,5 +445,94 @@ theorem spectrum_eq_union_of_reducing
   · exact Set.union_subset
       (spectrum_compress_subset_of_invariant H hH)
       (spectrum_compress_subset_of_invariant Hᗮ hHp)
+
+/-! ## Eigenspace decomposition over a reducing subspace (multiplicity bookkeeping)
+
+`spectrum_eq_union_of_reducing` records that a reducing pair splits the ambient
+spectrum as a *set* union.  The finer, multiplicity-aware statement is that each
+individual eigenspace splits as an **internal orthogonal direct sum** of its two
+blockwise pieces:
+
+  `eigenspace T μ = (eigenspace T μ ⊓ H) ⊔ (eigenspace T μ ⊓ Hᗮ)`,
+
+with the two summands disjoint (they live in `H` and `Hᗮ`, and `H ⊓ Hᗮ = ⊥`).
+Taking dimensions turns this into the algebraic-multiplicity bookkeeping of the
+block-diagonal picture:
+
+  `dim (eigenspace T μ) = dim (eigenspace T μ ⊓ H) + dim (eigenspace T μ ⊓ Hᗮ)`.
+
+The multiplicity of `μ` for `T` is exactly the sum of its multiplicities on the
+two blocks — the eigenspace-level refinement of the spectrum union.  Everything
+is symmetry-free, driven by `starProjection_eigenvector_of_reducing`. -/
+
+omit [FiniteDimensional 𝕜 V] in
+/-- The two blockwise pieces of an eigenspace over a reducing pair are disjoint:
+`(eigenspace T μ ⊓ H) ⊓ (eigenspace T μ ⊓ Hᗮ) = ⊥`, because they sit inside `H`
+and `Hᗮ` respectively and `H ⊓ Hᗮ = ⊥`.  (No invariance needed — this is purely
+the orthogonality of `H` and `Hᗮ`.) -/
+theorem eigenspace_inf_reducing_disjoint {T : V →ₗ[𝕜] V} (H : Submodule 𝕜 V)
+    (μ : 𝕜) :
+    (Module.End.eigenspace T μ ⊓ H) ⊓ (Module.End.eigenspace T μ ⊓ Hᗮ) = ⊥ := by
+  refine le_antisymm ?_ bot_le
+  calc (Module.End.eigenspace T μ ⊓ H) ⊓ (Module.End.eigenspace T μ ⊓ Hᗮ)
+      ≤ H ⊓ Hᗮ :=
+        le_inf (le_trans inf_le_left inf_le_right)
+          (le_trans inf_le_right inf_le_right)
+    _ = ⊥ := H.inf_orthogonal_eq_bot
+
+/-- **Eigenspace decomposition over a reducing subspace.**
+
+If `H` reduces `T` — both `H` and `Hᗮ` are `T`-invariant — then for every `μ` the
+`μ`-eigenspace of `T` is the internal direct sum of its `H`- and `Hᗮ`-parts:
+
+  `eigenspace T μ = (eigenspace T μ ⊓ H) ⊔ (eigenspace T μ ⊓ Hᗮ)`.
+
+The `⊇` inclusion is trivial (both summands are `≤ eigenspace T μ`); for `⊆`, an
+eigenvector `v` splits as `v = P_H v + (v - P_H v)`, and
+`starProjection_eigenvector_of_reducing` shows both pieces are again
+`μ`-eigenvectors, lying in `H` and `Hᗮ` respectively.  Combined with
+`eigenspace_inf_reducing_disjoint` this exhibits the eigenspace as an internal
+*orthogonal* direct sum.  No symmetry of `T` is used. -/
+theorem eigenspace_eq_sup_inf_of_reducing {T : V →ₗ[𝕜] V} (H : Submodule 𝕜 V)
+    (hH : ∀ y ∈ H, T y ∈ H) (hHp : ∀ y ∈ Hᗮ, T y ∈ Hᗮ) (μ : 𝕜) :
+    Module.End.eigenspace T μ =
+      (Module.End.eigenspace T μ ⊓ H) ⊔ (Module.End.eigenspace T μ ⊓ Hᗮ) := by
+  refine le_antisymm (fun v hv => ?_) (sup_le inf_le_left inf_le_left)
+  have hTv : T v = μ • v := Module.End.mem_eigenspace_iff.mp hv
+  have haH : H.starProjection v ∈ H := H.starProjection_apply_mem v
+  have hbHp : v - H.starProjection v ∈ Hᗮ := H.sub_starProjection_mem_orthogonal v
+  obtain ⟨hTa, hTb⟩ := starProjection_eigenvector_of_reducing H hH hHp hTv
+  have haE : H.starProjection v ∈ Module.End.eigenspace T μ :=
+    Module.End.mem_eigenspace_iff.mpr hTa
+  have hbE : v - H.starProjection v ∈ Module.End.eigenspace T μ :=
+    Module.End.mem_eigenspace_iff.mpr hTb
+  have hmem : H.starProjection v + (v - H.starProjection v) ∈
+      (Module.End.eigenspace T μ ⊓ H) ⊔ (Module.End.eigenspace T μ ⊓ Hᗮ) :=
+    Submodule.add_mem_sup (Submodule.mem_inf.mpr ⟨haE, haH⟩)
+      (Submodule.mem_inf.mpr ⟨hbE, hbHp⟩)
+  have hva : H.starProjection v + (v - H.starProjection v) = v := by abel
+  rwa [hva] at hmem
+
+/-- **Multiplicity additivity over a reducing subspace.**
+
+The dimension form of `eigenspace_eq_sup_inf_of_reducing`: on a reducing pair the
+algebraic multiplicity of each eigenvalue `μ` of `T` is the sum of its
+multiplicities on the two orthogonal blocks,
+
+  `dim (eigenspace T μ) = dim (eigenspace T μ ⊓ H) + dim (eigenspace T μ ⊓ Hᗮ)`.
+
+Immediate from the internal-direct-sum decomposition
+(`eigenspace_eq_sup_inf_of_reducing` for the `⊔`, `eigenspace_inf_reducing_disjoint`
+for the `⊓ = ⊥`) via `Submodule.finrank_sup_add_finrank_inf_eq`.  This is the
+multiplicity-level bookkeeping of the block-diagonal spectral decomposition. -/
+theorem finrank_eigenspace_eq_add_of_reducing {T : V →ₗ[𝕜] V} (H : Submodule 𝕜 V)
+    (hH : ∀ y ∈ H, T y ∈ H) (hHp : ∀ y ∈ Hᗮ, T y ∈ Hᗮ) (μ : 𝕜) :
+    Module.finrank 𝕜 (Module.End.eigenspace T μ) =
+      Module.finrank 𝕜 (Module.End.eigenspace T μ ⊓ H : Submodule 𝕜 V) +
+        Module.finrank 𝕜 (Module.End.eigenspace T μ ⊓ Hᗮ : Submodule 𝕜 V) := by
+  have h := Submodule.finrank_sup_add_finrank_inf_eq
+    (Module.End.eigenspace T μ ⊓ H) (Module.End.eigenspace T μ ⊓ Hᗮ)
+  rwa [eigenspace_inf_reducing_disjoint H μ, finrank_bot, add_zero,
+    ← eigenspace_eq_sup_inf_of_reducing H hH hHp μ] at h
 
 end CauchyInterlacing.PoincareCompression
