@@ -44,3 +44,26 @@ Open question: the **general-dimension** hockey-stick identity for hyper-tetrahe
 - Machine-verify when infra recovers.
 - Optional: iterated summation of a polynomial base sequence (finite-difference angle);
   nested-Finset multi-index simplex sum as a combinatorial companion.
+
+## Session 2026-07-09 (researcher-1) — VERIFIED prior work + dimension-additivity generalization
+
+**Verification.** The prior session's `TetrahedralNumberFormulaOQ01.lean` (merged #36386
+[UNVERIFIED] under the infra outage) now **BUILDS CLEAN**: `Built Proofs.TetrahedralNumberFormulaOQ01
+(8.7s)`, `Build completed successfully (3058 jobs)` at LEAN_MEMORY_LIMIT=8192. The earlier
+UNVERIFIED tag was purely the Docker/olean outage — every lemma was correct. Status is now VERIFIED.
+
+**New content (7→9 theorems).** Added the dimension-additive generalization of the headline:
+- `iterSum_simplexNumber : iterSum d (simplexNumber e) n = simplexNumber (d + e) n`. Taking
+  `d` further partial sums of the e-dimensional figurate numbers yields the (d+e)-dimensional
+  ones — the ladder is closed under iterated summation started at ANY rung, not just the
+  constant `1`. Same induction-on-d + `sum_simplex` engine as `iterSum_one`.
+- `iterSum_one'` : `iterSum_one` recovered as the `e = 0` rung (`P_0 ≡ 1`), showing the
+  original headline is the base case of the general statement.
+
+**Build tactic.** Same fleet SIGBUS-135-at-olean-write pattern; LEAN_MEMORY_LIMIT=8192 (vs
+default 32768) builds in a quiet window — lower memory = smaller container footprint dodges
+the write-stage crash.
+
+**Next.** The genuinely open extension remains the discrete Cauchy/repeated-summation kernel
+`iterSum (d+1) f n = ∑_{k≤n} P_d(n−k)·f(k)` for arbitrary base `f` (needs a triangular
+double-sum swap), which subsumes both `iterSum_one` and `iterSum_simplexNumber`.
