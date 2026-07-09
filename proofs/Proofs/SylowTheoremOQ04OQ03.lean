@@ -541,4 +541,201 @@ theorem exists_lowerUnipotent_isCommutator (hp : 5 ≤ p) (s : ZMod p) :
     group
   rw [key, hc, weylW_conj_unipotent, neg_neg]
 
+/-!
+## Bruhat generation: `⟨U, U⁻⟩ = SL(2, p)`
+
+The final structural input to Iwasawa's criterion is the **generation hypothesis**:
+the two opposite root groups generate the whole group,
+
+    ⟨U, U⁻⟩ = SL(2, 𝔽_p).
+
+Combined with the perfectness lemmas above (`exists_unipotent_isCommutator` and
+`exists_lowerUnipotent_isCommutator`, which place `U` and `U⁻` inside the derived
+subgroup for `p ≥ 5`), this makes `SL(2, p)` perfect — the perfectness half of
+Iwasawa — and it is also the generation clause of Iwasawa's lemma itself.
+
+The proof is the concrete **Bruhat/Gauss decomposition** of `SL(2)`.  Two
+elementary factorizations feed it:
+
+* the Weyl element is a word in the root groups,
+  `w = u(-1) · l(1) · u(-1)` (`weylW_eq_root_word`);
+* every torus element is a word in the root groups,
+  `diag(a) = u(a) · l(-a⁻¹) · u(a) · w` (`torusDiag_eq_root_word`), so the whole
+  split torus `T` lies in `⟨U, U⁻⟩`.
+
+With `w, T ⊆ ⟨U, U⁻⟩` (and `U, U⁻` there by definition) the Bruhat cell
+`u(x)·w·diag(c)·u(y)` covers every matrix with nonzero lower-left entry
+(`mem_closure_of_lowerLeft_ne_zero`); a single lower transvection `l(1)` moves the
+remaining `c = 0` matrices into that cell, giving
+`closure_rootGroups_eq_top`.
+-/
+
+/-- The lower unipotent embedding is additive:
+`[[1,0],[s,1]] · [[1,0],[t,1]] = [[1,0],[s+t,1]]`. -/
+theorem lowerUnipotent_mul (s t : ZMod p) :
+    lowerUnipotent s * lowerUnipotent t = lowerUnipotent (s + t) := by
+  apply Subtype.ext
+  show (!![1, 0; s, 1] : Matrix (Fin 2) (Fin 2) (ZMod p)) * !![1, 0; t, 1]
+      = !![1, 0; s + t, 1]
+  ext i j
+  fin_cases i <;> fin_cases j <;>
+    simp [Matrix.mul_apply, Fin.sum_univ_two, add_comm]
+
+/-- The lower unipotent embedding sends `0` to the identity matrix. -/
+theorem lowerUnipotent_zero : lowerUnipotent (0 : ZMod p) = 1 := by
+  apply Subtype.ext
+  show (!![1, (0 : ZMod p); 0, 1] : Matrix (Fin 2) (Fin 2) (ZMod p)) = 1
+  rw [Matrix.one_fin_two]
+
+/-- **The Weyl element is a word in the two root groups.**  `w = u(-1)·l(1)·u(-1)`:
+
+    [[0, -1], [1, 0]] = [[1, -1], [0, 1]] · [[1, 0], [1, 1]] · [[1, -1], [0, 1]].
+
+This exhibits `w ∈ ⟨U, U⁻⟩`, the Bruhat generator that swaps the two root groups. -/
+theorem weylW_eq_root_word :
+    weylW (p := p)
+      = unipotentUpper (-1) * lowerUnipotent 1 * unipotentUpper (-1) := by
+  apply Subtype.ext
+  show (!![0, -1; 1, 0] : Matrix (Fin 2) (Fin 2) (ZMod p))
+      = !![1, -1; 0, 1] * !![1, 0; 1, 1] * !![1, -1; 0, 1]
+  ext i j
+  fin_cases i <;> fin_cases j <;>
+    simp [Matrix.mul_apply, Fin.sum_univ_two] <;> ring
+
+/-- **Every torus element is a word in the two root groups.**
+`diag(a) = u(a)·l(-a⁻¹)·u(a)·w`:
+
+    [[a, 0], [0, a⁻¹]]
+      = [[1, a], [0, 1]] · [[1, 0], [-a⁻¹, 1]] · [[1, a], [0, 1]] · [[0, -1], [1, 0]].
+
+Hence the whole split torus `T` lies in `⟨U, U⁻⟩`. -/
+theorem torusDiag_eq_root_word (a : (ZMod p)ˣ) :
+    torusDiag a
+      = unipotentUpper (a : ZMod p) * lowerUnipotent (-((a : ZMod p)⁻¹))
+          * unipotentUpper (a : ZMod p) * weylW := by
+  have hc : (a : ZMod p) ≠ 0 := a.ne_zero
+  have hinv : ((a⁻¹ : (ZMod p)ˣ) : ZMod p) = (a : ZMod p)⁻¹ :=
+    Units.val_inv_eq_inv_val a
+  apply Subtype.ext
+  show (!![(a : ZMod p), 0; 0, ((a⁻¹ : (ZMod p)ˣ) : ZMod p)]
+        : Matrix (Fin 2) (Fin 2) (ZMod p))
+      = !![1, (a : ZMod p); 0, 1] * !![1, 0; -((a : ZMod p)⁻¹), 1]
+          * !![1, (a : ZMod p); 0, 1] * !![0, -1; 1, 0]
+  rw [hinv]
+  ext i j
+  fin_cases i <;> fin_cases j <;>
+    simp only [Matrix.mul_apply, Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one,
+      Matrix.head_cons] <;>
+    field_simp <;> ring
+
+/-- The two opposite root groups `U ∪ U⁻`, the Bruhat generators of `SL(2, p)`. -/
+def rootGroups : Set (Matrix.SpecialLinearGroup (Fin 2) (ZMod p)) :=
+  Set.range (unipotentUpper (p := p)) ∪ Set.range (lowerUnipotent (p := p))
+
+theorem unipotentUpper_mem_closure_rootGroups (t : ZMod p) :
+    unipotentUpper t ∈ Subgroup.closure (rootGroups (p := p)) :=
+  Subgroup.subset_closure (Set.mem_union_left _ ⟨t, rfl⟩)
+
+theorem lowerUnipotent_mem_closure_rootGroups (t : ZMod p) :
+    lowerUnipotent t ∈ Subgroup.closure (rootGroups (p := p)) :=
+  Subgroup.subset_closure (Set.mem_union_right _ ⟨t, rfl⟩)
+
+/-- The Weyl element lies in `⟨U, U⁻⟩`. -/
+theorem weylW_mem_closure_rootGroups :
+    weylW ∈ Subgroup.closure (rootGroups (p := p)) := by
+  rw [weylW_eq_root_word]
+  exact mul_mem (mul_mem (unipotentUpper_mem_closure_rootGroups _)
+    (lowerUnipotent_mem_closure_rootGroups _)) (unipotentUpper_mem_closure_rootGroups _)
+
+/-- The whole split torus `T` lies in `⟨U, U⁻⟩`. -/
+theorem torusDiag_mem_closure_rootGroups (a : (ZMod p)ˣ) :
+    torusDiag a ∈ Subgroup.closure (rootGroups (p := p)) := by
+  rw [torusDiag_eq_root_word]
+  exact mul_mem (mul_mem (mul_mem (unipotentUpper_mem_closure_rootGroups _)
+    (lowerUnipotent_mem_closure_rootGroups _)) (unipotentUpper_mem_closure_rootGroups _))
+    weylW_mem_closure_rootGroups
+
+/-- **Bruhat cell membership.**  Every `g ∈ SL(2, p)` whose lower-left entry `c` is
+nonzero lies in `⟨U, U⁻⟩`, via the Bruhat factorization
+
+    g = u(a·c⁻¹) · w · diag(c) · u(d·c⁻¹),
+
+where `a = g₀₀`, `d = g₁₁`.  (The top-right entry checks out because
+`ad − bc = 1`.)  Since `u(·), w, diag(c)` all lie in `⟨U, U⁻⟩`, so does `g`. -/
+theorem mem_closure_of_lowerLeft_ne_zero
+    (g : Matrix.SpecialLinearGroup (Fin 2) (ZMod p))
+    (hc : (g : Matrix (Fin 2) (Fin 2) (ZMod p)) 1 0 ≠ 0) :
+    g ∈ Subgroup.closure (rootGroups (p := p)) := by
+  set A := (g : Matrix (Fin 2) (Fin 2) (ZMod p)) with hA
+  have hdet : A 0 0 * A 1 1 - A 0 1 * A 1 0 = 1 := by
+    have h : A.det = 1 := Matrix.SpecialLinearGroup.det_coe g
+    rw [Matrix.det_fin_two] at h
+    exact h
+  have hv2 : (((Units.mk0 (A 1 0) hc)⁻¹ : (ZMod p)ˣ) : ZMod p) = (A 1 0)⁻¹ := by
+    rw [Units.val_inv_eq_inv_val, Units.val_mk0]
+  have key : ((unipotentUpper (A 0 0 * (A 1 0)⁻¹) * weylW * torusDiag (Units.mk0 (A 1 0) hc)
+        * unipotentUpper (A 1 1 * (A 1 0)⁻¹) : Matrix.SpecialLinearGroup (Fin 2) (ZMod p))
+        : Matrix (Fin 2) (Fin 2) (ZMod p)) = A := by
+    simp only [Matrix.SpecialLinearGroup.coe_mul, val_unipotentUpper, val_weylW,
+      val_torusDiag, Units.val_mk0, hv2]
+    ext i j
+    fin_cases i <;> fin_cases j <;>
+      simp only [Matrix.mul_apply, Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one,
+        Matrix.head_cons]
+    · field_simp <;> ring
+    · field_simp
+      first
+        | linear_combination hdet
+        | linear_combination -hdet
+        | linear_combination (A 1 0) * hdet
+        | linear_combination -(A 1 0) * hdet
+    · field_simp <;> ring
+    · field_simp <;> ring
+  have hword : g = unipotentUpper (A 0 0 * (A 1 0)⁻¹) * weylW * torusDiag (Units.mk0 (A 1 0) hc)
+      * unipotentUpper (A 1 1 * (A 1 0)⁻¹) := Subtype.ext key.symm
+  rw [hword]
+  exact mul_mem (mul_mem (mul_mem (unipotentUpper_mem_closure_rootGroups _)
+    weylW_mem_closure_rootGroups) (torusDiag_mem_closure_rootGroups _))
+    (unipotentUpper_mem_closure_rootGroups _)
+
+/-- **`⟨U, U⁻⟩ = SL(2, p)`.**  The two opposite root groups generate the whole
+special linear group.  This is the Bruhat generation theorem: matrices with a
+nonzero lower-left entry are covered by the big Bruhat cell
+(`mem_closure_of_lowerLeft_ne_zero`), and the remaining matrices — those with
+lower-left entry `0`, forcing the top-left entry to be a unit — are pulled into
+that cell by one lower transvection `l(1)`.
+
+Together with `exists_unipotent_isCommutator` / `exists_lowerUnipotent_isCommutator`
+(both root groups lie in the derived subgroup for `p ≥ 5`) this yields perfectness
+of `SL(2, p)` for `p ≥ 5`, and it is the generation hypothesis of Iwasawa's
+simplicity criterion for `PSL(2, p)`. -/
+theorem closure_rootGroups_eq_top :
+    Subgroup.closure (rootGroups (p := p)) = ⊤ := by
+  rw [Subgroup.eq_top_iff']
+  intro g
+  by_cases hc : (g : Matrix (Fin 2) (Fin 2) (ZMod p)) 1 0 = 0
+  · -- lower-left entry `0`: `det = 1` forces the top-left entry `g₀₀ ≠ 0`.
+    have hane : (g : Matrix (Fin 2) (Fin 2) (ZMod p)) 0 0 ≠ 0 := by
+      intro ha0
+      have h : (g : Matrix (Fin 2) (Fin 2) (ZMod p)).det = 1 :=
+        Matrix.SpecialLinearGroup.det_coe g
+      rw [Matrix.det_fin_two, ha0, hc] at h
+      simp at h
+    -- `l(1) · g` then has lower-left entry `g₀₀ + g₁₀ = g₀₀ ≠ 0`.
+    have hbl : ((lowerUnipotent 1 * g : Matrix.SpecialLinearGroup (Fin 2) (ZMod p)) :
+        Matrix (Fin 2) (Fin 2) (ZMod p)) 1 0 ≠ 0 := by
+      rw [Matrix.SpecialLinearGroup.coe_mul, val_lowerUnipotent]
+      simp only [Matrix.mul_apply, Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one,
+        Matrix.head_cons, hc, mul_zero, add_zero]
+      exact hane
+    have hmem : lowerUnipotent 1 * g ∈ Subgroup.closure (rootGroups (p := p)) :=
+      mem_closure_of_lowerLeft_ne_zero _ hbl
+    have hinv : lowerUnipotent (-1 : ZMod p) * lowerUnipotent 1 = 1 := by
+      rw [lowerUnipotent_mul, neg_add_cancel, lowerUnipotent_zero]
+    have hg : g = lowerUnipotent (-1) * (lowerUnipotent 1 * g) := by
+      rw [← mul_assoc, hinv, one_mul]
+    rw [hg]
+    exact mul_mem (lowerUnipotent_mem_closure_rootGroups _) hmem
+  · exact mem_closure_of_lowerLeft_ne_zero g hc
+
 end SylowOQ04OQ03
