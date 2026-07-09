@@ -149,5 +149,80 @@
       "relationship": "related",
       "description": "Base entry of the family: establishes the first-order finite Boole summation identity ∑ (-1)^j a_j = ½((-1)^n a_n − (-1)^m a_m) − ½ ∑ (-1)^j Δa_j (boole_first), the algebraic seed that every later entry — including this one's exact remainder identity — is derived from."
     }
+  ],
+  "references": [
+    {
+      "authors": "Boole, George",
+      "title": "A Treatise on the Calculus of Finite Differences",
+      "year": "1860",
+      "venue": "Macmillan",
+      "note": "Source of the forward-difference (Boole) summation transform a ↦ Δa studied here. The identity altSum (fdiff a) 0 m = a₀ − (−1)^m a_m − 2·altSum a 0 m formalized in fdiff_altSum_eq is a finite instance of Boole's summation calculus."
+    },
+    {
+      "authors": "Knopp, Konrad",
+      "title": "Theory and Application of Infinite Series",
+      "year": "1990",
+      "venue": "Dover (repr. of 2nd English ed., Blackie & Son, 1951)",
+      "note": "Classic reference for the Leibniz alternating-series remainder bound |L − S_m| ≤ a_m that this entry shows is preserved verbatim under the first-order Boole transform."
+    },
+    {
+      "authors": "Nörlund, Niels Erik",
+      "title": "Vorlesungen über Differenzenrechnung",
+      "year": "1924",
+      "venue": "Springer, Berlin",
+      "note": "Standard treatise on the finite-difference calculus and Boole/Euler summation, the setting in which the forward-difference transform and its convergence behaviour (fdiff_tendsto, a₀ − 2S) live."
+    },
+    {
+      "authors": "Hardy, Godfrey Harold",
+      "title": "Divergent Series",
+      "year": "1949",
+      "venue": "Oxford University Press",
+      "note": "Systematic account of summation transforms and their effect on convergence and error; provides the broader context for asking whether the Boole transform preserves the sharp remainder rate, answered affirmatively here (fdiff_remainder_bound)."
+    },
+    {
+      "authors": "Bromwich, Thomas J. I'Anson",
+      "title": "An Introduction to the Theory of Infinite Series",
+      "year": "1926",
+      "venue": "Macmillan, 2nd ed.",
+      "note": "Two-sided bracketing of alternating-series sums by consecutive partial sums — the sharpness structure that the exact remainder identity fdiff_remainder_eq transports to the transformed series."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "fdiff_remainder_bound",
+      "type": "main",
+      "description": "Sharp remainder bound for the forward-difference (Boole) series: for an antitone sequence whose alternating sum is S, the transformed series approximates its limit a₀ − 2S to within the m-th term of the original sequence, |(a₀ − 2S) − altSum (fdiff a) 0 m| ≤ a_m. The transform preserves the sharp aₘ rate exactly.",
+      "leanType": "(ha : Antitone a) {S : ℝ} (hS : Tendsto (fun m => altSum a 0 m) atTop (𝓝 S)) (m : ℕ) : |(a 0 - 2 * S) - altSum (fdiff a) 0 m| ≤ a m"
+    },
+    {
+      "name": "fdiff_remainder_bound_of_antitone",
+      "type": "main",
+      "description": "Unconditional packaging: every antitone null sequence yields a limit S, the transformed series converges to a₀ − 2S, and the sharp bound |(a₀ − 2S) − altSum (fdiff a) 0 m| ≤ a_m holds for all m — the self-contained statement that the Boole transform preserves the remainder bound.",
+      "leanType": "(ha : Antitone a) (ha0 : Tendsto a atTop (𝓝 0)) : ∃ S, Tendsto (fun m => altSum a 0 m) atTop (𝓝 S) ∧ Tendsto (fun m => altSum (fdiff a) 0 m) atTop (𝓝 (a 0 - 2 * S)) ∧ ∀ m, |(a 0 - 2 * S) - altSum (fdiff a) 0 m| ≤ a m"
+    },
+    {
+      "name": "fdiff_altSum_eq",
+      "type": "supporting",
+      "description": "Forward-difference partial sum solved exactly: altSum (fdiff a) 0 m = a₀ − (−1)^m a_m − 2·altSum a 0 m. The finite Boole summation identity from which every other result telescopes.",
+      "leanType": "(a : ℕ → ℝ) (m : ℕ) : altSum (fdiff a) 0 m = a 0 - (-1 : ℝ) ^ m * a m - 2 * altSum a 0 m"
+    },
+    {
+      "name": "fdiff_remainder_eq",
+      "type": "supporting",
+      "description": "Exact remainder identity: (a₀ − 2S) − altSum (fdiff a) 0 m = (−1)^m a_m − 2(S − altSum a 0 m), pinning the transformed-series remainder to the original-series remainder S − altSum a 0 m.",
+      "leanType": "(a : ℕ → ℝ) (S : ℝ) (m : ℕ) : (a 0 - 2 * S) - altSum (fdiff a) 0 m = (-1 : ℝ) ^ m * a m - 2 * (S - altSum a 0 m)"
+    },
+    {
+      "name": "fdiff_tendsto",
+      "type": "supporting",
+      "description": "The forward-difference (Boole) series converges to a₀ − 2S, where S is the alternating sum of the original sequence.",
+      "leanType": "(ha0 : Tendsto a atTop (𝓝 0)) {S : ℝ} (hS : Tendsto (fun m => altSum a 0 m) atTop (𝓝 S)) : Tendsto (fun m => altSum (fdiff a) 0 m) atTop (𝓝 (a 0 - 2 * S))"
+    },
+    {
+      "name": "fdiff_remainder_tendsto_zero",
+      "type": "supporting",
+      "description": "O(aₘ) convergence: the forward-difference remainder (a₀ − 2S) − altSum (fdiff a) 0 m tends to 0, a direct consequence of the sharp aₘ bound and a → 0.",
+      "leanType": "(ha0 : Tendsto a atTop (𝓝 0)) {S : ℝ} (hS : Tendsto (fun m => altSum a 0 m) atTop (𝓝 S)) : Tendsto (fun m => (a 0 - 2 * S) - altSum (fdiff a) 0 m) atTop (𝓝 0)"
+    }
   ]
 }
