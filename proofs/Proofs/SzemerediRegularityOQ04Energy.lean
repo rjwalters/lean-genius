@@ -329,4 +329,129 @@ theorem variance_atom_bound {ι : Type*} (s : Finset ι) (w x : ι → ℚ)
   rw [← hμ_def] at hvar
   linarith [hsingle, hatom, hvar]
 
+-- ═══════════════════════════════════════════════════════════════════
+-- PART IV: THE n-CELL ENERGY INCREMENT (variance atom bound, graph form)
+-- ═══════════════════════════════════════════════════════════════════
+
+/-- Edge counts to a fixed `B` are additive over a *family* of pairwise-disjoint
+    `A`-parts, generalizing `edge_count_union` from two cells to any finite family
+    `As`.  The union `As.biUnion id` is the refined `A`-side. -/
+private theorem edge_count_biUnion (G : SimpleGraph V) [DecidableRel G.Adj]
+    (As : Finset (Finset V)) (B : Finset V)
+    (hdisj : ∀ A₁ ∈ As, ∀ A₂ ∈ As, A₁ ≠ A₂ → Disjoint A₁ A₂) :
+    (((As.biUnion id).product B).filter (fun p => G.Adj p.1 p.2)).card =
+    ∑ A ∈ As, ((A.product B).filter (fun p => G.Adj p.1 p.2)).card := by
+  -- Rewrite the filtered product over the union as a `biUnion` of filtered products.
+  have hset : ((As.biUnion id).product B).filter (fun p => G.Adj p.1 p.2) =
+      As.biUnion (fun A => (A.product B).filter (fun p => G.Adj p.1 p.2)) := by
+    ext ⟨a, b⟩
+    simp only [Finset.mem_filter, Finset.mem_product, Finset.mem_biUnion, id_eq]
+    constructor
+    · rintro ⟨⟨⟨A, hA, ha⟩, hb⟩, hadj⟩; exact ⟨A, hA, ⟨ha, hb⟩, hadj⟩
+    · rintro ⟨A, hA, ⟨ha, hb⟩, hadj⟩; exact ⟨⟨⟨A, hA, ha⟩, hb⟩, hadj⟩
+  rw [hset]
+  -- The filtered products of distinct cells are disjoint, so cards sum.
+  apply Finset.card_biUnion
+  intro A₁ hA₁ A₂ hA₂ hne
+  apply Finset.disjoint_of_subset_left (Finset.filter_subset _ _)
+  apply Finset.disjoint_of_subset_right (Finset.filter_subset _ _)
+  rw [Finset.disjoint_left]
+  rintro ⟨a, b⟩ h₁ h₂
+  exact absurd (Finset.mem_product.mp h₂).1
+    (Finset.disjoint_left.mp (hdisj A₁ hA₁ A₂ hA₂ hne) (Finset.mem_product.mp h₁).1)
+
+/-- **n-cell weighted-average identity.**  For a family `As` of pairwise-disjoint
+    `A`-parts and a fixed `B`, the edge-count-weighted density of the union splits as
+    `|⋃As|·|B|·d(⋃As,B) = Σ_{A∈As} |A|·|B|·d(A,B)`.  Equivalently, `d(⋃As,B)` is the
+    `|A|`-weighted mean of the sub-densities `d(A,B)`.  This is the Finset
+    generalization of `edgeDensity_union_mul`, and it is exactly the algebraic
+    hypothesis that turns `variance_atom_bound` into a `pairEnergy` statement. -/
+theorem edgeDensity_biUnion_mul (G : SimpleGraph V) [DecidableRel G.Adj]
+    (As : Finset (Finset V)) (B : Finset V)
+    (hdisj : ∀ A₁ ∈ As, ∀ A₂ ∈ As, A₁ ≠ A₂ → Disjoint A₁ A₂) :
+    (↑(As.biUnion id).card : ℚ) * B.card * edgeDensity G (As.biUnion id) B =
+    ∑ A ∈ As, (↑A.card * B.card * edgeDensity G A B) := by
+  rw [card_mul_edgeDensity G (As.biUnion id) B]
+  rw [show (∑ A ∈ As, (↑A.card * ↑B.card * edgeDensity G A B : ℚ)) =
+        ∑ A ∈ As, (↑((A.product B).filter (fun p => G.Adj p.1 p.2)).card : ℚ) from
+      Finset.sum_congr rfl (fun A _ => card_mul_edgeDensity G A B)]
+  rw [← Nat.cast_sum]
+  exact_mod_cast edge_count_biUnion G As B hdisj
+
+/-- **The n-cell energy increment (variance atom bound, graph form).**  Refine the
+    `A`-side of a pair `(A, B)` into a family `As` of pairwise-disjoint sub-parts
+    with union `A = ⋃As`.  If one sub-part `A₀ ∈ As` has density against `B`
+    deviating from the union density `d(A,B)` by at least `d ≥ 0`, then the refined
+    contribution exceeds the coarse one by at least `(|A₀|·|B|/n²)·d²`:
+    `pairEnergy G (⋃As) B + (|A₀|·|B|/n²)·d² ≤ Σ_{A∈As} pairEnergy G A B`.
+
+    This is the genuine `n`-cell generalization of `pairEnergy_split_gain`
+    (two-cell Cauchy–Schwarz): rather than splitting into two halves it converts a
+    single deviating atom of an arbitrary simultaneous refinement into a definite
+    energy gain, obtained by instantiating the abstract `variance_atom_bound` with
+    weights `|A|·|B|/n²` and values `d(A,B)`.  It is the analytic engine the AFKS
+    outer loop consumes when an ε-irregular pair is refined into many sub-cells. -/
+theorem pairEnergy_family_split_gain (G : SimpleGraph V) [DecidableRel G.Adj]
+    (As : Finset (Finset V)) (B : Finset V)
+    (hdisj : ∀ A₁ ∈ As, ∀ A₂ ∈ As, A₁ ≠ A₂ → Disjoint A₁ A₂)
+    (hB : 0 < (B.card : ℚ)) (hAtot : 0 < ((As.biUnion id).card : ℚ))
+    (A₀ : Finset V) (hA₀ : A₀ ∈ As) (d : ℚ) (hd : 0 ≤ d)
+    (hdev : d ≤ |edgeDensity G A₀ B - edgeDensity G (As.biUnion id) B|) :
+    pairEnergy G (As.biUnion id) B +
+        (A₀.card : ℚ) * B.card / (Fintype.card V : ℚ) ^ 2 * d ^ 2 ≤
+      ∑ A ∈ As, pairEnergy G A B := by
+  set n2 : ℚ := (Fintype.card V : ℚ) ^ 2 with hn2
+  -- `V` is nonempty (`B` is), so the normaliser is positive.
+  have hn2pos : 0 < n2 := by
+    have : 0 < (Fintype.card V : ℚ) := by
+      rcases Finset.card_pos.mp (by exact_mod_cast hB) with ⟨b, hb⟩
+      exact_mod_cast Fintype.card_pos_iff.mpr ⟨b⟩
+    positivity
+  -- Instantiate the abstract variance atom bound with graph weights/values.
+  set w : Finset V → ℚ := fun A => (A.card : ℚ) * B.card / n2 with hw_def
+  set x : Finset V → ℚ := fun A => edgeDensity G A B with hx_def
+  -- Total weight `Σ w = |⋃As|·|B|/n²`, using card-additivity of the union.
+  have hcard : (∑ A ∈ As, (A.card : ℚ)) = ((As.biUnion id).card : ℚ) := by
+    have hcb := Finset.card_biUnion hdisj
+    simp only [id_eq] at hcb
+    rw [hcb, Nat.cast_sum]
+  have hWsum : (∑ A ∈ As, w A) = ((As.biUnion id).card : ℚ) * B.card / n2 := by
+    simp only [hw_def]
+    rw [← Finset.sum_div, ← Finset.sum_mul, hcard]
+  have hWpos : 0 < (∑ A ∈ As, w A) := by
+    rw [hWsum]; positivity
+  have hWne : (∑ A ∈ As, w A) ≠ 0 := ne_of_gt hWpos
+  -- Weighted first moment `Σ w x = |⋃As|·|B|·d(⋃As,B)/n²`.
+  have hWX : (∑ A ∈ As, w A * x A) =
+      ((As.biUnion id).card : ℚ) * B.card * edgeDensity G (As.biUnion id) B / n2 := by
+    simp only [hw_def, hx_def]
+    rw [edgeDensity_biUnion_mul G As B hdisj, Finset.sum_div]
+    exact Finset.sum_congr rfl (fun A _ => by ring)
+  -- Hence the weighted mean `μ = Σwx/Σw` is exactly the union density.
+  have hμ : (∑ A ∈ As, w A * x A) / (∑ A ∈ As, w A) =
+      edgeDensity G (As.biUnion id) B := by
+    rw [div_eq_iff hWne, hWX, hWsum]; ring
+  -- Nonnegativity of every graph weight.
+  have hwnn : ∀ A ∈ As, (0 : ℚ) ≤ w A := by
+    intro A _; rw [hw_def]; positivity
+  -- The deviation hypothesis phrased against the abstract mean.
+  have hdev' : d ≤ |x A₀ - (∑ A ∈ As, w A * x A) / (∑ A ∈ As, w A)| := by
+    rw [hμ]; simpa only [hx_def] using hdev
+  -- Apply the abstract variance atom bound with `w₀ = w A₀`.
+  have hatom := variance_atom_bound As w x hwnn hWne A₀ hA₀ (w A₀) d
+    (hwnn A₀ hA₀) hd (le_refl _) hdev'
+  -- Identify the two abstract sums with graph energies.
+  have hsumsq : (∑ A ∈ As, w A * x A ^ 2) = ∑ A ∈ As, pairEnergy G A B :=
+    Finset.sum_congr rfl (fun A _ => by
+      simp only [hw_def, hx_def, hn2, pairEnergy]; ring)
+  have hcoarse :
+      (∑ A ∈ As, w A) * ((∑ A ∈ As, w A * x A) / (∑ A ∈ As, w A)) ^ 2 =
+      pairEnergy G (As.biUnion id) B := by
+    rw [hμ, hWsum]; simp only [hn2, pairEnergy]; ring
+  -- The gain term is exactly `w A₀ · d²`.
+  have hgain : (A₀.card : ℚ) * B.card / n2 * d ^ 2 = w A₀ * d ^ 2 := by
+    simp only [hw_def]
+  rw [hgain]
+  linarith [hatom, hsumsq, hcoarse]
+
 end Szemeredi.RegularityOQ04Energy
