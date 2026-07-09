@@ -364,4 +364,78 @@ theorem weighted_second_moment_atom_gain {ι : Type*} (s : Finset ι) (w x : ι 
     rw [← hμ] at hkey
     linarith [hkey]
 
+-- ═══════════════════════════════════════════════════════════════════
+-- PART IV: THE LAW OF TOTAL DENSITY (2×2 SIMULTANEOUS REFINEMENT)
+-- ═══════════════════════════════════════════════════════════════════
+
+/-- Helper: edge counts from `A` are additive over a disjoint split of the
+    `B`-side.  Mirror of `edge_count_union`, splitting the *second* coordinate. -/
+private theorem edge_count_union_right (G : SimpleGraph V) [DecidableRel G.Adj]
+    (A B₁ B₂ : Finset V) (hB : Disjoint B₁ B₂) :
+    ((A.product (B₁ ∪ B₂)).filter (fun p => G.Adj p.1 p.2)).card =
+    ((A.product B₁).filter (fun p => G.Adj p.1 p.2)).card +
+    ((A.product B₂).filter (fun p => G.Adj p.1 p.2)).card := by
+  have h_prod : A.product (B₁ ∪ B₂) = A.product B₁ ∪ A.product B₂ := by
+    ext ⟨a, b⟩
+    constructor
+    · intro h
+      have hab := Finset.mem_product.mp h
+      rcases Finset.mem_union.mp hab.2 with hb | hb
+      · exact Finset.mem_union.mpr (Or.inl (Finset.mem_product.mpr ⟨hab.1, hb⟩))
+      · exact Finset.mem_union.mpr (Or.inr (Finset.mem_product.mpr ⟨hab.1, hb⟩))
+    · intro h
+      rcases Finset.mem_union.mp h with hab | hab <;> {
+        have := Finset.mem_product.mp hab
+        exact Finset.mem_product.mpr ⟨this.1, Finset.mem_union.mpr (by tauto)⟩ }
+  rw [h_prod, Finset.filter_union]
+  apply Finset.card_union_of_disjoint
+  apply Finset.disjoint_filter_filter
+  rw [Finset.disjoint_left]
+  intro x h₁ h₂
+  exact absurd (Finset.mem_product.mp h₂).2
+    (Finset.disjoint_left.mp hB (Finset.mem_product.mp h₁).2)
+
+/-- **Weighted-average identity, second coordinate.**  Mirror of
+    `edgeDensity_union_mul`: for a disjoint split `B₁, B₂` of the `B`-side,
+    `|A|·|B₁∪B₂|·d(A,B₁∪B₂) = |A|·|B₁|·d(A,B₁) + |A|·|B₂|·d(A,B₂)`. -/
+theorem edgeDensity_union_mul_right (G : SimpleGraph V) [DecidableRel G.Adj]
+    (A B₁ B₂ : Finset V) (hB : Disjoint B₁ B₂) :
+    (↑A.card : ℚ) * ↑(B₁ ∪ B₂).card * edgeDensity G A (B₁ ∪ B₂) =
+    ↑A.card * ↑B₁.card * edgeDensity G A B₁ +
+    ↑A.card * ↑B₂.card * edgeDensity G A B₂ := by
+  have h₁ := card_mul_edgeDensity G A B₁
+  have h₂ := card_mul_edgeDensity G A B₂
+  have h₃ := card_mul_edgeDensity G A (B₁ ∪ B₂)
+  have he : (↑((A.product (B₁ ∪ B₂)).filter (fun p => G.Adj p.1 p.2)).card : ℚ) =
+      ↑((A.product B₁).filter (fun p => G.Adj p.1 p.2)).card +
+      ↑((A.product B₂).filter (fun p => G.Adj p.1 p.2)).card := by
+    exact_mod_cast edge_count_union_right G A B₁ B₂ hB
+  rw [h₃, h₁, h₂]; exact he
+
+/-- **Law of total density for a 2×2 simultaneous refinement.**  When a pair is
+    refined on *both* coordinates into a disjoint `2×2` grid of sub-cells, the
+    whole edge-count-weighted density is exactly the sum of the four sub-cell
+    edge-count-weighted densities:
+
+      `|A||B|·d(A,B) = Σ_{i,j∈{1,2}} |Aᵢ||Bⱼ|·d(Aᵢ,Bⱼ)`,
+
+    with `A = A₁∪A₂`, `B = B₁∪B₂`.  Equivalently, `d(A,B)` is the `|Aᵢ||Bⱼ|`-weighted
+    mean of the four sub-densities.  This is the *mean identity* that the variance
+    atom bound consumes: it certifies that the coarse density `d(A,B)` is the
+    honest weighted centroid of the refined density distribution, so a single
+    sub-cell whose density deviates from `d(A,B)` is a genuine variance atom.
+    Proved by splitting the `A`-side (`edgeDensity_union_mul`) and then each
+    resulting term on the `B`-side (`edgeDensity_union_mul_right`). -/
+theorem edgeDensity_prod_split (G : SimpleGraph V) [DecidableRel G.Adj]
+    (A₁ A₂ B₁ B₂ : Finset V) (hA : Disjoint A₁ A₂) (hB : Disjoint B₁ B₂) :
+    (↑(A₁ ∪ A₂).card : ℚ) * ↑(B₁ ∪ B₂).card * edgeDensity G (A₁ ∪ A₂) (B₁ ∪ B₂) =
+      ↑A₁.card * ↑B₁.card * edgeDensity G A₁ B₁ +
+      ↑A₁.card * ↑B₂.card * edgeDensity G A₁ B₂ +
+      ↑A₂.card * ↑B₁.card * edgeDensity G A₂ B₁ +
+      ↑A₂.card * ↑B₂.card * edgeDensity G A₂ B₂ := by
+  rw [edgeDensity_union_mul G A₁ A₂ (B₁ ∪ B₂) hA,
+      edgeDensity_union_mul_right G A₁ B₁ B₂ hB,
+      edgeDensity_union_mul_right G A₂ B₁ B₂ hB]
+  ring
+
 end Szemeredi.RegularityOQ04Energy
