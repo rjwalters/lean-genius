@@ -138,6 +138,16 @@
       "proofId": "nicomachus-sum-of-cubes-oq-01",
       "relationship": "related — figurate power-sum closed form",
       "description": "Nicomachus's identity ∑_{k≤n} k³ = (∑_{k≤n} k)² is the sum-of-cubes member of the same family of clean closed forms for polynomial power sums. Both prove a figurate-number identity by short fully verified induction, complementing Mathlib's built-in power-sum lemmas."
+    },
+    {
+      "proofId": "nicomachus-sum-of-cubes-oq-03",
+      "relationship": "odd-index power-sum companion (degree 3)",
+      "description": "The degree-3 rung of the same odd-index Faulhaber ladder: ∑_{k<n} (2k+1)³ = n²(2n²−1). It uses the identical 'clear the subtraction into a subtraction-free ℕ identity, then ring-and-induction' recipe (there ∑+n² = 2n⁴, here 3∑+n = 4n³) and already cross-references this degree-2 entry as its companion — this makes the link bidirectional."
+    },
+    {
+      "proofId": "arithmetic-series",
+      "relationship": "odd-index power-sum companion (degree 1)",
+      "description": "The degree-1 base of the ladder: the sum of the first n odd numbers ∑_{k<n}(2k+1) = n² is a perfect square. Degrees 1, 2 (this entry), and 3 (odd cubes) together trace the elementary odd-index power-sum family from squares up."
     }
   ]
 }
