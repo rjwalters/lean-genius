@@ -10,13 +10,15 @@
     "status": "verified",
     "proofRepoPath": "Proofs/AlgebraicRealsMeagerOQ02OQ01.lean",
     "tags": [
-      "measure-theory",
       "baire-category",
+      "higher-dimensional",
+      "lebesgue-measure",
       "liouville-numbers",
       "meagre",
-      "residual",
-      "lebesgue-measure",
+      "measure-theory",
+      "product-measure",
       "real-analysis",
+      "residual",
       "sharp-boundary"
     ],
     "badge": "mathlib",
@@ -61,7 +63,8 @@
       "nonLiouville_conull: PROVED the non-Liouville reals are conull — volume (Lᶜ)ᶜ = volume L = 0 — i.e. of full Lebesgue measure",
       "exists_meagre_conull: PROVED the headline dual Oxtoby statement — there exists a meagre subset of ℝ of full Lebesgue measure, the mirror of the parent's comeagre null set",
       "real_symmetric_oxtoby: PROVED the symmetric decomposition ℝ = L ⊔ Lᶜ (disjoint, union = univ) with L comeagre-and-null and Lᶜ meagre-and-conull, the sharp form of OQ-02 exhibiting the two largeness notions as exactly complementary",
-      "Synthesis (no new mathematics): reuses Mathlib's Liouville residual/measure-zero facts and complementation to complete the OQ-02 measure/category contrast in the dual direction the parent leaves implicit"
+      "Synthesis (no new mathematics): reuses Mathlib's Liouville residual/measure-zero facts and complementation to complete the OQ-02 measure/category contrast in the dual direction the parent leaves implicit",
+      "productLiouville / product_symmetric_oxtoby (ℝⁿ transfer): PROVED the symmetric Oxtoby decomposition transfers verbatim to finite-dimensional real space ℝ^ι. The product Liouville set Lⁿ = {x : ι → ℝ | ∀ i, Liouville (xᵢ)} = ⋂ i, (eval i)⁻¹ L is comeagre (each coordinate cylinder is residual via tendsto_residual_of_isOpenMap on the open surjection eval i; finite intersection of residual is residual) and Lebesgue-null (Lⁿ ⊆ (eval i)⁻¹ L, null by Measure.pi_eval_preimage_null), its complement (Lⁿ)ᶜ meagre and conull, and — via dense_of_conull and the pi.isOpenPosMeasure instance — BOTH pieces dense. Resolves the sole open follow-up (ℝⁿ transfer) left by the equivariance session"
     ],
     "axiomCount": 0,
     "prerequisites": [
@@ -84,7 +87,8 @@
     "theoremCount": 8,
     "definitionCount": 0,
     "additionalFiles": [
-      "Proofs/AlgebraicRealsMeagerOQ02OQ01Equivariant.lean"
+      "Proofs/AlgebraicRealsMeagerOQ02OQ01Equivariant.lean",
+      "Proofs/AlgebraicRealsMeagerOQ02OQ01Product.lean"
     ]
   },
   "overview": {
