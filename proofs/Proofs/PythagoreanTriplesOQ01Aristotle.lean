@@ -137,14 +137,14 @@ theorem parametric_triple (m n : ℤ) :
 /-- Every coprime Pythagorean triple is primitively classified. -/
 theorem coprime_triple_classified {x y z : ℤ}
     (h : PythagoreanTriple x y z) (hcop : Int.gcd x y = 1) :
-    h.IsPrimitiveClassified := by
-      exact?
+    h.IsPrimitiveClassified :=
+  h.isPrimitiveClassified_of_coprime hcop
 
 /-- Every Pythagorean triple is classified. -/
 theorem triple_classified {x y z : ℤ}
     (h : PythagoreanTriple x y z) :
-    h.IsClassified := by
-      exact?
+    h.IsClassified :=
+  h.classified
 
 /-- In a primitive triple, one leg is even and one is odd. -/
 theorem even_odd_of_coprime {x y z : ℤ}
