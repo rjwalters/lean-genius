@@ -232,4 +232,52 @@ theorem expectedMonoCliques_lt_one_pow {k : ℕ} (hk : 3 ≤ k) :
       = 2 ^ (2 * ((k - 1) / 2)) := by rw [← pow_mul, Nat.mul_comm]
     _ < 2 ^ k := Nat.pow_lt_pow_right (by norm_num) hm
 
+/-! ## Extensions: monotonicity, the full sub-threshold range, and the literal `2^{k/2}` form
+
+`expectedMonoCliques_lt_one_of_sq_lt` and its witness `expectedMonoCliques_lt_one_pow`
+settle OQ-04 at the single point `n = 2^{⌊(k-1)/2⌋}`.  The following round out the result:
+the expected count is monotone in `n` (so the bound holds for *every* `n` below the
+witness, not just at it), and the hypothesis can be stated in the literal half-power form
+`n < 2^{k/2}` the gallery question uses, over `ℝ`. -/
+
+/-- **Monotonicity in `n`.**  The expected number of monochromatic `k`-cliques is
+non-decreasing in the number of vertices: `m ≤ n ⟹ E(m,k) ≤ E(n,k)`.  Immediate from
+monotonicity of `C(·,k)` and positivity of the constant factor `2^{1−C(k,2)}`. -/
+theorem expectedMonoCliques_mono_left {m n k : ℕ} (h : m ≤ n) :
+    expectedMonoCliques m k ≤ expectedMonoCliques n k := by
+  unfold expectedMonoCliques
+  apply mul_le_mul_of_nonneg_right _ (zpow_nonneg (by norm_num : (0 : ℚ) ≤ 2) _)
+  exact_mod_cast Nat.choose_mono k h
+
+/-- **OQ-04 over the whole sub-threshold range.**  For `k ≥ 3`, *every* `n` with
+`n ≤ 2^{⌊(k-1)/2⌋}` has `E(n,k) < 1` — not merely the endpoint.  Combines
+`expectedMonoCliques_mono_left` with the endpoint witness `expectedMonoCliques_lt_one_pow`. -/
+theorem expectedMonoCliques_lt_one_of_le_pow {k : ℕ} (hk : 3 ≤ k) {n : ℕ}
+    (hn : n ≤ 2 ^ ((k - 1) / 2)) : expectedMonoCliques n k < 1 :=
+  (expectedMonoCliques_mono_left hn).trans_lt (expectedMonoCliques_lt_one_pow hk)
+
+/-- **OQ-04 in the literal half-power form.**  The gallery question asks for `E(n,k) < 1`
+when `n < 2^{k/2}`.  Here that hypothesis is stated over `ℝ` with the genuine real
+exponent `(k:ℝ)/2`; squaring it recovers the `ℕ` hypothesis `n² < 2^k` of
+`expectedMonoCliques_lt_one_of_sq_lt`, so the two forms are equivalent and this closes the
+statement exactly as phrased. -/
+theorem expectedMonoCliques_lt_one_of_lt_sqrt {n k : ℕ} (hk : 3 ≤ k)
+    (hn : (n : ℝ) < (2 : ℝ) ^ ((k : ℝ) / 2)) : expectedMonoCliques n k < 1 := by
+  apply expectedMonoCliques_lt_one_of_sq_lt hk
+  have h2 : (0 : ℝ) ≤ 2 := by norm_num
+  have hn0 : (0 : ℝ) ≤ (n : ℝ) := by positivity
+  -- `(2^{k/2})² = 2^k` in `ℝ`.
+  have hpow : ((2 : ℝ) ^ ((k : ℝ) / 2)) ^ (2 : ℕ) = (2 : ℝ) ^ k := by
+    rw [← Real.rpow_natCast ((2 : ℝ) ^ ((k : ℝ) / 2)) 2, ← Real.rpow_mul h2,
+      show (k : ℝ) / 2 * ((2 : ℕ) : ℝ) = (k : ℝ) from by push_cast; ring, Real.rpow_natCast]
+  -- Square the hypothesis and rewrite the RHS.
+  have hsq : (n : ℝ) ^ 2 < (2 : ℝ) ^ k := by
+    have hstep : (n : ℝ) ^ 2 < ((2 : ℝ) ^ ((k : ℝ) / 2)) ^ (2 : ℕ) := by
+      nlinarith [mul_pos (show (0 : ℝ) < (2 : ℝ) ^ ((k : ℝ) / 2) - n by linarith)
+        (show (0 : ℝ) < (2 : ℝ) ^ ((k : ℝ) / 2) + n by positivity)]
+    exact hstep.trans_eq hpow
+  -- Descend to `ℕ`.
+  have hcast : ((n ^ 2 : ℕ) : ℝ) < ((2 ^ k : ℕ) : ℝ) := by push_cast; linarith
+  exact_mod_cast hcast
+
 end ProbMethod.ExpectationOQ04
