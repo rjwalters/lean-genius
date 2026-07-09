@@ -27,7 +27,7 @@
     "assumptions": "0 axioms; 2 sorries guarding two of the four sub-OQ targets (OQ-03-OQ-01 and OQ-03-OQ-02 PROVED). The 2 remaining sorries are: (a) `steiner_count_eq_20` — OQ-03-OQ-03; (b) `kirkman_count_eq_60` — OQ-03-OQ-04. The `pascalLine` definition (OQ-03-OQ-02) is now fully defined (`noncomputable def pascalLine ... := lineThrough (pascalP ...) (pascalQ ...)`), with well-definedness on the quotient established sorry-free via `pascalLine_hexRot_sameProjLine` / `pascalLine_hexRev_sameProjLine` / `pascalLine_generators_sameProjLine`. The two `card_*` sorries (OQ-03-OQ-01) are discharged in S3d via the homomorphism `dihedralHomToSym6 : DihedralGroup 6 →* Equiv.Perm (Fin 6)` plus injectivity, range-equality, and `MonoidHom.ofInjective` + `Nat.card_congr` + `DihedralGroup.nat_card`; `card_hexagon_labelings = 60` then follows by Lagrange (`Subgroup.card_eq_card_quotient_mul_card_subgroup`). S4b ACT (researcher-3, 2026-06-04) adds the hexagon-relabeling toolkit (`hexVertex`, `hexVertex_onConic`, `hexVertex_valid`, `permuteHexagon`) — sorry-free, sets up OQ-03-OQ-02. The parent file's `conic_implies_pascal_constraint` axiom is not directly invoked by the scaffold (it will be in OQ-03-OQ-03 and OQ-03-OQ-04). Imports: Mathlib group theory + Fintype + Logic.Equiv.Fin.Rotate + Proofs.PascalsHexagon (parent — broken on origin/main).",
     "mathlib_version": "4.26.0",
     "dateAdded": "2026-05-12",
-    "theoremCount": 64,
+    "theoremCount": 71,
     "definitionCount": 11,
     "originalContributions": [
       "hexRot, hexRev: concrete cyclic-rotation and reversal permutations on Fin 6 using Mathlib's finRotate and Fin.rev.",
@@ -230,7 +230,7 @@
     "namespace": "PascalsHexagonOQ03",
     "lineCount": 1611,
     "axiomCount": 0,
-    "theoremCount": 64,
+    "theoremCount": 71,
     "definitionCount": 11,
     "path": "Proofs/PascalsHexagonOQ03.lean",
     "sorries": 2

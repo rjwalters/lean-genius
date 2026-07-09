@@ -22,7 +22,7 @@
     "axiomCount": 1,
     "assumptions": "One assumption: `Lean.ofReduceBool`. 0 `axiom` declarations, 0 sorries. The presented Fermat-primality facts (`prime_257`, `prime_65537`) and the regular-n-gon constructibility theorems (`triangle_constructible`, `pentagon_constructible`, `heptadecagon_constructible`, and the non-constructibility witnesses) discharge their decidable cores by `native_decide`. Under the gallery convention (CLAUDE.md), a presented result discharged by `native_decide` depends on `Lean.ofReduceBool` (the kernel trusts the compiler's reduction), so the entry is `axiomatized` with `axiomCount` 1; `leanFile.axiomCount` stays 0 (no literal `axiom` declarations).",
     "lineCount": 366,
-    "theoremCount": 40,
+    "theoremCount": 44,
     "definitionCount": 3,
     "originalContributions": [
       "prime_dvd_pow_two_eq_two: any prime dividing 2^n equals 2",
@@ -70,7 +70,7 @@
     "namespace": "AngleTrisectionOQ01",
     "lineCount": 366,
     "axiomCount": 0,
-    "theoremCount": 40,
+    "theoremCount": 44,
     "definitionCount": 3,
     "path": "Proofs/AngleTrisectionOQ01.lean",
     "sorries": 0

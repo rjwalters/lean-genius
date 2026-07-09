@@ -35,7 +35,7 @@
       "purePower_sharp_witness: capstone packaging the exact-disc identity, the exact area π, and the strict gap below degree·π"
     ],
     "theoremCount": 9,
-    "definitionCount": 3
+    "definitionCount": 4
   },
   "overview": {
     "historicalContext": "Erdős Problem #1040 concerns the area of polynomial lemniscates. For a closed infinite set F ⊆ ℂ one studies μ(F) = inf of the area |{z : |f(z)| < 1}| over monic polynomials f with roots in F, and asks whether μ(F) is governed by the transfinite diameter of F. The sharp single-polynomial bound is Pólya's inequality, area{|f| ≤ 1} ≤ π for any monic degree-n f. The parent companion (oq-03) proved the elementary metric upper bounds area ≤ degree·π and (roots in the unit disc) area ≤ 4π. The natural question those bounds leave open is how tight they are — which monic polynomials, if any, achieve small lemniscate area, and whether the degree·π bound is ever attained beyond degree one.",
@@ -135,7 +135,7 @@
     "lineCount": 138,
     "axiomCount": 0,
     "theoremCount": 9,
-    "definitionCount": 3,
+    "definitionCount": 4,
     "path": "Proofs/Erdos1040OQ03OQ01.lean",
     "sorries": 0
   },

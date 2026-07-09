@@ -11,7 +11,7 @@
     "lineCount": 214,
     "axiomCount": 0,
     "theoremCount": 11,
-    "definitionCount": 8,
+    "definitionCount": 9,
     "path": "Proofs/Erdos128WIP01OQ01OQ01.lean",
     "sorries": 0
   },
@@ -38,7 +38,7 @@
     "assumptions": "Machine-checked with `lake env lean Proofs/Erdos128WIP01OQ01OQ01.lean` (Lean v4.26.0, Mathlib pin): compiles with 0 errors. 0 sorries, 0 axiom declarations, no native_decide. #print axioms reports: cliqueFree_of_hom depends on no axioms at all; C5_cliqueFree, blowup_C5_cliqueFree, triangleFree_of_hom and hasTriangle_iff_hasClique_three depend only on the standard foundational axioms [propext, Classical.choice, Quot.sound] (the `decide` evaluation of C₅ over Fin 5 is the ordinary kernel decision procedure, NOT native_decide, so Lean.ofReduceBool is not used). Self-contained: the Graph objects are re-declared (the scaffold Erdos128Problem.lean does not build). Honest scope: the structural clique-pullback / clique-monotonicity facts and the K_r-freeness of the C₅-blow-up witnesses, NOT the open optimal-constant question (that these blow-ups achieve induced density > n²/50, and that 1/50 is optimal, remain open).",
     "lineCount": 214,
     "theoremCount": 11,
-    "definitionCount": 8,
+    "definitionCount": 9,
     "originalContributions": [
       "cliqueFree_of_hom: K_r-freeness pulls back along graph homomorphisms, for every clique order r -- if f : G -> H is a homomorphism and H has no r-clique then neither does G; the r image vertices of a G-clique are forced distinct by H's irreflexivity (two equal images would be an H-loop). Strictly generalizes the parent's triangleFree_of_hom, which is the case r = 3.",
       "hasClique_mono / cliqueFree_mono: clique-freeness is monotone in the order. A K_r-clique restricts to a K_m-clique for m <= r (compose the clique map with Fin.castLE), so K_m-freeness forces K_r-freeness for every r >= m. In particular triangle-free (K_3-free) implies K_r-free for all r >= 3.",

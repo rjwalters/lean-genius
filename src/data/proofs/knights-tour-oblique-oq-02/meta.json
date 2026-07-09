@@ -45,7 +45,7 @@
       }
     ],
     "theoremCount": 42,
-    "definitionCount": 12
+    "definitionCount": 8
   },
   "overview": {
     "historicalContext": "In his 29th Annual Christmas Lecture (December 2025), Donald Knuth proved that every closed knight's tour on the standard 8×8 chessboard has at least 4 oblique (>90°) turns, with a unique minimizing tour up to the board's D4 symmetry. A natural follow-up question (OQ-02) asks for the full distribution of oblique counts: how many of the ~1.3 × 10¹³ closed tours have exactly k oblique turns, for each k? The individual histogram values are far beyond what Lean can enumerate, but the distribution's structural backbone — its support, normalization, and the symmetry group acting on its level sets — is reachable using only algebraic infrastructure from the parent formalization.",
@@ -195,7 +195,7 @@
     "path": "Proofs/KnightsTourObliqueOQ02.lean",
     "axiomCount": 0,
     "sorries": 0,
-    "definitionCount": 11,
+    "definitionCount": 8,
     "theoremCount": 42
   },
   "sorries": 0

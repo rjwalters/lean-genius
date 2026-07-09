@@ -47,10 +47,10 @@
     "dateAdded": "2026-07-01",
     "axiomCount": 0,
     "lineCount": 211,
-    "theoremCount": 8,
+    "theoremCount": 11,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries (only Lean's foundational axioms propext / Classical.choice / Quot.sound). No native_decide.",
     "mathlib_version": "4.26.0",
-    "definitionCount": 1
+    "definitionCount": 2
   },
   "overview": {
     "historicalContext": "The Gaussian (q-)binomial coefficient $\\binom{n}{k}_q$ is the q-analog of the ordinary binomial coefficient: a polynomial in $q$ that specializes to $\\binom{n}{k}$ at $q=1$. It is the single most important object in q-combinatorics. Over a finite field it literally counts the $k$-dimensional subspaces of $\\mathbb{F}_q^n$; combinatorially it is the generating function $\\sum_{\\lambda \\subseteq (n-k)^k} q^{|\\lambda|}$ for integer partitions fitting in a $k \\times (n-k)$ box (equivalently the area statistic on monotone lattice paths); and it is the engine of the Gauss/Rothe q-binomial theorem and the Rogers–Ramanujan identities. The standard references are Andrews, *The Theory of Partitions* (1976), and Kac–Cheung, *Quantum Calculus* (2002), Ch. 5–7.",

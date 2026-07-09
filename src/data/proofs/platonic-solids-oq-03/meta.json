@@ -49,7 +49,7 @@
       "Finite reflection (Coxeter) groups: degrees, exponents, Coxeter number"
     ],
     "mathlib_version": "4.26.0",
-    "definitionCount": 16
+    "definitionCount": 15
   },
   "overview": {
     "historicalContext": "That the regular polyhedra are governed by reflection symmetry is ancient in spirit but modern in formulation. H. S. M. Coxeter's classification of finite reflection groups (1934) placed the symmetry groups of the Platonic solids inside the family of finite Coxeter groups: the rank-3 groups are exactly A₃, B₃ (= BC₃), and H₃, together with the dihedral groups. The tetrahedron realizes A₃ ≅ S₄, the cube/octahedron realize B₃, and the dodecahedron/icosahedron realize H₃ — the unique non-crystallographic rank-3 group, tied to the golden ratio. The numerical invariants used here (degrees, exponents, Coxeter number, reflection count) are the standard data of Coxeter theory, governed by the Shephard–Todd/Chevalley theorem (order = product of degrees) and the identity N = nh/2.",
@@ -165,7 +165,7 @@
     "lineCount": 294,
     "axiomCount": 0,
     "theoremCount": 18,
-    "definitionCount": 16,
+    "definitionCount": 15,
     "path": "Proofs/PlatonicSolidsOQ03.lean",
     "sorries": 0
   },

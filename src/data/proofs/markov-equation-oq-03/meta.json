@@ -10,7 +10,7 @@
     "path": "Proofs/MarkovHurwitz.lean",
     "sorries": 0,
     "definitionCount": 4,
-    "theoremCount": 23
+    "theoremCount": 24
   },
   "meta": {
     "author": "Formalization original to Lean Genius (Markov 1879; Hurwitz 1907)",
@@ -41,7 +41,7 @@
       "isMH_three_iff / isMH_three_markov: the (n = 3, a = 3) member is the classical Markov equation, with concrete witnesses isMH_ones (1,1,1), isMH_threes the Hurwitz triple (3,3,3) of x²+y²+z²=xyz, isMH_ones_four a four-variable all-ones solution, and vietaVal_ones_two a worked jump (1,1,1) ↦ (1,1,2)"
     ],
     "assumptions": "None. The file is fully machine-checked with 0 sorries and 0 axiom declarations; #print axioms reports only the foundational propext / Classical.choice / Quot.sound. No native_decide is used.",
-    "theoremCount": 23,
+    "theoremCount": 24,
     "definitionCount": 4
   },
   "overview": {

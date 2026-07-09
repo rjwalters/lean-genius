@@ -24,7 +24,7 @@
     "assumptions": "None. Both main theorems take the right-angle curved law (as a scaled functional equation ∀ t > 0) as an explicit hypothesis and derive c² = a² + b² from it; they do not assume any spherical/hyperbolic-geometry infrastructure. Fully machine-checked, depending only on propext, Classical.choice, and Quot.sound.",
     "lineCount": 443,
     "theoremCount": 19,
-    "definitionCount": 0,
+    "definitionCount": 1,
     "originalContributions": [
       "spherical_flat_limit: if cos(t·c) = cos(t·a)·cos(t·b) for all t > 0 then c² = a² + b² — the spherical right-triangle law degenerates to Pythagoras in the flat limit, with NO range restriction on a, b, c",
       "hyperbolic_flat_limit: if cosh(t·c) = cosh(t·a)·cosh(t·b) for all t > 0 then c² = a² + b² — the hyperbolic right-triangle law degenerates to Pythagoras in the flat limit",
@@ -69,7 +69,7 @@
     "lineCount": 443,
     "axiomCount": 0,
     "theoremCount": 19,
-    "definitionCount": 0,
+    "definitionCount": 1,
     "path": "Proofs/PythagoreanTheoremOQ05.lean",
     "imports": [
       "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",

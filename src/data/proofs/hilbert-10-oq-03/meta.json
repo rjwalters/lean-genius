@@ -41,7 +41,7 @@
     "assumptions": "Five axioms encode the deep number theory: (1) hilbert10_Int_undecidable — H10/Z undecidable (MRDP 1970); (2) robinson_1962 — Z Diophantine in 𝒪_K for totally real K; (3) imaginary_quadratic_diophantine — Z Diophantine in 𝒪_K for imaginary quadratic K; (4) shlapentokh — Z Diophantine in 𝒪_K for Shlapentokh's classes; (5) mazur_rubin_2010 — Z Diophantine in 𝒪_K for all K under the Mazur–Rubin hypothesis. The reduction calculus and all decidability-transfer lemmas are PROVED (depend only on propext). The full characterization for all number fields remains OPEN.",
     "mathlib_version": "4.26.0",
     "theoremCount": 10,
-    "definitionCount": 6
+    "definitionCount": 8
   },
   "overview": {
     "historicalContext": "Hilbert's 10th problem (1900) asked for an algorithm to decide whether a Diophantine equation has integer solutions. The negative answer — the MRDP theorem of Davis, Putnam, Robinson, and Matiyasevich (1970) — shows every recursively enumerable set is Diophantine, so H10 over $\\mathbb{Z}$ is undecidable.\n\nThe natural next question is H10 over the ring of integers $\\mathcal{O}_K$ of a number field $K$: is there an algorithm deciding whether an integer polynomial has a solution in $\\mathcal{O}_K$? The expected answer is that it is undecidable for every $K$. The standard route is to show $\\mathbb{Z}$ is *Diophantine* over $\\mathcal{O}_K$ — definable by an existential polynomial formula — because then a solvability oracle for $\\mathcal{O}_K$ would decide solvability over $\\mathbb{Z}$, contradicting MRDP.\n\nThis has been established for large classes: Julia Robinson (1962) handled totally real fields by defining $\\mathbb{Z}$ first-order (in fact Diophantinely) in $\\mathcal{O}_K$; the imaginary quadratic case follows from class-group / norm-form arguments; Alexandra Shlapentokh (1989–2008) covered broad Diophantine classes using elliptic curves; and Mazur–Rubin (2010) proved $\\mathbb{Z}$ is Diophantine in $\\mathcal{O}_K$ for *every* $K$, conditional on a Shafarevich–Tate finiteness hypothesis. An unconditional proof for all number fields remains open — this is the content of oq-03.",
@@ -174,7 +174,7 @@
     "lineCount": 321,
     "axiomCount": 5,
     "theoremCount": 10,
-    "definitionCount": 6,
+    "definitionCount": 8,
     "path": "Proofs/Hilbert10OQ03.lean",
     "sorries": 0
   },

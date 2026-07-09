@@ -22,7 +22,7 @@
     "assumptions": "None that count. 0 sorries, 0 axiom declarations, 0 structure-encoded assumptions. #print axioms shows only [propext, Classical.choice, Quot.sound] — the standard foundational trio, none of which is Lean.ofReduceBool or sorryAx. The Denumerable instance is noncomputable (the encoding is extracted from the countability proof via Classical.choice); a genuinely constructive, index-computing enumeration is NOT provided and remains open (parent open question 1). Verified via lake env lean against Mathlib.",
     "mathlib_version": "4.26.0",
     "theoremCount": 4,
-    "definitionCount": 5
+    "definitionCount": 2
   },
   "overview": {
     "historicalContext": "Cantor's 1874 paper — the birth of set theory — proved that the algebraic numbers are countable, and used this to give the first proof that transcendental numbers exist (the reals being uncountable). In Lean/Mathlib the countability of the algebraic elements over a countable base ring is `Algebraic.countable`. Mathlib distinguishes several strengths of countability: `Countable` (a surjection from ℕ, or equivalently an injection into ℕ) is the weakest; `Encodable` adds a concrete encode/decode pair; and `Denumerable` is the strongest — an explicit bijection with ℕ, available exactly for the countably infinite types. The parent entry denumerability-rationals-oq-04 establishes `Countable`; this entry promotes it to `Denumerable`, the level at which one has a genuine enumeration Q̄ ≅ ℕ.",
@@ -134,7 +134,7 @@
     "lineCount": 102,
     "axiomCount": 0,
     "theoremCount": 4,
-    "definitionCount": 5,
+    "definitionCount": 2,
     "path": "Proofs/DenumerabilityRationalsOQ04OQ04.lean",
     "sorries": 0
   },

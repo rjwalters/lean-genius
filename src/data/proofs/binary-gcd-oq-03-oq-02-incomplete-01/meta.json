@@ -25,7 +25,7 @@
     "lineCount": 284,
     "dateAdded": "2026-06-21",
     "theoremCount": 21,
-    "definitionCount": 7,
+    "definitionCount": 8,
     "assumptions": "None. The file is fully machine-checked with no `axiom` declarations, no `sorry`, and no `native_decide` — `#print axioms` for the headline theorems (`act_bijective`, `gcd_apply_eq`, `span_apply_eq`) lists only the foundational `propext`, `Classical.choice`, and `Quot.sound`. In particular it does NOT depend on `Lean.ofReduceBool`, unlike the parent entry.",
     "mathlibDependencies": [
       {
@@ -134,7 +134,7 @@
     "lineCount": 284,
     "axiomCount": 0,
     "theoremCount": 21,
-    "definitionCount": 7,
+    "definitionCount": 8,
     "path": "Proofs/BinaryGcdOQ03OQ02Incomplete01.lean",
     "sorries": 0,
     "additionalFiles": []

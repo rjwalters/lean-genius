@@ -10,7 +10,7 @@
     "path": "Proofs/BezoutIdentityOQ01OQ01OQ01OQ04.lean",
     "sorries": 0,
     "definitionCount": 0,
-    "theoremCount": 5
+    "theoremCount": 9
   },
   "meta": {
     "author": "Formalization original to Lean Genius (binary GCD step-count tightness)",
@@ -39,7 +39,7 @@
       "sharp_refines_parent: the sharp bound implies the parent's — log₂ a + log₂ b + 1 ≤ 2·(log₂ a + log₂ b) + 2, so binaryGcdSteps_le_log_sharp recovers the parent's binaryGcdSteps_le_log as a corollary"
     ],
     "assumptions": "None. The file is fully machine-checked with 0 sorries and 0 axiom declarations; #print axioms reports only the foundational propext / Classical.choice / Quot.sound for all five theorems (binaryGcdSteps_le_log_sharp, binaryGcdSteps_one_pow, sharp_bound_tight, parent_constant_not_tight, sharp_refines_parent). No native_decide is used (so no Lean.ofReduceBool); the worked examples are discharged by the proven theorems rather than by kernel evaluation. The step counter binaryGcdSteps and its O(log) upper bound are imported from the verified parent entry bezout-identity-oq-01-oq-01-oq-01.",
-    "theoremCount": 5,
+    "theoremCount": 9,
     "definitionCount": 0
   },
   "overview": {

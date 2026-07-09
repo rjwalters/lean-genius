@@ -32,7 +32,7 @@
     "axiomCount": 0,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries (only the standard foundational axioms propext / Classical.choice / Quot.sound, confirmed by #print axioms, which do not count as assumptions). Reuses the four Euler formulas euler_OI_formula / euler_OI_a_formula / euler_OI_b_formula / euler_OI_c_formula, the exradius bridges two_R_r_eq / two_R_ra_eq / two_R_rb_eq / two_R_rc_eq, and the law-of-sines identity four_R_area_eq_abc from the sibling files FeuerbachsTheoremDefsOQ02.lean and FeuerbachsTheoremDefsOQ02OQ01.lean, and the coordinate API (Triangle, circumcenter, incenter, excenter_a/b/c, circumradius, inradius, exradius_a/b/c, area, side lengths) from FeuerbachsTheoremDefs.lean; all are themselves 0-sorry, 0-axiom. The strict triangle inequalities (declared private in the parent) are reproved locally.",
     "lineCount": 330,
-    "theoremCount": 3,
+    "theoremCount": 19,
     "definitionCount": 0,
     "originalContributions": [
       "sum_OI_sq_eq_twelve_R_sq: the circumcenter–center square-distance sum dist²(O,I) + dist²(O,Iₐ) + dist²(O,I_b) + dist²(O,I_c) = 12R² for an arbitrary non-degenerate triangle — a shape-independent constant obtained by adding Euler's incenter and three excenter laws",
@@ -198,7 +198,7 @@
     "namespace": "FeuerbachSumOISq",
     "lineCount": 330,
     "axiomCount": 0,
-    "theoremCount": 3,
+    "theoremCount": 19,
     "definitionCount": 0,
     "path": "Proofs/FeuerbachsTheoremDefsOQ02OQ01OQ01.lean",
     "sorries": 0,

@@ -60,7 +60,7 @@
     "lineCount": 110,
     "assumptions": "None. Fully verified with 0 sorries and 0 axioms beyond Lean/Mathlib's foundational propext / Classical.choice / Quot.sound. The main theorems use no decide/native_decide; only the trailing numeric sanity-check examples use kernel `decide` (which contributes no extra axioms).",
     "mathlib_version": "4.26.0",
-    "theoremCount": 5,
+    "theoremCount": 6,
     "definitionCount": 1
   },
   "overview": {
@@ -157,7 +157,7 @@
     "namespace": "FibonacciIdentitiesOQ01OQ03",
     "lineCount": 110,
     "axiomCount": 0,
-    "theoremCount": 5,
+    "theoremCount": 6,
     "definitionCount": 1,
     "path": "Proofs/FibonacciIdentitiesOQ01OQ03.lean",
     "sorries": 0

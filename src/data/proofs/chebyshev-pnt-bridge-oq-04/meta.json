@@ -64,7 +64,7 @@
     "assumptions": "The unconditional results — the floor identity (Step A), its decomposition (Step B), the remainder sandwich (Step C), and the rearrangement lambdaRecip_eq — are fully verified, 0 axioms and 0 sorries (only propext / Classical.choice / Quot.sound), no native_decide. The headline Λ-weighted first Mertens estimate lambdaRecip_sub_log_le is CONDITIONAL: it is a verified implication taking the two analytic inputs as the hypotheses of the MertensInputs structure — (1) Chebyshev's bound ψ(N) ≤ c_ψ·N (the gallery's standing open chebyshevPsi_asymptotic, upper half) and (2) Stirling's estimate |Σ_{n≤N} log n − (N log N − N)| ≤ c_S·log N. These two structure-encoded assumptions are counted as axiomCount = 2 per the project's axiom-integrity policy (leanFile.axiomCount = 0 since there are no literal `axiom` declarations). Neither input is proved here. The prime-power strip is now performed exactly and axiom-free: lambdaRecip_prime_split gives Σ_{d≤N} Λ(d)/d = Σ_{p≤N} (log p)/p + R(N), primePowerTail_nonneg gives R(N) ≥ 0, and primeLogRecip_le transfers the UPPER half of the estimate to the genuine prime sum, Σ_{p≤N} (log p)/p ≤ log N + (1 + c_S + c_ψ), with no new assumptions (still axiomCount 2). The matching LOWER bound needs a uniform tail bound R(N) = Σ_{p^k≤N, k≥2} (log p)/p^k = O(1) (a convergent geometric-series estimate), and the Abel partial-summation passage to Mertens' second theorem Σ_{p≤x} 1/p = log log x + M + O(1/log x) remains the open target. The companion file ChebyshevPNTBridgeOQ04Tail.lean now supplies the full verified convergence engine for that tail bound (0 axioms, 0 sorries): log_le_two_mul_sqrt (log x ≤ 2√x), summable_log_div_sq (Σ_n (log n)/n² converges), summable_primes_log_div_sq (the prime-indexed majorant Σ_p (log p)/p² converges, obtained by restricting the integer engine along Nat.Primes ↪ ℕ), and geom_tail_le_two_div_sq (the per-prime geometric collapse (log p)/(p(p−1)) ≤ 2·(log p)/p²). The sole remaining step to close the lower half is the Finset reindexing R(N) = Σ_{p^k≤N,k≥2}(log p)/p^k ≤ Σ_{p≤N}(log p)/(p(p−1)) — grouping the tail by base prime and summing over k — after which these lemmas give the uniform bound R(N) ≤ 2·Σ_p (log p)/p² < ∞.",
     "mathlib_version": "4.26.0",
     "theoremCount": 9,
-    "definitionCount": 5
+    "definitionCount": 6
   },
   "overview": {
     "historicalContext": "Mertens proved his three theorems in 1874, two decades after Chebyshev's 1852 bounds and two decades before the Prime Number Theorem. The first theorem Σ_{p≤x} (log p)/p = log x + O(1) is the elementary heart: it is provable from Chebyshev-strength bounds plus Stirling's approximation, without the analytic machinery PNT requires. The classical route runs through the von Mangoldt function Λ — the prime-power weight satisfying Σ_{d∣n} Λ(d) = log n — because summing that divisor identity over n ≤ N and swapping the order of summation turns the difficult prime sum into a tractable floor sum Σ_d Λ(d)⌊N/d⌋. This is the same Dirichlet-hyperbola swap that the sibling Möbius file uses for Σ μ(d)⌊N/d⌋ = 1.",
@@ -166,7 +166,7 @@
     "lineCount": 323,
     "axiomCount": 0,
     "theoremCount": 9,
-    "definitionCount": 5,
+    "definitionCount": 6,
     "path": "Proofs/ChebyshevPNTBridgeOQ04.lean",
     "sorries": 0
   },

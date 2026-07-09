@@ -32,7 +32,7 @@
     "axiomCount": 0,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries (only the standard foundational axioms propext / Classical.choice / Quot.sound, which do not count as assumptions). Uses only the coordinate API (Point, Triangle, incenter, excenter_a/b/c, side_a/b/c, area, triangle_345 with its side/incenter lemmas) from FeuerbachsTheoremDefs.lean, which is itself 0-sorry, 0-axiom. The squared side lengths, side/area positivity and the strict triangle inequalities (declared private in the parent files) are reproved locally; everything else is closed by field_simp / ring / linear_combination / nlinarith and the real square-root lemma Real.sq_sqrt.",
     "lineCount": 408,
-    "theoremCount": 8,
+    "theoremCount": 21,
     "definitionCount": 0,
     "originalContributions": [
       "incenter_altitude_perp_a / _b / _c: the three perpendicularity identities ⟨Iₐ−I, I_c−I_b⟩ = ⟨I_b−I, I_c−Iₐ⟩ = ⟨I_c−I, I_b−Iₐ⟩ = 0 — each says the line from the incenter through one excenter is perpendicular to the opposite side of the excentral triangle, i.e. the internal angle bisectors of ABC are the altitudes of IₐI_bI_c",
@@ -183,7 +183,7 @@
     "namespace": "FeuerbachExcentralOrthocenter",
     "lineCount": 408,
     "axiomCount": 0,
-    "theoremCount": 8,
+    "theoremCount": 21,
     "definitionCount": 0,
     "path": "Proofs/FeuerbachsTheoremDefsOQ02OQ01OQ01OQ01OQ01OQ01.lean",
     "sorries": 0,

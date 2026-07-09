@@ -60,7 +60,7 @@
     "axiomCount": 2,
     "lineCount": 459,
     "assumptions": "2 axiom(s): green_upper_bound (Green 2004), precise_asymptotic (Green/Sapozhenko). Both are deep results from the literature. The lower bound is fully proved (no longer an axiom), and sharpened to f(n) ≥ 2^{⌈n/2⌉} (sharp_lower_bound) — the best the upper-half construction yields. See the Lean source for details.",
-    "theoremCount": 15,
+    "theoremCount": 16,
     "definitionCount": 5,
     "additionalFiles": [
       "Proofs/Erdos748Aristotle.lean"

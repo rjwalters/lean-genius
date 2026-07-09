@@ -25,7 +25,7 @@
     "assumptions": "0 `axiom` declarations and 0 sorries. F(2n) and f(2n) are declared as `opaque` constants with concrete bodies (`:= fun _ => 0`); being sealed definitions with a fixed value they assert nothing and carry no assumption. The deep results (the F(2n) = o(f(2n)) conjecture, the Guth–Katz lower bound, and the lattice upper bound) appear only as informal comments and are NOT formalized. The verified mathematical content is the elementary distance-squared infrastructure, the bipartite-distance-set cardinality bound, and the Lenz construction in ℝ⁴ (all bipartite distances equal √2), all fully proved.",
     "mathlib_version": "4.26.0",
     "theoremCount": 10,
-    "definitionCount": 9
+    "definitionCount": 7
   },
   "sections": [
     {
@@ -125,7 +125,7 @@
     "lineCount": 164,
     "axiomCount": 0,
     "theoremCount": 10,
-    "definitionCount": 9,
+    "definitionCount": 7,
     "path": "Proofs/Erdos661Problem.lean",
     "sorries": 0
   },

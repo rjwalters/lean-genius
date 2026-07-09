@@ -32,7 +32,7 @@
     "assumptions": "None. #print axioms reports that peano_isCommSemiring and all supporting theorems 'do not depend on any axioms' — no sorryAx, no Lean.ofReduceBool, and not even the ordinary foundational axioms propext / Classical.choice / Quot.sound, because no proof uses funext, choice, or propositional extensionality.",
     "mathlib_version": "4.26.0",
     "theoremCount": 20,
-    "definitionCount": 6
+    "definitionCount": 7
   },
   "overview": {
     "historicalContext": "Peano's 1889 Arithmetices principia defined not only successor and addition but multiplication, by the two recursion equations n·0 = 0 and n·S(m) = n·m + n, and it is from these that the ring-theoretic laws of arithmetic follow by induction. The parent gallery entry russell-1-plus-1 reconstructs the additive fragment of this development in Lean with no Mathlib, proving 1+1=2 by rfl and then add_comm and add_assoc — but it halts before multiplication, leaving the algebraic structure of ℕ unstated. Its open question asks for that structure. This entry supplies it: the multiplicative half of Peano arithmetic and a proof that the resulting (ℕ, 0, 1, +, ·) is a commutative semiring, the algebraic skeleton on which all of elementary number theory rests.",
@@ -139,7 +139,7 @@
     "lineCount": 218,
     "axiomCount": 0,
     "theoremCount": 20,
-    "definitionCount": 6,
+    "definitionCount": 7,
     "path": "Proofs/OnePlusOneOQ02.lean",
     "sorries": 0
   },
