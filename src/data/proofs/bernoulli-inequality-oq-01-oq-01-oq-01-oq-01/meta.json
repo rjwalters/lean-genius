@@ -76,6 +76,14 @@
   },
   "sections": [
     {
+      "id": "preamble",
+      "title": "Overview, Imports, and the Residual Cubic Definition",
+      "startLine": 1,
+      "endLine": 52,
+      "summary": "Module docstring stating the open question (locate the n = 5 odd endpoint a₅* of the strict Bernoulli inequality 1 + 5a < (1+a)⁵) and previewing the six main results — the factorization, the residual cubic's strict monotonicity, the sign-of-g form, the headline endpoint a₅* ∈ (−3, −2), the concrete bracketing witnesses, and the universal below-−2 companion. Imports Mathlib, opens the BernoulliInequalityOQ01OQ01OQ01OQ01 namespace and Real, and defines the residual cubic g(a) = a³ + 5a² + 10a + 10 left after dividing the quintic gap by a².",
+      "mathContext": "The quintic Bernoulli gap factors as $(1+a)^5 - (1+5a) = a^2\\,g(a)$ with $g(a) = a^3 + 5a^2 + 10a + 10$; the strict inequality is governed entirely by the sign of $g$."
+    },
+    {
       "id": "factorization",
       "title": "The Residual Cubic Factorization",
       "startLine": 53,
@@ -119,7 +127,7 @@
       "id": "below-neg-two",
       "title": "Every Odd Endpoint Sits Below −2",
       "startLine": 153,
-      "endLine": 160,
+      "endLine": 161,
       "summary": "For every odd n ≥ 2 the strict inequality holds at a = −2, since (1 + (−2))ⁿ = (−1)ⁿ = −1 beats 1 − 2n; so −2 is interior for each odd n and aₙ* < −2 universally.",
       "mathContext": "Odd n, n ≥ 2 ⟹ 1 + n·(−2) < (1 + (−2))ⁿ."
     }
