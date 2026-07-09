@@ -10,7 +10,9 @@
       "Flagship: (n+1) ∣ n!+1 ↔ (n+1).Prime for n ≥ 1 — the universal form of the parent's five example computations. Composite obstruction is then immediate.",
       "The technique transfers verbatim to the sibling n!−1: for prime p, p ∣ (p-1)!−1 ↔ p = 2 (odd primes give (p-1)!−1 ≡ −2).",
       "Prime-power classification is provable axiom-free using isPrimePow_nat_iff + a reusable unique-prime-divisor lemma; kernel `decide` (NOT native_decide) keeps ofReduceBool out.",
-      "Luca's finiteness itself is genuinely analytic/Diophantine and NOT session-sized or elementary — the axiom in the parent is not eliminable here."
+      "Luca's finiteness itself is genuinely analytic/Diophantine and NOT session-sized or elementary — the axiom in the parent is not eliminable here.",
+      "Sharp composite companion to Wilson: every composite n≠4 divides (n-1)! outright (not just a proper divisor as in Mathlib's Wilson proof). Proof splits n=a·b at least prime factor a; distinct factors a<b (or a,2a in the square case n=a²,a≥3) contribute distinct terms of (n-1)!.",
+      "This yields the divisibility form of Wilson's primality test: for 2≤n, n≠4, n ∣ (n-1)! ↔ n composite — the exact complement of the flagship (n+1)∣n!+1 ↔ (n+1).Prime, and pins the residue of (n-1)! mod n in every case (prime ⟹ -1, composite≠4 ⟹ 0, n=4 ⟹ 2)."
     ],
     "builtItems": [
       "succ_dvd_factorial_add_one_iff_prime (Erdos1058OQ03.lean) — flagship characterization, VERIFIED 0/0",
@@ -19,7 +21,11 @@
       "prime_dvd_factorial_pred_sub_one_iff — sibling n!−1 characterization",
       "not_dvd_factorial_add_one_of_dvd_factorial — general divisor obstruction",
       "eq_of_prime_dvd_of_isPrimePow — reusable unique-prime-divisor lemma",
-      "isPrimePow_{four,five}_factorial_add_one, not_isPrimePow_six_factorial_add_one, isPrimePow_three_factorial_sub_one, not_isPrimePow_five_factorial_sub_one — axiom-free small-case classification"
+      "isPrimePow_{four,five}_factorial_add_one, not_isPrimePow_six_factorial_add_one, isPrimePow_three_factorial_sub_one, not_isPrimePow_five_factorial_sub_one — axiom-free small-case classification",
+      "mul_dvd_factorial_of_lt (Erdos1058OQ03.lean) — 0<p<q≤m ⟹ p·q ∣ m! (distinct-factor product lemma), VERIFIED 0/0",
+      "dvd_factorial_pred_of_composite — composite n≠4 ⟹ n ∣ (n-1)!, the sharp companion to Wilson (stronger than Mathlib's proper-divisor extraction), VERIFIED 0/0",
+      "factorial_pred_zmod_eq_zero_of_composite — (n-1)! ≡ 0 (mod n) for composite n≠4, VERIFIED 0/0",
+      "dvd_factorial_pred_iff_not_prime — Wilson primality test in divisibility form: n∣(n-1)! ↔ ¬n.Prime (2≤n,n≠4), VERIFIED 0/0"
     ],
     "mathlibGaps": [
       "None required — Wilson (Mathlib.NumberTheory.Wilson) and IsPrimePow (Mathlib.Algebra.IsPrimePow) suffice."
@@ -29,6 +35,6 @@
       "Extend prime-power classification to n!+1 for larger n with a general obstruction (Brocard-type) — but genuine finiteness is analytic, not elementary.",
       "Connect to Brocard-Ramanujan (n!+1 = m²) formalization if/when Mathlib gains the needed Diophantine tools."
     ],
-    "progressSummary": "PROGRESS: Answered oq-03 constructively and axiom-free — Wilson yields an exact characterization of n!±1 divisibility (flagship + sibling), plus axiom-free small-case prime-power classification. 11 theorems, VERIFIED 0 sorries / 0 axioms."
+    "progressSummary": "PROGRESS: Added the sharp composite companion to Wilson (composite n≠4 ⟹ n∣(n-1)!), stronger than the proper-divisor fact Mathlib extracts. This completes the residue classification of (n-1)! mod n and gives the divisibility form of Wilson primality (n∣(n-1)! ↔ ¬prime). 15 theorems total, VERIFIED 0 sorries / 0 axioms."
   }
 }
