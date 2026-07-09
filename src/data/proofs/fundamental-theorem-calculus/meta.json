@@ -90,46 +90,46 @@
       "id": "setup",
       "title": "Setup and Imports",
       "startLine": 1,
-      "endLine": 30,
+      "endLine": 49,
       "summary": "Introduces the historical context, imports Mathlib's calculus and integration libraries, and opens the namespace.",
       "mathContext": "Imports: `FDeriv` (Fréchet derivative), `Deriv` (real derivative), `IntervalIntegral` ($\\int_a^b$), `FundThmCalculus` (Mathlib's FTC infrastructure), `MeanValue` (MVT), `Topology`."
     },
     {
       "id": "integral-function",
       "title": "The Integral Function",
-      "startLine": 31,
-      "endLine": 43,
+      "startLine": 50,
+      "endLine": 62,
       "summary": "Defines F(x) = ∫ₐˣ f(t)dt, the cumulative integral that measures accumulated area.",
       "mathContext": "$F(x) = \\int_a^x f(t)\\,dt$ defines a function $F : \\mathbb{R} \\to \\mathbb{R}$ that 'accumulates' the values of $f$ from the basepoint $a$."
     },
     {
       "id": "ftc-part1",
       "title": "FTC Part 1: Differentiation of Integrals",
-      "startLine": 44,
-      "endLine": 60,
+      "startLine": 63,
+      "endLine": 78,
       "summary": "Proves that the derivative of an integral recovers the original function: F'(x) = f(x).",
       "mathContext": "$\\frac{d}{dx}\\int_a^x f(t)\\,dt = f(x)$ for $f$ continuous. Lean: `HasDerivAt (integralFunction f a) (f b) b`."
     },
     {
       "id": "ftc-part2",
       "title": "FTC Part 2: Evaluation of Integrals",
-      "startLine": 61,
-      "endLine": 87,
+      "startLine": 79,
+      "endLine": 105,
       "summary": "Proves that the integral of a derivative equals the net change: ∫ₐᵇ F' = F(b) - F(a).",
       "mathContext": "$\\int_a^b F'(x)\\,dx = F(b) - F(a)$ for $F$ continuous on $[a,b]$, differentiable on $(a,b)$."
     },
     {
       "id": "antiderivatives",
       "title": "Antiderivatives and Uniqueness",
-      "startLine": 88,
-      "endLine": 140,
+      "startLine": 106,
+      "endLine": 158,
       "summary": "Shows that the integral function is an antiderivative, and that antiderivatives differ only by constants.",
       "mathContext": "$F' = G' \\Rightarrow (F-G)' = 0 \\Rightarrow F - G = c$. The kernel of $d/dx$ is $\\{\\text{constants}\\}$, so antiderivatives form an affine subspace $F + \\mathbb{R}$."
     },
     {
       "id": "checks",
       "title": "Type Checking",
-      "startLine": 141,
+      "startLine": 159,
       "endLine": 165,
       "summary": "Verifies the types of the main theorems using #check commands.",
       "mathContext": "Verified: `ftc_part1`, `ftc_part2`, `integral_is_antiderivative`, `antiderivatives_differ_by_constant`."
