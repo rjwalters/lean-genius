@@ -126,7 +126,7 @@ theorem partitionEnergy_prod_refinement_gain (G : SimpleGraph V) [DecidableRel G
     have a := pairEnergy_split_mono G B₁ B₂ (A₁ ∪ A₂) hdisjB
     have b := pairEnergy_split_mono_right G B₁ A₁ A₂ hdisjA
     have c := pairEnergy_split_mono_right G B₂ A₁ A₂ hdisjA
-    rw [hAunion, hBunion] at a b c; linarith
+    rw [hBunion, hAunion] at a; rw [hAunion] at b c; linarith
   -- Column sums against `R`: `d(A,·)` splits, `d(B,·)` splits.
   have hcolA : R.sum (fun Q => pairEnergy G A Q) ≤
       R.sum (fun Q => pairEnergy G A₁ Q) + R.sum (fun Q => pairEnergy G A₂ Q) := by
