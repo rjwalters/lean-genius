@@ -1060,4 +1060,36 @@ theorem B_div_C_pow_diverges (p m : ℕ) : ∃ K, ∀ k, K ≤ k → m * (C k) ^
     _ = (C k) ^ (p + 1) := by rw [pow_succ]; ring
     _ ≤ B k := hK0 k hkK0
 
+/-- **Filter-level packaging: `B k / (C k)^p → ∞` for every fixed power `p`.**
+The division-free eventual bounds `C_pow_le_B_eventually` / `B_div_C_pow_diverges`
+say only that `m·(C k)^p ≤ B k` eventually, for each constant `m`.  Repackaged as a
+single `Filter.Tendsto … atTop atTop` statement, this is the honest analytic assertion
+that the factorial certificate `B` dominates *every* fixed polynomial power of the
+primorial certificate `C` — the real-valued ratio genuinely diverges to `+∞`.
+Proof: `Tendsto … atTop` unfolds to `∀ M, eventually M ≤ B k / (C k)^p`; take the
+constant `m = ⌈M⌉₊` in `B_div_C_pow_diverges`, then clear the (positive) denominator. -/
+theorem tendsto_B_div_C_pow_atTop (p : ℕ) :
+    Filter.Tendsto (fun k => (B k : ℝ) / (C k : ℝ) ^ p) Filter.atTop Filter.atTop := by
+  rw [Filter.tendsto_atTop]
+  intro M
+  obtain ⟨K, hK⟩ := B_div_C_pow_diverges p ⌈M⌉₊
+  filter_upwards [Filter.eventually_ge_atTop K] with k hk
+  have hCpos : (0 : ℝ) < (C k : ℝ) ^ p := by
+    have hC0 : 0 < C k := by have := C_ge_add k; omega
+    have : (0 : ℝ) < (C k : ℝ) := by exact_mod_cast hC0
+    positivity
+  have hcast : (⌈M⌉₊ : ℝ) * (C k : ℝ) ^ p ≤ (B k : ℝ) := by exact_mod_cast hK k hk
+  rw [le_div_iff₀ hCpos]
+  calc M * (C k : ℝ) ^ p
+      ≤ (⌈M⌉₊ : ℝ) * (C k : ℝ) ^ p :=
+        mul_le_mul_of_nonneg_right (Nat.le_ceil M) hCpos.le
+    _ ≤ (B k : ℝ) := hcast
+
+/-- **The classical ratio `B k / C k → ∞`** (the `p = 1` instance of
+`tendsto_B_div_C_pow_atTop`): the factorial certificate outgrows the primorial
+certificate itself, not merely additively but with unbounded ratio. -/
+theorem tendsto_B_div_C_atTop :
+    Filter.Tendsto (fun k => (B k : ℝ) / (C k : ℝ)) Filter.atTop Filter.atTop := by
+  simpa using tendsto_B_div_C_pow_atTop 1
+
 end DirichletsTheoremOQ02OQ03
