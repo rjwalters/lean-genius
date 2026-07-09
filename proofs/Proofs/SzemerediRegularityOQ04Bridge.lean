@@ -297,6 +297,38 @@ theorem afks_energy_iteration_count (G : SimpleGraph V) [DecidableRel G.Adj]
     (ε ^ 2 / (2 * (Fintype.card V : ℚ) ^ 2)) hδ hcover hdisjoint hstep
   rwa [one_div_div] at hbound
 
+/-- **Sharp AFKS iteration count (no-loss `ε⁴` route).**  The counterpart of
+    `afks_energy_iteration_count` for the *simultaneous* two-coordinate refinement of
+    `partitionEnergy_prod_gain_eps4`, which raises the whole-partition energy by the
+    sharp `ε⁴·|A||B|/n²` — free of the factor-`¼` loss the one-sided branches
+    (`partitionEnergy_gain_of_irregular_pair`) incur.  If every one of the first `N`
+    refinement steps clears the *uniform* floor `ε⁴·m/n²`, where `m` lower-bounds the
+    mass-product `|A||B|` of the refined pair, then
+
+    `N ≤ n² / (ε⁴·m)`.
+
+    Where the one-sided route pays `2n²/ε²`, the no-loss product route pays only
+    `n²/(ε⁴·m)`: once the refined cells carry macroscopic mass (`m ≳ 1/ε²`) the sharp
+    floor `ε⁴·m/n²` exceeds the one-sided `ε²/(2n²)`, so this is the tighter
+    finiteness bound.  Like its `ε²` sibling it is a thin corollary of the abstract
+    `[0,1]`-potential bound `partitionEnergy_iteration_bound`, here specialised to the
+    sharp floor that `partitionEnergy_prod_gain_eps4` supplies. -/
+theorem afks_energy_iteration_count_sharp (G : SimpleGraph V) [DecidableRel G.Adj]
+    (parts : ℕ → Finset (Finset V)) (N : ℕ) (ε m : ℚ) (hε : 0 < ε) (hm : 0 < m)
+    (hcard : 0 < (Fintype.card V : ℚ))
+    (hcover : ∀ n, ∀ v : V, ∃ P ∈ parts n, v ∈ P)
+    (hdisjoint : ∀ n, ∀ P Q : Finset V, P ∈ parts n → Q ∈ parts n → P ≠ Q →
+      Disjoint P Q)
+    (hstep : ∀ n, n < N →
+      partitionEnergy G (parts n) + ε ^ 4 * m / (Fintype.card V : ℚ) ^ 2 ≤
+        partitionEnergy G (parts (n + 1))) :
+    (N : ℚ) ≤ (Fintype.card V : ℚ) ^ 2 / (ε ^ 4 * m) := by
+  have hδ : 0 < ε ^ 4 * m / (Fintype.card V : ℚ) ^ 2 :=
+    div_pos (mul_pos (pow_pos hε 4) hm) (pow_pos hcard 2)
+  have hbound := Szemeredi.RegularityOQ04.partitionEnergy_iteration_bound G parts N
+    (ε ^ 4 * m / (Fintype.card V : ℚ) ^ 2) hδ hcover hdisjoint hstep
+  rwa [one_div_div] at hbound
+
 -- ═══════════════════════════════════════════════════════════════════
 -- PART V: FROM AN IRREGULARITY WITNESS TO THE TWO-HALVES DEVIATION
 -- ═══════════════════════════════════════════════════════════════════
