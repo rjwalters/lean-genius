@@ -56,6 +56,46 @@
     ]
   },
   {
+    "id": "ann-central-beta-def",
+    "proofId": "beta-integral-recurrence-oq-01-oq-01-oq-02",
+    "range": { "startLine": 54, "endLine": 80 },
+    "type": "definition",
+    "title": "The Central Beta Sequence b(n) = (n!)²/(2n+1)! and Base Values",
+    "content": "centralBeta n = (n!)²/(2n+1)! is the diagonal Euler Beta value B(n+1,n+1) packaged as a real sequence (noncomputable because of the real division). The first three values are checked directly — centralBeta_zero: b(0)=1, centralBeta_one: b(1)=1/6, centralBeta_two: b(2)=1/30 — by unfolding the definition and evaluating factorials with norm_num, matching the parent entry's independently computed instances. centralBeta_pos establishes strict positivity for every n from Nat.factorial_pos on numerator and denominator via positivity; this nonnegativity is what later lets the power series be summed term-by-term against the Beta integral.",
+    "mathContext": "$b(n) = \\dfrac{(n!)^2}{(2n+1)!},\\quad b(0)=1,\\ b(1)=\\tfrac16,\\ b(2)=\\tfrac1{30},\\ b(n)>0.$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "diagonal Euler Beta value",
+      "factorial sequence",
+      "noncomputable real definition",
+      "positivity"
+    ],
+    "prerequisites": [
+      "Nat.factorial and factorial positivity",
+      "the diagonal Beta value B(n+1,n+1)"
+    ]
+  },
+  {
+    "id": "ann-reciprocal-link",
+    "proofId": "beta-integral-recurrence-oq-01-oq-01-oq-02",
+    "range": { "startLine": 82, "endLine": 106 },
+    "type": "technique",
+    "title": "Reciprocal Central-Binomial Form and the Complex-Beta Link",
+    "content": "Two identifications tie this sequence to the surrounding gallery. centralBeta_eq_reciprocal proves b(n) = 1/((2n+1)·C(2n,n)) by importing the parent's factorial factorization (2n+1)! = (2n+1)·C(2n,n)·(n!)² (BetaCentralBinomial.factorial_two_mul_succ), rewriting the denominator, and clearing fractions with field_simp once both denominators are shown nonzero (Nat.choose_pos, Nat.factorial_pos). centralBeta_eq_betaIntegral then equates the real cast of b(n) with the complex diagonal Euler Beta integral B(n+1,n+1) = betaIntegral(n+1,n+1), chaining the parent's betaIntegral_diag_central_binom with the reciprocal form. Together these make b(n) simultaneously a combinatorial reciprocal and an honest Beta integral, the bridge the sum↔integral interchange later relies on.",
+    "mathContext": "$b(n) = \\dfrac{1}{(2n+1)\\binom{2n}{n}} = B(n+1,n+1) = \\int_0^1 (t(1-t))^n\\,dt.$",
+    "significance": "important",
+    "relatedConcepts": [
+      "central binomial coefficient",
+      "Euler Beta integral",
+      "factorial factorization",
+      "field_simp fraction clearing"
+    ],
+    "prerequisites": [
+      "BetaCentralBinomial.factorial_two_mul_succ",
+      "Complex.betaIntegral and the diagonal closed form"
+    ]
+  },
+  {
     "id": "ann-recurrence",
     "proofId": "beta-integral-recurrence-oq-01-oq-01-oq-02",
     "range": { "startLine": 108, "endLine": 140 },
