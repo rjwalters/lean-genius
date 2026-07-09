@@ -1115,4 +1115,45 @@ theorem stddev_sum_eq_iff_pairwise_correlation_eq_one [IsFiniteMeasure μ] {ι :
     rw [correlation] at hcorr
     exact (div_eq_one_iff_eq (hden i hi j hj)).mp hcorr
 
+/-- **Strict multivariate standard-deviation triangle inequality (covariance form).**  For any
+finite family of square-integrable contributions the L² triangle inequality
+`σ[∑ᵢ Wᵢ] ≤ ∑ᵢ σ[Wᵢ]` of `stddev_sum_le` is *strict*,
+
+        √Var[∑ᵢ Wᵢ] < ∑ᵢ √Var[Wᵢ],
+
+*if and only if* **some** ordered pair fails to saturate the covariance Cauchy–Schwarz bound,
+`cov[Wᵢ, Wⱼ] ≠ √Var[Wᵢ]·√Var[Wⱼ]`.  The strict companion of
+`stddev_sum_eq_iff_pairwise_covariance_eq_sqrt`: the aggregate standard deviation reaches its ceiling
+exactly when *every* pair is tight and undershoots it the moment a single pair slackens.  Together
+with `stddev_sum_le` (`≤`) and the equality boundary (`=`) this closes the `≤ / = / <` trichotomy of
+the finite-family triangle inequality at the covariance level. -/
+theorem stddev_sum_lt_iff_pairwise_covariance_ne_sqrt [IsFiniteMeasure μ] {ι : Type*}
+    {W : ι → Ω → ℝ} {s : Finset ι} (hW : ∀ i, MemLp (W i) 2 μ) :
+    Real.sqrt (Var[∑ i ∈ s, W i; μ]) < ∑ i ∈ s, Real.sqrt (Var[W i; μ]) ↔
+      ¬ ∀ i ∈ s, ∀ j ∈ s,
+        cov[W i, W j; μ] = Real.sqrt (Var[W i; μ]) * Real.sqrt (Var[W j; μ]) := by
+  rw [lt_iff_le_and_ne]
+  simp only [stddev_sum_le hW s, true_and, ne_eq, not_iff_not]
+  exact stddev_sum_eq_iff_pairwise_covariance_eq_sqrt (fun i _ => hW i)
+
+/-- **Strict multivariate standard-deviation triangle inequality (correlation form).**  For a finite
+family of *non-degenerate* square-integrable contributions (`Var[Wᵢ] ≠ 0` for all `i ∈ s`) the
+aggregate standard deviations add *strictly*,
+
+        √Var[∑ᵢ Wᵢ] < ∑ᵢ √Var[Wᵢ],
+
+*if and only if* the family is **not** fully perfectly-positively-correlated, i.e. some pair has
+`ρ[Wᵢ, Wⱼ] ≠ 1`.  The strict companion of `stddev_sum_eq_iff_pairwise_correlation_eq_one` and the
+multivariate capstone of the two-variable `stddev_add_lt_iff_correlation_lt_one`: perfect alignment
+of *every* pair is exactly the razor's edge where the triangle inequality becomes an equality, and
+any deviation from it makes the aggregate standard deviation strictly smaller than the sum. -/
+theorem stddev_sum_lt_iff_pairwise_correlation_ne_one [IsFiniteMeasure μ] {ι : Type*}
+    {W : ι → Ω → ℝ} {s : Finset ι} (hW : ∀ i, MemLp (W i) 2 μ)
+    (hnd : ∀ i ∈ s, Var[W i; μ] ≠ 0) :
+    Real.sqrt (Var[∑ i ∈ s, W i; μ]) < ∑ i ∈ s, Real.sqrt (Var[W i; μ]) ↔
+      ¬ ∀ i ∈ s, ∀ j ∈ s, correlation (W i) (W j) μ = 1 := by
+  rw [lt_iff_le_and_ne]
+  simp only [stddev_sum_le hW s, true_and, ne_eq, not_iff_not]
+  exact stddev_sum_eq_iff_pairwise_correlation_eq_one (fun i _ => hW i) hnd
+
 end ShannonAWGNMultiSymbolPower
