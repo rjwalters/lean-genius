@@ -551,4 +551,64 @@ theorem x2_minus_x_plus_1_signChanges :
 
 end Quadratic
 
+/- ## § 5. General `Fin n` vanishing of the sign-change count (verified, axiom-free)
+
+The length-2 and length-3 lemmas above resolve small cases by enumerating index
+pairs.  One implication, however, holds for *every* length `n`: a sequence whose
+entries all share a sign (all `≥ 0`, or all `≤ 0`) has **no** sign change, because
+`SignChangeBetween` demands a strictly-negative product `f i · f j < 0`.  These are
+the general (arbitrary-`n`) companions of `countSignChanges_two` and
+`countSignChanges_three_mid_zero_zero`, and they yield the "no Descartes sign
+variation from one-signed coefficients" fact for polynomials of *any* degree
+(`signChangesInCoeffs_eq_zero_of_coeff_nonneg`) — the coefficient-side statement
+behind "a polynomial with nonnegative coefficients has no positive roots". -/
+
+/-- **A nonnegative sequence has no sign change.**  For any length `n`, if every
+entry of `f : Fin n → ℝ` is `≥ 0` then `countSignChanges f = 0`: a sign change
+requires a strictly-negative product `f i · f j`, impossible when both factors are
+nonnegative.  Axiom-free, general in `n`. -/
+theorem countSignChanges_eq_zero_of_nonneg {n : ℕ} {f : Fin n → ℝ}
+    (h : ∀ i, 0 ≤ f i) : DescartesRuleOfSigns.countSignChanges f = 0 := by
+  unfold DescartesRuleOfSigns.countSignChanges
+  rw [Finset.card_eq_zero]
+  apply Finset.filter_eq_empty_iff.mpr
+  rintro ⟨i, j⟩ -
+  simp only [decide_eq_true_eq, DescartesRuleOfSigns.SignChangeBetween,
+    DescartesRuleOfSigns.oppositeSign]
+  rintro ⟨-, -, -, -, hopp⟩
+  exact absurd hopp (not_lt.mpr (mul_nonneg (h i) (h j)))
+
+/-- **A nonpositive sequence has no sign change.**  Dual of
+`countSignChanges_eq_zero_of_nonneg`: if every entry of `f : Fin n → ℝ` is `≤ 0`
+then `countSignChanges f = 0` (a product of two nonpositive reals is nonnegative).
+Axiom-free, general in `n`. -/
+theorem countSignChanges_eq_zero_of_nonpos {n : ℕ} {f : Fin n → ℝ}
+    (h : ∀ i, f i ≤ 0) : DescartesRuleOfSigns.countSignChanges f = 0 := by
+  unfold DescartesRuleOfSigns.countSignChanges
+  rw [Finset.card_eq_zero]
+  apply Finset.filter_eq_empty_iff.mpr
+  rintro ⟨i, j⟩ -
+  simp only [decide_eq_true_eq, DescartesRuleOfSigns.SignChangeBetween,
+    DescartesRuleOfSigns.oppositeSign]
+  rintro ⟨-, -, -, -, hopp⟩
+  have hprod : 0 ≤ f i * f j := by
+    have := mul_nonneg (neg_nonneg.mpr (h i)) (neg_nonneg.mpr (h j))
+    rwa [neg_mul_neg] at this
+  exact absurd hopp (not_lt.mpr hprod)
+
+/-- **A polynomial with nonnegative coefficients has no coefficient sign change.**
+`signChangesInCoeffs p = 0` whenever every coefficient of `p` is `≥ 0`.  Immediate
+from `countSignChanges_eq_zero_of_nonneg` applied to the coefficient sequence
+`coeffSequence p p.natDegree` (`i ↦ p.coeff (natDegree − i) ≥ 0`); the `p = 0`
+branch of `signChangesInCoeffs` is `0` by definition.  Classical reading: a real
+polynomial whose coefficients are all one sign exhibits no Descartes sign variation
+(and hence, via Descartes' rule, no positive root). -/
+theorem signChangesInCoeffs_eq_zero_of_coeff_nonneg {p : ℝ[X]}
+    (h : ∀ k, 0 ≤ p.coeff k) :
+    DescartesRuleOfSigns.signChangesInCoeffs p = 0 := by
+  unfold DescartesRuleOfSigns.signChangesInCoeffs
+  split
+  · rfl
+  · exact countSignChanges_eq_zero_of_nonneg fun i => h _
+
 end DescartesRuleOfSignsOQ01OQ03
