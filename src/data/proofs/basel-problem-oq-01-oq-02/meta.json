@@ -58,10 +58,10 @@
       "The nonzero-ness of the rational coefficient qₙ is obtained for free from positivity of the series (ζ(2n) > 0), avoiding any Bernoulli-number vanishing lemma"
     ],
     "dateAdded": "2026-07-02",
-    "lineCount": 165,
+    "lineCount": 221,
     "assumptions": "Depends on the axiom hermite_lindemann (Lindemann–Weierstrass theorem, giving transcendence of π), imported via Proofs.PiTranscendental. Mathlib does not yet contain a complete Lindemann–Weierstrass development, and irrationality of π^(2n) provably requires transcendence of π (irrational_pi alone is insufficient, as irrationality does not lift through powers). Everything else is machine-checked with 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 8,
+    "theoremCount": 11,
     "definitionCount": 0
   },
   "overview": {
@@ -159,9 +159,9 @@
       "Real"
     ],
     "namespace": "BaselProblemOQ01OQ02",
-    "lineCount": 165,
+    "lineCount": 221,
     "axiomCount": 0,
-    "theoremCount": 8,
+    "theoremCount": 11,
     "definitionCount": 0,
     "path": "Proofs/BaselProblemOQ01OQ02.lean",
     "sorries": 0
