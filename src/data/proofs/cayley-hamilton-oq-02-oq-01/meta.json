@@ -98,8 +98,40 @@
       "id": "truncation",
       "title": "Cayley–Hamilton truncation",
       "startLine": 100,
-      "endLine": 123,
+      "endLine": 132,
       "summary": "aeval_X_sub_C, the bridge lemma rho_eq_aeval_prod (ρₖ = aeval A ∏(X - C λᵢ)), and rho_card (ρₙ = 0 when χ_A splits), via Matrix.aeval_self_charpoly."
+    },
+    {
+      "id": "concatenation-law",
+      "title": "The Concatenation (Semigroup) Law for Partial Products",
+      "startLine": 134,
+      "endLine": 158,
+      "summary": "rho_add: the multiplicative concatenation law ρ_{j+k} = ρⱼ · ρ'ₖ, where ρ' uses the shifted eigenvalue sequence i ↦ λ_{j+i} — the matrix analogue of ∏_{i<j+k} = (∏_{i<j})·(∏_{j≤i<j+k}), holding exactly because ρ is built by right-multiplication (proved by induction on k, the k=1 case being rho_succ). rho_dvd_rho_add packages the immediate corollary that ρⱼ left-divides ρ_{j+k}.",
+      "mathContext": "$\\rho_{j+k} = \\rho_j \\cdot \\rho'_k$ with $\\rho'$ on $i \\mapsto \\lambda_{j+i}$; hence $\\rho_j \\mid_{\\text{left}} \\rho_{j+k}$."
+    },
+    {
+      "id": "two-sided-telescoping",
+      "title": "Two-Sided Factor Structure and Sum-Level Telescoping",
+      "startLine": 159,
+      "endLine": 197,
+      "summary": "Since each factor A - λᵢ•1 is a polynomial in A it commutes with every ρₖ, so factors pull to either side. rho_succ_left: ρ_{k+1} = (A - λₖ•1)·ρₖ (left complement of rho_succ). rho_mul_A: the right telescoping identity ρₖ·A = ρ_{k+1} + λₖ•ρₖ (mirror of A_mul_rho). A_mul_sum_rho: multiplying the whole finite Putzer sum ∑_{k<m} aₖ•ρₖ by A telescopes term-by-term into ∑_{k<m} aₖ•(ρ_{k+1} + λₖ•ρₖ), converting left-multiplication by A into a shift ρₖ↦ρ_{k+1} plus a diagonal λₖ term — over any CommRing.",
+      "mathContext": "$\\rho_{k+1} = (A - \\lambda_k\\!\\cdot\\!1)\\rho_k$, $\\;\\rho_k A = \\rho_{k+1} + \\lambda_k\\rho_k$, $\\;A\\sum_k a_k\\rho_k = \\sum_k a_k(\\rho_{k+1} + \\lambda_k\\rho_k)$."
+    },
+    {
+      "id": "algebraic-derivative-bridge",
+      "title": "The Algebraic Form of Ṁ = A·M (the Analytic Bridge)",
+      "startLine": 198,
+      "endLine": 269,
+      "summary": "Isolates the purely algebraic identity underlying Putzer's ODE claim: A·∑_{k<n} Pₖ•ρₖ = ∑_{k<n} (λₖPₖ + P_{k-1})•ρₖ, with the P_{k-1} convention (P_{-1}=0) encoded cleanly via a second family Pprev (Pprev 0 = 0, Pprev(k+1)=Pₖ) to avoid ℕ-subtraction. sum_P_rho_succ re-indexes the shifted sum (Finset.sum_range_succ'). A_mul_putzer_sum proves the identity given the single boundary hypothesis ρₘ = 0, which deletes the leftover term P_{m-1}•ρₘ. A_mul_putzer_sum_charpoly then discharges that hypothesis automatically at full length n via the Cayley–Hamilton truncation rho_card — no analysis, over any CommRing.",
+      "mathContext": "$A\\sum_{k<n} P_k\\rho_k = \\sum_{k<n}(\\lambda_k P_k + P_{k-1})\\rho_k$, closed by the boundary vanishing $\\rho_n = 0$."
+    },
+    {
+      "id": "algebraic-initial-condition",
+      "title": "The Algebraic Initial Condition M(0) = I",
+      "startLine": 271,
+      "endLine": 319,
+      "summary": "The second IVP half. putzer_sum_initial: if a coefficient family c has c₀ = 1 and cₖ = 0 for k > 0, the Putzer sum ∑_{k<m} cₖ•ρₖ collapses to the surviving k=0 term c₀•ρ₀ = 1•1 = 1 (any m ≥ 1) — exactly M(0) = I when cₖ = Pₖ(0). putzer_ivp_charpoly assembles both halves: for a split χ_A and Putzer initial data (P₀ = 1, Pₖ = 0 for k > 0), the finite matrix sum M = ∑_{k<n} Pₖ•ρₖ simultaneously satisfies the Ṁ = A·M right-hand side and M = 1 — the complete algebraic skeleton of Putzer's theorem, leaving only the analytic HasDerivAt/uniqueness layer.",
+      "mathContext": "$\\sum_{k<m} c_k\\rho_k = c_0\\rho_0 = 1$ when $c_0=1,\\,c_{k>0}=0$; combined with $A\\!\\cdot\\!M = \\dot M$ gives the full algebraic IVP."
     }
   ],
   "conclusion": {
