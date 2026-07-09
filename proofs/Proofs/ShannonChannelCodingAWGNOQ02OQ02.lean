@@ -1444,4 +1444,36 @@ theorem mrc_output_signal_sq_le_variance_mul [IsFiniteMeasure μ] {ι : Type*}
   rw [variance_smul_sum_of_pairwise_uncorrelated a hN huncor]
   exact mrc_signal_sq_le s a sig (fun i => Var[N i; μ]) hv
 
+/-- **MRC diversity gain (monotonicity in the branch set).**  By `mrc_snr_le` and
+`mrc_snr_matched`, the *maximum* attainable output SNR of a linear combiner over a branch block
+`s` equals the summed per-branch SNRs `∑_{i∈s} sigᵢ²/vᵢ`.  This maximum is monotone under adding
+branches: for `s ⊆ t` with strictly positive branch noise variances,
+
+        ∑_{i∈s} sigᵢ²/vᵢ ≤ ∑_{i∈t} sigᵢ²/vᵢ.
+
+Combining over *more* branches can never lower the attainable SNR — the diversity-gain
+principle of maximal-ratio combining.  Each summand `sigᵢ²/vᵢ ≥ 0`, so this is exactly
+`Finset.sum_le_sum_of_subset_of_nonneg`. -/
+theorem mrc_max_snr_mono {ι : Type*} {s t : Finset ι} (hst : s ⊆ t) (sig v : ι → ℝ)
+    (hv : ∀ i ∈ t, 0 < v i) :
+    ∑ i ∈ s, sig i ^ 2 / v i ≤ ∑ i ∈ t, sig i ^ 2 / v i :=
+  Finset.sum_le_sum_of_subset_of_nonneg hst
+    (fun i hit _ => div_nonneg (sq_nonneg _) (hv i hit).le)
+
+/-- **Strict diversity gain from a signal-bearing branch.**  If `s ⊆ t` and some added branch
+`j ∈ t \ s` observes nonzero signal (`sig j ≠ 0`, `v j > 0`), the attainable SNR strictly
+increases:
+
+        ∑_{i∈s} sigᵢ²/vᵢ < ∑_{i∈t} sigᵢ²/vᵢ.
+
+The added term `sig j²/v j > 0` is a genuine gain, while the remaining new summands are `≥ 0`.
+Sharp companion to `mrc_max_snr_mono`: a branch improves diversity *exactly* when it carries
+signal — a noise-only branch (`sig = 0`) contributes nothing. -/
+theorem mrc_max_snr_lt_of_signal {ι : Type*} {s t : Finset ι} (hst : s ⊆ t) (sig v : ι → ℝ)
+    (hv : ∀ i ∈ t, 0 < v i) {j : ι} (hj : j ∈ t) (hjs : j ∉ s) (hsig : sig j ≠ 0) :
+    ∑ i ∈ s, sig i ^ 2 / v i < ∑ i ∈ t, sig i ^ 2 / v i := by
+  refine Finset.sum_lt_sum_of_subset hst hj hjs ?_ (fun i hit _ => div_nonneg (sq_nonneg _) (hv i hit).le)
+  have h2 : (0 : ℝ) < sig j ^ 2 := lt_of_le_of_ne (sq_nonneg _) (Ne.symm (pow_ne_zero 2 hsig))
+  exact div_pos h2 (hv j hj)
+
 end ShannonAWGNMultiSymbolPower
