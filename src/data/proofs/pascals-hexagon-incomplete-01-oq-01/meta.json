@@ -67,6 +67,14 @@
   },
   "sections": [
     {
+      "id": "context-setup",
+      "title": "Context: The Retained-Axiom Gap and Honest Scope",
+      "startLine": 1,
+      "endLine": 52,
+      "summary": "Imports (Matrix multiplication/determinant, BigOperators) and the module docstring. Situates the file against PascalsHexagon.lean, whose Sylvester reduction sylvester_stdConic_of_isotropic carries a standing hC_sym hypothesis and whose residual axiom conic_implies_pascal_constraint is retained for the 'asymmetric and degenerate' cases. The parent's proof sketch lists 'replace C with symmetrized (C + Cᵀ)/2 (same zero set)' as its first outstanding step but never proves it — this file does, self-contained. States the honest scope: it removes the symmetry hypothesis from the reduction, not the hard indefinite-symmetric Sylvester direction, and reproduces the conic API locally because the parent is bit-rotted under toolchain 4.26.0. Opens the namespace; 0 sorries, 0 axiom declarations, no native_decide.",
+      "mathContext": "Reduce the general (possibly asymmetric) non-degenerate conic to the symmetric case via symmetrize C = (C + Cᵀ)/2."
+    },
+    {
       "id": "api",
       "title": "Minimal Conic API",
       "startLine": 53,
