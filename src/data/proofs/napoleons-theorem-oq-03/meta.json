@@ -51,6 +51,13 @@
   },
   "sections": [
     {
+      "title": "Module Header & Setup",
+      "startLine": 1,
+      "endLine": 63,
+      "description": "Imports (complex analysis, real square roots, tactics), the module docstring, and the namespace/open declarations. The docstring frames the open question: the sibling OQ-02 shows the outer and inner Napoleon constructions act on the 3-point DFT of the vertices as complementary spectral filters (outer zeroes frequency 2 and negates frequency 1; inner zeroes frequency 1 and negates frequency 2). The follow-up proved here is what their composition does — spectrally, outer ∘ inner (and inner ∘ outer) zeroes both non-DC frequencies, so the triangle collapses to the single point at its centroid ('shape annihilation'). It also records the proof method: every Napoleon vertex map is ℂ-affine, so each collapse is a ℂ-polynomial identity closed by a single linear_combination against the one non-ring fact disp_sq: a² = −1/12 for the displacement coefficient a = i√3/6.",
+      "summary": "Imports, framing docstring (spectral complementarity → shape annihilation), and namespace setup"
+    },
+    {
       "title": "Napoleon Vertex Definitions",
       "startLine": 64,
       "endLine": 86,
