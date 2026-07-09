@@ -39,11 +39,13 @@
   "tags": [],
   "relatedProofs": [
     "collatz-structured",
+    "collatz-structured-oq-01",
     "collatz-structured-oq-02",
     "collatz-structured-oq-02-oq-01",
     "collatz-structured-oq-02-oq-02",
     "collatz-structured-oq-02-oq-03",
-    "collatz-structured-oq-03"
+    "collatz-structured-oq-03",
+    "collatz-structured-oq-03-oq-03"
   ],
   "references": {
     "papers": [],
@@ -63,6 +65,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CollatzStructured.lean"
+    },
+    {
+      "path": "Proofs/CollatzStructuredOQ01.lean",
+      "filename": "CollatzStructuredOQ01.lean",
+      "lineCount": 348,
+      "theoremCount": 22,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CollatzStructuredOQ01.lean"
     },
     {
       "path": "Proofs/CollatzStructuredOQ02OQ01.lean",
@@ -89,10 +102,10 @@
     {
       "path": "Proofs/CollatzStructuredOQ02OQ03.lean",
       "filename": "CollatzStructuredOQ02OQ03.lean",
-      "lineCount": 146,
-      "theoremCount": 7,
+      "lineCount": 1802,
+      "theoremCount": 64,
       "axiomCount": 1,
-      "defCount": 5,
+      "defCount": 13,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CollatzStructuredOQ02OQ03.lean"
@@ -107,6 +120,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CollatzStructuredOQ03.lean"
+    },
+    {
+      "path": "Proofs/CollatzStructuredOQ03OQ03.lean",
+      "filename": "CollatzStructuredOQ03OQ03.lean",
+      "lineCount": 230,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CollatzStructuredOQ03OQ03.lean"
     }
   ]
 }

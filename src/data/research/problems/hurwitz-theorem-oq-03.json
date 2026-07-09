@@ -42,9 +42,12 @@
   "tags": [],
   "relatedProofs": [
     "hurwitz-theorem",
+    "hurwitz-theorem-oq-02",
     "hurwitz-theorem-oq-03",
     "hurwitz-theorem-oq-03-incomplete-01",
     "hurwitz-theorem-oq-03-oq-01",
+    "hurwitz-theorem-oq-03-oq-01-incomplete-01",
+    "hurwitz-theorem-oq-03-wip-01",
     "hurwitz-theorem-oq-04"
   ],
   "references": {
@@ -64,6 +67,28 @@
       "sorryCount": 2,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/HurwitzTheorem.lean"
+    },
+    {
+      "path": "Proofs/HurwitzTheoremOQ02.lean",
+      "filename": "HurwitzTheoremOQ02.lean",
+      "lineCount": 233,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/HurwitzTheoremOQ02.lean"
+    },
+    {
+      "path": "Proofs/HurwitzTheoremOQ03WIP01.lean",
+      "filename": "HurwitzTheoremOQ03WIP01.lean",
+      "lineCount": 204,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/HurwitzTheoremOQ03WIP01.lean"
     },
     {
       "path": "Proofs/HurwitzTheoremOQ04.lean",

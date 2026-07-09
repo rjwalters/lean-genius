@@ -80,10 +80,14 @@
     "fermat-two-squares-oq-01-oq-03",
     "fermat-two-squares-oq-01-oq-03-oq-01",
     "fermat-two-squares-oq-04",
+    "fermat-two-squares-oq-04-oq-01",
     "fermat-two-squares-oq-05",
     "fermat-two-squares-oq-06",
+    "fermat-two-squares-oq-06-oq-02",
     "fermat-two-squares-oq-07",
-    "fermat-two-squares-oq-07-oq-01"
+    "fermat-two-squares-oq-07-oq-01",
+    "fermat-two-squares-oq-08",
+    "fermat-two-squares-oq-09"
   ],
   "references": {
     "papers": [],
@@ -162,6 +166,17 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FermatTwoSquaresOQ04.lean"
     },
     {
+      "path": "Proofs/FermatTwoSquaresOQ04OQ01.lean",
+      "filename": "FermatTwoSquaresOQ04OQ01.lean",
+      "lineCount": 179,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FermatTwoSquaresOQ04OQ01.lean"
+    },
+    {
       "path": "Proofs/FermatTwoSquaresOQ05.lean",
       "filename": "FermatTwoSquaresOQ05.lean",
       "lineCount": 153,
@@ -184,6 +199,17 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FermatTwoSquaresOQ06.lean"
     },
     {
+      "path": "Proofs/FermatTwoSquaresOQ06OQ02.lean",
+      "filename": "FermatTwoSquaresOQ06OQ02.lean",
+      "lineCount": 153,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FermatTwoSquaresOQ06OQ02.lean"
+    },
+    {
       "path": "Proofs/FermatTwoSquaresOQ07.lean",
       "filename": "FermatTwoSquaresOQ07.lean",
       "lineCount": 161,
@@ -204,6 +230,28 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FermatTwoSquaresOQ07OQ01.lean"
+    },
+    {
+      "path": "Proofs/FermatTwoSquaresOQ08.lean",
+      "filename": "FermatTwoSquaresOQ08.lean",
+      "lineCount": 156,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FermatTwoSquaresOQ08.lean"
+    },
+    {
+      "path": "Proofs/FermatTwoSquaresOQ09.lean",
+      "filename": "FermatTwoSquaresOQ09.lean",
+      "lineCount": 145,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FermatTwoSquaresOQ09.lean"
     }
   ]
 }

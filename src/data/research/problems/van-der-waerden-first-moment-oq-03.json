@@ -17,14 +17,58 @@
     "All three of the last bounds dominate the first-moment bound asymptotically."
   ],
   "leanFiles": [
-    "Proofs/Erdos138FirstMomentBridge.lean",
-    "Proofs/VanDerWaerdenFirstMomentOQ01.lean",
-    "Proofs/Erdos138Problem.lean"
+    {
+      "path": "Proofs/VanDerWaerdenFirstMoment.lean",
+      "filename": "VanDerWaerdenFirstMoment.lean",
+      "lineCount": 138,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/VanDerWaerdenFirstMoment.lean"
+    },
+    {
+      "path": "Proofs/VanDerWaerdenFirstMomentOQ01.lean",
+      "filename": "VanDerWaerdenFirstMomentOQ01.lean",
+      "lineCount": 199,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/VanDerWaerdenFirstMomentOQ01.lean"
+    },
+    {
+      "path": "Proofs/VanDerWaerdenFirstMomentOQ01OQ01.lean",
+      "filename": "VanDerWaerdenFirstMomentOQ01OQ01.lean",
+      "lineCount": 179,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/VanDerWaerdenFirstMomentOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/VanDerWaerdenFirstMomentOQ02.lean",
+      "filename": "VanDerWaerdenFirstMomentOQ02.lean",
+      "lineCount": 198,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/VanDerWaerdenFirstMomentOQ02.lean"
+    }
   ],
   "relatedProofs": [
+    "erdos-138",
     "van-der-waerden-first-moment",
     "van-der-waerden-first-moment-oq-01",
-    "erdos-138"
+    "van-der-waerden-first-moment-oq-01-oq-01",
+    "van-der-waerden-first-moment-oq-02",
+    "van-der-waerden-first-moment-oq-03"
   ],
   "references": [
     "Graham, Rothschild, Spencer — Ramsey Theory (first-moment vdW lower bound).",

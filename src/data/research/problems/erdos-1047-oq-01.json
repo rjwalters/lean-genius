@@ -73,7 +73,8 @@
     "erdos-10",
     "erdos-104",
     "erdos-1047",
-    "erdos-1047-oq-02"
+    "erdos-1047-oq-02",
+    "erdos-1047-oq-02-chord-exit"
   ],
   "references": {
     "papers": [],
@@ -117,6 +118,17 @@
       "sorryCount": 2,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1047OQ02Certificate.lean"
+    },
+    {
+      "path": "Proofs/Erdos1047OQ02ChordExit.lean",
+      "filename": "Erdos1047OQ02ChordExit.lean",
+      "lineCount": 293,
+      "theoremCount": 16,
+      "axiomCount": 0,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1047OQ02ChordExit.lean"
     },
     {
       "path": "Proofs/Erdos1047OQ02Reduction.lean",

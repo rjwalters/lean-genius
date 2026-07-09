@@ -5,7 +5,13 @@
   "phase": "COMPLETED",
   "status": "completed",
   "tier": "C",
-  "tags": ["number-theory", "perfect-numbers", "odd-perfect-numbers", "abundancy-index", "sigma"],
+  "tags": [
+    "number-theory",
+    "perfect-numbers",
+    "odd-perfect-numbers",
+    "abundancy-index",
+    "sigma"
+  ],
   "started": "2026-06-28",
   "lastUpdate": "2026-06-28",
   "problemStatement": {
@@ -18,9 +24,158 @@
   },
   "leanFiles": [
     {
-      "path": "proofs/Proofs/SumOfDivisorsOQ01OQ01.lean",
-      "sorries": 0,
-      "axiomCount": 0
+      "path": "Proofs/SumOfDivisors.lean",
+      "filename": "SumOfDivisors.lean",
+      "lineCount": 550,
+      "theoremCount": 81,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SumOfDivisors.lean"
+    },
+    {
+      "path": "Proofs/SumOfDivisorsOQ01.lean",
+      "filename": "SumOfDivisorsOQ01.lean",
+      "lineCount": 134,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SumOfDivisorsOQ01.lean"
+    },
+    {
+      "path": "Proofs/SumOfDivisorsOQ01Assembly.lean",
+      "filename": "SumOfDivisorsOQ01Assembly.lean",
+      "lineCount": 138,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SumOfDivisorsOQ01Assembly.lean"
+    },
+    {
+      "path": "Proofs/SumOfDivisorsOQ01OQ01.lean",
+      "filename": "SumOfDivisorsOQ01OQ01.lean",
+      "lineCount": 202,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SumOfDivisorsOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/SumOfDivisorsOQ01SpecialPrime.lean",
+      "filename": "SumOfDivisorsOQ01SpecialPrime.lean",
+      "lineCount": 83,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SumOfDivisorsOQ01SpecialPrime.lean"
+    },
+    {
+      "path": "Proofs/SumOfDivisorsOQ01SquarePacking.lean",
+      "filename": "SumOfDivisorsOQ01SquarePacking.lean",
+      "lineCount": 120,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SumOfDivisorsOQ01SquarePacking.lean"
+    },
+    {
+      "path": "Proofs/SumOfDivisorsOQ02.lean",
+      "filename": "SumOfDivisorsOQ02.lean",
+      "lineCount": 229,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SumOfDivisorsOQ02.lean"
+    },
+    {
+      "path": "Proofs/SumOfDivisorsOQ03.lean",
+      "filename": "SumOfDivisorsOQ03.lean",
+      "lineCount": 119,
+      "theoremCount": 4,
+      "axiomCount": 1,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SumOfDivisorsOQ03.lean"
+    },
+    {
+      "path": "Proofs/SumOfDivisorsOQ04.lean",
+      "filename": "SumOfDivisorsOQ04.lean",
+      "lineCount": 70,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SumOfDivisorsOQ04.lean"
+    },
+    {
+      "path": "Proofs/SumOfDivisorsOQ04OQ01.lean",
+      "filename": "SumOfDivisorsOQ04OQ01.lean",
+      "lineCount": 124,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SumOfDivisorsOQ04OQ01.lean"
+    },
+    {
+      "path": "Proofs/SumOfDivisorsOQ05.lean",
+      "filename": "SumOfDivisorsOQ05.lean",
+      "lineCount": 91,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SumOfDivisorsOQ05.lean"
+    },
+    {
+      "path": "Proofs/SumOfDivisorsOQ06.lean",
+      "filename": "SumOfDivisorsOQ06.lean",
+      "lineCount": 101,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SumOfDivisorsOQ06.lean"
+    },
+    {
+      "path": "Proofs/SumOfDivisorsOQ06OQ01.lean",
+      "filename": "SumOfDivisorsOQ06OQ01.lean",
+      "lineCount": 87,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SumOfDivisorsOQ06OQ01.lean"
+    },
+    {
+      "path": "Proofs/SumOfDivisorsOQ07.lean",
+      "filename": "SumOfDivisorsOQ07.lean",
+      "lineCount": 96,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SumOfDivisorsOQ07.lean"
     }
   ],
   "knowledge": {
@@ -47,7 +202,21 @@
     "Euler's form N = pᵃm², p ≡ a ≡ 1 (mod 4) (sum-of-divisors-oq-01).",
     "ω(N) ≥ 10 is known (Nielsen 2015); this entry verifies the elementary base ω(N) ≥ 3."
   ],
-  "relatedProofs": ["sum-of-divisors-oq-01", "perfect-numbers-oq-05", "perfect-numbers"],
+  "relatedProofs": [
+    "perfect-numbers",
+    "perfect-numbers-oq-05",
+    "sum-of-divisors",
+    "sum-of-divisors-oq-01",
+    "sum-of-divisors-oq-01-oq-01",
+    "sum-of-divisors-oq-02",
+    "sum-of-divisors-oq-03",
+    "sum-of-divisors-oq-04",
+    "sum-of-divisors-oq-04-oq-01",
+    "sum-of-divisors-oq-05",
+    "sum-of-divisors-oq-06",
+    "sum-of-divisors-oq-06-oq-01",
+    "sum-of-divisors-oq-07"
+  ],
   "references": [
     {
       "title": "Perfect number — Odd perfect numbers",

@@ -54,6 +54,7 @@
     "newton-inductive-step-oq-01",
     "newton-inductive-step-oq-01-oq-02",
     "newton-inductive-step-oq-02",
+    "newton-inductive-step-oq-02-oq-02",
     "newton-inductive-step-oq-03"
   ],
   "references": {
@@ -67,8 +68,8 @@
     {
       "path": "Proofs/NewtonInductiveStep.lean",
       "filename": "NewtonInductiveStep.lean",
-      "lineCount": 153,
-      "theoremCount": 2,
+      "lineCount": 488,
+      "theoremCount": 5,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 0,
@@ -118,6 +119,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/NewtonInductiveStepOQ02.lean"
+    },
+    {
+      "path": "Proofs/NewtonInductiveStepOQ02OQ02.lean",
+      "filename": "NewtonInductiveStepOQ02OQ02.lean",
+      "lineCount": 173,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/NewtonInductiveStepOQ02OQ02.lean"
     },
     {
       "path": "Proofs/NewtonInductiveStepOQ03.lean",

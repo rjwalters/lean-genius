@@ -101,7 +101,8 @@
   "relatedProofs": [
     "puiseux-theorem",
     "puiseux-theorem-oq-01",
-    "puiseux-theorem-oq-02"
+    "puiseux-theorem-oq-02",
+    "puiseux-theorem-oq-03"
   ],
   "references": {
     "papers": [],
@@ -113,10 +114,10 @@
     {
       "path": "Proofs/PuiseuxTheorem.lean",
       "filename": "PuiseuxTheorem.lean",
-      "lineCount": 541,
-      "theoremCount": 9,
+      "lineCount": 759,
+      "theoremCount": 17,
       "axiomCount": 0,
-      "defCount": 2,
+      "defCount": 3,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PuiseuxTheorem.lean"
@@ -142,6 +143,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PuiseuxTheoremOQ02.lean"
+    },
+    {
+      "path": "Proofs/PuiseuxTheoremOQ03.lean",
+      "filename": "PuiseuxTheoremOQ03.lean",
+      "lineCount": 1627,
+      "theoremCount": 92,
+      "axiomCount": 0,
+      "defCount": 12,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PuiseuxTheoremOQ03.lean"
     }
   ],
   "lastUpdate": "2026-06-28T13:30:00.000Z"

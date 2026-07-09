@@ -1,53 +1,541 @@
 {
-    "slug": "ballot-problem-oq-02-oq-04",
-    "title": "The Arcsine Distribution: verified core of Lévy's Arcsine Law",
+  "slug": "ballot-problem-oq-02-oq-04",
+  "title": "The Arcsine Distribution: verified core of Lévy's Arcsine Law",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Lévy's Arcsine Law states that the occupation time $A^+ = |\\{t \\in [0,1] : W_t > 0\\}|$ of a standard Brownian motion (and equally its argmax time and last-zero time) has cumulative distribution $F(x) = \\tfrac{2}{\\pi}\\arcsin\\sqrt{x}$ on $[0,1]$. A from-primitives proof requires Brownian local times, absent from Mathlib v4.26.0. This entry isolates and proves the verifiable quantitative core: that $F$ is a genuine CDF on $[0,1]$ (endpoints $0,1$, median $1/2$, monotone) with the reflection symmetry $F(x) + F(1-x) = 1$, and that the density $f(x) = 1/(\\pi\\sqrt{x(1-x)})$ is symmetric about $1/2$ with global minimum $2/\\pi$ there.",
+    "plain": "A self-contained, axiom-free Lean formalization of the arcsine distribution on [0,1] — the cumulative distribution function F(x) = (2/π)·arcsin(√x) that governs Lévy's Arcsine Law for Brownian motion. Proves the endpoints (total mass 1), the median at 1/2, monotonicity, the signature reflection symmetry F(x)+F(1-x)=1, and the U-shaped density. The full probabilistic derivation 'via Brownian motion local times' is documented as future work (Mathlib v4.26.0 has no local-time theory).",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [
+      "A self-contained, axiom-free Lean formalization of the arcsine distribution on [0,1] — the cumulative distribution function F(x) = (2/π)·arcsin(√x) that governs Lévy's Arcsine Law for Brownian motion."
+    ],
+    "open": [],
+    "goal": "Lévy's Arcsine Law states that the occupation time $A^+ = |\\{t \\in [0,1] : W_t > 0\\}|$ of a standard Brownian motion (and equally its argmax time and last-zero time) has cumulative distribution $F(x) = \\tfrac{2}{\\pi}\\arcsin\\sqrt{x}$ on $[0,1]$. A from-primitives proof requires Brownian local times, absent from Mathlib v4.26.0. This entry isolates and proves the verifiable quantitative core: that $F$ is a genuine CDF on $[0,1]$ (endpoints $0,1$, median $1/2$, monotone) with the reflection symmetry $F(x) + F(1-x) = 1$, and that the density $f(x) = 1/(\\pi\\sqrt{x(1-x)})$ is symmetric about $1/2$ with global minimum $2/\\pi$ there."
+  },
+  "currentState": {
     "phase": "COMPLETED",
-    "status": "completed",
-    "tier": "B",
-    "path": "full",
-    "problemStatement": {
-        "formal": "Lévy's Arcsine Law states that the occupation time $A^+ = |\\{t \\in [0,1] : W_t > 0\\}|$ of a standard Brownian motion (and equally its argmax time and last-zero time) has cumulative distribution $F(x) = \\tfrac{2}{\\pi}\\arcsin\\sqrt{x}$ on $[0,1]$. A from-primitives proof requires Brownian local times, absent from Mathlib v4.26.0. This entry isolates and proves the verifiable quantitative core: that $F$ is a genuine CDF on $[0,1]$ (endpoints $0,1$, median $1/2$, monotone) with the reflection symmetry $F(x) + F(1-x) = 1$, and that the density $f(x) = 1/(\\pi\\sqrt{x(1-x)})$ is symmetric about $1/2$ with global minimum $2/\\pi$ there.",
-        "plain": "A self-contained, axiom-free Lean formalization of the arcsine distribution on [0,1] — the cumulative distribution function F(x) = (2/π)·arcsin(√x) that governs Lévy's Arcsine Law for Brownian motion. Proves the endpoints (total mass 1), the median at 1/2, monotonicity, the signature reflection symmetry F(x)+F(1-x)=1, and the U-shaped density. The full probabilistic derivation 'via Brownian motion local times' is documented as future work (Mathlib v4.26.0 has no local-time theory).",
-        "whyMatters": []
+    "since": "2026-06-22T00:00:00Z",
+    "iteration": 1,
+    "focus": "Verified deliverable already complete in main: proofs/Proofs/BallotProblemOQ02OQ04.lean and gallery entry ballot-problem-oq-02-oq-04 (status verified)."
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED and verified (0 sorries, axiomCount 0, badge 'original'). A self-contained, axiom-free Lean formalization of the arcsine distribution on [0,1] — CDF F(x) = (2/π)·arcsin(√x). Proves the endpoints (total mass 1), the median at 1/2, monotonicity, the reflection symmetry F(x)+F(1-x)=1, the U-shaped density, and (S2, 2026-06-28) the FTC link F'(x) = f(x) on (0,1) connecting the density to the CDF. S2 also repaired a silent Mathlib-drift breakage (div_le_div_iff rename + stronger field_simp) so the file again compiles exit-0 against the pinned Mathlib v4.26.0. The full probabilistic derivation 'via Brownian motion local times' remains future work (no local-time theory in Mathlib).",
+    "builtItems": [
+      "Gallery entry src/data/proofs/ballot-problem-oq-02-oq-04 (meta.json + annotations.json); Lean source proofs/Proofs/BallotProblemOQ02OQ04.lean.",
+      "S2: hasDerivAt_arcsineCDF / deriv_arcsineCDF (FTC link F'=f on (0,1)); plus build-repair of pre-existing Mathlib-drift errors."
+    ],
+    "insights": [
+      "**The FTC link makes 'density' literal**: arcsineCDF and arcsineDensity began as two unrelated definitions; hasDerivAt_arcsineCDF proves F'(x)=f(x) on (0,1) by the chain rule on arcsin∘√ (Real.hasDerivAt_arcsin ∘ Real.hasDerivAt_sqrt), so the U-shaped f really is the rate of change of the S-shaped F — and density-normalization ∫₀¹f=1 reduces to F(1)−F(0).",
+      "**Verified entries silently rot under library drift**: this file passed exit-0 on 2026-06-25 but failed against the same *pinned* Mathlib by 2026-06-28 because div_le_div_iff was renamed and field_simp grew stronger (redundant `ring`s became 'no goals' errors). A 'verified' badge is only as current as the last actual build; single-file `lake env lean` against the pinned oleans is the cheap canonical recheck.",
+      "**The arcsin in the name is literal**: the CDF is built directly from Real.arcsin(√x), so every property of the law is a property of a single elementary special function — the formalization needs no measure theory, only real analysis of arcsin and sqrt.",
+      "**Reflection symmetry F(x)+F(1−x)=1 is the heart of the matter**: it says the occupation time is distributed symmetrically about 1/2, yet — because the density is U-shaped — symmetry about 1/2 coexists with mass fleeing AWAY from 1/2. The symmetric median and the anti-concentrated density are not in tension; they are the whole surprise of the arcsine law.",
+      "**The complementary-angle identity arcsin(√x) + arcsin(√(1−x)) = π/2 is the engine**: it is the analytic shadow of the geometric fact that √x and √(1−x) are sine and cosine of complementary angles, and it is what forces the reflection symmetry. The proof routes through arccos to expose this.",
+      "**Honest scoping under a library gap**: Mathlib v4.26.0 has no Brownian motion, no stochastic local time, and no arcsine-distribution object, so the probabilistic 'via local times' derivation cannot be done from primitives. This entry proves exactly the part that IS formalizable — the CDF and density as real-analytic objects — and marks the local-time route as future work rather than axiomatizing it.",
+      "**The U-shaped density's minimum at 2/π quantifies the paradox**: the most 'fair' split (half the time positive) is the single least likely outcome, with density bottoming out at 2/π ≈ 0.637, while the density diverges at the extremes 0 and 1."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "probability",
+    "arcsine-law",
+    "brownian-motion",
+    "ballot-problem",
+    "distribution",
+    "real-analysis",
+    "research"
+  ],
+  "leanFiles": [
+    {
+      "path": "Proofs/BallotProblem.lean",
+      "filename": "BallotProblem.lean",
+      "lineCount": 252,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblem.lean"
     },
-    "knownResults": {
-        "proven": [
-            "A self-contained, axiom-free Lean formalization of the arcsine distribution on [0,1] — the cumulative distribution function F(x) = (2/π)·arcsin(√x) that governs Lévy's Arcsine Law for Brownian motion."
-        ],
-        "open": [],
-        "goal": "Lévy's Arcsine Law states that the occupation time $A^+ = |\\{t \\in [0,1] : W_t > 0\\}|$ of a standard Brownian motion (and equally its argmax time and last-zero time) has cumulative distribution $F(x) = \\tfrac{2}{\\pi}\\arcsin\\sqrt{x}$ on $[0,1]$. A from-primitives proof requires Brownian local times, absent from Mathlib v4.26.0. This entry isolates and proves the verifiable quantitative core: that $F$ is a genuine CDF on $[0,1]$ (endpoints $0,1$, median $1/2$, monotone) with the reflection symmetry $F(x) + F(1-x) = 1$, and that the density $f(x) = 1/(\\pi\\sqrt{x(1-x)})$ is symmetric about $1/2$ with global minimum $2/\\pi$ there."
+    {
+      "path": "Proofs/BallotProblemOQ01.lean",
+      "filename": "BallotProblemOQ01.lean",
+      "lineCount": 790,
+      "theoremCount": 44,
+      "axiomCount": 0,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ01.lean"
     },
-    "currentState": {
-        "phase": "COMPLETED",
-        "since": "2026-06-22T00:00:00Z",
-        "iteration": 1,
-        "focus": "Verified deliverable already complete in main: proofs/Proofs/BallotProblemOQ02OQ04.lean and gallery entry ballot-problem-oq-02-oq-04 (status verified)."
+    {
+      "path": "Proofs/BallotProblemOQ01OQ01.lean",
+      "filename": "BallotProblemOQ01OQ01.lean",
+      "lineCount": 152,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ01OQ01.lean"
     },
-    "knowledge": {
-        "progressSummary": "COMPLETED and verified (0 sorries, axiomCount 0, badge 'original'). A self-contained, axiom-free Lean formalization of the arcsine distribution on [0,1] — CDF F(x) = (2/π)·arcsin(√x). Proves the endpoints (total mass 1), the median at 1/2, monotonicity, the reflection symmetry F(x)+F(1-x)=1, the U-shaped density, and (S2, 2026-06-28) the FTC link F'(x) = f(x) on (0,1) connecting the density to the CDF. S2 also repaired a silent Mathlib-drift breakage (div_le_div_iff rename + stronger field_simp) so the file again compiles exit-0 against the pinned Mathlib v4.26.0. The full probabilistic derivation 'via Brownian motion local times' remains future work (no local-time theory in Mathlib).",
-        "builtItems": [
-            "Gallery entry src/data/proofs/ballot-problem-oq-02-oq-04 (meta.json + annotations.json); Lean source proofs/Proofs/BallotProblemOQ02OQ04.lean.",
-            "S2: hasDerivAt_arcsineCDF / deriv_arcsineCDF (FTC link F'=f on (0,1)); plus build-repair of pre-existing Mathlib-drift errors."
-        ],
-        "insights": [
-            "**The FTC link makes 'density' literal**: arcsineCDF and arcsineDensity began as two unrelated definitions; hasDerivAt_arcsineCDF proves F'(x)=f(x) on (0,1) by the chain rule on arcsin∘√ (Real.hasDerivAt_arcsin ∘ Real.hasDerivAt_sqrt), so the U-shaped f really is the rate of change of the S-shaped F — and density-normalization ∫₀¹f=1 reduces to F(1)−F(0).",
-            "**Verified entries silently rot under library drift**: this file passed exit-0 on 2026-06-25 but failed against the same *pinned* Mathlib by 2026-06-28 because div_le_div_iff was renamed and field_simp grew stronger (redundant `ring`s became 'no goals' errors). A 'verified' badge is only as current as the last actual build; single-file `lake env lean` against the pinned oleans is the cheap canonical recheck.",
-            "**The arcsin in the name is literal**: the CDF is built directly from Real.arcsin(√x), so every property of the law is a property of a single elementary special function — the formalization needs no measure theory, only real analysis of arcsin and sqrt.",
-            "**Reflection symmetry F(x)+F(1−x)=1 is the heart of the matter**: it says the occupation time is distributed symmetrically about 1/2, yet — because the density is U-shaped — symmetry about 1/2 coexists with mass fleeing AWAY from 1/2. The symmetric median and the anti-concentrated density are not in tension; they are the whole surprise of the arcsine law.",
-            "**The complementary-angle identity arcsin(√x) + arcsin(√(1−x)) = π/2 is the engine**: it is the analytic shadow of the geometric fact that √x and √(1−x) are sine and cosine of complementary angles, and it is what forces the reflection symmetry. The proof routes through arccos to expose this.",
-            "**Honest scoping under a library gap**: Mathlib v4.26.0 has no Brownian motion, no stochastic local time, and no arcsine-distribution object, so the probabilistic 'via local times' derivation cannot be done from primitives. This entry proves exactly the part that IS formalizable — the CDF and density as real-analytic objects — and marks the local-time route as future work rather than axiomatizing it.",
-            "**The U-shaped density's minimum at 2/π quantifies the paradox**: the most 'fair' split (half the time positive) is the single least likely outcome, with density bottoming out at 2/π ≈ 0.637, while the density diverges at the extremes 0 and 1."
-        ],
-        "mathlibGaps": [],
-        "nextSteps": []
+    {
+      "path": "Proofs/BallotProblemOQ01OQ01OQ02.lean",
+      "filename": "BallotProblemOQ01OQ01OQ02.lean",
+      "lineCount": 212,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ01OQ01OQ02.lean"
     },
-    "tags": [
-        "probability",
-        "arcsine-law",
-        "brownian-motion",
-        "ballot-problem",
-        "distribution",
-        "real-analysis",
-        "research"
-    ]
+    {
+      "path": "Proofs/BallotProblemOQ01OQ01OQ02OQ01.lean",
+      "filename": "BallotProblemOQ01OQ01OQ02OQ01.lean",
+      "lineCount": 641,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ01OQ01OQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ01OQ02.lean",
+      "filename": "BallotProblemOQ01OQ02.lean",
+      "lineCount": 1080,
+      "theoremCount": 37,
+      "axiomCount": 0,
+      "defCount": 18,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ01OQ02OQ01.lean",
+      "filename": "BallotProblemOQ01OQ02OQ01.lean",
+      "lineCount": 250,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ01OQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ01OQ02OQ01Aristotle.lean",
+      "filename": "BallotProblemOQ01OQ02OQ01Aristotle.lean",
+      "lineCount": 113,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 2,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ01OQ02OQ01Aristotle.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ01OQ02OQ01OQ01.lean",
+      "filename": "BallotProblemOQ01OQ02OQ01OQ01.lean",
+      "lineCount": 201,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ01OQ02OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ01OQ02OQ01OQ02.lean",
+      "filename": "BallotProblemOQ01OQ02OQ01OQ02.lean",
+      "lineCount": 199,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ01OQ02OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ01OQ02OQ01OQ02OQ01.lean",
+      "filename": "BallotProblemOQ01OQ02OQ01OQ02OQ01.lean",
+      "lineCount": 206,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ01OQ02OQ01OQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ01OQ02OQ02.lean",
+      "filename": "BallotProblemOQ01OQ02OQ02.lean",
+      "lineCount": 261,
+      "theoremCount": 15,
+      "axiomCount": 2,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ01OQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ01OQ02OQ04.lean",
+      "filename": "BallotProblemOQ01OQ02OQ04.lean",
+      "lineCount": 312,
+      "theoremCount": 24,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ01OQ02OQ04.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ01OQ03.lean",
+      "filename": "BallotProblemOQ01OQ03.lean",
+      "lineCount": 93,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ01OQ04.lean",
+      "filename": "BallotProblemOQ01OQ04.lean",
+      "lineCount": 74,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ01OQ04.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ01OQ04Core.lean",
+      "filename": "BallotProblemOQ01OQ04Core.lean",
+      "lineCount": 179,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ01OQ04Core.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ01OQ04OQ01.lean",
+      "filename": "BallotProblemOQ01OQ04OQ01.lean",
+      "lineCount": 1165,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ01OQ04OQ01.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ02.lean",
+      "filename": "BallotProblemOQ02.lean",
+      "lineCount": 340,
+      "theoremCount": 8,
+      "axiomCount": 2,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ02.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ02OQ02.lean",
+      "filename": "BallotProblemOQ02OQ02.lean",
+      "lineCount": 186,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ02OQ02OQ05.lean",
+      "filename": "BallotProblemOQ02OQ02OQ05.lean",
+      "lineCount": 205,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ02OQ02OQ05.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ02OQ03.lean",
+      "filename": "BallotProblemOQ02OQ03.lean",
+      "lineCount": 217,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ02OQ03.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ02OQ04.lean",
+      "filename": "BallotProblemOQ02OQ04.lean",
+      "lineCount": 200,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ02OQ04.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ02OQ05.lean",
+      "filename": "BallotProblemOQ02OQ05.lean",
+      "lineCount": 358,
+      "theoremCount": 6,
+      "axiomCount": 1,
+      "defCount": 7,
+      "sorryCount": 6,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ02OQ05.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ03.lean",
+      "filename": "BallotProblemOQ03.lean",
+      "lineCount": 2964,
+      "theoremCount": 123,
+      "axiomCount": 0,
+      "defCount": 31,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ03OQ01OQ01.lean",
+      "filename": "BallotProblemOQ03OQ01OQ01.lean",
+      "lineCount": 131,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean",
+      "filename": "BallotProblemOQ03OQ01OQ01OQ01.lean",
+      "lineCount": 2558,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 6,
+      "sorryCount": 17,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ03OQ01OQ01OQ01Aristotle.lean",
+      "filename": "BallotProblemOQ03OQ01OQ01OQ01Aristotle.lean",
+      "lineCount": 132,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ01OQ01OQ01Aristotle.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ03OQ01OQ02.lean",
+      "filename": "BallotProblemOQ03OQ01OQ02.lean",
+      "lineCount": 399,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ03OQ01OQ02Aristotle.lean",
+      "filename": "BallotProblemOQ03OQ01OQ02Aristotle.lean",
+      "lineCount": 118,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 5,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ01OQ02Aristotle.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean",
+      "filename": "BallotProblemOQ03OQ01OQ02Helpers.lean",
+      "lineCount": 15996,
+      "theoremCount": 79,
+      "axiomCount": 0,
+      "defCount": 15,
+      "sorryCount": 9,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ03OQ01OQ04.lean",
+      "filename": "BallotProblemOQ03OQ01OQ04.lean",
+      "lineCount": 183,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ01OQ04.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ03OQ02.lean",
+      "filename": "BallotProblemOQ03OQ02.lean",
+      "lineCount": 2590,
+      "theoremCount": 28,
+      "axiomCount": 0,
+      "defCount": 23,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ02.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ03OQ02OQ01.lean",
+      "filename": "BallotProblemOQ03OQ02OQ01.lean",
+      "lineCount": 155,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ03OQ02OQ03.lean",
+      "filename": "BallotProblemOQ03OQ02OQ03.lean",
+      "lineCount": 164,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ02OQ03.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ03OQ03.lean",
+      "filename": "BallotProblemOQ03OQ03.lean",
+      "lineCount": 281,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ03.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ04.lean",
+      "filename": "BallotProblemOQ04.lean",
+      "lineCount": 193,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ04.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ04OQ01.lean",
+      "filename": "BallotProblemOQ04OQ01.lean",
+      "lineCount": 61,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ04OQ01.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ04OQ02.lean",
+      "filename": "BallotProblemOQ04OQ02.lean",
+      "lineCount": 153,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ04OQ02.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ04OQ02OQ01.lean",
+      "filename": "BallotProblemOQ04OQ02OQ01.lean",
+      "lineCount": 1199,
+      "theoremCount": 41,
+      "axiomCount": 0,
+      "defCount": 10,
+      "sorryCount": 12,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ04OQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ04OQ02OQ01Aristotle.lean",
+      "filename": "BallotProblemOQ04OQ02OQ01Aristotle.lean",
+      "lineCount": 53,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 2,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ04OQ02OQ01Aristotle.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ05.lean",
+      "filename": "BallotProblemOQ05.lean",
+      "lineCount": 177,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ05.lean"
+    }
+  ],
+  "relatedProofs": [
+    "ballot-problem",
+    "ballot-problem-oq-01",
+    "ballot-problem-oq-01-oq-01",
+    "ballot-problem-oq-01-oq-01-oq-02",
+    "ballot-problem-oq-01-oq-01-oq-02-oq-01",
+    "ballot-problem-oq-01-oq-02",
+    "ballot-problem-oq-01-oq-02-oq-01",
+    "ballot-problem-oq-01-oq-02-oq-01-oq-01",
+    "ballot-problem-oq-01-oq-02-oq-01-oq-02",
+    "ballot-problem-oq-01-oq-02-oq-04",
+    "ballot-problem-oq-01-oq-03",
+    "ballot-problem-oq-01-oq-04",
+    "ballot-problem-oq-01-oq-04-oq-01",
+    "ballot-problem-oq-02",
+    "ballot-problem-oq-02-oq-02",
+    "ballot-problem-oq-02-oq-02-oq-05",
+    "ballot-problem-oq-02-oq-03",
+    "ballot-problem-oq-02-oq-04",
+    "ballot-problem-oq-03",
+    "ballot-problem-oq-03-oq-01",
+    "ballot-problem-oq-03-oq-01-oq-01",
+    "ballot-problem-oq-03-oq-01-oq-01-oq-01",
+    "ballot-problem-oq-03-oq-01-oq-02",
+    "ballot-problem-oq-03-oq-01-oq-04",
+    "ballot-problem-oq-03-oq-02",
+    "ballot-problem-oq-03-oq-02-oq-01",
+    "ballot-problem-oq-03-oq-02-oq-03",
+    "ballot-problem-oq-03-oq-03",
+    "ballot-problem-oq-04",
+    "ballot-problem-oq-04-oq-01",
+    "ballot-problem-oq-04-oq-02",
+    "ballot-problem-oq-04-oq-02-oq-01",
+    "ballot-problem-oq-05"
+  ]
 }

@@ -1,57 +1,541 @@
 {
-    "slug": "derangements-oq-02-oq-04",
-    "title": "Low-Codimension Fixed-Point Counts: S(n,n−2) = C(n,2) and S(n,n−3) = 2·C(n,3)",
+  "slug": "derangements-oq-02-oq-04",
+  "title": "Low-Codimension Fixed-Point Counts: S(n,n−2) = C(n,2) and S(n,n−3) = 2·C(n,3)",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Evaluate the partial-derangement count S(n,k) = #{σ ∈ Perm(Fin n) : |Fix σ| = k} at codimensions 2 and 3: prove S(n,n−2) = C(n,2) for n ≥ 2 and S(n,n−3) = 2·C(n,3) for n ≥ 3, extending the parent's extreme cases S(n,n) = 1 and S(n,n−1) = 0.",
+    "plain": "Closed forms for the top of the fixed-point distribution of permutations of Fin n. The parent (derangements-oq-02) proved the partial-derangement count S(n,k) = C(n,k)·D(n−k) — permutations with exactly k fixed points — together with the two extreme cases S(n,n) = 1 (the identity) and S(n,n−1) = 0 (impossible). This entry evaluates the next two cases by specialising the main formula at the small derangement numbers D(2) = 1 and D(3) = 2: S(n,n−2) = C(n,2) for n ≥ 2 (exactly the transpositions — choose the 2 moved points, with the unique swap as their derangement) and S(n,n−3) = 2·C(n,3) for n ≥ 3 (choose the 3 moved points, each admitting the two 3-cycles). Together with the parent this gives the complete top of the distribution: 1, 0, C(n,2), 2·C(n,3), … for k = n, n−1, n−2, n−3, …. 0 axioms, 0 sorries.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [
+      "card_perms_n_minus_two_fixed: S(n,n−2) = C(n,2) for n ≥ 2 — the permutations of Fin n with exactly n−2 fixed points are precisely the C(n,2) transpositions, obtained from the parent's S(n,k) = C(n,k)·D(n−k) at D(2) = 1 and C(n,n−2) = C(n,2)",
+      "card_perms_n_minus_three_fixed: S(n,n−3) = 2·C(n,3) for n ≥ 3 — choose the three moved points (C(n,3) ways), each admitting the two 3-cycles (D(3) = 2)",
+      "numDerangements_two (D(2) = 1) and numDerangements_three (D(3) = 2), the small derangement values feeding the two counts, by kernel decide",
+      "Completes the top of the fixed-point distribution begun by the parent's extreme cases: 1, 0, C(n,2), 2·C(n,3), … for codimensions 0, 1, 2, 3"
+    ],
+    "open": [],
+    "goal": "Evaluate the partial-derangement count S(n,k) = #{σ ∈ Perm(Fin n) : |Fix σ| = k} at codimensions 2 and 3: prove S(n,n−2) = C(n,2) for n ≥ 2 and S(n,n−3) = 2·C(n,3) for n ≥ 3, extending the parent's extreme cases S(n,n) = 1 and S(n,n−1) = 0."
+  },
+  "currentState": {
     "phase": "COMPLETED",
-    "status": "completed",
-    "tier": "B",
-    "path": "full",
-    "problemStatement": {
-        "formal": "Evaluate the partial-derangement count S(n,k) = #{σ ∈ Perm(Fin n) : |Fix σ| = k} at codimensions 2 and 3: prove S(n,n−2) = C(n,2) for n ≥ 2 and S(n,n−3) = 2·C(n,3) for n ≥ 3, extending the parent's extreme cases S(n,n) = 1 and S(n,n−1) = 0.",
-        "plain": "Closed forms for the top of the fixed-point distribution of permutations of Fin n. The parent (derangements-oq-02) proved the partial-derangement count S(n,k) = C(n,k)·D(n−k) — permutations with exactly k fixed points — together with the two extreme cases S(n,n) = 1 (the identity) and S(n,n−1) = 0 (impossible). This entry evaluates the next two cases by specialising the main formula at the small derangement numbers D(2) = 1 and D(3) = 2: S(n,n−2) = C(n,2) for n ≥ 2 (exactly the transpositions — choose the 2 moved points, with the unique swap as their derangement) and S(n,n−3) = 2·C(n,3) for n ≥ 3 (choose the 3 moved points, each admitting the two 3-cycles). Together with the parent this gives the complete top of the distribution: 1, 0, C(n,2), 2·C(n,3), … for k = n, n−1, n−2, n−3, …. 0 axioms, 0 sorries.",
-        "whyMatters": []
+    "since": "2026-06-25T00:00:00Z",
+    "iteration": 1,
+    "focus": "Verified deliverable already complete in main: proofs/Proofs/DerangementsOQ02OQ04.lean and gallery entry derangements-oq-02-oq-04 (status verified)."
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED and verified in main (59 lines, 4 theorems, 0 sorries, axiomCount 0, badge 'original'). Closed forms for the top of the fixed-point distribution of permutations of Fin n. The parent (derangements-oq-02) proved the partial-derangement count S(n,k) = C(n,k)·D(n−k) — permutations with exactly k fixed points — together with the two extreme cases S(n,n) = 1 (the identity) and S(n,n−1) = 0 (impossible). This entry evaluates the next two cases by specialising the main formula at the small derangement numbers D(2) = 1 and D(3) = 2: S(n,n−2) = C(n,2) for n ≥ 2 (exactly the transpositions — choose the 2 moved points, with the unique swap as their derangement) and S(n,n−3) = 2·C(n,3) for n ≥ 3 (choose the 3 moved points, each admitting the two 3-cycles). Together with the parent this gives the complete top of the distribution: 1, 0, C(n,2), 2·C(n,3), … for k = n, n−1, n−2, n−3, …. 0 axioms, 0 sorries.",
+    "builtItems": [
+      "card_perms_n_minus_two_fixed: S(n,n−2) = C(n,2) for n ≥ 2 — the permutations of Fin n with exactly n−2 fixed points are precisely the C(n,2) transpositions, obtained from the parent's S(n,k) = C(n,k)·D(n−k) at D(2) = 1 and C(n,n−2) = C(n,2)",
+      "card_perms_n_minus_three_fixed: S(n,n−3) = 2·C(n,3) for n ≥ 3 — choose the three moved points (C(n,3) ways), each admitting the two 3-cycles (D(3) = 2)",
+      "numDerangements_two (D(2) = 1) and numDerangements_three (D(3) = 2), the small derangement values feeding the two counts, by kernel decide",
+      "Completes the top of the fixed-point distribution begun by the parent's extreme cases: 1, 0, C(n,2), 2·C(n,3), … for codimensions 0, 1, 2, 3",
+      "Gallery entry src/data/proofs/derangements-oq-02-oq-04 (meta.json + annotations.json); Lean source proofs/Proofs/DerangementsOQ02OQ04.lean."
+    ],
+    "insights": [
+      "The whole entry rests on the parent's factorisation S(n,k) = C(n,k)·D(n−k): counting permutations with a prescribed number of fixed points decouples into 'choose which points are fixed' (binomial) times 'derange the rest' (derangement number). The codimension cases are simply this formula read at small derangement arguments.",
+      "Low codimension means small derangement number, and the small derangement numbers are tiny constants: D(0)=1, D(1)=0, D(2)=1, D(3)=2. That is exactly why S(n,n)=1, S(n,n−1)=0, S(n,n−2)=C(n,2), S(n,n−3)=2C(n,3) all collapse to a binomial times a small constant — the combinatorial content lives entirely in choosing the moved points.",
+      "The symmetry C(n,n−k) = C(n,k) (Nat.choose_symm) is what turns the 'codimension' index n−k back into the natural 'choose k moved points' reading; without it the answers would be stated awkwardly as C(n,n−2), C(n,n−3).",
+      "Evaluating D(2) and D(3) by kernel `decide` (not native_decide) keeps the proof axiom-free: it is genuine kernel reduction over the finite Derangements type, so #print axioms shows no Lean.ofReduceBool — a deliberate choice consistent with the project's axiom-integrity policy.",
+      "The result n−2 ↦ transpositions, n−3 ↦ pairs of 3-cycles is the start of a pattern: codimension c contributes C(n,c)·D(c), and D(c) is the number of fixed-point-free permutations of the c moved points, so each new row needs only one more derangement value."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "combinatorics",
+    "derangements",
+    "permutations",
+    "fixed-points",
+    "rencontres-numbers",
+    "binomial-coefficients",
+    "research"
+  ],
+  "leanFiles": [
+    {
+      "path": "Proofs/Derangements.lean",
+      "filename": "Derangements.lean",
+      "lineCount": 228,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Derangements.lean"
     },
-    "knownResults": {
-        "proven": [
-            "card_perms_n_minus_two_fixed: S(n,n−2) = C(n,2) for n ≥ 2 — the permutations of Fin n with exactly n−2 fixed points are precisely the C(n,2) transpositions, obtained from the parent's S(n,k) = C(n,k)·D(n−k) at D(2) = 1 and C(n,n−2) = C(n,2)",
-            "card_perms_n_minus_three_fixed: S(n,n−3) = 2·C(n,3) for n ≥ 3 — choose the three moved points (C(n,3) ways), each admitting the two 3-cycles (D(3) = 2)",
-            "numDerangements_two (D(2) = 1) and numDerangements_three (D(3) = 2), the small derangement values feeding the two counts, by kernel decide",
-            "Completes the top of the fixed-point distribution begun by the parent's extreme cases: 1, 0, C(n,2), 2·C(n,3), … for codimensions 0, 1, 2, 3"
-        ],
-        "open": [],
-        "goal": "Evaluate the partial-derangement count S(n,k) = #{σ ∈ Perm(Fin n) : |Fix σ| = k} at codimensions 2 and 3: prove S(n,n−2) = C(n,2) for n ≥ 2 and S(n,n−3) = 2·C(n,3) for n ≥ 3, extending the parent's extreme cases S(n,n) = 1 and S(n,n−1) = 0."
+    {
+      "path": "Proofs/DerangementsConvergence.lean",
+      "filename": "DerangementsConvergence.lean",
+      "lineCount": 273,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DerangementsConvergence.lean"
     },
-    "currentState": {
-        "phase": "COMPLETED",
-        "since": "2026-06-25T00:00:00Z",
-        "iteration": 1,
-        "focus": "Verified deliverable already complete in main: proofs/Proofs/DerangementsOQ02OQ04.lean and gallery entry derangements-oq-02-oq-04 (status verified)."
+    {
+      "path": "Proofs/DerangementsConvergenceOQ01.lean",
+      "filename": "DerangementsConvergenceOQ01.lean",
+      "lineCount": 153,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 4,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DerangementsConvergenceOQ01.lean"
     },
-    "knowledge": {
-        "progressSummary": "COMPLETED and verified in main (59 lines, 4 theorems, 0 sorries, axiomCount 0, badge 'original'). Closed forms for the top of the fixed-point distribution of permutations of Fin n. The parent (derangements-oq-02) proved the partial-derangement count S(n,k) = C(n,k)·D(n−k) — permutations with exactly k fixed points — together with the two extreme cases S(n,n) = 1 (the identity) and S(n,n−1) = 0 (impossible). This entry evaluates the next two cases by specialising the main formula at the small derangement numbers D(2) = 1 and D(3) = 2: S(n,n−2) = C(n,2) for n ≥ 2 (exactly the transpositions — choose the 2 moved points, with the unique swap as their derangement) and S(n,n−3) = 2·C(n,3) for n ≥ 3 (choose the 3 moved points, each admitting the two 3-cycles). Together with the parent this gives the complete top of the distribution: 1, 0, C(n,2), 2·C(n,3), … for k = n, n−1, n−2, n−3, …. 0 axioms, 0 sorries.",
-        "builtItems": [
-            "card_perms_n_minus_two_fixed: S(n,n−2) = C(n,2) for n ≥ 2 — the permutations of Fin n with exactly n−2 fixed points are precisely the C(n,2) transpositions, obtained from the parent's S(n,k) = C(n,k)·D(n−k) at D(2) = 1 and C(n,n−2) = C(n,2)",
-            "card_perms_n_minus_three_fixed: S(n,n−3) = 2·C(n,3) for n ≥ 3 — choose the three moved points (C(n,3) ways), each admitting the two 3-cycles (D(3) = 2)",
-            "numDerangements_two (D(2) = 1) and numDerangements_three (D(3) = 2), the small derangement values feeding the two counts, by kernel decide",
-            "Completes the top of the fixed-point distribution begun by the parent's extreme cases: 1, 0, C(n,2), 2·C(n,3), … for codimensions 0, 1, 2, 3",
-            "Gallery entry src/data/proofs/derangements-oq-02-oq-04 (meta.json + annotations.json); Lean source proofs/Proofs/DerangementsOQ02OQ04.lean."
-        ],
-        "insights": [
-            "The whole entry rests on the parent's factorisation S(n,k) = C(n,k)·D(n−k): counting permutations with a prescribed number of fixed points decouples into 'choose which points are fixed' (binomial) times 'derange the rest' (derangement number). The codimension cases are simply this formula read at small derangement arguments.",
-            "Low codimension means small derangement number, and the small derangement numbers are tiny constants: D(0)=1, D(1)=0, D(2)=1, D(3)=2. That is exactly why S(n,n)=1, S(n,n−1)=0, S(n,n−2)=C(n,2), S(n,n−3)=2C(n,3) all collapse to a binomial times a small constant — the combinatorial content lives entirely in choosing the moved points.",
-            "The symmetry C(n,n−k) = C(n,k) (Nat.choose_symm) is what turns the 'codimension' index n−k back into the natural 'choose k moved points' reading; without it the answers would be stated awkwardly as C(n,n−2), C(n,n−3).",
-            "Evaluating D(2) and D(3) by kernel `decide` (not native_decide) keeps the proof axiom-free: it is genuine kernel reduction over the finite Derangements type, so #print axioms shows no Lean.ofReduceBool — a deliberate choice consistent with the project's axiom-integrity policy.",
-            "The result n−2 ↦ transpositions, n−3 ↦ pairs of 3-cycles is the start of a pattern: codimension c contributes C(n,c)·D(c), and D(c) is the number of fixed-point-free permutations of the c moved points, so each new row needs only one more derangement value."
-        ],
-        "mathlibGaps": [],
-        "nextSteps": []
+    {
+      "path": "Proofs/DerangementsConvergenceOQ01OQ01.lean",
+      "filename": "DerangementsConvergenceOQ01OQ01.lean",
+      "lineCount": 255,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DerangementsConvergenceOQ01OQ01.lean"
     },
-    "tags": [
-        "combinatorics",
-        "derangements",
-        "permutations",
-        "fixed-points",
-        "rencontres-numbers",
-        "binomial-coefficients",
-        "research"
-    ]
+    {
+      "path": "Proofs/DerangementsConvergenceOQ02.lean",
+      "filename": "DerangementsConvergenceOQ02.lean",
+      "lineCount": 240,
+      "theoremCount": 25,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DerangementsConvergenceOQ02.lean"
+    },
+    {
+      "path": "Proofs/DerangementsConvergenceOQ02OQ01.lean",
+      "filename": "DerangementsConvergenceOQ02OQ01.lean",
+      "lineCount": 153,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DerangementsConvergenceOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/DerangementsConvergenceOQ03.lean",
+      "filename": "DerangementsConvergenceOQ03.lean",
+      "lineCount": 89,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DerangementsConvergenceOQ03.lean"
+    },
+    {
+      "path": "Proofs/DerangementsConvergenceOQ03OQ01.lean",
+      "filename": "DerangementsConvergenceOQ03OQ01.lean",
+      "lineCount": 118,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DerangementsConvergenceOQ03OQ01.lean"
+    },
+    {
+      "path": "Proofs/DerangementsConvergenceOQ03OQ01OQ02.lean",
+      "filename": "DerangementsConvergenceOQ03OQ01OQ02.lean",
+      "lineCount": 267,
+      "theoremCount": 20,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DerangementsConvergenceOQ03OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/DerangementsConvergenceOQ03OQ02.lean",
+      "filename": "DerangementsConvergenceOQ03OQ02.lean",
+      "lineCount": 83,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DerangementsConvergenceOQ03OQ02.lean"
+    },
+    {
+      "path": "Proofs/DerangementsConvergenceOQ03OQ03.lean",
+      "filename": "DerangementsConvergenceOQ03OQ03.lean",
+      "lineCount": 176,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DerangementsConvergenceOQ03OQ03.lean"
+    },
+    {
+      "path": "Proofs/DerangementsConvergenceOQ04.lean",
+      "filename": "DerangementsConvergenceOQ04.lean",
+      "lineCount": 93,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DerangementsConvergenceOQ04.lean"
+    },
+    {
+      "path": "Proofs/DerangementsConvergenceOQ04OQ01.lean",
+      "filename": "DerangementsConvergenceOQ04OQ01.lean",
+      "lineCount": 111,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DerangementsConvergenceOQ04OQ01.lean"
+    },
+    {
+      "path": "Proofs/DerangementsConvergenceOQ04OQ02.lean",
+      "filename": "DerangementsConvergenceOQ04OQ02.lean",
+      "lineCount": 204,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DerangementsConvergenceOQ04OQ02.lean"
+    },
+    {
+      "path": "Proofs/DerangementsConvergenceOQ04OQ03.lean",
+      "filename": "DerangementsConvergenceOQ04OQ03.lean",
+      "lineCount": 165,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DerangementsConvergenceOQ04OQ03.lean"
+    },
+    {
+      "path": "Proofs/DerangementsConvergenceOQ04OQ04.lean",
+      "filename": "DerangementsConvergenceOQ04OQ04.lean",
+      "lineCount": 148,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DerangementsConvergenceOQ04OQ04.lean"
+    },
+    {
+      "path": "Proofs/DerangementsConvergenceOQ04OQ04OQ01.lean",
+      "filename": "DerangementsConvergenceOQ04OQ04OQ01.lean",
+      "lineCount": 155,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DerangementsConvergenceOQ04OQ04OQ01.lean"
+    },
+    {
+      "path": "Proofs/DerangementsConvergenceOQ05.lean",
+      "filename": "DerangementsConvergenceOQ05.lean",
+      "lineCount": 170,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DerangementsConvergenceOQ05.lean"
+    },
+    {
+      "path": "Proofs/DerangementsConvergenceOQ05OQ01.lean",
+      "filename": "DerangementsConvergenceOQ05OQ01.lean",
+      "lineCount": 131,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DerangementsConvergenceOQ05OQ01.lean"
+    },
+    {
+      "path": "Proofs/DerangementsConvergenceOQ05OQ03.lean",
+      "filename": "DerangementsConvergenceOQ05OQ03.lean",
+      "lineCount": 163,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DerangementsConvergenceOQ05OQ03.lean"
+    },
+    {
+      "path": "Proofs/DerangementsConvergenceOQ06.lean",
+      "filename": "DerangementsConvergenceOQ06.lean",
+      "lineCount": 148,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DerangementsConvergenceOQ06.lean"
+    },
+    {
+      "path": "Proofs/DerangementsConvergenceOQ06OQ01.lean",
+      "filename": "DerangementsConvergenceOQ06OQ01.lean",
+      "lineCount": 184,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DerangementsConvergenceOQ06OQ01.lean"
+    },
+    {
+      "path": "Proofs/DerangementsConvergenceOQ07.lean",
+      "filename": "DerangementsConvergenceOQ07.lean",
+      "lineCount": 122,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DerangementsConvergenceOQ07.lean"
+    },
+    {
+      "path": "Proofs/DerangementsConvergenceOQ07OQ01.lean",
+      "filename": "DerangementsConvergenceOQ07OQ01.lean",
+      "lineCount": 137,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DerangementsConvergenceOQ07OQ01.lean"
+    },
+    {
+      "path": "Proofs/DerangementsConvergenceOQ07OQ02.lean",
+      "filename": "DerangementsConvergenceOQ07OQ02.lean",
+      "lineCount": 121,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DerangementsConvergenceOQ07OQ02.lean"
+    },
+    {
+      "path": "Proofs/DerangementsOQ02.lean",
+      "filename": "DerangementsOQ02.lean",
+      "lineCount": 358,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DerangementsOQ02.lean"
+    },
+    {
+      "path": "Proofs/DerangementsOQ02OQ01.lean",
+      "filename": "DerangementsOQ02OQ01.lean",
+      "lineCount": 124,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DerangementsOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/DerangementsOQ02OQ01OQ01.lean",
+      "filename": "DerangementsOQ02OQ01OQ01.lean",
+      "lineCount": 132,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DerangementsOQ02OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/DerangementsOQ02OQ02.lean",
+      "filename": "DerangementsOQ02OQ02.lean",
+      "lineCount": 250,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DerangementsOQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/DerangementsOQ02OQ02OQ01.lean",
+      "filename": "DerangementsOQ02OQ02OQ01.lean",
+      "lineCount": 184,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DerangementsOQ02OQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/DerangementsOQ02OQ04.lean",
+      "filename": "DerangementsOQ02OQ04.lean",
+      "lineCount": 60,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DerangementsOQ02OQ04.lean"
+    },
+    {
+      "path": "Proofs/DerangementsOQ03.lean",
+      "filename": "DerangementsOQ03.lean",
+      "lineCount": 399,
+      "theoremCount": 22,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DerangementsOQ03.lean"
+    },
+    {
+      "path": "Proofs/DerangementsOQ03OQ01.lean",
+      "filename": "DerangementsOQ03OQ01.lean",
+      "lineCount": 244,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DerangementsOQ03OQ01.lean"
+    },
+    {
+      "path": "Proofs/DerangementsOQ03OQ01OQ02.lean",
+      "filename": "DerangementsOQ03OQ01OQ02.lean",
+      "lineCount": 413,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DerangementsOQ03OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/DerangementsOQ03OQ02.lean",
+      "filename": "DerangementsOQ03OQ02.lean",
+      "lineCount": 383,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DerangementsOQ03OQ02.lean"
+    },
+    {
+      "path": "Proofs/DerangementsOQ03OQ03.lean",
+      "filename": "DerangementsOQ03OQ03.lean",
+      "lineCount": 133,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DerangementsOQ03OQ03.lean"
+    },
+    {
+      "path": "Proofs/DerangementsOQ03OQ03OQ01.lean",
+      "filename": "DerangementsOQ03OQ03OQ01.lean",
+      "lineCount": 158,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DerangementsOQ03OQ03OQ01.lean"
+    },
+    {
+      "path": "Proofs/DerangementsOQ04.lean",
+      "filename": "DerangementsOQ04.lean",
+      "lineCount": 119,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DerangementsOQ04.lean"
+    },
+    {
+      "path": "Proofs/DerangementsOQ04OQ01.lean",
+      "filename": "DerangementsOQ04OQ01.lean",
+      "lineCount": 160,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DerangementsOQ04OQ01.lean"
+    },
+    {
+      "path": "Proofs/DerangementsOQ04OQ01OQ01.lean",
+      "filename": "DerangementsOQ04OQ01OQ01.lean",
+      "lineCount": 113,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DerangementsOQ04OQ01OQ01.lean"
+    }
+  ],
+  "relatedProofs": [
+    "derangements",
+    "derangements-convergence",
+    "derangements-convergence-oq-01",
+    "derangements-convergence-oq-01-oq-01",
+    "derangements-convergence-oq-02",
+    "derangements-convergence-oq-02-oq-01",
+    "derangements-convergence-oq-03",
+    "derangements-convergence-oq-03-oq-01",
+    "derangements-convergence-oq-03-oq-01-oq-02",
+    "derangements-convergence-oq-03-oq-02",
+    "derangements-convergence-oq-03-oq-03",
+    "derangements-convergence-oq-04",
+    "derangements-convergence-oq-04-oq-01",
+    "derangements-convergence-oq-04-oq-02",
+    "derangements-convergence-oq-04-oq-03",
+    "derangements-convergence-oq-04-oq-04",
+    "derangements-convergence-oq-04-oq-04-oq-01",
+    "derangements-convergence-oq-05",
+    "derangements-convergence-oq-05-oq-01",
+    "derangements-convergence-oq-05-oq-03",
+    "derangements-convergence-oq-06",
+    "derangements-convergence-oq-06-oq-01",
+    "derangements-convergence-oq-07",
+    "derangements-convergence-oq-07-oq-01",
+    "derangements-convergence-oq-07-oq-02",
+    "derangements-oq-02",
+    "derangements-oq-02-oq-01",
+    "derangements-oq-02-oq-01-oq-01",
+    "derangements-oq-02-oq-02",
+    "derangements-oq-02-oq-02-oq-01",
+    "derangements-oq-02-oq-04",
+    "derangements-oq-03",
+    "derangements-oq-03-oq-01",
+    "derangements-oq-03-oq-01-oq-02",
+    "derangements-oq-03-oq-02",
+    "derangements-oq-03-oq-03",
+    "derangements-oq-03-oq-03-oq-01",
+    "derangements-oq-04",
+    "derangements-oq-04-oq-01",
+    "derangements-oq-04-oq-01-oq-01"
+  ]
 }

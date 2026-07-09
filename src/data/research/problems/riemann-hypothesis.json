@@ -186,6 +186,9 @@
   ],
   "relatedProofs": [
     "rh-consequences",
+    "rh-consequences-oq-01",
+    "rh-consequences-oq-02",
+    "rh-consequences-oq-03",
     "riemann-hypothesis"
   ],
   "references": {
@@ -220,6 +223,39 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/RiemannHypothesisConsequences.lean"
+    },
+    {
+      "path": "Proofs/RiemannHypothesisConsequencesOQ01.lean",
+      "filename": "RiemannHypothesisConsequencesOQ01.lean",
+      "lineCount": 170,
+      "theoremCount": 5,
+      "axiomCount": 2,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/RiemannHypothesisConsequencesOQ01.lean"
+    },
+    {
+      "path": "Proofs/RiemannHypothesisConsequencesOQ02.lean",
+      "filename": "RiemannHypothesisConsequencesOQ02.lean",
+      "lineCount": 198,
+      "theoremCount": 7,
+      "axiomCount": 1,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/RiemannHypothesisConsequencesOQ02.lean"
+    },
+    {
+      "path": "Proofs/RiemannHypothesisConsequencesOQ03.lean",
+      "filename": "RiemannHypothesisConsequencesOQ03.lean",
+      "lineCount": 185,
+      "theoremCount": 8,
+      "axiomCount": 2,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/RiemannHypothesisConsequencesOQ03.lean"
     }
   ]
 }

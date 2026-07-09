@@ -63,8 +63,9 @@
     "open-question"
   ],
   "relatedProofs": [
-    "legendre-partial",
     "bertrands-postulate",
+    "legendre-partial",
+    "legendre-partial-oq-04",
     "prime-number-theorem"
   ],
   "references": {
@@ -72,5 +73,29 @@
     "urls": [
       "https://en.wikipedia.org/wiki/Oppermann%27s_conjecture"
     ]
-  }
+  },
+  "leanFiles": [
+    {
+      "path": "Proofs/LegendrePartial.lean",
+      "filename": "LegendrePartial.lean",
+      "lineCount": 166,
+      "theoremCount": 21,
+      "axiomCount": 1,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LegendrePartial.lean"
+    },
+    {
+      "path": "Proofs/LegendrePartialOQ04.lean",
+      "filename": "LegendrePartialOQ04.lean",
+      "lineCount": 472,
+      "theoremCount": 39,
+      "axiomCount": 1,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LegendrePartialOQ04.lean"
+    }
+  ]
 }

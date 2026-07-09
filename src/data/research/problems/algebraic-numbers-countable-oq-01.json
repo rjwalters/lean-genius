@@ -63,13 +63,21 @@
     "algebraic-numbers-countable",
     "algebraic-numbers-countable-oq-01",
     "algebraic-numbers-countable-oq-01-oq-01",
+    "algebraic-numbers-countable-oq-01-oq-01-oq-01",
+    "algebraic-numbers-countable-oq-01-oq-03",
     "algebraic-numbers-countable-oq-02",
     "algebraic-numbers-countable-oq-02-oq-02",
+    "algebraic-numbers-countable-oq-02-oq-02-oq-03",
     "algebraic-numbers-countable-oq-02-oq-03",
     "algebraic-numbers-countable-oq-02-oq-03-oq-02",
+    "algebraic-numbers-countable-oq-02-oq-03-oq-02-oq-01",
     "algebraic-numbers-countable-oq-02-oq-04",
+    "algebraic-numbers-countable-oq-02-oq-04-oq-01",
+    "algebraic-numbers-countable-oq-02-oq-05",
     "algebraic-numbers-countable-oq-04",
-    "algebraic-numbers-countable-oq-05"
+    "algebraic-numbers-countable-oq-05",
+    "algebraic-numbers-countable-oq-05-oq-04",
+    "algebraic-numbers-countable-oq-05-oq-04-oq-01"
   ],
   "references": {
     "papers": [],
@@ -125,6 +133,28 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AlgebraicNumbersCountableOQ01OQ01.lean"
     },
     {
+      "path": "Proofs/AlgebraicNumbersCountableOQ01OQ01OQ01.lean",
+      "filename": "AlgebraicNumbersCountableOQ01OQ01OQ01.lean",
+      "lineCount": 147,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AlgebraicNumbersCountableOQ01OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/AlgebraicNumbersCountableOQ01OQ03.lean",
+      "filename": "AlgebraicNumbersCountableOQ01OQ03.lean",
+      "lineCount": 154,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AlgebraicNumbersCountableOQ01OQ03.lean"
+    },
+    {
       "path": "Proofs/AlgebraicNumbersCountableOQ02.lean",
       "filename": "AlgebraicNumbersCountableOQ02.lean",
       "lineCount": 193,
@@ -158,6 +188,17 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AlgebraicNumbersCountableOQ02OQ02OQ01.lean"
     },
     {
+      "path": "Proofs/AlgebraicNumbersCountableOQ02OQ02OQ03.lean",
+      "filename": "AlgebraicNumbersCountableOQ02OQ02OQ03.lean",
+      "lineCount": 104,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AlgebraicNumbersCountableOQ02OQ02OQ03.lean"
+    },
+    {
       "path": "Proofs/AlgebraicNumbersCountableOQ02OQ03.lean",
       "filename": "AlgebraicNumbersCountableOQ02OQ03.lean",
       "lineCount": 194,
@@ -180,6 +221,17 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AlgebraicNumbersCountableOQ02OQ03OQ02.lean"
     },
     {
+      "path": "Proofs/AlgebraicNumbersCountableOQ02OQ03OQ02OQ01.lean",
+      "filename": "AlgebraicNumbersCountableOQ02OQ03OQ02OQ01.lean",
+      "lineCount": 122,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AlgebraicNumbersCountableOQ02OQ03OQ02OQ01.lean"
+    },
+    {
       "path": "Proofs/AlgebraicNumbersCountableOQ02OQ04.lean",
       "filename": "AlgebraicNumbersCountableOQ02OQ04.lean",
       "lineCount": 1080,
@@ -189,6 +241,28 @@
       "sorryCount": 4,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AlgebraicNumbersCountableOQ02OQ04.lean"
+    },
+    {
+      "path": "Proofs/AlgebraicNumbersCountableOQ02OQ04OQ01.lean",
+      "filename": "AlgebraicNumbersCountableOQ02OQ04OQ01.lean",
+      "lineCount": 188,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AlgebraicNumbersCountableOQ02OQ04OQ01.lean"
+    },
+    {
+      "path": "Proofs/AlgebraicNumbersCountableOQ02OQ05.lean",
+      "filename": "AlgebraicNumbersCountableOQ02OQ05.lean",
+      "lineCount": 193,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AlgebraicNumbersCountableOQ02OQ05.lean"
     },
     {
       "path": "Proofs/AlgebraicNumbersCountableOQ04.lean",
@@ -211,6 +285,39 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AlgebraicNumbersCountableOQ05.lean"
+    },
+    {
+      "path": "Proofs/AlgebraicNumbersCountableOQ05OQ01.lean",
+      "filename": "AlgebraicNumbersCountableOQ05OQ01.lean",
+      "lineCount": 86,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AlgebraicNumbersCountableOQ05OQ01.lean"
+    },
+    {
+      "path": "Proofs/AlgebraicNumbersCountableOQ05OQ04.lean",
+      "filename": "AlgebraicNumbersCountableOQ05OQ04.lean",
+      "lineCount": 141,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AlgebraicNumbersCountableOQ05OQ04.lean"
+    },
+    {
+      "path": "Proofs/AlgebraicNumbersCountableOQ05OQ04OQ01.lean",
+      "filename": "AlgebraicNumbersCountableOQ05OQ04OQ01.lean",
+      "lineCount": 166,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AlgebraicNumbersCountableOQ05OQ04OQ01.lean"
     }
   ]
 }

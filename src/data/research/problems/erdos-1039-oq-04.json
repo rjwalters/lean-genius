@@ -16,8 +16,56 @@
   ],
   "problemStatement": "Formulate and assess the higher-dimensional analogue of the Erdős–Herzog–Piranian inradius problem (parent erdos-1039): for polynomials in ℂᵈ, or for systems of polynomials, how large a ball/polydisc is inscribed in the sublevel set {|f|<1} when the zero set lies in the unit polydisc? The 1-D conjecture is rho(f) >> 1/n (open). The d>=2 version has not been posed as a direct generalization.",
   "currentState": "OBSERVE/SURVEY. No Lean file (parent is axiomatized/open; a d>=2 file would be scaffolding on an unprovable conjecture with no Mathlib pluripotential support). Documented the bifurcation (single poly vs system; ball vs polydisc — B^d not biholomorphic to D^d for d>=2 makes the 1-D inradius lift non-uniquely), confirmed the direct generalization is essentially unstudied (all EHP inradius results are 1-D), and identified the Mathlib gap (no multivariate lemniscate geometry, no Bedford–Taylor/Siciak capacity).",
-  "leanFiles": [],
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1039Aristotle.lean",
+      "filename": "Erdos1039Aristotle.lean",
+      "lineCount": 167,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1039Aristotle.lean"
+    },
+    {
+      "path": "Proofs/Erdos1039Conformal.lean",
+      "filename": "Erdos1039Conformal.lean",
+      "lineCount": 165,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1039Conformal.lean"
+    },
+    {
+      "path": "Proofs/Erdos1039Problem.lean",
+      "filename": "Erdos1039Problem.lean",
+      "lineCount": 534,
+      "theoremCount": 14,
+      "axiomCount": 5,
+      "defCount": 16,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1039Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos1039ProblemAristotle.lean",
+      "filename": "Erdos1039ProblemAristotle.lean",
+      "lineCount": 102,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1039ProblemAristotle.lean"
+    }
+  ],
   "relatedProofs": [
+    "erdos-1",
+    "erdos-10",
+    "erdos-103",
     "erdos-1039",
     "erdos-1039-oq-03"
   ],

@@ -50,7 +50,8 @@
     "research"
   ],
   "relatedProofs": [
-    "van-aubel-theorem-oq-01"
+    "van-aubel-theorem-oq-01",
+    "van-aubel-theorem-oq-01-oq-01"
   ],
   "references": {
     "papers": [],
@@ -69,9 +70,20 @@
       "theoremCount": 3,
       "axiomCount": 0,
       "defCount": 1,
-      "sorryCount": 0,
+      "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/VanAubelTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/VanAubelTheoremOQ01OQ01.lean",
+      "filename": "VanAubelTheoremOQ01OQ01.lean",
+      "lineCount": 164,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 10,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/VanAubelTheoremOQ01OQ01.lean"
     }
   ]
 }

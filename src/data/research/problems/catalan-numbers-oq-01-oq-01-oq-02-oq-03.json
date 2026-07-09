@@ -1,58 +1,231 @@
 {
-    "slug": "catalan-numbers-oq-01-oq-01-oq-02-oq-03",
-    "title": "The Catalan-triangle recurrence B(p,q) = B(p−1,q) + B(p,q−1) from the ballot closed form and Pascal's rule",
+  "slug": "catalan-numbers-oq-01-oq-01-oq-02-oq-03",
+  "title": "The Catalan-triangle recurrence B(p,q) = B(p−1,q) + B(p,q−1) from the ballot closed form and Pascal's rule",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "The parent entry catalan-numbers-oq-01-oq-01-oq-02 proves the ballot closed form B(p,q) = C(p+q,q) − C(p+q,p+1) and asks (openQuestions[2]) to derive the Catalan-triangle recurrence B(p,q) = B(p−1,q) + B(p,q−1) (for q ≤ p) directly from that closed form and Pascal's rule, exhibiting the full triangle structure.\n\n**Answer:** ballot_recurrence establishes exactly this for 1 ≤ q ≤ p, and ballot_recurrence_diag specializes it to the diagonal edge rule ballot n n = ballot n (n−1).",
+    "plain": "Answers the parent entry's lead open question: derive the defining two-term recurrence of the Catalan triangle, ballot p q = ballot (p−1) q + ballot p (q−1) for 1 ≤ q ≤ p, directly from the parent's closed form ballot p q = C(p+q,q) − C(p+q,p+1) and Pascal's rule. The proof is pure binomial algebra: substituting p = a+1, q = b+1 makes every binomial index a clean polynomial in a,b; Pascal's rule Nat.choose_succ_succ' splits each of the two binomials of ballot p q into the two reduced-row coefficients; and the parent's ballot_genuine supplies the three genuineness bounds (C(p+q,p+1) ≤ C(p+q,q) and its shifts) that let the truncated ℕ-subtractions recombine — a single omega then closes the goal over the six binomial atoms. As a corollary, the diagonal recurrence ballot n n = ballot n (n−1) follows because the left neighbour ballot (n−1) n lies above the diagonal and vanishes (parent's ballot_eq_zero_of_lt). Together with the boundary ballot p 0 = 1, the recurrence regenerates the entire Catalan triangle row by row. Verified with 0 axioms, 0 sorries, no native_decide.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [
+      "ballot_recurrence: ballot p q = ballot (p−1) q + ballot p (q−1) for 1 ≤ q ≤ p — the defining additive law of the Catalan triangle, derived directly from the parent's closed form and Pascal's rule (this is the parent entry's lead open question openQuestions[2]).",
+      "Proof technique: substitute p = a+1, q = b+1 to clear the predecessors and normalise indices; apply Pascal's rule Nat.choose_succ_succ' to each of the two binomials of ballot p q; supply three genuineness bounds from the parent's ballot_genuine (covering the diagonal edge q = p as an equality); then close the linear ℕ-relation among the six binomial coefficients with a single omega — no path counting, no real-valued probability.",
+      "ballot_recurrence_diag: ballot n n = ballot n (n−1) for n ≥ 1 — the edge rule carrying the Catalan numbers up the diagonal, since the left neighbour ballot (n−1) n vanishes above the diagonal (parent's ballot_eq_zero_of_lt).",
+      "Three concrete kernel-decide sanity checks of the recurrence: B(4,2) = B(3,2) + B(4,1) (9 = 5+4), the diagonal B(3,3) = B(3,2) (5 = 5), and B(5,3) = B(4,3) + B(5,2)."
+    ],
+    "open": [],
+    "goal": "The parent entry catalan-numbers-oq-01-oq-01-oq-02 proves the ballot closed form B(p,q) = C(p+q,q) − C(p+q,p+1) and asks (openQuestions[2]) to derive the Catalan-triangle recurrence B(p,q) = B(p−1,q) + B(p,q−1) (for q ≤ p) directly from that closed form and Pascal's rule, exhibiting the full triangle structure.\n\n**Answer:** ballot_recurrence establishes exactly this for 1 ≤ q ≤ p, and ballot_recurrence_diag specializes it to the diagonal edge rule ballot n n = ballot n (n−1)."
+  },
+  "currentState": {
     "phase": "COMPLETED",
-    "status": "completed",
-    "tier": "C",
-    "path": "full",
-    "problemStatement": {
-        "formal": "The parent entry catalan-numbers-oq-01-oq-01-oq-02 proves the ballot closed form B(p,q) = C(p+q,q) − C(p+q,p+1) and asks (openQuestions[2]) to derive the Catalan-triangle recurrence B(p,q) = B(p−1,q) + B(p,q−1) (for q ≤ p) directly from that closed form and Pascal's rule, exhibiting the full triangle structure.\n\n**Answer:** ballot_recurrence establishes exactly this for 1 ≤ q ≤ p, and ballot_recurrence_diag specializes it to the diagonal edge rule ballot n n = ballot n (n−1).",
-        "plain": "Answers the parent entry's lead open question: derive the defining two-term recurrence of the Catalan triangle, ballot p q = ballot (p−1) q + ballot p (q−1) for 1 ≤ q ≤ p, directly from the parent's closed form ballot p q = C(p+q,q) − C(p+q,p+1) and Pascal's rule. The proof is pure binomial algebra: substituting p = a+1, q = b+1 makes every binomial index a clean polynomial in a,b; Pascal's rule Nat.choose_succ_succ' splits each of the two binomials of ballot p q into the two reduced-row coefficients; and the parent's ballot_genuine supplies the three genuineness bounds (C(p+q,p+1) ≤ C(p+q,q) and its shifts) that let the truncated ℕ-subtractions recombine — a single omega then closes the goal over the six binomial atoms. As a corollary, the diagonal recurrence ballot n n = ballot n (n−1) follows because the left neighbour ballot (n−1) n lies above the diagonal and vanishes (parent's ballot_eq_zero_of_lt). Together with the boundary ballot p 0 = 1, the recurrence regenerates the entire Catalan triangle row by row. Verified with 0 axioms, 0 sorries, no native_decide.",
-        "whyMatters": []
+    "since": "2026-06-23T00:00:00Z",
+    "iteration": 1,
+    "focus": "Verified deliverable already complete in main: proofs/Proofs/CatalanNumbersOQ01OQ01OQ02OQ03.lean and gallery entry catalan-numbers-oq-01-oq-01-oq-02-oq-03 (status verified)."
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED and verified in main (103 lines, 2 theorems, 0 sorries, axiomCount 0, badge 'original'). Answers the parent entry's lead open question: derive the defining two-term recurrence of the Catalan triangle, ballot p q = ballot (p−1) q + ballot p (q−1) for 1 ≤ q ≤ p, directly from the parent's closed form ballot p q = C(p+q,q) − C(p+q,p+1) and Pascal's rule. The proof is pure binomial algebra: substituting p = a+1, q = b+1 makes every binomial index a clean polynomial in a,b; Pascal's rule Nat.choose_succ_succ' splits each of the two binomials of ballot p q into the two reduced-row coefficients; and the parent's ballot_genuine supplies the three genuineness bounds (C(p+q,p+1) ≤ C(p+q,q) and its shifts) that let the truncated ℕ-subtractions recombine — a single omega then closes the goal over the six binomial atoms. As a corollary, the diagonal recurrence ballot n n = ballot n (n−1) follows because the left neighbour ballot (n−1) n lies above the diagonal and vanishes (parent's ballot_eq_zero_of_lt). Together with the boundary ballot p 0 = 1, the recurrence regenerates the entire Catalan triangle row by row. Verified with 0 axioms, 0 sorries, no native_decide.",
+    "builtItems": [
+      "ballot_recurrence: ballot p q = ballot (p−1) q + ballot p (q−1) for 1 ≤ q ≤ p — the defining additive law of the Catalan triangle, derived directly from the parent's closed form and Pascal's rule (this is the parent entry's lead open question openQuestions[2]).",
+      "Proof technique: substitute p = a+1, q = b+1 to clear the predecessors and normalise indices; apply Pascal's rule Nat.choose_succ_succ' to each of the two binomials of ballot p q; supply three genuineness bounds from the parent's ballot_genuine (covering the diagonal edge q = p as an equality); then close the linear ℕ-relation among the six binomial coefficients with a single omega — no path counting, no real-valued probability.",
+      "ballot_recurrence_diag: ballot n n = ballot n (n−1) for n ≥ 1 — the edge rule carrying the Catalan numbers up the diagonal, since the left neighbour ballot (n−1) n vanishes above the diagonal (parent's ballot_eq_zero_of_lt).",
+      "Three concrete kernel-decide sanity checks of the recurrence: B(4,2) = B(3,2) + B(4,1) (9 = 5+4), the diagonal B(3,3) = B(3,2) (5 = 5), and B(5,3) = B(4,3) + B(5,2).",
+      "Gallery entry src/data/proofs/catalan-numbers-oq-01-oq-01-oq-02-oq-03 (meta.json + annotations.json); Lean source proofs/Proofs/CatalanNumbersOQ01OQ01OQ02OQ03.lean."
+    ],
+    "insights": [
+      "**The recurrence is Pascal's rule, reflected.** ballot p q = C(p+q,q) − C(p+q,p+1) is a difference of two binomials; applying Pascal's rule to each and regrouping yields exactly ballot (p−1) q + ballot p (q−1). The Catalan-triangle recurrence is the difference of two copies of Pascal's recurrence.",
+      "**Clearing predecessors removes all truncated subtraction from the indices.** Writing p = a+1, q = b+1 turns p−1, q−1, p+1 into honest sums a, b, a+2, so Pascal's rule and the genuineness lemma apply on the nose and omega never has to reason about index truncation — only about the value-level subtractions, which the genuineness bounds make exact.",
+      "**The diagonal edge is the recurrence with a vanishing neighbour.** On the diagonal the left neighbour ballot (n−1) n sits strictly above the diagonal of its own row and is 0, so B(n,n) = B(n,n−1): the rule that propagates catalan n = B(n,n) up the triangle's edge is a special case of the two-term recurrence, not a separate fact.",
+      "**Genuineness covers the diagonal as an equality.** The one bound not directly furnished by ballot_genuine (the q = p case of the left neighbour) holds because the two binomial indices coincide there — the proof splits b < a (Pascal genuineness) from b = a (reflexivity), so the single omega works uniformly across the closed regime 1 ≤ q ≤ p."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "combinatorics",
+    "catalan-numbers",
+    "ballot-problem",
+    "catalan-triangle",
+    "pascal-rule",
+    "recurrence",
+    "binomial-coefficients",
+    "lattice-paths",
+    "research"
+  ],
+  "leanFiles": [
+    {
+      "path": "Proofs/CatalanNumbersOQ01.lean",
+      "filename": "CatalanNumbersOQ01.lean",
+      "lineCount": 64,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CatalanNumbersOQ01.lean"
     },
-    "knownResults": {
-        "proven": [
-            "ballot_recurrence: ballot p q = ballot (p−1) q + ballot p (q−1) for 1 ≤ q ≤ p — the defining additive law of the Catalan triangle, derived directly from the parent's closed form and Pascal's rule (this is the parent entry's lead open question openQuestions[2]).",
-            "Proof technique: substitute p = a+1, q = b+1 to clear the predecessors and normalise indices; apply Pascal's rule Nat.choose_succ_succ' to each of the two binomials of ballot p q; supply three genuineness bounds from the parent's ballot_genuine (covering the diagonal edge q = p as an equality); then close the linear ℕ-relation among the six binomial coefficients with a single omega — no path counting, no real-valued probability.",
-            "ballot_recurrence_diag: ballot n n = ballot n (n−1) for n ≥ 1 — the edge rule carrying the Catalan numbers up the diagonal, since the left neighbour ballot (n−1) n vanishes above the diagonal (parent's ballot_eq_zero_of_lt).",
-            "Three concrete kernel-decide sanity checks of the recurrence: B(4,2) = B(3,2) + B(4,1) (9 = 5+4), the diagonal B(3,3) = B(3,2) (5 = 5), and B(5,3) = B(4,3) + B(5,2)."
-        ],
-        "open": [],
-        "goal": "The parent entry catalan-numbers-oq-01-oq-01-oq-02 proves the ballot closed form B(p,q) = C(p+q,q) − C(p+q,p+1) and asks (openQuestions[2]) to derive the Catalan-triangle recurrence B(p,q) = B(p−1,q) + B(p,q−1) (for q ≤ p) directly from that closed form and Pascal's rule, exhibiting the full triangle structure.\n\n**Answer:** ballot_recurrence establishes exactly this for 1 ≤ q ≤ p, and ballot_recurrence_diag specializes it to the diagonal edge rule ballot n n = ballot n (n−1)."
+    {
+      "path": "Proofs/CatalanNumbersOQ01OQ01OQ02.lean",
+      "filename": "CatalanNumbersOQ01OQ01OQ02.lean",
+      "lineCount": 155,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CatalanNumbersOQ01OQ01OQ02.lean"
     },
-    "currentState": {
-        "phase": "COMPLETED",
-        "since": "2026-06-23T00:00:00Z",
-        "iteration": 1,
-        "focus": "Verified deliverable already complete in main: proofs/Proofs/CatalanNumbersOQ01OQ01OQ02OQ03.lean and gallery entry catalan-numbers-oq-01-oq-01-oq-02-oq-03 (status verified)."
+    {
+      "path": "Proofs/CatalanNumbersOQ01OQ01OQ02OQ03.lean",
+      "filename": "CatalanNumbersOQ01OQ01OQ02OQ03.lean",
+      "lineCount": 104,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CatalanNumbersOQ01OQ01OQ02OQ03.lean"
     },
-    "knowledge": {
-        "progressSummary": "COMPLETED and verified in main (103 lines, 2 theorems, 0 sorries, axiomCount 0, badge 'original'). Answers the parent entry's lead open question: derive the defining two-term recurrence of the Catalan triangle, ballot p q = ballot (p−1) q + ballot p (q−1) for 1 ≤ q ≤ p, directly from the parent's closed form ballot p q = C(p+q,q) − C(p+q,p+1) and Pascal's rule. The proof is pure binomial algebra: substituting p = a+1, q = b+1 makes every binomial index a clean polynomial in a,b; Pascal's rule Nat.choose_succ_succ' splits each of the two binomials of ballot p q into the two reduced-row coefficients; and the parent's ballot_genuine supplies the three genuineness bounds (C(p+q,p+1) ≤ C(p+q,q) and its shifts) that let the truncated ℕ-subtractions recombine — a single omega then closes the goal over the six binomial atoms. As a corollary, the diagonal recurrence ballot n n = ballot n (n−1) follows because the left neighbour ballot (n−1) n lies above the diagonal and vanishes (parent's ballot_eq_zero_of_lt). Together with the boundary ballot p 0 = 1, the recurrence regenerates the entire Catalan triangle row by row. Verified with 0 axioms, 0 sorries, no native_decide.",
-        "builtItems": [
-            "ballot_recurrence: ballot p q = ballot (p−1) q + ballot p (q−1) for 1 ≤ q ≤ p — the defining additive law of the Catalan triangle, derived directly from the parent's closed form and Pascal's rule (this is the parent entry's lead open question openQuestions[2]).",
-            "Proof technique: substitute p = a+1, q = b+1 to clear the predecessors and normalise indices; apply Pascal's rule Nat.choose_succ_succ' to each of the two binomials of ballot p q; supply three genuineness bounds from the parent's ballot_genuine (covering the diagonal edge q = p as an equality); then close the linear ℕ-relation among the six binomial coefficients with a single omega — no path counting, no real-valued probability.",
-            "ballot_recurrence_diag: ballot n n = ballot n (n−1) for n ≥ 1 — the edge rule carrying the Catalan numbers up the diagonal, since the left neighbour ballot (n−1) n vanishes above the diagonal (parent's ballot_eq_zero_of_lt).",
-            "Three concrete kernel-decide sanity checks of the recurrence: B(4,2) = B(3,2) + B(4,1) (9 = 5+4), the diagonal B(3,3) = B(3,2) (5 = 5), and B(5,3) = B(4,3) + B(5,2).",
-            "Gallery entry src/data/proofs/catalan-numbers-oq-01-oq-01-oq-02-oq-03 (meta.json + annotations.json); Lean source proofs/Proofs/CatalanNumbersOQ01OQ01OQ02OQ03.lean."
-        ],
-        "insights": [
-            "**The recurrence is Pascal's rule, reflected.** ballot p q = C(p+q,q) − C(p+q,p+1) is a difference of two binomials; applying Pascal's rule to each and regrouping yields exactly ballot (p−1) q + ballot p (q−1). The Catalan-triangle recurrence is the difference of two copies of Pascal's recurrence.",
-            "**Clearing predecessors removes all truncated subtraction from the indices.** Writing p = a+1, q = b+1 turns p−1, q−1, p+1 into honest sums a, b, a+2, so Pascal's rule and the genuineness lemma apply on the nose and omega never has to reason about index truncation — only about the value-level subtractions, which the genuineness bounds make exact.",
-            "**The diagonal edge is the recurrence with a vanishing neighbour.** On the diagonal the left neighbour ballot (n−1) n sits strictly above the diagonal of its own row and is 0, so B(n,n) = B(n,n−1): the rule that propagates catalan n = B(n,n) up the triangle's edge is a special case of the two-term recurrence, not a separate fact.",
-            "**Genuineness covers the diagonal as an equality.** The one bound not directly furnished by ballot_genuine (the q = p case of the left neighbour) holds because the two binomial indices coincide there — the proof splits b < a (Pascal genuineness) from b = a (reflexivity), so the single omega works uniformly across the closed regime 1 ≤ q ≤ p."
-        ],
-        "mathlibGaps": [],
-        "nextSteps": []
+    {
+      "path": "Proofs/CatalanNumbersOQ01OQ01OQ02OQ04.lean",
+      "filename": "CatalanNumbersOQ01OQ01OQ02OQ04.lean",
+      "lineCount": 158,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CatalanNumbersOQ01OQ01OQ02OQ04.lean"
     },
-    "tags": [
-        "combinatorics",
-        "catalan-numbers",
-        "ballot-problem",
-        "catalan-triangle",
-        "pascal-rule",
-        "recurrence",
-        "binomial-coefficients",
-        "lattice-paths",
-        "research"
-    ]
+    {
+      "path": "Proofs/CatalanNumbersOQ01OQ01OQ03.lean",
+      "filename": "CatalanNumbersOQ01OQ01OQ03.lean",
+      "lineCount": 162,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CatalanNumbersOQ01OQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/CatalanNumbersOQ01OQ02.lean",
+      "filename": "CatalanNumbersOQ01OQ02.lean",
+      "lineCount": 176,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CatalanNumbersOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/CatalanNumbersOQ01OQ02OQ01.lean",
+      "filename": "CatalanNumbersOQ01OQ02OQ01.lean",
+      "lineCount": 138,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CatalanNumbersOQ01OQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/CatalanNumbersOQ01OQ02OQ01OQ01.lean",
+      "filename": "CatalanNumbersOQ01OQ02OQ01OQ01.lean",
+      "lineCount": 172,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CatalanNumbersOQ01OQ02OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/CatalanNumbersOQ01OQ02OQ02.lean",
+      "filename": "CatalanNumbersOQ01OQ02OQ02.lean",
+      "lineCount": 127,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CatalanNumbersOQ01OQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/CatalanNumbersOQ01OQ04.lean",
+      "filename": "CatalanNumbersOQ01OQ04.lean",
+      "lineCount": 116,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CatalanNumbersOQ01OQ04.lean"
+    },
+    {
+      "path": "Proofs/CatalanNumbersOQ01OQ04OQ02.lean",
+      "filename": "CatalanNumbersOQ01OQ04OQ02.lean",
+      "lineCount": 110,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CatalanNumbersOQ01OQ04OQ02.lean"
+    },
+    {
+      "path": "Proofs/CatalanNumbersOQ05.lean",
+      "filename": "CatalanNumbersOQ05.lean",
+      "lineCount": 92,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CatalanNumbersOQ05.lean"
+    },
+    {
+      "path": "Proofs/CatalanNumbersOQ05OQ01.lean",
+      "filename": "CatalanNumbersOQ05OQ01.lean",
+      "lineCount": 89,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CatalanNumbersOQ05OQ01.lean"
+    },
+    {
+      "path": "Proofs/CatalanNumbersOQ05OQ02.lean",
+      "filename": "CatalanNumbersOQ05OQ02.lean",
+      "lineCount": 194,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CatalanNumbersOQ05OQ02.lean"
+    }
+  ],
+  "relatedProofs": [
+    "catalan-numbers-oq-01",
+    "catalan-numbers-oq-01-oq-01",
+    "catalan-numbers-oq-01-oq-01-oq-02",
+    "catalan-numbers-oq-01-oq-01-oq-02-oq-03",
+    "catalan-numbers-oq-01-oq-01-oq-02-oq-04",
+    "catalan-numbers-oq-01-oq-01-oq-03",
+    "catalan-numbers-oq-01-oq-02",
+    "catalan-numbers-oq-01-oq-02-oq-01",
+    "catalan-numbers-oq-01-oq-02-oq-01-oq-01",
+    "catalan-numbers-oq-01-oq-02-oq-02",
+    "catalan-numbers-oq-01-oq-04",
+    "catalan-numbers-oq-01-oq-04-oq-02",
+    "catalan-numbers-oq-05",
+    "catalan-numbers-oq-05-oq-01",
+    "catalan-numbers-oq-05-oq-02"
+  ]
 }

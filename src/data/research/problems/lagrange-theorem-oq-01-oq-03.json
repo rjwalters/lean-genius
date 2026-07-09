@@ -49,6 +49,8 @@
     "lagrange-theorem-oq-01-oq-01-oq-02",
     "lagrange-theorem-oq-01-oq-02",
     "lagrange-theorem-oq-01-oq-03",
+    "lagrange-theorem-oq-01-oq-03-oq-01",
+    "lagrange-theorem-oq-01-oq-03-oq-02",
     "lagrange-theorem-oq-02",
     "lagrange-theorem-oq-02-oq-01",
     "lagrange-theorem-oq-02-oq-01-oq-01",
@@ -59,13 +61,17 @@
     "lagrange-theorem-oq-02-oq-02-oq-01-oq-01-oq-01",
     "lagrange-theorem-oq-02-oq-02-oq-01-oq-01-oq-01-oq-01",
     "lagrange-theorem-oq-02-oq-02-oq-01-oq-02",
+    "lagrange-theorem-oq-02-oq-03",
     "lagrange-theorem-oq-03",
     "lagrange-theorem-oq-03-oq-02",
     "lagrange-theorem-oq-05",
     "lagrange-theorem-oq-06",
     "lagrange-theorem-oq-07",
     "lagrange-theorem-oq-07-oq-02",
-    "lagrange-theorem-oq-09"
+    "lagrange-theorem-oq-08",
+    "lagrange-theorem-oq-08-oq-01",
+    "lagrange-theorem-oq-09",
+    "lagrange-theorem-oq-10"
   ],
   "references": {
     "papers": [],
@@ -158,13 +164,35 @@
     {
       "path": "Proofs/LagrangeTheoremOQ01OQ03.lean",
       "filename": "LagrangeTheoremOQ01OQ03.lean",
-      "lineCount": 212,
+      "lineCount": 218,
       "theoremCount": 13,
       "axiomCount": 2,
       "defCount": 2,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeTheoremOQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/LagrangeTheoremOQ01OQ03OQ01.lean",
+      "filename": "LagrangeTheoremOQ01OQ03OQ01.lean",
+      "lineCount": 289,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeTheoremOQ01OQ03OQ01.lean"
+    },
+    {
+      "path": "Proofs/LagrangeTheoremOQ01OQ03OQ02.lean",
+      "filename": "LagrangeTheoremOQ01OQ03OQ02.lean",
+      "lineCount": 136,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeTheoremOQ01OQ03OQ02.lean"
     },
     {
       "path": "Proofs/LagrangeTheoremOQ02.lean",
@@ -277,6 +305,17 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeTheoremOQ02OQ02OQ01OQ02.lean"
     },
     {
+      "path": "Proofs/LagrangeTheoremOQ02OQ03.lean",
+      "filename": "LagrangeTheoremOQ02OQ03.lean",
+      "lineCount": 168,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeTheoremOQ02OQ03.lean"
+    },
+    {
       "path": "Proofs/LagrangeTheoremOQ03.lean",
       "filename": "LagrangeTheoremOQ03.lean",
       "lineCount": 374,
@@ -343,6 +382,28 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeTheoremOQ07OQ02.lean"
     },
     {
+      "path": "Proofs/LagrangeTheoremOQ08.lean",
+      "filename": "LagrangeTheoremOQ08.lean",
+      "lineCount": 180,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeTheoremOQ08.lean"
+    },
+    {
+      "path": "Proofs/LagrangeTheoremOQ08OQ01.lean",
+      "filename": "LagrangeTheoremOQ08OQ01.lean",
+      "lineCount": 100,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeTheoremOQ08OQ01.lean"
+    },
+    {
       "path": "Proofs/LagrangeTheoremOQ09.lean",
       "filename": "LagrangeTheoremOQ09.lean",
       "lineCount": 161,
@@ -352,6 +413,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeTheoremOQ09.lean"
+    },
+    {
+      "path": "Proofs/LagrangeTheoremOQ10.lean",
+      "filename": "LagrangeTheoremOQ10.lean",
+      "lineCount": 92,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeTheoremOQ10.lean"
     }
   ]
 }

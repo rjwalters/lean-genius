@@ -1,60 +1,159 @@
 {
-    "slug": "buffons-noodle-oq-01-oq-02",
-    "title": "General Buffon–Laplace for k Line Families (Cauchy–Crofton Discretization)",
+  "slug": "buffons-noodle-oq-01-oq-02",
+  "title": "General Buffon–Laplace for k Line Families (Cauchy–Crofton Discretization)",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Prove that a polygonal noodle of total length L dropped against k families of parallel lines with positive spacings d₁,…,d_k has expected total crossings (2L/π)·Σⱼ 1/dⱼ, recovering the two-family grid as k=2 and the equal-spacing count 2kL/(πd).",
+    "plain": "Extends the Buffon–Laplace grid identity from two perpendicular line families to k families with arbitrary spacings d₁,…,d_k. For a polygonal noodle of total length L, the expected total number of crossings is (2L/π)·Σⱼ 1/dⱼ, depending only on the total length and the spacings — never on the noodle's shape nor on the families' orientations. Proved by additivity of expectation: each family contributes 2L/(πdⱼ) via the parent single-family theorem, and the total is their sum by linearity. The two-family grid is recovered as the k=2 case, and equal spacings give 2kL/(πd). Fully machine-checked: 0 sorries, 0 axioms.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [
+      "PolygonalNoodle.expectedMultiCrossings: DEFINED the expected total number of crossings against k line families as Σⱼ N.expectedCrossings (dⱼ) — additivity of expectation across an arbitrary index set Fin k",
+      "buffon_noodle_multi_family: PROVED the general Buffon–Laplace / Cauchy–Crofton identity E = (2L/π)·Σⱼ 1/dⱼ for positive spacings, for a polygonal noodle of any shape",
+      "expectedGridCrossings_eq_multi: PROVED the parent's two-family perpendicular grid is exactly the k=2 case with spacings ![dₕ, dᵥ]",
+      "buffon_noodle_multi_family_const: PROVED the equal-spacing count 2kL/(πd), so the expected crossings scale linearly in the number of families",
+      "buffon_noodle_multi_family_nonneg: PROVED nonnegativity of the k-family functional",
+      "buffon_noodle_multi_family_mono: PROVED monotonicity under the canonical inclusion Fin k ↪ Fin (k+m) — adding more families can only increase the expected crossings"
+    ],
+    "open": [],
+    "goal": "Prove that a polygonal noodle of total length L dropped against k families of parallel lines with positive spacings d₁,…,d_k has expected total crossings (2L/π)·Σⱼ 1/dⱼ, recovering the two-family grid as k=2 and the equal-spacing count 2kL/(πd)."
+  },
+  "currentState": {
     "phase": "COMPLETED",
-    "status": "completed",
-    "tier": "B",
-    "path": "full",
-    "problemStatement": {
-        "formal": "Prove that a polygonal noodle of total length L dropped against k families of parallel lines with positive spacings d₁,…,d_k has expected total crossings (2L/π)·Σⱼ 1/dⱼ, recovering the two-family grid as k=2 and the equal-spacing count 2kL/(πd).",
-        "plain": "Extends the Buffon–Laplace grid identity from two perpendicular line families to k families with arbitrary spacings d₁,…,d_k. For a polygonal noodle of total length L, the expected total number of crossings is (2L/π)·Σⱼ 1/dⱼ, depending only on the total length and the spacings — never on the noodle's shape nor on the families' orientations. Proved by additivity of expectation: each family contributes 2L/(πdⱼ) via the parent single-family theorem, and the total is their sum by linearity. The two-family grid is recovered as the k=2 case, and equal spacings give 2kL/(πd). Fully machine-checked: 0 sorries, 0 axioms.",
-        "whyMatters": []
+    "since": "2026-06-25T00:00:00Z",
+    "iteration": 1,
+    "focus": "Verified deliverable already complete in main: proofs/Proofs/BuffonsNoodleOQ01OQ02.lean and gallery entry buffons-noodle-oq-01-oq-02 (status verified)."
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED and verified in main (179 lines, 6 theorems, 0 sorries, axiomCount 0, badge 'original'). Extends the Buffon–Laplace grid identity from two perpendicular line families to k families with arbitrary spacings d₁,…,d_k. For a polygonal noodle of total length L, the expected total number of crossings is (2L/π)·Σⱼ 1/dⱼ, depending only on the total length and the spacings — never on the noodle's shape nor on the families' orientations. Proved by additivity of expectation: each family contributes 2L/(πdⱼ) via the parent single-family theorem, and the total is their sum by linearity. The two-family grid is recovered as the k=2 case, and equal spacings give 2kL/(πd). Fully machine-checked: 0 sorries, 0 axioms.",
+    "builtItems": [
+      "PolygonalNoodle.expectedMultiCrossings: DEFINED the expected total number of crossings against k line families as Σⱼ N.expectedCrossings (dⱼ) — additivity of expectation across an arbitrary index set Fin k",
+      "buffon_noodle_multi_family: PROVED the general Buffon–Laplace / Cauchy–Crofton identity E = (2L/π)·Σⱼ 1/dⱼ for positive spacings, for a polygonal noodle of any shape",
+      "expectedGridCrossings_eq_multi: PROVED the parent's two-family perpendicular grid is exactly the k=2 case with spacings ![dₕ, dᵥ]",
+      "buffon_noodle_multi_family_const: PROVED the equal-spacing count 2kL/(πd), so the expected crossings scale linearly in the number of families",
+      "buffon_noodle_multi_family_nonneg: PROVED nonnegativity of the k-family functional",
+      "buffon_noodle_multi_family_mono: PROVED monotonicity under the canonical inclusion Fin k ↪ Fin (k+m) — adding more families can only increase the expected crossings",
+      "Gallery entry src/data/proofs/buffons-noodle-oq-01-oq-02 (meta.json + annotations.json); Lean source proofs/Proofs/BuffonsNoodleOQ01OQ02.lean."
+    ],
+    "insights": [
+      "**The angles vanish.** Although the candidate poses k families 'at angles θ₁,…,θ_k', the formula carries no angle dependence. Each single-family expected count depends only on length and spacing (Barbier orientation-invariance), so by linearity the total is Σⱼ 2L/(πdⱼ) regardless of how the families are angled. Modelling families by their spacings d : Fin k → ℝ loses no information.",
+      "**Additivity needs no independence.** The k crossing tallies come from the same drop of the same noodle and are strongly correlated, yet E[ΣXⱼ] = ΣE[Xⱼ] holds unconditionally — so the k-family expectation is literally a sum of k single-family theorems.",
+      "**The grid is the k=2 case.** The parent's perpendicular two-family grid is recovered exactly by instantiating the index set with ![dₕ, dᵥ], unifying the earlier result into the general framework.",
+      "**Linear scaling in the family count.** With equal spacings the count is 2kL/(πd) — k families give exactly k times the single-family count.",
+      "**Cauchy–Crofton discretization.** Summing intersection counts over finitely many line families is the discrete analogue of integrating intersection counts over the full kinematic measure on lines; the formula (2L/π)·Σⱼ 1/dⱼ is the integral-geometric content made elementary."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "geometric-probability",
+    "integral-geometry",
+    "buffon",
+    "buffon-laplace",
+    "cauchy-crofton",
+    "linearity-of-expectation"
+  ],
+  "leanFiles": [
+    {
+      "path": "Proofs/BuffonsNoodle.lean",
+      "filename": "BuffonsNoodle.lean",
+      "lineCount": 453,
+      "theoremCount": 19,
+      "axiomCount": 1,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BuffonsNoodle.lean"
     },
-    "knownResults": {
-        "proven": [
-            "PolygonalNoodle.expectedMultiCrossings: DEFINED the expected total number of crossings against k line families as Σⱼ N.expectedCrossings (dⱼ) — additivity of expectation across an arbitrary index set Fin k",
-            "buffon_noodle_multi_family: PROVED the general Buffon–Laplace / Cauchy–Crofton identity E = (2L/π)·Σⱼ 1/dⱼ for positive spacings, for a polygonal noodle of any shape",
-            "expectedGridCrossings_eq_multi: PROVED the parent's two-family perpendicular grid is exactly the k=2 case with spacings ![dₕ, dᵥ]",
-            "buffon_noodle_multi_family_const: PROVED the equal-spacing count 2kL/(πd), so the expected crossings scale linearly in the number of families",
-            "buffon_noodle_multi_family_nonneg: PROVED nonnegativity of the k-family functional",
-            "buffon_noodle_multi_family_mono: PROVED monotonicity under the canonical inclusion Fin k ↪ Fin (k+m) — adding more families can only increase the expected crossings"
-        ],
-        "open": [],
-        "goal": "Prove that a polygonal noodle of total length L dropped against k families of parallel lines with positive spacings d₁,…,d_k has expected total crossings (2L/π)·Σⱼ 1/dⱼ, recovering the two-family grid as k=2 and the equal-spacing count 2kL/(πd)."
+    {
+      "path": "Proofs/BuffonsNoodleOQ01.lean",
+      "filename": "BuffonsNoodleOQ01.lean",
+      "lineCount": 215,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BuffonsNoodleOQ01.lean"
     },
-    "currentState": {
-        "phase": "COMPLETED",
-        "since": "2026-06-25T00:00:00Z",
-        "iteration": 1,
-        "focus": "Verified deliverable already complete in main: proofs/Proofs/BuffonsNoodleOQ01OQ02.lean and gallery entry buffons-noodle-oq-01-oq-02 (status verified)."
+    {
+      "path": "Proofs/BuffonsNoodleOQ01OQ01.lean",
+      "filename": "BuffonsNoodleOQ01OQ01.lean",
+      "lineCount": 205,
+      "theoremCount": 9,
+      "axiomCount": 1,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BuffonsNoodleOQ01OQ01.lean"
     },
-    "knowledge": {
-        "progressSummary": "COMPLETED and verified in main (179 lines, 6 theorems, 0 sorries, axiomCount 0, badge 'original'). Extends the Buffon–Laplace grid identity from two perpendicular line families to k families with arbitrary spacings d₁,…,d_k. For a polygonal noodle of total length L, the expected total number of crossings is (2L/π)·Σⱼ 1/dⱼ, depending only on the total length and the spacings — never on the noodle's shape nor on the families' orientations. Proved by additivity of expectation: each family contributes 2L/(πdⱼ) via the parent single-family theorem, and the total is their sum by linearity. The two-family grid is recovered as the k=2 case, and equal spacings give 2kL/(πd). Fully machine-checked: 0 sorries, 0 axioms.",
-        "builtItems": [
-            "PolygonalNoodle.expectedMultiCrossings: DEFINED the expected total number of crossings against k line families as Σⱼ N.expectedCrossings (dⱼ) — additivity of expectation across an arbitrary index set Fin k",
-            "buffon_noodle_multi_family: PROVED the general Buffon–Laplace / Cauchy–Crofton identity E = (2L/π)·Σⱼ 1/dⱼ for positive spacings, for a polygonal noodle of any shape",
-            "expectedGridCrossings_eq_multi: PROVED the parent's two-family perpendicular grid is exactly the k=2 case with spacings ![dₕ, dᵥ]",
-            "buffon_noodle_multi_family_const: PROVED the equal-spacing count 2kL/(πd), so the expected crossings scale linearly in the number of families",
-            "buffon_noodle_multi_family_nonneg: PROVED nonnegativity of the k-family functional",
-            "buffon_noodle_multi_family_mono: PROVED monotonicity under the canonical inclusion Fin k ↪ Fin (k+m) — adding more families can only increase the expected crossings",
-            "Gallery entry src/data/proofs/buffons-noodle-oq-01-oq-02 (meta.json + annotations.json); Lean source proofs/Proofs/BuffonsNoodleOQ01OQ02.lean."
-        ],
-        "insights": [
-            "**The angles vanish.** Although the candidate poses k families 'at angles θ₁,…,θ_k', the formula carries no angle dependence. Each single-family expected count depends only on length and spacing (Barbier orientation-invariance), so by linearity the total is Σⱼ 2L/(πdⱼ) regardless of how the families are angled. Modelling families by their spacings d : Fin k → ℝ loses no information.",
-            "**Additivity needs no independence.** The k crossing tallies come from the same drop of the same noodle and are strongly correlated, yet E[ΣXⱼ] = ΣE[Xⱼ] holds unconditionally — so the k-family expectation is literally a sum of k single-family theorems.",
-            "**The grid is the k=2 case.** The parent's perpendicular two-family grid is recovered exactly by instantiating the index set with ![dₕ, dᵥ], unifying the earlier result into the general framework.",
-            "**Linear scaling in the family count.** With equal spacings the count is 2kL/(πd) — k families give exactly k times the single-family count.",
-            "**Cauchy–Crofton discretization.** Summing intersection counts over finitely many line families is the discrete analogue of integrating intersection counts over the full kinematic measure on lines; the formula (2L/π)·Σⱼ 1/dⱼ is the integral-geometric content made elementary."
-        ],
-        "mathlibGaps": [],
-        "nextSteps": []
+    {
+      "path": "Proofs/BuffonsNoodleOQ01OQ02.lean",
+      "filename": "BuffonsNoodleOQ01OQ02.lean",
+      "lineCount": 180,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BuffonsNoodleOQ01OQ02.lean"
     },
-    "tags": [
-        "geometric-probability",
-        "integral-geometry",
-        "buffon",
-        "buffon-laplace",
-        "cauchy-crofton",
-        "linearity-of-expectation"
-    ]
+    {
+      "path": "Proofs/BuffonsNoodleOQ02.lean",
+      "filename": "BuffonsNoodleOQ02.lean",
+      "lineCount": 102,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BuffonsNoodleOQ02.lean"
+    },
+    {
+      "path": "Proofs/BuffonsNoodleOQ03.lean",
+      "filename": "BuffonsNoodleOQ03.lean",
+      "lineCount": 280,
+      "theoremCount": 19,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BuffonsNoodleOQ03.lean"
+    },
+    {
+      "path": "Proofs/BuffonsNoodleOQ03OQ01.lean",
+      "filename": "BuffonsNoodleOQ03OQ01.lean",
+      "lineCount": 234,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BuffonsNoodleOQ03OQ01.lean"
+    },
+    {
+      "path": "Proofs/BuffonsNoodleOQ03OQ02.lean",
+      "filename": "BuffonsNoodleOQ03OQ02.lean",
+      "lineCount": 360,
+      "theoremCount": 19,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BuffonsNoodleOQ03OQ02.lean"
+    }
+  ],
+  "relatedProofs": [
+    "buffons-noodle",
+    "buffons-noodle-oq-01",
+    "buffons-noodle-oq-01-oq-01",
+    "buffons-noodle-oq-01-oq-02",
+    "buffons-noodle-oq-03",
+    "buffons-noodle-oq-03-oq-01",
+    "buffons-noodle-oq-03-oq-02"
+  ]
 }

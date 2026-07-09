@@ -23,15 +23,15 @@
   },
   "leanFiles": [
     {
-      "path": "Proofs/EulerTotientOQ04OQ03.lean",
-      "filename": "EulerTotientOQ04OQ03.lean",
-      "lineCount": 642,
-      "theoremCount": 42,
-      "axiomCount": 0,
-      "defCount": 3,
+      "path": "Proofs/Erdos1064Problem.lean",
+      "filename": "Erdos1064Problem.lean",
+      "lineCount": 183,
+      "theoremCount": 4,
+      "axiomCount": 1,
+      "defCount": 4,
       "sorryCount": 0,
       "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerTotientOQ04OQ03.lean"
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1064Problem.lean"
     }
   ],
   "knowledge": {
@@ -95,5 +95,11 @@
       "Characterise the reversal seed set {odd a : φ(a) < φ(e)·2^(t−1)} — a structural description of which odd seeds reverse (a=21 smallest) would be a new elementary result now that the per-seed test is k-free.",
       "Handle the excluded case v₂(2a−φ(a))>1 (the transport hypothesis 2a−φ(a)=2b with b odd fails): extend the transport/criterion to higher first-step 2-adic valuation."
     ]
-  }
+  },
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-10",
+    "erdos-106",
+    "erdos-1064"
+  ]
 }

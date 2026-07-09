@@ -81,6 +81,7 @@
     "chinese-remainder-constructive",
     "euler-totient",
     "gauss-wilson-non-cyclic",
+    "gauss-wilson-non-cyclic-oq-04",
     "wilsons-theorem"
   ],
   "references": {
@@ -158,6 +159,17 @@
       "sorryCount": 3,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GaussWilsonNonCyclicOQ03.lean"
+    },
+    {
+      "path": "Proofs/GaussWilsonNonCyclicOQ04.lean",
+      "filename": "GaussWilsonNonCyclicOQ04.lean",
+      "lineCount": 183,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GaussWilsonNonCyclicOQ04.lean"
     }
   ]
 }

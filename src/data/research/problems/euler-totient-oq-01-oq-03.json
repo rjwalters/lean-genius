@@ -52,16 +52,27 @@
     "euler-totient-oq-01-oq-03",
     "euler-totient-oq-02",
     "euler-totient-oq-02-oq-01",
+    "euler-totient-oq-02-oq-02",
+    "euler-totient-oq-02-oq-02-oq-01",
+    "euler-totient-oq-02-oq-04",
     "euler-totient-oq-03",
+    "euler-totient-oq-03-oq-02",
     "euler-totient-oq-03-oq-03",
+    "euler-totient-oq-03-oq-03-oq-01",
     "euler-totient-oq-04",
     "euler-totient-oq-04-oq-02",
     "euler-totient-oq-05",
     "euler-totient-oq-05-oq-01",
+    "euler-totient-oq-05-oq-02",
     "euler-totient-oq-06",
     "euler-totient-oq-06-oq-01",
+    "euler-totient-oq-06-oq-02",
     "euler-totient-oq-07",
+    "euler-totient-oq-07-oq-01",
+    "euler-totient-oq-07-oq-03",
     "euler-totient-oq-07-oq-04",
+    "euler-totient-oq-08",
+    "euler-totient-oq-08-oq-01",
     "euler-totient-oq-09",
     "euler-totient-oq-09-oq-01",
     "euler-totient-oq-09-oq-02",
@@ -228,6 +239,39 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerTotientOQ02OQ01.lean"
     },
     {
+      "path": "Proofs/EulerTotientOQ02OQ02.lean",
+      "filename": "EulerTotientOQ02OQ02.lean",
+      "lineCount": 148,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerTotientOQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/EulerTotientOQ02OQ02OQ01.lean",
+      "filename": "EulerTotientOQ02OQ02OQ01.lean",
+      "lineCount": 224,
+      "theoremCount": 16,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerTotientOQ02OQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/EulerTotientOQ02OQ04.lean",
+      "filename": "EulerTotientOQ02OQ04.lean",
+      "lineCount": 119,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerTotientOQ02OQ04.lean"
+    },
+    {
       "path": "Proofs/EulerTotientOQ03.lean",
       "filename": "EulerTotientOQ03.lean",
       "lineCount": 209,
@@ -239,6 +283,17 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerTotientOQ03.lean"
     },
     {
+      "path": "Proofs/EulerTotientOQ03OQ02.lean",
+      "filename": "EulerTotientOQ03OQ02.lean",
+      "lineCount": 244,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerTotientOQ03OQ02.lean"
+    },
+    {
       "path": "Proofs/EulerTotientOQ03OQ03.lean",
       "filename": "EulerTotientOQ03OQ03.lean",
       "lineCount": 135,
@@ -248,6 +303,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerTotientOQ03OQ03.lean"
+    },
+    {
+      "path": "Proofs/EulerTotientOQ03OQ03OQ01.lean",
+      "filename": "EulerTotientOQ03OQ03OQ01.lean",
+      "lineCount": 168,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerTotientOQ03OQ03OQ01.lean"
     },
     {
       "path": "Proofs/EulerTotientOQ04.lean",
@@ -283,6 +349,17 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerTotientOQ04OQ02.lean"
     },
     {
+      "path": "Proofs/EulerTotientOQ04OQ03.lean",
+      "filename": "EulerTotientOQ04OQ03.lean",
+      "lineCount": 795,
+      "theoremCount": 51,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerTotientOQ04OQ03.lean"
+    },
+    {
       "path": "Proofs/EulerTotientOQ05.lean",
       "filename": "EulerTotientOQ05.lean",
       "lineCount": 179,
@@ -303,6 +380,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerTotientOQ05OQ01.lean"
+    },
+    {
+      "path": "Proofs/EulerTotientOQ05OQ02.lean",
+      "filename": "EulerTotientOQ05OQ02.lean",
+      "lineCount": 143,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerTotientOQ05OQ02.lean"
     },
     {
       "path": "Proofs/EulerTotientOQ06.lean",
@@ -327,6 +415,17 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerTotientOQ06OQ01.lean"
     },
     {
+      "path": "Proofs/EulerTotientOQ06OQ02.lean",
+      "filename": "EulerTotientOQ06OQ02.lean",
+      "lineCount": 335,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerTotientOQ06OQ02.lean"
+    },
+    {
       "path": "Proofs/EulerTotientOQ07.lean",
       "filename": "EulerTotientOQ07.lean",
       "lineCount": 107,
@@ -338,6 +437,28 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerTotientOQ07.lean"
     },
     {
+      "path": "Proofs/EulerTotientOQ07OQ01.lean",
+      "filename": "EulerTotientOQ07OQ01.lean",
+      "lineCount": 118,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerTotientOQ07OQ01.lean"
+    },
+    {
+      "path": "Proofs/EulerTotientOQ07OQ03.lean",
+      "filename": "EulerTotientOQ07OQ03.lean",
+      "lineCount": 186,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerTotientOQ07OQ03.lean"
+    },
+    {
       "path": "Proofs/EulerTotientOQ07OQ04.lean",
       "filename": "EulerTotientOQ07OQ04.lean",
       "lineCount": 136,
@@ -347,6 +468,28 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerTotientOQ07OQ04.lean"
+    },
+    {
+      "path": "Proofs/EulerTotientOQ08.lean",
+      "filename": "EulerTotientOQ08.lean",
+      "lineCount": 118,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerTotientOQ08.lean"
+    },
+    {
+      "path": "Proofs/EulerTotientOQ08OQ01.lean",
+      "filename": "EulerTotientOQ08OQ01.lean",
+      "lineCount": 206,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerTotientOQ08OQ01.lean"
     },
     {
       "path": "Proofs/EulerTotientOQ09.lean",

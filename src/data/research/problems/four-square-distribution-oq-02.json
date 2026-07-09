@@ -51,9 +51,13 @@
     "four-square-distribution-oq-01-oq-01",
     "four-square-distribution-oq-02",
     "four-square-distribution-oq-04",
+    "four-square-distribution-oq-04-surj",
     "four-square-distribution-oq-05",
     "four-square-distribution-oq-06",
-    "four-square-distribution-oq-06-oq-01"
+    "four-square-distribution-oq-06-oq-01",
+    "four-square-distribution-oq-06-oq-02",
+    "four-square-distribution-oq-06-oq-03",
+    "four-square-distribution-oq-07"
   ],
   "references": {
     "papers": [],
@@ -130,6 +134,17 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourSquareDistributionOQ04Arrange.lean"
     },
     {
+      "path": "Proofs/FourSquareDistributionOQ04ArrangeFinal.lean",
+      "filename": "FourSquareDistributionOQ04ArrangeFinal.lean",
+      "lineCount": 163,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourSquareDistributionOQ04ArrangeFinal.lean"
+    },
+    {
       "path": "Proofs/FourSquareDistributionOQ04ArrangeProof.lean",
       "filename": "FourSquareDistributionOQ04ArrangeProof.lean",
       "lineCount": 264,
@@ -196,6 +211,17 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourSquareDistributionOQ04Sign.lean"
     },
     {
+      "path": "Proofs/FourSquareDistributionOQ04Surj.lean",
+      "filename": "FourSquareDistributionOQ04Surj.lean",
+      "lineCount": 62,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourSquareDistributionOQ04Surj.lean"
+    },
+    {
       "path": "Proofs/FourSquareDistributionOQ05.lean",
       "filename": "FourSquareDistributionOQ05.lean",
       "lineCount": 214,
@@ -227,6 +253,39 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourSquareDistributionOQ06OQ01.lean"
+    },
+    {
+      "path": "Proofs/FourSquareDistributionOQ06OQ02.lean",
+      "filename": "FourSquareDistributionOQ06OQ02.lean",
+      "lineCount": 246,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourSquareDistributionOQ06OQ02.lean"
+    },
+    {
+      "path": "Proofs/FourSquareDistributionOQ06OQ03.lean",
+      "filename": "FourSquareDistributionOQ06OQ03.lean",
+      "lineCount": 184,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourSquareDistributionOQ06OQ03.lean"
+    },
+    {
+      "path": "Proofs/FourSquareDistributionOQ07.lean",
+      "filename": "FourSquareDistributionOQ07.lean",
+      "lineCount": 209,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourSquareDistributionOQ07.lean"
     }
   ]
 }

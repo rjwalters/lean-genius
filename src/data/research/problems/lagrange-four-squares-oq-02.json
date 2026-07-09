@@ -61,10 +61,14 @@
     "lagrange-four-squares",
     "lagrange-four-squares-oq-01",
     "lagrange-four-squares-oq-01-oq-01",
+    "lagrange-four-squares-oq-01-oq-03",
     "lagrange-four-squares-oq-02",
+    "lagrange-four-squares-oq-02-oq-02",
     "lagrange-four-squares-oq-03",
+    "lagrange-four-squares-oq-03-oq-01",
     "lagrange-four-squares-oq-04",
     "lagrange-four-squares-oq-04-oq-01",
+    "lagrange-four-squares-oq-05",
     "lagrange-four-squares-waring-g2",
     "lagrange-four-squares-waring-g2-oq-03-oq-03",
     "lagrange-four-squares-waring-g2-oq-03-oq-04",
@@ -90,8 +94,8 @@
     {
       "path": "Proofs/LagrangeFourSquares.lean",
       "filename": "LagrangeFourSquares.lean",
-      "lineCount": 393,
-      "theoremCount": 15,
+      "lineCount": 410,
+      "theoremCount": 14,
       "axiomCount": 5,
       "defCount": 8,
       "sorryCount": 0,
@@ -121,6 +125,28 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeFourSquaresOQ01OQ01.lean"
     },
     {
+      "path": "Proofs/LagrangeFourSquaresOQ01OQ03.lean",
+      "filename": "LagrangeFourSquaresOQ01OQ03.lean",
+      "lineCount": 118,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeFourSquaresOQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/LagrangeFourSquaresOQ01OQ03Even.lean",
+      "filename": "LagrangeFourSquaresOQ01OQ03Even.lean",
+      "lineCount": 100,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeFourSquaresOQ01OQ03Even.lean"
+    },
+    {
       "path": "Proofs/LagrangeFourSquaresOQ02.lean",
       "filename": "LagrangeFourSquaresOQ02.lean",
       "lineCount": 652,
@@ -132,6 +158,17 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeFourSquaresOQ02.lean"
     },
     {
+      "path": "Proofs/LagrangeFourSquaresOQ02OQ02.lean",
+      "filename": "LagrangeFourSquaresOQ02OQ02.lean",
+      "lineCount": 232,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeFourSquaresOQ02OQ02.lean"
+    },
+    {
       "path": "Proofs/LagrangeFourSquaresOQ03.lean",
       "filename": "LagrangeFourSquaresOQ03.lean",
       "lineCount": 157,
@@ -141,6 +178,17 @@
       "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeFourSquaresOQ03.lean"
+    },
+    {
+      "path": "Proofs/LagrangeFourSquaresOQ03OQ01.lean",
+      "filename": "LagrangeFourSquaresOQ03OQ01.lean",
+      "lineCount": 196,
+      "theoremCount": 18,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeFourSquaresOQ03OQ01.lean"
     },
     {
       "path": "Proofs/LagrangeFourSquaresOQ04.lean",
@@ -163,6 +211,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeFourSquaresOQ04OQ01.lean"
+    },
+    {
+      "path": "Proofs/LagrangeFourSquaresOQ05.lean",
+      "filename": "LagrangeFourSquaresOQ05.lean",
+      "lineCount": 184,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeFourSquaresOQ05.lean"
     },
     {
       "path": "Proofs/LagrangeFourSquaresWaringG2.lean",
@@ -240,6 +299,28 @@
       "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeFourSquaresWaringG2OQ01CountingG7.lean"
+    },
+    {
+      "path": "Proofs/LagrangeFourSquaresWaringG2OQ01CountingG8.lean",
+      "filename": "LagrangeFourSquaresWaringG2OQ01CountingG8.lean",
+      "lineCount": 145,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeFourSquaresWaringG2OQ01CountingG8.lean"
+    },
+    {
+      "path": "Proofs/LagrangeFourSquaresWaringG2OQ01CountingTemplate.lean",
+      "filename": "LagrangeFourSquaresWaringG2OQ01CountingTemplate.lean",
+      "lineCount": 186,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeFourSquaresWaringG2OQ01CountingTemplate.lean"
     },
     {
       "path": "Proofs/LagrangeFourSquaresWaringG2OQ01ExactValue.lean",
