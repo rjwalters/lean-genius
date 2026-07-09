@@ -60,7 +60,8 @@
       "The parent gallery file Erdos1080Problem.lean does not currently compile: it has a malformed doc-comment (a /-- … -/ block at ~line 156 with no following declaration, which derails the parser) and an unrelated `sorry` in c4_free_iff_no_K22 (its meta.json honestly records sorries:1, status:null). This companion therefore inlines the three needed definitions rather than importing the parent, keeping the contribution independently verifiable.",
       "A 4-cycle in a bipartite graph is exactly a K_{2,2}: bipartite alternation forces the four cycle vertices to split 2-2 across the parts, so C4-freeness ⇔ no two distinct left vertices share two distinct common neighbours. Proved as c4Free_iff_no_K22 (Erdos1080OQ03.lean), discharging the c4_free_iff_no_K22 sorry left open in the parent Erdos1080Problem.lean.",
       "Bipartite cycle spectrum is EXACTLY {even ≥4}: proved the sufficiency/converse (every even k≥4 realized by cycleGraph k), completing the iff with the prior necessity results (bipartite_cycle_spectrum)",
-      "Parent Erdos1080Problem.lean was doubly broken: parse failure from stacked orphan doc-comments before axiom luw_superlinear and before the KST theorem, plus the c4_free_iff_no_K22 sorry. Bridge reuses the OQ-03 companion proof verbatim because parent IsBipartition/HasCycleOfLength/C4Free defs are character-identical to companion inlines. Parent still carries 2 genuine axioms (luw_superlinear, erdos_c8_observation) so stays axiomatized, but is now sorry-free."
+      "Parent Erdos1080Problem.lean was doubly broken: parse failure from stacked orphan doc-comments before axiom luw_superlinear and before the KST theorem, plus the c4_free_iff_no_K22 sorry. Bridge reuses the OQ-03 companion proof verbatim because parent IsBipartition/HasCycleOfLength/C4Free defs are character-identical to companion inlines. Parent still carries 2 genuine axioms (luw_superlinear, erdos_c8_observation) so stays axiomatized, but is now sorry-free.",
+      "Sharp parity dichotomy for cycle graphs: cycleGraph N is bipartite IFF N is even (for N≥3). Proved cycleGraph_isBipartite_iff_even by combining the even 2-colouring (cycleGraph_isBipartite_of_even) with the odd-cycle obstruction (an odd cycleGraph IS an odd cycle, forbidden in bipartite graphs). This is the converse completing the one-directional even⇒bipartite lemma."
     ],
     "builtItems": [
       "bipartite_walk_parity (Erdos1080OQ03.lean) — parity engine: for a walk u→v, (u∈X → (Even length ↔ v∈X)) ∧ (u∈Y → (Even length ↔ v∈Y)); proved by induction on the walk.",
@@ -73,7 +74,9 @@
       "c4Free_iff_no_K22 (Erdos1080OQ03.lean:380): ¬HasCycleOfLength G 4 ⇔ K_{2,2}-free, via a 5-level Walk.@cons decomposition of the length-4 closed walk + IsCycle.support.tail.Nodup for vertex distinctness.",
       "PR #35906: verified c4Free_iff_no_K22 + hasCycleOfLength_four_of_K22 (Docker 979 jobs exit 0, 0 sorries/0 axioms)",
       "descPath + descPath_length/support_val_le/isPath/edges_diff_one + closingEdge_not_mem + cycleGraph_hasCycleOfLength (explicit Hamiltonian N-cycle) + cycleGraph_isBipartite_of_even + bipartite_realizes_even_ge_four + bipartite_cycle_spectrum in Erdos1080OQ03.lean (VERIFIED host lake env lean, 0 sorry/0 axiom)",
-      "Bridged c4Free_iff_no_K22 + hasCycleOfLength_four_of_K22 + mem_left/right complement helpers into the PARENT Erdos1080Problem.lean, discharging its lone c4_free_iff_no_K22 sorry; also converted 6 orphan doc-comments to block comments so the parent file parses again."
+      "Bridged c4Free_iff_no_K22 + hasCycleOfLength_four_of_K22 + mem_left/right complement helpers into the PARENT Erdos1080Problem.lean, discharging its lone c4_free_iff_no_K22 sorry; also converted 6 orphan doc-comments to block comments so the parent file parses again.",
+      "cycleGraph_not_isBipartite_of_odd (Erdos1080OQ03.lean): for N≥3 odd, ¬IsBipartite (cycleGraph N), one-liner via bipartite_odd_cycle_free hbip hOdd (cycleGraph_hasCycleOfLength N hN3). VERIFIED 0 sorry/0 axiom (host lake env lean, #print axioms = propext/Classical.choice/Quot.sound only).",
+      "cycleGraph_isBipartite_iff_even (Erdos1080OQ03.lean): IsBipartite (cycleGraph N) ↔ Even N for N≥3, via Nat.even_or_odd case split + absurd with the odd obstruction."
     ],
     "mathlibGaps": [
       "No off-the-shelf 'bipartite ⇒ even cycle' lemma against this file's own IsBipartition definition (Mathlib has SimpleGraph.Colorable / two-colourings and odd-girth machinery, but not directly against an ad-hoc bipartition predicate); the walk-parity induction is short enough to build locally.",
@@ -81,9 +84,8 @@
       "Mathlib has cycleGraph + bicoloring_of_even + cycleGraph_EulerianCircuit but NO lemma that cycleGraph is Hamiltonian / its Eulerian circuit IsCycle — built the explicit cycle from scratch"
     ],
     "nextSteps": [
-      "Attempt Erdos C8 existence observation (erdos_c8_observation axiom): dense C4,C6-free bipartite graph must contain C8 - genuinely hard extremal/moment-count core, NOT elementary.",
-      "If a clean Docker write window opens, confirm parent build green and flip erdos-1080 meta status toward axiomatized with 0 sorry."
+      "Attempt Erdos C8 existence observation (erdos_c8_observation axiom): dense C4,C6-free bipartite graph must contain C8 - genuinely hard extremal/moment-count core, NOT elementary and NOT session-sized. This is the sole remaining open core; all elementary spectrum/parity results are now complete."
     ],
-    "progressSummary": "PROGRESS: bipartite cycle-spectrum characterization complete; ALSO restored the previously-uncompilable parent Erdos1080Problem.lean (VERIFIED green Docker 1955 jobs exit 0, 0 sorries, 2 stated axioms) by erasing its c4_free_iff_no_K22 sorry via the OQ-03 companion proof + fixing 4 pre-existing breakages (orphan doc-comments, missing Floor/rpow/SupSet-ℕ imports, mp/mpr bug). Extremal C8 existence still open."
+    "progressSummary": "PROGRESS (verified 0 sorries / 0 axioms): completed the cycle-graph parity dichotomy (cycleGraph bipartite ⟺ N even) as the converse-sharp complement to the realizability capstone. Also resolved the PR #35973 merge conflict, unblocking the ~528-line VERIFIED realizability+parent-restore work onto main. Elementary spectrum/parity theory now fully closed; only the hard extremal C8-existence core remains open."
   }
 }

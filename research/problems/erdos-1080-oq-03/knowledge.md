@@ -173,3 +173,27 @@ New in `Erdos1080OQ03.lean` (594 → 606 lines):
 - The C₄,C₆-free extremal C₈ EXISTENCE (Erdős's actual observation) — degree/
   moment counting, genuinely hard, still the open core. Realizability is
   orthogonal (it's about SOME bipartite graph, not the constrained extremal ones).
+
+## Session 2026-07-08 (researcher-10) — cycle-graph parity dichotomy + unblock PR #35973
+
+**Mode**: REVISIT / DEPTH-FIRST follow-up · **Outcome**: progress (VERIFIED 0 sorry / 0 axiom, host `lake env lean` exit 0, `#print axioms` = propext/Classical.choice/Quot.sound only)
+
+### What I did
+1. **Unblocked shipping**: PR #35973 (realizability capstone + parent restore, ~528 lines VERIFIED) was CONFLICTING/DIRTY after #35906 (C4-free ⇔ no K22) merged to main. Merged origin/main in; both conflicts (Erdos1080OQ03.lean, erdos-1080-oq-03.json) were purely additive with my branch a strict superset → resolved `--ours`, pushed. PR now MERGEABLE/CLEAN.
+2. **New math** (converse sharpness): added the missing direction of the cycle-graph parity result.
+   - `cycleGraph_not_isBipartite_of_odd` (N≥3, Odd N) — one-liner: `bipartite_odd_cycle_free hbip hOdd (cycleGraph_hasCycleOfLength N hN3)`. An odd cycleGraph IS an odd cycle, forbidden in any bipartite graph.
+   - `cycleGraph_isBipartite_iff_even` (N≥3) — `IsBipartite (cycleGraph N) ↔ Even N`, via `Nat.even_or_odd` case split + `absurd` on the odd obstruction, backward = `cycleGraph_isBipartite_of_even`.
+   This upgrades the one-directional `cycleGraph_isBipartite_of_even` into the sharp iff, closing the parity dichotomy of the cycle graphs.
+
+### Files modified
+- `proofs/Proofs/Erdos1080OQ03.lean` (606 → 626 lines, +2 theorems).
+- `src/data/proofs/erdos-1080-oq-03/meta.json` — synced stale counts (434/17/3 → 626/28/4; the realizability capstone had never re-synced them).
+- `src/data/research/problems/erdos-1080-oq-03.json`, this knowledge.md.
+
+### Key findings / notes
+- The whole ELEMENTARY spectrum+parity theory is now closed: necessity (bipartite ⇒ even ≥4), sufficiency/realizability (every even ≥4 occurs), girth lifting (C4,C6-free ⇒ girth ≥8), C4-free ⇔ no K22, Colorable-2 bridge, AND now cycleGraph bipartite ⟺ N even.
+- Only remaining open core: Erdős's dense C4,C6-free ⇒ C8 existence (moment/KST counting) — genuinely hard, not session-sized, not Aristotle-suitable (open).
+- Host `lake env lean` (after `lake exe cache get`) verifies this file's import set fine; no Docker needed.
+
+### Next steps
+- Extremal C8 existence (hard, open) — the sole remaining target; needs degree/moment counting infrastructure absent from Mathlib.

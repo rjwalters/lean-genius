@@ -578,6 +578,26 @@ theorem cycleGraph_isBipartite_of_even (hEven : Even N) :
   have hc := (cycleGraph.bicoloring_of_even N hEven).colorable
   rwa [Fintype.card_bool] at hc
 
+/-- **`cycleGraph N` is NOT bipartite when `N` is odd** (for `N ≥ 3`): it *is* an
+odd cycle, and a bipartite graph has no odd cycle.  This is the converse of
+`cycleGraph_isBipartite_of_even`, closing the parity dichotomy of the cycle
+graphs. -/
+theorem cycleGraph_not_isBipartite_of_odd (hN3 : 3 ≤ N) (hOdd : Odd N) :
+    ¬ IsBipartite (cycleGraph N) := fun hbip =>
+  bipartite_odd_cycle_free hbip hOdd (cycleGraph_hasCycleOfLength N hN3)
+
+/-- **`cycleGraph N` is bipartite iff `N` is even** (for `N ≥ 3`).  Combines the
+standard even parity `2`-colouring with the odd-cycle obstruction, giving the
+sharp characterization of which cycle graphs are two-colourable. -/
+theorem cycleGraph_isBipartite_iff_even (hN3 : 3 ≤ N) :
+    IsBipartite (cycleGraph N) ↔ Even N := by
+  constructor
+  · intro hbip
+    rcases Nat.even_or_odd N with heven | hodd
+    · exact heven
+    · exact absurd hbip (cycleGraph_not_isBipartite_of_odd N hN3 hodd)
+  · exact cycleGraph_isBipartite_of_even N
+
 end Realizability
 
 /-- **Sufficiency.** Every even `k ≥ 4` is the length of a cycle in some bipartite
