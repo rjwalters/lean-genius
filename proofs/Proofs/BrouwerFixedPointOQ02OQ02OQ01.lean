@@ -202,4 +202,45 @@ theorem contraction_comp_list (fL : List ((ℝ → ℝ) × ℝ)) (hne : fL ≠ [
   exact ⟨list_prod_lt_one _ hne' hpos' hlt',
     fun x y => lipschitz_comp_list fL x y hpos hlip⟩
 
+/-! ### Well-definedness of `x*` and optimality of the geometric bound
+
+Every estimate above is stated for a *given* fixed point `x*`, but for `L < 1` a
+contraction has **at most one** fixed point, so the object `x*` the estimates refer
+to is unambiguous.  Conversely the geometric decay `iterate_dist` is **best
+possible**: the linear map `t ↦ L·t` is an `L`-contraction (with equality in the
+Lipschitz bound) whose iteration `xₙ = Lⁿ·x₀` from any `x₀` satisfies
+`|xₙ − x*| = Lⁿ·|x₀ − x*|` exactly. -/
+
+/-- **Uniqueness of the fixed point.**  A contraction with constant `L < 1` has at
+    most one fixed point: if `f p = p` and `f q = q` then `|p − q| = |f p − f q| ≤
+    L·|p − q|`, so `(1 − L)·|p − q| ≤ 0` with `1 − L > 0`, forcing `p = q`.  This is
+    what makes the `x*` in every estimate above well-defined. -/
+theorem fixed_point_unique (f : ℝ → ℝ) (L : ℝ) (hL1 : L < 1)
+    (hf : ∀ x y, |f x - f y| ≤ L * |x - y|)
+    (p q : ℝ) (hp : f p = p) (hq : f q = q) : p = q := by
+  have h := hf p q
+  rw [hp, hq] at h
+  have hnn : 0 ≤ |p - q| := abs_nonneg _
+  have hq0 : |p - q| = 0 := by
+    by_contra hne
+    have hpos : 0 < |p - q| := lt_of_le_of_ne hnn (Ne.symm hne)
+    nlinarith [h, hpos, hL1]
+  exact sub_eq_zero.mp (abs_eq_zero.mp hq0)
+
+/-- **Sharpness of the geometric decay `iterate_dist`.**  The bound
+    `|xₙ − x*| ≤ Lⁿ·|x₀ − x*|` is attained, so it cannot be improved.  Witness: the
+    linear map `t ↦ L·t` (`L ≥ 0`) is an `L`-contraction *with equality*, has fixed
+    point `0`, and its iteration from `x₀` is `xₙ = Lⁿ·x₀`; for it the error decays
+    at *exactly* the geometric rate.  The four conjuncts record, in order: the exact
+    Lipschitz identity, the fixed-point equation, the iteration recurrence, and the
+    equality form of the decay bound. -/
+theorem iterate_dist_sharp (L : ℝ) (hL0 : 0 ≤ L) (x0 : ℝ) :
+    (∀ a b : ℝ, |L * a - L * b| = L * |a - b|) ∧
+    L * 0 = 0 ∧
+    (∀ k : ℕ, L ^ (k + 1) * x0 = L * (L ^ k * x0)) ∧
+    (∀ n : ℕ, |L ^ n * x0 - 0| = L ^ n * |x0 - 0|) := by
+  refine ⟨fun a b => ?_, by ring, fun k => by rw [pow_succ]; ring, fun n => ?_⟩
+  · rw [← mul_sub, abs_mul, abs_of_nonneg hL0]
+  · rw [sub_zero, sub_zero, abs_mul, abs_of_nonneg (pow_nonneg hL0 n)]
+
 end BrouwerOQ02OQ02OQ01
