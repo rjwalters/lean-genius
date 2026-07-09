@@ -2,7 +2,7 @@
   "id": "erdos-1013-oq-01",
   "title": "Erdős #1013: The Asymptotic Constant Subsumes Ratio Convergence",
   "slug": "erdos-1013-oq-01",
-  "description": "Erdős #1013 poses two open questions about h₃(k), the least number of vertices in a triangle-free graph of chromatic number k: (1) the exact asymptotic constant c in h₃(k) ~ c·k²·log k (known only to lie in [1/2,1]), and (2) whether h₃(k+1)/h₃(k) → 1. This entry does NOT determine c. Instead it proves the two questions are not independent: if the asymptotic constant exists for ANY c > 0, then ratio convergence follows automatically, and the constant is unique. The analytic core is a machine-checked proof that ((k+1)²·log(k+1))/(k²·log k) → 1. 4 theorems, 1 definition, 0 sorries, 0 axioms.",
+  "description": "Erdős #1013 poses two open questions about h₃(k), the least number of vertices in a triangle-free graph of chromatic number k: (1) the exact asymptotic constant c in h₃(k) ~ c·k²·log k (known only to lie in [1/2,1]), and (2) whether h₃(k+1)/h₃(k) → 1. This entry does NOT determine c. Instead it proves the two questions are not independent: if the asymptotic constant exists for ANY c > 0, then ratio convergence follows automatically, and the constant is unique. The analytic core is a machine-checked proof that ((k+1)²·log(k+1))/(k²·log k) → 1. 4 theorems, 2 definitions, 0 sorries, 0 axioms.",
   "meta": {
     "author": "Lean Genius Researcher",
     "sourceUrl": "https://erdosproblems.com/1013",

@@ -2,7 +2,7 @@
   "id": "unit-distance-independence-oq-01",
   "title": "A Machine-Checked Lower Bound χ(ℝ²) ≥ 4 via the Moser Spindle",
   "slug": "unit-distance-independence-oq-01",
-  "description": "Open question OQ-01 of unit-distance-independence. Supplies the strongest fully verified (0-axiom) lower bound for the Hadwiger-Nelson problem: no 3-coloring of the plane avoids monochromatic unit-distance pairs, i.e. χ(ℝ²) ≥ 4. The bound is the classical Moser (1961) result, obtained by an explicit unit-distance embedding of the 7-vertex Moser spindle and a kernel-checked proof that the spindle graph is not 3-colorable. Together with the parent's verified upper bound χ(ℝ²) ≤ 7, this gives the machine-checked window 4 ≤ χ(ℝ²) ≤ 7, with the sharper de Grey bound χ(ℝ²) ≥ 5 remaining the one axiomatized input. 23 theorems, 6 definitions, 0 axioms, 0 sorries.",
+  "description": "Open question OQ-01 of unit-distance-independence. Supplies the strongest fully verified (0-axiom) lower bound for the Hadwiger-Nelson problem: no 3-coloring of the plane avoids monochromatic unit-distance pairs, i.e. χ(ℝ²) ≥ 4. The bound is the classical Moser (1961) result, obtained by an explicit unit-distance embedding of the 7-vertex Moser spindle and a kernel-checked proof that the spindle graph is not 3-colorable. Together with the parent's verified upper bound χ(ℝ²) ≤ 7, this gives the machine-checked window 4 ≤ χ(ℝ²) ≤ 7, with the sharper de Grey bound χ(ℝ²) ≥ 5 remaining the one axiomatized input. 23 theorems, 7 definitions, 0 axioms, 0 sorries.",
   "meta": {
     "author": "Lean Genius (researcher-2)",
     "date": "2026-06-25",
@@ -97,7 +97,7 @@
     }
   ],
   "conclusion": {
-    "summary": "The Moser spindle is realized as an explicit unit-distance graph in ℝ² and proved non-3-colorable by an elementary, brute-force-free argument, yielding a fully machine-checked χ(ℝ²) ≥ 4. 23 theorems, 6 definitions, 300 lines, 0 axioms, 0 sorries (only propext / Classical.choice / Quot.sound).",
+    "summary": "The Moser spindle is realized as an explicit unit-distance graph in ℝ² and proved non-3-colorable by an elementary, brute-force-free argument, yielding a fully machine-checked χ(ℝ²) ≥ 4. 23 theorems, 7 definitions, 300 lines, 0 axioms, 0 sorries (only propext / Classical.choice / Quot.sound).",
     "implications": "Combined with the parent file's verified upper bound χ(ℝ²) ≤ 7, the window 4 ≤ χ(ℝ²) ≤ 7 is now entirely machine-checked. The sharper de Grey lower bound χ(ℝ²) ≥ 5 remains the single axiomatized input; this entry makes precise how much of the Hadwiger-Nelson bound is unconditionally verified versus assumed.",
     "openQuestions": [
       "Formalize de Grey's 2018 construction to replace the axiomatized χ(ℝ²) ≥ 5 with a verified proof",

@@ -2,7 +2,7 @@
   "id": "three-place-identity-oq-01",
   "title": "Three-Place Identity, OQ-01: Foundation Is Exactly the Round-Trip Hypothesis",
   "slug": "three-place-identity-oq-01",
-  "description": "Makes precise the parent entry's asserted-but-unproved claim that Foundation is 'essential' for the Round-Trip Theorem. Proves the sharp identity derivedMem mem y x ↔ ¬(mem y x ↔ mem x x), from which everything follows: Foundation at x is sufficient (recovers roundtrip), necessary (round-trip holds for all y iff ¬ mem x x), and when it fails the round-trip inverts (↔ ¬ mem y x). The derived membership always satisfies Foundation, so the derivation is an idempotent regularization. Pure classical propositional logic. 7 theorems, 2 definitions, 0 axioms, 0 sorries.",
+  "description": "Makes precise the parent entry's asserted-but-unproved claim that Foundation is 'essential' for the Round-Trip Theorem. Proves the sharp identity derivedMem mem y x ↔ ¬(mem y x ↔ mem x x), from which everything follows: Foundation at x is sufficient (recovers roundtrip), necessary (round-trip holds for all y iff ¬ mem x x), and when it fails the round-trip inverts (↔ ¬ mem y x). The derived membership always satisfies Foundation, so the derivation is an idempotent regularization. Pure classical propositional logic. 8 theorems, 2 definitions, 0 axioms, 0 sorries.",
   "meta": {
     "author": "Lean Genius",
     "sourceUrl": "https://spasim.org/docs/UniversalityOfThreePlaceIdentity.pdf",
@@ -84,7 +84,7 @@
     }
   ],
   "conclusion": {
-    "summary": "OQ-01 is resolved with a sharp, fully machine-verified (0 axioms, 0 sorries) characterization: Foundation is exactly the hypothesis the Three-Place Identity round-trip requires — necessary and sufficient — and when it fails the round-trip inverts to the negation of membership. The derivation is an idempotent regularization onto well-founded membership relations. 7 theorems, 2 definitions, 164 lines.",
+    "summary": "OQ-01 is resolved with a sharp, fully machine-verified (0 axioms, 0 sorries) characterization: Foundation is exactly the hypothesis the Three-Place Identity round-trip requires — necessary and sufficient — and when it fails the round-trip inverts to the negation of membership. The derivation is an idempotent regularization onto well-founded membership relations. 8 theorems, 2 definitions, 164 lines.",
     "implications": "The result upgrades the parent entry's informal 'Foundation is essential' remark to a precise theorem, and reveals additional structure: the D2 ; D1 composite is a regularization operator whose fixed points are exactly the well-founded membership relations. The inversion phenomenon gives a clean logical account of what non-well-founded membership does to the identity round-trip.",
     "openQuestions": [
       "Characterize the round-trip behaviour for partial or many-valued membership relations",

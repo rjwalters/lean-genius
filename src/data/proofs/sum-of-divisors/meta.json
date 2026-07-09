@@ -2,7 +2,7 @@
   "id": "sum-of-divisors",
   "title": "Sum of Divisors Function: Properties and Classification",
   "slug": "sum-of-divisors",
-  "description": "Formalizes the arithmetic function σ(n) = Σ_{d|n} d with concrete values, multiplicativity, prime power formula, and number classification. Proves σ(p) = p+1 for all primes, σ(mn) = σ(m)σ(n) when gcd(m,n)=1, σ(p^k) = Σ p^i, and classifies deficient/perfect/abundant numbers. Verifies amicable pairs (220,284) and (1184,1210). Proves 12 is the smallest abundant number. 81 theorems, 4 definitions; concrete values and classifications use native_decide (Lean.ofReduceBool axiom).",
+  "description": "Formalizes the arithmetic function σ(n) = Σ_{d|n} d with concrete values, multiplicativity, prime power formula, and number classification. Proves σ(p) = p+1 for all primes, σ(mn) = σ(m)σ(n) when gcd(m,n)=1, σ(p^k) = Σ p^i, and classifies deficient/perfect/abundant numbers. Verifies amicable pairs (220,284) and (1184,1210). Proves 12 is the smallest abundant number. 81 theorems, 5 definitions; concrete values and classifications use native_decide (Lean.ofReduceBool axiom).",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-02-15",

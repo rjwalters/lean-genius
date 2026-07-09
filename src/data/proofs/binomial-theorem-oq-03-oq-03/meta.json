@@ -2,7 +2,7 @@
   "id": "binomial-theorem-oq-03-oq-03",
   "title": "The Multinomial Distribution from the Multinomial Theorem: Category Aggregation",
   "slug": "binomial-theorem-oq-03-oq-03",
-  "description": "Derives the structural backbone of the multinomial distribution directly from the multinomial theorem. The centerpiece is the aggregation (lumping) property: for ANY union of categories A ⊆ s, the aggregated count X_A = Σ_{i∈A} X_i of a Multinomial(n, p) vector is Binomial(n, p_A) with p_A = Σ_{i∈A} p_i. Proved via the probability generating function: feeding the block indicator g(i) = if i∈A then t else 1 into the multinomial generating identity collapses E[t^{X_A}] to (p_A·t + (1−p_A))^n, exactly the Binomial(n, p_A) PGF. The single-coordinate marginal is the special case A = {i₀}; full aggregation A = s recovers the deterministic total X_s = n; and the complement block is Binomial(n, 1−p_A). 9 theorems, 1 definition, 0 axioms.",
+  "description": "Derives the structural backbone of the multinomial distribution directly from the multinomial theorem. The centerpiece is the aggregation (lumping) property: for ANY union of categories A ⊆ s, the aggregated count X_A = Σ_{i∈A} X_i of a Multinomial(n, p) vector is Binomial(n, p_A) with p_A = Σ_{i∈A} p_i. Proved via the probability generating function: feeding the block indicator g(i) = if i∈A then t else 1 into the multinomial generating identity collapses E[t^{X_A}] to (p_A·t + (1−p_A))^n, exactly the Binomial(n, p_A) PGF. The single-coordinate marginal is the special case A = {i₀}; full aggregation A = s recovers the deterministic total X_s = n; and the complement block is Binomial(n, 1−p_A). 8 theorems, 1 definition, 0 axioms.",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-06-25",
@@ -57,7 +57,7 @@
     ]
   },
   "conclusion": {
-    "summary": "Machine-verified aggregation property of the multinomial distribution: for any union of categories A ⊆ s, the aggregated count X_A of a Multinomial(n, p) vector is Binomial(n, p_A) with p_A = Σ_{i∈A} p_i, proved from the multinomial theorem via probability generating functions. The single-coordinate marginal, the complement-block split, and the deterministic total are all special cases. 9 theorems, 1 definition, 0 axioms, 246 lines.",
+    "summary": "Machine-verified aggregation property of the multinomial distribution: for any union of categories A ⊆ s, the aggregated count X_A of a Multinomial(n, p) vector is Binomial(n, p_A) with p_A = Σ_{i∈A} p_i, proved from the multinomial theorem via probability generating functions. The single-coordinate marginal, the complement-block split, and the deterministic total are all special cases. 8 theorems, 1 definition, 0 axioms, 246 lines.",
     "implications": "The lumping property is the operational reason multinomial models are robust to re-categorization: merging outcome categories never leaves the binomial/multinomial family and simply adds the corresponding probabilities. The generating-function proof gives all marginals and aggregates uniformly, and the binomial-coefficient identification makes the explicit PMF available whenever needed.",
     "openQuestions": [
       "Promote the PGF-level aggregation to a full joint statement: the vector of block counts (X_{A₁},…,X_{A_m}) for a partition s = A₁ ⊔ … ⊔ A_m is itself Multinomial(n, p_{A₁},…,p_{A_m}), via a multinomial factorization over disjoint unions.",

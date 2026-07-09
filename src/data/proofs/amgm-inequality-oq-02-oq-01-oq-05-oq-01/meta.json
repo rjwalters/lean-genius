@@ -2,7 +2,7 @@
   "id": "amgm-inequality-oq-02-oq-01-oq-05-oq-01",
   "title": "Newton's Rung S₂² ≥ S₁S₃ for all reals (n = 3) via an explicit SOS certificate",
   "slug": "amgm-inequality-oq-02-oq-01-oq-05-oq-01",
-  "description": "Proves the second Maclaurin/Newton rung S₂² ≥ S₁S₃ — Newton's log-concavity of the elementary symmetric means — for THREE real variables with NO nonnegativity hypothesis, via an explicit sum-of-squares certificate. Cleared of binomial denominators the rung is 2(n-2)·e₂² ≥ 3(n-1)·e₁e₃; specialized at n = 3 this is e₂² ≥ 3e₁e₃, and the exact identity e₂² − 3e₁e₃ = ½[(xy−yz)² + (yz−zx)² + (zx−xy)²] makes nonnegativity manifest and independent of the signs of x, y, z. The existing gallery proof of this rung (NewtonLC.newton_ineq) genuinely uses eₖ ≥ 0, so the all-reals statement is a strict strengthening. Includes the exact equality locus (all pair products equal — strictly larger than x = y = z). 4 theorems, 3 definitions, 0 axioms, 0 sorries.",
+  "description": "Proves the second Maclaurin/Newton rung S₂² ≥ S₁S₃ — Newton's log-concavity of the elementary symmetric means — for THREE real variables with NO nonnegativity hypothesis, via an explicit sum-of-squares certificate. Cleared of binomial denominators the rung is 2(n-2)·e₂² ≥ 3(n-1)·e₁e₃; specialized at n = 3 this is e₂² ≥ 3e₁e₃, and the exact identity e₂² − 3e₁e₃ = ½[(xy−yz)² + (yz−zx)² + (zx−xy)²] makes nonnegativity manifest and independent of the signs of x, y, z. The existing gallery proof of this rung (NewtonLC.newton_ineq) genuinely uses eₖ ≥ 0, so the all-reals statement is a strict strengthening. Includes the exact equality locus (all pair products equal — strictly larger than x = y = z). 5 theorems, 3 definitions, 0 axioms, 0 sorries.",
   "leanFile": {
     "namespace": "AmgmInequalityOQ02OQ01OQ05OQ01",
     "lineCount": 124,
@@ -61,7 +61,7 @@
     ]
   },
   "conclusion": {
-    "summary": "Newton's rung S₂² ≥ S₁S₃, cleared and specialized to n = 3, holds for all reals x, y, z via the explicit SOS identity e₂² − 3e₁e₃ = ½[(xy−yz)² + (yz−zx)² + (zx−xy)²]. Fully machine-checked: 4 theorems, 3 definitions, 0 axioms, 0 sorries, green Docker build on Mathlib v4.26.",
+    "summary": "Newton's rung S₂² ≥ S₁S₃, cleared and specialized to n = 3, holds for all reals x, y, z via the explicit SOS identity e₂² − 3e₁e₃ = ½[(xy−yz)² + (yz−zx)² + (zx−xy)²]. Fully machine-checked: 5 theorems, 3 definitions, 0 axioms, 0 sorries, green Docker build on Mathlib v4.26.",
     "implications": "Provides the all-reals base dimension for Newton's k = 2 log-concavity rung, strengthening the gallery's nonnegative proof (NewtonLC.newton_ineq). The SOS certificate is explicit and, via the Johnson-scheme (triangular-graph T(n)) eigenvalue analysis recorded in the problem's research notes, generalizes to all n — the Gram matrix of the quartic form Fₙ = 2(n-2)e₂² − 3(n-1)e₁e₃ has eigenvalues 0, n(n-1)/2, n-1 (all ≥ 0) on the three T(n) eigenspaces.",
     "openQuestions": [
       "Formalize the general-n all-reals rung 2(n-2)e₂² ≥ 3(n-1)e₁e₃ via the Johnson-scheme SOS certificate (heavier: needs the T(n) eigen-projections), or via real-rootedness preserved under differentiation (card_roots_le_derivative) plus the discriminant of the quadratic slice.",
