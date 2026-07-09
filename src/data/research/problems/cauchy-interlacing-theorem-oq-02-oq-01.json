@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE + with-multiplicity spectral decomposition RESOLVED: on a reducing pair, dim(eigenspace T μ) = dim(eigenspace(compress T H) μ) + dim(eigenspace(compress T Hᗮ) μ), the multiplicity-exact upgrade of the set-level spectrum union. The formerly-open with-multiplicity sub-multiset next-step is closed, symmetry-free. Only tuple-ordering (descending-eigenvalue) forms remain.",
+    "progressSummary": "COMPLETE + extended: added operator-theoretic capstone (reducing ⟺ commuting-projection characterization, block-diagonal reconstruction P_H T P_H + P_Hᗮ T P_Hᗮ = T, trace additivity). All symmetry-free, VERIFIED 0/0.",
     "builtItems": [
       "poincare_separation_compression in CauchyInterlacingPoincareCompression.lean (#28084) — unconditional codimension-m Poincaré separation: given a symmetric T on V (dim n+m) and any subspace H (dim n), the descending eigenvalues of the explicit orthogonal compression compress T H interlace those of T as lam⟨k+m⟩ ≤ mu k ≤ lam⟨k⟩, with NO Rayleigh side hypothesis.",
       "compress / isSymmetric_compress / rayleigh_compress_eq in CauchyInterlacingCompression.lean (#27245) — define compress T H := P_H∘T∘ι_H, prove it symmetric, and discharge the Rayleigh-agreement identity for an arbitrary subspace via the orthogonal-projection adjoint identity.",
@@ -52,7 +52,11 @@
       "map_eigenspace_compress_eq_inf_of_invariant (CauchyInterlacingPoincareCompression.lean): on invariant H the coercion H.subtype carries eigenspace(compress T H) μ exactly onto eigenspace T μ ⊓ H — symmetry-free",
       "finrank_eigenspace_compress_eq_of_invariant: exact blockwise multiplicity dim(eigenspace(compress T H) μ) = dim(eigenspace T μ ⊓ H), via Submodule.equivMapOfInjective",
       "finrank_eigenspace_compress_le_of_invariant: multiplicity monotonicity dim(eigenspace(compress T H) μ) ≤ dim(eigenspace T μ) — honest sub-multiset form of spectrum inclusion",
-      "finrank_eigenspace_eq_add_compress_of_reducing: WITH-MULTIPLICITY spectral decomposition dim(eigenspace T μ) = dim(eigenspace(compress T H) μ) + dim(eigenspace(compress T Hᗮ) μ) over a reducing pair — capstone, symmetry-free"
+      "finrank_eigenspace_eq_add_compress_of_reducing: WITH-MULTIPLICITY spectral decomposition dim(eigenspace T μ) = dim(eigenspace(compress T H) μ) + dim(eigenspace(compress T Hᗮ) μ) over a reducing pair — capstone, symmetry-free",
+      "reducing_iff_commute_starProjection: H reduces T ↔ T commutes with P_H (CauchyInterlacingPoincareCompression.lean)",
+      "starProjection_compress_add_orthogonal_eq_of_reducing: block-diagonal reconstruction P_H T P_H + P_Hᗮ T P_Hᗮ = T on a reducing subspace",
+      "trace_eq_add_starProjection_compress_of_reducing: trace additivity tr T = tr(P_H T P_H) + tr(P_Hᗮ T P_Hᗮ)",
+      "private starProjection_eq_zero_iff_mem_orthogonal helper (P_H v=0 ↔ v∈Hᗮ) re-derived from starProjection_add_starProjection_orthogonal for v4.26.0 pin"
     ],
     "insights": [
       "This slug duplicates work already merged under sibling cauchy-interlacing-theorem-oq-01-oq-02 (#28084). The Rayleigh-agreement hypothesis of the abstract poincare_separation is discharged by rayleigh_compress_eq, which is stated for an ARBITRARY submodule H (nothing uses codim=1), so the abstract theorem and the explicit compression join for any codimension m with no new work.",
@@ -65,12 +69,13 @@
       "Symmetry-free reducing mechanism: the two projections P_H v and P_Hᗮ v of a T-eigenvector v are THEMSELVES eigenvectors of T for the same μ. Proof needs no adjoint/symmetry — only that T a - μ•a lands in H while the equal quantity μ•(v-a) - T(v-a) lands in Hᗮ, and H⊓Hᗮ=⊥ (Submodule.inf_orthogonal_eq_bot) kills anything in both. Key Mathlib: starProjection_apply_mem, sub_starProjection_mem_orthogonal, sub_eq_sub_iff_add_eq_add, Module.End.hasEigenvalue_iff_mem_spectrum.",
       "The reducing-pair spectrum union spectrum(T)=spectrum(compress T H)∪spectrum(compress T Hᗮ) refines to a MULTIPLICITY statement: each eigenspace splits as an internal orthogonal direct sum eigenspace(T,μ)=(eigenspace(T,μ)⊓H)⊕(eigenspace(T,μ)⊓Hᗮ), so dim eigenspace(T,μ)=dim(·⊓H)+dim(·⊓Hᗮ). The multiplicity of μ for T is the exact sum of its multiplicities on the two blocks — the eigenspace-level (not just set-level) form of block-diagonalisation. Symmetry-free.",
       "The whole reducing-subspace theory is driven by one reusable mechanism (now factored as starProjection_eigenvector_of_reducing): if T v=μ•v and H reduces T, then P_H v and v-P_H v are THEMSELVES μ-eigenvectors. Proof: T(P_H v)-μ•P_H v ∈ H equals μ•(v-P_H v)-T(v-P_H v) ∈ Hᗮ, and H⊓Hᗮ=⊥. Disjointness of the two eigenspace blocks needs NO invariance — purely Submodule.inf_orthogonal_eq_bot.",
-      "The with-multiplicity sub-multiset form (previously flagged open) is achievable symmetry-free: the compression eigenspace is literally isomorphic (via H.subtype) to eigenspace T μ ⊓ H, so no eigenvalue-tuple-as-multiset machinery across distinct IsSymmetric witnesses is needed — the multiplicity identity follows from the eigenspace direct sum finrank_eigenspace_eq_add_of_reducing plus a per-block linear equiv."
+      "The with-multiplicity sub-multiset form (previously flagged open) is achievable symmetry-free: the compression eigenspace is literally isomorphic (via H.subtype) to eigenspace T μ ⊓ H, so no eigenvalue-tuple-as-multiset machinery across distinct IsSymmetric witnesses is needed — the multiplicity identity follows from the eigenspace direct sum finrank_eigenspace_eq_add_of_reducing plus a per-block linear equiv.",
+      "Operator-theoretic root of all reducing-subspace results: H reduces T (both H, Hᗮ T-invariant) ⟺ T commutes with the orthogonal projection P_H (pointwise T(P_H v)=P_H(T v)). Symmetry-free — only the projection is self-adjoint."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Descending-eigenvalue-tuple form: translate finrank_eigenspace_eq_add_compress_of_reducing into a statement about hT.eigenvalues tuples (sub-multiset of ordered eigenvalues) — still needs eigenvalue-tuple ↔ eigenspace-multiplicity bridge in Mathlib for symmetric operators.",
-      "Sharp attainment: characterise WHEN Poincaré interlacing μ_k = λ_k holds for all k (iff H reduces T and the block ordering aligns) — combine finrank_eigenspace_eq_add_compress_of_reducing with poincare_separation_compression."
+      "Follow-up: identify the trace-of-ambient-compression tr(P_H T P_H) with the honest compress-operator trace LinearMap.trace 𝕜 H (compress T H) (needs trace-conjugation-invariance / cyclic-trace bridge across the H↪V coercion).",
+      "Follow-up: charpoly/determinant factorization over a reducing subspace det T = det(compress T H)·det(compress T Hᗮ) (block-triangular determinant)."
     ]
   },
   "tags": [
