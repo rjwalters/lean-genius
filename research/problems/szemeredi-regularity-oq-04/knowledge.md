@@ -240,3 +240,47 @@ carries all the graph-theoretic content.
   `Σ wᵢ xᵢ² − (Σwᵢ)μ² ≥ w₀·d²` (one atom of weight ≥ w₀ deviating ≥ d from mean),
   then instantiate over the 4 sub-cells to get the true ε⁴ energy increment.
 - Outer AFKS loop assembly feeding `afks_energy_iteration_count`.
+
+## Session 2026-07-08 (Session 6, researcher-7) - Variance atom bound (the analytic core)
+
+**Mode**: REVISIT (continuing branch szem-oq04-bside-s5)
+**Outcome**: progress (2 theorems VERIFIED 0/0)
+
+### What I Did
+- `weighted_variance_identity` (Energy file): the Finset generalization of the
+  two-cell `split_energy_identity`. For nonnegative weights `w` on a finite `s`,
+  with weighted mean `μ = (Σ wⱼxⱼ)/(Σ wⱼ)`:
+  `Σ wᵢ(xᵢ−μ)² = Σ wᵢxᵢ² − (Σ wᵢ)·μ²`. Sole hypothesis `Σ wᵢ ≠ 0`. Proof:
+  termwise `sub_sq` expansion → three sub-sums via `Finset.mul_sum` +
+  `sum_sub/add_distrib` → substitute `(Σw)·μ = Σwx` (`mul_div` cancel via
+  `field_simp`) → `ring`.
+- `variance_atom_bound` (Energy file): the analytic core session 5 flagged as the
+  genuine blocker. If one cell `i₀` has weight `≥ w₀ ≥ 0` and value deviating from
+  the mean by `≥ d ≥ 0`, then `Σ wᵢxᵢ² − (Σ wᵢ)μ² ≥ w₀·d²`. Proof: variance terms
+  all nonneg → `Finset.single_le_sum` isolates the `i₀` term → `sq_le_sq'`/`sq_abs`
+  give `(xᵢ₀−μ)² ≥ d²` → two `mul_le_mul` steps give `wᵢ₀(xᵢ₀−μ)² ≥ w₀d²` →
+  `linarith` with the identity.
+
+### Key Findings
+- This is the **variance ≥ single-atom-contribution** fact that dodges the
+  session-5 obstruction (the mixed second difference / defect that no single
+  triangle inequality kills). Instead of decomposing the two-sided witness
+  deviation through a mixed density, one refines BOTH coordinates simultaneously
+  into cells and treats the density distribution as a weighted point set; the
+  witness cell is a single atom whose deviation is bounded below, and its energy
+  contribution alone is ≥ w₀d² by this bound. No triangle detour, no defect term.
+- Abstract over an arbitrary index type `ι` (not tied to `V`), so it is reusable
+  as a clean standalone weighted-variance lower bound.
+
+### Files Modified
+- proofs/Proofs/SzemerediRegularityOQ04Energy.lean (+weighted_variance_identity,
+  +variance_atom_bound; +~90 lines)
+
+### Next Steps
+- Instantiate `variance_atom_bound` over the 4 (or general m×k) sub-cells of a
+  simultaneous two-coordinate refinement: weights `|Aᵢ||Bⱼ|/n²`, values
+  `d(Aᵢ,Bⱼ)`, mean `d(A,B)`, witness atom `(A',B')` with deviation `≥ ε/2` from
+  the block average → energy gain `≥ (|A'||B'|/n²)·(ε/2)²`. This closes the
+  genuine ε⁴ increment that the two whole-partner one-sided branches (S4/S5)
+  could only approximate.
+- Wire the resulting increment into `afks_energy_iteration_count`.

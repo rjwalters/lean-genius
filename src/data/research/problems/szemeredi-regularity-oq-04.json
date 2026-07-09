@@ -26,7 +26,7 @@
     "nextAction": "Reconstruct the energy-increment step (epsilon-irregular refinement raises partitionEnergy by >= delta) from split_energy_excess_bound, then assemble the outer AFKS loop using partitionEnergy_no_infinite_increments as termination certificate."
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (VERIFIED 0/0): supplied the missing witness->increment bridge (SzemerediRegularityOQ04Witness, 4 theorems). exists_irregular_witness now feeds a concrete between-halves density gap >eps/2 - exactly the hdev hypothesis pairEnergy_split_gain/partitionEnergy_single_split_gain_uniform require. Termination engine + quantitative increment + witness bridge now all in hand; remaining: promote the witness subset to a partition part (two-sided refinement) to close the loop into afks_energy_iteration_count.",
+    "progressSummary": "PROGRESS (VERIFIED 0/0): supplied the variance atom bound Σwᵢxᵢ²−(Σwᵢ)μ²≥w₀d² (+its identity), the abstract analytic core the S5 note flagged as the genuine blocker for full AFKS closure. Bypasses the mixed-second-difference defect via variance≥single-atom-contribution. Remaining: instantiate over the m×k sub-cells of a two-coordinate refinement and feed afks_energy_iteration_count.",
     "builtItems": [
       "edgeDensity_union_mul in SzemerediRegularityOQ04Energy.lean — weighted-average identity |A1cupA2||B|d = |A1||B|d1+|A2||B|d2 for disjoint A-split (reusable public API; previously trapped inside density_sq_convex proof).",
       "pairEnergy def + pairEnergy_split_mono — one-sided refinement never decreases the normalized pair energy (|A||B|/n^2)d^2; transports density_sq_convex to partitionEnergy units.",
@@ -40,7 +40,9 @@
       "edgeDensity_whole_between (SzemerediRegularityOQ04Witness.lean): |d(A1,B)-d(A1 u A2,B)| <= |d(A1,B)-d(A2,B)| for disjoint A1,A2 (0<|B|, 0<|A1|+|A2|), via edgeDensity_union_mul + |B|-cancellation + abs of the weighted-mean identity. VERIFIED 0/0.",
       "edgeDensity_whole_between_right (SzemerediRegularityOQ04Witness.lean): second-argument form via edgeDensity_comm. VERIFIED 0/0.",
       "irregular_witness_split_gap (SzemerediRegularityOQ04Witness.lean): |d(A',B')-d(A\\A',B')| + |d(A,B')-d(A,B\\B')| > eps from a witness deviation >eps, via abs_sub_le through d(A,B') then two edgeDensity_whole_between collapses. VERIFIED 0/0.",
-      "irregular_witness_split_gap_disjunction (SzemerediRegularityOQ04Witness.lean): at least one coordinate carries a between-halves gap > eps/2 = exactly the hdev hypothesis of pairEnergy_split_gain (delta=eps/2). VERIFIED 0/0."
+      "irregular_witness_split_gap_disjunction (SzemerediRegularityOQ04Witness.lean): at least one coordinate carries a between-halves gap > eps/2 = exactly the hdev hypothesis of pairEnergy_split_gain (delta=eps/2). VERIFIED 0/0.",
+      "weighted_variance_identity (Energy): Finset generalization of split_energy_identity — Σwᵢ(xᵢ−μ)²=Σwᵢxᵢ²−(Σwᵢ)μ² for weighted mean μ, VERIFIED 0/0",
+      "variance_atom_bound (Energy): single-atom deviation ≥d (weight ≥w₀) ⟹ Σwᵢxᵢ²−(Σwᵢ)μ²≥w₀d² — the analytic core dodging the S5 defect obstruction, VERIFIED 0/0"
     ],
     "insights": [
       "partitionEnergy IS the standard size-weighted energy |Pi||Pj|/n^2 d^2 (SzemerediCore:63), NOT 1/k^2. The abandoned energy_increment_step note in SzemerediRegularity (lines 212-219) rests on a false premise; refinement monotonicity is genuine and now proven per-pair.",
@@ -50,12 +52,13 @@
       "check-superseded.sh false-positives on PRs that only MODIFY (append to) existing proof files: it flags a branch when the file PATHS it touches exist on main, ignoring whether the specific theorems are new. PR #35809 (verified quantitative gain) was wrongly auto-closed this way; rebasing onto current main fixes it (files exist at merge-base ⇒ NOT_SUPERSEDED modifies-existing-only).",
       "Three consecutive line-less exit-135 SIGBUS crashes were MASKING a real elaboration error (No goals to be solved at gcongr). docker-build --repair-cache (fresh olean force-refresh) let elaboration complete and surface the genuine error at 4.7s — SIGBUS retries alone would never have revealed it.",
       "The AFKS energy-increment lemmas (pairEnergy_split_gain, partitionEnergy_single_split_gain) consume a between-halves density gap |d(A1,B0)-d(A2,B0)|>=delta, but exists_irregular_witness produces a whole-vs-pair deviation |d(A',B')-d(A,B)|>eps. Different shapes; the missing link is a triangle-inequality bridge, now supplied by SzemerediRegularityOQ04Witness.",
-      "Density convexity: d(A1 u A2,B) is the |A1|:|A2|-weighted mean of d(A1,B),d(A2,B), hence lies between them, so the whole is never farther from a half than the two halves are from each other (edgeDensity_whole_between). Upgrades a whole-vs-half gap into a half-vs-half gap of >= the same size."
+      "Density convexity: d(A1 u A2,B) is the |A1|:|A2|-weighted mean of d(A1,B),d(A2,B), hence lies between them, so the whole is never farther from a half than the two halves are from each other (edgeDensity_whole_between). Upgrades a whole-vs-half gap into a half-vs-half gap of >= the same size.",
+      "The S5 mixed-second-difference (defect) obstruction is bypassed by treating the two-coordinate refinement as a weighted point distribution: the witness cell is one atom, and variance≥single-atom-contribution gives the energy gain directly, with no triangle-through-mixed-density detour."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Assemble the full AFKS energy-increment step: from an eps-irregular pair (A,B) in partition P, use exists_irregular_witness -> irregular_witness_split_gap_disjunction to select the coordinate with the >eps/2 gap, refine that part so the witness subset becomes a partition part, and invoke partitionEnergy_single_split_gain_uniform for the eps^2/(2n^2) floor. Remaining subtlety: the B-side disjunct needs B' promoted to a part (two-sided refinement); wire this into afks_energy_iteration_count.",
-      "State the strong-regularity conclusion: almost-all-pairs regular with arbitrary precision (AFKS), now that termination + increment + witness-bridge are all in hand.",
+      "Instantiate variance_atom_bound over the m×k sub-cells of a simultaneous two-coordinate refinement (weights |Aᵢ||Bⱼ|/n², values d(Aᵢ,Bⱼ), mean d(A,B), witness atom (A′,B′) deviation ≥ε/2) → energy gain ≥ (|A′||B′|/n²)(ε/2)²; this is the true ε⁴ increment.",
+      "Wire that increment into afks_energy_iteration_count for the outer AFKS loop.",
       "Consider upstreaming edgeDensity_whole_between (density convexity) as a clean general fact."
     ],
     "markdown": "# Knowledge Base: szemeredi-regularity-oq-04\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
