@@ -543,6 +543,98 @@ theorem awgn_multisymbol_power_ge_of_nonneg_covariance [IsProbabilityMeasure μ]
   exact variance_sum_ge_of_nonneg_covariance hW hcov
 
 /-!
+### Sharp signed boundary: the aggregate off-diagonal covariance controls the defect *exactly*
+
+The two monotonicity results above are one-directional and demand *pointwise* sign-definiteness
+(every off-diagonal pair `≥ 0`, resp. `≤ 0`).  The exact defect identity
+`variance_sum_sub_eq_offDiag_covariance` upgrades them to sharp `iff`s controlled by the far
+weaker *aggregate* sign of the total off-diagonal covariance: the variance of the sum strictly
+undershoots the sum of the variances **iff** the off-diagonal covariances cancel to a strictly
+negative aggregate, and strictly overshoots it **iff** they cancel to a strictly positive
+aggregate — no hypothesis on the individual pairs.  Together with the `= 0` boundary
+`variance_sum_eq_iff_offDiag_covariance_zero` these close the additive `< / = / >` trichotomy of
+the variance defect, the additive counterpart of the multiplicative Cauchy–Schwarz `≤ / = / <`
+trichotomy at the standard-deviation level.
+-/
+
+/-- **Strict sub-additivity ⟺ net negative off-diagonal correlation.**  The variance of a sum is
+*strictly less* than the sum of the variances if and only if the total off-diagonal covariance is
+strictly negative:
+
+    Var[∑_{i ∈ s} Wᵢ] < ∑_{i ∈ s} Var[Wᵢ]  ↔  ∑_{i ∈ s} ∑_{j ∈ s.erase i} cov[Wᵢ, Wⱼ] < 0.
+
+The sharp strict companion of `variance_sum_eq_iff_offDiag_covariance_zero`, and the exact form of
+`variance_sum_le_of_nonpos_covariance`: pointwise non-positive covariances are *sufficient* for
+sub-additivity, but the precise condition for the *strict* inequality is only that they cancel to a
+strictly negative aggregate. -/
+theorem variance_sum_lt_iff_offDiag_covariance_neg [IsFiniteMeasure μ] {ι : Type*}
+    [DecidableEq ι] {W : ι → Ω → ℝ} {s : Finset ι} (hW : ∀ i ∈ s, MemLp (W i) 2 μ) :
+    Var[∑ i ∈ s, W i; μ] < ∑ i ∈ s, Var[W i; μ] ↔
+      ∑ i ∈ s, ∑ j ∈ s.erase i, cov[W i, W j; μ] < 0 := by
+  have h := variance_sum_sub_eq_offDiag_covariance hW
+  constructor <;> intro hlt <;> linarith
+
+/-- **Strict super-additivity ⟺ net positive off-diagonal correlation.**  The variance of a sum is
+*strictly greater* than the sum of the variances if and only if the total off-diagonal covariance is
+strictly positive:
+
+    ∑_{i ∈ s} Var[Wᵢ] < Var[∑_{i ∈ s} Wᵢ]  ↔  0 < ∑_{i ∈ s} ∑_{j ∈ s.erase i} cov[Wᵢ, Wⱼ].
+
+The sharp strict companion of `variance_sum_eq_iff_offDiag_covariance_zero`, and the exact form of
+`variance_sum_ge_of_nonneg_covariance`: pointwise non-negative covariances are *sufficient* for
+super-additivity, but the precise condition for the *strict* inequality is only that they cancel to a
+strictly positive aggregate. -/
+theorem variance_sum_gt_iff_offDiag_covariance_pos [IsFiniteMeasure μ] {ι : Type*}
+    [DecidableEq ι] {W : ι → Ω → ℝ} {s : Finset ι} (hW : ∀ i ∈ s, MemLp (W i) 2 μ) :
+    ∑ i ∈ s, Var[W i; μ] < Var[∑ i ∈ s, W i; μ] ↔
+      0 < ∑ i ∈ s, ∑ j ∈ s.erase i, cov[W i, W j; μ] := by
+  have h := variance_sum_sub_eq_offDiag_covariance hW
+  constructor <;> intro hlt <;> linarith
+
+/-- **AWGN output power strictly deflates ⟺ net negative off-diagonal correlation (power form).**
+For a finite family of *zero-mean* square-integrable contributions the aggregate output power is
+*strictly less* than the sum of the individual powers if and only if the total off-diagonal
+covariance is strictly negative:
+
+    E[(∑_{i ∈ s} Wᵢ)²] < ∑_{i ∈ s} E[Wᵢ²]  ↔  ∑_{i ∈ s} ∑_{j ∈ s.erase i} cov[Wᵢ, Wⱼ] < 0.
+
+The strict sub-additive companion of `awgn_multisymbol_power_eq_iff_offDiag_covariance_zero`,
+transported into second-moment language via the zero-mean bridge. -/
+theorem awgn_multisymbol_power_lt_iff_offDiag_covariance_neg [IsProbabilityMeasure μ]
+    {ι : Type*} [DecidableEq ι] {W : ι → Ω → ℝ} {s : Finset ι}
+    (hW : ∀ i ∈ s, MemLp (W i) 2 μ) (hmean : ∀ i ∈ s, μ[W i] = 0) :
+    μ[(∑ i ∈ s, W i) ^ 2] < ∑ i ∈ s, μ[(W i) ^ 2] ↔
+      ∑ i ∈ s, ∑ j ∈ s.erase i, cov[W i, W j; μ] < 0 := by
+  have hSum : MemLp (∑ i ∈ s, W i) 2 μ := memLp_finset_sum' s hW
+  have hSum0 : μ[∑ i ∈ s, W i] = 0 := sum_mean_zero hW hmean
+  rw [second_moment_eq_variance hSum hSum0,
+    show (∑ i ∈ s, μ[(W i) ^ 2]) = ∑ i ∈ s, Var[W i; μ] from
+      Finset.sum_congr rfl fun i hi => second_moment_eq_variance (hW i hi) (hmean i hi)]
+  exact variance_sum_lt_iff_offDiag_covariance_neg hW
+
+/-- **AWGN output power strictly inflates ⟺ net positive off-diagonal correlation (power form).**
+For a finite family of *zero-mean* square-integrable contributions the aggregate output power is
+*strictly greater* than the sum of the individual powers if and only if the total off-diagonal
+covariance is strictly positive:
+
+    ∑_{i ∈ s} E[Wᵢ²] < E[(∑_{i ∈ s} Wᵢ)²]  ↔  0 < ∑_{i ∈ s} ∑_{j ∈ s.erase i} cov[Wᵢ, Wⱼ].
+
+The strict super-additive companion of `awgn_multisymbol_power_eq_iff_offDiag_covariance_zero` and
+of `awgn_multisymbol_power_ge_of_nonneg_covariance`, transported into second-moment language via the
+zero-mean bridge. -/
+theorem awgn_multisymbol_power_gt_iff_offDiag_covariance_pos [IsProbabilityMeasure μ]
+    {ι : Type*} [DecidableEq ι] {W : ι → Ω → ℝ} {s : Finset ι}
+    (hW : ∀ i ∈ s, MemLp (W i) 2 μ) (hmean : ∀ i ∈ s, μ[W i] = 0) :
+    ∑ i ∈ s, μ[(W i) ^ 2] < μ[(∑ i ∈ s, W i) ^ 2] ↔
+      0 < ∑ i ∈ s, ∑ j ∈ s.erase i, cov[W i, W j; μ] := by
+  have hSum : MemLp (∑ i ∈ s, W i) 2 μ := memLp_finset_sum' s hW
+  have hSum0 : μ[∑ i ∈ s, W i] = 0 := sum_mean_zero hW hmean
+  rw [second_moment_eq_variance hSum hSum0,
+    show (∑ i ∈ s, μ[(W i) ^ 2]) = ∑ i ∈ s, Var[W i; μ] from
+      Finset.sum_congr rfl fun i hi => second_moment_eq_variance (hW i hi) (hmean i hi)]
+  exact variance_sum_gt_iff_offDiag_covariance_pos hW
+
+/-!
 ### Sharp *equality* boundary: when Cauchy–Schwarz is tight (a.e. affine dependence)
 
 The covariance Cauchy–Schwarz inequality `cov[X, Y]² ≤ Var[X]·Var[Y]` proved above raises the
