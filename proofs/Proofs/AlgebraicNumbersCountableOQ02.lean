@@ -8,11 +8,18 @@ import Proofs.CantorDiagonalization
 import Proofs.AlgebraicNumbersCountable
 
 /-
-# ℝ is Uncountable: Cantor's Diagonal Argument (1874)
+# ℝ is Uncountable: Cantor's Cardinality Argument (ℵ₀ < 2^ℵ₀ = 𝔠)
 
 ## Open Question (algebraic-numbers-countable-oq-02)
 
-Prove in Lean 4 that ℝ is uncountable (Cantor's diagonal argument, completing the 1874 paper).
+Prove in Lean 4 that ℝ is uncountable via cardinal arithmetic (#ℝ = 𝔠 = 2^ℵ₀ > ℵ₀).
+
+Note on technique/history: this file proves ¬Countable ℝ by *cardinal arithmetic*,
+not by a diagonal digit construction. Cantor's original 1874 paper established the
+uncountability of ℝ via the *nested-interval* method (see sibling entry
+algebraic-numbers-countable-oq-02-oq-02); the *diagonal* digit argument came later,
+in 1891 (see sibling CantorDiagonalization.lean). The only "diagonal" content here is
+the abstract cardinal gap ℵ₀ < 2^ℵ₀ (Cantor's theorem, `Cardinal.cantor`).
 
 ## What This Proves
 
@@ -24,9 +31,10 @@ Prove in Lean 4 that ℝ is uncountable (Cantor's diagonal argument, completing 
 
 ## Proof Strategy
 
-**Cantor's diagonal argument** proves ℵ₀ < 2^ℵ₀ (no surjection from a set to its power set).
-Since #ℝ = 𝔠 = 2^ℵ₀ (Cardinal.mk_real) and 𝔠 > ℵ₀ (Cardinal.aleph0_lt_continuum),
-no injection ℝ → ℕ exists, i.e., ℝ is uncountable.
+**Cardinal arithmetic** (not a diagonal digit construction). Since #ℝ = 𝔠 = 2^ℵ₀
+(Cardinal.mk_real) and 𝔠 > ℵ₀ (Cardinal.aleph0_lt_continuum), no injection ℝ → ℕ
+exists, i.e., ℝ is uncountable. The strict gap ℵ₀ < 2^ℵ₀ is **Cantor's theorem**
+(the abstract form of the diagonal argument: no surjection from a set to its power set).
 
 **Connection to CantorDiagonalization**: The abstract gap ℵ₀ < 2^ℵ₀ (Cardinal.cantor ℵ₀)
 is the same theorem as no surjection ℕ → BinarySeq exists (CantorDiagonalization.lean).
@@ -40,9 +48,13 @@ real numbers are transcendental.
 ## Historical Note
 
 Cantor's 1874 paper "Über eine Eigenschaft des Inbegriffes aller reellen algebraischen Zahlen"
-proved two results:
+proved two results (using the *nested-interval* method, not the later diagonal argument):
 - The algebraic numbers are countable
 - The real numbers are uncountable
+
+The famous *diagonal* digit argument is from Cantor's 1891 paper. This formalization
+takes a third route — pure cardinal arithmetic via Mathlib's continuum bridge — which is
+logically equivalent to both but mechanically shortest.
 
 This established that there are "more" transcendental numbers than algebraic ones in a precise
 cardinality sense, even though transcendental numbers were historically much harder to identify
@@ -105,8 +117,9 @@ theorem reals_uncountable : ¬ Countable ℝ := reals_not_countable
 
 /-- **No surjection ℕ → ℝ exists.**
 
-    This is the direct statement of Cantor's diagonal argument:
-    no enumeration of real numbers can be complete.
+    This is the classical conclusion of Cantor's uncountability theorem:
+    no enumeration of real numbers can be complete. (Here it is obtained from
+    the cardinality bound above, not from a diagonal digit construction.)
 
     Proof: A surjection f : ℕ → ℝ would make ℝ countable (since ℕ is countable
     and the image of a countable set under a surjection is countable). But ℝ is

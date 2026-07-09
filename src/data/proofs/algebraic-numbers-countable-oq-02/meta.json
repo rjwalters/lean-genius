@@ -1,8 +1,8 @@
 {
   "id": "algebraic-numbers-countable-oq-02",
-  "title": "ℝ is Uncountable: Cantor's Diagonal Argument (1874)",
+  "title": "ℝ is Uncountable: Cantor's Cardinality Argument (ℵ₀ < 2^ℵ₀ = 𝔠)",
   "slug": "algebraic-numbers-countable-oq-02",
-  "description": "Proves that ℝ is uncountable via Cantor's diagonal argument, completing the 1874 paper. The main result ¬Countable ℝ follows from #ℝ = 𝔠 = 2^ℵ₀ > ℵ₀. Derives that: (1) no surjection ℕ → ℝ exists, (2) transcendental reals are uncountable. 0 sorries, 0 axioms.",
+  "description": "Proves ¬Countable ℝ via cardinal arithmetic: #ℝ = 𝔠 = 2^ℵ₀ > ℵ₀ (Mathlib bridge Cardinal.mk_real / Cardinal.aleph0_lt_continuum). Derives that (1) no surjection ℕ → ℝ exists, and (2) the transcendental reals are uncountable. The abstract diagonal content is Cantor's theorem ℵ₀ < 2^ℵ₀ (Cardinal.cantor). Cantor's 1874 paper established uncountability via nested intervals (see sibling oq-02-oq-02); the 1891 diagonal digit construction is the sibling CantorDiagonalization entry. 0 sorries, 0 axioms.",
   "meta": {
     "author": "Lean Genius Research",
     "sourceUrl": "https://en.wikipedia.org/wiki/Cantor%27s_diagonal_argument",
