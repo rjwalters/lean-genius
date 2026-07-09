@@ -49,7 +49,7 @@
     "historicalContext": "The problem of squaring the circle dates to the Rhind Papyrus (c. 1650 BCE) and was a central challenge in ancient Greek mathematics, studied by Anaxagoras, Hippocrates of Chios, and Archimedes. In 1761, Johann Heinrich Lambert proved $\\pi$ is irrational, but transcendence required entirely new methods. Charles Hermite's landmark 1873 proof that $e$ is transcendental introduced the auxiliary polynomial technique. Ferdinand von Lindemann, building directly on Hermite's method, proved $\\pi$ transcendental in 1882, definitively resolving the 2,000-year-old circle-squaring problem. Karl Weierstrass later generalized Lindemann's result to the full Lindemann-Weierstrass theorem (1885), establishing that $e^{\\alpha_1}, \\ldots, e^{\\alpha_n}$ are algebraically independent when $\\alpha_1, \\ldots, \\alpha_n$ are linearly independent algebraic numbers. This line of work opened transcendental number theory as a distinct field, leading to Gelfond-Schneider (1934), Baker's theorem (1966), and modern Diophantine analysis.",
     "problemStatement": "**Theorem**: $\\pi$ is transcendental over $\\mathbb{Z}$, i.e., there is no nonzero polynomial $P \\in \\mathbb{Z}[X]$ such that $P(\\pi) = 0$.\n\n$$\\nexists P \\in \\mathbb{Z}[X] \\setminus \\{0\\}: P(\\pi) = 0$$\n\n**Corollary**: Squaring the circle is impossible with ruler and compass, since constructible numbers are algebraic of degree $2^n$.",
     "text": "Pi is transcendental: it is not a root of any polynomial with integer coefficients. This proves the impossibility of squaring the circle with ruler and compass.",
-    "proofStrategy": "The proof proceeds by contradiction using **Lindemann's theorem**: if $\\alpha \\neq 0$ is algebraic, then $e^\\alpha$ is transcendental. Suppose $\\pi$ were algebraic. Then $i\\pi$ would be algebraic (since $i$ is algebraic and algebraic numbers form a field). By Lindemann's theorem, $e^{i\\pi}$ must be transcendental. But Euler's identity gives $e^{i\\pi} = -1$, which is algebraic (root of $X + 1$). This contradiction proves $\\pi$ is transcendental. The Lean formalization axiomatizes Lindemann's theorem and then proves corollaries: $-1$ and $i$ are algebraic, and expressions like $2\\pi$, $\\pi^2$, $\\pi + 1$, $1/\\pi$, and $\\sqrt{\\pi}$ are all transcendental.",
+    "proofStrategy": "The proof proceeds by contradiction using **Lindemann's theorem**: if $\\alpha \\neq 0$ is algebraic, then $e^\\alpha$ is transcendental. Suppose $\\pi$ were algebraic. Then $i\\pi$ would be algebraic (since $i$ is algebraic and algebraic numbers form a field). By Lindemann's theorem, $e^{i\\pi}$ must be transcendental. But Euler's identity gives $e^{i\\pi} = -1$, which is algebraic (root of $X + 1$). This contradiction proves $\\pi$ is transcendental. The Lean formalization axiomatizes only the Hermite-Lindemann theorem (imported from `HermiteLindemann.lean`); from that single axiom it *proves* Lindemann's theorem, $\\pi$'s transcendence, and every corollary: $-1$ and $i$ are algebraic, and $2\\pi$, $\\pi^2$, $\\pi + 1$, $1/\\pi$, and $\\sqrt{\\pi}$ are all transcendental.",
     "keyInsights": [
       "**Contraposition via Euler's identity**: The proof hinges on $e^{i\\pi} = -1$; if $\\pi$ were algebraic, Lindemann's theorem would force $e^{i\\pi}$ to be transcendental, contradicting that $-1$ is algebraic",
       "**Lindemann-Weierstrass generalization**: Lindemann's theorem for a single exponent is a special case of the Lindemann-Weierstrass theorem on linear independence of $e^{\\alpha_i}$ over algebraic numbers",
@@ -97,11 +97,11 @@
     },
     {
       "id": "main-axioms",
-      "title": "The Main Theorem (Axiomatized)",
+      "title": "The Main Theorem (Proved from Hermite-Lindemann)",
       "startLine": 118,
       "endLine": 154,
-      "summary": "Axiomatizes Lindemann's theorem (`lindemann_theorem`) and the main result `Transcendental ℤ Real.pi`, plus `Transcendental ℚ Real.pi`. These await Mathlib's Lindemann-Weierstrass formalization.",
-      "mathContext": "Axiomatizes Lindemann's theorem (`lindemann_theorem`) and the main result `Transcendental $\\mathbb{Z}$ Real.$\\pi$`, plus `Transcendental $\\mathbb{Q}$ Real.$\\pi$`. These await Mathlib's Lindemann-Weierstrass formalization."
+      "summary": "Proves Lindemann's theorem (`lindemann_theorem`) and the main result `Transcendental ℤ Real.pi`, plus `Transcendental ℚ Real.pi`, from the imported `HermiteLindemann.hermite_lindemann` axiom via the `IsFractionRing.isAlgebraic_iff` bridge and Euler's identity. Only the Hermite-Lindemann theorem itself remains axiomatized (awaiting Mathlib's Lindemann-Weierstrass formalization).",
+      "mathContext": "Proves Lindemann's theorem (`lindemann_theorem`) and the main result `Transcendental $\\mathbb{Z}$ Real.$\\pi$`, plus `Transcendental $\\mathbb{Q}$ Real.$\\pi$`, from the imported `HermiteLindemann.hermite_lindemann` axiom via the `IsFractionRing.isAlgebraic_iff` bridge and Euler's identity. Only the Hermite-Lindemann theorem itself remains axiomatized (awaiting Mathlib's Lindemann-Weierstrass formalization)."
     },
     {
       "id": "algebraic-numbers",
@@ -116,8 +116,8 @@
       "title": "Corollaries of Transcendence",
       "startLine": 194,
       "endLine": 283,
-      "summary": "Axiomatizes and states propagation results: $\\pi$ is irrational, $2\\pi$ is transcendental, $\\pi^2$ is transcendental, $\\pi + 1$ is transcendental, and $1/\\pi$ is transcendental — each via polynomial composition arguments.",
-      "mathContext": "Axiomatizes and states propagation results: $\\pi$ is irrational, $2\\pi$ is transcendental, $\\pi^2$ is transcendental, $\\pi + 1$ is transcendental, and $1/\\pi$ is transcendental — each via polynomial composition arguments."
+      "summary": "Proves propagation results: $\\pi$ is irrational, $2\\pi$ is transcendental, $\\pi^2$ is transcendental, $\\pi + 1$ is transcendental, and $1/\\pi$ is transcendental — each derived from $\\pi$'s transcendence via polynomial composition and field arguments.",
+      "mathContext": "Proves propagation results: $\\pi$ is irrational, $2\\pi$ is transcendental, $\\pi^2$ is transcendental, $\\pi + 1$ is transcendental, and $1/\\pi$ is transcendental — each derived from $\\pi$'s transcendence via polynomial composition and field arguments."
     },
     {
       "id": "squaring-circle",
@@ -145,13 +145,13 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization axiomatizes Lindemann's 1882 proof that $\\pi$ is transcendental, resolving the 2,000-year-old problem of squaring the circle. The Lean file proves the supporting lemmas ($-1$ and $i$ are algebraic, Euler's identity) and derives corollaries ($2\\pi$, $\\pi^2$, $\\pi + 1$, $1/\\pi$, $\\sqrt{\\pi}$ are all transcendental). The main result and Lindemann's theorem are axiomatized pending Mathlib's formalization of the Lindemann-Weierstrass theorem.",
+    "summary": "This formalization axiomatizes Lindemann's 1882 proof that $\\pi$ is transcendental, resolving the 2,000-year-old problem of squaring the circle. The Lean file proves the supporting lemmas ($-1$ and $i$ are algebraic, Euler's identity) and derives corollaries ($2\\pi$, $\\pi^2$, $\\pi + 1$, $1/\\pi$, $\\sqrt{\\pi}$ are all transcendental). The main result and Lindemann's theorem are proved from a single imported axiom — the Hermite-Lindemann theorem — which itself awaits Mathlib's formalization of the Lindemann-Weierstrass theorem.",
     "implications": "**Theoretical Significance**: The transcendence of $\\pi$ established transcendental number theory as a major branch of mathematics.\n\nIt resolved the most famous classical construction problem and demonstrated that fundamental geometric constants lie beyond algebraic description. The proof techniques — auxiliary polynomials, integration by parts estimates, and algebraic independence arguments — became foundational tools leading to Gelfond-Schneider, Baker's theorem, and modern Diophantine approximation theory.",
     "openQuestions": [
       "Is $\\pi + e$ transcendental? Both are individually transcendental, but their sum's status remains one of the great open problems in transcendental number theory",
       "Is $\\pi$ a normal number (equidistributed digits in every base)? Statistical evidence strongly suggests yes, but no proof is known",
       "What is the exact irrationality measure $\\mu(\\pi)$? Known: $2 \\leq \\mu(\\pi) \\leq 7.103205$; conjectured to be exactly 2",
-      "Can the Lindemann-Weierstrass theorem be fully formalized in Lean/Mathlib? This would eliminate the axioms in this file and provide a complete proof"
+      "Can the Lindemann-Weierstrass theorem be fully formalized in Lean/Mathlib? This would eliminate the remaining axiom (the imported Hermite-Lindemann theorem) and provide a fully unconditional proof"
     ]
   },
   "crossReferences": [
