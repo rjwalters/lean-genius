@@ -110,6 +110,16 @@
       "targetId": "pascals-hexagon-incomplete-01-oq-03",
       "relationship": "related",
       "description": "Sibling OQ-03 proves the definite half of the Sylvester dichotomy (positive-definite conics are never equivalent to stdConic). This entry removes the symmetry hypothesis; together they isolate the remaining work to the indefinite-symmetric Sylvester direction."
+    },
+    {
+      "targetId": "pascals-hexagon",
+      "relationship": "related",
+      "description": "The theorem this whole lineage targets: a hexagon inscribed in a conic has its three pairs of opposite sides meeting at collinear points. The Sylvester reduction refined here — normalizing an arbitrary non-degenerate conic to stdConic = diag(1,1,−1) — is the projective-normal-form step by which the general Pascal statement is reduced to the standard conic."
+    },
+    {
+      "targetId": "pascals-hexagon-incomplete-01-oq-03-oq-01",
+      "relationship": "related",
+      "description": "The sufficiency counterpart completing the projective-equivalence dichotomy: while this entry (with OQ-03) supplies the necessity side (definite conics are never equivalent to stdConic), OQ-03-OQ-01 proves indefinite diagonal conics ARE projectively equivalent to stdConic — closing the indefinite-symmetric Sylvester direction these entries isolate."
     }
   ],
   "leanFile": {
