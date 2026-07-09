@@ -1206,4 +1206,77 @@ theorem exists_pComplement_isCyclic_iff_card_fifteen {G : Type*} [Group G] [Fini
     c hc (by norm_num)
   exact ⟨c, H, hHcard, hHequiv, hHiff⟩
 
+/-- **Nilpotency descends to the `p`-complement.**  Running the internal direct product
+`G ≃* ⟨c⟩ × H` (`exists_mulEquiv_prod_zpowers_of_coprime_index`) through the theory of nilpotent
+groups collapses nilpotency of the whole group to that of the complement:
+
+> `G` is nilpotent **iff** its normal `p`-complement `H` is nilpotent.
+
+This is a genuinely different reduction from the cyclicity descent (`exists_pComplement_isCyclic_iff`):
+cyclicity is *not* recovered from nilpotency, and `H` may be nilpotent-but-not-cyclic for composite
+`m`, so this equivalence carries strictly weaker — hence more broadly applicable — structural
+information about `G`.
+
+The central Sylow-`p` factor `⟨c⟩` is a `p`-group (order `p`), hence **always** nilpotent
+(`IsPGroup.isNilpotent`).  The two directions then use complementary Mathlib facts about the direct
+product `⟨c⟩ × H`:
+
+* **`G` nilpotent ⟹ `H` nilpotent.**  Transport nilpotency across `e : G ≃* ⟨c⟩ × H`
+  (`nilpotent_of_mulEquiv`); `H` is the image of the surjective projection
+  `MonoidHom.snd : ⟨c⟩ × H →* H`, and the image of a nilpotent group is nilpotent
+  (`nilpotent_of_surjective`).
+* **`H` nilpotent ⟹ `G` nilpotent.**  A finite product of nilpotent groups is nilpotent
+  (`isNilpotent_prod`, with the always-nilpotent factor `⟨c⟩`), and nilpotency transports back across
+  `e.symm`.
+
+Combined with `IsNilpotent.to_isSolvable` this feeds the Abel–Ruffini solvability chain: whenever the
+`p`-complement is nilpotent (e.g. abelian, or itself a coprime-index tower), the ambient group `G` is
+solvable — the elementary structural engine behind the `p = 5` non-solvability dichotomy. -/
+theorem exists_pComplement_isNilpotent_iff {G : Type*} [Group G] [Finite G] {p : ℕ}
+    [hp : Fact p.Prime] (m : ℕ)
+    (hcard : Nat.card G = p * m) (hpm : ¬ (p ∣ m))
+    (huniq : ∀ d : ℕ, d ∣ m → d % p = 1 → d = 1)
+    (c : G) (hc : orderOf c = p) (hcop : Nat.Coprime m (p - 1)) :
+    ∃ H : Subgroup G, Nat.card H = m ∧ Nonempty (G ≃* (Subgroup.zpowers c) × H) ∧
+      (Group.IsNilpotent G ↔ Group.IsNilpotent H) := by
+  obtain ⟨H, hHcard, ⟨e⟩⟩ :=
+    exists_mulEquiv_prod_zpowers_of_coprime_index m hcard hpm huniq c hc hcop
+  refine ⟨H, hHcard, ⟨e⟩, ?_⟩
+  -- `⟨c⟩` is a `p`-group (order `p`), hence nilpotent.
+  have h_pg : IsPGroup p (Subgroup.zpowers c) :=
+    IsPGroup.iff_card.mpr ⟨1, by rw [pow_one, Nat.card_zpowers, hc]⟩
+  haveI hznil : Group.IsNilpotent (Subgroup.zpowers c) := h_pg.isNilpotent
+  constructor
+  · -- `G` nilpotent ⟹ `H` nilpotent: transport across `e`, then project onto `H`.
+    intro hG
+    haveI := hG
+    haveI : Group.IsNilpotent ((Subgroup.zpowers c) × H) := nilpotent_of_mulEquiv e
+    exact nilpotent_of_surjective (MonoidHom.snd (Subgroup.zpowers c) H)
+      (fun h => ⟨(1, h), rfl⟩)
+  · -- `H` nilpotent ⟹ `G` nilpotent: product of nilpotent factors, transport back across `e.symm`.
+    intro hH
+    haveI := hH
+    haveI : Group.IsNilpotent ((Subgroup.zpowers c) × H) := inferInstance
+    exact nilpotent_of_mulEquiv e.symm
+
+/-- **Order `15` nilpotency as a complement equivalence.**  The `p = 5, m = 3` instance of
+`exists_pComplement_isNilpotent_iff`: a group `G` of order `15` splits as `⟨c⟩ × H` with `|H| = 3`,
+and `G` is nilpotent *iff* the order-`3` complement `H` is.  Since `|H| = 3` is prime, `H` is
+abelian, hence nilpotent, so this exhibits *every* group of order `15` as nilpotent — consistent with
+the sharper `isCyclic_of_card_fifteen`, but reached through the direct-product decomposition rather
+than by classifying the group outright. -/
+theorem exists_pComplement_isNilpotent_iff_card_fifteen {G : Type*} [Group G] [Finite G]
+    (hcard : Nat.card G = 15) :
+    ∃ (c : G) (H : Subgroup G), Nat.card H = 3 ∧
+      Nonempty (G ≃* (Subgroup.zpowers c) × H) ∧
+        (Group.IsNilpotent G ↔ Group.IsNilpotent H) := by
+  haveI : Fact (Nat.Prime 5) := ⟨by norm_num⟩
+  haveI : Fintype G := Fintype.ofFinite G
+  obtain ⟨c, hc⟩ : ∃ x : G, orderOf x = 5 :=
+    exists_prime_orderOf_dvd_card 5 (by rw [← Nat.card_eq_fintype_card, hcard]; norm_num)
+  obtain ⟨H, hHcard, hHequiv, hHiff⟩ := exists_pComplement_isNilpotent_iff (p := 5) (m := 3)
+    (hcard.trans (by norm_num)) (by norm_num) (huniq_of_lt (by norm_num) (by norm_num))
+    c hc (by norm_num)
+  exact ⟨c, H, hHcard, hHequiv, hHiff⟩
+
 end AbelRuffiniSylowElim
