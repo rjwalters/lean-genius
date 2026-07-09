@@ -34,7 +34,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (VERIFIED 0/0): full positive half of the classical order-pq classification (p<q primes, p∤q−1 ⟹ cyclic) proved for ARBITRARY primes — generalizing the previous order-15-only instance — together with its SHARP converse (non-cyclic ⟹ p∣q−1) obtained as a one-line contrapositive. Only the Frobenius-group WITNESS construction (order 21) and the density-1 Galois-obstruction forward direction remain open.",
+    "progressSummary": "PROGRESS (VERIFIED 0/0): supplied the missing existence witness that makes the order-pq cyclic classification genuinely two-sided. For the p=2 family, DihedralGroup q (odd prime q) is a finite non-cyclic group of order 2q, refuting order-2q => cyclic and realizing the necessity condition p | q-1. Remaining open: general-p (p|q-1) Frobenius witness (semidirect product) and the density-1 Galois-obstruction forward direction (analytically blocked).",
     "builtItems": [
       "zpowers_sylow_normal in AbelRuffiniOQ04OQ01OQ03.lean — arbitrary-prime Sylow-elimination core: order p·m + p∤m + no-small-divisor ⇒ ⟨c⟩ (order-p) normal",
       "conj_mem_zpowers_sylow — every g normalizes ⟨c⟩ (general prime consequence)",
@@ -64,7 +64,10 @@
       "mul_comm_of_card_eq_prime_mul_prime_of_not_dvd (AbelRuffiniOQ04OQ01OQ03.lean): general commutativity for order pq, p<q primes, p∤q−1 — VERIFIED 0/0",
       "isCyclic_of_card_eq_prime_mul_prime_of_not_dvd: general positive half of order-pq classification, generalizes isCyclic_of_card_fifteen — VERIFIED 0/0",
       "dvd_sub_one_of_not_isCyclic_card_eq_prime_mul_prime: sharp converse (non-cyclic ⟹ p∣q−1) via contrapositive — VERIFIED 0/0",
-      "isCyclic_of_card_thirtyfive (35=5·7) and isCyclic_of_card_thirtythree (33=3·11): concrete instances beyond order 15 — VERIFIED 0/0"
+      "isCyclic_of_card_thirtyfive (35=5·7) and isCyclic_of_card_thirtythree (33=3·11): concrete instances beyond order 15 — VERIFIED 0/0",
+      "dihedralGroup_not_isCyclic (n>2 => ¬IsCyclic (DihedralGroup n)) in Proofs/AbelRuffiniOQ04OQ01OQ03Sharpness.lean",
+      "exists_finite_not_isCyclic_card_eq_two_mul (odd prime q => ∃ finite non-cyclic G, Nat.card G = 2q) — the DihedralGroup q witness",
+      "not_forall_isCyclic_card_eq_two_mul (odd prime q => ¬∀ finite G of order 2q, IsCyclic G) — crisp sharpness statement; plus exists_finite_not_isCyclic_card_six (order-6 instance, D3≅S3)"
     ],
     "insights": [
       "Generalizing the fixed prime 5 to a variable prime p is NOT a rename: the two number-theoretic steps change tactic. n_p ≡ 1 (mod p) ⇒ n_p = 1 needs Nat.mod_eq_of_lt hp.out.one_lt to evaluate 1 % p (omega cannot do variable-modulus mod); index cancellation [G:P]·p = p·m ⇒ [G:P] = m needs Nat.eq_of_mul_eq_mul_right (omega cannot cancel a variable multiplier).",
@@ -83,7 +86,9 @@
       "The single-element centrality criterion promotes cleanly to the whole Sylow-p subgroup and yields a genuine GLOBAL class-equation consequence p | |Z(G)| (centre nontrivial) without needing the full sum-over-conjugacy-classes packaging.",
       "Central normal Hall subgroup splits off as a direct factor: Schur-Zassenhaus complement + centrality => complement automatically normal (conjugation by the central factor is trivial), giving internal direct product — elementary content of Burnside normal p-complement in this cyclic-Sylow regime.",
       "Order-pq classification (p<q primes): cyclicity is governed ENTIRELY by whether p ∣ q−1. The Sylow-elimination engine (mem_center_of_coprime_index, mul_comm_of_prime_index_coprime) already supplies the positive half for ARBITRARY p,q — order 15 was just the p=3,q=5 instance.",
-      "The sharp CONVERSE (non-cyclic order-pq ⟹ p ∣ q−1) is a free one-line contrapositive of the sufficiency theorem — no Frobenius-group construction needed to state the sharp boundary. Constructing ℤ/q⋊ℤ/p to WITNESS non-cyclicity when p∣q−1 remains the only heavier open direction."
+      "The sharp CONVERSE (non-cyclic order-pq ⟹ p ∣ q−1) is a free one-line contrapositive of the sufficiency theorem — no Frobenius-group construction needed to state the sharp boundary. Constructing ℤ/q⋊ℤ/p to WITNESS non-cyclicity when p∣q−1 remains the only heavier open direction.",
+      "Sharpness of the order-pq cyclic classification is witnessed concretely for the family p=2: for every odd prime q one has 2 | q-1, and DihedralGroup q is a finite non-cyclic group of order 2q — so the necessity condition p | q-1 (dvd_sub_one_of_not_isCyclic_card_eq_prime_mul_prime) is realizable, not vacuous.",
+      "Non-cyclicity of DihedralGroup n (n>2) is elementary and Mathlib-native: r 1 and sr 0 fail to commute (r 1 * sr 0 = sr(-1) via r_mul_sr, sr 0 * r 1 = sr 1 via sr_mul_r), and -1 != 1 in ZMod n once n>2; combined with IsCyclic.commutative (a cyclic group is Std.Commutative) this refutes IsCyclic without any group-order computation."
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -93,7 +98,8 @@
       "Abelian regime is now complete through prime-index/order-15. A natural next follow-up: order 21 = 3·7 (nonabelian example exists) vs the coprime criterion — sharpness of the abelian conclusion when q ∤ (p-1) fails (e.g. 7 ≡ 1 mod 3 gives the nonabelian group of order 21).",
       "Package exists_normal_pComplement_of_coprime_index into a genuine MulEquiv G ≃* ⟨c⟩ × H (needs internal-direct-product MulEquiv from two complementary normal subgroups; Mathlib Complement.lean lacks a ready lemma, would build from commute_of_normal_of_disjoint).",
       "Consequence: under coprime index G is a (nontrivial-centre) group with G/Z abelian-ish? Investigate whether central Sylow-p + p-complement forces G nilpotent iff H nilpotent.",
-      "Construct the nonabelian Frobenius group ℤ/q ⋊ ℤ/p (via SemidirectProduct with a nontrivial hom ℤ/p → (ZMod q)ˣ of order p, exists when p ∣ q−1) to WITNESS the sharpness of dvd_sub_one_of_not_isCyclic — e.g. the order-21 group. Heavier (~150-300 lines): need order computation of the semidirect product and a non-commuting pair."
+      "Construct the nonabelian Frobenius group ℤ/q ⋊ ℤ/p (via SemidirectProduct with a nontrivial hom ℤ/p → (ZMod q)ˣ of order p, exists when p ∣ q−1) to WITNESS the sharpness of dvd_sub_one_of_not_isCyclic — e.g. the order-21 group. Heavier (~150-300 lines): need order computation of the semidirect product and a non-commuting pair.",
+      "Extend the sharpness witness beyond p=2 to general p|q-1: construct the nonabelian ℤ/q ⋊ ℤ/p (e.g. order 21) via SemidirectProduct with a nontrivial hom ZMod p → (ZMod q)ˣ of order p — heavier (semidirect-product order + non-commuting pair), ~150-300 lines."
     ]
   },
   "tags": [
