@@ -254,4 +254,52 @@ theorem hasEigenvalue_compress_eigenvalue_of_invariant
     ⟨Module.End.mem_eigenspace_iff.mpr hcoe, hne⟩
   exact Module.End.hasEigenvalue_of_hasEigenvector hev
 
+/-- **Spectrum containment on an invariant subspace (attainment case).**
+
+If `H` is `T`-invariant, the whole spectrum of the orthogonal compression
+`compress T H` is contained in the spectrum of the ambient operator `T`:
+
+  `spectrum 𝕜 (compress T H) ⊆ spectrum 𝕜 T`.
+
+This is the set-level upgrade of the per-index
+`hasEigenvalue_compress_eigenvalue_of_invariant`.  On an invariant `H` the
+compression coincides with the honest restriction `T.restrict`
+(`compress_eq_restrict_of_invariant`), so it loses no spectral information: each
+eigenvalue it exhibits is realised in the ambient space by the *same*
+eigenvector, viewed in `V`.  No symmetry of `T` is required — this is a pure
+invariant-restriction fact, which is exactly why Poincaré interlacing
+`μ_k ≤ λ_k` degenerates to equality on such a block. -/
+theorem spectrum_compress_subset_of_invariant {T : V →ₗ[𝕜] V} (H : Submodule 𝕜 V)
+    (hinv : ∀ y ∈ H, T y ∈ H) :
+    spectrum 𝕜 (compress T H) ⊆ spectrum 𝕜 T := by
+  intro μ hμ
+  -- `μ ∈ spectrum` ⇒ eigenvalue of the (finite-dimensional) compression.
+  have hev : Module.End.HasEigenvalue (compress T H) μ :=
+    Module.End.hasEigenvalue_iff_mem_spectrum.mpr hμ
+  obtain ⟨y, hy⟩ := hev.exists_hasEigenvector
+  rw [Module.End.hasEigenvector_iff] at hy
+  obtain ⟨hy_mem, hy_ne⟩ := hy
+  rw [Module.End.mem_eigenspace_iff] at hy_mem
+  -- Transport the eigen-equation `compress T H y = μ • y` to `V` via invariance.
+  have hcoe : T (y : V) = μ • (y : V) := by
+    have e := coe_compress_of_invariant H hinv y
+    rw [hy_mem] at e
+    simpa using e.symm
+  have hyV : (y : V) ≠ 0 := by rw [Ne, Submodule.coe_eq_zero]; exact hy_ne
+  have hevV : Module.End.HasEigenvalue T μ :=
+    Module.End.hasEigenvalue_of_hasEigenvector
+      ⟨Module.End.mem_eigenspace_iff.mpr hcoe, hyV⟩
+  exact hevV.mem_spectrum
+
+/-- **The compression spectrum is the honest-restriction spectrum on an invariant
+block.**  Since `compress T H = T.restrict hinv` on an invariant subspace
+(`compress_eq_restrict_of_invariant`), the two operators share a spectrum; the
+containment `spectrum_compress_subset_of_invariant` is thus the classical fact
+that a restriction to an invariant subspace has spectrum inside the ambient one,
+routed through the explicit orthogonal compression. -/
+theorem spectrum_compress_eq_restrict_of_invariant {T : V →ₗ[𝕜] V}
+    (H : Submodule 𝕜 V) (hinv : ∀ y ∈ H, T y ∈ H) :
+    spectrum 𝕜 (compress T H) = spectrum 𝕜 (T.restrict hinv) := by
+  rw [compress_eq_restrict_of_invariant H hinv]
+
 end CauchyInterlacing.PoincareCompression
