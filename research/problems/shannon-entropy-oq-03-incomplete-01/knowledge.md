@@ -19,3 +19,25 @@ Insights accumulated during research on this problem.
 ## Dead Ends
 
 [Approaches known not to work will be documented here]
+
+## Session 2026-07-08 (researcher-1) — SSA inequality now self-contained in the equality file
+
+The problem was already COMPLETE (the "remaining SSA sorry" premise was false; SSA is
+in ShannonEntropy.lean:875, and the equality condition shipped as ShannonEntropySSAEq.lean
+→ gallery shannon-entropy-oq-03-oq-01). Genuine outward increment: that self-contained
+file held only the SSA *equality* condition; the SSA *inequality* itself lived only in the
+conflicting parent. Added to ShannonEntropySSAEq.lean (gallery shannon-entropy-oq-03-oq-01):
+- `cmiSum_nonneg : 0 ≤ cmiSum pXYZ` — I(X;Z|Y) ≥ 0, the SSA inequality in relative-entropy
+  form. Needs ONLY pXYZ ≥ 0 (NO ∑p=1 normalization). Reuses the file's own KL machinery
+  (q, hq_nn, hmarg_pos, hq_pos_of, hq_sum_y, hcmi_q, hbound → all local haves in
+  ssa_cmi_eq_zero_iff). Proof: termwise Gibbs `p log(p/q) ≥ p−q` (kl_lb) summed against
+  reference kernel q = p_XY·p_YZ/p_Y; per-y mass ∑_{x,z}q = ∑_{x,z}p (hq_sum_y), so the
+  linear lower bound telescopes to 0. Key nesting-sum tricks: `Finset.sum_comm` twice to
+  reorder ∑_x∑_y∑_z q → ∑_y(...) to apply hq_sum_y; `Finset.sum_le_sum` nested ×3 for the
+  triple-sum monotonicity; `simp only [Finset.sum_sub_distrib]; linarith [hq_eq_p]`.
+- `ssa_inequality : H(X,Y,Z)+H(Y) ≤ H(X,Y)+H(Y,Z)` — headline SSA, now self-contained
+  (ssa_deficit_eq_cmi + cmiSum_nonneg, one linarith).
+Named `ssa_inequality` (NOT `strong_subadditivity`) to avoid the exact dup-decl clash that
+broke ShannonEntropySSA.lean. File: 5 defs + 9 theorems (was 7), 570 lines, 0 axioms/0 sorries.
+Host-verified (lake env lean, clean; #print axioms = propext/Classical.choice/Quot.sound).
+Synced gallery meta lineCount 448→570, theoremCount 7→9.
