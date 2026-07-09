@@ -385,6 +385,83 @@ theorem franklFurediEven_card_le_T (n r : ℕ) (hn : 1 ≤ n) (hpar : (n + r) % 
   exact Finset.le_sup hmem
 
 /-
+## Part IV.b: Structural Properties of `T`
+
+Elementary structural facts about the extremal function `T(n,r)` that hold for
+all `n, r`, independent of the deep Frankl–Rödl bound. They frame the problem:
+the trivial upper bound `T(n,r) ≤ 2^n` is exactly what Frankl–Rödl improves to
+`(2 − δ)^n` in the middle range, and `T` is monotone in the ground set.
+-/
+
+/--
+**Trivial upper bound `T(n,r) ≤ 2^n`.**
+Every `r`-avoiding family lives inside `2^{[n]}`, which has `2^n` members, so the
+sup of family sizes is at most `2^n`. The Frankl–Rödl axiom sharpens this to
+`(2 − δ)^n` in the middle range `εn < r < (1/2 − ε)n`.
+-/
+theorem T_le_pow (n r : ℕ) : T n r ≤ 2 ^ n := by
+  unfold T
+  apply Finset.sup_le
+  intro F hF
+  rw [Finset.mem_filter, Finset.mem_powerset] at hF
+  calc F.card ≤ ((Finset.range n).powerset).card := Finset.card_le_card hF.1
+    _ = 2 ^ n := by rw [Finset.card_powerset, Finset.card_range]
+
+/--
+**`T` is monotone in the ground set.**
+If `m ≤ n` then any `r`-avoiding family of subsets of `[m]` is also an
+`r`-avoiding family of subsets of `[n]` (the predicate `avoidsRIntersection r`
+depends only on the sets, not on the ground set), so `T(m,r) ≤ T(n,r)`.
+-/
+theorem T_mono_ground {m n r : ℕ} (h : m ≤ n) : T m r ≤ T n r := by
+  unfold T
+  apply Finset.sup_mono
+  apply Finset.filter_subset_filter
+  apply Finset.powerset_mono.mpr
+  apply Finset.powerset_mono.mpr
+  intro x hx
+  rw [Finset.mem_range] at hx ⊢
+  omega
+
+/--
+**Positivity `1 ≤ T(n,r)` for `r ≥ 1`.**
+The singleton family `{∅}` is `r`-avoiding whenever `r ≠ 0` (the only intersection
+is `∅ ∩ ∅ = ∅`, of size `0 ≠ r`), witnessing a family of size `1`.
+-/
+theorem one_le_T (n r : ℕ) (hr : 1 ≤ r) : 1 ≤ T n r := by
+  unfold T
+  have hmem : ({∅} : Finset (Finset ℕ)) ∈
+      ((Finset.range n).powerset.powerset).filter (avoidsRIntersection r) := by
+    rw [Finset.mem_filter]
+    refine ⟨?_, ?_⟩
+    · rw [Finset.mem_powerset]
+      intro A hA
+      rw [Finset.mem_singleton] at hA
+      subst hA
+      rw [Finset.mem_powerset]
+      exact Finset.empty_subset _
+    · intro A B hA hB
+      rw [Finset.mem_singleton] at hA hB
+      subst hA; subst hB
+      simp only [Finset.inter_empty, Finset.card_empty]
+      omega
+  calc 1 = ({∅} : Finset (Finset ℕ)).card := (Finset.card_singleton _).symm
+    _ ≤ _ := Finset.le_sup hmem
+
+/--
+**The `r = 1` large-set family is contained in `franklFurediOdd n 1`.**
+`largeSetsFamily n` filters on `|A| > (n+1)/2`, exactly the "large" disjunct of
+`franklFurediOdd n 1` (whose threshold `(n+1)/2` coincides). So the general-`r`
+Frankl–Füredi construction specializes to Frankl's `r = 1` construction.
+-/
+theorem largeSetsFamily_subset_franklFurediOdd_one (n : ℕ) :
+    largeSetsFamily n ⊆ franklFurediOdd n 1 := by
+  intro A hA
+  rw [largeSetsFamily, Finset.mem_filter] at hA
+  rw [franklFurediOdd, Finset.mem_filter]
+  exact ⟨hA.1, Or.inl hA.2⟩
+
+/-
 ## Part V: The Main Question - Exponential Bound
 
 For fixed `r` and `n` sufficiently large, Frankl-Füredi (1984) determined
