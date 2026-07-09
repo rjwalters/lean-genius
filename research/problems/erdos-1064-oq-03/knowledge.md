@@ -325,3 +325,45 @@ elaboration) — verified on host instead (file imports only Mathlib).
 - Sharpen the necessary condition with φ(seedE a)/seedE a to attempt the excluded-regime
   non-reversal claim; relate φ(seedE a) back to φ(a) = p^(k-1)(p-1) for a = p^k, p≡3 mod4.
 - Density-1 forward direction still analytically blocked (ψ(x,y) smooth-number density).
+
+## Session 2026-07-08 (researcher-3) — prime-triple reversal family collapses to {21,55}
+
+**Mode**: REVISIT (RICH tier) | **Outcome**: progress (VERIFIED 0 sorry / 0 axiom, Docker `Built (7.4s)`, 3058 jobs; axioms propext/Classical.choice/Quot.sound; no native_decide)
+
+### What I Did
+- Observed the two known reversal seeds `21 = 3·7`, `55 = 5·11` are exactly
+  `a = p·(2p+1)` for the two smallest Sophie-Germain primes `p = 3, 5` (with the
+  extra property that `p+2` is also prime — a "prime triple" `(p, p+2, 2p+1)`).
+- Proved this natural infinite candidate family does NOT furnish infinitely many
+  reversal seeds:
+  - `prime_triple_family_not_reversal`: for `p ≥ 7` with `p, p+2, 2p+1` all
+    prime, `p(2p+1)·2^(k+1) ∉ ReversalSet`.
+  - `prime_triple_reversal_iff`: the family reverses iff `p ∈ {3, 5}`.
+
+### Key Findings / proof recipe
+- For `a = p(2p+1)` (p, 2p+1 prime): `φ(a) = 2p(p−1)`, first step
+  `2a−φ(a) = 2p(p+2)` (v₂ = 1, transport-admissible, `b = p(p+2)`),
+  `φ(b) = p²−1`, landing `C = 2a−φ(b) = 3p²+2p+1 = 2e`, `t = 1`.
+- Reversal ⟺ `φ(a) < φ(e)` (via `dblIter_reversal_iff`, `t = 1`). The uniform
+  non-reversal bound uses ONLY `φ(e) ≤ e−1` (no factorisation of the wildly
+  varying `e` needed!): `φ(e) ≤ e−1 = (3p²+2p−1)/2 ≤ 2p(p−1) = φ(a)` ⟺
+  `p²−6p+1 ≥ 0` ⟺ `p ≥ 6`. Below the threshold `3+2√2 ≈ 5.83` only `p = 3, 5`.
+- Lean plumbing: substitute `p = 2j+1` (j ≥ 3) to kill all nat-subtraction in
+  the polynomial identities; `φ(a)`, `φ(b)` via `Nat.totient_mul` +
+  `Nat.totient_prime` with the two `show (2j+1)-1 = 2j` rewrites; `hstep`/`hC`
+  each proven by a `ring` additive identity fed to `omega` (which abstracts the
+  nonlinear products as atoms and discharges the nat subtraction); final sign
+  refutation by `Nat.totient_lt` + two `nlinarith [hj3]` + `omega`.
+- `prime_triple_reversal_iff` forward: an odd prime with `p+2, 2p+1` prime and
+  `p ∉ {3,5}` is forced `≥ 7` by `interval_cases p <;> revert … <;> decide`.
+
+### Files Modified
+- `proofs/Proofs/EulerTotientOQ04OQ03.lean` (+123 lines, 2 theorems)
+- `src/data/research/problems/erdos-1064-oq-03.json`
+
+### Next Steps
+- Elementary terminus stands: the only open direction remains the analytically
+  hard density-1 forward statement (ψ(x,y) smooth-number density / Luca–Pomerance)
+  — a genuine Mathlib gap, not session-sized. Reversal-seed-set infinitude, if
+  true, is essentially the hard direction (this session shows the natural
+  candidate family degenerates). Do not reclaim for elementary work.
