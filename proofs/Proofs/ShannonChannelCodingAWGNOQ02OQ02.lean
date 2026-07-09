@@ -1156,4 +1156,92 @@ theorem stddev_sum_lt_iff_pairwise_correlation_ne_one [IsFiniteMeasure μ] {ι :
   simp only [stddev_sum_le hW s, true_and, ne_eq, not_iff_not]
   exact stddev_sum_eq_iff_pairwise_correlation_eq_one (fun i _ => hW i) hnd
 
+/-!
+### Weighted combining: output power of a scaled sum
+
+The results above treat the aggregate `∑ᵢ Wᵢ` as an unweighted superposition.  In the
+matched-filter / maximal-ratio-combining picture, each contribution enters the receiver
+scaled by a (deterministic) channel gain `aᵢ`, so the physically relevant output is the
+*weighted* sum `∑ᵢ aᵢ·Wᵢ`.  Bilinearity of covariance carries the Bienaymé machinery
+straight through the scaling: the general identity picks up an `aᵢ·aⱼ` on every
+covariance, and under pairwise uncorrelatedness the off-diagonal terms still vanish,
+leaving the **weighted power law**
+
+        Var[∑ᵢ aᵢ·Wᵢ] = ∑ᵢ aᵢ²·Var[Wᵢ].
+
+This is the exact statement that the received power of a linear combination of
+uncorrelated symbols is the `aᵢ²`-weighted sum of the individual powers — the second-order
+foundation of maximal-ratio combining and the SNR-scaling behaviour of a matched filter.
+-/
+
+/-- **Weighted Bienaymé identity (bilinear expansion).**  For any deterministic weights
+`a : ι → ℝ` and finite family of square-integrable contributions, the variance of the
+scaled sum expands as the `aᵢ·aⱼ`-weighted double sum of covariances:
+
+        Var[∑ᵢ aᵢ·Wᵢ] = ∑ᵢ ∑ⱼ aᵢ·aⱼ·cov[Wᵢ, Wⱼ].
+
+The weighted lift of `variance_sum'`: each covariance in the Bienaymé double sum is scaled
+by the product of the two weights, by bilinearity of covariance
+(`covariance_smul_left`/`covariance_smul_right`). -/
+theorem variance_smul_sum' [IsFiniteMeasure μ] {ι : Type*}
+    {W : ι → Ω → ℝ} {s : Finset ι} (a : ι → ℝ) (hW : ∀ i ∈ s, MemLp (W i) 2 μ) :
+    Var[∑ i ∈ s, a i • W i; μ]
+      = ∑ i ∈ s, ∑ j ∈ s, a i * a j * cov[W i, W j; μ] := by
+  have hV : ∀ i ∈ s, MemLp (a i • W i) 2 μ := fun i hi => (hW i hi).const_smul (a i)
+  rw [variance_sum' hV]
+  refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
+  rw [covariance_smul_left, covariance_smul_right]
+  ring
+
+/-- **Weighted power law (sharp, uncorrelated form).**  For deterministic weights
+`a : ι → ℝ` and a finite family of *pairwise-uncorrelated* square-integrable
+contributions, the variance of the weighted sum is the `aᵢ²`-weighted sum of the
+individual variances:
+
+        Var[∑ᵢ aᵢ·Wᵢ] = ∑ᵢ aᵢ²·Var[Wᵢ].
+
+The weighted generalisation of `variance_sum_of_pairwise_uncorrelated` (recovered at
+`a ≡ 1`): scaling preserves pairwise uncorrelatedness (`cov[aᵢWᵢ, aⱼWⱼ] = aᵢaⱼ·cov = 0`),
+so only the diagonal `Var[aᵢWᵢ] = aᵢ²·Var[Wᵢ]` (`variance_smul`) survives. This is the
+maximal-ratio-combining power identity: the output power of a linear combination of
+uncorrelated symbols is the square-weighted sum of their powers. -/
+theorem variance_smul_sum_of_pairwise_uncorrelated [IsFiniteMeasure μ] {ι : Type*}
+    {W : ι → Ω → ℝ} {s : Finset ι} (a : ι → ℝ) (hW : ∀ i ∈ s, MemLp (W i) 2 μ)
+    (huncor : Set.Pairwise ↑s fun i j => cov[W i, W j; μ] = 0) :
+    Var[∑ i ∈ s, a i • W i; μ] = ∑ i ∈ s, a i ^ 2 * Var[W i; μ] := by
+  have hV : ∀ i ∈ s, MemLp (a i • W i) 2 μ := fun i hi => (hW i hi).const_smul (a i)
+  have hVuncor : Set.Pairwise ↑s fun i j => cov[a i • W i, a j • W j; μ] = 0 := by
+    intro i hi j hj hij
+    rw [covariance_smul_left, covariance_smul_right, huncor hi hj hij, mul_zero, mul_zero]
+  rw [variance_sum_of_pairwise_uncorrelated hV hVuncor]
+  refine Finset.sum_congr rfl fun i _ => ?_
+  rw [variance_smul]
+
+/-- **Weighted multi-symbol AWGN output power (sharp).**  If the receiver forms the
+weighted combination `∑ᵢ aᵢ·Wᵢ` of *pairwise-uncorrelated*, zero-mean, square-integrable
+contributions with deterministic gains `aᵢ`, then the output second moment (power) is the
+`aᵢ²`-weighted sum of the per-contribution powers:
+
+        E[(∑ᵢ aᵢ·Wᵢ)²] = ∑ᵢ aᵢ²·E[Wᵢ²].
+
+The weighted companion of `awgn_multisymbol_power_of_uncorrelated`: each gain `aᵢ` scales
+the `i`-th symbol's power by `aᵢ²`, exactly the SNR-scaling of a matched filter /
+maximal-ratio combiner over an uncorrelated symbol block. -/
+theorem awgn_weighted_multisymbol_power_of_uncorrelated [IsProbabilityMeasure μ] {ι : Type*}
+    {W : ι → Ω → ℝ} {s : Finset ι} (a : ι → ℝ) (hW : ∀ i ∈ s, MemLp (W i) 2 μ)
+    (huncor : Set.Pairwise ↑s fun i j => cov[W i, W j; μ] = 0)
+    (hmean : ∀ i ∈ s, μ[W i] = 0) :
+    μ[(∑ i ∈ s, a i • W i) ^ 2] = ∑ i ∈ s, a i ^ 2 * μ[(W i) ^ 2] := by
+  have hV : ∀ i ∈ s, MemLp (a i • W i) 2 μ := fun i hi => (hW i hi).const_smul (a i)
+  have hVmean : ∀ i ∈ s, μ[a i • W i] = 0 := by
+    intro i hi
+    simp only [Pi.smul_apply, smul_eq_mul]
+    rw [integral_const_mul, hmean i hi, mul_zero]
+  have hSum : MemLp (∑ i ∈ s, a i • W i) 2 μ := memLp_finset_sum' s hV
+  have hSum0 : μ[∑ i ∈ s, a i • W i] = 0 := sum_mean_zero hV hVmean
+  rw [second_moment_eq_variance hSum hSum0,
+    variance_smul_sum_of_pairwise_uncorrelated a hW huncor]
+  refine Finset.sum_congr rfl fun i hi => ?_
+  rw [second_moment_eq_variance (hW i hi) (hmean i hi)]
+
 end ShannonAWGNMultiSymbolPower
