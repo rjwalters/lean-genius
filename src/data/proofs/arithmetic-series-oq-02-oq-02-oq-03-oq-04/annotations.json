@@ -84,10 +84,10 @@
   {
     "id": "wz-ann-main",
     "proofId": "arithmetic-series-oq-02-oq-02-oq-03-oq-04",
-    "range": { "startLine": 182, "endLine": 208 },
+    "range": { "startLine": 182, "endLine": 215 },
     "type": "insight",
     "title": "binomial_sum_eq_pow — the identity from recurrence + base case",
-    "content": "rowSum_eq_one inducts on the recurrence from the base case rowSum(0) = 1 to get rowSum(n) = 1 for all n — the WZ-normalized identity. binomial_sum_eq_pow then unwinds the normalization: since rowSum(n) = (∑_{k≤n} C(n,k))/2ⁿ, clearing the denominator over ℚ and casting back to ℕ gives ∑_{k≤n} C(n,k) = 2ⁿ. The closing `example` cross-checks the result against Mathlib's Nat.sum_range_choose, confirming the WZ route reaches the same theorem by an independent path.",
+    "content": "rowSum_eq_one inducts on the recurrence from the base case rowSum(0) = 1 to get rowSum(n) = 1 for all n — the WZ-normalized identity. binomial_sum_eq_pow then unwinds the normalization: since rowSum(n) = (∑_{k≤n} C(n,k))/2ⁿ, clearing the denominator over ℚ and casting back to ℕ gives ∑_{k≤n} C(n,k) = 2ⁿ. The closing `example` cross-checks the result against Mathlib's Nat.sum_range_choose, confirming the WZ route reaches the same theorem by an independent path — an honest end-to-end validation that the creative-telescoping derivation agrees with the library's directly-proved binomial sum.",
     "mathContext": "$\\text{rowSum}(n)=1$ and $\\text{rowSum}(n)=\\dfrac{\\sum_{k\\le n}\\binom{n}{k}}{2^n}$ give $\\sum_{k\\le n}\\binom{n}{k}=2^n$, re-derived without Nat.sum_range_choose.",
     "significance": "key",
     "relatedConcepts": ["induction", "binomial theorem", "normalization", "Nat.sum_range_choose"],
