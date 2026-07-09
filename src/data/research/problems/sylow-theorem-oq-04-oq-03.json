@@ -56,14 +56,15 @@
     ]
   },
   "knowledge": {
-    "progressSummary": "BUILD/VERIFIED (researcher-1, 2026-07-08): added the perfectness engine — the T–U commutator identity [diag(a),u(t)]=u((a²−1)t) and its corollary that for p≥5 every unipotent is a commutator [diag(2),u(t)] (a²−1=3 a unit iff p∉{2,3}). SylowTheoremOQ04OQ03.lean now 520 lines / 0 sorry / 0 axiom. This supplies the perfectness hypothesis of Iwasawa's criterion; the deep simplicity theorem (PSL(2,p) action on P¹, 2-transitivity, Iwasawa assembly) remains open.",
+    "progressSummary": "BUILD (researcher-1, 2026-07-09) [UNVERIFIED — build blocked by Docker daemon containerd I/O corruption, not a code error]: added the Bruhat generation theorem closure_rootGroups_eq_top : ⟨U,U⁻⟩ = ⊤ for SL(2,p). Two elementary root-group factorizations feed it — weylW_eq_root_word (w = u(-1)·l(1)·u(-1)) and torusDiag_eq_root_word (diag(a) = u(a)·l(-a⁻¹)·u(a)·w, so the whole split torus T ⊆ ⟨U,U⁻⟩) — plus the Bruhat cell lemma mem_closure_of_lowerLeft_ne_zero (g = u(a·c⁻¹)·w·diag(c)·u(d·c⁻¹) covers every matrix with nonzero lower-left entry) and a single lower transvection l(1) to sweep in the c=0 matrices. This CLOSES the generation hypothesis of Iwasawa's criterion and, with the existing perfectness lemmas (U,U⁻ ⊆ derived subgroup for p≥5), gives perfectness of SL(2,p). Re-establishes & completes PR #35565's reverted rootGroups material (which only had membership, not the '= ⊤' theorem). File 544→738 lines / 0 sorry / 0 axiom (pending build confirmation).",
     "insights": [
       "The right tool is Iwasawa's criterion, not raw Sylow counting: PSL(2,p) acts 2-transitively (hence primitively and faithfully) on the p+1 points of P¹(𝔽_p); the unipotent upper-triangular subgroup U = {[[1,t],[0,1]] : t ∈ 𝔽_p} is abelian, normal in the stabilizer of ∞, and its PSL-conjugates generate PSL(2,p); with perfectness for p ≥ 5, IwasawaStructure.isSimpleGroup concludes.",
       "Mathlib's PSL support is a single 39-line abbreviation with no order, no group action, and no simplicity lemmas — so the bottleneck is entirely the missing connective infrastructure, not the final criterion.",
       "The p = 5 case is already in Mathlib as isSimpleGroup_five (PSL(2,5) ≅ A₅); a parametrized proof must recover it uniformly, so a family-level Iwasawa argument is genuinely more than re-deriving the parent.",
       "Perfectness (commutator PSL = ⊤) is the p ≥ 5 hinge: for p = 2 (PSL(2,2) ≅ S₃) and p = 3 (PSL(2,3) ≅ A₄) the group is NOT simple, precisely because perfectness fails — the p ≥ 5 hypothesis enters through this Iwasawa side condition.",
       "Perfectness of SL(2,p)/PSL(2,p) for p≥5 reduces to a single commutator identity: [diag(a),u(t)] = u((a²−1)·t). Composing torusHom_conj_unipotent (diag(a)·u(t)·diag(a)⁻¹ = u(a²t)) with the additive law u(a²t)·u(−t) = u((a²−1)t) gives it in two rewrites. When a²−1 is a unit the map t↦[diag(a),u(t)] is onto U, so every unipotent is a commutator.",
-      "The range p≥5 in the simplicity theorem is exactly the range where the perfectness engine fires: a=2 gives a²−1=3, a unit iff p∉{2,3}. This pins the failure at p=2,3 to the non-invertibility of 3 (=2²−1) mod p, matching PSL(2,2)≅S₃ and PSL(2,3)≅A₄ being non-simple."
+      "The range p≥5 in the simplicity theorem is exactly the range where the perfectness engine fires: a=2 gives a²−1=3, a unit iff p∉{2,3}. This pins the failure at p=2,3 to the non-invertibility of 3 (=2²−1) mod p, matching PSL(2,2)≅S₃ and PSL(2,3)≅A₄ being non-simple.",
+      "The generation ⟨U,U⁻⟩ = SL(2,p) is the concrete Bruhat/Gauss decomposition and needs no P¹ action: (i) w = u(-1)·l(1)·u(-1) and diag(a) = u(a)·l(-a⁻¹)·u(a)·w are explicit words in the root groups, so w and the entire torus T lie in ⟨U,U⁻⟩; (ii) any g with lower-left c≠0 factors as u(ac⁻¹)·w·diag(c)·u(dc⁻¹) (the top-right entry closes via ad-bc=1); (iii) g with c=0 has g₀₀≠0, and l(1)·g has lower-left g₀₀≠0, so l(-1)·(l(1)·g) pulls it into the Bruhat cell. This is the missing 'PSL-conjugates of U generate' clause of Iwasawa, obtained entirely inside SL(2,ZMod p)."
     ],
     "mathlibGaps": [
       "No cardinality of SL(2,𝔽_p) or PSL(2,p) in Mathlib (need |SL(2,𝔽_p)| = p(p²−1)).",
@@ -72,19 +73,19 @@
       "No perfectness result commutator (PSL(2,p)) = ⊤ for p ≥ 5."
     ],
     "nextSteps": [
-      "BUILD (standalone, ~300–500 lines): formalize the action of SL(2,𝔽_p) on P¹(𝔽_p) = points/lines of 𝔽_p², prove it is 2-transitive, and identify the stabilizer of ∞ as the Borel subgroup of upper-triangular matrices. This is reusable infrastructure independent of the simplicity goal.",
-      "BUILD: prove |SL(2,𝔽_p)| = p(p²−1) and derive |PSL(2,p)| = p(p²−1)/2 for odd p (Sylow-p subgroup is exactly the order-p unipotent U).",
-      "Assemble the Iwasawa structure (U abelian-normal-in-stabilizer, conjugates generate) and prove perfectness for p ≥ 5, then apply IwasawaStructure.isSimpleGroup.",
-      "Until the P¹ action infrastructure exists, keep this entry BLOCKED rather than attempting the simplicity theorem directly on top of missing foundations.",
-      "Package the commutator result as membership in the derived subgroup (commutator/perfect group API), then combine with card_unipotent_range to show U ⊆ [SL(2,p),SL(2,p)] and step toward perfectness of the whole group.",
-      "REGRESSION to flag: PR #35565's rootGroups material (⟨U,U⁻⟩ contains w and the torus, file→539 lines) was reverted on main by a stale-base merge in #35578 (erdos-1064); main is back to 436 lines. Consider restoring that verified generation step."
+      "VERIFY the Bruhat generation additions once Docker recovers (host containerd meta.db I/O error blocked the build this session; the earlier clean elaboration of the pre-fix version showed only tactic-automation gaps in torusDiag_eq_root_word / key, now addressed with full-simp index evaluation + uniform closers).",
+      "Package perfectness: with closure_rootGroups_eq_top plus exists_unipotent_isCommutator / exists_lowerUnipotent_isCommutator, prove commutator (SL(2,p)) = ⊤ for p≥5 (U,U⁻ generate and both lie in the derived subgroup ⇒ derived = ⊤). This is the perfectness input to Iwasawa in closed form.",
+      "BUILD |SL(2,𝔽_p)| = p(p²−1) (still absent from Mathlib) and derive |PSL(2,p)|.",
+      "BUILD the action of SL(2,𝔽_p) on P¹(𝔽_p), its 2-transitivity, and the Borel point-stabilizer — the remaining Iwasawa ingredient before IwasawaStructure.isSimpleGroup can be applied.",
+      "Assemble IwasawaStructure and conclude PSL(2,p) simple for p≥5."
     ],
     "builtItems": [
       "SylowTheoremOQ04OQ03.lean (VERIFIED, 0-axiom/0-sorry, 388 lines / 17 lemmas): PART I unipotent Sylow-p U={[[1,t],[0,1]]} (unipotentHom injective additive hom, |U|=p); PART II split torus T={diag(a,a⁻¹)} (torusHom injective, |T|=p-1) with torusHom_conj_unipotent + torus_normalizes_unipotent (T normalises U); PART III Weyl element weylW=[[0,-1],[1,0]] with explicit inverse, weylW_conj_torus (reflection a↦a⁻¹), lowerUnipotent U⁻ + weylW_conj_unipotent (w·U·w⁻¹=U⁻), and unipotent_inter_torus_trivial (U∩T=1 ⇒ B=U⋊T internal semidirect product). All Iwasawa/Bruhat ingredients toward PSL(2,p) simplicity.",
       "torus_unipotent_commutator (SylowTheoremOQ04OQ03.lean): [diag(a),u(t)] = u((a²−1)·t), VERIFIED 0/0",
       "unipotent_isCommutator_of_isUnit (SylowTheoremOQ04OQ03.lean): a²−1 a unit ⟹ every u(s) is a T–U commutator, VERIFIED 0/0",
       "exists_unipotent_isCommutator (SylowTheoremOQ04OQ03.lean): p≥5 ⟹ every u(s) is a commutator [diag(2),u(t)] (perfectness input), VERIFIED 0/0",
-      "unipotentUpper_inv (SylowTheoremOQ04OQ03.lean): (u(t))⁻¹ = u(−t) helper, VERIFIED 0/0"
+      "unipotentUpper_inv (SylowTheoremOQ04OQ03.lean): (u(t))⁻¹ = u(−t) helper, VERIFIED 0/0",
+      "closure_rootGroups_eq_top + weylW_eq_root_word + torusDiag_eq_root_word + mem_closure_of_lowerLeft_ne_zero + rootGroups + membership lemmas + lowerUnipotent_mul/_zero (SylowTheoremOQ04OQ03.lean, +~194 lines): Bruhat generation ⟨U,U⁻⟩ = SL(2,p). [UNVERIFIED — Docker daemon I/O corruption blocked the build; mathematically hand-checked, tactics mirror the file's verified matrix-identity idiom.]"
     ]
   },
   "leanFiles": [
