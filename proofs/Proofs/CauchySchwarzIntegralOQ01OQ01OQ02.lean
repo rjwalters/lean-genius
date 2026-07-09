@@ -19,7 +19,9 @@ the eLpNorm Hölder inequality?"
 
 1. L2 self-duality via Fréchet-Riesz (0 axioms)
 2. Hölder gives the isometric embedding Lq ↪ (Lp)* (0 axioms)
-3. General Riesz surjectivity stated axiomatically (1 axiom)
+3. General Riesz surjectivity — **now discharged (0 axioms)** as a re-export of
+   `RieszLpDualitySynthesis.riesz_lp_surjective_general` (arbitrary measure `μ`,
+   via σ-finite-support localization + Radon–Nikodým + Folland-6.16 gluing)
 
 ## References
 
@@ -28,6 +30,7 @@ the eLpNorm Hölder inequality?"
 -/
 
 import Mathlib
+import Proofs.CauchySchwarzIntegralLpDualitySynthesis
 
 noncomputable section
 
@@ -114,12 +117,23 @@ but the full composition with Lp is not yet formalized.
 /-- **Riesz Representation for Lp** (1 < p < ∞, HARD DIRECTION):
     Every bounded linear functional on Lp is represented by integration
     against an Lq function, where q is the conjugate exponent.
-    This requires Radon-Nikodým + Lp machinery. -/
-axiom riesz_lp_surjective (p q : ℝ≥0∞) [Fact (1 ≤ p)] (hp1 : 1 < p) (hptop : p ≠ ⊤)
+    This requires Radon-Nikodým + Lp machinery.
+
+    Formerly axiomatized. Now **discharged** (0 axioms) as a re-export of
+    `RieszLpDualitySynthesis.riesz_lp_surjective_general`, which proves this exact
+    statement — for an *arbitrary* measure `μ` (no σ-finiteness assumption) — by
+    localizing to the σ-finite support of each `Lᵖ` function and gluing the
+    per-support Radon–Nikodým representers via the ext-agnostic Folland-6.16
+    maximality assembly. Kernel-verified with foundational axioms only
+    (`propext, Classical.choice, Quot.sound`; no `sorryAx`). This upgrades the
+    full `Lᵖ` duality chain (Young → Hölder → embedding + surjectivity → (Lᵖ)* ≅ Lq)
+    from axiomatized to verified. -/
+theorem riesz_lp_surjective (p q : ℝ≥0∞) [Fact (1 ≤ p)] (hp1 : 1 < p) (hptop : p ≠ ⊤)
     (hpq : p.toReal.HolderConjugate q.toReal) :
     ∀ φ : Lp ℝ p μ →L[ℝ] ℝ,
     ∃ g : α → ℝ, MemLp g q μ ∧
-      ∀ f : Lp ℝ p μ, φ f = ∫ a, (f : α → ℝ) a * g a ∂μ
+      ∀ f : Lp ℝ p μ, φ f = ∫ a, (f : α → ℝ) a * g a ∂μ :=
+  RieszLpDualitySynthesis.riesz_lp_surjective_general p q hp1 hptop hpq
 
 /-
 ## Part IV: Hierarchy Summary
@@ -127,7 +141,7 @@ axiom riesz_lp_surjective (p q : ℝ≥0∞) [Fact (1 ≤ p)] (hp1 : 1 < p) (hpt
   Young → Hölder (lintegral)
     → Embedding Lq ↪ (Lp)* (proved, Part II)
     → L2 self-duality via inner product (proved, Part I)
-  Radon-Nikodým → Surjectivity (Lp)* → Lq (axiomatized, Part III)
+  Radon-Nikodým → Surjectivity (Lp)* → Lq (verified, Part III — 0 axioms)
     → Full Riesz: (Lp)* ≅ Lq (complete when combined)
 
 The answer to the open question is: Hölder provides the EMBEDDING
