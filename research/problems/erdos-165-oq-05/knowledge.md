@@ -64,3 +64,23 @@ Added the *above* mirror using Shearer (upper constant 1):
 the constant ≥ 1/2 from below; Shearer pins it ≤ 1 from above. Together they bracket the
 (open) exact constant to **[1/2, 1]** using only the two Ramsey axioms. 0 new axioms;
 still 10 deep-Ramsey axioms (Kim/Shearer/HHKP/AKS), none Mathlib-eliminable. VERIFIED build.
+
+## Follow-up: complete the two-sided bracket + capstone (researcher-2, 2026-07-08)
+
+Prior sessions had `constantConjecture_refuted_of_one_lt` (Shearer rules out c>1 from
+above) and `pgm_conjecture_refuted` (HHKP rules out the specific c=1/4 from below), but
+the symmetric general refutation from below and a positive packaging were missing.
+
+Added (VERIFIED, 0 new axioms, build green [1861/1861]):
+- `constantConjecture_refuted_of_lt_half (c) (c < 1/2) : ¬ constantConjecture c` — the mirror
+  of `_of_one_lt` and the general form of `pgm_conjecture_refuted` (c=1/4 is the special case).
+  Its upper half is a valid first-order upper constant < 1/2, contradicting HHKP via
+  `R3_upper_constant_ge_half`.
+- `constantConjecture_forces_mem_Icc (c) (constantConjecture c) : 1/2 ≤ c ∧ c ≤ 1` — capstone
+  packaging the bracket as a single positive statement. Lower edge = HHKP
+  (`R3_upper_constant_ge_half`), upper edge = Shearer (`R3_lower_constant_le_one`). The two
+  refutation theorems are exactly the contrapositives of its two halves.
+
+Net: the [1/2,1] bracket, previously only implicit across two one-sided refutations, is now a
+single machine-checked interval-membership theorem. c=1/2 (mainConjecture) sits at the lower
+edge and is (correctly) NOT refuted. Still 10 deep-Ramsey axioms, none Mathlib-eliminable.

@@ -343,6 +343,48 @@ theorem constantConjecture_refuted_of_one_lt (c : ℝ) (hc : 1 < c) :
   have : c ≤ 1 := R3_lower_constant_le_one c hlower
   linarith
 
+/-- **Any conjectured constant `< 1/2` is refuted by the HHKP lower bound.**  The mirror of
+    `constantConjecture_refuted_of_one_lt`, and the general form of `pgm_conjecture_refuted`
+    (the PGM constant `1/4 < 1/2` is the special case `c = 1/4`): whereas a constant `> 1` is
+    ruled out from *above* by Shearer, any constant below `1/2` is ruled out from *below* — its
+    upper half would assert a valid first-order upper constant `< 1/2`, contradicting
+    `R3_upper_constant_ge_half`.  The only Ramsey input is `hhkp_bound`. -/
+theorem constantConjecture_refuted_of_lt_half (c : ℝ) (hc : c < 1/2) :
+    ¬ constantConjecture c := by
+  intro h
+  have hupper : ∀ ε > 0, ∃ k₀ : ℕ, ∀ k : ℕ, k ≥ k₀ →
+      (R3 k : ℝ) ≤ (c + ε) * k^2 / log k := by
+    intro ε hε
+    obtain ⟨k₀, hk₀⟩ := h ε hε
+    exact ⟨k₀, fun k hk => (hk₀ k hk).2⟩
+  have : (1:ℝ)/2 ≤ c := R3_upper_constant_ge_half c hupper
+  linarith
+
+/-- **The exact `R(3,k)` constant is bracketed to `[1/2, 1]`.**  Capstone packaging of the
+    two-sided obstruction: *any* conjectured exact asymptotic constant `c` for `R(3,k)`
+    (i.e. any `c` with `constantConjecture c`) necessarily satisfies `1/2 ≤ c ≤ 1`.  The lower
+    edge is HHKP via `R3_upper_constant_ge_half`; the upper edge is Shearer via
+    `R3_lower_constant_le_one`.  The two refutation theorems
+    `constantConjecture_refuted_of_lt_half` and `constantConjecture_refuted_of_one_lt` are
+    exactly the contrapositives of the two halves.  The precise value inside `[1/2, 1]` remains
+    open; `c = 1/2` (`mainConjecture`) sits at the lower edge and is *not* refuted, while the
+    Shearer upper constant `1` sits at the upper edge. -/
+theorem constantConjecture_forces_mem_Icc (c : ℝ) (h : constantConjecture c) :
+    (1:ℝ)/2 ≤ c ∧ c ≤ 1 := by
+  refine ⟨?_, ?_⟩
+  · have hupper : ∀ ε > 0, ∃ k₀ : ℕ, ∀ k : ℕ, k ≥ k₀ →
+        (R3 k : ℝ) ≤ (c + ε) * k^2 / log k := by
+      intro ε hε
+      obtain ⟨k₀, hk₀⟩ := h ε hε
+      exact ⟨k₀, fun k hk => (hk₀ k hk).2⟩
+    exact R3_upper_constant_ge_half c hupper
+  · have hlower : ∀ ε > 0, ∃ k₀ : ℕ, ∀ k : ℕ, k ≥ k₀ →
+        (c - ε) * k^2 / log k ≤ (R3 k : ℝ) := by
+      intro ε hε
+      obtain ⟨k₀, hk₀⟩ := h ε hε
+      exact ⟨k₀, fun k hk => (hk₀ k hk).1⟩
+    exact R3_lower_constant_le_one c hlower
+
 /- ## Part VII: Related Problems -/
 
 /-
