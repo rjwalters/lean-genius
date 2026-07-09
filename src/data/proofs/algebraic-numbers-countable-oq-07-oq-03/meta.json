@@ -158,6 +158,62 @@
       "description": "Provides the Baire-category pillar of the one-dimensional smallness trichotomy (the algebraic reals are meagre). This entry is the measure pillar's n-dimensional form. Together they illustrate that in higher dimensions the various notions of smallness — countable, meagre, null — diverge further: the at-least-one-algebraic set is null but neither countable nor (in general) meagre-forcing on every coordinate."
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "ae_all_transcendental",
+      "type": "main",
+      "description": "The headline result over ℝⁿ: almost every point has all coordinates transcendental. Since the all-algebraic points are null (they sit inside the at-least-one-algebraic null set), their complement — the everywhere-transcendental points — has full measure.",
+      "leanType": "{n : ℕ} : ∀ᵐ x : Fin n → ℝ ∂volume, ∀ i, Transcendental ℚ (x i)"
+    },
+    {
+      "name": "atLeastOneAlgebraicReal_null",
+      "type": "main",
+      "description": "For every n, the set of points of ℝⁿ having some algebraic coordinate is Lebesgue-null — even though for n ≥ 2 it has cardinality of the continuum. Each coordinate cylinder over the null set of algebraic reals is null (coord_preimage_volume_zero), and a finite union of null sets is null.",
+      "leanType": "{n : ℕ} : volume {x : Fin n → ℝ | ∃ i, IsAlgebraic ℚ (x i)} = 0"
+    },
+    {
+      "name": "coord_preimage_volume_zero",
+      "type": "main",
+      "description": "The general Fubini/Tonelli engine powering both dimensions and both fields: a coordinate cylinder {x : Fin n → α | x i ∈ A} over a null factor A is null for the product measure.",
+      "leanType": "{α : Type*} [MeasureSpace α] [SigmaFinite (volume : Measure α)] {n : ℕ} {A : Set α} (hA : volume A = 0) (i : Fin n) : volume {x : Fin n → α | x i ∈ A} = 0"
+    },
+    {
+      "name": "allAlgebraicReal_null",
+      "type": "supporting",
+      "description": "For n ≥ 1 the all-algebraic points of ℝⁿ are Lebesgue-null — they lie inside the at-least-one-algebraic null set.",
+      "leanType": "{n : ℕ} (hn : 0 < n) : volume {x : Fin n → ℝ | ∀ i, IsAlgebraic ℚ (x i)} = 0"
+    },
+    {
+      "name": "allAlgebraicReal_countable",
+      "type": "supporting",
+      "description": "The all-algebraic points of ℝⁿ are countable — a finite product of the countable set of algebraic reals.",
+      "leanType": "{n : ℕ} : {x : Fin n → ℝ | ∀ i, IsAlgebraic ℚ (x i)}.Countable"
+    },
+    {
+      "name": "atLeastOneAlgebraicComplex_null",
+      "type": "supporting",
+      "description": "The ℂⁿ analogue of atLeastOneAlgebraicReal_null: points with some algebraic coordinate are planar-Lebesgue-null.",
+      "leanType": "{n : ℕ} : volume {z : Fin n → ℂ | ∃ i, IsAlgebraic ℚ (z i)} = 0"
+    },
+    {
+      "name": "allAlgebraicComplex_null",
+      "type": "supporting",
+      "description": "For n ≥ 1 the all-algebraic points of ℂⁿ are null.",
+      "leanType": "{n : ℕ} (hn : 0 < n) : volume {z : Fin n → ℂ | ∀ i, IsAlgebraic ℚ (z i)} = 0"
+    },
+    {
+      "name": "allAlgebraicComplex_countable",
+      "type": "supporting",
+      "description": "The all-algebraic points of ℂⁿ are countable.",
+      "leanType": "{n : ℕ} : {z : Fin n → ℂ | ∀ i, IsAlgebraic ℚ (z i)}.Countable"
+    },
+    {
+      "name": "ae_all_transcendental_complex",
+      "type": "supporting",
+      "description": "The ℂⁿ headline: almost every point has all coordinates transcendental.",
+      "leanType": "{n : ℕ} : ∀ᵐ z : Fin n → ℂ ∂volume, ∀ i, Transcendental ℚ (z i)"
+    }
+  ],
   "leanFile": {
     "path": "Proofs/AlgebraicPointsNull.lean",
     "lineCount": 201,
