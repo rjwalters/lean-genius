@@ -294,7 +294,8 @@ theorem A_le_A_succ (k : ℕ) : A k ≤ A (k + 1) := by
   have hne : a.Nonempty := by rw [← Finset.card_pos, hcard]; omega
   obtain ⟨x, hx⟩ := hne
   have hsub : a.erase x ⊆ a := fun y hy => Finset.mem_of_mem_erase hy
-  have hcard' : (a.erase x).card = k := by rw [Finset.card_erase_of_mem hx, hcard]
+  have hcard' : (a.erase x).card = k := by
+    rw [Finset.card_erase_of_mem hx, hcard, Nat.add_sub_cancel]
   have ha' : Admissible (a.erase x) := ha.subset hsub
   calc A k ≤ (a.erase x).sup id := A_le hcard' ha'
     _ ≤ a.sup id := Finset.sup_mono hsub

@@ -254,3 +254,50 @@ lakefile.toml" — it must be run from a NON-SPARSE worktree that actually has p
 Still OPEN: asymptotics A(k)∼k log k and B(k) (need analytic sieve). Next: A(8)=26 (H(8)
 jumps by 6). Consider factoring a generic "single-parity window minus one mod-p class"
 helper before the case analysis grows further.
+
+## Session 2026-07-09 (researcher-10) — the SECOND quantity B(k) (minimal average)
+
+Every prior session worked only on A(k) (min max, exact A(0..7)). This session opens
+the untouched second headline quantity **B(k) = min (a₁+⋯+a_k)/k** (minimal average),
+as companion file `proofs/Proofs/Erdos1204B.lean` (226 L, 0 axioms / 0 sorries, kernel
+`decide` only — NO native_decide). Carried by the ℕ-valued minimal sum
+`S(k) = sInf {∑a : a admissible, |a|=k}`, with `B(k) = S(k)/k`.
+
+- `S`, `B` defined; `S_set_nonempty`/`S_mem` (infimum attained), `S_le` (lower-bounds
+  every admissible sum). Translating an admissible set down to start at 0 preserves
+  admissibility and only lowers the sum, so the sInf is attained by a min-0 set — the
+  `sInf` handles this automatically (no explicit normalization needed).
+- **General lower bound** `admissible_sum_ge : k·(k−1) ≤ a.sum id` for admissible `a`,
+  hence `sub_mul_le_S : k(k−1) ≤ S(k)` and `sub_one_le_B : k−1 ≤ B(k)`. This is the
+  exact sum-analogue of the diameter bound `A(k) ≥ 2(k−1)` — both come from the prime 2
+  forcing single parity (translated to 0, elements are ≥ 0,2,…,2(k−1), sum k(k−1)).
+- **Exact values** `S(2)=2`/`B(2)=1` (parity floor tight), `S(3)=8`/`B(3)=8/3` (first
+  average forced strictly above the floor, by the SAME mod-3 obstruction that gives
+  `A(3)=6`).
+
+**Reusable recipe.** `admissible_sum_ge` is proved by strong induction removing the max
+`M`: `M ≥ 2(card−1)` from the existing `admissible_two_mul_card_sub_one_le_sup`, and the
+erased set (still admissible) gives the IH; `2(k−1)+(k−1)(k−2)=k(k−1)` closes the step
+(`nlinarith` after `obtain ⟨j,rfl⟩ : card = j+1` + `cases j`). For the exact `S(3)=8`,
+NO fresh mod-3 enumeration is needed: `S(3) = M + S(erased 2-set) ≥ 6 + 2 = 8`, where
+`M ≥ 6` is exactly the A(3) bound `admissible_three_sup_ge`. So exact `S(k)` values
+bootstrap off the already-proven A(k) sup bounds — much cheaper than the mod-p case
+analysis the A(k) values themselves needed.
+
+**Also repaired the imported dependency.** `Erdos1204Problem.lean:297` (`A_le_A_succ`)
+had `rw [Finset.card_erase_of_mem hx, hcard]` leaving the goal `k+1-1 = k` UNSOLVED on
+the current Mathlib pin (v4.26.0) — the file was byte-identical to origin/main yet did
+NOT build (evidently merged unverified; earlier sessions built A4–A7 via host-lake
+bypass). Fixed by appending `Nat.add_sub_cancel` to the `rw`. Both `Erdos1204Problem`
+and `Erdos1204B` now build green in Docker (`Built Proofs.Erdos1204B (4.8s)`).
+
+Gotchas: `le_div_iff` is now `le_div_iff₀`; `Nat.cast_sub hk` needed to cast
+`(k*(k-1):ℕ)` to `(k:ℚ)*((k:ℚ)-1)` for the `B(k) ≥ k-1` division; `Finset.add_sum_erase
+s id h` (not `sum_erase_add`) splits off the max; `Finset.sup_le (fun x hx => by simpa
+using s.le_max' x hx)` gives `sup id ≤ max'`. Write landed in MAIN repo not worktree
+AGAIN (cp+rm fix). Docker axiom-check reruns hit fleet SIGBUS-135 (olean-write), but the
+clean build succeeded and the source has no native_decide/sorry/axiom.
+
+Still OPEN: asymptotics `A(k) ∼ k log k` and the `B(k)` estimate (analytic sieve). Next:
+`B(4)=S(4)/4` (witness {0,2,6,8} → B(4)=4?); whether min-sum sets always equal min-max
+sets (true for k≤3).
