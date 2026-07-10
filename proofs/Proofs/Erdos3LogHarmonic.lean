@@ -124,4 +124,128 @@ theorem not_summable_one_div_nat_mul_log :
     ((summable_nat_add_iff 2).mpr hsum).congr (fun n => by unfold f₂; push_cast; ring)
   exact not_summable_f₂ hshift
 
+/-!
+### Convergent companion: `∑ 1/(n · (log n)^{1+δ})` converges for `δ > 0`
+
+The `p = 1+δ > 1` twin of `not_summable_one_div_nat_mul_log` (the `p = 1`
+divergent case).  Together they pin the Bertrand-series convergence boundary
+at the exponent `p = 1`: divergent at `p = 1`, convergent at every `p > 1`.
+
+This is the analytic ingredient needed to sharpen the Erdős #3 conditional
+reduction below the `(log N)^{1+δ}` threshold of
+`Erdos3Problem.summable_of_strongBound`: a set whose counting function is
+`O(N / (log N · (log log N)^{1+δ}))` has convergent reciprocal sum, because the
+dyadic block masses are bounded by the general term of *this* convergent series.
+No such lemma exists in Mathlib (only the `p`-series `Real.summable_one_div_nat_rpow`
+and the divergent harmonic/log-harmonic cases), so it is proved here from scratch
+by Cauchy condensation, mirroring the divergent proof above.
+-/
+
+section Convergent
+
+variable (δ : ℝ)
+
+/-- Shifted convergent-Bertrand term `1/((n+2)·(log(n+2))^{1+δ})`; positive and
+    antitone (for `n ≥ 1`), the inputs Cauchy condensation demands. -/
+private noncomputable def h₂ (n : ℕ) : ℝ :=
+  1 / (((n : ℝ) + 2) * (Real.log ((n : ℝ) + 2)) ^ (1 + δ))
+
+private lemma h₂_nonneg (n : ℕ) : 0 ≤ h₂ δ n := by
+  unfold h₂
+  have hlog : 0 ≤ Real.log ((n : ℝ) + 2) :=
+    Real.log_nonneg (by have := Nat.cast_nonneg (α := ℝ) n; linarith)
+  positivity
+
+private lemma h₂_antitone (hδ : 0 ≤ δ) :
+    ∀ ⦃m n : ℕ⦄, 0 < m → m ≤ n → h₂ δ n ≤ h₂ δ m := by
+  intro m n _ hmn
+  unfold h₂
+  have hlogm_pos : 0 < Real.log ((m : ℝ) + 2) :=
+    Real.log_pos (by have := Nat.cast_nonneg (α := ℝ) m; linarith)
+  have hDm_pos : 0 < ((m : ℝ) + 2) * (Real.log ((m : ℝ) + 2)) ^ (1 + δ) := by
+    apply mul_pos (by have := Nat.cast_nonneg (α := ℝ) m; linarith)
+    exact Real.rpow_pos_of_pos hlogm_pos _
+  apply one_div_le_one_div_of_le hDm_pos
+  have hmn' : ((m : ℝ) + 2) ≤ ((n : ℝ) + 2) := by
+    have : (m : ℝ) ≤ (n : ℝ) := by exact_mod_cast hmn
+    linarith
+  have hlog_le : Real.log ((m : ℝ) + 2) ≤ Real.log ((n : ℝ) + 2) :=
+    Real.log_le_log (by have := Nat.cast_nonneg (α := ℝ) m; linarith) hmn'
+  exact mul_le_mul hmn'
+    (Real.rpow_le_rpow hlogm_pos.le hlog_le (by linarith))
+    (Real.rpow_nonneg hlogm_pos.le _) (by have := Nat.cast_nonneg (α := ℝ) n; linarith)
+
+/-- Upper bound on the Cauchy-condensed term `2^k · h₂(2^k)`, compared against the
+    convergent `p`-series term `1/k^{1+δ}` (up to the constant `(log 2)^{-(1+δ)}`). -/
+private lemma h₂_cond_upper (hδ : 0 ≤ δ) (k : ℕ) (hk : 1 ≤ k) :
+    (2 : ℝ) ^ k * h₂ δ (2 ^ k)
+      ≤ (1 / (Real.log 2) ^ (1 + δ)) * (1 / (k : ℝ) ^ (1 + δ)) := by
+  have hlog2 : (0 : ℝ) < Real.log 2 := Real.log_pos (by norm_num)
+  have hk1 : (1 : ℝ) ≤ (k : ℝ) := by exact_mod_cast hk
+  have hklog_pos : 0 < (k : ℝ) * Real.log 2 := by positivity
+  have hlogb_ge : (k : ℝ) * Real.log 2 ≤ Real.log ((2 : ℝ) ^ k + 2) := by
+    have hstep : Real.log ((2 : ℝ) ^ k) ≤ Real.log ((2 : ℝ) ^ k + 2) :=
+      Real.log_le_log (by positivity) (by linarith [pow_pos (show (0:ℝ) < 2 by norm_num) k])
+    rwa [Real.log_pow] at hstep
+  have hlogb_pos : 0 < Real.log ((2 : ℝ) ^ k + 2) := lt_of_lt_of_le hklog_pos hlogb_ge
+  have hden_ge : ((k : ℝ) * Real.log 2) ^ (1 + δ)
+      ≤ (Real.log ((2 : ℝ) ^ k + 2)) ^ (1 + δ) :=
+    Real.rpow_le_rpow hklog_pos.le hlogb_ge (by linarith)
+  -- `2^k · h₂(2^k) ≤ 1/(log(2^k+2))^{1+δ}`, dropping the `2^k/(2^k+2) ≤ 1` factor.
+  have step1 : (2 : ℝ) ^ k * h₂ δ (2 ^ k)
+      ≤ 1 / (Real.log ((2 : ℝ) ^ k + 2)) ^ (1 + δ) := by
+    unfold h₂
+    push_cast
+    rw [mul_one_div, div_le_div_iff₀ (by positivity) (Real.rpow_pos_of_pos hlogb_pos _), one_mul]
+    exact mul_le_mul_of_nonneg_right (by linarith) (Real.rpow_nonneg hlogb_pos.le _)
+  -- Rewrite the target RHS as `1/((k·log2)^{1+δ})` via `mul_rpow`.
+  have hRHS : (1 / (Real.log 2) ^ (1 + δ)) * (1 / (k : ℝ) ^ (1 + δ))
+      = 1 / (((k : ℝ) * Real.log 2) ^ (1 + δ)) := by
+    rw [Real.mul_rpow (by positivity) hlog2.le]; ring
+  calc (2 : ℝ) ^ k * h₂ δ (2 ^ k)
+      ≤ 1 / (Real.log ((2 : ℝ) ^ k + 2)) ^ (1 + δ) := step1
+    _ ≤ 1 / (((k : ℝ) * Real.log 2) ^ (1 + δ)) :=
+        one_div_le_one_div_of_le (Real.rpow_pos_of_pos hklog_pos _) hden_ge
+    _ = (1 / (Real.log 2) ^ (1 + δ)) * (1 / (k : ℝ) ^ (1 + δ)) := hRHS.symm
+
+private lemma summable_h₂ (hδ : 0 < δ) : Summable (h₂ δ) := by
+  rw [← summable_condensed_iff_of_nonneg (h₂_nonneg δ) (h₂_antitone δ hδ.le)]
+  -- reduce to the `k ≥ 1` tail (the bound needs `k ≥ 1` so `log 2^k = k·log2 > 0`)
+  apply (summable_nat_add_iff 1).mp
+  -- dominate `2^{n+1}·h₂(2^{n+1})` by a constant multiple of the p-series `1/(n+1)^{1+δ}`
+  set D : ℕ → ℝ := fun n => (1 / (Real.log 2) ^ (1 + δ)) * (1 / ((n : ℝ) + 1) ^ (1 + δ))
+    with hDdef
+  have hDsum : Summable D := by
+    have hp : (1 : ℝ) < 1 + δ := by linarith
+    have h1 := Real.summable_one_div_nat_rpow.mpr hp
+    have h2 : Summable (fun n : ℕ => 1 / ((n : ℝ) + 1) ^ (1 + δ)) := by
+      have h1' := (summable_nat_add_iff 1).mpr h1
+      simpa using h1'
+    exact h2.mul_left _
+  refine Summable.of_nonneg_of_le (fun n => ?_) (fun n => ?_) hDsum
+  · exact mul_nonneg (by positivity) (h₂_nonneg δ _)
+  · have hb := h₂_cond_upper δ hδ.le (n + 1) (Nat.le_add_left 1 n)
+    have hcast : (((n + 1 : ℕ)) : ℝ) = (n : ℝ) + 1 := by push_cast; ring
+    rw [hDdef]
+    calc (2 : ℝ) ^ (n + 1) * h₂ δ (2 ^ (n + 1))
+        ≤ (1 / (Real.log 2) ^ (1 + δ)) * (1 / (((n + 1 : ℕ)) : ℝ) ^ (1 + δ)) := hb
+      _ = (1 / (Real.log 2) ^ (1 + δ)) * (1 / ((n : ℝ) + 1) ^ (1 + δ)) := by rw [hcast]
+
+/-- **The convergent Bertrand series `∑ 1/(n · (log n)^{1+δ})` converges for `δ > 0`.**
+    The `p = 1+δ > 1` companion of `not_summable_one_div_nat_mul_log`; together they
+    locate the Bertrand-series convergence threshold exactly at the exponent `p = 1`.
+    Proof by Cauchy condensation: the condensed term `2^k · (2^k·(log 2^k)^{1+δ})⁻¹`
+    is `≤ (log 2)^{-(1+δ)} · k^{-(1+δ)}`, a constant multiple of the convergent
+    `p`-series `∑ 1/k^{1+δ}`. -/
+theorem summable_one_div_nat_mul_log_rpow {δ : ℝ} (hδ : 0 < δ) :
+    Summable (fun n : ℕ => 1 / ((n : ℝ) * (Real.log n) ^ (1 + δ))) := by
+  -- shift by two (the `n = 0, 1` terms vanish or are harmless) to land on `h₂`
+  apply (summable_nat_add_iff 2).mp
+  refine (summable_h₂ δ hδ).congr (fun n => ?_)
+  unfold h₂
+  push_cast
+  ring
+
+end Convergent
+
 end Erdos3Bertrand
