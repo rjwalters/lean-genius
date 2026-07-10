@@ -28,8 +28,8 @@
     "id": "ann-sqrt23-root-witness",
     "proofId": "sqrt2-plus-sqrt3-irrational-oq-03",
     "range": {
-      "startLine": 38,
-      "endLine": 70
+      "startLine": 39,
+      "endLine": 69
     },
     "type": "concept",
     "title": "Root Witness: Step-by-Step Algebraic Computation",
@@ -53,7 +53,7 @@
     "id": "ann-sqrt23-monic",
     "proofId": "sqrt2-plus-sqrt3-irrational-oq-03",
     "range": {
-      "startLine": 71,
+      "startLine": 72,
       "endLine": 92
     },
     "type": "concept",
@@ -78,7 +78,7 @@
     "proofId": "sqrt2-plus-sqrt3-irrational-oq-03",
     "range": {
       "startLine": 93,
-      "endLine": 356
+      "endLine": 308
     },
     "type": "insight",
     "title": "Irreducibility: Klein 4-Group Obstruction (via Gauss's Lemma)",
@@ -90,7 +90,7 @@
       "Galois group",
       "rational root theorem",
       "quadratic factor case analysis",
-      "sorry in Lean"
+      "Gauss's lemma (ℤ[X] ⇒ ℚ[X])"
     ],
     "prerequisites": [
       "Polynomial.Irreducible in Mathlib",
@@ -103,8 +103,8 @@
     "id": "ann-sqrt23-minpoly-main",
     "proofId": "sqrt2-plus-sqrt3-irrational-oq-03",
     "range": {
-      "startLine": 357,
-      "endLine": 368
+      "startLine": 311,
+      "endLine": 318
     },
     "type": "insight",
     "title": "Main Theorem: One-Line Assembly via minpoly.eq_of_irreducible_of_monic",
@@ -127,8 +127,8 @@
     "id": "ann-sqrt23-consequences",
     "proofId": "sqrt2-plus-sqrt3-irrational-oq-03",
     "range": {
-      "startLine": 369,
-      "endLine": 403
+      "startLine": 319,
+      "endLine": 349
     },
     "type": "insight",
     "title": "Consequences: Extension Degree 4 and Irrationality Certificate",
