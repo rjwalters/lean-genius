@@ -64,7 +64,8 @@
       "The increasing-only covering number satisfies an EXACT min-max identity minIncreasingParts = LDS (dual-Dilworth/Mirsky for sequences), sharper than the monotone bracket which is only [n/max(LIS,LDS), min(LIS,LDS)].",
       "Lower bound LDS <= numParts needs NO distinctness (pure pigeonhole: a longest strictly-decreasing subsequence meets each increasing part at most once); only the upper bound (Mirsky rank colouring) needs injective/distinct values.",
       "k-MONOTONIC generalization (this session): a k-monotone subsequence (index image covered by k monotone runs) has length <= k*max(LIS,LDS) via a Finset.card_biUnion_le counting argument over the run images; the k=1 case recovers len_le_max_of_monotonic. This is the clean generalization requested by OQ-05.",
-      "The k-monotone covering number minKMonotonicParts k satisfies the sandwich n/(k*max(LIS,LDS)) <= minKMonotonicParts k <= minMonotonicParts (k>=1): the upper half embeds every monotone decomposition (a monotone part is trivially k-monotone with constant runs), the lower half is the k-monotone Mirsky counting bound and weakens as k grows, matching the intuition that more direction-changes per part means fewer parts."
+      "The k-monotone covering number minKMonotonicParts k satisfies the sandwich n/(k*max(LIS,LDS)) <= minKMonotonicParts k <= minMonotonicParts (k>=1): the upper half embeds every monotone decomposition (a monotone part is trivially k-monotone with constant runs), the lower half is the k-monotone Mirsky counting bound and weakens as k grows, matching the intuition that more direction-changes per part means fewer parts.",
+      "Antitone-in-k for the k-monotone covering number: minKMonotonicParts is non-increasing in k (1≤k≤k′ ⟹ minKMonotonicParts k′ ≤ minKMonotonicParts k). Engine is a padding lemma IsKMonotonic.mono — clamp the run index Fin k′→Fin k via j↦min j (k−1), repeating the last run in the surplus slots (no empty runs needed since covering only requires SOME run to hit each index); lifted to decompositions by KMonotonicDecomposition.mono. Specializing k=1 (with the k=1 identity) recovers minKMonotonicParts_le_minMonotonicParts, so this subsumes the previously isolated monotone-endpoint bound."
     ],
     "builtItems": [
       "monotonicDecomposition_numParts_lower_bound: n ≤ numParts · max(LIS, LDS) (Erdos1026OQ05.lean:131)",
@@ -77,7 +78,8 @@
       "IncreasingDecomposition structure + minIncreasingParts (covering number) in Erdos1026OQ05IncreasingIdentity.lean",
       "minIncreasingParts_eq_LDS : Function.Injective seq -> minIncreasingParts seq = LDS seq  (Erdos1026OQ05IncreasingIdentity.lean) [VERIFIED 0/0]",
       "LDS_le_numParts (pigeonhole lower bound), mirskyIncreasingDecomposition (upper bound), minMonotonicParts_le_minIncreasingParts + re-derived minMonotonicParts_le_LDS",
-      "Erdos1026OQ05KMonotonic.lean (companion, VERIFIED 0 sorry/0 axiom, 204 lines): IsKMonotonic, len_le_kmono, KMonotonicDecomposition, kMonotonicDecomposition_numParts_lower_bound/_ge, monotonicToKMonotonic, minKMonotonicParts, minKMonotonicParts_ge/_le_minMonotonicParts/_bracket"
+      "Erdos1026OQ05KMonotonic.lean (companion, VERIFIED 0 sorry/0 axiom, 204 lines): IsKMonotonic, len_le_kmono, KMonotonicDecomposition, kMonotonicDecomposition_numParts_lower_bound/_ge, monotonicToKMonotonic, minKMonotonicParts, minKMonotonicParts_ge/_le_minMonotonicParts/_bracket",
+      "Erdos1026OQ05KMonotonic.lean: IsKMonotonic.mono (padding), KMonotonicDecomposition.mono (decomposition lift), minKMonotonicParts_antitone (non-increasing in k) — 3 decls, 0 sorries/0 axioms, elaboration-clean (olean-write blocked by fleet SIGBUS-135 storm)."
     ],
     "mathlibGaps": [
       "No Hanani-style monotonic decomposition theorem in Mathlib; the parent file only states the structure. Dilworth is available for antichains but not directly wired to the LIS/LDS monotone-run decomposition.",
@@ -93,7 +95,7 @@
       "Prove the EXACT k=1 identity minKMonotonicParts 1 = minMonotonicParts (need IsKMonotonic 1 -> IsMonotonic: a subsequence contained in a single monotone run is itself monotone, via order-preservation of the induced index map).",
       "Antitone-in-k: minKMonotonicParts is non-increasing in k (needs IsKMonotonic.mono padding runs Fin k -> Fin k with empty monotone runs; dependent-Sigma reindexing is the fiddly part)."
     ],
-    "progressSummary": "PROGRESS: k-monotonic generalization VERIFIED (Erdos1026OQ05KMonotonic.lean, 0 sorry/0 axiom) — length bound k*max(LIS,LDS), counting lower bound, and the sandwich n/(k*max)<=minKMonotonicParts k<=minMonotonicParts. Remaining open: exact k=1 identity, antitone-in-k, and the hard constructive O(sqrt n) Hanani upper bound."
+    "progressSummary": "PROGRESS: k-monotone covering number now proven ANTITONE in k (minKMonotonicParts_antitone), generalizing the k=1 monotone-endpoint bound to the full non-increasing-in-k law via a run-index clamp padding lemma. The two-sided bracket, exact k=1 identity, dual minDecreasingParts=LIS, and Erdős–Szekeres tightness are all complete. ONLY remaining open direction: the hard constructive O(√n) Hanani UPPER bound (√n monotone pieces suffice for EVERY sequence) — needs Dilworth chain-decomposition machinery absent from Mathlib; not session-sized."
   },
   "tags": [
     "combinatorics",

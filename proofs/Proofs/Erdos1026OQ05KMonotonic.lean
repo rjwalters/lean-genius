@@ -279,4 +279,70 @@ theorem minKMonotonicParts_one_eq_minMonotonicParts (seq : RealSeq n) :
   le_antisymm (minKMonotonicParts_le_minMonotonicParts Nat.one_pos seq)
     (minMonotonicParts_le_minKMonotonicParts_one seq)
 
+/-! ## Monotonicity in `k`: `minKMonotonicParts` is non-increasing in the run budget
+
+The bracket `minKMonotonicParts_bracket` only compares the k-monotone covering number to the
+`k = 1` (ordinary monotone) endpoint. Here we prove the full **antitone** statement: for
+`1 ≤ k ≤ k'`, allowing more monotone runs per part cannot increase the covering number,
+
+    minKMonotonicParts k' seq ≤ minKMonotonicParts k seq.
+
+The engine is a **padding** lemma: a k-monotone piece is k'-monotone whenever `k ≤ k'`, obtained
+by clamping the run index `Fin k' → Fin k` (repeating the last run for the extra slots — no empty
+runs are needed, since the covering condition only requires *some* run to hit each index).
+Specializing to `k = 1` (with `minKMonotonicParts_one_eq_minMonotonicParts`) recovers
+`minKMonotonicParts_le_minMonotonicParts`. -/
+
+/-- **Padding a k-monotone piece to a larger run budget.** If `sub` is `k`-monotone and `k ≤ k'`
+(with `k ≥ 1`), then `sub` is `k'`-monotone: reindex the `k` runs by clamping `Fin k' → Fin k`
+(the map `j ↦ min j (k-1)`), which repeats the final run in the surplus slots. Every run stays
+monotone, and any index covered by run `j : Fin k` is still covered — the slot `j : Fin k'`
+clamps back to `j`. This is the direction opposite to reading off a single run. -/
+theorem IsKMonotonic.mono {k k' : ℕ} (hk : 0 < k) (hkk' : k ≤ k') {seq : RealSeq n}
+    {sub : Subsequence n m} (h : IsKMonotonic k seq sub) : IsKMonotonic k' seq sub := by
+  obtain ⟨runs, hmono, hcov⟩ := h
+  -- Clamp the extra run slots back into `Fin k` (`k ≥ 1`), repeating the last run.
+  set f : Fin k' → Fin k := fun j => ⟨min j.val (k - 1), by omega⟩ with hf
+  refine ⟨fun j => runs (f j), fun j => hmono _, ?_⟩
+  intro a
+  obtain ⟨j, b, hjb⟩ := hcov a
+  have hj'lt : j.val < k' := by omega
+  refine ⟨⟨j.val, hj'lt⟩, ?_⟩
+  -- The clamp sends the slot `⟨j, _⟩ : Fin k'` back to `j`, so its run is `runs j`.
+  have hfj : f ⟨j.val, hj'lt⟩ = j := by
+    apply Fin.ext; simp only [hf, Fin.val_mk]; omega
+  rw [hfj]
+  exact ⟨b, hjb⟩
+
+/-- Lift a `k`-monotone decomposition to a `k'`-monotone one for `k ≤ k'` (`k ≥ 1`): each part is
+padded via `IsKMonotonic.mono`, while the disjointness and covering data are unchanged. -/
+def KMonotonicDecomposition.mono {k k' : ℕ} (hk : 0 < k) (hkk' : k ≤ k') {seq : RealSeq n}
+    (D : KMonotonicDecomposition k n seq) : KMonotonicDecomposition k' n seq where
+  numParts := D.numParts
+  parts := D.parts
+  kmonotonic := fun i => (D.kmonotonic i).mono hk hkk'
+  disjoint := D.disjoint
+  covering := D.covering
+
+/-- **The k-monotone covering number is antitone in `k`.** For `1 ≤ k ≤ k'`,
+
+    minKMonotonicParts k' seq ≤ minKMonotonicParts k seq.
+
+The optimal `k`-monotone decomposition is, after padding (`KMonotonicDecomposition.mono`), a
+`k'`-monotone decomposition of the same size, so its part count bounds the `k'`-monotone infimum.
+Combined with `minKMonotonicParts_one_eq_minMonotonicParts`, taking `k = 1` recovers
+`minKMonotonicParts_le_minMonotonicParts`; the general statement makes precise the "non-increasing
+in `k`" picture that `minKMonotonicParts_bracket` only asserts informally. -/
+theorem minKMonotonicParts_antitone {k k' : ℕ} (hk : 0 < k) (hkk' : k ≤ k')
+    (seq : RealSeq n) : minKMonotonicParts k' seq ≤ minKMonotonicParts k seq := by
+  classical
+  have hne : {p | ∃ D : KMonotonicDecomposition k n seq, D.numParts = p}.Nonempty :=
+    ⟨n, monotonicToKMonotonic hk (singletonDecomposition seq), rfl⟩
+  obtain ⟨D, hD⟩ := Nat.sInf_mem hne
+  have hEq : minKMonotonicParts k seq = D.numParts := hD.symm
+  rw [hEq]
+  unfold minKMonotonicParts
+  apply Nat.sInf_le
+  exact ⟨D.mono hk hkk', rfl⟩
+
 end Erdos1026OQ05KMonotonic
