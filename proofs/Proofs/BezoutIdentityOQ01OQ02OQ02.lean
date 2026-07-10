@@ -127,7 +127,8 @@ def headBlock3 (N : Matrix (Fin 2) (Fin 2) ℤ) : Matrix (Fin 3) (Fin 3) ℤ :=
 theorem det_headBlock3 (N : Matrix (Fin 2) (Fin 2) ℤ) :
     (headBlock3 N).det = N.det := by
   rw [headBlock3, Matrix.det_fin_three, Matrix.det_fin_two]
-  dsimp only [Matrix.cons_val]
+  simp only [Matrix.of_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
+    Matrix.head_cons, Matrix.tail_cons, Matrix.cons_val_fin_one, Matrix.head_fin_const]
   ring
 
 theorem headBlock3_mulVec (N : Matrix (Fin 2) (Fin 2) ℤ) (x y z : ℤ) :
