@@ -906,6 +906,37 @@ theorem kronecker_sq_left_eq_one_of_coprime (a : ℤ) (n : ℕ) (hn : 0 < n) (hn
   rw [kronecker_sq_left a (n : ℤ) ha]
   exact kronecker_sq_eq_one_of_coprime a n hn hno h
 
+/-! The three results above square the *numerator*.  Their denominator-side duals
+follow the same way from second-argument multiplicativity `kronecker_mul_right`:
+the symbol at a *square modulus* `n²` is a perfect square, hence `≥ 0`, and equals
+`1` on units.  This completes the "squares are residues" picture in both arguments. -/
+
+/-- **The symbol at a square modulus is the square of the symbol.**  For nonzero
+`n`, `(a/n²) = (a/n)²` — the denominator-side dual of `kronecker_sq_left`, a direct
+instance of second-argument multiplicativity `kronecker_mul_right` on the nonzero
+product `n² = n·n`. -/
+theorem kronecker_sq_right (a n : ℤ) (hn : n ≠ 0) :
+    kronecker a (n ^ 2) = kronecker a n ^ 2 := by
+  rw [pow_two, kronecker_mul_right a n n (mul_ne_zero hn hn), pow_two]
+
+/-- **The symbol is non-negative at square moduli.**  `0 ≤ (a/n²)` for nonzero `n`:
+by `kronecker_sq_right` the value is a perfect square.  So a square modulus never
+records `a` as a quadratic *non*-residue — the value is `0` (non-coprime) or `1`. -/
+theorem kronecker_sq_right_nonneg (a n : ℤ) (hn : n ≠ 0) :
+    0 ≤ kronecker a (n ^ 2) := by
+  rw [kronecker_sq_right a n hn]; exact sq_nonneg _
+
+/-- **Square moduli coprime to the numerator give the trivial value.**  For odd
+positive `n` coprime to `a`, `(a/n²) = 1`: at a square modulus the character is
+principal on units.  The denominator-side companion of
+`kronecker_sq_left_eq_one_of_coprime`, combining `kronecker_sq_right` with
+`kronecker_sq_eq_one_of_coprime`. -/
+theorem kronecker_sq_right_eq_one_of_coprime (a : ℤ) (n : ℕ) (hn : 0 < n) (hno : n % 2 = 1)
+    (h : Int.gcd a n = 1) :
+    kronecker a ((n : ℤ) ^ 2) = 1 := by
+  rw [kronecker_sq_right a (n : ℤ) (by exact_mod_cast hn.ne')]
+  exact kronecker_sq_eq_one_of_coprime a n hn hno h
+
 /-!
 ## Module note: what remains open
 
