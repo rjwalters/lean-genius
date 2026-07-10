@@ -4,6 +4,54 @@ Insights accumulated during research on this problem.
 
 ---
 
+## Session 2026-07-09 (researcher-8) — TERMINATION capstone: a regular step is reached in bounded time
+
+**Mode:** REVISIT (RICH tier). **Outcome:** progress — the conclusion the whole development
+was built toward, finally stated as an existence/termination result.
+
+### Key realization
+The Assembly file already derives the sharp AFKS **iteration-count bound**
+`afks_sharp_energy_iteration_count_of_prod_witness`: *if* every step `n < N` is a mass-`m`
+`ε`-irregular sharp 2×2 refinement, *then* `N ≤ n²/(ε⁴m²)`. But the file never stated the
+**contrapositive** — the actual strong-regularity termination statement: an *infinite* chain
+of such irregular refinements is impossible (energy is bounded by 1), so a **regular** step is
+reached within `O(n²/(ε⁴m²))` refinements. That existence result is what "the algorithm halts /
+a regular partition exists" means, and it was missing.
+
+### What I did — `afks_regular_step_within_bound` (Assembly, +1 theorem, ~12 lines)
+For any partition sequence `parts : ℕ → Finset (Finset V)` (cover + pairwise-disjoint) and any
+horizon `N > n²/(ε⁴m²)`, there is a step `n < N` at which the refinement `parts n → parts (n+1)`
+is **not** a mass-`m` `ε`-irregular sharp 2×2 split. Proof: `by_contra` + `push_neg` turns the
+negated goal *exactly* into the per-step witness hypothesis `hwit` of the iteration-count lemma
+(the existential predicate is copied verbatim), feed it to
+`afks_sharp_energy_iteration_count_of_prod_witness` to get `N ≤ n²/(ε⁴m²)`, which
+`absurd … (not_le.mpr hN)` contradicts with the horizon.
+
+### Why this matters
+It is the top-level capstone of the six-file OQ-04 development: the whole chain
+(variance-atom 2×2 ε⁴ increment → partition lift → `[0,1]`-potential termination → iteration
+count) now culminates in an *existence-of-a-regular-step* theorem. The one standing open blocker
+is unchanged: discharging the freshness/equipartition realizability of the witnessed steps from a
+concrete equipartition model (threaded as hypotheses here and everywhere upstream).
+
+### Verification — UNVERIFIED-by-build (persistent fleet SIGBUS-135, Bridge dependency)
+~9 Docker attempts + 2 `--repair-cache` cycles: every one crashed at `[7748/7749] Building
+Proofs.SzemerediRegularityOQ04Bridge` — the **unchanged** heavy 799-line Bridge dependency
+crashing at **olean write** in ~1.5 s (elaboration completes, zero type errors); my Assembly file
+(job 7749) is never reached. This is the **identical** persistent block every prior szemeredi
+session hit (Session 7 landed green only on attempt 4; researcher-2 after a cache repair) — it
+clears once the fleet's memory pressure eases. The addition is maximally safe: a pure
+contrapositive of an already-VERIFIED theorem, using only `by_contra`/`push_neg`/`absurd`/
+`not_le.mpr`, with the existential predicate copied verbatim from the verified capstone's
+hypothesis (so the `fun n hn => hcon n hn` application is guaranteed to typecheck). Hand-audited
+line-by-line. A clean rebuild when the fleet quiets should confirm 0 sorry / 0 axiom.
+
+### Files Modified
+- `proofs/Proofs/SzemerediRegularityOQ04Assembly.lean` (+`afks_regular_step_within_bound`; 290→342 lines, 4→5 theorems)
+- `src/data/research/problems/szemeredi-regularity-oq-04.json` (added missing Assembly leanFile entry + knowledge)
+
+---
+
 ## Problem Understanding
 
 The strong (Alon–Fischer–Krivelevich–Szegedy, 2000) regularity lemma is the

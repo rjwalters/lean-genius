@@ -287,4 +287,56 @@ theorem afks_sharp_energy_iteration_count_of_prod_witness
     gcongr
   linarith [hgain, hfloor]
 
+-- ═══════════════════════════════════════════════════════════════════
+-- TERMINATION: A REGULAR REFINEMENT STEP IS REACHED IN BOUNDED TIME
+-- ═══════════════════════════════════════════════════════════════════
+
+/-- **AFKS termination / a regular step is reached in bounded time.**  This is the
+    contrapositive capstone of `afks_sharp_energy_iteration_count_of_prod_witness`
+    and states the *conclusion* the whole file was built toward: an infinite chain of
+    sharp `2×2` irregular-refinement steps is impossible, so a *regular* step must occur
+    within a bounded number of refinements.
+
+    Concretely: for any partition sequence `parts : ℕ → Finset (Finset V)` (each a cover
+    by pairwise-disjoint parts) and any horizon `N` strictly larger than the sharp
+    iteration bound `n²/(ε⁴·m²)`, there is some step `n < N` at which the refinement
+    `parts n → parts (n+1)` is **not** a mass-`m`, `ε`-irregular sharp `2×2` split.  Since
+    `afks_sharp_energy_iteration_count_of_prod_witness` shows every such witnessed step
+    raises `partitionEnergy` by the fixed no-loss floor `ε⁴·m²/n²`, and energy is capped
+    at `1`, no more than `n²/(ε⁴·m²)` witnessed steps can occur; a horizon exceeding that
+    bound must therefore contain a step whose refined pair is already `ε`-regular (or has
+    a part of mass `< m`).  This is exactly the strong-regularity termination statement:
+    the AFKS iteration halts — a regular partition is reached — in `O(n²/(ε⁴m²))` steps.
+
+    The freshness/equipartition realizability of the witnessed steps is inherited from
+    the underlying iteration-count lemma and is not assumed here; the theorem is purely
+    the impossibility of an all-witnessed refinement chain longer than the energy budget
+    allows. -/
+theorem afks_regular_step_within_bound
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (parts : ℕ → Finset (Finset V)) (N : ℕ) (eps m : ℚ)
+    (hε : 0 < eps) (hm : 0 < m) (hcard : 0 < (Fintype.card V : ℚ))
+    (hcover : ∀ n, ∀ v : V, ∃ P ∈ parts n, v ∈ P)
+    (hdisjoint : ∀ n, ∀ P Q : Finset V, P ∈ parts n → Q ∈ parts n → P ≠ Q →
+      Disjoint P Q)
+    (hN : (Fintype.card V : ℚ) ^ 2 / (eps ^ 4 * m ^ 2) < N) :
+    ∃ n < N, ¬ (∃ R : Finset (Finset V), ∃ A B A₁ A₂ B₁ B₂ : Finset V,
+      parts n = insert A (insert B R) ∧
+      parts (n + 1) = insert A₁ (insert A₂ (insert B₁ (insert B₂ R))) ∧
+      A₁ ∪ A₂ = A ∧ B₁ ∪ B₂ = B ∧ Disjoint A₁ A₂ ∧ Disjoint B₁ B₂ ∧
+      A ∉ insert B R ∧ B ∉ R ∧
+      A₁ ∉ insert A₂ (insert B₁ (insert B₂ R)) ∧ A₂ ∉ insert B₁ (insert B₂ R) ∧
+      B₁ ∉ insert B₂ R ∧ B₂ ∉ R ∧
+      m ≤ (A.card : ℚ) ∧ m ≤ (B.card : ℚ) ∧
+      eps * A.card ≤ (A₁.card : ℚ) ∧ eps * B.card ≤ (B₁.card : ℚ) ∧
+      eps ≤ |edgeDensity G A₁ B₁ - edgeDensity G A B|) := by
+  by_contra hcon
+  push_neg at hcon
+  -- `hcon` is now exactly the per-step witness hypothesis: every step `n < N` IS a
+  -- mass-`m`, `ε`-irregular sharp `2×2` split.  Feed it to the iteration-count bound.
+  have hle := afks_sharp_energy_iteration_count_of_prod_witness
+    G parts N eps m hε hm hcard hcover hdisjoint (fun n hn => hcon n hn)
+  -- The bound `N ≤ n²/(ε⁴m²)` contradicts the assumed horizon `n²/(ε⁴m²) < N`.
+  exact absurd hle (not_le.mpr hN)
+
 end Szemeredi.RegularityOQ04Bridge
