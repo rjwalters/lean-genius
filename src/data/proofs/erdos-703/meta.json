@@ -46,13 +46,16 @@
       "card_le_of_avoids_zero: complement-pairing upper bound |F| ≤ 2^{n-1} for 0-avoiding (intersecting) families",
       "star_family_card: the fixed-point star family has exactly 2^{n-1} members (sharpness witness)",
       "T_n_0: fully machine-checked proof that T(n,0) = 2^{n-1} (previously a sorry)",
-      "largeSetsFamily / largeSetsFamily_avoids_1 / largeSetsFamily_card_le_T: Frankl's (1977) r=1 lower-bound construction — the family of sets larger than (n+1)/2 is a valid 1-avoiding family, giving a verified lower bound |largeSetsFamily n| ≤ T(n,1)"
+      "largeSetsFamily / largeSetsFamily_avoids_1 / largeSetsFamily_card_le_T: Frankl's (1977) r=1 lower-bound construction — the family of sets larger than (n+1)/2 is a valid 1-avoiding family, giving a verified lower bound |largeSetsFamily n| ≤ T(n,1)",
+      "T_n_n: fully machine-checked exact diagonal value T(n,n) = 2^n − 1 — the maximal n-avoiding family is the powerset of [n] minus the single full set [n], since [n] with itself is the only pair of subsets meeting in exactly n elements. This is the third exactly-known boundary of T, alongside T(n,0) = 2^{n-1} and T(n,r) = 2^n for n < r.",
+      "inter_card_eq_n_iff: the supporting characterization that for A, B ⊆ [n], |A ∩ B| = n iff A = B = [n]; the combinatorial core of the diagonal value.",
+      "Structural lemmas on T: T_le_pow (T(n,r) ≤ 2^n), T_mono_ground (monotone in the ground-set size n), one_le_T (positivity), and full_powerset_avoids_r_of_lt / T_eq_pow_of_lt (T(n,r) = 2^n whenever n < r); plus largeSetsFamily_subset_franklFurediOdd_one linking Frankl's r=1 family into the general Frankl-Füredi construction."
     ],
     "axiomCount": 1,
-    "lineCount": 578,
+    "lineCount": 638,
     "assumptions": "1 axiom: frankl_rodl_1987 (the deep Frankl–Rödl 1987 exponential bound — the affirmative answer to the main question). 0 sorries: the trivial case T(n,0)=2^{n-1} is fully machine-checked (#print axioms T_n_0 = [propext, Classical.choice, Quot.sound]) via a complement-pairing upper bound and a star-family witness. The unused opaque chromaticNumber axiom was removed; the geometric chromatic-number consequence is recorded as prose only since infinite unit-distance chromatic numbers are not yet in Mathlib.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 19,
+    "theoremCount": 21,
     "definitionCount": 8
   },
   "crossReferences": [
@@ -69,84 +72,76 @@
   ],
   "sections": [
     {
-      "id": "imports",
-      "title": "Imports and Setup",
+      "id": "overview-setup",
+      "title": "Overview and Setup",
       "startLine": 1,
-      "endLine": 40,
-      "summary": "Imports `Finset.Basic`, `Finset.Card`, `Finset.Powerset`, and `SetFamily.Intersecting`. Opens `Nat Finset` namespace.",
-      "mathContext": "Mathematical content: Imports `Finset.Basic`, `Finset.Card`, `Finset.Powerset`, and `SetFamily.Intersecting`. Opens `Nat Finset` namespace."
+      "endLine": 46,
+      "summary": "Module docstring stating Erdős #703 and the plan: build up from definitions through the known exact values to the axiomatized Frankl–Rödl bound. `import Mathlib`, `open Nat Finset`, `open scoped Classical`, `namespace Erdos703`.",
+      "mathContext": "Goal: estimate $T(n,r)=\\max\\{|\\mathcal F|: \\mathcal F\\subseteq 2^{[n]},\\ |A\\cap B|\\neq r\\ \\forall A,B\\in\\mathcal F\\}$; the headline question is whether $T(n,r)<(2-\\delta)^n$ for $\\varepsilon n<r<(1/2-\\varepsilon)n$."
     },
     {
-      "id": "r-intersection",
-      "title": "Forbidden r-Intersection Families",
-      "startLine": 41,
-      "endLine": 67,
-      "summary": "Defines `hasRIntersection` ($|A \\cap B| = r$), `avoidsRIntersection` (family-level constraint), and $T(n,r) = \\max|\\mathcal{F}|$ via `Finset.sup` over filtered powerset.",
-      "mathContext": "Formal definition: Defines `hasRIntersection` ($|A \\cap B| = r$), `avoidsRIntersection` (family-level constraint), and $T(n,r) = \\max|\\mathcal{F}|$ via `Finset.sup` over filtered powerset."
+      "id": "part-i-definitions",
+      "title": "Part I — Forbidden r-Intersection Families",
+      "startLine": 47,
+      "endLine": 76,
+      "summary": "Defines `hasRIntersection r A B` ($|A \\cap B| = r$), `avoidsRIntersection r F` (no two members meet in exactly $r$ points), and $T(n,r)$ as a `Finset.sup` of family cardinalities over the filtered double powerset.",
+      "mathContext": "$T(n,r) = \\sup\\{|\\mathcal F| : \\mathcal F \\in 2^{2^{[n]}},\\ \\text{avoidsRIntersection } r\\ \\mathcal F\\}$, taken over the powerset of the powerset of $[n]=\\mathrm{range}\\,n$."
     },
     {
-      "id": "trivial-case",
-      "title": "The Trivial Case T(n,0)",
-      "startLine": 68,
-      "endLine": 89,
-      "summary": "$T(n,0) = 2^{n-1}$: 0-avoiding families are intersecting families. Equivalence proved; optimality has a sorry.",
-      "mathContext": "$T(n,0) = $$2^{{n-1}$}$$: 0-avoiding families are intersecting families. Equivalence proved; optimality has a sorry."
+      "id": "part-ii-trivial-case",
+      "title": "Part II — The Trivial Case T(n,0)",
+      "startLine": 77,
+      "endLine": 227,
+      "summary": "$T(n,0)=2^{n-1}$, fully machine-checked (no sorry). `zero_avoiding_is_intersecting` identifies 0-avoiding families with intersecting families; `card_le_of_avoids_zero` gives the complement-pairing upper bound $|\\mathcal F|\\le 2^{n-1}$; `star_family_card` supplies the sharp star-family witness; `T_n_0` combines them, and `large_sets_avoid_1` sets up the $r=1$ construction.",
+      "mathContext": "Complement pairing: for an intersecting family $\\mathcal F$, $A$ and its complement $[n]\\setminus A$ cannot both belong to $\\mathcal F$, so $|\\mathcal F|\\le \\tfrac12\\,2^n = 2^{n-1}$; the star $\\{A : 1\\in A\\}$ attains it."
     },
     {
-      "id": "frankl-1977",
-      "title": "Frankl's Result for r = 1",
-      "startLine": 90,
-      "endLine": 118,
-      "summary": "Frankl (1977) determined $T(n,1)$: optimal family is large sets ($|A| > (n+1)/2$) plus $\\emptyset$. Pigeonhole argument for large sets avoiding 1-intersection.",
-      "mathContext": "Mathematical content: Frankl (1977) determined $T(n,1)$: optimal family is large sets ($|A| > (n+1)/2$) plus $\\emptyset$. Pigeonhole argument for large sets avoiding 1-intersection."
+      "id": "part-iii-frankl-1977",
+      "title": "Part III — Frankl's Result for r = 1",
+      "startLine": 228,
+      "endLine": 280,
+      "summary": "`largeSetsFamily n` (sets with $|A|>(n+1)/2$) is a valid 1-avoiding family (`largeSetsFamily_avoids_1`), giving the verified lower bound $|\\text{largeSetsFamily } n| \\le T(n,1)$ (`largeSetsFamily_card_le_T`) — Frankl's (1977) $r=1$ construction.",
+      "mathContext": "Two sets of size $>(n+1)/2$ overlap in more than $(n+1)-n=1$ point, so $|A\\cap B|\\ge 2\\neq 1$; hence the large-set family avoids 1-intersection."
     },
     {
-      "id": "frankl-furedi",
-      "title": "Frankl-Füredi Optimal Families",
-      "startLine": 119,
-      "endLine": 142,
-      "summary": "Explicit constructions split by parity of $n+r$: odd case uses $|A| > (n+r)/2$ or $|A| < r$; even case uses $|A \\setminus \\{1\\}| \\geq (n+r)/2$. Frankl-Füredi (1984) proves optimality for fixed $r$ and large $n$.",
-      "mathContext": "Explicit constructions split by parity of $n+r$: odd case uses $|A| > (n+r)/2$ or $|A| < r$; even case uses $|A \\setminus \\{1\\}| \\geq (n+r)/2$. Frankl-Füredi (1984) proves optimality for fixed $r$ and large $n$."
+      "id": "part-iv-frankl-furedi",
+      "title": "Part IV — Frankl-Füredi Optimal Families",
+      "startLine": 281,
+      "endLine": 386,
+      "summary": "Explicit optimal constructions split by parity of $n+r$: `franklFurediOdd` uses $|A|>(n+r)/2$ or $|A|<r$; `franklFurediEven` uses $|A\\setminus\\{1\\}|\\ge (n+r)/2$. Each is shown $r$-avoiding and bounded by $T(n,r)$. Frankl-Füredi (1984) proved these optimal for fixed $r$ and large $n$.",
+      "mathContext": "Odd case: large sets ($|A|>(n+r)/2$) pairwise meet in $>r$ points; tiny sets ($|A|<r$) cannot meet in $r$ points; the two blocks never cross exactly at $r$. Even case recenters around a fixed element."
     },
     {
-      "id": "main-question",
-      "title": "The Main Question — Exponential Bound",
-      "startLine": 143,
-      "endLine": 171,
-      "summary": "Formal $\\varepsilon$-$\\delta$ statement: $T(n,r) < (2-\\delta)^n$ for $\\varepsilon n < r < (1/2-\\varepsilon)n$. **Frankl-Rödl (1987)**: YES, resolving the \\$250 prize.",
-      "mathContext": "Formal $\\varepsilon$-$\\$\\delta$$ statement: $T(n,r) < (2-\\$\\delta$)^n$ for $\\varepsilon n < r < (1/2-\\varepsilon)n$. **Frankl-Rödl (1987)**: YES, resolving the \\$250 prize."
+      "id": "part-ivb-structural-T",
+      "title": "Part IV.b — Structural Properties of T (incl. the diagonal T(n,n))",
+      "startLine": 387,
+      "endLine": 557,
+      "summary": "General structural lemmas on $T$: the universal upper bound `T_le_pow` ($T(n,r)\\le 2^n$), ground-set monotonicity `T_mono_ground`, positivity `one_le_T`, and the above-range regime `full_powerset_avoids_r_of_lt` / `T_eq_pow_of_lt` ($T(n,r)=2^n$ for $n<r$). The centerpiece is the exact diagonal value `T_n_n`: $T(n,n)=2^n-1$, proved via `inter_card_eq_n_iff` (the only pair of subsets of $[n]$ meeting in $n$ elements is $[n]$ with itself). `largeSetsFamily_subset_franklFurediOdd_one` links Part III to Part IV.",
+      "mathContext": "Diagonal: a family avoids $n$-intersection iff it omits the full set $[n]$ (self-pair is the unique $n$-meeting pair), so the maximum is $2^{[n]}\\setminus\\{[n]\\}$ of size $2^n-1$. This is the third exactly-known boundary of $T$, joining $T(n,0)=2^{n-1}$ and $T(n,r)=2^n$ for $n<r$."
     },
     {
-      "id": "chromatic-connection",
-      "title": "Connection to Chromatic Numbers",
-      "startLine": 172,
-      "endLine": 195,
-      "summary": "The exponential bound implies $\\chi(G_n) \\geq c^n$ for the unit distance graph. Frankl-Wilson (1981) proved this independently via mod $p$ methods.",
-      "mathContext": "Bound: The exponential bound implies $\\chi(G_n) \\geq c^n$ for the unit distance graph. Frankl-Wilson (1981) proved this independently via mod $p$ methods."
+      "id": "part-v-main-question",
+      "title": "Part V — The Main Question (Exponential Bound)",
+      "startLine": 558,
+      "endLine": 582,
+      "summary": "Formal $\\varepsilon$-$\\delta$ statement `mainQuestion` and the axiomatized answer `frankl_rodl_1987 : mainQuestion` — the deep Frankl-Rödl (1987) theorem, resolving the \\$250 prize affirmatively via the nibble method.",
+      "mathContext": "$\\forall \\varepsilon>0\\ \\exists \\delta>0$ such that $T(n,r)<(2-\\delta)^n$ whenever $\\varepsilon n<r<(1/2-\\varepsilon)n$. This single deep bound is the file's only axiom."
     },
     {
-      "id": "frankl-wilson",
-      "title": "The Frankl-Wilson Theorem",
-      "startLine": 196,
-      "endLine": 212,
-      "summary": "Generalizes to $L$-avoiding families. The Frankl-Wilson theorem (mod $p$ version): uniform families with modular constraints satisfy $|\\mathcal{F}| \\leq \\binom{n}{s}$, using the linear algebra method.",
-      "mathContext": "Verified: Generalizes to $L$-avoiding families. The Frankl-Wilson theorem (mod $p$ version): uniform families with modular constraints satisfy $|\\mathcal{F}| \\leq \\binom{n}{s}$, using the linear algebra method."
+      "id": "part-vi-vii-chromatic-frankl-wilson",
+      "title": "Parts VI–VII — Chromatic Numbers and the Frankl-Wilson Theorem",
+      "startLine": 583,
+      "endLine": 604,
+      "summary": "Prose record of the geometric consequence — the exponential bound implies $\\chi(\\mathbb{R}^n)\\ge c^n$ for the unit-distance graph, also proved by Frankl-Wilson (1981) via mod $p$ methods — plus the definition `avoidsLIntersections` generalizing to $L$-avoiding families.",
+      "mathContext": "Frankl-Wilson: uniform families with $L$-intersection constraints modulo a prime satisfy $|\\mathcal F|\\le \\binom{n}{s}$ via the polynomial/linear-algebra method; the chromatic bound is stated as prose since infinite unit-distance chromatic numbers are not yet in Mathlib."
     },
     {
-      "id": "part-viii-related-702",
-      "title": "Related Problem #702",
-      "startLine": 213,
-      "endLine": 222,
-      "summary": "Poses the companion open question Erdős #702 (the $k$-uniform case): what is the maximum size of a $k$-uniform family (all sets of size exactly $k$) avoiding $r$-intersection? Stated as prose only; no formal declaration.",
-      "mathContext": "The $k$-uniform restriction connects to the Frankl-Wilson and Ray-Chaudhuri-Wilson theorems on $L$-intersecting uniform families, which give $\\binom{n}{s}$-type bounds via the linear algebra method."
-    },
-    {
-      "id": "summary",
-      "title": "Summary and Resolution",
-      "startLine": 223,
-      "endLine": 259,
-      "summary": "Combined `erdos_703_solved` theorem: `mainQuestion ∧ T(n,0) = 2^{n-1}`. Clean statement `erdos_703 : mainQuestion := frankl_rodl_1987`.",
-      "mathContext": "Combined `erdos_703_solved` theorem: `mainQuestion ∧ T(n,0) = $$2^{{n-1}$}$`. Clean statement `erdos_703 : mainQuestion := frankl_rodl_1987`."
+      "id": "part-viii-summary",
+      "title": "Part VIII — Summary and Resolution",
+      "startLine": 605,
+      "endLine": 638,
+      "summary": "The combined `erdos_703_solved` theorem (`mainQuestion ∧ T(n,0) = 2^{n-1}`) and the clean top-level statement `erdos_703 : mainQuestion := frankl_rodl_1987`.",
+      "mathContext": "`erdos_703_solved` bundles the axiomatized affirmative answer with the machine-checked exact value $T(n,0)=2^{n-1}$; `erdos_703` exposes the headline resolution as a one-line term."
     }
   ],
   "overview": {
@@ -159,7 +154,8 @@
       "**Pigeonhole mechanism**: Large sets ($|A| > (n+r)/2$) automatically satisfy $|A \\cap B| > r$, providing the key construction ingredient for all known optimal families",
       "**Phase transition at r = Θ(n)**: For fixed r, $T(n,r)/2^n \\to 1$ as $n \\to \\infty$; but for $r = \\Theta(n)$, the Frankl-Rödl theorem gives an exponential gap $T(n,r) < (2-\\delta)^n$",
       "**Geometric connection**: The exponential bound on $T(n,r)$ implies $\\chi(\\mathbb{R}^n) \\geq c^n$ for the unit distance graph, linking combinatorics to high-dimensional geometry",
-      "**Algebraic methods**: The Frankl-Wilson theorem uses the linear algebra (dimension) method modulo a prime $p$, bounding $|\\mathcal{F}| \\leq \\binom{n}{s}$ via polynomial independence"
+      "**Algebraic methods**: The Frankl-Wilson theorem uses the linear algebra (dimension) method modulo a prime $p$, bounding $|\\mathcal{F}| \\leq \\binom{n}{s}$ via polynomial independence",
+      "**Three exact boundary values**: $T$ is pinned exactly at three loci — $T(n,0) = 2^{n-1}$ (complement pairing), the diagonal $T(n,n) = 2^n - 1$ (omit only the full set $[n]$), and $T(n,r) = 2^n$ for $n < r$ (no pair can meet in $r>n$ points, so every family is avoiding). The hard Frankl-Rödl regime lives strictly between these easy endpoints, in the middle band $\\varepsilon n < r < (1/2-\\varepsilon)n$"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -173,7 +169,7 @@
       "What is the optimal δ = δ(ε) as a function of ε in the Frankl-Rödl bound?",
       "Can the Frankl-Füredi families be characterized for all n and r, not just fixed r and large n?",
       "What happens at the boundary r ≈ εn or r ≈ (1/2-ε)n — is there a sharp phase transition?",
-      "Can the two remaining sorries (T_n_0 and large_sets_avoid_1) be closed with current Mathlib?",
+      "Beyond the three exactly-known boundary values T(n,0) = 2^{n-1}, T(n,n) = 2^n − 1, and T(n,r) = 2^n for n < r, can further exact interior values T(n,r) be machine-checked?",
       "Does the Frankl-Wilson polynomial method extend to give tight bounds on T(n,r) in the middle range?"
     ]
   },
@@ -186,9 +182,9 @@
       "Finset"
     ],
     "namespace": "Erdos703",
-    "lineCount": 578,
+    "lineCount": 638,
     "axiomCount": 1,
-    "theoremCount": 19,
+    "theoremCount": 21,
     "definitionCount": 8,
     "path": "Proofs/Erdos703Problem.lean",
     "sorries": 0
