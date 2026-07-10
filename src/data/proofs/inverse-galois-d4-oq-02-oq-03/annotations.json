@@ -5,7 +5,7 @@
     "range": { "startLine": 1, "endLine": 41 },
     "type": "concept",
     "title": "The metacyclic bracket and its coprime sharpness",
-    "content": "The parent entry bounds the order of Gal(Xⁿ−p/ℚ) by three divisibilities: n ∣ |Gal| (the radical kernel Cₙ from ⁿ√p ↦ ζₙᵃ·ⁿ√p), φ(n) ∣ |Gal| (the cyclotomic quotient (ℤ/n)ˣ from ζₙ ↦ ζₙᵇ), and |Gal| ∣ n! (the faithful action on the n roots, Gal ↪ Sₙ). The conjectured order under genericity is the holomorph order n·φ(n). This file asks: how tightly do the two lower factors combine, and when does that combination already reach n·φ(n) with no genericity hypothesis? The answer is the least common multiple — and equality with the product is exactly the coprime case.",
+    "content": "The parent entry bounds the order of Gal(Xⁿ−p/ℚ) by three divisibilities: n ∣ |Gal| (the radical kernel Cₙ from ⁿ√p ↦ ζₙᵃ·ⁿ√p), φ(n) ∣ |Gal| (the cyclotomic quotient (ℤ/n)ˣ from ζₙ ↦ ζₙᵇ), and |Gal| ∣ n! (the faithful action on the n roots, Gal ↪ Sₙ). The conjectured order under genericity is the holomorph order n·φ(n). This file resolves the parent's third open question: it combines the two lower factors into the single sharp bound lcm(n, φ(n)) ∣ |Gal|, notes that coprimality gcd(n, φ(n)) = 1 upgrades this to the full product n·φ(n) ∣ |Gal|, and applies that to the cubic case n = 3 to pin |Gal(X³−p/ℚ)| = 6 exactly for every prime p.",
     "mathContext": "$n \\mid |\\mathrm{Gal}|,\\ \\varphi(n) \\mid |\\mathrm{Gal}|,\\ |\\mathrm{Gal}| \\mid n! \\ \\Longrightarrow\\ \\mathrm{lcm}(n,\\varphi(n)) \\mid |\\mathrm{Gal}| \\le n!$",
     "significance": "supporting",
     "relatedConcepts": [
@@ -29,7 +29,7 @@
     "range": { "startLine": 42, "endLine": 47 },
     "type": "tactic",
     "title": "Building on the verified parent lemmas",
-    "content": "The file imports the parent module Proofs.InverseGaloisD4OQ02, which supplies the three structural divisibilities as named, fully verified lemmas (n_dvd_gal_card, totient_dvd_gal_card, gal_card_dvd_factorial). Every result here is purely number-theoretic plumbing on top of those three inputs: no new Galois-theoretic content is introduced, only the arithmetic of combining and squeezing the divisibility bounds. The `open Polynomial` brings the X, C, and .Gal notation for the polynomial Xⁿ − C p into scope.",
+    "content": "The file imports the parent module Proofs.InverseGaloisD4OQ02, which supplies the three structural divisibilities as named, fully verified lemmas (n_dvd_gal_card, totient_dvd_gal_card, gal_card_dvd_factorial) plus the combined bounds lcm_dvd_gal_card and mul_totient_dvd_gal_card_of_coprime. Every result here is purely number-theoretic plumbing on top of those inputs: no new Galois-theoretic content is introduced, only the arithmetic of combining and squeezing the divisibility bounds. The `open Polynomial` brings the X, C, and .Gal notation for the polynomial Xⁿ − C p into scope.",
     "mathContext": "$\\texttt{Fintype.card}\\,(X^n - C(p:\\mathbb{Q}):\\mathbb{Q}[X]).\\mathrm{Gal} = |\\mathrm{Gal}(X^n - p/\\mathbb{Q})|$",
     "significance": "supporting",
     "relatedConcepts": [
@@ -44,54 +44,36 @@
     ]
   },
   {
-    "id": "ann-lcm-bound",
+    "id": "ann-lcm-coprime-merged",
     "proofId": "inverse-galois-d4-oq-02-oq-03",
-    "range": { "startLine": 49, "endLine": 59 },
+    "range": { "startLine": 49, "endLine": 57 },
     "type": "insight",
-    "title": "lcm, not product: the sharp combination of two divisibilities",
-    "content": "Two independent statements a ∣ N and b ∣ N do not give ab ∣ N — they give lcm(a, b) ∣ N, the smallest number both divide that must therefore divide N. The whole proof is a one-line application of Nat.lcm_dvd to the parent's n ∣ |Gal| and φ(n) ∣ |Gal|. The lcm is genuinely weaker than the product whenever n and φ(n) share a prime: for n = 4, φ(4) = 2, lcm(4, 2) = 4, so the bracket gives only 4 ∣ |Gal| even though the true order is 8. Recognising that the correct merge is lcm — not the optimistic product — is the conceptual heart of the entry.",
-    "mathContext": "$a \\mid N \\wedge b \\mid N \\Rightarrow \\mathrm{lcm}(a,b) \\mid N;\\quad \\mathrm{lcm}(4,2)=4 \\neq 8 = 4\\cdot 2$",
+    "title": "Parts I & II (lcm bound + coprime sharpening), now in the parent",
+    "content": "The two combining results were originally proved in this file and later merged into the parent InverseGaloisD4OQ02.lean (PR #31408) to keep the namespace coherent; this comment block records that history, and the file imports them. Their content is the conceptual core: (1) lcm_dvd_gal_card — two independent divisibilities a ∣ N and b ∣ N give not ab ∣ N but lcm(a, b) ∣ N, and the lcm is genuinely weaker whenever n and φ(n) share a prime (n = 4, φ(4) = 2, lcm(4, 2) = 4 ≠ 8); and (2) mul_totient_dvd_gal_card_of_coprime — when gcd(n, φ(n)) = 1, lcm(n, φ(n)) = n·φ(n) (Nat.Coprime.lcm_eq_mul), so the full metacyclic order n·φ(n) ∣ |Gal| drops out with no genericity/linear-disjointness hypothesis. These are the two inputs Part III specialises to n = 3.",
+    "mathContext": "$a \\mid N \\wedge b \\mid N \\Rightarrow \\mathrm{lcm}(a,b) \\mid N;\\quad \\gcd(n,\\varphi(n))=1 \\Rightarrow \\mathrm{lcm}(n,\\varphi(n)) = n\\,\\varphi(n) \\mid |\\mathrm{Gal}|$",
     "significance": "key",
     "relatedConcepts": [
       "least common multiple",
-      "divisibility lattice",
       "Nat.lcm_dvd",
-      "greatest common divisor"
+      "Nat.Coprime.lcm_eq_mul",
+      "Euler totient",
+      "unconditional lower bound",
+      "modular proof architecture"
     ],
     "prerequisites": [
       "divisibility",
-      "lcm and gcd"
-    ]
-  },
-  {
-    "id": "ann-coprime",
-    "proofId": "inverse-galois-d4-oq-02-oq-03",
-    "range": { "startLine": 61, "endLine": 74 },
-    "type": "insight",
-    "title": "Coprimality forces the full metacyclic order for free",
-    "content": "When gcd(n, φ(n)) = 1 the identity lcm(n, φ(n)) = n·φ(n) holds (Nat.Coprime.lcm_eq_mul), so the lcm bound upgrades instantly to the full holomorph order n·φ(n) ∣ |Gal|. The striking point is that this lower bound needs NO genericity / linear-disjointness assumption — the assumption is only required for the matching upper bound |Gal| ≤ n·φ(n). So under coprimality the conjectured order is at least half-confirmed unconditionally: the bracket already certifies the full metacyclic order divides |Gal|.",
-    "mathContext": "$\\gcd(n,\\varphi(n))=1 \\Rightarrow \\mathrm{lcm}(n,\\varphi(n)) = n\\,\\varphi(n) \\Rightarrow n\\,\\varphi(n) \\mid |\\mathrm{Gal}|$",
-    "significance": "key",
-    "relatedConcepts": [
-      "coprime integers",
-      "Nat.Coprime.lcm_eq_mul",
-      "Euler totient",
-      "metacyclic order",
-      "unconditional lower bound"
-    ],
-    "prerequisites": [
+      "lcm and gcd",
       "coprimality",
-      "Euler's totient function",
-      "lcm = product / gcd"
+      "Euler's totient function"
     ]
   },
   {
     "id": "ann-six-dvd-cubic",
     "proofId": "inverse-galois-d4-oq-02-oq-03",
-    "range": { "startLine": 76, "endLine": 87 },
+    "range": { "startLine": 59, "endLine": 66 },
     "type": "tactic",
     "title": "The cubic instance: 6 ∣ |Gal(X³−p)| for every prime p",
-    "content": "Specialising the coprime theorem to n = 3 needs only the decidable facts gcd(3, φ(3)) = gcd(3, 2) = 1 and 3·φ(3) = 6, both discharged by kernel `decide` (not native_decide — so no Lean.ofReduceBool, and the result stays axiom-free). The conclusion 6 ∣ |Gal(X³−p/ℚ)| is uniform in p: it holds for X³−2, X³−3, X³−5, and every other prime, because the coprime lower bound is a structural feature of n = 3, independent of which prime sits inside the radical.",
+    "content": "six_dvd_gal_card_cubic specialises the parent's coprime bound mul_totient_dvd_gal_card_of_coprime to n = 3, needing only the decidable facts gcd(3, φ(3)) = gcd(3, 2) = 1 and 3·φ(3) = 6, both discharged by kernel `decide` (not native_decide — so no Lean.ofReduceBool, and the result stays axiom-free). The conclusion 6 ∣ |Gal(X³−p/ℚ)| is uniform in p: it holds for X³−2, X³−3, X³−5, and every other prime, because the coprime lower bound is a structural feature of n = 3, independent of which prime sits inside the radical.",
     "mathContext": "$\\gcd(3,\\varphi(3))=\\gcd(3,2)=1,\\ 3\\cdot\\varphi(3)=6 \\ \\Rightarrow\\ 6 \\mid |\\mathrm{Gal}(X^3-p/\\mathbb{Q})|$",
     "significance": "supporting",
     "relatedConcepts": [
@@ -108,10 +90,10 @@
   {
     "id": "ann-cubic-exact",
     "proofId": "inverse-galois-d4-oq-02-oq-03",
-    "range": { "startLine": 89, "endLine": 102 },
+    "range": { "startLine": 68, "endLine": 79 },
     "type": "insight",
     "title": "The squeeze: |Gal(X³−p)| = 6 = |S₃| exactly",
-    "content": "Because 3·φ(3) = 6 happens to equal 3! = 6, the coprime lower bound 6 ∣ |Gal| meets the parent's upper bound |Gal| ∣ 3! head-on. Nat.dvd_antisymm (mutual divisibility forces equality) then pins |Gal(X³−p/ℚ)| = 6 = |S₃| for every prime p — the cubic Galois group is always the full symmetric group S₃. This is the cubic analogue of the base entry's |Gal(X⁴−2)| = 8, but where the quartic needed a bespoke ℝ-embedding argument, the cubic falls out of pure divisibility: the squeeze closes precisely because n = 3 is one of the few n with n·φ(n) = n!.",
+    "content": "gal_card_cubic_eq_six: because 3·φ(3) = 6 happens to equal 3! = 6, the coprime lower bound 6 ∣ |Gal| meets the parent's upper bound |Gal| ∣ 3! head-on. Nat.dvd_antisymm (mutual divisibility forces equality) then pins |Gal(X³−p/ℚ)| = 6 = |S₃| for every prime p — the cubic Galois group is always the full symmetric group S₃. This is the cubic analogue of the base entry's |Gal(X⁴−2)| = 8, but where the quartic needed a bespoke ℝ-embedding argument, the cubic falls out of pure divisibility: the squeeze closes precisely because n = 3 is one of the few n with n·φ(n) = n!.",
     "mathContext": "$6 \\mid |\\mathrm{Gal}| \\ \\wedge\\ |\\mathrm{Gal}| \\mid 3! = 6 \\ \\Rightarrow\\ |\\mathrm{Gal}(X^3-p/\\mathbb{Q})| = 6 = |S_3|$",
     "significance": "key",
     "relatedConcepts": [
