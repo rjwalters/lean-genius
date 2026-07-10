@@ -649,6 +649,34 @@ theorem hasRamseyPropertyColored_construction (C : Type*) [Finite C] (k : ℕ) (
   ramsey_construction_general C k hk
 
 /--
+**Colored Ramsey property forces size ≥ k.**  Any set with the `C`-colored Ramsey property for
+`k` (for a nonempty palette `C`) contains at least `k` points: applying the property to the
+*constant* coloring `fun _ => c₀` (which needs a single color `c₀ : C`) already yields a
+monochromatic `k`-collinear subset `S ⊆ A`, so `k ≤ |S| ≤ |A|`.  The colored analogue of
+`hasRamseyProperty_card_ge`; the constant coloring makes the monochromatic constraint vacuous. -/
+theorem hasRamseyPropertyColored_card_ge (C : Type*) [Nonempty C] (A : Finset Point) (k : ℕ)
+    (h : HasRamseyPropertyColored C A k) : k ≤ A.card := by
+  obtain ⟨S, hSA, ⟨hSk, _⟩, _⟩ := h (fun _ => Classical.arbitrary C)
+  exact le_trans hSk (Finset.card_le_card hSA)
+
+/--
+**Colored Ramsey lower bound: `k ≤ R_C(k)`.**  For a finite nonempty palette `C` and `k ≥ 3`,
+the colored Ramsey number is at least `k`.  As in the uncolored `ramsey_lower_bound`,
+`hasRamseyPropertyColored_construction` makes the defining set nonempty so its infimum is
+attained by some witness `A`, which has `≥ k` points by `hasRamseyPropertyColored_card_ge`.
+Together with the upper bound "R_C(k) ≤ |any witness|" this two-sidedly locates `R_C(k)`, and
+for `C := Bool` it recovers `ramsey_lower_bound` via `ramseyNumberColored_bool`. -/
+theorem ramseyNumberColored_lower_bound (C : Type*) [Finite C] [Nonempty C] (k : ℕ) (hk : k ≥ 3) :
+    k ≤ ramseyNumberColored C k := by
+  unfold ramseyNumberColored
+  have hne : {n : ℕ | ∃ A : Finset Point, A.card = n ∧ HasRamseyPropertyColored C A k}.Nonempty := by
+    obtain ⟨A, hA⟩ := hasRamseyPropertyColored_construction C k hk
+    exact ⟨A.card, A, rfl, hA⟩
+  obtain ⟨A, hcard, hA⟩ := Nat.sInf_mem hne
+  rw [← hcard]
+  exact hasRamseyPropertyColored_card_ge C A k hA
+
+/--
 **Fewer colors is easier (transfer along an embedding).**  If the palette `C` embeds into
 `C'` and `A` has the `C'`-colored Ramsey property, then `A` also has the `C`-colored one.
 Given a `C`-coloring `c`, push it forward to the `C'`-coloring `e ∘ c`; the `C'`-property
