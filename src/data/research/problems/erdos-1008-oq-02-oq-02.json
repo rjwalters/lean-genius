@@ -26,8 +26,8 @@
   "currentState": {
     "phase": "OBSERVE",
     "since": "2026-07-09T16:43:20-07:00",
-    "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "iteration": 2,
+    "focus": "ACT: added algebraic-core lower-root exactness + full quadratic factorization (both roots), local-lean verified.",
     "blockers": [],
     "nextAction": "Read problem.md thoroughly and acquire full context.",
     "attemptCounts": {
@@ -47,13 +47,16 @@
       "kst_edge_bound (Erdos1008OQ02OQ02.lean): graph-level closed form 4m ≤ n(1+√(1+4κ(n-1))) via kst_quadratic_solve with t=κ+1",
       "HasK2t + commonNbrs_card_lt_of_free + kst_edge_bound_of_free: connects the common-neighbour-bound hypothesis to the genuine forbidden-subgraph definition of K_{2,t}-freeness",
       "hasK2t_of_edge_bound_lt / hasK2t_of_edge_bound_leading_order_lt / hasK2t_two_of_edge_bound_leading_order_lt in Erdos1008OQ02OQ02.lean (GraphLevel): the KST forcing/existence direction — edges above the exact / leading-order / Reiman-C4 threshold force HasK2t; one-line contrapositives of the corresponding upper bounds (PR #37195, UNVERIFIED docker-down)",
-      "hasK2t_mono / not_hasK2t_mono : K_{2,t}-containment is antitone in t (HasK2t G t → HasK2t G s for s≤t, same witness T reused) and dually K_{2,t}-freeness is monotone (¬HasK2t G s → ¬HasK2t G t) — the nested lattice ⋯⊇Free(s)⊇Free(t)⊇⋯. [VERIFIED axiom-free, lean-elab exit 0, #print axioms=propext/Quot.sound]"
+      "hasK2t_mono / not_hasK2t_mono : K_{2,t}-containment is antitone in t (HasK2t G t → HasK2t G s for s≤t, same witness T reused) and dually K_{2,t}-freeness is monotone (¬HasK2t G s → ¬HasK2t G t) — the nested lattice ⋯⊇Free(s)⊇Free(t)⊇⋯. [VERIFIED axiom-free, lean-elab exit 0, #print axioms=propext/Quot.sound]",
+      "kst_lower_root_exact (Erdos1008OQ02OQ02.lean): the LOWER root R⁻=n(1-s)/4 also makes the general KST quadratic vanish exactly (4R⁻²=(t-1)n²(n-1)+2nR⁻), companion to kst_root_exact; both roots n(1±s)/4 now certified [VERIFIED local-lean v4.26.0, 0 errors]",
+      "kst_quadratic_factor (Erdos1008OQ02OQ02.lean): FULL factorization 4x²-2nx-(t-1)n²(n-1)=4(x-n(1+s)/4)(x-n(1-s)/4) over the two roots n(1±s)/4 — the definitive 'solving the quadratic' identity; encodes Vieta R⁺+R⁻=n/2, R⁺R⁻=-(t-1)n²(n-1)/4; proof linear_combination (n²/4)*hs2 [VERIFIED local-lean v4.26.0, 0 errors]"
     ],
     "insights": [
       "The C4 algebraic core generalises to K_{2,t} with zero structural change: replace the single-common-neighbour bound by (t-1), so s^2=4n-3 becomes s^2=1+4(t-1)(n-1) and the KST quadratic gains a (t-1) factor on the n^2(n-1) term. Same nlinarith case-split proof works.",
       "Leading-order closed form is ex(n;K_{2,t}) <= (1/2)(sqrt(t-1)*n^{3/2}+n), matching the classical Kovari-Sos-Turan asymptotic.",
       "The graph-level file only had the K_{2,t}-free upper bounds; the forcing converse (too many edges ⟹ K_{2,t}) is what makes KST an extremal theorem and was missing. Trivial via by_contra + absurd (bound) (not_le.2 hm).",
-      "HasK2t (∃ a≠b, T with t≤|T|, all of T common-adjacent to a,b) is antitone in t by reusing the SAME witness T and only weakening its cardinality bound t↦s (le_trans). This gives the K_{2,t}-free-class monotonicity for free — orthogonal to the edge-bound/KST machinery, a pure structural fact about the forbidden-subgraph predicate."
+      "HasK2t (∃ a≠b, T with t≤|T|, all of T common-adjacent to a,b) is antitone in t by reusing the SAME witness T and only weakening its cardinality bound t↦s (le_trans). This gives the K_{2,t}-free-class monotonicity for free — orthogonal to the edge-bound/KST machinery, a pure structural fact about the forbidden-subgraph predicate.",
+      "The problem title ('explicit closed-form solve of the KST quadratic') is fully witnessed at the algebraic level by kst_quadratic_factor: the quadratic 4x²-2nx-(t-1)n²(n-1) has EXACTLY the two roots n(1±s)/4 with s²=1+4(t-1)(n-1), so the Reiman/KST upper bound n(1+s)/4 loses nothing algebraically — all residual slack in ex(n;K_{2,t}) is extremal-graph existence, not the quadratic-formula step. Equality goal closed by linear_combination with coefficient n²/4 (the s²-coefficient of the discriminant), not nlinarith."
     ],
     "mathlibGaps": [
       "No graph-level general cherry-count sum_v C(d_v,2) <= (t-1)*C(n,2) for K_{2,t}-free graphs in the gallery; parent Erdos1008Problem only proves the t=2 (C4) case kovari_sos_turan."

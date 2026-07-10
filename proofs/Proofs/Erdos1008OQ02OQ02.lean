@@ -46,7 +46,12 @@ Colloq. Math. 3 (1954), 50–57.
 
 Status: 0 sorries, 0 axioms.  The algebraic core (`kst_quadratic_solve`,
 `reiman_quadratic_solve_of_kst`, `kst_root_exact`) is docker-VERIFIED
-(PR #36875).  The graph-level section (`kst_cherry_count_nat`,
+(PR #36875); the algebraic-core additions `kst_lower_root_exact` (the lower root
+`n(1-s)/4` also solves the quadratic) and `kst_quadratic_factor` (the full
+factorization `4x² - 2nx - (t-1)n²(n-1) = 4(x - n(1+s)/4)(x - n(1-s)/4)`,
+exhibiting *exactly* the two roots `n(1±s)/4`) are local-lean verified
+(Lean v4.26.0 + pinned Mathlib oleans, 0 errors).  The graph-level section
+(`kst_cherry_count_nat`,
 `kst_graph_quadratic`, `kst_edge_bound`, `kst_edge_bound_of_free`) and the
 leading-order closed form added in this session (`kst_radical_envelope`,
 `kst_edge_bound_leading_order`, giving the recognisable
@@ -119,6 +124,42 @@ theorem kst_root_exact (t n s : ℝ) (hs2 : s ^ 2 = 1 + 4 * (t - 1) * (n - 1)) :
   intro R
   simp only [R]
   nlinarith [hs2]
+
+/-- **Exactness of the *lower* extracted root.**  Companion to `kst_root_exact`:
+the lower root `R⁻ = n(1 - s)/4`, with `s² = 1 + 4(t-1)(n-1)`, *also* makes the
+generalised Kővári–Sós–Turán quadratic vanish,
+
+      4 R⁻² = (t-1) n²(n-1) + 2 n R⁻.
+
+Together with `kst_root_exact` this exhibits *both* roots `n(1 ± s)/4` of the
+quadratic `4 x² - 2 n x - (t-1) n²(n-1)`.  Setting `t = 2` gives the C₄ lower
+root `n(1 - √(4n-3))/4`. -/
+theorem kst_lower_root_exact (t n s : ℝ) (hs2 : s ^ 2 = 1 + 4 * (t - 1) * (n - 1)) :
+    let R := n * (1 - s) / 4
+    4 * R ^ 2 = (t - 1) * n ^ 2 * (n - 1) + 2 * n * R := by
+  intro R
+  simp only [R]
+  nlinarith [hs2]
+
+/-- **Full factorization of the KST quadratic.**  With `s² = 1 + 4(t-1)(n-1)`, the
+generalised Kővári–Sós–Turán quadratic factors completely over its two roots
+`R^± = n(1 ± s)/4`:
+
+      4 x² - 2 n x - (t-1) n²(n-1) = 4 · (x - n(1+s)/4) · (x - n(1-s)/4).
+
+This is the definitive *"solving the quadratic"* statement underlying the whole
+algebraic core: `kst_quadratic_solve` extracts the upper root `R⁺`, while
+`kst_root_exact` / `kst_lower_root_exact` certify that `R⁺` and `R⁻` are roots —
+this identity shows the quadratic has *exactly* those two roots and nothing more,
+so the closed form loses no algebra.  Vieta's relations `R⁺ + R⁻ = n/2` and
+`R⁺·R⁻ = -(t-1)n²(n-1)/4` are read off from the linear and constant coefficients
+of the expanded right-hand side.  The proof is the polynomial identity closed by
+`s² = 1 + 4(t-1)(n-1)`. -/
+theorem kst_quadratic_factor (t n s x : ℝ)
+    (hs2 : s ^ 2 = 1 + 4 * (t - 1) * (n - 1)) :
+    4 * x ^ 2 - 2 * n * x - (t - 1) * n ^ 2 * (n - 1) =
+      4 * (x - n * (1 + s) / 4) * (x - n * (1 - s) / 4) := by
+  linear_combination (n ^ 2 / 4) * hs2
 
 /-- **Classical Kővári–Sós–Turán closed form.**  From the generalised KST quadratic
 `4 m² ≤ (t-1)·n²(n-1) + 2 n m` (for `t ≥ 2`, `n ≥ 1`, `m ≥ 0`) the edge count obeys the
