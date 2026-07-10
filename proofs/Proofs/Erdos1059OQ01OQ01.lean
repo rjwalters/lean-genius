@@ -463,6 +463,58 @@ theorem density_one_at_factorials (k : ℕ) : ∃ N : ℕ, ∀ n : ℕ, n ≥ N 
   exact hN₀ (n - 1) (by omega)
 
 /-
+## Part VIII: The Non-Qualifying Deficit — Sharp Form of "Density → 1"
+
+The density bound `C(x)·(k+1) ≥ π(x)·k` is exactly a bound on the *deficit*
+`D(x) := π(x) − C(x)`, the number of non-qualifying primes up to `x`. Writing
+`C = π − D` and expanding, the density inequality at threshold `k/(k+1)` is
+*equivalent* (pointwise, for every `x`) to
+
+    D(x) · (k+1) ≤ π(x),
+
+i.e. the non-qualifying primes make up at most a `1/(k+1)` fraction of all
+primes. Letting `k → ∞` this says the qualifying fraction tends to `1` — the
+sharp quantitative reading of `density_one_conjecture`.
+-/
+
+/-- **Deficit ⇔ density (pointwise).**  For every `x` and every threshold `k`,
+    the density lower bound `C(x)·(k+1) ≥ π(x)·k` holds *iff* the non-qualifying
+    deficit `π(x) − C(x)` is at most a `1/(k+1)` fraction of `π(x)`:
+
+      (π(x) − C(x)) · (k+1) ≤ π(x)   ↔   C(x) · (k+1) ≥ π(x) · k.
+
+    This is pure `ℕ`-arithmetic (truncated subtraction), valid at *every* `x`;
+    it turns the density statement into an explicit bound on the count of
+    non-qualifying primes. -/
+theorem deficit_le_iff_density (x k : ℕ) :
+    (Erdos1059OQ01.primeCount x - Erdos1059OQ01.qualifyingPrimeCount x) * (k + 1) ≤
+      Erdos1059OQ01.primeCount x ↔
+    Erdos1059OQ01.qualifyingPrimeCount x * (k + 1) ≥ Erdos1059OQ01.primeCount x * k := by
+  have e1 : (Erdos1059OQ01.primeCount x - Erdos1059OQ01.qualifyingPrimeCount x) * (k + 1) =
+      Erdos1059OQ01.primeCount x * (k + 1) - Erdos1059OQ01.qualifyingPrimeCount x * (k + 1) :=
+    Nat.sub_mul _ _ _
+  have e2 : Erdos1059OQ01.primeCount x * (k + 1) =
+      Erdos1059OQ01.primeCount x * k + Erdos1059OQ01.primeCount x := by ring
+  rw [e1, e2]
+  omega
+
+/-- **Non-qualifying deficit vanishes (at factorial points).**  For every `k`
+    there is an `N` such that for all `n ≥ N`, the number of *non-qualifying*
+    primes up to `n!` is at most a `1/(k+1)` fraction of all primes up to `n!`:
+
+      (π(n!) − C(n!)) · (k+1) ≤ π(n!).
+
+    Immediate from `density_one_at_factorials` via the pointwise equivalence
+    `deficit_le_iff_density`. As `k → ∞` this is the sharp statement that the
+    qualifying fraction `C(n!)/π(n!) → 1`. -/
+theorem nonqualifying_deficit_at_factorials (k : ℕ) : ∃ N : ℕ, ∀ n : ℕ, n ≥ N →
+    (Erdos1059OQ01.primeCount (Nat.factorial n) -
+      Erdos1059OQ01.qualifyingPrimeCount (Nat.factorial n)) * (k + 1) ≤
+    Erdos1059OQ01.primeCount (Nat.factorial n) := by
+  obtain ⟨N, hN⟩ := density_one_at_factorials k
+  exact ⟨N, fun n hn => (deficit_le_iff_density _ k).mpr (hN n hn)⟩
+
+/-
 ## Summary
 
 **Proved from first principles** (no sorry):
@@ -478,6 +530,10 @@ theorem density_one_at_factorials (k : ℕ) : ∃ N : ℕ, ∀ n : ℕ, n ≥ N 
 10. qualifyingCount_decomposition — C(n!) = Σ qualifyingInLevel  (now proved)
 11. density_one_at_factorials — density at factorial points (now proved; combines
     density_at_levels with the two decompositions)
+12. deficit_le_iff_density — pointwise equivalence of the density bound with the
+    non-qualifying deficit bound (π(x)−C(x))·(k+1) ≤ π(x)
+13. nonqualifying_deficit_at_factorials — sharp form: the non-qualifying primes up
+    to n! are eventually a ≤1/(k+1) fraction, i.e. C(n!)/π(n!) → 1
 
 **This file is now sorry-free** — the previous two `sorry`s (the interval
 decompositions) are discharged by `count_decomp`.

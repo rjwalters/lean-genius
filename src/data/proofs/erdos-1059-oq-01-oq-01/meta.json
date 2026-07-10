@@ -69,7 +69,7 @@
       "Sieve theory: Selberg sieve, Brun-Titchmarsh inequality (motivational)",
       "Finset operations: filter, card, sum, sum splitting"
     ],
-    "lineCount": 496,
+    "lineCount": 552,
     "relatedProblems": [
       {
         "id": "erdos-1059-oq-01",
@@ -85,7 +85,7 @@
       }
     ],
     "assumptions": "One explicit sieve axiom: strong_selberg_density (the Selberg sieve's quantitative prediction q(l)·(l+1) ≥ p(l)·l for l ≥ 3). The former second axiom primes_growth_in_levels (p(l) ≥ l) is now the PROVED theorem primesInLevel_pos (p(l) ≥ 1, via Bertrand's postulate); the downstream results only ever used positivity of the level prime count, so the axiom count drops from 2 to 1. The file is SORRY-FREE: the two interval-decomposition lemmas (π(n!) and C(n!) as sums over primorial levels) are proved via the generic count_decomp by induction. Hence density_one_at_factorials is fully derived modulo the single disclosed axiom.",
-    "theoremCount": 12,
+    "theoremCount": 14,
     "definitionCount": 3
   },
   "overview": {
@@ -190,15 +190,15 @@
     }
   ],
   "leanFile": {
-    "lineCount": 496,
+    "lineCount": 552,
     "namespace": "Erdos1059OQ01OQ01",
     "opens": [
       "Nat"
     ],
     "structureCount": 0,
     "axiomCount": 1,
-    "theoremCount": 12,
-    "substantiveTheoremCount": 8,
+    "theoremCount": 14,
+    "substantiveTheoremCount": 10,
     "computationalVerifications": 0,
     "lemmaCount": 0,
     "imports": [
