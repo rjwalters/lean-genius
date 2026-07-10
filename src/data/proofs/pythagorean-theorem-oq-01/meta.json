@@ -26,7 +26,7 @@
     "dateAdded": "2026-07-09",
     "axiomCount": 0,
     "assumptions": "None. All theorems are fully machine-checked, depending only on propext, Classical.choice, and Quot.sound. Layer 3 works in a general real inner-product space; the right angle is supplied as the explicit hypothesis ⟪A − C, B − C⟫ = 0 and non-degeneracy as A ≠ B. Honesty note: once a Euclidean/inner-product model is fixed, the norm already encodes distance, so the one-line identity pythagorean_core (‖A−B‖² = ‖A−C‖² + ‖B−C‖²) is itself Pythagoras; Layer 3 does not claim foundational independence from it — its content is the verified geometric-mean/altitude decomposition. Layers 1 and 2 capture the parts of Einstein's reasoning genuinely independent of coordinates.",
-    "lineCount": 299,
+    "lineCount": 318,
     "theoremCount": 13,
     "definitionCount": 2,
     "originalContributions": [
