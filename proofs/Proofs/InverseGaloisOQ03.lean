@@ -306,7 +306,46 @@ theorem Monster_realizing_field_not_solvable :
     (solvable_of_solvable_injective (f := e.toMonoidHom) e.injective)
 
 -- ============================================================================
--- Part VI: The Sporadic Realizability Census
+-- Part VI: Field-Side Consequences of the Realizing Degree
+-- ============================================================================
+
+/-
+The realizability input pins `[K : ℚ] = |𝕄|` exactly (`Monster_realizing_field_finrank`).
+Every arithmetic fact we proved about `|𝕄|` in Part II therefore transports to the
+degree of Thompson's field. Two are recorded here as the field-side analogues of
+`Monster_card_factored` and `Monster_card_not_prime`.
+-/
+
+/-- Field-side analogue of `Monster_card_factored`: the Monster-realizing field's
+    degree over ℚ is the full 15-prime factorization of |𝕄|. -/
+theorem Monster_realizing_field_finrank_factored :
+    ∃ (K : Type) (_ : Field K) (_ : Algebra ℚ K) (_ : FiniteDimensional ℚ K)
+      (_ : IsGalois ℚ K),
+      Module.finrank ℚ K =
+        2 ^ 46 * 3 ^ 20 * 5 ^ 9 * 7 ^ 6 * 11 ^ 2 * 13 ^ 3 * 17 * 19 * 23 * 29 * 31 *
+          41 * 47 * 59 * 71 := by
+  obtain ⟨K, fK, aK, fdK, gK, hfr⟩ := Monster_realizing_field_finrank
+  refine ⟨K, fK, aK, fdK, gK, ?_⟩
+  rw [hfr]; norm_num
+
+/-- Field-side analogue of `Monster_card_not_prime`: the degree `[K : ℚ]` of the
+    Monster-realizing field is composite. In particular K/ℚ is not a prime-degree
+    (hence not a cyclic prime) extension — its Galois group is the non-abelian
+    simple 𝕄, consistent with `Monster_realizing_field_not_solvable`. -/
+theorem Monster_realizing_field_finrank_not_prime :
+    ∃ (K : Type) (_ : Field K) (_ : Algebra ℚ K) (_ : FiniteDimensional ℚ K)
+      (_ : IsGalois ℚ K), ¬ Nat.Prime (Module.finrank ℚ K) := by
+  obtain ⟨K, fK, aK, fdK, gK, hfr⟩ := Monster_realizing_field_finrank
+  refine ⟨K, fK, aK, fdK, gK, ?_⟩
+  rw [hfr]
+  intro h
+  have hdvd : 2 ∣ (808017424794512875886459904961710757005754368000000000 : ℕ) :=
+    ⟨404008712397256437943229952480855378502877184000000000, by norm_num⟩
+  have := h.eq_one_or_self_of_dvd 2 hdvd
+  omega
+
+-- ============================================================================
+-- Part VII: The Sporadic Realizability Census
 -- ============================================================================
 
 /-
