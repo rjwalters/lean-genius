@@ -1,0 +1,121 @@
+{
+  "slug": "erdos-606-oq-02",
+  "title": "Complete Achievable Line-Count Spectrum for Small n (n ≤ 20)",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{For each } n \\le 20,\\ \\text{determine } L(n) := \\{\\, \\ell(P) : P \\subseteq \\mathbb{R}^2,\\ |P| = n \\,\\},\\ \\text{where } \\ell(P) = |\\{\\, \\overline{pq} : p,q \\in P,\\ p \\ne q \\,\\}|. \\text{ For large } n,\\ L(n) = \\{1\\} \\cup ([n, \\binom{n}{2}] \\setminus \\{\\binom{n}{2}-1, \\binom{n}{2}-3\\}); \\text{ the task is to pin down } L(n) \\text{ exactly for small } n.",
+    "plain": "If you place n dots on paper, connect every pair with a straight line, and count the distinct lines, which totals are possible? For large n the answer is known: every value from n to C(n,2) except C(n,2)-1 and C(n,2)-3, plus 1 when all points are collinear. But for small n (like 7, 10, 20) the clean asymptotic rule is not guaranteed to apply and the full list of achievable counts has not been worked out. The goal is to determine, for each small n, exactly which line-counts occur.",
+    "whyMatters": [
+      "The parent Erdős–Salamon theorem is asymptotic with no explicit threshold N0 and no small-n information; enumerating L(n) for small n reveals whether extra gaps appear below the threshold and calibrates the constant.",
+      "A certified small-n table provides ground-truth test cases that any formalization of the general #606 characterization must respect, and connects to the orchard problem and order-type enumeration."
+    ]
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-07-09T16:59:48-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: erdos-606-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "discrete-geometry",
+    "incidence-geometry",
+    "combinatorial-geometry",
+    "erdos"
+  ],
+  "relatedProofs": [
+    "erdos-6",
+    "erdos-60",
+    "erdos-606",
+    "erdos-606-oq-01",
+    "erdos-606-oq-03",
+    "erdos-606-oq-03-oq-03",
+    "erdos-606-oq-03-wip-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-07-10T00:01:19.574Z",
+  "lastUpdate": "2026-07-10T00:01:19.632Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos606OQ01.lean",
+      "filename": "Erdos606OQ01.lean",
+      "lineCount": 256,
+      "theoremCount": 17,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos606OQ01.lean"
+    },
+    {
+      "path": "Proofs/Erdos606OQ03.lean",
+      "filename": "Erdos606OQ03.lean",
+      "lineCount": 101,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos606OQ03.lean"
+    },
+    {
+      "path": "Proofs/Erdos606OQ03OQ03.lean",
+      "filename": "Erdos606OQ03OQ03.lean",
+      "lineCount": 517,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos606OQ03OQ03.lean"
+    },
+    {
+      "path": "Proofs/Erdos606OQ03WIP01.lean",
+      "filename": "Erdos606OQ03WIP01.lean",
+      "lineCount": 118,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos606OQ03WIP01.lean"
+    },
+    {
+      "path": "Proofs/Erdos606Problem.lean",
+      "filename": "Erdos606Problem.lean",
+      "lineCount": 244,
+      "theoremCount": 2,
+      "axiomCount": 12,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos606Problem.lean"
+    }
+  ]
+}

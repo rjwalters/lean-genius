@@ -1,0 +1,33 @@
+{
+  "title": "Computational Complexity of Locating the Kostochka–Pyber Non-Planar Subgraph",
+  "slug": "erdos-1018-oq-05",
+  "status": "available",
+  "phase": "OBSERVE",
+  "tier": "B",
+  "significance": 6,
+  "tractability": 3,
+  "problemStatement": {
+    "formal": "Given a graph $G$ on $n$ vertices with $|E(G)| \\ge n^{1+\\varepsilon}$ and $\\varepsilon > 0$, Kostochka–Pyber (1988) guarantees a non-planar $H \\subseteq G$ with $|V(H)| \\le C_\\varepsilon = O_\\varepsilon(1)$. What is the time complexity of an algorithm that outputs such an $H$? Equivalently, is there an algorithm running in time $f(\\varepsilon)\\cdot\\mathrm{poly}(n)$ that returns a vertex set $S$ with $|S| \\le C_\\varepsilon$ and $G[S]$ non-planar?",
+    "plain": "Kostochka and Pyber proved that any graph with n^(1+ε) edges must contain a non-planar piece on only a bounded number C_ε of vertices, regardless of how large the graph is. Their proof shows such a piece exists but does not obviously produce it efficiently. This problem asks how computationally hard it is to actually find one of these small non-planar subgraphs: can it be done in polynomial time in n for each fixed ε, or is locating the obstruction genuinely harder than knowing it exists?",
+    "whyMatters": [
+      "Separates existence from construction — a recurring theme (algorithmic Local Lemma, constructive Ramsey bounds) where non-constructive guarantees were later matched by efficient algorithms.",
+      "Making the guarantee constructive would turn a pure existence theorem into a certified subroutine and link topological obstruction theory (Kuratowski, K5/K3,3 subdivisions) to the algorithmic theory of topological-minor testing."
+    ]
+  },
+  "tags": [
+    "graph-theory",
+    "planar-graphs",
+    "erdos",
+    "topological-graph-theory",
+    "extremal-combinatorics"
+  ],
+  "knownResults": [],
+  "relatedProofs": ["erdos-1018"],
+  "references": [],
+  "knowledge": [],
+  "leanFiles": [],
+  "currentState": "Seeded by seeker; awaiting researcher.",
+  "path": "research/problems/erdos-1018-oq-05",
+  "started": null,
+  "lastUpdate": null
+}

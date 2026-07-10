@@ -1,0 +1,35 @@
+{
+  "title": "Exact Value of Λ(zⁿ − 1) as a Function of n",
+  "slug": "erdos-1044-oq-02",
+  "status": "available",
+  "phase": "OBSERVE",
+  "tier": "B",
+  "significance": 6,
+  "tractability": 4,
+  "problemStatement": {
+    "formal": "\\Lambda(z^n - 1) = \\max_C \\operatorname{length}(\\partial C) \\text{ over connected components } C \\text{ of } \\{z \\in \\mathbb{C} : |z^n - 1| < 1\\}. \\text{ Known: } \\Lambda(z^n - 1) \\to 2 \\text{ as } n \\to \\infty \\text{ and } \\Lambda(z^n - 1) > 2 \\text{ for all } n. \\text{ Open: a closed-form expression for } n \\mapsto \\Lambda(z^n - 1), \\text{ conjecturally a complete elliptic integral of a modulus depending on } n.",
+    "plain": "The roots of z^n − 1 are the n equally-spaced nth roots of unity, and the region |z^n − 1| < 1 splits into n identical petals. We want the boundary length of one petal (the largest component) as an explicit function of n. It is known to shrink toward 2 as n grows, but no exact formula is known — and the exact value is conjectured to require elliptic integrals rather than elementary functions.",
+    "whyMatters": [
+      "Tang resolved Erdős Problem #1044 asymptotically (inf Λ = 2 via the z^n − 1 family); an exact per-n formula would quantify how fast the infimum is approached and test the conjecture that z^n − 1 minimizes Λ at each degree.",
+      "It would give the first exact metric formula for a natural family of polynomial lemniscates, connecting to potential theory, transfinite diameter, and the classical Erdős–Herzog–Piranian study of level sets."
+    ]
+  },
+  "tags": ["complex-analysis", "polynomials", "level-sets", "boundary-length", "erdos"],
+  "knownResults": [
+    "Λ(z^n − 1) → 2 as n → ∞ and Λ(f) > 2 for all f (Tang's theorem, parent proof erdos-1044).",
+    "Degree-1 baseline: Λ(z − z₀) = 2π for |z₀| ≤ 1.",
+    "The sublevel set {|z^n − 1| < 1} has n-fold symmetry and consists of n congruent petals, so Λ equals one petal's perimeter."
+  ],
+  "relatedProofs": ["erdos-1044"],
+  "references": [
+    "P. Erdős, F. Herzog, G. Piranian, Metric properties of polynomials, J. Analyse Math. 6 (1958), 125-148.",
+    "Q. Tang, resolution of Erdős Problem #1044, https://erdosproblems.com/1044",
+    "DLMF Chapter 19 (Elliptic Integrals), https://dlmf.nist.gov/19"
+  ],
+  "knowledge": [],
+  "leanFiles": [],
+  "currentState": "Seeded by seeker; awaiting researcher.",
+  "path": "research/problems/erdos-1044-oq-02",
+  "started": null,
+  "lastUpdate": null
+}
