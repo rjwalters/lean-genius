@@ -379,6 +379,56 @@ theorem zeta_even_finset_prod_transcendental {ι : Type*} (f : ι → ℕ) (s : 
   have : 0 < ∑ i ∈ s, f i := Finset.sum_pos hf hs
   omega
 
+/-- **Weighted finite-product structure for even zeta values — axiom-free.**  For arbitrary
+    finite families of positive indices `(f i)` and positive exponents `(g i)` over `s`, the
+    weighted product `∏_{i∈s} ζ(2 f i)^(g i)` is a *single* nonzero-rational multiple of a
+    *single* power of π, whose exponent is the doubled weighted sum:
+    `∏_{i∈s} ζ(2 f i)^(g i) = (∏_{i∈s} q_{f i}^{g i}) · π^(2 ∑_{i∈s} f i · g i)`.
+    This is the common generalisation of *both* `zeta_even_pow_eq_rat_mul_pi_pow` (a single index
+    raised to a power — the case `s = {i}`) and `zeta_even_finset_prod_eq_rat_mul_pi_pow` (a product
+    with all exponents `1`): the class `ℚ∖{0} · π^(even)` is closed under arbitrary finite
+    products of *powers*, i.e. under every monomial in the even zeta values.  Proved by induction
+    on `s`, feeding each factor through the power identity `zeta_even_pow_eq_rat_mul_pi_pow` and
+    collecting the π-powers with `pow_add`.  Uses only Euler's closed form, **no**
+    `hermite_lindemann`. -/
+theorem zeta_even_weighted_prod_eq_rat_mul_pi_pow {ι : Type*} (f g : ι → ℕ) (s : Finset ι)
+    (hf : ∀ i ∈ s, 0 < f i) (hg : ∀ i ∈ s, 0 < g i) :
+    ∃ q : ℚ, q ≠ 0 ∧
+      (∏ i ∈ s, (∑' k : ℕ, 1 / (k : ℝ) ^ (2 * f i)) ^ g i)
+        = (q : ℝ) * π ^ (2 * ∑ i ∈ s, f i * g i) := by
+  classical
+  induction s using Finset.induction_on with
+  | empty => exact ⟨1, one_ne_zero, by simp⟩
+  | @insert a s ha ih =>
+      obtain ⟨q, hq, hqeq⟩ :=
+        ih (fun i hi => hf i (Finset.mem_insert_of_mem hi))
+           (fun i hi => hg i (Finset.mem_insert_of_mem hi))
+      obtain ⟨qa, hqa, hqaeq⟩ :=
+        zeta_even_pow_eq_rat_mul_pi_pow (f a) (g a)
+          (hf a (Finset.mem_insert_self a s)) (hg a (Finset.mem_insert_self a s))
+      refine ⟨qa ^ g a * q, mul_ne_zero (pow_ne_zero _ hqa) hq, ?_⟩
+      rw [Finset.prod_insert ha, Finset.sum_insert ha, hqeq, hqaeq, mul_add, pow_add]
+      push_cast; ring
+
+/-- **Arbitrary finite products of powers of even zeta values are transcendental over ℚ.**
+
+    For nonempty finite families of positive indices `(f i)` and positive exponents `(g i)`, the
+    monomial `∏_{i∈s} ζ(2 f i)^(g i)` is a nonzero rational multiple of a *positive* even power of π
+    (`2 ∑ f i · g i ≥ 2`), hence transcendental over ℚ.  The common companion of
+    `zeta_even_pow_transcendental` and `zeta_even_finset_prod_transcendental`: no finite monomial in
+    the even zeta values can be algebraic.
+
+    **Assumption:** `hermite_lindemann` (transcendence of π). -/
+theorem zeta_even_weighted_prod_transcendental {ι : Type*} (f g : ι → ℕ) (s : Finset ι)
+    (hs : s.Nonempty) (hf : ∀ i ∈ s, 0 < f i) (hg : ∀ i ∈ s, 0 < g i) :
+    Transcendental ℚ (∏ i ∈ s, (∑' k : ℕ, 1 / (k : ℝ) ^ (2 * f i)) ^ g i) := by
+  obtain ⟨q, hq, heq⟩ := zeta_even_weighted_prod_eq_rat_mul_pi_pow f g s hf hg
+  rw [heq]
+  refine transcendental_ratCast_mul (pi_transcendental_over_rationals.pow ?_) hq
+  have hpos : 0 < ∑ i ∈ s, f i * g i :=
+    Finset.sum_pos (fun i hi => Nat.mul_pos (hf i hi) (hg i hi)) hs
+  omega
+
 /-!
 ## The open odd case (documentation only)
 
