@@ -100,5 +100,28 @@
     "imports": [
       "import Mathlib"
     ]
-  }
+  },
+  "references": [
+    {
+      "title": "A Remark on Stirling's Formula",
+      "author": "Herbert Robbins",
+      "year": "1955",
+      "venue": "American Mathematical Monthly, 62(1), 26–29",
+      "description": "The classic effective two-sided bound exp(1/(12n+1)) < n!/(√(2πn)(n/e)ⁿ) < exp(1/(12n)); the source of explicit, non-asymptotic constants of exactly the kind this entry attaches to the diagonal Beta value."
+    },
+    {
+      "title": "A Course of Modern Analysis",
+      "author": "E. T. Whittaker and G. N. Watson",
+      "year": "1927",
+      "venue": "Cambridge University Press (4th ed.)",
+      "description": "Gamma/Beta functions and Stirling's asymptotic series with remainder, the analytic backdrop for turning B(n+1,n+1) ~ √(πn)/((2n+1)·4ⁿ) into an effective 1 + O(1/n) bracket."
+    },
+    {
+      "title": "NIST Digital Library of Mathematical Functions",
+      "author": "F. W. J. Olver et al. (eds.)",
+      "year": "2010",
+      "venue": "dlmf.nist.gov, §5.11 (Stirling series and error bounds)",
+      "description": "Modern reference giving Stirling's series together with explicit error bounds, the effective machinery underlying this entry's two-sided rate."
+    }
+  ]
 }
