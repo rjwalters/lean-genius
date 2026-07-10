@@ -13,10 +13,10 @@
       "ShannonAWGN"
     ],
     "namespace": "ShannonHartley",
-    "lineCount": 220,
+    "lineCount": 284,
     "axiomCount": 0,
-    "theoremCount": 11,
-    "definitionCount": 1,
+    "theoremCount": 17,
+    "definitionCount": 2,
     "path": "Proofs/ShannonChannelCodingAWGNOQ03.lean",
     "sorries": 0
   },
@@ -38,9 +38,9 @@
     ],
     "axiomCount": 0,
     "sorries": 0,
-    "lineCount": 220,
-    "theoremCount": 11,
-    "definitionCount": 1,
+    "lineCount": 284,
+    "theoremCount": 17,
+    "definitionCount": 2,
     "badge": "verified",
     "originalContributions": [
       "shannonHartley_eq_awgn: the bridge identity C(B, P, N) = (2B / log 2)·awgnCapacity P N. This is the precise formal content of 'Nyquist sampling + change of logarithm base': the per-use AWGN capacity awgnCapacity P N = ½ log(1 + P/N) (nats per channel use, from the parent file) is multiplied by the Nyquist factor 2B (independent dimensions per second) and divided by log 2 (the nats→bits change of base), yielding the bits-per-second Shannon–Hartley value. It ties the bandlimited formula directly to the parent's verified per-use quantity rather than re-deriving it.",

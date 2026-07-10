@@ -217,4 +217,68 @@ theorem shannonHartley_le_snr_linear {B P N : ℝ} (hB : 0 ≤ B) (hP : 0 ≤ P)
       ≤ B * ((P / N) / Real.log 2) := mul_le_mul_of_nonneg_left hlogb_le hB
     _ = B * (P / N) / Real.log 2 := by ring
 
+/-! ## Toward the vector channel: the parallel (multi-band) capacity
+
+    The bandlimited scalar formula above extends to a *bank* of `n` independent
+    Gaussian sub-channels — the discrete model of a frequency-selective (or
+    parallel-band) channel.  Splitting the spectrum into `n` narrowband slots
+    with signal powers `P i` and noise powers `N i`, the total capacity is the
+    *sum* of the per-band per-use capacities
+
+          Cᵥ(P, N) = Σᵢ awgnCapacity (Pᵢ, Nᵢ) = Σᵢ ½ log(1 + Pᵢ/Nᵢ)   [nats/use].
+
+    The water-filling *optimisation* — maximising this sum over the allocation
+    `P` subject to a total power budget `Σᵢ Pᵢ ≤ P` — is the genuinely separate
+    problem left open by this entry.  What follows is the additive capacity
+    object that water-filling optimises, together with its structural
+    (non-negativity / monotonicity) properties, each inherited term-by-term
+    from the scalar `awgnCapacity`. -/
+
+/-- The **sum capacity of a parallel (vector) AWGN channel**: `n` independent
+    Gaussian sub-channels with signal powers `P i` and noise powers `N i` have
+    total per-use capacity `Σᵢ awgnCapacity (P i) (N i) = Σᵢ ½ log(1 + Pᵢ/Nᵢ)`
+    nats. -/
+noncomputable def parallelAwgnCapacity {n : ℕ} (P N : Fin n → ℝ) : ℝ :=
+  ∑ i, awgnCapacity (P i) (N i)
+
+/-- The vector capacity written out explicitly as the sum of Shannon terms. -/
+theorem parallelAwgnCapacity_eq_sum {n : ℕ} (P N : Fin n → ℝ) :
+    parallelAwgnCapacity P N = ∑ i, (1 / 2) * Real.log (1 + P i / N i) :=
+  rfl
+
+/-- For a single sub-channel (`n = 1`) the vector capacity reduces to the
+    scalar per-use AWGN capacity. -/
+theorem parallelAwgnCapacity_one (P N : Fin 1 → ℝ) :
+    parallelAwgnCapacity P N = awgnCapacity (P 0) (N 0) := by
+  unfold parallelAwgnCapacity
+  rw [Fin.sum_univ_one]
+
+/-- The vector capacity is non-negative when every sub-channel has
+    non-negative signal power and positive noise power. -/
+theorem parallelAwgnCapacity_nonneg {n : ℕ} {P N : Fin n → ℝ}
+    (hP : ∀ i, 0 ≤ P i) (hN : ∀ i, 0 < N i) :
+    0 ≤ parallelAwgnCapacity P N := by
+  unfold parallelAwgnCapacity
+  exact Finset.sum_nonneg (fun i _ => awgn_capacity_nonneg (hP i) (hN i))
+
+/-- The vector capacity is monotone increasing in the signal-power allocation:
+    raising every sub-channel's power (weakly) cannot decrease total capacity.
+    This is the monotonicity against which a water-filling power budget is
+    spent. -/
+theorem parallelAwgnCapacity_mono_power {n : ℕ} {P₁ P₂ N : Fin n → ℝ}
+    (hN : ∀ i, 0 < N i) (hP₁ : ∀ i, 0 ≤ P₁ i) (h : ∀ i, P₁ i ≤ P₂ i) :
+    parallelAwgnCapacity P₁ N ≤ parallelAwgnCapacity P₂ N := by
+  unfold parallelAwgnCapacity
+  exact Finset.sum_le_sum
+    (fun i _ => awgn_capacity_mono_power (hN i) (hP₁ i) (h i))
+
+/-- The vector capacity is decreasing in the noise allocation: more noise in
+    any sub-channel (weakly) lowers the total capacity. -/
+theorem parallelAwgnCapacity_antitone_noise {n : ℕ} {P N₁ N₂ : Fin n → ℝ}
+    (hP : ∀ i, 0 ≤ P i) (hN₁ : ∀ i, 0 < N₁ i) (h : ∀ i, N₁ i ≤ N₂ i) :
+    parallelAwgnCapacity P N₂ ≤ parallelAwgnCapacity P N₁ := by
+  unfold parallelAwgnCapacity
+  exact Finset.sum_le_sum
+    (fun i _ => awgn_capacity_antitone_noise (hP i) (hN₁ i) (h i))
+
 end ShannonHartley
