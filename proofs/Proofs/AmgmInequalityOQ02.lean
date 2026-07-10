@@ -669,6 +669,45 @@ theorem newton_k1 {n : ℕ} (hn : 2 ≤ n) (x : Fin n → ℝ) :
   exact div_nonneg (by linarith) (le_of_lt (mul_pos (pow_pos hn_pos 2) hC_pos))
 
 /-
+## Part VII: The chain endpoints ARE the arithmetic and geometric means
+
+`maclaurin_m1_ge_mn` (`M₁ ≥ Mₙ`) is repeatedly described as "AM ≥ GM in disguise",
+but until now the file never machine-checked that the two endpoints of the chain
+literally *are* the arithmetic and geometric means. These identities close that gap:
+`M₁ = (∑ xᵢ)/n` (arithmetic mean) and `Mₙ = (∏ xᵢ)^(1/n)` (geometric mean), so the
+top-to-bottom Maclaurin chain collapses to the AM–GM inequality itself. Unlike
+`amgm_from_maclaurin` (which invokes Mathlib's weighted AM–GM as a black box), the
+capstone `maclaurin_chain_amgm` obtains AM–GM *through the Maclaurin chain*, i.e. from
+`newton_log_concavity` alone. No new axioms.
+-/
+
+/-- **The first Maclaurin mean is the arithmetic mean.** `M₁ = (∑ xᵢ)/n`, since
+`e₁ = ∑ xᵢ`, `C(n,1) = n`, and the exponent `1/1 = 1`. -/
+theorem maclaurinMean_one {n : ℕ} (x : Fin n → ℝ) :
+    maclaurinMean 1 x = (∑ i, x i) / n := by
+  simp only [maclaurinMean, elemSymm_one, Nat.choose_one_right, Nat.cast_one, div_one,
+    Real.rpow_one]
+
+/-- **The last Maclaurin mean is the geometric mean.** `Mₙ = (∏ xᵢ)^(1/n)`, since
+`eₙ = ∏ xᵢ` (`elemSymm_n_eq_prod`) and `C(n,n) = 1`. -/
+theorem maclaurinMean_top_eq_geom {n : ℕ} (x : Fin n → ℝ) :
+    maclaurinMean n x = (∏ i, x i) ^ ((1 : ℝ) / n) := by
+  rw [maclaurinMean, elemSymm_n_eq_prod, Nat.choose_self, Nat.cast_one, div_one]
+
+/-- **AM–GM through the Maclaurin chain.** `(∏ xᵢ)^(1/n) ≤ (∑ xᵢ)/n` for non-negative
+inputs, obtained by identifying the endpoints of `maclaurin_m1_ge_mn` (`M₁ ≥ Mₙ`) with
+the arithmetic and geometric means via `maclaurinMean_one` / `maclaurinMean_top_eq_geom`.
+This is the AM–GM inequality derived *through* the Maclaurin chain — hence from
+`newton_log_concavity` alone — rather than from Mathlib's weighted AM–GM
+(`amgm_from_maclaurin`). No new axioms. -/
+theorem maclaurin_chain_amgm {n : ℕ} (hn : 0 < n) (x : Fin n → ℝ)
+    (hx : ∀ i, 0 ≤ x i) :
+    (∏ i, x i) ^ ((1 : ℝ) / n) ≤ (∑ i, x i) / n := by
+  have h := maclaurin_m1_ge_mn hn x hx
+  rw [maclaurinMean_one, maclaurinMean_top_eq_geom] at h
+  exact h
+
+/-
 ## Summary
 
 ### The Main Answer:
@@ -694,6 +733,9 @@ The chain follows from Newton's log-concavity inequalities for the sequence eₖ
 15. `elemSymm_gt_eq_zero` — eₖ = 0 for k > n
 16. `elemSymm_n_eq_prod` — eₙ = ∏ xᵢ
 17. `newton_k1` — Newton's inequality at k=1, proved from scratch (no axiom)
+18. `maclaurinMean_one` — M₁ = (∑ xᵢ)/n (first Maclaurin mean is the arithmetic mean)
+19. `maclaurinMean_top_eq_geom` — Mₙ = (∏ xᵢ)^(1/n) (last is the geometric mean)
+20. `maclaurin_chain_amgm` — (∏ xᵢ)^(1/n) ≤ (∑ xᵢ)/n, AM-GM through the chain (from Newton alone)
 
 ### Axiomatized (deep results):
 1. `newton_log_concavity` — log-concavity of eₖ/C(n,k) for non-negative inputs
