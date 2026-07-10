@@ -20,6 +20,23 @@
     "tags": ["module-header", "framing", "fibonacci"]
   },
   {
+    "id": "ann-fiboq0503-setup",
+    "proofId": "fibonacci-identities-oq-05-oq-03",
+    "range": { "startLine": 32, "endLine": 35 },
+    "type": "context",
+    "title": "Namespace and the open Finset Summation Layer",
+    "content": "**Why `open Finset` matters here.** The single line `open Finset` is the infrastructure the whole entry runs on: it brings `Finset.range` and the `∑ i ∈ Finset.range (n+1), F_i F_{i+2}` big-operator notation into scope, and — critically — makes `Finset.sum_range_succ` available unqualified. That lemma, $\\sum_{i<n+1} f(i) = \\left(\\sum_{i<n} f(i)\\right) + f(n)$, is exactly the *peel-the-last-term* step the main induction uses to expose the fresh product $F_n F_{n+2}$ so that `omega` can combine it with the inductive hypothesis. The `namespace FibonacciIdentitiesOQ05OQ03` wrapper keeps `fib_cassini`, `fib_gap_rel`, and the headline `fib_gap_two_prod_sum` from colliding with the parent `FibonacciIdentitiesOQ05` file's consecutive-product lemmas of the same shape.",
+    "mathContext": "$\\sum_{i \\in \\mathrm{range}(n+1)} f(i) = \\left(\\sum_{i \\in \\mathrm{range}(n)} f(i)\\right) + f(n)$ — `Finset.sum_range_succ`.",
+    "significance": "technical",
+    "relatedConcepts": [
+      "Finset.range and big-operator ∑ notation",
+      "Finset.sum_range_succ (peeling the last term)",
+      "Namespacing to avoid collision with the parent file"
+    ],
+    "prerequisites": ["Finite sums over Finset.range", "Lean namespaces and open"],
+    "tags": ["setup", "finset", "namespace"]
+  },
+  {
     "id": "ann-fiboq0503-2",
     "proofId": "fibonacci-identities-oq-05-oq-03",
     "range": { "startLine": 37, "endLine": 54 },
