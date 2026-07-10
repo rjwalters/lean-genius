@@ -315,3 +315,51 @@ lemma needs an eventually-comparison `log((j+1)·log2) ≥ ½·log(j+1)` for lar
 (a shifted-argument convergent-Bertrand comparison), ~40 extra lines mirroring
 `summable_of_strongBound`. The clean convergent lemma is now a **verified** base
 for that step.
+
+---
+
+## ADVANCE (2026-07-09, researcher-5) — second-tier (iterated-log) Bertrand divergence
+
+Added `not_summable_one_div_nat_mul_log_mul_loglog` to
+`Proofs/Erdos3LogHarmonic.lean` (now 501 lines, 4 public theorems):
+
+```lean
+theorem not_summable_one_div_nat_mul_log_mul_loglog :
+    ¬ Summable (fun n : ℕ => 1 / ((n : ℝ) * Real.log n * Real.log (Real.log n)))
+```
+
+**The divergence borderline one iterated logarithm deeper than the first-tier
+`not_summable_one_div_nat_mul_log`.** This formalises — for the first time in the
+gallery — the profile `f(N) ≍ N/(log N · log log N)` that ASSESS/ADVANCE notes above
+described only in prose as the true obstruction: it is `o(N/log N)` (so it satisfies the
+weak `RequiredBound` threshold) yet has a *divergent* reciprocal sum
+(`∑_{a≤N} 1/a ≍ ∑ 1/(n·log n·log log n) → ∞`). This is precisely why `RequiredBound`
+(`o(N/log N)`) cannot be strengthened into a *provable* sufficient condition without a
+`(log log N)`-power correction. Together with the convergent
+`summable_one_div_nat_mul_log_mul_const` (added 2026-07-09), the two now bracket the
+Erdős #3 borderline on the **second logarithmic axis**, just as
+`not_summable_one_div_nat_mul_log` / `summable_one_div_nat_mul_log_rpow` bracket the first.
+
+**Proof (Cauchy condensation absorbs one logarithm).** Shift by 3 onto
+`g₃ n = 1/((n+3)·log(n+3)·log log(n+3))` (the shift `+3 > e` makes `log(n+3) > 1`, hence
+`log log(n+3) > 0`; positive + antitone). `summable_condensed_iff_of_nonneg` reduces to
+the condensed term `2^k·g₃(2^k) = 1/(log(2^k)·log log(2^k)) ≍ 1/(k·log k)`; for `k ≥ 2`
+the helper `cond_lower₃` dominates it below by `(2 log 2)⁻¹ · f₂ k`, a constant multiple
+of the file's own first-tier log-harmonic term. Since `∑ f₂` diverges (`not_summable_f₂`),
+so does the condensed series, hence `g₃` — hence the original. The whole proof reuses the
+existing `f₂` machinery; no new Mathlib gap.
+
+**Verification status: ELABORATION-CLEAN, olean-write blocked (UNVERIFIED).** Five docker
+builds this session (`docker-build.sh Proofs.Erdos3LogHarmonic`): one died on a Mathlib
+dependency (`Mathlib.Topology.List`, SIGBUS-135), and four reached the target file, each
+elaborating with **zero Lean diagnostics** (times 705ms, 2.0s, 2.5s, 5.1s) before crashing
+with exit-135 (SIGBUS) at the `.olean`-write stage. This is the persistent env-level
+SIGBUS-135 storm documented across sessions since 2026-07-08 — real elaboration errors
+print `error:`/`unsolved goals` and exit 1, not 135. No such error appeared in any run, so
+the code is elaboration-clean; an olean could not be written this session. A future session
+on healthy infra should confirm green and flip the STATUS.
+
+### Open crux UNCHANGED
+`required_bound_implies_conjecture` (weak `o(N/log N)` threshold, in `Erdos3Problem.lean`)
+remains the sole `sorry` and is as hard as Erdős #3 itself — not touched, not faked. This
+advance is a companion-file analytic lemma, not the crux.
