@@ -70,9 +70,9 @@
       "S(2)=2 and S(3)=8 exact, giving the first exact averages B(2)=1 and B(3)=8/3. B(2)=1 attains the parity floor k-1=1 (the general bound is tight); B(3)=8/3 > 2 is the first place the mod-3 obstruction — the same one that makes A(3)=6 — forces the average strictly above the floor. The S(3) >= 8 lower bound combines the A(3) fact sup >= 6 (admissible_three_sup_ge) with admissible_sum_ge on the erased admissible 2-set: 6+2=8 (Proofs/Erdos1204B.lean)"
     ],
     "axiomCount": 0,
-    "lineCount": 561,
+    "lineCount": 604,
     "assumptions": "0 axiom declarations and 0 sorries; every stated lemma is fully proved. Proofs use only kernel `decide` (no `native_decide`) and `Nat.sInf`; #print axioms (incl. admissible_same_parity, admissible_diam_ge, two_mul_sub_one_le_A) shows only propext/Classical.choice/Quot.sound — no Lean.ofReduceBool, no sorryAx. Status is 'axiomatized' because the headline asymptotic questions of Problem #1204 — whether A(k) ∼ k log k and the estimate for B(k) — remain OPEN and are documented but not formalized as theorems. Formalized here: the admissibility framework, the reduction to small primes, existence/well-definedness of A(k), the parity-sharpened two-sided bounds 2(k-1) ≤ A(k) ≤ (k-1)·primorial (doubling the trivial k-1 lower bound for all k), and the exact values A(0)=A(1)=0, A(2)=2, A(3)=6, A(4)=8, A(5)=12, A(6)=16, A(7)=20 (the last four in companion files Erdos1204A4.lean, Erdos1204A5.lean, Erdos1204A6.lean and Erdos1204A7.lean, each verified and axiom-free; A(6)=16 is the first exact value whose lower bound needs three primes 2,3,5, and A(7)=20 shows the prime 7 is not yet binding — two forced 7-sets per parity are all killed at p=5). The companion Erdos1204B.lean (B(k) theory: S/B definitions, the bound k(k-1) <= S(k), and exact S(2)=2/S(3)=8, B(2)=1/B(3)=8/3) is likewise 0 axioms / 0 sorries, kernel decide only (no native_decide), depending only on propext/Classical.choice/Quot.sound.",
-    "theoremCount": 30,
+    "theoremCount": 32,
     "definitionCount": 3,
     "summary": " A companion file (Erdos1204B.lean) now also introduces the SECOND extremal quantity B(k)=min(a1+...+ak)/k (the minimal average, carried by the minimal sum S(k)), previously untouched: it is defined as an attained infimum, satisfies the parity lower bound B(k) >= k-1 (average analogue of A(k) >= 2(k-1)), with first exact values B(2)=1 (tight) and B(3)=8/3 (mod-3 forces the average above the floor). The asymptotics of B(k) remain OPEN."
   },
@@ -223,9 +223,9 @@
       "Finset"
     ],
     "namespace": "Erdos1204",
-    "lineCount": 561,
+    "lineCount": 604,
     "axiomCount": 0,
-    "theoremCount": 30,
+    "theoremCount": 32,
     "definitionCount": 3,
     "path": "Proofs/Erdos1204Problem.lean",
     "sorries": 0
