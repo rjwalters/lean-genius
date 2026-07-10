@@ -129,5 +129,34 @@
       "summary": "Tabulates the results, notes that x = 1 collapses each to the parent Neumann-series entry, and situates local continuity as the source of the openness of the unit group and the holomorphy of the resolvent (λ − T)⁻¹."
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Walter Rudin"
+      ],
+      "title": "Functional Analysis",
+      "year": "1991",
+      "venue": "McGraw-Hill, 2nd ed.",
+      "note": "Standard treatment of Banach algebras: the Neumann series for (1 − s)⁻¹ when ‖s‖ < 1, invertibility in a unital normed ring, and the resolvent — the framework this entry perturbs from the unit 1 to an arbitrary unit x."
+    },
+    {
+      "authors": [
+        "John B. Conway"
+      ],
+      "title": "A Course in Functional Analysis",
+      "year": "1990",
+      "venue": "Springer, Graduate Texts in Mathematics 96, 2nd ed.",
+      "note": "Proves that the group of units of a Banach algebra is open and that inversion is continuous there, using exactly the perturbed-unit factorization x − t = x(1 − x⁻¹t) formalized here."
+    },
+    {
+      "authors": [
+        "Tosio Kato"
+      ],
+      "title": "Perturbation Theory for Linear Operators",
+      "year": "1995",
+      "venue": "Springer, Classics in Mathematics (reprint of the 1980 ed.)",
+      "note": "Develops the analyticity of the resolvent (λ − T)⁻¹ via Neumann-series expansions of perturbed inverses, the setting toward which this entry's local continuity of t ↦ (x − t)⁻¹ points."
+    }
+  ],
   "sorries": 0
 }
