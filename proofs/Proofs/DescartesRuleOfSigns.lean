@@ -264,10 +264,28 @@ axiom example_x2_plus_1_sign_changes :
 example : signChangesInCoeffs (X^2 + 1 : ℝ[X]) = 0 :=
   example_x2_plus_1_sign_changes
 
-/-- Example: x³ - x has coefficients [1, 0, -1, 0], giving 1 sign change.
-    It has exactly 1 positive root (x = 1). -/
-axiom x_cubed_minus_x_positive_roots_axiom :
-    countPositiveRoots (X^3 - X : ℝ[X]) = 1
+/-- Example: `x³ - x = x(x-1)(x+1)` has real roots `{0, 1, -1}`, of which exactly one
+    (`x = 1`) is positive, so `countPositiveRoots (X³ - X) = 1`.
+
+    Formerly an `axiom`; the count is now computed directly from Mathlib's polynomial
+    root API (`roots_mul`, `roots_X`, `roots_X_sub_C`) — a concrete arithmetic fact
+    that needs no assumption. -/
+theorem x_cubed_minus_x_positive_roots_axiom :
+    countPositiveRoots (X^3 - X : ℝ[X]) = 1 := by
+  have hfac : (X ^ 3 - X : ℝ[X]) = X * (X - C 1) * (X + C 1) := by
+    simp only [map_one]; ring
+  have hX : (X : ℝ[X]) ≠ 0 := X_ne_zero
+  have hXm : (X - C 1 : ℝ[X]) ≠ 0 := X_sub_C_ne_zero 1
+  have hpe : (X + C 1 : ℝ[X]) = X - C (-1) := by rw [map_neg, sub_neg_eq_add]
+  have hXp : (X + C 1 : ℝ[X]) ≠ 0 := by rw [hpe]; exact X_sub_C_ne_zero (-1)
+  have hne : (X ^ 3 - X : ℝ[X]) ≠ 0 := by
+    rw [hfac]; exact mul_ne_zero (mul_ne_zero hX hXm) hXp
+  unfold countPositiveRoots
+  rw [if_neg hne, hfac,
+    roots_mul (by rw [← hfac]; exact hne),
+    roots_mul (mul_ne_zero hX hXm), roots_X, roots_X_sub_C, hpe, roots_X_sub_C]
+  simp only [Multiset.filter_add, Multiset.filter_singleton]
+  norm_num
 
 theorem x_cubed_minus_x_positive_roots :
     countPositiveRoots (X^3 - X : ℝ[X]) = 1 :=
