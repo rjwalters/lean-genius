@@ -513,4 +513,23 @@ theorem neumann_hard_direction_of_finite_commutatorSet
     (Subgroup.center G).index ≠ 0 :=
   Subgroup.FiniteIndex.index_ne_zero
 
+/-- **Bounded cliques are a group-isomorphism invariant.**  If `G ≃* K` then `Γ(G)` has
+    finite clique number iff `Γ(K)` does: `BoundedCliques G ↔ BoundedCliques K`.  An
+    isomorphism is in particular a surjective homomorphism, so `boundedCliques_of_surjective`
+    transports the property forward along `e` and backward along `e.symm` — the two
+    heredity lemmas `boundedCliques_of_subgroup` (injective, cliques *up*) and
+    `boundedCliques_of_surjective` (surjective, cliques *back*) specialise, at a bijection,
+    to full invariance.
+
+    Axiom-free (only the elementary clique transfer, not the BFC core
+    `neumann_hard_direction`).  Consequently the whole Neumann dichotomy
+    `BoundedCliques ↔ [·:Z(·)] finite` is an isomorphism invariant: isomorphic groups share
+    both the finiteness of their non-commuting clique number and of their central index. -/
+theorem boundedCliques_congr {K : Type*} [Group K] (e : G ≃* K) :
+    BoundedCliques G ↔ BoundedCliques K := by
+  refine ⟨boundedCliques_of_surjective e.toMonoidHom ?_,
+          boundedCliques_of_surjective e.symm.toMonoidHom ?_⟩
+  · exact fun y => ⟨e.symm y, by simp⟩
+  · exact fun y => ⟨e y, by simp⟩
+
 end Erdos1098OQ01OQ03
