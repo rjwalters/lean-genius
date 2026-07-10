@@ -268,4 +268,43 @@ theorem scaledLattice_dist_ne_sqrt_six {p q : Plane}
     dist p q ≠ Real.sqrt 6 :=
   scaledLattice_dist_ne_sqrt_six_mod_eight hp hq (n := 6) (by decide)
 
+/-!
+## The complete mod-8 dichotomy for achievable distances
+
+The squared distance is `2·(u² + v²)` with `u² + v² ≢ 3 (mod 4)`, so it lies in
+`{0, 2, 4} (mod 8)`.  This single arithmetic fact *characterizes* the achievable
+integer square-distances of `√2·ℤ²` modulo `8`, and unifies both previous avoidance
+families: the odd `n` (residues `1, 3, 5, 7`) and `n ≡ 6 (mod 8)` results are exactly
+the residues `{1, 3, 5, 6, 7}` that are **not** in `{0, 2, 4}`.
+-/
+
+/-- **Achievable distances lie in `{0, 2, 4} (mod 8)`.**  If two points of
+`ScaledLattice` are at distance `√n` (`n : ℕ`), then `n ≡ 0, 2, or 4 (mod 8)`.
+Indeed `n = 2·(u² + v²)` and `u² + v² ≢ 3 (mod 4)`, so `2·(u² + v²) ∈ {0,2,4} (mod 8)`.
+This is the positive companion to the avoidance theorems: it pins the *only* residues
+mod `8` a lattice distance can realize. -/
+theorem scaledLattice_achievable_mod_eight {p q : Plane}
+    (hp : p ∈ ScaledLattice) (hq : q ∈ ScaledLattice)
+    {n : ℕ} (h : dist p q = Real.sqrt n) :
+    n % 8 = 0 ∨ n % 8 = 2 ∨ n % 8 = 4 := by
+  obtain ⟨u, v, huv⟩ := scaledLattice_dist_sq_two_mul_sq_add_sq hp hq
+  have hsq : dist p q ^ 2 = (n : ℝ) := by rw [h, Real.sq_sqrt (by positivity)]
+  rw [hsq] at huv
+  have hz : (n : ℤ) = 2 * (u ^ 2 + v ^ 2) := by exact_mod_cast huv
+  have h3 := sq_add_sq_mod_four_ne_three u v
+  omega
+
+/-- **Complete mod-8 avoidance.**  `√2·ℤ²` avoids `√n` for *every* `n` with
+`n ≡ 1, 3, 5, 6, or 7 (mod 8)` — the exact complement of the achievable residues
+`{0, 2, 4}`.  This single statement subsumes both `scaledLattice_dist_ne_sqrt_odd`
+(residues `1, 3, 5, 7`) and `scaledLattice_dist_ne_sqrt_six_mod_eight` (residue `6`),
+and is the sharp mod-8 boundary of the lattice's distance set. -/
+theorem scaledLattice_dist_ne_sqrt_of_mod_eight {p q : Plane}
+    (hp : p ∈ ScaledLattice) (hq : q ∈ ScaledLattice) {n : ℕ}
+    (hn : n % 8 = 1 ∨ n % 8 = 3 ∨ n % 8 = 5 ∨ n % 8 = 6 ∨ n % 8 = 7) :
+    dist p q ≠ Real.sqrt n := by
+  intro h
+  have hach := scaledLattice_achievable_mod_eight hp hq h
+  omega
+
 end Erdos214Incomplete01OQ01
