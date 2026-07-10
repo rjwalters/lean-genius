@@ -41,21 +41,41 @@
   {
     "id": "ann-diagonal",
     "proofId": "beta-integral-recurrence-oq-01-oq-01",
-    "range": { "startLine": 56, "endLine": 82 },
+    "range": { "startLine": 56, "endLine": 76 },
     "type": "insight",
     "title": "The Central Binomial Reciprocal",
-    "content": "betaIntegral_diag_central_binom is the headline: B(n+1, n+1) = 1/((2n+1)·C(2n,n)). It rewrites the parent's diagonal value betaIntegral_nat_nat n n = (n!)²/(2n+1)! and clears denominators with div_eq_div_iff, using the factorization key: n!·n!·((2n+1)·C(2n,n)) = (2n+1)!. The nonvanishing side conditions come from factorial positivity and Nat.choose_pos. The companion betaIntegral_diag_centralBinom restates the same value with Mathlib's Nat.centralBinom n = C(2n,n) — a definitional rfl rewrite — connecting the result to the library's named central binomial coefficient.",
-    "mathContext": "$B(n{+}1,n{+}1) = \\dfrac{1}{(2n+1)\\binom{2n}{n}} = \\dfrac{1}{(2n+1)\\,\\mathrm{centralBinom}\\,n}.$",
+    "content": "betaIntegral_diag_central_binom is the headline: B(n+1, n+1) = 1/((2n+1)·C(2n,n)). It rewrites the parent's diagonal value betaIntegral_nat_nat n n = (n!)²/(2n+1)! and clears denominators with div_eq_div_iff, using the factorization key: n!·n!·((2n+1)·C(2n,n)) = (2n+1)!. The two nonvanishing side conditions are discharged by factorial positivity (Nat.factorial_pos) and Nat.choose_pos (with n ≤ 2n), after which ← Nat.cast_mul folds the ℕ product before the cast to ℂ so the key identity closes the goal. The value is the reciprocal of an integer — the total mass of the unnormalized symmetric density xⁿ(1−x)ⁿ on [0,1].",
+    "mathContext": "$B(n{+}1,n{+}1) = \\dfrac{(n!)^2}{(2n+1)!} = \\dfrac{1}{(2n+1)\\binom{2n}{n}}.$",
     "significance": "key",
     "relatedConcepts": [
       "Beta integral closed form",
-      "Nat.centralBinom",
+      "central binomial coefficient",
       "clearing denominators (div_eq_div_iff)",
       "casting ℕ to ℂ"
     ],
     "prerequisites": [
       "the factorial factorization",
       "the parent betaIntegral_nat_nat"
+    ]
+  },
+  {
+    "id": "ann-centralbinom-restatement",
+    "proofId": "beta-integral-recurrence-oq-01-oq-01",
+    "range": { "startLine": 77, "endLine": 83 },
+    "type": "definition",
+    "title": "Restatement via Mathlib's Nat.centralBinom",
+    "content": "betaIntegral_diag_centralBinom restates the headline value using Mathlib's canonical Nat.centralBinom n in place of the explicit (2n).choose n: B(n+1, n+1) = 1/((2n+1)·centralBinom n). Because Nat.centralBinom n is *definitionally* (2n).choose n, the proof is `rw [betaIntegral_diag_central_binom]; rfl` — no arithmetic, purely a change of spelling. The point is API hygiene: downstream Mathlib users reach for centralBinom (which carries the library's lemmas — its 4ⁿ growth bound, its two-adic valuation, the Catalan-number link Catalan n = centralBinom n/(n+1)), so exposing the Beta normalization in that vocabulary lets those results compose with this one without re-proving the definitional identity.",
+    "mathContext": "$B(n{+}1,n{+}1) = \\dfrac{1}{(2n+1)\\,\\mathrm{centralBinom}\\,n},\\quad \\mathrm{centralBinom}\\,n \\mathrel{:=} \\binom{2n}{n}.$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Nat.centralBinom",
+      "definitional equality (rfl)",
+      "Catalan numbers",
+      "library API idioms"
+    ],
+    "prerequisites": [
+      "the central binomial reciprocal formula",
+      "Mathlib's central-binomial API"
     ]
   },
   {
