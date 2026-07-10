@@ -158,5 +158,42 @@
     "definitionCount": 2,
     "theoremCount": 5
   },
+  "references": [
+    {
+      "authors": "Augustin-Louis Cauchy",
+      "title": "Mémoire sur diverses propriétés remarquables des substitutions régulières ou irrégulières, et des systèmes de substitutions conjuguées",
+      "year": "1845",
+      "venue": "Comptes Rendus de l'Académie des Sciences, Paris, 21, 835–843",
+      "note": "Establishes the transitive case of the orbit-counting lemma (average number of fixed points equals the number of orbits) — the earliest source for what is now called the Cauchy–Frobenius–Burnside lemma underlying this necklace count."
+    },
+    {
+      "authors": "Ferdinand Georg Frobenius",
+      "title": "Über die Congruenz nach einem aus zwei endlichen Gruppen gebildeten Doppelmodul",
+      "year": "1887",
+      "venue": "Journal für die reine und angewandte Mathematik (Crelle) 101, 273–299",
+      "note": "General form of the orbit-counting lemma for an arbitrary finite group action; the averaging identity Σ_g |Fix(g)| = (#orbits)·|G| specialized here to the cyclic rotation action (result (C))."
+    },
+    {
+      "authors": "William Burnside",
+      "title": "Theory of Groups of Finite Order",
+      "year": "1897",
+      "venue": "Cambridge University Press (2nd ed. 1911, §145)",
+      "note": "Popularized the orbit-counting lemma — hence the common name 'Burnside's lemma' — though Burnside himself attributed it to Frobenius; the k-colored necklace count is its textbook first application."
+    },
+    {
+      "authors": "George Pólya",
+      "title": "Kombinatorische Anzahlbestimmungen für Gruppen, Graphen und chemische Verbindungen",
+      "year": "1937",
+      "venue": "Acta Mathematica 68, 145–254",
+      "note": "The Pólya enumeration theorem, a cycle-index refinement of Burnside's lemma that generalizes the k^{gcd(n,r)} per-rotation count to the full generating-function necklace enumeration (1/n)·Σ_{d|n} φ(n/d) k^d (see openQuestions)."
+    },
+    {
+      "authors": "J. Howard Redfield",
+      "title": "The Theory of Group-Reduced Distributions",
+      "year": "1927",
+      "venue": "American Journal of Mathematics 49 (3), 433–455",
+      "note": "Independent earlier discovery of the enumeration theory later rediscovered by Pólya; the foundational combinatorial source for counting colorings up to a group action such as necklace rotations."
+    }
+  ],
   "sorries": 0
 }
