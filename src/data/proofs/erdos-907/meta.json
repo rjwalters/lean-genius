@@ -34,7 +34,7 @@
       "Full proof that linear_is_additive, continuous_has_continuous_differences, additive_difference_const, continuous_decomposition, sq_has_continuous_differences (all 0-sorry)",
       "Axiomatization of exactly 2 deep results: continuous_additive_is_linear (Cauchy regularity), de_bruijn_theorem (main decomposition theorem)",
       "Regularity remark: a docstring notes that continuous, measurable, or monotone additive functions are all linear (mathematical context only; only the continuous case is stated, as the axiom continuous_additive_is_linear)",
-      "Connection to erdos-908 via decomposition_continuous_additive characterization",
+      "Cross-reference to erdos-908 as a docstring pointer only (Part 9); no formal declaration links the two problems (there is no `decomposition_continuous_additive` in the source)",
       "Summary theorem packaging de Bruijn + continuous direction + additive constancy as conjunction"
     ],
     "axiomCount": 2,
