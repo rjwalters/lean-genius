@@ -1,0 +1,57 @@
+{
+  "slug": "cayley-hamilton-cyclic-vector-all-fields-oq-02-oq-03",
+  "title": "Lift the result to the endomorphism setting (Module.End) rather than concrete matrices, for reuse across the gallery's linear-algebra…",
+  "phase": "OBSERVE",
+  "status": "available",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Open extension question extending Commutant of a Cyclic Matrix is K[M]: Lift the result to the endomorphism setting (Module.End) rather than concrete matrices, for reuse across the gallery's linear-algebra…",
+    "plain": "Lift the result to the endomorphism setting (Module.End) rather than concrete matrices, for reuse across the gallery's linear-algebra entries.",
+    "whyMatters": [
+      "Extends the formalized result cayley-hamilton-cyclic-vector-all-fields-oq-02.",
+      "Clarifies how far the parent proof's techniques generalize."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Parent entry cayley-hamilton-cyclic-vector-all-fields-oq-02 is fully formalized in the gallery."
+    ],
+    "open": [
+      "Lift the result to the endomorphism setting (Module.End) rather than concrete matrices, for reuse across the gallery's linear-algebra…"
+    ],
+    "goal": "Formalize the question in Lean 4 (or establish a rigorous negative result), reusing the parent entry's lemmas."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-07-09T00:00:00Z",
+    "iteration": 0,
+    "focus": "Newly seeded by Seeker; awaiting Researcher OBSERVE pass."
+  },
+  "knowledge": {
+    "progressSummary": "Seeded stub. No research performed yet.",
+    "builtItems": [],
+    "insights": [],
+    "nextSteps": [
+      "Survey the parent gallery entry and its Lean source.",
+      "State the question precisely in Lean 4.",
+      "Identify supporting Mathlib theory."
+    ]
+  },
+  "tags": [
+    "linear-algebra",
+    "matrices",
+    "cyclic-vector",
+    "cayley-hamilton",
+    "minimal-polynomial",
+    "nonderogatory",
+    "commutant",
+    "centralizer",
+    "research",
+    "open-question"
+  ],
+  "started": "2026-07-09T00:00:00Z",
+  "lastUpdate": "2026-07-09T00:00:00Z",
+  "significance": 6,
+  "tractability": 5
+}

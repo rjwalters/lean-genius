@@ -1,0 +1,52 @@
+{
+  "slug": "erdos-1038-oq-02",
+  "title": "Can the infimum be achieved by a specific polynomial, or only as a limit?",
+  "phase": "OBSERVE",
+  "status": "available",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Open extension question extending Erdős Problem #1038: Sublevel Sets of Monic Polynomials: Can the infimum be achieved by a specific polynomial, or only as a limit?",
+    "plain": "Can the infimum be achieved by a specific polynomial, or only as a limit?",
+    "whyMatters": [
+      "Extends the formalized result erdos-1038.",
+      "Clarifies how far the parent proof's techniques generalize."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Parent entry erdos-1038 is fully formalized in the gallery."
+    ],
+    "open": [
+      "Can the infimum be achieved by a specific polynomial, or only as a limit?"
+    ],
+    "goal": "Formalize the question in Lean 4 (or establish a rigorous negative result), reusing the parent entry's lemmas."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-07-09T00:00:00Z",
+    "iteration": 0,
+    "focus": "Newly seeded by Seeker; awaiting Researcher OBSERVE pass."
+  },
+  "knowledge": {
+    "progressSummary": "Seeded stub. No research performed yet.",
+    "builtItems": [],
+    "insights": [],
+    "nextSteps": [
+      "Survey the parent gallery entry and its Lean source.",
+      "State the question precisely in Lean 4.",
+      "Identify supporting Mathlib theory."
+    ]
+  },
+  "tags": [
+    "erdos",
+    "measure-theory",
+    "polynomials",
+    "potential-theory",
+    "real-analysis"
+  ],
+  "started": "2026-07-09T00:00:00Z",
+  "lastUpdate": "2026-07-09T00:00:00Z",
+  "significance": 6,
+  "tractability": 5
+}

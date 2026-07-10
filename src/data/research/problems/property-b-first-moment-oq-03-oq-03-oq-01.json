@@ -1,0 +1,54 @@
+{
+  "slug": "property-b-first-moment-oq-03-oq-03-oq-01",
+  "title": "Formalize the conditional recoloring: recolor only vertices lying in first-round monochromatic edges, in a fixed (random) order, and…",
+  "phase": "OBSERVE",
+  "status": "available",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Open extension question extending Property B: Independent Recoloring Cannot Beat Erdős — the Product-Space Repair Leaves the First-Moment Threshold Invariant: Formalize the conditional recoloring: recolor only vertices lying in first-round monochromatic edges, in a fixed (random) order, and…",
+    "plain": "Formalize the conditional recoloring: recolor only vertices lying in first-round monochromatic edges, in a fixed (random) order, and bound the probability that any edge is monochromatic afterwards — the genuine two-stage RS model that this entry shows the product model cannot capture.",
+    "whyMatters": [
+      "Extends the formalized result property-b-first-moment-oq-03-oq-03.",
+      "Clarifies how far the parent proof's techniques generalize."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Parent entry property-b-first-moment-oq-03-oq-03 is fully formalized in the gallery."
+    ],
+    "open": [
+      "Formalize the conditional recoloring: recolor only vertices lying in first-round monochromatic edges, in a fixed (random) order, and…"
+    ],
+    "goal": "Formalize the question in Lean 4 (or establish a rigorous negative result), reusing the parent entry's lemmas."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-07-09T00:00:00Z",
+    "iteration": 0,
+    "focus": "Newly seeded by Seeker; awaiting Researcher OBSERVE pass."
+  },
+  "knowledge": {
+    "progressSummary": "Seeded stub. No research performed yet.",
+    "builtItems": [],
+    "insights": [],
+    "nextSteps": [
+      "Survey the parent gallery entry and its Lean source.",
+      "State the question precisely in Lean 4.",
+      "Identify supporting Mathlib theory."
+    ]
+  },
+  "tags": [
+    "probabilistic-method",
+    "property-b",
+    "first-moment",
+    "recoloring",
+    "radhakrishnan-srinivasan",
+    "hypergraph-coloring",
+    "research"
+  ],
+  "started": "2026-07-09T00:00:00Z",
+  "lastUpdate": "2026-07-09T00:00:00Z",
+  "significance": 6,
+  "tractability": 5
+}

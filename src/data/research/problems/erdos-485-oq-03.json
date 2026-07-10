@@ -1,0 +1,53 @@
+{
+  "slug": "erdos-485-oq-03",
+  "title": "For which fields F does f_F(k) → ∞?",
+  "phase": "OBSERVE",
+  "status": "available",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Open extension question extending Minimum Terms in Squared Polynomials: For which fields F does f_F(k) → ∞?",
+    "plain": "For which fields F does f_F(k) → ∞? The result holds in characteristic 0 and large characteristic, but positive characteristic allows new cancellations.",
+    "whyMatters": [
+      "Extends the formalized result erdos-485.",
+      "Clarifies how far the parent proof's techniques generalize."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Parent entry erdos-485 is fully formalized in the gallery."
+    ],
+    "open": [
+      "For which fields F does f_F(k) → ∞?"
+    ],
+    "goal": "Formalize the question in Lean 4 (or establish a rigorous negative result), reusing the parent entry's lemmas."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-07-09T00:00:00Z",
+    "iteration": 0,
+    "focus": "Newly seeded by Seeker; awaiting Researcher OBSERVE pass."
+  },
+  "knowledge": {
+    "progressSummary": "Seeded stub. No research performed yet.",
+    "builtItems": [],
+    "insights": [],
+    "nextSteps": [
+      "Survey the parent gallery entry and its Lean source.",
+      "State the question precisely in Lean 4.",
+      "Identify supporting Mathlib theory."
+    ]
+  },
+  "tags": [
+    "erdos",
+    "algebra",
+    "polynomials",
+    "sparse-polynomials",
+    "asymptotics",
+    "solved"
+  ],
+  "started": "2026-07-09T00:00:00Z",
+  "lastUpdate": "2026-07-09T00:00:00Z",
+  "significance": 6,
+  "tractability": 5
+}

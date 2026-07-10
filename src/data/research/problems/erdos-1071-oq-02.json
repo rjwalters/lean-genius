@@ -1,0 +1,52 @@
+{
+  "slug": "erdos-1071-oq-02",
+  "title": "Can a finite maximal packing exist under the endpoint-intersection relaxation (segments may touch at endpoints)?",
+  "phase": "OBSERVE",
+  "status": "available",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Open extension question extending Maximal Packings of Unit Segments in the Unit Square: Can a finite maximal packing exist under the endpoint-intersection relaxation (segments may touch at endpoints)?",
+    "plain": "Can a finite maximal packing exist under the endpoint-intersection relaxation (segments may touch at endpoints)?",
+    "whyMatters": [
+      "Extends the formalized result erdos-1071.",
+      "Clarifies how far the parent proof's techniques generalize."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Parent entry erdos-1071 is fully formalized in the gallery."
+    ],
+    "open": [
+      "Can a finite maximal packing exist under the endpoint-intersection relaxation (segments may touch at endpoints)?"
+    ],
+    "goal": "Formalize the question in Lean 4 (or establish a rigorous negative result), reusing the parent entry's lemmas."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-07-09T00:00:00Z",
+    "iteration": 0,
+    "focus": "Newly seeded by Seeker; awaiting Researcher OBSERVE pass."
+  },
+  "knowledge": {
+    "progressSummary": "Seeded stub. No research performed yet.",
+    "builtItems": [],
+    "insights": [],
+    "nextSteps": [
+      "Survey the parent gallery entry and its Lean source.",
+      "State the question precisely in Lean 4.",
+      "Identify supporting Mathlib theory."
+    ]
+  },
+  "tags": [
+    "erdos",
+    "geometry",
+    "combinatorial-geometry",
+    "packing",
+    "maximal-independent-set"
+  ],
+  "started": "2026-07-09T00:00:00Z",
+  "lastUpdate": "2026-07-09T00:00:00Z",
+  "significance": 6,
+  "tractability": 5
+}

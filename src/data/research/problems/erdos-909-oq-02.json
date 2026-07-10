@@ -1,0 +1,52 @@
+{
+  "slug": "erdos-909-oq-02",
+  "title": "What is dim(S_n^k) for the Anderson-Keisler space S_n when k > 2?",
+  "phase": "OBSERVE",
+  "status": "available",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Open extension question extending Erdős Problem #909: Dimension of Product Spaces: What is dim(S_n^k) for the Anderson-Keisler space S_n when k > 2?",
+    "plain": "What is dim(S_n^k) for the Anderson-Keisler space S_n when k > 2? Does dim(S_n^k) = n for all k?",
+    "whyMatters": [
+      "Extends the formalized result erdos-909.",
+      "Clarifies how far the parent proof's techniques generalize."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Parent entry erdos-909 is fully formalized in the gallery."
+    ],
+    "open": [
+      "What is dim(S_n^k) for the Anderson-Keisler space S_n when k > 2?"
+    ],
+    "goal": "Formalize the question in Lean 4 (or establish a rigorous negative result), reusing the parent entry's lemmas."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-07-09T00:00:00Z",
+    "iteration": 0,
+    "focus": "Newly seeded by Seeker; awaiting Researcher OBSERVE pass."
+  },
+  "knowledge": {
+    "progressSummary": "Seeded stub. No research performed yet.",
+    "builtItems": [],
+    "insights": [],
+    "nextSteps": [
+      "Survey the parent gallery entry and its Lean source.",
+      "State the question precisely in Lean 4.",
+      "Identify supporting Mathlib theory."
+    ]
+  },
+  "tags": [
+    "erdos",
+    "topology",
+    "dimension-theory",
+    "product-spaces",
+    "solved"
+  ],
+  "started": "2026-07-09T00:00:00Z",
+  "lastUpdate": "2026-07-09T00:00:00Z",
+  "significance": 6,
+  "tractability": 5
+}
