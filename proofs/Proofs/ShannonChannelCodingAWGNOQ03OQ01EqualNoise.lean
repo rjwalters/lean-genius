@@ -143,4 +143,51 @@ theorem rate_equalNoise_mono_power [Nonempty ι] {c : ℝ} (hc : 0 < c)
     gcongr
   exact mul_le_mul_of_nonneg_left (Real.log_le_log hx1 hle) (by positivity)
 
+/-- **The equal-noise capacity is antitone in the noise floor.**  For a fixed
+    power budget `P ≥ 0`, raising the common noise `c₁ ≤ c₂` never increases the
+    achievable rate: `C(c₂) ≤ C(c₁)`.  This is the noise-side dual of
+    `rate_equalNoise_mono_power`; it holds because `P/(n·c)` decreases in `c`. -/
+theorem rate_equalNoise_antitone_noise [Nonempty ι] {P : ℝ} (hP : 0 ≤ P)
+    {c₁ c₂ : ℝ} (hc₁ : 0 < c₁) (hc : c₁ ≤ c₂) :
+    (Fintype.card ι : ℝ) / 2 * Real.log (1 + P / (Fintype.card ι * c₂))
+      ≤ (Fintype.card ι : ℝ) / 2 * Real.log (1 + P / (Fintype.card ι * c₁)) := by
+  have hn : 0 < (Fintype.card ι : ℝ) := by exact_mod_cast Fintype.card_pos
+  have hc₂ : 0 < c₂ := lt_of_lt_of_le hc₁ hc
+  have hnc₂ : 0 < (Fintype.card ι : ℝ) * c₂ := mul_pos hn hc₂
+  have hx2 : (0 : ℝ) < 1 + P / (Fintype.card ι * c₂) := by
+    have : 0 ≤ P / (Fintype.card ι * c₂) := div_nonneg hP hnc₂.le
+    linarith
+  have hle : 1 + P / (Fintype.card ι * c₂) ≤ 1 + P / (Fintype.card ι * c₁) := by
+    gcongr
+  exact mul_le_mul_of_nonneg_left (Real.log_le_log hx2 hle) (by positivity)
+
+/-! ## The wideband ceiling `C ≤ P/(2c)` -/
+
+/-- **Wideband capacity ceiling.**  For any finite number `n` of equal parallel
+    Gaussian channels of noise `c > 0` sharing total power `P ≥ 0`, the equal-noise
+    capacity is capped by `P/(2c)`, *independently of `n`*:
+    `(n/2)·log(1 + P/(n·c)) ≤ P/(2c)`.
+
+    This is the infinite-bandwidth (wideband) limit of the AWGN channel: no matter
+    how the total power is split across identical sub-channels, the aggregate rate
+    cannot exceed `P/(2c)` nats.  It follows from the elementary tangent bound
+    `log u ≤ u − 1` applied to `u = 1 + P/(n·c)`. -/
+theorem rate_equalNoise_le_wideband [Nonempty ι] {c : ℝ} (hc : 0 < c) {P : ℝ}
+    (hP : 0 ≤ P) :
+    (Fintype.card ι : ℝ) / 2 * Real.log (1 + P / (Fintype.card ι * c)) ≤ P / (2 * c) := by
+  have hn : 0 < (Fintype.card ι : ℝ) := by exact_mod_cast Fintype.card_pos
+  have hcne : c ≠ 0 := hc.ne'
+  have hnne : (Fintype.card ι : ℝ) ≠ 0 := hn.ne'
+  have hnc : 0 < (Fintype.card ι : ℝ) * c := mul_pos hn hc
+  have hu : (0 : ℝ) < 1 + P / (Fintype.card ι * c) := by
+    have : 0 ≤ P / (Fintype.card ι * c) := div_nonneg hP hnc.le
+    linarith
+  have hlog : Real.log (1 + P / (Fintype.card ι * c)) ≤ P / (Fintype.card ι * c) := by
+    have h := Real.log_le_sub_one_of_pos hu
+    linarith
+  calc (Fintype.card ι : ℝ) / 2 * Real.log (1 + P / (Fintype.card ι * c))
+      ≤ (Fintype.card ι : ℝ) / 2 * (P / (Fintype.card ι * c)) :=
+        mul_le_mul_of_nonneg_left hlog (by positivity)
+    _ = P / (2 * c) := by field_simp; ring
+
 end ShannonWaterFilling
