@@ -2860,4 +2860,144 @@ theorem four_onQuartic_collinear_iff {a b c d : ℝ × ℝ}
     · linear_combination (a.1 + b.1 + c.1) * he1 - he2
     · linear_combination (a.1 + b.1 + d.1) * he1 - he2
 
+/-! ### Sum-of-squares form and the general arithmetic counting engine
+
+`four_onQuartic_collinear_iff` phrases a four-point line on `y = x⁴ − 5x²` through the
+two Vieta relations `Σx = 0` and `Σ_{i<j}xᵢxⱼ = −5`.  Under `Σx = 0` the second relation
+is equivalent — via `(Σx)² = Σx² + 2·Σ_{i<j}xᵢxⱼ` — to the *sum-of-squares* condition
+`Σx² = 10`, the "four abscissae on a common squared-radius-`10` circle" reading.  This
+form is the one an additive count actually uses, and it powers the general engine below:
+`quartic_fourPointLineCount_from_quadruples` turns **any** injective family of arithmetic
+quadruples `(Σx = 0, Σx² = 10)` into a `fourPointLineCount ≥ k` lower bound, dropping the
+"horizontal / symmetric" restriction baked into `quartic_linear_lower_bound`.  It is the
+exact reduction the open growth question rests on: a *super-linear* family of such
+quadruples (necessarily oblique) would give a super-linear four-point-line count. -/
+
+/-- **Sum-of-squares form of the four-point-line criterion on the quartic.**
+Four points on `y = x⁴ − 5x²` with pairwise-distinct abscissae are collinear iff their
+abscissae satisfy `Σx = 0` and `Σx² = 10`.  Equivalent to `four_onQuartic_collinear_iff`
+by `(Σx)² = Σx² + 2·Σ_{i<j}xᵢxⱼ`: under `Σx = 0`, `Σ_{i<j}xᵢxⱼ = −5 ↔ Σx² = 10`. -/
+theorem four_onQuartic_collinear_iff_sq {a b c d : ℝ × ℝ}
+    (ha : onQuartic a) (hb : onQuartic b) (hc : onQuartic c) (hd : onQuartic d)
+    (hab : a.1 ≠ b.1) (hbc : b.1 ≠ c.1) (hca : c.1 ≠ a.1)
+    (hbd : b.1 ≠ d.1) (hda : d.1 ≠ a.1) (hcd : c.1 ≠ d.1) :
+    (collinear a b c ∧ collinear a b d) ↔
+      (a.1 + b.1 + c.1 + d.1 = 0 ∧
+       a.1 ^ 2 + b.1 ^ 2 + c.1 ^ 2 + d.1 ^ 2 = 10) := by
+  rw [four_onQuartic_collinear_iff ha hb hc hd hab hbc hca hbd hda hcd]
+  constructor
+  · rintro ⟨h1, h2⟩
+    exact ⟨h1, by linear_combination (a.1 + b.1 + c.1 + d.1) * h1 - 2 * h2⟩
+  · rintro ⟨h1, h2⟩
+    exact ⟨h1, by
+      linear_combination (1 / 2 : ℝ) * (a.1 + b.1 + c.1 + d.1) * h1 - (1 / 2 : ℝ) * h2⟩
+
+/-- **General four-point-line count from arithmetic quadruples.**
+Let `x : Fin k → Fin 4 → ℝ` list `k` quadruples of abscissae with
+* four distinct entries per quadruple (`hx_inj`),
+* each quadruple satisfying `Σx = 0` and `Σx² = 10` (`hsum`, `hsq`), and
+* distinct quadruples producing distinct abscissa-sets (`hset_inj`).
+
+Then the image of all these abscissae under `x ↦ (x, x⁴ − 5x²)` is a no-five-collinear
+planar point set on at most `4·k` points with `fourPointLineCount ≥ k`.
+
+This subsumes `quartic_linear_lower_bound`, whose witnesses are the symmetric quadruples
+`(a, −a, b, −b)` with `a² + b² = 5`; the engine additionally accepts *oblique* quadruples,
+so any super-linear family of solutions to `Σx = 0 ∧ Σx² = 10` would immediately upgrade
+the linear floor.  It does not resolve the OPEN `Ω(n^{3/2})` / `n^{2−o(1)}` growth. -/
+theorem quartic_fourPointLineCount_from_quadruples (k : ℕ) (hk : 0 < k)
+    (x : Fin k → Fin 4 → ℝ)
+    (hx_inj : ∀ i, Function.Injective (x i))
+    (hsum : ∀ i, x i 0 + x i 1 + x i 2 + x i 3 = 0)
+    (hsq : ∀ i, x i 0 ^ 2 + x i 1 ^ 2 + x i 2 ^ 2 + x i 3 ^ 2 = 10)
+    (hset_inj : Function.Injective
+      (fun i => (Finset.univ.image (x i) : Finset ℝ))) :
+    ∃ P : PlanarPointSet, P.points.card ≤ 4 * k ∧
+      NoFiveCollinear P ∧ k ≤ fourPointLineCount P := by
+  classical
+  -- The quartic embedding `Q` and the image-line family `L`.
+  let Q : ℝ → ℝ × ℝ := fun t => (t, t ^ 4 - 5 * t ^ 2)
+  let L : Fin k → Finset (ℝ × ℝ) := fun i => (Finset.univ.image (x i)).image Q
+  have hQq : ∀ t, onQuartic (Q t) := fun _ => rfl
+  have hQinj : Function.Injective Q := by
+    intro s t h; exact congrArg Prod.fst h
+  -- Pairwise distinctness of the four abscissae in each quadruple.
+  have hxne : ∀ (i : Fin k) (m n : Fin 4), m ≠ n → x i m ≠ x i n :=
+    fun i m n hmn h => hmn (hx_inj i h)
+  -- Each image-line has exactly four elements.
+  have hLcard : ∀ i, (L i).card = 4 := by
+    intro i
+    change ((Finset.univ.image (x i)).image Q).card = 4
+    rw [Finset.card_image_of_injective _ hQinj,
+      Finset.card_image_of_injective _ (hx_inj i), Finset.card_univ, Fintype.card_fin]
+  -- Membership: `Q (x i j) ∈ L i`.
+  have hQmem : ∀ (i : Fin k) (j : Fin 4), Q (x i j) ∈ L i := by
+    intro i j
+    change Q (x i j) ∈ (Finset.univ.image (x i)).image Q
+    exact Finset.mem_image_of_mem _ (Finset.mem_image_of_mem _ (Finset.mem_univ j))
+  -- The point set: union of all image-lines.
+  have hpts_ne : (Finset.univ.biUnion L).Nonempty :=
+    ⟨Q (x ⟨0, hk⟩ 0), by rw [Finset.mem_biUnion];
+      exact ⟨⟨0, hk⟩, Finset.mem_univ _, hQmem _ 0⟩⟩
+  let P : PlanarPointSet := ⟨Finset.univ.biUnion L, Finset.card_pos.mpr hpts_ne⟩
+  -- Every point lies on the quartic graph, so no five are collinear.
+  have hquartic : ∀ p ∈ P.points, onQuartic p := by
+    intro p hp
+    have hp' : p ∈ Finset.univ.biUnion L := hp
+    rw [Finset.mem_biUnion] at hp'
+    obtain ⟨i, _, hpi⟩ := hp'
+    change p ∈ (Finset.univ.image (x i)).image Q at hpi
+    rw [Finset.mem_image] at hpi
+    obtain ⟨w, _, rfl⟩ := hpi
+    exact hQq w
+  have hno5 : NoFiveCollinear P := noFiveCollinear_of_onQuartic P hquartic
+  -- Each line is a four-point collinear subset of `P`.
+  have hmem : ∀ i, L i ⊆ P.points := by
+    intro i
+    change L i ⊆ Finset.univ.biUnion L
+    exact Finset.subset_biUnion_of_mem L (Finset.mem_univ i)
+  have hcol : ∀ i, ∃ a b : ℝ × ℝ, a ∈ L i ∧ b ∈ L i ∧ a ≠ b ∧
+      ∀ p ∈ L i, collinear a b p := by
+    intro i
+    refine ⟨Q (x i 0), Q (x i 1), hQmem i 0, hQmem i 1, ?_, ?_⟩
+    · intro heq; exact hxne i 0 1 (by decide) (hQinj heq)
+    -- The two non-anchor points are collinear via the sum-of-squares criterion.
+    · have hcd : collinear (Q (x i 0)) (Q (x i 1)) (Q (x i 2)) ∧
+          collinear (Q (x i 0)) (Q (x i 1)) (Q (x i 3)) := by
+        rw [four_onQuartic_collinear_iff_sq (hQq _) (hQq _) (hQq _) (hQq _)
+          (hxne i 0 1 (by decide)) (hxne i 1 2 (by decide)) (hxne i 2 0 (by decide))
+          (hxne i 1 3 (by decide)) (hxne i 3 0 (by decide)) (hxne i 2 3 (by decide))]
+        refine ⟨?_, ?_⟩
+        · show x i 0 + x i 1 + x i 2 + x i 3 = 0; exact hsum i
+        · show x i 0 ^ 2 + x i 1 ^ 2 + x i 2 ^ 2 + x i 3 ^ 2 = 10; exact hsq i
+      have hline : ∀ j : Fin 4, collinear (Q (x i 0)) (Q (x i 1)) (Q (x i j)) := by
+        intro j
+        fin_cases j
+        · unfold collinear; ring
+        · unfold collinear; ring
+        · exact hcd.1
+        · exact hcd.2
+      intro p hp
+      change p ∈ (Finset.univ.image (x i)).image Q at hp
+      rw [Finset.mem_image] at hp
+      obtain ⟨w, hw, rfl⟩ := hp
+      rw [Finset.mem_image] at hw
+      obtain ⟨j, _, rfl⟩ := hw
+      exact hline j
+  -- Distinct indices give distinct lines (abscissa-sets are injective under `Q`).
+  have hLinj : Function.Injective L := by
+    intro i j hij
+    apply hset_inj
+    change (Finset.univ.image (x i)).image Q = (Finset.univ.image (x j)).image Q at hij
+    exact Finset.image_injective hQinj hij
+  -- Point count `≤ 4·k`.
+  have hcardP : P.points.card ≤ 4 * k := by
+    change (Finset.univ.biUnion L).card ≤ 4 * k
+    calc (Finset.univ.biUnion L).card
+        ≤ ∑ i : Fin k, (L i).card := Finset.card_biUnion_le
+      _ = ∑ _i : Fin k, 4 := Finset.sum_congr rfl (fun i _ => hLcard i)
+      _ = 4 * k := by
+          rw [Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul]; ring
+  exact ⟨P, hcardP, hno5, fourPointLineCount_ge_of_injOn_family P k L hmem hLcard hcol hLinj⟩
+
 end Erdos101OQ04
