@@ -232,5 +232,26 @@
       "description": "AllOffsetsPrime {2} n gives twin primes; the $k$-tuple conjecture generalizes the twin prime conjecture"
     }
   ],
+  "references": [
+    {
+      "authors": "Paul Erdős, Ronald L. Graham",
+      "title": "Old and New Problems and Results in Combinatorial Number Theory",
+      "year": "1980",
+      "venue": "Monographies de L'Enseignement Mathématique 28, Geneva",
+      "note": "Proves the limsup version of this problem — a set of prime-generating offsets with positive upper density relative to π(x) — assuming the prime k-tuple conjecture; the liminf version formalized here remains open."
+    },
+    {
+      "authors": "G. H. Hardy, J. E. Littlewood",
+      "title": "Some problems of 'Partitio Numerorum' III: On the expression of a number as a sum of primes",
+      "year": "1923",
+      "venue": "Acta Mathematica, 44, 1–70",
+      "note": "Source of the prime k-tuple (Hardy–Littlewood) conjecture on the asymptotic density of prime constellations, the hypothesis under which the limsup form of Erdős #428 is known."
+    },
+    {
+      "title": "Erdős Problem #428 (erdosproblems.com) — prime offsets with positive density",
+      "url": "https://www.erdosproblems.com/428",
+      "note": "Source problem (OPEN, liminf version): is there A ⊆ ℕ with liminf |A∩[1,x]|/π(x) > 0 such that infinitely often every offset a∈A gives n−a prime?"
+    }
+  ],
   "sorries": 0
 }
