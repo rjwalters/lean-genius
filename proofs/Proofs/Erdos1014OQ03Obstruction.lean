@@ -122,6 +122,24 @@ theorem increment_ratio_not_tendsto_one :
   have : (-1 : ℝ) = 1 := tendsto_nhds_unique tendsto_const_nhds heven
   norm_num at this
 
+/-- **The base sequence's normalized increment vanishes.**  For the witness `u l = l`
+the normalized consecutive increment is `(u(l+1) − u(l))/u(l) = 1/l`, which tends to
+`0`.  Read alongside `increment_ratio_not_tendsto_one`, this sharpens the obstruction:
+`u` individually has a vanishing *normalized* increment (its jumps are `o(u)`), yet the
+increment *ratio* against the `~`-equivalent `v` still fails to converge.  So even
+`o(R)`-scale agreement of the sequences does not pin down the increment asymptotic —
+the honest increment–ratio bridge, which hypothesizes the consecutive ratio directly,
+is unavoidable.  (The companion statement for `v`, whose oscillating increment is
+`1 − 2(−1)^l` over the diverging `v l = l + (−1)^l`, likewise tends to `0` but requires
+a bounded-numerator-over-divergent-denominator estimate; recorded here as the base
+case.) -/
+theorem u_normalizedIncrement_tendsto_zero :
+    Tendsto (fun l => (u (l + 1) - u l) / u l) atTop (𝓝 0) := by
+  have hEq : (fun l => (u (l + 1) - u l) / u l) = (fun l : ℕ => 1 / (l : ℝ)) := by
+    funext l; rw [u_increment]; simp [u]
+  rw [hEq]
+  exact tendsto_one_div_atTop_nhds_zero_nat
+
 /-- **Increment not determined by the asymptotic class (packaged existential).**
 
 There exist eventually-positive sequences `u, v` that are asymptotically equivalent
