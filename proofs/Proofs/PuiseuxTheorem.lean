@@ -710,6 +710,25 @@ theorem isPuiseux_mul {K : Type*} [NonUnitalNonAssocSemiring K] {f g : HahnSerie
   rw [div_add_div _ _ hn0 hm0, div_eq_div_iff (mul_ne_zero hn0 hm0) (mul_ne_zero hn0 hm0)]
   ring
 
+/-- **Closure under subtraction.** `f - g = f + (-g)`, so subtraction closure is
+immediate from `isPuiseux_add` and `isPuiseux_neg`; it completes the additive-group
+closure family (the missing companion to `isPuiseux_add` / `isPuiseux_neg`). -/
+theorem isPuiseux_sub {K : Type*} [AddCommGroup K] {f g : HahnSeries ℚ K}
+    (hf : IsPuiseuxSeries f) (hg : IsPuiseuxSeries g) :
+    IsPuiseuxSeries (f - g) := by
+  rw [sub_eq_add_neg]
+  exact isPuiseux_add hf (isPuiseux_neg hg)
+
+/-- **Closure under natural-number powers.** `f ^ k` is a Puiseux series, by induction
+from `isPuiseux_mul` and `isPuiseux_one` (`f ^ 0 = 1`). The multiplicative companion of
+`isPuiseux_add`'s iterated form; specializes the subring's `pow_mem` to a standalone,
+instance-light lemma. -/
+theorem isPuiseux_pow {K : Type*} [Semiring K] {f : HahnSeries ℚ K}
+    (hf : IsPuiseuxSeries f) (k : ℕ) : IsPuiseuxSeries (f ^ k) := by
+  induction k with
+  | zero => rw [pow_zero]; exact isPuiseux_one
+  | succ k ih => rw [pow_succ]; exact isPuiseux_mul ih hf
+
 /-- **The Puiseux series form a subring of `HahnSeries ℚ K`.**
 
 Bundling the five closure facts above, `{f : HahnSeries ℚ K | IsPuiseuxSeries f}`
