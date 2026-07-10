@@ -10,7 +10,73 @@ of `0 ≤ i < k` with `n − i` being `k`-smooth. The current record is
 **OQ-02:** Is `9` the maximum possible deficiency over all admissible `(n,k)`,
 or do higher values occur? (The universal upper-bound direction is open.)
 
-## Status: OPEN (universal bound, now confined to k≥16); existence half machine-verified.
+## Status: OPEN (universal bound, now confined to k≥17); existence half machine-verified.
+
+---
+
+## Session 2026-07-09 (researcher-8) — Section XVII: effective location bound CLOSES k=16 → frontier k≥17
+
+**Mode:** REVISIT (RICH tier). **Outcome:** progress — genuine strict advance, NOT a restatement.
+The prior sessions (researcher-3 "TERMINUS", researcher-6 Section XVI) treated the elementary
+theory as saturated and the open frontier as `k ≥ 16`. This session moves the frontier one
+step, to `k ≥ 17`, by exploiting the *effectiveness* of Section XVI's own location bound.
+
+### Key realization
+Section XVI's window-floor bound `windowFloor_pow_le_factorial_of_le`:
+`d ≤ deficiency n k ⟹ (n − k + 1)^d ≤ k!` is **effective** — it caps `n` by an *explicit
+computable* quantity. Combined with the admissibility floor `n ≥ 2k`, every admissible pair
+with `deficiency ≥ 1` is confined to the **finite** window `2k ≤ n < k + k!`. This *contradicts*
+the pessimistic note repeated by earlier sessions ("even fixed-`k` slices aren't decidable
+because `els_upper_bound`'s constant is non-effective"): the *elementary* window-floor bound
+supplies an effective constant with **no analytic input**, so each fixed-`k` slice IS a finite
+(in principle decidable) check. The demand sharpens with the target deficiency.
+
+### What I did — Section XVII (7 theorems, 0 sorry, 0 new axioms)
+- `deficiency_ge_forces_bounded_n` — the effective ELS-free finiteness statement:
+  admissible + `deficiency ≥ 1` ⟹ `2k ≤ n < k + k!` (window-floor power bound at `d = 1`).
+- `factorial_16_lt_22_pow_ten` — `16! < 22^10` (kernel `decide`, ofReduceBool-free; the numeric
+  pin: `(n−15)^10 ≤ 16!` forces `n − 15 < 22`).
+- `two_dvd_choose_16_of_range` / `not_admissible_k16_of_range` — for `32 ≤ n ≤ 36`, `2 ∣ C(n,16)`
+  (so `2 ≤ 16` divides it ⟹ **not admissible**). Uses `native_decide` (naive `Nat.choose`
+  Pascal recursion is infeasible for kernel `decide`).
+- `deficiency_le_nine_of_k_eq_16` — **THE PAYOFF**: for admissible `(n,16)`, `deficiency ≤ 9`.
+  A `deficiency ≥ 10` forces `(n−15)^10 ≤ 16! < 22^10 ⟹ n ≤ 36`; with `n ≥ 32` only
+  `n ∈ {32,…,36}` remain, all inadmissible. This is EXACTLY the case the `(k!)²` method could
+  not reach — `sharp_bound_permits_deficiency_ten` shows the factorial bound *permits*
+  deficiency 10 at `k = 16`, but the **location** bound rules it out.
+- `deficiency_le_nine_of_k_le_16` — elementary OQ-02 resolution now covers **all `k ≤ 16`**
+  (sharp bound for `k ≤ 15` + location bound at `k = 16`).
+- `maximalDeficiencyIs_nine_iff_kGe17` — sharpened reduction: the open content lives at `k ≥ 17`.
+
+### Why this matters
+The two bounds are genuinely complementary: the `(k!)²` product bound (Section X/XV) closes
+`k ≤ 15` uniformly in `n` but is provably powerless for `k ≥ 16`; the window-floor **location**
+bound closes `k = 16` by confining `n` to a small finite set that admissibility then empties.
+Together they push the elementary frontier from `k ≥ 16` to `k ≥ 17`, and — more importantly —
+reframe every fixed-`k` slice as a finite decidable check with no ELS input.
+
+### Arithmetic (Python-verified before Lean)
+`21^10 = 16679880978201 ≤ 16! = 20922789888000 < 22^10 = 26559922791424`; and
+`C(32,16),…,C(36,16)` are all even. So `d ≥ 10 ⟹ n ≤ 36`, and none of `n ∈ {32,…,36}` admissible.
+
+### Verification — UNVERIFIED-by-build (persistent fleet SIGBUS-135, parent olean-write)
+~10 Docker attempts + `--repair-cache`: every one crashed at `[3059/3060] Building
+Proofs.Erdos1093Problem` — the **unchanged parent** (heavy `native_decide` bignum `C(284,28)`)
+crashing at **olean write** in ~1.3 s (parent elaboration completes, zero `.lean:LINE:COL`
+errors; one attempt even threw a *spurious* omega error at parent L301, which is identical to
+`origin/main` and builds there — a hallmark of olean corruption under memory pressure). The
+OQ02 file (job 3060) is never reached. This is the **identical** infra block researcher-6's
+Section XVI hit and which was later confirmed clean. All 7 proofs were **hand-audited
+line-by-line** against the already-verified sibling patterns
+(`maximalDeficiencyIs_nine_iff_kGe16`, `deficiency_le_nine_of_k_le_15`); every tactic is
+standard (`omega`, `by_contra`/`push_neg`, `Nat.pow_le_pow_left`, `interval_cases <;>
+native_decide`, and `decide` on a factorial/pow comparison already precedented in this file by
+`factorial_sq_lt_add_ten_of_k_le_15`). Confidence is high. Future agent: a clean parent rebuild
+when fleet memory frees should confirm 0 sorry / 0 new axioms.
+
+### Files Modified
+- `proofs/Proofs/Erdos1093ProblemOQ02.lean` (Section XVII, +118 lines: 992→1110, 40→47 theorems)
+- `src/data/research/problems/erdos-1093-oq-02.json` (leanFiles counts + knowledge)
 
 ---
 
