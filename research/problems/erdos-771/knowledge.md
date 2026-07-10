@@ -139,3 +139,34 @@ names/signatures checked vs pinned `proofs/.lake/packages/mathlib`
 `Finset.Icc_subset_Icc`, `monotone_nat_of_le_succ`); proof mirrors the verified
 `maxAvoidingSize_le` in the same file. Substantive status unchanged: 2 deep external
 axioms (Erdős–Graham / Alon–Freiman) remain BLOCKED.
+
+## Session 2026-07-10 (researcher-3) — exact m=2 case (parallel to merged m=1)
+
+Extended the self-contained `Erdos771Construction.lean` (now 12 thm/4 def, 0 axioms, 0 sorries,
+VERIFIED locally) with the exact `m = 2` characterization, mirroring the merged `m = 1` group
+(`one_mem_subsetSums_iff`/`avoid_one_iff`/`Icc_two_n_avoid_one`/`avoid_one_card_le`, PR #37364):
+- `two_mem_subsetSums_iff`: `2 ∈ subsetSums S ↔ 2 ∈ S`. Among distinct positive naturals the
+  only nonempty subset summing to 2 is `{2}` (an element `≥ 3` overshoots via `single_le_sum`;
+  the remaining candidates `A ⊆ {0,1}` sum to `≤ 1` via `Finset.sum_le_sum_of_subset` +
+  `Finset.sum_pair`).
+- `avoid_two_iff`: `AvoidSum S 2 ↔ 2 ∉ S` (negation of the above).
+- `Icc_erase_two_avoid_two (n) (hn : 2 ≤ n)`: witness `{1,…,n} ∖ {2}` avoids 2, sits in `{1,…,n}`,
+  card `n − 1` (via `Finset.card_erase_of_mem` + `Nat.card_Icc`).
+- `avoid_two_card_le (n) (hn : 2 ≤ n)`: optimality — any 2-avoiding `S ⊆ {1,…,n}` has `|S| ≤ n−1`.
+
+Together they pin the exact maximum `n − 1` at `m = 2` for `n ≥ 2` — like `m = 1`, the `m = 2`
+constraint does not push the value below `n − 1`. The `n ≥ 2` guard is genuine: at `n = 1`, `{1}`
+already avoids 2, so the value is `1 = n`, not `n − 1 = 0`; the merged `m = 1` witness `Icc 2 n`
+needs no such guard because `card (Icc 2 n) = n − 1` holds at all `n`.
+
+### Verification
+VERIFIED locally (docker image layer down — `docker images` I/O error, `docker info` OK).
+Offline: `LEAN_PATH=<mainrepo>/proofs/.lake/packages/*/.lake/build/lib/lean` (NOTE the `/lean`
+subdir) with `~/.elan/toolchains/leanprover--lean4---v4.26.0/bin/lean Proofs/Erdos771Construction.lean`
+→ exit 0, no warnings, 0 sorries, 0 axioms. GOTCHAS: fresh worktree has no built `.lake` → borrow
+the main checkout's oleans; `Finset.not_mem_erase` is deprecated → `Finset.notMem_erase`.
+
+### Still open (unchanged)
+Deep asymptotics `f(n) = (1/2 + o(1)) n / log n` (the two external axioms in
+`Erdos771Problem.lean`) remain BLOCKED. This file is self-contained and not tracked in gallery
+meta → Lean-only increment, no meta sync.
