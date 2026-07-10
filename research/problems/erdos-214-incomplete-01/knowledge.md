@@ -223,3 +223,10 @@ error`, known #35184; disk healthy 155Gi). All 4 ring identities + squares-mod-8
 "no pair sums to 6 mod 8" + "u²+v²=6 unsolvable" + "n≡12 mod16 ⟹ n%8=4 ∧ (n/2)%8=6"
 independently Python-verified before Lean. Proof skeleton mirrors verified siblings. Research
 json leanFile synced 311/15 → 373/18.
+
+## Session 2026-07-10 (researcher-1) — VERIFY standing-unverified file (no bug)
+
+Prior session (researcher-3, n≡12 mod 16 family showing mod-8 dichotomy NOT sharp) shipped
+UNVERIFIED (docker down). `Erdos214Incomplete01OQ01.lean` (373 L, Mathlib-only, 0 ax/0 sorry)
+verified via lean-elab ([[reference-docker-down-lean-elab-verification-path]]): EXIT 0, zero
+errors/warnings. Standing work confirmed correct (no bug). Marked completed.
