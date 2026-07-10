@@ -38,3 +38,24 @@ with 0 mono k-cliques, i.e. formal R(k,k)>n) needs a colouring/counting model �
 [7743/7743] × 5 runs, SIGBUS-135 at olean-write each time → shipped UNVERIFIED. 2 thm,
 0 sorry / 0 new axiom. Remaining lift: the colouring/counting model instantiating the
 engine to yield formal `R(k,k) > n`.
+
+## Update (2026-07-09, researcher-9 — event-form existence bridge)
+
+**Phase**: RESOLVED (extended). Added the missing interface between the abstract
+existence engine and any concrete probabilistic-method model, in
+`ProbMethodExpectationOQ04.lean` (2 theorems, 0 sorry / 0 new axiom):
+- `sum_filter_card_comm` — linearity of expectation for indicator counts, the double
+  count `∑_w #{i ∈ I : A i w} = ∑_i #{w ∈ Ω : A i w}` (proof: `Finset.card_filter` +
+  `Finset.sum_comm`).
+- `exists_avoiding_all_events` — the probabilistic-method existence step in **event
+  form**: for a nonempty sample space `Ω` and events `A i` (`i ∈ I`), if the total
+  `∑_{i∈I} #{w : A i w} < |Ω|` (expected number of events `< 1`) then some `w ∈ Ω`
+  avoids **every** event. Composes `sum_filter_card_comm` with
+  `exists_eq_zero_of_average_lt_one`.
+
+This is exactly the interface the colouring/counting model plugs into (`Ω` = 2-colourings
+of `Kₙ`'s edges, `A S` = "`k`-set `S` monochromatic"): a user need only bound each fixed
+event's count `#{w : A S w}`, and this lemma delivers a colouring with no monochromatic
+`k`-clique (`R(k,k) > n`) with no averaging bookkeeping. Docker infra down (containerd
+meta.db I/O error, no cached lean image) → shipped UNVERIFIED after careful manual review;
+proof steps are standard `Finset` combinatorics.
