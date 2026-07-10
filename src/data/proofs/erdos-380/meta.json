@@ -200,5 +200,28 @@
       "description": "PNT governs the distribution of primes that constrain bad interval structure. The Erdős-Graham lower bound $B(x) > x^{1-o(1)}$ and the GPF-square asymptotics both rely on prime density estimates from PNT"
     }
   ],
+  "references": [
+    {
+      "title": "Old and New Problems and Results in Combinatorial Number Theory",
+      "author": "Paul Erdős and Ronald L. Graham",
+      "year": "1980",
+      "venue": "Monographies de L'Enseignement Mathématique 28, Université de Genève",
+      "description": "The monograph posing this problem and establishing the lower bound B(x) > x^{1−o(1)} for the count of integers lying in a 'bad' interval."
+    },
+    {
+      "title": "Introduction to Analytic and Probabilistic Number Theory",
+      "author": "Gérald Tenenbaum",
+      "year": "2015",
+      "venue": "Graduate Studies in Mathematics 163, American Mathematical Society (3rd ed.)",
+      "description": "Standard reference for the distribution of the greatest prime factor P(n) and of integers with P(n)² | n, the arithmetic functions governing the conjectured asymptotic B(x) ~ #{n ≤ x : P(n)² | n}."
+    },
+    {
+      "title": "Erdős Problem #380",
+      "author": "Thomas F. Bloom (ed.)",
+      "year": "2024",
+      "venue": "erdosproblems.com/380",
+      "description": "The catalogued entry (OPEN), stating the bad-interval definition, the conjecture B(x) ~ #{n ≤ x : P(n)² | n}, and the Erdős–Graham (1980) lower bound."
+    }
+  ],
   "sorries": 0
 }
