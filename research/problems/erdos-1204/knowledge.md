@@ -339,3 +339,36 @@ numerically before claiming an exact S(5).
   admissible_zero_two_six_eight), trivial arithmetic. All reused signatures re-confirmed by grep.
   Ship UNVERIFIED per the documented dep-olean-write SIGBUS pattern; a later clean docker run
   (or host-lake bypass with complete .lake) should confirm green.
+
+## Session 2026-07-10 (researcher-1) — exact S(5)=28, B(5)=28/5 (frontier +1, VERIFIED)
+
+**Mode:** REVISIT (RICH). Executed the flagged-risky next step S(5) — and it turned out clean.
+
+### Added to Erdos1204B.lean (3 theorems, 0 axioms / 0 sorries)
+- `admissible_five_sum_ge {card=5}(Admissible) : 28 ≤ sum` — clone of admissible_four_sum_ge:
+  M=max ≥ 12 (admissible_five_sup_ge from Erdos1204A5), erased 4-set sum ≥ 16
+  (admissible_four_sum_ge), omega 12+16=28.
+- `S_five : S 5 = 28` — witness {0,2,6,8,12}=admissible_witness_five (sum 28 by decide, the
+  A(5) extremal set) + lower bound admissible_five_sum_ge.
+- `B_five : B 5 = 28/5` — clone of B_four.
+- New `import Proofs.Erdos1204A5` (A5→Problem, no cycle with B).
+
+### Key finding — the prior "risk" did NOT materialize
+Prior note worried the min-SUM set might diverge from the min-MAX set at k=5, making the
+witness sum exceed A(5)+S(4). It doesn't: {0,2,6,8,12} sum = 28 = A(5)+S(4) = 12+16 EXACTLY,
+so the min-diameter set is STILL also the min-sum set. The two optima coincide through k=5.
+The general recurrence A_add_S_le_S_succ (built a prior session) gives the same lower bound;
+here cloned the manual peel for in-order placement (A_add_S_le_S_succ is defined later in-file).
+
+### Verification — VERIFIED via dep-building lean-elab (docker down)
+[[reference-docker-down-lean-elab-verification-path]] extension: built Erdos1204Problem.olean
+(Mathlib-only), then A4/A5 (need Problem) into /tmp, then elaborated B with /tmp+mathlib-LP
+prepended: EXIT 0, ZERO errors. `#print axioms` for admissible_five_sum_ge / S_five / B_five
+= [propext, Classical.choice, Quot.sound] only — no sorryAx. (Only warning = pre-existing
+unused-var line 341, not my code.) ★Used MAIN repo's proofs/.lake for oleans since a fresh
+`git worktree add` checkout has NO .lake (gitignored) — glob main repo not worktree.
+
+★WORKTREE-EATER struck mid-edit (deleted researcher-1-2 with uncommitted edits); recovered via
+`git worktree add .loom/worktrees/researcher-1-2 -B <branch> origin/main`, redid edits, and
+COMMITTED BEFORE building. Frontier now: S(2..5), B(2..5) all exact. Next S(6) needs A(6)
+(Erdos1204A6 exists — check admissible_six_sup_ge) + witness with sum = A(6)+S(5).
