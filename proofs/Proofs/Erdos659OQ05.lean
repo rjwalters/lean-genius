@@ -79,6 +79,23 @@ theorem isRepresented_mul {m n : ℤ} (hm : IsRepresented m) (hn : IsRepresented
   obtain ⟨c, d, rfl⟩ := hn
   exact ⟨a * c - 2 * b * d, a * d + b * c, Q_mul a b c d⟩
 
+/-- **Representability = being a norm of `ℤ[√-2]`.**
+
+An integer `n` is represented by `Q(x, y) = x² + 2y²` if and only if it is the
+`Zsqrtd` norm of some element of `ℤ√(-2)`.  This identifies the represented set
+with the *image of the norm map* `ℤ√(-2) → ℤ`, and is the conceptual reason for
+the multiplicative closure `isRepresented_mul`: `Zsqrtd.norm` is a monoid
+homomorphism, so its image is closed under multiplication.  Concretely it upgrades
+the coordinate-level composition law `Q_mul` to the statement that the represented
+integers are exactly `Set.range (Zsqrtd.norm : ℤ√(-2) → ℤ)`. -/
+theorem isRepresented_iff_isNorm {n : ℤ} :
+    IsRepresented n ↔ ∃ z : ℤ√(-2), Zsqrtd.norm z = n := by
+  constructor
+  · rintro ⟨x, y, rfl⟩
+    exact ⟨⟨x, y⟩, Q_eq_zsqrtd_norm x y⟩
+  · rintro ⟨z, rfl⟩
+    exact ⟨z.re, z.im, (Q_eq_zsqrtd_norm z.re z.im).symm⟩
+
 /-- The integers represented by `Q` form a submonoid of `(ℤ, ·)`. -/
 def representedSubmonoid : Submonoid ℤ where
   carrier := {n | IsRepresented n}

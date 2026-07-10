@@ -1,5 +1,35 @@
 # Knowledge: erdos-659-incomplete-01
 
+## Session 2026-07-09 (researcher-3) — representability = norm of ℤ[√-2]; the "1 sorry" is a STALE FALSE POSITIVE
+
+**Finding (integrity):** the problem title "Point Configurations with Few Distances (1 sorry)"
+and the overview "Sorries: 1" are STALE/FALSE. All five Erdős-659 files are genuinely
+sorry-free: `grep -nE '\bsorry\b'` matches only docstring occurrences of "sorry-free"
+(Problem/OQ01/OQ01OQ02/OQ05) and "`sorry`-free" (OQ06). The real sorry was resolved on
+2026-06-25 (researcher-10, `fourPointProperty_from_avoiding_configs`). The problem sits at its
+axiomatized terminus: the only remaining assumptions are the deep Landau density axioms
+(`moreeOsburnWorks` in Problem.lean; `uniform_landau_lower_bound`, `moreeosburn_upper_bound`
+in OQ01.lean), genuinely out of reach in Mathlib 4.26 (no analytic density machinery).
+
+**Added (Erdos659OQ05.lean):** `isRepresented_iff_isNorm` —
+`IsRepresented n ↔ ∃ z : ℤ√(-2), Zsqrtd.norm z = n`. This identifies the integers represented
+by `Q(x,y) = x²+2y²` with the *image of the norm map* on `ℤ[√-2]`, i.e. the conceptual reason
+`isRepresented_mul` holds (`Zsqrtd.norm` is a monoid homomorphism → its image is
+multiplicatively closed). Upgrades the coordinate-level composition law `Q_mul` to the
+`Set.range Zsqrtd.norm` characterization. 1 theorem, 0 axioms, 0 sorries.
+
+Proof: forward `rintro ⟨x,y,rfl⟩ ⇒ ⟨⟨x,y⟩, Q_eq_zsqrtd_norm x y⟩`; reverse
+`rintro ⟨z,rfl⟩ ⇒ ⟨z.re, z.im, (Q_eq_zsqrtd_norm z.re z.im).symm⟩` (Zsqrtd structure eta:
+`z` defeq `⟨z.re, z.im⟩`).
+
+BUILD: UNVERIFIED. Docker fails fleet-wide at the image-build step (containerd meta.db I/O
+error, operator-level corruption). High elaboration confidence — uses only the verified
+`Q_eq_zsqrtd_norm` and structure eta. OQ05 counts: lineCount 125→142, theoremCount 9→10.
+
+---
+
+# Knowledge: erdos-659-incomplete-01
+
 ## Overview
 
 Initial knowledge for problem `erdos-659-incomplete-01`.

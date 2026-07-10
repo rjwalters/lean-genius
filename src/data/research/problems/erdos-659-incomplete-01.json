@@ -1,7 +1,7 @@
 {
   "slug": "erdos-659-incomplete-01",
   "title": "Erdős #659: Point Configurations with Few Distances (1 sorry)",
-  "phase": "NEW",
+  "phase": "ACT",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -29,15 +29,17 @@
     }
   },
   "knowledge": {
-    "progressSummary": "UPDATE (researcher-5, 2026-07-08): extended the multiplicative-structure section of the norm form x²+2y² with three verified closure lemmas: sq_representable (every perfect square n²=n²+2·0² is representable), representable_pow (powers mᵏ of a representable m stay representable — induction from representable_mul + one_representable), and two_pow_representable (every 2ᵏ is representable). The last makes precise the claim already asserted in the representable_mul docstring ('every power of 2 is representable') but not previously proved. All 0-axiom / 0-sorry, docker-build verified (3058 jobs, Mathlib v4.26.0). The Landau axiom moreeOsburnWorks and the isConfiguration True-placeholders are untouched (out of scope). COMPLETION: dangling sorry resolved (file now 0-sorry, 1-axiom, compiles clean after fixing 5 floating doc-comments). Added verified positive-definiteness lemmas for x²+2y². Main result erdos_659 remains axiomatized on moreeOsburnWorks (Landau theorem, not in Mathlib).",
+    "progressSummary": "AT AXIOMATIZED TERMINUS. All 5 Erdos659 files sorry-free (the 'incomplete-01/1 sorry' title is a stale false positive — grep matches only docstring 'sorry-free'; real sorry resolved 2026-06-25). Remaining assumptions = deep Landau density axioms, out of reach in Mathlib 4.26. researcher-3 (2026-07-09) added isRepresented_iff_isNorm to Erdos659OQ05.lean: represented integers = norm image of ℤ[√-2] (the conceptual source of multiplicative closure). 1 theorem, 0 axioms, 0 sorries. UNVERIFIED-by-build (docker containerd meta.db I/O corruption fleet-wide); high elaboration confidence (rintro + existing Q_eq_zsqrtd_norm, structure eta on Zsqrtd).",
     "builtItems": [
       "latticeDistSq_symm / latticeDistSq_nonneg / latticeDistSq_eq_zero_iff in Erdos659Problem.lean (positive-definiteness of x²+2y²)",
       "Verified fourPointProperty_from_avoiding_configs (0 sorries) with explicit lower-bound hypothesis",
-      "sq_representable / representable_pow / two_pow_representable: closure of the x²+2y² representable set under squares and powers; completes the 'every power of 2 is representable' claim from the representable_mul docstring."
+      "sq_representable / representable_pow / two_pow_representable: closure of the x²+2y² representable set under squares and powers; completes the 'every power of 2 is representable' claim from the representable_mul docstring.",
+      "isRepresented_iff_isNorm (researcher-3, 2026-07-09) in Erdos659OQ05.lean: IsRepresented n ↔ ∃ z:ℤ√(-2), Zsqrtd.norm z = n — identifies represented integers with the norm image of ℤ[√-2] (conceptual reason for isRepresented_mul: norm is a monoid hom)."
     ],
     "insights": [
       "The original fourPointProperty_from_avoiding_configs was false under the product/Chebyshev metric on ℝ×ℝ: unit-square corners (0,0),(1,0),(0,1),(1,1) are mutually equidistant (sup-distance 1), so distinctDistances=1 while avoiding every named 2-distance config. A geometric lower bound (2 ≤ distinctDistances on 4-subsets) is required and now explicit.",
-      "The defining form x²+2y² is positive-definite over ℤ (latticeDistSq_eq_zero_iff), so distinct lattice points have positive squared distance — verified independently of the deep axiom."
+      "The defining form x²+2y² is positive-definite over ℤ (latticeDistSq_eq_zero_iff), so distinct lattice points have positive squared distance — verified independently of the deep axiom.",
+      "The 'incomplete-01 (1 sorry)' label is STALE/FALSE: all 5 Erdos659 files (Problem/OQ01/OQ01OQ02/OQ05/OQ06) are genuinely sorry-free (grep 'sorry' matches only docstring 'sorry-free'). The real sorry was resolved 2026-06-25 (researcher-10). Remaining assumptions are deep Landau density axioms (moreeOsburnWorks, uniform_landau_lower_bound, moreeosburn_upper_bound) — out of reach in Mathlib."
     ],
     "mathlibGaps": [
       "Landau (1908) asymptotic count of integers representable as x²+2y² (~N/√log N) — not in Mathlib 4.26; blocks eliminating moreeOsburnWorks"
