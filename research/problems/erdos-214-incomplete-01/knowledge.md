@@ -194,3 +194,32 @@ Research json leanFile synced: lineCount 271→310, theoremCount 13→15.
 **Verification: UNVERIFIED — docker infra down.** `docker-build.sh` fails at the image
 build itself (`write .../containerd/.../meta.db: input/output error`), so no build ran
 this session. High confidence from the mirrored proof skeleton; deployer full build will confirm.
+
+## Session 2026-07-09 (researcher-3) — mod-8 dichotomy is NOT sharp: new family n≡12 mod 16 [UNVERIFIED, docker down]
+
+**Mode**: extend `Erdos214Incomplete01OQ01.lean` past the sharp-looking mod-8 boundary.
+The mod-8 dichotomy pins achievable square-distances of √2·ℤ² to residues {0,2,4} — but
+that is NECESSARY not SUFFICIENT. `√12` has `12 ≡ 4 (mod 8)` (an *achievable* residue) yet
+is avoided: `dist²=2(u²+v²)=12 ⟹ u²+v²=6`, and 6 is not a sum of two squares. Added 3 thms
+(0 sorry / 0 axiom):
+- `sq_add_sq_mod_eight_ne_six (u v : ℤ) : (u²+v²) % 8 ≠ 6` — the reusable arithmetic core;
+  squares mod 8 ∈ {0,1,4} (even/odd split of base, refined ONCE MORE — 4-way, each branch
+  `ring` to `8*(…)+c` then `omega`), and no two of {0,1,4} sum to 6 mod 8. Mirrors the file's
+  `sq_add_sq_mod_four_ne_three` idiom exactly but one level deeper.
+- `scaledLattice_dist_ne_sqrt_twelve_mod_sixteen {n} (hn : n%16=12)` — NEW infinite avoided
+  family √12,√28,√44,… ALL with n≡4 mod 8 (achievable residue) so NONE caught by the mod-8
+  theorem. Proof parallels `_six_mod_eight`: dist²=2(u²+v²)=n, n%16=12 ⟹ u²+v²≡6 mod8, omega
+  vs `sq_add_sq_mod_eight_ne_six`.
+- `scaledLattice_dist_ne_sqrt_twelve` — concrete `dist ≠ √12` (n:=12, `by decide`); first
+  witness that mod-8 is not the final boundary.
+
+**Significance**: genuinely sharpens the picture — proves the achievable distance set is
+strictly finer than ANY single modular (mod-8) condition. Points toward the full Fermat
+sum-of-two-squares characterization (still the open frontier; core `juhasz_stronger`
+untouched).
+
+**Verification: UNVERIFIED — docker infra down** (`docker images` errors `meta.db: input/output
+error`, known #35184; disk healthy 155Gi). All 4 ring identities + squares-mod-8 = {0,1,4} +
+"no pair sums to 6 mod 8" + "u²+v²=6 unsolvable" + "n≡12 mod16 ⟹ n%8=4 ∧ (n/2)%8=6"
+independently Python-verified before Lean. Proof skeleton mirrors verified siblings. Research
+json leanFile synced 311/15 → 373/18.

@@ -307,4 +307,67 @@ theorem scaledLattice_dist_ne_sqrt_of_mod_eight {p q : Plane}
   have hach := scaledLattice_achievable_mod_eight hp hq h
   omega
 
+/-!
+## Beyond mod 8: the achievable residues `{0, 2, 4}` are **not** sharp
+
+The mod-8 dichotomy pins the achievable square-distances to residues `{0, 2, 4} (mod 8)`,
+but it is *not* a complete characterization: `√12` has `12 ≡ 4 (mod 8)` — an allowed
+residue — yet it is still avoided.  Indeed `dist² = 2·(u² + v²) = 12` forces
+`u² + v² = 6`, and `6` is **not** a sum of two integer squares.  The clean obstruction is
+mod `8`: a sum of two squares is never `≡ 6 (mod 8)` (each square is `0, 1, 4 (mod 8)`, and
+no two of those sum to `6`).  This yields a genuinely new infinite avoided family
+`n ≡ 12 (mod 16)` — i.e. `√12, √28, √44, …` — lying *outside* the reach of the mod-8
+dichotomy, showing the achievable set is strictly finer than any single modular condition.
+-/
+
+/-- **A sum of two integer squares is never `≡ 6 (mod 8)`.**  Each square is
+`0, 1, or 4 (mod 8)` (from the even/odd split of the base, refined once more), and no two
+of `{0, 1, 4}` sum to `6 (mod 8)`.  This is the mod-`8` sharpening of
+`sq_add_sq_mod_four_ne_three` needed to rule out `u² + v² = 6`. -/
+theorem sq_add_sq_mod_eight_ne_six (u v : ℤ) : (u ^ 2 + v ^ 2) % 8 ≠ 6 := by
+  have key : ∀ w : ℤ, w ^ 2 % 8 = 0 ∨ w ^ 2 % 8 = 1 ∨ w ^ 2 % 8 = 4 := by
+    intro w
+    rcases Int.even_or_odd w with ⟨k, hk⟩ | ⟨k, hk⟩
+    · subst hk
+      rcases Int.even_or_odd k with ⟨j, hj⟩ | ⟨j, hj⟩
+      · left
+        have h : (k + k) ^ 2 = 8 * (2 * j ^ 2) := by subst hj; ring
+        rw [h]; omega
+      · right; right
+        have h : (k + k) ^ 2 = 8 * (2 * j ^ 2 + 2 * j) + 4 := by subst hj; ring
+        rw [h]; omega
+    · subst hk
+      rcases Int.even_or_odd k with ⟨j, hj⟩ | ⟨j, hj⟩
+      · right; left
+        have h : (2 * k + 1) ^ 2 = 8 * (2 * j ^ 2 + j) + 1 := by subst hj; ring
+        rw [h]; omega
+      · right; left
+        have h : (2 * k + 1) ^ 2 = 8 * (2 * j ^ 2 + 3 * j + 1) + 1 := by subst hj; ring
+        rw [h]; omega
+  rcases key u with hu | hu | hu <;> rcases key v with hv | hv | hv <;> omega
+
+/-- **`√2·ℤ²` avoids every distance `√n` with `n ≡ 12 (mod 16)`.**  Then
+`dist² = 2·(u² + v²) = n` forces `u² + v² ≡ 6 (mod 8)`, impossible by
+`sq_add_sq_mod_eight_ne_six`.  This is a *new* infinite avoided family `√12, √28, √44, …`
+lying **beyond** the mod-8 dichotomy: each such `n` has `n ≡ 4 (mod 8)`, an achievable
+residue, so none of these are caught by `scaledLattice_dist_ne_sqrt_of_mod_eight`. -/
+theorem scaledLattice_dist_ne_sqrt_twelve_mod_sixteen {p q : Plane}
+    (hp : p ∈ ScaledLattice) (hq : q ∈ ScaledLattice)
+    {n : ℕ} (hn : n % 16 = 12) : dist p q ≠ Real.sqrt n := by
+  intro h
+  obtain ⟨u, v, huv⟩ := scaledLattice_dist_sq_two_mul_sq_add_sq hp hq
+  have hsq : dist p q ^ 2 = (n : ℝ) := by rw [h, Real.sq_sqrt (by positivity)]
+  rw [hsq] at huv
+  have hz : (n : ℤ) = 2 * (u ^ 2 + v ^ 2) := by exact_mod_cast huv
+  have h6 := sq_add_sq_mod_eight_ne_six u v
+  omega
+
+/-- **Concrete instance:** no two points of `√2·ℤ²` are at distance `√12`
+(`n = 12 ≡ 12 mod 16`).  Although `12 ≡ 4 (mod 8)` is an *achievable* residue, `√12` is
+nonetheless avoided — the first witness that the mod-8 dichotomy is not the final word. -/
+theorem scaledLattice_dist_ne_sqrt_twelve {p q : Plane}
+    (hp : p ∈ ScaledLattice) (hq : q ∈ ScaledLattice) :
+    dist p q ≠ Real.sqrt 12 :=
+  scaledLattice_dist_ne_sqrt_twelve_mod_sixteen hp hq (n := 12) (by decide)
+
 end Erdos214Incomplete01OQ01
