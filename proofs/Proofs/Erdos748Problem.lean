@@ -549,6 +549,43 @@ theorem two_family_bound_gt_upperHalf (n : ℕ) (hn : 3 ≤ n) :
     Nat.pow_lt_pow_right (by norm_num) hcard
   omega
 
+/--
+**The two-family bound also dominates the single *odd-family* bound.**
+Symmetric companion of `two_family_bound_ge_upperHalf`: the right-hand side of
+`two_family_lower_bound`, `2^{|O|} + 2^{|U|} − 2^{|O ∩ U|}`, is always at least
+`2^{|O|}` — the value coming from the odd family alone. Here `O ∩ U ⊆ U`, so
+`2^{|O ∩ U|} ≤ 2^{|U|}` and the surplus `2^{|U|} − 2^{|O ∩ U|}` is nonnegative.
+Together with `two_family_bound_ge_upperHalf` this shows the two-family count
+never loses to *either* single family. -/
+theorem two_family_bound_ge_oddFamily (n : ℕ) :
+    2 ^ ((Finset.range (n + 1)).filter (fun k => k % 2 = 1)).card
+      + 2 ^ (Finset.Icc (n / 2 + 1) n).card
+      - 2 ^ (((Finset.range (n + 1)).filter (fun k => k % 2 = 1))
+              ∩ Finset.Icc (n / 2 + 1) n).card
+    ≥ 2 ^ ((Finset.range (n + 1)).filter (fun k => k % 2 = 1)).card := by
+  have hsub : (((Finset.range (n + 1)).filter (fun k => k % 2 = 1))
+                ∩ Finset.Icc (n / 2 + 1) n).card
+              ≤ (Finset.Icc (n / 2 + 1) n).card :=
+    Finset.card_le_card Finset.inter_subset_right
+  have hpow : 2 ^ (((Finset.range (n + 1)).filter (fun k => k % 2 = 1))
+                ∩ Finset.Icc (n / 2 + 1) n).card
+              ≤ 2 ^ (Finset.Icc (n / 2 + 1) n).card :=
+    Nat.pow_le_pow_right (by norm_num) hsub
+  omega
+
+/--
+**Odd-family lower bound:** `f(n) ≥ 2^{|O|}`, where `O` is the set of odd numbers
+in `[1,n]`. Every subset of `O` is sum-free (odd + odd is even, so no `a = b + c`
+among odds), so the `2^{|O|}` subsets of `O` are all counted by `f n`. This is
+the "type 2" dominant family of Part VII, isolated as a standalone bound: it is
+obtained from `two_family_lower_bound` by discarding the upper-half contribution
+via `two_family_bound_ge_oddFamily`. Since `|O| = ⌈n/2⌉`, it gives the same
+`2^{⌈n/2⌉}` exponent as `sharp_lower_bound` but through the *odd* construction
+rather than the upper half — a genuinely distinct witnessing family. -/
+theorem oddFamily_lower_bound (n : ℕ) :
+    f n ≥ 2 ^ ((Finset.range (n + 1)).filter (fun k => k % 2 = 1)).card :=
+  le_trans (two_family_bound_ge_oddFamily n) (two_family_lower_bound n)
+
 /-
 ## Part VII: Structure of Sum-Free Sets
 -/
