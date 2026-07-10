@@ -70,7 +70,8 @@
       "Substituting m = n - 1 turns the balance into the depressed cubic m³ - m = c³, where c = (6d²ln2)^(1/3); the depressed (no quadratic term) form is exactly what makes the centered analysis clean.",
       "The upper bound is not an analytic estimate but an algebraic identity: 3c(m-c) ≤ 1 is equivalent, after clearing the positive factor m² + mc + c², to (m-c)² ≥ 0. The remainder 1/(3c) is therefore sharp for this argument.",
       "The remainder 1/(3c) = O(d^(-2/3)) vanishes as d → ∞, so the constant term is genuinely exactly 1 in the limit — a strict refinement, not merely a smaller constant in an O(1) bound.",
-      "The sharpening is special to k = 3: for general k the centered monomial (n - (k-1)/2)^k does not divide the falling factorial exactly, which is why the sibling general-k entry retains the loose ±(k-1) band."
+      "The sharpening is special to k = 3: for general k the centered monomial (n - (k-1)/2)^k does not divide the falling factorial exactly, which is why the sibling general-k entry retains the loose ±(k-1) band.",
+      "The sharp window has sub-unit width, so it pins the integer threshold. Because c = (6d²ln2)^(1/3) ≥ (6ln2)^(1/3) ≈ 1.61 for every d ≥ 1, the remainder satisfies 1/(3c) ≤ 0.21 < 1: the balance solution n is located to better than a fifth of an integer. This is the practical payoff over the parent's width-2 band c ≤ n ≤ c + 2, which could straddle three consecutive integers — the sharp bound instead predicts a single rounded threshold value."
     ]
   },
   "sections": [
