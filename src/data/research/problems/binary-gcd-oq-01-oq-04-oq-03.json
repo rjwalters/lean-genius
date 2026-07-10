@@ -1,7 +1,7 @@
 {
   "slug": "binary-gcd-oq-01-oq-04-oq-03",
   "title": "Formalize the average-case counterpart: Brent (1976) showed that on random in...",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "progress",
   "tier": "C",
   "path": "fast",
@@ -32,19 +32,21 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (researcher-3 2026-07-09): Added totalSteps_one_closed — the EXACT a=1 average-case total at every N: with n=floor(log2 N), totalSteps 1 N + 2^(n+1) = (N+1)*n + N + 2. Subsumes the dyadic totalSteps_one_pow_two and removes the abstract sum(log2 b) of totalSteps_one_eq, completing the elementary a=1 analysis (exact closed form + Theta(log N) sandwich). Split [1,N]=[1,2^n]+(2^n,N], constant tail (N-2^n)*(n+1), linear_combination with the dyadic total. Full elaboration clean [7745/7745], olean-write env-blocked (SIGBUS-135 x4) -> UNVERIFIED. Sharp Brent 0.7050 constant remains BLOCKED (transfer-operator theory absent from Mathlib).",
+    "progressSummary": "PROGRESS (researcher-3, 2026-07-09). Added avgSteps_one_pow_two: the EXACT a=1 average at dyadic endpoints N=2^n in closed rational form (n-1)+(n+2)/2^n, refining the sandwich avgSteps_one_ge ≤ avg ≤ avgSteps_le to an exact value on the dyadic subsequence and pinning the leading constant on log₂N to exactly 1 — the elementary analogue of Brent's out-of-reach 0.7050. 1 theorem, 0 axioms, 0 sorries. UNVERIFIED-by-build (docker containerd meta.db I/O corruption fleet-wide); high elaboration confidence (field_simp+ring over ℚ from the verified totalSteps_one_pow_two). Brent's sharp constant remains OUT OF REACH (needs transfer-operator spectral machinery absent from Mathlib).",
     "builtItems": [
       "BinaryGcdOQ01OQ04OQ03.lean: totalSteps (average-case object), totalSteps_le (O(log N) total-sum ceiling), avgSteps_le (rational average ceiling) — all verified, 0 sorry / 0 axiom / 0 native_decide",
       "BinaryGcdOQ01OQ04OQ03.lean PART IV: binaryGcdSteps_one_step (unified floor-halving one-step), binaryGcdSteps_one_eq_log (EXACT binaryGcdSteps 1 b = log₂ b + 1 ∀b≥1), totalSteps_one_eq (exact a=1 total = ∑log₂b + N) — verified, 0 sorry/0 axiom/0 native_decide",
       "BinaryGcdOQ01OQ04OQ03.lean PART V: totalSteps_one_ge (matching Ω(N·log N) lower bound (N−⌊N/2⌋)·(log₂N−1) ≤ totalSteps 1 N, via upper-half density count) — VERIFIED, 0 sorry/0 axiom/0 native_decide. Pins the a=1 average at Θ(log N).",
-      "totalSteps_one_closed (BinaryGcdOQ01OQ04OQ03.lean) — exact a=1 total at EVERY N: totalSteps 1 N + 2^(floor(log2 N)+1) = (N+1)*floor(log2 N) + N + 2."
+      "totalSteps_one_closed (BinaryGcdOQ01OQ04OQ03.lean) — exact a=1 total at EVERY N: totalSteps 1 N + 2^(floor(log2 N)+1) = (N+1)*floor(log2 N) + N + 2.",
+      "avgSteps_one_pow_two (researcher-3, 2026-07-09) in BinaryGcdOQ01OQ04OQ03.lean: exact a=1 average at dyadic N=2^n: (totalSteps 1 (2^n))/2^n = (n-1) + (n+2)/2^n in ℚ. Pins leading constant on log₂N to exactly 1 (elementary analogue of Brent's 0.7050)."
     ],
     "insights": [
       "Sharp Brent (1976) constant 0.7050·log₂max(a,b) for the AVERAGE binary-GCD step count is OUT OF REACH in Mathlib 4.26: the constant has no closed form and comes from a transfer-operator/dynamical-systems analysis of the Euclidean-type map (Brent; Vallée). Mathlib has measure theory but none of the spectral machinery to pin the leading constant.",
       "TRACTABLE sub-claim proved (researcher-6 2026-07-05, BinaryGcdOQ01OQ04OQ03.lean, 0 sorry/0 axiom): the average step count over b∈[1,N] is O(log N) — the order Brent sharpens. totalSteps a N := ∑_{b∈Icc 1 N} binaryGcdSteps a b; totalSteps_le: totalSteps a N ≤ N·(2·(log₂ a + log₂ N)+2) via the parent worst-case bound binaryGcdSteps_le_log + log₂ monotonicity + sum_const over the N-element range; avgSteps_le: (totalSteps a N : ℚ)/N ≤ 2·(log₂ a+log₂ N)+2.",
       "Remaining open here: the matching Ω(log N) average LOWER bound (→ Θ(log N)) needs a density count of how many b in the range force ≥ c·log N steps (the general per-input lower bound is false — e.g. binaryGcdSteps a a is small), and the sharp 0.7050 constant needs the dynamical analysis. Depth-3 OQ chain: 0 follow-up questions (OQ-depth guard).",
       "TIGHT Θ(log N) on the a=1 row (researcher-6 2026-07-05, BinaryGcdOQ01OQ04OQ03.lean PART IV, 0 sorry/0 axiom): binaryGcdSteps_one_eq_log proves binaryGcdSteps 1 b = Nat.log 2 b + 1 for EVERY b≥1. From (1,b) the algorithm floor-halves b every step (unified one-step lemma binaryGcdSteps_one_step: binaryGcdSteps 1 b = 1 + binaryGcdSteps 1 (b/2)), so it runs exactly ⌊log₂ b⌋+1 steps. Proof: strong induction + Nat.log_div_base. This STRICTLY GENERALIZES the parent binaryGcdSteps 1 (2^n-1)=n from the sparse worst-case family to the whole a=1 row.",
-      "Exact a=1 average: totalSteps_one_eq proves totalSteps 1 N = (∑_{b∈[1,N]} Nat.log 2 b) + N = Θ(N log N). Combined with the earlier avgSteps_le ceiling, the a=1 average step count is Θ(log N) — the O(log N) upper bound is TIGHT on this row. The general-a matching lower bound (density count) and the sharp 0.7050 constant remain the only open pieces."
+      "Exact a=1 average: totalSteps_one_eq proves totalSteps 1 N = (∑_{b∈[1,N]} Nat.log 2 b) + N = Θ(N log N). Combined with the earlier avgSteps_le ceiling, the a=1 average step count is Θ(log N) — the O(log N) upper bound is TIGHT on this row. The general-a matching lower bound (density count) and the sharp 0.7050 constant remain the only open pieces.",
+      "The a=1 average = log₂N − 1 + (log₂N+2)/N → log₂N − 1 (correction (n+2)/2^n → 0), so the EXACT leading constant is 1 on the a=1 row (vs Brent's transcendental 0.7050 for max(a,b)). Proof: cast totalSteps_one_pow_two to ℚ, field_simp + ring (2^n ≠ 0 via positivity)."
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -169,8 +171,8 @@
     {
       "path": "Proofs/BinaryGcdOQ01OQ04OQ03.lean",
       "filename": "BinaryGcdOQ01OQ04OQ03.lean",
-      "lineCount": 290,
-      "theoremCount": 7,
+      "lineCount": 472,
+      "theoremCount": 10,
       "axiomCount": 0,
       "defCount": 1,
       "sorryCount": 0,

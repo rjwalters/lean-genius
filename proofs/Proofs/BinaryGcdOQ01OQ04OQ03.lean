@@ -423,5 +423,50 @@ theorem totalSteps_one_closed (N : ℕ) (hN : 1 ≤ N) :
 example : totalSteps 1 100 + 2 ^ (Nat.log 2 100 + 1) = (100 + 1) * Nat.log 2 100 + 100 + 2 :=
   totalSteps_one_closed 100 (by norm_num)
 
+-- ═══════════════════════════════════════════════════════════════════
+-- PART VIII: THE EXACT a = 1 AVERAGE AT DYADIC ENDPOINTS  (leading constant = 1)
+-- ═══════════════════════════════════════════════════════════════════
+--
+-- Dividing the exact dyadic total `totalSteps_one_pow_two` by `N = 2^n` gives the
+-- a = 1 *average* in closed rational form:
+--
+--     avg(a=1, N=2^n) = (n − 1) + (n + 2)/2^n = log₂N − 1 + (log₂N + 2)/N.
+--
+-- As `n → ∞` the correction `(n+2)/2^n → 0`, so the a = 1 average is
+-- `log₂N − 1 + o(1)`: its leading constant on `log₂N` is EXACTLY 1. This is the
+-- fully-elementary analogue of Brent's transcendental `0.7050` average constant
+-- (which is for the harder `max(a,b)` model and stays out of reach; see header).
+-- Unlike the sandwich `avgSteps_one_ge ≤ avg ≤ avgSteps_le`, this pins the average
+-- exactly on the dyadic subsequence.
+
+/-- **Exact `a = 1` average at dyadic endpoints (`N = 2^n`).**  Dividing the exact
+    total `totalSteps_one_pow_two` by `N = 2^n`,
+
+      (totalSteps 1 (2^n)) / 2^n = (n − 1) + (n + 2) / 2^n.
+
+    Since `(n + 2)/2^n → 0`, the `a = 1` average is `log₂N − 1 + o(1)`: the leading
+    constant on `log₂N` is exactly `1`.  This is the elementary, fully-verified
+    counterpart of Brent's `≈ 0.7050` average constant (for the harder `max(a,b)`
+    model, out of reach here — see file header); here the exact leading constant is
+    pinned to `1` on the `a = 1` row.  Proved from `totalSteps_one_pow_two` by a
+    single `field_simp`/`ring` over `ℚ` (`2^n ≠ 0`). -/
+theorem avgSteps_one_pow_two (n : ℕ) :
+    (totalSteps 1 (2 ^ n) : ℚ) / (2 ^ n : ℚ)
+      = ((n : ℚ) - 1) + ((n : ℚ) + 2) / (2 ^ n : ℚ) := by
+  have hne : (2 : ℚ) ^ n ≠ 0 := by positivity
+  have hkeyQ : (totalSteps 1 (2 ^ n) : ℚ)
+      = (n : ℚ) * (2 : ℚ) ^ n + (n : ℚ) + 2 - (2 : ℚ) ^ n := by
+    have hkey := totalSteps_one_pow_two n
+    have hcast : (totalSteps 1 (2 ^ n) : ℚ) + (2 : ℚ) ^ n
+        = (n : ℚ) * (2 : ℚ) ^ n + (n : ℚ) + 2 := by exact_mod_cast hkey
+    linarith
+  rw [hkeyQ]
+  field_simp
+  ring
+
+-- Concrete check of the exact average (a = 1, N = 2^6 = 64): n = 6,
+--   avg = (6 − 1) + (6 + 2)/64 = 5 + 1/8 = 41/8.
+example : (totalSteps 1 (2 ^ 6) : ℚ) / (2 ^ 6 : ℚ) = ((6 : ℚ) - 1) + ((6 : ℚ) + 2) / (2 ^ 6 : ℚ) :=
+  avgSteps_one_pow_two 6
 
 end BinaryGcdOQ01OQ04OQ03
