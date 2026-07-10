@@ -216,6 +216,52 @@ theorem scaledLattice_unitDistanceFree : IsUnitDistanceFree ScaledLattice := by
   have hint : (2 * ((a₁ - a₂) ^ 2 + (b₁ - b₂) ^ 2) : ℤ) = 1 := by exact_mod_cast hdist
   omega
 
+/-- **General scaled lattice `c·ℤ²`.** Vertices are `(c·a, c·b)` for integers `a, b`.
+The earlier `ScaledLattice` is the `c = √2` instance (`scaledLattice_eq_gen`). -/
+def ScaledLatticeGen (c : ℝ) : Set Plane :=
+  {p : Plane | ∃ a b : ℤ, p 0 = c * a ∧ p 1 = c * b}
+
+/-- **Every lattice `c·ℤ²` with `c² > 1` is unit-distance-free.**
+
+Two distinct lattice points `(c·a₁, c·b₁)`, `(c·a₂, c·b₂)` are at squared distance
+`c²·m`, where `m = (a₁-a₂)² + (b₁-b₂)²` is a nonnegative integer. A unit distance would
+force `c²·m = 1`; but `m = 0` gives `0 ≠ 1`, and `m ≥ 1` gives `c²·m ≥ c² > 1`, so no
+two points are at distance `1`.
+
+This generalises `scaledLattice_unitDistanceFree` (the `c² = 2` case) to a whole
+one-parameter family of explicit infinite unit-distance-free sets.  The bound `c² > 1`
+is *sufficient but not necessary*: integrality of `m` means only `m` that are sums of
+two squares can occur, so e.g. `c = 1/√3` also works (`1/c² = 3` is not a sum of two
+squares) despite `c² < 1`.  The clean scale-invariant condition captured here is that
+`c` is large enough (`|c| > 1`) that no positive integer multiple of `c²` can equal `1`. -/
+theorem scaledLatticeGen_unitDistanceFree {c : ℝ} (hc : 1 < c ^ 2) :
+    IsUnitDistanceFree (ScaledLatticeGen c) := by
+  rintro p q ⟨a₁, b₁, hp0, hp1⟩ ⟨a₂, b₂, hq0, hq1⟩ _ hdist
+  set m : ℤ := (a₁ - a₂) ^ 2 + (b₁ - b₂) ^ 2 with hm
+  have hX : (p 0 - q 0) ^ 2 + (p 1 - q 1) ^ 2 = c ^ 2 * (m : ℝ) := by
+    rw [hp0, hp1, hq0, hq1, hm]; push_cast; ring
+  rw [dist_sq, hX, Real.sqrt_eq_one] at hdist
+  have hm0 : 0 ≤ m := by rw [hm]; positivity
+  rcases eq_or_lt_of_le hm0 with hm_eq | hm_pos
+  · -- m = 0 : the squared distance is 0, not 1
+    have : (m : ℝ) = 0 := by exact_mod_cast hm_eq.symm
+    rw [this, mul_zero] at hdist
+    exact absurd hdist (by norm_num)
+  · -- m ≥ 1 : squared distance is at least c² > 1
+    have hm1 : (1 : ℝ) ≤ (m : ℝ) := by
+      have : (1 : ℤ) ≤ m := by omega
+      exact_mod_cast this
+    have hc0 : (0 : ℝ) < c ^ 2 := lt_trans one_pos hc
+    have hge : c ^ 2 * 1 ≤ c ^ 2 * (m : ℝ) := mul_le_mul_of_nonneg_left hm1 hc0.le
+    rw [mul_one] at hge
+    linarith
+
+/-- **`ScaledLattice` is the `c = √2` instance of `ScaledLatticeGen`.** Definitional:
+both unfold to `{p | ∃ a b : ℤ, p 0 = √2·a ∧ p 1 = √2·b}`.  In particular
+`scaledLattice_unitDistanceFree` is `scaledLatticeGen_unitDistanceFree` applied at
+`c = √2` (where `c² = 2 > 1`). -/
+theorem scaledLattice_eq_gen : ScaledLattice = ScaledLatticeGen (Real.sqrt 2) := rfl
+
 /-
 ## Part 8: Related Problems
 -/
