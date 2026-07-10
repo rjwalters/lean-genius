@@ -667,20 +667,23 @@ equality iff `HasDistinctProducts A B`. -/
 theorem multiplicativeEnergy_ge (A B : Finset ℕ) :
     A.card * B.card ≤ multiplicativeEnergy A B := by
   classical
-  rw [← Finset.card_product A B]
-  unfold multiplicativeEnergy
-  refine Finset.card_le_card_of_injOn (fun p => ((p.1, p.1), (p.2, p.2))) ?_ ?_
-  · rintro ⟨a, b⟩ hp
-    rw [Finset.mem_product] at hp
-    rw [Finset.mem_filter]
-    refine ⟨?_, rfl⟩
-    rw [Finset.mem_product, Finset.mem_product, Finset.mem_product]
-    exact ⟨⟨hp.1, hp.1⟩, hp.2, hp.2⟩
-  · rintro ⟨a₁, b₁⟩ _ ⟨a₂, b₂⟩ _ h
+  have hinj : Set.InjOn (fun p : ℕ × ℕ => ((p.1, p.1), (p.2, p.2))) ↑(A ×ˢ B) := by
+    intro p _ p' _ h
     simp only [Prod.mk.injEq] at h
-    obtain ⟨⟨ha, _⟩, hb, _⟩ := h
-    rw [Prod.mk.injEq]
-    exact ⟨ha, hb⟩
+    exact Prod.ext_iff.mpr ⟨h.1.1, h.2.1⟩
+  have hsub : (A ×ˢ B).image (fun p : ℕ × ℕ => ((p.1, p.1), (p.2, p.2))) ⊆
+      ((A ×ˢ A) ×ˢ (B ×ˢ B)).filter (fun ((a₁, a₂), (b₁, b₂)) => a₁ * b₁ = a₂ * b₂) := by
+    intro q hq
+    simp only [Finset.mem_image, Finset.mem_product] at hq
+    obtain ⟨⟨a, b⟩, ⟨ha, hb⟩, rfl⟩ := hq
+    refine Finset.mem_filter.mpr ⟨?_, rfl⟩
+    simp only [Finset.mem_product]
+    exact ⟨⟨ha, ha⟩, hb, hb⟩
+  calc A.card * B.card
+      = (A ×ˢ B).card := (Finset.card_product A B).symm
+    _ = ((A ×ˢ B).image (fun p : ℕ × ℕ => ((p.1, p.1), (p.2, p.2)))).card :=
+        (Finset.card_image_of_injOn hinj).symm
+    _ ≤ multiplicativeEnergy A B := Finset.card_le_card hsub
 
 /-
 ## Part VIII: Bounds History
