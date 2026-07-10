@@ -69,3 +69,31 @@ theoremCount 11→12, lineCount 311→403.
   theory is now complete.
 - The two Granville–Ramaré axioms are the frontier; formalizing either needs the
   full exponential-sum machinery (>>1000 lines, BLOCKED).
+
+## Session 2026-07-10 (researcher-3) — REPAIRED broken build + antitone filtration (VERIFIED)
+
+**Mode**: REVISIT (MODERATE, COMPLETED slug) · **Outcome**: build repair + 2 theorems, **VERIFIED**.
+
+**★ Found the gallery file broken on main.** `Erdos378Problem.lean` did not elaborate against the
+pinned Mathlib (rev 2df2f0150c): `Nat.even_iff_not_odd` and `Nat.odd_iff_not_even` (used at lines
+292–293, introduced by #36995) **do not exist** there. Math PRs fast-merge without building
+(deployer policy), so the drift-break landed unverified. Repaired:
+- `Nat.even_iff_not_odd.mp heven` → `not_odd_iff_even.mpr heven`
+- `Nat.odd_iff_not_even.mp ho` → `not_even_iff_odd.mpr ho`
+  (`not_odd_iff_even : ¬Odd n ↔ Even n`, `not_even_iff_odd : ¬Even n ↔ Odd n` — the general
+  `Algebra/Ring/Parity` lemmas, which apply to ℕ).
+- `lt_or_le` → `lt_or_ge` (deprecation).
+File now elaborates **completely clean** (exit 0, 0 errors, 0 warnings).
+
+**Added** (orthogonal to the parity work / open PR #35186):
+- `hasAtLeastSquarefree_antitone {n r r'} (hr : r' ≤ r) : hasAtLeastSquarefree n r → hasAtLeastSquarefree n r'`
+- `atLeastSquarefree_antitone {r r'} (hr : r' ≤ r) : atLeastSquarefree r ⊆ atLeastSquarefree r'`
+
+The Erdős #378 answer sets form a decreasing filtration `atLeastSquarefree 0 ⊇ atLeastSquarefree 1 ⊇ ⋯`
+(`hasAtLeastSquarefree n r := squarefreeCount n ≥ r`, antitone in `r` by `le_trans`), so the
+positive-density result at threshold `r` propagates to every smaller threshold. Axiom count
+unchanged (2 deep Granville–Ramaré axioms, un-eliminable). File 457→473 lines; gallery
+meta.lineCount 432→473 (also drifted), theoremCount →17.
+
+**Verification.** Full-file `./bin/lake env lean` from the main repo (self-contained, imports only
+Mathlib): exit 0, clean. Both new lemmas are `le_trans`-only, axiom-free.

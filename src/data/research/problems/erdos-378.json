@@ -39,13 +39,16 @@
       "erdos_378 / erdos_378_answer: packaged full resolution combining existence and positivity for all r.",
       "atLeastSquarefree_eq_compl: atLeastSquarefree r is the set-complement of {n | squarefreeCount n < r} (elementary, 0 sorries).",
       "Definitions squarefreeCount, hasAtLeastSquarefree, exactlySquarefree, atLeastSquarefree, eta, HasDensity/NaturalDensity scaffolding (8 definitions) framing the density formulation.",
-      "Two named axioms granville_ramare_density_exists and complement_density isolating the deep analytic input; gallery entry src/data/proofs/erdos-378 (meta.json + annotations.json)."
+      "Two named axioms granville_ramare_density_exists and complement_density isolating the deep analytic input; gallery entry src/data/proofs/erdos-378 (meta.json + annotations.json).",
+      "REPAIRED broken build (Mathlib drift): Nat.even_iff_not_odd/Nat.odd_iff_not_even (nonexistent in pinned Mathlib rev 2df2f0150c) → not_odd_iff_even.mpr/not_even_iff_odd.mpr; lt_or_le → lt_or_ge deprecation. File now elaborates CLEAN (0 errors 0 warnings). The break was introduced by #36995 and fast-merged unbuilt (math PRs skip build).",
+      "hasAtLeastSquarefree_antitone / atLeastSquarefree_antitone : the Erdős #378 answer sets form a decreasing filtration atLeastSquarefree 0 ⊇ atLeastSquarefree 1 ⊇ ⋯ (antitone in threshold r via le_trans). [VERIFIED axiom-free]"
     ],
     "insights": [
       "The whole resolution is complementation: 'at least r squarefree' is the complement of 'fewer than r squarefree', so its density is 1 − d, and positivity is exactly the d < 1 clause of the Granville–Ramaré tail estimate.",
       "The deep content is purely the two density facts of Granville–Ramaré (1996); once granted, the Erdős #378 answer follows by elementary, fully-checked Lean arguments — so axiomatizing those two inputs is the honest and efficient architecture.",
       "Positivity is the substantive 'yes': existence of a density is the easy half; that the density is strictly positive (the excluded tail does not have full density) is what makes the answer affirmative.",
-      "Mathlib lacks the Granville–Ramaré machinery, so these inputs cannot currently be discharged; the entry is correctly badged 'axiomatized' (axiomCount 2) rather than 'verified'."
+      "Mathlib lacks the Granville–Ramaré machinery, so these inputs cannot currently be discharged; the entry is correctly badged 'axiomatized' (axiomCount 2) rather than 'verified'.",
+      "Erdos378Problem.lean was BROKEN on main against the pinned Mathlib: Nat.even_iff_not_odd and Nat.odd_iff_not_even do not exist there (the general not_odd_iff_even/not_even_iff_odd in Algebra/Ring/Parity are the correct names). Math PRs fast-merge WITHOUT building (deployer policy), so drift-breaking edits land unverified — always full-file lake env lean before adding to a gallery file."
     ],
     "mathlibGaps": [
       "Granville–Ramaré (1996) density results for squarefree-binomial counts are not in Mathlib; discharging granville_ramare_density_exists and complement_density would require formalizing substantial analytic number theory."

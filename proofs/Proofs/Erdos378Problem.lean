@@ -279,7 +279,7 @@ theorem odd_squarefreeCount_iff {n : ℕ} :
     Odd (squarefreeCount n) ↔ (Even n ∧ 2 ≤ n ∧ Squarefree (n.choose (n / 2))) := by
   rcases Nat.even_or_odd n with he | ho
   · -- even `n`: split on the degenerate `n = 0` versus the genuine `n ≥ 2` rows
-    rcases lt_or_le n 2 with hlt | hge
+    rcases lt_or_ge n 2 with hlt | hge
     · have hn0 : n = 0 := by have := Nat.even_iff.mp he; omega
       subst hn0
       have h0 : squarefreeCount 0 = 0 := by simp [squarefreeCount]
@@ -289,8 +289,8 @@ theorem odd_squarefreeCount_iff {n : ℕ} :
       exact ⟨fun h => ⟨he, hge, h⟩, fun h => h.2.2⟩
   · -- odd `n`: the count is even, and the right side fails because `n` is not even
     have heven : Even (squarefreeCount n) := squarefreeCount_even_of_odd ho
-    exact ⟨fun h => absurd h (Nat.even_iff_not_odd.mp heven),
-           fun h => absurd h.1 (Nat.odd_iff_not_even.mp ho)⟩
+    exact ⟨fun h => absurd h (not_odd_iff_even.mpr heven),
+           fun h => absurd h.1 (not_even_iff_odd.mpr ho)⟩
 
 /-
 ## Part IV: Natural density
@@ -414,6 +414,22 @@ theorem atLeastSquarefree_eq_compl (r : ℕ) :
   ext n
   simp only [atLeastSquarefree, hasAtLeastSquarefree, Set.mem_setOf_eq,
     Set.mem_compl_iff, not_lt]
+
+/-- **`hasAtLeastSquarefree` is antitone in the threshold `r`.**  If `n` has at least `r`
+values of `k` with `C(n,k)` squarefree, then it has at least `r'` for every `r' ≤ r`: the
+requirement only weakens as the threshold drops (`r' ≤ r ≤ squarefreeCount n`). -/
+theorem hasAtLeastSquarefree_antitone {n r r' : ℕ} (hr : r' ≤ r)
+    (h : hasAtLeastSquarefree n r) : hasAtLeastSquarefree n r' :=
+  le_trans hr h
+
+/-- **The `atLeastSquarefree r` sets form a decreasing filtration.**  A larger threshold `r`
+carves out a smaller set: `atLeastSquarefree r ⊆ atLeastSquarefree r'` whenever `r' ≤ r`.  So
+the Erdős #378 answer sets are nested `atLeastSquarefree 0 ⊇ atLeastSquarefree 1 ⊇ ⋯`, and the
+positive-density statement `erdos_378_density_positive` at threshold `r` propagates down to every
+smaller threshold `r' ≤ r`. -/
+theorem atLeastSquarefree_antitone {r r' : ℕ} (hr : r' ≤ r) :
+    atLeastSquarefree r ⊆ atLeastSquarefree r' :=
+  fun _ hn => hasAtLeastSquarefree_antitone hr hn
 
 /-- **Main Theorem, Part 1 — the density exists.**
 
