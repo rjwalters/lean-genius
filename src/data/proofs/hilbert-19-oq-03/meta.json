@@ -49,7 +49,7 @@
       }
     ],
     "originalContributions": [
-      "Reduced axiom count from 8 to 2 by proving 6 axioms with trivially satisfiable conclusions",
+      "Reduced axiom count by proving several former axioms whose conclusions were trivially satisfiable (4 substantive axioms remain)",
       "Fully nonlinear operator framework with ellipticity constants (λ, Λ)",
       "Pucci extremal operators in 1D with proved bounds (M⁻ ≤ M⁺, superadditivity)",
       "Pucci maximal operator proved uniformly elliptic (all sandwich bounds)",
@@ -61,10 +61,10 @@
     ],
     "dateAdded": "2026-03-11",
     "mathlib_version": "4.26.0",
-    "axioms": 2,
+    "axioms": 4,
     "axiomCount": 4,
     "lineCount": 454,
-    "assumptions": "4 axioms (Evans-Krylov theorem, Schauder estimates, comparison principle, ABP estimate). No sorries.",
+    "assumptions": "4 axioms (Evans-Krylov theorem, Schauder bootstrap, viscosity comparison principle, second-derivative test for touching functions). No sorries.",
     "theoremCount": 16,
     "definitionCount": 12
   },
@@ -123,7 +123,7 @@
     {
       "id": "classical-viscosity",
       "title": "Classical Solutions Are Viscosity Solutions",
-      "summary": "States `classical_implies_viscosity_sub`: if $u \\in C^2$ satisfies $F(u''(x)) \\geq 0$ pointwise and $F$ is monotone, then $u$ is a viscosity subsolution. The proof sketch uses the second derivative test for touching functions ($\\varphi''(x_0) \\geq u''(x_0)$) combined with monotonicity. Contains the file's only `sorry`.",
+      "summary": "States `classical_implies_viscosity_sub`: if $u \\in C^2$ satisfies $F(u''(x)) \\geq 0$ pointwise and $F$ is monotone, then $u$ is a viscosity subsolution. The proof sketch uses the second derivative test for touching functions ($\\varphi''(x_0) \\geq u''(x_0)$) combined with monotonicity. The second-derivative test itself is axiomatized (`touching_above_second_deriv`), so this theorem is proved outright — the file has no sorries.",
       "startLine": 224,
       "endLine": 240,
       "mathContext": "States `classical_implies_viscosity_sub`: if $u \\in C^2$ satisfies $F(u''(x)) \\geq 0$ pointwise and $F$ is monotone, then $u$ is a viscosity subsolution. The proof sketch uses the second derivative test for touching functions ($\\varphi''(x_0) \\geq u''(x_0)$) combined with monotonicity."
@@ -186,8 +186,8 @@
     }
   ],
   "conclusion": {
-    "summary": "Complete formalization of the fully nonlinear extension of Hilbert's 19th problem. The Evans-Krylov theorem (1982) resolves the regularity question affirmatively for convex/concave $F$: viscosity solutions of uniformly elliptic $F(D^2 u) = 0$ are $C^\\infty$ when $F$ is smooth. The formalization covers the full chain from operator definitions through Pucci extremal operators, viscosity solutions, and the regularity hierarchy. Reduced from 8 axioms to 2 by proving 6 axioms whose conclusions were trivially satisfiable (existence of constants, True). Remaining 2 axioms (viscosity comparison principle, Schauder bootstrap) have substantive conclusions requiring deep PDE theory. 1 sorry (second derivative test).",
-    "implications": "**Theoretical Significance**: The Evans-Krylov regularity theory opens the fully nonlinear PDE world to the same smoothness guarantees that De Giorgi-Nash-Moser provides for quasilinear equations. The remaining sorry (classical_implies_viscosity_sub) requires formalizing the second derivative test for touching functions — a natural Mathlib target.\n\nThe 2 remaining axioms encode results requiring doubling-of-variables technique (comparison principle) and Schauder estimates (bootstrap) — both beyond current Mathlib capabilities. Six former axioms were proved trivially because their formal conclusions (∃ C > 0, ∃ α ∈ (0,1], etc.) did not capture the full mathematical content.",
+    "summary": "Formal scaffold for the fully nonlinear extension of Hilbert's 19th problem, with the deep PDE results axiomatized. The Evans-Krylov theorem (1982) resolves the regularity question affirmatively for convex/concave $F$: viscosity solutions of uniformly elliptic $F(D^2 u) = 0$ are $C^\\infty$ when $F$ is smooth. The formalization covers the full chain from operator definitions through Pucci extremal operators, viscosity solutions, and the regularity hierarchy. Several former axioms with trivially satisfiable conclusions (existence of constants, True) were proved, leaving 4 substantive axioms: the Evans-Krylov theorem itself, the Schauder bootstrap, the viscosity comparison principle, and the second-derivative test for touching functions. The main theorem `hilbert19_fully_nonlinear` is derived from these axioms (it is not an independent proof of Evans-Krylov). 0 sorries.",
+    "implications": "**Theoretical Significance**: The Evans-Krylov regularity theory opens the fully nonlinear PDE world to the same smoothness guarantees that De Giorgi-Nash-Moser provides for quasilinear equations. This file formalizes the definitions and the logical regularity chain, but the core analytic results remain axiomatized.\n\nThe 4 remaining axioms encode the Evans-Krylov theorem (Ishii-Lions method), the Schauder bootstrap, the viscosity comparison principle (doubling-of-variables technique), and the second-derivative test for touching functions — all beyond current Mathlib capabilities. Formalizing the second-derivative test (`touching_above_second_deriv`) is the most tractable and a natural Mathlib target.",
     "openQuestions": [
       "Can Evans-Krylov be proved for broader classes beyond convex/concave?",
       "What is the optimal Holder exponent α in Evans-Krylov?",
