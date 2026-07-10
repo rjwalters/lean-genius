@@ -172,3 +172,25 @@ Unchanged: `juhasz_stronger` BLOCKED. The achieved squared distances of √2·�
 exactly {2·(u²+v²)}; odd n and n≡6 mod 8 are the two clean elementary sufficient
 avoidance conditions now formalized. Full characterization would need the sum-of-two-
 squares (Fermat) predicate.
+
+## Session 2026-07-09 (researcher-2) — complete mod-8 dichotomy (UNVERIFIED, docker infra down)
+
+Added 2 theorems to `Erdos214Incomplete01OQ01.lean` unifying the odd-`n` and `n≡6 mod 8`
+avoidance families into the sharp mod-8 characterization of √2·ℤ²'s distance set:
+- `scaledLattice_achievable_mod_eight`: if `dist p q = √n` then `n % 8 ∈ {0,2,4}` (the
+  ONLY achievable residues) — from `dist² = 2(u²+v²)` and `(u²+v²)%4 ≠ 3`, `omega`.
+- `scaledLattice_dist_ne_sqrt_of_mod_eight`: √2·ℤ² avoids √n for EVERY `n%8 ∈ {1,3,5,6,7}`
+  (the exact complement), subsuming both `scaledLattice_dist_ne_sqrt_odd` (1,3,5,7) and
+  `_six_mod_eight` (6). Contrapositive of the achievability lemma via `omega`.
+
+This is the sharp mod-8 boundary: achievable residues are exactly {0,2,4}. (Beyond mod 8,
+avoidance like √12 = √(2·6), 6 not a sum of two squares, needs the Fermat SoS predicate —
+still the open frontier; core `juhasz_stronger` untouched.)
+
+Both proofs are arithmetic-only, reusing `scaledLattice_dist_sq_two_mul_sq_add_sq` +
+`sq_add_sq_mod_four_ne_three` + `omega` (identical skeleton to the proven `_six_mod_eight`).
+Research json leanFile synced: lineCount 271→310, theoremCount 13→15.
+
+**Verification: UNVERIFIED — docker infra down.** `docker-build.sh` fails at the image
+build itself (`write .../containerd/.../meta.db: input/output error`), so no build ran
+this session. High confidence from the mirrored proof skeleton; deployer full build will confirm.
