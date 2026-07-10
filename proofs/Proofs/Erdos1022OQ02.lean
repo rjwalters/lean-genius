@@ -595,4 +595,38 @@ theorem admissibleCoeff_ge_two_pow_sub (hV : 0 < Fintype.card V) (t : ℕ)
   have hk := admissibleCoeff_ge_two_pow_of_card hV (t - Fintype.card V - 1)
   rwa [show Fintype.card V + 1 + (t - Fintype.card V - 1) = t from by omega] at hk
 
+-- ══════════════════════════════════════════════════════════════════
+-- § 8: Monotonicity of the admissible coefficient in `t`
+-- ══════════════════════════════════════════════════════════════════
+
+/-
+  §§ 5-7 pin the *rate* of growth (doubling per step, exponential brackets).
+  What underlies all of that — and is worth recording on its own, since OQ-02
+  asks about the growth *rate* of `c_t` — is the bare qualitative fact that the
+  coefficient never decreases as the minimum set size `t` grows.  Both the
+  threshold `2^{t-1}` and its truncated quotient `⌊2^{t-1}/|V|⌋` are monotone
+  in `t`, unconditionally (no positivity or ground-set hypothesis needed): a
+  larger `t` admits a sparseness coefficient at least as large.  This is the
+  monotone envelope the quantitative doubling bound `admissibleCoeff_ge_two_mul`
+  refines.
+-/
+
+/-- **The first-moment threshold is monotone in `t`.**  `2^{a-1} ≤ 2^{b-1}`
+    whenever `a ≤ b`; the exponential threshold never decreases as the minimum
+    set size grows. -/
+theorem firstMomentThreshold_mono {a b : ℕ} (hab : a ≤ b) :
+    firstMomentThreshold a ≤ firstMomentThreshold b := by
+  unfold firstMomentThreshold
+  exact Nat.pow_le_pow_right (by norm_num) (Nat.sub_le_sub_right hab 1)
+
+/-- **The admissible coefficient is monotone in `t`.**  For a fixed ground set,
+    `c(a) = ⌊2^{a-1}/|V|⌋ ≤ ⌊2^{b-1}/|V|⌋ = c(b)` whenever `a ≤ b`: truncated
+    division by the fixed divisor `|V|` preserves the monotonicity of the
+    threshold.  This is the unconditional monotone backbone of the quantitative
+    growth bounds in §§ 5-7 — no positivity or `1 ≤ a` hypothesis is required. -/
+theorem admissibleCoeff_mono {a b : ℕ} (hab : a ≤ b) :
+    firstMomentThreshold a / Fintype.card V
+      ≤ firstMomentThreshold b / Fintype.card V :=
+  Nat.div_le_div_right (firstMomentThreshold_mono hab)
+
 end Erdos1022OQ02
