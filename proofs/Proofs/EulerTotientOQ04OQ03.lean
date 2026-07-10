@@ -3042,4 +3042,80 @@ theorem reversal_gap_primeTriple_ge {m : ℕ} (hm : 1 ≤ m)
   calc 2 ^ (k + 2) = 4 * 2 ^ k := by rw [pow_add]; ring
     _ ≤ (2 * m + 2) * 2 ^ k := by gcongr; omega
 
+-- ----------------------------------------------------------------------------
+-- Quantitative sharpening: a divergent FORWARD margin of the fiveTimes family
+-- ----------------------------------------------------------------------------
+-- `mem_ForwardSet_fiveTimes` shows the family `n = 5·(4m+1)·2^(k+1)` is forward
+-- (`φ(D(n)) < φ(n)`) whenever `4m+1` and `12m+5 = 3q+2` are prime (`m ≥ 3`).  That
+-- is purely qualitative.  The mirror of `reversal_gap_primeTriple` would be an
+-- EXACT gap, but the forward family lands on `14m+3` WITHOUT assuming it prime, so
+-- `φ(D(n)) = φ(14m+3)·2^k` has no closed form.  What the membership proof already
+-- exploits — the uniform bound `φ(14m+3) ≤ 14m+2` — does, however, give a clean
+-- LOWER bound on the margin:  `φ(n) − φ(D(n)) ≥ (2m−2)·2^k`.  This is the exact
+-- forward analogue of `reversal_gap_primeTriple_ge`: the forward margin is not
+-- merely positive but diverges without bound in both `m` and `k`, using no
+-- factorisation of the landing.
+
+/-- **Divergent forward margin of the fiveTimes family.**  For a seed
+    `a = 5·(4m+1)` with `4m+1` and `12m+5` (`= 3q+2`) both prime (`m ≥ 3`), the
+    forward inequality along `n = 5·(4m+1)·2^(k+1)` has margin at least
+    `(2m−2)·2^k`:  `φ(n) − φ(D(n)) ≥ (2m−2)·2^k`.  This sharpens the qualitative
+    membership `mem_ForwardSet_fiveTimes` (`φ(D(n)) < φ(n)`) to a lower bound that
+    grows without bound in both `m` and `k`.  Like the membership proof it needs
+    only the uniform totient bound `φ(14m+3) ≤ 14m+2` — no factorisation of the
+    landing `14m+3` is required. -/
+theorem forward_gap_fiveTimes_ge {m : ℕ} (hm : 3 ≤ m)
+    (hq : (4 * m + 1).Prime) (hb : (12 * m + 5).Prime) (k : ℕ) :
+    (2 * m - 2) * 2 ^ k ≤
+      Nat.totient (5 * (4 * m + 1) * 2 ^ (k + 1))
+        - Nat.totient (dblIter (5 * (4 * m + 1) * 2 ^ (k + 1))) := by
+  have hcop : Nat.Coprime 5 (4 * m + 1) :=
+    (Nat.coprime_primes (by norm_num) hq).mpr (by omega)
+  -- φ(a) = 16m  (a = 5·(4m+1))
+  have hφa : Nat.totient (5 * (4 * m + 1)) = 16 * m := by
+    rw [Nat.totient_mul hcop, show Nat.totient 5 = 4 from by decide,
+        Nat.totient_prime hq]; omega
+  -- φ(b) = 12m+4  (b = 12m+5 prime)
+  have hφb : Nat.totient (12 * m + 5) = 12 * m + 4 := by
+    rw [Nat.totient_prime hb]; omega
+  have ha_odd : Odd (5 * (4 * m + 1)) := Nat.odd_iff.mpr (by omega)
+  have hb_odd : Odd (12 * m + 5) := Nat.odd_iff.mpr (by omega)
+  have hp2 : Nat.totient (2 ^ (k + 1)) = 2 ^ k := by
+    rw [Nat.totient_prime_pow Nat.prime_two (Nat.succ_pos k)]; simp
+  -- φ(n) = φ(5·(4m+1))·2^k = 16m·2^k
+  have copa : Nat.Coprime (5 * (4 * m + 1)) (2 ^ (k + 1)) :=
+    ((Nat.prime_two.coprime_iff_not_dvd).mpr (by omega)).symm.pow_right (k + 1)
+  have hφn : Nat.totient (5 * (4 * m + 1) * 2 ^ (k + 1)) = 16 * m * 2 ^ k := by
+    rw [Nat.totient_mul copa, hp2, hφa]
+  -- transport: D(n) = (2a − φ(b))·2^k = (14m+3)·2^(k+1)
+  have hstep : 2 * (5 * (4 * m + 1)) - Nat.totient (5 * (4 * m + 1)) = 2 * (12 * m + 5) := by
+    rw [hφa]; omega
+  have hD : dblIter (5 * (4 * m + 1) * 2 ^ (k + 1)) = (14 * m + 3) * 2 ^ (k + 1) := by
+    rw [dblIter_transport ha_odd hb_odd hstep k, hφb,
+        show 2 * (5 * (4 * m + 1)) - (12 * m + 4) = (14 * m + 3) * 2 from by omega]
+    ring
+  -- φ(D(n)) = φ(14m+3)·2^k, with the uniform bound φ(14m+3) ≤ 14m+2
+  have cope : Nat.Coprime (14 * m + 3) (2 ^ (k + 1)) :=
+    ((Nat.prime_two.coprime_iff_not_dvd).mpr (by omega)).symm.pow_right (k + 1)
+  have hφD : Nat.totient (dblIter (5 * (4 * m + 1) * 2 ^ (k + 1)))
+      = Nat.totient (14 * m + 3) * 2 ^ k := by
+    rw [hD, Nat.totient_mul cope, hp2]
+  have hple : Nat.totient (14 * m + 3) ≤ 14 * m + 2 := by
+    have := Nat.totient_lt (14 * m + 3) (by omega); omega
+  rw [hφn, hφD, ← Nat.sub_mul]
+  exact mul_le_mul_right' (by omega) (2 ^ k)
+
+/-- **The forward margin is unbounded below by `2^(k+2)`.**  A direct corollary of
+    `forward_gap_fiveTimes_ge`: since `2m−2 ≥ 4` for `m ≥ 3`, the forward margin
+    `φ(n) − φ(D(n)) ≥ (2m−2)·2^k` is at least `2^(k+2)` along every fiveTimes
+    family, and grows with `m` — so the family is forward by an arbitrarily large
+    amount even at fixed `k`.  This mirrors `reversal_gap_primeTriple_ge`. -/
+theorem forward_gap_fiveTimes_ge_pow {m : ℕ} (hm : 3 ≤ m)
+    (hq : (4 * m + 1).Prime) (hb : (12 * m + 5).Prime) (k : ℕ) :
+    2 ^ (k + 2) ≤ Nat.totient (5 * (4 * m + 1) * 2 ^ (k + 1))
+      - Nat.totient (dblIter (5 * (4 * m + 1) * 2 ^ (k + 1))) := by
+  refine le_trans ?_ (forward_gap_fiveTimes_ge hm hq hb k)
+  calc 2 ^ (k + 2) = 4 * 2 ^ k := by rw [pow_add]; ring
+    _ ≤ (2 * m - 2) * 2 ^ k := by gcongr; omega
+
 end Erdos1064OQ03
