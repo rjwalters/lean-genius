@@ -636,4 +636,74 @@ example : (Nat.log 2 100 : ℚ) - 1 < (totalSteps 1 100 : ℚ) / (100 : ℚ) ∧
     (totalSteps 1 100 : ℚ) / (100 : ℚ) ≤ (Nat.log 2 100 : ℚ) + 1 :=
   avgSteps_one_sandwich 100 (by norm_num)
 
+-- ═══════════════════════════════════════════════════════════════════
+-- PART XI: THE CEILING IS STRICT  ⇒  TWO-SIDED STRICT SANDWICH  (a = 1 row)
+-- ═══════════════════════════════════════════════════════════════════
+--
+-- `avgSteps_one_sandwich` bounds the a = 1 average by `log₂N − 1 < avg ≤ log₂N + 1`,
+-- with a NON-strict ceiling. The ceiling is in fact strict for every `N ≥ 2`: the
+-- summand at `b = 1` is `binaryGcdSteps 1 1 = log₂1 + 1 = 1`, strictly below the
+-- per-term ceiling `log₂N + 1 ≥ 2` (as `log₂N ≥ 1` once `N ≥ 2`). A single strict
+-- summand makes the whole sum strict (`Finset.sum_lt_sum`), so
+--     totalSteps 1 N < N·(log₂N + 1),
+-- and dividing by `N` gives `avg < log₂N + 1`. Together with the floor
+-- `avgSteps_one_gt` this upgrades the headline `avgSteps_one_sandwich` to a genuine
+-- TWO-SIDED STRICT band `log₂N − 1 < avg < log₂N + 1` at every `N ≥ 2`.
+
+/-- **Strict total upper bound (a = 1 row).** For every `N ≥ 2`,
+    `totalSteps 1 N < N · (log₂ N + 1)`. The `b = 1` summand is
+    `binaryGcdSteps 1 1 = 1`, strictly below the per-term ceiling `log₂N + 1 ≥ 2`,
+    so the sum is strict (`Finset.sum_lt_sum`). This is the strict sharpening of
+    `totalSteps_one_le_nat`. -/
+theorem totalSteps_one_lt_nat (N : ℕ) (hN : 2 ≤ N) :
+    totalSteps 1 N < N * (Nat.log 2 N + 1) := by
+  have hlogN : 1 ≤ Nat.log 2 N := Nat.log_pos (by norm_num) hN
+  unfold totalSteps
+  calc ∑ b ∈ Finset.Icc 1 N, binaryGcdSteps 1 b
+      < ∑ _b ∈ Finset.Icc 1 N, (Nat.log 2 N + 1) := by
+        apply Finset.sum_lt_sum
+        · intro b hb
+          rw [Finset.mem_Icc] at hb
+          rw [binaryGcdSteps_one_eq_log b hb.1]
+          have hbN : Nat.log 2 b ≤ Nat.log 2 N := Nat.log_mono_right hb.2
+          omega
+        · refine ⟨1, by rw [Finset.mem_Icc]; omega, ?_⟩
+          rw [binaryGcdSteps_one_eq_log 1 le_rfl, Nat.log_one_right]
+          omega
+    _ = N * (Nat.log 2 N + 1) := by
+        rw [Finset.sum_const, Nat.card_Icc]; simp
+
+/-- **Strict `log₂N + 1` ceiling for the `a = 1` average (every `N ≥ 2`).**
+    `(totalSteps 1 N) / N < log₂ N + 1`. The strict counterpart of `avgSteps_one_le`,
+    obtained from `totalSteps_one_lt_nat` by clearing the denominator `N > 0`. -/
+theorem avgSteps_one_lt (N : ℕ) (hN : 2 ≤ N) :
+    (totalSteps 1 N : ℚ) / (N : ℚ) < (Nat.log 2 N : ℚ) + 1 := by
+  have hNpos : 0 < N := by omega
+  have hNQ : (0 : ℚ) < (N : ℚ) := by exact_mod_cast hNpos
+  rw [div_lt_iff₀ hNQ]
+  have h : (totalSteps 1 N : ℚ) < ((N * (Nat.log 2 N + 1) : ℕ) : ℚ) := by
+    exact_mod_cast totalSteps_one_lt_nat N hN
+  calc (totalSteps 1 N : ℚ)
+      < ((N * (Nat.log 2 N + 1) : ℕ) : ℚ) := h
+    _ = ((Nat.log 2 N : ℚ) + 1) * (N : ℚ) := by push_cast; ring
+
+/-- **Two-sided STRICT `Θ(log N)` sandwich for the `a = 1` average (every `N ≥ 2`).**
+
+      log₂ N − 1  <  (totalSteps 1 N) / N  <  log₂ N + 1.
+
+    Upgrades `avgSteps_one_sandwich` (whose ceiling is non-strict) to a genuinely
+    strict two-sided band: the `a = 1` average lies *strictly inside* the width-2
+    window about `log₂ N` at every `N ≥ 2`. Combines `avgSteps_one_gt` (floor) with
+    `avgSteps_one_lt` (strict ceiling). -/
+theorem avgSteps_one_sandwich_strict (N : ℕ) (hN : 2 ≤ N) :
+    (Nat.log 2 N : ℚ) - 1 < (totalSteps 1 N : ℚ) / (N : ℚ) ∧
+    (totalSteps 1 N : ℚ) / (N : ℚ) < (Nat.log 2 N : ℚ) + 1 :=
+  ⟨avgSteps_one_gt N (by omega), avgSteps_one_lt N hN⟩
+
+-- Concrete check of the strict sandwich (a = 1, N = 100): avg = 29/5 = 5.8,
+--   and log₂100 − 1 = 5 < 5.8 < 7 = log₂100 + 1.
+example : (Nat.log 2 100 : ℚ) - 1 < (totalSteps 1 100 : ℚ) / (100 : ℚ) ∧
+    (totalSteps 1 100 : ℚ) / (100 : ℚ) < (Nat.log 2 100 : ℚ) + 1 :=
+  avgSteps_one_sandwich_strict 100 (by norm_num)
+
 end BinaryGcdOQ01OQ04OQ03
