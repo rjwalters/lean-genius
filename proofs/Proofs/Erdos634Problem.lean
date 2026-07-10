@@ -230,6 +230,19 @@ theorem non_dissectable_form :
   | inl h => exact ⟨1, h⟩
   | inr h => exact ⟨2, h⟩
 
+/-- **Every element of `KnownNonDissectable` is genuinely non-dissectable.**
+This ties the `KnownNonDissectable = {7, 11}` set back to Beeson's two theorems
+(`seven_not_dissectable`, `eleven_not_dissectable`): the set is not merely a label,
+its members really fail to admit a congruent tiling.  Provides a single
+`n ∈ KnownNonDissectable → ¬ IsDissectable n` entry point for downstream use. -/
+theorem knownNonDissectable_not_dissectable :
+    ∀ n ∈ KnownNonDissectable, ¬ IsDissectable n := by
+  intro n hn
+  simp [KnownNonDissectable] at hn
+  cases hn with
+  | inl h => subst h; exact seven_not_dissectable
+  | inr h => subst h; exact eleven_not_dissectable
+
 /-
 ## Part VI: The Conjecture
 
