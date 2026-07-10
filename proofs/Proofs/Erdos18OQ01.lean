@@ -474,4 +474,27 @@ theorem practical_pow {m : ℕ} (hp : IsPractical m) (k : ℕ) : IsPractical (m 
 theorem six_pow_practical (k : ℕ) : IsPractical (6 ^ k) :=
   practical_pow six_practical k
 
+/-! ## Infinitude of practical numbers
+
+The parent's `conjecture_part1` asks whether *infinitely many* practical numbers
+enjoy a doubly-logarithmic bound on `h`; that conditional statement is open.  The
+*unconditional* fact — that there are infinitely many practical numbers at all —
+is elementary: the powers of two `2^k` are all practical (`two_pow_practical`)
+and pairwise distinct, so `k ↦ 2^k` injects `ℕ` into the practical numbers. -/
+
+/-- **There are infinitely many practical numbers.**  The set `{m | IsPractical m}`
+    (the parent's `Erdos18.PracticalNumbers`) is infinite, witnessed by the
+    injective family `k ↦ 2^k` of powers of two, each practical by
+    `two_pow_practical`. -/
+theorem practical_infinite : {m : ℕ | IsPractical m}.Infinite :=
+  Set.infinite_of_injective_forall_mem
+    (Nat.pow_right_injective (le_refl 2))
+    (fun k => two_pow_practical k)
+
+/-- **Practical numbers are unbounded.**  For every bound `N` there is a practical
+    number exceeding `N`, realised by the power of two `2^(N+1)`. -/
+theorem practical_unbounded (N : ℕ) : ∃ m, N < m ∧ IsPractical m :=
+  ⟨2 ^ (N + 1), (Nat.lt_succ_self N).trans Nat.lt_two_pow_self,
+    two_pow_practical (N + 1)⟩
+
 end Erdos18OQ01
