@@ -4,10 +4,11 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-07-09T19:11:41-07:00
-**Iteration**: 1
+**Iteration**: 2
 
 ## Current Focus
-Initial problem understanding. Read problem.md and gather context.
+Both ends of the Frobenius commutant range `n ≤ dim C(M) ≤ n²` are now pinned:
+nonderogatory → `n` (sibling OQ02OQ02), scalar `c•I` → `n²` (this iter).
 
 ## Active Approach
 None yet.
