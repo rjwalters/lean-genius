@@ -1,4 +1,27 @@
 {
+  "references":   [
+    {
+      "authors": "R. A. Horn and C. R. Johnson",
+      "title": "Matrix Analysis",
+      "year": "2013",
+      "venue": "Cambridge University Press, 2nd ed.",
+      "note": "Standard reference for the conjugate transpose (Hermitian adjoint) M^H, Hermitian and unitary matrices, and the determinant identities det(M^H) = conj(det M) and |det U| = 1 for unitary U."
+    },
+    {
+      "authors": "P. R. Halmos",
+      "title": "Finite-Dimensional Vector Spaces",
+      "year": "1958",
+      "venue": "Van Nostrand, 2nd ed.",
+      "note": "Coordinate-free development of the adjoint operator and its determinant, the operator-theoretic form of det(M^H) = conj(det M)."
+    },
+    {
+      "authors": "S. Axler",
+      "title": "Linear Algebra Done Right",
+      "year": "2015",
+      "venue": "Springer, 3rd ed.",
+      "note": "Modern account of adjoints, self-adjoint (Hermitian) and unitary operators over ℂ, the setting R = StarRing specializes to."
+    }
+  ],
   "id": "det-conjugate-transpose-oq-01",
   "title": "Determinant of the Conjugate Transpose: det Mᴴ = star (det M), with the Hermitian and Unitary Corollaries",
   "slug": "det-conjugate-transpose-oq-01",

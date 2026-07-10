@@ -1,4 +1,27 @@
 {
+  "references":   [
+    {
+      "authors": "R. P. Stanley",
+      "title": "Enumerative Combinatorics, Volume 1",
+      "year": "2011",
+      "venue": "Cambridge University Press, 2nd ed.",
+      "note": "Standard reference for compositions of an integer: the number of compositions of n into k positive parts is C(n-1, k-1) (stars and bars), summing to 2^{n-1} total."
+    },
+    {
+      "authors": "L. Comtet",
+      "title": "Advanced Combinatorics: The Art of Finite and Infinite Expansions",
+      "year": "1974",
+      "venue": "D. Reidel Publishing Company",
+      "note": "Classical enumeration of compositions and their refinement by number of parts."
+    },
+    {
+      "authors": "P. A. MacMahon",
+      "title": "Combinatory Analysis, Volume 1",
+      "year": "1915",
+      "venue": "Cambridge University Press",
+      "note": "Foundational treatise on the theory of compositions and partitions of integers."
+    }
+  ],
   "id": "composition-parts-choose-oq-01",
   "title": "Composition Parts OQ-01: Compositions of n into k Parts Number C(n−1, k−1)",
   "slug": "composition-parts-choose-oq-01",
