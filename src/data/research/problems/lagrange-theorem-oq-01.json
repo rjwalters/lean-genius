@@ -29,16 +29,18 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: All three Sylow theorems + partial converse + Cauchy theorem. 0 sorries, 0 axioms.",
+    "progressSummary": "COMPLETED+extended: Sylow theorems + normality criterion + capstone (order-pq non-simplicity). 0 sorries, 0 axioms. Math argument verified against local Mathlib (EXIT=0).",
     "builtItems": [
       "LagrangeTheoremOQ01.lean: ~140 lines, 11 theorems, 0 sorries, 0 axioms",
-      "Parts I-V: Lagrange, Sylow existence, conjugacy, counting, partial converse + Cauchy"
+      "Parts I-V: Lagrange, Sylow existence, conjugacy, counting, partial converse + Cauchy",
+      "LagrangeTheoremOQ01.lean: +2 thms — card_sylow_q_of_card_eq_pq (|Q|=q via factorization(pq)=1) and sylow_q_normal_of_card_eq_pq (order-pq groups have normal Sylow q-subgroup)"
     ],
     "insights": [
       "Sylow theorems are fully in Mathlib — file wraps existing API in gallery format",
       "Key Mathlib lemmas: Sylow.nonempty, Sylow.card_eq_multiplicity, Sylow.conj_eq",
       "Sylow.card_sylow_dvd_index, Sylow.card_sylow_modEq_one, exists_prime_orderOf_dvd_card",
-      "Partial converse: Sylow.exists_subgroup_card_pow_prime gives p^k | |G| → ∃ H of order p^k"
+      "Partial converse: Sylow.exists_subgroup_card_pow_prime gives p^k | |G| → ∃ H of order p^k",
+      "Capstone application: n_q ≡ 1 mod q + n_q | [G:Q]=p forces n_q=1 for |G|=pq (p<q), so the Sylow q-subgroup is normal — groups of order pq are not simple. Uses only the file's own Sylow wrappers."
     ],
     "mathlibGaps": [],
     "nextSteps": []

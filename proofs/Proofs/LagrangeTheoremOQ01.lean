@@ -230,6 +230,64 @@ theorem exists_subgroup_card_prime (p : ℕ) [hp : Fact p.Prime] (h : p ∣ card
   obtain ⟨H, hH⟩ := partial_converse_lagrange p 1 (by rwa [pow_one])
   exact ⟨H, by rwa [pow_one] at hH⟩
 
+/-
+═══════════════════════════════════════════════════════════════════════════════
+PART VI: A CAPSTONE APPLICATION — GROUPS OF ORDER p·q ARE NOT SIMPLE
+
+The Third-Sylow counting data (`sylow_count_mod_p`, `sylow_count_dvd_index`,
+`sylow_count_eq_one_or_prime`) together with the normality criterion
+(`sylow_normal_iff_card_eq_one`) yields the classical structural fact that a
+group of order `p·q` with `p < q` prime always has a *normal* — hence unique —
+Sylow q-subgroup, so it is never simple.  This is the archetypal use of Sylow
+theory as a structure engine, going strictly beyond what any divisibility count
+alone provides: it is a genuine consequence about the *lattice of subgroups*,
+not merely about orders.
+═══════════════════════════════════════════════════════════════════════════════ -/
+
+/-- In a group of order `p·q` with `p < q` prime, the top Sylow prime `q` divides
+    `|G|` to the first power only, so the Sylow q-subgroup has order exactly `q`.
+    (From `sylow_card_eq`: `|Q| = q^(vq(|G|))` and `v_q(p·q) = 1` since `q ∤ p`.) -/
+theorem card_sylow_q_of_card_eq_pq (p q : ℕ) (hp : p.Prime) (hq : q.Prime)
+    (hpq : p < q) (Q : Sylow q G) (hG : card G = p * q) :
+    card Q = q := by
+  haveI : Fact q.Prime := ⟨hq⟩
+  have hqp : ¬ q ∣ p := fun hdvd =>
+    absurd ((Nat.prime_dvd_prime_iff_eq hq hp).mp hdvd) (ne_of_gt hpq)
+  have hfact : (card G).factorization q = 1 := by
+    rw [hG, Nat.factorization_mul hp.pos.ne' hq.pos.ne', Finsupp.add_apply,
+      Nat.factorization_eq_zero_of_not_dvd hqp, hq.factorization_self, zero_add]
+  rw [sylow_card_eq, hfact, pow_one]
+
+/-- **Groups of order `p·q` are not simple** (structural form): if `|G| = p·q` with
+    `p < q` prime, the Sylow q-subgroup is normal.
+
+    Proof: `n_q ∣ [G:Q]` and `[G:Q] = p` (Lagrange, since `|Q| = q`), so `n_q ∣ p`
+    and hence `n_q ∈ {1, p}` (`sylow_count_eq_one_or_prime`).  But `n_q ≡ 1 (mod q)`
+    (`sylow_count_mod_p`) while `p < q` forces `p % q = p ≠ 1`, ruling out `n_q = p`.
+    Therefore `n_q = 1`, and `Q` is normal by the normality criterion
+    (`sylow_normal_iff_card_eq_one`). -/
+theorem sylow_q_normal_of_card_eq_pq (p q : ℕ) (hp : p.Prime) (hq : q.Prime)
+    (hpq : p < q) (Q : Sylow q G) (hG : card G = p * q) :
+    Q.Normal := by
+  haveI : Fact q.Prime := ⟨hq⟩
+  -- The index [G : Q] equals p (Lagrange with |Q| = q).
+  have hcardQ : card Q.toSubgroup = q := card_sylow_q_of_card_eq_pq p q hp hq hpq Q hG
+  have hidx : Q.toSubgroup.index = p := by
+    have hlag := lagrange_index Q.toSubgroup
+    rw [hcardQ, hG, mul_comm p q] at hlag
+    exact (Nat.eq_of_mul_eq_mul_left hq.pos hlag).symm
+  -- n_q divides p.
+  have hdvd : card (Sylow q G) ∣ p := by
+    have h := sylow_count_dvd_index (G := G) q Q
+    rwa [hidx] at h
+  -- n_q = 1 or n_q = p; the latter contradicts n_q ≡ 1 (mod q).
+  rcases sylow_count_eq_one_or_prime (G := G) q p hp hdvd with h1 | hpeq
+  · exact (sylow_normal_iff_card_eq_one (G := G) q Q).mpr h1
+  · exfalso
+    have hmod := sylow_count_mod_p (G := G) q
+    rw [hpeq, Nat.mod_eq_of_lt hpq] at hmod
+    exact hp.one_lt.ne' hmod
+
 end LagrangeOQ01
 
 /-
@@ -246,6 +304,8 @@ end LagrangeOQ01
   - Normality criterion: P normal ⟺ n_p = 1; a normal Sylow is characteristic
   - Partial converse: p^k | |G| implies ∃ subgroup of order p^k
   - Cauchy's theorem: p | |G| implies ∃ element of order p
+  - Capstone: groups of order p·q (p < q) have a normal Sylow q-subgroup
+    (hence are not simple) — a genuine structural consequence of Sylow III
 
   **Status**: Verified, 0 sorries, 0 axioms
 -/
