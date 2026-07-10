@@ -2833,4 +2833,49 @@ theorem classifySeed_55 : classifySeed 55 = Ordering.lt := by
 theorem mem_ReversalSet_55 (k : ℕ) : 55 * 2 ^ (k + 1) ∈ ReversalSet :=
   (classifySeed_lt_iff (by decide) (by norm_num) k).mpr classifySeed_55
 
+-- ----------------------------------------------------------------------------
+-- The last isolated reversal seed of the original docstring: `175 = 5²·7`
+-- ----------------------------------------------------------------------------
+-- The original problem cited four isolated reversal seeds `21, 55, 129, 175`.
+-- The prime-triple family `mem_ReversalSet_primeTriple` machine-classifies
+-- `21` (`m=1`) and `129` (`m=7`); `classifySeed_55` catalogues `55 = 5·11`.
+-- The remaining seed `175 = 5²·7` has yet a third shape — neither `18m+3` nor
+-- `5·(5m+1)` — so it is recorded here as a standalone catalogue member.  With it,
+-- every isolated reversal seed named in the original problem is machine-verified
+-- to lie in `ReversalSet`.
+
+/-- `φ(25) = 20`  (`25 = 5²`). -/
+theorem totient_25 : Nat.totient 25 = 20 := by decide
+
+/-- `φ(115) = 88`  (`115 = 5·23`, distinct primes). -/
+theorem totient_115 : Nat.totient 115 = 88 := by
+  rw [show (115 : ℕ) = 5 * 23 from rfl, Nat.totient_mul (by decide),
+      Nat.totient_prime (by norm_num), Nat.totient_prime (by norm_num)]
+
+/-- `φ(175) = 120`  (`175 = 25·7`, coprime factors). -/
+theorem totient_175 : Nat.totient 175 = 120 := by
+  rw [show (175 : ℕ) = 25 * 7 from rfl, Nat.totient_mul (by decide), totient_25,
+      Nat.totient_prime (by norm_num)]
+
+/-- `φ(131) = 130`  (`131` is prime). -/
+theorem totient_131 : Nat.totient 131 = 130 := Nat.totient_prime (by norm_num)
+
+/-- **Classifier value on the seed `175 = 5²·7`.**  Transport data: `b = 115 = 5·23`
+    (`2·175 − φ(175) = 230 = 115·2¹`, so `s = 1`), landing `C = 2·175 − φ(115) = 262 =
+    131·2¹` (so `t = 1`, `e = 131` prime), and the classifier compares `φ(175) = 120`
+    against `φ(131)·2^0 = 130`; `120 < 130`, so the total decision procedure classifies
+    `175 = 5²·7` as `lt` (reversal) — the third distinct reversal-seed shape, outside
+    both the `3q` prime-triple family and the `5·(5m+1)` seed `55`. -/
+theorem classifySeed_175 : classifySeed 175 = Ordering.lt := by
+  rw [classifySeed_val (s := 1) (b := 115) (t := 1) (e := 131) (by decide) (by decide)
+      (by norm_num [totient_175]) (by norm_num [totient_115])]
+  rw [totient_175, totient_131]; decide
+
+/-- **Reversal family `175·2^(k+1)`.**  Since `classifySeed 175 = lt`, the whole
+    family lies in `ReversalSet`; combined with `mem_ReversalSet_55` and the
+    prime-triple family (`21, 129`), every isolated reversal seed named in the
+    original problem statement is now machine-verified. -/
+theorem mem_ReversalSet_175 (k : ℕ) : 175 * 2 ^ (k + 1) ∈ ReversalSet :=
+  (classifySeed_lt_iff (by decide) (by norm_num) k).mpr classifySeed_175
+
 end Erdos1064OQ03
