@@ -50,11 +50,11 @@
     ],
     "dateAdded": "2024-12-27",
     "wiedijkNumber": 100,
-    "axiomCount": 7,
-    "lineCount": 594,
-    "assumptions": "7 axiom(s) encoding mathematical hypotheses. See the Lean source for details. (The former x_cubed_minus_x positive-roots example axiom is now a proved theorem.)",
+    "axiomCount": 5,
+    "lineCount": 676,
+    "assumptions": "5 axiom(s) encoding the deep Descartes-proof content (upper bound, parity, negative roots, alternating-signs maximum, derivative reduces sign changes). The former concrete example axioms (x_cubed_minus_x positive roots, and the X²−1 / X²+1 quadratic sign-change counts) are now proved theorems.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 36,
+    "theoremCount": 40,
     "definitionCount": 11
   },
   "overview": {
@@ -209,9 +209,9 @@
       "Polynomial"
     ],
     "namespace": "DescartesRuleOfSigns",
-    "lineCount": 594,
-    "axiomCount": 7,
-    "theoremCount": 36,
+    "lineCount": 676,
+    "axiomCount": 5,
+    "theoremCount": 40,
     "definitionCount": 11,
     "path": "Proofs/DescartesRuleOfSigns.lean",
     "sorries": 0
