@@ -157,6 +157,34 @@
       "mathContext": "$\\theta\\mapsto e^{i\\alpha\\theta}$ continuous: $(\\mathbb{R},+)\\to(S^1,\\cdot)$ homomorphism."
     }
   ],
+  "references": [
+    {
+      "title": "Miscellanea Analytica de Seriebus et Quadraturis",
+      "author": "Abraham de Moivre",
+      "year": "1730",
+      "description": "De Moivre's work containing the relation (cos θ + i sin θ)ⁿ = cos nθ + i sin nθ for integer n, the theorem this entry extends to real exponents via Complex.cpow on the principal branch."
+    },
+    {
+      "title": "Introductio in analysin infinitorum",
+      "author": "Leonhard Euler",
+      "year": "1748",
+      "description": "Introduces e^{iθ} = cos θ + i sin θ, the exponential form that recasts De Moivre's theorem as e^{iαθ} and makes the real-exponent extension a statement about Complex.cpow = exp ∘ (α·) ∘ log."
+    },
+    {
+      "title": "Über die Gleichverteilung von Zahlen mod. Eins",
+      "author": "Hermann Weyl",
+      "year": "1916",
+      "venue": "Mathematische Annalen 77, 313–352",
+      "description": "Proves the equidistribution mod 1 of (nα) for irrational α via exponential sums — the theorem behind this entry's axiomatized weyl_equidistribution, describing the dense equidistributed orbit of θ ↦ e^{iαθ} on the circle."
+    },
+    {
+      "title": "Uniform Distribution of Sequences",
+      "author": "L. Kuipers and H. Niederreiter",
+      "year": "1974",
+      "venue": "Wiley-Interscience",
+      "description": "Standard reference for equidistribution theory and Weyl's criterion, giving the Fourier-analytic circle-group machinery the axiomatized equidistribution statement would require to be discharged."
+    }
+  ],
   "conclusion": {
     "summary": "This formalization extends De Moivre's theorem to real exponents via `Complex.cpow`, correctly proving the principal-branch formula and constructing rational multi-valued roots. Key gaps: `irrational_exponent_single_valued` is a True stub, and `weyl_equidistribution` is axiomatized (Weyl 1916 proof requires Fourier analysis on the circle group not yet assembled in Mathlib).",
     "implications": "The principal-branch De Moivre proof establishes a clean Lean template for complex power computations: unfold cpow via log, apply the branch condition, finish with ring. The rational multi-valued root construction demonstrates existence proofs by explicit witness with rfl — avoiding the computational cost of verifying root-checking. The continuous group homomorphism characterization connects all cases (integer, rational, irrational) via the single map φ_α : ℝ → S¹.",
