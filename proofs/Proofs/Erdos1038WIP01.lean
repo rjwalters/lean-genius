@@ -476,8 +476,7 @@ theorem Xsq_sub_C_admissible' {d : ℝ} (hd : d ∈ Set.Icc (0 : ℝ) 1) :
   have hval : Real.sqrt d * Real.sqrt d = d := Real.mul_self_sqrt hd0
   have hsd0 : 0 ≤ Real.sqrt d := Real.sqrt_nonneg d
   have hsd : Real.sqrt d ≤ 1 := by
-    have := Real.sqrt_le_sqrt hd1
-    simpa using this
+    nlinarith [Real.sq_sqrt hd0, Real.sqrt_nonneg d]
   have hfac : (X ^ 2 - C d : Polynomial ℝ)
       = (X - C (Real.sqrt d)) * (X - C (-Real.sqrt d)) := by
     have h1 : (X - C (Real.sqrt d)) * (X - C (-Real.sqrt d))

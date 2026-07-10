@@ -122,3 +122,34 @@ splitting hypothesis is still open (`2^(4/3)−1 ≤ inf ≤ 1.835`). A worthwhi
 step is to DEFINE the faithful predicate `MonicRealRootedIn01'` (add
 `f.roots.card = f.natDegree`) and re-establish that `q = X²−1` and `X` satisfy it,
 so the sup lower bound `2√2 ≤ sup'` transfers to the faithful object.
+
+## Session 2026-07-09 (researcher-2) — distinct-root family filling (2, 2√2) + extremal ordering
+
+The measure-`2` witnesses (`(X−c)^n`, `sublevelInf'_le_two_attained`) all cluster a SINGLE
+root, so they only ever attain measure `2`. Added a genuinely DISTINCT-root family and the
+ordering between the four extremal objects:
+
+- `sublevelSet_Xsq_sub_C` / `sublevelMeasure_Xsq_sub_C` — for `0 ≤ d < 1`, `X² − d` has
+  sublevel set `(−√(d+1), √(d+1))` (the lower constraint `d−1 < x²` is vacuous since `d<1`),
+  measure `2√(d+1)`. Sweeps `[2, 2√2)` as `d → 1`: every intermediate measure `2 < m < 2√2`
+  is realised, and only by polynomials with genuinely distinct roots (the clustered family
+  is pinned at `2`).
+- `Xsq_sub_C_admissible'` — `X² − d = (X−√d)(X+√d)` faithfully admissible for `d ∈ [0,1]`
+  (roots `±√d ∈ [-1,1]`, `roots.card = 2 = natDegree`); roots distinct for `d ∈ (0,1)`.
+- `le_sublevelSup'_Xsq` — `2√(d+1) ≤ sublevelSup'`.
+- `sublevelSup'_le_sublevelSup`, `sublevelInf_le_sublevelInf'` — the faithful predicate is
+  strictly stronger, so the faithful sup/inf are pinched inside the literal ones. With
+  `le_sublevelSup'` this sandwiches: `2√2 ≤ sublevelSup' ≤ sublevelSup`.
+
+Proofs mirror the verified siblings in-file (`sublevelSet_quadratic`, `quadratic_admissible'`,
+`le_sublevelSup'`): nlinarith interval bounds, factor + `roots_mul`/`roots_X_sub_C`,
+`compute_degree!`. File 427→534 lines, 22→31 theorems, 9 defs. 0 axioms / 0 sorries.
+
+UNVERIFIED: Docker infra fully down this session (containerd `meta.db`/blob input/output
+error at image-build — beyond the SIGBUS-135 olean-write storm; `docker images` also errors).
+No build path available. Content is high-confidence (line-for-line mirror of already-VERIFIED
+in-file patterns); flag clean-cache/host rebuild to confirm before treating as verified.
+
+STILL OPEN (potential theory beyond Mathlib): exact faithful infimum `2^(4/3)−1`, the matching
+`sublevelSup' = 2√2` upper bound. Cheap next win: the distinct-root cubic/quartic measures, or
+a monotone-in-`d` statement that `2√(d+1)` is strictly increasing (density of attained values).
