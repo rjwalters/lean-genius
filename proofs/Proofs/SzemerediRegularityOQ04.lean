@@ -101,13 +101,10 @@ theorem energy_steps_bounded_sharp (N : ℕ) (hN : 0 < N) :
   · -- exact `δ`-increment on each of the first `N` steps
     intro n hn
     refine le_of_eq ?_
-    have h1 : (min n N : ℚ) = (n : ℚ) := by
-      exact_mod_cast Nat.min_eq_left (Nat.le_of_lt hn)
-    have h2 : (min (n + 1) N : ℚ) = (n : ℚ) + 1 := by
-      have hmin : min (n + 1) N = n + 1 := Nat.min_eq_left hn
-      rw [hmin]; push_cast; ring
-    show (min n N : ℚ) / (N : ℚ) + 1 / (N : ℚ) = (min (n + 1) N : ℚ) / (N : ℚ)
-    rw [h1, h2, div_add_div_same]
+    push_cast
+    rw [min_eq_left (show (n : ℚ) ≤ (N : ℚ) by exact_mod_cast hn.le),
+        min_eq_left (show (n : ℚ) + 1 ≤ (N : ℚ) by exact_mod_cast hn)]
+    ring
   · -- equality `N • δ = 1`
     rw [mul_one_div, div_self hNQ.ne']
 
