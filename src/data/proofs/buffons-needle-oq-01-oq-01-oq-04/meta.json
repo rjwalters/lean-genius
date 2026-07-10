@@ -151,5 +151,52 @@
       "description": "N-ball volumes use the same Gamma function framework as sphere surface areas"
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Georges-Louis Leclerc, Comte de Buffon"
+      ],
+      "title": "Essai d'arithmétique morale",
+      "year": "1777",
+      "venue": "Supplément à l'Histoire Naturelle, Vol. 4, Imprimerie Royale, Paris, pp. 46–123",
+      "note": "The original needle problem (first posed to the Académie des Sciences in 1733): a needle of length L dropped on a floor ruled with lines spaced d apart crosses a line with probability 2L/(πd). This is the n=2 case of the Cauchy–Crofton formula generalized here, with crossing constant c_2 = 2/π."
+    },
+    {
+      "authors": [
+        "Joseph-Émile Barbier"
+      ],
+      "title": "Note sur le problème de l'aiguille et le jeu du joint couvert",
+      "year": "1860",
+      "venue": "Journal de mathématiques pures et appliquées, 2e série, 5, 273–286",
+      "note": "Extends Buffon's needle to arbitrary convex curves: a convex curve of perimeter L meets a random line grid of spacing d an average of 2L/(πd) times — the Buffon–Barbier formula whose n-dimensional analogue E[crossings] = c_n·L/d is proved in this entry."
+    },
+    {
+      "authors": [
+        "Morgan W. Crofton"
+      ],
+      "title": "On the Theory of Local Probability, applied to Straight Lines drawn at random in a Plane",
+      "year": "1868",
+      "venue": "Philosophical Transactions of the Royal Society of London, 158, 181–199",
+      "note": "Recasts Cauchy's projection-measure identities probabilistically as expected numbers of intersections with a random line, founding the Cauchy–Crofton formula of integral geometry that this entry lifts to ℝⁿ."
+    },
+    {
+      "authors": [
+        "Luis A. Santaló"
+      ],
+      "title": "Integral Geometry and Geometric Probability",
+      "year": "1976",
+      "venue": "Encyclopedia of Mathematics and its Applications, Vol. 1, Addison-Wesley, Reading, MA",
+      "note": "The definitive modern treatment of the Cauchy–Crofton formula in n dimensions, including the sphere-area constants σ_k = 2π^{(k+1)/2}/Γ((k+1)/2) and the kinematic measure underlying the angular-averaging identity axiomatized here; connects the formula to mixed volumes and Hadwiger's characterization of intrinsic volumes."
+    },
+    {
+      "authors": [
+        "Herbert Solomon"
+      ],
+      "title": "Geometric Probability",
+      "year": "1978",
+      "venue": "CBMS-NSF Regional Conference Series in Applied Mathematics, Vol. 28, SIAM, Philadelphia",
+      "note": "Accessible development of Buffon-type problems and the Cauchy–Crofton crossing formula, with the geometric-probability interpretation of the dimension-dependent constant c_n."
+    }
+  ],
   "sorries": 0
 }
