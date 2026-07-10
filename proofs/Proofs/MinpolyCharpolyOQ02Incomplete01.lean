@@ -426,4 +426,19 @@ theorem exists_diagonalizable_add_not_diagonalizable :
     rw [hD11] at hprod
     nlinarith [sq_nonneg (D 0 0), hprod]
 
+/-- **Subtraction does not preserve diagonalizability.**  Diagonalizable matrices
+    `M`, `N` can have a non-diagonalizable *difference* `M − N`, so the
+    common-diagonalizer hypothesis of `sub_of_commonDiagonalizer` is genuinely
+    necessary (not merely for products and sums).  Reduces to the additive
+    counterexample `exists_diagonalizable_add_not_diagonalizable`: negation
+    preserves diagonalizability (`IsDiagonalizable.neg`), so from diagonalizable
+    `M`, `N` with `M + N` non-diagonalizable we obtain diagonalizable `M`, `−N`
+    with `M − (−N) = M + N` non-diagonalizable.  Completes the trio of
+    binary-operation counterexamples (product, sum, difference). -/
+theorem exists_diagonalizable_sub_not_diagonalizable :
+    ∃ M N : Matrix (Fin 2) (Fin 2) ℚ,
+      M.IsDiagonalizable ∧ N.IsDiagonalizable ∧ ¬ (M - N).IsDiagonalizable := by
+  obtain ⟨M, N, hM, hN, hMN⟩ := exists_diagonalizable_add_not_diagonalizable
+  exact ⟨M, -N, hM, IsDiagonalizable.neg hN, by rwa [sub_neg_eq_add]⟩
+
 end MinpolyCharpolyOQ02Incomplete01
