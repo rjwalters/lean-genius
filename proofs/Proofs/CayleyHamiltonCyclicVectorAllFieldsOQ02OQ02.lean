@@ -226,6 +226,29 @@ theorem finrank_centralizer_eq_natDegree_minpoly_iff_nonderogatory
   (centralizer_eq_adjoin_iff_finrank_eq_natDegree_minpoly M).symm.trans
     (centralizer_eq_adjoin_iff_nonderogatory M)
 
+/-- **The always-true commutant lower bound** `deg(minpoly K M) ≤ dim_K C(M)`.  Since
+    `K[M] ⊆ C(M)` (`adjoin_le_centralizer`) as `K`-submodules and `dim_K K[M] =
+    deg(minpoly K M)` (`finrank_adjoin_eq_natDegree_minpoly`), `Submodule.finrank_mono`
+    gives the inequality for *every* `M` — derogatory or not.  This is the elementary
+    lower half of the Frobenius commutant bound; equality `dim_K C(M) = deg(minpoly K M)`
+    is the nonderogatory case (`finrank_centralizer_eq_natDegree_minpoly_iff_nonderogatory`),
+    while the file's other bound `dim_K C(M) ≥ n` (Frobenius) is the sharper form available
+    only through the invariant-factor formula. -/
+theorem natDegree_minpoly_le_finrank_centralizer
+    (M : Matrix (Fin n) (Fin n) K) :
+    (minpoly K M).natDegree
+      ≤ Module.finrank K
+          ↥(Subalgebra.centralizer K ({M} : Set (Matrix (Fin n) (Fin n) K))) := by
+  have hlesub :
+      (Algebra.adjoin K ({M} : Set (Matrix (Fin n) (Fin n) K))).toSubmodule
+        ≤ (Subalgebra.centralizer K ({M} : Set (Matrix (Fin n) (Fin n) K))).toSubmodule := by
+    intro x hx
+    rw [Subalgebra.mem_toSubmodule] at hx ⊢
+    exact adjoin_le_centralizer M hx
+  have hmono := Submodule.finrank_mono hlesub
+  rwa [Subalgebra.finrank_toSubmodule, Subalgebra.finrank_toSubmodule,
+    CyclicCommutantConverse.finrank_adjoin_eq_natDegree_minpoly M] at hmono
+
 /-! ### Summary -/
 
 /-- **De Moivre / Cayley–Hamilton OQ-02-OQ-02 summary.**  For an `n × n` matrix
