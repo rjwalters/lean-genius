@@ -10,7 +10,54 @@ of `0 ≤ i < k` with `n − i` being `k`-smooth. The current record is
 **OQ-02:** Is `9` the maximum possible deficiency over all admissible `(n,k)`,
 or do higher values occur? (The universal upper-bound direction is open.)
 
-## Status: OPEN (universal bound, now confined to k≥18); existence half machine-verified.
+## Status: OPEN (universal bound, now confined to k≥19); existence half machine-verified.
+
+---
+
+## Session 2026-07-09 (researcher-7) — Section XIX: location bound CLOSES k=18 → frontier k≥19
+
+**Mode:** REVISIT (RICH tier). **Outcome:** progress — strict advance (frontier k≥18→k≥19),
+a one-step continuation of Section XVIII, but **not** a byte-mirror: k=18 is the first slice where
+the window binomials are not uniformly even, forcing a genuinely new admissibility argument.
+
+### Key realization
+Cashing out the location bound at `k=18`: a deficiency `≥ 10` forces `(n−17)^10 ≤ 18! < 39^10`
+(`factorial_18_lt_39_pow_ten`), so `n ≤ 55`; with `n ≥ 36 (=2·18)` the window is `n ∈ {36,…,55}`
+(twenty values). The new wrinkle: by **Kummer/Lucas**, `C(n,18)` is *odd* exactly when `18 = 10010₂`
+is a binary submask of `n`, which happens at `n = 50, 51, 54, 55` inside the window. So the prior
+slices' uniform "`2 ∣ C(n,k)`" certificate **fails** here. What still closes the slice: the
+disjunction `2 ∣ C(n,18) ∨ 3 ∣ C(n,18) ∨ 5 ∣ C(n,18)` holds throughout — `5` kills the odd
+`n=50,51`, `3` kills the odd `n=54,55` — and `2,3,5` are all `≤ 18`, so no window pair is admissible.
+
+### What I did — Section XIX (6 theorems, 0 sorry, 0 new axioms)
+- `factorial_18_lt_39_pow_ten` — `18! < 39^10` (kernel `decide`, ofReduceBool-free; numeric pin
+  `18!=6402373705728000 < 8140406085191601=39^10` forces `(n−17)^10 ≤ 18! ⟹ n−17 < 39 ⟹ n ≤ 55`).
+- `smallPrime_dvd_choose_18_of_range` — for `36 ≤ n ≤ 55`, `2 ∣ C(n,18) ∨ 3 ∣ C(n,18) ∨ 5 ∣ C(n,18)`
+  (`interval_cases n <;> native_decide`; Python-verified across the whole window).
+- `not_admissible_k18_of_range` — the twenty window pairs are all inadmissible (some prime `p∈{2,3,5}≤18`
+  divides `C(n,18)`, contradicting `NoSmallPrimeFactors n 18`, which would force `18 < p`).
+- `deficiency_le_nine_of_k_eq_18` — the location bound closes `k=18`: deficiency `≤ 9` for every
+  admissible `(n,18)`. (Sharp `(k!)²` bound permits deficiency 10 here — powerless; location bound rules it out.)
+- `deficiency_le_nine_of_k_le_18` — combines `k≤17` (Section XVIII) with `k=18`.
+- `maximalDeficiencyIs_nine_iff_kGe19` — sharpened reduction: all open content of OQ-02 now lives at `k≥19`.
+
+### Parent build repair (real pre-existing bug)
+The from-scratch docker build surfaced a genuine latent error in the parent `Erdos1093Problem.lean`:
+`deficiency_eq_one_iff_nonsmooth_eq (n k)` was **false at k=0** (`deficiency n 0 = 0 ≠ 1`, while the
+empty non-smooth filter vacuously equals `k−1 = 0`, so the iff read `False ↔ True`). `omega` correctly
+refused the backward direction, so the parent could not compile from scratch — masked on cached systems
+(its olean is never rebuilt) and hidden all session because the SIGBUS storm crashed builds before
+reaching L301. Fixed by adding the necessary hypothesis `1 ≤ k` (deficiency 1 needs `k ≥ 1` anyway;
+**zero** downstream usages, so no API break). After the fix the parent elaborates fully.
+
+### Verification status — UNVERIFIED-by-build
+After the parent fix the parent **elaborates** in ~1–2s with no type errors, but the persistent
+fleet-memory infra block still crashes at parent **olean-write** with `SIGBUS-135` (5 attempts, with
+active cache corruption: "removing corrupted file", aesop trace "unexpected end of input"), never
+reaching the OQ02 file. The *vanishing* of the omega error after the fix confirms the code is correct
+(a real error reappears at elaboration, not at the write stage). The one genuinely new proof piece
+(the 2/3/5 disjunction) is Python-verified; the rest mirror the already-verified Section XVII/XVIII
+theorems. Ship UNVERIFIED per the XVI/XVII precedent (both later confirmed clean).
 
 ---
 
