@@ -2548,6 +2548,34 @@ theorem classifySeed_gt_iff_of_seedS_one_seedE_prime {a : ℕ} (ha3 : 3 ≤ a)
       2 * (a - Nat.totient a) < Nat.totient (seedB a) + 2 ^ seedT a := by
   rw [classifySeed_eq_compare_of_seedS_one_seedE_prime ha3 hs1 hep, compare_gt_iff_gt]
 
+/-- **Prime-landing equality family.**  The `.eq` analogue of
+    `prime_landing_family_reversal`: under the hypotheses of
+    `classifySeed_eq_iff_of_seedS_one_seedE_prime` together with the balance
+    equality, the *entire* family `n = a·2^(k+1)` lies in `EqualitySet`
+    (`φ(n) = φ(D(n))` for every `k`).  This packages the equality criterion into an
+    infinitely-often statement for each qualifying seed (e.g. every Sophie–Germain
+    seed `a = 3q`, cf. `mem_EqualitySet_sophieGermain`). -/
+theorem prime_landing_family_equality {a : ℕ} (ha : Odd a) (ha3 : 3 ≤ a)
+    (hs1 : seedS a = 1) (hep : (seedE a).Prime)
+    (hcrit : Nat.totient (seedB a) + 2 ^ seedT a = 2 * (a - Nat.totient a))
+    (k : ℕ) : a * 2 ^ (k + 1) ∈ EqualitySet := by
+  rw [classifySeed_eq_iff ha ha3 k]
+  exact (classifySeed_eq_iff_of_seedS_one_seedE_prime ha3 hs1 hep).2 hcrit
+
+/-- **Prime-landing forward family.**  The `.gt` analogue of
+    `prime_landing_family_reversal`: under the hypotheses of
+    `classifySeed_gt_iff_of_seedS_one_seedE_prime` together with the strict forward
+    inequality, the *entire* family `n = a·2^(k+1)` lies in `ForwardSet`
+    (`φ(D(n)) < φ(n)` for every `k`).  With the reversal and equality families this
+    completes the packaging of the prime-landing trichotomy into infinitely-often
+    membership for all three regimes. -/
+theorem prime_landing_family_forward {a : ℕ} (ha : Odd a) (ha3 : 3 ≤ a)
+    (hs1 : seedS a = 1) (hep : (seedE a).Prime)
+    (hcrit : 2 * (a - Nat.totient a) < Nat.totient (seedB a) + 2 ^ seedT a)
+    (k : ℕ) : a * 2 ^ (k + 1) ∈ ForwardSet := by
+  rw [classifySeed_gt_iff ha ha3 k]
+  exact (classifySeed_gt_iff_of_seedS_one_seedE_prime ha3 hs1 hep).2 hcrit
+
 -- ----------------------------------------------------------------------------
 -- A Sophie–Germain–indexed EQUALITY family: `n = 3q·2^(k+1)` with `2q+1` prime
 -- ----------------------------------------------------------------------------
