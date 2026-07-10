@@ -257,4 +257,62 @@ theorem coprime_factorial_sub_one_add_one {n : ℕ} (hn : 2 ≤ n) :
   · exact h1
   · exact absurd (h2eq ▸ hd2) h2
 
+/-! ## Brocard's problem: the factorial squares `n! + 1 = m²`
+
+The three prime-power values proved above — `4!+1 = 5²`, `5!+1 = 11²`, `7!+1 = 71²`
+— are precisely the three known **Brown numbers**, the only known solutions of the
+**Brocard–Ramanujan equation** `n! + 1 = m²` (Brocard 1876 / Ramanujan 1913; whether
+there are others is a well-known open problem).  Note each root `5, 11, 71` is prime,
+matching the `IsPrimePow` results above.  We (i) record that these three `n` are
+solutions, (ii) rule out the intervening `n = 6`, and (iii) prove — via the Euclid
+engine `prime_dvd_factorial_add_one_gt` — the structural constraint that in *any*
+solution the root `m` must exceed `n`. -/
+
+/-- **Brocard–Ramanujan predicate.**  `n! + 1` is a perfect square; a solution `n`
+    is a *Brown number*.  Only `n = 4, 5, 7` are known. -/
+def IsBrocardSolution (n : ℕ) : Prop := ∃ m, n ! + 1 = m ^ 2
+
+/-- `n = 4` is a Brown number: `4! + 1 = 25 = 5²`. -/
+theorem isBrocardSolution_four : IsBrocardSolution 4 := ⟨5, by decide⟩
+
+/-- `n = 5` is a Brown number: `5! + 1 = 121 = 11²`. -/
+theorem isBrocardSolution_five : IsBrocardSolution 5 := ⟨11, by decide⟩
+
+/-- `n = 7` is a Brown number: `7! + 1 = 5041 = 71²`. -/
+theorem isBrocardSolution_seven : IsBrocardSolution 7 := ⟨71, by decide⟩
+
+/-- `n = 6` is **not** a Brown number: `6! + 1 = 721` lies strictly between
+    `26² = 676` and `27² = 729`, so it is not a perfect square.  (The gap between the
+    known solutions `5` and `7` contains no solution.) -/
+theorem not_isBrocardSolution_six : ¬ IsBrocardSolution 6 := by
+  rintro ⟨m, hm⟩
+  have h721 : (6 : ℕ)! + 1 = 721 := by decide
+  rw [h721, pow_two] at hm      -- hm : 721 = m * m
+  have hup : m < 27 := by
+    by_contra h'
+    push_neg at h'
+    have := Nat.mul_le_mul h' h'   -- 27 * 27 ≤ m * m
+    omega
+  interval_cases m <;> omega
+
+/-- **Structural constraint on Brocard solutions (via the Euclid engine).**  In any
+    solution `n! + 1 = m²` with `n ≥ 1`, the root satisfies `n < m`.  Indeed `m ≥ 2`,
+    so its least prime factor `p` divides `m² = n! + 1`; the engine
+    `prime_dvd_factorial_add_one_gt` forces `p > n`, and `p ≤ m` gives `n < m`.  Thus a
+    factorial square is always rooted *above* `n` — the quantitative shadow of Euclid's
+    argument on the Brocard equation. -/
+theorem brocard_root_gt {n m : ℕ} (hn : 1 ≤ n) (h : n ! + 1 = m ^ 2) : n < m := by
+  have hfac : 1 ≤ n ! := Nat.factorial_pos n
+  have hmpos : 2 ≤ m ^ 2 := by omega
+  have hm2 : 2 ≤ m := by
+    by_contra h'
+    push_neg at h'
+    interval_cases m <;> simp_all
+  have hp : (m.minFac).Prime := Nat.minFac_prime (by omega)
+  have hpn1 : m.minFac ∣ n ! + 1 := by
+    rw [h]; exact (Nat.minFac_dvd m).trans (dvd_pow_self m (by norm_num))
+  have hlt : n < m.minFac := prime_dvd_factorial_add_one_gt hp hpn1
+  have hple : m.minFac ≤ m := Nat.minFac_le (by omega)
+  omega
+
 end Erdos1058OQ03

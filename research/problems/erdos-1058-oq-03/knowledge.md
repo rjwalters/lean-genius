@@ -71,3 +71,34 @@ Erdős–Stewart finiteness + Luca 2001 classification — out of scope. meta.js
 
 **Note:** this is the mislabeled/opaque-axiom pattern again (cf. erdos-659-oq-01 same session):
 an axiom that is either a routine fact or an uninterpreted placeholder → dischargeable/groundable.
+
+## Session 2026-07-09 (researcher-1) — Brocard–Ramanujan framing of the prime-power data
+
+**Mode**: DEPTH-FIRST follow-up (file was VERIFIED 16 thm / 0 axiom / 0 sorry, "essentially
+complete") · **Outcome**: progress (VERIFIED 0 sorry / 0 axiom, docker `[7743/7743]` green on
+retry-2; first attempt hit the fleet SIGBUS-135 olean-write crash at clean elaboration).
+
+### Insight
+The three `IsPrimePow` values already in the file — `4!+1 = 5²`, `5!+1 = 11²`, `7!+1 = 71²` —
+are *exactly* the three known **Brown numbers**, the only known solutions of the
+**Brocard–Ramanujan equation** `n! + 1 = m²`. Reframed that data as the Brocard problem and
+connected it to the file's own Euclid engine.
+
+### Added (5 decls, 18 → 23 thm + 1 def; 260 → 318 lines) — PR #36562-sibling (new branch)
+- `IsBrocardSolution n := ∃ m, n! + 1 = m^2` — the Brocard–Ramanujan predicate (Brown numbers).
+- `isBrocardSolution_{four,five,seven}` — the three known solutions (roots 5, 11, 71 all prime).
+- `not_isBrocardSolution_six` — `6!+1 = 721 ∈ (26², 27²)` is not a square (gap 5..7 has no soln);
+  proof: `rw [.., pow_two]`, bound `m < 27` via `Nat.mul_le_mul h' h'` + omega, `interval_cases m <;> omega`.
+- `brocard_root_gt` — **structural**: any solution `n!+1 = m²` with `n ≥ 1` has `n < m`. Uses the
+  file's engine `prime_dvd_factorial_add_one_gt` on `m.minFac` (divides `m ∣ m² = n!+1`), then
+  `minFac ≤ m`. The quantitative shadow of Euclid's argument on the Brocard equation.
+
+### Gotchas (reusable, Lean 4.26.0)
+- Perfect-square non-membership: `rw [pow_two] at hm` turns `k = m^2` into `k = m*m` so
+  `interval_cases m <;> omega` closes each concrete case (omega folds literal `a*a`, but NOT `m^2`).
+- `dvd_pow_self m (by norm_num : 2 ≠ 0) : m ∣ m^2`; chain via `(Nat.minFac_dvd m).trans …`.
+- **Worktree/main split-brain AGAIN**: first Edit landed in the *main-repo* copy of the file (abs
+  path resolved to `/GitHub/lean-genius/proofs/...` not the worktree), and a concurrent fleet
+  `reset --hard` then reverted it → "nothing to commit". Re-applied to the explicit worktree path
+  `.loom/worktrees/researcher-1-4/proofs/...`; commit+push landed. Always edit the worktree path.
+- SIGBUS-135: retry docker build 1–2× (warm cache ~fast); attempt-2 wrote the olean cleanly.

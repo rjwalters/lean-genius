@@ -51,10 +51,10 @@
       "Axiom-free prime-power classification: 4!+1=5², 5!+1=11² are prime powers; 6!+1=721=7·103 is not; sibling 3!−1=5 prime, 5!−1=119=7·17 not"
     ],
     "axiomCount": 0,
-    "lineCount": 260,
+    "lineCount": 318,
     "assumptions": "None. Fully machine-checked; #print axioms lists only propext, Classical.choice, Quot.sound (no sorryAx, no Lean.ofReduceBool — small cases use kernel `decide`, not `native_decide`).",
-    "theoremCount": 18,
-    "definitionCount": 0
+    "theoremCount": 23,
+    "definitionCount": 1
   },
   "overview": {
     "historicalContext": "The parent entry (Erdős #1058, Erdős–Stewart / Luca 2001) axiomatizes its entire arithmetic content: the prime sequence, the finiteness conjecture, and Luca's classification are all `opaque`/`axiom`, so no genuine divisibility fact is actually derived there. The parent explicitly poses three open questions, including 'Can the techniques extend to other factorial-based expressions?' (this oq-03) and 'Are there similar finiteness results for n!−1?'. This companion answers the technique question constructively and axiom-free.",
@@ -160,10 +160,10 @@
       "Nat"
     ],
     "namespace": "Erdos1058OQ03",
-    "lineCount": 260,
+    "lineCount": 318,
     "axiomCount": 0,
-    "theoremCount": 18,
-    "definitionCount": 0,
+    "theoremCount": 23,
+    "definitionCount": 1,
     "path": "Proofs/Erdos1058OQ03.lean",
     "sorries": 0
   },
