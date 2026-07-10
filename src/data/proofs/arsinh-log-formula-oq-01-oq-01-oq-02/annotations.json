@@ -70,6 +70,27 @@
     "mathContext": "$F(t)=\\tfrac12\\bigl(t\\sqrt{1+t^2}+\\operatorname{arsinh} t\\bigr)$ satisfies $F'(t)=\\sqrt{1+t^2}$; the algebra collapses via $\\dfrac{t^2+1}{\\sqrt{1+t^2}}=\\sqrt{1+t^2}$."
   },
   {
+    "id": "ann-intervalintegrable-sqrt",
+    "proofId": "arsinh-log-formula-oq-01-oq-01-oq-02",
+    "range": {
+      "startLine": 78,
+      "endLine": 81
+    },
+    "type": "tactic",
+    "title": "Interval-integrability of √(1+t²)",
+    "content": "intervalIntegral.integral_eq_sub_of_hasDerivAt has TWO hypotheses: the antiderivative relation (above) and that the integrand is interval-integrable on [0, b]. This lemma supplies the second: t ↦ √(1+t²) is continuous (dispatched by fun_prop), and continuous functions are interval-integrable on every [a, b] via Continuous.intervalIntegrable. Without it the FTC evaluation below cannot be invoked.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "IntervalIntegrable",
+      "Continuous.intervalIntegrable",
+      "fun_prop"
+    ],
+    "prerequisites": [
+      "continuity implies interval integrability"
+    ],
+    "mathContext": "$t\\mapsto\\sqrt{1+t^2}$ is continuous, hence interval-integrable on every $[a,b]$ — the side condition FTC needs alongside the antiderivative."
+  },
+  {
     "id": "ann-integral-arsinh-form",
     "proofId": "arsinh-log-formula-oq-01-oq-01-oq-02",
     "range": {
@@ -170,6 +191,27 @@
       "HasDerivAt in Mathlib"
     ],
     "mathContext": "$G(x)=\\tfrac12\\bigl(x+\\sinh x\\cosh x\\bigr)$ satisfies $G'(x)=\\cosh^2 x$; uses $(\\sinh x\\cosh x)'=\\cosh^2 x+\\sinh^2 x$ and $\\cosh^2 x=1+\\sinh^2 x$."
+  },
+  {
+    "id": "ann-intervalintegrable-coshsq",
+    "proofId": "arsinh-log-formula-oq-01-oq-01-oq-02",
+    "range": {
+      "startLine": 134,
+      "endLine": 137
+    },
+    "type": "tactic",
+    "title": "Interval-integrability of cosh²",
+    "content": "The companion integrability side-condition for the cosh² integral: x ↦ cosh²x is continuous (fun_prop), so Continuous.intervalIntegrable makes it interval-integrable on every [a, b]. This is the second hypothesis integral_eq_sub_of_hasDerivAt requires before the cosh² antiderivative can be turned into the definite integral below.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "IntervalIntegrable",
+      "Continuous.intervalIntegrable",
+      "fun_prop"
+    ],
+    "prerequisites": [
+      "continuity implies interval integrability"
+    ],
+    "mathContext": "$x\\mapsto\\cosh^2 x$ is continuous, hence interval-integrable on every $[a,b]$ — the side condition needed to apply FTC to the $\\cosh^2$ antiderivative."
   },
   {
     "id": "ann-integral-coshsq",
