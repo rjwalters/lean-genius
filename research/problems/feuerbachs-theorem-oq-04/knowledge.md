@@ -743,3 +743,56 @@ under the docker wrapper.
 
 **Frontier unchanged:** the Feuerbach tangency capstone (concrete nine-point vs incircle
 centre, the identity `⟪O₉,O_in⟫ = cos(ρ₉−ρ_in)`) remains the sole hard open item.
+
+## Session 2026-07-09 (researcher-3): tangent great circle at a point [ELABORATION-CLEAN; docker olean-write blocked by fleet SIGBUS/SIGSEGV]
+
+**Mode**: ACT (CONTINUE). All elementary metric/tangency scaffolding is on main and verified
+(tritangent family, circumcircle, medial-triangle nine-point circle existence, arc-bisecting
+midpoints). The sole remaining frontier is the deep Feuerbach tangency itself (nine-point
+circle internally tangent to incircle, externally to excircles), which needs an explicit
+spherical Euler-type distance formula between the nine-point centre and incentre — genuinely
+hard, not session-sized.
+
+**Gap closed this session**: the merged API describes tangency of a *given* great circle to a
+small circle (`circle_tangent_greatCircle_inter`: given a tangent great circle, `greatCircleFoot`
+locates the contact point) but never produces the tangent great circle *at a prescribed point*
+of a circle. Since the mechanism of the classical Feuerbach theorem is a **common tangent line**
+at the point of contact — and on the sphere "tangent line" = "tangent great circle" — this
+point-wise primitive is a genuine prerequisite.
+
+**Outcome**: new companion file `proofs/Proofs/FeuerbachsTheoremOQ04TangentLine.lean` (8
+declarations + 1 def, ~0 axiom/0 sorry). For a point `P` on `sCircle O ρ` (so `⟪P,O⟫ = cos ρ`),
+with `0 < ρ < π/2`:
+- **`tangentPole P O ρ := (sin ρ)⁻¹ • radialDir P O = (sin ρ)⁻¹ • (O − ⟪O,P⟫•P)`** — explicit
+  unit pole of the tangent great circle at `P` (radial direction, normalised).
+- `inner_self_radialDir` — `⟪radialDir P O, radialDir P O⟫ = sin²ρ` (spherical Pythagoras;
+  reuses merged `inner_orthoComp_self` with `N := P`).
+- `inner_point_radialDir` / `inner_center_radialDir` — `⟪P, radialDir⟫ = 0`, `⟪O, radialDir⟫ =
+  sin²ρ` (via merged `inner_radialDir`).
+- `onSphere_tangentPole` — the pole is a model point (`⟪N,N⟫ = (sinρ)⁻¹²·sin²ρ = 1`; norm=1 by
+  the standard `(‖N‖−1)(‖N‖+1)=0` factoring).
+- `inner_point_tangentPole` / `mem_sGreatCircle_tangentPole` — `P ∈ sGreatCircle (tangentPole)`.
+- `inner_center_tangentPole` — `⟪O, tangentPole⟫ = (sinρ)⁻¹·sin²ρ = sin ρ`.
+- `tangentToGreatCircle_tangentPole` — `|⟪O, tangentPole⟫| = sin ρ` = `TangentToGreatCircle O ρ N`.
+- **`tangentGreatCircle_at_point`** (headline) — feeds that tangency into merged
+  `circle_tangent_greatCircle_inter`: `sCircle O ρ ∩ sGreatCircle (tangentPole P O ρ) = {P}`.
+  The tangent great circle meets the small circle in *exactly* `P`. This is the great-circle-level
+  dual of `circle_tangent_greatCircle_inter` (point→tangent-line vs tangent-line→foot), the
+  "common tangent" mechanism underneath a spherical Feuerbach argument.
+
+### Verification note
+All proofs are elementary real-inner-product algebra on the *merged* API (`radialDir`,
+`inner_radialDir`, `inner_orthoComp_self`, `TangentToGreatCircle`, `greatCircleFoot`,
+`circle_tangent_greatCircle_inter`) plus `Real.sin_sq_add_cos_sq`, `sin_pos_of_pos_of_lt_pi`,
+`abs_of_pos`. **7 docker builds all reached `[7744/7744] Building …TangentLine (1–3s)` and
+elaborated the file with ZERO type errors, then crashed at the olean-*write* stage with exit
+135 (SIGBUS) / 139 (SIGSEGV)** — the well-documented fleet memory-saturation failure (memory,
+not math), identical across many prior sessions. Reducing `LEAN_MEMORY_LIMIT` to 24576 did not
+help (host is saturated by concurrent `lean-build-*` containers). Shipped elaboration-clean; a
+green write-stage build is expected once fleet contention clears (deployer merges math PRs on
+elaboration-clean when write-stage green is unobtainable).
+
+### Frontier UNCHANGED
+1. **The Feuerbach tangency** — nine-point circle internally tangent to the incircle, externally
+   to the three excircles. Still the sole open item; needs an explicit spherical
+   nine-point-centre / incentre distance identity (spherical Euler formula). Genuinely hard.
