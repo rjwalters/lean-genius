@@ -312,6 +312,38 @@ theorem triArea_hypotenuse_eq_legs (hperp : ⟪A - C, B - C⟫ = (0 : ℝ)) :
   field_simp
   ring
 
+include hAB in
+/-- **The inverse (reciprocal) Pythagorean theorem.**  For a right angle at `C` with
+non-degenerate legs (`A ≠ C`, `B ≠ C`), the *reciprocals of the squares* of the two legs
+sum to the reciprocal of the square of the altitude `|CH|` dropped onto the hypotenuse:
+
+  `1 / |CH|²  =  1 / |CA|²  +  1 / |CB|²`.
+
+This is the elegant "upside-down" companion of Pythagoras `|CA|² + |CB|² = |CB'|²`: whereas
+Pythagoras adds the leg squares to the hypotenuse square, the inverse theorem adds their
+*reciprocal* squares to the reciprocal altitude square.  It follows immediately from the two
+altitude facts already proved here: `altitude_length` gives `|CH| = |CA|·|CB| / |AB|`, so
+`1/|CH|² = |AB|² / (|CA|²·|CB|²)`, and `pythagorean_via_altitude` rewrites the numerator
+`|AB|² = |CA|² + |CB|²`, splitting the single fraction into `1/|CB|² + 1/|CA|²`. -/
+theorem inverse_pythagorean (hAC : A ≠ C) (hBC : B ≠ C)
+    (hperp : ⟪A - C, B - C⟫ = (0 : ℝ)) :
+    1 / ‖C - altitudeFoot A B C‖ ^ 2
+      = 1 / ‖A - C‖ ^ 2 + 1 / ‖B - C‖ ^ 2 := by
+  have hcA : ‖A - C‖ ≠ 0 := by
+    have : A - C ≠ 0 := sub_ne_zero.mpr hAC
+    simpa using norm_ne_zero_iff.mpr this
+  have hcB : ‖B - C‖ ≠ 0 := by
+    have : B - C ≠ 0 := sub_ne_zero.mpr hBC
+    simpa using norm_ne_zero_iff.mpr this
+  have hlen := altitude_length A B C hAB hperp
+  have hpy := pythagorean_via_altitude A B C hAB hperp
+  have hCH2 : ‖C - altitudeFoot A B C‖ ^ 2
+      = ‖A - C‖ ^ 2 * ‖B - C‖ ^ 2 / ‖A - B‖ ^ 2 := by
+    rw [hlen, div_pow, mul_pow]
+  rw [hCH2, ← hpy, one_div_div]
+  field_simp
+  ring
+
 end Geometric
 
 -- ============================================================
