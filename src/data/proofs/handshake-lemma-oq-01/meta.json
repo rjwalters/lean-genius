@@ -67,7 +67,7 @@
       }
     ],
     "axiomCount": 0,
-    "lineCount": 135,
+    "lineCount": 177,
     "assumptions": "0 axioms, 0 sorries. The sharpness witness deficiency_floor_attained and the two accompanying examples use kernel `decide` (not `native_decide`), so no Lean.ofReduceBool and no extra trust assumptions are introduced; #print axioms on the main results reports only the foundational propext / Classical.choice / Quot.sound. Scope: this quantifies the parity obstruction and proves the deficiency lower bound is attained by an explicit witness. It does NOT prove general realisability — that for every odd n·d there is a graph with deg ≤ d and deficiency exactly 1 — which is a degree-sequence construction (Erdős–Gallai / Havel–Hakimi territory, handshake-lemma-oq-02).",
     "mathlib_version": "4.26.0",
     "theoremCount": 9,
@@ -165,7 +165,7 @@
       "SimpleGraph"
     ],
     "namespace": "HandshakeLemmaOQ01",
-    "lineCount": 135,
+    "lineCount": 177,
     "axiomCount": 0,
     "sorries": 0,
     "definitionCount": 1,
