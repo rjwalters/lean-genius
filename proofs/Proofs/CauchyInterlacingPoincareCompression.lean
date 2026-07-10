@@ -1183,4 +1183,67 @@ theorem finrank_eq_add_card_roots_compress_of_reducing_of_splits {T : V →ₗ[�
   rw [← card_roots_charpoly_eq_finrank_of_splits hsplit,
     card_roots_charpoly_eq_add_compress_of_reducing H hH hHp]
 
+/-! ### The algebraically closed (e.g. `ℂ`) corollaries: splitting is automatic
+
+Every theorem in the previous section carries an explicit splitting hypothesis
+`(LinearMap.charpoly _).Splits`.  Over an **algebraically closed** field — in
+particular `𝕜 = ℂ`, the archetypal `RCLike` field — that hypothesis is free:
+`IsAlgClosed.splits` splits every polynomial over its own field.  The docstrings
+above repeatedly note that "over `𝕜 = ℂ` every charpoly splits, so all
+hypotheses are free"; this section states the resulting *hypothesis-free*
+corollaries.  With `[IsAlgClosed 𝕜]` in force the eigenvalue lists of `T` and of
+each compression block have length exactly the relevant `finrank`,
+unconditionally — no separate `Splits` argument is required. -/
+
+/-- **Eigenvalue-list length = dimension, over an algebraically closed field.**
+The `IsAlgClosed` specialisation of `card_roots_charpoly_eq_finrank_of_splits`:
+for any operator on a finite-dimensional space over an algebraically closed
+field the multiset of eigenvalues (roots of the charpoly, with multiplicity) has
+cardinality exactly `finrank`, with no splitting hypothesis. -/
+theorem card_roots_charpoly_eq_finrank_of_isAlgClosed {W : Type*}
+    [NormedAddCommGroup W] [InnerProductSpace 𝕜 W] [FiniteDimensional 𝕜 W]
+    [IsAlgClosed 𝕜] (S : W →ₗ[𝕜] W) :
+    (LinearMap.charpoly S).roots.card = Module.finrank 𝕜 W :=
+  card_roots_charpoly_eq_finrank_of_splits (IsAlgClosed.splits _)
+
+/-- Over an algebraically closed field, the `H`-block compression's eigenvalue
+list has length exactly `finrank 𝕜 H` on a reducing subspace — the
+hypothesis-free form of `card_roots_charpoly_compress_eq_finrank_of_reducing`. -/
+theorem card_roots_charpoly_compress_eq_finrank_of_reducing_of_isAlgClosed
+    [IsAlgClosed 𝕜] {T : V →ₗ[𝕜] V}
+    (H : Submodule 𝕜 V) (hH : ∀ y ∈ H, T y ∈ H) (hHp : ∀ y ∈ Hᗮ, T y ∈ Hᗮ) :
+    (LinearMap.charpoly (compress T H)).roots.card = Module.finrank 𝕜 H :=
+  card_roots_charpoly_compress_eq_finrank_of_reducing H hH hHp (IsAlgClosed.splits _)
+
+/-- The `Hᗮ`-block companion of the previous corollary: over an algebraically
+closed field the orthogonal compression's eigenvalue list has length exactly
+`finrank 𝕜 Hᗮ`, with no splitting hypothesis. -/
+theorem card_roots_charpoly_orthogonal_compress_eq_finrank_of_reducing_of_isAlgClosed
+    [IsAlgClosed 𝕜] {T : V →ₗ[𝕜] V}
+    (H : Submodule 𝕜 V) (hH : ∀ y ∈ H, T y ∈ H) (hHp : ∀ y ∈ Hᗮ, T y ∈ Hᗮ) :
+    (LinearMap.charpoly (compress T Hᗮ)).roots.card = Module.finrank 𝕜 Hᗮ :=
+  card_roots_charpoly_orthogonal_compress_eq_finrank_of_reducing H hH hHp
+    (IsAlgClosed.splits _)
+
+/-- **The `finrank` identity on eigenvalue lists, over an algebraically closed
+field.**  The hypothesis-free specialisation of
+`finrank_eq_add_card_roots_compress_of_reducing_of_splits`: on any reducing
+subspace over an algebraically closed field (e.g. `ℂ`), the ambient dimension is
+the sum of the two compression blocks' eigenvalue-list lengths,
+
+  `finrank V = (charpoly (compress T H)).roots.card
+                + (charpoly (compress T Hᗮ)).roots.card`,
+
+with **no** splitting side condition.  This is the reading the earlier docstrings
+promise: over `ℂ` the eigenvalues of `T` (with multiplicity) partition exactly
+into the eigenvalues of the two blocks. -/
+theorem finrank_eq_add_card_roots_compress_of_reducing_of_isAlgClosed
+    [IsAlgClosed 𝕜] {T : V →ₗ[𝕜] V}
+    (H : Submodule 𝕜 V) (hH : ∀ y ∈ H, T y ∈ H) (hHp : ∀ y ∈ Hᗮ, T y ∈ Hᗮ) :
+    Module.finrank 𝕜 V =
+      (LinearMap.charpoly (compress T H)).roots.card
+        + (LinearMap.charpoly (compress T Hᗮ)).roots.card :=
+  finrank_eq_add_card_roots_compress_of_reducing_of_splits H hH hHp
+    (IsAlgClosed.splits _)
+
 end CauchyInterlacing.PoincareCompression
