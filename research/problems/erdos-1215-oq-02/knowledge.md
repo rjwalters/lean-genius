@@ -131,3 +131,44 @@ Turn a set-containment `A ⊆ closedBall 0 ρ` into an area bound: `measure_mono
 volume (closedBall a ρ) = ENNReal.ofReal ρ ^ 2 * NNReal.pi` (`@[simp]`, ℂ≅ℝ² proper
 space). Finiteness: `ENNReal.mul_lt_top (ENNReal.pow_lt_top ENNReal.ofReal_lt_top)
 ENNReal.coe_lt_top`. The `NNReal.pi` factor coerces silently into `ℝ≥0∞`.
+
+## Session 2026-07-09 (researcher-3) — sharp outer radius shrinks to 2 with degree
+
+**Mode**: REVISIT (built on OQ02OQ02's sharp radius). **Outcome**: progress (full
+elaboration clean `[7746/7746]`; olean-write env-blocked SIGBUS-135 → UNVERIFIED;
+0 sorry / 0 axiom).
+
+### What I did
+- Created `proofs/Proofs/CyclotomicPolynomialsOQ02OQ04.lean` (3 theorems). Turned
+  the **prose observation** of OQ02OQ02 ("the sharp outer radius `1 + C^{1/φ(n)}`
+  decreases to 2 as `φ(n) → ∞`") into theorems.
+- `sharpRadius_antitone`: for `C ≥ 1`, `1 ≤ k ≤ k'` ⟹ `1 + C^{1/k'} ≤ 1 + C^{1/k}`
+  (outer radius antitone in degree).
+- `tendsto_sharpRadius`: for `C > 0`, `Tendsto (fun k => 1 + C^{1/k}) atTop (𝓝 2)`.
+- `eventually_levelSet_subset_closedBall`: for `C ≥ 1`, `ε > 0`, ∃ degree threshold
+  `K` s.t. EVERY cyclotomic level set `{|Φ_n|<C}` with `φ(n) ≥ K` fits in the one
+  fixed disc `closedBall 0 (2+ε)` — uniform confinement of all high-degree
+  cyclotomic lemniscates (antithesis of a Mac Lane labyrinth).
+
+### Reusable Lean recipe
+- Limit of `C^{1/k}` (`C>0`): rewrite `C^{1/k} = exp(log C · k⁻¹)` via
+  `Real.rpow_def_of_pos hC`; `tendsto_inv_atTop_zero.comp tendsto_natCast_atTop_atTop`
+  gives `k⁻¹ → 0`; `Tendsto.const_mul (Real.log C)` → arg `→ 0`;
+  `(Real.continuous_exp.tendsto 0).comp` + `Real.exp_zero` → `C^{1/k} → 1`;
+  `.const_add 1` → radius `→ 2`.
+- Extract threshold: `(tendsto_order.1 htend).2 (2+ε) (by linarith)` →
+  `∀ᶠ k, radius k < 2+ε`; `eventually_atTop.1` → `∃ K ∀ k ≥ K`.
+- Nesting: `Metric.closedBall_subset_closedBall` composes with
+  `OQ02OQ02.sublevel_subset_closedBall_sharp`.
+- Antitone: `inv_le_inv_of_le hkpos hcast` + `Real.rpow_le_rpow_of_exponent_le`.
+
+### Status / next
+- The elementary quantitative side of OQ-02 is now essentially complete: bounded
+  (OQ01) → sharp two-sided radii (OQ02) → area squeeze (OQ03) → radius→2 shrinkage
+  (this). The genuinely-open driver (small-n `n=3,4,6` lemniscate component/path
+  topology) still needs polynomial-lemniscate topology Mathlib lacks — unchanged.
+- ★INFRA: worktree `.loom/worktrees/researcher-3` lost its `.git` link mid-session
+  (worktree-eater) → `git checkout -b` accidentally switched the MAIN repo branch;
+  recovered by copying the file to a fresh external worktree `/Users/rwalters/lg-r3-cyclo`
+  off origin/main and restoring main. Elaboration errors ARE visible before the
+  SIGBUS write, so correctness is verifiable even when the olean write fails.
