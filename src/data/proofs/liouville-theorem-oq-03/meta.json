@@ -23,8 +23,8 @@
     "dateAdded": "2026-06-24",
     "axiomCount": 1,
     "assumptions": "One axiom: `dimH_wellApprox` — the Jarník–Besicovitch dimension formula dimH(W τ) = ENNReal.ofReal(2/τ) for τ ≥ 2. This is the deep theorem of metric Diophantine approximation (Jarník 1931, Besicovitch 1934) and is not yet available in Mathlib (the upper bound requires a covering/Borel–Cantelli Hausdorff-measure estimate; the lower bound a mass-distribution principle / Frostman construction on a Cantor subset). `#print axioms` confirms: the structural lemmas (wellApprox_antitone, liouville_subset_wellApprox, dimH_liouville_le_wellApprox, and the jbDim exponent facts) depend on no axioms beyond the standard foundational trio; only the formula-dependent results (dimH_wellApprox_two, dimH_liouville_le, dimH_liouville_eq_zero, the summary) carry dimH_wellApprox.",
-    "lineCount": 347,
-    "theoremCount": 24,
+    "lineCount": 374,
+    "theoremCount": 25,
     "definitionCount": 2,
     "originalContributions": [
       "wellApprox τ := {x | LiouvilleWith τ x}: the τ-well-approximable sets, packaged on top of Mathlib's LiouvilleWith with the JB exponent in mind",
@@ -134,9 +134,9 @@
     "path": "Proofs/LiouvilleTheoremOQ03.lean",
     "sorries": 0,
     "axiomCount": 1,
-    "theoremCount": 24,
+    "theoremCount": 25,
     "definitionCount": 2,
-    "lineCount": 347
+    "lineCount": 374
   },
   "sorries": 0
 }

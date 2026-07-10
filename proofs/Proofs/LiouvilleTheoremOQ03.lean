@@ -344,4 +344,31 @@ theorem volume_liouville_eq_zero :
     volume {x : ℝ | Liouville x} = 0 :=
   measure_mono_null (liouville_subset_wellApprox 3) (volume_wellApprox_eq_zero (by norm_num))
 
+open MeasureTheory in
+/-- **The very-well-approximable reals form a Lebesgue-null set.** The set of `x`
+that are `τ`-well-approximable for *some* exponent `τ > 2` — the union
+`⋃_{τ > 2} W τ` — is Lebesgue-null, strengthening the fixed-exponent statement
+`volume_wellApprox_eq_zero` from each individual `W τ` to their whole union.
+
+This is the sharp measure-theoretic form of Khintchine's convergence theorem: for
+almost every real number the irrationality measure is *exactly* `2`. The proof
+covers the union by the countable subfamily `W(2 + 1/(n+1))` (any `τ > 2` exceeds
+`2 + 1/(n+1)` for some `n`, and `W τ ⊆ W(2 + 1/(n+1))` by antitonicity), each of
+which is null by `volume_wellApprox_eq_zero`, then applies countable subadditivity.
+Since the Liouville numbers are `τ`-well-approximable for every `τ` (in particular
+some `τ > 2`), this re-proves and generalises `volume_liouville_eq_zero`. -/
+theorem volume_setOf_exists_liouvilleWith_gt_two_eq_zero :
+    volume {x : ℝ | ∃ τ : ℝ, 2 < τ ∧ LiouvilleWith τ x} = 0 := by
+  have hsub : {x : ℝ | ∃ τ : ℝ, 2 < τ ∧ LiouvilleWith τ x}
+      ⊆ ⋃ n : ℕ, wellApprox (2 + 1 / ((n : ℝ) + 1)) := by
+    rintro x ⟨τ, hτ, hx⟩
+    obtain ⟨n, hn⟩ := exists_nat_one_div_lt (sub_pos.mpr hτ)
+    refine Set.mem_iUnion.2 ⟨n, ?_⟩
+    have hle : 2 + 1 / ((n : ℝ) + 1) ≤ τ := by linarith
+    exact hx.mono hle
+  refine measure_mono_null hsub (measure_iUnion_null (fun n => ?_))
+  refine volume_wellApprox_eq_zero ?_
+  have hpos : (0 : ℝ) < 1 / ((n : ℝ) + 1) := by positivity
+  linarith
+
 end LiouvilleTheoremOQ03
