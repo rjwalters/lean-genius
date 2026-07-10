@@ -228,4 +228,29 @@ theorem not_pgroup_any_of_not_isPrimePow (α : ℝ) (hα : IsIntegral ℚ α)
   · exact h1 h
   · exact hpp h
 
+/-- **A nontrivial p-group Galois group forces `p` to divide the degree.**
+    A `p`-group Galois group makes the degree `p^k`; nontriviality (`degree > 1`) forces
+    `k ≥ 1`, so `p ∣ degree`.  This exposes as a named lemma the divisibility that the
+    proof of `pgroup_prime_unique` uses internally, pinning the `p`-group prime down as a
+    *divisor* of the degree — the cleanest positive form of the "which prime" constraint. -/
+theorem prime_dvd_degree_of_pgroup (α : ℝ) (hα : IsIntegral ℚ α)
+    {p : ℕ} (hp : p.Prime) (hgt : 1 < (minpoly ℚ α).natDegree)
+    (hP : IsPGroup p (minpoly ℚ α).Gal) :
+    p ∣ (minpoly ℚ α).natDegree := by
+  obtain ⟨k, hk⟩ := galois_pgroup_implies_degree_is_pow_p α hα hp hP
+  have hk0 : k ≠ 0 := by rintro rfl; rw [pow_zero] at hk; omega
+  rw [hk]; exact dvd_pow_self p hk0
+
+/-- **The p-group prime must divide the degree (contrapositive, crispest form).**
+    If the prime `p` does *not* divide `natDegree(minpoly ℚ α)` and the extension is
+    nontrivial (`degree > 1`), then `Gal(minpoly ℚ α)` is not a `p`-group.  This is the
+    tightest hypothesis form of the prime-factor obstruction — no dividing prime `q` need
+    be exhibited — and generalises `odd_degree_gt_one_not_2group` (the `p = 2` case, where
+    `2 ∤ degree` is exactly `degree` odd) to every prime `p`. -/
+theorem not_pgroup_of_not_dvd_degree (α : ℝ) (hα : IsIntegral ℚ α)
+    {p : ℕ} (hp : p.Prime) (hgt : 1 < (minpoly ℚ α).natDegree)
+    (hndvd : ¬ p ∣ (minpoly ℚ α).natDegree) :
+    ¬ IsPGroup p (minpoly ℚ α).Gal :=
+  fun hP => hndvd (prime_dvd_degree_of_pgroup α hα hp hgt hP)
+
 end AngleTrisectionOQ02OQ01OQ03
