@@ -571,4 +571,25 @@ theorem weighted_variance_subset_bound {ι : Type*} (s : Finset ι) (w x : ι �
   rw [Finset.sum_mul]
   linarith [hsubset, hfloor]
 
+/-- **Energy monotonicity: square of the mean ≤ weighted mean of squares (Jensen).**
+    With nonnegative weights `w` and weighted mean `μ` (`∑ wᵢxᵢ = (∑ wᵢ)·μ`), the total
+    weighted second moment about `0` dominates the mean scaled by the total weight:
+    `(∑ wᵢ)·μ² ≤ ∑ wᵢxᵢ²`.  Immediate from `weighted_variance_eq`, since the variance
+    `∑ wᵢ(xᵢ − μ)²` is a sum of nonnegative terms.
+
+    This is the coarse-to-fine inequality the atom bounds sharpen: it says the
+    mean-square edge density (partition energy) of a *refined* partition is at least
+    that of its parent — refining can only raise energy, never lower it.  The
+    variance-atom lemmas above quantify *how much* it rises; this records that the
+    rise is nonnegative unconditionally, the monotonicity underlying the `[0,1]`
+    energy trap that makes the AFKS iteration terminate. -/
+theorem weighted_sq_mean_le {ι : Type*} (s : Finset ι) (w x : ι → ℚ) (μ : ℚ)
+    (hw : ∀ i ∈ s, 0 ≤ w i)
+    (hmean : ∑ i ∈ s, w i * x i = (∑ i ∈ s, w i) * μ) :
+    (∑ i ∈ s, w i) * μ ^ 2 ≤ ∑ i ∈ s, w i * x i ^ 2 := by
+  have hvar : 0 ≤ ∑ i ∈ s, w i * (x i - μ) ^ 2 :=
+    Finset.sum_nonneg (fun i hi => mul_nonneg (hw i hi) (sq_nonneg _))
+  rw [weighted_variance_eq s w x μ hmean] at hvar
+  linarith
+
 end Szemeredi.RegularityOQ04
