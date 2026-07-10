@@ -149,16 +149,16 @@
       "title": "Equality Characterization",
       "startLine": 239,
       "endLine": 276,
-      "summary": "Defines `IsOptimal` ($4\\pi A = L^2$) and proves circles satisfy it. Axiomatizes the converse: optimality implies circularity. This **rigidity** result is the key qualitative insight.",
-      "mathContext": "Defines `IsOptimal` ($4\\$\\pi$ A = L^2$) and proves circles satisfy it. Axiomatizes the converse: optimality implies circularity. This **rigidity** result is the key qualitative insight."
+      "summary": "Defines `IsOptimal` ($4\\pi A = L^2$), proves `isOptimal_iff_ratio`, and proves `circle_isOptimal` (circles satisfy it). The converse rigidity result (optimality $\\Rightarrow$ circle) is documented in a docstring but is **not** formalized — neither proved nor axiomatized.",
+      "mathContext": "Defines `IsOptimal` ($4\\pi A = L^2$), proves `isOptimal_iff_ratio` and `circle_isOptimal` (circles are optimal). The converse rigidity result (optimality $\\Rightarrow$ circle) is documented in a docstring but is not formalized (neither proved nor axiomatized)."
     },
     {
       "id": "examples-comparison",
       "title": "Examples: Square vs Circle",
       "startLine": 281,
       "endLine": 370,
-      "summary": "Defines `Square` and `EquilateralTriangle`, computes their isoperimetric ratios ($1/16$ and $1/(12\\sqrt{3})$ respectively), and proves both are strictly suboptimal compared to circles.",
-      "mathContext": "Formal definition: Defines `Square` and `EquilateralTriangle`, computes their isoperimetric ratios ($1/16$ and $1/(12\\sqrt{3})$ respectively), and proves both are strictly suboptimal compared to circles."
+      "summary": "Defines the `Square` structure, computes its isoperimetric ratio (`square_ratio` $= 1/16$), and proves it is strictly suboptimal compared to circles (`square_suboptimal`). Also states the 3D isoperimetric inequality $36\\pi V^2 \\le S^3$ as a reference `Prop` (`isoperimetric_3d_statement`).",
+      "mathContext": "Formal definition: defines the `Square` structure, computes its isoperimetric ratio (`square_ratio` $= 1/16$), and proves it is strictly suboptimal compared to circles (`square_suboptimal`)."
     },
     {
       "id": "higher-dimensions",
