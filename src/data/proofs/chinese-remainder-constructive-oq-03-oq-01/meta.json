@@ -5,7 +5,7 @@
   "description": "Generalizes the parent's primorial growth bound from the k ≤ 6 lookup table to ALL k, by giving a proper total definition of the k-th prime via Mathlib's Nat.nth Nat.Prime. Proves primorialProper k ≥ 2^k for every k, that the proper primorial is strictly increasing and unbounded, that the first-k-primes list is pairwise coprime and bounded below by 2 for every k, and packages this into a genuine RNSBase (firstPrimeBase) with k channels and dynamic range ≥ 2^k for all k. Cross-checks the proper primorial against the classical sequence 1,2,6,30,210,2310,30030 for k=0..6.",
   "meta": {
     "author": "Lean Genius Researcher",
-    "sourceUrl": "",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Residue_number_system",
     "date": "2026",
     "status": "verified",
     "proofRepoPath": "Proofs/ChineseRemainderConstructiveOQ03OQ01.lean",
@@ -116,5 +116,42 @@
     "definitionCount": 6,
     "theoremCount": 26
   },
+  "references": [
+    {
+      "authors": "Sunzi (Master Sun)",
+      "title": "Sunzi Suanjing (Master Sun's Mathematical Manual)",
+      "year": "c. 3rd–5th century CE",
+      "venue": "Classical Chinese mathematical text",
+      "note": "Contains the earliest known statement of the Chinese Remainder Theorem — the 'counting unknown objects' problem of finding a number with prescribed residues modulo 3, 5, 7 — the root of the modular reconstruction underlying every RNS base here."
+    },
+    {
+      "authors": "Qin Jiushao",
+      "title": "Shushu Jiuzhang (Mathematical Treatise in Nine Sections)",
+      "year": "1247",
+      "venue": "Song dynasty treatise",
+      "note": "Gives the first general algorithm (dayan shu, the 'Great Extension' method) for solving simultaneous congruences with pairwise coprime moduli — the constructive CRT that makes the prime RNS base recoverable."
+    },
+    {
+      "authors": "Carl Friedrich Gauss",
+      "title": "Disquisitiones Arithmeticae",
+      "year": "1801",
+      "venue": "Gerhard Fleischer, Leipzig",
+      "note": "The modern formulation of modular arithmetic and the Chinese Remainder Theorem; establishes the residue-system framework in which the k-channel prime base and its dynamic range = ∏ primes are stated."
+    },
+    {
+      "authors": "Harvey L. Garner",
+      "title": "The Residue Number System",
+      "year": "1959",
+      "venue": "IRE Transactions on Electronic Computers, EC-8 (2), 140–147",
+      "note": "Introduces Residue Number Systems for parallel (carry-free) computer arithmetic; the source of the RNSBase / dynamic-range framework and the efficiency motivation for the ≥ 2^k growth bound proved here for all k."
+    },
+    {
+      "authors": "Nicholas S. Szabó, Richard I. Tanaka",
+      "title": "Residue Arithmetic and Its Applications to Computer Technology",
+      "year": "1967",
+      "venue": "McGraw-Hill, New York",
+      "note": "Foundational RNS textbook establishing that a base of pairwise-coprime moduli has dynamic range equal to their product; prime (or first-k-primes) bases and their range are the classical efficient choice generalized here from k ≤ 6 to all k."
+    }
+  ],
   "sorries": 0
 }
