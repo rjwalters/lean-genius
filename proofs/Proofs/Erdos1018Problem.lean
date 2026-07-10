@@ -322,31 +322,33 @@ theorem sparse_hides_nonplanarity :
   refine ⟨1, one_pos, ?_⟩
   intro ε _ C hHyp
   by_cases hε1 : ε = -1
-  · -- `ε = -1`: `K₂ = ⊤` on `Fin 2` is dense but has only two vertices.
+  · -- `ε = -1`: `K₂ = ⊤` on `ULift (Fin 2)` is dense but has only two vertices.
+    -- (`ULift` places the witness in the same universe `u` the hypothesis ranges
+    -- over; a bare `Fin 2 : Type 0` cannot instantiate `V : Type u`.)
     subst hε1
-    obtain ⟨S, _, hSnp⟩ := hHyp (Fin 2) (⊤ : SimpleGraph (Fin 2)) (by
-      show (edgeCount (⊤ : SimpleGraph (Fin 2)) : ℝ)
-            ≥ (Fintype.card (Fin 2) : ℝ) ^ (1 + (-1 : ℝ))
-      have hec : edgeCount (⊤ : SimpleGraph (Fin 2)) = 1 := by
-        simp [edgeCount, card_edgeFinset_top_eq_card_choose_two]
-      have he0 : (1 : ℝ) + (-1) = 0 := by norm_num
-      rw [hec, he0, Real.rpow_zero]
-      norm_num)
+    obtain ⟨S, _, hSnp⟩ :=
+      hHyp (ULift (Fin 2)) (⊤ : SimpleGraph (ULift (Fin 2))) (by
+        unfold isDense edgeCount
+        have hexp : (1 : ℝ) + (-1) = 0 := by norm_num
+        rw [hexp, Real.rpow_zero, card_edgeFinset_top_eq_card_choose_two,
+          Fintype.card_ulift, Fintype.card_fin]
+        simp)
     have h5 := nonPlanar_needs_five _ S hSnp
-    have hle : S.card ≤ 2 := by simpa [Fintype.card_fin] using Finset.card_le_univ S
+    have hle : S.card ≤ 2 := by
+      simpa [Fintype.card_ulift, Fintype.card_fin] using Finset.card_le_univ S
     omega
-  · -- `ε ≠ -1`: the empty graph on `Fin 0` is vacuously dense.
-    obtain ⟨S, _, hSnp⟩ := hHyp (Fin 0) (⊥ : SimpleGraph (Fin 0)) (by
-      show (edgeCount (⊥ : SimpleGraph (Fin 0)) : ℝ)
-            ≥ (Fintype.card (Fin 0) : ℝ) ^ (1 + ε)
-      have hec : edgeCount (⊥ : SimpleGraph (Fin 0)) = 0 := by
-        simp [edgeCount, edgeFinset_bot]
-      have hcard : (Fintype.card (Fin 0) : ℝ) = 0 := by simp
-      have hne : (1 : ℝ) + ε ≠ 0 := fun h => hε1 (by linarith)
-      rw [hec, hcard, Real.zero_rpow hne]
-      norm_num)
+  · -- `ε ≠ -1`: the empty graph on `ULift (Fin 0)` is vacuously dense.
+    have hne : (1 : ℝ) + ε ≠ 0 := fun h => hε1 (by linarith)
+    obtain ⟨S, _, hSnp⟩ :=
+      hHyp (ULift (Fin 0)) (⊥ : SimpleGraph (ULift (Fin 0))) (by
+        unfold isDense edgeCount
+        have hcard : (Fintype.card (ULift (Fin 0)) : ℝ) = 0 := by
+          simp [Fintype.card_ulift]
+        rw [hcard, Real.zero_rpow hne]
+        positivity)
     have h5 := nonPlanar_needs_five _ S hSnp
-    have hle : S.card ≤ 0 := by simpa [Fintype.card_fin] using Finset.card_le_univ S
+    have hle : S.card ≤ 0 := by
+      simpa [Fintype.card_ulift, Fintype.card_fin] using Finset.card_le_univ S
     omega
 
 /-
