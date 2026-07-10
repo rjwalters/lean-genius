@@ -238,7 +238,6 @@ theorem conjecturedBound_div_klrBound (c : ℝ) (hc : 0 < c) (n : ℕ) (hn : n �
   have h3 : Real.sqrt (Real.log (n : ℝ)) ≠ 0 := hsqrt_pos.ne'
   simp only [conjecturedBound, klrBound]
   field_simp
-  ring
 
 /-- The multiplicative gap `conjecturedBound / klrBound` is unbounded — it grows like
     `√log n → ∞`.  Hence KLR does not reach the conjectured rate even up to constants. -/
@@ -258,6 +257,50 @@ theorem conjecturedBound_div_klrBound_tendsto_atTop (c : ℝ) (hc : 0 < c) :
   refine hcomp.congr' ?_
   filter_upwards [Filter.eventually_ge_atTop 2] with n hn
   exact (conjecturedBound_div_klrBound c hc n hn).symm
+
+/-
+## The Pommerenke–Conjecture Gap
+
+The block above measures how far the *KLR* bound `c/(n√log n)` sits below the conjectured
+`c/n`: exactly a factor `√log n`, which is unbounded but grows only logarithmically.  The
+*older* Pommerenke bound `1/(2en²)` falls short by much more.  Here we pin down the Pommerenke
+shortfall the same way:
+
+* `conjecturedBound_div_pommerenkeBound` — the *exact* multiplicative gap is `2ec·n` (linear
+  in `n`, versus KLR's `√log n`).
+* `conjecturedBound_div_pommerenkeBound_tendsto_atTop` — that gap diverges.
+
+Together with the KLR block this shows both published lower bounds are asymptotically infinitely
+far (up to constants) from the conjecture, and quantifies *how much* the 2025 KLR bound improved
+on Pommerenke's 1961 bound: the shortfall dropped from a factor `Θ(n)` to a factor `Θ(√log n)`.
+Like the KLR block these are unconditional facts about the bound *functions* and use none of the
+deep axioms.
+-/
+
+/-- The exact multiplicative gap between the conjectured and Pommerenke bounds is `2ec·n`
+    (for `c > 0`, `n ≥ 1`) — linear in `n`, in contrast with KLR's `√log n`. -/
+theorem conjecturedBound_div_pommerenkeBound (c : ℝ) (hc : 0 < c) (n : ℕ) (hn : n ≥ 1) :
+    conjecturedBound c n / pommerenkeBound n = 2 * Real.exp 1 * c * n := by
+  have hn_pos : (0 : ℝ) < (n : ℝ) := by exact_mod_cast show 0 < n by omega
+  have h1 : (n : ℝ) ≠ 0 := hn_pos.ne'
+  have h2 : Real.exp 1 ≠ 0 := (Real.exp_pos 1).ne'
+  simp only [conjecturedBound, pommerenkeBound]
+  field_simp
+
+/-- The multiplicative gap `conjecturedBound / pommerenkeBound` is unbounded — it grows like
+    `2ec·n → ∞`.  So Pommerenke's bound, too, does not reach the conjectured rate even up to
+    constants, and (comparing with `conjecturedBound_div_klrBound_tendsto_atTop`) it falls short
+    far faster than KLR. -/
+theorem conjecturedBound_div_pommerenkeBound_tendsto_atTop (c : ℝ) (hc : 0 < c) :
+    Filter.Tendsto (fun n : ℕ => conjecturedBound c n / pommerenkeBound n)
+      Filter.atTop Filter.atTop := by
+  have hlin : Filter.Tendsto (fun n : ℕ => 2 * Real.exp 1 * c * (n : ℝ))
+      Filter.atTop Filter.atTop :=
+    Filter.Tendsto.const_mul_atTop (by positivity : (0 : ℝ) < 2 * Real.exp 1 * c)
+      tendsto_natCast_atTop_atTop
+  refine hlin.congr' ?_
+  filter_upwards [Filter.eventually_ge_atTop 1] with n hn
+  exact (conjecturedBound_div_pommerenkeBound c hc n hn).symm
 
 /-
 ## Lemniscate Properties
@@ -446,7 +489,7 @@ theorem area_implies_disc_bound :
     have hsup_bound :
         sSup {r : ℝ | ∃ c : ℂ, isInscribedDisc (sublevelSet f) c r}
           ≤ Real.sqrt (sublevelArea f / Real.pi) := by
-      apply csSup_le ⟨r0, c0, hr0pos, hsub0⟩
+      refine csSup_le ⟨r0, c0, hr0pos, hsub0⟩ ?_
       rintro r ⟨c, hrpos, hsub⟩
       have h1 : Real.pi * r ^ 2 ≤ sublevelArea f := hkey r ⟨c, hrpos, hsub⟩
       have h2 : r ^ 2 ≤ sublevelArea f / Real.pi := by
@@ -461,7 +504,10 @@ theorem area_implies_disc_bound :
     have hsq :
         (sSup {r : ℝ | ∃ c : ℂ, isInscribedDisc (sublevelSet f) c r}) ^ 2
           ≤ sublevelArea f / Real.pi := by
-      have hs := Real.sq_sqrt (div_nonneg ENNReal.toReal_nonneg hpi.le)
+      have harea : (0 : ℝ) ≤ sublevelArea f := by
+        unfold sublevelArea; exact ENNReal.toReal_nonneg
+      have hs : Real.sqrt (sublevelArea f / Real.pi) ^ 2 = sublevelArea f / Real.pi :=
+        Real.sq_sqrt (div_nonneg harea hpi.le)
       nlinarith [hsup_bound, hsup_nonneg, hs, Real.sqrt_nonneg (sublevelArea f / Real.pi)]
     calc Real.pi * (sSup {r : ℝ | ∃ c : ℂ, isInscribedDisc (sublevelSet f) c r}) ^ 2
         ≤ Real.pi * (sublevelArea f / Real.pi) := mul_le_mul_of_nonneg_left hsq hpi.le
