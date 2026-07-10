@@ -79,6 +79,7 @@
    "The 'actual minimum' question is exactly an IsLeast statement: attainability + lower bound",
    "IsLeast.csInf_eq converts the least element into the infimum sInf collisionSpectrum = 2",
    "0 and 1 are excluded as direct omega consequences of the ≥ 2 lower bound",
+   "A cube collides precisely when the dissection holds a distinct cube of the same size (collidingCubes filters for ∃ c' ≠ c, c.size = c'.size), so colliding cubes partition into equal-size classes each of cardinality ≥ 2 — this equivalence-class structure is the mechanism forcing the minimum to be 2 and making a lone colliding cube impossible",
    "Three equal-size cubes side-by-side give collision count 3, so the spectrum is not the singleton {2}",
    "Achievability is axiom-free; only the inherited lower bound carries the base geometric axiom"
   ],
