@@ -403,4 +403,93 @@ theorem subsetSums_card_insert_superincreasing
     Finset.card_union_of_disjoint h_disj, h_img_card]
   ring
 
+/-- **Superincreasing set.**  A finite set of naturals in which every element
+    strictly exceeds the sum of all *strictly smaller* elements.  This is the
+    classical "superincreasing sequence" condition, phrased order-agnostically for
+    a `Finset`: the standard powers-of-two example `{1,2,4,…,2^{k-1}}` qualifies.
+    Superincreasing sets are exactly the ones whose non-empty subset sums are all
+    distinct — the extremal regime of `subsetSums_card_le`. -/
+def Superincreasing (A : Finset ℕ) : Prop :=
+  ∀ a ∈ A, (A.filter (· < a)).sum id < a
+
+/-- Elements of a superincreasing set are positive: each exceeds the sum of the
+    smaller elements, which is `≥ 0`. -/
+theorem Superincreasing.pos {A : Finset ℕ} (hA : Superincreasing A) :
+    ∀ a ∈ A, 1 ≤ a := by
+  intro a ha
+  have := hA a ha
+  omega
+
+/-- **Superincreasing-ness is hereditary.**  Passing to a subset only removes
+    smaller elements, so the defining inequality is preserved (the truncated sum
+    can only shrink). -/
+theorem Superincreasing.mono {A B : Finset ℕ} (h : B ⊆ A)
+    (hA : Superincreasing A) : Superincreasing B := by
+  intro b hb
+  have hsub : B.filter (· < b) ⊆ A.filter (· < b) := by
+    intro x hx
+    rw [Finset.mem_filter] at hx ⊢
+    exact ⟨h hx.1, hx.2⟩
+  calc (B.filter (· < b)).sum id
+      ≤ (A.filter (· < b)).sum id := Finset.sum_le_sum_of_subset hsub
+    _ < b := hA b (h hb)
+
+/-- In a superincreasing set the maximum element exceeds the sum of all the
+    others: the elements strictly below the max are precisely the rest of the set
+    (`A.erase (max)`), and the superincreasing condition at the max bounds their
+    total.  This is exactly the hypothesis `∑ (rest) < max` needed to fire the
+    doubling law `subsetSums_card_insert_superincreasing`. -/
+theorem sum_erase_max_lt {A : Finset ℕ} (hA : Superincreasing A)
+    (hne : A.Nonempty) :
+    (A.erase (A.max' hne)).sum id < A.max' hne := by
+  have hfilter : A.filter (· < A.max' hne) = A.erase (A.max' hne) := by
+    ext x
+    rw [Finset.mem_filter, Finset.mem_erase]
+    constructor
+    · rintro ⟨hxA, hxlt⟩
+      exact ⟨ne_of_lt hxlt, hxA⟩
+    · rintro ⟨hxne, hxA⟩
+      exact ⟨hxA, lt_of_le_of_ne (Finset.le_max' A x hxA) hxne⟩
+  have := hA (A.max' hne) (A.max'_mem hne)
+  rwa [hfilter] at this
+
+/-- **Superincreasing ⟹ all subset sums distinct (extremal counting).**  A
+    superincreasing set of `k` elements realises the full `2^k − 1` distinct
+    non-empty subset sums, meeting the upper bound `subsetSums_card_le` with
+    equality.  Proof: strong induction removing the maximum `m`; since
+    `∑ (A.erase m) < m` (`sum_erase_max_lt`) the doubling law gives
+    `|subsetSums A| = 2·|subsetSums (A.erase m)| + 1`, and `A.erase m` is again
+    superincreasing (`Superincreasing.mono`).  This is the exact converse of the
+    collapse regime: it certifies that the powers-of-two construction attains the
+    maximum possible number of distinct subset sums. -/
+theorem subsetSums_card_superincreasing :
+    ∀ {A : Finset ℕ}, Superincreasing A →
+      (subsetSums A).card = 2 ^ A.card - 1 := by
+  intro A
+  induction A using Finset.strongInduction with
+  | _ A ih =>
+    intro hA
+    rcases A.eq_empty_or_nonempty with rfl | hne
+    · simp [subsetSums, nonemptySubsets, Finset.powerset_empty]
+    · set m := A.max' hne with hm
+      have hmem : m ∈ A := A.max'_mem hne
+      have hEq : A = insert m (A.erase m) := (Finset.insert_erase hmem).symm
+      have hnotmem : m ∉ A.erase m := Finset.not_mem_erase m A
+      have hsub : A.erase m ⊂ A := Finset.erase_ssubset hmem
+      have hAe : Superincreasing (A.erase m) := hA.mono (Finset.erase_subset m A)
+      have hgt : (A.erase m).sum id < m := sum_erase_max_lt hA hne
+      have hdouble : (subsetSums A).card
+          = 2 * (subsetSums (A.erase m)).card + 1 := by
+        conv_lhs => rw [hEq]
+        exact subsetSums_card_insert_superincreasing hnotmem hAe.pos hgt
+      have hcard : (A.erase m).card = A.card - 1 := Finset.card_erase_of_mem hmem
+      have hpos : 1 ≤ A.card := Finset.card_pos.mpr hne
+      have hple : (1 : ℕ) ≤ 2 ^ (A.card - 1) := Nat.one_le_two_pow
+      have h2 : 2 * 2 ^ (A.card - 1) = 2 ^ A.card := by
+        rw [← pow_succ']
+        congr 1
+        omega
+      rw [hdouble, ih (A.erase m) hsub hAe, hcard]
+      omega
+
 end Erdos882OQ03
