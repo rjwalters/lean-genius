@@ -122,6 +122,48 @@ theorem not_isRegularOfDegree_of_odd_odd (d : ℕ) (hn : Odd (Fintype.card V))
     (hd : Odd d) : ¬ G.IsRegularOfDegree d :=
   not_isRegularOfDegree_of_odd_mul G d (hn.mul hd)
 
+/-- **Even companion of the parity dichotomy.** When `n·d` is even the degree
+deficiency is even. Together with `deficiency_odd` this pins the parity of the
+deficiency to that of `n·d` in both cases. -/
+theorem deficiency_even_of_even (d : ℕ) (hbound : ∀ v, G.degree v ≤ d)
+    (heven : Even (Fintype.card V * d)) : Even (deficiency G d) := by
+  rw [Nat.even_iff] at heven ⊢
+  rw [deficiency_parity G d hbound, heven]
+
+/-- **A strictly-deficient vertex exists.** When `n·d` is odd, not only is the graph
+non-regular, but some concrete vertex witnesses the shortfall: `∃ v, deg v < d`.
+(If every vertex reached the target `d`, the graph would be `d`-regular, forcing
+the impossible `deficiency = 0`.) This is the vertex-level refinement of
+`not_isRegularOfDegree_of_odd_mul`. -/
+theorem exists_degree_lt_of_odd (d : ℕ) (hbound : ∀ v, G.degree v ≤ d)
+    (hodd : Odd (Fintype.card V * d)) : ∃ v, G.degree v < d := by
+  by_contra h
+  push_neg at h
+  have hdef0 : deficiency G d = 0 := by
+    unfold deficiency
+    refine Finset.sum_eq_zero (fun v _ => ?_)
+    have : G.degree v = d := le_antisymm (hbound v) (h v)
+    omega
+  have := one_le_deficiency G d hbound hodd
+  omega
+
+/-- **The below-target vertices are counted by the deficiency.** The number of
+vertices whose degree strictly undershoots `d` is at most `deficiency G d` — each
+such vertex contributes at least `1` to the shortfall sum `∑_v (d − deg v)`. In the
+odd case this again yields a strictly-deficient vertex (the count is `≥ 1`), and it
+quantifies how many vertices can miss the target. -/
+theorem card_degree_lt_le_deficiency (d : ℕ) :
+    (Finset.univ.filter (fun v => G.degree v < d)).card ≤ deficiency G d := by
+  unfold deficiency
+  rw [Finset.card_eq_sum_ones]
+  calc ∑ _v ∈ Finset.univ.filter (fun v => G.degree v < d), 1
+      ≤ ∑ v ∈ Finset.univ.filter (fun v => G.degree v < d), (d - G.degree v) := by
+        refine Finset.sum_le_sum (fun v hv => ?_)
+        rw [Finset.mem_filter] at hv
+        omega
+    _ ≤ ∑ v, (d - G.degree v) :=
+        Finset.sum_le_sum_of_subset (Finset.filter_subset _ _)
+
 /-- **Sharpness: the floor `1` is attained.** The empty graph on a single vertex,
 with target degree `d = 1`, has `n·d = 1` odd and degree deficiency exactly `1`.
 So the lower bound `one_le_deficiency` cannot be improved. -/
