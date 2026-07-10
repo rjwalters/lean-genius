@@ -64,4 +64,22 @@ theorem simplexNumber_diag (d : ℕ) : simplexNumber d d = (2 * d).choose d := b
   unfold simplexNumber
   rw [two_mul]
 
+/-- **Central simplex-number doubling recurrence.**  Along the diagonal `d = n` the
+figurate number is the central binomial coefficient `P_d(d) = C(2d, d)`
+(`simplexNumber_diag`), and successive diagonal entries obey the central binomial
+recurrence
+
+`(d+1) · P_{d+1}(d+1) = 2·(2d+1) · P_d(d)`.
+
+Equivalently `P_{d+1}(d+1)/P_d(d) = 2(2d+1)/(d+1)`, the exact growth ratio of the
+central binomials `C(2d,d)` (which underlies their `4^d/√(πd)` asymptotics and the
+Catalan numbers `C(2d,d)/(d+1)`). Immediate from Mathlib's
+`Nat.succ_mul_centralBinom_succ` once `simplexNumber_diag` identifies the diagonal with
+`Nat.centralBinom`. This is the diagonal companion of the off-diagonal absorption
+recurrences `simplexNumber_absorption` / `simplexNumber_size_absorption`. -/
+theorem simplexNumber_diag_succ (d : ℕ) :
+    (d + 1) * simplexNumber (d + 1) (d + 1) = 2 * (2 * d + 1) * simplexNumber d d := by
+  rw [simplexNumber_diag (d + 1), simplexNumber_diag d]
+  exact Nat.succ_mul_centralBinom_succ d
+
 end TetrahedralNumberFormulaOQ01
