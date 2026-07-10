@@ -1,0 +1,42 @@
+{
+  "title": "Exact Constant in the Independent-Set Asymptotic g(n) ~ c·n^{1/2} for Erdős Problem #1025",
+  "slug": "erdos-1025-oq-01",
+  "status": "available",
+  "phase": "OBSERVE",
+  "tier": "B",
+  "significance": 6,
+  "tractability": 4,
+  "problemStatement": {
+    "formal": "g(n) = \\min_{f \\in \\mathcal{F}_n} \\max_{X \\subseteq [n],\\, X \\text{ independent for } f} |X|, \\quad \\mathcal{F}_n = \\{ f : \\binom{[n]}{2} \\to [n] : f(\\{x,y\\}) \\notin \\{x,y\\} \\}. \\text{ Given } g(n) = \\Theta(n^{1/2}), \\text{ determine whether } c = \\lim_{n \\to \\infty} g(n)/\\sqrt{n} \\text{ exists and its exact value.}",
+    "plain": "Erdős Problem #1025 is solved up to constants: for any function f mapping each pair {x,y} of an n-element set to a third element (never x or y), one can always find an independent set X — one avoiding all values f({x,y}) for pairs inside X — of size on the order of sqrt(n), and this is optimal. Open: the exact constant. Does g(n)/sqrt(n) converge to a specific number c, and what is it? Spencer's lower bound and the Conlon–Fox–Sudakov upper bound leave a gap between their multiplicative constants.",
+    "whyMatters": [
+      "Pinning the sharp constant is the natural step after the order of magnitude is known, and such constants (as in Ramsey/Turán/Zarankiewicz) are notoriously hard.",
+      "A matching constant would upgrade the qualitative Θ(n^{1/2}) into a genuine limit law and sharpen the link between Erdős–Hajnal set mappings and hypergraph independence."
+    ]
+  },
+  "tags": [
+    "combinatorics",
+    "set-mappings",
+    "erdos",
+    "extremal-combinatorics",
+    "probabilistic-method"
+  ],
+  "knownResults": [
+    "Erdős–Hajnal (1958): n^{1/3} ≪ g(n) ≪ (n log n)^{1/2}.",
+    "Spencer (1972): g(n) ≫ n^{1/2} via the deletion method.",
+    "Conlon–Fox–Sudakov (2016): g(n) ≪ n^{1/2}, giving g(n) = Θ(n^{1/2})."
+  ],
+  "relatedProofs": ["erdos-1025"],
+  "references": [
+    "P. Erdős and A. Hajnal, On the structure of set-mappings, Acta Math. Acad. Sci. Hungar. 9 (1958), 111–131.",
+    "J. Spencer, Turán's theorem for k-graphs, Discrete Math. 2 (1972), 183–186.",
+    "D. Conlon, J. Fox, B. Sudakov, extremal-combinatorics work (2016) — matching upper bound.",
+    "https://erdosproblems.com/1025"
+  ],
+  "knowledge": [],
+  "leanFiles": [],
+  "currentState": "Seeded by seeker; awaiting researcher.",
+  "path": "research/problems/erdos-1025-oq-01",
+  "started": null,
+  "lastUpdate": null
+}

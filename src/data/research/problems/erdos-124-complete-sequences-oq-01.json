@@ -1,0 +1,41 @@
+{
+  "title": "Erdős #124 — The Strong Version Excluding the Power d^0 = 1",
+  "slug": "erdos-124-complete-sequences-oq-01",
+  "status": "available",
+  "phase": "OBSERVE",
+  "tier": "B",
+  "significance": 7,
+  "tractability": 4,
+  "problemStatement": {
+    "formal": "Given integers d_1, \\ldots, d_k \\ge 2, let S = \\{\\, d_i^{\\,e} : 1 \\le i \\le k,\\; e \\ge 1 \\,\\} be the set of their powers with the exponent e = 0 (the value 1) excluded. For which tuples (d_1, \\ldots, d_k) is S complete, i.e. every sufficiently large n \\in \\mathbb{N} a subset sum of S? Equivalently, for which (d_1, \\ldots, d_k) can every large n be written as n = \\sum_{i=1}^{k} a_i where each a_i uses only digits 0 and 1 in base d_i and has no constant term \\varepsilon_{i,0}? In particular, does \\sum_{i=1}^{k} \\tfrac{1}{d_i - 1} \\ge 1 still suffice once d_i^0 = 1 is forbidden, or must it be paired with \\gcd(d_1,\\ldots,d_k) = 1?",
+    "plain": "The solved weak version of Erdős #124 lets every number be written as a sum where each summand uses only 0/1 digits in some base d_i, and it allows the digit-value 1 = d_i^0. The strong version forbids that value 1, leaving only the powers d_i, d_i^2, d_i^3, .... The open question is to determine exactly which tuples (d_1, ..., d_k) still make the resulting set of powers complete — able to represent all sufficiently large integers as subset sums — when the anchoring value 1 is removed.",
+    "whyMatters": [
+      "Completes the historical record of Erdős #124: the celebrated AI solution (Harmonic Aristotle, 2025) resolved only the weak form; the strong reformulation excluding d^0 = 1 remains open.",
+      "Sharpens the theory of complete sequences by pinning down the exact threshold, and tests whether Brown's-criterion machinery survives the loss of the anchoring value 1 that its base case relies on."
+    ]
+  },
+  "tags": [
+    "number-theory",
+    "combinatorics",
+    "erdos",
+    "ai-solved",
+    "complete-sequences"
+  ],
+  "knownResults": [
+    "Erdős #124 weak version (with d^0 = 1 allowed) solved by Harmonic Aristotle (2025), formalized as erdos-124-complete-sequences.",
+    "Brown's criterion: a non-decreasing sequence with u_1 = 1 is complete iff u_{n+1} <= 1 + sum_{j<=n} u_j.",
+    "Cassels (1960): classical completeness criteria for subset sums of a fixed set of positive integers."
+  ],
+  "relatedProofs": ["erdos-124-complete-sequences"],
+  "references": [
+    "Burr, Erdős, Graham, Li, 'Complete sequences of sets of integer powers', Acta Arithmetica 77 (1996), 133-138.",
+    "Cassels, 'On the representation of integers as sums of distinct summands from a fixed set', Acta Sci. Math. Szeged 21 (1960), 111-124.",
+    "https://www.erdosproblems.com/124"
+  ],
+  "knowledge": [],
+  "leanFiles": [],
+  "currentState": "Seeded by seeker; awaiting researcher.",
+  "path": "research/problems/erdos-124-complete-sequences-oq-01",
+  "started": null,
+  "lastUpdate": null
+}

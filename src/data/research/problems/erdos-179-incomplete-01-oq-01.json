@@ -1,0 +1,77 @@
+{
+  "slug": "erdos-179-incomplete-01-oq-01",
+  "title": "Discharge the Nat.find Existence Proof to Make F_k(N,ℓ) Genuinely Well-Defined",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "F(k, N, \\ell) := \\operatorname{Nat.find}(\\texttt{supersaturation\\_exists}\\ k\\ N\\ \\ell), \\text{ where } \\exists\\, M \\in \\mathbb{N},\\ \\forall A \\subseteq \\mathbb{N} \\text{ with } |A| = N,\\ \\operatorname{countAPs}(A, k) \\ge M \\Rightarrow \\operatorname{ContainsAP}(A, \\ell). \\text{ Prove this existential without sorry; the witness } M = \\binom{N}{k} + 1 \\text{ works vacuously via } \\operatorname{countAPs}(A,k) \\le \\binom{|A|}{k}.",
+    "plain": "The parent formalization defines a supersaturation function F_k(N, ℓ) using Nat.find, which needs a proof that some finite threshold M exists such that any size-N set with at least M many k-term arithmetic progressions must contain an ℓ-term one. The parent supplies a placeholder witness M = N² + 1 and leaves the required implication as a sorry. This question asks whether that existence proof can be completed. Crucially, the placeholder N² + 1 is the wrong number for k ≥ 3 (a size-N set can have up to C(N, k) many k-APs, exceeding N²), so the sorry cannot be closed with it. Using the correct witness M = C(N, k) + 1 makes the hypothesis impossible — hence the implication vacuously true — and closes the gap honestly using the already-proven bound countAPs A k ≤ C(|A|, k).",
+    "whyMatters": [
+      "Removes a sorry and makes F_k(N, ℓ) a genuinely well-defined natural number rather than Nat.find applied to an unproven proposition.",
+      "Fixes a latent correctness bug: the placeholder witness N² + 1 is mathematically false for k ≥ 3; the honest threshold is C(N, k).",
+      "Cleanly separates the elementary (existence of a finite threshold) from the deep (the quantitative Fox–Pohoata value F_k(N, ℓ) = N^{2-o(1)})."
+    ]
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-07-09T16:59:48-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: erdos-179-incomplete-01-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "additive-combinatorics",
+    "arithmetic-progressions",
+    "supersaturation",
+    "counting",
+    "erdos",
+    "research"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-17",
+    "erdos-179",
+    "erdos-179-incomplete-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-07-10T00:01:19.572Z",
+  "lastUpdate": "2026-07-10T00:01:19.631Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos179Incomplete01.lean",
+      "filename": "Erdos179Incomplete01.lean",
+      "lineCount": 162,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos179Incomplete01.lean"
+    }
+  ]
+}

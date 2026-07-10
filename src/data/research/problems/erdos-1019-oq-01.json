@@ -1,0 +1,44 @@
+{
+  "title": "Constructive Simonovits — A Polynomial-Time Algorithm for Forced Saturated Planar Subgraphs",
+  "slug": "erdos-1019-oq-01",
+  "status": "available",
+  "phase": "OBSERVE",
+  "tier": "B",
+  "significance": 6,
+  "tractability": 4,
+  "problemStatement": {
+    "formal": "\\exists\\, \\mathcal{A} \\text{ running in } \\operatorname{poly}(n) \\text{ time such that, given } G = (V,E) \\text{ with } |V| = n \\text{ and } |E| \\ge \\left\\lfloor \\tfrac{n^2}{4} \\right\\rfloor + \\left\\lfloor \\tfrac{n+1}{2} \\right\\rfloor, \\; \\mathcal{A}(G) \\text{ outputs } H \\subseteq G \\text{ with } H \\cong K_4 \\text{ or } H \\cong C_\\ell + 2K_1\\ (\\ell \\ge 3).",
+    "plain": "Simonovits proved every n-vertex graph with at least floor(n^2/4) + floor((n+1)/2) edges contains a saturated planar subgraph on more than three vertices: either a K_4 or a cycle C_ell with two extra vertices each joined to the whole cycle (C_ell + 2K_1). His proof shows such a subgraph exists but does not obviously say how to find one efficiently. The question is whether the proof can be made fully constructive, yielding a deterministic polynomial-time algorithm that actually outputs one of these two structures on such dense graphs.",
+    "whyMatters": [
+      "Converting extremal existence proofs into polynomial-time algorithms is a central theme in combinatorics (algorithmic regularity lemma, constructive Lovasz Local Lemma); a constructive Simonovits theorem would fit this program and yield certificate-producing witnesses.",
+      "Both target subgraphs are saturated planar (|E| = 3|V| - 6), so an efficient finder produces explicit maximal-planar witnesses inside dense graphs and sharpens where forced topological structure lives."
+    ]
+  },
+  "tags": [
+    "graph-theory",
+    "planar-graphs",
+    "erdos",
+    "extremal-combinatorics",
+    "turan-theory"
+  ],
+  "knownResults": [
+    "Simonovits's dichotomy (existence) is the parent gallery result erdos-1019 (axiom simonovits_theorem).",
+    "The K_4 branch is already constructive: fixed-subgraph search runs in O(n^4). The open difficulty is the C_ell + 2K_1 branch where ell is unbounded.",
+    "Threshold tightness: Erdos's construction with floor(n^2/4) + floor((n-1)/2) edges avoids all such subgraphs; the one-edge gap is exact."
+  ],
+  "relatedProofs": [
+    "erdos-1019"
+  ],
+  "references": [
+    "M. Simonovits, A method for solving extremal problems in graph theory, Theory of Graphs (Tihany, 1966), 279-319.",
+    "P. Erdos, M. Simonovits, A limit theorem in graph theory, Studia Sci. Math. Hungar. 1 (1966), 51-57.",
+    "N. Alon et al., The algorithmic aspects of the regularity lemma, J. Algorithms 16 (1994), 80-109.",
+    "https://erdosproblems.com/1019"
+  ],
+  "knowledge": [],
+  "leanFiles": [],
+  "currentState": "Seeded by seeker; awaiting researcher.",
+  "path": "research/problems/erdos-1019-oq-01",
+  "started": null,
+  "lastUpdate": null
+}

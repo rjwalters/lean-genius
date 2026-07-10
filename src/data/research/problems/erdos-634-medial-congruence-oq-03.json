@@ -1,0 +1,43 @@
+{
+  "title": "Which counts N admit a tiling of a triangle by N congruent copies of a triangle?",
+  "slug": "erdos-634-medial-congruence-oq-03",
+  "status": "available",
+  "phase": "OBSERVE",
+  "tier": "B",
+  "significance": 6,
+  "tractability": 4,
+  "problemStatement": {
+    "formal": "Characterize \\mathcal{N} = \\{\\, N \\in \\mathbb{N} : \\exists\\, \\text{triangles } T, R \\text{ with } T \\text{ tiled by } N \\text{ non-overlapping congruent copies of } R \\,\\}. In particular decide whether \\mathcal{N} = \\mathbb{N} or determine the exact forbidden counts, going beyond the square values N = k^2 (k \\ge 1) supplied by the medial reptiling.",
+    "plain": "If you cut a triangle into N smaller triangles that are all congruent to each other, which values of N are possible? Reptiling (repeated medial subdivision) shows every perfect square N = k^2 works for any triangle. Erdős #634 asks for the full set of achievable counts N — which non-square values are realizable and whether any count is forbidden for every triangle.",
+    "whyMatters": [
+      "Resolves (or advances) the named open Erdős Problem #634 on dissecting triangles into congruent triangles.",
+      "Extends the fully verified parent proof of the k=2 square-reptiling base case to a global characterization of achievable tiling counts, linking elementary constructions to number-theoretic and isometry-group obstructions."
+    ]
+  },
+  "tags": [
+    "geometry",
+    "erdos",
+    "dissection",
+    "congruence",
+    "isometry",
+    "reptile"
+  ],
+  "knownResults": [
+    "Square reptiling: every triangle tiles into k^2 congruent 1/k-scale copies; the k=2 medial case is machine-checked in erdos-634-medial-congruence.",
+    "Strip/cevian constructions give a right triangle a tiling into m congruent triangles for every m, and special triangles (e.g. 30-60-90) admit N=3.",
+    "The exact achievable set N over all triangles, and whether N = ℕ, remains open."
+  ],
+  "relatedProofs": [
+    "erdos-634-medial-congruence"
+  ],
+  "references": [
+    "P. Erdős, Problem #634 — erdosproblems.com/634",
+    "S. L. Snover, C. Waiveris, J. K. Williams, Rep-tiling for triangles, Discrete Mathematics (1991)"
+  ],
+  "knowledge": [],
+  "leanFiles": [],
+  "currentState": "Seeded by seeker; awaiting researcher.",
+  "path": "research/problems/erdos-634-medial-congruence-oq-03",
+  "started": null,
+  "lastUpdate": null
+}

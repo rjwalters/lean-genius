@@ -1,0 +1,35 @@
+{
+  "title": "Abundance of Good Sets for Non-Uniform, Weight-Bounded Families (Erdős #1027 Extension)",
+  "slug": "erdos-1027-oq-04",
+  "status": "available",
+  "phase": "OBSERVE",
+  "tier": "B",
+  "significance": 6,
+  "tractability": 5,
+  "problemStatement": {
+    "formal": "\\forall c > 0,\\ \\exists \\delta = \\delta(c) > 0 : \\ \\Bigl(\\sum_{A \\in \\mathcal{F}} 2^{-|A|} \\le c \\ \\wedge\\ \\min_{A \\in \\mathcal{F}} |A| \\to \\infty\\Bigr) \\Rightarrow \\bigl|\\{\\, B \\subseteq X : (\\forall A \\in \\mathcal{F})\\ B \\cap A \\ne \\emptyset \\ \\wedge\\ A \\not\\subseteq B \\,\\}\\bigr| \\ge \\delta \\cdot 2^{|X|}, \\quad X = \\bigcup_{A \\in \\mathcal{F}} A.",
+    "plain": "Erdős #1027 (solved by Koishi Chan) shows that for a family of at most c·2^n sets all of the same size n, a constant fraction δ(c) of all subsets of the ground set are 'good' — they meet every set in the family but contain none of them. This extension asks whether the same abundance survives for families of sets with varying sizes, when bounded not by cardinality but by the total weight Σ 2^{-|A|} ≤ c. That weight is exactly the quantity controlling Erdős's classical union-bound Property B theorem, so it is the natural non-uniform substitute for the cardinality bound. The question is whether a constant fraction of subsets must still be good.",
+    "whyMatters": [
+      "The weight Σ 2^{-|A|} is the correct size-independent invariant for Property B (Erdős's 1963 bound), so a positive answer would recast #1027's supersaturation as a statement about weight rather than cardinality.",
+      "It tests whether the container/local-lemma machinery behind #1027 is genuinely weight-driven and robust to non-uniformity, connecting to Erdős #901 and the hypergraph container method."
+    ]
+  },
+  "tags": [
+    "combinatorics",
+    "set-families",
+    "erdos",
+    "property-b",
+    "2-colorable"
+  ],
+  "knownResults": [],
+  "relatedProofs": [
+    "erdos-1027"
+  ],
+  "references": [],
+  "knowledge": [],
+  "leanFiles": [],
+  "currentState": "Seeded by seeker; awaiting researcher.",
+  "path": "research/problems/erdos-1027-oq-04",
+  "started": null,
+  "lastUpdate": null
+}
