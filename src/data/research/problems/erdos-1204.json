@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: A(k) defined in Lean; exact small values A(0)=A(1)=0, A(2)=2, A(3)=6 (=Hardy–Littlewood minimal diameter H(3)). Two-sided bounds k-1 ≤ A(k) ≤ (k-1)·primorial. Headline asymptotics A(k)∼k log k and B(k) remain OPEN (sieve theory).",
+    "progressSummary": "PROGRESS (researcher-2, 2026-07-09): formalized the explicit weak upper bound A(k) ≤ (k-1)·primorialUpTo k (A_le_primorial) — the two-sided companion of the parity lower bound 2(k-1), previously only stated in a docstring. A(k) now provably sandwiched between 2(k-1) and (k-1)·∏_{p≤k}p. Exact small values A(0..7) and structural layer (admissibility, monotonicity, parity) already complete. Headline A(k)∼k log k and B(k) remain OPEN (sieve theory). Elaboration-clean; olean-write blocked by fleet SIGBUS-135.",
     "builtItems": [
       "Erdos1204.Admissible (def) in Proofs/Erdos1204Problem.lean",
       "Erdos1204.missing_class_of_card_lt",
@@ -42,7 +42,8 @@
       "Erdos1204Problem.lean: def A + A_mem/A_le/sub_one_le_A/A_zero/A_one/A_two/card_le_sup_succ/A_set_nonempty (8 thm + 1 def)",
       "A_three: A(3)=6 proved exactly (Erdos1204Problem.lean), with witness {0,2,6} and finite lower-bound argument",
       "admissible_three_sup_ge: every admissible 3-set has max ≥ 6 (parity forces {0,2,4} or {1,3,5}, both inadmissible mod 3)",
-      "not_admissible_zero_two_four / not_admissible_one_three_five / admissible_zero_two_six: supporting examples for A(3)"
+      "not_admissible_zero_two_four / not_admissible_one_three_five / admissible_zero_two_six: supporting examples for A(3)",
+      "Erdos1204Problem.lean: primorialUpTo k := ((range(k+1)).filter Nat.Prime).prod id + A_le_primorial (A k ≤ (k-1)*primorialUpTo k). Reuses the exists_admissible_card construction, adding the sup bound. 0 new axioms/sorries. Elaboration-clean; olean-write blocked by fleet SIGBUS-135."
     ],
     "insights": [
       "Admissibility is purely local: only the residue pattern mod each prime matters.",
@@ -52,18 +53,18 @@
       "An admissible k-tuple exists for every k: take multiples 0,N,2N,...,(k-1)N of the primorial N=∏_{p≤k}p; mod each prime p≤k all are ≡0 so class 1 is missed, larger primes auto by size bound. This makes A(k) well-defined and gives the explicit weak upper bound A(k) ≤ (k-1)·∏_{p≤k}p.",
       "A(k) defined as sInf of max over admissible k-sets; infimum attained (nonempty family); k-1 ≤ A(k) ≤ (k-1)·primorial; A(0)=A(1)=0, A(2)=2 (admissibility first binding at k=2).",
       "A(k) equals the Hardy–Littlewood minimal diameter H(k) (by translation invariance min a_k = min diameter); so A(3)=H(3)=6, A(4)=H(4)=8, etc. — the exact-value frontier is computing successive H(k).",
-      "Lower bound for A(3): the mod-2 admissibility constraint forces all three elements to share a parity, so within {0,..,5} the only candidates are {0,2,4} and {1,3,5}, both of which cover every class mod 3. This parity-then-residue pruning is the model for larger exact values."
+      "Lower bound for A(3): the mod-2 admissibility constraint forces all three elements to share a parity, so within {0,..,5} the only candidates are {0,2,4} and {1,3,5}, both of which cover every class mod 3. This parity-then-residue pruning is the model for larger exact values.",
+      "Formalized the explicit weak UPPER bound A(k) ≤ (k-1)·∏_{p≤k prime}p (A_le_primorial), previously only asserted in a docstring. Uses the arithmetic progression {0,N,2N,…,(k-1)N} with N=primorialUpTo k (product of primes ≤k): admissible because every element ≡0 mod each prime p≤k so class 1 is missed (larger primes automatic via missing_class_of_card_lt), k elements (injective ·*N since N>0), largest element (k-1)·N (Finset.sup_le, i*N≤(k-1)*N via mul_le_mul_right'), fed to A_le. This SANDWICHES A(k) between the parity lower bound 2(k-1) (two_mul_sub_one_le_A) and (k-1)·primorial — the elementary two-sided companion, far from the conjectured A(k)∼k log k (primorial grows like e^{(1+o(1))k}). Elaboration-clean [7743/7743] (olean-write SIGBUS-135)."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Formalize explicit admissible-tuple constructions to bound A(k) above.",
-      "Investigate a lower-bound argument toward A(k) ≳ k log k.",
-      "Define A(k) (and B(k)) as Lean functions (sInf over admissible k-sets) and prove the weak upper bound A(k) ≤ (k-1)·primorial(k) formally.",
-      "The headline A(k)∼k log k needs sieve theory / prime distribution — remains OPEN.",
-      "Prove A(4)=8 (witness {0,2,6,8}; lower bound needs mod-2 and mod-3 pruning over {0,..,7}).",
-      "Generalize the lower-bound pruning into a reusable lemma: an admissible k-set within {0,..,N} must avoid a class mod each prime ≤ k, enabling a decision procedure for A(k) at small k."
+      "Investigate a lower-bound argument toward A(k) ≳ k log k (needs sieve theory / prime distribution) — remains OPEN.",
+      "Sharpen the lower bound beyond parity 2(k-1) by also sieving mod 3 (and small primes) — a mod-2-and-3 combined lower bound would be the next elementary improvement.",
+      "Prove A(8)=26 (Hardy–Littlewood minimal diameter H(8)) extending the A4-A7 files; needs pruning mod 2,3,5,7 over {0,..,25}.",
+      "The headline A(k)∼k log k and B(k) estimate need sieve theory / prime distribution — remain OPEN."
     ],
-    "markdown": "# Erdős #1204 - Knowledge Base\n\n## Problem Statement\n\nWe call a sequence of integers $0\\leq a_1<\\cdots <a_k$ admissible if it is missing at least one congruence class modulo every prime $p$. Let $A(k)=\\min a_k$. Estimate $A(k)$ - in particular, is it true that\\[A(k)\\sim k\\log k?\\]Estimate\\[B(k)=\\min \\frac{a_1+\\cdots+a_k}{k}.\\]\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #337\n- Problem #2000\n- Problem #60\n- Problem #2\n- Problem #855\n- Problem #1203\n- Problem #1205\n- Problem #39\n- Problem #1\n\n## References\n\n- Er80\n- HeRi73\n- Po14c\n- El65\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-04-16*\n"
+    "markdown": "# Erdős #1204 - Knowledge Base\n\n## Problem Statement\n\nWe call a sequence of integers $0\\leq a_1<\\cdots <a_k$ admissible if it is missing at least one congruence class modulo every prime $p$. Let $A(k)=\\min a_k$. Estimate $A(k)$ - in particular, is it true that\\[A(k)\\sim k\\log k?\\]Estimate\\[B(k)=\\min \\frac{a_1+\\cdots+a_k}{k}.\\]\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #337\n- Problem #2000\n- Problem #60\n- Problem #2\n- Problem #855\n- Problem #1203\n- Problem #1205\n- Problem #39\n- Problem #1\n\n## References\n\n- Er80\n- HeRi73\n- Po14c\n- El65\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-04-16*\n",
+    "score": 27
   },
   "tags": [
     "erdos"

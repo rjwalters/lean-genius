@@ -499,4 +499,63 @@ These require analytic number theory (sieve methods, distribution of primes in
 residue classes) and are not formalized here.
 -/
 
+/- ## An explicit upper bound on `A(k)`
+
+The `admissible_diam_ge` / `two_mul_sub_one_le_A` results bound `A(k)` from
+*below*.  The dual weak *upper* bound comes from the explicit primorial-spacing
+construction `{0, N, 2N, …, (k-1)N}` (with `N` the product of the primes `≤ k`)
+already used in `exists_admissible_card`: its largest element is `(k-1)·N`, so
+`A(k) ≤ (k-1)·N`.  This is far from the conjectured truth `A(k) ∼ k log k`
+(`N` grows like `e^{(1+o(1))k}`), but it is the elementary two-sided companion of
+the lower bounds, and pins `A(k)` between `2(k-1)` and `(k-1)·∏_{p ≤ k} p`. -/
+
+/-- The **primorial-type product** `∏_{p ≤ k, p prime} p`, the spacing used by the
+explicit admissible construction. Divisible by every prime `p ≤ k`. -/
+def primorialUpTo (k : ℕ) : ℕ :=
+  ((Finset.range (k + 1)).filter Nat.Prime).prod id
+
+/-- **Explicit weak upper bound `A(k) ≤ (k-1)·∏_{p ≤ k} p`.**  The arithmetic
+progression `{0, N, 2N, …, (k-1)N}` with `N = primorialUpTo k` is admissible
+(every element is `≡ 0` modulo each prime `p ≤ k`, so the class `1` is missed;
+larger primes are automatic), has `k` elements, and largest element `(k-1)·N`.
+Feeding it to `A_le` gives the bound.  Together with `two_mul_sub_one_le_A` this
+sandwiches `A(k)` between `2(k-1)` and `(k-1)·primorialUpTo k`. -/
+theorem A_le_primorial (k : ℕ) : A k ≤ (k - 1) * primorialUpTo k := by
+  classical
+  set N := primorialUpTo k with hN
+  have hNpos : 0 < N := by
+    rw [hN, primorialUpTo]
+    exact Finset.prod_pos (fun q hq => (Finset.mem_filter.mp hq).2.pos)
+  have hNdvd : ∀ p, p.Prime → p ≤ k → p ∣ N := by
+    intro p hp hpk
+    rw [hN, primorialUpTo]
+    exact Finset.dvd_prod_of_mem id
+      (Finset.mem_filter.mpr ⟨Finset.mem_range.mpr (by omega), hp⟩)
+  have hinj : Function.Injective (fun x : ℕ => x * N) :=
+    fun x y h => Nat.eq_of_mul_eq_mul_right hNpos h
+  set a := (Finset.range k).image (fun x => x * N) with ha_def
+  have hcard : a.card = k := by
+    rw [ha_def, Finset.card_image_of_injective _ hinj, Finset.card_range]
+  have hadm : Admissible a := by
+    rw [admissible_iff_card, hcard]
+    intro p hp hpk
+    haveI : Fact p.Prime := ⟨hp⟩
+    have hp0 : (N : ZMod p) = 0 :=
+      (CharP.cast_eq_zero_iff (ZMod p) p N).mpr (hNdvd p hp hpk)
+    refine ⟨1, fun x hx => ?_⟩
+    rw [ha_def] at hx
+    obtain ⟨i, _, rfl⟩ := Finset.mem_image.mp hx
+    push_cast
+    rw [hp0, mul_zero]
+    exact zero_ne_one
+  have hsup : a.sup id ≤ (k - 1) * N := by
+    rw [ha_def]
+    apply Finset.sup_le
+    intro m hm
+    obtain ⟨i, hi, rfl⟩ := Finset.mem_image.mp hm
+    rw [Finset.mem_range] at hi
+    simp only [id_eq]
+    exact mul_le_mul_right' (by omega) N
+  exact le_trans (A_le hcard hadm) hsup
+
 end Erdos1204
