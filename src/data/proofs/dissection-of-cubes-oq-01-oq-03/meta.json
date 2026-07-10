@@ -185,6 +185,11 @@
       "targetId": "dissection-of-cubes-oq-02-oq-02",
       "relationship": "sibling-development",
       "description": "Sub-development of the Dehn-invariant track (oq-02 line) — provides further refinements of the scissor-congruence framework. The OQ-02 line and this entry's OQ-01-OQ-03 sub-tree pursue complementary refinements of the base CubeDissection structure: OQ-02 along the Dehn-invariant axis (relevant for *mixed-shape* dissections), OQ-01-OQ-03 along the volumetric axis (this entry, relevant for *cube-only* dissections). The eventual goal is a combined `MeasureDissection` enforcing $\\mu([0,1]^3 \\setminus \\bigcup C_i) = 0$ — strictly stronger than this entry's $\\sum s^3 = 1$ and strictly stronger than OQ-02's Dehn-invariant equality."
+    },
+    {
+      "targetId": "dissection-of-cubes-oq-01-oq-02",
+      "relationship": "sibling",
+      "description": "Sibling in the OQ-01 sub-tree (this entry already lists its companion OQ-01-OQ-01 as a sibling): where this entry formalizes the volume constraint ∑ c.side³ = 1, OQ-01-OQ-02 resolves the collision-count question, proving the minimum of collidingCubes.card is exactly 2 (IsLeast). Reciprocal to OQ-01-OQ-02's sibling link here."
     }
   ],
   "references": [

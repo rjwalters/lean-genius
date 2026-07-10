@@ -194,6 +194,11 @@
       "targetId": "dissection-of-cubes-oq-02",
       "relationship": "sibling",
       "description": "Sibling OQ exploring the Dehn invariant and algebraic obstructions to cube dissections"
+    },
+    {
+      "targetId": "dissection-of-cubes-oq-01-oq-02",
+      "relationship": "extended-by",
+      "description": "Extends this entry: it reuses the achievability witness (exampleDissection) and cube constructions developed here, upgrading the 'tight' collision bound to the IsLeast statement that the minimum collision count is exactly 2."
     }
   ],
   "references": [
