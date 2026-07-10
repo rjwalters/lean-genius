@@ -608,3 +608,63 @@ theorem fixedBy_card_of_isUnit {n k : ℕ} [NeZero n] {r : ZMod n} (hr : IsUnit 
     `fixed_point_sum_binary_4` from the general formula. -/
 example : Fintype.card { c : Coloring 4 2 // IsFixedByRotation 1 c } = 2 :=
   fixedBy_card_of_isUnit isUnit_one
+
+/-! ## Part VII: Prime-Length Necklaces and Fermat's Little Theorem
+
+For a **prime** length `p`, every nonzero rotation `a : ZMod p` is a unit (since
+`ZMod p` is a field), so by `fixedBy_card_of_isUnit` it fixes only the `k` constant
+colorings, while the identity fixes all `kᵖ`.  Burnside's engine then evaluates the
+necklace count in closed form, and the divisibility it forces is exactly Fermat's
+Little Theorem. -/
+
+/-- **Necklace count for prime length.**  For a prime `p` and palette size `k`, the
+number of rotation orbits (necklaces) of `Coloring p k` satisfies
+`|necklaces| · p = kᵖ + (p − 1)·k`.  The identity fixes all `kᵖ` colorings; every
+nonzero rotation is a unit of the field `ZMod p` and hence fixes only the `k` constant
+colorings (`fixedBy_card_of_isUnit`).  Summing over the `p` rotations and applying the
+Burnside engine `sum_fixedBy_eq_card_necklaces_mul` gives the identity. -/
+theorem necklaces_prime_length_mul {p : ℕ} (hp : p.Prime) (k : ℕ) :
+    @Fintype.card (Quotient (@coloringSetoid p k _)) (coloringQuotientFintype p k) * p
+      = k ^ p + (p - 1) * k := by
+  haveI : NeZero p := ⟨hp.pos.ne'⟩
+  haveI : Fact p.Prime := ⟨hp⟩
+  -- Fixed-point count at each rotation: `kᵖ` at the identity, `k` at every unit.
+  have hf : ∀ a : ZMod p,
+      Fintype.card { c : Coloring p k // IsFixedByRotation a c }
+        = if a = 0 then k ^ p else k := by
+    intro a
+    by_cases ha : a = 0
+    · subst ha
+      rw [if_pos rfl]
+      have huniv : ∀ c : Coloring p k, IsFixedByRotation (0 : ZMod p) c :=
+        fun c => zero_vadd c
+      rw [Fintype.card_congr (Equiv.subtypeUnivEquiv huniv)]
+      show Fintype.card (Fin p → Fin k) = k ^ p
+      rw [Fintype.card_fun, Fintype.card_fin, Fintype.card_fin]
+    · rw [if_neg ha]
+      exact fixedBy_card_of_isUnit (isUnit_iff_ne_zero.mpr ha)
+  -- Evaluate the total fixed-point sum: `kᵖ + (p−1)·k`.
+  have hsum : (∑ a : ZMod p, Fintype.card { c : Coloring p k // IsFixedByRotation a c })
+      = k ^ p + (p - 1) * k := by
+    simp only [hf]
+    rw [← Finset.add_sum_erase Finset.univ _ (Finset.mem_univ (0 : ZMod p)), if_pos rfl]
+    congr 1
+    rw [Finset.sum_congr rfl (fun a ha => if_neg (Finset.ne_of_mem_erase ha)),
+      Finset.sum_const, Finset.card_erase_of_mem (Finset.mem_univ (0 : ZMod p)),
+      Finset.card_univ, ZMod.card, smul_eq_mul]
+  exact (sum_fixedBy_eq_card_necklaces_mul p k).symm.trans hsum
+
+/-- **Fermat's Little Theorem, combinatorially.**  For a prime `p` and any `k`,
+`p ∣ kᵖ − k`.  The prime-length necklace identity `|necklaces| · p = kᵖ + (p−1)·k`
+rearranges to `kᵖ − k = (kᵖ + (p−1)·k) − ((p−1)·k + k)`, a difference of two multiples
+of `p`: the `p` cyclic rotations partition the `kᵖ − k` non-constant colorings into
+orbits of size exactly `p`.  No `native_decide`, no `Lean.ofReduceBool`. -/
+theorem prime_dvd_pow_sub_self {p : ℕ} (hp : p.Prime) (k : ℕ) : p ∣ k ^ p - k := by
+  have h := necklaces_prime_length_mul hp k
+  have hdvd1 : p ∣ k ^ p + (p - 1) * k := by rw [← h]; exact dvd_mul_left p _
+  have hpk : (p - 1) * k + k = p * k := by
+    rw [Nat.sub_one_mul, Nat.sub_add_cancel (Nat.le_mul_of_pos_left k hp.pos)]
+  have hdvd2 : p ∣ (p - 1) * k + k := by rw [hpk]; exact dvd_mul_right p k
+  have hrw : k ^ p - k = (k ^ p + (p - 1) * k) - ((p - 1) * k + k) := by omega
+  rw [hrw]
+  exact Nat.dvd_sub' hdvd1 hdvd2
