@@ -122,6 +122,30 @@ theorem sum_simplex (d n : ℕ) :
   simp only [simplexNumber]
   rw [Nat.sum_range_add_choose n d, show n + (d + 1) = n + d + 1 from by ring]
 
+/-- **Reflection symmetry of simplex numbers.** Dimension and size play symmetric
+roles: `P_d(n) = P_n(d)`, i.e. `C(n+d, d) = C(d+n, n)`. Pascal's simplex is symmetric
+across the `d = n` diagonal, so the `d`-dimensional figurate ladder read at size `n`
+coincides with the `n`-dimensional ladder read at size `d`. Immediate from the
+symmetry of binomial coefficients (`C(N,k) = C(N, N-k)`). -/
+theorem simplexNumber_symm (d n : ℕ) : simplexNumber d n = simplexNumber n d := by
+  unfold simplexNumber
+  rw [Nat.add_comm d n, ← Nat.choose_symm (Nat.le_add_left d n), Nat.add_sub_cancel]
+
+/-- **Hockey stick along the dimension axis.** Summing the `d`-dimensional simplex
+number over *increasing dimension* `P_0(d), P_1(d), …, P_n(d)` again produces a single
+simplex number:
+
+`∑_{k≤n} C(k+d, d) = C(n+d+1, d+1)`  (read with the roles of dimension and size swapped).
+
+This is the "shallow-diagonal" companion of `sum_simplex`: `sum_simplex` sums a fixed
+dimension over increasing size, whereas here we sum a fixed size over increasing
+dimension. The two coincide by `simplexNumber_symm`, reflecting that both are the same
+diagonal of Pascal's simplex viewed from the two axes. -/
+theorem sum_simplex_over_dim (d n : ℕ) :
+    ∑ k ∈ range (n + 1), simplexNumber k d = simplexNumber (d + 1) n := by
+  rw [← sum_simplex d n]
+  exact Finset.sum_congr rfl (fun k _ => simplexNumber_symm k d)
+
 /-- Partial-summation operator: `partialSum f n = ∑_{j≤n} f j`. -/
 def partialSum (f : ℕ → ℕ) (n : ℕ) : ℕ := ∑ j ∈ range (n + 1), f j
 

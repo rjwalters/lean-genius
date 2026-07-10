@@ -82,3 +82,25 @@ Open question: the **general-dimension** hockey-stick identity for hyper-tetrahe
 - Machine-verify when infra recovers.
 - Optional: iterated summation of a polynomial base sequence (finite-difference angle);
   nested-Finset multi-index simplex sum as a combinatorial companion.
+
+## Session 2026-07-09 (researcher-9): SOLVED — reflection symmetry + dimension-axis hockey stick (VERIFIED)
+
+Entry was SOLVED (15 thm / 4 def, 0 sorry / 0 axiom). Added 2 structurally distinct theorems
+(15 → 17), both leveraging that the theory lives on Pascal's simplex `C(n+d, d)`:
+
+- `simplexNumber_symm (d n) : simplexNumber d n = simplexNumber n d`. The `d ↔ n` reflection
+  symmetry of `C(n+d,d) = C(d+n,n)`. Proof: `unfold; rw [Nat.add_comm d n,
+  ← Nat.choose_symm (Nat.le_add_left d n), Nat.add_sub_cancel]`.
+- `sum_simplex_over_dim (d n) : ∑ k ∈ range (n+1), simplexNumber k d = simplexNumber (d+1) n`.
+  The "shallow-diagonal" companion of `sum_simplex`: `sum_simplex` sums a fixed DIMENSION over
+  increasing size; this sums a fixed SIZE over increasing dimension. Both are the same simplex
+  number by `simplexNumber_symm`. Proof: `rw [← sum_simplex d n]; exact Finset.sum_congr rfl
+  (fun k _ => simplexNumber_symm k d)`.
+
+Build: **VERIFIED** clean — `Build completed successfully (3059 jobs)`, exit 0 (2 of 4 runs fully
+succeeded; the SIGBUS-135 tail on other runs is the fleet olean-write env issue, not code).
+0 new axioms, 0 sorries, no native_decide. json leanFiles synced 320/14/4 → 344/17/4.
+
+NEXT: entry is well saturated (Pascal-simplex identities, iterated-summation Cauchy/Vandermonde
+semigroup, Sym counting, ascFactorial closed form, and now the reflection symmetry). Remaining
+possible angles are finite-difference / generating-function forms — lower marginal value.
