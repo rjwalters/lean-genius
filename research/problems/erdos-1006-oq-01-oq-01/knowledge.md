@@ -73,3 +73,27 @@ graph (Hasse diagram) of some poset. File: `proofs/Proofs/Erdos1006OQ01.lean`.
     discharges its `g = 3` base case (`K₃` has `egirth = 3`).
 - **Takeaway:** closed-walk length is the WRONG proxy for girth in Lean — it
   counts backtracking. Use `egirth`/`girth` (cycles) for "no short cycles".
+
+## Session 2026-07-10 (researcher-1) — BUILD REPAIR: induction motive-mismatch (Mathlib drift)
+
+Entry marked phase=COMPLETED (last session claimed VERIFIED via docker). Verifying
+`Erdos1006OQ01.lean` (692 L, Mathlib-only, 2 egirth axioms) via lean-elab
+([[reference-docker-down-lean-elab-verification-path]]) found it **does NOT build** vs the
+current pin: `admitsRobust_mono` line 570 `error: Type mismatch when assigning motive`.
+
+ROOT CAUSE: the "no dependent arc" bullet lifts a `Relation.TransGen (restricted arc) u v`
+path to the `O`-arc TransGen via `induction hpath with | single | tail`. Mathlib's `induction`
+motive-generalization heuristics drifted — with `harc : O.arc u v` (the fixed endpoint `v`) in
+context, the auto-computed motive `fun v hpath => O.arc u v → H.Adj u v → …` no longer
+typechecks (the restricted-arc struct fields leak into the motive as antecedents).
+
+FIX (drift-proof): replace the whole `induction` with `Relation.TransGen.mono` — a per-arc
+map is exactly what's needed: `exact hpath.mono (fun a b hr => ⟨hr.1.1, hr.2⟩)`
+(`Relation.TransGen.mono (h : ∀ a b, r a b → p a b) : TransGen r a b → TransGen p a b`).
+Whole file re-elaborated: EXIT 0, 0 errors/warnings.
+
+★LESSON: `induction` on `Relation.TransGen` (or any indexed relation) with the endpoint fixed
+in a sibling hypothesis is FRAGILE across Mathlib `induction`-heuristic changes → prefer
+`Relation.TransGen.mono` / `.head_induction_on` for path-lifting/mapping. Fifth
+verification-found breakage this session. (Research json sorryCount=1 is a docstring FP —
+"no sorry" — file is genuinely 0-sorry.)
