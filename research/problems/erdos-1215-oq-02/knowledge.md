@@ -56,3 +56,42 @@ Insights accumulated during research on this problem.
 give the per-factor bound `‖z-μ‖ ≥ ‖z‖-1`; `Finset.prod_le_prod` + `Finset.prod_const`
 + `card_primitiveRoots` assemble `(‖z‖-1)^{φ(n)} ≤ |Φ_n(z)|`; `le_self_pow₀` collapses
 the exponent for `‖z‖ ≥ 2`.
+
+## Session 2026-07-09 (researcher-6) - Sharp two-sided radii
+
+**Mode**: FRESH (built on researcher-4's OQ02OQ01)
+**Outcome**: progress (VERIFIED 0-sorry/0-axiom, docker `[7745/7745]` build succeeded)
+
+### What I Did
+- Created `proofs/Proofs/CyclotomicPolynomialsOQ02OQ02.lean` (6 decls, 0 sorry / 0 axiom).
+- Executed the first "Next Step" left by researcher-4: **sharpened the outer radius**
+  of the cyclotomic level set from the crude `max 2 (C+1)` to `1 + C^{1/φ(n)}`, and
+  added the complementary **inner ball containment**.
+
+### Key Findings
+- Mirror of the OQ01 lower bound: `‖z-μ‖ ≤ ‖z‖+1` per factor ⟹
+  `|Φ_n(z)| ≤ (‖z‖+1)^{φ(n)}` (`norm_cyclotomic_eval_le`).
+- Inner containment: `(‖z‖+1)^{φ(n)} < C ⟹ z ∈ {|Φ_n|<C}`, hence
+  `closedBall(0,r) ⊆ {|Φ_n|<C}` when `(r+1)^{φ(n)} < C`.
+- Sharp outer radius: taking `φ(n)`-th roots of `(‖z‖-1)^{φ(n)} ≤ |Φ_n(z)| < C`
+  gives `‖z‖ < 1 + C^{1/φ(n)}` (`cyclotomic_sublevel_norm_lt_sharp`).
+- Quantitative payoff (`sharp_radius_le_crude`): for `C ≥ 1`,
+  `1 + C^{1/φ(n)} ≤ max 2 (C+1)`, and the sharp radius → 2 as `φ(n) → ∞`. So
+  high-degree cyclotomic lemniscates hug the unit circle — the antithesis of the
+  clustering freedom Mac Lane needs for a labyrinth.
+
+### Files Modified
+- `proofs/Proofs/CyclotomicPolynomialsOQ02OQ02.lean` (new)
+
+### Next Steps
+- Component-count / path-length geometry for n=3,4,6 (still the genuinely open driver;
+  needs polynomial-lemniscate topology Mathlib currently lacks).
+- Two-sided sandwich is now in place; a natural follow-up is the *area* of
+  `{|Φ_n|<C}` squeezed between the two balls.
+
+### Reusable Lean recipe
+Take `k`-th roots of a natural-power bound `a^k < C` (with `a ≥ 0`, `k ≠ 0`):
+`Real.rpow_lt_rpow (pow_nonneg ha _) hak hkpos` lifts to `(a^k)^{1/k} < C^{1/k}`, then
+`Real.pow_rpow_inv_natCast ha hk0 : (a^k)^((k:ℝ)⁻¹) = a` collapses the LHS. Exponent
+`1/φ(n) ≤ 1` via `inv_le_one_of_one_le₀`; `Real.rpow_le_rpow_of_exponent_le` compares
+`C^{1/φ(n)} ≤ C^1 = C`. Upper factor bound uses `norm_sub_le` + `pow_le_pow_left₀`.
