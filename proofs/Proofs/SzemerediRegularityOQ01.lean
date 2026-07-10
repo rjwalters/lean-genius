@@ -298,6 +298,30 @@ theorem card_irregularOrderedPairs_antitone (G : SimpleGraph V) [DecidableRel G.
     (irregularOrderedPairs G eps₂ parts).card ≤ (irregularOrderedPairs G eps₁ parts).card :=
   Finset.card_le_card (irregularOrderedPairs_antitone G h parts)
 
+/-- **The irregular-pair set is monotone in the vertex partition.**  Enlarging the pool of
+    parts can only add ordered irregular pairs: if `parts₁ ⊆ parts₂` then every irregular
+    ordered pair over `parts₁` is also one over `parts₂`.  The `eps`-parameter monotonicity
+    (`irregularOrderedPairs_antitone`) and this partition monotonicity are the two ways the
+    irregular set can grow — coarser `eps` (smaller parameter) or a larger set of parts.
+    The filter predicate `p.1 ≠ p.2 ∧ ¬IsEpsilonRegular …` is independent of the partition,
+    so the containment is inherited directly from `parts₁ ×ˢ parts₁ ⊆ parts₂ ×ˢ parts₂`. -/
+theorem irregularOrderedPairs_mono_parts (G : SimpleGraph V) [DecidableRel G.Adj]
+    (eps : ℚ) {parts₁ parts₂ : Finset (Finset V)} (h : parts₁ ⊆ parts₂) :
+    irregularOrderedPairs G eps parts₁ ⊆ irregularOrderedPairs G eps parts₂ := by
+  intro x hx
+  simp only [irregularOrderedPairs, Finset.mem_filter, Finset.mem_product] at hx ⊢
+  obtain ⟨⟨h1, h2⟩, hne, hreg⟩ := hx
+  exact ⟨⟨h h1, h h2⟩, hne, hreg⟩
+
+/-- **The irregular-pair count is monotone (non-decreasing) in the partition.**  Cardinality
+    form of `irregularOrderedPairs_mono_parts`: refining a partition — passing to any
+    superset of parts — can only increase the number of ordered irregular pairs.  The
+    partition-side counterpart of `card_irregularOrderedPairs_antitone`. -/
+theorem card_irregularOrderedPairs_mono_parts (G : SimpleGraph V) [DecidableRel G.Adj]
+    (eps : ℚ) {parts₁ parts₂ : Finset (Finset V)} (h : parts₁ ⊆ parts₂) :
+    (irregularOrderedPairs G eps parts₁).card ≤ (irregularOrderedPairs G eps parts₂).card :=
+  Finset.card_le_card (irregularOrderedPairs_mono_parts G eps h)
+
 /-- **A partition is exactly as irregular for `Gᶜ` as for `G`.**  Lifting the per-pair
     `isEpsilonRegular_compl` to the whole partition: for a positive parameter `eps` and a
     family of *pairwise-disjoint, nonempty* parts (the standing hypotheses of a genuine
