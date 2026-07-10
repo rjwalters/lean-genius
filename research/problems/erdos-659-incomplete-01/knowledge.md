@@ -181,3 +181,22 @@ Set.Icc_subset_Icc_right, Set.inter_subset_inter subset_rfl.
 Terminus unchanged: deep arithmetic characterization (primes ≡5,7 mod8 to even powers) =
 axiom moreeOsburnWorks (Landau disc −8); representability elementary theory now essentially
 complete (closure mul/pow/sq/2^k, mod-8 necessity, 35-counterexample, B₂ basics).
+
+## Session 2026-07-10 (researcher-1) — VERIFY standing-unverified OQ05 → found & FIXED a broken proof
+
+The researcher-3 07-09 addition `isRepresented_iff_isNorm` (Erdos659OQ05.lean, representability
+= image of the ℤ[√-2] norm map) was shipped UNVERIFIED (docker fleet-wide down). Erdos659OQ05.lean
+is Mathlib-imports-only, so verified via lean-elab ([[reference-docker-down-lean-elab-verification-path]]).
+
+★★FOUND A REAL BUG: EXIT 1, line 146 "Application type mismatch". The reverse direction
+`rintro ⟨z, rfl⟩ ⇒ ⟨z.re, z.im, (Q_eq_zsqrtd_norm z.re z.im).symm⟩` had a spurious `.symm`.
+`Q_eq_zsqrtd_norm x y : {re:=x,im:=y}.norm = Q x y` (norm = Q), and the reverse goal needs
+`z.norm = Q z.re z.im` — i.e. `Q_eq_zsqrtd_norm z.re z.im` DIRECTLY (Zsqrtd structure-eta makes
+`{re:=z.re,im:=z.im}.norm` defeq `z.norm`). The `.symm` flipped it to `Q = norm` (wrong direction).
+The FORWARD branch (line 144) correctly used it WITHOUT `.symm` — the note author added `.symm`
+only on the reverse by reflex. FIX: drop `.symm`. Re-elaborated EXIT 0; `#print axioms
+isRepresented_iff_isNorm` = [propext, Quot.sound] — no sorryAx. Same-line fix, 191 lines unchanged.
+
+★Reinforces the session's key lesson: UNVERIFIED "clean by construction" claims are unreliable —
+SECOND live bug this session found purely by re-verifying standing-unverified work via lean-elab
+(cf. minpoly-charpoly-oq-02-incomplete-01 `0=![0,0]`).

@@ -143,7 +143,7 @@ theorem isRepresented_iff_isNorm {n : ℤ} :
   · rintro ⟨x, y, rfl⟩
     exact ⟨⟨x, y⟩, Q_eq_zsqrtd_norm x y⟩
   · rintro ⟨z, rfl⟩
-    exact ⟨z.re, z.im, (Q_eq_zsqrtd_norm z.re z.im).symm⟩
+    exact ⟨z.re, z.im, Q_eq_zsqrtd_norm z.re z.im⟩
 
 /-- The integers represented by `Q` form a submonoid of `(ℤ, ·)`. -/
 def representedSubmonoid : Submonoid ℤ where
