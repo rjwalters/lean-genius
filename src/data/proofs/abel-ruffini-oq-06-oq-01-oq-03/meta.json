@@ -91,28 +91,32 @@
       "title": "Overview: packaging the extension-closure property",
       "startLine": 1,
       "endLine": 38,
-      "summary": "Header docstring. Recalls that the parent A₄ proof inlined a short-exact-sequence solvability argument via Mathlib's general solvable_of_ker_le_range, and that Mathlib records the subgroup and quotient closure corollaries but not the symmetric normal-subgroup/quotient extension form. Frames the four deliverables: the packaged lemma, its hypothesis variant, the metabelian corollary, and the A₄ re-derivation."
+      "summary": "Header docstring. Recalls that the parent A₄ proof inlined a short-exact-sequence solvability argument via Mathlib's general solvable_of_ker_le_range, and that Mathlib records the subgroup and quotient closure corollaries but not the symmetric normal-subgroup/quotient extension form. Frames the four deliverables: the packaged lemma, its hypothesis variant, the metabelian corollary, and the A₄ re-derivation.",
+      "mathContext": "Extension-closure of solvable groups: if $N \\trianglelefteq G$ with $N$ and $G/N$ solvable, then $G$ is solvable — the SES $1 \\to N \\to G \\to G/N \\to 1$, packaged from Mathlib's low-level $\\texttt{solvable\\_of\\_ker\\_le\\_range}$."
     },
     {
       "id": "packaged-lemma",
       "title": "The packaged extension-closure lemma",
       "startLine": 49,
       "endLine": 72,
-      "summary": "isSolvable_of_normal_of_quotient: from [N.Normal], [IsSolvable N], [IsSolvable (G ⧸ N)] conclude IsSolvable G, by specializing solvable_of_ker_le_range to N.subtype and QuotientGroup.mk' N with the ker ≤ range goal discharged by QuotientGroup.ker_mk' and Subgroup.range_subtype (both equal N). isSolvable_of_normal_of_isSolvable_quotient restates it with the two solvability facts as explicit term hypotheses."
+      "summary": "isSolvable_of_normal_of_quotient: from [N.Normal], [IsSolvable N], [IsSolvable (G ⧸ N)] conclude IsSolvable G, by specializing solvable_of_ker_le_range to N.subtype and QuotientGroup.mk' N with the ker ≤ range goal discharged by QuotientGroup.ker_mk' and Subgroup.range_subtype (both equal N). isSolvable_of_normal_of_isSolvable_quotient restates it with the two solvability facts as explicit term hypotheses.",
+      "mathContext": "$N \\trianglelefteq G$, $\\mathrm{IsSolvable}\\,N$, $\\mathrm{IsSolvable}\\,(G/N) \\Rightarrow \\mathrm{IsSolvable}\\,G$: apply $\\texttt{solvable\\_of\\_ker\\_le\\_range}$ to $N \\hookrightarrow G \\twoheadrightarrow G/N$, where $\\ker(\\text{mk}') = N = \\mathrm{range}(\\text{subtype})$ collapses the side goal to $N \\le N$."
     },
     {
       "id": "metabelian-corollary",
       "title": "The metabelian corollary",
       "startLine": 71,
       "endLine": 84,
-      "summary": "isSolvable_of_isSolvable_commutator: a group is solvable whenever its commutator subgroup is. The quotient factor G ⧸ commutator G is abelian for free — quotient_commutative_iff_commutator_le applied to commutator G ≤ commutator G (reflexivity) — so isSolvable_of_comm makes it solvable and the packaged lemma with N = commutator G concludes."
+      "summary": "isSolvable_of_isSolvable_commutator: a group is solvable whenever its commutator subgroup is. The quotient factor G ⧸ commutator G is abelian for free — quotient_commutative_iff_commutator_le applied to commutator G ≤ commutator G (reflexivity) — so isSolvable_of_comm makes it solvable and the packaged lemma with N = commutator G concludes.",
+      "mathContext": "$\\mathrm{IsSolvable}\\,[G,G] \\Rightarrow \\mathrm{IsSolvable}\\,G$: the abelianization $G/[G,G]$ is abelian by definition, so only the derived subgroup's solvability is needed — iterating recovers 'terminating derived series $\\Rightarrow$ solvable'."
     },
     {
       "id": "a4-application",
       "title": "A₄ solvable, re-derived through the packaged lemma",
       "startLine": 86,
       "endLine": 104,
-      "summary": "alternatingFinFour_isSolvable: reconstructs V₄ = kleinFour (Fin 4) as normal (normal_kleinFour), solvable (exponent two ⟹ abelian via mul_comm_of_exponent_two + isSolvable_of_comm), with abelian quotient A₄ ⧸ V₄ (V₄ = commutator A₄ via kleinFour_eq_commutator + quotient_commutative_iff_commutator_le), then closes with a single exact isSolvable_of_normal_of_quotient N — the parent's inline solvable_of_ker_le_range plus hand-written side goal reduced to one application."
+      "summary": "alternatingFinFour_isSolvable: reconstructs V₄ = kleinFour (Fin 4) as normal (normal_kleinFour), solvable (exponent two ⟹ abelian via mul_comm_of_exponent_two + isSolvable_of_comm), with abelian quotient A₄ ⧸ V₄ (V₄ = commutator A₄ via kleinFour_eq_commutator + quotient_commutative_iff_commutator_le), then closes with a single exact isSolvable_of_normal_of_quotient N — the parent's inline solvable_of_ker_le_range plus hand-written side goal reduced to one application.",
+      "mathContext": "$A_4$ solvable in one application: $V_4 = [A_4,A_4]$ (Klein-four, exponent $2$ so abelian, normal) and $A_4/V_4 \\cong \\mathbb{Z}/3$ abelian, so $\\texttt{isSolvable\\_of\\_normal\\_of\\_quotient}\\;V_4$ discharges the parent's hand-written SES goal at once."
     }
   ],
   "references": [
