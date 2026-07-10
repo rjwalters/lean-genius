@@ -133,5 +133,28 @@
       "description": "Failure of unique factorization in ℤ[√(-5)]"
     }
   ],
+  "references": [
+    {
+      "title": "Elements, Books VII–IX",
+      "author": "Euclid",
+      "year": "c. 300 BC",
+      "venue": "Alexandria",
+      "description": "Contains Euclid's lemma (VII.30: a prime dividing a product divides a factor) and the existence of a prime factorization (VII.31, IX.14), the two ingredients whose uniqueness this entry packages as f.prod (·^·) = n ⟹ f = n.factorization."
+    },
+    {
+      "title": "Disquisitiones Arithmeticae",
+      "author": "Carl Friedrich Gauss",
+      "year": "1801",
+      "venue": "Fleischer, Leipzig",
+      "description": "Article 16 gives the first fully rigorous statement and proof of the Fundamental Theorem of Arithmetic — the uniqueness of prime factorization — the theorem this file formalizes through Mathlib's prime-exponent map Nat.factorization."
+    },
+    {
+      "title": "An Introduction to the Theory of Numbers",
+      "author": "G. H. Hardy and E. M. Wright",
+      "year": "2008",
+      "venue": "Oxford University Press (6th edition, revised by Heath-Brown and Silverman)",
+      "description": "Chapter I develops the FTA and the canonical prime-power representation n = ∏ p^{a_p}; the exponent map p ↦ a_p is exactly the Finsupp Nat.factorization whose uniqueness characterization this entry proves."
+    }
+  ],
   "sorries": 0
 }
