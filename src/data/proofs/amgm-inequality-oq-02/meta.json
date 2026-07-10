@@ -101,7 +101,7 @@
       "Real analysis (rpow, sqrt, mean inequalities)",
       "Finset combinatorics (powersetCard, sum, prod)"
     ],
-    "lineCount": 743,
+    "lineCount": 766,
     "assumptions": "1 axiom: newton_log_concavity — for non-negative inputs, the normalized elementary symmetric sequence is log-concave: (eₖ/C(n,k))² ≥ (eₖ₋₁/C(n,k-1))·(eₖ₊₁/C(n,k+1)). Classical result needing the real-rootedness / Rolle machinery (Hardy-Littlewood-Pólya §2.22), not yet in Mathlib. The previously-assumed maclaurin_step (Mₖ ≥ Mₖ₊₁) is NO LONGER an axiom: it is now derived from newton_log_concavity alone via the logarithm-free, product-free multiplicative core (maclaurin_core_of_pos: p_{k+1}^k ≤ p_k^{k+1}, induction on k), a crossed root extraction (rpow_cross), and a 'zeros form a suffix' positivity argument (elemSymm_pos_of_top_pos) covering all non-negative inputs. The k=1 case of Newton's inequality (newton_k1) is also proved without axioms. 0 sorries remain.",
     "mathlib_version": "4.26.0",
     "theoremCount": 34,
@@ -305,7 +305,7 @@
       "Real"
     ],
     "namespace": null,
-    "lineCount": 743,
+    "lineCount": 766,
     "structureCount": 0,
     "axiomCount": 1,
     "theoremCount": 34,
