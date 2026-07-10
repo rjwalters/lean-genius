@@ -1,62 +1,166 @@
 [
   {
+    "id": "ann-imports",
+    "proofId": "hall-marriage-theorem-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 3
+    },
+    "type": "context",
+    "title": "Imports: Mathlib and the Parent Defect Theorem",
+    "content": "The two imports fix this file as a child of the defect-form entry. `import Mathlib` supplies `Finset`, `Finset.sup`, truncated ℕ subtraction, and the `Fintype`/`DecidableEq` machinery; `import Proofs.HallMarriageTheoremOQ01OQ01` brings in the parent's defect (Ore) form of Hall's theorem — specifically `deficiency_matching_iff`, `exists_matching_of_deficiency_le`, and `deficiency_le_of_matching`. Those three are the only external facts the closed-form optimum consumes: nothing about matchings is re-proved here, and the whole result is assembled by feeding the parametrised parent `iff` a single sharp value of its deficiency parameter.",
+    "mathContext": "Parent fact reused (defect/Ore form): a matching missing at most $d$ indices exists $\\iff \\forall s,\\ \\#s \\le \\#(s.\\mathrm{biUnion}\\,t) + d$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Hall's marriage theorem (defect/Ore form)",
+      "reuse of a verified parent proof",
+      "Finset.sup and truncated subtraction"
+    ],
+    "prerequisites": [
+      "Lean 4 imports",
+      "the parent entry HallMarriageTheoremOQ01OQ01"
+    ]
+  },
+  {
     "id": "hall-marriage-theorem-oq-01-oq-01-oq-01-module-header",
     "proofId": "hall-marriage-theorem-oq-01-oq-01-oq-01",
     "type": "concept",
-    "range": { "startLine": 4, "endLine": 38 },
+    "range": {
+      "startLine": 4,
+      "endLine": 38
+    },
     "title": "Module Header: From the Defect Biconditional to a Closed Form",
     "content": "The companion entry proves the **defect (Ore) form** of Hall's theorem: a matching saturating all but $d$ indices exists **iff** every sub-family $s$ satisfies $\\#s \\le \\#(s.\\mathrm{biUnion}\\ t) + d$. This file pins the sharp $d$ to the **deficiency**\n$$\\delta(t) = \\max_{s}\\ \\bigl(\\#s - \\#(s.\\mathrm{biUnion}\\ t)\\bigr),$$\nturning the parametrised biconditional into a single optimum: **maximum partial-transversal size $= \\#\\iota - \\delta(t)$**. Attainability comes from the parent's $\\mathrm{exists\\_matching\\_of\\_deficiency\\_le}$, optimality from $\\mathrm{deficiency\\_le\\_of\\_matching}$; $\\delta = 0$ recovers Hall's full system of distinct representatives.",
     "mathContext": "$\\delta(t)=\\max_s\\bigl(\\#s-\\#(s.\\mathrm{biUnion}\\,t)\\bigr)$, max partial-transversal size $=\\#\\iota-\\delta(t)$.",
     "significance": "supporting",
-    "relatedConcepts": ["Hall's marriage theorem", "Ore defect form", "deficiency version of Hall", "min-max duality", "König–Egerváry theorem"],
-    "prerequisites": ["systems of distinct representatives", "bipartite matching"]
+    "relatedConcepts": [
+      "Hall's marriage theorem",
+      "Ore defect form",
+      "deficiency version of Hall",
+      "min-max duality",
+      "König–Egerváry theorem"
+    ],
+    "prerequisites": [
+      "systems of distinct representatives",
+      "bipartite matching"
+    ]
+  },
+  {
+    "id": "ann-setup-context",
+    "proofId": "hall-marriage-theorem-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 39,
+      "endLine": 49
+    },
+    "type": "context",
+    "title": "Open, Namespace, and the Typeclass Variable Context",
+    "content": "`open Finset Function` brings `univ`, `Finset.sup`, `biUnion`, and injectivity vocabulary into scope unqualified; `namespace HallDefect` isolates `deficiency` and the optimum theorems from the parent file's identically-shaped lemmas. The `variable {ι α : Type*} [Fintype ι] [DecidableEq ι] [DecidableEq α] [Nonempty α]` line fixes the ambient assumptions for everything that follows: `ι` (the index type) is finite so `#ι` and the `Finset.sup` over all sub-families are well-defined, `DecidableEq` on both types makes `biUnion` and its cardinality computable, and `Nonempty α` guarantees a target set for representatives. These are exactly the hypotheses under which the deficiency defined just below is well-posed.",
+    "mathContext": "$\\delta(t) = \\max_{s}\\big(\\#s - \\#(s.\\mathrm{biUnion}\\,t)\\big)$ as a `Finset.sup` over all sub-families $s \\subseteq \\iota$ (truncated subtraction $\\Rightarrow \\delta \\ge 0$).",
+    "significance": "technical",
+    "relatedConcepts": [
+      "Fintype and DecidableEq typeclasses",
+      "Finset.sup over the powerset",
+      "namespace isolation"
+    ],
+    "prerequisites": [
+      "Lean typeclasses and variable declarations",
+      "finite sets and biUnion"
+    ]
   },
   {
     "id": "hall-marriage-theorem-oq-01-oq-01-oq-01-deficiency",
     "proofId": "hall-marriage-theorem-oq-01-oq-01-oq-01",
     "type": "definition",
-    "range": { "startLine": 50, "endLine": 71 },
+    "range": {
+      "startLine": 50,
+      "endLine": 71
+    },
     "title": "The Deficiency as a Finset-sup",
     "content": "`deficiency t = (univ : Finset (Finset ι)).sup (fun s => #s − #(s.biUnion t))`, a maximum over **all** sub-families using $\\mathbb{N}$ **truncated subtraction** — so the empty family contributes $0$ and $\\delta \\ge 0$ holds by construction, no separate proof needed.\n\n`sub_card_le_deficiency`: the per-subfamily bound $\\#s - \\#(s.\\mathrm{biUnion}\\ t) \\le \\delta$, a direct `Finset.le_sup`. `deficiency_spec`: its additive form $\\#s \\le \\#(s.\\mathrm{biUnion}\\ t) + \\delta$ (by `omega`) — exactly the '$t$ is at worst $\\delta$-deficient' hypothesis the parent defect theorem consumes.",
     "mathContext": "$\\delta(t)=\\bigvee_{s\\in\\mathcal{P}(\\iota)}\\bigl(\\#s-\\#(s.\\mathrm{biUnion}\\,t)\\bigr)$ and $\\forall s,\\ \\#s\\le\\#(s.\\mathrm{biUnion}\\,t)+\\delta(t)$.",
     "significance": "key",
-    "relatedConcepts": ["Finset.sup over a lattice", "truncated natural subtraction", "Finset.le_sup", "neighbourhood of a set family"],
-    "prerequisites": ["Finset.sup / lattice suprema", "ℕ truncated subtraction", "omega arithmetic"]
+    "relatedConcepts": [
+      "Finset.sup over a lattice",
+      "truncated natural subtraction",
+      "Finset.le_sup",
+      "neighbourhood of a set family"
+    ],
+    "prerequisites": [
+      "Finset.sup / lattice suprema",
+      "ℕ truncated subtraction",
+      "omega arithmetic"
+    ]
   },
   {
     "id": "hall-marriage-theorem-oq-01-oq-01-oq-01-transversal-sizes",
     "proofId": "hall-marriage-theorem-oq-01-oq-01-oq-01",
     "type": "definition",
-    "range": { "startLine": 73, "endLine": 78 },
+    "range": {
+      "startLine": 73,
+      "endLine": 78
+    },
     "title": "Attainable Partial-Transversal Sizes",
     "content": "`transversalSizes t = { k | ∃ J f, #J = k ∧ Set.InjOn f ↑J ∧ ∀ i ∈ J, f i ∈ t i }`. A **partial transversal** is a set $J \\subseteq \\iota$ together with a choice function $f$ injective on $J$ with $f\\,i \\in t\\,i$ for $i \\in J$; its size is $\\#J$. The headline theorem characterises the greatest element of this set of sizes.",
     "mathContext": "$\\mathrm{transversalSizes}\\,t=\\{\\,\\#J \\mid \\exists f,\\ \\mathrm{InjOn}\\,f\\,J \\wedge \\forall i\\in J,\\ f(i)\\in t(i)\\,\\}$.",
     "significance": "supporting",
-    "relatedConcepts": ["partial transversal", "injective choice function", "Set.InjOn", "matching as a function"],
-    "prerequisites": ["set-builder notation", "injectivity on a set (InjOn)"]
+    "relatedConcepts": [
+      "partial transversal",
+      "injective choice function",
+      "Set.InjOn",
+      "matching as a function"
+    ],
+    "prerequisites": [
+      "set-builder notation",
+      "injectivity on a set (InjOn)"
+    ]
   },
   {
     "id": "hall-marriage-theorem-oq-01-oq-01-oq-01-closed-form",
     "proofId": "hall-marriage-theorem-oq-01-oq-01-oq-01",
     "type": "theorem",
-    "range": { "startLine": 80, "endLine": 107 },
+    "range": {
+      "startLine": 80,
+      "endLine": 107
+    },
     "title": "Closed-Form Maximum: |ι| − δ",
     "content": "`isGreatest_transversalSizes`: $\\mathrm{IsGreatest}\\ (\\mathrm{transversalSizes}\\ t)\\ (\\#\\iota - \\delta(t))$ — the optimum is both **attained** and an **upper bound**.\n\n*Attainability*: feed `deficiency_spec` into `exists_matching_of_deficiency_le` to get a matching on some $J$ with $\\#J \\ge \\#\\iota - \\delta$, then `Finset.exists_subset_card_eq` trims it to a sub-transversal of size **exactly** $\\#\\iota - \\delta$ (a subset of an injective partial transversal is again one).\n\n*Optimality*: any attainable $k = \\#J$ gives a matching saturating all but $\\#\\iota - \\#J$ indices, so `deficiency_le_of_matching` plus `Finset.sup_le` force $\\delta \\le \\#\\iota - \\#J$, hence $k \\le \\#\\iota - \\delta$ by `omega`.",
     "mathContext": "$\\mathrm{IsGreatest}\\,(\\mathrm{transversalSizes}\\,t)\\,(\\#\\iota-\\delta(t))$: $\\#\\iota-\\delta$ is both attained and an upper bound.",
     "significance": "key",
-    "relatedConcepts": ["IsGreatest (attained maximum)", "min-max identity", "Finset.exists_subset_card_eq", "Set.InjOn.mono", "Finset.sup_le"],
-    "prerequisites": ["IsGreatest in an order", "the companion defect theorem", "domain-shrinking of matchings"]
+    "relatedConcepts": [
+      "IsGreatest (attained maximum)",
+      "min-max identity",
+      "Finset.exists_subset_card_eq",
+      "Set.InjOn.mono",
+      "Finset.sup_le"
+    ],
+    "prerequisites": [
+      "IsGreatest in an order",
+      "the companion defect theorem",
+      "domain-shrinking of matchings"
+    ]
   },
   {
     "id": "hall-marriage-theorem-oq-01-oq-01-oq-01-hall-corollaries",
     "proofId": "hall-marriage-theorem-oq-01-oq-01-oq-01",
     "type": "theorem",
-    "range": { "startLine": 108, "endLine": 131 },
+    "range": {
+      "startLine": 108,
+      "endLine": 131
+    },
     "title": "Vanishing Deficiency Recovers Hall",
     "content": "`deficiency_eq_zero_iff`: $\\delta(t) = 0 \\iff \\forall s,\\ \\#s \\le \\#(s.\\mathrm{biUnion}\\ t)$ — i.e. $\\delta = 0$ is **exactly Hall's condition** (via `Finset.sup_le` / `Nat.le_zero`).\n\n`maxTransversal_eq_card_of_deficiency_zero`: rewriting $\\delta = 0$ in the closed form collapses $\\#\\iota - \\delta$ to $\\#\\iota$, so the maximum partial transversal saturates all of $\\iota$ — a **full system of distinct representatives**, recovering the classical marriage theorem as the zero-deficiency slice.",
     "mathContext": "$\\delta(t)=0\\iff\\forall s,\\ \\#s\\le\\#(s.\\mathrm{biUnion}\\,t)$; and $\\delta(t)=0\\Rightarrow\\mathrm{IsGreatest}\\,(\\mathrm{transversalSizes}\\,t)\\,\\#\\iota$.",
     "significance": "key",
-    "relatedConcepts": ["Hall's condition", "full system of distinct representatives", "specialisation/limiting case", "Nat.le_zero", "Finset.sup_le"],
-    "prerequisites": ["Hall's marriage condition", "rewriting with a hypothesis (rwa)"]
+    "relatedConcepts": [
+      "Hall's condition",
+      "full system of distinct representatives",
+      "specialisation/limiting case",
+      "Nat.le_zero",
+      "Finset.sup_le"
+    ],
+    "prerequisites": [
+      "Hall's marriage condition",
+      "rewriting with a hypothesis (rwa)"
+    ]
   }
 ]
