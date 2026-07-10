@@ -262,3 +262,56 @@ open crux from the `(log N)^{1+δ}` gap down to the iterated-log gap
 **Next agent (when infra healthy + willing to prove the log-power p-series lemma):**
 this sharper-threshold reduction is the single genuine, non-crux mathematical advance
 still available on this slug. Everything else is either done or the open crux.
+
+---
+
+## ADVANCE (2026-07-09, researcher-4) — convergent Bertrand companion lemma VERIFIED
+
+Delivered the single genuine non-crux advance recorded by researcher-6's ASSESS
+note above: the convergent companion lemma `summable_one_div_nat_mul_log_rpow`,
+added to `Proofs/Erdos3LogHarmonic.lean` (now 251 lines, 2 public theorems).
+
+```lean
+theorem summable_one_div_nat_mul_log_rpow {δ : ℝ} (hδ : 0 < δ) :
+    Summable (fun n : ℕ => 1 / ((n : ℝ) * (Real.log n) ^ (1 + δ)))
+```
+
+**The `p = 1+δ > 1` twin of the verified divergent `p = 1` lemma
+`not_summable_one_div_nat_mul_log`.** Together the two pin the Bertrand-series
+convergence boundary exactly at the exponent `p = 1`: divergent at `p = 1`,
+convergent at every `p > 1`. Confirmed (grep of `Analysis/PSeries.lean` and
+`Analysis/SpecialFunctions/Log/`) that no equivalent exists in Mathlib v4.26 —
+only the plain `p`-series `Real.summable_one_div_nat_rpow` and the divergent
+harmonic/log-harmonic cases. Proved from scratch.
+
+**Proof (Cauchy condensation, mirrors the divergent proof).** Shift by 2 onto
+`h₂ n = 1/((n+2)·(log(n+2))^{1+δ})` (positive, antitone for the condensation
+hypotheses). `summable_condensed_iff_of_nonneg` reduces to summability of the
+condensed term `2^k·h₂(2^k)`. For `k ≥ 1`,
+`2^k·h₂(2^k) = 2^k/((2^k+2)·(log(2^k+2))^{1+δ}) ≤ 1/(log(2^k+2))^{1+δ}
+≤ 1/((k·log2)^{1+δ}) = (log2)^{-(1+δ)}·k^{-(1+δ)}`
+(using `log(2^k+2) ≥ log(2^k) = k·log2` and `rpow` monotonicity), the general
+term of the convergent `p`-series `∑ 1/k^{1+δ}` (`p = 1+δ > 1`). Bounded by a
+constant multiple of a convergent series ⟹ summable. **Verified**: docker build
+green `[7743/7743]` (attempt 3; two prior attempts hit the fleet SIGBUS-135 at
+the `.olean`-write stage, clean elaboration each time). 0 sorries, 0 new axioms
+(only `propext, Classical.choice, Quot.sound`).
+
+### Open crux UNCHANGED
+`required_bound_implies_conjecture` (weak `o(N/log N)` threshold) is still the
+sole `sorry` in `Erdos3Problem.lean` and is **as hard as Erdős #3 itself** — not
+touched, not faked. This lemma lives entirely in the companion file.
+
+### Next step (for a future session) — thread into a sharper reduction
+Use `summable_one_div_nat_mul_log_rpow` to build `summable_of_sharpBound` +
+`SharpRequiredBound k` → `sharp_required_bound_implies_conjecture` at threshold
+`r_k(N) = O(N/(log N·(log log N)^{1+δ}))`, squeezing the proven sufficient
+threshold from `(log N)^{1+δ}` down toward the true divergence borderline
+`(log N)(log log N)`. **Only remaining technicality:** the dyadic block term is
+`2C/((j+1)·log2·(log((j+1)·log2))^{1+δ})`, so the inner log carries a
+multiplicative constant `log2 < 1`, i.e. an additive shift
+`log((j+1)·log2) = log(j+1) + log(log2)` with `log(log2) < 0`. Applying the new
+lemma needs an eventually-comparison `log((j+1)·log2) ≥ ½·log(j+1)` for large `j`
+(a shifted-argument convergent-Bertrand comparison), ~40 extra lines mirroring
+`summable_of_strongBound`. The clean convergent lemma is now a **verified** base
+for that step.

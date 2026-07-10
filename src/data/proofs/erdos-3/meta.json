@@ -50,17 +50,18 @@
       "arithProg_card: a genuine k-term AP (d > 0) has exactly k elements, via injectivity of i ↦ a + i·d on range k — a reusable counting fact turning AP-containment into cardinality lower bounds",
       "infinite_of_containsArbitrarilyLongAP: only infinite sets contain arbitrarily long APs (a finite set of size n cannot contain the (n+1)-element AP it would need), a sorry-free axiom-free sanity check on the conjecture's conclusion side",
       "not_summable_one_div_nat_mul_log (Proofs/Erdos3LogHarmonic.lean): a self-contained, sorry-free, axiom-free Cauchy-condensation proof that the log-harmonic (Bertrand) series ∑ 1/(n·log n) diverges — no equivalent exists in Mathlib v4.26. This substantiates the counterexample profile behind the o(N/log N) threshold: a set at that density (e.g. the primes, counting function ~ N/log N) can still have a divergent reciprocal sum, so RequiredBound alone cannot force the AP conclusion and the strictly stronger StrongRequiredBound O(N/(log N)^{1+δ}) threshold is genuinely needed",
-      "rothNumber_zero_length / rothNumber_one_length: exact Roth-number values r₀(N)=0 and r₁(N)=0 at the degenerate boundary — a 0-AP is the empty progression (contained by every set, so no set is 0-AP-free → sup over empty family = 0), a 1-AP is a single point (so 1-AP-free ⟺ empty). Together with rothNumber_two (r₂(N)=1) this pins the exact value for every length k≤2 and shows the general floor min(k-1,N+1) is attained across the whole no-arithmetic-content regime. Axiom-free, 0 sorry."
+      "rothNumber_zero_length / rothNumber_one_length: exact Roth-number values r₀(N)=0 and r₁(N)=0 at the degenerate boundary — a 0-AP is the empty progression (contained by every set, so no set is 0-AP-free → sup over empty family = 0), a 1-AP is a single point (so 1-AP-free ⟺ empty). Together with rothNumber_two (r₂(N)=1) this pins the exact value for every length k≤2 and shows the general floor min(k-1,N+1) is attained across the whole no-arithmetic-content regime. Axiom-free, 0 sorry.",
+      "summable_one_div_nat_mul_log_rpow (Proofs/Erdos3LogHarmonic.lean): the convergent p=1+δ>1 companion of not_summable_one_div_nat_mul_log — ∑ 1/(n·(log n)^{1+δ}) converges for every δ>0, by Cauchy condensation (condensed term ≤ (log2)^{-(1+δ)}·k^{-(1+δ)}, a convergent p-series). Together the two lemmas locate the Bertrand-series convergence boundary exactly at p=1. This is the analytic ingredient prior sessions flagged as missing to sharpen the Erdős #3 conditional reduction below the (log N)^{1+δ} threshold toward the true divergence borderline (log N)(log log N); no equivalent exists in Mathlib v4.26."
     ],
     "additionalFiles": [
       {
         "path": "Proofs/Erdos3LogHarmonic.lean",
-        "description": "Divergence of the log-harmonic (Bertrand) series ∑ 1/(n·log n) via Cauchy condensation; substantiates the o(N/log N) counterexample profile in Erdos3Problem.lean's StrongRequiredBound docstring. Machine-checked, 0 sorries, axioms only [propext, Classical.choice, Quot.sound].",
+        "description": "Bertrand-series convergence dichotomy at exponent p=1, via Cauchy condensation (machine-checked, 0 sorries, axioms only [propext, Classical.choice, Quot.sound]). not_summable_one_div_nat_mul_log: the log-harmonic series ∑ 1/(n·log n) DIVERGES (p=1); summable_one_div_nat_mul_log_rpow: the companion ∑ 1/(n·(log n)^{1+δ}) CONVERGES for every δ>0 (p=1+δ>1). The divergent case substantiates the o(N/log N) counterexample profile in Erdos3Problem.lean's StrongRequiredBound docstring; the convergent case is the analytic ingredient for sharpening the conditional reduction below the (log N)^{1+δ} threshold. Neither exists in Mathlib v4.26.",
         "status": "verified",
         "sorries": 0,
         "axiomCount": 0,
-        "theoremCount": 1,
-        "lineCount": 127
+        "theoremCount": 2,
+        "lineCount": 251
       }
     ],
     "axiomCount": 0,
