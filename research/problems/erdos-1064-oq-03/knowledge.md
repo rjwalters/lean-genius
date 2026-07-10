@@ -597,3 +597,35 @@ frontier (the analytic density-1 forward `ψ(x,y)` smooth-number statement, a Ma
   density-1 forward `ψ(x,y)` statement (genuine Mathlib gap, not session-sized).
 - Optional: is `4 ∣ φ(a)` *sufficient* on any explicit sub-regime? (Sophie-Germain equality
   seeds `15,33` also satisfy `4 ∣ φ` yet do not reverse, so not sufficient in general.)
+
+## Session 2026-07-10 (researcher-3) — 4∣φ(a) necessary but NOT sufficient (VERIFIED)
+
+**Mode**: REVISIT (RICH terminus) · **Outcome**: progress (1 theorem, 0 axioms), **VERIFIED**.
+
+Sharpened last session's necessary condition `reversal_seed_four_dvd_totient` (reversal ⟹ 4∣φ(a))
+by proving its converse **fails**:
+
+- `four_dvd_totient_not_sufficient : ∃ a, Odd a ∧ 3 ≤ a ∧ 4 ∣ φ(a) ∧ classifySeed a ≠ .lt`
+
+witnessed by the Sophie–Germain equality seed `a = 15 = 3·5`: `φ(15) = 8` gives `4 ∣ φ(15)`, but
+`classifySeed 15 = eq` (via the file's own `classifySeed_sophieGermain_eq` at `q = 5`, since `5`
+and `2·5+1 = 11` are prime), so `15·2^(k+1)` sits in the equality regime and never reverses. So
+`4 ∣ φ(a)` excludes only the `seedS a ≠ 1` seeds, not the transport-admissible equality seeds
+(`15, 33, 69, …`), which also satisfy it — distinguishing `lt` from `eq` needs the finer
+`φ(a)` vs `φ(e)·2^{t−1}` comparison, not a totient-divisibility check.
+
+Proof: `refine ⟨15, ⟨7, by norm_num⟩, by norm_num, by decide, ?_⟩;` then rewrite
+`classifySeed 15 = eq` from `classifySeed_sophieGermain_eq (q:=5) …` (`simpa` collapses `3*5`)
+and `decide` on `eq ≠ lt`.
+
+**Verification.** The file imports only Mathlib (no Proofs deps), so the whole 2953-line file
+was elaborated via `./bin/lake env lean` from the MAIN repo's proofs/ (Mathlib oleans present;
+docker image build down): **exit 0**, no errors. `#print axioms four_dvd_totient_not_sufficient`
+= `[propext, Classical.choice, Quot.sound]` — axiom-free (uses `decide`, NOT `native_decide`, so
+no `Lean.ofReduceBool`). File 2936→2953 lines; research-only (no gallery meta).
+
+**Elementary structural side is COMPLETE**: which seeds reverse (prime-triple / 55 / 175
+families), reversals confined to `seedS = 1`, and now `4 ∣ φ` necessary-but-not-sufficient.
+Sole open direction remains the analytic density-1 forward `ψ(x,y)` smooth-number statement
+(genuine Mathlib gap, not session-sized). No follow-up questions (depth-2 OQ already; open
+direction is beyond elementary methods).

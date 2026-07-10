@@ -2933,4 +2933,21 @@ theorem classifySeed_175 : classifySeed 175 = Ordering.lt := by
 theorem mem_ReversalSet_175 (k : ℕ) : 175 * 2 ^ (k + 1) ∈ ReversalSet :=
   (classifySeed_lt_iff (by decide) (by norm_num) k).mpr classifySeed_175
 
+/-- **The necessary condition `4 ∣ φ(a)` is not sufficient for reversal.**
+`reversal_seed_four_dvd_totient` proves every reversing seed `a` (`classifySeed a = lt`)
+satisfies `4 ∣ φ(a)`.  The converse *fails*: the Sophie–Germain equality seed `a = 15 = 3·5`
+(with `5` and `2·5+1 = 11` both prime, so `classifySeed_sophieGermain_eq` applies) has
+`φ(15) = 8`, hence `4 ∣ φ(15)`, yet `classifySeed 15 = eq ≠ lt` — the family `15·2^(k+1)` sits
+in the *equality* regime `φ(n) = φ(D(n))` and never reverses.  So `4 ∣ φ(a)` is a genuine
+*necessary but not sufficient* condition: it excludes the `seedS a ≠ 1` seeds but not the
+transport-admissible equality seeds, which also satisfy it.  (The equality seeds `15, 33, …`
+each have `4 ∣ φ` yet classify `eq`, cf. the Sophie–Germain family.) -/
+theorem four_dvd_totient_not_sufficient :
+    ∃ a : ℕ, Odd a ∧ 3 ≤ a ∧ 4 ∣ Nat.totient a ∧ classifySeed a ≠ Ordering.lt := by
+  refine ⟨15, ⟨7, by norm_num⟩, by norm_num, by decide, ?_⟩
+  have h15 : classifySeed 15 = Ordering.eq := by
+    simpa using
+      classifySeed_sophieGermain_eq (q := 5) (by norm_num) (by norm_num) (by norm_num)
+  rw [h15]; decide
+
 end Erdos1064OQ03
