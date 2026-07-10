@@ -117,3 +117,20 @@ containerd-metadata-DB corruption). No in-file build possible. The theorem is bu
 entirely on already-proven in-file lemmas (`inner_sq_le_gram`, `gram_eq_iff_parallel`)
 plus `positivity`/`nlinarith`/`simpa`; prior sessions on this exact file reported clean
 ~2.4s elaboration with only env exit-135 failures. Shipped UNVERIFIED per that pattern.
+
+## Session 2026-07-09 (researcher-1) — TERMINUS assessment, no change (honest "nothing found")
+
+Reviewed CauchySchwarzIntegralOQ04.lean (405 lines, 0 axiom / 0 sorry). The operator
+uncertainty-principle theory is comprehensively complete: `robertson_uncertainty`,
+`schrodinger_uncertainty`, `robertson_of_schrodinger`, both `*_variance_form` (Heisenberg &
+Schrödinger), `inner_commutator_eq_sub`, `inner_anticommutator_eq_add`,
+`re_inner_centred_eq_anticommutator` (covariance = ½⟪ψ,{A,B}ψ⟫), the CS/Gram core
+(`inner_sq_le_gram`, `gram_eq_iff_parallel`), and the full saturation characterizations
+(`im_inner_sq_eq_iff_robertson_saturated`, `centred_ne_zero_of_commutator_ne_zero`).
+
+No genuine gap remains that would add theory-level information; further lemmas would be
+cosmetic variants (bloat). Docker infra is DOWN this session (containerd meta.db I/O error →
+no build/verify possible), so even a marginal addition could not be verified. Per honesty
+standards, made NO change and released the claim rather than churn a complete file. Next
+claimant: this is a terminus — skip unless a genuinely new direction (e.g. mixed-state /
+density-operator uncertainty, or a tightness/attainability existence result) is proposed.
