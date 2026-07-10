@@ -3051,4 +3051,41 @@ theorem quartic_fourPointLineCount_from_quadruples (k : ℕ) (hk : 0 < k)
           rw [Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul]; ring
   exact ⟨P, hcardP, hno5, fourPointLineCount_ge_of_injOn_family P k L hmem hLcard hcol hLinj⟩
 
+/-! ### The symmetric linear family satisfies the general arithmetic criterion
+
+`quartic_fourPointLineCount_from_quadruples` accepts *any* injective family of
+abscissa-quadruples solving `Σx = 0 ∧ Σx² = 10`, and its docstring notes that the
+concrete linear witnesses of `quartic_linear_lower_bound` are the *symmetric* quadruples
+`(a, −a, b, −b)` with `a² + b² = 5` (there `a = √u`, `b = √(5 − u)`, so
+`a² + b² = u + (5 − u) = 5`).  The two lemmas below turn that observation into checked
+theorems: the symmetric pattern always meets the arithmetic criterion, and hence always
+forms a genuine four-point line on the quartic.  This closes the gap between the general
+engine and the concrete family it is claimed to subsume. -/
+
+/-- **Symmetric quadruples solve the arithmetic four-point-line criterion.**
+For any `a b : ℝ` with `a² + b² = 5`, the abscissae `(a, −a, b, −b)` satisfy the two
+Vieta/sum-of-squares relations `Σx = 0` and `Σx² = 10` that `four_onQuartic_collinear_iff_sq`
+and `quartic_fourPointLineCount_from_quadruples` require.  The first is immediate; the
+second is `a² + (−a)² + b² + (−b)² = 2(a² + b²) = 10`. -/
+theorem symmetric_quadruple_criterion (a b : ℝ) (hab : a ^ 2 + b ^ 2 = 5) :
+    a + (-a) + b + (-b) = 0 ∧
+      a ^ 2 + (-a) ^ 2 + b ^ 2 + (-b) ^ 2 = 10 := by
+  refine ⟨by ring, ?_⟩
+  linear_combination 2 * hab
+
+/-- **Symmetric quadruples form a four-point line on the quartic.**
+For `a² + b² = 5` with the four abscissae `a, −a, b, −b` pairwise distinct, the four points
+above them on `y = x⁴ − 5x²` are collinear — a genuine four-point line, anchored through the
+`(a, ·)` and `(−a, ·)` points.  This is exactly the per-level line the concrete witness
+family `quartic_linear_lower_bound` produces (`a = √u`, `b = √(5 − u)`), now derived directly
+from the general sum-of-squares criterion `four_onQuartic_collinear_iff_sq`. -/
+theorem symmetric_quadruple_onQuartic_collinear (a b : ℝ) (hab : a ^ 2 + b ^ 2 = 5)
+    (h1 : a ≠ -a) (h2 : a ≠ b) (h3 : a ≠ -b) (h4 : -a ≠ b) (h5 : -a ≠ -b) (h6 : b ≠ -b) :
+    collinear (a, a ^ 4 - 5 * a ^ 2) (-a, (-a) ^ 4 - 5 * (-a) ^ 2)
+        (b, b ^ 4 - 5 * b ^ 2) ∧
+      collinear (a, a ^ 4 - 5 * a ^ 2) (-a, (-a) ^ 4 - 5 * (-a) ^ 2)
+        (-b, (-b) ^ 4 - 5 * (-b) ^ 2) := by
+  rw [four_onQuartic_collinear_iff_sq rfl rfl rfl rfl h1 h4 (Ne.symm h2) h5 (Ne.symm h3) h6]
+  exact symmetric_quadruple_criterion a b hab
+
 end Erdos101OQ04
