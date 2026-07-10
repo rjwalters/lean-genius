@@ -371,6 +371,35 @@ theorem im_inner_sq_eq_iff_robertson_saturated {u v : E} (hu : u ≠ 0) (hv : v 
     rw [hre0] at hgeq
     simpa using hgeq
 
+/-- **Incompatible observables cannot both be sharp.**  If the commutator expectation
+`⟪ψ, (AB−BA)ψ⟫` is nonzero, then for *any* real shifts `a, b` both centred vectors are
+nonzero: `(A−a)ψ ≠ 0` and `(B−b)ψ ≠ 0`.  Since `Var_ψ(A) = ‖(A−⟨A⟩)ψ‖²`, taking
+`a = ⟨A⟩`, `b = ⟨B⟩` says a nonzero commutator forces **strictly positive** variance in
+*both* observables — so `ψ` is an eigenvector of neither `A` nor `B` (after any shift),
+i.e. observables with nonvanishing commutator expectation admit no common eigenstate.
+
+    This is the qualitative (positivity) consequence of the Robertson bound
+    `robertson_uncertainty`, complementary to its quantitative saturation
+    characterization `im_inner_sq_eq_iff_robertson_saturated`: whenever the right-hand
+    side lower bound `¼‖⟪ψ,[A,B]ψ⟫‖²` is positive, each factor of the variance product
+    must be positive. -/
+theorem centred_ne_zero_of_commutator_ne_zero {A B : E →ₗ[𝕜] E} (hA : A.IsSymmetric)
+    (hB : B.IsSymmetric) (ψ : E) (a b : ℝ)
+    (hcomm : inner 𝕜 ψ (A (B ψ) - B (A ψ)) ≠ 0) :
+    A ψ - (a : 𝕜) • ψ ≠ 0 ∧ B ψ - (b : 𝕜) • ψ ≠ 0 := by
+  have hrob := robertson_uncertainty hA hB ψ a b
+  have hcpos : 0 < ‖inner 𝕜 ψ (A (B ψ) - B (A ψ))‖ := norm_pos_iff.mpr hcomm
+  have hcsq : 0 < ‖inner 𝕜 ψ (A (B ψ) - B (A ψ))‖ ^ 2 := pow_pos hcpos 2
+  have hprodpos : 0 < ‖A ψ - (a : 𝕜) • ψ‖ ^ 2 * ‖B ψ - (b : 𝕜) • ψ‖ ^ 2 := by
+    linarith [hrob, hcsq]
+  refine ⟨?_, ?_⟩
+  · intro hu
+    rw [hu, norm_zero, zero_pow (by norm_num), zero_mul] at hprodpos
+    exact lt_irrefl 0 hprodpos
+  · intro hv
+    rw [hv, norm_zero, zero_pow (by norm_num), mul_zero] at hprodpos
+    exact lt_irrefl 0 hprodpos
+
 end CauchySchwarzIntegralOQ04
 
 #print axioms CauchySchwarzIntegralOQ04.gram_eq_iff_parallel
