@@ -2675,4 +2675,44 @@ theorem classifySeed_primeTriple_lt {m : ℕ} (hm : 1 ≤ m)
   exact (classifySeed_lt_iff hodd (by omega) 1).mp
     (mem_ReversalSet_primeTriple hm hp hq he 1)
 
+-- ----------------------------------------------------------------------------
+-- Concrete members of the prime-triple reversal family
+-- ----------------------------------------------------------------------------
+-- The parametric family `mem_ReversalSet_primeTriple` / `classifySeed_primeTriple_lt`
+-- names three explicit reversal seeds in its docstring — `21` (`m=1`), `129`
+-- (`m=7`) and `453` (`m=25`) — but only the smallest, `21`, was previously
+-- formalised (`twentyone_smallest_reversing_seed`, `classifySeed_21'`).  We
+-- discharge the two higher members as verified statements, extending the file's
+-- concrete classifier catalogue (`classifySeed_3 … classifySeed_21`) onto the
+-- reversal family and confirming the family is non-vacuous well beyond its least
+-- element.  Both are pure instantiations of the parametric theorems; the three
+-- primality side-conditions of each are closed by `norm_num`.
+
+/-- **Concrete reversal seed `129 = 3·43` (`m = 7`).**  The three associated
+    numbers `4·7+1 = 29`, `6·7+1 = 43`, `14·7+3 = 101` are all prime, so the entire
+    family `129·2^(k+1)` reverses (`φ(n) < φ(D(n))`). -/
+theorem mem_ReversalSet_129 (k : ℕ) : 129 * 2 ^ (k + 1) ∈ ReversalSet := by
+  simpa using mem_ReversalSet_primeTriple (m := 7) (by norm_num)
+    (by norm_num) (by norm_num) (by norm_num) k
+
+/-- **Classifier value on the seed `129`.**  Total decision procedure classifies
+    `129` as `lt` (reversal). -/
+theorem classifySeed_129 : classifySeed 129 = Ordering.lt := by
+  simpa using classifySeed_primeTriple_lt (m := 7) (by norm_num)
+    (by norm_num) (by norm_num) (by norm_num)
+
+/-- **Concrete reversal seed `453 = 3·151` (`m = 25`).**  The three associated
+    numbers `4·25+1 = 101`, `6·25+1 = 151`, `14·25+3 = 353` are all prime, so the
+    entire family `453·2^(k+1)` reverses — the third explicitly exhibited member of
+    the prime-triple reversal family, beyond `21` (`m=1`) and `129` (`m=7`). -/
+theorem mem_ReversalSet_453 (k : ℕ) : 453 * 2 ^ (k + 1) ∈ ReversalSet := by
+  simpa using mem_ReversalSet_primeTriple (m := 25) (by norm_num)
+    (by norm_num) (by norm_num) (by norm_num) k
+
+/-- **Classifier value on the seed `453`.**  Total decision procedure classifies
+    `453` as `lt` (reversal). -/
+theorem classifySeed_453 : classifySeed 453 = Ordering.lt := by
+  simpa using classifySeed_primeTriple_lt (m := 25) (by norm_num)
+    (by norm_num) (by norm_num) (by norm_num)
+
 end Erdos1064OQ03
