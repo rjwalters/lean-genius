@@ -57,7 +57,7 @@
       "erdos_910_both_false: combined result disproving both conjectures"
     ],
     "lineCount": 155,
-    "assumptions": "1 axiom: rudin_theorem_ch. See Lean source for the complete statement.",
+    "assumptions": "2 axiom declarations, both encoding the same result — Rudin's 1958 construction under CH: `rudin_theorem_ch` in Erdos910OQ01.lean and `rudin_theorem` in the companion Erdos910Problem.lean. Each asserts that under CH there exists a connected planar Rudin set with exactly continuum-many connected subsets. See Lean source for the complete statements.",
     "mathlib_version": "4.26.0",
     "theoremCount": 6,
     "definitionCount": 7,
