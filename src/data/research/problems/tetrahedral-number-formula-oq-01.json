@@ -42,14 +42,16 @@
       "card_sym_fin_eq_simplexNumber: counting face |Sym (Fin (n+1)) d| = P_d(n) (stars and bars / weakly increasing d-tuples).",
       "iterSum_add — semigroup law of iterated summation: iterSum a (iterSum b f) = iterSum (a+b) f (monoid action of (ℕ,+); discrete Riemann–Liouville semigroup Iᵃ∘Iᵇ=Iᵃ⁺ᵇ). Induction on a, one partialSum layer per step. VERIFIED.",
       "iterSum_simplexNumber — dimension-additivity of the figurate ladder: iterSum a (simplexNumber b) n = simplexNumber (a+b) n, from iterSum_add + iterSum_one. VERIFIED.",
-      "simplexConv_comp — convolution semigroup law for figurate kernels: simplexConv a (simplexConv b f) = simplexConv (a+b+1) f (P_a ∗ P_b = P_{a+b+1}, discrete fractional-integral composition / Vandermonde identity), from iterSum_add + iterSum_eq_simplexConv. VERIFIED."
+      "simplexConv_comp — convolution semigroup law for figurate kernels: simplexConv a (simplexConv b f) = simplexConv (a+b+1) f (P_a ∗ P_b = P_{a+b+1}, discrete fractional-integral composition / Vandermonde identity), from iterSum_add + iterSum_eq_simplexConv. VERIFIED.",
+      "TetrahedralNumberFormulaOQ01.lean: simplexNumber_pos + simplexNumber_mono_size + simplexNumber_mono_dim. VERIFIED green, 0 axioms/sorries. File now 19 theorems."
     ],
     "insights": [
       "The hyper-tetrahedral / d-simplex number is exactly Mathlib Nat.multichoose (n+1) d = C(n+d,d); Mathlib gives the one-step hockey stick Nat.sum_range_add_choose : sum i in range(n+1),(i+d).choose d = (n+d+1).choose(d+1)",
       "The whole figurate ladder (1 -> linear -> triangular -> tetrahedral -> ...) is captured in one dimension-indexed statement: it is the d-fold iterate of the partial-summation operator applied to the constant sequence 1. Induction is on the DIMENSION d, with the hockey stick as the single inductive step - a genuinely different structure from the parent's induction on n at fixed d=3.",
       "The cleared closed form is uniform in d via the ascending factorial: d!*C(n+d,d) = (n+1).ascFactorial d (Nat.ascFactorial_eq_factorial_mul_choose), with the explicit product from Nat.ascFactorial_eq_prod_range.",
       "The figurate numbers P_d are exactly the KERNEL of repeated discrete summation: iterating partialSum d+1 times against any f convolves f with P_d(n-k). Discrete analogue of Cauchy repeated integration (kernel (n-t)^d/d!).",
-      "Finset.sum_Ico_Ico_comm (a<=i<=j<b triangular swap) + Finset.sum_Ico_eq_sum_range cleanly reduce a nested partial-sum-of-convolution to a single hockey-stick collapse."
+      "Finset.sum_Ico_Ico_comm (a<=i<=j<b triangular swap) + Finset.sum_Ico_eq_sum_range cleanly reduce a nested partial-sum-of-convolution to a single hockey-stick collapse.",
+      "VERIFIED (researcher-2, 2026-07-09, GREEN build): the order facts of the figurate ladder P_d(n)=C(n+d,d), absent from the file. simplexNumber_pos (0<P_d(n), Nat.choose_pos on d≤n+d), simplexNumber_mono_size (m≤n⟹P_d(m)≤P_d(n), Nat.choose_le_choose on m+d≤n+d), simplexNumber_mono_dim (a≤b⟹P_a(n)≤P_b(n), reduced to mono_size through the reflection symmetry simplexNumber_symm P_d(n)=P_n(d)). Monotone in BOTH arguments + positive. Complements the exact-value/summation theory with the growth/order structure."
     ],
     "mathlibGaps": [
       "Mathlib has the one-step hockey stick and multichoose but no dimension-indexed figurate theory: no iterated-partial-sum characterization of simplex numbers, no figurate recurrence/closed form stated uniformly in the dimension d."
