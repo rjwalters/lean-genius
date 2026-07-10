@@ -909,4 +909,29 @@ theorem equilateral_pi_four_side (t : HyperbolicTriangle)
     t.c = Real.arcosh (1 + Real.sqrt 2) := by
   rw [← equilateral_pi_four_cosh t hAB hBC hC4, Real.arcosh_cosh t.hc.le]
 
+/-- **Equilateral triangles are equilateral in the sides too.** If all three angles are
+    equal (`A = B = C`) then all three sides are equal: `a = b` and `b = c`. This is the
+    fact underlying the phrase "every side satisfies …" in `equilateral_cosh`, which as
+    stated only pins the third side `c`; here the metric equality of the three sides is
+    proved outright. `a = b` is `isosceles_of_angle_eq`; `b = c` follows because the
+    angle-only closed forms `cosh_b_eq` and `cosh_c_eq` coincide once `A = B = C`, and
+    `cosh` is injective on `[0, ∞)` (the sides being positive). -/
+theorem equilateral_sides_eq (t : HyperbolicTriangle)
+    (hAB : t.A = t.B) (hBC : t.B = t.C) :
+    t.a = t.b ∧ t.b = t.c := by
+  refine ⟨isosceles_of_angle_eq t hAB, ?_⟩
+  have hcosh : Real.cosh t.b = Real.cosh t.c := by
+    rw [cosh_b_eq t, cosh_c_eq t, hAB, hBC]
+  exact Real.cosh_strictMonoOn.injOn (mem_Ici.mpr t.hb.le) (mem_Ici.mpr t.hc.le) hcosh
+
+/-- **The `cosh` closed form holds for side `a` as well.** Confirming the "every side"
+    claim of `equilateral_cosh` for the first side: in an equilateral triangle
+    `cosh a = cos θ / (1 − cos θ)`, identical to the value proved there for side `c`.
+    Immediate from the side equality `a = c` (`equilateral_sides_eq`) and `equilateral_cosh`. -/
+theorem equilateral_cosh_a (t : HyperbolicTriangle)
+    (hAB : t.A = t.B) (hBC : t.B = t.C) :
+    Real.cosh t.a = Real.cos t.C / (1 - Real.cos t.C) := by
+  obtain ⟨hab, hbc⟩ := equilateral_sides_eq t hAB hBC
+  rw [hab, hbc, equilateral_cosh t hAB hBC]
+
 end HyperbolicAAA
