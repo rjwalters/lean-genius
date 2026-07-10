@@ -153,6 +153,11 @@
       "targetId": "fibonacci-identities-oq-04",
       "relationship": "relatedTo",
       "description": "Both entries center on Cassini's identity for Nat.fib; there it is proved via Vajda's identity over Int.fib, here it is reproved directly in subtractive form and used as the engine of the weighted-sum induction."
+    },
+    {
+      "targetId": "fibonacci-identities-oq-05-oq-01-oq-02",
+      "relationship": "extended-by",
+      "description": "Directly realizes this entry's second open question: it generalizes the Fibonacci weighted product-sum 2·∑ k FₖFₖ₊₁ to arbitrary Gibonacci sequences and to Lucas numbers, showing the parity correction ±1 becomes ±D for the discriminant D = G₁² − G₁G₀ − G₀² (D = 1 for Fibonacci, D = −5 for Lucas) — exactly the parity-tracking generalization posed here."
     }
   ],
   "conclusion": {
