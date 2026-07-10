@@ -170,6 +170,36 @@
       "description": "Sibling entry in the reduction series: OQ-01 proves the Cayley-Hamilton theorem for block upper triangular matrices via the trace formula. Together with this OQ-02-OQ-01, they form the infrastructure for the rational canonical form."
     }
   ],
+  "references": [
+    {
+      "title": "Über lineare Substitutionen und bilineare Formen",
+      "author": "Ferdinand Georg Frobenius",
+      "year": "1878",
+      "venue": "Journal für die reine und angewandte Mathematik 84, 1–63",
+      "description": "Introduces the rational (Frobenius) canonical form, of which the companion matrix defined here is the elementary building block: every matrix over a field is similar to a block-diagonal matrix of companion blocks of the invariant factors."
+    },
+    {
+      "title": "Linear Algebra",
+      "author": "Kenneth Hoffman and Ray Kunze",
+      "year": "1971",
+      "venue": "Prentice-Hall (2nd ed.)",
+      "description": "Standard textbook development of the companion matrix, cyclic subspaces, and the rational canonical form, including the fact that a companion matrix's characteristic and minimal polynomials both equal the polynomial it is built from."
+    },
+    {
+      "title": "Abstract Algebra",
+      "author": "David S. Dummit and Richard M. Foote",
+      "year": "2004",
+      "venue": "Wiley (3rd ed.)",
+      "description": "Derives the rational canonical form from the structure theorem for finitely generated modules over a PID (here k[x]), the module-theoretic setting in which companion matrices realize the invariant-factor decomposition."
+    },
+    {
+      "title": "Advanced Linear Algebra",
+      "author": "Steven Roman",
+      "year": "2008",
+      "venue": "Springer, Graduate Texts in Mathematics 135 (3rd ed.)",
+      "description": "Detailed treatment of cyclic modules, companion matrices, and both the rational and Jordan canonical forms over general fields."
+    }
+  ],
   "sorries": 0,
   "leanFile": {
     "imports": [
