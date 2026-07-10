@@ -56,35 +56,40 @@
       "title": "Open Question and Mathematical Context",
       "startLine": 1,
       "endLine": 41,
-      "summary": "Header stating OQ-05: the alternating row sum vanishes, and its combinatorial content as the even/odd subset-count equality. Explains the relationship to Mathlib's alternating sum lemma and the total row sum."
+      "summary": "Header stating OQ-05: the alternating row sum vanishes, and its combinatorial content as the even/odd subset-count equality. Explains the relationship to Mathlib's alternating sum lemma and the total row sum.",
+      "mathContext": "For $n \\ge 1$: $\\sum_{k\\text{ even}}\\binom{n}{k} = \\sum_{k\\text{ odd}}\\binom{n}{k} = 2^{n-1}$ — a nonempty set has equally many even- and odd-sized subsets."
     },
     {
       "id": "anchor",
       "title": "Anchor: Alternating Sum Vanishes",
       "startLine": 43,
       "endLine": 49,
-      "summary": "alternating_sum_choose_eq_zero: restates Mathlib's Int.alternating_sum_range_choose_of_ne, ∑ (-1)^k C(n,k) = 0 for n ≥ 1, as the starting point."
+      "summary": "alternating_sum_choose_eq_zero: restates Mathlib's Int.alternating_sum_range_choose_of_ne, ∑ (-1)^k C(n,k) = 0 for n ≥ 1, as the starting point.",
+      "mathContext": "$\\sum_{k=0}^{n} (-1)^k \\binom{n}{k} = 0$ for $n \\ge 1$ — the $x=-1$ case of the binomial theorem $(1+x)^n = \\sum_k \\binom{n}{k}x^k$."
     },
     {
       "id": "even-odd-split",
       "title": "Even/Odd Split",
       "startLine": 51,
       "endLine": 84,
-      "summary": "sum_even_choose_eq_sum_odd_choose: ∑_{k even} C(n,k) = ∑_{k odd} C(n,k). Splits the alternating sum by parity via Finset.sum_filter_add_sum_filter_not, evaluating (-1)^k = +1 on even (Even.neg_one_pow) and -1 on odd (Odd.neg_one_pow) indices."
+      "summary": "sum_even_choose_eq_sum_odd_choose: ∑_{k even} C(n,k) = ∑_{k odd} C(n,k). Splits the alternating sum by parity via Finset.sum_filter_add_sum_filter_not, evaluating (-1)^k = +1 on even (Even.neg_one_pow) and -1 on odd (Odd.neg_one_pow) indices.",
+      "mathContext": "$\\sum_{k\\text{ even}}\\binom{n}{k} = \\sum_{k\\text{ odd}}\\binom{n}{k}$: split the vanishing alternating sum by parity, using $(-1)^k = +1$ on evens and $-1$ on odds, so $E - O = 0$."
     },
     {
       "id": "each-half",
       "title": "Each Half Equals 2^{n-1}",
       "startLine": 86,
       "endLine": 110,
-      "summary": "sum_choose_int casts the total row sum to ℤ (= 2^n). sum_even_choose: combines E = O with E + O = 2^n and 2^n = 2·2^{n-1} to conclude each parity class sums to 2^{n-1}."
+      "summary": "sum_choose_int casts the total row sum to ℤ (= 2^n). sum_even_choose: combines E = O with E + O = 2^n and 2^n = 2·2^{n-1} to conclude each parity class sums to 2^{n-1}.",
+      "mathContext": "From $E = O$ and $E + O = \\sum_k \\binom{n}{k} = 2^n$: $2E = 2^n = 2\\cdot 2^{n-1}$, hence $E = 2^{n-1}$ for $n \\ge 1$."
     },
     {
       "id": "verification",
       "title": "Worked Verification",
       "startLine": 112,
       "endLine": 114,
-      "summary": "example: the even part of row 4 sums to C(4,0)+C(4,2)+C(4,4) = 1+6+1 = 8 = 2^3."
+      "summary": "example: the even part of row 4 sums to C(4,0)+C(4,2)+C(4,4) = 1+6+1 = 8 = 2^3.",
+      "mathContext": "Row $n=4$: $\\binom{4}{0}+\\binom{4}{2}+\\binom{4}{4} = 1+6+1 = 8 = 2^{3} = 2^{n-1}$, closed by $\\texttt{decide}$."
     }
   ],
   "conclusion": {
