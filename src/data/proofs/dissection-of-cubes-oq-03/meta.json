@@ -196,5 +196,35 @@
       "description": "Sibling open question on the de Bruijn divisibility approach; this file corrects the original unsound de Bruijn axiom (↔ True) and provides the proper CanTileWithBrick formulation"
     }
   ],
+  "references": [
+    {
+      "title": "The dissection of rectangles into squares",
+      "author": "R. L. Brooks, C. A. B. Smith, A. H. Stone, and W. T. Tutte",
+      "year": "1940",
+      "venue": "Duke Mathematical Journal 7, 312–340",
+      "description": "The foundational 'squaring the square' paper; its final section gives the classic 'lowest square' argument proving a cube cannot be dissected into finitely many distinct smaller cubes — the impossibility this entry connects to packing."
+    },
+    {
+      "title": "Simple perfect squared square of lowest order",
+      "author": "A. J. W. Duijvestijn",
+      "year": "1978",
+      "venue": "Journal of Combinatorial Theory, Series B 25(2), 240–243",
+      "description": "Exhibits the order-21 simple perfect squared square, the definitive 2D contrast to the 3D impossibility: squares can be perfectly dissected into distinct squares, cubes cannot."
+    },
+    {
+      "title": "Filling boxes with bricks",
+      "author": "N. G. de Bruijn",
+      "year": "1969",
+      "venue": "American Mathematical Monthly 76(1), 37–40",
+      "description": "The divisibility approach to box-packing (the 'de Bruijn theorem') underlying this entry's CanTileWithBrick formulation and the packing side of the dissection–packing bridge."
+    },
+    {
+      "title": "The Second Scientific American Book of Mathematical Puzzles and Diversions",
+      "author": "Martin Gardner",
+      "year": "1961",
+      "venue": "Simon & Schuster (chapter 'Squaring the Square')",
+      "description": "Popular exposition of squaring the square and the impossibility of cubing the cube, with the historical account of the Brooks–Smith–Stone–Tutte circle."
+    }
+  ],
   "sorries": 2
 }
