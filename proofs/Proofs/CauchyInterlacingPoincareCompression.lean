@@ -1098,4 +1098,89 @@ theorem card_roots_charpoly_eq_add_compress_of_reducing {T : V →ₗ[𝕜] V}
         + (LinearMap.charpoly (compress T Hᗮ)).roots.card := by
   rw [roots_charpoly_eq_add_compress_of_reducing H hH hHp, Multiset.card_add]
 
+/-! ### Upgrading eigenvalue-count additivity to a genuine `finrank` identity
+
+The multiset additivity `card_roots_charpoly_eq_add_compress_of_reducing` is
+*unconditional*, but its individual `roots.card` terms only equal the honest
+block dimensions once the relevant characteristic polynomials **split** (over
+`ℝ` a charpoly can carry complex-conjugate roots that never appear in
+`.roots`).  Under a single splitting hypothesis on the ambient `charpoly T`,
+both blocks split automatically (their charpolys *divide* `charpoly T`), so the
+eigenvalue lists have length exactly `finrank`, turning the count additivity
+into the genuine `finrank V = finrank H + finrank Hᗮ` read on eigenvalue
+lists.  (Over `𝕜 = ℂ` every charpoly splits, so all hypotheses are free; for a
+self-adjoint `T` over `ℝ` the spectral theorem supplies the same splitting.) -/
+
+/-- Each compression block's characteristic polynomial **divides** the ambient
+one, straight from the master factorisation `charpoly_eq_mul_compress_of_reducing`. -/
+theorem charpoly_compress_dvd_of_reducing {T : V →ₗ[𝕜] V}
+    (H : Submodule 𝕜 V) (hH : ∀ y ∈ H, T y ∈ H) (hHp : ∀ y ∈ Hᗮ, T y ∈ Hᗮ) :
+    LinearMap.charpoly (compress T H) ∣ LinearMap.charpoly T :=
+  ⟨LinearMap.charpoly (compress T Hᗮ), charpoly_eq_mul_compress_of_reducing H hH hHp⟩
+
+/-- The orthogonal block's charpoly likewise divides the ambient one (the
+factorisation is symmetric in the two blocks up to `mul_comm`). -/
+theorem charpoly_orthogonal_compress_dvd_of_reducing {T : V →ₗ[𝕜] V}
+    (H : Submodule 𝕜 V) (hH : ∀ y ∈ H, T y ∈ H) (hHp : ∀ y ∈ Hᗮ, T y ∈ Hᗮ) :
+    LinearMap.charpoly (compress T Hᗮ) ∣ LinearMap.charpoly T :=
+  ⟨LinearMap.charpoly (compress T H), by
+    rw [charpoly_eq_mul_compress_of_reducing H hH hHp, mul_comm]⟩
+
+/-- **Eigenvalue-list length = dimension, when the charpoly splits.**  For any
+operator `S` on a finite-dimensional inner product space whose characteristic
+polynomial splits, the multiset of eigenvalues (roots of `charpoly S`, counted
+with algebraic multiplicity) has cardinality exactly `finrank`.  This is the
+bridge that upgrades a `Multiset.card` of eigenvalues into an honest dimension:
+`Polynomial.splits_iff_card_roots` gives `roots.card = natDegree`, and
+`LinearMap.charpoly_natDegree` identifies that degree with `finrank`. -/
+theorem card_roots_charpoly_eq_finrank_of_splits {W : Type*} [NormedAddCommGroup W]
+    [InnerProductSpace 𝕜 W] [FiniteDimensional 𝕜 W] {S : W →ₗ[𝕜] W}
+    (hsplit : (LinearMap.charpoly S).Splits) :
+    (LinearMap.charpoly S).roots.card = Module.finrank 𝕜 W := by
+  rw [Polynomial.splits_iff_card_roots.mp hsplit, LinearMap.charpoly_natDegree]
+
+/-- On a reducing subspace, if the ambient `charpoly T` splits then the `H`-block
+compression's eigenvalue list has length exactly `finrank 𝕜 H`.  The block charpoly
+splits because it divides `charpoly T` (`charpoly_compress_dvd_of_reducing`), and then
+`card_roots_charpoly_eq_finrank_of_splits` reads its length off as a dimension. -/
+theorem card_roots_charpoly_compress_eq_finrank_of_reducing {T : V →ₗ[𝕜] V}
+    (H : Submodule 𝕜 V) (hH : ∀ y ∈ H, T y ∈ H) (hHp : ∀ y ∈ Hᗮ, T y ∈ Hᗮ)
+    (hsplit : (LinearMap.charpoly T).Splits) :
+    (LinearMap.charpoly (compress T H)).roots.card = Module.finrank 𝕜 H :=
+  card_roots_charpoly_eq_finrank_of_splits
+    (hsplit.splits_of_dvd (LinearMap.charpoly_monic T).ne_zero
+      (charpoly_compress_dvd_of_reducing H hH hHp))
+
+/-- The `Hᗮ`-block companion of `card_roots_charpoly_compress_eq_finrank_of_reducing`:
+the orthogonal compression's eigenvalue list has length exactly `finrank 𝕜 Hᗮ`. -/
+theorem card_roots_charpoly_orthogonal_compress_eq_finrank_of_reducing {T : V →ₗ[𝕜] V}
+    (H : Submodule 𝕜 V) (hH : ∀ y ∈ H, T y ∈ H) (hHp : ∀ y ∈ Hᗮ, T y ∈ Hᗮ)
+    (hsplit : (LinearMap.charpoly T).Splits) :
+    (LinearMap.charpoly (compress T Hᗮ)).roots.card = Module.finrank 𝕜 Hᗮ :=
+  card_roots_charpoly_eq_finrank_of_splits
+    (hsplit.splits_of_dvd (LinearMap.charpoly_monic T).ne_zero
+      (charpoly_orthogonal_compress_dvd_of_reducing H hH hHp))
+
+/-- **The `finrank` identity read on eigenvalue lists.**  Combining the
+unconditional multiset additivity `card_roots_charpoly_eq_add_compress_of_reducing`
+with the splitting hypothesis, the ambient dimension equals the sum of the two
+compression blocks' eigenvalue-list lengths:
+
+  `finrank V = (charpoly (compress T H)).roots.card + (charpoly (compress T Hᗮ)).roots.card`.
+
+Together with `card_roots_charpoly_compress_eq_finrank_of_reducing` (and its `Hᗮ`
+companion), which identify each summand with `finrank H` and `finrank Hᗮ`, this is the
+genuine `finrank V = finrank H + finrank Hᗮ` of a reducing decomposition **realised on
+the eigenvalue lists**: not merely that the dimensions add, but that the eigenvalues of
+`T` (with multiplicity) partition exactly into the eigenvalues of the two blocks.
+Symmetry-free. -/
+theorem finrank_eq_add_card_roots_compress_of_reducing_of_splits {T : V →ₗ[𝕜] V}
+    (H : Submodule 𝕜 V) (hH : ∀ y ∈ H, T y ∈ H) (hHp : ∀ y ∈ Hᗮ, T y ∈ Hᗮ)
+    (hsplit : (LinearMap.charpoly T).Splits) :
+    Module.finrank 𝕜 V =
+      (LinearMap.charpoly (compress T H)).roots.card
+        + (LinearMap.charpoly (compress T Hᗮ)).roots.card := by
+  rw [← card_roots_charpoly_eq_finrank_of_splits hsplit,
+    card_roots_charpoly_eq_add_compress_of_reducing H hH hHp]
+
 end CauchyInterlacing.PoincareCompression
