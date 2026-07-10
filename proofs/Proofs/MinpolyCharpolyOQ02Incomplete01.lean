@@ -329,6 +329,47 @@ theorem commute_of_commonDiagonalizer {M N P : Matrix n n K}
     _ = P * (P⁻¹ * (N * M) * P) * P⁻¹ := by rw [hconj]
     _ = N * M := hcancel _
 
+/-- **A matrix commuting with a diagonal matrix of *distinct* entries is itself diagonal.**
+
+    This is the combinatorial heart of the hard (still-open) converse
+    "commuting diagonalizable ⟹ common diagonalizer": if `D` is diagonal with pairwise
+    distinct diagonal entries and `A` commutes with `D`, then `A` must be diagonal.
+    Entrywise, `(A*D)_{ij} = A_{ij}·D_{jj}` and `(D*A)_{ij} = D_{ii}·A_{ij}`, so
+    `A_{ij}·(D_{jj} − D_{ii}) = 0`; for `i ≠ j` the distinctness `D_{jj} ≠ D_{ii}` forces
+    `A_{ij} = 0`.
+
+    Consequence (the reusable step a build-capable session can assemble into the converse):
+    if `P` diagonalizes `M` (so `D = P⁻¹MP` is diagonal) with distinct eigenvalues and `N`
+    commutes with `M`, then `P⁻¹NP` commutes with `D`, hence is diagonal — i.e. the *same*
+    `P` diagonalizes `N`, giving a common diagonalizer. This settles the generic
+    (distinct-eigenvalue) case of the classical theorem. -/
+theorem isDiag_of_commute_diag_distinct {D A : Matrix n n K} (hD : D.IsDiag)
+    (hdist : ∀ i j, i ≠ j → D i i ≠ D j j) (hcomm : A * D = D * A) :
+    A.IsDiag := by
+  intro i j hij
+  -- `(A * D) i j = A i j * D j j` — only the `k = j` term of the row·column sum survives.
+  have hAD : (A * D) i j = A i j * D j j := by
+    rw [Matrix.mul_apply]
+    refine Finset.sum_eq_single j ?_ ?_
+    · intro k _ hkj; rw [hD hkj, mul_zero]
+    · intro hj; exact absurd (Finset.mem_univ j) hj
+  -- `(D * A) i j = D i i * A i j` — only the `k = i` term survives.
+  have hDA : (D * A) i j = D i i * A i j := by
+    rw [Matrix.mul_apply]
+    refine Finset.sum_eq_single i ?_ ?_
+    · intro k _ hki; rw [hD (Ne.symm hki), zero_mul]
+    · intro hi; exact absurd (Finset.mem_univ i) hi
+  -- commutativity equates the two entries
+  have hkey : A i j * D j j = D i i * A i j := by rw [← hAD, ← hDA, hcomm]
+  -- `A i j * (D j j - D i i) = 0`
+  have hz : A i j * (D j j - D i i) = 0 := by
+    rw [mul_sub, hkey, mul_comm (D i i) (A i j), sub_self]
+  -- the second factor is nonzero, so `A i j = 0`
+  have hne : D j j - D i i ≠ 0 := sub_ne_zero.mpr (hdist j i (Ne.symm hij))
+  rcases mul_eq_zero.mp hz with h | h
+  · exact h
+  · exact absurd h hne
+
 /-- **The (ordered) product of a list of diagonal matrices is diagonal.**  The
     multiplicative companion of `isDiag_sum`.  Because matrix multiplication is
     *not* commutative, the product must be taken over an ordered `List` rather than
