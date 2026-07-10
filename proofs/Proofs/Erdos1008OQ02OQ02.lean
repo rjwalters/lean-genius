@@ -50,10 +50,12 @@ Status: 0 sorries, 0 axioms.  The algebraic core (`kst_quadratic_solve`,
 `kst_graph_quadratic`, `kst_edge_bound`, `kst_edge_bound_of_free`) and the
 leading-order closed form added in this session (`kst_radical_envelope`,
 `kst_edge_bound_leading_order`, giving the recognisable
-`ex(n ; K_{2,t}) ≤ ½(√(t-1)·n^{3/2}+n)`) are elaboration-checked but UNVERIFIED
-in docker — the containerd build backend was down (meta.db / content-store I/O
-errors) at authoring time.  They should be re-verified once the build infra is
-repaired.
+`ex(n ; K_{2,t}) ≤ ½(√(t-1)·n^{3/2}+n)`), together with the exact C₄
+specialisations `reiman_edge_bound_of_free` (the graph-level Reiman bound
+`4 m ≤ n(1+√(4n-3))`) and its forcing contrapositive `hasK2t_two_of_edge_bound_lt`,
+are elaboration-checked but UNVERIFIED in docker — the containerd build backend was
+down (meta.db / content-store I/O errors) at authoring time.  They should be
+re-verified once the build infra is repaired.
 -/
 
 import Mathlib
@@ -548,6 +550,40 @@ theorem hasK2t_two_of_edge_bound_leading_order_lt (G : SimpleGraph V) [Decidable
     HasK2t G 2 := by
   by_contra hfree
   exact absurd (reiman_edge_bound_leading_order G hfree) (not_le.2 hm)
+
+/-- **Reiman's exact C₄ edge bound (graph-level `t = 2`).**  A `C₄`-free
+(`K_{2,2}`-free) nonempty graph on `n` vertices with `m` edges satisfies Reiman's
+(1958) *exact* nested-radical bound
+
+      4 m ≤ n · (1 + √(4n - 3)).
+
+This is the `t = 2` case of `kst_edge_bound_of_free`, where the general K_{2,t}
+discriminant `1 + 4(t-1)(n-1)` collapses to `4n - 3`.  It is the graph-level
+counterpart of the sibling file's algebraic `reiman_quadratic_solve` and the
+*exact* (pre-leading-order) sharpening of `reiman_edge_bound_leading_order`,
+tying the K_{2,t} family back to the parent `C₄` (`erdos-1008-oq-02`) entry at
+full radical precision. -/
+theorem reiman_edge_bound_of_free (G : SimpleGraph V) [DecidableRel G.Adj] [Nonempty V]
+    (hfree : ¬ HasK2t G 2) :
+    4 * (G.edgeFinset.card : ℝ) ≤
+      (Fintype.card V : ℝ) * (1 + Real.sqrt (4 * (Fintype.card V : ℝ) - 3)) := by
+  have h := kst_edge_bound_of_free G 2 (by norm_num) hfree
+  have hdisc : (1 + 4 * (((2 : ℕ) : ℝ) - 1) * ((Fintype.card V : ℝ) - 1)) =
+      4 * (Fintype.card V : ℝ) - 3 := by push_cast; ring
+  rwa [hdisc] at h
+
+/-- **Reiman C₄ exact forcing threshold (graph-level `t = 2`).**  A nonempty graph
+on `n` vertices with more than `¼·n·(1 + √(4n - 3))` edges contains a `C₄`
+(`K_{2,2}`).  The `t = 2` *exact-form* specialisation of `hasK2t_of_edge_bound_lt`
+and the contrapositive of `reiman_edge_bound_of_free`; it gives the sharp
+nested-radical (pre-leading-order) existence threshold, refining
+`hasK2t_two_of_edge_bound_leading_order_lt`. -/
+theorem hasK2t_two_of_edge_bound_lt (G : SimpleGraph V) [DecidableRel G.Adj] [Nonempty V]
+    (hm : (Fintype.card V : ℝ) * (1 + Real.sqrt (4 * (Fintype.card V : ℝ) - 3))
+        < 4 * (G.edgeFinset.card : ℝ)) :
+    HasK2t G 2 := by
+  by_contra hfree
+  exact absurd (reiman_edge_bound_of_free G hfree) (not_le.2 hm)
 
 end GraphLevel
 
