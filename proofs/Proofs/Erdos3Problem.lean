@@ -987,6 +987,60 @@ theorem strongRequiredBound_implies_requiredBound {k : ℕ}
     mul_nonneg (mul_nonneg (Nat.cast_nonneg N) hL.le) (by linarith)
   nlinarith [hfac]
 
+/-- **The strong threshold implies the sharp (iterated-log) threshold.**
+    `StrongRequiredBound k` (`r_k(N) = O(N/(log N)^{1+δ})` for some `δ > 0`) implies the
+    strictly weaker `SharpRequiredBound k` (`r_k(N) = O(N/(log N · (log log N)^{1+δ'}))`).
+    Taking the sharp witness `δ' = 1` and the same constant `C`, it suffices to compare the
+    two denominators: for large `N`,
+    `log N · (log log N)^2 ≤ (log N)^{1+δ}`, i.e. `(log log N)^2 ≤ (log N)^δ`, because
+    `log log N` grows slower than any positive power of `log N`. Concretely
+    `log (log N) ≤ (log N)^{δ/2}` eventually (`Real.isLittleO_log_rpow_atTop` with exponent
+    `δ/2 > 0`), and squaring gives `(log log N)^2 ≤ (log N)^δ`.
+
+    This formalizes the ordering asserted in the `SharpRequiredBound` docstring
+    (`StrongRequiredBound ⇒ SharpRequiredBound`, converse fails), certifying that
+    `sharp_required_bound_implies_conjecture` is a genuine sharpening of
+    `strong_required_bound_implies_conjecture`: its hypothesis is *implied by* — hence no
+    stronger than — the strong one. Axiom-free. -/
+theorem strongRequiredBound_implies_sharpRequiredBound {k : ℕ}
+    (h : StrongRequiredBound k) : SharpRequiredBound k := by
+  obtain ⟨δ, hδ, C, hC, hev⟩ := h
+  refine ⟨1, one_pos, C, hC, ?_⟩
+  -- `log N → ∞`, so `log (log N) = o((log N)^{δ/2})` (a positive power of `log N` dominates).
+  have hlog : Filter.Tendsto (fun N : ℕ => Real.log (N : ℝ)) Filter.atTop Filter.atTop :=
+    Real.tendsto_log_atTop.comp tendsto_natCast_atTop_atTop
+  have hr : (0 : ℝ) < δ / 2 := by linarith
+  have hlittle := (Real.isLittleO_log_rpow_atTop hr).comp_tendsto hlog
+  have hbound := Asymptotics.isLittleO_iff.mp hlittle (one_pos)
+  simp only [Function.comp_apply] at hbound
+  have hLgt : ∀ᶠ N : ℕ in Filter.atTop, 1 < Real.log (N : ℝ) :=
+    hlog.eventually (eventually_gt_atTop 1)
+  filter_upwards [hev, hbound, hLgt] with N hN hb hL
+  set L : ℝ := Real.log (N : ℝ) with hLdef
+  have hL0 : 0 < L := lt_trans one_pos hL
+  have hLL0 : 0 < Real.log L := Real.log_pos hL
+  have hpow0 : (0 : ℝ) < L ^ (δ / 2) := Real.rpow_pos_of_pos hL0 _
+  rw [one_mul, Real.norm_of_nonneg hLL0.le, Real.norm_of_nonneg hpow0.le] at hb
+  -- `(log L)^2 ≤ (L^{δ/2})^2 = L^δ`.
+  have hstep : (Real.log L) ^ (1 + 1 : ℝ) ≤ (L ^ (δ / 2)) ^ (1 + 1 : ℝ) :=
+    Real.rpow_le_rpow hLL0.le hb (by norm_num)
+  have hcollapse : (L ^ (δ / 2)) ^ (1 + 1 : ℝ) = L ^ δ := by
+    rw [← Real.rpow_mul hL0.le]; congr 1; ring
+  have hpow_le : (Real.log L) ^ (1 + 1 : ℝ) ≤ L ^ δ := hcollapse ▸ hstep
+  -- The sharp denominator is dominated by the strong one: `L·(log L)^2 ≤ L^{1+δ}`.
+  have hLd : L * L ^ δ = L ^ (1 + δ) := by rw [Real.rpow_add hL0, Real.rpow_one]
+  have hdenom_le : L * (Real.log L) ^ (1 + 1 : ℝ) ≤ L ^ (1 + δ) := by
+    calc L * (Real.log L) ^ (1 + 1 : ℝ)
+          ≤ L * L ^ δ := mul_le_mul_of_nonneg_left hpow_le hL0.le
+      _ = L ^ (1 + δ) := hLd
+  -- Bigger denominator ⇒ smaller quotient, so the strong bound `hN` transfers.
+  refine le_trans hN ?_
+  have hbig : (0 : ℝ) < L ^ (1 + δ) := Real.rpow_pos_of_pos hL0 _
+  have hsmall : (0 : ℝ) < L * (Real.log L) ^ (1 + 1 : ℝ) :=
+    mul_pos hL0 (Real.rpow_pos_of_pos hLL0 _)
+  rw [div_le_div_iff₀ hbig hsmall]
+  exact mul_le_mul_of_nonneg_left hdenom_le (mul_nonneg hC.le (Nat.cast_nonneg N))
+
 /-- **The strong threshold hypothesis is downward-closed in the length.**
     `StrongRequiredBound m` implies `StrongRequiredBound k` for every `k ≤ m`: the same
     witnesses `δ, C` work because `r_k(N) ≤ r_m(N) ≤ C·N/(log N)^{1+δ}` by `rothNumber_mono`.
@@ -994,6 +1048,19 @@ theorem strongRequiredBound_implies_requiredBound {k : ℕ}
     *sufficiently large* `k` — the content is at large lengths, not small ones. Axiom-free. -/
 theorem strongRequiredBound_mono {k m : ℕ} (hkm : k ≤ m)
     (h : StrongRequiredBound m) : StrongRequiredBound k := by
+  obtain ⟨δ, hδ, C, hC, hev⟩ := h
+  refine ⟨δ, hδ, C, hC, ?_⟩
+  filter_upwards [hev] with N hN
+  exact le_trans (by exact_mod_cast rothNumber_mono hkm) hN
+
+/-- **The sharp threshold hypothesis is downward-closed in the length.**
+    `SharpRequiredBound m` implies `SharpRequiredBound k` for every `k ≤ m`: the same
+    witnesses `δ, C` work because `r_k(N) ≤ r_m(N)` by `rothNumber_mono`, and the
+    denominator is unchanged. So `∀ k ≥ 3, SharpRequiredBound k` is equivalent to the
+    bound holding for all *sufficiently large* `k`, exactly as for the strong and weak
+    thresholds (`strongRequiredBound_mono`, `requiredBound_mono`). Axiom-free. -/
+theorem sharpRequiredBound_mono {k m : ℕ} (hkm : k ≤ m)
+    (h : SharpRequiredBound m) : SharpRequiredBound k := by
   obtain ⟨δ, hδ, C, hC, hev⟩ := h
   refine ⟨δ, hδ, C, hC, ?_⟩
   filter_upwards [hev] with N hN
