@@ -623,10 +623,9 @@ number of rotation orbits (necklaces) of `Coloring p k` satisfies
 nonzero rotation is a unit of the field `ZMod p` and hence fixes only the `k` constant
 colorings (`fixedBy_card_of_isUnit`).  Summing over the `p` rotations and applying the
 Burnside engine `sum_fixedBy_eq_card_necklaces_mul` gives the identity. -/
-theorem necklaces_prime_length_mul {p : ℕ} (hp : p.Prime) (k : ℕ) :
+theorem necklaces_prime_length_mul {p : ℕ} [NeZero p] (hp : p.Prime) (k : ℕ) :
     @Fintype.card (Quotient (@coloringSetoid p k _)) (coloringQuotientFintype p k) * p
       = k ^ p + (p - 1) * k := by
-  haveI : NeZero p := ⟨hp.pos.ne'⟩
   haveI : Fact p.Prime := ⟨hp⟩
   -- Fixed-point count at each rotation: `kᵖ` at the identity, `k` at every unit.
   have hf : ∀ a : ZMod p,
@@ -637,7 +636,7 @@ theorem necklaces_prime_length_mul {p : ℕ} (hp : p.Prime) (k : ℕ) :
     · subst ha
       rw [if_pos rfl]
       have huniv : ∀ c : Coloring p k, IsFixedByRotation (0 : ZMod p) c :=
-        fun c => zero_vadd c
+        fun c => by simp only [IsFixedByRotation, zero_vadd]
       rw [Fintype.card_congr (Equiv.subtypeUnivEquiv huniv)]
       show Fintype.card (Fin p → Fin k) = k ^ p
       rw [Fintype.card_fun, Fintype.card_fin, Fintype.card_fin]
@@ -660,6 +659,7 @@ rearranges to `kᵖ − k = (kᵖ + (p−1)·k) − ((p−1)·k + k)`, a differe
 of `p`: the `p` cyclic rotations partition the `kᵖ − k` non-constant colorings into
 orbits of size exactly `p`.  No `native_decide`, no `Lean.ofReduceBool`. -/
 theorem prime_dvd_pow_sub_self {p : ℕ} (hp : p.Prime) (k : ℕ) : p ∣ k ^ p - k := by
+  haveI : NeZero p := ⟨hp.pos.ne'⟩
   have h := necklaces_prime_length_mul hp k
   have hdvd1 : p ∣ k ^ p + (p - 1) * k := by rw [← h]; exact dvd_mul_left p _
   have hpk : (p - 1) * k + k = p * k := by
@@ -667,4 +667,4 @@ theorem prime_dvd_pow_sub_self {p : ℕ} (hp : p.Prime) (k : ℕ) : p ∣ k ^ p 
   have hdvd2 : p ∣ (p - 1) * k + k := by rw [hpk]; exact dvd_mul_right p k
   have hrw : k ^ p - k = (k ^ p + (p - 1) * k) - ((p - 1) * k + k) := by omega
   rw [hrw]
-  exact Nat.dvd_sub' hdvd1 hdvd2
+  exact Nat.dvd_sub hdvd1 hdvd2
