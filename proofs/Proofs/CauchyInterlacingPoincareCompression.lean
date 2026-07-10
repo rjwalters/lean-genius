@@ -1098,6 +1098,38 @@ theorem card_roots_charpoly_eq_add_compress_of_reducing {T : V →ₗ[𝕜] V}
         + (LinearMap.charpoly (compress T Hᗮ)).roots.card := by
   rw [roots_charpoly_eq_add_compress_of_reducing H hH hHp, Multiset.card_add]
 
+/-- **The `H`-block eigenvalue multiset is a sub-multiset of the ambient one.**
+The with-multiplicity, root-level refinement of the set-level containment
+`spectrum_compress_subset_of_invariant`: over a reducing subspace the eigenvalues of the
+`H`-compression (roots of `charpoly (compress T H)`, counted with algebraic multiplicity)
+occur, *with at least the same multiplicity*, among the eigenvalues of the ambient `T`,
+
+  `(charpoly (compress T H)).roots ≤ (charpoly T).roots`.
+
+This is the multiset shadow of the divisibility `charpoly_compress_dvd_of_reducing`
+(`p ∣ q` forces `p.roots ≤ q.roots`) and sharpens the mere set inclusion of spectra to a
+counted containment.  Immediate from the additivity
+`roots_charpoly_eq_add_compress_of_reducing` via `Multiset.le_add_right`.  Symmetry-free. -/
+theorem roots_charpoly_compress_le_of_reducing {T : V →ₗ[𝕜] V}
+    (H : Submodule 𝕜 V) (hH : ∀ y ∈ H, T y ∈ H) (hHp : ∀ y ∈ Hᗮ, T y ∈ Hᗮ) :
+    (LinearMap.charpoly (compress T H)).roots ≤ (LinearMap.charpoly T).roots := by
+  rw [roots_charpoly_eq_add_compress_of_reducing H hH hHp]
+  exact Multiset.le_add_right _ _
+
+/-- The `Hᗮ`-block companion of `roots_charpoly_compress_le_of_reducing`: the orthogonal
+compression's eigenvalue multiset is likewise a sub-multiset of the ambient one,
+
+  `(charpoly (compress T Hᗮ)).roots ≤ (charpoly T).roots`.
+
+The two blocks' eigenvalue multisets partition the ambient one
+(`roots_charpoly_eq_add_compress_of_reducing`), so each is bounded above by the whole;
+here via `Multiset.le_add_left`. -/
+theorem roots_charpoly_orthogonal_compress_le_of_reducing {T : V →ₗ[𝕜] V}
+    (H : Submodule 𝕜 V) (hH : ∀ y ∈ H, T y ∈ H) (hHp : ∀ y ∈ Hᗮ, T y ∈ Hᗮ) :
+    (LinearMap.charpoly (compress T Hᗮ)).roots ≤ (LinearMap.charpoly T).roots := by
+  rw [roots_charpoly_eq_add_compress_of_reducing H hH hHp]
+  exact Multiset.le_add_left _ _
+
 /-! ### Upgrading eigenvalue-count additivity to a genuine `finrank` identity
 
 The multiset additivity `card_roots_charpoly_eq_add_compress_of_reducing` is
