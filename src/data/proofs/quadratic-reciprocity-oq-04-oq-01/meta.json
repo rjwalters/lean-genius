@@ -152,6 +152,29 @@
       "Extend the construction from squarefree semiprimes to arbitrary odd n with ≥ 2 distinct prime factors via the full CRT factorization, controlling the whole Jacobi product."
     ]
   },
+  "references": [
+    {
+      "title": "Disquisitiones Arithmeticae",
+      "author": "Carl Friedrich Gauss",
+      "year": "1801",
+      "venue": "Fleischer, Leipzig",
+      "description": "Founds the theory of quadratic residues and proves the law of quadratic reciprocity; the Jacobi symbol J(a | n) generalizing the Legendre symbol (a | p) — and its failure to detect quadratic residues for composite n, the phenomenon studied here — descends from this framework."
+    },
+    {
+      "title": "A Fast Monte-Carlo Test for Primality",
+      "author": "Robert Solovay and Volker Strassen",
+      "year": "1977",
+      "venue": "SIAM Journal on Computing 6(1), 84–85",
+      "description": "Introduces the Solovay–Strassen primality test, which declares n prime when a^((n−1)/2) ≡ J(a | n); an Euler liar (a non-square with J(a | n) = +1 passing the congruence) is exactly a witness that fools this test, the objects whose existence and sharp boundary this entry pins down."
+    },
+    {
+      "title": "Prime Numbers: A Computational Perspective",
+      "author": "Richard Crandall and Carl Pomerance",
+      "year": "2005",
+      "venue": "Springer (2nd edition)",
+      "description": "Chapter 3 develops the Jacobi symbol, Euler pseudoprimes, and the ≤ 1/2 density bound on Euler liars underlying the Solovay–Strassen error estimate — the quantitative companion to this entry's existence and boundary theorems."
+    }
+  ],
   "leanFile": {
     "imports": ["Mathlib"],
     "opens": [],
