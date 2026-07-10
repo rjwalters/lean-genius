@@ -345,6 +345,31 @@ theorem natDensity_compl {S : Set ℕ} {d : ℝ} (h : NaturalDensity S d) :
   rw [hfield, abs_neg]
   exact hN₀ N hN0
 
+/-- **Uniqueness of the natural density.** A set has at most one natural density:
+if `S` has density `d` and density `d'` then `d = d'`.
+
+This is the well-definedness underlying the whole density framework — in particular it
+justifies `eta m` (defined via `Classical.choose` of `granville_ramare_density_exists`)
+being genuinely *the* density `η_m` of `exactlySquarefree m`, not merely *a* value the
+counting ratios could approach. Elementary ε/2 argument: if `d ≠ d'`, take
+`ε = |d − d'|/2 > 0`; past both thresholds the common counting ratio `x` at `N = max N₁ N₂`
+satisfies `|x − d| < ε` and `|x − d'| < ε`, so by the triangle inequality
+`|d − d'| ≤ |x − d| + |x − d'| < 2ε = |d − d'|`, a contradiction. Fully verified, uses none
+of the Granville–Ramaré axioms. -/
+theorem naturalDensity_unique {S : Set ℕ} {d d' : ℝ}
+    (h : NaturalDensity S d) (h' : NaturalDensity S d') : d = d' := by
+  by_contra hne
+  have h0 : 0 < |d - d'| := abs_pos.mpr (sub_ne_zero.mpr hne)
+  obtain ⟨N₁, hN₁⟩ := h (|d - d'| / 2) (by linarith)
+  obtain ⟨N₂, hN₂⟩ := h' (|d - d'| / 2) (by linarith)
+  have h1 := hN₁ (max N₁ N₂) (le_max_left _ _)
+  have h2 := hN₂ (max N₁ N₂) (le_max_right _ _)
+  -- `x` is the common counting ratio at `N = max N₁ N₂`.
+  set x : ℝ := ((S ∩ Set.Iio (max N₁ N₂)).ncard : ℝ) / ((max N₁ N₂ : ℕ) : ℝ)
+  have htri : |d - d'| ≤ |d - x| + |x - d'| := abs_sub_le d x d'
+  rw [abs_sub_comm d x] at htri
+  linarith [add_lt_add h1 h2, htri]
+
 /-
 ## Part V: The Granville–Ramaré inputs (axioms)
 
