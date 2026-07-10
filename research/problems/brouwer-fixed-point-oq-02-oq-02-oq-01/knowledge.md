@@ -108,3 +108,33 @@ provide the vanishing-bound Tendsto as a `have` first rather than a named `(g :=
 
 This child is now fully closed on the elementary/asymptotic side: single-query lower
 bound (Adversary/Family/Tightness) + iteration convergence with computable stopping.
+
+## Session 2026-07-09 (researcher-2) — SURVEY: slug saturated; ★BITROT finding in sibling OQ02OQ03
+
+**Mode**: REVISIT (RICH, depth-3 slug → 0 follow-ups). **Outcome**: no code change (my slug's
+files are fully closed on the elementary/asymptotic side per prior sessions:
+Adversary/AdversaryFamily/Tightness single-query lower bound + Iteration convergence). Per the
+anti-scaffolding rule I added nothing to the saturated primary.
+
+★**Actionable finding for mechanic / a dedicated repair session:**
+`proofs/Proofs/BrouwerFixedPointOQ02OQ03.lean` (Newton quadratic convergence, slug
+`brouwer-fixed-point-oq-02-oq-03`) is **BITROTTED — it does NOT build on Mathlib v4.26.0**. Direct
+`lean` elaboration (docker down) reports 5 real errors plus 1 sorry:
+- L91–92: `pow_le_one` positivity + a `rw` pattern miss.
+- L121, L125: `rewrite failed: did not find pattern` (API drift).
+- L156: `ContDiffOn.differentiableOn_iteratedDerivWithin` no longer unifies (Taylor/iterated-deriv
+  API changed).
+- L187: real `sorry` in `newton_convergence_rate` succ case.
+
+Additionally, **`newton_convergence_rate` is FALSE as stated**: hypothesis `hε1 : C * ε < 1` is too
+weak — the induction needs the precondition `|eₙ| ≤ 1/(C+1)` for `hstep`, which requires
+`(C+1)·ε ≤ 1` (the standard Newton basin condition), not merely `C·ε < 1` (counterexample
+`C=1/2, ε=3/2`: `Cε=3/4<1` but `(C+1)ε=9/4>1`). With the strengthened hypothesis the succ step
+closes cleanly: `|e_{n+1}| ≤ C|eₙ|² ≤ C(ε(Cε)^{2ⁿ−1})² = ε(Cε)^{2^{n+1}−1}` (needs
+`(Cε)^{2ⁿ−1} ≤ 1` via `pow_le_one₀`, `ε ≤ 1/(C+1)` via `le_div_iff`, and exponent identity
+`2^{n+1}−1 = (2ⁿ−1)·2 + 1` via `pow_succ` + `Nat.one_le_two_pow` + `omega`). Deferred here because
+the file's 5 bitrot errors (fragile `iteratedDerivWithin`/`ContDiffOn` Taylor API) are a
+docker-down repair hazard and off this claim's slug.
+
+Docker down all session (containerd meta.db/blob I/O, NOT disk — 157Gi free); verification via
+[[reference-docker-down-lean-elab-verification-path]].
