@@ -400,6 +400,46 @@ theorem centred_ne_zero_of_commutator_ne_zero {A B : E →ₗ[𝕜] E} (hA : A.I
     rw [hv, norm_zero, zero_pow (by norm_num), mul_zero] at hprodpos
     exact lt_irrefl 0 hprodpos
 
+/-- **The Heisenberg bound is attained — explicit minimum-uncertainty witness.**  For
+*any* nonzero `u` over a field with a genuine imaginary unit (`RCLike.I ≠ 0`, i.e. `ℂ`,
+excluding the degenerate real case), the pair `(u, I • u)` **saturates** the squared
+uncertainty inequality `im_inner_sq_le`:
+
+    `(Im⟪u, I•u⟫)² = ‖u‖² · ‖I•u‖²`.
+
+With `u = (A−⟨A⟩)ψ`, this is the canonical minimum-uncertainty (coherent / squeezed)
+state condition `(B−⟨B⟩)ψ = i·(A−⟨A⟩)ψ` for which Heisenberg's `Var(A)·Var(B) ≥
+¼|⟪ψ,[A,B]ψ⟫|²` holds with **equality**.  It is the constructive companion to the
+qualitative characterization `im_inner_sq_eq_iff_robertson_saturated`: that lemma says
+*which* states saturate; this exhibits one, proving the saturating set is nonempty and
+hence that the bound `im_inner_sq_le` is **sharp** (its constant `1` cannot be lowered).
+
+    Proof: verify the two saturation conditions of
+    `im_inner_sq_eq_iff_robertson_saturated`.  Parallelism `I•u = I•u` is `rfl` with the
+    nonzero ratio `r = I`; the vanishing covariance `Re⟪u, I•u⟫ = 0` is
+    `inner_smul_right` then `RCLike.I_mul_re` (`re (I·z) = −im z`) with `inner_self_im`
+    (`im⟪u,u⟫ = 0`). -/
+theorem im_inner_I_smul_saturated (hI : (RCLike.I : 𝕜) ≠ 0) {u : E} (hu : u ≠ 0) :
+    (RCLike.im (inner 𝕜 u ((RCLike.I : 𝕜) • u))) ^ 2
+      = ‖u‖ ^ 2 * ‖(RCLike.I : 𝕜) • u‖ ^ 2 := by
+  have hv : (RCLike.I : 𝕜) • u ≠ 0 := smul_ne_zero hI hu
+  rw [im_inner_sq_eq_iff_robertson_saturated hu hv]
+  refine ⟨?_, RCLike.I, hI, rfl⟩
+  rw [inner_smul_right, RCLike.I_mul_re, inner_self_im, neg_zero]
+
+/-- **Sharpness / attainability of the abstract Heisenberg inequality.**  Over a field
+with a genuine imaginary unit (`RCLike.I ≠ 0`), for every nonzero `u` there **exists** a
+nonzero `v` saturating `im_inner_sq_le`:
+
+    `∃ v ≠ 0, (Im⟪u,v⟫)² = ‖u‖²·‖v‖²`.
+
+Thus the uncertainty inequality `(Im⟪u,v⟫)² ≤ ‖u‖²·‖v‖²` — equivalently Heisenberg's
+`Var(A)·Var(B) ≥ ¼|⟪ψ,[A,B]ψ⟫|²` — is **tight**: the bound is achieved, so it cannot be
+strengthened.  The explicit witness is `v = I • u` (see `im_inner_I_smul_saturated`). -/
+theorem exists_im_inner_sq_saturated (hI : (RCLike.I : 𝕜) ≠ 0) {u : E} (hu : u ≠ 0) :
+    ∃ v : E, v ≠ 0 ∧ (RCLike.im (inner 𝕜 u v)) ^ 2 = ‖u‖ ^ 2 * ‖v‖ ^ 2 :=
+  ⟨(RCLike.I : 𝕜) • u, smul_ne_zero hI hu, im_inner_I_smul_saturated hI hu⟩
+
 end CauchySchwarzIntegralOQ04
 
 #print axioms CauchySchwarzIntegralOQ04.gram_eq_iff_parallel

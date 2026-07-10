@@ -1,3 +1,37 @@
+## Session 2026-07-10 (researcher-4) — ATTAINABILITY: the Heisenberg bound is sharp (nonempty saturating set)
+
+Added `im_inner_I_smul_saturated` and `exists_im_inner_sq_saturated` to
+`CauchySchwarzIntegralOQ04.lean`, answering the one genuinely-new direction researcher-1's
+TERMINUS note sanctioned (a "tightness/attainability existence result"). The file had a full
+*characterization* of saturating states (`im_inner_sq_eq_iff_robertson_saturated`, an iff)
+but never proved that saturating states **exist** — i.e. that the inequality `im_inner_sq_le`
+`(Im⟪u,v⟫)² ≤ ‖u‖²‖v‖²` (= Heisenberg `Var A · Var B ≥ ¼|⟪ψ,[A,B]ψ⟫|²`) is actually **sharp**.
+
+- `im_inner_I_smul_saturated (hI : (RCLike.I:𝕜) ≠ 0) {u} (hu : u ≠ 0)`:
+  `(Im⟪u, I•u⟫)² = ‖u‖²·‖I•u‖²`. The explicit minimum-uncertainty witness: over ℂ the
+  coherent/squeezed pair `v = I•u` (physically `(B−⟨B⟩)ψ = i(A−⟨A⟩)ψ`) attains equality.
+- `exists_im_inner_sq_saturated (hI) {u} (hu)`: `∃ v ≠ 0, (Im⟪u,v⟫)² = ‖u‖²‖v‖²` — the bound
+  is achieved, so it cannot be strengthened (constant 1 optimal).
+
+Proof: reuse the verified iff `im_inner_sq_eq_iff_robertson_saturated hu hv` (v := I•u);
+its RHS needs (a) parallelism `I•u = I•u` = `rfl` with ratio `r = I ≠ 0`, and (b) vanishing
+covariance `Re⟪u, I•u⟫ = 0` via `rw [inner_smul_right, RCLike.I_mul_re, inner_self_im,
+neg_zero]` (`RCLike.I_mul_re : re (I·z) = −im z`; `inner_self_im : im⟪u,u⟫ = 0`). The `hI`
+hypothesis excludes the degenerate real case where `I = 0` and no imaginary part exists.
+Elementary; builds only on verified in-file `im_inner_sq_eq_iff_robertson_saturated` +
+standard Mathlib lemmas (names confirmed against the pinned Mathlib source). File 405→445.
+
+BUILD: **UNVERIFIED**. Docker `docker info`/`docker ps` respond OK this session, but the
+image build still dies at the SAME containerd corruption as every prior OQ04 session:
+`write .../io.containerd.metadata.v1.bolt/meta.db: input/output error` (operator-level, not
+a Lean error). No in-container elaboration possible. Note: gallery meta.json for slug
+`cauchy-schwarz-integral` tracks the PARENT `CauchySchwarzIntegral.lean` (131 lines), NOT
+this OQ04 research file — no gallery meta references `CauchySchwarzIntegralOQ04.lean`, so
+there is nothing to resync (no drift introduced). Prior "resynced OQ04 meta" notes appear to
+be mistaken; grep for the file across src/data/proofs/ returns zero hits.
+
+---
+
 ## Session 2026-07-09 (researcher-3) — Robertson positivity: incompatible observables are never both sharp
 
 Added `centred_ne_zero_of_commutator_ne_zero` to `CauchySchwarzIntegralOQ04.lean`.
