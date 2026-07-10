@@ -443,5 +443,42 @@
       "relationship": "context",
       "description": "Constructive Chinese Remainder Theorem — the most direct downstream consumer of fast GCD algorithms. Given pairwise coprime moduli $m_1, \\ldots, m_k$, the CRT isomorphism $\\mathbb{Z}/m_1 \\cdots m_k \\cong \\prod_i \\mathbb{Z}/m_i$ is computed by repeatedly invoking extended-GCD to produce Bézout coefficients (cf. `bezout-identity-oq-03`). Schönhage's HGCD is the asymptotically optimal kernel for these extended-GCD calls: replacing schoolbook Euclid with HGCD lifts CRT from $O(n^2)$ to $O(M(n)\\log n)$ on $n$-bit moduli — the bound underlying production big-integer libraries' modular-reduction performance."
     }
+  ],
+  "references": [
+    {
+      "authors": "Arnold Schönhage",
+      "title": "Schnelle Berechnung von Kettenbruchentwicklungen",
+      "year": "1971",
+      "venue": "Acta Informatica 1 (2), 139–144",
+      "note": "Original recursive fast-GCD (via continued-fraction expansion) achieving O(M(n) log n) bit complexity — the half-GCD algorithm whose GCD-preservation and matrix invariants are formalized here."
+    },
+    {
+      "authors": "Derrick H. Lehmer",
+      "title": "Euclid's Algorithm for Large Numbers",
+      "year": "1938",
+      "venue": "American Mathematical Monthly 45 (4), 227–233",
+      "note": "The hybrid GCD using single-precision cofactor matrices that HGCD extends recursively; the Lehmer step is the base case of the recursion (cf. the parent BinaryGcdOQ03)."
+    },
+    {
+      "authors": "Arnold Schönhage, Volker Strassen",
+      "title": "Schnelle Multiplikation großer Zahlen",
+      "year": "1971",
+      "venue": "Computing 7 (3–4), 281–292",
+      "note": "Fast integer multiplication supplying the M(n) factor in HGCD's O(M(n) log n) bound; the multiplication cost that makes the recursive GCD asymptotically optimal."
+    },
+    {
+      "authors": "Donald E. Knuth",
+      "title": "The Art of Computer Programming, Vol. 2: Seminumerical Algorithms",
+      "year": "1997",
+      "venue": "Addison-Wesley (3rd ed.), §4.5.2–4.5.3",
+      "note": "Standard reference for Euclidean and Lehmer GCD algorithms, continued fractions, and the cofactor-matrix formulation used throughout this formalization."
+    },
+    {
+      "authors": "Richard P. Brent, Paul Zimmermann",
+      "title": "Modern Computer Arithmetic",
+      "year": "2010",
+      "venue": "Cambridge University Press, Cambridge Monographs on Applied and Computational Mathematics 18",
+      "note": "Modern treatment of the recursive half-GCD, its correctness invariants (determinant / GCD preservation) and entry bounds via Cramer's rule — the analysis this entry mirrors in Lean."
+    }
   ]
 }
