@@ -46,12 +46,12 @@
       }
     ],
     "originalContributions": [
-      "Clean definitions of entire and transcendental functions",
-      "Axiomatization of iterated derivatives with basic properties",
-      "Definition of derivativeZeroSet for subsequences",
+      "Clean definitions of entire (IsEntire) and transcendental (IsTranscendental) functions",
+      "Axiomatization of the iterated derivative operator (iteratedDeriv)",
+      "Definition of derivativeZeroSet for a subsequence of derivatives",
       "HasDenseDerivativeZeros property capturing the question",
-      "Proof that polynomials trivially satisfy the property",
-      "Counterexample: exp doesn't work (no zeros)"
+      "Axiomatization that polynomials trivially satisfy the property (polynomial_trivial axiom)",
+      "Axiomatization that exp is entire and transcendental (exp_is_entire, exp_is_transcendental); exp's failure of the property is discussed in commentary only, not formalized"
     ],
     "axiomCount": 4,
     "lineCount": 168,
@@ -63,7 +63,7 @@
     "historicalContext": "This problem lies in the intersection of complex analysis and the theory of entire functions. An **entire function** is one that is holomorphic (complex differentiable) on all of ℂ - examples include polynomials, exp, sin, and cos. A **transcendental** entire function is one that is not a polynomial.\n\nThe problem asks about a very strong property: for ANY infinite subsequence of derivative orders n₁ < n₂ < ..., the union of zeros of f^{(nₖ)} should be dense in ℂ. This means no matter how sparse a subsequence you choose, you can find zeros of those derivatives arbitrarily close to any point.\n\nErdős wrote in 1982 that this was 'solved in the affirmative more than ten years ago' but gave no reference. He seemed to attribute it to Barth and Schneider (1972), but their paper 'On a problem of Erdős concerning zeros of derivatives' contains no such result. The formal-conjectures project marks this as OPEN due to no verified proof.",
     "problemStatement": "**Erdős Problem #906**: Is there an entire non-zero transcendental function $f : \\mathbb{C} \\to \\mathbb{C}$ such that for any infinite increasing sequence $n_1 < n_2 < \\cdots$, the set\n$$\\{ z \\in \\mathbb{C} : f^{(n_k)}(z) = 0 \\text{ for some } k \\geq 1 \\}$$\nis everywhere dense in $\\mathbb{C}$?\n\n**Status**: UNCLEAR / OPEN\n\n**Note**: Tang observes the problem is trivial for polynomials (eventually all derivatives vanish), which is why **transcendental** is required.\n\n**Claimed solution**: Erdős stated this was solved affirmatively before 1972, but no proof has been located.",
     "text": "Is there a transcendental entire function f : ℂ → ℂ such that for any subsequence of derivatives, their zeros are dense? Erdős claimed solved but no proof is known.",
-    "proofStrategy": "We formalize this problem by defining the key concepts:\n\n1. **IsEntire f**: f is differentiable everywhere on ℂ\n2. **IsTranscendental f**: f is not equal to any polynomial\n3. **iteratedDeriv n f**: The n-th derivative f^{(n)}, axiomatized with basic properties\n4. **derivativeZeroSet f n**: The set {z : f^{(n(k))}(z) = 0 for some k}\n5. **HasDenseDerivativeZeros f**: For all strictly monotone n, derivativeZeroSet f n is dense\n\nWe then axiomatize:\n- The main open question\n- That polynomials trivially satisfy the property (all high derivatives are zero)\n- That exp does NOT satisfy the property (no zeros at all)\n\nThe counterexample of exp shows the property is non-trivial for transcendental functions.",
+    "proofStrategy": "We formalize this problem by defining the key concepts:\n\n1. **IsEntire f**: f is differentiable everywhere on ℂ\n2. **IsTranscendental f**: f is not equal to any polynomial\n3. **iteratedDeriv n f**: The n-th derivative f^{(n)}, axiomatized with basic properties\n4. **derivativeZeroSet f n**: The set {z : f^{(n(k))}(z) = 0 for some k}\n5. **HasDenseDerivativeZeros f**: For all strictly monotone n, derivativeZeroSet f n is dense\n\nWe then:\n- State the main open question as a Prop (erdos_906_statement), asserted neither true nor false\n- Axiomatize that polynomials trivially satisfy the property (polynomial_trivial)\n- Axiomatize that exp is entire and transcendental (exp_is_entire, exp_is_transcendental)\n\nThe reason exp does not satisfy the property (its derivatives all equal e^z, which never vanishes) is discussed in commentary; it is not separately formalized as a declaration.",
     "keyInsights": [
       "**Entire vs polynomial**: Entire functions include all polynomials plus transcendental functions like exp, sin, cos. The problem excludes polynomials because they trivially work.",
       "**Why polynomials are trivial**: A degree-d polynomial has f^{(n)} = 0 for all n > d. So for any subsequence eventually exceeding d, the zero set is all of ℂ.",
