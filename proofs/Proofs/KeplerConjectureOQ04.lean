@@ -1104,5 +1104,50 @@ theorem isGreatest_packingDensity_range :
   rintro x ⟨d, rfl⟩
   exact packingDensity_le_rhombicDodecahedron d
 
+/-!
+## S22 — the packing-density supremum, and the sphere-to-space-filling gap
+
+`isGreatest_packingDensity_range` (S21) shows `δ = 1` is the *attained* maximum of
+the density functional. This section records its two standard capstone forms: the
+supremum of the range is exactly `1` (`csSup … = 1`, the Mathlib-native
+"space-filling body is optimal" statement), and a *quantitative* version of the
+hierarchy's total spread — the space-filling rhombic dodecahedron beats the FCC
+sphere at the bottom by more than `6/25`. Both reuse only facts already proved in
+this file (`isGreatest_packingDensity_range`, `rhombicDodecahedronPackingDensity_eq_one`,
+the verified rational bound `fccDensity_lt_35329_div_46710`); no new axioms.
+-/
+
+/-- **The packing-density supremum equals the space-filling value.**
+`sSup (range PackingDensity.density) = 1`: the least upper bound of all achievable
+convex-body packing densities is exactly the space-filling value `δ = 1`, and it is
+*attained* (by `rhombicDodecahedronPacking`), so the supremum is a genuine maximum.
+The Mathlib-native `sSup` packaging of `isGreatest_packingDensity_range`. No axioms. -/
+theorem csSup_packingDensity_range_eq_one :
+    sSup (Set.range (PackingDensity.density)) = 1 :=
+  isGreatest_packingDensity_range.csSup_eq
+
+/-- **The range of achievable densities is bounded above.**
+`BddAbove (range PackingDensity.density)`: the density functional does not run off to
+arbitrarily large values — the space-filling ceiling `δ = 1` bounds it. Immediate from
+`isGreatest_packingDensity_range`. No axioms. -/
+theorem bddAbove_packingDensity_range :
+    BddAbove (Set.range (PackingDensity.density)) :=
+  isGreatest_packingDensity_range.bddAbove
+
+/-- **Quantitative sphere-to-space-filling gap.**
+The top of the hierarchy (the space-filling rhombic dodecahedron, `δ = 1`) exceeds the
+bottom (the FCC sphere density `π/(3√2) ≈ 0.7405`) by more than `6/25 = 0.24`:
+
+  `6/25 < rhombicDodecahedronPackingDensity − fccDensity`.
+
+A machine-checked measure of the total spread of the five-body hierarchy
+(`grand_density_hierarchy`), obtained from the space-filling value `1`
+(`rhombicDodecahedronPackingDensity_eq_one`) and the file's verified upper bound
+`fccDensity < 35329/46710 < 19/25` (`fccDensity_lt_35329_div_46710`). No new axioms. -/
+theorem sphere_to_spaceFilling_gap_gt :
+    6 / 25 < rhombicDodecahedronPackingDensity - fccDensity := by
+  rw [rhombicDodecahedronPackingDensity_eq_one]
+  linarith [fccDensity_lt_35329_div_46710]
+
 
 end KeplerConjectureOQ04
