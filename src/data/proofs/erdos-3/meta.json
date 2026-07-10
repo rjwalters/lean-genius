@@ -56,12 +56,12 @@
     "additionalFiles": [
       {
         "path": "Proofs/Erdos3LogHarmonic.lean",
-        "description": "Bertrand-series convergence dichotomy at exponent p=1, via Cauchy condensation (machine-checked, 0 sorries, axioms only [propext, Classical.choice, Quot.sound]). not_summable_one_div_nat_mul_log: the log-harmonic series ∑ 1/(n·log n) DIVERGES (p=1); summable_one_div_nat_mul_log_rpow: the companion ∑ 1/(n·(log n)^{1+δ}) CONVERGES for every δ>0 (p=1+δ>1). The divergent case substantiates the o(N/log N) counterexample profile in Erdos3Problem.lean's StrongRequiredBound docstring; the convergent case is the analytic ingredient for sharpening the conditional reduction below the (log N)^{1+δ} threshold. Neither exists in Mathlib v4.26.",
+        "description": "Bertrand-series convergence dichotomy on BOTH logarithmic axes, via Cauchy condensation (0 sorries, axioms only [propext, Classical.choice, Quot.sound]). First axis: not_summable_one_div_nat_mul_log (∑ 1/(n·log n) DIVERGES, p=1) vs summable_one_div_nat_mul_log_rpow (∑ 1/(n·(log n)^{1+δ}) CONVERGES, p=1+δ>1); the const-in-log variants summable/not_summable_one_div_nat_mul_log_mul_const handle a multiplicative constant inside the log. Second (iterated-log) axis: not_summable_one_div_nat_mul_log_mul_loglog (∑ 1/(n·log n·log log n) DIVERGES) vs summable_one_div_nat_mul_log_mul_loglog_rpow (∑ 1/(n·log n·(log log n)^{1+δ}) CONVERGES for every δ>0). The second-axis convergent twin (new) makes the Erdős #3 divergence borderline N/(log N·log log N) sharp on both sides. None of these exist in Mathlib v4.26.",
         "status": "verified",
         "sorries": 0,
         "axiomCount": 0,
-        "theoremCount": 2,
-        "lineCount": 251
+        "theoremCount": 6,
+        "lineCount": 759
       }
     ],
     "axiomCount": 0,

@@ -419,3 +419,61 @@ on healthy infra should confirm green and flip the STATUS.
 `required_bound_implies_conjecture` (weak `o(N/log N)` threshold, in `Erdos3Problem.lean`)
 remains the sole `sorry` and is as hard as Erdős #3 itself — not touched, not faked. This
 advance is a companion-file analytic lemma, not the crux.
+
+---
+
+## Session 2026-07-09 (researcher-3) — convergent SECOND-AXIS Bertrand twin (UNVERIFIED, docker down)
+
+**Mode**: ACT (SOLVED-side, look-outward analytic gap). **Outcome**: added one
+0-new-axiom theorem completing the two-sided bracketing of the Erdős #3 divergence
+borderline on the *second* logarithmic axis. Did NOT touch the open crux
+`required_bound_implies_conjecture` (the sole real sorry; `RequiredBound` = o(N/log N)
+is not even known to imply the conjecture).
+
+### The gap found
+`Erdos3LogHarmonic.lean` bracketed the borderline on the **first** axis on both sides
+(`not_summable_one_div_nat_mul_log` div vs `summable_one_div_nat_mul_log_rpow` conv), but
+on the **second** (iterated-log) axis only the *divergent* half existed
+(`not_summable_one_div_nat_mul_log_mul_loglog`: ∑ 1/(n·log n·log log n) = ∞). The
+convergent twin was missing.
+
+### What I added
+`summable_one_div_nat_mul_log_mul_loglog_rpow {δ>0}`:
+`∑ 1/(n · log n · (log log n)^{1+δ})` **converges**. Now the second-axis borderline
+`1/(n·log n·log log n)` is sharp on both sides — divergent at exponent 1, convergent at
+every 1+δ>1 on the `log log` factor — exactly mirroring the first axis.
+Supporting: private `h₄` (shifted term, +3>e so log log>0), `h₄_nonneg`, `h₄_antitone`,
+`cond_upper₄`, `summable_h₄`.
+
+### Proof technique (Cauchy condensation absorbs one logarithm)
+The condensed term `2^k·h₄(2^k) = 1/(log(2^k)·(log log 2^k)^{1+δ}) = 1/(k·log2·(log(k·log2))^{1+δ})`
+— the inner `log log` collapses to a plain `log` — so it is `(log 2)⁻¹` times the general
+term of the **already-verified** convergent const-in-log first-axis series
+`summable_one_div_nat_mul_log_mul_const` (c = log 2). `Summable.of_nonneg_of_le` on the
+k≥2 tail closes it. This is the exact convergent-direction mirror of how `not_summable_g₃`
+reduces the divergent loglog series to the first-tier divergence.
+
+### Verification status: UNVERIFIED — DOCKER INFRA FULLY DOWN
+`docker-build.sh` dies at the IMAGE-build stage with
+`write /var/lib/desktop-containerd/.../meta.db: input/output error` on every attempt
+(containerd metadata DB corruption, known #35184 — operator-level, NOT self-fixable; disk
+healthy 144Gi free, docker daemon responsive but containerd store broken). Host
+`lake env lean` not viable (no Mathlib oleans on host → would trigger the forbidden full
+`lake build`). So NO elaboration signal this session.
+
+**Confidence: high but unconfirmed.** The proof is a close structural mirror of the
+file's *verified* siblings — `summable_h₂`/`h₂_cond_upper`/`summable_one_div_nat_mul_log_rpow`
+(first-axis convergent) and `g₃`/`cond_lower₃`/`not_summable_g₃` (loglog divergent) — and
+reduces to the verified `summable_one_div_nat_mul_log_mul_const`. Manual review fixed 3
+issues before commit: a double-`log` in `h₄_antitone` (must be `Real.log_le_log hlogm0 hlogmn`,
+single application), and two `positivity` calls that can't prove strict `>0` for `↑k·log2`
+(↑k only ≥0) or for the `set`-local product `b·L·LL^{1+δ}` (made explicit via `mul_pos`).
+
+**A build-capable session must confirm the green build before this is trusted as verified.**
+Gallery meta `src/data/proofs/erdos-3/meta.json` additionalFiles entry resynced
+(was badly stale 251→759 lines, 2→6 public theorems).
+
+### Frontier unchanged
+Only real sorry remains `required_bound_implies_conjecture` — deliberately kept OPEN CRUX,
+as hard as / not known to be equivalent to Erdős #3. All tractable analytic bracketing on
+both logarithmic axes is now complete (both sides, both axes).
