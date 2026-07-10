@@ -61,10 +61,10 @@
       "zeta_even_finset_prod_transcendental: any finite product ∏_{i∈s} ζ(2 f i) over a nonempty family of positive indices is transcendental over ℚ (its π-exponent 2∑ f i ≥ 2 is positive) — the Finset companion of zeta_even_product_transcendental, showing no finite product of even zeta values can be algebraic"
     ],
     "dateAdded": "2026-07-02",
-    "lineCount": 391,
+    "lineCount": 441,
     "assumptions": "Depends on the axiom hermite_lindemann (Lindemann–Weierstrass theorem, giving transcendence of π), imported via Proofs.PiTranscendental. Mathlib does not yet contain a complete Lindemann–Weierstrass development, and irrationality of π^(2n) provably requires transcendence of π (irrational_pi alone is insufficient, as irrationality does not lift through powers). Everything else is machine-checked with 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 23,
+    "theoremCount": 25,
     "definitionCount": 0
   },
   "overview": {
@@ -162,9 +162,9 @@
       "Real"
     ],
     "namespace": "BaselProblemOQ01OQ02",
-    "lineCount": 391,
+    "lineCount": 441,
     "axiomCount": 0,
-    "theoremCount": 23,
+    "theoremCount": 25,
     "definitionCount": 0,
     "path": "Proofs/BaselProblemOQ01OQ02.lean",
     "sorries": 0
