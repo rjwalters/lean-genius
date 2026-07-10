@@ -109,9 +109,9 @@
   },
   "crossReferences": [
     {
-      "targetId": "erdos-1017-oq-04",
+      "targetId": "erdos-1017",
       "relationship": "parent",
-      "description": "The graph case (k=2): defines EdgeCliqueCover / EdgeCliquePartition on a SimpleGraph and proves cc(G) ≤ cp(G) with the same partition ⟹ cover structure, the trivial partition, the edge_unique_clique keystone, and positivity. This entry lifts that whole framework to k-uniform hypergraphs, showing the inequality is uniform in k."
+      "description": "Root Erdős Problem #1017 (clique partition of graphs: f(n,k) = min cliques to partition a graph with n vertices and k edges, the Erdős–Goodman–Pósa bound f(n,k) ≤ ⌊n²/4⌋). The k = 2 cover-vs-partition inequality cc(G) ≤ cp(G) is the graph case; this entry lifts that always-true direction to k-uniform hypergraphs (ccₖ(H) ≤ cpₖ(H)), showing the inequality is uniform in the uniformity k."
     }
   ]
 }
