@@ -376,6 +376,28 @@ theorem constantConjecture_forces_bracket (c : ℝ) (h : constantConjecture c) :
     push_neg at hgt
     exact constantConjecture_refuted_of_one_lt c hgt h
 
+/-- **Uniqueness of the exact asymptotic constant.**  At most one constant can be the
+    first-order asymptotic constant of `R(3,k)`: if both `constantConjecture c₁` and
+    `constantConjecture c₂` hold, then `c₁ = c₂`.  A two-sided application of the axiom-free
+    `asymptotic_constant_le` — pairing `c₁`'s lower bound with `c₂`'s upper bound gives
+    `c₁ ≤ c₂`, and the symmetric pairing gives `c₂ ≤ c₁`.  So the family `constantConjecture c`
+    is a genuine *singleton predicate*: at most one member can hold, and (with
+    `constantConjecture_forces_bracket`) that member's constant lies in `[1/2, 1]`.  In
+    particular `mainConjecture` (`c = 1/2`) and `pgmConjecture` (`c = 1/4`) are mutually
+    exclusive.  No Ramsey axioms are used. -/
+theorem constantConjecture_unique (c₁ c₂ : ℝ)
+    (h₁ : constantConjecture c₁) (h₂ : constantConjecture c₂) :
+    c₁ = c₂ := by
+  have h12 : c₁ ≤ c₂ :=
+    asymptotic_constant_le (fun k => (R3 k : ℝ)) c₁ c₂
+      (fun ε hε => by obtain ⟨k₀, hk₀⟩ := h₁ ε hε; exact ⟨k₀, fun k hk => (hk₀ k hk).1⟩)
+      (fun ε hε => by obtain ⟨k₀, hk₀⟩ := h₂ ε hε; exact ⟨k₀, fun k hk => (hk₀ k hk).2⟩)
+  have h21 : c₂ ≤ c₁ :=
+    asymptotic_constant_le (fun k => (R3 k : ℝ)) c₂ c₁
+      (fun ε hε => by obtain ⟨k₀, hk₀⟩ := h₂ ε hε; exact ⟨k₀, fun k hk => (hk₀ k hk).1⟩)
+      (fun ε hε => by obtain ⟨k₀, hk₀⟩ := h₁ ε hε; exact ⟨k₀, fun k hk => (hk₀ k hk).2⟩)
+  linarith
+
 /- ## Part VII: Related Problems -/
 
 /-
