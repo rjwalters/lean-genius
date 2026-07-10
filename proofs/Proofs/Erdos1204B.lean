@@ -115,6 +115,30 @@ theorem S_le {k : ℕ} {a : Finset ℕ} (hcard : a.card = k) (ha : Admissible a)
     S k ≤ a.sum id :=
   Nat.sInf_le ⟨a, hcard, ha, rfl⟩
 
+/-- **One-step monotonicity of the minimal sum.** `S(k) ≤ S(k+1)`: deleting one
+element from an optimal admissible `(k+1)`-set leaves an admissible `k`-set
+(`Admissible.subset`) whose element sum is no larger
+(`Finset.sum_le_sum_of_subset`, as all elements are nonnegative), so its sum —
+which is `≥ S(k)` — bounds `S(k+1)` from above. The average-analogue of
+`A_le_A_succ` from the `A(k)` theory. -/
+theorem S_le_S_succ (k : ℕ) : S k ≤ S (k + 1) := by
+  obtain ⟨a, hcard, ha, hsum⟩ := S_mem (k + 1)
+  have hne : a.Nonempty := by rw [← Finset.card_pos, hcard]; omega
+  obtain ⟨x, hx⟩ := hne
+  have hsub : a.erase x ⊆ a := fun y hy => Finset.mem_of_mem_erase hy
+  have hcard' : (a.erase x).card = k := by
+    rw [Finset.card_erase_of_mem hx, hcard, Nat.add_sub_cancel]
+  have ha' : Admissible (a.erase x) := ha.subset hsub
+  calc S k ≤ (a.erase x).sum id := S_le hcard' ha'
+    _ ≤ a.sum id := Finset.sum_le_sum_of_subset hsub
+    _ = S (k + 1) := hsum
+
+/-- **`S` is monotone.** The minimal-sum function `S(k)` is non-decreasing in `k`:
+a larger admissible tuple can only need a larger element sum. Immediate from the
+one-step bound `S_le_S_succ`; mirrors `A_monotone`. -/
+theorem S_monotone : Monotone S :=
+  monotone_nat_of_le_succ S_le_S_succ
+
 /-- **General lower bound on `S(k)`: `k·(k-1) ≤ S(k)`.** Immediate from the
 attained minimizer and `admissible_sum_ge`. Equivalently `B(k) ≥ k-1`
 (`sub_one_le_B`): twice the trivial packing sum, forced by the prime-`2`
