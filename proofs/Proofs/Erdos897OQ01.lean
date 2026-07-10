@@ -25,6 +25,11 @@
       parent file's completely-additive reduction. The cancellation differs: the
       value is constant in `k`, so the binding case is `k = 1`, and the `M < 0`
       branch is handled by invoking the hypothesis at `0`.
+  (5) **Lattice structure.** The hypothesis cuts the pointwise order into a
+      sup-closed **filter** (the "large" functions, closed under `max` with
+      anything — `unboundedOnPrimePowers_max_left`) and a complementary sup-closed
+      **ideal** (the `O(log)`-on-prime-powers functions, closed under `max` of two
+      — `not_unboundedOnPrimePowers_max`).
 
   Verified, 0 axioms, 0 sorries, no `native_decide`.
 -/
@@ -435,5 +440,64 @@ theorem not_unboundedOnPrimePowers_of_le_const_mul_log {f : ℕ → ℝ} {C : �
   intro h
   obtain ⟨p, k, hp, hk, hgt⟩ := h C
   exact absurd hgt (not_lt.mpr (hf p k hp hk))
+
+/-
+## (9) Sup-closure: the order structure is a lattice filter / ideal
+
+Sections (6) and (8) established that the hypothesis class is an *up-set* in the
+prime-power domination order (upward closed under `unboundedOnPrimePowers_of_ge`,
+downward failure under `not_unboundedOnPrimePowers_of_le`).  This section completes
+that picture with the **join** (pointwise `max`), turning the qualitative "up-set"
+statement into the sharp lattice fact:
+
+* the hypothesis functions are closed under `max` with an *arbitrary* function
+  (`unboundedOnPrimePowers_max_left`) — they form a sup-closed **filter**;
+* the *failing* functions are closed under `max` of two of them
+  (`not_unboundedOnPrimePowers_max`) — they form a sup-closed **ideal**.
+
+The second is not a mere domination corollary: it needs the two `O(log)` constants
+to be merged into their maximum, using `log (p^k) ≥ 0`.  Together they say the
+Erdős #897 hypothesis cuts the pointwise order into a filter of "large" functions
+and a complementary ideal of "small" (`O(log)` on prime powers) ones, both stable
+under joins.
+-/
+
+/-- **Sup-closure of the hypothesis (filter side).**  If `f` is unbounded on prime
+powers relative to `log`, then so is its pointwise maximum with *any* function `g`:
+`max (f n) (g n) ≥ f n` on every prime power, so the same witnesses transfer via the
+domination lemma.  The hypothesis class is therefore closed under `max`. -/
+theorem unboundedOnPrimePowers_max_left {f g : ℕ → ℝ}
+    (hf : UnboundedOnPrimePowers f) :
+    UnboundedOnPrimePowers (fun n => max (f n) (g n)) :=
+  unboundedOnPrimePowers_of_ge hf (fun _ _ _ _ => le_max_left _ _)
+
+/-- **Sup-closure of the hypothesis (symmetric form).**  Likewise `max` with a
+function on the left. -/
+theorem unboundedOnPrimePowers_max_right {f g : ℕ → ℝ}
+    (hg : UnboundedOnPrimePowers g) :
+    UnboundedOnPrimePowers (fun n => max (f n) (g n)) :=
+  unboundedOnPrimePowers_of_ge hg (fun _ _ _ _ => le_max_right _ _)
+
+/-- **Sup-closure of the failing class (ideal side).**  If both `f` and `g` FAIL the
+Erdős #897 hypothesis — i.e. each is `O(log)` on prime powers, say `f ≤ Mf·log` and
+`g ≤ Mg·log` — then their pointwise maximum also fails: `max (f, g) ≤ max(Mf,Mg)·log`
+on every prime power (using `log(p^k) ≥ 0`), so the `O(log)` criterion of (8) applies.
+Thus the small functions form a sup-closed ideal, dual to the filter above. -/
+theorem not_unboundedOnPrimePowers_max {f g : ℕ → ℝ}
+    (hf : ¬ UnboundedOnPrimePowers f) (hg : ¬ UnboundedOnPrimePowers g) :
+    ¬ UnboundedOnPrimePowers (fun n => max (f n) (g n)) := by
+  unfold UnboundedOnPrimePowers at hf hg
+  push_neg at hf hg
+  obtain ⟨Mf, hMf⟩ := hf
+  obtain ⟨Mg, hMg⟩ := hg
+  refine not_unboundedOnPrimePowers_of_le_const_mul_log
+    (C := max Mf Mg) (fun p k hp hk => ?_)
+  have hlog : 0 ≤ Real.log ((p ^ k : ℕ) : ℝ) :=
+    Real.log_nonneg (by exact_mod_cast Nat.one_le_pow k p hp.pos)
+  have hfb : f (p ^ k) ≤ max Mf Mg * Real.log (p ^ k) :=
+    le_trans (hMf p k hp hk) (by gcongr; exact le_max_left _ _)
+  have hgb : g (p ^ k) ≤ max Mf Mg * Real.log (p ^ k) :=
+    le_trans (hMg p k hp hk) (by gcongr; exact le_max_right _ _)
+  exact max_le hfb hgb
 
 end Erdos897
