@@ -15,6 +15,12 @@ the already-verified figurate theory (`iterSum_one`, `iterSum_eq_simplexConv`, c
 - `iterSum_simplexNumber` — **dimension-additivity of the ladder**: `iterSum a (P_b) n = P_{a+b}(n)`.
   Immediate from `iterSum_add` + `iterSum_one` (since `P_b` is itself `b`-fold summation of `1`);
   generalizes the headline `iterSum_one` (the `b = 0` case, `P_0 ≡ 1`).
+- `simplexConv_comp` (added after PR #36589 merged) — **convolution semigroup law** for the
+  figurate kernels: `simplexConv a (simplexConv b f) = simplexConv (a + b + 1) f`. The semigroup
+  law transported through the discrete Cauchy formula `iterSum_eq_simplexConv`
+  (`simplexConv d = iterSum (d+1)`): `iterSum (a+1) ∘ iterSum (b+1) = iterSum (a+b+2)`, i.e.
+  `P_a ∗ P_b = P_{a+b+1}` — the summation-side analogue of the fractional-integral composition
+  `(x-·)^a/a! ∗ (x-·)^b/b! = (x-·)^{a+b+1}/(a+b+1)!`, a Vandermonde-type kernel identity. VERIFIED.
 
 ### Key Lean notes (reusable)
 - `iterSum` recurses on its FIRST (dimension) arg: `iterSum 0 f = f`, `iterSum (d+1) f =

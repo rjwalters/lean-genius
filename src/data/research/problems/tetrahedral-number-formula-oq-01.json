@@ -41,7 +41,8 @@
       "partialSum_simplexConv: kernel dimension-raising engine (Ico-Ico triangular swap + sum_simplex hockey stick).",
       "card_sym_fin_eq_simplexNumber: counting face |Sym (Fin (n+1)) d| = P_d(n) (stars and bars / weakly increasing d-tuples).",
       "iterSum_add — semigroup law of iterated summation: iterSum a (iterSum b f) = iterSum (a+b) f (monoid action of (ℕ,+); discrete Riemann–Liouville semigroup Iᵃ∘Iᵇ=Iᵃ⁺ᵇ). Induction on a, one partialSum layer per step. VERIFIED.",
-      "iterSum_simplexNumber — dimension-additivity of the figurate ladder: iterSum a (simplexNumber b) n = simplexNumber (a+b) n, from iterSum_add + iterSum_one. VERIFIED."
+      "iterSum_simplexNumber — dimension-additivity of the figurate ladder: iterSum a (simplexNumber b) n = simplexNumber (a+b) n, from iterSum_add + iterSum_one. VERIFIED.",
+      "simplexConv_comp — convolution semigroup law for figurate kernels: simplexConv a (simplexConv b f) = simplexConv (a+b+1) f (P_a ∗ P_b = P_{a+b+1}, discrete fractional-integral composition / Vandermonde identity), from iterSum_add + iterSum_eq_simplexConv. VERIFIED."
     ],
     "insights": [
       "The hyper-tetrahedral / d-simplex number is exactly Mathlib Nat.multichoose (n+1) d = C(n+d,d); Mathlib gives the one-step hockey stick Nat.sum_range_add_choose : sum i in range(n+1),(i+d).choose d = (n+d+1).choose(d+1)",
@@ -92,8 +93,8 @@
     {
       "path": "Proofs/TetrahedralNumberFormulaOQ01.lean",
       "filename": "TetrahedralNumberFormulaOQ01.lean",
-      "lineCount": 300,
-      "theoremCount": 13,
+      "lineCount": 320,
+      "theoremCount": 14,
       "axiomCount": 0,
       "defCount": 4,
       "sorryCount": 0,
