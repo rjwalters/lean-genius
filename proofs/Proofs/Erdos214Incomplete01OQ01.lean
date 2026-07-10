@@ -195,4 +195,77 @@ theorem scaledLattice_unitDistanceFree_of_odd : IsUnitDistanceFree ScaledLattice
   have h := scaledLattice_dist_ne_sqrt_odd hp hq (n := 1) (by decide)
   simpa [Real.sqrt_one] using h
 
+/-!
+## Further strengthening: an infinite family of *even* avoided distances
+
+The odd result above is not the whole story: the squared distance is not merely
+even, it is `2·(u² + v²)` — twice a **sum of two integer squares**.  Since a sum
+of two squares is never `≡ 3 (mod 4)`, the squared distance is never `≡ 6 (mod 8)`.
+Hence `√2·ℤ²` also avoids every distance `√n` with `n ≡ 6 (mod 8)` — the infinite
+family `√6, √14, √22, …` of *even* distances, none of which is caught by the
+odd-`n` result.
+-/
+
+/-- **A sum of two integer squares is never `≡ 3 (mod 4)`.**  Each square is
+`0` or `1 (mod 4)` (even/odd split), so the sum lies in `{0, 1, 2} (mod 4)`. -/
+theorem sq_add_sq_mod_four_ne_three (u v : ℤ) : (u ^ 2 + v ^ 2) % 4 ≠ 3 := by
+  have key : ∀ w : ℤ, w ^ 2 % 4 = 0 ∨ w ^ 2 % 4 = 1 := by
+    intro w
+    rcases Int.even_or_odd w with ⟨k, hk⟩ | ⟨k, hk⟩
+    · left; subst hk
+      have : (k + k) ^ 2 = 4 * k ^ 2 := by ring
+      rw [this]; omega
+    · right; subst hk
+      have : (2 * k + 1) ^ 2 = 4 * (k ^ 2 + k) + 1 := by ring
+      rw [this]; omega
+  rcases key u with hu | hu <;> rcases key v with hv | hv <;> omega
+
+/-- **Squared lattice distances are twice a sum of two squares.**  Sharpens
+`scaledLattice_dist_sq_even` by exposing the two-square structure of the even
+factor: `dist p q ^ 2 = 2·(u² + v²)` with `u = a − a'`, `v = b − b'`. -/
+theorem scaledLattice_dist_sq_two_mul_sq_add_sq {p q : Plane}
+    (hp : p ∈ ScaledLattice) (hq : q ∈ ScaledLattice) :
+    ∃ u v : ℤ, dist p q ^ 2 = 2 * ((u : ℝ) ^ 2 + (v : ℝ) ^ 2) := by
+  obtain ⟨a, b, hpa, hpb⟩ := hp
+  obtain ⟨a', b', hqa, hqb⟩ := hq
+  refine ⟨a - a', b - b', ?_⟩
+  rw [dist_eq_coords]
+  have hs : Real.sqrt 2 ^ 2 = 2 := Real.sq_sqrt (by norm_num)
+  have hx : (p 0 - q 0) ^ 2 = 2 * ((a : ℝ) - a') ^ 2 := by
+    rw [hpa, hqa]
+    have e : (Real.sqrt 2 * (a : ℝ) - Real.sqrt 2 * a') ^ 2
+        = Real.sqrt 2 ^ 2 * ((a : ℝ) - a') ^ 2 := by ring
+    rw [e, hs]
+  have hy : (p 1 - q 1) ^ 2 = 2 * ((b : ℝ) - b') ^ 2 := by
+    rw [hpb, hqb]
+    have e : (Real.sqrt 2 * (b : ℝ) - Real.sqrt 2 * b') ^ 2
+        = Real.sqrt 2 ^ 2 * ((b : ℝ) - b') ^ 2 := by ring
+    rw [e, hs]
+  have hnn : 0 ≤ (p 0 - q 0) ^ 2 + (p 1 - q 1) ^ 2 := by positivity
+  rw [Real.sq_sqrt hnn, hx, hy]
+  push_cast; ring
+
+/-- **`√2·ℤ²` avoids every distance `√n` with `n ≡ 6 (mod 8)`.**  The squared
+distance is `2·(u² + v²)`; if it equalled `n ≡ 6 (mod 8)` then `u² + v² ≡ 3 (mod 4)`,
+impossible by `sq_add_sq_mod_four_ne_three`.  This is a genuinely *new* infinite
+family of avoided distances — all **even** (`√6, √14, √22, …`), none reachable from
+the odd-`n` theorem. -/
+theorem scaledLattice_dist_ne_sqrt_six_mod_eight {p q : Plane}
+    (hp : p ∈ ScaledLattice) (hq : q ∈ ScaledLattice)
+    {n : ℕ} (hn : n % 8 = 6) : dist p q ≠ Real.sqrt n := by
+  intro h
+  obtain ⟨u, v, huv⟩ := scaledLattice_dist_sq_two_mul_sq_add_sq hp hq
+  have hsq : dist p q ^ 2 = (n : ℝ) := by rw [h, Real.sq_sqrt (by positivity)]
+  rw [hsq] at huv
+  have hz : (n : ℤ) = 2 * (u ^ 2 + v ^ 2) := by exact_mod_cast huv
+  have h3 := sq_add_sq_mod_four_ne_three u v
+  omega
+
+/-- **Concrete instance:** no two points of `√2·ℤ²` are at distance `√6`
+(`n = 6 ≡ 6 mod 8`, an *even* distance beyond the reach of the odd-`n` result). -/
+theorem scaledLattice_dist_ne_sqrt_six {p q : Plane}
+    (hp : p ∈ ScaledLattice) (hq : q ∈ ScaledLattice) :
+    dist p q ≠ Real.sqrt 6 :=
+  scaledLattice_dist_ne_sqrt_six_mod_eight hp hq (n := 6) (by decide)
+
 end Erdos214Incomplete01OQ01
