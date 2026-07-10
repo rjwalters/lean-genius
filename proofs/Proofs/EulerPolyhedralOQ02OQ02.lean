@@ -507,6 +507,39 @@ theorem connectedSum_genusSurface_totalPfaffian (g h : ℕ) :
   push_cast
   ring
 
+-- ============================================================================
+-- Part XIII: χ is a complete invariant of Σ_g — faithfulness of the monoid
+--            embedding (surfaces, #) ↪ (ℕ, +)
+-- ============================================================================
+
+/-- **Euler characteristic is a complete invariant of the genus surfaces.**  Two
+    genus surfaces have the same Euler characteristic iff they have the same genus:
+    `χ(Σ_g) = χ(Σ_h) ↔ g = h`.  Combined with the additivity `connectedSum_genusSurface_chi`
+    (the homomorphism half), this injectivity is the *faithfulness* half that upgrades
+    `g ↦ Σ_g` from a monoid homomorphism to a genuine monoid **embedding**
+    `(closed orientable surfaces, #) ↪ (ℕ, +)`: distinct genera are never conflated by
+    `χ`.  The forward direction is the classification statement `2 − 2g = 2 − 2h ⇒ g = h`. -/
+theorem genusSurfaceCGB_chi_inj (g h : ℕ) :
+    (genusSurfaceCGB g).chi = (genusSurfaceCGB h).chi ↔ g = h := by
+  rw [genusSurfaceCGB_chi, genusSurfaceCGB_chi]
+  omega
+
+/-- **Distinct genera give distinct surfaces.**  The contrapositive of the injectivity
+    `genusSurfaceCGB_chi_inj`: if `g ≠ h` then `χ(Σ_g) ≠ χ(Σ_h)`.  This is precisely the
+    faithfulness of the connected-sum monoid embedding — no two non-homeomorphic closed
+    orientable surfaces share an Euler characteristic. -/
+theorem genusSurfaceCGB_chi_ne_of_ne {g h : ℕ} (hgh : g ≠ h) :
+    (genusSurfaceCGB g).chi ≠ (genusSurfaceCGB h).chi :=
+  fun hc => hgh ((genusSurfaceCGB_chi_inj g h).mp hc)
+
+/-- **The inverse of the classification: genus recovered from Euler characteristic.**
+    `2g = 2 − χ(Σ_g)`, i.e. `g = (2 − χ)/2`.  This explicit left inverse of `g ↦ χ(Σ_g)`
+    is the constructive witness for `genusSurfaceCGB_chi_inj`, and expresses the genus of
+    a closed orientable surface directly in terms of its Euler characteristic. -/
+theorem genusSurfaceCGB_genus_of_chi (g : ℕ) :
+    2 * (g : ℤ) = 2 - (genusSurfaceCGB g).chi := by
+  rw [genusSurfaceCGB_chi]; ring
+
 end ChernGaussBonnet
 
 end
