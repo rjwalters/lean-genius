@@ -544,4 +544,31 @@ theorem weighted_variance_atom_bound {ι : Type*} (s : Finset ι) (w x : ι → 
     mul_le_mul_of_nonneg_left hd (hw j hj)
   linarith [hle_sum, hatom]
 
+/-- **The variance atom over many deviating cells.**  Strengthening of
+    `weighted_variance_atom_bound` from a single index to an arbitrary sub-family
+    `J ⊆ s`: if *every* index `j ∈ J` deviates from the weighted mean `μ` by at
+    least `d` (`d² ≤ (xⱼ − μ)²`), then the pooled weight of `J` scales the floor,
+    `(∑_{j∈J} wⱼ)·d² ≤ (∑ wᵢxᵢ²) − (∑ wᵢ)·μ²`.
+
+    This is the form the AFKS energy-increment step actually consumes: refining a
+    part into sub-cells whose densities all deviate from the parent mean by `d`
+    raises the partition energy by at least the *total* sub-cell weight times `d²`,
+    not just one cell's — the honest four-cell (`ε⁴`) increment rather than the
+    single-cell (`ε²`) one.  The single-index bound is the case `J = {j}`. -/
+theorem weighted_variance_subset_bound {ι : Type*} (s : Finset ι) (w x : ι → ℚ)
+    (μ d : ℚ) (hw : ∀ i ∈ s, 0 ≤ w i)
+    (hmean : ∑ i ∈ s, w i * x i = (∑ i ∈ s, w i) * μ)
+    {J : Finset ι} (hJ : J ⊆ s) (hdev : ∀ j ∈ J, d ^ 2 ≤ (x j - μ) ^ 2) :
+    (∑ j ∈ J, w j) * d ^ 2 ≤ (∑ i ∈ s, w i * x i ^ 2) - (∑ i ∈ s, w i) * μ ^ 2 := by
+  rw [← weighted_variance_eq s w x μ hmean]
+  have hterm_nonneg : ∀ i ∈ s, 0 ≤ w i * (x i - μ) ^ 2 :=
+    fun i hi => mul_nonneg (hw i hi) (sq_nonneg _)
+  have hsubset : ∑ i ∈ J, w i * (x i - μ) ^ 2 ≤ ∑ i ∈ s, w i * (x i - μ) ^ 2 :=
+    Finset.sum_le_sum_of_subset_of_nonneg hJ (fun i hi _ => hterm_nonneg i hi)
+  have hfloor : ∑ j ∈ J, w j * d ^ 2 ≤ ∑ j ∈ J, w j * (x j - μ) ^ 2 :=
+    Finset.sum_le_sum (fun j hj =>
+      mul_le_mul_of_nonneg_left (hdev j hj) (hw j (hJ hj)))
+  rw [Finset.sum_mul]
+  linarith [hsubset, hfloor]
+
 end Szemeredi.RegularityOQ04
