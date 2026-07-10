@@ -192,6 +192,26 @@ theorem maxAvoidingSize_ge_iff (n m k : ℕ) :
       rw [Finset.mem_filter, Finset.mem_powerset] at hSmem
       exact ⟨S, hSmem.1, hScard, hSmem.2⟩
 
+/-- **The full box is a large-target witness.** For `m > n²` the whole set
+`{1,…,n}` avoids `m` (`avoid_full`) and has size `n`, so the maximum avoiding
+size is at least `n`: `n ≤ maxAvoidingSize n m`. Packaged from `avoid_full` via
+the bridge `maxAvoidingSize_ge_iff`. -/
+theorem le_maxAvoidingSize_of_lt (n m : ℕ) (h : n * n < m) :
+    n ≤ maxAvoidingSize n m :=
+  (maxAvoidingSize_ge_iff n m n).mp
+    ⟨Icc_n n, Finset.Subset.refl _, by rw [Icc_n, Nat.card_Icc]; omega,
+      avoid_full n m h⟩
+
+/-- **Exact value for large targets.** Once `m > n²` no subset sum of `{1,…,n}`
+can reach `m` (`avoid_full`), so the maximum avoiding size attains its ceiling:
+`maxAvoidingSize n m = n`. Combines the universal upper bound
+`maxAvoidingSize_le` with the full-box lower bound `le_maxAvoidingSize_of_lt`.
+This pins down `maxAvoidingSize` completely in the large-`m` regime and is the
+fact behind the `m > n²` branch of `f_characterization`. -/
+theorem maxAvoidingSize_eq_of_lt (n m : ℕ) (h : n * n < m) :
+    maxAvoidingSize n m = n :=
+  le_antisymm (maxAvoidingSize_le n m) (le_maxAvoidingSize_of_lt n m h)
+
 /-- f(n) is the largest k satisfying f_property. -/
 theorem f_characterization (n : ℕ) (hn : n ≥ 1) :
     f_property n (f n) ∧ ∀ k > f n, ¬f_property n k := by
