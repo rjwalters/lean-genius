@@ -434,4 +434,45 @@ theorem admissibleCoeff_succ_le_two_pow_mul (hV : 0 < Fintype.card V) (t : ℕ) 
           ≤ 2 * (firstMomentThreshold (t + k) / Fintype.card V + 1) := by omega
       exact le_trans h2 (Nat.mul_le_mul (le_refl 2) ih)
 
+/-- **Exact positivity threshold for the admissible coefficient.**  The integer
+    coefficient `c(t) = ⌊2^{t-1}/|V|⌋` is nonzero *exactly* when the ground set is
+    small enough for the threshold to reach one full copy of `|V|`:
+
+        `0 < c(t)  ↔  |V| ≤ 2^{t-1}`.
+
+    This locates the explicit step `t₀` (any `t` with `|V| ≤ firstMomentThreshold t`)
+    past which the construction of `exists_admissible_coeff` yields a genuinely
+    positive sparseness coefficient — the effective content behind the abstract
+    divergence `firstMomentThreshold_tendsto_atTop`. -/
+theorem admissibleCoeff_pos_iff (hV : 0 < Fintype.card V) (t : ℕ) :
+    0 < firstMomentThreshold t / Fintype.card V
+      ↔ Fintype.card V ≤ firstMomentThreshold t := by
+  constructor
+  · intro h; exact (Nat.one_le_div_iff hV).mp h
+  · intro h; exact (Nat.one_le_div_iff hV).mpr h
+
+/-- **Explicit exponential lower bound on the coefficient (effective divergence).**
+    Once the coefficient is positive at step `t` (i.e. `|V| ≤ 2^{t-1}`, cf.
+    `admissibleCoeff_pos_iff`), it is bounded below by a *concrete* power of two after
+    `k` further steps:
+
+        `2^k ≤ c(t + k)`.
+
+    Equivalently, writing `t₀` for the positivity threshold, `c(t) ≥ 2^{t-t₀}` for all
+    `t ≥ t₀`.  This upgrades the qualitative `firstMomentThreshold_tendsto_atTop` /
+    `exists_admissible_coeff` divergence to an explicit exponential rate: it exhibits,
+    for each target `2^k`, the exact step at which the admissible sparseness coefficient
+    surpasses it.  Proof: `1 ≤ c(t)` from `admissibleCoeff_pos_iff`, then multiply the
+    iterated lower bound `admissibleCoeff_two_pow_mul_le` (`2^k·c(t) ≤ c(t+k)`). -/
+theorem admissibleCoeff_ge_two_pow_of_le (hV : 0 < Fintype.card V) (t : ℕ) (ht : 1 ≤ t)
+    (hle : Fintype.card V ≤ firstMomentThreshold t) (k : ℕ) :
+    2 ^ k ≤ firstMomentThreshold (t + k) / Fintype.card V := by
+  have hpos : 0 < firstMomentThreshold t / Fintype.card V :=
+    (admissibleCoeff_pos_iff hV t).mpr hle
+  have hmul := admissibleCoeff_two_pow_mul_le hV t ht k
+  calc 2 ^ k = 2 ^ k * 1 := (mul_one _).symm
+    _ ≤ 2 ^ k * (firstMomentThreshold t / Fintype.card V) :=
+        Nat.mul_le_mul (le_refl _) hpos
+    _ ≤ firstMomentThreshold (t + k) / Fintype.card V := hmul
+
 end Erdos1022OQ02
