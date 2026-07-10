@@ -121,6 +121,11 @@
       "targetId": "combinations-formula",
       "relationship": "related",
       "description": "Root of the combinations-formula family: the basic count C(n,k) = n!/(k!(n−k)!). This entry supplies the row's sharp structural equality."
+    },
+    {
+      "targetId": "combinations-formula-oq-04-oq-01",
+      "relationship": "sibling",
+      "description": "Twin entry answering the same parent open question (ultra-log-concavity of a Pascal row) from the same core adjacent-triple identity. Its choose_adjacent_ratio_prod is this entry's identity in n,k form (n = k+2+t, so n−k = t+2, n−k−1 = t+1); it then extracts the exact defect/gap and the rational excess 1 + (n+1)/((k+1)(n−k−1)), complementary to this entry's middle-index centering that recovers Liggett's ultra-log-concavity bound."
     }
   ],
   "references": [
