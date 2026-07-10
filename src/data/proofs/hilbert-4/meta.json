@@ -43,7 +43,7 @@
     "dateAdded": "2025-12-29",
     "hilbertNumber": 4,
     "axiomCount": 5,
-    "assumptions": "5 axiom declarations: minkowski_geodesics_are_straight (lines are geodesics in Minkowski), minkowski_straight_line_shortest (line is shortest path), busemann_classification (exhaustive metric classification), hamel_theorem_2d (2D Minkowski characterization), funk_geodesics_straight (Funk metric geodesics). Some axioms are placeholder/vacuous pending proper formalization of metric geometry foundations.",
+    "assumptions": "5 axiom declarations. Substantive geometric statements: minkowski_geodesics_are_straight (lines are geodesics in Minkowski geometry), minkowski_straight_line_shortest (line is shortest path), busemann_classification (Busemann's exhaustive metric classification). Currently VACUOUS placeholders: hamel_theorem_2d concludes only `∃ M : MinkowskiGeometry, True` (independent of the input metric d), and funk_geodesics_straight is stated over `FunkMetric := fun _ _ => 0`, so it reduces to 0 + 0 = 0. Additionally, the headline theorem `hilbert_geodesics_are_straight` has conclusion `True` (a formal-statement placeholder proved by `trivial`). The only genuinely machine-checked theorems are `euclidean_triangle` and `taxicab_triangle` (triangle inequalities for the Euclidean and taxicab norms). This entry is a formal scaffold for Hilbert's 4th problem, not a verified solution.",
     "lineCount": 459,
     "prerequisites": [
       "Metric spaces and geodesics",
@@ -220,8 +220,8 @@
     {
       "name": "hilbert4_metric",
       "type": "core",
-      "description": "Construction of metrics for which straight lines are geodesics",
-      "leanType": "exists metric, forall line, is_geodesic metric line"
+      "description": "Formal scaffold for Hilbert's 4th problem. The geodesic-straightness of Minkowski/Hilbert geometries is axiomatized (minkowski_geodesics_are_straight); the file's headline theorem hilbert_geodesics_are_straight is currently a True-typed placeholder. The machine-checked theorems are the Euclidean and taxicab triangle inequalities.",
+      "leanType": "axiomatized: minkowski_geodesics_are_straight; headline hilbert_geodesics_are_straight : (...) -> True (placeholder)"
     }
   ],
   "sorries": 0
