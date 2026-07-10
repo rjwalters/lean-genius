@@ -119,5 +119,27 @@
       "relationship": "Shared divisibility toolkit",
       "description": "Both entries turn on elementary divisibility arithmetic in ℕ. This Mersenne result is a pointed application: exponent divisibility d ∣ n lifting to 2^d − 1 ∣ 2^n − 1."
     }
+  ],
+  "references": [
+    {
+      "title": "An Introduction to the Theory of Numbers",
+      "author": "G. H. Hardy and E. M. Wright",
+      "year": "2008",
+      "venue": "Oxford University Press (6th ed., rev. Heath-Brown, Silverman, Wiles)",
+      "description": "Standard treatment of Mersenne primes and perfect numbers, including the necessary condition that a prime 2^n − 1 forces n prime, via the divisibility 2^d − 1 ∣ 2^n − 1."
+    },
+    {
+      "title": "Elementary Number Theory",
+      "author": "David M. Burton",
+      "year": "2010",
+      "venue": "McGraw-Hill (7th ed.)",
+      "description": "Undergraduate text presenting exactly this necessary-condition argument for Mersenne exponents alongside the Lucas–Lehmer primality test, whose search this condition restricts to prime n."
+    },
+    {
+      "title": "Cogitata Physico-Mathematica",
+      "author": "Marin Mersenne",
+      "year": "1644",
+      "description": "Historical origin of the numbers M_p = 2^p − 1 studied for prime exponents p; Mersenne's list of conjectured primes launched the study whose basic necessary condition this entry formalizes."
+    }
   ]
 }

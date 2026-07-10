@@ -145,5 +145,27 @@
       "relationship": "Sibling power-sum entry sharing the clear-denominator theme",
       "description": "Faulhaber's fifth-power sum ∑ k⁵ = n²(n+1)²(2n²+2n−1)/12. Both entries dissolve a rational closed form into a division-free ℕ statement; there by clearing the denominator and a subtraction, here by re-expressing the whole identity with Nat.choose."
     }
+  ],
+  "references": [
+    {
+      "title": "Concrete Mathematics: A Foundation for Computer Science",
+      "author": "Ronald L. Graham, Donald E. Knuth, and Oren Patashnik",
+      "year": "1994",
+      "venue": "Addison-Wesley (2nd ed.)",
+      "description": "Standard reference for the hockey-stick (parallel-summation) identity ∑_k C(k, m) = C(n+1, m+1) on Pascal's triangle, of which ∑ C(k+1,2) = C(n+2,3) is the d=3 case proved here."
+    },
+    {
+      "title": "The Book of Numbers",
+      "author": "John H. Conway and Richard K. Guy",
+      "year": "1996",
+      "venue": "Copernicus / Springer-Verlag",
+      "description": "Treats the figurate-number ladder (triangular, tetrahedral, and higher simplicial numbers) and their closed forms, the family in which this entry's identity is the linear→triangular→tetrahedral rung."
+    },
+    {
+      "title": "Traité du triangle arithmétique",
+      "author": "Blaise Pascal",
+      "year": "1665",
+      "description": "Posthumous foundational study of the arithmetic (Pascal's) triangle, where the relations among successive diagonals — the source of the hockey-stick summation used here — first appear."
+    }
   ]
 }

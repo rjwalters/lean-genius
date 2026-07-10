@@ -138,5 +138,28 @@
       "relationship": "related",
       "description": "Sibling giving a multiplicative $1+O(1/n)$ correction bracket via a tail bound on the Stirling sequence; complements this entry's constant-factor two-sided envelope."
     }
+  ],
+  "references": [
+    {
+      "title": "A Remark on Stirling's Formula",
+      "author": "Herbert Robbins",
+      "year": "1955",
+      "venue": "American Mathematical Monthly, 62(1), 26–29",
+      "description": "The effective two-sided bound exp(1/(12n+1)) < n!/(√(2πn)(n/e)ⁿ) < exp(1/(12n)); the 'Robbins refinement' named in this entry's first open question as the route to the sharp 1 + O(1/n) form."
+    },
+    {
+      "title": "A Course of Modern Analysis",
+      "author": "E. T. Whittaker and G. N. Watson",
+      "year": "1927",
+      "venue": "Cambridge University Press (4th ed.)",
+      "description": "Gamma/Beta functions and Stirling's series; the analytic setting for the exact stirlingSeq/central-binomial identity and effective bounds driving this two-sided rate."
+    },
+    {
+      "title": "NIST Digital Library of Mathematical Functions",
+      "author": "F. W. J. Olver et al. (eds.)",
+      "year": "2010",
+      "venue": "dlmf.nist.gov, §5.11–5.12 (Stirling series with error bounds; Beta function)",
+      "description": "Modern reference for the Beta function and the effective Stirling estimates that pin the correction factor ratioR to explicit constants here."
+    }
   ]
 }

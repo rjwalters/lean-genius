@@ -108,5 +108,27 @@
     "additionalFiles": [
       "Proofs/BetaCentralBinomial.lean"
     ]
-  }
+  },
+  "references": [
+    {
+      "title": "Methodus Differentialis",
+      "author": "James Stirling",
+      "year": "1730",
+      "description": "Origin of Stirling's asymptotic factorial formula n! ~ √(2πn)(n/e)ⁿ, from which the central binomial estimate C(2n,n) ~ 4ⁿ/√(πn) underlying this diagonal Beta asymptotic is derived."
+    },
+    {
+      "title": "A Course of Modern Analysis",
+      "author": "E. T. Whittaker and G. N. Watson",
+      "year": "1927",
+      "venue": "Cambridge University Press (4th ed.)",
+      "description": "Classical development of the Gamma and Beta functions and Stirling's series; the diagonal value B(n+1,n+1) = 1/((2n+1)·C(2n,n)) and its asymptotics live in this framework."
+    },
+    {
+      "title": "NIST Digital Library of Mathematical Functions",
+      "author": "F. W. J. Olver et al. (eds.)",
+      "year": "2010",
+      "venue": "dlmf.nist.gov, §5.11 (Gamma function asymptotics) and §5.12 (Beta function)",
+      "description": "Standard modern reference for the Beta function and the Stirling/Wallis asymptotics quantified here."
+    }
+  ]
 }
