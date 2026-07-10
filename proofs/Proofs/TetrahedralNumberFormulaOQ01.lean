@@ -367,4 +367,37 @@ theorem simplexNumber_mono_dim {a b : ℕ} (n : ℕ) (h : a ≤ b) :
   rw [simplexNumber_symm a n, simplexNumber_symm b n]
   exact simplexNumber_mono_size n h
 
+/-- **Strict monotonicity in the size `n`** (positive dimension). For every dimension
+`d + 1 ≥ 1`, the simplex number `P_{d+1}(n) = C(n+d+1, d+1)` is *strictly* increasing
+in `n`: passing from `n` to `n+1` adds a full nonempty `d`-dimensional layer
+`P_d(n+1) > 0`. This sharpens the ≤-only `simplexNumber_mono_size`. Strictness genuinely
+needs `d ≥ 1`: at `d = 0`, `P_0 ≡ 1` is constant. Immediate from the figurate Pascal
+recurrence `simplexNumber_succ_succ` together with `simplexNumber_pos`. -/
+theorem simplexNumber_strictMono_size (d : ℕ) :
+    StrictMono (simplexNumber (d + 1)) := by
+  apply strictMono_nat_of_lt_succ
+  intro n
+  rw [simplexNumber_succ_succ]
+  have hpos : 0 < simplexNumber d (n + 1) := simplexNumber_pos d (n + 1)
+  omega
+
+/-- **Strict growth in size**, `<`-form: `m < n → P_{d+1}(m) < P_{d+1}(n)`. The
+convenient specialization of `simplexNumber_strictMono_size` to a strict-inequality
+hypothesis, mirroring `simplexNumber_mono_size` on the `≤` side. -/
+theorem simplexNumber_lt_of_lt {m n : ℕ} (d : ℕ) (h : m < n) :
+    simplexNumber (d + 1) m < simplexNumber (d + 1) n :=
+  simplexNumber_strictMono_size d h
+
+/-- **Strict monotonicity in the dimension `d`** (positive size). For every size
+`n + 1 ≥ 1`, `P_d(n+1)` is *strictly* increasing in the dimension `d`. By the
+reflection symmetry `P_d(n) = P_n(d)` this is `simplexNumber_strictMono_size` read
+along the other axis; it sharpens `simplexNumber_mono_dim`, and like it needs the size
+to be positive (`P_d(0) ≡ 1` is constant in `d`). -/
+theorem simplexNumber_strictMono_dim (n : ℕ) :
+    StrictMono (fun d => simplexNumber d (n + 1)) := by
+  intro a b hab
+  show simplexNumber a (n + 1) < simplexNumber b (n + 1)
+  rw [simplexNumber_symm a (n + 1), simplexNumber_symm b (n + 1)]
+  exact simplexNumber_strictMono_size n hab
+
 end TetrahedralNumberFormulaOQ01

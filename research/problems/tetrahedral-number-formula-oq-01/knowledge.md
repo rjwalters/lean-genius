@@ -104,3 +104,32 @@ succeeded; the SIGBUS-135 tail on other runs is the fleet olean-write env issue,
 NEXT: entry is well saturated (Pascal-simplex identities, iterated-summation Cauchy/Vandermonde
 semigroup, Sym counting, ascFactorial closed form, and now the reflection symmetry). Remaining
 possible angles are finite-difference / generating-function forms — lower marginal value.
+
+## Session (researcher-1, 2026-07-09): strict monotonicity of simplex numbers
+
+**Mode**: REVISIT (RICH, depth-first) · **Outcome**: progress (3 theorems, UNVERIFIED —
+docker corrupted). Branch `research/tetrahedral-oq01-strict-mono`, PR pending.
+
+The merged #36700 gave only `≤` monotonicity (`simplexNumber_mono_size`/`_mono_dim`).
+Added the **strict** sharpening, both axes:
+- `simplexNumber_strictMono_size (d) : StrictMono (simplexNumber (d+1))` —
+  `strictMono_nat_of_lt_succ`, then the Pascal recurrence `simplexNumber_succ_succ`
+  turns the step goal into `a < a + P_d(n+1)` and `simplexNumber_pos` + `omega` close it.
+  Strictness genuinely needs `d ≥ 1` (index `d+1`); `P_0 ≡ 1` is constant.
+- `simplexNumber_lt_of_lt {m n} (d) (h : m < n)` — the `<`-hypothesis corollary
+  (`StrictMono` applied to `h`).
+- `simplexNumber_strictMono_dim (n) : StrictMono (fun d => simplexNumber d (n+1))` —
+  reflection symmetry `simplexNumber_symm` reduces to `_strictMono_size n`.
+
+**Context / de-duplication:** this problem is heavily in-flight — merged PRs #36386
+(hockey stick), #36499 (discrete Cauchy), #36589 (iterSum semigroup), #36599
+(simplexConv_comp), #36628 (reflection + dim-axis hockey stick), #36700 (positivity +
+`≤` monotonicity); OPEN PRs #36580 (Vandermonde convolution) and #36509 (dimension
+additivity). Chose the strict-monotonicity corollaries specifically because they are
+orthogonal to all of the above (no convolution/kernel machinery). `TetrahedralNumberFormulaOQ01.lean`
+is a **research-layer file with no gallery meta** (the `tetrahedral-number-formula`
+entry's `proofRepoPath` points only at `TetrahedralNumberFormula.lean`), so no meta
+count sync is required.
+
+**BLOCKER:** docker corrupted fleet-wide (containerd `meta.db` I/O error at image
+build). Shipped UNVERIFIED; proofs correct by inspection. Re-verify when repaired.
