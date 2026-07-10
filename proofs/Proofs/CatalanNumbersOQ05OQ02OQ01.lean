@@ -1,5 +1,4 @@
 import Mathlib
-import Proofs.CatalanNumbersOQ05OQ02
 
 /-!
 # Row sums of Catalan's triangle: `Σₖ T(n,k) = catalan (n+1)`
@@ -17,6 +16,11 @@ the *next* Catalan number,
 
   `Σ_{k=0}^{n} ballotNumber n k = catalan (n+1)`.
 
+To keep the file self-contained (and robust to the heavy parent module), we
+restate the parent's `ballotNumber` definition and re-derive the single
+well-posedness fact `C(n+k, n+1) ≤ C(n+k, k)` that we need; the definition is
+identical to the parent's `CatalanNumbersOQ05OQ02.ballotNumber`.
+
 ## A correction to the seeded statement
 
 The seed problem stated the row sum as `C(2n+1, n)`. That is **false**: for `n = 1`
@@ -28,8 +32,8 @@ say. We prove the correct identity.
 ## Proof outline
 
 Write `A(n) = Σ_{k≤n} C(n+k, k)` and `B(n) = Σ_{k≤n} C(n+k, n+1)`. Since each
-term satisfies `C(n+k, n+1) ≤ C(n+k, k)` (parent `ballotNumber_le`), the row sum is
-`A(n) − B(n)` (proved in additive form to avoid truncated subtraction).
+term satisfies `C(n+k, n+1) ≤ C(n+k, k)`, the row sum is `A(n) − B(n)` (proved in
+additive form to avoid truncated subtraction).
 
 * `sum_choose_diag`  : `A(n) = C(2n+1, n+1)` — hockey stick (`Nat.sum_Icc_choose`).
 * `sum_choose_reflected` : `B(n) = C(2n+1, n+2)` — hockey stick, dropping the zero `k=0` term.
@@ -46,7 +50,30 @@ open Nat Finset
 
 namespace CatalanNumbersOQ05OQ02OQ01
 
-open CatalanNumbersOQ05OQ02 (ballotNumber ballotNumber_le)
+/-- **Catalan's triangle / ballot number** (restated from the parent entry).
+`ballotNumber n k = C(n+k, k) − C(n+k, n+1)`; the second term is the reflected
+("bad path") count. -/
+def ballotNumber (n k : ℕ) : ℕ :=
+  (n + k).choose k - (n + k).choose (n + 1)
+
+/-- **Well-posedness of the reflected term.** `C(n+k, n+1) ≤ C(n+k, k)` for `k ≤ n`.
+
+By the absorption law `Nat.choose_succ_right_eq`,
+`C(n+k, n+1)·(n+1) = C(n+k, n)·k = C(n+k, k)·k ≤ C(n+k, k)·(n+1)`, then cancel `n+1`. -/
+theorem choose_reflected_le (n k : ℕ) (hk : k ≤ n) :
+    (n + k).choose (n + 1) ≤ (n + k).choose k := by
+  have h := Nat.choose_succ_right_eq (n + k) n
+  rw [show n + k - n = k by omega] at h
+  -- `h : (n+k).choose (n+1) * (n+1) = (n+k).choose n * k`
+  have hsym : (n + k).choose n = (n + k).choose k := by
+    rw [← Nat.choose_symm (show k ≤ n + k by omega)]
+    congr 1
+    omega
+  rw [hsym] at h
+  -- `h : (n+k).choose (n+1) * (n+1) = (n+k).choose k * k`
+  have hmul : (n + k).choose (n + 1) * (n + 1) ≤ (n + k).choose k * (n + 1) := by
+    rw [h]; gcongr; omega
+  exact Nat.le_of_mul_le_mul_right hmul (by omega)
 
 /-- **Hockey stick, main diagonal.** `Σ_{k=0}^{n} C(n+k, k) = C(2n+1, n+1)`.
 
@@ -54,17 +81,14 @@ open CatalanNumbersOQ05OQ02 (ballotNumber ballotNumber_le)
 direct instance of the hockey-stick identity `Nat.sum_Icc_choose`. -/
 theorem sum_choose_diag (n : ℕ) :
     ∑ k ∈ range (n + 1), (n + k).choose k = (2 * n + 1).choose (n + 1) := by
-  -- Replace `C(n+k, k)` by `C(n+k, n)` termwise.
   have hsymm : ∀ k ∈ range (n + 1), (n + k).choose k = (n + k).choose n := by
     intro k _
     rw [← Nat.choose_symm (show k ≤ n + k by omega)]
     congr 1
     omega
   rw [Finset.sum_congr rfl hsymm]
-  -- Turn the target central binomial into the hockey-stick `Icc` sum, then reindex.
   rw [← Nat.sum_Icc_choose (2 * n) n, ← Nat.Ico_succ_right,
     Finset.sum_Ico_eq_sum_range]
-  -- `∑ i ∈ range (2n+1-n), (n+i).choose n`, and `2n+1-n = n+1`.
   rw [show 2 * n + 1 - n = n + 1 by omega]
 
 /-- **Hockey stick, reflected diagonal.** `Σ_{k=0}^{n} C(n+k, n+1) = C(2n+1, n+2)`.
@@ -73,11 +97,9 @@ The `k = 0` summand is `C(n, n+1) = 0`; the rest is again `Nat.sum_Icc_choose`. 
 theorem sum_choose_reflected (n : ℕ) :
     ∑ k ∈ range (n + 1), (n + k).choose (n + 1) = (2 * n + 1).choose (n + 2) := by
   rw [Finset.sum_range_succ']
-  -- `(∑ i ∈ range n, (n+(i+1)).choose (n+1)) + (n+0).choose (n+1)`
   have h0 : (n + 0).choose (n + 1) = 0 := by
     simp [Nat.choose_eq_zero_of_lt]
   rw [h0, add_zero]
-  -- Reindex the target `C(2n+1, n+2)` back to a `range` sum over `Icc (n+1) (2n)`.
   rw [← Nat.sum_Icc_choose (2 * n) (n + 1), ← Nat.Ico_succ_right,
     Finset.sum_Ico_eq_sum_range, show 2 * n + 1 - (n + 1) = n by omega]
   apply Finset.sum_congr rfl
@@ -92,28 +114,21 @@ Multiplying by `n+2`: `(n+2)·catalan (n+1) = centralBinom (n+1) = 2·C(2n+1, n+
 Hence `(n+2)·(catalan (n+1) + C(2n+1, n+2)) = (n+2)·C(2n+1, n+1)`, and we cancel `n+2`. -/
 theorem choose_sub_eq_catalan (n : ℕ) :
     (2 * n + 1).choose (n + 1) = catalan (n + 1) + (2 * n + 1).choose (n + 2) := by
-  -- `C(2n+1, n) = C(2n+1, n+1)` by symmetry.
   have hsym : (2 * n + 1).choose n = (2 * n + 1).choose (n + 1) := by
     rw [← Nat.choose_symm (show n + 1 ≤ 2 * n + 1 by omega)]
     congr 1
     omega
-  -- `centralBinom (n+1) = 2 · C(2n+1, n+1)`.
   have h2 : (n + 1).centralBinom = 2 * (2 * n + 1).choose (n + 1) := by
     rw [Nat.centralBinom_eq_two_mul_choose, show 2 * (n + 1) = (2 * n + 1) + 1 by ring,
       Nat.choose_succ_succ' (2 * n + 1) n, hsym]
     ring
-  -- `(n+2) · catalan (n+1) = centralBinom (n+1)`.
   have h3 : (n + 2) * catalan (n + 1) = (n + 1).centralBinom :=
     succ_mul_catalan_eq_centralBinom (n + 1)
-  -- `(n+2) · catalan (n+1) = 2 · C(2n+1, n+1)`.
   have hA2 : (n + 2) * catalan (n + 1) = 2 * (2 * n + 1).choose (n + 1) := h3.trans h2
-  -- Absorption: `C(2n+1, n+2) · (n+2) = C(2n+1, n+1) · n`.
   have h1 : (2 * n + 1).choose (n + 2) * (n + 2) = (2 * n + 1).choose (n + 1) * n := by
     have h := Nat.choose_succ_right_eq (2 * n + 1) (n + 1)
     rw [show 2 * n + 1 - (n + 1) = n by omega] at h
-    -- `h : C(2n+1, n+2) * (n+2) = C(2n+1, n+1) * n`   (note `(n+1)+1 = n+2`)
     simpa using h
-  -- Multiply the goal through by `n+2` and cancel.
   have key : (n + 2) * (catalan (n + 1) + (2 * n + 1).choose (n + 2))
       = (n + 2) * (2 * n + 1).choose (n + 1) := by
     calc (n + 2) * (catalan (n + 1) + (2 * n + 1).choose (n + 2))
@@ -126,7 +141,7 @@ theorem choose_sub_eq_catalan (n : ℕ) :
 /-- **Additive split.** `(Σ ballotNumber n k) + (Σ C(n+k, n+1)) = Σ C(n+k, k)`.
 
 Termwise, `ballotNumber n k + C(n+k, n+1) = C(n+k, k)` for `k ≤ n`, by
-`Nat.sub_add_cancel` and the parent's well-posedness `ballotNumber_le`. -/
+`Nat.sub_add_cancel` and well-posedness `choose_reflected_le`. -/
 theorem sum_add_reflected (n : ℕ) :
     (∑ k ∈ range (n + 1), ballotNumber n k)
       + ∑ k ∈ range (n + 1), (n + k).choose (n + 1)
@@ -136,7 +151,7 @@ theorem sum_add_reflected (n : ℕ) :
   intro k hk
   rw [Finset.mem_range] at hk
   show ((n + k).choose k - (n + k).choose (n + 1)) + (n + k).choose (n + 1) = (n + k).choose k
-  exact Nat.sub_add_cancel (ballotNumber_le n k (by omega))
+  exact Nat.sub_add_cancel (choose_reflected_le n k (by omega))
 
 /-- **Row sums of Catalan's triangle are the Catalan numbers.**
 
