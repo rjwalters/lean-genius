@@ -12,9 +12,9 @@
       "KeplerConjecture"
     ],
     "namespace": "KeplerConjectureOQ04",
-    "lineCount": 1153,
+    "lineCount": 1252,
     "axiomCount": 2,
-    "theoremCount": 38,
+    "theoremCount": 43,
     "definitionCount": 10,
     "path": "Proofs/KeplerConjectureOQ04.lean",
     "sorries": 0,
@@ -40,8 +40,8 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 2,
-    "lineCount": 1153,
-    "theoremCount": 38,
+    "lineCount": 1252,
+    "theoremCount": 43,
     "definitionCount": 10,
     "assumptions": "0 sorries, 2 axioms in this file: (i) `bezdek_kuperberg_ellipsoid_lattice_upper_bound` (Bezdek-Kuperberg 2007, the ellipsoid lattice density bound, stated but not proved in Lean — published proof relies on affine density invariance under linear transforms, not yet in Mathlib v4.26.0); and (ii) `ulam_conjecture` (Ulam 1972, OPEN — the bound `fccDensity ≤ δ_K` for centrally symmetric convex bodies `K ⊂ ℝ³`, stated as a STATEMENT axiom because the conjecture remains unproven after 50+ years). The parent `Proofs/KeplerConjecture.lean` axiomatizes (a) `thues_theorem` (2D hexagonal optimality, Thue 1892 / Fejes Tóth 1940), (b) `fccDensity_lt_one` (numerical bound), and (c) the Kepler conjecture itself (Hales 1998, Flyspeck 2014). This OQ-04 file defines the Chen-Engel-Glotzer rational constant 4000/4671, the `tetrahedronDimerPacking : PackingDensity` instance, the `EllipsoidLatticePacking` marker structure, and the `SymmetricConvexBody3DPacking` marker structure; proves eleven theorems including `tetrahedronDimerDensity_gt_fccDensity` (the central refutation `π/(3√2) < 4000/4671`, via `Real.pi_lt_d2` and `Real.lt_sqrt`, axiom-free), the existential corollary `exists_packingDensity_gt_fcc`, the Bezdek-Kuperberg-derived corollary `ellipsoid_lattice_le_fccPacking`, the Ulam-derived corollary `ulam_le_fccPacking_density`, and the S7 aggregator `density_hierarchy_3d`. (S15 SOUNDNESS FIX, researcher-8) The shape-restricted bound axioms were over-quantified: this file's `EllipsoidLatticePacking` / `SymmetricConvexBody3DPacking` were contentless `extends PackingDensity` markers (anonymous constructor `PackingDensity → ·`), so the tetrahedral dimer (density > fccDensity) could be wrapped into `bezdek_kuperberg_ellipsoid_lattice_upper_bound` to derive `tetrahedronDimerDensity ≤ fccDensity` — contradicting the axiom-free `tetrahedronDimerDensity_gt_fccDensity` — and a density-0 packing wrapped into `ulam_conjecture` gives `fccDensity ≤ 0`; i.e. the file proved `False`. The parent `Proofs/KeplerConjecture.lean` was independently inconsistent: `thues_theorem`, `kepler_conjecture`, `gauss_lattice_theorem` each bounded EVERY `PackingDensity` by a constant `< 1` (refuted by the trivially constructible density-1 packing), and `viazovska_theorem_8d` bounded every real in `[0,1]` by `e8Density ≈ 0.2537` (refuted by `d = 1/2`). Fix: gate each shape-specific bound behind an uninterpreted `opaque IsDiskPacking / IsSpherePacking / IsSpherePacking8D / IsEllipsoidLatticePacking / IsSymmetricConvexBody3DPacking` predicate (no introduction rule, so no concrete witness can be manufactured), and forward the hypothesis through the derived theorems. The two child statement axioms (`bezdek_kuperberg_ellipsoid_lattice_upper_bound`, `ulam_conjecture`) and the parent's count are unchanged — opaque predicates assert nothing, so axiomCount stays 2. The mathematical content (each bound, restricted to its genuine shape class) is preserved; only the unsound over-quantification is removed. (S16 ENRICH, researcher-2) Added three axiom-free derived theorems (no new axioms; axiomCount stays 2): (1) `fccDensity_lt_35329_div_46710` — a division-cleared rational upper bound `fccDensity < 35329/46710 ≈ 0.75634`, the same `Real.pi_lt_d2` + `Real.lt_sqrt` linear chain as the central refutation (`π·46710 < 35329·3·√2`, i.e. `147136.5 < 148381.8`); (2) `tetrahedronDimerDensity_gt_fccDensity_margin` — strengthens the bare strict inequality `tetrahedronDimerDensity_gt_fccDensity` to an explicit quantitative separation `fccDensity + 1/10 < tetrahedronDimerDensity` (the ≈ 0.1159 gap is bounded below by a clean rational `1/10`; `35329/46710 = 4000/4671 − 1/10`, so it follows from (1) by `linarith`); (3) `ellipsoid_lattice_lt_tetrahedronDimer` — a cross-shape strict-domination corollary `e.density < tetrahedronDimerDensity` for every ellipsoid lattice packing `e`, transitivity through `fccDensity` of the Bezdek-Kuperberg upper bound and the axiom-free tetrahedral refutation (so FCC density is a strict separator: no ellipsoid lattice packing can match the tetrahedral dimer). lineCount 497→570, theoremCount 8→11. (S17 ACT, researcher-1) Added the attained top of the ladder (no new axioms; axiomCount stays 2): the space-filling rhombic dodecahedron (Voronoi cell of the FCC lattice, tiles ℝ³) at packing density exactly 1 — `rhombicDodecahedronPackingDensity : ℝ := 1`, bundled into `rhombicDodecahedronPacking : PackingDensity` whose `le_one` field is satisfied by equality. Capstone `exists_packingDensity_eq_one : ∃ p : PackingDensity, p.density = 1` proves the parent's structural bound `PackingDensity.le_one` is SHARP (attained, not merely approached), so the FCC ceiling π/(3√2) ≈ 0.7405 is strictly interior to the attainable range (0, 1]. Plus `octahedron_lt_rhombicDodecahedron` (18/19 < 1), the strict four-shape ladder `fcc_lt_tetra_lt_octa_lt_rhombicDodecahedron`, and `rhombicDodecahedron_not_ellipsoidLattice` (third non-vacuity witness for the S5 opaque gate). lineCount 570→872, theoremCount 11→26, definitionCount 4→6.",
     "mathlib_version": "4.26.0",
@@ -208,6 +208,6 @@
       "description": "Ehrhart theory counts lattice points in polytope dilations, complementing the volumetric density theory of Kepler/Hales; the 4000/4671 dimer construction is polytopal and interfaces naturally with Ehrhart techniques."
     }
   ],
-  "theoremCount": 38,
+  "theoremCount": 43,
   "definitionCount": 10
 }
