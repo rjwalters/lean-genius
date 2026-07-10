@@ -283,4 +283,41 @@ theorem exists_unique_fixed_point (f : ℝ → ℝ) (L : ℝ) (hL0 : 0 ≤ L) (h
   obtain ⟨xstar, hxs⟩ := exists_fixed_point f L hL0 hL1 hf
   exact ⟨xstar, hxs, fun y hy => fixed_point_unique f L hL1 hf y xstar hy hxs⟩
 
+/-! ### Unconditional estimates (no assumed fixed point)
+
+Every estimate above carries the fixed point `x*` as a *hypothesis* `f x* = x*`.
+Since `exists_fixed_point` produces that `x*` from the contraction data alone on
+the complete space `ℝ`, both practical estimates can be stated **without** any
+`x*` input: there is a fixed point `x*` (necessarily the unique one, by
+`fixed_point_unique`) for which the a priori / a posteriori bounds hold at every
+step.  These are the fully self-contained, hypothesis-free forms — exactly what a
+computation using the iteration `xₙ₊₁ = f xₙ` can invoke, knowing only `f`, `L`
+and the iterates. -/
+
+/-- **Unconditional a priori estimate.**  With no assumed fixed point: a
+    contraction on `ℝ` has a fixed point `x*` for which
+    `|xₙ − x*| ≤ Lⁿ/(1−L) · |x₁ − x₀|` at every step.  Produced by threading
+    `exists_fixed_point` through `apriori_estimate`; `x*` is the unique fixed
+    point by `fixed_point_unique`. -/
+theorem apriori_estimate_unconditional (f : ℝ → ℝ) (L : ℝ) (hL0 : 0 ≤ L) (hL1 : L < 1)
+    (hf : ∀ x y, |f x - f y| ≤ L * |x - y|)
+    (x : ℕ → ℝ) (hx : ∀ n, x (n + 1) = f (x n)) :
+    ∃ xstar : ℝ, f xstar = xstar ∧
+      ∀ n, |x n - xstar| ≤ L ^ n / (1 - L) * |x 1 - x 0| := by
+  obtain ⟨xstar, hfp⟩ := exists_fixed_point f L hL0 hL1 hf
+  exact ⟨xstar, hfp, fun n => apriori_estimate f L hL0 hL1 hf x hx xstar hfp n⟩
+
+/-- **Unconditional a posteriori estimate.**  With no assumed fixed point: a
+    contraction on `ℝ` has a fixed point `x*` for which
+    `|xₙ₊₁ − x*| ≤ L/(1−L) · |xₙ₊₁ − xₙ|` at every step, the computable stopping
+    criterion in its hypothesis-free form.  Produced by threading
+    `exists_fixed_point` through `aposteriori_estimate`. -/
+theorem aposteriori_estimate_unconditional (f : ℝ → ℝ) (L : ℝ) (hL0 : 0 ≤ L) (hL1 : L < 1)
+    (hf : ∀ x y, |f x - f y| ≤ L * |x - y|)
+    (x : ℕ → ℝ) (hx : ∀ n, x (n + 1) = f (x n)) :
+    ∃ xstar : ℝ, f xstar = xstar ∧
+      ∀ n, |x (n + 1) - xstar| ≤ L / (1 - L) * |x (n + 1) - x n| := by
+  obtain ⟨xstar, hfp⟩ := exists_fixed_point f L hL0 hL1 hf
+  exact ⟨xstar, hfp, fun n => aposteriori_estimate f L hL0 hL1 hf x hx xstar hfp n⟩
+
 end BrouwerOQ02OQ02OQ01
