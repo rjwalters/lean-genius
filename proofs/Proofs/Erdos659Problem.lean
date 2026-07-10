@@ -392,6 +392,21 @@ theorem one_le_B2 {N : ℕ} (hN : 1 ≤ N) : 1 ≤ B2 N := by
     (Set.ncard_pos hfin).mpr ⟨1, hmem⟩
   omega
 
+/-- **`B₂(N) ≤ N`.** The counted set `representable ∩ Icc 1 N` is a subset of the window
+    `Icc 1 N`, which has exactly `N` elements, so the counting function never exceeds `N`.
+    Together with `one_le_B2` this sandwiches `B₂` as `1 ≤ B₂(N) ≤ N` for `N ≥ 1`; the
+    *rate* at which `B₂(N)` approaches its Landau asymptotic `∼ c·N/√(log N)` inside this
+    window is exactly the deep content isolated in `moreeOsburnWorks`. Elementary finiteness
+    bookkeeping, independent of the deep analytic input. -/
+theorem B2_le (N : ℕ) : B2 N ≤ N := by
+  unfold B2
+  have hle := Set.ncard_le_ncard
+    (Set.inter_subset_right : representable_x2_2y2 ∩ Set.Icc 1 N ⊆ Set.Icc (1 : ℕ) N)
+    (Set.finite_Icc 1 N)
+  have hcard : (Set.Icc (1 : ℕ) N).ncard = N := by
+    rw [← Finset.coe_Icc, Set.ncard_coe_finset, Nat.card_Icc]; omega
+  omega
+
 /-! ### The mod-8 obstruction (necessity side of the characterization)
 
 The lemmas above are all *positivity* results — they exhibit integers that **are**
