@@ -268,4 +268,24 @@ theorem pgroup_primeFactors_eq (α : ℝ) (hα : IsIntegral ℚ α)
   have hk0 : k ≠ 0 := by rintro rfl; rw [pow_zero] at hk; omega
   rw [hk, Nat.primeFactors_prime_pow hk0 hp]
 
+/-- **The p-group prime is the computable minimal prime factor of the degree.**
+    The previous "which prime" results pin the prime `p` down as the unique element of
+    `natDegree.primeFactors` (`pgroup_primeFactors_eq`) or as *a* divisor of the degree
+    (`prime_dvd_degree_of_pgroup`).  This sharpens the identification to the concrete,
+    *computable* invariant `Nat.minFac`: for a nontrivial `p`-group Galois extension the
+    target prime `p` is forced to equal `natDegree(minpoly ℚ α).minFac`, the smallest
+    prime factor of the degree.  So the prime is not merely determined abstractly — it can
+    be read off by a decidable computation on the degree alone. -/
+theorem pgroup_prime_eq_minFac (α : ℝ) (hα : IsIntegral ℚ α)
+    {p : ℕ} (hp : p.Prime) (hgt : 1 < (minpoly ℚ α).natDegree)
+    (hP : IsPGroup p (minpoly ℚ α).Gal) :
+    p = (minpoly ℚ α).natDegree.minFac := by
+  have hne : (minpoly ℚ α).natDegree ≠ 1 := by omega
+  have hpf := pgroup_primeFactors_eq α hα hp hgt hP
+  have hmem : (minpoly ℚ α).natDegree.minFac ∈ (minpoly ℚ α).natDegree.primeFactors := by
+    rw [Nat.mem_primeFactors]
+    exact ⟨Nat.minFac_prime hne, Nat.minFac_dvd _, by omega⟩
+  rw [hpf, Finset.mem_singleton] at hmem
+  exact hmem.symm
+
 end AngleTrisectionOQ02OQ01OQ03
