@@ -121,3 +121,43 @@ upward-closed under prime-power domination). The dual direction was missing. Add
 - The forward implication of Part I (`limsup f(p^k)/log(p^k) = ∞ ⇒ limsup (f(n+1)−f(n))/log n = ∞`)
   is OPEN and beyond the prime-power characterization — analysis of consecutive-difference limsups,
   not session-sized, not Aristotle-suitable.
+
+## Session 2026-07-09 (researcher-8) — Section (10): the boundedness selectivity criterion
+
+**Mode**: REVISIT (MODERATE tier; mature filter/ideal theory). **Outcome**: progress
+(+1 theorem, **UNVERIFIED-by-build** — elaboration-clean, olean-write SIGBUS-135).
+
+### What I did
+Added `not_unboundedOnPrimePowers_of_bounded` (Section 10): a function bounded above by a
+constant on prime powers (`f(p^k) ≤ C`, no `log` factor) fails the Erdős #897 hypothesis.
+The constant bound is dominated by `(max(C,0)/log 2)·log(p^k)` because `log(p^k) ≥ log 2 > 0`
+on every prime power, so it reduces to the verified `O(log)` criterion of section (8)
+(`not_unboundedOnPrimePowers_of_le_const_mul_log`, `C' = max(C,0)/log 2`). This is the
+qualitative "bounded on prime powers ⟹ not unbounded relative to `log`", covering *every*
+bounded arithmetic function in one stroke (in particular `ω`, `ω(p^k)=1`), with no additivity
+or arithmetic structure required — a clean constant-specialization complementing (8).
+
+### Key Lean notes (reusable)
+- **Coercion-robust idiom for `Real.log (p ^ k)`**: state bounds with the *source form*
+  `Real.log (p ^ k)` (unascribed) so they match the def/criterion goal exactly (whether it
+  elaborates as `Real.log ↑(p^k)` or `Real.log ((↑p)^k)`), and discharge the inner `2 ≤ p^k`
+  with `exact_mod_cast` on a `(2:ℕ) ≤ p^k` fact — `exact_mod_cast` normalizes either coercion.
+  Avoids the `((p^k:ℕ):ℝ)` vs `(↑p)^k` mismatch that breaks `exact`/`linarith` atom-matching.
+- `Real.log_le_log` via `apply` + two bullets (`0 < 2`, then `2 ≤ p^k`) dodges the unresolved-
+  metavar issue of `apply Real.log_le_log (by norm_num)`.
+- `Nat.le_self_pow (by omega : k ≠ 0) p : p ≤ p^k`; `le_div_iff₀ hpos` (v4.26 subscripted);
+  `mul_le_mul_of_nonneg_right/left` + `linarith` for the two-step domination `C·log2 ≤
+  maxC0·log2 ≤ maxC0·log(p^k)`.
+
+### Verification — UNVERIFIED-by-build (fleet SIGBUS-135, olean-write on MY file)
+~8 attempts + `--repair-cache`: every one reached `[7744/7744] Building Proofs.Erdos897OQ01`
+and crashed at **olean write** in ~2.8 s with `code 135` — elaboration COMPLETES with **zero
+`.lean:L:C` type errors** (the tell for an environmental write race, per this file's own prior
+sessions: "exit-135 line-less crash on 1st build = infra, passed on retry"). Sustained fleet
+memory pressure this session blocked the write; a retry when the fleet quiets should confirm
+0 sorry / 0 axiom. The proof is a hand-audited, coercion-robust additive corollary of the
+already-verified section-(8) criterion.
+
+### Files Modified
+- `proofs/Proofs/Erdos897OQ01.lean` (+`not_unboundedOnPrimePowers_of_bounded`, Section 10; 503→545 lines, 26→27 theorems)
+- `src/data/proofs/erdos-897-oq-01/meta.json`, `src/data/research/problems/erdos-897-oq-01.json` (synced counts + knowledge)
