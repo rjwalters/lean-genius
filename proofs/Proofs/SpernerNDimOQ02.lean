@@ -3685,4 +3685,119 @@ theorem topPivotCell_zeroPivotCell (s : GridSimplex d N) (hd1 : 0 < d)
       congr 1; apply Fin.ext; show (k.val - 1) + 1 = k.val; omega
   · rw [topPivotCell_miss, zeroPivotCell_miss]
 
+-- ============================================================
+-- Reverse reciprocity: `zeroPivotCell (topPivotCell u) = u`
+-- ============================================================
+-- `topPivotCell_zeroPivotCell` proves ONE composition of the two
+-- cross-facet pivots is the identity (`topPivotCell ∘ zeroPivotCell =
+-- id`).  This section proves the OTHER composition
+-- (`zeroPivotCell ∘ topPivotCell = id`), upgrading the partial-involution
+-- reciprocity to a genuine two-sided involution: on the feasible regime the
+-- facet-`0` cross-chain pivot and the dual top-facet pivot are mutually
+-- inverse bijections.  This is exactly the well-definedness the boundary
+-- `adj` needs — the gluing at a shared cross-chain facet is an involution,
+-- so each of the two cells filling it maps to the other and back.
+--
+-- The feasibility bridge is automatic: `topPivotCell u`'s apex is `u.verts
+-- (d-1)`, whose `miss` coordinate is `base_miss − (d−1) ≥ d − (d−1) = 1`
+-- (`miss_coord_at` + `base_miss_ge_d`), so the facet-`0` pivot is always
+-- applicable to it.  The crux is the dual apex-recovery
+-- `zeroPivotTop (topPivotCell u) = u.verts (Fin.last d)` — the mirror of
+-- `topPivotBottom_zeroPivotCell`: the new apex the facet-`0` pivot appends
+-- above `topPivotCell u`'s chain reconstructs `u`'s deleted apex, coordinate
+-- by coordinate via the last chain step `u.step_inc/step_dec/step_same` at
+-- `⟨d-1⟩`.  All 0-sorry, 0-axiom.
+
+/-- **Feasibility bridge.**  The facet-`0` cross-chain pivot is always
+applicable to the dual cell `topPivotCell u`: its apex is `u.verts (d-1)`,
+whose `miss` coordinate is `base_miss − (d−1) ≥ 1` (it descends by one at each
+of the `d−1` steps and starts `≥ d`, `miss_coord_at` + `base_miss_ge_d`). -/
+theorem topPivotCell_zeroFeasible (u : GridSimplex d N) (hd1 : 0 < d)
+    (hfeas : 1 ≤ (u.verts 0).coords (lastIncDir u hd1)) :
+    1 ≤ ((topPivotCell u hd1 hfeas).verts (Fin.last d)).coords
+          (topPivotCell u hd1 hfeas).miss := by
+  have hne : (Fin.last d).val ≠ 0 := by simp only [Fin.val_last]; omega
+  rw [topPivotCell_verts, topPivotCell_miss,
+    topPivotVerts_of_pos u hd1 hfeas (Fin.last d) hne, u.miss_coord_at]
+  have hb := u.base_miss_ge_d
+  simp only [Fin.val_last]
+  omega
+
+/-- **Dual apex recovery** (mirror of `topPivotBottom_zeroPivotCell`).  The new
+apex that the facet-`0` pivot appends above `topPivotCell u`'s chain
+reconstructs exactly `u`'s deleted apex `u.verts (Fin.last d)`.  Proved
+coordinate-by-coordinate from the last chain step of `u` (`step_inc` at the
+reversed `lastIncDir` direction, `step_dec` at `miss`, `step_same` elsewhere)
+evaluated between `u.verts (d-1)` and `u.verts (Fin.last d)`. -/
+theorem zeroPivotTop_topPivotCell (u : GridSimplex d N) (hd1 : 0 < d)
+    (hfeas : 1 ≤ (u.verts 0).coords (lastIncDir u hd1)) :
+    zeroPivotTop (topPivotCell u hd1 hfeas) hd1
+        (topPivotCell_zeroFeasible u hd1 hfeas) = u.verts (Fin.last d) := by
+  have hlt : d - 1 < d := by omega
+  have hne : (Fin.last d).val ≠ 0 := by simp only [Fin.val_last]; omega
+  have hsucc : (⟨d - 1, hlt⟩ : Fin d).succ = Fin.last d := by
+    apply Fin.ext; show d - 1 + 1 = (Fin.last d).val; simp only [Fin.val_last]; omega
+  have hinc : (topPivotCell u hd1 hfeas).incDir ⟨0, hd1⟩ = u.incDir ⟨d - 1, hlt⟩ :=
+    topPivotInc_eq_lastIncDir u hd1 ⟨0, hd1⟩ rfl
+  have hmiss : (topPivotCell u hd1 hfeas).miss = u.miss := topPivotCell_miss u hd1 hfeas
+  have hapex : (topPivotCell u hd1 hfeas).verts (Fin.last d)
+      = u.verts (⟨d - 1, hlt⟩ : Fin d).castSucc := by
+    rw [topPivotCell_verts, topPivotVerts_of_pos u hd1 hfeas (Fin.last d) hne]
+    congr 1
+  ext j
+  by_cases hP : j = (topPivotCell u hd1 hfeas).incDir ⟨0, hd1⟩
+  · subst hP
+    rw [zeroPivotTop_coords_incDir0, hapex, hinc]
+    have hs := u.step_inc ⟨d - 1, hlt⟩
+    rw [hsucc] at hs
+    exact hs.symm
+  · by_cases hQ : j = (topPivotCell u hd1 hfeas).miss
+    · subst hQ
+      rw [zeroPivotTop_coords_miss, hapex, hmiss]
+      have hs := u.step_dec ⟨d - 1, hlt⟩
+      rw [hsucc] at hs
+      omega
+    · rw [zeroPivotTop_coords_other _ _ _ j hP hQ, hapex]
+      have hj1 : j ≠ u.incDir ⟨d - 1, hlt⟩ := by rw [← hinc]; exact hP
+      have hj2 : j ≠ u.miss := by rw [← hmiss]; exact hQ
+      have hs := u.step_same ⟨d - 1, hlt⟩ j hj1 hj2
+      rw [hsucc] at hs
+      exact hs.symm
+
+/-- **Cell-level reverse reciprocity: the two pivots invert one another (other
+direction).**  Applying the facet-`0` cross-chain pivot `zeroPivotCell` to the
+dual top-facet partner `topPivotCell u` reconstructs `u` exactly.  Together with
+`topPivotCell_zeroPivotCell` this establishes that, on the feasible regime,
+`zeroPivotCell` and `topPivotCell` are mutually inverse bijections — a genuine
+two-sided involution, the well-definedness the boundary `adj` requires.  Vertex
+`Fin.last d` is recovered by `zeroPivotTop_topPivotCell`; each lower vertex
+`k < d` is `u.verts k` because `topPivotCell` slid `u`'s chain up one index and
+`zeroPivotCell` slides it back; `incDir` matches by the two mutually-inverse
+cyclic rotations, and `miss` is preserved. -/
+theorem zeroPivotCell_topPivotCell (u : GridSimplex d N) (hd1 : 0 < d)
+    (hfeas : 1 ≤ (u.verts 0).coords (lastIncDir u hd1)) :
+    zeroPivotCell (topPivotCell u hd1 hfeas) hd1
+        (topPivotCell_zeroFeasible u hd1 hfeas) = u := by
+  apply gridSimplex_ext
+  · funext k
+    by_cases hk : k.val < d
+    · rw [zeroPivotCell_verts_of_lt _ hd1 _ k hk, topPivotCell_verts,
+        topPivotVerts_of_pos u hd1 hfeas ⟨k.val + 1, by omega⟩ (by simp)]
+      congr 1
+    · have hklast : k = Fin.last d := by
+        apply Fin.ext; simp only [Fin.val_last]; have := k.isLt; omega
+      rw [hklast, zeroPivotCell_verts_last]
+      exact zeroPivotTop_topPivotCell u hd1 hfeas
+  · funext k
+    show zeroPivotInc (topPivotCell u hd1 hfeas) hd1 k = u.incDir k
+    by_cases hk : k.val + 1 < d
+    · rw [zeroPivotInc_of_lt _ hd1 k hk, topPivotCell_incDir,
+        topPivotInc_of_pos u hd1 ⟨k.val + 1, hk⟩ (by simp)]
+      congr 1
+    · rw [zeroPivotInc_last _ hd1 k hk, topPivotCell_incDir,
+        topPivotInc_eq_lastIncDir u hd1 ⟨0, hd1⟩ rfl]
+      show u.incDir ⟨d - 1, by omega⟩ = u.incDir k
+      congr 1; apply Fin.ext; show d - 1 = k.val; have := k.isLt; omega
+  · rw [zeroPivotCell_miss, topPivotCell_miss]
+
 end SpernerNDimOQ02
