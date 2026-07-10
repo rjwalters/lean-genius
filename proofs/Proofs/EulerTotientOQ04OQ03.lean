@@ -2384,6 +2384,88 @@ theorem reversal_mem_implies_transport_regime {a : ℕ} (ha : Odd a) (ha3 : 3 �
   reversal_seed_transport_admissible ha ha3 ((classifySeed_lt_iff ha ha3 k).1 h)
 
 -- ----------------------------------------------------------------------------
+-- REVERSAL ENGINE on the transport-admissible regime (`seedS a = 1`)
+-- ----------------------------------------------------------------------------
+-- The excluded regime (`seedS a ≥ 2`) has two engines forcing the classifier
+-- away from reversal: `classifySeed_ne_lt_of_excess_bound` (rules out `.lt`) and
+-- `classifySeed_gt_of_excess_bound` (forces `.gt`).  The transport-admissible
+-- regime `seedS a = 1` — where `reversal_seed_transport_admissible` proves EVERY
+-- reversal lives — had no companion engine FORCING `.lt`.  We supply one on the
+-- large explicit sub-regime where the second landing constant is a *prime*
+-- (`seedE a` prime), turning the empirically-observed "reversals cluster on prime
+-- landings" into an EXACT arithmetic criterion.
+
+/-- **Reversal criterion on prime landings (transport-admissible regime).**  For
+    an odd seed `a ≥ 3` in the transport-admissible regime `seedS a = 1` whose
+    landing constant has a *prime* odd part (`seedE a` prime), the whole family
+    `n = a·2^(k+1)` reverses (`classifySeed a = .lt`) **iff** the single
+    seed-arithmetic inequality
+    `φ(seedB a) + 2^{seedT a} < 2·(a − φ(a))` holds.
+
+    Mechanism (`seedS a = 1`, so `2a − φ(a) = 2·seedB a` and
+    `2a − φ(seedB a) = seedE a · 2^{seedT a}`).  With `e := seedE a` prime,
+    `φ(e) = e − 1`, so the classifier's comparison
+    `φ(a) < φ(e)·2^{t−1} = e·2^{t−1} − 2^{t−1}` and the identity
+    `e·2^{t−1} = a − φ(seedB a)/2` collapse (after doubling) to
+    `φ(seedB a) + 2^{seedT a} < 2·(a − φ(a))`.
+
+    This is the missing `.lt` companion to the excluded-regime engines
+    `classifySeed_ne_lt_of_excess_bound` / `classifySeed_gt_of_excess_bound`, and
+    it recovers every known prime-landing reversal seed uniformly:
+    `21` (`b=15,t=1,e=17`), `55` (`b=35,t=1,e=43`), `129` (`b=87,e=101`),
+    `175` (`b=115,e=131`) all satisfy the criterion, while the Sophie–Germain
+    equality seeds `15,33,…` (also prime-landing) *fail* it, matching their `.eq`
+    regime.  The prime-landing restriction is genuine: `165` (`b=125,e=115=5·23`
+    composite) reverses yet lies outside this engine — reversals are not confined
+    to prime landings. -/
+theorem classifySeed_lt_iff_of_seedS_one_seedE_prime {a : ℕ} (ha3 : 3 ≤ a)
+    (hs1 : seedS a = 1) (hep : (seedE a).Prime) :
+    classifySeed a = Ordering.lt ↔
+      Nat.totient (seedB a) + 2 ^ seedT a < 2 * (a - Nat.totient a) := by
+  obtain ⟨hob, hoe, _, ht1, hstep, hCeq⟩ := seed_spec ha3
+  -- `seedS a = 1` : first step `2a − φ(a) = 2·seedB a`, so `seedB a ≥ 3` (odd).
+  have hφa_lt : Nat.totient a < a := Nat.totient_lt a (by omega)
+  rw [hs1, pow_one] at hstep
+  have hb2 : 2 ≤ seedB a := by omega
+  have hb3 : 3 ≤ seedB a := by rcases hob with ⟨i, hi⟩; omega
+  obtain ⟨jb, hjb⟩ := Nat.totient_even (show 2 < seedB a by omega)
+  -- `seedS a = 1` in the landing identity : `2a − φ(seedB a) = seedE a · 2^{seedT a}`.
+  rw [hs1] at hCeq
+  simp only [Nat.sub_self, pow_zero, mul_one] at hCeq
+  -- prime landing: `φ(seedE a) = seedE a − 1`, and the two powers of two split.
+  have hepos : 0 < seedE a := hep.pos
+  have hne : 0 < seedE a * 2 ^ seedT a := mul_pos hepos (pow_pos (by norm_num) _)
+  have hφa_le : Nat.totient a ≤ a := Nat.totient_le a
+  have hP : (2 : ℕ) ^ seedT a = 2 * 2 ^ (seedT a - 1) := by
+    conv_lhs => rw [show seedT a = (seedT a - 1) + 1 from by omega, pow_succ]
+    ring
+  have hEPt : seedE a * 2 ^ seedT a = 2 * (seedE a * 2 ^ (seedT a - 1)) := by
+    rw [hP]; ring
+  have hφe : Nat.totient (seedE a) = seedE a - 1 := Nat.totient_prime hep
+  have hsub : Nat.totient (seedE a) * 2 ^ (seedT a - 1)
+      = seedE a * 2 ^ (seedT a - 1) - 2 ^ (seedT a - 1) := by
+    rw [hφe, Nat.sub_one_mul]
+  have hEPge : 2 ^ (seedT a - 1) ≤ seedE a * 2 ^ (seedT a - 1) :=
+    Nat.le_mul_of_pos_left _ hepos
+  -- unfold the classifier and discharge the resulting linear equivalence
+  simp only [classifySeed]
+  rw [compare_lt_iff_lt, hsub]
+  omega
+
+/-- **Prime-landing reversal family.**  Under the hypotheses of
+    `classifySeed_lt_iff_of_seedS_one_seedE_prime` together with the criterion
+    inequality, the *entire* family `n = a·2^(k+1)` lies in `ReversalSet`:
+    `φ(n) < φ(D(n))` for every `k`.  This packages the criterion into an
+    infinitely-often reversal statement for each qualifying seed (e.g. `a = 21`
+    gives `42, 84, 168, …`; `a = 55` gives `110, 220, …`). -/
+theorem prime_landing_family_reversal {a : ℕ} (ha : Odd a) (ha3 : 3 ≤ a)
+    (hs1 : seedS a = 1) (hep : (seedE a).Prime)
+    (hcrit : Nat.totient (seedB a) + 2 ^ seedT a < 2 * (a - Nat.totient a))
+    (k : ℕ) : a * 2 ^ (k + 1) ∈ ReversalSet := by
+  rw [classifySeed_lt_iff ha ha3 k]
+  exact (classifySeed_lt_iff_of_seedS_one_seedE_prime ha3 hs1 hep).2 hcrit
+
+-- ----------------------------------------------------------------------------
 -- A Sophie–Germain–indexed EQUALITY family: `n = 3q·2^(k+1)` with `2q+1` prime
 -- ----------------------------------------------------------------------------
 
