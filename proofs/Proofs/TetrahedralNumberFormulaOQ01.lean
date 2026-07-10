@@ -223,6 +223,44 @@ convolution of `1` with the `d`-kernel is the `(d+1)`-dimensional simplex number
 example (d n : ℕ) : simplexConv d (fun _ => 1) n = simplexNumber (d + 1) n := by
   rw [← iterSum_eq_simplexConv, iterSum_one]
 
+/-- **Semigroup law of iterated summation.** Iterated partial summation is a monoid
+action of `(ℕ, +)` on sequences: summing `b` times and then `a` more times is the
+same as summing `a + b` times,
+
+`iterSum a (iterSum b f) = iterSum (a + b) f`.
+
+This is the discrete analogue of the semigroup property of repeated integration
+(`Iᵃ ∘ Iᵇ = Iᵃ⁺ᵇ`, the composition law behind the Riemann–Liouville fractional
+integral). It is the structural reason figurate dimensions *add*: it makes the whole
+figurate ladder a single orbit of the constant sequence `1` under this action.
+Proved by induction on `a`, unfolding one `partialSum` layer per step. -/
+theorem iterSum_add (a b : ℕ) (f : ℕ → ℕ) :
+    iterSum a (iterSum b f) = iterSum (a + b) f := by
+  induction a with
+  | zero =>
+    show iterSum b f = iterSum (0 + b) f
+    rw [Nat.zero_add]
+  | succ a ih =>
+    show partialSum (iterSum a (iterSum b f)) = iterSum (a + 1 + b) f
+    rw [show a + 1 + b = (a + b) + 1 from by ring]
+    show partialSum (iterSum a (iterSum b f)) = partialSum (iterSum (a + b) f)
+    rw [ih]
+
+/-- **Dimension-additivity of the figurate ladder.** Applying `a` further partial
+summations to the `b`-dimensional simplex sequence yields the `(a+b)`-dimensional one,
+
+`iterSum a (P_b) n = P_{a+b}(n)`.
+
+An immediate consequence of the semigroup law `iterSum_add` and the ladder
+characterization `iterSum_one`: since `P_b` is itself `b`-fold iterated summation of
+`1`, summing it `a` more times is summing `1` a total of `a + b` times. The headline
+`iterSum_one` is the case `b = 0` (`P_0 ≡ 1`). -/
+theorem iterSum_simplexNumber (a b n : ℕ) :
+    iterSum a (simplexNumber b) n = simplexNumber (a + b) n := by
+  have hfun : simplexNumber b = iterSum b (fun _ => 1) := by
+    funext m; rw [iterSum_one]
+  rw [hfun, iterSum_add, iterSum_one]
+
 /-- **Counting face (stars and bars).** The `d`-dimensional simplex number counts
 the size-`d` multisets drawn from the `n+1` symbols `{0, 1, …, n}` — equivalently
 the weakly increasing `d`-tuples `0 ≤ i₁ ≤ ⋯ ≤ i_d ≤ n`:
