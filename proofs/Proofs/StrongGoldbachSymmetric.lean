@@ -855,7 +855,7 @@ theorem symmetricPairCount_le_half_totient_succ_of_odd {m : ℕ}
   rw [← card_even_totatives_eq_totient_div_two ⟨j, hj⟩ h1, symmetricPairCount]
   refine (Finset.card_le_card ?_).trans (Finset.card_insert_le 0 _)
   intro k hk
-  simp only [Finset.mem_filter, Finset.mem_range, Nat.even_iff] at hk
+  simp only [Finset.mem_filter, Finset.mem_range] at hk
   obtain ⟨hkm, hp1, hp2⟩ := hk
   rcases Nat.eq_zero_or_pos k with hk0 | hk0
   · subst hk0; exact Finset.mem_insert_self 0 _
