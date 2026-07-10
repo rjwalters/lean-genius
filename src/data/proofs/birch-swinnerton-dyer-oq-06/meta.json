@@ -152,5 +152,25 @@
       "description": "FLT was proved via the modularity of elliptic curves (Wiles), placing it in the same elliptic-curve / L-function / modular-form world that gives BSD its analytic side; the Gross-Zagier machinery used here is part of that circle of ideas."
     }
   ],
+  "references": [
+    {
+      "authors": "Birch, B. J.; Swinnerton-Dyer, H. P. F.",
+      "title": "Notes on elliptic curves. II",
+      "year": "1965",
+      "note": "J. Reine Angew. Math. 218, 79–108 — the original conjecture relating the rank of E(ℚ) to the order of vanishing of L(E,s) at s=1, and the leading-coefficient formula this entry checks for 389a."
+    },
+    {
+      "authors": "Buhler, J. P.; Gross, B. H.; Zagier, D. B.",
+      "title": "On the conjecture of Birch and Swinnerton-Dyer for an elliptic curve of rank 3",
+      "year": "1985",
+      "note": "Math. Comp. 44, 473–481 — the explicit numerical BSD verification (incl. rank-2 curve 389a) computing L''(E,1)/2 ≈ 0.7558 against Ω·R·|Ш|·∏cₚ/|tors|², the computation formalized here."
+    },
+    {
+      "authors": "Cremona, J. E.",
+      "title": "Algorithms for Modular Elliptic Curves",
+      "year": "1992",
+      "note": "Cambridge University Press — the labelling and algorithms behind the Cremona identifier 389a1 (smallest-conductor rank-2 curve); LMFDB 389.a1 = https://www.lmfdb.org/EllipticCurve/Q/389/a/1."
+    }
+  ],
   "sorries": 0
 }
