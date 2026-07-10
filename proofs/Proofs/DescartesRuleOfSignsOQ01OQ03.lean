@@ -737,4 +737,134 @@ theorem signChangesInCoeffs_le_natDegree {p : ℝ[X]} (hp : p ≠ 0) :
   have h := countSignChanges_le (DescartesRuleOfSigns.coeffSequence p p.natDegree)
   simpa using h
 
+/- ## § 7. Invariances of the sign-change count (verified, axiom-free)
+
+The classical theory of Descartes' rule exploits *symmetries* of the coefficient
+sign-change count `V`, each of which leaves the positive-root count untouched and so
+is forced to leave `V` untouched too:
+
+* **Scaling.**  Multiplying a polynomial by a nonzero constant `c` rescales every
+  coefficient by `c`; the positive roots are unchanged.  Correspondingly the
+  sequence-level count `countSignChanges` is invariant under `f ↦ c · f` for any
+  `c ≠ 0` — the sign-change predicate sees only the product `(c f i)(c f j) = c² f i f j`
+  (and `c² > 0`) together with the non-vanishing of the entries, both preserved by a
+  nonzero rescaling.  Negation (`c = −1`, flipping every sign) is a special case.
+
+* **Reversal.**  Reading the coefficient list backwards corresponds to the reciprocal
+  polynomial `Xⁿ p(1/X)`, whose positive roots are the reciprocals of those of `p` —
+  again the same count.  At the sequence level, precomposing with `Fin.rev` preserves
+  `countSignChanges`: a sign change of the reversed sequence at `(i, j)` is exactly a
+  sign change of the original at `(rev j, rev i)`.
+
+We prove the two sequence-level invariances (`countSignChanges_const_smul`,
+`countSignChanges_comp_rev`), record negation as a corollary, and lift the scaling law
+to polynomials (`signChangesInCoeffs_C_mul`).  All axiom-free. -/
+
+/-- **Scaling invariance.**  Multiplying every entry of `f : Fin n → ℝ` by a nonzero
+constant `c` does not change the number of sign changes: a sign change depends only on
+`(c f i)(c f j) = c² · f i f j` (with `c² > 0`) and on the non-vanishing of the entries,
+both preserved by a nonzero rescaling.  Axiom-free, general in `n`. -/
+theorem countSignChanges_const_smul {n : ℕ} {c : ℝ} (hc : c ≠ 0) (f : Fin n → ℝ) :
+    DescartesRuleOfSigns.countSignChanges (fun i => c * f i)
+      = DescartesRuleOfSigns.countSignChanges f := by
+  have hcc : (0 : ℝ) < c * c := by
+    rcases lt_or_gt_of_ne hc with h | h
+    · exact mul_pos_of_neg_of_neg h h
+    · exact mul_pos h h
+  unfold DescartesRuleOfSigns.countSignChanges
+  congr 1
+  ext ⟨i, j⟩
+  simp only [Finset.mem_filter, Finset.mem_univ, true_and, decide_eq_true_eq,
+    DescartesRuleOfSigns.SignChangeBetween, DescartesRuleOfSigns.oppositeSign]
+  constructor
+  · rintro ⟨hij, hi, hj, hbtw, hopp⟩
+    refine ⟨hij, ?_, ?_, ?_, ?_⟩
+    · exact fun h => hi (by rw [h, mul_zero])
+    · exact fun h => hj (by rw [h, mul_zero])
+    · intro k hk1 hk2
+      exact (mul_eq_zero.mp (hbtw k hk1 hk2)).resolve_left hc
+    · have e : c * f i * (c * f j) = c * c * (f i * f j) := by ring
+      rw [e] at hopp
+      by_contra hcon
+      push_neg at hcon
+      exact absurd hopp (not_lt.mpr (mul_nonneg hcc.le hcon))
+  · rintro ⟨hij, hi, hj, hbtw, hopp⟩
+    refine ⟨hij, mul_ne_zero hc hi, mul_ne_zero hc hj, ?_, ?_⟩
+    · intro k hk1 hk2
+      rw [hbtw k hk1 hk2, mul_zero]
+    · have e : c * f i * (c * f j) = c * c * (f i * f j) := by ring
+      rw [e]
+      exact mul_neg_of_pos_of_neg hcc hopp
+
+/-- **Negation invariance.**  Flipping the sign of every entry preserves the count —
+the `c = −1` case of `countSignChanges_const_smul`.  Classically, `p ↦ −p` (indeed any
+negative rescaling) leaves Descartes' sign-change count unchanged.  Axiom-free. -/
+theorem countSignChanges_neg {n : ℕ} (f : Fin n → ℝ) :
+    DescartesRuleOfSigns.countSignChanges (fun i => -f i)
+      = DescartesRuleOfSigns.countSignChanges f := by
+  have h := countSignChanges_const_smul (c := -1) (by norm_num) f
+  simpa using h
+
+/-- **Reversal invariance.**  Precomposing a sequence with `Fin.rev` (reading it
+backwards) preserves the number of sign changes.  A sign change of the reversed
+sequence `fun i => f i.rev` at `(i, j)` corresponds bijectively to a sign change of `f`
+at `(j.rev, i.rev)`: reversal is order-reversing (`i < j ↔ j.rev < i.rev`), carries the
+non-vanishing along, and — being an involution — maps the "all strictly between vanish"
+clause across.  Axiom-free, general in `n`.  Classically this is the reciprocal-
+polynomial symmetry `p ↦ Xⁿ p(1/X)`, which reciprocates the positive roots and hence
+leaves both the root count and `V(p)` unchanged. -/
+theorem countSignChanges_comp_rev {n : ℕ} (f : Fin n → ℝ) :
+    DescartesRuleOfSigns.countSignChanges (fun i => f i.rev)
+      = DescartesRuleOfSigns.countSignChanges f := by
+  unfold DescartesRuleOfSigns.countSignChanges
+  refine Finset.card_bij' (fun p _ => (p.2.rev, p.1.rev))
+    (fun q _ => (q.2.rev, q.1.rev)) ?_ ?_ ?_ ?_
+  · -- forward: a sign change of the reversed sequence maps to one of `f`
+    rintro ⟨i, j⟩ hp
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and, decide_eq_true_eq,
+      DescartesRuleOfSigns.SignChangeBetween, DescartesRuleOfSigns.oppositeSign] at hp ⊢
+    obtain ⟨hij, hi, hj, hbtw, hopp⟩ := hp
+    refine ⟨Fin.rev_lt_rev.mpr hij, hj, hi, ?_, ?_⟩
+    · intro k hk1 hk2
+      have := hbtw k.rev (Fin.lt_rev_iff.mp hk2) (Fin.rev_lt_iff.mp hk1)
+      rwa [Fin.rev_rev] at this
+    · rw [mul_comm]; exact hopp
+  · -- backward: a sign change of `f` maps to one of the reversed sequence
+    rintro ⟨i, j⟩ hq
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and, decide_eq_true_eq,
+      DescartesRuleOfSigns.SignChangeBetween, DescartesRuleOfSigns.oppositeSign,
+      Fin.rev_rev] at hq ⊢
+    obtain ⟨hij, hi, hj, hbtw, hopp⟩ := hq
+    refine ⟨Fin.rev_lt_rev.mpr hij, hj, hi, ?_, ?_⟩
+    · intro k hk1 hk2
+      exact hbtw k.rev (Fin.lt_rev_iff.mp hk2) (Fin.rev_lt_iff.mp hk1)
+    · rw [mul_comm]; exact hopp
+  · -- round trip `(i,j) ↦ (rev j, rev i) ↦ (i,j)`
+    rintro ⟨i, j⟩ _
+    simp only [Fin.rev_rev]
+  · -- round trip in the other direction
+    rintro ⟨i, j⟩ _
+    simp only [Fin.rev_rev]
+
+/-- **Scaling invariance for polynomials.**  Multiplying a polynomial by a nonzero
+constant leaves Descartes' coefficient sign-change count unchanged: `V(c · p) = V(p)`
+for `c ≠ 0`.  The coefficient sequence of `C c * p` is `c` times that of `p`, the degree
+is unchanged, and `countSignChanges_const_smul` finishes.  Axiom-free. -/
+theorem signChangesInCoeffs_C_mul {c : ℝ} (hc : c ≠ 0) (p : ℝ[X]) :
+    DescartesRuleOfSigns.signChangesInCoeffs (C c * p)
+      = DescartesRuleOfSigns.signChangesInCoeffs p := by
+  unfold DescartesRuleOfSigns.signChangesInCoeffs
+  by_cases hp : p = 0
+  · subst hp; simp
+  · have hCp : C c * p ≠ 0 := mul_ne_zero (Polynomial.C_ne_zero.mpr hc) hp
+    rw [dif_neg hCp, dif_neg hp]
+    have hdeg : (C c * p).natDegree = p.natDegree := natDegree_C_mul hc
+    rw [hdeg]
+    have hcoe : DescartesRuleOfSigns.coeffSequence (C c * p) p.natDegree
+        = fun i => c * DescartesRuleOfSigns.coeffSequence p p.natDegree i := by
+      funext i
+      simp [DescartesRuleOfSigns.coeffSequence, coeff_C_mul]
+    rw [hcoe]
+    exact countSignChanges_const_smul hc _
+
 end DescartesRuleOfSignsOQ01OQ03
