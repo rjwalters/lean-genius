@@ -26,7 +26,7 @@
   {
     "id": "ann-main-statement",
     "proofId": "birthday-problem-oq-03-oq-01-oq-01-oq-03-oq-01",
-    "range": { "startLine": 66, "endLine": 83 },
+    "range": { "startLine": 67, "endLine": 83 },
     "type": "insight",
     "title": "The Sharp k = 3 Threshold: c + 1 ≤ n ≤ c + 1 + 1/(3c)",
     "content": "birthday_triple_threshold_sharp is the headline result. It assumes n ≥ 2 solves the expected-triple balance n(n−1)(n−2) = 6d²·ln 2 — the equation whose solution is the birthday-coincidence threshold for triples among d equally likely days — and concludes, with c := (6d²ln 2)^{1/3}, the two-sided bound c + 1 ≤ n ≤ c + 1 + 1/(3c). The lower-order term is therefore *exactly* 1, up to a remainder ≤ 1/(3c) = O(d^{−2/3}) that vanishes as d → ∞. This sharpens the parent's cruder band c ≤ n ≤ c + 2 to a window of width 1/(3c), pinning the leading correction to the cube-root scaling. The proof rests entirely on the centered substitution m = n − 1, which turns the balance into m³ − m = c³.",
