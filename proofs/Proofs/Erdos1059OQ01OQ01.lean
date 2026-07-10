@@ -320,6 +320,40 @@ theorem nonqualifying_le_qualifying_div_level (l : ℕ) (hl : l ≥ 3) :
     rw [← Nat.add_mul]; congr 1; omega
   omega
 
+/-- **Strict level-wise deficit bound (the surplus dual of `levelwise_deficit_le`).**
+    At a *surplus* level `l ≥ k + 2` the non-qualifying primes miss the `1/(k+1)`
+    fraction budget by at least one prime:
+
+      `(p(l) − q(l)) · (k+1) ≤ p(l) − 1`.
+
+    Where `levelwise_deficit_le` (from the non-strict `levelwise_density_bound`) only
+    gives `(p(l) − q(l))·(k+1) ≤ p(l)`, the strict surplus `levelwise_strict_surplus`
+    (`q(l)·(k+1) ≥ p(l)·k + 1`) tightens the right-hand side to `p(l) − 1` via the same
+    truncated-subtraction identity `(p−q)·(k+1) = p·(k+1) − q·(k+1)` and
+    `p·(k+1) = p·k + p`.  It records that once the level index exceeds the threshold by
+    at least two, at least one prime beyond the `k/(k+1)` density line is qualifying. -/
+theorem levelwise_strict_deficit_lt (l k : ℕ) (hl : l ≥ 3) (hlk : l ≥ k + 2) :
+    (primesInLevel l - qualifyingInLevel l) * (k + 1) ≤ primesInLevel l - 1 := by
+  have hs := levelwise_strict_surplus l k hl hlk
+  have e1 : (primesInLevel l - qualifyingInLevel l) * (k + 1)
+      = primesInLevel l * (k + 1) - qualifyingInLevel l * (k + 1) := Nat.sub_mul _ _ _
+  have e2 : primesInLevel l * (k + 1) = primesInLevel l * k + primesInLevel l := by ring
+  omega
+
+/-- **Sharpest strict per-level deficit.**  Taking `k = l − 2` (the largest threshold
+    for which `levelwise_strict_deficit_lt` applies) yields, for every `l ≥ 3`,
+
+      `(p(l) − q(l)) · (l − 1) ≤ p(l) − 1`,
+
+    the finest surplus reading of the strong Selberg density axiom at level `l`: the
+    non-qualifying primes occupy at most a `(p(l)−1)/(l−1)` share, strictly inside the
+    `1/(l−1)` budget the non-strict bound would permit. -/
+theorem nonqualifying_strict_fraction_sharp (l : ℕ) (hl : l ≥ 3) :
+    (primesInLevel l - qualifyingInLevel l) * (l - 1) ≤ primesInLevel l - 1 := by
+  have h := levelwise_strict_deficit_lt l (l - 2) hl (by omega)
+  have e : l - 2 + 1 = l - 1 := by omega
+  rwa [e] at h
+
 /-
 ## Part V: Gap Analysis — Why General x Fails
 
