@@ -87,35 +87,40 @@
       "title": "Open Question and the Degree-2 Trio",
       "startLine": 4,
       "endLine": 47,
-      "summary": "Header stating OQ-02-OQ-01-OQ-01-OQ-02: the companion sum-of-squares identity Lₙ² + 5Fₙ² = 2L₂ₙ and cross identity LₙFₙ = F₂ₙ, why the sum is sign-free where the parent's difference carries (−1)ⁿ, and the bridge back to the parent via the Lucas doubling L₂ₙ = Lₙ² − 2(−1)ⁿ."
+      "summary": "Header stating OQ-02-OQ-01-OQ-01-OQ-02: the companion sum-of-squares identity Lₙ² + 5Fₙ² = 2L₂ₙ and cross identity LₙFₙ = F₂ₙ, why the sum is sign-free where the parent's difference carries (−1)ⁿ, and the bridge back to the parent via the Lucas doubling L₂ₙ = Lₙ² − 2(−1)ⁿ.",
+      "mathContext": "Degree-2 trio over $\\mathbb{Z}$: cross identity $L_n F_n = F_{2n}$, the sign-free $L_n^2 + 5F_n^2 = 2L_{2n}$, and the Lucas doubling $L_{2n} = L_n^2 - 2(-1)^n$ bridging to the parent's sign-carrying $L_n^2 - 5F_n^2 = 4(-1)^n$."
     },
     {
       "id": "doublings",
       "title": "Integer Fibonacci Doublings",
       "startLine": 53,
       "endLine": 68,
-      "summary": "fib_two_mul_int: F₂ₙ = Fₙ(2Fₙ₊₁ − Fₙ) over ℤ, lifting Mathlib's Nat.fib_two_mul by discharging the truncated subtraction with Fₙ ≤ 2Fₙ₊₁ (fib_mono); fib_two_mul_add_one_int: F₂ₙ₊₁ = Fₙ₊₁² + Fₙ², a direct cast. These are the coordinate change into Fₙ, Fₙ₊₁."
+      "summary": "fib_two_mul_int: F₂ₙ = Fₙ(2Fₙ₊₁ − Fₙ) over ℤ, lifting Mathlib's Nat.fib_two_mul by discharging the truncated subtraction with Fₙ ≤ 2Fₙ₊₁ (fib_mono); fib_two_mul_add_one_int: F₂ₙ₊₁ = Fₙ₊₁² + Fₙ², a direct cast. These are the coordinate change into Fₙ, Fₙ₊₁.",
+      "mathContext": "$F_{2n} = F_n(2F_{n+1} - F_n)$ and $F_{2n+1} = F_{n+1}^2 + F_n^2$ over $\\mathbb{Z}$ — the doubling formulas rewriting even/odd-index Fibonacci numbers in the $(F_n, F_{n+1})$ basis."
     },
     {
       "id": "cross",
       "title": "The Cross Identity",
       "startLine": 70,
       "endLine": 74,
-      "summary": "lucas_mul_fib: LₙFₙ = F₂ₙ over ℤ, one ring step from Lₙ = 2Fₙ₊₁ − Fₙ (lucas_eq_int) and the integer doubling fib_two_mul_int."
+      "summary": "lucas_mul_fib: LₙFₙ = F₂ₙ over ℤ, one ring step from Lₙ = 2Fₙ₊₁ − Fₙ (lucas_eq_int) and the integer doubling fib_two_mul_int.",
+      "mathContext": "$L_n F_n = F_{2n}$: substitute $L_n = 2F_{n+1} - F_n$ into $F_{2n} = F_n(2F_{n+1} - F_n)$ — the cleanest Fibonacci–Lucas cross relation."
     },
     {
       "id": "lucas-doubling",
       "title": "The Lucas Doubling in Fibonacci Coordinates",
       "startLine": 76,
       "endLine": 82,
-      "summary": "lucas_two_mul_eq: L₂ₙ = 2Fₙ₊₁² + 3Fₙ² − 2FₙFₙ₊₁, obtained by expanding L₂ₙ = 2F₂ₙ₊₁ − F₂ₙ through the two integer doublings. This is the bridge expression that makes the sum-of-squares identity purely polynomial."
+      "summary": "lucas_two_mul_eq: L₂ₙ = 2Fₙ₊₁² + 3Fₙ² − 2FₙFₙ₊₁, obtained by expanding L₂ₙ = 2F₂ₙ₊₁ − F₂ₙ through the two integer doublings. This is the bridge expression that makes the sum-of-squares identity purely polynomial.",
+      "mathContext": "$L_{2n} = 2F_{n+1}^2 + 3F_n^2 - 2F_n F_{n+1}$, from expanding $L_{2n} = 2F_{2n+1} - F_{2n}$ via the two doublings — puts $L_{2n}$ into the same $(F_n, F_{n+1})$ polynomial coordinates."
     },
     {
       "id": "sum-of-squares",
       "title": "The Sum-of-Squares Identity and the Sign Bridge",
       "startLine": 84,
       "endLine": 99,
-      "summary": "lucas_sq_add_five_fib_sq: Lₙ² + 5Fₙ² = 2L₂ₙ, where both sides reduce to 4Fₙ₊₁² − 4FₙFₙ₊₁ + 6Fₙ² (no sign); lucas_two_mul_eq_neg_one_pow: L₂ₙ = Lₙ² − 2(−1)ⁿ, recovered by combining the sign-free sum with the parent's lucas_sq_eq, plus numeric checks at n = 5, 6."
+      "summary": "lucas_sq_add_five_fib_sq: Lₙ² + 5Fₙ² = 2L₂ₙ, where both sides reduce to 4Fₙ₊₁² − 4FₙFₙ₊₁ + 6Fₙ² (no sign); lucas_two_mul_eq_neg_one_pow: L₂ₙ = Lₙ² − 2(−1)ⁿ, recovered by combining the sign-free sum with the parent's lucas_sq_eq, plus numeric checks at n = 5, 6.",
+      "mathContext": "$L_n^2 + 5F_n^2 = 2L_{2n}$ (both sides $= 4F_{n+1}^2 - 4F_nF_{n+1} + 6F_n^2$, no sign); combined with the parent's $L_n^2 - 5F_n^2 = 4(-1)^n$ it yields $L_{2n} = L_n^2 - 2(-1)^n$."
     }
   ],
   "conclusion": {
