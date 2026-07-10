@@ -174,4 +174,29 @@ theorem norm_fourierCoeffOn_deriv2_eq_of_natAbs_one (f : ℝ → ℝ) (hf : Cont
     rcases Int.natAbs_eq_iff.mp hn with h | h <;> subst h <;> norm_num
   rw [norm_fourierCoeffOn_deriv2_eq f hf hperiod hab n hn0, hsq, one_mul]
 
+/-- **Higher-mode strict damping (`|n| ≥ 2`).**  The other half of the Wirtinger
+    dichotomy, complementing `norm_fourierCoeffOn_deriv2_eq_of_natAbs_one`: away from the
+    first harmonic every Fourier mode is damped by a factor at least `4` under the second
+    derivative,
+
+        4 · ‖ĉₙ(f)‖ ≤ ‖ĉₙ(f'')‖   for   |n| ≥ 2,
+
+    since the eigenvalue magnitude `n² ≥ 4`.  This makes the isoperimetric inequality
+    *strict* on every mode past the first harmonic, which is exactly why the Fourier
+    (Hurwitz) equality analysis forces all such modes to vanish — leaving the circle
+    (`|n| = 1`) as the unique extremal.  The file's magnitude identity
+    `norm_fourierCoeffOn_deriv2_eq` promised this strict gap in prose; here it is a lemma. -/
+theorem four_mul_norm_fourierCoeffOn_le_deriv2 (f : ℝ → ℝ) (hf : ContDiff ℝ 2 f)
+    (hperiod : ∀ t, f (t + 2 * π) = f t)
+    (hab : (0 : ℝ) < 2 * π) (n : ℤ) (hn : 2 ≤ n.natAbs) :
+    4 * ‖fourierCoeffOn hab (ofReal ∘ f) n‖
+      ≤ ‖fourierCoeffOn hab (ofReal ∘ deriv (deriv f)) n‖ := by
+  have hn0 : n ≠ 0 := by rintro rfl; simp at hn
+  rw [norm_fourierCoeffOn_deriv2_eq f hf hperiod hab n hn0]
+  have hi : (2 : ℤ) ≤ |n| := by rw [Int.abs_eq_natAbs]; exact_mod_cast hn
+  have h2 : (2 : ℝ) ≤ |(n : ℝ)| := by rw [← Int.cast_abs]; exact_mod_cast hi
+  have hn4 : (4 : ℝ) ≤ (n : ℝ) ^ 2 := by
+    nlinarith [sq_abs (n : ℝ), abs_nonneg (n : ℝ), h2]
+  nlinarith [norm_nonneg (fourierCoeffOn hab (ofReal ∘ f) n), hn4]
+
 end IsoperimetricFourier
