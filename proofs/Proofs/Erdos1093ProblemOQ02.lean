@@ -1108,3 +1108,95 @@ theorem maximalDeficiencyIs_nine_iff_kGe17 :
     by_cases hk : k ≤ 16
     · exact deficiency_le_nine_of_k_le_16 hv.1 hv.2 hk
     · exact h n k (by omega) hv
+
+/-
+## Section XVIII: The location bound closes `k = 17` — frontier `k ≥ 17` → `k ≥ 18`
+
+Section XVII cashed out the effective, ELS-free location bound of Section XVI at the
+open frontier `k = 16`.  The same mechanism applies verbatim one step further, at
+`k = 17`: the demand `deficiency ≥ 10` forces the window-floor power bound
+`(n - 16)^{10} ≤ 17!`, and `17! < 29^{10}` (`factorial_17_lt_29_pow_ten`), so
+`n - 16 < 29`, i.e. `n ≤ 44`.  With the admissibility floor `n ≥ 34` (`= 2·17`) this
+leaves the finite window `n ∈ {34, 35, …, 44}` (eleven values).  Every one of those
+eleven binomials `C(n,17)` is even, so `2` — a prime `≤ 17` — divides it and none of
+the pairs is admissible.  Hence no admissible pair at `k = 17` has deficiency exceeding
+`9`.
+
+Nothing in the `(k!)²` factorial method reaches this: `sharp_bound_permits_deficiency_ten`
+already shows that bound permits deficiency `10` for every `k ≥ 16`, so it is powerless at
+`k = 17`.  Only the *location* bound closes the slice, exactly as at `k = 16`.  The
+elementary resolution of OQ-02 now covers **all `k ≤ 17`**, moving the open frontier to
+`k ≥ 18`.  As in Section XVII the structural results are `ofReduceBool`-free; only the
+concrete "`2 ∣ C(n,17)`" admissibility facts use `native_decide` (the naive `Nat.choose`
+recursion does not reduce under kernel `decide`), consistent with the file's existing
+record certificates. -/
+
+/-- `17! < 29^10`, the numeric input that pins the `k = 17` window: `(n-16)^{10} ≤ 17!`
+forces `n - 16 < 29`.  `ofReduceBool`-free (`Nat.factorial` and `Nat.pow` on literals
+reduce under kernel `decide`; `17! = 355687428096000 < 420707233300201 = 29^{10}`). -/
+theorem factorial_17_lt_29_pow_ten : Nat.factorial 17 < 29 ^ 10 := by decide
+
+/-- For `34 ≤ n ≤ 44` the binomial `C(n,17)` is even, so `2` (a prime `≤ 17`) divides
+it — hence such a pair is *not* admissible.  Uses `native_decide` (⇒ `Lean.ofReduceBool`)
+because the naive `Nat.choose` recursion is infeasible for kernel `decide`. -/
+theorem two_dvd_choose_17_of_range {n : ℕ} (hlo : 34 ≤ n) (hhi : n ≤ 44) :
+    2 ∣ Nat.choose n 17 := by
+  interval_cases n <;> native_decide
+
+/-- The eleven small pairs left by the `k = 17` location window are all inadmissible:
+`2 ∣ C(n,17)` and `2 ≤ 17`, contradicting `NoSmallPrimeFactors n 17`. -/
+theorem not_admissible_k17_of_range {n : ℕ} (hlo : 34 ≤ n) (hhi : n ≤ 44) :
+    ¬ NoSmallPrimeFactors n 17 := by
+  intro h
+  have hdvd : 2 ∣ Nat.choose n 17 := two_dvd_choose_17_of_range hlo hhi
+  have := h 2 Nat.prime_two hdvd
+  omega
+
+/-- **The location bound closes `k = 17`.**  For an admissible pair with `k = 17`
+the deficiency never exceeds `9`.  A deficiency `≥ 10` would force, via the
+window-floor bound, `(n - 16)^{10} ≤ 17! < 29^{10}`, hence `n ≤ 44`; with the
+admissibility floor `n ≥ 34` this leaves only `n ∈ {34,…,44}`, none of which is
+admissible (`C(n,17)` is even).  As at `k = 16`, the sharp factorial bound permits
+deficiency `10` here (`sharp_bound_permits_deficiency_ten`), but the *location* bound
+rules it out. -/
+theorem deficiency_le_nine_of_k_eq_17 {n : ℕ} (hn : 34 ≤ n)
+    (h : NoSmallPrimeFactors n 17) : deficiency n 17 ≤ 9 := by
+  by_contra hcon
+  push_neg at hcon
+  have hpow : (n - 17 + 1) ^ 10 ≤ Nat.factorial 17 :=
+    windowFloor_pow_le_factorial_of_le (k := 17) (d := 10) (by omega) h (by omega)
+  have hlt : (n - 17 + 1) ^ 10 < 29 ^ 10 := lt_of_le_of_lt hpow factorial_17_lt_29_pow_ten
+  have hfloor : n - 17 + 1 < 29 := by
+    by_contra hge
+    push_neg at hge
+    exact absurd (Nat.pow_le_pow_left hge 10) (not_le.mpr hlt)
+  exact not_admissible_k17_of_range (n := n) (by omega) (by omega) h
+
+/-- **Elementary resolution of OQ-02 for all `k ≤ 17`.**  Combines the location
+bound at `k ≤ 16` (`deficiency_le_nine_of_k_le_16`) with the location bound at
+`k = 17` (`deficiency_le_nine_of_k_eq_17`).  Strictly extends the `k ≤ 16` reach of
+Section XVII. -/
+theorem deficiency_le_nine_of_k_le_17 {n k : ℕ} (hn : 2 * k ≤ n)
+    (h : NoSmallPrimeFactors n k) (hk : k ≤ 17) : deficiency n k ≤ 9 := by
+  by_cases hk16 : k ≤ 16
+  · exact deficiency_le_nine_of_k_le_16 hn h hk16
+  · have hk17 : k = 17 := by omega
+    subst hk17
+    exact deficiency_le_nine_of_k_eq_17 (by omega) h
+
+/-- **Sharpened reduction to `k ≥ 18`.**  `MaximalDeficiencyIs 9` is equivalent to
+the open universal bound restricted to `k ≥ 18`: the cases `k ≤ 16` are discharged
+by the sharp/location bounds and `k = 17` by the location bound
+(`deficiency_le_nine_of_k_le_17`).  Strictly sharper than
+`maximalDeficiencyIs_nine_iff_kGe17`; the entire remaining open content of OQ-02
+now lives at `k ≥ 18`. -/
+theorem maximalDeficiencyIs_nine_iff_kGe18 :
+    MaximalDeficiencyIs 9 ↔
+      ∀ n k, 18 ≤ k → ValidDeficiencyExample n k → deficiency n k ≤ 9 := by
+  rw [maximalDeficiencyIs_nine_iff_upperBound]
+  constructor
+  · intro h n k _ hv; exact h n k hv
+  · intro h n k hv
+    by_cases hk : k ≤ 17
+    · exact deficiency_le_nine_of_k_le_17 hv.1 hv.2 hk
+    · exact h n k (by omega) hv
