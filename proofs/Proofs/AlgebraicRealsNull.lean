@@ -280,6 +280,40 @@ theorem transcendental_complex_dense :
   rw [algebraic_complex_dimH_zero]
   exact_mod_cast Module.finrank_pos
 
+/-- **The transcendental reals have full Hausdorff dimension**, `dimH = 1`.
+
+This is the co-small dual of `algebraic_reals_dimH_zero`, completing the
+Hausdorff-dimension pillar: whereas the algebraic reals are dimension `0`, the
+transcendentals fill the whole line dimensionally.  Since `ℝ = {algebraic} ∪
+{transcendental}` and `dimH` of a union is the max of the parts
+(`dimH_union`), the transcendentals must carry the full dimension of `ℝ`:
+`1 = dimH ℝ = max (dimH {algebraic}) (dimH {transcendental}) = max 0 (dimH
+{transcendental})`. -/
+theorem transcendental_reals_dimH_one :
+    dimH {x : ℝ | Transcendental ℚ x} = 1 := by
+  have hcompl : {x : ℝ | Transcendental ℚ x} = {x : ℝ | IsAlgebraic ℚ x}ᶜ := by
+    ext x; simp only [mem_setOf_eq, mem_compl_iff, Transcendental]
+  have huniv : {x : ℝ | IsAlgebraic ℚ x} ∪ {x : ℝ | Transcendental ℚ x} = univ := by
+    rw [hcompl, union_compl_self]
+  have hun := dimH_union {x : ℝ | IsAlgebraic ℚ x} {x : ℝ | Transcendental ℚ x}
+  rw [huniv, Real.dimH_univ, algebraic_reals_dimH_zero, max_eq_right (zero_le _)] at hun
+  exact hun.symm
+
+/-- **The transcendental complex numbers have full Hausdorff dimension**, `dimH = 2`.
+
+The complex analogue of `transcendental_reals_dimH_one`, with `dimH (univ : Set ℂ)
+= finrank ℝ ℂ = 2`.  Co-small dual of `algebraic_complex_dimH_zero`. -/
+theorem transcendental_complex_dimH_two :
+    dimH {z : ℂ | Transcendental ℚ z} = 2 := by
+  have hcompl : {z : ℂ | Transcendental ℚ z} = {z : ℂ | IsAlgebraic ℚ z}ᶜ := by
+    ext z; simp only [mem_setOf_eq, mem_compl_iff, Transcendental]
+  have huniv : {z : ℂ | IsAlgebraic ℚ z} ∪ {z : ℂ | Transcendental ℚ z} = univ := by
+    rw [hcompl, union_compl_self]
+  have hun := dimH_union {z : ℂ | IsAlgebraic ℚ z} {z : ℂ | Transcendental ℚ z}
+  rw [huniv, Real.dimH_univ_eq_finrank ℂ, Complex.finrank_real_complex,
+    algebraic_complex_dimH_zero, max_eq_right (zero_le _)] at hun
+  rw [← hun]; norm_num
+
 -- ============================================================================
 -- § 5. Generalization to arbitrary atomless measures
 -- ============================================================================
