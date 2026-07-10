@@ -173,7 +173,10 @@ theorem sl3_transitive (a b c : ℤ) (h : IsCoprime a (Int.gcd b c : ℤ)) :
   refine ⟨⟨headBlock3 H * embedOne T, ?_⟩, ?_⟩
   · rw [Matrix.det_mul, det_headBlock3, det_embedOne, hHdet, hTdet, mul_one]
   · show (headBlock3 H * embedOne T) *ᵥ ![a, b, c] = ![1, 0, 0]
-    rw [← Matrix.mulVec_mulVec, embedOne_mulVec, hTw, headBlock3_mulVec]
+    -- `![…]` is `Matrix.vecCons`; convert to `Fin.cons` so the reduction lemmas fire.
+    have hcons : (![a, b, c] : Fin 3 → ℤ) = Fin.cons a ![b, c] := rfl
+    have hcons2 : (Fin.cons a (![g, 0] : Fin 2 → ℤ) : Fin 3 → ℤ) = ![a, g, 0] := rfl
+    rw [← Matrix.mulVec_mulVec, hcons, embedOne_mulVec, hTw, hcons2, headBlock3_mulVec]
     funext i
     fin_cases i
     · -- first coordinate: `H 0 0 * a + H 0 1 * g = 1`
