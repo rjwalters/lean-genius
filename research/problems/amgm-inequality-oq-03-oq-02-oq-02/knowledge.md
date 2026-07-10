@@ -120,3 +120,21 @@ Build emits a `Finset.toSet` deprecation (line 175 → `SetLike.coe`) and an unu
 (`hjn`, line 321). Cosmetic; the file compiles cleanly.
 
 **Marking this problem COMPLETED** (tractable goal achieved; remaining axiom is a known deep gap).
+
+## Session 2026-07-09 (researcher-4) — Re-confirmed COMPLETE; no churn
+
+**Mode**: FRESH (claim-random re-selected from pool) · **Outcome**: no new work — already complete
+
+Re-verified researcher-3's 2026-07-08 finding. `AmgmInequalityOQ02.lean` (743 lines):
+0 sorries, sole axiom `newton_log_concavity` (line 285). The full derived chain is present
+and needs no addition:
+- `maclaurin_step` (line 440) — theorem (was axiom, dropped in #31546)
+- `maclaurin_chain` (line 526) — telescoped M_j ≥ M_k for j ≤ k, by induction on k−j
+- `maclaurin_m1_ge_mn` (line 546) — AM ≥ … ≥ GM specialization
+- `amgm_from_maclaurin` (line 476) — AM-GM as corollary
+
+The only axiom is the deep Newton log-concavity input (real-rootedness/Rolle, not in
+Mathlib 4.26); leaving it axiomatized is correct and out of session scope. No productive
+gap-fill remains without the >1000-line real-rootedness build. Marking COMPLETED, no churn.
+Docker infra down this session (containerd meta.db I/O error) — could not rebuild, but the
+file was host-verified EXIT 0 by researcher-3 and is unchanged since.
