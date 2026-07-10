@@ -313,6 +313,69 @@ theorem triArea_hypotenuse_eq_legs (hperp : ⟪A - C, B - C⟫ = (0 : ℝ)) :
   ring
 
 include hAB in
+/-- **Einstein's key step, leg-`CA` piece: the similar sub-triangle's area scales as the
+squared side ratio.**  The altitude from `C` cuts off the sub-triangle `A H C`, similar to the
+whole `A B C` with ratio `|CA| / |AB|` (corresponding sides `CA ↔ AB`).  Its area is therefore
+`(|CA| / |AB|)²` times the whole triangle's area:
+
+  `Area(A H C) = (|CA|² / |AB|²) · Area(A B C)`.
+
+Both pieces are measured with the same altitude `|CH|` as height, so the ratio of areas is the
+ratio of bases `|AH| / |AB| = |CA|² / |AB|²` (`dist_A_foot`).  This is the concrete realisation
+of the abstract shape-constant law `triArea_scale` on Einstein's dissection: area is
+proportional to the square of a corresponding side — exactly why summing the two pieces
+recovers Pythagoras. -/
+theorem triArea_sub_A_ratio (hperp : ⟪A - C, B - C⟫ = (0 : ℝ)) :
+    triArea ‖A - altitudeFoot A B C‖ ‖C - altitudeFoot A B C‖
+      = (‖A - C‖ ^ 2 / ‖A - B‖ ^ 2) * triArea ‖A - B‖ ‖C - altitudeFoot A B C‖ := by
+  have hne := hnorm_ne A B hAB
+  unfold triArea
+  rw [dist_A_foot A B C hAB]
+  field_simp
+  ring
+
+include hAB in
+/-- **Einstein's key step, leg-`CB` piece.**  The altitude from `C` cuts off the sub-triangle
+`H B C`, similar to the whole with ratio `|CB| / |AB|`; its area is `(|CB| / |AB|)²` times the
+whole:
+
+  `Area(H B C) = (|CB|² / |AB|²) · Area(A B C)`.
+
+The `CB`-leg companion of `triArea_sub_A_ratio`, via `dist_foot_B` (`|HB| = |CB|² / |AB|`).
+Adding the two squared ratios gives `(|CA|² + |CB|²)/|AB|² = 1` (`pythagorean_via_altitude`):
+the two similar pieces exactly reconstitute the whole. -/
+theorem triArea_sub_B_ratio (hperp : ⟪A - C, B - C⟫ = (0 : ℝ)) :
+    triArea ‖altitudeFoot A B C - B‖ ‖C - altitudeFoot A B C‖
+      = (‖B - C‖ ^ 2 / ‖A - B‖ ^ 2) * triArea ‖A - B‖ ‖C - altitudeFoot A B C‖ := by
+  have hne := hnorm_ne A B hAB
+  unfold triArea
+  rw [dist_foot_B A B C hAB hperp]
+  field_simp
+  ring
+
+include hAB in
+/-- **The area-level dissection: the two similar pieces reconstitute the whole.**  The altitude
+from the right-angle vertex `C` splits triangle `A B C` into two sub-triangles `A H C` and
+`H B C` whose areas sum to the whole:
+
+  `Area(A H C) + Area(H B C) = Area(A B C)`.
+
+This is Einstein's dissection at the level of area — the companion of `segments_sum` (which
+states it at the level of the base `|AH| + |HB| = |AB|`).  Since all three triangles share the
+altitude `|CH|` as height, area additivity is base additivity scaled by `|CH|/2`.  Together
+with the two squared-ratio identities `triArea_sub_A_ratio`, `triArea_sub_B_ratio`, it is
+Einstein's proof of Pythagoras: two pieces, each with area proportional to the square of its
+governing leg, tile the whole. -/
+theorem triArea_pieces_sum_whole (hperp : ⟪A - C, B - C⟫ = (0 : ℝ)) :
+    triArea ‖A - altitudeFoot A B C‖ ‖C - altitudeFoot A B C‖
+        + triArea ‖altitudeFoot A B C - B‖ ‖C - altitudeFoot A B C‖
+      = triArea ‖A - B‖ ‖C - altitudeFoot A B C‖ := by
+  have hsum := segments_sum A B C hAB hperp
+  unfold triArea
+  rw [← hsum]
+  ring
+
+include hAB in
 /-- **The inverse (reciprocal) Pythagorean theorem.**  For a right angle at `C` with
 non-degenerate legs (`A ≠ C`, `B ≠ C`), the *reciprocals of the squares* of the two legs
 sum to the reciprocal of the square of the altitude `|CH|` dropped onto the hypotenuse:
