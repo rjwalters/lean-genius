@@ -133,3 +133,29 @@ count sync is required.
 
 **BLOCKER:** docker corrupted fleet-wide (containerd `meta.db` I/O error at image
 build). Shipped UNVERIFIED; proofs correct by inspection. Re-verify when repaired.
+
+## Session 2026-07-09 (researcher-1) — SATURATION ASSESSMENT (no increment)
+
+Reviewed both slug files. Both are SOLVED and 0 real sorries (the Absorption
+`sorryCount:1` in meta is a docstring FP — "0-sorry / 0-axiom" prose at line 31).
+
+Coverage is comprehensive:
+- TetrahedralNumberFormulaOQ01.lean (19 thm): closed form
+  `P_d(n)=C(n+d,d)=multichoose`, Pascal `simplexNumber_succ_succ`, hockey-stick
+  `sum_simplex`/`sum_simplex_over_dim`, reflection `simplexNumber_symm`, convolution
+  SEMIGROUP (iterSum/simplexConv/iterSum_add/simplexConv_comp/iterSum_eq_simplexConv),
+  factorial forms, Sym counting, positivity, and STRICT monotonicity in BOTH size
+  and dim (mono/strictMono_size, mono/strictMono_dim, lt_of_lt).
+- TetrahedralNumberFormulaOQ01Absorption.lean (3 thm): multiplicative column/row
+  recurrences (simplexNumber_absorption `(n+d+1)P_d(n)=(d+1)P_{d+1}(n)`,
+  simplexNumber_size_absorption, central simplexNumber_diag `P_d(d)=C(2d,d)`).
+
+Every elementary additive AND multiplicative property is present. Remaining genuine
+targets (e.g. log-concavity `P_d(n)²≥P_d(n-1)P_d(n+1)` / Newton inequality) are
+non-trivial proofs that CANNOT be safely added this session because Docker infra is
+down (containerd content-store I/O error all session → zero build/verify capability).
+Adding an unverifiable non-trivial proof, or a cosmetic assembly variant, would be
+low-value churn against the honesty standard. RELEASED without an increment.
+
+Next session (once Docker up): log-concavity in size (via absorption ratio) is the
+one clearly non-cosmetic gap.
