@@ -75,13 +75,16 @@ theorem reflectBallot_eq (a b : ℕ) (hb : 1 ≤ b) :
   have e1 : a + 1 + b - 1 = a + b := by omega
   have e2 : a + 1 - 1 = a := by omega
   simp only [reflectBallot, ballotNumber, e1, e2]
-  congr 1
-  · -- `C(a+b, b) = C(a+b, a)` via `k ↦ (a+b) − k` symmetry
-    have hba : b = (a + b) - a := by omega
-    rw [hba, Nat.choose_symm (Nat.le_add_right a b)]
-  · -- `C(a+b, b−1) = C(a+b, a+1)`, valid since `1 ≤ b`
-    have hba : b - 1 = (a + b) - (a + 1) := by omega
-    rw [hba, Nat.choose_symm (by omega : a + 1 ≤ a + b)]
+  -- `C(a+b, b) = C(a+b, a)` via `k ↦ (a+b) − k` symmetry
+  have h1 : (a + b).choose b = (a + b).choose a := by
+    have h := Nat.choose_symm (Nat.le_add_right a b)
+    rwa [Nat.add_sub_cancel_left] at h
+  -- `C(a+b, b−1) = C(a+b, a+1)`, valid since `1 ≤ b`
+  have h2 : (a + b).choose (b - 1) = (a + b).choose (a + 1) := by
+    have h := Nat.choose_symm (show a + 1 ≤ a + b by omega)
+    have e3 : a + b - (a + 1) = b - 1 := by omega
+    rwa [e3] at h
+  rw [h1, h2]
 
 /-- The reflection subtraction is **exact** for `b ≤ a`: `C(a+b, b−1) ≤ C(a+b, b)`, so
 `reflectBallot a b + C(a+b, b−1) = C(a+b, b)` with no `ℕ` truncation. -/
