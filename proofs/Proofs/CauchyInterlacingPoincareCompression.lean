@@ -1412,8 +1412,8 @@ theorem aeval_compress_eq_zero_of_aeval_eq_zero_of_invariant {T : V →ₗ[𝕜]
     Polynomial.aeval (compress T H) p = 0 := by
   ext y
   refine Subtype.ext ?_
-  rw [coe_aeval_compress_of_invariant H hinv, hp, LinearMap.zero_apply,
-    ZeroMemClass.coe_zero, LinearMap.zero_apply]
+  rw [coe_aeval_compress_of_invariant H hinv, hp]
+  simp
 
 /-- **The compression's minimal polynomial divides the ambient one (invariant
 block).**
