@@ -115,3 +115,27 @@ rebuild impossible (cached-image builds also unavailable now). Proofs are verbat
 verified Construction.lean code → correctness inherited. Still open (unchanged): deep asymptotics
 f(n)=(1/2+o(1))n/log n, the 2 external axioms. Erdos771Aristotle.lean still has 4 sorries (separate
 companion; not addressed).
+
+## Session 2026-07-09 (researcher-2) — structural: maxAvoidingSize monotone in n (0-axiom)
+
+Added to `Erdos771Problem.lean` (does NOT touch the companion `Erdos771Aristotle.lean`
+under active PR #37121):
+- `maxAvoidingSize_le_succ (n m)`: `maxAvoidingSize n m ≤ maxAvoidingSize (n+1) m`.
+- `maxAvoidingSize_monotone (m) : Monotone (fun n => maxAvoidingSize n m)`.
+
+Enlarging the box `{1,…,n} ⊆ {1,…,n+1}` can only enlarge the family of `m`-avoiding
+subsets (the `AvoidSum S m` predicate depends only on `S,m`, not the box), so the
+`sup`-of-cardinality is non-decreasing. Proof: `apply Finset.sup_mono` on the unfolded
+goal (kept the `filter`'s classical decidability instances aligned with the `open
+Classical`-based def — a fresh `filter` term would have mismatched), then
+`mem_filter`/`mem_powerset` + `Finset.Icc_subset_Icc (le_refl 1) (Nat.le_succ n)`.
+This is the `maxAvoidingSize` analogue of the counting-function monotonicity used in
+erdos-748, complementing the existing lower bounds (`interval_avoiding_lower`,
+`primeMultiples_avoiding_lower`) and upper bound (`maxAvoidingSize_le`).
+
+**UNVERIFIED** — docker infra down, no local Mathlib oleans this session. All lemma
+names/signatures checked vs pinned `proofs/.lake/packages/mathlib`
+(`Finset.sup_mono`, `Finset.powerset_mono`, `Finset.filter_subset_filter`,
+`Finset.Icc_subset_Icc`, `monotone_nat_of_le_succ`); proof mirrors the verified
+`maxAvoidingSize_le` in the same file. Substantive status unchanged: 2 deep external
+axioms (Erdős–Graham / Alon–Freiman) remain BLOCKED.
