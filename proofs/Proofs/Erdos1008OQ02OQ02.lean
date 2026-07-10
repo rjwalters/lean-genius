@@ -185,6 +185,32 @@ variable {V : Type*} [Fintype V] [DecidableEq V]
 def commonNbrs (G : SimpleGraph V) [DecidableRel G.Adj] (a b : V) : Finset V :=
   G.neighborFinset a ∩ G.neighborFinset b
 
+/-- Membership in `commonNbrs`: `v` is a common neighbour of `a` and `b` iff it is
+    adjacent to both. -/
+theorem mem_commonNbrs (G : SimpleGraph V) [DecidableRel G.Adj] {a b v : V} :
+    v ∈ commonNbrs G a b ↔ G.Adj a v ∧ G.Adj b v := by
+  simp only [commonNbrs, Finset.mem_inter, SimpleGraph.mem_neighborFinset]
+
+/-- **Symmetry of common neighbours.** `commonNbrs G a b = commonNbrs G b a`:
+    the set of common neighbours does not depend on the order of the pair, since
+    it is the (commutative) intersection of the two neighbour sets.  The `K_{2,t}`
+    codegree hypothesis `(commonNbrs G a b).card ≤ κ` is therefore symmetric in
+    `a, b`, matching the unordered nature of the `K_{2,t}` obstruction. -/
+theorem commonNbrs_comm (G : SimpleGraph V) [DecidableRel G.Adj] (a b : V) :
+    commonNbrs G a b = commonNbrs G b a := by
+  simp only [commonNbrs, Finset.inter_comm]
+
+/-- The common-neighbour count is symmetric in the two vertices. -/
+theorem commonNbrs_card_comm (G : SimpleGraph V) [DecidableRel G.Adj] (a b : V) :
+    (commonNbrs G a b).card = (commonNbrs G b a).card := by
+  rw [commonNbrs_comm]
+
+/-- A vertex's common neighbours with itself are exactly its neighbours:
+    `commonNbrs G a a = G.neighborFinset a`. -/
+theorem commonNbrs_self (G : SimpleGraph V) [DecidableRel G.Adj] (a : V) :
+    commonNbrs G a a = G.neighborFinset a := by
+  simp only [commonNbrs, Finset.inter_self]
+
 /-- `s.offDiag.card = s.card·(s.card-1)` (self-contained port). -/
 private theorem finset_card_offDiag {α : Type*} [DecidableEq α] (s : Finset α) :
     s.offDiag.card = s.card * (s.card - 1) := by
