@@ -115,7 +115,7 @@
     {
       "id": "dickman-theorem",
       "title": "Dickman's Theorem (1930)",
-      "summary": "psi counting function, dickman_theorem (proved as theorem — not a Lean axiom)",
+      "summary": "psi counting function; Dickman's theorem stated informally (docstring only, not a Lean declaration)",
       "startLine": 114,
       "endLine": 134,
       "mathContext": "$\\Psi(x, x^\\alpha) / x \\to \\rho(1/\\alpha)$ as $x \\to \\infty$ (Dickman, 1930). The density of $\\alpha$-smooth numbers is $\\rho(1/\\alpha)$."
