@@ -93,7 +93,8 @@
       "**The odd value falls out of uniqueness, not a fresh summation.** Rather than evaluating ∑ 1/(2k+1)² directly, reassemble ζ(2) from its even and odd halves and use HasSum.unique: π²/24 + (odd) = π²/6 ⟹ (odd) = π²/8. The only arithmetic is π²/6 − π²/24 = π²/8.",
       "**HasSum.even_add_odd needs a named summand for higher-order unification.** Defining `f n = 1/n²` as a top-level function lets `even_add_odd` infer the summand from the pattern `f (2*k)` / `f (2*k+1)`; an inline lambda would block the unification.",
       "**Summability of the odd part is reindexing, not analysis.** k ↦ 2k+1 is injective (one `omega`), so Summable.comp_injective transports summability of ζ(2) to the odd subseries — no comparison test or p-series estimate is invoked beyond Mathlib's ζ(2).",
-      "**Three quarters of the Basel mass is odd.** The decomposition π²/6 = π²/24 + π²/8 makes the even part one quarter and the odd part three quarters of ζ(2); the corollary odd_part_gt_even_part records π²/24 < π²/8."
+      "**Three quarters of the Basel mass is odd.** The decomposition π²/6 = π²/24 + π²/8 makes the even part one quarter and the odd part three quarters of ζ(2); the corollary odd_part_gt_even_part records π²/24 < π²/8.",
+      "**Sum vs. difference: the same two pieces also give the alternating Basel sum.** This entry uses even + odd = π²/24 + π²/8 = π²/6 = ζ(2); the *difference* of the very same pieces is the alternating (Dirichlet eta) value η(2) = ∑ (−1)ⁿ⁺¹/n² = odd − even = π²/8 − π²/24 = π²/12 = (1 − 2¹⁻²)ζ(2). So the even and odd Basel halves are a single resource that yields ζ(2) by addition and η(2) by subtraction — the parity split done here is exactly the machinery the cross-referenced eta entry (oq-11) reuses."
     ],
     "prerequisites": [
       "Basel problem ζ(2) = π²/6",
