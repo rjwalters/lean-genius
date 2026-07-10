@@ -140,5 +140,28 @@
       "proofId": "inverse-galois-d4",
       "relationship": "great-great-grandparent — the base n = 4, p = 2 case (|Gal| = 8). Here n = 4 is non-coprime (gcd(4,2) = 2), so the coprime pin does not apply; the ceiling gives |Gal(X⁴−p)| ≤ 8, consistent with the known |Gal(X⁴−2)| = 8, and frames the non-coprime open question."
     }
+  ],
+  "references": [
+    {
+      "authors": "Serge Lang",
+      "title": "Algebra",
+      "year": "2002",
+      "venue": "Springer, Graduate Texts in Mathematics 211 (revised 3rd ed.)",
+      "note": "Chapter VI (Galois theory): roots of unity, cyclotomic extensions ℚ(ζₙ)/ℚ of degree φ(n), and radical (Kummer) extensions ℚ(ⁿ√p). Gives the general structure of the splitting field of Xⁿ − a as the tower ℚ ⊆ ℚ(ζₙ) ⊆ ℚ(ζₙ, ⁿ√a) underlying the metacyclic ceiling |Gal| ≤ n·φ(n)."
+    },
+    {
+      "authors": "David S. Dummit, Richard M. Foote",
+      "title": "Abstract Algebra",
+      "year": "2004",
+      "venue": "John Wiley & Sons (3rd ed.)",
+      "note": "§14.7–14.8: the Galois group of xⁿ − a as a subgroup of the holomorph ℤ/n ⋊ (ℤ/n)ˣ (affine maps i ↦ ai + b), and the Frobenius group F₂₀ = AGL(1,5) = ℤ/5 ⋊ ℤ/4 of order 20 as the Galois group of an irreducible solvable quintic — the exact instance pinned here for X⁵ − p."
+    },
+    {
+      "authors": "Jean-Pierre Serre",
+      "title": "Topics in Galois Theory",
+      "year": "1992",
+      "venue": "Jones and Bartlett, Research Notes in Mathematics 1",
+      "note": "Context for the inverse Galois problem: which finite groups arise as Galois groups over ℚ. Solvable groups such as the metacyclic holomorph and F₂₀ are realized concretely, as here, by radical extensions Xⁿ − p."
+    }
   ]
 }
