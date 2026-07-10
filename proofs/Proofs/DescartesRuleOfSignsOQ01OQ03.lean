@@ -879,4 +879,26 @@ theorem signChangesInCoeffs_neg (p : ℝ[X]) :
   have h := signChangesInCoeffs_C_mul (c := -1) (by norm_num) p
   rwa [show (C (-1 : ℝ)) * p = -p by rw [map_neg, map_one, neg_one_mul]] at h
 
+/-- **Scaling invariance, `•`-form.**  The `smul` counterpart of
+`signChangesInCoeffs_C_mul`: scaling a polynomial by a nonzero real `c` via the
+module action leaves Descartes' coefficient sign-change count unchanged,
+`V(c • p) = V(p)`.  Immediate from `smul_eq_C_mul` and `signChangesInCoeffs_C_mul`.
+Axiom-free. -/
+theorem signChangesInCoeffs_smul {c : ℝ} (hc : c ≠ 0) (p : ℝ[X]) :
+    DescartesRuleOfSigns.signChangesInCoeffs (c • p)
+      = DescartesRuleOfSigns.signChangesInCoeffs p := by
+  rw [smul_eq_C_mul]
+  exact signChangesInCoeffs_C_mul hc p
+
+/-- **Descartes' bound is invariant under monic normalisation.**  For `p ≠ 0`,
+rescaling by the inverse leading coefficient — which produces a *monic* polynomial
+with the same roots — leaves the sign-change count unchanged:
+`V(leadingCoeff(p)⁻¹ • p) = V(p)`.  Thus Descartes' rule may be applied to the monic
+normalisation of any polynomial without affecting the bound.  The `c = leadingCoeff⁻¹`
+case of `signChangesInCoeffs_smul` (`leadingCoeff p ≠ 0` since `p ≠ 0`).  Axiom-free. -/
+theorem signChangesInCoeffs_leadingCoeff_inv_smul {p : ℝ[X]} (hp : p ≠ 0) :
+    DescartesRuleOfSigns.signChangesInCoeffs (p.leadingCoeff⁻¹ • p)
+      = DescartesRuleOfSigns.signChangesInCoeffs p :=
+  signChangesInCoeffs_smul (inv_ne_zero (leadingCoeff_ne_zero.mpr hp)) p
+
 end DescartesRuleOfSignsOQ01OQ03
