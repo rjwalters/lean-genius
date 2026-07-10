@@ -531,4 +531,39 @@ theorem sublevelSup'_le_sublevelSup : sublevelSup' ≤ sublevelSup :=
 theorem sublevelInf_le_sublevelInf' : sublevelInf ≤ sublevelInf' :=
   le_iInf fun f => le_iInf fun hf => iInf_le_of_le f (iInf_le_of_le hf.1 le_rfl)
 
+/-! ### The faithful extremal problem is non-degenerate: `sublevelInf' < sublevelSup'`
+
+The two elementary witnesses bound the faithful extremal object from *both* sides:
+the linear `X` gives `sublevelInf' ≤ 2` and the quadratic `X² − 1` gives
+`2√2 ≤ sublevelSup'`.  Since `2 < 2√2` (as `1 < √2`), these two bounds do not overlap,
+so the faithful supremum is *strictly* greater than the faithful infimum.  This records
+— with no potential theory — that the Erdős #1038 sublevel problem is genuinely
+non-degenerate: the sup and inf are separated, independently of their exact endpoints
+`2^(4/3) − 1` and `2√2`. -/
+
+/-- **The faithful infimum is strictly below the faithful supremum.**  Chaining
+    `sublevelInf' ≤ ofReal 2` (`sublevelInf'_le_two`) through the strict numeric gap
+    `2 < 2√2` (from `1 < √2`) into `ofReal (2√2) ≤ sublevelSup'` (`le_sublevelSup'`) shows
+    the faithful extremal spread is nonzero. -/
+theorem sublevelInf'_lt_sublevelSup' : sublevelInf' < sublevelSup' := by
+  have hgap : ENNReal.ofReal 2 < ENNReal.ofReal (2 * Real.sqrt 2) := by
+    rw [ENNReal.ofReal_lt_ofReal_iff (by positivity)]
+    have h1 : (1 : ℝ) < Real.sqrt 2 := by
+      rw [show (1 : ℝ) = Real.sqrt 1 from Real.sqrt_one.symm]
+      exact Real.sqrt_lt_sqrt (by norm_num) (by norm_num)
+    nlinarith [h1]
+  calc sublevelInf' ≤ ENNReal.ofReal 2 := sublevelInf'_le_two
+    _ < ENNReal.ofReal (2 * Real.sqrt 2) := hgap
+    _ ≤ sublevelSup' := le_sublevelSup'
+
+/-- **The literal supremum is strictly positive**, hence `sublevelInf < sublevelSup`.
+    The literal infimum collapses to `0` (`sublevelInf_eq_zero`) via the rootless
+    `X² + 1`, while `2√2 ≤ sublevelSup` keeps the supremum positive; the strict ordering
+    survives the collapse. -/
+theorem sublevelInf_lt_sublevelSup : sublevelInf < sublevelSup := by
+  rw [sublevelInf_eq_zero]
+  have hpos : (0 : ℝ≥0∞) < ENNReal.ofReal (2 * Real.sqrt 2) := by
+    rw [ENNReal.ofReal_pos]; positivity
+  exact lt_of_lt_of_le hpos le_sublevelSup
+
 end Erdos1038WIP01
