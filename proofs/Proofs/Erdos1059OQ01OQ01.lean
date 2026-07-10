@@ -262,6 +262,46 @@ theorem levelwise_strict_surplus (l k : ℕ) (hl : l ≥ 3) (hlk : l ≥ k + 2) 
   omega
 
 /-
+## Part IV.5: The Non-Qualifying (Bad) Prime Bound
+
+The strong Selberg density axiom `q(l)·(l+1) ≥ p(l)·l` is exactly the statement
+that at most a `1/(l+1)` fraction of the primes in `I(l)` are "bad"
+(non-qualifying).  The docstring of `strong_selberg_density` advertises this
+reading; the two lemmas below record it as formal consequences, using only the
+axiom and `q(l) ≤ p(l)`.
+-/
+
+/-- **The bad-prime fraction is at most `1/(l+1)`.**  The number of
+    non-qualifying primes `p(l) − q(l)` in the primorial interval `I(l)`
+    satisfies `(p(l) − q(l))·(l+1) ≤ p(l)`, i.e. at most a `1/(l+1)` fraction of
+    the primes fail the AFSC property.  This is the cross-multiplied form of the
+    sieve prediction stated informally in the `strong_selberg_density`
+    docstring. -/
+theorem nonqualifying_fraction_bound (l : ℕ) (hl : l ≥ 3) :
+    (primesInLevel l - qualifyingInLevel l) * (l + 1) ≤ primesInLevel l := by
+  have hs := strong_selberg_density l hl
+  have hqp := qualifyingInLevel_le_primesInLevel l
+  rw [Nat.sub_mul]
+  have h1 : primesInLevel l * (l + 1) = primesInLevel l * l + primesInLevel l := by ring
+  omega
+
+/-- **Qualifying primes outnumber the bad primes by a factor of at least `l`.**
+    From `q(l)·(l+1) ≥ p(l)·l` and `q(l) ≤ p(l)`: `(p(l) − q(l))·l ≤ q(l)`.  So
+    for every `l ≥ 3` the non-qualifying primes are at most a `1/l` fraction of
+    the qualifying ones — a form of the density bound that isolates the surplus
+    of good over bad primes. -/
+theorem nonqualifying_le_qualifying_div_level (l : ℕ) (hl : l ≥ 3) :
+    (primesInLevel l - qualifyingInLevel l) * l ≤ qualifyingInLevel l := by
+  have hs := strong_selberg_density l hl
+  have hqp := qualifyingInLevel_le_primesInLevel l
+  have hq1 : qualifyingInLevel l * (l + 1)
+      = qualifyingInLevel l * l + qualifyingInLevel l := by ring
+  have hp1 : primesInLevel l * l
+      = qualifyingInLevel l * l + (primesInLevel l - qualifyingInLevel l) * l := by
+    rw [← Nat.add_mul]; congr 1; omega
+  omega
+
+/-
 ## Part V: Gap Analysis — Why General x Fails
 
 At factorial evaluation points x = n!, the density bound follows from summing
