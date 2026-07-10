@@ -147,6 +147,29 @@
       "description": "Erdős #334 on smooth number representation explores additive properties of smooth numbers"
     }
   ],
+  "references": [
+    {
+      "title": "Long gaps between primes",
+      "author": "Kevin Ford, Ben Green, Sergei Konyagin, James Maynard, and Terence Tao",
+      "year": "2018",
+      "venue": "Journal of the American Mathematical Society 31, no. 1, pp. 65–105",
+      "description": "Provides the upper bound S(k) ≪ k·(log log log k)/(log log k · log log log log k) via the sieve machinery developed for large prime gaps."
+    },
+    {
+      "title": "Sieve Methods",
+      "author": "Heini Halberstam and Hans-Egon Richert",
+      "year": "1974",
+      "venue": "London Mathematical Society Monographs 4, Academic Press",
+      "description": "The standard reference for Rosser's (linear) sieve, the tool behind the lower bound S(k) > k^{1/2−o(1)} cited for this problem."
+    },
+    {
+      "title": "Erdős Problem #929",
+      "author": "Thomas F. Bloom (ed.)",
+      "year": "2024",
+      "venue": "erdosproblems.com/929",
+      "description": "The catalogued entry (OPEN): estimate the minimal x = S(k) for which a positive-density set of n has each of n+1,…,n+k divisible by some prime ≤ x, and decide whether S(k) ≥ k^{1−o(1)}."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Tactic",
