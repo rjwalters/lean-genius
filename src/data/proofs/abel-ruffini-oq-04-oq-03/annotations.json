@@ -181,8 +181,8 @@
     "id": "ann-full-criterion",
     "proofId": "abel-ruffini-oq-04-oq-03",
     "range": {
-      "startLine": 113,
-      "endLine": 125
+      "startLine": 125,
+      "endLine": 142
     },
     "type": "insight",
     "title": "The Full Biconditional: Galois's Criterion",
@@ -222,8 +222,8 @@
     "id": "ann-rationals-specialization",
     "proofId": "abel-ruffini-oq-04-oq-03",
     "range": {
-      "startLine": 131,
-      "endLine": 138
+      "startLine": 143,
+      "endLine": 155
     },
     "type": "concept",
     "title": "Instantiation to ℚ: The Primary Case",
@@ -244,8 +244,8 @@
     "id": "ann-solvable-implies-formula",
     "proofId": "abel-ruffini-oq-04-oq-03",
     "range": {
-      "startLine": 140,
-      "endLine": 148
+      "startLine": 156,
+      "endLine": 165
     },
     "type": "insight",
     "title": "Justifying the Classical Formulas (Degree ≤ 4)",
@@ -271,8 +271,8 @@
     "id": "ann-abel-ruffini-special-case",
     "proofId": "abel-ruffini-oq-04-oq-03",
     "range": {
-      "startLine": 154,
-      "endLine": 163
+      "startLine": 166,
+      "endLine": 183
     },
     "type": "insight",
     "title": "Abel-Ruffini as a Special Case of Galois's Criterion",
@@ -292,6 +292,32 @@
       "Galois criterion",
       "S₅ group theory",
       "perfect groups"
+    ]
+  },
+  {
+    "id": "ann-part6-axiom-free",
+    "proofId": "abel-ruffini-oq-04-oq-03",
+    "range": {
+      "startLine": 184,
+      "endLine": 242
+    },
+    "type": "insight",
+    "title": "Axiom-Free Concrete Abel-Ruffini via a Symmetric Galois Group",
+    "content": "The punchline of the file, and entirely axiom-free — it uses ONLY the forward direction of Galois's criterion (Mathlib-proved), so it is logically independent of the axiomatized reverse direction and needs no `[CharZero F]`. Two theorems: (1) `not_isSolvable_gal_of_perm_iso` — if `q.Gal ≃* Equiv.Perm (Fin n)` with n ≥ 5, then `q.Gal` is not solvable; the proof pushes any hypothetical solvability of `q.Gal` through the isomorphism via `solvable_of_surjective` (using `φ.surjective`) to contradict `Equiv.Perm.not_solvable (Fin n)` (whose cardinality hypothesis n ≥ 5 is discharged by `Cardinal.mk_fintype` + `Fintype.card_fin`). (2) `not_solvableByRad_of_perm_gal` — composes (1) with `not_solvableByRad_of_not_solvableGal` to conclude that an irreducible `q` with a root `α` and Galois group `≃* Equiv.Perm (Fin n)`, n ≥ 5, has `α` NOT solvable by radicals. This is the original Abel-Ruffini theorem as a clean structural corollary: the existence of any irreducible polynomial whose Galois group is the full symmetric group S₅ (e.g. an irreducible quintic over ℚ with exactly two non-real roots) refutes a general radical formula.",
+    "mathContext": "For n ≥ 5, $S_n = \\operatorname{Equiv.Perm}(\\operatorname{Fin} n)$ is not solvable ($A_n$ is a non-abelian simple normal subgroup, so the derived series stabilizes). Solvability is preserved by surjections and reflected by isomorphisms, so $q.\\text{Gal} \\cong S_n \\Rightarrow \\neg\\operatorname{IsSolvable}(q.\\text{Gal})$; the forward criterion then gives $\\neg\\operatorname{IsSolvableByRad}(F, \\alpha)$ with no characteristic-zero or reverse-direction assumption.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Abel-Ruffini theorem",
+      "Equiv.Perm.not_solvable",
+      "solvable_of_surjective",
+      "symmetric group S₅",
+      "axiom-free formalization"
+    ],
+    "prerequisites": [
+      "solvability preserved under surjective homomorphisms",
+      "Equiv.Perm.not_solvable",
+      "MulEquiv and group isomorphism",
+      "forward direction of Galois's criterion"
     ]
   }
 ]
