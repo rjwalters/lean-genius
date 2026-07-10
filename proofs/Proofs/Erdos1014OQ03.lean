@@ -92,6 +92,57 @@ theorem increment_div_tendsto_zero_of_ratio_tendsto_one (R : ℕ → ℝ)
     Tendsto (fun l => (R (l + 1) - R l) / R l) atTop (𝓝 0) :=
   (increment_div_tendsto_zero_iff_ratio_tendsto_one R hpos).mpr hratio
 
+/-- **General-limit increment–ratio bridge.** For an eventually-nonzero sequence
+`R` and any real `c`, the normalized increment `(R(l+1) − R(l))/R(l)` tends to `c`
+**iff** the consecutive ratio `R(l+1)/R(l)` tends to `c + 1`.
+
+The special case `c = 0` is `increment_div_tendsto_zero_iff_ratio_tendsto_one`. For
+a geometrically-growing sequence whose ratio tends to a limit `L` (e.g. the
+*diagonal* Ramsey number `R(k,k)`, whose growth ratio `R(k+1,k+1)/R(k,k)` tends to
+`4`), this reads off the normalized-increment limit `L − 1` directly, exhibiting the
+`o(R)` conclusion for #1014's off-diagonal `R(k,l)` (where `L = 1`) as the borderline
+case of a general statement. -/
+theorem increment_div_tendsto_iff_ratio_tendsto (R : ℕ → ℝ) (c : ℝ)
+    (hpos : ∀ᶠ l in atTop, R l ≠ 0) :
+    Tendsto (fun l => (R (l + 1) - R l) / R l) atTop (𝓝 c) ↔
+      Tendsto (fun l => R (l + 1) / R l) atTop (𝓝 (c + 1)) := by
+  have heq : (fun l => (R (l + 1) - R l) / R l)
+      =ᶠ[atTop] (fun l => R (l + 1) / R l - 1) := by
+    filter_upwards [hpos] with l hl using increment_div_eq_ratio_sub_one R l hl
+  rw [tendsto_congr' heq]
+  constructor
+  · intro h
+    have h1 := h.add_const 1
+    simpa using h1
+  · intro h
+    have h1 := h.sub_const 1
+    simpa using h1
+
+/-- **Increment-asymptotic reformulation.** Fix a comparison sequence `g`, with both
+`R` and `g` eventually nonzero. Then the increment `R(l+1) − R(l)` is asymptotically
+equivalent to `g` (normalized quotient `→ 1`) **iff** the *ratio-minus-one*
+`R(l+1)/R(l) − 1` is asymptotically equivalent to `g/R`:
+
+`(R(l+1) − R(l)) / g(l) → 1  ↔  (R(l+1)/R(l) − 1) / (g(l)/R(l)) → 1`.
+
+This is the rigorous, hypothesis-honest form of the naive power-law expansion warned
+against in the module docstring: an increment asymptotic `Δ_l(k) ~ g_k(l)` is
+*exactly* a statement about the consecutive ratio, namely
+`R(k,l+1)/R(k,l) − 1 ~ g_k(l)/R(k,l)`. The two normalized quantities are in fact
+eventually equal, so neither direction of the equivalence adds a hypothesis beyond
+eventual nonvanishing — a faithful reformulation, not a derivation that smuggles in
+regularity. -/
+theorem increment_asymptotic_iff_ratioSubOne_asymptotic (R g : ℕ → ℝ)
+    (hR : ∀ᶠ l in atTop, R l ≠ 0) (hg : ∀ᶠ l in atTop, g l ≠ 0) :
+    Tendsto (fun l => (R (l + 1) - R l) / g l) atTop (𝓝 1) ↔
+      Tendsto (fun l => (R (l + 1) / R l - 1) / (g l / R l)) atTop (𝓝 1) := by
+  have heq : (fun l => (R (l + 1) / R l - 1) / (g l / R l))
+      =ᶠ[atTop] (fun l => (R (l + 1) - R l) / g l) := by
+    filter_upwards [hR, hg] with l hR' hg'
+    field_simp
+    ring
+  rw [tendsto_congr' heq]
+
 /-- **Logarithmic increment–ratio bridge.** For an eventually-positive sequence
 `R`, the *additive* increment of `log R` tends to `0` **iff** the consecutive ratio
 tends to `1`:
