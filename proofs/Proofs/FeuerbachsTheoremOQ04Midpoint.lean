@@ -42,6 +42,9 @@ file adds no axioms and no sorries.
 * `scos_sMidpoint_left` — the explicit vertex-to-midpoint spherical cosine `‖A+B‖⁻¹(1+⟪A,B⟫)`.
 * `sdist_sMidpoint_half` — **the midpoint bisects the arc**: `sdist A (sMidpoint A B) = ½·sdist A B`,
   the sharper fact (beyond equidistance) that justifies the name.
+* `sdist_sMidpoint_half_right` — the other half-arc `sdist (sMidpoint A B) B = ½·sdist A B`.
+* `sdist_sMidpoint_add` — **spherical betweenness**: `sdist A M + sdist M B = sdist A B`, the
+  equality case of the triangle inequality placing `M` on the geodesic segment `AB`.
 * `sphericalNinePointCircle_exists` — **existence of the spherical nine-point circle**: the
   three side-midpoints of a spherical triangle lie on a common spherical circle.
 -/
@@ -180,6 +183,30 @@ theorem sdist_sMidpoint_half (A B : E) (hA : OnSphere A) (hB : OnSphere B)
   have hcoseq : Real.cos (2 * sdist A M) = Real.cos (sdist A B) := by rw [hcos2, hcosAB]
   have hfin : 2 * sdist A M = sdist A B := Real.injOn_cos h2M_mem hAB_mem hcoseq
   linarith [hfin]
+
+/-- **The midpoint bisects the arc from the far endpoint too: `sdist (sMidpoint A B) B = ½ · sdist A B`.**
+The companion of `sdist_sMidpoint_half`, giving the *other* half of the arc.  Obtained from the
+`A`-side statement by symmetry (`sdist_comm`, `sMidpoint_comm`): swapping the roles of `A` and `B`
+turns `sdist A (sMidpoint A B)` into `sdist B (sMidpoint A B)`, and `sdist A B` is symmetric. -/
+theorem sdist_sMidpoint_half_right (A B : E) (hA : OnSphere A) (hB : OnSphere B)
+    (hAB : A + B ≠ 0) :
+    sdist (sMidpoint A B) B = sdist A B / 2 := by
+  rw [sdist_comm, sMidpoint_comm,
+      sdist_sMidpoint_half B A hB hA (by rwa [add_comm]), sdist_comm B A]
+
+/-- **Spherical betweenness of the midpoint: `sdist A M + sdist M B = sdist A B`.**
+For non-antipodal model points the spherical midpoint `M = sMidpoint A B` lies *on the minor
+arc between* `A` and `B`: the two half-arcs it cuts off add up to the whole side.  This is the
+*equality* case of the spherical triangle inequality (`sdist_triangle`), which in general only
+gives `≤`; equality pins `M` to the geodesic segment `AB` and, together with the equidistance
+`sdist_sMidpoint_eq`, uniquely characterises the midpoint (the equidistant antipode of `M`
+would instead give the complementary sum `2π − sdist A B`).  Immediate from the two half-arc
+computations `sdist_sMidpoint_half` and `sdist_sMidpoint_half_right`. -/
+theorem sdist_sMidpoint_add (A B : E) (hA : OnSphere A) (hB : OnSphere B)
+    (hAB : A + B ≠ 0) :
+    sdist A (sMidpoint A B) + sdist (sMidpoint A B) B = sdist A B := by
+  rw [sdist_sMidpoint_half A B hA hB hAB, sdist_sMidpoint_half_right A B hA hB hAB]
+  ring
 
 /-- **Existence of the spherical nine-point circle.**  Given a spherical triangle with
 vertices `A, B, C` whose sides are non-degenerate (no two endpoints antipodal), its three
