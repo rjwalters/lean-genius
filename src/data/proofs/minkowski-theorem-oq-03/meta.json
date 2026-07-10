@@ -108,6 +108,29 @@
       "summary": "Closes the file with `example : Finite (ClassGroup (𝓞 K)) := inferInstance`, recording that the classical finiteness theorem is now the qualitative shadow of the explicit head-count: a class group bounded in cardinality by a finite set of ideals is automatically finite. The numeric content of the Minkowski bound strictly refines the bare finiteness already available in Mathlib via `instFintypeClassGroup`."
     }
   ],
+  "references": [
+    {
+      "title": "Geometrie der Zahlen",
+      "author": "Hermann Minkowski",
+      "year": "1896",
+      "venue": "Teubner, Leipzig",
+      "description": "Founds the geometry of numbers and proves the convex-body lattice-point theorem whose mixed-embedding form yields the ideal-norm bound; the Minkowski constant (4/π)^{r₂}·(n!/nⁿ)·√|d_K| packaged here descends directly from this convex-body estimate."
+    },
+    {
+      "title": "Algebraic Number Theory",
+      "author": "Jürgen Neukirch",
+      "year": "1999",
+      "venue": "Springer (Grundlehren der mathematischen Wissenschaften 322)",
+      "description": "Chapter I derives the Minkowski bound and the finiteness of the class group from the geometry of numbers, stating exactly that every ideal class contains an integral ideal of absolute norm ≤ M_K — the class-representative bound restated against the named constant in this entry."
+    },
+    {
+      "title": "Number Fields",
+      "author": "Daniel A. Marcus",
+      "year": "1977",
+      "venue": "Springer (Universitext)",
+      "description": "Chapter 5 develops the Minkowski bound as the practical engine of class-number computation: to determine the class group one need only examine ideals of norm ≤ ⌊M_K⌋, the finite head-count this entry certifies as classNumber K ≤ #{ I : absNorm I ≤ ⌊M_K⌋ }."
+    }
+  ],
   "conclusion": {
     "summary": "Starting from Minkowski's geometry of numbers, this entry exposes the Minkowski bound $M_K = (4/\\pi)^{r_2}(n!/n^n)\\sqrt{|d_K|}$ as a reusable Lean definition (Mathlib keeps it only as a local notation), restates the classical fact that every ideal class contains an integral ideal of absolute norm $\\le M_K$, and proves the new quantitative corollary $\\mathrm{classNumber}\\,K \\le \\#\\{I : \\mathrm{absNorm}\\,I \\le \\lfloor M_K\\rfloor\\}$. The argument is 0 axioms / 0 sorries and reduces to a surjectivity-plus-finiteness packaging of existing Mathlib lemmas.",
     "implications": "The estimate is the formal certificate underpinning the standard class-number algorithm: it proves that enumerating the finitely many ideals of norm at most $\\lfloor M_K\\rfloor$ already meets every ideal class, so the hand computation of a class group can never miss a class. It upgrades Mathlib's qualitative finiteness of the class group into a concrete, computable head-count, and isolates exactly one analytic input (the real-to-natural floor step) so that any sharper field-uniform norm bound could be substituted to shrink the search space without changing the proof.",
