@@ -556,3 +556,40 @@ upper bound (#35676), `theta_gap_ge_linear` (#36014). Confirmed by static scan t
 `|A|·|B| ≤ C·N²/log N`, a famous hard theorem not in Mathlib. Correctly axiomatized, out of
 session scope. Everything elementary / combinatorial / build-repair is done. Set
 `status: completed`, `phase: COMPLETED` so the strand stops being re-served.
+
+## Session 2026-07-09 (researcher-5) — unconditional accumulation point (Erdos490OQ01)
+
+**Mode**: ACT (SOLVED problem, structural consequence). **Outcome**: added 1 verified
+0-new-axiom theorem to the OQ-01 limit-question file. The two deep Szemerédi upper-bound
+axioms remain (out of scope, as documented).
+
+### What I Did (verified, docker [7745/7745])
+Added `productRatio_accumulation` to `Erdos490OQ01.lean`: the **unconditional** companion
+to the conditional `limit_in_sandwich`. Where `limit_in_sandwich` says *if* the limit of
+`productRatio'(N) = maxProd(N)·log N/N²` exists then it lies in `[c,C]`, this new theorem
+drops the hypothesis: the bounded ratio sequence **always** has at least one subsequential
+limit `L ∈ [c,C]` (in particular `0 < c ≤ L`). So the `LimitExists'` open question is
+**non-vacuous** — accumulation points exist and are pinned to the sandwich; the open
+question is precisely whether they all coincide.
+
+### Technique
+- Bolzano–Weierstrass via `IsCompact.tendsto_subseq` on the compact `Set.Icc c C`
+  (`isCompact_Icc`), applied to the **shifted** sequence `n ↦ productRatio'(n+2)` so the
+  hypothesis `2 ≤ N` is discharged by `Nat.le_add_left 2 n` (a real proof term, no
+  `by omega` in the index).
+- Membership `u n ∈ Icc c C` from `productRatio_bounded_below`/`_above` directly (NOT
+  `productRatio_sandwich`, which is defined *later* in the file → forward-reference error).
+- `simpa [Function.comp] using htend` to match the `u ∘ φ` composition against the
+  explicit-lambda goal (proof-irrelevance handles the `hN` argument).
+
+### Gotchas
+- `productRatio_sandwich` lives in §6, *after* the §5 limit block — using it in a §5
+  theorem gives `Unknown identifier`. Obtain `c`/`C` from the §4 bounded lemmas instead.
+- Same-session cache corruption: a truncated Mathlib olean/trace
+  (`CategoryTheory/Limits/Constructions/Pullbacks.trace: unexpected end of input`) caused a
+  spurious exit-135 on a *dependency*; `rm` the corrupted artifacts + rebuild → clean.
+
+Verification: docker-build.sh `Built Proofs.Erdos490OQ01 [7745/7745]`, 0 sorry, file
+axiomCount unchanged at 1 (the theorem depends on the existing `szemeredi_upper` via
+`productRatio_bounded_above`, no new axiom). Gallery meta `erdos-490-oq-01/meta.json`
+leanFile lineCount 343→371, theoremCount 13→14.
