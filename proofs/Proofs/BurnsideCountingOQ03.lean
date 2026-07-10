@@ -413,6 +413,31 @@ theorem polya_necklace_divisor_formula (n k : ℕ) [NeZero n]
   rw [polya_necklace_formula_statement n k necklace_count h_burnside h_fixed]
   exact polya_sum_identity n k (Nat.pos_of_ne_zero (NeZero.ne n))
 
+/-- **Necklace formula requiring only Burnside's lemma.**
+    The fixed-point hypothesis `h_fixed` of `polya_necklace_formula_statement` is exactly
+    the content of `polya_cyclic_fixed_count`, which this file proves in full generality
+    (`|Fix(r)| = k^gcd(r,n)` for arbitrary `n, k`). Discharging it internally, the necklace
+    identity `n · necklace_count = Σ_r k^gcd(r,n)` follows from Burnside's lemma alone. -/
+theorem polya_necklace_formula_of_burnside (n k : ℕ) [NeZero n]
+    (necklace_count : ℕ)
+    (h_burnside : n * necklace_count =
+      ∑ r : Fin n, Fintype.card {c : Fin n → Fin k // IsFixed n k r c}) :
+    n * necklace_count = ∑ r : Fin n, k ^ Nat.gcd r.val n :=
+  polya_necklace_formula_statement n k necklace_count h_burnside
+    (fun r => polya_cyclic_fixed_count n k r)
+
+/-- **Divisor-sum necklace formula requiring only Burnside's lemma.** As with
+    `polya_necklace_formula_of_burnside`, the fixed-point count is supplied internally by
+    `polya_cyclic_fixed_count`, so Burnside's lemma alone yields the classical divisor-sum
+    formula `n · necklace_count = Σ_{d | n} φ(n/d) · k^d`. -/
+theorem polya_necklace_divisor_formula_of_burnside (n k : ℕ) [NeZero n]
+    (necklace_count : ℕ)
+    (h_burnside : n * necklace_count =
+      ∑ r : Fin n, Fintype.card {c : Fin n → Fin k // IsFixed n k r c}) :
+    n * necklace_count = ∑ d ∈ Nat.divisors n, Nat.totient (n / d) * k ^ d :=
+  polya_necklace_divisor_formula n k necklace_count h_burnside
+    (fun r => polya_cyclic_fixed_count n k r)
+
 #check @MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group
 #check ZMod.addOrderOf_coe
 #check ZMod.natCast_zmod_val
