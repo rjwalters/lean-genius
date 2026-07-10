@@ -175,3 +175,48 @@ still needs the Newton-polygon term-by-term convergence machinery absent from Ma
 
 **Files Modified:** proofs/Proofs/PuiseuxTheorem.lean (+Part X: 3 theorems + 1 def;
 811→933 lines, 21→24 numbered theorems, 4→5 defs), meta.json counts synced.
+
+## Session (researcher-1, 2026-07-09): Part XI — the ramification filtration
+
+**Mode**: REVISIT (MODERATE, depth-first) · **Outcome**: progress
+(2 defs + 10 theorems, UNVERIFIED — docker daemon corrupted fleet-wide, see below).
+Branch `research/puiseux-wip01-ramification-filtration`.
+
+**Contribution — Part XI: the internal ramification filtration.** Prior sessions
+built the *outer* structure (Subring → Subalgebra → Subfield). This adds the *inner*
+structure: how the Puiseux field decomposes into finite-ramification Laurent pieces.
+
+1. `IsPuiseuxOfRamification (n : ℕ+) f` — `IsPuiseuxSeries` with the ramification
+   index fixed (`∀ q ∈ support, ∃ k:ℤ, q = k/n`).
+2. `isPuiseux_iff_exists_ramification` (`Iff.rfl`) — `IsPuiseuxSeries` = union of levels.
+3. `IsPuiseuxOfRamification.mono` — **monotone under divisibility**: `n ∣ n'` ⟹ level `n`
+   ⊆ level `n'`. Writing `n' = n·d`, `k/n = (k·d)/n'` (`div_eq_div_iff` + `ring`, casts
+   via `push_cast`; copies the `isPuiseux_add` denominator plumbing).
+4. `exists_common_ramification` — **directed**: any two Puiseux series share level `n·m`
+   (`dvd_mul_right` / `dvd_mul_left` into `.mono`). This is the fact that lets
+   common-denominator `+` and Cauchy `*` close on `PuiseuxField`.
+5. Level-`n` closure `isPuiseuxOfRamification_{zero,one,add,neg,mul}` — unlike the
+   global `isPuiseux_add`/`_mul` (which pass to `n·m`), *same-level* ops stay at level
+   `n`: `k₁/n + k₂/n = (k₁+k₂)/n` (`div_add_div_same`), support-union / Minkowski-sum
+   arguments identical to Part VIII but with the index fixed.
+6. `puiseuxRamificationSubring (K) (n) : Subring (HahnSeries ℚ K)` (+ `mem_…` `Iff.rfl`)
+   — the ring of `(1/n)`-ramified "Laurent series in `x^{1/n}`".
+7. `puiseuxRamificationSubring_mono` — `n ∣ n' → subring n ≤ subring n'`: the subrings
+   form an **increasing tower** whose directed union is `puiseuxSubring`. Exhibits the
+   Puiseux field as the directed colimit of Laurent fields along `x ↦ x^{1/n}`.
+
+**All proofs are line-for-line copies of already-verified patterns in this same file**
+(`isPuiseux_add`/`_mul`/`_neg`/`_zero`/`_one`, `puiseuxSubring`) with the ramification
+index fixed instead of existentially quantified — the only new Mathlib lemmas are
+`dvd_mul_right`/`dvd_mul_left`/`div_add_div_same` and PNat `obtain ⟨d,hd⟩` on `n ∣ n'`.
+
+**BLOCKER — docker corrupted (UNVERIFIED).** `docker-build.sh` failed at *image build*
+with `write /var/lib/desktop-containerd/.../meta.db: input/output error` on both
+attempts — the containerd daemon metadata store is corrupted (same class as the
+researcher-11 2026-07-09 fleet-wide docker corruption). NOT a proof error; elaboration
+never ran. Per protocol did NOT self-prune shared docker/caches (operator-level fix).
+Shipped UNVERIFIED with the clean-pattern-copy evidence above. Re-verify when docker
+is repaired: `./proofs/scripts/docker-build.sh Proofs.PuiseuxTheorem`.
+
+**Files Modified:** proofs/Proofs/PuiseuxTheorem.lean (+Part XI: 2 defs + 10 theorems;
+933→1068 lines, 24→34 theorems, 5→7 defs), meta.json counts synced (both blocks).
