@@ -370,4 +370,84 @@ theorem scaledLattice_dist_ne_sqrt_twelve {p q : Plane}
     dist p q ≠ Real.sqrt 12 :=
   scaledLattice_dist_ne_sqrt_twelve_mod_sixteen hp hq (n := 12) (by decide)
 
+/-!
+## Sharpness: the achievable square-distances are *exactly* `2·(u² + v²)`
+
+Every theorem above is one-directional: it lists square-distances the lattice does
+*not* realize.  The converse closes the loop.  For any integers `u, v` the concrete
+pair `(√2·u, √2·v)` and the origin `0` are both lattice points, and their squared
+distance is `(√2·u)² + (√2·v)² = 2·(u² + v²)`.  Hence **every** value `2·(u² + v²)`
+genuinely *is* a squared lattice distance.  Combined with
+`scaledLattice_dist_sq_two_mul_sq_add_sq` (the forward inclusion), this yields the
+**exact** characterization of the achievable distances of `√2·ℤ²`:
+`√n` is realized ⟺ `n = 2·(u² + v²)`, i.e. `n/2` is a sum of two integer squares.
+All the avoidance families above are then precisely its unrealizable instances.
+-/
+
+/-- The concrete lattice point `(√2·u, √2·v) ∈ √2·ℤ²`, built from two integer
+coordinates. -/
+noncomputable def latticePoint (u v : ℤ) : Plane :=
+  !₂[Real.sqrt 2 * u, Real.sqrt 2 * v]
+
+/-- The first coordinate of `latticePoint u v` is `√2·u`. -/
+@[simp] theorem latticePoint_zero (u v : ℤ) : latticePoint u v 0 = Real.sqrt 2 * u := by
+  simp [latticePoint, PiLp.toLp_apply]
+
+/-- The second coordinate of `latticePoint u v` is `√2·v`. -/
+@[simp] theorem latticePoint_one (u v : ℤ) : latticePoint u v 1 = Real.sqrt 2 * v := by
+  simp [latticePoint, PiLp.toLp_apply]
+
+/-- `latticePoint u v` really lies in `ScaledLattice` (witnesses `a = u`, `b = v`). -/
+theorem latticePoint_mem (u v : ℤ) : latticePoint u v ∈ ScaledLattice :=
+  ⟨u, v, latticePoint_zero u v, latticePoint_one u v⟩
+
+/-- **Realizability.**  For any integers `u, v`, the value `2·(u² + v²)` is genuinely a
+squared lattice distance: it is achieved by `latticePoint u v` and the origin `0`.  This
+is the converse of `scaledLattice_dist_sq_two_mul_sq_add_sq`. -/
+theorem scaledLattice_realizes (u v : ℤ) :
+    ∃ p q : Plane, p ∈ ScaledLattice ∧ q ∈ ScaledLattice ∧
+      dist p q = Real.sqrt (2 * ((u : ℝ) ^ 2 + (v : ℝ) ^ 2)) := by
+  refine ⟨latticePoint u v, 0, latticePoint_mem u v, scaledLattice_nonempty, ?_⟩
+  rw [dist_eq_coords]
+  have hz0 : (0 : Plane) 0 = 0 := by simp
+  have hz1 : (0 : Plane) 1 = 0 := by simp
+  rw [latticePoint_zero, latticePoint_one, hz0, hz1]
+  congr 1
+  have hs : Real.sqrt 2 ^ 2 = 2 := Real.sq_sqrt (by norm_num)
+  have e : (Real.sqrt 2 * (u : ℝ) - 0) ^ 2 + (Real.sqrt 2 * (v : ℝ) - 0) ^ 2
+      = Real.sqrt 2 ^ 2 * ((u : ℝ) ^ 2 + (v : ℝ) ^ 2) := by ring
+  rw [e, hs]
+
+/-- **Exact characterization of the achievable distances of `√2·ℤ²`.**  For a natural
+number `n`, some pair of lattice points is at distance `√n` **iff** `n = 2·(u² + v²)` for
+integers `u, v` — equivalently, `n` is even and `n/2` is a sum of two squares.  The
+forward direction is `scaledLattice_dist_sq_two_mul_sq_add_sq`; the reverse is
+`scaledLattice_realizes`.  This is the sharp statement to which every avoidance theorem
+above (odd `n`, `n ≡ 6 mod 8`, `n ≡ 12 mod 16`, …) is a special unrealizable case. -/
+theorem scaledLattice_achievable_iff (n : ℕ) :
+    (∃ p q : Plane, p ∈ ScaledLattice ∧ q ∈ ScaledLattice ∧ dist p q = Real.sqrt n)
+      ↔ ∃ u v : ℤ, (n : ℤ) = 2 * (u ^ 2 + v ^ 2) := by
+  constructor
+  · rintro ⟨p, q, hp, hq, h⟩
+    obtain ⟨u, v, huv⟩ := scaledLattice_dist_sq_two_mul_sq_add_sq hp hq
+    have hsq : dist p q ^ 2 = (n : ℝ) := by rw [h, Real.sq_sqrt (by positivity)]
+    rw [hsq] at huv
+    exact ⟨u, v, by exact_mod_cast huv⟩
+  · rintro ⟨u, v, huv⟩
+    obtain ⟨p, q, hp, hq, h⟩ := scaledLattice_realizes u v
+    refine ⟨p, q, hp, hq, ?_⟩
+    rw [h]
+    congr 1
+    have : (n : ℝ) = 2 * ((u : ℝ) ^ 2 + (v : ℝ) ^ 2) := by exact_mod_cast huv
+    rw [this]
+
+/-- **Concrete realization:** `√8` *is* a lattice distance (`8 = 2·(2² + 0²)`), witnessing
+that residue `0 (mod 8)` is genuinely achieved — the achievable residue set `{0, 2, 4}` is
+sharp as a set even though not every `n` in it is realized (cf. `√12`). -/
+theorem scaledLattice_realizes_sqrt_eight :
+    ∃ p q : Plane, p ∈ ScaledLattice ∧ q ∈ ScaledLattice ∧ dist p q = Real.sqrt 8 := by
+  obtain ⟨p, q, hp, hq, h⟩ := scaledLattice_realizes 2 0
+  refine ⟨p, q, hp, hq, ?_⟩
+  rw [h]; congr 1; norm_num
+
 end Erdos214Incomplete01OQ01
