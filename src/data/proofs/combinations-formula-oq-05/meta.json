@@ -116,6 +116,11 @@
       "targetId": "combinations-formula-oq-04-oq-01",
       "relationship": "related",
       "description": "A different structural property of the same Pascal row: where this entry splits the row into equal even/odd halves via the alternating sum, the log-concavity companion pins the exact ultra-log-concavity defect C(n,k+1)²/(C(n,k)·C(n,k+2)) = 1 + (n+1)/((k+1)(n−k−1)). Together they characterize the additive (parity) and multiplicative (log-concave) structure of a binomial row."
+    },
+    {
+      "targetId": "combinations-formula-oq-04",
+      "relationship": "related",
+      "description": "Twin open-question entry under the same parent (combinations-formula), studying the complementary structural property of a Pascal row: oq-04 proves the row's basic multiplicative inequality (log-concavity C(n,k)·C(n,k+2) ≤ C(n,k+1)²), while this entry (oq-05) records the row's additive structure (the alternating sum vanishes, splitting the row into equal even/odd halves of 2^{n−1}). oq-04 already lists this entry as its sibling on the alternating row sum; this is the reciprocal link."
     }
   ],
   "sorries": 0,
