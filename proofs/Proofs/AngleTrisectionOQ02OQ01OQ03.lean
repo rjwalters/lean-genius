@@ -253,4 +253,19 @@ theorem not_pgroup_of_not_dvd_degree (α : ℝ) (hα : IsIntegral ℚ α)
     ¬ IsPGroup p (minpoly ℚ α).Gal :=
   fun hP => hndvd (prime_dvd_degree_of_pgroup α hα hp hgt hP)
 
+/-- **The degree's prime-factor set is exactly `{p}`.**
+    The sharpest "which prime" statement for a nontrivial `p`-group Galois group.  The two
+    earlier facts say the degree is a prime power (`pgroup_degree_isPrimePow_or_one`) and
+    that `p` divides it (`prime_dvd_degree_of_pgroup`); this fuses and tightens them to the
+    exact identity `natDegree(minpoly ℚ α).primeFactors = {p}`.  So `p` is recovered as
+    literally the *unique* prime dividing the degree — the whole prime-factor set collapses
+    to the single target prime, the crispest form of `pgroup_prime_unique`'s content. -/
+theorem pgroup_primeFactors_eq (α : ℝ) (hα : IsIntegral ℚ α)
+    {p : ℕ} (hp : p.Prime) (hgt : 1 < (minpoly ℚ α).natDegree)
+    (hP : IsPGroup p (minpoly ℚ α).Gal) :
+    (minpoly ℚ α).natDegree.primeFactors = {p} := by
+  obtain ⟨k, hk⟩ := galois_pgroup_implies_degree_is_pow_p α hα hp hP
+  have hk0 : k ≠ 0 := by rintro rfl; rw [pow_zero] at hk; omega
+  rw [hk, Nat.primeFactors_prime_pow hk0 hp]
+
 end AngleTrisectionOQ02OQ01OQ03
