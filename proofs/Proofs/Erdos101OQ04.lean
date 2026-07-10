@@ -2793,6 +2793,19 @@ theorem exists_fourPointLineCount_ge_card_div_four_real (k : ℕ) (hk : 0 < k) :
       ≤ ((4 * fourPointLineCount P : ℕ) : ℝ) := by exact_mod_cast hdens
     _ = (fourPointLineCount P : ℝ) * 4 := by push_cast; ring
 
+/-- **Unboundedness of the four-point-line count.**  For every target `N` there is a
+no-five-collinear planar point set `P` with `N ≤ fourPointLineCount P`.  This is the
+qualitative core of the linear lower bound `quartic_linear_lower_bound`, stated without the
+auxiliary level-parameter `k`: the maximum number of four-point lines over no-five-collinear
+sets is bounded by *no* constant, so the constant witnesses `crossSet`/`asteriskSet`/`gridSet`
+(fixed floors `≤ 10`) cannot be maximal.  The prose remarks scattered through the file
+("`fourPointLineCount` is unbounded", "grows without bound") are exactly this statement;
+it follows in one step from the quartic-chord family at level parameter `k = max N 1`. -/
+theorem exists_fourPointLineCount_ge (N : ℕ) :
+    ∃ P : PlanarPointSet, NoFiveCollinear P ∧ N ≤ fourPointLineCount P := by
+  obtain ⟨P, _, hno5, hcount⟩ := quartic_linear_lower_bound (max N 1) (by omega)
+  exact ⟨P, hno5, le_trans (le_max_left N 1) hcount⟩
+
 /-! ### Exact collinearity criteria on the quartic (arithmetization)
 
 The `noFiveCollinear_of_onQuartic` engine says the quartic graph *forbids* five
