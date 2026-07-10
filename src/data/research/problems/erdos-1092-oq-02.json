@@ -29,9 +29,12 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
+    "progressSummary": "PROGRESS (VERIFIED 0/0, researcher-5 2026-07-09): new file Erdos1092OQ02.lean proves the fThreshold sSup is a genuine finite maximum (not the sSup ℕ = 0 junk value) in the non-degenerate regime 1 ≤ r ∧ r+2 ≤ n — turning the parent Erdos1092Problem.lean prose caveat into a theorem. Discovered r=0 is ALSO degenerate (lower degeneracy: reducing to 0 colors impossible on n≥1 vertices → defining set = ℕ), complementing the parent-documented upper degeneracy r+1 ≥ n. Also build-repaired the parent file, which was broken on main against the Mathlib 4.26 pin (edgeCount DecidablePred, malformed chromaticNum Nat.find, hasColoring_mono Fin.val ambiguity). Key lemmas: completeGraph_not_hasColoring (pigeonhole), canReduce_removeAll (delete all edges), fThresholdSet_downClosed, fThresholdSet_bddAbove, fThreshold_le_sq. 0 axioms, 0 sorries.",
     "builtItems": [],
-    "insights": [],
+    "insights": [
+      "fThreshold has TWO degeneracies: upper r+1≥n (set=ℕ, all graphs (r+1)-colorable) and lower r=0 (set=ℕ, no 0-coloring on n≥1 vertices). Non-degenerate regime is 1≤r ∧ r+2≤n.",
+      "Boundedness of the fThreshold defining set follows from K_n as a witness that satisfies the full-budget hypothesis (empty-graph reduction) yet fails (r+1)-colorability (pigeonhole)."
+    ],
     "mathlibGaps": [],
     "nextSteps": [],
     "markdown": "# Knowledge Base: erdos-1092-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"

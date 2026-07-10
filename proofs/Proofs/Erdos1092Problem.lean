@@ -27,6 +27,8 @@ import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Combinatorics.SimpleGraph.Basic
 
+open scoped Classical
+
 /- ## Definitions -/
 
 /-- A simple graph on n vertices. -/
@@ -44,9 +46,11 @@ noncomputable def SGraph.edgeCount {n : ℕ} (G : SGraph n) : ℕ :=
 def SGraph.hasColoring {n : ℕ} (G : SGraph n) (r : ℕ) : Prop :=
   ∃ c : Fin n → Fin r, ∀ u v, G.adj u v → c u ≠ c v
 
-/-- The chromatic number: minimum r such that G has a proper r-coloring. -/
+/-- The chromatic number: minimum r such that G has a proper r-coloring.
+    (`G` is always `n`-colorable via `SGraph.hasColoring_self`, so this set is nonempty
+    and `sInf` returns the genuine minimum.) -/
 noncomputable def SGraph.chromaticNum {n : ℕ} (G : SGraph n) : ℕ :=
-  Nat.find ⟨n, ⟨Fin.elim0, fun u v _ => (Fin.elim0 u).elim⟩⟩
+  sInf { r | G.hasColoring r }
 
 /-- Removing k edges from G: there exist k edges whose deletion
     yields a graph with chromatic number ≤ r. -/
@@ -136,8 +140,8 @@ is also r₂-colorable for any r₂ ≥ r₁ (embed colors via inclusion). -/
 theorem SGraph.hasColoring_mono {n : ℕ} (G : SGraph n) {r₁ r₂ : ℕ} (h : r₁ ≤ r₂)
     (hc : G.hasColoring r₁) : G.hasColoring r₂ := by
   obtain ⟨c, hc⟩ := hc
-  exact ⟨fun v => ⟨(c v).val, lt_of_lt_of_le (c v).isLt h⟩,
-    fun u v hadj heq => hc u v hadj (Fin.ext (congr_arg Fin.val heq))⟩
+  refine ⟨fun v => Fin.castLE h (c v), fun u v hadj heq => ?_⟩
+  exact hc u v hadj (Fin.castLE_injective h heq)
 
 /-- If G is already r-colorable, removing zero edges suffices. -/
 theorem canReduce_zero {n : ℕ} (G : SGraph n) (r : ℕ) (hc : G.hasColoring r) :
