@@ -296,13 +296,15 @@ theorem productRatio_accumulation :
       ∃ φ : ℕ → ℕ, StrictMono φ ∧
         Tendsto (fun k => productRatio' (φ k + 2) (Nat.le_add_left 2 (φ k)))
           atTop (nhds L) := by
-  obtain ⟨c, C, hc, _hC, hcC, hbound⟩ := productRatio_sandwich
+  obtain ⟨c, hc, hc_bound⟩ := productRatio_bounded_below
+  obtain ⟨C, _hC, hC_bound⟩ := productRatio_bounded_above
+  -- `c ≤ C` since both bound the same value at `N = 2`.
+  have hcC : c ≤ C := le_trans (hc_bound 2 (by omega)) (hC_bound 2 (by omega))
   -- The shifted sequence `n ↦ productRatio'(n+2)` lands in the compact interval `[c, C]`.
   have hmem : ∀ n : ℕ,
       (fun m => productRatio' (m + 2) (Nat.le_add_left 2 m)) n ∈ Set.Icc c C := by
     intro n
-    have h := hbound (n + 2) (Nat.le_add_left 2 n)
-    exact ⟨h.1, h.2⟩
+    exact ⟨hc_bound (n + 2) (Nat.le_add_left 2 n), hC_bound (n + 2) (Nat.le_add_left 2 n)⟩
   -- Bolzano–Weierstrass: a bounded real sequence has a convergent subsequence.
   obtain ⟨L, hLmem, φ, hφ, htend⟩ := isCompact_Icc.tendsto_subseq hmem
   refine ⟨c, C, L, hc, hcC, hLmem.1, hLmem.2, φ, hφ, ?_⟩
