@@ -1278,4 +1278,78 @@ theorem finrank_eq_add_card_roots_compress_of_reducing_of_isAlgClosed
   finrank_eq_add_card_roots_compress_of_reducing_of_splits H hH hHp
     (IsAlgClosed.splits _)
 
+/-! ## Spectral confinement: the compression's eigenvalues stay in `[λ_min, λ_max]`
+
+Poincaré separation gives the *local* interlacing `λ_{k+m} ≤ μ_k ≤ λ_k` for each
+`k`.  Because the ambient list `lam := hT.eigenvalues` is **descending**
+(`hT.eigenvalues_antitone`), the local bounds telescope to a single *global*
+confinement: every eigenvalue `μ_k` of the orthogonal compression lies between
+the **smallest** and **largest** eigenvalue of `T`,
+
+  `λ_{n+m-1} ≤ μ_k ≤ λ_0`.
+
+Indeed `μ_k ≤ λ_k ≤ λ_0` since `0 ≤ k` and `lam` is antitone, and
+`λ_{n+m-1} ≤ λ_{k+m} ≤ μ_k` since `k + m ≤ n + m - 1`.  This is the operator
+form of the statement that compressing a self-adjoint operator to a subspace can
+never push an eigenvalue outside `T`'s numerical range `[λ_min, λ_max]`: no
+Rayleigh quotient over `H ⊆ V` can exceed the global maximum or fall below the
+global minimum.  It is the coarse, index-free shadow of the fine interlacing,
+and needs only the top/bottom instances of `poincare_separation_compression`
+composed with antitonicity of the ambient spectrum. -/
+
+/-- **Compression eigenvalues are bounded above by the top eigenvalue of `T`.**
+For every `k`, the `k`-th descending eigenvalue `μ_k` of the orthogonal
+compression `compress T H` satisfies `μ_k ≤ λ_0`, the largest eigenvalue of `T`.
+Immediate from the interlacing bound `μ_k ≤ λ_k` and `λ_k ≤ λ_0` (antitonicity,
+`0 ≤ k`). -/
+theorem compress_eigenvalue_le_top_of_poincare
+    {T : V →ₗ[𝕜] V} (hT : T.IsSymmetric) {n m : ℕ}
+    (hVdim : Module.finrank 𝕜 V = n + m)
+    (H : Submodule 𝕜 V) (hHdim : Module.finrank 𝕜 H = n)
+    (k : Fin n) :
+    (isSymmetric_compress hT H).eigenvalues hHdim k
+      ≤ (hT.eigenvalues hVdim) ⟨0, by have := k.isLt; omega⟩ := by
+  obtain ⟨_, hup⟩ := poincare_separation_compression hT hVdim H hHdim k
+  refine hup.trans (hT.eigenvalues_antitone hVdim (Fin.le_def.mpr ?_))
+  simp only [Fin.val_mk]
+  omega
+
+/-- **Compression eigenvalues are bounded below by the bottom eigenvalue of `T`.**
+For every `k`, the `k`-th descending eigenvalue `μ_k` of the orthogonal
+compression `compress T H` satisfies `λ_{n+m-1} ≤ μ_k`, where `λ_{n+m-1}` is the
+smallest eigenvalue of `T`.  Immediate from `λ_{k+m} ≤ μ_k` and
+`λ_{n+m-1} ≤ λ_{k+m}` (antitonicity, `k + m ≤ n + m - 1`). -/
+theorem bot_le_compress_eigenvalue_of_poincare
+    {T : V →ₗ[𝕜] V} (hT : T.IsSymmetric) {n m : ℕ}
+    (hVdim : Module.finrank 𝕜 V = n + m)
+    (H : Submodule 𝕜 V) (hHdim : Module.finrank 𝕜 H = n)
+    (k : Fin n) :
+    (hT.eigenvalues hVdim) ⟨n + m - 1, by have := k.isLt; omega⟩
+      ≤ (isSymmetric_compress hT H).eigenvalues hHdim k := by
+  obtain ⟨hlo, _⟩ := poincare_separation_compression hT hVdim H hHdim k
+  refine le_trans (hT.eigenvalues_antitone hVdim (Fin.le_def.mpr ?_)) hlo
+  simp only [Fin.val_mk]
+  have := k.isLt; omega
+
+/-- **Spectral confinement of the orthogonal compression.**  Combining the two
+extremal bounds: every eigenvalue `μ_k` of `compress T H` lies between the
+smallest and largest eigenvalue of `T`,
+
+  `λ_{n+m-1} ≤ μ_k ≤ λ_0`.
+
+The compression cannot create an eigenvalue outside the numerical range
+`[λ_min, λ_max]` of `T` — the global, index-free consequence of Poincaré
+interlacing. -/
+theorem compress_eigenvalue_mem_Icc_of_poincare
+    {T : V →ₗ[𝕜] V} (hT : T.IsSymmetric) {n m : ℕ}
+    (hVdim : Module.finrank 𝕜 V = n + m)
+    (H : Submodule 𝕜 V) (hHdim : Module.finrank 𝕜 H = n)
+    (k : Fin n) :
+    (hT.eigenvalues hVdim) ⟨n + m - 1, by have := k.isLt; omega⟩
+        ≤ (isSymmetric_compress hT H).eigenvalues hHdim k
+      ∧ (isSymmetric_compress hT H).eigenvalues hHdim k
+          ≤ (hT.eigenvalues hVdim) ⟨0, by have := k.isLt; omega⟩ :=
+  ⟨bot_le_compress_eigenvalue_of_poincare hT hVdim H hHdim k,
+   compress_eigenvalue_le_top_of_poincare hT hVdim H hHdim k⟩
+
 end CauchyInterlacing.PoincareCompression
