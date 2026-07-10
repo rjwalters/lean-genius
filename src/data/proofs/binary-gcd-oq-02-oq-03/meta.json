@@ -156,6 +156,26 @@
       "description": "Parent open-question strand on the binary GCD; this leaf supplies the certified extended (Bézout-coefficient) version and its equivalence to Mathlib's Int.gcdA/gcdB."
     }
   ],
+  "references": [
+    {
+      "authors": "Stein, Josef",
+      "title": "Computational problems associated with Racah algebra",
+      "year": "1967",
+      "note": "J. Comput. Phys. 1(3), 397–405 — the binary GCD algorithm whose shift/parity reductions this entry runs to carry Bézout coefficients."
+    },
+    {
+      "authors": "Knuth, Donald E.",
+      "title": "The Art of Computer Programming, Vol. 2: Seminumerical Algorithms",
+      "year": "1997",
+      "note": "3rd ed., Addison-Wesley, §4.5.2 — analysis of the binary GCD and its extended (coefficient-producing) variant."
+    },
+    {
+      "authors": "Menezes, Alfred J.; van Oorschot, Paul C.; Vanstone, Scott A.",
+      "title": "Handbook of Applied Cryptography",
+      "year": "1996",
+      "note": "CRC Press, Algorithm 14.61 — the binary extended GCD returning (x, y) with a·x + b·y = gcd(a,b), the algorithm certified here."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Int.GCD",
