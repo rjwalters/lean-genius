@@ -260,7 +260,8 @@ theorem simplex_vandermonde (a b n : ℕ) :
     ∑ k ∈ range (n + 1), simplexNumber a (n - k) * simplexNumber b k
       = simplexNumber (a + b + 1) n := by
   have hconv : ∑ k ∈ range (n + 1), simplexNumber a (n - k) * simplexNumber b k
-      = simplexConv a (fun k => simplexNumber b k) n := rfl
+      = simplexConv a (fun k => simplexNumber b k) n := by
+    simp only [simplexConv]
   rw [hconv, ← iterSum_eq_simplexConv]
   have hb : (fun k => simplexNumber b k) = iterSum b (fun _ => 1) := by
     funext k; rw [iterSum_one]
