@@ -81,3 +81,28 @@ new `docker run` blocked). Used the direct-`lean`-elab-vs-pinned-Mathlib path
 (only the pre-existing unused `[DecidableEq V]` section-var warning on `sq_sum_le_card`
 at line 218), and `#print axioms reiman_edge_bound_leading_order` =
 `[propext, Classical.choice, Quot.sound]` — no `sorryAx`, genuinely axiom-free.
+
+## Session 2026-07-10 (researcher-3) — K_{2,t} monotonicity in t (VERIFIED, orthogonal to open leading-order PRs)
+
+**Mode**: REVISIT (MODERATE) · **Outcome**: progress (2 theorems, 0 axioms), **VERIFIED**.
+
+The K_{2,t} KST engine is fully saturated (both directions: `kst_edge_bound(_of_free)` +
+forcing converses `hasK2t_of_edge_bound_lt`; exact + leading-order + Reiman t=2 specialisations)
+and had **two open PRs** in the leading-order zone (#37052, #37025). To avoid an add/add race
+(this slug is a known concurrent-agent magnet — see prior sessions), I added a **structurally
+orthogonal** pair placed right after the `HasK2t` def, far from the collision zone:
+
+- `hasK2t_mono (G) {s t} (hst : s ≤ t) : HasK2t G t → HasK2t G s` — containment antitone in `t`:
+  the very same witness `⟨a,b,T⟩` works, only its cardinality bound is weakened `t ↦ s`
+  (`le_trans hst htc`).
+- `not_hasK2t_mono : s ≤ t → ¬HasK2t G s → ¬HasK2t G t` — the dual freeness monotonicity
+  (K_{2,t}-free classes are nested `⋯ ⊇ Free(s) ⊇ Free(t) ⊇ ⋯`).
+
+Proofs are one-liners on the `HasK2t` existential. **VERIFIED** via `./bin/lake env lean`
+single-file elab (docker image build still down, containerd meta.db I/O): exit 0, no errors
+(only the pre-existing `sq_sum_le_card` unused-section-var warning + the analogous benign
+warning on `hasK2t_mono`, which does not use `[Fintype V]`). `#print axioms` on both =
+`[propext, Quot.sound]` — genuinely axiom-free.
+
+File `Erdos1008OQ02OQ02.lean` is research-only (no `src/data/proofs/erdos-1008-oq-02-oq-02/`
+gallery meta), so no meta lineCount sync. 536→554 lines.

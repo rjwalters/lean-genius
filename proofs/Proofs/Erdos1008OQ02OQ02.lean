@@ -400,6 +400,24 @@ theorem commonNbrs_card_lt_of_free (G : SimpleGraph V) [DecidableRel G.Adj]
     simp only [commonNbrs, Finset.mem_inter, SimpleGraph.mem_neighborFinset] at hy
     exact hy⟩
 
+/-- **`K_{2,t}`-containment is antitone in `t`.**  If `G` contains a `K_{2,t}` then it
+also contains a `K_{2,s}` for every `s ≤ t`: the very same pair of vertices, together
+with its `≥ t ≥ s` common neighbours, already witnesses the smaller complete bipartite
+graph.  (The witness `T` is reused verbatim; only its cardinality lower bound is
+weakened `t ↦ s`.) -/
+theorem hasK2t_mono (G : SimpleGraph V) {s t : ℕ} (hst : s ≤ t) (h : HasK2t G t) :
+    HasK2t G s := by
+  obtain ⟨a, b, T, hab, htc, hadj⟩ := h
+  exact ⟨a, b, T, hab, le_trans hst htc, hadj⟩
+
+/-- **`K_{2,t}`-freeness is monotone in `t`.**  Dual to `hasK2t_mono`: a graph with no
+`K_{2,s}` also has no `K_{2,t}` for any `t ≥ s`, since a `K_{2,t}` would contain a
+`K_{2,s}`.  So the forbidden-subgraph hypothesis only *strengthens* as `t` grows — the
+`t`-indexed family of K_{2,t}-free classes is nested `⋯ ⊇ Free(s) ⊇ Free(t) ⊇ ⋯`. -/
+theorem not_hasK2t_mono (G : SimpleGraph V) {s t : ℕ} (hst : s ≤ t)
+    (h : ¬ HasK2t G s) : ¬ HasK2t G t :=
+  fun hcon => h (hasK2t_mono G hst hcon)
+
 /-- **K_{2,t}-free edge bound.**  A genuinely K_{2,t}-free nonempty graph
 (`t ≥ 1`) satisfies the classical Kővári–Sós–Turán bound
 
