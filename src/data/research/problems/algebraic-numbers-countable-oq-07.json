@@ -37,29 +37,32 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Proved the algebraic reals (and complex algebraic numbers) have Lebesgue measure zero, supplying the measure pillar of the cardinality/category/measure smallness trichotomy. Dually, almost every real (and complex) number is transcendental, and any positive-measure set contains a transcendental. 11 theorems, 0 sorries, 0 axioms (only propext/Classical.choice/Quot.sound).",
+    "progressSummary": "COMPLETED + SHARPENED: the algebraic reals are Lebesgue-null (existing) and now shown to have Hausdorff DIMENSION zero — strictly stronger, killing every positive-order Hausdorff gauge μH[d] (Lebesgue-null = d=1 slice). Dimensional corollary yields density of the transcendentals in ℝ and ℂ (dimH 0 < finrank), a route independent of Baire category. 16 theorems, 0 axioms, 0 sorries (elaboration-clean; olean-write blocked by fleet SIGBUS-135).",
     "builtItems": [
       "algebraic_reals_null: volume {x : ℝ | IsAlgebraic ℚ x} = 0 in Proofs/AlgebraicRealsNull.lean",
       "ae_transcendental: almost every real is transcendental (∀ᵐ x ∂volume, Transcendental ℚ x)",
       "transcendental_full_on_interval: transcendentals carry the full measure ofReal (b − a) of any interval",
       "exists_transcendental_of_pos_measure: any positive-measure set contains a transcendental",
-      "NoAtoms (volume : Measure ℂ) + algebraic_complex_null: complex algebraic numbers are null"
+      "NoAtoms (volume : Measure ℂ) + algebraic_complex_null: complex algebraic numbers are null",
+      "AlgebraicRealsNull.lean §6 (researcher-2): algebraic_reals_dimH_zero (dimH{alg reals}=0 via Set.Countable.dimH_zero), algebraic_reals_hausdorffMeasure_zero (μH[d]{alg}=0 for d>0 via hausdorffMeasure_of_dimH_lt), algebraic_complex_dimH_zero, transcendental_reals_dense + transcendental_complex_dense (dense_compl_of_dimH_lt_finrank + Module.finrank_pos). File now 16 theorems, 0 axioms, 0 sorries. Elaboration-clean; olean-write blocked by fleet SIGBUS-135."
     ],
     "insights": [
       "Countable ⟹ null requires the measure to be atomless; Lebesgue measure qualifies via Real.noAtoms_volume, so Set.Countable.measure_zero applies to the parent's countability theorem in one line.",
       "Transcendental ℚ x is definitionally ¬ IsAlgebraic ℚ x, so the transcendentals are the set-complement of the algebraic reals; conull and a.e. statements follow from compl_mem_ae_iff.",
       "The complex case needs NoAtoms (volume : Measure ℂ), which is not a single named instance; transport singletons through the measure-preserving ℂ ≃ᵐ ℝ × ℝ to the atomless planar measure (Measure.prod.instNoAtoms_fst).",
-      "measure_diff_null gives the interval full-measure result directly: Ioo a b ∩ {transcendental} = Ioo a b \\ {algebraic}, and removing the null algebraic set leaves the interval's measure unchanged."
+      "measure_diff_null gives the interval full-measure result directly: Ioo a b ∩ {transcendental} = Ioo a b \\ {algebraic}, and removing the null algebraic set leaves the interval's measure unchanged.",
+      "SHARPENING (researcher-2, 2026-07-09): the algebraic reals have Hausdorff DIMENSION zero, strictly stronger than Lebesgue-null. Since {x|IsAlgebraic ℚ x} is countable, Set.Countable.dimH_zero gives dimH=0; then hausdorffMeasure_of_dimH_lt kills EVERY positive-order Hausdorff measure μH[d] (d>0), of which Lebesgue-null (algebraic_reals_null) is only the d=1 slice. Dimensional corollary: dimH{alg}=0 < finrank ℝ ℝ=1 (and < finrank ℝ ℂ=2), so dense_compl_of_dimH_lt_finrank makes the transcendentals DENSE in ℝ and ℂ — a dimension-theoretic route to their topological largeness, independent of the Baire-category argument. Added algebraic_reals_dimH_zero, algebraic_reals_hausdorffMeasure_zero, algebraic_complex_dimH_zero, transcendental_reals_dense, transcendental_complex_dense to AlgebraicRealsNull.lean §6. Elaboration-clean [3073/3073] (olean-write SIGBUS-135)."
     ],
     "mathlibGaps": [
       "No single named NoAtoms instance for volume on ℂ; derived locally via the measure-preserving equivalence to ℝ × ℝ."
     ],
     "nextSteps": [
-      "Refine measure-zero to Hausdorff dimension zero for the algebraic reals.",
-      "Contrast with Liouville numbers (comeagre but null) to formalize independence of category and measure.",
-      "Generalize to ℝⁿ / ℂⁿ and to arbitrary atomless Borel probability measures."
+      "Contrast with Liouville numbers (comeagre but null) to formalize independence of category and measure — the algebraic reals are small in ALL of {cardinality, category, measure, dimension}, whereas Liouville numbers separate category (comeagre) from measure (null).",
+      "Generalize dimension-zero / measure-zero to ℝⁿ / arbitrary atomless Borel probability measures (the countable-set argument is dimension-agnostic).",
+      "Quantify the Hausdorff gauge boundary: is the algebraic reals' generalized Hausdorff measure with gauge h(t)=1/log(1/t) still zero? (finer than dimension)."
     ],
-    "markdown": "# Knowledge Base: algebraic-numbers-countable-oq-07\n\n## Result\n\nThe algebraic reals are Lebesgue-null, completing the cardinality/category/measure smallness trichotomy. Dually, almost every real (and complex) number is transcendental, and any positive-measure set contains a transcendental.\n\n## Key technique\n\nA countable set is null for any atomless measure (`Set.Countable.measure_zero` + `Real.noAtoms_volume`), so the parent's countability theorem upgrades to measure zero in one line. The complex case transports singletons through the measure-preserving `ℂ ≃ᵐ ℝ × ℝ`.\n"
+    "markdown": "# Knowledge Base: algebraic-numbers-countable-oq-07\n\n## Result\n\nThe algebraic reals are Lebesgue-null, completing the cardinality/category/measure smallness trichotomy. Dually, almost every real (and complex) number is transcendental, and any positive-measure set contains a transcendental.\n\n## Key technique\n\nA countable set is null for any atomless measure (`Set.Countable.measure_zero` + `Real.noAtoms_volume`), so the parent's countability theorem upgrades to measure zero in one line. The complex case transports singletons through the measure-preserving `ℂ ≃ᵐ ℝ × ℝ`.\n",
+    "score": 15
   },
   "leanFiles": [
     {

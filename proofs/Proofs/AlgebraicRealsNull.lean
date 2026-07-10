@@ -2,6 +2,7 @@ import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
 import Mathlib.MeasureTheory.Measure.Lebesgue.Complex
 import Mathlib.MeasureTheory.Measure.Haar.NormedSpace
 import Mathlib.MeasureTheory.Measure.Typeclasses.NoAtoms
+import Mathlib.Topology.MetricSpace.HausdorffDimension
 import Mathlib.Tactic
 import Proofs.AlgebraicNumbersCountable
 
@@ -201,5 +202,72 @@ theorem ae_transcendental_complex :
     ext z; simp only [mem_setOf_eq, mem_compl_iff, Transcendental]
   rw [Filter.eventually_iff, hset]
   exact compl_mem_ae_iff.mpr algebraic_complex_null
+
+-- ============================================================================
+-- § 6. Hausdorff dimension zero — a sharpening of Lebesgue-null
+-- ============================================================================
+
+/-!
+Lebesgue-null (`algebraic_reals_null`) is the order-`1` slice of a much stronger
+statement: the algebraic reals have **Hausdorff dimension zero**.  A countable set
+has Hausdorff dimension `0` (`Set.Countable.dimH_zero`), and dimension `0` forces
+*every* positive-order Hausdorff measure to vanish, not merely the order-`1`
+(Lebesgue) one.  So the algebraic reals are null for the entire one-parameter
+family of Hausdorff gauges `μH[d]`, `d > 0` — an infinitely stronger form of
+metric smallness than the single Lebesgue-null fact.
+
+A purely dimensional corollary also recovers the topological largeness of the
+transcendentals: since `dimH {algebraic} = 0 < finrank ℝ ℝ`, the complement is
+dense (`dense_compl_of_dimH_lt_finrank`) — the transcendentals are dense in `ℝ`
+(and, by the same argument with `finrank ℝ ℂ = 2`, in `ℂ`), obtained here from the
+dimension bound rather than from the Baire-category argument.
+-/
+
+/-- **The algebraic reals have Hausdorff dimension zero.**  Sharper than
+Lebesgue-null: a countable set has Hausdorff dimension `0` (`Set.Countable.dimH_zero`),
+and dimension `0` kills every positive-order Hausdorff measure at once. -/
+theorem algebraic_reals_dimH_zero :
+    dimH {x : ℝ | IsAlgebraic ℚ x} = 0 :=
+  (AlgebraicNumbersCountable.algebraic_reals_countable).dimH_zero
+
+/-- **Every positive-order Hausdorff measure of the algebraic reals vanishes.**
+For each `d > 0`, `μH[d] {algebraic} = 0`.  The order-`d = 1` case is exactly
+`algebraic_reals_null` (Lebesgue-null); dimension zero delivers the whole scale
+`d > 0`, so the algebraic reals are null for *every* Hausdorff gauge, not just
+Lebesgue measure. -/
+theorem algebraic_reals_hausdorffMeasure_zero {d : NNReal} (hd : 0 < d) :
+    μH[(d : ℝ)] {x : ℝ | IsAlgebraic ℚ x} = 0 :=
+  hausdorffMeasure_of_dimH_lt (by
+    rw [algebraic_reals_dimH_zero]; exact_mod_cast hd)
+
+/-- **The complex algebraic numbers have Hausdorff dimension zero.**  Same
+countable-set argument as on `ℝ`. -/
+theorem algebraic_complex_dimH_zero :
+    dimH {z : ℂ | IsAlgebraic ℚ z} = 0 :=
+  (AlgebraicNumbersCountable.algebraic_complex_countable).dimH_zero
+
+/-- **The transcendental reals are dense**, obtained from the dimensional bound:
+`dimH {algebraic} = 0 < 1 = finrank ℝ ℝ`, so the complement of the algebraic reals
+is dense (`dense_compl_of_dimH_lt_finrank`).  A dimension-theoretic route to the
+topological largeness of the transcendentals, independent of Baire category. -/
+theorem transcendental_reals_dense :
+    Dense {x : ℝ | Transcendental ℚ x} := by
+  have hcompl : {x : ℝ | Transcendental ℚ x} = {x : ℝ | IsAlgebraic ℚ x}ᶜ := by
+    ext x; simp only [mem_setOf_eq, mem_compl_iff, Transcendental]
+  rw [hcompl]
+  apply dense_compl_of_dimH_lt_finrank
+  rw [algebraic_reals_dimH_zero]
+  exact_mod_cast Module.finrank_pos
+
+/-- **The transcendental complex numbers are dense**, by the same dimensional
+argument with `finrank ℝ ℂ = 2 > 0 = dimH {algebraic}`. -/
+theorem transcendental_complex_dense :
+    Dense {z : ℂ | Transcendental ℚ z} := by
+  have hcompl : {z : ℂ | Transcendental ℚ z} = {z : ℂ | IsAlgebraic ℚ z}ᶜ := by
+    ext z; simp only [mem_setOf_eq, mem_compl_iff, Transcendental]
+  rw [hcompl]
+  apply dense_compl_of_dimH_lt_finrank
+  rw [algebraic_complex_dimH_zero]
+  exact_mod_cast Module.finrank_pos
 
 end AlgebraicRealsNull
