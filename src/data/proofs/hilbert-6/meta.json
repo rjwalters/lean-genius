@@ -39,14 +39,14 @@
       "Kolmogorov probability axioms demonstration",
       "Conditional probability and Bayes theorem",
       "Quantum state formalization (Born rule)",
-      "Classical mechanics Lagrangian structure",
+      "Classical mechanics Lagrangian structure (definitions and action functional; Hamilton's principle is a placeholder axiom, not formalized)",
       "Thermodynamics Caratheodory formulation"
     ],
     "dateAdded": "2025-12-29",
     "hilbertNumber": 6,
     "axiomCount": 7,
     "lineCount": 326,
-    "assumptions": "7 axioms: bayes_theorem, total_probability, born_probability_le_one, and 4 more. See Lean source for complete statements.",
+    "assumptions": "7 axioms. Four state genuine mathematical facts taken as axioms rather than proved: bayes_theorem, total_probability, born_probability_le_one (Cauchy-Schwarz), caratheodory_axiom and entropy_exists. Two are non-rigorous placeholder axioms that do NOT faithfully formalize the physics they name and are degenerate as literally stated: hamiltons_principle asserts 'isPhysical <-> (there exists a Prop that holds)', whose right side is trivially true, so it collapses to 'isPhysical is always true' for any proposition; unified_physics_open asserts 'not (there exists a nonempty type)', which is provably false (Unit is nonempty). As written these two axioms are logically inconsistent, so they should be read as informal scaffolding markers, not verified statements. The genuinely machine-checked content is the Kolmogorov probability layer (kolmogorov_axiom_1/2/3, probability_nonneg/le_one/compl/union_le) and the Born-rule lemmas (born_probability_nonneg/self), derived from Mathlib's measure/inner-product-space theory.",
     "mathlib_version": "4.26.0",
     "theoremCount": 10,
     "definitionCount": 7
@@ -194,10 +194,10 @@
   ],
   "mainTheorems": [
     {
-      "name": "hilbert6_axiomatization",
+      "name": "hilbert_6_status",
       "type": "core",
-      "description": "Mathematical axiomatization of physical theories",
-      "leanType": "PhysicalTheory T -> exists axioms, Consistent axioms and Models T axioms"
+      "description": "Status marker recording that probability, QM, thermodynamics, and mechanics are each axiomatized; the substantive machine-checked results are the Kolmogorov probability theorems (kolmogorov_axiom_1/2/3) and the Born-rule lemmas. There is no single 'hilbert6_axiomatization' theorem proving consistency or model existence.",
+      "leanType": "(exists _ : Prop, True) and (exists _ : Prop, True) and (exists _ : Prop, True) and (exists _ : Prop, True)"
     }
   ],
   "sorries": 0
