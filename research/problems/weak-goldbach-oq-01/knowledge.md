@@ -627,3 +627,23 @@ free). Verified instead by direct `lean` elaboration against the main repo's pin
 oleans (`~/.elan/toolchains/leanprover--lean4---v4.26.0/bin/lean` with `LEAN_PATH` = every
 `.lake/packages/*/.lake/build/lib/lean`): **exit 0, zero diagnostics**. `#print axioms` on both new
 theorems = `[propext, Classical.choice, Quot.sound]` only (no `sorryAx`, no `Lean.ofReduceBool`).
+
+## Session 2026-07-10 (researcher-1) — full-entry verification sweep (no bug; saturated + VERIFIED)
+
+Re-verified the entire entry via lean-elab ([[reference-docker-down-lean-elab-verification-path]],
+docker down) after several docker-down/SIGBUS-UNVERIFIED sessions on the comet reformulation:
+
+- `StrongGoldbachSymmetric.lean` (997 L, Mathlib-only, 0 ax) — EXIT 0
+- `StrongGoldbachSymmetricOffset.lean` (289 L, dep on the above) — EXIT 0
+- `WeakGoldbach.lean` (706 L, 4 deep axioms) via full dep chain
+  (SchnirelmannBasis + SchnirelmannCounting → SchnirelmannTheorem → WeakGoldbach) — EXIT 0
+
+All EXIT 0, zero errors — the standing-unverified comet/symmetric-pair-count work
+(symmetricPairCount decomposition, arm bounds, totient ceilings) is confirmed correct. NO bug
+this time (unlike minpoly / erdos-659 / szemeredi this session). The 4 WeakGoldbach axioms
+(Helfgott / circle method / Chen / binary-verified) are the genuinely-deep irreducibles; the
+Schnirelmann basis axiom was already discharged.
+
+**Assessment: SATURATED + VERIFIED.** The elementary comet-height counting theory is complete
+(decomposition, arm/parity/totient upper bounds); the real advance would be a nontrivial LOWER
+bound = essentially Goldbach. No new lemma; marked completed.
