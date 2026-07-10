@@ -65,6 +65,11 @@
       "proofId": "hall-marriage-theorem-oq-01",
       "relationship": "related",
       "description": "The root entry proving Hall's biconditional. Its existence statement is recovered here as the δ = 0 case (maxTransversal_eq_card_of_deficiency_zero), where the maximum partial transversal saturates all of ι."
+    },
+    {
+      "proofId": "hall-marriage-theorem-oq-01-oq-01-oq-01-oq-01",
+      "relationship": "extended-by",
+      "description": "A concrete application of this entry's closed form: a k-regular bipartite family (every index has exactly k neighbours, every element hit by exactly k indices) satisfies Hall's condition, so its deficiency is 0 and the maximum partial transversal is a full SDR — the δ = 0 endpoint of the size = |ι| − deficiency formula, instantiated on the regular case."
     }
   ],
   "sections": [
