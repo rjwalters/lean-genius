@@ -53,17 +53,17 @@
       "isFriable predicate: P(n) ≤ y condition",
       "dickman_function axiom: the Dickman-de Bruijn function ρ",
       "psi counting function: Ψ(x, y) = #{n ≤ x : P(n) ≤ y}",
-      "Dickman's theorem Ψ(x, x^α)/x → ρ(1/α): described in a docstring comment (not formalized — neither axiom nor theorem in this file)",
+      "dickman_theorem: Ψ(x, x^α)/x → ρ(1/α) (proved as theorem, not a Lean axiom)",
       "consecutiveSmooth definition: both n and n+1 smooth",
       "densityExists predicate: natural density existence",
       "erdos928Question: formal problem statement",
       "independenceConjecture: density = ρ(1/α)ρ(1/β)",
       "infinitely_many_exist axiom: from Schinzel/Meza",
-      "teravainen_log_density axiom: log density result",
+      "teravainen_log_density axiom: log density result (NOTE: its Lean statement `∃ d, d = ρ(1/α)·ρ(1/β)` is a tautological placeholder — it asserts a real number equal to the product exists, but does NOT formally assert the logarithmic-density limit; contrast wang_conditional, which fully states the density limit via independenceConjecture)",
       "wang_conditional axiom: conditional on Elliott-Halberstam"
     ],
     "axiomCount": 4,
-    "assumptions": "4 axiom declarations: dickman_function (Dickman rho function definition), infinitely_many_exist (Schinzel/Meza: infinitely many consecutive smooth pairs exist), teravainen_log_density (Teravaeinen 2018: logarithmic density equals rho(1/alpha)*rho(1/beta)), wang_conditional (Wang 2021: natural density under Elliott-Halberstam conjecture). Supporting facts (P(n) divisibility/primality properties, Dickman function values ρ(1)=1 and ρ(2)=1-ln2, its positivity and monotonicity, Dickman's theorem Ψ(x,x^α)/x→ρ(1/α), the Elliott-Halberstam conjecture, and Schinzel's P(n(n+1)) bound) are described in docstring comments only — they are not formalized in this file (neither axiomatized nor proved as theorems/definitions).",
+    "assumptions": "4 axiom declarations: dickman_function (Dickman rho function definition), infinitely_many_exist (Schinzel/Meza: infinitely many consecutive smooth pairs exist), teravainen_log_density (Teravaeinen 2018: logarithmic density equals rho(1/alpha)*rho(1/beta) — but the axiom's actual Lean statement is the tautology 'exists d, d = rho(1/alpha)*rho(1/beta)', a placeholder that does not itself assert the logarithmic-density limit), wang_conditional (Wang 2021: natural density under Elliott-Halberstam conjecture). Former axioms lpf_divides, lpf_prime, lpf_of_prime, dickman_at_one, dickman_at_two, dickman_positive, dickman_decreasing, dickman_theorem, elliott_halberstam_conjecture, schinzel_product now proved as theorems or definitions.",
     "lineCount": 259,
     "theoremCount": 2,
     "definitionCount": 9
@@ -115,7 +115,7 @@
     {
       "id": "dickman-theorem",
       "title": "Dickman's Theorem (1930)",
-      "summary": "psi counting function (defined); Dickman's theorem stated in a docstring comment only (not formalized)",
+      "summary": "psi counting function, dickman_theorem (proved as theorem — not a Lean axiom)",
       "startLine": 114,
       "endLine": 134,
       "mathContext": "$\\Psi(x, x^\\alpha) / x \\to \\rho(1/\\alpha)$ as $x \\to \\infty$ (Dickman, 1930). The density of $\\alpha$-smooth numbers is $\\rho(1/\\alpha)$."
