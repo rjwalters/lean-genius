@@ -261,6 +261,26 @@ theorem iterSum_simplexNumber (a b n : ℕ) :
     funext m; rw [iterSum_one]
   rw [hfun, iterSum_add, iterSum_one]
 
+/-- **Convolution semigroup law for the figurate kernels.** Convolving with the
+`b`-dimensional simplex kernel and then the `a`-dimensional one is convolution with the
+`(a+b+1)`-dimensional kernel:
+
+`simplexConv a (simplexConv b f) = simplexConv (a + b + 1) f`.
+
+This is the semigroup law `iterSum_add` transported through the discrete Cauchy formula
+`iterSum_eq_simplexConv` (which identifies `simplexConv d = iterSum (d+1)`): composing the
+two convolutions is `iterSum (a+1) ∘ iterSum (b+1) = iterSum (a+b+2)`, and `a+b+2` is the
+`(d+1)` of `d = a+b+1`. Expanded, it is a Vandermonde-type identity for the figurate
+kernels — the discrete analogue of the fractional-integral composition
+`(x-·)^a/a! ∗ (x-·)^b/b! = (x-·)^{a+b+1}/(a+b+1)!` — the summation-side manifestation of
+`P_a ∗ P_b = P_{a+b+1}`. -/
+theorem simplexConv_comp (a b : ℕ) (f : ℕ → ℕ) (n : ℕ) :
+    simplexConv a (simplexConv b f) n = simplexConv (a + b + 1) f n := by
+  have hb : simplexConv b f = iterSum (b + 1) f := by
+    funext m; rw [iterSum_eq_simplexConv]
+  rw [← iterSum_eq_simplexConv, hb, iterSum_add,
+    show a + 1 + (b + 1) = (a + b + 1) + 1 from by ring, iterSum_eq_simplexConv]
+
 /-- **Counting face (stars and bars).** The `d`-dimensional simplex number counts
 the size-`d` multisets drawn from the `n+1` symbols `{0, 1, …, n}` — equivalently
 the weakly increasing `d`-tuples `0 ≤ i₁ ≤ ⋯ ≤ i_d ≤ n`:
