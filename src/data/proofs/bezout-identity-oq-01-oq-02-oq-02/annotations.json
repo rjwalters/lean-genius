@@ -1,0 +1,84 @@
+[
+  {
+    "id": "ann-isprimitive-def",
+    "proofId": "bezout-identity-oq-01-oq-02-oq-02",
+    "range": { "startLine": 56, "endLine": 82 },
+    "type": "definition",
+    "title": "IsPrimitive: the Coordinate-Free Dual Notion",
+    "content": "Defines IsPrimitive v := ∃ w : Fin n → ℤ, w ⬝ᵥ v = 1 — a vector is primitive when it admits an integer dual pairing to 1. isPrimitive_single shows the standard basis vector eᵢ = Pi.single i 1 is primitive (its own indicator is a dual). isPrimitive_iff_span_eq_top proves this dot-product form agrees with the classical condition that the entries generate the unit ideal, IsPrimitive v ↔ Ideal.span (Set.range v) = ⊤, via Ideal.eq_top_iff_one and Ideal.mem_span_range_iff_exists_fun (matching the dot product to ∑ cᵢ • vᵢ through smul_eq_mul). Over ℤ this is exactly gcd of the entries = 1.",
+    "mathContext": "$v \\text{ primitive} \\iff \\exists w,\\ \\langle w, v\\rangle = 1 \\iff \\langle v_0,\\dots,v_{n-1}\\rangle_{\\mathbb Z} = \\mathbb Z$",
+    "significance": "key",
+    "relatedConcepts": [
+      "primitive vector",
+      "dot product dual",
+      "unit ideal",
+      "n-ary Bézout"
+    ],
+    "prerequisites": [
+      "Matrix.dotProduct",
+      "Ideal.eq_top_iff_one",
+      "Ideal.mem_span_range_iff_exists_fun"
+    ]
+  },
+  {
+    "id": "ann-invariance",
+    "proofId": "bezout-identity-oq-01-oq-02-oq-02",
+    "range": { "startLine": 84, "endLine": 104 },
+    "type": "theorem",
+    "title": "SLₙ(ℤ) Preserves Primitivity (Both Directions)",
+    "content": "IsPrimitive.mulVec: if w ⬝ᵥ v = 1 and A ∈ SLₙ(ℤ), then the transported dual w ᵥ* ↑ₘA⁻¹ witnesses primitivity of ↑ₘA *ᵥ v, because (w ᵥ* ↑ₘA⁻¹) ⬝ᵥ (↑ₘA *ᵥ v) = w ᵥ* (↑ₘA⁻¹ * ↑ₘA) ⬝ᵥ v = w ᵥ* 1 ⬝ᵥ v = w ⬝ᵥ v = 1, using dotProduct_mulVec, vecMul_vecMul, and ↑ₘA⁻¹ * ↑ₘA = 1 (SpecialLinearGroup.coe_mul + inv_mul_cancel). isPrimitive_mulVec_iff upgrades this to a biconditional by applying the forward lemma to A⁻¹ and simplifying with mulVec_mulVec. This is the exact invariant the transitivity action lives inside: primitivity is necessary for SLₙ(ℤ)-equivalence to a basis vector.",
+    "mathContext": "$A \\in \\mathrm{SL}_n(\\mathbb Z) \\ \\Rightarrow\\ \\big(A v \\text{ primitive} \\iff v \\text{ primitive}\\big)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "SLₙ(ℤ) action",
+      "invariance",
+      "contravariant dual",
+      "transitivity"
+    ],
+    "prerequisites": [
+      "Matrix.dotProduct_mulVec",
+      "Matrix.vecMul_vecMul",
+      "SpecialLinearGroup.coe_mul"
+    ]
+  },
+  {
+    "id": "ann-transvections",
+    "proofId": "bezout-identity-oq-01-oq-02-oq-02",
+    "range": { "startLine": 106, "endLine": 131 },
+    "type": "definition",
+    "title": "transvectionSL: the Euclidean-Descent Generators",
+    "content": "Packages Mathlib's transvection i j c = I + c·Eᵢⱼ (i ≠ j), which has determinant 1 (det_transvection_of_ne), as an element transvectionSL i j h c of Matrix.SpecialLinearGroup (Fin n) ℤ. transvectionSL_mulVec computes its action: ↑ₘ(transvectionSL i j h c) *ᵥ v = Function.update v i (vᵢ + c·vⱼ) — one elementary Bézout step adding c·vⱼ to coordinate i — proved by unfolding transvection = 1 + Matrix.single via add_mulVec, one_mulVec, single_mulVec and Function.update case analysis. IsPrimitive.transvection records that each such step preserves primitivity, a special case of the general SLₙ(ℤ) lemma. Because the whole Euclidean descent is a product of these generators, it stays in SLₙ(ℤ) automatically.",
+    "mathContext": "$T_{ij}(c)\\, v = v + c\\, v_j\\, e_i, \\qquad \\det T_{ij}(c) = 1$",
+    "significance": "key",
+    "relatedConcepts": [
+      "transvection",
+      "elementary matrix",
+      "Euclidean algorithm",
+      "generators of SLₙ(ℤ)"
+    ],
+    "prerequisites": [
+      "Matrix.transvection",
+      "Matrix.det_transvection_of_ne",
+      "Matrix.single_mulVec"
+    ]
+  },
+  {
+    "id": "ann-orbit",
+    "proofId": "bezout-identity-oq-01-oq-02-oq-02",
+    "range": { "startLine": 133, "endLine": 142 },
+    "type": "theorem",
+    "title": "Necessity Half of Transitivity",
+    "content": "orbit_e_isPrimitive: every vector in the SLₙ(ℤ)-orbit of a basis vector eᵢ is primitive, i.e. IsPrimitive (↑ₘA *ᵥ Pi.single i 1), assembled from isPrimitive_single and IsPrimitive.mulVec. This is the ⊆ direction of the sharp characterization 'the SLₙ(ℤ)-orbit of e₀ equals the set of primitive vectors'; the ⊇ (sufficiency) direction — every primitive vector is reachable — is the remaining Euclidean-descent construction, for which transvectionSL and the invariance lemma above are the tools.",
+    "mathContext": "$\\mathrm{SL}_n(\\mathbb Z)\\cdot e_i \\subseteq \\{\\text{primitive vectors}\\}$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "group orbit",
+      "transitivity",
+      "primitive vector"
+    ],
+    "prerequisites": [
+      "IsPrimitive.mulVec",
+      "isPrimitive_single"
+    ]
+  }
+]
