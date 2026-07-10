@@ -580,4 +580,38 @@ theorem kAPCount_nondeg_le {N : ℕ} [NeZero N] {k : ℕ} (hk : 0 < k)
     _ = A.card * (N - 1) := by
           rw [Finset.card_erase_of_mem (Finset.mem_univ _), Finset.card_univ, ZMod.card]
 
+/-- **Monotonicity of the `k`-AP count in the set.**  Enlarging `A` can only add
+    progressions: if `A ⊆ B` then every pair `(x, d)` whose length-`k` progression lies
+    in `A` also has it in `B`, so the counted set for `A` embeds in that for `B`.  This is
+    the basic structural fact behind density-increment arguments — the `k`-AP count is a
+    monotone functional of the underlying set. -/
+theorem kAPCount_count_mono {N : ℕ} [NeZero N] {k : ℕ} {A B : Finset (ZMod N)}
+    (hAB : A ⊆ B) :
+    (Finset.univ.filter (fun p : ZMod N × ZMod N =>
+        ∀ i : Fin k, p.1 + i.val • p.2 ∈ A)).card
+      ≤ (Finset.univ.filter (fun p : ZMod N × ZMod N =>
+          ∀ i : Fin k, p.1 + i.val • p.2 ∈ B)).card := by
+  classical
+  apply Finset.card_le_card
+  intro p hp
+  rw [Finset.mem_filter] at hp ⊢
+  exact ⟨hp.1, fun i => hAB (hp.2 i)⟩
+
+/-- **Monotonicity of the nondegenerate `k`-AP count in the set.**  The `A ⊆ B` version of
+    `kAPCount_count_mono` restricted to nonzero common difference `d ≠ 0`: the genuine
+    (nondiagonal) `k`-AP count controlled by Roth's theorem is likewise monotone in the set,
+    since enlarging `A` preserves both the "all terms in the set" and the `d ≠ 0`
+    conditions. -/
+theorem kAPCount_nondeg_mono {N : ℕ} [NeZero N] {k : ℕ} {A B : Finset (ZMod N)}
+    (hAB : A ⊆ B) :
+    (Finset.univ.filter (fun p : ZMod N × ZMod N =>
+        (∀ i : Fin k, p.1 + i.val • p.2 ∈ A) ∧ p.2 ≠ 0)).card
+      ≤ (Finset.univ.filter (fun p : ZMod N × ZMod N =>
+          (∀ i : Fin k, p.1 + i.val • p.2 ∈ B) ∧ p.2 ≠ 0)).card := by
+  classical
+  apply Finset.card_le_card
+  intro p hp
+  rw [Finset.mem_filter] at hp ⊢
+  exact ⟨hp.1, ⟨fun i => hAB (hp.2.1 i), hp.2.2⟩⟩
+
 end RothTheoremOQ03OQ01
