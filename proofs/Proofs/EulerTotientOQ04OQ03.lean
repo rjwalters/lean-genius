@@ -2465,6 +2465,89 @@ theorem prime_landing_family_reversal {a : ℕ} (ha : Odd a) (ha3 : 3 ≤ a)
   rw [classifySeed_lt_iff ha ha3 k]
   exact (classifySeed_lt_iff_of_seedS_one_seedE_prime ha3 hs1 hep).2 hcrit
 
+/-- **Prime-landing trichotomy (the full classifier value).**  For a transport-
+    admissible seed with a *prime* landing (`seedS a = 1`, `seedE a` prime), the
+    entire computable classifier collapses to a single two-term comparison:
+    `classifySeed a = compare (φ(seedB a) + 2^{seedT a}) (2·(a − φ(a)))`.
+
+    This is the common refinement of `classifySeed_lt_iff_of_seedS_one_seedE_prime`
+    (the `.lt` case) and its two missing companions: it decides *all three* regimes
+    of the prime-landing family through one linear criterion, exactly mirroring how
+    `classifySeed_classifies` decides the general family through `compare (φ a)
+    (φ(seedE a)·2^{seedT a−1})`.  Reading off the three `Ordering` values gives the
+    reversal / equality / forward corollaries below.
+
+    Mechanism: with `s = 1` the two seed identities are `2a − φ(a) = 2·seedB a` and
+    `2a − φ(seedB a) = seedE a·2^{seedT a}`.  Primality of `e := seedE a` gives
+    `φ(e) = e − 1`, so the classifier's compared quantity
+    `φ(e)·2^{t−1} = e·2^{t−1} − 2^{t−1}` equals `(a − φ(seedB a)/2) − 2^{t−1}`.
+    Doubling turns the comparison `φ(a) ⋛ φ(e)·2^{t−1}` into the stated
+    `(φ(seedB a) + 2^{seedT a}) ⋛ 2·(a − φ(a))` (the halves and the even totient
+    `φ(seedB a)` clear exactly), and the three `compare` branches agree termwise. -/
+theorem classifySeed_eq_compare_of_seedS_one_seedE_prime {a : ℕ} (ha3 : 3 ≤ a)
+    (hs1 : seedS a = 1) (hep : (seedE a).Prime) :
+    classifySeed a
+      = compare (Nat.totient (seedB a) + 2 ^ seedT a) (2 * (a - Nat.totient a)) := by
+  obtain ⟨hob, hoe, _, ht1, hstep, hCeq⟩ := seed_spec ha3
+  have hφa_lt : Nat.totient a < a := Nat.totient_lt a (by omega)
+  rw [hs1, pow_one] at hstep
+  have hb2 : 2 ≤ seedB a := by omega
+  have hb3 : 3 ≤ seedB a := by rcases hob with ⟨i, hi⟩; omega
+  obtain ⟨jb, hjb⟩ := Nat.totient_even (show 2 < seedB a by omega)
+  rw [hs1] at hCeq
+  simp only [Nat.sub_self, pow_zero, mul_one] at hCeq
+  have hepos : 0 < seedE a := hep.pos
+  have hne : 0 < seedE a * 2 ^ seedT a := mul_pos hepos (pow_pos (by norm_num) _)
+  have hφe : Nat.totient (seedE a) = seedE a - 1 := Nat.totient_prime hep
+  have hp2 : 1 ≤ (2 : ℕ) ^ (seedT a - 1) := Nat.one_le_two_pow
+  have hP : (2 : ℕ) ^ seedT a = 2 * 2 ^ (seedT a - 1) := by
+    conv_lhs => rw [show seedT a = (seedT a - 1) + 1 from by omega, pow_succ]
+    ring
+  have hEPt : seedE a * 2 ^ seedT a = 2 * (seedE a * 2 ^ (seedT a - 1)) := by
+    rw [hP]; ring
+  have hsub : Nat.totient (seedE a) * 2 ^ (seedT a - 1)
+      = seedE a * 2 ^ (seedT a - 1) - 2 ^ (seedT a - 1) := by
+    rw [hφe, Nat.sub_one_mul]
+  have hEPge : 2 ^ (seedT a - 1) ≤ seedE a * 2 ^ (seedT a - 1) :=
+    Nat.le_mul_of_pos_left _ hepos
+  simp only [classifySeed]
+  rw [hsub]
+  rcases lt_trichotomy (Nat.totient a)
+      (seedE a * 2 ^ (seedT a - 1) - 2 ^ (seedT a - 1)) with h | h | h
+  · rw [compare_lt_iff_lt.mpr h,
+        compare_lt_iff_lt.mpr (show Nat.totient (seedB a) + 2 ^ seedT a
+          < 2 * (a - Nat.totient a) by omega)]
+  · rw [compare_eq_iff_eq.mpr h,
+        compare_eq_iff_eq.mpr (show Nat.totient (seedB a) + 2 ^ seedT a
+          = 2 * (a - Nat.totient a) by omega)]
+  · rw [compare_gt_iff_gt.mpr h,
+        compare_gt_iff_gt.mpr (show 2 * (a - Nat.totient a)
+          < Nat.totient (seedB a) + 2 ^ seedT a by omega)]
+
+/-- **Prime-landing equality criterion** (`.eq` companion of
+    `classifySeed_lt_iff_of_seedS_one_seedE_prime`).  A transport-admissible seed
+    with a prime landing is classified `eq` — the whole family `a·2^(k+1)` sits in
+    the equality regime `φ(n) = φ(D(n))` — iff `φ(seedB a) + 2^{seedT a}` exactly
+    balances `2·(a − φ(a))`.  (The Sophie–Germain seeds `3q` are instances: there
+    `seedB = 2q+1`, `seedE = q`, and both sides equal `4q`.) -/
+theorem classifySeed_eq_iff_of_seedS_one_seedE_prime {a : ℕ} (ha3 : 3 ≤ a)
+    (hs1 : seedS a = 1) (hep : (seedE a).Prime) :
+    classifySeed a = Ordering.eq ↔
+      Nat.totient (seedB a) + 2 ^ seedT a = 2 * (a - Nat.totient a) := by
+  rw [classifySeed_eq_compare_of_seedS_one_seedE_prime ha3 hs1 hep, compare_eq_iff_eq]
+
+/-- **Prime-landing forward criterion** (`.gt` companion of
+    `classifySeed_lt_iff_of_seedS_one_seedE_prime`).  A transport-admissible seed
+    with a prime landing is classified `gt` — the whole family `a·2^(k+1)` sits in
+    the forward regime `φ(D(n)) < φ(n)` — iff `2·(a − φ(a))` strictly exceeds
+    `φ(seedB a) + 2^{seedT a}`.  Together with the `.lt` and `.eq` criteria this
+    completely settles every prime-landing seed by a single linear inequality. -/
+theorem classifySeed_gt_iff_of_seedS_one_seedE_prime {a : ℕ} (ha3 : 3 ≤ a)
+    (hs1 : seedS a = 1) (hep : (seedE a).Prime) :
+    classifySeed a = Ordering.gt ↔
+      2 * (a - Nat.totient a) < Nat.totient (seedB a) + 2 ^ seedT a := by
+  rw [classifySeed_eq_compare_of_seedS_one_seedE_prime ha3 hs1 hep, compare_gt_iff_gt]
+
 -- ----------------------------------------------------------------------------
 -- A Sophie–Germain–indexed EQUALITY family: `n = 3q·2^(k+1)` with `2q+1` prime
 -- ----------------------------------------------------------------------------
