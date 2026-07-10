@@ -113,7 +113,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Hilbert's 9th problem is completely solved by Artin reciprocity (1927). This theorem shows that all reciprocity laws for n-th power residues in algebraic number fields follow from a single principle: the Artin map induces an isomorphism between ray class groups and Galois groups of abelian extensions.\n\nWe formalize the foundation (quadratic reciprocity) fully via Mathlib, and state the general answer axiomatically. The full proof of Artin reciprocity requires the machinery of class field theory.",
+    "summary": "Hilbert's 9th problem is completely solved by Artin reciprocity (1927). This theorem shows that all reciprocity laws for n-th power residues in algebraic number fields follow from a single principle: the Artin map induces an isomorphism between ray class groups and Galois groups of abelian extensions.\n\nWe formalize the foundation (quadratic reciprocity) fully via Mathlib, and present the general answer as an axiomatized scaffold (a True-typed placeholder theorem alongside a placeholder ArtinSymbol axiom). The full proof of Artin reciprocity requires the machinery of class field theory.",
     "implications": "The solution to Hilbert's 9th problem has profound implications:\n\n**1. Complete Classification**\nArtin reciprocity classifies all abelian extensions of number fields, answering both the existence and uniqueness questions.\n\n**2. Computational Power**\nThe Artin symbol gives explicit methods to compute power residue symbols in any number field.\n\n**3. Modern Number Theory**\nClass field theory, developed to answer this problem, became a cornerstone of algebraic number theory.\n\n**4. Langlands Program**\nArtin reciprocity is the abelian case of the Langlands correspondence, one of the most ambitious programs in modern mathematics.",
     "openQuestions": [
       "What is the most elementary proof of Artin reciprocity?",
@@ -190,8 +190,8 @@
     {
       "name": "artin_reciprocity",
       "type": "core",
-      "description": "The Artin reciprocity law: the most general reciprocity law for abelian extensions",
-      "leanType": "IsAbelianExtension K L -> ArtinMap K L is_surjective and kernel = NormGroup"
+      "description": "The Artin reciprocity law, stated as an axiomatized scaffold: the Lean declaration is a True-typed placeholder (the full surjectivity/kernel statement requires class field theory machinery not yet formalized)",
+      "leanType": "∀ (K L : Type*) [Field K] [Field L] [Algebra K L], True  -- scaffold placeholder; the substantive surjectivity/kernel statement is not yet encoded in Lean"
     }
   ],
   "sorries": 0
