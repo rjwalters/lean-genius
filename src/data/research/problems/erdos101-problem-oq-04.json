@@ -34,14 +34,9 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-07-08",
-    "iteration": 10,
-    "focus": "ACT iteration 10 (researcher-2, 2026-07-08) — docker-build verified (lean v4.26.0, 0 new axioms / 0 new sorries). Added the first unconditional GROWING lower bound, breaking the constant-witness treadmill (crossSet 2 / asteriskSet 3 / gridSet 10): noFiveCollinear_of_onQuartic (any subset of the quartic graph y = x^4 - 5x^2 is no-five-collinear, via Polynomial.card_roots' on a degree-4 polynomial — a single degree fact replacing the bespoke finite case-splits), and quartic_linear_lower_bound: for every k>=1 a no-five-collinear set on <=4k points with fourPointLineCount >= k, so L4(n)=Omega(n) unconditionally and the count is unbounded. Witness = k horizontal chords of the quartic (levels u in (0,5/2), points (+-sqrt u, c),(+-sqrt(5-u),c)). Does NOT touch the single remaining sorry (solymosi_stojakovic_lower_bound, the open n^{2-o(1)} measure-theoretic construction); this is the linear floor beneath it.",
-    "blockers": [
-      "S3-B2-β 4-collinear COUNT `Ω(p^{3/2})`: the parabola itself is now PROVEN to be no-three-collinear, so it has zero four-point lines on its own — the Ω(p^{3/2}) four-point-line witness requires the further sumset/grid construction over this general-position base, not the bare parabola.",
-      "S4-S5 (Path A random-projection genericity): unchanged from S2 — measure-theoretic infrastructure deferred to dedicated multi-session ACT."
-    ],
-    "nextAction": "S3-B6: certify the two diagonals of gridSet to reach the full four-point-line count of 10 (fourPointLineCount gridSet = 10), completing the maximal-grid witness. ALTERNATIVE (Path B): parameterize a growing family — e.g. a superlinearly-staggered stack of 4-wide rows so no external line threads 5 points — to obtain the first NON-constant (unbounded) fourPointLineCount lower bound, the genuine stepping stone toward grunbaum_lower_bound_three_halves. The S4-S5 random-projection genericity (measure theory) remains deferred to a dedicated multi-session ACT."
+    "since": "2026-07-09",
+    "iteration": 11,
+    "focus": "ACT iteration 11 (researcher-4, 2026-07-09) — UNVERIFIED (env SIGBUS on fresh elaboration, confirmed via pristine-file crash; not code). Added four_onQuartic_collinear_iff_sq (four points on y=x^4-5x^2 collinear iff Sum x=0 and Sum x^2=10, the sum-of-squares form of the Vieta criterion) and quartic_fourPointLineCount_from_quadruples (any injective family of k quadruples with Sum x=0, Sum x^2=10 gives a no-five-collinear set on <=4k points with fourPointLineCount >= k). Subsumes quartic_linear_lower_bound (symmetric quadruples) and drops the horizontal restriction; the exact geometry->arithmetic count reduction the open n^(2-o(1)) growth rests on. 0 new axioms, 0 new sorries; single open sorry (solymosi_stojakovic_lower_bound) untouched."
   },
   "leanFiles": [
     {
@@ -166,7 +161,7 @@
     "sourceTitle": "Erdős Problem #101: Four-Point Lines from Planar Point Sets",
     "sourceType": "open-question"
   },
-  "lastUpdate": "2026-07-08",
+  "lastUpdate": "2026-07-09",
   "relatedProofs": [
     "erdos-101",
     "erdos101-problem",

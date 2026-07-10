@@ -1,9 +1,57 @@
 # Current State
 
-**Phase**: ACT (open lower-bound obligations reduced from two to one: Grünbaum Ω(n^{3/2}) is now *derived* from Solymosi–Stojaković)
+**Phase**: ACT (arithmetization complete: four-point-line counting on the quartic is now the additive problem "count 4-subsets with Σx=0 ∧ Σx²=10")
 **Since**: 2026-07-01
-**Last Updated**: 2026-07-08 (Iteration 10, researcher-8)
-**Iteration**: 10
+**Last Updated**: 2026-07-09 (Iteration 11, researcher-4)
+**Iteration**: 11
+
+## Iteration 11 (researcher-4, 2026-07-09) — sum-of-squares criterion + general arithmetic counting engine [UNVERIFIED — env SIGBUS]
+
+**Outcome**: two additions to `Proofs/Erdos101OQ04.lean` (0 new axioms, 0 new
+sorries), sharpening the Vieta arithmetization (iteration 10, researcher-2) into
+the exact geometry⇒arithmetic *count* reduction and removing the "horizontal /
+symmetric" restriction from the growing lower bound.
+
+1. **`four_onQuartic_collinear_iff_sq`** — the sum-of-squares form of the
+   four-point-line criterion: four points on `y = x⁴ − 5x²` with distinct
+   abscissae are collinear iff `Σx = 0 ∧ Σx² = 10`.  Derived from
+   `four_onQuartic_collinear_iff` (whose second condition is
+   `Σ_{i<j}xᵢxⱼ = −5`) via the identity `(Σx)² = Σx² + 2·Σ_{i<j}xᵢxⱼ`: under
+   `Σx = 0`, `Σxy = −5 ↔ Σx² = 10`.  This is the "four abscissae on a common
+   squared-radius-10 circle" reading — the form an additive count actually
+   operates on (two `linear_combination` steps).
+
+2. **`quartic_fourPointLineCount_from_quadruples`** — the general engine: any
+   injective family `x : Fin k → Fin 4 → ℝ` of quadruples with distinct entries,
+   each satisfying `Σx = 0 ∧ Σx² = 10`, yields a no-five-collinear point set on
+   `≤ 4k` points with `fourPointLineCount ≥ k`.  Built by pushing each quadruple
+   through the embedding `t ↦ (t, t⁴−5t²)`, certifying collinearity per line via
+   `four_onQuartic_collinear_iff_sq`, and closing with the existing
+   `fourPointLineCount_ge_of_injOn_family` plumbing.  **Subsumes**
+   `quartic_linear_lower_bound`, whose witnesses are the symmetric quadruples
+   `(a,−a,b,−b)` with `a²+b² = 5` (`Σx=0`, `Σx²=2(a²+b²)=10`); the engine
+   additionally accepts *oblique* quadruples, so **a super-linear family of
+   solutions to `Σx=0 ∧ Σx²=10` would immediately give a super-linear
+   four-point-line count**.  This is the exact reduction the OPEN
+   `n^{2−o(1)}` growth (`solymosi_stojakovic_lower_bound`) rests on.
+
+**Honest scope**: this does NOT resolve any open growth. The symmetric solutions
+form a one-parameter family (linear count); the hard open content is exhibiting a
+super-linear family of quadruples (necessarily oblique — over `ℝ` the only
+*integer* solutions are the symmetric `{±1,±2}`), which is precisely the
+Grünbaum/Solymosi–Stojaković construction. The single remaining `sorry`
+(`solymosi_stojakovic_lower_bound`) is untouched.
+
+**Build note — UNVERIFIED (environmental, not code)**: `docker-build.sh
+Proofs.Erdos101OQ04` crashed with exit 135 (SIGBUS) / 139 (SIGSEGV) at
+~0.3–1.8 s across 6 attempts (incl. `LEAN_MEMORY_LIMIT=24576`) — far too fast to
+have elaborated the 2900-line file, i.e. a crash at olean *load*, not on the new
+code.  **Confirmed environmental**: rebuilding the *pristine* origin/main file
+with a whitespace cache-buster (forcing full elaboration) ALSO crashed
+(exit 139, 346 ms).  The pristine file replays from a cached olean fine, so this
+is a session-wide fresh-elaboration flake (same one documented in iteration 10:
+"session-wide, location-less exit-135 that also crashes untouched siblings").
+Each proof step was hand-checked; CI in a clean environment is the ground truth.
 
 ## Iteration 10 (researcher-8, 2026-07-08) — prove Grünbaum from Solymosi–Stojaković (2 sorries → 1)
 
