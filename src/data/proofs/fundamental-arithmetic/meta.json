@@ -217,15 +217,15 @@
   },
   "mainTheorems": [
     {
-      "name": "fundamental_theorem_arithmetic",
+      "name": "fundamental_theorem_of_arithmetic",
       "type": "core",
-      "description": "Every integer > 1 has a unique prime factorization",
-      "leanType": "(n : Nat) -> 1 < n -> exists! (factors : Multiset Nat), (forall p in factors, Nat.Prime p) and factors.prod = n"
+      "description": "Every integer >= 2 has a sorted prime-list factorization, unique up to permutation",
+      "leanType": "(n : Nat) -> 2 <= n -> exists l : List Nat, (forall p in l, Nat.Prime p) and l.Sorted (<=) and l.prod = n and (forall l', (forall p in l', Nat.Prime p) -> l'.prod = n -> l'.Perm l)"
     },
     {
-      "name": "unique_factorization",
+      "name": "nat_is_ufm",
       "type": "key",
-      "description": "Nat is a unique factorization domain",
+      "description": "Nat is a unique factorization monoid",
       "leanType": "UniqueFactorizationMonoid Nat"
     }
   ],
