@@ -47,7 +47,8 @@
       "A single repackaging of the absorption identity — absorb: (k+1)·C(n+1,k+1) = (n+1)·C(n,k) — drives both moments; no generating functions or real analysis are needed.",
       "Peeling the k=0 term with Finset.sum_range_succ' is exactly what makes the index shift k ↦ k+1 align with absorption, since absorption naturally produces a (k+1) factor.",
       "The second moment never needs a fresh argument: after one application of absorb, k²·C reduces to a (k+1)-weighted row sum, which splits into the already-proven first moment plus the row sum.",
-      "Stating the workhorse lemmas in shifted form (∑ over range(n+2), range(n+3)) avoids ℕ-subtraction entirely; the familiar 2^{n-1}, 2^{n-2} forms are recovered only at the very end."
+      "Stating the workhorse lemmas in shifted form (∑ over range(n+2), range(n+3)) avoids ℕ-subtraction entirely; the familiar 2^{n-1}, 2^{n-2} forms are recovered only at the very end.",
+      "The two moments combine to the variance n/4 — the payoff of computing a second moment. Dividing by 2^n reads the sums as the Binomial(n, ½) mean E[k] = n/2 and second moment E[k²] = n(n+1)/4, whose difference is Var(k) = E[k²] − E[k]² = n(n+1)/4 − n²/4 = n/4. So a fair-coin count of n tosses concentrates around n/2 with spread √n/2 — the quantitative form of the Pascal row peaking sharply at its center, and the reason both moments (not just the mean) are worth computing."
     ]
   },
   "sections": [
