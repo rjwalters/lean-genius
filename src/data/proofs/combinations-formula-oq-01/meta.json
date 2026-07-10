@@ -90,6 +90,11 @@
       "targetId": "inclusion-exclusion",
       "relationship": "related",
       "description": "The inclusion-exclusion principle and Vandermonde's identity are both fundamental counting tools in combinatorics. Vandermonde counts r-element subsets of a partitioned set by summing over sizes of the two parts; inclusion-exclusion counts elements in a union by alternating sums of intersection sizes. Both principles appear in the Fibonacci diagonal sum identity Sigma_j C(n-j,j) = F(n+1), where the tiling bijection uses complementary counting arguments similar to inclusion-exclusion"
+    },
+    {
+      "targetId": "combinations-formula-oq-09",
+      "relationship": "sibling",
+      "description": "Moment sibling: this entry supplies the zeroth-moment identities of a Pascal row (total sum ∑ C(n,k) = 2ⁿ and alternating sum ∑ (−1)ᵏ C(n,k) = 0), which oq-09 complements with the first and second moments ∑ k·C(n,k) = n·2^{n−1} and ∑ k²·C(n,k) = n(n+1)·2^{n−2}. Reciprocal to oq-09's link here."
     }
   ],
   "sections": [
