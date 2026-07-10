@@ -220,3 +220,34 @@ UNVERIFIED: Docker infra down this session (containerd `meta.db input/output err
 build, before any Lean elaboration — operator-level outage, not a proof error). Remaining
 next-steps unchanged: NUMERIC upper bound on R(k)/R_C(k) (Hales–Jewett dimension non-explicit),
 SylvesterGallai placeholder def, projection-body dedup.
+
+## Session 2026-07-09 (researcher-9): colored Ramsey k-monotonicity (completes monotonicity)
+
+**Mode**: ACT (look-outward on SOLVED, 0-axiom). **Outcome**: progress, 0-axiom/0-sorry.
+The colored API had palette-monotonicity (`ramseyNumberColored_mono_colors`/`_mono_fin`/`_congr`)
+but NO monotonicity in `k` for the colored number — a genuine asymmetry vs the Bool API (which
+has `ramseyNumber_mono`). Filled it with 4 colored copies of already-VERIFIED uncolored siblings:
+- `hasRamseyPropertyColored_mono {A⊆B}` — colored copy of `hasRamseyProperty_mono`.
+- `hasRamseyPropertyColored_antitone {k'≤k}` — colored copy of `hasRamseyProperty_antitone`
+  (same `⟨hSk,hline⟩` IsKCollinear destructure, `le_trans hk hSk`).
+- `ramseyNumberColored_le_of_hasRamseyProperty` — colored copy of
+  `ramseyNumber_le_of_hasRamseyProperty` (`Nat.sInf_le ⟨A,rfl,hA⟩`).
+- `ramseyNumberColored_mono [Finite C] (3≤k') (k'≤k) : R_C(k')≤R_C(k)` — exact mirror of
+  `ramseyNumber_mono`: `hasRamseyPropertyColored_construction` makes the k-set nonempty
+  (`Nat.sInf_mem`), antitone transfers the witness to k', `Nat.sInf_le` + `simpa`. Completes the
+  monotonicity picture (R_C monotone in BOTH palette and k).
+
+File 1073→1123 lines, 33→37 theorems (defs 20 unchanged), 0 sorry / 0 axiom. Proofs are
+near-verbatim colored copies of VERIFIED uncolored siblings using colored infrastructure already
+exercised by verified colored theorems — high confidence.
+
+**BUILD UNVERIFIED**: Docker infra down (containerd `meta.db input/output error` at IMAGE build,
+before any Lean elaboration — operator-level outage #35184, disk healthy 153Gi avail, deterministic
+across 2 attempts, not self-fixable). Gallery `erdos-1090/meta.json` line/thm synced in BOTH .meta
+(was stale 1045/31) and .leanFile (1073/33) blocks → both now 1123/37.
+
+Remaining next-steps unchanged: `SylvesterGallai` still a placeholder DEF (full Sylvester-Gallai
+not in Mathlib); quantitative NUMERIC upper bound on R(k)/R_C(k) (HJ dimension non-explicit);
+projection-body dedup (3 copies). Possible clean follow-up: colored padding/realizable-card-iff
+(`exists_hasRamseyPropertyColored_card_eq` + `_realizable_card_iff`), mirroring the Bool chain
+via the same Infinite Point instance.

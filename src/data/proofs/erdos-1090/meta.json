@@ -74,9 +74,9 @@
       "ramseyNumberColored_mono_colors (0-axiom): palette monotonicity — if C ↪ C' then R_C(k) ≤ R_{C'}(k); more colors cannot lower the threshold. Proved via hasRamseyPropertyColored_of_embedding (a C-coloring pushes forward along e, and injectivity of e pulls monochromaticity back). ramseyNumberColored_congr gives recoloring invariance (C ≃ C' ⟹ equal), ramseyNumberColored_mono_fin the monotone chain R_{Fin r} ≤ R_{Fin r'} for r ≤ r', and ramseyNumber_le_ramseyNumberColored_fin the bound R(k) ≤ R_{Fin r}(k) for r ≥ 2 (via finTwoEquiv)"
     ],
     "axiomCount": 0,
-    "lineCount": 1045,
+    "lineCount": 1123,
     "assumptions": "None. 0 axiom declarations, 0 sorries. Both former axioms (graham_selfridge, hunter_observation) are now theorems proved from Mathlib's Hales-Jewett theorem. #print axioms reports only the standard foundational axioms [propext, Classical.choice, Quot.sound]; no sorryAx, no Lean.ofReduceBool. The Line structure's `nonzero` field is constructive data (a witnessed direction), not an assumption.",
-    "theoremCount": 31,
+    "theoremCount": 37,
     "definitionCount": 20
   },
   "overview": {
@@ -113,9 +113,9 @@
       "Finset"
     ],
     "namespace": "Erdos1090",
-    "lineCount": 1073,
+    "lineCount": 1123,
     "axiomCount": 0,
-    "theoremCount": 33,
+    "theoremCount": 37,
     "definitionCount": 20,
     "path": "Proofs/Erdos1090Problem.lean",
     "sorries": 0
