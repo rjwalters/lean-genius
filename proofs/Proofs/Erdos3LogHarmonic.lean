@@ -248,4 +248,88 @@ theorem summable_one_div_nat_mul_log_rpow {δ : ℝ} (hδ : 0 < δ) :
 
 end Convergent
 
+/-!
+### Convergent Bertrand series with a multiplicative constant inside the log
+
+The dyadic-blocking step that sharpens the Erdős #3 conditional reduction produces
+a series whose general term carries a *multiplicative constant* `c = log 2 < 1`
+inside the logarithm:
+
+    ∑_j  1 / ((j+1) · (log ((j+1) · log 2))^{1+δ}).
+
+Because `log ((j+1)·c) = log (j+1) + log c` with `log c < 0` for `c < 1`, this is
+not literally the constant-free `summable_one_div_nat_mul_log_rpow`.  The
+following lemma removes exactly that gap: for any `c > 0`, `δ > 0` the series
+`∑ 1/(n·(log (n·c))^{1+δ})` still converges.  The proof is a tail comparison —
+once `n ≥ 1/c²` one has `log n ≤ 2·log(n·c)` (equivalently `n·c² ≥ 1`), so each
+term is at most `2^{1+δ}` times the corresponding constant-free term, and
+`summable_one_div_nat_mul_log_rpow` supplies the dominating series.
+-/
+
+/-- **Convergent Bertrand series with a multiplicative constant inside the log.**
+    For every `c > 0` and `δ > 0`, `∑ 1/(n·(log (n·c))^{1+δ})` converges.  This is
+    the constant-carrying generalisation of `summable_one_div_nat_mul_log_rpow`
+    (`c = 1`), the exact form the Erdős #3 dyadic-blocking argument needs (`c = log 2`).
+    Proof: on the tail `n ≥ 1/c²` (where `n·c² ≥ 1`, hence `log n ≤ 2·log(n·c)`) each
+    term is `≤ 2^{1+δ}` times the constant-free term, which is summable. -/
+theorem summable_one_div_nat_mul_log_mul_const {c δ : ℝ} (hc : 0 < c) (hδ : 0 < δ) :
+    Summable (fun n : ℕ => 1 / ((n : ℝ) * (Real.log ((n : ℝ) * c)) ^ (1 + δ))) := by
+  have hc2 : (0 : ℝ) < c ^ 2 := by positivity
+  -- threshold `N₀` above `2`, `2/c` and `1/c²` (so `m·c ≥ 2` and `m·c² ≥ 1` on the tail)
+  set N₀ : ℕ := max 2 (⌈2 / c⌉₊ + ⌈1 / c ^ 2⌉₊) with hN₀def
+  have hN₀2 : (2 : ℝ) ≤ (N₀ : ℝ) := by exact_mod_cast le_max_left 2 (⌈2 / c⌉₊ + ⌈1 / c ^ 2⌉₊)
+  have hN₀2c : 2 / c ≤ (N₀ : ℝ) :=
+    le_trans (Nat.le_ceil _) (by exact_mod_cast le_trans (Nat.le_add_right _ _)
+      (le_max_right 2 (⌈2 / c⌉₊ + ⌈1 / c ^ 2⌉₊)))
+  have hN₀c2 : 1 / c ^ 2 ≤ (N₀ : ℝ) :=
+    le_trans (Nat.le_ceil _) (by exact_mod_cast le_trans (Nat.le_add_left _ _)
+      (le_max_right 2 (⌈2 / c⌉₊ + ⌈1 / c ^ 2⌉₊)))
+  -- dominating series: the constant-free convergent series, shifted and scaled by `2^{1+δ}`
+  have hbase : Summable (fun n : ℕ => 1 / ((n : ℝ) * (Real.log n) ^ (1 + δ))) :=
+    summable_one_div_nat_mul_log_rpow hδ
+  have hdom : Summable (fun n : ℕ => (2 : ℝ) ^ (1 + δ) *
+      (1 / (((n + N₀ : ℕ) : ℝ) * (Real.log ((n + N₀ : ℕ) : ℝ)) ^ (1 + δ)))) :=
+    ((summable_nat_add_iff N₀).mpr hbase).mul_left _
+  apply (summable_nat_add_iff N₀).mp
+  refine Summable.of_nonneg_of_le (fun n => ?_) (fun n => ?_) hdom
+  · -- nonnegativity of the shifted target term
+    set m : ℝ := ((n + N₀ : ℕ) : ℝ) with hm
+    have hmN : (N₀ : ℝ) ≤ m := by rw [hm]; exact_mod_cast Nat.le_add_left N₀ n
+    have hm2 : (2 : ℝ) ≤ m := le_trans hN₀2 hmN
+    have hmc : (2 : ℝ) ≤ m * c := (div_le_iff hc).mp (le_trans hN₀2c hmN)
+    have hlogmc : 0 ≤ Real.log (m * c) := Real.log_nonneg (by linarith)
+    positivity
+  · -- termwise domination
+    set m : ℝ := ((n + N₀ : ℕ) : ℝ) with hm
+    have hmN : (N₀ : ℝ) ≤ m := by rw [hm]; exact_mod_cast Nat.le_add_left N₀ n
+    have hm2 : (2 : ℝ) ≤ m := le_trans hN₀2 hmN
+    have hm_pos : 0 < m := by linarith
+    have hm1 : (1 : ℝ) ≤ m := by linarith
+    have hmc : (2 : ℝ) ≤ m * c := (div_le_iff hc).mp (le_trans hN₀2c hmN)
+    have hmc2 : (1 : ℝ) ≤ m * c ^ 2 := (div_le_iff hc2).mp (le_trans hN₀c2 hmN)
+    have hlogmc_pos : 0 < Real.log (m * c) := Real.log_pos (by linarith)
+    -- key comparison `log m ≤ 2·log(m·c)`, i.e. `0 ≤ log(m·c²)`
+    have hmc_eq : Real.log (m * c) = Real.log m + Real.log c :=
+      Real.log_mul (ne_of_gt hm_pos) (ne_of_gt hc)
+    have hmc2_eq : Real.log (m * c ^ 2) = Real.log m + 2 * Real.log c := by
+      rw [Real.log_mul (ne_of_gt hm_pos) (by positivity), Real.log_pow]; push_cast; ring
+    have hmc2_nonneg : 0 ≤ Real.log m + 2 * Real.log c := hmc2_eq ▸ Real.log_nonneg hmc2
+    have hcrux : Real.log m ≤ 2 * Real.log (m * c) := by rw [hmc_eq]; linarith
+    -- lift through the `(·)^{1+δ}` power
+    have hPQ : (Real.log m) ^ (1 + δ)
+        ≤ (2 : ℝ) ^ (1 + δ) * (Real.log (m * c)) ^ (1 + δ) := by
+      calc (Real.log m) ^ (1 + δ)
+          ≤ (2 * Real.log (m * c)) ^ (1 + δ) :=
+            Real.rpow_le_rpow (Real.log_nonneg hm1) hcrux (by linarith)
+        _ = (2 : ℝ) ^ (1 + δ) * (Real.log (m * c)) ^ (1 + δ) :=
+            Real.mul_rpow (by norm_num) hlogmc_pos.le
+    have hP_pos : 0 < (Real.log m) ^ (1 + δ) :=
+      Real.rpow_pos_of_pos (Real.log_pos (by linarith)) _
+    have hQ_pos : 0 < (Real.log (m * c)) ^ (1 + δ) := Real.rpow_pos_of_pos hlogmc_pos _
+    rw [mul_one_div, div_le_div_iff (by positivity) (by positivity), one_mul]
+    calc m * (Real.log m) ^ (1 + δ)
+        ≤ m * ((2 : ℝ) ^ (1 + δ) * (Real.log (m * c)) ^ (1 + δ)) :=
+          mul_le_mul_of_nonneg_left hPQ hm_pos.le
+      _ = (2 : ℝ) ^ (1 + δ) * (m * (Real.log (m * c)) ^ (1 + δ)) := by ring
+
 end Erdos3Bertrand
