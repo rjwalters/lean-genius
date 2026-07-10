@@ -220,5 +220,28 @@
       "description": "Related Erdős problem sharing themes: number-theory, open, prime-divisors"
     }
   ],
+  "references": [
+    {
+      "title": "Old and New Problems and Results in Combinatorial Number Theory",
+      "author": "Paul Erdős and Ronald L. Graham",
+      "year": "1980",
+      "venue": "Monographies de L'Enseignement Mathématique 28, Université de Genève",
+      "description": "Records this problem [ErGr80, p. 74]: for F(n) = max{m + p(m) : m < n composite}, is F(n) > n for all large n, and does F(n) − n → ∞? Here p(m) is the least prime factor of m."
+    },
+    {
+      "title": "Erdős Problem #385",
+      "author": "Thomas F. Bloom (ed.)",
+      "year": "2024",
+      "venue": "erdosproblems.com/385",
+      "description": "The catalogued entry (OPEN), tracing the problem to Erdős–Eggleton–Selfridge [Er79d, p. 73], noting the equivalence of Question 1 to Problem #430 (Adenwalla), and Terence Tao's 2024 connection to Siegel zeros."
+    },
+    {
+      "title": "OEIS A322292: a(n) = max_{m<n, m composite} (m + lpf(m))",
+      "author": "N. J. A. Sloane (ed.), OEIS Foundation",
+      "year": "2024",
+      "venue": "The On-Line Encyclopedia of Integer Sequences, oeis.org/A322292",
+      "description": "The sequence F(n) = max{m + p(m) : m < n composite} whose growth relative to n is the subject of this problem."
+    }
+  ],
   "sorries": 0
 }
