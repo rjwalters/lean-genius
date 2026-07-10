@@ -137,5 +137,28 @@
       "relationship": "related",
       "description": "Home of the `large_prime_gaps_exist` axiom that this file discharges with a machine-checked elementary proof."
     }
+  ],
+  "references": [
+    {
+      "title": "An Introduction to the Theory of Numbers",
+      "author": "G. H. Hardy and E. M. Wright",
+      "year": "2008",
+      "venue": "Oxford University Press (6th ed., rev. Heath-Brown, Silverman, Wiles)",
+      "description": "Classical treatment of the distribution of primes; the elementary fact that gaps between consecutive primes are unbounded, established without analytic input, is standard textbook material here."
+    },
+    {
+      "title": "Elementary Number Theory and Its Applications",
+      "author": "Kenneth H. Rosen",
+      "year": "2011",
+      "venue": "Pearson/Addison-Wesley (6th ed.)",
+      "description": "Presents the factorial-block construction explicitly: the G consecutive integers (G+1)!+2, …, (G+1)!+(G+1) are each composite, giving arbitrarily long prime-free runs — exactly the argument formalized as exists_consecutive_composites."
+    },
+    {
+      "title": "On the difference of consecutive primes",
+      "author": "Paul Erdős",
+      "year": "1935",
+      "venue": "Quarterly Journal of Mathematics, Oxford Series, 6, 124–128",
+      "description": "Origin of the quantitative study of large prime gaps (the Erdős–Rankin lower bound), the deep refinement beyond the mere unboundedness proved here and cited in this entry's open questions."
+    }
   ]
 }
