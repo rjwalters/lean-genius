@@ -64,7 +64,8 @@
       "charpoly_eq_mul_compress_of_reducing (CauchyInterlacingPoincareCompression.lean, PR #36265) — charpoly T = charpoly(compress T H)*charpoly(compress T Hᗮ) on a reducing subspace; polynomial master identity subsuming trace additivity + det factorization; symmetry-free",
       "roots_charpoly_eq_add_compress_of_reducing in CauchyInterlacingPoincareCompression.lean (eigenvalue-multiset additivity over reducing subspace, 0/0)",
       "card_roots_charpoly_eq_add_compress_of_reducing (eigenvalue-count additivity via Multiset.card_add, 0/0)",
-      "Repaired charpoly_eq_mul_compress_of_reducing hT rewrite (removed spurious leading ← comp_assoc after conj_apply)"
+      "Repaired charpoly_eq_mul_compress_of_reducing hT rewrite (removed spurious leading ← comp_assoc after conj_apply)",
+      "roots_charpoly_compress_le_of_reducing (+ orthogonal companion) in CauchyInterlacingPoincareCompression.lean (PR #36909) — with-multiplicity sub-multiset refinement of spectrum_compress_subset_of_invariant: over a reducing subspace (charpoly (compress T H)).roots ≤ (charpoly T).roots, the multiset shadow of charpoly_compress_dvd_of_reducing, via roots_charpoly_eq_add_compress_of_reducing + Multiset.le_add_{right,left}. 0 sorry/0 axiom. UNVERIFIED (docker infra down: containerd content-store I/O error)."
     ],
     "insights": [
       "This slug duplicates work already merged under sibling cauchy-interlacing-theorem-oq-01-oq-02 (#28084). The Rayleigh-agreement hypothesis of the abstract poincare_separation is discharged by rayleigh_compress_eq, which is stated for an ARBITRARY submodule H (nothing uses codim=1), so the abstract theorem and the explicit compression join for any codimension m with no new work.",
@@ -107,7 +108,7 @@
     "mathlib": []
   },
   "started": "2026-07-02T05:53:08.467Z",
-  "lastUpdate": "2026-07-08T00:00:00.000Z",
+  "lastUpdate": "2026-07-09T00:00:00.000Z",
   "completed": "2026-07-02T23:38:28.210Z",
   "significance": 3,
   "tractability": 7
