@@ -852,4 +852,36 @@ theorem card_SL2 :
   rw [hfact] at key
   exact Nat.eq_of_mul_eq_mul_right hpos key
 
+/-!
+## `SL(2, p)` is not solvable for `p ≥ 5`
+
+Perfectness (`commutator_eq_top`) rules out solvability outright: a *nontrivial
+solvable* group has a **proper** commutator subgroup
+(`IsSolvable.commutator_lt_top_of_nontrivial`), whereas `SL(2, p)` equals its own
+commutator subgroup for `p ≥ 5`.  Non-solvability is the group-theoretic heart of
+the simplicity of `PSL(2, p)`: `SL(2, p)` (and hence its central quotient
+`PSL(2, p)`) escapes the entire solvable hierarchy exactly when `p ≥ 5`, the same
+threshold at which the simplicity theorem turns on.
+-/
+
+/-- **`SL(2, p)` is not solvable for `p ≥ 5`.**  It is perfect
+(`commutator_eq_top`) and nontrivial (the unipotent `[[1, 1], [0, 1]] ≠ 1`), and a
+nontrivial solvable group would have a proper commutator subgroup
+(`IsSolvable.commutator_lt_top_of_nontrivial`), contradicting
+`commutator (SL(2, p)) = ⊤`.  This is the non-solvability obstruction underlying the
+simplicity of `PSL(2, p)`. -/
+theorem not_isSolvable (hp : 5 ≤ p) :
+    ¬ IsSolvable (Matrix.SpecialLinearGroup (Fin 2) (ZMod p)) := by
+  intro hsolv
+  haveI := hsolv
+  haveI : Nontrivial (Matrix.SpecialLinearGroup (Fin 2) (ZMod p)) := by
+    refine ⟨unipotentUpper 1, 1, ?_⟩
+    rw [← unipotentUpper_zero (p := p)]
+    intro h
+    exact one_ne_zero (unipotentUpper_injective h)
+  have hlt : commutator (Matrix.SpecialLinearGroup (Fin 2) (ZMod p)) < ⊤ :=
+    IsSolvable.commutator_lt_top_of_nontrivial _
+  rw [commutator_eq_top hp] at hlt
+  exact lt_irrefl _ hlt
+
 end SylowOQ04OQ03
