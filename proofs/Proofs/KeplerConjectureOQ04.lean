@@ -1068,5 +1068,41 @@ theorem packingDensity_le_rhombicDodecahedron (d : PackingDensity) :
   rw [rhombicDodecahedronPackingDensity_eq_one]
   exact d.le_one
 
+/-!
+## S21 — the density functional attains a genuine global maximum
+
+`packingDensity_le_rhombicDodecahedron` shows the space-filling density `δ = 1` is a
+universal ceiling, and `exists_packingDensity_eq_one` shows that ceiling is *attained*
+by `rhombicDodecahedronPacking`. The docstring of the former already calls the rhombic
+dodecahedron "a global maximum of the density functional" — but only in prose. This
+section turns that phrase into a single machine-checked statement in the two standard
+forms: the bare existential (a `PackingDensity` weakly dominating every other) and
+Mathlib's `IsGreatest` on the range of the density projection. Both are immediate
+combinations of the two facts above; no new axioms.
+-/
+
+/-- **The density functional attains a global maximum (existential form).**
+There is a `PackingDensity` weakly dominating every other, namely the space-filling
+rhombic dodecahedron: `∀ e, e.density ≤ rhombicDodecahedronPacking.density = 1`.
+Immediate from `packingDensity_le_rhombicDodecahedron` (the density-`1` ceiling is
+attained by `rhombicDodecahedronPacking`, so the universal bound is realized as a true
+maximum, not an unreached supremum). No axioms. -/
+theorem exists_greatest_packingDensity :
+    ∃ d : PackingDensity, ∀ e : PackingDensity, e.density ≤ d.density :=
+  ⟨rhombicDodecahedronPacking, packingDensity_le_rhombicDodecahedron⟩
+
+/-- **The density functional attains its supremum (`IsGreatest` form).**
+`1` is the greatest element of the range of `PackingDensity.density`: it lies in the
+range (witnessed by `rhombicDodecahedronPacking`) and it is an upper bound of the whole
+range (`packingDensity_le_rhombicDodecahedron`). This is the Mathlib-native packaging of
+the "space-filling body is universally optimal" statement — the density functional
+genuinely achieves its maximum value `δ = 1`, dual to the (conjecturally minimal, hence
+axiomatized via Ulam) sphere at the bottom of the hierarchy. No axioms. -/
+theorem isGreatest_packingDensity_range :
+    IsGreatest (Set.range (PackingDensity.density)) 1 := by
+  refine ⟨⟨rhombicDodecahedronPacking, rhombicDodecahedronPackingDensity_eq_one⟩, ?_⟩
+  rintro x ⟨d, rfl⟩
+  exact packingDensity_le_rhombicDodecahedron d
+
 
 end KeplerConjectureOQ04
