@@ -40,17 +40,28 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS (researcher-4, VERIFIED 0-sorry/0-axiom, docker [7744/7744] 4.6s): cyclotomic lemniscate {|Phi_n|<C} proven BOUNDED with explicit radius; escape-to-inf path obstruction is unconditional for cyclotomic polynomials (compactness supersedes Mac Lane labyrinth). Exact n=1,2 disk geometry recorded. Open frontier: component-count / path-length geometry (genuinely open, needs lemniscate topology Mathlib lacks).",
+    "builtItems": [
+      "norm_cyclotomic_eval (CyclotomicPolynomialsOQ02OQ01.lean): |Phi_n(z)| = prod distances to primitive roots, via cyclotomic_eq_prod_X_sub_primitiveRoots + norm_prod (VERIFIED 0/0)",
+      "pow_sub_one_le_norm_cyclotomic_eval: (|z|-1)^{phi(n)} <= |Phi_n(z)| for |z|>=1 (Finset.prod_le_prod + norm_sub_norm_le + IsPrimitiveRoot.norm'_eq_one + card_primitiveRoots)",
+      "cyclotomic_sublevel_norm_lt: |Phi_n(z)|<C implies |z| < max 2 (C+1) (le_self_pow0 for exponent>=1)",
+      "isBounded_levelSet_cyclotomic: Bornology.IsBounded (levelSet (cyclotomic n C) C)",
+      "not_hasBoundedLevelPath_cyclotomic: no HasBoundedLevelPath (Tendsto.eventually_gt_atTop contradiction)",
+      "sublevel_one, sublevel_two: exact ball descriptions for n=1,2"
+    ],
+    "insights": [
+      "All roots of Phi_n lie on the unit circle (primitive n-th roots), so |Phi_n(z)| = prod_{mu prim} dist(z,mu) >= (|z|-1)^{phi(n)} -> inf: the cyclotomic lemniscate {|Phi_n|<C} is BOUNDED (compact) for EVERY C, explicit radius max 2 (C+1).",
+      "Consequence for parent Erdos #1215 path problem: for cyclotomic Phi_n there is NO escape-to-inf path staying in a sublevel set, unconditionally (every threshold C, not just C>1), because the level set is compact - plain compactness supersedes the Mac Lane labyrinth obstruction in the cyclotomic case.",
+      "n=1,2 level-1 sets are exact open unit disks: {|Phi_1|<1}=ball(1,1), {|Phi_2|<1}=ball(-1,1), from Phi_1=X-1, Phi_2=X+1."
+    ],
     "mathlibGaps": [
       "No developed theory of rectifiable paths with arc length in ℂ tied to polynomial sublevel sets.",
       "No polynomial-lemniscate topology results (component counts, connectivity of {|P|=c})."
     ],
     "nextSteps": [
-      "Draft a Lean definition of the sublevel set {z : |Φ_n(z)| < 1} using Polynomial.eval and Complex.abs.",
-      "Compute and formalize the geometry of {|Φ_n(z)|<1} for small n (n = 1, 2, 3, 4, 6).",
-      "Investigate whether root equidistribution of primitive n-th roots of unity bounds the number of lemniscate components."
+      "Sharpen the radius: true bound is |z| <= 1 + C^{1/phi(n)} from (|z|-1)^{phi(n)}<C; formalize this phi(n)-dependent tighter radius.",
+      "Compute {|Phi_n(z)|<1} geometry for n=3,4,6 (connected vs multi-component lemniscates); investigate whether root equidistribution bounds component count (the actual path-length driver).",
+      "Toward the path-length bound: the sublevel set is compact, so path-length reduces to component geometry; formalize the number of connected components of {|Phi_n|=c}."
     ],
     "markdown": "# Knowledge Base: erdos-1215-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\nThis is a restriction of Erdős #1215 to cyclotomic polynomials Φ_n, whose roots are the primitive n-th roots of unity. The parent problem was resolved negatively by Mac Lane (1953) using labyrinth polynomials; the question here is whether the rigid, symmetric placement of cyclotomic roots precludes such labyrinths and yields a polynomial-in-n path-length bound.\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
