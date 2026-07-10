@@ -67,6 +67,17 @@ noncomputable def sMidpoint (A B : E) : E := (‖A + B‖)⁻¹ • (A + B)
 theorem sMidpoint_comm (A B : E) : sMidpoint A B = sMidpoint B A := by
   unfold sMidpoint; rw [add_comm A B]
 
+/-- **The spherical midpoint of a model point with itself is that point.**  `sMidpoint A A = A`
+for `A` on the sphere: the degenerate side `AA` has the vertex as its own midpoint.  (Here
+`A + A ≠ 0` automatically, since `‖A‖ = 1`.) -/
+theorem sMidpoint_self {A : E} (hA : OnSphere A) : sMidpoint A A = A := by
+  have hnorm : ‖A‖ = 1 := hA
+  have h2 : ‖A + A‖ = 2 := by
+    rw [← two_smul ℝ A, norm_smul, hnorm, mul_one]; simp
+  unfold sMidpoint
+  rw [h2, ← two_smul ℝ A, smul_smul,
+      inv_mul_cancel₀ (by norm_num : (2:ℝ) ≠ 0), one_smul]
+
 /-- **The midpoint of a non-degenerate spherical side is a model point.**  For non-antipodal
 `A, B` (`A + B ≠ 0`) the normalised sum has unit norm.  The hypothesis is genuinely needed:
 antipodal points sum to `0` and have no well-defined midpoint. -/
@@ -85,6 +96,18 @@ theorem inner_sMidpoint_sub (A B : E) (hA : OnSphere A) (hB : OnSphere B) :
   rw [real_inner_smul_left, inner_sub_right, inner_add_left, inner_add_left,
       real_inner_self_eq_norm_sq, real_inner_self_eq_norm_sq, hA, hB, real_inner_comm B A]
   ring
+
+/-- **The spherical midpoint lies on the geodesic through `A` and `B`.**  Being the normalised
+sum `‖A + B‖⁻¹ • (A + B)`, the midpoint is a linear combination of `A` and `B`, hence lies in the
+plane they span — i.e. on the great circle through `A` and `B`.  Together with
+`inner_sMidpoint_sub` (the midpoint is on the perpendicular bisector of `AB`) this locates
+`sMidpoint A B` as the intersection of the side's geodesic with its perpendicular bisector. -/
+theorem sMidpoint_mem_span (A B : E) :
+    sMidpoint A B ∈ Submodule.span ℝ ({A, B} : Set E) := by
+  unfold sMidpoint
+  refine Submodule.smul_mem _ _ (Submodule.add_mem _ ?_ ?_)
+  · exact Submodule.subset_span (by simp)
+  · exact Submodule.subset_span (by simp)
 
 /-- **The spherical midpoint is equidistant (equal spherical cosine) from the two endpoints.**
 `scos A M = ‖A+B‖⁻¹ (1 + ⟪A,B⟫) = scos B M`, so `A` and `B` are on a common spherical circle

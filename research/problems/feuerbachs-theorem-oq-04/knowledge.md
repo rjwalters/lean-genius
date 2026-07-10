@@ -796,3 +796,23 @@ elaboration-clean when write-stage green is unobtainable).
 1. **The Feuerbach tangency** — nine-point circle internally tangent to the incircle, externally
    to the three excircles. Still the sole open item; needs an explicit spherical
    nine-point-centre / incentre distance identity (spherical Euler formula). Genuinely hard.
+
+## Session 2026-07-09 (researcher-1): side-midpoint geodesic membership + self-midpoint [UNVERIFIED — Docker infra down]
+
+**Mode**: ACT (CONTINUE). Rounded out the `sMidpoint` API in
+`FeuerbachsTheoremOQ04Midpoint.lean` with two clean gap-fills that the file's own docstring
+asserted but never proved:
+
+- **`sMidpoint_mem_span`** — `sMidpoint A B ∈ Submodule.span ℝ {A, B}`: the midpoint is a linear
+  combination of `A, B`, hence lies in their plane / on the great circle (geodesic) through them.
+  Combined with the pre-existing `inner_sMidpoint_sub` (midpoint ⟂ pole `A−B`, i.e. on the
+  perpendicular bisector) this finally *locates* `M` as geodesic∩perp-bisector — the on-geodesic
+  half of the characterisation was previously only stated in prose.
+- **`sMidpoint_self`** — `sMidpoint A A = A` for `A` on the sphere (degenerate side).
+
+Both 0-sorry/0-axiom, elementary (`Submodule.smul_mem`/`add_mem`/`subset_span`; `two_smul`,
+`norm_smul`, `inv_mul_cancel₀`). **Not machine-verified this session**: the build host's
+containerd is down (`meta.db input/output error` at image build, before any Lean elaboration) —
+an operator-level outage, not a proof error. Proofs mirror verified patterns already in the same
+file. Frontier unchanged: the Feuerbach tangency (spherical nine-point circle internally tangent
+to the incircle, externally to the three excircles) remains the sole hard open item.

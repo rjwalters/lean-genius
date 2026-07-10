@@ -32,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (researcher-1 2026-07-08): the spherical midpoint sMidpoint was proven equidistant (sdist_sMidpoint_eq) but never proven to actually BISECT the arc. Added sdist_sMidpoint_half: sdist A (sMidpoint A B) = (1/2)*sdist A B — strictly stronger than equidistance (rules out the antipode of the true midpoint), justifying the name. Plus reusable helpers norm_add_sq_unit (‖A+B‖²=2+2⟪A,B⟫) and scos_sMidpoint_left (explicit vertex-to-midpoint spherical cosine ‖A+B‖⁻¹(1+⟪A,B⟫)). Companion FeuerbachsTheoremOQ04Midpoint.lean 119->199 lines, 6->9 theorems, VERIFIED 0 axioms / 0 sorries (docker Built, #print axioms = propext/Classical.choice/Quot.sound). Frontier unchanged: the Feuerbach tangency capstone (nine-point circle tangent to incircle) remains the sole hard open item.",
+    "progressSummary": "PROGRESS: side-midpoint API rounded out with geodesic-membership (span{A,B}) and self-midpoint lemmas; frontier remains the Feuerbach tangency (nine-point circle ↔ incircle/excircles).",
     "builtItems": [
       "FeuerbachsTheoremOQ04.chord_sq (Proofs/FeuerbachsTheoremOQ04.lean) — chord-cosine bridge: for unit vectors, ||P-Q||^2 = 2 - 2*scos P Q; turns spherical tangency into an inner-product equation. 0-axiom.",
       "FeuerbachsTheoremOQ04.abs_scos_le_one/scos_le_one/neg_one_le_scos — spherical cosine in [-1,1] (Cauchy-Schwarz on unit vectors)",
@@ -55,7 +55,8 @@
       "SphericalIncircle Na Nb Nc O ρ — circle tangent to all 3 side poles of a spherical triangle",
       "sphericalIncircle_contact_points — incircle meets each of the 3 sides in exactly one point (explicit feet)",
       "sphericalCircumcircle_exists in FeuerbachsTheoremOQ04Circumcircle.lean: any three model points lie on a common sCircle O rho (circumcircle), via greatCircles_inter on poles A-B, B-C. [VERIFIED, 0-axiom]",
-      "sphericalCircumcircle_equidistant + inner_sub_eq_zero_iff_scos_eq in FeuerbachsTheoremOQ04Circumcircle.lean: circumcentre is spherically equidistant sdist A O = sdist B O = sdist C O. [VERIFIED, 0-axiom]"
+      "sphericalCircumcircle_equidistant + inner_sub_eq_zero_iff_scos_eq in FeuerbachsTheoremOQ04Circumcircle.lean: circumcentre is spherically equidistant sdist A O = sdist B O = sdist C O. [VERIFIED, 0-axiom]",
+      "sMidpoint_self (degenerate midpoint sMidpoint A A = A) + sMidpoint_mem_span (midpoint lies in span{A,B}, i.e. on the geodesic through A,B) in FeuerbachsTheoremOQ04Midpoint.lean"
     ],
     "insights": [
       "Mathlib has clean spherical geometry for free (unit vectors of any InnerProductSpace R E; geodesic distance = arccos of inner product) but essentially no hyperbolic metric, so the spherical model is the tractable non-Euclidean route for Feuerbach.",
@@ -64,7 +65,8 @@
       "Spherical common tangent at a contact point is captured coordinate-free: since P ∈ span{O₁,O₂}, any T ⟂ {O₁,O₂} is simultaneously in the tangent space at P and tangent to both circles — no explicit geodesic parametrisation needed.",
       "Circle-to-great-circle tangency is the exact primitive a spherical INCIRCLE construction needs: the incircle is tangent to the three side-geodesics (great circles), not to other circles. Distance from a point to a great circle with unit pole N is arcsin|⟪O,N⟫|, so tangency criterion is |⟪O,N⟫| = sin ρ (spherical shadow of Euclidean distance-to-line = radius).",
       "The contact point of a tangent circle and a side is the FOOT OF THE PERPENDICULAR (O - ⟪O,N⟫•N)/cos ρ; it is pure inner-product algebra (no infimum/analysis): ⟪foot,N⟫=0, ⟪foot,O⟫=cos ρ, ‖foot‖=1 via ‖O⊥‖²=1-⟪O,N⟫²=cos²ρ under the criterion. Uniqueness via ⟪Q,foot⟫=1 ⟹ Q=foot (scos_eq_one_iff).",
-      "Spherical perpendicular bisector of a segment AB is the great circle with pole A-B: model points equidistant (equal scos) from A and B are exactly those orthogonal to A-B (inner_sub_eq_zero_iff_scos_eq). Dual to the side-pole bisector equidistant_two_sides_iff."
+      "Spherical perpendicular bisector of a segment AB is the great circle with pole A-B: model points equidistant (equal scos) from A and B are exactly those orthogonal to A-B (inner_sub_eq_zero_iff_scos_eq). Dual to the side-pole bisector equidistant_two_sides_iff.",
+      "The spherical midpoint is now located as the intersection of the side geodesic (sMidpoint_mem_span: M ∈ span{A,B}) with the perpendicular bisector (inner_sMidpoint_sub), completing the on-geodesic + equidistant characterisation the docstring asserted."
     ],
     "mathlibGaps": [
       "No developed hyperbolic-geometry metric (hyperboloid / Poincare disk distance) in Mathlib — blocks an axiom-free hyperbolic Feuerbach without building the model first.",
