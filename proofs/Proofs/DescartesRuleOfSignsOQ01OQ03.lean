@@ -704,7 +704,8 @@ theorem countSignChanges_alternating {n : ℕ} {f : Fin n → ℝ}
     simp only [Finset.mem_filter, Finset.mem_univ, true_and, decide_eq_true_eq] at hp
     have hadj := adj i j hp
     have hj : j.val < n := j.isLt
-    exact Finset.mem_range.mpr (by omega)
+    have hlt : i.val < n - 1 := by omega
+    exact Finset.mem_range.mpr hlt
   · -- each adjacent pair is a genuine sign change
     intro m hm
     have hmr : m < n - 1 := Finset.mem_range.mp hm
