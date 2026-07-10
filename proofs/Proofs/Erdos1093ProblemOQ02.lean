@@ -1110,6 +1110,78 @@ theorem maximalDeficiencyIs_nine_iff_kGe17 :
     · exact h n k (by omega) hv
 
 /-
+## Section XVIIB: The uniform location-bound transfer principle behind Sections XVII+
+
+Section XVII closes `k = 16` by a five-step argument, and every later section
+(`XVIII, XIX, …`) closing `k = 17, 18, …` repeats it *verbatim* with only three
+inputs changed: the modulus `k`, a numeric certificate `k! < M^(d₀+1)`, and the
+inadmissibility of the resulting finite window `2k ≤ n ≤ k + M - 2`.  This section
+factors that shared skeleton into a single reusable lemma, exactly as
+`deficiency_le_of_sq_factorial_lt` (Section XIV) did for the *factorial-ceiling*
+method.  The file now carries both uniform elementary tools symmetrically:
+
+  * the **factorial-ceiling** transfer principle (`deficiency_le_of_sq_factorial_lt`),
+    from a certificate `(k!)² < (k + D + 1)!`, and
+  * the **location-bound** transfer principle (`deficiency_le_of_windowFloor_pow_lt`,
+    below), from a certificate `k! < M^(d₀+1)` plus window inadmissibility.
+
+The engine turns each `deficiency_le_nine_of_k_eq_*` proof into a one-line
+instantiation; the numeric certificate `k! < M^(d₀+1)` is a literal-factorial /
+literal-power comparison the kernel reduces, so the location step itself is always
+`Lean.ofReduceBool`-free (only the window's `Nat.choose` admissibility facts use
+`native_decide`, as before).
+-/
+
+/-- **Uniform location-bound transfer principle.**  Fix a modulus `k` and suppose
+the window-floor certificate `k! < M^(d₀+1)` holds *and* every `n` in the finite
+window `2k ≤ n ≤ k + M - 2` fails admissibility.  Then every admissible pair `(n, k)`
+with `n ≥ 2k` has `deficiency n k ≤ d₀`.
+
+Proof (the shared skeleton of Sections XVII+): a deficiency `≥ d₀ + 1` would force,
+via the window-floor power bound `windowFloor_pow_le_factorial_of_le`,
+`(n - k + 1)^(d₀+1) ≤ k! < M^(d₀+1)`, hence `n - k + 1 < M`, i.e. `n ≤ k + M - 2`;
+with the admissibility floor `2k ≤ n` this lands `n` in the window, contradicting its
+inadmissibility.  Independent of the axiomatized ELS bound `els_upper_bound`. -/
+theorem deficiency_le_of_windowFloor_pow_lt {n k M d₀ : ℕ} (hn : 2 * k ≤ n)
+    (h : NoSmallPrimeFactors n k)
+    (hnum : Nat.factorial k < M ^ (d₀ + 1))
+    (hwin : ∀ m : ℕ, 2 * k ≤ m → m ≤ k + M - 2 → ¬ NoSmallPrimeFactors m k) :
+    deficiency n k ≤ d₀ := by
+  by_contra hcon
+  push_neg at hcon
+  have hpow : (n - k + 1) ^ (d₀ + 1) ≤ Nat.factorial k :=
+    windowFloor_pow_le_factorial_of_le hn h (by omega)
+  have hlt : (n - k + 1) ^ (d₀ + 1) < M ^ (d₀ + 1) := lt_of_le_of_lt hpow hnum
+  have hfloor : n - k + 1 < M := by
+    by_contra hge
+    push_neg at hge
+    exact absurd (Nat.pow_le_pow_left hge (d₀ + 1)) (not_le.mpr hlt)
+  exact hwin n hn (by omega) h
+
+/-- **The record-target specialization.**  The exact shape every `k`-section needs:
+from a certificate `k! < M^10` and inadmissibility of the location window
+`2k ≤ n ≤ k + M - 2`, no admissible pair at modulus `k` exceeds the record
+deficiency `9`.  A one-line corollary of `deficiency_le_of_windowFloor_pow_lt` at
+`d₀ = 9`. -/
+theorem deficiency_le_nine_of_location {n k M : ℕ} (hn : 2 * k ≤ n)
+    (h : NoSmallPrimeFactors n k)
+    (hnum : Nat.factorial k < M ^ 10)
+    (hwin : ∀ m : ℕ, 2 * k ≤ m → m ≤ k + M - 2 → ¬ NoSmallPrimeFactors m k) :
+    deficiency n k ≤ 9 :=
+  deficiency_le_of_windowFloor_pow_lt hn h hnum hwin
+
+/-- **Certification that the engine reproduces Section XVII.**  An independent
+one-line re-derivation of `deficiency_le_nine_of_k_eq_16` through the uniform
+`deficiency_le_nine_of_location`, instantiated at `k = 16, M = 22` with the very
+same certificate `16! < 22^10` and window facts.  It confirms the transfer principle
+subsumes the hand-written per-`k` skeleton (window here: `32 ≤ n ≤ 16 + 22 - 2 = 36`). -/
+theorem deficiency_le_nine_of_k_eq_16_via_location {n : ℕ} (hn : 32 ≤ n)
+    (h : NoSmallPrimeFactors n 16) : deficiency n 16 ≤ 9 :=
+  deficiency_le_nine_of_location (k := 16) (M := 22) (by omega) h
+    factorial_16_lt_22_pow_ten
+    (fun m hlo hhi => not_admissible_k16_of_range (by omega) (by omega))
+
+/-
 ## Section XVIII: The location bound closes `k = 17` — frontier `k ≥ 17` → `k ≥ 18`
 
 Section XVII cashed out the effective, ELS-free location bound of Section XVI at the
