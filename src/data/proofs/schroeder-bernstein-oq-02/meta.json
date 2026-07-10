@@ -62,7 +62,7 @@
       "**Fixed Point Is Explicit**: Unlike the classical Mathlib proof (which uses Classical.choice internally), the partition set S* is explicitly constructed as OrderHom.lfp and can be inspected.",
       "**Three Proof Variants**: The gallery now has three CBS proofs: orbit decomposition (parent), Knaster-Tarski (this), and constructive finite (OQ-04), each using fundamentally different methods."
     ],
-    "text": "A Knaster-Tarski proof of the Schroeder-Bernstein theorem in 207 lines, using Mathlib's OrderHom.lfp for the fixed point. The monotone operator T(S) = (range g)ᶜ ∪ g''(f''S) on Set α has a least fixed point S* that partitions α for the bijection. Fully verified: 0 sorries, 0 axioms.",
+    "text": "A Knaster-Tarski proof of the Schroeder-Bernstein theorem in 223 lines, using Mathlib's OrderHom.lfp for the fixed point. The monotone operator T(S) = (range g)ᶜ ∪ g''(f''S) on Set α has a least fixed point S* that partitions α for the bijection. Fully verified: 0 sorries, 0 axioms.",
     "prerequisites": [
       "Complete lattices and monotone functions (Knaster-Tarski theorem)",
       "Set operations: image, range, complement, union",

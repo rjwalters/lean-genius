@@ -142,7 +142,7 @@
     }
   ],
   "conclusion": {
-    "summary": "This module provides core definitions for hypergraph regularity in 175 lines with 3 definitions (UHypergraph, kPartiteDensity, IsHypergraphRegular) and 4 proved lemmas (0 sorries, 0 axioms). It generalizes the graph regularity framework of SzemerediCore.lean to k-uniform hypergraphs.",
+    "summary": "This module provides core definitions for hypergraph regularity in 213 lines with 3 definitions (UHypergraph, kPartiteDensity, IsHypergraphRegular) and 4 proved lemmas (0 sorries, 0 axioms). It generalizes the graph regularity framework of SzemerediCore.lean to k-uniform hypergraphs.",
     "implications": "**Theoretical Significance**: Hypergraph regularity is the foundation for the multidimensional Szemerédi theorem (Gowers 2007), the hypergraph removal lemma, and many results in additive combinatorics. The naive regularity defined here captures the density-deviation idea and specializes correctly to the graph case.\n\nThe centralized UHypergraph structure can replace the 27+ per-problem hypergraph definitions scattered across Erdős problem files, preventing definition drift.\n\n**Limitations**: The naive regularity is insufficient for most applications — the full Gowers regularity (relative to simplicial complexes) is needed for the hypergraph counting lemma and removal lemma.",
     "openQuestions": [
       "Define SimplicialComplex (nested family of j-graphs) and relative density for the full Gowers (2007) regularity",
