@@ -50,7 +50,7 @@
   {
     "id": "ann-bonferroni",
     "proofId": "inclusion-exclusion-oq-04-oq-03",
-    "range": { "startLine": 249, "endLine": 285 },
+    "range": { "startLine": 249, "endLine": 284 },
     "type": "insight",
     "title": "The Bonferroni Inequalities and the Exact Endpoint",
     "content": "`bonferroni_even` (m even ⟹ noneCard A ≤ bonf A m) and `bonferroni_odd` (m odd ⟹ bonf A m ≤ noneCard A) follow immediately from the core sign statement by specializing the parity of (-1)^m. `bonf_eq_noneCard_of_card_le` closes the circle: once m ≥ |ι|, every deg A x ≤ |ι| ≤ m forces C(deg−1, m) = 0 (Nat.choose_eq_zero_of_lt), so altPartial (deg A x) m becomes the exact indicator [deg A x = 0] and the truncated sieve equals the true count — the exact inclusion–exclusion principle as the endpoint of the Bonferroni ladder.",

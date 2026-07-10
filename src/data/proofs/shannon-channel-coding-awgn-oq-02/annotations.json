@@ -62,7 +62,7 @@
   {
     "id": "ann-output-power",
     "proofId": "shannon-channel-coding-awgn-oq-02",
-    "range": { "startLine": 82, "endLine": 108 },
+    "range": { "startLine": 82, "endLine": 96 },
     "type": "insight",
     "title": "The Output Power E[Y²] = P + N",
     "content": "`awgn_output_power` is the headline: substituting the named powers $P=\\mathbb{E}[X^2]$, $N=\\mathbb{E}[Z^2]$ into the additivity lemma yields $\\mathbb{E}[(X+Z)^2]=P+N$ — exactly the quantity the parent converse assumes as `hvar`, now derived. `awgn_output_variance` restates it through Mathlib's `variance`: $\\mathrm{Var}[X+Z]=P+N$, obtained by applying the centered second-moment bridge to $X+Z$ (whose mean vanishes). The conceptual payoff: the converse's variance budget $\\le P+N$ is the genuine power accounting of an additive channel, not an external hypothesis, and the identity holds for any additive-noise channel — Gaussianity is needed only for the entropy half of the capacity.",

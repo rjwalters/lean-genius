@@ -102,7 +102,7 @@
       "id": "range",
       "title": "Verified Lower Bound by One Kernel decide",
       "startLine": 168,
-      "endLine": 182,
+      "endLine": 181,
       "summary": "reprCount_odd_ge_two_range: every odd 1 < n < 100 has 2 ≤ reprCount n (the representation is redundant, min 2 at n = 3, 5, 13, 29), by a single kernel decide on the reducible count (maxRecDepth 10000 is a recursion budget, not an axiom). isSquarefreePlusPow2_odd_range recovers the existence range as a weaker corollary. The trailing #print axioms confirms only propext / Classical.choice / Quot.sound — no Lean.ofReduceBool.",
       "mathContext": "$\\forall$ odd $n,\\ 1<n<100:\\ \\mathrm{reprCount}\\,n\\ge 2$, with $\\#\\mathrm{print\\ axioms}=\\{\\mathrm{propext},\\mathrm{Classical.choice},\\mathrm{Quot.sound}\\}$ only."
     }

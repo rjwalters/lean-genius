@@ -74,7 +74,7 @@
   {
     "id": "geomseries-oq06-ann-summary",
     "proofId": "geometric-series-oq-06",
-    "range": { "startLine": 117, "endLine": 145 },
+    "range": { "startLine": 117, "endLine": 144 },
     "type": "concept",
     "title": "Summary table and #check sanity",
     "content": "A markdown summary table lists all six results with their backing Mathlib lemmas, and re-derives the differentiation heuristic $\\sum r^n = 1/(1-r) \\Rightarrow \\sum n r^{n-1} = 1/(1-r)^2$. The trailing `#check`s confirm the exported signatures elaborate. Together these document that the entry's value is a clean, named gallery API over Mathlib's weighted-geometric lemmas, plus the genuinely-derived shifted companion.",

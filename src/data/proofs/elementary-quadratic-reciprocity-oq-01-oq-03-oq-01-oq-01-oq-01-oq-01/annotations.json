@@ -50,7 +50,7 @@
   {
     "id": "ann-eqr-oq010301010101-headline",
     "proofId": "elementary-quadratic-reciprocity-oq-01-oq-03-oq-01-oq-01-oq-01-oq-01",
-    "range": { "startLine": 267, "endLine": 320 },
+    "range": { "startLine": 267, "endLine": 318 },
     "type": "theorem",
     "title": "Prime-power Zolotarev: legendre power and Jacobi form",
     "content": "sign_ringMulPerm_eq_legendre_pow inducts the one-step recursion on the exponent to get sign(ringMulPerm a on ℤ/pⁿ) = legendreSym p (a mod p)ⁿ (base case n = 1: the non-unit block is the singleton {0}, sign 1). jacobiSym_prime_pow proves J(A | pⁿ) = (legendreSym p A)ⁿ via jacobiSym.mul_right, and sign_ringMulPerm_eq_jacobiSym packages the headline as the Jacobi symbol J(a | pⁿ) — closing the prime-power case of the Frobenius/Zolotarev identity.",

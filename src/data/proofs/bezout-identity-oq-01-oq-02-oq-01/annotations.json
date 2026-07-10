@@ -86,7 +86,7 @@
   {
     "id": "bezout-oq010201-examples",
     "proofId": "bezout-identity-oq-01-oq-02-oq-01",
-    "range": { "startLine": 172, "endLine": 189 },
+    "range": { "startLine": 172, "endLine": 188 },
     "type": "concept",
     "title": "Concrete sanity checks, axiom-free",
     "content": "Three examples close the entry: (12,8) ↦ (gcd = 4, 0), the coprime pair (7,5) ↦ (1,0), and the quotient list euclidQuots 12 8 = [1,2] (from 12 = 1·8 + 4 and 8 = 2·4 + 0), so euclidProd 12 8 = E 2 · E 1. Crucially these are discharged by `simpa`/`norm_num` unfolding the recursion — not by native_decide — so the entry stays genuinely 0-axiom (only propext / Classical.choice / Quot.sound, and no Lean.ofReduceBool).",
