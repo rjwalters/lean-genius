@@ -307,6 +307,49 @@ bound `A_le_A_succ`. -/
 theorem A_monotone : Monotone A :=
   monotone_nat_of_le_succ A_le_A_succ
 
+/-- **Strict one-step monotonicity.** For `k ≥ 1`, `A(k) < A(k+1)`. Deleting the
+*largest* element (rather than an arbitrary one) from an optimal admissible
+`(k+1)`-set leaves an admissible `k`-set whose maximum is *strictly* smaller: every
+surviving element lies below the deleted maximum. Since `A(k)` bounds that smaller
+maximum and the deleted maximum is `A(k+1)`, we get `A(k) < A(k+1)`.
+
+This sharpens `A_le_A_succ` from `≤` to `<`: no two distinct admissible-tuple sizes
+`k ≥ 1` share a minimal diameter — the exact-value frontier
+`A(2)=2, A(3)=6, A(4)=8, …` is genuinely strictly increasing. -/
+theorem A_lt_A_succ {k : ℕ} (hk : 1 ≤ k) : A k < A (k + 1) := by
+  obtain ⟨a, hcard, ha, hsup⟩ := A_mem (k + 1)
+  have hne : a.Nonempty := by rw [← Finset.card_pos, hcard]; omega
+  obtain ⟨x, hxa, hxsup⟩ := Finset.exists_mem_eq_sup a hne id
+  have hsub : a.erase x ⊆ a := fun y hy => Finset.mem_of_mem_erase hy
+  have hcard' : (a.erase x).card = k := by
+    rw [Finset.card_erase_of_mem hxa, hcard, Nat.add_sub_cancel]
+  have ha' : Admissible (a.erase x) := ha.subset hsub
+  -- The maximum `x` is positive: `a` has `k + 1 ≥ 2` distinct naturals, so `x ≥ k ≥ 1`.
+  have hxpos : 0 < x := by
+    have hcs := card_le_sup_succ a
+    rw [hcard, hxsup] at hcs
+    simp only [id_eq] at hcs
+    omega
+  -- Every surviving element is strictly below the deleted maximum `x`.
+  have hlt : (a.erase x).sup id < x := by
+    rw [Finset.sup_lt_iff (by simpa using hxpos)]
+    intro y hy
+    have hya : y ∈ a := Finset.mem_of_mem_erase hy
+    have hyne : y ≠ x := Finset.ne_of_mem_erase hy
+    have hle : id y ≤ a.sup id := Finset.le_sup hya
+    rw [hxsup] at hle
+    simp only [id_eq] at hle ⊢
+    omega
+  have hup : A k ≤ (a.erase x).sup id := A_le hcard' ha'
+  have hlt2 : (a.erase x).sup id < a.sup id := by rw [hxsup]; simpa using hlt
+  omega
+
+/-- **The frontier is strictly increasing.** Reindexing by `j ↦ A(j+1)` (so the
+domain starts at the first strictly-increasing index `k = 1`), `A` is strictly
+monotone. Packages `A_lt_A_succ`, which holds for every `k ≥ 1`. -/
+theorem A_succ_strictMono : StrictMono (fun j => A (j + 1)) :=
+  strictMono_nat_of_lt_succ (fun j => A_lt_A_succ (by omega))
+
 /-- **Trivial lower bound.** `A(k) ≥ k - 1`, since any `k` distinct naturals have maximum
 at least `k - 1`. -/
 theorem sub_one_le_A (k : ℕ) : k - 1 ≤ A k := by
