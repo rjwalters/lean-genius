@@ -383,4 +383,41 @@ theorem card_irregularOrderedPairs_eq_zero_of_card_le_one
   rw [hz] at hle
   exact Nat.le_zero.mp hle
 
+/-- **Every pair is ε-regular once `eps ≥ 1`.**  The density gap between any two
+    sub-densities is at most `1` (both edge densities lie in `[0, 1]`, so their
+    difference is in `[-1, 1]`), which is `≤ eps` as soon as `1 ≤ eps`.  Thus `eps = 1`
+    is the trivial-regularity threshold: at or above it the ε-regularity condition
+    imposes no constraint at all.  This is the large-parameter extreme complementing
+    `isEpsilonRegular_mono` (regularity only weakens as `eps` grows). -/
+theorem isEpsilonRegular_of_one_le (G : SimpleGraph V) [DecidableRel G.Adj]
+    {eps : ℚ} (heps : 1 ≤ eps) (A B : Finset V) :
+    IsEpsilonRegular G eps A B := by
+  intro A' B' _ _ _ _
+  have h1 := edgeDensity_mem_Icc G A' B'
+  have h2 := edgeDensity_mem_Icc G A B
+  rw [Set.mem_Icc] at h1 h2
+  rw [abs_le]
+  exact ⟨by linarith [h1.1, h2.2], by linarith [h1.2, h2.1]⟩
+
+/-- **No irregular pairs once `eps ≥ 1`.**  Since every pair is ε-regular at `eps ≥ 1`
+    (`isEpsilonRegular_of_one_le`), the ordered irregular set is empty for any partition.
+    The high-`eps` counterpart of `card_irregularOrderedPairs_eq_zero_of_card_le_one`
+    (which is the few-parts extreme): the irregular count vanishes at *both* ends of the
+    regularity regime. -/
+theorem irregularOrderedPairs_eq_empty_of_one_le (G : SimpleGraph V) [DecidableRel G.Adj]
+    {eps : ℚ} (heps : 1 ≤ eps) (parts : Finset (Finset V)) :
+    irregularOrderedPairs G eps parts = ∅ := by
+  rw [Finset.eq_empty_iff_forall_not_mem]
+  rintro x hx
+  simp only [irregularOrderedPairs, Finset.mem_filter, Finset.mem_product] at hx
+  exact hx.2.2 (isEpsilonRegular_of_one_le G heps x.1 x.2)
+
+/-- **The irregular-pair count vanishes for `eps ≥ 1`.**  Cardinality form of
+    `irregularOrderedPairs_eq_empty_of_one_le`: at or above the trivial threshold the
+    `IsRegularPartition` irregular-count bound is satisfied vacuously by every partition. -/
+theorem card_irregularOrderedPairs_eq_zero_of_one_le (G : SimpleGraph V) [DecidableRel G.Adj]
+    {eps : ℚ} (heps : 1 ≤ eps) (parts : Finset (Finset V)) :
+    (irregularOrderedPairs G eps parts).card = 0 := by
+  rw [irregularOrderedPairs_eq_empty_of_one_le G heps parts, Finset.card_empty]
+
 end Szemeredi.Regularity.OQ01
