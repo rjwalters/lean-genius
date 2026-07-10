@@ -238,7 +238,6 @@ theorem conjecturedBound_div_klrBound (c : ℝ) (hc : 0 < c) (n : ℕ) (hn : n �
   have h3 : Real.sqrt (Real.log (n : ℝ)) ≠ 0 := hsqrt_pos.ne'
   simp only [conjecturedBound, klrBound]
   field_simp
-  ring
 
 /-- The multiplicative gap `conjecturedBound / klrBound` is unbounded — it grows like
     `√log n → ∞`.  Hence KLR does not reach the conjectured rate even up to constants. -/
@@ -287,7 +286,6 @@ theorem conjecturedBound_div_pommerenkeBound (c : ℝ) (hc : 0 < c) (n : ℕ) (h
   have h2 : Real.exp 1 ≠ 0 := (Real.exp_pos 1).ne'
   simp only [conjecturedBound, pommerenkeBound]
   field_simp
-  ring
 
 /-- The multiplicative gap `conjecturedBound / pommerenkeBound` is unbounded — it grows like
     `2ec·n → ∞`.  So Pommerenke's bound, too, does not reach the conjectured rate even up to
@@ -491,7 +489,7 @@ theorem area_implies_disc_bound :
     have hsup_bound :
         sSup {r : ℝ | ∃ c : ℂ, isInscribedDisc (sublevelSet f) c r}
           ≤ Real.sqrt (sublevelArea f / Real.pi) := by
-      apply csSup_le ⟨r0, c0, hr0pos, hsub0⟩
+      refine csSup_le ⟨r0, c0, hr0pos, hsub0⟩ ?_
       rintro r ⟨c, hrpos, hsub⟩
       have h1 : Real.pi * r ^ 2 ≤ sublevelArea f := hkey r ⟨c, hrpos, hsub⟩
       have h2 : r ^ 2 ≤ sublevelArea f / Real.pi := by
