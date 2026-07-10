@@ -179,6 +179,16 @@ theorem sum_geomSet (n : ℕ) : (geomSet n).sum id = 2 ^ n - 1 := by
   have := geomSum_two_succ n
   omega
 
+/-- The geometric set makes the Section 2 counting bound `two_pow_card_le_sum_succ`
+    (`2^{|A|} ≤ Σ A + 1`) an **equality** for every `n`: with `|A| = n` and
+    `Σ A = 2ⁿ − 1`, we get `2^{|A|} = 2ⁿ = Σ A + 1`. This is the explicit witness
+    that the counting lower bound cannot be improved as stated. -/
+theorem two_pow_card_geomSet_eq_sum_succ (n : ℕ) :
+    2 ^ (geomSet n).card = (geomSet n).sum id + 1 := by
+  rw [card_geomSet, sum_geomSet]
+  have h : 1 ≤ 2 ^ n := Nat.one_le_pow n 2 (by norm_num)
+  omega
+
 /-- The largest element of the geometric set is `2^{n-1}` (for `n ≥ 1`). -/
 theorem max'_geomSet {n : ℕ} (hn : 1 ≤ n) (hne : (geomSet n).Nonempty) :
     (geomSet n).max' hne = 2 ^ (n - 1) := by
@@ -239,6 +249,13 @@ theorem Superincreasing.erase {A : Finset ℕ} (h : Superincreasing A) (m : ℕ)
   have hsub : (A.erase m).filter (· < a) ⊆ A.filter (· < a) :=
     filter_subset_filter _ (erase_subset _ _)
   exact lt_of_le_of_lt (sum_le_sum_of_subset hsub) (h a haA)
+
+/-- A superincreasing set cannot contain `0` (the structural analogue of
+    `zero_not_mem` for distinct-subset-sums sets): applying the superincreasing
+    inequality at `a = 0` would give `(A.filter (· < 0)).sum id < 0`, impossible
+    in `ℕ`. -/
+theorem Superincreasing.zero_not_mem {A : Finset ℕ} (h : Superincreasing A) :
+    0 ∉ A := fun h0 => absurd (h 0 h0) (Nat.not_lt_zero _)
 
 /-- **Superincreasing ⟹ distinct subset sums.** The key structural principle: because
     each element dominates the sum of everything below it, a subset is determined by
