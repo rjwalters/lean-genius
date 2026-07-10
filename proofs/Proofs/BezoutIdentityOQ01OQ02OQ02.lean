@@ -205,4 +205,30 @@ there is nothing to reduce and no target `e₁` to reach, so the descent is vacu
 theorem not_isPrimitive_fin_zero (v : Fin 0 → ℤ) : ¬ IsPrimitive v :=
   fun h => h.ne_zero (Subsingleton.elim v 0)
 
+/-! ### Reconciliation with the parent proof (`n = 2`) -/
+
+/-- **Two-dimensional case: primitivity is coprimality of the entries.**  A vector
+`v : Fin 2 → ℤ` is primitive iff `v 0` and `v 1` are coprime.  This is precisely the
+hypothesis under which the parent proof `bezout-identity-oq-01-oq-02` builds its
+explicit `SL₂(ℤ)` matrix, so it identifies the coordinate-free `IsPrimitive` with the
+classical Bézout notion at the base dimension of the descent.  Indeed `IsPrimitive v`
+unfolds to the existence of `w` with `w 0 · v 0 + w 1 · v 1 = 1`, which is exactly the
+definition of `IsCoprime (v 0) (v 1)`. -/
+theorem isPrimitive_fin_two_iff_isCoprime (v : Fin 2 → ℤ) :
+    IsPrimitive v ↔ IsCoprime (v 0) (v 1) := by
+  constructor
+  · rintro ⟨w, hw⟩
+    exact ⟨w 0, w 1, by simpa [dotProduct, Fin.sum_univ_two] using hw⟩
+  · rintro ⟨a, b, hab⟩
+    exact ⟨![a, b], by simpa [dotProduct, Fin.sum_univ_two] using hab⟩
+
+/-- **The classical "gcd of the entries is `1`" characterization, base case.**  For
+`v : Fin 2 → ℤ`, primitivity is equivalent to `Int.gcd (v 0) (v 1) = 1`.  This is the
+literal gcd form promised for the general `isPrimitive_iff_span_eq_top`, made concrete
+in the two-coordinate case handled by the parent proof: the entries generate the unit
+ideal exactly when their gcd is a unit, i.e. `1`. -/
+theorem isPrimitive_fin_two_iff_gcd (v : Fin 2 → ℤ) :
+    IsPrimitive v ↔ Int.gcd (v 0) (v 1) = 1 := by
+  rw [isPrimitive_fin_two_iff_isCoprime, Int.isCoprime_iff_gcd_eq_one]
+
 end BezoutPrimitive

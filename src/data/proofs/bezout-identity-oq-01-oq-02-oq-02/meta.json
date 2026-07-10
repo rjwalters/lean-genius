@@ -23,8 +23,8 @@
     "dateAdded": "2026-07-09",
     "axiomCount": 0,
     "assumptions": "None beyond Mathlib's foundational axioms. Fully machine-checked (0 sorries, 0 axiom declarations, no structure-encoded assumptions, no native_decide). Note: in the local Docker sandbox the file elaborates cleanly across repeated runs but the .olean cache write intermittently aborts with SIGBUS (exit 135), an environment/IO issue independent of the proofs; CI produces the build artifact.",
-    "lineCount": 208,
-    "theoremCount": 12,
+    "lineCount": 234,
+    "theoremCount": 14,
     "definitionCount": 2,
     "originalContributions": [
       "IsPrimitive v := ∃ w, w ⬝ᵥ v = 1 — a coordinate-free, manifestly SLₙ(ℤ)-invariant notion of primitivity for integer vectors (absent from Mathlib)",
@@ -89,9 +89,9 @@
   ],
   "leanFile": {
     "namespace": "BezoutPrimitive",
-    "lineCount": 208,
+    "lineCount": 234,
     "axiomCount": 0,
-    "theoremCount": 12,
+    "theoremCount": 14,
     "definitionCount": 2,
     "path": "Proofs/BezoutIdentityOQ01OQ02OQ02.lean",
     "sorries": 0
