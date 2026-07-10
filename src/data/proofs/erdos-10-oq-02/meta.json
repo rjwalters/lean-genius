@@ -25,7 +25,7 @@
     "badge": "original",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 542,
+    "lineCount": 188,
     "assumptions": "0 axioms, 0 sorries. The Granville–Soundararajan k=3 (odd) conjecture itself is OPEN and is formalized only as a Prop definition (GranvilleSoundararajanOdd), not assumed. The stack proves the supporting infrastructure (reduction lemma, exponent/prime bounds, popcount characterization, decision procedure). Docker-verified green (2026-06-15, 3066 jobs): all three files — Erdos10OQ02, Erdos10OQ02Decidable, Erdos10OQ02Popcount — kernel-check at the v4.26.0 pin, including the native_decide witnesses (e.g. 906 ∉ S_3). Two Mathlib-drift fixes were needed: a stray omega after a now-self-closing simp (Erdos10OQ02:133) and a rw chain that no longer auto-closes a defeq powSum goal (Erdos10OQ02Popcount:83, closed with rfl).",
     "dateAdded": "2026-06-15",
     "mathlib_version": "4.26.0",
