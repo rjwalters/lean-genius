@@ -20,7 +20,7 @@
     "dateAdded": "2026-07-02",
     "axiomCount": 0,
     "assumptions": "None. The file is axiom-free (only the ordinary foundational axioms of Lean/Mathlib are used; `#print axioms` shows no `sorryAx`, no `Lean.ofReduceBool`). All examples use kernel `decide`, not `native_decide`. Note: this file does NOT prove the Strong Goldbach Conjecture, which remains open; it proves only that the conjecture is equivalent to its symmetric-prime-pair form.",
-    "lineCount": 892,
+    "lineCount": 932,
     "theoremCount": 30,
     "definitionCount": 5,
     "originalContributions": [
@@ -119,7 +119,7 @@
   },
   "leanFile": {
     "namespace": "StrongGoldbach",
-    "lineCount": 892,
+    "lineCount": 932,
     "axiomCount": 0,
     "theoremCount": 30,
     "definitionCount": 5,
