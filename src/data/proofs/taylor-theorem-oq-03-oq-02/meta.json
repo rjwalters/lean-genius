@@ -168,6 +168,29 @@
       "description": "The TaylorSinCosConvergence family proves cos convergence but axiomatizes the remainder bound cos_taylor_remainder_bound; this entry discharges that bound as an axiom-free theorem for x >= 0."
     }
   ],
+  "references": [
+    {
+      "title": "Théorie des fonctions analytiques",
+      "author": "Joseph-Louis Lagrange",
+      "year": "1797",
+      "venue": "Imprimerie de la République, Paris",
+      "description": "Introduces the Lagrange form of the Taylor remainder R_n = f^{(n+1)}(ξ)·x^{n+1}/(n+1)! for some intermediate ξ — the exact mean-value estimate that Mathlib's taylor_mean_remainder_bound packages and that this entry specializes to cos with the uniform derivative bound C = 1."
+    },
+    {
+      "title": "Principles of Mathematical Analysis",
+      "author": "Walter Rudin",
+      "year": "1976",
+      "venue": "McGraw-Hill (3rd edition)",
+      "description": "Theorem 5.15 states Taylor's theorem with the Lagrange remainder; the boundedness of every iterated derivative of cos by 1 turns this into the uniform convergence estimate ‖cos x − Tₙ(x)‖ ≤ x^{n+1}/n! proved here."
+    },
+    {
+      "title": "Mathematical Analysis",
+      "author": "Tom M. Apostol",
+      "year": "1974",
+      "venue": "Addison-Wesley (2nd edition)",
+      "description": "Standard development of Taylor's formula with remainder (Chapter 5) and of the power-series expansions of the elementary transcendental functions, including the entire-function argument that the Taylor partial sums of cos converge to cos on all of ℝ."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib"
