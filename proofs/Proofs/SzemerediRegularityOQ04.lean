@@ -145,4 +145,45 @@ theorem partitionEnergy_no_infinite_increments
   · intro n; exact partitionEnergy_nonneg G (parts n)
   · intro n; exact partitionEnergy_le_one G (parts n) (hcover n) (hdisjoint n)
 
+-- ═══════════════════════════════════════════════════════════════════
+-- PART III: A REGULAR (NON-INCREMENT) STEP IS REACHED WITHIN THE BOUND
+-- ═══════════════════════════════════════════════════════════════════
+
+/-- **A non-increment step is reached within any horizon `N > 1/δ`.**  The
+    contrapositive *existence* form of `energy_iteration_count_le`: an
+    `[0,1]`-valued potential admits at most `1/δ` genuine `δ`-increments, so any
+    window of `N > 1/δ` steps must contain a step `n < N` at which the potential
+    fails to climb by `δ`.  This is the abstract "a regular step is reached in
+    `O(1/δ)` steps" statement that drives AFKS termination — the positive
+    counterpart of `no_infinite_energy_increments`, quantified with an explicit
+    finite horizon rather than the whole tail. -/
+theorem energy_regular_step_exists (f : ℕ → ℚ) (N : ℕ) (δ : ℚ) (hδ : 0 < δ)
+    (h0 : ∀ n, 0 ≤ f n) (h1 : ∀ n, f n ≤ 1) (hN : 1 / δ < (N : ℚ)) :
+    ∃ n < N, ¬ (f n + δ ≤ f (n + 1)) := by
+  by_contra hcon
+  push_neg at hcon
+  -- `hcon : ∀ n < N, f n + δ ≤ f (n+1)` — every step increments, so `N ≤ 1/δ`.
+  have hb : (N : ℚ) ≤ 1 / δ := energy_iteration_count_le f N δ hδ h0 h1 hcon
+  linarith
+
+/-- **Graph instantiation: a regular refinement step is reached within the bound.**
+    Within any horizon `N > 1/δ`, a sequence of covering, pairwise-disjoint
+    partitions contains a step `n < N` at which `partitionEnergy` fails to climb by
+    `δ`.  Concretely: the AFKS energy-increment iteration reaches a non-increment
+    ("regular") refinement in at most `⌈1/δ⌉` steps — the finite-horizon existence
+    form of `partitionEnergy_no_infinite_increments`. -/
+theorem partitionEnergy_regular_step_exists
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (parts : ℕ → Finset (Finset V)) (N : ℕ) (δ : ℚ) (hδ : 0 < δ)
+    (hcover : ∀ n, ∀ v : V, ∃ P ∈ parts n, v ∈ P)
+    (hdisjoint : ∀ n, ∀ P Q : Finset V, P ∈ parts n → Q ∈ parts n → P ≠ Q →
+      Disjoint P Q)
+    (hN : 1 / δ < (N : ℚ)) :
+    ∃ n < N,
+      ¬ (partitionEnergy G (parts n) + δ ≤ partitionEnergy G (parts (n + 1))) := by
+  refine energy_regular_step_exists
+    (fun n => partitionEnergy G (parts n)) N δ hδ ?_ ?_ hN
+  · intro n; exact partitionEnergy_nonneg G (parts n)
+  · intro n; exact partitionEnergy_le_one G (parts n) (hcover n) (hdisjoint n)
+
 end Szemeredi.RegularityOQ04
