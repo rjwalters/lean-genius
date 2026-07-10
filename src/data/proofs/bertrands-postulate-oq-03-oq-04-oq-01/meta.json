@@ -165,6 +165,26 @@
       "relationship": "related: PNT is the density statement π(x) ~ x/log(x); ShortIntervalPNT is the local analogue"
     }
   ],
+  "references": [
+    {
+      "authors": "Cramér, Harald",
+      "title": "On the order of magnitude of the difference between consecutive prime numbers",
+      "year": "1936",
+      "note": "Acta Arith. 2, 23–46 — the original Cramér conjecture that prime gaps are O(log² p), the hypothesis this file shows implies PrimeGapConjecture(ε) for every ε > 0."
+    },
+    {
+      "authors": "Baker, R. C.; Harman, G.; Pintz, J.",
+      "title": "The difference between consecutive primes, II",
+      "year": "2001",
+      "note": "Proc. London Math. Soc. (3) 83, 532–562 — the unconditional gap exponent 0.525 (BHP) that this entry extends to all positive exponents under Cramér."
+    },
+    {
+      "authors": "Granville, Andrew",
+      "title": "Harald Cramér and the distribution of prime numbers",
+      "year": "1995",
+      "note": "Scand. Actuar. J. 1995(1), 12–28 — survey of Cramér's probabilistic model and the refined conjectures on the true order of prime gaps."
+    }
+  ],
   "conclusion": {
     "summary": "The formalization proves: Cramér's conjecture implies PrimeGapConjecture(ε) for ALL ε > 0. The core analytical insight — log²(x) = o(x^ε) — is fully machine-checked via Mathlib's isLittleO infrastructure. The result extends Baker-Harman-Pintz's unconditional ε = 0.525 to all positive exponents, conditionally. One axiom remains: the bridge from nth-prime gaps to interval bounds.",
     "implications": "This result illuminates the mathematical landscape between Bertrand's postulate (ε = 1, trivial) and the twin prime conjecture (ε → 0). It shows that Cramér's probabilistic heuristic, if correct, would simultaneously resolve all questions of the form 'is there always a prime in [x, x^ε]?' — a sweeping conditional theorem. The density gap analysis reveals the next frontier: even with Cramér, we cannot prove the count of primes in short intervals without additional input about zeta-function zero distribution.",
