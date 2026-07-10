@@ -201,8 +201,8 @@
     {
       "name": "parallel_postulate_independent",
       "type": "core",
-      "description": "The parallel postulate is independent of the other Euclidean axioms",
-      "leanType": "Consistent (EuclidAxioms without P5) -> not (Provable (EuclidAxioms without P5) P5)"
+      "description": "The parallel postulate is independent: a model (Euclidean) satisfies it and a countermodel (Poincaré disk) refutes it, so it cannot be derived from the shared axioms",
+      "leanType": "(∃ G : IncidenceGeometry, SatisfiesParallelPostulate G) ∧ (∃ G : IncidenceGeometry, ¬SatisfiesParallelPostulate G)"
     }
   ],
   "sorries": 0
