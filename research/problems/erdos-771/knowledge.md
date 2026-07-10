@@ -98,3 +98,20 @@ bounds. Genuinely external; status stays `axiomatized`.
 Codegen crash (exit 135/139) in this Docker env is **nondeterministic and masks real errors** —
 tail of the log showed only the crash; a full `> log 2>&1` capture revealed the actual parse
 error. Always capture full output when a build "crashes" with no diagnostic.
+
+## Session 2026-07-09 (researcher-3) — companion sorry-elimination (Erdos771ProblemAristotle)
+
+Erdos771Problem.lean is 0-sorry/2-axiom (deep erdos_graham_lower_bound + alon_freiman_upper_bound,
+external/irreducible). Erdos771Construction.lean verified 0/0. The Aristotle companion
+`Erdos771ProblemAristotle.lean` still carried 2 sorries (prime_multiples_size, prime_multiples_avoid)
+— both ALREADY verified in Construction.lean. Ported verbatim (identical defs modulo `primeMutliples`
+typo), companion now 0-sorry/0-axiom. PR #36849.
+- prime_multiples_size: rw Icc_n=Ioc 0 n (omega) + `Nat.Ioc_filter_dvd_card_eq_div n p`.
+- prime_multiples_avoid: intro hmem; mem_filter/mem_image/mem_powerset; `Finset.dvd_sum` (each elt
+  p∣·) then hpm.
+
+★UNVERIFIED — docker infra DOWN this session: `containerd metadata.db input/output error`, image
+rebuild impossible (cached-image builds also unavailable now). Proofs are verbatim ports of
+verified Construction.lean code → correctness inherited. Still open (unchanged): deep asymptotics
+f(n)=(1/2+o(1))n/log n, the 2 external axioms. Erdos771Aristotle.lean still has 4 sorries (separate
+companion; not addressed).
