@@ -57,8 +57,8 @@
     ],
     "axiomCount": 4,
     "assumptions": "4 axioms in Erdos634Problem.lean: Tiles (abstract tiling predicate), seven_not_dissectable, eleven_not_dissectable, soifer_theorem. 5 sorries: the five positive-result stubs (squares/two/three/six/sum), each a genuine reptiling construction blocked only on Mathlib's missing polygonal-tiling API. SOUNDNESS (resolved): a prior version was internally inconsistent — the area-only IsDissectable is provable for every n >= 1 (constant equilateral witnesses of side 1/sqrt(n), proven in Erdos634AreaCollapse.lean), which contradicted the Beeson non-dissectability axioms; and congruent_implies_similar was a sorry on a false statement (unordered-multiset Congruent vs order-pinned Similar). Both are now fixed: IsDissectable additionally requires an abstract Tiles (covering + interior-disjointness) witness, blocking the trivial equal-area construction so Beeson's negatives are consistent; and Similar is restated on the unordered side multiset, making congruent_implies_similar a real 1-line proof. A faithful non-abstract Tiles still awaits a Mathlib tiling API (the oq-02 covering line).",
-    "lineCount": 373,
-    "theoremCount": 16,
+    "lineCount": 386,
+    "theoremCount": 17,
     "definitionCount": 20,
     "additionalFiles": [
       "Proofs/Erdos634Aristotle.lean",
@@ -145,39 +145,39 @@
       "title": "Open Cases",
       "summary": "Analyzes $n = 19$: proves it is prime (`by decide`), of form $4 \\cdot 4 + 3$, and that the refined $4k+3$ conjecture would imply $\\neg\\text{IsDissectable}\\, 19$.",
       "startLine": 212,
-      "endLine": 231,
+      "endLine": 244,
       "mathContext": "Verified: Analyzes $n = 19$: proves it is prime (`by decide`), of form $4 \\cdot 4 + 3$, and that the refined $4k+3$ conjecture would imply $\\neg\\text{IsDissectable}\\, 19$."
     },
     {
       "id": "soifer",
       "title": "Similar Triangles (Soifer's Result)",
       "summary": "Defines `IsSimilarDissection` and `IsSimilarDissectable`, then axiomatizes Soifer's complete theorem: all $n \\geq 1$ except $2, 3, 5$ admit similar dissections, with the three exceptions also axiomatized.",
-      "startLine": 232,
-      "endLine": 252,
+      "startLine": 245,
+      "endLine": 265,
       "mathContext": "Defines `IsSimilarDissection` and `IsSimilarDissectable`, then axiomatizes Soifer's complete theorem: all $n \\geq 1$ except $2, 3, 5$ admit similar dissections, with the three exceptions also axiomatized."
     },
     {
       "id": "self-similar",
       "title": "Self-Similar Dissections (Snover–Waiveris–Williams)",
       "summary": "Defines `IsSelfSimilarDissection` (pieces similar to the original) and axiomatizes the SWW characterization: $n$ is self-similar-dissectable iff $n \\in \\{k^2\\} \\cup \\{k^2 + m^2\\} \\cup \\{3k^2\\}$.",
-      "startLine": 253,
-      "endLine": 268,
+      "startLine": 266,
+      "endLine": 281,
       "mathContext": "Defines `IsSelfSimilarDissection` (pieces similar to the original) and axiomatizes the SWW characterization: $n$ is self-similar-dissectable iff $n \\in \\{$k^{2}$\\} \\cup \\{$k^{2}$ + m^2\\} \\cup \\{3k^2\\}$."
     },
     {
       "id": "recent",
       "title": "Recent Progress (Zhang 2025)",
       "summary": "Axiomatizes Zhang's 2025 result on sufficient conditions: for fixed $a \\geq b \\geq 1$, all sufficiently large $n^2 a b$ are dissectable. Also defines `KnownDissectable` as the union of all known parametric families.",
-      "startLine": 269,
-      "endLine": 283,
+      "startLine": 282,
+      "endLine": 296,
       "mathContext": "Axiomatizes Zhang's 2025 result on sufficient conditions: for fixed $a \\geq b \\geq 1$, all sufficiently large $n^2 a b$ are dissectable. Also defines `KnownDissectable` as the union of all known parametric families."
     },
     {
       "id": "main-result",
       "title": "Main Results — Erdős Problem #634",
       "summary": "The partial answer theorem `erdos_634_partial`: $\\forall k \\geq 1, \\text{IsDissectable}(k^2) \\wedge \\neg\\text{IsDissectable}\\, 7 \\wedge \\neg\\text{IsDissectable}\\, 11$, combining the grid subdivision theorem with Beeson's axioms.",
-      "startLine": 284,
-      "endLine": 331,
+      "startLine": 297,
+      "endLine": 344,
       "mathContext": "The partial answer theorem `erdos_634_partial`: $\\forall k \\geq 1, \\text{IsDissectable}(k^2) \\wedge \\neg\\text{IsDissectable}\\, 7 \\wedge \\neg\\text{IsDissectable}\\, 11$, combining the grid subdivision theorem with Beeson's axioms."
     }
   ],
@@ -201,9 +201,9 @@
       "Function"
     ],
     "namespace": "Erdos634",
-    "lineCount": 373,
+    "lineCount": 386,
     "axiomCount": 4,
-    "theoremCount": 16,
+    "theoremCount": 17,
     "definitionCount": 20,
     "sorries": 5,
     "path": "Proofs/Erdos634Problem.lean",

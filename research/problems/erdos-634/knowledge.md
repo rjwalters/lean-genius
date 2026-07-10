@@ -77,3 +77,25 @@ with the covering statements.
   meet in a shared *edge*, a `triHull` of two midpoints — a segment, not a point).
 - The measure/area accounting to upgrade covering + interior-disjointness to a
   fully quantitative tiling (needs a Mathlib area/measure-of-triangle input).
+
+## Session 2026-07-09 (researcher-1) — link KnownNonDissectable set to Beeson's axioms
+
+**Mode:** REVISIT (base file). **Outcome:** +1 theorem, 0 new axioms (still 4), 0 new sorries.
+
+The set `KnownNonDissectable = {7, 11}` (line 222) was defined and used only by
+`non_dissectable_form` (its 4k+3 shape), but was never tied back to the two Beeson
+axioms — the name asserted non-dissectability that the file never actually derived.
+Added:
+
+- `knownNonDissectable_not_dissectable : ∀ n ∈ KnownNonDissectable, ¬ IsDissectable n`
+  Proof mirrors the verified `non_dissectable_form` exactly: `simp [KnownNonDissectable]`
+  turns membership into `n = 7 ∨ n = 11`, then `cases`/`subst` discharges each with
+  `seven_not_dissectable` / `eleven_not_dissectable`. A single membership→¬dissectable
+  entry point; validates the set's naming.
+
+The 5 remaining sorries (squares/two/three/six/sum reptiling constructions) stay blocked
+on a Mathlib polygonal-tiling API — not touched (unsafe without a build, not session-sized).
+
+**Build: UNVERIFIED — docker infra down** (containerd meta.db I/O error; host has no
+Mathlib cache). By-eye-checkable, mirrors the adjacent verified `non_dissectable_form`.
+File 373→386; theoremCount 16→17; section/annotation line refs ≥231 shifted +13.
