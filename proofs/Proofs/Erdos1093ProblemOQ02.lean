@@ -1200,3 +1200,101 @@ theorem maximalDeficiencyIs_nine_iff_kGe18 :
     by_cases hk : k ≤ 17
     · exact deficiency_le_nine_of_k_le_17 hv.1 hv.2 hk
     · exact h n k (by omega) hv
+
+/-
+## Section XIX: The location bound closes `k = 18` — frontier `k ≥ 18` → `k ≥ 19`
+
+Section XVIII cashed out the effective, ELS-free location bound at the open frontier
+`k = 17`.  The same mechanism advances one further step, to `k = 18`, but with a new
+arithmetic wrinkle that makes the slice *not* a mechanical copy of `k = 17`.  A
+deficiency `≥ 10` forces the window-floor power bound `(n - 17)^{10} ≤ 18!`, and
+`18! < 39^{10}` (`factorial_18_lt_39_pow_ten`), so `n - 17 < 39`, i.e. `n ≤ 55`.  With
+the admissibility floor `n ≥ 36` (`= 2·18`) this leaves the finite window
+`n ∈ {36, 37, …, 55}` (twenty values).
+
+Unlike every earlier slice, `C(n,18)` is **not** uniformly even on this window: by
+Kummer/Lucas `C(n,18)` is odd exactly when the binary digits of `18 = 10010₂` sit
+inside those of `n`, which occurs at `n = 50, 51, 54, 55` inside the window, so the
+single prime `2` no longer certifies inadmissibility.  It remains true — and this is
+what closes the slice — that *some* prime `≤ 18` divides `C(n,18)` for every one of the
+twenty values: `2` for the sixteen even ones, and `5` (`n = 50, 51`) or `3`
+(`n = 54, 55`) for the four odd ones.  Concretely `2 ∣ C(n,18) ∨ 3 ∣ C(n,18) ∨
+5 ∣ C(n,18)` holds throughout the window, so no pair is admissible and no admissible
+pair at `k = 18` has deficiency exceeding `9`.
+
+As before the `(k!)²` factorial method is powerless here
+(`sharp_bound_permits_deficiency_ten` permits deficiency `10` for every `k ≥ 16`); only
+the *location* bound closes the slice.  The elementary resolution of OQ-02 now covers
+**all `k ≤ 18`**, moving the open frontier to `k ≥ 19`.  The structural results remain
+`ofReduceBool`-free; only the concrete divisibility facts use `native_decide`. -/
+
+/-- `18! < 39^10`, the numeric input that pins the `k = 18` window: `(n-17)^{10} ≤ 18!`
+forces `n - 17 < 39`.  `ofReduceBool`-free (`Nat.factorial` and `Nat.pow` on literals
+reduce under kernel `decide`; `18! = 6402373705728000 < 8140406085191601 = 39^{10}`). -/
+theorem factorial_18_lt_39_pow_ten : Nat.factorial 18 < 39 ^ 10 := by decide
+
+/-- For `36 ≤ n ≤ 55` some prime `≤ 18` divides `C(n,18)`: `2` for the even values and,
+for the four odd binomials `n ∈ {50, 51, 54, 55}`, the prime `5` (`n = 50, 51`) or `3`
+(`n = 54, 55`).  Stated as the disjunction `2 ∣ · ∨ 3 ∣ · ∨ 5 ∣ ·`, which holds across
+the whole window.  Uses `native_decide` (⇒ `Lean.ofReduceBool`) because the naive
+`Nat.choose` recursion is infeasible for kernel `decide`. -/
+theorem smallPrime_dvd_choose_18_of_range {n : ℕ} (hlo : 36 ≤ n) (hhi : n ≤ 55) :
+    2 ∣ Nat.choose n 18 ∨ 3 ∣ Nat.choose n 18 ∨ 5 ∣ Nat.choose n 18 := by
+  interval_cases n <;> native_decide
+
+/-- The twenty small pairs left by the `k = 18` location window are all inadmissible:
+some prime `p ∈ {2, 3, 5}` (each `≤ 18`) divides `C(n,18)`, contradicting
+`NoSmallPrimeFactors n 18` (which would force `18 < p`). -/
+theorem not_admissible_k18_of_range {n : ℕ} (hlo : 36 ≤ n) (hhi : n ≤ 55) :
+    ¬ NoSmallPrimeFactors n 18 := by
+  intro h
+  rcases smallPrime_dvd_choose_18_of_range hlo hhi with hd | hd | hd
+  · have := h 2 Nat.prime_two hd; omega
+  · have := h 3 Nat.prime_three hd; omega
+  · have := h 5 (by norm_num) hd; omega
+
+/-- **The location bound closes `k = 18`.**  For an admissible pair with `k = 18` the
+deficiency never exceeds `9`.  A deficiency `≥ 10` would force, via the window-floor
+bound, `(n - 17)^{10} ≤ 18! < 39^{10}`, hence `n ≤ 55`; with the admissibility floor
+`n ≥ 36` this leaves only `n ∈ {36,…,55}`, none admissible (some prime `≤ 18` divides
+`C(n,18)`, even where `C(n,18)` is odd).  The sharp factorial bound permits deficiency
+`10` here (`sharp_bound_permits_deficiency_ten`), but the *location* bound rules it out. -/
+theorem deficiency_le_nine_of_k_eq_18 {n : ℕ} (hn : 36 ≤ n)
+    (h : NoSmallPrimeFactors n 18) : deficiency n 18 ≤ 9 := by
+  by_contra hcon
+  push_neg at hcon
+  have hpow : (n - 18 + 1) ^ 10 ≤ Nat.factorial 18 :=
+    windowFloor_pow_le_factorial_of_le (k := 18) (d := 10) (by omega) h (by omega)
+  have hlt : (n - 18 + 1) ^ 10 < 39 ^ 10 := lt_of_le_of_lt hpow factorial_18_lt_39_pow_ten
+  have hfloor : n - 18 + 1 < 39 := by
+    by_contra hge
+    push_neg at hge
+    exact absurd (Nat.pow_le_pow_left hge 10) (not_le.mpr hlt)
+  exact not_admissible_k18_of_range (n := n) (by omega) (by omega) h
+
+/-- **Elementary resolution of OQ-02 for all `k ≤ 18`.**  Combines the location bound at
+`k ≤ 17` (`deficiency_le_nine_of_k_le_17`) with the location bound at `k = 18`
+(`deficiency_le_nine_of_k_eq_18`).  Strictly extends the `k ≤ 17` reach of Section XVIII. -/
+theorem deficiency_le_nine_of_k_le_18 {n k : ℕ} (hn : 2 * k ≤ n)
+    (h : NoSmallPrimeFactors n k) (hk : k ≤ 18) : deficiency n k ≤ 9 := by
+  by_cases hk17 : k ≤ 17
+  · exact deficiency_le_nine_of_k_le_17 hn h hk17
+  · have hk18 : k = 18 := by omega
+    subst hk18
+    exact deficiency_le_nine_of_k_eq_18 (by omega) h
+
+/-- **Sharpened reduction to `k ≥ 19`.**  `MaximalDeficiencyIs 9` is equivalent to the
+open universal bound restricted to `k ≥ 19`: the cases `k ≤ 17` are discharged by the
+sharp/location bounds and `k = 18` by the location bound (`deficiency_le_nine_of_k_le_18`).
+Strictly sharper than `maximalDeficiencyIs_nine_iff_kGe18`; the entire remaining open
+content of OQ-02 now lives at `k ≥ 19`. -/
+theorem maximalDeficiencyIs_nine_iff_kGe19 :
+    MaximalDeficiencyIs 9 ↔
+      ∀ n k, 19 ≤ k → ValidDeficiencyExample n k → deficiency n k ≤ 9 := by
+  rw [maximalDeficiencyIs_nine_iff_upperBound]
+  constructor
+  · intro h n k _ hv; exact h n k hv
+  · intro h n k hv
+    by_cases hk : k ≤ 18
+    · exact deficiency_le_nine_of_k_le_18 hv.1 hv.2 hk
+    · exact h n k (by omega) hv
