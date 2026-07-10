@@ -641,6 +641,73 @@ theorem density_surplus_at_factorials (k M : ℕ) : ∃ N : ℕ, ∀ n : ℕ, n 
   exact hN₀ (n - 1) (by omega)
 
 /-
+## Part X: The Sharp Margin Deficit — Deficit Side of the Unbounded Surplus
+
+`nonqualifying_deficit_at_factorials` is the deficit reading of
+`density_one_at_factorials`: the non-qualifying primes up to `n!` are eventually a
+`≤ 1/(k+1)` fraction. Part IX sharpened the density statement to an *unbounded
+additive surplus* (`density_surplus_at_factorials`). Reading that surplus back on
+the deficit side gives the correspondingly sharp bound: the non-qualifying deficit
+`π(n!) − C(n!)`, scaled by `k+1`, leaves an arbitrarily large slack `M` below
+`π(n!)`.
+
+The pointwise bridge is the *margin* analogue of `deficit_le_iff_density`. Unlike
+the `M = 0` case it is **not** unconditional: it needs `C(x) ≤ π(x)` (otherwise a
+huge `C` could satisfy the density surplus while the truncated deficit collapses to
+`0` and the margin `M` alone exceeds `π(x)`). That hypothesis is exactly the
+pointwise subset bound `qualifyingCount_le_primeCount`.
+-/
+
+/-- **Margin deficit ⇔ density surplus (pointwise).**  For every `x`, threshold `k`
+    and margin `M`, the density surplus bound `C(x)·(k+1) ≥ π(x)·k + M` holds *iff*
+    the scaled non-qualifying deficit undershoots `π(x)` by at least `M`:
+
+      (π(x) − C(x)) · (k+1) + M ≤ π(x)   ↔   C(x) · (k+1) ≥ π(x) · k + M.
+
+    The `M = 0` case is `deficit_le_iff_density`; there the equivalence is
+    unconditional, but the additive margin needs the subset bound `C(x) ≤ π(x)`
+    (`Erdos1059OQ01.qualifyingCount_le_primeCount`) to rule out the degenerate
+    branch where the truncated deficit is `0` while `M > π(x)`. -/
+theorem deficit_add_le_iff_density_surplus (x k M : ℕ) :
+    (Erdos1059OQ01.primeCount x - Erdos1059OQ01.qualifyingPrimeCount x) * (k + 1) + M ≤
+      Erdos1059OQ01.primeCount x ↔
+    Erdos1059OQ01.qualifyingPrimeCount x * (k + 1) ≥ Erdos1059OQ01.primeCount x * k + M := by
+  -- Subset bound C(x) ≤ π(x), scaled to C(x)·(k+1) ≤ π(x)·k + π(x).
+  have hmul : Erdos1059OQ01.qualifyingPrimeCount x * (k + 1) ≤
+      Erdos1059OQ01.primeCount x * k + Erdos1059OQ01.primeCount x := by
+    have h1 : Erdos1059OQ01.qualifyingPrimeCount x * (k + 1) ≤
+        Erdos1059OQ01.primeCount x * (k + 1) :=
+      Nat.mul_le_mul_right _ (Erdos1059OQ01.qualifyingCount_le_primeCount x)
+    have h2 : Erdos1059OQ01.primeCount x * (k + 1) =
+        Erdos1059OQ01.primeCount x * k + Erdos1059OQ01.primeCount x := by ring
+    omega
+  have e1 : (Erdos1059OQ01.primeCount x - Erdos1059OQ01.qualifyingPrimeCount x) * (k + 1) =
+      Erdos1059OQ01.primeCount x * (k + 1) - Erdos1059OQ01.qualifyingPrimeCount x * (k + 1) :=
+    Nat.sub_mul _ _ _
+  have e2 : Erdos1059OQ01.primeCount x * (k + 1) =
+      Erdos1059OQ01.primeCount x * k + Erdos1059OQ01.primeCount x := by ring
+  rw [e1, e2]
+  omega
+
+/-- **Non-qualifying deficit with unbounded margin (at factorial points).**  For
+    every threshold `k` and every margin `M` there is an `N` such that for all
+    `n ≥ N`,
+
+      (π(n!) − C(n!)) · (k+1) + M ≤ π(n!).
+
+    So the scaled non-qualifying deficit up to `n!` sits an arbitrarily large slack
+    `M` below `π(n!)`. This is the deficit reading of `density_surplus_at_factorials`
+    exactly as `nonqualifying_deficit_at_factorials` (its `M = 0` case) is the
+    deficit reading of `density_one_at_factorials`; the bridge is the pointwise
+    `deficit_add_le_iff_density_surplus`. -/
+theorem nonqualifying_deficit_surplus_at_factorials (k M : ℕ) : ∃ N : ℕ, ∀ n : ℕ, n ≥ N →
+    (Erdos1059OQ01.primeCount (Nat.factorial n) -
+      Erdos1059OQ01.qualifyingPrimeCount (Nat.factorial n)) * (k + 1) + M ≤
+    Erdos1059OQ01.primeCount (Nat.factorial n) := by
+  obtain ⟨N, hN⟩ := density_surplus_at_factorials k M
+  exact ⟨N, fun n hn => (deficit_add_le_iff_density_surplus _ k M).mpr (hN n hn)⟩
+
+/-
 ## Summary
 
 **Proved from first principles** (no sorry):
@@ -664,6 +731,11 @@ theorem density_surplus_at_factorials (k M : ℕ) : ∃ N : ℕ, ∀ n : ℕ, n 
     Σ p_l·k by any prescribed margin M (density_at_levels is the M=0 case)
 15. density_surplus_at_factorials — at factorial points C(n!)·(k+1) ≥ π(n!)·k + M,
     the qualifying count overshoots the k/(k+1) prime fraction by an unbounded margin
+16. deficit_add_le_iff_density_surplus — pointwise margin equivalence: the density
+    surplus C(x)·(k+1) ≥ π(x)·k + M holds iff (π(x)−C(x))·(k+1) + M ≤ π(x)
+    (needs the subset bound C(x) ≤ π(x); the M=0 case is deficit_le_iff_density)
+17. nonqualifying_deficit_surplus_at_factorials — sharp deficit form of the unbounded
+    surplus: (π(n!)−C(n!))·(k+1) + M ≤ π(n!) eventually, for every margin M
 
 **This file is now sorry-free** — the previous two `sorry`s (the interval
 decompositions) are discharged by `count_decomp`.
