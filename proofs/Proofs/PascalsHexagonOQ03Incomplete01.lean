@@ -246,4 +246,47 @@ theorem hexagrammum_total_from_census :
       = 95 := by
   simp only [card_sixCycles, card_doubleThreeCycles, card_tripleTranspositions]
 
+/-! ### Pairwise disjointness of the census classes
+
+`fixedPointFree_census_sum` and `census_cards_sum_eq_fixedPointFree` note in prose that
+the exact count "forces the four classes to be pairwise disjoint", but that disjointness
+is never itself formalized. The two results below supply it: the class predicates are
+pairwise mutually exclusive, so — together with the cover `fixedPointFree_iff_census` —
+the census is a genuine *partition* of the derangements of `Fin 6`. -/
+
+/-- **The four census classes are pairwise mutually exclusive.**  No permutation of `Sym(6)`
+    satisfies two of the fixed-point-free cycle-type predicates at once: `IsSixCycle`,
+    `IsFourTwoCycle`, `IsDoubleThreeCycle`, and `IsTripleTransposition` are pairwise
+    incompatible.  This is the disjointness that `fixedPointFree_census_sum` /
+    `census_cards_sum_eq_fixedPointFree` invoke in prose but do not formalize; with the cover
+    `fixedPointFree_iff_census` it upgrades the census to a partition of `derangements (Fin 6)`. -/
+theorem census_classes_pairwise_exclusive : ∀ σ : Equiv.Perm (Fin 6),
+    ¬(IsSixCycle σ ∧ IsFourTwoCycle σ) ∧
+    ¬(IsSixCycle σ ∧ IsDoubleThreeCycle σ) ∧
+    ¬(IsSixCycle σ ∧ IsTripleTransposition σ) ∧
+    ¬(IsFourTwoCycle σ ∧ IsDoubleThreeCycle σ) ∧
+    ¬(IsFourTwoCycle σ ∧ IsTripleTransposition σ) ∧
+    ¬(IsDoubleThreeCycle σ ∧ IsTripleTransposition σ) := by
+  native_decide
+
+/-- **The three Hexagrammum classes are pairwise disjoint as Finsets.**  Derived from
+    `census_classes_pairwise_exclusive` via `Finset.disjoint_filter`: the six-cycle,
+    double-3-cycle, and triple-transposition filters pairwise share no permutation.  This is
+    the combinatorial fact underlying `census_cards_sum_eq_fixedPointFree` and
+    `hexagrammum_total_from_census`: the `120 / 40 / 15` counts add with no overlap, so the
+    `60 + 20 + 15 = 95` configuration totals are genuine (non-double-counted) sums. -/
+theorem hexagrammum_classes_disjoint :
+    Disjoint (Finset.univ.filter (fun σ : Equiv.Perm (Fin 6) => IsSixCycle σ))
+             (Finset.univ.filter (fun σ : Equiv.Perm (Fin 6) => IsDoubleThreeCycle σ)) ∧
+    Disjoint (Finset.univ.filter (fun σ : Equiv.Perm (Fin 6) => IsSixCycle σ))
+             (Finset.univ.filter (fun σ : Equiv.Perm (Fin 6) => IsTripleTransposition σ)) ∧
+    Disjoint (Finset.univ.filter (fun σ : Equiv.Perm (Fin 6) => IsDoubleThreeCycle σ))
+             (Finset.univ.filter (fun σ : Equiv.Perm (Fin 6) => IsTripleTransposition σ)) :=
+  ⟨Finset.disjoint_filter.mpr
+      (fun σ _ h1 h2 => (census_classes_pairwise_exclusive σ).2.1 ⟨h1, h2⟩),
+   Finset.disjoint_filter.mpr
+      (fun σ _ h1 h2 => (census_classes_pairwise_exclusive σ).2.2.1 ⟨h1, h2⟩),
+   Finset.disjoint_filter.mpr
+      (fun σ _ h1 h2 => (census_classes_pairwise_exclusive σ).2.2.2.2.2 ⟨h1, h2⟩)⟩
+
 end PascalsHexagonOQ03Incomplete01
