@@ -45,19 +45,19 @@
     "dateAdded": "2025-12-29",
     "hilbertNumber": 17,
     "axiomCount": 1,
-    "lineCount": 640,
+    "lineCount": 590,
     "assumptions": [
       "pfister_bound_aux: At most 2^n rational function squares needed for n-variable PSD polynomials (Pfister forms)"
     ],
     "mathlib_version": "4.26.0",
-    "theoremCount": 16,
+    "theoremCount": 11,
     "definitionCount": 8,
     "description": "Axiom-reduction history: three axioms were redundant restatements of deeper ones and are now derived theorems (artin_hilbert17 and cassels_bound_bivariate from pfister_bound_aux; artin_univariate from univariate_psd_is_sos_aux), and four more have been fully discharged by elementary 0-axiom child proofs — motzkin_not_sos_polynomial_aux (Hilbert17MotzkinNotSOS.lean), robinson_not_sos_aux (Hilbert17RobinsonNotSOS.lean), univariate_psd_is_sos_aux (Hilbert17UnivariatePSDSOS.lean), and quadratic_psd_is_sos_aux (Hilbert17QuadraticGram.lean: the homogeneous Gram/Cholesky core plus affine homogenisation by one extra coordinate). The single remaining independent axiom is pfister_bound_aux (Pfister's 2ⁿ bound)."
   },
   "overview": {
     "historicalContext": "Hilbert's 17th Problem emerged from a long investigation into the relationship between non-negativity and sums of squares. In 1888, Hilbert proved a remarkable non-constructive result: there exist non-negative polynomials that are not sums of squares of polynomials. He showed this happens in all but three exceptional cases — univariate polynomials, quadratic forms, and bivariate quartics — but gave no explicit example.\n\nIn his famous 1900 Paris lecture, Hilbert posed Problem 17: even if polynomial squares don't suffice, can every non-negative polynomial be written as a sum of squares of rational functions (quotients of polynomials)? This seemingly modest weakening turns out to be exactly right.\n\nEmil Artin resolved the problem affirmatively in 1927, as an application of his theory of formally real fields and real closures. The proof is a triumph of abstract algebra: if a non-negative polynomial were not a sum of squares of rational functions, one could construct an ordering of the function field making it negative, which contradicts non-negativity via the transfer principle for real closed fields.\n\nNearly 40 years after Hilbert's non-constructive existence proof, Theodore Motzkin (1967) gave the first explicit counterexample to polynomial SOS: M(x,y) = x⁴y² + x²y⁴ - 3x²y² + 1 is non-negative everywhere (by AM-GM) but cannot be decomposed as a sum of squared polynomials (by degree analysis). In the same year, Albrecht Pfister proved that at most 2^n rational function squares are needed for n-variable polynomials.",
     "problemStatement": "**Question:** If f is a polynomial with f(x) >= 0 for all x, is f a sum of squares?\n\n**Answer (Artin):** Yes, but as a sum of squares of rational functions. Motzkin's polynomial shows polynomials don't suffice.",
-    "text": "Artin's theorem: every non-negative polynomial is a sum of squares of rational functions, but not necessarily polynomials (Motzkin's counterexample). Note: of 11 proved theorems, 8 are one-line wrappers around axioms (e.g., theorem foo := foo_aux); the genuine deductions are motzkin_sos_ratfunc (combining motzkin_nonneg with artin_hilbert17) and motzkin_not_sos_polynomial (the non-SOS direction, now discharged by the elementary 0-axiom proof in Hilbert17MotzkinNotSOS.lean), plus the nlinarith-proved non-negativity lemmas.",
+    "text": "Artin's theorem: every non-negative polynomial is a sum of squares of rational functions, but not necessarily polynomials (Motzkin's counterexample). Note: of the 16 proved theorems only the existence results artin_hilbert17, pfister_bound and cassels_bound_bivariate rest on the file's single remaining axiom pfister_bound_aux (Pfister's 2ⁿ bound); everything else is genuinely discharged — motzkin_nonneg and robinson_nonneg by nlinarith, and motzkin_not_sos_polynomial, robinson_not_sos, univariate_psd_is_sos_aux and quadratic_psd_is_sos_aux by elementary 0-axiom proofs in the four Hilbert17* child files.",
     "proofStrategy": "The formalization is structured in nine parts mirroring the mathematical landscape. Part I defines SOS and PSD predicates for univariate, multivariate, and rational function settings. Part II axiomatizes Artin's theorem using algebraMap to embed polynomials into rational function fields. Part III constructs the Motzkin polynomial as an MvPolynomial, proves its non-negativity (nlinarith) and its non-polynomial-SOS property (via the elementary 0-axiom degree/coefficient proof in Hilbert17MotzkinNotSOS.lean), then derives its rational-SOS representation by applying Artin's theorem. Part IV axiomatizes Hilbert's 1888 classification (univariate and quadratic cases). Part V gives Pfister's 2^n bound and Cassels' bivariate specialization. Part VI discusses real closed fields. Parts VII-IX cover applications, additional counterexamples (Robinson, Choi-Lam), and a summary.",
     "keyInsights": [
       "The gap between non-negativity and being a sum of polynomial squares is fundamental: Hilbert proved it exists (1888), Motzkin exhibited it (1967), and Artin showed rational functions bridge it (1927)",
@@ -78,79 +78,79 @@
       "id": "docstring",
       "title": "Module Docstring",
       "startLine": 8,
-      "endLine": 82,
+      "endLine": 90,
       "summary": "Historical exposition covering Hilbert (1888, 1900), Artin (1927), Motzkin (1967), and the proof strategy. Documents Mathlib dependencies and references.",
       "mathContext": "**Hilbert's 17th Problem**: If $f \\in \\mathbb{R}[x_1,\\ldots,x_n]$ satisfies $f(\\mathbf{x}) \\geq 0$ for all $\\mathbf{x} \\in \\mathbb{R}^n$, is $f$ a sum of squares? **Artin (1927)**: Yes, as rational functions: $f = \\sum_i (g_i/h_i)^2$. **Motzkin (1967)**: Not as polynomials."
     },
     {
       "id": "definitions",
       "title": "Part I: Basic Definitions",
-      "startLine": 92,
-      "endLine": 133,
-      "summary": "Defines IsSumOfSquaresPolynomial, IsSumOfSquaresMvPolynomial, IsSumOfSquaresRatFunc, IsPositiveSemidefinite, and IsPositiveSemidefiniteMv using existential quantification over Fin m.",
+      "startLine": 100,
+      "endLine": 238,
+      "summary": "Defines IsSumOfSquaresPolynomial, IsSumOfSquaresMvPolynomial, IsSumOfSquaresRatFunc, IsPositiveSemidefinite, and IsPositiveSemidefiniteMv using existential quantification over Fin m. Also declares univariate_psd_is_sos_aux (proved via the Hilbert17UnivariatePSDSOS child) and the file's single axiom pfister_bound_aux.",
       "mathContext": "**SOS**: $f$ is SOS $\\iff \\exists g_1,\\ldots,g_m$ s.t. $f = \\sum_{i=1}^m g_i^2$. **PSD**: $f$ is PSD $\\iff \\forall \\mathbf{x},\\, f(\\mathbf{x}) \\geq 0$. Three SOS variants: polynomial ($g_i \\in \\mathbb{R}[\\mathbf{x}]$), multivariate ($g_i \\in \\mathbb{R}[x_1,\\ldots,x_n]$), rational ($g_i \\in \\mathbb{R}(\\mathbf{x})$)."
     },
     {
       "id": "artin-theorem",
       "title": "Part II: Artin's Theorem",
-      "startLine": 134,
-      "endLine": 183,
-      "summary": "Axiomatizes artin_hilbert17 (multivariate PSD → rational-SOS) and artin_univariate (univariate PSD → rational-SOS, which is actually polynomial-SOS).",
+      "startLine": 240,
+      "endLine": 283,
+      "summary": "Proves artin_hilbert17 (multivariate PSD → rational-SOS) as a specialization of the file's single axiom pfister_bound_aux (declared in Part I), and derives artin_univariate (univariate PSD → rational-SOS) from the machine-checked univariate_psd_is_sos_aux.",
       "mathContext": "**Artin's Theorem**: $f \\in \\mathbb{R}[x_1,\\ldots,x_n],\\, f \\geq 0 \\Rightarrow f = \\sum_i (g_i/h_i)^2$ with $g_i, h_i \\in \\mathbb{R}[x_1,\\ldots,x_n]$. **Univariate case**: $f \\in \\mathbb{R}[x],\\, f \\geq 0 \\Rightarrow f = g_1^2 + g_2^2$ (polynomial squares suffice via complex factorization)."
     },
     {
       "id": "motzkin",
       "title": "Part III: Motzkin Counterexample",
-      "startLine": 184,
-      "endLine": 268,
+      "startLine": 285,
+      "endLine": 351,
       "summary": "Defines motzkin polynomial, proves non-negativity (via AM-GM, nlinarith) and non-polynomial-SOS (elementary 0-axiom degree/coefficient proof in Hilbert17MotzkinNotSOS.lean), then derives motzkin_sos_ratfunc by applying Artin's theorem.",
       "mathContext": "**Motzkin polynomial**: $M(x,y) = x^4y^2 + x^2y^4 - 3x^2y^2 + 1 \\geq 0$ (by AM-GM: $x^4y^2 + x^2y^4 + 1 \\geq 3x^2y^2$). **Non-SOS**: $M \\neq \\sum p_i^2$ for any $p_i \\in \\mathbb{R}[x,y]$ (degree obstruction). **Key deduction**: $M \\geq 0 \\xrightarrow{\\text{Artin}} M = \\sum (g_i/h_i)^2$."
     },
     {
       "id": "hilbert-1888",
       "title": "Part IV: Hilbert's 1888 Classification",
-      "startLine": 269,
-      "endLine": 343,
+      "startLine": 353,
+      "endLine": 426,
       "summary": "Both tractable cases are now machine-checked, zero axioms: univariate_psd_is_sos (complex factorization, Hilbert17UnivariatePSDSOS.lean) and quadratic_psd_is_sos (Gram/Cholesky core plus affine homogenisation, Hilbert17QuadraticGram.lean).",
       "mathContext": "**Hilbert 1888**: PSD = polynomial-SOS in exactly 3 cases: (1) univariate ($n=1$, any degree), (2) quadratic forms (any $n$, degree 2), (3) bivariate quartics ($n=2$, degree 4). **Univariate**: $f(x) \\geq 0 \\Rightarrow f = g^2 + h^2$ via $f = c\\prod(x-\\alpha_i)(x-\\bar{\\alpha}_i)$. **Quadratic**: PSD $\\iff$ Gram matrix $Q \\succeq 0$ $\\iff$ Cholesky $Q = L^TL$."
     },
     {
       "id": "pfister",
       "title": "Part V: Pfister's Quantitative Bound",
-      "startLine": 344,
-      "endLine": 396,
-      "summary": "Axiomatizes pfister_bound (at most 2^n rational function squares for n variables) and cassels_bound_bivariate (4 squares for bivariate).",
+      "startLine": 428,
+      "endLine": 459,
+      "summary": "Re-exports the file's sole axiom pfister_bound_aux (declared in Part I) as the theorem pfister_bound (at most 2^n rational function squares for n variables) and specializes it to cassels_bound_bivariate (4 = 2² squares for bivariate).",
       "mathContext": "**Pfister bound**: $f \\in \\mathbb{R}[x_1,\\ldots,x_n],\\, f \\geq 0 \\Rightarrow f = \\sum_{i=1}^{2^n} (g_i/h_i)^2$. The bound $2^n$ is achieved by Pfister forms (multiplicative quadratic forms from tensor products). **Cassels (bivariate)**: $f \\in \\mathbb{R}[x,y],\\, f \\geq 0 \\Rightarrow f = \\sum_{i=1}^4 (g_i/h_i)^2$ ($2^2 = 4$)."
     },
     {
       "id": "real-closed",
       "title": "Part VI: Real Closed Fields",
-      "startLine": 397,
-      "endLine": 439,
-      "summary": "Documents the role of real closed fields in Artin's proof. Includes placeholder real_is_real_closed and axiomatized real_closed_transfer principle.",
+      "startLine": 461,
+      "endLine": 487,
+      "summary": "Pure expository prose (no declarations) on the role of real closed fields in Artin's proof: formally real fields, orderings on ℝ(X₁,…,Xₙ), passage to the real closure, and the model-theoretic transfer principle underlying the contradiction.",
       "mathContext": "**Real closed fields**: $\\mathbb{R}$ is real closed (every PSD element is a sum of squares, and every odd-degree polynomial has a root). **Artin's strategy**: if $f \\geq 0$ were not SOS in $\\mathbb{R}(\\mathbf{x})$, one could order $\\mathbb{R}(\\mathbf{x})$ making $f < 0$, then pass to the real closure to get a point where $f < 0$ — contradiction."
     },
     {
       "id": "applications",
       "title": "Part VII: Modern Applications",
-      "startLine": 440,
-      "endLine": 480,
+      "startLine": 489,
+      "endLine": 528,
       "summary": "Documents SOS programming via SDP, Positivstellensatz, Stengle's and Schmüdgen's theorems, and applications to control theory, robotics, and formal verification.",
       "mathContext": "**SOS programming**: Checking if $f = \\sum g_i^2$ reduces to semidefinite programming (SDP): $f$ is polynomial-SOS $\\iff$ the Gram matrix $Q$ in $f(\\mathbf{x}) = \\mathbf{v}(\\mathbf{x})^T Q\\, \\mathbf{v}(\\mathbf{x})$ satisfies $Q \\succeq 0$. **Positivstellensatz**: Certificates of positivity on semialgebraic sets $\\{\\mathbf{x} : g_i(\\mathbf{x}) \\geq 0\\}$."
     },
     {
       "id": "counterexamples",
       "title": "Part VIII: Additional Counterexamples",
-      "startLine": 481,
-      "endLine": 542,
+      "startLine": 530,
+      "endLine": 606,
       "summary": "Defines Robinson's 3-variable degree-6 polynomial (axiomatized PSD and non-SOS) and Choi-Lam's 4-variable degree-4 polynomial (defined only).",
       "mathContext": "**Robinson**: $R(x,y,z) = x^6 + y^6 + z^6 - x^4y^2 - x^2y^4 - y^4z^2 - y^2z^4 - z^4x^2 - z^2x^4 + 3x^2y^2z^2 \\geq 0$ (Schur's inequality) but $R \\notin$ polynomial-SOS. **Choi-Lam**: $1 + x^2y^2 + y^2z^2 + z^2x^2 - 4xyz \\geq 0$ (AM-GM), non-SOS in 4 variables."
     },
     {
       "id": "summary",
       "title": "Part IX: Summary",
-      "startLine": 543,
-      "endLine": 561,
+      "startLine": 608,
+      "endLine": 640,
       "summary": "Uses #check to verify main theorems and provides a final prose overview of the complete picture: PSD → rational-SOS (Artin), but PSD ↛ polynomial-SOS (Motzkin), with Pfister's 2^n bound.",
       "mathContext": "**Complete picture**: $\\text{PSD} \\xrightarrow{\\text{Artin}} \\text{rational-SOS}$ (with $\\leq 2^n$ squares by Pfister), but $\\text{PSD} \\not\\Rightarrow \\text{polynomial-SOS}$ (Motzkin). Equality holds for univariate, quadratic, and bivariate quartic polynomials (Hilbert 1888)."
     }
@@ -206,16 +206,18 @@
       "Mathlib.FieldTheory.RatFunc.Basic",
       "Mathlib.Tactic",
       "Proofs.Hilbert17MotzkinNotSOS",
-      "Proofs.Hilbert17RobinsonNotSOS"
+      "Proofs.Hilbert17RobinsonNotSOS",
+      "Proofs.Hilbert17UnivariatePSDSOS",
+      "Proofs.Hilbert17QuadraticGram"
     ],
     "opens": [
       "Polynomial",
       "RatFunc"
     ],
     "namespace": "Hilbert17",
-    "lineCount": 640,
+    "lineCount": 590,
     "axiomCount": 1,
-    "theoremCount": 16,
+    "theoremCount": 11,
     "definitionCount": 8,
     "path": "Proofs/Hilbert17SumOfSquares.lean",
     "sorries": 0
@@ -252,7 +254,7 @@
   ],
   "mainTheorems": [
     {
-      "name": "hilbert17_artin",
+      "name": "artin_hilbert17",
       "type": "core",
       "description": "A non-negative polynomial over R is a sum of squares of rational functions (Artin 1927)",
       "leanType": "(p : MvPolynomial (Fin n) R) -> (forall x, 0 <= eval x p) -> exists qs, p = sum (q_i^2 / r_i^2)"
