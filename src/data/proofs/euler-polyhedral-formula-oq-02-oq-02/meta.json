@@ -2,7 +2,7 @@
   "id": "euler-polyhedral-formula-oq-02-oq-02",
   "title": "Chern-Gauss-Bonnet in Higher Dimensions",
   "slug": "euler-polyhedral-formula-oq-02-oq-02",
-  "description": "Connects the discrete Gauss-Bonnet theorem (Σδ(v) = 2πχ) and the smooth 2D Gauss-Bonnet theorem (∫K dA = 2πχ) to their full higher-dimensional generalization, the Chern-Gauss-Bonnet theorem: for a closed oriented Riemannian manifold of even dimension 2n, ∫_M Pf(Ω) = (2π)^n · χ(M), equivalently ∫_M Pf(Ω/2π) = χ(M). Encodes the Chern-Gauss-Bonnet identity as a structure field (Mathlib lacks the Pfaffian, characteristic forms, and manifold integration) and proves the algebraic and combinatorial consequences: Euler characteristics of spheres χ(S^m)=1+(-1)^m, the (2π)^n normalization, the 2×2 Pfaffian identity Pf²=det underlying the n=1 reduction, even-dimensionality, normalized integrality ∫Pf/(2π)^n=χ, recovery of classical Gauss-Bonnet at n=1, sphere/product/torus manifolds with multiplicative χ, and the odd-dimensional vanishing χ=0. 44 theorems, 0 sorries, 0 axiom declarations, 2 structure-encoded assumptions.",
+  "description": "Connects the discrete Gauss-Bonnet theorem (Σδ(v) = 2πχ) and the smooth 2D Gauss-Bonnet theorem (∫K dA = 2πχ) to their full higher-dimensional generalization, the Chern-Gauss-Bonnet theorem: for a closed oriented Riemannian manifold of even dimension 2n, ∫_M Pf(Ω) = (2π)^n · χ(M), equivalently ∫_M Pf(Ω/2π) = χ(M). Encodes the Chern-Gauss-Bonnet identity as a structure field (Mathlib lacks the Pfaffian, characteristic forms, and manifold integration) and proves the algebraic and combinatorial consequences: Euler characteristics of spheres χ(S^m)=1+(-1)^m, the (2π)^n normalization, the 2×2 Pfaffian identity Pf²=det underlying the n=1 reduction, even-dimensionality, normalized integrality ∫Pf/(2π)^n=χ, recovery of classical Gauss-Bonnet at n=1, sphere/product/torus manifolds with multiplicative χ, and the odd-dimensional vanishing χ=0. 52 theorems, 0 sorries, 0 axiom declarations, 2 structure-encoded assumptions.",
   "meta": {
     "author": "Formalized in Lean 4 (Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Chern%E2%80%93Gauss%E2%80%93Bonnet_theorem",
@@ -42,11 +42,11 @@
     ],
     "historicalContext": "Gauss (1827) and Bonnet (1848) related Gaussian curvature to topology for surfaces: ∫K dA = 2πχ. Allendoerfer-Weil (1943) and then Chern (1944-45) generalized this to all closed oriented even-dimensional Riemannian manifolds, expressing the Euler characteristic as the integral of the Pfaffian of the curvature form: ∫_M Pf(Ω/2π) = χ(M). Chern's intrinsic proof, via the transgression of the Euler form, became a cornerstone of characteristic-class theory. For 2-manifolds (n=1) the Pfaffian of the 2×2 curvature is the Gaussian curvature times the area form, recovering classical Gauss-Bonnet; for polyhedral surfaces the curvature concentrates at vertices as angular deficiency, recovering the discrete theorem Σδ(v)=2πχ.",
     "axiomCount": 2,
-    "lineCount": 426,
-    "assumptions": "0 sorries; 0 axiom declarations; 2 structure-encoded assumptions. (1) CGBManifold.chern_gauss_bonnet encodes the Chern-Gauss-Bonnet identity ∫_M Pf(Ω) = (2π)^n·χ(M); Mathlib v4.26.0 has no Pfaffian of a curvature form, no integration of characteristic forms over manifolds, and no manifold Euler characteristic, so the identity is taken as a field rather than derived. (2) ClosedOddManifold.chi_zero encodes the Poincaré-duality fact that closed odd-dimensional manifolds have χ=0. All 44 theorems are then derived; the sphere Euler characteristics, normalization-constant lemmas, and the 2×2 Pfaffian identity are independently verified (depend only on propext/Classical.choice/Quot.sound). #print axioms confirms no sorryAx and no Lean.ofReduceBool.",
+    "lineCount": 483,
+    "assumptions": "0 sorries; 0 axiom declarations; 2 structure-encoded assumptions. (1) CGBManifold.chern_gauss_bonnet encodes the Chern-Gauss-Bonnet identity ∫_M Pf(Ω) = (2π)^n·χ(M); Mathlib v4.26.0 has no Pfaffian of a curvature form, no integration of characteristic forms over manifolds, and no manifold Euler characteristic, so the identity is taken as a field rather than derived. (2) ClosedOddManifold.chi_zero encodes the Poincaré-duality fact that closed odd-dimensional manifolds have χ=0. All 52 theorems are then derived; the sphere Euler characteristics, normalization-constant lemmas, and the 2×2 Pfaffian identity are independently verified (depend only on propext/Classical.choice/Quot.sound). #print axioms confirms no sorryAx and no Lean.ofReduceBool.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 44,
-    "definitionCount": 11
+    "theoremCount": 52,
+    "definitionCount": 12
   },
   "overview": {
     "historicalContext": "Chern (1944-45) generalized the Gauss-Bonnet theorem to closed oriented even-dimensional Riemannian manifolds, expressing χ(M) as the integral of the Pfaffian of the curvature form. This entry connects that higher-dimensional theorem back to the discrete (OQ-02) and smooth 2D (OQ-02-OQ-01) Gauss-Bonnet theorems already in the gallery.",
@@ -58,7 +58,7 @@
       "Topological quantization: a transcendental curvature integral ∫_M Pf(Ω/2π) lands on the integer χ(M) ∈ ℤ. The deep content is that an analytic quantity is constrained to take integer values, and euler_number_integral records precisely this.",
       "The n=1 reduction is the algebraic identity Pf² = det: for the 2×2 antisymmetric curvature [[0,a],[-a,0]] the Pfaffian a equals the Gaussian curvature density, so Chern-Gauss-Bonnet specializes literally to ∫K dA = 2πχ, unifying the discrete (OQ-02) and smooth (OQ-02-OQ-01) gallery entries as the n=1 case.",
       "Multiplicativity is consistent across all data: under products χ(M×N)=χ(M)χ(N), the total Pfaffian multiplies, and (2π)^{m+n}=(2π)^m(2π)^n — the three multiplicativities agree exactly, so the Euler-number identity is closed under taking products of manifolds.",
-      "Honest separation of assumption from theorem: only the geometric identity (and the Poincaré-duality fact χ=0 in odd dimension) are structure-encoded; all 44 theorems — including the sphere characteristics, normalization lemmas, and Pfaffian identity — are derived, with the algebraic core independently machine-verified at 0 axioms."
+      "Honest separation of assumption from theorem: only the geometric identity (and the Poincaré-duality fact χ=0 in odd dimension) are structure-encoded; all 52 theorems — including the sphere characteristics, normalization lemmas, and Pfaffian identity — are derived, with the algebraic core independently machine-verified at 0 axioms."
     ]
   },
   "conclusion": {
@@ -153,10 +153,10 @@
       "Real"
     ],
     "namespace": "ChernGaussBonnet",
-    "lineCount": 426,
+    "lineCount": 483,
     "axiomCount": 0,
-    "theoremCount": 44,
-    "definitionCount": 11,
+    "theoremCount": 52,
+    "definitionCount": 12,
     "path": "Proofs/EulerPolyhedralOQ02OQ02.lean",
     "sorries": 0
   },
