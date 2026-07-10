@@ -41,7 +41,8 @@
       "erdos_1947_clique_bound in ProbMethodExpectationOQ04.lean (n^2<2^k, k≥3 ⟹ 2·C(n,k) < 2^C(k,2))",
       "expectedMonoCliques_lt_one_of_sq_lt in ProbMethodExpectationOQ04.lean (E(n,k) < 1 for n^2<2^k, k≥3 — OQ-04 target)",
       "two_pow_add_two_le_factorial_sq and two_mul_choose_two_add helper lemmas",
-      "expectedMonoCliques_lt_one_pow in ProbMethodExpectationOQ04.lean: explicit witness n=2^⌊(k-1)/2⌋ (k≥3) gives E(n,k)<1 — the unconditional Erdős-1947 form R(k,k) > 2^⌊(k-1)/2⌋."
+      "expectedMonoCliques_lt_one_pow in ProbMethodExpectationOQ04.lean: explicit witness n=2^⌊(k-1)/2⌋ (k≥3) gives E(n,k)<1 — the unconditional Erdős-1947 form R(k,k) > 2^⌊(k-1)/2⌋.",
+      "ProbMethodExpectationOQ04.lean: exists_le_and_ge_average + exists_nonneg_spread_of_average (two-sided first moment). VERIFIED green [7743/7743], 0 axioms/sorries. File now 17 theorems."
     ],
     "insights": [
       "The division-free shapes (t·|s| ≤ ∑f ⟹ ∃ f a ≥ t) are the practical lower-bound forms of the first moment method — they avoid dividing by |s| and feed directly into existence arguments.",
@@ -51,7 +52,8 @@
       "OQ-04 fully resolved: the half-integer hypothesis n < 2^(k/2) is equivalent (squaring) to the clean ℕ statement n^2 < 2^k, sidestepping rpow entirely.",
       "Square-comparison keeps the whole Erdős 1947 argument in ℕ: prove (2·C(n,k))^2 < (2^C(k,2))^2 via multiplying through by (k!)^2, then lt_of_pow_lt_pow_left₀.",
       "Key sublemmas: Nat.descFactorial_le_pow gives C(n,k)·k! ≤ n^k; factorial growth 2^(k+2) ≤ (k!)^2 (induction, base 32 ≤ 36); and 2·C(k,2)+k = k^2 (induction via choose_succ_succ).",
-      "Instantiating the conditional bound at n=2^⌊(k-1)/2⌋ yields the classical unconditional Ramsey lower bound: 2·⌊(k-1)/2⌋ ≤ k-1 < k so n²=2^{2⌊(k-1)/2⌋}<2^k (via Nat.pow_lt_pow_right + omega for the exponent inequality)."
+      "Instantiating the conditional bound at n=2^⌊(k-1)/2⌋ yields the classical unconditional Ramsey lower bound: 2·⌊(k-1)/2⌋ ≤ k-1 < k so n²=2^{2⌊(k-1)/2⌋}<2^k (via Nat.pow_lt_pow_right + omega for the exponent inequality).",
+      "VERIFIED (researcher-2, 2026-07-09, GREEN build): the two-sided first-moment lemmas (nextStep 1). exists_le_and_ge_average (the mean is STRADDLED: ∃a∈s, f a ≤ avg ∧ ∃b∈s, avg ≤ f b — combines exists_le_average + exists_ge_average) and exists_nonneg_spread_of_average (∃a,b∈s, 0 ≤ f b − f a, the nonneg max−min spread). Two-sided companion of first_moment_ge/first_moment_le; the base for second-moment/variance arguments that need both tails of the mean at once. f:α→ℚ."
     ],
     "mathlibGaps": [],
     "nextSteps": [

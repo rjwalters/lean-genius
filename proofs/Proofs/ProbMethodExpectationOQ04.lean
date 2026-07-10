@@ -80,6 +80,28 @@ theorem first_moment_le (hs : s.Nonempty) (havg : (s.sum f) / s.card ≤ t) :
   obtain ⟨a, ha, hfa⟩ := exists_le_average hs
   exact ⟨a, ha, le_trans hfa havg⟩
 
+/-- **Two-sided first moment.**  The mean is *straddled* by the sample: some
+    element lies at or below it and some element at or above it, simultaneously.
+    Immediate from `exists_le_average` and `exists_ge_average` together — the base
+    of any argument that needs both tails of the mean at once (spread bounds,
+    second-moment / variance arguments). -/
+theorem exists_le_and_ge_average (hs : s.Nonempty) :
+    ∃ a ∈ s, ∃ b ∈ s,
+      f a ≤ (s.sum f) / s.card ∧ (s.sum f) / s.card ≤ f b := by
+  obtain ⟨a, ha, hfa⟩ := exists_le_average hs
+  obtain ⟨b, hb, hfb⟩ := exists_ge_average hs
+  exact ⟨a, ha, b, hb, hfa, hfb⟩
+
+/-- **Nonnegative spread around the mean.**  There are sample points `a, b ∈ s`
+    with `f a ≤ (∑ f)/|s| ≤ f b`, hence `0 ≤ f b − f a`: the max-minus-min spread
+    of any sample is nonnegative and dominates the deviation of both extremes from
+    the mean.  The two-sided companion of the one-sided `first_moment_ge` /
+    `first_moment_le`. -/
+theorem exists_nonneg_spread_of_average (hs : s.Nonempty) :
+    ∃ a ∈ s, ∃ b ∈ s, 0 ≤ f b - f a := by
+  obtain ⟨a, ha, b, hb, hfa, hfb⟩ := exists_le_and_ge_average hs
+  exact ⟨a, ha, b, hb, by linarith⟩
+
 /-! ## Application: strengthening `expected_mono_cliques` toward Erdős 1947
 
 The parent gallery lemma `expected_mono_cliques` only records that the expected
