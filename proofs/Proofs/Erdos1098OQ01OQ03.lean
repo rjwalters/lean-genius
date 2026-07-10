@@ -600,4 +600,27 @@ theorem boundedCliques_prod_of_finiteIndex {K : Type*} [Group K]
     Subgroup.index_dvd_of_le hle
   exact bounded_cliques_of_finite_index (ne_zero_of_dvd_ne_zero hprod hdvd)
 
+/-- **Each factor inherits bounded cliques from a direct product (left projection).**
+    If `Γ(G × K)` has finite clique number then so does `Γ(G)`: `ω(Γ(G)) ≤ ω(Γ(G × K))`.
+    The projection `MonoidHom.fst G K : G × K →* G` is surjective (a set-theoretic section
+    is `g ↦ (g, 1)`), so this is the direct specialisation of `boundedCliques_of_surjective`.
+
+    This is the exact converse of the construction lemma `boundedCliques_prod_of_finiteIndex`:
+    together they close the product under both directions, giving the equivalence
+    `BoundedCliques (G × K) ↔ BoundedCliques G ∧ BoundedCliques K` (via Neumann's dichotomy
+    for the reverse implication). Axiom-free — only the elementary surjective clique transfer,
+    not the BFC core `neumann_hard_direction`. -/
+theorem boundedCliques_of_prod_left {K : Type*} [Group K]
+    (h : BoundedCliques (G × K)) : BoundedCliques G :=
+  boundedCliques_of_surjective (MonoidHom.fst G K) (fun g => ⟨(g, 1), rfl⟩) h
+
+/-- **Each factor inherits bounded cliques from a direct product (right projection).**
+    If `Γ(G × K)` has finite clique number then so does `Γ(K)`: `ω(Γ(K)) ≤ ω(Γ(G × K))`.
+    The projection `MonoidHom.snd G K : G × K →* K` is surjective (section `k ↦ (1, k)`),
+    so this is the right-hand companion of `boundedCliques_of_prod_left`, again a direct
+    specialisation of `boundedCliques_of_surjective`. Axiom-free. -/
+theorem boundedCliques_of_prod_right {K : Type*} [Group K]
+    (h : BoundedCliques (G × K)) : BoundedCliques K :=
+  boundedCliques_of_surjective (MonoidHom.snd G K) (fun k => ⟨(1, k), rfl⟩) h
+
 end Erdos1098OQ01OQ03
