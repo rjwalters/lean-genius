@@ -1,0 +1,25 @@
+{
+  "slug": "erdos-1003-wip-01",
+  "title": "Complete Erd\u0151s Problem #1003: Consecutive Equal Totients (Work in Progress)",
+  "problemStatement": {
+    "formal": "\\forall k \\ge 1,\\ \\left|\\{n \\in \\mathbb{N} : \\varphi(n)=\\varphi(n+1)=\\cdots=\\varphi(n+k)\\}\\right| = \\infty",
+    "plain": "Are there infinitely many solutions to \u03c6(n) = \u03c6(n+1), where \u03c6 is the Euler totient function? Erd\u0151s conjectured yes, and made the stronger claim that \u03c6(n) = \u03c6(n+1) = ... = \u03c6(n+k) has infinitely many solutions for every k \u2265 1.",
+    "whyMatters": [
+      "Euler's totient is central to number theory; equal consecutive values probe its fine multiplicative structure."
+    ]
+  },
+  "status": "active",
+  "tags": [
+    "erdos",
+    "number-theory",
+    "totient-function",
+    "consecutive-values",
+    "asymptotic-density",
+    "open-problem",
+    "wip"
+  ],
+  "source": {
+    "proofId": "erdos-1003",
+    "type": "gallery-gap"
+  }
+}

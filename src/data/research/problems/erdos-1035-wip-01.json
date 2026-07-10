@@ -1,0 +1,24 @@
+{
+  "slug": "erdos-1035-wip-01",
+  "title": "Complete Hypercube Subgraphs in Dense Graphs (Work in Progress)",
+  "problemStatement": {
+    "formal": "\\exists c>0\\ \\forall G\\ \\big(|V(G)|=2^n,\\ \\delta(G) > (1-c)2^n \\implies Q_n \\subseteq G\\big)",
+    "plain": "Is there c > 0 such that every graph on 2^n vertices with min degree > (1-c)\u00b72^n contains the hypercube Q_n? Related to extremal graph theory for hypercube embeddings.",
+    "whyMatters": [
+      "Minimum-degree thresholds for spanning hypercubes are a benchmark problem in extremal graph theory."
+    ]
+  },
+  "status": "active",
+  "tags": [
+    "erdos",
+    "graph-theory",
+    "hypercube",
+    "extremal-graph-theory",
+    "minimum-degree",
+    "wip"
+  ],
+  "source": {
+    "proofId": "erdos-1035",
+    "type": "gallery-gap"
+  }
+}

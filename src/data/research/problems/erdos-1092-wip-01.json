@@ -1,0 +1,24 @@
+{
+  "slug": "erdos-1092-wip-01",
+  "title": "Complete Erd\u0151s Problem #1092: Chromatic Decomposition Threshold (Work in Progress)",
+  "problemStatement": {
+    "formal": "f_2(n) = \\max\\{m: \\text{removing} \\le m \\text{ edges from every subgraph keeps } \\chi \\le 2,\\ \\text{yet } \\chi(G)\\le 3\\};\\ f_2(n) \\gg n?",
+    "plain": "Let f_r(n) be max edges removable from each subgraph to reduce chromatic number to \u2264 r while forcing \u03c7(G) \u2264 r+1. Is f\u2082(n) \u226b n? R\u00f6dl (1982) gives f\u2082(n) = O(n\u00b7polylog). Open.",
+    "whyMatters": [
+      "Quantifies how far a graph can be from bipartite while remaining locally 2-degenerate in chromatic terms."
+    ]
+  },
+  "status": "active",
+  "tags": [
+    "erdos",
+    "graph-theory",
+    "chromatic-number",
+    "extremal-graph-theory",
+    "open",
+    "wip"
+  ],
+  "source": {
+    "proofId": "erdos-1092",
+    "type": "gallery-gap"
+  }
+}

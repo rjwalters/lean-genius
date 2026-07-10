@@ -1,0 +1,25 @@
+{
+  "slug": "erdos-1174-wip-01",
+  "title": "Complete Erd\u0151s Problem #1174: Monochromatic Cliques from Edge Colorings (Work in Progress)",
+  "problemStatement": {
+    "formal": "\\exists\\, K_4\\text{-free } G \\text{ s.t. every countable edge-colouring of } G \\text{ yields a monochromatic triangle}",
+    "plain": "Does there exist a K\u2084-free graph such that every countable edge coloring contains a monochromatic triangle, and does the analogous infinite generalization hold?",
+    "whyMatters": [
+      "Bridges finite Ramsey theory with infinite colourings; a partition property strictly below $K_4$."
+    ]
+  },
+  "status": "active",
+  "tags": [
+    "erdos",
+    "combinatorics",
+    "graph-theory",
+    "set-theory",
+    "ramsey-theory",
+    "open",
+    "wip"
+  ],
+  "source": {
+    "proofId": "erdos-1174",
+    "type": "gallery-gap"
+  }
+}

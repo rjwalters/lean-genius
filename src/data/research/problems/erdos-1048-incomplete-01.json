@@ -1,0 +1,25 @@
+{
+  "slug": "erdos-1048-incomplete-01",
+  "title": "Complete proof of Erd\u0151s Problem #1048: Polynomial Lemniscate Diameter",
+  "problemStatement": {
+    "formal": "f \\text{ monic, roots in } |z|\\le r,\\ r<2 \\implies \\{z:|f(z)|<1\\} \\text{ has a component of diameter} > 2-r\\ (\\text{FALSE for } r>1)",
+    "plain": "For a monic polynomial f \u2208 \u2102[x] with roots in |z| \u2264 r where r < 2, must L(f,1) = {z : |f(z)| < 1} have a component with diameter > 2-r? DISPROVED by Pommerenke (1961) for r > 1.",
+    "whyMatters": [
+      "Pommerenke's disproof calibrates how lemniscate geometry fails naive diameter lower bounds."
+    ]
+  },
+  "status": "active",
+  "tags": [
+    "erdos",
+    "analysis",
+    "complex-analysis",
+    "polynomials",
+    "lemniscates",
+    "disproved",
+    "incomplete"
+  ],
+  "source": {
+    "proofId": "erdos-1048",
+    "type": "gallery-gap"
+  }
+}

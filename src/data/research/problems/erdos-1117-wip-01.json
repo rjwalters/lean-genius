@@ -1,0 +1,25 @@
+{
+  "slug": "erdos-1117-wip-01",
+  "title": "Complete Erd\u0151s Problem #1117: Maximum Modulus Points on Circles (Work in Progress)",
+  "problemStatement": {
+    "formal": "f \\text{ entire, non-monomial},\\ \\nu(r)=\\#\\{|z|=r: |f(z)|=\\max_{|w|=r}|f(w)|\\};\\ \\liminf_{r\\to\\infty}\\nu(r)=\\infty?",
+    "plain": "For a non-monomial entire f, let \u03bd(r) count maximum modulus points on |z|=r. Can lim sup \u03bd(r) = \u221e? YES (Herzog\u2013Piranian 1968). Can lim inf \u03bd(r) = \u221e? OPEN. Approximate answer by Gl\u00fccksam\u2013Pardo-Sim\u00f3n (2024).",
+    "whyMatters": [
+      "Maximum-modulus point counts probe the geometry of value distribution for entire functions."
+    ]
+  },
+  "status": "active",
+  "tags": [
+    "erdos",
+    "complex-analysis",
+    "entire-functions",
+    "maximum-modulus",
+    "value-distribution",
+    "open",
+    "wip"
+  ],
+  "source": {
+    "proofId": "erdos-1117",
+    "type": "gallery-gap"
+  }
+}

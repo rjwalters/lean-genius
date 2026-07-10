@@ -1,0 +1,25 @@
+{
+  "slug": "erdos-1049-incomplete-01",
+  "title": "Complete proof of Erd\u0151s Problem #1049: Irrationality of Divisor Sums",
+  "problemStatement": {
+    "formal": "t \\in \\mathbb{Q},\\ t>1 \\implies \\sum_{n\\ge 1} \\frac{1}{t^n-1} = \\sum_{n\\ge 1}\\frac{\\tau(n)}{t^n} \\notin \\mathbb{Q}",
+    "plain": "For rational t > 1, is \u2211_{n\u22651} 1/(t^n - 1) = \u2211_{n\u22651} \u03c4(n)/t^n irrational? OPEN: Erd\u0151s proved YES for integer t \u2265 2. Chowla's conjecture for all rationals unresolved.",
+    "whyMatters": [
+      "Irrationality of Lambert-type divisor series; Erd\u0151s settled integer $t$, Chowla's rational case is open."
+    ]
+  },
+  "status": "active",
+  "tags": [
+    "erdos",
+    "number-theory",
+    "irrationality",
+    "divisor-function",
+    "series",
+    "open-problem",
+    "incomplete"
+  ],
+  "source": {
+    "proofId": "erdos-1049",
+    "type": "gallery-gap"
+  }
+}

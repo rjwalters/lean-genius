@@ -1,0 +1,24 @@
+{
+  "slug": "erdos-501-wip-01",
+  "title": "Complete Erd\u0151s #501: Independent Sets for Outer Measure Families (Work in Progress)",
+  "problemStatement": {
+    "formal": "\\{A_x\\}_{x} \\text{ bounded},\\ \\lambda^*(A_x)<1 \\implies \\exists \\text{ infinite } I \\text{ independent (}x\\notin A_y\\ \\forall x,y\\in I)\\,?",
+    "plain": "For bounded sets A_x with outer measure < 1, must infinite independent sets exist? Answer depends on set-theoretic axioms!",
+    "whyMatters": [
+      "Whether infinite independent sets exist is independent of ZFC \u2014 a striking set-theoretic dichotomy."
+    ]
+  },
+  "status": "active",
+  "tags": [
+    "erdos",
+    "set-theory",
+    "measure-theory",
+    "combinatorics",
+    "independence",
+    "wip"
+  ],
+  "source": {
+    "proofId": "erdos-501",
+    "type": "gallery-gap"
+  }
+}

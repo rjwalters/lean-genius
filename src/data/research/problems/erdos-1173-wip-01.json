@@ -1,0 +1,23 @@
+{
+  "slug": "erdos-1173-wip-01",
+  "title": "Complete Erd\u0151s Problem #1173: Free Sets for Set Mappings under GCH (Work in Progress)",
+  "problemStatement": {
+    "formal": "\\text{set mapping } F \\text{ of order} <\\aleph_{\\omega+1} \\text{ on } \\aleph_{\\omega+1} \\implies \\exists \\text{ free set of size } \\aleph_{\\omega+1}\\ (\\text{under GCH})",
+    "plain": "Does there exist a free set of cardinality \u2135_{\u03c9+1}?",
+    "whyMatters": [
+      "Free-set theorems for set mappings underpin combinatorial set theory of singular cardinals."
+    ]
+  },
+  "status": "active",
+  "tags": [
+    "erdos",
+    "combinatorics",
+    "set-theory",
+    "open",
+    "wip"
+  ],
+  "source": {
+    "proofId": "erdos-1173",
+    "type": "gallery-gap"
+  }
+}

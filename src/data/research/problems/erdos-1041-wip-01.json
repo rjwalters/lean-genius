@@ -1,0 +1,25 @@
+{
+  "slug": "erdos-1041-wip-01",
+  "title": "Complete Erd\u0151s Problem #1041: Paths in Polynomial Level Sets (Work in Progress)",
+  "problemStatement": {
+    "formal": "f \\text{ monic},\\ \\text{roots} \\subseteq \\overline{\\mathbb{D}} \\implies \\exists \\text{ path of length} < 2 \\text{ in } \\{z:|f(z)|<1\\} \\text{ joining two roots}",
+    "plain": "For a monic polynomial with all roots in the unit disk, must there exist a path of length less than 2 in the sublevel set {z : |f(z)| < 1} connecting two roots?",
+    "whyMatters": [
+      "Connectivity of polynomial sublevel sets links complex analysis to metric geometry of lemniscates."
+    ]
+  },
+  "status": "active",
+  "tags": [
+    "erdos",
+    "complex-analysis",
+    "polynomials",
+    "metric-geometry",
+    "level-sets",
+    "paths",
+    "wip"
+  ],
+  "source": {
+    "proofId": "erdos-1041",
+    "type": "gallery-gap"
+  }
+}

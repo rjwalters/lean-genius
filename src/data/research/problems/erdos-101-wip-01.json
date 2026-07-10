@@ -1,0 +1,24 @@
+{
+  "slug": "erdos-101-wip-01",
+  "title": "Complete Erd\u0151s Problem #101: Four-Point Lines from Planar Point Sets (Work in Progress)",
+  "problemStatement": {
+    "formal": "n \\text{ points in } \\mathbb{R}^2,\\ \\text{no 5 collinear} \\implies \\#\\{\\text{lines with exactly 4 points}\\} = o(n^2)",
+    "plain": "Given n points in \u211d\u00b2 with no five collinear, is the number of lines containing exactly four points o(n\u00b2)? Gr\u00fcnbaum: \u226b n^{3/2}. Solymosi\u2013Stojakovi\u0107: n^{2\u2212O(1/\u221alog n)}. Open.",
+    "whyMatters": [
+      "A central incidence-geometry question; bounds on $k$-rich lines drive extremal combinatorics."
+    ]
+  },
+  "status": "active",
+  "tags": [
+    "erdos",
+    "combinatorial-geometry",
+    "incidence-geometry",
+    "collinearity",
+    "open",
+    "wip"
+  ],
+  "source": {
+    "proofId": "erdos-101",
+    "type": "gallery-gap"
+  }
+}

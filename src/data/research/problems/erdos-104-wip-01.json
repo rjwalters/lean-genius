@@ -1,0 +1,24 @@
+{
+  "slug": "erdos-104-wip-01",
+  "title": "Complete Erd\u0151s Problem #104: Unit Circles Through Three Points (Work in Progress)",
+  "problemStatement": {
+    "formal": "n \\text{ points in } \\mathbb{R}^2 \\implies \\#\\{\\text{unit circles containing} \\ge 3 \\text{ points}\\} = O(n^{3/2})",
+    "plain": "Given n points in \u211d\u00b2, how many unit circles contain at least 3 points? Known: \u03a9(n^{3/2}) \u2264 answer \u2264 O(n\u00b2). Conjecture: O(n^{3/2}). OPEN ($100 prize).",
+    "whyMatters": [
+      "A \\$100 Erd\u0151s prize problem tightening incidence bounds between $\\Omega(n^{3/2})$ and $O(n^2)$."
+    ]
+  },
+  "status": "active",
+  "tags": [
+    "erdos",
+    "discrete-geometry",
+    "incidences",
+    "unit-circles",
+    "open-problem",
+    "wip"
+  ],
+  "source": {
+    "proofId": "erdos-104",
+    "type": "gallery-gap"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "slug": "erdos-507-wip-01",
+  "title": "Complete Erd\u0151s Problem #507: Heilbronn's Triangle Problem (Work in Progress)",
+  "problemStatement": {
+    "formal": "\\alpha(n) = \\min_{|P|=n,\\,P\\subseteq \\mathbb{D}}\\ \\max_{\\triangle \\subseteq P} \\text{area};\\ \\frac{\\log n}{n^2} \\ll \\alpha(n) \\ll n^{-7/6+o(1)}",
+    "plain": "Estimate \u03b1(n), the smallest area such that every n-point set in the unit disk contains a triangle of area \u2264 \u03b1(n). Best bounds: (log n)/n\u00b2 \u226a \u03b1(n) \u226a 1/n^{7/6+o(1)}. Status: OPEN.",
+    "whyMatters": [
+      "Heilbronn's triangle problem is a canonical extremal geometry question with a large bound gap."
+    ]
+  },
+  "status": "active",
+  "tags": [
+    "erdos",
+    "geometry",
+    "discrete-geometry",
+    "combinatorial-geometry",
+    "open",
+    "wip"
+  ],
+  "source": {
+    "proofId": "erdos-507",
+    "type": "gallery-gap"
+  }
+}
