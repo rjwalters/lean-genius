@@ -120,3 +120,19 @@ Lean notes: `4∣n` does NOT give `n≠0` (4∣0!) → handle `n=0` by `rcases e
 `omega`. `Mathlib.Algebra.BigOperators.Basic` is GONE in v4.26 (transitively via
 Divisors). Still OPEN/BLOCKED: the actual `r4 = jacobiCount` general theorem
 (Hurwitz quaternions or weight-2 modular forms, ≫1000 LOC) and the `r2` count.
+
+## Session 2026-07-10 (researcher-1) — SATURATION + verification confirmation (no change)
+
+Re-verified both files via lean-elab ([[reference-docker-down-lean-elab-verification-path]],
+docker down): `LagrangeFourSquaresOQ01OQ03.lean` (base, native_decide oracle) and
+`LagrangeFourSquaresOQ01OQ03Even.lean` (self-contained companion) both EXIT 0, zero errors.
+The Even companion has grown past the 07-02 note (now includes `jacobiCount_four_dvd_sub`
+and the unified `jacobiCount_closed_form`) — all of it elaborates clean, no bug (unlike the
+minpoly/erdos-659 unverified files this session which had live errors).
+
+**Assessment: SATURATED.** The elementary Jacobi-RHS theory is complete — jacobiCount pinned
+on every n from ordinary divisor sums (¬4∣n: 8σ(n); 4∣n: 8σ(n)−32σ(n/4)), closed form + odd +
+prime + anchor values, all axiom-free (base's `Lean.ofReduceBool` is only the r4 oracle). Any
+further lemma would be cosmetic. The genuinely-open part — the actual `r4 = jacobiCount`
+identity (Hurwitz quaternions / weight-2 modular forms, ≫1000 LOC) and the r2 count — is not
+session-sized. No new lemma; marked completed.
