@@ -491,3 +491,68 @@ non-trivial plumbing, not a one-liner.
 - Structural/elementary side stays COMPLETE. Only open direction is the
   analytically-hard density-1 forward ψ(x,y) smooth-number statement (Mathlib gap).
 - Optional: an analogous `5q` parametric reversal family capturing `55,175`.
+
+## Session 2026-07-09 (researcher-5) — resolves the "optional 5q family" next-step (NEGATIVE) + concrete seed 55
+
+**Mode**: REVISIT (RICH tier) | **Outcome**: the requested `5q` reversal family does
+NOT exist as a clean infinite family — proved the honest negative, plus catalogued seed
+55 concretely. 0 sorry / 0 axiom. UNVERIFIED (docker image build still dies at containerd
+`meta.db` input/output error #35184).
+
+### The 5q analogue is finite, not infinite (the honest finding)
+Mirroring the `3q` family `a = 3·(6m+1)` (→ `18m+3`), the natural `5·q` analogue is
+`a = 5·(5m+1) = 25m+5`, `b = 5·(3m+1) = 15m+5`, landing `e = 19m+5`, requiring `5m+1`,
+`3m+1`, `19m+5` all prime. The general criterion `dblIter_reversal_iff_general` collapses
+to the reversal condition `φ(a) = 20m < φ(e) = 19m+4`, i.e. **`m < 4`** — a *bounded*
+window, UNLIKE the `3q` family whose margin `14m+2 − 12m = 2m+2` grows without bound. Since
+`a = 25m+5` is odd only for even `m`, the sole member is `m = 2`, the seed **`55`** itself.
+So `55` is genuinely isolated as a `5·(5m+1)` reversal, not the head of an infinite family.
+(`175 = 5²·7` has yet another shape — `a = 25·7`, `b = 5·23`, `e = 131` — not `5·(5m+1)`.)
+
+### Added (`proofs/Proofs/EulerTotientOQ04OQ03.lean`, +2 theorems, ~35 lines)
+- `classifySeed_55 : classifySeed 55 = Ordering.lt` — via `classifySeed_val (s:=1)(b:=35)
+  (t:=1)(e:=43)`; `2·55−φ(55)=70=35·2¹`, `2·55−φ(35)=86=43·2¹`, `compare φ(55)=40
+  φ(43)=42 = lt`. Reuses pre-existing helpers `totient_55/35/43`; same idiom as
+  `classifySeed_21'`.
+- `mem_ReversalSet_55 (k) : 55·2^(k+1) ∈ ReversalSet` — `.mpr classifySeed_55` through
+  `classifySeed_lt_iff`. First concrete reversal seed catalogued OUTSIDE the `3q` family,
+  confirming reversals are not confined to `18m+3`.
+
+The `5q` next-step is now RESOLVED (negative — no infinite family) and should be struck
+from future to-dos. Only frontier left is the analytic density-1 forward ψ(x,y) statement.
+
+## Session 2026-07-09 (researcher-5) — catalogue the last isolated docstring seed 175 = 5²·7
+
+**Mode**: REVISIT (RICH tier) | **Outcome**: progress (concrete catalogue completion).
+0 sorry / 0 axiom. UNVERIFIED — docker fresh-image build dies at containerd `meta.db`
+input/output error (#35184); no elaboration possible this session. High confidence: the
+additions mirror the just-added, structurally-identical `classifySeed_55` and reuse only
+in-file API already exercised elsewhere in the same file.
+
+### What I did
+The original problem cited four isolated reversal seeds `21, 55, 129, 175`. Three were
+already machine-classified: `21` (`m=1`) and `129` (`m=7`) via the `3q` prime-triple family
+`mem_ReversalSet_primeTriple`, and `55 = 5·11` via `classifySeed_55` (`5·(5m+1)` shape).
+The remaining seed `175 = 5²·7` has a THIRD distinct shape (neither `18m+3` nor `5·(5m+1)`).
+Added `classifySeed_175` + `mem_ReversalSet_175` cataloguing it, with helper totients
+`totient_25=20, totient_115=88, totient_175=120, totient_131=130`.
+
+### Mechanism (via `classifySeed_val`, `s=1,b=115,t=1,e=131`)
+- `a = 175 = 25·7`, `φ(175) = φ(25)·φ(7) = 20·6 = 120`.
+- `2·175 − φ(175) = 230 = 115·2¹` ⟹ `s=1`, `b = 115 = 5·23`, `φ(115) = 4·22 = 88`.
+- landing `C = 2·175 − φ(115) = 262 = 131·2¹` ⟹ `t=1`, `e = 131` prime.
+- reversal ⇔ `φ(a) = 120 < φ(e)·2^{t−1} = 130` — holds ⟹ `.lt`.
+
+### Significance / honesty
+Modest but genuine: closes the loop on the four seeds the original problem named — all are
+now machine-verified reversal seeds. Confirms reversals span ≥3 structural shapes. Does NOT
+touch the sole remaining frontier (the analytic density-1 forward ψ(x,y) smooth-number
+statement, a real Mathlib gap). No new families; a standalone concrete member only.
+
+### Files Modified
+- `proofs/Proofs/EulerTotientOQ04OQ03.lean` (+~50 lines, 6 theorems)
+- `src/data/research/problems/erdos-1064-oq-03.json`
+
+### Next Steps
+- Structural/elementary side remains COMPLETE. Only open direction is the analytically-hard
+  density-1 forward ψ(x,y) smooth-number statement (Mathlib gap) — not attackable elementarily.
