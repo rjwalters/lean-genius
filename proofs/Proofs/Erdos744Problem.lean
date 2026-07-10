@@ -376,6 +376,26 @@ theorem maxCut_eq_zero_iff {V : Type*} [Fintype V] [LinearOrder V]
     have hle := maxCut_le_edgeCount G
     omega
 
+/-- **The bipartition number saturates the edge count iff `G` is edgeless.**
+`bipartitionNumber G = edgeCount G ↔ edgeCount G = 0`: every edge is monochromatic under
+*every* coloring (nothing can be cut) exactly when there are no edges at all.  This is the
+fourth and final "corner" of the max-cut / min-uncut square, the exact dual of
+`maxCut_eq_edgeCount_iff` (`maxCut = edgeCount ↔ bipartite`):
+
+| quantity | `= 0` | `= edgeCount` |
+|----------|-------|---------------|
+| `maxCut` | edgeless (`maxCut_eq_zero_iff`) | bipartite (`maxCut_eq_edgeCount_iff`) |
+| `bipartitionNumber` | bipartite (`bipartitionNumber_eq_zero_iff`) | edgeless (*this lemma*) |
+
+Immediate from the complementarity `bipartitionNumber G + maxCut G = edgeCount G` and
+`maxCut_eq_zero_iff`. -/
+theorem bipartitionNumber_eq_edgeCount_iff {V : Type*} [Fintype V] [LinearOrder V]
+    (G : SimpleGraph' V) [DecidableRel G.Adj] :
+    bipartitionNumber G = edgeCount G ↔ edgeCount G = 0 := by
+  rw [← maxCut_eq_zero_iff]
+  have h := bipartitionNumber_add_maxCut G
+  omega
+
 /--
 **The f_k(n) Function**
 
