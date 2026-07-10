@@ -169,6 +169,42 @@ theorem bipartitionNumber_eq_zero_iff {V : Type*} [Fintype V] [LinearOrder V]
       Finset.inf'_le _ (Finset.mem_univ c)
     omega
 
+/-- **Universal lower bound.** The bipartition number is at most the monochromatic-edge count
+    of *every* 2-coloring: `bipartitionNumber G ≤ monochromaticEdges G c`. Half of its
+    characterization as the minimum over all colorings. -/
+theorem bipartitionNumber_le {V : Type*} [Fintype V] [LinearOrder V]
+    (G : SimpleGraph' V) [DecidableRel G.Adj] (c : V → Bool) :
+    bipartitionNumber G ≤ monochromaticEdges G c :=
+  Finset.inf'_le _ (Finset.mem_univ c)
+
+/-- **The minimum is attained.** Some 2-coloring realizes the bipartition number exactly:
+    the optimal (fewest-monochromatic-edge) colouring exists. Together with
+    `bipartitionNumber_le` this is the full universal property of `bipartitionNumber` as a
+    minimum. -/
+theorem exists_coloring_eq_bipartitionNumber {V : Type*} [Fintype V] [LinearOrder V]
+    (G : SimpleGraph' V) [DecidableRel G.Adj] :
+    ∃ c : V → Bool, monochromaticEdges G c = bipartitionNumber G := by
+  obtain ⟨c, -, hc⟩ :=
+    Finset.exists_mem_eq_inf' (Finset.univ_nonempty (α := V → Bool)) (monochromaticEdges G)
+  exact ⟨c, hc.symm⟩
+
+/-- **Positivity ⟺ genuinely non-bipartite.** The bipartition number is positive iff *no*
+    2-coloring is proper — every colouring leaves at least one monochromatic edge. The
+    contrapositive companion of `bipartitionNumber_eq_zero_iff`: at least one edge deletion is
+    required exactly when `G` has no proper 2-colouring. -/
+theorem bipartitionNumber_pos_iff {V : Type*} [Fintype V] [LinearOrder V]
+    (G : SimpleGraph' V) [DecidableRel G.Adj] :
+    0 < bipartitionNumber G ↔ ∀ c : V → Bool, ∃ u v, G.Adj u v ∧ c u = c v := by
+  rw [Nat.pos_iff_ne_zero, ne_eq, bipartitionNumber_eq_zero_iff, not_exists]
+  constructor
+  · intro h c
+    have hc := h c
+    push_neg at hc
+    exact hc
+  · intro h c hc
+    obtain ⟨u, v, hadj, huv⟩ := h c
+    exact hc u v hadj huv
+
 /-
 # Part 3b: Structural properties of the bipartition number
 
