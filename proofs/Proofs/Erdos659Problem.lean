@@ -407,15 +407,13 @@ theorem representable_iff_nat (n : ℕ) :
   constructor
   · rintro ⟨x, y, hxy⟩
     refine ⟨x.natAbs, y.natAbs, ?_⟩
-    have hx : ((x.natAbs : ℤ)) ^ 2 = x ^ 2 := by
-      have h := Int.natAbs_mul_self (a := x); push_cast at h; rw [sq, sq]; exact h
-    have hy : ((y.natAbs : ℤ)) ^ 2 = y ^ 2 := by
-      have h := Int.natAbs_mul_self (a := y); push_cast at h; rw [sq, sq]; exact h
-    have : (n : ℤ) = ((x.natAbs ^ 2 + 2 * y.natAbs ^ 2 : ℕ) : ℤ) := by
-      push_cast [hx, hy]; rw [hxy]
-    exact_mod_cast this
+    have hx : ((x.natAbs : ℤ)) ^ 2 = x ^ 2 := by rw [← Int.abs_eq_natAbs, sq_abs]
+    have hy : ((y.natAbs : ℤ)) ^ 2 = y ^ 2 := by rw [← Int.abs_eq_natAbs, sq_abs]
+    have key : (n : ℤ) = (x.natAbs : ℤ) ^ 2 + 2 * (y.natAbs : ℤ) ^ 2 := by
+      rw [hx, hy]; exact hxy
+    exact_mod_cast key
   · rintro ⟨a, b, hab⟩
-    exact ⟨a, b, by exact_mod_cast hab⟩
+    exact ⟨(a : ℤ), (b : ℤ), by exact_mod_cast hab⟩
 
 /-- **`35` is not representable as `x² + 2y²`.** Since `35 = 5 · 7` and both primes are
     inert in `ℤ[√-2]` (`5 ≡ 5`, `7 ≡ 7 mod 8`), the product carries each to an *odd*
