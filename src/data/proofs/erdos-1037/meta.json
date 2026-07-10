@@ -262,5 +262,27 @@
       "Proofs/Erdos1037Aristotle.lean"
     ]
   },
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "title": "Erdős Problem #1037",
+      "author": "erdosproblems.com",
+      "year": "2023",
+      "venue": "erdosproblems.com",
+      "url": "https://erdosproblems.com/1037",
+      "description": "Canonical entry for the Chen–Erdős question on degree-diverse graphs and the size of forced trivial (empty/complete) induced subgraphs."
+    },
+    {
+      "title": "Disproof of a conjecture on degree-diverse graphs",
+      "author": "Stijn Cambie, Yiu Ka Chan, Kevin Hunter",
+      "year": "2023",
+      "description": "Constructs graphs on n vertices with ≥ 3n/4 distinct degrees, each occurring at most twice, whose largest trivial (empty or complete) induced subgraph has size only O(log n) — disproving the conjectured super-logarithmic bound."
+    },
+    {
+      "title": "Original question of Chen and Erdős",
+      "author": "G. Chen and Paul Erdős",
+      "year": "—",
+      "description": "Poses whether high degree diversity (>(1/2+ε)n distinct degrees, multiplicities ≤ 2) forces a trivial induced subgraph much larger than log n."
+    }
+  ]
 }
