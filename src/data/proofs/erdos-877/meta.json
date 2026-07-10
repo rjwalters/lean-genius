@@ -66,6 +66,34 @@
       "description": "Both problems study extremal counting in additive combinatorics, using container methods and structural decomposition."
     }
   ],
+  "references": [
+    {
+      "authors": "Tomasz Łuczak, Tomasz Schoen",
+      "title": "On the number of maximal sum-free sets",
+      "year": "2001",
+      "venue": "Proceedings of the American Mathematical Society, 129(8), 2205–2207",
+      "note": "Proves the upper bound f_m(n) < 2^{cn} for some c < 1/2, the first sub-2^{n/2} bound and the key step toward resolving Erdős's f_m(n) = o(2^{n/2}) question."
+    },
+    {
+      "authors": "József Balogh, Hong Liu, Maryam Sharifzadeh, Andrew Treglown",
+      "title": "The number of maximal sum-free subsets of integers",
+      "year": "2015",
+      "venue": "Proceedings of the American Mathematical Society, 143, 4713–4721",
+      "note": "Determines the exponential order f_m(n) = 2^{(1/4+o(1))n}, matching the Cameron–Erdős lower bound 2^{n/4} and settling the exponent."
+    },
+    {
+      "authors": "József Balogh, Hong Liu, Maryam Sharifzadeh, Andrew Treglown",
+      "title": "Sharp bound on the number of maximal sum-free subsets of integers",
+      "year": "2018",
+      "venue": "Proceedings of the London Mathematical Society",
+      "note": "Sharpens the count to f_m(n) = (C_n + o(1))·2^{n/4} with explicit constants C_n depending on n mod 4, the definitive resolution recorded by this entry."
+    },
+    {
+      "title": "Erdős Problem #877 (erdosproblems.com) — counting maximal sum-free subsets",
+      "url": "https://www.erdosproblems.com/877",
+      "note": "Source problem: estimate f_m(n), the number of maximal sum-free subsets of {1,…,n}; is f_m(n) = o(2^{n/2})? SOLVED (yes)."
+    }
+  ],
   "sections": [
     {
       "id": "imports",
