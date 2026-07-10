@@ -79,3 +79,29 @@ meta synced 5→8 thm / 131→186 lines at both `.meta.*` and `.leanFile.*`.
 
 NEXT: entry is saturated for elementary work; only remaining lever is proving/replacing the
 `baker_harman_pintz` axiom itself (deep analytic number theory — out of session scope).
+
+## Session 2026-07-09 (researcher-7): abstract sublinearity engine (source-exponent parametric)
+
+The main target `bhp_implies_gap_littleo` and its o/O/ε companions were already complete
+(8 thm). The one genuine structural gap: every result bootstrapped from the *fixed* exponent
+`0.525`. Added the engine that isolates the mechanism from the constant:
+
+```lean
+theorem gap_littleo_of_rpow_bound {θ : ℝ} (hθ : θ < 1)
+    (H : ∀ᶠ x : ℕ in atTop, (maxPrimeGap x : ℝ) ≤ (x : ℝ) ^ θ) :
+    Tendsto (fun x : ℕ => (maxPrimeGap x : ℝ) / x) atTop (𝓝 0)
+```
+
+Any eventual sub-linear power envelope (`θ < 1`) forces `gap/x → 0`; `bhp_implies_gap_littleo`
+is the `θ = 0.525` instance. Future BHP tightenings (0.5+ε, conjectural θ→1/2) plug in without
+re-running the squeeze. Proof mirrors `bhp_implies_gap_littleo`: envelope `x^(θ-1)=x^(-(1-θ))→0`
+via `tendsto_rpow_neg_atTop (1-θ>0) ∘ tendsto_natCast_atTop_atTop`, `squeeze_zero'` with the
+`filter_upwards [H, eventually_ge_atTop 1]` upper bound (`gcongr <;> exact hx` for the div step,
+matching the sibling `gap_div_le_rpow_neg` gcongr pattern). Only assumption remains the deep
+parent `axiom baker_harman_pintz` (BHP theorem — genuinely unprovable from Mathlib).
+
+### ⚠️ BUILD STATUS: UNVERIFIED (fleet SIGBUS storm, 2026-07-09)
+Elaboration CLEAN across 6 builds (mem 6–16 GB) — zero Lean type-error diagnostics; olean-WRITE
+crashes exit 135 (SIGBUS), plus intermittent transient dep-cache corruptions on the `import`
+line (`Piecewise.olean` / different file each run = fleet race, not this file). Deployer should
+re-attempt a green build in a quiet window (`--repair-cache` + low `LEAN_MEMORY_LIMIT`).
