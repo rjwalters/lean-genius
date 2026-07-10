@@ -268,6 +268,38 @@ theorem eLpNorm_rpow_restrict_mono {g : α → ℝ} {A B : Set α}
   rw [key]
   exact le_self_add
 
+/-- **Seminorm-level monotonicity of the Lᵠ-seminorm under set inclusion.**
+    For `A ⊆ B`, `eLpNorm g q (μ.restrict A) ≤ eLpNorm g q (μ.restrict B)`.
+
+    This is the *seminorm-level* statement of the monotonicity that
+    `eLpNorm_rpow_restrict_mono` proves only for the `q`-power. The docstrings of the
+    maximality reduction repeatedly assert it verbally ("enlarging the σ-finite support
+    set can only increase the representing function's norm"), yet the additive machinery
+    only delivers it on the `q`-power because the seminorm itself is merely subadditive
+    (Minkowski). It is nevertheless directly monotone in the *measure*, and hence in the
+    restriction set: it follows in one step from `eLpNorm_mono_measure` applied to
+    `μ.restrict A ≤ μ.restrict B` (`Measure.restrict_mono_set`), with **no** finiteness,
+    measurability, or `0 < q < ∞` hypothesis — strictly more general than the `q`-power
+    companion above, which needs `q ≠ 0`, `q ≠ ∞`, and measurability of `A`, `B`. -/
+theorem eLpNorm_restrict_mono {g : α → ℝ} {A B : Set α} (hAB : A ⊆ B) {q : ℝ≥0∞} :
+    eLpNorm g q (μ.restrict A) ≤ eLpNorm g q (μ.restrict B) :=
+  eLpNorm_mono_measure g (Measure.restrict_mono_set μ hAB)
+
+/-- **iUnion specialization** of `eLpNorm_restrict_mono` (step 2 ingredient).
+    Each piece of a countable family is dominated, in Lᵠ-seminorm, by the union:
+
+      `eLpNorm g q (μ.restrict (S n)) ≤ eLpNorm g q (μ.restrict (⋃ k, S k))`.
+
+    This is the exact bound the maximizing-sequence construction consumes: forming the
+    increasing union `T = ⋃ₙ Sₙ` can only *raise* each representer's norm, so replacing a
+    maximizing sequence by its union loses nothing and `‖g_T‖_q` attains the supremum
+    `c = ⨆_S ‖g_S‖_q`. It is the immediate corollary `Set.subset_iUnion S n` of the
+    monotonicity lemma above, and — like it — needs no disjointness, measurability, or
+    exponent hypotheses (unlike the additive `eLpNorm_rpow_restrict_iUnion`). -/
+theorem eLpNorm_restrict_le_iUnion {g : α → ℝ} {S : ℕ → Set α} (n : ℕ) {q : ℝ≥0∞} :
+    eLpNorm g q (μ.restrict (S n)) ≤ eLpNorm g q (μ.restrict (⋃ k, S k)) :=
+  eLpNorm_restrict_mono (Set.subset_iUnion S n)
+
 /-- **Step 1 of the maximality reduction — per-σ-finite-set representer.**
     For any measurable set `S` whose restriction `μ.restrict S` is σ-finite, the
     functional `φ` on `Lp ℝ p μ`, pulled back along the extension-by-zero embedding
@@ -395,6 +427,8 @@ theorem riesz_lp_surjective_general
 #print axioms RieszLpDualitySynthesis.eLpNorm_rpow_restrict_union
 #print axioms RieszLpDualitySynthesis.eLpNorm_rpow_restrict_iUnion
 #print axioms RieszLpDualitySynthesis.eLpNorm_rpow_restrict_mono
+#print axioms RieszLpDualitySynthesis.eLpNorm_restrict_mono
+#print axioms RieszLpDualitySynthesis.eLpNorm_restrict_le_iUnion
 #print axioms RieszLpDualitySynthesis.riesz_representer_on_sigmaFinite_set
 #print axioms RieszLpDualitySynthesis.riesz_lp_surjective_general
 
