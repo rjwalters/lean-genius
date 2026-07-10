@@ -37,7 +37,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (UNVERIFIED, docker down): graph-level K_{2,t} KST bound COMPLETE — cherry count + quadratic assembly + closed-form edge bound + K_{2,t}-free bridge, feeding the merged algebraic core; closes the graph-level gap (parent had only t=2/C4)",
+    "progressSummary": "PROGRESS (UNVERIFIED, docker infra down): graph-level K_{2,t} KST development now has BOTH directions — the K_{2,t}-free edge upper bounds AND the forcing/existence converse (edges over threshold ⟹ K_{2,t}). OQ deliverable (graph-level K_{2,t} bound) complete; only re-verification pending build-backend repair.",
     "builtItems": [
       "kst_quadratic_solve (Erdos1008OQ02OQ02.lean): solves the general K_{2,t} KST quadratic 4m^2 <= (t-1)n^2(n-1)+2nm for the upper root 4m <= n(1+s), s=sqrt(1+4(t-1)(n-1))",
       "reiman_quadratic_solve_of_kst: t=2 specialisation recovering the sibling C4 lemma verbatim (1+4(t-1)(n-1)=4n-3)",
@@ -45,11 +45,13 @@
       "kst_cherry_count_nat (Erdos1008OQ02OQ02.lean): graph-level double count ∑_v d_v(d_v-1) ≤ κ·n(n-1) for graphs whose distinct vertex pairs share ≤ κ common neighbours (K_{2,κ+1}-free); cherry (a,b) fibre = |N(a)∩N(b)| via sum_comm double count",
       "kst_graph_quadratic (Erdos1008OQ02OQ02.lean): assembles cherry count + handshaking + CS (sq_sum_le_card) into 4m² ≤ κ·n²(n-1)+2nm — the graph-theoretic input kst_quadratic_solve needed",
       "kst_edge_bound (Erdos1008OQ02OQ02.lean): graph-level closed form 4m ≤ n(1+√(1+4κ(n-1))) via kst_quadratic_solve with t=κ+1",
-      "HasK2t + commonNbrs_card_lt_of_free + kst_edge_bound_of_free: connects the common-neighbour-bound hypothesis to the genuine forbidden-subgraph definition of K_{2,t}-freeness"
+      "HasK2t + commonNbrs_card_lt_of_free + kst_edge_bound_of_free: connects the common-neighbour-bound hypothesis to the genuine forbidden-subgraph definition of K_{2,t}-freeness",
+      "hasK2t_of_edge_bound_lt / hasK2t_of_edge_bound_leading_order_lt / hasK2t_two_of_edge_bound_leading_order_lt in Erdos1008OQ02OQ02.lean (GraphLevel): the KST forcing/existence direction — edges above the exact / leading-order / Reiman-C4 threshold force HasK2t; one-line contrapositives of the corresponding upper bounds (PR #37195, UNVERIFIED docker-down)"
     ],
     "insights": [
       "The C4 algebraic core generalises to K_{2,t} with zero structural change: replace the single-common-neighbour bound by (t-1), so s^2=4n-3 becomes s^2=1+4(t-1)(n-1) and the KST quadratic gains a (t-1) factor on the n^2(n-1) term. Same nlinarith case-split proof works.",
-      "Leading-order closed form is ex(n;K_{2,t}) <= (1/2)(sqrt(t-1)*n^{3/2}+n), matching the classical Kovari-Sos-Turan asymptotic."
+      "Leading-order closed form is ex(n;K_{2,t}) <= (1/2)(sqrt(t-1)*n^{3/2}+n), matching the classical Kovari-Sos-Turan asymptotic.",
+      "The graph-level file only had the K_{2,t}-free upper bounds; the forcing converse (too many edges ⟹ K_{2,t}) is what makes KST an extremal theorem and was missing. Trivial via by_contra + absurd (bound) (not_le.2 hm)."
     ],
     "mathlibGaps": [
       "No graph-level general cherry-count sum_v C(d_v,2) <= (t-1)*C(n,2) for K_{2,t}-free graphs in the gallery; parent Erdos1008Problem only proves the t=2 (C4) case kovari_sos_turan."
@@ -117,10 +119,10 @@
     {
       "path": "Proofs/Erdos1008OQ02OQ02.lean",
       "filename": "Erdos1008OQ02OQ02.lean",
-      "lineCount": 421,
-      "theoremCount": 9,
+      "lineCount": 497,
+      "theoremCount": 12,
       "axiomCount": 0,
-      "defCount": 0,
+      "defCount": 2,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1008OQ02OQ02.lean"
