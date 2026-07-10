@@ -38,7 +38,11 @@ def primeMutliples (p n : ℕ) : Finset ℕ :=
     This is a standard counting result: multiples of p in [1,n] are p, 2p, ..., floor(n/p)*p. -/
 theorem prime_multiples_size (p n : ℕ) (hp : p > 0) :
     (primeMutliples p n).card = n / p := by
-  sorry
+  have hIcc : Icc_n n = Finset.Ioc 0 n := by
+    unfold Icc_n; ext k; simp only [Finset.mem_Icc, Finset.mem_Ioc]; omega
+  unfold primeMutliples
+  rw [hIcc]
+  exact Nat.Ioc_filter_dvd_card_eq_div n p
 
 -- ===================================================================
 -- Section 2: Prime multiples avoid non-multiples
@@ -62,7 +66,13 @@ theorem primeMutliples_subset_sum_dvd (p n : ℕ) (A : Finset ℕ)
     Any subset sum of multiples of p is a multiple of p, but m is not. -/
 theorem prime_multiples_avoid (p m n : ℕ) (hp : Nat.Prime p) (hpm : ¬p ∣ m) :
     AvoidSum (primeMutliples p n) m := by
-  sorry
+  intro hmem
+  rw [subsetSums, Finset.mem_filter, Finset.mem_image] at hmem
+  obtain ⟨⟨A, hA, hAsum⟩, _⟩ := hmem
+  rw [Finset.mem_powerset] at hA
+  have hdvd : p ∣ ∑ a ∈ A, a := primeMutliples_subset_sum_dvd p n A hA
+  rw [hAsum] at hdvd
+  exact hpm hdvd
 
 -- ===================================================================
 -- Section 3: Avoiding sum 1
@@ -71,11 +81,23 @@ theorem prime_multiples_avoid (p m n : ℕ) (hp : Nat.Prime p) (hpm : ¬p ∣ m)
 /-- The set {2, ..., n} is a 1-avoiding set of size n-1 for n >= 2. -/
 theorem Icc_2_n_avoids_one (n : ℕ) (hn : n ≥ 2) :
     AvoidSum (Finset.Icc 2 n) 1 := by
-  sorry
+  intro hmem
+  rw [subsetSums, Finset.mem_filter, Finset.mem_image] at hmem
+  obtain ⟨⟨A, hA, hAsum⟩, _⟩ := hmem
+  rw [Finset.mem_powerset] at hA
+  rcases Finset.eq_empty_or_nonempty A with hE | hNE
+  · -- the empty subset sums to 0, not 1
+    subst hE; simp at hAsum
+  · -- a nonempty subset of {2,…,n} has sum ≥ 2 > 1
+    obtain ⟨a, ha⟩ := hNE
+    have ha2 : 2 ≤ a := (Finset.mem_Icc.mp (hA ha)).1
+    have hle : a ≤ ∑ x ∈ A, x :=
+      Finset.single_le_sum (fun i _ => Nat.zero_le i) ha
+    omega
 
 /-- The set {2, ..., n} has card n - 1. -/
 theorem Icc_2_n_card (n : ℕ) (hn : n ≥ 2) :
     (Finset.Icc 2 n).card = n - 1 := by
-  sorry
+  rw [Nat.card_Icc]; omega
 
 end Erdos771Aristotle
