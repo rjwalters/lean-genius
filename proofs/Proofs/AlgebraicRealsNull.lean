@@ -270,4 +270,53 @@ theorem transcendental_complex_dense :
   rw [algebraic_complex_dimH_zero]
   exact_mod_cast Module.finrank_pos
 
+-- ============================================================================
+-- § 5. Generalization to arbitrary atomless measures
+-- ============================================================================
+
+/-!
+The measure-zero results above are stated for Lebesgue `volume`, but the only
+property used is that a *countable* set is null for any measure **without atoms**
+(`Set.Countable.measure_zero`). So the same conclusion holds verbatim for every
+atomless Borel measure on `ℝ` (or `ℂ`) — Gaussian, exponential, any absolutely
+continuous law, etc. The algebraic reals are `μ`-null not because of any special
+feature of Lebesgue measure but purely because they are countable.
+-/
+
+/-- **The algebraic reals are null for every atomless measure**, not just Lebesgue
+`volume`: countability alone forces `μ`-measure zero whenever `μ` has no atoms. -/
+theorem algebraic_reals_null_of_noAtoms (μ : Measure ℝ) [NoAtoms μ] :
+    μ {x : ℝ | IsAlgebraic ℚ x} = 0 :=
+  (AlgebraicNumbersCountable.algebraic_reals_countable).measure_zero μ
+
+/-- **Almost every real is transcendental, for any atomless measure `μ`.** Generalizes
+`ae_transcendental` from Lebesgue `volume` to every `[NoAtoms μ]`. -/
+theorem ae_transcendental_of_noAtoms (μ : Measure ℝ) [NoAtoms μ] :
+    ∀ᵐ x : ℝ ∂μ, Transcendental ℚ x := by
+  have hset : {x : ℝ | Transcendental ℚ x} = {x : ℝ | IsAlgebraic ℚ x}ᶜ := by
+    ext x; simp only [mem_setOf_eq, mem_compl_iff, Transcendental]
+  rw [Filter.eventually_iff, hset]
+  exact compl_mem_ae_iff.mpr (algebraic_reals_null_of_noAtoms μ)
+
+/-- **The algebraic complex numbers are null for every atomless measure on `ℂ`.** The
+complex analogue of `algebraic_reals_null_of_noAtoms`. -/
+theorem algebraic_complex_null_of_noAtoms (μ : Measure ℂ) [NoAtoms μ] :
+    μ {z : ℂ | IsAlgebraic ℚ z} = 0 :=
+  (AlgebraicNumbersCountable.algebraic_complex_countable).measure_zero μ
+
+/-- **Positive-measure sets contain transcendentals, for any atomless `μ`.** If `μ` has no
+atoms and `μ s > 0`, then `s` contains a transcendental — otherwise `s ⊆ {algebraic}` would be
+`μ`-null. Generalizes `exists_transcendental_of_pos_measure` beyond Lebesgue measure. -/
+theorem exists_transcendental_of_pos_measure_noAtoms {μ : Measure ℝ} [NoAtoms μ]
+    {s : Set ℝ} (hs : 0 < μ s) : ∃ x ∈ s, Transcendental ℚ x := by
+  by_contra h
+  push_neg at h
+  have hsub : s ⊆ {x : ℝ | IsAlgebraic ℚ x} := by
+    intro x hx
+    have := h x hx
+    simpa only [mem_setOf_eq, Transcendental, not_not] using this
+  have hz : μ s = 0 := measure_mono_null hsub (algebraic_reals_null_of_noAtoms μ)
+  rw [hz] at hs
+  exact lt_irrefl 0 hs
+
 end AlgebraicRealsNull
