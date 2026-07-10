@@ -469,4 +469,92 @@ theorem avgSteps_one_pow_two (n : ℕ) :
 example : (totalSteps 1 (2 ^ 6) : ℚ) / (2 ^ 6 : ℚ) = ((6 : ℚ) - 1) + ((6 : ℚ) + 2) / (2 ^ 6 : ℚ) :=
   avgSteps_one_pow_two 6
 
+-- ═══════════════════════════════════════════════════════════════════
+-- PART IX: THE EXACT a = 1 AVERAGE AT EVERY N  +  A TIGHT log₂N − 1 FLOOR
+-- ═══════════════════════════════════════════════════════════════════
+--
+-- `avgSteps_one_pow_two` pins the a = 1 average in closed rational form only on
+-- the dyadic subsequence `N = 2^n`. Dividing the *every-N* exact total
+-- `totalSteps_one_closed` by `N` extends this to a closed rational form at EVERY
+-- `N ≥ 1` (with `n = ⌊log₂N⌋`):
+--
+--     avg(a=1, N) = (n + 1) + (n + 2 − 2^{n+1}) / N.
+--
+-- This subsumes `avgSteps_one_pow_two`: at `N = 2^n` the correction is
+-- `(n + 2 − 2^{n+1})/2^n = (n + 2)/2^n − 2`, recovering `(n − 1) + (n + 2)/2^n`.
+--
+-- The closed form also sharpens the averaged lower bound: because
+-- `2^{n+1} = 2·2^n ≤ 2N`, the correction obeys `(n + 2 − 2^{n+1})/N > −2`, so the
+-- a = 1 average exceeds `log₂N − 1` at EVERY `N` — a factor-2 improvement over the
+-- `(log₂N − 1)/2` floor of `avgSteps_one_ge`, and matching (to the additive `−1`)
+-- the leading constant `1` established on the dyadic subsequence.
+
+/-- **Exact `a = 1` average at every `N ≥ 1`.**  With `n = ⌊log₂ N⌋`,
+
+      (totalSteps 1 N) / N = (n + 1) + (n + 2 − 2^{n+1}) / N.
+
+    This extends `avgSteps_one_pow_two` (dyadic `N = 2^n` only) to an exact closed
+    rational form for the `a = 1` average at *every* `N`, obtained by dividing the
+    every-`N` total `totalSteps_one_closed` by `N`.  Proved by clearing the
+    denominator `N ≠ 0` against the cast of `totalSteps_one_closed`. -/
+theorem avgSteps_one_closed (N : ℕ) (hN : 1 ≤ N) :
+    (totalSteps 1 N : ℚ) / (N : ℚ)
+      = ((Nat.log 2 N : ℚ) + 1)
+        + ((Nat.log 2 N : ℚ) + 2 - (2 : ℚ) ^ (Nat.log 2 N + 1)) / (N : ℚ) := by
+  set n := Nat.log 2 N with hn
+  have hNQ : (0 : ℚ) < (N : ℚ) := by exact_mod_cast hN
+  have hne : (N : ℚ) ≠ 0 := ne_of_gt hNQ
+  -- cast the every-N total identity to ℚ and solve for totalSteps 1 N
+  have hcast : (totalSteps 1 N : ℚ) + (2 : ℚ) ^ (n + 1)
+      = ((N : ℚ) + 1) * (n : ℚ) + (N : ℚ) + 2 := by
+    have := totalSteps_one_closed N hN
+    rw [← hn] at this
+    exact_mod_cast this
+  have hT : (totalSteps 1 N : ℚ)
+      = ((N : ℚ) + 1) * (n : ℚ) + (N : ℚ) + 2 - (2 : ℚ) ^ (n + 1) := by linarith
+  rw [hT]
+  field_simp
+  ring
+
+/-- **Tight `log₂N − 1` floor for the `a = 1` average (every `N`).**  For every
+    `N ≥ 1`,
+
+      log₂ N − 1  <  (totalSteps 1 N) / N.
+
+    This strengthens `avgSteps_one_ge`'s `(log₂N − 1)/2` floor by a factor of two,
+    and matches — up to the additive `−1` — the exact dyadic leading constant `1`
+    of `avgSteps_one_pow_two`, now at *every* `N`.  Proof: from the exact average
+    `avgSteps_one_closed`, the correction `(n + 2 − 2^{n+1})/N` exceeds `−2` because
+    `2^{n+1} = 2·2^n ≤ 2N` (`Nat.pow_log_le_self`), so the average exceeds
+    `(n + 1) − 2 = n − 1`. -/
+theorem avgSteps_one_gt (N : ℕ) (hN : 1 ≤ N) :
+    (Nat.log 2 N : ℚ) - 1 < (totalSteps 1 N : ℚ) / (N : ℚ) := by
+  set n := Nat.log 2 N with hn
+  have hNQ : (0 : ℚ) < (N : ℚ) := by exact_mod_cast hN
+  have hn0 : (0 : ℚ) ≤ (n : ℚ) := Nat.cast_nonneg n
+  -- 2^{n+1} = 2·2^n ≤ 2·N  (since 2^n ≤ N)
+  have hpow_le : (2 : ℕ) ^ n ≤ N := Nat.pow_log_le_self 2 (by omega)
+  have hpowQ : (2 : ℚ) ^ (n + 1) ≤ 2 * (N : ℚ) := by
+    have h : ((2 ^ n : ℕ) : ℚ) ≤ (N : ℚ) := by exact_mod_cast hpow_le
+    push_cast at h
+    calc (2 : ℚ) ^ (n + 1) = 2 * (2 : ℚ) ^ n := by rw [pow_succ]; ring
+      _ ≤ 2 * (N : ℚ) := by linarith
+  -- cast of the exact every-N total (relates totalSteps 1 N to 2^{n+1})
+  have hcast : (totalSteps 1 N : ℚ) + (2 : ℚ) ^ (n + 1)
+      = ((N : ℚ) + 1) * (n : ℚ) + (N : ℚ) + 2 := by
+    have h := totalSteps_one_closed N hN
+    rw [← hn] at h
+    exact_mod_cast h
+  -- clear the denominator: goal becomes  (n − 1)·N < totalSteps 1 N
+  rw [lt_div_iff₀ hNQ]
+  -- (n−1)·N < (N+1)·n + N + 2 − 2^{n+1}  ⟸  2^{n+1} ≤ 2N and n ≥ 0
+  nlinarith [hcast, hpowQ, hn0]
+
+-- Concrete check of the exact every-N average (a = 1, N = 100): n = 6,
+--   avg = (6 + 1) + (6 + 2 − 2^7)/100 = 7 − 120/100 = 7 − 6/5 = 29/5.
+example : (totalSteps 1 100 : ℚ) / (100 : ℚ)
+    = ((Nat.log 2 100 : ℚ) + 1)
+      + ((Nat.log 2 100 : ℚ) + 2 - (2 : ℚ) ^ (Nat.log 2 100 + 1)) / (100 : ℚ) :=
+  avgSteps_one_closed 100 (by norm_num)
+
 end BinaryGcdOQ01OQ04OQ03
