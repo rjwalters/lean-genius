@@ -884,4 +884,29 @@ theorem exists_equilateral (θ : ℝ) (hθ : 0 < θ) (hθ3 : θ < Real.pi / 3) :
   have hθpi : θ < Real.pi := by linarith [Real.pi_pos]
   exact exists_triangle_of_defect θ θ θ hθ hθ hθ hθpi hθpi hθpi (by linarith)
 
+-- ============================================================
+-- PART 11: Equilateral side lengths in closed form (explicit arcosh)
+-- ============================================================
+
+/-- **The equilateral side length in closed form.** Upgrading `equilateral_cosh` from the
+    `cosh` of the side to the side itself: an equilateral hyperbolic triangle with common
+    angle `θ` has every side equal to `arcosh(cos θ / (1 - cos θ))`. Because the side is
+    nonnegative, `arcosh` inverts `cosh` (`Real.arcosh_cosh`), turning the implicit length of
+    PART 5 into an explicit formula and confirming that the closed form of PART 5 really is
+    the metric length of the side (not merely its hyperbolic cosine). -/
+theorem equilateral_side (t : HyperbolicTriangle)
+    (hAB : t.A = t.B) (hBC : t.B = t.C) :
+    t.c = Real.arcosh (Real.cos t.C / (1 - Real.cos t.C)) := by
+  rw [← equilateral_cosh t hAB hBC, Real.arcosh_cosh t.hc.le]
+
+/-- **The concrete equilateral side length.** The hyperbolic equilateral triangle with all
+    three angles `π/4` has every side exactly `arcosh(1 + √2)` — the explicit length promised
+    by the docstring of `equilateral_pi_four_cosh`, which only established the `cosh` value.
+    Immediate from `equilateral_pi_four_cosh` and `Real.arcosh_cosh` (the side is
+    nonnegative). -/
+theorem equilateral_pi_four_side (t : HyperbolicTriangle)
+    (hAB : t.A = t.B) (hBC : t.B = t.C) (hC4 : t.C = Real.pi / 4) :
+    t.c = Real.arcosh (1 + Real.sqrt 2) := by
+  rw [← equilateral_pi_four_cosh t hAB hBC hC4, Real.arcosh_cosh t.hc.le]
+
 end HyperbolicAAA
