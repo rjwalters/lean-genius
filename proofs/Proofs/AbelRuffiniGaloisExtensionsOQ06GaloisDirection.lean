@@ -729,4 +729,21 @@ theorem primitive_solvable_subgroup_card_eq_prime_mul
   rw [hm] at hdvd
   exact (Nat.mul_dvd_mul_iff_left hp.pos).mp hdvd
 
+/-- **Corollary (Galois order upper bound).** A primitive solvable subgroup
+    `H ≤ S_p = Equiv.Perm (ZMod p)` has order **at most** `p * (p - 1)`.
+
+    This is the explicit numeric ceiling — the form in which Galois's 1832 theorem
+    is most often quoted ("a solvable transitive group of prime degree `p` has order
+    `≤ p(p-1)`"). It is immediate from `primitive_solvable_subgroup_card_dvd`
+    (`|H| ∣ p(p-1)`) together with `Nat.le_of_dvd`, since `p(p-1) > 0` for a prime
+    `p ≥ 2`. No new `sorry`, no axiom. -/
+theorem primitive_solvable_subgroup_card_le
+    (H : Subgroup (Equiv.Perm (ZMod p)))
+    (hPrim : MulAction.IsPreprimitive H (ZMod p))
+    (hSolv : IsSolvable H) :
+    Nat.card H ≤ p * (p - 1) := by
+  have hp : p.Prime := Fact.out
+  have hpos : 0 < p * (p - 1) := Nat.mul_pos hp.pos (by have := hp.two_le; omega)
+  exact Nat.le_of_dvd hpos (primitive_solvable_subgroup_card_dvd H hPrim hSolv)
+
 end AbelRuffiniGaloisExtensionsOQ06GaloisDirection
