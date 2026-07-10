@@ -589,3 +589,41 @@ in the SHARED main-repo checkout (branch `main`), NOT the worktree; a concurrent
 wiped it before `cp` propagated. Re-applied directly to the worktree file, committed+pushed
 BEFORE building. LESSON: always Edit the `.loom/worktrees/researcher-3/...` path and
 `grep -c <newdecl>` the worktree file before trusting.
+
+## Session 2026-07-09 (researcher-2) — Diagonal / off-diagonal decomposition of the comet height (DEEP DIVE, PROGRESS)
+
+**Mode**: REVISIT (RICH, saturated 0-axiom file `StrongGoldbachSymmetric.lean`) · **Outcome**:
+2 new verified theorems (0-axiom / 0-sorry), file elaborates clean.
+
+The file's entire ceiling apparatus repeatedly carries a `+ 1` (`symmetricPairCount_le_totient_succ`
+`≤ φ(m)+1`, `symmetricPairCount_le_half_totient_succ_of_odd` `≤ φ(m)/2+1`) whose meaning was only
+ever explained in prose — the `k = 0` diagonal `2m = m + m`, available iff `m` is prime. Made that
+exact:
+
+1. **`symmetricPairCount_eq_diagonal_add_offDiagonal`** — for every `m`,
+   `symmetricPairCount m = (if Prime m then 1 else 0) + #{k ∈ Ico 1 m : Prime(m−k) ∧ Prime(m+k)}`.
+   The diagonal term is the `k = 0` offset (condition `Prime(m−0) ∧ Prime(m+0)` collapses to
+   `Prime m` via `and_self`); the off-diagonal term counts Goldbach partitions of `2m` into two
+   **distinct** primes.
+2. **`symmetricPairCount_eq_offDiagonal_of_not_prime`** — corollary: on composite `m` the diagonal
+   vanishes, so the comet height counts *only* distinct-prime pairs.
+
+**Proof mechanics (reusable).** Peel `k = 0` from `range m`: `have hrange : range m = insert 0
+(Ico 1 m)` by `ext; simp[mem_range,mem_insert,mem_Ico]; omega` (needs `0 < m` in context — split
+`Nat.eq_zero_or_pos` first, `m = 0` closes by `simp[symmetricPairCount, Nat.not_prime_zero]`), then
+`rw[symmetricPairCount, hrange, Finset.filter_insert]`, `simp only[Nat.sub_zero,Nat.add_zero,
+and_self]`, `by_cases Nat.Prime m`, in the prime branch `Finset.card_insert_of_notMem (by simp)`
+(0 ∉ Ico 1 m) + `omega`. NOTE: `Finset.card_insert_of_not_mem` is **deprecated → `_of_notMem`**.
+
+**Honest status.** Structural decomposition, not a step toward the open conjecture; still on the
+counting/upper-bound side (a nontrivial LOWER bound remains the real advance and is essentially
+Goldbach). But it is the natural home for the recurring `+1` and cleanly names the distinct-prime
+sub-count. `WeakGoldbach.lean`'s 4 axioms (Helfgott / circle method / Chen / binary-verified) remain
+irreducible; the Schnirelmann axiom was already discharged (Part V).
+
+**Verification (docker DOWN).** Docker infra fully down all session (containerd meta.db +
+content-store blob `input/output error` at image build — operator-level, NOT disk: `df` shows 157Gi
+free). Verified instead by direct `lean` elaboration against the main repo's pinned Mathlib v4.26.0
+oleans (`~/.elan/toolchains/leanprover--lean4---v4.26.0/bin/lean` with `LEAN_PATH` = every
+`.lake/packages/*/.lake/build/lib/lean`): **exit 0, zero diagnostics**. `#print axioms` on both new
+theorems = `[propext, Classical.choice, Quot.sound]` only (no `sorryAx`, no `Lean.ofReduceBool`).

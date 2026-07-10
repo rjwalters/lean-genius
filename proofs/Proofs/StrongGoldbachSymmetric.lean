@@ -235,6 +235,71 @@ theorem symmetricPairCount_pos_of_prime {m : ℕ} (hm : Nat.Prime m) :
 -- `m = 7` is prime, so `14 = 7 + 7` is the diagonal Goldbach partition.
 example : HasSymmetricPrimePair 7 := hasSymmetricPrimePair_of_prime (by decide)
 
+/-! ## Diagonal / Off-Diagonal Decomposition of the Comet Height
+
+The offset `k = 0` is special: the symmetric pair it produces is the **diagonal**
+partition `2 * m = m + m`, present exactly when `m` itself is prime. Every other
+contributing offset `k ≥ 1` gives a partition `2 * m = (m - k) + (m + k)` into two
+**distinct** primes. Splitting the comet count at `k = 0` therefore separates the
+single possible "square" representation from the genuinely distinct-prime ones:
+
+    symmetricPairCount m  =  [m prime]  +  #{ 1 ≤ k < m : m - k, m + k both prime }.
+
+This makes precise the `+ 1` that recurs in the totient ceilings
+(`symmetricPairCount_le_totient_succ`, `symmetricPairCount_le_half_totient_succ_of_odd`):
+that unit is exactly the diagonal term, contributed by `k = 0` only at a prime midpoint,
+so on composite `m` it drops and the comet height counts *only* distinct-prime pairs. -/
+
+/-- **Diagonal / off-diagonal decomposition of the comet height.** The Goldbach
+partitions of `2 * m` split into the single diagonal `2 * m = m + m` (present iff `m`
+is prime, the `k = 0` offset) and the distinct-prime pairs (offsets `1 ≤ k < m`):
+
+    symmetricPairCount m = (if m prime then 1 else 0)
+        + #{ k ∈ [1, m) : Prime (m - k) ∧ Prime (m + k) }.
+
+Isolating the `k = 0` term via `Finset.filter_insert` and simplifying `m ± 0 = m`
+(so the diagonal condition `Prime m ∧ Prime m` collapses to `Prime m`). -/
+theorem symmetricPairCount_eq_diagonal_add_offDiagonal (m : ℕ) :
+    symmetricPairCount m
+      = (if Nat.Prime m then 1 else 0)
+        + ((Finset.Ico 1 m).filter
+            (fun k => Nat.Prime (m - k) ∧ Nat.Prime (m + k))).card := by
+  rcases Nat.eq_zero_or_pos m with rfl | hm
+  · simp [symmetricPairCount, Nat.not_prime_zero]
+  · have hrange : Finset.range m = insert 0 (Finset.Ico 1 m) := by
+      ext k
+      simp only [Finset.mem_range, Finset.mem_insert, Finset.mem_Ico]
+      omega
+    rw [symmetricPairCount, hrange, Finset.filter_insert]
+    simp only [Nat.sub_zero, Nat.add_zero, and_self]
+    by_cases hp : Nat.Prime m
+    · rw [if_pos hp, if_pos hp, Finset.card_insert_of_notMem (by simp)]
+      omega
+    · rw [if_neg hp, if_neg hp, Nat.zero_add]
+
+/-- **On a composite midpoint the comet height counts only distinct-prime pairs.**
+When `m` is not prime the diagonal `2 * m = m + m` is unavailable, so the comet
+height equals exactly the number of Goldbach partitions of `2 * m` into two
+*distinct* primes (offsets `1 ≤ k < m`). Corollary of the diagonal decomposition. -/
+theorem symmetricPairCount_eq_offDiagonal_of_not_prime {m : ℕ} (hm : ¬ Nat.Prime m) :
+    symmetricPairCount m
+      = ((Finset.Ico 1 m).filter
+          (fun k => Nat.Prime (m - k) ∧ Nat.Prime (m + k))).card := by
+  rw [symmetricPairCount_eq_diagonal_add_offDiagonal, if_neg hm, Nat.zero_add]
+
+-- `m = 5` is prime: the diagonal `10 = 5 + 5` plus one distinct-prime pair
+-- (`k = 2`, `10 = 3 + 7`) gives comet height `2`.
+example :
+    ((Finset.Ico 1 5).filter (fun k => Nat.Prime (5 - k) ∧ Nat.Prime (5 + k))).card = 1 := by
+  decide
+
+-- `m = 6` is composite: no diagonal, and the lone distinct-prime pair is
+-- `k = 1` (`12 = 5 + 7`), so the comet height `1` is purely off-diagonal.
+example :
+    symmetricPairCount 6
+      = ((Finset.Ico 1 6).filter (fun k => Nat.Prime (6 - k) ∧ Nat.Prime (6 + k))).card :=
+  symmetricPairCount_eq_offDiagonal_of_not_prime (by decide)
+
 /-! ## Upper Bound: Comet Height ≤ Primes in the Upper Arm
 
 Each symmetric pair `(m - k, m + k)` with `k < m` contributes a *distinct* prime
