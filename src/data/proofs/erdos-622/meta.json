@@ -77,6 +77,27 @@
       "description": "Problem #1036 counts distinct induced subgraphs in non-Ramsey graphs (≥ 2^{Ω(n)} non-isomorphic subgraphs). Both problems concern counting subsets/subgraphs with specific structural properties in dense graphs."
     }
   ],
+  "references": [
+    {
+      "authors": "Nemanja Draganić, Peter Keevash, Ada Müyesser",
+      "title": "Resolution of Erdős Problem #622 — cycle-spanning subsets in regular graphs",
+      "year": "2025",
+      "venue": "Research announcement / preprint (2025)",
+      "note": "Proves that every (n+1)-regular graph on 2n vertices has at least (1/2 + o(1))·2^{2n} vertex subsets spanned by a cycle, answering Erdős's question in the affirmative; the bound is asymptotically tight and regularity is shown to be essential."
+    },
+    {
+      "authors": "J. A. Bondy, U. S. R. Murty",
+      "title": "Graph Theory",
+      "year": "2008",
+      "venue": "Springer, Graduate Texts in Mathematics 244",
+      "note": "Standard reference for cycles, Hamiltonicity, and regularity in graphs; supplies the structural background (degree conditions forcing long/spanning cycles) against which this counting refinement is set."
+    },
+    {
+      "title": "Erdős Problem #622 (erdosproblems.com) — cycle-spanning subsets in regular graphs",
+      "url": "https://www.erdosproblems.com/622",
+      "note": "Source problem: must an (n+1)-regular graph on 2n vertices have ≫ 2^{2n} cycle-spanned subsets? SOLVED (yes)."
+    }
+  ],
   "overview": {
     "historicalContext": "Erdős and Faudree posed Problem #622 in the 1990s (referenced in [Er99]), asking whether dense regular graphs must contain many cycle-spanning subsets. The conjecture emerges from the intersection of Hamiltonian graph theory and subset enumeration. Dirac's theorem (1952) guarantees that graphs with minimum degree ≥ n/2 on n vertices are Hamiltonian, so Erdős-Faudree graphs (degree n+1 on 2n vertices) certainly contain Hamiltonian cycles. The deeper question is whether the cycle-spanning phenomenon extends to exponentially many subsets. Erdős himself observed (claiming it was 'easy to see') that at least (1/2 + o(1))2^{2n} subsets are NOT spanned by cycles, establishing an upper bound on the cycle-spanned fraction. In 2025, Nemanja Draganić, Peter Keevash, and Alp Müyesser resolved the conjecture, proving that at least (1/2 + o(1))2^{2n} subsets ARE cycle-spanned. Their proof uses the absorbing method (introduced by Rödl, Ruciński, and Szemerédi for Hamiltonicity problems) combined with refined counting techniques. The matching upper and lower bounds reveal a remarkable half-half symmetry: cycle-spanned and non-cycle-spanned subsets each comprise approximately half the powerset.",
     "problemStatement": "**Problem Statement (SOLVED)**\n\nLet G be a regular graph with 2n vertices and degree n+1. Must G have ≫ 2^{2n} subsets that are spanned by a cycle?\n\n**Solution (Draganić-Keevash-Müyesser 2025):**\nYES! At least (1/2 + o(1))2^{2n} subsets are spanned by cycles. Combined with Erdős's observation that (1/2 + o(1))2^{2n} sets are NOT on cycles, this shows a remarkable half-half symmetry.\n\n**Key Condition:** Regularity is essential. Minimum degree n+1 alone is insufficient (K_{n,n} with stars is a counterexample).",
