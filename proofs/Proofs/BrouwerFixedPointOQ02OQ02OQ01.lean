@@ -243,4 +243,44 @@ theorem iterate_dist_sharp (L : ℝ) (hL0 : 0 ≤ L) (x0 : ℝ) :
   · rw [← mul_sub, abs_mul, abs_of_nonneg hL0]
   · rw [sub_zero, sub_zero, abs_mul, abs_of_nonneg (pow_nonneg hL0 n)]
 
+/-! ### Existence of the fixed point (closing the standing hypothesis)
+
+Every estimate above takes the fixed point `x*` as a *hypothesis* (`f x* = x*`).
+On the complete space `ℝ` that hypothesis is discharged automatically: a
+contraction `|f x − f y| ≤ L·|x − y|` with `0 ≤ L < 1` *has* a fixed point, by the
+Banach fixed-point theorem.  We bridge the raw real-analytic contraction bound to
+Mathlib's `ContractingWith` (via `LipschitzWith.of_dist_le_mul` and
+`Real.dist_eq`) and read off existence; combined with `fixed_point_unique` this
+upgrades the setup to the full Banach existence-and-uniqueness statement, so `x*`
+is a genuine object rather than a standing assumption. -/
+
+/-- **Existence of the fixed point (Banach on `ℝ`).**  A contraction
+    `|f x − f y| ≤ L·|x − y|` with `0 ≤ L < 1` on the complete space `ℝ` has a
+    fixed point.  This discharges the standing `f x* = x*` hypothesis of every
+    estimate above. -/
+theorem exists_fixed_point (f : ℝ → ℝ) (L : ℝ) (hL0 : 0 ≤ L) (hL1 : L < 1)
+    (hf : ∀ x y, |f x - f y| ≤ L * |x - y|) :
+    ∃ xstar : ℝ, f xstar = xstar := by
+  have hlip : LipschitzWith L.toNNReal f := by
+    apply LipschitzWith.of_dist_le_mul
+    intro x y
+    rw [Real.dist_eq, Real.dist_eq, Real.coe_toNNReal L hL0]
+    exact hf x y
+  have hKlt : L.toNNReal < 1 := by
+    have h : (L.toNNReal : ℝ) < 1 := by rw [Real.coe_toNNReal L hL0]; exact hL1
+    exact_mod_cast h
+  obtain ⟨y, hy, _, _⟩ :=
+    ContractingWith.exists_fixedPoint ⟨hKlt, hlip⟩ 0 (edist_ne_top _ _)
+  exact ⟨y, hy⟩
+
+/-- **Banach fixed-point theorem on `ℝ` (existence and uniqueness).**  A
+    contraction with `0 ≤ L < 1` has a *unique* fixed point: existence from
+    `exists_fixed_point`, uniqueness from `fixed_point_unique`.  This is the
+    self-contained Banach statement the whole estimate suite rests on. -/
+theorem exists_unique_fixed_point (f : ℝ → ℝ) (L : ℝ) (hL0 : 0 ≤ L) (hL1 : L < 1)
+    (hf : ∀ x y, |f x - f y| ≤ L * |x - y|) :
+    ∃! xstar : ℝ, f xstar = xstar := by
+  obtain ⟨xstar, hxs⟩ := exists_fixed_point f L hL0 hL1 hf
+  exact ⟨xstar, hxs, fun y hy => fixed_point_unique f L hL1 hf y xstar hy hxs⟩
+
 end BrouwerOQ02OQ02OQ01
