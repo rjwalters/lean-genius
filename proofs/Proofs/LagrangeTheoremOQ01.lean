@@ -112,6 +112,43 @@ theorem sylow_count_mod_p (p : ℕ) [hp : Fact p.Prime] :
 
 /-
 ═══════════════════════════════════════════════════════════════════════════════
+PART IV-B: THE NORMALITY CRITERION (STRUCTURAL COROLLARY OF SYLOW III)
+
+The counting data `n_p` controls normality: a Sylow p-subgroup is normal exactly
+when it is the unique one, `n_p = 1`. Combined with `n_p ≡ 1 mod p` and
+`n_p | |G|/p^k` this is the standard engine for proving non-simplicity of groups
+of many orders (e.g. `|G| = pq`).
+═══════════════════════════════════════════════════════════════════════════════ -/
+
+/-- **Normality criterion**: a Sylow p-subgroup is normal in `G` iff it is the
+    *unique* Sylow p-subgroup, i.e. the Sylow count `n_p` equals `1`.
+
+    Forward (`P.Normal → n_p = 1`): a normal Sylow p-subgroup is the only one
+    (`Sylow.unique_of_normal`), so the count is `1`.  Backward (`n_p = 1 → P.Normal`):
+    a count of `1` makes the Sylow p-subgroups a subsingleton, and the unique Sylow
+    subgroup is normal (`Sylow.normal_of_subsingleton`).  This is the standard bridge
+    from the Third-Sylow counting data to structural normality. -/
+theorem sylow_normal_iff_card_eq_one (p : ℕ) [hp : Fact p.Prime] (P : Sylow p G) :
+    P.Normal ↔ card (Sylow p G) = 1 := by
+  constructor
+  · intro h
+    haveI := P.unique_of_normal h
+    exact Fintype.card_unique
+  · intro h
+    haveI : Subsingleton (Sylow p G) :=
+      Fintype.card_le_one_iff_subsingleton.mp (le_of_eq h)
+    exact P.normal_of_subsingleton
+
+/-- A normal Sylow p-subgroup is even **characteristic** (invariant under every
+    automorphism of `G`) — a strengthening special to Sylow subgroups, since
+    uniqueness (`n_p = 1`) is automorphism-invariant. Immediate from
+    `Sylow.characteristic_of_normal`. -/
+theorem sylow_characteristic_of_normal (p : ℕ) [hp : Fact p.Prime] (P : Sylow p G)
+    (h : P.Normal) : P.Characteristic :=
+  P.characteristic_of_normal h
+
+/-
+═══════════════════════════════════════════════════════════════════════════════
 PART V: PARTIAL CONVERSE OF LAGRANGE
 
 The Sylow theorems give a partial converse: for prime powers dividing |G|,
@@ -144,6 +181,7 @@ end LagrangeOQ01
   - Sylow existence (First Sylow Theorem)
   - Sylow conjugacy (Second Sylow Theorem)
   - Sylow counting (Third Sylow Theorem): n_p ≡ 1 mod p, n_p | [G:P]
+  - Normality criterion: P normal ⟺ n_p = 1; a normal Sylow is characteristic
   - Partial converse: p^k | |G| implies ∃ subgroup of order p^k
   - Cauchy's theorem: p | |G| implies ∃ element of order p
 
