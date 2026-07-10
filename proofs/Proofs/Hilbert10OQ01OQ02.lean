@@ -3124,6 +3124,59 @@ theorem int_diophantine_iff_affinePullback_diophantine
     have hpq := hP q
     simpa only [affinePullback, hq] using hpq
 
+/-- **Affine invariance of the level-2 OPEN question (Σ₂).** For `a ≠ 0`, the
+    map `q ↦ a·q + b` is a bijection of `ℚ`, so ℤ is Σ₂-definable over ℚ iff
+    its affine pullback `{ q | a·q + b ∈ ℤ }` is. This is the level-2
+    (existential-universal) analog of
+    `int_diophantine_iff_affinePullback_diophantine`: the OPEN Σ₂(ℤ) question
+    `IntegersAreExistentialUniversalOverQ` is invariant under affine
+    reparametrization, exactly as its level-1 Σ₁ counterpart is. The forward
+    direction is the closure theorem
+    `affinePullback_isExistentialUniversalDefinition`; the converse pulls back
+    along the inverse map `q ↦ a⁻¹·q − a⁻¹·b`. -/
+theorem int_existentialUniversal_iff_affinePullback_existentialUniversal
+    (a b : Rat) (ha : a ≠ 0) :
+    IsExistentialUniversalDefinition IntSubset ↔
+      IsExistentialUniversalDefinition (affinePullback a b IntSubset) := by
+  constructor
+  · intro h
+    exact affinePullback_isExistentialUniversalDefinition a b h
+  · intro h
+    -- pull the pullback back along the inverse map `q ↦ a⁻¹·q − a⁻¹·b`
+    have hback := affinePullback_isExistentialUniversalDefinition a⁻¹ (-(a⁻¹ * b)) h
+    obtain ⟨P, hP⟩ := hback
+    refine ⟨P, fun q => ?_⟩
+    have hinv : a * a⁻¹ = 1 := mul_inv_cancel₀ ha
+    have hq : a * (a⁻¹ * q + -(a⁻¹ * b)) + b = q := by
+      linear_combination (q - b) * hinv
+    have hpq := hP q
+    simpa only [affinePullback, hq] using hpq
+
+/-- **Affine invariance of the settled level-2 (Π₂) statement.** For `a ≠ 0`,
+    ℤ is Π₂-definable over ℚ iff its affine pullback `{ q | a·q + b ∈ ℤ }` is.
+    Unlike the Σ₁/Σ₂ versions this iff has BOTH sides true (Koenigsmann 2016
+    settles the Π₂ level, and `affinePullback_int_isUniversalExistentialDefinition`
+    gives the pullback directly), but recording the reparametrization
+    invariance completes the level-2 pair alongside
+    `int_existentialUniversal_iff_affinePullback_existentialUniversal`. Same
+    inverse-map argument as the Σ₂ case. -/
+theorem int_universalExistential_iff_affinePullback_universalExistential
+    (a b : Rat) (ha : a ≠ 0) :
+    IsUniversalExistentialDefinition IntSubset ↔
+      IsUniversalExistentialDefinition (affinePullback a b IntSubset) := by
+  constructor
+  · intro h
+    exact affinePullback_isUniversalExistentialDefinition a b h
+  · intro h
+    have hback := affinePullback_isUniversalExistentialDefinition a⁻¹ (-(a⁻¹ * b)) h
+    obtain ⟨P, hP⟩ := hback
+    refine ⟨P, fun q => ?_⟩
+    have hinv : a * a⁻¹ = 1 := mul_inv_cancel₀ ha
+    have hq : a * (a⁻¹ * q + -(a⁻¹ * b)) + b = q := by
+      linear_combination (q - b) * hinv
+    have hpq := hP q
+    simpa only [affinePullback, hq] using hpq
+
 -- ============================================================
 -- Part IX: The landscape, sharpened
 -- ============================================================
@@ -3352,6 +3405,8 @@ consequences of the OQ-01 axioms together with the Σ₁ ↔ existing-formulatio
   - `sdiff_codiophantine_diophantine_isCoDiophantineDefinition` (Π₁ \ Σ₁ ⊆ Π₁, dual at level 1, iter 28)
   - `sdiff_sigma2_pi2_isExistentialUniversalDefinition` (Σ₂ \ Π₂ ⊆ Σ₂, level-2 analog, iter 28)
   - `sdiff_pi2_sigma2_isUniversalExistentialDefinition` (Π₂ \ Σ₂ ⊆ Π₂, level-2 dual — Boolean algebra of all four levels complete, iter 28)
+  - `int_existentialUniversal_iff_affinePullback_existentialUniversal` (affine invariance of the level-2 OPEN Σ₂(ℤ) question, a ≠ 0 — level-2 analog of the Σ₁ affine invariance, iter 30)
+  - `int_universalExistential_iff_affinePullback_universalExistential` (affine invariance of the settled Π₂(ℤ) statement, a ≠ 0 — completes the level-2 pair, iter 30)
 -/
 
 #check @IsDiophantineDefinition
@@ -3441,5 +3496,7 @@ consequences of the OQ-01 axioms together with the Σ₁ ↔ existing-formulatio
 #check @sdiff_codiophantine_diophantine_isCoDiophantineDefinition
 #check @sdiff_sigma2_pi2_isExistentialUniversalDefinition
 #check @sdiff_pi2_sigma2_isUniversalExistentialDefinition
+#check @int_existentialUniversal_iff_affinePullback_existentialUniversal
+#check @int_universalExistential_iff_affinePullback_universalExistential
 
 end Hilbert10Rationals
