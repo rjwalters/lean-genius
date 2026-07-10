@@ -4,7 +4,7 @@
   "phase": "ACT",
   "status": "in-progress",
   "started": "2026-07-08T00:00:00.000Z",
-  "lastUpdate": "2026-07-08",
+  "lastUpdate": "2026-07-09",
   "path": "full",
   "parentId": "erdos-1064",
   "tier": "B",
@@ -35,7 +35,7 @@
     }
   ],
   "knowledge": {
-    "progressSummary": "PROGRESS (r1 2026-07-09): Added the missing REVERSAL (.lt) engine to the transport-admissible regime seedS a=1. classifySeed_lt_iff_of_seedS_one_seedE_prime gives an EXACT reversal criterion φ(seedB a)+2^seedT a < 2(a−φ(a)) when seedE a is prime, the .lt companion to the excluded-regime ne_lt/gt engines. Uniformly recovers all known prime-landing reversal seeds (21,55,129,175); honestly bounded (165 reverses with composite landing, outside scope). Elab-clean, olean-write env-blocked. Only open direction remains the analytically-hard density-1 forward ψ(x,y) statement.",
+    "progressSummary": "PROGRESS (researcher-3 2026-07-09): Added a PARAMETRIC REVERSAL family, completing the trichotomy of k-free parametric seed families. mem_ReversalSet_primeTriple: for m>=1 with 4m+1, 6m+1, 14m+3 all prime, the seed a=18m+3 (=3*(6m+1)) puts the whole family n=(18m+3)*2^(k+1) in ReversalSet (phi(n)<phi(D(n))) for all k, via a clean collapse of dblIter_reversal_iff_general (s=1, b=3*(4m+1), t=1, e=14m+3; reversal criterion 12m<14m+2 automatic). Unifies the previously isolated reversal seeds 21 (m=1) and 129 (m=7) into one statement; next member 453 (m=25). classifySeed_primeTriple_lt gives the classifier value. All three primality conditions load-bearing (e=14m+3 prime needed for the phi(e)=14m+2>12m lower bound). This is the reversal analogue of the Sophie-Germain equality family (3q) and the 5q forward family. Full elaboration clean [3058/3058]; olean-write env-blocked (SIGBUS-135, 4 runs), shipped UNVERIFIED. Only open direction remains the analytically-hard density-1 forward psi(x,y) statement.",
     "builtItems": [
       "dblIter (EulerTotientOQ04OQ03.lean) — the double cototient iterate D(n) = n − φ(n − φ(n)), the object of OQ-03.",
       "dblIter_prime — collapse lemma: for EVERY prime p, D(p) = p − 1 exactly (φ(p)=p−1 ⟹ p−φ(p)=1 ⟹ φ(1)=1 ⟹ D(p)=p−1).",
@@ -98,7 +98,9 @@
       "prime_triple_reversal_iff in EulerTotientOQ04OQ03.lean: the prime-triple family reverses iff p∈{3,5}, contributing exactly seeds {21,55}",
       "Strict-gt classifier engine (2026-07-09 researcher-2, VERIFIED 0/0): added classifySeed_gt_of_excess_bound (the missing .gt companion of the ne_lt engine — same excess bound + 2≤seedE a ⟹ .gt via strict φ(seedE)<seedE), completing the excluded-regime trichotomy as a function of seedE (=1⟹eq, ≥2⟹gt); and classifySeed_prime_three_mod_four_gt_of_seedE reducing the excluded-prime forward regime to the single fact seedE p≥2. Docker Build succeeded 3058 jobs (attempt 2).",
       "classifySeed_lt_iff_of_seedS_one_seedE_prime in EulerTotientOQ04OQ03.lean — reversal iff-criterion on prime-landing transport-admissible seeds (elab-clean [3058/3058], olean-write blocked by env SIGBUS-135/139)",
-      "prime_landing_family_reversal in EulerTotientOQ04OQ03.lean — packages criterion into a·2^(k+1) ⊆ ReversalSet for every k"
+      "prime_landing_family_reversal in EulerTotientOQ04OQ03.lean — packages criterion into a·2^(k+1) ⊆ ReversalSet for every k",
+      "mem_ReversalSet_primeTriple (EulerTotientOQ04OQ03.lean) — parametric reversal family: m>=1 & 4m+1,6m+1,14m+3 prime ⇒ (18m+3)*2^(k+1) ∈ ReversalSet ∀k; unifies seeds 21,129,453.",
+      "classifySeed_primeTriple_lt — the reversal family seeds 18m+3 are classified .lt by the total decision procedure."
     ],
     "insights": [
       "On primes the higher iterate is trivial: D(p) = p − 1 for all primes p, because the first cototient step p − φ(p) = 1 and φ(1) = 1. So φ(D(p)) = φ(p−1), and φ(p−1) < p−1 = φ(p) for every p ≥ 3 (with equality only at p = 2). This gives the forward direction on an infinite explicit family with a one-line reduction to Nat.totient_lt — no density machinery needed.",
