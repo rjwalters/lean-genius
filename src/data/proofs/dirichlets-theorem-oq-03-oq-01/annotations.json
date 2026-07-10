@@ -163,7 +163,7 @@
   {
     "id": "ann-linnik-specialization",
     "proofId": "dirichlets-theorem-oq-03-oq-01",
-    "range": { "startLine": 116, "endLine": 138 },
+    "range": { "startLine": 116, "endLine": 144 },
     "type": "concept",
     "title": "Specializing to the Linnik Constant",
     "content": "The final block instantiates the abstract theory at the arithmetic-progression data without re-introducing axioms. `linnikConstantOf p` is `criticalExponent p (fun i => i.2)` — the base is the modulus `q = i.2`. `linnik_threshold` then states the sharp-threshold property directly for the Linnik constant: given Linnik's theorem as the single hypothesis that one admissible exponent exists (`hne`), and `q ≥ 1`, every exponent above the Linnik constant is admissible. The least-prime function `p` is kept abstract so the file remains fully machine-checked; supplying the genuine `leastPrimeInAP` and a concrete witness (e.g. Xylouris's `L = 5`) would discharge `hne` from the parent's analytic input.",
