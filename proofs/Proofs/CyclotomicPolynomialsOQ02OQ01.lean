@@ -96,6 +96,23 @@ theorem isBounded_levelSet_cyclotomic (n : ℕ) (hn : n ≠ 0) (C : ℝ) :
     exact le_of_lt (cyclotomic_sublevel_norm_lt n hn C z hz)
   exact Metric.isBounded_closedBall.subset hsub
 
+/-- **The cyclotomic level set is open.**
+`{z : |Φ_n(z)| < C}` is the preimage of the open ray `(-∞, C)` under the continuous
+map `z ↦ |Φ_n(z)|` (a polynomial evaluation composed with the norm), hence open.
+Together with `isBounded_levelSet_cyclotomic` this exhibits the cyclotomic lemniscate
+interior as a *bounded open* subset of `ℂ` — the natural topological shape of an
+Erdős #1215 sublevel set. -/
+theorem isOpen_levelSet_cyclotomic (n : ℕ) (C : ℝ) :
+    IsOpen (Erdos1215.levelSet (cyclotomic n ℂ) C) := by
+  have hcont : Continuous fun z : ℂ => ‖(cyclotomic n ℂ).eval z‖ :=
+    (Polynomial.continuous (cyclotomic n ℂ)).norm
+  have hset : Erdos1215.levelSet (cyclotomic n ℂ) C
+      = (fun z : ℂ => ‖(cyclotomic n ℂ).eval z‖) ⁻¹' Set.Iio C := by
+    ext z
+    simp only [Erdos1215.levelSet, Set.mem_setOf_eq, Set.mem_preimage, Set.mem_Iio]
+  rw [hset]
+  exact isOpen_Iio.preimage hcont
+
 /-- **No escape-to-infinity path for cyclotomic polynomials.**
 Because the level set is bounded, no continuous path from `0` with `‖γ t‖ → ∞`
 can stay inside `{z : |Φ_n(z)| < C}`.  This is the cyclotomic specialisation of the
