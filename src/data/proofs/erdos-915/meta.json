@@ -44,11 +44,6 @@
         "theorem": "choose",
         "description": "Binomial coefficients C(m,2) in conjecture statement",
         "module": "Mathlib.Data.Nat.Choose.Basic"
-      },
-      {
-        "theorem": "Filter.atTop",
-        "description": "Asymptotic filter for Leonard's lower bound",
-        "module": "Mathlib.Order.Filter.AtTopBot"
       }
     ],
     "originalContributions": [
@@ -56,20 +51,15 @@
       "VertexDisjoint and EdgeDisjoint predicates on internal vertices/edges",
       "HasMVertexDisjointPaths, HasMEdgeDisjointPaths via Fin m indexed families",
       "ContainsMVertexDisjointPair, ContainsMEdgeDisjointPair existential definitions",
-      "k and ell axiomatized extremal functions",
+      "k and ell axiomatized extremal functions (abstract, no explicit formula)",
       "BollobasErdosConjecture formal statement with choose",
-      "extremal_construction definition (n copies of K_m sharing a vertex)",
-      "k_2, bartfai_k3_even/odd, bollobas_k4 explicit formulas",
-      "leonard_counterexample: 57-vertex, 141-edge disproof for m = 5",
-      "leonard_lower_bound: asymptotic lower bound with Filter.atTop",
-      "sorensen_thomassen_k5: exact formula k_5(n) = ⌊8n/3⌋ - 3",
-      "mader_disproof: vertex-disjoint conjecture false for m ≥ 6",
-      "mader_edge_disjoint: complete solution ℓ_m(n) = ⌊m(n-1)/2 + 1⌋",
+      "conjecture_m2, conjecture_m3, conjecture_m4 axioms: conjecture holds for m = 2, 3, 4 (Bártfai, Bollobás)",
+      "conjecture_small_m theorem: bundles the m = 2, 3, 4 cases",
+      "conjecture_false_m5 axiom: conjecture fails for m = 5 (Leonard 1973)",
+      "conjecture_false_large_m axiom: conjecture fails for all m ≥ 6 (Mader 1973)",
+      "mader_edge_disjoint axiom: edge-disjoint solution ℓ_m(n) = ⌊m(n-1)/2 + 1⌋",
       "EdgeDisjointConjecture definition and edge_disjoint_solved theorem",
-      "leonard_small_m, leonard_ell5, leonard_ell6 specific ℓ_m values",
-      "mader_degree_condition: stronger edge-disjoint sufficient condition",
-      "three_connected_conjecture with 3-connectivity hypothesis",
-      "erdos_915_summary combining all four main results"
+      "erdos_915_summary theorem: conjunction of the four axiomatized results"
     ],
     "axiomCount": 8,
     "lineCount": 186,
@@ -81,7 +71,7 @@
     "historicalContext": "The Bollobás-Erdős conjecture (1962) is a landmark problem in extremal graph theory concerning the minimum number of edges needed to guarantee m disjoint paths between some pair of vertices. The problem connects to Menger's theorem, which equates the maximum number of disjoint paths to the minimum cut size. The natural extremal construction consists of n copies of K_m sharing a single vertex, which has 1 + (m-1)n vertices and 1 + C(m,2)n edges but contains no m vertex-disjoint paths between any pair.\n\nThe conjecture was gradually resolved over more than a decade. Bártfai (1960) settled the m = 3 case before the general conjecture was even formulated. Bollobás (1966) proved the m = 4 case, the last positive result. Then Leonard (1973) disproved the vertex-disjoint conjecture for m = 5 with an explicit 57-vertex counterexample matching the conjectured parameters exactly. Mader (1973) independently disproved all m ≥ 6 via asymptotic arguments. Sørensen and Thomassen (1974) found the exact formula k_5(n) = ⌊8n/3⌋ - 3 for n ≥ 13, showing the true threshold exceeds the conjectured 5n/2 by a factor of 16/15.\n\nRemarkably, while the vertex-disjoint version fails for m ≥ 5, Mader (1973) proved that the edge-disjoint analogue holds for all m ≥ 2 with the exact formula ℓ_m(n) = ⌊m(n-1)/2 + 1⌋. This complete dichotomy between vertex-disjoint and edge-disjoint paths is one of the most striking phenomena in extremal graph theory. Sørensen and Thomassen also showed that the vertex-disjoint conjecture holds for 3-connected graphs, indicating that the counterexamples must exploit low-connectivity structure.",
     "problemStatement": "**Problem Statement (SOLVED)**\n\nLet $G$ be a graph with $1 + n(m-1)$ vertices and $1 + n\\binom{m}{2}$ edges. Must $G$ contain two vertices connected by $m$ disjoint paths?\n\n**For Vertex-Disjoint Paths ($k_m$):**\n- TRUE for $m = 2, 3, 4$ (Bártfai 1960, Bollobás 1966)\n- FALSE for $m = 5$: Leonard (1973) gave a counterexample with 57 vertices and 141 edges\n- FALSE for $m \\geq 6$: Mader (1973) showed $k_m(n)$ exceeds $(m/2)n + C$ for any constant $C$\n- $k_5(n) = \\lfloor 8n/3 \\rfloor - 3$ for $n \\geq 13$ (Sørensen-Thomassen 1974)\n\n**For Edge-Disjoint Paths ($\\ell_m$):**\n- TRUE for all $m \\geq 2$ (Mader 1973)\n- $\\ell_m(n) = \\lfloor m(n-1)/2 + 1 \\rfloor$",
     "text": "Must a graph with 1+n(m-1) vertices and 1+nC(m,2) edges contain two vertices connected by m disjoint paths? The Bollobás-Erdős conjecture (1962) is TRUE for vertex-disjoint paths when m ≤ 4 (Bártfai, Bollobás), FALSE for m ≥ 5 (Leonard 1973, Mader 1973), and TRUE for edge-disjoint paths for all m ≥ 2 with ℓ_m(n) = ⌊m(n-1)/2 + 1⌋ (Mader 1973).",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Path and Disjointness Structures (lines 42-84):**\n   - `Path G u v`: vertex list with adjacency proof\n   - `VertexDisjoint`: no shared internal vertices\n   - `EdgeDisjoint`: no shared edges (checking both orientations)\n   - `HasMVertexDisjointPaths` / `HasMEdgeDisjointPaths`: Fin m indexed families\n   - `ContainsMVertexDisjointPair` / `ContainsMEdgeDisjointPair`: existential over vertex pairs\n\n2. **Extremal Functions (lines 86-102):**\n   - `k m n` and `ell m n` axiomatized (computing exact extremal thresholds is beyond Mathlib)\n   - `ell_le_k`: vertex-disjoint implies edge-disjoint\n\n3. **The Conjecture and Construction (lines 104-125):**\n   - `BollobasErdosConjecture m`: k_m(1 + (m-1)n) = 1 + C(m,2)n\n   - `extremal_construction`: lower bound witness\n\n4. **Small Cases TRUE (lines 127-149):**\n   - Explicit formulas: k_2(n) = n, k_3 parity split, k_4(n) = 2n-1\n   - `conjecture_small_m`: conjunction for m = 2, 3, 4\n\n5. **Disproof for m ≥ 5 (lines 151-195):**\n   - `leonard_counterexample`: 57 vertices, 141 edges, no 5 vertex-disjoint paths\n   - `leonard_lower_bound`: asymptotic with Filter.atTop\n   - `sorensen_thomassen_k5`: exact formula 8n/3 - 3\n   - `mader_disproof`: m ≥ 6 general disproof\n\n6. **Edge-Disjoint Solution (lines 197-226):**\n   - `mader_edge_disjoint`: ℓ_m(n) = m(n-1)/2 + 1\n   - `edge_disjoint_solved`: proves EdgeDisjointConjecture\n\n7. **Summary (lines 278-292):**\n   - `erdos_915_summary`: four-part conjunction covering all results",
+    "proofStrategy": "**Formalization Approach**\n\nThe file formalizes the *structure* of the problem and records the known results as axioms; the deep extremal-graph-theory content (explicit counterexamples, exact formulas) is asserted axiomatically, not proved.\n\n1. **Path and Disjointness Structures (lines 42-84):**\n   - `Path G u v`: vertex list with adjacency proof\n   - `VertexDisjoint`: no shared internal vertices\n   - `EdgeDisjoint`: no shared edges (checking both orientations)\n   - `HasMVertexDisjointPaths` / `HasMEdgeDisjointPaths`: Fin m indexed families\n   - `ContainsMVertexDisjointPair` / `ContainsMEdgeDisjointPair`: existential over vertex pairs\n\n2. **Extremal Functions (lines 86-99):**\n   - `k m n` and `ell m n` axiomatized as abstract functions (computing exact extremal thresholds is beyond Mathlib; no explicit formula is given)\n\n3. **The Conjecture (lines 101-110):**\n   - `BollobasErdosConjecture m`: k_m(1 + (m-1)n) = 1 + C(m,2)n\n\n4. **Small Cases TRUE (lines 112-124):**\n   - `conjecture_m2`, `conjecture_m3`, `conjecture_m4` axioms: the conjecture holds for m = 2, 3, 4 (asserted; the underlying Bártfai/Bollobás arguments are not formalized)\n   - `conjecture_small_m` theorem: conjunction for m = 2, 3, 4\n\n5. **Disproof for m ≥ 5 (lines 126-134):**\n   - `conjecture_false_m5` axiom: ¬BollobasErdosConjecture 5 (Leonard 1973, asserted; the 57-vertex counterexample is not constructed in Lean)\n   - `conjecture_false_large_m` axiom: ¬BollobasErdosConjecture m for all m ≥ 6 (Mader 1973)\n\n6. **Edge-Disjoint Solution (lines 136-152):**\n   - `mader_edge_disjoint` axiom: ℓ_m(n) = m(n-1)/2 + 1\n   - `EdgeDisjointConjecture` definition and `edge_disjoint_solved` theorem (derives it from the axiom)\n\n7. **Summary (lines 154-184):**\n   - `erdos_915_summary` theorem: four-part conjunction combining the axiomatized results",
     "keyInsights": [
       "**Two Interpretations:** The problem bifurcates into vertex-disjoint (k_m) and edge-disjoint (ℓ_m) versions with fundamentally different answers — the conjecture is partially false for vertex-disjoint but completely true for edge-disjoint",
       "**Small m Works:** For m = 2, 3, 4, the vertex-disjoint conjecture holds, with explicit formulas k_2(n) = n, k_3 with parity cases, and k_4(n) = 2n - 1",
@@ -108,34 +98,34 @@
     {
       "id": "functions",
       "title": "The Functions k_m(n) and ℓ_m(n)",
-      "summary": "Axiomatized extremal functions k, ell, and ell_le_k ordering",
+      "summary": "Axiomatized extremal functions k and ell (abstract, no explicit formula)",
       "startLine": 86,
       "endLine": 103,
-      "mathContext": "Axiomatized: Axiomatized extremal functions k, ell, and ell_le_k ordering"
+      "mathContext": "Axiomatized: extremal functions k and ell (abstract, no explicit formula)"
     },
     {
       "id": "conjecture",
       "title": "The Bollobás-Erdős Conjecture",
-      "summary": "BollobasErdosConjecture definition and extremal_construction lower bound",
+      "summary": "BollobasErdosConjecture definition",
       "startLine": 104,
       "endLine": 126,
-      "mathContext": "Formal definition: BollobasErdosConjecture definition and extremal_construction lower bound"
+      "mathContext": "Formal definition: BollobasErdosConjecture"
     },
     {
       "id": "small-cases",
       "title": "Small Cases: Conjecture TRUE for m ≤ 4",
-      "summary": "k_2, bartfai_k3_even/odd, bollobas_k4, conjecture_m2/m3/m4, conjecture_small_m",
+      "summary": "conjecture_m2/m3/m4 axioms, conjecture_small_m theorem",
       "startLine": 127,
       "endLine": 150,
-      "mathContext": "Mathematical content: k_2, bartfai_k3_even/odd, bollobas_k4, conjecture_m2/m3/m4, conjecture_small_m"
+      "mathContext": "Axiomatized (m = 2, 3, 4 hold): conjecture_m2, conjecture_m3, conjecture_m4; conjecture_small_m theorem bundles them"
     },
     {
       "id": "disproof",
       "title": "The Disproof for m ≥ 5",
-      "summary": "leonard_counterexample, leonard_lower_bound, sorensen_thomassen_k5, mader_disproof, conjecture_false_m5, conjecture_false_large_m",
+      "summary": "conjecture_false_m5, conjecture_false_large_m axioms",
       "startLine": 151,
       "endLine": 186,
-      "mathContext": "Verified: leonard_counterexample, leonard_lower_bound, sorensen_thomassen_k5, mader_disproof, conjecture_false_m5, conjecture_false_large_m"
+      "mathContext": "Axiomatized (m ≥ 5 fails): conjecture_false_m5 (Leonard 1973), conjecture_false_large_m (Mader 1973)"
     }
   ],
   "conclusion": {
