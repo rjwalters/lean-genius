@@ -223,6 +223,62 @@ convolution of `1` with the `d`-kernel is the `(d+1)`-dimensional simplex number
 example (d n : ℕ) : simplexConv d (fun _ => 1) n = simplexNumber (d + 1) n := by
   rw [← iterSum_eq_simplexConv, iterSum_one]
 
+/-- **Monoid law for iterated summation.** Iterating the partial-sum operator is
+additive in the number of iterations: summing `a + b` times equals summing `b`
+times and then `a` more times,
+
+`iterSum (a + b) f = iterSum a (iterSum b f)`.
+
+Equivalently, `iterSum` is a monoid action of `(ℕ, +)` on sequences: the discrete
+summation operators compose by adding their orders. Proved by induction on `a`
+directly from the definition of `iterSum`; it is the structural fact that turns
+the discrete Cauchy formula into a *convolution* identity below. -/
+theorem iterSum_add (a b : ℕ) (f : ℕ → ℕ) :
+    iterSum (a + b) f = iterSum a (iterSum b f) := by
+  induction a with
+  | zero => rfl
+  | succ a ih =>
+    have hab : a + 1 + b = (a + b) + 1 := by ring
+    rw [hab]
+    show partialSum (iterSum (a + b) f) = partialSum (iterSum a (iterSum b f))
+    rw [ih]
+
+/-- **Vandermonde convolution of simplex kernels (discrete Beta identity).** The
+convolution of the `a`-dimensional and `b`-dimensional figurate kernels is the
+`(a+b+1)`-dimensional one:
+
+`∑_{k≤n} P_a(n-k) · P_b(k) = P_{a+b+1}(n)`.
+
+This is the discrete analogue of the Beta-integral kernel composition
+`∫₀ˣ (x−t)^a t^b dt = B(a+1, b+1) · x^{a+b+1}`: convolving two figurate kernels
+adds their dimensions (with one extra for the joining summation). The hockey stick
+`sum_simplex` is the special case `b = 0` (kernel `P_0 ≡ 1`). Proof: the left side
+is `iterSum (a+1)` applied to `P_b = iterSum b (fun _ => 1)`, and the monoid law
+`iterSum_add` collapses the `(a+1) + b` iterated summations of the constant `1`
+into `P_{a+b+1}` via `iterSum_one`. -/
+theorem simplex_vandermonde (a b n : ℕ) :
+    ∑ k ∈ range (n + 1), simplexNumber a (n - k) * simplexNumber b k
+      = simplexNumber (a + b + 1) n := by
+  have hconv : ∑ k ∈ range (n + 1), simplexNumber a (n - k) * simplexNumber b k
+      = simplexConv a (fun k => simplexNumber b k) n := rfl
+  rw [hconv, ← iterSum_eq_simplexConv]
+  have hb : (fun k => simplexNumber b k) = iterSum b (fun _ => 1) := by
+    funext k; rw [iterSum_one]
+  rw [hb, ← iterSum_add]
+  have hidx : a + 1 + b = a + b + 1 := by ring
+  rw [hidx, iterSum_one]
+
+/-- The Vandermonde convolution in pure binomial-coefficient form:
+
+`∑_{k≤n} C(n−k+a, a) · C(k+b, b) = C(n+a+b+1, a+b+1)`.
+
+The `a = b = 0` case is `∑_{k≤n} 1 = n+1 = C(n+1, 1)`; taking `b = 0` recovers the
+hockey stick, and `a = b` gives the "central" figurate self-convolution. -/
+theorem sum_choose_mul_choose (a b n : ℕ) :
+    ∑ k ∈ range (n + 1), (n - k + a).choose a * (k + b).choose b
+      = (n + (a + b + 1)).choose (a + b + 1) := by
+  simpa [simplexNumber] using simplex_vandermonde a b n
+
 /-- **Counting face (stars and bars).** The `d`-dimensional simplex number counts
 the size-`d` multisets drawn from the `n+1` symbols `{0, 1, …, n}` — equivalently
 the weakly increasing `d`-tuples `0 ≤ i₁ ≤ ⋯ ≤ i_d ≤ n`:
