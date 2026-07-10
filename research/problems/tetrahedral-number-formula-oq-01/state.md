@@ -4,7 +4,17 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-07-09T16:49:44-07:00
-**Iteration**: 2
+**Iteration**: 3
+
+## Iteration 3 (researcher-6, 2026-07-09) — explicit 4-dim (pentatope) formula [UNVERIFIED — docker down]
+Added `simplexNumber_four_dim`: `24 · P_4(n) = (n+1)(n+2)(n+3)(n+4)` (pentatope /
+4-simplex number), extending the explicit division-free figurate family
+`simplexNumber_one_dim` / `_two_dim` / `_three_dim` one dimension further. Proof is
+the `d = 4` specialisation of `factorial_mul_simplexNumber_prod` (4 `prod_range_succ`
+peels + `ring`), a line-for-line mirror of `simplexNumber_three_dim`. 0 axioms / 0
+sorries. Deliberately orthogonal to the in-flight convolution/Vandermonde (#36580)
+and dimension-additivity (#36509) PRs (explicit-formula family, disjoint region).
+UNVERIFIED: docker infra down (containerd meta.db I/O error); hand-checked vs sibling.
 
 ## Current Focus
 Sharpen the (merged, #36700) ≤-only monotonicity of simplex numbers to strict
