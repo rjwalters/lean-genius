@@ -1,5 +1,17 @@
 [
   {
+    "id": "ann-import-scaffold",
+    "proofId": "cayley-hamilton-cyclic-vector-all-fields-oq-01-oq-02-oq-05",
+    "range": { "startLine": 1, "endLine": 2 },
+    "type": "context",
+    "title": "Two-file architecture: importing the parent scaffold",
+    "content": "The proof is deliberately split across two files. `import Proofs.CayleyHamiltonReductionOQ02OQ01WIP01` (recorded as this entry's `additionalFiles` dependency) pulls in the two heavy, sorry-free block-matrix theorems `charpoly_companion_block` (charpoly = p·q) and `minpoly_companion_block` (minpoly = lcm p q), whose proofs manipulate the `fromBlocks` structure directly. Once imported, this file never touches the block-matrix structure again: the entire coprime-merge result is obtained by feeding one scalar polynomial identity (lcm = product) into those imported readouts. The `import Mathlib` line brings in the `GCDMonoid F[X]` machinery — `lcm`, `IsCoprime.mul_dvd`, `lcm_dvd`, and the monic-divisibility lemmas — that the new arithmetic lemma rests on. Splitting the derivation this way keeps the derogatory-vs-nonderogatory story (matrix side) cleanly separated from the coprimality arithmetic (scalar side).",
+    "mathContext": "Imported facts: $\\chi_{C(p)\\oplus C(q)} = pq$ and $\\mu_{C(p)\\oplus C(q)} = \\operatorname{lcm}(p,q)$; the only new input is the scalar identity $\\operatorname{lcm}(p,q) = pq$ for coprime monic $p,q$.",
+    "significance": "supporting",
+    "relatedConcepts": ["module dependency", "companion block matrix", "separation of concerns", "GCDMonoid instance", "block-matrix charpoly/minpoly"],
+    "prerequisites": ["Lean imports and namespaces", "companion matrices"]
+  },
+  {
     "id": "ann-crt-context",
     "proofId": "cayley-hamilton-cyclic-vector-all-fields-oq-01-oq-02-oq-05",
     "range": { "startLine": 4, "endLine": 45 },
