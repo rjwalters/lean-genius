@@ -54,6 +54,28 @@
     ]
   },
   {
+    "id": "tolerance-mono",
+    "proofId": "erdos-1026-oq-02",
+    "range": {
+      "startLine": 100,
+      "endLine": 113
+    },
+    "type": "theorem",
+    "title": "A Larger Tolerance Is a Weaker Constraint",
+    "content": "isApproxIncreasing_mono (and its dual isApproxDecreasing_mono) prove monotonicity of the predicate in the tolerance parameter: if ε₁ ≤ ε₂ then IsApproxIncreasing ε₁ implies IsApproxIncreasing ε₂. The proof is one line — the ε₁-approximate inequality seq(idxᵢ) − ε₁ < seq(idxⱼ) already implies the slacker seq(idxᵢ) − ε₂ < seq(idxⱼ) because subtracting a larger number lowers the threshold (linarith with hε). Together with the ε = 0 coincidence this makes the approximate notions a nested one-parameter family: the sets of ε-approximately monotonic subsequences grow monotonically from the classical set at ε = 0.",
+    "mathContext": "$\\varepsilon_1 \\le \\varepsilon_2 \\Rightarrow \\mathrm{ApproxInc}_{\\varepsilon_1} \\subseteq \\mathrm{ApproxInc}_{\\varepsilon_2}$; the threshold $\\mathrm{seq}(\\iota_i) - \\varepsilon$ only decreases as $\\varepsilon$ grows.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "monotone parameter family",
+      "nested predicate sets",
+      "linarith"
+    ],
+    "prerequisites": [
+      "IsApproxIncreasing definition",
+      "order on ℝ"
+    ]
+  },
+  {
     "id": "containment",
     "proofId": "erdos-1026-oq-02",
     "range": {
