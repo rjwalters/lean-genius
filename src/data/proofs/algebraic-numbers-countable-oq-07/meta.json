@@ -20,8 +20,8 @@
     "badge": "mathlib",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 205,
-    "theoremCount": 11,
+    "lineCount": 273,
+    "theoremCount": 16,
     "definitionCount": 0,
     "dateAdded": "2026-06-21",
     "mathlibDependencies": [
@@ -44,6 +44,11 @@
         "theorem": "compl_mem_ae_iff",
         "description": "A set is conull iff its complement is null; converts algebraic_reals_null into the almost-everywhere statement ae_transcendental.",
         "module": "Mathlib.MeasureTheory.Measure.Typeclasses.NoAtoms"
+      },
+      {
+        "theorem": "Set.Countable.dimH_zero",
+        "description": "A countable set has Hausdorff dimension zero; applied to the countable algebraic reals/complex algebraic numbers to strengthen Lebesgue-null to dimension zero (algebraic_reals_dimH_zero), whence every positive-order Hausdorff measure vanishes (hausdorffMeasure_of_dimH_lt) and the transcendentals are dense (dense_compl_of_dimH_lt_finrank).",
+        "module": "Mathlib.Topology.MetricSpace.HausdorffDimension"
       }
     ],
     "assumptions": "0 `axiom` declarations, 0 sorries, 0 structure-encoded assumptions. No `native_decide` is used. The core result `algebraic_reals_null` is a one-liner: the countability of the algebraic reals is imported from the parent `AlgebraicNumbersCountable.algebraic_reals_countable`, and `Set.Countable.measure_zero` (with Mathlib's atomless `Real.noAtoms_volume`) upgrades countable to null. The file's independent content is the measure-theoretic packaging (conull/ae/interval/existence corollaries) and the `NoAtoms (volume : Measure ℂ)` instance transported through `Complex.volume_preserving_equiv_real_prod`. `#print axioms` reports only propext, Classical.choice, Quot.sound — no `Lean.ofReduceBool`, no `sorryAx`.",
@@ -172,8 +177,8 @@
   ],
   "leanFile": {
     "path": "Proofs/AlgebraicRealsNull.lean",
-    "lineCount": 205,
-    "theoremCount": 11,
+    "lineCount": 273,
+    "theoremCount": 16,
     "axiomCount": 0,
     "definitionCount": 0,
     "sorries": 0
