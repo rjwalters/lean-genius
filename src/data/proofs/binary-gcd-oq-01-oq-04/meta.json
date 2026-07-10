@@ -20,7 +20,7 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 1,
-    "lineCount": 157,
+    "lineCount": 193,
     "dateAdded": "2026-04-04",
     "mathlibDependencies": [
       {
@@ -59,7 +59,7 @@
       "Computational verification for n = 1,2,3,4,6,8 via native_decide"
     ],
     "assumptions": "Depends on Lean.ofReduceBool. The symbolic results — binaryGcdSteps_one_pow2_sub_one (exact step count = n), binaryGcdSteps_log_lower_bound, and binaryGcdSteps_exceeds_log_by_one — are proved symbolically and are axiom-free. The advertised 'Computational verification for n = 1,2,3,4,6,8 via native_decide' contribution is discharged by native_decide, which trusts the Lean compiler's kernel reduction and adds the Lean.ofReduceBool axiom. 0 sorries. leanFile.axiomCount remains 0 (no literal axiom declarations).",
-    "theoremCount": 6,
+    "theoremCount": 8,
     "definitionCount": 0
   },
   "overview": {
@@ -171,10 +171,10 @@
       "Nat"
     ],
     "namespace": "BinaryGcdOQ01OQ04",
-    "lineCount": 157,
+    "lineCount": 193,
     "axiomCount": 0,
-    "theoremCount": 6,
-    "substantiveTheoremCount": 5,
+    "theoremCount": 8,
+    "substantiveTheoremCount": 7,
     "definitionCount": 0,
     "path": "Proofs/BinaryGcdOQ01OQ04.lean",
     "sorries": 0

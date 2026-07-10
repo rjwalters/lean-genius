@@ -139,6 +139,42 @@ theorem binaryGcdSteps_exceeds_log_by_one (n : ℕ) (hn : 2 ≤ n) :
   omega
 
 -- ═══════════════════════════════════════════════════════════════════
+-- PART IV.5: MATCHING UPPER BOUND AND THE TWO-SIDED SANDWICH
+-- ═══════════════════════════════════════════════════════════════════
+
+/-- **Matching upper bound** for the worst-case family, specialised from the
+    general Binary GCD bound `binaryGcdSteps_le_log` in `BinaryGcdOQ01`.
+
+    Since the first argument is `1` and `Nat.log 2 1 = 0`, the two-variable
+    bound `binaryGcdSteps a b ≤ 2·(log₂ a + log₂ b) + 2` collapses to
+      binaryGcdSteps 1 (2^n - 1) ≤ 2·log₂(2^n - 1) + 2. -/
+theorem binaryGcdSteps_family_upper_bound (n : ℕ) (hn : 1 ≤ n) :
+    binaryGcdSteps 1 (2 ^ n - 1) ≤ 2 * Nat.log 2 (2 ^ n - 1) + 2 := by
+  have hb : 0 < 2 ^ n - 1 := by
+    have h2n : 2 ≤ 2 ^ n := by
+      calc 2 = 2 ^ 1 := by norm_num
+        _ ≤ 2 ^ n := Nat.pow_le_pow_right (by norm_num) hn
+    omega
+  have h := binaryGcdSteps_le_log 1 (2 ^ n - 1) (by norm_num) hb
+  rw [Nat.log_one_right] at h
+  omega
+
+/-- **Two-sided tight bound (Θ(log b))** for the worst-case family `(1, 2^n - 1)`.
+
+    This formalizes the claim stated in prose in the file header and in the
+    docstring of `binaryGcdSteps_log_lower_bound`: with `L = log₂(2^n - 1)`,
+      L + 1 ≤ binaryGcdSteps 1 (2^n - 1) ≤ 2·L + 2.
+
+    The lower bound comes from the exact step count `= n` (which exceeds `L`),
+    and the upper bound is the specialised general bound. Together they pin the
+    step count to a factor-2 window around `log₂ b`, proving the worst-case
+    Binary GCD complexity is `Θ(log b)`. -/
+theorem binaryGcdSteps_family_sandwich (n : ℕ) (hn : 1 ≤ n) :
+    Nat.log 2 (2 ^ n - 1) + 1 ≤ binaryGcdSteps 1 (2 ^ n - 1) ∧
+      binaryGcdSteps 1 (2 ^ n - 1) ≤ 2 * Nat.log 2 (2 ^ n - 1) + 2 :=
+  ⟨binaryGcdSteps_log_lower_bound n hn, binaryGcdSteps_family_upper_bound n hn⟩
+
+-- ═══════════════════════════════════════════════════════════════════
 -- PART V: CONCRETE VERIFICATIONS
 -- ═══════════════════════════════════════════════════════════════════
 
