@@ -88,9 +88,11 @@ theorem summable_weightedMajorant (hs : s < RothTheoremOQ02.blasiConst) :
   exact hbase.mul_left _
 
 /-- **Per-block weighted reciprocal bound.**  For any finite 3-AP-free `T` with `0 ∉ T` and
-weight exponent `0 ≤ s`, the `(log a)^s`-weighted reciprocal sum over the `k`-th dyadic
-fiber `{a ∈ T : ⌊log₂ a⌋ = k}` is at most `weightedMajorant s k`. -/
-theorem weighted_fiber_sum_le (hs0 : 0 ≤ s)
+weight exponent `0 ≤ s < blasiConst`, the `(log a)^s`-weighted reciprocal sum over the `k`-th
+dyadic fiber `{a ∈ T : ⌊log₂ a⌋ = k}` is at most `weightedMajorant s k`.  The upper bound
+`s < blasiConst` guarantees the majorant exponent `1 + blasiConst − s` stays positive (needed
+for the `k = 0` block, where `Real.rpow_le_one` requires a nonnegative exponent). -/
+theorem weighted_fiber_sum_le (hs0 : 0 ≤ s) (hs : s < RothTheoremOQ02.blasiConst)
     (T : Finset ℕ) (hT : ThreeAPFree (T : Set ℕ)) (hT0 : 0 ∉ T) (k : ℕ) :
     ∑ a ∈ T.filter (fun a => Nat.log 2 a = k), (Real.log a) ^ s / (a : ℝ)
       ≤ weightedMajorant s k := by
@@ -196,7 +198,6 @@ theorem weighted_fiber_sum_le (hs0 : 0 ≤ s)
             unfold weightedMajorant
             rw [pow_succ, Real.rpow_sub hbpos]
             field_simp
-            ring
 
 /-- **Uniform bound on finite weighted reciprocal sums.**  For every finite 3-AP-free `T`
 (`0 ∉ T`) and `0 ≤ s < blasiConst`, the `(log a)^s`-weighted reciprocal sum is bounded by
@@ -211,7 +212,7 @@ theorem weighted_finite_sum_le (hs0 : 0 ≤ s) (hs : s < RothTheoremOQ02.blasiCo
   calc ∑ k ∈ T.image (Nat.log 2), ∑ a ∈ T.filter (fun a => Nat.log 2 a = k),
           (Real.log a) ^ s / (a : ℝ)
       ≤ ∑ k ∈ T.image (Nat.log 2), weightedMajorant s k :=
-        Finset.sum_le_sum (fun k _ => weighted_fiber_sum_le hs0 T hT hT0 k)
+        Finset.sum_le_sum (fun k _ => weighted_fiber_sum_le hs0 hs T hT hT0 k)
     _ ≤ ∑' k, weightedMajorant s k :=
         Summable.sum_le_tsum _ (fun k _ => weightedMajorant_nonneg k)
           (summable_weightedMajorant hs)
