@@ -22,7 +22,7 @@
     "sorries": 0,
     "dateAdded": "2026-06-20",
     "axiomCount": 0,
-    "lineCount": 138,
+    "lineCount": 166,
     "theoremCount": 4,
     "definitionCount": 1,
     "assumptions": "None beyond 'T is a symmetric operator and H is a codimension-one subspace'. 0 axioms, 0 sorries in this file and in its transitive imports (CauchyInterlacingAssembly.lean #27236 and CauchyInterlacingKeystone.lean #25063, both 0-sorry/0-axiom). The Rayleigh-agreement hypothesis that the abstract assembly theorem (cauchy_interlacing) takes as input is here PROVED, not assumed, from the orthogonal-projection adjoint identity. This closes the operator-level half of the parent entry's first open question. The remaining bridge is purely the matrix↔operator translation: showing that for a Hermitian matrix and a coordinate hyperplane, deleting a row/column yields exactly this orthogonal compression (a bookkeeping identification, no new spectral content).",
@@ -153,7 +153,7 @@
       "InnerProductSpace"
     ],
     "namespace": "CauchyInterlacing.Compression",
-    "lineCount": 138,
+    "lineCount": 166,
     "axiomCount": 0,
     "theoremCount": 4,
     "definitionCount": 1,
