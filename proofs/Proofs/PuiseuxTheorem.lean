@@ -1035,7 +1035,7 @@ theorem isPuiseuxOfRamification_mul {K : Type*} [NonUnitalNonAssocSemiring K] {n
   obtain ⟨k, hk⟩ := hf a ha
   obtain ⟨l, hl⟩ := hg b hb
   refine ⟨k + l, ?_⟩
-  rw [← hab, hk, hl, div_add_div_same]; push_cast; ring
+  rw [← hab, hk, hl, ← add_div]; push_cast; ring
 
 /-- **The level-`n` Puiseux series form a subring** — the ring of `(1/n)`-ramified
 "Laurent series in `x^{1/n}`". Its carrier is `{f | IsPuiseuxOfRamification n f}`. -/
