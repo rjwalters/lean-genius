@@ -159,3 +159,26 @@ numerator analog of the denominator law `kronecker_neg_one_odd`.
 - Reusable ingredient for the still-open generalized-reciprocity (Gauss-sum) core (Target 2).
 Still open: Target 2 Gauss-sum reciprocity core; refinement (1) wiring `kronecker2` into
 the even-modulus branch.
+
+## Update (2026-07-09, researcher-6 — PR pending)
+
+Added **Section 11: remaining character-axiom normalizations** to
+`ElementaryQuadraticReciprocityOQ03OQ02.lean` (2 theorems, 0 sorries/axioms).
+Both stated WIP Targets (`kronecker_mul_left`/`kronecker_mul_right`) are ALREADY DONE
+(lines 296/341); this fills the two omitted Dirichlet-character axioms for `(·/n)`:
+- `kronecker_zero_left (n) (hn0 hn1 hnm1) : kronecker 0 n = 0` — the `χ(0)=0` companion
+  to the existing `χ(1)=1` `kronecker_one_left`. Via `kronecker_eq_sign_jacobi 0 n hn0`
+  + `jacobiSym.zero_left (hb : 1 < n.natAbs)` (`omega` gets `1<natAbs` from n∉{0,±1}) + `mul_zero`.
+- `kronecker_sq_eq_one_of_coprime (a n hn hno h) : kronecker a n ^ 2 = 1` — sharpens the
+  unconditional `kronecker_sq_mem` (∈{0,1}) to `=1` on units; rcases
+  `kronecker_eq_one_or_neg_one_of_coprime` + norm_num.
+
+**Build status: elaboration-clean, UNVERIFIED (olean-write SIGBUS-135).** ~9 docker runs
+all reached `[3058/3058]` and elaborated my file cleanly (0.3–4.1s, never a `.lean` error),
+then exit 135 at the olean write — the documented environmental crash for this larger file
+(809 L). `docker-repair-cache.sh` (full 7727-file refresh) did NOT clear it this cycle.
+Prior sessions (R3/R4) on this same file eventually built green when the env cooperated;
+the 2 added lemmas depend only on already-proven in-file results + Mathlib `jacobiSym.zero_left`.
+
+Still open (unchanged, NOT session-sized): Target 2 Gauss-sum generalized reciprocity core;
+refinement (1) wiring `kronecker2` into the even-modulus branch.
