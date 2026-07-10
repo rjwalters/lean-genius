@@ -12,6 +12,18 @@
     "prerequisites": ["Galois theory", "splitting fields"]
   },
   {
+    "id": "ann-arge-oq01-phi-family",
+    "proofId": "abel-ruffini-galois-extensions-oq-01",
+    "range": { "startLine": 78, "endLine": 111 },
+    "type": "definition",
+    "title": "The Φ = X⁵ − aX + b family and its basic invariants",
+    "content": "Rather than hard-code X⁵ − 4X + 2, the file works with the parametrized quintic Φ R a b := X⁵ − C a · X + C b over an arbitrary commutative ring R, specializing to R = ℚ, a = 4, b = 2 only at the very end. The structural lemmas are proved once, generically: map_Phi (Φ is stable under any ring hom, so ℤ→ℚ base change is transparent — the @[simp] form that lets later proofs shuttle between ℤ and ℚ), coeff_zero_Phi (constant term = b) and coeff_five_Phi (leading coeff = 1), then degree_Phi = 5 (via degree_add_eq_left_of_degree_lt: the X⁵ term dominates the linear and constant tails), natDegree_Phi = 5, leadingCoeff_Phi = 1, and finally monic_Phi. Monicity and the exact degree are the hypotheses every downstream step — Eisenstein, the root counts, the prime-degree theorem — silently depends on.",
+    "mathContext": "$\\Phi_R(a,b) = X^5 - aX + b$; $\\deg = 5$, monic, $\\Phi.\\mathrm{coeff}\\,0 = b$, $\\Phi.\\mathrm{coeff}\\,5 = 1$, and $\\Phi$ commutes with every ring hom $f$: $f_*(\\Phi_R) = \\Phi_S$.",
+    "significance": "supporting",
+    "relatedConcepts": ["parametrized polynomial family", "monic polynomial", "degree_add_eq_left_of_degree_lt", "base change / map of polynomials", "@[simp] normal form"],
+    "prerequisites": ["polynomial coefficients and degree", "ring homomorphisms on R[X]"]
+  },
+  {
     "id": "ann-arge-oq01-irreducible",
     "proofId": "abel-ruffini-galois-extensions-oq-01",
     "range": { "startLine": 113, "endLine": 133 },
@@ -46,6 +58,18 @@
     "significance": "critical",
     "relatedConcepts": ["galActionHom", "transposition", "p-cycle", "generation of Sₚ"],
     "prerequisites": ["Galois group action on roots", "permutation groups"]
+  },
+  {
+    "id": "ann-arge-oq01-witness-q",
+    "proofId": "abel-ruffini-galois-extensions-oq-01",
+    "range": { "startLine": 199, "endLine": 221 },
+    "type": "theorem",
+    "title": "Specializing to the witness q = X⁵ − 4X + 2",
+    "content": "Here the generic machinery is instantiated at the classical Abel–Ruffini witness q := Φ ℚ 4 2, unfolding to X⁵ − 4X + 2 (q_eq, by rfl). Each property is a one-line specialization of a general Φ theorem: q_irreducible = irreducible_Phi 4 2 2 with the Eisenstein-at-2 side conditions (2 ∣ 4, 2 ∣ 2, 4 ∤ 2) discharged by norm_num/decide; q_separable = irreducibility in characteristic zero; q_card_complex_roots = 5 from complex_roots_Phi; and q_galActionHom_bijective = gal_Phi 4 2 with b < a (2 < 4) supplying the two-non-real-roots hypothesis. Choosing a = 4, b = 2 is exactly what makes b < a hold (three real roots) while keeping Eisenstein at 2 available — the two constraints that together force the full S₅ action.",
+    "mathContext": "$q = \\Phi_{\\mathbb{Q}}(4,2) = X^5 - 4X + 2$: irreducible (Eisenstein at 2), separable, $5$ complex roots, and $\\mathrm{galActionHom}\\,q\\,\\mathbb{C}$ bijective.",
+    "significance": "key",
+    "relatedConcepts": ["concrete witness polynomial", "Eisenstein at 2", "specialization of a family", "b < a real-root condition"],
+    "prerequisites": ["the Φ family invariants", "irreducible_Phi / gal_Phi"]
   },
   {
     "id": "ann-arge-oq01-permCongr",
