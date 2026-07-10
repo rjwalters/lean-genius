@@ -25,14 +25,14 @@
       }
     ],
     "originalContributions": [
-      "Five Color Theorem complete proof via Kempe chains",
-      "Reducibility and unavoidability framework",
-      "Main theorem combining reducibility and unavoidability"
+      "Fully proved planar-graph infrastructure lemmas: colorable_of_card_le, planar_of_subgraph, and exists_degree_le_five (every nonempty planar graph has a vertex of degree <= 5, via the handshaking lemma and a planar edge bound)",
+      "Five Color Theorem stated and reduced to the axiom five_color_theorem_nonempty (the vertex-deletion induction is not yet available in Mathlib); only the empty-graph case is discharged directly",
+      "Four Color Theorem axiomatized as four_color_theorem_axiom (the Appel-Haken / Gonthier result is not ported to Lean), with four_implies_five derived from it. KempeChain is defined for exposition only and is not used in any proof; the file contains no reducibility/unavoidability formalization"
     ],
     "dateAdded": "2025-12-21",
     "wiedijkNumber": 32,
     "axiomCount": 2,
-    "assumptions": "2 axiom(s). No sorries.",
+    "assumptions": "2 axioms carrying the core results themselves: five_color_theorem_nonempty (Colorable G 5 for nonempty planar G) and four_color_theorem_axiom (Colorable G 4). The Four and Five Color Theorems are therefore assumed, not proved, in this file; the theorems five_color_theorem, four_color_theorem, and four_implies_five are thin wrappers over these axioms. Genuinely proved: supporting infrastructure (colorable_of_card_le, planar_of_subgraph, exists_degree_le_five). No sorries.",
     "proofRepoPath": "Proofs/FourColorTheorem.lean",
     "mathlib_version": "4.26.0",
     "lineCount": 294,
