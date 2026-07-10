@@ -130,6 +130,11 @@
       "id": "arsinh-log-formula-oq-01-oq-01-oq-01-oq-01-oq-01",
       "question": "Show that the catenoid is a minimal surface by formalising that the catenary y = cosh x extremises the surface-of-revolution area functional ∫ y √(1 + y'²) dx — i.e. derive the Euler–Lagrange equation y·y'' = 1 + (y')² and verify cosh x solves it — connecting the closed-form area to the variational origin of the catenoid.",
       "significance": "medium"
+    },
+    {
+      "id": "arsinh-log-formula-oq-01-oq-01-oq-01-oq-01-oq-02",
+      "question": "Formalise the Goldschmidt existence threshold: for two coaxial rings the catenoid connecting them exists only while their separation-to-radius ratio stays below a critical value (fixing the aspect ratio determines the neck via the transcendental condition on cosh); beyond it no smooth catenoid spans the rings and the two-flat-disks (Goldschmidt) solution becomes the area minimiser. Determine the critical ratio and prove the catenoid area 2π ∫ cosh²  exceeds the competing disk area 2·½·2π r² there — the classic discontinuity in the calculus-of-variations problem.",
+      "significance": "medium"
     }
   ],
   "crossReferences": [
@@ -172,7 +177,8 @@
     "summary": "Answers the parent's open question with its two requested upgrades. The affine boundary case: hasDerivAt_affine identifies the constant arc-length integrand √(1 + m²) of a line y = m·x + c, and line_arclength evaluates the constant integral to the arc length (b − a)·√(1 + m²). The catenoid: the core contribution hasDerivAt_coshSqAntideriv builds, from scratch, the antiderivative of cosh² — d/dx [½(x + sinh x·cosh x)] = cosh²x (product rule on sinh·cosh giving cosh²x + sinh²x, plus cosh²x = 1 + sinh²x) — and integral_cosh_sq_zero_to gives ∫_0^b cosh²x dx = ½(b + sinh b·cosh b). The headline catenoid_surface_area collapses the surface-of-revolution integrand 2π·cosh x·√(1 + sinh²x) to 2π·cosh²x via √(1 + sinh²x) = cosh x, yielding the surface area π(b + sinh b·cosh b); a concrete value π(1 + sinh 1·cosh 1) over [0, 1] closes the file. 126 lines, 8 theorems, 0 definitions, 0 axioms, 0 sorries.",
     "implications": "Mathlib differentiates sinh/cosh and supplies the FTC, but the antiderivative of cosh², the catenoid surface-area-of-revolution closed form, and the affine arc-length specialisation are new to the gallery (hence the original badge). Together with the parent (catenary arc length sinh b) this completes the catenary→catenoid passage from length to area, both governed by the single identity √(1 + sinh²x) = cosh x.",
     "openQuestions": [
-      "Show the catenoid is a minimal surface by deriving the Euler–Lagrange equation y·y'' = 1 + (y')² for the surface-of-revolution area functional and verifying cosh x solves it, linking the closed-form area to the variational origin of the catenoid."
+      "Show the catenoid is a minimal surface by deriving the Euler–Lagrange equation y·y'' = 1 + (y')² for the surface-of-revolution area functional and verifying cosh x solves it, linking the closed-form area to the variational origin of the catenoid.",
+      "Formalise the Goldschmidt threshold: the catenoid spanning two coaxial rings exists only below a critical separation-to-radius ratio, beyond which the two-flat-disks solution has smaller area — the classic discontinuity of the minimal surface of revolution."
     ]
   },
   "description": "Revolving the catenary y = cosh x over [0, b] about the x-axis sweeps out the catenoid, whose surface area 2π ∫_0^b cosh x·√(1 + sinh²x) dx collapses — via the same identity √(1 + sinh²x) = cosh x that simplifies the catenary's length — to 2π ∫_0^b cosh²x dx = π(b + sinh b·cosh b). Built on a hand-made antiderivative d/dx [½(x + sinh x·cosh x)] = cosh²x (the cosh² antiderivative Mathlib lacks), this entry also records the affine boundary case: the arc length of a line y = m·x + c over [a, b] is the constant integral (b − a)·√(1 + m²). Answers the parent's open question. Fully verified, 0 axioms, 0 sorries."
