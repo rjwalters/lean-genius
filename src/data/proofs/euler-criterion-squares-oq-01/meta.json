@@ -93,6 +93,21 @@
       "proofId": "primitive-roots-oq-03",
       "relationship": "related",
       "description": "Both study the multiplicative structure of (ℤ/pℤ)ˣ. The primitive-roots entry gives the full order distribution; Euler's criterion isolates the order-2 quotient — the squares form the index-2 subgroup of squares, detected by a^((p−1)/2) = ±1."
+    },
+    {
+      "proofId": "euler-criterion-squares-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Direct follow-up: counts the nonzero quadratic residues mod an odd prime as exactly (p−1)/2. It builds on the same ±1 dichotomy proved here — the squaring endomorphism on (ℤ/pℤ)ˣ has kernel {1, −1}, so its image (the residues) has index 2 — turning this entry's residue criterion into the residue count."
+    },
+    {
+      "proofId": "elementary-quadratic-reciprocity",
+      "relationship": "related",
+      "description": "Euler's criterion (a | p) ≡ a^((p−1)/2) and the complete multiplicativity of the Legendre symbol proved here are the algebraic backbone of quadratic reciprocity; Eisenstein's elementary proof supplies the complementary lattice-point / Gauss's-Lemma half that fixes the reciprocity sign (−1)^((p−1)/2·(q−1)/2)."
+    },
+    {
+      "proofId": "wilsons-theorem",
+      "relationship": "related",
+      "description": "Companion classical fact about the field ℤ/p: Wilson's theorem ((p−1)! ≡ −1) and Euler's criterion both exploit the pairing of each nonzero element with its inverse and the fact that ±1 are the only square roots of unity — Wilson via the product over (ℤ/pℤ)ˣ, Euler via the (p−1)/2 power."
     }
   ],
   "leanFile": {
