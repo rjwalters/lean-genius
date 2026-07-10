@@ -329,6 +329,58 @@ theorem commute_of_commonDiagonalizer {M N P : Matrix n n K}
     _ = P * (P⁻¹ * (N * M) * P) * P⁻¹ := by rw [hconj]
     _ = N * M := hcancel _
 
+/-- **The (ordered) product of a list of diagonal matrices is diagonal.**  The
+    multiplicative companion of `isDiag_sum`.  Because matrix multiplication is
+    *not* commutative, the product must be taken over an ordered `List` rather than
+    a `Finset`; an immediate `List.prod` induction (base `1` diagonal, step
+    `isDiag_mul`) gives the result. -/
+theorem isDiag_listProd (L : List (Matrix n n K)) (h : ∀ A ∈ L, A.IsDiag) :
+    L.prod.IsDiag := by
+  induction L with
+  | nil => rw [List.prod_nil]; exact Matrix.isDiag_one
+  | cons a l ih =>
+      rw [List.prod_cons]
+      exact isDiag_mul (h a (List.mem_cons.mpr (Or.inl rfl)))
+        (ih (fun A hA => h A (List.mem_cons.mpr (Or.inr hA))))
+
+/-- **Conjugation distributes over an ordered product.**  For invertible `P`,
+    `P⁻¹ · (∏ L) · P = ∏ (L.map (A ↦ P⁻¹ A P))`.  The list-valued analogue of
+    `conj_pow`; the same interior `P * P⁻¹ = 1` cancellation is applied once per
+    `cons` step. -/
+theorem conj_listProd {P : Matrix n n K} (hP : IsUnit P.det) (L : List (Matrix n n K)) :
+    P⁻¹ * L.prod * P = (L.map (fun A => P⁻¹ * A * P)).prod := by
+  have hPP : P * P⁻¹ = 1 := Matrix.mul_nonsing_inv P hP
+  induction L with
+  | nil =>
+      rw [List.prod_nil, List.map_nil, List.prod_nil, mul_one, Matrix.nonsing_inv_mul P hP]
+  | cons a l ih =>
+      rw [List.prod_cons, List.map_cons, List.prod_cons, ← ih]
+      show P⁻¹ * (a * l.prod) * P = (P⁻¹ * a * P) * (P⁻¹ * l.prod * P)
+      calc P⁻¹ * (a * l.prod) * P
+          = P⁻¹ * a * (P * P⁻¹) * l.prod * P := by rw [hPP]; simp only [mul_one, mul_assoc]
+        _ = (P⁻¹ * a * P) * (P⁻¹ * l.prod * P) := by simp only [mul_assoc]
+
+/-- **Common diagonalizer ⟹ an ordered product of the family is diagonalizable.**
+    The multiplicative, `List`-indexed generalization of both
+    `mul_of_commonDiagonalizer` (a two-element product) and
+    `sum_of_commonDiagonalizer` (the additive `Finset` version).  If a single
+    invertible `P` diagonalizes every matrix in the list `L`, it diagonalizes the
+    ordered product `L.prod`: conjugation distributes over the product
+    (`conj_listProd`) and a list of diagonal matrices has a diagonal product
+    (`isDiag_listProd`).  The ordering is essential — matrix multiplication is
+    non-commutative — so unlike the sum this is genuinely a `List`, not a `Finset`,
+    statement. -/
+theorem IsDiagonalizable.prod_of_commonDiagonalizer {P : Matrix n n K} (hP : IsUnit P)
+    (L : List (Matrix n n K)) (hM : ∀ A ∈ L, (P⁻¹ * A * P).IsDiag) :
+    L.prod.IsDiagonalizable := by
+  refine ⟨P, hP, ?_⟩
+  have hPdet : IsUnit P.det := (Matrix.isUnit_iff_isUnit_det P).mp hP
+  rw [conj_listProd hPdet]
+  refine isDiag_listProd _ (fun A hA => ?_)
+  rw [List.mem_map] at hA
+  obtain ⟨B, hB, rfl⟩ := hA
+  exact hM B hB
+
 /-! ### Necessity of the common-diagonalizer hypothesis
 
 `mul_of_commonDiagonalizer` requires `M` and `N` to share a single diagonalizer `P`;
