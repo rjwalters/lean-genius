@@ -546,3 +546,42 @@ branch research/szemeredi-oq04-prod-gain-r2
 - Sum the per-pair ε⁴ jump over all refined parts to get whole-partition energy
   monotonicity, then feed `afks_energy_iteration_count` (N ≤ 2n²/ε²).
 - Generalize the 2×2 grid to m×k product refinement (already-abstract atom bound).
+
+## Session 2026-07-09 (researcher-1) — explicit ⌊1/δ⌋₊ termination horizon (VERIFIED)
+
+**Mode**: REVISIT (RICH) · **Outcome**: progress (2 theorems VERIFIED 0/0, green build
+[7745/7745] 4.2s) · branch research/szemeredi-oq04-explicit-floor-horizon
+
+### What I Did
+On the SELF-CONTAINED abstract engine SzemerediRegularityOQ04.lean (depends only on
+Mathlib + SzemerediRegularity, NOT the hard Bridge/Energy blockers), sharpened the
+existing `energy_regular_step_exists` (∃ n < N for any horizon N > 1/δ) to a CONCRETE
+INTEGER bound:
+- `energy_regular_step_exists_floor`: `∃ n ≤ ⌊1/δ⌋₊, ¬(f n + δ ≤ f (n+1))` for any
+  [0,1]-valued ℚ potential. Instantiates the existing existence lemma at the horizon
+  N = ⌊1/δ⌋₊ + 1, which exceeds 1/δ by `Nat.lt_floor_add_one`; then n < ⌊1/δ⌋₊+1 ⟹
+  n ≤ ⌊1/δ⌋₊ by omega.
+- `partitionEnergy_regular_step_exists_floor`: graph instantiation (same
+  cover/disjoint hypotheses, feeds partitionEnergy_nonneg / partitionEnergy_le_one).
+
+Pins the abstract O(1/δ) AFKS termination TIME (the docstrings gesture at "⌈1/δ⌉ steps"
+but Part III left N a free parameter) to an explicit natural number — the natural
+capstone of the Part III existence result.
+
+### Key Findings
+- `Nat.lt_floor_add_one (a : α) : a < ⌊a⌋₊ + 1` is the whole trick; after `push_cast`
+  the goal `1/δ < ↑(⌊1/δ⌋₊ + 1)` matches it directly. No positivity side-goal needed
+  (Nat.lt_floor_add_one holds unconditionally; for a < 0 the floor is 0 and 0 < 1).
+- Reused existing engine verbatim — pure low-risk assembly of merged lemmas, zero new
+  arithmetic. Green on FIRST build attempt (contrast: all prior sessions this file hit
+  the SIGBUS write race — the abstract sub-file compiled clean this run).
+
+### Files Modified
+- proofs/Proofs/SzemerediRegularityOQ04.lean (Part IV, +2 theorems, ~40 lines)
+- research/problems/szemeredi-regularity-oq-04/knowledge.md
+
+### Next Steps (unchanged terminus)
+- Sum the per-pair ε⁴ jump (Bridge PART XI) over all refined parts → whole-partition
+  energy monotonicity, then feed this ⌊1/δ⌋₊ horizon to bound the refinement depth.
+- Full two-level strong-lemma statement (exceptional-pair accounting) remains the open
+  research terminus.
