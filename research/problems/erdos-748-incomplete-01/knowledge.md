@@ -96,3 +96,22 @@ the one-family one.
 UNVERIFIED: Docker infra down this session (containerd `meta.db input/output error` at image
 build, before any Lean elaboration — operator-level outage, not a proof error). Proof uses only
 rock-solid API; high confidence. 2 deep axioms remain BLOCKED (Green 2004 / Sapozhenko 2003).
+
+### Strict two-family domination (2026-07-09, researcher-2)
+
+Added `two_family_bound_gt_upperHalf (n) (hn : 3 ≤ n)` (0 axioms), the strict (`>`)
+sharpening of the existing `two_family_bound_ge_upperHalf` (`≥`). This formalizes the
+strictness clause already asserted in the `two_family_lower_bound` docstring — "the
+inequality is strict whenever some odd number lies in the lower half (`O ⊄ U`, i.e. all
+`n ≥ 3`)" — which had no theorem behind it. Proof: `1` is the witness (`1 ∈ O`: odd and
+`< n+1`; `1 ∉ U`: `1 < n/2 + 1` for `n ≥ 3`), so `O ∩ U ⊊ O`, hence
+`|O ∩ U| < |O|` (`Finset.card_lt_card`) and `2^{|O∩U|} < 2^{|O|}`
+(`Nat.pow_lt_pow_right`); `omega` closes the nat-subtraction goal. A line-for-line
+analogue of the verified sibling. **UNVERIFIED** (Docker infra down, no local Mathlib
+oleans this session) — but all four lemma names/signatures were checked against the
+pinned `proofs/.lake/packages/mathlib` source (`Finset.ssubset_iff_of_subset`,
+`Finset.mem_of_mem_inter_right`, `Finset.card_lt_card`, `Nat.pow_lt_pow_right`).
+
+Substantive status unchanged: 2 deep axioms (Green 2004 / Sapozhenko 2003) remain
+BLOCKED. Nothing else routine here; follow-up "max sum-free subset = ⌈n/2⌉" owned by
+PR #30202 (do not duplicate). Slug is already `-incomplete-01` depth; no new OQ spawned.

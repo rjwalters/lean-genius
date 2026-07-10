@@ -489,6 +489,40 @@ theorem two_family_bound_ge_upperHalf (n : ℕ) :
     Nat.pow_le_pow_right (by norm_num) hsub
   omega
 
+/--
+**The two-family bound STRICTLY dominates the single upper-half bound for `n ≥ 3`.**
+This sharpens `two_family_bound_ge_upperHalf` from `≥` to `>`, formalising the prose
+claim in `two_family_lower_bound` that the inequality "is strict whenever some odd
+number lies in the lower half (`O ⊄ U`, i.e. all `n ≥ 3`)". The witness is `1`: it is
+odd and lies in `[1,n]` (so `1 ∈ O`) but `1 < n/2 + 1` for `n ≥ 3`, so `1 ∉ U`. Hence
+`O ∩ U ⊊ O`, giving `|O ∩ U| < |O|` and therefore `2^{|O∩U|} < 2^{|O|}`; the surplus
+`2^{|O|} − 2^{|O∩U|}` is then strictly positive. So the two dominant sum-free families
+together always count *strictly* more sets than the upper half alone — the structural
+reason the leading constant genuinely combines both families rather than reducing to one.
+-/
+theorem two_family_bound_gt_upperHalf (n : ℕ) (hn : 3 ≤ n) :
+    2 ^ ((Finset.range (n + 1)).filter (fun k => k % 2 = 1)).card
+      + 2 ^ (Finset.Icc (n / 2 + 1) n).card
+      - 2 ^ (((Finset.range (n + 1)).filter (fun k => k % 2 = 1))
+              ∩ Finset.Icc (n / 2 + 1) n).card
+    > 2 ^ (Finset.Icc (n / 2 + 1) n).card := by
+  set O : Finset ℕ := (Finset.range (n + 1)).filter (fun k => k % 2 = 1) with hO
+  set U : Finset ℕ := Finset.Icc (n / 2 + 1) n with hU
+  -- `1 ∈ O` (odd, in `[1,n]`) but `1 ∉ U` (since `n/2 + 1 ≥ 2` for `n ≥ 3`).
+  have h1O : (1 : ℕ) ∈ O := by
+    simp only [hO, Finset.mem_filter, Finset.mem_range]; omega
+  have h1U : (1 : ℕ) ∉ U := by
+    simp only [hU, Finset.mem_Icc]; omega
+  -- Therefore `O ∩ U ⊊ O`, so `|O ∩ U| < |O|`.
+  have hssub : O ∩ U ⊂ O :=
+    (Finset.ssubset_iff_of_subset Finset.inter_subset_left).2
+      ⟨1, h1O, fun h => h1U (Finset.mem_of_mem_inter_right h)⟩
+  have hcard : (O ∩ U).card < O.card := Finset.card_lt_card hssub
+  -- Strictly monotone `2^·` turns the strict cardinality gap into a strict power gap.
+  have hpow : 2 ^ (O ∩ U).card < 2 ^ O.card :=
+    Nat.pow_lt_pow_right (by norm_num) hcard
+  omega
+
 /-
 ## Part VII: Structure of Sum-Free Sets
 -/

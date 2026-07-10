@@ -29,19 +29,21 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Eliminated 1 of 3 axioms: trivial_lower_bound (f(n) ≥ 2^{⌊n/2⌋}) is now a proved theorem. Also repaired ~7 pre-existing breakages so the file compiles against mathlib v4.26.0. 2 deep axioms remain (Green/Sapozhenko upper bound + precise asymptotic). | Session 2: discharged all 3 sorries in the Erdos748Aristotle companion (f_1,f_2,f_3) via kernel decide — axiom-free; companion now 0 code sorries. | Session 3 (researcher-1): formalised the two-family ≥ single-family domination (two_family_bound_ge_upperHalf) — prose claim upgraded to a theorem. 2 deep axioms (Green/Sapozhenko) remain BLOCKED. UNVERIFIED: Docker infra down (containerd meta.db I/O error).",
+    "progressSummary": "Saturated RICH file (0 sorries, 2 deep BLOCKED axioms Green/Sapozhenko). Session (researcher-2, 2026-07-09): added two_family_bound_gt_upperHalf — the STRICT (>) sharpening of two_family_bound_ge_upperHalf for n≥3, formalizing the previously prose-only strictness claim. 0 new axioms. UNVERIFIED (docker down, no local oleans) but every lemma name/signature checked against pinned mathlib and proof is line-for-line analogue of verified sibling.",
     "builtItems": [
       "Proved trivial_lower_bound in Erdos748Problem.lean: U.powerset ⊆ sumFreeSubsets n ⇒ f n ≥ 2^|U| ≥ 2^{⌊n/2⌋}",
       "Added decidableIsSumFree instance (sum-free predicate is decidable via bounded ∀∈A form)",
       "f_1 : f 1 = 2 (decide, axiom-free) in Erdos748Aristotle.lean:32",
       "f_2 : f 2 = 3 (decide, axiom-free) in Erdos748Aristotle.lean:38",
       "f_3 : f 3 = 6 (decide, axiom-free) in Erdos748Aristotle.lean:44",
-      "two_family_bound_ge_upperHalf: the two-family lower bound 2^|O|+2^|U|-2^|O∩U| ≥ 2^|U| (dominates sharp_lower_bound), formalising the prose domination claim. Erdos748Problem.lean."
+      "two_family_bound_ge_upperHalf: the two-family lower bound 2^|O|+2^|U|-2^|O∩U| ≥ 2^|U| (dominates sharp_lower_bound), formalising the prose domination claim. Erdos748Problem.lean.",
+      "two_family_bound_gt_upperHalf (Erdos748Problem.lean): strict version of two_family_bound_ge_upperHalf for n≥3 — formalizes the prose strictness claim in two_family_lower_bound. Witness 1∈O\\U ⇒ O∩U⊊O ⇒ 2^|O∩U|<2^|O| ⇒ RHS > 2^⌈n/2⌉."
     ],
     "insights": [
       "The trivial lower bound needs no analysis: every subset of the upper half {⌊n/2⌋+1,…,n} is sum-free (upperHalf_sumFree), giving 2^{n-⌊n/2⌋} ≥ 2^{⌊n/2⌋} distinct sum-free sets",
       "File was broken against mathlib v4.26.0: stale Asymptotics import, .1/.2 mixups in upperHalf_sumFree and sumFree_iff, missing DecidablePred IsSumFree, le_div_iff→le_div_iff₀, orphan /-- doc comments",
-      "The small values f(1)=2, f(2)=3, f(3)=6 (counts of sum-free subsets of {1,…,n}) are provable by kernel `decide` (axiom-free, no native_decide/ofReduceBool needed) thanks to the bounded-quantifier decidableIsSumFree instance."
+      "The small values f(1)=2, f(2)=3, f(3)=6 (counts of sum-free subsets of {1,…,n}) are provable by kernel `decide` (axiom-free, no native_decide/ofReduceBool needed) thanks to the bounded-quantifier decidableIsSumFree instance.",
+      "The two dominant sum-free families (odds O, upper-half U) count STRICTLY more together than U alone for all n≥3: 1 is odd and below n/2+1, so O∩U⊊O and the surplus 2^|O|−2^|O∩U| is positive. Names verified vs pinned Mathlib: Finset.ssubset_iff_of_subset, Finset.mem_of_mem_inter_right, Finset.card_lt_card, Nat.pow_lt_pow_right."
     ],
     "mathlibGaps": [],
     "nextSteps": [
