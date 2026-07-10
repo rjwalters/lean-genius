@@ -129,16 +129,55 @@ the normalized consecutive increment is `(u(l+1) − u(l))/u(l) = 1/l`, which te
 increment *ratio* against the `~`-equivalent `v` still fails to converge.  So even
 `o(R)`-scale agreement of the sequences does not pin down the increment asymptotic —
 the honest increment–ratio bridge, which hypothesizes the consecutive ratio directly,
-is unavoidable.  (The companion statement for `v`, whose oscillating increment is
-`1 − 2(−1)^l` over the diverging `v l = l + (−1)^l`, likewise tends to `0` but requires
-a bounded-numerator-over-divergent-denominator estimate; recorded here as the base
-case.) -/
+is unavoidable.  (The companion statement for `v`, whose oscillating increment
+`1 − 2(−1)^l` over the diverging `v l = l + (−1)^l` likewise vanishes, is proved next as
+`v_normalizedIncrement_tendsto_zero`.) -/
 theorem u_normalizedIncrement_tendsto_zero :
     Tendsto (fun l => (u (l + 1) - u l) / u l) atTop (𝓝 0) := by
   have hEq : (fun l => (u (l + 1) - u l) / u l) = (fun l : ℕ => 1 / (l : ℝ)) := by
     funext l; rw [u_increment]; simp [u]
   rw [hEq]
   exact tendsto_one_div_atTop_nhds_zero_nat
+
+/-- **The perturbed sequence's normalized increment also vanishes.**  For the witness
+`v l = l + (−1)^l` the numerator `v(l+1) − v(l) = 1 − 2(−1)^l` is *bounded* — it lies in
+`{−1, 3}`, so `|v(l+1) − v(l)| ≤ 3` — while the denominator `v l = l + (−1)^l ≥ l − 1`
+diverges.  Hence the normalized increment `(v(l+1) − v(l))/v(l)` is squeezed by `6/l → 0`
+and tends to `0`.
+
+Together with `u_normalizedIncrement_tendsto_zero` this closes the documented picture:
+*both* `~`-equivalent witnesses have vanishing *normalized* increments (each sequence's
+jumps are `o` of itself), yet their increment *ratio* still fails to converge
+(`increment_ratio_not_tendsto_one`).  So even simultaneous `o(R)`-scale regularity of two
+asymptotically equivalent sequences does not force their consecutive increments to agree —
+any correct increment statement for `R(k, ·)` must hypothesize the consecutive ratio (or a
+regularity condition) directly, exactly as the honest increment–ratio bridge does. -/
+theorem v_normalizedIncrement_tendsto_zero :
+    Tendsto (fun l => (v (l + 1) - v l) / v l) atTop (𝓝 0) := by
+  -- Dominating sequence `6/l → 0`.
+  have hg : Tendsto (fun l : ℕ => 6 / (l : ℝ)) atTop (𝓝 0) := by
+    have h := (tendsto_one_div_atTop_nhds_zero_nat).const_mul (6 : ℝ)
+    simpa [mul_one_div] using h
+  refine squeeze_zero_norm' ?_ hg
+  filter_upwards [eventually_ge_atTop 2] with l hl
+  set a : ℝ := (-1 : ℝ) ^ l with ha_def
+  have hl2 : (2 : ℝ) ≤ (l : ℝ) := by exact_mod_cast hl
+  have hlpos : (0 : ℝ) < (l : ℝ) := by linarith
+  -- `|(−1)^l| = 1`, hence `(−1)^l = 1 ∨ (−1)^l = −1`.
+  have habs : |a| = 1 := by rw [ha_def, abs_pow]; simp
+  have hacase : a = 1 ∨ a = -1 := (abs_eq (by norm_num : (0 : ℝ) ≤ 1)).mp habs
+  have hb : (-1 : ℝ) ≤ a := by rcases hacase with h | h <;> rw [h] <;> norm_num
+  -- Numerator bound `|v(l+1) − v l| ≤ 3` (it equals `−1` or `3`).
+  have hnum : |v (l + 1) - v l| ≤ 3 := by
+    rw [v_increment, ← ha_def, abs_le]
+    rcases hacase with h | h <;> rw [h] <;> constructor <;> norm_num
+  -- Denominator `v l = l + (−1)^l ≥ l/2 > 0`.
+  have hvpos : 0 < v l := by simp only [v, ← ha_def]; linarith
+  have hden : (l : ℝ) / 2 ≤ v l := by simp only [v, ← ha_def]; linarith
+  -- Squeeze: `|(v(l+1) − v l)/v l| ≤ 6/l`.
+  simp only [Real.norm_eq_abs, abs_div, abs_of_pos hvpos]
+  rw [div_le_div_iff hvpos hlpos]
+  nlinarith [mul_le_mul_of_nonneg_right hnum hlpos.le, hden, hlpos]
 
 /-- **Increment not determined by the asymptotic class (packaged existential).**
 
