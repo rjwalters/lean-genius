@@ -557,4 +557,83 @@ example : (totalSteps 1 100 : ℚ) / (100 : ℚ)
       + ((Nat.log 2 100 : ℚ) + 2 - (2 : ℚ) ^ (Nat.log 2 100 + 1)) / (100 : ℚ) :=
   avgSteps_one_closed 100 (by norm_num)
 
+-- ═══════════════════════════════════════════════════════════════════
+-- PART X: THE MATCHING TIGHT log₂N + 1 CEILING  (a = 1 row)  ⇒  SANDWICH
+-- ═══════════════════════════════════════════════════════════════════
+--
+-- PART IX pinned the a = 1 average's *floor* at every N to `log₂N − 1`
+-- (`avgSteps_one_gt`), a factor-2 sharpening of `avgSteps_one_ge`'s
+-- `(log₂N − 1)/2`. The only ceiling at every N so far is the loose
+-- `avgSteps_le`, which at a = 1 reads `≤ 2·log₂N + 2` — leading constant 2.
+-- The symmetric, matching *tight* ceiling has leading constant 1:
+--
+--     (totalSteps 1 N) / N ≤ log₂N + 1     at every N ≥ 1.
+--
+-- It is immediate from the exact per-b value: every summand
+-- `binaryGcdSteps 1 b = log₂ b + 1 ≤ log₂ N + 1` (as `b ≤ N ⟹ log₂ b ≤ log₂ N`),
+-- so the total is `≤ N·(log₂N + 1)`. Combined with `avgSteps_one_gt` this
+-- sandwiches the a = 1 average in an additive band of width 2 about `log₂N` at
+-- EVERY N — pinning its leading `log₂N` constant to exactly 1 without needing the
+-- dyadic restriction of `avgSteps_one_pow_two`.
+
+/-- **Total upper bound (a = 1 row), tight leading constant.** For every `N`,
+    `totalSteps 1 N ≤ N · (log₂ N + 1)`. Each summand equals `log₂ b + 1`
+    (`binaryGcdSteps_one_eq_log`) and `log₂ b ≤ log₂ N` since `b ≤ N`, so the
+    `N`-element sum is bounded by `N·(log₂N + 1)`. This is the exact-value
+    counterpart of the worst-case `totalSteps_le`, halving its leading constant on
+    the `a = 1` row. -/
+theorem totalSteps_one_le_nat (N : ℕ) : totalSteps 1 N ≤ N * (Nat.log 2 N + 1) := by
+  unfold totalSteps
+  calc ∑ b ∈ Finset.Icc 1 N, binaryGcdSteps 1 b
+      ≤ ∑ _b ∈ Finset.Icc 1 N, (Nat.log 2 N + 1) := by
+        apply Finset.sum_le_sum
+        intro b hb
+        rw [Finset.mem_Icc] at hb
+        rw [binaryGcdSteps_one_eq_log b hb.1]
+        have hbN : Nat.log 2 b ≤ Nat.log 2 N := Nat.log_mono_right hb.2
+        omega
+    _ = N * (Nat.log 2 N + 1) := by
+        rw [Finset.sum_const, Nat.card_Icc]
+        simp
+
+/-- **Tight `log₂N + 1` ceiling for the `a = 1` average (every `N`).** For every
+    `N ≥ 1`,
+
+      (totalSteps 1 N) / N ≤ log₂ N + 1.
+
+    This is the matching upper bound to `avgSteps_one_gt`'s `log₂N − 1` floor:
+    it has leading constant `1` on `log₂N` (versus the loose `2` of `avgSteps_le`),
+    obtained directly from `totalSteps_one_le_nat`. -/
+theorem avgSteps_one_le (N : ℕ) (hN : 1 ≤ N) :
+    (totalSteps 1 N : ℚ) / (N : ℚ) ≤ (Nat.log 2 N : ℚ) + 1 := by
+  have hNQ : (0 : ℚ) < (N : ℚ) := by exact_mod_cast hN
+  rw [div_le_iff₀ hNQ]
+  have h : (totalSteps 1 N : ℚ) ≤ ((N * (Nat.log 2 N + 1) : ℕ) : ℚ) := by
+    exact_mod_cast totalSteps_one_le_nat N
+  calc (totalSteps 1 N : ℚ)
+      ≤ ((N * (Nat.log 2 N + 1) : ℕ) : ℚ) := h
+    _ = ((Nat.log 2 N : ℚ) + 1) * (N : ℚ) := by push_cast; ring
+
+/-- **Two-sided `Θ(log N)` sandwich for the `a = 1` average (every `N`).** For
+    every `N ≥ 1`,
+
+      log₂ N − 1  <  (totalSteps 1 N) / N  ≤  log₂ N + 1.
+
+    The average step count on the `a = 1` row sits in an additive band of width `2`
+    about `log₂ N` at *every* `N` (not merely the dyadic subsequence of
+    `avgSteps_one_pow_two`), so its leading constant on `log₂N` is pinned to exactly
+    `1`. This is the elementary, fully-verified analogue of Brent's average-case
+    order; the sharp `0.7050` constant (for the harder `max(a,b)` model) remains out
+    of reach (see file header). Combines `avgSteps_one_gt` and `avgSteps_one_le`. -/
+theorem avgSteps_one_sandwich (N : ℕ) (hN : 1 ≤ N) :
+    (Nat.log 2 N : ℚ) - 1 < (totalSteps 1 N : ℚ) / (N : ℚ) ∧
+    (totalSteps 1 N : ℚ) / (N : ℚ) ≤ (Nat.log 2 N : ℚ) + 1 :=
+  ⟨avgSteps_one_gt N hN, avgSteps_one_le N hN⟩
+
+-- Concrete check of the sandwich (a = 1, N = 100): n = 6, avg = 29/5 = 5.8,
+--   and log₂100 − 1 = 5 < 5.8 ≤ 7 = log₂100 + 1.
+example : (Nat.log 2 100 : ℚ) - 1 < (totalSteps 1 100 : ℚ) / (100 : ℚ) ∧
+    (totalSteps 1 100 : ℚ) / (100 : ℚ) ≤ (Nat.log 2 100 : ℚ) + 1 :=
+  avgSteps_one_sandwich 100 (by norm_num)
+
 end BinaryGcdOQ01OQ04OQ03
