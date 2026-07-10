@@ -70,10 +70,10 @@
       "S(2)=2 and S(3)=8 exact, giving the first exact averages B(2)=1 and B(3)=8/3. B(2)=1 attains the parity floor k-1=1 (the general bound is tight); B(3)=8/3 > 2 is the first place the mod-3 obstruction — the same one that makes A(3)=6 — forces the average strictly above the floor. The S(3) >= 8 lower bound combines the A(3) fact sup >= 6 (admissible_three_sup_ge) with admissible_sum_ge on the erased admissible 2-set: 6+2=8 (Proofs/Erdos1204B.lean)"
     ],
     "axiomCount": 0,
-    "lineCount": 502,
+    "lineCount": 561,
     "assumptions": "0 axiom declarations and 0 sorries; every stated lemma is fully proved. Proofs use only kernel `decide` (no `native_decide`) and `Nat.sInf`; #print axioms (incl. admissible_same_parity, admissible_diam_ge, two_mul_sub_one_le_A) shows only propext/Classical.choice/Quot.sound — no Lean.ofReduceBool, no sorryAx. Status is 'axiomatized' because the headline asymptotic questions of Problem #1204 — whether A(k) ∼ k log k and the estimate for B(k) — remain OPEN and are documented but not formalized as theorems. Formalized here: the admissibility framework, the reduction to small primes, existence/well-definedness of A(k), the parity-sharpened two-sided bounds 2(k-1) ≤ A(k) ≤ (k-1)·primorial (doubling the trivial k-1 lower bound for all k), and the exact values A(0)=A(1)=0, A(2)=2, A(3)=6, A(4)=8, A(5)=12, A(6)=16, A(7)=20 (the last four in companion files Erdos1204A4.lean, Erdos1204A5.lean, Erdos1204A6.lean and Erdos1204A7.lean, each verified and axiom-free; A(6)=16 is the first exact value whose lower bound needs three primes 2,3,5, and A(7)=20 shows the prime 7 is not yet binding — two forced 7-sets per parity are all killed at p=5). The companion Erdos1204B.lean (B(k) theory: S/B definitions, the bound k(k-1) <= S(k), and exact S(2)=2/S(3)=8, B(2)=1/B(3)=8/3) is likewise 0 axioms / 0 sorries, kernel decide only (no native_decide), depending only on propext/Classical.choice/Quot.sound.",
-    "theoremCount": 29,
-    "definitionCount": 2,
+    "theoremCount": 30,
+    "definitionCount": 3,
     "summary": " A companion file (Erdos1204B.lean) now also introduces the SECOND extremal quantity B(k)=min(a1+...+ak)/k (the minimal average, carried by the minimal sum S(k)), previously untouched: it is defined as an attained infimum, satisfies the parity lower bound B(k) >= k-1 (average analogue of A(k) >= 2(k-1)), with first exact values B(2)=1 (tight) and B(3)=8/3 (mod-3 forces the average above the floor). The asymptotics of B(k) remain OPEN."
   },
   "overview": {
@@ -156,17 +156,25 @@
       "id": "a-three",
       "title": "The Exact Value A(3) = 6",
       "startLine": 351,
-      "endLine": 464,
+      "endLine": 486,
       "mathContext": "$A(3)=6 = H(3)$, the Hardy–Littlewood minimal diameter; witness $\\{0,2,6\\}$, with $\\{0,2,4\\},\\{1,3,5\\}$ ruled out mod $3$.",
       "summary": "A(3)=6 matches the Hardy–Littlewood minimal diameter H(3). Upper bound: {0,2,6} is admissible (all even mod 2, residues {0,2,0} mod 3 miss class 1). Lower bound (admissible_three_sup_ge): any admissible 3-set with max ≤ 5 must be single-parity, pinning it to {0,2,4} or {1,3,5} — both of which cover every class mod 3 and so fail admissibility, so no admissible 3-set fits below 6."
     },
     {
       "id": "open-problems",
       "title": "Open Problems",
-      "startLine": 466,
-      "endLine": 478,
+      "startLine": 488,
+      "endLine": 500,
       "mathContext": "Open: $A(k)\\sim k\\log k$? and the order of $B(k)=\\min(a_1+\\cdots+a_k)/k$.",
       "summary": "The asymptotic questions of #1204 remain open and are documented but not asserted: whether A(k) ∼ k log k and the correct order of the minimal average B(k). Both need sieve-theoretic analytic number theory beyond the elementary framework formalized here."
+    },
+    {
+      "id": "upper-bound",
+      "title": "An Explicit Upper Bound A(k) ≤ (k−1)·∏_{p ≤ k} p",
+      "startLine": 502,
+      "endLine": 561,
+      "mathContext": "$2(k-1) \\le A(k) \\le (k-1)\\cdot\\!\\!\\prod_{p \\le k}\\! p$; the primorial spacing $N=\\prod_{p\\le k}p$ gives the admissible set $\\{0,N,\\dots,(k-1)N\\}$.",
+      "summary": "primorialUpTo k = ∏_{p ≤ k} p (product of primes ≤ k) and A_le_primorial: A(k) ≤ (k−1)·primorialUpTo k. The arithmetic progression {0, N, …, (k−1)N} with N = primorialUpTo k is admissible (every element ≡ 0 mod each prime p ≤ k, so class 1 is missed), has k elements, and largest element (k−1)N; feeding it to A_le gives the bound. Together with two_mul_sub_one_le_A this sandwiches A(k) between 2(k−1) and (k−1)·∏_{p≤k}p — an elementary two-sided companion far from the conjectured A(k) ∼ k log k, since N grows like e^{(1+o(1))k}."
     }
   ],
   "conclusion": {
@@ -215,10 +223,10 @@
       "Finset"
     ],
     "namespace": "Erdos1204",
-    "lineCount": 502,
+    "lineCount": 561,
     "axiomCount": 0,
-    "theoremCount": 29,
-    "definitionCount": 2,
+    "theoremCount": 30,
+    "definitionCount": 3,
     "path": "Proofs/Erdos1204Problem.lean",
     "sorries": 0
   },
