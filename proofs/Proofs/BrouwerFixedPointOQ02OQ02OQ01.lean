@@ -320,4 +320,44 @@ theorem aposteriori_estimate_unconditional (f : ℝ → ℝ) (L : ℝ) (hL0 : 0 
   obtain ⟨xstar, hfp⟩ := exists_fixed_point f L hL0 hL1 hf
   exact ⟨xstar, hfp, fun n => aposteriori_estimate f L hL0 hL1 hf x hx xstar hfp n⟩
 
+/-! ### Convergence of the iteration (the qualitative limit behind the estimates)
+
+The a priori/a posteriori theorems above are *quantitative* error bounds; the
+underlying *qualitative* fact is that the iterates actually converge to the fixed
+point, `xₙ → x*`.  It is an immediate consequence of the geometric decay
+`iterate_dist` (`|xₙ − x*| ≤ Lⁿ·|x₀ − x*|`) together with `Lⁿ → 0` for `0 ≤ L < 1`,
+sandwiched to `0`.  This completes the Banach picture: existence + uniqueness of `x*`
+(`exists_unique_fixed_point`), the two computable error estimates, and now the
+convergence they estimate the *rate* of. -/
+
+/-- **Convergence of the iteration.**  For a contraction `f` on `ℝ` with fixed point
+    `x*` and iteration `xₙ₊₁ = f xₙ`, the iterates converge to `x*`:
+    `xₙ → x*` as `n → ∞`.  Proved by squeezing the error `|xₙ − x*|` between `0` and
+    the geometric bound `Lⁿ·|x₀ − x*| → 0` (`iterate_dist` +
+    `tendsto_pow_atTop_nhds_zero_of_lt_one`). -/
+theorem iterate_tendsto (f : ℝ → ℝ) (L : ℝ) (hL0 : 0 ≤ L) (hL1 : L < 1)
+    (hf : ∀ x y, |f x - f y| ≤ L * |x - y|)
+    (x : ℕ → ℝ) (hx : ∀ n, x (n + 1) = f (x n))
+    (xstar : ℝ) (hfp : f xstar = xstar) :
+    Filter.Tendsto x Filter.atTop (nhds xstar) := by
+  rw [tendsto_iff_dist_tendsto_zero]
+  have hbound : ∀ n, dist (x n) xstar ≤ L ^ n * |x 0 - xstar| := by
+    intro n
+    rw [Real.dist_eq]
+    exact iterate_dist f L hL0 hf x hx xstar hfp n
+  have hg : Filter.Tendsto (fun n : ℕ => L ^ n * |x 0 - xstar|) Filter.atTop (nhds 0) := by
+    have h0 := tendsto_pow_atTop_nhds_zero_of_lt_one hL0 hL1
+    simpa using h0.mul_const |x 0 - xstar|
+  exact squeeze_zero (fun _ => dist_nonneg) hbound hg
+
+/-- **Unconditional convergence.**  A contraction on `ℝ` has a fixed point `x*` to which
+    every iteration sequence `xₙ₊₁ = f xₙ` converges — the hypothesis-free form of
+    `iterate_tendsto`, threading `exists_fixed_point` for the existence of `x*`. -/
+theorem exists_iterate_tendsto (f : ℝ → ℝ) (L : ℝ) (hL0 : 0 ≤ L) (hL1 : L < 1)
+    (hf : ∀ x y, |f x - f y| ≤ L * |x - y|)
+    (x : ℕ → ℝ) (hx : ∀ n, x (n + 1) = f (x n)) :
+    ∃ xstar : ℝ, f xstar = xstar ∧ Filter.Tendsto x Filter.atTop (nhds xstar) := by
+  obtain ⟨xstar, hfp⟩ := exists_fixed_point f L hL0 hL1 hf
+  exact ⟨xstar, hfp, iterate_tendsto f L hL0 hL1 hf x hx xstar hfp⟩
+
 end BrouwerOQ02OQ02OQ01
