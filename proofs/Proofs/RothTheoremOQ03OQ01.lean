@@ -614,4 +614,37 @@ theorem kAPCount_nondeg_mono {N : ℕ} [NeZero N] {k : ℕ} {A B : Finset (ZMod 
   rw [Finset.mem_filter] at hp ⊢
   exact ⟨hp.1, ⟨fun i => hAB (hp.2.1 i), hp.2.2⟩⟩
 
+/-- **Lower bound on the `k`-AP count.**  The diagonal `d = 0` already contributes exactly
+    `#A` constant progressions (`kAPCount_count_split`), so the total number of length-`k`
+    progressions inside `A` is at least `#A`.  This is the missing lower companion to the
+    trivial upper bound `kAPCount_count_le`. -/
+theorem kAPCount_count_ge {N : ℕ} [NeZero N] {k : ℕ} (hk : 0 < k)
+    (A : Finset (ZMod N)) :
+    A.card ≤ (Finset.univ.filter (fun p : ZMod N × ZMod N =>
+        ∀ i : Fin k, p.1 + i.val • p.2 ∈ A)).card := by
+  rw [kAPCount_count_split hk]
+  exact Nat.le_add_right _ _
+
+/-- **Two-sided bracket on the `k`-AP count.**  Combining the diagonal lower bound
+    `kAPCount_count_ge` with the trivial upper bound `kAPCount_count_le` pins the count between
+    the diagonal contribution and `#A` starting points times the `N` available differences:
+
+        #A ≤ #{(x,d) : ∀ i, x + i·d ∈ A} ≤ #A · N. -/
+theorem kAPCount_count_bracket {N : ℕ} [NeZero N] {k : ℕ} (hk : 0 < k)
+    (A : Finset (ZMod N)) :
+    A.card ≤ (Finset.univ.filter (fun p : ZMod N × ZMod N =>
+        ∀ i : Fin k, p.1 + i.val • p.2 ∈ A)).card ∧
+      (Finset.univ.filter (fun p : ZMod N × ZMod N =>
+        ∀ i : Fin k, p.1 + i.val • p.2 ∈ A)).card ≤ A.card * N :=
+  ⟨kAPCount_count_ge hk A, kAPCount_count_le hk A⟩
+
+/-- **Positivity of the `k`-AP count for nonempty `A`.**  A nonempty set contains at least one
+    constant (diagonal) progression, so its `k`-AP count is strictly positive — immediate from
+    `kAPCount_count_ge` and `Finset.card_pos`. -/
+theorem kAPCount_count_pos {N : ℕ} [NeZero N] {k : ℕ} (hk : 0 < k)
+    {A : Finset (ZMod N)} (hA : A.Nonempty) :
+    0 < (Finset.univ.filter (fun p : ZMod N × ZMod N =>
+        ∀ i : Fin k, p.1 + i.val • p.2 ∈ A)).card :=
+  lt_of_lt_of_le (Finset.card_pos.mpr hA) (kAPCount_count_ge hk A)
+
 end RothTheoremOQ03OQ01
