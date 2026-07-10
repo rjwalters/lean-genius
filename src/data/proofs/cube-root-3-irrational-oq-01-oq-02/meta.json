@@ -117,6 +117,29 @@
       "description": "That entry proves the three real numbers 1, ∛3, ∛3² are ℚ-linearly independent; this entry upgrades them to a full basis with spanning and explicit coordinates."
     }
   ],
+  "references": [
+    {
+      "title": "Abstract Algebra",
+      "author": "David S. Dummit and Richard M. Foote",
+      "year": "2004",
+      "venue": "Wiley (3rd edition)",
+      "description": "Chapter 13 develops simple algebraic extensions ℚ(α): if α has minimal polynomial of degree n then {1, α, …, αⁿ⁻¹} is a ℚ-basis, and Eisenstein's criterion (§9.4) gives the irreducibility of X³−3 that fixes n = 3 — exactly the power basis {1, ∛3, ∛9} exhibited here."
+    },
+    {
+      "title": "Algebra",
+      "author": "Serge Lang",
+      "year": "2002",
+      "venue": "Springer (Graduate Texts in Mathematics 211, revised 3rd edition)",
+      "description": "Chapter V treats the structure of algebraic extensions and the power basis {1, α, …, αⁿ⁻¹} of a simple extension K(α), the abstract statement Mathlib's IntermediateField.adjoin.powerBasis realizes and this entry reindexes to an honest Basis (Fin 3)."
+    },
+    {
+      "title": "Galois Theory",
+      "author": "Ian Stewart",
+      "year": "2015",
+      "venue": "CRC Press (4th edition)",
+      "description": "A concrete undergraduate development of degree, minimal polynomials, and bases of number-field extensions such as ℚ(∛3), including the Eisenstein irreducibility of X³−3 and the resulting representation of every element as a·1 + b·∛3 + c·∛9."
+    }
+  ],
   "conclusion": {
     "summary": "{1, ∛3, ∛9} is exhibited as a genuine ℚ-basis of ℚ(∛3): a PowerBasis ℚ ℚ⟮∛3⟯ of dimension 3, reindexed to a Basis (Fin 3) whose vectors are the real numbers 1, ∛3, ∛9, with a representation theorem giving unique coordinates. 12 theorems, 4 definitions, 0 sorries, 0 axioms.",
     "implications": "**A basis, not just independence.** The deliverable is the coordinate system on ℚ(∛3): every element is uniquely a + b·∛3 + c·∛9 with rational a, b, c. This is the structural certificate the parent's open question asked for, strictly stronger than the linear independence of {1, ∛3, ∛3²} alone (which needs spanning to become a basis).\n\n**Power basis as the natural object.** Displaying the basis as 1, α, α² (with α² = ∛9) ties the entry to Mathlib's PowerBasis machinery, making the coordinates computable and connecting to the minimal polynomial X³−3.\n\n**Robustness under Mathlib drift.** By re-deriving the degree from the parametric helper CubeRoot2IrrationalOQ03, the entry stays green even though the sibling CubeRoot3IrrationalOQ02OQ01 no longer compiles against the pinned Mathlib — a small case study in keeping gallery entries self-contained.",
