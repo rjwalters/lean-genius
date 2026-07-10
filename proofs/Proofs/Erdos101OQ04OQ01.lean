@@ -109,4 +109,32 @@ theorem realParabolaSet_threePointLineCount_zero (p : ℕ) [NeZero p]
     kPointLineCount (realParabolaSet p hp) 3 = 0 :=
   realParabolaSet_kPointLineCount_zero p hp (le_refl 3)
 
+/-- **Universal counting upper bound.** A `k`-point line is in particular a
+`k`-element subset of the `n = |P|` points, so there are at most `C(n, k)` of them:
+`kPointLineCount P k ≤ (|P|).choose k`. This is the general-position-free companion of
+the `= 0` lower results above — the collinearity constraint can only *cut down* the
+raw subset count `C(n, k)`, never exceed it. -/
+theorem kPointLineCount_le_choose (P : PlanarPointSet) (k : ℕ) :
+    kPointLineCount P k ≤ P.points.card.choose k := by
+  rw [kPointLineCount, ← Finset.card_powersetCard k P.points]
+  apply Finset.card_le_card
+  intro S hS
+  simp only [Finset.mem_filter, Finset.mem_powerset] at hS
+  rw [Finset.mem_powersetCard]
+  exact ⟨hS.1, hS.2.1⟩
+
+/-- **Vacuity below the point count.** A set with fewer than `k` points cannot carry
+any `k`-point line: `|P| < k ⟹ kPointLineCount P k = 0`. Any witnessing subset `S`
+satisfies `k = |S| ≤ |P| < k`, a contradiction. Together with
+`kPointLineCount_le_choose` this bookends the count: it vanishes past `|P|` and never
+exceeds `C(|P|, k)`. -/
+theorem kPointLineCount_eq_zero_of_card_lt (P : PlanarPointSet) {k : ℕ}
+    (hk : P.points.card < k) : kPointLineCount P k = 0 := by
+  rw [kPointLineCount, Finset.card_eq_zero, Finset.filter_eq_empty_iff]
+  intro S hS
+  simp only [Finset.mem_powerset] at hS
+  rintro ⟨hScard, -⟩
+  have hle := Finset.card_le_card hS
+  omega
+
 end Erdos101OQ04OQ01
