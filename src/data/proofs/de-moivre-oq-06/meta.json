@@ -54,9 +54,9 @@
     "dateAdded": "2026-07-01",
     "mathlib_version": "4.26.0",
     "axiomCount": 0,
-    "lineCount": 142,
+    "lineCount": 181,
     "assumptions": "0 axioms, 0 sorries. Mathlib supplies the raw geometric series (geom_sum_eq), the exponential power law (Complex.exp_nat_mul), and the angle-addition formulas; the finite closed forms for ∑ e^{ikθ}, ∑ cos(kθ), ∑ sin(kθ) and the telescoping product-to-sum steps are supplied here. The real identities require sin(θ/2) ≠ 0 (θ not an integer multiple of 2π); the complex identity requires e^{iθ} ≠ 1.",
-    "theoremCount": 7,
+    "theoremCount": 9,
     "definitionCount": 0
   },
   "overview": {
@@ -154,9 +154,9 @@
       "Finset"
     ],
     "namespace": "DeMoivreOQ06",
-    "lineCount": 142,
+    "lineCount": 181,
     "axiomCount": 0,
-    "theoremCount": 7,
+    "theoremCount": 9,
     "definitionCount": 0,
     "path": "Proofs/DeMoivreOQ06.lean",
     "sorries": 0
