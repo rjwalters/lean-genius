@@ -283,6 +283,31 @@ theorem limit_in_sandwich :
     rw [abs_lt] at hN₀_bound
     linarith
 
+/-- **Accumulation point (unconditional Bolzano–Weierstrass).**  `limit_in_sandwich`
+only says *if* the limit exists it lies in `[c, C]`.  This is the unconditional companion:
+without assuming the limit exists, the bounded ratio sequence still has at least one
+subsequential limit `L`, and every such `L` lies in the sandwich interval `[c, C]` (in
+particular `0 < c ≤ L`).  So the limit question posed by `LimitExists'` is *non-vacuous* —
+accumulation points always exist and are pinned to `[c, C]`; the open question is precisely
+whether they all coincide.  The subsequence is indexed by the shift `N = φ k + 2`, which
+makes the hypothesis `2 ≤ N` automatic (`Nat.le_add_left`). -/
+theorem productRatio_accumulation :
+    ∃ (c C L : ℝ), 0 < c ∧ c ≤ C ∧ c ≤ L ∧ L ≤ C ∧
+      ∃ φ : ℕ → ℕ, StrictMono φ ∧
+        Tendsto (fun k => productRatio' (φ k + 2) (Nat.le_add_left 2 (φ k)))
+          atTop (nhds L) := by
+  obtain ⟨c, C, hc, _hC, hcC, hbound⟩ := productRatio_sandwich
+  -- The shifted sequence `n ↦ productRatio'(n+2)` lands in the compact interval `[c, C]`.
+  have hmem : ∀ n : ℕ,
+      (fun m => productRatio' (m + 2) (Nat.le_add_left 2 m)) n ∈ Set.Icc c C := by
+    intro n
+    have h := hbound (n + 2) (Nat.le_add_left 2 n)
+    exact ⟨h.1, h.2⟩
+  -- Bolzano–Weierstrass: a bounded real sequence has a convergent subsequence.
+  obtain ⟨L, hLmem, φ, hφ, htend⟩ := isCompact_Icc.tendsto_subseq hmem
+  refine ⟨c, C, L, hc, hcC, hLmem.1, hLmem.2, φ, hφ, ?_⟩
+  simpa [Function.comp] using htend
+
 -- ============================================================================
 -- § 6. Structural Analysis
 -- ============================================================================
@@ -337,6 +362,7 @@ theorem productRatio_sandwich :
 #check @productRatio_bounded_above
 #check @productRatio_bounded_below
 #check @limit_in_sandwich
+#check @productRatio_accumulation
 #check @productRatio_nonneg
 #check @card_le_of_subset_upto
 #check @maxProd_le_sq
