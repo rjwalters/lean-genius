@@ -86,9 +86,8 @@ theorem det_embedOne {n : ℕ} (M : Matrix (Fin n) (Fin n) ℤ) :
     intro i; simp
   simp only [hrest, Finset.sum_const_zero, add_zero]
   simp only [Fin.val_zero, pow_zero, embedOne_zero_zero, one_mul, Fin.succAbove_zero]
-  congr 1
-  ext i j
-  simp [embedOne]
+  -- the surviving minor `(embedOne M).submatrix succ succ` is definitionally `M`
+  rfl
 
 /-- The action of `diag(1, M)` fixes the head coordinate and applies `M` to the tail. -/
 theorem embedOne_mulVec {n : ℕ} (M : Matrix (Fin n) (Fin n) ℤ) (a : ℤ) (w : Fin n → ℤ) :
@@ -128,6 +127,8 @@ def headBlock3 (N : Matrix (Fin 2) (Fin 2) ℤ) : Matrix (Fin 3) (Fin 3) ℤ :=
 theorem det_headBlock3 (N : Matrix (Fin 2) (Fin 2) ℤ) :
     (headBlock3 N).det = N.det := by
   rw [headBlock3, Matrix.det_fin_three, Matrix.det_fin_two]
+  simp only [Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero, Matrix.cons_val_one,
+    Matrix.head_cons, Matrix.head_fin_const, Matrix.cons_val_fin_one, Matrix.empty_val']
   ring
 
 theorem headBlock3_mulVec (N : Matrix (Fin 2) (Fin 2) ℤ) (x y z : ℤ) :
