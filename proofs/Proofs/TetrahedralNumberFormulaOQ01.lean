@@ -363,6 +363,22 @@ theorem simplexNumber_three_dim (n : ℕ) :
       Finset.prod_range_zero]
   ring
 
+/-- **Pentatope numbers (`d = 4`, division-free).**  The four-dimensional simplex
+number is the pentatope (4-simplex) number, the next figurate after the tetrahedral:
+
+`24 · P_4(n) = (n+1)(n+2)(n+3)(n+4)`,  i.e.  `C(n+4, 4) = (n+1)(n+2)(n+3)(n+4)/24`.
+
+The `d = 4` specialisation of `factorial_mul_simplexNumber_prod`, extending the explicit
+figurate-formula family `simplexNumber_one_dim` / `_two_dim` / `_three_dim` one dimension
+further with the denominator cleared. -/
+theorem simplexNumber_four_dim (n : ℕ) :
+    24 * simplexNumber 4 n = (n + 1) * (n + 2) * (n + 3) * (n + 4) := by
+  have h := factorial_mul_simplexNumber_prod 4 n
+  rw [show (4 : ℕ)! = 24 from rfl] at h
+  rw [h, Finset.prod_range_succ, Finset.prod_range_succ, Finset.prod_range_succ,
+      Finset.prod_range_succ, Finset.prod_range_zero]
+  ring
+
 /-- Bridge to the parent `TetrahedralNumberFormula`. The `d = 2` instance of the
 general hockey stick sums the triangular numbers `C(k+2, 2)` to the tetrahedral
 number `C(n+3, 3)`, matching the parent's `∑ T_k = C(n+2, 3)` up to the standard
