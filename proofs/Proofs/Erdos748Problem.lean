@@ -566,6 +566,34 @@ Green's proof shows type 1 and 2 dominate the count.
 Sum-free sets are related to Schur numbers.
 The maximum size of a sum-free subset of [1,n] is ⌈n/2⌉.
 -/
+
+/--
+**Achievability of the maximum sum-free size `⌈n/2⌉`.**
+There is a sum-free subset of `{1,…,n}` of cardinality exactly `⌈n/2⌉ = (n+1)/2`,
+namely the upper half `U = {⌊n/2⌋+1, …, n}`: it is sum-free by
+`upperHalf_sumFree`, and `Nat.card_Icc` computes `|U| = n − ⌊n/2⌋ = ⌈n/2⌉`.
+
+This formalises the *achievable* direction of the Part VII prose claim that "the
+maximum size of a sum-free subset of `[1,n]` is `⌈n/2⌉`": the extremal size is
+attained. (The matching upper bound — that no sum-free subset can exceed
+`⌈n/2⌉` — is the classical hard direction and is left to the informal discussion.)
+It also witnesses that the exponent in `sharp_lower_bound` comes from a single
+genuine sum-free set of that size, not merely a counting artefact. -/
+theorem exists_sumFree_card_ceil (n : ℕ) :
+    ∃ A ∈ sumFreeSubsets n, A.card = (n + 1) / 2 := by
+  set U : Finset ℕ := Finset.Icc (n / 2 + 1) n with hU
+  refine ⟨U, ?_, ?_⟩
+  · -- `U` is a sum-free subset of `{1,…,n}`.
+    rw [sumFreeSubsets, Finset.mem_filter, Finset.mem_powerset]
+    refine ⟨?_, ?_⟩
+    · rw [hU]; exact Finset.Icc_subset_Icc (by omega) (le_refl n)
+    · apply upperHalf_sumFree n U
+      intro a ha
+      rw [hU, Finset.mem_Icc] at ha
+      exact ha
+  · -- `|U| = n − ⌊n/2⌋ = ⌈n/2⌉ = (n+1)/2`.
+    rw [hU, Nat.card_Icc]; omega
+
 /-
 ## Part VIII: OEIS A007865
 -/
