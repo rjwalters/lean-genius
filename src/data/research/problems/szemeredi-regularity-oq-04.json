@@ -62,7 +62,8 @@
       "edgeDensity_prod_family_split (SzemerediRegularityOQ04Product.lean): general product law of total density |A||B|d(A,B)=ΣΣ|Aᵢ||Bⱼ|d(Aᵢ,Bⱼ) for arbitrary disjoint families {Aᵢ}_I,{Bⱼ}_J",
       "prod_family_total_weight (SzemerediRegularityOQ04Product.lean): ΣΣ|Aᵢ||Bⱼ|=|A||B| via Finset.card_biUnion + Finset.sum_mul_sum",
       "pairEnergy_prod_family_refinement_gain (SzemerediRegularityOQ04Product.lean): the full m×k product-refinement energy increment — pairEnergy A B + (|A_{i₀}||B_{j₀}|/n²)d² ≤ ΣΣ pairEnergy Aᵢ Bⱼ from a single deviating witness cell; VERIFIED 0/0, generalizes the 2×2 pairEnergy_prod_refinement_gain",
-      "afks_regular_step_within_bound (Assembly) -- TERMINATION capstone: contrapositive of the sharp iteration-count bound; for horizon N > n^2/(eps^4 m^2), some step n<N is NOT a mass-m epsilon-irregular sharp 2x2 split (a regular step is reached in O(n^2/(eps^4 m^2)) steps). Reuses the verified afks_sharp_energy_iteration_count_of_prod_witness."
+      "afks_regular_step_within_bound (Assembly) -- TERMINATION capstone: contrapositive of the sharp iteration-count bound; for horizon N > n^2/(eps^4 m^2), some step n<N is NOT a mass-m epsilon-irregular sharp 2x2 split (a regular step is reached in O(n^2/(eps^4 m^2)) steps). Reuses the verified afks_sharp_energy_iteration_count_of_prod_witness.",
+      "SzemerediRegularityOQ04.lean Part III (researcher-2, VERIFIED green [7745/7745]): energy_regular_step_exists + partitionEnergy_regular_step_exists — finite-horizon 'a regular (non-increment) step is reached within N>1/δ' existence bounds. 0 axioms/sorries. Builds green (self-contained, avoids Bridge SIGBUS)."
     ],
     "insights": [
       "partitionEnergy IS the standard size-weighted energy |Pi||Pj|/n^2 d^2 (SzemerediCore:63), NOT 1/k^2. The abandoned energy_increment_step note in SzemerediRegularity (lines 212-219) rests on a false premise; refinement monotonicity is genuine and now proven per-pair.",
@@ -86,7 +87,8 @@
       "The deployer's file-level dedup (PR #36107 closed as superseded) discarded a UNIQUE already-VERIFIED theorem (afks_sharp_energy_iteration_count) because the winning competing PR added the same Assembly file WITHOUT that theorem — file-basename dedup is lossy when two branches touch one file with different content. Recovered + extended it.",
       "The sharp iteration count is a thin one_div_div wrapper over the generic δ engine; the genuine new content is the witness-driven certificate that packages partitionEnergy_prod_gain_eps4 into hstep, closing per-step-witness → sharp count N≤n²/(ε⁴m²) with the freshness the only remaining hypothesis.",
       "The 2×2 product-refinement increment generalizes verbatim to an arbitrary m×k product of disjoint families: weighted_second_moment_atom_gain already handles arbitrary finite index, so only the general law of total density (mean identity) and total-weight identity are needed as new inputs. Both are Finset.induction/card_biUnion routine over the existing 2-way one-sided laws.",
-      "General law of total density is obtained compositionally: one A-side biUnion induction (edgeDensity_biUnion_mul) times one B-side biUnion induction (edgeDensity_mul_biUnion), avoiding any direct product-partition biUnion decomposition."
+      "General law of total density is obtained compositionally: one A-side biUnion induction (edgeDensity_biUnion_mul) times one B-side biUnion induction (edgeDensity_mul_biUnion), avoiding any direct product-partition biUnion decomposition.",
+      "VERIFIED (researcher-2, 2026-07-09, GREEN build [7745/7745]): the finite-horizon EXISTENCE counterpart of the energy-iteration engine, added to the self-contained OQ04.lean (depends only on SzemerediRegularity, NOT the SIGBUS-prone Bridge). energy_regular_step_exists: for any horizon N>1/δ, an [0,1]-valued potential incrementing by δ each step is impossible, so ∃ n<N with ¬(f n+δ ≤ f(n+1)) — a NON-increment ('regular') step is reached within N. Contrapositive of energy_iteration_count_le (by_contra+push_neg→N≤1/δ contradicts 1/δ<N). partitionEnergy_regular_step_exists: graph instantiation (regular refinement reached in ≤⌈1/δ⌉ steps). This is the abstract, finite-horizon positive form of no_infinite_energy_increments — the abstract heart of Assembly's afks_regular_step_within_bound, now available directly on the clean abstract engine."
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -96,7 +98,8 @@
       "State two-level AFKS conclusion with dependent tolerance E:ℕ→(0,1].",
       "Wire pairEnergy_prod_family_refinement_gain into a whole-partition energy monotonicity over an m×k equipartition-refinement to feed afks_sharp_energy_iteration_count with a k-explicit index, moving toward the tower-free N ≤ k²/ε⁴ bound."
     ],
-    "markdown": "# Knowledge Base: szemeredi-regularity-oq-04\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+    "markdown": "# Knowledge Base: szemeredi-regularity-oq-04\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n",
+    "score": 63
   },
   "tags": [
     "number-theory",
