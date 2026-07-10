@@ -45,12 +45,12 @@
     "dateAdded": "2025-12-29",
     "hilbertNumber": 17,
     "axiomCount": 1,
-    "lineCount": 590,
+    "lineCount": 640,
     "assumptions": [
       "pfister_bound_aux: At most 2^n rational function squares needed for n-variable PSD polynomials (Pfister forms)"
     ],
     "mathlib_version": "4.26.0",
-    "theoremCount": 11,
+    "theoremCount": 16,
     "definitionCount": 8,
     "description": "Axiom-reduction history: three axioms were redundant restatements of deeper ones and are now derived theorems (artin_hilbert17 and cassels_bound_bivariate from pfister_bound_aux; artin_univariate from univariate_psd_is_sos_aux), and four more have been fully discharged by elementary 0-axiom child proofs — motzkin_not_sos_polynomial_aux (Hilbert17MotzkinNotSOS.lean), robinson_not_sos_aux (Hilbert17RobinsonNotSOS.lean), univariate_psd_is_sos_aux (Hilbert17UnivariatePSDSOS.lean), and quadratic_psd_is_sos_aux (Hilbert17QuadraticGram.lean: the homogeneous Gram/Cholesky core plus affine homogenisation by one extra coordinate). The single remaining independent axiom is pfister_bound_aux (Pfister's 2ⁿ bound)."
   },
@@ -215,9 +215,9 @@
       "RatFunc"
     ],
     "namespace": "Hilbert17",
-    "lineCount": 590,
+    "lineCount": 640,
     "axiomCount": 1,
-    "theoremCount": 11,
+    "theoremCount": 16,
     "definitionCount": 8,
     "path": "Proofs/Hilbert17SumOfSquares.lean",
     "sorries": 0
