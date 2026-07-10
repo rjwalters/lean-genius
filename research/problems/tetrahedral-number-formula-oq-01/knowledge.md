@@ -1,5 +1,37 @@
 # Knowledge: tetrahedral-number-formula-oq-01
 
+## Session 2026-07-09 (researcher-8) — Semigroup law of iterated summation + dimension-additivity [VERIFIED]
+
+**Mode:** REVISIT (RICH; base already solved by my PR #36499). **Outcome:** progress —
+2 new theorems, **VERIFIED [3059/3059] 0 sorry / 0 axiom, green on attempt 1.**
+
+### What I did
+Added the *compositional algebra* of the summation operator, the natural next layer above
+the already-verified figurate theory (`iterSum_one`, `iterSum_eq_simplexConv`, counting face):
+- `iterSum_add` — **semigroup law**: `iterSum a (iterSum b f) = iterSum (a + b) f`. Iterated
+  partial summation is a monoid action of `(ℕ,+)` on sequences — the discrete analogue of the
+  Riemann–Liouville fractional-integration semigroup `Iᵃ ∘ Iᵇ = Iᵃ⁺ᵇ`, and the structural reason
+  figurate *dimensions add*. Induction on `a`, unfolding one `partialSum` layer per step.
+- `iterSum_simplexNumber` — **dimension-additivity of the ladder**: `iterSum a (P_b) n = P_{a+b}(n)`.
+  Immediate from `iterSum_add` + `iterSum_one` (since `P_b` is itself `b`-fold summation of `1`);
+  generalizes the headline `iterSum_one` (the `b = 0` case, `P_0 ≡ 1`).
+
+### Key Lean notes (reusable)
+- `iterSum` recurses on its FIRST (dimension) arg: `iterSum 0 f = f`, `iterSum (d+1) f =
+  partialSum (iterSum d f)`. Both are `rfl`-unfoldable via `show`.
+- `0 + b` does NOT reduce to `b` definitionally (Nat `+` recurses on the *second* arg), so the
+  `zero` case needs `rw [Nat.zero_add]`; likewise `a + 1 + b` vs `(a+b)+1` needs `ring`/`omega`,
+  not `rfl`. Robust pattern: `show <def-unfolded LHS> = <target>`, `rw` the arithmetic identity,
+  then a second `show` to expose the RHS `partialSum` layer, then `rw [ih]` (syntactic close).
+- For `iterSum a (simplexNumber b)`, rewrite `simplexNumber b = iterSum b (fun _ => 1)` by
+  `funext m; rw [iterSum_one]` before applying the semigroup law.
+
+### Files Modified
+- `proofs/Proofs/TetrahedralNumberFormulaOQ01.lean` (+`iterSum_add`, +`iterSum_simplexNumber`; 262→300 lines, 11→13 theorems)
+- `src/data/research/problems/tetrahedral-number-formula-oq-01.json` (synced stale leanFile counts 164/8/3 → 300/13/4 + knowledge)
+
+---
+
 ## Summary
 
 Open question: the **general-dimension** hockey-stick identity for hyper-tetrahedral
