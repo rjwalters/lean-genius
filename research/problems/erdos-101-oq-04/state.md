@@ -2,7 +2,24 @@
 
 **Phase**: ACT
 **Since**: 2026-07-08T00:00:00Z
-**Iteration**: 2
+**Iteration**: 3
+
+## Progress This Iteration (iter 3, 2026-07-09) — UNVERIFIED (docker infra down)
+
+Added `quartic_quadruple_sum_zero_sq_iff_ternary` to `Proofs/Erdos101OQ04.lean`:
+eliminating `x₃ = −(x₀+x₁+x₂)` via `Σx = 0`, the engine's sum-of-squares condition
+`Σx² = 10` is *equivalent* to the fixed **ternary conic**
+`x₀²+x₁²+x₂²+x₀x₁+x₁x₂+x₂x₀ = 5` — the same quadratic form and constant `5` that
+governs the three-point criterion `collinear_onQuartic_iff`. This recasts the OPEN
+super-linear-growth question (`quartic_fourPointLineCount_from_quadruples`) as the
+purely arithmetic problem of finding super-linearly many distinct solution-sets on
+one fixed ternary conic — no `x⁴` term survives. Pure algebra (`linarith`/`subst`/
+`linear_combination`), 0-sorry, 0-axiom, no new API. Docker build infra down all
+session (containerd meta.db I/O error), so shipped UNVERIFIED with hand-audit; the
+`(1/2)·h` and `2·h` linear_combination coefficients are the exact factor of 2
+between `Σx²` and the ternary form. The two OPEN construction sorries
+(`grunbaum_lower_bound_three_halves`, `solymosi_stojakovic_lower_bound`) are the
+genuine hard frontier and remain untouched.
 
 ## Current Focus
 

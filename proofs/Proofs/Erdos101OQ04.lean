@@ -2920,6 +2920,29 @@ theorem four_onQuartic_collinear_iff_sq {a b c d : ℝ × ℝ}
     exact ⟨h1, by
       linear_combination (1 / 2 : ℝ) * (a.1 + b.1 + c.1 + d.1) * h1 - (1 / 2 : ℝ) * h2⟩
 
+/-- **The four-point-line quadruple condition is a fixed ternary conic.**
+Eliminating the fourth abscissa via `Σx = 0` (so `x₃ = −(x₀+x₁+x₂)`), the engine's
+sum-of-squares condition `Σx² = 10` is *equivalent* to the ternary quadratic relation
+`x₀² + x₁² + x₂² + x₀x₁ + x₁x₂ + x₂x₀ = 5` in the three free abscissae — because
+`Σx² = 2·(x₀²+x₁²+x₂²+x₀x₁+x₁x₂+x₂x₀)` once `x₃` is substituted.
+
+This is the *same* quadratic form (and the same constant `5`) that governs the
+three-point collinearity criterion `collinear_onQuartic_iff`.  Its consequence is
+structural: a four-point line on `y = x⁴ − 5x²` is exactly a point
+`(x₀, x₁, x₂)` on the fixed ellipsoid `Q = 5` with `x₃` determined by `Σx = 0`, so the
+open super-linear-growth question (`quartic_fourPointLineCount_from_quadruples`)
+becomes the purely arithmetic problem of exhibiting super-linearly many *distinct*
+solution-sets on a single fixed ternary conic `Q = 5` — no `x⁴` term survives. -/
+theorem quartic_quadruple_sum_zero_sq_iff_ternary (x₀ x₁ x₂ x₃ : ℝ)
+    (hsum : x₀ + x₁ + x₂ + x₃ = 0) :
+    x₀ ^ 2 + x₁ ^ 2 + x₂ ^ 2 + x₃ ^ 2 = 10 ↔
+      x₀ ^ 2 + x₁ ^ 2 + x₂ ^ 2 + x₀ * x₁ + x₁ * x₂ + x₂ * x₀ = 5 := by
+  have hx3 : x₃ = -(x₀ + x₁ + x₂) := by linarith
+  subst hx3
+  constructor
+  · intro h; linear_combination (1 / 2 : ℝ) * h
+  · intro h; linear_combination 2 * h
+
 /-- **General four-point-line count from arithmetic quadruples.**
 Let `x : Fin k → Fin 4 → ℝ` list `k` quadruples of abscissae with
 * four distinct entries per quadruple (`hx_inj`),
