@@ -763,4 +763,31 @@ theorem kAPCount_nondeg_univ {N : ℕ} [NeZero N] {k : ℕ} (hk : 0 < k) :
   rw [kAPCount_count_univ, Finset.card_univ, ZMod.card] at hsplit
   omega
 
+/-- **A singleton carries no nondegenerate progression.**  For `k ≥ 2` the nondegenerate
+    (`d ≠ 0`) `k`-AP count of a one-point set `{a}` is `0`: the `i = 0` term forces the start
+    `x = a`, and then the `i = 1` term forces `a + d = a`, i.e. `d = 0`, contradicting `d ≠ 0`.
+
+    This is the sharp qualitative contrast between the nondegenerate count and the *total*
+    count: the total count vanishes **iff** the set is empty (`kAPCount_count_eq_zero_iff`),
+    whereas the nondegenerate count already vanishes on the nonempty singleton.  It is exactly
+    this failure of "nonempty ⟹ nondegenerate progression" that makes Roth's theorem a genuine
+    theorem rather than the trivial diagonal count — the nondegenerate mass only appears once
+    the set is large enough, and pinning down *how* large is the content of the problem. -/
+theorem kAPCount_nondeg_singleton {N : ℕ} [NeZero N] {k : ℕ} (hk : 2 ≤ k)
+    (a : ZMod N) :
+    (Finset.univ.filter (fun p : ZMod N × ZMod N =>
+        (∀ i : Fin k, p.1 + i.val • p.2 ∈ ({a} : Finset (ZMod N))) ∧ p.2 ≠ 0)).card = 0 := by
+  classical
+  rw [Finset.card_eq_zero, Finset.filter_eq_empty_iff]
+  rintro p -
+  rintro ⟨hall, hd⟩
+  -- `i = 0` term: the start is `a`
+  have h0 : p.1 = a := by simpa using hall ⟨0, by omega⟩
+  -- `i = 1` term (needs `k ≥ 2`): `a + d = a`, forcing `d = 0`
+  have h1 : p.1 + p.2 = a := by simpa using hall ⟨1, by omega⟩
+  refine hd (add_left_cancel (a := a) ?_)
+  rw [h0] at h1
+  rw [add_zero]
+  exact h1
+
 end RothTheoremOQ03OQ01
