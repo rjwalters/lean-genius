@@ -141,6 +141,67 @@ theorem exists_eq_zero_of_average_lt_one (hs : s.Nonempty) {g : α → ℕ}
   have : g a < 1 := by exact_mod_cast hlt
   omega
 
+/-! ### From the abstract engine to an event model: the probabilistic-method existence step
+
+The engine above (`exists_eq_zero_of_average_lt_one`) works on an abstract count
+`g : α → ℕ`.  The probabilistic method is almost always applied in a specific shape:
+a finite **sample space** `Ω`, a finite family of **bad events** `A i` (each either
+holding or failing at a sample `w`), and the count `g w = #{i : A i holds at w}` of bad
+events occurring.  Two facts turn the engine into the usable "avoid all events" tool:
+
+* **Linearity of expectation for indicator counts** (`sum_filter_card_comm`): summing the
+  number of bad events over all samples equals summing, over the events, the number of
+  samples at which each holds — a plain double count `∑_w #{i : A i w} = ∑_i #{w : A i w}`.
+* Hence if the *total* over events `∑_i #{w : A i w}` is `< |Ω|` (the expected number of
+  bad events is `< 1`), some sample `w` has **no** bad event (`exists_avoiding_all_events`).
+
+This is exactly the interface a concrete model plugs into: take `Ω` = the 2-colourings of
+`Kₙ`'s edges, `A S` = "the `k`-set `S` is monochromatic", and computing `#{w : A S w}` for a
+fixed `S` (a single power of two) plus this lemma yields a colouring with no monochromatic
+`k`-clique — i.e. `R(k,k) > n` — without any further averaging bookkeeping. -/
+
+/-- **Linearity of expectation for indicator counts (double counting).**  Summing, over
+all samples `w ∈ Ω`, the number of events `i ∈ I` that hold at `w`, equals summing, over
+all events `i ∈ I`, the number of samples at which `i` holds:
+`∑_{w} #{i ∈ I : A i w} = ∑_{i} #{w ∈ Ω : A i w}`.  Both sides count the same set of pairs
+`(w, i)` with `A i w`; the proof rewrites each cardinality as a sum of indicators and swaps
+the order of summation (`Finset.sum_comm`). -/
+theorem sum_filter_card_comm {ω ι : Type*} (Ω : Finset ω) (I : Finset ι)
+    (A : ι → ω → Prop) [∀ i w, Decidable (A i w)] :
+    ∑ w ∈ Ω, (I.filter (fun i => A i w)).card
+      = ∑ i ∈ I, (Ω.filter (fun w => A i w)).card := by
+  simp_rw [Finset.card_filter]
+  rw [Finset.sum_comm]
+
+/-- **Probabilistic-method existence step (event form).**  Given a nonempty finite sample
+space `Ω` and a finite family of events `A i` (`i ∈ I`), if the *expected number of events
+that occur* is `< 1` — packaged as the total count `∑_{i ∈ I} #{w ∈ Ω : A i w} < |Ω|` — then
+some sample `w ∈ Ω` avoids **every** event: `∀ i ∈ I, ¬ A i w`.
+
+This is the qualitative conclusion of the probabilistic method (first moment), specialised
+to indicator events and stated so a concrete model need only bound each event's individual
+count.  It combines linearity of expectation (`sum_filter_card_comm`) with the integrality
+engine (`exists_eq_zero_of_average_lt_one`). -/
+theorem exists_avoiding_all_events {ω ι : Type*} (Ω : Finset ω) (hΩ : Ω.Nonempty)
+    (I : Finset ι) (A : ι → ω → Prop) [∀ i w, Decidable (A i w)]
+    (h : ∑ i ∈ I, ((Ω.filter (fun w => A i w)).card : ℚ) < Ω.card) :
+    ∃ w ∈ Ω, ∀ i ∈ I, ¬ A i w := by
+  classical
+  have hcount : (∑ w ∈ Ω, ((I.filter (fun i => A i w)).card : ℚ))
+      = ∑ i ∈ I, ((Ω.filter (fun w => A i w)).card : ℚ) := by
+    rw [← Nat.cast_sum, ← Nat.cast_sum, sum_filter_card_comm]
+  have hcard : (0 : ℚ) < Ω.card := by exact_mod_cast Finset.card_pos.mpr hΩ
+  have havg : (∑ w ∈ Ω, ((I.filter (fun i => A i w)).card : ℚ)) / Ω.card < 1 := by
+    rw [hcount, div_lt_one hcard]; exact h
+  obtain ⟨w, hw, hgw⟩ :=
+    exists_eq_zero_of_average_lt_one (g := fun w => (I.filter (fun i => A i w)).card) hΩ havg
+  refine ⟨w, hw, fun i hi hAi => ?_⟩
+  have hz : (I.filter (fun i => A i w)).card = 0 := hgw
+  rw [Finset.card_eq_zero] at hz
+  have hmem : i ∈ I.filter (fun i => A i w) := Finset.mem_filter.mpr ⟨hi, hAi⟩
+  rw [hz] at hmem
+  exact absurd hmem (Finset.not_mem_empty i)
+
 /-! ## Application: strengthening `expected_mono_cliques` toward Erdős 1947
 
 The parent gallery lemma `expected_mono_cliques` only records that the expected
