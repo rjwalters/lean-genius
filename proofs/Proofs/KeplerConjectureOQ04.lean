@@ -1025,4 +1025,48 @@ theorem fcc_lt_ellipsoidNonLattice_lt_tetrahedron_lt_octahedron :
    ellipsoidNonLatticeDensity_lt_tetrahedronDimer,
    tetrahedronDimerDensity_lt_octahedron⟩
 
+/-!
+## S20 — the grand five-body density hierarchy and universal optimality
+
+The two partial chains `fcc_lt_tetra_lt_octa_lt_rhombicDodecahedron` and
+`fcc_lt_ellipsoidNonLattice_lt_tetrahedron_lt_octahedron` cover four bodies each
+but neither lists all five in a single ordering. This section states the complete
+strict chain across every body formalized in this entry, and records that the
+space-filling rhombic dodecahedron (`δ = 1`) is *universally optimal*: no packing
+density of any convex body can exceed it.
+-/
+
+/-- **The grand five-body density hierarchy.** All five packing densities
+formalized in this entry are strictly ordered:
+
+  `fcc  <  ellipsoid(non-lattice)  <  tetrahedron(dimer)  <  octahedron  <  rhombicDodecahedron`,
+
+i.e. `π/(3√2) < 0.7707 < 4000/4671 < 18/19 < 1`. This unifies the two partial
+chains (`fcc_lt_tetra_lt_octa_lt_rhombicDodecahedron`,
+`fcc_lt_ellipsoidNonLattice_lt_tetrahedron_lt_octahedron`) into the single complete
+ordering of every body in the entry. The sphere (FCC) is strictly the *least* dense
+and the space-filling rhombic dodecahedron strictly the *most* dense. -/
+theorem grand_density_hierarchy :
+    fccDensity < ellipsoidNonLatticeDensity ∧
+    ellipsoidNonLatticeDensity < tetrahedronDimerDensity ∧
+    tetrahedronDimerDensity < octahedronPackingDensity ∧
+    octahedronPackingDensity < rhombicDodecahedronPackingDensity :=
+  ⟨ellipsoidNonLatticeDensity_gt_fccDensity,
+   ellipsoidNonLatticeDensity_lt_tetrahedronDimer,
+   tetrahedronDimerDensity_lt_octahedron,
+   octahedron_lt_rhombicDodecahedron⟩
+
+/-- **Universal optimality of the space-filling packing.** No packing density
+exceeds that of the rhombic dodecahedron: for *every* `PackingDensity d`,
+`d.density ≤ rhombicDodecahedronPackingDensity`. The rhombic dodecahedron attains
+the universal ceiling `δ = 1` (space-filling), so it is a global maximum of the
+density functional — every body in the hierarchy above, and any other, sits weakly
+below it. Immediate from the `le_one` field and
+`rhombicDodecahedronPackingDensity_eq_one`. -/
+theorem packingDensity_le_rhombicDodecahedron (d : PackingDensity) :
+    d.density ≤ rhombicDodecahedronPackingDensity := by
+  rw [rhombicDodecahedronPackingDensity_eq_one]
+  exact d.le_one
+
+
 end KeplerConjectureOQ04
