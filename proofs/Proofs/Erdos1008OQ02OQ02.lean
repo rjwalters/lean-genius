@@ -491,6 +491,46 @@ theorem reiman_edge_bound_leading_order (G : SimpleGraph V) [DecidableRel G.Adj]
   rw [hsqrt, one_mul] at h
   exact h
 
+/-- **Forcing direction (exact form).**  The extremal *existence* content of
+Kővári–Sós–Turán: a nonempty graph (`t ≥ 1`) whose edge count *exceeds* the exact
+Reiman/KST nested-radical threshold must actually *contain* a `K_{2,t}`, i.e.
+some pair of distinct vertices with `t` common neighbours.  This is the
+contrapositive of `kst_edge_bound_of_free` — the reason the bound is a genuine
+Turán-type theorem (too many edges force the forbidden subgraph), not merely an
+inequality on `K_{2,t}`-free graphs. -/
+theorem hasK2t_of_edge_bound_lt (G : SimpleGraph V) [DecidableRel G.Adj] [Nonempty V]
+    (t : ℕ) (ht : 1 ≤ t)
+    (hm : (Fintype.card V : ℝ) *
+        (1 + Real.sqrt (1 + 4 * ((t : ℝ) - 1) * ((Fintype.card V : ℝ) - 1)))
+        < 4 * (G.edgeFinset.card : ℝ)) :
+    HasK2t G t := by
+  by_contra hfree
+  exact absurd (kst_edge_bound_of_free G t ht hfree) (not_le.2 hm)
+
+/-- **Forcing direction (leading-order form).**  If a nonempty graph (`t ≥ 1`) has
+more than `½·(√(t-1)·n^{3/2} + n)` edges then it contains `K_{2,t}`.  The
+recognisable `ex(n ; K_{2,t}) = O(√(t-1)·n^{3/2})` existence threshold, obtained as
+the contrapositive of `kst_edge_bound_leading_order`. -/
+theorem hasK2t_of_edge_bound_leading_order_lt (G : SimpleGraph V) [DecidableRel G.Adj]
+    [Nonempty V] (t : ℕ) (ht : 1 ≤ t)
+    (hm : (Real.sqrt ((t : ℝ) - 1) * (Fintype.card V : ℝ) * Real.sqrt (Fintype.card V)
+        + (Fintype.card V : ℝ)) / 2 < (G.edgeFinset.card : ℝ)) :
+    HasK2t G t := by
+  by_contra hfree
+  exact absurd (kst_edge_bound_leading_order G t ht hfree) (not_le.2 hm)
+
+/-- **Reiman C₄ forcing threshold (graph-level `t = 2`).**  A graph on `n` vertices
+with more than `½·(n^{3/2} + n)` edges contains a `C₄` (`K_{2,2}`).  The `t = 2`
+specialisation of `hasK2t_of_edge_bound_leading_order_lt`, tying the extremal
+existence threshold back to the parent `C₄` entry. -/
+theorem hasK2t_two_of_edge_bound_leading_order_lt (G : SimpleGraph V) [DecidableRel G.Adj]
+    [Nonempty V]
+    (hm : ((Fintype.card V : ℝ) * Real.sqrt (Fintype.card V) + (Fintype.card V : ℝ)) / 2
+        < (G.edgeFinset.card : ℝ)) :
+    HasK2t G 2 := by
+  by_contra hfree
+  exact absurd (reiman_edge_bound_leading_order G hfree) (not_le.2 hm)
+
 end GraphLevel
 
 end Erdos1008
