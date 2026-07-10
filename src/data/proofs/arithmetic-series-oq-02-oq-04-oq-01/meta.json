@@ -119,7 +119,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Proved the descending factorial identity C(n,k)·k! = n.descFactorial(k) and 10 consequences. 169 lines, 12 theorems, 0 sorries, 0 axioms. Dual to the ascending factorial identity in ArithmeticSeriesOQ02OQ04.",
+    "summary": "Proved the descending factorial identity C(n,k)·k! = n.descFactorial(k) and 10 consequences. 169 lines, 12 theorems, 0 sorries, 0 axiom declarations (native_decide relies on Lean.ofReduceBool). Dual to the ascending factorial identity in ArithmeticSeriesOQ02OQ04.",
     "implications": "Together with the ascending factorial result, this completes the symmetry between rising and falling factorials in the context of arithmetic series and binomial coefficients. Both forms are useful in combinatorics: the descending form appears in falling factorial polynomials (basis for umbral calculus) and the ascending form in rising factorial polynomials (Pochhammer symbols).",
     "openQuestions": [
       "Generalize to multiset coefficients: C(n+k-1, k) * k! = ∏ i in range k, (n + i)?",

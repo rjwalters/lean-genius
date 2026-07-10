@@ -2,7 +2,7 @@
   "id": "inclusion-exclusion-oq-01",
   "title": "Inclusion-Exclusion: Applications to Number Theory and Combinatorics",
   "slug": "inclusion-exclusion-oq-01",
-  "description": "Applies the inclusion-exclusion principle to connect combinatorics and number theory. Proves sieve formulas (2-set and 3-set), Euler's totient via IE sieve (φ(pq)=(p-1)(q-1)), surjection counting (|Surj(n,k)| = Σ (-1)^j C(k,j)(k-j)^n), derangement formula (D(n) = Σ (-1)^k C(n,k)(n-k)!), derangement recurrence, divisor-totient identity (Σ_{d|n} φ(d) = n), and alternating binomial sum. 41 theorems, 5 definitions, 0 axioms.",
+  "description": "Applies the inclusion-exclusion principle to connect combinatorics and number theory. Proves sieve formulas (2-set and 3-set), Euler's totient via IE sieve (φ(pq)=(p-1)(q-1)), surjection counting (|Surj(n,k)| = Σ (-1)^j C(k,j)(k-j)^n), derangement formula (D(n) = Σ (-1)^k C(n,k)(n-k)!), derangement recurrence, divisor-totient identity (Σ_{d|n} φ(d) = n), and alternating binomial sum. 41 theorems, 5 definitions, 0 axiom declarations (native_decide relies on Lean.ofReduceBool).",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-02-15",
@@ -52,7 +52,7 @@
     ]
   },
   "conclusion": {
-    "summary": "Inclusion-exclusion applications fully verified: 2-set and 3-set sieves, Euler totient (φ(pq)=(p-1)(q-1) and general properties), surjection counting, derangement formula and two recurrences, alternating binomial sum, divisor-totient identity, Stirling numbers S(n,k), Bell numbers B(n). 41 theorems, 382 lines, 0 axioms.",
+    "summary": "Inclusion-exclusion applications fully verified: 2-set and 3-set sieves, Euler totient (φ(pq)=(p-1)(q-1) and general properties), surjection counting, derangement formula and two recurrences, alternating binomial sum, divisor-totient identity, Stirling numbers S(n,k), Bell numbers B(n). 41 theorems, 382 lines, 0 axiom declarations (native_decide relies on Lean.ofReduceBool).",
     "implications": "This file demonstrates the unifying power of inclusion-exclusion: the same alternating-sum principle underlies Euler's totient (sieve over multiples of prime factors), derangements (sieve over fixed points), surjections (sieve over missing image elements), and the Stirling/Bell number hierarchy. The derangement limit D(n)/n! → 1/e connects discrete combinatorics to e ≈ 2.718, one of the fundamental constants of analysis. The divisor-totient identity connects IE to multiplicative number theory and Möbius inversion.",
     "openQuestions": [
       "Formalize the general IE formula for k sets: |U \\ (A₁∪...∪Aₖ)| = Σ_{S⊆[k]} (-1)^|S| |∩_{i∈S} Aᵢ ∩ U|",

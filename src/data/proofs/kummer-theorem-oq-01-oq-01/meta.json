@@ -2,7 +2,7 @@
   "id": "kummer-theorem-oq-01-oq-01",
   "title": "The p-adic Valuation of Multinomial Coefficients via Carries (Kummer's Multinomial Theorem)",
   "slug": "kummer-theorem-oq-01-oq-01",
-  "description": "Proves that v_p(multinomial(k₁,...,kₘ)) = total carries when adding k₁,...,kₘ in base p, using Mathlib's Nat.factorization_choose' (Kummer's theorem) and the binomial decomposition from OQ-01. Refutes the claim that base-p carry counting is 'not yet in Mathlib'. 0 sorries, 0 axioms.",
+  "description": "Proves that v_p(multinomial(k₁,...,kₘ)) = total carries when adding k₁,...,kₘ in base p, using Mathlib's Nat.factorization_choose' (Kummer's theorem) and the binomial decomposition from OQ-01. Refutes the claim that base-p carry counting is 'not yet in Mathlib'. 0 sorries, 0 axiom declarations (native_decide relies on Lean.ofReduceBool).",
   "meta": {
     "status": "axiomatized",
     "tags": [
@@ -84,7 +84,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Kummer's multinomial theorem is fully formalized: v_p(multinomial(k₁,...,kₘ)) = total carries when adding k₁,...,kₘ in base p. The proof uses Mathlib's Nat.factorization_choose' (which was already available in 4.26.0, contrary to the comment in the parent file). All 10 theorems verified with 0 sorries and 0 axioms.",
+    "summary": "Kummer's multinomial theorem is fully formalized: v_p(multinomial(k₁,...,kₘ)) = total carries when adding k₁,...,kₘ in base p. The proof uses Mathlib's Nat.factorization_choose' (which was already available in 4.26.0, contrary to the comment in the parent file). All 10 theorems verified with 0 sorries and 0 axiom declarations (native_decide relies on Lean.ofReduceBool).",
     "implications": "The formalization corrects the claim that base-p carry counting was 'not yet in Mathlib' — `Nat.factorization_choose'` has been in Mathlib since at least version 4.26.0.\n\nThe theorem has several important consequences:\n- **Divisibility criterion**: $p \\nmid \\binom{n}{k_1,\\ldots,k_m}$ iff adding $k_1,\\ldots,k_m$ in base $p$ produces no carries\n- **Lucas multinomial**: The carry-free condition is equivalent to the base-$p$ digits of $n$ being partitioned among $k_1,\\ldots,k_m$, which is the multinomial analog of Lucas' theorem\n- **Granville's generalization**: Connects to $\\binom{n}{k_1,\\ldots,k_m} \\equiv \\prod_j \\binom{n_j}{k_{1,j},\\ldots,k_{m,j}} \\pmod{p}$ (Granville 1997)",
     "openQuestions": [
       "Can the multinomial Kummer theorem be used to prove a Lucas-type congruence for multinomials in Lean: C(n; k₁,...,kₘ) ≡ ∏_j C(nⱼ; k₁ⱼ,...,kₘⱼ) (mod p) where subscript j denotes the j-th base-p digit?",

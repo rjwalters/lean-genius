@@ -2,7 +2,7 @@
   "id": "sqrt2-plus-sqrt3-plus-sqrt5-irrational",
   "title": "Irrationality of √2 + √3 + √5",
   "slug": "sqrt2-plus-sqrt3-plus-sqrt5-irrational",
-  "description": "Proves that √2 + √3 + √5 is irrational by isolating √30 via two squarings. Letting α = √2+√3+√5: reuse the parent identity (√2+√3)² = 5+2√6 to get α² = 2α√5 + 2√6, then square again to derive α⁴ − 20α² − 24 = 8α·√30. Dividing by 8α (positive) gives √30 ∈ ℚ if α ∈ ℚ, contradicting irrationality of √30 (proved via Mathlib's irrational_sqrt_natCast_iff + native_decide on ¬IsSquare 30). 4 public theorems + 1 private cross-radical bridge (√5·√6 = √30), 0 sorries, 0 axioms.",
+  "description": "Proves that √2 + √3 + √5 is irrational by isolating √30 via two squarings. Letting α = √2+√3+√5: reuse the parent identity (√2+√3)² = 5+2√6 to get α² = 2α√5 + 2√6, then square again to derive α⁴ − 20α² − 24 = 8α·√30. Dividing by 8α (positive) gives √30 ∈ ℚ if α ∈ ℚ, contradicting irrationality of √30 (proved via Mathlib's irrational_sqrt_natCast_iff + native_decide on ¬IsSquare 30). 4 public theorems + 1 private cross-radical bridge (√5·√6 = √30), 0 sorries, 0 axiom declarations (native_decide relies on Lean.ofReduceBool).",
   "meta": {
     "author": "Lean Genius Research",
     "date": "2026-05-12",
@@ -53,7 +53,7 @@
     ]
   },
   "conclusion": {
-    "summary": "Fully verified (0 sorries, 0 axioms): irrational_sqrt2_plus_sqrt3_plus_sqrt5 : Irrational (sqrt 2 + sqrt 3 + sqrt 5). The proof composes the parent gallery proof's sqrt2_plus_sqrt3_sq identity with a second squaring step and the cross-radical bridge √5·√6 = √30. Build verified at Mathlib v4.26.0 (PR #18369, 3060 jobs, ~4 min Docker). 4 public theorems + 1 private bridge, 144 lines.",
+    "summary": "Fully verified (0 sorries, 0 axiom declarations (native_decide relies on Lean.ofReduceBool)): irrational_sqrt2_plus_sqrt3_plus_sqrt5 : Irrational (sqrt 2 + sqrt 3 + sqrt 5). The proof composes the parent gallery proof's sqrt2_plus_sqrt3_sq identity with a second squaring step and the cross-radical bridge √5·√6 = √30. Build verified at Mathlib v4.26.0 (PR #18369, 3060 jobs, ~4 min Docker). 4 public theorems + 1 private bridge, 144 lines.",
     "implications": "Closes OQ-01 of the parent `sqrt2-plus-sqrt3-irrational` gallery entry. Provides the unit-case (n=3) instance for any future formalisation of Besicovitch's general theorem on linear independence of square roots of distinct squarefree positive integers. The two-squaring + cross-radical-bridge technique generalises by induction to n ≥ 4 summands at quadratic blow-up per added summand (n=4 would require three squarings yielding an octic identity).",
     "openQuestions": [
       "Generalise to four summands: prove √2 + √3 + √5 + √7 ∉ ℚ via three squarings, yielding an octic identity (degree 8 in α).",

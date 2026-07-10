@@ -2,7 +2,7 @@
   "id": "arithmetic-series-oq-02-oq-02-oq-03",
   "title": "Parallel Vandermonde via Generating Functions",
   "slug": "arithmetic-series-oq-02-oq-02-oq-03",
-  "description": "Proves the parallel Vandermonde identity Σ C(i+a,a)·C(j+b,b) = C(n+a+b+1,a+b+1) using formal power series. The algebraic identity (1-x)^{-(a+1)} · (1-x)^{-(b+1)} = (1-x)^{-(a+b+2)} is just pow_add; extracting coefficients gives the Vandermonde convolution. Fully verified, 0 axioms.",
+  "description": "Proves the parallel Vandermonde identity Σ C(i+a,a)·C(j+b,b) = C(n+a+b+1,a+b+1) using formal power series. The algebraic identity (1-x)^{-(a+1)} · (1-x)^{-(b+1)} = (1-x)^{-(a+b+2)} is just pow_add; extracting coefficients gives the Vandermonde convolution. Fully verified, 0 axiom declarations (native_decide relies on Lean.ofReduceBool).",
   "meta": {
     "author": "Vandermonde (1772), generating function proof",
     "sourceUrl": "https://en.wikipedia.org/wiki/Vandermonde%27s_identity",
@@ -129,7 +129,7 @@
     }
   ],
   "conclusion": {
-    "summary": "The generating function proof of the Vandermonde identity works by encoding simplicial numbers as coefficients of (1-x)^{-(k+1)}, then using the trivial algebraic identity (1-x)^{-(a+1)} · (1-x)^{-(b+1)} = (1-x)^{-(a+b+2)} to derive the convolution. Fully verified with 0 axioms and 0 sorries.",
+    "summary": "The generating function proof of the Vandermonde identity works by encoding simplicial numbers as coefficients of (1-x)^{-(k+1)}, then using the trivial algebraic identity (1-x)^{-(a+1)} · (1-x)^{-(b+1)} = (1-x)^{-(a+b+2)} to derive the convolution. Fully verified with 0 axiom declarations (native_decide relies on Lean.ofReduceBool) and 0 sorries.",
     "implications": "1. **Algebra replaces combinatorics**: The deep Vandermonde identity becomes trivial pow_add\n\n2. **Generating functions in Lean**: Demonstrates that PowerSeries ℕ is a viable framework for generating function proofs\n\n3. **Alternative proof technique**: Complements the parent file's inductive proof with a fundamentally different approach",
     "openQuestions": [
       "Polya enumeration theorem: Can the generating function approach be extended to prove Polya's enumeration theorem in Lean 4? This would require formalizing cycle index polynomials and the action of a group on colorings.",

@@ -139,7 +139,7 @@
     }
   ],
   "conclusion": {
-    "summary": "The Conway-Guy sequence is formalized with all key structural properties verified. Optimality f(n) = conwayGuy(n) is computationally proved for n=1..5, eliminating the previous axiom. The file is now fully verified (0 axioms, 0 sorries).",
+    "summary": "The Conway-Guy sequence is formalized with all key structural properties verified. Optimality f(n) = conwayGuy(n) is computationally proved for n=1..5, eliminating the previous axiom. The file is now fully verified (0 axiom declarations (native_decide relies on Lean.ofReduceBool), 0 sorries).",
     "implications": "Establishes a formal foundation for studying the Conway-Guy optimality conjecture and provides verified structural properties that could support future progress on Erdos Problem #1.",
     "openQuestions": [
       "Can the Conway-Guy optimality be proved for all n, or just verified computationally?",

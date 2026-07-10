@@ -2,7 +2,7 @@
   "id": "sqrt2-plus-sqrt3-irrational",
   "title": "Irrationality of √2 + √3",
   "slug": "sqrt2-plus-sqrt3-irrational",
-  "description": "Proves that √2 + √3 is irrational by contradiction: if √2 + √3 = r ∈ ℚ, then squaring gives r² = 5 + 2√6, so √6 = (r² - 5)/2 ∈ ℚ, contradicting the irrationality of √6. Also proves √6 irrational using Mathlib's irrational_sqrt_natCast_iff. 3 theorems, 0 definitions, 0 axioms.",
+  "description": "Proves that √2 + √3 is irrational by contradiction: if √2 + √3 = r ∈ ℚ, then squaring gives r² = 5 + 2√6, so √6 = (r² - 5)/2 ∈ ℚ, contradicting the irrationality of √6. Also proves √6 irrational using Mathlib's irrational_sqrt_natCast_iff. 3 theorems, 0 definitions, 0 axiom declarations (native_decide relies on Lean.ofReduceBool).",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-02-15",
@@ -47,7 +47,7 @@
     ]
   },
   "conclusion": {
-    "summary": "√2 + √3 is irrational: proved via the squaring identity (√2+√3)² = 5+2√6 and irrationality of √6 (from irrational_sqrt_natCast_iff and ¬IsSquare 6 by native_decide). Concise 54-line proof. 3 theorems, 0 axioms.",
+    "summary": "√2 + √3 is irrational: proved via the squaring identity (√2+√3)² = 5+2√6 and irrationality of √6 (from irrational_sqrt_natCast_iff and ¬IsSquare 6 by native_decide). Concise 54-line proof. 3 theorems, 0 axiom declarations (native_decide relies on Lean.ofReduceBool).",
     "implications": "The squaring technique demonstrates how algebraic manipulation can reduce hard irrationality questions to simpler ones. The proof is constructive in the sense that it shows √6 would be rational if √2+√3 were — a clear logical chain. The Lean 4 proof is clean because ring_nf and sqrt_mul handle the algebraic identity automatically, while native_decide handles the finite computation.",
     "openQuestions": [
       "Prove that $\\sqrt{2} + \\sqrt{3} + \\sqrt{5}$ is irrational: squaring gives $\\sqrt{2}+\\sqrt{3}+\\sqrt{5} = r$ implies $\\sqrt{6}+\\sqrt{10}+\\sqrt{15} \\in \\mathbb{Q}$ (from $(r-\\sqrt{5})^2 = 5 + 2\\sqrt{6} + 2\\sqrt{10}\\cdot ?$); requires a more involved algebraic argument.",

@@ -149,7 +149,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Four-square distribution theory fully formalized: 38 theorems, 0 sorries, 0 axioms. The symmetry-based contribution formula is verified for all major representation types.",
+    "summary": "Four-square distribution theory fully formalized: 38 theorems, 0 sorries, 0 axiom declarations (native_decide relies on Lean.ofReduceBool). The symmetry-based contribution formula is verified for all major representation types.",
     "implications": "The formalization bridges combinatorics and analytic number theory: the contribution formula shows that Jacobi's factor of 8 is not a coincidence but a consequence of the signed permutation symmetry group acting on 4-tuples. The type (0,0,0,k) always contributing 8 implies every perfect square k² satisfies r₄(k²) ≥ 8 — a weak but unconditional lower bound that follows from the type-decomposition without using Jacobi's formula. The symmetry ratio 384/16 = 24 = |S₄| gives a precise meaning to 'how much symmetry reduces the representation count': maximally symmetric types (all equal) are suppressed by |S₄| relative to maximally asymmetric types. This connects to the Hurwitz quaternion interpretation: four-square representations correspond to Hurwitz integers of a given norm, and the symmetry group is the left-unit group of Hurwitz integers acting on representations.",
     "openQuestions": [
       "Can Jacobi's four-square formula r₄(n) = 8·Σ_{4∤d|n} d be formally proved in Lean 4? (Tracked as four-square-distribution-oq-01.)",

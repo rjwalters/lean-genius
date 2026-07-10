@@ -2,7 +2,7 @@
   "id": "subset-count-oq-02-oq-01",
   "title": "The Distinct Submultiset Count Formula: ∏(mᵢ + 1)",
   "slug": "subset-count-oq-02-oq-01",
-  "description": "Proves that a multiset s has exactly ∏ a ∈ s.toFinset, (s.count a + 1) distinct submultisets, directly from Mathlib's Multiset.card_Iic. Includes the set case (nodup → 2^n), concrete verifications, and a multiplicativity theorem for disjoint supports. 0 sorries, 0 axioms.",
+  "description": "Proves that a multiset s has exactly ∏ a ∈ s.toFinset, (s.count a + 1) distinct submultisets, directly from Mathlib's Multiset.card_Iic. Includes the set case (nodup → 2^n), concrete verifications, and a multiplicativity theorem for disjoint supports. 0 sorries, 0 axiom declarations (native_decide relies on Lean.ofReduceBool).",
   "meta": {
     "status": "axiomatized",
     "tags": [
@@ -83,7 +83,7 @@
     }
   ],
   "conclusion": {
-    "summary": "The distinct submultiset count formula ∏(mᵢ+1) is fully formalized using Multiset.card_Iic from Mathlib.Data.Multiset.Interval. All 10 theorems are proved with 0 sorries and 0 axioms.",
+    "summary": "The distinct submultiset count formula ∏(mᵢ+1) is fully formalized using Multiset.card_Iic from Mathlib.Data.Multiset.Interval. All 10 theorems are proved with 0 sorries and 0 axiom declarations (native_decide relies on Lean.ofReduceBool).",
     "implications": "This answers the OQ: the formula can indeed be formalized using Mathlib's existing infrastructure. The key insight is that `Finset.Iic s` is the finset of distinct submultisets, and `Multiset.card_Iic` directly gives the product formula.\n\nConsequences:\n- **Set powerset**: The nodup specialization gives `2^n`, connecting to `Multiset.card_powerset`\n- **Multiplicativity**: The disjoint-support case is a useful structural property\n- **Classification**: Combined with `Multiset.card_powersetCard`, gives a complete enumeration theory for multiset selections",
     "openQuestions": [
       "Can the generating function ∏ₐ (1 + xᵃ + x^(2a) + ... + x^(mₐ·a)) for multiset submultisets be formalized in Lean, connecting the count formula to polynomial identities?",
