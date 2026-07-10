@@ -176,4 +176,31 @@ theorem capacity_mono_budget (N : ι → ℝ) (hN : ∀ i, 0 < N i)
     exact waterfilling_optimal N hN hμ₂ h2 (waterAlloc μ₁ N)
       (fun i => waterAlloc_nonneg μ₁ N i) hxsum
 
+/-! ## The water level itself is monotone in the power budget -/
+
+/-- **The water level is monotone in the power budget.**  Let `μ₁` and `μ₂` be the
+water levels realising budgets `P₁` and `P₂` (`g(μⱼ) = Pⱼ`), with `P₁ > 0` and
+`P₁ ≤ P₂`.  Then `μ₁ ≤ μ₂`: pouring in more total power can only raise the water
+surface.
+
+This is the level-side dual of `capacity_mono_budget` (which shows the *capacity*
+is monotone in the budget).  It follows immediately from strict monotonicity of
+the budget function once a channel is active: if the surface dropped
+(`μ₂ < μ₁`) while the (positive) budget at the lower level is `g(μ₂) = P₂ ≥ P₁ > 0`,
+then `waterBudget_strictMono_of_pos` gives `P₂ = g(μ₂) < g(μ₁) = P₁`, contradicting
+`P₁ ≤ P₂`.  The hypothesis `P₁ > 0` is essential: at budget `0` every channel is dry
+and any `μ ≤ min Nᵢ` realises it, so the water level is not determined. -/
+theorem waterLevel_mono_budget (N : ι → ℝ) {μ₁ μ₂ P₁ P₂ : ℝ}
+    (h1 : waterBudget N μ₁ = P₁) (h2 : waterBudget N μ₂ = P₂)
+    (hP1 : 0 < P₁) (hP : P₁ ≤ P₂) :
+    μ₁ ≤ μ₂ := by
+  by_contra hcon
+  push_neg at hcon
+  -- `μ₂ < μ₁`, and the budget at the lower level `μ₂` is `P₂ ≥ P₁ > 0`
+  have hp2 : 0 < waterBudget N μ₂ := by rw [h2]; linarith
+  have hlt := waterBudget_strictMono_of_pos N hcon hp2
+  rw [h2, h1] at hlt
+  -- `P₂ < P₁` contradicts `P₁ ≤ P₂`
+  linarith
+
 end ShannonWaterFilling
