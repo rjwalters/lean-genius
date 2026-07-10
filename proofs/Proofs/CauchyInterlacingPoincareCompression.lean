@@ -1130,6 +1130,57 @@ theorem roots_charpoly_orthogonal_compress_le_of_reducing {T : V →ₗ[𝕜] V}
   rw [roots_charpoly_eq_add_compress_of_reducing H hH hHp]
   exact Multiset.le_add_left _ _
 
+/-- **Per-eigenvalue algebraic-multiplicity additivity over a reducing subspace.**
+
+The pointwise, single-eigenvalue refinement of the eigenvalue-multiset additivity
+`roots_charpoly_eq_add_compress_of_reducing`: for *each* scalar `μ`, the algebraic
+multiplicity of `μ` as a root of `charpoly T` splits as the sum of its algebraic
+multiplicities over the two reducing blocks,
+
+  `(charpoly T).rootMultiplicity μ
+      = (charpoly (compress T H)).rootMultiplicity μ
+          + (charpoly (compress T Hᗮ)).rootMultiplicity μ`.
+
+This is the *algebraic*-multiplicity companion of the *geometric*-multiplicity
+additivity `finrank_eigenspace_eq_add_of_reducing`
+(`dim (eigenspace T μ) = dim (eigenspace T μ ⊓ H) + dim (eigenspace T μ ⊓ Hᗮ)`); for a
+symmetric `T` the two coincide, but the algebraic statement needs no symmetry.  Proof:
+apply the master factorisation `charpoly_eq_mul_compress_of_reducing` and read off
+`Polynomial.rootMultiplicity_mul` (valid since `charpoly T`, monic, is nonzero).  Unlike
+the `Multiset.count` form this uses `rootMultiplicity`, so it needs no `DecidableEq 𝕜`.
+Symmetry-free. -/
+theorem rootMultiplicity_charpoly_eq_add_compress_of_reducing {T : V →ₗ[𝕜] V}
+    (H : Submodule 𝕜 V) (hH : ∀ y ∈ H, T y ∈ H) (hHp : ∀ y ∈ Hᗮ, T y ∈ Hᗮ) (μ : 𝕜) :
+    (LinearMap.charpoly T).rootMultiplicity μ =
+      (LinearMap.charpoly (compress T H)).rootMultiplicity μ
+        + (LinearMap.charpoly (compress T Hᗮ)).rootMultiplicity μ := by
+  rw [charpoly_eq_mul_compress_of_reducing H hH hHp]
+  refine Polynomial.rootMultiplicity_mul ?_
+  rw [← charpoly_eq_mul_compress_of_reducing H hH hHp]
+  exact (LinearMap.charpoly_monic T).ne_zero
+
+/-- The `H`-block algebraic-multiplicity bound: for every eigenvalue `μ`, its algebraic
+multiplicity in the `H`-compression is at most its algebraic multiplicity in the ambient
+`T`.  The single-eigenvalue shadow of the sub-multiset containment
+`roots_charpoly_compress_le_of_reducing`, read off the additivity
+`rootMultiplicity_charpoly_eq_add_compress_of_reducing` via `Nat.le_add_right`. -/
+theorem rootMultiplicity_charpoly_compress_le_of_reducing {T : V →ₗ[𝕜] V}
+    (H : Submodule 𝕜 V) (hH : ∀ y ∈ H, T y ∈ H) (hHp : ∀ y ∈ Hᗮ, T y ∈ Hᗮ) (μ : 𝕜) :
+    (LinearMap.charpoly (compress T H)).rootMultiplicity μ ≤
+      (LinearMap.charpoly T).rootMultiplicity μ := by
+  rw [rootMultiplicity_charpoly_eq_add_compress_of_reducing H hH hHp]
+  exact Nat.le_add_right _ _
+
+/-- The `Hᗮ`-block companion of `rootMultiplicity_charpoly_compress_le_of_reducing`:
+each eigenvalue's algebraic multiplicity in the orthogonal compression is bounded by its
+algebraic multiplicity in the ambient `T`, via `Nat.le_add_left`. -/
+theorem rootMultiplicity_charpoly_orthogonal_compress_le_of_reducing {T : V →ₗ[𝕜] V}
+    (H : Submodule 𝕜 V) (hH : ∀ y ∈ H, T y ∈ H) (hHp : ∀ y ∈ Hᗮ, T y ∈ Hᗮ) (μ : 𝕜) :
+    (LinearMap.charpoly (compress T Hᗮ)).rootMultiplicity μ ≤
+      (LinearMap.charpoly T).rootMultiplicity μ := by
+  rw [rootMultiplicity_charpoly_eq_add_compress_of_reducing H hH hHp]
+  exact Nat.le_add_left _ _
+
 /-! ### Upgrading eigenvalue-count additivity to a genuine `finrank` identity
 
 The multiset additivity `card_roots_charpoly_eq_add_compress_of_reducing` is
