@@ -109,11 +109,19 @@ theorem arithmetic_series_sum (a d n : ℕ) :
 
 /-! ## Famous Special Cases -/
 
-/-- Sum of first 100 natural numbers (Gauss's original problem) -/
-theorem gauss_100 : ∑ i ∈ range 101, i = 5050 := by native_decide
+/-- Sum of first 100 natural numbers (Gauss's original problem).
 
-/-- Sum of first 10 natural numbers: 0 + 1 + 2 + ... + 10 = 55 -/
-theorem sum_0_to_10 : ∑ i ∈ range 11, i = 55 := by native_decide
+    Discharged from the kernel-checked `gauss_sum` (no `native_decide`), so the
+    entry carries no `Lean.ofReduceBool` assumption. -/
+theorem gauss_100 : ∑ i ∈ range 101, i = 5050 := by
+  rw [show (101 : ℕ) = 100 + 1 from rfl, gauss_sum]
+
+/-- Sum of first 10 natural numbers: 0 + 1 + 2 + ... + 10 = 55.
+
+    Also derived from `gauss_sum`, keeping the presented corollaries fully
+    kernel-checked. -/
+theorem sum_0_to_10 : ∑ i ∈ range 11, i = 55 := by
+  rw [show (11 : ℕ) = 10 + 1 from rfl, gauss_sum]
 
 /-- Sum of odd numbers: 1 + 3 + 5 + ... + (2n-1) = n²
 
