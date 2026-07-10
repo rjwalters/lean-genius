@@ -320,6 +320,51 @@ theorem aposteriori_estimate_unconditional (f : ℝ → ℝ) (L : ℝ) (hL0 : 0 
   obtain ⟨xstar, hfp⟩ := exists_fixed_point f L hL0 hL1 hf
   exact ⟨xstar, hfp, fun n => aposteriori_estimate f L hL0 hL1 hf x hx xstar hfp n⟩
 
+/-! ### A matching a posteriori *lower* bound (two-sided residual control)
+
+Every a posteriori bound above is an *upper* bound: it certifies that a small
+increment `|xₙ₊₁ − xₙ|` guarantees a small error `|xₙ₊₁ − x*|`.  The complementary
+*lower* bound `|xₙ₊₁ − xₙ| / (1 + L) ≤ |xₙ − x*|` says the increment cannot vastly
+*over*-estimate the error either: a nonzero increment forces a genuinely nonzero
+error, so the increment is a two-sided proxy for the distance to `x*`.  Together
+with `aposteriori_estimate` this pins the error to a constant-factor band around
+the observable increment, `|xₙ₊₁ − xₙ|/(1+L) ≤ |xₙ − x*|` and
+`|xₙ₊₁ − x*| ≤ L/(1−L)·|xₙ₊₁ − xₙ|`.  Proof: the reverse triangle inequality
+`|xₙ₊₁ − xₙ| ≤ |xₙ₊₁ − x*| + |x* − xₙ|` with `|xₙ₊₁ − x*| ≤ L·|xₙ − x*|` gives
+`|xₙ₊₁ − xₙ| ≤ (1 + L)·|xₙ − x*|`. -/
+
+/-- **A posteriori lower error bound.**  `|xₙ₊₁ − xₙ| / (1 + L) ≤ |xₙ − x*|`: the
+    latest increment is, up to the factor `1 + L`, a *lower* bound on the current
+    error, complementing the a posteriori *upper* bound `aposteriori_estimate`.
+    Only `0 ≤ L` is needed (no `L < 1`). -/
+theorem aposteriori_lower_estimate (f : ℝ → ℝ) (L : ℝ) (hL0 : 0 ≤ L)
+    (hf : ∀ x y, |f x - f y| ≤ L * |x - y|)
+    (x : ℕ → ℝ) (hx : ∀ n, x (n + 1) = f (x n))
+    (xstar : ℝ) (hfp : f xstar = xstar) (n : ℕ) :
+    |x (n + 1) - x n| / (1 + L) ≤ |x n - xstar| := by
+  have hpos : (0 : ℝ) < 1 + L := by linarith
+  have hstep : |x (n + 1) - xstar| ≤ L * |x n - xstar| := by
+    have h := hf (x n) xstar
+    rw [hfp, ← hx n] at h
+    exact h
+  have ht : |x (n + 1) - x n| ≤ |x (n + 1) - xstar| + |xstar - x n| := abs_sub_le _ _ _
+  rw [abs_sub_comm xstar (x n)] at ht
+  rw [div_le_iff₀ hpos]
+  nlinarith [ht, hstep]
+
+/-- **Unconditional a posteriori lower bound.**  With no assumed fixed point: a
+    contraction on `ℝ` has a fixed point `x*` for which
+    `|xₙ₊₁ − xₙ| / (1 + L) ≤ |xₙ − x*|` at every step — the hypothesis-free form of
+    `aposteriori_lower_estimate`, threading `exists_fixed_point`. -/
+theorem aposteriori_lower_estimate_unconditional (f : ℝ → ℝ) (L : ℝ)
+    (hL0 : 0 ≤ L) (hL1 : L < 1)
+    (hf : ∀ x y, |f x - f y| ≤ L * |x - y|)
+    (x : ℕ → ℝ) (hx : ∀ n, x (n + 1) = f (x n)) :
+    ∃ xstar : ℝ, f xstar = xstar ∧
+      ∀ n, |x (n + 1) - x n| / (1 + L) ≤ |x n - xstar| := by
+  obtain ⟨xstar, hfp⟩ := exists_fixed_point f L hL0 hL1 hf
+  exact ⟨xstar, hfp, fun n => aposteriori_lower_estimate f L hL0 hf x hx xstar hfp n⟩
+
 /-! ### Convergence of the iteration (the qualitative limit behind the estimates)
 
 The a priori/a posteriori theorems above are *quantitative* error bounds; the
