@@ -212,10 +212,10 @@
   ],
   "mainTheorems": [
     {
-      "name": "de_giorgi_nash",
+      "name": "hilbert19_regularity",
       "type": "core",
-      "description": "Solutions of elliptic variational problems are analytic",
-      "leanType": "EllipticVariational F -> minimizer u -> Analytic u"
+      "description": "Minimizers of smooth, uniformly-elliptic variational problems are C^infinity smooth; reduces to the schauder_estimates axiom. Analyticity of analytic data is a separate axiom (hilbert19_analytic_regularity).",
+      "leanType": "IsUniformlyElliptic L 1 -> HasSmoothCoefficients L -> SatisfiesEulerLagrange L u -> ContDiff ℝ ⊤ u"
     }
   ],
   "sorries": 0
