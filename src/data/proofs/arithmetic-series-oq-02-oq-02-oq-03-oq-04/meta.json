@@ -55,7 +55,7 @@
       "wz_telescope: the abstract WZ/creative-telescoping engine over an arbitrary AddCommGroup — the WZ equation plus the two boundary conditions G(n,0)=0, G(n,N)=0 yield ∑_{k<N} F(n+1,k) = ∑_{k<N} F(n,k). Reusable for any WZ pair, including the parallel Vandermonde once its certificate is supplied.",
       "wz_equation: a hand-verified WZ certificate for ∑ₖ C(n,k) = 2ⁿ with explicit mate G(n,k) = −C(n,k−1)/2ⁿ⁺¹ (certificate R(n,k) = −k/(2(n−k+1))). The k=0 boundary is handled by an ℕ-subtraction guard so the WZ equation holds for every k.",
       "rowSum_succ: the WZ recurrence rowSum(n+1) = rowSum(n) obtained purely from wz_telescope applied to the verified pair, with window N = n+2 trimmed by F(n,n+1)=0.",
-      "binomial_sum_eq_pow: a from-scratch derivation of ∑_{k≤n} C(n,k) = 2ⁿ by the WZ method (recurrence + base case), independent of Mathlib's Nat.sum_range_choose; cross-checked against it.",
+      "binomial_sum_eq_pow: a from-scratch derivation of ∑_{k≤n} C(n,k) = 2ⁿ by the WZ method (recurrence + base case), independent of Mathlib's Nat.sum_range_choose and stated in the same form the library proves by a different route (a closing example matches the statement; the library lemma is never invoked as a proof term).",
       "Honest scoping: the full two-variable parallel-Vandermonde certificate is identified as the remaining work; the reusable engine accepts that pair unchanged once a certificate is found."
     ],
     "prerequisites": [
