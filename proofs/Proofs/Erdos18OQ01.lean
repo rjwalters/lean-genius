@@ -441,4 +441,21 @@ theorem practical_mul {m n : ℕ} (hpm : IsPractical m) (hpn : IsPractical n) :
   rw [hAsum, hSrsum, hdecomp] at hunion
   exact hunion
 
+/-- **Practical numbers are closed under powers.**  If `m` is practical then so is
+    every power `m ^ k`.  This is the iterate of `practical_mul` starting from the
+    trivially practical `1 = m ^ 0` (`Erdos18.one_practical`): each factor of `m`
+    keeps the product practical.  In particular every practical base generates an
+    infinite family of practical numbers `m, m², m³, …`. -/
+theorem practical_pow {m : ℕ} (hp : IsPractical m) (k : ℕ) : IsPractical (m ^ k) := by
+  induction k with
+  | zero => simpa using one_practical
+  | succ k ih => rw [pow_succ]; exact practical_mul ih hp
+
+/-- **Powers of six are practical.**  Instantiating `practical_pow` at the verified
+    practical base `6` gives the infinite family `1, 6, 36, 216, …` of practical
+    numbers — a family with an odd prime factor, distinct from the powers of two
+    `two_pow_practical`. -/
+theorem six_pow_practical (k : ℕ) : IsPractical (6 ^ k) :=
+  practical_pow six_practical k
+
 end Erdos18OQ01
