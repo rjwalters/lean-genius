@@ -82,7 +82,7 @@
     ],
     "dateAdded": "2026-05-04",
     "axiomCount": 1,
-    "lineCount": 2029,
+    "lineCount": 2062,
     "assumptions": "1 axiom (the main open conjecture): e_absolutely_normal — e is absolutely normal (open as of 2026). Session 13 discharged the normal_imp_irrational axiom: composing rational_has_missing_ktuple_intCast (the ℤ-valued lift of S12's Layer 4a missing-tuple), rational_match_count_le (the matching-position count is bounded by N₀ via Finset.card_le_card), and tendsto_bounded_count_div_atTop_zero (squeeze: 0 ≤ count_N/N ≤ N₀/N → 0). For rational q, normality forces frequency → b^(-k) > 0, but the bound forces it → 0; tendsto_nhds_unique closes the contradiction. Earlier history: rational-digits-periodic was discharged in Session 11 via the 3-layer recipe (Layer 1 eventually_periodic_iterate S8, Layer 2 ratResidue_eventually_periodic S9, Layer 3 floor_pow_mul_div S10 + nthDigit_succ_via_residue S11), then Session 12 added Layer 4a (Fin b cast bridge) and rational_has_missing_ktuple. 33 public theorems including first 9 decimal digits of e proved from exp_one bounds and now normal_imp_irrational fully axiom-free.",
     "mathlib_version": "4.26.0",
     "definitionCount": 7
@@ -215,7 +215,7 @@
       "Filter"
     ],
     "namespace": "ETranscendentalOQ02",
-    "lineCount": 2029,
+    "lineCount": 2062,
     "axiomCount": 1,
     "theoremCount": 90,
     "definitionCount": 7,
