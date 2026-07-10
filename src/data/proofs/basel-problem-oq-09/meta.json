@@ -142,7 +142,7 @@
     "openQuestions": [
       {
         "id": "basel-problem-oq-09-oq-01",
-        "question": "Generalize the even/odd parity split to a reusable lemma λ(2m) = ∑ 1/(2k+1)^{2m} = (1 - 2^{-2m}) ζ(2m), deriving λ(4) = π⁴/96 from Mathlib's hasSum_zeta_four with no new analytic input.",
+        "question": "Generalize the even/odd parity split to a reusable lemma λ(2m) = ∑ 1/(2k+1)^{2m} = (1 - 2^{-2m}) ζ(2m), deriving λ(4) = π⁴/96 from Mathlib's hasSum_zeta_four with no new analytic input. (Realized by the child entry basel-problem-oq-09-oq-01, which proves the exponent-uniform lemma and specializes it to λ(4) = π⁴/96.)",
         "significance": "medium"
       },
       {
@@ -157,6 +157,11 @@
       "targetId": "basel-problem",
       "relationship": "extends",
       "description": "Root Basel entry ζ(2) = π²/6; this is the odd-index corollary λ(2) = ∑ 1/(2k+1)² = π²/8."
+    },
+    {
+      "targetId": "basel-problem-oq-09-oq-01",
+      "relationship": "specialized-by — direct child",
+      "description": "Direct descendant that resolves this entry's first open question: it lifts the single-exponent even/odd split to the exponent-uniform lemma λ(2m) = ∑ 1/(2k+1)^{2m} = (1 − 2^{−2m})·ζ(2m), recovering this entry's λ(2) = π²/8 and proving the new value λ(4) = π⁴/96 from Mathlib's hasSum_zeta_four. This page's λ(2) = π²/8 is exactly the m = 1 specialization of that lemma."
     },
     {
       "targetId": "basel-problem-oq-11",
@@ -199,7 +204,7 @@
   "openQuestions": [
     {
       "id": "basel-problem-oq-09-oq-01",
-      "question": "Generalize the even/odd parity split to λ(2m) = ∑ 1/(2k+1)^{2m} = (1 - 2^{-2m}) ζ(2m) and derive λ(4) = π⁴/96 from hasSum_zeta_four.",
+      "question": "Generalize the even/odd parity split to λ(2m) = ∑ 1/(2k+1)^{2m} = (1 - 2^{-2m}) ζ(2m) and derive λ(4) = π⁴/96 from hasSum_zeta_four. (Realized by the child entry basel-problem-oq-09-oq-01.)",
       "significance": "medium"
     },
     {
