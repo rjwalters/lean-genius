@@ -332,4 +332,170 @@ theorem summable_one_div_nat_mul_log_mul_const {c δ : ℝ} (hc : 0 < c) (hδ : 
           mul_le_mul_of_nonneg_left hPQ hm_pos.le
       _ = (2 : ℝ) ^ (1 + δ) * (m * (Real.log (m * c)) ^ (1 + δ)) := by ring
 
+/-!
+### Second-tier (iterated-log) Bertrand divergence: `∑ 1/(n · log n · log log n)`
+
+`not_summable_one_div_nat_mul_log` pins the *first* Bertrand boundary: `∑ 1/(n(log n)^p)`
+diverges at `p = 1` and converges for `p > 1`.  The genuine divergence borderline that
+makes Erdős #3 hard, however, sits one iterated logarithm deeper: the profile
+`f(N) ≍ N/(log N · log log N)` is still `o(N/log N)` (so it satisfies the weak
+`RequiredBound` threshold) yet has a *divergent* reciprocal sum, because by partial
+summation `∑_{a≤N} 1/a ≍ ∑ 1/(n · log n · log log n) → ∞`.  This is exactly the profile
+whose existence — as an AP-free set — is the open content of Erdős #3, and it is the
+reason `RequiredBound` (`o(N/log N)`) cannot be strengthened to a *provable* sufficient
+condition without pushing all the way down to a `(log log N)`-power correction.
+
+The following theorem formalises that second-tier divergence.  It is the true divergence
+companion to the convergent `summable_one_div_nat_mul_log_mul_const` above (which lives at
+the `(log log N)^{1+δ}` correction): together they now bracket the Erdős #3 borderline on
+*both* logarithmic axes.
+
+**Proof.**  Cauchy condensation absorbs one logarithm: the condensed term
+`2^k · (2^k · log(2^k) · log log(2^k))⁻¹ = (log(2^k) · log log(2^k))⁻¹ ≍ 1/(k · log k)`,
+so the condensed series is (a tail of) a constant multiple of the *first-tier*
+log-harmonic series `∑ 1/(n log n)`, whose divergence is `not_summable_f₂` above.  Hence
+the condensed series — and therefore the original — is not summable.
+-/
+
+/-- Shifted iterated-log term `1/((n+3)·log(n+3)·log log(n+3))`; positive and antitone.
+    The shift `+3 > e` guarantees `log(n+3) > 1`, so the inner `log log` is positive. -/
+private noncomputable def g₃ (n : ℕ) : ℝ :=
+  1 / (((n : ℝ) + 3) * Real.log ((n : ℝ) + 3) * Real.log (Real.log ((n : ℝ) + 3)))
+
+private lemma g₃_nonneg (n : ℕ) : 0 ≤ g₃ n := by
+  unfold g₃
+  have hn3 : (3 : ℝ) ≤ (n : ℝ) + 3 := by have := Nat.cast_nonneg (α := ℝ) n; linarith
+  have hlog : 1 < Real.log ((n : ℝ) + 3) := by
+    rw [Real.lt_log_iff_exp_lt (by linarith)]
+    calc Real.exp 1 < 2.7182818286 := Real.exp_one_lt_d9
+      _ ≤ (n : ℝ) + 3 := by linarith
+  have hll : 0 ≤ Real.log (Real.log ((n : ℝ) + 3)) := Real.log_nonneg hlog.le
+  refine div_nonneg (by norm_num) ?_
+  refine mul_nonneg (mul_nonneg (by linarith) ?_) hll
+  exact le_of_lt (lt_trans one_pos hlog)
+
+private lemma g₃_antitone : ∀ ⦃m n : ℕ⦄, 0 < m → m ≤ n → g₃ n ≤ g₃ m := by
+  intro m n _ hmn
+  unfold g₃
+  have hmc : (m : ℝ) ≤ (n : ℝ) := by exact_mod_cast hmn
+  have hmn3 : ((m : ℝ) + 3) ≤ ((n : ℝ) + 3) := by linarith
+  have hlogm : 1 < Real.log ((m : ℝ) + 3) := by
+    rw [Real.lt_log_iff_exp_lt (by have := Nat.cast_nonneg (α := ℝ) m; linarith)]
+    calc Real.exp 1 < 2.7182818286 := Real.exp_one_lt_d9
+      _ ≤ (m : ℝ) + 3 := by have := Nat.cast_nonneg (α := ℝ) m; linarith
+  have hlogm0 : 0 < Real.log ((m : ℝ) + 3) := lt_trans one_pos hlogm
+  have hllm0 : 0 < Real.log (Real.log ((m : ℝ) + 3)) := Real.log_pos hlogm
+  have hDm : 0 < ((m : ℝ) + 3) * Real.log ((m : ℝ) + 3) * Real.log (Real.log ((m : ℝ) + 3)) :=
+    mul_pos (mul_pos (by have := Nat.cast_nonneg (α := ℝ) m; linarith) hlogm0) hllm0
+  apply one_div_le_one_div_of_le hDm
+  have hlogmn : Real.log ((m : ℝ) + 3) ≤ Real.log ((n : ℝ) + 3) :=
+    Real.log_le_log (by have := Nat.cast_nonneg (α := ℝ) m; linarith) hmn3
+  have hllmn : Real.log (Real.log ((m : ℝ) + 3)) ≤ Real.log (Real.log ((n : ℝ) + 3)) :=
+    Real.log_le_log hlogm0 hlogmn
+  exact mul_le_mul
+    (mul_le_mul hmn3 hlogmn hlogm0.le (by have := Nat.cast_nonneg (α := ℝ) n; linarith))
+    hllmn hllm0.le
+    (mul_nonneg (by have := Nat.cast_nonneg (α := ℝ) n; linarith) (le_trans hlogm0.le hlogmn))
+
+/-- The condensed term `2^k · g₃(2^k)` dominates `(2 log 2)⁻¹ · f₂ k`, a constant multiple
+    of the first-tier log-harmonic term.  Valid for `k ≥ 2` (so `2^k ≥ 4`, giving both
+    `2^k + 3 ≤ 2^{k+1}` and `log(2^k+3) > 1`). -/
+private lemma cond_lower₃ (k : ℕ) (hk : 2 ≤ k) :
+    (1 / (2 * Real.log 2)) * f₂ k ≤ (2 : ℝ) ^ k * g₃ (2 ^ k) := by
+  have hlog2 : (0 : ℝ) < Real.log 2 := Real.log_pos (by norm_num)
+  have hlog2_le : Real.log 2 ≤ 1 := le_of_lt (lt_of_lt_of_le Real.log_two_lt_d9 (by norm_num))
+  have hkR : (0 : ℝ) ≤ (k : ℝ) := Nat.cast_nonneg k
+  have hpow : (0 : ℝ) < (2 : ℝ) ^ k := by positivity
+  have h4 : (4 : ℝ) ≤ (2 : ℝ) ^ k := by
+    calc (4 : ℝ) = 2 ^ 2 := by norm_num
+      _ ≤ 2 ^ k := pow_le_pow_right₀ (by norm_num) hk
+  have hlogk2 : 0 < Real.log ((k : ℝ) + 2) := Real.log_pos (by linarith)
+  set b : ℝ := (2 : ℝ) ^ k + 3 with hbdef
+  have hb : (7 : ℝ) ≤ b := by rw [hbdef]; linarith
+  have hb0 : 0 < b := by linarith
+  set L : ℝ := Real.log b with hLdef
+  have hL1 : 1 < L := by
+    rw [hLdef, Real.lt_log_iff_exp_lt hb0]
+    calc Real.exp 1 < 2.7182818286 := Real.exp_one_lt_d9
+      _ ≤ b := by linarith
+  have hL0 : 0 < L := lt_trans one_pos hL1
+  set LL : ℝ := Real.log L with hLLdef
+  have hLL0 : 0 < LL := by rw [hLLdef]; exact Real.log_pos hL1
+  -- factor bounds
+  have hb_le : b ≤ (2 : ℝ) ^ (k + 1) := by rw [hbdef, pow_succ]; nlinarith [h4]
+  have hL_le : L ≤ ((k : ℝ) + 2) * Real.log 2 := by
+    have hble2 : b ≤ (2 : ℝ) ^ (k + 2) := by rw [hbdef, pow_succ, pow_succ]; nlinarith [h4]
+    calc L = Real.log b := hLdef
+      _ ≤ Real.log ((2 : ℝ) ^ (k + 2)) := Real.log_le_log hb0 hble2
+      _ = ((k : ℝ) + 2) * Real.log 2 := by rw [Real.log_pow]; push_cast; ring
+  have hLL_le : LL ≤ Real.log ((k : ℝ) + 2) := by
+    have h2 : ((k : ℝ) + 2) * Real.log 2 ≤ (k : ℝ) + 2 := by nlinarith [hlog2_le, hkR]
+    calc LL = Real.log L := hLLdef
+      _ ≤ Real.log (((k : ℝ) + 2) * Real.log 2) := Real.log_le_log hL0 hL_le
+      _ ≤ Real.log ((k : ℝ) + 2) := Real.log_le_log (mul_pos (by linarith) hlog2) h2
+  -- product bound: `b·L·LL ≤ 2^k · (2 log2 · (k+2) · log(k+2))`
+  have hprod : b * L * LL
+      ≤ (2 : ℝ) ^ k * (2 * Real.log 2 * (((k : ℝ) + 2) * Real.log ((k : ℝ) + 2))) := by
+    have hstep : b * L * LL
+        ≤ (2 : ℝ) ^ (k + 1) * (((k : ℝ) + 2) * Real.log 2) * Real.log ((k : ℝ) + 2) := by
+      apply mul_le_mul _ hLL_le hLL0.le
+        (mul_nonneg (by positivity) (mul_nonneg (by positivity) hlog2.le))
+      · exact mul_le_mul hb_le hL_le hL0.le (by positivity)
+    calc b * L * LL
+        ≤ (2 : ℝ) ^ (k + 1) * (((k : ℝ) + 2) * Real.log 2) * Real.log ((k : ℝ) + 2) := hstep
+      _ = (2 : ℝ) ^ k * (2 * Real.log 2 * (((k : ℝ) + 2) * Real.log ((k : ℝ) + 2))) := by
+          rw [pow_succ]; ring
+  -- assemble
+  have hcast : ((2 ^ k : ℕ) : ℝ) = (2 : ℝ) ^ k := by push_cast; ring
+  have hg : (2 : ℝ) ^ k * g₃ (2 ^ k) = (2 : ℝ) ^ k / (b * L * LL) := by
+    rw [hLLdef, hLdef, hbdef]; unfold g₃; rw [hcast, mul_one_div]
+  have hden1 : 0 < 2 * Real.log 2 * (((k : ℝ) + 2) * Real.log ((k : ℝ) + 2)) :=
+    mul_pos (mul_pos (by norm_num) hlog2) (mul_pos (by linarith) hlogk2)
+  have hden2 : 0 < b * L * LL := mul_pos (mul_pos hb0 hL0) hLL0
+  have hf2 : f₂ k = 1 / (((k : ℝ) + 2) * Real.log ((k : ℝ) + 2)) := rfl
+  rw [hg, hf2, one_div_mul_one_div, div_le_div_iff hden1 hden2, one_mul]
+  -- goal is now exactly `b·L·LL ≤ 2^k · (2 log2 · (k+2) · log(k+2))`
+  exact hprod
+
+private lemma not_summable_g₃ : ¬ Summable g₃ := by
+  intro hsum
+  -- Cauchy condensation
+  have hcond : Summable (fun k : ℕ => (2 : ℝ) ^ k * g₃ (2 ^ k)) :=
+    (summable_condensed_iff_of_nonneg g₃_nonneg g₃_antitone).mpr hsum
+  -- restrict to the `k ≥ 2` tail where the comparison bound holds
+  have hcond2 : Summable (fun k : ℕ => (2 : ℝ) ^ (k + 2) * g₃ (2 ^ (k + 2))) :=
+    (summable_nat_add_iff 2).mpr hcond
+  have hlog2 : (0 : ℝ) < Real.log 2 := Real.log_pos (by norm_num)
+  have hconst_pos : 0 < 1 / (2 * Real.log 2) := div_pos one_pos (by positivity)
+  -- dominate the (scaled, shifted) log-harmonic term by the condensed term
+  have hcomp : Summable (fun k : ℕ => (1 / (2 * Real.log 2)) * f₂ (k + 2)) := by
+    refine Summable.of_nonneg_of_le (fun k => ?_) (fun k => ?_) hcond2
+    · exact mul_nonneg hconst_pos.le (f₂_nonneg _)
+    · exact cond_lower₃ (k + 2) (by omega)
+  -- strip the constant and the shift to recover `Summable f₂`, contradicting its divergence
+  have hf2shift : Summable (fun k : ℕ => f₂ (k + 2)) := by
+    have hm := hcomp.mul_left (2 * Real.log 2)
+    refine hm.congr (fun k => ?_)
+    have h2l : (2 * Real.log 2) ≠ 0 := by positivity
+    rw [← mul_assoc, mul_one_div, div_self h2l, one_mul]
+  exact not_summable_f₂ ((summable_nat_add_iff 2).mp hf2shift)
+
+/-- **The iterated-log (second-tier Bertrand) series `∑ 1/(n · log n · log log n)`
+    diverges.**  This is the divergence borderline one logarithm deeper than
+    `not_summable_one_div_nat_mul_log`, and it formalises the profile
+    `f(N) ≍ N/(log N · log log N)` that is `o(N/log N)` yet has a divergent reciprocal
+    sum — the exact obstruction to strengthening the weak `RequiredBound` threshold of
+    Erdős #3 into a provable sufficient condition.  Together with the convergent
+    `summable_one_div_nat_mul_log_mul_const`, it brackets the borderline on the second
+    logarithmic axis.  Proof: Cauchy condensation absorbs one logarithm, reducing to the
+    first-tier log-harmonic divergence `not_summable_one_div_nat_mul_log`. -/
+theorem not_summable_one_div_nat_mul_log_mul_loglog :
+    ¬ Summable (fun n : ℕ => 1 / ((n : ℝ) * Real.log n * Real.log (Real.log n))) := by
+  intro hsum
+  -- shift by three (dropping `n = 0, 1, 2`, where the summand is junk `0`) lands on `g₃`
+  have hshift : Summable g₃ := by
+    refine ((summable_nat_add_iff 3).mpr hsum).congr (fun n => ?_)
+    unfold g₃; push_cast; ring
+  exact not_summable_g₃ hshift
+
 end Erdos3Bertrand
