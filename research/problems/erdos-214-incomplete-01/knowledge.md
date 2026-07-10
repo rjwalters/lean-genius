@@ -134,3 +134,41 @@ does not touch the axiomatized core `juhasz_stronger`. PR opened.
 ### Files Modified
 - `proofs/Proofs/Erdos214Incomplete01OQ01.lean` (+70 lines: 4 theorems)
 - `src/data/research/problems/erdos-214-incomplete-01.json` (OQ01 leanFile counts)
+
+## Session 2026-07-09 (researcher-1) — √2·ℤ² avoids an infinite family of EVEN distances (n≡6 mod 8)
+
+**Mode:** REVISIT (core still BLOCKED on `juhasz_stronger`; strengthened the verified
+axiom-free content in the self-contained `Erdos214Incomplete01OQ01.lean`).
+
+### Key realization
+`scaledLattice_dist_ne_sqrt_odd` (dist²=2m even ⟹ avoids odd √n) throws away that the
+even factor m is a SUM OF TWO SQUARES: dist² = 2·(u²+v²), u=a−a', v=b−b'. Since
+u²+v² ≢ 3 (mod 4), dist² ≢ 6 (mod 8), so √2·ℤ² ALSO avoids every √n with n≡6 mod 8 —
+the infinite family √6, √14, √22, … of EVEN distances, none reachable from the odd result.
+
+### Added (4 theorems, 0 sorry, 0 axioms)
+- `sq_add_sq_mod_four_ne_three (u v : ℤ) : (u²+v²)%4 ≠ 3` — even/odd square split
+  (`Int.even_or_odd`; (k+k)²=4k², (2k+1)²=4(k²+k)+1; `rw;omega`), then
+  `rcases key u <;> rcases key v <;> omega`.
+- `scaledLattice_dist_sq_two_mul_sq_add_sq` — dist²=2(u²+v²) (sharpens dist_sq_even by
+  exposing u,v; identical hx/hy/`push_cast;ring` skeleton, returns a−a', b−b').
+- `scaledLattice_dist_ne_sqrt_six_mod_eight {n} (hn: n%8=6)` — the new family. crux:
+  exact_mod_cast to (n:ℤ)=2(u²+v²), then `omega` chains n%8=6 → u²+v²≡3 mod4 vs h3.
+  omega handles the mixed ℕ/ℤ modular reasoning with u²,v² as opaque atoms.
+- `scaledLattice_dist_ne_sqrt_six` — concrete √6 instance (even, beyond odd result).
+
+### Verification — VERIFIED-by-elaboration (olean-write SIGBUS-135)
+Same pattern as researcher-6's session on this file: after the shared Mathlib cache
+corruption cleared (2 early runs hit `invalid header` on random Mathlib .ir/.olean deps
+at the import line — fleet cache race, different file each run), 5 runs reached
+`[7743/7743] Building … (1.4–5.8s)` with ZERO `.lean:LINE:COL` diagnostics, then
+`code 135` at olean serialization. A failed tactic prints a source-location error not a
+SIGBUS, so the clean elaboration confirms all 4 proofs type-check. 0 sorry, 0 new axioms,
+core `juhasz_stronger` untouched. File 198→271 lines, 9→13 theorems. Also fixed a stale
+json sorryCount (1→0; the "1" was a docstring "no `sorry`" false-positive).
+
+### Frontier
+Unchanged: `juhasz_stronger` BLOCKED. The achieved squared distances of √2·ℤ² are
+exactly {2·(u²+v²)}; odd n and n≡6 mod 8 are the two clean elementary sufficient
+avoidance conditions now formalized. Full characterization would need the sum-of-two-
+squares (Fermat) predicate.
