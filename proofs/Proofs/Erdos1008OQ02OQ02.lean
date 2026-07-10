@@ -378,6 +378,71 @@ theorem kst_edge_bound_of_free (G : SimpleGraph V) [DecidableRel G.Adj] [Nonempt
     rw [Nat.cast_sub ht, Nat.cast_one]
   rwa [hcast] at h
 
+/-- **Leading-order Kővári–Sós–Turán asymptotic for K_{2,t}.**
+
+The closed-form root bound `4m ≤ n·(1 + √(1 + 4(t-1)(n-1)))` still carries the
+exact quadratic-formula surd.  Its textbook leading-order consequence is the
+clean `n^{3/2}` estimate
+
+      ex(n ; K_{2,t}) ≤ ½·(√(t-1)·n^{3/2} + n),
+
+here written with `n^{3/2}` spelled out as `n·√n` to stay `Real.sqrt`-elementary
+(no `rpow`).  The only analytic input beyond `kst_edge_bound_of_free` is the
+surd relaxation
+
+      √(1 + 4(t-1)(n-1)) ≤ 2·√(t-1)·√n + 1,
+
+valid because squaring the right side gives `4(t-1)n + 4√(t-1)√n + 1`, which
+exceeds `1 + 4(t-1)(n-1) = 1 + 4(t-1)n - 4(t-1)` by `4√(t-1)√n + 4(t-1) ≥ 0`.
+Multiplying through by `n` and dividing by `4` yields the stated bound.  This is
+the explicit `ℝ`-valued form of the standard `ex(n ; K_{s,t}) = O(n^{2-1/s})`
+Kővári–Sós–Turán growth at `s = 2`. -/
+theorem kst_edge_bound_of_free_asymptotic (G : SimpleGraph V) [DecidableRel G.Adj]
+    [Nonempty V] (t : ℕ) (ht : 1 ≤ t) (hfree : ¬ HasK2t G t) :
+    (G.edgeFinset.card : ℝ) ≤
+      (1 / 2) * (Real.sqrt ((t : ℝ) - 1) * (Fintype.card V : ℝ)
+          * Real.sqrt (Fintype.card V : ℝ) + (Fintype.card V : ℝ)) := by
+  have h := kst_edge_bound_of_free G t ht hfree
+  set nR := (Fintype.card V : ℝ) with hnR
+  set κr := (t : ℝ) - 1 with hκr
+  -- Basic positivity: `n ≥ 1` and `κ = t-1 ≥ 0`.
+  have hn1 : (1 : ℝ) ≤ nR := by
+    have hpos : 1 ≤ Fintype.card V := Fintype.card_pos
+    rw [hnR]; exact_mod_cast hpos
+  have hn0 : (0 : ℝ) ≤ nR := by linarith
+  have hκr0 : (0 : ℝ) ≤ κr := by
+    have h1 : (1 : ℝ) ≤ (t : ℝ) := by exact_mod_cast ht
+    rw [hκr]; linarith
+  -- Square roots of `κr` and `nR`.
+  set sκ := Real.sqrt κr with hsκ
+  set sn := Real.sqrt nR with hsn
+  have hsκ0 : 0 ≤ sκ := Real.sqrt_nonneg _
+  have hsn0 : 0 ≤ sn := Real.sqrt_nonneg _
+  have hsκ2 : sκ ^ 2 = κr := by rw [hsκ]; exact Real.sq_sqrt hκr0
+  have hsn2 : sn ^ 2 = nR := by rw [hsn]; exact Real.sq_sqrt hn0
+  -- The surd relaxation `√(1 + 4κ(n-1)) ≤ 2·sκ·sn + 1`.
+  have hRHSnn : 0 ≤ 2 * sκ * sn + 1 := by positivity
+  -- Expand `(2·sκ·sn + 1)²` and substitute `sκ² = κ`, `sn² = n`.
+  have hexp : (2 * sκ * sn + 1) ^ 2 = 4 * κr * nR + 4 * (sκ * sn) + 1 := by
+    rw [show (2 * sκ * sn + 1) ^ 2 = 4 * sκ ^ 2 * sn ^ 2 + 4 * (sκ * sn) + 1 from by ring,
+      hsκ2, hsn2]
+  have hsqle : 1 + 4 * κr * (nR - 1) ≤ (2 * sκ * sn + 1) ^ 2 := by
+    rw [hexp]; nlinarith [mul_nonneg hsκ0 hsn0, hκr0]
+  have hsqrt_le : Real.sqrt (1 + 4 * κr * (nR - 1)) ≤ 2 * sκ * sn + 1 := by
+    rw [← Real.sqrt_sq hRHSnn]
+    exact Real.sqrt_le_sqrt hsqle
+  -- Feed the relaxation into the root bound and simplify.
+  have hstep : nR * (1 + Real.sqrt (1 + 4 * κr * (nR - 1)))
+      ≤ nR * (2 + 2 * sκ * sn) :=
+    mul_le_mul_of_nonneg_left (by linarith [hsqrt_le]) hn0
+  have hfin : 4 * (G.edgeFinset.card : ℝ)
+      ≤ 2 * nR + 2 * (sκ * nR * sn) := by
+    calc 4 * (G.edgeFinset.card : ℝ)
+        ≤ nR * (1 + Real.sqrt (1 + 4 * κr * (nR - 1))) := h
+      _ ≤ nR * (2 + 2 * sκ * sn) := hstep
+      _ = 2 * nR + 2 * (sκ * nR * sn) := by ring
+  linarith [hfin]
+
 end GraphLevel
 
 end Erdos1008
