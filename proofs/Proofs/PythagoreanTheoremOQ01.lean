@@ -277,6 +277,25 @@ theorem altitude_geometric_mean (hperp : ⟪A - C, B - C⟫ = (0 : ℝ)) :
       = ‖A - B‖ - ‖A - altitudeFoot A B C‖ := by linarith
   rw [hCH, hgA, hBsub]; ring
 
+include hAB in
+/-- **Altitude-on-hypotenuse length.** The altitude from the right-angle vertex has length
+`|CH| = |CA|·|CB| / |AB|` — the product of the legs divided by the hypotenuse. Equivalently,
+`|AB|·|CH| = |CA|·|CB|`, the statement that the triangle's area computed on the hypotenuse
+(`½|AB|·|CH|`) equals its area computed on the legs (`½|CA|·|CB|`). It is the positive square
+root of the altitude geometric-mean relation `|CH|² = |AH|·|HB|` after substituting the two
+segment lengths `|AH| = |CA|²/|AB|` and `|HB| = |CB|²/|AB|`. -/
+theorem altitude_length (hperp : ⟪A - C, B - C⟫ = (0 : ℝ)) :
+    ‖C - altitudeFoot A B C‖ = ‖A - C‖ * ‖B - C‖ / ‖A - B‖ := by
+  have hne := hnorm_ne A B hAB
+  have hgm := altitude_geometric_mean A B C hAB hperp
+  have hAH := dist_A_foot A B C hAB
+  have hHB := dist_foot_B A B C hAB hperp
+  have hlhs : 0 ≤ ‖C - altitudeFoot A B C‖ := norm_nonneg _
+  have hrhs : 0 ≤ ‖A - C‖ * ‖B - C‖ / ‖A - B‖ := by positivity
+  have hsq : ‖C - altitudeFoot A B C‖ ^ 2 = (‖A - C‖ * ‖B - C‖ / ‖A - B‖) ^ 2 := by
+    rw [hgm, hAH, hHB]; field_simp; ring
+  rw [← Real.sqrt_sq hlhs, hsq, Real.sqrt_sq hrhs]
+
 end Geometric
 
 -- ============================================================
