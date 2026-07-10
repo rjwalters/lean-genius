@@ -1,5 +1,28 @@
 [
   {
+    "id": "ann-hallreg4-imports",
+    "proofId": "hall-marriage-theorem-oq-01-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 2
+    },
+    "type": "context",
+    "title": "The Two Imports: Mathlib and the Parent Deficiency File",
+    "content": "Line 1 pulls in all of Mathlib, which supplies the marriage-theorem infrastructure this file leans on: Finset.all_card_le_biUnion_card_iff_exists_injective (Hall's condition ⟹ an injective system of distinct representatives) together with the Finset double-counting lemmas (bipartiteAbove, sum over incidence pairs) used to verify that condition. Line 2 imports the parent entry's Lean file, HallMarriageTheoremOQ01OQ01OQ01, rather than re-deriving its results: this endpoint reuses that file's deficiency calculus — deficiency_eq_zero_iff and maxTransversal_eq_card_of_deficiency_zero — to upgrade the SDR produced here into the statement that the maximum partial transversal of a k-regular family has full size #ι. The import is what makes this a genuine leaf of the oq-01 chain rather than a standalone lemma.",
+    "mathContext": "Depends on Hall's theorem $\\bigl(\\forall S,\\ \\#\\!\\bigcup_{i\\in S} t_i \\ge \\#S\\bigr) \\Rightarrow \\exists\\,f\\ \\text{injective},\\ f(i)\\in t_i$, and on the parent's deficiency identity $\\mathrm{def}(t)=0 \\iff \\max\\#(\\text{partial transversal}) = \\#\\iota$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Hall's marriage theorem",
+      "systems of distinct representatives",
+      "deficiency version of Hall",
+      "module dependencies"
+    ],
+    "prerequisites": [
+      "Lean import system",
+      "Mathlib"
+    ]
+  },
+  {
     "id": "ann-hallreg-overview",
     "proofId": "hall-marriage-theorem-oq-01-oq-01-oq-01-oq-01",
     "range": {
