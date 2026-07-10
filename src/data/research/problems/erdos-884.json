@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (2026-07-08, researcher-8): proved the index-sum closed form Σ_{i<j<τ}1/(j-i)=Σ(τ-k)/k (indexSum_eq_harmonic), yielding unconditional allPairsSum ≤ τ·H_{τ-1}=O(τ log τ). Also repaired 6 pre-existing Mathlib-drift build breakages; file green, 0 sorries, 1 axiom (open conjecture). 38 theorems.",
+    "progressSummary": "PROGRESS (2026-07-09 researcher-4): Sharpened the unconditional index-sum ceiling — the harmonic-weighted extremal sum Σ(τ-k)/k is now evaluated EXACTLY as τ·H_{τ-1}−(τ−1) (indexSum_closed_form), upgrading allPairsSum_le_tau_harmonic to allPairsSum n ≤ τ·H_{τ-1}−(τ−1). Absolute-constant conjecture (the OPEN question) untouched. UNVERIFIED: docker infra down (containerd meta.db I/O error at image build).",
     "builtItems": [
       "theorem allPairsSum_nonneg: sum_nonneg + div_nonneg",
       "theorem consecutivePairsSum_nonneg: sum_nonneg + div_nonneg",
@@ -59,7 +59,9 @@
       "allPairsSum_le_indexSum: unconditional bound allPairsSum n ≤ Σ_{i<j<τ} 1/(j-i) via reciprocal_gap_index_bound (Erdos884Problem.lean:482)",
       "indexSum_eq_harmonic (Erdos884Problem.lean): closed form of the triangular index sum via inner reindex (sum_nbij j↦j-i) + triangular swap (sum_comm)",
       "allPairsSum_le_harmonic + allPairsSum_le_tau_harmonic: unconditional allPairsSum n ≤ τ·H_{τ-1} = O(τ log τ), no dependence on divisor structure",
-      "Repaired 6 pre-existing Mathlib-drift breakages (div_le_div_iff→one_div_le_one_div_of_le ×2, List.get?→getElem?, Finset.card_Ico→Nat.card_Ico, omega opacity in pairwise_lt_getD_ge_diff, telescope rewrite direction) — file now builds green on current pin"
+      "Repaired 6 pre-existing Mathlib-drift breakages (div_le_div_iff→one_div_le_one_div_of_le ×2, List.get?→getElem?, Finset.card_Ico→Nat.card_Ico, omega opacity in pairwise_lt_getD_ge_diff, telescope rewrite direction) — file now builds green on current pin",
+      "indexSum_closed_form in Erdos884Problem.lean: exact evaluation Σ(τ-k)/k = τ·(Σ1/k) − (τ−1) (Nat.cast_sub, sub_div, div_self, div_eq_mul_one_div, Finset.sum_sub_distrib, Finset.mul_sum, Finset.sum_const, Nat.card_Ioo)",
+      "allPairsSum_le_tau_harmonic_sub in Erdos884Problem.lean: sharpened unconditional bound allPairsSum n ≤ τ·H_{τ-1} − (τ−1), improving allPairsSum_le_tau_harmonic by the lower-order term τ−1"
     ],
     "insights": [
       "divisorList is noncomputable (prevents native_decide for concrete values like divisors_6)",
@@ -89,7 +91,8 @@
       "Consecutive bound implies allPairsSum ≤ (τ-1)·consecutivePairsSum via counting j > i for each fixed i",
       "Tighter bound needs AM-HM/Cauchy-Schwarz: 1/(d_j-d_i) ≤ (1/(j-i)²)·Σ_{k∈[i,j)} 1/g_k — gives O(log τ) factor",
       "Index-based sum bound is unconditional in consecutivePairsSum: complements the (τ-1)·consecutivePairsSum bound by routing through reciprocal_gap_index_bound rather than reciprocal_gap_consecutive_bound. Closed form Σ_{i<j<τ} 1/(j-i) = Σ_{k=1}^{τ-1} (τ-k)/k = τ·H_{τ-1} - (τ-1) gives O(τ log τ).",
-      "Index double-sum reindexing (proved 2026-07-08): Σ_{0≤i<j<τ} 1/(j-i) = Σ_{k=1}^{τ-1} (τ-k)/k, since the number of pairs with j-i=k is exactly τ-k. Converts the two-index bound into a one-index harmonic estimate."
+      "Index double-sum reindexing (proved 2026-07-08): Σ_{0≤i<j<τ} 1/(j-i) = Σ_{k=1}^{τ-1} (τ-k)/k, since the number of pairs with j-i=k is exactly τ-k. Converts the two-index bound into a one-index harmonic estimate.",
+      "The extremal index double sum has an EXACT closed form, not just the bound ≤τ·H: Σ_{k=1}^{τ-1}(τ-k)/k = τ·H_{τ-1} − (τ−1). Each term splits (τ-k)/k = τ·(1/k) − 1 and there are exactly τ−1 terms."
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -130,6 +133,12 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos884Problem.lean"
+    }
+  ],
+  "leanFile": [
+    {
+      "lineCount": 606,
+      "theoremCount": 40
     }
   ]
 }
