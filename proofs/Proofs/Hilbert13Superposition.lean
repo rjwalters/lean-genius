@@ -190,16 +190,32 @@ def SepticRootFunction : (ℝ × ℝ × ℝ) → ℝ := fun ⟨a, b, c⟩ =>
   -- This is a multivalued function; we take one branch
   0 -- Placeholder; actual definition requires root selection
 
+/-- **Predicate: `F` solves the septic.**
+
+`F` returns an actual root of the Bring-Jerrard septic
+`x⁷ + ax³ + bx² + cx + 1 = 0` for every choice of parameters `(a, b, c)`. -/
+def SolvesSeptic (F : ℝ × ℝ × ℝ → ℝ) : Prop :=
+  ∀ a b c : ℝ, BringJerrardSeptic a b c (F (a, b, c)) = 0
+
+/-- **Predicate: `F` is expressible in radicals.**
+
+`F` is built from the parameters `(a, b, c)` using only the field operations
+`+, -, *, /` and radical extractions. This is an abstract (axiomatized) predicate:
+a complete formalization would supply an inductive syntax of radical expressions
+together with its interpretation. Stating it abstractly is what lets
+`no_radical_solution_septic` below be a genuine, *consistent* assumption rather
+than the vacuous `¬∃ F, True` placeholder it replaced (that placeholder was
+logically equivalent to `False`). -/
+axiom ExpressibleInRadicals : (ℝ × ℝ × ℝ → ℝ) → Prop
+
 /-- **Abel-Ruffini Consequence for Degree 7**
 
 There is no general algebraic formula (in radicals) for solving the septic
 equation. This follows from Galois theory and was proven by Abel (1824)
-and Ruffini (1799). -/
+and Ruffini (1799): no formula built from the parameters using field operations
+and radicals returns a root of the general septic. -/
 axiom no_radical_solution_septic :
-    ¬∃ (F : ℝ × ℝ × ℝ × ℝ × ℝ × ℝ × ℝ → ℝ),
-    -- F is expressible using only +, -, *, /, and radicals
-    -- and F gives a root of the general septic
-    True
+    ¬∃ F : ℝ × ℝ × ℝ → ℝ, ExpressibleInRadicals F ∧ SolvesSeptic F
 
 /-! ═══════════════════════════════════════════════════════════════════════════════
 PART IV: SMOOTH FUNCTIONS - WHERE HILBERT'S INTUITION HOLDS
