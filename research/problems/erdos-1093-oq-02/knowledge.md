@@ -10,7 +10,49 @@ of `0 ≤ i < k` with `n − i` being `k`-smooth. The current record is
 **OQ-02:** Is `9` the maximum possible deficiency over all admissible `(n,k)`,
 or do higher values occur? (The universal upper-bound direction is open.)
 
-## Status: OPEN (universal bound, now confined to k≥19); existence half machine-verified.
+## Status: OPEN (universal bound, now confined to k≥20); existence half machine-verified.
+
+---
+
+## Session 2026-07-09 (researcher-7) — Section XX: location bound CLOSES k=19 → frontier k≥20
+
+**Mode:** REVISIT (RICH tier). **Outcome:** progress — strict advance (frontier k≥19→k≥20),
+a one-step continuation of Section XIX. Like k=18 this is *not* a byte-mirror (C(n,19) is not
+uniformly even), but the closing disjunction is actually **simpler** than k=18.
+
+### Key realization
+The same effective location bound advances to k=19. A deficiency `≥ 10` forces the window-floor
+power bound `(n-18)^10 ≤ 19! < 52^10`, so `n ≤ 69`; with the admissibility floor `n ≥ 38 (=2·19)`
+the window is `n ∈ {38,…,69}` (32 values). By Kummer/Lucas `C(n,19)` is odd exactly when
+`19 = 10011₂` is a binary submask of `n`, i.e. at `n = 51, 55, 59, 63`. **All four odd binomials
+are divisible by 3**, so the two-prime disjunction `2 ∣ C(n,19) ∨ 3 ∣ C(n,19)` already covers the
+whole window — one prime fewer than k=18, which needed 5 as well.
+
+### What I did — Section XX (6 theorems, 0 sorry, 0 new axioms)
+- `factorial_19_lt_52_pow_ten` — `19! < 52^10` (kernel `decide`, ofReduceBool-free).
+- `smallPrime_dvd_choose_19_of_range` — `2 ∣ C(n,19) ∨ 3 ∣ C(n,19)` for `38 ≤ n ≤ 69` (`interval_cases <;> native_decide`).
+- `not_admissible_k19_of_range` — the 32 window pairs are all inadmissible.
+- `deficiency_le_nine_of_k_eq_19` — the location bound closes k=19.
+- `deficiency_le_nine_of_k_le_19` — combines `k≤18` (Section XIX) with `k=19`.
+- `maximalDeficiencyIs_nine_iff_kGe20` — sharpened reduction: open content lives at `k ≥ 20`.
+
+### Arithmetic (Python-verified before Lean)
+- `19! = 121645100408832000 < 144555105949057024 = 52^10`; smallest m with m^10 > 19! is 52.
+- window floor: `(n-18)^10 ≤ 19! < 52^10 ⟹ n-18 < 52 ⟹ n ≤ 69`; floor `n ≥ 38`.
+- odd C(n,19) at n=51,55,59,63; each divisible by 3; evens by 2 ⟹ {2,3} covers {38,…,69}.
+
+### Verification — UNVERIFIED-by-build (persistent fleet SIGBUS-135, parent olean-write)
+3 attempts; the UNMODIFIED parent `Erdos1093Problem.lean` elaborates fully and cleanly in ~2s,
+then crashes at olean-WRITE with SIGBUS-135 (with active cache corruption 'removing corrupted file'),
+never reaching the OQ02 file. Environmental block, not a code error — identical to Sections XVI–XIX,
+later confirmed clean. All 6 proofs are structural mirrors of the verified/merged Section XIX
+theorems, differing only in the Python-verified constants (18→19, 39→52, 36→38, 55→69) and the
+simpler {2,3} prime set.
+
+### Files Modified
+- `proofs/Proofs/Erdos1093ProblemOQ02.lean` (Section XX, +96 lines: 1300→1396, 59→65 theorems)
+- `src/data/research/problems/erdos-1093-oq-02.json` (counts + progressSummary)
+- `research/problems/erdos-1093-oq-02/knowledge.md`
 
 ---
 
