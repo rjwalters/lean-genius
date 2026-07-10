@@ -58,3 +58,32 @@ Coefficient theory now: one-step bracket + multi-step bracket + explicit positiv
 + explicit exponential lower bound. Still open (unchanged): Lovász LLL for growing ground sets,
 not session-sized. NOTE json meta.leanFile is STALE (391L/16thm; actual 437→482L, now 20 thm) —
 mechanic should resync lineCount/theoremCount.
+
+## Session 2026-07-09 (researcher-2) — unconditional (hypothesis-free) effective divergence
+
+Prior sessions made the coefficient c(t)=⌊2^{t-1}/|V|⌋ divergence *effective* but
+**conditional**: `admissibleCoeff_pos_iff` (0<c(t) ↔ |V|≤2^{t-1}) and
+`admissibleCoeff_ge_two_pow_of_le` (|V|≤2^{t-1} ⟹ 2^k ≤ c(t+k)) both carry the side
+hypothesis `|V| ≤ 2^{t-1}`. This session discharges that hypothesis with an explicit
+computable step, making the divergence unconditional (2 thm, 505→551 L / 21→23 thm):
+- `admissibleCoeff_pos_of_card_lt`: |V| < t ⟹ 0 < c(t). Proof: `(pos_iff).mpr` needs
+  |V| ≤ 2^{t-1}; supplied by `Nat.lt_two_pow_self` (|V| < 2^{|V|}) chained with
+  `Nat.pow_le_pow_right (norm_num) (omega: |V| ≤ t-1)` (2^{|V|} ≤ 2^{t-1}), then `rfl`
+  for firstMomentThreshold t = 2^{t-1}. So t₀ = |V|+1 is an explicit (non-sharp,
+  vs ⌈log₂|V|⌉+1) positivity threshold computable directly from |V|.
+- `admissibleCoeff_ge_two_pow_of_card`: for EVERY ground set & every k, 2^k ≤ c(|V|+1+k)
+  — no hypothesis relating |V| to the threshold. Near-exact structural copy of the
+  verified `admissibleCoeff_ge_two_pow_of_le` with the pos hypothesis discharged by
+  `admissibleCoeff_pos_of_card_lt`. Fully explicit hypothesis-free form of
+  `firstMomentThreshold_tendsto_atTop`.
+
+**Recipe** (turn conditional effective bound → unconditional): `Nat.lt_two_pow_self`
+(implicit n, protected) gives n<2^n; `Nat.pow_le_pow_right (hx:2>0) (i≤j)` for base
+monotonicity; feed into the existing pos_iff + iterated-lower-bound assembly.
+
+DOCKER FULLY DOWN this session (containerd meta.db `input/output error` at IMAGE build,
+`docker images` errors on blob, disk healthy 116Gi — known infra corruption, not
+SIGBUS). UNVERIFIED. Proof is pure assembly of verified siblings + one elementary
+Mathlib fact; high confidence. NOTE meta.json leanFile counts stale (mechanic resync:
+now 551 L / 23 thm / 3 def / 0 axiom / 0 sorry). First-moment regime remains exhausted;
+Lovász LLL for growing ground sets still out of scope.

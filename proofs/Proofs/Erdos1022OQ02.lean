@@ -502,4 +502,50 @@ theorem admissibleCoeff_bracket (hV : 0 < Fintype.card V) (t : ℕ) (ht : 1 ≤ 
   have hpow : 1 ≤ 2 ^ k := Nat.one_le_two_pow
   exact ⟨hlow, by omega⟩
 
+/-- **Unconditional positivity step (explicit `t₀` for every ground set).**  The
+    positivity criterion `admissibleCoeff_pos_iff` requires the side condition
+    `|V| ≤ 2^{t-1}`; here we discharge it with a *concrete, computable* step valid
+    for arbitrary ground sets.  As soon as `t` exceeds `|V|`, the elementary bound
+    `|V| < 2^{|V|} ≤ 2^{t-1}` supplies the hypothesis, so
+
+        `|V| < t  ⟹  0 < c(t)`.
+
+    Thus `t₀ = |V| + 1` is an explicit positivity threshold that does not require
+    knowing where `2^{t-1}` overtakes `|V|` — the crude gap `2^{|V|} > |V|` already
+    forces it.  (This `t₀` is far from the sharp `⌈log₂|V|⌉ + 1`, but it is
+    unconditional and computable directly from `|V|`.) -/
+theorem admissibleCoeff_pos_of_card_lt (hV : 0 < Fintype.card V) (t : ℕ)
+    (ht : Fintype.card V < t) :
+    0 < firstMomentThreshold t / Fintype.card V := by
+  refine (admissibleCoeff_pos_iff hV t).mpr ?_
+  have h1 : Fintype.card V < 2 ^ (Fintype.card V) := Nat.lt_two_pow_self
+  have h2 : 2 ^ (Fintype.card V) ≤ 2 ^ (t - 1) :=
+    Nat.pow_le_pow_right (by norm_num) (by omega)
+  calc Fintype.card V ≤ 2 ^ (Fintype.card V) := le_of_lt h1
+    _ ≤ 2 ^ (t - 1) := h2
+    _ = firstMomentThreshold t := rfl
+
+/-- **Unconditional effective exponential divergence.**  Feeding the explicit
+    positivity step `admissibleCoeff_pos_of_card_lt` into the iterated lower bound
+    `admissibleCoeff_two_pow_mul_le` removes *all* side conditions relating `|V|` to
+    the threshold: for every nonempty ground set and every target exponent `k`,
+
+        `2^k ≤ c(|V| + 1 + k)`.
+
+    This is the fully explicit, hypothesis-free form of the divergence
+    `firstMomentThreshold_tendsto_atTop` / `exists_admissible_coeff`: it names, for
+    each `k`, the concrete step `|V| + 1 + k` at which the admissible sparseness
+    coefficient of a bounded ground set already exceeds `2^k`.  Proof: `1 ≤ c(|V|+1)`
+    from the positivity step, then scale the iterated bound `2^k·c(|V|+1) ≤ c(|V|+1+k)`. -/
+theorem admissibleCoeff_ge_two_pow_of_card (hV : 0 < Fintype.card V) (k : ℕ) :
+    2 ^ k ≤ firstMomentThreshold (Fintype.card V + 1 + k) / Fintype.card V := by
+  have ht : (1 : ℕ) ≤ Fintype.card V + 1 := by omega
+  have hpos : 0 < firstMomentThreshold (Fintype.card V + 1) / Fintype.card V :=
+    admissibleCoeff_pos_of_card_lt hV (Fintype.card V + 1) (by omega)
+  have hmul := admissibleCoeff_two_pow_mul_le hV (Fintype.card V + 1) ht k
+  calc 2 ^ k = 2 ^ k * 1 := (mul_one _).symm
+    _ ≤ 2 ^ k * (firstMomentThreshold (Fintype.card V + 1) / Fintype.card V) :=
+        Nat.mul_le_mul (le_refl _) hpos
+    _ ≤ firstMomentThreshold (Fintype.card V + 1 + k) / Fintype.card V := hmul
+
 end Erdos1022OQ02
