@@ -302,6 +302,40 @@ theorem zeta_two_sq_transcendental :
   have := zeta_even_pow_transcendental 1 2 one_pos (by norm_num)
   simpa using this
 
+/-- **Dividing a transcendental by a nonzero rational preserves transcendence over ℚ.**
+
+    The division companion of `transcendental_ratCast_mul`: since `x / q = q⁻¹ · x` and
+    `q⁻¹ ≠ 0`, transcendence of `x` transfers to `x / q`.  Reusable engine for the
+    normalised even-zeta values (e.g. `ζ(2n)/2`, `ζ(2n)/qₙ`). -/
+theorem transcendental_div_ratCast {x : ℝ} (hx : Transcendental ℚ x) {q : ℚ}
+    (hq : q ≠ 0) : Transcendental ℚ (x / (q : ℝ)) := by
+  have hxq : x / (q : ℝ) = ((q⁻¹ : ℚ) : ℝ) * x := by push_cast; ring
+  rw [hxq]
+  exact transcendental_ratCast_mul hx (inv_ne_zero hq)
+
+/-- **The class `ℚ∖{0} · π^(2n)` is closed under scaling by nonzero rationals — axiom-free.**
+    For any `c ∈ ℚ∖{0}`, `c · ζ(2n) = (c·qₙ) · π^(2n)` is again a nonzero-rational multiple
+    of the same positive even power of π.  Together with `zeta_even_product_eq_rat_mul_pi_pow`
+    (products) and `zeta_even_pow_eq_rat_mul_pi_pow` (powers) this completes the algebraic
+    picture: the even zeta values live in a set closed under ℚ*-scaling, products, and powers.
+    Uses only Euler's closed form (`zeta_even_eq_rat_mul_pi_pow`), **no** `hermite_lindemann`. -/
+theorem zeta_even_ratCast_mul_eq_rat_mul_pi_pow (n : ℕ) (hn : 0 < n) (c : ℚ) (hc : c ≠ 0) :
+    ∃ q : ℚ, q ≠ 0 ∧
+      (c : ℝ) * (∑' k : ℕ, 1 / (k : ℝ) ^ (2 * n)) = (q : ℝ) * π ^ (2 * n) := by
+  obtain ⟨qn, hqn, hq⟩ := zeta_even_eq_rat_mul_pi_pow n hn
+  refine ⟨c * qn, mul_ne_zero hc hqn, ?_⟩
+  rw [hq]; push_cast; ring
+
+/-- **Nonzero-rational multiples of even zeta values are transcendental over ℚ.**
+    For `n ≥ 1` and `c ∈ ℚ∖{0}`, `c · ζ(2n)` is transcendental — the transcendence-level
+    statement of the ℚ*-scaling closure, immediate from `zeta_even_transcendental` and the
+    scaling engine `transcendental_ratCast_mul`.
+
+    **Assumption:** `hermite_lindemann` (transcendence of π). -/
+theorem zeta_even_ratCast_mul_transcendental (n : ℕ) (hn : 0 < n) (c : ℚ) (hc : c ≠ 0) :
+    Transcendental ℚ ((c : ℝ) * (∑' k : ℕ, 1 / (k : ℝ) ^ (2 * n))) :=
+  transcendental_ratCast_mul (zeta_even_transcendental n hn) hc
+
 /-!
 ## The open odd case (documentation only)
 

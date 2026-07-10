@@ -59,10 +59,10 @@
       "zeta_even_ratio_eq_rat_mul_pi_pow (0-axiom): for m<n, ζ(2n)/ζ(2m) = (nonzero-rational)·π^(2(n-m)) — the axiom-free structural skeleton beneath zeta_even_ratio_transcendental, recording unconditionally that even zeta values are multiplicatively π-power-incommensurable over ℚ (their quotient is never rational). Transcendence enters only when π^(2(n-m)) is declared transcendental; mirrors how zeta_even_eq_rat_mul_pi_pow isolates the axiom for single values"
     ],
     "dateAdded": "2026-07-02",
-    "lineCount": 314,
+    "lineCount": 348,
     "assumptions": "Depends on the axiom hermite_lindemann (Lindemann–Weierstrass theorem, giving transcendence of π), imported via Proofs.PiTranscendental. Mathlib does not yet contain a complete Lindemann–Weierstrass development, and irrationality of π^(2n) provably requires transcendence of π (irrational_pi alone is insufficient, as irrationality does not lift through powers). Everything else is machine-checked with 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 18,
+    "theoremCount": 21,
     "definitionCount": 0
   },
   "overview": {
@@ -160,9 +160,9 @@
       "Real"
     ],
     "namespace": "BaselProblemOQ01OQ02",
-    "lineCount": 314,
+    "lineCount": 348,
     "axiomCount": 0,
-    "theoremCount": 18,
+    "theoremCount": 21,
     "definitionCount": 0,
     "path": "Proofs/BaselProblemOQ01OQ02.lean",
     "sorries": 0
