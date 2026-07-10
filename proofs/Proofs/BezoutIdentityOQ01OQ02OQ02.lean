@@ -70,7 +70,7 @@ generate the unit ideal of `ℤ`, i.e. `Ideal.span (range v) = ⊤`.  Over `ℤ`
 right-hand side says exactly that the gcd of the entries is a unit. -/
 theorem isPrimitive_iff_span_eq_top (v : Fin n → ℤ) :
     IsPrimitive v ↔ Ideal.span (Set.range v) = ⊤ := by
-  rw [Ideal.eq_top_iff_one, Ideal.span, Submodule.mem_span_range_iff_exists_fun]
+  rw [Ideal.eq_top_iff_one, Ideal.mem_span_range_iff_exists_fun]
   constructor
   · rintro ⟨w, hw⟩
     exact ⟨w, by simpa [dotProduct, smul_eq_mul, mul_comm] using hw⟩
@@ -96,7 +96,7 @@ theorem isPrimitive_mulVec_iff (A : Matrix.SpecialLinearGroup (Fin n) ℤ)
     (v : Fin n → ℤ) : IsPrimitive (↑ₘA *ᵥ v) ↔ IsPrimitive v := by
   refine ⟨fun h => ?_, fun h => h.mulVec A⟩
   have h2 := h.mulVec A⁻¹
-  rwa [← mulVec_mulVec, ← SpecialLinearGroup.coe_mul, inv_mul_cancel,
+  rwa [mulVec_mulVec, ← SpecialLinearGroup.coe_mul, inv_mul_cancel,
     SpecialLinearGroup.coe_one, one_mulVec] at h2
 
 /-! ### Elementary generators: transvections in `SLₙ(ℤ)` -/
@@ -118,7 +118,7 @@ theorem transvectionSL_mulVec (i j : Fin n) (h : i ≠ j) (c : ℤ) (v : Fin n �
   funext k
   rcases eq_or_ne k i with rfl | hk
   · simp
-  · simp [Function.update_of_ne hk, Function.update_of_ne (a := (0 : Fin n → ℤ)) hk]
+  · simp [Function.update_of_ne hk]
 
 /-- **A transvection preserves primitivity** — a special case of
 `IsPrimitive.mulVec`, recorded because transvections are the atomic moves of the
