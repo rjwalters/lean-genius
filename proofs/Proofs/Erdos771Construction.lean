@@ -282,6 +282,128 @@ theorem avoid_two_card_le (n : ℕ) (hn : 2 ≤ n) (S : Finset ℕ) (hS : S ⊆ 
   calc S.card ≤ ((Icc_n n).erase 2).card := Finset.card_le_card hsub
     _ = n - 1 := by rw [Finset.card_erase_of_mem hmem, Icc_n, Nat.card_Icc]; omega
 
+/-! ## The case `m = 3`: the value first drops below `n − 1`
+
+Unlike `m = 1` and `m = 2`, the constraint `m = 3` genuinely lowers the maximum. The number
+`3` has **two** representations as a sum of distinct positive integers: `3 = {3}` and
+`3 = {1, 2}`. So avoiding the subset sum `3` requires *both* `3 ∉ S` *and* not-both-of
+`1, 2 ∈ S` — two independent deletions from `{1,…,n}`. Consequently (for `n ≥ 3`) the largest
+`3`-avoiding subset has size `n − 2`, strictly below the `n − 1` of the two previous cases.
+This is the first case where the Erdős–Graham value `f`-analogue is pushed down, foreshadowing
+the eventual `(1/2 + o(1)) · n / log n` decay. -/
+
+/-- `3` is a positive subset sum of `S` iff `3 ∈ S` **or** both `1 ∈ S` and `2 ∈ S`: the only
+    nonempty sets of distinct naturals summing to `3` are `{3}` and `{1, 2}` (any element `≥ 4`
+    overshoots, and once `3` is excluded the remaining candidates `{0, 1, 2}` reach `3` only by
+    using both `1` and `2`). -/
+theorem three_mem_subsetSums_iff (S : Finset ℕ) :
+    (3 : ℕ) ∈ subsetSums S ↔ (3 ∈ S ∨ (1 ∈ S ∧ 2 ∈ S)) := by
+  constructor
+  · intro h
+    rw [subsetSums, Finset.mem_filter, Finset.mem_image] at h
+    obtain ⟨⟨A, hA, hAsum⟩, _⟩ := h
+    rw [Finset.mem_powerset] at hA
+    have hle : ∀ a ∈ A, a ≤ 3 := by
+      intro a ha
+      have hsum := Finset.single_le_sum (f := fun x => x) (fun i _ => Nat.zero_le i) ha
+      rw [hAsum] at hsum; exact hsum
+    by_cases h3 : (3 : ℕ) ∈ A
+    · exact Or.inl (hA h3)
+    · refine Or.inr ⟨hA ?_, hA ?_⟩
+      · by_contra h1
+        have hsub : A ⊆ {0, 2} := by
+          intro a ha
+          have hle3 := hle a ha
+          have ha3 : a ≠ 3 := fun he => h3 (he ▸ ha)
+          have ha1 : a ≠ 1 := fun he => h1 (he ▸ ha)
+          simp only [Finset.mem_insert, Finset.mem_singleton]; omega
+        have hbound : ∑ x ∈ A, x ≤ ∑ x ∈ ({0, 2} : Finset ℕ), x :=
+          Finset.sum_le_sum_of_subset hsub
+        rw [Finset.sum_pair (by norm_num : (0 : ℕ) ≠ 2)] at hbound
+        omega
+      · by_contra h2
+        have hsub : A ⊆ {0, 1} := by
+          intro a ha
+          have hle3 := hle a ha
+          have ha3 : a ≠ 3 := fun he => h3 (he ▸ ha)
+          have ha2 : a ≠ 2 := fun he => h2 (he ▸ ha)
+          simp only [Finset.mem_insert, Finset.mem_singleton]; omega
+        have hbound : ∑ x ∈ A, x ≤ ∑ x ∈ ({0, 1} : Finset ℕ), x :=
+          Finset.sum_le_sum_of_subset hsub
+        rw [Finset.sum_pair (by norm_num : (0 : ℕ) ≠ 1)] at hbound
+        omega
+  · intro h
+    rw [subsetSums, Finset.mem_filter, Finset.mem_image]
+    rcases h with h3 | ⟨h1, h2⟩
+    · refine ⟨⟨{3}, ?_, ?_⟩, by norm_num⟩
+      · rw [Finset.mem_powerset]; exact Finset.singleton_subset_iff.mpr h3
+      · simp
+    · refine ⟨⟨{1, 2}, ?_, ?_⟩, by norm_num⟩
+      · rw [Finset.mem_powerset, Finset.insert_subset_iff, Finset.singleton_subset_iff]
+        exact ⟨h1, h2⟩
+      · rw [Finset.sum_pair (by norm_num : (1 : ℕ) ≠ 2)]
+
+/-- **The case `m = 3`.** `S` avoids the subset sum `3` iff `3 ∉ S` and not both `1, 2 ∈ S`.
+    Immediate from `three_mem_subsetSums_iff` by negation (`not_or`, `not_and`). -/
+theorem avoid_three_iff (S : Finset ℕ) :
+    AvoidSum S 3 ↔ (3 ∉ S ∧ ¬ (1 ∈ S ∧ 2 ∈ S)) := by
+  unfold AvoidSum
+  rw [three_mem_subsetSums_iff, not_or]
+
+/-- **Exact `m = 3` realization.** For `n ≥ 3` the explicit set `{1,…,n} ∖ {2, 3}` witnesses
+    the value `n − 2` at `m = 3`: it lies inside `{1,…,n}`, avoids the subset sum `3` (since
+    `3 ∉ S` and `2 ∉ S`, via `avoid_three_iff`), and has cardinality `n − 2`. -/
+theorem Icc_erase_two_three_avoid_three (n : ℕ) (hn : 3 ≤ n) :
+    (((Icc_n n).erase 2).erase 3) ⊆ Icc_n n ∧
+      AvoidSum (((Icc_n n).erase 2).erase 3) 3 ∧
+      (((Icc_n n).erase 2).erase 3).card = n - 2 := by
+  have h2 : (2 : ℕ) ∈ Icc_n n := by rw [Icc_n, Finset.mem_Icc]; omega
+  have h3 : (3 : ℕ) ∈ (Icc_n n).erase 2 := by
+    rw [Finset.mem_erase, Icc_n, Finset.mem_Icc]; omega
+  refine ⟨(Finset.erase_subset _ _).trans (Finset.erase_subset _ _), ?_, ?_⟩
+  · rw [avoid_three_iff]
+    refine ⟨Finset.notMem_erase 3 _, ?_⟩
+    rintro ⟨_, hmem2⟩
+    have hno2 : (2 : ℕ) ∉ (Icc_n n).erase 2 := Finset.notMem_erase 2 _
+    exact hno2 (Finset.mem_of_mem_erase hmem2)
+  · rw [Finset.card_erase_of_mem h3, Finset.card_erase_of_mem h2, Icc_n, Nat.card_Icc]
+    omega
+
+/-- **Optimality at `m = 3`.** For `n ≥ 3` every `3`-avoiding subset of `{1,…,n}` has size at
+    most `n − 2`: avoiding `3` forces `3 ∉ S` and (`1 ∉ S` or `2 ∉ S`), so `S` misses `3` and
+    at least one of `1, 2` — two distinct elements of `{1,…,n}`. Together with
+    `Icc_erase_two_three_avoid_three` this pins the exact maximum `n − 2` at `m = 3`, strictly
+    below the `n − 1` of `m = 1, 2`. -/
+theorem avoid_three_card_le (n : ℕ) (hn : 3 ≤ n) (S : Finset ℕ) (hS : S ⊆ Icc_n n)
+    (hav : AvoidSum S 3) : S.card ≤ n - 2 := by
+  rw [avoid_three_iff] at hav
+  obtain ⟨h3, h12⟩ := hav
+  have h3mem : (3 : ℕ) ∈ Icc_n n := by rw [Icc_n, Finset.mem_Icc]; omega
+  rw [not_and_or] at h12
+  rcases h12 with h1 | h2
+  · have h1mem : (1 : ℕ) ∈ Icc_n n := by rw [Icc_n, Finset.mem_Icc]; omega
+    have hsub : S ⊆ ((Icc_n n).erase 1).erase 3 := by
+      intro x hx
+      rw [Finset.mem_erase, Finset.mem_erase]
+      exact ⟨fun he => h3 (he ▸ hx), fun he => h1 (he ▸ hx), hS hx⟩
+    calc S.card ≤ (((Icc_n n).erase 1).erase 3).card := Finset.card_le_card hsub
+      _ = n - 2 := by
+        have h3e : (3 : ℕ) ∈ (Icc_n n).erase 1 := by
+          rw [Finset.mem_erase]; exact ⟨by norm_num, h3mem⟩
+        rw [Finset.card_erase_of_mem h3e, Finset.card_erase_of_mem h1mem, Icc_n, Nat.card_Icc]
+        omega
+  · have h2mem : (2 : ℕ) ∈ Icc_n n := by rw [Icc_n, Finset.mem_Icc]; omega
+    have hsub : S ⊆ ((Icc_n n).erase 2).erase 3 := by
+      intro x hx
+      rw [Finset.mem_erase, Finset.mem_erase]
+      exact ⟨fun he => h3 (he ▸ hx), fun he => h2 (he ▸ hx), hS hx⟩
+    calc S.card ≤ (((Icc_n n).erase 2).erase 3).card := Finset.card_le_card hsub
+      _ = n - 2 := by
+        have h3e : (3 : ℕ) ∈ (Icc_n n).erase 2 := by
+          rw [Finset.mem_erase]; exact ⟨by norm_num, h3mem⟩
+        rw [Finset.card_erase_of_mem h3e, Finset.card_erase_of_mem h2mem, Icc_n, Nat.card_Icc]
+        omega
+
 /-! ## Summary
 
 Verified here (0 axioms, 0 sorries): the elementary Erdős–Graham construction behind the
@@ -289,9 +411,10 @@ lower bound for `f(n)` — the multiples of a prime `p` in `{1,…,n}` have size
 any `m` with `p ∤ m`, and such a prime exists for every `m ≥ 1`; and, via Bertrand's
 postulate, an `m`-avoiding subset of size `≥ ⌊n/(2m)⌋` exists for every `m ≥ 1`. The two
 smallest cases are pinned exactly: at `m = 1` and (for `n ≥ 2`) at `m = 2` the largest
-avoiding subset of `{1,…,n}` has size `n − 1`, realized by `{1,…,n} ∖ {m}`. The deep
-asymptotics (the matching `(1/2 + o(1)) n / log n` lower and upper bounds) are not addressed
-here.
+avoiding subset of `{1,…,n}` has size `n − 1`, realized by `{1,…,n} ∖ {m}`; and at `m = 3`
+(for `n ≥ 3`) the maximum drops to `n − 2`, realized by `{1,…,n} ∖ {2, 3}` — the first case
+where the two representations `3 = {3} = {1,2}` force a second deletion. The deep asymptotics
+(the matching `(1/2 + o(1)) n / log n` lower and upper bounds) are not addressed here.
 -/
 
 end Erdos771Construction
