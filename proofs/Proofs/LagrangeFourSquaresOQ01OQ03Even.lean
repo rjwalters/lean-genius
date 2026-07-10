@@ -93,6 +93,16 @@ theorem jacobiCount_four_dvd_add {n : ℕ} (hn : 4 ∣ n) :
   rw [sum_four_dvd_divisors hn] at hpart
   omega
 
+/-- **Even closed form as a subtraction.** For `4 ∣ n`, the additive identity
+`jacobiCount_four_dvd_add` rearranges to the equation the docstring keeps writing,
+`jacobiCount n = 8·σ(n) − 32·σ(n/4)` (truncated `ℕ` subtraction, exact here since
+`32·σ(n/4) ≤ 8·σ(n)`). This is the standalone subtractive form the file references
+but never states as an equation. Example `n = 4`: `24 = 8·7 − 32·1 = 56 − 32`. -/
+theorem jacobiCount_four_dvd_sub {n : ℕ} (hn : 4 ∣ n) :
+    jacobiCount n = 8 * ∑ d ∈ n.divisors, d - 32 * ∑ e ∈ (n / 4).divisors, e := by
+  have h := jacobiCount_four_dvd_add hn
+  omega
+
 /-- Sanity check of the even closed form at `n = 4`: `jacobiCount 4 = 24`. -/
 example : jacobiCount 4 = 24 := by decide
 
