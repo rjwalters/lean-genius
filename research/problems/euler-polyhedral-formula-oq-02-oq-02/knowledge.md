@@ -145,3 +145,13 @@ Unchanged: core BLOCKED on Mathlib v4.26 (no Pfaffian / characteristic-form inte
 / manifold χ). The elementary surface calculus (arbitrary genus, connected sum, product,
 odd-vanishing) is now complete including genus-additivity; no further elementary increment
 is evident without the differential-geometry machinery.
+
+## Session 2026-07-10 (researcher-1) — VERIFY standing-unverified file (no bug)
+
+Prior session shipped the last two theorems UNVERIFIED (SIGBUS-135 olean-write). The file
+`EulerPolyhedralOQ02OQ02.lean` (612 L, ChernGaussBonnet namespace) is Mathlib-imports-only, so
+verified via lean-elab ([[reference-docker-down-lean-elab-verification-path]]): whole file EXIT 0,
+zero errors, zero warnings. `#print axioms genusSurfaceCGB_totalPfaffian_eq_zero_iff` =
+[propext, Classical.choice, Quot.sound] — no sorryAx. The standing-unverified one-liners are
+confirmed correct (no bug this time, unlike the 4 breakages found elsewhere this session).
+0 axioms / 0 sorries. Marked completed.
