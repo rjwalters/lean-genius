@@ -312,6 +312,43 @@ theorem re_inner_centred_eq_anticommutator {A B : E →ₗ[𝕜] E} (hA : A.IsSy
   simp only [map_add, map_sub, RCLike.re_ofReal_mul] at hre
   linarith [hre]
 
+/-- **Robertson (Heisenberg) saturation — the minimum-uncertainty states.**  For
+    *nonzero* centred vectors `u, v`, the Robertson/Heisenberg squared bound
+    `im_inner_sq_le`
+
+      `(Im⟪u,v⟫)² = ‖u‖²·‖v‖²`
+
+    is attained **iff** the covariance vanishes (`Re⟪u,v⟫ = 0`) *and* `u, v` are
+    parallel (`v = r • u`, `r ≠ 0`).  With `u = (A−⟨A⟩)ψ`, `v = (B−⟨B⟩)ψ` this is the
+    exact equality case of the Heisenberg bound `Var(A)·Var(B) ≥ ¼|⟪ψ,[A,B]ψ⟫|²`:
+    the saturating states are the parallel (`gram_eq_iff_parallel`) states with the
+    additional purely-imaginary-ratio condition `Re⟪u,v⟫ = 0`, i.e. the classic
+    `(B−⟨B⟩)ψ = iλ(A−⟨A⟩)ψ`.  This is the strict Robertson subclass of the wider
+    Schrödinger minimum-uncertainty family (`gram_eq_iff_parallel`), formalizing the
+    "`r` purely imaginary, vanishing covariance" remark there.
+
+    Proof: from the sharp Gram bound `inner_sq_le_gram`, `(Im⟪u,v⟫)² = ‖u‖²‖v‖²`
+    forces `(Re⟪u,v⟫)² ≤ 0`, hence `Re⟪u,v⟫ = 0`, and then the Gram bound is itself
+    saturated, so `gram_eq_iff_parallel` applies. -/
+theorem im_inner_sq_eq_iff_robertson_saturated {u v : E} (hu : u ≠ 0) (hv : v ≠ 0) :
+    (RCLike.im (inner 𝕜 u v)) ^ 2 = ‖u‖ ^ 2 * ‖v‖ ^ 2
+      ↔ RCLike.re (inner 𝕜 u v) = 0 ∧ ∃ r : 𝕜, r ≠ 0 ∧ v = r • u := by
+  constructor
+  · intro h
+    have hgram := inner_sq_le_gram (𝕜 := 𝕜) u v
+    have hle : (RCLike.re (inner 𝕜 u v)) ^ 2 ≤ 0 := by nlinarith [hgram, h]
+    have hre0 : RCLike.re (inner 𝕜 u v) = 0 := by
+      by_contra hne
+      have hpos : 0 < (RCLike.re (inner 𝕜 u v)) ^ 2 := by positivity
+      linarith
+    have hgeq : (RCLike.re (inner 𝕜 u v)) ^ 2 + (RCLike.im (inner 𝕜 u v)) ^ 2
+        = ‖u‖ ^ 2 * ‖v‖ ^ 2 := by rw [hre0]; simpa using h
+    exact ⟨hre0, (gram_eq_iff_parallel hu hv).mp hgeq⟩
+  · rintro ⟨hre0, hpar⟩
+    have hgeq := (gram_eq_iff_parallel hu hv).mpr hpar
+    rw [hre0] at hgeq
+    simpa using hgeq
+
 end CauchySchwarzIntegralOQ04
 
 #print axioms CauchySchwarzIntegralOQ04.gram_eq_iff_parallel
