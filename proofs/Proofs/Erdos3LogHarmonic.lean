@@ -332,6 +332,64 @@ theorem summable_one_div_nat_mul_log_mul_const {c δ : ℝ} (hc : 0 < c) (hδ : 
           mul_le_mul_of_nonneg_left hPQ hm_pos.le
       _ = (2 : ℝ) ^ (1 + δ) * (m * (Real.log (m * c)) ^ (1 + δ)) := by ring
 
+/-- **Divergent Bertrand series with a multiplicative constant inside the log.**
+    For every `c > 0`, `∑ 1/(n·log (n·c))` diverges.  This is the exact `p = 1`
+    divergence twin of the convergent `summable_one_div_nat_mul_log_mul_const`
+    (`p = 1+δ`): together they pin the constant-in-log Bertrand boundary at the
+    exponent `p = 1`, exactly as `not_summable_one_div_nat_mul_log` and
+    `summable_one_div_nat_mul_log_rpow` do for the constant-free series (`c = 1`).
+    The multiplicative constant inside the log does not move the threshold.
+    Proof: a tail comparison the mirror of the convergent lemma's.  On the tail
+    `n ≥ max (c) (2/c)` one has `c ≤ n` (so `log c ≤ log n`, giving `log (n·c) ≤ 2·log n`)
+    and `n·c ≥ 2` (so `log (n·c) > 0`); hence each term dominates `½·1/(n·log n)`,
+    and `∑ 1/(n·log n)` already diverges (`not_summable_one_div_nat_mul_log`). -/
+theorem not_summable_one_div_nat_mul_log_mul_const {c : ℝ} (hc : 0 < c) :
+    ¬ Summable (fun n : ℕ => 1 / ((n : ℝ) * Real.log ((n : ℝ) * c))) := by
+  intro hsum
+  -- threshold `N₀ ≥ 2`, `≥ c`, `≥ 2/c` (so `m ≥ 2`, `c ≤ m`, `m·c ≥ 2` on the tail)
+  set N₀ : ℕ := max 2 (⌈c⌉₊ + ⌈2 / c⌉₊) with hN₀def
+  have hN₀2 : (2 : ℝ) ≤ (N₀ : ℝ) := by exact_mod_cast le_max_left 2 (⌈c⌉₊ + ⌈2 / c⌉₊)
+  have hN₀c : c ≤ (N₀ : ℝ) :=
+    le_trans (Nat.le_ceil _) (by exact_mod_cast le_trans (Nat.le_add_right _ _)
+      (le_max_right 2 (⌈c⌉₊ + ⌈2 / c⌉₊)))
+  have hN₀2c : 2 / c ≤ (N₀ : ℝ) :=
+    le_trans (Nat.le_ceil _) (by exact_mod_cast le_trans (Nat.le_add_left _ _)
+      (le_max_right 2 (⌈c⌉₊ + ⌈2 / c⌉₊)))
+  -- the given series, shifted past the threshold and scaled by `2`, dominates `1/(n·log n)`
+  have hdom : Summable (fun n : ℕ => (2 : ℝ) *
+      (1 / (((n + N₀ : ℕ) : ℝ) * Real.log (((n + N₀ : ℕ) : ℝ) * c)))) :=
+    ((summable_nat_add_iff N₀).mpr hsum).mul_left _
+  -- derive `Summable (1/(n·log n))`, contradicting its divergence
+  apply not_summable_one_div_nat_mul_log
+  apply (summable_nat_add_iff N₀).mp
+  refine Summable.of_nonneg_of_le (fun n => ?_) (fun n => ?_) hdom
+  · -- nonnegativity of the shifted `1/(m·log m)`
+    set m : ℝ := ((n + N₀ : ℕ) : ℝ) with hm
+    have hmN : (N₀ : ℝ) ≤ m := by rw [hm]; exact_mod_cast Nat.le_add_left N₀ n
+    have hm2 : (2 : ℝ) ≤ m := le_trans hN₀2 hmN
+    have hm_pos : 0 < m := by linarith
+    have hlogm : 0 ≤ Real.log m := Real.log_nonneg (by linarith)
+    positivity
+  · -- termwise domination `1/(m·log m) ≤ 2·(1/(m·log (m·c)))`
+    set m : ℝ := ((n + N₀ : ℕ) : ℝ) with hm
+    have hmN : (N₀ : ℝ) ≤ m := by rw [hm]; exact_mod_cast Nat.le_add_left N₀ n
+    have hm2 : (2 : ℝ) ≤ m := le_trans hN₀2 hmN
+    have hm_pos : 0 < m := by linarith
+    have hmc_ge : c ≤ m := le_trans hN₀c hmN
+    have hmc2 : (2 : ℝ) ≤ m * c := (div_le_iff₀ hc).mp (le_trans hN₀2c hmN)
+    have hlogm_pos : 0 < Real.log m := Real.log_pos (by linarith)
+    have hlogmc_pos : 0 < Real.log (m * c) := Real.log_pos (by linarith)
+    have hlogc_le : Real.log c ≤ Real.log m := Real.log_le_log hc hmc_ge
+    have hmc_eq : Real.log (m * c) = Real.log m + Real.log c :=
+      Real.log_mul (ne_of_gt hm_pos) (ne_of_gt hc)
+    -- key comparison `log (m·c) ≤ 2·log m` (`log c ≤ log m` since `c ≤ m`)
+    have hcrux : Real.log (m * c) ≤ 2 * Real.log m := by rw [hmc_eq]; linarith
+    rw [mul_one_div, div_le_div_iff₀ (mul_pos hm_pos hlogm_pos) (mul_pos hm_pos hlogmc_pos),
+      one_mul]
+    calc m * Real.log (m * c)
+        ≤ m * (2 * Real.log m) := mul_le_mul_of_nonneg_left hcrux hm_pos.le
+      _ = 2 * (m * Real.log m) := by ring
+
 /-!
 ### Second-tier (iterated-log) Bertrand divergence: `∑ 1/(n · log n · log log n)`
 
