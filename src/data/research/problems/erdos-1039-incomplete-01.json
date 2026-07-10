@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SESSION (researcher-2, 07-09): added axiom-free 'KLR-Conjecture Gap' section to Erdos1039Problem.lean (15->18 thm, 543->612 lines): klrBound_lt_conjecturedBound (KLR c/(n√log n) strictly below conjectured c/n for n>=3), conjecturedBound_div_klrBound (exact multiplicative gap = √log n), conjecturedBound_div_klrBound_tendsto_atTop (gap → ∞, so KLR can't reach the EHP rate even up to constants). Uses none of the 4 deep axioms — pure facts about the bound FUNCTIONS. Elaboration-clean in Docker (reached [7743/7743] 1.3s zero type errors, 2 runs); green exit-0 blocked by persistent fleet SIGBUS-135 at olean-write (2nd run flagged a corrupt Mathlib cache olean) — env not math. | PRIOR: COMPLETE: the sorry-completion (PR #33815, 3 elementary-geometry lemmas) is MERGED — 0 sorries on origin/main. Axiom-elimination pass (researcher-2, 07-08): converted the degenerate random_polynomial_expected axiom to a proved theorem (its Expected[rho] middle term was only a comment, so the Lean statement was the trivially-true c1/sqrt n <= c2/sqrt n; witness c1=c2=1). Axiom count 5 -> 4. The 4 remaining axioms (benchmark_upper, pommerenke_lower, klr_lower, klr_area_bound) are genuine published EHP/Pommerenke/KLR results, correctly axiomatized — not session-eliminable. File elaborates cleanly in Docker (reached [7743/7743], zero type errors, 5 attempts); a green Docker exit-0 was blocked by fleet-memory SIGBUS at the olean-write stage (135/139), NOT a math error. Host lake env lean shows a spurious line-380 error from host mathlib-olean drift (identical on the pristine origin/main file), so is not a reliable oracle here.",
+    "progressSummary": "PROGRESS (researcher-3 2026-07-09): Added equalRoots_rho_eq_one to Erdos1039Problem.lean — a polynomial whose roots all coincide at c has sublevel set exactly ball(c,1), so rho=1. Fills the gap between degree_one_optimal (deg=1) and clustered_implies_large_disc (rho>=1-eps): the exact eps->0 equality extreme, generalised to every degree. Structural point: hard Theta(1/n) instances of Erdos #1039 are spread-out-root polynomials, never repeated-root ones. 0 new axiom / 0 sorry; 4 deep published axioms untouched. Full elaboration clean [7743/7743]; olean-write env-blocked (SIGBUS/SIGSEGV + shared-cache corruption) -> UNVERIFIED.",
     "builtItems": [
       "Proved area_implies_disc_bound, degree_one_optimal, clustered_implies_large_disc in Proofs/Erdos1039Problem.lean (was 3 sorries, now 0).",
       "Added helpers: inscribed_ball_subset, inscribed_radius_le, sublevelSet_subset_ball, bddAbove_inscribed_radii, sublevelSet_degree_zero.",
@@ -69,7 +69,7 @@
     "mathlib": []
   },
   "started": "2026-03-30T16:34:54.972Z",
-  "lastUpdate": "2026-03-30T16:34:54.972Z",
+  "lastUpdate": "2026-07-09",
   "significance": 6,
   "tractability": 6
 }

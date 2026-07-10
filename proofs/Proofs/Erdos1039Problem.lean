@@ -597,6 +597,48 @@ theorem clustered_implies_large_disc (ε : ℝ) (hε : ε > 0) (hε' : ε < 1) :
   rw [ge_iff_le, hrho]
   exact le_csSup (bddAbove_inscribed_radii f hdeg) ⟨c, hins⟩
 
+/-- **Repeated roots ⟹ ρ = 1.**  A polynomial all of whose roots coincide at a single
+    point `c` (so `f = (z - c)^{deg}`) has sublevel set exactly the unit ball
+    `ball(c, 1)`, hence inscribed-disc radius `ρ(f) = 1`.  This is the `ε → 0`
+    equality extreme of `clustered_implies_large_disc` and generalises
+    `degree_one_optimal` (the `deg = 1` case) to *every* degree: the difficult
+    instances of Erdős #1039 — where `ρ` is forced down to `Θ(1/n)` — are the
+    *spread-out*-root polynomials, never the repeated-root ones, for which `ρ` is
+    maximal.  Because `|(z-c)^{deg}| < 1 ⟺ |z - c| < 1`, the sublevel set is the full
+    unit ball about `c` and the argument of `degree_one_optimal` applies verbatim. -/
+theorem equalRoots_rho_eq_one (f : UnitDiscPolynomial) (hdeg : 0 < f.degree)
+    (c : ℂ) (hc : ∀ i, f.roots i = c) : rho f = 1 := by
+  have hdeg0 : f.degree ≠ 0 := hdeg.ne'
+  -- the product collapses to `(z - c)^{deg}`
+  have hprod : ∀ z : ℂ, (∏ i : Fin f.degree, (z - f.roots i)) = (z - c) ^ f.degree := by
+    intro z
+    rw [Finset.prod_congr rfl (fun i _ => by rw [hc i]), Finset.prod_const,
+        Finset.card_univ, Fintype.card_fin]
+  -- sublevel set is exactly the unit ball about `c`
+  have hset : sublevelSet f = Metric.ball c 1 := by
+    ext z
+    simp only [sublevelSet, Set.mem_setOf_eq, UnitDiscPolynomial.eval, Metric.mem_ball,
+      dist_eq_norm]
+    rw [hprod z, norm_pow, pow_lt_one_iff_of_nonneg (norm_nonneg _) hdeg0]
+  have hins1 : isInscribedDisc (sublevelSet f) c 1 := by
+    refine ⟨one_pos, ?_⟩
+    intro z hz
+    rw [hset, Metric.mem_ball, dist_eq_norm]
+    exact hz
+  have hrho : rho f = sSup {r : ℝ | ∃ c : ℂ, isInscribedDisc (sublevelSet f) c r} := rfl
+  rw [hrho]
+  have hne1 : {r : ℝ | ∃ c : ℂ, isInscribedDisc (sublevelSet f) c r}.Nonempty :=
+    ⟨1, c, hins1⟩
+  apply le_antisymm
+  · apply csSup_le hne1
+    rintro r ⟨c', hrpos, hsub⟩
+    refine inscribed_radius_le (c := c') (z0 := c) hrpos one_pos ?_
+    intro z hz
+    have hmem := hsub z hz
+    rw [hset, Metric.mem_ball, dist_eq_norm] at hmem
+    exact hmem
+  · exact le_csSup (bddAbove_inscribed_radii f hdeg) ⟨c, hins1⟩
+
 /-
 ## Random Polynomials
 -/
