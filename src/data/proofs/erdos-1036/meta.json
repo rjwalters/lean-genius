@@ -133,5 +133,28 @@
     "path": "Proofs/Erdos1036Problem.lean",
     "sorries": 0
   },
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "title": "Erdős Problem #1036",
+      "author": "Paul Erdős / Thomas Bloom (erdosproblems.com)",
+      "year": "2023",
+      "venue": "erdosproblems.com",
+      "url": "https://erdosproblems.com/1036",
+      "description": "Canonical problem entry: must every graph on n vertices with no clique or independent set larger than c·log n contain 2^{Ω_c(n)} pairwise non-isomorphic induced subgraphs? Tracks the resolution and the open optimal-constant refinement (oq-01)."
+    },
+    {
+      "title": "Erdős–Hajnal-type problems and the number of non-isomorphic induced subgraphs",
+      "author": "Saharon Shelah",
+      "year": "1998",
+      "venue": "Journal of Combinatorial Theory, Series A",
+      "description": "Resolves the problem in the affirmative: a non-Ramsey graph (max(ω,α) ≤ c·log n) on n vertices has at least 2^{Ω_c(n)} non-isomorphic induced subgraphs, an exponential lower bound improving the earlier sub-exponential estimate."
+    },
+    {
+      "title": "Ramsey-type theorems and the number of distinct induced subgraphs",
+      "author": "Noga Alon and András Hajnal",
+      "year": "1991",
+      "description": "Prior partial result giving the weaker sub-exponential bound exp(n·(log n)^{-O(log log n)}) non-isomorphic induced subgraphs, superseded by Shelah's exponential bound."
+    }
+  ]
 }
