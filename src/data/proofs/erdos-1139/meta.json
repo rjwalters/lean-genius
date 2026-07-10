@@ -188,5 +188,29 @@
       "description": "Erdős #218 on prime gap densities explores the distributional behavior of prime gaps, providing context for the almost-prime gap question."
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "title": "Erdős Problem #1139",
+      "author": "erdosproblems.com",
+      "year": "2023",
+      "venue": "erdosproblems.com",
+      "url": "https://erdosproblems.com/1139",
+      "description": "Canonical entry (OPEN): for the increasing sequence u_k of integers with at most 2 prime factors (primes and semiprimes), is limsup (u_{k+1}−u_k)/log k = ∞?"
+    },
+    {
+      "title": "Multiplicative Number Theory",
+      "author": "Harold Davenport",
+      "year": "2000",
+      "venue": "Springer (Graduate Texts in Mathematics 74), 3rd ed.",
+      "description": "Standard reference for the distribution of primes and almost-primes (E_2 numbers) via sieve methods, the analytic framework for gap questions on the semiprime sequence."
+    },
+    {
+      "title": "Sieve Methods",
+      "author": "Heini Halberstam and Hans-Egon Richert",
+      "year": "1974",
+      "venue": "Academic Press (London Mathematical Society Monographs)",
+      "description": "Develops the sieve theory of numbers with a bounded number of prime factors (P_2/almost-primes), the natural machinery for bounding gaps in the u_k sequence of this problem."
+    }
+  ]
 }

@@ -180,5 +180,28 @@
     "path": "Proofs/Erdos1126Problem.lean",
     "sorries": 0
   },
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "title": "Erdős Problem #1126",
+      "author": "erdosproblems.com",
+      "year": "2023",
+      "venue": "erdosproblems.com",
+      "url": "https://erdosproblems.com/1126",
+      "description": "Canonical entry: if f(x+y)=f(x)+f(y) for almost all (x,y)∈ℝ², is there a genuinely additive g agreeing with f almost everywhere? Solved affirmatively."
+    },
+    {
+      "title": "On Cauchy's functional equation",
+      "author": "Wolfgang B. Jurkat",
+      "year": "1965",
+      "venue": "Proceedings of the American Mathematical Society",
+      "description": "One of two independent solutions: an almost-additive function on ℝ coincides almost everywhere with a genuinely additive function, which is essentially unique."
+    },
+    {
+      "title": "On almost additive functions",
+      "author": "N. G. de Bruijn",
+      "year": "1966",
+      "description": "Independent solution of the same repair theorem for almost-everywhere additive functions, obtained a year after Jurkat."
+    }
+  ]
 }

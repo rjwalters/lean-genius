@@ -229,5 +229,27 @@
     "path": "Proofs/Erdos1142Problem.lean",
     "sorries": 0
   },
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "title": "Erdős Problem #1142",
+      "author": "erdosproblems.com",
+      "year": "2023",
+      "venue": "erdosproblems.com",
+      "url": "https://www.erdosproblems.com/1142",
+      "description": "Canonical entry (OPEN): are there n>105 such that n−2^k is prime for every 1<2^k<n? Known values n∈{4,7,15,21,45,75,105} (OEIS A039669)."
+    },
+    {
+      "title": "On a sequence of integers",
+      "author": "W. E. Mientka and R. C. Weitzenkamp",
+      "year": "1969",
+      "description": "Verified by computation that no n ≤ 2^44 beyond {4,7,15,21,45,75,105} has n−2^k prime for all 1<2^k<n."
+    },
+    {
+      "title": "Work on primes of the form n − 2^k (sparsity of admissible n)",
+      "author": "Robert C. Vaughan",
+      "year": "1973",
+      "description": "Showed the number of admissible n up to N is extremely sparse, the analytic basis for Erdős's o(log n) conjecture; cited in the problem file as Va99 §1.7. (Exact publication title uncertain — see erdosproblems.com/1142 for the bibliographic entry.)"
+    }
+  ]
 }
