@@ -2,6 +2,7 @@ import Mathlib.Combinatorics.Additive.Corner.Roth
 import Mathlib.Combinatorics.Additive.AP.Three.Behrend
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
+import Mathlib.Analysis.SpecialFunctions.Pow.Asymptotics
 import Mathlib.Analysis.Complex.ExponentialBounds
 import Proofs.RothTheoremOQ02
 
@@ -415,7 +416,7 @@ theorem blasi_factor_isLittleO_bourgain_factor :
     have hD : Filter.Tendsto
         (fun N : ℕ => Real.log N ^ ((1:ℝ)/2 + c) * Real.log (Real.log N) ^ ((1:ℝ)/2))
         Filter.atTop Filter.atTop := by
-      have := ((tendsto_rpow_atTop (show (0:ℝ) < 1/2 + c by positivity)).comp hlogN).atTop_mul_atTop
+      have := ((tendsto_rpow_atTop (show (0:ℝ) < 1/2 + c by positivity)).comp hlogN).atTop_mul_atTop₀
         ((tendsto_rpow_atTop (show (0:ℝ) < 1/2 by norm_num)).comp hloglogN)
       simpa [Function.comp] using this
     refine (hD.inv_tendsto_atTop).congr' ?_
@@ -431,7 +432,6 @@ theorem blasi_factor_isLittleO_bourgain_factor :
     have hM12 : Real.log (Real.log N) ^ ((1:ℝ)/2) ≠ 0 := ne_of_gt (Real.rpow_pos_of_pos hLL _)
     rw [Real.div_rpow hLL.le hL.le, hLsplit]
     field_simp
-    ring
 
 /-- **Bloom–Sisask density bound for an arbitrary 3-AP-free set.**
 
