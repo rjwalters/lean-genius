@@ -312,4 +312,46 @@ theorem logConcave_ratio_strictAnti (p : ℕ → ℝ) (hpos : ∀ j, 0 < p j)
   rw [div_lt_div_iff (hpos (m + 1)) (hpos m)]
   nlinarith [hstrict m]
 
+/-- **Strict ratio equivalence.** For a positive sequence `p`, *strict* log-concavity
+`∀ m, p m · p (m+2) < (p (m+1))²` holds **iff** the consecutive ratios
+`m ↦ p (m+1) / p m` are `StrictAnti`. This upgrades the one-directional
+`logConcave_ratio_strictAnti` to a full `Iff`, exactly mirroring the non-strict
+`logConcave_iff_ratio_antitone`. The reverse direction reads off a single strict step
+`p (m+2)/p (m+1) < p (m+1)/p m` and clears the positive denominators. -/
+theorem logConcave_strict_iff_ratio_strictAnti (p : ℕ → ℝ) (hpos : ∀ j, 0 < p j) :
+    (∀ m, p m * p (m + 2) < (p (m + 1)) ^ 2) ↔
+      StrictAnti (fun m : ℕ => p (m + 1) / p m) := by
+  constructor
+  · exact logConcave_ratio_strictAnti p hpos
+  · intro hsa m
+    have h : p (m + 2) / p (m + 1) < p (m + 1) / p m := hsa (by omega : m < m + 1)
+    rw [div_lt_div_iff (hpos (m + 1)) (hpos m)] at h
+    nlinarith [h]
+
+/-- **Consecutive ratios are bounded by the first ratio.** For a positive log-concave
+sequence with `p 0 = 1`, every consecutive ratio is at most the first one,
+`p (m+1) / p m ≤ p 1 / p 0 = p 1`. Immediate from the ratio-antitone form
+`logConcave_iff_ratio_antitone` evaluated against index `0`. -/
+theorem logConcave_ratio_le_first (p : ℕ → ℝ) (hp0 : p 0 = 1)
+    (hpos : ∀ j, 0 < p j)
+    (hlc : ∀ m, p m * p (m + 2) ≤ (p (m + 1)) ^ 2) (m : ℕ) :
+    p (m + 1) / p m ≤ p 1 := by
+  have hanti := (logConcave_iff_ratio_antitone p hpos).mp hlc
+  simpa [hp0] using hanti (Nat.zero_le m)
+
+/-- **Every root mean is bounded by the first term.** For a positive log-concave
+sequence with `p 0 = 1`, the whole root sequence `p (k+1)^{1/(k+1)}` lies below its
+initial value `p 1^{1/1} = p 1`:  `p (k+1)^{1/(k+1)} ≤ p 1` for every `k`.
+
+Specialised to `p k = eₖ/C(n,k)`, this is the top of the Maclaurin chain: every
+Maclaurin mean `Mₖ` is at most `M₁ = e₁/n`, the arithmetic mean of the inputs — i.e.
+`AM ≥ Mₖ` for all `k`. A direct consequence of the global antitone chain
+`logConcave_root_antitone_seq` evaluated against index `0`. -/
+theorem logConcave_root_le_first (p : ℕ → ℝ) (hp0 : p 0 = 1)
+    (hpos : ∀ j, 0 < p j)
+    (hlc : ∀ m, p m * p (m + 2) ≤ (p (m + 1)) ^ 2) (k : ℕ) :
+    p (k + 1) ^ ((1 : ℝ) / (k + 1)) ≤ p 1 := by
+  have hanti := logConcave_root_antitone_seq p hp0 hpos hlc
+  simpa using hanti (Nat.zero_le k)
+
 end MaclaurinLogConcave
