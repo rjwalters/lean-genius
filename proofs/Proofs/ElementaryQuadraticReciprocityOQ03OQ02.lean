@@ -396,7 +396,7 @@ theorem kronecker_mul_right_odd (a : ℤ) (m n : ℕ)
 theorem kronecker_pow_right (a n : ℤ) (k : ℕ) (hn : n ≠ 0) :
     kronecker a (n ^ k) = kronecker a n ^ k := by
   induction k with
-  | zero => simp only [pow_zero, kronecker_one_right]
+  | zero => simp [pow_zero, kronecker]
   | succ k ih =>
     have hnk : n ^ k ≠ 0 := pow_ne_zero k hn
     rw [pow_succ, kronecker_mul_right a (n ^ k) n (mul_ne_zero hnk hn), ih, pow_succ]
@@ -856,6 +856,8 @@ theorem kronecker_at_two (a : ℤ) :
     simp only [kronecker]
     norm_num
   rw [hk, jacobiSym.mod_left a 2]
+  have hcast : ((2 : ℕ) : ℤ) = 2 := by norm_num
+  rw [hcast]
   have hcases : a % 2 = 0 ∨ a % 2 = 1 := by omega
   rcases hcases with h | h
   · rw [h, if_pos rfl]; exact jacobiSym.zero_left (b := 2) (by norm_num)
@@ -971,6 +973,48 @@ theorem kronecker_sq_left_eq_one_iff (a n : ℤ) (ha : a ≠ 0) :
   · intro h
     rcases kronecker_sq_left_eq_zero_or_one a n ha with h0 | h1
     · exact absurd ((kronecker_sq_left_eq_zero_iff a n ha).mp h0) h
+    · exact h1
+
+/-! The three `_sq_left_*` results above pin down the square-*numerator* value via
+`kronecker_sq_mem`.  Their square-*modulus* duals close the same `{0, 1}` picture
+in the second argument, completing the symmetry promised in Section 13: everything
+proved for `(a²/n)` from `kronecker_sq_left` holds for `(a/n²)` from
+`kronecker_sq_right`, since both reduce the goal to the perfect square `(a/·)²`. -/
+
+/-- **A square modulus is a residue or a non-unit — never a non-residue.**
+For nonzero `n`, `(a/n²) ∈ {0, 1}`: by `kronecker_sq_right` the value is `(a/n)²`,
+which is `{0,1}`-valued (`kronecker_sq_mem`).  The denominator-side dual of
+`kronecker_sq_left_eq_zero_or_one`, sharpening `kronecker_sq_right_nonneg`
+(`0 ≤ (a/n²)`) with the matching upper bound. -/
+theorem kronecker_sq_right_eq_zero_or_one (a n : ℤ) (hn : n ≠ 0) :
+    kronecker a (n ^ 2) = 0 ∨ kronecker a (n ^ 2) = 1 := by
+  rw [kronecker_sq_right a n hn]; exact kronecker_sq_mem a n
+
+/-- **A square modulus vanishes exactly when the base modulus does.**  `(a/n²) = 0
+↔ (a/n) = 0` for nonzero `n`: the value `(a/n)²` is zero iff `(a/n)` is
+(`sq_eq_zero_iff`, `ℤ` having no zero divisors).  So squaring the modulus never
+creates or destroys a common factor with `a` — the denominator-side dual of
+`kronecker_sq_left_eq_zero_iff`. -/
+theorem kronecker_sq_right_eq_zero_iff (a n : ℤ) (hn : n ≠ 0) :
+    kronecker a (n ^ 2) = 0 ↔ kronecker a n = 0 := by
+  rw [kronecker_sq_right a n hn, sq_eq_zero_iff]
+
+/-- **A square modulus is a residue exactly when the base modulus is a unit.**
+`(a/n²) = 1 ↔ (a/n) ≠ 0` for nonzero `n`.  Since `(a/n²) ∈ {0, 1}`
+(`kronecker_sq_right_eq_zero_or_one`) and vanishes iff `(a/n)` does
+(`kronecker_sq_right_eq_zero_iff`), the value is `1` precisely on the nonvanishing
+locus.  The denominator-side dual of `kronecker_sq_left_eq_one_iff`, and the
+general-modulus refinement of `kronecker_sq_right_eq_one_of_coprime` (which needs
+`n` odd positive and coprimality): here the criterion is simply `(a/n) ≠ 0`. -/
+theorem kronecker_sq_right_eq_one_iff (a n : ℤ) (hn : n ≠ 0) :
+    kronecker a (n ^ 2) = 1 ↔ kronecker a n ≠ 0 := by
+  constructor
+  · intro h hz
+    have h0 : kronecker a (n ^ 2) = 0 := (kronecker_sq_right_eq_zero_iff a n hn).mpr hz
+    rw [h] at h0; exact one_ne_zero h0
+  · intro h
+    rcases kronecker_sq_right_eq_zero_or_one a n hn with h0 | h1
+    · exact absurd ((kronecker_sq_right_eq_zero_iff a n hn).mp h0) h
     · exact h1
 
 /-!
