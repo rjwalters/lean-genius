@@ -139,4 +139,43 @@ theorem lagrange_sin_sum (θ : ℝ) (hθ : Real.sin (θ / 2) ≠ 0) (n : ℕ) :
   rw [eq_div_iff hden]
   linear_combination hk
 
+/-- **Dirichlet kernel bound (cosine form).**
+The classical Fourier-analysis estimate: the (one-sided, normalised) Dirichlet
+kernel `D_n(θ) = ∑_{k=0}^{n} cos(kθ) − 1/2 = sin((n+1/2)θ)/(2 sin(θ/2))` is
+bounded by `1/(2|sin(θ/2)|)` uniformly in `n`, since `|sin((n+1/2)θ)| ≤ 1`.
+This is the estimate underlying Dirichlet's test for the pointwise convergence
+of Fourier series. -/
+theorem dirichlet_kernel_bound (θ : ℝ) (hθ : Real.sin (θ / 2) ≠ 0) (n : ℕ) :
+    |(∑ k ∈ Finset.range (n + 1), Real.cos ((k : ℝ) * θ)) - 1 / 2|
+      ≤ 1 / (2 * |Real.sin (θ / 2)|) := by
+  rw [lagrange_cos_sum θ hθ n]
+  have hrw : (1 / 2 + Real.sin (((n : ℝ) + 1 / 2) * θ) / (2 * Real.sin (θ / 2))) - 1 / 2
+      = Real.sin (((n : ℝ) + 1 / 2) * θ) / (2 * Real.sin (θ / 2)) := by ring
+  rw [hrw, abs_div, abs_mul, abs_two]
+  have hden : (0 : ℝ) < 2 * |Real.sin (θ / 2)| := mul_pos two_pos (abs_pos.mpr hθ)
+  rw [div_le_div_iff hden hden]
+  have hnum : |Real.sin (((n : ℝ) + 1 / 2) * θ)| ≤ 1 :=
+    abs_le.mpr ⟨Real.neg_one_le_sin _, Real.sin_le_one _⟩
+  nlinarith [mul_le_mul_of_nonneg_right hnum (le_of_lt hden)]
+
+/-- **Conjugate Dirichlet kernel bound (sine form).**
+The partial sums of `sin(kθ)` are bounded by `1/|sin(θ/2)|` uniformly in `n`:
+from the closed form `∑_{k=0}^{n} sin(kθ) = (cos(θ/2) − cos((n+1/2)θ))/(2 sin(θ/2))`
+the numerator is a difference of two cosines, hence at most `2` in absolute value. -/
+theorem dirichlet_conjugate_bound (θ : ℝ) (hθ : Real.sin (θ / 2) ≠ 0) (n : ℕ) :
+    |∑ k ∈ Finset.range (n + 1), Real.sin ((k : ℝ) * θ)|
+      ≤ 1 / |Real.sin (θ / 2)| := by
+  have hA : (0 : ℝ) < |Real.sin (θ / 2)| := abs_pos.mpr hθ
+  rw [lagrange_sin_sum θ hθ n, abs_div, abs_mul, abs_two]
+  rw [div_le_div_iff (mul_pos two_pos hA) hA]
+  have hnum : |Real.cos (θ / 2) - Real.cos (((n : ℝ) + 1 / 2) * θ)| ≤ 2 :=
+    abs_le.mpr ⟨by
+      have := Real.cos_le_one (θ / 2)
+      have := Real.neg_one_le_cos (((n : ℝ) + 1 / 2) * θ)
+      linarith, by
+      have := Real.neg_one_le_cos (θ / 2)
+      have := Real.cos_le_one (((n : ℝ) + 1 / 2) * θ)
+      linarith⟩
+  nlinarith [mul_le_mul_of_nonneg_right hnum (le_of_lt hA)]
+
 end DeMoivreOQ06
