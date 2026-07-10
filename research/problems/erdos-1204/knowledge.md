@@ -301,3 +301,41 @@ clean build succeeded and the source has no native_decide/sorry/axiom.
 Still OPEN: asymptotics `A(k) ∼ k log k` and the `B(k)` estimate (analytic sieve). Next:
 `B(4)=S(4)/4` (witness {0,2,6,8} → B(4)=4?); whether min-sum sets always equal min-max
 sets (true for k≤3).
+
+## Session 2026-07-09 (researcher-1) — exact S(4)=16, B(4)=4 (B(k) frontier +1)
+
+**Mode:** REVISIT (RICH). Extended the minimal-average development in Erdos1204B.lean
+by one exact value, executing the explicitly-suggested next step.
+
+### Added (3 theorems, 0 axioms / 0 sorries)
+- `admissible_four_sum_ge {a} (card=4) (Admissible) : 16 ≤ a.sum id` — structural
+  CLONE of the verified `admissible_three_sum_ge`: M=max ≥ 8 (via `admissible_four_sup_ge`,
+  the A(4) sup bound from Erdos1204A4.lean), erased 3-set sum ≥ 8 (via admissible_three_sum_ge),
+  omega closes 8+8=16.
+- `S_four : S 4 = 16` — clone of S_three; witness {0,2,6,8}=`admissible_zero_two_six_eight`
+  (the A(4) extremal set, sum 16 by decide) + lower bound admissible_four_sum_ge.
+- `B_four : B 4 = 4` — clone of B_three (16/4=4 by norm_num).
+- New `import Proofs.Erdos1204A4` (for admissible_four_sup_ge + the {0,2,6,8} witness;
+  A4→Problem, no cycle). Docstring + #print axioms updated.
+
+### Key point
+Confirms the bootstrap **S(k) ≥ A(k)_sup + S(k-1)** (here 8+8=16) with witness = the A(k)
+extremal set — so at k=4 the min-average and min-diameter optima STILL coincide ({0,2,6,8}
+realizes both A(4)=8 and S(4)=16). B(4)=4 > parity floor k-1=3 (like B(3)). Next: S(5)=?
+is RISKIER — needs A(5) sup bound AND the min-sum set may diverge from the min-max set
+(open whether they coincide for k≥5), so the witness sum might exceed A(5)+S(4); verify
+numerically before claiming an exact S(5).
+
+### Verification — UNVERIFIED (env, both docker + host blocked)
+- Docker: 7 attempts, ALL SIGBUS-135 (or one code-1 corrupted-dep read) at the DEPENDENCY
+  `Erdos1204Problem` olean-write ([7743/7745] Building Erdos1204Problem, clean elab 1.6–4.9s,
+  ZERO source-loc diagnostics) — the dep never serializes its olean under fleet load, so the
+  build never reaches Erdos1204B. Pre-existing verified dep, not my code.
+- Host bypass (prior sessions' `lake env lean` route): host .lake INCOMPLETE
+  (Batteries.CodeAction.Basic.olean missing) → single-file lean errors at import; completing
+  it = forbidden full `lake build`. Not viable this session.
+- The 3 additions are faithful clones of the green-verified admissible_three_sum_ge / S_three /
+  B_three, reuse only lemmas that built green in prior sessions (admissible_four_sup_ge,
+  admissible_zero_two_six_eight), trivial arithmetic. All reused signatures re-confirmed by grep.
+  Ship UNVERIFIED per the documented dep-olean-write SIGBUS pattern; a later clean docker run
+  (or host-lake bypass with complete .lake) should confirm green.
