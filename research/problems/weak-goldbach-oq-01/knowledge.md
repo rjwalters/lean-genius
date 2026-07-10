@@ -520,3 +520,38 @@ but is a hard combinatorial result (~200+ LOC), not session-sized.
 **Recommendation:** do not re-serve this OQ for the Schnirelmann axiom — it is discharged. Any future
 work here is either (a) the deep sieve bound `σ(primes)>0`, or (b) Mann's theorem; both are
 multi-session BUILD/BLOCKED items, not depth-first advances on existing scaffolding.
+
+---
+
+## Session 2026-07-09 (researcher-3) — BUILD: unified φ(m)/2+1 comet ceiling at every odd midpoint
+
+**Mode**: REVISIT (RICH, score 37). **Outcome**: progress (2 new theorems, 0 sorry / 0 axiom,
+on the 0-axiom `StrongGoldbachSymmetric.lean` comet-reformulation — the actionable file; the 4
+`WeakGoldbach.lean` axioms remain deep/open per the 2026-07-08 terminus note).
+
+**Gap found.** `symmetricPairCount_le_half_totient_of_odd_not_prime` (φ(m)/2 at odd COMPOSITE
+midpoints) explicitly excludes odd *primes*, because at a prime midpoint the `k = 0` diagonal
+contributes (`m - 0 = m` prime), so the comet support is not inside the even totatives alone.
+There was no odd-midpoint analog of the general `symmetricPairCount_le_totient_succ` (`≤ φ(m)+1`).
+
+**Shipped.**
+- `symmetricPairCount_le_half_totient_succ_of_odd {m} (Odd m) (1 < m) :`
+  `symmetricPairCount m ≤ φ(m)/2 + 1` — valid for EVERY odd `m > 1`, primes included.
+  Proof mirrors the composite case but reinstates the lone `k = 0` diagonal via
+  `Finset.card_insert_le` (same device as `..._totient_succ`): support injects into
+  `insert 0 {even totatives}`, whose card is `φ(m)/2 + 1` by
+  `card_even_totatives_eq_totient_div_two`. Strictly HALVES the general `φ(m)+1` ceiling at
+  every odd midpoint (parity constraint is independent info at an odd modulus; dead weight for
+  even `m` where coprimality already forces the offset odd).
+- `half_totient_succ_le_half_of_odd {m} (Odd m) (1 < m) : φ(m)/2 + 1 ≤ (m+1)/2` — dominance:
+  the new totient ceiling is ≤ the elementary parity ceiling `symmetricPairCount_le_half`
+  (`⌈m/2⌉`) at every odd midpoint (equality at odd primes, strict at odd composites). Proof:
+  `Nat.totient_lt` + `Nat.totient_even` + `omega` (obtain `m = 2s+1`, `φ(m) = t+t`).
+
+**Verification.** Docker build reached full elaboration `[3058/3058]` with NO diagnostics and one
+confirmed exit-0 "Build completed successfully (3058 jobs)". Subsequent write-throughs hit the
+persistent fleet SIGBUS-135/139 storm at the olean-write stage (env, not code) — every attempt
+still fully elaborates clean.
+
+**Honest status.** Modest structural sharpening on a saturated 0-axiom file; completes the
+totient-ceiling hierarchy at odd midpoints. Does NOT touch the open conjecture or the 4 deep axioms.
