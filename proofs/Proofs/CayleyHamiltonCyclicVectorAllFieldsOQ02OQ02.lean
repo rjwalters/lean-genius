@@ -132,6 +132,23 @@ theorem finrank_centralizer_eq_natDegree_charpoly
   rw [finrank_centralizer_eq_of_nonderogatory M hM, M.charpoly_natDegree_eq_dim,
     Fintype.card_fin]
 
+/-- **Commutant dimension from `C(M) = K[M]`.**  If the centralizer of `M` already
+    coincides with the polynomial algebra `K[M]`, then it has `K`-dimension exactly
+    `n`.  This is the `(iii) ⟹ dim = n` edge: together with `(ii) ⟹ (iii)`
+    (`centralizer_eq_adjoin_of_nonderogatory`) and `(ii) ⟹ dim = n`
+    (`finrank_centralizer_eq_of_nonderogatory`) it names all three forward
+    implications among {nonderogatory, `C(M) = K[M]`, `dim = n`} that are available
+    without the Frobenius invariant-factor formula.  Obtained by feeding the
+    characterization `centralizer_eq_adjoin_iff_nonderogatory` into the headline. -/
+theorem finrank_centralizer_eq_of_centralizer_eq_adjoin
+    (M : Matrix (Fin n) (Fin n) K)
+    (h : Subalgebra.centralizer K ({M} : Set (Matrix (Fin n) (Fin n) K))
+        = Algebra.adjoin K ({M} : Set (Matrix (Fin n) (Fin n) K))) :
+    Module.finrank K
+        ↥(Subalgebra.centralizer K ({M} : Set (Matrix (Fin n) (Fin n) K))) = n :=
+  finrank_centralizer_eq_of_nonderogatory M
+    ((centralizer_eq_adjoin_iff_nonderogatory M).mp h)
+
 /-! ### Summary -/
 
 /-- **De Moivre / Cayley–Hamilton OQ-02-OQ-02 summary.**  For an `n × n` matrix
