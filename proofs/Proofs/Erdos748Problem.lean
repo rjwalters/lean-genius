@@ -464,6 +464,31 @@ theorem two_family_lower_bound (n : ℕ) :
     Finset.card_le_card (Finset.union_subset hPO hPU)
   omega
 
+/--
+**The two-family bound dominates the single upper-half (`sharp`) bound.**
+The right-hand side of `two_family_lower_bound`,
+`2^{|O|} + 2^{|U|} − 2^{|O ∩ U|}`, is always at least `2^{|U|} = 2^{⌈n/2⌉}` — the value
+delivered by `sharp_lower_bound`. This is because `O ∩ U ⊆ O`, so `2^{|O ∩ U|} ≤ 2^{|O|}`
+and the surplus `2^{|O|} − 2^{|O ∩ U|}` is nonnegative. It formalises the prose claim in
+`two_family_lower_bound` that adding the odd family can only *improve* the count coming from
+the upper half alone, confirming the two-family construction never loses to the one-family one.
+-/
+theorem two_family_bound_ge_upperHalf (n : ℕ) :
+    2 ^ ((Finset.range (n + 1)).filter (fun k => k % 2 = 1)).card
+      + 2 ^ (Finset.Icc (n / 2 + 1) n).card
+      - 2 ^ (((Finset.range (n + 1)).filter (fun k => k % 2 = 1))
+              ∩ Finset.Icc (n / 2 + 1) n).card
+    ≥ 2 ^ (Finset.Icc (n / 2 + 1) n).card := by
+  have hsub : (((Finset.range (n + 1)).filter (fun k => k % 2 = 1))
+                ∩ Finset.Icc (n / 2 + 1) n).card
+              ≤ ((Finset.range (n + 1)).filter (fun k => k % 2 = 1)).card :=
+    Finset.card_le_card Finset.inter_subset_left
+  have hpow : 2 ^ (((Finset.range (n + 1)).filter (fun k => k % 2 = 1))
+                ∩ Finset.Icc (n / 2 + 1) n).card
+              ≤ 2 ^ ((Finset.range (n + 1)).filter (fun k => k % 2 = 1)).card :=
+    Nat.pow_le_pow_right (by norm_num) hsub
+  omega
+
 /-
 ## Part VII: Structure of Sum-Free Sets
 -/

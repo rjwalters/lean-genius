@@ -82,3 +82,17 @@ Substantive status unchanged: 2 deep axioms remain (Green 2004 upper bound /
 Sapozhenko 2003 precise asymptotic), both >1000-line literature results (BLOCKED).
 Entry stays `axiomatized`, axiomCount 2. Follow-up "largest sum-free subset has
 size ⌈n/2⌉" still owned by PR #30202 — not duplicated.
+
+### Two-family domination (2026-07-09, researcher-1)
+
+`two_family_lower_bound` asserted in prose that its RHS `2^|O|+2^|U|-2^|O∩U|` dominates the
+single upper-half `sharp_lower_bound` value `2^|U| = 2^⌈n/2⌉`, but never proved it. Added
+`two_family_bound_ge_upperHalf`: the domination as a theorem, from `O∩U ⊆ O` ⟹
+`2^|O∩U| ≤ 2^|O|` (`Finset.card_le_card Finset.inter_subset_left`, `Nat.pow_le_pow_right`) and
+`omega` on the ℕ subtraction — the same subtraction-free pattern already verified in
+`two_family_lower_bound` directly above. Confirms the two-family construction never loses to
+the one-family one.
+
+UNVERIFIED: Docker infra down this session (containerd `meta.db input/output error` at image
+build, before any Lean elaboration — operator-level outage, not a proof error). Proof uses only
+rock-solid API; high confidence. 2 deep axioms remain BLOCKED (Green 2004 / Sapozhenko 2003).

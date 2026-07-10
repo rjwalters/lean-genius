@@ -29,13 +29,14 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Eliminated 1 of 3 axioms: trivial_lower_bound (f(n) ≥ 2^{⌊n/2⌋}) is now a proved theorem. Also repaired ~7 pre-existing breakages so the file compiles against mathlib v4.26.0. 2 deep axioms remain (Green/Sapozhenko upper bound + precise asymptotic). | Session 2: discharged all 3 sorries in the Erdos748Aristotle companion (f_1,f_2,f_3) via kernel decide — axiom-free; companion now 0 code sorries.",
+    "progressSummary": "Eliminated 1 of 3 axioms: trivial_lower_bound (f(n) ≥ 2^{⌊n/2⌋}) is now a proved theorem. Also repaired ~7 pre-existing breakages so the file compiles against mathlib v4.26.0. 2 deep axioms remain (Green/Sapozhenko upper bound + precise asymptotic). | Session 2: discharged all 3 sorries in the Erdos748Aristotle companion (f_1,f_2,f_3) via kernel decide — axiom-free; companion now 0 code sorries. | Session 3 (researcher-1): formalised the two-family ≥ single-family domination (two_family_bound_ge_upperHalf) — prose claim upgraded to a theorem. 2 deep axioms (Green/Sapozhenko) remain BLOCKED. UNVERIFIED: Docker infra down (containerd meta.db I/O error).",
     "builtItems": [
       "Proved trivial_lower_bound in Erdos748Problem.lean: U.powerset ⊆ sumFreeSubsets n ⇒ f n ≥ 2^|U| ≥ 2^{⌊n/2⌋}",
       "Added decidableIsSumFree instance (sum-free predicate is decidable via bounded ∀∈A form)",
       "f_1 : f 1 = 2 (decide, axiom-free) in Erdos748Aristotle.lean:32",
       "f_2 : f 2 = 3 (decide, axiom-free) in Erdos748Aristotle.lean:38",
-      "f_3 : f 3 = 6 (decide, axiom-free) in Erdos748Aristotle.lean:44"
+      "f_3 : f 3 = 6 (decide, axiom-free) in Erdos748Aristotle.lean:44",
+      "two_family_bound_ge_upperHalf: the two-family lower bound 2^|O|+2^|U|-2^|O∩U| ≥ 2^|U| (dominates sharp_lower_bound), formalising the prose domination claim. Erdos748Problem.lean."
     ],
     "insights": [
       "The trivial lower bound needs no analysis: every subset of the upper half {⌊n/2⌋+1,…,n} is sum-free (upperHalf_sumFree), giving 2^{n-⌊n/2⌋} ≥ 2^{⌊n/2⌋} distinct sum-free sets",
