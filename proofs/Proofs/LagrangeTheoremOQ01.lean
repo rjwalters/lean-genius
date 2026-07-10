@@ -95,6 +95,16 @@ theorem sylow_count_dvd_index (p : ℕ) [hp : Fact p.Prime] (P : Sylow p G) :
     card (Sylow p G) ∣ P.toSubgroup.index :=
   Sylow.card_sylow_dvd_index P
 
+/-- The number of Sylow p-subgroups divides `|G|`.
+    Since `n_p` divides the index `[G : P] = |G| / p^k` (`sylow_count_dvd_index`)
+    and that index divides `|G|` (`Subgroup.index_dvd_card`), transitivity gives the
+    headline Third-Sylow divisibility `n_p | |G|` — the coarser but self-contained
+    form of `n_p | |G|/p^k` that needs no reference to the Sylow order. -/
+theorem sylow_count_dvd_card (p : ℕ) [hp : Fact p.Prime] (P : Sylow p G) :
+    card (Sylow p G) ∣ card G := by
+  have h := (Sylow.card_sylow_dvd_index P).trans P.toSubgroup.index_dvd_card
+  rwa [Nat.card_eq_fintype_card] at h
+
 /-- The number of Sylow p-subgroups is congruent to 1 mod p. -/
 theorem sylow_count_mod_p (p : ℕ) [hp : Fact p.Prime] :
     card (Sylow p G) % p = 1 := by
