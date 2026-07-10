@@ -233,6 +233,51 @@ theorem quadratic_iteration_count {C ε : ℝ} (hC : 0 < C) (hε : 0 < ε)
   exact div_le_of_le_mul₀ (le_of_lt hC) (le_of_lt hε) hn
 
 -- ============================================================
+-- SECTION IX: Persistence of ε-Approximation (OQ-02 / OQ-02 / OQ-01)
+-- ============================================================
+-- Sub-question (OQ-01): once a query algorithm on a contraction has spent
+-- enough queries to reach ε-accuracy, does further querying preserve that
+-- accuracy, and is ε-accuracy achieved *eventually for every* sufficiently
+-- large query budget?  Both hold: the contraction iteration error L^n·D is
+-- monotone non-increasing in n (for L ≤ 1), so more queries never hurt.
+
+/-- **Persistence of ε-accuracy**: if the n-th contraction iterate is within
+    ε of the fixed point (because `L^n · D ≤ ε`), then EVERY later iterate
+    `m ≥ n` is also within ε.  Spending more queries never loses accuracy.
+
+    This is the monotonicity backbone of the contraction query complexity:
+    the accuracy threshold, once crossed, is never re-crossed. -/
+theorem contraction_epsilon_persists {f : ℝ → ℝ} {L : ℝ}
+    (hL : 0 ≤ L) (hL1 : L ≤ 1)
+    (hlip : ∀ x y : ℝ, |f x - f y| ≤ L * |x - y|)
+    {x_star : ℝ} (hfix : f x_star = x_star) (x₀ : ℝ)
+    {n : ℕ} {ε : ℝ} (hn : L ^ n * |x₀ - x_star| ≤ ε)
+    {m : ℕ} (hmn : n ≤ m) :
+    |f^[m] x₀ - x_star| ≤ ε := by
+  have hDbound : |f^[m] x₀ - x_star| ≤ L ^ m * |x₀ - x_star| :=
+    contraction_error_bound hL hlip hfix x₀ m
+  have hpow : L ^ m ≤ L ^ n := pow_le_pow_of_le_one hL hL1 hmn
+  have hstep : L ^ m * |x₀ - x_star| ≤ L ^ n * |x₀ - x_star| :=
+    mul_le_mul_of_nonneg_right hpow (abs_nonneg _)
+  linarith
+
+/-- **Eventual ε-accuracy**: for an L-contraction (`L < 1`), there is a query
+    budget N such that EVERY iterate using at least N queries lands within ε of
+    the fixed point.  Combines `contraction_finite_iterations` (some N works)
+    with `contraction_epsilon_persists` (all larger budgets keep working),
+    upgrading "∃ n" convergence to "∃ N, ∀ m ≥ N". -/
+theorem contraction_eventually_epsilon {f : ℝ → ℝ} {L : ℝ}
+    (hL : 0 ≤ L) (hL1 : L < 1)
+    (hlip : ∀ x y : ℝ, |f x - f y| ≤ L * |x - y|)
+    {x_star : ℝ} (hfix : f x_star = x_star) (x₀ : ℝ)
+    {ε : ℝ} (hε : 0 < ε) :
+    ∃ N : ℕ, ∀ m : ℕ, N ≤ m → |f^[m] x₀ - x_star| ≤ ε := by
+  obtain ⟨N, hN⟩ :=
+    contraction_finite_iterations hL hL1 hε (abs_nonneg (x₀ - x_star))
+  exact ⟨N, fun m hm =>
+    contraction_epsilon_persists hL (le_of_lt hL1) hlip hfix x₀ hN hm⟩
+
+-- ============================================================
 -- SECTION VIII: Summary
 -- ============================================================
 
@@ -265,4 +310,6 @@ end BrouwerOQ02OQ02
 #check BrouwerOQ02OQ02.contraction_faster_than_bisection
 #check BrouwerOQ02OQ02.quadratic_convergence_rate
 #check BrouwerOQ02OQ02.quadratic_to_epsilon
+#check BrouwerOQ02OQ02.contraction_epsilon_persists
+#check BrouwerOQ02OQ02.contraction_eventually_epsilon
 #check BrouwerOQ02OQ02.query_complexity_landscape
