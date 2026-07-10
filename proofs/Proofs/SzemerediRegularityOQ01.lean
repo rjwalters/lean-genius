@@ -340,4 +340,30 @@ theorem card_irregularOrderedPairs_compl (G : SimpleGraph V) [DecidableRel G.Adj
     (irregularOrderedPairs Gᶜ eps parts).card = (irregularOrderedPairs G eps parts).card := by
   rw [irregularOrderedPairs_compl G eps heps parts hne hdisj]
 
+/-- **Irregular pairs are off-diagonal.**  Every ordered irregular pair `(P, Q)`
+    is drawn from `parts` with `P ≠ Q`, i.e. lies in `parts.offDiag`.  The extra
+    `¬IsEpsilonRegular` filter condition only removes more pairs, so the irregular
+    set is contained in the off-diagonal. -/
+theorem irregularOrderedPairs_subset_offDiag (G : SimpleGraph V) [DecidableRel G.Adj]
+    (eps : ℚ) (parts : Finset (Finset V)) :
+    irregularOrderedPairs G eps parts ⊆ parts.offDiag := by
+  intro x hx
+  simp only [irregularOrderedPairs, Finset.mem_filter, Finset.mem_product] at hx
+  rw [Finset.mem_offDiag]
+  exact ⟨hx.1.1, hx.1.2, hx.2.1⟩
+
+/-- **Trivial upper bound on the irregular-pair count.**  There are at most
+    `n·n − n = n(n−1)` ordered irregular pairs, where `n = #parts`: the irregular
+    set embeds in `parts.offDiag`, whose cardinality is `Finset.offDiag_card`.
+    This is the ceiling against which the `IsRegularPartition` threshold
+    `card irregular ≤ eps·n²` is compared, and the complement of the antitone
+    lower-side bookkeeping (`card_irregularOrderedPairs_antitone`). -/
+theorem card_irregularOrderedPairs_le (G : SimpleGraph V) [DecidableRel G.Adj]
+    (eps : ℚ) (parts : Finset (Finset V)) :
+    (irregularOrderedPairs G eps parts).card ≤ parts.card * parts.card - parts.card := by
+  calc (irregularOrderedPairs G eps parts).card
+      ≤ parts.offDiag.card :=
+        Finset.card_le_card (irregularOrderedPairs_subset_offDiag G eps parts)
+    _ = parts.card * parts.card - parts.card := Finset.offDiag_card parts
+
 end Szemeredi.Regularity.OQ01
