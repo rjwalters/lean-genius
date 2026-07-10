@@ -116,5 +116,25 @@
   "crossReferences": [
     "stars-and-bars-weak-compositions-oq-02",
     "stars-and-bars-weak-compositions"
+  ],
+  "references": [
+    {
+      "key": "Andrews1998Partitions",
+      "citation": "Andrews, G. E. (1998). The Theory of Partitions. Cambridge Mathematical Library. Cambridge University Press.",
+      "type": "book",
+      "note": "Standard reference for Gaussian (q-)binomial coefficients. B(k,n,b) is the coefficient of qⁿ in the Gaussian binomial [k+b; b]_q, and the reflection n ↦ kb − n formalized here is the combinatorial content of the palindromic symmetry of the coefficient sequence."
+    },
+    {
+      "key": "StanleyEC1",
+      "citation": "Stanley, R. P. (2012). Enumerative Combinatorics, Vol. 1 (2nd ed.), §1.7–1.8. Cambridge University Press.",
+      "type": "book",
+      "note": "Treats compositions and weak compositions (stars and bars), the inclusion–exclusion count of bounded compositions, and the symmetry/unimodality of Gaussian binomial coefficients that underlies the reflection B(k,n,b) = B(k, kb−n, b)."
+    },
+    {
+      "key": "KacCheung2002",
+      "citation": "Kac, V., & Cheung, P. (2002). Quantum Calculus. Universitext. Springer.",
+      "type": "book",
+      "note": "Gives the q-binomial reflection identity [m; r]_q = [m; r]_{q⁻¹} · q^{r(m−r)} specialized here at q = 1 to the finite bijection f ↦ (i ↦ b − f i) between compositions of n and of kb − n."
+    }
   ]
 }
