@@ -168,6 +168,23 @@ theorem exists_deficiency_nine :
     ∃ n k, ValidDeficiencyExample n k ∧ deficiency n k = 9 :=
   ⟨284, 28, record_valid, deficiency_284_28⟩
 
+/-- **Well-definedness of the maximal deficiency.**  The value `D` in
+`MaximalDeficiencyIs D` is unique: if two constants `D₁, D₂` are both maximal
+deficiencies, then `D₁ = D₂`.  Each maximal value is *attained* by some admissible
+pair and *dominates* every admissible pair, so `D₁`'s attaining example is bounded by
+`D₂` (giving `D₁ ≤ D₂`) and symmetrically `D₂ ≤ D₁`.  In particular the target value
+`9` of OQ-02 is the *only* possible answer — `MaximalDeficiencyIs` picks out a single
+number — so no rival constant can also satisfy the conjecture's shape.  Pure
+consequence of the definition (no Ramsey/prime input), the exact analogue of the
+"unique extremal constant" packaging. -/
+theorem maximalDeficiencyIs_unique {D₁ D₂ : ℕ}
+    (h₁ : MaximalDeficiencyIs D₁) (h₂ : MaximalDeficiencyIs D₂) : D₁ = D₂ := by
+  obtain ⟨⟨n₁, k₁, hv₁, he₁⟩, hub₁⟩ := h₁
+  obtain ⟨⟨n₂, k₂, hv₂, he₂⟩, hub₂⟩ := h₂
+  have hb1 := hub₂ n₁ k₁ hv₁
+  have hb2 := hub₁ n₂ k₂ hv₂
+  omega
+
 /-- **Reduction of OQ-02 to its open core.**  Because the existence half is
 established (`exists_deficiency_nine`), the conjecture `MaximalDeficiencyIs 9`
 is *equivalent* to the single open statement: no admissible pair has deficiency
