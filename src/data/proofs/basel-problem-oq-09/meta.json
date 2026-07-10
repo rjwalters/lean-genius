@@ -123,17 +123,25 @@
       "id": "odd-part",
       "title": "hasSum_odd_squares — ∑ 1/(2k+1)² = π²/8",
       "startLine": 80,
-      "endLine": 121,
-      "summary": "Odd subseries summable via comp_injective; reassemble ζ(2) = even + odd with HasSum.even_add_odd and use HasSum.unique to pin the odd sum to π²/8, then bridge to the clean statement. Includes tsum and summability corollaries.",
+      "endLine": 124,
+      "summary": "Odd subseries summable via comp_injective; reassemble ζ(2) = even + odd with HasSum.even_add_odd and use HasSum.unique to pin the odd sum to π²/8, then bridge to the clean statement. Packages the reusable corollaries tsum_odd_squares, summable_odd_squares, and the positivity check odd_squares_value_pos.",
       "mathContext": "The odd-square Basel sum, recovered as ζ(2) minus its even part."
     },
     {
       "id": "decomposition",
-      "title": "The decomposition identity and sanity checks",
-      "startLine": 123,
+      "title": "The decomposition identity — π²/6 = π²/24 + π²/8",
+      "startLine": 126,
+      "endLine": 138,
+      "summary": "Records the value identity π²/6 = π²/24 + π²/8 (basel_even_odd_decomposition, closed by ring) and that the odd part exceeds the even part (odd_part_gt_even_part), so three quarters of the Basel mass lives on the odd indices.",
+      "mathContext": "$\\frac{\\pi^2}{6} = \\frac{\\pi^2}{24} + \\frac{\\pi^2}{8}$: the odd part (¾ζ(2)) exceeds the even part (¼ζ(2))."
+    },
+    {
+      "id": "sanity-checks",
+      "title": "Numerical sanity checks",
+      "startLine": 140,
       "endLine": 148,
-      "summary": "Records π²/6 = π²/24 + π²/8, that the odd part exceeds the even part, and numerical checks that the first two odd terms are 1 and 1/9.",
-      "mathContext": "Three quarters of the Basel mass lives on the odd indices."
+      "summary": "Two anonymous examples confirm the first two odd terms evaluate to 1/1² = 1 and 1/3² = 1/9, grounding the abstract HasSum statement in concrete arithmetic; being examples they contribute no axioms and no named theorems.",
+      "mathContext": "First odd terms: $\\frac{1}{1^2}=1$, $\\frac{1}{3^2}=\\frac19$."
     }
   ],
   "conclusion": {
