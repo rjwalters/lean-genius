@@ -297,6 +297,54 @@ theorem exists_universal_recip_bound :
       ∑' a : A, (1 : ℝ) / (a : ℝ) ≤ B :=
   ⟨recipBound, recipBound_pos, fun _A hA hA0 => threeAPFree_tsum_reciprocal_le hA hA0⟩
 
+/-- **Finite checkable criterion (contrapositive of the uniform bound).**  A *finite* set
+`S ⊆ ℕ` (with `0 ∉ S`) whose reciprocal sum already *exceeds* the absolute constant
+`recipBound` cannot be 3-AP-free: `recipBound < ∑_{a ∈ S} 1/a → ¬ ThreeAPFree S`.
+
+Where `not_threeAPFree_of_not_summable_reciprocal` needs the full infinite sum to *diverge*,
+this only needs one finite over-threshold partial sum — a concrete, computable certificate
+that forces a three-term progression.  Immediate contrapositive of `finite_recip_sum_le`
+(`∑_{a ∈ S} 1/a ≤ recipBound` for every finite 3-AP-free `S`). -/
+theorem not_threeAPFree_of_finite_recip_sum_gt
+    (S : Finset ℕ) (hS0 : 0 ∉ S)
+    (hgt : recipBound < ∑ a ∈ S, (1 : ℝ) / (a : ℝ)) :
+    ¬ ThreeAPFree (S : Set ℕ) := by
+  intro hAP
+  have hle : ∑ a ∈ S, (1 : ℝ) / (a : ℝ) ≤ recipBound := by
+    unfold recipBound
+    exact finite_recip_sum_le S hAP hS0
+  linarith
+
+/-- **Finite explicit-progression criterion.**  A finite set `S ⊆ ℕ` (with `0 ∉ S`) whose
+reciprocal sum exceeds `recipBound` contains a *nontrivial* three-term arithmetic progression
+`a, a + d, a + 2d` with `d > 0`.  The finite, computable analogue of
+`exists_nontrivial_threeAP_of_not_summable_reciprocal`: rather than a divergent infinite sum,
+a single finite reciprocal sum over the absolute threshold `recipBound` already exhibits the
+progression.  Unpacks `not_threeAPFree_of_finite_recip_sum_gt` into concrete AP witnesses. -/
+theorem exists_threeAP_of_finite_recip_sum_gt
+    (S : Finset ℕ) (hS0 : 0 ∉ S)
+    (hgt : recipBound < ∑ a ∈ S, (1 : ℝ) / (a : ℝ)) :
+    ∃ a d : ℕ, 0 < d ∧ a ∈ S ∧ a + d ∈ S ∧ a + 2 * d ∈ S := by
+  have hnot : ¬ ThreeAPFree (S : Set ℕ) :=
+    not_threeAPFree_of_finite_recip_sum_gt S hS0 hgt
+  unfold ThreeAPFree at hnot
+  push_neg at hnot
+  obtain ⟨a, ha, b, hb, c, hc, hsum, hne⟩ := hnot
+  -- `hsum : a + c = b + b`, `hne : a ≠ c`; the middle term `b` is the average.
+  rcases lt_or_gt_of_ne hne with hlt | hgt'
+  · -- `a < c`: progression starts at `a` with difference `b - a`.
+    refine ⟨a, b - a, by omega, Finset.mem_coe.mp ha, ?_, ?_⟩
+    · have h : a + (b - a) = b := by omega
+      rw [h]; exact Finset.mem_coe.mp hb
+    · have h : a + 2 * (b - a) = c := by omega
+      rw [h]; exact Finset.mem_coe.mp hc
+  · -- `c < a`: progression starts at `c` with difference `b - c`.
+    refine ⟨c, b - c, by omega, Finset.mem_coe.mp hc, ?_, ?_⟩
+    · have h : c + (b - c) = b := by omega
+      rw [h]; exact Finset.mem_coe.mp hb
+    · have h : c + 2 * (b - c) = a := by omega
+      rw [h]; exact Finset.mem_coe.mp ha
+
 #check @threeAPFree_summable_reciprocal
 #check @finite_recip_sum_le
 #check @fiber_sum_le
