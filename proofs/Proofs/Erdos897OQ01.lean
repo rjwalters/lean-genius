@@ -500,4 +500,46 @@ theorem not_unboundedOnPrimePowers_max {f g : ℕ → ℝ}
     le_trans (hMg p k hp hk) (by gcongr; exact le_max_right _ _)
   exact max_le hfb hgb
 
+/-
+## (10) The boundedness selectivity criterion
+
+Section (8)'s `O(log)` criterion `not_unboundedOnPrimePowers_of_le_const_mul_log`
+subsumes the ad-hoc selectivity of `logN` and `ω` by comparing against `C·log`.
+Its sharpest *constant* specialization deserves its own name: a function that is
+merely **bounded above** on prime powers (`f(p^k) ≤ C` for a fixed `C`, no `log`
+factor at all) fails the Erdős #897 hypothesis outright.  This is the qualitative
+statement "bounded on prime powers ⟹ not unbounded relative to `log`", and it
+covers *every* bounded arithmetic function in one stroke — in particular `ω`
+(`ω(p^k) = 1`), and more generally any additive `f` taking finitely many values on
+prime powers.
+-/
+
+/-- **Boundedness selectivity criterion.**  If an arithmetic function is bounded
+above by a constant on prime powers — `f(p^k) ≤ C` for a fixed `C` and every prime
+power — then it fails the Erdős #897 hypothesis.  The constant bound is dominated by
+`(max C 0 / log 2)·log(p^k)`, because `log(p^k) ≥ log 2 > 0` on every prime power,
+so the `O(log)` criterion of section (8) applies with `C' = max(C,0)/log 2`.  This
+generalizes the `ω` selectivity of section (2) (`ω(p^k) = 1 ≤ C = 1`) to *any*
+prime-power-bounded function, with no additivity or arithmetic structure required. -/
+theorem not_unboundedOnPrimePowers_of_bounded {f : ℕ → ℝ} {C : ℝ}
+    (hf : ∀ p k : ℕ, p.Prime → 1 ≤ k → f (p ^ k) ≤ C) :
+    ¬ UnboundedOnPrimePowers f := by
+  refine not_unboundedOnPrimePowers_of_le_const_mul_log
+    (C := max C 0 / Real.log 2) (fun p k hp hk => ?_)
+  have hlog2 : (0 : ℝ) < Real.log 2 := Real.log_pos (by norm_num)
+  have hmaxnn : (0 : ℝ) ≤ max C 0 := le_max_right _ _
+  have hloglow : Real.log 2 ≤ Real.log (p ^ k) := by
+    apply Real.log_le_log
+    · norm_num
+    · have h : (2 : ℕ) ≤ p ^ k := le_trans hp.two_le (Nat.le_self_pow (by omega) p)
+      exact_mod_cast h
+  have hmid : C ≤ (max C 0 / Real.log 2) * Real.log (p ^ k) := by
+    rw [div_mul_eq_mul_div, le_div_iff₀ hlog2]
+    have h1 : C * Real.log 2 ≤ max C 0 * Real.log 2 :=
+      mul_le_mul_of_nonneg_right (le_max_left C 0) hlog2.le
+    have h2 : max C 0 * Real.log 2 ≤ max C 0 * Real.log (p ^ k) :=
+      mul_le_mul_of_nonneg_left hloglow hmaxnn
+    linarith
+  exact le_trans (hf p k hp hk) hmid
+
 end Erdos897
