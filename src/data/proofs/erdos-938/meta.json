@@ -211,5 +211,28 @@
       "description": "Related Erdős problem sharing themes: number-theory, open, powerful-numbers"
     }
   ],
+  "references": [
+    {
+      "title": "Powerful numbers",
+      "author": "Solomon W. Golomb",
+      "year": "1970",
+      "venue": "American Mathematical Monthly 77, no. 8, pp. 848–852",
+      "description": "The classic reference introducing 'powerful numbers' (p | n ⟹ p² | n), their a²b³ parametrization, and the asymptotic count (ζ(3/2)/ζ(3))·√x that underlies this problem's density estimates."
+    },
+    {
+      "title": "Erdős Problem #938",
+      "author": "Thomas F. Bloom (ed.)",
+      "year": "2024",
+      "venue": "erdosproblems.com/938",
+      "description": "The catalogued entry recording the OPEN status and Erdős's original posing [Er76d]: are there only finitely many three-term APs among consecutive powerful numbers? Links to the related #364 (no three consecutive powerful integers)."
+    },
+    {
+      "title": "OEIS A001694: Powerful numbers",
+      "author": "N. J. A. Sloane (ed.), OEIS Foundation",
+      "year": "2024",
+      "venue": "The On-Line Encyclopedia of Integer Sequences, oeis.org/A001694",
+      "description": "The sequence 1, 4, 8, 9, 16, 25, 27, 32, 36, 49, … of powerful (squarefull) numbers whose consecutive triples this problem examines for arithmetic progressions."
+    }
+  ],
   "sorries": 0
 }
