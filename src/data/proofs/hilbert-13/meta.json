@@ -30,16 +30,17 @@
       }
     ],
     "originalContributions": [
-      "Statement of the Kolmogorov-Arnold representation theorem",
-      "Connection to the septic equation and Bring-Jerrard form",
-      "Vitushkin's theorem for smooth functions",
-      "Universal inner functions (Arnold's refinement)"
+      "Axiomatized statement of the Kolmogorov-Arnold representation theorem (via the KolmogorovArnoldRepresentation structure)",
+      "Statement of the septic-equation / Bring-Jerrard motivation — note the SepticRootFunction is a `0` placeholder and no_radical_solution_septic is a degenerate placeholder axiom (see assumptions), not the intended radical-unsolvability result",
+      "Axiomatized statement of Vitushkin's smooth-obstruction theorem",
+      "Axiomatized statement of universal inner functions (Arnold's refinement)",
+      "All results are axiomatized statements rather than machine-checked proofs: the four `theorem` declarations are `True`/arithmetic placeholders and the genuine content resides in the three non-degenerate axioms (see assumptions)"
     ],
     "dateAdded": "2025-12-29",
     "hilbertNumber": 13,
     "axiomCount": 4,
     "lineCount": 399,
-    "assumptions": "4 axioms: kolmogorov_arnold_theorem, no_radical_solution_septic, vitushkin_smooth_obstruction, and 1 more. See Lean source for complete statements.",
+    "assumptions": "4 axioms. Three carry genuine mathematical content: kolmogorov_arnold_theorem (∃ a KolmogorovArnoldRepresentation of a continuous f — i.e. f x = ∑_q Φ_q(∑_p coeff·φ_p) with univariate Φ_q, φ_p), vitushkin_smooth_obstruction (∃ a C² function of 3 variables not representable through two given 2-variable functions), and universal_inner_functions (Arnold's universal inner φ_p working for all continuous f). The fourth axiom, no_radical_solution_septic, is a DEGENERATE PLACEHOLDER: as formalized its proposition is `¬∃ (F : ℝ⁷ → ℝ), True`, which reduces to `¬True = False` (the intended 'expressible in radicals' constraint lives only in comments), so it is logically false and must not be relied upon — the axiom set as literally stated is inconsistent. Separately, all four `theorem` declarations are placeholders, not proofs of Hilbert 13: hilbert_conjecture_disproved concludes `RepresentableWithKVariables n 1 f`, a predicate defined as `True`; dimension_reduction_principle and exact_representation_caveat conclude `True`; hilbert13_summary proves `1 + 1 = 2`. The genuine content of this entry therefore lives entirely in the three non-degenerate axioms; the file is a Tier-C axiomatized scaffold.",
     "mathlib_version": "4.26.0",
     "theoremCount": 4,
     "definitionCount": 9
@@ -65,55 +66,55 @@
     {
       "id": "definitions",
       "title": "Superposition of Functions",
-      "startLine": 63,
-      "endLine": 93,
+      "startLine": 89,
+      "endLine": 117,
       "summary": "Definition of function representation using superpositions of lower-dimensional functions and the Kolmogorov-Arnold representation structure.",
       "mathContext": "Function superposition: $f(x_1, \\ldots, x_n)$ can be represented using functions of fewer variables composed with addition. Hilbert conjectured (1900) that $f(x_1, \\ldots, x_7)$ arising from solving degree-7 equations cannot be represented using only functions of two variables."
     },
     {
       "id": "kolmogorov-arnold",
       "title": "The Kolmogorov-Arnold Theorem",
-      "startLine": 94,
-      "endLine": 146,
+      "startLine": 119,
+      "endLine": 166,
       "summary": "The main theorem stating that every continuous function of n variables can be represented using functions of one variable.",
       "mathContext": "The Kolmogorov-Arnold representation theorem (1957): every continuous $f: [0,1]^n \\to \\mathbb{R}$ can be written as $f(x_1, \\ldots, x_n) = \\sum_{q=0}^{2n} \\Phi_q\\left(\\sum_{p=1}^{n} \\phi_{q,p}(x_p)\\right)$ where $\\Phi_q$ and $\\phi_{q,p}$ are continuous functions of ONE variable. This disproves Hilbert's conjecture for continuous functions."
     },
     {
       "id": "septic",
       "title": "The Septic Equation",
-      "startLine": 147,
-      "endLine": 182,
+      "startLine": 168,
+      "endLine": 203,
       "summary": "Connection to the original motivation: the Bring-Jerrard form of degree-7 polynomials and Abel-Ruffini impossibility.",
       "mathContext": "Hilbert's original motivation: the Bring-Jerrard form $x^7 + ax^3 + bx^2 + cx + 1 = 0$ reduces degree-7 equations to 3 parameters. Can the roots be expressed using functions of only 2 variables? Kolmogorov-Arnold says yes (for continuous functions), but the smooth case remains open."
     },
     {
       "id": "smooth-case",
       "title": "Smooth Functions: Vitushkin's Theorem",
-      "startLine": 183,
-      "endLine": 230,
+      "startLine": 205,
+      "endLine": 257,
       "summary": "For smooth (C^k) functions, Hilbert's intuition holds: some require more variables. Vitushkin's obstruction theorem.",
       "mathContext": "For $C^k$ functions ($k \\geq 2$), Hilbert's intuition holds partially: Vitushkin (1954) showed some $C^k$ functions of 3 variables cannot be represented via $C^k$ functions of 2 variables. The analytic ($C^\\omega$) case remains open and is arguably the 'true' Hilbert 13th problem."
     },
     {
       "id": "universal-functions",
       "title": "Universal Inner Functions",
-      "startLine": 231,
-      "endLine": 269,
+      "startLine": 259,
+      "endLine": 289,
       "summary": "Arnold's refinement showing that the inner functions can be chosen independently of the function being represented.",
       "mathContext": "Arnold's refinement (1957): the inner functions $\\phi_{q,p}$ in Kolmogorov's representation can be chosen independently of $f$ — only the outer functions $\\Phi_q$ depend on the target. This makes the representation universal: fixed inner functions serve all continuous functions."
     },
     {
       "id": "applications",
       "title": "Applications and Consequences",
-      "startLine": 270,
-      "endLine": 299,
+      "startLine": 291,
+      "endLine": 328,
       "summary": "Modern applications including neural network theory and Kolmogorov-Arnold Networks (KANs).",
       "mathContext": "Modern connections: Kolmogorov-Arnold Networks (KANs) in machine learning use learnable activation functions on edges (analogous to $\\phi_{q,p}$) rather than fixed activations on nodes. The representation theorem provides the theoretical foundation: any continuous function can be learned by a 2-layer KAN."
     },
     {
       "id": "summary",
       "title": "Summary",
-      "startLine": 319,
+      "startLine": 329,
       "endLine": 399,
       "summary": "Complete summary of Hilbert's 13th problem, its resolution, and remaining open questions.",
       "mathContext": "Summary: Hilbert's 13th is resolved for continuous functions (Kolmogorov-Arnold, 1957) but open for smooth/analytic functions. The theorem reveals that topological dimension does not constrain continuous function representation, while differentiable structure does."
@@ -186,10 +187,10 @@
   ],
   "mainTheorems": [
     {
-      "name": "kolmogorov_superposition",
-      "type": "core",
-      "description": "Every continuous function of n variables is a superposition of continuous functions of 2 variables",
-      "leanType": "Continuous f -> exists gs hs, f = sum (fun q => g_q ∘ sum (fun p => h_{pq}))"
+      "name": "kolmogorov_arnold_theorem",
+      "type": "axiom",
+      "description": "Axiomatized: every continuous function of n variables is a superposition of continuous functions of ONE variable (Kolmogorov-Arnold). Declared as an axiom, not a machine-checked theorem.",
+      "leanType": "(hf : Continuous f) -> exists rep : KolmogorovArnoldRepresentation n f, True  -- the structure bundles univariate Φ_q, φ_p and the exact formula f x = ∑_q Φ_q (∑_p coeff_{p,q} · φ_p (x_p))"
     }
   ],
   "sorries": 0
