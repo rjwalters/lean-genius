@@ -39,6 +39,7 @@ import Mathlib.LinearAlgebra.Matrix.SpecialLinearGroup
 import Mathlib.LinearAlgebra.Matrix.Transvection
 import Mathlib.RingTheory.Ideal.Span
 import Mathlib.RingTheory.Ideal.Operations
+import Mathlib.RingTheory.PrincipalIdealDomain
 import Mathlib.Tactic
 
 namespace BezoutPrimitive
@@ -76,6 +77,39 @@ theorem isPrimitive_iff_span_eq_top (v : Fin n → ℤ) :
     exact ⟨w, by simpa [dotProduct, smul_eq_mul, mul_comm] using hw⟩
   · rintro ⟨c, hc⟩
     exact ⟨c, by simpa [dotProduct, smul_eq_mul, mul_comm] using hc⟩
+
+/-- **The gcd characterization of primitivity.**  A vector `v` is primitive iff
+every common divisor of its entries is a unit — i.e. `gcd(v₁, …, vₙ) = 1`, the
+classical definition.  Forward: a dual `w` with `w ⬝ᵥ v = 1` divides `1` by any
+common divisor `d` of the entries (`d ∣ ∑ wᵢvᵢ = 1`), so `d` is a unit.  Reverse
+(over `ℤ`, a principal ideal ring): the generator `g` of `Ideal.span (range v)`
+divides every entry, hence is a unit by hypothesis, so the ideal is `⊤` and
+`isPrimitive_iff_span_eq_top` closes it.  This is the entry-level statement the
+opening docstring names ("gcd of the entries is `1`"), complementing the ideal
+form. -/
+theorem isPrimitive_iff_forall_isUnit_of_dvd (v : Fin n → ℤ) :
+    IsPrimitive v ↔ ∀ d : ℤ, (∀ i, d ∣ v i) → IsUnit d := by
+  constructor
+  · rintro ⟨w, hw⟩ d hd
+    apply isUnit_of_dvd_one
+    rw [← hw, dotProduct]
+    exact Finset.dvd_sum fun i _ => (hd i).mul_left (w i)
+  · intro h
+    rw [isPrimitive_iff_span_eq_top]
+    haveI hP : (Ideal.span (Set.range v)).IsPrincipal :=
+      IsPrincipalIdealRing.principal _
+    set I := Ideal.span (Set.range v) with hI
+    have hgen : Ideal.span {Submodule.IsPrincipal.generator I} = I :=
+      Submodule.IsPrincipal.span_singleton_generator I
+    set g := Submodule.IsPrincipal.generator I with hg
+    have hdvd : ∀ i, g ∣ v i := by
+      intro i
+      have hmem : v i ∈ I := Ideal.subset_span (Set.mem_range_self i)
+      rw [← hgen] at hmem
+      exact Ideal.mem_span_singleton.mp hmem
+    have hu : IsUnit g := h g hdvd
+    rw [← hgen]
+    exact Ideal.span_singleton_eq_top.mpr hu
 
 /-! ### `SLₙ(ℤ)` preserves primitivity -/
 
@@ -150,6 +184,24 @@ theorem IsPrimitive.ne_zero {v : Fin n → ℤ} (h : IsPrimitive v) : v ≠ 0 :=
   obtain ⟨w, hw⟩ := h
   rw [dotProduct_zero] at hw
   exact one_ne_zero hw.symm
+
+/-- **A unit coordinate makes the whole vector primitive.**  If some entry `vᵢ` is
+a unit (over `ℤ`, `vᵢ = ±1`) then `v` is primitive: the single dual
+`w = (vᵢ)⁻¹ · eᵢ` pairs `v` to `1`.  This is the *termination test* of the
+Euclidean descent — the moment a Bézout reduction drives one coordinate down to a
+unit, primitivity (hence reachability of `e₁`) is already certified, no further
+reduction required.  It is the sufficient-condition companion to
+`IsPrimitive.ne_zero`. -/
+theorem isPrimitive_of_isUnit_apply {v : Fin n → ℤ} {i : Fin n}
+    (hi : IsUnit (v i)) : IsPrimitive v := by
+  obtain ⟨u, hu⟩ := hi
+  refine ⟨Pi.single i ((u⁻¹ : ℤˣ) : ℤ), ?_⟩
+  rw [dotProduct, Finset.sum_eq_single i]
+  · rw [Pi.single_eq_same, ← hu, ← Units.val_mul, inv_mul_cancel, Units.val_one]
+  · intro j _ hj
+    rw [Pi.single_eq_of_ne hj, zero_mul]
+  · intro h
+    exact absurd (Finset.mem_univ i) h
 
 /-- **Primitivity is preserved under negation.**  If `w ⬝ᵥ v = 1` then
 `(-w) ⬝ᵥ (-v) = 1`, so `-v` is primitive with dual `-w`.  A sign flip is an
