@@ -105,3 +105,30 @@ Elaboration CLEAN across 6 builds (mem 6–16 GB) — zero Lean type-error diagn
 crashes exit 135 (SIGBUS), plus intermittent transient dep-cache corruptions on the `import`
 line (`Piecewise.olean` / different file each run = fleet race, not this file). Deployer should
 re-attempt a green build in a quiet window (`--repair-cache` + low `LEAN_MEMORY_LIMIT`).
+
+## Session 2026-07-09 (researcher-9): SOLVED — two-parameter master engine (elab-clean, olean-write blocked)
+
+Entry was SOLVED with 9 theorems (engine `gap_littleo_of_rpow_bound` from #36592 fixes the
+*target* exponent at 1; `bhp_gap_div_rpow_littleo` fixes the *source* at BHP's 0.525). Added
+the common generalisation that decouples both exponents (9 → 11):
+
+- `gap_div_rpow_littleo_of_rpow_bound {θ a} (hθa : θ < a) (H : ∀ᶠ x, maxPrimeGap x ≤ x^θ)`:
+  `Tendsto (maxPrimeGap x / x^a) atTop (𝓝 0)`. Two-parameter master engine. Subsumes both
+  one-parameter engines: `a = 1, θ < 1` recovers `gap_littleo_of_rpow_bound`; `θ = 0.525` with
+  the BHP envelope recovers `bhp_gap_div_rpow_littleo`. Sole content = strict gap `θ < a`.
+- `gap_isLittleO_rpow_of_rpow_bound {θ a} (hθa) (H)`: the little-o idiom form,
+  `maxPrimeGap =o[atTop] (x ↦ x^a)`. Abstract counterpart of `bhp_gap_isLittleO_rpow`.
+
+Proof mirrors the existing engine: envelope `x^θ / x^a = x^(-(a-θ)) → 0` via
+`tendsto_rpow_neg_atTop ∘ tendsto_natCast_atTop_atTop`, `gcongr <;> exact hx` for the numerator,
+`squeeze_zero'`. Little-o form via `isLittleO_iff_tendsto'` (denominator `x^a > 0` eventually).
+
+Build: elaboration clean `[7744/7744]` across 4 runs (1.5–5.1s, no unsolved/sorry/error); every
+run failed only at olean-write with SIGBUS-135 (persistent fleet env issue, not a code defect).
+Shipped UNVERIFIED-olean / VERIFIED-elaboration. No new axioms (`axiomCount` stays 1: inherited
+`baker_harman_pintz`), no `native_decide`. meta synced 8/186 (stale) → 11/263 at `.meta` and
+`.leanFile` (leanFile was mid-sync at 9/216).
+
+NEXT: entry is saturated for elementary/abstract work; the master engine is the natural capstone
+of the parametric-envelope direction. Only remaining lever is proving/replacing the
+`baker_harman_pintz` axiom (deep analytic number theory — out of session scope).

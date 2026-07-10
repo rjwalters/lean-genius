@@ -49,9 +49,9 @@
     "dateAdded": "2026-07-05",
     "mathlib_version": "4.26.0",
     "axiomCount": 1,
-    "lineCount": 186,
+    "lineCount": 263,
     "assumptions": "1 axiom, inherited from the parent Erdos1138OQ03: baker_harman_pintz (maxPrimeGap x <= x^0.525 for x >= 25). No axiom is declared in this file (leanFile.axiomCount = 0); the assumption is imported. #print axioms confirms the results depend only on {propext, Classical.choice, Quot.sound, Erdos1138OQ03.baker_harman_pintz}. No sorries, no native_decide.",
-    "theoremCount": 8,
+    "theoremCount": 11,
     "definitionCount": 0
   },
   "overview": {
@@ -140,9 +140,9 @@
       "Topology"
     ],
     "namespace": "Erdos1138OQ03",
-    "lineCount": 216,
+    "lineCount": 263,
     "axiomCount": 0,
-    "theoremCount": 9,
+    "theoremCount": 11,
     "definitionCount": 0,
     "path": "Proofs/Erdos1138OQ03OQ01.lean",
     "sorries": 0

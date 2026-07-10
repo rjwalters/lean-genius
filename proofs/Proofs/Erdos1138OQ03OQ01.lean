@@ -213,4 +213,51 @@ theorem gap_littleo_of_rpow_bound {θ : ℝ} (hθ : θ < 1)
       _ = (x : ℝ) ^ (-(1 - θ)) := hdiv
   exact squeeze_zero' (Eventually.of_forall h_lo) h_hi h_env
 
+/-- **Two-parameter master engine.** Both exponents are free: from *any* eventual power
+envelope `maxPrimeGap x ≤ x^θ` and *any* target exponent `a` strictly above the source `θ`,
+the normalised gap `maxPrimeGap x / x^a → 0`. The envelope `x^θ / x^a = x^(-(a - θ))` vanishes
+because `a - θ > 0`.
+
+This is the common generalisation of the two one-parameter engines in this file:
+`gap_littleo_of_rpow_bound` is the target-fixed instance `a = 1` (with `hθa : θ < 1`), while
+`bhp_gap_div_rpow_littleo` is the source-fixed instance `θ = 0.525` (with the BHP envelope
+supplied by `baker_harman_pintz`). Decoupling source from target isolates the sole arithmetic
+content — the strict gap `θ < a` between "how big the gaps provably are" and "what we divide by"
+— from every particular pair of exponents. -/
+theorem gap_div_rpow_littleo_of_rpow_bound {θ a : ℝ} (hθa : θ < a)
+    (H : ∀ᶠ x : ℕ in atTop, (maxPrimeGap x : ℝ) ≤ (x : ℝ) ^ θ) :
+    Tendsto (fun x : ℕ => (maxPrimeGap x : ℝ) / (x : ℝ) ^ a) atTop (𝓝 0) := by
+  have hpos : 0 < a - θ := by linarith
+  -- Envelope: x^(θ - a) = x^(-(a - θ)) → 0 (compose the ℝ-limit with the ℕ-cast).
+  have h_env : Tendsto (fun x : ℕ => (x : ℝ) ^ (-(a - θ))) atTop (𝓝 0) :=
+    (tendsto_rpow_neg_atTop hpos).comp tendsto_natCast_atTop_atTop
+  have h_lo : ∀ x : ℕ, 0 ≤ (maxPrimeGap x : ℝ) / (x : ℝ) ^ a := fun x =>
+    div_nonneg (Nat.cast_nonneg _) (Real.rpow_nonneg (Nat.cast_nonneg _) _)
+  -- Upper bound: divide the envelope hypothesis by `x^a` (valid once `x ≥ 1`).
+  have h_hi : ∀ᶠ x : ℕ in atTop,
+      (maxPrimeGap x : ℝ) / (x : ℝ) ^ a ≤ (x : ℝ) ^ (-(a - θ)) := by
+    filter_upwards [H, eventually_ge_atTop 1] with x hx hx1
+    have hx_pos : (0 : ℝ) < (x : ℝ) := by exact_mod_cast (lt_of_lt_of_le Nat.zero_lt_one hx1)
+    have hdiv : (x : ℝ) ^ θ / (x : ℝ) ^ a = (x : ℝ) ^ (-(a - θ)) := by
+      rw [← Real.rpow_sub hx_pos]; congr 1; ring
+    calc (maxPrimeGap x : ℝ) / (x : ℝ) ^ a
+        ≤ (x : ℝ) ^ θ / (x : ℝ) ^ a := by gcongr <;> exact hx
+      _ = (x : ℝ) ^ (-(a - θ)) := hdiv
+  exact squeeze_zero' (Eventually.of_forall h_lo) h_hi h_env
+
+/-- **Master engine, little-o idiom.** The two-parameter engine restated in Mathlib's
+asymptotics notation: any eventual envelope `maxPrimeGap x ≤ x^θ` gives `maxPrimeGap =o[atTop]
+(x ↦ x^a)` for every target `a > θ`. This is the abstract counterpart of `bhp_gap_isLittleO_rpow`
+(which fixes the source at the BHP exponent `0.525`) and generalises `bhp_gap_isLittleO_id`
+(target `a = 1`). -/
+theorem gap_isLittleO_rpow_of_rpow_bound {θ a : ℝ} (hθa : θ < a)
+    (H : ∀ᶠ x : ℕ in atTop, (maxPrimeGap x : ℝ) ≤ (x : ℝ) ^ θ) :
+    (fun x : ℕ => (maxPrimeGap x : ℝ)) =o[atTop] (fun x : ℕ => (x : ℝ) ^ a) := by
+  refine (isLittleO_iff_tendsto' ?_).mpr (gap_div_rpow_littleo_of_rpow_bound hθa H)
+  filter_upwards [eventually_ge_atTop 1] with x hx h0
+  have hxpos : (0 : ℝ) < (x : ℝ) := by exact_mod_cast Nat.lt_of_lt_of_le Nat.zero_lt_one hx
+  have hrp : (0 : ℝ) < (x : ℝ) ^ a := Real.rpow_pos_of_pos hxpos a
+  rw [h0] at hrp
+  exact absurd hrp (lt_irrefl 0)
+
 end Erdos1138OQ03
