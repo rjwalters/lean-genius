@@ -59,14 +59,16 @@
     "insights": [
       "Water-filling KKT optimality has a fully ELEMENTARY proof: the first-order condition is replaced by the per-channel tangent bound log u <= u-1 (Real.log_le_sub_one_of_pos), summed across channels. No differentiability/Lagrange/KKT machinery needed.",
       "Key identity N_i + (mu-N_i)_+ = max mu N_i turns the derivative coefficient 1/(2(N_i+P_i*)) into 1/(2 max(mu,N_i)), which is constant 1/(2mu) on ACTIVE channels (N_i<mu) and <= 1/(2mu) on inactive ones (P_i*=0, x_i>=0). This case split is exactly what makes the aggregated linear term collapse to (sum x_i - P)/(2mu) <= 0.",
-      "Water level existence = IVT on the continuous monotone budget g(mu)=sum (mu-N_i)_+ between g(0)=0 and g(N_{i0}+P)>=P; uniqueness (for P>0) = strict monotonicity of g wherever g>0 (some channel active)."
+      "Water level existence = IVT on the continuous monotone budget g(mu)=sum (mu-N_i)_+ between g(0)=0 and g(N_{i0}+P)>=P; uniqueness (for P>0) = strict monotonicity of g wherever g>0 (some channel active).",
+      "VERIFIED (researcher-2, 2026-07-09, GREEN build attempt 1): capacity properties of the equal-noise closed form C(P)=(n/2)log(1+P/(nc)) in ShannonChannelCodingAWGNOQ03OQ01EqualNoise.lean. rate_equalNoise_nonneg (C(P)≥0 for P≥0, via Real.log_nonneg on 1≤1+P/(nc) + mul_nonneg) and rate_equalNoise_mono_power (P₁≤P₂⟹C(P₁)≤C(P₂), via Real.log_le_log + gcongr for the argument monotonicity). Standard 'capacity is a nonneg increasing function of the power budget' facts, absent from the file. The three parent open items (optimality, water-level existence/uniqueness, closed form) + equal-noise specialization are all complete; remaining nextSteps (operational random-coding theorem, infinite-band integral limit) are substantial."
     ],
     "builtItems": [
       "waterfilling_optimal (KKT optimality of P_i*=(mu-N_i)_+) in ShannonChannelCodingAWGNOQ03OQ01.lean",
       "awgnCapacity_sub_le (per-channel tangent bound, the FOC in elementary form)",
       "add_waterAlloc (N_i + (mu-N_i)_+ = max mu N_i)",
       "waterAlloc_rate_closedForm (R(P*) = sum 1/2 log(max mu N_i / N_i))",
-      "exists_waterLevel (IVT existence) + waterLevel_unique (strict-monotone uniqueness) + continuous/monotone_waterBudget"
+      "exists_waterLevel (IVT existence) + waterLevel_unique (strict-monotone uniqueness) + continuous/monotone_waterBudget",
+      "ShannonChannelCodingAWGNOQ03OQ01EqualNoise.lean: rate_equalNoise_nonneg + rate_equalNoise_mono_power. VERIFIED green, 0 axioms/sorries. File now 7 theorems."
     ],
     "mathlibGaps": [],
     "nextSteps": [
