@@ -1136,6 +1136,24 @@ theorem colMin_idempotent (n : ℕ) : colMin (colMin n) = colMin n := by
   rw [hk] at h
   exact h
 
+/-- **The terminal value `1` never drops below itself.**  Every Collatz iterate of a
+positive number is positive (`collatz_iterate_pos`), so no iterate of `1` is `< 1`:
+`1` is not an `AttainsBelow` number.  This is the ground truth that makes `1` the
+unique positive valley — the endpoint every Collatz trajectory is conjectured to
+reach and then stay at. -/
+theorem not_attainsBelow_one : ¬ AttainsBelow 1 := by
+  rintro ⟨k, _, hlt⟩
+  have := collatz_iterate_pos (n := 1) one_pos k
+  omega
+
+/-- **The orbit minimum of `1` is `1`.**  The terminal value `1` is its own orbit
+minimum: it never drops below itself (`not_attainsBelow_one`), so `colMin_eq_self_iff`
+gives `colMin 1 = 1`.  This is the base/valley companion of `colMin_pow_two_eq_one`
+(`colMin (2^k) = 1`): powers of two descend *to* `1`, and `1` is where the descent
+stops. -/
+theorem colMin_one : colMin 1 = 1 :=
+  colMin_eq_self_iff.mpr not_attainsBelow_one
+
 /-- Consequently the entire three-quarters family of Part II — the even numbers
 and the odd class `1 + 4ℕ` (`n ≥ 5`) — has orbit minimum strictly below the start,
 unconditionally and without Tao's axiom. -/
