@@ -132,6 +132,31 @@ theorem sl2_transitive (a b : ℤ) (h : IsCoprime a b) :
       (M : Matrix (Fin 2) (Fin 2) ℤ) *ᵥ ![a, b] = ![1, 0] :=
   ⟨BezoutIdentityOQ01OQ02.bezoutSL a b h, BezoutIdentityOQ01OQ02.bezoutSL_mulVec a b h⟩
 
+/-- **General `SL₂` content reduction.**  For an *arbitrary* pair `(x, y)` — dropping the coprimality
+hypothesis of `sl2_transitive` — there is an element of `SL₂(ℤ)` carrying `(x, y)` to its content
+`(gcd x y, 0)`.  When `gcd x y = 0` (i.e. `x = y = 0`) the pair is already reduced and the identity
+works; otherwise this is the grandparent's `bezoutMatrix`, whose determinant is `1` precisely because
+`gcd ≠ 0`.
+
+This is the reusable atom of the descent: in the general induction *both* the tail clear
+(`(v₁, …, vₙ) ↦ (gcd, 0, …, 0)`) and the final head clear (`(v₀, g) ↦ (gcd(v₀, g), 0)`) are instances
+of it, whereas the primitive `sl2_transitive` only covers the `gcd = 1` head clear. -/
+theorem gcdReduceSL2 (x y : ℤ) :
+    ∃ N : Matrix.SpecialLinearGroup (Fin 2) ℤ,
+      (N : Matrix (Fin 2) (Fin 2) ℤ) *ᵥ ![x, y] = ![(Int.gcd x y : ℤ), 0] := by
+  by_cases hxy : Int.gcd x y = 0
+  · -- `gcd x y = 0` forces `x = y = 0`; the identity fixes the (already reduced) zero vector.
+    obtain ⟨hx, hy⟩ := Int.gcd_eq_zero_iff.mp hxy
+    refine ⟨1, ?_⟩
+    subst hx; subst hy
+    have hg : (Int.gcd (0 : ℤ) 0 : ℤ) = 0 := by simp
+    rw [hg, Matrix.SpecialLinearGroup.coe_one, Matrix.one_mulVec]
+  · -- `gcd x y ≠ 0`: the Bézout reduction matrix is unimodular (`bezoutMatrix_det`) and clears the
+    -- pair to `(gcd, 0)` (`bezoutMatrix_mulVec`).
+    exact ⟨⟨BezoutIdentityOQ01OQ02.bezoutMatrix x y,
+            BezoutIdentityOQ01OQ02.bezoutMatrix_det x y hxy⟩,
+          BezoutIdentityOQ01OQ02.bezoutMatrix_mulVec x y⟩
+
 /-! ### First new case: `SL₃(ℤ)` acts transitively on primitive triples -/
 
 /-- The concrete `SL₂`-in-`SL₃` head block `diag(N, 1)` acting on the first two coordinates. -/
@@ -199,6 +224,45 @@ theorem sl3_transitive (a b c : ℤ) (h : IsCoprime a (Int.gcd b c : ℤ)) :
       simpa [Matrix.mulVec, dotProduct, Fin.sum_univ_two] using this
     · -- second coordinate: `H 1 0 * a + H 1 1 * g = 0`
       have := congrFun hHw 1
+      simpa [Matrix.mulVec, dotProduct, Fin.sum_univ_two] using this
+    · -- third coordinate: `0 = 0`
+      simp
+
+/-- **`n = 3`, content form.**  Dropping the coprimality hypothesis of `sl3_transitive`: an *arbitrary*
+triple `(a, b, c)` is carried by an element of `SL₃(ℤ)` to `(g, 0, 0)`, where `g = gcd a (gcd b c)` is
+the content (gcd of all three entries).  Both reduction steps are now instances of the single atom
+`gcdReduceSL2`:
+1. `embedOne` of the tail reducer `gcdReduce(b, c)` sends `(a, b, c) ↦ (a, gcd b c, 0)`;
+2. the head block `diag(gcdReduce(a, gcd b c), 1)` sends `(a, gcd b c, 0) ↦ (gcd a (gcd b c), 0, 0)`.
+
+`sl3_transitive` is the special case where the content `g = 1` (then `![g, 0, 0] = ![1, 0, 0]`).  This
+content form — not the primitive form — is what the `n = 4` induction step needs as its `SL₃` tail
+reducer, since the tail of a primitive `4`-vector is generally *not* itself primitive. -/
+theorem sl3_content_reduce (a b c : ℤ) :
+    ∃ M : Matrix.SpecialLinearGroup (Fin 3) ℤ,
+      (M : Matrix (Fin 3) (Fin 3) ℤ) *ᵥ ![a, b, c]
+        = ![(Int.gcd a (Int.gcd b c) : ℤ), 0, 0] := by
+  obtain ⟨T, hT⟩ := gcdReduceSL2 b c
+  obtain ⟨H, hH⟩ := gcdReduceSL2 a (Int.gcd b c : ℤ)
+  have hHdet : (H : Matrix (Fin 2) (Fin 2) ℤ).det = 1 := H.2
+  have hTdet : (T : Matrix (Fin 2) (Fin 2) ℤ).det = 1 := T.2
+  refine ⟨⟨headBlock3 (H : Matrix (Fin 2) (Fin 2) ℤ) * embedOne (T : Matrix (Fin 2) (Fin 2) ℤ),
+      ?_⟩, ?_⟩
+  · rw [Matrix.det_mul, det_headBlock3, det_embedOne, hHdet, hTdet, mul_one]
+  · show (headBlock3 (H : Matrix (Fin 2) (Fin 2) ℤ) * embedOne (T : Matrix (Fin 2) (Fin 2) ℤ))
+        *ᵥ ![a, b, c] = ![(Int.gcd a (Int.gcd b c) : ℤ), 0, 0]
+    -- `![…]` is `Matrix.vecCons`; convert to `Fin.cons` so the block-reduction lemmas fire.
+    have hcons : (![a, b, c] : Fin 3 → ℤ) = Fin.cons a ![b, c] := rfl
+    have hcons2 : (Fin.cons a (![(Int.gcd b c : ℤ), 0] : Fin 2 → ℤ) : Fin 3 → ℤ)
+        = ![a, (Int.gcd b c : ℤ), 0] := rfl
+    rw [← Matrix.mulVec_mulVec, hcons, embedOne_mulVec, hT, hcons2, headBlock3_mulVec]
+    funext i
+    fin_cases i
+    · -- first coordinate: `H 0 0 * a + H 0 1 * (gcd b c) = gcd a (gcd b c)`
+      have := congrFun hH 0
+      simpa [Matrix.mulVec, dotProduct, Fin.sum_univ_two] using this
+    · -- second coordinate: `H 1 0 * a + H 1 1 * (gcd b c) = 0`
+      have := congrFun hH 1
       simpa [Matrix.mulVec, dotProduct, Fin.sum_univ_two] using this
     · -- third coordinate: `0 = 0`
       simp
