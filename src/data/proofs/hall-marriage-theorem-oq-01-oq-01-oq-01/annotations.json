@@ -54,13 +54,14 @@
     },
     "type": "context",
     "title": "Open, Namespace, and the Typeclass Variable Context",
-    "content": "`open Finset Function` brings `univ`, `Finset.sup`, `biUnion`, and injectivity vocabulary into scope unqualified; `namespace HallDefect` isolates `deficiency` and the optimum theorems from the parent file's identically-shaped lemmas. The `variable {ι α : Type*} [Fintype ι] [DecidableEq ι] [DecidableEq α] [Nonempty α]` line fixes the ambient assumptions for everything that follows: `ι` (the index type) is finite so `#ι` and the `Finset.sup` over all sub-families are well-defined, `DecidableEq` on both types makes `biUnion` and its cardinality computable, and `Nonempty α` guarantees a target set for representatives. These are exactly the hypotheses under which the deficiency defined just below is well-posed.",
+    "content": "`open Finset Function` brings `univ`, `Finset.sup`, `biUnion`, and injectivity vocabulary into scope unqualified; `namespace HallDefect` isolates `deficiency` and the optimum theorems from the parent file's identically-shaped lemmas. The `variable {ι α : Type*} [Fintype ι] [DecidableEq ι] [DecidableEq α] [Nonempty α]` line fixes the ambient assumptions for everything that follows: `ι` (the index type) is finite so `#ι` and the `Finset.sup` over all sub-families are well-defined, `DecidableEq` on both types makes `biUnion` and its cardinality computable, and `Nonempty α` guarantees a target set for representatives. These are exactly the hypotheses under which the deficiency defined just below is well-posed. Not every declaration needs all four, though: the three pure-counting facts below carry `omit [DecidableEq ι] [Nonempty α] in`, since a statement about biUnion cardinalities needs neither decidable equality on ι nor a nonempty target — only the transversal-existence results use the full context.",
     "mathContext": "$\\delta(t) = \\max_{s}\\big(\\#s - \\#(s.\\mathrm{biUnion}\\,t)\\big)$ as a `Finset.sup` over all sub-families $s \\subseteq \\iota$ (truncated subtraction $\\Rightarrow \\delta \\ge 0$).",
     "significance": "technical",
     "relatedConcepts": [
       "Fintype and DecidableEq typeclasses",
       "Finset.sup over the powerset",
-      "namespace isolation"
+      "namespace isolation",
+      "the `omit` idiom for minimal hypotheses"
     ],
     "prerequisites": [
       "Lean typeclasses and variable declarations",
