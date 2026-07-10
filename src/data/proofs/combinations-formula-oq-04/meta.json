@@ -156,6 +156,16 @@
       "targetId": "combinations-formula-oq-05",
       "relationship": "related",
       "description": "Sibling on the alternating row sum and the even/odd split of a Pascal row — another structural property of the row, complementary to log-concavity."
+    },
+    {
+      "targetId": "combinations-formula-oq-04-oq-01",
+      "relationship": "answered-by",
+      "description": "Child answering this entry's ultra-log-concavity open question: sharpens the bare inequality C(n,k)·C(n,k+2) ≤ C(n,k+1)² to the exact defect identity (C(n,k+1)² − C(n,k)·C(n,k+2))·(k+1)(n−k−1) = (n+1)·C(n,k)·C(n,k+2), equivalently the ratio C(n,k+1)²/(C(n,k)·C(n,k+2)) = 1 + (n+1)/((k+1)(n−k−1)) > 1. Both this entry's ≤ and its strict interior < are recovered as corollaries."
+    },
+    {
+      "targetId": "combinations-formula-oq-04-oq-03",
+      "relationship": "answered-by",
+      "description": "Twin child answering the same ultra-log-concavity open question via the same core adjacent-triple identity, centered at the middle index to recover Liggett's ultra-log-concavity bound."
     }
   ],
   "references": [
