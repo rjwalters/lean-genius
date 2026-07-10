@@ -261,6 +261,25 @@ theorem levelwise_strict_surplus (l k : ℕ) (hl : l ≥ 3) (hlk : l ≥ k + 2) 
   have hexp : primesInLevel l * (k + 1) = primesInLevel l * k + primesInLevel l := by ring
   omega
 
+/-- **Level-wise non-qualifying deficit bound.**  For `l ≥ 3` and `l ≥ k`, the *non*-qualifying
+    primes in the primorial interval `I(l)` occupy at most a `1/(k+1)` fraction of all primes in
+    `I(l)`:
+
+      `(p(l) − q(l)) · (k+1) ≤ p(l)`.
+
+    This is the per-interval dual of the cumulative pointwise equivalence `deficit_le_iff_density`,
+    obtained from the level-wise density bound `levelwise_density_bound` (`q(l)·(k+1) ≥ p(l)·k`) by
+    the same truncated-subtraction identity `(p−q)·(k+1) = p·(k+1) − q·(k+1)` and
+    `p·(k+1) = p·k + p`. Letting `k → l` (its largest admissible value) it says the deficit fraction
+    in `I(l)` is at most `1/(l+1)` — the sharp per-level reading of the Selberg density prediction. -/
+theorem levelwise_deficit_le (l k : ℕ) (hl : l ≥ 3) (hlk : l ≥ k) :
+    (primesInLevel l - qualifyingInLevel l) * (k + 1) ≤ primesInLevel l := by
+  have hb := levelwise_density_bound l k hl hlk
+  have e1 : (primesInLevel l - qualifyingInLevel l) * (k + 1)
+      = primesInLevel l * (k + 1) - qualifyingInLevel l * (k + 1) := Nat.sub_mul _ _ _
+  have e2 : primesInLevel l * (k + 1) = primesInLevel l * k + primesInLevel l := by ring
+  omega
+
 /-
 ## Part IV.5: The Non-Qualifying (Bad) Prime Bound
 
