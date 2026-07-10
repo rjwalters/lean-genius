@@ -81,6 +81,37 @@
       "description": "The characteristic-polynomial invariance proved here is the companion to minimal-polynomial invariance under conjugation; together they show both polynomials descend to the underlying linear map."
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Ferdinand Georg Frobenius"
+      ],
+      "title": "Über lineare Substitutionen und bilineare Formen",
+      "year": "1878",
+      "venue": "Journal für die reine und angewandte Mathematik (Crelle) 84, 1–63",
+      "note": "The memoir cited in the historical context: develops the theory of similar matrices via elementary divisors, establishing that the invariant factors (and hence the characteristic polynomial, determinant, and trace) are unchanged under N ↦ U N U⁻¹ — the conjugation invariance packaged here."
+    },
+    {
+      "authors": [
+        "Kenneth Hoffman",
+        "Ray Kunze"
+      ],
+      "title": "Linear Algebra",
+      "year": "1971",
+      "venue": "2nd ed., Prentice-Hall, Ch. 6 (elementary canonical forms; similarity and invariant factors)",
+      "note": "Standard textbook development of the characteristic polynomial and its coefficients (determinant and trace) as basis-independent invariants of a linear operator, i.e. invariant under similarity."
+    },
+    {
+      "authors": [
+        "Roger A. Horn",
+        "Charles R. Johnson"
+      ],
+      "title": "Matrix Analysis",
+      "year": "2013",
+      "venue": "2nd ed., Cambridge University Press, §1.3 (similarity)",
+      "note": "Definitive modern reference: determinant, trace, and characteristic polynomial are listed among the fundamental similarity invariants, with the cyclic-invariance and multiplicativity arguments formalized in this entry."
+    }
+  ],
   "sections": [
     {
       "id": "setup",
