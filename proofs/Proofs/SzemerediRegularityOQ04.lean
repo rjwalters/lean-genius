@@ -186,4 +186,42 @@ theorem partitionEnergy_regular_step_exists
   · intro n; exact partitionEnergy_nonneg G (parts n)
   · intro n; exact partitionEnergy_le_one G (parts n) (hcover n) (hdisjoint n)
 
+-- ═══════════════════════════════════════════════════════════════════
+-- PART IV: EXPLICIT INTEGER TERMINATION HORIZON  ⌊1/δ⌋₊
+-- ═══════════════════════════════════════════════════════════════════
+
+/-- **A regular step occurs by time `⌊1/δ⌋₊`.**  Sharpening
+    `energy_regular_step_exists` from "some horizon `N > 1/δ`" to a *concrete
+    integer* bound: an `[0,1]`-valued potential fails to climb by `δ` at some step
+    `n ≤ ⌊1/δ⌋₊`.  This pins the abstract `O(1/δ)` termination time of the AFKS
+    iteration to an explicit natural number, obtained by instantiating the horizon
+    at `N = ⌊1/δ⌋₊ + 1 > 1/δ` (`Nat.lt_floor_add_one`). -/
+theorem energy_regular_step_exists_floor (f : ℕ → ℚ) (δ : ℚ) (hδ : 0 < δ)
+    (h0 : ∀ n, 0 ≤ f n) (h1 : ∀ n, f n ≤ 1) :
+    ∃ n ≤ ⌊1 / δ⌋₊, ¬ (f n + δ ≤ f (n + 1)) := by
+  have hN : 1 / δ < ((⌊1 / δ⌋₊ + 1 : ℕ) : ℚ) := by
+    push_cast
+    exact Nat.lt_floor_add_one (1 / δ)
+  obtain ⟨n, hn, hstep⟩ :=
+    energy_regular_step_exists f (⌊1 / δ⌋₊ + 1) δ hδ h0 h1 hN
+  exact ⟨n, by omega, hstep⟩
+
+/-- **Graph instantiation: a regular refinement step occurs by time `⌊1/δ⌋₊`.**
+    The concrete-integer counterpart of `partitionEnergy_regular_step_exists`: a
+    sequence of covering, pairwise-disjoint partitions reaches a non-increment
+    ("regular") step `n ≤ ⌊1/δ⌋₊` — the explicit `⌈1/δ⌉`-many-steps termination
+    bound for the AFKS energy-increment iteration, with no free horizon parameter. -/
+theorem partitionEnergy_regular_step_exists_floor
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (parts : ℕ → Finset (Finset V)) (δ : ℚ) (hδ : 0 < δ)
+    (hcover : ∀ n, ∀ v : V, ∃ P ∈ parts n, v ∈ P)
+    (hdisjoint : ∀ n, ∀ P Q : Finset V, P ∈ parts n → Q ∈ parts n → P ≠ Q →
+      Disjoint P Q) :
+    ∃ n ≤ ⌊1 / δ⌋₊,
+      ¬ (partitionEnergy G (parts n) + δ ≤ partitionEnergy G (parts (n + 1))) := by
+  refine energy_regular_step_exists_floor
+    (fun n => partitionEnergy G (parts n)) δ hδ ?_ ?_
+  · intro n; exact partitionEnergy_nonneg G (parts n)
+  · intro n; exact partitionEnergy_le_one G (parts n) (hcover n) (hdisjoint n)
+
 end Szemeredi.RegularityOQ04
