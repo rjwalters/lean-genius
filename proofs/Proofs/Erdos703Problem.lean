@@ -408,6 +408,50 @@ theorem T_le_pow (n r : ℕ) : T n r ≤ 2 ^ n := by
     _ = 2 ^ n := by rw [Finset.card_powerset, Finset.card_range]
 
 /--
+**Sharpened upper bound `T(n,r) ≤ 2ⁿ − C(n,r)`.**
+An `r`-avoiding family cannot contain *any* set `A` of size exactly `r`: the
+self-pair `A, A` meets in `|A ∩ A| = |A| = r`, which `avoidsRIntersection r`
+forbids. Hence every `r`-avoiding family embeds in the powerset with all
+`C(n,r)` sets of size `r` removed, of size `2ⁿ − C(n,r)`. This strictly sharpens
+`T_le_pow` and is tight at the diagonal `r = n`, where `C(n,n) = 1` recovers the
+exact value `T(n,n) = 2ⁿ − 1` (`T_n_n`).
+-/
+theorem T_le_pow_sub_choose (n r : ℕ) : T n r ≤ 2 ^ n - n.choose r := by
+  unfold T
+  apply Finset.sup_le
+  intro F hF
+  rw [Finset.mem_filter, Finset.mem_powerset] at hF
+  obtain ⟨hFsub, hFavoid⟩ := hF
+  -- No set of size `r` can belong to an `r`-avoiding family (self-intersection).
+  have hsub : F ⊆ (Finset.range n).powerset.filter (fun A => ¬ A.card = r) := by
+    intro A hA
+    rw [Finset.mem_filter]
+    refine ⟨hFsub hA, ?_⟩
+    intro hcard
+    exact hFavoid A A hA hA (by rw [Finset.inter_self]; exact hcard)
+  -- Count the complement of the `r`-element subsets inside the powerset.
+  have hcount : ((Finset.range n).powerset.filter (fun A => ¬ A.card = r)).card
+      = 2 ^ n - n.choose r := by
+    rw [Finset.filter_not, Finset.card_sdiff_of_subset (Finset.filter_subset _ _),
+      Finset.card_powerset, ← Finset.powersetCard_eq_filter, Finset.card_powersetCard]
+    simp [Finset.card_range]
+  calc F.card ≤ ((Finset.range n).powerset.filter (fun A => ¬ A.card = r)).card :=
+        Finset.card_le_card hsub
+    _ = 2 ^ n - n.choose r := hcount
+
+/--
+**Uniform strict-improvement `T(n,r) ≤ 2ⁿ − 1` for `r ≤ n`.**
+Whenever `r ≤ n` there is at least one `r`-element subset of `[n]`
+(`C(n,r) ≥ 1`), so the sharpened bound `T_le_pow_sub_choose` already strictly
+beats the trivial ceiling `2ⁿ`: no `r`-avoiding family can be the full powerset.
+This holds across the entire non-degenerate range `0 ≤ r ≤ n`, and is attained
+at the diagonal `r = n`. -/
+theorem T_le_pow_sub_one {n r : ℕ} (h : r ≤ n) : T n r ≤ 2 ^ n - 1 := by
+  have hchoose : 1 ≤ n.choose r := Nat.choose_pos h
+  have hbound := T_le_pow_sub_choose n r
+  omega
+
+/--
 **`T` is monotone in the ground set.**
 If `m ≤ n` then any `r`-avoiding family of subsets of `[m]` is also an
 `r`-avoiding family of subsets of `[n]` (the predicate `avoidsRIntersection r`

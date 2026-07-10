@@ -49,13 +49,14 @@
       "largeSetsFamily / largeSetsFamily_avoids_1 / largeSetsFamily_card_le_T: Frankl's (1977) r=1 lower-bound construction — the family of sets larger than (n+1)/2 is a valid 1-avoiding family, giving a verified lower bound |largeSetsFamily n| ≤ T(n,1)",
       "T_n_n: fully machine-checked exact diagonal value T(n,n) = 2^n − 1 — the maximal n-avoiding family is the powerset of [n] minus the single full set [n], since [n] with itself is the only pair of subsets meeting in exactly n elements. This is the third exactly-known boundary of T, alongside T(n,0) = 2^{n-1} and T(n,r) = 2^n for n < r.",
       "inter_card_eq_n_iff: the supporting characterization that for A, B ⊆ [n], |A ∩ B| = n iff A = B = [n]; the combinatorial core of the diagonal value.",
-      "Structural lemmas on T: T_le_pow (T(n,r) ≤ 2^n), T_mono_ground (monotone in the ground-set size n), one_le_T (positivity), and full_powerset_avoids_r_of_lt / T_eq_pow_of_lt (T(n,r) = 2^n whenever n < r); plus largeSetsFamily_subset_franklFurediOdd_one linking Frankl's r=1 family into the general Frankl-Füredi construction."
+      "Structural lemmas on T: T_le_pow (T(n,r) ≤ 2^n), T_mono_ground (monotone in the ground-set size n), one_le_T (positivity), and full_powerset_avoids_r_of_lt / T_eq_pow_of_lt (T(n,r) = 2^n whenever n < r); plus largeSetsFamily_subset_franklFurediOdd_one linking Frankl's r=1 family into the general Frankl-Füredi construction.",
+      "T_le_pow_sub_choose / T_le_pow_sub_one: sharpened upper bound T(n,r) ≤ 2^n − C(n,r), machine-checked. An r-avoiding family can contain no set of size exactly r (its self-pair A,A meets in |A| = r), so the family omits all C(n,r) subsets of size r, giving T(n,r) ≤ 2^n − C(n,r); for r ≤ n this yields the uniform strict improvement T(n,r) ≤ 2^n − 1 over the trivial ceiling, and it is tight at the diagonal r = n (C(n,n) = 1 recovers T(n,n) = 2^n − 1)."
     ],
     "axiomCount": 1,
-    "lineCount": 721,
+    "lineCount": 765,
     "assumptions": "1 axiom: frankl_rodl_1987 (the deep Frankl–Rödl 1987 exponential bound — the affirmative answer to the main question). 0 sorries: the trivial case T(n,0)=2^{n-1} is fully machine-checked (#print axioms T_n_0 = [propext, Classical.choice, Quot.sound]) via a complement-pairing upper bound and a star-family witness. The unused opaque chromaticNumber axiom was removed; the geometric chromatic-number consequence is recorded as prose only since infinite unit-distance chromatic numbers are not yet in Mathlib.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 29,
+    "theoremCount": 31,
     "definitionCount": 8
   },
   "crossReferences": [
@@ -182,9 +183,9 @@
       "Finset"
     ],
     "namespace": "Erdos703",
-    "lineCount": 721,
+    "lineCount": 765,
     "axiomCount": 1,
-    "theoremCount": 29,
+    "theoremCount": 31,
     "definitionCount": 8,
     "path": "Proofs/Erdos703Problem.lean",
     "sorries": 0
