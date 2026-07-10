@@ -42,11 +42,28 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": []
+    "progressSummary": "PROGRESS: Built the SLₙ(ℤ)-invariant foundation for transitivity on primitive vectors — coordinate-free primitivity (dot-product dual), its SLₙ(ℤ)-invariance (both directions), transvection generators with explicit action, and the necessity half of transitivity. The Euclidean-descent converse (sufficiency) remains for a follow-up session.",
+    "builtItems": [
+      "IsPrimitive (Fin n → ℤ) := ∃ w, w ⬝ᵥ v = 1 — BezoutIdentityOQ01OQ02OQ02.lean",
+      "isPrimitive_iff_span_eq_top: IsPrimitive v ↔ Ideal.span (range v) = ⊤ (bridge to classical gcd=1 via Ideal.mem_span_range_iff_exists_fun)",
+      "IsPrimitive.mulVec + isPrimitive_mulVec_iff: SLₙ(ℤ) preserves primitivity, both directions",
+      "transvectionSL i j h c: elementary generator in SpecialLinearGroup (Fin n) ℤ; transvectionSL_mulVec: explicit vector action",
+      "orbit_e_isPrimitive: the easy half — every vector in the SLₙ(ℤ)-orbit of eᵢ is primitive"
+    ],
+    "insights": [
+      "Primitivity of an integer vector v is cleanly captured coordinate-free as: ∃ dual w with w ⬝ᵥ v = 1. This dot-product form is manifestly SLₙ(ℤ)-invariant, unlike the gcd-of-entries phrasing.",
+      "SLₙ(ℤ) preserves primitivity in BOTH directions: if w ⬝ᵥ v = 1 then (w ᵥ* ↑ₘA⁻¹) ⬝ᵥ (↑ₘA *ᵥ v) = 1, because ↑ₘA⁻¹ * ↑ₘA = 1. This is the exact invariant the transitivity action must respect — the necessity half of the transitivity characterization.",
+      "The Euclidean-descent generators are Mathlib transvections: transvection i j c = I + c·Eᵢⱼ (i≠j) has det 1 (det_transvection_of_ne), so it packages directly into SLₙ(ℤ); its action adds c·vⱼ to vᵢ (Function.update)."
+    ],
+    "mathlibGaps": [
+      "Mathlib has no packaged transitivity of SLₙ(ℤ) on primitive vectors (only n=2 pieces via bezoutSL in the parent). Foundation built here; the Euclidean-descent converse (every primitive vector reaches eᵢ) remains.",
+      "No IsPrimitive predicate for integer vectors in Mathlib; defined here via the dot-product dual."
+    ],
+    "nextSteps": [
+      "Prove the converse (open direction): every primitive v is SLₙ(ℤ)-equivalent to e₀, via strong induction on ∑ᵢ|vᵢ| using transvectionSL_mulVec (Euclidean algorithm across coordinates), accumulating the transvection product.",
+      "Add the sign-fixing rotation (3 transvections, det 1) to convert coordinate swaps without leaving SLₙ(ℤ).",
+      "Bridge IsPrimitive to Finset.univ.gcd of entries = 1 to connect explicitly with the parent n=2 IsCoprime phrasing."
+    ]
   },
   "tags": [
     "number-theory",
