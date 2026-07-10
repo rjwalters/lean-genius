@@ -521,4 +521,45 @@ theorem erdos_378_density_mem_Ioc (r : ℕ) :
   obtain ⟨d, hd_pos, hd_density⟩ := erdos_378_density_positive r
   exact ⟨d, ⟨hd_pos, natDensity_le_one hd_density⟩, hd_density⟩
 
+/-
+## Part VIII: The threshold-`0` boundary — density exactly `1`
+
+The universal upper bound `natDensity_le_one` says every density is `≤ 1`. Here we
+exhibit the extreme case where it is *attained*: at threshold `r = 0` the answer set
+is all of `ℕ` (every `n` has at least `0` squarefree interior binomials), so its
+density is exactly `1`. This pins the top endpoint of the interval
+`erdos_378_density_mem_Ioc` and needs none of the Granville–Ramaré axioms.
+-/
+
+/-- **The full set `ℕ` has natural density `1`.**  For every `N ≥ 1` the counting
+ratio is `|univ ∩ [0,N)| / N = N / N = 1`, so the limit is `1`.  Elementary, uses no
+axioms. -/
+theorem natDensity_univ : NaturalDensity Set.univ 1 := by
+  intro ε hε
+  refine ⟨1, fun N hN => ?_⟩
+  have hNR : (N : ℝ) ≠ 0 := by
+    have : 0 < N := hN
+    exact_mod_cast this.ne'
+  have hcard : (Set.univ ∩ Set.Iio N).ncard = N := by
+    rw [Set.univ_inter, ← Finset.coe_range, Set.ncard_coe_finset, Finset.card_range]
+  rw [hcard, div_self hNR, sub_self, abs_zero]
+  exact hε
+
+/-- **At threshold `0` the answer set is everything.**  `hasAtLeastSquarefree n 0`
+holds for every `n` (the count is always `≥ 0`), so `atLeastSquarefree 0 = ℕ`. -/
+theorem atLeastSquarefree_zero_eq_univ : atLeastSquarefree 0 = Set.univ := by
+  ext n
+  simp only [atLeastSquarefree, hasAtLeastSquarefree, Set.mem_setOf_eq, Set.mem_univ,
+    iff_true]
+  exact Nat.zero_le _
+
+/-- **The Erdős #378 density at threshold `0` is exactly `1`.**  Since
+`atLeastSquarefree 0 = ℕ`, the density equals that of the full set, namely `1` — the
+maximal value permitted by `natDensity_le_one` and the top endpoint of the interval in
+`erdos_378_density_mem_Ioc`.  So the universal upper bound `d ≤ 1` is sharp, attained
+precisely at the (vacuous) threshold `r = 0`. -/
+theorem erdos_378_density_zero : NaturalDensity (atLeastSquarefree 0) 1 := by
+  rw [atLeastSquarefree_zero_eq_univ]
+  exact natDensity_univ
+
 end Erdos378
