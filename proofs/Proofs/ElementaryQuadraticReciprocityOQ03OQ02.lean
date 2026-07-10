@@ -759,6 +759,42 @@ theorem kronecker_neg_numerator_three_mod_four (a : ℤ) (n : ℕ) (hn4 : n % 4 
   rw [kronecker_neg_numerator_if a n (by omega) (by omega) ha,
     if_neg (by omega : ¬ n % 4 = 1), neg_one_mul]
 
+-- ============================================================
+-- Section 11: The remaining character-axiom normalizations
+-- ============================================================
+
+/-! Section 10 pinned the numerator normalization at `1` (`kronecker_one_left`,
+`(1/n) = 1`). The two facts below complete the Dirichlet-character axiom set for
+`(·/n)`: the character **vanishes at `0`** (the canonical non-unit), and it is
+**exactly of order two on the units** (not merely order dividing two). Together with
+`kronecker_one_left`, `kronecker_mul_left`, `kronecker_mod_numerator`,
+`kronecker_eq_zero_iff` and `kronecker_eq_one_or_neg_one_of_coprime` these are the
+complete data of a real (quadratic) Dirichlet character. -/
+
+/-- **The character vanishes at numerator `0`.** For every modulus `n ≠ 0, ±1` (i.e.
+`|n| ≥ 2`), `(0/n) = 0` — the numerator `0` is the canonical non-unit and a Dirichlet
+character kills it. This is the `χ(0) = 0` companion to the `χ(1) = 1` normalization
+`kronecker_one_left`; the excluded moduli are exactly the degenerate ones where the
+symbol is constant (`(0/1) = 1`, `(0/0) = 0` by the special-modulus definitions). Via
+`kronecker_eq_sign_jacobi` it reduces to `jacobiSym.zero_left` (`J(0 | b) = 0` for
+`b > 1`). -/
+theorem kronecker_zero_left (n : ℤ) (hn0 : n ≠ 0) (hn1 : n ≠ 1) (hnm1 : n ≠ -1) :
+    kronecker 0 n = 0 := by
+  rw [kronecker_eq_sign_jacobi 0 n hn0]
+  have hb : 1 < n.natAbs := by omega
+  rw [jacobiSym.zero_left hb, mul_zero]
+
+/-- **On the units the character has order exactly two.** For odd positive `n` and
+`a` coprime to `n`, `(a/n)² = 1`. This sharpens the unconditional `kronecker_sq_mem`
+(`(a/n)² ∈ {0, 1}`) by ruling out the `0` value on units: `(·/n)` restricted to
+`(ℤ/nℤ)ˣ` is a genuine `{±1}`-valued quadratic character. Immediate from
+`kronecker_eq_one_or_neg_one_of_coprime`. -/
+theorem kronecker_sq_eq_one_of_coprime (a : ℤ) (n : ℕ) (hn : 0 < n) (hno : n % 2 = 1)
+    (h : Int.gcd a n = 1) : kronecker a n ^ 2 = 1 := by
+  rcases kronecker_eq_one_or_neg_one_of_coprime a n hn hno h with h1 | hm1
+  · rw [h1]; norm_num
+  · rw [hm1]; norm_num
+
 /-!
 ## Module note: what remains open
 
