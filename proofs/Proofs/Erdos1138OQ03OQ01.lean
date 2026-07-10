@@ -290,6 +290,24 @@ theorem gap_isLittleO_id_of_rpow_bound {θ : ℝ} (hθ : θ < 1)
   rw [h0] at hxpos
   exact absurd hxpos (lt_irrefl 0)
 
+/-- **Master engine, ε-form.** From *any* eventual power envelope `maxPrimeGap x ≤ x^θ` with
+sub-linear exponent `θ < 1`, for every `ε > 0` eventually `maxPrimeGap x ≤ ε · x`. This is the
+abstract counterpart of the concrete `bhp_gap_eventually_le_eps` (the BHP instance `θ = 0.525`):
+the ε-form was the sole concrete BHP term without an engine twin, so this completes the abstract
+family's term-for-term match. Like the other engines it takes the envelope in `atTop`-eventual
+form, and it factors through the `Tendsto` engine `gap_littleo_of_rpow_bound` exactly as the
+concrete `bhp_gap_eventually_le_eps` factors through `bhp_implies_gap_littleo`. -/
+theorem gap_eventually_le_eps_of_rpow_bound {θ : ℝ} (hθ : θ < 1)
+    (H : ∀ᶠ x : ℕ in atTop, (maxPrimeGap x : ℝ) ≤ (x : ℝ) ^ θ) (ε : ℝ) (hε : 0 < ε) :
+    ∀ᶠ x : ℕ in atTop, (maxPrimeGap x : ℝ) ≤ ε * x := by
+  -- From the engine limit, `maxPrimeGap x / x < ε` eventually; clear the denominator.
+  have hev : ∀ᶠ x : ℕ in atTop, (maxPrimeGap x : ℝ) / x < ε :=
+    (gap_littleo_of_rpow_bound hθ H).eventually (eventually_lt_nhds hε)
+  filter_upwards [hev, eventually_ge_atTop 1] with x hxlt hx1
+  have hx_pos : (0 : ℝ) < (x : ℝ) := by exact_mod_cast (lt_of_lt_of_le Nat.zero_lt_one hx1)
+  rw [div_lt_iff₀ hx_pos] at hxlt
+  exact le_of_lt hxlt
+
 -- ============================================================================
 -- Individual-gap bridge: from the maximal gap `sSup` back to actual gaps
 -- ============================================================================
