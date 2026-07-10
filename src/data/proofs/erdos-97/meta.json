@@ -42,11 +42,11 @@
       }
     ],
     "originalContributions": [
-      "Definition of hasKEquidistantAt for k-equidistant neighbors",
-      "Definition of hasKEquidistantProperty for sets",
-      "Definition of hasKUnitDistanceProperty for unit distances",
-      "Definition of isConvexPosition for convex polygons",
-      "Erdos97Question: the k = 4 open problem",
+      "Definition of HasNEquidistantPointsAt for n equidistant neighbors of a vertex",
+      "Definition of HasNEquidistantProperty for sets",
+      "Definition of HasNUnitDistanceProperty for unit distances",
+      "Convexity modeled via Mathlib's ConvexIndep (not a bespoke definition)",
+      "Erdos97Conjecture: the k = 4 open problem",
       "Axioms for Danzer and Fishburn-Reeds counterexamples",
       "GeneralKConjecture: does any k work?",
       "Connection to unit distance bounds"
@@ -64,7 +64,7 @@
     "historicalContext": "Erdős originally conjectured (1946) that every convex polygon has a vertex with no other 3 vertices equidistant from it. Danzer disproved this with a 9-point counterexample where every vertex has exactly 3 vertices equidistant from it.\n\nThe problem was then raised for k = 4: does every convex polygon have a vertex with no other 4 vertices equidistant? This remains open.\n\nFishburn and Reeds (1992) found an even stronger example: a convex 20-gon where every vertex has 3 vertices at UNIT distance (not just equidistant at varying radii). They also proved 20 is minimal for this property.",
     "problemStatement": "**Erdős Problem #97 (OPEN for k = 4)**\n\nDoes every convex polygon have a vertex with no other 4 vertices equidistant from it?\n\n**Solved Variants**:\n- k = 3: NO (Danzer's 9-point counterexample)\n- k = 3 unit distance: NO (Fishburn-Reeds 20-point example)\n\n**Open Questions**:\n- The k = 4 case\n- Does any k work?\n\n**Prize**: $100",
     "text": "Does every convex polygon have a vertex with no other 4 vertices equidistant from it?",
-    "proofStrategy": "We formalize the key concepts and counterexamples:\n\n1. **hasKEquidistantAt**: k points at same distance from a vertex\n\n2. **hasKEquidistantProperty**: k-equidistant from every vertex\n\n3. **isConvexPosition**: vertices of a convex polygon\n\n4. **Erdos97Question**: the open k = 4 question\n\n5. **danzerCounterexample** (axiom): 9-point convex with 3-equidistant\n\n6. **fishburnReedsExample** (axiom): 20-point with 3 unit-distance",
+    "proofStrategy": "We formalize the key concepts and counterexamples:\n\n1. **HasNEquidistantPointsAt**: n points at the same distance from a vertex\n\n2. **HasNEquidistantProperty**: n-equidistant from every vertex\n\n3. **ConvexIndep** (Mathlib): vertices in convex position\n\n4. **Erdos97Conjecture**: the open k = 4 question\n\n5. **danzer_counterexample** (axiom): 9-point convex with 3-equidistant\n\n6. **fishburn_reeds_example** (axiom): 20-point with 3 unit-distance",
     "keyInsights": [
       "**Convexity is crucial**: Without convexity, hypercube graphs give arbitrarily high equidistance.",
       "**Danzer's surprise**: A 9-point convex polygon can have 3 equidistant from every vertex.",
