@@ -112,5 +112,28 @@
   },
   "crossReferences": [
     "dyck-catalan-count-oq-01"
+  ],
+  "references": [
+    {
+      "authors": "Richard P. Stanley",
+      "title": "Enumerative Combinatorics, Volume 1",
+      "year": "2011",
+      "venue": "Cambridge University Press (2nd ed.), Cambridge Studies in Advanced Mathematics 49",
+      "note": "§1.2: compositions of n as ordered tuples of positive parts, and the count 2^{n−1} via the bijection with subsets of the n−1 internal gaps — the 'bar or no bar' model formalized here."
+    },
+    {
+      "authors": "Silvia Heubach, Toufik Mansour",
+      "title": "Combinatorics of Compositions and Words",
+      "year": "2009",
+      "venue": "CRC Press, Discrete Mathematics and Its Applications",
+      "note": "Dedicated monograph on compositions: the gap/bar bijection, the 2^{n−1} enumeration, and the doubling recurrence that adding one unit doubles the count — the structural consequences this entry derives."
+    },
+    {
+      "authors": "Louis Comtet",
+      "title": "Advanced Combinatorics: The Art of Finite and Infinite Expansions",
+      "year": "1974",
+      "venue": "D. Reidel Publishing Company",
+      "note": "Classic reference for compositions of integers and their generating function ∑ 2^{n−1} x^n = x/(1−2x), the analytic shadow of the 2^{n−1} count."
+    }
   ]
 }
