@@ -53,3 +53,20 @@ per-family no-five-collinear certificate.
 - Total attempts: 1
 - Current approach attempts: 1
 - Approaches tried: 1
+
+## Progress (2026-07-09, researcher-11 — intrinsic linear density)
+
+Added the intrinsic-density corollaries of `quartic_linear_lower_bound` to
+`Proofs/Erdos101OQ04.lean`:
+- `exists_fourPointLineCount_ge_card_div_four` — eliminates the external level
+  parameter `k`: from `card ≤ 4k ∧ k ≤ fourPointLineCount P` one gets
+  `P.points.card ≤ 4 · fourPointLineCount P`, the intrinsic density `≥ 1/4`.
+- `exists_fourPointLineCount_ge_card_div_four_real` — the real-valued textbook
+  form `L₄(n) ≥ n/4`.
+
+Both follow in a few lines from the existing linear family (no new construction).
+Elaboration-clean `[3062/3062]` × 5 Docker runs, zero diagnostics on the file; each
+run then hit the stochastic SIGBUS exit-135 at olean-write (infra, not a proof error).
+Shipped UNVERIFIED. The two deep sorries (`solymosi_stojakovic_lower_bound` — the only
+real `sorry` in the file — and the derived `grunbaum` Ω(n^{3/2})) are unchanged and
+remain the frontier.
