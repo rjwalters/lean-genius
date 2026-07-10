@@ -18,7 +18,7 @@
     "type": "insight",
     "title": "The residual cubic factorization",
     "content": "`residualCubic a = a³ + 5a² + 10a + 10` is defined, and `quintic_factor` proves the residual factorization (1+a)⁵ − (1+5a) = a²·g(a) by `ring`. The double factor a² (the source of the always-equality at a = 0) splits off, leaving the residual cubic g to govern the sign of the strict inequality. This mirrors the parent's a²(a+3) — but where a+3 was linear with rational root −3, here the residual is a genuine cubic with no rational root, which is exactly why the endpoint becomes irrational and must be located rather than read off.",
-    "mathContext": "$(1+a)^5 - (1+5a) = a^2\\,(a^3 + 5a^2 + 10a + 10)$; the binomial expansion's $a^2$ term onward all carry a factor $a^2$.",
+    "mathContext": "$(1+a)^5 - (1+5a) = a^2\\,(a^3 + 5a^2 + 10a + 10)$; the residual $g$ is the binomial tail $\\sum_{k\\ge 2}\\binom{5}{k}a^{k-2}$, its coefficients $(10,10,5,1) = \\big(\\binom52,\\binom53,\\binom54,\\binom55\\big)$.",
     "significance": "key",
     "relatedConcepts": ["polynomial factorization", "binomial expansion", "ring tactic", "double root at a=0"],
     "prerequisites": ["polynomial algebra", "binomial theorem"]
