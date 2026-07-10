@@ -141,6 +141,55 @@ theorem rate_waterAlloc_eq_zero_of_budget_zero (N : ι → ℝ)
   rw [hzero i]
   simp [perUseCapacity]
 
+/-- **Strict positivity of the water-filling rate.**  As soon as a strictly
+positive total power `P > 0` is poured in (with positive noise floors), the
+water-filling rate is strictly positive: `0 < R(waterAlloc μ N)`.  Some channel is
+necessarily active (`Pᵢ⋆ > 0`) — otherwise the whole budget `∑ᵢ Pᵢ⋆ = P` would
+vanish — and that active channel contributes a strictly positive
+`½ log(1 + Pᵢ⋆/Nᵢ)`, while every other term is nonnegative.  This sharpens
+`rate_waterAlloc_nonneg` and is the general-noise counterpart of the equal-noise
+`rate_equalNoise_pos`. -/
+theorem rate_waterAlloc_pos (N : ι → ℝ) (hN : ∀ i, 0 < N i) {μ P : ℝ}
+    (hbudget : waterBudget N μ = P) (hP : 0 < P) :
+    0 < parallelRate N (waterAlloc μ N) := by
+  -- some channel is active, else the whole budget `∑ᵢ Pᵢ⋆ = P` would vanish
+  have hact : ∃ i, 0 < waterAlloc μ N i := by
+    by_contra hcon
+    push_neg at hcon
+    have hle : waterBudget N μ ≤ 0 := by
+      unfold waterBudget
+      exact Finset.sum_nonpos fun i _ => hcon i
+    rw [hbudget] at hle
+    linarith
+  obtain ⟨i₀, hi₀⟩ := hact
+  unfold parallelRate
+  refine Finset.sum_pos'
+    (fun i _ => perUseCapacity_nonneg (waterAlloc_nonneg μ N i) (hN i))
+    ⟨i₀, Finset.mem_univ i₀, ?_⟩
+  -- the active channel `i₀` has strictly positive per-use capacity
+  unfold perUseCapacity
+  apply mul_pos (by norm_num)
+  apply Real.log_pos
+  have hpos : 0 < waterAlloc μ N i₀ / N i₀ := div_pos hi₀ (hN i₀)
+  linarith
+
+/-- **The water-filling rate vanishes exactly at zero budget.**  For positive noise
+floors and a water level `μ` realising a budget `P ≥ 0`, the water-filling rate is
+zero iff `P = 0`.  This pins down the capacity's zero set for an *arbitrary* noise
+profile — the general-noise counterpart of `rate_equalNoise_eq_zero_iff` — by
+combining `rate_waterAlloc_eq_zero_of_budget_zero` (⇐) with the contrapositive of
+`rate_waterAlloc_pos` (⇒).  Together with `rate_waterAlloc_nonneg` it fixes the
+dichotomy: no power ⇒ no rate, and any positive power ⇒ positive rate. -/
+theorem rate_waterAlloc_eq_zero_iff (N : ι → ℝ) (hN : ∀ i, 0 < N i) {μ P : ℝ}
+    (hbudget : waterBudget N μ = P) (hP : 0 ≤ P) :
+    parallelRate N (waterAlloc μ N) = 0 ↔ P = 0 := by
+  constructor
+  · intro h
+    by_contra hP0
+    exact (rate_waterAlloc_pos N hN hbudget (lt_of_le_of_ne hP (Ne.symm hP0))).ne' h
+  · intro h
+    exact rate_waterAlloc_eq_zero_of_budget_zero N (hbudget.trans h)
+
 /-! ## The headline: capacity is monotone in the power budget -/
 
 /-- **Capacity is monotone in the total power budget.**  Let `μ₁` and `μ₂` be the
