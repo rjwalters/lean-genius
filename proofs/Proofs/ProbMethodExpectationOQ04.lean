@@ -102,6 +102,45 @@ theorem exists_nonneg_spread_of_average (hs : s.Nonempty) :
   obtain ⟨a, ha, b, hb, hfa, hfb⟩ := exists_le_and_ge_average hs
   exact ⟨a, ha, b, hb, by linarith⟩
 
+/-! ### The first-moment *existence* step for integer counts
+
+The lemmas above extract an outcome meeting the mean.  The probabilistic method's
+existence conclusion needs one more qualitative jump, special to **counting**
+functions `g : α → ℕ`: if the expected count is `< 1`, some outcome has count
+*exactly* `0`.  A real average `< 1` only bounds a witness below `1`; integrality
+of `g` then forces that witness to vanish.  This is precisely the step that turns
+`E(n,k) < 1` (expected number of monochromatic cliques) into the *existence* of a
+2-colouring with **no** monochromatic clique — the piece beyond the strict
+threshold `first_moment_principle`, phrased here as a reusable engine independent of
+the colouring model. -/
+
+/-- **Pigeonhole / first-moment existence (sum form).**  If the total count `∑ g`
+over `s` is strictly less than `|s|`, some element has count `0`.  (Contrapositive:
+every element counting `≥ 1` forces `∑ g ≥ |s|`.)  No nonemptiness hypothesis is
+needed — for `s = ∅` the premise `0 < 0` is vacuous. -/
+theorem exists_eq_zero_of_sum_lt_card {g : α → ℕ} (h : s.sum g < s.card) :
+    ∃ a ∈ s, g a = 0 := by
+  by_contra hc
+  push_neg at hc
+  have hpos : ∀ a ∈ s, 1 ≤ g a := fun a ha => Nat.one_le_iff_ne_zero.mpr (hc a ha)
+  have : s.card ≤ s.sum g := by
+    calc s.card = s.sum (fun _ => 1) := by rw [Finset.sum_const, smul_eq_mul, mul_one]
+      _ ≤ s.sum g := Finset.sum_le_sum hpos
+  omega
+
+/-- **First-moment existence (average form).**  If the *average* of a nonnegative
+integer count `g : α → ℕ` over a nonempty `s` is `< 1`, then some element has count
+exactly `0`.  This is the existence conclusion of the probabilistic method: an
+expected value below `1` guarantees a witness realising the count `0`.  Combines
+`exists_le_average` (a witness at or below the mean) with integrality of `g`. -/
+theorem exists_eq_zero_of_average_lt_one (hs : s.Nonempty) {g : α → ℕ}
+    (h : (s.sum (fun a => (g a : ℚ))) / s.card < 1) : ∃ a ∈ s, g a = 0 := by
+  obtain ⟨a, ha, hfa⟩ := exists_le_average (f := fun a => (g a : ℚ)) hs
+  refine ⟨a, ha, ?_⟩
+  have hlt : (g a : ℚ) < 1 := lt_of_le_of_lt hfa h
+  have : g a < 1 := by exact_mod_cast hlt
+  omega
+
 /-! ## Application: strengthening `expected_mono_cliques` toward Erdős 1947
 
 The parent gallery lemma `expected_mono_cliques` only records that the expected
