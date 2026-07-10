@@ -106,4 +106,32 @@ theorem fourierCoeffOn_eq_of_deriv2_periodic (f : ℝ → ℝ) (hf : ContDiff �
   rw [fourierCoeffOn_deriv2_periodic f hf hperiod hab n hn, eq_div_iff hn2]
   ring
 
+/-- **Per-mode Wirtinger bound.**  For a `C²` periodic function and any nonzero mode
+    `n`, the eigenvalue identity `ĉₙ(f'') = −n²·ĉₙ(f)` with `n² ≥ 1` gives
+
+        ‖ĉₙ(f)‖ ≤ ‖ĉₙ(f'')‖,
+
+    i.e. passing to the second derivative never shrinks a nonzero Fourier mode.  This is
+    the mode-wise form of Wirtinger's inequality: summed over `n` by Parseval it yields
+    `∫ f² ≤ ∫ (f'')·f` type estimates, the analytic core of the Hurwitz–Fourier proof of
+    the isoperimetric inequality (`C² ≥ 4πA`), with equality forced onto the first
+    harmonic `n = ±1` — the circle.  The `n = 0` mode (the mean) is the sole exception. -/
+theorem norm_fourierCoeffOn_le_deriv2 (f : ℝ → ℝ) (hf : ContDiff ℝ 2 f)
+    (hperiod : ∀ t, f (t + 2 * π) = f t)
+    (hab : (0 : ℝ) < 2 * π) (n : ℤ) (hn : n ≠ 0) :
+    ‖fourierCoeffOn hab (ofReal ∘ f) n‖
+      ≤ ‖fourierCoeffOn hab (ofReal ∘ deriv (deriv f)) n‖ := by
+  rw [fourierCoeffOn_deriv2_periodic f hf hperiod hab n hn]
+  simp only [norm_mul, norm_neg]
+  have hnorm_eq : ‖(n : ℂ) ^ 2‖ = (n : ℝ) ^ 2 := by
+    rw [norm_pow, Complex.norm_intCast, sq_abs]
+  rw [hnorm_eq]
+  have hn1 : (1 : ℝ) ≤ (n : ℝ) ^ 2 := by
+    have h0 : (0 : ℤ) < n ^ 2 := by positivity
+    have hge : (1 : ℤ) ≤ n ^ 2 := by omega
+    calc (1 : ℝ) = ((1 : ℤ) : ℝ) := by norm_num
+      _ ≤ ((n ^ 2 : ℤ) : ℝ) := by exact_mod_cast hge
+      _ = (n : ℝ) ^ 2 := by push_cast; ring
+  nlinarith [norm_nonneg (fourierCoeffOn hab (ofReal ∘ f) n), hn1]
+
 end IsoperimetricFourier
