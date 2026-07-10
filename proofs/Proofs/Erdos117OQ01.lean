@@ -462,6 +462,15 @@ theorem growthRateLimInf_pos : 0 < growthRateLimInf := by
   obtain ⟨c₁, hc1, hge⟩ := limInf_ge_log_c1
   exact lt_of_lt_of_le (Real.log_pos hc1) hge
 
+/-- **The limsup is strictly positive.** The highest cluster value of the growth-rate
+sequence is likewise bounded away from `0`: since `growthRateLimInf ≤ growthRateLimSup`
+(`limInf_le_limSup`) and the liminf is already `> 0` (`growthRateLimInf_pos`), the
+limsup is `> 0` a fortiori. The upper companion of `growthRateLimInf_pos`: whether or
+not the exponential base exists, both cluster extremes sit strictly inside the positive
+Pyber window, so `h(n)` grows at least exponentially in every asymptotic sense. -/
+theorem growthRateLimSup_pos : 0 < growthRateLimSup :=
+  lt_of_lt_of_le growthRateLimInf_pos limInf_le_limSup
+
 /-- **Uniform two-sided Pyber window.** A single pair of constants `1 < c₁ < c₂`
 traps every `growthRate n` (`n ≥ 1`) in the fixed band `[log c₁, log c₂]`. This
 consolidates `growthRate_lower_bound` and `growthRate_upper_bound` — which produce
