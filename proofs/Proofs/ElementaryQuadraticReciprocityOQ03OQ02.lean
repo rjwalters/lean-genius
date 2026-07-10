@@ -847,6 +847,39 @@ theorem kronecker_two_ne_kronecker2 :
   rw [kronecker_at_two 3, kronecker2_three]
   norm_num
 
+-- ============================================================
+-- Section 13: Square numerators — the character on quadratic residues
+-- ============================================================
+
+/-! First-argument multiplicativity (`kronecker_mul_left`) applied to a repeated
+factor `a·a` shows the symbol at a *square* numerator is a perfect square, hence
+`≥ 0` and equal to `1` on units.  This is the concrete statement that squares are
+"quadratic residues" for the character `(·/n)` — the numerator-side companion of
+`kronecker_sq_eq_one_of_coprime` (which squares the *value*). -/
+
+/-- **The symbol at a square numerator is the square of the symbol.**  For nonzero
+`a`, `(a²/n) = (a/n)²` — a direct instance of first-argument multiplicativity
+`kronecker_mul_left` on `a² = a·a` (nonzero product). -/
+theorem kronecker_sq_left (a n : ℤ) (ha : a ≠ 0) :
+    kronecker (a ^ 2) n = kronecker a n ^ 2 := by
+  rw [pow_two, kronecker_mul_left a a n (mul_ne_zero ha ha), pow_two]
+
+/-- **The symbol is non-negative at square numerators.**  `0 ≤ (a²/n)` for nonzero
+`a`: by `kronecker_sq_left` the value is a perfect square.  So a square numerator
+is never a quadratic *non*-residue — it is `0` (non-coprime) or `1`. -/
+theorem kronecker_sq_left_nonneg (a n : ℤ) (ha : a ≠ 0) :
+    0 ≤ kronecker (a ^ 2) n := by
+  rw [kronecker_sq_left a n ha]; exact sq_nonneg _
+
+/-- **Square numerators coprime to the modulus are residues.**  For odd positive `n`
+and nonzero `a` coprime to `n`, `(a²/n) = 1`: squares are quadratic residues.
+Combines `kronecker_sq_left` with `kronecker_sq_eq_one_of_coprime`. -/
+theorem kronecker_sq_left_eq_one_of_coprime (a : ℤ) (n : ℕ) (hn : 0 < n) (hno : n % 2 = 1)
+    (h : Int.gcd a n = 1) (ha : a ≠ 0) :
+    kronecker (a ^ 2) (n : ℤ) = 1 := by
+  rw [kronecker_sq_left a (n : ℤ) ha]
+  exact kronecker_sq_eq_one_of_coprime a n hn hno h
+
 /-!
 ## Module note: what remains open
 
