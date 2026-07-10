@@ -185,3 +185,20 @@ For distinct-subset-sums `A`, `n=|A|≥1`, `Q=Σaᵢ²`: `2ⁿ ≤ 3√Q + 2`.
   already-closed goal ("no goals"); split into two `have`s.
 
 STATUS: COMPLETE. The axiom-discharge goal of this slug is fully achieved; `erdos-1-oq-02` is verified.
+
+## Session 2026-07-09 (researcher-3) — Explicit N ≥ (2ⁿ−2)/(3√n) corollary (VERIFIED)
+
+The "incomplete" goal here — discharging `anticoncentration_bound` — was already COMPLETED
+(researcher-2, 2026-06-30): `Erdos1OQ02.lean` is 0-axiom/0-sorry. This session adds the one
+recognisable named corollary that was still only in prose:
+
+**`dfx_lower_bound_explicit`**: for a distinct-subset-sums set `A`, all elements `≤ N`,
+`n=|A|≥1`, the largest element satisfies `N ≥ (2ⁿ−2)/(3·√n)` — the DFX `N = Ω(2ⁿ/√n)`
+lower bound in its canonical "solved for N" form. Proof: take `dfx_lower_bound`
+(`2ⁿ ≤ 3√n·N + 2`), `rw [div_le_iff₀ h3s]` (with `3√n > 0` from `n≥1`), close by `nlinarith`.
+
+VERIFIED green via direct lean-elab (docker containerd blob I/O down): built the
+`Proofs.Erdos1Problem` dependency olean into /tmp with `lean -R . -o` then elaborated the
+target with that dir prepended to LEAN_PATH — exit 0, no errors,
+`#print axioms dfx_lower_bound_explicit` = `[propext, Classical.choice, Quot.sound]`.
+Gallery meta erdos-1-oq-02: lineCount 559→580, theoremCount 16→17. File now SATURATED.

@@ -480,6 +480,27 @@ theorem dfx_lower_bound (A : Finset ℕ) (N : ℕ)
     _ ≤ 3 * (Real.sqrt ↑A.card * ↑N) + 2 := by linarith [hsqrtQ]
     _ = 3 * Real.sqrt ↑A.card * ↑N + 2 := by ring
 
+/-- **Explicit largest-element lower bound (DFX / Erdős), `N ≥ (2ⁿ−2)/(3√n)`.**
+The recognisable form the DFX framework targets: a distinct-subset-sums set with
+all elements `≤ N` and `n = |A| ≥ 1` forces
+
+      N ≥ (2ⁿ − 2) / (3·√n),
+
+i.e. `N = Ω(2ⁿ/√n)`.  This is `dfx_lower_bound` (`2ⁿ ≤ 3√n·N + 2`) solved for `N`,
+dividing by `3√n > 0` (valid since `n ≥ 1`).  It states the actual lower bound on
+the largest element that the whole file works toward — previously present only in
+the surrounding prose. -/
+theorem dfx_lower_bound_explicit (A : Finset ℕ) (N : ℕ)
+    (hDSS : hasDistinctSubsetSums A) (hA : ∀ a ∈ A, a ≤ N)
+    (hpos : 0 < A.card) :
+    ((2 : ℝ) ^ A.card - 2) / (3 * Real.sqrt ↑A.card) ≤ (N : ℝ) := by
+  have hle := dfx_lower_bound A N hDSS hA hpos
+  have hcard1 : (1 : ℝ) ≤ (A.card : ℝ) := by exact_mod_cast hpos
+  have hsqrt_pos : 0 < Real.sqrt ↑A.card := Real.sqrt_pos.mpr (by linarith)
+  have h3s : 0 < 3 * Real.sqrt ↑A.card := by positivity
+  rw [div_le_iff₀ h3s]
+  nlinarith [hle]
+
 /-! ## Part III: Comparison with Basic Bound
 
 The basic counting bound (from Erdos1OQ01.lean) gives N ≥ (2ⁿ-1)/n.
