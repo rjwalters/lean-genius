@@ -733,24 +733,44 @@ modulus still needs to rule out the range `10 ≤ d ≤ 18` — exactly the anal
 short-interval prime-density input the elementary product argument cannot supply.
 -/
 
-/-- **Explicit deficiency ceiling at the record modulus `k = 28`.**  Every
-admissible pair `(n, 28)` has `deficiency n 28 ≤ 18`.  This specialises the sharp
-factorial bound `(28 + d)! ≤ (28!)²` (`deficiency_add_factorial_le_sq`) using the
-numeric certificate `(28!)² < 47!`: a deficiency `≥ 19` would give
-`47! ≤ (28 + d)! ≤ (28!)² < 47!`, a contradiction.  The record `(284, 28)` attains
-`9`, so the elementary theory still leaves the window `10 ≤ d ≤ 18` open. -/
-theorem deficiency_record_le_18 {n : ℕ} (hn : 56 ≤ n)
-    (h : NoSmallPrimeFactors n 28) : deficiency n 28 ≤ 18 := by
+/-- **Uniform elementary deficiency ceiling — the transfer principle behind Section XIV.**
+For *every* modulus `k` a single factorial comparison `(k!)² < (k + D + 1)!` promotes to a
+deficiency ceiling `deficiency n k ≤ D` on every admissible pair `(n, k)` with `n ≥ 2k`.
+This is the general form that the record-modulus bound `deficiency_record_le_18` below
+instantiates at `k = 28, D = 18` (certificate `(28!)² < 47!`).  It follows in one step from
+the sharp closed form `(k + deficiency n k)! ≤ (k!)²` (`deficiency_add_factorial_le_sq`):
+if the deficiency exceeded `D` then `D + 1 ≤ deficiency n k`, so by `Nat.factorial_le`
+`(k + D + 1)! ≤ (k + deficiency n k)! ≤ (k!)² < (k + D + 1)!`, a contradiction.
+
+The certificate `(k!)² < (k + D + 1)!` is a comparison of two *literal* factorials, which
+the kernel reduces (`Nat.factorial` is structural recursion), so every instance is
+`Lean.ofReduceBool`-free.  This lemma turns the abstract sharp bound into a reusable,
+per-`k`, `decide`-checkable ceiling without re-running the product argument each time; it is
+the elementary theory's uniform upper-bound tool.  (It cannot reach the conjectural bound
+`9`: for each fixed `D` the certificate eventually *fails* as `k` grows, since `(k!)²` then
+overtakes `(k + D + 1)!` — the sharp bound is provably consistent with unboundedly large
+deficiency, cf. `sharp_bound_permits_deficiency_ten`.) -/
+theorem deficiency_le_of_sq_factorial_lt {n k D : ℕ} (hn : 2 * k ≤ n)
+    (h : NoSmallPrimeFactors n k)
+    (hnum : (Nat.factorial k) ^ 2 < Nat.factorial (k + D + 1)) :
+    deficiency n k ≤ D := by
   by_contra hgt
   push_neg at hgt
-  have hsq := deficiency_add_factorial_le_sq (n := n) (k := 28) (by omega) h
-  have hmono : Nat.factorial 47 ≤ Nat.factorial (28 + deficiency n 28) :=
+  have hsq := deficiency_add_factorial_le_sq hn h
+  have hmono : Nat.factorial (k + D + 1) ≤ Nat.factorial (k + deficiency n k) :=
     Nat.factorial_le (by omega)
-  -- `Nat.factorial` is structural recursion, so the kernel reduces it: this
-  -- bignum comparison is checked by `decide` (⇒ no `Lean.ofReduceBool`), matching
-  -- the `interval_cases k <;> decide` pattern used for the abstract bound above.
-  have hnum : (Nat.factorial 28) ^ 2 < Nat.factorial 47 := by decide
   exact absurd (hmono.trans hsq) (not_le.mpr hnum)
+
+/-- **Explicit deficiency ceiling at the record modulus `k = 28`.**  Every
+admissible pair `(n, 28)` has `deficiency n 28 ≤ 18`.  Now a one-line instance of the
+uniform transfer principle `deficiency_le_of_sq_factorial_lt` at `k = 28, D = 18`, whose
+certificate is the bignum comparison `(28!)² < 47!` (kernel `decide`, so
+`Lean.ofReduceBool`-free): a deficiency `≥ 19` would give
+`47! ≤ (28 + d)! ≤ (28!)² < 47!`, a contradiction.  The record `(284, 28)` attains `9`, so
+the elementary theory still leaves the window `10 ≤ d ≤ 18` open. -/
+theorem deficiency_record_le_18 {n : ℕ} (hn : 56 ≤ n)
+    (h : NoSmallPrimeFactors n 28) : deficiency n 28 ≤ 18 :=
+  deficiency_le_of_sq_factorial_lt (k := 28) (D := 18) (by omega) h (by decide)
 
 /-
 ## Section XV: The correct OQ-02 frontier — the sharp bound closes `k ≤ 15`, open frontier is `k ≥ 16`
