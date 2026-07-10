@@ -175,6 +175,36 @@
       "description": "P\u00f3lya enumeration generalizes binomial-style counting from unordered selections (color $k$ objects from $n$ with no symmetry) to selections under group action (color $k$ objects from $n$ modulo cyclic rotation). The identity $\\sum_{d \\mid n} \\varphi(n/d) k^d = n \\cdot N(n, k)$ specialises to $k^n$ when the symmetry group is trivial, recovering plain binomial counting; the divisor sum is the symmetry-aware refinement."
     }
   ],
+  "references": [
+    {
+      "title": "Kombinatorische Anzahlbestimmungen für Gruppen, Graphen und chemische Verbindungen",
+      "author": "George Pólya",
+      "year": "1937",
+      "venue": "Acta Mathematica 68, 145–254",
+      "description": "The original enumeration theorem: counting configurations under a group of symmetries via the cycle index of the group. The cyclic-group case formalized here — necklace counting with |Fix(r)| = k^gcd(r,n) — is the elementary instance whose cycle index is (1/n)·Σ_{d|n} φ(n/d)·x_d^{n/d}."
+    },
+    {
+      "title": "The theory of group-reduced distributions",
+      "author": "J. Howard Redfield",
+      "year": "1927",
+      "venue": "American Journal of Mathematics 49, 433–455",
+      "description": "Independent earlier discovery of the enumeration theory (hence 'Redfield–Pólya'); introduces the group-reduced distribution counts that the cycle-index formula tabulates."
+    },
+    {
+      "title": "Theory of Groups of Finite Order",
+      "author": "William Burnside",
+      "year": "1911",
+      "venue": "Cambridge University Press (2nd ed.)",
+      "description": "Popularized the orbit-counting lemma N = (1/|G|)·Σ_{g∈G} |Fix(g)| (Cauchy–Frobenius–Burnside) that underlies this file's necklace count n·N(n,k) = Σ_{r} k^gcd(r,n)."
+    },
+    {
+      "title": "Graphical Enumeration",
+      "author": "Frank Harary and Edgar M. Palmer",
+      "year": "1973",
+      "venue": "Academic Press",
+      "description": "Standard modern development of Pólya theory and the cycle index, with the necklace/bracelet counting problems for cyclic and dihedral groups treated in detail."
+    }
+  ],
   "leanFile": {
     "lineCount": 404,
     "path": "Proofs/BurnsideCountingOQ03.lean",
