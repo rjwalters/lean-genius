@@ -2013,4 +2013,17 @@ theorem absolutely_normal_imp_disjunctive (x : ℝ) (h : IsAbsolutelyNormal x)
     ∃ n : ℕ, ∀ i : Fin k, nthDigit b (n + i.val) x = (s i : ℤ) :=
   normal_imp_disjunctive b k hb x (h b hb) s
 
+/-- **e is disjunctive in every base** (consequence of the absolute-normality axiom
+    `e_absolutely_normal`).  For every base `b ≥ 2` and every finite digit string
+    `s : Fin k → Fin b`, the base-`b` expansion of `e` contains `s` as a contiguous block:
+    some window starting at position `n` matches `s` digit-for-digit.  This is the
+    qualitative "every finite pattern eventually occurs in `e`" richness that absolute
+    normality entails — the disjunctive companion of `e_normal_base_10` and
+    `e_irrational_necessary_for_normality`.  Like every `e_normal_*` statement in this
+    file it is conditional on the open axiom `e_absolutely_normal` (no base is proved
+    normal for `e` unconditionally). -/
+theorem e_disjunctive (b k : ℕ) (hb : 2 ≤ b) (s : Fin k → Fin b) :
+    ∃ n : ℕ, ∀ i : Fin k, nthDigit b (n + i.val) (Real.exp 1) = (s i : ℤ) :=
+  absolutely_normal_imp_disjunctive (Real.exp 1) e_absolutely_normal b k hb s
+
 end ETranscendentalOQ02

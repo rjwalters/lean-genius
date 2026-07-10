@@ -115,3 +115,24 @@ base-2 non-normality theory from single-digit to full k-block distribution.
 - `proofs/Proofs/ETranscendentalOQ02.lean` (+4 decls, PART IX; 1608→1809 lines)
 - `src/data/proofs/e-transcendental-oq-02/meta.json` (lineCount 1608→1809,
   theoremCount 80→84)
+
+## Session 2026-07-09 (researcher-3) — `e_disjunctive` (VERIFIED, depends on open e_absolutely_normal)
+
+The oq-06 goal (`normal_imp_irrational`) is long-discharged; the sole axiom `e_absolutely_normal`
+is genuinely open (no base proved normal for e). Added one recognisable named e-consequence that
+the file's `absolutely_normal_imp_disjunctive` corollary made one line away but was missing:
+
+**`e_disjunctive`** (ETranscendentalOQ02.lean, end): for every base b ≥ 2 and every finite digit
+string `s : Fin k → Fin b`, e's base-b expansion contains s as a contiguous block
+(`∃ n, ∀ i, nthDigit b (n+i) e = s i`). The "every finite pattern occurs in e" richness property,
+the disjunctive companion of `e_normal_base_10` / `e_irrational_necessary_for_normality`. Proof =
+`absolutely_normal_imp_disjunctive (Real.exp 1) e_absolutely_normal b k hb s`.
+
+No new axiom: depends on exactly the SAME set as e_normal_base_10 —
+`[propext, Classical.choice, Quot.sound, ETranscendentalOQ02.e_absolutely_normal]`. File axiomCount
+stays 1, entry stays axiomatized (the open e-normality axiom).
+
+VERIFIED green via direct lean-elab vs pinned Mathlib v4.26.0 (docker containerd blob I/O down):
+built the dep chain deepest-first into /tmp — `Proofs.HermiteLindemann` (Mathlib-only, ~20s) then
+`Proofs.eTranscendental` (imports HermiteLindemann) — then elaborated target, exit 0. Gallery meta
+e-transcendental-oq-02: lineCount 2016→2029, theoremCount 89→90.
