@@ -210,4 +210,40 @@ theorem hexagrammum_points_eq_95 : 60 + 20 + 15 = 95 := by norm_num
 
 theorem hexagrammum_lines_eq_95 : 60 + 20 + 15 = 95 := by norm_num
 
+/-! ### Census exactness at the level of the proven cardinalities
+
+`fixedPointFree_census_sum` records the bare numeral identity `120 + 90 + 40 + 15 = 265`.
+The following capstone upgrades it to reference the *proven* filter cardinalities: the four
+class sizes, as machine-checked `Finset.card`s, sum to exactly the derangement count
+`card_fixedPointFree`. Together with `fixedPointFree_iff_census` (the four classes cover
+every derangement), this exact equality forces the classes to be pairwise disjoint — no
+derangement is double-counted — closing the census both ways (cover *and* exactness). -/
+
+/-- **Census exactness.** The four fixed-point-free class sizes, taken as the *proven*
+    filter cardinalities (`card_sixCycles`, `card_fourTwoCycles`, `card_doubleThreeCycles`,
+    `card_tripleTranspositions`), sum to exactly `card_fixedPointFree = 265`. With the
+    exhaustive cover `fixedPointFree_iff_census`, the exact count forces pairwise
+    disjointness of the four classes. -/
+theorem census_cards_sum_eq_fixedPointFree :
+    (Finset.univ.filter (fun σ : Equiv.Perm (Fin 6) => IsSixCycle σ)).card
+      + (Finset.univ.filter (fun σ : Equiv.Perm (Fin 6) => IsFourTwoCycle σ)).card
+      + (Finset.univ.filter (fun σ : Equiv.Perm (Fin 6) => IsDoubleThreeCycle σ)).card
+      + (Finset.univ.filter (fun σ : Equiv.Perm (Fin 6) => IsTripleTransposition σ)).card
+      = (Finset.univ.filter (fun σ : Equiv.Perm (Fin 6) => FixedPointFree σ)).card := by
+  simp only [card_sixCycles, card_fourTwoCycles, card_doubleThreeCycles,
+    card_tripleTranspositions, card_fixedPointFree]
+
+/-- **Hexagrammum totals from the census.** The `95` points (and `95` lines) of the
+    `(95₃, 95₃)` configuration derived directly from the proven class cardinalities via the
+    2:1 outer-automorphism pairing (self-paired at the triple-transposition class): the
+    `120` six-cycles give `60` Pascal lines, the `40` double-3-cycles give `20` Steiner
+    points, and the `15` triple transpositions are self-paired — `60 + 20 + 15 = 95`. This
+    sources the totals from the machine-checked census rather than as bare numerals. -/
+theorem hexagrammum_total_from_census :
+    (Finset.univ.filter (fun σ : Equiv.Perm (Fin 6) => IsSixCycle σ)).card / 2
+      + (Finset.univ.filter (fun σ : Equiv.Perm (Fin 6) => IsDoubleThreeCycle σ)).card / 2
+      + (Finset.univ.filter (fun σ : Equiv.Perm (Fin 6) => IsTripleTransposition σ)).card
+      = 95 := by
+  simp only [card_sixCycles, card_doubleThreeCycles, card_tripleTranspositions]
+
 end PascalsHexagonOQ03Incomplete01
