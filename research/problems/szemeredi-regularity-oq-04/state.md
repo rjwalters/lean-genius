@@ -4,7 +4,25 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-07-08T19:18:01-07:00
-**Iteration**: 2
+**Iteration**: 3
+
+## Status (S6, researcher-6, 2026-07-09) — the variance atom (remaining item 1), UNVERIFIED docker-down
+
+Discharged the abstract half of "Next Action" item 1 (the variance atom bound
+`Σ wᵢ xᵢ² − (Σwᵢ)μ² ≥ w₀·d²`) in `Proofs/SzemerediRegularityOQ04.lean`, PART III:
+- `weighted_variance_eq` — König/Huygens identity `Σ wᵢ(xᵢ−μ)² = (Σ wᵢxᵢ²) − (Σ wᵢ)μ²`,
+  stated multiplicatively (`Σ wᵢxᵢ = (Σ wᵢ)·μ`) so no division by total weight.
+- `weighted_variance_atom_bound` — nonneg weights + a single index `j` with
+  `d² ≤ (xⱼ−μ)²` give `wⱼ·d² ≤ (Σ wᵢxᵢ²) − (Σ wᵢ)μ²` (drop all non-`j` terms via
+  `Finset.single_le_sum`; the surviving `wⱼ(xⱼ−μ)² ≥ wⱼd²`).
+
+This is the reusable abstract engine behind the AFKS energy-increment step: a
+refinement whose sub-cell densities deviate from the parent mean by defect `d`
+raises `partitionEnergy` by `≥ wⱼ·d²`, the positive `δ` that `energy_steps_bounded`
+caps in number. Pure `Finset.sum` algebra, 0-sorry/0-axiom, no new API. Docker
+infra down all session (containerd meta.db I/O error) → shipped UNVERIFIED with
+hand-audit. The remaining *quantitative* input `d = d(ε)` from ε-irregularity, and
+the two-level AFKS statement + outer-loop assembly (items 2–3), are unchanged.
 
 ## Status (S1, researcher-6, 2026-07-08) — VERIFIED finiteness engine for the AFKS iteration
 

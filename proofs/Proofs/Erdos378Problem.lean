@@ -263,6 +263,35 @@ theorem squarefreeCount_odd_iff_central_squarefree {n : ℕ}
   rw [key, hparity, hFodd, memS (n / 2)]
   tauto
 
+/-- **Complete parity characterization of the row count.**  Unifying the odd-row
+theorem (`squarefreeCount_even_of_odd`) and the even-row theorem
+(`squarefreeCount_odd_iff_central_squarefree`), the number of squarefree interior
+binomials in row `n` is *odd* precisely when `n` is even, at least `2`, and the central
+binomial coefficient `C(n, n/2)` is squarefree:
+
+    Odd (squarefreeCount n) ↔ Even n ∧ 2 ≤ n ∧ Squarefree (C(n, n/2)).
+
+Every other row has an even count: odd rows (the `k ↦ n−k` involution is fixed-point
+free) and the degenerate rows `n = 0, 1` (empty interior).  In particular an odd count
+*forces* `n` even with a squarefree central coefficient — a single closed criterion for
+the entire parity behaviour of the row-count sequence. -/
+theorem odd_squarefreeCount_iff {n : ℕ} :
+    Odd (squarefreeCount n) ↔ (Even n ∧ 2 ≤ n ∧ Squarefree (n.choose (n / 2))) := by
+  rcases Nat.even_or_odd n with he | ho
+  · -- even `n`: split on the degenerate `n = 0` versus the genuine `n ≥ 2` rows
+    rcases lt_or_le n 2 with hlt | hge
+    · have hn0 : n = 0 := by have := Nat.even_iff.mp he; omega
+      subst hn0
+      have h0 : squarefreeCount 0 = 0 := by simp [squarefreeCount]
+      rw [h0]
+      exact ⟨fun h => absurd h (by decide), fun h => absurd h.2.1 (by decide)⟩
+    · rw [squarefreeCount_odd_iff_central_squarefree he hge]
+      exact ⟨fun h => ⟨he, hge, h⟩, fun h => h.2.2⟩
+  · -- odd `n`: the count is even, and the right side fails because `n` is not even
+    have heven : Even (squarefreeCount n) := squarefreeCount_even_of_odd ho
+    exact ⟨fun h => absurd h (Nat.even_iff_not_odd.mp heven),
+           fun h => absurd h.1 (Nat.odd_iff_not_even.mp ho)⟩
+
 /-
 ## Part IV: Natural density
 -/

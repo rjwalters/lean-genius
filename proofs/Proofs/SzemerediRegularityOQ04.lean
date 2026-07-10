@@ -416,4 +416,50 @@ theorem partitionEnergy_increment_count_le_floor
   apply Nat.le_floor
   exact_mod_cast partitionEnergy_increment_count_le G parts N δ hδ hcover hdisjoint hmono
 
+-- ═══════════════════════════════════════════════════════════════════
+-- PART III: THE VARIANCE ATOM (energy-increment lower bound)
+-- ═══════════════════════════════════════════════════════════════════
+
+/-- **Weighted-variance identity.**  For weights `w` and values `x` on a finite
+    index set `s`, whenever `μ` is the weighted mean (`∑ wᵢxᵢ = (∑ wᵢ)·μ`),
+    `∑ wᵢ(xᵢ − μ)² = (∑ wᵢxᵢ²) − (∑ wᵢ)·μ²`.  The König/Huygens decomposition,
+    stated multiplicatively so no division by the total weight is needed. -/
+theorem weighted_variance_eq {ι : Type*} (s : Finset ι) (w x : ι → ℚ) (μ : ℚ)
+    (hmean : ∑ i ∈ s, w i * x i = (∑ i ∈ s, w i) * μ) :
+    ∑ i ∈ s, w i * (x i - μ) ^ 2
+      = (∑ i ∈ s, w i * x i ^ 2) - (∑ i ∈ s, w i) * μ ^ 2 := by
+  have hcong : ∑ i ∈ s, w i * (x i - μ) ^ 2
+      = ∑ i ∈ s, (w i * x i ^ 2 - 2 * μ * (w i * x i) + μ ^ 2 * w i) :=
+    Finset.sum_congr rfl (fun i _ => by ring)
+  rw [hcong, Finset.sum_add_distrib, Finset.sum_sub_distrib,
+      ← Finset.mul_sum, ← Finset.mul_sum, hmean]
+  ring
+
+/-- **The variance atom: a single deviating cell forces a positive second moment.**
+    Weighted values with nonnegative weights and weighted mean `μ` have their
+    weighted second moment about `μ` bounded below by the single-cell contribution:
+    if one index `j` deviates from the mean by at least `d` (`d² ≤ (xⱼ − μ)²`), then
+    `wⱼ·d² ≤ (∑ wᵢxᵢ²) − (∑ wᵢ)·μ²`.
+
+    This is the abstract engine behind the AFKS *energy-increment step*: when a
+    refinement splits a part into sub-cells whose edge densities deviate from the
+    part's mean density by a defect `d`, the mean-square density (partition energy)
+    rises by at least the deviating cell's weighted square defect `wⱼ·d²` — the
+    positive `δ` that `energy_steps_bounded` then caps in number.  Combined with the
+    `[0,1]` energy trap it yields the finite iteration; the quantitative `d = d(ε)`
+    from irregularity is the remaining analytic input. -/
+theorem weighted_variance_atom_bound {ι : Type*} (s : Finset ι) (w x : ι → ℚ) (μ d : ℚ)
+    (hw : ∀ i ∈ s, 0 ≤ w i)
+    (hmean : ∑ i ∈ s, w i * x i = (∑ i ∈ s, w i) * μ)
+    (j : ι) (hj : j ∈ s) (hd : d ^ 2 ≤ (x j - μ) ^ 2) :
+    w j * d ^ 2 ≤ (∑ i ∈ s, w i * x i ^ 2) - (∑ i ∈ s, w i) * μ ^ 2 := by
+  rw [← weighted_variance_eq s w x μ hmean]
+  have hterm_nonneg : ∀ i ∈ s, 0 ≤ w i * (x i - μ) ^ 2 :=
+    fun i hi => mul_nonneg (hw i hi) (sq_nonneg _)
+  have hle_sum : w j * (x j - μ) ^ 2 ≤ ∑ i ∈ s, w i * (x i - μ) ^ 2 :=
+    Finset.single_le_sum hterm_nonneg hj
+  have hatom : w j * d ^ 2 ≤ w j * (x j - μ) ^ 2 :=
+    mul_le_mul_of_nonneg_left hd (hw j hj)
+  linarith [hle_sum, hatom]
+
 end Szemeredi.RegularityOQ04
