@@ -318,4 +318,53 @@ theorem waterLevel_unique (N : ι → ℝ) {P : ℝ} (hP : 0 < P)
     rw [h1, h2] at hlt
     exact absurd hlt (lt_irrefl P)
 
+/-- **A positive budget forces a positive water level.**  If the water level `μ`
+    realises a strictly positive budget `P > 0`, then `μ > 0`.  Otherwise
+    (`μ ≤ 0`) monotonicity would push the budget below its value `0` at level `0`
+    (all channels off, since every noise power is positive), contradicting
+    `g(μ) = P > 0`.  This is the bridge that upgrades the *existence* level
+    `0 ≤ μ` to the *strictly positive* level required by optimality. -/
+theorem waterLevel_pos (N : ι → ℝ) (hN : ∀ i, 0 < N i) {P : ℝ} (hP : 0 < P)
+    {μ : ℝ} (hμ : waterBudget N μ = P) : 0 < μ := by
+  by_contra hcon
+  push_neg at hcon
+  have hmono := monotone_waterBudget N hcon
+  rw [waterBudget_zero N hN, hμ] at hmono
+  linarith
+
+/-! ## Capacity of the parallel Gaussian channel (capstone) -/
+
+/-- **Capacity of the parallel Gaussian channel via water-filling.**  This is the
+    full statement of the open question.  For any strictly positive power budget
+    `P > 0` there is a water level `μ > 0` whose water-filling allocation
+    `Pᵢ⋆ = (μ − Nᵢ)₊`
+
+      * **is feasible** — every `Pᵢ⋆ ≥ 0` and it uses exactly the budget,
+        `∑ᵢ Pᵢ⋆ = P`;
+      * **is optimal** — it maximises the total rate `∑ᵢ ½ log(1 + Pᵢ/Nᵢ)` over
+        every feasible allocation `x` (`xᵢ ≥ 0`, `∑ xᵢ ≤ P`);
+      * **attains the closed-form capacity** `∑ᵢ ½ log(max μ Nᵢ / Nᵢ)`.
+
+    It assembles the file's separate results — `exists_waterLevel`,
+    `waterLevel_pos`, `waterfilling_optimal`, `waterAlloc_rate_closedForm` — into
+    the single "the constrained capacity of a bank of parallel AWGN sub-channels
+    is achieved by water-filling" statement.  The *value* of the water level `μ`
+    is the only remaining implicit datum; by `waterLevel_unique` it is uniquely
+    determined by `P`. -/
+theorem parallel_gaussian_capacity [Nonempty ι]
+    (N : ι → ℝ) (hN : ∀ i, 0 < N i) {P : ℝ} (hP : 0 < P) :
+    ∃ μ : ℝ, 0 < μ ∧
+      (∀ i, 0 ≤ waterAlloc μ N i) ∧
+      (∑ i, waterAlloc μ N i = P) ∧
+      (∀ x : ι → ℝ, (∀ i, 0 ≤ x i) → (∑ i, x i ≤ P) →
+        parallelRate N x ≤ parallelRate N (waterAlloc μ N)) ∧
+      parallelRate N (waterAlloc μ N)
+        = ∑ i, (1 / 2) * Real.log (max μ (N i) / N i) := by
+  obtain ⟨μ, hμ0, hbudget⟩ := exists_waterLevel N hN hP.le
+  have hμpos : 0 < μ := waterLevel_pos N hN hP hbudget
+  refine ⟨μ, hμpos, fun i => waterAlloc_nonneg μ N i, hbudget, ?_,
+          waterAlloc_rate_closedForm N hN μ⟩
+  intro x hx hxsum
+  exact waterfilling_optimal N hN hμpos hbudget x hx hxsum
+
 end ShannonWaterFilling
