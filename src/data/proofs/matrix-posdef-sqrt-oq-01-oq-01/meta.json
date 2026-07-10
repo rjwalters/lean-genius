@@ -136,5 +136,28 @@
   "crossReferences": [
     "matrix-posdef-sqrt-oq-01"
   ],
+  "references": [
+    {
+      "title": "Matrix Analysis",
+      "author": "Roger A. Horn and Charles R. Johnson",
+      "year": "2013",
+      "venue": "Cambridge University Press (2nd edition)",
+      "description": "Theorem 7.3.1 gives the polar decomposition A = UP with P = (AᴴA)^{1/2} positive semidefinite and U unitary, together with the uniqueness of the PSD factor P — exactly the existence and uniqueness statements formalized here."
+    },
+    {
+      "title": "Functions of Matrices: Theory and Computation",
+      "author": "Nicholas J. Higham",
+      "year": "2008",
+      "venue": "SIAM",
+      "description": "Chapters 6 and 8 treat the principal matrix square root and the polar decomposition via the functional calculus, mirroring this entry's construction of P = √(AᴴA) through CFC.sqrt and the recovery of U = A·P⁻¹ for invertible A."
+    },
+    {
+      "title": "Matrix Computations",
+      "author": "Gene H. Golub and Charles F. Van Loan",
+      "year": "2013",
+      "venue": "Johns Hopkins University Press (4th edition)",
+      "description": "Develops the polar decomposition and its link to the singular value decomposition, the standard computational reference for the factorization A = U·√(AᴴA) whose structural uniqueness this entry proves needs no invertibility hypothesis."
+    }
+  ],
   "sorries": 0
 }
