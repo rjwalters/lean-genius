@@ -707,6 +707,24 @@ theorem maclaurin_chain_amgm {n : ℕ} (hn : 0 < n) (x : Fin n → ℝ)
   rw [maclaurinMean_one, maclaurinMean_top_eq_geom] at h
   exact h
 
+/-- **Every Maclaurin mean lies between the geometric and arithmetic means.**
+For non-negative inputs and any `1 ≤ k ≤ n`,
+`(∏ xᵢ)^(1/n) ≤ Mₖ ≤ (∑ xᵢ)/n`. Identifying the chain endpoints `M₁ = AM`
+(`maclaurinMean_one`) and `Mₙ = GM` (`maclaurinMean_top_eq_geom`) turns the two
+half-chains `M₁ ≥ Mₖ` and `Mₖ ≥ Mₙ` (`maclaurin_chain`) into this two-sided
+sandwich. This generalizes `maclaurin_chain_amgm` — which is exactly the `k = 1`
+(upper, an equality) and `k = n` (lower, an equality) endpoints — to an arbitrary
+interior mean. From `newton_log_concavity` alone; no new axioms. -/
+theorem geom_le_maclaurinMean_le_arith {n : ℕ} (k : ℕ) (hk : 1 ≤ k) (hkn : k ≤ n)
+    (x : Fin n → ℝ) (hx : ∀ i, 0 ≤ x i) :
+    (∏ i, x i) ^ ((1 : ℝ) / n) ≤ maclaurinMean k x ∧
+      maclaurinMean k x ≤ (∑ i, x i) / n := by
+  refine ⟨?_, ?_⟩
+  · have h := maclaurin_chain k n (by omega) hkn le_rfl x hx
+    rwa [maclaurinMean_top_eq_geom] at h
+  · have h := maclaurin_chain 1 k (by omega) hk hkn x hx
+    rwa [maclaurinMean_one] at h
+
 /-
 ## Summary
 
@@ -736,8 +754,13 @@ The chain follows from Newton's log-concavity inequalities for the sequence eₖ
 18. `maclaurinMean_one` — M₁ = (∑ xᵢ)/n (first Maclaurin mean is the arithmetic mean)
 19. `maclaurinMean_top_eq_geom` — Mₙ = (∏ xᵢ)^(1/n) (last is the geometric mean)
 20. `maclaurin_chain_amgm` — (∏ xᵢ)^(1/n) ≤ (∑ xᵢ)/n, AM-GM through the chain (from Newton alone)
+21. `maclaurin_step` — Mₖ ≥ Mₖ₊₁, now a THEOREM from `newton_log_concavity` alone
+     (via `maclaurin_core_of_pos` + `rpow_cross`; formerly axiomatized)
+22. `geom_le_maclaurinMean_le_arith` — (∏ xᵢ)^(1/n) ≤ Mₖ ≤ (∑ xᵢ)/n for 1 ≤ k ≤ n
+     (every Maclaurin mean sits between GM and AM; generalizes `maclaurin_chain_amgm`)
 
 ### Axiomatized (deep results):
 1. `newton_log_concavity` — log-concavity of eₖ/C(n,k) for non-negative inputs
-2. `maclaurin_step` — Mₖ ≥ Mₖ₊₁ for consecutive Maclaurin means
+   (the sole remaining assumption; needs real-rootedness / Rolle machinery,
+    a >1000-line build, so it stays axiomatized)
 -/
