@@ -302,6 +302,83 @@ theorem zeta_two_sq_transcendental :
   have := zeta_even_pow_transcendental 1 2 one_pos (by norm_num)
   simpa using this
 
+/-- **Dividing a transcendental by a nonzero rational preserves transcendence over ℚ.**
+
+    The division companion of `transcendental_ratCast_mul`: since `x / q = q⁻¹ · x` and
+    `q⁻¹ ≠ 0`, transcendence of `x` transfers to `x / q`.  Reusable engine for the
+    normalised even-zeta values (e.g. `ζ(2n)/2`, `ζ(2n)/qₙ`). -/
+theorem transcendental_div_ratCast {x : ℝ} (hx : Transcendental ℚ x) {q : ℚ}
+    (hq : q ≠ 0) : Transcendental ℚ (x / (q : ℝ)) := by
+  have hxq : x / (q : ℝ) = ((q⁻¹ : ℚ) : ℝ) * x := by push_cast; ring
+  rw [hxq]
+  exact transcendental_ratCast_mul hx (inv_ne_zero hq)
+
+/-- **The class `ℚ∖{0} · π^(2n)` is closed under scaling by nonzero rationals — axiom-free.**
+    For any `c ∈ ℚ∖{0}`, `c · ζ(2n) = (c·qₙ) · π^(2n)` is again a nonzero-rational multiple
+    of the same positive even power of π.  Together with `zeta_even_product_eq_rat_mul_pi_pow`
+    (products) and `zeta_even_pow_eq_rat_mul_pi_pow` (powers) this completes the algebraic
+    picture: the even zeta values live in a set closed under ℚ*-scaling, products, and powers.
+    Uses only Euler's closed form (`zeta_even_eq_rat_mul_pi_pow`), **no** `hermite_lindemann`. -/
+theorem zeta_even_ratCast_mul_eq_rat_mul_pi_pow (n : ℕ) (hn : 0 < n) (c : ℚ) (hc : c ≠ 0) :
+    ∃ q : ℚ, q ≠ 0 ∧
+      (c : ℝ) * (∑' k : ℕ, 1 / (k : ℝ) ^ (2 * n)) = (q : ℝ) * π ^ (2 * n) := by
+  obtain ⟨qn, hqn, hq⟩ := zeta_even_eq_rat_mul_pi_pow n hn
+  refine ⟨c * qn, mul_ne_zero hc hqn, ?_⟩
+  rw [hq]; push_cast; ring
+
+/-- **Nonzero-rational multiples of even zeta values are transcendental over ℚ.**
+    For `n ≥ 1` and `c ∈ ℚ∖{0}`, `c · ζ(2n)` is transcendental — the transcendence-level
+    statement of the ℚ*-scaling closure, immediate from `zeta_even_transcendental` and the
+    scaling engine `transcendental_ratCast_mul`.
+
+    **Assumption:** `hermite_lindemann` (transcendence of π). -/
+theorem zeta_even_ratCast_mul_transcendental (n : ℕ) (hn : 0 < n) (c : ℚ) (hc : c ≠ 0) :
+    Transcendental ℚ ((c : ℝ) * (∑' k : ℕ, 1 / (k : ℝ) ^ (2 * n))) :=
+  transcendental_ratCast_mul (zeta_even_transcendental n hn) hc
+
+/-- **General finite-product structure for even zeta values — axiom-free.**  For an arbitrary
+    finite family of positive indices `(f i)_{i ∈ s}`, the product of the even zeta values
+    `ζ(2·f i)` is a *single* nonzero-rational multiple of a *single* power of π, whose exponent is
+    the doubled index sum:
+    `∏_{i∈s} ζ(2 f i) = (∏_{i∈s} q_{f i}) · π^(2 ∑_{i∈s} f i)`.
+    This is the `Finset` generalisation of the pairwise `zeta_even_product_eq_rat_mul_pi_pow`:
+    the class `ℚ∖{0} · π^(even)` housing the even zeta values is closed under *all* finite
+    products, not merely two factors.  Proved by induction on `s`, feeding each factor through
+    Euler's closed form and collecting the π-powers with `pow_add`.  Uses only
+    `zeta_even_eq_rat_mul_pi_pow`, **no** `hermite_lindemann`. -/
+theorem zeta_even_finset_prod_eq_rat_mul_pi_pow {ι : Type*} (f : ι → ℕ) (s : Finset ι)
+    (hf : ∀ i ∈ s, 0 < f i) :
+    ∃ q : ℚ, q ≠ 0 ∧
+      (∏ i ∈ s, ∑' k : ℕ, 1 / (k : ℝ) ^ (2 * f i))
+        = (q : ℝ) * π ^ (2 * ∑ i ∈ s, f i) := by
+  classical
+  induction s using Finset.induction_on with
+  | empty => exact ⟨1, one_ne_zero, by simp⟩
+  | @insert a s ha ih =>
+      obtain ⟨q, hq, hqeq⟩ := ih (fun i hi => hf i (Finset.mem_insert_of_mem hi))
+      obtain ⟨qa, hqa, hqaeq⟩ :=
+        zeta_even_eq_rat_mul_pi_pow (f a) (hf a (Finset.mem_insert_self a s))
+      refine ⟨qa * q, mul_ne_zero hqa hq, ?_⟩
+      rw [Finset.prod_insert ha, Finset.sum_insert ha, hqeq, hqaeq, mul_add, pow_add]
+      push_cast; ring
+
+/-- **Arbitrary finite products of even zeta values are transcendental over ℚ.**
+
+    For a nonempty finite family of positive indices, `∏_{i∈s} ζ(2 f i)` is a nonzero rational
+    multiple of a *positive* even power of π (`2 ∑ f i ≥ 2`), hence transcendental over ℚ.  The
+    `Finset` companion of `zeta_even_product_transcendental`: no finite product of even zeta
+    values can be algebraic.
+
+    **Assumption:** `hermite_lindemann` (transcendence of π). -/
+theorem zeta_even_finset_prod_transcendental {ι : Type*} (f : ι → ℕ) (s : Finset ι)
+    (hs : s.Nonempty) (hf : ∀ i ∈ s, 0 < f i) :
+    Transcendental ℚ (∏ i ∈ s, ∑' k : ℕ, 1 / (k : ℝ) ^ (2 * f i)) := by
+  obtain ⟨q, hq, heq⟩ := zeta_even_finset_prod_eq_rat_mul_pi_pow f s hf
+  rw [heq]
+  refine transcendental_ratCast_mul (pi_transcendental_over_rationals.pow ?_) hq
+  have : 0 < ∑ i ∈ s, f i := Finset.sum_pos hf hs
+  omega
+
 /-!
 ## The open odd case (documentation only)
 
