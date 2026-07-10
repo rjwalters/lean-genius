@@ -560,9 +560,47 @@ theorem allPairsSum_le_tau_harmonic (n : ℕ) (hn : n > 1) :
   gcongr
   exact Nat.cast_le.mpr (Nat.sub_le _ _)
 
+/-- **Exact closed form of the index double sum.**  The harmonic-weighted sum evaluated
+    by `indexSum_eq_harmonic` has an *exact* value, not merely the bound `≤ τ·H_{τ-1}`
+    used in `allPairsSum_le_tau_harmonic`:
+    `Σ_{k=1}^{τ-1} (τ-k)/k = τ·H_{τ-1} - (τ-1)`.
+    This is elementary: each term splits as `(τ-k)/k = τ·(1/k) - 1`, and there are exactly
+    `τ-1` terms, so the constant `-1`'s accumulate to `-(τ-1)`.  It pins down the extremal
+    index sum precisely (asymptotically `τ log τ - τ + O(log τ)`), sharpening the ceiling on
+    `allPairsSum` by the lower-order term `τ-1`. -/
+theorem indexSum_closed_form (τ : ℕ) :
+    ∑ k ∈ Finset.Ioo 0 τ, ((τ - k : ℕ) : ℝ) / ((k : ℕ) : ℝ)
+      = (τ : ℝ) * (∑ k ∈ Finset.Ioo 0 τ, (1 : ℝ) / ((k : ℕ) : ℝ))
+        - ((τ - 1 : ℕ) : ℝ) := by
+  -- Split each term: (τ - k)/k = τ·(1/k) - 1 for 0 < k < τ.
+  have hterm : ∀ k ∈ Finset.Ioo 0 τ,
+      ((τ - k : ℕ) : ℝ) / ((k : ℕ) : ℝ) = (τ : ℝ) * (1 / (k : ℝ)) - 1 := by
+    intro k hk
+    rw [Finset.mem_Ioo] at hk
+    have hkne : (k : ℝ) ≠ 0 := by
+      have : (0 : ℝ) < (k : ℝ) := by exact_mod_cast hk.1
+      exact ne_of_gt this
+    rw [Nat.cast_sub (le_of_lt hk.2), sub_div, div_self hkne, div_eq_mul_one_div]
+  rw [Finset.sum_congr rfl hterm, Finset.sum_sub_distrib, ← Finset.mul_sum,
+      Finset.sum_const, Nat.card_Ioo, Nat.sub_zero, nsmul_eq_mul, mul_one]
+
+/-- **Sharpened unconditional harmonic bound.**  Feeding the exact closed form
+    `indexSum_closed_form` into `allPairsSum_le_harmonic` improves `allPairsSum_le_tau_harmonic`
+    by the exact lower-order term `τ-1`:
+    `allPairsSum n ≤ τ(n)·H_{τ(n)-1} - (τ(n)-1)`.
+    Still `O(τ log τ)`, but now the tightest bound the index-sum method yields. -/
+theorem allPairsSum_le_tau_harmonic_sub (n : ℕ) (hn : n > 1) :
+    allPairsSum n ≤
+      ((numDivisors n : ℕ) : ℝ) *
+          (∑ k ∈ Finset.Ioo 0 (numDivisors n), (1 : ℝ) / ((k : ℕ) : ℝ))
+        - ((numDivisors n - 1 : ℕ) : ℝ) :=
+  (allPairsSum_le_harmonic n hn).trans (indexSum_closed_form (numDivisors n)).le
+
 end Erdos884
 
 -- Axiom audit: the only axiom is the OPEN conjecture `erdos_884`; all supporting
 -- lemmas (including the new closed-form index sum) are foundational-only.
 #print axioms Erdos884.indexSum_eq_harmonic
 #print axioms Erdos884.allPairsSum_le_tau_harmonic
+#print axioms Erdos884.indexSum_closed_form
+#print axioms Erdos884.allPairsSum_le_tau_harmonic_sub
