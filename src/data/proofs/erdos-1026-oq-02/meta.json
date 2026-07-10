@@ -108,6 +108,11 @@
       "targetId": "erdos-1026",
       "relationship": "extends",
       "description": "Parent gallery proof: Erdős Problem #1026 (monotonic subsequence sum optimization), whose Erdős–Szekeres length guarantee is the bound this entry relaxes."
+    },
+    {
+      "targetId": "erdos-1026-oq-05",
+      "relationship": "sibling",
+      "description": "Companion open question of #1026 that pushes in the orthogonal direction: instead of relaxing single-subsequence monotonicity by a tolerance ε, OQ-05 studies decompositions of the whole sequence into monotonic pieces (Hanani's 1957 theorem, MonotonicDecomposition) and bounds the number of parts. Both isolate and settle the axiom-free easy half of their respective questions on the same Subsequence interface, leaving the quantitative optimum open."
     }
   ],
   "references": [
