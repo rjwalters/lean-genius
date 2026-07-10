@@ -444,4 +444,27 @@ theorem card_irregularOrderedPairs_eq_zero_of_one_le (G : SimpleGraph V) [Decida
     (irregularOrderedPairs G eps parts).card = 0 := by
   rw [irregularOrderedPairs_eq_empty_of_one_le G heps parts, Finset.card_empty]
 
+/-- **An empty part is trivially ε-regular (left).**  For any `eps ≥ 0` the pair
+    `(∅, B)` is ε-regular: the only admissible witness `A' ⊆ ∅` is `∅`, and both
+    densities `d(∅, B')`, `d(∅, B)` vanish (`edgeDensity_empty_left`), so the gap is
+    `0 ≤ eps`.  This lifts the density fact `edgeDensity_empty_left` to the regularity
+    predicate — the degenerate base case underlying every partition induction, where a
+    part may be empty. -/
+theorem isEpsilonRegular_empty_left (G : SimpleGraph V) [DecidableRel G.Adj]
+    {eps : ℚ} (heps : 0 ≤ eps) (B : Finset V) :
+    IsEpsilonRegular G eps ∅ B := by
+  intro A' B' hA' _ _ _
+  rw [Finset.subset_empty] at hA'
+  subst hA'
+  rw [edgeDensity_empty_left, edgeDensity_empty_left]
+  simpa using heps
+
+/-- **An empty part is trivially ε-regular (right).**  The `(A, ∅)` companion of
+    `isEpsilonRegular_empty_left`, obtained by symmetry (`isEpsilonRegular_comm`); it lifts
+    `edgeDensity_empty_right` to the regularity predicate. -/
+theorem isEpsilonRegular_empty_right (G : SimpleGraph V) [DecidableRel G.Adj]
+    {eps : ℚ} (heps : 0 ≤ eps) (A : Finset V) :
+    IsEpsilonRegular G eps A ∅ :=
+  (isEpsilonRegular_comm G eps A ∅).mpr (isEpsilonRegular_empty_left G heps A)
+
 end Szemeredi.Regularity.OQ01
