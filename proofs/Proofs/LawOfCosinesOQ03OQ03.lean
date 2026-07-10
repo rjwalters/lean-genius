@@ -646,6 +646,15 @@ theorem sinh_c_num_sq (t : HyperbolicTriangle) :
 theorem gramNumerator_nonneg (t : HyperbolicTriangle) : 0 ≤ gramNumerator t := by
   rw [← sinh_a_num_sq t]; positivity
 
+/-- **The Gram numerator is strictly positive.** Strengthening `gramNumerator_nonneg`: it
+    equals `(sinh a · sin B · sin C)²`, whose base is a product of the strictly positive
+    quantities `sinh a`, `sin B`, `sin C`, so the square is `> 0`. Thus a genuine hyperbolic
+    triangle satisfies `cos²A + cos²B + cos²C + 2 cos A cos B cos C > 1` strictly — the
+    inequality is never tight (tightness would force a degenerate side or a straight angle). -/
+theorem gramNumerator_pos (t : HyperbolicTriangle) : 0 < gramNumerator t := by
+  rw [← sinh_a_num_sq t]
+  exact pow_pos (mul_pos (sinh_a_pos t) (mul_pos (sin_B_pos t) (sin_C_pos t))) 2
+
 /-- **Hyperbolic law of sines, pair `a,b` (cross form).**
     `sinh a · sin B = sinh b · sin A`. Both `(sinh a · sin B · sin C)²` and
     `(sinh b · sin A · sin C)²` equal the Gram numerator; cancelling the common
@@ -711,6 +720,16 @@ theorem hyperbolic_law_of_sines (t : HyperbolicTriangle) :
   refine ⟨?_, ?_⟩
   · rw [div_eq_div_iff hA hB]; linear_combination law_of_sines_ab t
   · rw [div_eq_div_iff hB hC]; linear_combination law_of_sines_bc t
+
+/-- **Hyperbolic law of sines, outer ratio `a,c`.** `sinh a / sin A = sinh c / sin C`, the
+    remaining pair of the three equal ratios (`hyperbolic_law_of_sines` records the two
+    adjacent equalities `a=b` and `b=c`; this is their transitive consequence, stated
+    directly from `law_of_sines_ac` for convenience). -/
+theorem hyperbolic_law_of_sines_ac (t : HyperbolicTriangle) :
+    Real.sinh t.a / Real.sin t.A = Real.sinh t.c / Real.sin t.C := by
+  have hA : Real.sin t.A ≠ 0 := (sin_A_pos t).ne'
+  have hC : Real.sin t.C ≠ 0 := (sin_C_pos t).ne'
+  rw [div_eq_div_iff hA hC]; linear_combination law_of_sines_ac t
 
 -- ============================================================
 -- PART 10: Realizability — the defect condition A+B+C<π is SUFFICIENT
