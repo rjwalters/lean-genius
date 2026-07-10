@@ -35,7 +35,7 @@
     }
   ],
   "knowledge": {
-    "progressSummary": "PROGRESS (researcher-3 2026-07-09): Added a PARAMETRIC REVERSAL family, completing the trichotomy of k-free parametric seed families. mem_ReversalSet_primeTriple: for m>=1 with 4m+1, 6m+1, 14m+3 all prime, the seed a=18m+3 (=3*(6m+1)) puts the whole family n=(18m+3)*2^(k+1) in ReversalSet (phi(n)<phi(D(n))) for all k, via a clean collapse of dblIter_reversal_iff_general (s=1, b=3*(4m+1), t=1, e=14m+3; reversal criterion 12m<14m+2 automatic). Unifies the previously isolated reversal seeds 21 (m=1) and 129 (m=7) into one statement; next member 453 (m=25). classifySeed_primeTriple_lt gives the classifier value. All three primality conditions load-bearing (e=14m+3 prime needed for the phi(e)=14m+2>12m lower bound). This is the reversal analogue of the Sophie-Germain equality family (3q) and the 5q forward family. Full elaboration clean [3058/3058]; olean-write env-blocked (SIGBUS-135, 4 runs), shipped UNVERIFIED. Only open direction remains the analytically-hard density-1 forward psi(x,y) statement.",
+    "progressSummary": "PROGRESS (researcher-11 2026-07-09): closed the composite-landing gap flagged in the file docstrings — mem_ReversalSet_generalLanding generalizes primeTriple to composite landings (reversal ⇔ 12m<φ(14m+3)), plus first composite-landing seed 1803 (m=100) and the canonical smallest composite-landing reversal seed 165 formally established. UNVERIFIED (docker infra down, containerd meta.db I/O). Only remaining open direction: analytically-hard density-1 forward ψ(x,y) statement.",
     "builtItems": [
       "dblIter (EulerTotientOQ04OQ03.lean) — the double cototient iterate D(n) = n − φ(n − φ(n)), the object of OQ-03.",
       "dblIter_prime — collapse lemma: for EVERY prime p, D(p) = p − 1 exactly (φ(p)=p−1 ⟹ p−φ(p)=1 ⟹ φ(1)=1 ⟹ D(p)=p−1).",
@@ -100,7 +100,11 @@
       "classifySeed_lt_iff_of_seedS_one_seedE_prime in EulerTotientOQ04OQ03.lean — reversal iff-criterion on prime-landing transport-admissible seeds (elab-clean [3058/3058], olean-write blocked by env SIGBUS-135/139)",
       "prime_landing_family_reversal in EulerTotientOQ04OQ03.lean — packages criterion into a·2^(k+1) ⊆ ReversalSet for every k",
       "mem_ReversalSet_primeTriple (EulerTotientOQ04OQ03.lean) — parametric reversal family: m>=1 & 4m+1,6m+1,14m+3 prime ⇒ (18m+3)*2^(k+1) ∈ ReversalSet ∀k; unifies seeds 21,129,453.",
-      "classifySeed_primeTriple_lt — the reversal family seeds 18m+3 are classified .lt by the total decision procedure."
+      "classifySeed_primeTriple_lt — the reversal family seeds 18m+3 are classified .lt by the total decision procedure.",
+      "mem_ReversalSet_generalLanding (EulerTotientOQ04OQ03.lean): generalizes mem_ReversalSet_primeTriple by replacing 14m+3 prime with the exact reversal inequality 12m<φ(14m+3); subsumes the prime-triple family AND covers composite landings",
+      "classifySeed_generalLanding_lt: classifier value for the general-landing reversal family",
+      "totient_1403/mem_ReversalSet_1803/classifySeed_1803: first parametric composite-landing reversal seed a=1803 (m=100), landing 1403=23·61 composite, φ=1320>1200",
+      "totient_115/totient_125/totient_165/classifySeed_165/mem_ReversalSet_165: formalized the canonical SMALLEST composite-landing reversal seed 165=3·5·11 (b=125=5³, e=115=5·23 composite) via the total classifier"
     ],
     "insights": [
       "On primes the higher iterate is trivial: D(p) = p − 1 for all primes p, because the first cototient step p − φ(p) = 1 and φ(1) = 1. So φ(D(p)) = φ(p−1), and φ(p−1) < p−1 = φ(p) for every p ≥ 3 (with equality only at p = 2). This gives the forward direction on an infinite explicit family with a one-line reduction to Nat.totient_lt — no density machinery needed.",
@@ -132,7 +136,10 @@
       "CAPSTONE (structural conjecture now proven): the excluded seeds (seedS a≥2) are EXACTLY prime powers p^k with p≡3 mod4 (seedS_ge_two_iff_totient_mod_four composed with totient_mod_four_eq_two_iff_prime_pow_three_mod_four, both already in the file). Since all such powers never reverse, NO excluded seed reverses — equivalently every reversing seed has seedS a=1 (transport-admissible). The long-conjectured structural dichotomy is a theorem.",
       "Both known reversal seeds 21=3·7 and 55=5·11 are exactly a=p·(2p+1) for the two smallest Sophie-Germain primes p=3,5 (with p+2 also prime); this natural infinite candidate family does NOT give infinitely many reversal seeds.",
       "REVERSAL ENGINE (r1, 2026-07-09): the transport-admissible regime seedS a=1 now has a .lt-forcing engine on prime landings — classifySeed_lt_iff_of_seedS_one_seedE_prime proves that for odd a≥3 with seedS a=1 and seedE a PRIME, the family a·2^(k+1) reverses IFF φ(seedB a)+2^seedT a < 2(a−φ(a)). This is the missing companion to the excluded-regime ne_lt/gt engines and formalizes the empirical prime-landing clustering as an EXACT criterion. Recovers 21(b=15,e=17),55(b=35,e=43),129(b=87,e=101),175(b=115,e=131) uniformly; the Sophie-Germain equality seeds 15,33 (also prime-landing) FAIL the criterion (→.eq), consistent with mem_EqualitySet_sophieGermain.",
-      "The prime-landing restriction is GENUINE, not cosmetic: 165 (seedB=125, seedE=115=5·23 COMPOSITE) is a reversal seed lying OUTSIDE the engine. So reversals are not confined to prime landings; a full seedS=1 reversal characterization needs a lower bound on φ(seedE a)/seedE a beyond the prime case φ(e)=e−1."
+      "The prime-landing restriction is GENUINE, not cosmetic: 165 (seedB=125, seedE=115=5·23 COMPOSITE) is a reversal seed lying OUTSIDE the engine. So reversals are not confined to prime landings; a full seedS=1 reversal characterization needs a lower bound on φ(seedE a)/seedE a beyond the prime case φ(e)=e−1.",
+      "Composite-landing reversals are abundant: 82 composite-landing reversal seeds exist below 4000 (Python search). The primeTriple seed shape a=18m+3 itself yields a composite-landing sub-family whenever 4m+1,6m+1 prime and 14m+3 composite with φ(14m+3)>12m (60 members below 4000, first at m=100→a=1803, e=1403=23·61).",
+      "The primality of the landing in mem_ReversalSet_primeTriple was only a sufficient condition for 12m<φ(14m+3); the honest hypothesis is that inequality directly. mem_ReversalSet_generalLanding makes reversal ⇔ 12m<φ(14m+3), with prime landings the special case φ=14m+2.",
+      "165 is the smallest composite-landing reversal seed and lies outside all parametric families (6m+1=55 composite at m=9); discharged directly via classifySeed_val + classifySeed_lt_iff."
     ],
     "mathlibGaps": [
       "Kernel `decide` on Nat.totient of a seed (e.g. totient 21) blows the stack → SIGBUS (Lean exit 135, line-less); must prove totient values by factorisation (Nat.totient_mul + Nat.totient_prime). Reconfirms the file's existing note."
@@ -140,7 +147,9 @@
     "nextSteps": [
       "ONLY remaining open direction of Erdős 1064 OQ-03: the density-1 forward statement φ(n)>φ(D(n)) for almost all n. Needs ψ(x,y) smooth-number density / Luca–Pomerance analytic input — a real Mathlib gap, not session-sized, not Aristotle-suitable. The elementary structural side (which seeds reverse, and that reversals live only in the seedS=1 regime) is now COMPLETE.",
       "Possible follow-up (elementary): characterise WHICH transport-admissible seeds (seedS a=1) reverse — i.e. describe {odd a : seedS a=1 ∧ classifySeed a=.lt} beyond its least element a=21. This is the natural next structural question now that the excluded regime is fully closed.",
-      "Possible follow-up: is the reversal-seed set (seedS=1, classify=.lt) infinite with positive density among transport-admissible seeds? (21·2^(k+1) family already gives infinitely-often.)"
+      "Possible follow-up: is the reversal-seed set (seedS=1, classify=.lt) infinite with positive density among transport-admissible seeds? (21·2^(k+1) family already gives infinitely-often.)",
+      "Open: characterize which composite landings e=seedE a give reversal purely by a checkable structural condition (semiprime e=pq gives φ=(p-1)(q-1); a clean parametric semiprime-landing family beyond the 18m+3 shape remains to be found).",
+      "The 15q family (a=3·5·q) contains many composite-landing reversal seeds (165,285,345,465,885) but seedB varies non-uniformly (125,213,257,345,653) so φ(b) has no clean parametric form — no clean collapse there."
     ]
   },
   "relatedProofs": [

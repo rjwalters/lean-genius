@@ -2798,4 +2798,146 @@ theorem classifySeed_453 : classifySeed 453 = Ordering.lt := by
   simpa using classifySeed_primeTriple_lt (m := 25) (by norm_num)
     (by norm_num) (by norm_num) (by norm_num)
 
+-- ----------------------------------------------------------------------------
+-- COMPOSITE landings: reversals are not confined to prime landings
+-- ----------------------------------------------------------------------------
+-- The prime-triple family `mem_ReversalSet_primeTriple` and the prime-landing
+-- engine `classifySeed_lt_iff_of_seedS_one_seedE_prime` both use primality of the
+-- landing constant `e = seedE a` only to secure the lower bound `φ(e)` needed for
+-- reversal.  Their docstrings flag — but never formalise — that reversals also
+-- occur with a *composite* landing (the example `165 = 3·5·11`, whose landing
+-- `e = 115 = 5·23` is composite).  We close that gap on both fronts:
+--
+--   * a *parametric* composite-landing family, obtained from the prime-triple
+--     family by replacing "`14m+3` prime" with the exact reversal inequality
+--     `12m < φ(14m+3)` it was standing in for (prime landings are then just the
+--     special case `φ(14m+3) = 14m+2`); and
+--   * the canonical smallest composite-landing reversal seed `165`, discharged
+--     through the total classifier `classifySeed`.
+
+/-- **General-landing reversal family** (the honest generalisation of
+    `mem_ReversalSet_primeTriple`).  For `m ≥ 1` with `4m+1` and `6m+1` prime, the
+    entire family `n = (18m+3)·2^(k+1)` reverses (`φ(n) < φ(D(n))`) **as soon as**
+    the landing totient clears the seed totient: `12m < φ(14m+3)`.
+
+    Primality of `14m+3` is *not* required — it is only one sufficient way to force
+    the inequality (there `φ(14m+3) = 14m+2 > 12m` for every `m`), so this theorem
+    contains `mem_ReversalSet_primeTriple` as a special case.  Crucially it also
+    covers *composite* landings, resolving the remark in `mem_ReversalSet_primeTriple`
+    ("for a composite landing `φ(e)` could drop below `12m` and the family would not
+    reverse"): whether it reverses is decided precisely by `12m ⋛ φ(14m+3)`.  The
+    first composite instance is `m = 100` (`a = 1803`), whose landing
+    `14·100+3 = 1403 = 23·61` is composite with `φ(1403) = 1320 > 1200 = 12·100`.
+
+    Mechanism is identical to `mem_ReversalSet_primeTriple`: `a = 3·(6m+1)` gives
+    `φ(a) = 12m`; the first step `2a − φ(a) = 2·(12m+3)` has `s = 1`,
+    `b = 3·(4m+1)` with `φ(b) = 8m`; the landing is `2a − φ(b) = (14m+3)·2¹`, so
+    `t = 1`, `e = 14m+3`.  The `k`-free criterion then reads
+    `φ(a) = 12m < φ(e)·2^{t−1} = φ(14m+3)`, which is exactly the hypothesis. -/
+theorem mem_ReversalSet_generalLanding {m : ℕ} (hm : 1 ≤ m)
+    (hp : (4 * m + 1).Prime) (hq : (6 * m + 1).Prime)
+    (he : 12 * m < Nat.totient (14 * m + 3))
+    (k : ℕ) : (18 * m + 3) * 2 ^ (k + 1) ∈ ReversalSet := by
+  have hcopa : Nat.Coprime 3 (6 * m + 1) :=
+    (Nat.coprime_primes (by norm_num) hq).mpr (by omega)
+  have hcopb : Nat.Coprime 3 (4 * m + 1) :=
+    (Nat.coprime_primes (by norm_num) hp).mpr (by omega)
+  -- φ(a) = 12m  (a = 18m+3 = 3·(6m+1))
+  have hφa : Nat.totient (18 * m + 3) = 12 * m := by
+    rw [show 18 * m + 3 = 3 * (6 * m + 1) from by ring, Nat.totient_mul hcopa,
+        show Nat.totient 3 = 2 from by decide, Nat.totient_prime hq]; omega
+  -- φ(b) = 8m  (b = 12m+3 = 3·(4m+1))
+  have hφb : Nat.totient (12 * m + 3) = 8 * m := by
+    rw [show 12 * m + 3 = 3 * (4 * m + 1) from by ring, Nat.totient_mul hcopb,
+        show Nat.totient 3 = 2 from by decide, Nat.totient_prime hp]; omega
+  have ha_odd : Odd (18 * m + 3) := Nat.odd_iff.mpr (by omega)
+  have hb_odd : Odd (12 * m + 3) := Nat.odd_iff.mpr (by omega)
+  have he_odd : Odd (14 * m + 3) := Nat.odd_iff.mpr (by omega)
+  have p0 : (2 : ℕ) ^ (1 - 1) = 1 := by norm_num
+  have p1 : (2 : ℕ) ^ 1 = 2 := by norm_num
+  have hstep : 2 * (18 * m + 3) - Nat.totient (18 * m + 3)
+      = 2 ^ 1 * (12 * m + 3) := by rw [hφa, p1]; omega
+  have hC : 2 * (18 * m + 3) - Nat.totient (12 * m + 3) * 2 ^ (1 - 1)
+      = (14 * m + 3) * 2 ^ 1 := by rw [hφb, p0, p1]; omega
+  -- the k-free reversal criterion: reversal ⇔ φ(a)=12m < φ(e)·2^(t−1)=φ(14m+3)
+  rw [dblIter_reversal_iff_general ha_odd hb_odd he_odd (le_refl 1) (le_refl 1)
+        hstep hC k, hφa, p0, mul_one]
+  exact he
+
+/-- **Classifier value on the general-landing reversal seeds.**  Every seed
+    `18m+3` with `4m+1`, `6m+1` prime and `12m < φ(14m+3)` is classified `lt`. -/
+theorem classifySeed_generalLanding_lt {m : ℕ} (hm : 1 ≤ m)
+    (hp : (4 * m + 1).Prime) (hq : (6 * m + 1).Prime)
+    (he : 12 * m < Nat.totient (14 * m + 3)) :
+    classifySeed (18 * m + 3) = Ordering.lt := by
+  have hodd : Odd (18 * m + 3) := Nat.odd_iff.mpr (by omega)
+  exact (classifySeed_lt_iff hodd (by omega) 1).mp
+    (mem_ReversalSet_generalLanding hm hp hq he 1)
+
+/-- Totient of the first composite landing `1403 = 23·61`. -/
+theorem totient_1403 : Nat.totient 1403 = 1320 := by
+  rw [show (1403 : ℕ) = 23 * 61 from by norm_num, Nat.totient_mul (by decide),
+      Nat.totient_prime (by norm_num), Nat.totient_prime (by norm_num)]
+
+/-- **Concrete composite-landing reversal seed `1803 = 3·601` (`m = 100`).**  The
+    guards `4·100+1 = 401` and `6·100+1 = 601` are prime, and the landing
+    `14·100+3 = 1403 = 23·61` is *composite* yet still reverses because
+    `φ(1403) = 1320 > 1200 = 12·100`.  The first explicitly exhibited reversal seed
+    with a composite landing produced by the parametric family. -/
+theorem mem_ReversalSet_1803 (k : ℕ) : 1803 * 2 ^ (k + 1) ∈ ReversalSet := by
+  simpa using mem_ReversalSet_generalLanding (m := 100) (by norm_num)
+    (by norm_num) (by norm_num)
+    (show 12 * 100 < Nat.totient (14 * 100 + 3) by
+      rw [show (14 * 100 + 3 : ℕ) = 1403 from by norm_num, totient_1403]; norm_num) k
+
+/-- **Classifier value on the seed `1803`.** -/
+theorem classifySeed_1803 : classifySeed 1803 = Ordering.lt := by
+  simpa using classifySeed_generalLanding_lt (m := 100) (by norm_num)
+    (by norm_num) (by norm_num)
+    (show 12 * 100 < Nat.totient (14 * 100 + 3) by
+      rw [show (14 * 100 + 3 : ℕ) = 1403 from by norm_num, totient_1403]; norm_num)
+
+-- ----------------------------------------------------------------------------
+-- The canonical smallest composite-landing reversal seed: a = 165
+-- ----------------------------------------------------------------------------
+-- `165 = 3·5·11` lies outside every parametric family above (`6m+1 = 55` is
+-- composite at `m = 9`), and its landing `e = seedE 165 = 115 = 5·23` is composite,
+-- so neither the prime-landing engine nor the prime-triple/general-landing families
+-- name it.  It is nonetheless the *smallest* composite-landing reversal seed, and we
+-- discharge it directly through the total classifier `classifySeed`, extending the
+-- concrete catalogue `classifySeed_3 … classifySeed_21`, `classifySeed_129/453`.
+
+/-- Totient of the composite landing `115 = 5·23`. -/
+theorem totient_115 : Nat.totient 115 = 88 := by
+  rw [show (115 : ℕ) = 5 * 23 from by norm_num, Nat.totient_mul (by decide),
+      totient_5, Nat.totient_prime (by norm_num)]
+
+/-- Totient of the first cototient step `125 = 5³` of the seed `165`. -/
+theorem totient_125 : Nat.totient 125 = 100 := by
+  have h : Nat.totient (5 ^ 3) = 5 ^ (3 - 1) * (5 - 1) :=
+    Nat.totient_prime_pow (by norm_num) (by norm_num)
+  simpa using h
+
+/-- Totient of the seed `165 = 3·5·11`. -/
+theorem totient_165 : Nat.totient 165 = 80 := by
+  rw [show (165 : ℕ) = 3 * (5 * 11) from by norm_num, Nat.totient_mul (by decide),
+      totient_3, Nat.totient_mul (by decide), totient_5, totient_11]
+
+/-- **Classifier value on the seed `165 = 3·5·11`.**  Here `b = seedB 165 = 125 = 5³`
+    (`φ = 100`), the landing is `C = 2·165 − φ(125) = 230 = 115·2¹`, so `t = 1` and
+    `e = seedE 165 = 115 = 5·23` is *composite*, with `φ(115) = 88`.  The classifier
+    compares `φ(165) = 80` against `φ(115)·2^{t−1} = 88`, and `80 < 88`, so `165`
+    reverses — the smallest reversal seed with a composite landing. -/
+theorem classifySeed_165 : classifySeed 165 = Ordering.lt := by
+  rw [classifySeed_val (s := 1) (b := 125) (t := 1) (e := 115) (by decide) (by decide)
+      (by norm_num [totient_165]) (by norm_num [totient_125])]
+  rw [totient_165, totient_115]; decide
+
+/-- **Composite-landing reversal seed `165`.**  The whole family `165·2^(k+1)`
+    reverses (`φ(n) < φ(D(n))`) for every `k`, with a *composite* landing
+    `e = 115 = 5·23` — the concrete witness that reversals are not confined to prime
+    landings. -/
+theorem mem_ReversalSet_165 (k : ℕ) : 165 * 2 ^ (k + 1) ∈ ReversalSet :=
+  (classifySeed_lt_iff (by decide) (by norm_num) k).mpr classifySeed_165
+
 end Erdos1064OQ03
