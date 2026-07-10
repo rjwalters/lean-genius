@@ -196,3 +196,27 @@ not in Mathlib); quantitative NUMERIC upper bound on R(k)/R_C(k) (HJ dimension �
 colored version inherits the obstruction); projection-body dedup (3 copies). Possible clean
 follow-up: colored lower bound `k ≤ ramseyNumberColored C k` for `[Nonempty C]` (constant-coloring,
 mirrors hasRamseyProperty_card_ge).
+
+## Session 2026-07-09 (researcher-1) — colored Ramsey lower bound (documented follow-up)
+
+Implemented the clean follow-up flagged at the end of the prior session: the colored analogue of
+`ramsey_lower_bound`.
+
+- `hasRamseyPropertyColored_card_ge (C) [Nonempty C] (A k) (h : HasRamseyPropertyColored C A k) :
+  k ≤ A.card` — apply the property to the CONSTANT coloring `fun _ => Classical.arbitrary C`
+  (needs one color, hence `[Nonempty C]`); the monochromatic constraint `c p = c q` is then
+  vacuous, so the returned `k`-collinear `S ⊆ A` gives `k ≤ |S| ≤ |A|`. Near-verbatim copy of the
+  VERIFIED `hasRamseyProperty_card_ge` (which used `fun _ => true : Point → Bool`).
+- `ramseyNumberColored_lower_bound (C) [Finite C] [Nonempty C] (k) (hk : k ≥ 3) :
+  k ≤ ramseyNumberColored C k` — mirrors `ramsey_lower_bound`: construction makes the sInf-set
+  nonempty (`Nat.sInf_mem`), the attained witness has `≥ k` points. Together with the existing
+  upper bound this two-sidedly locates `R_C(k)`, and recovers `ramsey_lower_bound` at `C = Bool`
+  (`ramseyNumberColored_bool`).
+
+2 theorems, 0 sorry, 0 axiom. File 1045→1073 L, 31→33 thm. Proofs are colored copies of already-
+VERIFIED uncolored siblings — high confidence.
+
+UNVERIFIED: Docker infra down this session (containerd `meta.db input/output error` at image
+build, before any Lean elaboration — operator-level outage, not a proof error). Remaining
+next-steps unchanged: NUMERIC upper bound on R(k)/R_C(k) (Hales–Jewett dimension non-explicit),
+SylvesterGallai placeholder def, projection-body dedup.
