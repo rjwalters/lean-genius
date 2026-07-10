@@ -118,15 +118,15 @@
       "title": "Part II: Irreducibility over ℚ (via Gauss's Lemma)",
       "summary": "The technical core: `f_no_int_root` (no integer root, since $X^4-10X^2+1$ has none in $\\mathbb{Z}$) feeds `irred_f`, proving $X^4-10X^2+1$ irreducible over $\\mathbb{Q}$ by ruling out both linear factors (Gauss's lemma / rational root test) and a factorization into two monic quadratics.",
       "startLine": 107,
-      "endLine": 356,
+      "endLine": 308,
       "mathContext": "Irreducibility over $\\mathbb{Q}$: no rational roots (Gauss) and no $\\mathbb{Q}$-quadratic split, so the quartic is irreducible."
     },
     {
       "id": "part3-consequences",
       "title": "Part III: Consequences of the Minimal Polynomial",
       "summary": "Draws the conclusions: `minpoly_sqrt2_plus_sqrt3` (the minimal polynomial is exactly $X^4-10X^2+1$, from monic + irreducible + root), `adjoin_sqrt2_plus_sqrt3_finrank` ($[\\mathbb{Q}(\\sqrt2+\\sqrt3):\\mathbb{Q}]=4$), and `sqrt2_plus_sqrt3_irrational` ($\\sqrt2+\\sqrt3\\notin\\mathbb{Q}$, since a rational would have degree 1).",
-      "startLine": 357,
-      "endLine": 403,
+      "startLine": 309,
+      "endLine": 350,
       "mathContext": "Minimal polynomial degree 4 $\\Rightarrow [\\mathbb{Q}(\\sqrt2+\\sqrt3):\\mathbb{Q}]=4 \\Rightarrow \\sqrt2+\\sqrt3$ irrational."
     }
   ],
