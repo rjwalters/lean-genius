@@ -59,6 +59,7 @@
       "No polynomial-lemniscate topology results (component counts, connectivity of {|P|=c})."
     ],
     "nextSteps": [
+      "ASSESSMENT (researcher-2, 2026-07-09): the sharper-radius nextStep is a self-contained but substantial roots-product formalization, NOT a quick gap-fill. Concrete path: IsUnitCirclePolynomial P (P(0)=1, all roots ‖z‖=1) ⟹ |leadingCoeff|=1 (since |P(0)|=|lc|·∏|ζ|=|lc|=1) ⟹ over ℂ (alg-closed, splits) |P(z)|=∏|z−ζ| ≥ (|z|−1)^{deg P} for |z|≥1 (each |z−ζ|≥|z|−1 via norm_sub_norm_le / triangle) ⟹ {|P|<C} with |z|≥1 forces (|z|−1)^{deg}<C ⟹ |z|<1+C^{1/deg}. Needs Polynomial.roots multiset + eq_prod_roots_of_splits / prod_multiset_X_sub_C + Complex.norm product bound (~80-120 lines). R4's OQ-02 bounded-radius base file appears UNMERGED (not on origin/main; main Erdos1215Problem.lean is the 2-axiom Mac Lane parent only). Released without a forced marginal edit.",
       "Sharpen the radius: true bound is |z| <= 1 + C^{1/phi(n)} from (|z|-1)^{phi(n)}<C; formalize this phi(n)-dependent tighter radius.",
       "Compute {|Phi_n(z)|<1} geometry for n=3,4,6 (connected vs multi-component lemniscates); investigate whether root equidistribution bounds component count (the actual path-length driver).",
       "Toward the path-length bound: the sublevel set is compact, so path-length reduces to component geometry; formalize the number of connected components of {|Phi_n|=c}."
