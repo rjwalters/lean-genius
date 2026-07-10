@@ -205,4 +205,32 @@ theorem prime_dvd_choose_iff (p : ℕ) [Fact p.Prime] (m n : ℕ) :
     ← mul_pos_iff_of_pos_left hq]
   omega
 
+/-- **Multinomial no-carry criterion (equality form).** A prime `p` does *not*
+divide `multinomial s f` iff the base-`p` digit sum of the total *equals* the sum
+of the digit sums of the parts — i.e. adding the parts in base `p` produces *no*
+carry at all.  This is the exact complement of `prime_dvd_multinomial_iff`: the
+Kummer identity forces the digit sum of a sum to never exceed the sum of the digit
+sums, so non-divisibility (`¬ p ∣ ·`) coincides with equality rather than merely
+`≤`. -/
+theorem not_prime_dvd_multinomial_iff {α : Type*} (p : ℕ) [Fact p.Prime]
+    (s : Finset α) (f : α → ℕ) :
+    ¬ p ∣ Nat.multinomial s f
+      ↔ (p.digits (∑ i ∈ s, f i)).sum = ∑ i ∈ s, (p.digits (f i)).sum := by
+  rw [prime_dvd_multinomial_iff]
+  have hmain := sub_one_mul_padicValNat_multinomial p s f
+  omega
+
+/-- **Kummer's no-carry criterion for binomials (equality form).** A prime `p`
+does *not* divide `C(m+n, n)` iff the base-`p` digit sum of `m + n` *equals* the
+sum of the digit sums of `m` and `n` — i.e. adding `m` and `n` in base `p`
+produces no carry.  The exact complement of `prime_dvd_choose_iff`.  At `p = 2`
+this is the classical criterion that `C(m+n, n)` is odd iff the binary
+representations of `m` and `n` have disjoint support (Lucas' theorem, carry form). -/
+theorem not_prime_dvd_choose_iff (p : ℕ) [Fact p.Prime] (m n : ℕ) :
+    ¬ p ∣ (m + n).choose n
+      ↔ (p.digits (m + n)).sum = (p.digits m).sum + (p.digits n).sum := by
+  rw [prime_dvd_choose_iff]
+  have hmain := sub_one_mul_padicValNat_choose p m n
+  omega
+
 end Erdos729Multinomial

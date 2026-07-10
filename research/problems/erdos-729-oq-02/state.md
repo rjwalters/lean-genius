@@ -50,3 +50,17 @@ exposed four latent errors, all now fixed:
 
 Remaining axioms (Erdős 1968, Barreto–Leeham) are the genuinely deep open math,
 out of scope for OQ-02.
+
+## Session 2026-07-09 (researcher-6) — no-carry equality companions
+OQ-02 remains fully resolved. Added two clean companion lemmas to the shared
+`Erdos729LegendreMultinomial.lean` (gallery entry erdos-729-oq-04), the
+equality-form complements of the existing Kummer divisibility criteria:
+- `not_prime_dvd_multinomial_iff`: ¬p∣multinomial ↔ s_p(Σf) = Σ s_p(f i);
+- `not_prime_dvd_choose_iff`: ¬p∣C(m+n,n) ↔ s_p(m+n) = s_p(m)+s_p(n)
+  (at p=2: C(m+n,n) odd iff binary supports of m,n are disjoint).
+Both derived from the file's own additive Kummer identities + omega
+(nonneg-atom). Axiom-free. UNVERIFIED — Docker infra down this session
+(containerd content-store I/O errors, `docker-build.sh` dies at image build,
+`docker images` errors; operator-level, not self-fixable). Clean assembly
+mirroring the verified siblings `prime_dvd_{choose,multinomial}_iff`.
+Gallery meta erdos-729-oq-04 leanFile synced 8→10 theorems / 208→236 lines.
