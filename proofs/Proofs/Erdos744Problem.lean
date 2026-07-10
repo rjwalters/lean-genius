@@ -340,6 +340,42 @@ theorem maxCut_eq_edgeCount_iff {V : Type*} [Fintype V] [LinearOrder V]
   have h := bipartitionNumber_add_maxCut G
   omega
 
+/-- **The max-cut never exceeds the total edge count.** A cut can separate at most
+every edge. Immediate dual of `bipartitionNumber_le_edgeCount` via the
+complementarity `bipartitionNumber G + maxCut G = edgeCount G`. -/
+theorem maxCut_le_edgeCount {V : Type*} [Fintype V] [LinearOrder V]
+    (G : SimpleGraph' V) [DecidableRel G.Adj] :
+    maxCut G ≤ edgeCount G := by
+  have h := bipartitionNumber_add_maxCut G
+  omega
+
+/-- **The max-cut vanishes iff `G` is edgeless.** `maxCut G = 0 ↔ edgeCount G = 0`:
+the zero case of the max-cut, dual to `maxCut_eq_edgeCount_iff` (which characterizes
+the saturated case). If `G` has any edge `u < v`, the coloring `w ↦ (w = u)` separates
+it, so the cut is already positive; conversely with no edges there is nothing to cut. -/
+theorem maxCut_eq_zero_iff {V : Type*} [Fintype V] [LinearOrder V]
+    (G : SimpleGraph' V) [DecidableRel G.Adj] :
+    maxCut G = 0 ↔ edgeCount G = 0 := by
+  constructor
+  · intro h
+    by_contra hne
+    have hpos : 0 < edgeCount G := Nat.pos_of_ne_zero hne
+    unfold edgeCount at hpos
+    rw [Finset.card_pos] at hpos
+    obtain ⟨p, hp⟩ := hpos
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hp
+    obtain ⟨hlt, hadj⟩ := hp
+    -- The coloring that isolates `p.1` cuts the edge `p`.
+    set c : V → Bool := fun w => decide (w = p.1) with hc
+    have hne_uv : p.2 ≠ p.1 := ne_of_gt hlt
+    have hle : bichromaticEdges G c ≤ maxCut G := Finset.le_sup' _ (Finset.mem_univ c)
+    rw [h, Nat.le_zero, bichromaticEdges, Finset.card_eq_zero,
+      Finset.filter_eq_empty_iff] at hle
+    exact hle (Finset.mem_univ p) ⟨hlt, hadj, by simp only [hc]; simp [hne_uv]⟩
+  · intro h
+    have hle := maxCut_le_edgeCount G
+    omega
+
 /--
 **The f_k(n) Function**
 
