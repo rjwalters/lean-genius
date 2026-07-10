@@ -131,4 +131,47 @@ theorem logConcave_root_antitone_seq (p : ℕ → ℝ) (hp0 : p 0 = 1)
   intro k
   simpa using logConcave_root_antitone p hp0 hpos hlc (k + 1) (Nat.succ_pos k)
 
+/-! ## Sharpness: geometric sequences are the equality case
+
+The engine above proves the root sequence `p_k^{1/k}` is *non-increasing*. The natural
+question is whether the bound is tight. It is: a **geometric** sequence `p k = r^k` (`r > 0`)
+is positive with `p 0 = 1`, log-concave *with equality*, and its root sequence is the
+**constant** `r`, so every step of `logConcave_root_antitone` holds with equality.
+
+Specialised to Maclaurin (`p k = eₖ/C(n,k)`), the geometric case corresponds exactly to all
+inputs being equal — the classical AM-GM/Maclaurin equality case — confirming the abstract
+monotonicity cannot be improved to a strict inequality without a strict-log-concavity
+hypothesis. -/
+
+/-- **`k`-th root of `r^k` is `r`.** For `r > 0` and `k ≥ 1`, `(r^k)^{1/k} = r`. The basic
+identity making geometric root sequences constant. -/
+theorem rpow_pow_root_self {r : ℝ} (hr : 0 < r) {k : ℕ} (hk : 0 < k) :
+    (r ^ k) ^ ((1 : ℝ) / k) = r := by
+  have hk0 : (k : ℝ) ≠ 0 := by exact_mod_cast hk.ne'
+  rw [← Real.rpow_natCast r k, ← Real.rpow_mul hr.le, mul_one_div, div_self hk0,
+    Real.rpow_one]
+
+/-- **Geometric sequences are log-concave with equality.** `r^m · r^(m+2) = (r^(m+1))²` for
+every `r` and `m`: the log-concavity inequality `hlc` is saturated at every index. -/
+theorem geometric_logConcave_eq (r : ℝ) (m : ℕ) :
+    r ^ m * r ^ (m + 2) = (r ^ (m + 1)) ^ 2 := by
+  rw [← pow_add, ← pow_mul]; congr 1; omega
+
+/-- **Sharpness of `logConcave_root_antitone`.** For `r > 0` the geometric root sequence is
+the constant `r`, so the antitone bound
+`p (k+1)^{1/(k+1)} ≤ p k^{1/k}` of `logConcave_root_antitone` holds with **equality** at every
+`k ≥ 1` when `p k = r^k`. Hence the monotonicity in the log-concavity engine is sharp: it
+cannot be strengthened to `<` without assuming strict log-concavity. -/
+theorem geometric_root_antitone_eq {r : ℝ} (hr : 0 < r) (k : ℕ) (hk : 0 < k) :
+    (r ^ (k + 1)) ^ ((1 : ℝ) / (k + 1)) = (r ^ k) ^ ((1 : ℝ) / k) := by
+  rw [rpow_pow_root_self hr (Nat.succ_pos k), rpow_pow_root_self hr hk]
+
+/-- **The geometric root sequence is constant (hence the abstract chain is flat).** For
+`r > 0`, `logConcave_root_antitone_seq`'s sequence `k ↦ (r^(k+1))^{1/(k+1)}` is the constant
+function `r`. Combined with `geometric_logConcave_eq` (the hypotheses hold with equality), this
+exhibits the equality case of the whole Maclaurin chain `M_1 ≥ M_2 ≥ ⋯`. -/
+theorem geometric_root_seq_const {r : ℝ} (hr : 0 < r) (k : ℕ) :
+    (r ^ (k + 1)) ^ ((1 : ℝ) / (k + 1)) = r :=
+  rpow_pow_root_self hr (Nat.succ_pos k)
+
 end MaclaurinLogConcave
