@@ -31,19 +31,19 @@
     ],
     "originalContributions": [
       "Axiomatized statement of the Kolmogorov-Arnold representation theorem (via the KolmogorovArnoldRepresentation structure)",
-      "Statement of the septic-equation / Bring-Jerrard motivation — note the SepticRootFunction is a `0` placeholder and no_radical_solution_septic is a degenerate placeholder axiom (see assumptions), not the intended radical-unsolvability result",
+      "Statement of the septic-equation / Bring-Jerrard motivation — the SepticRootFunction is a `0` placeholder, but no_radical_solution_septic now genuinely encodes '¬∃ radical-expressible F solving the general septic' via the abstract ExpressibleInRadicals and SolvesSeptic predicates (see assumptions), rather than the earlier vacuous placeholder",
       "Axiomatized statement of Vitushkin's smooth-obstruction theorem",
       "Axiomatized statement of universal inner functions (Arnold's refinement)",
       "All results are axiomatized statements rather than machine-checked proofs: the four `theorem` declarations are `True`/arithmetic placeholders and the genuine content resides in the three non-degenerate axioms (see assumptions)"
     ],
     "dateAdded": "2025-12-29",
     "hilbertNumber": 13,
-    "axiomCount": 4,
-    "lineCount": 399,
-    "assumptions": "4 axioms. Three carry genuine mathematical content: kolmogorov_arnold_theorem (∃ a KolmogorovArnoldRepresentation of a continuous f — i.e. f x = ∑_q Φ_q(∑_p coeff·φ_p) with univariate Φ_q, φ_p), vitushkin_smooth_obstruction (∃ a C² function of 3 variables not representable through two given 2-variable functions), and universal_inner_functions (Arnold's universal inner φ_p working for all continuous f). The fourth axiom, no_radical_solution_septic, is a DEGENERATE PLACEHOLDER: as formalized its proposition is `¬∃ (F : ℝ⁷ → ℝ), True`, which reduces to `¬True = False` (the intended 'expressible in radicals' constraint lives only in comments), so it is logically false and must not be relied upon — the axiom set as literally stated is inconsistent. Separately, all four `theorem` declarations are placeholders, not proofs of Hilbert 13: hilbert_conjecture_disproved concludes `RepresentableWithKVariables n 1 f`, a predicate defined as `True`; dimension_reduction_principle and exact_representation_caveat conclude `True`; hilbert13_summary proves `1 + 1 = 2`. The genuine content of this entry therefore lives entirely in the three non-degenerate axioms; the file is a Tier-C axiomatized scaffold.",
+    "axiomCount": 5,
+    "lineCount": 415,
+    "assumptions": "5 axioms. Four carry genuine mathematical content: kolmogorov_arnold_theorem (∃ a KolmogorovArnoldRepresentation of a continuous f — i.e. f x = ∑_q Φ_q(∑_p coeff·φ_p) with univariate Φ_q, φ_p), no_radical_solution_septic (¬∃ F : ℝ×ℝ×ℝ → ℝ, ExpressibleInRadicals F ∧ SolvesSeptic F — no radical-expressible formula in the three Bring-Jerrard parameters yields a root of the general septic), vitushkin_smooth_obstruction (∃ a C² function of 3 variables not representable through two given 2-variable functions), and universal_inner_functions (Arnold's universal inner φ_p working for all continuous f). The fifth axiom, ExpressibleInRadicals : (ℝ×ℝ×ℝ → ℝ) → Prop, is an abstract opaque predicate used to state the septic result. The septic axiom is now a genuine, consistent assumption: it was previously a vacuous ¬∃F,True placeholder that reduced to `¬True = False`, making the axiom set inconsistent (#36647). Separately, all four `theorem` declarations are placeholders, not proofs of Hilbert 13: hilbert_conjecture_disproved concludes `RepresentableWithKVariables n 1 f`, a predicate defined as `True`; dimension_reduction_principle and exact_representation_caveat conclude `True`; hilbert13_summary proves `1 + 1 = 2`. The genuine content of this entry therefore lives in the four non-degenerate axioms; the file is a Tier-C axiomatized scaffold.",
     "mathlib_version": "4.26.0",
     "theoremCount": 4,
-    "definitionCount": 9
+    "definitionCount": 10
   },
   "overview": {
     "historicalContext": "In 1900, Hilbert asked whether the roots of the general degree-7 polynomial equation could be expressed using continuous functions of only two variables. The Bring-Jerrard form reduces the septic to three essential parameters, so Hilbert conjectured that functions of three variables are genuinely necessary.\n\nThe answer came as a complete surprise: Kolmogorov (1956) and Arnold (1957) proved that not only can the septic be solved with two-variable functions, but ANY continuous function of n variables can be expressed using only ONE-variable functions!\n\nThis stunning result completely disproved Hilbert's conjecture. However, for smooth (differentiable) functions, Vitushkin showed that Hilbert's intuition was correct - some smooth functions genuinely require more variables.",
@@ -83,39 +83,39 @@
       "id": "septic",
       "title": "The Septic Equation",
       "startLine": 168,
-      "endLine": 203,
+      "endLine": 219,
       "summary": "Connection to the original motivation: the Bring-Jerrard form of degree-7 polynomials and Abel-Ruffini impossibility.",
       "mathContext": "Hilbert's original motivation: the Bring-Jerrard form $x^7 + ax^3 + bx^2 + cx + 1 = 0$ reduces degree-7 equations to 3 parameters. Can the roots be expressed using functions of only 2 variables? Kolmogorov-Arnold says yes (for continuous functions), but the smooth case remains open."
     },
     {
       "id": "smooth-case",
       "title": "Smooth Functions: Vitushkin's Theorem",
-      "startLine": 205,
-      "endLine": 257,
+      "startLine": 221,
+      "endLine": 273,
       "summary": "For smooth (C^k) functions, Hilbert's intuition holds: some require more variables. Vitushkin's obstruction theorem.",
       "mathContext": "For $C^k$ functions ($k \\geq 2$), Hilbert's intuition holds partially: Vitushkin (1954) showed some $C^k$ functions of 3 variables cannot be represented via $C^k$ functions of 2 variables. The analytic ($C^\\omega$) case remains open and is arguably the 'true' Hilbert 13th problem."
     },
     {
       "id": "universal-functions",
       "title": "Universal Inner Functions",
-      "startLine": 259,
-      "endLine": 289,
+      "startLine": 275,
+      "endLine": 305,
       "summary": "Arnold's refinement showing that the inner functions can be chosen independently of the function being represented.",
       "mathContext": "Arnold's refinement (1957): the inner functions $\\phi_{q,p}$ in Kolmogorov's representation can be chosen independently of $f$ — only the outer functions $\\Phi_q$ depend on the target. This makes the representation universal: fixed inner functions serve all continuous functions."
     },
     {
       "id": "applications",
       "title": "Applications and Consequences",
-      "startLine": 291,
-      "endLine": 328,
+      "startLine": 307,
+      "endLine": 344,
       "summary": "Modern applications including neural network theory and Kolmogorov-Arnold Networks (KANs).",
       "mathContext": "Modern connections: Kolmogorov-Arnold Networks (KANs) in machine learning use learnable activation functions on edges (analogous to $\\phi_{q,p}$) rather than fixed activations on nodes. The representation theorem provides the theoretical foundation: any continuous function can be learned by a 2-layer KAN."
     },
     {
       "id": "summary",
       "title": "Summary",
-      "startLine": 329,
-      "endLine": 399,
+      "startLine": 345,
+      "endLine": 415,
       "summary": "Complete summary of Hilbert's 13th problem, its resolution, and remaining open questions.",
       "mathContext": "Summary: Hilbert's 13th is resolved for continuous functions (Kolmogorov-Arnold, 1957) but open for smooth/analytic functions. The theorem reveals that topological dimension does not constrain continuous function representation, while differentiable structure does."
     }
@@ -145,10 +145,10 @@
       "BigOperators"
     ],
     "namespace": "Hilbert13Superposition",
-    "lineCount": 399,
-    "axiomCount": 4,
+    "lineCount": 415,
+    "axiomCount": 5,
     "theoremCount": 4,
-    "definitionCount": 9,
+    "definitionCount": 10,
     "path": "Proofs/Hilbert13Superposition.lean",
     "sorries": 0
   },
