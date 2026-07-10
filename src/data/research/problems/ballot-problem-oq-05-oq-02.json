@@ -36,11 +36,26 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETE: reflectBallot a b = C(a+b,b) - C(a+b,b-1) formalized as the NON-NEGATIVE ballot number and reconciled to the parent strict ballotNumber(a+1,b) via the prepend-an-up-step shift; verified 0/0.",
+    "builtItems": [
+      "reflectBallot (def): non-negative ballot number C(a+b,b) - C(a+b,b-1) in Proofs/BallotProblemOQ05OQ02.lean:61",
+      "reflectBallot_eq: reflectBallot a b = ballotNumber (a+1) b for 1≤b (reconciliation) — BallotProblemOQ05OQ02.lean:73",
+      "reflectBallot_sub_exact: C(a+b,b-1) ≤ C(a+b,b) for b≤a, subtraction exact — :91",
+      "reflectBallot_mul: aggregate reflectBallot a b·(a+1+b)=(a+1-b)·C(a+1+b,a+1) — :112",
+      "reflectBallot_div: probability (a+1-b)/(a+1+b) over ℚ — :120",
+      "reflectBallot_catalan: reflectBallot n n = catalan n (1≤n) — :129"
+    ],
+    "insights": [
+      "The OQ identity C(a+b,b)-C(a+b,b-1) is NOT the parent strict ballotNumber (disagree at a=2,b=1: 2 vs 1); it is the non-negative (weakly-ahead) ballot number = Catalan-triangle entries.",
+      "Reconciliation is the single shift a↦a+1: reflectBallot a b = ballotNumber(a+1) b, arithmetic form of the prepend-an-up-step bijection. Proved by binomial symmetry Nat.choose_symm on each term.",
+      "All consequences (aggregate/probability/Catalan diagonal) transport for free from the parents cycle-lemma arithmetic along the shift.",
+      "b=0 boundary: reflectBallot a 0 = 0 ≠ ballotNumber(a+1,0)=1 due to ℕ truncation of b-1, so reconciliation requires 1≤b; Catalan diagonal requires 1≤n (n=0 gives 0≠catalan 0=1)."
+    ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "Upgrade reflectBallot_eq to an explicit Finset.card bijection (non-negative (a,b)-paths ≃ strictly-positive (a+1,b)-paths).",
+      "Prove the Catalan-triangle recurrence reflectBallot a b = reflectBallot (a-1) b + reflectBallot a (b-1) directly from the reflection form."
+    ]
   },
   "tags": [
     "probability",
