@@ -85,6 +85,34 @@
       "description": "Directed-graph sibling. Where OQ-02 establishes vertex-pancyclicity for undirected dense graphs, OQ-03 develops the orientation-sensitive cycle theory (Ghouila-Houri, Moon–Moser, Rédei). The bipartite exception K_{n/2,n/2} that blocks vertex-pancyclicity here has no clean tournament analogue — Moon's theorem shows every strongly connected tournament is vertex-pancyclic with no exceptional family — so the two entries together delineate exactly where orientation removes the even-cycle obstruction."
     }
   ],
+  "references": [
+    {
+      "authors": "J. A. Bondy",
+      "title": "Pancyclic graphs I",
+      "year": "1971",
+      "venue": "Journal of Combinatorial Theory, Series B, 11(1), 80–84",
+      "note": "Introduces pancyclicity and proves the meta-conjecture instance: a Hamiltonian graph with enough edges is either the balanced complete bipartite graph K_{n/2,n/2} or is pancyclic. The dichotomy (bipartite exception vs. all cycle lengths) is exactly the shape strengthened to vertex-pancyclicity here."
+    },
+    {
+      "authors": "E. F. Schmeichel, S. L. Hakimi",
+      "title": "Pancyclic graphs and a conjecture of Bondy and Chvátal",
+      "year": "1988",
+      "venue": "Journal of Combinatorial Theory, Series B",
+      "note": "Establishes vertex-pancyclicity under Ore-type degree-sum conditions — every vertex lies on a cycle of each length — the per-vertex refinement this entry proves under Woodall's edge-count hypothesis."
+    },
+    {
+      "authors": "D. R. Woodall",
+      "title": "Sufficient conditions for circuits in graphs",
+      "year": "1972",
+      "venue": "Proceedings of the London Mathematical Society, s3-24(4), 739–755",
+      "note": "Supplies the edge-count threshold f(k) = 2k+3 guaranteeing cycles of every length in [3, n−k]; this file lifts Woodall's (edge-)pancyclicity to vertex-pancyclicity."
+    },
+    {
+      "title": "Erdős Problem #1012 (erdosproblems.com) — long cycles in dense graphs",
+      "url": "https://www.erdosproblems.com/1012",
+      "note": "The source problem: how many edges force long cycles in a graph; OQ-02 is the vertex-pancyclic strengthening of the pancyclicity answer."
+    }
+  ],
   "sections": [
     {
       "id": "module-header",
