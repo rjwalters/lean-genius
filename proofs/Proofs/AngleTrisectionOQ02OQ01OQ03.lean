@@ -288,4 +288,28 @@ theorem pgroup_prime_eq_minFac (α : ℝ) (hα : IsIntegral ℚ α)
   rw [hpf, Finset.mem_singleton] at hmem
   exact hmem.symm
 
+/-- **The degree is coprime to every prime other than `p`.**
+    Companion to `pgroup_primeFactors_eq`: since a `p`-group Galois group makes the
+    degree a power of `p`, the degree shares no prime factor with any other prime `q`.
+    Equivalently, `q ∤ natDegree(minpoly ℚ α)` for `q ≠ p` — the positive coprimality
+    form of the prime-factor obstruction `not_pgroup_of_prime_dvd_degree_ne`. -/
+theorem pgroup_degree_coprime_of_prime_ne (α : ℝ) (hα : IsIntegral ℚ α)
+    {p q : ℕ} (hp : p.Prime) (hq : q.Prime) (hne : q ≠ p)
+    (hP : IsPGroup p (minpoly ℚ α).Gal) :
+    Nat.Coprime q (minpoly ℚ α).natDegree := by
+  obtain ⟨k, hk⟩ := galois_pgroup_implies_degree_is_pow_p α hα hp hP
+  rw [hk]
+  exact ((Nat.coprime_primes hq hp).mpr hne).pow_right k
+
+/-- **A nontrivial p-group Galois extension has degree at least `p`.**
+    The cleanest size bound: a `p`-group Galois group forces `p ∣ degree`
+    (`prime_dvd_degree_of_pgroup`), and a positive multiple of `p` is at least `p`.
+    So the minimal-polynomial degree of a nontrivial `p`-group extension can never be
+    smaller than the prime itself. -/
+theorem p_le_degree_of_pgroup (α : ℝ) (hα : IsIntegral ℚ α)
+    {p : ℕ} (hp : p.Prime) (hgt : 1 < (minpoly ℚ α).natDegree)
+    (hP : IsPGroup p (minpoly ℚ α).Gal) :
+    p ≤ (minpoly ℚ α).natDegree :=
+  Nat.le_of_dvd (by omega) (prime_dvd_degree_of_pgroup α hα hp hgt hP)
+
 end AngleTrisectionOQ02OQ01OQ03
