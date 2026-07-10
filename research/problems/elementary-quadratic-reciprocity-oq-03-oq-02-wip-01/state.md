@@ -44,6 +44,16 @@ supplementary laws are done. Or refinement (1): redefine `kronecker` to use
 
 ## Progress log
 
+- 2026-07-10 (iter 5): Added the **denominator-side square trio** completing
+  Section 13's numerator/denominator symmetry — `kronecker_sq_right`
+  ((a/n²) = (a/n)², via `kronecker_mul_right` on n²=n·n), `kronecker_sq_right_nonneg`
+  (0 ≤ (a/n²), a perfect square), and `kronecker_sq_right_eq_one_of_coprime`
+  ((a/n²)=1 for odd positive n coprime to a). Exact denominator duals of the
+  verified `kronecker_sq_left`/`_nonneg`/`_eq_one_of_coprime`; one-line proofs off
+  second-arg multiplicativity + `kronecker_sq_eq_one_of_coprime`. Docker infra DOWN
+  (containerd meta.db I/O error) — shipped UNVERIFIED, proofs mirror verified
+  siblings. Refinements (1) def-rewiring and (2) Gauss-sum reciprocity core remain open.
+
 - 2026-07-08 (iter 4): Added the numerator-side structural law
   `kronecker_mod_numerator` — for odd positive `n`, `(a/n) = (a % n / n)`, i.e.
   the symbol at a fixed odd modulus factors through `ℤ/nℤ` in the numerator — and
