@@ -822,4 +822,71 @@ example : symmetricPairCount 9 ≤ Nat.totient 9 / 2 :=
 -- composite midpoints: `φ(15)/2 = 4 < 8 = φ(15)`.
 example : Nat.totient 15 / 2 < Nat.totient 15 := by decide
 
+/-! ## Unified Half-Totient Ceiling at Every Odd Midpoint
+
+`symmetricPairCount_le_half_totient_of_odd_not_prime` needs `m` composite: at an odd
+*prime* midpoint the `k = 0` diagonal contributes (`m - 0 = m` is prime), so the
+comet support is not contained in the even totatives alone.  Reinstating that single
+diagonal offset — exactly as `symmetricPairCount_le_totient_succ` does for the general
+totient ceiling — yields the odd-midpoint bound valid for **every** odd `m > 1`,
+primes included:
+
+    symmetricPairCount m ≤ φ(m) / 2 + 1.
+
+This is the odd analog of the general `+1` ceiling `symmetricPairCount_le_totient_succ`
+(`≤ φ(m) + 1`), and it strictly **halves** it at every odd midpoint, because the parity
+constraint `symmetric_pair_offset_parity` (dead weight for even `m`, where coprimality
+already forces the offset odd) becomes independent information at an odd modulus. -/
+
+/-- **Unified half-totient ceiling at odd midpoints.**  For odd `m > 1` — with no
+compositeness hypothesis, so odd primes are included —
+
+    symmetricPairCount m ≤ φ(m) / 2 + 1.
+
+Every nonzero contributing offset is an even totative of `m`
+(`symmetric_pair_offset_coprime` + `symmetric_pair_offset_parity`), and the lone
+possible `k = 0` diagonal is absorbed by the `+1` via `Finset.card_insert_le` — the
+same device `symmetricPairCount_le_totient_succ` uses.  This is strictly sharper than
+that general totient ceiling `≤ φ(m) + 1` at every odd `m > 1`. -/
+theorem symmetricPairCount_le_half_totient_succ_of_odd {m : ℕ}
+    (hm : Odd m) (h1 : 1 < m) :
+    symmetricPairCount m ≤ Nat.totient m / 2 + 1 := by
+  obtain ⟨j, hj⟩ := hm
+  rw [← card_even_totatives_eq_totient_div_two ⟨j, hj⟩ h1, symmetricPairCount]
+  refine (Finset.card_le_card ?_).trans (Finset.card_insert_le 0 _)
+  intro k hk
+  simp only [Finset.mem_filter, Finset.mem_range] at hk
+  obtain ⟨hkm, hp1, hp2⟩ := hk
+  rcases Nat.eq_zero_or_pos k with hk0 | hk0
+  · subst hk0; exact Finset.mem_insert_self 0 _
+  · refine Finset.mem_insert_of_mem ?_
+    simp only [Finset.mem_filter, Finset.mem_range, Nat.even_iff]
+    have hpar := symmetric_pair_offset_parity (by omega) hkm hp1 hp2
+    exact ⟨hkm, (symmetric_pair_offset_coprime hk0 hp1 hp2).symm, by omega⟩
+
+-- Concrete unified ceiling at an odd *prime* midpoint, where the composite-only
+-- `symmetricPairCount_le_half_totient_of_odd_not_prime` does not apply: `m = 7` is
+-- prime, `φ(7) = 6`, so the comet height of `14` is at most `φ(7)/2 + 1 = 4`.
+-- (Actual: `14 = 3 + 11 = 7 + 7`, height `2`.)
+example : symmetricPairCount 7 ≤ Nat.totient 7 / 2 + 1 :=
+  symmetricPairCount_le_half_totient_succ_of_odd (by decide) (by norm_num)
+
+/-- **The unified half-totient ceiling dominates the parity `⌈m/2⌉` ceiling at odd
+midpoints.**  For odd `m > 1`,
+
+    φ(m) / 2 + 1 ≤ (m + 1) / 2  =  ⌈m / 2⌉.
+
+Since `φ(m) < m` (`Nat.totient_lt`) and `φ(m)` is even for `m > 2` (`Nat.totient_even`),
+we have `φ(m)/2 ≤ (m-1)/2`, and adding `1` lands exactly on `(m+1)/2` because `m` is
+odd.  Composed with `symmetricPairCount_le_half_totient_succ_of_odd` this shows the
+totient-based ceiling is at least as sharp as the elementary parity ceiling
+`symmetricPairCount_le_half` at *every* odd midpoint (and strictly sharper whenever `m`
+is composite, where `φ(m) < m - 1`). -/
+theorem half_totient_succ_le_half_of_odd {m : ℕ} (hm : Odd m) (h1 : 1 < m) :
+    Nat.totient m / 2 + 1 ≤ (m + 1) / 2 := by
+  obtain ⟨s, hs⟩ := hm
+  have hlt : Nat.totient m < m := Nat.totient_lt m h1
+  obtain ⟨t, ht⟩ := Nat.totient_even (by omega : 2 < m)
+  omega
+
 end StrongGoldbach

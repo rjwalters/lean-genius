@@ -20,8 +20,8 @@
     "dateAdded": "2026-07-02",
     "axiomCount": 0,
     "assumptions": "None. The file is axiom-free (only the ordinary foundational axioms of Lean/Mathlib are used; `#print axioms` shows no `sorryAx`, no `Lean.ofReduceBool`). All examples use kernel `decide`, not `native_decide`. Note: this file does NOT prove the Strong Goldbach Conjecture, which remains open; it proves only that the conjecture is equivalent to its symmetric-prime-pair form.",
-    "lineCount": 825,
-    "theoremCount": 28,
+    "lineCount": 892,
+    "theoremCount": 30,
     "definitionCount": 5,
     "originalContributions": [
       "sumTwoPrimes_iff_symmetric: for every m, IsSumOfTwoPrimes (2m) ↔ ∃ k < m, Prime (m−k) ∧ Prime (m+k) — the midpoint-symmetry equivalence, valid without any lower bound on m",
@@ -119,9 +119,9 @@
   },
   "leanFile": {
     "namespace": "StrongGoldbach",
-    "lineCount": 825,
+    "lineCount": 892,
     "axiomCount": 0,
-    "theoremCount": 28,
+    "theoremCount": 30,
     "definitionCount": 5,
     "path": "Proofs/StrongGoldbachSymmetric.lean",
     "sorries": 0
