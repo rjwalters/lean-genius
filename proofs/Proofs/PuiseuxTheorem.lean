@@ -1060,6 +1060,26 @@ theorem puiseuxRamificationSubring_mono {K : Type*} [Ring K] {n n' : ℕ+} (hdvd
     puiseuxRamificationSubring K n ≤ puiseuxRamificationSubring K n' :=
   fun _ hx => IsPuiseuxOfRamification.mono hdvd hx
 
+/-- **Every level sits inside the full Puiseux subring.** A `(1/n)`-ramified series is
+a fortiori a Puiseux series (take the ramification witness to be `n`), so each floor of
+the tower is bounded above by `puiseuxSubring K`. -/
+theorem puiseuxRamificationSubring_le_puiseuxSubring {K : Type*} [Ring K] (n : ℕ+) :
+    puiseuxRamificationSubring K n ≤ puiseuxSubring K :=
+  fun _ hx => ⟨n, hx⟩
+
+/-- **The ramification tower exhausts the Puiseux subring.** The directed union
+`⨆ n, puiseuxRamificationSubring K n` of the level-`n` Laurent subrings is exactly the
+full Puiseux subring: every level embeds (`puiseuxRamificationSubring_le_puiseuxSubring`)
+and every Puiseux series lands in *some* level (`isPuiseux_iff_exists_ramification`). This
+is the colimit description `K⦃⦃x⦄⦄ = colim_n K((x^{1/n}))` at the ring level. -/
+theorem iSup_puiseuxRamificationSubring {K : Type*} [Ring K] :
+    (⨆ n : ℕ+, puiseuxRamificationSubring K n) = puiseuxSubring K := by
+  refine le_antisymm (iSup_le puiseuxRamificationSubring_le_puiseuxSubring) ?_
+  intro x hx
+  rw [mem_puiseuxSubring] at hx
+  obtain ⟨n, hn⟩ := hx
+  exact (le_iSup (puiseuxRamificationSubring K) n) hn
+
 end Filtration
 
 /-! ═══════════════════════════════════════════════════════════════════════════════
