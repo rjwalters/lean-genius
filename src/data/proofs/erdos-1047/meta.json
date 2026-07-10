@@ -62,7 +62,7 @@
       "Repaired the faithful ∀ c > 0 statement of grunskyConjecture (the earlier small-c form was vacuously true, making its negation a false axiom)"
     ],
     "axiomCount": 0,
-    "lineCount": 842,
+    "lineCount": 70,
     "assumptions": "None — fully machine-checked. The former lone axiom goodman_counterexample (Goodman's polynomial f = (z²+1)(z−2)² has a non-convex lemniscate component at c = 5^(3/2)/4) is now the sorry-free, axiom-free theorem Erdos1047OQ02Cert.goodman_counterexample_proof in Proofs/Erdos1047OQ02Certificate.lean. It is established by a constructive geometric certificate: an explicit preconnected 4-segment polyline arc −i → (1−i)/2 → 2 → (1+i)/2 → +i lying inside the lemniscate (each segment verified by a Bernstein/SOS rational inequality discharged by nlinarith) whose chord midpoint 0 escapes the sublevel set (‖f(0)‖ = 4 > c ≈ 2.795), fed through the topological reduction bridge componentContaining_lemniscate_not_convex_of_chord_exits (built only on Mathlib's IsPreconnected.subset_connectedComponentIn and connectedComponentIn_subset). Docker-verified (3061 jobs): #print axioms for erdos_1047, grunskyConjecture_false, and erdos_1047_answer reports exactly [propext, Classical.choice, Quot.sound] — Mathlib's standard foundational axioms, with no problem-specific axiom, no sorry, and no native_decide. The earlier spurious ∃ c₀, ∀ c < c₀ small-c form of grunskyConjecture (which was actually TRUE, making its negation a false axiom) was repaired to the faithful ∀ c > 0 form.",
     "mathlib_version": "4.26.0",
     "theoremCount": 37,
