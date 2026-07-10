@@ -157,5 +157,28 @@
       "summary": "tendsto_one_sub_cos_prod_div_sq telescopes the product side to (a²+b²)/2; spherical_flat_limit then mirrors the hyperbolic argument: cos(t·c) = cos(t·a)·cos(t·b) forces c²/2 = (a²+b²)/2 by uniqueness of limits, hence c² = a² + b² with no range restriction on a, b, c."
     }
   ],
+  "references": [
+    {
+      "title": "Spherical Trigonometry, For the Use of Colleges and Schools",
+      "author": "Isaac Todhunter",
+      "year": "1886",
+      "venue": "Macmillan (5th edition)",
+      "description": "Classical development of spherical trigonometry, including the right-angled formula cos c = cos a · cos b (the spherical Pythagorean theorem) whose small-triangle expansion recovers c² = a² + b², the spherical half of this entry."
+    },
+    {
+      "title": "Foundations of Hyperbolic Manifolds",
+      "author": "John G. Ratcliffe",
+      "year": "2019",
+      "venue": "Springer (Graduate Texts in Mathematics 149, 3rd edition)",
+      "description": "Develops hyperbolic trigonometry and the hyperbolic law of cosines; for a right angle it gives cosh c = cosh a · cosh b (the hyperbolic Pythagorean theorem), the curvature −1 counterpart whose flat limit this entry proves recovers Euclidean Pythagoras."
+    },
+    {
+      "title": "Non-Euclidean Geometry",
+      "author": "H. S. M. Coxeter",
+      "year": "1998",
+      "venue": "Mathematical Association of America (6th edition)",
+      "description": "Unified treatment of spherical, Euclidean, and hyperbolic geometry as the curvature-parametrized family K > 0, K = 0, K < 0, making explicit that the Euclidean identity c² = a² + b² is the common K → 0 limit of the two non-Euclidean Pythagorean laws — the mechanism formalized here via rescaling the sides by t = 1/R."
+    }
+  ],
   "sorries": 0
 }
