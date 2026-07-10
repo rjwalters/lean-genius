@@ -50,7 +50,20 @@ we establish, with **0 sorries and 0 axioms**, a small self-contained theory:
 * `card_sym_fin_eq_simplexNumber` : **the counting face (stars and bars)** —
   `|Sym (Fin (n+1)) d| = P_d(n)`, i.e. `P_d(n)` counts the size-`d` multisets over
   `{0,…,n}`, equivalently the weakly increasing tuples `0 ≤ i₁ ≤ ⋯ ≤ i_d ≤ n`.
-  This gives the algebraic figurate numbers their direct combinatorial meaning.
+  This gives the algebraic figurate numbers their direct combinatorial meaning;
+* `iterSum_add` : **the monoid law for iterated summation** —
+  `iterSum (a+b) f = iterSum a (iterSum b f)`, so the discrete summation operators
+  compose by adding their orders (`iterSum` is a monoid action of `(ℕ,+)` on
+  sequences);
+* `simplex_vandermonde` : **the Vandermonde convolution of simplex kernels** (a
+  discrete Beta identity) — `∑_{k≤n} P_a(n-k)·P_b(k) = P_{a+b+1}(n)`, the discrete
+  analogue of the Beta-integral kernel composition
+  `∫₀ˣ (x−t)^a t^b dt = B(a+1,b+1)·x^{a+b+1}`: convolving two figurate kernels adds
+  their dimensions. It follows from `iterSum_add` (writing the convolution as
+  `iterSum (a+1)` of `P_b = iterSum b 1` and collapsing the summations) and unifies
+  the hockey stick (`b = 0`) with the general two-kernel convolution. Its pure
+  binomial form is `sum_choose_mul_choose`:
+  `∑_{k≤n} C(n-k+a,a)·C(k+b,b) = C(n+a+b+1,a+b+1)`.
 
 ## Novelty
 

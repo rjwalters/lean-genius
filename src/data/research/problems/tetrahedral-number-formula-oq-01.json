@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SOLVED base + extended: two new verified faces (discrete Cauchy repeated-summation formula generalizing iterSum_one to arbitrary f; multiset-counting Sym-cardinality face). docker-build clean [3059/3059], 0/0. PR open.",
+    "progressSummary": "SOLVED base + extended. researcher-6 added the CONVOLUTION-SEMIGROUP layer: iterSum_add (monoid law iterSum(a+b)=iterSum a . iterSum b) + simplex_vandermonde (Vandermonde/discrete-Beta convolution sum_{k<=n} P_a(n-k)P_b(k)=P_{a+b+1}(n)) + sum_choose_mul_choose (pure binomial form). Convolving two figurate kernels adds their dimensions. Elaboration clean [3059/3059], 0 sorries/0 axioms; olean-write blocked by fleet SIGBUS-135/139 (memory, not math). Two real bugs fixed en route (0+b not defeq b in base case; simplexConv rfl needed simp-unfold).",
     "builtItems": [
       "simplexNumber d n := (n+d).choose d - the d-dimensional hyper-tetrahedral number (TetrahedralNumberFormulaOQ01.lean)",
       "sum_simplex: sum_{k<=n} simplexNumber d k = simplexNumber (d+1) n - general hockey stick, any dimension d (via Nat.sum_range_add_choose)",
@@ -39,14 +39,18 @@
       "factorial_mul_simplexNumber(_prod): d! P_d(n) = (n+1).ascFactorial d = prod_{i<d}(n+1+i) - division-free closed form generalizing 6*C(n+2,3)=n(n+1)(n+2)",
       "iterSum_eq_simplexConv (TetrahedralNumberFormulaOQ01.lean): discrete Cauchy repeated-summation formula iterSum (d+1) f n = sum_{k<=n} P_d(n-k)*f(k), arbitrary f; strictly generalizes iterSum_one (f=1 case). VERIFIED 0/0.",
       "partialSum_simplexConv: kernel dimension-raising engine (Ico-Ico triangular swap + sum_simplex hockey stick).",
-      "card_sym_fin_eq_simplexNumber: counting face |Sym (Fin (n+1)) d| = P_d(n) (stars and bars / weakly increasing d-tuples)."
+      "card_sym_fin_eq_simplexNumber: counting face |Sym (Fin (n+1)) d| = P_d(n) (stars and bars / weakly increasing d-tuples).",
+      "iterSum_add (researcher-6): monoid law for iterated summation iterSum (a+b) f = iterSum a (iterSum b f) - discrete summation operators compose by adding orders; iterSum is a monoid action of (N,+) on sequences. Induction on a; base needs Nat.zero_add + iterSum eqn lemmas (0+b NOT defeq b).",
+      "simplex_vandermonde (researcher-6): Vandermonde convolution of simplex kernels / discrete Beta identity sum_{k<=n} P_a(n-k)*P_b(k) = P_{a+b+1}(n) - convolving two figurate kernels adds their dimensions. Discrete analogue of Beta-integral kernel composition int (x-t)^a t^b = B(a+1,b+1) x^{a+b+1}. Proof: convolution = iterSum(a+1) of P_b=iterSum b 1, monoid law collapses (a+1)+b summations of 1 to P_{a+b+1} via iterSum_one. Hockey stick sum_simplex is the b=0 case.",
+      "sum_choose_mul_choose (researcher-6): pure binomial form sum_{k<=n} C(n-k+a,a)*C(k+b,b) = C(n+a+b+1,a+b+1)."
     ],
     "insights": [
       "The hyper-tetrahedral / d-simplex number is exactly Mathlib Nat.multichoose (n+1) d = C(n+d,d); Mathlib gives the one-step hockey stick Nat.sum_range_add_choose : sum i in range(n+1),(i+d).choose d = (n+d+1).choose(d+1)",
       "The whole figurate ladder (1 -> linear -> triangular -> tetrahedral -> ...) is captured in one dimension-indexed statement: it is the d-fold iterate of the partial-summation operator applied to the constant sequence 1. Induction is on the DIMENSION d, with the hockey stick as the single inductive step - a genuinely different structure from the parent's induction on n at fixed d=3.",
       "The cleared closed form is uniform in d via the ascending factorial: d!*C(n+d,d) = (n+1).ascFactorial d (Nat.ascFactorial_eq_factorial_mul_choose), with the explicit product from Nat.ascFactorial_eq_prod_range.",
       "The figurate numbers P_d are exactly the KERNEL of repeated discrete summation: iterating partialSum d+1 times against any f convolves f with P_d(n-k). Discrete analogue of Cauchy repeated integration (kernel (n-t)^d/d!).",
-      "Finset.sum_Ico_Ico_comm (a<=i<=j<b triangular swap) + Finset.sum_Ico_eq_sum_range cleanly reduce a nested partial-sum-of-convolution to a single hockey-stick collapse."
+      "Finset.sum_Ico_Ico_comm (a<=i<=j<b triangular swap) + Finset.sum_Ico_eq_sum_range cleanly reduce a nested partial-sum-of-convolution to a single hockey-stick collapse.",
+      "The iterated-summation operator is a MONOID: iterSum (a+b) = iterSum a . iterSum b. This structural fact turns the discrete Cauchy formula (a convolution against a single kernel) into a Vandermonde/Beta CONVOLUTION of two kernels: P_a * P_b = P_{a+b+1}. The simplex kernels form a convolution semigroup indexed by dimension, exactly mirroring the Beta-function kernel composition for repeated integration."
     ],
     "mathlibGaps": [
       "Mathlib has the one-step hockey stick and multichoose but no dimension-indexed figurate theory: no iterated-partial-sum characterization of simplex numbers, no figurate recurrence/closed form stated uniformly in the dimension d."
@@ -90,10 +94,10 @@
     {
       "path": "Proofs/TetrahedralNumberFormulaOQ01.lean",
       "filename": "TetrahedralNumberFormulaOQ01.lean",
-      "lineCount": 164,
-      "theoremCount": 8,
+      "lineCount": 332,
+      "theoremCount": 14,
       "axiomCount": 0,
-      "defCount": 3,
+      "defCount": 4,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/TetrahedralNumberFormulaOQ01.lean"
