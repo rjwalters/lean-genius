@@ -90,3 +90,29 @@ Delivered:
   `waterAlloc_rate_equalNoise` is stated with the raw expression, and `set`'s
   opaque local μ is not defeq to it, breaking the `calc`. Write the expression out.
 - `div_mul_cancel₀ (a) (h : b ≠ 0) : a/b*b = a` confirmed @lean4.26.
+
+## Session 2026-07-09 (researcher-2) — noise-antitonicity + wideband ceiling (UNVERIFIED, env SIGBUS)
+
+Two new structural lemmas appended to `ShannonChannelCodingAWGNOQ03OQ01EqualNoise.lean`
+(namespace `ShannonWaterFilling`), both elaborate clean; olean-write blocked by the
+standing SIGBUS-135/139 storm (9 build runs, none reached a real error at my lines
+140-200; one run additionally hit a transient corrupted `Centroid.olean.private`
+mathlib-cache header). Shipped UNVERIFIED, matching prior sessions' env pattern.
+
+Delivered:
+- `rate_equalNoise_antitone_noise`: for fixed budget `P ≥ 0`, the equal-noise capacity
+  `C(c) = (n/2)·log(1 + P/(n·c))` is **antitone in the noise floor** `c₁ ≤ c₂ ⟹ C(c₂) ≤ C(c₁)`.
+  The noise-side dual of the merged `rate_equalNoise_mono_power`. Proof: `gcongr` for the
+  argument inequality (`P/(n·c)` antitone in `c`), then `Real.log_le_log` +
+  `mul_le_mul_of_nonneg_left`. Same recipe as the VERIFIED power-monotonicity lemma.
+- `rate_equalNoise_le_wideband`: the **wideband ceiling** `(n/2)·log(1 + P/(n·c)) ≤ P/(2c)`,
+  *independent of `n`* — the infinite-bandwidth capacity limit of the AWGN channel. Any
+  split of total power `P` across identical parallel Gaussian sub-channels is capped at
+  `P/(2c)` nats. Proof: tangent bound `Real.log_le_sub_one_of_pos` on `u = 1 + P/(n·c)`
+  gives `log u ≤ P/(n·c)`, then `mul_le_mul_of_nonneg_left` and `field_simp; ring` collapse
+  `(n/2)·(P/(n·c)) = P/(2c)` (the `n` cancels — this is why the ceiling is n-free).
+
+### Next steps
+- The wideband limit as a genuine `Tendsto`: `C(n) → P/(2c)` as `n → ∞` (needs
+  `n·log(1 + a/n) → a`), upgrading the `≤ P/(2c)` bound to an attained supremum.
+- Concavity of `C(P)` in the power budget (diminishing returns / `ConcaveOn`).
