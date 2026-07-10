@@ -27,9 +27,9 @@ order `q − 1` (`IsCyclic.card_mulAut`, `Nat.totient_prime`) — contains, by C
   `N ⋊ ⟨σ⟩`   (with `⟨σ⟩ ≤ MulAut N` acting through the inclusion)
 
 then has order `q · p` (`SemidirectProduct.card`) and is **nonabelian**: the generators
-`inr σ` and `inl n` fail to commute for any `n` moved by `σ`, because a direct computation of
-left components gives `(inr σ · inl n).left = σ n ≠ n = (inl n · inr σ).left`.  A nonabelian
-group of squarefree order `pq` is automatically non-cyclic (cyclic ⟹ abelian).
+`inr σ` and `inl n` fail to commute for any `n` moved by `σ`, because comparing left
+components gives `(inr σ · inl n).left = σ n ≠ n = (inl n · inr σ).left`.  A nonabelian group
+of squarefree order `pq` is automatically non-cyclic (cyclic ⟹ abelian).
 
 This is the elementary content behind "the nonabelian group of order `21` exists" (`p = 3`,
 `q = 7`, `3 ∣ 6`), the smallest case where the abelian/cyclic conclusion genuinely fails.
@@ -38,8 +38,6 @@ This is the elementary content behind "the nonabelian group of order `21` exists
 
 * `semidirectProduct_subtype_zpowers_not_comm` — the abstract nonabelian witness: a
   prime-order automorphism yields a nonabelian semidirect product.
-* `exists_nonabelian_of_dvd_card_mulAut` — existence of a nonabelian group of order
-  `p · |N|` from `p ∣ |MulAut N|`, for any finite `N`.
 * `exists_noncyclic_group_of_card_eq_prime_mul_prime_of_dvd_sub_one` — the witness: for
   `p ∣ q − 1`, a non-cyclic group of order `p·q` exists.
 * `exists_noncyclic_card_eq_prime_mul_prime_iff_dvd_sub_one` — the sharp biconditional,
@@ -62,41 +60,21 @@ theorem semidirectProduct_subtype_zpowers_not_comm {N : Type*} [Group N] {p : �
     (hp : 1 < p) {σ : MulAut N} (hσ : orderOf σ = p) :
     ∃ a b : SemidirectProduct N (Subgroup.zpowers σ) (Subgroup.zpowers σ).subtype,
       a * b ≠ b * a := by
-  -- `σ` is a nontrivial automorphism, so it moves some element.
+  -- `σ` is a nontrivial automorphism, so it moves some element `n`.
   have hσ1 : σ ≠ 1 := by intro h; rw [h, orderOf_one] at hσ; omega
-  have hmove : ∃ n : N, σ n ≠ n := by
+  obtain ⟨n, hn⟩ : ∃ n : N, σ n ≠ n := by
     by_contra h
     push_neg at h
-    exact hσ1 (MulEquiv.ext h)
-  obtain ⟨n, hn⟩ := hmove
-  set g : (Subgroup.zpowers σ) := ⟨σ, Subgroup.mem_zpowers σ⟩ with hg
-  refine ⟨SemidirectProduct.inr g, SemidirectProduct.inl n, ?_⟩
+    exact hσ1 (MulEquiv.ext fun x => (h x).trans (MulAut.one_apply x).symm)
+  refine ⟨SemidirectProduct.inr ⟨σ, Subgroup.mem_zpowers σ⟩, SemidirectProduct.inl n, ?_⟩
   intro hcomm
-  -- Left components of the two products.
-  have h1 : (SemidirectProduct.inr g * SemidirectProduct.inl n).left = σ n := by
-    rw [SemidirectProduct.mul_left, SemidirectProduct.left_inr,
-        SemidirectProduct.right_inr, SemidirectProduct.left_inl, one_mul]
-  have h2 : (SemidirectProduct.inl n * SemidirectProduct.inr g).left = n := by
-    rw [SemidirectProduct.mul_left, SemidirectProduct.left_inl,
-        SemidirectProduct.right_inl, SemidirectProduct.left_inr, map_one]
-    simp
-  rw [hcomm, h2] at h1
-  exact hn h1.symm
-
-/-- **Existence of a nonabelian group of order `p · |N|`.**  For any finite group `N`, if the
-prime `p` divides `|MulAut N|` then Cauchy supplies an automorphism `σ` of order `p`, and the
-semidirect product `N ⋊ ⟨σ⟩` is a nonabelian group of order `p · |N|`. -/
-theorem exists_nonabelian_of_dvd_card_mulAut {N : Type} [Group N] [Finite N] {p : ℕ}
-    [hp : Fact p.Prime] (hdvd : p ∣ Nat.card (MulAut N)) :
-    ∃ (M : Type) (_ : Group M) (_ : Finite M),
-      Nat.card M = p * Nat.card N ∧ ∃ a b : M, a * b ≠ b * a := by
-  haveI : Fintype (MulAut N) := Fintype.ofFinite _
-  have hdvd' : p ∣ Fintype.card (MulAut N) := by rwa [Nat.card_eq_fintype_card] at hdvd
-  obtain ⟨σ, hσ⟩ := exists_prime_orderOf_dvd_card p hdvd'
-  refine ⟨SemidirectProduct N (Subgroup.zpowers σ) (Subgroup.zpowers σ).subtype,
-    inferInstance, Finite.of_equiv _ SemidirectProduct.equivProd.symm, ?_, ?_⟩
-  · rw [SemidirectProduct.card, Nat.card_zpowers, hσ, mul_comm]
-  · exact semidirectProduct_subtype_zpowers_not_comm hp.out.one_lt hσ
+  -- Compare left components of the two products; they are `σ n` and `n`.
+  have hkey := congrArg (·.left) hcomm
+  simp only [SemidirectProduct.mul_left, SemidirectProduct.left_inl, SemidirectProduct.left_inr,
+    SemidirectProduct.right_inl, SemidirectProduct.right_inr, map_one, MulAut.one_apply,
+    one_mul, mul_one] at hkey
+  -- `hkey : σ n = n`, contradicting `hn`.
+  exact hn hkey
 
 /-- **The sharpness witness.**  For a prime `q` and a prime `p` with `p ∣ q − 1`, there is a
 non-cyclic group of order `p·q`.  Take `N = ℤ/q`, cyclic of order `q`, whose automorphism
@@ -111,16 +89,23 @@ theorem exists_noncyclic_group_of_card_eq_prime_mul_prime_of_dvd_sub_one
   haveI : NeZero q := ⟨hq.pos.ne'⟩
   have hNq : Nat.card (Multiplicative (ZMod q)) = q := by
     rw [Nat.card_eq_fintype_card, Fintype.card_multiplicative, ZMod.card]
-  have hdvd : p ∣ Nat.card (MulAut (Multiplicative (ZMod q))) := by
-    rw [IsCyclic.card_mulAut, hNq, Nat.totient_prime hq]; exact hpq
-  obtain ⟨M, instG, instF, hcard, a, b, hab⟩ :=
-    exists_nonabelian_of_dvd_card_mulAut (N := Multiplicative (ZMod q)) hdvd
-  haveI := instG; haveI := instF
-  refine ⟨M, instG, instF, ?_, ?_⟩
-  · rw [hcard, hNq]
+  haveI : Fintype (MulAut (Multiplicative (ZMod q))) := Fintype.ofFinite _
+  -- `p ∣ |MulAut (ℤ/q)| = q − 1`, so Cauchy gives an order-`p` automorphism `σ`.
+  have hdvd : p ∣ Fintype.card (MulAut (Multiplicative (ZMod q))) := by
+    rw [← Nat.card_eq_fintype_card, IsCyclic.card_mulAut, hNq, Nat.totient_prime hq]
+    exact hpq
+  obtain ⟨σ, hσ⟩ := exists_prime_orderOf_dvd_card
+    (G := MulAut (Multiplicative (ZMod q))) p hdvd
+  -- `M := (ℤ/q) ⋊ ⟨σ⟩`, built with its canonical group instance.
+  refine ⟨SemidirectProduct (Multiplicative (ZMod q)) (Subgroup.zpowers σ)
+      (Subgroup.zpowers σ).subtype, inferInstance,
+      Finite.of_equiv _ SemidirectProduct.equivProd.symm, ?_, ?_⟩
+  · rw [SemidirectProduct.card, hNq, Nat.card_zpowers, hσ, mul_comm]
   · intro hcyc
     haveI := hcyc
-    letI : CommGroup M := IsCyclic.commGroup
+    obtain ⟨a, b, hab⟩ := semidirectProduct_subtype_zpowers_not_comm hp.out.one_lt hσ
+    letI : CommGroup (SemidirectProduct (Multiplicative (ZMod q)) (Subgroup.zpowers σ)
+      (Subgroup.zpowers σ).subtype) := IsCyclic.commGroup
     exact hab (mul_comm a b)
 
 /-- **Sharp classification of order-`pq` groups.**  For primes `p < q`, a non-cyclic group of
@@ -137,7 +122,8 @@ theorem exists_noncyclic_card_eq_prime_mul_prime_iff_dvd_sub_one
   haveI : Fact p.Prime := ⟨hp⟩
   constructor
   · rintro ⟨M, instG, instF, hcard, hnc⟩
-    haveI := instG; haveI := instF
+    haveI := instG
+    haveI := instF
     exact dvd_sub_one_of_not_isCyclic_card_eq_prime_mul_prime hp hq hpq hcard hnc
   · exact fun hdvd =>
       exists_noncyclic_group_of_card_eq_prime_mul_prime_of_dvd_sub_one hq hdvd
