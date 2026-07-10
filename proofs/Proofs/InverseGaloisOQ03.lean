@@ -286,6 +286,25 @@ theorem Monster_realizing_field_finrank :
   rw [hcard, Nat.card_eq_fintype_card, Monster_card] at hgal
   exact hgal.symm
 
+/-- **The Monster-realizing field is a non-solvable Galois extension.** Any field
+    `K` with `Gal(K/ℚ) ≅ 𝕄` has a *non-solvable* Galois group, so `K/ℚ` is not
+    solvable by radicals. This is the field-side counterpart of the group-level
+    `Monster_not_solvable_barrier`: it exhibits, concretely, an extension of ℚ that
+    lies outside the reach of Shafarevich's theorem (which covers only solvable
+    groups) yet is realized (Thompson 1984). Non-solvability transports across the
+    isomorphism `𝕄 ≃* Gal(K/ℚ)` by `solvable_of_solvable_injective`: were the Galois
+    group solvable, so would be 𝕄, contradicting `Monster_not_solvable`. -/
+theorem Monster_realizing_field_not_solvable :
+    ∃ (K : Type) (_ : Field K) (_ : Algebra ℚ K) (_ : FiniteDimensional ℚ K)
+      (_ : IsGalois ℚ K), ¬ IsSolvable (K ≃ₐ[ℚ] K) := by
+  obtain ⟨K, fK, aK, fdK, gK, ⟨e⟩⟩ := Monster_realizable_over_Q
+  haveI := fK; haveI := aK; haveI := fdK; haveI := gK
+  refine ⟨K, fK, aK, fdK, gK, ?_⟩
+  intro hsolv
+  haveI := hsolv
+  exact Monster_not_solvable
+    (solvable_of_solvable_injective (f := e.toMonoidHom) e.injective)
+
 -- ============================================================================
 -- Part VI: The Sporadic Realizability Census
 -- ============================================================================
