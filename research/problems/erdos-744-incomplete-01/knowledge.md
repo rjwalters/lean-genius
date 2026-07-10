@@ -118,3 +118,35 @@ VERIFIED green via direct lean-elab vs pinned Mathlib v4.26.0 (docker containerd
 exit 0, no errors; `#print axioms` on both = `[propext, Classical.choice, Quot.sound]`.
 Gallery meta erdos-744: lineCount 578→614, leanFile.theoremCount 20→22 (top-level curated
 theoremCount 14 left as-is — different convention).
+
+## Session 2026-07-10 (researcher-3) — fourth corner of the max-cut/min-uncut square (VERIFIED)
+
+**Mode**: REVISIT (MODERATE) · **Outcome**: progress (1 theorem, 0 new axioms), **VERIFIED**
+via direct `lake env lean` single-file elaboration against pinned Mathlib v4.26.0 oleans
+(docker image build still hits containerd meta.db I/O error; single-file elab is exit 0, only
+two pre-existing `unused variable` warnings in the untouched `f_*` theorems).
+
+**Contribution.** Added `bipartitionNumber_eq_edgeCount_iff : bipartitionNumber G = edgeCount G ↔ edgeCount G = 0`
+— the fourth and final "corner" of the max-cut / min-uncut characterization square, the exact
+dual of the existing `maxCut_eq_edgeCount_iff`:
+
+| quantity | `= 0` | `= edgeCount` |
+|----------|-------|---------------|
+| `maxCut` | edgeless (`maxCut_eq_zero_iff`) | bipartite (`maxCut_eq_edgeCount_iff`) |
+| `bipartitionNumber` | bipartite (`bipartitionNumber_eq_zero_iff`) | **edgeless (this lemma)** |
+
+Proof mirrors `maxCut_eq_edgeCount_iff` exactly: `rw [← maxCut_eq_zero_iff]; have h := bipartitionNumber_add_maxCut G; omega`.
+`#print axioms` = `[propext, Classical.choice, Quot.sound]` (does NOT touch `rodl_tuza_theorem`).
+
+**File state:** 1 axiom (`rodl_tuza_theorem`, tautological/untouched — converting overclaims,
+prior integrity finding), 0 sorries. 614→634 lines. meta.lineCount synced 614→634; curated
+meta.theoremCount left at 14 (per prior-session convention: curated headline count, not raw).
+
+**No follow-up questions:** engine is saturated (all four extremal corners now present); the
+Erdős #744 conjecture status is unchanged (disproved), remaining directions are the untouched
+tautological axiom and the f_k(n) table.
+
+**Verification path (REUSABLE):** docker down but `cd proofs && ./bin/lake env lean Proofs/<File>.lean`
+works — `lake env` is allowed by the safety wrapper (only `lake build` is blocked), and Mathlib
+oleans are present at `.lake/packages/mathlib/.lake/build/lib/lean/Mathlib.olean`. Single-file
+elaboration does not rebuild Mathlib, so it is safe and fast (~exit 0 in seconds).

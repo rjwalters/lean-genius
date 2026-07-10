@@ -34,12 +34,14 @@
       "monochromaticEdges G c : ℕ — count of same-colored adjacent pairs u<v (Erdos744Problem.lean:99)",
       "bipartitionNumber G := inf over c:V→Bool of monochromaticEdges G c — total, sorry-free, no chromaticNumber axiom (Erdos744Problem.lean:115)",
       "monochromaticEdges_eq_zero_iff: c has no monochromatic edge ↔ proper 2-coloring (Erdos744Problem.lean:120)",
-      "bipartitionNumber_eq_zero_iff: bipartitionNumber G = 0 ↔ G properly 2-colorable — intrinsic bipartiteness, 0-axiom (Erdos744Problem.lean:136)"
+      "bipartitionNumber_eq_zero_iff: bipartitionNumber G = 0 ↔ G properly 2-colorable — intrinsic bipartiteness, 0-axiom (Erdos744Problem.lean:136)",
+      "bipartitionNumber_eq_edgeCount_iff : bipartitionNumber G = edgeCount G ↔ edgeCount G = 0 — the fourth/final corner of the max-cut/min-uncut square (dual of maxCut_eq_edgeCount_iff), bipartitionNumber saturates edgeCount iff G edgeless. Proof rw[← maxCut_eq_zero_iff]; complementarity; omega [VERIFIED axiom-free, lean-elab exit 0, #print axioms = propext/Classical.choice/Quot.sound]"
     ],
     "insights": [
       "The original bipartitionNumber was Nat.find ⟨witness, sorry⟩ over a metavariable predicate p — ill-formed, not a real definition; the right completion is a redefinition, not discharging the sorry.",
       "Realizing the bipartition number as min monochromatic edges over 2-colorings avoids the chromaticNumber axiom entirely: bipartiteness becomes the intrinsic property bipartitionNumber = 0.",
-      "log_conjecture_false needs only f 4 n = 3 by definition (no Rödl-Tuza axiom): #print axioms shows it depends only on propext/Classical/Quot."
+      "log_conjecture_false needs only f 4 n = 3 by definition (no Rödl-Tuza axiom): #print axioms shows it depends only on propext/Classical/Quot.",
+      "The four extremal characterizations of the bipartitionNumber/maxCut engine form a 2x2 square: maxCut=0⟺edgeless, maxCut=edgeCount⟺bipartite, bipartitionNumber=0⟺bipartite, bipartitionNumber=edgeCount⟺edgeless. All four follow from the single complementarity identity bipartitionNumber+maxCut=edgeCount plus one of the ⟺ endpoints via omega."
     ],
     "mathlibGaps": [],
     "nextSteps": [
