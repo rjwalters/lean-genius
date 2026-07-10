@@ -22,7 +22,7 @@ The classical result gives lim sup ω(n) · log log n / log n = 1.
 ## Approach
 
 Uses Mathlib's ArithmeticFunction.omega (ω) for the distinct prime factor count
-and Nat.primeCounting for π. Computable verification provided for small cases.
+and Nat.primeCounting for π (both noncomputable).
 The two open conjectures are stated as Prop definitions.
 The Erdős–Selfridge lower bound is axiomatized as a known but deep result.
 -/
