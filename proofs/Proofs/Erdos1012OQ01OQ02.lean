@@ -399,4 +399,101 @@ theorem edgeThreshold_min_at (n : ℕ) (hn : 5 ≤ n) {k : ℕ} (hk : k + 2 ≤ 
   · exact edgeThreshold_antitone_left n hle (by omega)
   · exact edgeThreshold_monotone_right n (le_of_lt hlt) (by omega) (by omega)
 
+/-! ## Strict convexity: the minimizing band and a *unique* minimizer for odd `n`
+
+The `k`-profile results above are all weak (`≤`): the branch lemmas
+`edgeThreshold_succ_right_le` / `edgeThreshold_le_succ_right` and the global bound
+`edgeThreshold_min_at` only certify `edgeThreshold n k₀ ≤ edgeThreshold n k`.  Yet the
+docstring for this section calls the profile *strictly convex* with a *single* global
+minimizer — a claim the second-difference identity `edgeThreshold_second_diff_right`
+(constant `+2`) supports but which the weak lemmas do not yet witness.  This section
+supplies the missing strictness.
+
+The signed `k`-derivative is `2k + 4 − n` (`edgeThreshold_succ_right`), so a single step
+`k → k+1` is:
+
+* strictly *decreasing* once `n ≥ 2k+5` (past the turning point),
+* *flat* exactly at `n = 2k+4` (even `n`, giving a width-2 minimizing band), and
+* strictly *increasing* while `n ≤ 2k+3` (before the turning point).
+
+Iterating the two strict steps yields strict chains, and hence a strict global minimum
+for **odd** `n` — where no flat turning point exists, the minimizer `k₀ = (n-3)/2` is
+unique.  (For even `n` the minimum is genuinely attained on the adjacent pair
+`{k₀, k₀+1}`, recorded by `edgeThreshold_flat_at_turning`, so a unique minimizer is a
+strictly odd-`n` phenomenon.) -/
+
+/-- **Flat bottom of the `k`-profile (even `n`).**  At the exact turning point `n = 2k+4`
+    the signed `k`-derivative `2k+4−n` vanishes, so two adjacent clique sizes give the
+    *same* threshold: `edgeThreshold n k = edgeThreshold n (k+1)`.  This is why for even
+    `n` the global minimum `edgeThreshold_min_at` is attained on the adjacent pair
+    `{k₀, k₀+1}` — a width-2 flat band rather than a single point. -/
+theorem edgeThreshold_flat_at_turning (n k : ℕ) (h : n = 2 * k + 4) :
+    edgeThreshold n k = edgeThreshold n (k + 1) := by
+  have hrec := edgeThreshold_succ_right n k (by omega)
+  omega
+
+/-- **Strictly decreasing branch in `k`.**  Strengthening `edgeThreshold_succ_right_le`
+    from `≤` to `<`: once `n ≥ 2k+5` (strictly past the turning point) the threshold
+    strictly falls, `edgeThreshold n (k+1) < edgeThreshold n k`. -/
+theorem edgeThreshold_succ_right_lt (n k : ℕ) (h : 2 * k + 5 ≤ n) :
+    edgeThreshold n (k + 1) < edgeThreshold n k := by
+  have hrec := edgeThreshold_succ_right n k (by omega)
+  omega
+
+/-- **Strictly increasing branch in `k`.**  Strengthening `edgeThreshold_le_succ_right`
+    from `≤` to `<`: while `k+2 ≤ n ≤ 2k+3` (strictly before the turning point) the
+    threshold strictly rises, `edgeThreshold n k < edgeThreshold n (k+1)`. -/
+theorem edgeThreshold_lt_succ_right_strict (n k : ℕ) (h1 : k + 2 ≤ n) (h2 : n ≤ 2 * k + 3) :
+    edgeThreshold n k < edgeThreshold n (k + 1) := by
+  have hrec := edgeThreshold_succ_right n k h1
+  omega
+
+/-- **Strictly antitone chain on the decreasing branch.**  Strengthening
+    `edgeThreshold_antitone_left`: whenever `k < j` and the top step `j-1 → j` is strictly
+    past the turning point (`2j+3 ≤ n`), the threshold has *strictly* fallen:
+    `edgeThreshold n j < edgeThreshold n k`.  (The top step is strict by
+    `edgeThreshold_succ_right_lt`; the remainder is covered by the weak chain.) -/
+theorem edgeThreshold_antitone_left_strict (n : ℕ) {k j : ℕ} (hkj : k < j)
+    (h : 2 * j + 3 ≤ n) : edgeThreshold n j < edgeThreshold n k := by
+  obtain ⟨j', rfl⟩ : ∃ j', j = j' + 1 := ⟨j - 1, by omega⟩
+  have hstep : edgeThreshold n (j' + 1) < edgeThreshold n j' :=
+    edgeThreshold_succ_right_lt n j' (by omega)
+  exact lt_of_lt_of_le hstep (edgeThreshold_antitone_left n (by omega) (by omega))
+
+/-- **Strictly monotone chain on the increasing branch.**  Strengthening
+    `edgeThreshold_monotone_right`: whenever `k < j`, the bottom step `k → k+1` is strictly
+    before the turning point (`n ≤ 2k+3`) and the top index stays meaningful (`j+1 ≤ n`),
+    the threshold has *strictly* risen: `edgeThreshold n k < edgeThreshold n j`. -/
+theorem edgeThreshold_monotone_right_strict (n : ℕ) {k j : ℕ} (hkj : k < j)
+    (h1 : n ≤ 2 * k + 3) (h2 : j + 1 ≤ n) :
+    edgeThreshold n k < edgeThreshold n j := by
+  have hstep : edgeThreshold n k < edgeThreshold n (k + 1) :=
+    edgeThreshold_lt_succ_right_strict n k (by omega) h1
+  exact lt_of_lt_of_le hstep (edgeThreshold_monotone_right n (by omega) (by omega) h2)
+
+/-- **Unique global minimizer of the `k`-profile for odd `n`.**  When `n` is odd (`n ≥ 5`)
+    there is no flat turning point (`n = 2k+4` has no integer solution), so the minimizer
+    `k₀ = (n-3)/2` is the *strict* global minimum: for every other clique size `k` with
+    `k+2 ≤ n` and `k ≠ k₀`,
+
+        edgeThreshold n k₀ < edgeThreshold n k.
+
+    Seeds `k < k₀` fall on the strictly decreasing branch (via
+    `edgeThreshold_antitone_left_strict`, whose top-step constraint `2k₀+3 = n` is met with
+    equality); seeds `k > k₀` fall on the strictly increasing branch (via
+    `edgeThreshold_monotone_right_strict`, whose bottom-step constraint `n ≤ 2k₀+3 = n` is
+    likewise tight).  This upgrades the weak `edgeThreshold_min_at` to a genuinely unique
+    minimizer — the sharpest form of the "well-defined minimum" underlying `f(k)`. -/
+theorem edgeThreshold_min_at_unique_odd (n : ℕ) (hn : 5 ≤ n) (hodd : Odd n) {k : ℕ}
+    (hk : k + 2 ≤ n) (hne : k ≠ (n - 3) / 2) :
+    edgeThreshold n ((n - 3) / 2) < edgeThreshold n k := by
+  obtain ⟨m, rfl⟩ := hodd
+  have hk0 : (2 * m + 1 - 3) / 2 = m - 1 := by omega
+  rw [hk0] at hne ⊢
+  rcases lt_or_gt_of_ne hne with hlt | hgt
+  · -- k < k₀ = m-1: strictly decreasing branch, upper index m-1 with 2(m-1)+3 = n
+    exact edgeThreshold_antitone_left_strict n hlt (by omega)
+  · -- k > k₀ = m-1: strictly increasing branch, bottom index m-1 with n ≤ 2(m-1)+3
+    exact edgeThreshold_monotone_right_strict n hgt (by omega) (by omega)
+
 end Erdos1012OQ01OQ02
