@@ -67,3 +67,21 @@ genuine open direction is a QUANTITATIVE/STABILITY SSA (Pinsker-type lower bound
 `cmiSum ≥ ½‖p − q‖₁²`, giving distance to the nearest Markov factorization), but that
 needs Pinsker's inequality, which is not readily available in usable form and is larger
 than one session. Marking the problem **completed**.
+
+## Session 2026-07-09 (researcher-3) — equality case of conditioning-reduces-entropy
+
+Problem confirmed at terminus (r2 marked completed 07-08; json still "active" → keeps
+re-serving). Added ONE genuine gallery increment to ShannonEntropySSAEq.lean (0-axiom,
+now 6 defs / 10 thm, PR #36838, elab-clean [7743/7743] UNVERIFIED SIGBUS-135 then docker
+containerd metadata.db I/O error blocked retry):
+- `conditioning_reduces_entropy_eq_iff`: H(X|Y,Z) = H(X|Y) ⟺ X–Y–Z Markov. The EQUALITY
+  companion to `conditioning_reduces_entropy_general` (the inequality in ShannonEntropySSA.lean).
+  Since H(X|Y,Z)=H(XYZ)−H(YZ), H(X|Y)=H(XY)−H(Y), the equation IS the SSA equality rearranged;
+  proof `rw [← strong_subadditivity_eq_iff hp hsum]; constructor <;> intro h <;> linarith`.
+  Judged non-shallow (distinct named textbook result, Cover–Thomas equality-in-conditioning)
+  vs r2's rejected CMI-symmetry (pure notation).
+
+Still open (unchanged, too big): Pinsker-type quantitative SSA cmiSum ≥ ½‖p−q‖₁² (needs
+Pinsker's inequality, not session-sized). ★Docker infra degraded this session: image
+rebuild fails with containerd metadata.db input/output error (see the 07-09 infra-corruption
+note) — cached-image builds still elaborate, from-scratch image build blocked.

@@ -567,4 +567,37 @@ theorem ssa_inequality {α β γ : Type*}
   have hnn := cmiSum_nonneg (pXYZ := pXYZ) hp
   linarith
 
+-- ═══════════════════════════════════════════════════════════════
+-- PART V: Equality condition for "conditioning reduces entropy"
+-- ═══════════════════════════════════════════════════════════════
+
+/-- **Equality condition for "conditioning reduces entropy".**
+    The conditioning inequality `H(X | Y, Z) ≤ H(X | Y)` — proved as
+    `conditioning_reduces_entropy_general` in `ShannonEntropySSA.lean` — holds with
+    *equality* exactly when `X – Y – Z` is a Markov chain, i.e. `X` and `Z` are
+    conditionally independent given `Y`:
+
+      `H(X | Y, Z) = H(X | Y)  ↔  ∀ x y z, p(x,y,z)·p_Y(y) = p_{XY}(x,y)·p_{YZ}(y,z)`.
+
+    Here `H(X | Y, Z) = H(X,Y,Z) − H(Y,Z)` and `H(X | Y) = H(X,Y) − H(Y)`, so the
+    stated equation is precisely the strong-subadditivity equality rearranged; this
+    is `strong_subadditivity_eq_iff` read through the conditional-entropy lens — the
+    classical statement (Cover–Thomas) that observing the extra variable `Z` leaves
+    the entropy of `X` unchanged exactly when `Z` is conditionally irrelevant given
+    `Y`.  It is the equality companion to the inequality
+    `conditioning_reduces_entropy_general`. -/
+theorem conditioning_reduces_entropy_eq_iff {α β γ : Type*}
+    [Fintype α] [Fintype β] [Fintype γ]
+    [DecidableEq α] [DecidableEq β] [DecidableEq γ]
+    {pXYZ : α × β × γ → ℝ} (hp : ∀ xyz, 0 ≤ pXYZ xyz)
+    (hsum : ∑ xyz : α × β × γ, pXYZ xyz = 1) :
+    (shannonEntropy' pXYZ - shannonEntropy' (marginalYZ pXYZ)
+      = shannonEntropy' (marginalXY pXYZ) - shannonEntropy' (marginalY_3 pXYZ))
+    ↔ (∀ x y z, pXYZ (x, y, z) * marginalY_3 pXYZ y
+        = marginalXY pXYZ (x, y) * marginalYZ pXYZ (y, z)) := by
+  rw [← strong_subadditivity_eq_iff hp hsum]
+  constructor
+  · intro h; linarith
+  · intro h; linarith
+
 end InformationTheory
