@@ -66,6 +66,29 @@ Insights accumulated during research on this problem.
   elaboration-audited vs confirmed Mathlib signatures but NOT docker-verified; re-verify after an
   image re-pull.
 
+## Session 2026-07-09 (later) — content-reduction atoms in literal dimensions (`BezoutDescent`)
+
+**Outcome**: two reusable atoms added (0 sorry / 0 axiom), staying entirely in *literal* `Fin 2`/`Fin 3`
+dimensions so the `2 + m` vs `m + 2` cast obstruction never arises. Docker infra STILL DOWN
+(containerd `meta.db` write `input/output error` — image build fails before any elaboration); additions
+are elaboration-audited by line-for-line mirroring of the audited `sl3_transitive`, NOT docker-verified.
+
+### Decls
+- `gcdReduceSL2 (x y) : ∃ N : SL₂, N ·ᵥ ![x,y] = ![gcd x y, 0]` — the general (non-coprime) `SL₂`
+  content-reduction atom. `by_cases Int.gcd x y = 0`: zero branch identity (`gcd=0 ⇒ x=y=0`,
+  `Int.gcd_eq_zero_iff`), else grandparent `bezoutMatrix`/`bezoutMatrix_det`/`bezoutMatrix_mulVec`.
+  Extracts the exact inline tail-reducer `T` that `sl3_transitive` built ad hoc, making it reusable.
+- `sl3_content_reduce (a b c) : ∃ M : SL₃, M ·ᵥ ![a,b,c] = ![gcd a (gcd b c), 0, 0]` — CONTENT form of
+  `sl3_transitive` (drops `IsCoprime`). Both steps now instances of `gcdReduceSL2`. Proof mirrors
+  `sl3_transitive` verbatim (`embedOne`/`headBlock3`, `← mulVec_mulVec`, `hcons`/`hcons2` rfl, `funext;
+  fin_cases` + `simpa [mulVec, dotProduct, Fin.sum_univ_two]`). `sl3_transitive` = the `g=1` corollary.
+
+### Why the content form matters
+The `n=4` step (and every step) reduces the *tail* of a primitive vector, but that tail is generally
+NOT primitive — so the tail reducer must be the CONTENT form (`→ (gcd,0,…,0)`), which the primitive
+`slk_transitive` lemmas do not provide. `gcdReduceSL2` + `sl3_content_reduce` are the first two rungs of
+that content ladder. General obstruction below unchanged.
+
 ### Next step (single remaining ingredient for full induction)
 `Fin.cons`/`Fin.append` content bridge: package `(v₀, g, 0,…,0)` as `Fin.append ![v₀,g] 0`, prove
 `Fin.cons v₀ (Fin.cons g 0) = Fin.append ![v₀,g] 0`, thread `Int.gcd` bookkeeping through an
