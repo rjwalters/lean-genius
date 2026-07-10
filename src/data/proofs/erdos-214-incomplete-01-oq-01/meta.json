@@ -63,11 +63,11 @@
     ],
     "dateAdded": "2026-06-28",
     "axiomCount": 0,
-    "lineCount": 373,
+    "lineCount": 453,
     "mathlib_version": "4.26.0",
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries (only the foundational propext / Classical.choice / Quot.sound). In particular this result does NOT use the parent entry's axiomatized juhasz_1979 / juhasz_stronger.",
-    "theoremCount": 9,
-    "definitionCount": 4
+    "theoremCount": 15,
+    "definitionCount": 5
   },
   "overview": {
     "historicalContext": "Erdős Problem #214 asks whether the complement of every unit-distance-free planar set S (no two points exactly distance 1 apart) must contain the four vertices of a unit square; Juhász (1979) proved the stronger statement that Sᶜ contains a congruent copy of every 4-point configuration. The gallery entry erdos-214 formalizes the statement and Juhász's theorem as axioms and derives the unit-square corollary from the stronger form. Among its definitions is a concrete example, ScaledLattice = √2·ℤ², intended to illustrate a unit-distance-free set — but the entry never proves it actually is one, leaving the example inert and the #214 hypothesis formally unwitnessed.",
@@ -160,10 +160,10 @@
     ],
     "opens": [],
     "namespace": "Erdos214Incomplete01OQ01",
-    "lineCount": 373,
+    "lineCount": 453,
     "axiomCount": 0,
-    "theoremCount": 9,
-    "definitionCount": 4,
+    "theoremCount": 15,
+    "definitionCount": 5,
     "sorries": 0,
     "path": "Proofs/Erdos214Incomplete01OQ01.lean"
   }
