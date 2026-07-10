@@ -2950,4 +2950,25 @@ theorem four_dvd_totient_not_sufficient :
       classifySeed_sophieGermain_eq (q := 5) (by norm_num) (by norm_num) (by norm_num)
   rw [h15]; decide
 
+/-- **`4 ∣ φ(a)` occurs in all three regimes — fully orthogonal to the trichotomy.**
+`reversal_seed_four_dvd_totient` makes `4 ∣ φ(a)` a *necessary* condition for reversal, and
+`four_dvd_totient_not_sufficient` shows it is not sufficient (the equality seed `a = 15`).
+This sharpens "not sufficient" to its strongest form: `4 ∣ φ(a)` is realised by seeds
+classifying in **each** of the three regimes —
+
+* `a = 21` (`φ(21) = 12`, `classifySeed 21 = lt`, reversal),
+* `a = 15` (`φ(15) = 8`,  `classifySeed 15 = eq`, equality), and
+* `a = 13` (`φ(13) = 12`, `classifySeed 13 = gt`, forward).
+
+So the divisibility carries no information about the classification beyond excluding the
+non-transport (`seedS ≥ 2`) seeds (`reversal_seed_transport_admissible`): *within* the
+transport-admissible regime it is compatible with every trichotomy outcome. -/
+theorem four_dvd_totient_all_regimes :
+    (∃ a : ℕ, 4 ∣ Nat.totient a ∧ classifySeed a = Ordering.lt) ∧
+    (∃ a : ℕ, 4 ∣ Nat.totient a ∧ classifySeed a = Ordering.eq) ∧
+    (∃ a : ℕ, 4 ∣ Nat.totient a ∧ classifySeed a = Ordering.gt) :=
+  ⟨⟨21, by rw [totient_21]; norm_num, classifySeed_21'⟩,
+   ⟨15, by rw [totient_15]; norm_num, classifySeed_15⟩,
+   ⟨13, by rw [totient_13]; norm_num, classifySeed_13⟩⟩
+
 end Erdos1064OQ03
