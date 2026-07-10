@@ -526,6 +526,17 @@ For small n, the exact values f(n) (OEIS A005318) are known.
 These provide concrete verification of the bounds.
 -/
 
+/-- f(0) = 0: The empty set has a single subset sum (the empty sum `0`), so it
+    trivially has distinct subset sums.  This is the base case `a(0) = 0` of
+    OEIS A005318, the `n = 0` companion of `f_one`/`f_two_max`: the only subset of
+    `∅` is `∅` itself (`Finset.subset_empty`), so the distinctness hypothesis is
+    vacuous. -/
+theorem f_zero : ∃ (A : Finset ℕ), A.card = 0 ∧ hasDistinctSubsetSums A ∧ A.sup id = 0 := by
+  refine ⟨∅, by simp, ?_, by simp⟩
+  intro S T hS hT _
+  rw [Finset.subset_empty] at hS hT
+  rw [hS, hT]
+
 /-- f(1) = 1: The set {1} has 2 distinct subset sums (0 and 1). -/
 theorem f_one : ∃ (A : Finset ℕ), A.card = 1 ∧ hasDistinctSubsetSums A ∧ A.sup id = 1 := by
   use {1}
