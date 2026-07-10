@@ -234,5 +234,26 @@
       "description": "Related Erdős problem sharing themes: coloring, graph-theory"
     }
   ],
+  "references": [
+    {
+      "authors": "Béla Bollobás",
+      "title": "The chromatic number of random graphs",
+      "year": "1988",
+      "venue": "Combinatorica, 8(1), 49–55",
+      "note": "Establishes χ(G(n,1/2)) = (1+o(1))·n/(2 log₂ n) almost surely; combined with the matching cochromatic bounds this frames the χ − ζ gap that Erdős #625 asks to grow without bound."
+    },
+    {
+      "authors": "Annika Heckel, Marc Steiner",
+      "title": "On the cochromatic number of random graphs (χ − ζ is unbounded for G(n,1/2))",
+      "year": "2024",
+      "venue": "Preprint (2024)",
+      "note": "Shows the difference χ(G) − ζ(G) is unbounded with high probability for G(n,1/2), a partial advance on Erdős's $1000/$100 question of whether it tends to infinity; Heckel's conjecture predicts χ − ζ ≈ n/(log n)³. Descriptive title (exact publication details not asserted)."
+    },
+    {
+      "title": "Erdős Problem #625 (erdosproblems.com) — chromatic vs cochromatic number of random graphs",
+      "url": "https://www.erdosproblems.com/625",
+      "note": "Source problem (OPEN, $1000 falsity / $100 truth): for G(n,1/2), does χ(G) − ζ(G) → ∞ almost surely?"
+    }
+  ],
   "sorries": 19
 }
