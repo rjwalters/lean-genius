@@ -450,4 +450,75 @@ theorem scaledLattice_realizes_sqrt_eight :
   refine ⟨p, q, hp, hq, ?_⟩
   rw [h]; congr 1; norm_num
 
+/-!
+## The minimal positive distance of `√2·ℤ²` is exactly `√2`
+
+Every result above describes *which* distances the lattice avoids or realizes,
+but none pins down its **smallest positive** distance.  The exact
+characterization `dist² = 2·(u² + v²)` supplies it at once: the radicand is either
+`0` (coincident points) or `≥ 2` (any nonzero integer combination), so the lattice
+has **no** distance in the open interval `(0, √2)`.  This "gap" bound is *sharp* —
+`√2` itself is attained (`latticePoint 1 0` and the origin) — so the minimal
+positive distance is exactly `√2`, the nearest-neighbour spacing of the lattice.
+-/
+
+/-- **Distance gap.**  Any two points of `ScaledLattice` are either *coincident*
+(distance `0`) or at least `√2` apart: the squared distance `2·((a-a')² + (b-b')²)`
+is either `0` or `≥ 2`, since `(a-a')² + (b-b')²` is a nonnegative integer that,
+when nonzero, is `≥ 1`.  Hence the lattice realizes **no** distance in the open
+interval `(0, √2)`. -/
+theorem scaledLattice_dist_eq_zero_or_ge_sqrt_two {p q : Plane}
+    (hp : p ∈ ScaledLattice) (hq : q ∈ ScaledLattice) :
+    dist p q = 0 ∨ Real.sqrt 2 ≤ dist p q := by
+  obtain ⟨a, b, hpa, hpb⟩ := hp
+  obtain ⟨a', b', hqa, hqb⟩ := hq
+  have hs : Real.sqrt 2 ^ 2 = 2 := Real.sq_sqrt (by norm_num)
+  have hx : (p 0 - q 0) ^ 2 = 2 * ((a : ℝ) - a') ^ 2 := by
+    rw [hpa, hqa]
+    have e : (Real.sqrt 2 * (a : ℝ) - Real.sqrt 2 * a') ^ 2
+        = Real.sqrt 2 ^ 2 * ((a : ℝ) - a') ^ 2 := by ring
+    rw [e, hs]
+  have hy : (p 1 - q 1) ^ 2 = 2 * ((b : ℝ) - b') ^ 2 := by
+    rw [hpb, hqb]
+    have e : (Real.sqrt 2 * (b : ℝ) - Real.sqrt 2 * b') ^ 2
+        = Real.sqrt 2 ^ 2 * ((b : ℝ) - b') ^ 2 := by ring
+    rw [e, hs]
+  rw [dist_eq_coords, hx, hy]
+  rcases eq_or_ne ((a - a') ^ 2 + (b - b') ^ 2) 0 with h0 | h0
+  · left
+    have hc : ((a : ℝ) - a') ^ 2 + ((b : ℝ) - b') ^ 2 = 0 := by exact_mod_cast h0
+    have hz : 2 * ((a : ℝ) - a') ^ 2 + 2 * ((b : ℝ) - b') ^ 2 = 0 := by linarith
+    rw [hz, Real.sqrt_zero]
+  · right
+    have hnn : (0 : ℤ) ≤ (a - a') ^ 2 + (b - b') ^ 2 := by positivity
+    have hM : (1 : ℤ) ≤ (a - a') ^ 2 + (b - b') ^ 2 := by omega
+    have hM' : (1 : ℝ) ≤ ((a : ℝ) - a') ^ 2 + ((b : ℝ) - b') ^ 2 := by exact_mod_cast hM
+    have hR : (2 : ℝ) ≤ 2 * ((a : ℝ) - a') ^ 2 + 2 * ((b : ℝ) - b') ^ 2 := by linarith
+    exact Real.sqrt_le_sqrt hR
+
+/-- **Minimal positive distance.**  Any two *distinct* points of `ScaledLattice`
+are at distance at least `√2`.  Immediate from the distance-gap dichotomy: the
+`distance 0` branch forces `p = q` (via `‖p - q‖ = 0`), contradicting `p ≠ q`. -/
+theorem scaledLattice_dist_ge_sqrt_two {p q : Plane}
+    (hp : p ∈ ScaledLattice) (hq : q ∈ ScaledLattice) (hpq : p ≠ q) :
+    Real.sqrt 2 ≤ dist p q := by
+  rcases scaledLattice_dist_eq_zero_or_ge_sqrt_two hp hq with h0 | h
+  · exfalso
+    apply hpq
+    have hsub : p - q = 0 := by
+      unfold dist at h0
+      exact norm_eq_zero.mp h0
+    exact sub_eq_zero.mp hsub
+  · exact h
+
+/-- **Sharpness of the gap.**  The bound `√2` is attained: `latticePoint 1 0` and the
+origin `0` are distinct lattice points exactly `√2` apart (`n = 2 = 2·(1² + 0²)`).
+Together with `scaledLattice_dist_ge_sqrt_two` this shows the minimal positive
+distance of `√2·ℤ²` is **exactly** `√2` — its nearest-neighbour spacing. -/
+theorem scaledLattice_realizes_sqrt_two :
+    ∃ p q : Plane, p ∈ ScaledLattice ∧ q ∈ ScaledLattice ∧ dist p q = Real.sqrt 2 := by
+  obtain ⟨p, q, hp, hq, h⟩ := scaledLattice_realizes 1 0
+  refine ⟨p, q, hp, hq, ?_⟩
+  rw [h]; congr 1; norm_num
+
 end Erdos214Incomplete01OQ01

@@ -38,7 +38,10 @@
       "two_mul_sq_add_sq_ne_one: 2·(m² + k²) ≠ 1 for integers m,k — the parity/arithmetic core (omega after casting to ℤ)",
       "scaledLattice_dist_ne_one: any two points of ScaledLattice are at distance ≠ 1 (no p ≠ q hypothesis needed; the squared distance is an even integer)",
       "scaledLattice_unitDistanceFree: the √2-scaled integer lattice is unit-distance-free — the hypothesis of Erdős #214 is non-vacuous",
-      "scaledLattice_nonempty: the origin lies in ScaledLattice (the set is inhabited)"
+      "scaledLattice_nonempty: the origin lies in ScaledLattice (the set is inhabited)",
+      "scaledLattice_dist_eq_zero_or_ge_sqrt_two: distance-gap dichotomy — any two lattice points are either coincident (distance 0) or at least √2 apart; the lattice realizes no distance in the open interval (0, √2)",
+      "scaledLattice_dist_ge_sqrt_two: the minimal positive distance — any two distinct lattice points are at distance ≥ √2 (the coincidence branch is ruled out via ‖p − q‖ = 0 ⇒ p = q)",
+      "scaledLattice_realizes_sqrt_two: sharpness — √2 is attained by latticePoint 1 0 and the origin, so the minimal positive (nearest-neighbour) distance of √2·ℤ² is exactly √2"
     ],
     "references": [
       {
@@ -63,10 +66,10 @@
     ],
     "dateAdded": "2026-06-28",
     "axiomCount": 0,
-    "lineCount": 453,
+    "lineCount": 524,
     "mathlib_version": "4.26.0",
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries (only the foundational propext / Classical.choice / Quot.sound). In particular this result does NOT use the parent entry's axiomatized juhasz_1979 / juhasz_stronger.",
-    "theoremCount": 15,
+    "theoremCount": 18,
     "definitionCount": 5
   },
   "overview": {
@@ -160,9 +163,9 @@
     ],
     "opens": [],
     "namespace": "Erdos214Incomplete01OQ01",
-    "lineCount": 453,
+    "lineCount": 524,
     "axiomCount": 0,
-    "theoremCount": 15,
+    "theoremCount": 18,
     "definitionCount": 5,
     "sorries": 0,
     "path": "Proofs/Erdos214Incomplete01OQ01.lean"
