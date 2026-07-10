@@ -229,10 +229,10 @@
       "leanType": "ClosedCurve gamma -> length gamma = L -> area_enclosed gamma <= L^2 / (4 * pi)"
     },
     {
-      "name": "isoperimetric_equality",
+      "name": "circle_isOptimal",
       "type": "key",
-      "description": "Equality holds iff the curve is a circle",
-      "leanType": "area_enclosed gamma = L^2 / (4 * pi) <-> is_circle gamma"
+      "description": "Circles achieve equality in the isoperimetric inequality (4πA = L²). The rigidity converse (equality ⇒ circle) is discussed in a docstring but not formalized.",
+      "leanType": "(c : Circle) → IsOptimal c.toCurve"
     }
   ],
   "sorries": 0
