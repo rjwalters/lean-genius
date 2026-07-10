@@ -333,6 +333,36 @@ theorem factorial_mul_simplexNumber_prod (d n : ℕ) :
     d ! * simplexNumber d n = ∏ i ∈ range d, (n + 1 + i) := by
   rw [factorial_mul_simplexNumber, Nat.ascFactorial_eq_prod_range]
 
+/-- **Triangular numbers (`d = 2`, division-free).**  The two-dimensional simplex
+number is the triangular number `T_{n+1}`:
+
+`2 · P_2(n) = (n+1)(n+2)`,  i.e.  `C(n+2, 2) = (n+1)(n+2)/2`.
+
+The `d = 2` specialisation of the general product form
+`factorial_mul_simplexNumber_prod`, and the multiplicative closed-form companion to
+the base case `simplexNumber_one_dim` (`P_1(n) = n+1`). -/
+theorem simplexNumber_two_dim (n : ℕ) :
+    2 * simplexNumber 2 n = (n + 1) * (n + 2) := by
+  have h := factorial_mul_simplexNumber_prod 2 n
+  rw [show (2 : ℕ)! = 2 from rfl] at h
+  rw [h, Finset.prod_range_succ, Finset.prod_range_succ, Finset.prod_range_zero]
+  ring
+
+/-- **Tetrahedral numbers (`d = 3`, division-free).**  The three-dimensional simplex
+number is the tetrahedral number — the namesake of this entry:
+
+`6 · P_3(n) = (n+1)(n+2)(n+3)`,  i.e.  `C(n+3, 3) = (n+1)(n+2)(n+3)/6`.
+
+The `d = 3` specialisation of `factorial_mul_simplexNumber_prod`, giving the explicit
+figurate formula `Te_{n+1} = C(n+3, 3)` with the denominator cleared. -/
+theorem simplexNumber_three_dim (n : ℕ) :
+    6 * simplexNumber 3 n = (n + 1) * (n + 2) * (n + 3) := by
+  have h := factorial_mul_simplexNumber_prod 3 n
+  rw [show (3 : ℕ)! = 6 from rfl] at h
+  rw [h, Finset.prod_range_succ, Finset.prod_range_succ, Finset.prod_range_succ,
+      Finset.prod_range_zero]
+  ring
+
 /-- Bridge to the parent `TetrahedralNumberFormula`. The `d = 2` instance of the
 general hockey stick sums the triangular numbers `C(k+2, 2)` to the tetrahedral
 number `C(n+3, 3)`, matching the parent's `∑ T_k = C(n+2, 3)` up to the standard
