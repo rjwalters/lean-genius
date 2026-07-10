@@ -93,6 +93,22 @@ theorem sub_one_dvd_sub_digitSum (p n : ℕ) (hp : p.Prime) :
     (p - 1) ∣ (n - digitSum p n) :=
   ⟨padicValNat p n.factorial, (sub_one_mul_padicValNat_factorial_digitSum p n hp).symm⟩
 
+/-- **The base-`p` digit-sum congruence ("casting out `p − 1`'s").**  For every prime `p`,
+
+  `n ≡ s_p(n)  (mod p − 1)`,
+
+i.e. a number is congruent to its base-`p` digit sum modulo `p − 1`.  This is the
+`Nat.ModEq` form of the divisibility `sub_one_dvd_sub_digitSum`, upgraded via
+`Nat.modEq_iff_dvd'` and the elementary bound `s_p(n) ≤ n` (`Nat.digit_sum_le`).  It is
+the prime-base instance of the schoolbook "casting out nines" rule (base `10`, mod `9`):
+for `p = 3` a number and its ternary digit sum agree mod `2`, for `p = 7` they agree mod
+`6`, and so on.  (The `p = 2` case, mod `1`, is vacuously true.)  Here it drops straight
+out of Legendre's formula, since `n − s_p(n) = (p − 1)·v_p(n!)`. -/
+theorem modEq_digitSum (p n : ℕ) (hp : p.Prime) :
+    n ≡ digitSum p n [MOD p - 1] :=
+  ((Nat.modEq_iff_dvd' (by simpa [digitSum] using Nat.digit_sum_le p n)).mpr
+    (sub_one_dvd_sub_digitSum p n hp)).symm
+
 /-- **The sharp `n/(p-1)` upper bound, multiplied form.**  For every prime `p`,
 `(p - 1)·v_p(n!) ≤ n`.  Immediate from Legendre's identity
 `(p-1)·v_p(n!) = n - s_p(n)` and `n - s_p(n) ≤ n`; this is the exact integer form
@@ -123,5 +139,6 @@ theorem padicValNat_factorial_le_div (p n : ℕ) (hp : p.Prime) :
 #check @sub_one_dvd_sub_digitSum
 #check @sub_one_mul_padicValNat_factorial_le
 #check @padicValNat_factorial_le_div
+#check @modEq_digitSum
 
 end Erdos729Legendre
