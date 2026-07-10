@@ -753,6 +753,56 @@ theorem ramseyNumber_le_ramseyNumberColored_fin {r : ℕ} (hr : 2 ≤ r) {k : �
   rw [h2]
   exact ramseyNumberColored_mono_fin hr hk
 
+/--
+**Colored Ramsey property is monotone under enlarging the set.**  If `A ⊆ B` and `A` has the
+`C`-colored Ramsey property for `k`, so does `B`: any `C`-coloring of the plane restricts to
+one on `A`, whose monochromatic `k`-collinear subset `S ⊆ A ⊆ B` also witnesses `B`.  The
+colored analogue of `hasRamseyProperty_mono`. -/
+theorem hasRamseyPropertyColored_mono {C : Type*} {A B : Finset Point} (hAB : A ⊆ B) {k : ℕ}
+    (hA : HasRamseyPropertyColored C A k) : HasRamseyPropertyColored C B k := by
+  intro c
+  obtain ⟨S, hSA, hScol, hSmono⟩ := hA c
+  exact ⟨S, hSA.trans hAB, hScol, hSmono⟩
+
+/--
+**Colored Ramsey property is antitone in `k`.**  Requiring fewer monochromatic collinear points
+is easier: if `A` has the `C`-colored Ramsey property for `k` and `k' ≤ k`, then it has it for
+`k'` — the same monochromatic `k`-collinear subset already has `≥ k ≥ k'` points on a common
+line.  The colored analogue of `hasRamseyProperty_antitone`. -/
+theorem hasRamseyPropertyColored_antitone {C : Type*} {A : Finset Point} {k k' : ℕ} (hk : k' ≤ k)
+    (hA : HasRamseyPropertyColored C A k) : HasRamseyPropertyColored C A k' := by
+  intro c
+  obtain ⟨S, hSA, ⟨hSk, hline⟩, hSmono⟩ := hA c
+  exact ⟨S, hSA, ⟨le_trans hk hSk, hline⟩, hSmono⟩
+
+/--
+**Colored upper bound from any witness: `R_C(k) ≤ |A|`.**  Any finite set `A` with the
+`C`-colored Ramsey property for `k` bounds the colored Ramsey number from above, since `|A|`
+lies in the set whose infimum defines `R_C(k)`.  The colored analogue of
+`ramseyNumber_le_of_hasRamseyProperty`. -/
+theorem ramseyNumberColored_le_of_hasRamseyProperty {C : Type*} {A : Finset Point} {k : ℕ}
+    (hA : HasRamseyPropertyColored C A k) : ramseyNumberColored C k ≤ A.card :=
+  Nat.sInf_le ⟨A, rfl, hA⟩
+
+/--
+**Monotonicity of the colored Ramsey number in `k`.**  For a finite palette `C` and
+`3 ≤ k' ≤ k`, `R_C(k') ≤ R_C(k)`: demanding *more* monochromatic collinear points cannot lower
+the threshold.  As in the uncolored `ramseyNumber_mono`, the set defining `R_C(k)` is contained
+in the one defining `R_C(k')` (`hasRamseyPropertyColored_antitone`), and
+`hasRamseyPropertyColored_construction` makes the `k`-set nonempty; its attained infimum is a set
+`A` that a fortiori witnesses `k'`, so `A.card = R_C(k) ∈` the `k'`-set and `Nat.sInf_le` applies.
+Completes the monotonicity picture for `ramseyNumberColored`: monotone both in the palette
+(`ramseyNumberColored_mono_colors`) and in `k`. -/
+theorem ramseyNumberColored_mono {C : Type*} [Finite C] {k k' : ℕ} (hk' : 3 ≤ k') (hkk : k' ≤ k) :
+    ramseyNumberColored C k' ≤ ramseyNumberColored C k := by
+  have hk : 3 ≤ k := le_trans hk' hkk
+  have hne : {n : ℕ | ∃ A : Finset Point, A.card = n ∧ HasRamseyPropertyColored C A k}.Nonempty := by
+    obtain ⟨A, hA⟩ := hasRamseyPropertyColored_construction C k hk
+    exact ⟨A.card, A, rfl, hA⟩
+  obtain ⟨A, hcard, hA⟩ := Nat.sInf_mem hne
+  refine Nat.sInf_le ⟨A, ?_, hasRamseyPropertyColored_antitone hkk hA⟩
+  simpa [ramseyNumberColored] using hcard
+
 /-
 **R(3) is Small:**
 The k = 3 case can be achieved with a small set of points.
