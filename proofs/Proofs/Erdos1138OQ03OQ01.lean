@@ -260,6 +260,36 @@ theorem gap_isLittleO_rpow_of_rpow_bound {θ a : ℝ} (hθa : θ < a)
   rw [h0] at hrp
   exact absurd hrp (lt_irrefl 0)
 
+/-- **Master engine, big-O idiom.** Any eventual power envelope `maxPrimeGap x ≤ x^θ`
+already gives `maxPrimeGap =O[atTop] (x ↦ x^θ)` — the envelope *is* the big-O witness (constant
+`1`), no sublinearity of `θ` required. This is the abstract counterpart of `gap_isBigO_rpow`
+(which fixes `θ = 0.525` and uses `baker_harman_pintz`); together with the little-o and `Tendsto`
+engines above it completes the abstract family, matching the concrete BHP family term for term. -/
+theorem gap_isBigO_rpow_of_rpow_bound {θ : ℝ}
+    (H : ∀ᶠ x : ℕ in atTop, (maxPrimeGap x : ℝ) ≤ (x : ℝ) ^ θ) :
+    (fun x : ℕ => (maxPrimeGap x : ℝ)) =O[atTop] (fun x : ℕ => (x : ℝ) ^ θ) := by
+  rw [isBigO_iff]
+  refine ⟨1, ?_⟩
+  filter_upwards [H, eventually_ge_atTop 1] with x hx hx1
+  have hnn : (0 : ℝ) ≤ (x : ℝ) ^ θ := Real.rpow_nonneg (Nat.cast_nonneg x) _
+  rw [one_mul, Real.norm_eq_abs, Real.norm_eq_abs,
+    abs_of_nonneg (Nat.cast_nonneg (maxPrimeGap x)), abs_of_nonneg hnn]
+  exact hx
+
+/-- **Master engine, little-o against `id`.** From *any* eventual power envelope
+`maxPrimeGap x ≤ x^θ` with sub-linear exponent `θ < 1`, `maxPrimeGap =o[atTop] id`. This is the
+abstract counterpart of `bhp_gap_isLittleO_id` (the BHP instance `θ = 0.525`), and the `=o id`
+twin of the `Tendsto (·/x)` engine `gap_littleo_of_rpow_bound`. It is *not* subsumed by
+`gap_isLittleO_rpow_of_rpow_bound` at `a = 1`, whose target `x^1` differs from `id`. -/
+theorem gap_isLittleO_id_of_rpow_bound {θ : ℝ} (hθ : θ < 1)
+    (H : ∀ᶠ x : ℕ in atTop, (maxPrimeGap x : ℝ) ≤ (x : ℝ) ^ θ) :
+    (fun x : ℕ => (maxPrimeGap x : ℝ)) =o[atTop] (fun x : ℕ => (x : ℝ)) := by
+  refine (isLittleO_iff_tendsto' ?_).mpr (gap_littleo_of_rpow_bound hθ H)
+  filter_upwards [eventually_ge_atTop 1] with x hx h0
+  have hxpos : (0 : ℝ) < (x : ℝ) := by exact_mod_cast Nat.lt_of_lt_of_le Nat.zero_lt_one hx
+  rw [h0] at hxpos
+  exact absurd hxpos (lt_irrefl 0)
+
 -- ============================================================================
 -- Individual-gap bridge: from the maximal gap `sSup` back to actual gaps
 -- ============================================================================
