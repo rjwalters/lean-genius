@@ -72,7 +72,7 @@ theorem centralizer_eq_adjoin_of_nonderogatory
     have hcomm : A * M = M * A := (hA M (by simp)).symm
     obtain ⟨p, rfl⟩ :=
       CyclicCommutant.commuting_matrix_is_polynomial M v hcyc A hcomm
-    rw [Algebra.adjoin_singleton_eq_range_aeval]
+    rw [Algebra.adjoin_singleton_eq_range_aeval K M]
     exact ⟨p, rfl⟩
   · -- `K[M] ⊆ C(M)`: `M` commutes with `M`, so `adjoin K {M}` centralizes `M`.
     apply Algebra.adjoin_le
