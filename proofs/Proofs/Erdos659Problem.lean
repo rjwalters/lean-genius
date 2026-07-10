@@ -297,6 +297,17 @@ theorem repr_mul_identity (a b c d : ℤ) :
       = (a * c + 2 * b * d) ^ 2 + 2 * (a * d - b * c) ^ 2 := by
   ring
 
+/-- **Conjugate composition identity for `x² + 2y²`.** The same product also factors
+    as `(ac − 2bd)² + 2(ad + bc)²` — the "conjugate" of `repr_mul_identity`, obtained by
+    replacing `d ↦ -d` (conjugating the second factor in `ℤ[√-2]`). The two identities
+    generically yield *distinct* representations of the same product, the arithmetic
+    source of the non-uniqueness in the representation count that Landau's theorem
+    (`moreeOsburnWorks`) ultimately measures. A pure `ring` fact. -/
+theorem repr_mul_identity' (a b c d : ℤ) :
+    (a ^ 2 + 2 * b ^ 2) * (c ^ 2 + 2 * d ^ 2)
+      = (a * c - 2 * b * d) ^ 2 + 2 * (a * d + b * c) ^ 2 := by
+  ring
+
 /-- The set of integers representable as `x² + 2y²` is **closed under multiplication**.
     Combined with `one_representable`/`two_representable` this shows, e.g., every power
     of `2` is representable. This is the norm-multiplicativity of `ℤ[√-2]`. -/
@@ -338,6 +349,19 @@ theorem representable_pow {m : ℕ} (hm : m ∈ representable_x2_2y2) (k : ℕ) 
     of `representable_pow` promised by the `representable_mul` docstring. -/
 theorem two_pow_representable (k : ℕ) : 2 ^ k ∈ representable_x2_2y2 :=
   representable_pow two_representable k
+
+/-- **Closure under finite products.** A product `∏ i ∈ s, f i` of representable
+    integers is representable. Generalises `representable_pow` (the constant-`f` case)
+    from a single repeated factor to an arbitrary finite family, via
+    `Finset.prod_induction` over the multiplicative monoid `(ℕ, ·, 1)` with
+    `representable_mul` as the step and `one_representable` as the base. No axioms. -/
+theorem representable_prod {ι : Type*} (s : Finset ι) (f : ι → ℕ)
+    (hf : ∀ i ∈ s, f i ∈ representable_x2_2y2) :
+    (∏ i ∈ s, f i) ∈ representable_x2_2y2 := by
+  refine Finset.prod_induction f (· ∈ representable_x2_2y2) ?_ ?_ hf
+  · intro a b ha hb
+    exact representable_mul ha hb
+  · exact one_representable
 
 /-! ### Basic behaviour of the counting function `B₂`
 
