@@ -170,6 +170,39 @@ theorem avoid_one_iff (S : Finset ℕ) : AvoidSum S 1 ↔ 1 ∉ S := by
   unfold AvoidSum
   rw [one_mem_subsetSums_iff]
 
+/-- **Exact `m = 1` realization.** The explicit set `{2, …, n}` witnesses the value
+    `f(n) = n − 1` at `m = 1`: it sits inside `{1, …, n}`, avoids the subset sum `1`
+    (since `1 ∉ {2,…,n}`, via `avoid_one_iff`), and has cardinality `n − 1`. -/
+theorem Icc_two_n_avoid_one (n : ℕ) :
+    Finset.Icc 2 n ⊆ Icc_n n ∧
+      AvoidSum (Finset.Icc 2 n) 1 ∧
+      (Finset.Icc 2 n).card = n - 1 := by
+  refine ⟨?_, ?_, ?_⟩
+  · unfold Icc_n
+    exact Finset.Icc_subset_Icc (by norm_num) le_rfl
+  · rw [avoid_one_iff]
+    simp only [Finset.mem_Icc]
+    omega
+  · rw [Nat.card_Icc]
+    omega
+
+/-- **Optimality at `m = 1`.** Every `1`-avoiding subset of `{1, …, n}` has size at
+    most `n − 1`: avoiding `1` forces `1 ∉ S` (`avoid_one_iff`), so `S ⊆ {2, …, n}`.
+    Together with `Icc_two_n_avoid_one` this pins the exact maximum `f(n) = n − 1`
+    at `m = 1`. -/
+theorem avoid_one_card_le (n : ℕ) (S : Finset ℕ) (hS : S ⊆ Icc_n n)
+    (hav : AvoidSum S 1) : S.card ≤ n - 1 := by
+  rw [avoid_one_iff] at hav
+  have hsub : S ⊆ Finset.Icc 2 n := by
+    intro x hx
+    have hx1 : x ∈ Icc_n n := hS hx
+    unfold Icc_n at hx1
+    rw [Finset.mem_Icc] at hx1 ⊢
+    have hxne : x ≠ 1 := fun h => hav (h ▸ hx)
+    omega
+  calc S.card ≤ (Finset.Icc 2 n).card := Finset.card_le_card hsub
+    _ = n - 1 := by rw [Nat.card_Icc]; omega
+
 /-! ## Summary
 
 Verified here (0 axioms, 0 sorries): the elementary Erdős–Graham construction behind the
