@@ -144,6 +144,29 @@
       "description": "CollatzStructured OQ-02 proves similar cycle constraints using interval_cases; this file uses algebraic product methods instead"
     }
   ],
+  "references": [
+    {
+      "title": "The 3x+1 Problem and Its Generalizations",
+      "author": "Jeffrey C. Lagarias",
+      "year": "1985",
+      "venue": "The American Mathematical Monthly 92(1), 3–23",
+      "description": "The standard survey of the Collatz problem; derives the algebraic cycle equation and the resulting 2^M > 3^j halving constraint on any nontrivial cycle — exactly the identity ∏(3nᵢ+1) = 2^M·∏nᵢ generalized here to all j."
+    },
+    {
+      "title": "On the Existence of Cycles of Given Length in Integer Sequences like x_{n+1} = x_n/2 if x_n even, and x_{n+1} = 3x_n+1 otherwise",
+      "author": "Corrado Böhm and Giovanni Sontacchi",
+      "year": "1978",
+      "venue": "Atti della Accademia Nazionale dei Lincei 64(3), 260–264",
+      "description": "Establishes the closed-form cycle equation for the 3x+1 map, expressing any cycle's elements through the product/telescoping relation over the odd steps — the algebraic backbone of the unified j-step argument in this entry."
+    },
+    {
+      "title": "The Ultimate Challenge: The 3x+1 Problem",
+      "author": "Jeffrey C. Lagarias (editor)",
+      "year": "2010",
+      "venue": "American Mathematical Society",
+      "description": "Comprehensive edited volume on the Collatz problem, collecting the cycle-equation and halving-ratio results (2^M/3^j bounds, cycle-length lower bounds M ≥ j+1) that this entry formalizes for general j."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Tactic",
