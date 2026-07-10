@@ -32,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE (elementary groundwork). Child of erdos-18 (practical numbers, OPEN $250). The parent defines IsRepresentable/IsPractical/h and verifies 1, 2 practical; the open questions concern h(m) asymptotics (out of elementary reach). This entry adds the representability algebra (0, every divisor, 1, and m itself are representable) and a decidable bridge practical_of_check that turns IsPractical m into a finite check over (divisors m).powerset, yielding verified practical numbers 4, 6, 8 (extending 1, 2 along OEIS A005153). Erdos18OQ01.lean, 7 theorems, 0 axioms, 0 sorries, no native_decide (the `decide` for 4/6/8 is KERNEL-based, axioms = propext/Classical.choice/Quot.sound only, NO ofReduceBool).",
+    "progressSummary": "COMPLETE (elementary groundwork). Child of erdos-18 (practical numbers, OPEN $250). The parent defines IsRepresentable/IsPractical/h and verifies 1, 2 practical; the open questions concern h(m) asymptotics (out of elementary reach). This entry adds the representability algebra (0, every divisor, 1, and m itself are representable) and a decidable bridge practical_of_check that turns IsPractical m into a finite check over (divisors m).powerset, yielding verified practical numbers 4, 6, 8 (extending 1, 2 along OEIS A005153). Erdos18OQ01.lean, 7 theorems, 0 axioms, 0 sorries, no native_decide (the `decide` for 4/6/8 is KERNEL-based, axioms = propext/Classical.choice/Quot.sound only, NO ofReduceBool). UPDATE (researcher-9, 2026-07-09, UNVERIFIED — docker infra down, containerd meta.db I/O error): the file has since grown to 29 theorems incl. the full closure algebra (practical_mul product law, two_pow_practical, practical_two_mul, representable_scale). Added the pure-power closure companion practical_pow (IsPractical m → IsPractical (m^k), induction on k from one_practical + practical_mul) and, as a structural illustration, thirtysix_practical (IsPractical 36 = 6^2 via practical_pow six_practical 2, extending A005153 beyond the decide-verified 4/6/8 WITHOUT decide). Trivial high-confidence term/induction assembly; ships UNVERIFIED (build infra down this session).",
     "builtItems": [
       "Erdos18OQ01.lean: 7 theorems, 0 axioms, 0 sorries. Imports Proofs.Erdos18Problem for the definitions.",
       "zero_representable (∅), mem_divisors_representable (singleton {d}), one_representable (1∣m), self_representable ({m}).",
@@ -211,8 +211,8 @@
     {
       "path": "Proofs/Erdos18OQ01.lean",
       "filename": "Erdos18OQ01.lean",
-      "lineCount": 445,
-      "theoremCount": 27,
+      "lineCount": 463,
+      "theoremCount": 29,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 0,

@@ -441,4 +441,23 @@ theorem practical_mul {m n : ℕ} (hpm : IsPractical m) (hpn : IsPractical n) :
   rw [hAsum, hSrsum, hdecomp] at hunion
   exact hunion
 
+/-- **Powers of a practical number are practical.** If `m` is practical then so is
+`m ^ k` for every `k`.  Induction on `k`: `m ^ 0 = 1` is practical (`one_practical`),
+and `m ^ (k+1) = m ^ k · m` is practical by `practical_mul` applied to the induction
+hypothesis and `hpm`.  This is the pure-power closure companion to the product law
+`practical_mul`; it subsumes `two_pow_practical` at `m = 2` and, more generally,
+turns any single verified practical number into an infinite family. -/
+theorem practical_pow {m : ℕ} (hpm : IsPractical m) (k : ℕ) : IsPractical (m ^ k) := by
+  induction k with
+  | zero => simpa using one_practical
+  | succ k ih => rw [pow_succ]; exact practical_mul ih hpm
+
+/-- **36 is practical**, obtained *structurally* as `6 ^ 2` via `practical_pow` from
+`six_practical` — no `decide`.  This extends the finite-check-verified `4, 6, 8`
+further along OEIS A005153 (`…, 30, 32, 36, …`) using the closure algebra rather
+than a per-number computation, illustrating `practical_pow`. -/
+theorem thirtysix_practical : IsPractical 36 := by
+  have h : (36 : ℕ) = 6 ^ 2 := by norm_num
+  rw [h]; exact practical_pow six_practical 2
+
 end Erdos18OQ01
