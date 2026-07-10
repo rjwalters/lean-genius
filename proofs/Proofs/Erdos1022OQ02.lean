@@ -451,6 +451,36 @@ theorem admissibleCoeff_pos_iff (hV : 0 < Fintype.card V) (t : ℕ) :
   · intro h; exact (Nat.one_le_div_iff hV).mp h
   · intro h; exact (Nat.one_le_div_iff hV).mpr h
 
+/-- **The explicit positivity threshold `t₀ = |V|`.**  The `↔` criterion
+    `admissibleCoeff_pos_iff` locates positivity at the abstract condition
+    `|V| ≤ 2^{t-1}`, but never exhibits a concrete `t₀` realising it.  This does:
+    for *every* `t ≥ |V|` the admissible coefficient is already positive,
+
+        `|V| ≤ t  ⟹  0 < c(t)`.
+
+    So `t₀ = |V|` is an explicit step past which the `exists_admissible_coeff`
+    construction yields a genuinely nonzero sparseness coefficient.  Proof: the
+    exponential dominates the linear bound (`t ≤ 2^{t-1}`,
+    `firstMoment_threshold_ge_self`), so `|V| ≤ t ≤ 2^{t-1}`, and
+    `admissibleCoeff_pos_iff` reads off positivity. -/
+theorem admissibleCoeff_pos_of_card_le (hV : 0 < Fintype.card V) (t : ℕ)
+    (ht : Fintype.card V ≤ t) :
+    0 < firstMomentThreshold t / Fintype.card V := by
+  have h1 : 1 ≤ t := by omega
+  exact (admissibleCoeff_pos_iff hV t).mpr
+    (le_trans ht (firstMoment_threshold_ge_self t h1))
+
+/-- **Eventual positivity of the admissible coefficient (filter form).**  Packaging
+    the explicit threshold `admissibleCoeff_pos_of_card_le` as an `atTop` statement:
+    the coefficient `c(t) = ⌊2^{t-1}/|V|⌋` is *eventually* positive.  This is the
+    qualitative shadow of the effective bound — the companion to the divergence
+    `firstMomentThreshold_tendsto_atTop` on the positivity side — with the witness
+    `t₀ = |V|` supplied concretely by `admissibleCoeff_pos_of_card_le`. -/
+theorem admissibleCoeff_eventually_pos (hV : 0 < Fintype.card V) :
+    ∀ᶠ t in Filter.atTop, 0 < firstMomentThreshold t / Fintype.card V :=
+  Filter.eventually_atTop.mpr
+    ⟨Fintype.card V, fun t ht => admissibleCoeff_pos_of_card_le hV t ht⟩
+
 /-- **Explicit exponential lower bound on the coefficient (effective divergence).**
     Once the coefficient is positive at step `t` (i.e. `|V| ≤ 2^{t-1}`, cf.
     `admissibleCoeff_pos_iff`), it is bounded below by a *concrete* power of two after
