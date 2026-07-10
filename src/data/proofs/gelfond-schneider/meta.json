@@ -123,8 +123,8 @@
       "title": "Axiom Catalog",
       "startLine": 126,
       "endLine": 202,
-      "summary": "Seven technical axioms bridging real and complex analysis: `real_algebraic_to_complex_algebraic`, `real_cpow_eq_rpow`, `transcendental_of_complex_eq_real`, Euler's identity $(-1)^{-i} = e^\\pi$, cube root properties, and the Hermite-Lindemann corollary for $\\log$.",
-      "mathContext": "Seven technical axioms bridging real and complex analysis: `real_algebraic_to_complex_algebraic` (algebraic over $\\mathbb{R}$ implies algebraic over $\\mathbb{C}$), complex exponential and logarithm properties, and the definition of $a^b := e^{b \\log a}$ for complex numbers."
+      "summary": "Five technical axioms bridging real and complex analysis: `real_cpow_eq_rpow` (real/complex power compatibility), Euler's identity `neg_one_cpow_neg_I` $(-1)^{-i} = e^\\pi$, cube root properties (`cbrt_two_algebraic`, `cbrt_two_irrational`), and the Hermite-Lindemann corollary `log_algebraic_transcendental`. Two former axioms — `real_algebraic_to_complex_algebraic` and `transcendental_of_complex_eq_real` — are now **proved** theorems (via `isAlgebraic_algebraMap_iff` and `transcendental_algebraMap_iff`).",
+      "mathContext": "Five technical axioms bridging real and complex analysis: `real_cpow_eq_rpow` (real power equals complex power for positive base), `neg_one_cpow_neg_I` (Euler's identity), `cbrt_two_algebraic`/`cbrt_two_irrational`, and `log_algebraic_transcendental` (Hermite-Lindemann corollary). The two coercion lemmas `real_algebraic_to_complex_algebraic` (algebraic over $\\mathbb{R}$ implies algebraic over $\\mathbb{C}$) and `transcendental_of_complex_eq_real` are proved theorems, not axioms. The complex Gelfond-Schneider statement itself is the sixth axiom (see the main-theorem section)."
     },
     {
       "id": "main-theorem",
