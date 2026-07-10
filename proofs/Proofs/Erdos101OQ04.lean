@@ -2765,6 +2765,34 @@ theorem exists_isLowerBoundConstruction_linear (k : ℕ) (hk : 0 < k) :
   obtain ⟨P, hcard, hno5, hcount⟩ := quartic_linear_lower_bound k hk
   exact ⟨P, hcard, hno5, by exact_mod_cast hcount⟩
 
+/-- **Intrinsic linear density `L₄(n) ≥ n/4`.**  The quartic family
+`quartic_linear_lower_bound` states its count `k ≤ fourPointLineCount P` against the
+*external* level-parameter `k`, on `≤ 4·k` points.  Eliminating `k` (it satisfies both
+`P.points.card ≤ 4·k` and `k ≤ fourPointLineCount P`) turns this into the *intrinsic*
+statement that four-point lines are at least a `1/4` fraction of the points:
+`4 · fourPointLineCount P ≥ P.points.card`.  Since `fourPointLineCount P ≥ k` is
+unbounded, this exhibits arbitrarily large no-five-collinear sets whose four-point-line
+count is a fixed positive fraction of the vertex count — the textbook linear lower bound
+`L₄(n) = Ω(n)` phrased as a density, independent of the auxiliary parameter. -/
+theorem exists_fourPointLineCount_ge_card_div_four (k : ℕ) (hk : 0 < k) :
+    ∃ P : PlanarPointSet, NoFiveCollinear P ∧ k ≤ fourPointLineCount P ∧
+      P.points.card ≤ 4 * fourPointLineCount P := by
+  obtain ⟨P, hcard, hno5, hcount⟩ := quartic_linear_lower_bound k hk
+  exact ⟨P, hno5, hcount, by omega⟩
+
+/-- **Real-valued density form.**  The same witness family, with the `1/4` density
+written over `ℝ`: `(P.points.card : ℝ) / 4 ≤ fourPointLineCount P`, i.e. the linear
+lower bound `L₄(n) ≥ n/4` for the (unboundedly large) quartic-chord sets. -/
+theorem exists_fourPointLineCount_ge_card_div_four_real (k : ℕ) (hk : 0 < k) :
+    ∃ P : PlanarPointSet, NoFiveCollinear P ∧ (k : ℝ) ≤ (fourPointLineCount P : ℝ) ∧
+      (P.points.card : ℝ) / 4 ≤ (fourPointLineCount P : ℝ) := by
+  obtain ⟨P, hno5, hcount, hdens⟩ := exists_fourPointLineCount_ge_card_div_four k hk
+  refine ⟨P, hno5, by exact_mod_cast hcount, ?_⟩
+  rw [div_le_iff₀ (by norm_num : (0 : ℝ) < 4)]
+  calc (P.points.card : ℝ)
+      ≤ ((4 * fourPointLineCount P : ℕ) : ℝ) := by exact_mod_cast hdens
+    _ = (fourPointLineCount P : ℝ) * 4 := by push_cast; ring
+
 /-! ### Exact collinearity criteria on the quartic (arithmetization)
 
 The `noFiveCollinear_of_onQuartic` engine says the quartic graph *forbids* five
