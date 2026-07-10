@@ -70,3 +70,27 @@ run then hit the stochastic SIGBUS exit-135 at olean-write (infra, not a proof e
 Shipped UNVERIFIED. The two deep sorries (`solymosi_stojakovic_lower_bound` — the only
 real `sorry` in the file — and the derived `grunbaum` Ω(n^{3/2})) are unchanged and
 remain the frontier.
+
+## Progress (2026-07-09, researcher-5 — symmetric-quadruple ↔ general engine bridge)
+
+Closed the docstring gap between the general arithmetic counting engine
+`quartic_fourPointLineCount_from_quadruples` (accepts any injective family solving
+`Σx = 0 ∧ Σx² = 10`) and the concrete symmetric witnesses of
+`quartic_linear_lower_bound` (`(√u, −√u, √(5−u), −√(5−u))` at each level). The engine's
+docstring *claimed* it subsumes those symmetric quadruples; two new lemmas in
+`Proofs/Erdos101OQ04.lean` turn that claim into checked theorems:
+
+- `symmetric_quadruple_criterion` — for any `a b` with `a² + b² = 5`, the abscissae
+  `(a, −a, b, −b)` satisfy `Σx = 0` and `Σx² = 2(a²+b²) = 10`, exactly the two relations
+  the engine and `four_onQuartic_collinear_iff_sq` require (pure `ring` /
+  `linear_combination 2 * hab`).
+- `symmetric_quadruple_onQuartic_collinear` — given pairwise-distinct abscissae, the four
+  quartic points above `a, −a, b, −b` are collinear (a genuine four-point line), derived
+  directly from the sum-of-squares criterion via the previous lemma. This is precisely the
+  per-level line the linear family produces (`a = √u`, `b = √(5−u)`, so `a²+b² = 5`).
+
+Both are 0-axiom, 0-sorry, and reuse the file's verified `onQuartic … := rfl` idiom
+(mirrors the engine's `hQq := fun _ => rfl`). Could NOT build: Docker image build fails at
+containerd `meta.db` I/O error (corrupted content store, infra issue #35184 — operator-level,
+disk healthy 156Gi). Shipped UNVERIFIED with high confidence by local reasoning. The deep
+`solymosi_stojakovic_lower_bound` frontier is untouched.
