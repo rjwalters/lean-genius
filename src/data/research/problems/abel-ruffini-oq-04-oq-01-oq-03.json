@@ -34,7 +34,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (VERIFIED 0/0): two-sided order-pq cyclic classification now genuinely sharp AND structurally complete. (1) Internal direct product G \u2243* \u27e8c\u27e9 \u00d7 H is a genuine MulEquiv (structural endgame), giving IsNilpotent G \u2194 IsNilpotent H. (2) Existence witness for the necessity condition p | q-1: for the p=2 family, DihedralGroup q (odd prime q) is a finite non-cyclic group of order 2q, refuting order-2q \u21d2 cyclic (separate Sharpness.lean). Remaining gap: general-p (p|q-1) Frobenius/semidirect-product witness, and the density-1 Galois-obstruction forward direction (analytically blocked).",
+    "progressSummary": "PROGRESS (VERIFIED 0/0, docker 7744 jobs): order-pq classification made genuinely SHARP. Base file had positive half + necessity contrapositive (¬cyclic⟹p∣q-1) but no existence witness; added the semidirect-product witness (p∣q-1⟹∃ non-cyclic order-pq group) via Cauchy on MulAut(ℤ/q), completing the biconditional. Concrete order-21 nonabelian group exhibited.",
     "builtItems": [
       "zpowers_sylow_normal in AbelRuffiniOQ04OQ01OQ03.lean — arbitrary-prime Sylow-elimination core: order p·m + p∤m + no-small-divisor ⇒ ⟨c⟩ (order-p) normal",
       "conj_mem_zpowers_sylow — every g normalizes ⟨c⟩ (general prime consequence)",
@@ -71,7 +71,11 @@
       "exists_pComplement_isNilpotent_iff_card_fifteen (AbelRuffiniOQ04OQ01OQ03.lean): order-15 instance, every group of order 15 is nilpotent through the ⟨c⟩×H decomposition",
       "dihedralGroup_not_isCyclic (n>2 => ¬IsCyclic (DihedralGroup n)) in Proofs/AbelRuffiniOQ04OQ01OQ03Sharpness.lean",
       "exists_finite_not_isCyclic_card_eq_two_mul (odd prime q => ∃ finite non-cyclic G, Nat.card G = 2q) — the DihedralGroup q witness",
-      "not_forall_isCyclic_card_eq_two_mul (odd prime q => ¬∀ finite G of order 2q, IsCyclic G) — crisp sharpness statement; plus exists_finite_not_isCyclic_card_six (order-6 instance, D3≅S3)"
+      "not_forall_isCyclic_card_eq_two_mul (odd prime q => ¬∀ finite G of order 2q, IsCyclic G) — crisp sharpness statement; plus exists_finite_not_isCyclic_card_six (order-6 instance, D3≅S3)",
+      "semidirectProduct_subtype_zpowers_not_comm: prime-order automorphism ⟹ nonabelian semidirect product (AbelRuffiniOQ04OQ01OQ03Sharp.lean)",
+      "exists_noncyclic_group_of_card_eq_prime_mul_prime_of_dvd_sub_one: p∣q-1 ⟹ ∃ non-cyclic group of order pq (the sharpness witness)",
+      "exists_noncyclic_card_eq_prime_mul_prime_iff_dvd_sub_one: sharp biconditional combining base necessity + new sufficiency",
+      "exists_noncyclic_group_of_card_twentyone: concrete order-21 Frobenius witness"
     ],
     "insights": [
       "Generalizing the fixed prime 5 to a variable prime p is NOT a rename: the two number-theoretic steps change tactic. n_p ≡ 1 (mod p) ⇒ n_p = 1 needs Nat.mod_eq_of_lt hp.out.one_lt to evaluate 1 % p (omega cannot do variable-modulus mod); index cancellation [G:P]·p = p·m ⇒ [G:P] = m needs Nat.eq_of_mul_eq_mul_right (omega cannot cancel a variable multiplier).",
@@ -94,7 +98,8 @@
       "Internal direct product upgraded from set-level splitting to genuine MulEquiv: MonoidHom.noncommCoprod assembles (k,h)↦k·h as a hom (factors commute since ⟨c⟩≤Z(G)), and Subgroup.isComplement_iff_bijective makes complementarity DEFINITIONALLY the bijectivity of that map, so MulEquiv.ofBijective closes it in ~5 lines. Mathlib lacks a direct both-normal-complement ⟹ MulEquiv-to-product lemma, but noncommCoprod+isComplement_iff_bijective is the clean route.",
       "Nilpotency descends to the p-complement: from the internal direct product G ≃* ⟨c⟩ × H one gets IsNilpotent G ↔ IsNilpotent H. The prior-session belief that this was blocked (no isNilpotent_prod_iff) was wrong — the iff is assembled from isNilpotent_prod (⟸) and nilpotent_of_surjective on the projection (⟹), with ⟨c⟩ always nilpotent as a p-group via IsPGroup.isNilpotent. This is a genuinely distinct reduction from the cyclicity descent (nilpotency is strictly weaker), feeding IsNilpotent.to_isSolvable into the Abel-Ruffini solvability chain.",
       "Sharpness of the order-pq cyclic classification is witnessed concretely for the family p=2: for every odd prime q one has 2 | q-1, and DihedralGroup q is a finite non-cyclic group of order 2q — so the necessity condition p | q-1 (dvd_sub_one_of_not_isCyclic_card_eq_prime_mul_prime) is realizable, not vacuous.",
-      "Non-cyclicity of DihedralGroup n (n>2) is elementary and Mathlib-native: r 1 and sr 0 fail to commute (r 1 * sr 0 = sr(-1) via r_mul_sr, sr 0 * r 1 = sr 1 via sr_mul_r), and -1 != 1 in ZMod n once n>2; combined with IsCyclic.commutative (a cyclic group is Std.Commutative) this refutes IsCyclic without any group-order computation."
+      "Non-cyclicity of DihedralGroup n (n>2) is elementary and Mathlib-native: r 1 and sr 0 fail to commute (r 1 * sr 0 = sr(-1) via r_mul_sr, sr 0 * r 1 = sr 1 via sr_mul_r), and -1 != 1 in ZMod n once n>2; combined with IsCyclic.commutative (a cyclic group is Std.Commutative) this refutes IsCyclic without any group-order computation.",
+      "The order-pq classification is now genuinely SHARP: a non-cyclic group of order pq exists iff p∣q-1. The witness is the semidirect product (ℤ/q)⋊⟨σ⟩ where σ∈MulAut(ℤ/q)≅(ℤ/q)ˣ has order p (Cauchy, since p∣q-1=|MulAut(ℤ/q)|)."
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -106,7 +111,8 @@
       "Consequence: under coprime index G is a (nontrivial-centre) group with G/Z abelian-ish? Investigate whether central Sylow-p + p-complement forces G nilpotent iff H nilpotent.",
       "Construct the nonabelian Frobenius group ℤ/q ⋊ ℤ/p (via SemidirectProduct with a nontrivial hom ℤ/p → (ZMod q)ˣ of order p, exists when p ∣ q−1) to WITNESS the sharpness of dvd_sub_one_of_not_isCyclic — e.g. the order-21 group. Heavier (~150-300 lines): need order computation of the semidirect product and a non-commuting pair.",
       "CONSTRUCTIVE CONVERSE (the real remaining classical gap): when p∣(q−1), EXHIBIT a noncyclic group of order pq (Frobenius ℤ/q ⋊ ℤ/p) to make dvd_sub_one_of_not_isCyclic... genuinely sharp rather than contrapositive-only. Assessment: HARD-known, ~200-400 lines. Mathlib has SemidirectProduct (.card lemma = |N|·|G|) but N=ZMod q needs the Multiplicative(ZMod q) wrapper: φ:ZMod p →* MulAut(Multiplicative(ZMod q)) ≅ AddAut(ZMod q) ≅ (ZMod q)ˣ (via MulAutMultiplicative ∘ AddAutEquivUnits); element of order p in cyclic (ZMod q)ˣ exists since p∣q−1=totient q. Noncyclicity = manual non-commuting pair (no Mathlib lemma for nonabelian semidirect product). The DEFINITION of φ is the hard part (Aristotle skips defs), so not a quick delegate.",
-      "Nilpotency IFF now done alongside cyclicity IFF; remaining meaningful targets unchanged: (a) Frobenius witness ℤ/q⋊ℤ/p order-21 for sharpness of p∤(q-1), ~150-300 lines; (b) global class equation packaging. Density-1 Galois forward direction remains analytically blocked."
+      "Nilpotency IFF now done alongside cyclicity IFF; remaining meaningful targets unchanged: (a) Frobenius witness ℤ/q⋊ℤ/p order-21 for sharpness of p∤(q-1), ~150-300 lines; (b) global class equation packaging. Density-1 Galois forward direction remains analytically blocked.",
+      "Package the order-21 witness as an explicit MulEquiv to a named group (e.g. via the Aut action) rather than an anonymous semidirect product; or compute its character/conjugacy-class structure to connect with the class-equation nextStep."
     ]
   },
   "tags": [
