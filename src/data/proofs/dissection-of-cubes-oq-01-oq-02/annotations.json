@@ -60,6 +60,18 @@
     "prerequisites": ["Cube and CubeDissection definitions", "cubeA / cubeB from OQ-01-OQ-01"]
   },
   {
+    "id": "diss-oq0102-tri-mem",
+    "proofId": "dissection-of-cubes-oq-01-oq-02",
+    "range": { "startLine": 196, "endLine": 205 },
+    "type": "technique",
+    "title": "Membership lemmas for the three-cube dissection",
+    "content": "Before counting collisions, cubeA_mem_tri / cubeB_mem_tri / cubeD_mem_tri record that each of the three cubes actually belongs to triDissection.cubes = {A,B,D}. They discharge the `Finset.mem_insert` / `Finset.mem_singleton` unfolding by `simp`, feeding the distinctness lemmas (cubeA_ne_cubeB, cubeA_ne_cubeD, cubeB_ne_cubeD) so the simplifier can resolve which branch of the insert chain each cube sits in. These are the plumbing the collision characterisation mem_collidingCubes_tri_iff relies on: a cube can only be flagged as colliding once its membership in the dissection is established.",
+    "mathContext": "$A, B, D \\in \\mathrm{triDissection.cubes} = \\{A, B, D\\}$, resolved through the insert/singleton normal form.",
+    "significance": "technical",
+    "relatedConcepts": ["Finset.mem_insert", "Finset.mem_singleton", "distinctness by coordinate", "membership plumbing"],
+    "prerequisites": ["triDissection construction", "cube distinctness lemmas"]
+  },
+  {
     "id": "diss-oq0102-three",
     "proofId": "dissection-of-cubes-oq-01-oq-02",
     "range": { "startLine": 206, "endLine": 250 },
