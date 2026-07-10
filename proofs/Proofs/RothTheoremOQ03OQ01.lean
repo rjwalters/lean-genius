@@ -647,4 +647,32 @@ theorem kAPCount_count_pos {N : ℕ} [NeZero N] {k : ℕ} (hk : 0 < k)
         ∀ i : Fin k, p.1 + i.val • p.2 ∈ A)).card :=
   lt_of_lt_of_le (Finset.card_pos.mpr hA) (kAPCount_count_ge hk A)
 
+/-- **Positivity characterizes nonemptiness.**  For `k ≥ 1`, the `k`-AP count of `A` is
+    strictly positive iff `A` is nonempty: a nonempty set supplies its diagonal (constant)
+    progressions (`kAPCount_count_pos`), and conversely any counted progression contains its
+    `i = 0` starting term `x` in `A`.  The biconditional packaging of `kAPCount_count_pos`,
+    which pins down exactly when Roth's positivity hypothesis is even meaningful. -/
+theorem kAPCount_count_pos_iff {N : ℕ} [NeZero N] {k : ℕ} (hk : 0 < k)
+    {A : Finset (ZMod N)} :
+    0 < (Finset.univ.filter (fun p : ZMod N × ZMod N =>
+        ∀ i : Fin k, p.1 + i.val • p.2 ∈ A)).card ↔ A.Nonempty := by
+  classical
+  refine ⟨fun hpos => ?_, fun hA => kAPCount_count_pos hk hA⟩
+  obtain ⟨p, hp⟩ := Finset.card_pos.mp hpos
+  rw [Finset.mem_filter] at hp
+  exact ⟨p.1, by simpa using hp.2 ⟨0, hk⟩⟩
+
+/-- **Exact count for the whole group.**  Every pair `(x, d)` has its length-`k` progression
+    inside `univ`, so the `k`-AP count of the full group is exactly `N²` — the combinatorial
+    companion of the normalized identity `kAPCount_indicator_univ`
+    (`Λ_k(1_univ) = 1 = (N⁻¹)²·N²`), and the saturation case `A = univ` of the trivial upper
+    bound `kAPCount_count_le` (`#univ · N = N · N`). -/
+theorem kAPCount_count_univ {N : ℕ} [NeZero N] (k : ℕ) :
+    (Finset.univ.filter (fun p : ZMod N × ZMod N =>
+        ∀ i : Fin k, p.1 + i.val • p.2 ∈ (Finset.univ : Finset (ZMod N)))).card = N ^ 2 := by
+  classical
+  rw [Finset.filter_true_of_mem (fun p _ i => Finset.mem_univ _),
+      Finset.card_univ, Fintype.card_prod, ZMod.card]
+  ring
+
 end RothTheoremOQ03OQ01
