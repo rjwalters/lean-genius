@@ -1212,18 +1212,18 @@ theorem sum_match_count_eq (b : ℕ) (hb : 2 ≤ b) (x : ℝ) (k N : ℕ) :
     ext n
     simp only [Finset.mem_filter]
     exact and_congr_right (fun _ => (key n s).symm)
-  calc
-    ∑ s : Fin k → Fin b,
-        ((Finset.range N).filter
-          (fun n => ∀ i : Fin k, nthDigit b (n + i.val) x = (s i : ℤ))).card
+  -- Rewrite each match-filter to its fiber, then count fiberwise.
+  have step1 :
+      ∑ s : Fin k → Fin b,
+          ((Finset.range N).filter
+            (fun n => ∀ i : Fin k, nthDigit b (n + i.val) x = (s i : ℤ))).card
         = ∑ s : Fin k → Fin b,
             ((Finset.range N).filter (fun n => F n = s)).card :=
-          Finset.sum_congr rfl (fun s _ => by rw [hfilter s])
-      _ = (Finset.range N).card :=
-          (Finset.card_eq_sum_card_fiberwise
-            (s := Finset.range N) (t := Finset.univ)
-            (f := F) (fun n _ => Finset.mem_univ (F n))).symm
-      _ = N := Finset.card_range N
+    Finset.sum_congr rfl (fun s _ => by rw [hfilter s])
+  rw [step1]
+  exact (Finset.card_eq_sum_card_fiberwise
+      (s := Finset.range N) (t := Finset.univ)
+      (f := F) (fun n _ => Finset.mem_univ (F n))).symm.trans (Finset.card_range N)
 
 /-- **Frequencies form a probability distribution.** For `N ≥ 1` the empirical
     frequencies of the `bᵏ` tuples sum to `1` — the normalised form of the
