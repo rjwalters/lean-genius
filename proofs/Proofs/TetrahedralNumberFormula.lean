@@ -115,6 +115,25 @@ theorem six_mul_choose_three (n : ℕ) :
   rw [← sum_triangular_choose]
   exact six_mul_sum_triangular n
 
+/-- **Tetrahedral closed form (with division).** The tetrahedral number
+`C(n+2, 3)` equals `n·(n+1)·(n+2)/6` exactly — the classical closed form as it
+is usually written, recovered from the division-free `six_mul_choose_three` by
+dividing by `6` (exact because `n·(n+1)·(n+2)` is divisible by `6`). This is the
+`C(n+2, 3) = n(n+1)(n+2)/6` identity promised in the problem statement. -/
+theorem choose_three_closed_form (n : ℕ) :
+    (n + 2).choose 3 = n * (n + 1) * (n + 2) / 6 := by
+  have h := six_mul_choose_three n
+  omega
+
+/-- **Classical tetrahedral number formula (with division).** The running total
+of the first `n` triangular numbers `T_k = C(k+1, 2)` equals `n·(n+1)·(n+2)/6` —
+the classical `∑ T_k = n(n+1)(n+2)/6` written with the familiar `/6`, recovered
+from the division-free `six_mul_sum_triangular`. -/
+theorem sum_triangular_closed_form (n : ℕ) :
+    ∑ k ∈ range (n + 1), (k + 1).choose 2 = n * (n + 1) * (n + 2) / 6 := by
+  have h := six_mul_sum_triangular n
+  omega
+
 /-- The hockey-stick identity phrased with the elementary triangular number
 `T_k = k·(k+1)/2` in place of `C(k+1, 2)`:
 

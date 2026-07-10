@@ -57,10 +57,10 @@
     ],
     "dateAdded": "2026-07-05",
     "axiomCount": 0,
-    "lineCount": 127,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries. #print axioms reports only the foundational propext, Classical.choice, Quot.sound (none of which count as assumptions) for all four public theorems (sum_triangular_choose, six_mul_sum_triangular, six_mul_choose_three, sum_triangular_div). No native_decide, so no Lean.ofReduceBool; no sorryAx; no structure-encoded hypotheses.",
+    "lineCount": 146,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries. #print axioms reports only the foundational propext, Classical.choice, Quot.sound (none of which count as assumptions) for all public theorems (sum_triangular_choose, six_mul_sum_triangular, six_mul_choose_three, choose_three_closed_form, sum_triangular_closed_form, sum_triangular_div). No native_decide, so no Lean.ofReduceBool; no sorryAx; no structure-encoded hypotheses.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 6,
+    "theoremCount": 8,
     "definitionCount": 0
   },
   "sections": [
