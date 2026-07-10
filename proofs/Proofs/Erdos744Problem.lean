@@ -266,6 +266,81 @@ theorem bipartitionNumber_le_edgeCount {V : Type*} [Fintype V] [LinearOrder V]
         simp [Finset.mem_filter]
 
 /--
+**Bichromatic (properly-cut) edges of a 2-coloring**
+
+Dual to `monochromaticEdges`: the edges of `G` whose two endpoints receive
+*different* colors under `c`. These are exactly the edges the cut `c` separates,
+so the maximum over all colorings is the max-cut of `G`. -/
+def bichromaticEdges {V : Type*} [Fintype V] [LinearOrder V]
+    (G : SimpleGraph' V) [DecidableRel G.Adj] (c : V → Bool) : ℕ :=
+  (Finset.univ.filter
+    (fun p : V × V => p.1 < p.2 ∧ G.Adj p.1 p.2 ∧ c p.1 ≠ c p.2)).card
+
+/-- **Edge conservation for a fixed 2-coloring.** Every edge is either
+monochromatic or bichromatic under `c`, so the two counts partition the edge set:
+`monochromaticEdges G c + bichromaticEdges G c = edgeCount G`. -/
+theorem monochromaticEdges_add_bichromaticEdges {V : Type*} [Fintype V] [LinearOrder V]
+    (G : SimpleGraph' V) [DecidableRel G.Adj] (c : V → Bool) :
+    monochromaticEdges G c + bichromaticEdges G c = edgeCount G := by
+  have hmono : monochromaticEdges G c
+      = ((Finset.univ.filter (fun p : V × V => p.1 < p.2 ∧ G.Adj p.1 p.2)).filter
+          (fun p => c p.1 = c p.2)).card := by
+    rw [monochromaticEdges, Finset.filter_filter]
+    congr 1; ext p; simp only [Finset.mem_filter]; tauto
+  have hbi : bichromaticEdges G c
+      = ((Finset.univ.filter (fun p : V × V => p.1 < p.2 ∧ G.Adj p.1 p.2)).filter
+          (fun p => ¬ c p.1 = c p.2)).card := by
+    rw [bichromaticEdges, Finset.filter_filter]
+    congr 1; ext p; simp only [Finset.mem_filter, ne_eq]; tauto
+  rw [hmono, hbi, Finset.filter_card_add_filter_neg_card_eq_card]
+  rfl
+
+/-- **Max-cut of `G`.** The maximum number of edges separated by a 2-coloring,
+i.e. the largest bichromatic-edge count over all colorings. -/
+def maxCut {V : Type*} [Fintype V] [LinearOrder V]
+    (G : SimpleGraph' V) [DecidableRel G.Adj] : ℕ :=
+  (Finset.univ : Finset (V → Bool)).sup' Finset.univ_nonempty (bichromaticEdges G)
+
+/-- **Max-cut / min-uncut complementarity.** The bipartition number (minimum
+number of edges to delete to make `G` bipartite — the "uncut" edges of the best
+cut) and the max-cut are complementary in the total edge count:
+
+    bipartitionNumber G + maxCut G = edgeCount G.
+
+Both extremes are realized by the *same* optimal coloring: minimizing the
+monochromatic edges is the same as maximizing the bichromatic ones, since their
+sum is the constant `edgeCount G` (`monochromaticEdges_add_bichromaticEdges`). -/
+theorem bipartitionNumber_add_maxCut {V : Type*} [Fintype V] [LinearOrder V]
+    (G : SimpleGraph' V) [DecidableRel G.Adj] :
+    bipartitionNumber G + maxCut G = edgeCount G := by
+  refine le_antisymm ?_ ?_
+  · -- ≤ : the max-cut-optimal coloring already leaves ≥ bipartitionNumber uncut
+    obtain ⟨c1, -, hc1⟩ := Finset.exists_mem_eq_sup'
+      (Finset.univ_nonempty (α := V → Bool)) (bichromaticEdges G)
+    have hbp : bipartitionNumber G ≤ monochromaticEdges G c1 := bipartitionNumber_le G c1
+    have hmc : maxCut G = bichromaticEdges G c1 := hc1
+    have hid := monochromaticEdges_add_bichromaticEdges G c1
+    omega
+  · -- ≥ : the bipartition-optimal coloring already cuts ≤ maxCut edges
+    obtain ⟨c0, -, hc0⟩ := Finset.exists_mem_eq_inf'
+      (Finset.univ_nonempty (α := V → Bool)) (monochromaticEdges G)
+    have hbp : bipartitionNumber G = monochromaticEdges G c0 := hc0
+    have hmc : bichromaticEdges G c0 ≤ maxCut G :=
+      Finset.le_sup' (bichromaticEdges G) (Finset.mem_univ c0)
+    have hid := monochromaticEdges_add_bichromaticEdges G c0
+    omega
+
+/-- **The max-cut saturates the edge count iff `G` is bipartite.** A cut separates
+*every* edge exactly when a proper 2-coloring exists (leaving nothing uncut).
+Immediate from the complementarity and `bipartitionNumber_eq_zero_iff`. -/
+theorem maxCut_eq_edgeCount_iff {V : Type*} [Fintype V] [LinearOrder V]
+    (G : SimpleGraph' V) [DecidableRel G.Adj] :
+    maxCut G = edgeCount G ↔ ∃ c : V → Bool, ∀ u v, G.Adj u v → c u ≠ c v := by
+  rw [← bipartitionNumber_eq_zero_iff]
+  have h := bipartitionNumber_add_maxCut G
+  omega
+
+/--
 **The f_k(n) Function**
 
 f_k(n) = min { bipartitionNumber(G) : G is k-critical on n vertices }

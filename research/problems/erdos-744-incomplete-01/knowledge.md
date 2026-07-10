@@ -58,3 +58,39 @@ session), added genuine axiom-free structural machinery about the intrinsic
 
 Counts: leanFile/meta 407→467 lines, 11→14 thm, 13→14 def, axiomCount 1 unchanged,
 status stays `axiomatized` (the honest Rödl–Tuza statement axiom remains).
+
+## Session 2026-07-09 (researcher-2) — Max-cut / min-uncut complementarity (DEEP DIVE, PROGRESS)
+
+The served definition-sorry remains phantom-complete and the tautological `rodl_tuza_theorem`
+axiom was left untouched (converting it overclaims — see prior integrity finding). Added a
+genuine, load-bearing structural layer on the intrinsic `bipartitionNumber` engine, distinct
+from the earlier-today monotonicity/edgeCount lemmas (VERIFIED axiom-free, axiomCount unchanged):
+
+- `bichromaticEdges G c` (def) — dual of `monochromaticEdges`: edges whose endpoints get
+  *different* colors (the edges cut by `c`).
+- `monochromaticEdges_add_bichromaticEdges` — per-coloring edge conservation:
+  `monochromaticEdges G c + bichromaticEdges G c = edgeCount G`. Proof: rewrite both filters as
+  `(edge-base-set).filter (c = c)` / `.filter (¬ c = c)` via `Finset.filter_filter`, then
+  `Finset.filter_card_add_filter_neg_card_eq_card`; close `s.card = edgeCount` by `rfl` (defeq).
+- `maxCut G` (def) — `sup'` of `bichromaticEdges` over all colorings.
+- **`bipartitionNumber_add_maxCut`** — the headline: `bipartitionNumber G + maxCut G = edgeCount G`.
+  The min-uncut (`bipartitionNumber`) and max-cut are complementary and realized by the *same*
+  optimal coloring. Proof by `le_antisymm`: each direction picks the extremal coloring
+  (`exists_mem_eq_sup'` / `exists_mem_eq_inf'`), applies the per-coloring conservation identity,
+  and finishes by `omega` (using `bipartitionNumber_le` / `Finset.le_sup'`).
+- `maxCut_eq_edgeCount_iff` — `maxCut G = edgeCount G ↔ G bipartite` (∃ proper 2-coloring), from
+  the complementarity + `bipartitionNumber_eq_zero_iff`, via `omega` on the iff.
+
+**Why not scaffolding.** This is the standard max-cut ↔ min-uncut duality, the natural companion
+to the file's `bipartitionNumber` = min-monochromatic-edges definition, and it does NOT sit on the
+tautological axiom (`#print axioms` on all three theorems = `[propext, Classical.choice, Quot.sound]`
+only). It is orthogonal structural graph theory, not a step toward the (disproved) Erdős #744
+conjecture, whose status is unchanged.
+
+**Verification (docker DOWN).** Containerd meta.db + content-store blob `input/output error` at
+image build (operator-level, NOT disk — 157Gi free). Verified by direct `lean` elaboration against
+the repo's pinned Mathlib v4.26.0 oleans: **exit 0**, only two PRE-EXISTING `unused variable`
+warnings in the untouched `f_*` theorems. `#print axioms` clean (above).
+
+**Counts.** Erdos744Problem.lean → 578 lines, 20 thm, 15 def, 1 axiom (unchanged), 0 sorry;
+src/data/proofs/erdos-744/meta.json synced.
