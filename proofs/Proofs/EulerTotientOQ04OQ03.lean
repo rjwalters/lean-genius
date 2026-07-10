@@ -2798,4 +2798,39 @@ theorem classifySeed_453 : classifySeed 453 = Ordering.lt := by
   simpa using classifySeed_primeTriple_lt (m := 25) (by norm_num)
     (by norm_num) (by norm_num) (by norm_num)
 
+-- ----------------------------------------------------------------------------
+-- A reversal seed OUTSIDE the prime-triple (`3q`) family: `55 = 5·11`
+-- ----------------------------------------------------------------------------
+-- The prime-triple family `mem_ReversalSet_primeTriple` collects reversal seeds
+-- of the shape `18m+3 = 3·(6m+1)`.  The next-step note asked for an *analogous
+-- infinite `5q` family* capturing the observed reversal seed `55 = 5·11`.  The
+-- honest finding is that **no such clean infinite family exists**: the natural
+-- `5·q` analogue `a = 5·(5m+1)`, `b = 5·(3m+1)`, landing `e = 19m+5` (all three
+-- of `5m+1`, `3m+1`, `19m+5` prime) collapses the general criterion
+-- `dblIter_reversal_iff_general` to the reversal condition
+-- `φ(a) = 20m < φ(e) = 19m+4`, i.e. `m < 4` — a *bounded* window, in contrast to
+-- the `3q` family whose margin `14m+2 − 12m = 2m+2 > 0` grows without bound.
+-- Since `a = 25m+5` is odd only for even `m`, the only member is `m = 2`, the seed
+-- `55` itself.  So `55` is genuinely isolated as a `5·(5m+1)` reversal, not the
+-- head of an infinite family; we record it as a concrete catalogue member,
+-- confirming (as the prime-triple docstring already notes) that reversals are not
+-- confined to the `3q` family.
+
+/-- **Classifier value on the seed `55`.**  Transport data: `b = 35 = 5·7`
+    (`2·55 − φ(55) = 70 = 35·2¹`, so `s = 1`), landing `C = 2·55 − φ(35) = 86 = 43·2¹`
+    (so `t = 1`, `e = 43` prime), and the classifier compares `φ(55) = 40` against
+    `φ(43)·2^0 = 42`; `40 < 42`, so the total decision procedure classifies
+    `55 = 5·11` as `lt` (reversal) — a `5q`-type seed outside the prime-triple
+    (`3q`) reversal family. -/
+theorem classifySeed_55 : classifySeed 55 = Ordering.lt := by
+  rw [classifySeed_val (s := 1) (b := 35) (t := 1) (e := 43) (by decide) (by decide)
+      (by norm_num [totient_55]) (by norm_num [totient_35])]
+  rw [totient_55, totient_43]; decide
+
+/-- **Reversal family `55·2^(k+1)`, outside the `3q` prime-triple family.**  Since
+    `classifySeed 55 = lt`, the whole family lies in `ReversalSet` (`φ(n) < φ(D(n))`
+    for every `k`), confirming reversals are not confined to the seeds `18m+3`. -/
+theorem mem_ReversalSet_55 (k : ℕ) : 55 * 2 ^ (k + 1) ∈ ReversalSet :=
+  (classifySeed_lt_iff (by decide) (by norm_num) k).mpr classifySeed_55
+
 end Erdos1064OQ03
