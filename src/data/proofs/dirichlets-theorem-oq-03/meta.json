@@ -166,6 +166,43 @@
       "description": "OQ-01: another open question branch of Dirichlet's theorem in the gallery"
     }
   ],
+  "references": [
+    {
+      "title": "On the least prime in an arithmetic progression. I. The basic theorem",
+      "author": "Yuri V. Linnik",
+      "year": "1944",
+      "venue": "Recueil Mathématique (Matematicheskii Sbornik) 15(57), 139–178",
+      "description": "Linnik's original theorem: the least prime p ≡ a (mod q) satisfies p ≪ q^L for an absolute constant L. The infimum of admissible L is the Linnik constant this entry formalizes."
+    },
+    {
+      "title": "On the least prime in an arithmetic progression. II. The Deuring–Heilbronn phenomenon",
+      "author": "Yuri V. Linnik",
+      "year": "1944",
+      "venue": "Recueil Mathématique (Matematicheskii Sbornik) 15(57), 347–368",
+      "description": "Second part establishing the zero-repulsion (Deuring–Heilbronn) phenomenon for Dirichlet L-functions that drives all effective bounds on the Linnik constant."
+    },
+    {
+      "title": "Zero-free regions for Dirichlet L-functions, and the least prime in an arithmetic progression",
+      "author": "D. R. Heath-Brown",
+      "year": "1992",
+      "venue": "Proceedings of the London Mathematical Society (3) 64, 265–338",
+      "description": "Proves L ≤ 5.5, the bound this entry derives via monotonicity; introduces the log-free zero-density and zero-repulsion estimates underlying the modern Linnik-constant bounds."
+    },
+    {
+      "title": "On the least prime in an arithmetic progression and estimates for the zeros of Dirichlet L-functions",
+      "author": "Triantafyllos Xylouris",
+      "year": "2011",
+      "venue": "Acta Arithmetica 150, 65–90",
+      "description": "Establishes the current record L ≤ 5, the value axiomatized in this entry as the best known upper bound on the Linnik constant."
+    },
+    {
+      "title": "Multiplicative Number Theory",
+      "author": "Harold Davenport",
+      "year": "2000",
+      "venue": "Springer, Graduate Texts in Mathematics 74 (3rd ed., rev. H. L. Montgomery)",
+      "description": "Standard reference for Dirichlet L-functions, their zero-free regions, and the analytic machinery behind Linnik's theorem and primes in arithmetic progressions."
+    }
+  ],
   "conclusion": {
     "summary": "This formalization captures the Linnik constant framework: the infimum definition of L*, the known upper bound L* ≤ 5 from Xylouris, the monotonicity-based derivation of Heath-Brown's L ≤ 5.5, and a conditional proof that the optimal conjecture implies L* ≤ 1. Two axioms encode the unconditional existence of Linnik's bound and Xylouris's specific value; three sorries mark the remaining gaps.",
     "implications": "The `csInf`-based definition of the Linnik constant provides a blueprint for formalizing infimum-defined constants in analytic number theory — including the de Bruijn-Newman constant, the Landau-Siegel zero exponent, and other extremal parameters in L-function theory. The `optimal_implies_le_one` proof illustrates a general Lean pattern: conditional results about infima can be formalized cleanly via contradiction with `csInf_le`, without needing to compute the infimum explicitly.",
