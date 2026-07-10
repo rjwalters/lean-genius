@@ -12,6 +12,18 @@
     "prerequisites": ["Euler totient", "Erdős problem 1004"]
   },
   {
+    "id": "ann-erdos-1004-oq-03-def",
+    "proofId": "erdos-1004-oq-03",
+    "range": { "startLine": 40, "endLine": 44 },
+    "type": "definition",
+    "title": "Distinct Run as Injectivity of φ",
+    "content": "`IsDistinctTotientRun n K` is defined as `Set.InjOn Nat.totient (Finset.Icc (n+1) (n+K))` — φ restricted to the K consecutive arguments {n+1,…,n+K} is injective. This is the clean way to say 'the K totient values φ(n+1),…,φ(n+K) are pairwise distinct': distinctness of a list of values is exactly injectivity of the indexing map on the argument block, so no separate list or `Nodup` predicate is needed. Working with `InjOn` over an `Icc` also makes the two hypotheses the main proof consumes — that equal totients on the run force equal arguments — a direct rewrite of the definition. Note the block has `K` arguments (`Icc (n+1) (n+K)` has cardinality K), so the run length is read straight off the argument interval.",
+    "mathContext": "$\\mathrm{IsDistinctTotientRun}(n,K) \\equiv \\varphi\\restriction_{\\{n+1,\\dots,n+K\\}} \\text{ injective} \\iff \\varphi(n+1),\\dots,\\varphi(n+K) \\text{ pairwise distinct}.$ Here $|\\mathrm{Icc}(n+1,n+K)| = K$.",
+    "significance": "key",
+    "relatedConcepts": ["Set.InjOn", "pairwise distinctness", "Finset.Icc", "Euler totient"],
+    "prerequisites": ["injectivity on a set", "Finset interval Icc"]
+  },
+  {
     "id": "ann-erdos-1004-oq-03-02",
     "proofId": "erdos-1004-oq-03",
     "range": { "startLine": 53, "endLine": 66 },
