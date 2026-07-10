@@ -370,6 +370,36 @@ theorem isDiag_of_commute_diag_distinct {D A : Matrix n n K} (hD : D.IsDiag)
   · exact h
   · exact absurd h hne
 
+/-- **Distinct-eigenvalue case of the hard converse: a matrix commuting with a
+    diagonalized matrix of distinct eigenvalues shares its diagonalizer.**
+    If `P` diagonalizes `M` — `D = P⁻¹MP` is diagonal — with pairwise *distinct* diagonal
+    entries (distinct eigenvalues), and `N` commutes with `M`, then the **same** `P`
+    diagonalizes `N`: `P⁻¹NP` is diagonal.  This is the payoff of the crux
+    `isDiag_of_commute_diag_distinct`: conjugating the commutation `MN = NM` by `P` (the
+    same interior-`P·P⁻¹=1` cancellation as `commute_of_commonDiagonalizer`) shows `P⁻¹NP`
+    commutes with the distinct-entry diagonal `D`, hence is diagonal.  It settles the generic
+    (distinct-eigenvalue) case of the classical "commuting diagonalizable ⟹ common
+    diagonalizer"; only the repeated-eigenvalue case (eigenspace decomposition) of the full
+    converse remains open. -/
+theorem commonDiagonalizer_of_commute_distinct {M N P : Matrix n n K}
+    (hP : IsUnit P.det) (hMdiag : (P⁻¹ * M * P).IsDiag)
+    (hdist : ∀ i j, i ≠ j → (P⁻¹ * M * P) i i ≠ (P⁻¹ * M * P) j j)
+    (hcomm : M * N = N * M) :
+    (P⁻¹ * N * P).IsDiag := by
+  have hPP : P * P⁻¹ = 1 := Matrix.mul_nonsing_inv P hP
+  -- Conjugation by `P` turns `NM = MN` into a commutation of `P⁻¹NP` with `D = P⁻¹MP`.
+  have hAD : (P⁻¹ * N * P) * (P⁻¹ * M * P) = (P⁻¹ * M * P) * (P⁻¹ * N * P) := by
+    have h1 : (P⁻¹ * N * P) * (P⁻¹ * M * P) = P⁻¹ * (N * M) * P := by
+      calc (P⁻¹ * N * P) * (P⁻¹ * M * P)
+          = P⁻¹ * N * (P * P⁻¹) * M * P := by simp only [mul_assoc]
+        _ = P⁻¹ * (N * M) * P := by rw [hPP]; simp only [mul_one, mul_assoc]
+    have h2 : (P⁻¹ * M * P) * (P⁻¹ * N * P) = P⁻¹ * (M * N) * P := by
+      calc (P⁻¹ * M * P) * (P⁻¹ * N * P)
+          = P⁻¹ * M * (P * P⁻¹) * N * P := by simp only [mul_assoc]
+        _ = P⁻¹ * (M * N) * P := by rw [hPP]; simp only [mul_one, mul_assoc]
+    rw [h1, h2, hcomm]
+  exact isDiag_of_commute_diag_distinct hMdiag hdist hAD
+
 /-- **The (ordered) product of a list of diagonal matrices is diagonal.**  The
     multiplicative companion of `isDiag_sum`.  Because matrix multiplication is
     *not* commutative, the product must be taken over an ordered `List` rather than
