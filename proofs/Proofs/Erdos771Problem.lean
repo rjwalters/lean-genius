@@ -121,6 +121,36 @@ theorem maxAvoidingSize_le (n m : ℕ) : maxAvoidingSize n m ≤ n := by
   rw [Icc_n, Nat.card_Icc] at hcard
   omega
 
+/-- **Monotonicity in the range `n`.** For a fixed target `m`, enlarging the
+    ambient box `{1,…,n}` can only enlarge the family of `m`-avoiding subsets, so
+    the maximum avoiding size is non-decreasing in `n`: `maxAvoidingSize n m ≤
+    maxAvoidingSize (n+1) m`. Every `m`-avoiding `S ⊆ {1,…,n}` is still an
+    `m`-avoiding subset of `{1,…,n+1}` (the `AvoidSum S m` predicate depends only
+    on `S` and `m`, not on the box), so the filtered powerset for `n` embeds into
+    that for `n+1` and `Finset.sup_mono` transfers the bound. This is the analogue
+    for `maxAvoidingSize` of the counting-function monotonicity used elsewhere in
+    the gallery, and complements the lower bounds `interval_avoiding_lower` /
+    `primeMultiples_avoiding_lower` and the upper bound `maxAvoidingSize_le`. -/
+theorem maxAvoidingSize_le_succ (n m : ℕ) :
+    maxAvoidingSize n m ≤ maxAvoidingSize (n + 1) m := by
+  classical
+  unfold maxAvoidingSize
+  -- Reduce to nestedness of the two filtered avoiding families; working on the
+  -- unfolded goal directly keeps the `filter`'s decidability instances aligned
+  -- with the `open Classical`-based definition (a fresh `filter` term would not).
+  apply Finset.sup_mono
+  intro S hS
+  rw [Finset.mem_filter, Finset.mem_powerset] at hS ⊢
+  -- `AvoidSum S m` is unchanged; only the box `{1,…,n} ⊆ {1,…,n+1}` grows.
+  refine ⟨hS.1.trans ?_, hS.2⟩
+  rw [Icc_n, Icc_n]
+  exact Finset.Icc_subset_Icc (le_refl 1) (Nat.le_succ n)
+
+/-- **`maxAvoidingSize` is monotone in `n`** (packaged form of
+    `maxAvoidingSize_le_succ`). -/
+theorem maxAvoidingSize_monotone (m : ℕ) : Monotone (fun n => maxAvoidingSize n m) :=
+  monotone_nat_of_le_succ (fun n => maxAvoidingSize_le_succ n m)
+
 /-- For `m > n²` the whole set `{1,…,n}` avoids `m`: every subset sum is at most
     `|A|·n ≤ n·n < m`, so `m` is never realised. -/
 theorem avoid_full (n m : ℕ) (h : n * n < m) : AvoidSum (Icc_n n) m := by
