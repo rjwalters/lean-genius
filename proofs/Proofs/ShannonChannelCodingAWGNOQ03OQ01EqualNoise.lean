@@ -84,7 +84,7 @@ theorem waterAlloc_rate_equalNoise [Nonempty ι] (N : ι → ℝ) {c : ℝ} (hc 
   have hNpos : ∀ i, 0 < N i := fun i => by rw [hN i]; exact hc
   rw [waterAlloc_rate_closedForm N hNpos μ]
   have heq : μ / c = 1 + P / (Fintype.card ι * c) := by
-    rw [hμdef]; field_simp; ring
+    rw [hμdef, add_div, div_self hcne, div_div]
   have hterm : ∀ i, (1 / 2) * Real.log (max μ (N i) / N i)
       = (1 / 2) * Real.log (1 + P / (Fintype.card ι * c)) := by
     intro i
