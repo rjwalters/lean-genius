@@ -140,7 +140,6 @@ theorem increment_asymptotic_iff_ratioSubOne_asymptotic (R g : ℕ → ℝ)
       =ᶠ[atTop] (fun l => (R (l + 1) - R l) / g l) := by
     filter_upwards [hR, hg] with l hR' hg'
     field_simp
-    ring
   rw [tendsto_congr' heq]
 
 /-- **Logarithmic increment–ratio bridge.** For an eventually-positive sequence
@@ -303,6 +302,53 @@ theorem increment_gap_div_tendsto_zero (R : ℕ → ℝ) (m : ℕ)
     rw [sub_div, div_self (ne_of_gt hl)]
   rw [tendsto_congr' heq]
   have := hgap.sub_const 1
+  simpa using this
+
+/-- **General-limit additive–multiplicative increment equivalence.** For an
+eventually-positive sequence `R` and any `c` with `c + 1 > 0`, the *normalized
+(multiplicative) increment* `(R(l+1) − R(l))/R(l)` tends to `c` **iff** the *additive
+log-increment* `log R(l+1) − log R(l)` tends to `log (c + 1)`.
+
+The `c = 0` case is `increment_div_tendsto_zero_iff_log_increment_tendsto_zero`
+(where `log (0 + 1) = 0`). Both quantities are, by the two general-limit bridges,
+equivalent to the consecutive ratio tending to `c + 1`
+(`increment_div_tendsto_iff_ratio_tendsto` and
+`log_increment_tendsto_log_iff_ratio_tendsto` at `L = c + 1`), hence equivalent to each
+other. This is the `c`-parametrized form of the additive–multiplicative equivalence:
+for a geometrically-growing sequence whose normalized increment tends to `c` (ratio
+`→ c + 1`), the additive log-increment tends to `log (c + 1)`. -/
+theorem increment_div_tendsto_iff_log_increment_tendsto (R : ℕ → ℝ) (c : ℝ)
+    (hc : 0 < c + 1) (hpos : ∀ᶠ l in atTop, 0 < R l) :
+    Tendsto (fun l => (R (l + 1) - R l) / R l) atTop (𝓝 c) ↔
+      Tendsto (fun l => Real.log (R (l + 1)) - Real.log (R l)) atTop
+        (𝓝 (Real.log (c + 1))) := by
+  rw [increment_div_tendsto_iff_ratio_tendsto R c (hpos.mono fun _ hl => ne_of_gt hl),
+    log_increment_tendsto_log_iff_ratio_tendsto R (c + 1) hc hpos]
+
+/-- **Logarithmic bounded-gap increment vanishes.** Under Erdős #1014's ratio
+convergence `R(l+1)/R(l) → 1` (with `R` eventually positive), the *additive
+log-increment over any fixed gap* `m` tends to `0`:
+`log R(l+m) − log R(l) → 0`.
+
+The logarithmic companion of `increment_gap_div_tendsto_zero` (the multiplicative
+bounded-gap increment), and the `m`-fold form of
+`log_increment_tendsto_zero_of_ratio_tendsto_one` (the unit gap `m = 1`). Since
+`log R(l+m) − log R(l) = log (R(l+m)/R(l))` and the gap-ratio `R(l+m)/R(l) → 1`
+(`ratio_gap_tendsto_one`), continuity of `log` at `1` (with `log 1 = 0`) gives the
+claim. So under #1014, Ramsey growth is additively smooth on the log scale over every
+bounded window of the second index. -/
+theorem log_increment_gap_tendsto_zero (R : ℕ → ℝ) (m : ℕ)
+    (hpos : ∀ᶠ l in atTop, 0 < R l)
+    (hratio : Tendsto (fun l => R (l + 1) / R l) atTop (𝓝 1)) :
+    Tendsto (fun l => Real.log (R (l + m)) - Real.log (R l)) atTop (𝓝 0) := by
+  have hgap := ratio_gap_tendsto_one R m hpos hratio
+  have hpos_m : ∀ᶠ l in atTop, 0 < R (l + m) := (tendsto_add_atTop_nat m).eventually hpos
+  have heq : (fun l => Real.log (R (l + m)) - Real.log (R l))
+      =ᶠ[atTop] (fun l => Real.log (R (l + m) / R l)) := by
+    filter_upwards [hpos, hpos_m] with l hl hlm
+    rw [Real.log_div (ne_of_gt hlm) (ne_of_gt hl)]
+  rw [tendsto_congr' heq]
+  have := (Real.continuousAt_log (by norm_num : (1 : ℝ) ≠ 0)).tendsto.comp hgap
   simpa using this
 
 
