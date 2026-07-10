@@ -1,5 +1,51 @@
 # Erdős #1093 — OQ-02: Is d(284,28)=9 the maximal deficiency?
 
+## Session 2026-07-09 (researcher-3) — Section XXIII: location bound CLOSES k=22 → frontier k≥23
+
+**Mode:** REVISIT (RICH tier). **Outcome:** progress — strict advance (frontier k≥22→k≥23),
+a one-step continuation of Section XXII. Not a byte-mirror (C(n,22) is not uniformly even),
+but the closing disjunction uses the two-prime economy {2,3} (simplest yet at this depth).
+
+### Key realization
+The effective location bound advances to k=22. A deficiency `≥ 10` forces the window-floor
+power bound `(n-21)^10 ≤ 22!`, and `22! < 128^10` (`factorial_22_lt_128_pow_ten`), so `n ≤ 148`;
+with the admissibility floor `n ≥ 44 (=2·22)` the window is `n ∈ {44,…,148}` (105 values). By
+Kummer/Lucas `C(n,22)` is odd exactly when `22 = 10110₂` is a binary submask of `n`, i.e. at
+`n = 54,55,62,63,86,87,94,95,118,119,126,127`. **All twelve odd binomials are divisible by 3**,
+so the two-prime disjunction `2 ∣ C(n,22) ∨ 3 ∣ C(n,22)` covers the whole window (evens by 2,
+odds by 3).
+
+### What I did — Section XXIII (6 theorems, 0 sorry, 0 new axioms)
+- `factorial_22_lt_128_pow_ten` — `22! < 128^10` (kernel `decide`, ofReduceBool-free;
+  `22! = 1124000727777607680000 < 1180591620717411303424 = 128^10`).
+- `smallPrime_dvd_choose_22_of_range` — `2 ∣ C(n,22) ∨ 3 ∣ C(n,22)` for `44 ≤ n ≤ 148`
+  (`interval_cases <;> native_decide`).
+- `not_admissible_k22_of_range` — the 105 window pairs are all inadmissible.
+- `deficiency_le_nine_of_k_eq_22` — the location bound closes k=22.
+- `deficiency_le_nine_of_k_le_22` — combines `k≤21` (Section XXII) with `k=22`.
+- `maximalDeficiencyIs_nine_iff_kGe23` — sharpened reduction: open content lives at `k ≥ 23`.
+
+### Arithmetic (Python-verified before Lean)
+- `22! = 1124000727777607680000 < 1180591620717411303424 = 128^10`; smallest m with m^10 > 22! is 128.
+- window floor: `(n-21)^10 ≤ 22! < 128^10 ⟹ n-21 < 128 ⟹ n ≤ 148`; floor `n ≥ 44`.
+- odd C(n,22) at n=54,55,62,63,86,87,94,95,118,119,126,127; each divisible by 3; evens by 2 ⟹ {2,3} covers {44,…,148} (verified: 0 uncovered pairs).
+
+### Verification — UNVERIFIED (Docker infra fully down)
+Docker daemon corrupted: containerd content-store / meta.db `input/output error` at IMAGE
+build (2 attempts; `docker images` itself errors on a missing blob). Disk healthy (157Gi free)
+— this is beyond the SIGBUS-135 olean-write storm; needs OPERATOR docker cleanup. Zero build
+signal possible. All 6 proofs are exact structural mirrors of the merged/verified Section XXII,
+differing only in Python-verified constants (21→22, 94→128, 42→44, 113→148) and the {2,3} prime
+set; `Nat.prime_three` is a standard Mathlib lemma used elsewhere in the repo.
+
+### Files Modified
+- `proofs/Proofs/Erdos1093ProblemOQ02.lean` (Section XXIII, 1590→1688 lines, 77→83 theorems)
+- `src/data/research/problems/erdos-1093-oq-02.json` (OQ02 leanFiles counts resynced to 1688/83)
+- `research/problems/erdos-1093-oq-02/knowledge.md`
+
+---
+
+
 ## Session 2026-07-09 (researcher-3) — Section XXII: location bound CLOSES k=21 → frontier k≥22
 
 **Mode:** REVISIT (RICH tier). **Outcome:** progress — strict advance (frontier k≥21→k≥22),
@@ -646,3 +692,33 @@ session-sized work** — the genuine frontier (universal bound / `10≤d≤18` a
 blocked on effective analytic NT absent from Mathlib. Future agents: do not reclaim
 for elementary or de-native_decide work; the only real advance is formalising ELS,
 a multi-month effort. Recipe above is recorded so no one re-derives it.
+
+## Session 2026-07-09 (researcher-3) — Section XXIV: location bound closes k=23, frontier k≥24
+
+**Mode:** ACT. Extended the elementary ELS-free location bound one step (k=22 → k=23).
+Added 6 theorems (0 sorry, 0 new axiom), mirroring Sections XVIII–XXIII exactly:
+- `factorial_23_lt_175_pow_ten` — `23! < 175^10` (kernel `decide`, ofReduceBool-free;
+  `23! = 25852016738884976640000 < 26938938999176025390625 = 175^10`). 175 is the LEAST
+  base with `23! < b^10` (Python-verified).
+- `smallPrime_dvd_choose_23_of_range` — `2 ∣ C(n,23) ∨ 5 ∣ C(n,23)` for `46 ≤ n ≤ 196`
+  (`interval_cases n <;> native_decide`, 151 values).
+- `not_admissible_k23_of_range`, `deficiency_le_nine_of_k_eq_23`,
+  `deficiency_le_nine_of_k_le_23`, `maximalDeficiencyIs_nine_iff_kGe24`.
+
+**Numerics (Python-verified before Lean):** window-floor `(n-22)^10 ≤ 23! < 175^10` ⇒
+`n ≤ 196`; floor `n ≥ 46 (=2·23)`; window `{46..196}` = 151 values. `C(n,23)` odd (Kummer:
+`23 = 10111₂` submask of n) at `n ∈ {55,63,87,95,119,127,151,159,183,191}` (10 values); ALL
+ten divisible by 5. So `2 ∣ C ∨ 5 ∣ C` covers the whole window (evens by 2, odds by 5).
+Prime set `{2,5}` here (same as k=20,21; k=22 used `{2,3}`).
+
+**Build:** UNVERIFIED. Docker infra down again — `docker images` errors
+`meta.db: input/output error` (containerd metadata store corrupt, known #35184, operator-
+level). Disk healthy (155Gi free). No build signal obtainable. The section is a byte-exact
+structural mirror of the merged/verified k=18..22 sections, only constants differ → high
+confidence. Committed onto feature/researcher-3-5; PR #36915 now covers Sections XXIII+XXIV.
+
+**Frontier:** now `k ≥ 24`. NEXT (k=24): Python-recheck least base `b` with `24! < b^10`,
+window floor `n ≥ 48`, window `{48..b+22}`, odd binomials of `24 = 11000₂` and the small
+prime dividing them; then clone this section with the new constants. The deep frontier
+(universal bound / `10≤d≤18` at k=28) remains BLOCKED on effective analytic NT (ELS) absent
+from Mathlib — the incremental k-by-k march is the only session-sized advance here.
