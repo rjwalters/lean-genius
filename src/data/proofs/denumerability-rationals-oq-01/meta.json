@@ -179,6 +179,43 @@
       "description": "Constructive denumerability of algebraic numbers — another cardinality result in the countable hierarchy."
     }
   ],
+  "references": [
+    {
+      "title": "Über eine Eigenschaft des Inbegriffes aller reellen algebraischen Zahlen",
+      "author": "Georg Cantor",
+      "year": "1874",
+      "venue": "Journal für die reine und angewandte Mathematik 77, 258–262",
+      "description": "Cantor's first proof that the algebraic (hence rational) reals are countable while ℝ is not, establishing the cardinality gap |ℚ| = ℵ₀ < 𝔠 = |ℝ| that this entry formalizes."
+    },
+    {
+      "title": "Über eine elementare Frage der Mannigfaltigkeitslehre",
+      "author": "Georg Cantor",
+      "year": "1891",
+      "venue": "Jahresbericht der Deutschen Mathematiker-Vereinigung 1, 75–78",
+      "description": "The diagonal argument giving |𝒫(X)| > |X| for every set, hence 𝔠 = |𝒫(ℚ)| = 2^ℵ₀ > ℵ₀ — the source of the Dedekind-cut cardinality |𝒫(ℚ)| = 𝔠 used here."
+    },
+    {
+      "title": "The Consistency of the Axiom of Choice and of the Generalized Continuum Hypothesis with the Axioms of Set Theory",
+      "author": "Kurt Gödel",
+      "year": "1940",
+      "venue": "Annals of Mathematics Studies 3, Princeton University Press",
+      "description": "Gödel's constructible universe L shows CH cannot be refuted from ZFC; half of the independence result axiomatized in this entry."
+    },
+    {
+      "title": "The Independence of the Continuum Hypothesis",
+      "author": "Paul J. Cohen",
+      "year": "1963",
+      "venue": "Proceedings of the National Academy of Sciences 50, 1143–1148",
+      "description": "Cohen's forcing method shows CH cannot be proved from ZFC; together with Gödel it establishes the full independence this entry states via axioms."
+    },
+    {
+      "title": "Set Theory",
+      "author": "Thomas Jech",
+      "year": "2003",
+      "venue": "Springer Monographs in Mathematics (3rd Millennium ed.)",
+      "description": "Standard graduate reference for cardinal arithmetic, the continuum function, and the forcing proof of the independence of CH from ZFC."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.SetTheory.Cardinal.Basic",
