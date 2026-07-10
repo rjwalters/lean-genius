@@ -88,42 +88,48 @@
       "title": "Adjacent-Ratio Product Identity",
       "summary": "choose_adjacent_ratio_prod: the subtraction-free identity C(n,k)·C(n,k+2)·(t+2)(k+2) = C(n,k+1)²·(k+1)(t+1) with n = k+2+t, from two applications of Nat.choose_succ_right_eq. This is the exact form behind the parent's log-concavity inequality.",
       "startLine": 65,
-      "endLine": 87
+      "endLine": 87,
+      "mathContext": "With $n = k+2+t$: $\\binom{n}{k}\\binom{n}{k+2}(t+2)(k+2) = \\binom{n}{k+1}^2 (k+1)(t+1)$, from combining the two forms of $\\texttt{Nat.choose\\_succ\\_right\\_eq}$ with no truncated subtraction."
     },
     {
       "id": "defect",
       "title": "Exact Log-Concavity Defect",
       "summary": "choose_logConcavity_defect: C(n,k+1)²·(k+1)(n−k−1) = C(n,k)·C(n,k+2)·((k+1)(n−k−1) + (n+1)) for k+2 ≤ n. The surplus multiplier on the right exceeds the left by exactly n+1 — the quantitative content the parent's inequality discards.",
       "startLine": 89,
-      "endLine": 109
+      "endLine": 109,
+      "mathContext": "$\\binom{n}{k+1}^2 (k+1)(n-k-1) = \\binom{n}{k}\\binom{n}{k+2}\\big((k+1)(n-k-1) + (n+1)\\big)$ for $k+2 \\le n$: the right multiplier exceeds the left by exactly $n+1$."
     },
     {
       "id": "gap",
       "title": "Gap Form",
       "summary": "choose_logConcavity_gap: (C(n,k+1)² − C(n,k)·C(n,k+2))·(k+1)(n−k−1) = (n+1)·C(n,k)·C(n,k+2), the log-concavity gap as a fixed (n+1)-multiple of the outer product.",
       "startLine": 111,
-      "endLine": 125
+      "endLine": 125,
+      "mathContext": "$\\big(\\binom{n}{k+1}^2 - \\binom{n}{k}\\binom{n}{k+2}\\big)(k+1)(n-k-1) = (n+1)\\binom{n}{k}\\binom{n}{k+2}$: the (exact, truncation-safe) log-concavity gap is a fixed $(n+1)$-multiple of the outer product."
     },
     {
       "id": "corollaries",
       "title": "Recovered Inequalities",
       "summary": "choose_logConcave_le and choose_logConcave_lt: the parent's inequality C(n,k)·C(n,k+2) ≤ C(n,k+1)² and its strict interior form, both immediate from the defect identity — confirming the strengthening subsumes the original.",
       "startLine": 127,
-      "endLine": 152
+      "endLine": 152,
+      "mathContext": "$\\binom{n}{k}\\binom{n}{k+2} \\le \\binom{n}{k+1}^2$ for all $n,k$ (zero outside the interior), strict $<$ for $k+2 \\le n$ since the surplus $(n+1)\\binom{n}{k}\\binom{n}{k+2} > 0$ there."
     },
     {
       "id": "centered-and-ratio",
       "title": "Centered Form and Rational Excess",
       "summary": "choose_logConcavity_defect' (the identity at a centered index j) and choose_ratio_rat: C(n,k+1)²/(C(n,k)·C(n,k+2)) = 1 + (n+1)/((k+1)(n−k−1)) over ℚ, the explicit ultra-log-concavity excess over the geometric value 1.",
       "startLine": 154,
-      "endLine": 192
+      "endLine": 192,
+      "mathContext": "Centered index $j$: $\\binom{n}{j}^2 j(n-j) = \\binom{n}{j-1}\\binom{n}{j+1}\\big(j(n-j) + (n+1)\\big)$; over $\\mathbb{Q}$ the ratio $\\binom{n}{k+1}^2 / \\big(\\binom{n}{k}\\binom{n}{k+2}\\big) = 1 + \\frac{n+1}{(k+1)(n-k-1)} > 1$ — the ultra-log-concavity excess."
     },
     {
       "id": "summary",
       "title": "Signature Checks and Exact-Defect Summary",
       "summary": "Closing #check signature confirmations of the headline results and a summary docstring recording the exact defect identity (C(n,k+1)² − C(n,k)·C(n,k+2))·(k+1)(n−k−1) = (n+1)·C(n,k)·C(n,k+2) and its rational-ratio form, noting the whole file rests only on Mathlib's Nat.choose_succ_right_eq with no new axioms; closes the namespace.",
       "startLine": 194,
-      "endLine": 215
+      "endLine": 215,
+      "mathContext": "$\\texttt{\\#check}$ signature confirmations and the summary identity $\\big(\\binom{n}{k+1}^2 - \\binom{n}{k}\\binom{n}{k+2}\\big)(k+1)(n-k-1) = (n+1)\\binom{n}{k}\\binom{n}{k+2}$; rests only on $\\texttt{Nat.choose\\_succ\\_right\\_eq}$, no new axioms."
     }
   ],
   "conclusion": {
