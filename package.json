@@ -5,10 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "export NODE_OPTIONS=\"${NODE_OPTIONS:-} --max-old-space-size=8192\" && pnpm gallery:check-size && pnpm annotations:build && pnpm research:build && pnpm research:enrich && pnpm gallery:check-search-index && pnpm gallery:loading-facts && tsc -b && vite build && pnpm gallery:check-bundle-budget",
+    "build": "export NODE_OPTIONS=\"${NODE_OPTIONS:-} --max-old-space-size=8192\" && pnpm gallery:check-size && pnpm gallery:check-verified-companions && pnpm annotations:build && pnpm research:build && pnpm research:enrich && pnpm gallery:check-search-index && pnpm gallery:loading-facts && tsc -b && vite build && pnpm gallery:check-bundle-budget",
     "lint": "eslint .",
     "gallery:check-bundle-budget": "tsx scripts/gallery/check-bundle-budget.ts",
     "gallery:check-search-index": "tsx scripts/gallery/check-search-index.ts",
+    "gallery:check-verified-companions": "tsx scripts/gallery/check-verified-companions.ts",
     "gallery:check-size": "tsx scripts/gallery/check-meta-size.ts",
     "gallery:check-size:strict": "tsx scripts/gallery/check-meta-size.ts --strict",
     "gallery:size-report": "tsx scripts/gallery/check-meta-size.ts --report",
