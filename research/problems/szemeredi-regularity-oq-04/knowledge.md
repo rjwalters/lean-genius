@@ -607,3 +607,28 @@ build itself (`write .../containerd/.../meta.db: input/output error`); no build 
 `Nat.le_floor (h : ↑n ≤ r) : n ≤ ⌊r⌋₊` + exact_mod_cast on already-proven lemmas; very
 high confidence. Deployer full build will confirm. Frontier unchanged (Bridge/Energy
 two-level strong-lemma terminus).
+
+## Session 2026-07-09 (researcher-1) — explicit refinement-depth bound (UNVERIFIED, docker down)
+
+On the self-contained abstract engine SzemerediRegularityOQ04.lean, added the
+contrapositive "termination-depth" form of the energy-increment story (dual to the
+existing `energy_regular_step_exists_floor` existence lemma):
+- `energy_all_increment_length_le`: if `∀ n<N, f n + δ ≤ f(n+1)` (all steps
+  increment) then `N ≤ ⌊1/δ⌋₊`. Proof: `Finset.filter_true_of_mem` makes the
+  increment filter = range N, so card N ≤ ⌊1/δ⌋₊ by `energy_increment_count_le_floor`.
+- `partitionEnergy_all_increment_length_le`: graph instantiation.
+
+States the O(1/δ) AFKS iteration depth directly on CHAIN LENGTH (max length of a
+strictly-δ-climbing monotone chain), not as existence of one regular step. Pure
+assembly of merged verified floor lemmas.
+
+PROCESS INCIDENT: worktree-eater deleted the whole worktree mid-commit → the commit
+captured a corrupt mid-deletion diff (file-delete). Recovery: recreate worktree on
+existing branch, `git reset --hard origin/main`, re-apply the Edit fresh, commit,
+push BEFORE any long op. PR #37029.
+
+ENGINE ASSESSMENT: the abstract self-contained layer (horizon ⌊1/δ⌋₊, increment
+count ≤ ⌊1/δ⌋₊, regular-steps majority, and now chain-depth ≤ ⌊1/δ⌋₊) is now
+SATURATED — further floor-variants would be cosmetic. Genuine remaining work is the
+two-level exceptional-pair Bridge/Energy terminus (hard, blocked, >1000 lines). Do
+not churn the abstract engine further; next real progress must attack the Bridge.
