@@ -260,6 +260,51 @@ theorem conjecturedBound_div_klrBound_tendsto_atTop (c : ℝ) (hc : 0 < c) :
   exact (conjecturedBound_div_klrBound c hc n hn).symm
 
 /-
+## The Pommerenke–Conjecture Gap
+
+The block above measures how far the *KLR* bound `c/(n√log n)` sits below the conjectured
+`c/n`: exactly a factor `√log n`, which is unbounded but grows only logarithmically.  The
+*older* Pommerenke bound `1/(2en²)` falls short by much more.  Here we pin down the Pommerenke
+shortfall the same way:
+
+* `conjecturedBound_div_pommerenkeBound` — the *exact* multiplicative gap is `2ec·n` (linear
+  in `n`, versus KLR's `√log n`).
+* `conjecturedBound_div_pommerenkeBound_tendsto_atTop` — that gap diverges.
+
+Together with the KLR block this shows both published lower bounds are asymptotically infinitely
+far (up to constants) from the conjecture, and quantifies *how much* the 2025 KLR bound improved
+on Pommerenke's 1961 bound: the shortfall dropped from a factor `Θ(n)` to a factor `Θ(√log n)`.
+Like the KLR block these are unconditional facts about the bound *functions* and use none of the
+deep axioms.
+-/
+
+/-- The exact multiplicative gap between the conjectured and Pommerenke bounds is `2ec·n`
+    (for `c > 0`, `n ≥ 1`) — linear in `n`, in contrast with KLR's `√log n`. -/
+theorem conjecturedBound_div_pommerenkeBound (c : ℝ) (hc : 0 < c) (n : ℕ) (hn : n ≥ 1) :
+    conjecturedBound c n / pommerenkeBound n = 2 * Real.exp 1 * c * n := by
+  have hn_pos : (0 : ℝ) < (n : ℝ) := by exact_mod_cast show 0 < n by omega
+  have h1 : (n : ℝ) ≠ 0 := hn_pos.ne'
+  have h2 : Real.exp 1 ≠ 0 := (Real.exp_pos 1).ne'
+  simp only [conjecturedBound, pommerenkeBound]
+  field_simp
+  ring
+
+/-- The multiplicative gap `conjecturedBound / pommerenkeBound` is unbounded — it grows like
+    `2ec·n → ∞`.  So Pommerenke's bound, too, does not reach the conjectured rate even up to
+    constants, and (comparing with `conjecturedBound_div_klrBound_tendsto_atTop`) it falls short
+    far faster than KLR. -/
+theorem conjecturedBound_div_pommerenkeBound_tendsto_atTop (c : ℝ) (hc : 0 < c) :
+    Filter.Tendsto (fun n : ℕ => conjecturedBound c n / pommerenkeBound n)
+      Filter.atTop Filter.atTop := by
+  have hlin : Filter.Tendsto (fun n : ℕ => 2 * Real.exp 1 * c * (n : ℝ))
+      Filter.atTop Filter.atTop :=
+    Filter.Tendsto.const_mul_atTop (by positivity : (0 : ℝ) < 2 * Real.exp 1 * c)
+      tendsto_natCast_atTop_atTop
+  refine hlin.congr' ?_
+  filter_upwards [Filter.eventually_ge_atTop 1] with n hn
+  exact (conjecturedBound_div_pommerenkeBound c hc n hn).symm
+
+/-
 ## Lemniscate Properties
 -/
 
