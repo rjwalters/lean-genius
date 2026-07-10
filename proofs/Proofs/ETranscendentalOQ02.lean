@@ -1982,4 +1982,35 @@ theorem liouvilleNumber_all_zeros_not_normal_base_two (k : ℕ) (hk : 1 ≤ k) :
         omega)
     exact h2.ne'
 
+-- ============================================================
+-- PART VIII: ABSOLUTE-LEVEL COROLLARIES
+-- ============================================================
+
+/-!
+## Consequences of absolute normality
+
+`IsAbsolutelyNormal` (normal in *every* base `≥ 2`) is the notion the axiom
+`e_absolutely_normal` asserts for `e`, but the file draws its consequences only
+one base at a time. The two corollaries below package the base-uniform
+consequences: an absolutely normal number is irrational, and is disjunctive in
+every base. They follow from `normal_imp_irrational` / `normal_imp_disjunctive`
+by instantiating the base.
+-/
+
+/-- **Absolutely normal numbers are irrational.**  The absolute-level form of
+    `normal_imp_irrational`: an absolutely normal number is normal in *every* base,
+    in particular base `2`, hence irrational. -/
+theorem absolutely_normal_imp_irrational (x : ℝ) (h : IsAbsolutelyNormal x) :
+    Irrational x :=
+  normal_imp_irrational 2 (le_refl 2) x (h 2 (le_refl 2))
+
+/-- **Absolutely normal numbers are disjunctive in every base.**  For each base
+    `b ≥ 2` and every finite digit string `s`, the base-`b` expansion of an
+    absolutely normal number contains `s` — by `normal_imp_disjunctive` applied to
+    its normality in base `b`. -/
+theorem absolutely_normal_imp_disjunctive (x : ℝ) (h : IsAbsolutelyNormal x)
+    (b k : ℕ) (hb : 2 ≤ b) (s : Fin k → Fin b) :
+    ∃ n : ℕ, ∀ i : Fin k, nthDigit b (n + i.val) x = (s i : ℤ) :=
+  normal_imp_disjunctive b k hb x (h b hb) s
+
 end ETranscendentalOQ02
