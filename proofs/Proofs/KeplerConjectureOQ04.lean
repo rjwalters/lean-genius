@@ -1149,5 +1149,43 @@ theorem sphere_to_spaceFilling_gap_gt :
   rw [rhombicDodecahedronPackingDensity_eq_one]
   linarith [fccDensity_lt_35329_div_46710]
 
+/-!
+## S23 — the FCC sphere density is provably *not* optimal
+
+`isGreatest_packingDensity_range` (S21) shows the space-filling value `δ = 1` is the
+*attained* maximum. Its sharp negative dual — the crisp headline of Kepler OQ-04 — is
+that the FCC sphere density `π/(3√2)` is **not** the greatest achievable density: some
+convex body (the space-filling rhombic dodecahedron) packs strictly denser, so spheres
+are provably suboptimal among convex-body packings. This section records that as a
+Mathlib-native `¬ IsGreatest` statement and, dually, as the strict inequality
+`fccDensity < sSup (range density)`. Both reuse only facts already in this file
+(the `δ = 1` range-membership witness and the verified bound
+`fccDensity_lt_35329_div_46710`); no new axioms.
+-/
+
+/-- **The FCC sphere density is not the greatest achievable density.**
+`¬ IsGreatest (range PackingDensity.density) fccDensity`: were `fccDensity` an upper
+bound of the range it would dominate the space-filling value `δ = 1`
+(`rhombicDodecahedronPacking`), forcing `1 ≤ fccDensity` — impossible since
+`fccDensity < 35329/46710 < 1` (`fccDensity_lt_35329_div_46710`). This is the exact
+negative dual of `isGreatest_packingDensity_range`: spheres are provably *suboptimal*
+among convex-body packings, the headline of Kepler OQ-04. No axioms. -/
+theorem not_isGreatest_fccDensity_range :
+    ¬ IsGreatest (Set.range (PackingDensity.density)) fccDensity := by
+  rintro ⟨-, hub⟩
+  have h1 : (1 : ℝ) ≤ fccDensity :=
+    hub ⟨rhombicDodecahedronPacking, rhombicDodecahedronPackingDensity_eq_one⟩
+  linarith [fccDensity_lt_35329_div_46710]
+
+/-- **The FCC sphere density lies strictly below the achievable supremum.**
+`fccDensity < sSup (range PackingDensity.density)`: the least upper bound of achievable
+convex-body packing densities (`= 1`, `csSup_packingDensity_range_eq_one`) strictly
+exceeds the FCC sphere density. The `sSup`-native rendering of "spheres are suboptimal",
+complementing the `¬ IsGreatest` form. No axioms. -/
+theorem fccDensity_lt_csSup_packingDensity_range :
+    fccDensity < sSup (Set.range (PackingDensity.density)) := by
+  rw [csSup_packingDensity_range_eq_one]
+  linarith [fccDensity_lt_35329_div_46710]
+
 
 end KeplerConjectureOQ04
