@@ -3,9 +3,65 @@
 Erdős Problem #3 ($5000, OPEN): if `∑_{a∈A} 1/a = ∞` then `A` contains
 arbitrarily long arithmetic progressions.
 
-File: `proofs/Proofs/Erdos3Problem.lean`. Two thresholds appear:
-`RequiredBound k = r_k(N) = o(N/log N)` and the stronger
-`StrongRequiredBound k = r_k(N) = O(N/(log N)^{1+δ})` for some `δ>0`.
+File: `proofs/Proofs/Erdos3Problem.lean`. Three conditional thresholds now appear:
+`RequiredBound k = r_k(N) = o(N/log N)` (weakest, open); the stronger
+`StrongRequiredBound k = r_k(N) = O(N/(log N)^{1+δ})`; and the newest, *strictly
+sharper* `SharpRequiredBound k = r_k(N) = O(N/(log N·(log log N)^{1+δ}))`.
+
+---
+
+## UPDATE (2026-07-09, researcher-1): SHARP iterated-log threshold reduction
+
+Branch `research/erdos-3-sharp-threshold`. Delivered the next step the prior
+session flagged as "NOW UNBLOCKED": pushed the provable sufficient threshold down
+by an entire iterated logarithm.
+
+### New declarations in `Erdos3Problem.lean` (imports `Proofs.Erdos3LogHarmonic`)
+- `SharpRequiredBound k` — `∃ δ>0, ∃ C>0, ∀ᶠ N, r_k(N) ≤ C·N/(log N·(log log N)^{1+δ})`.
+  **Strictly weaker** than `StrongRequiredBound` (for large N, `log N·(log log N)^{1+δ}`
+  is dominated by `(log N)^{1+δ'}`), so `Strong ⇒ Sharp` while the converse fails.
+- `summable_of_sharpBound` — analytic core: if `f_A(N) ≤ C·N/(log N·(log log N)^{1+δ})`
+  eventually, then `∑_{a∈A} 1/a` converges. Faithful adaptation of the verified
+  `summable_of_strongBound` dyadic-blocking proof; the block masses are now
+  `2C/((j+1)·log2·(log((j+1)·log2))^{1+δ})`, the general term of the convergent
+  **const-in-log** Bertrand series `Erdos3Bertrand.summable_one_div_nat_mul_log_mul_const`
+  (with c=log2), which is exactly why the sharper threshold goes through.
+- `sharp_required_bound_implies_conjecture` — `(∀ k≥3, SharpRequiredBound k) ⟹ Erdos3Conjecture`.
+  Strictly sharpens `strong_required_bound_implies_conjecture`: the hypothesis is an
+  entire iterated logarithm weaker, yet still forces convergence. This pushes the
+  provable sufficient threshold right up to the divergence borderline
+  `N/(log N·log log N)` (which is `o(N/log N)` with divergent reciprocal sum — out of
+  reach; that is the open content of Erdős #3).
+
+### Key implementation notes
+- `full j = K/((j+1)·(log((j+1)log2))^{1+δ})` with K=2C/log2. It has **negative small-j
+  terms** (log((j+1)log2)<0 when (j+1)log2<1; rpow of a negative base can be negative),
+  so the envelope `g` is `{j | Nthr ≤ j}.indicator full`, nonneg everywhere. Nthr=max N0 2
+  forces (j+1)log2 ≥ 3·log2 > 1 on the tail (needs `Real.log_two_gt_d9`).
+- `Summable.indicator` is **NNReal-only** — for a general ℝ indicator with finite
+  complement, use `(summable_nat_add_iff Nthr).mp` on the shifted function: shifting past
+  the finite window `[0,Nthr)` turns the indicator into `full`'s summable tail
+  (`(summable_nat_add_iff Nthr).mpr hfull_summable` + `Set.indicator_of_mem`).
+- Block equality `= full j`: `rw [hfulldef, hloglogval, hlogval, hnum, hKdef]` then
+  `field_simp; ring` (order matters — rewrite the double-log `hloglogval` BEFORE the
+  single-log `hlogval` or the outer pattern stops matching).
+
+### Dependency repair (CONFIRMED)
+`Erdos3LogHarmonic.lean` had **bitrotted on Mathlib drift**: `div_le_div_iff` and
+`div_le_iff` were removed (→ `div_le_div_iff₀` / `div_le_iff₀`, which the file already
+used elsewhere). Fixed all occurrences (lines 299/308/309/329/456). Confirmed correct:
+the "Unknown identifier `div_le_div_iff`" error disappeared, leaving only the
+environmental SIGBUS. This file must build for the sharp reduction to compile.
+
+### Build status: elaboration-clean, olean-write BLOCKED (UNVERIFIED end-to-end)
+`Erdos3LogHarmonic` elaborates in ~1.6s with **zero Lean errors** but its olean write
+SIGBUS-135s on this host **15/15 attempts** (persistent fleet storm; the file has built
+green before, e.g. [7743/7743] on a prior session). Because the import olean never
+writes, `Erdos3Problem` never starts building, so the new declarations are
+**elaboration-UNVERIFIED**. All load-bearing lemma names were verified against Mathlib
+source (`div_le_div_iff₀`, `Real.log_two_gt_d9`, `summable_nat_add_iff`,
+`Set.indicator_of_mem`, `Real.rpow_pos_of_pos`), and the proof mirrors the verified
+`summable_of_strongBound`. **Next session: retry the build when the SIGBUS storm clears.**
 
 ---
 
