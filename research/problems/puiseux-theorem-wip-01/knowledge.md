@@ -241,3 +241,51 @@ verified via [[reference-docker-down-lean-elab-verification-path]]:
 **Assessment: file SATURATED + now VERIFIED.** Structure complete through the ramification
 colimit capstone; the algebraic-closure frontier is >1000-line out of scope. No new lemma
 added (would be cosmetic); the value this session is turning UNVERIFIED→VERIFIED + cleanup.
+
+## Session (researcher-2, 2026-07-10): Part XII — ramification tower at the FIELD level
+
+**Mode**: REVISIT (MODERATE, saturated) · **Outcome**: progress (1 thm + 1 def + 3 thms,
+VERIFIED 0-sorry/0-axiom via local lean 4.26.0 — docker image-build down, ENOSPC/meta.db).
+Branch `research/erdos1006-oq0101-decidablepred` (pre-existing worktree branch).
+
+**Gap closed.** Part XI (researcher-1) built the ramification filtration only at the
+**ring** level (`puiseuxRamificationSubring`, `_mono`, `iSup_… = puiseuxSubring`), even
+though every Part-X/XI docstring describes the Puiseux field as "the colimit of Laurent
+**fields** along `x ↦ x^{1/n}`". Over a `Field K` each level is inverse-closed, so each
+floor is genuinely a `Subfield` — that field-level statement was promised in prose but
+never formalized.
+
+**Contribution — Part XII (section `FieldFiltration`):**
+1. `isPuiseuxOfRamification_inv [Field K] {n} {f} : IsPuiseuxOfRamification n f →
+   IsPuiseuxOfRamification n f⁻¹` — the fixed-level refinement of Part X's `isPuiseux_inv`.
+   Proof is `isPuiseux_inv`'s body verbatim but with the level hypothesis `hf` supplied
+   directly (no outer `obtain ⟨n,_⟩`) and the conclusion stated at the *same* `n` (the
+   embedding `ℤ ↪o ℚ, k↦k/n` is unchanged, so `f⁻¹`'s support stays in its range). This is
+   the one field-axiom `puiseuxRamificationSubring` was missing.
+2. `puiseuxRamificationSubfield (K) [Field K] (n) : Subfield (HahnSeries ℚ K)` — the
+   Laurent field `K((x^{1/n}))`; carrier `{f | IsPuiseuxOfRamification n f}`, `inv_mem'`
+   from (1), other fields reuse Part-XI level closure lemmas. `mem_…` `Iff.rfl`.
+3. `puiseuxRamificationSubfield_mono` (`n∣n' → ≤`, via `IsPuiseuxOfRamification.mono`),
+   `_le_puiseuxSubfield` (`fun _ hx => ⟨n, hx⟩`), and the capstone
+   `iSup_puiseuxRamificationSubfield : (⨆ n, puiseuxRamificationSubfield K n) =
+   puiseuxSubfield K` — field-level `K⦃⦃x⦄⦄ = colim_n K((x^{1/n}))`. All three are
+   line-for-line the Part-XI `Subring` versions with `Subring`→`Subfield`.
+
+**Verification (docker down — ENOSPC).** `docker-build.sh` still dies at *image build*
+with the containerd `meta.db: input/output error`; ROOT CAUSE this session confirmed = the
+host `/` volume is at 99% (≈150–180 Mi free), so containerd can't write its metadata store
+(and Edit's atomic-rename tmp write also hit ENOSPC until I freed my own /tmp junk). NOT a
+proof error. Verified via [[reference-docker-down-lean-elab-verification-path]]:
+`~/.elan/toolchains/leanprover--lean4---v4.26.0/bin/lean -R proofs` with
+`LEAN_PATH` = every `proofs/.lake/packages/*/.lake/build/lib/lean`. Full-file elaboration
+**EXIT 0, zero errors** (only the two pre-existing warnings at lines 353/380). `#print axioms`
+on `iSup_puiseuxRamificationSubfield`, `isPuiseuxOfRamification_inv`,
+`puiseuxRamificationSubfield_mono` = `[propext, Classical.choice, Quot.sound]` — no sorryAx,
+no ofReduceBool. Genuinely 0-axiom/0-sorry.
+
+**Files Modified:** proofs/Proofs/PuiseuxTheorem.lean (+Part XII: 4 thms + 1 def;
+1107→1216 lines), src/data/proofs/puiseux-theorem/meta.json (both count blocks synced:
+lineCount 1107→1216, theoremCount 34→39 & 36→41, definitionCount 7→8).
+
+**Assessment.** Structure line is now complete symmetrically at ring AND field level; the
+only remaining frontier is full Newton–Puiseux algebraic closure (>1000-line, out of scope).
