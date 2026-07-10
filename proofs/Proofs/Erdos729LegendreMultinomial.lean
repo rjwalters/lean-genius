@@ -153,4 +153,56 @@ theorem prime_dvd_multinomial_iff {α : Type*} (p : ℕ) [Fact p.Prime]
     ← mul_pos_iff_of_pos_left hq]
   omega
 
+/-- **Kummer's identity for binomial coefficients (★), additive form.**
+
+The classical two-part specialisation, stated directly on `Nat.choose`: for any prime
+`p` and any `m, n`,
+
+    (p - 1) · v_p( C(m+n, n) ) + s_p(m + n)  =  s_p(m) + s_p(n),
+
+with `s_p(k) = (p.digits k).sum`.  Equivalently `(p-1)·v_p(C(m+n,n)) = s_p(m)+s_p(n)-s_p(m+n)`,
+the exact number of base-`p` carries in `m + n` scaled by `p - 1`.  This is the
+`Nat.choose` form of the general-`p` Kummer theorem (the `p = 2` case is
+`Erdos729DigitSum.excess_eq_v2_choose`), proved by applying the additive Legendre
+identity `legendre_add` to the three factorials in `(m+n)! = C(m+n,n) · n! · m!`. -/
+theorem sub_one_mul_padicValNat_choose (p : ℕ) [Fact p.Prime] (m n : ℕ) :
+    (p - 1) * padicValNat p ((m + n).choose n) + (p.digits (m + n)).sum
+      = (p.digits m).sum + (p.digits n).sum := by
+  -- `(m+n).choose n · n! · m! = (m+n)!`
+  have hfact : (m + n).choose n * n ! * m ! = (m + n)! := by
+    have h := Nat.choose_mul_factorial_mul_factorial (Nat.le_add_left n m)
+    simpa [Nat.add_sub_cancel] using h
+  have hCne : (m + n).choose n ≠ 0 := (Nat.choose_pos (Nat.le_add_left n m)).ne'
+  -- `v_p((m+n)!) = v_p(C) + v_p(n!) + v_p(m!)`
+  have hval : padicValNat p ((m + n)!)
+      = padicValNat p ((m + n).choose n) + padicValNat p (n !)
+          + padicValNat p (m !) := by
+    rw [← hfact,
+      padicValNat.mul (mul_ne_zero hCne (Nat.factorial_ne_zero n)) (Nat.factorial_ne_zero m),
+      padicValNat.mul hCne (Nat.factorial_ne_zero n)]
+  -- distribute `(p-1)·(·)` over the three-term sum
+  have hexp : (p - 1) * padicValNat p ((m + n)!)
+      = (p - 1) * padicValNat p ((m + n).choose n)
+          + (p - 1) * padicValNat p (n !) + (p - 1) * padicValNat p (m !) := by
+    rw [hval, Nat.mul_add, Nat.mul_add]
+  have hN := legendre_add p (m + n)
+  have hm := legendre_add p m
+  have hn := legendre_add p n
+  omega
+
+/-- **Kummer's carry criterion for binomial coefficients.** A prime `p` divides
+`C(m+n, n)` iff the base-`p` digit sum of `m + n` is strictly smaller than the sum of
+the digit sums of `m` and `n` — equivalently, iff adding `m` and `n` in base `p`
+produces at least one carry.  The `Nat.choose` specialisation of
+`prime_dvd_multinomial_iff`. -/
+theorem prime_dvd_choose_iff (p : ℕ) [Fact p.Prime] (m n : ℕ) :
+    p ∣ (m + n).choose n
+      ↔ (p.digits (m + n)).sum < (p.digits m).sum + (p.digits n).sum := by
+  have hCne : (m + n).choose n ≠ 0 := (Nat.choose_pos (Nat.le_add_left n m)).ne'
+  have hq : 0 < p - 1 := by have := (Fact.out : p.Prime).two_le; omega
+  have hmain := sub_one_mul_padicValNat_choose p m n
+  rw [dvd_iff_padicValNat_ne_zero hCne, ← Nat.pos_iff_ne_zero,
+    ← mul_pos_iff_of_pos_left hq]
+  omega
+
 end Erdos729Multinomial
