@@ -210,5 +210,25 @@
       "relationship": "foundation",
       "description": "Fundamental Theorem of Arithmetic — unique prime factorization underlies $\\omega(n)$ and the factorization product over which the multiplicative count is evaluated; without it the reduction to the prime-power case is meaningless."
     }
+  ],
+  "references": [
+    {
+      "authors": "Hardy, G. H.; Wright, E. M.",
+      "title": "An Introduction to the Theory of Numbers (6th ed.)",
+      "year": "2008",
+      "note": "Oxford University Press — multiplicative arithmetic functions, ω(n), and the Chinese Remainder Theorem, the framework in which the idempotent count is evaluated over the prime factorization."
+    },
+    {
+      "authors": "Dummit, David S.; Foote, Richard M.",
+      "title": "Abstract Algebra (3rd ed.)",
+      "year": "2004",
+      "note": "Wiley — the CRT ring isomorphism ℤ/nℤ ≅ ∏ᵢ ℤ/pᵢ^{kᵢ}ℤ and its idempotents; a product of k local rings has exactly 2^k idempotents, the structural reason the count is 2^ω(n)."
+    },
+    {
+      "authors": "Niven, Ivan; Zuckerman, Herbert S.; Montgomery, Hugh L.",
+      "title": "An Introduction to the Theory of Numbers (5th ed.)",
+      "year": "1991",
+      "note": "Wiley — solutions of the congruence n² ≡ n (mod m) (automorphic residues) via CRT and prime-power reduction, exactly the objects counted here."
+    }
   ]
 }
