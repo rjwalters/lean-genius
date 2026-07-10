@@ -602,6 +602,47 @@ have intersection size in L.
 def avoidsLIntersections (L : Finset ℕ) (F : Finset (Finset ℕ)) : Prop :=
   ∀ A B : Finset ℕ, A ∈ F → B ∈ F → (A ∩ B).card ∉ L
 
+/--
+**Single-forbidden-size is `r`-avoidance.** The `L`-avoiding predicate specializes to
+`avoidsRIntersection r` exactly when `L = {r}`: forbidding the single intersection size
+`r` is the same as avoiding `r`-intersection. This is the bridge that places
+`avoidsRIntersection` inside the Frankl–Wilson `L`-avoiding hierarchy.
+-/
+theorem avoidsRIntersection_iff_avoidsLIntersections_singleton
+    (r : ℕ) (F : Finset (Finset ℕ)) :
+    avoidsRIntersection r F ↔ avoidsLIntersections {r} F := by
+  unfold avoidsRIntersection avoidsLIntersections
+  simp only [Finset.mem_singleton, ne_eq]
+
+/--
+**Monotone in the family (subfamily closure).** Any subfamily of an `L`-avoiding
+family is again `L`-avoiding: the constraint on pairs is inherited by any subset.
+-/
+theorem avoidsLIntersections_of_subset_family
+    {L : Finset ℕ} {F F' : Finset (Finset ℕ)} (hsub : F' ⊆ F)
+    (hF : avoidsLIntersections L F) : avoidsLIntersections L F' :=
+  fun A B hA hB => hF A B (hsub hA) (hsub hB)
+
+/--
+**Antitone in the forbidden-size set.** Forbidding a *larger* set of intersection
+sizes is a stronger condition: if `F` avoids every size in `L'` and `L ⊆ L'`, then `F`
+avoids every size in `L`. Combined with the singleton bridge this recovers, e.g., that
+an `L`-avoiding family with `r ∈ L` is in particular `r`-avoiding.
+-/
+theorem avoidsLIntersections_of_subset_forbidden
+    {L L' : Finset ℕ} {F : Finset (Finset ℕ)} (hL : L ⊆ L')
+    (hF : avoidsLIntersections L' F) : avoidsLIntersections L F :=
+  fun A B hA hB hmem => hF A B hA hB (hL hmem)
+
+/--
+**Every family avoids the empty set of sizes.** The vacuous base case of the
+hierarchy: with no forbidden intersection sizes there is nothing to avoid.
+-/
+theorem avoidsLIntersections_empty (F : Finset (Finset ℕ)) :
+    avoidsLIntersections ∅ F := by
+  intro A B _ _
+  simp
+
 /-
 ## Part VIII: Summary
 -/
