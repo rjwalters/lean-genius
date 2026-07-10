@@ -419,6 +419,48 @@ theorem kst_edge_bound_of_free (G : SimpleGraph V) [DecidableRel G.Adj] [Nonempt
     rw [Nat.cast_sub ht, Nat.cast_one]
   rwa [hcast] at h
 
+/-- **Monotonicity of the exact KST bound in `t`.**  For `t ≤ t'` and `n ≥ 1` the
+Reiman/KST right-hand side is non-decreasing in the parameter `t`:
+
+      n · (1 + √(1 + 4(t-1)(n-1)))  ≤  n · (1 + √(1 + 4(t'-1)(n-1))).
+
+The radicand is monotone because `(n-1) ≥ 0`, so the larger `t' - 1 ≥ t - 1` only
+increases `4(t-1)(n-1)`; `√` and the nonnegative factor `n` preserve the order.  This
+is the algebraic reason the extremal count `ex(n ; K_{2,t})` is non-decreasing in `t`:
+forbidding the *larger* complete bipartite graph `K_{2,t'}` is a *weaker* constraint. -/
+theorem kst_exact_bound_mono_t (t t' : ℕ) (htt' : t ≤ t') (n : ℝ) (hn : 1 ≤ n) :
+    n * (1 + Real.sqrt (1 + 4 * ((t : ℝ) - 1) * (n - 1))) ≤
+      n * (1 + Real.sqrt (1 + 4 * ((t' : ℝ) - 1) * (n - 1))) := by
+  have hcast : (t : ℝ) ≤ (t' : ℝ) := by exact_mod_cast htt'
+  have hn1 : (0 : ℝ) ≤ n - 1 := by linarith
+  have hdiff : (0 : ℝ) ≤ (((t' : ℝ) - 1) - ((t : ℝ) - 1)) * (n - 1) :=
+    mul_nonneg (by linarith) hn1
+  have harg : 1 + 4 * ((t : ℝ) - 1) * (n - 1) ≤ 1 + 4 * ((t' : ℝ) - 1) * (n - 1) := by
+    nlinarith [hdiff]
+  have hsqrt := Real.sqrt_le_sqrt harg
+  exact mul_le_mul_of_nonneg_left (by linarith) (by linarith)
+
+/-- **Monotone (weaker-forbidden) KST bound.**  A `K_{2,t}`-free nonempty graph
+(`t ≥ 1`) also satisfies the KST edge bound for every *larger* forbidden parameter
+`t' ≥ t`:
+
+      4 m ≤ n · (1 + √(1 + 4(t'-1)(n-1))).
+
+Immediate from `kst_edge_bound_of_free` at `t` composed with the parameter
+monotonicity `kst_exact_bound_mono_t`.  It records that the `t`-bound is the sharpest
+of the family: a graph avoiding `K_{2,t}` a fortiori respects every looser
+`K_{2,t'}` estimate. -/
+theorem kst_edge_bound_of_free_mono_t (G : SimpleGraph V) [DecidableRel G.Adj]
+    [Nonempty V] (t t' : ℕ) (ht : 1 ≤ t) (htt' : t ≤ t') (hfree : ¬ HasK2t G t) :
+    4 * (G.edgeFinset.card : ℝ) ≤
+      (Fintype.card V : ℝ) *
+        (1 + Real.sqrt (1 + 4 * ((t' : ℝ) - 1) * ((Fintype.card V : ℝ) - 1))) := by
+  have hn : (1 : ℝ) ≤ (Fintype.card V : ℝ) := by
+    have : 1 ≤ Fintype.card V := Fintype.card_pos
+    exact_mod_cast this
+  exact le_trans (kst_edge_bound_of_free G t ht hfree)
+    (kst_exact_bound_mono_t t t' htt' (Fintype.card V : ℝ) hn)
+
 /-- **Nested-radical envelope.**  For `t ≥ 1` and any `n ≥ 0` the Reiman/KST radical
 is dominated by a sum of *separated* radicals:
 
