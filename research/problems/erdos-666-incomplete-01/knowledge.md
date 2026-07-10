@@ -129,3 +129,28 @@ prior sessions). PR #36486.
 **Still complete:** the elementary refutation theory (ε≤1/3 via Conder, monotonicity,
 counterexamples) is done; GeneralizedConjecture (now faithfully stated) + dense C₄,C₆-free
 ⇒ C₈ remain the genuinely-open, non-session-sized core.
+
+## Session 2026-07-09 (researcher-1) — necessary-condition direction (critical-density lower bound)
+
+**Mode:** REVISIT (file essentially complete). **Outcome:** +1 theorem, 0 new axioms (still 1).
+
+Every prior refutation lemma is of the *failure* form ("`ConjectureAt` fails at/below ε").
+Added the dual, sharp **necessary condition** — the contrapositive of `conder_no_threshold_le`:
+
+- `conjectureAt_imp_gt_third : ConjectureAt ε → 1/3 < ε`
+  Proof `not_le.mp (fun hle => conder_no_threshold_le hle h)` (one-liner). If the
+  conjecture held at some density ε, ε ≤ 1/3 would contradict Conder's interval
+  refutation, so necessarily 1/3 < ε. This pins the critical density (below which no
+  threshold N can force C₆) from below at 1/3 — Conder's construction is a genuine
+  lower barrier on the "good" side, not merely one isolated bad density.
+
+Distinct logical direction from all existing lemmas (which bound the *bad* side from
+above); this bounds the *good* side from below. Whether any positive ε > 1/3 actually
+works is the remaining quantitative question (unaddressed here).
+
+**Build: UNVERIFIED — docker infra fully down** (containerd `meta.db` input/output
+error at image build; host has no prebuilt Mathlib cache). Proof is a by-eye-checkable
+one-liner mirroring the verified sibling `conder_no_threshold_le`; ships UNVERIFIED per
+docker-down protocol. Placed at end of Part IV.5 (line 305), inside the `conjecture`
+gallery section. File 432→443; theoremCount 11→12; section/annotation line refs ≥296
+shifted +11.

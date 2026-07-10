@@ -294,6 +294,17 @@ density `0 < ε ≤ 1/3`. -/
 theorem conder_no_threshold_le {ε : ℝ} (hε : ε ≤ 1/3) : ¬ ConjectureAt ε :=
   fun h => conder_no_threshold (conjectureAt_mono hε h)
 
+/-- **Necessary condition: any density at which the conjecture holds exceeds `1/3`.**
+The contrapositive of Conder's interval refutation `conder_no_threshold_le`.  Where the
+previous lemmas assert that `ConjectureAt` *fails* at every `ε ≤ 1/3`, this records the
+dual, sharp lower bound: if `ConjectureAt ε` *does* hold for some density `ε`, then
+necessarily `1/3 < ε`.  Equivalently, the critical density below which no threshold `N`
+can force `C₆` is at least `1/3` — Conder's construction is not merely one bad density but
+a genuine lower barrier on the "good" side.  (Whether any positive `ε > 1/3` actually
+works is the remaining quantitative question; here we only pin the barrier from below.) -/
+theorem conjectureAt_imp_gt_third {ε : ℝ} (h : ConjectureAt ε) : 1/3 < ε :=
+  not_le.mp (fun hle => conder_no_threshold_le hle h)
+
 /-
 ## Part V: Chung's Result (1992)
 
