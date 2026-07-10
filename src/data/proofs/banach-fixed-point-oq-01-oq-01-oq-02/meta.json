@@ -141,6 +141,26 @@
       "description": "Parent Picard–Lindelöf entry. This entry answers its second open question by exhibiting the Picard operator, its successive approximations, and its contraction constant explicitly for the model linear IVP y' = y, y(0) = 1."
     }
   ],
+  "references": [
+    {
+      "authors": "Picard, Émile",
+      "title": "Mémoire sur la théorie des équations aux dérivées partielles et la méthode des approximations successives",
+      "year": "1890",
+      "note": "J. Math. Pures Appl. 6, 145–210 — introduces the method of successive approximations that this entry makes explicit; the iterates picardIter n are its literal instances for y' = y."
+    },
+    {
+      "authors": "Banach, Stefan",
+      "title": "Sur les opérations dans les ensembles abstraits et leur application aux équations intégrales",
+      "year": "1922",
+      "note": "Fund. Math. 3, 133–181 — the contraction mapping principle behind the explicit estimate |P y t − P z t| ≤ C·|t|, which makes P a genuine contraction on [0, ε] for ε < 1."
+    },
+    {
+      "authors": "Coddington, Earl A.; Levinson, Norman",
+      "title": "Theory of Ordinary Differential Equations",
+      "year": "1955",
+      "note": "McGraw-Hill, Chapter 1 — develops Picard's successive approximations and the existence-uniqueness theorem; the linear model y' = y whose iterates are the exponential Taylor partial sums is the standard worked illustration."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib"
