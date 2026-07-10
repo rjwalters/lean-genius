@@ -71,6 +71,65 @@ theorem perUseCapacity_mono {N : ℝ} (hN : 0 < N) {P₁ P₂ : ℝ}
   · have hdiv : P₁ / N ≤ P₂ / N := by gcongr
     linarith
 
+/-! ## Per-channel rate: strict positivity and its zero set -/
+
+/-- **A single sub-channel with positive power has strictly positive rate.**  For
+positive noise `N` and strictly positive allotted power `P`, the per-use AWGN
+capacity `½ log(1 + P/N)` is strictly positive, since `1 + P/N > 1`.  This
+sharpens `perUseCapacity_nonneg` and is the atomic building block behind the
+sum-level `rate_waterAlloc_pos`. -/
+theorem perUseCapacity_pos {P N : ℝ} (hP : 0 < P) (hN : 0 < N) :
+    0 < perUseCapacity P N := by
+  unfold perUseCapacity
+  apply mul_pos (by norm_num)
+  apply Real.log_pos
+  have hpos : 0 < P / N := div_pos hP hN
+  linarith
+
+/-- **A single sub-channel's rate vanishes exactly at zero power.**  For positive
+noise `N` and nonnegative power `P`, the per-use AWGN capacity is zero iff no power
+is allotted: `½ log(1 + P/N) = 0 ↔ P = 0`.  This pins the zero set of the
+per-channel rate, the atomic counterpart of the sum-level
+`rate_waterAlloc_eq_zero_iff`. -/
+theorem perUseCapacity_eq_zero_iff {P N : ℝ} (hP : 0 ≤ P) (hN : 0 < N) :
+    perUseCapacity P N = 0 ↔ P = 0 := by
+  constructor
+  · intro h
+    unfold perUseCapacity at h
+    have hlog : Real.log (1 + P / N) = 0 := by
+      rcases mul_eq_zero.1 h with h' | h'
+      · exact absurd h' (by norm_num)
+      · exact h'
+    have hxpos : 0 < 1 + P / N := by
+      have : 0 ≤ P / N := div_nonneg hP hN.le
+      linarith
+    have hx1 : 1 + P / N = 1 := by
+      have hexp := Real.exp_log hxpos
+      rw [hlog, Real.exp_zero] at hexp
+      linarith
+    have hpn : P / N = 0 := by linarith
+    rcases div_eq_zero_iff.1 hpn with hP0 | hN0
+    · exact hP0
+    · exact absurd hN0 (ne_of_gt hN)
+  · intro h
+    subst h
+    simp [perUseCapacity]
+
+/-- **A single sub-channel has positive rate exactly when it is allotted positive
+power.**  For positive noise `N` and nonnegative power `P`, `0 < perUseCapacity P N
+↔ 0 < P`.  Combined with `perUseCapacity_nonneg` this fixes the per-channel
+trichotomy: no power ⇒ no rate, any positive power ⇒ positive rate. -/
+theorem perUseCapacity_pos_iff {P N : ℝ} (hP : 0 ≤ P) (hN : 0 < N) :
+    0 < perUseCapacity P N ↔ 0 < P := by
+  constructor
+  · intro h
+    rcases eq_or_lt_of_le hP with h0 | h0
+    · rw [(perUseCapacity_eq_zero_iff hP hN).2 h0.symm] at h
+      exact absurd h (lt_irrefl 0)
+    · exact h0
+  · intro h
+    exact perUseCapacity_pos h hN
+
 /-! ## Water-filling depth: monotonicity in the water level -/
 
 /-- **The water-filling depth is monotone in the water level.**  Raising the
