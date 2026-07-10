@@ -685,6 +685,55 @@ theorem multiplicativeEnergy_ge (A B : Finset ℕ) :
         (Finset.card_image_of_injOn hinj).symm
     _ ≤ multiplicativeEnergy A B := Finset.card_le_card hsub
 
+/-- **Multiplicative energy is symmetric**: `E(A, B) = E(B, A)`.  Swapping the two
+factors, `((a₁, a₂), (b₁, b₂)) ↦ ((b₁, b₂), (a₁, a₂))`, is a bijection between the two
+energy sets: the defining relation `a₁·b₁ = a₂·b₂` is carried to `b₁·a₁ = b₂·a₂` by
+`mul_comm`, and the swap is its own inverse. -/
+theorem multiplicativeEnergy_comm (A B : Finset ℕ) :
+    multiplicativeEnergy A B = multiplicativeEnergy B A := by
+  classical
+  unfold multiplicativeEnergy
+  refine Finset.card_bij'
+    (fun q _ => ((q.2.1, q.2.2), (q.1.1, q.1.2)))
+    (fun q _ => ((q.2.1, q.2.2), (q.1.1, q.1.2)))
+    ?hi ?hj ?left ?right
+  case hi =>
+    rintro ⟨⟨a₁, a₂⟩, ⟨b₁, b₂⟩⟩ hq
+    rw [Finset.mem_filter] at hq
+    simp only [Finset.mem_product] at hq
+    obtain ⟨⟨⟨ha1, ha2⟩, hb1, hb2⟩, hrel⟩ := hq
+    rw [Finset.mem_filter]
+    refine ⟨?_, ?_⟩
+    · simp only [Finset.mem_product]; exact ⟨⟨hb1, hb2⟩, ha1, ha2⟩
+    · show b₁ * a₁ = b₂ * a₂
+      rw [mul_comm b₁ a₁, mul_comm b₂ a₂]; exact hrel
+  case hj =>
+    rintro ⟨⟨b₁, b₂⟩, ⟨a₁, a₂⟩⟩ hq
+    rw [Finset.mem_filter] at hq
+    simp only [Finset.mem_product] at hq
+    obtain ⟨⟨⟨hb1, hb2⟩, ha1, ha2⟩, hrel⟩ := hq
+    rw [Finset.mem_filter]
+    refine ⟨?_, ?_⟩
+    · simp only [Finset.mem_product]; exact ⟨⟨ha1, ha2⟩, hb1, hb2⟩
+    · show a₁ * b₁ = a₂ * b₂
+      rw [mul_comm a₁ b₁, mul_comm a₂ b₂]; exact hrel
+  case left =>
+    rintro ⟨⟨a₁, a₂⟩, ⟨b₁, b₂⟩⟩ _; rfl
+  case right =>
+    rintro ⟨⟨b₁, b₂⟩, ⟨a₁, a₂⟩⟩ _; rfl
+
+/-- **Strict energy excess characterizes product collisions.**  Combining the general
+lower bound `|A||B| ≤ E(A, B)` (`multiplicativeEnergy_ge`) with its equality case
+(`distinct_minimal_energy`): the energy *strictly* exceeds `|A||B|` exactly when the
+products are not all distinct.  This completes the trichotomy — energy equals `|A||B|`
+iff products are distinct, and exceeds it otherwise. -/
+theorem multiplicativeEnergy_gt_iff_not_distinctProducts (A B : Finset ℕ) :
+    A.card * B.card < multiplicativeEnergy A B ↔ ¬HasDistinctProducts A B := by
+  rw [distinct_minimal_energy]
+  constructor
+  · intro hlt heq; rw [heq] at hlt; exact lt_irrefl _ hlt
+  · intro hne; exact lt_of_le_of_ne (multiplicativeEnergy_ge A B) (Ne.symm hne)
+
 /-
 ## Part VIII: Bounds History
 -/
