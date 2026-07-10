@@ -268,4 +268,48 @@ theorem logConcave_root_antitone_seq_strict (p : ℕ → ℝ) (hp0 : p 0 = 1)
   simpa using
     logConcave_root_antitone_strict p hp0 hpos hlc hstrict (k + 1) (Nat.succ_pos k)
 
+/-! ## Ratio form: log-concavity ⟺ the consecutive-ratio sequence is antitone
+
+The engine above phrases log-concavity through the *root means* `p_k^{1/k}`. Its most
+elementary reformulation is through the **consecutive ratios** `r_m := p (m+1) / p m`:
+for a positive sequence, the log-concavity inequality `p m · p (m+2) ≤ (p (m+1))²` is
+*exactly* `r_(m+1) ≤ r_m`, i.e. the ratio sequence is non-increasing. This is the
+discrete analogue of "a log-concave function has non-increasing logarithmic
+derivative", and it is the primitive from which the root-mean monotonicity is usually
+derived (`p_k^{1/k}` is the geometric mean of `r_0, …, r_(k-1)`, and the geometric mean
+of a non-increasing sequence is itself non-increasing). Because it is an honest
+equivalence — no `p 0 = 1` normalisation needed — it is recorded here as an `Iff`. -/
+
+/-- **Ratio form of log-concavity.** For a positive sequence `p`, log-concavity
+`∀ m, p m · p (m+2) ≤ (p (m+1))²` holds **iff** the consecutive ratios
+`m ↦ p (m+1) / p m` form an `Antitone` sequence. Each direction clears the positive
+denominators (`div_le_div_iff`) and reduces to the same polynomial inequality. -/
+theorem logConcave_iff_ratio_antitone (p : ℕ → ℝ) (hpos : ∀ j, 0 < p j) :
+    (∀ m, p m * p (m + 2) ≤ (p (m + 1)) ^ 2) ↔
+      Antitone (fun m : ℕ => p (m + 1) / p m) := by
+  constructor
+  · intro hlc
+    apply antitone_nat_of_succ_le
+    intro m
+    show p (m + 2) / p (m + 1) ≤ p (m + 1) / p m
+    rw [div_le_div_iff (hpos (m + 1)) (hpos m)]
+    nlinarith [hlc m]
+  · intro hanti m
+    have h : p (m + 2) / p (m + 1) ≤ p (m + 1) / p m := hanti (Nat.le_succ m)
+    rw [div_le_div_iff (hpos (m + 1)) (hpos m)] at h
+    nlinarith [h]
+
+/-- **Strict ratio form.** For a positive, *strictly* log-concave sequence
+(`∀ m, p m · p (m+2) < (p (m+1))²`), the consecutive ratios `m ↦ p (m+1) / p m` are
+`StrictAnti`. The strict analogue of the forward direction of
+`logConcave_iff_ratio_antitone`. -/
+theorem logConcave_ratio_strictAnti (p : ℕ → ℝ) (hpos : ∀ j, 0 < p j)
+    (hstrict : ∀ m, p m * p (m + 2) < (p (m + 1)) ^ 2) :
+    StrictAnti (fun m : ℕ => p (m + 1) / p m) := by
+  apply strictAnti_nat_of_succ_lt
+  intro m
+  show p (m + 2) / p (m + 1) < p (m + 1) / p m
+  rw [div_lt_div_iff (hpos (m + 1)) (hpos m)]
+  nlinarith [hstrict m]
+
 end MaclaurinLogConcave
