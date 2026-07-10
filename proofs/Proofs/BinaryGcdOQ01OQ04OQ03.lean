@@ -394,8 +394,11 @@ theorem totalSteps_one_closed (N : ℕ) (hN : 1 ≤ N) :
   have hdisj : Disjoint (Finset.Icc 1 (2 ^ n)) (Finset.Ioc (2 ^ n) N) :=
     Finset.disjoint_left.mpr (fun x hx hx' => by
       rw [Finset.mem_Icc] at hx; rw [Finset.mem_Ioc] at hx'; omega)
-  have hunion : Finset.Icc 1 (2 ^ n) ∪ Finset.Ioc (2 ^ n) N = Finset.Icc 1 N :=
-    Finset.Icc_union_Ioc_eq_Icc Nat.one_le_two_pow hpow_le
+  have hunion : Finset.Icc 1 (2 ^ n) ∪ Finset.Ioc (2 ^ n) N = Finset.Icc 1 N := by
+    have h1 : (1 : ℕ) ≤ 2 ^ n := Nat.one_le_two_pow
+    ext x
+    simp only [Finset.mem_union, Finset.mem_Icc, Finset.mem_Ioc]
+    omega
   -- the partial tail (2^n, N] contributes the constant (N − 2^n)·(n+1)
   have htail : ∑ b ∈ Finset.Ioc (2 ^ n) N, binaryGcdSteps 1 b = (N - 2 ^ n) * (n + 1) := by
     have hval : ∀ b ∈ Finset.Ioc (2 ^ n) N, binaryGcdSteps 1 b = n + 1 := by
@@ -705,5 +708,52 @@ theorem avgSteps_one_sandwich_strict (N : ℕ) (hN : 2 ≤ N) :
 example : (Nat.log 2 100 : ℚ) - 1 < (totalSteps 1 100 : ℚ) / (100 : ℚ) ∧
     (totalSteps 1 100 : ℚ) / (100 : ℚ) < (Nat.log 2 100 : ℚ) + 1 :=
   avgSteps_one_sandwich_strict 100 (by norm_num)
+
+-- ═══════════════════════════════════════════════════════════════════
+-- PART XII: MONOTONICITY STRUCTURE OF THE a = 1 TOTAL
+-- ═══════════════════════════════════════════════════════════════════
+--
+-- The exact-log form `binaryGcdSteps_one_eq_log` gives the a = 1 row a clean
+-- one-term recurrence in `N`: passing from `N` to `N + 1` appends the single
+-- summand `binaryGcdSteps 1 (N+1) = log₂(N+1) + 1`. Since that increment is
+-- always `≥ 1 > 0`, the running total `N ↦ totalSteps 1 N` is *strictly*
+-- increasing — a structural fact none of the earlier size bounds record. This
+-- pins down the qualitative shape of the total-work curve underlying the
+-- `Θ(N·log N)` estimates above.
+
+/-- **Per-step recurrence for the `a = 1` total.** Extending the range from
+    `[1, N]` to `[1, N+1]` appends exactly the summand
+    `binaryGcdSteps 1 (N+1) = log₂(N+1) + 1`:
+
+      totalSteps 1 (N+1) = totalSteps 1 N + (log₂(N+1) + 1).
+
+    Immediate from `Finset.sum_Icc_succ_top` together with the exact step count
+    `binaryGcdSteps_one_eq_log`. This is the discrete recurrence that drives the
+    monotonicity results below. -/
+theorem totalSteps_one_succ (N : ℕ) :
+    totalSteps 1 (N + 1) = totalSteps 1 N + (Nat.log 2 (N + 1) + 1) := by
+  unfold totalSteps
+  rw [Finset.sum_Icc_succ_top (by omega : 1 ≤ N + 1),
+      binaryGcdSteps_one_eq_log (N + 1) (by omega)]
+
+/-- **The `a = 1` total is strictly increasing in `N`.** Each new argument
+    `N + 1` contributes `log₂(N+1) + 1 ≥ 1 > 0` extra steps, so
+    `totalSteps 1 N < totalSteps 1 (N+1)` for every `N`. Consequently `N ↦
+    totalSteps 1 N` is `StrictMono` — the running work count never plateaus. -/
+theorem totalSteps_one_strictMono : StrictMono (totalSteps 1) := by
+  apply strictMono_nat_of_lt_succ
+  intro N
+  rw [totalSteps_one_succ]
+  omega
+
+/-- **The `a = 1` total is monotone in `N`.** The `Monotone` weakening of
+    `totalSteps_one_strictMono`: `M ≤ N ⟹ totalSteps 1 M ≤ totalSteps 1 N`. -/
+theorem totalSteps_one_mono : Monotone (totalSteps 1) :=
+  totalSteps_one_strictMono.monotone
+
+-- Concrete check of the per-step recurrence (a = 1, N = 7):
+--   totalSteps 1 8 = totalSteps 1 7 + (log₂ 8 + 1) = totalSteps 1 7 + 4.
+example : totalSteps 1 8 = totalSteps 1 7 + (Nat.log 2 8 + 1) :=
+  totalSteps_one_succ 7
 
 end BinaryGcdOQ01OQ04OQ03
