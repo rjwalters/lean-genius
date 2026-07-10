@@ -914,4 +914,31 @@ theorem not_isSolvable (hp : 5 ≤ p) :
   rw [commutator_eq_top hp] at hlt
   exact lt_irrefl _ hlt
 
+/-- **`PSL(2, p)` is not solvable for `p ≥ 5`.**  Non-solvability descends from the
+cover `SL(2, p)` to the projective quotient through the central extension
+
+    `1 → Z → SL(2, p) → PSL(2, p) → 1`.
+
+The kernel `Z = Z(SL(2, p))` is abelian, hence solvable, and if `PSL(2, p)` were
+solvable then — with a solvable kernel *and* a solvable quotient — the middle group
+`SL(2, p)` would be solvable too (`solvable_of_ker_le_range`).  That contradicts
+`not_isSolvable`, so `PSL(2, p)` is not solvable.
+
+This is the non-solvability of the target group itself, one step past the
+non-solvability of its cover; together with `commutator_PSL_eq_top` (perfectness of
+`PSL(2, p)`) it records that `PSL(2, p)` escapes the entire solvable hierarchy exactly
+on the range `p ≥ 5` where the simplicity theorem turns on. -/
+theorem not_isSolvable_PSL (hp : 5 ≤ p) :
+    ¬ IsSolvable (Matrix.ProjectiveSpecialLinearGroup (Fin 2) (ZMod p)) := by
+  intro hsolv
+  haveI := hsolv
+  -- A solvable quotient and (automatically) solvable central kernel force the middle
+  -- group `SL(2, p)` to be solvable via the central extension.
+  haveI : IsSolvable (Matrix.SpecialLinearGroup (Fin 2) (ZMod p)) :=
+    solvable_of_ker_le_range
+      (Subgroup.center (Matrix.SpecialLinearGroup (Fin 2) (ZMod p))).subtype
+      (QuotientGroup.mk' (Subgroup.center (Matrix.SpecialLinearGroup (Fin 2) (ZMod p))))
+      (by rw [QuotientGroup.ker_mk']; exact (Subgroup.range_subtype _).ge)
+  exact not_isSolvable hp this
+
 end SylowOQ04OQ03
