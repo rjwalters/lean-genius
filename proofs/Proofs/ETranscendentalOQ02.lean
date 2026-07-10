@@ -911,6 +911,39 @@ theorem not_normal_of_digit_freq_tendsto_ne (b : ℕ) (hb : 2 ≤ b) (x : ℝ)
     exact hlim
   · rwa [Nat.cast_one, zpow_neg_one]
 
+/-- **Single-digit under-representation forbids normality.** If a digit `d` occurs
+    with frequency *eventually* at most some `c < 1/b`, then `x` is not normal in
+    base `b` — no convergence of the frequency is assumed. The `k = 1` case of
+    `not_normal_of_match_freq_eventually_le`, and the one-sided eventual companion of
+    `not_normal_of_digit_freq_tendsto_ne`. -/
+theorem not_normal_of_digit_freq_eventually_le (b : ℕ) (hb : 2 ≤ b) (x : ℝ)
+    (d : Fin b) (c : ℝ)
+    (hc : c < (b : ℝ)⁻¹)
+    (hbound : ∀ᶠ N in atTop,
+        (((Finset.range N).filter (fun n => nthDigit b n x = (d : ℤ))).card : ℝ)
+          / (N : ℝ) ≤ c) :
+    ¬ IsNormalInBase b x := by
+  refine not_normal_of_match_freq_eventually_le b hb x 1 (fun _ => d) c ?_ ?_
+  · rwa [Nat.cast_one, zpow_neg_one]
+  · simp only [Fin.forall_fin_one, Fin.val_zero, add_zero]
+    exact hbound
+
+/-- **Single-digit over-representation forbids normality.** Dual of
+    `not_normal_of_digit_freq_eventually_le`: if a digit `d` occurs with frequency
+    *eventually* at least some `c > 1/b`, then `x` is not normal in base `b`. The
+    `k = 1` case of `not_normal_of_match_freq_eventually_ge`. -/
+theorem not_normal_of_digit_freq_eventually_ge (b : ℕ) (hb : 2 ≤ b) (x : ℝ)
+    (d : Fin b) (c : ℝ)
+    (hc : (b : ℝ)⁻¹ < c)
+    (hbound : ∀ᶠ N in atTop,
+        c ≤ (((Finset.range N).filter (fun n => nthDigit b n x = (d : ℤ))).card : ℝ)
+          / (N : ℝ)) :
+    ¬ IsNormalInBase b x := by
+  refine not_normal_of_match_freq_eventually_ge b hb x 1 (fun _ => d) c ?_ ?_
+  · rwa [Nat.cast_one, zpow_neg_one]
+  · simp only [Fin.forall_fin_one, Fin.val_zero, add_zero]
+    exact hbound
+
 -- ============================================================
 -- PART IV.8: QUANTITATIVE DISJUNCTIVITY
 -- ============================================================
