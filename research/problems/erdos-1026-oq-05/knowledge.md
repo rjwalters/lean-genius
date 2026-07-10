@@ -105,3 +105,39 @@ Hit a shared-cache corruption first (`Mathlib/.../Acyclic.ir invalid header` fro
 → fixed with `docker-build.sh --repair-cache` (force cache re-download) → then the usual
 SIGBUS-135 at olean-write on busy fleet, cleared in a quiet window. meta ES additionalFiles
 synced 139→166 / 5→6.
+
+## Session 2026-07-09 (researcher-7) — antitone-in-k (covering number non-increasing in the run budget)
+
+Added the last clean elementary structural fact to `Erdos1026OQ05KMonotonic.lean` (282→348 lines,
++2 thm / +1 def): the full **antitone law** the file's own docstring only asserted informally.
+
+- `IsKMonotonic.mono` (padding lemma): a `k`-monotone piece is `k'`-monotone whenever `1 ≤ k ≤ k'`,
+  by clamping the run index `Fin k' → Fin k` via `j ↦ min j (k-1)` (repeats the last run in the
+  surplus slots — **no empty runs needed**, since the covering condition only requires *some* run
+  to hit each index). This is the reverse direction of the existing `IsKMonotonic.isMonotonic_of_one`.
+- `KMonotonicDecomposition.mono`: lifts the padding to whole decompositions (parts padded, disjoint
+  + covering data unchanged) — same shape as `monotonicToKMonotonic` / `kMonotonicToMonotonic_one`.
+- `minKMonotonicParts_antitone`: `1 ≤ k ≤ k' ⟹ minKMonotonicParts k' seq ≤ minKMonotonicParts k seq`.
+  Padding the optimal `k`-decomposition gives a `k'`-decomposition of the same size, so its part
+  count bounds the `k'`-infimum (`Nat.sInf_le`). Combined with the k=1 identity this **subsumes**
+  `minKMonotonicParts_le_minMonotonicParts` (previously the only monotonicity fact, at k=1 only).
+
+**Significance:** completes the "non-increasing in k, pinned at the monotone covering number" picture.
+Genuinely new (not a reindexed corollary): the general `k ≤ k'` comparison did not exist before.
+
+### Gotcha (dependent-Sigma reindexing — the fiddly part flagged in prior notes)
+The covering witness needs `b : Fin (runs j).1` placed where `Fin (runs (clamp J)).1` is expected.
+`simp only [hfj]` REFUSES the rewrite (changes the bound variable `b`'s type → dependent motive,
+reported as "unused simp arg"). Fix: **`rw [hfj]`** — `rw` abstracts `clamp J` into a motive
+`fun x => ∃ b : Fin (runs x).1, …` that is type-correct for all `x : Fin k`, so the dependent
+rewrite goes through. Use `set f := (clamp) with hf` so `f J` is an atomic rewrite target; prove
+`f ⟨j.val,_⟩ = j` by `Fin.ext; simp only [hf, Fin.val_mk]; omega` (omega picks up `j.isLt` + `0<k`).
+
+### ⚠️ BUILD STATUS: UNVERIFIED (2026-07-09, same fleet storm as Extremal above)
+Elaboration is **CLEAN** — after the `rw` fix, ~6 consecutive builds show **zero** Lean type-error
+diagnostics; the file crashes at olean-WRITE with exit 135 (SIGBUS), 2–5 s, across mem 16–30 GB, plus
+intermittent transient dep-cache corruptions on the `import Mathlib` line (`FintypeCat.olean` /
+`KullbackLeibler/Basic.ir` / different file each run = fleet race, not this file). The pre-edit build
+of the unchanged file was green `[7744/7744] (4.4s)`, confirming toolchain is sound. Each of the 3 new
+decls is a structural near-clone of an already-verified decl in the same file. Deployer should
+re-attempt a green build in a quiet window (try `--repair-cache` + `LEAN_MEMORY_LIMIT=8192`).

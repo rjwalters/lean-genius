@@ -169,10 +169,10 @@
       },
       {
         "path": "Proofs/Erdos1026OQ05KMonotonic.lean",
-        "lineCount": 282,
-        "theoremCount": 10,
-        "definitionCount": 4,
-        "description": "k-monotone generalization: length bound m ≤ k·max(LIS,LDS), covering-number lower bound, and the sandwich n/(k·max) ≤ minKMonotonicParts k ≤ minMonotonicParts — with the EXACT k=1 identity minKMonotonicParts 1 = minMonotonicParts (a 1-monotone piece is monotone), pinning the k=1 endpoint of the bracket."
+        "lineCount": 348,
+        "theoremCount": 12,
+        "definitionCount": 5,
+        "description": "k-monotone generalization: length bound m ≤ k·max(LIS,LDS), covering-number lower bound, and the sandwich n/(k·max) ≤ minKMonotonicParts k ≤ minMonotonicParts — with the EXACT k=1 identity minKMonotonicParts 1 = minMonotonicParts (a 1-monotone piece is monotone) and the general antitone law minKMonotonicParts is non-increasing in k (padding a k-monotone piece to k'≥k via run-index clamping), making precise the whole non-increasing-in-k picture."
       },
       {
         "path": "Proofs/Erdos1026OQ05Extremal.lean",
