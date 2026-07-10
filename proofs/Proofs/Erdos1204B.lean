@@ -282,6 +282,26 @@ min-diameter optima still coincide. -/
 theorem B_four : B 4 = 4 := by
   rw [B, S_four]; norm_num
 
+/-- **Diameter is dominated by sum (pointwise).** For every admissible `k`-set `a`,
+the minimal diameter `A(k)` is at most the element sum `∑ a`. The largest element
+`a.sup id` is one of the (nonnegative) summands, hence `a.sup id ≤ ∑ a`, and
+`A(k) ≤ a.sup id` by definition of `A`. This is the bridge between the two extremal
+quantities of Erdős #1204: the diameter side and the sum side. -/
+theorem A_le_sum {k : ℕ} {a : Finset ℕ} (hcard : a.card = k) (ha : Admissible a) :
+    A k ≤ a.sum id :=
+  le_trans (A_le hcard ha)
+    (Finset.sup_le fun x hx => Finset.single_le_sum (fun i _ => Nat.zero_le i) hx)
+
+/-- **The minimal diameter is at most the minimal sum: `A(k) ≤ S(k)`.** Instantiating
+`A_le_sum` at the sum-minimizer (`S_mem`) shows the diameter extremal `A(k)` never
+exceeds the sum extremal `S(k)`. Equivalently `(A k : ℚ) ≤ k · B(k)`, since
+`B(k) = S(k)/k`: the least attainable largest-element is bounded by the least
+attainable total. -/
+theorem A_le_S (k : ℕ) : A k ≤ S k := by
+  obtain ⟨a, hcard, ha, hsum⟩ := S_mem k
+  rw [← hsum]
+  exact A_le_sum hcard ha
+
 /- ## Open Problem
 
 The asymptotic behaviour of `B(k) = min (a₁ + ⋯ + a_k)/k` over admissible
@@ -297,3 +317,5 @@ end Erdos1204
 #print axioms Erdos1204.sub_one_le_B
 #print axioms Erdos1204.S_four
 #print axioms Erdos1204.B_four
+#print axioms Erdos1204.A_le_sum
+#print axioms Erdos1204.A_le_S
