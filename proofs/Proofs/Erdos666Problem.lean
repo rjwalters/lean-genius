@@ -427,6 +427,26 @@ theorem hasC2k_three_iff_hasC6 {V : Type*} (H : SimpleGraph V) :
   show HasCycle H (2 * 3) ↔ HasCycle H 6
   rfl
 
+/-- **The generalized conjecture at `k = 3` is a `C₆`-forcing statement.**
+If the generalized `C_{2k}` conjecture holds, its `k = 3` instance forces `C₆`
+(not merely the syntactic `HasC2k H 3`): there is a positive constant `c` and an
+exponent `a ∈ (0,1)` such that every subgraph of `Qₙ` (`n ≥ 10`) with at least
+`c·n^a·2ⁿ` edges contains a `C₆`.  Obtained by specialising `GeneralizedConjecture`
+at `k = 3` and rewriting its conclusion `HasC2k H 3` to `HasC6 H` via
+`hasC2k_three_iff_hasC6`.  This pins down exactly how the generalization meets the
+original problem: same cycle length, but a *sparser* `n^a·2ⁿ` density threshold than
+the `ε·n·2ⁿ⁻¹` of `ConjectureAt`, which is why the `C₆` refutation
+(`conder_no_threshold`) does **not** transfer to it.  No new axioms. -/
+theorem generalizedConjecture_three_forces_c6 (h : GeneralizedConjecture) :
+    ∃ c : ℝ, 0 < c ∧ ∃ a : ℝ, 0 < a ∧ a < 1 ∧
+      ∀ n : ℕ, n ≥ 10 →
+        ∀ H : SimpleGraph (Fin (2^n)),
+          (Nat.card H.edgeSet : ℝ) ≥ c * (n : ℝ)^a * 2^n →
+          HasC6 H := by
+  obtain ⟨c, hc, a, ha0, ha1, hforce⟩ := h 3 (by norm_num)
+  exact ⟨c, hc, a, ha0, ha1,
+    fun n hn H hden => (hasC2k_three_iff_hasC6 H).mp (hforce n hn H hden)⟩
+
 /-
 **This generalization remains open.**
 -/
