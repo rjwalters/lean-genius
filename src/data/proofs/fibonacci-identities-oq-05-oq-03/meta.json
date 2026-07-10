@@ -144,6 +144,11 @@
       "description": "Sibling refinement of the same parent: there the gap is fixed at one and the sum is weighted/alternated; here the gap is widened to two. Both reduce their inductive step to a Cassini-derived product identity."
     },
     {
+      "targetId": "fibonacci-identities-oq-05-oq-02",
+      "relationship": "relatedTo",
+      "description": "The orthogonal sibling refinement of the same parent: rather than widening the gap, it fixes the gap at one and generalizes the sequence, replacing Fₙ by an arbitrary Gibonacci (Horadam) sequence G. There the parent's [n even] toggle is unmasked as [n even]·D with D = G₁² − G₀G₁ − G₀² the recurrence discriminant (D = 1 for Fibonacci); here the same toggle survives sign-intact under the gap widening. Both proofs are powered by a generalized Cassini identity — that entry's seed-free Gₙ₊₁² − Gₙ Gₙ₊₂ = (−1)ⁿ D and this entry's d'Ocagne consequence of Cassini for Nat.fib."
+    },
+    {
       "targetId": "fibonacci-identities",
       "relationship": "relatedTo",
       "description": "The base entry's sum-of-squares identity ∑ Fₖ² = Fₙ Fₙ₊₁ is the gap-zero member of the same family; this entry supplies the gap-two member, landing on Fₙ₊₁ Fₙ₊₂."
