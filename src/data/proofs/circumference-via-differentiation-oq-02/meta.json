@@ -132,6 +132,29 @@
       "description": "The entire integral direction rests on intervalIntegral.integral_eq_sub_of_hasDerivAt: applying the FTC to OQ-01's pointwise derivative identity turns 'surface is the derivative of volume' into 'volume is the radial integral of surface.'"
     }
   ],
+  "references": [
+    {
+      "title": "Calculus, Volume I",
+      "author": "Tom M. Apostol",
+      "year": "1967",
+      "venue": "Wiley (2nd edition)",
+      "description": "Develops the Fundamental Theorem of Calculus and the computation of areas and volumes as integrals of cross-sections (the shell/washer methods), the classical setting for reading the disk area A(r) = ∫₀ʳ C(t) dt as an accumulation of concentric circumferences."
+    },
+    {
+      "title": "Introduction to Calculus and Analysis, Volume I",
+      "author": "Richard Courant and Fritz John",
+      "year": "1989",
+      "venue": "Springer (Classics in Mathematics)",
+      "description": "Treats volumes of solids by integrating cross-sectional measures and the shell decomposition of a ball into concentric spherical shells, V(r) = ∫₀ʳ S(t) dt, the radial-shell identity this entry formalizes via the FTC."
+    },
+    {
+      "title": "Calculus",
+      "author": "Michael Spivak",
+      "year": "2008",
+      "venue": "Publish or Perish (4th edition)",
+      "description": "Rigorous account of the Fundamental Theorem of Calculus and the derivative/integral duality; the pointwise identity V'(r) = S(r) integrates back to V(r) = ∫₀ʳ S(t) dt, exactly the direction (surface = dV/dr ⟹ volume = ∫ surface) proved here."
+    }
+  ],
   "leanFile": {
     "path": "Proofs/BallVolumeSurfaceDuality.lean",
     "filename": "BallVolumeSurfaceDuality.lean",
