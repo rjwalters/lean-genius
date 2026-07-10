@@ -1,0 +1,52 @@
+{
+  "slug": "erdos-1028-oq-02",
+  "title": "Algorithmic: can we efficiently find high-discrepancy subsets?",
+  "phase": "OBSERVE",
+  "status": "available",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Open extension question extending Erdős Problem #1028: Discrepancy of Sign Functions: Algorithmic: can we efficiently find high-discrepancy subsets?",
+    "plain": "Algorithmic: can we efficiently find high-discrepancy subsets?",
+    "whyMatters": [
+      "Extends the formalized result erdos-1028.",
+      "Clarifies how far the parent proof's techniques generalize."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Parent entry erdos-1028 is fully formalized in the gallery."
+    ],
+    "open": [
+      "Algorithmic: can we efficiently find high-discrepancy subsets?"
+    ],
+    "goal": "Formalize the question in Lean 4 (or establish a rigorous negative result), reusing the parent entry's lemmas."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-07-09T00:00:00Z",
+    "iteration": 0,
+    "focus": "Newly seeded by Seeker; awaiting Researcher OBSERVE pass."
+  },
+  "knowledge": {
+    "progressSummary": "Seeded stub. No research performed yet.",
+    "builtItems": [],
+    "insights": [],
+    "nextSteps": [
+      "Survey the parent gallery entry and its Lean source.",
+      "State the question precisely in Lean 4.",
+      "Identify supporting Mathlib theory."
+    ]
+  },
+  "tags": [
+    "combinatorics",
+    "discrepancy-theory",
+    "erdos",
+    "signed-graphs",
+    "probabilistic-method"
+  ],
+  "started": "2026-07-09T00:00:00Z",
+  "lastUpdate": "2026-07-09T00:00:00Z",
+  "significance": 6,
+  "tractability": 5
+}

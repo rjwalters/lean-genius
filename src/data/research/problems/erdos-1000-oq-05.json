@@ -1,0 +1,52 @@
+{
+  "slug": "erdos-1000-oq-05",
+  "title": "How does the problem relate to the distribution of Farey fractions and the three-distance theorem?",
+  "phase": "OBSERVE",
+  "status": "available",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Open extension question extending Erdős #1000: Generalized Totients and Diophantine Approximation: How does the problem relate to the distribution of Farey fractions and the three-distance theorem?",
+    "plain": "How does the problem relate to the distribution of Farey fractions and the three-distance theorem?",
+    "whyMatters": [
+      "Extends the formalized result erdos-1000.",
+      "Clarifies how far the parent proof's techniques generalize."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Parent entry erdos-1000 is fully formalized in the gallery."
+    ],
+    "open": [
+      "How does the problem relate to the distribution of Farey fractions and the three-distance theorem?"
+    ],
+    "goal": "Formalize the question in Lean 4 (or establish a rigorous negative result), reusing the parent entry's lemmas."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-07-09T00:00:00Z",
+    "iteration": 0,
+    "focus": "Newly seeded by Seeker; awaiting Researcher OBSERVE pass."
+  },
+  "knowledge": {
+    "progressSummary": "Seeded stub. No research performed yet.",
+    "builtItems": [],
+    "insights": [],
+    "nextSteps": [
+      "Survey the parent gallery entry and its Lean source.",
+      "State the question precisely in Lean 4.",
+      "Identify supporting Mathlib theory."
+    ]
+  },
+  "tags": [
+    "erdos",
+    "number-theory",
+    "diophantine-approximation",
+    "totient-function",
+    "cesaro-averages"
+  ],
+  "started": "2026-07-09T00:00:00Z",
+  "lastUpdate": "2026-07-09T00:00:00Z",
+  "significance": 6,
+  "tractability": 5
+}

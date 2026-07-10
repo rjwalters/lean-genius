@@ -1,0 +1,53 @@
+{
+  "slug": "erdos-1160-oq-01",
+  "title": "Can the Pantelidakis threshold of $m \\geq 3619$ for odd $n$ be significantly lowered, perhaps to $m \\geq 10$ or smaller?",
+  "phase": "OBSERVE",
+  "status": "available",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Open extension question extending Erdős Problem #1160: Group Counting Function Maximized at Powers of 2: Can the Pantelidakis threshold of $m \\geq 3619$ for odd $n$ be significantly lowered, perhaps to $m \\geq 10$ or smaller?",
+    "plain": "Can the Pantelidakis threshold of $m \\geq 3619$ for odd $n$ be significantly lowered, perhaps to $m \\geq 10$ or smaller?",
+    "whyMatters": [
+      "Extends the formalized result erdos-1160.",
+      "Clarifies how far the parent proof's techniques generalize."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Parent entry erdos-1160 is fully formalized in the gallery."
+    ],
+    "open": [
+      "Can the Pantelidakis threshold of $m \\geq 3619$ for odd $n$ be significantly lowered, perhaps to $m \\geq 10$ or smaller?"
+    ],
+    "goal": "Formalize the question in Lean 4 (or establish a rigorous negative result), reusing the parent entry's lemmas."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-07-09T00:00:00Z",
+    "iteration": 0,
+    "focus": "Newly seeded by Seeker; awaiting Researcher OBSERVE pass."
+  },
+  "knowledge": {
+    "progressSummary": "Seeded stub. No research performed yet.",
+    "builtItems": [],
+    "insights": [],
+    "nextSteps": [
+      "Survey the parent gallery entry and its Lean source.",
+      "State the question precisely in Lean 4.",
+      "Identify supporting Mathlib theory."
+    ]
+  },
+  "tags": [
+    "erdos",
+    "group-theory",
+    "enumeration",
+    "open-problem",
+    "p-groups",
+    "asymptotic-analysis"
+  ],
+  "started": "2026-07-09T00:00:00Z",
+  "lastUpdate": "2026-07-09T00:00:00Z",
+  "significance": 6,
+  "tractability": 5
+}
