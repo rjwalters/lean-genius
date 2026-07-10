@@ -96,6 +96,28 @@ theorem productMapInjective_iff_hasDistinctProducts (A B : Finset ℕ) :
     have hy : ((a₂, b₂) : ℕ × ℕ) ∈ A ×ˢ B := Finset.mem_product.mpr ⟨ha₂, hb₂⟩
     have := h (Finset.mem_coe.mpr hx) (Finset.mem_coe.mpr hy) heq
     rw [Prod.mk.injEq] at this; exact this
+
+/-- **The product set is symmetric**: `A·B = B·A` as finsets.  Commutativity of
+multiplication (`a·b = b·a`) means the two product sets contain exactly the same
+elements, so they are literally equal (not merely equinumerous). -/
+theorem productSet_comm (A B : Finset ℕ) :
+    productSet A B = productSet B A := by
+  ext n
+  simp only [productSet, Finset.mem_biUnion, Finset.mem_image]
+  constructor
+  · rintro ⟨a, ha, b, hb, rfl⟩; exact ⟨b, hb, a, ha, by rw [mul_comm]⟩
+  · rintro ⟨b, hb, a, ha, rfl⟩; exact ⟨a, ha, b, hb, by rw [mul_comm]⟩
+
+/-- **Distinct products is symmetric in the two factors**: `HasDistinctProducts A B ↔
+HasDistinctProducts B A`.  Since `A·B = B·A` (`productSet_comm`) and `|A||B| = |B||A|`,
+the cardinality condition `|A·B| = |A||B|` is unchanged by swapping `A` and `B`.  This
+records that the whole distinctness/energy theory is symmetric — one need only study
+`|A| ≤ |B|`. -/
+theorem hasDistinctProducts_comm (A B : Finset ℕ) :
+    HasDistinctProducts A B ↔ HasDistinctProducts B A := by
+  rw [HasDistinctProducts, HasDistinctProducts, productSet_comm A B,
+    Nat.mul_comm A.card B.card]
+
 /-
 ## Part II: The Erdős Question
 -/
