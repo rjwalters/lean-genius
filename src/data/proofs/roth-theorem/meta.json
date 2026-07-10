@@ -34,7 +34,7 @@
       "roth_density_bound: main theorem via Mathlib roth_3ap_theorem_nat"
     ],
     "dateAdded": "2026-05-04",
-    "lineCount": 1631,
+    "lineCount": 1745,
     "theoremCount": 52,
     "definitionCount": 8,
     "additionalFiles": [
@@ -46,7 +46,7 @@
   "overview": {
     "historicalContext": "Roth's theorem (1953) was a landmark in additive combinatorics: every subset of integers with positive upper density contains a 3-term arithmetic progression. The original proof used Fourier analysis (the density increment strategy). The k=3 case was later subsumed by Szemerédi's theorem (1975) for general k-APs, but Roth's Fourier method remains fundamental.\n\nThe Fourier-analytic proof proceeds by density increment: if A ⊆ Z/NZ has density δ but no 3-AP, then A's Fourier transform has a large coefficient at some frequency r≠0 (the key analytic lemma). This large coefficient means A looks 'structured' — concentrated in a coset of a subgroup. Restricting to that coset increases the density to δ + δ²/4. Iterating O(1/δ²) times reaches density 1, giving a 3-AP by the pigeonhole principle.\n\nModern proofs achieve better quantitative bounds: Bourgain (1999) gave N/(log log N)^{1/2} and Bloom-Sisask (2020) gave N/log^{1+c} N. The qualitative result here suffices for Roth's original theorem.",
     "problemStatement": "**Roth's Theorem**: For every δ > 0, there exists N₀ such that for all N ≥ N₀, every subset A ⊆ Z/NZ with |A| ≥ δN contains a 3-term arithmetic progression {a, a+d, a+2d} with d ≠ 0.",
-    "text": "A 1631-line formalization developing the full Fourier-analytic proof of Roth's theorem from first principles on Z/NZ. Parts I–V (Fourier analysis, AP counting, large coefficient, density increment) are fully self-contained; Part VI wraps via Mathlib's `roth_3ap_theorem_nat`. The key standalone result is `fourier_large_coefficient` — a complete, independently verified proof of the crucial analytic step.",
+    "text": "A 1745-line formalization developing the full Fourier-analytic proof of Roth's theorem from first principles on Z/NZ. Parts I–V (Fourier analysis, AP counting, large coefficient, density increment) are fully self-contained; Part VI wraps via Mathlib's `roth_3ap_theorem_nat`. The key standalone result is `fourier_large_coefficient` — a complete, independently verified proof of the crucial analytic step.",
     "proofStrategy": "**Part I (AP-free basics)**: Define `APFree A` on `ZMod N`; prove empty/singleton cases; monotonicity under subset. Cardinality bound `card_le_nat` via `ZMod.card N`.\n\n**Part II (AP counting)**: `tripleCount A` counts nontrivial 3-APs via filter on `ZMod N × ZMod N`. Prove `apFree_iff_tripleCount_zero` using Finset.card_eq_zero.\n\n**Part III (Fourier analysis)**: `fourierCoeff A r = Σ_{x∈A} exp(2πi val(r·x)/N)`. Additive character `ψ`: prove `psi_add`, `psi_zero`, `psi_ne_one`, `psi_norm`, `conj_psi`. Prove `char_orthogonality`: `Σ_r ψ(rc) = N·δ(c,0)` via shift argument. Use to prove `parseval_on_zmod` and `triple_count_fourier`.\n\n**Part IV (Large coefficient)**: `fourier_large_coefficient` — two cases: (1) δ²N < 2: Parseval gives max ≥ 1 > δ²N/2; (2) δ²N ≥ 2: contradiction via Fourier identity + AM-GM bound on sum over T₁ ∪ T₂ splitting by kernel of ×2.\n\n**Part V (Density increment)**: `cosetRestrict A g hg hgN j hj` restricts A to the j-th coset in ZMod(N/g). Prove `apFree_coset_restrict` (AP-free preserved) and `density_increment_lemma` (some coset achieves density δ + δ²/4).\n\n**Part VI (Main theorem)**: `roth_density_bound` maps A to ℕ via `ZMod.val`, verifies `apFree_imp_threeAPFree_val`, then invokes `roth_3ap_theorem_nat`.",
     "keyInsights": [
       "**Character Orthogonality as Foundation**: The entire Fourier-analytic approach rests on `char_orthogonality` — the sum of ψ(rc) over all r vanishes when c≠0. This is proved via a shift argument: multiplication by ψ(c)≠1 is a bijection on the sum, forcing it to zero. All subsequent results build on this.",
@@ -89,7 +89,7 @@
       "Mathlib"
     ],
     "namespace": "Szemeredi.Roth",
-    "lineCount": 1631,
+    "lineCount": 1745,
     "axiomCount": 0,
     "theoremCount": 52,
     "definitionCount": 8,
