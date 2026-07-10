@@ -215,4 +215,53 @@ theorem pairEnergy_prod_family_refinement_gain (G : SimpleGraph V) [DecidableRel
   rw [hL, hR]
   exact hscaled
 
+/-- **The ε-irregular product-refinement energy jump (`ε⁴` form).**  Specializing
+    `pairEnergy_prod_family_refinement_gain` to a genuinely `ε`-irregular witness
+    cell — one that is not too small in either coordinate (`|A_{i₀}| ≥ ε|A|`,
+    `|B_{j₀}| ≥ ε|B|`) and whose density deviates by at least `ε`
+    (`ε ≤ |d(A_{i₀},B_{j₀}) − d(A,B)|`) — yields the clean uniform energy jump
+
+      `pairEnergy G A B + ε⁴·|A||B|/n² ≤ Σ_{i∈I} Σ_{j∈J} pairEnergy G Aᵢ Bⱼ`.
+
+    This is the concrete `ε⁴` bound recorded (but not previously formalized) in the
+    docstring of `pairEnergy_prod_family_refinement_gain`; it is the increment that
+    drives the energy-increment argument in the Szemerédi regularity proof: each
+    refinement of an irregular pair raises the total energy by a fixed `ε⁴`-sized
+    amount, and since energy is bounded above the process must terminate.  The gain
+    term now depends only on `ε` and the *original* cell sizes `|A|, |B|`, not on the
+    witness sub-cell sizes: we replace `|A_{i₀}||B_{j₀}|·ε²` by the smaller
+    `ε²|A||B|·ε² = ε⁴|A||B|` using the irregularity lower bounds. -/
+theorem pairEnergy_prod_family_refinement_gain_eps (G : SimpleGraph V) [DecidableRel G.Adj]
+    {ι κ : Type*} [DecidableEq ι] [DecidableEq κ]
+    (I : Finset ι) (J : Finset κ) (As : ι → Finset V) (Bs : κ → Finset V)
+    (hA : (↑I : Set ι).PairwiseDisjoint As) (hB : (↑J : Set κ).PairwiseDisjoint Bs)
+    (i₀ : ι) (j₀ : κ) (hi₀ : i₀ ∈ I) (hj₀ : j₀ ∈ J)
+    (ε : ℚ) (hε : 0 ≤ ε)
+    (hAcard : ε * ↑(I.biUnion As).card ≤ (↑(As i₀).card : ℚ))
+    (hBcard : ε * ↑(J.biUnion Bs).card ≤ (↑(Bs j₀).card : ℚ))
+    (hdev : ε ≤ |edgeDensity G (As i₀) (Bs j₀) -
+                  edgeDensity G (I.biUnion As) (J.biUnion Bs)|) :
+    pairEnergy G (I.biUnion As) (J.biUnion Bs) +
+        ε ^ 4 * ↑(I.biUnion As).card * ↑(J.biUnion Bs).card / (Fintype.card V : ℚ) ^ 2 ≤
+      ∑ i ∈ I, ∑ j ∈ J, pairEnergy G (As i) (Bs j) := by
+  have hgain := pairEnergy_prod_family_refinement_gain G I J As Bs hA hB
+    i₀ j₀ hi₀ hj₀ ε hε hdev
+  -- Replace the witness-cell gain by the uniform `ε⁴|A||B|` lower bound.
+  have hcore : ε * ↑(I.biUnion As).card * (ε * ↑(J.biUnion Bs).card)
+      ≤ (↑(As i₀).card : ℚ) * ↑(Bs j₀).card :=
+    mul_le_mul hAcard hBcard (mul_nonneg hε (by positivity)) (by positivity)
+  have key : ε ^ 4 * ↑(I.biUnion As).card * ↑(J.biUnion Bs).card
+      ≤ (↑(As i₀).card : ℚ) * ↑(Bs j₀).card * ε ^ 2 := by
+    nlinarith [mul_le_mul_of_nonneg_left hcore (sq_nonneg ε)]
+  have hinv : (0 : ℚ) ≤ 1 / (Fintype.card V : ℚ) ^ 2 := by positivity
+  have hstep : ε ^ 4 * ↑(I.biUnion As).card * ↑(J.biUnion Bs).card / (Fintype.card V : ℚ) ^ 2
+      ≤ (↑(As i₀).card : ℚ) * ↑(Bs j₀).card / (Fintype.card V : ℚ) ^ 2 * ε ^ 2 :=
+    calc ε ^ 4 * ↑(I.biUnion As).card * ↑(J.biUnion Bs).card / (Fintype.card V : ℚ) ^ 2
+        = (ε ^ 4 * ↑(I.biUnion As).card * ↑(J.biUnion Bs).card)
+            * (1 / (Fintype.card V : ℚ) ^ 2) := by ring
+      _ ≤ ((↑(As i₀).card : ℚ) * ↑(Bs j₀).card * ε ^ 2)
+            * (1 / (Fintype.card V : ℚ) ^ 2) := mul_le_mul_of_nonneg_right key hinv
+      _ = (↑(As i₀).card : ℚ) * ↑(Bs j₀).card / (Fintype.card V : ℚ) ^ 2 * ε ^ 2 := by ring
+  linarith [hgain, hstep]
+
 end Szemeredi.RegularityOQ04Energy
