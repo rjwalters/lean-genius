@@ -1,0 +1,98 @@
+[
+  {
+    "id": "ann-deficiency-def",
+    "proofId": "handshake-lemma-oq-01",
+    "range": { "startLine": 52, "endLine": 55 },
+    "type": "definition",
+    "title": "The Degree Deficiency Functional",
+    "content": "`deficiency G d = ∑_v (d − deg v)` measures the total shortfall of the vertex degrees from a target degree `d`, computed in ℕ so each summand uses truncated subtraction. This is the object that upgrades the parity obstruction from a yes/no impossibility to a numeric quantity: `deficiency = 0` exactly when `G` is `d`-regular, and larger values record how many degree-units of edge must be added to reach the regular ideal. Working in ℕ with truncated subtraction is deliberate — under the degree bound `deg ≤ d` every summand is a genuine nonnegative shortfall, so no cancellation is lost.",
+    "mathContext": "$\\operatorname{deficiency}(G,d) = \\sum_{v \\in V} (d - \\deg v)$, a natural number; it equals $0$ iff $G$ is $d$-regular.",
+    "significance": "key",
+    "relatedConcepts": ["regular graph", "degree sequence", "truncated subtraction", "extremal shortfall functional"],
+    "prerequisites": ["finite simple graphs", "vertex degree", "Finset.sum over Fintype"]
+  },
+  {
+    "id": "ann-even-sum-degrees",
+    "proofId": "handshake-lemma-oq-01",
+    "range": { "startLine": 57, "endLine": 59 },
+    "type": "insight",
+    "title": "The Degree Sum is Even — the Engine",
+    "content": "Rewriting the degree sum by Mathlib's handshake identity `sum_degrees_eq_twice_card_edges` as `2·|E|` and applying `even_two_mul` gives evenness of the total degree. This one fact is the entire engine of the entry: because the ideal `n·d` and the actual `∑ deg` differ by the deficiency, and `∑ deg` is even, the deficiency and `n·d` are forced into the same parity class. Every downstream consequence — the lower bound, the edge cap, the impossibility corollary — is a shadow of `2 | ∑ deg`.",
+    "mathContext": "$\\sum_v \\deg v = 2\\,|E| \\equiv 0 \\pmod 2$. Each edge contributes $1$ to two vertex degrees.",
+    "significance": "key",
+    "relatedConcepts": ["handshake lemma", "parity invariant", "double counting"],
+    "prerequisites": ["SimpleGraph.sum_degrees_eq_twice_card_edges", "even_two_mul"]
+  },
+  {
+    "id": "ann-deficiency-eq",
+    "proofId": "handshake-lemma-oq-01",
+    "range": { "startLine": 61, "endLine": 67 },
+    "type": "technique",
+    "title": "Deficiency as an Ideal Shortfall",
+    "content": "Under the pointwise bound `deg v ≤ d`, `Finset.sum_tsub_distrib` distributes the truncated subtraction across the sum — this step is exactly where the hypothesis `hbound` is spent, since ℕ subtraction only distributes when each subtrahend is dominated. `Finset.sum_const` then collapses `∑_v d` to `|V|·d`, yielding `deficiency = n·d − ∑ deg = n·d − 2|E|`. The identity converts a sum-of-shortfalls into a single subtraction against the regular ideal degree sum `n·d`, the reference point for everything that follows.",
+    "mathContext": "$\\deg v \\le d\\ \\forall v \\ \\Rightarrow\\ \\sum_v (d-\\deg v) = \\sum_v d - \\sum_v \\deg v = n\\cdot d - 2|E|$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Finset.sum_tsub_distrib", "Finset.sum_const", "monus (truncated subtraction)"],
+    "prerequisites": ["distributing ℕ subtraction over a bounded sum", "Finset.card_univ"]
+  },
+  {
+    "id": "ann-deficiency-parity",
+    "proofId": "handshake-lemma-oq-01",
+    "range": { "startLine": 69, "endLine": 78 },
+    "type": "insight",
+    "title": "Parity Pinned to n·d",
+    "content": "The core structural theorem: the deficiency is congruent to `n·d` mod 2. The proof extracts `∑ deg = 2m` from evenness, bounds `∑ deg ≤ n·d` (so the ℕ subtraction is exact), rewrites via `deficiency_eq`, and closes with `omega`. Because the deficiency differs from `n·d` by the even quantity `2m`, subtracting it cannot flip parity. This is the precise quantitative content of the handshake parity obstruction — the moment the classical 'impossible' becomes a residue class.",
+    "mathContext": "$\\operatorname{deficiency}(G,d) \\equiv n\\cdot d \\pmod 2$, since $\\operatorname{deficiency} = n\\cdot d - 2m$ for $m = |E|$.",
+    "significance": "key",
+    "relatedConcepts": ["congruence modulo 2", "parity invariant", "omega decision procedure"],
+    "prerequisites": ["deficiency_eq", "even_sum_degrees", "Finset.sum_le_sum"]
+  },
+  {
+    "id": "ann-one-le-deficiency",
+    "proofId": "handshake-lemma-oq-01",
+    "range": { "startLine": 80, "endLine": 92 },
+    "type": "concept",
+    "title": "Odd n·d ⟹ Minimal Deficiency ≥ 1",
+    "content": "When `n·d` is odd, `deficiency_odd` reduces `Odd (deficiency)` to `Odd (n·d)` through the parity identity, and `one_le_deficiency` observes that an odd natural number is at least 1. This is the sharp lower bound: no graph with `deg ≤ d` can be `d`-regular when `n·d` is odd, and more, every such graph misses the regular ideal degree sum by at least one full degree-unit. The bound is a clean consequence of parity alone — no structural graph theory beyond the handshake lemma is needed.",
+    "mathContext": "$n\\cdot d$ odd $\\Rightarrow \\operatorname{deficiency}(G,d)$ odd $\\Rightarrow \\operatorname{deficiency}(G,d) \\ge 1$.",
+    "significance": "key",
+    "relatedConcepts": ["parity obstruction", "extremal lower bound", "regular graph nonexistence"],
+    "prerequisites": ["Nat.odd_iff", "deficiency_parity", "an odd natural is ≥ 1"]
+  },
+  {
+    "id": "ann-edge-upper-bound",
+    "proofId": "handshake-lemma-oq-01",
+    "range": { "startLine": 94, "endLine": 105 },
+    "type": "concept",
+    "title": "The Minimal Edge Deficiency",
+    "content": "Substituting `∑ deg = 2|E|` into the degree bound `deficiency ≥ 1` translates the degree shortfall into an edge-count cap: `2|E| ≤ n·d − 1`. Since a `d`-regular graph would have exactly `n·d/2` edges, this says the edge count falls strictly short of the regular ideal — the degree deficiency and edge deficiency are two faces of the same inequality. `omega` finishes from the ℕ arithmetic once both the lower bound on deficiency and the upper bound `2|E| ≤ n·d` are in hand.",
+    "mathContext": "$n\\cdot d$ odd $\\Rightarrow 2|E| \\le n\\cdot d - 1$, so $|E| \\le \\lfloor (n\\cdot d - 1)/2 \\rfloor < n\\cdot d/2$.",
+    "significance": "supporting",
+    "relatedConcepts": ["edge count", "extremal edge bound", "regular ideal n·d/2"],
+    "prerequisites": ["one_le_deficiency", "sum_degrees_eq_twice_card_edges", "omega"]
+  },
+  {
+    "id": "ann-impossibility",
+    "proofId": "handshake-lemma-oq-01",
+    "range": { "startLine": 107, "endLine": 123 },
+    "type": "concept",
+    "title": "The d-Regular Impossibility Corollary",
+    "content": "The headline application, packaged as a reusable lemma: no `d`-regular graph on `n` vertices exists when `n·d` is odd. A `d`-regular graph has `∑ deg = n·d` (every degree equals `d` via `hreg.degree_eq`), but the handshake lemma forces `∑ deg` even — contradicting `n·d` odd. The `omega` closes the parity clash after extracting the odd and even witnesses. The specialisation `not_isRegularOfDegree_of_odd_odd` combines odd `n` and odd `d` into odd `n·d`, recovering the classroom fact (e.g. no 3-regular graph on 5 vertices).",
+    "mathContext": "$n\\cdot d$ odd $\\Rightarrow \\neg\\, G.\\mathrm{IsRegularOfDegree}\\, d$; a regular graph would give even $\\sum\\deg = n\\cdot d$.",
+    "significance": "key",
+    "relatedConcepts": ["IsRegularOfDegree", "proof by contradiction", "Odd.mul"],
+    "prerequisites": ["SimpleGraph.IsRegularOfDegree.degree_eq", "even_sum_degrees", "parity contradiction via omega"]
+  },
+  {
+    "id": "ann-sharpness",
+    "proofId": "handshake-lemma-oq-01",
+    "range": { "startLine": 125, "endLine": 135 },
+    "type": "insight",
+    "title": "Sharpness: the Floor is Attained by Kernel decide",
+    "content": "`deficiency_floor_attained` certifies that the empty graph on `Fin 1` with `d = 1` has deficiency exactly 1, so `one_le_deficiency` cannot be strengthened — the lower bound is tight. Crucially the witness uses kernel `decide`, not `native_decide`, so no `Lean.ofReduceBool` axiom is introduced and the entry remains genuinely axiom-free. The two accompanying `example`s confirm the hypotheses of the bound (`n·d = 1` is odd, all degrees `≤ 1`) are met, so this is a legitimate instance of the general theorem, not an edge case dodging it.",
+    "mathContext": "Empty graph on $\\mathrm{Fin}\\,1$, $d=1$: $n\\cdot d = 1$ (odd), $\\deg v = 0 \\le 1$, $\\operatorname{deficiency} = 1$.",
+    "significance": "key",
+    "relatedConcepts": ["sharpness witness", "kernel decide vs native_decide", "axiom hygiene"],
+    "prerequisites": ["decidable graph predicates on Fin 1", "the empty SimpleGraph ⊥"]
+  }
+]
