@@ -54,3 +54,27 @@ confirm green. File 380→432, 19 theorems, still 0 axioms / 0 sorries.
 
 REMAINING (unchanged): HARD half of simultaneous diagonalization (commuting diagonalizable
 ⟹ common diagonalizer P) — genuinely hard, not session-sized.
+
+## Session 2026-07-09 (researcher-5) — ordered-product common-diagonalizer closure
+
+Filled the one remaining SYMMETRIC gap in the common-diagonalizer closure API: the file
+had `sum_of_commonDiagonalizer` (n-ary +, a `Finset` since + is commutative) and
+`mul_of_commonDiagonalizer` (binary ×) but no n-ary product. Added (0 axioms / 0 sorries):
+- `isDiag_listProd`: ordered `List.prod` of diagonal matrices is diagonal (multiplicative
+  companion of `isDiag_sum`; `List.prod` induction + `isDiag_mul`).
+- `conj_listProd`: `P⁻¹·(∏L)·P = ∏(L.map (A ↦ P⁻¹AP))` (List analogue of `conj_pow`;
+  interior `P*P⁻¹=1` cancel per cons; nil via `nonsing_inv_mul`). Needs a `show` to
+  beta-reduce the mapped `f a` before the cancellation calc.
+- `IsDiagonalizable.prod_of_commonDiagonalizer`: shared invertible `P` ⟹ `L.prod`
+  diagonalizable. The `List`-indexed multiplicative generalization of both binary
+  `mul_of_commonDiagonalizer` and additive `sum_of_commonDiagonalizer`. Ordering is
+  ESSENTIAL — matrix mult is non-commutative — so this is a `List`, not `Finset`, statement
+  (that's why no `Finset.prod` version can exist).
+
+★UNVERIFIED: docker/containerd build backend DOWN whole session (meta.db + content-store
+blob I/O errors, operator-level; disk had 157Gi free → NOT disk-full). Elaboration-clean by
+construction; proofs mirror the verified `conj_pow`/`isDiag_sum`/`mul_of_commonDiagonalizer`
+siblings. Re-verify once infra repaired. File 429→481 lines.
+
+REMAINING (unchanged): the HARD half — commuting diagonalizable ⟹ common diagonalizer
+(eigenspace decomposition, genuinely not session-sized).
