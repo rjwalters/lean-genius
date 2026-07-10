@@ -746,4 +746,42 @@ theorem primitive_solvable_subgroup_card_le
   have hpos : 0 < p * (p - 1) := Nat.mul_pos hp.pos (by have := hp.two_le; omega)
   exact Nat.le_of_dvd hpos (primitive_solvable_subgroup_card_dvd H hPrim hSolv)
 
+/-- **Corollary (Galois order lower bound).** A primitive solvable subgroup
+    `H ≤ S_p = Equiv.Perm (ZMod p)` has order **at least** `p`.
+
+    The prime `p` divides `|H|` exactly (`primitive_solvable_subgroup_card_eq_prime_mul`
+    writes `|H| = p·m`), and the cofactor `m` is positive since `|H| > 0`, so
+    `|H| = p·m ≥ p·1 = p`.  Group-theoretically: `H` is transitive on the
+    `p`-element set `ZMod p`, so its order is a multiple of `p`.  No new `sorry`,
+    no axiom. -/
+theorem primitive_solvable_subgroup_prime_le_card
+    (H : Subgroup (Equiv.Perm (ZMod p)))
+    (hPrim : MulAction.IsPreprimitive H (ZMod p))
+    (hSolv : IsSolvable H) :
+    p ≤ Nat.card H := by
+  obtain ⟨m, _, hm⟩ := primitive_solvable_subgroup_card_eq_prime_mul H hPrim hSolv
+  have hm_pos : 0 < m :=
+    Nat.pos_of_ne_zero (by rintro rfl; rw [mul_zero] at hm; exact Nat.card_pos.ne' hm)
+  have hle : p * 1 ≤ p * m := Nat.mul_le_mul (le_refl p) hm_pos
+  rw [mul_one] at hle
+  rwa [hm]
+
+/-- **Corollary (Galois order sandwich, Rotman 9.11).** A primitive solvable
+    subgroup `H ≤ S_p = Equiv.Perm (ZMod p)` has order pinned to the range
+    `p ≤ |H| ≤ p(p-1)`.
+
+    This packages the lower bound `primitive_solvable_subgroup_prime_le_card`
+    (transitivity forces `p ∣ |H|`) with the upper bound
+    `primitive_solvable_subgroup_card_le` (the embedding into `AGL(1,p)` forces
+    `|H| ∣ p(p-1)`).  It is the sharp classical order interval for a solvable
+    transitive permutation group of prime degree `p`: the minimum `p` is realised
+    by the cyclic group `ℤ/pℤ` and the maximum `p(p-1)` by `AGL(1,p)` itself. -/
+theorem primitive_solvable_subgroup_card_bounds
+    (H : Subgroup (Equiv.Perm (ZMod p)))
+    (hPrim : MulAction.IsPreprimitive H (ZMod p))
+    (hSolv : IsSolvable H) :
+    p ≤ Nat.card H ∧ Nat.card H ≤ p * (p - 1) :=
+  ⟨primitive_solvable_subgroup_prime_le_card H hPrim hSolv,
+    primitive_solvable_subgroup_card_le H hPrim hSolv⟩
+
 end AbelRuffiniGaloisExtensionsOQ06GaloisDirection
