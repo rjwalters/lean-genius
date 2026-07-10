@@ -24,6 +24,9 @@
       commutant has dimension `n² > n`.  (Obtained purely from the sibling headline:
       were `c • I` nonderogatory its commutant would have dimension `n`, but it has
       dimension `n²`.)
+    * `finrank_centralizer_scalar_gt` — the quantitative form: for `n ≥ 2`,
+      `n < dim_K C(c • I)`, i.e. the Frobenius lower bound is *strictly* exceeded at
+      the derogatory extreme.
 
   Together with `...OQ02OQ02` (dimension `n`, nonderogatory) and its `...Masa`
   refinement, this pins both ends of the interval `n ≤ dim_K C(M) ≤ n²`:
@@ -95,6 +98,23 @@ theorem scalar_derogatory (c : K) (hn : 2 ≤ n) :
       (c • (1 : Matrix (Fin n) (Fin n) K)) hM
   rw [finrank_centralizer_scalar] at h1
   -- `h1 : n * n = n`, impossible for `n ≥ 2` since `2 * n ≤ n * n`.
+  have h2 : 2 * n ≤ n * n := Nat.mul_le_mul hn (le_refl n)
+  omega
+
+/-- **The Frobenius lower bound is strict at the derogatory extreme.**  For `n ≥ 2`
+    the commutant of a scalar matrix `c • I` has dimension `n² > n`, so the bound
+    `dim_K C(M) ≥ n` (equality iff `M` nonderogatory) is *strictly* exceeded here:
+
+      `n < dim_K C(c • I)`.
+
+    This is the quantitative companion of `scalar_derogatory` (which records only
+    the qualitative failure `minpoly ≠ charpoly`): a scalar matrix is not merely
+    derogatory, its commutant is maximally large. -/
+theorem finrank_centralizer_scalar_gt (c : K) (hn : 2 ≤ n) :
+    n < Module.finrank K
+        ↥(Subalgebra.centralizer K
+            ({c • (1 : Matrix (Fin n) (Fin n) K)} : Set (Matrix (Fin n) (Fin n) K))) := by
+  rw [finrank_centralizer_scalar]
   have h2 : 2 * n ≤ n * n := Nat.mul_le_mul hn (le_refl n)
   omega
 
