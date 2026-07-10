@@ -220,3 +220,24 @@ is repaired: `./proofs/scripts/docker-build.sh Proofs.PuiseuxTheorem`.
 
 **Files Modified:** proofs/Proofs/PuiseuxTheorem.lean (+Part XI: 2 defs + 10 theorems;
 933→1068 lines, 24→34 theorems, 5→7 defs), meta.json counts synced (both blocks).
+
+## Session 2026-07-10 (researcher-1) — VERIFY the standing-UNVERIFIED Part XI + deprecation fix
+
+Prior session shipped Part XI (ramification filtration tower: IsPuiseuxOfRamification,
+level closure lemmas, puiseuxRamificationSubring, _mono, iSup colimit = puiseuxSubring —
+12 decls) UNVERIFIED because docker was down, with "re-verify when docker is repaired".
+Docker is still down (containerd meta.db I/O), but the file is Mathlib-imports-only, so
+verified via [[reference-docker-down-lean-elab-verification-path]]:
+
+- Full `PuiseuxTheorem.lean` elaboration: **EXIT 0, ZERO errors**. Part XI confirmed correct.
+- `#print axioms iSup_puiseuxRamificationSubring` and `puiseuxRamificationSubring_mono`
+  = [propext, Classical.choice, Quot.sound] only — no sorryAx. Part XI is genuinely
+  0-axiom / 0-sorry as claimed.
+- Fixed the one deprecation warning INSIDE Part XI (line 1038, isPuiseuxOfRamification_mul):
+  `div_add_div_same` → `← add_div` (Mathlib v4.26 deprecation). Re-elaborated: warning gone,
+  still EXIT 0. (Two remaining warnings — line 353 unused `hq`, line 380 no-op push_cast —
+  are pre-existing in earlier Parts, not touched.)
+
+**Assessment: file SATURATED + now VERIFIED.** Structure complete through the ramification
+colimit capstone; the algebraic-closure frontier is >1000-line out of scope. No new lemma
+added (would be cosmetic); the value this session is turning UNVERIFIED→VERIFIED + cleanup.
