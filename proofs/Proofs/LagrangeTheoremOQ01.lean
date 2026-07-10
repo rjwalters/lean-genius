@@ -119,6 +119,18 @@ theorem sylow_count_not_dvd_p (p : ℕ) [hp : Fact p.Prime] :
   rw [Nat.dvd_iff_mod_eq_zero, sylow_count_mod_p]
   exact one_ne_zero
 
+/-- **First step of the classification of groups of order `pq`**: if the Sylow count
+    `n_p` divides a prime `q`, then `n_p = 1` or `n_p = q`, because the only divisors of a
+    prime are `1` and itself (`Nat.Prime.eq_one_or_self_of_dvd`).  Together with
+    `n_p ≡ 1 (mod p)` (`sylow_count_mod_p`), this is exactly the arithmetic engine used to
+    force a normal Sylow subgroup — hence non-simplicity — for a group of order `p·q`:
+    when `q ≢ 1 (mod p)` the value `n_p = q` is excluded and `n_p = 1`, making `P` normal
+    by `sylow_normal_iff_card_eq_one`. -/
+theorem sylow_count_eq_one_or_prime (p q : ℕ) [hp : Fact p.Prime] (hq : q.Prime)
+    (h : card (Sylow p G) ∣ q) :
+    card (Sylow p G) = 1 ∨ card (Sylow p G) = q :=
+  hq.eq_one_or_self_of_dvd _ h
+
 /-- **Hall property of Sylow subgroups**: the index `[G : P]` of a Sylow p-subgroup is
     prime to `p`.  Since `|P| = p^(vₚ(|G|))` is the *full* p-power in `|G|`
     (`sylow_card_eq`), the complementary index carries no factor of `p`.  This is exactly
@@ -129,6 +141,18 @@ theorem sylow_count_not_dvd_p (p : ℕ) [hp : Fact p.Prime] :
 theorem sylow_index_not_dvd_p (p : ℕ) [hp : Fact p.Prime] (P : Sylow p G) :
     ¬ p ∣ P.toSubgroup.index :=
   P.not_dvd_index
+
+/-- **Sylow subgroups are Hall subgroups (coprimality form)**: the order `|P| = p^k` and
+    the index `[G : P]` are coprime.  This is the sharp, symmetric statement of the Hall
+    property upgrading `sylow_index_not_dvd_p`: rewriting `|P|` to the full p-power
+    `p^(vₚ(|G|))` (`sylow_card_eq`) reduces coprimality of `p^k` and the index to the
+    single fact `p ∤ [G:P]` (`Sylow.not_dvd_index`), raised to the `k`-th power via
+    `Nat.Coprime.pow_left`.  A subgroup whose order is coprime to its index is by
+    definition a Hall subgroup, so every Sylow subgroup is a Hall subgroup. -/
+theorem sylow_card_coprime_index (p : ℕ) [hp : Fact p.Prime] (P : Sylow p G) :
+    Nat.Coprime (card P) P.toSubgroup.index := by
+  rw [sylow_card_eq]
+  exact ((hp.out.coprime_iff_not_dvd).mpr P.not_dvd_index).pow_left _
 
 /-
 ═══════════════════════════════════════════════════════════════════════════════
