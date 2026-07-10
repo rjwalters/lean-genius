@@ -867,4 +867,16 @@ theorem signChangesInCoeffs_C_mul {c : ℝ} (hc : c ≠ 0) (p : ℝ[X]) :
     rw [hcoe]
     exact countSignChanges_const_smul hc _
 
+/-- **Negation invariance for polynomials.**  Negating a polynomial leaves Descartes'
+coefficient sign-change count unchanged: `V(−p) = V(p)`.  This is the `c = −1` case of
+the scaling invariance `signChangesInCoeffs_C_mul` (since `−p = C(−1)·p`), and the
+polynomial-level companion of the sequence lemma `countSignChanges_neg`.  Classically it
+reflects that `p` and `−p` have the *same* roots — in particular the same positive roots —
+so Descartes' bound is identical for both.  Axiom-free. -/
+theorem signChangesInCoeffs_neg (p : ℝ[X]) :
+    DescartesRuleOfSigns.signChangesInCoeffs (-p)
+      = DescartesRuleOfSigns.signChangesInCoeffs p := by
+  have h := signChangesInCoeffs_C_mul (c := -1) (by norm_num) p
+  rwa [show (C (-1 : ℝ)) * p = -p by rw [map_neg, map_one, neg_one_mul]] at h
+
 end DescartesRuleOfSignsOQ01OQ03
