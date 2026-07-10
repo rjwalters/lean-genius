@@ -94,12 +94,12 @@ theorem dissection_skeleton {a b q : ℝ}
 
 /-- Signed area of the triangle with vertices `(x₁,y₁)`, `(x₂,y₂)`, `(x₃,y₃)` via the
 shoelace formula. Positive for counter-clockwise orientation. -/
-def triArea (x₁ y₁ x₂ y₂ x₃ y₃ : ℝ) : ℝ :=
+noncomputable def triArea (x₁ y₁ x₂ y₂ x₃ y₃ : ℝ) : ℝ :=
   ((x₁ * y₂ - x₂ * y₁) + (x₂ * y₃ - x₃ * y₂) + (x₃ * y₁ - x₁ * y₃)) / 2
 
 /-- Signed area of the quadrilateral `(x₁,y₁) … (x₄,y₄)` (vertices in order) via the
 shoelace formula. Positive for counter-clockwise orientation. -/
-def quadArea (x₁ y₁ x₂ y₂ x₃ y₃ x₄ y₄ : ℝ) : ℝ :=
+noncomputable def quadArea (x₁ y₁ x₂ y₂ x₃ y₃ x₄ y₄ : ℝ) : ℝ :=
   ((x₁ * y₂ - x₂ * y₁) + (x₂ * y₃ - x₃ * y₂)
     + (x₃ * y₄ - x₄ * y₃) + (x₄ * y₁ - x₁ * y₄)) / 2
 
