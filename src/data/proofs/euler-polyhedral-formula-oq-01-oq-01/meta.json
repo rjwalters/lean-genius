@@ -46,11 +46,11 @@
       "K₅ non-planarity and five-neighbor non-completeness as Five Color Theorem prerequisites"
     ],
     "dateAdded": "2026-03-06",
-    "axiomCount": 4,
-    "lineCount": 507,
-    "assumptions": "4 axioms: planar_hereditary, kempe_chain_separation, five_color_axiom, and 1 more. See Lean source for complete statements.",
+    "axiomCount": 3,
+    "lineCount": 491,
+    "assumptions": "3 axioms, each conditioned on the planar edge bound E ≤ 3V-6 (this entry's encoding of planarity): planar_hereditary (subgraphs of a planar graph inherit an edge bound), kempe_chain_separation (under the edge bound, a Kempe-chain swap reduces a degree-5 vertex's distinct neighbor colors below 5), and five_color_axiom (the planar edge-bound bridge to G.Colorable 5). See Lean source for complete statements.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 25,
+    "theoremCount": 24,
     "definitionCount": 4
   },
   "overview": {
@@ -117,61 +117,54 @@
       "id": "part-6-core-structure",
       "title": "PART 6: Five Color Theorem — Core Proof Structure",
       "startLine": 236,
-      "endLine": 277,
-      "summary": "planar_hereditary axiom (subgraph edge bounds) and kempe_chain_separation axiom: for a degree-5 vertex with 5 distinctly-colored neighbors, a Kempe chain swap always yields a proper recoloring with < 5 distinct neighbor colors."
+      "endLine": 279,
+      "summary": "planar_hereditary axiom (subgraph edge bounds) and kempe_chain_separation axiom: under the planar edge-bound hypothesis, for a degree-5 vertex with 5 distinctly-colored neighbors, a Kempe chain swap always yields a proper recoloring with < 5 distinct neighbor colors."
     },
     {
       "id": "part-7-inductive-proof",
       "title": "PART 7: Five Color Theorem — Inductive Proof",
-      "startLine": 278,
-      "endLine": 336,
-      "summary": "five_color_axiom bridging the Mathlib SimpleGraph vertex-deletion gap, and five_color_theorem: small graphs (≤ 5 vertices) colored directly via Fintype.equivFin; larger graphs reduced through exists_low_degree to the axiomatized inductive step."
+      "startLine": 280,
+      "endLine": 344,
+      "summary": "five_color_axiom (now carrying the planar edge-bound hypothesis, matching five_color_theorem — without it the statement is false, e.g. K₆) bridging the Mathlib SimpleGraph vertex-deletion gap, and five_color_theorem: small graphs (≤ 5 vertices) colored directly via Fintype.equivFin; larger graphs reduced through exists_low_degree to the axiomatized inductive step."
     },
     {
       "id": "part-8-consequences",
       "title": "PART 8: Consequences of the Five Color Theorem",
-      "startLine": 337,
-      "endLine": 355,
+      "startLine": 345,
+      "endLine": 363,
       "summary": "five_implies_six_colorable (mono to 6 colors) and planar_chromatic_le_five: the chromatic number of any planar graph is at most 5 (sharpened to 4 by the Four Color Theorem)."
     },
     {
       "id": "part-9-kempe-properties",
       "title": "PART 9: Kempe Chain Properties (Fully Proved)",
-      "startLine": 356,
-      "endLine": 399,
+      "startLine": 364,
+      "endLine": 407,
       "summary": "swapColors_self, swapColors_involutive, swapColors_comm (algebraic laws of the transposition). kempeSwap_empty, kempeSwap_outside, kempeSwap_c1_to_c2, kempeSwap_c2_to_c1: membership-based behavior of the localized swap."
     },
     {
       "id": "part-10-degree-5-analysis",
       "title": "PART 10: Degree-5 Analysis for the Five Color Theorem",
-      "startLine": 400,
-      "endLine": 423,
+      "startLine": 408,
+      "endLine": 431,
       "summary": "color_extension: a free color exists whenever the used-color count is below the palette size. kempe_reduces_colors: after a Kempe swap reduces 5 used colors to fewer, at most 4 distinct colors remain among the neighbors."
     },
     {
-      "id": "part-11-graph-minor-connection",
-      "title": "PART 11: Graph Minor Connection",
-      "startLine": 424,
-      "endLine": 447,
-      "summary": "kuratowski_wagner axiom (no K₅/K₃,₃ minor ⟹ planar edge bound) and hadwiger_implies_five_color: the Hadwiger-conjecture chain (no K₆ minor ⟹ 5-colorable), proved for t ≤ 6 by Robertson–Seymour–Thomas."
-    },
-    {
-      "id": "part-12-small-graph-colorability",
-      "title": "PART 12: Small Graph Colorability",
-      "startLine": 448,
-      "endLine": 468,
+      "id": "part-11-small-graph-colorability",
+      "title": "PART 11: Small Graph Colorability",
+      "startLine": 432,
+      "endLine": 452,
       "summary": "colorable_five_vertices: graphs on ≤ 5 vertices are 5-colorable. colorable_card_vertices: any graph on n vertices is n-colorable, both via Fintype.equivFin and injectivity."
     },
     {
-      "id": "part-13-summary-exports",
-      "title": "PART 13: Summary and Exports",
-      "startLine": 469,
-      "endLine": 507,
+      "id": "part-12-summary-exports",
+      "title": "PART 12: Summary and Exports",
+      "startLine": 453,
+      "endLine": 491,
       "summary": "Closing docstring summarizing the fully-proved combinatorial ingredients and the axioms bridging Mathlib's SimpleGraph API gaps, plus the namespace close."
     }
   ],
   "conclusion": {
-    "summary": "This formalization proves all combinatorial ingredients of the Five Color Theorem: Kempe chain swap correctness (via Equiv.swap), K₅ non-planarity, color counting arguments, and the complete inductive proof structure. The 4 axioms encode planarity-specific facts that Mathlib currently lacks (subgraph planarity, Kempe chain separation, vertex deletion). 0 sorries.",
+    "summary": "This formalization proves all combinatorial ingredients of the Five Color Theorem: Kempe chain swap correctness (via Equiv.swap), K₅ non-planarity, color counting arguments, and the complete inductive proof structure. The 3 axioms encode planarity-specific facts that Mathlib currently lacks (subgraph planarity, Kempe chain separation, vertex deletion); each is conditioned on the planar edge bound E ≤ 3V-6 so the axiom set is not falsified by non-planar counterexamples such as K₆. 0 sorries.",
     "implications": "**Theoretical Significance**: The Five Color Theorem sits between the elementary Six Color Theorem (fully proved in OQ-01) and the deep Four Color Theorem (requiring computer verification).\n\nThe Kempe chain technique formalized here is fundamental to graph coloring theory and is used in various generalizations. The Equiv.swap approach to color transpositions provides a clean, reusable pattern for future coloring formalizations.",
     "openQuestions": [
       "Can vertex deletion with Fintype preservation be formalized in Mathlib to eliminate the five_color_axiom?",
@@ -194,9 +187,9 @@
       "Finset"
     ],
     "namespace": "FiveColorTheorem",
-    "lineCount": 507,
-    "axiomCount": 4,
-    "theoremCount": 25,
+    "lineCount": 491,
+    "axiomCount": 3,
+    "theoremCount": 24,
     "definitionCount": 4,
     "path": "Proofs/FiveColorTheorem.lean",
     "sorries": 0

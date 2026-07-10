@@ -264,7 +264,9 @@ axiom planar_hereditary {V' : Type*} [Fintype V'] [DecidableEq V']
     This planarity-based separation is axiomatized. -/
 axiom kempe_chain_separation {V' : Type*} [Fintype V'] [DecidableEq V']
     (G : SimpleGraph V') [DecidableRel G.Adj]
-    (f : V' → Fin 5) :
+    (f : V' → Fin 5)
+    (h_planar : ∀ (hV3 : 3 ≤ Fintype.card V'),
+      (G.edgeFinset.card : ℤ) ≤ 3 * Fintype.card V' - 6) :
     -- For a degree-5 vertex v with 5 distinctly colored neighbors:
     -- There always exists a Kempe chain swap that reduces the number
     -- of distinct colors among v's neighbors to at most 4.
@@ -304,8 +306,14 @@ axiom kempe_chain_separation {V' : Type*} [Fintype V'] [DecidableEq V']
 -- The Five Color Theorem as an axiom for the inductive step.
 -- This bridges the gap between our proved structural ingredients and Mathlib's
 -- SimpleGraph API, which currently lacks vertex-deletion with Fintype preservation.
+-- The planar edge-bound hypothesis (this entry's encoding of planarity, and the
+-- hypothesis carried by `five_color_theorem`) is required: without it the statement
+-- is false — e.g. K₆ is a finite graph that is not 5-colorable.
 axiom five_color_axiom (G : SimpleGraph V) [Fintype V] [DecidableEq V]
-    [DecidableRel G.Adj] : G.Colorable 5
+    [DecidableRel G.Adj]
+    (h_planar : ∀ (hV3 : 3 ≤ Fintype.card V),
+      (G.edgeFinset.card : ℤ) ≤ 3 * Fintype.card V - 6) :
+    G.Colorable 5
 
 theorem five_color_theorem (G : SimpleGraph V) [DecidableRel G.Adj]
     (h_planar : ∀ (hV3 : 3 ≤ Fintype.card V),
@@ -332,7 +340,7 @@ theorem five_color_theorem (G : SimpleGraph V) [DecidableRel G.Adj]
     -- - Induced subgraph API for SimpleGraph with Fintype preservation
     -- - Vertex deletion that preserves DecidableRel
     -- We defer to the axiomatic statement below.
-    exact five_color_axiom G
+    exact five_color_axiom G h_planar
 
 -- ============================================================
 -- PART 8: Consequences of the Five Color Theorem
@@ -422,31 +430,7 @@ theorem kempe_reduces_colors (usedBefore usedAfter : ℕ)
   omega
 
 -- ============================================================
--- PART 11: Graph Minor Connection
--- ============================================================
-
-/-- A graph with no K₅ minor and no K₃,₃ minor is planar (Kuratowski/Wagner).
-    Combined with the Five Color Theorem, such graphs are 5-colorable.
-    This is stated as an axiom since Mathlib lacks minor theory. -/
-axiom kuratowski_wagner {V' : Type*} [Fintype V'] [DecidableEq V']
-    (G : SimpleGraph V') [DecidableRel G.Adj] :
-    -- If G has no K₅ or K₃,₃ as topological minor, then G is planar
-    True → (∀ (hV3 : 3 ≤ Fintype.card V'),
-      (G.edgeFinset.card : ℤ) ≤ 3 * Fintype.card V' - 6)
-
-/-- Hadwiger's conjecture (1943) implies the Five Color Theorem:
-    If G has no K₆ minor, then G is 5-colorable.
-    This is a strictly stronger statement than the Five Color Theorem.
-
-    Currently proved for t ≤ 6 (Robertson, Seymour, Thomas 1993). -/
-theorem hadwiger_implies_five_color :
-    -- Hadwiger(6): no K₆ minor → 5-colorable
-    -- Planar → no K₅ minor → no K₆ minor → 5-colorable
-    ∀ t : ℕ, t ≤ 5 → t < 6 := by
-  intro t ht; omega
-
--- ============================================================
--- PART 12: Small Graph Colorability
+-- PART 11: Small Graph Colorability
 -- ============================================================
 
 /-- Every graph on at most 5 vertices is 5-colorable. -/
@@ -467,7 +451,7 @@ theorem colorable_card_vertices (G : SimpleGraph V) [DecidableRel G.Adj] :
     (fun {v w} hadj => (Fintype.equivFin V).injective.ne (G.ne_of_adj hadj))
 
 -- ============================================================
--- PART 13: Summary and Exports
+-- PART 12: Summary and Exports
 -- ============================================================
 
 /-
