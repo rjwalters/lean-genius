@@ -38,7 +38,10 @@
     "algebra"
   ],
   "relatedProofs": [
-    "group-order-prime-squared-abelian-oq-01"
+    "group-order-prime-squared-abelian-oq-01",
+    "group-order-prime-squared-abelian-oq-01-oq-01",
+    "group-order-prime-squared-abelian-oq-01-oq-01-oq-02",
+    "group-order-prime-squared-abelian-oq-01-oq-03"
   ],
   "references": {
     "papers": [],
@@ -57,5 +60,73 @@
   },
   "significance": 6,
   "tractability": 5,
-  "category": "extension"
+  "category": "extension",
+  "leanFiles": [
+    {
+      "path": "Proofs/GroupOrderPrimeSquaredAbelian.lean",
+      "filename": "GroupOrderPrimeSquaredAbelian.lean",
+      "lineCount": 105,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GroupOrderPrimeSquaredAbelian.lean"
+    },
+    {
+      "path": "Proofs/GroupOrderPrimeSquaredAbelianClassificationOQ01OQ01OQ02.lean",
+      "filename": "GroupOrderPrimeSquaredAbelianClassificationOQ01OQ01OQ02.lean",
+      "lineCount": 150,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GroupOrderPrimeSquaredAbelianClassificationOQ01OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/GroupOrderPrimeSquaredAbelianCountOQ03.lean",
+      "filename": "GroupOrderPrimeSquaredAbelianCountOQ03.lean",
+      "lineCount": 145,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GroupOrderPrimeSquaredAbelianCountOQ03.lean"
+    },
+    {
+      "path": "Proofs/GroupOrderPrimeSquaredAbelianElementCountsOQ03.lean",
+      "filename": "GroupOrderPrimeSquaredAbelianElementCountsOQ03.lean",
+      "lineCount": 143,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GroupOrderPrimeSquaredAbelianElementCountsOQ03.lean"
+    },
+    {
+      "path": "Proofs/GroupOrderPrimeSquaredAbelianExponentOQ01.lean",
+      "filename": "GroupOrderPrimeSquaredAbelianExponentOQ01.lean",
+      "lineCount": 136,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GroupOrderPrimeSquaredAbelianExponentOQ01.lean"
+    },
+    {
+      "path": "Proofs/GroupOrderPrimeSquaredAbelianIsoOQ01OQ01OQ02.lean",
+      "filename": "GroupOrderPrimeSquaredAbelianIsoOQ01OQ01OQ02.lean",
+      "lineCount": 155,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GroupOrderPrimeSquaredAbelianIsoOQ01OQ01OQ02.lean"
+    }
+  ]
 }

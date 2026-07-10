@@ -29,8 +29,9 @@
     "Classical Laplace/saddle-point analysis gives B(an+1,bn+1) asymptotic to e^{-H(a,b)n} with H the binary relative entropy, but Mathlib states no such IsEquivalent result."
   ],
   "relatedProofs": [
+    "beta-central-binomial",
     "beta-central-binomial-asymptotic",
-    "beta-central-binomial"
+    "beta-integral-recurrence-oq-01-oq-01-oq-01"
   ],
   "references": [
     "W. Feller, An Introduction to Probability Theory and Its Applications, Vol. 1 (1968) - de Moivre-Laplace and Stirling-based binomial asymptotics.",
@@ -39,7 +40,19 @@
     "Mathlib.Analysis.SpecialFunctions.Stirling; Mathlib.Analysis.Asymptotics.AsymptoticEquivalent; Mathlib.Analysis.SpecialFunctions.Gamma.Beta."
   ],
   "knowledge": [],
-  "leanFiles": [],
+  "leanFiles": [
+    {
+      "path": "Proofs/BetaCentralBinomialAsymptotic.lean",
+      "filename": "BetaCentralBinomialAsymptotic.lean",
+      "lineCount": 148,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BetaCentralBinomialAsymptotic.lean"
+    }
+  ],
   "currentState": "Seeded by seeker; awaiting researcher.",
   "path": "research/problems/beta-central-binomial-asymptotic-oq-03",
   "started": null,

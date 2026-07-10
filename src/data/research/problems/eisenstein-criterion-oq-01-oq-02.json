@@ -34,7 +34,13 @@
     "open-question"
   ],
   "relatedProofs": [
-    "eisenstein-criterion-oq-01"
+    "eisenstein-criterion-oq-01",
+    "eisenstein-criterion-oq-01-oq-01",
+    "eisenstein-criterion-oq-01-oq-02",
+    "eisenstein-criterion-oq-01-oq-03",
+    "eisenstein-criterion-oq-01-oq-03-oq-02",
+    "eisenstein-criterion-oq-01-oq-03-oq-02-oq-01",
+    "eisenstein-criterion-oq-01-oq-03-oq-02-oq-02"
   ],
   "references": {
     "papers": [],
@@ -62,5 +68,84 @@
       "Stating the core theorems for an arbitrary real root α (any α with αⁿ=p) makes √2, ∛2, and the general rpow root all one-line instances of a single lemma.",
       "Build infra note: file elaborates cleanly ([7744/7744] ~1.5s, no type errors) but Docker olean-write intermittently SIGBUS-135 / hits fleet-race dependency .ir corruption; environmental, not a proof error."
     ]
-  }
+  },
+  "leanFiles": [
+    {
+      "path": "Proofs/EisensteinCriterionOQ01.lean",
+      "filename": "EisensteinCriterionOQ01.lean",
+      "lineCount": 103,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EisensteinCriterionOQ01.lean"
+    },
+    {
+      "path": "Proofs/EisensteinCriterionOQ01OQ01.lean",
+      "filename": "EisensteinCriterionOQ01OQ01.lean",
+      "lineCount": 153,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EisensteinCriterionOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/EisensteinCriterionOQ01OQ02.lean",
+      "filename": "EisensteinCriterionOQ01OQ02.lean",
+      "lineCount": 122,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EisensteinCriterionOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/EisensteinCriterionOQ01OQ03.lean",
+      "filename": "EisensteinCriterionOQ01OQ03.lean",
+      "lineCount": 215,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EisensteinCriterionOQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/EisensteinCriterionOQ01OQ03OQ02.lean",
+      "filename": "EisensteinCriterionOQ01OQ03OQ02.lean",
+      "lineCount": 98,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EisensteinCriterionOQ01OQ03OQ02.lean"
+    },
+    {
+      "path": "Proofs/EisensteinCriterionOQ01OQ03OQ02OQ01.lean",
+      "filename": "EisensteinCriterionOQ01OQ03OQ02OQ01.lean",
+      "lineCount": 115,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EisensteinCriterionOQ01OQ03OQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/EisensteinCriterionOQ01OQ03OQ02OQ02.lean",
+      "filename": "EisensteinCriterionOQ01OQ03OQ02OQ02.lean",
+      "lineCount": 76,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EisensteinCriterionOQ01OQ03OQ02OQ02.lean"
+    }
+  ]
 }

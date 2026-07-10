@@ -50,5 +50,81 @@
   "started": "2026-07-09T00:00:00Z",
   "lastUpdate": "2026-07-09T00:00:00Z",
   "significance": 6,
-  "tractability": 5
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1047Main.lean",
+      "filename": "Erdos1047Main.lean",
+      "lineCount": 71,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1047Main.lean"
+    },
+    {
+      "path": "Proofs/Erdos1047OQ02.lean",
+      "filename": "Erdos1047OQ02.lean",
+      "lineCount": 111,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1047OQ02.lean"
+    },
+    {
+      "path": "Proofs/Erdos1047OQ02Certificate.lean",
+      "filename": "Erdos1047OQ02Certificate.lean",
+      "lineCount": 299,
+      "theoremCount": 19,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1047OQ02Certificate.lean"
+    },
+    {
+      "path": "Proofs/Erdos1047OQ02ChordExit.lean",
+      "filename": "Erdos1047OQ02ChordExit.lean",
+      "lineCount": 293,
+      "theoremCount": 16,
+      "axiomCount": 0,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1047OQ02ChordExit.lean"
+    },
+    {
+      "path": "Proofs/Erdos1047OQ02Reduction.lean",
+      "filename": "Erdos1047OQ02Reduction.lean",
+      "lineCount": 100,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1047OQ02Reduction.lean"
+    },
+    {
+      "path": "Proofs/Erdos1047Problem.lean",
+      "filename": "Erdos1047Problem.lean",
+      "lineCount": 266,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 13,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1047Problem.lean"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-10",
+    "erdos-104",
+    "erdos-1047",
+    "erdos-1047-oq-02",
+    "erdos-1047-oq-02-chord-exit"
+  ]
 }

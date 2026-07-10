@@ -28,7 +28,11 @@
     "Maximum independent set is NP-hard in general (Karp 1972), but the f(x,y) ∉ {x,y} structure does not transfer that hardness automatically — the exact complexity here is open."
   ],
   "relatedProofs": [
+    "erdos-1",
+    "erdos-10",
+    "erdos-102",
     "erdos-1025",
+    "erdos-1025-oq-04",
     "ramseys-theorem",
     "szemeredi-regularity"
   ],
@@ -39,7 +43,30 @@
     "R. M. Karp, Reducibility Among Combinatorial Problems (1972)"
   ],
   "knowledge": [],
-  "leanFiles": [],
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1025OQ04.lean",
+      "filename": "Erdos1025OQ04.lean",
+      "lineCount": 190,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1025OQ04.lean"
+    },
+    {
+      "path": "Proofs/Erdos1025Problem.lean",
+      "filename": "Erdos1025Problem.lean",
+      "lineCount": 247,
+      "theoremCount": 6,
+      "axiomCount": 4,
+      "defCount": 12,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1025Problem.lean"
+    }
+  ],
   "currentState": "Seeded by seeker; awaiting researcher.",
   "path": "research/problems/erdos-1025-oq-03",
   "started": null,

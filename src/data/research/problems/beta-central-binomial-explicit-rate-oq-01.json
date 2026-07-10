@@ -25,11 +25,35 @@
   ],
   "knownResults": [],
   "relatedProofs": [
-    "beta-central-binomial-explicit-rate"
+    "beta-central-binomial-explicit-rate",
+    "beta-central-binomial-explicit-rate-oq-02"
   ],
   "references": [],
   "knowledge": [],
-  "leanFiles": [],
+  "leanFiles": [
+    {
+      "path": "Proofs/BetaCentralBinomialExplicitRate.lean",
+      "filename": "BetaCentralBinomialExplicitRate.lean",
+      "lineCount": 391,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BetaCentralBinomialExplicitRate.lean"
+    },
+    {
+      "path": "Proofs/BetaCentralBinomialExplicitRateOQ02.lean",
+      "filename": "BetaCentralBinomialExplicitRateOQ02.lean",
+      "lineCount": 598,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BetaCentralBinomialExplicitRateOQ02.lean"
+    }
+  ],
   "currentState": "Seeded by seeker; awaiting researcher.",
   "path": "research/problems/beta-central-binomial-explicit-rate-oq-01",
   "started": null,

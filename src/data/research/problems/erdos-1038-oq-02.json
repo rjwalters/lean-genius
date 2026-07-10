@@ -48,5 +48,35 @@
   "started": "2026-07-09T00:00:00Z",
   "lastUpdate": "2026-07-09T00:00:00Z",
   "significance": 6,
-  "tractability": 5
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1038Problem.lean",
+      "filename": "Erdos1038Problem.lean",
+      "lineCount": 94,
+      "theoremCount": 0,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1038Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos1038WIP01.lean",
+      "filename": "Erdos1038WIP01.lean",
+      "lineCount": 535,
+      "theoremCount": 31,
+      "axiomCount": 0,
+      "defCount": 9,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1038WIP01.lean"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-10",
+    "erdos-103",
+    "erdos-1038"
+  ]
 }

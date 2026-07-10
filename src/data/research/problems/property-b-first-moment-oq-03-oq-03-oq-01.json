@@ -50,5 +50,93 @@
   "started": "2026-07-09T00:00:00Z",
   "lastUpdate": "2026-07-09T00:00:00Z",
   "significance": 6,
-  "tractability": 5
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/PropertyBFirstMoment.lean",
+      "filename": "PropertyBFirstMoment.lean",
+      "lineCount": 204,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PropertyBFirstMoment.lean"
+    },
+    {
+      "path": "Proofs/PropertyBFirstMomentAsymmetric.lean",
+      "filename": "PropertyBFirstMomentAsymmetric.lean",
+      "lineCount": 126,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PropertyBFirstMomentAsymmetric.lean"
+    },
+    {
+      "path": "Proofs/PropertyBFirstMomentConditionalOpt.lean",
+      "filename": "PropertyBFirstMomentConditionalOpt.lean",
+      "lineCount": 180,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PropertyBFirstMomentConditionalOpt.lean"
+    },
+    {
+      "path": "Proofs/PropertyBFirstMomentIndepRecoloring.lean",
+      "filename": "PropertyBFirstMomentIndepRecoloring.lean",
+      "lineCount": 112,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PropertyBFirstMomentIndepRecoloring.lean"
+    },
+    {
+      "path": "Proofs/PropertyBFirstMomentOQ03.lean",
+      "filename": "PropertyBFirstMomentOQ03.lean",
+      "lineCount": 499,
+      "theoremCount": 19,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PropertyBFirstMomentOQ03.lean"
+    },
+    {
+      "path": "Proofs/PropertyBFirstMomentRamsey.lean",
+      "filename": "PropertyBFirstMomentRamsey.lean",
+      "lineCount": 170,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PropertyBFirstMomentRamsey.lean"
+    },
+    {
+      "path": "Proofs/PropertyBFirstMomentRecoloring.lean",
+      "filename": "PropertyBFirstMomentRecoloring.lean",
+      "lineCount": 148,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PropertyBFirstMomentRecoloring.lean"
+    }
+  ],
+  "relatedProofs": [
+    "property-b-first-moment",
+    "property-b-first-moment-oq-02",
+    "property-b-first-moment-oq-03",
+    "property-b-first-moment-oq-03-oq-01",
+    "property-b-first-moment-oq-03-oq-02",
+    "property-b-first-moment-oq-03-oq-03",
+    "property-b-first-moment-oq-03-oq-04"
+  ]
 }

@@ -1,0 +1,57 @@
+{
+  "slug": "erdos-241-wip-01",
+  "title": "Complete Erdős Problem #241 — Maximum Size of B₃ Sets",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "f(N) := \\max\\Big\\{ |A| : A \\subseteq \\{1,\\dots,N\\},\\ \\text{all sums } a_1+a_2+a_3\\ (a_i \\in A,\\ a_1\\le a_2\\le a_3)\\ \\text{distinct} \\Big\\}",
+    "plain": "A $B_3$ set is a set of integers in which every unordered triple has a distinct sum — no two different triples add to the same value. We want the largest such subset of $\\{1,\\dots,N\\}$. Trivially there are about $N^{1/3}$ elements achievable, and no more than a constant times $N^{1/3}$; the question is whether the constant is exactly $1$, i.e. whether $f(N)/N^{1/3} \\to 1$.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-07-09T19:15:58-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: erdos-241-wip-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "additive-combinatorics",
+    "sidon-sets",
+    "b3-sets",
+    "number-theory"
+  ],
+  "relatedProofs": [
+    "erdos-2",
+    "erdos-24",
+    "erdos-241"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-07-10T02:37:39.912Z",
+  "lastUpdate": "2026-07-10T02:37:39.983Z"
+}

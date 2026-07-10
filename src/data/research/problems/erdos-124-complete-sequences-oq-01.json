@@ -26,14 +26,55 @@
     "Brown's criterion: a non-decreasing sequence with u_1 = 1 is complete iff u_{n+1} <= 1 + sum_{j<=n} u_j.",
     "Cassels (1960): classical completeness criteria for subset sums of a fixed set of positive integers."
   ],
-  "relatedProofs": ["erdos-124-complete-sequences"],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-12",
+    "erdos-124",
+    "erdos-124-complete-sequences",
+    "erdos-124-complete-sequences-oq-02",
+    "erdos-124-complete-sequences-oq-02-oq-01"
+  ],
   "references": [
     "Burr, Erdős, Graham, Li, 'Complete sequences of sets of integer powers', Acta Arithmetica 77 (1996), 133-138.",
     "Cassels, 'On the representation of integers as sums of distinct summands from a fixed set', Acta Sci. Math. Szeged 21 (1960), 111-124.",
     "https://www.erdosproblems.com/124"
   ],
   "knowledge": [],
-  "leanFiles": [],
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos124CompleteSequences.lean",
+      "filename": "Erdos124CompleteSequences.lean",
+      "lineCount": 508,
+      "theoremCount": 18,
+      "axiomCount": 0,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos124CompleteSequences.lean"
+    },
+    {
+      "path": "Proofs/Erdos124CompleteSequencesOQ02.lean",
+      "filename": "Erdos124CompleteSequencesOQ02.lean",
+      "lineCount": 317,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos124CompleteSequencesOQ02.lean"
+    },
+    {
+      "path": "Proofs/Erdos124CompleteSequencesOQ02OQ01.lean",
+      "filename": "Erdos124CompleteSequencesOQ02OQ01.lean",
+      "lineCount": 152,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos124CompleteSequencesOQ02OQ01.lean"
+    }
+  ],
   "currentState": "Seeded by seeker; awaiting researcher.",
   "path": "research/problems/erdos-124-complete-sequences-oq-01",
   "started": null,

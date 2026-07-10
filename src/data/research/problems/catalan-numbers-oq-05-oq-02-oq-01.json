@@ -69,7 +69,21 @@
     "research"
   ],
   "relatedProofs": [
-    "catalan-numbers-oq-05-oq-02"
+    "catalan-numbers-oq-01",
+    "catalan-numbers-oq-01-oq-01-oq-02",
+    "catalan-numbers-oq-01-oq-01-oq-02-oq-03",
+    "catalan-numbers-oq-01-oq-01-oq-02-oq-04",
+    "catalan-numbers-oq-01-oq-01-oq-03",
+    "catalan-numbers-oq-01-oq-02",
+    "catalan-numbers-oq-01-oq-02-oq-01",
+    "catalan-numbers-oq-01-oq-02-oq-01-oq-01",
+    "catalan-numbers-oq-01-oq-02-oq-02",
+    "catalan-numbers-oq-01-oq-04",
+    "catalan-numbers-oq-01-oq-04-oq-02",
+    "catalan-numbers-oq-05",
+    "catalan-numbers-oq-05-oq-01",
+    "catalan-numbers-oq-05-oq-02",
+    "catalan-numbers-oq-05-oq-02-oq-01"
   ],
   "references": {
     "papers": [],
@@ -84,5 +98,172 @@
   },
   "started": "2026-07-09T16:43:20-07:00",
   "significance": 5,
-  "tractability": 5
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/CatalanNumbersOQ01.lean",
+      "filename": "CatalanNumbersOQ01.lean",
+      "lineCount": 64,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CatalanNumbersOQ01.lean"
+    },
+    {
+      "path": "Proofs/CatalanNumbersOQ01OQ01OQ02.lean",
+      "filename": "CatalanNumbersOQ01OQ01OQ02.lean",
+      "lineCount": 155,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CatalanNumbersOQ01OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/CatalanNumbersOQ01OQ01OQ02OQ03.lean",
+      "filename": "CatalanNumbersOQ01OQ01OQ02OQ03.lean",
+      "lineCount": 104,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CatalanNumbersOQ01OQ01OQ02OQ03.lean"
+    },
+    {
+      "path": "Proofs/CatalanNumbersOQ01OQ01OQ02OQ04.lean",
+      "filename": "CatalanNumbersOQ01OQ01OQ02OQ04.lean",
+      "lineCount": 158,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CatalanNumbersOQ01OQ01OQ02OQ04.lean"
+    },
+    {
+      "path": "Proofs/CatalanNumbersOQ01OQ01OQ03.lean",
+      "filename": "CatalanNumbersOQ01OQ01OQ03.lean",
+      "lineCount": 162,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CatalanNumbersOQ01OQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/CatalanNumbersOQ01OQ02.lean",
+      "filename": "CatalanNumbersOQ01OQ02.lean",
+      "lineCount": 176,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CatalanNumbersOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/CatalanNumbersOQ01OQ02OQ01.lean",
+      "filename": "CatalanNumbersOQ01OQ02OQ01.lean",
+      "lineCount": 138,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CatalanNumbersOQ01OQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/CatalanNumbersOQ01OQ02OQ01OQ01.lean",
+      "filename": "CatalanNumbersOQ01OQ02OQ01OQ01.lean",
+      "lineCount": 172,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CatalanNumbersOQ01OQ02OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/CatalanNumbersOQ01OQ02OQ02.lean",
+      "filename": "CatalanNumbersOQ01OQ02OQ02.lean",
+      "lineCount": 127,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CatalanNumbersOQ01OQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/CatalanNumbersOQ01OQ04.lean",
+      "filename": "CatalanNumbersOQ01OQ04.lean",
+      "lineCount": 116,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CatalanNumbersOQ01OQ04.lean"
+    },
+    {
+      "path": "Proofs/CatalanNumbersOQ01OQ04OQ02.lean",
+      "filename": "CatalanNumbersOQ01OQ04OQ02.lean",
+      "lineCount": 110,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CatalanNumbersOQ01OQ04OQ02.lean"
+    },
+    {
+      "path": "Proofs/CatalanNumbersOQ05.lean",
+      "filename": "CatalanNumbersOQ05.lean",
+      "lineCount": 92,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CatalanNumbersOQ05.lean"
+    },
+    {
+      "path": "Proofs/CatalanNumbersOQ05OQ01.lean",
+      "filename": "CatalanNumbersOQ05OQ01.lean",
+      "lineCount": 89,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CatalanNumbersOQ05OQ01.lean"
+    },
+    {
+      "path": "Proofs/CatalanNumbersOQ05OQ02.lean",
+      "filename": "CatalanNumbersOQ05OQ02.lean",
+      "lineCount": 194,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CatalanNumbersOQ05OQ02.lean"
+    },
+    {
+      "path": "Proofs/CatalanNumbersOQ05OQ02OQ01.lean",
+      "filename": "CatalanNumbersOQ05OQ02OQ01.lean",
+      "lineCount": 173,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CatalanNumbersOQ05OQ02OQ01.lean"
+    }
+  ]
 }

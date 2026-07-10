@@ -22,10 +22,27 @@
     "erdos"
   ],
   "knownResults": [],
-  "relatedProofs": ["erdos-1044"],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-10",
+    "erdos-104",
+    "erdos-1044"
+  ],
   "references": [],
   "knowledge": [],
-  "leanFiles": [],
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1044Problem.lean",
+      "filename": "Erdos1044Problem.lean",
+      "lineCount": 121,
+      "theoremCount": 3,
+      "axiomCount": 2,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1044Problem.lean"
+    }
+  ],
   "currentState": "Seeded by seeker; awaiting researcher.",
   "path": "research/problems/erdos-1044-oq-04",
   "started": null,

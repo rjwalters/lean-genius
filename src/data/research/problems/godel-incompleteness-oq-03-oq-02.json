@@ -61,7 +61,10 @@
     "research"
   ],
   "relatedProofs": [
-    "godel-incompleteness-oq-03"
+    "godel-incompleteness",
+    "godel-incompleteness-oq-02",
+    "godel-incompleteness-oq-03",
+    "godel-incompleteness-oq-04"
   ],
   "references": {
     "papers": [],
@@ -73,5 +76,51 @@
   },
   "started": "2026-07-09T16:43:19-07:00",
   "significance": 5,
-  "tractability": 5
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/GodelIncompleteness.lean",
+      "filename": "GodelIncompleteness.lean",
+      "lineCount": 438,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 12,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GodelIncompleteness.lean"
+    },
+    {
+      "path": "Proofs/GodelIncompletenessOQ02.lean",
+      "filename": "GodelIncompletenessOQ02.lean",
+      "lineCount": 199,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GodelIncompletenessOQ02.lean"
+    },
+    {
+      "path": "Proofs/GodelIncompletenessOQ03.lean",
+      "filename": "GodelIncompletenessOQ03.lean",
+      "lineCount": 241,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GodelIncompletenessOQ03.lean"
+    },
+    {
+      "path": "Proofs/GodelIncompletenessOQ04.lean",
+      "filename": "GodelIncompletenessOQ04.lean",
+      "lineCount": 177,
+      "theoremCount": 13,
+      "axiomCount": 1,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GodelIncompletenessOQ04.lean"
+    }
+  ]
 }
