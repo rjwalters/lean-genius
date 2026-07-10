@@ -161,6 +161,23 @@ theorem IsPrimitive.neg {v : Fin n → ℤ} (h : IsPrimitive v) : IsPrimitive (-
   rw [neg_dotProduct, dotProduct_neg, neg_neg]
   exact hw
 
+/-- **Primitivity is preserved under coordinate permutation.**  Reindexing the
+entries of `v` by any permutation `σ` of the coordinates keeps it primitive: if
+`w ⬝ᵥ v = 1` then `(w ∘ σ) ⬝ᵥ (v ∘ σ) = 1`, since a permutation only reorders the
+terms of the dot-product sum.  A permutation matrix lies in `SLₙ(ℤ)` only when the
+permutation is even (its determinant is the sign), so — exactly like
+`IsPrimitive.neg` — this invariance holds in every dimension beyond the `SLₙ`-orbit
+itself.  The Euclidean descent uses it to bring a chosen pivot coordinate into
+position without disturbing primitivity. -/
+theorem IsPrimitive.comp_perm (σ : Equiv.Perm (Fin n)) {v : Fin n → ℤ}
+    (h : IsPrimitive v) : IsPrimitive (v ∘ σ) := by
+  obtain ⟨w, hw⟩ := h
+  refine ⟨w ∘ σ, ?_⟩
+  have hsum : (w ∘ σ) ⬝ᵥ (v ∘ σ) = w ⬝ᵥ v := by
+    simp only [dotProduct, Function.comp_apply]
+    exact Equiv.sum_comp σ (fun i => w i * v i)
+  rw [hsum, hw]
+
 /-- **One-dimensional base case of the descent.**  A vector `v : Fin 1 → ℤ` is
 primitive iff its single entry is a unit, i.e. `v 0 = 1` or `v 0 = -1`.  So in
 dimension `1` the primitive vectors are exactly `±e₁` — the descent has nothing

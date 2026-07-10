@@ -23,8 +23,8 @@
     "dateAdded": "2026-07-09",
     "axiomCount": 0,
     "assumptions": "None beyond Mathlib's foundational axioms. Fully machine-checked (0 sorries, 0 axiom declarations, no structure-encoded assumptions, no native_decide). Note: in the local Docker sandbox the file elaborates cleanly across repeated runs but the .olean cache write intermittently aborts with SIGBUS (exit 135), an environment/IO issue independent of the proofs; CI produces the build artifact.",
-    "lineCount": 184,
-    "theoremCount": 10,
+    "lineCount": 201,
+    "theoremCount": 11,
     "definitionCount": 2,
     "originalContributions": [
       "IsPrimitive v := ∃ w, w ⬝ᵥ v = 1 — a coordinate-free, manifestly SLₙ(ℤ)-invariant notion of primitivity for integer vectors (absent from Mathlib)",
@@ -52,7 +52,7 @@
     ]
   },
   "conclusion": {
-    "summary": "Establishes the SLₙ(ℤ)-invariant foundation for transitivity on primitive vectors: a coordinate-free primitivity predicate (dot-product dual) equivalent to the classical unit-ideal condition, its SLₙ(ℤ)-invariance in both directions, the transvection generators of the Euclidean descent with explicit action, and the necessity half of transitivity (the orbit of a basis vector is primitive). 10 theorems, 2 definitions, 0 sorries, 0 axioms, 184 lines.",
+    "summary": "Establishes the SLₙ(ℤ)-invariant foundation for transitivity on primitive vectors: a coordinate-free primitivity predicate (dot-product dual) equivalent to the classical unit-ideal condition, its SLₙ(ℤ)-invariance in both directions, the transvection generators of the Euclidean descent with explicit action, and the necessity half of transitivity (the orbit of a basis vector is primitive), plus the permutation-invariance of primitivity in every dimension. 11 theorems, 2 definitions, 0 sorries, 0 axioms, 201 lines.",
     "implications": "Reduces the parent's open question to a single remaining step: the sufficiency converse — every primitive vector is SLₙ(ℤ)-equivalent to e₀ — for which the transvection generators and the invariance guarantee here are exactly the tools. Because primitivity is now an SLₙ(ℤ)-invariant, the transitivity theorem takes the sharp form 'the SLₙ(ℤ)-orbit of e₀ is precisely the set of primitive vectors', of which the ⊆ direction is proved here.",
     "openQuestions": [
       "Prove sufficiency: every primitive v ∈ ℤⁿ is SLₙ(ℤ)-equivalent to e₀, by strong induction on ∑ᵢ|vᵢ| applying transvectionSL (the Euclidean algorithm across coordinates) and accumulating the transvection product.",
@@ -89,9 +89,9 @@
   ],
   "leanFile": {
     "namespace": "BezoutPrimitive",
-    "lineCount": 184,
+    "lineCount": 201,
     "axiomCount": 0,
-    "theoremCount": 10,
+    "theoremCount": 11,
     "definitionCount": 2,
     "path": "Proofs/BezoutIdentityOQ01OQ02OQ02.lean",
     "sorries": 0
