@@ -84,6 +84,36 @@
       "description": "Cayley-Hamilton as a corollary of Cramer's rule uses the adjugate construction. The adjugate reflexive properties proved here are building blocks for that derivation."
     }
   ],
+  "references": [
+    {
+      "title": "Introduction à l'analyse des lignes courbes algébriques",
+      "author": "Gabriel Cramer",
+      "year": "1750",
+      "venue": "Geneva: Frères Cramer & Cl. Philibert",
+      "description": "The appendix stating Cramer's rule — solving a linear system by ratios of determinants — which the adjugate identity A·adj(A) = det(A)·I formalized here generalizes to singular matrices."
+    },
+    {
+      "title": "Generalized Inverses: Theory and Applications",
+      "author": "Adi Ben-Israel and Thomas N. E. Greville",
+      "year": "2003",
+      "venue": "Springer, CMS Books in Mathematics (2nd ed.)",
+      "description": "Standard reference for {1}-, reflexive, and Moore–Penrose inverses; the 1-reflexive property A·adj(A)·A = det(A)·A proved here places the adjugate within this generalized-inverse hierarchy."
+    },
+    {
+      "title": "Matrix Analysis",
+      "author": "Roger A. Horn and Charles R. Johnson",
+      "year": "2013",
+      "venue": "Cambridge University Press (2nd ed.)",
+      "description": "Develops the adjugate (classical adjoint) and the identities A·adj(A) = adj(A)·A = det(A)·I that are the backbone of this formalization."
+    },
+    {
+      "title": "Determinants and Matrices",
+      "author": "A. C. Aitken",
+      "year": "1939",
+      "venue": "Oliver & Boyd, University Mathematical Texts",
+      "description": "Classical treatment of determinants, the adjugate/adjoint matrix, and Cramer's rule, giving the elementary route to the identities extended here to the singular case."
+    }
+  ],
   "sections": [
     {
       "id": "setup",
