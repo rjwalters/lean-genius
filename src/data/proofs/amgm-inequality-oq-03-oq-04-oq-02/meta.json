@@ -196,5 +196,42 @@
     "definitionCount": 3,
     "sorries": 0,
     "path": "Proofs/AmgmInequalityOQ03OQ04OQ02.lean"
-  }
+  },
+  "references": [
+    {
+      "authors": "Constantino Tsallis",
+      "title": "Possible generalization of Boltzmann-Gibbs statistics",
+      "year": "1988",
+      "venue": "Journal of Statistical Physics 52 (1–2), 479–487",
+      "note": "Introduces the non-extensive entropy S_q and the q-deformed logarithm ln_q(x) = (x^{1−q}−1)/(1−q); the origin of the pseudo-additive law and escort identity formalized in this entry."
+    },
+    {
+      "authors": "Alfréd Rényi",
+      "title": "On Measures of Entropy and Information",
+      "year": "1961",
+      "venue": "Proc. 4th Berkeley Symposium on Mathematical Statistics and Probability, Vol. 1, 547–561",
+      "note": "Defines the α-parameter Rényi entropy H_α — the parent entry's H_α(p) = −log(M_{α−1}(p,p)) — which this entry q-deforms into the Tsallis analogue."
+    },
+    {
+      "authors": "Claude E. Shannon",
+      "title": "A Mathematical Theory of Communication",
+      "year": "1948",
+      "venue": "Bell System Technical Journal 27 (3), 379–423 & (4), 623–656",
+      "note": "The Boltzmann–Gibbs–Shannon entropy recovered from both Rényi and Tsallis entropy in the q → 1 (α → 1) limit, where ln_q degenerates to the ordinary logarithm."
+    },
+    {
+      "authors": "Constantino Tsallis",
+      "title": "Introduction to Nonextensive Statistical Mechanics: Approaching a Complex World",
+      "year": "2009",
+      "venue": "Springer, New York",
+      "note": "Comprehensive treatment of q-deformed logarithms/exponentials, escort distributions, and the pseudo-additivity ln_q(xy) = ln_q(x) + ln_q(y) + (1−q) ln_q(x) ln_q(y) proved here."
+    },
+    {
+      "authors": "G. H. Hardy, J. E. Littlewood, G. Pólya",
+      "title": "Inequalities",
+      "year": "1934",
+      "venue": "Cambridge University Press",
+      "note": "Classical source for the weighted power means M_r and their monotonicity in r — the analytic backbone of the Rényi/Tsallis-entropy identities and the AM-GM lineage this entry belongs to."
+    }
+  ]
 }
