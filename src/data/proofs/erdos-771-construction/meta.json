@@ -19,7 +19,7 @@
     "badge": "verified",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 183,
+    "lineCount": 216,
     "assumptions": "None. Every theorem is elementary number theory / finite combinatorics with zero axioms and zero sorries (only the foundational propext/Classical.choice/Quot.sound; the quantitative theorem additionally uses Mathlib's verified Bertrand's postulate, itself 0-axiom). The deep asymptotic bounds of Erdős #771 (the matching (1/2+o(1))·n/log n lower and upper bounds) are NOT proved or assumed here.",
     "dateAdded": "2026-06-25",
     "mathlib_version": "4.26.0",
@@ -133,7 +133,7 @@
       "Mathlib"
     ],
     "namespace": "Erdos771Construction",
-    "lineCount": 183,
+    "lineCount": 216,
     "axiomCount": 0,
     "theoremCount": 6,
     "path": "Proofs/Erdos771Construction.lean",
