@@ -291,8 +291,11 @@ theorem deficiency_add_nonsmooth_eq (n k : ℕ) :
   exact h
 
 /-- Deficiency 1 is equivalent to exactly k-1 of the window terms being
-non-k-smooth. -/
-theorem deficiency_eq_one_iff_nonsmooth_eq (n k : ℕ) :
+non-k-smooth.  The hypothesis `1 ≤ k` is necessary: at `k = 0` the deficiency is
+`0 ≠ 1` while the (empty) non-smooth count vacuously equals `k - 1 = 0`, so the
+equivalence would fail — with `1 ≤ k` the truncated subtraction `k - 1` is exact and
+the two counts sum to `k` (`deficiency_add_nonsmooth_eq`). -/
+theorem deficiency_eq_one_iff_nonsmooth_eq (n k : ℕ) (hk : 1 ≤ k) :
     deficiency n k = 1 ↔
       (Finset.filter (fun i => ¬ IsKSmooth k (n - i)) (Finset.range k)).card = k - 1 := by
   have h := deficiency_add_nonsmooth_eq n k
