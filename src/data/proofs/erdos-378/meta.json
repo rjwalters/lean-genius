@@ -64,7 +64,7 @@
       "erdos_378, erdos_378_answer (no sorries): combined resolution of both questions"
     ],
     "axiomCount": 2,
-    "lineCount": 473,
+    "lineCount": 524,
     "assumptions": "2 axioms, both isolating the deep analytic content of Granville-Ramaré (1996): granville_ramare_density_exists (the density η_m of n with exactly 2m+2 squarefree binomials exists) and complement_density (the set of n with fewer than r squarefree binomials has density Σ_{0≤m≤(r-1)/2} η_m, which is < 1). 0 sorries. All other results, including the resolution of both questions and the parity theorems squarefreeCount_even_of_odd (odd rows have an even count) and squarefreeCount_odd_iff_central_squarefree (an even row has an odd count iff its central binomial C(n,n/2) is squarefree), are fully machine-checked (depend only on propext/Classical.choice/Quot.sound).",
     "theoremCount": 17,
     "definitionCount": 8,

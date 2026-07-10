@@ -470,4 +470,55 @@ theorem erdos_378_answer (r : ℕ) :
   obtain ⟨d, hd_pos, hd_density⟩ := erdos_378_density_positive r
   exact ⟨d, hd_pos, ⟨d, hd_density⟩, hd_density⟩
 
+/-
+## Part VII: Elementary two-sided bounds on the natural density
+-/
+
+/-- **A natural density is nonnegative.**  The counting ratio
+`|S ∩ [0,N)| / N` is a ratio of nonnegative reals, so its limit `d` cannot be
+negative: were `d < 0`, taking `ε = −d > 0` past the convergence threshold would
+force the (nonnegative) ratio strictly below `0`.  Elementary, uses no axioms. -/
+theorem natDensity_nonneg {S : Set ℕ} {d : ℝ} (h : NaturalDensity S d) : 0 ≤ d := by
+  by_contra hd
+  push_neg at hd
+  obtain ⟨N₀, hN₀⟩ := h (-d) (by linarith)
+  set N := max N₀ 1 with hNdef
+  have hb := hN₀ N (le_max_left _ _)
+  have hratio : 0 ≤ ((S ∩ Set.Iio N).ncard : ℝ) / (N : ℝ) :=
+    div_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _)
+  rw [abs_lt] at hb
+  linarith [hb.2, hratio]
+
+/-- **A natural density is at most one.**  Since `S ∩ [0,N) ⊆ [0,N)` has at most
+`N` elements, the counting ratio is `≤ 1`, so its limit `d` cannot exceed `1`:
+were `1 < d`, taking `ε = d − 1 > 0` past the threshold would force the ratio
+strictly above `1`.  Elementary, uses no axioms. -/
+theorem natDensity_le_one {S : Set ℕ} {d : ℝ} (h : NaturalDensity S d) : d ≤ 1 := by
+  by_contra hd
+  push_neg at hd
+  obtain ⟨N₀, hN₀⟩ := h (d - 1) (by linarith)
+  set N := max N₀ 1 with hNdef
+  have hNpos : 0 < N := lt_of_lt_of_le Nat.zero_lt_one (le_max_right _ _)
+  have hNR : (0 : ℝ) < N := by exact_mod_cast hNpos
+  have hb := hN₀ N (le_max_left _ _)
+  have hcard : (S ∩ Set.Iio N).ncard ≤ N := by
+    calc (S ∩ Set.Iio N).ncard
+        ≤ (Set.Iio N).ncard :=
+          Set.ncard_le_ncard Set.inter_subset_right (Set.finite_Iio N)
+      _ = N := by rw [← Finset.coe_range, Set.ncard_coe_finset, Finset.card_range]
+  have hle : ((S ∩ Set.Iio N).ncard : ℝ) ≤ (N : ℝ) := by exact_mod_cast hcard
+  have hratio : ((S ∩ Set.Iio N).ncard : ℝ) / (N : ℝ) ≤ 1 := (div_le_one hNR).mpr hle
+  rw [abs_lt] at hb
+  linarith [hb.1, hratio]
+
+/-- **The Erdős #378 density lies in `(0, 1]`.**  Combining the positivity
+`erdos_378_density_positive` with the universal upper bound `natDensity_le_one`:
+for every threshold `r`, the density of the integers with at least `r` squarefree
+interior binomials exists and lies strictly above `0` and at most `1` — the sharp
+two-sided localisation of the answer to Erdős #378. -/
+theorem erdos_378_density_mem_Ioc (r : ℕ) :
+    ∃ d : ℝ, d ∈ Set.Ioc (0 : ℝ) 1 ∧ NaturalDensity (atLeastSquarefree r) d := by
+  obtain ⟨d, hd_pos, hd_density⟩ := erdos_378_density_positive r
+  exact ⟨d, ⟨hd_pos, natDensity_le_one hd_density⟩, hd_density⟩
+
 end Erdos378
