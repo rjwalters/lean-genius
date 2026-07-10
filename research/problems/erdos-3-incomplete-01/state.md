@@ -2,10 +2,29 @@
 
 **Phase**: COMPLETE-EXCEPT-OPEN-CRUX (mature)
 **Since**: 2026-07-04
-**Attempts**: 5
-**Status**: mature — no incremental work remains that is not the open crux
+**Attempts**: 6
+**Status**: mature — the sole remaining sorry is the open crux; the analytic
+Bertrand-boundary toolkit around it is now complete on both threshold axes.
 
-## Current Focus
+## Result this iteration (attempt 6, 2026-07-09) — UNVERIFIED (docker infra down)
+
+Added `not_summable_one_div_nat_mul_log_mul_const` to `Erdos3LogHarmonic.lean`:
+for every `c > 0`, `∑ 1/(n·log(n·c))` **diverges**. This is the exact `p = 1`
+divergence twin of the already-verified convergent
+`summable_one_div_nat_mul_log_mul_const` (`p = 1+δ`) — together they pin the
+constant-in-log Bertrand boundary at the exponent `p = 1`, exactly as
+`not_summable_one_div_nat_mul_log` / `summable_one_div_nat_mul_log_rpow` do for
+the constant-free (`c = 1`) series. Proof is a tail comparison (mirror of the
+convergent lemma's): on `n ≥ max c (2/c)` one has `c ≤ n` ⟹ `log(n·c) ≤ 2·log n`
+and `n·c ≥ 2` ⟹ `log(n·c) > 0`, so each term dominates `½·1/(n·log n)`, whose
+divergence is the verified `not_summable_one_div_nat_mul_log`. 0-sorry, 0-axiom,
+no new API — mirrors two verified siblings in the same file. Docker build infra
+down all session (containerd meta.db I/O error; `docker images` fails), so
+shipped UNVERIFIED with full hand-audit of every tactic step against the sibling
+proofs it mirrors. The main-file open crux `required_bound_implies_conjecture`
+is untouched.
+
+## Current Focus (prior attempts)
 
 None. Attempt 5 (2026-07-07) was a notes-only reconciliation: a full re-read
 confirmed `Proofs/Erdos3Problem.lean` (773 lines) is **0-axiom, 1-sorry** and
