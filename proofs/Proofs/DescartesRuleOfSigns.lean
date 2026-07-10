@@ -248,21 +248,103 @@ theorem descartes_negative_roots (p : ℝ[X]) (hp : p ≠ 0) :
 Concrete examples demonstrating sign change counting.
 -/
 
-/-- Example: The polynomial x² - 1 has coefficient sequence [1, 0, -1].
-    There is 1 sign change (from 1 to -1). -/
-axiom example_x2_minus_1_sign_changes :
-    signChangesInCoeffs (X^2 - 1 : ℝ[X]) = 1
+/-- **One sign change across a zero.**  If `f : Fin 3 → ℝ` has a zero middle entry
+(`f 1 = 0`) and outer entries of opposite sign (`f 0 · f 2 < 0`), then `f` has exactly
+one sign change — the pair `(0, 2)` jumping over the vanishing middle term.  Axiom-free.
+The `Fin 3` middle-zero engine behind the `X² − 1` example below; a self-contained copy of
+the downstream `DescartesRuleOfSignsOQ01OQ03` lemma, brought in-file so the base can prove
+its own quadratic examples without the (circular) downstream import. -/
+theorem countSignChanges_three_mid_zero_pos {f : Fin 3 → ℝ}
+    (hmid : f 1 = 0) (h : f 0 * f 2 < 0) :
+    countSignChanges f = 1 := by
+  have h0 : f 0 ≠ 0 := fun he => by rw [he, zero_mul] at h; exact lt_irrefl 0 h
+  have h2 : f 2 ≠ 0 := fun he => by rw [he, mul_zero] at h; exact lt_irrefl 0 h
+  unfold countSignChanges
+  rw [Finset.card_eq_one]
+  refine ⟨(0, 2), ?_⟩
+  ext ⟨i, j⟩
+  simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_singleton,
+    decide_eq_true_eq, SignChangeBetween, oppositeSign, Prod.mk.injEq]
+  constructor
+  · rintro ⟨hij, hi0, hj0, -, -⟩
+    have hi1 : i ≠ 1 := by rintro rfl; exact hi0 hmid
+    have hj1 : j ≠ 1 := by rintro rfl; exact hj0 hmid
+    fin_cases i <;> fin_cases j <;>
+      first
+        | exact ⟨rfl, rfl⟩
+        | (exfalso; revert hij hi1 hj1; decide)
+  · rintro ⟨rfl, rfl⟩
+    refine ⟨by decide, h0, h2, ?_, h⟩
+    intro k hk0 hk2
+    fin_cases k <;>
+      first
+        | exact hmid
+        | exact absurd hk0 (by decide)
+        | exact absurd hk2 (by decide)
 
-example : signChangesInCoeffs (X^2 - 1 : ℝ[X]) = 1 :=
-  example_x2_minus_1_sign_changes
+/-- **No sign change with a zero middle and non-opposite outer entries.**  If `f 1 = 0`
+and the outer entries do not have strictly opposite signs (`0 ≤ f 0 · f 2` — covering
+equal signs *and* a vanishing outer entry), then `f` has no sign change.  Axiom-free.
+Companion middle-zero engine behind the `X² + 1` example below. -/
+theorem countSignChanges_three_mid_zero_zero {f : Fin 3 → ℝ}
+    (hmid : f 1 = 0) (h : 0 ≤ f 0 * f 2) :
+    countSignChanges f = 0 := by
+  unfold countSignChanges
+  rw [Finset.card_eq_zero]
+  apply Finset.filter_eq_empty_iff.mpr
+  rintro ⟨i, j⟩ -
+  simp only [decide_eq_true_eq, SignChangeBetween, oppositeSign]
+  rintro ⟨hij, hi0, hj0, -, hopp⟩
+  have hi1 : i ≠ 1 := by rintro rfl; exact hi0 hmid
+  have hj1 : j ≠ 1 := by rintro rfl; exact hj0 hmid
+  have hij02 : i = 0 ∧ j = 2 := by
+    fin_cases i <;> fin_cases j <;>
+      first
+        | exact ⟨rfl, rfl⟩
+        | (exfalso; revert hij hi1 hj1; decide)
+  obtain ⟨rfl, rfl⟩ := hij02
+  exact absurd hopp (not_lt.mpr h)
 
-/-- Example: The polynomial x² + 1 has coefficient sequence [1, 0, 1].
-    There are 0 sign changes. -/
-axiom example_x2_plus_1_sign_changes :
-    signChangesInCoeffs (X^2 + 1 : ℝ[X]) = 0
+/-- **`X² − 1` has exactly one coefficient sign change, computed axiom-free.**  The
+coefficient sequence is `[1, 0, −1]`: a zero middle with opposite outer signs, hence one
+sign change.  Formerly an `axiom`; now discharged directly from the `Fin 3` middle-zero
+engine `countSignChanges_three_mid_zero_pos` (name kept for the downstream re-exports). -/
+theorem example_x2_minus_1_sign_changes :
+    signChangesInCoeffs (X ^ 2 - 1 : ℝ[X]) = 1 := by
+  have hne : (X ^ 2 - 1 : ℝ[X]) ≠ 0 := by
+    intro h
+    have : (X ^ 2 - 1 : ℝ[X]).coeff 2 = 0 := by rw [h]; simp
+    simp [coeff_sub, coeff_X_pow, coeff_one] at this
+  have hdeg : (X ^ 2 - 1 : ℝ[X]).natDegree = 2 := by compute_degree!
+  unfold signChangesInCoeffs
+  rw [dif_neg hne, hdeg]
+  apply countSignChanges_three_mid_zero_pos
+  · simp [coeffSequence, coeff_sub, coeff_X_pow, coeff_one]
+  · have e0 : coeffSequence (X ^ 2 - 1 : ℝ[X]) 2 0 = 1 := by
+      simp [coeffSequence, coeff_sub, coeff_X_pow, coeff_one]
+    have e2 : coeffSequence (X ^ 2 - 1 : ℝ[X]) 2 2 = -1 := by
+      simp [coeffSequence, coeff_sub, coeff_X_pow, coeff_one]
+    rw [e0, e2]; norm_num
 
-example : signChangesInCoeffs (X^2 + 1 : ℝ[X]) = 0 :=
-  example_x2_plus_1_sign_changes
+/-- **`X² + 1` has no coefficient sign change, computed axiom-free.**  The coefficient
+sequence is `[1, 0, 1]`: a zero middle with equal outer signs, hence no sign change.
+Formerly an `axiom`; now discharged from `countSignChanges_three_mid_zero_zero`. -/
+theorem example_x2_plus_1_sign_changes :
+    signChangesInCoeffs (X ^ 2 + 1 : ℝ[X]) = 0 := by
+  have hne : (X ^ 2 + 1 : ℝ[X]) ≠ 0 := by
+    intro h
+    have : (X ^ 2 + 1 : ℝ[X]).coeff 2 = 0 := by rw [h]; simp
+    simp [coeff_add, coeff_X_pow, coeff_one] at this
+  have hdeg : (X ^ 2 + 1 : ℝ[X]).natDegree = 2 := by compute_degree!
+  unfold signChangesInCoeffs
+  rw [dif_neg hne, hdeg]
+  apply countSignChanges_three_mid_zero_zero
+  · simp [coeffSequence, coeff_add, coeff_X_pow, coeff_one]
+  · have e0 : coeffSequence (X ^ 2 + 1 : ℝ[X]) 2 0 = 1 := by
+      simp [coeffSequence, coeff_add, coeff_X_pow, coeff_one]
+    have e2 : coeffSequence (X ^ 2 + 1 : ℝ[X]) 2 2 = 1 := by
+      simp [coeffSequence, coeff_add, coeff_X_pow, coeff_one]
+    rw [e0, e2]; norm_num
 
 /-- Example: `x³ - x = x(x-1)(x+1)` has real roots `{0, 1, -1}`, of which exactly one
     (`x = 1`) is positive, so `countPositiveRoots (X³ - X) = 1`.
