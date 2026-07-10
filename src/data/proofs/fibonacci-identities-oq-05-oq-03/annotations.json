@@ -20,6 +20,23 @@
     "tags": ["module-header", "framing", "fibonacci"]
   },
   {
+    "id": "ann-fiboq0503-setup",
+    "proofId": "fibonacci-identities-oq-05-oq-03",
+    "range": { "startLine": 31, "endLine": 35 },
+    "type": "context",
+    "title": "Namespace and the ℤ→ℕ Scaffolding Convention",
+    "content": "**Why the signed lemmas live in ℤ.** The file opens a private namespace and `open Finset` (bringing `range` and the `∑` big-operator notation into scope for the summation statements below). The deliberate design choice visible from here down is the split of number systems: the three engine identities — Cassini, d'Ocagne, and the linear gap relation — are all stated and proved over $\\mathbb{Z}$, because they carry the alternating sign $(-1)^n$ and genuine subtraction, where `linear_combination` and `ring` operate cleanly. Only after collapsing the sign by parity (`Even/Odd.neg_one_pow`) are the results transported to $\\mathbb{N}$ via `zify` + `omega`, so the headline product-sum statement can live entirely in $\\mathbb{N}$ (`Nat.fib`) without truncated subtraction ever appearing inside a proof obligation.",
+    "mathContext": "Signed identities over $\\mathbb{Z}$ ($(-1)^n$, subtraction) $\\rightarrow$ parity collapse $\\rightarrow$ $\\mathbb{N}$ statements via `zify`/`omega`.",
+    "significance": "context",
+    "relatedConcepts": [
+      "open Finset (range / ∑ notation)",
+      "Working over ℤ for signed identities",
+      "Transport to ℕ via zify and omega"
+    ],
+    "prerequisites": ["Namespaces and open in Lean 4", "ℤ vs ℕ subtraction"],
+    "tags": ["setup", "namespace", "design-convention"]
+  },
+  {
     "id": "ann-fiboq0503-2",
     "proofId": "fibonacci-identities-oq-05-oq-03",
     "range": { "startLine": 37, "endLine": 54 },
