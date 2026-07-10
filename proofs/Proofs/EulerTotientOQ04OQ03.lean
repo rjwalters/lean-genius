@@ -2383,6 +2383,33 @@ theorem reversal_mem_implies_transport_regime {a : ℕ} (ha : Odd a) (ha3 : 3 �
     (k : ℕ) (h : a * 2 ^ (k + 1) ∈ ReversalSet) : seedS a = 1 :=
   reversal_seed_transport_admissible ha ha3 ((classifySeed_lt_iff ha ha3 k).1 h)
 
+/-- **Concrete arithmetic necessary condition for reversal: `4 ∣ φ(a)`.**  The
+    structural dichotomy `reversal_seed_transport_admissible` places every
+    reversing seed in the transport-admissible regime `seedS a = 1`, and
+    `seedS_eq_one_iff_four_dvd_totient` translates that abstract 2-adic condition
+    into a divisibility statement purely about the classical Euler totient of the
+    seed.  So a *checkable* necessary condition for the family `a·2^(k+1)` to
+    reverse the totient inequality is simply `4 ∣ φ(a)`.  (Consistent with every
+    known reversal seed: `φ(21)=12`, `φ(55)=40`, `φ(129)=84`, `φ(165)=80`,
+    `φ(175)=120` are all divisible by `4`.) -/
+theorem reversal_seed_four_dvd_totient {a : ℕ} (ha : Odd a) (ha3 : 3 ≤ a)
+    (h : classifySeed a = Ordering.lt) : 4 ∣ Nat.totient a :=
+  (seedS_eq_one_iff_four_dvd_totient ha ha3).1 (reversal_seed_transport_admissible ha ha3 h)
+
+/-- **`ReversalSet` form of the `4 ∣ φ(a)` necessary condition.**  Any member
+    `n = a·2^(k+1)` of `ReversalSet` (odd seed `a ≥ 3`) has `4 ∣ φ(a)`: every
+    actual totient-inequality reversal is supported on a seed whose totient is a
+    multiple of four.  A concrete corollary of the structural dichotomy that can
+    be tested by a single divisibility check on `φ(a)`. -/
+theorem reversal_mem_four_dvd_totient {a : ℕ} (ha : Odd a) (ha3 : 3 ≤ a)
+    (k : ℕ) (h : a * 2 ^ (k + 1) ∈ ReversalSet) : 4 ∣ Nat.totient a :=
+  reversal_seed_four_dvd_totient ha ha3 ((classifySeed_lt_iff ha ha3 k).1 h)
+
+/-- Sanity check at the smallest reversing seed `21`: `φ(21) = 12` is divisible by
+    `4`, as forced by `reversal_seed_four_dvd_totient` (`classifySeed 21 = .lt`). -/
+theorem reversal_four_dvd_totient_21 : 4 ∣ Nat.totient 21 :=
+  reversal_seed_four_dvd_totient (by decide) (by norm_num) classifySeed_21'
+
 -- ----------------------------------------------------------------------------
 -- REVERSAL ENGINE on the transport-admissible regime (`seedS a = 1`)
 -- ----------------------------------------------------------------------------

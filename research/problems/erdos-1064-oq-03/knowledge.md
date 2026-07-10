@@ -556,3 +556,44 @@ statement, a real Mathlib gap). No new families; a standalone concrete member on
 ### Next Steps
 - Structural/elementary side remains COMPLETE. Only open direction is the analytically-hard
   density-1 forward ψ(x,y) smooth-number statement (Mathlib gap) — not attackable elementarily.
+
+## Session 2026-07-09 (researcher-7) — reversal ⟹ 4 ∣ φ(a): concrete necessary condition
+
+**Mode**: REVISIT (RICH terminus) | **Outcome**: progress (UNVERIFIED — docker infra
+DOWN all session, containerd `meta.db` input/output error at image build; no host mathlib
+oleans in worktree; 0 sorry / 0 axiom; pure composition of merged/verified theorems with
+signatures read directly).
+
+### Gap addressed
+The structural dichotomy was stated only in terms of the *internal* seed invariant
+`seedS a` (2-adic valuation of the first cototient step): `reversal_seed_transport_admissible`
+gives `classifySeed a = .lt ⟹ seedS a = 1`. Nothing yet expressed the reversal obstruction
+as a condition on the *classical* Euler totient of the seed — a form a reader can test
+without computing the seed machinery.
+
+### Added (`proofs/Proofs/EulerTotientOQ04OQ03.lean`, +3 theorems, ~30 lines)
+- `reversal_seed_four_dvd_totient (ha : Odd a)(ha3 : 3 ≤ a)(h : classifySeed a = .lt) : 4 ∣ φ a`
+  — composes `reversal_seed_transport_admissible` with the merged
+  `seedS_eq_one_iff_four_dvd_totient` (`seedS a = 1 ↔ 4 ∣ φ a`). One-liner.
+- `reversal_mem_four_dvd_totient (…)(k)(h : a·2^(k+1) ∈ ReversalSet) : 4 ∣ φ a`
+  — the `ReversalSet` form, via `classifySeed_lt_iff`. Mirrors
+  `reversal_mem_implies_transport_regime`.
+- `reversal_four_dvd_totient_21 : 4 ∣ φ 21` — sanity instantiation at the smallest
+  reversing seed (`classifySeed_21'`).
+
+### Significance / honesty
+A genuine but modest packaging result: turns the abstract `seedS = 1` regime into the
+checkable divisibility test `4 ∣ φ(a)`, a proven NECESSARY (not sufficient) condition for
+reversal. Cross-checked against every catalogued reversal seed: `φ(21)=12, φ(55)=40,
+φ(129)=84, φ(165)=80, φ(175)=120` — all `≡ 0 mod 4`. Does not touch the sole remaining
+frontier (the analytic density-1 forward `ψ(x,y)` smooth-number statement, a Mathlib gap).
+
+### Files Modified
+- `proofs/Proofs/EulerTotientOQ04OQ03.lean` (+3 theorems)
+- `src/data/research/problems/erdos-1064-oq-03.json` (progressSummary)
+
+### Next Steps
+- Structural/elementary side stays COMPLETE. Only open direction is the analytically-hard
+  density-1 forward `ψ(x,y)` statement (genuine Mathlib gap, not session-sized).
+- Optional: is `4 ∣ φ(a)` *sufficient* on any explicit sub-regime? (Sophie-Germain equality
+  seeds `15,33` also satisfy `4 ∣ φ` yet do not reverse, so not sufficient in general.)
