@@ -47,7 +47,8 @@
       "The alternating sum is exactly the difference E − O of the even-index and odd-index partial sums; its vanishing is precisely the statement E = O.",
       "The total sum 2^n is E + O; combined with E = O it forces E = O = 2^{n-1} — two classical identities pin down both partial sums.",
       "Parity filtering (Finset.sum_filter_add_sum_filter_not with predicate Even) plus the sign evaluations Even.neg_one_pow and Odd.neg_one_pow is all the machinery needed; no generating functions are required.",
-      "The n ≥ 1 hypothesis enters only through 2^n = 2·2^{n-1} (handled by omega on the exponent) and the alternating sum's case split at n = 0."
+      "The n ≥ 1 hypothesis enters only through 2^n = 2·2^{n-1} (handled by omega on the exponent) and the alternating sum's case split at n = 0.",
+      "The algebraic cancellation has a one-line bijective reason. Fixing any element x of the (nonempty) ground set, the involution S ↦ S △ {x} (toggle whether x is in S) flips the parity of |S| and pairs each even-sized subset with an odd-sized one, proving E = O with no sum manipulation. The vanishing alternating sum is the generating-function shadow of this involution, and the n ≥ 1 hypothesis is exactly the existence of an element x to toggle: for n = 0 the only subset ∅ is unpaired, so E − O = 1 ≠ 0."
     ]
   },
   "sections": [
