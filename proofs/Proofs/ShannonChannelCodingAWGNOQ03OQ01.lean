@@ -144,7 +144,7 @@ theorem perUseCapacity_sub_le
   have htan : Real.log ((N i + xi) / (N i + Ps)) ≤ (xi - Ps) / (N i + Ps) := by
     have h := Real.log_le_sub_one_of_pos (x := (N i + xi) / (N i + Ps)) (by positivity)
     have hstep : (N i + xi) / (N i + Ps) - 1 = (xi - Ps) / (N i + Ps) := by
-      field_simp
+      field_simp; ring
     linarith [hstep ▸ h]
   -- coefficient bound: (xᵢ − Pᵢ⋆)/(Nᵢ+Pᵢ⋆) ≤ (xᵢ − Pᵢ⋆)/μ
   have hden : N i + Ps = max μ (N i) := by rw [hPs]; exact add_waterAlloc μ N i
@@ -289,7 +289,7 @@ theorem waterBudget_strictMono_of_pos (N : ι → ℝ) {a b : ℝ}
   obtain ⟨i₀, hi₀⟩ := hact
   have hpos0 : 0 ≤ a - N i₀ := by
     unfold waterAlloc at hi₀
-    rcases le_or_lt 0 (a - N i₀) with h | h
+    rcases le_or_gt 0 (a - N i₀) with h | h
     · exact h
     · rw [max_eq_right (le_of_lt h)] at hi₀; exact absurd hi₀ (lt_irrefl 0)
   unfold waterBudget
