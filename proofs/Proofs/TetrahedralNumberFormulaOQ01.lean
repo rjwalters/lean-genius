@@ -341,4 +341,30 @@ example (n : ℕ) :
     ∑ k ∈ range (n + 1), (k + 2).choose 2 = (n + 3).choose 3 := by
   simpa [simplexNumber] using sum_simplex 2 n
 
+/-! ### Positivity and monotonicity of the figurate ladder
+
+Basic order facts absent from the file above: every simplex number is positive,
+and `P_d(n) = C(n+d, d)` is non-decreasing in *both* the size `n` and the
+dimension `d`.  Monotonicity in `d` follows from monotonicity in `n` via the
+reflection symmetry `simplexNumber_symm`.  These bound the figurate ladder below
+and give the monotone growth used, e.g., by the reciprocal-sum siblings. -/
+
+/-- **Simplex numbers are positive.**  `P_d(n) = C(n+d, d) ≥ 1`, since `d ≤ n+d`. -/
+theorem simplexNumber_pos (d n : ℕ) : 0 < simplexNumber d n :=
+  Nat.choose_pos (Nat.le_add_left d n)
+
+/-- **Monotone in the size `n`.**  `m ≤ n → P_d(m) ≤ P_d(n)`: the figurate ladder
+    grows with the size argument, from `Nat.choose_le_choose` on `m+d ≤ n+d`. -/
+theorem simplexNumber_mono_size {m n : ℕ} (d : ℕ) (h : m ≤ n) :
+    simplexNumber d m ≤ simplexNumber d n :=
+  Nat.choose_le_choose d (by omega)
+
+/-- **Monotone in the dimension `d`.**  `a ≤ b → P_a(n) ≤ P_b(n)`: raising the
+    dimension only enlarges the figurate number.  Reduced to `simplexNumber_mono_size`
+    through the reflection symmetry `P_d(n) = P_n(d)`. -/
+theorem simplexNumber_mono_dim {a b : ℕ} (n : ℕ) (h : a ≤ b) :
+    simplexNumber a n ≤ simplexNumber b n := by
+  rw [simplexNumber_symm a n, simplexNumber_symm b n]
+  exact simplexNumber_mono_size n h
+
 end TetrahedralNumberFormulaOQ01
