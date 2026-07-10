@@ -726,4 +726,15 @@ neither base is a power of the other — so it lies outside the base-power famil
 example : Set.Infinite (NonRepresentable 6 4) :=
   infinite_nonRepresentable_of_common_dvd (d := 2) (by norm_num) (by norm_num) (by norm_num)
 
+/-- **The identity is the unique unit exponent pair.** For distinct primes `p ≠ q`,
+`p^k q^l = 1` iff both exponents vanish — the exponent-uniqueness readout at the monoid
+identity `1 = p^0 q^0`. So `(0, 0)` is the only exponent vector representing the unit of
+the power-form submonoid. -/
+theorem powerForm_eq_one_iff {p q : ℕ} (hp : p.Prime) (hq : q.Prime) (hpq : p ≠ q)
+    (k l : ℕ) : p ^ k * q ^ l = 1 ↔ k = 0 ∧ l = 0 := by
+  constructor
+  · intro h
+    exact powerForm_exponents_unique hp hq hpq (by simpa using h)
+  · rintro ⟨rfl, rfl⟩; simp
+
 end Erdos1110
