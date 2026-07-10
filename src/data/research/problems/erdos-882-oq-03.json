@@ -4,7 +4,7 @@
   "parentId": "erdos-882",
   "status": "in-progress",
   "knowledge": {
-    "score": 10,
+    "score": 22,
     "insights": [
       "Erdős #882: largest A ⊆ {1,…,n} whose non-empty subset sums are pairwise non-dividing (answer (1+o(1))log₂ n). The parent file states the two deep analytic bounds as axioms but proves NO structural properties of the predicates subsetSums / DivisibilityFree / ValidSubset.",
       "Headline: ValidSubset is DOWNWARD CLOSED — any subset of a valid set is valid. This is the WLOG 'pass to a sub-configuration' tool extremal arguments rely on, and the exact monotonicity the upper bound uses.",
@@ -16,7 +16,8 @@
       "Extremal value: the MAXIMUM non-empty subset sum is exactly the total ∑A (max'_subsetSums_eq_sum). It is attained by the full subset A itself (sum_mem_subsetSums) and dominates every other subset sum (subsetSums_le_sum, via Finset.sum_le_sum_of_subset since all summands are non-negative). This sharpens the membership range to the tight interval subsetSums A ⊆ {1,…,∑A} (subsetSums_subset_Icc_sum), whose right endpoint — unlike the coarse n·|A| — is realized; note ∑A ≤ n·|A| so this refines subsetSums_subset_Icc.",
       "Extremal value (lower endpoint): the MINIMUM non-empty subset sum is exactly A.min' (min'_subsetSums_eq_min'). Attained by the singleton {A.min'} (subset_subsetSums ∘ min'_mem) and a lower bound for every subset sum (min'_le_subsetSums: any subset sum ≥ one of its summands ≥ A.min'). This is the exact dual of max'_subsetSums_eq_sum (max = ∑A), so the subset-sum set's extremes are pinned to the attained interval [A.min', ∑A].",
       "Insertion recursion subsetSums_insert: for a fresh a∉A, subsetSums(insert a A) = insert a (subsetSums A ∪ (subsetSums A).image (a+·)). The non-empty subsets of insert a A split into three families — those avoiding a (→ subsetSums A), the singleton {a} (→ a), and insert a S′ with S′⊆A non-empty (→ a+s). This is the recursive tool for building the sum set of an explicit construction one generator at a time (lower-bound side).",
-      "Doubling law subsetSums_card_insert_superincreasing: if a > ∑A (superincreasing regime, a exceeds every subset sum) then the three recursion families are pairwise disjoint — old sums ⊆[1,∑A], value a>∑A, shifted sums a+s≥a+1>a — so |subsetSums(insert a A)| = 2·|subsetSums A| + 1. Iterated from ∅ this is exactly why a superincreasing sequence realises the full 2^|A|−1 distinct subset sums of subsetSums_card_le; it is the distinct-subset-sum (extremal) side of the counting picture, the exact opposite regime from collapse."
+      "Doubling law subsetSums_card_insert_superincreasing: if a > ∑A (superincreasing regime, a exceeds every subset sum) then the three recursion families are pairwise disjoint — old sums ⊆[1,∑A], value a>∑A, shifted sums a+s≥a+1>a — so |subsetSums(insert a A)| = 2·|subsetSums A| + 1. Iterated from ∅ this is exactly why a superincreasing sequence realises the full 2^|A|−1 distinct subset sums of subsetSums_card_le; it is the distinct-subset-sum (extremal) side of the counting picture, the exact opposite regime from collapse.",
+      "Extremal characterization (CONVERSE of collapse): a superincreasing set — every element exceeds the sum of all strictly smaller elements (def Superincreasing, order-agnostic Finset form; powers-of-two {1,2,4,…} qualify) — realises the FULL 2^|A|-1 distinct non-empty subset sums, meeting subsetSums_card_le with equality (subsetSums_card_superincreasing). Proof iterates the doubling law by strong induction removing the maximum m: sum_erase_max_lt shows ∑(A.erase m)<m (elements below the max are exactly A.erase m), so subsetSums_card_insert_superincreasing gives |subsetSums A|=2|subsetSums(A.erase m)|+1, and A.erase m stays superincreasing (Superincreasing.mono, hereditary since passing to a subset only drops smaller elements). Superincreasing.pos: every element ≥1 (exceeds a nonneg truncated sum)."
     ],
     "builtItems": [
       "Erdos882ProblemOQ03.lean: 4 defs + 17 theorems, 0 axioms, 0 sorries, self-contained.",
@@ -25,13 +26,14 @@
       "subsetSums_le (every non-empty subset sum ≤ n·|A|) and subsetSums_subset_Icc (subsetSums A ⊆ Icc 1 (n·|A|)) — the MEMBERSHIP-range side of the counting bound, complementing subsetSums_card_le's cardinality side. All 0-axiom verified (7743 jobs).",
       "sum_mem_subsetSums (∑A is a subset sum, realized by the full subset), subsetSums_le_sum (every subset sum ≤ ∑A), subsetSums_subset_Icc_sum (sharp range subsetSums A ⊆ Icc 1 (∑A)), and max'_subsetSums_eq_sum (the maximum subset sum equals ∑A) — the extremal-value layer. All 0-axiom verified (7743 jobs).",
       "min'_le_subsetSums (every non-empty subset sum ≥ A.min', via Finset.min'_le on any summand then Finset.single_le_sum) and min'_subsetSums_eq_min' (the MINIMUM subset sum equals A.min' — exact dual of max'_subsetSums_eq_sum). Together the two extremal-value results pin BOTH endpoints of the subset-sum range to attained values: [A.min', ∑A]. All 0-axiom verified (7743 jobs).",
-      "subsetSums_insert (insertion recursion, ext + erase/insert case split, 0-axiom) and subsetSums_card_insert_superincreasing (doubling law via Finset.disjoint_left + card_union_of_disjoint + card_image_of_injective(add_right_injective) + omega, 0-axiom). Both in Erdos882ProblemOQ03.lean. Elaboration clean [7743/7743]; olean write blocked by persistent fleet SIGBUS-135 (memory, not math — zero type errors on 6 builds)."
+      "subsetSums_insert (insertion recursion, ext + erase/insert case split, 0-axiom) and subsetSums_card_insert_superincreasing (doubling law via Finset.disjoint_left + card_union_of_disjoint + card_image_of_injective(add_right_injective) + omega, 0-axiom). Both in Erdos882ProblemOQ03.lean. Elaboration clean [7743/7743]; olean write blocked by persistent fleet SIGBUS-135 (memory, not math — zero type errors on 6 builds).",
+      "Erdos882ProblemOQ03.lean: added Superincreasing (def) + Superincreasing.pos + Superincreasing.mono + sum_erase_max_lt + subsetSums_card_superincreasing (|subsetSums A|=2^|A|-1). Now 5 defs + 22 theorems, 0 axioms, 0 sorries, self-contained. Elaboration clean [7743/7743] across 5 builds (0 type errors); olean write blocked by persistent fleet SIGBUS-135 (memory, not math)."
     ],
-    "progressSummary": "PROGRESS: added the insertion recursion subsetSums_insert and the superincreasing doubling law |subsetSums(insert a A)|=2|subsetSums A|+1 to the structural layer — the recursive computation tool plus the distinct-subset-sum growth regime. 21 theorems + 4 defs, 0-axiom (elaboration clean; olean-write blocked by fleet SIGBUS-135).",
+    "progressSummary": "PROGRESS: proved the extremal characterization subsetSums_card_superincreasing — a superincreasing set attains the full 2^|A|-1 distinct subset sums, meeting subsetSums_card_le with equality. Iterates the doubling law via strong induction on the max. 22 theorems + 5 defs, 0-axiom (elaboration clean; olean-write blocked by fleet SIGBUS-135).",
     "nextSteps": [
-      "Iterate the doubling law: prove that a superincreasing sequence (each element > sum of predecessors) has all 2^|A|−1 subset sums distinct (|subsetSums A| = 2^|A|−1), matching the subsetSums_card_le upper bound with equality — the extremal characterization of the counting anchor.",
-      "Formalize distinct subset sums as a consequence of, or relation to, divisibility-free sums (parent DistinctSubsetSums defined but unconnected).",
-      "Repair the parent Erdos882Problem.lean toolchain drift so the structural lemmas can be imported back."
+      "Connect distinct-subset-sums (superincreasing) to DivisibilityFree: a superincreasing set need NOT have divisibility-free subset sums (e.g. {1,2}: sums {1,2,3}, 1|2), so distinct-sum ≠ valid — clarify the gap between the counting-extremal regime and the actual Erdős #882 validity constraint.",
+      "Formalize the powers-of-two witness {2^0,…,2^{k-1}} explicitly as a Superincreasing instance to instantiate subsetSums_card_superincreasing on a concrete family.",
+      "Repair the parent Erdos882Problem.lean toolchain drift so the structural lemmas import back."
     ]
   },
   "relatedProofs": [
@@ -54,10 +56,10 @@
     {
       "path": "Proofs/Erdos882ProblemOQ03.lean",
       "filename": "Erdos882ProblemOQ03.lean",
-      "lineCount": 277,
-      "theoremCount": 19,
+      "lineCount": 495,
+      "theoremCount": 25,
       "axiomCount": 0,
-      "defCount": 4,
+      "defCount": 5,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos882ProblemOQ03.lean"
