@@ -141,5 +141,28 @@
       "relationship": "grandparent — establishes the Fibonacci–Lucas bridge and doubling context from which the degree-2 relations descend"
     }
   ],
+  "references": [
+    {
+      "authors": "Steven Vajda",
+      "title": "Fibonacci and Lucas Numbers, and the Golden Section: Theory and Applications",
+      "year": "1989",
+      "venue": "Ellis Horwood / Dover (reprint 2008)",
+      "note": "The standard compendium of Fibonacci–Lucas identities. Catalogs the degree-2 relations formalized here: the cross/doubling identity LₙFₙ = F₂ₙ, the sum Lₙ² + 5Fₙ² = 2L₂ₙ, and the sign-carrying difference Lₙ² − 5Fₙ² = 4(−1)ⁿ."
+    },
+    {
+      "authors": "Thomas Koshy",
+      "title": "Fibonacci and Lucas Numbers with Applications",
+      "year": "2001",
+      "venue": "John Wiley & Sons",
+      "note": "Comprehensive reference deriving the Lucas doubling L₂ₙ = Lₙ² − 2(−1)ⁿ and the interlocking Fibonacci–Lucas square identities from the Binet forms and the recurrences, matching the bridge lemma lucas_two_mul_eq_neg_one_pow."
+    },
+    {
+      "authors": "Ronald L. Graham, Donald E. Knuth, Oren Patashnik",
+      "title": "Concrete Mathematics: A Foundation for Computer Science",
+      "year": "1994",
+      "venue": "Addison-Wesley (2nd ed.)",
+      "note": "§6.6 (Fibonacci numbers): the doubling formula F₂ₙ = Fₙ(2Fₙ₊₁ − Fₙ) used here as fib_two_mul_int, and the algebraic manipulation of Fibonacci identities via Fₙ, Fₙ₊₁."
+    }
+  ],
   "sorries": 0
 }
