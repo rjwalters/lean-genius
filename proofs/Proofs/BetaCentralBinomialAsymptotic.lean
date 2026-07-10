@@ -144,4 +144,37 @@ theorem betaIntegral_diag_eq (n : ℕ) :
   push_cast
   ring
 
+
+/-- **Diagonal Beta value vanishes (new).**  `B(n+1, n+1) → 0` as `n → ∞`.
+This is the limit form of the "mass collapses" statement above, obtained
+directly from `(2n+1)·C(2n,n) → ∞`. -/
+theorem betaDiag_tendsto_zero :
+    Tendsto (fun n : ℕ => betaDiag n) atTop (𝓝 0) := by
+  have hprod : Tendsto (fun n : ℕ => (2 * (n : ℝ) + 1) * (Nat.centralBinom n : ℝ))
+      atTop atTop := by
+    have hle : ∀ n : ℕ,
+        (2 * (n : ℝ) + 1) ≤ (2 * (n : ℝ) + 1) * (Nat.centralBinom n : ℝ) := by
+      intro n
+      have h1 : (1 : ℝ) ≤ (Nat.centralBinom n : ℝ) := by
+        exact_mod_cast Nat.one_le_iff_ne_zero.mpr (Nat.centralBinom_ne_zero n)
+      nlinarith [h1, Nat.cast_nonneg (α := ℝ) n]
+    exact tendsto_atTop_mono hle
+      (tendsto_atTop_add_const_right atTop 1
+        (tendsto_natCast_atTop_atTop.const_mul_atTop (by norm_num : (0 : ℝ) < 2)))
+  have hinv := hprod.inv_tendsto_atTop
+  refine hinv.congr fun n => ?_
+  simp only [Pi.inv_apply, betaDiag, one_div]
+
+/-- **Wallis ratio limit (new).**  `C(2n, n) / (4ⁿ/√(πn)) → 1` as `n → ∞`.
+The `Tendsto`-to-one restatement of `centralBinom_isEquivalent`, exposing the
+sharp leading-order constant governing the central binomial coefficient. -/
+theorem centralBinom_div_stirling_tendsto_one :
+    Tendsto (fun n : ℕ => (Nat.centralBinom n : ℝ) / ((4 : ℝ) ^ n / Real.sqrt (π * n)))
+      atTop (𝓝 1) := by
+  have hz : ∀ᶠ n : ℕ in atTop, ((4 : ℝ) ^ n / Real.sqrt (π * n)) ≠ 0 := by
+    filter_upwards [eventually_gt_atTop 0] with n hn
+    have hnpos : (0 : ℝ) < (n : ℝ) := by exact_mod_cast hn
+    have hden : (0 : ℝ) < Real.sqrt (π * n) := Real.sqrt_pos.2 (by positivity)
+    exact (div_pos (by positivity) hden).ne'
+  exact (isEquivalent_iff_tendsto_one hz).1 centralBinom_isEquivalent
 end BetaDiagAsymptotic
