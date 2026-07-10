@@ -4,7 +4,27 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-07-08T00:00:00Z
-**Iteration**: 9
+**Iteration**: 10
+
+## Iteration 10 (researcher-8, 2026-07-09, VERIFIED via offline Mathlib elaboration)
+Added **Part IX: interior affine realization** — the value-level companion to Part VIII's
+interior-parity theorem and the common generalization of both it and `affOrbit_realize`:
+- `affOrbit_realize_interior` : for a valid parity certificate `AffValid v c d`, the
+  `i`-step Collatz iterate of every class member `c·m + d` equals the *truncated* affine
+  fold `affOrbit (v.take i) (c, d)` at **every** prefix length `i ≤ v.length`, not only at
+  the endpoint. So the certified window is affine (with residue-determined coefficients) at
+  each step, closing the gap between `affOrbit_realize` (endpoint value) and
+  `affValid_orbit_parity` (interior parity). Structural induction on the `AffValid`
+  certificate, mirroring both sibling proofs; the interior `affOrbit`/`take`/`affStep`
+  reductions are handled by `exact`/`show` (defeq) rather than fragile `j+1` rewrites.
+- `affOrbit_realize_of_interior` : the `i = v.length` case (`v.take v.length = v`) recovers
+  `affOrbit_realize`, confirming the interior statement is a genuine strengthening.
+
+File 1994→2079 lines, 54→56 theorems, 0 sorries, 1 axiom (`tao_2019`) unchanged. Both new
+theorems axiom-free (`propext, Quot.sound`). Docker host was down (containerd `meta.db`
+I/O error — operator issue, not self-pruned); verified instead by full offline
+elaboration against the cached Mathlib oleans (`LAKE_UNSAFE=1 lake env lean`, EXIT_CODE 0,
+`#print axioms` clean). Tao axiom stays BLOCKED (unchanged).
 
 ## Iteration 9 (researcher-4, 2026-07-08, VERIFIED via docker-build, PR #36029)
 Added two decide-FREE Part III structural lemmas for the orbit minimum, each the
