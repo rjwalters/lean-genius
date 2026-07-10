@@ -205,4 +205,45 @@ there is nothing to reduce and no target `e₁` to reach, so the descent is vacu
 theorem not_isPrimitive_fin_zero (v : Fin 0 → ℤ) : ¬ IsPrimitive v :=
   fun h => h.ne_zero (Subsingleton.elim v 0)
 
+/-! ### The first nontrivial case of transitivity: dimension 2 -/
+
+/-- **Transitivity of the `SL₂(ℤ)`-action, base case.**  Every primitive vector
+`v : Fin 2 → ℤ` is carried to `e₁ = (1, 0)` by an *explicit* unimodular matrix.
+Given a dual `w` with `w ⬝ᵥ v = 1`, the matrix
+`![![w 0, w 1], ![-v 1, v 0]]` has determinant `w 0 · v 0 + w 1 · v 1 = 1`,
+so it lies in `SL₂(ℤ)`, and its first row `w` pairs `v` to `1` while its second
+row `(-v 1, v 0)` pairs `v` to `0`.  This is the `n = 2` instance of the
+Euclidean-descent step that `orbit_e_isPrimitive` records as remaining work — here
+the descent is a single Bézout move, so the construction is closed form.  Together
+with the easy half it upgrades to the full characterization
+`isPrimitive_fin_two_iff_orbit`. -/
+theorem isPrimitive_fin_two_orbit {v : Fin 2 → ℤ} (hv : IsPrimitive v) :
+    ∃ A : Matrix.SpecialLinearGroup (Fin 2) ℤ,
+      (A : Matrix (Fin 2) (Fin 2) ℤ) *ᵥ v = Pi.single 0 1 := by
+  obtain ⟨w, hw⟩ := hv
+  have hwv : w 0 * v 0 + w 1 * v 1 = 1 := by
+    simpa [dotProduct, Fin.sum_univ_two] using hw
+  refine ⟨⟨!![w 0, w 1; -v 1, v 0], ?_⟩, ?_⟩
+  · rw [Matrix.det_fin_two_of]
+    linear_combination hwv
+  · funext k
+    fin_cases k <;>
+      simp [Matrix.mulVec, dotProduct, Fin.sum_univ_two] <;>
+      linarith [hwv]
+
+/-- **Full transitivity in dimension 2.**  A vector `v : Fin 2 → ℤ` is primitive
+iff it is `SL₂(ℤ)`-equivalent to `e₁`.  The forward direction is the closed-form
+Bézout reduction `isPrimitive_fin_two_orbit`; the reverse is the invariance
+`isPrimitive_mulVec_iff` applied to the primitive target `e₁`.  This is the
+converse (sufficiency) half of the transitivity characterization, established in
+full for `n = 2`. -/
+theorem isPrimitive_fin_two_iff_orbit (v : Fin 2 → ℤ) :
+    IsPrimitive v ↔ ∃ A : Matrix.SpecialLinearGroup (Fin 2) ℤ,
+      (A : Matrix (Fin 2) (Fin 2) ℤ) *ᵥ v = Pi.single 0 1 := by
+  refine ⟨isPrimitive_fin_two_orbit, ?_⟩
+  rintro ⟨A, hA⟩
+  have h : IsPrimitive ((A : Matrix (Fin 2) (Fin 2) ℤ) *ᵥ v) := by
+    rw [hA]; exact isPrimitive_single 0
+  exact (isPrimitive_mulVec_iff A v).mp h
+
 end BezoutPrimitive
