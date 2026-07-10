@@ -82,4 +82,17 @@ theorem simplexNumber_diag_succ (d : ℕ) :
   rw [simplexNumber_diag (d + 1), simplexNumber_diag d]
   exact Nat.succ_mul_centralBinom_succ d
 
+/-- **Catalan numbers on the diagonal.**  The `d`-th Catalan number is the central simplex
+number `P_d(d) = C(2d, d)` divided by `d+1`; multiplicatively,
+`(d+1) · catalan d = P_d(d)`.  Since `simplexNumber_diag` identifies the diagonal of
+Pascal's simplex with the central binomial coefficient `Nat.centralBinom`, this is just
+Mathlib's `Nat.succ_mul_catalan_eq_centralBinom` read through that identification.  It
+places the Catalan numbers `catalan d = C(2d,d)/(d+1)` inside the figurate ladder as the
+`(d+1)`-quotient of the central simplex diagonal, complementing the diagonal doubling
+recurrence `simplexNumber_diag_succ`. -/
+theorem simplexNumber_diag_catalan (d : ℕ) :
+    (d + 1) * catalan d = simplexNumber d d := by
+  rw [simplexNumber_diag d, ← Nat.centralBinom_eq_two_mul_choose]
+  exact succ_mul_catalan_eq_centralBinom d
+
 end TetrahedralNumberFormulaOQ01
