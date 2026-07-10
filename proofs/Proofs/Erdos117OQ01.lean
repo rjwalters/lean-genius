@@ -497,6 +497,70 @@ theorem growthRate_window :
     rw [Real.log_pow, mul_comm] at hlog
     exact hlog
 
+/-- **Both cluster values sit inside a single Pyber window.** A shared pair of constants
+    `1 < c₁ < c₂` traps `growthRateLimInf` and `growthRateLimSup` in the *same* band
+    `[log c₁, log c₂]`. This is the cluster-value analogue of `growthRate_window`:
+    `limInf_ge_log_c1` and `limSup_le_log_c2` each conjure their own constant from
+    `pyber_bounds`, so Lean cannot see the two witnesses as equal. Consolidating them with
+    shared constants is what makes the oscillation bound below possible. -/
+theorem limInfLimSup_window :
+    ∃ c₁ c₂ : ℝ, 1 < c₁ ∧ c₁ < c₂ ∧
+      Real.log c₁ ≤ growthRateLimInf ∧ growthRateLimSup ≤ Real.log c₂ := by
+  obtain ⟨c₁, c₂, hc1, hc12, hbounds⟩ := pyber_bounds
+  have hc2 : c₂ > 1 := lt_trans hc1 hc12
+  refine ⟨c₁, c₂, hc1, hc12, ?_, ?_⟩
+  · -- log c₁ ≤ liminf, with the shared c₁
+    have hev : ∀ᶠ n : ℕ in atTop, Real.log c₁ ≤ growthRate n := by
+      apply Filter.eventually_atTop.mpr
+      refine ⟨1, fun n hn => ?_⟩
+      have hn_pos : (0 : ℝ) < n := by exact_mod_cast (show 0 < n from by omega)
+      unfold growthRate
+      rw [if_neg (show n ≠ 0 from by omega), le_div_iff₀ hn_pos]
+      have hlog : Real.log (c₁ ^ n) ≤ Real.log (h n : ℝ) :=
+        Real.log_le_log (by positivity) (hbounds n hn).1
+      rw [Real.log_pow, mul_comm] at hlog
+      exact hlog
+    have hcobdd : (atTop : Filter ℕ).IsCoboundedUnder (· ≥ ·) growthRate := by
+      obtain ⟨U, hU⟩ := growthRate_upper_bound
+      refine ⟨U, fun a ha => ?_⟩
+      rw [Filter.eventually_map] at ha
+      obtain ⟨N, hN⟩ := Filter.eventually_atTop.mp ha
+      exact le_trans (hN (max N 1) (le_max_left _ _)) (hU (max N 1) (le_max_right _ _))
+    unfold growthRateLimInf
+    exact Filter.le_liminf_of_le hcobdd hev
+  · -- limsup ≤ log c₂, with the shared c₂
+    have hev : ∀ᶠ n : ℕ in atTop, growthRate n ≤ Real.log c₂ := by
+      apply Filter.eventually_atTop.mpr
+      refine ⟨1, fun n hn => ?_⟩
+      have hn_pos : (0 : ℝ) < n := by exact_mod_cast (show 0 < n from by omega)
+      unfold growthRate
+      rw [if_neg (show n ≠ 0 from by omega), div_le_iff₀ hn_pos]
+      have hhn : (1 : ℝ) ≤ (h n : ℝ) := by exact_mod_cast h_pos n hn
+      have hlog : Real.log (h n : ℝ) ≤ Real.log (c₂ ^ n) :=
+        Real.log_le_log (by linarith) (hbounds n hn).2
+      rw [Real.log_pow, mul_comm] at hlog
+      exact hlog
+    have hcobdd : (atTop : Filter ℕ).IsCoboundedUnder (· ≤ ·) growthRate := by
+      obtain ⟨L, _, hL⟩ := growthRate_lower_bound
+      refine ⟨L, fun a ha => ?_⟩
+      rw [Filter.eventually_map] at ha
+      obtain ⟨N, hN⟩ := Filter.eventually_atTop.mp ha
+      exact le_trans (hL (max N 1) (le_max_right _ _)) (hN (max N 1) (le_max_left _ _))
+    unfold growthRateLimSup
+    exact Filter.limsup_le_of_le hcobdd hev
+
+/-- **The growth-rate oscillation is bounded by the log-width of Pyber's window.**
+    `growthRateLimSup − growthRateLimInf ≤ log c₂ − log c₁ = log (c₂ / c₁)`. The open
+    question is precisely whether this gap is `0` (convergence ⟺ `liminf = limsup`), so
+    this is a quantitative near-convergence statement: the growth rate's failure to
+    converge is capped by the *fixed* multiplicative slack `c₂ / c₁` between Pyber's two
+    constants, uniformly in `n`. Immediate from `limInfLimSup_window`. -/
+theorem growthRate_oscillation_le_window :
+    ∃ c₁ c₂ : ℝ, 1 < c₁ ∧ c₁ < c₂ ∧
+      growthRateLimSup - growthRateLimInf ≤ Real.log c₂ - Real.log c₁ := by
+  obtain ⟨c₁, c₂, hc1, hc12, hlo, hhi⟩ := limInfLimSup_window
+  exact ⟨c₁, c₂, hc1, hc12, by linarith⟩
+
 /-- The open question stated precisely -/
 def erdos117OQ01 : Prop := exponentialBaseExists
 
