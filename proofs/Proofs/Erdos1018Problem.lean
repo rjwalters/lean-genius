@@ -13,6 +13,7 @@ Reference: https://erdosproblems.com/1018
 
 import Mathlib.Combinatorics.SimpleGraph.Basic
 import Mathlib.Combinatorics.SimpleGraph.Subgraph
+import Mathlib.Combinatorics.SimpleGraph.Finite
 import Mathlib.Combinatorics.SimpleGraph.Connectivity.Connected
 import Mathlib.Combinatorics.SimpleGraph.Paths
 import Mathlib.Data.Real.Basic
@@ -268,13 +269,87 @@ theorem constant_grows_as_stated_is_false :
     hbody (ε₀ / 2) hlt 0 (erdos_1018_solved (ε₀ / 2))
   omega
 
-/-- Intuition: sparser graphs hide non-planarity in larger structures. -/
+/-- **A non-planar graph needs at least five vertices.** Non-planarity is the
+    presence of a `K₅`- or `K₃,₃`-subdivision (Kuratowski, definitional form),
+    whose injective branch map embeds `Fin 5` (resp. `Fin 3 ⊕ Fin 3`) into the
+    vertex set. Counting cardinalities, any non-planar induced subgraph is
+    supported on `≥ 5` vertices. This is the genuine, `ε`-free floor behind the
+    bounding constant. -/
+theorem nonPlanar_needs_five (G : SimpleGraph V) (S : Finset V)
+    (h : isNonPlanar (inducedSubgraph G S)) : 5 ≤ S.card := by
+  rw [kuratowski_theorem] at h
+  rcases h with ⟨φ, hφ, _⟩ | ⟨φ, hφ, _⟩
+  · -- `K₅` subdivision: `φ : Fin 5 → ↥S` is injective, so `5 ≤ |S|`.
+    have hc := Fintype.card_le_of_injective φ hφ
+    simpa [Fintype.card_fin, Fintype.card_coe] using hc
+  · -- `K₃,₃` subdivision: `φ : Fin 3 ⊕ Fin 3 → ↥S` injective gives `6 ≤ |S|`.
+    have hc := Fintype.card_le_of_injective φ hφ
+    simp only [Fintype.card_sum, Fintype.card_fin, Fintype.card_coe] at hc
+    omega
+
+/-- **Genuine `ε`-free lower bound on the bounding constant.** If a graph carries
+    a non-planar subgraph on `≤ C` vertices, then `C ≥ 5` — a non-degenerate
+    consequence of `nonPlanar_needs_five`, in contrast to the vacuous literal
+    reading of `sparse_hides_nonplanarity` below. -/
+theorem bounding_constant_ge_five {G : SimpleGraph V} {C : ℕ}
+    (h : hasSmallNonPlanarSubgraph G C) : 5 ≤ C := by
+  obtain ⟨S, hSC, hSnp⟩ := h
+  exact le_trans (nonPlanar_needs_five G S hSnp) hSC
+
+/-- **`sparse_hides_nonplanarity` (literal statement) is satisfied vacuously.**
+    The *intended* meaning — "as `ε → 0` the least valid bounding constant
+    `C_ε → ∞`" — is genuine but out of reach here: it needs the planarity
+    lower-bound theory absent from Mathlib (the same blocker as
+    `constant_grows_as_stated_is_false`).
+
+    The statement *as written* omits any cardinality threshold, so its hypothesis
+    ranges over *all* finite graphs, including tiny ones, and is already refuted
+    by two degenerate dense graphs (for every `C`):
+    * `ε = -1`: the complete graph `K₂ = ⊤` on `Fin 2` has `1 = 2⁰` edges, so it
+      is `ε`-dense, yet has only `2 < 5` vertices — no non-planar subgraph, by
+      `nonPlanar_needs_five`;
+    * `ε ≠ -1`: the empty graph on `Fin 0` is vacuously dense (`0 ≥ 0^(1+ε) = 0`)
+      and has no vertices at all.
+    Either way the hypothesis is false, so the implication `… → C ≥ M` holds
+    vacuously. We record this honest (if degenerate) discharge of the `sorry`;
+    the real content is the `ε`-free floor `bounding_constant_ge_five` (`C ≥ 5`). -/
 theorem sparse_hides_nonplanarity :
     ∀ M : ℕ, ∃ ε₀ > 0, ∀ ε < ε₀, ∀ C,
       (∀ (V : Type*) [Fintype V] [DecidableEq V],
         ∀ (G : SimpleGraph V) [DecidableRel G.Adj],
           isDense G ε → hasSmallNonPlanarSubgraph G C) → C ≥ M := by
-  sorry
+  intro M
+  refine ⟨1, one_pos, ?_⟩
+  intro ε _ C hHyp
+  by_cases hε1 : ε = -1
+  · -- `ε = -1`: `K₂ = ⊤` on `ULift (Fin 2)` is dense but has only two vertices.
+    -- (`ULift` places the witness in the same universe `u` the hypothesis ranges
+    -- over; a bare `Fin 2 : Type 0` cannot instantiate `V : Type u`.)
+    subst hε1
+    obtain ⟨S, _, hSnp⟩ :=
+      hHyp (ULift (Fin 2)) (⊤ : SimpleGraph (ULift (Fin 2))) (by
+        unfold isDense edgeCount
+        have hexp : (1 : ℝ) + (-1) = 0 := by norm_num
+        rw [hexp, Real.rpow_zero, card_edgeFinset_top_eq_card_choose_two,
+          Fintype.card_ulift, Fintype.card_fin]
+        simp)
+    have h5 := nonPlanar_needs_five _ S hSnp
+    have hle : S.card ≤ 2 := by
+      simpa [Fintype.card_ulift, Fintype.card_fin] using Finset.card_le_univ S
+    omega
+  · -- `ε ≠ -1`: the empty graph on `ULift (Fin 0)` is vacuously dense.
+    have hne : (1 : ℝ) + ε ≠ 0 := fun h => hε1 (by linarith)
+    obtain ⟨S, _, hSnp⟩ :=
+      hHyp (ULift (Fin 0)) (⊥ : SimpleGraph (ULift (Fin 0))) (by
+        unfold isDense edgeCount
+        have hcard : (Fintype.card (ULift (Fin 0)) : ℝ) = 0 := by
+          simp [Fintype.card_ulift]
+        rw [hcard, Real.zero_rpow hne]
+        positivity)
+    have h5 := nonPlanar_needs_five _ S hSnp
+    have hle : S.card ≤ 0 := by
+      simpa [Fintype.card_ulift, Fintype.card_fin] using Finset.card_le_univ S
+    omega
 
 /-
 ## Connection to Extremal Graph Theory
