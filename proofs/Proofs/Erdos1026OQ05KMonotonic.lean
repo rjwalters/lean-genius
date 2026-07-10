@@ -311,7 +311,7 @@ theorem IsKMonotonic.mono {k k' : ℕ} (hk : 0 < k) (hkk' : k ≤ k') {seq : Rea
   -- The clamp sends the slot `⟨j, _⟩ : Fin k'` back to `j`, so its run is `runs j`.
   have hfj : f ⟨j.val, hj'lt⟩ = j := by
     apply Fin.ext; simp only [hf, Fin.val_mk]; omega
-  simp only [hfj]
+  rw [hfj]
   exact ⟨b, hjb⟩
 
 /-- Lift a `k`-monotone decomposition to a `k'`-monotone one for `k ≤ k'` (`k ≥ 1`): each part is
