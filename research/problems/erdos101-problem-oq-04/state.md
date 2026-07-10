@@ -2,8 +2,41 @@
 
 **Phase**: ACT (arithmetization complete: four-point-line counting on the quartic is now the additive problem "count 4-subsets with Σx=0 ∧ Σx²=10")
 **Since**: 2026-07-01
-**Last Updated**: 2026-07-09 (Iteration 11, researcher-4)
-**Iteration**: 11
+**Last Updated**: 2026-07-09 (Iteration 12, researcher-6)
+**Iteration**: 12
+
+## Iteration 12 (researcher-6, 2026-07-09) — concrete OBLIQUE quadruple witness [UNVERIFIED — docker infra down]
+
+**Outcome**: three additions to `Proofs/Erdos101OQ04.lean` (0 new axioms, 0 new
+sorries) substantiating the engine's repeated "additionally accepts *oblique*
+quadruples" claim with an actual checked example. Every prior realized witness
+(`quartic_linear_lower_bound`, `symmetric_quadruple_onQuartic_collinear`) is
+symmetric `(a,−a,b,−b)`; the engine's generality over *oblique* inputs was asserted
+but never exhibited.
+
+1. **`oblique_quadruple_criterion`** — the rational abscissae `(−8/3, 1/3, 1, 4/3)`
+   satisfy `Σx = 0` and `Σx² = (64+1+9+16)/9 = 90/9 = 10`, the two relations the
+   engine requires (`norm_num`).
+2. **`oblique_quadruple_not_symmetric`** — checked non-symmetry: the abscissa `1` is
+   present but its negation `−1` equals none of the four abscissae, so the abscissa
+   set is not closed under negation and no `(a,−a,b,−b)` relabeling exists (`norm_num`).
+3. **`oblique_quadruple_onQuartic_collinear`** — the four points above these abscissae
+   on `y = x⁴ − 5x²` are genuinely collinear (a four-point line), via
+   `four_onQuartic_collinear_iff_sq` + `oblique_quadruple_criterion`. The oblique
+   analogue of `symmetric_quadruple_onQuartic_collinear`.
+
+**Honest scope**: a *single* oblique quadruple, not a family — it does NOT touch the
+OPEN super-linear growth (`solymosi_stojakovic_lower_bound`), which needs
+super-linearly many distinct oblique solution-sets on the fixed conic `Q = 5`. It
+closes the smaller gap between the engine's stated generality and the concrete
+witnesses actually exhibited.
+
+**Build note — UNVERIFIED (environmental)**: `docker-build.sh Proofs.Erdos101OQ04`
+died at Docker image build with `containerd .../meta.db: input/output error` — the
+known session-wide docker-infra outage (disk healthy, 115Gi free), not a code fault.
+Each proof step is elementary (`norm_num` + one `rw` mirroring the already-present
+`symmetric_quadruple_onQuartic_collinear`); hand-checked. CI in a clean environment
+is ground truth.
 
 ## Iteration 11 (researcher-4, 2026-07-09) — sum-of-squares criterion + general arithmetic counting engine [UNVERIFIED — env SIGBUS]
 

@@ -3088,4 +3088,57 @@ theorem symmetric_quadruple_onQuartic_collinear (a b : ℝ) (hab : a ^ 2 + b ^ 2
   rw [four_onQuartic_collinear_iff_sq rfl rfl rfl rfl h1 h4 (Ne.symm h2) h5 (Ne.symm h3) h6]
   exact symmetric_quadruple_criterion a b hab
 
+/-! ### An oblique (non-symmetric) quadruple realizes the engine
+
+`quartic_fourPointLineCount_from_quadruples` and its docstring assert that the engine
+accepts *oblique* abscissa-quadruples — solutions of `Σx = 0 ∧ Σx² = 10` that are **not**
+of the symmetric shape `(a, −a, b, −b)`.  Every concrete witness realized so far
+(`quartic_linear_lower_bound`, `symmetric_quadruple_onQuartic_collinear`) is symmetric, so
+the "additionally accepts oblique quadruples" claim was, until now, unsubstantiated by an
+actual checked example.  The three lemmas below fix that with the concrete rational witness
+`(−8/3, 1/3, 1, 4/3)`: it meets the arithmetic criterion, is genuinely oblique (its abscissa
+set is not closed under negation), and forms a bona-fide four-point line on the quartic.
+
+Note this is a *single* oblique quadruple, not a family — it does not touch the OPEN
+super-linear growth (`solymosi_stojakovic_lower_bound`), which needs *super-linearly many*
+distinct oblique solution-sets on the fixed ternary conic `Q = 5`.  It closes the smaller
+gap between the engine's stated generality and the witnesses actually exhibited. -/
+
+/-- **An oblique quadruple solves the arithmetic four-point-line criterion.**
+The rational abscissae `(−8/3, 1/3, 1, 4/3)` satisfy `Σx = 0` and `Σx² = 10`
+(`(−8/3)² + (1/3)² + 1² + (4/3)² = (64 + 1 + 9 + 16)/9 = 90/9 = 10`), exactly the two
+relations `four_onQuartic_collinear_iff_sq` and `quartic_fourPointLineCount_from_quadruples`
+require. -/
+theorem oblique_quadruple_criterion :
+    (-8 / 3 : ℝ) + 1 / 3 + 1 + 4 / 3 = 0 ∧
+      (-8 / 3 : ℝ) ^ 2 + (1 / 3 : ℝ) ^ 2 + (1 : ℝ) ^ 2 + (4 / 3 : ℝ) ^ 2 = 10 := by
+  refine ⟨by norm_num, by norm_num⟩
+
+/-- **The oblique quadruple is genuinely non-symmetric.**
+A symmetric family `(a, −a, b, −b)` has an abscissa set closed under negation.  Here the
+abscissa `1` is present but its negation `−1` equals none of the four abscissae, so no
+symmetric `(a, −a, b, −b)` relabeling of `(−8/3, 1/3, 1, 4/3)` exists — the quadruple is
+strictly oblique. -/
+theorem oblique_quadruple_not_symmetric :
+    (-(1 : ℝ) ≠ -8 / 3) ∧ (-(1 : ℝ) ≠ 1 / 3) ∧ (-(1 : ℝ) ≠ 1) ∧ (-(1 : ℝ) ≠ 4 / 3) := by
+  refine ⟨by norm_num, by norm_num, by norm_num, by norm_num⟩
+
+/-- **The oblique quadruple forms a four-point line on the quartic.**
+For the four distinct abscissae `−8/3, 1/3, 1, 4/3`, the four points above them on
+`y = x⁴ − 5x²` are collinear — a genuine four-point line anchored through the `(−8/3, ·)`
+and `(1/3, ·)` points.  Derived directly from the sum-of-squares criterion
+`four_onQuartic_collinear_iff_sq` via `oblique_quadruple_criterion`, this is the *oblique*
+analogue of `symmetric_quadruple_onQuartic_collinear`, witnessing that the engine
+`quartic_fourPointLineCount_from_quadruples` accepts inputs outside the symmetric family. -/
+theorem oblique_quadruple_onQuartic_collinear :
+    collinear (-8 / 3, (-8 / 3 : ℝ) ^ 4 - 5 * (-8 / 3) ^ 2)
+        (1 / 3, (1 / 3 : ℝ) ^ 4 - 5 * (1 / 3) ^ 2)
+        (1, (1 : ℝ) ^ 4 - 5 * 1 ^ 2) ∧
+      collinear (-8 / 3, (-8 / 3 : ℝ) ^ 4 - 5 * (-8 / 3) ^ 2)
+        (1 / 3, (1 / 3 : ℝ) ^ 4 - 5 * (1 / 3) ^ 2)
+        (4 / 3, (4 / 3 : ℝ) ^ 4 - 5 * (4 / 3) ^ 2) := by
+  rw [four_onQuartic_collinear_iff_sq rfl rfl rfl rfl (by norm_num) (by norm_num)
+    (by norm_num) (by norm_num) (by norm_num) (by norm_num)]
+  exact oblique_quadruple_criterion
+
 end Erdos101OQ04
