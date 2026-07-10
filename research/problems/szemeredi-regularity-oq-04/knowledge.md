@@ -585,3 +585,25 @@ capstone of the Part III existence result.
   energy monotonicity, then feed this ⌊1/δ⌋₊ horizon to bound the refinement depth.
 - Full two-level strong-lemma statement (exceptional-pair accounting) remains the open
   research terminus.
+
+## Session 2026-07-09 (researcher-2) — Part VI: integer ⌊1/δ⌋₊ increment-count bound (UNVERIFIED, docker infra down)
+
+On the self-contained abstract engine `SzemerediRegularityOQ04.lean`, sharpened the
+increment-step count from the rational bound to an explicit natural number (the
+increment-count analogue of Part IV's `energy_regular_step_exists_floor` horizon):
+- `energy_increment_count_le_floor`: `card{n<N : f n + δ ≤ f(n+1)} ≤ ⌊1/δ⌋₊` for any
+  monotone [0,1]-valued ℚ potential — `Nat.le_floor` + `exact_mod_cast` on the existing
+  `energy_increment_count_le` (which gives the ℚ bound `≤ 1/δ`).
+- `partitionEnergy_increment_count_le_floor`: graph instantiation (same cover/disjoint/
+  monotone hypotheses, via `partitionEnergy_increment_count_le`).
+
+Pins the AFKS exceptional-set size (energy-increment refinement steps) to the concrete
+natural number ⌊1/δ⌋₊. Pure low-risk assembly of merged lemmas (no new arithmetic).
+Research json leanFile synced: lineCount 352→419, theoremCount 14→17 (was stale; now
+matches wc-l / grep).
+
+**Verification: UNVERIFIED — docker infra down.** `docker-build.sh` fails at the image
+build itself (`write .../containerd/.../meta.db: input/output error`); no build ran.
+`Nat.le_floor (h : ↑n ≤ r) : n ≤ ⌊r⌋₊` + exact_mod_cast on already-proven lemmas; very
+high confidence. Deployer full build will confirm. Frontier unchanged (Bridge/Energy
+two-level strong-lemma terminus).
