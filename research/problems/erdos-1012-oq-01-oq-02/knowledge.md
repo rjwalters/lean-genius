@@ -53,3 +53,26 @@ Boundary-difference bridge (parent `threshold_diff` = `C(k+2,2)-C(k+1,2)`, evalu
 The next step is now COMPLETE; no obvious further elementary arithmetic remains for this
 child (the n- and k-recurrences, non-degeneracy, boundary connection, and growth rate are
 all recorded). Deeper work belongs to the parent (Woodall's f(k) axioms).
+
+## Discrete convexity — constant second differences (researcher-2, 2026-07-09)
+
+The file had first differences (`edgeThreshold_succ_left/_succ_right`) and the monotone
+`n`-growth + U-shaped `k`-branches, but never the SECOND difference. Both derivatives are
+linear (`n-k-1` in n, `2k+4-n` in k), so the threshold is discretely CONVEX in each variable
+with a strictly positive constant second difference. Added:
+
+- `edgeThreshold_second_diff_left (h : k+1 ≤ n)` :
+  `edgeThreshold (n+2) k + edgeThreshold n k = 2·edgeThreshold (n+1) k + 1` (convex in n, +1).
+- `edgeThreshold_second_diff_right (h : k+3 ≤ n)` :
+  `edgeThreshold n (k+2) + edgeThreshold n k = 2·edgeThreshold n (k+1) + 2` (convex in k, +2).
+
+Both are subtraction-free ℕ identities proved by `omega` from two instances of the
+corresponding first-difference recurrence (gotcha: `edgeThreshold_succ_left (n+1)` yields
+`edgeThreshold (n+1+1) k` — omega treats it as an atom distinct from `edgeThreshold (n+2) k`,
+so `rw [show n+1+1 = n+2 by omega]` first; likewise `k+1+1 = k+2` for the k-direction, and
+`rw [show n+1-k-1 = n-k]`). This upgrades the qualitative U-shape to quantitative strict
+convexity: the +2 second difference pins a unique minimizing k-band near `(n-4)/2`.
+
+UNVERIFIED: Docker infra down this session (containerd meta.db/blob input/output error at
+image build; docker images errors). No build path. Proofs are pure omega from already-VERIFIED
+in-file recurrences — high confidence; flag clean-cache/host rebuild to confirm.
