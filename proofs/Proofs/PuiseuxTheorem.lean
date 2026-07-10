@@ -909,6 +909,141 @@ def puiseuxSubfield (K : Type*) [Field K] : Subfield (HahnSeries ℚ K) where
 end Subfield
 
 /-! ═══════════════════════════════════════════════════════════════════════════════
+PART XI: THE RAMIFICATION FILTRATION
+═══════════════════════════════════════════════════════════════════════════════ -/
+
+/-!
+### The filtration by ramification index
+
+`IsPuiseuxSeries` is an *existential* over a ramification index. Fixing that index
+gives a finer predicate, `IsPuiseuxOfRamification n`: every exponent lies in `(1/n)ℤ`.
+The Puiseux series thus decompose into a tower of *Laurent-type* pieces:
+
+* `IsPuiseuxSeries` is the union over all `n` (`isPuiseux_iff_exists_ramification`);
+* the levels are **monotone** under divisibility (`IsPuiseuxOfRamification.mono`): a
+  series ramified by `n` is also ramified by any multiple `n'` — refining a common
+  denominator never destroys the property;
+* the levels are **directed** (`exists_common_ramification`): any two Puiseux series
+  share a single ramification index (their product `n·m` works for both). This is
+  exactly what makes the common-denominator addition and Cauchy product close — the
+  field operations never need more than a finite lcm of ramifications;
+* each fixed level is itself a **subring** (`puiseuxRamificationSubring`) — the honest
+  ring of `(1/n)`-ramified "Laurent series in `x^{1/n}`" — and these subrings form an
+  increasing tower (`puiseuxRamificationSubring_mono`) whose directed union is the full
+  Puiseux subring. This exhibits the Puiseux field as the colimit of Laurent fields
+  along the ramification maps `x ↦ x^{1/n}`.
+-/
+
+section Filtration
+
+/-- `f` is a Puiseux series of ramification (dividing) `n`: every exponent of `f`
+lies in `(1/n)ℤ`. This is `IsPuiseuxSeries` with the ramification index fixed. -/
+def IsPuiseuxOfRamification {K : Type*} [Zero K] (n : ℕ+) (f : HahnSeries ℚ K) : Prop :=
+  ∀ q ∈ f.support, ∃ k : ℤ, q = k / n
+
+/-- `IsPuiseuxSeries` is precisely the union of the ramification levels. -/
+theorem isPuiseux_iff_exists_ramification {K : Type*} [Zero K] (f : HahnSeries ℚ K) :
+    IsPuiseuxSeries f ↔ ∃ n : ℕ+, IsPuiseuxOfRamification n f := Iff.rfl
+
+/-- **Monotonicity of the filtration.** If `n ∣ n'` then a series ramified by `n` is
+also ramified by `n'`: writing `n' = n·d`, an exponent `k/n` equals `(k·d)/n'`. -/
+theorem IsPuiseuxOfRamification.mono {K : Type*} [Zero K] {n n' : ℕ+} (hdvd : n ∣ n')
+    {f : HahnSeries ℚ K} (hf : IsPuiseuxOfRamification n f) :
+    IsPuiseuxOfRamification n' f := by
+  obtain ⟨d, hd⟩ := hdvd
+  have hn0 : ((n : ℕ) : ℚ) ≠ 0 := by exact_mod_cast n.pos.ne'
+  have hd0 : ((d : ℕ) : ℚ) ≠ 0 := by exact_mod_cast d.pos.ne'
+  intro q hq
+  obtain ⟨k, hk⟩ := hf q hq
+  refine ⟨k * (d : ℤ), ?_⟩
+  rw [hk, hd]; push_cast
+  rw [div_eq_div_iff hn0 (mul_ne_zero hn0 hd0)]; ring
+
+/-- **Directedness of the filtration.** Any two Puiseux series share a common
+ramification index (their product `n·m` works for both), so they lie in a single
+`(1/(n·m))`-Laurent field. -/
+theorem exists_common_ramification {K : Type*} [Zero K] {f g : HahnSeries ℚ K}
+    (hf : IsPuiseuxSeries f) (hg : IsPuiseuxSeries g) :
+    ∃ N : ℕ+, IsPuiseuxOfRamification N f ∧ IsPuiseuxOfRamification N g := by
+  obtain ⟨n, hn⟩ := hf
+  obtain ⟨m, hm⟩ := hg
+  exact ⟨n * m, IsPuiseuxOfRamification.mono (dvd_mul_right n m) hn,
+    IsPuiseuxOfRamification.mono (dvd_mul_left m n) hm⟩
+
+/-- The zero series is ramified by any `n` (empty support). -/
+theorem isPuiseuxOfRamification_zero {K : Type*} [Zero K] (n : ℕ+) :
+    IsPuiseuxOfRamification n (0 : HahnSeries ℚ K) :=
+  fun q hq => by simp [HahnSeries.support_zero] at hq
+
+/-- The unit series `1 = single 0 1` is ramified by any `n` (its only exponent is
+the integer `0 = 0/n`). -/
+theorem isPuiseuxOfRamification_one {K : Type*} [Zero K] [One K] (n : ℕ+) :
+    IsPuiseuxOfRamification n (1 : HahnSeries ℚ K) := by
+  intro q hq
+  rw [← HahnSeries.single_zero_one] at hq
+  by_cases h1 : (1 : K) = 0
+  · simp [HahnSeries.single_eq_zero, h1] at hq
+  · rw [HahnSeries.support_single_of_ne h1, Set.mem_singleton_iff] at hq
+    exact ⟨0, by simp [hq]⟩
+
+/-- **Level-`n` closure under addition.** Unlike the general `isPuiseux_add` (which
+must pass to the product `n·m`), adding two series *at the same level* stays at that
+level: `support (f+g) ⊆ support f ∪ support g` and both exponents are already in
+`(1/n)ℤ`. -/
+theorem isPuiseuxOfRamification_add {K : Type*} [AddCommMonoid K] {n : ℕ+}
+    {f g : HahnSeries ℚ K} (hf : IsPuiseuxOfRamification n f)
+    (hg : IsPuiseuxOfRamification n g) : IsPuiseuxOfRamification n (f + g) := by
+  intro q hq
+  rcases HahnSeries.support_add_subset hq with h | h
+  · exact hf q h
+  · exact hg q h
+
+/-- **Level-`n` closure under negation.** -/
+theorem isPuiseuxOfRamification_neg {K : Type*} [AddGroup K] {n : ℕ+}
+    {f : HahnSeries ℚ K} (hf : IsPuiseuxOfRamification n f) :
+    IsPuiseuxOfRamification n (-f) := by
+  intro q hq
+  rw [HahnSeries.support_neg] at hq
+  exact hf q hq
+
+/-- **Level-`n` closure under multiplication.** A typical exponent of `f · g` is
+`k₁/n + k₂/n = (k₁+k₂)/n`, again in `(1/n)ℤ`; no denominator refinement is needed. -/
+theorem isPuiseuxOfRamification_mul {K : Type*} [NonUnitalNonAssocSemiring K] {n : ℕ+}
+    {f g : HahnSeries ℚ K} (hf : IsPuiseuxOfRamification n f)
+    (hg : IsPuiseuxOfRamification n g) : IsPuiseuxOfRamification n (f * g) := by
+  intro q hq
+  obtain ⟨a, ha, b, hb, hab⟩ := Set.mem_add.mp (HahnSeries.support_mul_subset_add_support hq)
+  obtain ⟨k, hk⟩ := hf a ha
+  obtain ⟨l, hl⟩ := hg b hb
+  refine ⟨k + l, ?_⟩
+  rw [← hab, hk, hl, div_add_div_same]; push_cast; ring
+
+/-- **The level-`n` Puiseux series form a subring** — the ring of `(1/n)`-ramified
+"Laurent series in `x^{1/n}`". Its carrier is `{f | IsPuiseuxOfRamification n f}`. -/
+def puiseuxRamificationSubring (K : Type*) [Ring K] (n : ℕ+) : Subring (HahnSeries ℚ K) where
+  carrier := {f | IsPuiseuxOfRamification n f}
+  zero_mem' := isPuiseuxOfRamification_zero n
+  one_mem' := isPuiseuxOfRamification_one n
+  add_mem' := fun ha hb => isPuiseuxOfRamification_add ha hb
+  mul_mem' := fun ha hb => isPuiseuxOfRamification_mul ha hb
+  neg_mem' := fun ha => isPuiseuxOfRamification_neg ha
+
+/-- Membership in the level-`n` subring is definitionally ramification by `n`. -/
+@[simp] theorem mem_puiseuxRamificationSubring {K : Type*} [Ring K] (n : ℕ+)
+    (y : HahnSeries ℚ K) :
+    y ∈ puiseuxRamificationSubring K n ↔ IsPuiseuxOfRamification n y := Iff.rfl
+
+/-- **The ramification subrings form an increasing tower.** If `n ∣ n'` then every
+`(1/n)`-Laurent series is a `(1/n')`-Laurent series, so
+`puiseuxRamificationSubring K n ≤ puiseuxRamificationSubring K n'`. The directed union
+of this tower is the full Puiseux subring. -/
+theorem puiseuxRamificationSubring_mono {K : Type*} [Ring K] {n n' : ℕ+} (hdvd : n ∣ n') :
+    puiseuxRamificationSubring K n ≤ puiseuxRamificationSubring K n' :=
+  fun _ hx => IsPuiseuxOfRamification.mono hdvd hx
+
+end Filtration
+
+/-! ═══════════════════════════════════════════════════════════════════════════════
 SUMMARY
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
