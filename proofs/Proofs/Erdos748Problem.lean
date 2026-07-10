@@ -244,6 +244,32 @@ theorem f_strictMono : StrictMono f := by
     rw [Finset.mem_Icc] at hmem
     omega
 
+/--
+**`f` is injective.**  Strict monotonicity (`f_strictMono`) makes the counting
+function injective: distinct ambient sizes give distinct sum-free subset counts.
+-/
+theorem f_injective : Function.Injective f := f_strictMono.injective
+
+/--
+**`f` grows by at least one at each step**, `f n < f (n+1)`.  The explicit
+successor form of `f_strictMono`, witnessing the strict inclusion of the
+sum-free families (`{n+1}` is the new member at step `n+1`).
+-/
+theorem f_lt_succ (n : ℕ) : f n < f (n + 1) := f_strictMono (Nat.lt_succ_self n)
+
+/--
+**`f` is unbounded**: for every target `M` there is an `n` with `f n ≥ M`, so
+there are arbitrarily many sum-free subsets.  Take `n = 2M`: the sharp lower
+bound gives `f (2M) ≥ 2^{⌈(2M+1)/2⌉} = 2^M ≥ M` (since `M < 2^M`).  This is the
+qualitative core of the Cameron–Erdős growth `f(n) = 2^{(1+o(1))n/2}` that the
+axiomatized asymptotics make precise. -/
+theorem f_unbounded (M : ℕ) : ∃ n, M ≤ f n := by
+  refine ⟨2 * M, ?_⟩
+  have h1 : (2 * M + 1) / 2 = M := by omega
+  calc M ≤ 2 ^ M := M.lt_two_pow_self.le
+    _ = 2 ^ ((2 * M + 1) / 2) := by rw [h1]
+    _ ≤ f (2 * M) := sharp_lower_bound (2 * M)
+
 /-
 ## Part IV: The Cameron-Erdős Conjecture
 -/
