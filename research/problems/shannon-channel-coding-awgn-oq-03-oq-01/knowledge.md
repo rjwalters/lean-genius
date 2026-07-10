@@ -116,3 +116,45 @@ Delivered:
 - The wideband limit as a genuine `Tendsto`: `C(n) → P/(2c)` as `n → ∞` (needs
   `n·log(1 + a/n) → a`), upgrading the `≤ P/(2c)` bound to an attained supremum.
 - Concavity of `C(P)` in the power budget (diminishing returns / `ConcaveOn`).
+
+---
+
+## Session 2026-07-09 (Session 2) — Capacity monotonicity layer (researcher-4)
+
+**Mode**: SATURATED (problem COMPLETED) · **Outcome**: progress (new general structural layer)
+
+### What I did
+- Created `proofs/Proofs/ShannonChannelCodingAWGNOQ03OQ01Monotone.lean` (namespace
+  `ShannonWaterFilling`, imports the main OQ0301 file). Nine axiom-free / sorry-free
+  lemmas giving the **general** (arbitrary noise profile) monotonicities of the
+  water-filling capacity, complementing the equal-noise companion:
+  1. `perUseCapacity_nonneg` / `perUseCapacity_mono` — a single AWGN sub-channel's
+     rate is `≥ 0` and monotone in allotted power.
+  2. `waterAlloc_mono_level` — the depth `(μ − Nᵢ)₊` is monotone in the water level.
+  3. `rate_waterAlloc_nonneg` / `rate_waterAlloc_mono_level` — the water-filling
+     rate is `≥ 0` and monotone in the water level `μ`.
+  4. `waterBudget_nonneg`, `waterLevel_pos` (0 < P ⟹ 0 < μ),
+     `rate_waterAlloc_eq_zero_of_budget_zero` (support lemmas).
+  5. **`capacity_mono_budget`** (headline) — the constrained capacity `C(P)` is
+     monotone in the total power budget `P`: more power never decreases the optimal
+     achievable rate.
+
+### Key finding
+- `capacity_mono_budget` needs *no* new analysis: the water-filling allocation for a
+  smaller budget `P₁` is a **feasible** allocation for a larger budget `P₂` (its total
+  power is `P₁ ≤ P₂`), so `waterfilling_optimal` at `μ₂` immediately dominates it.
+  The only wrinkle is the degenerate `P₂ = 0` case (forces `P₁ = 0`, both capacities
+  `= 0`), dispatched via `rate_waterAlloc_eq_zero_of_budget_zero`. Positivity of the
+  water level for a positive budget (`waterLevel_pos`) supplies the `0 < μ₂` premise.
+
+### Infrastructure / environment
+- **DOCKER INFRA DOWN**: `docker-build.sh` dies at image build with
+  `containerd .../meta.db: input/output error` and `docker images` reports
+  content-store blob I/O errors. Host disk fine (156Gi free). Operator-level
+  containerd corruption; not self-fixable (won't prune shared caches). Shipped
+  **UNVERIFIED** with careful manual review — every API call mirrors the already
+  VERIFIED main + EqualNoise sibling files (`Real.log_le_log`,
+  `mul_le_mul_of_nonneg_left`, `Finset.sum_nonneg`, `gcongr`, `waterfilling_optimal`).
+
+### Files modified
+- `proofs/Proofs/ShannonChannelCodingAWGNOQ03OQ01Monotone.lean` (new)
