@@ -142,5 +142,34 @@
       "relationship": "sibling — completes the degree-2 Fibonacci–Lucas relations (sum-of-squares and cross identity); its second open question explicitly asks for the exact gcd value proved here"
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Thomas Koshy"
+      ],
+      "title": "Fibonacci and Lucas Numbers with Applications",
+      "year": "2001",
+      "venue": "Wiley-Interscience, New York",
+      "note": "Comprehensive reference for Fibonacci–Lucas identities; treats the same-index relationship of Fₙ and Lₙ, their near-coprimality (gcd ∈ {1,2}), and the divisibility 2 = F₃ ∣ Fₙ ⟺ 3 ∣ n underlying the parity criterion used here."
+    },
+    {
+      "authors": [
+        "Steven Vajda"
+      ],
+      "title": "Fibonacci and Lucas Numbers, and the Golden Section: Theory and Applications",
+      "year": "1989",
+      "venue": "Ellis Horwood, Chichester (Dover reprint 2008)",
+      "note": "Catalogue of Fibonacci–Lucas relations, including the quadratic identity Lₙ² − 5Fₙ² = 4(−1)ⁿ from which the parent's gcd(Fₙ, Lₙ) ∣ 2 bound is derived."
+    },
+    {
+      "authors": [
+        "Nikolai N. Vorobiev"
+      ],
+      "title": "Fibonacci Numbers",
+      "year": "2002",
+      "venue": "Birkhäuser, Basel (translation of the 1951 Russian original)",
+      "note": "Classic treatment of Fibonacci divisibility: gcd(Fₘ, Fₙ) = F_{gcd(m,n)}, which specializes to 2 = F₃ ∣ Fₙ ⟺ 3 ∣ n, the Fibonacci parity fact this entry formalizes (Mathlib lacks it)."
+    }
+  ],
   "sorries": 0
 }
