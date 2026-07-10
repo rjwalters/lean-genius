@@ -4,34 +4,35 @@
 
 **Phase**: ACT
 **Status**: Active
-**Last Updated**: 2026-07-08
+**Last Updated**: 2026-07-09
 
 ## Progress Summary
 
-The gallery file `Erdos703Problem.lean` has **0 real sorries** (the only `sorry`
-token is inside a docstring) and **1 deep axiom** (`frankl_rodl_1987`, the
-Frankl–Rödl 1987 exponential bound — genuinely open-literature, not
-Mathlib-eliminable). The stale "1 sorry / 2 axioms" in the seed metadata was
-incorrect.
+`Erdos703Problem.lean` has **0 real sorries** and **1 deep axiom**
+(`frankl_rodl_1987`, genuinely open-literature). Prior sessions built the
+Frankl–Füredi odd/even families and their `T(n,r)` lower bounds, the `T(n,0)`
+and `T(n,n)` exact values, and the small-`r` / `n<r` regimes.
 
-This session added verified content around the previously **defined-but-unused**
-Frankl–Füredi families:
+This session **activated the previously dead `avoidsLIntersections` predicate**
+(Part VII, the Frankl–Wilson `L`-avoiding generalization, which had a definition
+but zero lemmas):
 
-- `franklFurediOdd_avoids_r (n r)` : the family `{A ⊆ [n] : |A| > (n+r)/2 ∨ |A| < r}`
-  is a valid `r`-avoiding family, for **all** `r` (both parities of `n+r`).
-  Generalizes the existing `r = 1` result `large_sets_avoid_1`.
-- `franklFurediOdd_card_le_T (n r)` : consequently `|franklFurediOdd n r| ≤ T(n,r)`,
-  the general-`r` analogue of `largeSetsFamily_card_le_T`.
-
-Build: `docker-build.sh Proofs.Erdos703Problem` → 7743 jobs, 0 errors, 0 sorries.
+- `avoidsRIntersection_iff_avoidsLIntersections_singleton` — `r`-avoidance is
+  exactly `{r}`-avoidance (the bridge into the Frankl–Wilson hierarchy).
+- `avoidsLIntersections_of_subset_family` — monotone under subfamily.
+- `avoidsLIntersections_of_subset_forbidden` — antitone in the forbidden-size set.
+- `avoidsLIntersections_empty` — vacuous base case.
 
 ## Blockers
 
-The main question (`mainQuestion` / `frankl_rodl_1987`) is a deep 1987 theorem
-with no Mathlib pathway; it remains an axiom. Not eliminable this session.
+`mainQuestion` / `frankl_rodl_1987` is the deep 1987 exponential bound with no
+Mathlib pathway; it remains an axiom, untouched. Docker daemon corrupted this
+session (containerd `meta.db` I/O error at image build) → shipped UNVERIFIED;
+the four new lemmas are trivial Finset-membership facts, correct by inspection.
 
 ## Next Action
 
-Optional: prove `franklFurediEven` avoids `r`-intersection under `Even (n + r)`
-(the parity-matched optimal family), and/or a Frankl–Füredi exactness statement
-for fixed `r` and large `n`.
+Re-verify once docker repaired:
+`./proofs/scripts/docker-build.sh Proofs.Erdos703Problem`. Further `L`-avoiding
+API (e.g. an `avoidsLIntersections`-indexed analogue of `T`) is possible but the
+core problem is otherwise mature around the standing axiom.
