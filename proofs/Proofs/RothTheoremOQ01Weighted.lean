@@ -293,8 +293,52 @@ theorem threeAPFree_tsum_log_weighted_reciprocal_le
     exact hA0 (by rw [← hi]; exact i.property)
   exact weighted_finite_sum_le hs0 hs T hTAP hT0
 
+/-- The absolute log-weighted reciprocal-sum constant `weightedRecipBound s` is strictly
+positive for every admissible weight exponent `s < blasiConst` — its `k = 0` term already is.
+The weighted analogue of `RothTheoremOQ01Reciprocal.recipBound_pos`. -/
+theorem weightedRecipBound_pos (hs : s < RothTheoremOQ02.blasiConst) :
+    0 < weightedRecipBound s := by
+  unfold weightedRecipBound
+  have h0 : 0 < weightedMajorant s 0 := by
+    unfold weightedMajorant
+    exact div_pos (by norm_num) (weightedMajorant_denom_pos 0)
+  exact (summable_weightedMajorant hs).tsum_pos weightedMajorant_nonneg 0 h0
+
+/-- **Universal log-weighted reciprocal-sum bound (packaged form).**  For every admissible
+weight exponent `0 ≤ s < blasiConst` there is a single *absolute* constant `B > 0` —
+independent of the set — such that every 3-AP-free `A ⊆ ℕ` with `0 ∉ A` satisfies
+`∑'_{a ∈ A} (log a)^s / a ≤ B`.  The weighted analogue of
+`RothTheoremOQ01Reciprocal.exists_universal_recip_bound`: one common constant simultaneously
+bounds the log-weighted reciprocal sums of all 3-AP-free sets at once.  Rests on the single
+imported Bloom–Sisask assumption; introduces **no new axiom**. -/
+theorem exists_universal_log_weighted_recip_bound
+    (hs0 : 0 ≤ s) (hs : s < RothTheoremOQ02.blasiConst) :
+    ∃ B : ℝ, 0 < B ∧ ∀ (A : Set ℕ), ThreeAPFree A → 0 ∉ A →
+      ∑' a : A, (Real.log (a : ℝ)) ^ s / (a : ℝ) ≤ B :=
+  ⟨weightedRecipBound s, weightedRecipBound_pos hs,
+    fun _A hA hA0 => threeAPFree_tsum_log_weighted_reciprocal_le hs0 hs hA hA0⟩
+
+/-- **Log-weighted Erdős `k = 3` conjecture, contrapositive form.**  For every admissible
+weight exponent `0 ≤ s < blasiConst`, any set `A ⊆ ℕ` (with `0 ∉ A`) whose *log-weighted*
+reciprocal sum `∑_{a ∈ A} (log a)^s / a` diverges is not 3-AP-free.  This is the direct
+contrapositive of `threeAPFree_summable_log_weighted_reciprocal`, and the weighted analogue
+of `RothTheoremOQ01Reciprocal.not_threeAPFree_of_not_summable_reciprocal`.  It is strictly
+sharper than the unweighted `s = 0` form: because the extra `(log a)^s` weight only *inflates*
+the summand, divergence of the weighted sum is an easier certificate to meet, so more sets are
+forced to contain a three-term progression.  Rests on the single imported Bloom–Sisask
+assumption; introduces **no new axiom**. -/
+theorem not_threeAPFree_of_not_summable_log_weighted_reciprocal
+    (hs0 : 0 ≤ s) (hs : s < RothTheoremOQ02.blasiConst)
+    {A : Set ℕ} (hA0 : 0 ∉ A)
+    (hdiv : ¬ Summable (fun a : A => (Real.log (a : ℝ)) ^ s / (a : ℝ))) :
+    ¬ ThreeAPFree A :=
+  fun hAP => hdiv (threeAPFree_summable_log_weighted_reciprocal hs0 hs hAP hA0)
+
 #check @threeAPFree_summable_log_weighted_reciprocal
 #check @threeAPFree_tsum_log_weighted_reciprocal_le
+#check @weightedRecipBound_pos
+#check @exists_universal_log_weighted_recip_bound
+#check @not_threeAPFree_of_not_summable_log_weighted_reciprocal
 #check @weighted_finite_sum_le
 #check @weighted_fiber_sum_le
 #check @summable_weightedMajorant
@@ -304,5 +348,7 @@ theorem threeAPFree_tsum_log_weighted_reciprocal_le
 #print axioms threeAPFree_summable_log_weighted_reciprocal
 #print axioms summable_weightedMajorant
 #print axioms threeAPFree_tsum_log_weighted_reciprocal_le
+#print axioms exists_universal_log_weighted_recip_bound
+#print axioms not_threeAPFree_of_not_summable_log_weighted_reciprocal
 
 end RothTheoremOQ01Weighted
