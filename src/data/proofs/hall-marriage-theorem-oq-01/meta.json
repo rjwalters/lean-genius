@@ -136,6 +136,16 @@
       "targetId": "halls-theorem-oq-01",
       "relationship": "related",
       "description": "The bipartite-graph matching formulation of Hall's theorem (SimpleGraph.IsBipartiteWith / IsMatching). This entry gives the dual set-system / transversal (SDR) formulation over a Finset family — the original 'marriage' statement — on a different Mathlib backbone."
+    },
+    {
+      "targetId": "hall-marriage-theorem-oq-01-oq-01",
+      "relationship": "extended-by",
+      "description": "Answers this entry's first open question — the quantitative defect (Ore) form: instead of the all-or-nothing biconditional, a maximum matching saturates all but the deficiency max_s (#s − #(s.biUnion t)), sharpening the failure obstruction proved here into an exact count."
+    },
+    {
+      "targetId": "hall-marriage-theorem-oq-01-oq-02",
+      "relationship": "extended-by",
+      "description": "Answers this entry's second open question: derives the König–Egerváry min–max duality (maximum matching size = minimum vertex cover size in bipartite graphs) directly from the defect form of Hall's theorem — the optimisation face of the same combinatorial content."
     }
   ],
   "sections": [
