@@ -140,6 +140,29 @@
       "description": "Complements the parent's axiomatized EPS upper bound with a fully verified, 0-axiom, unconditional bound K ≤ n−1 on distinct totient run length."
     }
   ],
+  "references": [
+    {
+      "authors": "Paul Erdős, Carl Pomerance, András Sárközy",
+      "title": "On locally repeated values of certain arithmetic functions. I",
+      "year": "1985",
+      "venue": "Journal of Number Theory 21 (3), 319–332",
+      "note": "The deep Erdős–Pomerance–Sárközy analysis of consecutive distinct values of arithmetic functions such as Euler's φ, yielding the run-length bound K ≤ n/exp(c·(log n)^{1/3}) recorded as an axiom in the parent entry. This file's elementary K ≤ n−1 is unconditional and axiom-free but asymptotically far weaker."
+    },
+    {
+      "authors": "Thomas F. Bloom",
+      "title": "Erdős Problems — Problem 1004",
+      "year": "2024",
+      "venue": "erdosproblems.com",
+      "note": "Curated statement of Erdős #1004 on the length of runs of consecutive integers with distinct totient values, with pointers to the known bounds."
+    },
+    {
+      "authors": "G. H. Hardy, E. M. Wright",
+      "title": "An Introduction to the Theory of Numbers",
+      "year": "2008",
+      "venue": "Oxford University Press (6th ed., revised by Heath-Brown and Silverman)",
+      "note": "Standard source for Euler's totient φ: its multiplicativity, the parity fact that φ(m) is even for m ≥ 3, and the elementary bounds 2 ≤ φ(m) ≤ m−1 — the arithmetic driving the counting argument K distinct even values in [2, n+K−1] ⟹ K ≤ n−1."
+    }
+  ],
   "leanFile": {
     "lineCount": 136,
     "namespace": "Erdos1004OQ03",
