@@ -3800,4 +3800,53 @@ theorem zeroPivotCell_topPivotCell (u : GridSimplex d N) (hd1 : 0 < d)
       congr 1; apply Fin.ext; show d - 1 = k.val; have := k.isLt; omega
   · rw [zeroPivotCell_miss, topPivotCell_miss]
 
+/-- **The dual shared cross-chain facet** (mirror of `zeroPivotCell_gridFacet_last`).
+Facet `0` of the dual top-facet partner `topPivotCell u` equals the top facet
+(`Fin.last d`) of `u`.  Dropping the dual cell's new base vertex `topPivotBottom`
+(index `0`) leaves its upper `d` vertices, which are exactly `u`'s surviving chain
+`verts 0, …, verts (d-1)` (`topPivotVerts_of_pos`); that set is precisely facet
+`Fin.last d` of `u`.  This is the concrete facet-level gluing datum at the top
+facet: the two *distinct* cells `u` and `topPivotCell u` (`topPivotCell_ne`) meet
+along one common facet — `u` across its facet `Fin.last d` and `topPivotCell u`
+across its facet `0` — the reciprocal of the facet-`0` gluing witnessed by
+`zeroPivotCell_gridFacet_last`. -/
+theorem topPivotCell_gridFacet_zero (u : GridSimplex d N) (hd1 : 0 < d)
+    (hfeas : 1 ≤ (u.verts 0).coords (lastIncDir u hd1)) :
+    gridFacet (topPivotCell u hd1 hfeas) 0 = gridFacet u (Fin.last d) := by
+  ext v
+  rw [mem_gridFacet_iff, mem_gridFacet_iff]
+  constructor
+  · rintro ⟨j, hj, rfl⟩
+    have hj0 : j.val ≠ 0 := fun h => hj (Fin.ext (by simp [h]))
+    have hlt : j.val - 1 < d + 1 := by have := j.isLt; omega
+    refine ⟨⟨j.val - 1, hlt⟩, ?_, ?_⟩
+    · simp only [ne_eq, Fin.ext_iff, Fin.val_last]; have := j.isLt; omega
+    · show gridVertices u ⟨j.val - 1, hlt⟩ = gridVertices (topPivotCell u hd1 hfeas) j
+      unfold gridVertices
+      rw [topPivotCell_verts, topPivotVerts_of_pos u hd1 hfeas j hj0]
+  · rintro ⟨i, hi, rfl⟩
+    have hid : i.val < d := by
+      have := i.isLt
+      rcases Nat.lt_or_ge i.val d with h | h
+      · exact h
+      · exact absurd (Fin.ext (by simp [Fin.val_last]; omega)) hi
+    have hidx : (⟨i.val, hid⟩ : Fin d).castSucc = i := by apply Fin.ext; simp
+    refine ⟨(⟨i.val, hid⟩ : Fin d).succ, Fin.succ_ne_zero _, ?_⟩
+    show gridVertices (topPivotCell u hd1 hfeas) (⟨i.val, hid⟩ : Fin d).succ
+        = gridVertices u i
+    unfold gridVertices
+    rw [topPivotCell_verts, topPivotVerts_succ u hd1 hfeas ⟨i.val, hid⟩, hidx]
+
+/-- **Top-facet cross-chain gluing witness** (mirror of
+`zeroPivotCell_shares_facet_zero`).  Packages `topPivotCell_gridFacet_zero` with
+`topPivotCell_ne`: in the feasible regime the dual partner `topPivotCell u` is a
+cell *distinct* from `u` that shares `u`'s top facet `Fin.last d` (as its own
+facet `0`).  This is the adjacency datum a total gluing map records at the
+top-facet boundary, reciprocal to `zeroPivotCell_shares_facet_zero`. -/
+theorem topPivotCell_shares_facet_last (u : GridSimplex d N) (hd1 : 0 < d)
+    (hfeas : 1 ≤ (u.verts 0).coords (lastIncDir u hd1)) :
+    topPivotCell u hd1 hfeas ≠ u ∧
+      gridFacet (topPivotCell u hd1 hfeas) 0 = gridFacet u (Fin.last d) :=
+  ⟨topPivotCell_ne u hd1 hfeas, topPivotCell_gridFacet_zero u hd1 hfeas⟩
+
 end SpernerNDimOQ02
