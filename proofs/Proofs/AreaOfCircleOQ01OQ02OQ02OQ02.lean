@@ -199,4 +199,44 @@ theorem four_mul_norm_fourierCoeffOn_le_deriv2 (f : ℝ → ℝ) (hf : ContDiff 
     nlinarith [sq_abs (n : ℝ), abs_nonneg (n : ℝ), h2]
   nlinarith [norm_nonneg (fourierCoeffOn hab (ofReal ∘ f) n), hn4]
 
+/-- **The Wirtinger spectral gap, quantified exactly.**  Rearranging the magnitude identity
+    `‖ĉₙ(f'')‖ = n²·‖ĉₙ(f)‖` isolates the amount by which the second derivative *grows* a
+    nonzero Fourier mode,
+
+        ‖ĉₙ(f'')‖ − ‖ĉₙ(f)‖ = (n² − 1) · ‖ĉₙ(f)‖.
+
+    The gap factor `n² − 1` is `0` exactly on the first harmonic `|n| = 1` (Wirtinger
+    equality — the circle) and strictly positive for every `|n| ≥ 2`.  This is the exact,
+    signed form of the estimates `norm_fourierCoeffOn_le_deriv2` (`gap ≥ 0`) and
+    `four_mul_norm_fourierCoeffOn_le_deriv2` (`gap ≥ 3·‖ĉₙ(f)‖` when `|n| ≥ 2`), which the
+    file previously stated only as one-sided bounds. -/
+theorem norm_fourierCoeffOn_deriv2_sub (f : ℝ → ℝ) (hf : ContDiff ℝ 2 f)
+    (hperiod : ∀ t, f (t + 2 * π) = f t)
+    (hab : (0 : ℝ) < 2 * π) (n : ℤ) (hn : n ≠ 0) :
+    ‖fourierCoeffOn hab (ofReal ∘ deriv (deriv f)) n‖
+        - ‖fourierCoeffOn hab (ofReal ∘ f) n‖
+      = ((n : ℝ) ^ 2 - 1) * ‖fourierCoeffOn hab (ofReal ∘ f) n‖ := by
+  rw [norm_fourierCoeffOn_deriv2_eq f hf hperiod hab n hn]
+  ring
+
+/-- **Strict damping past the first harmonic.**  The strict half of the Wirtinger dichotomy,
+    which the docstring of `norm_fourierCoeffOn_deriv2_eq_of_natAbs_one` promised in prose:
+    for `|n| ≥ 2` and a *nonzero* Fourier mode,
+
+        ‖ĉₙ(f)‖ < ‖ĉₙ(f'')‖.
+
+    Together with the `|n| = 1` equality case this shows the second derivative strictly
+    inflates every mode except the first harmonic — the mechanism by which the Fourier
+    (Hurwitz) equality analysis forces all higher modes to vanish, leaving the circle as the
+    unique isoperimetric extremal.  Immediate from the factor-`4` bound and `‖ĉₙ(f)‖ > 0`. -/
+theorem norm_fourierCoeffOn_lt_deriv2_of_natAbs_ge_two (f : ℝ → ℝ) (hf : ContDiff ℝ 2 f)
+    (hperiod : ∀ t, f (t + 2 * π) = f t)
+    (hab : (0 : ℝ) < 2 * π) (n : ℤ) (hn : 2 ≤ n.natAbs)
+    (hne : fourierCoeffOn hab (ofReal ∘ f) n ≠ 0) :
+    ‖fourierCoeffOn hab (ofReal ∘ f) n‖
+      < ‖fourierCoeffOn hab (ofReal ∘ deriv (deriv f)) n‖ := by
+  have hpos : 0 < ‖fourierCoeffOn hab (ofReal ∘ f) n‖ := norm_pos_iff.mpr hne
+  have h4 := four_mul_norm_fourierCoeffOn_le_deriv2 f hf hperiod hab n hn
+  linarith
+
 end IsoperimetricFourier
