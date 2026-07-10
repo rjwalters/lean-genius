@@ -1187,5 +1187,66 @@ theorem fccDensity_lt_csSup_packingDensity_range :
   rw [csSup_packingDensity_range_eq_one]
   linarith [fccDensity_lt_35329_div_46710]
 
+/-!
+## S24 — quantitative gaps at each rung of the hierarchy
+
+`sphere_to_spaceFilling_gap_gt` (S22) measures the *total* spread of the five-body chain
+`grand_density_hierarchy` (top minus bottom, `> 6/25`). It does not record how that spread
+is distributed across the four individual steps. This section fills that in: each strict
+inequality of `grand_density_hierarchy` is upgraded to an explicit rational lower bound on
+the gap, exactly as `tetrahedronDimerDensity_gt_fccDensity_margin` (S3) does for the
+sphere-to-tetrahedron step. Three of the four steps are between rational densities (pure
+`norm_num`); the sphere-to-ellipsoid step routes through the verified upper bound
+`fccDensity < 35329/46710` (`fccDensity_lt_35329_div_46710`). No new axioms.
+-/
+
+/-- **Sphere → ellipsoid gap.** The DSC ellipsoid (non-lattice) density `0.7707` exceeds
+the FCC sphere density `π/(3√2)` by more than `1/100`. Uses the verified rational upper
+bound `fccDensity < 35329/46710 ≈ 0.75635` (`fccDensity_lt_35329_div_46710`); the true gap
+`≈ 0.0302` is larger, but `1/100` is all the file's certified sphere bound yields. -/
+theorem fcc_to_ellipsoidNonLattice_gap_gt :
+    1 / 100 < ellipsoidNonLatticeDensity - fccDensity := by
+  have h := fccDensity_lt_35329_div_46710
+  unfold ellipsoidNonLatticeDensity
+  linarith
+
+/-- **Ellipsoid → tetrahedron gap.** The Chen–Engel–Glotzer tetrahedral dimer density
+`4000/4671 ≈ 0.8563` exceeds the ellipsoid density `7707/10000` by more than `1/12`. Pure
+rational comparison. -/
+theorem ellipsoidNonLattice_to_tetrahedronDimer_gap_gt :
+    1 / 12 < tetrahedronDimerDensity - ellipsoidNonLatticeDensity := by
+  unfold tetrahedronDimerDensity ellipsoidNonLatticeDensity
+  norm_num
+
+/-- **Tetrahedron → octahedron gap.** The regular-octahedron Minkowski lattice density
+`18/19 ≈ 0.9474` exceeds the tetrahedral dimer density `4000/4671` by more than `1/12`.
+Pure rational comparison. -/
+theorem tetrahedronDimer_to_octahedron_gap_gt :
+    1 / 12 < octahedronPackingDensity - tetrahedronDimerDensity := by
+  unfold octahedronPackingDensity tetrahedronDimerDensity
+  norm_num
+
+/-- **Octahedron → space-filling gap.** The space-filling rhombic dodecahedron (`δ = 1`)
+exceeds the octahedron density `18/19` by exactly `1/19`, in particular by more than
+`1/20`. Uses `rhombicDodecahedronPackingDensity_eq_one`. -/
+theorem octahedron_to_rhombicDodecahedron_gap_gt :
+    1 / 20 < rhombicDodecahedronPackingDensity - octahedronPackingDensity := by
+  rw [rhombicDodecahedronPackingDensity_eq_one]
+  unfold octahedronPackingDensity
+  norm_num
+
+/-- **The rung gaps, bundled.** Each of the four strict steps of `grand_density_hierarchy`
+carries an explicit rational margin: the four gaps exceed `1/100`, `1/12`, `1/12`, `1/20`
+respectively. Their sum `> 6/25` recovers the total spread of `sphere_to_spaceFilling_gap_gt`,
+now resolved rung by rung. No axioms. -/
+theorem hierarchy_rung_gaps :
+    1 / 100 < ellipsoidNonLatticeDensity - fccDensity ∧
+    1 / 12 < tetrahedronDimerDensity - ellipsoidNonLatticeDensity ∧
+    1 / 12 < octahedronPackingDensity - tetrahedronDimerDensity ∧
+    1 / 20 < rhombicDodecahedronPackingDensity - octahedronPackingDensity :=
+  ⟨fcc_to_ellipsoidNonLattice_gap_gt,
+   ellipsoidNonLattice_to_tetrahedronDimer_gap_gt,
+   tetrahedronDimer_to_octahedron_gap_gt,
+   octahedron_to_rhombicDodecahedron_gap_gt⟩
 
 end KeplerConjectureOQ04
