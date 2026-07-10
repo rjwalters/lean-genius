@@ -60,6 +60,7 @@ measure-theoretic, route to the existence of transcendentals.
 -/
 
 open MeasureTheory Set
+open scoped Cardinal
 
 namespace AlgebraicRealsNull
 
@@ -133,6 +134,28 @@ theorem transcendental_reals_uncountable :
     have hu := hcount.union hcompl
     rwa [Set.union_compl_self] at hu
   exact Cardinal.not_countable_real huniv
+
+/-- **The transcendental reals have cardinality the continuum**: `#{x | Transcendental ℚ x} = 𝔠`.
+
+This is the quantitative sharpening of `transcendental_reals_uncountable` — from the qualitative
+"not countable" to the exact cardinal value. There are *precisely* continuum-many transcendental
+reals, exactly as many as there are reals.
+
+The transcendentals are the complement of the algebraic reals, and the algebraic reals are
+countable, so they have cardinality `≤ ℵ₀ < 𝔠 = #ℝ` (`Set.Countable.le_aleph0`,
+`Cardinal.aleph0_lt_continuum`, `Cardinal.mk_real`). Deleting a set of cardinality strictly below
+`#ℝ` from `ℝ` cannot change the cardinality of what remains (`Cardinal.mk_compl_of_infinite`), so
+the complement — the transcendentals — still has cardinality `#ℝ = 𝔠`. This makes the cardinality
+pillar of the smallness trichotomy quantitative: the algebraic reals are not merely a countable
+sliver, they are *cardinally negligible*, leaving a full-continuum transcendental remainder. -/
+theorem transcendental_reals_mk_eq_continuum :
+    #{x : ℝ | Transcendental ℚ x} = 𝔠 := by
+  have hcompl : {x : ℝ | Transcendental ℚ x} = {x : ℝ | IsAlgebraic ℚ x}ᶜ := by
+    ext x; simp only [mem_setOf_eq, mem_compl_iff, Transcendental]
+  have hlt : #{x : ℝ | IsAlgebraic ℚ x} < #(ℝ) :=
+    lt_of_le_of_lt AlgebraicNumbersCountable.algebraic_reals_countable.le_aleph0
+      (by rw [Cardinal.mk_real]; exact Cardinal.aleph0_lt_continuum)
+  rw [hcompl, Cardinal.mk_compl_of_infinite _ hlt, Cardinal.mk_real]
 
 -- ============================================================================
 -- § 3. Transcendentals fill almost all of every interval
