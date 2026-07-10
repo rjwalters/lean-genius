@@ -419,6 +419,48 @@ theorem growthRate_1 (h1 : h 1 = 1) : growthRate 1 = 0 := by
   unfold growthRate
   simp [h1, Real.log_one]
 
+/-- **The growth rate is strictly positive.** For every `n ≥ 1` the normalized
+log-growth `log h(n)/n` is `> 0`: the abelian covering number grows genuinely
+exponentially, never sub-exponentially. Immediate from the Pyber lower bound
+`growthRate n ≥ log c₁ > 0`. -/
+theorem growthRate_pos (n : ℕ) (hn : n ≥ 1) : 0 < growthRate n := by
+  obtain ⟨L, hL, hbound⟩ := growthRate_lower_bound
+  exact lt_of_lt_of_le hL (hbound n hn)
+
+/-- **The liminf is strictly positive.** The lowest cluster value of the growth-rate
+sequence is bounded away from `0` by `log c₁ > 0`. Even if the sequence does not
+converge, it cannot cluster at a sub-exponential rate — a structural constraint on
+the (possibly non-existent) exponential base. From `limInf_ge_log_c1`. -/
+theorem growthRateLimInf_pos : 0 < growthRateLimInf := by
+  obtain ⟨c₁, hc1, hge⟩ := limInf_ge_log_c1
+  exact lt_of_lt_of_le (Real.log_pos hc1) hge
+
+/-- **Uniform two-sided Pyber window.** A single pair of constants `1 < c₁ < c₂`
+traps every `growthRate n` (`n ≥ 1`) in the fixed band `[log c₁, log c₂]`. This
+consolidates `growthRate_lower_bound` and `growthRate_upper_bound` — which produce
+their constants independently — into one statement with *shared* constants, the
+uniform band on which the liminf/limsup analysis of Part III rests. -/
+theorem growthRate_window :
+    ∃ c₁ c₂ : ℝ, 1 < c₁ ∧ c₁ < c₂ ∧
+      ∀ n : ℕ, n ≥ 1 → Real.log c₁ ≤ growthRate n ∧ growthRate n ≤ Real.log c₂ := by
+  obtain ⟨c₁, c₂, hc1, hc12, hbounds⟩ := pyber_bounds
+  refine ⟨c₁, c₂, hc1, hc12, fun n hn => ?_⟩
+  have hn' : (0 : ℝ) < n := by exact_mod_cast (show 0 < n from by omega)
+  unfold growthRate
+  rw [if_neg (show n ≠ 0 from by omega)]
+  refine ⟨?_, ?_⟩
+  · rw [le_div_iff₀ hn']
+    have hlog : Real.log (c₁ ^ n) ≤ Real.log (h n : ℝ) :=
+      Real.log_le_log (by positivity) (hbounds n hn).1
+    rw [Real.log_pow, mul_comm] at hlog
+    exact hlog
+  · rw [div_le_iff₀ hn']
+    have hhn : (1 : ℝ) ≤ (h n : ℝ) := by exact_mod_cast h_pos n hn
+    have hlog : Real.log (h n : ℝ) ≤ Real.log (c₂ ^ n) :=
+      Real.log_le_log (by linarith) (hbounds n hn).2
+    rw [Real.log_pow, mul_comm] at hlog
+    exact hlog
+
 /-- The open question stated precisely -/
 def erdos117OQ01 : Prop := exponentialBaseExists
 
