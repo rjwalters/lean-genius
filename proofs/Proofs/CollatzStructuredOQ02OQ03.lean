@@ -1991,4 +1991,85 @@ theorem deriveVec_orbit_parity {b r : ℕ} {n : ℕ} (hn : n % 2 ^ b = r) (i : �
     ⟨n / 2 ^ b, by have := Nat.div_add_mod n (2 ^ b); omega⟩
   exact affValid_orbit_parity hval m i hi
 
+/-! ## Part IX: Interior affine realization — the certified window is affine at *every* step
+
+`affOrbit_realize` (Part V) computes only the **endpoint** value of a certified window:
+after `v.length` steps the iterate of `c·m + d` is `affOrbit v (c, d)`.  Part VIII then
+recovers the interior *parities* (`affValid_orbit_parity`), but not the interior *values*.
+The lemma below closes that last gap: for a valid certificate, the Collatz iterate at
+**every** prefix length `i ≤ v.length` is the affine value read off the truncated fold
+`affOrbit (v.take i) (c, d)` — the orbit stays affine, with residue-determined
+coefficients, through the whole window, not merely at its end.
+
+This is the value-level companion to `affValid_orbit_parity` and the common
+generalization of both it and `affOrbit_realize`: taking `i = v.length` (where
+`v.take v.length = v`) recovers the endpoint identity, and reducing mod 2 recovers the
+parity transcript.  Everything remains axiom-free. -/
+
+/-- **Interior affine realization.**  If `v` is a valid parity certificate for the affine
+class `c·m + d`, then for every prefix length `i ≤ v.length` the `i`-step Collatz iterate
+of every class member is the affine value of the truncated fold:
+`collatz^[i] (c·m + d) = (affOrbit (v.take i) (c, d)).1 · m + (affOrbit (v.take i) (c, d)).2`.
+The orbit is affine at every certified step, not only at the endpoint. -/
+theorem affOrbit_realize_interior : ∀ {v : List Bool} {c d : ℕ}, AffValid v c d →
+    ∀ (m i : ℕ), i ≤ v.length →
+      collatz^[i] (c * m + d)
+        = (affOrbit (v.take i) (c, d)).1 * m + (affOrbit (v.take i) (c, d)).2 := by
+  intro v c d hv
+  induction hv with
+  | nil =>
+    intro m i hi
+    simp only [List.length_nil, Nat.le_zero] at hi
+    subst hi
+    rfl
+  | @odd v c d hc hd _ ih =>
+    intro m i hi
+    obtain ⟨c', rfl⟩ : ∃ c', c = 2 * c' := ⟨c / 2, by omega⟩
+    cases i with
+    | zero => rfl
+    | succ j =>
+      have hj : j ≤ v.length := by simp only [List.length_cons] at hi; omega
+      have hcm : 2 * c' * m = 2 * (c' * m) := by ring
+      have hodd : (2 * c' * m + d) % 2 = 1 := by omega
+      have hstep : collatz (2 * c' * m + d) = (3 * (2 * c')) * m + (3 * d + 1) := by
+        rw [collatz_odd hodd]; ring
+      rw [Function.iterate_succ_apply, hstep]
+      -- goal RHS `affOrbit ((true::v).take (j+1)) (2c',d)` is defeq to
+      -- `affOrbit (v.take j) (3*(2c'), 3d+1)`, exactly the ih target
+      exact ih m j hj
+  | @even v c d hc hd _ ih =>
+    intro m i hi
+    obtain ⟨c', rfl⟩ : ∃ c', c = 2 * c' := ⟨c / 2, by omega⟩
+    obtain ⟨d', rfl⟩ : ∃ d', d = 2 * d' := ⟨d / 2, by omega⟩
+    cases i with
+    | zero => rfl
+    | succ j =>
+      have hj : j ≤ v.length := by simp only [List.length_cons] at hi; omega
+      have hcm : 2 * c' * m = 2 * (c' * m) := by ring
+      have he : (2 * c' * m + 2 * d') % 2 = 0 := by omega
+      have hstep : collatz (2 * c' * m + 2 * d') = c' * m + d' := by
+        rw [collatz_even he]; omega
+      rw [Function.iterate_succ_apply, hstep]
+      -- restate the (defeq) goal so the halved coefficients are exposed for `e1`/`e2`
+      show collatz^[j] (c' * m + d')
+          = (affOrbit (v.take j) ((2 * c') / 2, (2 * d') / 2)).1 * m
+            + (affOrbit (v.take j) ((2 * c') / 2, (2 * d') / 2)).2
+      have e1 : (2 * c') / 2 = c' := by omega
+      have e2 : (2 * d') / 2 = d' := by omega
+      rw [e1, e2]
+      have key := ih m j hj
+      rw [e1, e2] at key
+      exact key
+
+/-- **Endpoint from the interior.**  Specialising `affOrbit_realize_interior` to the full
+prefix `i = v.length` (where `v.take v.length = v`) recovers the endpoint realization
+`affOrbit_realize`: the interior statement is a genuine generalization, not a parallel
+result. -/
+theorem affOrbit_realize_of_interior {v : List Bool} {c d : ℕ} (hv : AffValid v c d)
+    (m : ℕ) :
+    collatz^[v.length] (c * m + d)
+      = (affOrbit v (c, d)).1 * m + (affOrbit v (c, d)).2 := by
+  have h := affOrbit_realize_interior hv m v.length (le_refl _)
+  rwa [List.take_length] at h
+
 end CollatzStructuredOQ02OQ03
