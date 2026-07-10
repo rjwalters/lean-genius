@@ -35,8 +35,8 @@
       }
     ],
     "assumptions": "The general Jacobi four-square theorem is NOT proved — it is a genuine Mathlib gap requiring either Hurwitz-quaternion order arithmetic or weight-2 modular forms (θ⁴∈M₂(Γ₀(4))), each ≫1000 LOC of absent number theory. This entry proves (a) a 0-axiom general lemma jacobiCount_odd (for odd n the 4∤d filter is vacuous, so jacobiCount n = 8·σ(n)), and (b) a machine-checked oracle jacobi_oracle : ∀ n∈[1,24], r₄ n = jacobiCount n, discharged by native_decide. native_decide trusts the Lean compiler and depends on the Lean.ofReduceBool axiom (#print axioms lists it, together with Lean.trustCompiler); naive_sigma_fails and r4_anchor_values also use native_decide. The entry is therefore axiomatized, not axiom-free. The literal `axiom` declaration count in the Lean file is 0; the single counted assumption is Lean.ofReduceBool introduced via native_decide.",
-    "lineCount": 126,
-    "theoremCount": 5,
+    "lineCount": 165,
+    "theoremCount": 7,
     "definitionCount": 3,
     "originalContributions": [
       "r4: the ordered, signed four-square representation count r₄(n), defined as a computable Finset.card over the integer box [-√n,√n]⁴ — an object Mathlib lacks entirely",
@@ -44,7 +44,9 @@
       "jacobiCount_odd: 0-axiom general lemma isolating the elementary half — for odd n the 4∤d exclusion is vacuous, so jacobiCount collapses to 8·σ(n)",
       "naive_sigma_fails: 0-axiom convention guard proving the naive 8·σ(4)=56 is wrong while r₄(4)=jacobiCount(4)=24 — the 4∤d exclusion is load-bearing",
       "jacobi_oracle: native_decide regression oracle r₄(n)=jacobiCount(n) for all 1≤n≤24, pinning the convention (r₄(1)=8, r₄(2)=24, r₄(4)=24, ...)",
-      "r4_anchor_values: explicit spot anchors r₄(1)=8, r₄(2)=24, r₄(3)=32, r₄(4)=24, r₄(5)=48, r₄(7)=64"
+      "r4_anchor_values: explicit spot anchors r₄(1)=8, r₄(2)=24, r₄(3)=32, r₄(4)=24, r₄(5)=48, r₄(7)=64",
+      "jacobiCount_two_pow: 0-axiom general closed form — for every k≥1, jacobiCount(2^k)=24 (the 4∤d filter keeps only divisors 1 and 2), the elementary even-side companion to jacobiCount_odd, revealing r₄ is constant on powers of two",
+      "jacobiCount_two_pow_const: 0-axiom corollary — Jacobi's count is independent of the exponent, jacobiCount(2^j)=jacobiCount(2^k) for all j,k≥1"
     ]
   },
   "overview": {
@@ -123,12 +125,12 @@
     }
   ],
   "leanFile": {
-    "lineCount": 126,
+    "lineCount": 165,
     "path": "Proofs/LagrangeFourSquaresOQ01OQ03.lean",
     "axiomCount": 0,
     "sorries": 0,
     "definitionCount": 3,
-    "theoremCount": 5
+    "theoremCount": 7
   },
   "sorries": 0
 }
