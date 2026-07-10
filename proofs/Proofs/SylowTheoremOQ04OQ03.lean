@@ -770,4 +770,86 @@ theorem commutator_eq_top (hp : 5 ≤ p) :
     rw [← hc]
     exact Subgroup.commutator_mem_commutator (Subgroup.mem_top _) (Subgroup.mem_top _)
 
+/-!
+## The order `|SL(2, p)| = p·(p² − 1)`
+
+The remaining Iwasawa/order ingredient toward `|PSL(2, p)|` is the cardinality of
+`SL(2, 𝔽_p)`, absent from Mathlib.  We obtain it from Mathlib's `Matrix.card_GL_field`
+(`|GL(2, 𝔽_p)| = (p² − 1)(p² − p)`) via the short exact sequence
+`1 → SL(2, p) → GL(2, p) --det--> 𝔽_pˣ → 1`.  The determinant is a **surjective**
+homomorphism (`diag(u, 1)` realizes any unit `u`) whose kernel is the image of
+`SL(2, p)` (`Matrix.SpecialLinearGroup.range_toGL`), so by Lagrange
+`|SL| · (p − 1) = |GL| = (p² − 1)(p² − p)` and hence `|SL| = p·(p² − 1)`.
+-/
+
+/-- **The determinant `GL(2, 𝔽_p) → 𝔽_pˣ` is surjective.**  Every unit `u` is the
+determinant of the diagonal matrix `diag(u, 1)`. -/
+theorem generalLinearGroup_det_surjective :
+    Function.Surjective
+      (GeneralLinearGroup.det : GL (Fin 2) (ZMod p) →* (ZMod p)ˣ) := by
+  intro u
+  have hdet : (!![(u : ZMod p), 0; 0, 1] :
+      Matrix (Fin 2) (Fin 2) (ZMod p)).det = (u : ZMod p) := by
+    rw [Matrix.det_fin_two_of]; ring
+  refine ⟨GeneralLinearGroup.mkOfDetNeZero !![(u : ZMod p), 0; 0, 1] ?_, ?_⟩
+  · rw [hdet]; exact u.ne_zero
+  · apply Units.ext
+    simp [Matrix.det_fin_two_of]
+
+/-- **Order of `SL(2, p)`:** `|SL(2, 𝔽_p)| = p·(p² − 1)`.
+
+Proof via the determinant short exact sequence `1 → SL → GL --det--> 𝔽_pˣ → 1`:
+the determinant is a surjective homomorphism whose kernel is (the image of) `SL`,
+so `|SL| = |GL| / |𝔽_pˣ| = (p² − 1)(p² − p)/(p − 1) = p·(p² − 1)`. -/
+theorem card_SL2 :
+    Nat.card (Matrix.SpecialLinearGroup (Fin 2) (ZMod p)) = p * (p ^ 2 - 1) := by
+  have hp2 : 2 ≤ p := (Fact.out : p.Prime).two_le
+  set D : GL (Fin 2) (ZMod p) →* (ZMod p)ˣ := GeneralLinearGroup.det with hD
+  have hsurj : Function.Surjective D := generalLinearGroup_det_surjective
+  -- (1) `SL ≃* ker(det)`, so the cardinalities agree.
+  have hrangeker :
+      (Matrix.SpecialLinearGroup.toGL :
+        Matrix.SpecialLinearGroup (Fin 2) (ZMod p) →* GL (Fin 2) (ZMod p)).range = D.ker := by
+    ext g
+    simp only [MonoidHom.mem_range, MonoidHom.mem_ker, hD]
+    constructor
+    · rintro ⟨A, rfl⟩
+      exact Matrix.SpecialLinearGroup.coeToGL_det A
+    · intro hg
+      have hmem : g ∈ Set.range (Matrix.SpecialLinearGroup.toGL :
+          Matrix.SpecialLinearGroup (Fin 2) (ZMod p) → GL (Fin 2) (ZMod p)) := by
+        rw [Matrix.SpecialLinearGroup.range_toGL]
+        simp only [Set.mem_preimage, Set.mem_singleton_iff]
+        exact hg
+      exact hmem
+  have hcardSL :
+      Nat.card (Matrix.SpecialLinearGroup (Fin 2) (ZMod p)) = Nat.card D.ker := by
+    rw [← hrangeker]
+    exact Nat.card_congr
+      (MulEquiv.ofInjective Matrix.SpecialLinearGroup.toGL_injective).toEquiv
+  -- (2) Lagrange: `|ker| · index = |GL|`.
+  have hmulindex : Nat.card D.ker * D.ker.index = Nat.card (GL (Fin 2) (ZMod p)) :=
+    D.ker.card_mul_index
+  -- (3) `index = |range(det)| = |𝔽_pˣ| = p − 1`.
+  have hindex : D.ker.index = p - 1 := by
+    rw [MonoidHom.index_ker, MonoidHom.range_eq_top.mpr hsurj,
+      Nat.card_congr (Subgroup.topEquiv (G := (ZMod p)ˣ)).toEquiv, Nat.card_eq_fintype_card,
+      ZMod.card_units]
+  -- (4) `|GL(2, p)| = (p² − 1)(p² − p)`.
+  have hcardGL : Nat.card (GL (Fin 2) (ZMod p)) = (p ^ 2 - 1) * (p ^ 2 - p) := by
+    have h := Matrix.card_GL_field (n := 2) (𝔽 := ZMod p)
+    rw [h, Fin.prod_univ_two]
+    simp [ZMod.card]
+  -- Assemble: `|SL| · (p − 1) = (p² − 1)(p² − p) = (p·(p² − 1))·(p − 1)`, then cancel.
+  have hpos : 0 < p - 1 := by omega
+  have key : Nat.card (Matrix.SpecialLinearGroup (Fin 2) (ZMod p)) * (p - 1)
+      = (p ^ 2 - 1) * (p ^ 2 - p) := by
+    rw [hcardSL, ← hindex, hmulindex, hcardGL]
+  have hfact : (p ^ 2 - 1) * (p ^ 2 - p) = p * (p ^ 2 - 1) * (p - 1) := by
+    have e1 : p ^ 2 - p = p * (p - 1) := by
+      rw [pow_two, Nat.mul_sub_left_distrib, mul_one]
+    rw [e1, ← mul_assoc, mul_comm (p ^ 2 - 1) p]
+  rw [hfact] at key
+  exact Nat.eq_of_mul_eq_mul_right hpos key
+
 end SylowOQ04OQ03
