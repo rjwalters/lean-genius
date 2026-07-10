@@ -208,6 +208,11 @@
       "targetId": "fundamental-theorem-algebra-oq-04",
       "relationship": "complementary",
       "description": "That entry shows ℝ is not algebraically closed via X²+1 (even degree); this entry shows odd-degree polynomials always have roots, so the obstruction is exactly even degree."
+    },
+    {
+      "targetId": "fundamental-theorem-algebra-oq-06-oq-01",
+      "relationship": "extended-by",
+      "description": "Sharpens this entry's one-directional odd-degree root theorem into a two-sided characterisation: the polynomial function x ↦ P.eval x is surjective ℝ → ℝ iff P has odd degree. The forward direction reuses this entry's root existence applied to every shift P − C y; the converse pins even degree (including the constant case) as exactly the obstruction to surjectivity."
     }
   ],
   "sorries": []
