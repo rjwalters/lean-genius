@@ -48,17 +48,18 @@
     ],
     "originalContributions": [
       "Point/PointConfig: type aliases for EuclideanSpace ℝ (Fin 2) and Finset Point",
-      "distanceSet/distanceMultiset: distance set and multiset from Finset.product",
-      "distanceMultiplicity/unorderedMultiplicity: ordered and unordered pair counts",
-      "sum_multiplicities: fully proved ∑ f(u) = C(n,2) by Aristotle (no sorry)",
-      "sumSquaredMultiplicities/countEqualDistancePairs: key quantity and quadruple formulation",
-      "InConvexPosition: no point in convex hull of rest (convexHull ℝ)",
+      "distanceSet: the set of positive pairwise distances, built from Finset.product",
+      "distanceMultiplicity/unorderedMultiplicity: ordered and unordered pair counts at a given distance",
+      "sumSquaredMultiplicities/countEqualDistancePairs: the key quantity ∑ f(u)² and its quadruple formulation",
+      "InConvexPosition: no point in the convex hull of the rest (convexHull ℝ)",
       "NoThreeCollinear: no three points collinear (Collinear ℝ)",
-      "fishburn_theorem/fishburn_asymptotic: ∑ f(u)² ≤ C·n³ (axiomatized)",
-      "lefmann_theile_theorem: O(n³) under no-three-collinear (axiomatized)",
-      "regularNGon: unit circle construction via cos/sin",
-      "ErdosFishburnConjecture: regular n-gon maximizes ∑ f(u)²",
-      "convex_distinct_distances/convex_max_multiplicity/convex_unit_distance: related bounds"
+      "convex_implies_no_collinear: convex position ⇒ no three collinear (axiomatized)",
+      "sum_multiplicities: baseline identity ∑ f(u) = C(n,2) (axiomatized)",
+      "fishburn_theorem: ∑ f(u)² ≤ C·n³ for convex polygons (axiomatized)",
+      "lefmann_theile_theorem: O(n³) under no-three-collinear, Lefmann-Theile 1995 (axiomatized)",
+      "regularNGon + regularNGon_card/regularNGon_convex/regularNGon_cubic: the regular n-gon axiomatized as an opaque function with n points, convex position, and Θ(n³) tightness",
+      "ErdosFishburnConjecture: the OPEN extremal conjecture (regular n-gon maximizes ∑ f(u)²) stated as a Prop",
+      "SumSquaredThetaN3: the Θ(n³) consequence of the axioms, stated as a Prop"
     ],
     "axiomCount": 8,
     "lineCount": 152,
@@ -71,12 +72,12 @@
     ]
   },
   "overview": {
-    "historicalContext": "Erdős posed this $44 prize problem asking whether $\\sum f(u_i)^2 = O(n^3)$ for $n$ points in convex position, where $f(u)$ counts pairs at distance $u$. The question connects to the broader study of distance distributions in discrete geometry. Fishburn resolved it affirmatively, establishing the cubic upper bound. Lefmann and Theile (1995) strengthened the result by proving the same bound under the weaker assumption that no three points are collinear — a strict generalization since convex position implies no-three-collinear but not conversely. The trivial identity $\\sum f(u) = \\binom{n}{2}$ means the problem asks about the 'concentration' of distances: by Cauchy-Schwarz, $\\sum f(u)^2 \\geq \\binom{n}{2}^2 / |d(P)|$, so the $O(n^3)$ bound constrains how clustered the distance distribution can be. Erdős and Fishburn conjectured that the regular $n$-gon maximizes $\\sum f(u)^2$ among all convex $n$-gons for large $n$, verified computationally for $n \\leq 10$ (OEIS A387858). The formalization includes an Aristotle-proved theorem ($\\sum f(u) = \\binom{n}{2}$) alongside 12 axiomatized results.",
+    "historicalContext": "Erdős posed this $44 prize problem asking whether $\\sum f(u_i)^2 = O(n^3)$ for $n$ points in convex position, where $f(u)$ counts pairs at distance $u$. The question connects to the broader study of distance distributions in discrete geometry. Fishburn resolved it affirmatively, establishing the cubic upper bound. Lefmann and Theile (1995) strengthened the result by proving the same bound under the weaker assumption that no three points are collinear — a strict generalization since convex position implies no-three-collinear but not conversely. The trivial identity $\\sum f(u) = \\binom{n}{2}$ means the problem asks about the 'concentration' of distances: by Cauchy-Schwarz, $\\sum f(u)^2 \\geq \\binom{n}{2}^2 / |d(P)|$, so the $O(n^3)$ bound constrains how clustered the distance distribution can be. Erdős and Fishburn conjectured that the regular $n$-gon maximizes $\\sum f(u)^2$ among all convex $n$-gons for large $n$, verified computationally for $n \\leq 10$ (OEIS A387858). The formalization axiomatizes all of these results (8 axioms: the baseline identity $\\sum f(u) = \\binom{n}{2}$, Fishburn's and Lefmann-Theile's $O(n^3)$ bounds, and the regular $n$-gon's construction and $\\Theta(n^3)$ tightness) and states the open Erdős-Fishburn conjecture as a Prop; no result is independently proved in Lean.",
     "problemStatement": "Suppose $n$ points in $\\mathbb{R}^2$ form the vertices of a convex polygon. Let $f(u)$ count the number of pairs at distance $u$. Prove that $\\sum_u f(u)^2 = O(n^3)$. Note: trivially $\\sum f(u) = \\binom{n}{2}$.",
     "text": "For n points forming a convex polygon with distance multiplicities f(u), prove ∑ f(u)² = O(n³). Solved by Fishburn, strengthened by Lefmann-Theile (1995) to 'no three collinear'. Regular n-gon achieves Θ(n³). Erdős-Fishburn conjecture: regular n-gon is extremal.",
-    "proofStrategy": "The formalization defines point configurations in $\\mathbb{R}^2$ via `EuclideanSpace ℝ (Fin 2)`, distance multiplicities via `Finset.product` and `Finset.filter`, and the sum of squared multiplicities as the central quantity. Convex position uses `convexHull ℝ`, and the no-three-collinear condition uses `Collinear ℝ`. The main theorems (Fishburn, Lefmann-Theile, regular $n$-gon bounds) are axiomatized. The sum-of-multiplicities identity $\\sum f(u) = \\binom{n}{2}$ is fully proved by Aristotle via a double-counting argument with an involution-based evenness proof.",
+    "proofStrategy": "The formalization defines point configurations in $\\mathbb{R}^2$ via `EuclideanSpace ℝ (Fin 2)`, distance multiplicities via `Finset.product` and `Finset.filter`, and the sum of squared multiplicities as the central quantity. Convex position uses `convexHull ℝ`, and the no-three-collinear condition uses `Collinear ℝ`. The main theorems (Fishburn, Lefmann-Theile, regular $n$-gon bounds) are axiomatized. The sum-of-multiplicities identity $\\sum f(u) = \\binom{n}{2}$ — provable by a standard double-counting argument — is axiomatized here (`sum_multiplicities`) rather than proved in Lean.",
     "keyInsights": [
-      "**Double counting gives $\\sum f(u) = \\binom{n}{2}$**: Each unordered pair $(p,q)$ has exactly one distance, so the multiplicities partition $\\binom{n}{2}$ pairs. The Lean proof by Aristotle establishes this via `Finset.sum_image'` and an involution argument for evenness.",
+      "**Double counting gives $\\sum f(u) = \\binom{n}{2}$**: Each unordered pair $(p,q)$ has exactly one distance, so the multiplicities partition $\\binom{n}{2}$ pairs. In this entry the identity is axiomatized (`sum_multiplicities`) rather than proved in Lean.",
       "**Quadruple interpretation**: $\\sum f(u)^2$ equals (up to factor 4) the count of quadruples $(p,q,r,s)$ with $d(p,q) = d(r,s)$. This reformulation connects to incidence geometry: each equal-distance quadruple corresponds to an incidence between a distance value and two pairs.",
       "**Cauchy-Schwarz lower bound**: By Cauchy-Schwarz, $\\sum f(u)^2 \\geq (\\sum f(u))^2 / |d(P)| = \\binom{n}{2}^2 / |d(P)|$. Since $|d(P)| \\leq \\lfloor n/2 \\rfloor + 1$ for convex $n$-gons (Altman), this gives $\\sum f(u)^2 \\geq \\Omega(n^3)$.",
       "**Regular $n$-gon achieves $\\Theta(n^3)$**: The $\\lfloor n/2 \\rfloor$ distinct distances in a regular $n$-gon each have multiplicity $n$, giving $\\sum f(u)^2 \\approx n^2 \\cdot n/2 = \\Theta(n^3)$. This shows Fishburn's bound is tight.",
@@ -92,18 +93,18 @@
     {
       "id": "point-config",
       "title": "Point Configurations",
-      "summary": "Defines `Point := EuclideanSpace ℝ (Fin 2)`, `PointConfig := Finset Point`, `dist'` wrapping `dist`, `distanceSet` as positive pairwise distances, and `distanceMultiset` with repetitions.",
+      "summary": "Defines `Point := EuclideanSpace ℝ (Fin 2)`, `PointConfig := Finset Point`, and `distanceSet` as the set of positive pairwise distances.",
       "startLine": 35,
       "endLine": 53,
-      "mathContext": "Defines `Point := EuclideanSpace $\\mathbb{R}$ (Fin 2)`, `PointConfig := Finset Point`, `dist'` wrapping `dist`, `distanceSet` as positive pairwise distances, and `distanceMultiset` with repetitions."
+      "mathContext": "Defines `Point := EuclideanSpace $\\mathbb{R}$ (Fin 2)`, `PointConfig := Finset Point`, and `distanceSet` as the set of positive pairwise distances."
     },
     {
       "id": "multiplicity",
       "title": "Distance Multiplicity",
-      "summary": "Defines `distanceMultiplicity P u` (ordered pairs) and `unorderedMultiplicity P u` (half of ordered). Proves `sum_multiplicities`: $\\sum f(u) = \\binom{n}{2}$ via Aristotle (no sorry).",
+      "summary": "Defines `distanceMultiplicity P u` (ordered pairs), `unorderedMultiplicity P u` (half of ordered), `sumSquaredMultiplicities`, and `countEqualDistancePairs`. Axiomatizes `sum_multiplicities`: $\\sum f(u) = \\binom{n}{2}$.",
       "startLine": 54,
       "endLine": 68,
-      "mathContext": "Formal definition: Defines `distanceMultiplicity P u` (ordered pairs) and `unorderedMultiplicity P u` (half of ordered). Proves `sum_multiplicities`: $\\sum f(u) = \\binom{n}{2}$ via Aristotle (no sorry)."
+      "mathContext": "Formal definition: Defines `distanceMultiplicity P u` (ordered pairs), `unorderedMultiplicity P u` (half of ordered), `sumSquaredMultiplicities`, and `countEqualDistancePairs`. Axiomatizes `sum_multiplicities`: $\\sum f(u) = \\binom{n}{2}$."
     },
     {
       "id": "sum-squared",
@@ -124,10 +125,10 @@
     {
       "id": "fishburn",
       "title": "Fishburn's Theorem",
-      "summary": "States `fishburn_theorem`: $\\exists C > 0,\\, \\sum f(u)^2 \\leq C n^3$ for convex polygons (sorry). States `fishburn_asymptotic`: constant approaches $1 + \\varepsilon$ for large $n$ (sorry).",
+      "summary": "Axiomatizes `fishburn_theorem`: $\\exists C > 0,\\, \\sum f(u)^2 \\leq C n^3$ for convex polygons, and `lefmann_theile_theorem`: the same $O(n^3)$ bound under the weaker no-three-collinear hypothesis.",
       "startLine": 102,
       "endLine": 115,
-      "mathContext": "States `fishburn_theorem`: $\\exists C > 0,\\, \\sum f(u)^2 \\leq C $n^{3}$$ for convex polygons (sorry). States `fishburn_asymptotic`: constant approaches $1 + \\varepsilon$ for large $n$ (sorry)."
+      "mathContext": "Axiomatizes `fishburn_theorem`: $\\exists C > 0,\\, \\sum f(u)^2 \\leq C n^3$ for convex polygons, and `lefmann_theile_theorem`: the same $O(n^3)$ bound under the weaker no-three-collinear hypothesis."
     },
     {
       "id": "lefmann-theile",
@@ -155,7 +156,7 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erdős Problem #94, a $44 prize problem solved by Fishburn. The bound $\\sum f(u)^2 = O(n^3)$ is proved for convex polygons and strengthened by Lefmann-Theile to 'no three collinear'. The regular $n$-gon achieves $\\Theta(n^3)$. One theorem ($\\sum f(u) = \\binom{n}{2}$) is fully proved by Aristotle; the remaining 12 results are axiomatized.",
+    "summary": "This formalization captures Erdős Problem #94, a $44 prize problem solved by Fishburn. It states the bound $\\sum f(u)^2 = O(n^3)$ for convex polygons (Fishburn) and its strengthening to 'no three collinear' (Lefmann-Theile 1995), together with the regular $n$-gon's $\\Theta(n^3)$ tightness. All of these results — plus the baseline identity $\\sum f(u) = \\binom{n}{2}$ — are axiomatized (8 axioms, 0 theorems); the main file contributes only definitional infrastructure (11 definitions, 0 sorries) and states the OPEN Erdős-Fishburn conjecture as a Prop. No result is independently proved in Lean; the companion `Proofs/Stubs/Erdos94Aristotle.lean` holds sorry-stubbed helper lemmas for future Aristotle proof search.",
     "implications": "**Theoretical Significance**: The cubic bound constrains the clustering of distances in convex configurations. Combined with the Cauchy-Schwarz lower bound and Altman's distinct distance count, it pins down $\\sum f(u)^2 = \\Theta(n^3)$ for convex polygons.\n\nThe quadruple-counting interpretation connects to incidence geometry and algebraic techniques. The Erdős-Fishburn conjecture, if true, would identify the regular polygon as the unique extremal configuration.",
     "openQuestions": [
       "Does the regular $n$-gon maximize $\\sum f(u)^2$ among all convex $n$-gons for sufficiently large $n$ (Erdős-Fishburn conjecture)?",
