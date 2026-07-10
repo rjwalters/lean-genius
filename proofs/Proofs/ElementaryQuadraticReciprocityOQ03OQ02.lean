@@ -795,6 +795,40 @@ theorem kronecker_sq_eq_one_of_coprime (a : ℤ) (n : ℕ) (hn : 0 < n) (hno : n
   · rw [h1]; norm_num
   · rw [hm1]; norm_num
 
+-- ============================================================
+-- Section 12: The even-modulus scope caveat, machine-checked
+-- ============================================================
+
+/-- **The file's symbol at the even modulus `2` is the trivial character.**
+    `kronecker a 2 = 1` for odd `a` and `= 0` for even `a`.  The general branch of
+    `kronecker` routes the whole modulus through `jacobiSym a |n|`, and
+    `jacobiSym a 2` is the trivial quadratic character mod `2` (every unit of
+    `ZMod 2` is a square, so `J(a | 2) = 1` on odd `a` and `0` on even `a`).  This
+    turns the documented "scope caveat" (that the definition does **not** invoke
+    `kronecker2` at even moduli) into a machine-checked value formula. -/
+theorem kronecker_at_two (a : ℤ) :
+    kronecker a 2 = if a % 2 = 0 then 0 else 1 := by
+  have hk : kronecker a 2 = jacobiSym a 2 := by
+    simp only [kronecker]
+    norm_num
+  rw [hk, jacobiSym.mod_left a 2]
+  have hcases : a % 2 = 0 ∨ a % 2 = 1 := by omega
+  rcases hcases with h | h
+  · rw [h, if_pos rfl]; exact jacobiSym.zero_left (b := 2) (by norm_num)
+  · rw [h, if_neg (by decide)]; exact jacobiSym.one_left 2
+
+/-- **The file's symbol is genuinely *not* the classical `(·/2)` character.**
+    A concrete witness for the scope caveat: at the even modulus `2` the symbol
+    defined here disagrees with `kronecker2` (`= χ₈`).  Take `a = 3`:
+    `kronecker 3 2 = 1` (Jacobi's trivial value on the odd residue) while
+    `kronecker2 3 = -1` (the classical `(3/2) = χ₈(3)`).  Hence any refinement
+    that makes `kronecker` the classical Kronecker symbol at even moduli must
+    change its value here — the two symbols are not equal as functions. -/
+theorem kronecker_two_ne_kronecker2 :
+    kronecker 3 2 ≠ kronecker2 3 := by
+  rw [kronecker_at_two 3, kronecker2_three]
+  norm_num
+
 /-!
 ## Module note: what remains open
 
