@@ -1,5 +1,25 @@
 [
   {
+    "id": "ann-overview",
+    "proofId": "bezout-identity-oq-01-oq-02-oq-02",
+    "range": { "startLine": 1, "endLine": 52 },
+    "type": "context",
+    "title": "The Goal: SLₙ(ℤ)-Transitivity on Primitive Vectors",
+    "content": "Orients the whole file. The parent bezout-identity-oq-01-oq-02 solves n=2: it builds bezoutSL a b ∈ SL₂(ℤ) carrying a coprime pair (a,b) to (1,0). The open question is the n-coordinate generalization — is the SLₙ(ℤ)-action transitive on primitive integer vectors, i.e. does every primitive v admit a unimodular U with U·v = e₁? That full statement needs a Euclidean descent (iterated Bézout reduction across coordinates). This file does NOT prove sufficiency; it builds the axiom-free invariant-theoretic foundation any descent must respect: the coordinate-free predicate IsPrimitive, its SLₙ(ℤ)-invariance (both directions), the transvection generators transvectionSL that realize the atomic descent moves inside SLₙ(ℤ), and orbit_e_isPrimitive — the easy 'necessity' half (the orbit of e₁ consists of primitive vectors). The hard 'sufficiency' half (every primitive vector is reachable) is left as recorded future work.",
+    "mathContext": "$\\text{Open: is }\\mathrm{SL}_n(\\mathbb Z)\\curvearrowright\\{\\text{primitive } v\\}\\text{ transitive?}\\quad \\big(\\forall v\\text{ prim }\\exists U\\in\\mathrm{SL}_n(\\mathbb Z),\\ Uv=e_1\\big)$",
+    "significance": "context",
+    "relatedConcepts": [
+      "transitivity of a group action",
+      "primitive vector",
+      "Bézout identity",
+      "Euclidean descent"
+    ],
+    "prerequisites": [
+      "Matrix.SpecialLinearGroup",
+      "group action orbit"
+    ]
+  },
+  {
     "id": "ann-isprimitive-def",
     "proofId": "bezout-identity-oq-01-oq-02-oq-02",
     "range": { "startLine": 56, "endLine": 82 },
