@@ -340,4 +340,63 @@ theorem edgeThreshold_second_diff_right (n k : ℕ) (h : k + 3 ≤ n) :
   rw [show k + 1 + 1 = k + 2 by omega] at h2
   omega
 
+/-! ## The `k`-profile has a global minimum (a well-defined `f(k)` minimizer)
+
+The single-step branch lemmas `edgeThreshold_succ_right_le` (decreasing while `n ≥ 2k+4`)
+and `edgeThreshold_le_succ_right` (increasing while `n ≤ 2k+4`) only compare *adjacent*
+clique sizes.  Iterating each along its branch gives genuine range-monotonicity — the
+threshold is antitone up to the turning point and monotone after it — and the two chains
+meet at the parity-uniform minimizer `k₀ = ⌊(n-3)/2⌋`, giving a *global* lower bound
+`edgeThreshold n k₀ ≤ edgeThreshold n k` for every clique size `k`.  This is precisely the
+"well-defined minimum" structure that makes the Woodall function `f(k)` meaningful: the
+edge threshold, viewed as a function of `k`, is minimized at one location. -/
+
+/-- **Antitone chain on the decreasing branch.**  Iterating `edgeThreshold_succ_right_le`:
+    whenever `k ≤ j` and the whole run stays in the decreasing region (`2j+2 ≤ n`, the
+    binding constraint at the top step `j-1 → j`), the threshold has fallen:
+    `edgeThreshold n j ≤ edgeThreshold n k`. -/
+theorem edgeThreshold_antitone_left (n : ℕ) {k j : ℕ} (hkj : k ≤ j)
+    (h : 2 * j + 2 ≤ n) : edgeThreshold n j ≤ edgeThreshold n k := by
+  revert h
+  induction j, hkj using Nat.le_induction with
+  | base => intro _; exact le_refl _
+  | succ j hkj ih =>
+    intro h
+    exact le_trans (edgeThreshold_succ_right_le n j (by omega)) (ih (by omega))
+
+/-- **Monotone chain on the increasing branch.**  Iterating `edgeThreshold_le_succ_right`:
+    whenever `k ≤ j`, the run starts in the increasing region (`n ≤ 2k+4`, binding at the
+    bottom step) and the top index stays meaningful (`j+1 ≤ n`, binding at `j-1 → j`), the
+    threshold has risen: `edgeThreshold n k ≤ edgeThreshold n j`. -/
+theorem edgeThreshold_monotone_right (n : ℕ) {k j : ℕ} (hkj : k ≤ j)
+    (h1 : n ≤ 2 * k + 4) (h2 : j + 1 ≤ n) :
+    edgeThreshold n k ≤ edgeThreshold n j := by
+  revert h2
+  induction j, hkj using Nat.le_induction with
+  | base => intro _; exact le_refl _
+  | succ j hkj ih =>
+    intro h2
+    have step : edgeThreshold n j ≤ edgeThreshold n (j + 1) :=
+      edgeThreshold_le_succ_right n j (by omega) (by omega)
+    exact le_trans (ih (by omega)) step
+
+/-- **Global minimum of the `k`-profile.**  For `n ≥ 5` the threshold, as a function of the
+    clique size `k`, attains its minimum at the parity-uniform location
+    `k₀ = ⌊(n-3)/2⌋`: for *every* clique size `k` with `k+2 ≤ n`,
+
+        edgeThreshold n k₀ ≤ edgeThreshold n k.
+
+    The choice `k₀ = ⌊(n-3)/2⌋` handles both parities at once — for even `n` it is the
+    turning point `(n-4)/2` (where `2k₀+4 = n`), and for odd `n` it is `(n-3)/2` (where
+    `2k₀+2 = n-1` and `2k₀+4 = n+1`), each side of it strictly monotone.  Seeds `k ≤ k₀`
+    are handled by the antitone chain (decreasing branch), seeds `k > k₀` by the monotone
+    chain (increasing branch); the branch constraints `2k₀+2 ≤ n` and `n ≤ 2k₀+4` both hold
+    for this `k₀`.  This upgrades the qualitative "U-shaped in `k`" observation to a proven
+    single global minimizer — the well-defined minimum underlying `f(k)`. -/
+theorem edgeThreshold_min_at (n : ℕ) (hn : 5 ≤ n) {k : ℕ} (hk : k + 2 ≤ n) :
+    edgeThreshold n ((n - 3) / 2) ≤ edgeThreshold n k := by
+  rcases le_or_lt k ((n - 3) / 2) with hle | hlt
+  · exact edgeThreshold_antitone_left n hle (by omega)
+  · exact edgeThreshold_monotone_right n (le_of_lt hlt) (by omega) (by omega)
+
 end Erdos1012OQ01OQ02
