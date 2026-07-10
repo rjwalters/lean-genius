@@ -416,6 +416,50 @@ theorem partitionEnergy_increment_count_le_floor
   apply Nat.le_floor
   exact_mod_cast partitionEnergy_increment_count_le G parts N δ hδ hcover hdisjoint hmono
 
+/-- **Refinement-depth bound: an all-increment chain has length `≤ ⌊1/δ⌋₊`.**  If a
+    monotone `[0,1]`-valued potential climbs by `≥ δ` at *every* one of the first `N`
+    steps (`hall`), then `N ≤ ⌊1/δ⌋₊`.  This is the contrapositive "termination"
+    reading of `energy_regular_step_exists_floor`: since the increment set is then all
+    of `[0, N)`, its cardinality `N` is bounded by `energy_increment_count_le_floor`.
+    It is the explicit cap on how deep an AFKS energy-increment refinement chain can
+    run — the O(1/δ) iteration depth at the heart of the strong-regularity argument,
+    stated directly on the chain length rather than as an existence of one regular
+    step. -/
+theorem energy_all_increment_length_le (f : ℕ → ℚ) (N : ℕ) (δ : ℚ) (hδ : 0 < δ)
+    (h0 : ∀ n, 0 ≤ f n) (h1 : ∀ n, f n ≤ 1) (hmono : ∀ n, f n ≤ f (n + 1))
+    (hall : ∀ n < N, f n + δ ≤ f (n + 1)) :
+    N ≤ ⌊1 / δ⌋₊ := by
+  have hfilter :
+      (Finset.range N).filter (fun n => f n + δ ≤ f (n + 1)) = Finset.range N :=
+    Finset.filter_true_of_mem (fun n hn => hall n (Finset.mem_range.mp hn))
+  have h := energy_increment_count_le_floor f N δ hδ h0 h1 hmono
+  rwa [hfilter, Finset.card_range] at h
+
+/-- **Graph instantiation: an all-increment AFKS refinement chain has depth `≤ ⌊1/δ⌋₊`.**
+    If every one of the first `N` refinement steps raises `partitionEnergy` by `≥ δ`,
+    then `N ≤ ⌊1/δ⌋₊`.  The explicit termination-depth cap on a strictly energy-climbing
+    refinement chain: no monotone chain can climb by `δ` more than `⌊1/δ⌋₊` times before
+    hitting the `[0,1]` energy ceiling, so the AFKS iteration halts within `⌊1/δ⌋₊`
+    steps. -/
+theorem partitionEnergy_all_increment_length_le
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (parts : ℕ → Finset (Finset V)) (N : ℕ) (δ : ℚ) (hδ : 0 < δ)
+    (hcover : ∀ n, ∀ v : V, ∃ P ∈ parts n, v ∈ P)
+    (hdisjoint : ∀ n, ∀ P Q : Finset V, P ∈ parts n → Q ∈ parts n → P ≠ Q →
+      Disjoint P Q)
+    (hmono : ∀ n,
+      partitionEnergy G (parts n) ≤ partitionEnergy G (parts (n + 1)))
+    (hall : ∀ n < N,
+      partitionEnergy G (parts n) + δ ≤ partitionEnergy G (parts (n + 1))) :
+    N ≤ ⌊1 / δ⌋₊ := by
+  have hfilter :
+      (Finset.range N).filter (fun n =>
+        partitionEnergy G (parts n) + δ ≤ partitionEnergy G (parts (n + 1)))
+        = Finset.range N :=
+    Finset.filter_true_of_mem (fun n hn => hall n (Finset.mem_range.mp hn))
+  have h := partitionEnergy_increment_count_le_floor G parts N δ hδ hcover hdisjoint hmono
+  rwa [hfilter, Finset.card_range] at h
+
 -- ═══════════════════════════════════════════════════════════════════
 -- PART III: THE VARIANCE ATOM (energy-increment lower bound)
 -- ═══════════════════════════════════════════════════════════════════
