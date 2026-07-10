@@ -339,6 +339,47 @@ theorem motzkinPoly_psd_not_sos {c : ℝ} (hc0 : 0 < c) (hc3 : c ≤ 3) :
     IsPSDMv (motzkinPoly c) ∧ ¬ Hilbert17MotzkinNotSOS.IsSOS (motzkinPoly c) :=
   ⟨(motzkinPoly_psd_iff c).2 hc3, motzkinPoly_not_sos hc0⟩
 
+/-! ## Structure of the family: the diagonal value, the boundary zero, monotonicity
+
+Three elementary structural facts that expose *why* `c = 3` is the sharp threshold.
+The whole threshold argument runs through the single diagonal evaluation
+`Mₐ(1,1) = 3 − c`; naming it isolates that mechanism. From it, the boundary member
+`c = 3` has an honest real *zero* at `(1,1)` (so it is PSD but not positive
+definite — it sits *on* the PSD-cone boundary, not in its interior), while the
+family decreases pointwise in `c`, which is exactly what makes the PSD region a
+downward-closed half-line `c ≤ 3`. All `0`-axiom. -/
+
+/-- **The diagonal evaluation** driving the threshold: `Mₐ(1,1) = 3 − c`. Every PSD
+    obstruction in this family is detected here — the sign of `3 − c` is the whole
+    story of `motzkinFun_psd_iff`. -/
+theorem motzkinFun_at_one_one (c : ℝ) : motzkinFun c 1 1 = 3 - c := by
+  unfold motzkinFun; ring
+
+/-- **The boundary member has a real zero.** At the sharp threshold `c = 3` the
+    Motzkin function vanishes at `(1,1)`: `M₃(1,1) = 0`. Combined with
+    `motzkin_nonneg` (`M₃ ≥ 0`), this shows the boundary polynomial is PSD but *not*
+    positive definite — it touches `0`, sitting exactly on the PSD-cone boundary,
+    which is the geometric reason `c = 3` is extremal. -/
+theorem motzkinFun_three_zero_at_one_one : motzkinFun 3 1 1 = 0 := by
+  rw [motzkinFun_at_one_one]; norm_num
+
+/-- **Strict positivity below the threshold at the critical point.** For `c < 3`
+    the diagonal value `Mₐ(1,1) = 3 − c > 0` is strictly positive: the real zero of
+    the boundary member `c = 3` appears *exactly* at the threshold and nowhere below
+    it (at the critical point `(1,1)`). -/
+theorem motzkinFun_pos_at_one_one_of_lt_three {c : ℝ} (hc : c < 3) :
+    0 < motzkinFun c 1 1 := by
+  rw [motzkinFun_at_one_one]; linarith
+
+/-- **The family is antitone in the coefficient.** Raising `c` can only lower the
+    value: `c₁ ≤ c₂ ⟹ Mₐ₂(x,y) ≤ Mₐ₁(x,y)` for all real `x, y`, since only the
+    `−c·x²y²` term depends on `c` and `x²y² ≥ 0`. This monotonicity is precisely why
+    the PSD region `{c | Mₐ is PSD}` is the downward-closed half-line `c ≤ 3`. -/
+theorem motzkinFun_antitone_in_coeff {c₁ c₂ : ℝ} (h : c₁ ≤ c₂) (x y : ℝ) :
+    motzkinFun c₂ x y ≤ motzkinFun c₁ x y := by
+  unfold motzkinFun
+  nlinarith [mul_nonneg (sub_nonneg.mpr h) (mul_nonneg (sq_nonneg x) (sq_nonneg y))]
+
 end Hilbert17OQ03OQ05
 
 -- Axiom audit: should list only propext, Classical.choice, Quot.sound.
