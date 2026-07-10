@@ -476,6 +476,41 @@ def smallPrimeConstruction (m n : ℕ) : Finset ℕ :=
   let p := Nat.minFac (m + 1)  -- A prime not dividing m
   primeMutliples p n
 
+/-- **`minFac (m+1)` does not divide `m`.**  The least prime factor `p` of `m + 1`
+    divides `m + 1`; if it also divided `m` it would divide `(m+1) - m = 1`, forcing
+    `p = 1` and contradicting primality.  This is the fact that makes
+    `smallPrimeConstruction` a valid `m`-avoiding construction. -/
+theorem minFac_succ_not_dvd (m : ℕ) (hm : 1 ≤ m) : ¬ Nat.minFac (m + 1) ∣ m := by
+  intro hdvd
+  have hp : (Nat.minFac (m + 1)).Prime := Nat.minFac_prime (by omega)
+  have hdsub : Nat.minFac (m + 1) ∣ (m + 1 - m) := Nat.dvd_sub' (Nat.minFac_dvd _) hdvd
+  rw [show m + 1 - m = 1 by omega] at hdsub
+  exact hp.one_lt.ne' (Nat.dvd_one.mp hdsub)
+
+/-- **`smallPrimeConstruction` is `m`-avoiding.**  Its elements are the multiples of
+    the prime `p = minFac (m+1) ∤ m` in `{1,…,n}`, so every nonempty subset sum is a
+    multiple of `p` while `m` is not (`prime_multiples_avoid`). -/
+theorem smallPrimeConstruction_avoid (m n : ℕ) (hm : 1 ≤ m) :
+    AvoidSum (smallPrimeConstruction m n) m :=
+  prime_multiples_avoid (Nat.minFac (m + 1)) m n
+    (Nat.minFac_prime (by omega)) (minFac_succ_not_dvd m hm)
+
+/-- **Size of `smallPrimeConstruction`.**  It has `⌊n / minFac (m+1)⌋` elements
+    (`prime_multiples_size`). -/
+theorem smallPrimeConstruction_card (m n : ℕ) (hm : 1 ≤ m) :
+    (smallPrimeConstruction m n).card = n / Nat.minFac (m + 1) :=
+  prime_multiples_size (Nat.minFac (m + 1)) n (Nat.minFac_prime (by omega)).pos
+
+/-- **Small-prime lower bound.**  Instantiating the prime-multiples bound at the
+    canonical prime `minFac (m+1) ∤ m` gives `maxAvoidingSize n m ≥ ⌊n / minFac(m+1)⌋`
+    — the lower bound realised by `smallPrimeConstruction`, with no external choice
+    of prime.  For `m + 1` prime this is `⌊n/(m+1)⌋`; in general `minFac(m+1) ≤ m+1`
+    so it dominates the crude `⌊n/(m+1)⌋`. -/
+theorem smallPrime_avoiding_lower (m n : ℕ) (hm : 1 ≤ m) :
+    maxAvoidingSize n m ≥ n / Nat.minFac (m + 1) :=
+  primeMultiples_avoiding_lower (Nat.minFac (m + 1)) m n
+    (Nat.minFac_prime (by omega)) (minFac_succ_not_dvd m hm)
+
 /-
 ## Part IX: Connection to Sum-Free Sets
 -/
