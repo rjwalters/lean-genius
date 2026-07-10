@@ -53,15 +53,15 @@
       "endLine": 111
     },
     "type": "technique",
-    "title": "§1. Bridging Index-Disjointness to List.Pairwise",
-    "content": "areDisjoint_pairwise converts the CliquePartition's native disjointness predicate — areDisjoint, which asserts Disjoint (get i) (get j) for all index pairs i ≠ j — into List.Pairwise Disjoint, the form the fold induction of §2 consumes. The proof rewrites with List.pairwise_iff_get (Pairwise R ↔ R (get i) (get j) for i < j), then discharges the i < j case: strict inequality gives i.val ≠ j.val (Nat.ne_of_lt), and areDisjoint supplies disjointness for that pair. The step is small but load-bearing: Pairwise is the structure induction destructures via List.pairwise_cons (head-disjoint-from-tail + tail-Pairwise), which the accumulator-generalized fold in §2 relies on to maintain its disjointness invariant.",
-    "mathContext": "$\\mathrm{areDisjoint}\\,l \\iff \\forall i\\neq j,\\ \\mathrm{Disjoint}\\,(l_i)\\,(l_j);\\quad \\text{via } \\texttt{pairwise\\_iff\\_get} \\Rightarrow l.\\mathrm{Pairwise}\\ \\mathrm{Disjoint}.$",
+    "title": "Bridging Index-Disjointness to List.Pairwise Disjoint",
+    "content": "areDisjoint_pairwise converts the CliquePartition's index-based disjointness predicate — `areDisjoint sets`, which asserts `Disjoint (sets.get i) (sets.get j)` for all i ≠ j — into the structural `List.Pairwise Disjoint` that the fold induction of §2 consumes. The proof rewrites with `List.pairwise_iff_get`, which characterizes `Pairwise R` as `R (get i) (get j)` for every i < j, then discharges the goal by supplying the strict inequality's `i ≠ j` (via `Nat.ne_of_lt`) to the index-based hypothesis. The i < j direction suffices because Disjoint is symmetric, so Pairwise need only be checked in one order.",
+    "mathContext": "`List.pairwise_iff_get : l.Pairwise R ↔ ∀ i j, i < j → R (l.get i) (l.get j)`. The index predicate quantifies over all i ≠ j; restricting to i < j loses nothing here since the underlying relation Disjoint is symmetric.",
     "significance": "supporting",
     "relatedConcepts": [
       "List.pairwise_iff_get",
-      "List.pairwise_cons",
-      "index-based vs inductive disjointness",
-      "Nat.ne_of_lt"
+      "index-based vs structural disjointness",
+      "Nat.ne_of_lt",
+      "symmetry of Disjoint"
     ],
     "prerequisites": [
       "List.Pairwise",
