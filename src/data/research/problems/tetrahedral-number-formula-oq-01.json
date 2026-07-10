@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "General-dimension figurate theory VERIFIED end-to-end in TetrahedralNumberFormulaOQ01.lean (simplexNumber d n = C(n+d,d)): hockey stick sum_simplex, iterated-summation ladder iterSum_one (P_d = d-fold partial sum of the constant 1), discrete Cauchy repeated-summation formula iterSum_eq_simplexConv (iterSum (d+1) f = convolution with the P_d kernel), Sym counting face card_sym_fin_eq_simplexNumber (|Sym(Fin(n+1)) d| = P_d(n)), and division-free closed form d!·P_d(n)=(n+1)^{(d)}. NEW (researcher-8, 2026-07-09, VERIFIED [3059/3059] 0 sorry/0 axiom): iterSum_add — the SEMIGROUP LAW iterSum a (iterSum b f) = iterSum (a+b) f (iterated partial summation is a monoid action of (ℕ,+) on sequences, the discrete analogue of the Riemann–Liouville fractional-integration semigroup Iᵃ∘Iᵇ=Iᵃ⁺ᵇ, and the structural reason figurate dimensions add); and iterSum_simplexNumber — dimension-additivity iterSum a (P_b) = P_{a+b} (a further summations of the b-dim figurate sequence give the (a+b)-dim one), immediate from the semigroup law + iterSum_one, generalizing the headline iterSum_one (b=0). The base OQ-01 question (general-dimension hockey stick) is fully resolved; this session adds the compositional algebra of the summation operator.",
+    "progressSummary": "PROGRESS: completed the linear-operator structure of the figurate calculus (5 verified theorems: additivity + homogeneity of iterSum and simplexConv, plus constant-kernel convolution). File remains 0 sorries, 0 axioms; verified locally against Mathlib v4.26.0.",
     "builtItems": [
       "simplexNumber d n := (n+d).choose d - the d-dimensional hyper-tetrahedral number (TetrahedralNumberFormulaOQ01.lean)",
       "sum_simplex: sum_{k<=n} simplexNumber d k = simplexNumber (d+1) n - general hockey stick, any dimension d (via Nat.sum_range_add_choose)",
@@ -43,7 +43,11 @@
       "iterSum_add — semigroup law of iterated summation: iterSum a (iterSum b f) = iterSum (a+b) f (monoid action of (ℕ,+); discrete Riemann–Liouville semigroup Iᵃ∘Iᵇ=Iᵃ⁺ᵇ). Induction on a, one partialSum layer per step. VERIFIED.",
       "iterSum_simplexNumber — dimension-additivity of the figurate ladder: iterSum a (simplexNumber b) n = simplexNumber (a+b) n, from iterSum_add + iterSum_one. VERIFIED.",
       "simplexConv_comp — convolution semigroup law for figurate kernels: simplexConv a (simplexConv b f) = simplexConv (a+b+1) f (P_a ∗ P_b = P_{a+b+1}, discrete fractional-integral composition / Vandermonde identity), from iterSum_add + iterSum_eq_simplexConv. VERIFIED.",
-      "TetrahedralNumberFormulaOQ01.lean: simplexNumber_pos + simplexNumber_mono_size + simplexNumber_mono_dim. VERIFIED green, 0 axioms/sorries. File now 19 theorems."
+      "TetrahedralNumberFormulaOQ01.lean: simplexNumber_pos + simplexNumber_mono_size + simplexNumber_mono_dim. VERIFIED green, 0 axioms/sorries. File now 19 theorems.",
+      "iterSum_add_fn: additivity of d-fold summation (induction + Finset.sum_add_distrib) — TetrahedralNumberFormulaOQ01.lean",
+      "iterSum_smul_fn: ℕ-homogeneity of d-fold summation (induction + Finset.mul_sum) — TetrahedralNumberFormulaOQ01.lean",
+      "simplexConv_add_fn / simplexConv_smul_fn: convolution linear in f (Nat.mul_add / Finset.mul_sum) — TetrahedralNumberFormulaOQ01.lean",
+      "simplexConv_const: constant-kernel convolution = c·P_{d+1}(n), generalizing the c=1 example — TetrahedralNumberFormulaOQ01.lean"
     ],
     "insights": [
       "The hyper-tetrahedral / d-simplex number is exactly Mathlib Nat.multichoose (n+1) d = C(n+d,d); Mathlib gives the one-step hockey stick Nat.sum_range_add_choose : sum i in range(n+1),(i+d).choose d = (n+d+1).choose(d+1)",
@@ -51,14 +55,16 @@
       "The cleared closed form is uniform in d via the ascending factorial: d!*C(n+d,d) = (n+1).ascFactorial d (Nat.ascFactorial_eq_factorial_mul_choose), with the explicit product from Nat.ascFactorial_eq_prod_range.",
       "The figurate numbers P_d are exactly the KERNEL of repeated discrete summation: iterating partialSum d+1 times against any f convolves f with P_d(n-k). Discrete analogue of Cauchy repeated integration (kernel (n-t)^d/d!).",
       "Finset.sum_Ico_Ico_comm (a<=i<=j<b triangular swap) + Finset.sum_Ico_eq_sum_range cleanly reduce a nested partial-sum-of-convolution to a single hockey-stick collapse.",
-      "VERIFIED (researcher-2, 2026-07-09, GREEN build): the order facts of the figurate ladder P_d(n)=C(n+d,d), absent from the file. simplexNumber_pos (0<P_d(n), Nat.choose_pos on d≤n+d), simplexNumber_mono_size (m≤n⟹P_d(m)≤P_d(n), Nat.choose_le_choose on m+d≤n+d), simplexNumber_mono_dim (a≤b⟹P_a(n)≤P_b(n), reduced to mono_size through the reflection symmetry simplexNumber_symm P_d(n)=P_n(d)). Monotone in BOTH arguments + positive. Complements the exact-value/summation theory with the growth/order structure."
+      "VERIFIED (researcher-2, 2026-07-09, GREEN build): the order facts of the figurate ladder P_d(n)=C(n+d,d), absent from the file. simplexNumber_pos (0<P_d(n), Nat.choose_pos on d≤n+d), simplexNumber_mono_size (m≤n⟹P_d(m)≤P_d(n), Nat.choose_le_choose on m+d≤n+d), simplexNumber_mono_dim (a≤b⟹P_a(n)≤P_b(n), reduced to mono_size through the reflection symmetry simplexNumber_symm P_d(n)=P_n(d)). Monotone in BOTH arguments + positive. Complements the exact-value/summation theory with the growth/order structure.",
+      "The figurate calculus is ℕ-linear: both iterated summation (iterSum) and simplex convolution (simplexConv) are additive and ℕ-homogeneous in the summand — the summand-side companion to the dimension-side semigroup laws iterSum_add / simplexConv_comp."
     ],
     "mathlibGaps": [
       "Mathlib has the one-step hockey stick and multichoose but no dimension-indexed figurate theory: no iterated-partial-sum characterization of simplex numbers, no figurate recurrence/closed form stated uniformly in the dimension d."
     ],
     "nextSteps": [
       "Optional: Norlund/finite-difference expansion of iterSum on a polynomial base sequence now follows by combining iterSum_eq_simplexConv with a binomial expansion of P_d(n-k).",
-      "Optional: express card_sym as an explicit nested multi-index Finset sum over {0<=i1<=...<=id<=n} to make the weakly-increasing-tuple face literal."
+      "Optional: express card_sym as an explicit nested multi-index Finset sum over {0<=i1<=...<=id<=n} to make the weakly-increasing-tuple face literal.",
+      "Convolution of arithmetic-progression / polynomial sequences against the simplex kernel, now reducible via the linearity package to simplexConv of id and constants."
     ],
     "markdown": "# Knowledge Base: tetrahedral-number-formula-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },

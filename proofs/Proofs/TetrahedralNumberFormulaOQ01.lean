@@ -491,4 +491,77 @@ theorem simplexNumber_strictMono_dim (n : ℕ) :
   rw [simplexNumber_symm a (n + 1), simplexNumber_symm b (n + 1)]
   exact simplexNumber_strictMono_size n hab
 
+
+/-! ### Linearity of the discrete Cauchy transform
+
+The file above builds iterated summation `iterSum` and the discrete Cauchy
+convolution `simplexConv`, and exhibits `iterSum` as a monoid action of `(ℕ, +)`.
+The following lemmas record the *other* half of the algebraic structure: each level
+of the transform is an **additive, `ℕ`-homogeneous (semilinear) operator** on
+sequences. Together with the semigroup law `iterSum_add` this upgrades the picture
+to a monoid action *by semimodule endomorphisms*, and makes the discrete Cauchy
+formula `iterSum_eq_simplexConv` a genuine linear-operator statement: repeated
+summation, and convolution against the figurate kernel, are linear in the summand.
+-/
+
+/-- **Additivity of iterated summation.** The `d`-fold partial-sum operator is
+additive in its sequence argument:
+`iterSum d (f + g) = iterSum d f + iterSum d g`. Proved by induction on `d`, pushing
+one `Finset.sum_add_distrib` through each summation layer. -/
+theorem iterSum_add_fn (d : ℕ) (f g : ℕ → ℕ) (n : ℕ) :
+    iterSum d (fun k => f k + g k) n = iterSum d f n + iterSum d g n := by
+  induction d generalizing n with
+  | zero => rfl
+  | succ d ih =>
+    show partialSum (iterSum d (fun k => f k + g k)) n
+      = partialSum (iterSum d f) n + partialSum (iterSum d g) n
+    simp only [partialSum]
+    rw [← Finset.sum_add_distrib]
+    exact Finset.sum_congr rfl fun j _ => ih j
+
+/-- **Homogeneity of iterated summation.** The `d`-fold partial-sum operator commutes
+with scalar multiplication: `iterSum d (c • f) = c • iterSum d f`, i.e.
+`iterSum d (fun k => c * f k) n = c * iterSum d f n`. Proved by induction on `d` via
+`Finset.mul_sum`. With `iterSum_add_fn` this shows every level of `iterSum` is an
+`ℕ`-linear operator on sequences. -/
+theorem iterSum_smul_fn (d c : ℕ) (f : ℕ → ℕ) (n : ℕ) :
+    iterSum d (fun k => c * f k) n = c * iterSum d f n := by
+  induction d generalizing n with
+  | zero => rfl
+  | succ d ih =>
+    show partialSum (iterSum d (fun k => c * f k)) n = c * partialSum (iterSum d f) n
+    simp only [partialSum]
+    rw [Finset.mul_sum]
+    exact Finset.sum_congr rfl fun j _ => ih j
+
+/-- **Convolution is additive in the summand.** The discrete simplex convolution
+`simplexConv d · n` distributes over pointwise addition:
+`simplexConv d (f + g) n = simplexConv d f n + simplexConv d g n`. Immediate from
+`Nat.mul_add` and `Finset.sum_add_distrib`. -/
+theorem simplexConv_add_fn (d : ℕ) (f g : ℕ → ℕ) (n : ℕ) :
+    simplexConv d (fun k => f k + g k) n
+      = simplexConv d f n + simplexConv d g n := by
+  simp only [simplexConv, Nat.mul_add, Finset.sum_add_distrib]
+
+/-- **Convolution is homogeneous in the summand.**
+`simplexConv d (c • f) n = c * simplexConv d f n`. Together with `simplexConv_add_fn`,
+the figurate convolution is an `ℕ`-linear map in `f` — the summand-side linearity
+matching the dimension-side semigroup law `simplexConv_comp`. -/
+theorem simplexConv_smul_fn (d c : ℕ) (f : ℕ → ℕ) (n : ℕ) :
+    simplexConv d (fun k => c * f k) n = c * simplexConv d f n := by
+  simp only [simplexConv, Finset.mul_sum]
+  exact Finset.sum_congr rfl fun k _ => by ring
+
+/-- **Constant-sequence convolution.** Convolving the constant sequence `c` with the
+`d`-dimensional simplex kernel scales the `(d+1)`-dimensional simplex number:
+`∑_{k≤n} P_d(n-k) · c = c · P_{d+1}(n)`. The `c = 1` case is the consistency `example`
+recorded just after `iterSum_eq_simplexConv`; here it is the homogeneous specialisation
+via `iterSum_smul_fn` and the ladder characterisation `iterSum_one`. -/
+theorem simplexConv_const (d c n : ℕ) :
+    simplexConv d (fun _ => c) n = c * simplexNumber (d + 1) n := by
+  have h : iterSum (d + 1) (fun _ => c) n = c * iterSum (d + 1) (fun _ => (1 : ℕ)) n := by
+    have := iterSum_smul_fn (d + 1) c (fun _ => (1 : ℕ)) n
+    simpa using this
+  rw [← iterSum_eq_simplexConv, h, iterSum_one]
+
 end TetrahedralNumberFormulaOQ01
