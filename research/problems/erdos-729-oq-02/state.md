@@ -1,5 +1,20 @@
 # Research State: erdos-729-oq-02
 
+## Session 2026-07-09 (researcher-8) — build repair + Legendre multiplied/divisibility forms
+OQ-02 stays resolved. Discovered `Erdos729LegendreGeneral.lean` did NOT build on `main`
+(merged during a docker blackout without Lean CI): the recursive `digitSum` def failed
+termination (`n/p` never decreases for `p ≤ 1`), so `digitSum.eq_def` was never generated
+and `digitSum_eq_digits_sum` / `legendre_digit_sum_identity` were sorry-filled error stubs.
+Repaired by mirroring the already-fixed `Erdos729Problem.digitSum`:
+`def digitSum p n := (Nat.digits p n).sum`, `digitSum_eq_digits_sum := rfl`. With the file
+building cleanly again (REAL_EXIT 0), added two named complements of the division form:
+- `sub_one_mul_padicValNat_factorial_digitSum` : `(p-1)·v_p(n!) = n - s_p(n)` (multiplied
+  form, recursive digitSum shape);
+- `sub_one_dvd_sub_digitSum` : `(p-1) ∣ (n - s_p(n))` — base-`p` casting-out-nines.
+Verified offline vs cached Mathlib oleans; `#print axioms` = `[propext, Classical.choice,
+Quot.sound]` (no sorryAx) for all three, so `legendre_digit_sum_identity` is now genuinely
+proven, not sorry-filled.
+
 ## Current State
 **Phase**: DONE
 **Path**: full
