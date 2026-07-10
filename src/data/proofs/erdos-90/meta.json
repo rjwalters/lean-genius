@@ -192,6 +192,13 @@
       "startLine": 61,
       "endLine": 75,
       "summary": "States the main conjecture (`ErdosProblem90`): $u(n) \\leq n^{1+C/\\log\\log n}$ eventually, matching the lattice lower bound up to the constant $C$. Also states the weak form (`erdos_90_weak`): $u(n) \\leq n^{1+\\varepsilon}$ for every $\\varepsilon > 0$ and large $n$. On 2026-05-20 OpenAI announced a reported disproof of the conjectured exponent via class field tower constructions (peer review pending); the file's comments are updated to reflect this status."
+    },
+    {
+      "id": "valtr-obstruction",
+      "title": "Valtr's Obstruction",
+      "startLine": 76,
+      "endLine": 81,
+      "summary": "Valtr's result that a non-Euclidean metric on ℝ² admits Θ(n^{4/3}) unit distances, showing any improvement on the n^{4/3} upper bound must exploit properties specific to Euclidean distance rather than the bare incidence structure."
     }
   ],
   "conclusion": {
@@ -234,7 +241,13 @@
     "theoremCount": 0,
     "definitionCount": 3,
     "path": "Proofs/Erdos90Problem.lean",
-    "sorries": 0
+    "sorries": 0,
+    "additionalFiles": [
+      "Proofs/Erdos90/ClassFieldTower.lean",
+      "Proofs/Erdos90/ClassGroupLRank.lean",
+      "Proofs/Erdos90/GolodShafarevich.lean",
+      "Proofs/Erdos90/OpenAI2026LowerBound.lean"
+    ]
   },
   "references": [
     {
