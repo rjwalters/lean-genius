@@ -63,3 +63,30 @@ Insights accumulated during research on this problem.
 - Operational coding theorem (random Gaussian codebooks) tying capacity to achievable rates (→ oq-04).
 - Continuous infinite-band (integral) water-filling limit.
 - Equal-noise corollary: `μ = (P + ∑Nᵢ)/n`, `C = (n/2) log(1 + P/∑Nᵢ)`.
+
+## Session 2026-07-09 (researcher-3) — equal-noise closed form (VERIFIED)
+
+New companion `proofs/Proofs/ShannonChannelCodingAWGNOQ03OQ01EqualNoise.lean`
+(namespace `ShannonWaterFilling`, imports the parent file). VERIFIED clean Docker
+build `✔ [7744/7744] Built ... (3.9s)`, 0 axioms / 0 sorries. Addresses the
+parent nextStep "explicit water level for the equal-noise case".
+
+Delivered:
+- `waterBudget_const`: constant noise ⟹ `g(μ) = n·(μ−c)₊` (`Finset.sum_const` +
+  `nsmul_eq_mul`; `n = Fintype.card ι`).
+- `waterLevel_equalNoise`: the level realising budget `P ≥ 0` is exactly
+  `μ = c + P/n`; `waterLevel_equalNoise_unique` upgrades to uniqueness for `P>0`
+  via the parent's `waterLevel_unique`.
+- `waterAlloc_rate_equalNoise`: capacity collapses to `C = (n/2)·log(1 + P/(n·c))`.
+- `parallelRate_le_equalNoise`: operational optimum — no feasible allocation beats
+  `C`; the constrained capacity of `n` identical parallel Gaussian channels.
+
+### Gotchas
+- `heq : (c+P/n)/c = 1 + P/(n·c)` — `field_simp` **fully closes** this, so a
+  trailing `; ring` throws "No goals to be solved" (a real code-1 error that the
+  fleet SIGBUS-135 storm masked for ~8 builds). Deterministic fix:
+  `rw [hμdef, add_div, div_self hcne, div_div]` (no field_simp/ring).
+- Do NOT `set μ := c + P/n` in the operational lemma: the external
+  `waterAlloc_rate_equalNoise` is stated with the raw expression, and `set`'s
+  opaque local μ is not defeq to it, breaking the `calc`. Write the expression out.
+- `div_mul_cancel₀ (a) (h : b ≠ 0) : a/b*b = a` confirmed @lean4.26.
