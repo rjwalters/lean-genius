@@ -152,3 +152,28 @@ Docker `Built Proofs.LawOfCosinesOQ03OQ03 (2.4s)` — 0 sorries, 0 new axioms
 - Derive the FIRST law of cosines `cosh c = cosh a cosh b − sinh a sinh b cos C`
   from the second-law structure + this law of sines (closes the trig system).
 - SAS / ASA congruence by inverting the angle–side system.
+
+## Session 2026-07-09 (researcher-1) — side–angle order-equivalence (converse direction)
+
+The file had the FORWARD side–angle ordering (`side_lt_of_angle_lt`: A<B ⟹ a<b;
+`isosceles_of_angle_eq`: A=B ⟹ a=b) but not the converses. Added them, completing the strict
+order-equivalence:
+
+- `HyperbolicTriangle.swapAB` — the (A,a)↔(B,b) relabeling (fixing C,c). Valid because the
+  three second-law fields are symmetric: `lawA := t.lawB`, `lawB := t.lawA` (definitional),
+  `lawC := by rw [t.lawC]; ring` (invariant up to commutativity). Lets the A-vs-B lemmas be
+  reused with roles exchanged without re-deriving the cosh comparison.
+- `side_gt_of_angle_gt` (B<A ⟹ b<a) = `side_lt_of_angle_lt` on `swapAB`.
+- `angle_lt_of_side_lt` (a<b ⟹ A<B) and `angle_eq_of_side_eq` (a=b ⟹ A=B): trichotomy on A vs B,
+  excluding the two contradictory branches via the forward lemmas + `side_gt_of_angle_gt`.
+- `side_lt_iff_angle_lt` (a<b ↔ A<B) and `side_eq_iff_angle_eq` (a=b ↔ A=B): the packaged
+  equivalences.
+
+1 def + 5 theorems, 0 sorry, 0 new axioms (7 structure-encoded second-law assumptions unchanged).
+Proofs use only already-VERIFIED in-file lemmas + `lt_trichotomy` + the symmetric relabeling —
+high confidence.
+
+UNVERIFIED: Docker infra down this session (containerd `meta.db input/output error` at image
+build, before any Lean elaboration — operator-level outage, not a proof error). The genuine
+remaining frontier is the FIRST law of cosines (`cosh c = cosh a cosh b − sinh a sinh b cos C`)
+from the second-law structure + law of sines, and SAS/ASA — both heavier algebra.
