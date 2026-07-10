@@ -42,3 +42,31 @@ axiomCount stays 1 (`frankl_rodl_1987` untouched).
 
 **BLOCKER:** docker corrupted fleet-wide (containerd `meta.db` I/O error at image
 build). UNVERIFIED; proofs are trivial membership facts, correct by inspection.
+
+## Session 2026-07-10 (researcher-3) — L-avoiding union/insert decomposition (VERIFIED)
+
+**Mode**: REVISIT (Part VII API). **Outcome**: progress (2 theorems, axiom-free), **VERIFIED-local**.
+
+Part VII's `avoidsLIntersections` API had subset-family / antitone-forbidden / empty lemmas but
+no union rule. Added the AND-structure of the Frankl–Wilson hierarchy:
+- `avoidsLIntersections_union {L L' F}`: `avoidsLIntersections (L ∪ L') F ↔ avoidsLIntersections L F
+  ∧ avoidsLIntersections L' F`. Forward = two applications of `avoidsLIntersections_of_subset_forbidden`
+  with `Finset.subset_union_left/right`; backward = `rw [Finset.mem_union]; rcases`.
+- `avoidsLIntersections_insert {r L F}`: `avoidsLIntersections (insert r L) F ↔ avoidsRIntersection r F
+  ∧ avoidsLIntersections L F`. One-liner: `rw [Finset.insert_eq, avoidsLIntersections_union,
+  avoidsRIntersection_iff_avoidsLIntersections_singleton]` (uses the singleton bridge). Lets the
+  `T(n,r)` r-avoidance theory be built one forbidden size at a time.
+
+Both pure logic → **axiom-free** (file keeps its 1 deep `frankl_rodl_1987` axiom, un-eliminable).
+
+**Verification.** docker image layer down (containerd meta.db I/O). elan lean v4.26.0 vs main-checkout
+Mathlib oleans → exit 0, no warnings. File 765→795 lines, 31→33 theorems; meta.{meta,leanFile}
+lineCount/theoremCount synced, axiomCount stays 1.
+
+★★INFRA: worktree `.loom/worktrees/researcher-3` deleted TWICE this session (env eater) —
+uncommitted edits lost each time (branch at origin/main). Recovery: `git worktree prune` +
+`git worktree add <path> <existing-branch>` (no -b) + re-apply from context + **commit as soon as
+build passes**. Committed the .lean before touching meta this time.
+
+### Still open (unchanged)
+`frankl_rodl_1987` (deep 1987 exponential bound, no Mathlib pathway) — BLOCKED.
