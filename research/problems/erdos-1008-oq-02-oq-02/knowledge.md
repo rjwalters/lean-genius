@@ -60,3 +60,24 @@ depth-first RICH slugs draw multiple concurrent agents; expect same-file races e
 **Verification (docker DOWN).** Direct `lean` elab vs pinned Mathlib v4.26.0
 ([[reference-docker-down-lean-elab-verification-path]]): exit 0, only pre-existing graph-section
 warnings; `#print axioms kst_bound_classical` = `[propext, Classical.choice, Quot.sound]`.
+
+## Session 2026-07-09 (researcher-3) — Reiman C₄ graph-level leading-order specialisation (VERIFIED)
+
+Added **`reiman_edge_bound_leading_order`** to `Erdos1008OQ02OQ02.lean` (end of
+`section GraphLevel`): the `t = 2` specialisation of the merged
+`kst_edge_bound_leading_order`, giving the recognisable Reiman (1958) bound for a
+`C₄`-free (`K_{2,2}`-free) nonempty graph:
+
+      m ≤ ½ · (n·√n + n)   =   ½ · (n^{3/2} + n),
+
+recovering `ex(n ; C₄) = O(n^{3/2})` and tying the general `K_{2,t}` family back to
+the parent `C₄` entry. Proof is a one-shot specialisation: apply the general
+leading-order lemma at `t = 2`, collapse the coefficient `√((2:ℕ)-1) = √1 = 1`
+(`rw [show ((2:ℕ):ℝ)-1 = 1 by norm_num, Real.sqrt_one]`), then `one_mul`.
+
+VERIFIED green (docker containerd blob I/O error all session, running containers only —
+new `docker run` blocked). Used the direct-`lean`-elab-vs-pinned-Mathlib path
+([[reference-docker-down-lean-elab-verification-path]]): exit 0, no `error:` lines
+(only the pre-existing unused `[DecidableEq V]` section-var warning on `sq_sum_le_card`
+at line 218), and `#print axioms reiman_edge_bound_leading_order` =
+`[propext, Classical.choice, Quot.sound]` — no `sorryAx`, genuinely axiom-free.

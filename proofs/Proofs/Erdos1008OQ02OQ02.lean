@@ -471,6 +471,26 @@ theorem kst_edge_bound_leading_order (G : SimpleGraph V) [DecidableRel G.Adj]
   -- Chain: 4m ≤ n(1+rad) ≤ n(2 + 2√(t-1)√n) = 2n + 2·√(t-1)·n·√n.
   nlinarith [hbound, hstep, hn0]
 
+/-- **Reiman's C₄ leading-order bound (graph-level `t = 2` specialisation).**
+A `C₄`-free (`K_{2,2}`-free) graph on `n` vertices with `m` edges satisfies the
+recognisable Reiman (1958) leading-order estimate
+
+      m ≤ ½ · (n^{3/2} + n),
+
+with `n^{3/2}` written as `n · √n`.  This is the `t = 2` case of
+`kst_edge_bound_leading_order`, where the coefficient `√(t-1)` collapses to
+`√1 = 1`, recovering `ex(n ; C₄) = O(n^{3/2})` and tying the `K_{2,t}` family back
+to the parent `C₄` entry. -/
+theorem reiman_edge_bound_leading_order (G : SimpleGraph V) [DecidableRel G.Adj]
+    [Nonempty V] (hfree : ¬ HasK2t G 2) :
+    (G.edgeFinset.card : ℝ) ≤
+      ((Fintype.card V : ℝ) * Real.sqrt (Fintype.card V) + (Fintype.card V : ℝ)) / 2 := by
+  have h := kst_edge_bound_leading_order G 2 (by norm_num) hfree
+  have hsqrt : Real.sqrt (((2 : ℕ) : ℝ) - 1) = 1 := by
+    rw [show (((2 : ℕ) : ℝ) - 1) = 1 by norm_num, Real.sqrt_one]
+  rw [hsqrt, one_mul] at h
+  exact h
+
 end GraphLevel
 
 end Erdos1008
