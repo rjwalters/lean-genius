@@ -1,7 +1,7 @@
 {
   "slug": "shannon-channel-coding-awgn-oq-03-oq-01",
   "title": "Capacity of parallel Gaussian channels via water-filling",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -38,7 +38,9 @@
     "coding-theory",
     "research"
   ],
-  "relatedProofs": ["shannon-channel-coding-awgn-oq-03"],
+  "relatedProofs": [
+    "shannon-channel-coding-awgn-oq-03"
+  ],
   "references": {
     "papers": [],
     "urls": [],
@@ -52,5 +54,26 @@
   },
   "significance": 6,
   "tractability": 5,
-  "category": "extension"
+  "category": "extension",
+  "knowledge": {
+    "insights": [
+      "Water-filling KKT optimality has a fully ELEMENTARY proof: the first-order condition is replaced by the per-channel tangent bound log u <= u-1 (Real.log_le_sub_one_of_pos), summed across channels. No differentiability/Lagrange/KKT machinery needed.",
+      "Key identity N_i + (mu-N_i)_+ = max mu N_i turns the derivative coefficient 1/(2(N_i+P_i*)) into 1/(2 max(mu,N_i)), which is constant 1/(2mu) on ACTIVE channels (N_i<mu) and <= 1/(2mu) on inactive ones (P_i*=0, x_i>=0). This case split is exactly what makes the aggregated linear term collapse to (sum x_i - P)/(2mu) <= 0.",
+      "Water level existence = IVT on the continuous monotone budget g(mu)=sum (mu-N_i)_+ between g(0)=0 and g(N_{i0}+P)>=P; uniqueness (for P>0) = strict monotonicity of g wherever g>0 (some channel active)."
+    ],
+    "builtItems": [
+      "waterfilling_optimal (KKT optimality of P_i*=(mu-N_i)_+) in ShannonChannelCodingAWGNOQ03OQ01.lean",
+      "awgnCapacity_sub_le (per-channel tangent bound, the FOC in elementary form)",
+      "add_waterAlloc (N_i + (mu-N_i)_+ = max mu N_i)",
+      "waterAlloc_rate_closedForm (R(P*) = sum 1/2 log(max mu N_i / N_i))",
+      "exists_waterLevel (IVT existence) + waterLevel_unique (strict-monotone uniqueness) + continuous/monotone_waterBudget"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Connect to an operational coding theorem (random Gaussian codebooks) tying capacity to achievable rates (parent oq-04).",
+      "Extend the finite water-filling optimum to the continuous infinite-band (integral) limit.",
+      "Prove the explicit water level for the equal-noise case mu = (P + sum N_i)/n and derive C = (n/2) log(1 + P/(sum N_i)) style corollaries."
+    ],
+    "progressSummary": "PROGRESS: All three open items formalized (optimality, existence+uniqueness of water level, closed form) via an elementary tangent-bound proof; pending Docker build verification."
+  }
 }
