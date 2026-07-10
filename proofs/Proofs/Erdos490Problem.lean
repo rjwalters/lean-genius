@@ -658,6 +658,30 @@ theorem distinct_minimal_energy (A B : Finset ℕ) :
   · intro h
     exact (Finset.eq_of_subset_of_card_le hsub (by rw [h, hΔcard])).symm
 
+/-- **General lower bound on multiplicative energy**: `|A|·|B| ≤ E(A, B)`.  The diagonal
+quadruples `((a, a), (b, b))` always satisfy the energy relation `a·b = a·b`, and
+`(a, b) ↦ ((a, a), (b, b))` injects `A ×ˢ B` into the energy set.  Together with
+`distinct_minimal_energy` (which identifies the equality case) this shows the energy is
+*minimized exactly* when the products are distinct: `E(A, B) ≥ |A||B|` always, with
+equality iff `HasDistinctProducts A B`. -/
+theorem multiplicativeEnergy_ge (A B : Finset ℕ) :
+    A.card * B.card ≤ multiplicativeEnergy A B := by
+  classical
+  rw [← Finset.card_product A B]
+  unfold multiplicativeEnergy
+  refine Finset.card_le_card_of_injOn (fun p => ((p.1, p.1), (p.2, p.2))) ?_ ?_
+  · rintro ⟨a, b⟩ hp
+    rw [Finset.mem_product] at hp
+    rw [Finset.mem_filter]
+    refine ⟨?_, rfl⟩
+    rw [Finset.mem_product, Finset.mem_product, Finset.mem_product]
+    exact ⟨⟨hp.1, hp.1⟩, hp.2, hp.2⟩
+  · rintro ⟨a₁, b₁⟩ _ ⟨a₂, b₂⟩ _ h
+    simp only [Prod.mk.injEq] at h
+    obtain ⟨⟨ha, _⟩, hb, _⟩ := h
+    rw [Prod.mk.injEq]
+    exact ⟨ha, hb⟩
+
 /-
 ## Part VIII: Bounds History
 -/
