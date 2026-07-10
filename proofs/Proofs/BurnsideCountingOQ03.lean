@@ -397,6 +397,22 @@ theorem polya_necklace_formula_statement (n k : ℕ) [NeZero n]
   rw [h_burnside]
   exact Finset.sum_congr rfl (fun r _ => h_fixed r)
 
+/-- **Cyclic necklace count in divisor-sum form.** Combining Burnside's lemma and
+    Pólya's fixed-point formula (the two hypotheses of `polya_necklace_formula_statement`)
+    with the general reindexing identity `polya_sum_identity`, the number of `k`-colored
+    cyclic necklaces of length `n` satisfies the classical divisor-sum formula
+    `n · necklace_count = Σ_{d | n} φ(n/d) · k^d`. This generalizes the concrete
+    `polya_binary4_divisor_form` (n = 4, k = 2) to arbitrary `n, k`. -/
+theorem polya_necklace_divisor_formula (n k : ℕ) [NeZero n]
+    (necklace_count : ℕ)
+    (h_burnside : n * necklace_count =
+      ∑ r : Fin n, Fintype.card {c : Fin n → Fin k // IsFixed n k r c})
+    (h_fixed : ∀ r : Fin n,
+      Fintype.card {c : Fin n → Fin k // IsFixed n k r c} = k ^ Nat.gcd r.val n) :
+    n * necklace_count = ∑ d ∈ Nat.divisors n, Nat.totient (n / d) * k ^ d := by
+  rw [polya_necklace_formula_statement n k necklace_count h_burnside h_fixed]
+  exact polya_sum_identity n k (Nat.pos_of_ne_zero (NeZero.ne n))
+
 #check @MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group
 #check ZMod.addOrderOf_coe
 #check ZMod.natCast_zmod_val
