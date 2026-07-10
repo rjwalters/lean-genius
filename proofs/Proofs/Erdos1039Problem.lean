@@ -639,6 +639,33 @@ theorem equalRoots_rho_eq_one (f : UnitDiscPolynomial) (hdeg : 0 < f.degree)
     exact hmem
   · exact le_csSup (bddAbove_inscribed_radii f hdeg) ⟨c, hins1⟩
 
+/-- **ρ is always strictly positive.**  For any polynomial of positive degree the
+    sublevel set `{z : |f(z)| < 1}` is open and contains every root `zᵢ` (where
+    `f(zᵢ) = 0`), so a whole open ball about `zᵢ` lies inside it; that ball is an
+    inscribed disc of positive radius, forcing `ρ(f) > 0`.  Together with
+    `equalRoots_rho_eq_one` (`ρ = 1` for repeated roots) this pins the qualitative
+    range of `ρ`: it is genuinely positive for every admissible polynomial and
+    maxes out at `1`, so the open question is only *how small* `ρ` can be (the
+    conjectured `≫ 1/n` floor), never whether it can collapse to `0`. -/
+theorem rho_pos (hf : 0 < f.degree) : 0 < rho f := by
+  -- a root lies in the open sublevel set
+  set z0 : ℂ := f.roots ⟨0, hf⟩ with hz0
+  have hmem : z0 ∈ sublevelSet f := root_in_sublevelSet f ⟨0, hf⟩
+  -- openness gives an ambient ball about `z0`
+  obtain ⟨δ, hδ, hball⟩ := Metric.isOpen_iff.mp (sublevelSet_isOpen f) z0 hmem
+  -- that ball is an inscribed disc of radius `δ`
+  have hins : isInscribedDisc (sublevelSet f) z0 δ := by
+    refine ⟨hδ, ?_⟩
+    intro z hz
+    apply hball
+    rw [Metric.mem_ball, dist_eq_norm]
+    exact hz
+  have hrho : rho f = sSup {r : ℝ | ∃ c : ℂ, isInscribedDisc (sublevelSet f) c r} := rfl
+  rw [hrho]
+  calc (0 : ℝ) < δ := hδ
+    _ ≤ sSup {r : ℝ | ∃ c : ℂ, isInscribedDisc (sublevelSet f) c r} :=
+        le_csSup (bddAbove_inscribed_radii f hf) ⟨z0, hins⟩
+
 /-
 ## Random Polynomials
 -/
