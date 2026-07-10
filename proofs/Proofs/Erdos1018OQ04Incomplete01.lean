@@ -119,6 +119,30 @@ theorem embeddable_mono {r : ℕ} {H : Erdos1018OQ04.Hypergraph V r}
     rw [← Set.image_inter hι_inj]
     exact Set.image_subset ι (hsep e₁ he₁ e₂ he₂ hne)
 
+/-- **Heredity: embeddability passes to induced sub-hypergraphs.**
+    If `H` is embeddable in `ℝ^d`, so is every induced sub-hypergraph `H.induced S`:
+    the edges of `H.induced S` are exactly the edges of `H` contained in `S`, so the same
+    vertex map `φ` and the same separation condition witness the embedding. This is the
+    monotonicity of embeddability in the edge set (complementing `embeddable_mono`, which is
+    monotone in the dimension). -/
+theorem isEmbeddableConc_induced {r d : ℕ} {H : Erdos1018OQ04.Hypergraph V r} (S : Finset V)
+    (hE : isEmbeddableConc H d) : isEmbeddableConc (H.induced S) d := by
+  obtain ⟨φ, hinj, hsep⟩ := hE
+  refine ⟨φ, hinj, fun e₁ he₁ e₂ he₂ hne => ?_⟩
+  simp only [Erdos1018OQ04.Hypergraph.induced, Finset.mem_filter] at he₁ he₂
+  exact hsep e₁ he₁.1 e₂ he₂.1 hne
+
+/-- **A non-embeddable induced subgraph obstructs the whole graph.**
+    Contrapositive of `isEmbeddableConc_induced`: if some induced sub-hypergraph `H.induced S`
+    fails to embed in `ℝ^d`, then `H` itself is not embeddable. This is precisely the logical
+    direction used to certify non-embeddability of a dense (hyper)graph by exhibiting a *small*
+    non-embeddable subgraph — the shape of the Kostochka–Pyber conclusion `kostochka_pyber_r2`
+    and, for `r = 2`, of the non-planar-subgraph statement of Erdős #1018. -/
+theorem not_isEmbeddableConc_of_induced {r d : ℕ} {H : Erdos1018OQ04.Hypergraph V r}
+    (S : Finset V) (hne : ¬ isEmbeddableConc (H.induced S) d) :
+    ¬ isEmbeddableConc H d :=
+  fun hE => hne (isEmbeddableConc_induced S hE)
+
 
 /-- Explicit planar embedding of K₃:
     Vertices {0, 1, 2} mapped to (0,0), (1,0), (0,1) in ℝ².
