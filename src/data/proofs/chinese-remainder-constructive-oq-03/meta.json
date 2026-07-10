@@ -114,6 +114,36 @@
       "description": "CRT for non-coprime moduli. Extends the coprimality requirement relaxed; contrasts with this file where pairwise coprimality is a hard requirement for RNS correctness. The non-coprime case requires additional structure (gcd conditions) that breaks the clean parallel arithmetic."
     }
   ],
+  "references": [
+    {
+      "title": "The Residue Number System",
+      "author": "Harvey L. Garner",
+      "year": "1959",
+      "venue": "IRE Transactions on Electronic Computers EC-8(2), 140–147",
+      "description": "The foundational paper introducing residue number systems for carry-free parallel arithmetic — the computer-arithmetic application of the Chinese Remainder Theorem this entry formalizes."
+    },
+    {
+      "title": "Residue Arithmetic and Its Applications to Computer Technology",
+      "author": "Nicholas S. Szabó and Richard I. Tanaka",
+      "year": "1967",
+      "venue": "McGraw-Hill",
+      "description": "The classic monograph on RNS: dynamic range, base selection, and the correctness of RNS addition and multiplication established here."
+    },
+    {
+      "title": "The Art of Computer Programming, Vol. 2: Seminumerical Algorithms",
+      "author": "Donald E. Knuth",
+      "year": "1997",
+      "venue": "Addison-Wesley (3rd ed.), §4.3.2 'Modular Arithmetic'",
+      "description": "Standard treatment of modular (residue) arithmetic and the CRT reconstruction underlying RNS, including the choice of coprime moduli and mixed-radix conversion."
+    },
+    {
+      "title": "Residue Number Systems: Theory and Implementation",
+      "author": "Amos Omondi and Benjamin Premkumar",
+      "year": "2007",
+      "venue": "Imperial College Press",
+      "description": "Modern reference on RNS bases (primes, Mersenne/low-cost moduli), dynamic range, and hardware implementation of parallel RNS arithmetic."
+    }
+  ],
   "leanFile": {
     "lineCount": 322,
     "path": "Proofs/ChineseRemainderConstructiveOQ03.lean",
