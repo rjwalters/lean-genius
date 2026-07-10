@@ -113,6 +113,29 @@
       "description": "OQ-04 proves the general halving constraint 2^M > 3^j for all j ≥ 1 via product equation; OQ-03 is the M = 0 / j = 0 corner case via direct parity argument."
     }
   ],
+  "references": [
+    {
+      "title": "The 3x+1 Problem and Its Generalizations",
+      "author": "Jeffrey C. Lagarias",
+      "year": "1985",
+      "venue": "The American Mathematical Monthly 92(1), 3–23",
+      "description": "The standard survey of the Collatz (3x+1) problem. Establishes the basic parity dynamics of the accelerated map and the structure of cycles, the setting in which the present 'no all-odd cycle' corollary lives."
+    },
+    {
+      "title": "A Stopping Time Problem on the Positive Integers",
+      "author": "Riho Terras",
+      "year": "1976",
+      "venue": "Acta Arithmetica 30(3), 241–252",
+      "description": "Introduces the stopping-time and parity-vector analysis of the 3x+1 map. The parity flip 'odd n ⟹ 3n+1 even' used here is the elementary base case of Terras's parity-vector encoding of Collatz trajectories."
+    },
+    {
+      "title": "The Ultimate Challenge: The 3x+1 Problem",
+      "author": "Jeffrey C. Lagarias (editor)",
+      "year": "2010",
+      "venue": "American Mathematical Society",
+      "description": "The definitive edited volume on the Collatz problem, collecting the cycle-structure and lower-bound results (Steiner, Simons–de Weger) that constrain nontrivial cycles; the parity obstruction formalized here — every cycle must contain an even iterate — is a first structural constraint of this kind."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Tactic",
