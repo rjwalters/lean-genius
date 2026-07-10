@@ -25547,12 +25547,12 @@
       "result": "clean"
     },
     "stirling-formula": {
-      "agentId": "auditor-cycle-20-batch",
-      "auditCount": 4,
-      "lastAudited": "2026-05-03T23:12:19Z",
-      "result": "clean",
+      "agentId": "auditor-agent",
+      "auditCount": 5,
+      "lastAudited": "2026-07-09T00:00:00Z",
+      "result": "issues-fixed",
       "issues": [],
-      "notes": "Re-audited 2026-05-04: 0 sorries, 0 axioms, 18 theorems confirmed (includes 3 private lemmas). Metadata consistent. Empty issues array was auditor artifact."
+      "notes": "Re-audited 2026-07-09: counts/status/badge all correct (0 sorries, 0 literal axioms, 18 theorems incl 3 private lemmas, 1 def, axiomatized via native_decide ofReduceBool in factorial_10/factorial_20). Fixed overview.text prose drift from an older file version: phantom decl names stirling_tendsto_sqrt_pi (->stirlingSeq_tendsto_sqrt_pi), stirling_asymptotic (->stirling_formula), stirling_lower_bound/stirling_upper_bound (->factorial_lower_bound; no upper-bound theorem exists), and phantom 100! verification (actual is factorial_20). Also softened loose '(verified)' wording to reflect axiomatized status. Math genuinely proved via Mathlib bridge (properly disclosed)."
     },
     "stirling-formula-oq-01": {
       "auditCount": 8,
