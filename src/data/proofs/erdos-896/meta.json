@@ -168,5 +168,28 @@
       "description": "Related Erdős problem sharing themes: number-theory, product-sets"
     }
   ],
+  "references": [
+    {
+      "title": "An asymptotic inequality in the theory of numbers",
+      "author": "Paul Erdős",
+      "year": "1960",
+      "venue": "Vestnik Leningradskogo Universiteta 15, no. 13, pp. 41–49",
+      "description": "The origin of the multiplication-table problem — counting distinct products ab — that this problem refines by weighting products with a unique representation."
+    },
+    {
+      "title": "The distribution of integers with a divisor in a given interval",
+      "author": "Kevin Ford",
+      "year": "2008",
+      "venue": "Annals of Mathematics (2) 168, no. 2, pp. 367–433",
+      "description": "Determines the order of magnitude in the multiplication-table problem and is the source of the density exponent δ = 1 − (1 + log log 2)/log 2 ≈ 0.086 appearing in Van Doorn's upper bound for max F(A,B)."
+    },
+    {
+      "title": "Erdős Problem #896",
+      "author": "Thomas F. Bloom (ed.)",
+      "year": "2024",
+      "venue": "erdosproblems.com/896",
+      "description": "The catalogued entry recording Erdős's 1972 question [Er72, p. 81] and Van Doorn's two-sided bounds (1+o(1))N²/log N ≤ max F(A,B) ≪ N²/((log N)^δ (log log N)^{3/2})."
+    }
+  ],
   "sorries": 0
 }
