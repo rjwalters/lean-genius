@@ -35,13 +35,15 @@
       "Erdos101OQ04.witnessSet_isLowerBoundConstruction: IsLowerBoundConstruction witnessSet 1, 0 axioms (VERIFIED)",
       "Erdos101OQ04.exists_isLowerBoundConstruction_pos: framework floor > arc zero for a >4-point set (VERIFIED)",
       "Erdos101OQ04.fourPointLineCount_ge_of_subset: Finset T of four-point collinear subsets -> T.card <= fourPointLineCount P (VERIFIED, 0-axiom)",
-      "Erdos101OQ04.fourPointLineCount_ge_of_injOn_family: injective L : Fin k -> Finset four-point collinear subsets -> k <= fourPointLineCount P (VERIFIED, 0-axiom)"
+      "Erdos101OQ04.fourPointLineCount_ge_of_injOn_family: injective L : Fin k -> Finset four-point collinear subsets -> k <= fourPointLineCount P (VERIFIED, 0-axiom)",
+      "conic_slice_neg_eq_circle + oblique_triple_on_ternary_conic : formalize the two explicit surface-point remarks in the quartic_quadruple_family docstring — (1) the conic Q=p²+q²+r²+pq+qr+rp collapses to the circle p²+r² on the slice q=−p (algebraic core of the symmetric-family=slice claim); (2) the oblique witness (−8/3,1/3,1) is a point of Q=5 (=45/9), the oblique twin of symmetric_triple_on_ternary_conic. [proofs machine-checked standalone, ring/norm_num, axiom-free]"
     ],
     "insights": [
       "The realParabolaSet arc has fourPointLineCount=0, so the file only inhabited IsLowerBoundConstruction _ 0 before this session; the four collinear x-axis points of W give the first positive four-point-line count witness (>=1) with no five collinear.",
       "Both remaining sorries are genuine OPEN constructions: Grunbaum Omega(n^3/2) needs a sumset/grid built ON TOP of the no-three-collinear parabola base (parabola alone has 0 four-point lines); Solymosi-Stojakovic n^{2-o(1)} needs ~600-1000 LOC of measure-theoretic random-projection infra (Path A).",
       "The counting half of every witness lower bound is identical (subset of the defining powerset-filter, then Finset.card_le_card); factoring it out leaves future constructions to supply only geometry (the collinear quadruples) plus distinctness/injectivity.",
-      "The injective-family form is the natural interface for a GROWING construction: it produces one four-point line per index i : Fin k, and the only combinatorial obligation beyond per-line geometry is that distinct indices name distinct lines (Function.Injective L)."
+      "The injective-family form is the natural interface for a GROWING construction: it produces one four-point line per index i : Fin k, and the only combinatorial obligation beyond per-line geometry is that distinct indices name distinct lines (Function.Injective L).",
+      "The solution surface Σx=0∧Σx²=10 for four-point lines on y=x⁴−5x² is the fixed ternary conic Q=5; its named special cases are exactly (a) the q=−p slice = circle p²+r²=5 (symmetric family) and (b) surface points like (−8/3,1/3,1) (oblique). Both are pure ring/norm_num identities once the conic form is fixed — the OPEN content is purely SELECTING super-linearly many with pairwise-distinct abscissa sets, never existence."
     ],
     "mathlibGaps": [
       "No mathlib gap for the witness; the OPEN Path A (Solymosi-Stojakovic) needs a measure-zero certificate for algebraic varieties in projection-parameter space, not currently in Mathlib in usable form."

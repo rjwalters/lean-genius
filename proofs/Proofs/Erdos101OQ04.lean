@@ -3191,4 +3191,32 @@ theorem quartic_quadruple_family_onQuartic_collinear (p q r : ℝ)
   rw [four_onQuartic_collinear_iff_sq rfl rfl rfl rfl hpq hqr hrp hqd hdp hrd]
   exact quartic_quadruple_family_criterion p q r h
 
+/-! ### The two named surface points of the docstring, made precise
+
+The docstring of `quartic_quadruple_family_criterion` records two explicit locations on the
+solution surface `Q = 5`: the **symmetric slice** `q = −p` (where `Q` "collapses to the circle
+`p² + r² = 5`", quadruple `(p, −p, r, −r)`), and the **single oblique witness** as the surface
+point `(p, q, r) = (−8/3, 1/3, 1)`.  The two lemmas below turn those two prose remarks into
+checked identities. -/
+
+/-- **On the slice `q = −p` the ternary conic collapses to the circle `p² + r²`.**
+Substituting `q = −p` into `Q(p,q,r) = p²+q²+r²+pq+qr+rp` cancels the `q`-terms and leaves
+exactly `p² + r²`; so the slice `q = −p` of the surface `Q = 5` is the circle `p² + r² = 5`,
+whose quadruple `(p, −p, r, −(p+(−p)+r)) = (p, −p, r, −r)` is the symmetric shape.  This is the
+algebraic core of the docstring's "the symmetric family is the slice `q = −p`" remark. -/
+theorem conic_slice_neg_eq_circle (p r : ℝ) :
+    p ^ 2 + (-p) ^ 2 + r ^ 2 + p * (-p) + (-p) * r + r * p = p ^ 2 + r ^ 2 := by
+  ring
+
+/-- **The oblique witness `(−8/3, 1/3, 1)` is a point of the ternary conic `Q = 5`.**
+The rational triple `(−8/3, 1/3, 1)` satisfies `p²+q²+r²+pq+qr+rp = 5`
+(`= (64 + 1 + 9 − 8 + 3 − 24)/9 = 45/9 = 5`), so by `quartic_quadruple_family_onQuartic_collinear`
+it generates the oblique four-point line with abscissae `(−8/3, 1/3, 1, 4/3)` on the quartic —
+making precise the docstring's remark that the single oblique witness is the surface point
+`(p, q, r) = (−8/3, 1/3, 1)`. -/
+theorem oblique_triple_on_ternary_conic :
+    (-8 / 3 : ℝ) ^ 2 + (1 / 3 : ℝ) ^ 2 + (1 : ℝ) ^ 2
+        + (-8 / 3 : ℝ) * (1 / 3) + (1 / 3 : ℝ) * 1 + (1 : ℝ) * (-8 / 3) = 5 := by
+  norm_num
+
 end Erdos101OQ04
