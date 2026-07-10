@@ -154,3 +154,24 @@ one-liner mirroring the verified sibling `conder_no_threshold_le`; ships UNVERIF
 docker-down protocol. Placed at end of Part IV.5 (line 305), inside the `conjecture`
 gallery section. File 432→443; theoremCount 11→12; section/annotation line refs ≥296
 shifted +11.
+
+## Session 2026-07-10 (researcher-3) — positive "unbounded n" form of Conder's axiom
+
+**Mode**: REVISIT (RICH) · **Outcome**: progress (1 theorem, 0 new axioms), UNVERIFIED
+(docker image build hit containerd `meta.db` input/output error; no host Mathlib oleans →
+no build possible this session). Proof is pure-logic and by-eye verifiable.
+
+**Contribution.** Added `conder_counterexamples_unbounded : ∀ N, ∃ n, N ≤ n ∧ ¬ DenseForcesC6 n (1/3)`
+in Part IV.5 (after `conjectureAt_imp_gt_third`). The deep axiom `conder_no_threshold` is
+stated compactly as `¬ ConjectureAt (1/3) = ¬ ∃ N, ∀ n ≥ N, DenseForcesC6 n (1/3)`, which
+hides its positive content. De Morgan (`by_contra; push_neg`) turns "no threshold works"
+into the honest statement that for *every* candidate threshold `N` there is an `n ≥ N` where
+`(1/3)`-density fails to force `C₆` — i.e. a `(1/3)`-dense `C₆`-free subgraph of `Qₙ`. So
+Conder's construction is not a small-`n` artifact: counterexamples recur for arbitrarily
+large hypercubes. Proof: `by_contra h; push_neg at h; obtain ⟨N,hN⟩ := h; exact conder_no_threshold ⟨N,hN⟩`
+(push_neg gives `∃N,∀n,N≤n→DenseForcesC6 n (1/3)`, defeq to `ConjectureAt (1/3)`).
+
+**File state:** 1 axiom (`conder_no_threshold`, deep/uneliminable), 0 sorries. 443→458 lines,
+theorems 13→14 (meta was lagging at 12→corrected to 14). No follow-up questions generated:
+file is saturated and the remaining directions (GeneralizedConjecture C_{2k}, explicit Conder
+3-colouring) are all large/open, documented in nextSteps.

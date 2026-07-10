@@ -305,6 +305,21 @@ works is the remaining quantitative question; here we only pin the barrier from 
 theorem conjectureAt_imp_gt_third {ε : ℝ} (h : ConjectureAt ε) : 1/3 < ε :=
   not_le.mp (fun hle => conder_no_threshold_le hle h)
 
+/-- **Conder's counterexamples recur for arbitrarily large hypercubes.**
+The axiom `conder_no_threshold` is stated in the compact negation form `¬ ConjectureAt (1/3)`
+(no threshold `N` works), which conceals its positive content.  Unfolding the two nested
+quantifiers turns "`∃ N` fails" into the honest statement below: for *every* candidate
+threshold `N` there is some `n ≥ N` at which `(1/3)`-density does not force `C₆` — i.e. a
+`(1/3)`-dense `C₆`-free subgraph of `Qₙ`.  So Conder's construction is not a small-`n`
+artifact: the counterexamples occur for arbitrarily large `n`.  Pure logic (De Morgan on the
+`∃N ∀n≥N` shape), no new axioms. -/
+theorem conder_counterexamples_unbounded :
+    ∀ N : ℕ, ∃ n, N ≤ n ∧ ¬ DenseForcesC6 n (1/3) := by
+  by_contra h
+  push_neg at h
+  obtain ⟨N, hN⟩ := h
+  exact conder_no_threshold ⟨N, hN⟩
+
 /-
 ## Part V: Chung's Result (1992)
 
