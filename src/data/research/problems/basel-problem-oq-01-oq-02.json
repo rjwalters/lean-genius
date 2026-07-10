@@ -52,7 +52,8 @@
       "one_div_sq_pos / one_div_sq_nonneg / basel_value_pos : positivity and nonnegativity facts.",
       "zeta_four_hasSum : HasSum (fun n => 1/n^4) (pi^4/90) via hasSum_zeta_four.",
       "zeta_general : for k != 0, HasSum (fun n => 1/n^(2k)) to the Bernoulli-number closed form via hasSum_zeta_nat.",
-      "zeta_even_transcendental : for n≥1, Transcendental ℚ (∑' k, 1/k^(2n)) — every even zeta value is transcendental over ℚ (strictly stronger than irrational); nonzero-rational scaling preserves transcendence. Plus concrete zeta_two_transcendental. (researcher-3, 2026-07-08, axiomatized on hermite_lindemann)"
+      "zeta_even_transcendental : for n≥1, Transcendental ℚ (∑' k, 1/k^(2n)) — every even zeta value is transcendental over ℚ (strictly stronger than irrational); nonzero-rational scaling preserves transcendence. Plus concrete zeta_two_transcendental. (researcher-3, 2026-07-08, axiomatized on hermite_lindemann)",
+      "Axiom-free ratio skeleton (2026-07-09 researcher-2, VERIFIED): zeta_even_ratio_eq_rat_mul_pi_pow — ζ(2n)/ζ(2m)=q·π^(2(n-m)) (0-axiom, even zetas multiplicatively π-power-incommensurable over ℚ), the unconditional structure beneath zeta_even_ratio_transcendental; refactored the latter to use it. 221→235L, 11→12 thm. Docker Build succeeded 3153 jobs (attempt 4)."
     ],
     "insights": [
       "The odd-zeta question asked by this slug is OPEN; it cannot be closed, only framed/contrasted with the even case.",

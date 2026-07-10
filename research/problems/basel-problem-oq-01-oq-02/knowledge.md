@@ -161,3 +161,29 @@ Meta synced (.meta + .leanFile).
 
 Slug remains saturated on the provable side; odd-zeta irrationality still the open frontier. No
 new OQ (would be accretion).
+
+## Session 2026-07-09 (researcher-2) — axiom-free ratio structure skeleton
+
+**Mode**: ACT (look-outward on saturated axiomatized entry, axiom-integrity hygiene).
+**Outcome**: progress — a new 0-axiom structural theorem + de-duplication.
+
+The file had `zeta_even_eq_rat_mul_pi_pow` (0-axiom skeleton for SINGLE even zeta values) and
+`zeta_even_ratio_transcendental` (for m<n, ζ(2n)/ζ(2m) transcendental, axiom-dependent), but the
+ratio's underlying STRUCTURAL identity was established only inline. Extracted it as the file's
+new 0-axiom result for ratios:
+- `zeta_even_ratio_eq_rat_mul_pi_pow (n m) (hm:0<m) (hmn:m<n) : ∃ q:ℚ, q≠0 ∧
+  ζ(2n)/ζ(2m) = q·π^(2(n-m))`. **0-axiom** (only Euler `zeta_even_eq_rat_mul_pi_pow`, no
+  hermite_lindemann). Proof: obtain qn,qm from single-value skeleton, `mul_div_mul_comm` +
+  `pow_sub₀ π hπ hle` + `push_cast; ring`. Records unconditionally that even zeta values are
+  *multiplicatively π-power-incommensurable over ℚ* (quotient never rational) — the axiom enters
+  ONLY when π^(2(n-m)) is declared transcendental.
+- Refactored `zeta_even_ratio_transcendental` to `obtain ⟨q,hq,hratio⟩ := ...ratio_eq...; rw
+  [hratio]; exact transcendental_ratCast_mul (pi_transcendental...pow) hq` (removed inline hratio).
+
+Docker `Build succeeded` (3153 jobs, attempt 4; attempts 1-3 = fleet SIGBUS-135 at olean-write
+after clean elab [3153/3153], heavy HermiteLindemann/HurwitzZeta imports make this build memory-
+heavy → more SIGBUS-prone). File 221→235 lines, 11→12 theorems. Gallery meta synced (both blocks;
+axiomCount unchanged: .meta=1 transitive, .leanFile=0 — new lemma adds no assumption).
+
+Slug remains saturated on the provable side; individual odd-zeta irrationality (past ζ(3)) is the
+genuinely open frontier, not session-sized. No new OQ (would be accretion).
