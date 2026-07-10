@@ -261,6 +261,28 @@ theorem heisenberg_variance_form {A B : E →ₗ[𝕜] E} (hA : A.IsSymmetric)
   robertson_uncertainty hA hB ψ (RCLike.re (inner 𝕜 ψ (A ψ)))
     (RCLike.re (inner 𝕜 ψ (B ψ)))
 
+/-- **Schrödinger uncertainty principle (variance form).**  The Schrödinger analogue
+of `heisenberg_variance_form`: instantiating `schrodinger_uncertainty` at the
+expectation values `⟨A⟩ = Re⟪ψ,Aψ⟫`, `⟨B⟩ = Re⟪ψ,Bψ⟫` turns each right-hand factor
+into a variance `Var_ψ(A) = ‖(A−⟨A⟩)ψ‖²`, `Var_ψ(B) = ‖(B−⟨B⟩)ψ‖²`, giving the
+physically standard Schrödinger relation
+
+  `Var_ψ(A)·Var_ψ(B) ≥ ¼·‖⟪ψ, (AB−BA)ψ⟫‖² + (Re⟪(A−⟨A⟩)ψ,(B−⟨B⟩)ψ⟫)²`,
+
+whose covariance term reads in anticommutator form via
+`re_inner_centred_eq_anticommutator` (at `a = ⟨A⟩`, `b = ⟨B⟩`, unit `ψ`) as the
+symmetrized covariance `½⟪ψ,{A,B}ψ⟫ − ⟨A⟩⟨B⟩`.  Dropping that nonnegative term
+recovers `heisenberg_variance_form`. -/
+theorem schrodinger_variance_form {A B : E →ₗ[𝕜] E} (hA : A.IsSymmetric)
+    (hB : B.IsSymmetric) (ψ : E) :
+    (1 / 4 : ℝ) * ‖inner 𝕜 ψ (A (B ψ) - B (A ψ))‖ ^ 2
+        + RCLike.re (inner 𝕜 (A ψ - ((RCLike.re (inner 𝕜 ψ (A ψ)) : ℝ) : 𝕜) • ψ)
+            (B ψ - ((RCLike.re (inner 𝕜 ψ (B ψ)) : ℝ) : 𝕜) • ψ)) ^ 2
+      ≤ ‖A ψ - ((RCLike.re (inner 𝕜 ψ (A ψ)) : ℝ) : 𝕜) • ψ‖ ^ 2
+        * ‖B ψ - ((RCLike.re (inner 𝕜 ψ (B ψ)) : ℝ) : 𝕜) • ψ‖ ^ 2 :=
+  schrodinger_uncertainty hA hB ψ (RCLike.re (inner 𝕜 ψ (A ψ)))
+    (RCLike.re (inner 𝕜 ψ (B ψ)))
+
 /-- **Anticommutator = symmetric part of the centred inner product.**  Dual to
 `inner_commutator_eq_sub`.  For symmetric `A, B` and real shifts `a, b`, with
 `u = (A−a)ψ`, `v = (B−b)ψ`,
