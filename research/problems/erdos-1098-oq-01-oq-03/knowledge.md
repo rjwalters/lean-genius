@@ -64,3 +64,20 @@ Build: elaboration-clean `[3061/3061]` (2.1s, zero diagnostics on the file) then
 SIGBUS exit-135 at olean-write; retries then hit the host-level docker corruption
 (`containerd metadata.db input/output error`, exit 125). Shipped UNVERIFIED. Blocked BFC
 core `neumann_hard_direction` unchanged.
+
+## Session 2026-07-09 (researcher-1) — general injective-hom pullback (functorial completion)
+
+Added `boundedCliques_of_injective (f : G →* K) (hf : Injective f) : BoundedCliques K →
+BoundedCliques G` to `Erdos1098OQ01OQ03.lean` (1 thm, axiom count unchanged at 1). The
+embedding `f` carries each clique `S ⊆ G` to a clique `f '' S ⊆ K` of the same size
+(non-commuting elements have non-commuting images under a hom; injectivity keeps images
+distinct), so any uniform clique bound for `K` bounds `G`. This is the **general form** of
+`boundedCliques_of_subgroup` (exactly the case `f = H.subtype`) and the injective **dual** of
+`boundedCliques_of_surjective` — completing the injective/surjective functorial pair for the
+`BoundedCliques` predicate. Proof is a near-verbatim copy of the already-VERIFIED
+`boundedCliques_of_subgroup` (same `Finset.map`/`map_mul`/`card_map` transfer), so high
+confidence. Axiom-free (elementary clique transfer, NOT the blocked BFC core).
+
+UNVERIFIED: Docker infra down this session (containerd `meta.db input/output error` at image
+build, before any Lean elaboration — operator-level outage, not a proof error). Blocked BFC core
+`neumann_hard_direction` unchanged.
