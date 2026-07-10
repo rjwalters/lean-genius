@@ -173,5 +173,28 @@
       "description": "Complement: the CLT gives rate n^{1/2} and Gaussian limit for L² distributions. M-Z applies when L² fails, giving slower rate n^{1/r} with α-stable (non-Gaussian) limit."
     }
   ],
+  "references": [
+    {
+      "title": "Sur les fonctions indépendantes",
+      "author": "Józef Marcinkiewicz and Antoni Zygmund",
+      "year": "1937",
+      "venue": "Fundamenta Mathematicae 29, 60–90",
+      "description": "The original Marcinkiewicz–Zygmund strong law: for i.i.d. X with E[|X|^r] < ∞, r ∈ (0,2), the centered partial sums normalized by n^{1/r} converge to 0 almost surely — the theorem whose r ∈ (1,2) heavy-tailed rate n^{1/r} this entry formalizes."
+    },
+    {
+      "title": "Probability Theory: Independence, Interchangeability, Martingales",
+      "author": "Yuan Shih Chow and Henry Teicher",
+      "year": "1997",
+      "venue": "Springer (3rd edition)",
+      "description": "Standard graduate reference proving the Marcinkiewicz–Zygmund SLLN and its sharpness, with the moment condition E[|X|^r] < ∞ characterizing the optimal normalizing exponent 1/r."
+    },
+    {
+      "title": "Probability: Theory and Examples",
+      "author": "Rick Durrett",
+      "year": "2019",
+      "venue": "Cambridge University Press (5th edition)",
+      "description": "Develops the classical Kolmogorov SLLN, the Marcinkiewicz–Zygmund refinement for E[|X|^r] < ∞, and the domain-of-attraction / α-stable-limit theory (§3.7–3.8) that explains why Pareto(α), α ∈ (1,2), has convergence rate n^{1/α} rather than the Gaussian n^{1/2}."
+    }
+  ],
   "sorries": 0
 }
