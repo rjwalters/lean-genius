@@ -305,6 +305,51 @@ theorem simplexConv_comp (a b : ℕ) (f : ℕ → ℕ) (n : ℕ) :
   rw [← iterSum_eq_simplexConv, hb, iterSum_add,
     show a + 1 + (b + 1) = (a + b + 1) + 1 from by ring, iterSum_eq_simplexConv]
 
+/-- **Figurate convolution collapses to a single simplex number.** Convolving the
+`b`-dimensional simplex *sequence* `P_b` with the `a`-dimensional simplex *kernel* gives
+the `(a+b+1)`-dimensional simplex number:
+
+`simplexConv a (P_b) n = P_{a+b+1}(n)`.
+
+The specialisation of the convolution semigroup law `simplexConv_comp` to the sequence
+`f = P_b` whose answer is again a *single* figurate number (rather than a convolution of a
+general `f`). Structurally it is the discrete Cauchy formula `simplexConv a = iterSum (a+1)`
+(`iterSum_eq_simplexConv`) applied to `P_b` and collapsed by the dimension-additivity
+`iterSum_simplexNumber`, i.e. `iterSum (a+1) P_b = P_{(a+1)+b}`. -/
+theorem simplexConv_simplexNumber (a b n : ℕ) :
+    simplexConv a (simplexNumber b) n = simplexNumber (a + b + 1) n := by
+  rw [← iterSum_eq_simplexConv, iterSum_simplexNumber,
+    show a + 1 + b = a + b + 1 from by ring]
+
+/-- **Vandermonde convolution of figurate numbers (sum form).** Writing out
+`simplexConv_simplexNumber` as an explicit sum: the discrete convolution of the two
+figurate sequences `P_a` and `P_b` is the single figurate number `P_{a+b+1}`:
+
+`∑_{k≤n} P_a(n-k) · P_b(k) = P_{a+b+1}(n)`.
+
+The discrete analogue of the Beta-integral / fractional-integration composition
+`∫₀ⁿ (n-t)^a t^b dt ∝ n^{a+b+1}`; the figurate kernels `P_a` convolve additively in
+dimension (with the `+1` from the extra summation index). -/
+theorem sum_simplexNumber_mul_simplexNumber (a b n : ℕ) :
+    ∑ k ∈ range (n + 1), simplexNumber a (n - k) * simplexNumber b k
+      = simplexNumber (a + b + 1) n := by
+  have h := simplexConv_simplexNumber a b n
+  rwa [simplexConv] at h
+
+/-- **Vandermonde convolution in raw binomial form.** The previous identity written
+purely with `Nat.choose`, exhibiting the classical convolution Vandermonde identity for
+the shallow diagonals of Pascal's simplex:
+
+`∑_{k≤n} C(n-k+a, a) · C(k+b, b) = C(n+a+b+1, a+b+1)`.
+
+Mathlib has the single-step hockey stick `Nat.sum_range_add_choose` but not this
+two-parameter convolution of figurate diagonals as a named lemma. -/
+theorem sum_choose_mul_choose (a b n : ℕ) :
+    ∑ k ∈ range (n + 1), (n - k + a).choose a * (k + b).choose b
+      = (n + (a + b + 1)).choose (a + b + 1) := by
+  have h := sum_simplexNumber_mul_simplexNumber a b n
+  simpa [simplexNumber] using h
+
 /-- **Counting face (stars and bars).** The `d`-dimensional simplex number counts
 the size-`d` multisets drawn from the `n+1` symbols `{0, 1, …, n}` — equivalently
 the weakly increasing `d`-tuples `0 ≤ i₁ ≤ ⋯ ≤ i_d ≤ n`:
