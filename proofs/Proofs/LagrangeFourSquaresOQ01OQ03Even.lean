@@ -120,4 +120,30 @@ theorem jacobiCount_closed_form (n : ℕ) :
         = 8 * ∑ d ∈ n.divisors, d) :=
   ⟨jacobiCount_of_not_four_dvd, jacobiCount_four_dvd_add⟩
 
+/-- **Exact characterization of the odd/`≡2` collapse.**  For every `n ≥ 1`, the
+Jacobi right-hand side equals the plain scaled divisor sum `8·σ(n)` **iff** `4 ∤ n`.
+`jacobiCount_of_not_four_dvd` gives the easy `(⇐)` direction; the new `(⇒)` content
+is the converse strictness: once `4 ∣ n` (so `n ≥ 4` and `n/4 ≥ 1`), the correction
+`32·σ(n/4)` is *strictly positive* — the divisor `1` alone contributes `σ(n/4) ≥ 1` —
+so `jacobiCount n = 8σ(n) − 32σ(n/4) < 8σ(n)`, ruling out equality.  Thus the base
+file's `jacobiCount_odd`/`jacobiCount_of_not_four_dvd` collapse is not merely
+sufficient but *exactly* the `4 ∤ n` locus: the `4 ∣ n` correction never vanishes on
+`n ≥ 1`.  Axiom-free (`propext`/`Classical.choice`/`Quot.sound` only). -/
+theorem jacobiCount_eq_eight_sigma_iff {n : ℕ} (hn : 1 ≤ n) :
+    jacobiCount n = 8 * ∑ d ∈ n.divisors, d ↔ ¬ 4 ∣ n := by
+  constructor
+  · intro heq hdvd
+    -- With `4 ∣ n`, the partition identity forces the `n/4` divisor sum to vanish.
+    have hadd := jacobiCount_four_dvd_add hdvd
+    rw [heq] at hadd
+    have hσ' : (∑ e ∈ (n / 4).divisors, e) = 0 := by omega
+    -- But `n ≥ 4` gives `n/4 ≥ 1`, so `1` is a divisor of `n/4` and the sum is `≥ 1`.
+    have hn4 : 1 ≤ n / 4 := (Nat.one_le_div_iff (by norm_num)).mpr (Nat.le_of_dvd (by omega) hdvd)
+    have hmem : (1 : ℕ) ∈ (n / 4).divisors :=
+      Nat.one_mem_divisors.mpr (by omega)
+    have hpos : 1 ≤ ∑ e ∈ (n / 4).divisors, e :=
+      Finset.single_le_sum (f := fun e => e) (fun i _ => Nat.zero_le i) hmem
+    omega
+  · exact jacobiCount_of_not_four_dvd
+
 end LagrangeFourSquaresOQ01OQ03Even
