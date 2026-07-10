@@ -31,6 +31,7 @@ independently proved it in 1885 for the context of variational calculus.
 - [x] Integral form: |∫ f·g dμ| ≤ ‖f‖_L2 · ‖g‖_L2
 - [x] Squared integral form
 - [x] Equality characterization
+- [x] Squared equality characterization (inner and integral forms)
 -/
 
 noncomputable section
@@ -121,11 +122,39 @@ theorem bunyakovsky_schwarz_abs_eq_iff (f g : Lp ℝ 2 μ) (hf : f ≠ 0) (hg : 
   rw [← L2_inner_eq_integral]
   exact cauchy_schwarz_L2_eq_iff f g hf hg
 
+-- Equality Characterization (Squared Inner-Product Form)
+--
+-- The squared companion of `cauchy_schwarz_L2_eq_iff`. Since the bound
+-- `‖f‖·‖g‖` is nonnegative, squaring is monotone and the absolute value in the
+-- equality case can be dropped: for nonzero L² functions, `⟪f,g⟫² = ‖f‖²·‖g‖²`
+-- holds iff `f` and `g` are linearly dependent. This is the equality companion
+-- of `cauchy_schwarz_L2_sq` (the `≤` squared form). Proved by reducing to the
+-- absolute-value equality via `sq_eq_sq₀` on the two nonnegative sides.
+theorem cauchy_schwarz_L2_sq_eq_iff (f g : Lp ℝ 2 μ) (hf : f ≠ 0) (hg : g ≠ 0) :
+    (@inner ℝ _ _ f g) ^ 2 = ‖f‖ ^ 2 * ‖g‖ ^ 2 ↔ ∃ c : ℝ, f = c • g := by
+  rw [← cauchy_schwarz_L2_eq_iff f g hf hg,
+    ← sq_abs (@inner ℝ _ _ f g), ← mul_pow]
+  exact sq_eq_sq₀ (abs_nonneg _) (mul_nonneg (norm_nonneg _) (norm_nonneg _))
+
+-- Equality Characterization (Squared Integral Form)
+--
+-- The integral-form companion of `cauchy_schwarz_L2_sq_eq_iff` and the equality
+-- case of `bunyakovsky_schwarz_sq` (`(∫ f·g dμ)² ≤ ‖f‖²·‖g‖²`). For nonzero L²
+-- functions, `(∫ f·g dμ)² = ‖f‖²·‖g‖²` holds iff `f` and `g` are linearly
+-- dependent. Derived from the inner-product form through the same
+-- `L2_inner_eq_integral` bridge used by `bunyakovsky_schwarz_sq`.
+theorem bunyakovsky_schwarz_sq_eq_iff (f g : Lp ℝ 2 μ) (hf : f ≠ 0) (hg : g ≠ 0) :
+    (∫ a, (f : α → ℝ) a * (g : α → ℝ) a ∂μ) ^ 2 = ‖f‖ ^ 2 * ‖g‖ ^ 2 ↔ ∃ c : ℝ, f = c • g := by
+  rw [← L2_inner_eq_integral]
+  exact cauchy_schwarz_L2_sq_eq_iff f g hf hg
+
 -- Summary check
 #check @bunyakovsky_schwarz_abs
 #check @bunyakovsky_schwarz_sq
 #check @cauchy_schwarz_L2_eq_iff
 #check @bunyakovsky_schwarz_abs_eq_iff
+#check @cauchy_schwarz_L2_sq_eq_iff
+#check @bunyakovsky_schwarz_sq_eq_iff
 
 end BunyakovskySchwarz
 
