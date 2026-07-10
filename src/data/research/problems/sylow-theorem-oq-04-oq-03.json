@@ -86,7 +86,8 @@
       "unipotent_isCommutator_of_isUnit (SylowTheoremOQ04OQ03.lean): a²−1 a unit ⟹ every u(s) is a T–U commutator, VERIFIED 0/0",
       "exists_unipotent_isCommutator (SylowTheoremOQ04OQ03.lean): p≥5 ⟹ every u(s) is a commutator [diag(2),u(t)] (perfectness input), VERIFIED 0/0",
       "unipotentUpper_inv (SylowTheoremOQ04OQ03.lean): (u(t))⁻¹ = u(−t) helper, VERIFIED 0/0",
-      "closure_rootGroups_eq_top + weylW_eq_root_word + torusDiag_eq_root_word + mem_closure_of_lowerLeft_ne_zero + rootGroups + membership lemmas + lowerUnipotent_mul/_zero (SylowTheoremOQ04OQ03.lean, +~194 lines): Bruhat generation ⟨U,U⁻⟩ = SL(2,p). [UNVERIFIED — Docker daemon I/O corruption blocked the build; mathematically hand-checked, tactics mirror the file's verified matrix-identity idiom.]"
+      "closure_rootGroups_eq_top + weylW_eq_root_word + torusDiag_eq_root_word + mem_closure_of_lowerLeft_ne_zero + rootGroups + membership lemmas + lowerUnipotent_mul/_zero (SylowTheoremOQ04OQ03.lean, +~194 lines): Bruhat generation ⟨U,U⁻⟩ = SL(2,p). [UNVERIFIED — Docker daemon I/O corruption blocked the build; mathematically hand-checked, tactics mirror the file's verified matrix-identity idiom.]",
+      "subsingleton_abelianization + subsingleton_abelianization_PSL (SylowTheoremOQ04OQ03.lean): the G^{ab}=1 form of perfectness — Abelianization of SL(2,p) and of PSL(2,p) is a Subsingleton for p≥5, via commutator_eq_top / commutator_PSL_eq_top + QuotientGroup.subsingleton_quotient_top. [UNVERIFIED — Docker daemon down (containerd blob I/O); the 3-line proof pattern was independently confirmed to elaborate against the local pinned Mathlib on a generic perfect group.]"
     ]
   },
   "leanFiles": [
@@ -236,8 +237,8 @@
     {
       "path": "Proofs/SylowTheoremOQ04OQ03.lean",
       "filename": "SylowTheoremOQ04OQ03.lean",
-      "lineCount": 885,
-      "theoremCount": 36,
+      "lineCount": 978,
+      "theoremCount": 48,
       "axiomCount": 0,
       "defCount": 8,
       "sorryCount": 0,

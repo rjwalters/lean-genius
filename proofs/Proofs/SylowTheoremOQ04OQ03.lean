@@ -941,4 +941,38 @@ theorem not_isSolvable_PSL (hp : 5 ≤ p) :
       (by rw [QuotientGroup.ker_mk']; exact (Subgroup.range_subtype _).ge)
   exact not_isSolvable hp this
 
+/-!
+## Triviality of the abelianizations for `p ≥ 5`
+
+Perfectness (`commutator_eq_top`, `commutator_PSL_eq_top`) says the derived subgroup is
+the whole group.  In the standard `G^{ab} = 1` language this is the statement that the
+*abelianization* — the universal abelian quotient `G ⧸ ⁅G, G⁆` — is trivial.  Recording
+it in this form makes the perfectness of both the cover `SL(2, p)` and the target
+`PSL(2, p)` available as `Subsingleton (Abelianization …)`, the shape most facts about
+abelian quotients consume: every homomorphism from a perfect group to an abelian group is
+trivial, and the first integral homology `H₁(G; ℤ) ≅ G^{ab}` vanishes.
+-/
+
+/-- **The abelianization of `SL(2, p)` is trivial for `p ≥ 5`.**  Since
+`Abelianization G = G ⧸ commutator G` and `SL(2, p)` is perfect (`commutator_eq_top`), the
+abelianization is a quotient by the whole group, hence a subsingleton.  Equivalently, every
+group homomorphism from `SL(2, p)` into an abelian group is trivial. -/
+theorem subsingleton_abelianization (hp : 5 ≤ p) :
+    Subsingleton (Abelianization (Matrix.SpecialLinearGroup (Fin 2) (ZMod p))) := by
+  show Subsingleton (_ ⧸ commutator (Matrix.SpecialLinearGroup (Fin 2) (ZMod p)))
+  rw [commutator_eq_top hp]
+  exact QuotientGroup.subsingleton_quotient_top
+
+/-- **The abelianization of `PSL(2, p)` is trivial for `p ≥ 5`.**  The target group is
+perfect (`commutator_PSL_eq_top`), so its abelianization `PSL(2, p) ⧸ commutator` is a
+quotient by the whole group and therefore a subsingleton.  This is the `G^{ab} = 1` form of
+perfectness for the simple-group candidate itself. -/
+theorem subsingleton_abelianization_PSL (hp : 5 ≤ p) :
+    Subsingleton
+      (Abelianization (Matrix.ProjectiveSpecialLinearGroup (Fin 2) (ZMod p))) := by
+  show Subsingleton
+    (_ ⧸ commutator (Matrix.ProjectiveSpecialLinearGroup (Fin 2) (ZMod p)))
+  rw [commutator_PSL_eq_top hp]
+  exact QuotientGroup.subsingleton_quotient_top
+
 end SylowOQ04OQ03
