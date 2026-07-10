@@ -563,6 +563,21 @@ theorem f_two_max :
   have hT' : T ∈ ({1, 2} : Finset ℕ).powerset := Finset.mem_powerset.mpr hT
   fin_cases hS' <;> fin_cases hT' <;> revert heq <;> decide
 
+/-- f(3) = 4: the set `{1, 2, 4}` has `2³ = 8` distinct subset sums (`0..7`, the
+    binary representations) with maximum element `4`.  This is the `n = 3` entry of
+    OEIS A005318, continuing the `f_zero`/`f_one`/`f_two_max` sequence: powers of two
+    are the simplest distinct-subset-sums witness, and `{1,2,4}` attains the known
+    minimal maximum `f(3) = 4`.  The `hasDistinctSubsetSums {1,2,4}` obligation is
+    discharged by enumerating the eight subsets (`fin_cases` over the powerset) and
+    deciding each subset-pair sum comparison, exactly as in `f_two_max`. -/
+theorem f_three :
+    ∃ (A : Finset ℕ), A.card = 3 ∧ hasDistinctSubsetSums A ∧ A.sup id = 4 := by
+  refine ⟨{1, 2, 4}, by decide, ?_, by decide⟩
+  intro S T hS hT heq
+  have hS' : S ∈ ({1, 2, 4} : Finset ℕ).powerset := Finset.mem_powerset.mpr hS
+  have hT' : T ∈ ({1, 2, 4} : Finset ℕ).powerset := Finset.mem_powerset.mpr hT
+  fin_cases hS' <;> fin_cases hT' <;> revert heq <;> decide
+
 /-! ## Conclusion
 
 The DFX framework is formalized with:
