@@ -132,6 +132,11 @@
       "id": "area-of-circle-oq-07-oq-05-oq-01-oq-02-oq-01",
       "question": "Combine the scaled even moments with the (vanishing) scaled odd moments to read off the moment generating function ∫_ℝ e^{t x} e^{-a x²} dx = √(π/a) e^{t²/(4a)}, recovering the full Gaussian Laplace/Fourier transform from the moment sequence.",
       "significance": "medium"
+    },
+    {
+      "id": "area-of-circle-oq-07-oq-05-oq-01-oq-02-oq-02",
+      "question": "Unify the integer even moments with the general fractional/absolute moment via the Gamma function: since (2n-1)‼ = 2ⁿ Γ(n+½)/√π, the identity reads ∫_ℝ x^{2n} e^{-a x²} dx = Γ(n+½)/a^{n+½}, which extends to ∫_ℝ |x|^{s} e^{-a x²} dx = Γ((s+1)/2)/a^{(s+1)/2} for every real s > -1. Prove this continuous-order moment formula and recover the double-factorial case as the even integers s = 2n.",
+      "significance": "medium"
     }
   ],
   "crossReferences": [
@@ -167,7 +172,8 @@
     "summary": "For every n : ℕ and every a > 0 the scaled Gaussian even moment is ∫_ℝ x^{2n} e^{-a x²} dx = (2n-1)‼·√(π/a)/(2a)ⁿ (scaled_gaussian_even_moment). The proof is one linear change of variables x ↦ √a·x: Mathlib's dilation rule MeasureTheory.Measure.integral_comp_mul_left turns the parent entry's unscaled moment ∫ x^{2n} e^{-x²} = (2n-1)‼·√π/2ⁿ into the scaled one, with the dilated integrand g(√a·x) = aⁿ·x^{2n} e^{-a x²} supplying the factor aⁿ and the rule's Jacobian |s⁻¹| = 1/√a supplying the missing half-power, so the integral picks up exactly a^{-(n+1/2)} = √(π/a)/(2a)ⁿ ÷ ((2n-1)‼√π). The second moment specializes to √(π/a)/(2a), twice the half-line sibling value. 119 lines, 4 theorems, 0 definitions, 0 axioms, 0 sorries; depends only on propext, Classical.choice, Quot.sound.",
     "implications": "This parameterizes the gallery's even-moment family by the Gaussian scale a > 0: every ∫ x^{2n} e^{-a x²} now has a machine-checked closed form, obtained for free from the unscaled case by a single dilation rather than re-running the integration-by-parts induction at each scale. It isolates the algebraic content of scaling a Gaussian — the moment of order 2n acquires the factor a^{-(n+1/2)} — and connects the whole-line moments to their half-line counterparts by even symmetry.",
     "openQuestions": [
-      "Assemble the scaled moment generating function ∫_ℝ e^{t x} e^{-a x²} = √(π/a) e^{t²/(4a)} from the full moment sequence."
+      "Assemble the scaled moment generating function ∫_ℝ e^{t x} e^{-a x²} = √(π/a) e^{t²/(4a)} from the full moment sequence.",
+      "Unify the result via the Gamma function as ∫_ℝ x^{2n} e^{-a x²} = Γ(n+½)/a^{n+½}, extending to the continuous-order absolute moment ∫_ℝ |x|^{s} e^{-a x²} = Γ((s+1)/2)/a^{(s+1)/2} for s > -1."
     ]
   }
 }
