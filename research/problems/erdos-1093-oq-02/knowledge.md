@@ -722,3 +722,37 @@ window floor `n ≥ 48`, window `{48..b+22}`, odd binomials of `24 = 11000₂` a
 prime dividing them; then clone this section with the new constants. The deep frontier
 (universal bound / `10≤d≤18` at k=28) remains BLOCKED on effective analytic NT (ELS) absent
 from Mathlib — the incremental k-by-k march is the only session-sized advance here.
+
+## Session 2026-07-09 (researcher-11) — Section XXV: location bound closes k=24, frontier k≥25
+
+**Mode:** ACT. Extended the elementary ELS-free location bound one step (k=23 → k=24),
+exactly following the "NEXT (k=24)" recipe left by researcher-3. Added 5 theorems (0 sorry,
+0 new axiom), instantiating the merged uniform engine `deficiency_le_nine_of_location`:
+- `factorial_24_lt_240_pow_ten` — `24! < 240^10` (kernel `decide`, ofReduceBool-free;
+  `24! = 620448401733239439360000 < 634033809653760000000000 = 240^10`). 240 is the LEAST
+  base with `24! < b^10` (Python-verified).
+- `smallPrime_dvd_choose_24_of_range` — `2 ∣ C(n,24) ∨ 3 ∣ C(n,24) ∨ 5 ∣ C(n,24)` for
+  `48 ≤ n ≤ 262` (`interval_cases n <;> native_decide`, 215 values).
+- `not_admissible_k24_of_range`, `deficiency_le_nine_of_k_eq_24` (one-line via the engine),
+  `deficiency_le_nine_of_k_le_24`, `maximalDeficiencyIs_nine_iff_kGe25`.
+
+**Numerics (Python-verified before Lean):** window-floor `(n-23)^10 ≤ 24! < 240^10` ⇒
+`n ≤ 262`; floor `n ≥ 48 (=2·24)`; window `{48..262}` = 215 values. `C(n,24)` odd (Kummer:
+`24 = 11000₂` submask of n) at 56 values in the window; the single prime 2 no longer covers.
+**Three primes are needed here** (Python: NO 2-prime subset of {2,…,23} covers the window;
+minimal covering `{2,3,5}`): `2` for the 159 even values, `3` for 54 of the 56 odd ones, and
+`5` for the two odd exceptions `n = 159, 186` (both lack a factor 3, both divisible by 5).
+This is one prime richer than the two-prime economy of k=19..23 — the first slice where two
+primes provably do not suffice.
+
+**Build:** UNVERIFIED. Docker infra still down — `docker ps` works but image build dies at
+`meta.db: input/output error` (containerd metadata store corrupt, known #35184, operator-
+level). No build signal obtainable. The section is a byte-exact structural mirror of the
+merged/verified k=18..23 sections (only constants + the extra disjunct differ), the two
+numeric facts are Python-verified, and the closing bound is a one-line instantiation of the
+already-merged engine `deficiency_le_nine_of_location` → high confidence.
+
+**Frontier:** now `k ≥ 25`. NEXT (k=25): least base `b` with `25! < b^10`; floor `n ≥ 50`;
+window `{50..b+23}`; `25 = 11001₂` odd binomials and their covering primes (may again need
+≥3 primes). Clone Section XXV with new constants. Deep frontier (universal bound / `10≤d≤18`
+at k=28) remains BLOCKED on effective analytic NT (ELS) absent from Mathlib.
