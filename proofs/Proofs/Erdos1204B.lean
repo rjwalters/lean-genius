@@ -1,5 +1,6 @@
 import Proofs.Erdos1204Problem
 import Proofs.Erdos1204A4
+import Proofs.Erdos1204A5
 
 /-
 # Erdős #1204 — the second extremal quantity `B(k)`
@@ -233,6 +234,46 @@ theorem admissible_four_sum_ge {a : Finset ℕ} (hcard : a.card = 4)
     rw [← Finset.add_sum_erase a id hMmem]; simp
   omega
 
+/-- **Lower-bound core for `S(5)`.** Every admissible `5`-set has element sum at least
+`28`. The maximum `M` is `≥ 12` (`admissible_five_sup_ge`, the `A(5)` lower bound), and
+the remaining admissible `4`-set has sum `≥ 16` (`admissible_four_sum_ge`), so the total
+is `≥ 12 + 16 = 28`. The same bootstrap `S(k) ≥ A(k) + S(k-1)` as at `k = 4`, now with the
+`A(5) = 12` diameter value. -/
+theorem admissible_five_sum_ge {a : Finset ℕ} (hcard : a.card = 5)
+    (ha : Admissible a) : 28 ≤ a.sum id := by
+  have hne : a.Nonempty := by rw [← Finset.card_pos, hcard]; omega
+  set M := a.max' hne with hMdef
+  have hMmem : M ∈ a := a.max'_mem hne
+  -- `M ≥ 12` from the `A(5)` lower bound `sup ≥ 12`
+  have hsup12 : 12 ≤ a.sup id := admissible_five_sup_ge hcard ha
+  have hsupM : a.sup id ≤ M :=
+    Finset.sup_le (fun x hx => by simpa using a.le_max' x hx)
+  have hM12 : 12 ≤ M := le_trans hsup12 hsupM
+  -- the erased `4`-set has sum `≥ 16`
+  have haer : Admissible (a.erase M) := ha.subset (a.erase_subset M)
+  have hcarderase : (a.erase M).card = 4 := by
+    rw [Finset.card_erase_of_mem hMmem, hcard]
+  have h4 : 16 ≤ (a.erase M).sum id := admissible_four_sum_ge hcarderase haer
+  have hsum : a.sum id = M + (a.erase M).sum id := by
+    rw [← Finset.add_sum_erase a id hMmem]; simp
+  omega
+
+/-- **`S(5) = 28`.** Upper bound from the witness `{0, 2, 6, 8, 12}` (sum `28`, the
+`A(5)` extremal set from `Erdos1204A5.lean`); lower bound `28 ≤ S 5` from
+`admissible_five_sum_ge`. So `S(5) = A(5) + S(4) = 12 + 16 = 28` — the bootstrap stays
+sharp, and the minimal-diameter set `{0,2,6,8,12}` is again *also* the minimal-sum set
+(its sum `28` meets the lower bound exactly), so the min-diameter and min-average optima
+continue to coincide at `k = 5`. -/
+theorem S_five : S 5 = 28 := by
+  apply le_antisymm
+  · have h := S_le (k := 5) (a := ({0, 2, 6, 8, 12} : Finset ℕ)) (by decide)
+      admissible_witness_five
+    have hs : ({0, 2, 6, 8, 12} : Finset ℕ).sum id = 28 := by decide
+    rwa [hs] at h
+  · obtain ⟨a, hcard, ha, hsum⟩ := S_mem 5
+    have hge := admissible_five_sum_ge hcard ha
+    omega
+
 /-- **`S(4) = 16`.** Upper bound from the witness `{0, 2, 6, 8}` (sum `16`, the
 `A(4)` extremal set); lower bound `16 ≤ S 4` from `admissible_four_sum_ge`. So the
 minimal average is `B(4) = 4`, again strictly above the parity floor `k - 1 = 3`. -/
@@ -281,6 +322,13 @@ parity floor `k - 1 = 3`; the extremal set `{0, 2, 6, 8}` (which also realizes
 min-diameter optima still coincide. -/
 theorem B_four : B 4 = 4 := by
   rw [B, S_four]; norm_num
+
+/-- **`B(5) = 28/5 = 5.6`.** From `S(5) = 28`. Strictly above the parity floor
+`k - 1 = 4`; as at `k = 3, 4` the extremal set `{0,2,6,8,12}` (which also realizes
+`A(5) = 12`) is here the minimal-sum set as well, so the min-average and min-diameter
+optima still coincide at `k = 5`. -/
+theorem B_five : B 5 = 28 / 5 := by
+  rw [B, S_five]; norm_num
 
 /-- **Diameter is dominated by sum (pointwise).** For every admissible `k`-set `a`,
 the minimal diameter `A(k)` is at most the element sum `∑ a`. The largest element
@@ -349,6 +397,9 @@ end Erdos1204
 #print axioms Erdos1204.sub_one_le_B
 #print axioms Erdos1204.S_four
 #print axioms Erdos1204.B_four
+#print axioms Erdos1204.admissible_five_sum_ge
+#print axioms Erdos1204.S_five
+#print axioms Erdos1204.B_five
 #print axioms Erdos1204.A_le_sum
 #print axioms Erdos1204.A_le_S
 #print axioms Erdos1204.A_add_S_le_S_succ
