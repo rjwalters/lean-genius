@@ -44,7 +44,13 @@ step.
 Reference: T. Kővári, V. T. Sós, P. Turán, "On a problem of K. Zarankiewicz",
 Colloq. Math. 3 (1954), 50–57.
 
-Status: VERIFIED (0 sorries, 0 axioms).
+Status: 0 sorries, 0 axioms.  The algebraic core (`kst_quadratic_solve`,
+`reiman_quadratic_solve_of_kst`, `kst_root_exact`) is docker-VERIFIED
+(PR #36875).  The graph-level section added in this session
+(`kst_cherry_count_nat`, `kst_graph_quadratic`, `kst_edge_bound`,
+`kst_edge_bound_of_free`) is elaboration-checked but UNVERIFIED in docker —
+the containerd build backend was down (meta.db / content-store I/O errors) at
+authoring time.  It should be re-verified once the build infra is repaired.
 -/
 
 import Mathlib
@@ -108,5 +114,270 @@ theorem kst_root_exact (t n s : ℝ) (hs2 : s ^ 2 = 1 + 4 * (t - 1) * (n - 1)) :
   intro R
   simp only [R]
   nlinarith [hs2]
+
+/-! ### Graph-level Kővári–Sós–Turán bound for K_{2,t}
+
+The algebraic core above (`kst_quadratic_solve`) is fed by a genuinely
+graph-theoretic input: the **cherry-count** inequality
+
+      ∑_v C(d_v, 2) ≤ (t-1) · C(n, 2)
+
+for K_{2,t}-free graphs.  We formalise it here directly from the defining property
+of K_{2,t}-freeness — *any two distinct vertices have at most `t-1` common
+neighbours* — via a double count of cherries `a — v — b`.  Combined with the
+handshaking lemma `∑ d_v = 2m`, Cauchy–Schwarz `(∑ d_v)² ≤ n·∑ d_v²`, and the
+algebraic solver `kst_quadratic_solve`, this yields the graph-level closed form
+
+      ex(n ; K_{2,t}) ≤ ¼ · (1 + √(1 + 4(t-1)(n-1))) · n.
+
+This closes the gap flagged in the sibling algebraic file: the parent
+`Erdos1008Problem.lean` only proved the `t = 2` (C₄) graph-level bound
+(`kovari_sos_turan`); here we obtain the full K_{2,t} family. -/
+
+section GraphLevel
+
+variable {V : Type*} [Fintype V] [DecidableEq V]
+
+/-- Common neighbours of two vertices `a`, `b`, as a `Finset`. -/
+def commonNbrs (G : SimpleGraph V) [DecidableRel G.Adj] (a b : V) : Finset V :=
+  G.neighborFinset a ∩ G.neighborFinset b
+
+/-- `s.offDiag.card = s.card·(s.card-1)` (self-contained port). -/
+private theorem finset_card_offDiag {α : Type*} [DecidableEq α] (s : Finset α) :
+    s.offDiag.card = s.card * (s.card - 1) := by
+  have hdiag : s.diag.card = s.card := by
+    have heq : s.diag = s.image (fun a => (a, a)) := by
+      ext ⟨a, b⟩
+      simp only [Finset.mem_diag, Finset.mem_image, Prod.mk.injEq]
+      constructor
+      · rintro ⟨ha, rfl⟩; exact ⟨a, ha, rfl, rfl⟩
+      · rintro ⟨c, hc, rfl, rfl⟩; exact ⟨hc, rfl⟩
+    rw [heq]
+    exact Finset.card_image_of_injective _ (fun _ _ h => congr_arg Prod.fst h)
+  have hdisj : Disjoint s.diag s.offDiag := Finset.disjoint_diag_offDiag s
+  have hunion : s.diag ∪ s.offDiag = s ×ˢ s := Finset.diag_union_offDiag s
+  have hprod : s.card + s.offDiag.card = s.card * s.card := by
+    have hcu := Finset.card_union_of_disjoint hdisj
+    rw [hunion, Finset.card_product, hdiag] at hcu
+    omega
+  have hfact : s.card * (s.card - 1) + s.card = s.card * s.card := by
+    cases s.card with
+    | zero => simp
+    | succ n => simp only [Nat.succ_sub_one]; ring
+  omega
+
+/-- Cast helper `↑(d·(d-1)) = ↑d·(↑d-1)` for `d : ℕ` (self-contained port). -/
+private theorem nat_cast_mul_pred (d : ℕ) :
+    (↑(d * (d - 1)) : ℝ) = (↑d : ℝ) * ((↑d : ℝ) - 1) := by
+  cases d with
+  | zero => simp
+  | succ n => push_cast [Nat.succ_sub_one]; ring
+
+/-- Cauchy–Schwarz for finite sums: `(∑ f)² ≤ |V|·∑ f²` (self-contained port). -/
+private theorem sq_sum_le_card (f : V → ℝ) :
+    (∑ v : V, f v) ^ 2 ≤ (Fintype.card V : ℝ) * ∑ v : V, f v ^ 2 := by
+  suffices h : (0 : ℝ) ≤ ∑ i : V, ∑ j : V, (f i - f j) ^ 2 by
+    have hexp : ∑ i : V, ∑ j : V, (f i - f j) ^ 2 =
+        (2 : ℝ) * ((Fintype.card V : ℝ) * ∑ v : V, f v ^ 2 - (∑ v : V, f v) ^ 2) := by
+      trans ∑ i : V, ((Fintype.card V : ℝ) * f i ^ 2 -
+            2 * f i * ∑ j : V, f j + ∑ j : V, f j ^ 2)
+      · congr 1; ext i
+        simp only [sub_sq, Finset.sum_add_distrib, Finset.sum_sub_distrib,
+          Finset.sum_const, Finset.card_univ, nsmul_eq_mul, ← Finset.mul_sum]
+      · have h1 : ∑ i : V, (Fintype.card V : ℝ) * f i ^ 2 =
+            (Fintype.card V : ℝ) * ∑ v : V, f v ^ 2 := by
+          rw [← Finset.mul_sum]
+        have h2 : ∑ i : V, 2 * f i * ∑ j : V, f j = 2 * (∑ v : V, f v) ^ 2 := by
+          have hrearrange : ∀ i : V, 2 * f i * ∑ j : V, f j = (2 * ∑ j : V, f j) * f i :=
+            fun i => by ring
+          simp_rw [hrearrange, ← Finset.mul_sum]; ring
+        have h3 : ∑ i : V, ∑ j : V, f j ^ 2 = (Fintype.card V : ℝ) * ∑ v : V, f v ^ 2 := by
+          simp [Finset.sum_const, Finset.card_univ, nsmul_eq_mul]
+        simp only [Finset.sum_sub_distrib, Finset.sum_add_distrib]
+        linarith
+    linarith
+  exact Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => sq_nonneg _
+
+/-- **Graph-level cherry count for K_{2,t} (ℕ form).**  If any two *distinct*
+vertices of `G` have at most `κ` common neighbours (this is K_{2,κ+1}-freeness),
+then `∑_v d_v(d_v-1) ≤ κ · n(n-1)`.
+
+The proof double-counts ordered cherries `(a,b)` with `a, b ∈ N(v)`, `a ≠ b`:
+summed over `v` this equals `∑_{a≠b} |N(a) ∩ N(b)|`, and each common-neighbour
+count is bounded by `κ`. -/
+theorem kst_cherry_count_nat (G : SimpleGraph V) [DecidableRel G.Adj] (κ : ℕ)
+    (hfree : ∀ a b : V, a ≠ b → (commonNbrs G a b).card ≤ κ) :
+    ∑ v : V, G.degree v * (G.degree v - 1) ≤
+      κ * (Fintype.card V * (Fintype.card V - 1)) := by
+  -- Each degree cherry count is the offDiag cardinality of the neighbourhood.
+  have hoff : ∀ v : V, (G.neighborFinset v).offDiag.card = G.degree v * (G.degree v - 1) := by
+    intro v; rw [finset_card_offDiag, SimpleGraph.card_neighborFinset_eq_degree]
+  have hoffU : (Finset.univ : Finset V).offDiag.card =
+      Fintype.card V * (Fintype.card V - 1) := by
+    rw [finset_card_offDiag, Finset.card_univ]
+  -- offDiag of each neighbourhood embeds into offDiag of the whole vertex set.
+  have hsub : ∀ v : V, (G.neighborFinset v).offDiag ⊆ (Finset.univ : Finset V).offDiag := by
+    intro v p hp
+    rw [Finset.mem_offDiag] at hp ⊢
+    exact ⟨Finset.mem_univ _, Finset.mem_univ _, hp.2.2⟩
+  -- The core double count.
+  have key : ∑ v : V, (G.neighborFinset v).offDiag.card ≤
+      (Finset.univ : Finset V).offDiag.card * κ := by
+    -- Rewrite each cherry card as a sum of indicators over all ordered pairs.
+    have expand : ∀ v : V, (G.neighborFinset v).offDiag.card =
+        ∑ p ∈ (Finset.univ : Finset V).offDiag,
+          (if p ∈ (G.neighborFinset v).offDiag then 1 else 0) := by
+      intro v
+      rw [← Finset.card_filter, Finset.filter_mem_eq_inter,
+        Finset.inter_eq_right.mpr (hsub v)]
+    calc ∑ v : V, (G.neighborFinset v).offDiag.card
+        = ∑ v : V, ∑ p ∈ (Finset.univ : Finset V).offDiag,
+            (if p ∈ (G.neighborFinset v).offDiag then 1 else 0) :=
+          Finset.sum_congr rfl (fun v _ => expand v)
+      _ = ∑ p ∈ (Finset.univ : Finset V).offDiag, ∑ v : V,
+            (if p ∈ (G.neighborFinset v).offDiag then 1 else 0) := Finset.sum_comm
+      _ ≤ ∑ _p ∈ (Finset.univ : Finset V).offDiag, κ := by
+          apply Finset.sum_le_sum
+          intro p hp
+          rw [Finset.mem_offDiag] at hp
+          rw [← Finset.card_filter]
+          -- the fibre over pair p is exactly the common-neighbour set of p.1, p.2
+          have hset : (Finset.univ.filter
+              (fun v => p ∈ (G.neighborFinset v).offDiag)) = commonNbrs G p.1 p.2 := by
+            ext v
+            simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_offDiag,
+              SimpleGraph.mem_neighborFinset, commonNbrs, Finset.mem_inter]
+            constructor
+            · rintro ⟨hv1, hv2, _⟩; exact ⟨hv1.symm, hv2.symm⟩
+            · rintro ⟨hv1, hv2⟩; exact ⟨hv1.symm, hv2.symm, hp.2.2⟩
+          rw [hset]; exact hfree p.1 p.2 hp.2.2
+      _ = (Finset.univ : Finset V).offDiag.card * κ := by
+          rw [Finset.sum_const, smul_eq_mul]
+  -- Convert offDiag cardinalities back to degree cherry counts.
+  calc ∑ v : V, G.degree v * (G.degree v - 1)
+      = ∑ v : V, (G.neighborFinset v).offDiag.card :=
+        Finset.sum_congr rfl (fun v _ => (hoff v).symm)
+    _ ≤ (Finset.univ : Finset V).offDiag.card * κ := key
+    _ = κ * (Fintype.card V * (Fintype.card V - 1)) := by rw [hoffU]; ring
+
+/-- **Graph-level Kővári–Sós–Turán quadratic for K_{2,t}.**  For a graph `G` on
+`n` vertices with `m` edges in which any two distinct vertices share at most `κ`
+common neighbours (K_{2,κ+1}-freeness),
+
+      4 m² ≤ κ · n²(n-1) + 2 n m.
+
+This is the graph-theoretic input to `kst_quadratic_solve`; the `κ = 1` case is
+the parent file's `kovari_sos_turan`. -/
+theorem kst_graph_quadratic (G : SimpleGraph V) [DecidableRel G.Adj] (κ : ℕ)
+    (hfree : ∀ a b : V, a ≠ b → (commonNbrs G a b).card ≤ κ) :
+    (4 : ℝ) * (G.edgeFinset.card : ℝ) ^ 2 ≤
+      (κ : ℝ) * (Fintype.card V : ℝ) ^ 2 * ((Fintype.card V : ℝ) - 1)
+      + 2 * (Fintype.card V : ℝ) * (G.edgeFinset.card : ℝ) := by
+  -- Step 1: cherry count in ℝ.
+  have hcherry_real : ∑ v : V, (G.degree v : ℝ) * ((G.degree v : ℝ) - 1) ≤
+      (κ : ℝ) * ((Fintype.card V : ℝ) * ((Fintype.card V : ℝ) - 1)) := by
+    have hnat := kst_cherry_count_nat G κ hfree
+    calc ∑ v : V, (G.degree v : ℝ) * ((G.degree v : ℝ) - 1)
+        = ((∑ v : V, G.degree v * (G.degree v - 1) : ℕ) : ℝ) := by
+          rw [Nat.cast_sum]
+          exact Finset.sum_congr rfl (fun v _ => (nat_cast_mul_pred (G.degree v)).symm)
+      _ ≤ ((κ * (Fintype.card V * (Fintype.card V - 1)) : ℕ) : ℝ) := by exact_mod_cast hnat
+      _ = (κ : ℝ) * ((Fintype.card V : ℝ) * ((Fintype.card V : ℝ) - 1)) := by
+          rw [Nat.cast_mul, nat_cast_mul_pred]
+  -- Step 2: handshaking ∑ d_v = 2m.
+  have hhand : (∑ v : V, (G.degree v : ℝ)) = 2 * (G.edgeFinset.card : ℝ) := by
+    exact_mod_cast G.sum_degrees_eq_twice_card_edges
+  -- Step 3: ∑ d_v² ≤ κ·n(n-1) + 2m via d² = d(d-1) + d.
+  have hsum_sq : ∑ v : V, (G.degree v : ℝ) ^ 2 ≤
+      (κ : ℝ) * ((Fintype.card V : ℝ) * ((Fintype.card V : ℝ) - 1))
+      + 2 * (G.edgeFinset.card : ℝ) := by
+    have hid : ∀ v : V, (G.degree v : ℝ) ^ 2 =
+        (G.degree v : ℝ) * ((G.degree v : ℝ) - 1) + (G.degree v : ℝ) := fun v => by ring
+    calc ∑ v : V, (G.degree v : ℝ) ^ 2
+        = ∑ v, ((G.degree v : ℝ) * ((G.degree v : ℝ) - 1) + (G.degree v : ℝ)) :=
+          Finset.sum_congr rfl (fun v _ => hid v)
+      _ = ∑ v, (G.degree v : ℝ) * ((G.degree v : ℝ) - 1) + ∑ v, (G.degree v : ℝ) :=
+          Finset.sum_add_distrib
+      _ ≤ (κ : ℝ) * ((Fintype.card V : ℝ) * ((Fintype.card V : ℝ) - 1))
+          + 2 * (G.edgeFinset.card : ℝ) := by linarith [hcherry_real, hhand]
+  -- Step 4: Cauchy–Schwarz and combination.
+  have hcs := sq_sum_le_card (fun v : V => (G.degree v : ℝ))
+  rw [hhand] at hcs
+  have hn0 : (0 : ℝ) ≤ (Fintype.card V : ℝ) := Nat.cast_nonneg _
+  calc (4 : ℝ) * (G.edgeFinset.card : ℝ) ^ 2
+      = (2 * (G.edgeFinset.card : ℝ)) ^ 2 := by ring
+    _ ≤ (Fintype.card V : ℝ) * ∑ v : V, (G.degree v : ℝ) ^ 2 := hcs
+    _ ≤ (Fintype.card V : ℝ) *
+          ((κ : ℝ) * ((Fintype.card V : ℝ) * ((Fintype.card V : ℝ) - 1))
+            + 2 * (G.edgeFinset.card : ℝ)) := mul_le_mul_of_nonneg_left hsum_sq hn0
+    _ = (κ : ℝ) * (Fintype.card V : ℝ) ^ 2 * ((Fintype.card V : ℝ) - 1)
+          + 2 * (Fintype.card V : ℝ) * (G.edgeFinset.card : ℝ) := by ring
+
+/-- **Graph-level closed-form edge bound for K_{2,t}.**  For a nonempty graph `G`
+on `n ≥ 1` vertices with `m` edges in which any two distinct vertices share at
+most `κ` common neighbours,
+
+      4 m ≤ n · (1 + √(1 + 4κ(n-1))).
+
+Combining `kst_graph_quadratic` with the algebraic root extraction
+`kst_quadratic_solve` (taking `t = κ + 1`). -/
+theorem kst_edge_bound (G : SimpleGraph V) [DecidableRel G.Adj] [Nonempty V] (κ : ℕ)
+    (hfree : ∀ a b : V, a ≠ b → (commonNbrs G a b).card ≤ κ) :
+    4 * (G.edgeFinset.card : ℝ) ≤
+      (Fintype.card V : ℝ) *
+        (1 + Real.sqrt (1 + 4 * (κ : ℝ) * ((Fintype.card V : ℝ) - 1))) := by
+  have hn1 : (1 : ℝ) ≤ (Fintype.card V : ℝ) := by
+    have : 1 ≤ Fintype.card V := Fintype.card_pos
+    exact_mod_cast this
+  have harg : (0 : ℝ) ≤ 1 + 4 * (κ : ℝ) * ((Fintype.card V : ℝ) - 1) := by
+    have : (0 : ℝ) ≤ (κ : ℝ) * ((Fintype.card V : ℝ) - 1) :=
+      mul_nonneg (Nat.cast_nonneg _) (by linarith)
+    linarith
+  have hs0 : 0 ≤ Real.sqrt (1 + 4 * (κ : ℝ) * ((Fintype.card V : ℝ) - 1)) := Real.sqrt_nonneg _
+  have hs2 : Real.sqrt (1 + 4 * (κ : ℝ) * ((Fintype.card V : ℝ) - 1)) ^ 2 =
+      1 + 4 * (κ : ℝ) * ((Fintype.card V : ℝ) - 1) := Real.sq_sqrt harg
+  have hquad := kst_graph_quadratic G κ hfree
+  refine kst_quadratic_solve ((κ : ℝ) + 1) (G.edgeFinset.card : ℝ) (Fintype.card V : ℝ)
+    (Real.sqrt (1 + 4 * (κ : ℝ) * ((Fintype.card V : ℝ) - 1))) hn1 hs0 ?_ ?_
+  · rw [hs2]; ring
+  · have e : ((κ : ℝ) + 1 - 1) = (κ : ℝ) := by ring
+    rw [e]; linarith [hquad]
+
+/-- A graph *contains* K_{2,t}: two distinct vertices with at least `t` common
+neighbours (the common neighbours are automatically distinct from `a`, `b`). -/
+def HasK2t (G : SimpleGraph V) (t : ℕ) : Prop :=
+  ∃ (a b : V) (T : Finset V), a ≠ b ∧ t ≤ T.card ∧ (∀ y ∈ T, G.Adj a y ∧ G.Adj b y)
+
+/-- In a K_{2,t}-free graph, any two distinct vertices share fewer than `t`
+common neighbours (else those neighbours witness a K_{2,t}). -/
+theorem commonNbrs_card_lt_of_free (G : SimpleGraph V) [DecidableRel G.Adj]
+    (t : ℕ) (hfree : ¬ HasK2t G t) (a b : V) (hab : a ≠ b) :
+    (commonNbrs G a b).card < t := by
+  by_contra h
+  push_neg at h
+  exact hfree ⟨a, b, commonNbrs G a b, hab, h, fun y hy => by
+    simp only [commonNbrs, Finset.mem_inter, SimpleGraph.mem_neighborFinset] at hy
+    exact hy⟩
+
+/-- **K_{2,t}-free edge bound.**  A genuinely K_{2,t}-free nonempty graph
+(`t ≥ 1`) satisfies the classical Kővári–Sós–Turán bound
+
+      4 m ≤ n · (1 + √(1 + 4(t-1)(n-1))).
+
+This packages `kst_edge_bound` with `commonNbrs_card_lt_of_free`, using the
+forbidden-subgraph definition of K_{2,t}-freeness directly. -/
+theorem kst_edge_bound_of_free (G : SimpleGraph V) [DecidableRel G.Adj] [Nonempty V]
+    (t : ℕ) (ht : 1 ≤ t) (hfree : ¬ HasK2t G t) :
+    4 * (G.edgeFinset.card : ℝ) ≤
+      (Fintype.card V : ℝ) *
+        (1 + Real.sqrt (1 + 4 * ((t : ℝ) - 1) * ((Fintype.card V : ℝ) - 1))) := by
+  have hbound : ∀ a b : V, a ≠ b → (commonNbrs G a b).card ≤ t - 1 := fun a b hab => by
+    have := commonNbrs_card_lt_of_free G t hfree a b hab; omega
+  have h := kst_edge_bound G (t - 1) hbound
+  have hcast : ((t - 1 : ℕ) : ℝ) = (t : ℝ) - 1 := by
+    rw [Nat.cast_sub ht, Nat.cast_one]
+  rwa [hcast] at h
+
+end GraphLevel
 
 end Erdos1008
