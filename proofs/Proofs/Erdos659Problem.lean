@@ -339,6 +339,35 @@ theorem representable_pow {m : ℕ} (hm : m ∈ representable_x2_2y2) (k : ℕ) 
 theorem two_pow_representable (k : ℕ) : 2 ^ k ∈ representable_x2_2y2 :=
   representable_pow two_representable k
 
+/-! ### Basic behaviour of the counting function `B₂`
+
+The counting function `B₂(N) = |{d ≤ N : d = x² + 2y²}|` (whose growth `∼ c·N/√(log N)`
+is Landau's deep theorem) satisfies two elementary structural facts unconditionally: it
+is monotone in `N`, and it is positive once `N ≥ 1` (since `1 = 1² + 2·0²` is always
+counted). Both are finiteness bookkeeping on the underlying set, independent of the deep
+analytic input `moreeOsburnWorks`. -/
+
+/-- **`B₂` is monotone.** Enlarging the cutoff can only add representable integers:
+    `N ≤ M ⟹ B₂(N) ≤ B₂(M)`. The counted set `representable ∩ Icc 1 N` grows with `N`
+    and stays finite (bounded by `Icc 1 M`). -/
+theorem B2_mono {N M : ℕ} (h : N ≤ M) : B2 N ≤ B2 M := by
+  unfold B2
+  exact Set.ncard_le_ncard
+    (Set.inter_subset_inter subset_rfl (Set.Icc_subset_Icc_right h))
+    ((Set.finite_Icc 1 M).inter_of_right _)
+
+/-- **`B₂(N) ≥ 1` for `N ≥ 1`.** The integer `1 = 1² + 2·0²` is representable and lies
+    in every window `Icc 1 N` with `N ≥ 1`, so the counted set is nonempty. -/
+theorem one_le_B2 {N : ℕ} (hN : 1 ≤ N) : 1 ≤ B2 N := by
+  unfold B2
+  have hfin : (representable_x2_2y2 ∩ Set.Icc 1 N).Finite :=
+    (Set.finite_Icc 1 N).inter_of_right _
+  have hmem : (1 : ℕ) ∈ representable_x2_2y2 ∩ Set.Icc 1 N :=
+    ⟨one_representable, Set.mem_Icc.mpr ⟨le_refl 1, hN⟩⟩
+  have hpos : 0 < (representable_x2_2y2 ∩ Set.Icc 1 N).ncard :=
+    (Set.ncard_pos hfin).mpr ⟨1, hmem⟩
+  omega
+
 /-! ### The mod-8 obstruction (necessity side of the characterization)
 
 The lemmas above are all *positivity* results — they exhibit integers that **are**
