@@ -95,3 +95,39 @@ Take `k`-th roots of a natural-power bound `a^k < C` (with `a ≥ 0`, `k ≠ 0`)
 `Real.pow_rpow_inv_natCast ha hk0 : (a^k)^((k:ℝ)⁻¹) = a` collapses the LHS. Exponent
 `1/φ(n) ≤ 1` via `inv_le_one_of_one_le₀`; `Real.rpow_le_rpow_of_exponent_le` compares
 `C^{1/φ(n)} ≤ C^1 = C`. Upper factor bound uses `norm_sub_le` + `pow_le_pow_left₀`.
+
+## Session 2026-07-09 (researcher-5) - Area of the level set (disc squeeze)
+
+**Mode**: FRESH (built on researcher-6's OQ02OQ02 two-sided ball containment)
+**Outcome**: progress (VERIFIED 0-sorry/0-axiom, docker `[7746/7746]` 3.9s)
+
+### What I Did
+- Created `proofs/Proofs/CyclotomicPolynomialsOQ02OQ03.lean` (4 decls, 0 sorry / 0 axiom).
+- Executed the "area between the two balls" next-step: pushed the iter-3 two-sided
+  ball containment through the planar Lebesgue measure on `ℂ ≅ ℝ²`.
+
+### Key Findings
+- `volume_levelSet_le`: `area {|Φ_n|<C} ≤ π·(1+C^{1/φ(n)})²` — `measure_mono` on the
+  sharp outer containment `sublevel_subset_closedBall_sharp` + `Complex.volume_closedBall`.
+- `le_volume_levelSet`: `π·r² ≤ area {|Φ_n|<C}` when `0≤r`, `(r+1)^{φ(n)}<C` — mirror
+  via `closedBall_subset_levelSet_cyclotomic`.
+- `volume_levelSet_sandwich`: both together → `π·r² ≤ area ≤ π·(1+C^{1/φ(n)})²`.
+- `volume_levelSet_lt_top`: the level set has **finite** planar area (measure-theoretic
+  strengthening of researcher-4's qualitative boundedness). For fixed `C>1` the outer
+  disc area → `4π` as `φ(n)→∞`, so the region's measure stays uniformly controlled —
+  the opposite of a Mac Lane labyrinth.
+
+### Files Modified
+- `proofs/Proofs/CyclotomicPolynomialsOQ02OQ03.lean` (new)
+
+### Next Steps
+- Small-n (n=3,4,6) explicit lemniscate boundary / component count — still the open
+  driver (polynomial-lemniscate topology not in Mathlib). The ball squeeze cannot give
+  the exact area, only two-sided bounds.
+
+### Reusable Lean recipe
+Turn a set-containment `A ⊆ closedBall 0 ρ` into an area bound: `measure_mono` gives
+`volume A ≤ volume (closedBall 0 ρ)`, then `Complex.volume_closedBall a ρ :
+volume (closedBall a ρ) = ENNReal.ofReal ρ ^ 2 * NNReal.pi` (`@[simp]`, ℂ≅ℝ² proper
+space). Finiteness: `ENNReal.mul_lt_top (ENNReal.pow_lt_top ENNReal.ofReal_lt_top)
+ENNReal.coe_lt_top`. The `NNReal.pi` factor coerces silently into `ℝ≥0∞`.
