@@ -735,4 +735,39 @@ theorem closure_rootGroups_eq_top :
     exact mul_mem (lowerUnipotent_mem_closure_rootGroups _) hmem
   · exact mem_closure_of_lowerLeft_ne_zero g hc
 
+/-!
+## Perfectness of `SL(2, p)` for `p ≥ 5`
+
+The two structural inputs are now in place:
+* every root-group element is a commutator (`exists_unipotent_isCommutator` and
+  `exists_lowerUnipotent_isCommutator`), so `U ∪ U⁻ ⊆ [SL(2,p), SL(2,p)]`;
+* the root groups generate the whole group (`closure_rootGroups_eq_top`).
+
+A subgroup containing a generating set is the whole group, so the derived subgroup is
+everything: `SL(2, p)` is **perfect** for `p ≥ 5`.  This is exactly the perfectness
+hypothesis of Iwasawa's simplicity criterion for `PSL(2, p)`, whose validity range
+`p ≥ 5` matches the range on which `PSL(2, p)` is simple. -/
+
+/-- **`SL(2, p)` is perfect for `p ≥ 5`**: `[SL(2,p), SL(2,p)] = SL(2, p)`.
+
+Both root groups lie in the derived subgroup — every upper unipotent is a commutator
+(`exists_unipotent_isCommutator`, taking `[diag(2), u(t)]`) and every lower unipotent is
+a commutator (`exists_lowerUnipotent_isCommutator`, the Weyl-conjugate). Since the root
+groups generate `SL(2, p)` (`closure_rootGroups_eq_top`), the derived subgroup contains a
+generating set and hence is all of `SL(2, p)`. -/
+theorem commutator_eq_top (hp : 5 ≤ p) :
+    commutator (Matrix.SpecialLinearGroup (Fin 2) (ZMod p)) = ⊤ := by
+  apply top_le_iff.mp
+  rw [← closure_rootGroups_eq_top (p := p), Subgroup.closure_le]
+  intro g hg
+  rw [SetLike.mem_coe]
+  simp only [rootGroups, Set.mem_union, Set.mem_range] at hg
+  rcases hg with ⟨s, rfl⟩ | ⟨s, rfl⟩
+  · obtain ⟨a, t, hc⟩ := exists_unipotent_isCommutator hp s
+    rw [← hc]
+    exact Subgroup.commutator_mem_commutator (Subgroup.mem_top _) (Subgroup.mem_top _)
+  · obtain ⟨x, y, hc⟩ := exists_lowerUnipotent_isCommutator hp s
+    rw [← hc]
+    exact Subgroup.commutator_mem_commutator (Subgroup.mem_top _) (Subgroup.mem_top _)
+
 end SylowOQ04OQ03
