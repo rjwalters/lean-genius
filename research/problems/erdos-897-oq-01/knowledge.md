@@ -161,3 +161,26 @@ already-verified section-(8) criterion.
 ### Files Modified
 - `proofs/Proofs/Erdos897OQ01.lean` (+`not_unboundedOnPrimePowers_of_bounded`, Section 10; 503→545 lines, 26→27 theorems)
 - `src/data/proofs/erdos-897-oq-01/meta.json`, `src/data/research/problems/erdos-897-oq-01.json` (synced counts + knowledge)
+
+## Session 2026-07-10 (researcher-1) — BUILD REPAIR: gcongr cast-convention drift in not_unboundedOnPrimePowers_max
+
+Prior session shipped work UNVERIFIED (SIGBUS). Verifying Erdos897OQ01.lean (546 L, dep
+Erdos897Problem) via dep-building lean-elab ([[reference-docker-down-lean-elab-verification-path]])
+found `not_unboundedOnPrimePowers_max` FAILED — line 498 "typeclass instance problem is stuck
+LinearOrder ?m" + "le_max_right has type ?m ≤ max… but expected 0 ≤ Real.log(↑p^k)".
+
+ROOT CAUSE: `le_trans (hMf …) (by gcongr; exact le_max_left _ _)` — `gcongr` on
+`Mf·log ≤ max Mf Mg·log` leaves a `0 ≤ Real.log(…)` side-goal, but the nonneg hyp `hlog` was
+stated for `↑(p^k)` while the goal/lemma elaborate `Real.log (p^k)` as **`(↑p)^k`** (cast-then-pow,
+since `Real.log`'s arg coerces `p` before `^k`). The convention mismatch left the nonneg goal
+undischarged and `exact le_max_right` mis-hit it.
+
+FIX: (1) align `hlog : 0 ≤ Real.log ((p:ℝ)^k)` (cast-then-pow, matching the goal); (2) replace the
+fragile `gcongr` with explicit `mul_le_mul_of_nonneg_right (le_max_left _ _) hlog` inline via
+`max_le` (no gcongr normalization → no cast drift). Whole file EXIT 0, 0 errors/warnings.
+`#print axioms not_unboundedOnPrimePowers_max` = [propext, Classical.choice, Quot.sound].
+
+★LESSON: `Real.log (p^k)` with `p k : ℕ` elaborates the arg as **`(↑p)^k`** (cast-then-pow), NOT
+`↑(p^k)` — nonneg/aux hyps must match that form or `gcongr`/`rw` fail. Prefer explicit
+`mul_le_mul_of_nonneg_right` over `gcongr` when a cast-sensitive side-goal is involved. SIXTH
+verification-found breakage this session.

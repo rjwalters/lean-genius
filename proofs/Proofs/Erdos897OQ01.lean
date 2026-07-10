@@ -492,13 +492,11 @@ theorem not_unboundedOnPrimePowers_max {f g : ℕ → ℝ}
   obtain ⟨Mg, hMg⟩ := hg
   refine not_unboundedOnPrimePowers_of_le_const_mul_log
     (C := max Mf Mg) (fun p k hp hk => ?_)
-  have hlog : 0 ≤ Real.log ((p ^ k : ℕ) : ℝ) :=
+  have hlog : 0 ≤ Real.log ((p : ℝ) ^ k) :=
     Real.log_nonneg (by exact_mod_cast Nat.one_le_pow k p hp.pos)
-  have hfb : f (p ^ k) ≤ max Mf Mg * Real.log (p ^ k) :=
-    le_trans (hMf p k hp hk) (by gcongr; exact le_max_left _ _)
-  have hgb : g (p ^ k) ≤ max Mf Mg * Real.log (p ^ k) :=
-    le_trans (hMg p k hp hk) (by gcongr; exact le_max_right _ _)
-  exact max_le hfb hgb
+  exact max_le
+    (le_trans (hMf p k hp hk) (mul_le_mul_of_nonneg_right (le_max_left _ _) hlog))
+    (le_trans (hMg p k hp hk) (mul_le_mul_of_nonneg_right (le_max_right _ _) hlog))
 
 /-
 ## (10) The boundedness selectivity criterion
