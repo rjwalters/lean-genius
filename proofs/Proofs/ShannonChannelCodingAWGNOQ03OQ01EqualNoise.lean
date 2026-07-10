@@ -190,4 +190,35 @@ theorem rate_equalNoise_le_wideband [Nonempty ι] {c : ℝ} (hc : 0 < c) {P : �
         mul_le_mul_of_nonneg_left hlog (by positivity)
     _ = P / (2 * c) := by field_simp; ring
 
+/-! ## Strict positivity and the vanishing characterization -/
+
+/-- **Strict positivity of the equal-noise capacity.**  As soon as *any* power is
+    available (`P > 0`, `c > 0`), the achievable rate is strictly positive:
+    `0 < (n/2)·log(1 + P/(n·c))`.  This sharpens `rate_equalNoise_nonneg` — the rate
+    sits strictly above the zero baseline, since `log` of an argument exceeding `1`
+    is positive. -/
+theorem rate_equalNoise_pos [Nonempty ι] {c : ℝ} (hc : 0 < c) {P : ℝ} (hP : 0 < P) :
+    0 < (Fintype.card ι : ℝ) / 2 * Real.log (1 + P / (Fintype.card ι * c)) := by
+  have hn : 0 < (Fintype.card ι : ℝ) := by exact_mod_cast Fintype.card_pos
+  have hnc : 0 < (Fintype.card ι : ℝ) * c := mul_pos hn hc
+  have h1 : (1 : ℝ) < 1 + P / (Fintype.card ι * c) := by
+    have : 0 < P / (Fintype.card ι * c) := div_pos hP hnc
+    linarith
+  exact mul_pos (div_pos hn (by norm_num)) (Real.log_pos h1)
+
+/-- **The equal-noise capacity vanishes exactly at zero power.**  For `c > 0` and
+    `P ≥ 0`, the rate `(n/2)·log(1 + P/(n·c))` equals `0` iff `P = 0`.  Combined with
+    `rate_equalNoise_nonneg` and `rate_equalNoise_pos` this pins down the capacity's
+    zero set: no power ⇒ no rate, and any positive power ⇒ positive rate. -/
+theorem rate_equalNoise_eq_zero_iff [Nonempty ι] {c : ℝ} (hc : 0 < c) {P : ℝ}
+    (hP : 0 ≤ P) :
+    (Fintype.card ι : ℝ) / 2 * Real.log (1 + P / (Fintype.card ι * c)) = 0 ↔ P = 0 := by
+  constructor
+  · intro h
+    by_contra hP0
+    exact (rate_equalNoise_pos hc (lt_of_le_of_ne hP (Ne.symm hP0))).ne' h
+  · intro h
+    subst h
+    simp
+
 end ShannonWaterFilling
