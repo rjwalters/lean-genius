@@ -475,4 +475,31 @@ theorem admissibleCoeff_ge_two_pow_of_le (hV : 0 < Fintype.card V) (t : ℕ) (ht
         Nat.mul_le_mul (le_refl _) hpos
     _ ≤ firstMomentThreshold (t + k) / Fintype.card V := hmul
 
+/-- **Two-sided exponential bracket (the exact multi-step growth rate).**  The
+    capstone conjunction promised in the docstrings of the two iterate bounds:
+    combining the geometric lower bound `admissibleCoeff_two_pow_mul_le` with the
+    ceiling `admissibleCoeff_succ_le_two_pow_mul` pins the coefficient after `k`
+    steps to a window of width exactly `2^k − 1` around pure `2^k`-doubling,
+
+        `2^k · c(t)  ≤  c(t + k)  ≤  2^k · c(t) + (2^k − 1)`,
+
+    i.e. `0 ≤ c(t+k) − 2^k·c(t) < 2^k`.  The additive slack `2^k − 1` is the
+    geometric sum `∑_{i<k} 2^i` of the `k` per-step truncated-division remainders,
+    so relative to the leading `2^k·c(t)` the error is at most one unit of `c(t)`:
+    the growth rate is **exactly exponential with ratio `2`**, the floor operations
+    contributing only a bounded lower-order correction.  The lower half is
+    `admissibleCoeff_two_pow_mul_le`; the upper half rewrites the `+1`-shifted
+    ceiling `admissibleCoeff_succ_le_two_pow_mul` by distributing `2^k·(c(t)+1)`
+    and discharging with `omega` (using `1 ≤ 2^k`). -/
+theorem admissibleCoeff_bracket (hV : 0 < Fintype.card V) (t : ℕ) (ht : 1 ≤ t) (k : ℕ) :
+    2 ^ k * (firstMomentThreshold t / Fintype.card V)
+        ≤ firstMomentThreshold (t + k) / Fintype.card V
+      ∧ firstMomentThreshold (t + k) / Fintype.card V
+        ≤ 2 ^ k * (firstMomentThreshold t / Fintype.card V) + (2 ^ k - 1) := by
+  have hlow := admissibleCoeff_two_pow_mul_le hV t ht k
+  have hup := admissibleCoeff_succ_le_two_pow_mul hV t ht k
+  rw [mul_add, mul_one] at hup
+  have hpow : 1 ≤ 2 ^ k := Nat.one_le_two_pow
+  exact ⟨hlow, by omega⟩
+
 end Erdos1022OQ02
