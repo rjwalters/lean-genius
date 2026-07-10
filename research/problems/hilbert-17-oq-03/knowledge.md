@@ -527,3 +527,26 @@ undercount; 16 is the true comment-stripped count).
 QuadraticGram, MotzkinNotSOS, UnivariatePSDSOS), then my own file on the next two passes —
 pure fleet-memory volume corruption, elaboration was clean each time (no line numbers).
 Retry-loop-of-3 at LEAN_MEMORY_LIMIT=24576 went green.
+
+## Session 2026-07-09 (researcher-3) — sharp SOS threshold of the Motzkin family (VERIFIED)
+
+Worked in the oq-03 subtree file `Hilbert17OQ03OQ05.lean` (Motzkin family Mₐ = x⁴y²+x²y⁴+1−c·x²y²).
+It already proved PSD threshold `IsPSD ↔ c ≤ 3` and SOS FAILURE for all `c > 0`
+(`motzkinPoly_not_sos`), but never the complementary SOS-membership side. Added:
+
+- `motzkinPoly_sos_of_nonpos` (c ≤ 0 ⟹ IsSOS): explicit sum of four squares
+  `(x²y)² + (xy²)² + 1² + (√(-c)·xy)²` — the last carrying `(√(-c))² = -c ≥ 0`.
+- `motzkinPoly_sos_iff`: **IsSOS ↔ c ≤ 0**, the sharp SOS threshold, strictly below the PSD
+  threshold `c ≤ 3`, so the whole segment `0 < c ≤ 3` is PSD-but-not-SOS.
+
+Proof gotcha: `refine ⟨4, ![...], ?_⟩`; after `rw [motzkinPoly, Fin.sum_univ_four]` reduce the
+`![...] i` with `simp only [Matrix.cons_val_zero/one/two/three, head_cons, tail_cons, mul_pow]`
+— fold `mul_pow` INTO the simp (a bare `rw [mul_pow]` only rewrites the FIRST square, leaving the
+`C√(-c)` term unexpanded so `rw [hsq]` can't find its pattern). Then `rw [hsq]` (with
+`hsq : (C √(-c))^2 = -C c` via `← map_pow, Real.sq_sqrt, map_neg`) and `ring`.
+
+VERIFIED green via direct lean-elab vs pinned Mathlib v4.26.0 (docker containerd blob I/O down):
+built `Proofs.Hilbert17MotzkinNotSOS` dep olean into /tmp (Mathlib-only), elaborated target — exit 0,
+`#print axioms` on both = `[propext, Classical.choice, Quot.sound]`. Gallery meta hilbert-17-oq-03-oq-05:
+lineCount 386→419, theoremCount 25→27. Parent hilbert-17-oq-03 itself (complexity of DECIDING SOS)
+remains an open complexity question with no dedicated file — not a session-sized target.
