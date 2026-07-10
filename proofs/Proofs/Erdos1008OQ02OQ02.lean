@@ -44,7 +44,13 @@ step.
 Reference: T. Kővári, V. T. Sós, P. Turán, "On a problem of K. Zarankiewicz",
 Colloq. Math. 3 (1954), 50–57.
 
-Status: VERIFIED (0 sorries, 0 axioms).
+Status: 0 sorries, 0 axioms.  The algebraic core (`kst_quadratic_solve`,
+`reiman_quadratic_solve_of_kst`, `kst_root_exact`) is docker-VERIFIED
+(PR #36875).  The graph-level section added in this session
+(`kst_cherry_count_nat`, `kst_graph_quadratic`, `kst_edge_bound`,
+`kst_edge_bound_of_free`) is elaboration-checked but UNVERIFIED in docker —
+the containerd build backend was down (meta.db / content-store I/O errors) at
+authoring time.  It should be re-verified once the build infra is repaired.
 -/
 
 import Mathlib

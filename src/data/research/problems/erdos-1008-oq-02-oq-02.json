@@ -37,11 +37,15 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (UNVERIFIED): algebraic K_{2,t} KST quadratic-solve delivered (PR #36875); graph-level cherry-count remains",
+    "progressSummary": "PROGRESS (UNVERIFIED, docker down): graph-level K_{2,t} KST bound COMPLETE — cherry count + quadratic assembly + closed-form edge bound + K_{2,t}-free bridge, feeding the merged algebraic core; closes the graph-level gap (parent had only t=2/C4)",
     "builtItems": [
       "kst_quadratic_solve (Erdos1008OQ02OQ02.lean): solves the general K_{2,t} KST quadratic 4m^2 <= (t-1)n^2(n-1)+2nm for the upper root 4m <= n(1+s), s=sqrt(1+4(t-1)(n-1))",
       "reiman_quadratic_solve_of_kst: t=2 specialisation recovering the sibling C4 lemma verbatim (1+4(t-1)(n-1)=4n-3)",
-      "kst_root_exact: extracted root R=n(1+s)/4 makes the general quadratic vanish exactly (algebraic sharpness), generalising reiman_root_exact"
+      "kst_root_exact: extracted root R=n(1+s)/4 makes the general quadratic vanish exactly (algebraic sharpness), generalising reiman_root_exact",
+      "kst_cherry_count_nat (Erdos1008OQ02OQ02.lean): graph-level double count ∑_v d_v(d_v-1) ≤ κ·n(n-1) for graphs whose distinct vertex pairs share ≤ κ common neighbours (K_{2,κ+1}-free); cherry (a,b) fibre = |N(a)∩N(b)| via sum_comm double count",
+      "kst_graph_quadratic (Erdos1008OQ02OQ02.lean): assembles cherry count + handshaking + CS (sq_sum_le_card) into 4m² ≤ κ·n²(n-1)+2nm — the graph-theoretic input kst_quadratic_solve needed",
+      "kst_edge_bound (Erdos1008OQ02OQ02.lean): graph-level closed form 4m ≤ n(1+√(1+4κ(n-1))) via kst_quadratic_solve with t=κ+1",
+      "HasK2t + commonNbrs_card_lt_of_free + kst_edge_bound_of_free: connects the common-neighbour-bound hypothesis to the genuine forbidden-subgraph definition of K_{2,t}-freeness"
     ],
     "insights": [
       "The C4 algebraic core generalises to K_{2,t} with zero structural change: replace the single-common-neighbour bound by (t-1), so s^2=4n-3 becomes s^2=1+4(t-1)(n-1) and the KST quadratic gains a (t-1) factor on the n^2(n-1) term. Same nlinarith case-split proof works.",
@@ -51,8 +55,8 @@
       "No graph-level general cherry-count sum_v C(d_v,2) <= (t-1)*C(n,2) for K_{2,t}-free graphs in the gallery; parent Erdos1008Problem only proves the t=2 (C4) case kovari_sos_turan."
     ],
     "nextSteps": [
-      "Prove the graph-level K_{2,t} cherry-count (replay kovari_sos_turan double-count with t-1) then feed kst_quadratic_solve to get a graph-level ex(n;K_{2,t}) <= (1/4)(1+sqrt(1+4(t-1)(n-1)))*n theorem",
-      "VERIFY Erdos1008OQ02OQ02.lean once docker/containerd is repaired (this session: image lost + meta.db I/O corruption; Aristotle Resource-not-found)"
+      "VERIFY the graph-level GraphLevel section of Erdos1008OQ02OQ02.lean once containerd/docker build backend is repaired (this session: meta.db + content-store blob I/O errors)",
+      "Optional: derive the leading-order asymptotic ex(n;K_{2,t}) ≤ ½(√(t-1)·n^{3/2}+n) as an explicit ℝ corollary of kst_edge_bound"
     ]
   },
   "tags": [
