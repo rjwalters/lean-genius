@@ -193,4 +193,62 @@ theorem irregular_witness_split_gap_disjunction (G : SimpleGraph V)
   obtain ⟨h1, h2⟩ := hcon
   linarith
 
+-- ═══════════════════════════════════════════════════════════════════
+-- PART III: THE WHOLE DENSITY LIES IN THE CLOSED HALVES-INTERVAL
+-- ═══════════════════════════════════════════════════════════════════
+
+/-- **Convex-combination betweenness.**  The whole density `d(A₁∪A₂, B)` is the
+    `|A₁|:|A₂|`-weighted mean of the two half densities, hence lies in the closed
+    interval bounded by them:
+
+    `min (d(A₁,B)) (d(A₂,B)) ≤ d(A₁∪A₂,B) ≤ max (d(A₁,B)) (d(A₂,B))`.
+
+    This is the literal "lies between" content backing the distance bound
+    `edgeDensity_whole_between`: refining a part can never push its density outside
+    the range already spanned by the two halves. -/
+theorem edgeDensity_whole_mem_Icc (G : SimpleGraph V) [DecidableRel G.Adj]
+    (A₁ A₂ B : Finset V) (hdisj : Disjoint A₁ A₂)
+    (hB : 0 < (B.card : ℚ)) (hsum : 0 < (A₁.card : ℚ) + A₂.card) :
+    min (edgeDensity G A₁ B) (edgeDensity G A₂ B) ≤ edgeDensity G (A₁ ∪ A₂) B ∧
+      edgeDensity G (A₁ ∪ A₂) B ≤ max (edgeDensity G A₁ B) (edgeDensity G A₂ B) := by
+  have hBne : (B.card : ℚ) ≠ 0 := ne_of_gt hB
+  have hmul := edgeDensity_union_mul G A₁ A₂ B hdisj
+  have hcard : ((A₁ ∪ A₂).card : ℚ) = (A₁.card : ℚ) + A₂.card := by
+    rw [Finset.card_union_of_disjoint hdisj]; push_cast; ring
+  rw [hcard] at hmul
+  have hcan : ((A₁.card : ℚ) + A₂.card) * edgeDensity G (A₁ ∪ A₂) B =
+      (A₁.card : ℚ) * edgeDensity G A₁ B + (A₂.card : ℚ) * edgeDensity G A₂ B :=
+    mul_left_cancel₀ hBne (by linear_combination hmul)
+  have ha₁ : 0 ≤ (A₁.card : ℚ) := by positivity
+  have ha₂ : 0 ≤ (A₂.card : ℚ) := by positivity
+  set g₁ := edgeDensity G A₁ B
+  set g₂ := edgeDensity G A₂ B
+  set gu := edgeDensity G (A₁ ∪ A₂) B
+  set a₁ := (A₁.card : ℚ)
+  set a₂ := (A₂.card : ℚ)
+  refine ⟨?_, ?_⟩
+  · -- lower bound: `min` is dominated by the convex combination.
+    have h1 : a₁ * min g₁ g₂ ≤ a₁ * g₁ := mul_le_mul_of_nonneg_left (min_le_left _ _) ha₁
+    have h2 : a₂ * min g₁ g₂ ≤ a₂ * g₂ := mul_le_mul_of_nonneg_left (min_le_right _ _) ha₂
+    have hlb : (a₁ + a₂) * min g₁ g₂ ≤ (a₁ + a₂) * gu := by rw [hcan]; nlinarith [h1, h2]
+    exact le_of_mul_le_mul_left hlb hsum
+  · -- upper bound: the convex combination is dominated by `max`.
+    have h1 : a₁ * g₁ ≤ a₁ * max g₁ g₂ := mul_le_mul_of_nonneg_left (le_max_left _ _) ha₁
+    have h2 : a₂ * g₂ ≤ a₂ * max g₁ g₂ := mul_le_mul_of_nonneg_left (le_max_right _ _) ha₂
+    have hub : (a₁ + a₂) * gu ≤ (a₁ + a₂) * max g₁ g₂ := by rw [hcan]; nlinarith [h1, h2]
+    exact le_of_mul_le_mul_left hub hsum
+
+/-- Second-argument form of `edgeDensity_whole_mem_Icc`: the whole density
+    `d(A, B₁∪B₂)` lies in the closed interval spanned by `d(A,B₁)` and `d(A,B₂)`.
+    Obtained by symmetry of `edgeDensity`. -/
+theorem edgeDensity_whole_mem_Icc_right (G : SimpleGraph V) [DecidableRel G.Adj]
+    (A B₁ B₂ : Finset V) (hdisj : Disjoint B₁ B₂)
+    (hA : 0 < (A.card : ℚ)) (hsum : 0 < (B₁.card : ℚ) + B₂.card) :
+    min (edgeDensity G A B₁) (edgeDensity G A B₂) ≤ edgeDensity G A (B₁ ∪ B₂) ∧
+      edgeDensity G A (B₁ ∪ B₂) ≤ max (edgeDensity G A B₁) (edgeDensity G A B₂) := by
+  have h := edgeDensity_whole_mem_Icc G B₁ B₂ A hdisj hA hsum
+  rwa [Szemeredi.Regularity.OQ01.edgeDensity_comm G B₁ A,
+    Szemeredi.Regularity.OQ01.edgeDensity_comm G (B₁ ∪ B₂) A,
+    Szemeredi.Regularity.OQ01.edgeDensity_comm G B₂ A] at h
+
 end Szemeredi.RegularityOQ04Witness
