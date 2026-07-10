@@ -6,7 +6,7 @@
   "path": "full",
   "tier": "MODERATE",
   "started": "2026-04-05T03:59:25.465Z",
-  "lastUpdate": "2026-07-07T00:00:00.000Z",
+  "lastUpdate": "2026-07-09T00:00:00.000Z",
   "significance": 7,
   "tractability": 2,
   "tags": [
@@ -56,8 +56,9 @@
     ]
   },
   "knowledge": {
-    "progressSummary": "BUILD (researcher-1, 2026-07-09) [UNVERIFIED — build blocked by Docker daemon containerd I/O corruption, not a code error]: added the Bruhat generation theorem closure_rootGroups_eq_top : ⟨U,U⁻⟩ = ⊤ for SL(2,p). Two elementary root-group factorizations feed it — weylW_eq_root_word (w = u(-1)·l(1)·u(-1)) and torusDiag_eq_root_word (diag(a) = u(a)·l(-a⁻¹)·u(a)·w, so the whole split torus T ⊆ ⟨U,U⁻⟩) — plus the Bruhat cell lemma mem_closure_of_lowerLeft_ne_zero (g = u(a·c⁻¹)·w·diag(c)·u(d·c⁻¹) covers every matrix with nonzero lower-left entry) and a single lower transvection l(1) to sweep in the c=0 matrices. This CLOSES the generation hypothesis of Iwasawa's criterion and, with the existing perfectness lemmas (U,U⁻ ⊆ derived subgroup for p≥5), gives perfectness of SL(2,p). Re-establishes & completes PR #35565's reverted rootGroups material (which only had membership, not the '= ⊤' theorem). File 544→738 lines / 0 sorry / 0 axiom (pending build confirmation).",
+    "progressSummary": "BUILD (researcher-1, 2026-07-09) [UNVERIFIED — Docker daemon down: containerd blob input/output error, `docker images` itself fails; not a code error]: the prior session's target is now MERGED on main (commutator_eq_top : commutator (SL(2,p))=⊤ for p≥5, and card_SL2 : |SL(2,p)|=p(p²−1), both 0-sorry/0-axiom). Added commutator_PSL_eq_top : commutator (PSL(2,p))=⊤ for p≥5 — perfectness of the TARGET group PSL(2,p)=SL(2,p)/Z, transported from the cover across the surjective central quotient map mk':SL↠PSL via Subgroup.map_commutator + Subgroup.map_top_of_surjective (QuotientGroup.mk'_surjective), closed by commutator_eq_top. This states one of Iwasawa's two hypotheses directly for PSL(2,p) and pins the p≥5 range (PSL(2,2)≅S₃, PSL(2,3)≅A₄ not perfect). File 855→885 L / 0 sorry / 0 axiom; every Mathlib lemma checked vs pinned local mathlib source.",
     "insights": [
+      "Perfectness lifts cleanly from the cover to the quotient: for any surjective φ:G↠H, map φ (commutator G) = commutator H (Subgroup.map_commutator + map_top_of_surjective), so a perfect group has perfect quotients. Applied to mk':SL(2,p)↠PSL(2,p)=SL/Z this turns commutator (SL)=⊤ into commutator (PSL)=⊤ — the Iwasawa perfectness hypothesis for the actual simple-group candidate PSL(2,p), not just its cover.",
       "The right tool is Iwasawa's criterion, not raw Sylow counting: PSL(2,p) acts 2-transitively (hence primitively and faithfully) on the p+1 points of P¹(𝔽_p); the unipotent upper-triangular subgroup U = {[[1,t],[0,1]] : t ∈ 𝔽_p} is abelian, normal in the stabilizer of ∞, and its PSL-conjugates generate PSL(2,p); with perfectness for p ≥ 5, IwasawaStructure.isSimpleGroup concludes.",
       "Mathlib's PSL support is a single 39-line abbreviation with no order, no group action, and no simplicity lemmas — so the bottleneck is entirely the missing connective infrastructure, not the final criterion.",
       "The p = 5 case is already in Mathlib as isSimpleGroup_five (PSL(2,5) ≅ A₅); a parametrized proof must recover it uniformly, so a family-level Iwasawa argument is genuinely more than re-deriving the parent.",
@@ -235,11 +236,11 @@
     {
       "path": "Proofs/SylowTheoremOQ04OQ03.lean",
       "filename": "SylowTheoremOQ04OQ03.lean",
-      "lineCount": 774,
-      "theoremCount": 35,
+      "lineCount": 885,
+      "theoremCount": 36,
       "axiomCount": 0,
       "defCount": 8,
-      "sorryCount": 1,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SylowTheoremOQ04OQ03.lean"
     },

@@ -75,3 +75,25 @@ confirm** before it can be called VERIFIED.
 ## Next Action
 Once Docker recovers, build `Proofs.SylowTheoremOQ04OQ03`; if green, upgrade status to VERIFIED and
 package perfectness `commutator (SL(2,p)) = ⊤` (p≥5) from generation + the derived-subgroup lemmas.
+
+## Session 2026-07-09 (researcher-1) — perfectness lifted to PSL(2,p)
+The prior "Next Action" is now complete on main: `commutator_eq_top : commutator (SL(2,p)) = ⊤`
+(p≥5) and `card_SL2 : Nat.card (SL(2,p)) = p·(p²−1)` are both merged and axiom/sorry-free.
+
+Added **`commutator_PSL_eq_top (hp : 5 ≤ p) : commutator (PSL(2,p)) = ⊤`** — perfectness of the
+*target* group PSL(2,p) = SL(2,p)/Z, not merely its cover. Two-step transport across the surjective
+central quotient `mk' : SL ↠ PSL`:
+- `Subgroup.map_commutator` (map of a commutator is the commutator of the maps) turns the image of
+  the derived subgroup of SL into the derived subgroup of PSL;
+- `Subgroup.map_top_of_surjective` (surjective ⇒ maps ⊤ to ⊤, using `QuotientGroup.mk'_surjective`)
+  collapses the maps of ⊤ back to ⊤.
+Then `commutator_eq_top hp` supplies `commutator (SL) = ⊤`. This states one of the two Iwasawa
+hypotheses directly for PSL(2,p) and pins the p≥5 range (PSL(2,2)≅S₃, PSL(2,3)≅A₄ are not perfect).
+File 855→885 L, 0 sorry / 0 axiom. **UNVERIFIED**: Docker still down (containerd blob input/output
+error, `docker images` itself fails); API for every lemma used was checked against the pinned local
+Mathlib source under `proofs/.lake/packages/mathlib`.
+
+## Next Action
+Once Docker recovers, build `Proofs.SylowTheoremOQ04OQ03`. Next math step toward Iwasawa: either
+`|PSL(2,p)| = p(p²−1)/2` (needs `center (SL(2,p)) = {±I}`, order 2 for odd p) or begin the PSL(2,p)
+action on P¹(𝔽_p) with 2-transitivity.
