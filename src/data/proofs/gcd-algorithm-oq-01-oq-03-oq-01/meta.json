@@ -66,6 +66,32 @@
       "description": "The analogous tight worst-case family (1, 2^n − 1) for the binary GCD algorithm, providing a structural contrast with the Fibonacci worst case for the Euclidean algorithm."
     }
   ],
+  "references": [
+    {
+      "key": "Lame1844",
+      "citation": "Lamé, G. (1844). Note sur la limite du nombre des divisions dans la recherche du plus grand commun diviseur entre deux nombres entiers. Comptes Rendus des Séances de l'Académie des Sciences, 19, 867–870.",
+      "type": "article",
+      "note": "The original source. Lamé bounds the number of Euclidean division steps by (roughly) five times the number of decimal digits of the smaller input, using the Fibonacci sequence as the extremal case — historically regarded as the first worst-case complexity analysis of an algorithm."
+    },
+    {
+      "key": "KnuthTAOCP2",
+      "citation": "Knuth, D. E. (1997). The Art of Computer Programming, Vol. 2: Seminumerical Algorithms (3rd ed.), §4.5.3 'Analysis of Euclid's Algorithm'. Addison-Wesley.",
+      "type": "book",
+      "note": "The standard modern treatment. Derives Lamé's theorem, identifies consecutive Fibonacci numbers as the exact worst-case inputs, and connects the step count to the continued-fraction expansion — the sharp direction formalized in this entry."
+    },
+    {
+      "key": "Dixon1970",
+      "citation": "Dixon, J. D. (1970). The number of steps in the Euclidean algorithm. Journal of Number Theory, 2(4), 414–422.",
+      "type": "article",
+      "note": "Analyzes the distribution of the Euclidean step count, placing the Fibonacci worst case in the context of the average behaviour (≈ (12 ln 2 / π²) ln a steps)."
+    },
+    {
+      "key": "GrahamKnuthPatashnik1994",
+      "citation": "Graham, R. L., Knuth, D. E., & Patashnik, O. (1994). Concrete Mathematics: A Foundation for Computer Science (2nd ed.), §6.6. Addison-Wesley.",
+      "type": "book",
+      "note": "Textbook development of the Fibonacci numbers and their identities (Binet's formula, the recurrence fib(n+2) = fib(n+1) + fib(n)) that drive the exact worst-case count euclidSteps(fib(n+2), fib(n+1)) = n."
+    }
+  ],
   "sections": [
     "Module Overview and References",
     "Basic Recursion Lemmas for euclidSteps",
