@@ -239,4 +239,50 @@ theorem norm_fourierCoeffOn_lt_deriv2_of_natAbs_ge_two (f : ℝ → ℝ) (hf : C
   have h4 := four_mul_norm_fourierCoeffOn_le_deriv2 f hf hperiod hab n hn
   linarith
 
+/-- **Mode kernel: `f''` kills mode `n` iff `f` has no mode `n`.**  For any nonzero mode
+    `n`, the second derivative annihilates the `n`-th Fourier coefficient *exactly* when `f`
+    already did:
+
+        ĉₙ(f'') = 0  ↔  ĉₙ(f) = 0.
+
+    Immediate from the eigenvalue identity `ĉₙ(f'') = −n²·ĉₙ(f)` and `n² ≠ 0`: the
+    second-derivative operator scales each nonzero mode by the nonzero factor `−n²`, so it
+    has the same kernel as the identity on `{n ≠ 0}`.  This is the exact-kernel companion of
+    the magnitude identity `norm_fourierCoeffOn_deriv2_eq` and the reason
+    `fourierCoeffOn_eq_of_deriv2_periodic` can invert `f'' = g` mode by mode: no nonzero mode
+    of `f` is lost. -/
+theorem fourierCoeffOn_deriv2_eq_zero_iff (f : ℝ → ℝ) (hf : ContDiff ℝ 2 f)
+    (hperiod : ∀ t, f (t + 2 * π) = f t)
+    (hab : (0 : ℝ) < 2 * π) (n : ℤ) (hn : n ≠ 0) :
+    fourierCoeffOn hab (ofReal ∘ deriv (deriv f)) n = 0 ↔
+      fourierCoeffOn hab (ofReal ∘ f) n = 0 := by
+  rw [fourierCoeffOn_deriv2_periodic f hf hperiod hab n hn]
+  have hn2 : (n : ℂ) ^ 2 ≠ 0 := pow_ne_zero 2 (Int.cast_ne_zero.mpr hn)
+  rw [mul_eq_zero]
+  simp [hn2]
+
+/-- **Spectral gap is at least `3·‖ĉₙ(f)‖` past the first harmonic.**  The exact-gap
+    identity `norm_fourierCoeffOn_deriv2_sub` computes
+    `‖ĉₙ(f'')‖ − ‖ĉₙ(f)‖ = (n²−1)·‖ĉₙ(f)‖`, and for `|n| ≥ 2` the factor `n²−1 ≥ 3`, so
+
+        3·‖ĉₙ(f)‖ ≤ ‖ĉₙ(f'')‖ − ‖ĉₙ(f)‖.
+
+    This is the explicit form of the "gap ≥ 3·‖ĉₙ(f)‖ when `|n| ≥ 2`" promised in the
+    docstring of `norm_fourierCoeffOn_deriv2_sub`, quantifying the strict damping
+    `norm_fourierCoeffOn_lt_deriv2_of_natAbs_ge_two` by the sharp constant `3` (the
+    Wirtinger spectral gap between the first harmonic `n²−1 = 0` and the next mode). -/
+theorem three_mul_norm_le_norm_fourierCoeffOn_deriv2_sub (f : ℝ → ℝ) (hf : ContDiff ℝ 2 f)
+    (hperiod : ∀ t, f (t + 2 * π) = f t)
+    (hab : (0 : ℝ) < 2 * π) (n : ℤ) (hn : 2 ≤ n.natAbs) :
+    3 * ‖fourierCoeffOn hab (ofReal ∘ f) n‖
+      ≤ ‖fourierCoeffOn hab (ofReal ∘ deriv (deriv f)) n‖
+        - ‖fourierCoeffOn hab (ofReal ∘ f) n‖ := by
+  have hn0 : n ≠ 0 := by rintro rfl; simp at hn
+  rw [norm_fourierCoeffOn_deriv2_sub f hf hperiod hab n hn0]
+  have hi : (2 : ℤ) ≤ |n| := by rw [Int.abs_eq_natAbs]; exact_mod_cast hn
+  have h2 : (2 : ℝ) ≤ |(n : ℝ)| := by rw [← Int.cast_abs]; exact_mod_cast hi
+  have hn4 : (4 : ℝ) ≤ (n : ℝ) ^ 2 := by
+    nlinarith [sq_abs (n : ℝ), abs_nonneg (n : ℝ), h2]
+  nlinarith [norm_nonneg (fourierCoeffOn hab (ofReal ∘ f) n), hn4]
+
 end IsoperimetricFourier
