@@ -186,6 +186,32 @@
       "description": "Parallel Erdős problem on growth rates of multiplicative arithmetic functions (iterated sum of divisors)"
     }
   ],
+  "references": [
+    {
+      "authors": "Kevin Ford",
+      "title": "The distribution of totients",
+      "year": "1998",
+      "venue": "The Ramanujan Journal, 2(1–2), 67–151",
+      "note": "The definitive study of V(x) = |{n ≤ x : n ∈ range φ}|, establishing its order of magnitude; the essential modern reference for the counting functions V(x) and V'(x) whose ratio Erdős #417 concerns."
+    },
+    {
+      "authors": "Paul Erdős, Ronald L. Graham",
+      "title": "Old and New Problems and Results in Combinatorial Number Theory",
+      "year": "1980",
+      "venue": "Monographies de L'Enseignement Mathématique 28, Geneva",
+      "note": "Collects Erdős's problems on the range of Euler's totient, including the density/ratio questions behind V(x)/V'(x) formalized here ([ErGr80] in the source docstring)."
+    },
+    {
+      "title": "OEIS A264810 and A061070 — counts of totient values",
+      "url": "https://oeis.org/A264810",
+      "note": "On-Line Encyclopedia of Integer Sequences entries tabulating the totient-value counting functions referenced in the Lean source."
+    },
+    {
+      "title": "Erdős Problem #417 (erdosproblems.com) — counting totient values",
+      "url": "https://www.erdosproblems.com/417",
+      "note": "Source problem (OPEN): does V(x)/V'(x) tend to a limit, is it > 1, or (as Erdős conjectured) → ∞?"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib"
