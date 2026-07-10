@@ -515,6 +515,92 @@ theorem nonqualifying_deficit_at_factorials (k : ℕ) : ∃ N : ℕ, ∀ n : ℕ
   exact ⟨N, fun n hn => (deficit_le_iff_density _ k).mpr (hN n hn)⟩
 
 /-
+## Part IX: The Density Surplus is Unbounded
+
+`density_at_levels` shows the qualifying count *meets* the `k/(k+1)` threshold
+eventually. In fact it *overshoots* it by an arbitrarily large additive margin:
+each level `l ≥ max(3, k+2)` contributes a strict surplus `≥ 1`
+(`levelwise_strict_surplus`), and there are unboundedly many such levels, so the
+cumulative surplus `Σ q_l·(k+1) − Σ p_l·k` grows without bound. This is the exact
+same argument as `density_at_levels` (of which it is the `M = 0` case), with the
+witness `N` pushed out by `M` extra high levels to absorb the target margin.
+-/
+
+/-- **Unbounded density surplus (level-sum form)**: for every threshold `k` and
+    every margin `M`, eventually the level-sum qualifying count exceeds the
+    level-sum prime count (at rate `k/(k+1)`) by at least `M`:
+
+      Σ_{l≤n} q(l)·(k+1) ≥ Σ_{l≤n} p(l)·k + M   for all large `n`.
+
+    `density_at_levels` is the `M = 0` instance. The proof is identical, choosing
+    `N` large enough that the count of strict-surplus levels `n + 1 − L₀` exceeds
+    the early-level deficit by the extra margin `M`. -/
+theorem density_at_levels_surplus (k M : ℕ) : ∃ N : ℕ, ∀ n : ℕ, n ≥ N →
+    (Finset.range (n + 1)).sum (fun l => qualifyingInLevel l * (k + 1)) ≥
+    (Finset.range (n + 1)).sum (fun l => primesInLevel l * k) + M := by
+  set L₀ := max 3 (k + 2)
+  refine ⟨L₀ + earlyDeficit L₀ k + M, fun n hn => ?_⟩
+  have hL₀_le : L₀ ≤ n + 1 := by omega
+  -- Each high level l ∈ Ico L₀ (n+1) has strict surplus ≥ 1.
+  have h_high : ∀ l, l ∈ Finset.Ico L₀ (n + 1) →
+      qualifyingInLevel l * (k + 1) ≥ primesInLevel l * k + 1 := by
+    intro l hl
+    simp only [Finset.mem_Ico] at hl
+    exact levelwise_strict_surplus l k (by omega) (by omega)
+  have h_high_sum : (Finset.Ico L₀ (n + 1)).sum (fun l => qualifyingInLevel l * (k + 1)) ≥
+      (Finset.Ico L₀ (n + 1)).sum (fun l => primesInLevel l * k) +
+      (n + 1 - L₀) := by
+    have hge := Finset.sum_le_sum h_high
+    have hdecomp : (Finset.Ico L₀ (n + 1)).sum (fun l => primesInLevel l * k + 1) =
+        (Finset.Ico L₀ (n + 1)).sum (fun l => primesInLevel l * k) +
+        (Finset.Ico L₀ (n + 1)).sum (fun _ => 1) := Finset.sum_add_distrib
+    have hones : (Finset.Ico L₀ (n + 1)).sum (fun _ => 1) =
+        (Finset.Ico L₀ (n + 1)).card := by simp [Finset.sum_const]
+    have hcard : (Finset.Ico L₀ (n + 1)).card = n + 1 - L₀ := Nat.card_Ico L₀ (n + 1)
+    linarith
+  have h_low_deficit : (Finset.range L₀).sum (fun l => primesInLevel l * k) ≤
+      earlyDeficit L₀ k := by
+    unfold earlyDeficit
+    rw [Finset.mul_sum]
+    apply Finset.sum_le_sum
+    intro l _
+    exact le_of_eq (mul_comm (primesInLevel l) k)
+  have h_low_nonneg : 0 ≤ (Finset.range L₀).sum (fun l => qualifyingInLevel l * (k + 1)) :=
+    Nat.zero_le _
+  have h_split_lhs : (Finset.range (n + 1)).sum (fun l => qualifyingInLevel l * (k + 1)) =
+      (Finset.range L₀).sum (fun l => qualifyingInLevel l * (k + 1)) +
+      (Finset.Ico L₀ (n + 1)).sum (fun l => qualifyingInLevel l * (k + 1)) := by
+    rw [← Finset.sum_range_add_sum_Ico _ hL₀_le]
+  have h_split_rhs : (Finset.range (n + 1)).sum (fun l => primesInLevel l * k) =
+      (Finset.range L₀).sum (fun l => primesInLevel l * k) +
+      (Finset.Ico L₀ (n + 1)).sum (fun l => primesInLevel l * k) := by
+    rw [← Finset.sum_range_add_sum_Ico _ hL₀_le]
+  rw [h_split_lhs, h_split_rhs]
+  have h_n_bound : n + 1 - L₀ ≥ earlyDeficit L₀ k + M := by omega
+  linarith
+
+/-- **Unbounded density surplus (at factorial points)**: for every threshold `k`
+    and every margin `M`, eventually
+
+      C(n!)·(k+1) ≥ π(n!)·k + M.
+
+    So the qualifying primes up to `n!` not only meet the `k/(k+1)` density
+    threshold (`density_one_at_factorials`) but overshoot the corresponding prime
+    fraction by an arbitrarily large additive amount. Combines
+    `density_at_levels_surplus` with the interval decompositions, exactly as
+    `density_one_at_factorials` combines `density_at_levels` with them. -/
+theorem density_surplus_at_factorials (k M : ℕ) : ∃ N : ℕ, ∀ n : ℕ, n ≥ N →
+    Erdos1059OQ01.qualifyingPrimeCount (Nat.factorial n) * (k + 1) ≥
+    Erdos1059OQ01.primeCount (Nat.factorial n) * k + M := by
+  obtain ⟨N₀, hN₀⟩ := density_at_levels_surplus k M
+  refine ⟨N₀ + 1, fun n hn => ?_⟩
+  have hn1 : n ≥ 1 := by omega
+  rw [qualifyingCount_decomposition n hn1, primeCount_decomposition n hn1]
+  have hnn : n = (n - 1) + 1 := by omega
+  rw [hnn, Finset.sum_mul, Finset.sum_mul]
+  exact hN₀ (n - 1) (by omega)
+
+/-
 ## Summary
 
 **Proved from first principles** (no sorry):
@@ -534,6 +620,10 @@ theorem nonqualifying_deficit_at_factorials (k : ℕ) : ∃ N : ℕ, ∀ n : ℕ
     non-qualifying deficit bound (π(x)−C(x))·(k+1) ≤ π(x)
 13. nonqualifying_deficit_at_factorials — sharp form: the non-qualifying primes up
     to n! are eventually a ≤1/(k+1) fraction, i.e. C(n!)/π(n!) → 1
+14. density_at_levels_surplus — level-sum surplus is unbounded: Σ q_l·(k+1) exceeds
+    Σ p_l·k by any prescribed margin M (density_at_levels is the M=0 case)
+15. density_surplus_at_factorials — at factorial points C(n!)·(k+1) ≥ π(n!)·k + M,
+    the qualifying count overshoots the k/(k+1) prime fraction by an unbounded margin
 
 **This file is now sorry-free** — the previous two `sorry`s (the interval
 decompositions) are discharged by `count_decomp`.
