@@ -168,6 +168,11 @@
       "targetId": "hilbert-3",
       "relationship": "foundational",
       "description": "Hilbert's third problem (Dehn-Sydler theorem) provides the theoretical foundation: the Dehn invariant determines when polyhedra are scissors-congruent"
+    },
+    {
+      "targetId": "dissection-of-cubes-oq-01-oq-02",
+      "relationship": "answered-by",
+      "description": "Child answering this entry's second open question — 'what is the actual minimum of collidingCubes.card over all valid dissections?'. It proves the minimum is exactly 2: the collision spectrum has least element 2 (IsLeast), packaging OQ-01's lower bound together with an achievability witness."
     }
   ],
   "references": [
