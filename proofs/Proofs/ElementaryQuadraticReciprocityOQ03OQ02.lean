@@ -383,6 +383,32 @@ theorem kronecker_mul_right_odd (a : ℤ) (m n : ℕ)
     kronecker_eq_jacobi a m hm hmo, kronecker_eq_jacobi a n hn hno,
     jacobiSym.mul_right' a (by omega) (by omega)]
 
+/-- **The symbol at a prime-power modulus is the power of the symbol.**
+    For any nonzero modulus `n` and exponent `k`, `(a / nᵏ) = (a/n)ᵏ`.
+
+    This is the denominator-side companion of `kronecker_sq_left`
+    `(a²/n) = (a/n)²` (which powers the *numerator*): here the modulus is
+    raised to a power. It follows by induction from second-argument
+    multiplicativity `kronecker_mul_right` on `nᵏ⁺¹ = nᵏ · n` (a nonzero
+    product for `n ≠ 0`), with the base case `(a/n⁰) = (a/1) = 1 = (a/n)⁰`
+    supplied by `kronecker_one_right`. It generalizes the square case
+    `(a/n²) = (a/n)²` to every exponent. -/
+theorem kronecker_pow_right (a n : ℤ) (k : ℕ) (hn : n ≠ 0) :
+    kronecker a (n ^ k) = kronecker a n ^ k := by
+  induction k with
+  | zero => simp only [pow_zero, kronecker_one_right]
+  | succ k ih =>
+    have hnk : n ^ k ≠ 0 := pow_ne_zero k hn
+    rw [pow_succ, kronecker_mul_right a (n ^ k) n (mul_ne_zero hnk hn), ih, pow_succ]
+
+/-- **The symbol is non-negative at even-power moduli.**  For nonzero `n`,
+    `0 ≤ (a / n^(2j))`: the value is `(a/n)^(2j) = ((a/n)^j)²`, a perfect
+    square. Denominator-side companion of `kronecker_sq_left_nonneg`. -/
+theorem kronecker_even_pow_right_nonneg (a n : ℤ) (j : ℕ) (hn : n ≠ 0) :
+    0 ≤ kronecker a (n ^ (2 * j)) := by
+  rw [kronecker_pow_right a n (2 * j) hn, mul_comm 2 j, pow_mul]
+  exact sq_nonneg _
+
 /-- **Quadratic reciprocity for the Kronecker symbol, odd positive case.**
     For odd positive m, n:
     (m/n) = (-1)^{((m-1)/2)·((n-1)/2)} · (n/m).
