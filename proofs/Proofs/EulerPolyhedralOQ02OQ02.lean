@@ -551,6 +551,62 @@ theorem genusSurfaceCGB_genus_of_chi (g : ℕ) :
     2 * (g : ℤ) = 2 - (genusSurfaceCGB g).chi := by
   rw [genusSurfaceCGB_chi]; ring
 
+-- ============================================================================
+-- Part XIV: The Gauss-Bonnet sign trichotomy — total curvature detects the
+--           uniformization regime (spherical / flat / hyperbolic) from the genus
+-- ============================================================================
+
+/-- **Positive total curvature ⇔ the sphere (`g = 0`).**  Since `∫Pf(Σ_g) = 4π(1 − g)`
+    and `2π > 0`, the total Gauss-Bonnet curvature is *positive* exactly for genus `0` —
+    the spherical (positively-curved) case.  This is the `χ > 0` corner of the
+    uniformization trichotomy, read off directly from the genus. -/
+theorem genusSurfaceCGB_totalPfaffian_pos_iff (g : ℕ) :
+    0 < (genusSurfaceCGB g).totalPfaffian ↔ g = 0 := by
+  have hpi : (0 : ℝ) < 2 * π := by positivity
+  rw [genusSurfaceCGB_totalPfaffian, mul_pos_iff]
+  constructor
+  · rintro (⟨h, -⟩ | ⟨-, h⟩)
+    · have h1 : (g : ℝ) < 1 := by linarith
+      have : g < 1 := by exact_mod_cast h1
+      omega
+    · exact absurd h (lt_asymm hpi)
+  · intro hg; subst hg; exact Or.inl ⟨by push_cast; norm_num, hpi⟩
+
+/-- **Zero total curvature ⇔ the torus (`g = 1`).**  The total Gauss-Bonnet curvature
+    `4π(1 − g)` vanishes exactly for genus `1` — the flat (Euclidean) case.  This is the
+    `χ = 0` corner of the uniformization trichotomy. -/
+theorem genusSurfaceCGB_totalPfaffian_eq_zero_iff (g : ℕ) :
+    (genusSurfaceCGB g).totalPfaffian = 0 ↔ g = 1 := by
+  have hpi : (2 * π : ℝ) ≠ 0 := by positivity
+  rw [genusSurfaceCGB_totalPfaffian, mul_eq_zero]
+  constructor
+  · rintro (h | h)
+    · have : (g : ℝ) = 1 := by linarith
+      exact_mod_cast this
+    · exact absurd h hpi
+  · intro hg; subst hg; exact Or.inl (by push_cast; ring)
+
+/-- **Negative total curvature ⇔ higher genus (`g ≥ 2`).**  The total Gauss-Bonnet
+    curvature `4π(1 − g)` is *negative* exactly for genus `≥ 2` — the hyperbolic
+    (negatively-curved) case.  Together with `genusSurfaceCGB_totalPfaffian_pos_iff` and
+    `..._eq_zero_iff` this is the full **Gauss-Bonnet sign trichotomy**: the sign of the
+    total curvature of a closed orientable surface reads off its uniformization type
+    (spherical `g = 0`, flat `g = 1`, hyperbolic `g ≥ 2`) directly from the genus. -/
+theorem genusSurfaceCGB_totalPfaffian_neg_iff (g : ℕ) :
+    (genusSurfaceCGB g).totalPfaffian < 0 ↔ 2 ≤ g := by
+  have hpi : (0 : ℝ) < 2 * π := by positivity
+  rw [genusSurfaceCGB_totalPfaffian, mul_neg_iff]
+  constructor
+  · rintro (⟨-, h⟩ | ⟨h, -⟩)
+    · exact absurd h (lt_asymm hpi)
+    · have h1 : (1 : ℝ) < (g : ℝ) := by linarith
+      have : 1 < g := by exact_mod_cast h1
+      omega
+  · intro hg
+    refine Or.inr ⟨?_, hpi⟩
+    have : (2 : ℝ) ≤ (g : ℝ) := by exact_mod_cast hg
+    linarith
+
 end ChernGaussBonnet
 
 end
