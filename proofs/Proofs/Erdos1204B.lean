@@ -302,6 +302,38 @@ theorem A_le_S (k : ℕ) : A k ≤ S k := by
   rw [← hsum]
   exact A_le_sum hcard ha
 
+/-- **Sum–diameter bootstrap: `A(k+1) + S(k) ≤ S(k+1)`.** Peeling the maximum `M`
+off a sum-minimizing admissible `(k+1)`-set splits its total as `M + ∑(rest)`; the
+maximum dominates the whole set's largest element, so `M ≥ A(k+1)` (the diameter
+lower bound `A_le`), and the remaining admissible `k`-set has sum `≥ S(k)` (`S_le`).
+Adding gives `S(k+1) ≥ A(k+1) + S(k)`.
+
+This is the **general form of the recurrence** that the exact-value proofs
+`admissible_three_sum_ge` (`A(3)=6`, `S(2)=2 ⟹ S(3)≥8`) and `admissible_four_sum_ge`
+(`A(4)=8`, `S(3)=8 ⟹ S(4)≥16`) each instantiate by hand: every exact `S(k)` is the
+already-proven diameter value `A(k)` plus the previous minimal sum, needing no fresh
+mod-`p` enumeration. Iterated, it yields `S(k) ≥ A(k)+A(k-1)+⋯+A(2)`, sharpening the
+parity floor `k(k-1) ≤ S(k)` wherever the `A`-values exceed `2(j-1)`. -/
+theorem A_add_S_le_S_succ (k : ℕ) : A (k + 1) + S k ≤ S (k + 1) := by
+  obtain ⟨a, hcard, ha, hsum⟩ := S_mem (k + 1)
+  have hne : a.Nonempty := by rw [← Finset.card_pos, hcard]; omega
+  set M := a.max' hne with hMdef
+  have hMmem : M ∈ a := a.max'_mem hne
+  -- `M ≥ A(k+1)`: `M` dominates `a.sup id`, which is `≥ A(k+1)` by `A_le`
+  have hsupM : a.sup id ≤ M :=
+    Finset.sup_le (fun x hx => by simpa using a.le_max' x hx)
+  have hAM : A (k + 1) ≤ M := le_trans (A_le hcard ha) hsupM
+  -- the erased `k`-set is admissible with sum `≥ S(k)`
+  have haer : Admissible (a.erase M) := ha.subset (a.erase_subset M)
+  have hcarderase : (a.erase M).card = k := by
+    rw [Finset.card_erase_of_mem hMmem, hcard, Nat.add_sub_cancel]
+  have hSk : S k ≤ (a.erase M).sum id := S_le hcarderase haer
+  -- split the optimal sum off `M`
+  have hsplit : a.sum id = M + (a.erase M).sum id := by
+    rw [← Finset.add_sum_erase a id hMmem]; simp
+  rw [← hsum, hsplit]
+  omega
+
 /- ## Open Problem
 
 The asymptotic behaviour of `B(k) = min (a₁ + ⋯ + a_k)/k` over admissible
@@ -319,3 +351,4 @@ end Erdos1204
 #print axioms Erdos1204.B_four
 #print axioms Erdos1204.A_le_sum
 #print axioms Erdos1204.A_le_S
+#print axioms Erdos1204.A_add_S_le_S_succ
