@@ -3,6 +3,7 @@ import Mathlib.MeasureTheory.Measure.Lebesgue.Complex
 import Mathlib.MeasureTheory.Measure.Haar.NormedSpace
 import Mathlib.MeasureTheory.Measure.Typeclasses.NoAtoms
 import Mathlib.Topology.MetricSpace.HausdorffDimension
+import Mathlib.Analysis.Real.Cardinality
 import Mathlib.Tactic
 import Proofs.AlgebraicNumbersCountable
 
@@ -111,6 +112,27 @@ theorem ae_transcendental :
     ext x; simp only [mem_setOf_eq, mem_compl_iff, Transcendental]
   rw [Filter.eventually_iff, hset]
   exact compl_mem_ae_iff.mpr algebraic_reals_null
+
+/-- **The transcendental reals are uncountable.**  Completing the "smallness trichotomy"
+dual: the algebraic reals are countable, meagre, and null, so — dually — the transcendentals
+are uncountable, comeagre, and conull.  Here is the cardinality half: `{x | Transcendental ℚ x}`
+is not countable.
+
+Proof by contradiction: if the transcendentals were countable then, together with the
+countable algebraic reals (`AlgebraicNumbersCountable.algebraic_reals_countable`), their union
+`{Transcendental} ∪ {Transcendental}ᶜ = ℝ` would be countable, contradicting the
+uncountability of the reals (`Cardinal.not_countable_real`).  A purely cardinal argument,
+independent of the measure- and category-theoretic routes above. -/
+theorem transcendental_reals_uncountable :
+    ¬ {x : ℝ | Transcendental ℚ x}.Countable := by
+  intro hcount
+  have hcompl : {x : ℝ | Transcendental ℚ x}ᶜ.Countable := by
+    rw [compl_transcendental_eq_algebraic]
+    exact AlgebraicNumbersCountable.algebraic_reals_countable
+  have huniv : (Set.univ : Set ℝ).Countable := by
+    have hu := hcount.union hcompl
+    rwa [Set.union_compl_self] at hu
+  exact Cardinal.not_countable_real huniv
 
 -- ============================================================================
 -- § 3. Transcendentals fill almost all of every interval
