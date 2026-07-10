@@ -40,7 +40,10 @@ Specializations recorded here:
 * `schur_trace_eq` — basis independence of the trace, `∑ d i = ∑ λ j` (the `k = n`
   equality case of majorization, needing no convexity);
 * `schur_sum_sq_le` — `∑ (d i)² ≤ ∑ (λ j)²` (the `φ = (·)²` instance), i.e. the
-  diagonal has no larger Euclidean length than the spectrum.
+  diagonal has no larger Euclidean length than the spectrum;
+* `diag_mem_Icc` — the pointwise confinement `λ_min ≤ d i ≤ λ_max` (each diagonal
+  entry lies in the numerical range spanned by the extreme eigenvalues), the
+  `k = 1` extreme of majorization.
 
 ## Relation to Mathlib
 
@@ -174,5 +177,74 @@ theorem schur_sum_sq_le :
   schur_majorization_convexOn hT hn e
     (φ := fun x => x ^ 2) (s := Set.univ)
     (Even.convexOn_pow (by decide)) (fun _ => Set.mem_univ _)
+
+/-! ## Pointwise confinement (Schur's inequality for a single diagonal entry)
+
+The majorization results above are *aggregate*: they bound the sums `∑ φ(dᵢ)`.
+Their sharpest *pointwise* shadow is that **each individual diagonal entry lies in
+the closed interval spanned by the eigenvalues**, `λ_min ≤ dᵢ ≤ λ_max`.  Indeed a
+diagonal entry is the convex combination `∑ j, λ j · Dᵢⱼ` of the eigenvalues
+(`diag_decomp`), so it cannot escape their convex hull.  This is the classical
+statement that the diagonal of a Hermitian matrix is contained in the numerical
+range `[λ_min, λ_max]` — the `k = 1` extreme of majorization, needing only the
+row-stochasticity `∑ j, Dᵢⱼ = 1` (not the column sums). -/
+
+/-- **Upper confinement (abstract form).**  If every eigenvalue of `T` is at most
+`M`, then so is every diagonal entry of `T` in the basis `e`: a diagonal entry is
+the convex combination `∑ j, λ j · Dᵢⱼ` of the eigenvalues, and a weighted average
+with weights summing to `1` cannot exceed a common upper bound. -/
+theorem diag_le_of_forall_le {M : ℝ} (hM : ∀ j, hT.eigenvalues hn j ≤ M) (i : Fin n) :
+    RCLike.re (@inner 𝕜 E _ (T (e i)) (e i)) ≤ M := by
+  rw [diag_decomp hT hn e i]
+  calc ∑ j, hT.eigenvalues hn j * dsWeight hT hn e i j
+      ≤ ∑ j, M * dsWeight hT hn e i j :=
+        Finset.sum_le_sum fun j _ =>
+          mul_le_mul_of_nonneg_right (hM j) (dsWeight_nonneg hT hn e i j)
+    _ = M := by rw [← Finset.mul_sum, dsWeight_row_sum hT hn e i, mul_one]
+
+/-- **Lower confinement (abstract form).**  If every eigenvalue of `T` is at least
+`L`, then so is every diagonal entry of `T` in the basis `e`. -/
+theorem le_diag_of_forall_le {L : ℝ} (hL : ∀ j, L ≤ hT.eigenvalues hn j) (i : Fin n) :
+    L ≤ RCLike.re (@inner 𝕜 E _ (T (e i)) (e i)) := by
+  rw [diag_decomp hT hn e i]
+  calc L = ∑ j, L * dsWeight hT hn e i j := by
+        rw [← Finset.mul_sum, dsWeight_row_sum hT hn e i, mul_one]
+    _ ≤ ∑ j, hT.eigenvalues hn j * dsWeight hT hn e i j :=
+        Finset.sum_le_sum fun j _ =>
+          mul_le_mul_of_nonneg_right (hL j) (dsWeight_nonneg hT hn e i j)
+
+/-- **Diagonal entries are bounded above by the largest eigenvalue.**  The
+eigenvalues are listed in descending order, so `λ 0` is the maximum; every diagonal
+entry satisfies `dᵢ ≤ λ 0`. -/
+theorem diag_le_top (i : Fin n) :
+    RCLike.re (@inner 𝕜 E _ (T (e i)) (e i))
+      ≤ hT.eigenvalues hn ⟨0, lt_of_le_of_lt (Nat.zero_le _) i.isLt⟩ :=
+  diag_le_of_forall_le hT hn e
+    (fun _ => hT.eigenvalues_antitone hn (Fin.le_def.2 (Nat.zero_le _))) i
+
+/-- **Diagonal entries are bounded below by the smallest eigenvalue.**  The
+eigenvalues are listed in descending order, so `λ (n-1)` is the minimum; every
+diagonal entry satisfies `λ (n-1) ≤ dᵢ`. -/
+theorem bot_le_diag (i : Fin n) :
+    hT.eigenvalues hn ⟨n - 1, by have := i.isLt; omega⟩
+      ≤ RCLike.re (@inner 𝕜 E _ (T (e i)) (e i)) :=
+  le_diag_of_forall_le hT hn e
+    (fun j => hT.eigenvalues_antitone hn
+      (Fin.le_def.2 (by show (j : ℕ) ≤ n - 1; have := j.isLt; omega))) i
+
+/-- **Schur's pointwise confinement (numerical-range bound).**  Every diagonal
+entry of a symmetric (Hermitian) operator, in *any* orthonormal basis, lies in the
+closed interval spanned by its extreme eigenvalues,
+
+  `λ_{n-1} ≤ re ⟪T (e i), e i⟫ ≤ λ_0`,
+
+i.e. within `[λ_min, λ_max]`.  This is the pointwise (`k = 1`) shadow of the Schur
+majorization `diag T ≺ spec T`: a diagonal entry, being a convex combination of
+eigenvalues, cannot escape their hull. -/
+theorem diag_mem_Icc (i : Fin n) :
+    RCLike.re (@inner 𝕜 E _ (T (e i)) (e i)) ∈
+      Set.Icc (hT.eigenvalues hn ⟨n - 1, by have := i.isLt; omega⟩)
+        (hT.eigenvalues hn ⟨0, lt_of_le_of_lt (Nat.zero_le _) i.isLt⟩) :=
+  ⟨bot_le_diag hT hn e i, diag_le_top hT hn e i⟩
 
 end SchurHorn
