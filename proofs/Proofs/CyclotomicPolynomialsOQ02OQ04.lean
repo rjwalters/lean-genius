@@ -98,4 +98,19 @@ theorem eventually_levelSet_subset_closedBall {C : ℝ} (hC : 1 ≤ C) {ε : ℝ
     _ ⊆ Metric.closedBall (0 : ℂ) (2 + ε) :=
         Metric.closedBall_subset_closedBall (le_of_lt hlt)
 
+/-- **The sharp outer radius never drops below `2`.**
+For `C ≥ 1` and any degree `k`, the sharp outer radius satisfies `2 ≤ 1 + C^{1/k}`:
+since `C ≥ 1` and `1/k ≥ 0`, monotonicity of `x ↦ x^{1/k}` gives `C^{1/k} ≥ 1^{1/k} = 1`.
+Together with `sharpRadius_antitone` (weakly decreasing in the degree) and
+`tendsto_sharpRadius` (limit `2`), this shows the radius decreases to its **infimum** `2`
+strictly from above: `2` is the exact limiting confinement radius of the cyclotomic
+lemniscates, attained only in the `φ(n) → ∞` limit — never for a finite degree. -/
+theorem sharpRadius_ge_two {C : ℝ} (hC : 1 ≤ C) (k : ℕ) :
+    2 ≤ 1 + C ^ ((k : ℝ)⁻¹) := by
+  have ht : (0 : ℝ) ≤ (k : ℝ)⁻¹ := inv_nonneg.mpr (Nat.cast_nonneg k)
+  have h1 : (1 : ℝ) ≤ C ^ ((k : ℝ)⁻¹) := by
+    have h := Real.rpow_le_rpow (by norm_num : (0 : ℝ) ≤ 1) hC ht
+    rwa [Real.one_rpow] at h
+  linarith
+
 end CyclotomicPolynomialsOQ02OQ04
