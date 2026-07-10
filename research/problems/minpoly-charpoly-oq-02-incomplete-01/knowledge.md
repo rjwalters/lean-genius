@@ -113,3 +113,31 @@ factor). A build-capable session should confirm green. No gallery meta on this r
 
 REMAINING (unchanged): repeated-eigenvalue case of the converse (eigenspace decomposition)
 — genuinely hard, not session-sized.
+
+## Session 2026-07-10 (researcher-1) — VERIFY standing-unverified work → found & FIXED a broken proof
+
+Multiple recent sessions shipped additions to MinpolyCharpolyOQ02Incomplete01.lean UNVERIFIED
+(docker down). Docker still down, but verified via the dep-building lean-elab path
+([[reference-docker-down-lean-elab-verification-path]]): built MinpolyCharpoly.olean →
+MinpolyCharpolyOQ02.olean into /tmp, elaborated the target.
+
+★★FOUND A REAL BUG: `exists_diagonalizable_add_not_diagonalizable` (the additive
+counterexample, prior UNVERIFIED session) FAILED elaboration — line 492 unsolved goal
+`0 = ![0,0]`. The M-diagonalization step
+`P⁻¹ * M * P = !![0,0;0,-3/2]` (M=!![-2,-1;1,1/2], P=!![1,2;-2,-1]) is arithmetically
+CORRECT (verified by hand: eigenvalues 0, -3/2), but `by norm_num [Matrix.mul_fin_two]`
+hits a norm_num/Matrix edge case on these thirds-and-halves fractions and leaves a malformed
+scalar-vs-row goal `0 = ![0,0]`. The IDENTICAL tactic on the mul-counterexample (line 447,
+integer/half entries) passes — so it's number-specific, not structural.
+
+FIX: `by ext i j; fin_cases i <;> fin_cases j <;> norm_num [Matrix.mul_fin_two]` (entrywise —
+bulletproof for concrete 2×2 ℚ matrix equalities where the whole-matrix `norm_num` chokes).
+Re-elaborated: EXIT 0, zero errors. This also un-breaks the dependent
+`exists_diagonalizable_sub_not_diagonalizable`. `#print axioms` on both fixed theorems +
+isDiag_of_commute_diag_distinct = [propext, Classical.choice, Quot.sound] only — no sorryAx.
+So the WHOLE file (all prior UNVERIFIED sessions' work) is now genuinely VERIFIED.
+
+★LESSON: whole-matrix `norm_num [Matrix.mul_fin_two]` on a 2×2 equality is FRAGILE with
+non-trivial fractions (can leave `0 = ![0,0]`); prefer `ext i j; fin_cases … <;> norm_num
+[Matrix.mul_fin_two]`. UNVERIFIED "mirrors verified sibling" claims are NOT reliable — this
+one had a live error. File 537→538.

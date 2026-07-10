@@ -492,7 +492,8 @@ theorem exists_diagonalizable_add_not_diagonalizable :
       rw [hinv, show
         (!![-1/3, -2/3; 2/3, 1/3] : Matrix (Fin 2) (Fin 2) ℚ) * !![-2, -1; 1, 1/2]
             * !![1, 2; -2, -1]
-          = !![0, 0; 0, -3/2] by norm_num [Matrix.mul_fin_two]]
+          = !![0, 0; 0, -3/2] by ext i j; fin_cases i <;> fin_cases j <;>
+            norm_num [Matrix.mul_fin_two]]
       intro i j hij
       fin_cases i <;> fin_cases j <;> simp_all
   · -- `N` is diagonal, hence diagonalizable.
