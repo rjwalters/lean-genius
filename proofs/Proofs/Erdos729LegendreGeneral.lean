@@ -93,6 +93,25 @@ theorem sub_one_dvd_sub_digitSum (p n : ℕ) (hp : p.Prime) :
     (p - 1) ∣ (n - digitSum p n) :=
   ⟨padicValNat p n.factorial, (sub_one_mul_padicValNat_factorial_digitSum p n hp).symm⟩
 
+/-- **The sharp `n/(p-1)` upper bound, multiplied form.**  For every prime `p`,
+`(p - 1)·v_p(n!) ≤ n`.  Immediate from Legendre's identity
+`(p-1)·v_p(n!) = n - s_p(n)` and `n - s_p(n) ≤ n`; this is the exact integer form
+of the classical estimate `v_p(n!) ≤ n/(p-1)` (and its heuristic `v_p(n!) ≈ n/(p-1)`),
+with the digit-sum defect `s_p(n)` measuring the shortfall. -/
+theorem sub_one_mul_padicValNat_factorial_le (p n : ℕ) (hp : p.Prime) :
+    (p - 1) * padicValNat p n.factorial ≤ n := by
+  rw [sub_one_mul_padicValNat_factorial_digitSum p n hp]
+  exact Nat.sub_le n (digitSum p n)
+
+/-- **The sharp `n/(p-1)` upper bound, division form.**  For every prime `p`,
+`v_p(n!) ≤ n / (p - 1)` (truncated natural division).  The classical bound on the
+`p`-adic valuation of a factorial, obtained from the division identity
+`v_p(n!) = (n - s_p(n))/(p-1)` by monotonicity of division in the numerator. -/
+theorem padicValNat_factorial_le_div (p n : ℕ) (hp : p.Prime) :
+    padicValNat p n.factorial ≤ n / (p - 1) := by
+  rw [padicValNat_factorial_eq_div p n hp]
+  exact Nat.div_le_div_right (Nat.sub_le n ((p.digits n).sum))
+
 -- The numerical content (v_p(n!) = (n - s_p(n))/(p-1) for many p, n) is certified
 -- independently in `research/problems/erdos-729-oq-02/verify_legendre_general.py`
 -- (no Lean `decide` on `Nat.digits`, which is well-founded and does not reduce
@@ -102,5 +121,7 @@ theorem sub_one_dvd_sub_digitSum (p n : ℕ) (hp : p.Prime) :
 #check @legendre_digit_sum_identity
 #check @sub_one_mul_padicValNat_factorial_digitSum
 #check @sub_one_dvd_sub_digitSum
+#check @sub_one_mul_padicValNat_factorial_le
+#check @padicValNat_factorial_le_div
 
 end Erdos729Legendre
