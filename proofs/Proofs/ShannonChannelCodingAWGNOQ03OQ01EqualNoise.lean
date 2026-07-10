@@ -114,4 +114,33 @@ theorem parallelRate_le_equalNoise [Nonempty ι] (N : ι → ℝ) {c : ℝ} (hc 
     _ = (Fintype.card ι : ℝ) / 2 * Real.log (1 + P / (Fintype.card ι * c)) :=
         waterAlloc_rate_equalNoise N hc hN hP.le
 
+/-! ## Nonnegativity and power-monotonicity of the equal-noise capacity -/
+
+/-- **The equal-noise capacity is nonnegative.**  `(n/2)·log(1 + P/(n·c)) ≥ 0` for
+    `P ≥ 0`, `c > 0`: the achievable rate never drops below the zero baseline. -/
+theorem rate_equalNoise_nonneg [Nonempty ι] {c : ℝ} (hc : 0 < c) {P : ℝ} (hP : 0 ≤ P) :
+    0 ≤ (Fintype.card ι : ℝ) / 2 * Real.log (1 + P / (Fintype.card ι * c)) := by
+  have hn : 0 < (Fintype.card ι : ℝ) := by exact_mod_cast Fintype.card_pos
+  have hnc : 0 < (Fintype.card ι : ℝ) * c := mul_pos hn hc
+  have h1 : (1 : ℝ) ≤ 1 + P / (Fintype.card ι * c) := by
+    have : 0 ≤ P / (Fintype.card ι * c) := div_nonneg hP hnc.le
+    linarith
+  exact mul_nonneg (by positivity) (Real.log_nonneg h1)
+
+/-- **The equal-noise capacity is monotone in the power budget.**  `P₁ ≤ P₂ ⟹
+    C(P₁) ≤ C(P₂)`: allocating more total power never decreases the achievable rate,
+    since `log(1 + P/(n·c))` increases in `P`. -/
+theorem rate_equalNoise_mono_power [Nonempty ι] {c : ℝ} (hc : 0 < c)
+    {P₁ P₂ : ℝ} (hP₁ : 0 ≤ P₁) (h : P₁ ≤ P₂) :
+    (Fintype.card ι : ℝ) / 2 * Real.log (1 + P₁ / (Fintype.card ι * c))
+      ≤ (Fintype.card ι : ℝ) / 2 * Real.log (1 + P₂ / (Fintype.card ι * c)) := by
+  have hn : 0 < (Fintype.card ι : ℝ) := by exact_mod_cast Fintype.card_pos
+  have hnc : 0 < (Fintype.card ι : ℝ) * c := mul_pos hn hc
+  have hx1 : (0 : ℝ) < 1 + P₁ / (Fintype.card ι * c) := by
+    have : 0 ≤ P₁ / (Fintype.card ι * c) := div_nonneg hP₁ hnc.le
+    linarith
+  have hle : 1 + P₁ / (Fintype.card ι * c) ≤ 1 + P₂ / (Fintype.card ι * c) := by
+    gcongr
+  exact mul_le_mul_of_nonneg_left (Real.log_le_log hx1 hle) (by positivity)
+
 end ShannonWaterFilling
