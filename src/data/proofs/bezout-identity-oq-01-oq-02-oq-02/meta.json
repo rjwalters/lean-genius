@@ -1,0 +1,165 @@
+{
+  "id": "bezout-identity-oq-01-oq-02-oq-02",
+  "title": "Toward SLₙ(ℤ) Transitivity on Primitive Vectors: the Block Reduction Engine and the n = 2, 3 Cases",
+  "slug": "bezout-identity-oq-01-oq-02-oq-02",
+  "description": "Works toward the grandparent entry's open question — generalize the SL₂(ℤ) Bézout reduction to SLₙ(ℤ), constructing a unimodular n×n matrix that carries an arbitrary primitive integer vector to the first standard basis vector e₀. This entry builds the reusable induction engine and verifies the first genuinely new case. embedOne extends any M ∈ SLₙ(ℤ) to the block matrix diag(1, M) ∈ SL₍ₙ₊₁₎(ℤ), with det_embedOne (determinant 1, via cofactor expansion along the first column) and embedOne_mulVec (embedOne M ·ᵥ (a ::ᵥ w) = a ::ᵥ (M ·ᵥ w)) — precisely the step that reduces SL₍ₙ₊₁₎-transitivity to SLₙ-transitivity by clearing the tail. sl2_transitive repackages the grandparent's bezoutMatrix as the base case. sl3_transitive carries an arbitrary primitive triple (a,b,c) to (1,0,0) by an explicit product of two block reductions: embedOne of a tail reducer sends (a,b,c) ↦ (a, gcd(b,c), 0), then a concrete SL₂-in-SL₃ head block sends (a, gcd(b,c), 0) ↦ (1,0,0). The general induction follows this template; its remaining ingredients (an SL₂-in-SL₍ₙ₊₁₎ head block for arbitrary n, and the Finset.gcd content bridge) are recorded as the open question. 11 theorems, 3 definitions, 0 sorries, 0 axioms, 192 lines.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-07-09",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BezoutIdentityOQ01OQ02OQ02.lean",
+    "tags": [
+      "number-theory",
+      "bezout-identity",
+      "euclidean-algorithm",
+      "linear-algebra",
+      "special-linear-group",
+      "unimodular-matrix",
+      "primitive-vector",
+      "gcd",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-07-09",
+    "axiomCount": 0,
+    "assumptions": "None. Fully machine-verified over Mathlib and the grandparent BezoutIdentityOQ01OQ02.lean; no new axioms and no native_decide. The results proved (embedOne engine, det, mulVec, and the n = 2 and n = 3 transitivity theorems) are complete and sorry-free; the SLₙ transitivity theorem for general n is NOT proved here and is stated as the open question.",
+    "lineCount": 192,
+    "theoremCount": 11,
+    "definitionCount": 3,
+    "originalContributions": [
+      "embedOne: the general block-diagonal embedding SLₙ(ℤ) ↪ SL₍ₙ₊₁₎(ℤ), M ↦ diag(1, M), realized entrywise via Fin.cons of rows",
+      "det_embedOne: det (diag(1, M)) = det M, proved by expanding along the first column (only the top-left 1 survives) and identifying the surviving minor with M definitionally",
+      "embedOne_mulVec: diag(1, M) ·ᵥ (a ::ᵥ w) = a ::ᵥ (M ·ᵥ w) — the reduction step that lowers the dimension of the transitivity problem by one, fixing the head coordinate and applying M to the tail",
+      "sl3_transitive: an arbitrary primitive triple (a,b,c) (IsCoprime a (gcd b c)) is carried to (1,0,0) by an explicit SL₃(ℤ) matrix, the first genuinely new case beyond the grandparent's n = 2, via embedOne of a tail reducer composed with a concrete SL₂-in-SL₃ head block",
+      "sl2_transitive: the base case, repackaging the grandparent's bezoutMatrix as SL₂(ℤ)-transitivity on primitive pairs"
+    ]
+  },
+  "overview": {
+    "historicalContext": "That SLₙ(ℤ) acts transitively on primitive integer vectors — every v ∈ ℤⁿ with gcd of entries equal to 1 is the image of e₀ under some determinant-one integer matrix — is a classical fact of the reduction theory of integral matrices (Newman, Integral Matrices, 1972). It is the statement that a primitive vector extends to a ℤ-basis of determinant one, equivalently that ℤv is a direct summand of ℤⁿ. The n = 2 case is exactly the extended Euclidean algorithm: coprime (a,b) is carried to (1,0) by a 2×2 unimodular matrix whose top row is the Bézout coefficient pair, the content of the grandparent entry. The general statement fails for n = 1 (SL₁(ℤ) = {1} is trivial) and holds for all n ≥ 2, proved by induction: reduce the tail with an SLₙ matrix, then finish with a 2×2 Bézout step on the head coordinate.",
+    "problemStatement": "Generalize the grandparent's SL₂(ℤ) Bézout reduction to SLₙ(ℤ): construct a unimodular n×n integer matrix carrying an arbitrary primitive vector to the first standard basis vector e₀, formalizing transitivity of SLₙ(ℤ) on primitive vectors. This entry builds the induction engine (the block embedding SLₙ ↪ SL₍ₙ₊₁₎ and its action) and proves the theorem for n = 2 and n = 3; the general n remains open.",
+    "text": "The reduction is a two-step template. Given a primitive v = (v₀, w) ∈ ℤⁿ⁺¹, first clear the tail w with an SLₙ matrix M so that M ·ᵥ w = (g, 0, …, 0) with g = gcd(w); embedded as diag(1, M) ∈ SL₍ₙ₊₁₎ this sends v ↦ (v₀, g, 0, …, 0). Since gcd(v₀, g) = gcd(v) = 1, a 2×2 Bézout step on the first two coordinates (embedded in SL₍ₙ₊₁₎) then sends (v₀, g, 0, …, 0) ↦ (1, 0, …, 0) = e₀. The engine for the first step is embedOne: for M an n×n matrix, embedOne M is the (n+1)×(n+1) block matrix diag(1, M) with det (embedOne M) = det M and embedOne M ·ᵥ (a ::ᵥ w) = a ::ᵥ (M ·ᵥ w). Packaged as embedOneSL it maps SLₙ(ℤ) into SL₍ₙ₊₁₎(ℤ). For n = 2, sl2_transitive is the grandparent's bezoutMatrix. For n = 3, sl3_transitive assembles the template concretely: a tail reducer T (the identity when gcd(b,c) = 0, else the Bézout matrix on (b,c)) satisfies T ·ᵥ (b,c) = (gcd(b,c), 0), so embedOne T sends (a,b,c) ↦ (a, gcd(b,c), 0); the explicit SL₂-in-SL₃ head block diag(bezout(a, gcd b c), 1) then reaches (1,0,0).",
+    "proofStrategy": "embedOne M is defined entrywise as Matrix.of (Fin.cons (Fin.cons 1 0) (fun i => Fin.cons 0 (M i))): a top-left 1, first row and column otherwise zero, bottom-right block M. det_embedOne uses Matrix.det_succ_column_zero to expand along column 0 — every entry below the top-left is 0, so only the (0,0) cofactor survives, and its minor (embedOne M).submatrix Fin.succ Fin.succ is definitionally M, giving det = 1 · det M = det M by rfl. embedOne_mulVec splits on Fin.cases: the head coordinate reads off the top-left 1, and each tail coordinate k.succ reads off the row (0, M k) whose dot product with (a ::ᵥ w) is (M ·ᵥ w) k; both are discharged by simp over the mulVec/dotProduct expansion. sl3_transitive extracts the two scalar Bézout identities from bezoutMatrix a (gcd b c) ·ᵥ (a, gcd b c) = (1,0) and assembles headBlock3 H * embedOne T as an SL₃ element, with determinant 1 via det_mul, det_headBlock3, det_embedOne. The degenerate gcd(b,c) = 0 branch (the tail vanishes) is folded in by using the identity as the tail reducer.",
+    "keyInsights": [
+      "SLₙ(ℤ)-transitivity on primitive vectors reduces dimension one at a time: the block embedding diag(1, M) turns an SLₙ solution for the tail into an SL₍ₙ₊₁₎ operation that fixes the head and clears the tail to (gcd, 0). embedOne_mulVec is the exact algebraic content of this reduction.",
+      "The determinant of diag(1, M) is det M with no computation: expanding along the first column kills every term but the top-left 1, and the surviving minor is literally M — det_embedOne closes by rfl once the cofactor is isolated.",
+      "After the tail is cleared to (v₀, g, 0, …, 0), primitivity of the whole vector is exactly coprimality of the two surviving coordinates gcd(v₀, g) = gcd(v) = 1, so the finishing move is a single 2×2 Bézout step — the grandparent's matrix — embedded on the first two coordinates.",
+      "The degenerate case where the tail has content 0 (all tail entries vanish) needs no separate machine: using the identity as the tail reducer keeps the same two-step template, since gcd(v₀, 0) = |v₀| and primitivity forces v₀ = ±1.",
+      "n = 1 is genuinely excluded: SL₁(ℤ) = {1} cannot flip a sign, so it does not act transitively on primitive vectors {±1}. Transitivity is an n ≥ 2 phenomenon, which is why the induction is anchored at the n = 2 Bézout base case."
+    ],
+    "prerequisites": [
+      "The grandparent entry's bezoutMatrix and its reduction/determinant lemmas (BezoutIdentityOQ01OQ02.lean)",
+      "Cofactor expansion of determinants: Matrix.det_succ_column_zero, Fin.succAbove, submatrix minors",
+      "Matrix action on Fin-indexed vectors: Matrix.mulVec, dotProduct, Matrix.mulVec_mulVec, Fin.cons",
+      "Special linear group over ℤ (Matrix.SpecialLinearGroup) and Int.gcd / IsCoprime"
+    ]
+  },
+  "conclusion": {
+    "summary": "The SL₂(ℤ) Bézout reduction is lifted toward SLₙ(ℤ) by building the reusable induction engine embedOne — the block embedding SLₙ(ℤ) ↪ SL₍ₙ₊₁₎(ℤ), M ↦ diag(1, M), with det (diag(1,M)) = det M and diag(1,M) ·ᵥ (a ::ᵥ w) = a ::ᵥ (M ·ᵥ w) — and verifying transitivity for n = 2 (the grandparent's Bézout matrix) and n = 3 (an explicit two-block reduction carrying a primitive triple to (1,0,0)). 11 theorems, 3 definitions, 0 sorries, 0 axioms, 192 lines.",
+    "implications": "embedOne is the dimension-lowering step of the general induction: any proof of SLₙ(ℤ)-transitivity for a given n immediately yields the (n+1)-case once combined with a head Bézout block. The n = 3 case is the first instance beyond the grandparent and exhibits the full two-step template concretely, giving a verified blueprint for the general theorem.",
+    "openQuestions": [
+      "Prove SLₙ(ℤ) transitivity on primitive vectors for all n ≥ 2: induct on n using embedOne for the tail reduction and an SL₂-in-SL₍ₙ₊₁₎ head block (block-diag(bezout, I₍ₙ₋₁₎), e.g. via Matrix.fromBlocks + reindex) for the finishing step, with a Finset.gcd content bridge (w = g · w′ with w′ primitive) to feed the inductive hypothesis.",
+      "Package the general result as the statement that a primitive vector is the first column of an SLₙ(ℤ) matrix, i.e. that ℤv is a determinant-one direct summand of ℤⁿ, and connect it to Mathlib's Smith normal form / free-module-over-a-PID basis theory."
+    ]
+  },
+  "mainTheorems": [
+    {
+      "name": "embedOne_mulVec",
+      "type": "core",
+      "description": "diag(1, M) ·ᵥ (a ::ᵥ w) = a ::ᵥ (M ·ᵥ w): the block embedding fixes the head coordinate and applies M to the tail. This is the dimension-lowering step of the SLₙ transitivity induction — clear the tail with an SLₙ matrix, leaving (v₀, gcd(tail), 0, …, 0)."
+    },
+    {
+      "name": "det_embedOne",
+      "type": "core",
+      "description": "det (diag(1, M)) = det M. Expanding along the first column kills every term but the top-left 1, and the surviving minor is definitionally M, so the embedding preserves the determinant and maps SLₙ(ℤ) into SL₍ₙ₊₁₎(ℤ)."
+    },
+    {
+      "name": "sl3_transitive",
+      "type": "core",
+      "description": "An arbitrary primitive triple (a,b,c) (IsCoprime a (gcd b c)) is carried to (1,0,0) by an explicit SL₃(ℤ) matrix. The first new case: embedOne of a tail reducer sends (a,b,c) ↦ (a, gcd(b,c), 0), then a concrete SL₂-in-SL₃ head block sends (a, gcd(b,c), 0) ↦ (1,0,0)."
+    },
+    {
+      "name": "sl2_transitive",
+      "type": "supporting",
+      "description": "The base case n = 2: a primitive pair (a,b) (IsCoprime a b) is carried to (1,0) by an element of SL₂(ℤ), repackaging the grandparent's bezoutMatrix as transitivity."
+    },
+    {
+      "name": "embedOneSL",
+      "type": "supporting",
+      "description": "The block embedding as a group map SLₙ(ℤ) → SL₍ₙ₊₁₎(ℤ), M ↦ diag(1, M), with determinant preserved by det_embedOne."
+    }
+  ],
+  "leanFile": {
+    "namespace": "BezoutIdentityOQ01OQ02OQ02",
+    "lineCount": 192,
+    "axiomCount": 0,
+    "theoremCount": 11,
+    "definitionCount": 3,
+    "path": "Proofs/BezoutIdentityOQ01OQ02OQ02.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "bezout-identity-oq-01-oq-02",
+      "relationship": "parent",
+      "description": "Packages the extended Euclidean algorithm as a single closed-form unimodular matrix U ∈ SL₂(ℤ) carrying a primitive pair to (1,0), and poses the open question — generalize to SLₙ(ℤ) — that this entry works toward."
+    },
+    {
+      "targetId": "bezout-identity-oq-01-oq-02-oq-01",
+      "relationship": "sibling",
+      "description": "Factors the same closed-form matrix U into elementary Euclidean step matrices; this entry instead lifts the reduction to higher dimension via the block embedding diag(1, M)."
+    },
+    {
+      "targetId": "bezout-identity-oq-01",
+      "relationship": "related",
+      "description": "Formalizes the extended Euclidean algorithm as a computable function; the n = 2 base case here rests on that Bézout machinery."
+    }
+  ],
+  "sections": [
+    {
+      "id": "sec-header",
+      "title": "Module Header and Problem Statement",
+      "startLine": 1,
+      "endLine": 58,
+      "summary": "Module documentation recalls the grandparent's SL₂(ℤ) Bézout reduction, states the SLₙ(ℤ) transitivity generalization and the two-step reduction template, and records what is proved here (the engine plus n = 2, 3) versus the open general induction."
+    },
+    {
+      "id": "sec-engine",
+      "title": "The Induction Engine: SLₙ(ℤ) ↪ SL₍ₙ₊₁₎(ℤ) as diag(1, M)",
+      "startLine": 60,
+      "endLine": 111,
+      "summary": "Defines embedOne M = diag(1, M) entrywise (with the four entry simp lemmas), proves det_embedOne (= det M, via first-column cofactor expansion) and embedOne_mulVec (fixes the head, applies M to the tail), and packages embedOneSL : SLₙ(ℤ) → SL₍ₙ₊₁₎(ℤ)."
+    },
+    {
+      "id": "sec-base",
+      "title": "Base Case: SL₂(ℤ) Transitivity",
+      "startLine": 113,
+      "endLine": 120,
+      "summary": "sl2_transitive repackages the grandparent's bezoutSL: a primitive pair (IsCoprime a b) is carried to (1,0) by an element of SL₂(ℤ)."
+    },
+    {
+      "id": "sec-n3",
+      "title": "First New Case: SL₃(ℤ) Transitivity",
+      "startLine": 122,
+      "endLine": 189,
+      "summary": "Defines the concrete SL₂-in-SL₃ head block headBlock3 with its determinant (det_headBlock3) and action (headBlock3_mulVec), then proves sl3_transitive: an arbitrary primitive triple is carried to (1,0,0) by embedOne of a tail reducer composed with the head block, with the degenerate gcd(b,c) = 0 case folded in."
+    }
+  ],
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "M. Newman",
+      "title": "Integral Matrices",
+      "year": 1972,
+      "venue": "Academic Press",
+      "note": "Reduction theory of integral matrices; transitivity of SLₙ(ℤ) on primitive vectors and the elementary-divisor / unimodular-completion viewpoint."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides Matrix.det_succ_column_zero, the mulVec/dotProduct API, Matrix.SpecialLinearGroup, and Int.gcd / IsCoprime used throughout."
+    }
+  ]
+}

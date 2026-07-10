@@ -42,11 +42,26 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": []
+    "progressSummary": "PROGRESS: built general block-embedding engine embedOne (SLₙ↪SL₍ₙ₊₁₎, det+mulVec) and verified transitivity for n=2,3; general-n theorem remains open (needs general head block + gcd content bridge).",
+    "builtItems": [
+      "embedOne (BezoutIdentityOQ01OQ02OQ02.lean:62): SLₙ(ℤ)↪SL₍ₙ₊₁₎(ℤ), M↦diag(1,M), general n",
+      "det_embedOne (:80): det(diag(1,M))=det M via det_succ_column_zero + rfl minor",
+      "embedOne_mulVec (:93): diag(1,M)·ᵥ(a::ᵥw)=a::ᵥ(M·ᵥw) — the dimension-lowering step",
+      "sl2_transitive (:116), sl3_transitive (:148): verified transitivity for n=2,3 (primitive vector → e₀)"
+    ],
+    "insights": [
+      "SLₙ(ℤ) transitivity on primitive vectors is an n≥2 phenomenon: SL₁(ℤ)={1} is trivial and cannot flip a sign, so it does not act transitively on {±1}.",
+      "The reduction is a two-step induction template: (1) clear the tail with an SLₙ matrix embedded as diag(1,M), leaving (v₀,g,0,…,0) with g=gcd(tail); (2) since gcd(v₀,g)=gcd(v)=1, finish with a 2×2 Bézout step on the first two coordinates embedded in SL₍ₙ₊₁₎.",
+      "det(diag(1,M))=det M closes by rfl once first-column cofactor expansion isolates the top-left 1: the surviving minor (embedOne M).submatrix Fin.succ Fin.succ is definitionally M."
+    ],
+    "mathlibGaps": [
+      "Mathlib has IsCoprime.exists_SL2_col (n=2 transitivity) but NO general-n SLₙ(ℤ) transitivity on primitive vectors, and no fromBlocks-into-SpecialLinearGroup helper.",
+      "The general induction still needs: an SL₂-in-SL₍ₙ₊₁₎ head block for arbitrary n (block-diag(bezout,I) via fromBlocks+reindex, whose mulVec-through-reindex bookkeeping is the fiddly part), and a Finset.gcd content bridge (w=g·w′ with w′ primitive)."
+    ],
+    "nextSteps": [
+      "Prove SLₙ(ℤ) transitivity for all n≥2 by induction on n using embedOne (tail) + block-diag(bezout,I) head (via Matrix.fromBlocks + finSumFinEquiv reindex; det via det_fromBlocks_zero₂₁ + det_submatrix_equiv_self).",
+      "Add the Finset.gcd content lemmas: content g=Finset.univ.gcd w divides each wᵢ, w=g•(w/g), and w/g is primitive (gcd 1)."
+    ]
   },
   "tags": [
     "number-theory",
