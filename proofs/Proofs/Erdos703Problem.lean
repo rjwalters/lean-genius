@@ -729,6 +729,36 @@ theorem avoidsLIntersections_empty (F : Finset (Finset ℕ)) :
   intro A B _ _
   simp
 
+/--
+**Union of forbidden sizes decomposes.** Avoiding the union `L ∪ L'` of two forbidden-size
+sets is exactly avoiding each of them: a pair's intersection size lies in `L ∪ L'` iff it lies
+in `L` or in `L'`, so forbidding the union is the conjunction of the two constraints. This is
+the multiplicative/AND structure of the `L`-avoiding hierarchy, complementing the antitone
+`avoidsLIntersections_of_subset_forbidden`. -/
+theorem avoidsLIntersections_union {L L' : Finset ℕ} {F : Finset (Finset ℕ)} :
+    avoidsLIntersections (L ∪ L') F ↔
+      avoidsLIntersections L F ∧ avoidsLIntersections L' F := by
+  constructor
+  · intro h
+    exact ⟨avoidsLIntersections_of_subset_forbidden Finset.subset_union_left h,
+           avoidsLIntersections_of_subset_forbidden Finset.subset_union_right h⟩
+  · rintro ⟨h1, h2⟩ A B hA hB hmem
+    rw [Finset.mem_union] at hmem
+    rcases hmem with hL | hL'
+    · exact h1 A B hA hB hL
+    · exact h2 A B hA hB hL'
+
+/--
+**Adding one forbidden size.** Avoiding `insert r L` is avoiding the single size `r`
+(equivalently `avoidsRIntersection r`) *and* avoiding `L`. Via the singleton bridge
+`avoidsRIntersection_iff_avoidsLIntersections_singleton`, this lets the `T(n,r)` `r`-avoidance
+theory be assembled one forbidden size at a time inside the Frankl–Wilson hierarchy. -/
+theorem avoidsLIntersections_insert {r : ℕ} {L : Finset ℕ} {F : Finset (Finset ℕ)} :
+    avoidsLIntersections (insert r L) F ↔
+      avoidsRIntersection r F ∧ avoidsLIntersections L F := by
+  rw [Finset.insert_eq, avoidsLIntersections_union,
+      avoidsRIntersection_iff_avoidsLIntersections_singleton]
+
 /-
 ## Part VIII: Summary
 -/

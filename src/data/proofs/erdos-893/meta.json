@@ -64,9 +64,9 @@
       "Proved tau_mersenne_ge_tau: tau(2^k - 1) >= tau(k) via divisor injection d -> 2^d - 1",
       "Proved f_divisor_sum_lower: f(n) >= sum_{k=1}^n tau(k), connecting f to the divisor summatory function"
     ],
-    "axiomCount": 1,
+    "axiomCount": 2,
     "lineCount": 332,
-    "assumptions": "1 axiom: kovac_luca_limsup_infinite. See Lean source for the complete statement.",
+    "assumptions": "2 assumptions: (1) axiom kovac_luca_limsup_infinite (see Lean source for the complete statement); (2) Lean.ofReduceBool, on which the 16 native_decide computations that verify tau(2^k-1) and f(k) for k = 1, ..., 8 depend. The file has 1 literal axiom declaration, so leanFile.axiomCount = 1 counts only that literal axiom while meta.axiomCount = 2 counts all trust assumptions.",
     "mathlib_version": "4.26.0",
     "theoremCount": 35,
     "leanFiles": [

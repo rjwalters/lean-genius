@@ -112,4 +112,28 @@ theorem oq04_existence_universally_yes [Fintype V] (G : SimpleGraph V) :
     admitsRobustAcyclicOrientation G :=
   every_finite_graph_has_robust G
 
+/-
+## Part IV: The decidable recognizer (OQ-01-OQ-01)
+
+OQ-01-OQ-01 asks the literal question: with `[Fintype V]`, is
+`admitsRobustAcyclicOrientation` a `DecidablePred`?  The per-graph instance
+`instDecidableAdmitsRobustAcyclic` already answers it pointwise; here we record
+the bundled predicate form, which is the exact deliverable of that sub-question.
+-/
+
+/-- **OQ-01-OQ-01 (decidable recognizer): YES.**  On any finite vertex type,
+    `admitsRobustAcyclicOrientation` is a `DecidablePred` — the literal question
+    of OQ-01-OQ-01.  This bundles the per-graph decision instance
+    `instDecidableAdmitsRobustAcyclic` into predicate form
+    `∀ G, Decidable (admitsRobustAcyclicOrientation G)`.
+
+    The obstruction the question flags — that recognizing the predicate seems to
+    require quantifying over *all* orientations of `G` — is dissolved by the
+    rank-based construction `every_finite_graph_has_robust`: it certifies the
+    predicate is universally true on finite graphs, so the recognizer is the
+    constant `isTrue`, decidable in `O(1)` without enumerating orientations. -/
+theorem admitsRobustAcyclicOrientation_decidablePred [Fintype V] :
+    DecidablePred (admitsRobustAcyclicOrientation (V := V)) :=
+  fun G => instDecidableAdmitsRobustAcyclic G
+
 end Erdos1006OQ04Decidability

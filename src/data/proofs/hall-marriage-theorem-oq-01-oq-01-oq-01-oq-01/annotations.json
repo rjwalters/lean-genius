@@ -24,6 +24,30 @@
     ]
   },
   {
+    "id": "ann-hallreg-ambient",
+    "proofId": "hall-marriage-theorem-oq-01-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 41,
+      "endLine": 47
+    },
+    "type": "context",
+    "title": "Ambient Context: the HallRegular Namespace and Its Fixed Family",
+    "content": "Between the header and the first definition the file fixes its working environment. `open Finset Function` brings the combinatorial vocabulary into scope unqualified — `card`, `biUnion`, `filter` (used throughout the double-counting argument) and `Function.Injective` (the target property of the system of distinct representatives). `namespace HallRegular` scopes every following name. The `variable` line then declares the data the whole development shares: index type `ι` and element type `α`, with `[Fintype ι]` making the family finite (so `univ`, `Fintype.card ι`, and finite sums/counts are available) and `[DecidableEq α]` making `Finset α` operations — membership, `biUnion`, `filter`, cardinality — computable. Crucially `{t : ι → Finset α}` is itself a section variable, so it is *not* re-declared in each theorem; every result below silently ranges over the same fixed family `t`.",
+    "mathContext": "`ι` = left vertices, `α` = right vertices of the bipartite graph; `[Fintype ι]` supplies $\\#\\iota$ and `univ.biUnion t`, `[DecidableEq α]` supplies decidable membership in `Finset α`. Making `t` a `variable` is what lets `IsKRegular t k` and every theorem statement share one implicit family rather than re-quantifying it.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Fintype",
+      "DecidableEq",
+      "section variable",
+      "Finset.biUnion",
+      "bipartite graph model"
+    ],
+    "prerequisites": [
+      "Lean namespaces and section variables",
+      "Finset operations and decidability"
+    ]
+  },
+  {
     "id": "ann-hallreg-iskregular",
     "proofId": "hall-marriage-theorem-oq-01-oq-01-oq-01-oq-01",
     "range": {
@@ -137,6 +161,30 @@
     "prerequisites": [
       "Hall's marriage theorem",
       "injective functions"
+    ]
+  },
+  {
+    "id": "ann-hallreg-deficiency-section",
+    "proofId": "hall-marriage-theorem-oq-01-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 103,
+      "endLine": 108
+    },
+    "type": "context",
+    "title": "The Deficiency Section: Scoped Hypotheses and the omit Idiom",
+    "content": "`section Deficiency` opens a local scope that adds two hypotheses via `variable [DecidableEq ι] [Nonempty α]`. These are needed only by the section's *last* theorem, `isGreatest_transversal_of_regular`, which reaches into the parent entry's deficiency calculus (`HallDefect.maxTransversal_eq_card_of_deficiency_zero`). The very next theorem, `deficiency_eq_zero_of_regular`, does **not** need them, so it is prefixed with `omit [DecidableEq ι] [Nonempty α] in` — Lean 4's per-declaration hypothesis pruning, which removes the two instances from *that one* signature while leaving them in force for the rest of the section. The idiom keeps each theorem's statement minimal (no spurious `[DecidableEq ι]`/`[Nonempty α]` on a result that is independent of them) without splitting the section or duplicating the `variable` block.",
+    "mathContext": "Section-scoped `variable` + targeted `omit ... in` is the standard Lean 4 pattern for a group of lemmas that mostly share hypotheses but where one member is strictly more general. Here `[Nonempty α]` and `[DecidableEq ι]` are artefacts of the parent's `IsGreatest`/`transversalSizes` API, irrelevant to the pure statement `deficiency t = 0`.",
+    "significance": "context",
+    "relatedConcepts": [
+      "section variable scoping",
+      "omit tactic-block modifier",
+      "typeclass hypotheses",
+      "Hall deficiency",
+      "parent entry reuse"
+    ],
+    "prerequisites": [
+      "Lean 4 section/variable/omit",
+      "Hall deficiency calculus"
     ]
   },
   {

@@ -82,9 +82,9 @@
       "erdos490_analytic_tail (in Erdos490Chebyshev.lean, 0-axiom): ∃c>0,∃N₀,∀n≥N₀, the elementary θ-gap lower bound (n/3)·log4 − log n − √(2n)·log(2n) ≥ c·n, proved from Real.isLittleO_log_id_atTop and isLittleO_log_rpow_atTop (exponent 1/2). This is the single analytic input that converted the Chebyshev θ-gap axiom into a theorem."
     ],
     "axiomCount": 1,
-    "lineCount": 937,
+    "lineCount": 979,
     "assumptions": "1 axiom, 0 sorries. Axiom: szemeredi_theorem (Szemerédi 1976 N²/log N upper bound, deep — the hard analytic input of the problem). The former second axiom chebyshev_theta_upper_half_lower_bound (the classical Chebyshev θ-gap lower bound θ(N)−θ(N/2) ≥ c·N) is NOW A THEOREM (0-axiom), proved by combining the verified central-binomial estimate Erdos490Cheb.theta_gap_lower_bound with the analytic tail Erdos490Cheb.erdos490_analytic_tail (log n and √(2n)·log(2n) are o(n)) and a Bertrand-based θ(N)−θ(N/2) ≥ log 2 for the finitely many small N. Only the deep Szemerédi upper bound remains axiomatized; status stays 'axiomatized'.",
-    "theoremCount": 29,
+    "theoremCount": 33,
     "definitionCount": 15,
     "additionalFiles": [
       "Proofs/Erdos490ProblemAristotle.lean",
@@ -217,9 +217,9 @@
       "Real"
     ],
     "namespace": "Erdos490",
-    "lineCount": 937,
+    "lineCount": 979,
     "axiomCount": 1,
-    "theoremCount": 29,
+    "theoremCount": 33,
     "definitionCount": 15,
     "path": "Proofs/Erdos490Problem.lean",
     "sorries": 0,

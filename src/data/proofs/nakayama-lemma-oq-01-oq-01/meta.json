@@ -82,7 +82,8 @@
       "**The bridge lemma is the whole translation**: span_residueModule_eq_top_iff turns the residue-space (k-vector-space) statement into the M-level statement span R t ⊔ 𝔪•⊤ = ⊤ in one step, by composing the surjective-quotient lemma map_mkQ_eq_top with the surjective-scalar lemma restrictScalars_span. Everything else is bookkeeping on each side of it.",
       "**Lower and upper bounds reuse the same bridge in opposite directions**: the lower bound reads the bridge left-to-right (spanning M ⟹ spanning M/𝔪M ⟹ card ≥ dim), the upper bound reads it right-to-left (a lifted basis spans M/𝔪M ⟹ spans M modulo 𝔪M ⟹, by the parent's Nakayama, generates M).",
       "**The lift is automatically minimal**: lifting a dim-element basis can only collide, giving a generating set of ≤ dim elements; but the lower bound says any generating set has ≥ dim elements, so the lift has exactly dim — no separate injectivity argument is needed.",
-      "**Residue-space structure is off-the-shelf**: M/𝔪M is a k = R/𝔪 vector space via Mathlib's Module (R⧸I) (M⧸I•⊤) instance, and finite-dimensional via Module.Finite.of_restrictScalars_finite — the same machinery Mathlib uses for the cotangent space 𝔪/𝔪²."
+      "**Residue-space structure is off-the-shelf**: M/𝔪M is a k = R/𝔪 vector space via Mathlib's Module (R⧸I) (M⧸I•⊤) instance, and finite-dimensional via Module.Finite.of_restrictScalars_finite — the same machinery Mathlib uses for the cotangent space 𝔪/𝔪².",
+      "**The count is a genuine invariant, not an artifact of a choice**: because dim_k(M/𝔪M) is measured in a vector space over the field k = R/𝔪, it is independent of any chosen generating set or basis, so μ(M) = numGenerators M depends only on the isomorphism class of M. The upper bound sharpens this: *every* minimal generating set arises by lifting a k-basis of the residue space, so there is a canonical dictionary between minimal generators of M and coordinates on M/𝔪M."
     ],
     "prerequisites": [
       "Commutative rings, ideals, modules; finitely generated and finite modules",
@@ -165,6 +166,14 @@
     {
       "proofId": "nakayama-lemma-oq-01",
       "note": "Parent entry: the local-ring forms of Nakayama and nakayama_span_of_span_quotient, on which this count is built; this entry answers its first open question."
+    },
+    {
+      "proofId": "nakayama-lemma-oq-01-oq-02",
+      "note": "Graded sibling: the same 'spanning mod 𝔪M implies spanning M' mechanism, run with the irrelevant ideal 𝔪 = ⊕_{d>0} R_d of a graded ring in place of a maximal ideal, yielding a minimal-generator count for graded modules."
+    },
+    {
+      "proofId": "cayley-hamilton",
+      "note": "Foundational engine: the local Nakayama forms this count is built on are classically obtained from the determinant trick — Cayley-Hamilton applied to the matrix expressing a finite generating set in terms of itself over 𝔪."
     }
   ],
   "conclusion": {

@@ -41,4 +41,32 @@ theorem packingDensity_mem_Icc_rhombicDodecahedron (d : PackingDensity) :
     d.density ∈ Set.Icc (0 : ℝ) rhombicDodecahedronPackingDensity :=
   ⟨d.nonneg, packingDensity_le_rhombicDodecahedron d⟩
 
+/-!
+## The Ulam interval `[fcc, 1]` for centrally symmetric convex bodies
+
+For a *general* packing density the only interval available is `[0, 1]` above.  The
+one class where the lower endpoint sharpens is the centrally symmetric convex bodies:
+Ulam's conjecture (the file's `ulam_conjecture` axiom) asserts each of them packs at
+density at least the sphere/FCC value `fccDensity = π/(3√2)`, and the structural ceiling
+`le_one` still caps it at `1`.  Packaging the two as a single interval membership gives
+the sharpest two-sided bound the file supports for this class, conditional on Ulam.
+-/
+
+/-- **Symmetric-convex-body densities lie in `[fccDensity, 1]`.**  The Ulam-conditional
+sharpening of `packingDensity_mem_Icc`: for a centrally symmetric convex body packing the
+lower endpoint rises from `0` to the sphere/FCC value `fccDensity` (`ulam_conjecture`),
+while `le_one` keeps the upper endpoint at `1`.  Depends on the `ulam_conjecture` axiom
+(an open conjecture), so this interval is conditional. -/
+theorem symmetricConvexBody_density_mem_Icc_fcc (p : SymmetricConvexBody3DPacking) :
+    p.density ∈ Set.Icc fccDensity 1 :=
+  ⟨ulam_conjecture p, p.le_one⟩
+
+/-- **Same interval stated against the named `fccPacking` instance.**  The interval
+`[fccPacking.density, 1]` form, tying the lower endpoint to the concrete FCC packing
+instance from the parent file via `ulam_le_fccPacking_density`. -/
+theorem symmetricConvexBody_density_mem_Icc_fccPacking
+    (p : SymmetricConvexBody3DPacking) :
+    p.density ∈ Set.Icc fccPacking.density 1 :=
+  ⟨ulam_le_fccPacking_density p, p.le_one⟩
+
 end KeplerConjectureOQ04

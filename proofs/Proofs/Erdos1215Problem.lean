@@ -19,6 +19,7 @@ Reference:
 import Mathlib.Analysis.SpecialFunctions.Complex.Circle
 import Mathlib.RingTheory.Polynomial.Basic
 import Mathlib.Analysis.Complex.Basic
+import Mathlib.Topology.Algebra.Polynomial
 
 open Complex Polynomial
 
@@ -39,43 +40,55 @@ def HasBoundedLevelPath (P : ℂ[X]) (C : ℝ) : Prop :=
     ∀ t ≥ 0, γ t ∈ levelSet P C
 
 /--
+**The escape-to-∞ obstruction is trivial for degree reasons.**
+For *any* polynomial `P` of positive degree, `‖P(z)‖ → ∞` as `‖z‖ → ∞`
+(`Polynomial.tendsto_norm_atTop`), so its level set `{z : ‖P(z)‖ < C}` is *bounded* and
+admits no path escaping to `∞`: a path `γ` with `‖γ t‖ → ∞` would force
+`‖P(γ t)‖ → ∞`, contradicting `‖P(γ t)‖ < C` on `t ≥ 0`.
+
+This isolates exactly *why* the literal escape-to-∞ question (Erdős #1215) is easy: it is
+refuted by the growth of any single non-constant polynomial and needs nothing about roots,
+the unit circle, or Mac Lane's argument.  All of Mac Lane's genuine depth — paths forced
+through neighbourhoods of `0` in the `C > 1` regime — lives in the strictly stronger
+`maclane_labyrinth` below, which remains axiomatized. -/
+theorem no_bounded_level_path_of_degree_pos {P : ℂ[X]} (hP : 0 < P.degree) (C : ℝ) :
+    ¬ HasBoundedLevelPath P C := by
+  rintro ⟨γ, _hcont, _hγ0, htend, hpath⟩
+  -- growth of `P` transports `‖γ t‖ → ∞` into `‖P(γ t)‖ → ∞`
+  have hPtend : Filter.Tendsto (fun t => ‖P.eval (γ t)‖) Filter.atTop Filter.atTop :=
+    P.tendsto_norm_atTop hP htend
+  have h1 : ∀ᶠ t in Filter.atTop, C < ‖P.eval (γ t)‖ := hPtend.eventually_gt_atTop C
+  have h2 : ∀ᶠ t in Filter.atTop, (0 : ℝ) ≤ t := Filter.eventually_ge_atTop 0
+  obtain ⟨t, ht1, ht2⟩ := (h1.and h2).exists
+  have hmem := hpath t ht2
+  simp only [levelSet, Set.mem_setOf_eq] at hmem
+  linarith
+
+/--
 **The literal escape-to-∞ answer is NO — and it is *elementary*.**
 For any `C`, there is a unit-circle polynomial with no bounded-level path from
 `0` to `∞` inside `{|P| < C}`.  The witness is the degree-one cyclotomic
-`P = X + 1` (`P(0) = 1`, sole root `-1` on the unit circle): its level set
-`{z : ‖z + 1‖ < C}` is a *bounded* disc, so `‖z‖ ≤ ‖z + 1‖ + 1 < C + 1` there,
-and no path can escape to `∞` while staying inside it.
+`P = X + 1` (`P(0) = 1`, sole root `-1` on the unit circle); its level set is bounded
+because `X + 1` has positive degree, so `no_bounded_level_path_of_degree_pos` applies.
 
-This was formerly an `axiom` labelled "Mac Lane 1953", but the escape-to-∞
-formulation does **not** require Mac Lane's deep argument — it is refuted by mere
-compactness of the level set of a single explicit polynomial.  Mac Lane's genuine
-content (the labyrinth forcing paths through neighbourhoods of `0` in the `C > 1`
-regime) is the strictly stronger phenomenon recorded below in `maclane_labyrinth`,
-which remains axiomatized.  Cf. the cyclotomic re-derivation in
+This was formerly an `axiom` labelled "Mac Lane 1953", but the escape-to-∞ formulation does
+**not** require Mac Lane's deep argument — it now follows from the general degree obstruction
+`no_bounded_level_path_of_degree_pos` applied to a single explicit polynomial.  Mac Lane's
+genuine content (the labyrinth forcing paths through neighbourhoods of `0` in the `C > 1`
+regime) is the strictly stronger phenomenon recorded below in `maclane_labyrinth`, which
+remains axiomatized.  Cf. the cyclotomic re-derivation in
 `CyclotomicPolynomialsOQ02OQ05.erdos_1215_via_cyclotomic`. -/
 theorem maclane_1953 (C : ℝ) (_hC : C > 1) :
     ∃ P : ℂ[X], IsUnitCirclePolynomial P ∧ ¬HasBoundedLevelPath P C := by
-  refine ⟨X + 1, ⟨by simp, ?_⟩, ?_⟩
+  refine ⟨X + 1, ⟨by simp, ?_⟩, no_bounded_level_path_of_degree_pos ?_ C⟩
   · -- the sole root of `X + 1` is `-1`, which lies on the unit circle
     intro z hz
     rw [IsRoot.def, eval_add, eval_X, eval_one] at hz
     rw [eq_neg_of_add_eq_zero_left hz]
     simp
-  · -- no path can escape to ∞ while `‖γ t + 1‖ < C` keeps `‖γ t‖` below `C + 1`
-    rintro ⟨γ, _hcont, _hγ0, htend, hpath⟩
-    have hbound : ∀ t ≥ (0 : ℝ), ‖γ t‖ < C + 1 := by
-      intro t ht
-      have hmem := hpath t ht
-      simp only [levelSet, Set.mem_setOf_eq, eval_add, eval_X, eval_one] at hmem
-      have hkey := norm_sub_norm_le (γ t) (γ t + 1)
-      have hgeq : γ t - (γ t + 1) = -1 := by ring
-      rw [hgeq] at hkey
-      simp only [norm_neg, norm_one] at hkey
-      linarith
-    have h1 : ∀ᶠ t in Filter.atTop, C + 1 < ‖γ t‖ := htend.eventually_gt_atTop (C + 1)
-    have h2 : ∀ᶠ t in Filter.atTop, (0 : ℝ) ≤ t := Filter.eventually_ge_atTop 0
-    obtain ⟨t, ht1, ht2⟩ := (h1.and h2).exists
-    exact absurd (hbound t ht2) (by linarith)
+  · -- `X + 1 = X + C 1` has degree `1 > 0`
+    rw [← C_1, degree_X_add_C]
+    exact WithBot.coe_lt_coe.mpr Nat.one_pos
 
 /--
 **Stronger form:** For any C, there exist labyrinth blocks forcing the path

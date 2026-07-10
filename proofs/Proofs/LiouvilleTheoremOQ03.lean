@@ -427,4 +427,37 @@ theorem dimH_setOf_exists_liouvilleWith_gt_two_eq_one :
       simpa using this
     exact le_of_tendsto' htend hge
 
+/-! ## Part VIII: Cardinality — the fractals are uncountable
+
+The measure and dimension results above all say the well-approximable sets are
+*small*: for `τ > 2` they have Hausdorff dimension `< 1` (`dimH_wellApprox_lt_one`)
+and Lebesgue measure `0` (`volume_wellApprox_eq_zero`). The cardinality side is the
+opposite: they are *uncountable*. The mechanism is the contrapositive of
+`Set.Countable.dimH_zero` (a countable set has Hausdorff dimension `0`): since
+`dimH (W τ) = 2/τ > 0` for `τ ≥ 2` (`dimH_wellApprox_pos`), the set cannot be
+countable. This makes each `W τ` a genuine *fractal* in the strong sense —
+uncountably many points packed into a Lebesgue-null, sub-dimensional set. -/
+
+/-- **The well-approximable set is uncountable.** For `τ ≥ 2`, `W τ` cannot be
+countable: a countable set has Hausdorff dimension `0` (`Set.Countable.dimH_zero`),
+but `dimH (W τ) = 2/τ > 0` by `dimH_wellApprox_pos`. So although `W τ` is Lebesgue
+null and (for `τ > 2`) has dimension below the line, it still contains uncountably
+many reals. -/
+theorem not_countable_wellApprox {τ : ℝ} (hτ : 2 ≤ τ) : ¬ (wellApprox τ).Countable :=
+  fun hc => (dimH_wellApprox_pos hτ).ne' hc.dimH_zero
+
+/-- **The very-well-approximable reals are uncountable.** The set of `x` that are
+`τ`-well-approximable for *some* `τ > 2` — already shown to be Lebesgue-null
+(`volume_setOf_exists_liouvilleWith_gt_two_eq_zero`) yet of full Hausdorff
+dimension `1` (`dimH_setOf_exists_liouvilleWith_gt_two_eq_one`) — is in particular
+uncountable, since its dimension `1 ≠ 0`. The sharpest form of the "large yet
+measure-zero" phenomenon: a null set of maximal dimension carrying uncountably
+many points. -/
+theorem not_countable_setOf_exists_liouvilleWith_gt_two :
+    ¬ {x : ℝ | ∃ τ : ℝ, 2 < τ ∧ LiouvilleWith τ x}.Countable := by
+  intro hc
+  have h := hc.dimH_zero
+  rw [dimH_setOf_exists_liouvilleWith_gt_two_eq_one] at h
+  exact one_ne_zero h
+
 end LiouvilleTheoremOQ03

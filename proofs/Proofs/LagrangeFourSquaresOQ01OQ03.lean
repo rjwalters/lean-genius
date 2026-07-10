@@ -99,6 +99,45 @@ theorem jacobiCount_prime {p : ℕ} (hp : p.Prime) (hodd : Odd p) :
   rw [jacobiCount_odd hodd, hp.divisors, Finset.sum_pair hp.one_lt.ne]
   ring
 
+/-- **Power-of-two closed form (0-axiom, general).** For every `k ≥ 1` the divisors
+of `2^k` are `1, 2, 4, …, 2^k`, and the `4 ∤ d` filter keeps exactly `d = 1` and
+`d = 2` (all higher powers are divisible by `4 = 2²`). Hence Jacobi's count is the
+constant `jacobiCount (2^k) = 8·(1+2) = 24`, *independent of `k`*. Combined with
+`jacobi_oracle` this pins `r₄(2^k) = 24` for the powers of two in range
+(`r₄(2)=r₄(4)=r₄(8)=r₄(16)=24`), matching the classical fact that `r₄` is constant
+on powers of two. This is the elementary even-side companion to `jacobiCount_odd`. -/
+theorem jacobiCount_two_pow {k : ℕ} (hk : 1 ≤ k) : jacobiCount (2 ^ k) = 24 := by
+  have hset : (2 ^ k).divisors.filter (fun d => ¬ 4 ∣ d) = {1, 2} := by
+    ext d
+    simp only [Finset.mem_filter, Nat.mem_divisors, Finset.mem_insert, Finset.mem_singleton]
+    constructor
+    · rintro ⟨⟨hdvd, _hne⟩, h4⟩
+      rw [Nat.dvd_prime_pow Nat.prime_two] at hdvd
+      obtain ⟨i, _hik, rfl⟩ := hdvd
+      have hi2 : i < 2 := by
+        by_contra h
+        push_neg at h
+        exact h4 (by
+          have h4eq : (4 : ℕ) = 2 ^ 2 := rfl
+          rw [h4eq]; exact pow_dvd_pow 2 h)
+      interval_cases i
+      · left; rfl
+      · right; rfl
+    · rintro (rfl | rfl)
+      · exact ⟨⟨one_dvd _, pow_ne_zero k (by norm_num)⟩, by decide⟩
+      · exact ⟨⟨dvd_pow_self 2 (Nat.one_le_iff_ne_zero.mp hk),
+          pow_ne_zero k (by norm_num)⟩, by decide⟩
+  unfold jacobiCount
+  rw [hset, Finset.sum_pair (by decide : (1 : ℕ) ≠ 2)]
+  norm_num
+
+/-- **Constancy on powers of two (0-axiom).** An immediate corollary of
+`jacobiCount_two_pow`: Jacobi's four-square count takes the same value on every
+power of two `2^k` with `k ≥ 1`. -/
+theorem jacobiCount_two_pow_const {j k : ℕ} (hj : 1 ≤ j) (hk : 1 ≤ k) :
+    jacobiCount (2 ^ j) = jacobiCount (2 ^ k) := by
+  rw [jacobiCount_two_pow hj, jacobiCount_two_pow hk]
+
 /-- **Convention guard (0-axiom).** The naive formula `8·σ(n)` is WRONG for `n = 4`:
 `8·σ(4) = 8·(1+2+4) = 56`, whereas the true count is `r4 4 = 24`. Equivalently the
 `4 ∤ d` exclusion drops the divisor `d = 4`. This is exactly why the general formula

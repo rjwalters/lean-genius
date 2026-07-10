@@ -53,10 +53,10 @@
       "T_le_pow_sub_choose / T_le_pow_sub_one: sharpened upper bound T(n,r) ≤ 2^n − C(n,r), machine-checked. An r-avoiding family can contain no set of size exactly r (its self-pair A,A meets in |A| = r), so the family omits all C(n,r) subsets of size r, giving T(n,r) ≤ 2^n − C(n,r); for r ≤ n this yields the uniform strict improvement T(n,r) ≤ 2^n − 1 over the trivial ceiling, and it is tight at the diagonal r = n (C(n,n) = 1 recovers T(n,n) = 2^n − 1)."
     ],
     "axiomCount": 1,
-    "lineCount": 765,
+    "lineCount": 795,
     "assumptions": "1 axiom: frankl_rodl_1987 (the deep Frankl–Rödl 1987 exponential bound — the affirmative answer to the main question). 0 sorries: the trivial case T(n,0)=2^{n-1} is fully machine-checked (#print axioms T_n_0 = [propext, Classical.choice, Quot.sound]) via a complement-pairing upper bound and a star-family witness. The unused opaque chromaticNumber axiom was removed; the geometric chromatic-number consequence is recorded as prose only since infinite unit-distance chromatic numbers are not yet in Mathlib.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 31,
+    "theoremCount": 33,
     "definitionCount": 8
   },
   "crossReferences": [
@@ -183,9 +183,9 @@
       "Finset"
     ],
     "namespace": "Erdos703",
-    "lineCount": 765,
+    "lineCount": 795,
     "axiomCount": 1,
-    "theoremCount": 31,
+    "theoremCount": 33,
     "definitionCount": 8,
     "path": "Proofs/Erdos703Problem.lean",
     "sorries": 0

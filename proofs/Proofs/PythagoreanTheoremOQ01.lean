@@ -344,6 +344,22 @@ theorem inverse_pythagorean (hAC : A ≠ C) (hBC : B ≠ C)
   field_simp
   ring
 
+include hAB in
+/-- **The foot divides the hypotenuse in the ratio of the squared legs.**  The altitude foot
+`H` splits the hypotenuse `AB` into segments `|AH|` and `|HB|` whose lengths are proportional
+to the squares of the two adjacent legs: `|AH| · |CB|² = |HB| · |CA|²`, i.e.
+`|AH| / |HB| = |CA|² / |CB|²`.  This is the classical companion of the two geometric-mean
+relations: the near segment `|AH|` is to the far segment `|HB|` as the square of the leg
+meeting `A` (`|CA|`) is to the square of the leg meeting `B` (`|CB|`).  It follows by
+cross-multiplying `geometric_mean_A` (`|CA|² = |AB|·|AH|`) and `geometric_mean_B`
+(`|CB|² = |AB|·|HB|`): both sides equal `|AB|·|AH|·|HB|`. -/
+theorem foot_divides_hypotenuse_sq_ratio (hperp : ⟪A - C, B - C⟫ = (0 : ℝ)) :
+    ‖A - altitudeFoot A B C‖ * ‖B - C‖ ^ 2
+      = ‖altitudeFoot A B C - B‖ * ‖A - C‖ ^ 2 := by
+  have hgA := geometric_mean_A A B C hAB
+  have hgB := geometric_mean_B A B C hAB hperp
+  rw [hgA, hgB]; ring
+
 end Geometric
 
 -- ============================================================

@@ -128,6 +128,43 @@ theorem padicValNat_factorial_le_div (p n : ℕ) (hp : p.Prime) :
   rw [padicValNat_factorial_eq_div p n hp]
   exact Nat.div_le_div_right (Nat.sub_le n ((p.digits n).sum))
 
+/-- **The exact zero-locus of `v_p(n!)`.**  For every prime `p`,
+
+  `v_p(n!) = 0  ↔  n < p`.
+
+The upper-bound lemmas above (`padicValNat_factorial_le_div` etc.) pin the growth of
+`v_p(n!)` from above; this identifies exactly where the valuation *vanishes*.  A prime `p`
+first appears as a factor of `n!` precisely at `n = p`, so `n! ` is coprime to `p` iff
+`n < p`.  Proven directly from `Nat.Prime.dvd_factorial` (`p ∣ n! ↔ p ≤ n`) together with
+the standard positivity/vanishing lemmas for `padicValNat`, independently of the
+digit-sum machinery — and it is the natural base case for the sandwich
+`0 ≤ v_p(n!) ≤ n/(p-1)`. -/
+theorem padicValNat_factorial_eq_zero_iff (p n : ℕ) (hp : p.Prime) :
+    padicValNat p n.factorial = 0 ↔ n < p := by
+  haveI : Fact p.Prime := ⟨hp⟩
+  constructor
+  · intro h
+    by_contra hle
+    push_neg at hle
+    have hdvd : p ∣ n.factorial := hp.dvd_factorial.mpr hle
+    have : 1 ≤ padicValNat p n.factorial :=
+      one_le_padicValNat_of_dvd (Nat.factorial_ne_zero n) hdvd
+    omega
+  · intro hlt
+    exact padicValNat.eq_zero_of_not_dvd
+      (fun hdvd => absurd (hp.dvd_factorial.mp hdvd) (Nat.not_le.mpr hlt))
+
+/-- **The valuation `v_p(n!)` is positive exactly once `n` reaches `p`.**  The
+complement of `padicValNat_factorial_eq_zero_iff`: for every prime `p`,
+
+  `0 < v_p(n!)  ↔  p ≤ n`,
+
+i.e. `p` divides `n!` iff `n ≥ p`.  Together with the zero-locus statement this gives the
+sharp dichotomy governing the lowest step of Legendre's staircase. -/
+theorem padicValNat_factorial_pos_iff (p n : ℕ) (hp : p.Prime) :
+    0 < padicValNat p n.factorial ↔ p ≤ n := by
+  rw [Nat.pos_iff_ne_zero, ne_eq, padicValNat_factorial_eq_zero_iff p n hp, Nat.not_lt]
+
 -- The numerical content (v_p(n!) = (n - s_p(n))/(p-1) for many p, n) is certified
 -- independently in `research/problems/erdos-729-oq-02/verify_legendre_general.py`
 -- (no Lean `decide` on `Nat.digits`, which is well-founded and does not reduce
@@ -140,5 +177,7 @@ theorem padicValNat_factorial_le_div (p n : ℕ) (hp : p.Prime) :
 #check @sub_one_mul_padicValNat_factorial_le
 #check @padicValNat_factorial_le_div
 #check @modEq_digitSum
+#check @padicValNat_factorial_eq_zero_iff
+#check @padicValNat_factorial_pos_iff
 
 end Erdos729Legendre

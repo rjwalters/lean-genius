@@ -189,6 +189,23 @@ theorem cauchy_theorem (p : ℕ) [hp : Fact p.Prime] (h : p ∣ card G) :
     ∃ g : G, orderOf g = p :=
   exists_prime_orderOf_dvd_card p h
 
+/-- **There is always at least one Sylow p-subgroup**: `n_p > 0`.  The positivity
+    underlying every Third-Sylow statement (`n_p ≡ 1 mod p`, `n_p ∣ [G:P]`): the set of
+    Sylow p-subgroups is nonempty (`Sylow.nonempty`, the First Sylow Theorem), hence its
+    cardinality is positive.  Records the base fact that `sylow_count_mod_p` implicitly
+    relies on. -/
+theorem sylow_count_pos (p : ℕ) [hp : Fact p.Prime] : 0 < card (Sylow p G) :=
+  card_pos_iff.mpr Sylow.nonempty
+
+/-- **Subgroup form of Cauchy's theorem**: if `p ∣ |G|` then `G` has a subgroup of order
+    exactly `p`.  This is the `k = 1` case of `partial_converse_lagrange` (`p¹ ∣ |G|`), the
+    subgroup companion to `cauchy_theorem` (which produces an *element* of order `p`; the
+    cyclic group it generates is precisely such a subgroup). -/
+theorem exists_subgroup_card_prime (p : ℕ) [hp : Fact p.Prime] (h : p ∣ card G) :
+    ∃ H : Subgroup G, Fintype.card H = p := by
+  obtain ⟨H, hH⟩ := partial_converse_lagrange p 1 (by rwa [pow_one])
+  exact ⟨H, by rwa [pow_one] at hH⟩
+
 end LagrangeOQ01
 
 /-

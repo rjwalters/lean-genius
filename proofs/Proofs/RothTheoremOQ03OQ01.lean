@@ -728,4 +728,66 @@ theorem kAPCount_indicator_empty {N : ℕ} [NeZero N] {k : ℕ} (hk : 0 < k) :
   funext x
   simp [indicatorZMod]
 
+-- ============================================================
+-- Nondegenerate-count boundary values
+--
+-- `kAPCount_count_empty` / `kAPCount_count_univ` pin the *total* `k`-AP count at
+-- the two ends of the density scale (`0` and `N²`). The genuine content of Roth's
+-- theorem, however, lives in the *nondegenerate* (`d ≠ 0`) count split off by
+-- `kAPCount_count_split`. The two lemmas below pin that nondegenerate count at the
+-- same two ends: it vanishes for `A = ∅` and saturates at `N·(N − 1) = N² − N` for
+-- `A = univ` (every ordered pair `(x, d)` with `d ≠ 0`).
+-- ============================================================
+
+/-- **No nondegenerate progressions in the empty set.**  For `k ≥ 1`, no pair `(x, d)`
+    with `d ≠ 0` has its length-`k` progression inside `∅`, so the nondegenerate count is
+    `0`.  Immediate from the nondegenerate upper bound `kAPCount_nondeg_le`
+    (`≤ #∅ · (N − 1) = 0`); the `d ≠ 0` companion of `kAPCount_count_empty`. -/
+theorem kAPCount_nondeg_empty {N : ℕ} [NeZero N] {k : ℕ} (hk : 0 < k) :
+    (Finset.univ.filter (fun p : ZMod N × ZMod N =>
+        (∀ i : Fin k, p.1 + i.val • p.2 ∈ (∅ : Finset (ZMod N))) ∧ p.2 ≠ 0)).card = 0 := by
+  simpa using kAPCount_nondeg_le hk (∅ : Finset (ZMod N))
+
+/-- **Every nonzero difference gives a nondegenerate progression in the whole group.**
+    For `k ≥ 1`, the nondegenerate (`d ≠ 0`) `k`-AP count of `univ` is exactly
+    `N·(N − 1) = N² − N`: every one of the `N²` pairs `(x, d)` lies inside `univ`, and
+    removing the `N` diagonal pairs with `d = 0` leaves the nonzero-difference count.
+    This saturates the `kAPCount_nondeg_le` bound (`≤ #univ · (N − 1) = N·(N − 1)`) and is
+    the `A = univ` companion of `kAPCount_count_univ`.  Obtained from the diagonal split
+    `kAPCount_count_split` at `A = univ` together with `kAPCount_count_univ`. -/
+theorem kAPCount_nondeg_univ {N : ℕ} [NeZero N] {k : ℕ} (hk : 0 < k) :
+    (Finset.univ.filter (fun p : ZMod N × ZMod N =>
+        (∀ i : Fin k, p.1 + i.val • p.2 ∈ (Finset.univ : Finset (ZMod N))) ∧ p.2 ≠ 0)).card
+      = N ^ 2 - N := by
+  have hsplit := kAPCount_count_split hk (Finset.univ : Finset (ZMod N))
+  rw [kAPCount_count_univ, Finset.card_univ, ZMod.card] at hsplit
+  omega
+
+/-- **A singleton carries no nondegenerate progression.**  For `k ≥ 2` the nondegenerate
+    (`d ≠ 0`) `k`-AP count of a one-point set `{a}` is `0`: the `i = 0` term forces the start
+    `x = a`, and then the `i = 1` term forces `a + d = a`, i.e. `d = 0`, contradicting `d ≠ 0`.
+
+    This is the sharp qualitative contrast between the nondegenerate count and the *total*
+    count: the total count vanishes **iff** the set is empty (`kAPCount_count_eq_zero_iff`),
+    whereas the nondegenerate count already vanishes on the nonempty singleton.  It is exactly
+    this failure of "nonempty ⟹ nondegenerate progression" that makes Roth's theorem a genuine
+    theorem rather than the trivial diagonal count — the nondegenerate mass only appears once
+    the set is large enough, and pinning down *how* large is the content of the problem. -/
+theorem kAPCount_nondeg_singleton {N : ℕ} [NeZero N] {k : ℕ} (hk : 2 ≤ k)
+    (a : ZMod N) :
+    (Finset.univ.filter (fun p : ZMod N × ZMod N =>
+        (∀ i : Fin k, p.1 + i.val • p.2 ∈ ({a} : Finset (ZMod N))) ∧ p.2 ≠ 0)).card = 0 := by
+  classical
+  rw [Finset.card_eq_zero, Finset.filter_eq_empty_iff]
+  rintro p -
+  rintro ⟨hall, hd⟩
+  -- `i = 0` term: the start is `a`
+  have h0 : p.1 = a := by simpa using hall ⟨0, by omega⟩
+  -- `i = 1` term (needs `k ≥ 2`): `a + d = a`, forcing `d = 0`
+  have h1 : p.1 + p.2 = a := by simpa using hall ⟨1, by omega⟩
+  refine hd (add_left_cancel (a := a) ?_)
+  rw [h0] at h1
+  rw [add_zero]
+  exact h1
+
 end RothTheoremOQ03OQ01

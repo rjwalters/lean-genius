@@ -474,4 +474,43 @@ theorem practical_pow {m : ℕ} (hp : IsPractical m) (k : ℕ) : IsPractical (m 
 theorem six_pow_practical (k : ℕ) : IsPractical (6 ^ k) :=
   practical_pow six_practical k
 
+/-! ## Representability transfers along divisibility of the modulus
+
+Every representability transfer inside this file (`two_pow_representable`,
+`practical_two_mul`, `practical_mul`) ends with the same inlined step: a subset of
+`divisors d` is also a subset of `divisors m` whenever `d ∣ m`, so a value representable
+by divisors of `d` is representable by divisors of `m`.  The lemma below names that step
+once; the two examples that follow use it to round out the file's non-example
+(`not_practical_three`, the smallest odd non-practical, complementing the even
+`not_practical_ten`) and to exhibit a practical number produced purely by the closure
+machinery (`twelve_practical = 2·6`, via `practical_two_mul`, rather than by `decide`). -/
+
+/-- **Representability transfers to any multiple of the modulus.**  If `d ∣ m` (with
+    `m ≠ 0`) and `k` is a sum of distinct divisors of `d`, then `k` is a sum of distinct
+    divisors of `m` — the same subset works, since `divisors d ⊆ divisors m`.  This is the
+    named form of the `hS.trans (Nat.divisors_subset_of_dvd …)` step inlined throughout
+    `two_pow_representable`, `practical_two_mul`, and `practical_mul`. -/
+theorem representable_of_dvd {d m k : ℕ} (hdm : d ∣ m) (hm : m ≠ 0)
+    (h : IsRepresentable k d) : IsRepresentable k m := by
+  obtain ⟨S, hS, hsum⟩ := h
+  exact ⟨S, hS.trans (Nat.divisors_subset_of_dvd hm hdm), hsum⟩
+
+/-- **`3` is not practical** — the smallest odd non-practical number.  Immediate from
+    `odd_practical_eq_one` (`1` is the only odd practical number): `3` is odd and `≠ 1`.
+    Together with `not_practical_ten` (the smallest *even* non-practical) this pins down the
+    two flavours of failure. -/
+theorem not_practical_three : ¬ IsPractical 3 := fun hp => by
+  have := odd_practical_eq_one hp (by decide)
+  omega
+
+/-- **`12` is practical**, obtained purely from the closure machinery: `12 = 2·6` and `6`
+    is practical (`six_practical`), so `practical_two_mul` gives `IsPractical (2·6)`.  A new
+    verified practical number reached without any `decide`, illustrating that doubling
+    generates fresh members (`12` extends the OEIS A005153 list `1,2,4,6,8` past this file's
+    small examples). -/
+theorem twelve_practical : IsPractical 12 := by
+  have h : IsPractical (2 * 6) := practical_two_mul six_practical
+  norm_num at h
+  exact h
+
 end Erdos18OQ01

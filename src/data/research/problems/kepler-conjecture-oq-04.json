@@ -57,7 +57,8 @@
       "Realigned 6 drifted annotations (ranges pinned to the pre-S3 ~118-line file) to the current 456-line source + added 5 new annotations covering S3-S7 (refutation, PackingDensity instance/existential, Bezdek-Kuperberg axiom, Ulam axiom, density_hierarchy_3d aggregation); annotations now 11, matching the 11 meta.json sections, in src/data/proofs/kepler-conjecture-oq-04/annotations.json",
       "Backfilled missing S5/S6/S7 session entries in research/problems/kepler-conjecture-oq-04/knowledge.md (previously only S1 + S3+S4 were recorded; S5/S6/S7 had been deferred to a post-build doc update)",
       "S15/S8 (researcher-7, 2026-07-08): BUILD-VERIFIED the S14 opaque-predicate soundness fix. Both KeplerConjecture.lean (opaque IsDiskPacking/IsSpherePacking/IsSpherePacking8D) and KeplerConjectureOQ04.lean (opaque IsEllipsoidLatticePacking/IsSymmetricConvexBody3DPacking, gated marker structures) compile clean against Mathlib v4.26 (docker-build 7744 jobs), confirming the fix that was 'build-pending under Docker blackout' at S14. Added S8: two theorems proving the shape gates are NON-VACUOUS.",
-      "S9 octahedron benchmark: octahedronPackingDensity (18/19) + pos/lt_one, tetrahedronDimerDensity_lt_octahedron, octahedronPackingDensity_gt_fccDensity, octahedronPacking instance, exists_packingDensity_gt_tetrahedronDimer, octahedron_not_ellipsoidLattice, fcc_lt_tetrahedron_lt_octahedron. 7 theorems, 1 def, 0 NEW axioms (still 2 total)."
+      "S9 octahedron benchmark: octahedronPackingDensity (18/19) + pos/lt_one, tetrahedronDimerDensity_lt_octahedron, octahedronPackingDensity_gt_fccDensity, octahedronPacking instance, exists_packingDensity_gt_tetrahedronDimer, octahedron_not_ellipsoidLattice, fcc_lt_tetrahedron_lt_octahedron. 7 theorems, 1 def, 0 NEW axioms (still 2 total).",
+      "symmetricConvexBody_density_mem_Icc_fcc + _fccPacking (KeplerConjectureOQ04Interval.lean): the Ulam interval [fccDensity,1] for centrally symmetric convex body packings — the sharpest two-sided density bound the file supports for that class (lower endpoint from ulam_conjecture, upper from le_one), packaged as Set.Icc membership. Conditional on the ulam_conjecture axiom. [UNVERIFIED — Docker down; the Set.Icc anonymous-constructor + extends-field-access proof pattern was confirmed to elaborate against local Mathlib.]"
     ],
     "insights": [
       "The tetrahedral refutation 4000/4671 > pi/(3*sqrt(2)) is AXIOM-FREE in Lean: pure real-number arithmetic provable via Real.pi_sq_lt (pi^2 < 9.8696). Squared form: 288_000_000 > 21_818_241 * pi^2, margin ~ 25% even with the loosest Mathlib pi bound.",
@@ -156,11 +157,11 @@
     {
       "path": "Proofs/KeplerConjectureOQ04Interval.lean",
       "filename": "KeplerConjectureOQ04Interval.lean",
-      "lineCount": 45,
-      "theoremCount": 2,
+      "lineCount": 72,
+      "theoremCount": 4,
       "axiomCount": 0,
       "defCount": 0,
-      "sorryCount": 1,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KeplerConjectureOQ04Interval.lean"
     }

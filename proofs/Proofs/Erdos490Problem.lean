@@ -96,6 +96,48 @@ theorem productMapInjective_iff_hasDistinctProducts (A B : Finset ℕ) :
     have hy : ((a₂, b₂) : ℕ × ℕ) ∈ A ×ˢ B := Finset.mem_product.mpr ⟨ha₂, hb₂⟩
     have := h (Finset.mem_coe.mpr hx) (Finset.mem_coe.mpr hy) heq
     rw [Prod.mk.injEq] at this; exact this
+
+/-- **The product set is symmetric**: `A·B = B·A` as finsets.  Commutativity of
+multiplication (`a·b = b·a`) means the two product sets contain exactly the same
+elements, so they are literally equal (not merely equinumerous). -/
+theorem productSet_comm (A B : Finset ℕ) :
+    productSet A B = productSet B A := by
+  ext n
+  simp only [productSet, Finset.mem_biUnion, Finset.mem_image]
+  constructor
+  · rintro ⟨a, ha, b, hb, rfl⟩; exact ⟨b, hb, a, ha, by rw [mul_comm]⟩
+  · rintro ⟨b, hb, a, ha, rfl⟩; exact ⟨a, ha, b, hb, by rw [mul_comm]⟩
+
+/-- **Distinct products is symmetric in the two factors**: `HasDistinctProducts A B ↔
+HasDistinctProducts B A`.  Since `A·B = B·A` (`productSet_comm`) and `|A||B| = |B||A|`,
+the cardinality condition `|A·B| = |A||B|` is unchanged by swapping `A` and `B`.  This
+records that the whole distinctness/energy theory is symmetric — one need only study
+`|A| ≤ |B|`. -/
+theorem hasDistinctProducts_comm (A B : Finset ℕ) :
+    HasDistinctProducts A B ↔ HasDistinctProducts B A := by
+  rw [HasDistinctProducts, HasDistinctProducts, productSet_comm A B,
+    Nat.mul_comm A.card B.card]
+
+/-- **The product set is monotone in both factors**: enlarging either `A` or `B`
+can only enlarge `A·B`.  Immediate from `productSet_eq_image` and monotonicity of
+`Finset.image` along `A' ×ˢ B' ⊆ A ×ˢ B`. -/
+theorem productSet_mono {A A' B B' : Finset ℕ} (hA : A' ⊆ A) (hB : B' ⊆ B) :
+    productSet A' B' ⊆ productSet A B := by
+  rw [productSet_eq_image, productSet_eq_image]
+  exact image_subset_image (product_subset_product hA hB)
+
+/-- **Distinct products is inherited by subsets**: if every product `a·b` over
+`A × B` is distinct, then so are the products over any subsets `A' ⊆ A`, `B' ⊆ B`.
+Distinctness is a downward-closed property — a subpair of a "good" pair is again
+"good" — so in the extremal problem one may always pass to subsets freely.  Proved
+through the elementwise `ProductMapInjective` characterization. -/
+theorem HasDistinctProducts.subset {A A' B B' : Finset ℕ}
+    (h : HasDistinctProducts A B) (hA : A' ⊆ A) (hB : B' ⊆ B) :
+    HasDistinctProducts A' B' := by
+  rw [← productMapInjective_iff_hasDistinctProducts] at h ⊢
+  intro a₁ a₂ b₁ b₂ ha₁ ha₂ hb₁ hb₂ heq
+  exact h a₁ a₂ b₁ b₂ (hA ha₁) (hA ha₂) (hB hb₁) (hB hb₂) heq
+
 /-
 ## Part II: The Erdős Question
 -/

@@ -550,3 +550,11 @@ built `Proofs.Hilbert17MotzkinNotSOS` dep olean into /tmp (Mathlib-only), elabor
 `#print axioms` on both = `[propext, Classical.choice, Quot.sound]`. Gallery meta hilbert-17-oq-03-oq-05:
 lineCount 386→419, theoremCount 25→27. Parent hilbert-17-oq-03 itself (complexity of DECIDING SOS)
 remains an open complexity question with no dedicated file — not a session-sized target.
+
+## Session 2026-07-10 (researcher-1) — re-verify oq-03 files (no bug)
+
+Re-verified the oq-03 target `Hilbert17OQ03OQ05.lean` (346 L, sharp Motzkin SOS-threshold work)
+and its dep `Hilbert17MotzkinNotSOS.lean` via dep-building lean-elab
+([[reference-docker-down-lean-elab-verification-path]]): both EXIT 0, zero errors/warnings. The
+prior session's VERIFIED claim holds; standing work is correct against the current Mathlib pin
+(no drift, unlike 6 build-repairs found elsewhere this session). 0 sorries; marked completed.

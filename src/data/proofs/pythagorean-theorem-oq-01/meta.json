@@ -26,8 +26,8 @@
     "dateAdded": "2026-07-09",
     "axiomCount": 0,
     "assumptions": "None. All theorems are fully machine-checked, depending only on propext, Classical.choice, and Quot.sound. Layer 3 works in a general real inner-product space; the right angle is supplied as the explicit hypothesis ⟪A − C, B − C⟫ = 0 and non-degeneracy as A ≠ B. Honesty note: once a Euclidean/inner-product model is fixed, the norm already encodes distance, so the one-line identity pythagorean_core (‖A−B‖² = ‖A−C‖² + ‖B−C‖²) is itself Pythagoras; Layer 3 does not claim foundational independence from it — its content is the verified geometric-mean/altitude decomposition. Layers 1 and 2 capture the parts of Einstein's reasoning genuinely independent of coordinates.",
-    "lineCount": 366,
-    "theoremCount": 14,
+    "lineCount": 382,
+    "theoremCount": 15,
     "definitionCount": 2,
     "originalContributions": [
       "einstein_pythagorean: the coordinate-free algebraic core of Einstein's proof — from areaWhole = k·h², areaA = k·cA², areaB = k·cB² and areaWhole = areaA + areaB with k ≠ 0, cancelling k gives cA² + cB² = h². This is the 'cancel the shape constant' step, verified with no geometry.",
@@ -74,9 +74,9 @@
   },
   "leanFile": {
     "namespace": "PythagoreanEinstein",
-    "lineCount": 366,
+    "lineCount": 382,
     "axiomCount": 0,
-    "theoremCount": 16,
+    "theoremCount": 17,
     "definitionCount": 2,
     "path": "Proofs/PythagoreanTheoremOQ01.lean",
     "imports": [

@@ -3001,7 +3001,8 @@ theorem quartic_fourPointLineCount_from_quadruples (k : ℕ) (hk : 0 < k)
     exact Finset.mem_image_of_mem _ (Finset.mem_image_of_mem _ (Finset.mem_univ j))
   -- The point set: union of all image-lines.
   have hpts_ne : (Finset.univ.biUnion L).Nonempty :=
-    ⟨Q (x ⟨0, hk⟩ 0), by rw [Finset.mem_biUnion];
+    ⟨Q (x ⟨0, hk⟩ 0), by
+      rw [Finset.mem_biUnion]
       exact ⟨⟨0, hk⟩, Finset.mem_univ _, hQmem _ 0⟩⟩
   let P : PlanarPointSet := ⟨Finset.univ.biUnion L, Finset.card_pos.mpr hpts_ne⟩
   -- Every point lies on the quartic graph, so no five are collinear.
@@ -3037,8 +3038,8 @@ theorem quartic_fourPointLineCount_from_quadruples (k : ℕ) (hk : 0 < k)
       have hline : ∀ j : Fin 4, collinear (Q (x i 0)) (Q (x i 1)) (Q (x i j)) := by
         intro j
         fin_cases j
-        · unfold collinear; ring
-        · unfold collinear; ring
+        · show collinear (Q (x i 0)) (Q (x i 1)) (Q (x i 0)); unfold collinear; ring
+        · show collinear (Q (x i 0)) (Q (x i 1)) (Q (x i 1)); unfold collinear; ring
         · exact hcd.1
         · exact hcd.2
       intro p hp
@@ -3098,7 +3099,12 @@ theorem symmetric_quadruple_onQuartic_collinear (a b : ℝ) (hab : a ^ 2 + b ^ 2
         (b, b ^ 4 - 5 * b ^ 2) ∧
       collinear (a, a ^ 4 - 5 * a ^ 2) (-a, (-a) ^ 4 - 5 * (-a) ^ 2)
         (-b, (-b) ^ 4 - 5 * (-b) ^ 2) := by
-  rw [four_onQuartic_collinear_iff_sq rfl rfl rfl rfl h1 h4 (Ne.symm h2) h5 (Ne.symm h3) h6]
+  rw [four_onQuartic_collinear_iff_sq
+      (show onQuartic (a, a ^ 4 - 5 * a ^ 2) from rfl)
+      (show onQuartic (-a, (-a) ^ 4 - 5 * (-a) ^ 2) from rfl)
+      (show onQuartic (b, b ^ 4 - 5 * b ^ 2) from rfl)
+      (show onQuartic (-b, (-b) ^ 4 - 5 * (-b) ^ 2) from rfl)
+      h1 h4 (Ne.symm h2) h5 (Ne.symm h3) h6]
   exact symmetric_quadruple_criterion a b hab
 
 /-! ### An oblique (non-symmetric) quadruple realizes the engine
@@ -3150,8 +3156,12 @@ theorem oblique_quadruple_onQuartic_collinear :
       collinear (-8 / 3, (-8 / 3 : ℝ) ^ 4 - 5 * (-8 / 3) ^ 2)
         (1 / 3, (1 / 3 : ℝ) ^ 4 - 5 * (1 / 3) ^ 2)
         (4 / 3, (4 / 3 : ℝ) ^ 4 - 5 * (4 / 3) ^ 2) := by
-  rw [four_onQuartic_collinear_iff_sq rfl rfl rfl rfl (by norm_num) (by norm_num)
-    (by norm_num) (by norm_num) (by norm_num) (by norm_num)]
+  rw [four_onQuartic_collinear_iff_sq
+      (show onQuartic (-8 / 3, (-8 / 3 : ℝ) ^ 4 - 5 * (-8 / 3) ^ 2) from rfl)
+      (show onQuartic (1 / 3, (1 / 3 : ℝ) ^ 4 - 5 * (1 / 3) ^ 2) from rfl)
+      (show onQuartic (1, (1 : ℝ) ^ 4 - 5 * 1 ^ 2) from rfl)
+      (show onQuartic (4 / 3, (4 / 3 : ℝ) ^ 4 - 5 * (4 / 3) ^ 2) from rfl)
+      (by norm_num) (by norm_num) (by norm_num) (by norm_num) (by norm_num) (by norm_num)]
   exact oblique_quadruple_criterion
 
 /-! ### The full solution surface: the two-parameter ternary-conic family
@@ -3201,7 +3211,12 @@ theorem quartic_quadruple_family_onQuartic_collinear (p q r : ℝ)
     collinear (p, p ^ 4 - 5 * p ^ 2) (q, q ^ 4 - 5 * q ^ 2) (r, r ^ 4 - 5 * r ^ 2) ∧
       collinear (p, p ^ 4 - 5 * p ^ 2) (q, q ^ 4 - 5 * q ^ 2)
         (-(p + q + r), (-(p + q + r)) ^ 4 - 5 * (-(p + q + r)) ^ 2) := by
-  rw [four_onQuartic_collinear_iff_sq rfl rfl rfl rfl hpq hqr hrp hqd hdp hrd]
+  rw [four_onQuartic_collinear_iff_sq
+      (show onQuartic (p, p ^ 4 - 5 * p ^ 2) from rfl)
+      (show onQuartic (q, q ^ 4 - 5 * q ^ 2) from rfl)
+      (show onQuartic (r, r ^ 4 - 5 * r ^ 2) from rfl)
+      (show onQuartic (-(p + q + r), (-(p + q + r)) ^ 4 - 5 * (-(p + q + r)) ^ 2) from rfl)
+      hpq hqr hrp hqd hdp hrd]
   exact quartic_quadruple_family_criterion p q r h
 
 /-! ### The two named surface points of the docstring, made precise
@@ -3231,5 +3246,49 @@ theorem oblique_triple_on_ternary_conic :
     (-8 / 3 : ℝ) ^ 2 + (1 / 3 : ℝ) ^ 2 + (1 : ℝ) ^ 2
         + (-8 / 3 : ℝ) * (1 / 3) + (1 / 3 : ℝ) * 1 + (1 : ℝ) * (-8 / 3) = 5 := by
   norm_num
+
+/-! ### The solution surface `Q = 5` is a bounded (positive-definite) ellipsoid
+
+The docstring of `quartic_quadruple_family_criterion` describes the solutions of
+`Σx = 0 ∧ Σx² = 10` as a "whole two-parameter surface, not a sporadic list".  The three
+lemmas below pin down its *geometric character*.  The ternary form
+`Q(p,q,r) = p²+q²+r²+pq+qr+rp` is **positive-definite** — indeed
+`Q = ½·((p²+q²+r²) + (p+q+r)²)`, a nonnegative combination of the squared radius and the
+squared trace — so the level set `Q = 5` is a genuine *bounded ellipsoid*, with every
+abscissa confined to `p²+q²+r² ≤ 10`.  This upgrades the docstring's qualitative
+"two-parameter surface" to a quantitative fact: the surface is a bona-fide compact quadric
+(hence carries a continuum of solutions), and the OPEN super-linear-growth question is
+precisely one of extracting super-linearly many solutions with *pairwise-distinct abscissa
+sets* from this fixed compact surface — never one of existence. -/
+
+/-- **The ternary conic form is a half sum of two squares.**
+`Q(p,q,r) = p²+q²+r²+pq+qr+rp = ½·((p²+q²+r²) + (p+q+r)²)`.  This exhibits `Q` as
+positive-definite: a nonnegative combination of the squared radius `p²+q²+r²` and the
+squared trace `(p+q+r)²`.  Pure `ring` identity, the algebraic root of the two geometric
+corollaries below. -/
+theorem ternary_conic_eq_half_sum_of_squares (p q r : ℝ) :
+    p ^ 2 + q ^ 2 + r ^ 2 + p * q + q * r + r * p
+      = ((p ^ 2 + q ^ 2 + r ^ 2) + (p + q + r) ^ 2) / 2 := by
+  ring
+
+/-- **The ternary conic form is nonnegative** (positive semidefiniteness).
+`0 ≤ Q(p,q,r)` for all real `p,q,r`, since `Q = ½·((p²+q²+r²) + (p+q+r)²)` is a nonnegative
+combination of squares.  So the solution surface `Q = 5` is a genuine level set of a
+positive-definite form — a bounded ellipsoid — not a degenerate hyperbola. -/
+theorem ternary_conic_nonneg (p q r : ℝ) :
+    0 ≤ p ^ 2 + q ^ 2 + r ^ 2 + p * q + q * r + r * p := by
+  rw [ternary_conic_eq_half_sum_of_squares]
+  positivity
+
+/-- **The solution surface is bounded.** On the ternary conic `Q = 5`, the squared abscissa
+radius satisfies `p² + q² + r² ≤ 10`.  From `Q = ½·((p²+q²+r²) + (p+q+r)²)`: at `Q = 5` we
+have `(p²+q²+r²) + (p+q+r)² = 10`, and dropping the nonnegative `(p+q+r)²` leaves
+`p²+q²+r² ≤ 10`.  Hence every abscissa of a family four-point line obeys `|p|,|q|,|r| ≤ √10`:
+the surface `Q = 5` is compact, making the docstring's "two-parameter surface" genuinely
+bounded. -/
+theorem ternary_conic_sq_sum_le_of_mem (p q r : ℝ)
+    (h : p ^ 2 + q ^ 2 + r ^ 2 + p * q + q * r + r * p = 5) :
+    p ^ 2 + q ^ 2 + r ^ 2 ≤ 10 := by
+  nlinarith [sq_nonneg (p + q + r), h]
 
 end Erdos101OQ04

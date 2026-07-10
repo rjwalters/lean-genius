@@ -164,15 +164,17 @@ the constant `r`, so the antitone bound
 cannot be strengthened to `<` without assuming strict log-concavity. -/
 theorem geometric_root_antitone_eq {r : ℝ} (hr : 0 < r) (k : ℕ) (hk : 0 < k) :
     (r ^ (k + 1)) ^ ((1 : ℝ) / (k + 1)) = (r ^ k) ^ ((1 : ℝ) / k) := by
-  rw [rpow_pow_root_self hr (Nat.succ_pos k), rpow_pow_root_self hr hk]
+  rw [show ((k : ℝ) + 1) = ((k + 1 : ℕ) : ℝ) by push_cast; ring,
+    rpow_pow_root_self hr (by omega : 0 < k + 1), rpow_pow_root_self hr hk]
 
 /-- **The geometric root sequence is constant (hence the abstract chain is flat).** For
 `r > 0`, `logConcave_root_antitone_seq`'s sequence `k ↦ (r^(k+1))^{1/(k+1)}` is the constant
 function `r`. Combined with `geometric_logConcave_eq` (the hypotheses hold with equality), this
 exhibits the equality case of the whole Maclaurin chain `M_1 ≥ M_2 ≥ ⋯`. -/
 theorem geometric_root_seq_const {r : ℝ} (hr : 0 < r) (k : ℕ) :
-    (r ^ (k + 1)) ^ ((1 : ℝ) / (k + 1)) = r :=
-  rpow_pow_root_self hr (Nat.succ_pos k)
+    (r ^ (k + 1)) ^ ((1 : ℝ) / (k + 1)) = r := by
+  rw [show ((k : ℝ) + 1) = ((k + 1 : ℕ) : ℝ) by push_cast; ring]
+  exact rpow_pow_root_self hr (by omega : 0 < k + 1)
 
 /-! ## Strict monotonicity under strict log-concavity
 
@@ -292,11 +294,11 @@ theorem logConcave_iff_ratio_antitone (p : ℕ → ℝ) (hpos : ∀ j, 0 < p j) 
     apply antitone_nat_of_succ_le
     intro m
     show p (m + 2) / p (m + 1) ≤ p (m + 1) / p m
-    rw [div_le_div_iff (hpos (m + 1)) (hpos m)]
+    rw [div_le_div_iff₀ (hpos (m + 1)) (hpos m)]
     nlinarith [hlc m]
   · intro hanti m
     have h : p (m + 2) / p (m + 1) ≤ p (m + 1) / p m := hanti (Nat.le_succ m)
-    rw [div_le_div_iff (hpos (m + 1)) (hpos m)] at h
+    rw [div_le_div_iff₀ (hpos (m + 1)) (hpos m)] at h
     nlinarith [h]
 
 /-- **Strict ratio form.** For a positive, *strictly* log-concave sequence
@@ -309,7 +311,7 @@ theorem logConcave_ratio_strictAnti (p : ℕ → ℝ) (hpos : ∀ j, 0 < p j)
   apply strictAnti_nat_of_succ_lt
   intro m
   show p (m + 2) / p (m + 1) < p (m + 1) / p m
-  rw [div_lt_div_iff (hpos (m + 1)) (hpos m)]
+  rw [div_lt_div_iff₀ (hpos (m + 1)) (hpos m)]
   nlinarith [hstrict m]
 
 /-- **Strict ratio equivalence.** For a positive sequence `p`, *strict* log-concavity
@@ -325,7 +327,7 @@ theorem logConcave_strict_iff_ratio_strictAnti (p : ℕ → ℝ) (hpos : ∀ j, 
   · exact logConcave_ratio_strictAnti p hpos
   · intro hsa m
     have h : p (m + 2) / p (m + 1) < p (m + 1) / p m := hsa (by omega : m < m + 1)
-    rw [div_lt_div_iff (hpos (m + 1)) (hpos m)] at h
+    rw [div_lt_div_iff₀ (hpos (m + 1)) (hpos m)] at h
     nlinarith [h]
 
 /-- **Consecutive ratios are bounded by the first ratio.** For a positive log-concave
@@ -353,5 +355,54 @@ theorem logConcave_root_le_first (p : ℕ → ℝ) (hp0 : p 0 = 1)
     p (k + 1) ^ ((1 : ℝ) / (k + 1)) ≤ p 1 := by
   have hanti := logConcave_root_antitone_seq p hp0 hpos hlc
   simpa using hanti (Nat.zero_le k)
+
+/-! ## Lower bound: every root mean is at least the last consecutive ratio
+
+`logConcave_root_le_first` bounds each root mean `p (k+1)^{1/(k+1)}` *above* by the
+first consecutive ratio `p 1 = r_0`. The matching *lower* bound is that it is at least
+the **last** consecutive ratio `r_k = p (k+1) / p k`: the root mean is the geometric
+mean of `r_0 ≥ r_1 ≥ ⋯ ≥ r_k`, so it lies between the smallest ratio `r_k` and the
+largest `r_0`. Together the two bounds sandwich the whole Maclaurin chain between
+consecutive ratios. -/
+
+/-- **Every root mean is at least the last consecutive ratio.** For a positive
+log-concave sequence with `p 0 = 1`, `p (k+1) / p k ≤ p (k+1)^{1/(k+1)}` for every `k`.
+The dual of `logConcave_root_le_first`. Proof: both sides are nonnegative, so it
+suffices to compare their `(k+1)`-th powers; the right side powers back to `p (k+1)`,
+and the left side's `(k+1)`-th power is `≤ p (k+1)` exactly by the multiplicative core
+`logConcave_pow_antitone` (`p (k+1)^k ≤ p k^{k+1}`). -/
+theorem logConcave_root_ge_last_ratio (p : ℕ → ℝ) (hp0 : p 0 = 1)
+    (hpos : ∀ j, 0 < p j)
+    (hlc : ∀ m, p m * p (m + 2) ≤ (p (m + 1)) ^ 2) (k : ℕ) :
+    p (k + 1) / p k ≤ p (k + 1) ^ ((1 : ℝ) / (k + 1)) := by
+  have ha : 0 < p (k + 1) := hpos (k + 1)
+  have hb : 0 < p k := hpos k
+  have hcore : p (k + 1) ^ k ≤ p k ^ (k + 1) :=
+    logConcave_pow_antitone p hp0 hlc k (fun j _ => hpos j)
+  have hR : 0 ≤ p (k + 1) ^ ((1 : ℝ) / (k + 1)) := Real.rpow_nonneg ha.le _
+  -- The right side, raised to the `(k+1)`-th power, is `p (k+1)`.
+  have hRpow : (p (k + 1) ^ ((1 : ℝ) / (k + 1))) ^ (k + 1) = p (k + 1) := by
+    rw [one_div, show ((k : ℝ) + 1) = ((k + 1 : ℕ) : ℝ) by push_cast; ring]
+    exact Real.rpow_inv_natCast_pow ha.le (Nat.succ_ne_zero k)
+  refine le_of_pow_le_pow_left₀ (Nat.succ_ne_zero k) hR ?_
+  rw [hRpow, div_pow, div_le_iff₀ (by positivity : (0 : ℝ) < p k ^ (k + 1))]
+  calc p (k + 1) ^ (k + 1)
+        = p (k + 1) ^ k * p (k + 1) := by rw [pow_succ]
+    _ ≤ p k ^ (k + 1) * p (k + 1) := mul_le_mul_of_nonneg_right hcore ha.le
+    _ = p (k + 1) * p k ^ (k + 1) := by ring
+
+/-- **The root-mean sandwich.** For a positive log-concave sequence with `p 0 = 1`,
+every root mean lies between the last and first consecutive ratios:
+`p (k+1) / p k ≤ p (k+1)^{1/(k+1)} ≤ p 1` for every `k`. Combines
+`logConcave_root_ge_last_ratio` with `logConcave_root_le_first`. Specialised to
+`p k = eₖ/C(n,k)` this places each Maclaurin mean `Mₖ₊₁` between the consecutive
+ratio `eₖ₊₁ C(n,k) / (eₖ C(n,k+1))` and the arithmetic mean `M₁`. -/
+theorem logConcave_root_ratio_sandwich (p : ℕ → ℝ) (hp0 : p 0 = 1)
+    (hpos : ∀ j, 0 < p j)
+    (hlc : ∀ m, p m * p (m + 2) ≤ (p (m + 1)) ^ 2) (k : ℕ) :
+    p (k + 1) / p k ≤ p (k + 1) ^ ((1 : ℝ) / (k + 1)) ∧
+      p (k + 1) ^ ((1 : ℝ) / (k + 1)) ≤ p 1 :=
+  ⟨logConcave_root_ge_last_ratio p hp0 hpos hlc k,
+    logConcave_root_le_first p hp0 hpos hlc k⟩
 
 end MaclaurinLogConcave

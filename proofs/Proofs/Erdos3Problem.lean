@@ -1041,6 +1041,61 @@ theorem strongRequiredBound_implies_sharpRequiredBound {k : ℕ}
   rw [div_le_div_iff₀ hbig hsmall]
   exact mul_le_mul_of_nonneg_left hdenom_le (mul_nonneg hC.le (Nat.cast_nonneg N))
 
+/-- **The sharp threshold implies the weak (`o(N/log N)`) threshold.**
+    `SharpRequiredBound k` (`r_k(N) = O(N/(log N · (log log N)^{1+δ}))`) implies
+    `RequiredBound k` (`r_k(N) = o(N/log N)`). Writing the sharp bound as
+    `r_k(N) ≤ (C · (log log N)^{-(1+δ)}) · (N / log N)`, the leading factor
+    `C · (log log N)^{-(1+δ)} → 0` because `log log N → ∞` (`tendsto_rpow_neg_atTop`
+    at exponent `1 + δ > 0`), so for every `c > 0` it is eventually `< c`. The proof
+    mirrors `strongRequiredBound_implies_requiredBound`, with the vanishing factor
+    driven by the iterated logarithm instead of a positive power of `log N`.
+
+    Together with `strongRequiredBound_implies_sharpRequiredBound` this completes the
+    implication lattice `StrongRequiredBound ⇒ SharpRequiredBound ⇒ RequiredBound`,
+    so `strongRequiredBound_implies_requiredBound` now factors through the sharp
+    threshold. It also confirms that the sharp hypothesis of
+    `sharp_required_bound_implies_conjecture` sits *strictly below* `o(N/log N)`: the
+    genuinely open regime is the gap between `RequiredBound` and `SharpRequiredBound`,
+    exactly the `N/(log N · log log N)` borderline documented at `StrongRequiredBound`.
+    Axiom-free. -/
+theorem sharpRequiredBound_implies_requiredBound {k : ℕ}
+    (h : SharpRequiredBound k) : RequiredBound k := by
+  obtain ⟨δ, hδ, C, hC, hev⟩ := h
+  intro c hc
+  -- `log N → ∞`, hence `log log N → ∞`, hence `C·(log log N)^{-(1+δ)} → 0`.
+  have hlog : Filter.Tendsto (fun N : ℕ => Real.log (N : ℝ)) Filter.atTop Filter.atTop :=
+    Real.tendsto_log_atTop.comp tendsto_natCast_atTop_atTop
+  have hloglog : Filter.Tendsto (fun N : ℕ => Real.log (Real.log (N : ℝ)))
+      Filter.atTop Filter.atTop := Real.tendsto_log_atTop.comp hlog
+  have hδ1 : (0 : ℝ) < 1 + δ := by linarith
+  have hneg : Filter.Tendsto
+      (fun N : ℕ => C * (Real.log (Real.log (N : ℝ))) ^ (-(1 + δ)))
+      Filter.atTop (nhds 0) := by
+    have hmul := ((tendsto_rpow_neg_atTop hδ1).comp hloglog).const_mul C
+    simpa using hmul
+  -- Eventually the leading factor is below `c`, and `log N > 1` (so `log log N > 0`).
+  have hlt : ∀ᶠ N : ℕ in Filter.atTop,
+      C * (Real.log (Real.log (N : ℝ))) ^ (-(1 + δ)) < c := by
+    have hmem : Set.Iio c ∈ nhds (0 : ℝ) := isOpen_Iio.mem_nhds hc
+    filter_upwards [hneg.eventually hmem] with N hN using hN
+  have hLgt : ∀ᶠ N : ℕ in Filter.atTop, 1 < Real.log (N : ℝ) :=
+    hlog.eventually (eventually_gt_atTop 1)
+  filter_upwards [hev, hlt, hLgt] with N hN hNlt hL
+  set L : ℝ := Real.log (N : ℝ) with hLdef
+  have hL0 : 0 < L := lt_trans one_pos hL
+  have hLL0 : 0 < Real.log L := Real.log_pos hL
+  set M : ℝ := Real.log L with hMdef
+  have hMpow : (0 : ℝ) < M ^ (1 + δ) := Real.rpow_pos_of_pos hLL0 _
+  -- Turn the leading-factor bound `C · M^(-(1+δ)) < c` into `C ≤ c · M^(1+δ)`.
+  rw [Real.rpow_neg hLL0.le, ← div_eq_mul_inv] at hNlt
+  have hCle : C ≤ c * M ^ (1 + δ) := (div_le_iff₀ hMpow).mp hNlt.le
+  -- Bigger denominator on the left ⇒ the sharp bound transfers to the weak one.
+  refine le_trans hN ?_
+  rw [div_le_div_iff₀ (mul_pos hL0 hMpow) hL0]
+  have hfac : 0 ≤ (N : ℝ) * L * (c * M ^ (1 + δ) - C) :=
+    mul_nonneg (mul_nonneg (Nat.cast_nonneg N) hL0.le) (by linarith)
+  nlinarith [hfac]
+
 /-- **The strong threshold hypothesis is downward-closed in the length.**
     `StrongRequiredBound m` implies `StrongRequiredBound k` for every `k ≤ m`: the same
     witnesses `δ, C` work because `r_k(N) ≤ r_m(N) ≤ C·N/(log N)^{1+δ}` by `rothNumber_mono`.

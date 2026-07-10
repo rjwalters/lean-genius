@@ -44,14 +44,15 @@
     "originalContributions": [
       "gap_div_le_rpow_neg: pointwise upper envelope maxPrimeGap x / x <= x^(-0.475) for x >= 25, via BHP divided by x and the identity x^0.525 / x = x^(0.525 - 1)",
       "bhp_implies_gap_littleo: unconditional maxPrimeGap x / x -> 0, squeezing between 0 and the envelope x^(-0.475) -> 0 (unconditional twin of cramer_implies_gap_sublinear)",
-      "bhp_gap_eventually_le_eps: epsilon-form, for every epsilon > 0 eventually maxPrimeGap x <= epsilon * x"
+      "bhp_gap_eventually_le_eps: epsilon-form, for every epsilon > 0 eventually maxPrimeGap x <= epsilon * x",
+      "gap_eventually_le_eps_of_rpow_bound: abstract epsilon-form engine, from any eventual envelope maxPrimeGap x <= x^theta with theta < 1, for every epsilon > 0 eventually maxPrimeGap x <= epsilon * x (the abstract counterpart of bhp_gap_eventually_le_eps, completing the engine family's term-for-term match with the concrete BHP family)"
     ],
     "dateAdded": "2026-07-05",
     "mathlib_version": "4.26.0",
     "axiomCount": 1,
-    "lineCount": 358,
+    "lineCount": 376,
     "assumptions": "1 axiom, inherited from the parent Erdos1138OQ03: baker_harman_pintz (maxPrimeGap x <= x^0.525 for x >= 25). No axiom is declared in this file (leanFile.axiomCount = 0); the assumption is imported. #print axioms confirms the results depend only on {propext, Classical.choice, Quot.sound, Erdos1138OQ03.baker_harman_pintz}. No sorries, no native_decide.",
-    "theoremCount": 13,
+    "theoremCount": 14,
     "definitionCount": 0
   },
   "overview": {
@@ -140,9 +141,9 @@
       "Topology"
     ],
     "namespace": "Erdos1138OQ03",
-    "lineCount": 358,
+    "lineCount": 376,
     "axiomCount": 0,
-    "theoremCount": 16,
+    "theoremCount": 17,
     "definitionCount": 0,
     "path": "Proofs/Erdos1138OQ03OQ01.lean",
     "sorries": 0

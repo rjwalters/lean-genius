@@ -61,11 +61,11 @@
         "sorries": 0,
         "axiomCount": 0,
         "theoremCount": 6,
-        "lineCount": 759
+        "lineCount": 749
       }
     ],
     "axiomCount": 0,
-    "lineCount": 1169,
+    "lineCount": 1224,
     "prerequisites": [
       "Arithmetic progressions and their properties",
       "Series convergence and divergence (reciprocal sums)",
@@ -74,7 +74,7 @@
       "Extremal combinatorics (Ramsey-type reasoning)"
     ],
     "assumptions": "0 axioms. `euler_prime_sum_diverges` (Euler 1737, ∑ 1/p diverges) is now a proved theorem, discharged from Mathlib's `not_summable_one_div_on_primes`. 1 sorry remains in `required_bound_implies_conjecture` (the o(N/log N) threshold), which is threshold-critical: as hard as Erdős #3 itself. The strictly stronger (log N)^{1+δ} threshold reduction (`strong_required_bound_implies_conjecture`) is fully proved, sorry-free and axiom-free.",
-    "theoremCount": 32,
+    "theoremCount": 33,
     "definitionCount": 12
   },
   "overview": {
@@ -249,9 +249,9 @@
       "Finset"
     ],
     "namespace": "Erdos3",
-    "lineCount": 1169,
+    "lineCount": 1224,
     "axiomCount": 0,
-    "theoremCount": 32,
+    "theoremCount": 33,
     "definitionCount": 12,
     "path": "Proofs/Erdos3Problem.lean",
     "sorries": 1

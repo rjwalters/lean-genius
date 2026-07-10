@@ -668,3 +668,25 @@ theorem prime_dvd_pow_sub_self {p : ℕ} (hp : p.Prime) (k : ℕ) : p ∣ k ^ p 
   have hrw : k ^ p - k = (k ^ p + (p - 1) * k) - ((p - 1) * k + k) := by omega
   rw [hrw]
   exact Nat.dvd_sub hdvd1 hdvd2
+
+/-- **Fermat's little theorem, congruence form.**  The divisibility `p ∣ kᵖ − k` proved
+    combinatorially above (`prime_dvd_pow_sub_self`) is exactly the modular statement
+    `kᵖ ≡ k [MOD p]`.  We transfer it via `Nat.modEq_iff_dvd'`, using `k ≤ kᵖ` (`p ≠ 0`).
+    Thus the necklace-orbit count *is* Fermat's little theorem — no `ZMod.pow_card`. -/
+theorem pow_prime_modEq_self {p : ℕ} (hp : p.Prime) (k : ℕ) : k ^ p ≡ k [MOD p] := by
+  have hdvd : p ∣ k ^ p - k := prime_dvd_pow_sub_self hp k
+  have hle : k ≤ k ^ p := Nat.le_self_pow hp.pos.ne' k
+  exact ((Nat.modEq_iff_dvd' hle).mpr hdvd).symm
+
+/-- **Fermat's little theorem, coprime form.**  For a prime `p` and a base `k` not divisible
+    by `p`, `k^(p−1) ≡ 1 [MOD p]`.  Cancel a factor of `k` (coprime to `p`) from the
+    self-congruence `kᵖ ≡ k` of `pow_prime_modEq_self`, writing `kᵖ = k · k^(p−1)`. -/
+theorem pow_prime_sub_one_modEq_one {p : ℕ} (hp : p.Prime) {k : ℕ} (hk : ¬ p ∣ k) :
+    k ^ (p - 1) ≡ 1 [MOD p] := by
+  have hcop : Nat.Coprime p k := hp.coprime_iff_not_dvd.mpr hk
+  have hrw : k * k ^ (p - 1) = k ^ p := by
+    conv_rhs => rw [← Nat.sub_add_cancel hp.pos]
+    rw [pow_succ]; ring
+  have hstep : k * k ^ (p - 1) ≡ k * 1 [MOD p] := by
+    rw [mul_one, hrw]; exact pow_prime_modEq_self hp k
+  exact Nat.ModEq.cancel_left_of_coprime hcop hstep
