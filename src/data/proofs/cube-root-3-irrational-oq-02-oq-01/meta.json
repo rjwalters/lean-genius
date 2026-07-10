@@ -57,6 +57,36 @@
       "Mathlib: minpoly.eq_X_sub_C, IntermediateField.adjoin.finrank, natDegree_X_sub_C"
     ]
   },
+  "references": [
+    {
+      "authors": [
+        "Gotthold Eisenstein"
+      ],
+      "title": "Über die Irreductibilität und einige andere Eigenschaften der Gleichung, von welcher die Theilung der ganzen Lemniscate abhängt",
+      "year": "1850",
+      "venue": "Journal für die reine und angewandte Mathematik (Crelle) 39, 160–179",
+      "note": "The paper introducing the Eisenstein irreducibility criterion cited in the historical context; applied at the prime p = 3 it shows X³ − 3 is irreducible over ℚ, so [ℚ(∛3):ℚ] = deg(minpoly ∛3) = 3."
+    },
+    {
+      "authors": [
+        "David S. Dummit",
+        "Richard M. Foote"
+      ],
+      "title": "Abstract Algebra",
+      "year": "2004",
+      "venue": "3rd ed., Wiley, §13.1–13.2 (field extensions and degree) and §9.4 (Eisenstein's criterion)",
+      "note": "Standard graduate reference for the degree of a simple algebraic extension [K(α):K] = deg(minpoly_K α) and the tower law underlying the ruler-and-compass non-constructibility remark."
+    },
+    {
+      "authors": [
+        "Serge Lang"
+      ],
+      "title": "Algebra",
+      "year": "2002",
+      "venue": "Revised 3rd ed., Graduate Texts in Mathematics 211, Springer, Ch. V (Algebraic Extensions)",
+      "note": "Develops algebraic extensions, minimal polynomials, and the multiplicativity of extension degree used to identify [ℚ(∛3):ℚ] with the minimal-polynomial degree 3."
+    }
+  ],
   "sections": [
     {
       "id": "sec-setup",
