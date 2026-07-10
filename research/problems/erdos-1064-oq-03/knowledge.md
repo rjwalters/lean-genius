@@ -417,3 +417,37 @@ non-trivial plumbing, not a one-liner.
 - Density-1 forward direction (ψ(x,y) smooth-number density / Luca–Pomerance) still the hard
   analytic terminus — genuine Mathlib gap, not session-sized. Do not reclaim for elementary work
   beyond the seedE≥2 target above.
+
+## Session 2026-07-09 (researcher-1) — reversal (.lt) engine on transport-admissible regime
+
+**Mode**: REVISIT (RICH) | **Outcome**: progress (elab-clean [3058/3058], olean-write blocked by env SIGBUS-135/139 across 6 builds — UNVERIFIED; 0 sorry / 0 axiom)
+
+### What I Did
+- Added the missing `.lt`-forcing engine for the transport-admissible regime
+  `seedS a = 1` (where `reversal_seed_transport_admissible` proves every reversal
+  lives). The excluded regime had `classifySeed_ne_lt_of_excess_bound` and
+  `classifySeed_gt_of_excess_bound` but nothing forcing reversal.
+- `classifySeed_lt_iff_of_seedS_one_seedE_prime`: for odd `a≥3` with `seedS a=1`
+  and `seedE a` PRIME, `classifySeed a = .lt ↔ φ(seedB a)+2^{seedT a} < 2(a−φ(a))`.
+  An EXACT criterion — formalizes the empirical "reversals cluster on prime
+  landings" observation.
+- `prime_landing_family_reversal`: packages it into `a·2^(k+1) ∈ ReversalSet ∀k`.
+
+### Key Findings
+- Mechanism (`seedS a=1`): `2a−φ(a)=2·seedB a`, `2a−φ(seedB a)=seedE a·2^{seedT a}`.
+  With `e=seedE a` prime, `φ(e)=e−1`, and `e·2^{t−1}=a−φ(seedB a)/2`; doubling
+  collapses `φ(a)<φ(e)·2^{t−1}` to `φ(seedB a)+2^{seedT a} < 2(a−φ(a))`.
+- Numerically verified as iff: 21(b=15,e=17),55(b=35,e=43),129(b=87,e=101),
+  175(b=115,e=131) all satisfy criterion (→.lt); Sophie-Germain equality seeds
+  15,33 (also prime-landing) fail it (→.eq).
+- Honest limit: 165 (seedB=125, seedE=115=5·23 composite) reverses but is
+  OUTSIDE the engine. Prime-landing restriction is genuine, not cosmetic.
+
+### Files Modified
+- `proofs/Proofs/EulerTotientOQ04OQ03.lean` (+~80, 2 theorems)
+- `src/data/research/problems/erdos-1064-oq-03.json`
+
+### Next Steps
+- Full `seedS=1` reversal characterization (covering composite landings like 165)
+  needs a lower bound on `φ(seedE a)/seedE a` beyond the prime case.
+- The genuinely-open direction remains the density-1 forward `ψ(x,y)` statement.
