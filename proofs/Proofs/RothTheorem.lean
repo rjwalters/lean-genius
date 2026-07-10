@@ -1742,4 +1742,44 @@ theorem sqGaussSum_normSq_eq_of_kernel_trivial {N : ℕ} [NeZero N] (r : ZMod N)
   rw [hid] at hGsq
   exact_mod_cast hGsq
 
+/-- **Unit frequencies have trivial kernel.**  If `2r` is a unit in `ZMod N`, then the only
+    solution of `2r·h = 0` is `h = 0`: left-multiply by `(2r)⁻¹`.  This is the checkable
+    hypothesis feeding `sqGaussSum_normSq_eq_of_kernel_trivial` — it replaces the abstract
+    "kernel trivial" side condition with the concrete unit condition on the frequency `2r`. -/
+theorem kernel_trivial_of_isUnit {N : ℕ} [NeZero N] {r : ZMod N} (hu : IsUnit (2 * r)) :
+    ∀ h : ZMod N, 2 * r * h = 0 → h = 0 := by
+  intro h hh
+  obtain ⟨u, hu_eq⟩ := hu
+  have hz : (↑(u⁻¹) : ZMod N) * (2 * r * h) = 0 := by rw [hh, mul_zero]
+  rw [← hu_eq, ← mul_assoc, Units.inv_mul, one_mul] at hz
+  exact hz
+
+/-- **Exact Gauss-sum magnitude at unit frequencies.**  Whenever `2r` is a unit in `ZMod N`,
+    the quadratic Gauss sum has `‖G(r)‖² = N` — the classical `√N` magnitude, now with an
+    explicitly checkable hypothesis (no abstract kernel condition). -/
+theorem sqGaussSum_normSq_eq_of_isUnit {N : ℕ} [NeZero N] {r : ZMod N} (hu : IsUnit (2 * r)) :
+    ‖sqGaussSum r‖ ^ 2 = (N : ℝ) :=
+  sqGaussSum_normSq_eq_of_kernel_trivial r (kernel_trivial_of_isUnit hu)
+
+/-- **`‖G(r)‖ = √N` at unit frequencies.**  The square-root form of
+    `sqGaussSum_normSq_eq_of_isUnit`: this is exactly the value `M = √N` that, supplied to
+    `sqDiffFree_density_bound`, discharges its magnitude hypothesis on the unit frequencies. -/
+theorem sqGaussSum_norm_eq_sqrt_of_isUnit {N : ℕ} [NeZero N] {r : ZMod N} (hu : IsUnit (2 * r)) :
+    ‖sqGaussSum r‖ = Real.sqrt N := by
+  have h := sqGaussSum_normSq_eq_of_isUnit hu
+  rw [← h, Real.sqrt_sq (norm_nonneg _)]
+
+/-- **Odd-modulus regime.**  For `N` odd and any unit frequency `r`, `2r` is a unit (since `2`
+    is a unit mod an odd `N`), so `‖G(r)‖ = √N`.  This is the clean accessible case: on the
+    units of `ZMod N` (`N` odd) every quadratic Gauss sum has magnitude exactly `√N`. -/
+theorem sqGaussSum_norm_eq_sqrt_of_odd {N : ℕ} [NeZero N] (hodd : Odd N) {r : ZMod N}
+    (hr : IsUnit r) : ‖sqGaussSum r‖ = Real.sqrt N := by
+  have h2 : IsUnit (2 : ZMod N) := by
+    have hcast : ((2 : ℕ) : ZMod N) = (2 : ZMod N) := by norm_cast
+    rw [← hcast, ZMod.isUnit_iff_coprime]
+    have hmod : N % 2 = 1 := Nat.odd_iff.mp hodd
+    have hnd : ¬ (2 ∣ N) := by rw [Nat.dvd_iff_mod_eq_zero]; omega
+    exact (Nat.prime_two.coprime_iff_not_dvd).mpr hnd
+  exact sqGaussSum_norm_eq_sqrt_of_isUnit (h2.mul hr)
+
 end Szemeredi.Roth
