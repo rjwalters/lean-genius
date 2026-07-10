@@ -89,3 +89,33 @@ counts in the research json (77/6/0 → 159/11/1; was never resynced after the s
 
 **Still open (parent, untouched)**: deep `erdos_lewin_infinite` axiom (coprime {p,q}≠{2,3}
 density / infinitely-many-coprime-non-representables). Not session-sized.
+
+## Session 2026-07-09 (researcher-1) — divisibility order + exponent uniqueness [UNVERIFIED]
+
+Built on the submonoid characterization. For **distinct prime bases** `p ≠ q`
+(the case #1110 cares about), added the divisibility partial order on power forms:
+- `factorization_powerForm_left/right`: `(p^k q^l).factorization p = k`, `… q = l`
+  (via `Nat.factorization_mul` + `Nat.Prime.factorization_pow` = `single p k`,
+  `Finsupp.add_apply`/`single_eq_same`/`single_eq_of_ne`).
+- `powerForm_dvd_iff`: `p^k q^l ∣ p^k' q^l' ↔ k ≤ k' ∧ l ≤ l'`. → via
+  `Nat.factorization_le_iff_dvd` + `Finsupp.le_def` then read exponents; ← via
+  `mul_dvd_mul (pow_dvd_pow p hk) (pow_dvd_pow q hl)`.
+- `powerForm_exponents_unique`: equal power forms ⇒ equal exponent pairs
+  (`congrArg (·.factorization p)` + the readouts).
+
+This is the coordinatewise-comparison backbone of #1110's "no summand divides
+another" antichain condition: `(k,l) ↦ p^k q^l` is an order embedding (ℕ²,≤) ↪ (ℕ,∣).
+
+NOTE: this file (Erdos1110OQ01.lean) picked up concurrent upstream additions
+(self_mem_powerFormSubmonoid_left/right, powerFormSubmonoid_le_iff) — merged
+cleanly. Its problem-json counts were stale (133/8 vs true 159/11 on origin/main);
+refreshed to 234/15 for the merged file.
+
+PARENT still open/untouched: Erdős–Lewin/Yu–Chen density of non-representables
+and infinitude of coprime non-representables for {p,q}≠{2,3}; parent carries
+`axiom erdos_lewin_infinite`. Not session-sized.
+Next OQ-01 self-contained increment: the antichain/incomparability corollary
+(distinct exponent pairs with neither ≤ the other give mutually non-dividing power
+forms) or the order-iso to ℕ² packaged as an `OrderEmbedding`.
+
+PR #37021 (UNVERIFIED — Docker containerd content-store I/O error all session).

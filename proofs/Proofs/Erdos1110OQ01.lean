@@ -156,4 +156,79 @@ theorem powerFormSubmonoid_le_iff {p q : ℕ} {S : Submonoid ℕ} :
     · exact hp
     · exact hq
 
+/-! ### The divisibility order on power forms (distinct prime bases)
+
+For **distinct primes** `p ≠ q`, the exponent pair `(k, l)` of a power form
+`p^k q^l` is unique (unique factorization), and divisibility of power forms is
+exactly the product order on the exponents:
+
+  `p^k q^l ∣ p^{k'} q^{l'} ↔ k ≤ k' ∧ l ≤ l'`.
+
+Equivalently `(k, l) ↦ p^k q^l` is an order isomorphism from `(ℕ², ≤)` onto the
+power forms under divisibility. This is the structural fact behind #1110's
+central *antichain* hypothesis — "no summand divides another" — since it turns the
+divisibility test on power-form summands into a coordinatewise comparison of
+exponent vectors. The two prime-exponent readouts `factorization_powerForm_left`
+and `factorization_powerForm_right` extract `k` and `l` from `p^k q^l`. -/
+
+/-- **The `p`-adic exponent of a power form.** For distinct primes `p ≠ q`, the
+`p`-factorization of `p^k q^l` is exactly `k` (the `q^l` factor contributes nothing
+at `p`). -/
+theorem factorization_powerForm_left {p q : ℕ} (hp : p.Prime) (hq : q.Prime)
+    (hpq : p ≠ q) (k l : ℕ) : (p ^ k * q ^ l).factorization p = k := by
+  have hp0 : p ^ k ≠ 0 := pow_ne_zero k hp.pos.ne'
+  have hq0 : q ^ l ≠ 0 := pow_ne_zero l hq.pos.ne'
+  rw [Nat.factorization_mul hp0 hq0, Finsupp.add_apply, hp.factorization_pow,
+      hq.factorization_pow, Finsupp.single_eq_same,
+      Finsupp.single_eq_of_ne (Ne.symm hpq), add_zero]
+
+/-- **The `q`-adic exponent of a power form.** For distinct primes `p ≠ q`, the
+`q`-factorization of `p^k q^l` is exactly `l`. -/
+theorem factorization_powerForm_right {p q : ℕ} (hp : p.Prime) (hq : q.Prime)
+    (hpq : p ≠ q) (k l : ℕ) : (p ^ k * q ^ l).factorization q = l := by
+  have hp0 : p ^ k ≠ 0 := pow_ne_zero k hp.pos.ne'
+  have hq0 : q ^ l ≠ 0 := pow_ne_zero l hq.pos.ne'
+  rw [Nat.factorization_mul hp0 hq0, Finsupp.add_apply, hp.factorization_pow,
+      hq.factorization_pow, Finsupp.single_eq_of_ne hpq, Finsupp.single_eq_same,
+      zero_add]
+
+/-- **Divisibility of power forms is the product order on exponents.** For distinct
+primes `p ≠ q`,
+
+  `p^k q^l ∣ p^{k'} q^{l'} ↔ k ≤ k' ∧ l ≤ l'`.
+
+The `←` direction is `mul_dvd_mul` of `pow_dvd_pow`; the `→` direction reads the two
+prime exponents off both sides via `factorization_le_iff_dvd`. -/
+theorem powerForm_dvd_iff {p q : ℕ} (hp : p.Prime) (hq : q.Prime) (hpq : p ≠ q)
+    (k l k' l' : ℕ) :
+    p ^ k * q ^ l ∣ p ^ k' * q ^ l' ↔ k ≤ k' ∧ l ≤ l' := by
+  constructor
+  · intro h
+    have hp0 : p ^ k * q ^ l ≠ 0 :=
+      mul_ne_zero (pow_ne_zero k hp.pos.ne') (pow_ne_zero l hq.pos.ne')
+    have hn0 : p ^ k' * q ^ l' ≠ 0 :=
+      mul_ne_zero (pow_ne_zero k' hp.pos.ne') (pow_ne_zero l' hq.pos.ne')
+    have hle := (Nat.factorization_le_iff_dvd hp0 hn0).mpr h
+    rw [Finsupp.le_def] at hle
+    refine ⟨?_, ?_⟩
+    · have hpk := hle p
+      simpa only [factorization_powerForm_left hp hq hpq] using hpk
+    · have hql := hle q
+      simpa only [factorization_powerForm_right hp hq hpq] using hql
+  · rintro ⟨hk, hl⟩
+    exact mul_dvd_mul (pow_dvd_pow p hk) (pow_dvd_pow q hl)
+
+/-- **Unique exponents.** For distinct primes `p ≠ q`, equal power forms have equal
+exponent pairs: `p^k q^l = p^{k'} q^{l'} → k = k' ∧ l = l'`. Hence `(k, l) ↦ p^k q^l`
+is injective, and the power-form submonoid is freely generated (as a commutative
+monoid) by the two bases. -/
+theorem powerForm_exponents_unique {p q : ℕ} (hp : p.Prime) (hq : q.Prime)
+    (hpq : p ≠ q) {k l k' l' : ℕ} (h : p ^ k * q ^ l = p ^ k' * q ^ l') :
+    k = k' ∧ l = l' := by
+  refine ⟨?_, ?_⟩
+  · have := congrArg (fun n => n.factorization p) h
+    simpa only [factorization_powerForm_left hp hq hpq] using this
+  · have := congrArg (fun n => n.factorization q) h
+    simpa only [factorization_powerForm_right hp hq hpq] using this
+
 end Erdos1110
