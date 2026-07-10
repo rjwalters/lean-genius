@@ -563,4 +563,41 @@ theorem boundedCliques_congr {K : Type*} [Group K] (e : G ≃* K) :
   · exact fun y => ⟨e.symm y, by simp⟩
   · exact fun y => ⟨e y, by simp⟩
 
+/-- **Bounded cliques are closed under direct products (finite-central-index side).**
+    If both `[G : Z(G)]` and `[K : Z(K)]` are finite, then `Γ(G × K)` has bounded clique
+    number: `BoundedCliques (G × K)`.
+
+    *Proof.* The product of centres is central: `Z(G) × Z(K) ≤ Z(G × K)` (a pair is central
+    iff each coordinate is, and the easy inclusion suffices here).  By multiplicativity of
+    the index on products (`Subgroup.index_prod`) the subgroup `Z(G) × Z(K)` has finite index
+    `[G:Z(G)]·[K:Z(K)]`, and since it lies inside `Z(G × K)` the central index
+    `[G × K : Z(G × K)]` divides it (`Subgroup.index_dvd_of_le`), hence is also finite.  The
+    easy direction `bounded_cliques_of_finite_index` then bounds the cliques of `Γ(G × K)`.
+
+    This is the direct-product companion to the subgroup/quotient/isomorphism heredity lemmas
+    above: via Neumann's dichotomy the class of groups with `BoundedCliques` is closed under
+    finite products.  Axiom-free — it uses only the easy inclusion of centres and the easy
+    clique bound, never the BFC core `neumann_hard_direction`.  (Phrased on the finite-central-
+    index side so it stays axiom-free: turning a `BoundedCliques` hypothesis on the factors into
+    finite central index would route through the blocked hard direction.) -/
+theorem boundedCliques_prod_of_finiteIndex {K : Type*} [Group K]
+    (hG : (Subgroup.center G).index ≠ 0) (hK : (Subgroup.center K).index ≠ 0) :
+    BoundedCliques (G × K) := by
+  -- The product of the two centres is central in `G × K` (easy inclusion).
+  have hle : (Subgroup.center G).prod (Subgroup.center K) ≤ Subgroup.center (G × K) := by
+    intro x hx
+    rw [Subgroup.mem_prod] at hx
+    rw [Subgroup.mem_center_iff]
+    intro g
+    have h1 : g.1 * x.1 = x.1 * g.1 := Subgroup.mem_center_iff.mp hx.1 g.1
+    have h2 : g.2 * x.2 = x.2 * g.2 := Subgroup.mem_center_iff.mp hx.2 g.2
+    exact Prod.ext_iff.mpr ⟨h1, h2⟩
+  -- `[G:Z(G)]·[K:Z(K)]` is finite, and the central index of the product divides it.
+  have hprod : ((Subgroup.center G).prod (Subgroup.center K)).index ≠ 0 := by
+    rw [Subgroup.index_prod]; exact mul_ne_zero hG hK
+  have hdvd : (Subgroup.center (G × K)).index
+      ∣ ((Subgroup.center G).prod (Subgroup.center K)).index :=
+    Subgroup.index_dvd_of_le hle
+  exact bounded_cliques_of_finite_index (ne_zero_of_dvd_ne_zero hprod hdvd)
+
 end Erdos1098OQ01OQ03

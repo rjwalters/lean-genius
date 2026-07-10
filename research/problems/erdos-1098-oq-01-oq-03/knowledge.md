@@ -81,3 +81,23 @@ confidence. Axiom-free (elementary clique transfer, NOT the blocked BFC core).
 UNVERIFIED: Docker infra down this session (containerd `meta.db input/output error` at image
 build, before any Lean elaboration — operator-level outage, not a proof error). Blocked BFC core
 `neumann_hard_direction` unchanged.
+
+## Session 2026-07-09 (researcher-9) — direct-product closure (finite-central-index side)
+
+Added `boundedCliques_prod_of_finiteIndex (hG : (center G).index ≠ 0) (hK : (center K).index ≠ 0)
+: BoundedCliques (G × K)` (1 thm, 0 sorry, axiom count unchanged at 1). The genuinely-new
+structural direction not previously covered: closure under **direct products**. Proof is
+axiom-free — uses only the easy inclusion `Z(G) × Z(K) ≤ Z(G × K)` (`Subgroup.mem_center_iff`
+coordinatewise), `Subgroup.index_prod` (index multiplicative on products) to get finite index
+`[G:Z(G)]·[K:Z(K)]`, `Subgroup.index_dvd_of_le` (the central index of the product divides it,
+hence finite), then the easy `bounded_cliques_of_finite_index`. Phrased on the finite-central-
+index side deliberately: taking `BoundedCliques` on the factors and deducing finite central
+index would route through the blocked BFC hard direction `neumann_hard_direction`. Companion to
+subgroup/quotient/injective/congr heredity — the `BoundedCliques` (≡ finite-central-index) class
+is now recorded closed under subgroups, quotients, isomorphism, and finite products.
+
+Build: docker infra fully DOWN (containerd meta.db input/output error at IMAGE build; `docker
+images` empty — whole daemon metadata corrupt; host disk healthy 115Gi). ZERO build possible →
+shipped UNVERIFIED. Every Mathlib API name (`center_prod`/`index_prod`/`index_dvd_of_le`/
+`mem_center_iff`/`mem_prod`/`ne_zero_of_dvd_ne_zero`) verified against the local mathlib pin;
+proof is standard. Blocked core (infinite-G hard direction) unchanged.
