@@ -162,6 +162,24 @@ theorem K5_nonplanar : isNonPlanar (completeGraph 5) :=
 theorem K33_nonplanar : isNonPlanar (completeBipartite 3 3) :=
   (kuratowski_theorem _).mpr (Or.inr (self_containsSubdivision _))
 
+omit [Fintype V] [DecidableEq V] in
+/-- **Sufficient condition for non-planarity (K₅ branch).** A graph that contains a
+    subdivision of `K₅` is non-planar. This is the forward half of Kuratowski's
+    criterion, isolated as a reusable lemma — the pattern used inline in
+    `K5_nonplanar`. -/
+theorem nonPlanar_of_containsK5Subdivision {G : SimpleGraph V}
+    (h : containsSubdivision G (completeGraph 5)) : isNonPlanar G :=
+  (kuratowski_theorem G).mpr (Or.inl h)
+
+omit [Fintype V] [DecidableEq V] in
+/-- **Sufficient condition for non-planarity (K₃,₃ branch).** A graph that contains a
+    subdivision of `K₃,₃` is non-planar. The `K₃,₃` companion of
+    `nonPlanar_of_containsK5Subdivision` and the reusable form of the argument in
+    `K33_nonplanar`. -/
+theorem nonPlanar_of_containsK33Subdivision {G : SimpleGraph V}
+    (h : containsSubdivision G (completeBipartite 3 3)) : isNonPlanar G :=
+  (kuratowski_theorem G).mpr (Or.inr h)
+
 /-
 ## Induced Subgraphs
 
