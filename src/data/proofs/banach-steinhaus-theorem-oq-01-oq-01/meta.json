@@ -3,6 +3,38 @@
   "title": "Resonance principle for Fourier divergence (functional-analysis core)",
   "slug": "banach-steinhaus-theorem-oq-01-oq-01",
   "description": "The classical proof that some continuous 2π-periodic function has a Fourier series diverging at a point runs through the resonance (contrapositive) form of the Banach–Steinhaus uniform boundedness principle, applied to the partial-sum functionals Sₙ : C(𝕋) → ℂ whose operator norms — the Lebesgue constants ‖Sₙ‖ = ‖Dₙ‖_L¹ — diverge. This entry isolates and verifies (0 sorries, 0 axioms) the functional-analysis core of that argument as a reusable abstract resonance principle: exists_unbounded_orbit_of_not_bddAbove_norm shows that continuous linear maps g i : E →L[𝕜] F on a Banach space E with operator norms unbounded above must admit a point x whose orbit {‖g i x‖} is unbounded; exists_unbounded_orbit_of_tendsto_norm_atTop is the sequential corollary (‖g n‖ → ∞ ⟹ some x resonates). Instantiating E = C(𝕋), g n = Sₙ, and the Lebesgue-constant divergence ‖Sₙ‖ → ∞ yields a continuous function with divergent Fourier series at 0. The analytic input (divergence of the Lebesgue constants) is the documented Mathlib gap; the functional-analysis half is complete and machine-checked.",
+  "references": [
+    {
+      "authors": "Stefan Banach and Hugo Steinhaus",
+      "title": "Sur le principe de la condensation de singularités",
+      "year": 1927,
+      "note": "Fundamenta Mathematicae 9, 50–61. The uniform boundedness principle and its 'condensation of singularities', the abstract engine behind the resonance argument formalized here."
+    },
+    {
+      "authors": "Paul du Bois-Reymond",
+      "title": "Untersuchungen über die Convergenz und Divergenz der Fourierschen Darstellungsformeln",
+      "year": 1876,
+      "note": "Abhandlungen der Bayerischen Akademie der Wissenschaften 12. The first explicit continuous function whose Fourier series diverges at a point — the classical result this resonance principle abstracts."
+    },
+    {
+      "authors": "Walter Rudin",
+      "title": "Real and Complex Analysis",
+      "year": 1987,
+      "note": "3rd ed., McGraw-Hill, §5.11. The textbook Banach–Steinhaus proof of Fourier divergence via the Lebesgue constants ‖Sₙ‖ = ‖Dₙ‖_{L¹} → ∞, exactly the argument whose functional-analysis core is verified here."
+    },
+    {
+      "authors": "Yitzhak Katznelson",
+      "title": "An Introduction to Harmonic Analysis",
+      "year": 2004,
+      "note": "3rd ed., Cambridge University Press, Ch. II. The Dirichlet kernel, Lebesgue constants, and the divergence of Fourier series — the analytic input ‖Dₙ‖_{L¹} → ∞ that completes the argument."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib4: Mathlib.Analysis.Normed.Operator.BanachSteinhaus",
+      "year": 2024,
+      "note": "banach_steinhaus (uniform boundedness for continuous linear maps on a Banach space), the result whose contrapositive resonance form is derived in this entry."
+    }
+  ],
   "meta": {
     "author": "Banach, Steinhaus (1927); du Bois-Reymond (1876, divergence example); Lean formalization original (researcher-6)",
     "status": "verified",
