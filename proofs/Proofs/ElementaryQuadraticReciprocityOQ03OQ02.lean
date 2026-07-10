@@ -413,6 +413,24 @@ theorem kronecker_reciprocity_one_mod_four (m n : ℕ)
   rw [kronecker_eq_jacobi (m : ℤ) n hn hno, kronecker_eq_jacobi (n : ℤ) m hmpos hmo]
   exact jacobiSym.quadratic_reciprocity_one_mod_four hm (Nat.odd_iff.mpr hno)
 
+/-- **Quadratic reciprocity, both `≡ 3 (mod 4)` case.**
+    If `m ≡ n ≡ 3 (mod 4)`, the sign factor `(-1)^{((m-1)/2)·((n-1)/2)}` is `-1`
+    (both exponents are odd), so reciprocity flips sign: `(m/n) = -(n/m)`. This is
+    the companion of `kronecker_reciprocity_one_mod_four` and the only congruence
+    class of the pair `(m, n)` for which the two symbols disagree — the genuinely
+    non-symmetric case of the law. Transported from
+    `jacobiSym.quadratic_reciprocity_three_mod_four` across `kronecker_eq_jacobi`.
+    `sorry`-free, axiom-free. -/
+theorem kronecker_reciprocity_three_mod_four (m n : ℕ)
+    (hm : m % 4 = 3) (hn : n % 4 = 3) :
+    kronecker (m : ℤ) n = - kronecker (n : ℤ) m := by
+  have hmo : m % 2 = 1 := by omega
+  have hno : n % 2 = 1 := by omega
+  have hmpos : 0 < m := by omega
+  have hnpos : 0 < n := by omega
+  rw [kronecker_eq_jacobi (m : ℤ) n hnpos hno, kronecker_eq_jacobi (n : ℤ) m hmpos hmo]
+  exact jacobiSym.quadratic_reciprocity_three_mod_four hm hn
+
 -- ============================================================
 -- Section 8: Supplementary Laws at Odd Moduli
 -- ============================================================
