@@ -86,6 +86,43 @@
       "Real n-th roots via rpow and √; (x^{1/n})ⁿ = x and (√x)² = x for x ≥ 0"
     ]
   },
+  "sections": [
+    {
+      "id": "module-header",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 31,
+      "summary": "Docstring stating the goal — draw the field-theoretic corollary of the parent's ℤ-irreducibility of Xⁿ − p — and imports of Mathlib plus the parent entry EisensteinCriterionOQ01. Opens the Polynomial, IntermediateField, and EisensteinCriterionOQ01 namespaces."
+    },
+    {
+      "id": "irreducibility-rat",
+      "title": "Irreducibility over ℚ via Gauss's Lemma",
+      "startLine": 32,
+      "endLine": 51,
+      "summary": "irreducible_X_pow_sub_C_prime_rat: since Xⁿ − p is monic hence primitive, primitive-polynomial Gauss's lemma (IsPrimitive.Int.irreducible_iff_irreducible_map_cast) transports the parent's ℤ-irreducibility to ℚ for every n ≥ 1; the image of Xⁿ − C p under ℤ → ℚ is again Xⁿ − C p, closed by simp."
+    },
+    {
+      "id": "minimal-polynomial",
+      "title": "The Minimal Polynomial of a Real n-th Root",
+      "startLine": 52,
+      "endLine": 77,
+      "summary": "aeval_root shows any real α with αⁿ = p is a root of Xⁿ − p over ℚ; minpoly_eq_X_pow_sub_C identifies Xⁿ − p as minpoly ℚ α via minpoly.eq_of_irreducible_of_monic (monic + irreducible + vanishing); isIntegral_root deduces integrality from the monic minimal polynomial being nonzero."
+    },
+    {
+      "id": "radical-extension-degree",
+      "title": "The Degree of the Radical Extension",
+      "startLine": 78,
+      "endLine": 96,
+      "summary": "finrank_adjoin_eq reads [ℚ(α):ℚ] = natDegree(Xⁿ − p) = n off IntermediateField.adjoin.finrank and the identified minimal polynomial; exists_algebraic_number_of_degree instantiates α = p^{1/n} via Real.rpow_inv_natCast_pow, so Eisenstein furnishes a real algebraic number of every prescribed degree n ≥ 1."
+    },
+    {
+      "id": "concrete-instances",
+      "title": "Concrete Instances: √2 and ∛2",
+      "startLine": 97,
+      "endLine": 121,
+      "summary": "Single-line specializations of the arbitrary-root theorems: minpoly_sqrt_two (minpoly ℚ √2 = X² − 2) and finrank_adjoin_sqrt_two ([ℚ(√2):ℚ] = 2) using Real.sq_sqrt, and finrank_adjoin_cbrt_two ([ℚ(∛2):ℚ] = 3) using Real.rpow_inv_natCast_pow with p = 2, n = 3."
+    }
+  ],
   "conclusion": {
     "summary": "Formalizes the field-degree corollary of Eisenstein irreducibility: for every prime p and n ≥ 1, Xⁿ − p is the minimal polynomial over ℚ of the real n-th root p^{1/n}, so [ℚ(p^{1/n}) : ℚ] = n. Gauss's lemma lifts the parent's ℤ-irreducibility to ℚ, and the minimal-polynomial / adjoin-degree API of Mathlib does the rest. Concrete instances [ℚ(√2):ℚ] = 2 and [ℚ(∛2):ℚ] = 3, plus minpoly ℚ (√2) = X² − 2. All 9 theorems verified with 0 sorries and 0 axioms, no native_decide.",
     "implications": "Directly answers the parent entry's stated open question ('state the consequence for field degrees'). The result is the standard construction of algebraic numbers of arbitrary degree and a foundational example for field-extension towers and Galois theory. The abstract lemma (minpoly ℚ α = Xⁿ − p for any α with αⁿ = p) can be reused for any real radical p^{1/n} in downstream extension-degree computations.",
@@ -109,7 +146,9 @@
     }
   ],
   "crossReferences": [
-    "eisenstein-criterion-oq-01"
+    "eisenstein-criterion-oq-01",
+    "abel-ruffini",
+    "algebraic-numbers-countable"
   ],
   "sorries": [],
   "mainTheorems": [
