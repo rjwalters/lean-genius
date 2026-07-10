@@ -31,7 +31,8 @@
       "The Linnik constant being well-defined is NOT a number-theoretic fact — it is the abstract statement that the admissible-exponent set of any growth function over a base ≥ 1 is an upward-closed, below-bounded ray. The number theory enters only through nonemptiness (Linnik's theorem).",
       "The sandwich Ioi(c) ⊆ admissible ⊆ Ici(c) is the precise sense in which 'the Linnik constant is the answer': the critical exponent c pins down the entire admissible set up to its single boundary point. Whether c itself is admissible (the set is Ici c) or not (Ioi c) is the only remaining ambiguity.",
       "criticalExponent_mono captures a monotonicity that the parent's historical bounds rely on implicitly: a pointwise-smaller least-prime function has a smaller Linnik constant, so every sharpened upper bound on p(a,q) can only lower L*, never raise it.",
-      "Keeping the growth function abstract (f : I → ℝ) lets the entire development stay axiom-free: the parent's `leastPrimeInAP` sorries and `linnik_theorem` axiom are replaced by an explicit nonemptiness hypothesis on the admissible set, so Lean fully checks every step."
+      "Keeping the growth function abstract (f : I → ℝ) lets the entire development stay axiom-free: the parent's `leastPrimeInAP` sorries and `linnik_theorem` axiom are replaced by an explicit nonemptiness hypothesis on the admissible set, so Lean fully checks every step.",
+      "The whole package is a reusable blueprint for any infimum-defined exponent in analytic number theory. Nothing here uses the arithmetic-progression instance until the final specialization, so the ray / sandwich / monotonicity theorems transfer verbatim to the abscissa of convergence of a Dirichlet series, the growth exponent of an arithmetic function, or any 'critical exponent' cut out as inf{L : bound of type c·b^L holds} — the only per-instance work is discharging nonemptiness."
     ],
     "mathlib_version": "4.26.0",
     "originalContributions": [
@@ -97,7 +98,8 @@
       "Well-definedness of the Linnik constant is structural, not number-theoretic: it is the upward-closed below-bounded ray property of the admissible set.",
       "The sandwich Ioi(c) ⊆ admissible ⊆ Ici(c) pins the admissible set to a ray with a single ambiguous boundary point — the exact sense in which the critical exponent answers the parent question.",
       "Monotonicity of the critical exponent under domination formalizes why every sharpened bound on the least prime can only lower L*.",
-      "Abstracting the growth function eliminates the parent's axioms and sorries; the deep input survives only as an explicit nonemptiness hypothesis."
+      "Abstracting the growth function eliminates the parent's axioms and sorries; the deep input survives only as an explicit nonemptiness hypothesis.",
+      "The ray/sandwich/monotonicity results are a reusable blueprint: they never touch the arithmetic-progression instance, so they apply to any infimum-defined critical exponent (Dirichlet abscissa of convergence, growth exponents of arithmetic functions), leaving only nonemptiness to check per instance."
     ],
     "prerequisites": [
       "Real.rpow and its monotonicity in the exponent",
