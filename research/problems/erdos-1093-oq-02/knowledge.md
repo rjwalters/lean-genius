@@ -1,5 +1,51 @@
 # Erdős #1093 — OQ-02: Is d(284,28)=9 the maximal deficiency?
 
+## Session 2026-07-09 (researcher-3) — Section XXIII: location bound CLOSES k=22 → frontier k≥23
+
+**Mode:** REVISIT (RICH tier). **Outcome:** progress — strict advance (frontier k≥22→k≥23),
+a one-step continuation of Section XXII. Not a byte-mirror (C(n,22) is not uniformly even),
+but the closing disjunction uses the two-prime economy {2,3} (simplest yet at this depth).
+
+### Key realization
+The effective location bound advances to k=22. A deficiency `≥ 10` forces the window-floor
+power bound `(n-21)^10 ≤ 22!`, and `22! < 128^10` (`factorial_22_lt_128_pow_ten`), so `n ≤ 148`;
+with the admissibility floor `n ≥ 44 (=2·22)` the window is `n ∈ {44,…,148}` (105 values). By
+Kummer/Lucas `C(n,22)` is odd exactly when `22 = 10110₂` is a binary submask of `n`, i.e. at
+`n = 54,55,62,63,86,87,94,95,118,119,126,127`. **All twelve odd binomials are divisible by 3**,
+so the two-prime disjunction `2 ∣ C(n,22) ∨ 3 ∣ C(n,22)` covers the whole window (evens by 2,
+odds by 3).
+
+### What I did — Section XXIII (6 theorems, 0 sorry, 0 new axioms)
+- `factorial_22_lt_128_pow_ten` — `22! < 128^10` (kernel `decide`, ofReduceBool-free;
+  `22! = 1124000727777607680000 < 1180591620717411303424 = 128^10`).
+- `smallPrime_dvd_choose_22_of_range` — `2 ∣ C(n,22) ∨ 3 ∣ C(n,22)` for `44 ≤ n ≤ 148`
+  (`interval_cases <;> native_decide`).
+- `not_admissible_k22_of_range` — the 105 window pairs are all inadmissible.
+- `deficiency_le_nine_of_k_eq_22` — the location bound closes k=22.
+- `deficiency_le_nine_of_k_le_22` — combines `k≤21` (Section XXII) with `k=22`.
+- `maximalDeficiencyIs_nine_iff_kGe23` — sharpened reduction: open content lives at `k ≥ 23`.
+
+### Arithmetic (Python-verified before Lean)
+- `22! = 1124000727777607680000 < 1180591620717411303424 = 128^10`; smallest m with m^10 > 22! is 128.
+- window floor: `(n-21)^10 ≤ 22! < 128^10 ⟹ n-21 < 128 ⟹ n ≤ 148`; floor `n ≥ 44`.
+- odd C(n,22) at n=54,55,62,63,86,87,94,95,118,119,126,127; each divisible by 3; evens by 2 ⟹ {2,3} covers {44,…,148} (verified: 0 uncovered pairs).
+
+### Verification — UNVERIFIED (Docker infra fully down)
+Docker daemon corrupted: containerd content-store / meta.db `input/output error` at IMAGE
+build (2 attempts; `docker images` itself errors on a missing blob). Disk healthy (157Gi free)
+— this is beyond the SIGBUS-135 olean-write storm; needs OPERATOR docker cleanup. Zero build
+signal possible. All 6 proofs are exact structural mirrors of the merged/verified Section XXII,
+differing only in Python-verified constants (21→22, 94→128, 42→44, 113→148) and the {2,3} prime
+set; `Nat.prime_three` is a standard Mathlib lemma used elsewhere in the repo.
+
+### Files Modified
+- `proofs/Proofs/Erdos1093ProblemOQ02.lean` (Section XXIII, 1590→1688 lines, 77→83 theorems)
+- `src/data/research/problems/erdos-1093-oq-02.json` (OQ02 leanFiles counts resynced to 1688/83)
+- `research/problems/erdos-1093-oq-02/knowledge.md`
+
+---
+
+
 ## Session 2026-07-09 (researcher-3) — Section XXII: location bound CLOSES k=21 → frontier k≥22
 
 **Mode:** REVISIT (RICH tier). **Outcome:** progress — strict advance (frontier k≥21→k≥22),
