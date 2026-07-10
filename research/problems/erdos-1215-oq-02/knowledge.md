@@ -208,3 +208,40 @@ on C) → binder renamed `_hC`.
 v4.26.0 oleans (see [[reference-docker-down-lean-elab-verification-path]]): exit 0, `#print axioms`
 clean. Metas synced: src/data/proofs/erdos-1215/meta.json (axiomCount 2→1, 70→100 lines, 1→2 thm,
 assumptions text) + research json leanFiles.
+
+## Session 2026-07-10 (researcher-3) — general degree obstruction (maclane_1953 becomes a corollary)
+
+**Mode**: REVISIT. **Outcome**: progress (1 theorem, axiom-free), **VERIFIED-local**.
+
+Generalized the escape-to-∞ half of `maclane_1953` from the single witness `X + 1` to *every*
+positive-degree polynomial, isolating why the literal Erdős #1215 question is trivial:
+
+- `no_bounded_level_path_of_degree_pos {P : ℂ[X]} (hP : 0 < P.degree) (C) : ¬ HasBoundedLevelPath P C`.
+  For any non-constant `P`, `‖P(z)‖ → ∞` as `‖z‖ → ∞` (`Polynomial.tendsto_norm_atTop`), so a path
+  `γ` with `‖γ t‖ → ∞` forces `‖P(γ t)‖ → ∞`, contradicting `‖P(γ t)‖ < C` on `t ≥ 0`. Proof:
+  `P.tendsto_norm_atTop hP htend` then `eventually_gt_atTop C` ∧ `eventually_ge_atTop 0`, `.exists`,
+  `linarith` against the level-set membership.
+
+`maclane_1953` is now a corollary: witness `X + 1`, root on the circle as before, and the escape
+clause is `no_bounded_level_path_of_degree_pos` with `0 < degree (X+1)` via
+`rw [← C_1, degree_X_add_C]; exact WithBot.coe_lt_coe.mpr Nat.one_pos`. This removes the duplicated
+13-line escape argument and demonstrates the new lemma strictly subsumes it.
+
+### Key facts / gotchas
+- `Polynomial.tendsto_norm_atTop (p) (h : 0 < degree p) (hz : Tendsto (‖z ·‖) l atTop) :
+  Tendsto (‖p.eval (z ·)‖) l atTop` — the **norm** form (no cocompact/cobounded plumbing needed);
+  lives in `Mathlib.Topology.Algebra.Polynomial` → **added that import** (the file's 3 specific
+  imports did not transitively pull it; dot-notation errored "environment does not contain").
+- `degree (X + 1) = 1`: `rw [← Polynomial.C_1, degree_X_add_C]`; then `0 < (1 : WithBot ℕ)` via
+  `WithBot.coe_lt_coe.mpr Nat.one_pos`.
+
+### Verification
+VERIFIED-local (docker image layer down): elan lean v4.26.0 vs main-checkout Mathlib oleans →
+exit 0, no warnings. `#print axioms no_bounded_level_path_of_degree_pos` and `#print axioms
+erdos_1215` = `[propext, Classical.choice, Quot.sound]` — axiom-free (no `native_decide`, does NOT
+touch `maclane_labyrinth`). File 100→113 lines, 2→3 theorems, axiomCount stays 1 (the deep
+`maclane_labyrinth` labyrinth axiom, unused by the headline). Meta + research json synced.
+
+### Still open (unchanged)
+The genuinely deep Mac Lane labyrinth (`maclane_labyrinth` axiom): paths forced through
+neighbourhoods of `0` in the `C > 1` regime — needs polynomial-lemniscate topology Mathlib lacks.
