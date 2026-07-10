@@ -150,4 +150,42 @@ theorem conditionalMutualInfo_eq_conditioning_deficit (pXYZ : α × β × γ →
   unfold conditionalMutualInfo
   ring
 
+/-- **Conditional mutual information equals the conditioning deficit — `X ↔ Z`
+    dual.** With the conditional entropies `H(Z | Y) = H(Y, Z) − H(Y)` and
+    `H(Z | X, Y) = H(X, Y, Z) − H(X, Y)`,
+
+      `I(X ; Z | Y) = H(Z | Y) − H(Z | X, Y)`.
+
+    This is the `X ↔ Z` dual of `conditionalMutualInfo_eq_conditioning_deficit`,
+    formalizing the identity asserted in prose in the docstring of
+    `conditioning_reduces_entropy_general'` — that the deficit by which the extra
+    variable `X` reduces the conditional entropy of `Z` is *exactly* the same
+    conditional mutual information.  Together with the primal deficit identity it
+    completes the symmetric pair, matching the symmetric conditioning bounds
+    `conditioning_reduces_entropy_general` / `…'`.  Like its dual it is a pure
+    rearrangement of the definition, holding with no probability hypotheses. -/
+theorem conditionalMutualInfo_eq_conditioning_deficit' (pXYZ : α × β × γ → ℝ) :
+    conditionalMutualInfo pXYZ =
+      (shannonEntropy (marginalYZ pXYZ) - shannonEntropy (marginalY pXYZ)) -
+        (shannonEntropy pXYZ - shannonEntropy (marginalXY pXYZ)) := by
+  unfold conditionalMutualInfo
+  ring
+
+/-- **The two conditioning deficits are equal.**
+
+      `H(X | Y) − H(X | Y, Z) = H(Z | Y) − H(Z | X, Y)`,
+
+    i.e. the amount by which learning `Z` reduces the conditional entropy of `X`
+    equals the amount by which learning `X` reduces the conditional entropy of
+    `Z`.  Both sides equal the conditional mutual information `I(X ; Z | Y)`
+    (`conditionalMutualInfo_eq_conditioning_deficit` and its `'` dual), so this is
+    the symmetry `I(X ; Z | Y) = I(Z ; X | Y)` read at the level of conditional
+    entropies.  A pure rearrangement, valid with no probability hypotheses. -/
+theorem conditioning_deficit_symm (pXYZ : α × β × γ → ℝ) :
+    (shannonEntropy (marginalXY pXYZ) - shannonEntropy (marginalY pXYZ)) -
+        (shannonEntropy pXYZ - shannonEntropy (marginalYZ pXYZ)) =
+      (shannonEntropy (marginalYZ pXYZ) - shannonEntropy (marginalY pXYZ)) -
+        (shannonEntropy pXYZ - shannonEntropy (marginalXY pXYZ)) := by
+  ring
+
 end InformationTheory.SSA
