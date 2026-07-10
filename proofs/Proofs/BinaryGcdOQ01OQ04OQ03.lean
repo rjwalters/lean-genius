@@ -286,4 +286,76 @@ theorem avgSteps_one_ge (N : ℕ) (hN : 0 < N) :
     _ ≤ 2 * (totalSteps 1 N : ℚ) := keyQ
     _ = (totalSteps 1 N : ℚ) * 2 := by ring
 
+-- ═══════════════════════════════════════════════════════════════════
+-- PART VI: EXACT CLOSED FORM AT DYADIC ENDPOINTS  (a = 1 row)
+-- ═══════════════════════════════════════════════════════════════════
+--
+-- `totalSteps_one_eq` gives the exact total only as the abstract sum
+-- `(∑_{b=1}^N log₂ b) + N`. At the dyadic endpoints `N = 2^n` that sum has a
+-- genuine closed form, so the `a = 1` total is pinned exactly:
+--
+--     totalSteps 1 (2^n) = (n − 1)·2^n + n + 2
+--       (subtraction-free:  totalSteps 1 (2^n) + 2^n = n·2^n + n + 2).
+--
+-- The leading term `(n − 1)·2^n = N·log₂N − N` fixes the exact constant `1` on
+-- the `N·log₂N` term of the a = 1 total — the elementary, fully-verified
+-- analogue of Brent's (Mathlib-inaccessible) 0.7050 average constant. The proof
+-- decomposes `[1, 2^n)` into the dyadic blocks `[2^k, 2^{k+1})` on each of which
+-- `binaryGcdSteps 1 b` is the constant `k + 1`.
+
+/-- One dyadic block `[2^n, 2^{n+1})` contributes exactly `(n+1)·2^n` to the
+    `a = 1` total: it has `2^n` elements and `binaryGcdSteps 1 b = log₂ b + 1
+    = n + 1` throughout (every `b` in the block has `log₂ b = n`). -/
+private theorem block_sum_one (n : ℕ) :
+    ∑ b ∈ Finset.Ico (2 ^ n) (2 ^ (n + 1)), binaryGcdSteps 1 b = (n + 1) * 2 ^ n := by
+  have hval : ∀ b ∈ Finset.Ico (2 ^ n) (2 ^ (n + 1)), binaryGcdSteps 1 b = n + 1 := by
+    intro b hb
+    rw [Finset.mem_Ico] at hb
+    have hb1 : 1 ≤ b := le_trans Nat.one_le_two_pow hb.1
+    have hlog : Nat.log 2 b = n := Nat.log_eq_of_pow_le_of_lt_pow hb.1 hb.2
+    rw [binaryGcdSteps_one_eq_log b hb1, hlog]
+  have hp : (2 : ℕ) ^ (n + 1) = 2 * 2 ^ n := by rw [pow_succ]; ring
+  rw [Finset.sum_congr rfl hval, Finset.sum_const, Nat.card_Ico, hp, smul_eq_mul]
+  have hc : 2 * 2 ^ n - 2 ^ n = 2 ^ n := by omega
+  rw [hc]; ring
+
+/-- Accumulated `a = 1` total over the half-open dyadic prefix `[1, 2^n)`:
+    `(∑_{b=1}^{2^n − 1} binaryGcdSteps 1 b) + 2^n = n·2^n + 1`
+    (subtraction-free form of `∑ = (n−1)·2^n + 1`). Proved by induction on `n`,
+    each step absorbing one dyadic block via `block_sum_one`. -/
+private theorem sum_Ico_one_pow_two (n : ℕ) :
+    (∑ b ∈ Finset.Ico 1 (2 ^ n), binaryGcdSteps 1 b) + 2 ^ n = n * 2 ^ n + 1 := by
+  induction n with
+  | zero => simp
+  | succ n ih =>
+    have hsplit : ∑ b ∈ Finset.Ico 1 (2 ^ (n + 1)), binaryGcdSteps 1 b
+        = (∑ b ∈ Finset.Ico 1 (2 ^ n), binaryGcdSteps 1 b)
+          + ∑ b ∈ Finset.Ico (2 ^ n) (2 ^ (n + 1)), binaryGcdSteps 1 b :=
+      (Finset.sum_Ico_consecutive _ Nat.one_le_two_pow
+        (Nat.pow_le_pow_right (by norm_num) (Nat.le_succ n))).symm
+    have hp : (2 : ℕ) ^ (n + 1) = 2 * 2 ^ n := by rw [pow_succ]; ring
+    rw [hsplit, block_sum_one n, hp]
+    zify at ih ⊢
+    linear_combination ih
+
+/-- **Exact `a = 1` total at dyadic endpoints (`N = 2^n`).**
+    `totalSteps 1 (2^n) + 2^n = n·2^n + n + 2`, i.e.
+    `totalSteps 1 (2^n) = (n − 1)·2^n + n + 2`. This replaces the abstract
+    `∑ log₂ b` of `totalSteps_one_eq` by a closed form on the dyadic subsequence,
+    exhibiting the exact leading constant `1` on the `N·log₂N = n·2^n` term of the
+    `a = 1` average-case total. -/
+theorem totalSteps_one_pow_two (n : ℕ) :
+    totalSteps 1 (2 ^ n) + 2 ^ n = n * 2 ^ n + n + 2 := by
+  unfold totalSteps
+  have hlog2 : Nat.log 2 (2 ^ n) = n :=
+    Nat.log_eq_of_pow_le_of_lt_pow (le_refl _)
+      (by rw [pow_succ]; have hp : 0 < 2 ^ n := pow_pos (by norm_num) n; omega)
+  have hins : Finset.Icc 1 (2 ^ n) = insert (2 ^ n) (Finset.Ico 1 (2 ^ n)) :=
+    (Finset.Ico_insert_right Nat.one_le_two_pow).symm
+  rw [hins, Finset.sum_insert (by simp), binaryGcdSteps_one_eq_log (2 ^ n) Nat.one_le_two_pow,
+      hlog2]
+  have hIco := sum_Ico_one_pow_two n
+  omega
+
+
 end BinaryGcdOQ01OQ04OQ03
