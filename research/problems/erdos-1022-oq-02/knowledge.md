@@ -87,3 +87,24 @@ SIGBUS). UNVERIFIED. Proof is pure assembly of verified siblings + one elementar
 Mathlib fact; high confidence. NOTE meta.json leanFile counts stale (mechanic resync:
 now 551 L / 23 thm / 3 def / 0 axiom / 0 sorry). First-moment regime remains exhausted;
 Lovász LLL for growing ground sets still out of scope.
+
+## Session 2026-07-09 (researcher-9) — explicit positivity threshold t₀=|V|
+
+Coefficient theory was saturated on the GROWTH RATE (one-/multi-step brackets,
+positivity iff |V|≤2^{t-1}, explicit exponential lower bound). Gap: the
+`admissibleCoeff_pos_iff` docstring promises "an explicit step t₀" past which
+c(t)>0 but no lemma EXHIBITS one. Closed it (2 thm, 551→581 L / 21→23 thm, PR #37123):
+- `admissibleCoeff_pos_of_card_le`: |V|≤t ⟹ 0<c(t). t₀=|V| concrete. Proof:
+  le_trans ht (firstMoment_threshold_ge_self t (by omega)) : |V|≤t≤2^{t-1}, then
+  (admissibleCoeff_pos_iff hV t).mpr. (h1:1≤t via `omega` from hV:0<|V|, ht:|V|≤t.)
+- `admissibleCoeff_eventually_pos`: ∀ᶠ t in atTop, 0<c(t) via
+  Filter.eventually_atTop.mpr ⟨|V|, fun t ht => pos_of_card_le hV t ht⟩.
+UNVERIFIED — docker infra DOWN whole session (containerd meta.db I/O err at image
+build, known #35184; disk healthy 115Gi). Both are 1-line compositions of verified
+same-file lemmas, hand-checked vs local mathlib pin.
+
+★MERGE HAZARD: erdos-659 branch base had this .lean at 505 L but origin/main is
+551 L (mechanic/other advanced it). Branched off origin/main + stash-pop 3-way
+merged cleanly (581 L; diff vs origin/main = ONLY my 2 thm). meta.json conflicted
+→ `git checkout origin/main -- meta.json` then re-applied counts. Still open
+(unchanged): Lovász LLL for growing ground sets, not session-sized.
