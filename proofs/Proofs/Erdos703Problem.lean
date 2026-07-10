@@ -582,6 +582,21 @@ theorem seven_le_T_5_1 : 7 ≤ T 5 1 := by
   have hle := franklFurediOdd_card_le_T 5 1
   omega
 
+/-- **Uniform lower bound `T(n,1) ≥ 6` for every ground set of size `n ≥ 4`.** The
+    concrete `n = 4` anchor `six_le_T_4_1` propagates to all larger `n` by monotonicity
+    of `T` in the ground-set size (`T_mono_ground`): a `1`-avoiding family on `[4]` is
+    still `1`-avoiding when the ground set is enlarged to `[n]`, so the extremal size can
+    only grow.  This turns the isolated decidable anchor into an infinite family of
+    certified lower bounds without any further `decide`. -/
+theorem six_le_T_n_1 (n : ℕ) (hn : 4 ≤ n) : 6 ≤ T n 1 :=
+  le_trans six_le_T_4_1 (T_mono_ground (r := 1) hn)
+
+/-- **Uniform lower bound `T(n,1) ≥ 7` for every ground set of size `n ≥ 5`.** The same
+    monotone propagation (`T_mono_ground`) of the `n = 5` anchor `seven_le_T_5_1`,
+    sharpening `six_le_T_n_1` on the range `n ≥ 5`. -/
+theorem seven_le_T_n_1 (n : ℕ) (hn : 5 ≤ n) : 7 ≤ T n 1 :=
+  le_trans seven_le_T_5_1 (T_mono_ground (r := 1) hn)
+
 /-
 ## Part V: The Main Question - Exponential Bound
 
