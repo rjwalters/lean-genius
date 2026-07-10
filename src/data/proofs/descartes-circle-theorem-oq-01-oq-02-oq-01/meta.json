@@ -139,5 +139,28 @@
       "relationship": "ancestor",
       "description": "Ancestor entry: the Descartes circle theorem (k₄ = k₁+k₂+k₃ ± 2√(k₁k₂+k₂k₃+k₃k₁)) and its integer form (a+b+c+d)² = 2(a²+b²+c²+d²) underlying this parity analysis."
     }
+  ],
+  "references": [
+    {
+      "authors": "Ronald L. Graham, Jeffrey C. Lagarias, Colin L. Mallows, Allan R. Wilks, Catherine H. Yan",
+      "title": "Apollonian circle packings: number theory",
+      "year": "2003",
+      "venue": "Journal of Number Theory 100 (1), 1–45",
+      "note": "The definitive number-theoretic study of integral Apollonian packings: the Descartes quadratic form (a+b+c+d)² = 2(a²+b²+c²+d²), primitivity, and the curvature-parity structure — including that a primitive integral quadruple has exactly two odd curvatures, the invariant formalized here."
+    },
+    {
+      "authors": "Frederick Soddy",
+      "title": "The Kiss Precise",
+      "year": "1936",
+      "venue": "Nature 137, 1021",
+      "note": "The famous verse form of Descartes' four-circle relation 2(k₁²+k₂²+k₃²+k₄²) = (k₁+k₂+k₃+k₄)², which rediscovered the theorem and named the curvature ('bend') formulation used throughout."
+    },
+    {
+      "authors": "H. S. M. Coxeter",
+      "title": "The problem of Apollonius",
+      "year": "1968",
+      "venue": "American Mathematical Monthly 75 (1), 5–15",
+      "note": "Classical treatment of Descartes' circle theorem and the Apollonian tangency configuration, the geometric background to the integer Descartes relation analyzed here."
+    }
   ]
 }
