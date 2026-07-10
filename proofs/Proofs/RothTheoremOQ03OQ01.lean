@@ -662,6 +662,18 @@ theorem kAPCount_count_pos_iff {N : ℕ} [NeZero N] {k : ℕ} (hk : 0 < k)
   rw [Finset.mem_filter] at hp
   exact ⟨p.1, by simpa using hp.2 ⟨0, hk⟩⟩
 
+/-- **Vanishing characterizes emptiness.**  For `k ≥ 1`, the `k`-AP count of `A` is `0` iff
+    `A` is empty: a nonempty set always supplies its diagonal (constant) progressions, so the
+    only way the count can vanish is `A = ∅`.  The vanishing (`δ = 0`) companion of the
+    positivity characterization `kAPCount_count_pos_iff`, and the "iff" strengthening of the
+    empty-set base case `kAPCount_count_empty`. -/
+theorem kAPCount_count_eq_zero_iff {N : ℕ} [NeZero N] {k : ℕ} (hk : 0 < k)
+    {A : Finset (ZMod N)} :
+    (Finset.univ.filter (fun p : ZMod N × ZMod N =>
+        ∀ i : Fin k, p.1 + i.val • p.2 ∈ A)).card = 0 ↔ A = ∅ := by
+  rw [← Finset.not_nonempty_iff_eq_empty, ← kAPCount_count_pos_iff hk]
+  omega
+
 /-- **Exact count for the whole group.**  Every pair `(x, d)` has its length-`k` progression
     inside `univ`, so the `k`-AP count of the full group is exactly `N²` — the combinatorial
     companion of the normalized identity `kAPCount_indicator_univ`
