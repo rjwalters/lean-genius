@@ -43,7 +43,8 @@
       "inner_sq_le_gram build-break FIX (researcher-1): main's proof used RCLike.norm_sq_eq_def' (nonexistent); replaced with `rw [RCLike.norm_sq_eq_def]; ring`. The (Re⟪u,v⟫)²+(Im⟪u,v⟫)² ≤ ‖u‖²·‖v‖² Gram split itself was added by a concurrent PR.",
       "schrodinger_uncertainty in CauchySchwarzIntegralOQ04.lean (researcher-1): ¼‖⟪ψ,[A,B]ψ⟫‖² + (Re⟪(A−a)ψ,(B−b)ψ⟫)² ≤ ‖(A−a)ψ‖²·‖(B−b)ψ‖² — Schrödinger's 1930 strengthening of Robertson including the covariance term, built on inner_sq_le_gram. Verified 0 axioms, 0 sorries.",
       "robertson_of_schrodinger in CauchySchwarzIntegralOQ04.lean (researcher-1): Robertson follows from Schrödinger by dropping the nonnegative (Re…)² covariance term (sq_nonneg + nlinarith).",
-      "CauchySchwarzIntegralOQ04.lean (researcher-3, 2026-07-08, VERIFIED 0-axiom): the anticommutator/covariance identities dual to inner_commutator_eq_sub. inner_anticommutator_eq_add {A B}(hA hB : IsSymmetric)(ψ)(a b:ℝ): ⟪u,v⟫+⟪v,u⟫ = ⟪ψ,(AB+BA)ψ⟫ − 2b⟪ψ,Aψ⟫ − 2a⟪ψ,Bψ⟫ + 2ab⟪ψ,ψ⟫ (u=(A−a)ψ, v=(B−b)ψ) — the shifts do NOT cancel (unlike the commutator); same e1..e4 symmetry rewrites + push_cast + ring. re_inner_centred_eq_anticommutator: Re⟪u,v⟫ = ½Re⟪ψ,(AB+BA)ψ⟫ − b·Re⟪ψ,Aψ⟫ − a·Re⟪ψ,Bψ⟫ + ab·Re⟪ψ,ψ⟫ — take Re of the identity (map_add/map_sub + RCLike.re_ofReal_mul) and collapse Re⟪v,u⟫=Re⟪u,v⟫ via inner_re_symm, then linarith. At a=⟨A⟩,b=⟨B⟩,‖ψ‖=1 this is the symmetrized covariance ½⟪ψ,{A,B}ψ⟫−⟨A⟩⟨B⟩ that schrodinger_uncertainty keeps over Robertson. #print axioms → [propext, Classical.choice, Quot.sound]. File now 12 theorems."
+      "CauchySchwarzIntegralOQ04.lean (researcher-3, 2026-07-08, VERIFIED 0-axiom): the anticommutator/covariance identities dual to inner_commutator_eq_sub. inner_anticommutator_eq_add {A B}(hA hB : IsSymmetric)(ψ)(a b:ℝ): ⟪u,v⟫+⟪v,u⟫ = ⟪ψ,(AB+BA)ψ⟫ − 2b⟪ψ,Aψ⟫ − 2a⟪ψ,Bψ⟫ + 2ab⟪ψ,ψ⟫ (u=(A−a)ψ, v=(B−b)ψ) — the shifts do NOT cancel (unlike the commutator); same e1..e4 symmetry rewrites + push_cast + ring. re_inner_centred_eq_anticommutator: Re⟪u,v⟫ = ½Re⟪ψ,(AB+BA)ψ⟫ − b·Re⟪ψ,Aψ⟫ − a·Re⟪ψ,Bψ⟫ + ab·Re⟪ψ,ψ⟫ — take Re of the identity (map_add/map_sub + RCLike.re_ofReal_mul) and collapse Re⟪v,u⟫=Re⟪u,v⟫ via inner_re_symm, then linarith. At a=⟨A⟩,b=⟨B⟩,‖ψ‖=1 this is the symmetrized covariance ½⟪ψ,{A,B}ψ⟫−⟨A⟩⟨B⟩ that schrodinger_uncertainty keeps over Robertson. #print axioms → [propext, Classical.choice, Quot.sound]. File now 12 theorems.",
+      "schrodinger_variance_form in CauchySchwarzIntegralOQ04.lean (researcher-5, PR #36924) — Schrödinger analogue of heisenberg_variance_form: instantiate schrodinger_uncertainty at a=⟨A⟩=Re⟪ψ,Aψ⟫, b=⟨B⟩=Re⟪ψ,Bψ⟫ → Var(A)Var(B) ≥ ¼‖⟪ψ,[A,B]ψ⟫‖²+(Re⟪(A−⟨A⟩)ψ,(B−⟨B⟩)ψ⟫)². Term-mode. 0/0. UNVERIFIED (docker infra down: containerd content-store I/O error)."
     ],
     "insights": [
       "The Heisenberg/Robertson uncertainty inequality's analytic core is Cauchy-Schwarz on the imaginary part: |Im⟪u,v⟫| ≤ |⟪u,v⟫| ≤ ‖u‖‖v‖. For real fields Im = 0 (trivial); the content is the ℂ case.",
@@ -104,7 +105,7 @@
     "mathlib": []
   },
   "started": "2026-04-03T15:38:25.652Z",
-  "lastUpdate": "2026-07-08T21:00:00.000Z",
+  "lastUpdate": "2026-07-09T00:00:00.000Z",
   "leanFiles": [
     {
       "path": "Proofs/CauchySchwarzIntegral.lean",
