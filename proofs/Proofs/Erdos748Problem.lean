@@ -526,6 +526,17 @@ theorem f_1 : f 1 = 2 := by decide
 theorem f_2 : f 2 = 3 := by decide
 theorem f_3 : f 3 = 6 := by decide
 
+/-- `f 4 = 9`: the nine sum-free subsets of `{1,2,3,4}` are `∅`, `{1}`, `{2}`, `{3}`,
+    `{4}`, `{1,3}`, `{2,3}`, `{3,4}`, `{1,4}` (every subset containing `{1,2}`, `{2,4}`,
+    or `{1,3,4}` is excluded, since `2 = 1+1`, `4 = 2+2`, `4 = 1+3`). This upgrades the
+    table value `f(4) = 9` above from prose to a machine-checked (kernel `decide`) fact. -/
+theorem f_4 : f 4 = 9 := by decide
+
+/-- `f 5 = 16`: upgrades the table value `f(5) = 16` above from prose to a kernel-`decide`
+    fact. Beyond the `n = 4` exclusions this adds `5 = 1+4` and `5 = 2+3`, forbidding the
+    subsets containing `{1,4,5}` or `{2,3,5}`. -/
+theorem f_5 : f 5 = 16 := by decide
+
 /-
 ## Part IX: Summary
 -/
