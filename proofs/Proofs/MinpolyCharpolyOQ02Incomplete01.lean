@@ -377,4 +377,53 @@ theorem exists_diagonalizable_mul_not_diagonalizable :
     rw [hD11] at hprod
     nlinarith [sq_nonneg (D 0 0), hprod]
 
+/-- **Necessity of a common diagonalizer for `add_of_commonDiagonalizer`.**
+Diagonalizability of each summand is not enough to force the sum to be diagonalizable.
+Explicit witnesses over `ℚ`: the diagonalizable `M = !![-2,-1;1,1/2]` (distinct rational
+eigenvalues `0` and `-3/2`, diagonalized by `P = !![1,2;-2,-1]`) and the diagonal
+`N = !![2,0;0,-1/2]`.  Their sum `M + N = !![0,-1;1,0]` is the rational `90°` rotation with
+eigenvalues `±i ∉ ℚ`, hence not diagonalizable over `ℚ`.  So `M` and `N` cannot share a
+diagonalizer, since otherwise `add_of_commonDiagonalizer` would diagonalize the sum.  The
+non-diagonalizability proof reuses the trace/determinant argument of
+`exists_diagonalizable_mul_not_diagonalizable`: a diagonal conjugate `D` of the rotation
+would satisfy `D₀₀ + D₁₁ = 0` and `D₀₀·D₁₁ = 1`, forcing `D₀₀² = -1`. -/
+theorem exists_diagonalizable_add_not_diagonalizable :
+    ∃ M N : Matrix (Fin 2) (Fin 2) ℚ,
+      M.IsDiagonalizable ∧ N.IsDiagonalizable ∧ ¬ (M + N).IsDiagonalizable := by
+  refine ⟨!![-2, -1; 1, 1/2], !![2, 0; 0, -1/2], ?_, ?_, ?_⟩
+  · -- `M` is diagonalized by `P = !![1,2;-2,-1]` (columns = eigenvectors for `0, -3/2`).
+    refine ⟨!![1, 2; -2, -1], ?_, ?_⟩
+    · rw [Matrix.isUnit_iff_isUnit_det, Matrix.det_fin_two_of]; norm_num
+    · have hinv : (!![1, 2; -2, -1] : Matrix (Fin 2) (Fin 2) ℚ)⁻¹ = !![-1/3, -2/3; 2/3, 1/3] :=
+        Matrix.inv_eq_right_inv (by rw [Matrix.one_fin_two]; norm_num [Matrix.mul_fin_two])
+      rw [hinv, show
+        (!![-1/3, -2/3; 2/3, 1/3] : Matrix (Fin 2) (Fin 2) ℚ) * !![-2, -1; 1, 1/2]
+            * !![1, 2; -2, -1]
+          = !![0, 0; 0, -3/2] by norm_num [Matrix.mul_fin_two]]
+      intro i j hij
+      fin_cases i <;> fin_cases j <;> simp_all
+  · -- `N` is diagonal, hence diagonalizable.
+    refine Matrix.IsDiagonalizable.of_isDiag ?_
+    intro i j hij
+    fin_cases i <;> fin_cases j <;> simp_all
+  · -- `M + N = !![0,-1;1,0]` is not diagonalizable over `ℚ` (eigenvalues `±i`).
+    rintro ⟨P, hP, hdiag⟩
+    have hsum : (!![-2, -1; 1, 1/2] : Matrix (Fin 2) (Fin 2) ℚ) + !![2, 0; 0, -1/2]
+        = !![0, -1; 1, 0] := by
+      ext i j; fin_cases i <;> fin_cases j <;> simp [Matrix.add_apply] <;> norm_num
+    rw [hsum] at hdiag
+    set D := P⁻¹ * (!![0, -1; 1, 0] : Matrix (Fin 2) (Fin 2) ℚ) * P with hDdef
+    have htr : Matrix.trace D = 0 := by
+      rw [hDdef, Matrix.trace_conj' hP]; norm_num [Matrix.trace_fin_two_of]
+    have hdet : Matrix.det D = 1 := by
+      rw [hDdef, Matrix.det_conj' hP]; norm_num [Matrix.det_fin_two_of]
+    have h01 : D 0 1 = 0 := hdiag (by decide)
+    have h10 : D 1 0 = 0 := hdiag (by decide)
+    rw [Matrix.trace_fin_two] at htr
+    have hprod : D 0 0 * D 1 1 = 1 := by
+      rw [Matrix.det_fin_two, h01, h10] at hdet; simpa using hdet
+    have hD11 : D 1 1 = -D 0 0 := by linarith
+    rw [hD11] at hprod
+    nlinarith [sq_nonneg (D 0 0), hprod]
+
 end MinpolyCharpolyOQ02Incomplete01
