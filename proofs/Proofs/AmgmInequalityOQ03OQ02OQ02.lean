@@ -174,4 +174,98 @@ theorem geometric_root_seq_const {r : ℝ} (hr : 0 < r) (k : ℕ) :
     (r ^ (k + 1)) ^ ((1 : ℝ) / (k + 1)) = r :=
   rpow_pow_root_self hr (Nat.succ_pos k)
 
+/-! ## Strict monotonicity under strict log-concavity
+
+The sharpness section shows the abstract chain is *flat* exactly on geometric sequences
+(equality throughout). Its converse is the following: if the log-concavity is **strict**
+at every index — `p m · p (m+2) < (p (m+1))²` — then the root sequence `p_k^{1/k}` is
+**strictly** decreasing, never flat. This is precisely the strict-log-concavity
+hypothesis whose necessity the sharpness section points to. -/
+
+/-- **Strict multiplicative core.** If `p` is positive with `p 0 = 1`, log-concave, and
+*strictly* log-concave (`p m · p (m+2) < (p (m+1))²` for all `m`), then
+`p (k+1)^k < p k^{k+1}` for every `k ≥ 1`.  The proof reuses the non-strict core
+`logConcave_pow_antitone` (at index `k-1`) as the inductive ingredient and injects a
+single strict Newton inequality, so no separate strict induction is needed. -/
+theorem logConcave_pow_antitone_strict (p : ℕ → ℝ) (hp0 : p 0 = 1)
+    (hpos : ∀ j, 0 < p j)
+    (hlc : ∀ m, p m * p (m + 2) ≤ (p (m + 1)) ^ 2)
+    (hstrict : ∀ m, p m * p (m + 2) < (p (m + 1)) ^ 2)
+    (k : ℕ) (hk : 0 < k) :
+    p (k + 1) ^ k < p k ^ (k + 1) := by
+  obtain ⟨m, rfl⟩ : ∃ m, k = m + 1 := ⟨k - 1, by omega⟩
+  -- Goal: `p (m+2)^(m+1) < p (m+1)^(m+2)`.
+  have hA : 0 < p m := hpos m
+  have hB : 0 < p (m + 1) := hpos (m + 1)
+  have hC : 0 < p (m + 2) := hpos (m + 2)
+  -- Strict Newton at `m`, raised to the `(m+1)`-th power.
+  have hAC : (p m * p (m + 2)) ^ (m + 1) < (p (m + 1) ^ 2) ^ (m + 1) :=
+    pow_lt_pow_left₀ (hstrict m) (mul_nonneg hA.le hC.le) (by omega)
+  rw [mul_pow, ← pow_mul] at hAC
+  have hsplit : p (m + 1) ^ (2 * (m + 1))
+      = p (m + 1) ^ m * p (m + 1) ^ (m + 2) := by
+    rw [← pow_add]; congr 1; omega
+  -- Non-strict core at index `m`: `p (m+1)^m ≤ p m^(m+1)`.
+  have IH : p (m + 1) ^ m ≤ p m ^ (m + 1) :=
+    logConcave_pow_antitone p hp0 hlc m (fun j _ => hpos j)
+  have hIH2 : p (m + 1) ^ m * p (m + 1) ^ (m + 2)
+      ≤ p m ^ (m + 1) * p (m + 1) ^ (m + 2) :=
+    mul_le_mul_of_nonneg_right IH (pow_nonneg hB.le _)
+  have hchain : p m ^ (m + 1) * p (m + 2) ^ (m + 1)
+      < p m ^ (m + 1) * p (m + 1) ^ (m + 2) := by
+    calc p m ^ (m + 1) * p (m + 2) ^ (m + 1)
+          < p (m + 1) ^ (2 * (m + 1)) := hAC
+      _ = p (m + 1) ^ m * p (m + 1) ^ (m + 2) := hsplit
+      _ ≤ p m ^ (m + 1) * p (m + 1) ^ (m + 2) := hIH2
+  exact lt_of_mul_lt_mul_left hchain (pow_nonneg hA.le _)
+
+/-- Strict crossed-root comparison: if `b^s < a^t` for positive reals and positive
+naturals, then `b^(1/t) < a^(1/s)`.  The strict analogue of `rpow_cross`. -/
+theorem rpow_cross_strict {a b : ℝ} {s t : ℕ} (ha : 0 < a) (hb : 0 < b)
+    (hs : 0 < s) (ht : 0 < t) (h : b ^ s < a ^ t) :
+    b ^ ((1 : ℝ) / t) < a ^ ((1 : ℝ) / s) := by
+  have hs0 : (s : ℝ) ≠ 0 := by exact_mod_cast hs.ne'
+  have ht0 : (t : ℝ) ≠ 0 := by exact_mod_cast ht.ne'
+  have key : (b ^ s) ^ ((1 : ℝ) / (s * t)) < (a ^ t) ^ ((1 : ℝ) / (s * t)) :=
+    Real.rpow_lt_rpow (pow_nonneg hb.le s) h (by positivity)
+  have lhs : (b ^ s) ^ ((1 : ℝ) / (s * t)) = b ^ ((1 : ℝ) / t) := by
+    rw [← Real.rpow_natCast b s, ← Real.rpow_mul hb.le]
+    congr 1
+    field_simp
+  have rhs : (a ^ t) ^ ((1 : ℝ) / (s * t)) = a ^ ((1 : ℝ) / s) := by
+    rw [← Real.rpow_natCast a t, ← Real.rpow_mul ha.le]
+    congr 1
+    field_simp
+  rwa [lhs, rhs] at key
+
+/-- **Strict root form.** For a positive, strictly log-concave sequence `p` with
+`p 0 = 1`, the root sequence is *strictly* decreasing:
+`p (k+1)^{1/(k+1)} < p k^{1/k}` for every `k ≥ 1`.  The strict analogue of
+`logConcave_root_antitone`. -/
+theorem logConcave_root_antitone_strict (p : ℕ → ℝ) (hp0 : p 0 = 1)
+    (hpos : ∀ j, 0 < p j)
+    (hlc : ∀ m, p m * p (m + 2) ≤ (p (m + 1)) ^ 2)
+    (hstrict : ∀ m, p m * p (m + 2) < (p (m + 1)) ^ 2)
+    (k : ℕ) (hk : 0 < k) :
+    p (k + 1) ^ ((1 : ℝ) / (k + 1)) < p k ^ ((1 : ℝ) / k) := by
+  have hcore : p (k + 1) ^ k < p k ^ (k + 1) :=
+    logConcave_pow_antitone_strict p hp0 hpos hlc hstrict k hk
+  have h1 : (0 : ℕ) < k + 1 := by omega
+  simpa using rpow_cross_strict (hpos k) (hpos (k + 1)) hk h1 hcore
+
+/-- **The strict Maclaurin chain (abstract).** For a positive, strictly log-concave
+sequence with `p 0 = 1`, the shifted root sequence `k ↦ p_(k+1)^{1/(k+1)}` is
+`StrictAnti`: `p_1^{1/1} > p_2^{1/2} > p_3^{1/3} > ⋯`.  Specialised to `p k = eₖ/C(n,k)`
+with all inputs distinct (strict Newton), this is Maclaurin's inequality with strict
+inequalities throughout. -/
+theorem logConcave_root_antitone_seq_strict (p : ℕ → ℝ) (hp0 : p 0 = 1)
+    (hpos : ∀ j, 0 < p j)
+    (hlc : ∀ m, p m * p (m + 2) ≤ (p (m + 1)) ^ 2)
+    (hstrict : ∀ m, p m * p (m + 2) < (p (m + 1)) ^ 2) :
+    StrictAnti (fun k : ℕ => p (k + 1) ^ ((1 : ℝ) / (k + 1))) := by
+  apply strictAnti_nat_of_succ_lt
+  intro k
+  simpa using
+    logConcave_root_antitone_strict p hp0 hpos hlc hstrict (k + 1) (Nat.succ_pos k)
+
 end MaclaurinLogConcave
