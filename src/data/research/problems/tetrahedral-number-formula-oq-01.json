@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SOLVED base + extended: two new verified faces (discrete Cauchy repeated-summation formula generalizing iterSum_one to arbitrary f; multiset-counting Sym-cardinality face). docker-build clean [3059/3059], 0/0. PR open.",
+    "progressSummary": "General-dimension figurate theory VERIFIED end-to-end in TetrahedralNumberFormulaOQ01.lean (simplexNumber d n = C(n+d,d)): hockey stick sum_simplex, iterated-summation ladder iterSum_one (P_d = d-fold partial sum of the constant 1), discrete Cauchy repeated-summation formula iterSum_eq_simplexConv (iterSum (d+1) f = convolution with the P_d kernel), Sym counting face card_sym_fin_eq_simplexNumber (|Sym(Fin(n+1)) d| = P_d(n)), and division-free closed form d!·P_d(n)=(n+1)^{(d)}. NEW (researcher-8, 2026-07-09, VERIFIED [3059/3059] 0 sorry/0 axiom): iterSum_add — the SEMIGROUP LAW iterSum a (iterSum b f) = iterSum (a+b) f (iterated partial summation is a monoid action of (ℕ,+) on sequences, the discrete analogue of the Riemann–Liouville fractional-integration semigroup Iᵃ∘Iᵇ=Iᵃ⁺ᵇ, and the structural reason figurate dimensions add); and iterSum_simplexNumber — dimension-additivity iterSum a (P_b) = P_{a+b} (a further summations of the b-dim figurate sequence give the (a+b)-dim one), immediate from the semigroup law + iterSum_one, generalizing the headline iterSum_one (b=0). The base OQ-01 question (general-dimension hockey stick) is fully resolved; this session adds the compositional algebra of the summation operator.",
     "builtItems": [
       "simplexNumber d n := (n+d).choose d - the d-dimensional hyper-tetrahedral number (TetrahedralNumberFormulaOQ01.lean)",
       "sum_simplex: sum_{k<=n} simplexNumber d k = simplexNumber (d+1) n - general hockey stick, any dimension d (via Nat.sum_range_add_choose)",
@@ -39,7 +39,9 @@
       "factorial_mul_simplexNumber(_prod): d! P_d(n) = (n+1).ascFactorial d = prod_{i<d}(n+1+i) - division-free closed form generalizing 6*C(n+2,3)=n(n+1)(n+2)",
       "iterSum_eq_simplexConv (TetrahedralNumberFormulaOQ01.lean): discrete Cauchy repeated-summation formula iterSum (d+1) f n = sum_{k<=n} P_d(n-k)*f(k), arbitrary f; strictly generalizes iterSum_one (f=1 case). VERIFIED 0/0.",
       "partialSum_simplexConv: kernel dimension-raising engine (Ico-Ico triangular swap + sum_simplex hockey stick).",
-      "card_sym_fin_eq_simplexNumber: counting face |Sym (Fin (n+1)) d| = P_d(n) (stars and bars / weakly increasing d-tuples)."
+      "card_sym_fin_eq_simplexNumber: counting face |Sym (Fin (n+1)) d| = P_d(n) (stars and bars / weakly increasing d-tuples).",
+      "iterSum_add — semigroup law of iterated summation: iterSum a (iterSum b f) = iterSum (a+b) f (monoid action of (ℕ,+); discrete Riemann–Liouville semigroup Iᵃ∘Iᵇ=Iᵃ⁺ᵇ). Induction on a, one partialSum layer per step. VERIFIED.",
+      "iterSum_simplexNumber — dimension-additivity of the figurate ladder: iterSum a (simplexNumber b) n = simplexNumber (a+b) n, from iterSum_add + iterSum_one. VERIFIED."
     ],
     "insights": [
       "The hyper-tetrahedral / d-simplex number is exactly Mathlib Nat.multichoose (n+1) d = C(n+d,d); Mathlib gives the one-step hockey stick Nat.sum_range_add_choose : sum i in range(n+1),(i+d).choose d = (n+d+1).choose(d+1)",
@@ -90,10 +92,10 @@
     {
       "path": "Proofs/TetrahedralNumberFormulaOQ01.lean",
       "filename": "TetrahedralNumberFormulaOQ01.lean",
-      "lineCount": 164,
-      "theoremCount": 8,
+      "lineCount": 300,
+      "theoremCount": 13,
       "axiomCount": 0,
-      "defCount": 3,
+      "defCount": 4,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/TetrahedralNumberFormulaOQ01.lean"
