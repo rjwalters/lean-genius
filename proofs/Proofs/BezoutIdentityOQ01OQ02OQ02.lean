@@ -205,4 +205,52 @@ there is nothing to reduce and no target `e₁` to reach, so the descent is vacu
 theorem not_isPrimitive_fin_zero (v : Fin 0 → ℤ) : ¬ IsPrimitive v :=
   fun h => h.ne_zero (Subsingleton.elim v 0)
 
+/-! ### Full transitivity in dimension two -/
+
+/-- **Primitivity in dimension `2` is Bézout coprimality.**  A vector
+`v : Fin 2 → ℤ` is primitive iff its two entries are coprime, `IsCoprime (v 0) (v 1)`.
+Both sides unfold to the existence of integers `a, b` with `a * v 0 + b * v 1 = 1`,
+the classical Bézout identity — this is exactly the hypothesis a two-coordinate
+descent step consumes, and it links the coordinate-free `IsPrimitive` back to the
+parent proof's coprime pair `(a, b)`. -/
+theorem isPrimitive_fin_two_iff (v : Fin 2 → ℤ) :
+    IsPrimitive v ↔ IsCoprime (v 0) (v 1) := by
+  constructor
+  · rintro ⟨w, hw⟩
+    refine ⟨w 0, w 1, ?_⟩
+    simpa [dotProduct, Fin.sum_univ_two] using hw
+  · rintro ⟨a, b, hab⟩
+    refine ⟨![a, b], ?_⟩
+    simpa [dotProduct, Fin.sum_univ_two] using hab
+
+/-- **Transitivity of the `SL₂(ℤ)`-action — the base case of the descent.**
+Every primitive vector `v : Fin 2 → ℤ` is carried onto the basis vector `e₁ = (1, 0)`
+by an explicit element of `SL₂(ℤ)`.  Taking a Bézout dual `w ⬝ᵥ v = 1`, the matrix
+`!![w 0, w 1; -v 1, v 0]` has determinant `w 0 * v 0 + w 1 * v 1 = 1`, so it lies in
+`SL₂(ℤ)`, and it sends `v` to `(1, 0)`: the first row pairs `w` against `v`, the
+second row is `v` rotated a quarter turn and pairs to `0`.  Together with
+`orbit_e_isPrimitive` (necessity) this settles *full* transitivity in dimension two —
+`v` is `SL₂(ℤ)`-equivalent to `e₁` **iff** it is primitive — the first nontrivial
+case of the open question, recovering the parent proof's `bezoutSL`. -/
+theorem exists_special_mulVec_eq_single_fin_two (v : Fin 2 → ℤ)
+    (h : IsPrimitive v) :
+    ∃ A : Matrix.SpecialLinearGroup (Fin 2) ℤ, ↑ₘA *ᵥ v = Pi.single 0 1 := by
+  obtain ⟨w, hw⟩ := h
+  have hw2 : w 0 * v 0 + w 1 * v 1 = 1 := by
+    simpa [dotProduct, Fin.sum_univ_two] using hw
+  have hdet : (!![w 0, w 1; -v 1, v 0] : Matrix (Fin 2) (Fin 2) ℤ).det = 1 := by
+    rw [Matrix.det_fin_two_of]
+    linear_combination hw2
+  refine ⟨⟨!![w 0, w 1; -v 1, v 0], hdet⟩, ?_⟩
+  funext k
+  fin_cases k
+  · simp only [SpecialLinearGroup.coe_mk, mulVec, dotProduct, Fin.sum_univ_two,
+      Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Pi.single_eq_same,
+      Fin.isValue]
+    linear_combination hw2
+  · simp only [SpecialLinearGroup.coe_mk, mulVec, dotProduct, Fin.sum_univ_two,
+      Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Fin.isValue]
+    rw [Pi.single_eq_of_ne (by decide : (1 : Fin 2) ≠ 0)]
+    ring
+
 end BezoutPrimitive
