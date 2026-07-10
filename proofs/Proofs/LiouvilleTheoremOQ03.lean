@@ -163,6 +163,48 @@ theorem dimH_wellApprox_eq_jbDim (τ : ℝ) (hτ : 2 ≤ τ) :
     dimH (wellApprox τ) = ENNReal.ofReal (jbDim τ) :=
   dimH_wellApprox τ hτ
 
+/-! ### Full dimension on `[1, 2]` — closing the sub-threshold gap
+
+The axiom `dimH_wellApprox` only speaks for `τ ≥ 2` (where `2/τ ≤ 1`). For
+`τ ≤ 2` the Jarník–Besicovitch value `2/τ` would exceed `1`, but a set of reals
+can have dimension at most `1`, so the true dimension saturates at the full value
+`1`. The proofs below establish this *without* strengthening the axiom, by
+squeezing `W 2 ⊆ W τ ⊆ ℝ`; together with the axiom they give the complete
+dimension law `dimH (W τ) = min(1, 2/τ)`. -/
+
+/-- **Full dimension below the threshold.** For every `τ ≤ 2` the well-approximable
+set has full Hausdorff dimension `1`. This fills the range `1 < τ < 2` that the
+axiom (stated for `τ ≥ 2`) does not reach: since `2/τ > 1` there, the dimension is
+capped at the line's dimension `1`. Squeeze `1 = dimH (W 2) ≤ dimH (W τ) ≤ dimH ℝ
+= 1`, using antitonicity below the threshold and `Real.dimH_univ`. -/
+theorem dimH_wellApprox_eq_one_of_le_two {τ : ℝ} (hτ : τ ≤ 2) :
+    dimH (wellApprox τ) = 1 := by
+  refine le_antisymm ?_ ?_
+  · calc dimH (wellApprox τ) ≤ dimH (Set.univ : Set ℝ) := dimH_mono (Set.subset_univ _)
+      _ = 1 := Real.dimH_univ
+  · calc (1 : ℝ≥0∞) = dimH (wellApprox 2) := dimH_wellApprox_two.symm
+      _ ≤ dimH (wellApprox τ) := dimH_wellApprox_antitone hτ
+
+/-- **The complete Jarník–Besicovitch dimension law.** For every `τ ≥ 1`,
+
+  `dimH (W τ) = min(1, 2/τ)`,
+
+i.e. the dimension is the full `1` for `1 ≤ τ ≤ 2` and drops to `2/τ` for `τ ≥ 2`,
+matching continuously at the threshold `τ = 2`. This unifies the axiom
+`dimH_wellApprox` (the `τ ≥ 2` branch) with `dimH_wellApprox_eq_one_of_le_two`
+(the saturated `τ ≤ 2` branch) into a single formula valid across the whole
+range. -/
+theorem dimH_wellApprox_eq_min {τ : ℝ} (hτ : 1 ≤ τ) :
+    dimH (wellApprox τ) = ENNReal.ofReal (min 1 (2 / τ)) := by
+  have hτ0 : (0 : ℝ) < τ := by linarith
+  rcases le_or_lt τ 2 with h2 | h2
+  · rw [dimH_wellApprox_eq_one_of_le_two h2]
+    have h1 : (1 : ℝ) ≤ 2 / τ := by rw [le_div_iff₀ hτ0]; linarith
+    rw [min_eq_left h1, ENNReal.ofReal_one]
+  · rw [dimH_wellApprox τ h2.le]
+    have h1 : 2 / τ ≤ 1 := by rw [div_le_one hτ0]; linarith
+    rw [min_eq_right h1]
+
 /-! ### Quantitative shape of the dimension family `τ ↦ dimH (W τ)`
 
 The Jarník–Besicovitch formula pins the dimension exactly, so the qualitative
