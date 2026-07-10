@@ -52,10 +52,10 @@
       "Structural lemmas on T: T_le_pow (T(n,r) ≤ 2^n), T_mono_ground (monotone in the ground-set size n), one_le_T (positivity), and full_powerset_avoids_r_of_lt / T_eq_pow_of_lt (T(n,r) = 2^n whenever n < r); plus largeSetsFamily_subset_franklFurediOdd_one linking Frankl's r=1 family into the general Frankl-Füredi construction."
     ],
     "axiomCount": 1,
-    "lineCount": 706,
+    "lineCount": 721,
     "assumptions": "1 axiom: frankl_rodl_1987 (the deep Frankl–Rödl 1987 exponential bound — the affirmative answer to the main question). 0 sorries: the trivial case T(n,0)=2^{n-1} is fully machine-checked (#print axioms T_n_0 = [propext, Classical.choice, Quot.sound]) via a complement-pairing upper bound and a star-family witness. The unused opaque chromaticNumber axiom was removed; the geometric chromatic-number consequence is recorded as prose only since infinite unit-distance chromatic numbers are not yet in Mathlib.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 27,
+    "theoremCount": 29,
     "definitionCount": 8
   },
   "crossReferences": [
@@ -182,9 +182,9 @@
       "Finset"
     ],
     "namespace": "Erdos703",
-    "lineCount": 706,
+    "lineCount": 721,
     "axiomCount": 1,
-    "theoremCount": 27,
+    "theoremCount": 29,
     "definitionCount": 8,
     "path": "Proofs/Erdos703Problem.lean",
     "sorries": 0
