@@ -143,6 +143,29 @@
       "Is the $1/2$-approximation tight for the greedy algorithm on specific graph families beyond $K_{n,n}$?"
     ]
   },
+  "references": [
+    {
+      "title": "Randomized Algorithms",
+      "author": "Rajeev Motwani and Prabhakar Raghavan",
+      "year": "1995",
+      "venue": "Cambridge University Press",
+      "description": "§5.2 presents the method of conditional expectations and its use to derandomize the MaxCut ≥ W/2 existence argument into a deterministic greedy algorithm — exactly the derandomization pipeline this entry formalizes."
+    },
+    {
+      "title": "Probability and Computing",
+      "author": "Michael Mitzenmacher and Eli Upfal",
+      "year": "2017",
+      "venue": "Cambridge University Press (2nd edition)",
+      "description": "Chapter 6 develops the probabilistic (first-moment) MaxCut bound E[cut] = W/2 and its derandomization by conditional expectations, the averaging-identity → deterministic-algorithm argument reproduced here without the exists_good_partition axiom."
+    },
+    {
+      "title": "The Probabilistic Method",
+      "author": "Noga Alon and Joel H. Spencer",
+      "year": "2016",
+      "venue": "Wiley (4th edition)",
+      "description": "The standard reference for the probabilistic method and Spencer's general derandomization framework; the conditional-expectation derandomization of MaxCut is the canonical worked example, and the toggle-involution counting used here is a probabilistic-method staple."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Proofs.RandomizedMaxcutOQ02",
