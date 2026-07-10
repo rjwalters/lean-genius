@@ -139,4 +139,46 @@ theorem orbit_e_isPrimitive (A : Matrix.SpecialLinearGroup (Fin n) ℤ) (i : Fin
     IsPrimitive (↑ₘA *ᵥ Pi.single i (1 : ℤ)) :=
   (isPrimitive_single i).mulVec A
 
+/-! ### Closure properties and the one-dimensional base case -/
+
+/-- **A primitive vector is nonzero.**  If `v = 0` then `w ⬝ᵥ v = 0 ≠ 1` for every
+`w`, contradicting primitivity.  (In particular there are no primitive vectors in
+the empty dimension `n = 0`.)  Any Euclidean descent needs this to know the pivot
+coordinate can be made nonzero. -/
+theorem IsPrimitive.ne_zero {v : Fin n → ℤ} (h : IsPrimitive v) : v ≠ 0 := by
+  rintro rfl
+  obtain ⟨w, hw⟩ := h
+  rw [dotProduct_zero] at hw
+  exact one_ne_zero hw.symm
+
+/-- **Primitivity is preserved under negation.**  If `w ⬝ᵥ v = 1` then
+`(-w) ⬝ᵥ (-v) = 1`, so `-v` is primitive with dual `-w`.  A sign flip is an
+`SLₙ`-move only in even dimension, but primitivity is sign-invariant in every
+dimension. -/
+theorem IsPrimitive.neg {v : Fin n → ℤ} (h : IsPrimitive v) : IsPrimitive (-v) := by
+  obtain ⟨w, hw⟩ := h
+  refine ⟨-w, ?_⟩
+  rw [neg_dotProduct, dotProduct_neg, neg_neg]
+  exact hw
+
+/-- **One-dimensional base case of the descent.**  A vector `v : Fin 1 → ℤ` is
+primitive iff its single entry is a unit, i.e. `v 0 = 1` or `v 0 = -1`.  So in
+dimension `1` the primitive vectors are exactly `±e₁` — the descent has nothing
+left to do, which is the base case of the Euclidean reduction proving transitivity
+of the `SLₙ(ℤ)`-action. -/
+theorem isPrimitive_fin_one_iff (v : Fin 1 → ℤ) :
+    IsPrimitive v ↔ v 0 = 1 ∨ v 0 = -1 := by
+  have hdot : ∀ x y : Fin 1 → ℤ, x ⬝ᵥ y = x 0 * y 0 := fun x y => by
+    simp [dotProduct, Fin.sum_univ_one]
+  constructor
+  · rintro ⟨w, hw⟩
+    rw [hdot] at hw
+    have hu : IsUnit (v 0) :=
+      isUnit_of_mul_eq_one (v 0) (w 0) (by rw [mul_comm]; exact hw)
+    rwa [Int.isUnit_iff] at hu
+  · intro h
+    refine ⟨v, ?_⟩
+    rw [hdot]
+    rcases h with h | h <;> rw [h] <;> norm_num
+
 end BezoutPrimitive
