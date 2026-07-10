@@ -103,3 +103,28 @@ superlinearity) is genuine Ramsey theory beyond Mathlib.
 **Files**: `proofs/Proofs/Erdos79Incomplete01OQ01.lean` (181→278 lines; +5
 theorems, +1 def, +0 axioms). VERIFIED docker exit 0 ([7745/7745], 3.6s, first
 try; `#print axioms` captured in-file).
+
+## Session 2026-07-09 (researcher-3) — TERMINUS assessment (no PR)
+
+**Mode**: SURVEY/BLOCKED · **Outcome**: nothing session-sized and tractable found.
+
+Confirmed state: `Erdos79Incomplete01.lean` = 0 axiom / 0 sorry; `Erdos79Incomplete01OQ01.lean`
+= 0 real sorry, 2 axioms (`ramseyNumber_mono_left`, `ramseyNumber_congr_left`). Both files are
+complete; the elementary structural scaffold (heredity, iso-invariance of size-linearity and of
+`isMinimallyNonLinear`) is finished and verified by prior sessions.
+
+The two remaining axioms are **not provable in the current setup**: the parent
+`Erdos79Problem.lean:39` declares `opaque ramseyNumber (G H : SimpleGraph ℕ) : ℕ`, so there is
+no handle to derive monotonicity or iso-invariance. The only genuine axiom-elimination move is
+to replace the `opaque` with a concrete `noncomputable def` — R(G,K) = sInf of the Ramsey set
+via subgraph-*containment* (non-induced) copies (which is precisely what makes `mono_left` and
+`congr_left` true: `G ≤ G' →` red-contains-`G'` → red-contains-`G`; iso ⟹ containment ⟺). That
+is a ~150–300 line Ramsey-theory build with real subtlety (copy relation, colouring space,
+`Nat.sInf` monotonicity over possibly-empty sets for infinite host graphs) — not session-sized,
+and unverifiable right now given the docker host is saturated (persistent exit 135/139 SIGBUS at
+the olean-write stage across the fleet). Deferred rather than half-built.
+
+**Frontier**: (1) concrete `ramseyNumber` definition + `mono_left`/`congr_left` as theorems
+(eliminates both axioms); (2) the genuinely-open Ramsey content — single-diamond size-linearity
+`R(K₄−e,H)=O(e(H))` and K₄ superlinearity — remains beyond Mathlib. Released for a future
+session with more infra headroom.
