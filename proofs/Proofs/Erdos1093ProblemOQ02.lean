@@ -1686,3 +1686,101 @@ theorem maximalDeficiencyIs_nine_iff_kGe23 :
     by_cases hk : k ≤ 22
     · exact deficiency_le_nine_of_k_le_22 hv.1 hv.2 hk
     · exact h n k (by omega) hv
+
+/-!
+## Section XXIV: The location bound closes `k = 23` — frontier `k ≥ 23` → `k ≥ 24`
+
+Section XXIII cashed out the effective, ELS-free location bound at the open frontier
+`k = 22`.  The same mechanism advances one further step, to `k = 23`.  A deficiency
+`≥ 10` forces the window-floor power bound `(n - 22)^{10} ≤ 23!`, and `23! < 175^{10}`
+(`factorial_23_lt_175_pow_ten`), so `n - 22 < 175`, i.e. `n ≤ 196`.  With the admissibility
+floor `n ≥ 46` (`= 2·23`) this leaves the finite window `n ∈ {46, 47, …, 196}` (one hundred
+and fifty-one values).
+
+As at `k = 18, …, 22`, `C(n,23)` is **not** uniformly even on this window: by
+Kummer/Lucas `C(n,23)` is odd exactly when the binary digits of `23 = 10111₂` sit inside
+those of `n`, which occurs at `n = 55, 63, 87, 95, 119, 127, 151, 159, 183, 191` inside the
+window, so the single prime `2` no longer certifies inadmissibility.  It remains true — and
+this is what closes the slice — that *some* prime `≤ 23` divides `C(n,23)` for every one of
+the one hundred and fifty-one values: `2` for the one hundred and forty-one even ones, and
+`5` for all ten odd ones (each of the odd binomials has `5 ∣ C(n,23)`).  So already the
+two-prime disjunction `2 ∣ C(n,23) ∨ 5 ∣ C(n,23)` holds throughout the window — matching
+the two-prime economy of `k = 19, 20, 21` (`5` here as at `k = 20, 21`, versus `3` at
+`k = 22`) — so no pair is admissible and no admissible pair at `k = 23` has deficiency
+exceeding `9`.
+
+As before the `(k!)²` factorial method is powerless here
+(`sharp_bound_permits_deficiency_ten` permits deficiency `10` for every `k ≥ 16`); only
+the *location* bound closes the slice.  The elementary resolution of OQ-02 now covers
+**all `k ≤ 23`**, moving the open frontier to `k ≥ 24`.  The structural results remain
+`ofReduceBool`-free; only the concrete divisibility facts use `native_decide`. -/
+
+/-- `23! < 175^10`, the numeric input that pins the `k = 23` window: `(n-22)^{10} ≤ 23!`
+forces `n - 22 < 175`.  `ofReduceBool`-free (`Nat.factorial` and `Nat.pow` on literals
+reduce under kernel `decide`; `23! = 25852016738884976640000 < 26938938999176025390625 = 175^{10}`). -/
+theorem factorial_23_lt_175_pow_ten : Nat.factorial 23 < 175 ^ 10 := by decide
+
+/-- For `46 ≤ n ≤ 196` some prime `≤ 23` divides `C(n,23)`: `2` for the even values and,
+for the ten odd binomials `n ∈ {55,63,87,95,119,127,151,159,183,191}`, the prime `5`.
+Stated as the disjunction `2 ∣ · ∨ 5 ∣ ·`, which holds across the whole window.  Uses
+`native_decide` (⇒ `Lean.ofReduceBool`) because the naive `Nat.choose` recursion is
+infeasible for kernel `decide`. -/
+theorem smallPrime_dvd_choose_23_of_range {n : ℕ} (hlo : 46 ≤ n) (hhi : n ≤ 196) :
+    2 ∣ Nat.choose n 23 ∨ 5 ∣ Nat.choose n 23 := by
+  interval_cases n <;> native_decide
+
+/-- The one hundred and fifty-one small pairs left by the `k = 23` location window are all
+inadmissible: some prime `p ∈ {2, 5}` (each `≤ 23`) divides `C(n,23)`, contradicting
+`NoSmallPrimeFactors n 23` (which would force `23 < p`). -/
+theorem not_admissible_k23_of_range {n : ℕ} (hlo : 46 ≤ n) (hhi : n ≤ 196) :
+    ¬ NoSmallPrimeFactors n 23 := by
+  intro h
+  rcases smallPrime_dvd_choose_23_of_range hlo hhi with hd | hd
+  · have := h 2 Nat.prime_two hd; omega
+  · have := h 5 Nat.prime_five hd; omega
+
+/-- **The location bound closes `k = 23`.**  For an admissible pair with `k = 23` the
+deficiency never exceeds `9`.  A deficiency `≥ 10` would force, via the window-floor
+bound, `(n - 22)^{10} ≤ 23! < 175^{10}`, hence `n ≤ 196`; with the admissibility floor
+`n ≥ 46` this leaves only `n ∈ {46,…,196}`, none admissible (some prime `≤ 23` divides
+`C(n,23)`, even where `C(n,23)` is odd).  The sharp factorial bound permits deficiency
+`10` here (`sharp_bound_permits_deficiency_ten`), but the *location* bound rules it out. -/
+theorem deficiency_le_nine_of_k_eq_23 {n : ℕ} (hn : 46 ≤ n)
+    (h : NoSmallPrimeFactors n 23) : deficiency n 23 ≤ 9 := by
+  by_contra hcon
+  push_neg at hcon
+  have hpow : (n - 23 + 1) ^ 10 ≤ Nat.factorial 23 :=
+    windowFloor_pow_le_factorial_of_le (k := 23) (d := 10) (by omega) h (by omega)
+  have hlt : (n - 23 + 1) ^ 10 < 175 ^ 10 := lt_of_le_of_lt hpow factorial_23_lt_175_pow_ten
+  have hfloor : n - 23 + 1 < 175 := by
+    by_contra hge
+    push_neg at hge
+    exact absurd (Nat.pow_le_pow_left hge 10) (not_le.mpr hlt)
+  exact not_admissible_k23_of_range (n := n) (by omega) (by omega) h
+
+/-- **Elementary resolution of OQ-02 for all `k ≤ 23`.**  Combines the location bound at
+`k ≤ 22` (`deficiency_le_nine_of_k_le_22`) with the location bound at `k = 23`
+(`deficiency_le_nine_of_k_eq_23`).  Strictly extends the `k ≤ 22` reach of Section XXIII. -/
+theorem deficiency_le_nine_of_k_le_23 {n k : ℕ} (hn : 2 * k ≤ n)
+    (h : NoSmallPrimeFactors n k) (hk : k ≤ 23) : deficiency n k ≤ 9 := by
+  by_cases hk22 : k ≤ 22
+  · exact deficiency_le_nine_of_k_le_22 hn h hk22
+  · have hk23 : k = 23 := by omega
+    subst hk23
+    exact deficiency_le_nine_of_k_eq_23 (by omega) h
+
+/-- **Sharpened reduction to `k ≥ 24`.**  `MaximalDeficiencyIs 9` is equivalent to the
+open universal bound restricted to `k ≥ 24`: the cases `k ≤ 22` are discharged by the
+sharp/location bounds and `k = 23` by the location bound (`deficiency_le_nine_of_k_le_23`).
+Strictly sharper than `maximalDeficiencyIs_nine_iff_kGe23`; the entire remaining open
+content of OQ-02 now lives at `k ≥ 24`. -/
+theorem maximalDeficiencyIs_nine_iff_kGe24 :
+    MaximalDeficiencyIs 9 ↔
+      ∀ n k, 24 ≤ k → ValidDeficiencyExample n k → deficiency n k ≤ 9 := by
+  rw [maximalDeficiencyIs_nine_iff_upperBound]
+  constructor
+  · intro h n k _ hv; exact h n k hv
+  · intro h n k hv
+    by_cases hk : k ≤ 23
+    · exact deficiency_le_nine_of_k_le_23 hv.1 hv.2 hk
+    · exact h n k (by omega) hv
