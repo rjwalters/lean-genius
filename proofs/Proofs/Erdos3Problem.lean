@@ -734,9 +734,11 @@ theorem summable_of_sharpBound {A : Set ℕ} {C δ : ℝ} (hδ : 0 < δ) (hC : 0
     positivity
   set g : ℕ → ℝ := {j : ℕ | Nthr ≤ j}.indicator full with hgdef
   have hg_nonneg : ∀ j, 0 ≤ g j := by
-    have : (0 : ℕ → ℝ) ≤ g := by
-      rw [hgdef]; exact Set.indicator_nonneg (fun j hj => (hfullpos j hj).le)
-    exact fun j => this j
+    intro j
+    rw [hgdef, Set.indicator_apply]
+    split_ifs with hj
+    · exact (hfullpos j hj).le
+    · exact le_refl 0
   -- g is summable: `full` is a constant multiple of the convergent const-in-log series.
   have hfull_summable : Summable full := by
     have hbase := Erdos3Bertrand.summable_one_div_nat_mul_log_mul_const
@@ -746,7 +748,13 @@ theorem summable_of_sharpBound {A : Set ℕ} {C δ : ℝ} (hδ : 0 < δ) (hC : 0
     refine (hshift.mul_left K).congr (fun j => ?_)
     push_cast
     rw [mul_one_div]
-  have hg_summable : Summable g := by rw [hgdef]; exact hfull_summable.indicator _
+  -- g is summable: it is `full` outside the finite window `[0, Nthr)`, so shifting past
+  -- the window (`summable_nat_add_iff`) turns it into the summable tail of `full`.
+  have hg_summable : Summable g := by
+    rw [hgdef]
+    refine (summable_nat_add_iff Nthr).mp ?_
+    refine ((summable_nat_add_iff Nthr).mpr hfull_summable).congr (fun n => ?_)
+    exact (Set.indicator_of_mem (Nat.le_add_left Nthr n) full).symm
   -- Dyadic block masses.
   set block : ℕ → ℝ := fun j => ∑ i ∈ Finset.Ico (2 ^ j) (2 ^ (j + 1)), A.indicator F i
     with hblockdef
