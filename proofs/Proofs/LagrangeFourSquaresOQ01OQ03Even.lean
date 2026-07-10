@@ -96,4 +96,18 @@ theorem jacobiCount_four_dvd_add {n : ℕ} (hn : 4 ∣ n) :
 /-- Sanity check of the even closed form at `n = 4`: `jacobiCount 4 = 24`. -/
 example : jacobiCount 4 = 24 := by decide
 
+/-- **Unified closed form of the Jacobi right-hand side.**  Packaging
+`jacobiCount_of_not_four_dvd` and `jacobiCount_four_dvd_add` into a single
+determination valid for *every* `n`: off the `4 ∣ n` locus the Jacobi count is the
+plain scaled divisor sum `8·σ(n)`, and on it the same value is corrected by exactly
+`32·σ(n/4)` (equivalently `jacobiCount n = 8σ(n) − 32σ(n/4)`).  This is the entry
+point the docstring's "(1)+(3) determine `jacobiCount` on all `n`" claim refers to:
+the Jacobi RHS is pinned on every `n` purely from ordinary divisor sums, with no
+`native_decide` and no axioms (`propext`/`Classical.choice`/`Quot.sound` only). -/
+theorem jacobiCount_closed_form (n : ℕ) :
+    (¬ 4 ∣ n → jacobiCount n = 8 * ∑ d ∈ n.divisors, d) ∧
+    (4 ∣ n → jacobiCount n + 32 * ∑ e ∈ (n / 4).divisors, e
+        = 8 * ∑ d ∈ n.divisors, d) :=
+  ⟨jacobiCount_of_not_four_dvd, jacobiCount_four_dvd_add⟩
+
 end LagrangeFourSquaresOQ01OQ03Even
