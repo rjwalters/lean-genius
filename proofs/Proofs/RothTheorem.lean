@@ -1628,4 +1628,118 @@ theorem sqDiffFree_density_bound {N : ℕ} [NeZero N] (A : Finset (ZMod N)) {M :
     exact_mod_cast sqDiffCount_le_of_free A hfree
   linarith
 
+/-!
+## Part VII: Weyl-differencing magnitude of the quadratic Gauss sum
+
+The abstract circle-method reduction (`sqDiffFree_density_bound`) leaves a single
+analytic input: a magnitude bound `‖G(r)‖ ≤ M` on the quadratic Gauss sum
+`G(r) = Σ_n ψ(r·n²)` for nonzero frequencies `r`.  The classical route to that
+bound is **Weyl differencing**: squaring `G(r)` and reindexing `m = n + h` turns
+the double character sum into a *linear* one in `n`, which `char_orthogonality`
+collapses.  The result is the exact squared-magnitude identity
+
+    ‖G(r)‖² = N · Σ_{h : 2rh = 0} ψ(−r·h²),
+
+reducing the magnitude of a genuinely *quadratic* exponential sum to a sum over
+the (small) kernel `{h : 2rh = 0}`.  Two consequences follow immediately:
+
+  * `sqGaussSum_normSq_le` — the bound `‖G(r)‖² ≤ N · #{h : 2rh = 0}` (triangle
+    inequality, each `‖ψ‖ = 1`), pinning the sole remaining quantity in the
+    Sárközy density bound to the *cardinality of the kernel*;
+  * `sqGaussSum_normSq_eq_of_kernel_trivial` — the exact evaluation
+    `‖G(r)‖² = N` (so `‖G(r)‖ = √N`) whenever the kernel is trivial (e.g. `N`
+    odd and `2r` a unit) — the classical quadratic Gauss-sum magnitude in the
+    accessible regime.
+
+All 0-axiom.  This is the concrete first step of the one remaining input: it
+identifies the kernel count `#{h : 2rh = 0}` (a `gcd(2r, N)` quantity) as exactly
+what controls `‖G(r)‖`, replacing the black-box `√(2N)` with a structured estimate.
+-/
+
+/-- **Weyl-differencing squared-magnitude identity.**  Squaring the quadratic
+    Gauss sum and reindexing `m = n + h` linearises the phase in `n`:
+
+    `G(r) · conj(G(r)) = N · Σ_{h : 2rh = 0} ψ(−r·h²)`.
+
+    The inner `n`-sum `Σ_n ψ((−2rh)·n)` is a *linear* character sum, collapsed by
+    `char_orthogonality` to `N·[2rh = 0]`; only the diagonal frequencies `2rh = 0`
+    survive, each weighted by the residual quadratic phase `ψ(−r·h²)`. -/
+theorem sqGaussSum_mul_conj {N : ℕ} [NeZero N] (r : ZMod N) :
+    sqGaussSum r * starRingEnd ℂ (sqGaussSum r)
+      = (N : ℂ) * (Finset.univ.filter (fun h : ZMod N => 2 * r * h = 0)).sum
+          (fun h => ψ (-(r * h ^ 2))) := by
+  -- Expand `G · conj G` as a product of ψ-sums and merge each pair into one ψ.
+  simp only [sqGaussSum, map_sum (starRingEnd ℂ), conj_psi]
+  rw [Finset.sum_mul_sum]
+  simp_rw [← psi_add]
+  -- Reindex the inner `m`-sum by `m = n + h` (a bijection of `ZMod N`).
+  rw [show (Finset.univ.sum (fun n : ZMod N =>
+        Finset.univ.sum (fun m : ZMod N => ψ (r * n ^ 2 + -(r * m ^ 2)))))
+      = (Finset.univ.sum (fun n : ZMod N =>
+        Finset.univ.sum (fun h : ZMod N => ψ (r * n ^ 2 + -(r * (n + h) ^ 2))))) from by
+    refine Finset.sum_congr rfl (fun n _ => ?_)
+    exact (Finset.sum_equiv (Equiv.addLeft n) (fun h => by simp) (fun h _ => rfl)).symm]
+  -- The merged phase `r(n² − (n+h)²)` is linear in `n`: `(−2rh)·n − r·h²`.
+  simp_rw [show ∀ n h : ZMod N, ψ (r * n ^ 2 + -(r * (n + h) ^ 2))
+        = ψ (n * (-(2 * r * h))) * ψ (-(r * h ^ 2)) from
+    fun n h => by
+      rw [show r * n ^ 2 + -(r * (n + h) ^ 2) = n * (-(2 * r * h)) + (-(r * h ^ 2)) from by ring,
+        psi_add]]
+  -- Bring the `n`-sum innermost and factor the `n`-independent phase out.
+  rw [Finset.sum_comm]
+  simp_rw [← Finset.sum_mul]
+  -- Character orthogonality: `Σ_n ψ((−2rh)·n) = N·[2rh = 0]`.
+  simp_rw [char_orthogonality, neg_eq_zero]
+  -- Collapse the resulting `if` to a sum over the kernel and factor out `N`.
+  simp_rw [ite_mul, zero_mul]
+  rw [← Finset.sum_filter, ← Finset.mul_sum]
+
+/-- **Magnitude bound via the kernel count.**  From the Weyl identity, the triangle
+    inequality and `‖ψ‖ = 1` give `‖G(r)‖² ≤ N · #{h : 2rh = 0}`.  The sole quantity
+    controlling the quadratic Gauss sum is thus the size of the kernel `{h : 2rh = 0}`
+    — a `gcd(2r, N)` count — a structured replacement for the black-box `√(2N)`. -/
+theorem sqGaussSum_normSq_le {N : ℕ} [NeZero N] (r : ZMod N) :
+    ‖sqGaussSum r‖ ^ 2
+      ≤ (N : ℝ) * ((Finset.univ.filter (fun h : ZMod N => 2 * r * h = 0)).card : ℝ) := by
+  have hGsq : (↑(‖sqGaussSum r‖ ^ 2) : ℂ)
+      = (N : ℂ) * (Finset.univ.filter (fun h : ZMod N => 2 * r * h = 0)).sum
+          (fun h => ψ (-(r * h ^ 2))) := by
+    rw [← sqGaussSum_mul_conj r, Complex.mul_conj, Complex.normSq_eq_norm_sq]
+  have hnn : (0 : ℝ) ≤ ‖sqGaussSum r‖ ^ 2 := sq_nonneg _
+  have hnorm : ‖sqGaussSum r‖ ^ 2
+      = ‖(N : ℂ) * (Finset.univ.filter (fun h : ZMod N => 2 * r * h = 0)).sum
+          (fun h => ψ (-(r * h ^ 2)))‖ := by
+    have h := congrArg norm hGsq
+    rwa [Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg hnn] at h
+  rw [hnorm, norm_mul, Complex.norm_natCast]
+  apply mul_le_mul_of_nonneg_left _ (Nat.cast_nonneg N)
+  calc ‖(Finset.univ.filter (fun h : ZMod N => 2 * r * h = 0)).sum
+            (fun h => ψ (-(r * h ^ 2)))‖
+      ≤ (Finset.univ.filter (fun h : ZMod N => 2 * r * h = 0)).sum
+          (fun h => ‖ψ (-(r * h ^ 2))‖) := norm_sum_le _ _
+    _ = (Finset.univ.filter (fun h : ZMod N => 2 * r * h = 0)).sum (fun _ => (1 : ℝ)) :=
+        Finset.sum_congr rfl (fun h _ => psi_norm _)
+    _ = ((Finset.univ.filter (fun h : ZMod N => 2 * r * h = 0)).card : ℝ) := by
+        rw [Finset.sum_const, nsmul_eq_mul, mul_one]
+
+/-- **Exact magnitude in the accessible regime.**  When the kernel `{h : 2rh = 0}`
+    is trivial — e.g. `N` odd and `2r` a unit — only `h = 0` survives in the Weyl
+    identity, giving the classical exact evaluation `‖G(r)‖² = N`, i.e. `‖G(r)‖ = √N`.
+    This is the quadratic Gauss-sum magnitude that, supplied as `M = √N` into
+    `sqDiffFree_density_bound`, yields Sárközy's density bound outright. -/
+theorem sqGaussSum_normSq_eq_of_kernel_trivial {N : ℕ} [NeZero N] (r : ZMod N)
+    (hker : ∀ h : ZMod N, 2 * r * h = 0 → h = 0) :
+    ‖sqGaussSum r‖ ^ 2 = (N : ℝ) := by
+  have hfilter : (Finset.univ.filter (fun h : ZMod N => 2 * r * h = 0)) = {0} := by
+    ext h
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_singleton]
+    exact ⟨hker h, fun hh => by rw [hh]; ring⟩
+  have hid := sqGaussSum_mul_conj r
+  rw [hfilter, Finset.sum_singleton,
+    show (-(r * (0 : ZMod N) ^ 2)) = 0 from by ring, psi_zero, mul_one] at hid
+  have hGsq : (↑(‖sqGaussSum r‖ ^ 2) : ℂ) = sqGaussSum r * starRingEnd ℂ (sqGaussSum r) := by
+    rw [Complex.mul_conj, Complex.normSq_eq_norm_sq]
+  rw [hid] at hGsq
+  exact_mod_cast hGsq
+
 end Szemeredi.Roth
