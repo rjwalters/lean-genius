@@ -79,28 +79,32 @@
       "title": "Threshold Context and Namespace Setup",
       "startLine": 1,
       "endLine": 56,
-      "summary": "Module docstring framing the group-theoretic core of Abel–Ruffini: the dichotomy Sₙ solvable ⇔ n ≤ 4. The non-solvable half (n ≥ 5) lives in AbelRuffiniObstructionOQ06.lean; this file supplies the positive half that Mathlib does not package. Imports Mathlib, opens the AbelRuffiniOQ06 namespace with Equiv, and states the reduction lemma's docstring: Aₙ = ker(sign) is normal in Sₙ with abelian quotient Sₙ/Aₙ ↪ ℤˣ, so solvability of Aₙ lifts to Sₙ via solvable_of_ker_le_range. The characteristic-p / Abhyankar reading of the title is explicitly scoped out."
+      "summary": "Module docstring framing the group-theoretic core of Abel–Ruffini: the dichotomy Sₙ solvable ⇔ n ≤ 4. The non-solvable half (n ≥ 5) lives in AbelRuffiniObstructionOQ06.lean; this file supplies the positive half that Mathlib does not package. Imports Mathlib, opens the AbelRuffiniOQ06 namespace with Equiv, and states the reduction lemma's docstring: Aₙ = ker(sign) is normal in Sₙ with abelian quotient Sₙ/Aₙ ↪ ℤˣ, so solvability of Aₙ lifts to Sₙ via solvable_of_ker_le_range. The characteristic-p / Abhyankar reading of the title is explicitly scoped out.",
+      "mathContext": "Abel–Ruffini solvability threshold: $S_n$ is solvable $\\iff n \\le 4$. This file settles the sub-threshold cases $n \\le 3$, where $A_n$ is abelian; the obstruction ($A_5$ simple non-abelian, $n \\ge 5$) is a companion file."
     },
     {
       "id": "reduction",
       "title": "The Aₙ → Sₙ Reduction",
       "startLine": 57,
       "endLine": 61,
-      "summary": "permSolvable_of_alternatingSolvable: Sₙ is solvable whenever Aₙ is, via solvable_of_ker_le_range applied to the inclusion Aₙ ↪ Sₙ and sign : Sₙ →* ℤˣ. The kernel hypothesis reduces to Aₙ ≤ Aₙ after Subgroup.range_subtype and alternatingGroup_eq_sign_ker."
+      "summary": "permSolvable_of_alternatingSolvable: Sₙ is solvable whenever Aₙ is, via solvable_of_ker_le_range applied to the inclusion Aₙ ↪ Sₙ and sign : Sₙ →* ℤˣ. The kernel hypothesis reduces to Aₙ ≤ Aₙ after Subgroup.range_subtype and alternatingGroup_eq_sign_ker.",
+      "mathContext": "$A_n$ solvable $\\Rightarrow S_n$ solvable: the short exact sequence $1 \\to A_n \\to S_n \\xrightarrow{\\mathrm{sgn}} \\{\\pm 1\\} \\to 1$ has abelian quotient, and an extension of a solvable group by a solvable group is solvable."
     },
     {
       "id": "base-cases",
       "title": "A₂ and A₃ Solvable",
       "startLine": 67,
       "endLine": 80,
-      "summary": "alternatingFinTwo_isSolvable: |A₂| = 1, subsingleton, solvable. alternatingFinThree_isSolvable: |A₃| = 3 (nat_card_alternatingGroup); prime order ⟹ cyclic (isCyclic_of_prime_card) ⟹ abelian (IsCyclic.commutative) ⟹ solvable (isSolvable_of_comm). perm_fin_three_solvable adds S₃ via A₃=ker(sign) (prime order 3 ⇒ cyclic ⇒ solvable) and the abelian quotient S₃/A₃, through solvable_of_ker_le_range."
+      "summary": "alternatingFinTwo_isSolvable: |A₂| = 1, subsingleton, solvable. alternatingFinThree_isSolvable: |A₃| = 3 (nat_card_alternatingGroup); prime order ⟹ cyclic (isCyclic_of_prime_card) ⟹ abelian (IsCyclic.commutative) ⟹ solvable (isSolvable_of_comm). perm_fin_three_solvable adds S₃ via A₃=ker(sign) (prime order 3 ⇒ cyclic ⇒ solvable) and the abelian quotient S₃/A₃, through solvable_of_ker_le_range.",
+      "mathContext": "$|A_2| = 1$ (trivial, solvable); $|A_3| = 3$ prime $\\Rightarrow A_3$ cyclic $\\Rightarrow$ abelian $\\Rightarrow$ solvable. These abelian base cases are exactly why $S_2, S_3$ stay below the threshold."
     },
     {
       "id": "symmetric-cases",
       "title": "S₂ and S₃ Solvable",
       "startLine": 86,
       "endLine": 92,
-      "summary": "permFinTwo_isSolvable and permFinThree_isSolvable apply the reduction to the base cases, delivering the n = 2 and n = 3 solvable instances of the Abel–Ruffini threshold."
+      "summary": "permFinTwo_isSolvable and permFinThree_isSolvable apply the reduction to the base cases, delivering the n = 2 and n = 3 solvable instances of the Abel–Ruffini threshold.",
+      "mathContext": "$S_2$ and $S_3$ are solvable, immediate from the reduction ($A_2, A_3$ solvable). Concretely $S_2 \\cong \\mathbb{Z}/2$ and $S_3$ has the chain $1 \\trianglelefteq A_3 \\trianglelefteq S_3$ with cyclic quotients."
     }
   ],
   "conclusion": {
