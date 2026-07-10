@@ -478,6 +478,35 @@ theorem genusSurfaceCGB_one_chi : (genusSurfaceCGB 1).chi = 0 := by decide
 /-- Genus `2`: `χ(Σ_2) = −2`, matching `genus_two_surface_chi` (the `T² # T²` construction). -/
 theorem genusSurfaceCGB_two_chi : (genusSurfaceCGB 2).chi = -2 := by decide
 
+-- ============================================================================
+-- Part XII: Genus is additive under connected sum — (surfaces, #) ≅ (ℕ, +)
+-- ============================================================================
+
+/-- **Genus additivity (Euler characteristic).**  The connected sum of the genus-`g`
+    and genus-`h` closed orientable surfaces is the genus-`(g+h)` surface:
+    `χ(Σ_g # Σ_h) = χ(Σ_{g+h})`.  Indeed `(2−2g) + (2−2h) − 2 = 2 − 2(g+h)`.  This is
+    the full additivity behind the single-handle recursion `genusSurfaceCGB_chi_succ`
+    (the `h = 1` case), and exhibits genus as the monoid isomorphism
+    `(closed orientable surfaces, #) ≅ (ℕ, +)`. -/
+theorem connectedSum_genusSurface_chi (g h : ℕ) :
+    (connectedSumCGB (genusSurfaceCGB g) (genusSurfaceCGB h) rfl).chi
+      = (genusSurfaceCGB (g + h)).chi := by
+  simp only [connectedSumCGB_chi, genusSurfaceCGB_chi]
+  push_cast
+  ring
+
+/-- **Genus additivity (total curvature).**  The connected sum is also consistent on
+    the Gauss-Bonnet total Pfaffian: `∫Pf(Σ_g # Σ_h) = ∫Pf(Σ_{g+h}) = 4π(1 − g − h)`.
+    The `2·(2π)` curvature removed with the two glued disks accounts exactly for the
+    `χ`-drop, so `Σ_g # Σ_h` and `Σ_{g+h}` agree as Chern-Gauss-Bonnet manifolds. -/
+theorem connectedSum_genusSurface_totalPfaffian (g h : ℕ) :
+    (connectedSumCGB (genusSurfaceCGB g) (genusSurfaceCGB h) rfl).totalPfaffian
+      = (genusSurfaceCGB (g + h)).totalPfaffian := by
+  simp only [connectedSumCGB_totalPfaffian, genusSurfaceCGB_halfDim,
+    genusSurfaceCGB_totalPfaffian, cgbConst_one]
+  push_cast
+  ring
+
 end ChernGaussBonnet
 
 end
