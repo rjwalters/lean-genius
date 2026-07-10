@@ -47,10 +47,12 @@
       "increment_div_eq_ratio_sub_one — (R(l+1)-R(l))/R(l) = R(l+1)/R(l)-1 (algebraic engine).",
       "increment_div_tendsto_zero_iff_ratio_tendsto_one — normalized increment ->0 IFF consecutive ratio ->1; converts #1014's ratio convergence into Delta_l(k)=o(R(k,l)).",
       "increment_div_tendsto_zero_of_ratio_tendsto_one — forward corollary packaged for direct use.",
-      "Erdos1014OQ03Obstruction.lean: increment_asymptotic_not_determined_by_asymptotic_class (packaged existential) + increment_ratio_not_tendsto_one (crux, even-subsequence limit-uniqueness argument) + asymptotic_equiv (u~v via squeeze (-1)^l/l -> 0) + u_increment/v_increment closed forms. 0 axiom/0 sorry, UNVERIFIED (docker image-build down: containerd meta.db I/O error)."
+      "Erdos1014OQ03Obstruction.lean: increment_asymptotic_not_determined_by_asymptotic_class (packaged existential) + increment_ratio_not_tendsto_one (crux, even-subsequence limit-uniqueness argument) + asymptotic_equiv (u~v via squeeze (-1)^l/l -> 0) + u_increment/v_increment closed forms. 0 axiom/0 sorry, UNVERIFIED (docker image-build down: containerd meta.db I/O error).",
+      "increment_asymptotic_not_determined_under_normalized_regularity in Erdos1014OQ03Obstruction.lean — sharpened capstone existential: witnesses u,v can additionally be required normalized-increment-regular ((u(l+1)-u l)/u l → 0) while the increment ratio still fails to tend to 1"
     ],
     "insights": [
-      "The consecutive increment of a sequence is provably NOT a function of its asymptotic (~) equivalence class: witness u l = l, v l = l + (-1)^l have v/u -> 1 (u ~ v) yet increment ratio (v(l+1)-v l)/(u(l+1)-u l) = 1 - 2(-1)^l does not converge (=-1 on evens, =3 on odds). This is the rigorous form of the prose sin-based caution and formally justifies why the naive power-law Approach A is invalid."
+      "The consecutive increment of a sequence is provably NOT a function of its asymptotic (~) equivalence class: witness u l = l, v l = l + (-1)^l have v/u -> 1 (u ~ v) yet increment ratio (v(l+1)-v l)/(u(l+1)-u l) = 1 - 2(-1)^l does not converge (=-1 on evens, =3 on odds). This is the rigorous form of the prose sin-based caution and formally justifies why the naive power-law Approach A is invalid.",
+      "Adding the base sequence u its own o(u)-scale (normalized-increment) regularity does NOT rescue increment-ratio convergence; asymptotic equivalence + first-order smoothness of u together are still insufficient, so the honest increment-ratio bridge is unavoidable"
     ],
     "mathlibGaps": [],
     "nextSteps": [

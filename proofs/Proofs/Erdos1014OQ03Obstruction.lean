@@ -156,4 +156,25 @@ theorem increment_asymptotic_not_determined_by_asymptotic_class :
       ¬ Tendsto (fun l => (v (l + 1) - v l) / (u (l + 1) - u l)) atTop (𝓝 1) :=
   ⟨u, v, u_pos, v_pos, asymptotic_equiv, increment_ratio_not_tendsto_one⟩
 
+/-- **Increment undetermined even under normalized-increment regularity (sharpened
+existential).**
+
+A strengthening of `increment_asymptotic_not_determined_by_asymptotic_class`: the two
+witnesses can additionally be required to have `u` *normalized-increment regular*, i.e.
+`(u(l+1) − u(l))/u(l) → 0`.  So even when the sequences are asymptotically equivalent
+**and** the base sequence's own jumps are `o(u)` — the natural first-order smoothness
+hypothesis one might hope to leverage — the consecutive-increment ratio still fails to
+tend to `1`.  Hence a normalized-increment (`o(R)`-scale) regularity assumption on the
+sequence does **not** substitute for the honest increment–ratio bridge, which
+hypothesizes the consecutive ratio directly. -/
+theorem increment_asymptotic_not_determined_under_normalized_regularity :
+    ∃ u v : ℕ → ℝ,
+      (∀ᶠ l in atTop, 0 < u l) ∧
+      (∀ᶠ l in atTop, 0 < v l) ∧
+      Tendsto (fun l => v l / u l) atTop (𝓝 1) ∧
+      Tendsto (fun l => (u (l + 1) - u l) / u l) atTop (𝓝 0) ∧
+      ¬ Tendsto (fun l => (v (l + 1) - v l) / (u (l + 1) - u l)) atTop (𝓝 1) :=
+  ⟨u, v, u_pos, v_pos, asymptotic_equiv, u_normalizedIncrement_tendsto_zero,
+    increment_ratio_not_tendsto_one⟩
+
 end Erdos1014OQ03Obstruction
