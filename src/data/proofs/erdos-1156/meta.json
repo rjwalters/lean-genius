@@ -181,5 +181,29 @@
       "description": "Erdős #2 also concerns random graph properties and probabilistic combinatorics"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "title": "Erdős Problem #1156",
+      "author": "erdosproblems.com",
+      "year": "2023",
+      "venue": "erdosproblems.com",
+      "url": "https://erdosproblems.com/1156",
+      "description": "Canonical entry (OPEN): is χ(G(n,1/2)) a.s. concentrated on a constant number of values, and is there matching anti-concentration?"
+    },
+    {
+      "title": "The chromatic number of random graphs",
+      "author": "Béla Bollobás",
+      "year": "1988",
+      "venue": "Combinatorica",
+      "description": "Determined the asymptotics χ(G(n,1/2)) ~ n/(2 log₂ n) almost surely, the baseline for all concentration questions."
+    },
+    {
+      "title": "Non-concentration of the chromatic number of a random graph",
+      "author": "Annika Heckel",
+      "year": "2021",
+      "venue": "Journal of the American Mathematical Society",
+      "description": "Proved two-point concentration fails in general and, for at least half of all n, χ(G(n,1/2)) is concentrated on two consecutive values; strengthens Shamir–Spencer (1987) and Alon–Krivelevich (1997)."
+    }
+  ]
 }

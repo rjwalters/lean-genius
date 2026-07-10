@@ -148,5 +148,28 @@
     "path": "Proofs/Erdos1159Problem.lean",
     "sorries": 0
   },
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "title": "Erdős Problem #1159",
+      "author": "erdosproblems.com",
+      "year": "2023",
+      "venue": "erdosproblems.com",
+      "url": "https://erdosproblems.com/1159",
+      "description": "Canonical entry (OPEN): does an absolute constant C>1 exist so that every finite projective plane has a set S meeting each line in between 1 and C points (a C-bounded blocking set)?"
+    },
+    {
+      "title": "Erdős–Silverman–Stein result on bounded blocking sets (1983)",
+      "author": "Paul Erdős, D. R. Silverman, A. Stein",
+      "year": "1983",
+      "description": "Proved every projective plane of order n admits a blocking set S with |S∩ℓ|=O(log n) for all lines ℓ; the open question is whether O(log n) can be replaced by an absolute constant. See erdosproblems.com/1159 for the exact citation."
+    },
+    {
+      "title": "Projective Planes",
+      "author": "Daniel R. Hughes and Fred C. Piper",
+      "year": "1973",
+      "venue": "Springer (Graduate Texts in Mathematics 6)",
+      "description": "Standard reference for finite projective planes, lines, blocking sets, and incidence structure underlying the C-bounded blocking-set question."
+    }
+  ]
 }
