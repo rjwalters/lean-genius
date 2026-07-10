@@ -26,7 +26,7 @@
     "nextAction": "Reconstruct the energy-increment step (epsilon-irregular refinement raises partitionEnergy by >= delta) from split_energy_excess_bound, then assemble the outer AFKS loop using partitionEnergy_no_infinite_increments as termination certificate."
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: the SHARP no-loss route is now COMPLETE end-to-end as an iteration certificate — per-pair ε⁴ gain → sharp whole-partition gain (partitionEnergy_prod_gain_eps4) → SHARP termination count afks_sharp_energy_iteration_count (N≤n²/(ε⁴M)) → witness-driven afks_sharp_energy_iteration_count_of_prod_witness, all VERIFIED 0/0. Remaining blocker for a FULLY-INTERNAL ∃P′ capstone is unchanged: witness-cell freshness from a nonempty-equipartition model.",
+    "progressSummary": "AFKS strong-regularity finiteness formalized end-to-end across 6 companion files (OQ04/Energy/Bridge/Product/Assembly/Witness). The sharp 2x2 epsilon^4 energy increment is closed at the pair level (variance-atom bound), lifted to the whole partition (partitionEnergy_prod_refinement_gain / partitionEnergy_prod_gain_eps4), generalized to m x k product families (Product file), and fed to the [0,1]-potential termination engine to bound refinements by N <= n^2/(eps^4 m^2) (afks_sharp_energy_iteration_count / _of_prod_witness). NEW (researcher-8, 2026-07-09): afks_regular_step_within_bound (Assembly) -- the TERMINATION capstone the file was built toward: the contrapositive of the iteration-count bound, so for any horizon N > n^2/(eps^4 m^2) there is a step n<N that is NOT a mass-m epsilon-irregular sharp 2x2 split (a regular refinement step is reached in O(n^2/(eps^4 m^2)) steps; an infinite chain of sharp irregular refinements is impossible since energy is capped at 1). ~12 lines, pure by_contra+push_neg feeding the verified capstone. The one standing open blocker is discharging the freshness/equipartition realizability of the witnessed steps from a concrete equipartition model (threaded as hypotheses everywhere). UNVERIFIED-by-build this session: Bridge dependency (job 7748) crashes at olean-write SIGBUS-135 in ~1.5s under heavy fleet memory pressure (~9 attempts + 2 cache repairs); Assembly (7749) never reached. Every prior szemeredi session hit the identical block and confirmed green once the fleet quieted.",
     "builtItems": [
       "edgeDensity_union_mul in SzemerediRegularityOQ04Energy.lean — weighted-average identity |A1cupA2||B|d = |A1||B|d1+|A2||B|d2 for disjoint A-split (reusable public API; previously trapped inside density_sq_convex proof).",
       "pairEnergy def + pairEnergy_split_mono — one-sided refinement never decreases the normalized pair energy (|A||B|/n^2)d^2; transports density_sq_convex to partitionEnergy units.",
@@ -61,7 +61,8 @@
       "edgeDensity_biUnion_mul / edgeDensity_mul_biUnion (SzemerediRegularityOQ04Product.lean): general one-sided law of total density over an arbitrary disjoint Finset family, by Finset.induction peeling the 2-way edgeDensity_union_mul(_right) at each step",
       "edgeDensity_prod_family_split (SzemerediRegularityOQ04Product.lean): general product law of total density |A||B|d(A,B)=ΣΣ|Aᵢ||Bⱼ|d(Aᵢ,Bⱼ) for arbitrary disjoint families {Aᵢ}_I,{Bⱼ}_J",
       "prod_family_total_weight (SzemerediRegularityOQ04Product.lean): ΣΣ|Aᵢ||Bⱼ|=|A||B| via Finset.card_biUnion + Finset.sum_mul_sum",
-      "pairEnergy_prod_family_refinement_gain (SzemerediRegularityOQ04Product.lean): the full m×k product-refinement energy increment — pairEnergy A B + (|A_{i₀}||B_{j₀}|/n²)d² ≤ ΣΣ pairEnergy Aᵢ Bⱼ from a single deviating witness cell; VERIFIED 0/0, generalizes the 2×2 pairEnergy_prod_refinement_gain"
+      "pairEnergy_prod_family_refinement_gain (SzemerediRegularityOQ04Product.lean): the full m×k product-refinement energy increment — pairEnergy A B + (|A_{i₀}||B_{j₀}|/n²)d² ≤ ΣΣ pairEnergy Aᵢ Bⱼ from a single deviating witness cell; VERIFIED 0/0, generalizes the 2×2 pairEnergy_prod_refinement_gain",
+      "afks_regular_step_within_bound (Assembly) -- TERMINATION capstone: contrapositive of the sharp iteration-count bound; for horizon N > n^2/(eps^4 m^2), some step n<N is NOT a mass-m epsilon-irregular sharp 2x2 split (a regular step is reached in O(n^2/(eps^4 m^2)) steps). Reuses the verified afks_sharp_energy_iteration_count_of_prod_witness."
     ],
     "insights": [
       "partitionEnergy IS the standard size-weighted energy |Pi||Pj|/n^2 d^2 (SzemerediCore:63), NOT 1/k^2. The abandoned energy_increment_step note in SzemerediRegularity (lines 212-219) rests on a false premise; refinement monotonicity is genuine and now proven per-pair.",
@@ -215,6 +216,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SzemerediRegularityOQ04Product.lean"
+    },
+    {
+      "path": "Proofs/SzemerediRegularityOQ04Assembly.lean",
+      "filename": "SzemerediRegularityOQ04Assembly.lean",
+      "lineCount": 342,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SzemerediRegularityOQ04Assembly.lean"
     }
   ],
   "lastUpdate": "2026-07-09"
