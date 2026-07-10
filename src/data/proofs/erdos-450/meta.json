@@ -149,6 +149,29 @@
       "description": "Both concern the multiplicative structure of integers in intervals: #490 studies distinct products from subsets of $\\{1,\\ldots,N\\}$, while #450 studies divisor density. Both connect to Ford's program on the anatomy of integers"
     }
   ],
+  "references": [
+    {
+      "title": "Old and New Problems and Results in Combinatorial Number Theory",
+      "author": "Paul Erdős and Ronald L. Graham",
+      "year": "1980",
+      "venue": "Monographies de L'Enseignement Mathématique 28, Université de Genève",
+      "description": "The monograph where this problem is posed (p. 89): how large must y = y(ε, n) be so that at most ε·y integers in (x, x+y) have a divisor in (n, 2n)?"
+    },
+    {
+      "title": "The distribution of integers with a divisor in a given interval",
+      "author": "Kevin Ford",
+      "year": "2008",
+      "venue": "Annals of Mathematics (2) 168, no. 2, pp. 367–433",
+      "description": "The definitive study of H(x, y, z) = #{n ≤ x : n has a divisor in (y, z]}, resolving the order of magnitude for the (n, 2n) case. Source of the density constant δ = 1 − (1 + log log 2)/log 2 ≈ 0.086 that governs the anatomy-of-integers input to this problem."
+    },
+    {
+      "title": "Erdős Problem #450",
+      "author": "Thomas F. Bloom (ed.)",
+      "year": "2024",
+      "venue": "erdosproblems.com/450",
+      "description": "The catalogued entry for the problem, recording its OPEN status and Cambie's observation that under the 'for all x' interpretation no such y exists once ε·(log n)^δ·(log log n)^{3/2} → ∞, via Ford's divisor-distribution results."
+    }
+  ],
   "conclusion": {
     "summary": "Erdős Problem #450 remains OPEN in its existential form. The formalization proves that the 'for all x' version is false (via Cambie's observation and Ford's density results), establishes the pigeonhole bound y ∼ 2n for small ε, and provides 11 proved theorems alongside 3 axioms.",
     "implications": "Resolution of the existential version would connect the anatomy of integers (Ford's program) to the fine structure of divisor density in short intervals, with implications for understanding the distribution of smooth and rough numbers.",
