@@ -136,8 +136,8 @@
     "id": "ann-parity-principle",
     "proofId": "borsuk-ulam-oq-03-oq-01-oq-01",
     "range": {
-      "startLine": 124,
-      "endLine": 162
+      "startLine": 120,
+      "endLine": 225
     },
     "type": "insight",
     "title": "Tucker's Parity Principle (Core Argument)",
@@ -160,8 +160,8 @@
     "id": "ann-tucker-2d",
     "proofId": "borsuk-ulam-oq-03-oq-01-oq-01",
     "range": {
-      "startLine": 168,
-      "endLine": 186
+      "startLine": 226,
+      "endLine": 253
     },
     "type": "concept",
     "title": "Tucker 2D from Parity + 1D Tucker",
@@ -182,8 +182,8 @@
     "id": "ann-path-following",
     "proofId": "borsuk-ulam-oq-03-oq-01-oq-01",
     "range": {
-      "startLine": 189,
-      "endLine": 213
+      "startLine": 254,
+      "endLine": 280
     },
     "type": "concept",
     "title": "The Path-Following Algorithm",
@@ -205,8 +205,8 @@
     "id": "ann-example",
     "proofId": "borsuk-ulam-oq-03-oq-01-oq-01",
     "range": {
-      "startLine": 219,
-      "endLine": 237
+      "startLine": 281,
+      "endLine": 304
     },
     "type": "concept",
     "title": "Concrete Worked Example",
@@ -220,6 +220,31 @@
     ],
     "prerequisites": [
       "basic arithmetic"
+    ]
+  },
+  {
+    "id": "ann-handshaking",
+    "proofId": "borsuk-ulam-oq-03-oq-01-oq-01",
+    "range": {
+      "startLine": 305,
+      "endLine": 434
+    },
+    "type": "insight",
+    "title": "SimpleGraph Handshaking Eliminates the Parity Hypothesis",
+    "content": "Parts IX-X, the Mathlib-connection punchline (previously unannotated). The `tucker_parity_principle` above assumes `h_handshaking` (the number of odd-degree triangles is even). This section DERIVES that hypothesis from graph structure. `even_card_odd_degree_vertices` proves that any finite `SimpleGraph` has an even number of odd-degree vertices: it partitions the vertices into odd- and even-degree sets S₁, S₀, uses Mathlib's handshaking lemma `G.sum_degrees_eq_twice_card_edges` (∑ deg = 2|E|, hence even), and closes with two private mod-2 accounting lemmas (`sum_mod2_eq_zero` for the even part, `sum_mod2_eq_card_mod2` for the odd part, so ∑_{S₁} deg ≡ |S₁| mod 2) plus `omega`. `tucker_parity_from_graph` then feeds `even_card_odd_degree_vertices G` into `tucker_parity_principle`, reducing Tucker's lemma from three hypotheses to two: interior degree correspondence and boundary oddness.",
+    "mathContext": "Handshaking lemma: $\\sum_{v} \\deg(v) = 2|E| \\equiv 0 \\pmod 2$. Splitting $\\sum_v \\deg v = \\sum_{S_1}\\deg + \\sum_{S_0}\\deg$ with $\\sum_{S_0}\\deg \\equiv 0$ and $\\sum_{S_1}\\deg \\equiv |S_1|$ forces $|S_1| \\equiv 0$: an even number of odd-degree vertices.",
+    "significance": "key",
+    "relatedConcepts": [
+      "handshaking lemma",
+      "SimpleGraph.sum_degrees_eq_twice_card_edges",
+      "parity argument",
+      "odd-degree vertices",
+      "Tucker's lemma"
+    ],
+    "prerequisites": [
+      "SimpleGraph degree and edge count in Mathlib",
+      "Finset.induction mod-2 accounting",
+      "the tucker_parity_principle above"
     ]
   }
 ]
