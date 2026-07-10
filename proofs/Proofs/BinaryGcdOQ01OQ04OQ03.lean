@@ -357,5 +357,71 @@ theorem totalSteps_one_pow_two (n : ℕ) :
   have hIco := sum_Ico_one_pow_two n
   omega
 
+-- ═══════════════════════════════════════════════════════════════════
+-- PART VII: EXACT CLOSED FORM AT EVERY N  (a = 1 row)
+-- ═══════════════════════════════════════════════════════════════════
+--
+-- `totalSteps_one_pow_two` pins the a = 1 total only on the dyadic subsequence
+-- N = 2^n.  Extending across the partial final block `(2^n, N]` — on which
+-- `binaryGcdSteps 1 b = n + 1` is constant — pins the a = 1 total EXACTLY at
+-- EVERY N, subsuming both `totalSteps_one_eq` (removes the abstract ∑ log₂ b) and
+-- `totalSteps_one_pow_two` (its dyadic special case):
+--
+--     totalSteps 1 N + 2^{n+1} = (N + 1)·n + N + 2,   n = ⌊log₂ N⌋.
+
+/-- **Exact `a = 1` total at every `N ≥ 1`.**  With `n = ⌊log₂ N⌋`,
+
+      totalSteps 1 N + 2^{n+1} = (N+1)·n + N + 2,
+
+    i.e. `totalSteps 1 N = (N+1)·⌊log₂N⌋ − 2^{⌊log₂N⌋+1} + N + 2`.  This is the
+    exact average-case total for the `a = 1` row at *every* `N` (not merely the
+    dyadic `N = 2^n` of `totalSteps_one_pow_two`), and it removes the abstract
+    `∑ log₂ b` left standing in `totalSteps_one_eq`.  It is the fully elementary,
+    closed-form counterpart of Brent's `≈ 0.7050 · log₂ N` average — the latter's
+    transcendental leading constant stays out of reach (see file header).
+
+    Proof: split `[1,N] = [1, 2^n] ⊍ (2^n, N]`.  The head is the dyadic total
+    `totalSteps_one_pow_two`; on the partial tail every `b` satisfies
+    `2^n ≤ b < 2^{n+1}`, so `⌊log₂ b⌋ = n` and `binaryGcdSteps 1 b = n+1`, giving
+    the constant contribution `(N − 2^n)·(n+1)`.  A single `linear_combination`
+    with the dyadic total closes the resulting polynomial identity in `N`, `n`,
+    `2^n`. -/
+theorem totalSteps_one_closed (N : ℕ) (hN : 1 ≤ N) :
+    totalSteps 1 N + 2 ^ (Nat.log 2 N + 1) = (N + 1) * Nat.log 2 N + N + 2 := by
+  set n := Nat.log 2 N with hn
+  have hpow_le : 2 ^ n ≤ N := Nat.pow_log_le_self 2 (by omega)
+  have hlt_pow : N < 2 ^ (n + 1) := Nat.lt_pow_succ_log_self (by norm_num) N
+  have hdisj : Disjoint (Finset.Icc 1 (2 ^ n)) (Finset.Ioc (2 ^ n) N) :=
+    Finset.disjoint_left.mpr (fun x hx hx' => by
+      rw [Finset.mem_Icc] at hx; rw [Finset.mem_Ioc] at hx'; omega)
+  have hunion : Finset.Icc 1 (2 ^ n) ∪ Finset.Ioc (2 ^ n) N = Finset.Icc 1 N :=
+    Finset.Icc_union_Ioc_eq_Icc Nat.one_le_two_pow hpow_le
+  -- the partial tail (2^n, N] contributes the constant (N − 2^n)·(n+1)
+  have htail : ∑ b ∈ Finset.Ioc (2 ^ n) N, binaryGcdSteps 1 b = (N - 2 ^ n) * (n + 1) := by
+    have hval : ∀ b ∈ Finset.Ioc (2 ^ n) N, binaryGcdSteps 1 b = n + 1 := by
+      intro b hb
+      rw [Finset.mem_Ioc] at hb
+      have hb1 : 1 ≤ b := le_trans Nat.one_le_two_pow (le_of_lt hb.1)
+      have hlogb : Nat.log 2 b = n :=
+        Nat.log_eq_of_pow_le_of_lt_pow (le_of_lt hb.1) (lt_of_le_of_lt hb.2 hlt_pow)
+      rw [binaryGcdSteps_one_eq_log b hb1, hlogb]
+    rw [Finset.sum_congr rfl hval, Finset.sum_const, Nat.card_Ioc, smul_eq_mul]
+  -- split the total at the dyadic point 2^n
+  have hsum : totalSteps 1 N
+      = totalSteps 1 (2 ^ n) + ∑ b ∈ Finset.Ioc (2 ^ n) N, binaryGcdSteps 1 b := by
+    unfold totalSteps
+    rw [← Finset.sum_union hdisj, hunion]
+  have hdya : totalSteps 1 (2 ^ n) + 2 ^ n = n * 2 ^ n + n + 2 := totalSteps_one_pow_two n
+  rw [hsum, htail]
+  zify [hpow_le] at hdya ⊢
+  have hp : (2 : ℤ) ^ (n + 1) = 2 * 2 ^ n := by rw [pow_succ]; ring
+  rw [hp]
+  linear_combination hdya
+
+-- Concrete check of the closed form (a = 1, N = 100): n = ⌊log₂100⌋ = 6,
+--   totalSteps 1 100 + 2^7 = 101·6 + 100 + 2 = 708.
+example : totalSteps 1 100 + 2 ^ (Nat.log 2 100 + 1) = (100 + 1) * Nat.log 2 100 + 100 + 2 :=
+  totalSteps_one_closed 100 (by norm_num)
+
 
 end BinaryGcdOQ01OQ04OQ03

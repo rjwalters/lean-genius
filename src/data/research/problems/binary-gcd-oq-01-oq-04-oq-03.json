@@ -32,11 +32,12 @@
     }
   },
   "knowledge": {
-    "progressSummary": "VERIFIED (researcher-2, 2026-07-07): the matching Ω(N·log N) lower bound `totalSteps_one_ge : (N - N/2)*(Nat.log 2 N - 1) ≤ totalSteps 1 N` now BUILDS GREEN (docker-build Proofs.BinaryGcdOQ01OQ04OQ03, 0 sorry / 0 axiom / 0 native_decide). Together with `totalSteps_one_eq` (exact a=1 total) and `avgSteps_le` (O(log N) ceiling) it pins the a=1 average at a genuine Θ(log N) — closing the file header's one stated tractable open sub-goal (the matching averaged lower bound). Proof: restrict ∑_{b=1}^N log₂ b to the upper half b∈(⌊N/2⌋,N]; each term ≥ log₂⌊N/2⌋ = log₂ N − 1 (Nat.log_mono_right + Nat.log_div_base), and the sub-range has N−⌊N/2⌋ elements (Finset.sum_le_sum_of_subset + Finset.sum_const). The prior exit-135 blackout was environmental olean corruption; the cache is healthy this session. || PRIOR: the a=1 row is EXACTLY logarithmic — binaryGcdSteps 1 b = Nat.log 2 b + 1 for all b≥1 (binaryGcdSteps_one_eq_log), generalizing the parent sparse family 2^n-1 to the whole row. Open: general-a average lower bound (density count) and the sharp Brent constant 0.7050 (transfer-operator analysis, not in Mathlib).",
+    "progressSummary": "PROGRESS (researcher-3 2026-07-09): Added totalSteps_one_closed — the EXACT a=1 average-case total at every N: with n=floor(log2 N), totalSteps 1 N + 2^(n+1) = (N+1)*n + N + 2. Subsumes the dyadic totalSteps_one_pow_two and removes the abstract sum(log2 b) of totalSteps_one_eq, completing the elementary a=1 analysis (exact closed form + Theta(log N) sandwich). Split [1,N]=[1,2^n]+(2^n,N], constant tail (N-2^n)*(n+1), linear_combination with the dyadic total. Full elaboration clean [7745/7745], olean-write env-blocked (SIGBUS-135 x4) -> UNVERIFIED. Sharp Brent 0.7050 constant remains BLOCKED (transfer-operator theory absent from Mathlib).",
     "builtItems": [
       "BinaryGcdOQ01OQ04OQ03.lean: totalSteps (average-case object), totalSteps_le (O(log N) total-sum ceiling), avgSteps_le (rational average ceiling) — all verified, 0 sorry / 0 axiom / 0 native_decide",
       "BinaryGcdOQ01OQ04OQ03.lean PART IV: binaryGcdSteps_one_step (unified floor-halving one-step), binaryGcdSteps_one_eq_log (EXACT binaryGcdSteps 1 b = log₂ b + 1 ∀b≥1), totalSteps_one_eq (exact a=1 total = ∑log₂b + N) — verified, 0 sorry/0 axiom/0 native_decide",
-      "BinaryGcdOQ01OQ04OQ03.lean PART V: totalSteps_one_ge (matching Ω(N·log N) lower bound (N−⌊N/2⌋)·(log₂N−1) ≤ totalSteps 1 N, via upper-half density count) — VERIFIED, 0 sorry/0 axiom/0 native_decide. Pins the a=1 average at Θ(log N)."
+      "BinaryGcdOQ01OQ04OQ03.lean PART V: totalSteps_one_ge (matching Ω(N·log N) lower bound (N−⌊N/2⌋)·(log₂N−1) ≤ totalSteps 1 N, via upper-half density count) — VERIFIED, 0 sorry/0 axiom/0 native_decide. Pins the a=1 average at Θ(log N).",
+      "totalSteps_one_closed (BinaryGcdOQ01OQ04OQ03.lean) — exact a=1 total at EVERY N: totalSteps 1 N + 2^(floor(log2 N)+1) = (N+1)*floor(log2 N) + N + 2."
     ],
     "insights": [
       "Sharp Brent (1976) constant 0.7050·log₂max(a,b) for the AVERAGE binary-GCD step count is OUT OF REACH in Mathlib 4.26: the constant has no closed form and comes from a transfer-operator/dynamical-systems analysis of the Euclidean-type map (Brent; Vallée). Mathlib has measure theory but none of the spectral machinery to pin the leading constant.",
@@ -86,7 +87,7 @@
     "mathlib": []
   },
   "started": "2026-06-13T12:52:52.056Z",
-  "lastUpdate": "2026-07-07T00:00:00.000Z",
+  "lastUpdate": "2026-07-09",
   "leanFiles": [
     {
       "path": "Proofs/BinaryGcdOQ01.lean",
