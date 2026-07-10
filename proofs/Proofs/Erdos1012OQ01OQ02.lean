@@ -304,4 +304,40 @@ theorem edgeThreshold_quadratic_sandwich (n k : ℕ) (h : 2 * k + 3 ≤ n) :
   have hd : 2 * n.choose 2 = n * (n - 1) := two_mul_choose_two n
   omega
 
+/-! ## Discrete convexity: the second differences are constant
+
+The first-difference results (`edgeThreshold_succ_left`, `edgeThreshold_succ_right`) have
+discrete derivatives `n − k − 1` (in `n`) and `2k + 4 − n` (in `k`) that are themselves
+*linear*, so the threshold is discretely **convex** in each variable: the second difference
+is a strictly positive constant — `+1` in `n` and `+2` in `k`.  These identities upgrade the
+monotone `n`-growth and the two U-shaped `k`-branches to a quantitative convexity statement:
+a positive second difference forces the `k`-profile to be strictly convex (hence a unique
+minimizing band, sharpening `edgeThreshold_succ_right_le` / `edgeThreshold_le_succ_right`)
+and shows the `n`-growth is genuinely accelerating (consistent with the `Θ(n²)` sandwich). -/
+
+/-- **Discrete convexity in `n`: the second difference is the constant `+1`.**  For
+    `n ≥ k+1`,
+    `edgeThreshold (n+2) k + edgeThreshold n k = 2·edgeThreshold (n+1) k + 1`.
+    The `n`-derivative `n − k − 1` (`edgeThreshold_succ_left`) increases by exactly `1`
+    with each added vertex, so the threshold is strictly convex in `n`. -/
+theorem edgeThreshold_second_diff_left (n k : ℕ) (h : k + 1 ≤ n) :
+    edgeThreshold (n + 2) k + edgeThreshold n k = 2 * edgeThreshold (n + 1) k + 1 := by
+  have h1 := edgeThreshold_succ_left n k h
+  have h2 := edgeThreshold_succ_left (n + 1) k (by omega)
+  rw [show n + 1 + 1 = n + 2 by omega, show n + 1 - k - 1 = n - k by omega] at h2
+  omega
+
+/-- **Discrete convexity in `k`: the second difference is the constant `+2`.**  For
+    `n ≥ k+3`,
+    `edgeThreshold n (k+2) + edgeThreshold n k = 2·edgeThreshold n (k+1) + 2`.
+    The signed `k`-derivative `2k + 4 − n` (`edgeThreshold_succ_right`) increases by exactly
+    `2` per unit of `k`, so the threshold is strictly convex in `k` — pinning the U-shape to
+    a unique minimizing band near `k = (n-4)/2`. -/
+theorem edgeThreshold_second_diff_right (n k : ℕ) (h : k + 3 ≤ n) :
+    edgeThreshold n (k + 2) + edgeThreshold n k = 2 * edgeThreshold n (k + 1) + 2 := by
+  have h1 := edgeThreshold_succ_right n k (by omega)
+  have h2 := edgeThreshold_succ_right n (k + 1) (by omega)
+  rw [show k + 1 + 1 = k + 2 by omega] at h2
+  omega
+
 end Erdos1012OQ01OQ02
