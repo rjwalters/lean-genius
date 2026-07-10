@@ -371,4 +371,44 @@ theorem volume_setOf_exists_liouvilleWith_gt_two_eq_zero :
   have hpos : (0 : ℝ) < 1 / ((n : ℝ) + 1) := by positivity
   linarith
 
+/-- **Full Hausdorff dimension of the very-well-approximable reals.** The set of
+`x` that are `τ`-well-approximable for *some* `τ > 2` — the *same* set proved
+Lebesgue-null in `volume_setOf_exists_liouvilleWith_gt_two_eq_zero` — nonetheless
+has full Hausdorff dimension `1`.
+
+It contains `W τ` for every `τ > 2`, so its dimension is at least
+`dimH (W τ) = 2/τ`; letting `τ ↓ 2` along `τ = 2 + 1/(n+1)` pushes the bound up to
+`1`, while the reverse bound is `dimH ≤ dimH ℝ = 1`. This is the dimension-side
+companion to the measure statement: the very-well-approximable reals are a set of
+Lebesgue measure zero that is nonetheless dimensionally *full* — the hallmark
+fractal coexistence of measure zero with maximal Hausdorff dimension. -/
+theorem dimH_setOf_exists_liouvilleWith_gt_two_eq_one :
+    dimH {x : ℝ | ∃ τ : ℝ, 2 < τ ∧ LiouvilleWith τ x} = 1 := by
+  refine le_antisymm ?_ ?_
+  · calc dimH {x : ℝ | ∃ τ : ℝ, 2 < τ ∧ LiouvilleWith τ x}
+          ≤ dimH (Set.univ : Set ℝ) := dimH_mono (Set.subset_univ _)
+      _ = 1 := Real.dimH_univ
+  · -- Lower bound: the set contains `W (2 + 1/(n+1))` for every `n`, and the
+    -- Jarník–Besicovitch values `2 / (2 + 1/(n+1)) → 1`.
+    have hge : ∀ n : ℕ,
+        ENNReal.ofReal (2 / (2 + 1 / ((n : ℝ) + 1)))
+          ≤ dimH {x : ℝ | ∃ τ : ℝ, 2 < τ ∧ LiouvilleWith τ x} := by
+      intro n
+      have hτ : (2 : ℝ) < 2 + 1 / ((n : ℝ) + 1) := by
+        have : (0 : ℝ) < 1 / ((n : ℝ) + 1) := by positivity
+        linarith
+      rw [← dimH_wellApprox _ hτ.le]
+      exact dimH_mono (fun x hx => ⟨_, hτ, hx⟩)
+    have htend : Tendsto
+        (fun n : ℕ => ENNReal.ofReal (2 / (2 + 1 / ((n : ℝ) + 1)))) atTop (𝓝 1) := by
+      have h0 : Tendsto (fun n : ℕ => (2 : ℝ) + 1 / ((n : ℝ) + 1)) atTop (𝓝 2) := by
+        simpa using (tendsto_const_nhds (x := (2 : ℝ))).add
+          tendsto_one_div_add_atTop_nhds_zero_nat
+      have hquot : Tendsto (fun n : ℕ => (2 : ℝ) / (2 + 1 / ((n : ℝ) + 1))) atTop
+          (𝓝 ((2 : ℝ) / 2)) := (tendsto_const_nhds).div h0 (by norm_num)
+      rw [show (2 : ℝ) / 2 = 1 by norm_num] at hquot
+      have := (ENNReal.continuous_ofReal.tendsto 1).comp hquot
+      simpa using this
+    exact le_of_tendsto' htend hge
+
 end LiouvilleTheoremOQ03
