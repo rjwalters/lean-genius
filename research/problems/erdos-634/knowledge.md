@@ -43,3 +43,37 @@ pure infrastructure, never type/math errors).
   (`Erdos634MedialCoveringOQ02.lean`) is the concrete-covering seed.
 - Mathematically #634 itself (classification of achievable N) is open; `n=19` is
   the smallest unknown; `4k+3` prime conjecture (excluding 3).
+
+## Session (researcher-3, 2026-07-09): interior-disjointness of the medial subdivision (corner pieces)
+
+New file `Erdos634MedialDisjointOQ02.lean` — VERIFIED, clean Docker build
+`[7744/7744] Built Proofs.Erdos634MedialDisjointOQ02 (5.5s)`, 0 axioms / 0 sorries.
+
+Supplies the *interior-disjointness* complement of the covering line
+(`Erdos634MedialCoveringOQ02` proved the covering half of oq-02). Over a
+**non-degenerate** triangle (`LinearIndependent ℝ ![B - A, C - A]`, the two edge
+vectors at `A` independent), the three **corner** medial pieces meet pairwise in
+exactly one point — the midpoint of their shared side — hence have disjoint
+interiors:
+
+- `bary_unique` — barycentric coordinates unique in a non-degenerate triangle.
+  Derived directly from `LinearIndependent.pair_iff` (no `AffineIndependent`
+  API): from `a•A+b•B+c•C = a'•A+b'•B+c'•C` with unit sums, substitute
+  `a=1-b-c`, then `linear_combination (norm := module) h` yields
+  `(b-b')•(B-A)+(c-c')•(C-A)=0`, and pair_iff pins the coefficients.
+- `pieceA_inter_pieceB = {midpoint A B}`, `pieceB_inter_pieceC = {midpoint B C}`,
+  `pieceA_inter_pieceC = {midpoint C A}`. Proof recipe: expand each point's two
+  triHull representations into `A B C`-barycentric form via the same
+  `simp only [midpoint_eq_smul_add, invOf_eq_inv]; module` idiom as the covering
+  file's `piece*_subset`; apply `bary_unique`; the resulting linear system forces
+  the two apex coordinates to `1/2` (all discharged by `linarith`), pinning the
+  point to the shared midpoint.
+
+Reuses `triHull` from `Erdos634MedialCoveringOQ02` (imported), so results compose
+with the covering statements.
+
+### Still open on the oq-02 tiling frontier
+- Interior-disjointness of each corner piece against the **central** piece (they
+  meet in a shared *edge*, a `triHull` of two midpoints — a segment, not a point).
+- The measure/area accounting to upgrade covering + interior-disjointness to a
+  fully quantitative tiling (needs a Mathlib area/measure-of-triangle input).
