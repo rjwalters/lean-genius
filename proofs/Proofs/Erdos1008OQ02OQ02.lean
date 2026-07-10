@@ -46,11 +46,14 @@ Colloq. Math. 3 (1954), 50–57.
 
 Status: 0 sorries, 0 axioms.  The algebraic core (`kst_quadratic_solve`,
 `reiman_quadratic_solve_of_kst`, `kst_root_exact`) is docker-VERIFIED
-(PR #36875).  The graph-level section added in this session
-(`kst_cherry_count_nat`, `kst_graph_quadratic`, `kst_edge_bound`,
-`kst_edge_bound_of_free`) is elaboration-checked but UNVERIFIED in docker —
-the containerd build backend was down (meta.db / content-store I/O errors) at
-authoring time.  It should be re-verified once the build infra is repaired.
+(PR #36875).  The graph-level section (`kst_cherry_count_nat`,
+`kst_graph_quadratic`, `kst_edge_bound`, `kst_edge_bound_of_free`) and the
+leading-order closed form added in this session (`kst_radical_envelope`,
+`kst_edge_bound_leading_order`, giving the recognisable
+`ex(n ; K_{2,t}) ≤ ½(√(t-1)·n^{3/2}+n)`) are elaboration-checked but UNVERIFIED
+in docker — the containerd build backend was down (meta.db / content-store I/O
+errors) at authoring time.  They should be re-verified once the build infra is
+repaired.
 -/
 
 import Mathlib
@@ -377,6 +380,58 @@ theorem kst_edge_bound_of_free (G : SimpleGraph V) [DecidableRel G.Adj] [Nonempt
   have hcast : ((t - 1 : ℕ) : ℝ) = (t : ℝ) - 1 := by
     rw [Nat.cast_sub ht, Nat.cast_one]
   rwa [hcast] at h
+
+/-- **Nested-radical envelope.**  For `t ≥ 1` and any `n ≥ 0` the Reiman/KST radical
+is dominated by a sum of *separated* radicals:
+
+      √(1 + 4(t-1)(n-1)) ≤ 1 + 2·√(t-1)·√n.
+
+This is the algebraic step that turns the exact nested-radical closed form into the
+recognisable leading-order bound; it uses only `A² = t-1`, `B² = n`
+(`A = √(t-1)`, `B = √n`) and `AB ≥ 0`, the squared comparison reducing to
+`-4(t-1) ≤ 4·AB`. -/
+theorem kst_radical_envelope (t : ℕ) (ht : 1 ≤ t) (n : ℝ) (hn : 0 ≤ n) :
+    Real.sqrt (1 + 4 * ((t : ℝ) - 1) * (n - 1)) ≤
+      1 + 2 * Real.sqrt ((t : ℝ) - 1) * Real.sqrt n := by
+  have htm1 : (0 : ℝ) ≤ (t : ℝ) - 1 := by
+    have h1 : (1 : ℝ) ≤ (t : ℝ) := by exact_mod_cast ht
+    linarith
+  have hA0 : 0 ≤ Real.sqrt ((t : ℝ) - 1) := Real.sqrt_nonneg _
+  have hB0 : 0 ≤ Real.sqrt n := Real.sqrt_nonneg _
+  have hAB : 0 ≤ Real.sqrt ((t : ℝ) - 1) * Real.sqrt n := mul_nonneg hA0 hB0
+  -- (A·B)² = (t-1)·n, obtained from A² = t-1, B² = n.
+  have hab2 : (Real.sqrt ((t : ℝ) - 1) * Real.sqrt n) ^ 2 = ((t : ℝ) - 1) * n := by
+    rw [mul_pow, Real.sq_sqrt htm1, Real.sq_sqrt hn]
+  refine Real.sqrt_le_iff.mpr ⟨by positivity, ?_⟩
+  nlinarith [hab2, hAB, htm1]
+
+/-- **Leading-order Kővári–Sós–Turán bound for K_{2,t}.**  The recognisable textbook
+closed form: a K_{2,t}-free nonempty graph (`t ≥ 1`) on `n` vertices with `m` edges
+satisfies
+
+      m ≤ ½ · (√(t-1) · n^{3/2} + n),
+
+with `n^{3/2}` written as `n · √n`.  This is the classical
+`ex(n ; K_{2,t}) = O(√(t-1) · n^{3/2})` bound of Kővári–Sós–Turán, obtained from the
+exact nested-radical form `kst_edge_bound_of_free` by dominating the radical via
+`kst_radical_envelope`.  Setting `t = 2` gives the Reiman leading term
+`ex(n ; C₄) ≤ ½(n^{3/2} + n)`. -/
+theorem kst_edge_bound_leading_order (G : SimpleGraph V) [DecidableRel G.Adj]
+    [Nonempty V] (t : ℕ) (ht : 1 ≤ t) (hfree : ¬ HasK2t G t) :
+    (G.edgeFinset.card : ℝ) ≤
+      (Real.sqrt ((t : ℝ) - 1) * (Fintype.card V : ℝ) * Real.sqrt (Fintype.card V)
+        + (Fintype.card V : ℝ)) / 2 := by
+  have hn0 : (0 : ℝ) ≤ (Fintype.card V : ℝ) := Nat.cast_nonneg _
+  have hbound := kst_edge_bound_of_free G t ht hfree
+  have henv := kst_radical_envelope t ht (Fintype.card V : ℝ) hn0
+  -- n·(1 + radical) ≤ n·(2 + 2·√(t-1)·√n), monotonicity in the nonnegative factor n.
+  have hstep : (Fintype.card V : ℝ) *
+      (1 + Real.sqrt (1 + 4 * ((t : ℝ) - 1) * ((Fintype.card V : ℝ) - 1))) ≤
+      (Fintype.card V : ℝ) *
+        (2 + 2 * Real.sqrt ((t : ℝ) - 1) * Real.sqrt (Fintype.card V)) :=
+    mul_le_mul_of_nonneg_left (by nlinarith [henv]) hn0
+  -- Chain: 4m ≤ n(1+rad) ≤ n(2 + 2√(t-1)√n) = 2n + 2·√(t-1)·n·√n.
+  nlinarith [hbound, hstep, hn0]
 
 end GraphLevel
 
