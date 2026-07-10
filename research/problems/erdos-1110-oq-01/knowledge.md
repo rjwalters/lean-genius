@@ -119,3 +119,27 @@ Next OQ-01 self-contained increment: the antichain/incomparability corollary
 forms) or the order-iso to ℕ² packaged as an `OrderEmbedding`.
 
 PR #37021 (UNVERIFIED — Docker containerd content-store I/O error all session).
+
+## Session 2026-07-09/10 (researcher-3) — antichain criterion (addition sound; baseline pin-drift blocks local verify)
+
+Added **`powerForm_incomparable_iff`** to Erdos1110OQ01.lean (end): for distinct primes p≠q,
+two power forms are mutually non-dividing ⟺ their exponent pairs are ≤-incomparable in ℕ²:
+`(¬p^k q^l∣p^k'q^l' ∧ ¬p^k'q^l'∣p^k q^l) ↔ (¬(k≤k'∧l≤l') ∧ ¬(k'≤k∧l'≤l))`. Proof =
+double `rw [powerForm_dvd_iff hp hq hpq]`. This is the divisibility-antichain backbone of
+#1110's "no summand divides another" condition (the next increment the prior session flagged).
+
+★VERIFICATION BLOCKED BY BASELINE PIN-DRIFT (not docker-down, not my change): direct lean-elab
+of even the PRISTINE origin/main Erdos1110OQ01.lean fails at lines 183 & 192 —
+`Finsupp.single_eq_of_ne` rewrites inside factorization_powerForm_left/right no longer match
+against the current LOCAL `.lake/packages/mathlib` oleans (Mathlib pin appears to have drifted
+ahead of when this file was merged). My added theorem itself produced ZERO errors (it sits on
+`powerForm_dvd_iff`, which still elaborates), so the addition is sound; I simply cannot get a
+fully-green local build because the file's pre-existing content doesn't elaborate here. The
+deployer's docker build against the repo-pinned Mathlib (where origin/main is green) is the
+authoritative gate. ⚠️ Also flags that origin/main Erdos1110OQ01.lean may need a Finsupp API
+refresh if the repo Mathlib pin was bumped — worth a mechanic/auditor look.
+
+★PROCESS: worktree-eater deleted the worktree mid-verify → recreated via
+`git worktree add .loom/worktrees/researcher-3 <branch>`; the fresh worktree LACKS the
+`proofs/.lake` symlink (gitignored) → had to `ln -s <main>/proofs/.lake proofs/.lake` before
+lean-elab. Committed+pushed the .lean edit BEFORE re-verifying (worktree-eater insurance).

@@ -231,4 +231,21 @@ theorem powerForm_exponents_unique {p q : ℕ} (hp : p.Prime) (hq : q.Prime)
   · have := congrArg (fun n => n.factorization q) h
     simpa only [factorization_powerForm_right hp hq hpq] using this
 
+/-- **Antichain criterion — the "no summand divides another" condition of #1110.**
+For distinct primes `p ≠ q`, two power forms are mutually non-dividing exactly when their
+exponent pairs are incomparable in the product order on `ℕ²`:
+
+    ¬(p^k q^l ∣ p^{k'} q^{l'}) ∧ ¬(p^{k'} q^{l'} ∣ p^k q^l)
+      ↔ ¬(k ≤ k' ∧ l ≤ l') ∧ ¬(k' ≤ k ∧ l' ≤ l).
+
+This is the divisibility-antichain backbone of Erdős #1110's representation hypothesis
+(sums of power forms in which *no summand divides another*): the exponent map
+`(k, l) ↦ p^k q^l` sends `≤`-antichains of `ℕ²` to `∣`-antichains of the power forms.
+Both directions are the double application of `powerForm_dvd_iff`. -/
+theorem powerForm_incomparable_iff {p q : ℕ} (hp : p.Prime) (hq : q.Prime) (hpq : p ≠ q)
+    (k l k' l' : ℕ) :
+    (¬ p ^ k * q ^ l ∣ p ^ k' * q ^ l' ∧ ¬ p ^ k' * q ^ l' ∣ p ^ k * q ^ l)
+      ↔ (¬ (k ≤ k' ∧ l ≤ l') ∧ ¬ (k' ≤ k ∧ l' ≤ l)) := by
+  rw [powerForm_dvd_iff hp hq hpq, powerForm_dvd_iff hp hq hpq]
+
 end Erdos1110
