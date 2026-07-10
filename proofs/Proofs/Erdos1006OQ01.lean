@@ -567,9 +567,7 @@ theorem admitsRobust_mono {G H : SimpleGraph V} (hHG : H ≤ G)
   · -- no dependent arc: lift a dependent restricted arc back to a dependent `O`-arc.
     rintro ⟨u, v, ⟨harc, _⟩, hpath⟩
     refine hNoDep ⟨u, v, harc, ?_⟩
-    induction hpath with
-    | single hr => exact Relation.TransGen.single ⟨hr.1.1, hr.2⟩
-    | tail _ hr ih => exact Relation.TransGen.tail ih ⟨hr.1.1, hr.2⟩
+    exact hpath.mono (fun a b hr => ⟨hr.1.1, hr.2⟩)
 
 /-- **Obstruction propagation (no axiom):** the contrapositive of
     `admitsRobust_mono`. If some subgraph `H ≤ G` admits *no* robustly acyclic
