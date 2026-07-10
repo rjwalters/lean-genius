@@ -470,6 +470,37 @@ theorem boundedCliques_of_surjective {K : Type*} [Group K] (f : G →* K)
   rw [← Finset.card_image_of_injective S hginj]
   exact hB _ hclique
 
+/-- **Bounded cliques pull back along any injective homomorphism (heredity of ω(Γ)).**
+    If `f : G →* K` is an *injective* homomorphism and `Γ(K)` has finite clique number,
+    then so does `Γ(G)`: `ω(Γ(G)) ≤ ω(Γ(K))`.  The embedding `f` carries each clique
+    `S ⊆ G` of `Γ(G)` to a clique `f '' S ⊆ K` of the *same* size — non-commuting
+    elements have non-commuting images under a hom (`f a · f b = f (a·b)`), and injectivity
+    keeps the images distinct — so any uniform clique bound for `K` bounds `G`.
+
+    This is the general form of `boundedCliques_of_subgroup`, which is exactly the case
+    `f = H.subtype : H →* G`; it is also the injective dual of `boundedCliques_of_surjective`
+    (surjections push cliques *back*, injections push them *up*).  Axiom-free — only the
+    elementary clique transfer, not the BFC core `neumann_hard_direction`. -/
+theorem boundedCliques_of_injective {K : Type*} [Group K] (f : G →* K)
+    (hf : Function.Injective f) (h : BoundedCliques K) : BoundedCliques G := by
+  obtain ⟨B, hB⟩ := h
+  refine ⟨B, fun S hS => ?_⟩
+  let e : G ↪ K := ⟨f, hf⟩
+  have hclique : IsClique (S.map e) := by
+    intro a ha b hb hab
+    rw [Finset.mem_map] at ha hb
+    obtain ⟨a', ha', rfl⟩ := ha
+    obtain ⟨b', hb', rfl⟩ := hb
+    have hne : a' ≠ b' := fun heq => hab (by rw [heq])
+    have key := hS a' ha' b' hb' hne
+    intro hEq
+    apply key
+    apply hf
+    rw [map_mul, map_mul]
+    exact hEq
+  rw [← Finset.card_map e]
+  exact hB _ hclique
+
 /-- **The hard direction holds unconditionally — and axiom-free — for finite groups.**
     When `G` is finite the centre automatically has finite index (`[G:Z(G)] ≤ |G| < ∞`,
     here via `Subgroup.index_ne_zero_of_finite`), so the forward implication of
