@@ -172,6 +172,11 @@
       "proofId": "fibonacci-identities-oq-06",
       "relationship": "Linear-sum descendant",
       "description": "fibonacci-identities-oq-06 supplies the two un-filtered linear summation identities this entry left open: the full partial sum ∑Fᵢ = Fₙ₊₂ − 1 and the index-weighted first moment ∑ i·Fᵢ = n·Fₙ₊₂ − Fₙ₊₃ + 2 — directly answering the '∑ i·Fᵢ' weighted-sum open question posed below. Together they are the degree-zero and degree-one companions to this entry's degree-two sum of squares ∑Fᵢ² = Fₙ·Fₙ₊₁."
+    },
+    {
+      "proofId": "lucas-sum-oq-01",
+      "relationship": "Lucas analogue",
+      "description": "The Lucas counterpart of this entry's summation identities, realizing the open question below on whether 'the same template yields the Lucas-number summation identities': ∑_{k=1}^{n} L_k = L_{n+2} − 3 by the same telescoping induction from the Lucas recurrence (with the subtraction-free (∑L_k)+3 = L_{n+2} form to stay in ℕ), exactly mirroring this entry's even-indexed additive workaround (∑F₂ᵢ)+1 = F₂ₙ₊₁."
     }
   ],
   "conclusion": {
