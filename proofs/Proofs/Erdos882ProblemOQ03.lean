@@ -492,4 +492,64 @@ theorem subsetSums_card_superincreasing :
       rw [hdouble, ih (A.erase m) hsub hAe, hcard]
       omega
 
+/-- **The counting bound `subsetSums_card_le` is tight for every size.** For each `k`
+    there is a `k`-element superincreasing set of naturals whose non-empty subset sums
+    are all distinct, realising the full `2^k − 1` possible values. Built by induction:
+    insert a fresh element `m = (∑ A) + 1` strictly above the running sum, so `m` is a
+    new maximum, `insert m A` stays superincreasing, and the doubling law
+    `subsetSums_card_insert_superincreasing` fires. This certifies that the `2^k − 1`
+    in `subsetSums_card_le` cannot be lowered — the powers-of-two regime is optimal. -/
+theorem exists_superincreasing_extremal (k : ℕ) :
+    ∃ A : Finset ℕ, A.card = k ∧ Superincreasing A ∧
+      (subsetSums A).card = 2 ^ k - 1 := by
+  induction k with
+  | zero =>
+    refine ⟨∅, by simp, ?_, ?_⟩
+    · intro a ha; simp at ha
+    · simp [subsetSums, nonemptySubsets, Finset.powerset_empty]
+  | succ k ih =>
+    obtain ⟨A, hcard, hSI, hsum⟩ := ih
+    set m := A.sum id + 1 with hm
+    have hmnot : m ∉ A := by
+      intro hmA
+      have hle : m ≤ A.sum id := Finset.single_le_sum (f := id) (fun i _ => Nat.zero_le _) hmA
+      omega
+    have hgt : A.sum id < m := by omega
+    have hSI' : Superincreasing (insert m A) := by
+      intro a ha
+      rw [Finset.mem_insert] at ha
+      rcases ha with rfl | haA
+      · -- a = m : the smaller elements are exactly all of A, summing to ∑A < m
+        have hfil : (insert m A).filter (· < m) = A := by
+          ext x
+          simp only [Finset.mem_filter, Finset.mem_insert]
+          constructor
+          · rintro ⟨hx | hx, hlt⟩
+            · exact absurd hlt (by rw [hx]; exact lt_irrefl m)
+            · exact hx
+          · intro hxA
+            refine ⟨Or.inr hxA, ?_⟩
+            have hxle : x ≤ A.sum id :=
+              Finset.single_le_sum (f := id) (fun i _ => Nat.zero_le _) hxA
+            omega
+        rw [hfil]; omega
+      · -- a ∈ A : m exceeds a, so the smaller-element set is unchanged
+        have ham : a ≤ A.sum id :=
+          Finset.single_le_sum (f := id) (fun i _ => Nat.zero_le _) haA
+        have hfil : (insert m A).filter (· < a) = A.filter (· < a) := by
+          ext x
+          simp only [Finset.mem_filter, Finset.mem_insert]
+          constructor
+          · rintro ⟨hx | hx, hlt⟩
+            · rw [hx] at hlt; exact absurd hlt (by omega)
+            · exact ⟨hx, hlt⟩
+          · rintro ⟨hxA, hlt⟩; exact ⟨Or.inr hxA, hlt⟩
+        rw [hfil]; exact hSI a haA
+    refine ⟨insert m A, ?_, hSI', ?_⟩
+    · rw [Finset.card_insert_of_not_mem hmnot, hcard]
+    · have hdouble := subsetSums_card_insert_superincreasing hmnot hSI.pos hgt
+      have hk1 : (1 : ℕ) ≤ 2 ^ k := Nat.one_le_two_pow
+      have h2 : 2 ^ (k + 1) = 2 * 2 ^ k := by rw [pow_succ]; ring
+      rw [hdouble, hsum]; omega
+
 end Erdos882OQ03
