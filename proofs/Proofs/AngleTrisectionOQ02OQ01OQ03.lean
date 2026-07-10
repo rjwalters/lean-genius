@@ -195,4 +195,37 @@ theorem pgroup_distinct_primes_degree_one (α : ℝ) (hα : IsIntegral ℚ α)
         _ ≤ p ^ k := Nat.le_self_pow (by omega) p
     exact hne (pgroup_prime_unique α hα hp hp' hgt hP hP')
 
+/-- **Intrinsic degree shape: a p-group Galois group forces a prime-power degree.**
+    Independently of *which* prime `p` it is, `Gal(minpoly ℚ α)` being a `p`-group
+    forces `natDegree(minpoly ℚ α)` to be either `1` (trivial extension) or a
+    genuine prime power `p^k` (`k ≥ 1`).  This restates
+    `galois_pgroup_implies_degree_is_pow_p` in the `p`-free Mathlib predicate
+    `IsPrimePow`, so the conclusion no longer mentions the prime at all — the
+    prime is recovered intrinsically as the unique prime factor of the degree
+    (cf. `pgroup_prime_unique`). -/
+theorem pgroup_degree_isPrimePow_or_one (α : ℝ) (hα : IsIntegral ℚ α)
+    {p : ℕ} (hp : p.Prime) (hP : IsPGroup p (minpoly ℚ α).Gal) :
+    (minpoly ℚ α).natDegree = 1 ∨ IsPrimePow (minpoly ℚ α).natDegree := by
+  obtain ⟨k, hk⟩ := galois_pgroup_implies_degree_is_pow_p α hα hp hP
+  rcases Nat.eq_zero_or_pos k with h0 | hpos
+  · left; rw [hk, h0, pow_zero]
+  · right; exact ⟨p, k, hp.prime, hpos, hk.symm⟩
+
+/-- **Prime-free obstruction: a non-prime-power degree admits no p-group.**
+    Contrapositive of `pgroup_degree_isPrimePow_or_one`: if `natDegree(minpoly ℚ α)`
+    is neither `1` nor a prime power (e.g. it has two distinct prime factors like a
+    degree of `6`, `10`, `12`, …), then `Gal(minpoly ℚ α)` is **not** a `p`-group for
+    *any* prime `p`.  Unlike `not_pgroup_of_degree_ne_pow_p`, this needs no candidate
+    prime `p` — a single arithmetic property of the degree rules out every `p`-group
+    Galois structure at once, subsuming the two-distinct-prime-factors obstruction. -/
+theorem not_pgroup_any_of_not_isPrimePow (α : ℝ) (hα : IsIntegral ℚ α)
+    (h1 : (minpoly ℚ α).natDegree ≠ 1)
+    (hpp : ¬ IsPrimePow (minpoly ℚ α).natDegree)
+    {p : ℕ} (hp : p.Prime) :
+    ¬ IsPGroup p (minpoly ℚ α).Gal := by
+  intro hP
+  rcases pgroup_degree_isPrimePow_or_one α hα hp hP with h | h
+  · exact h1 h
+  · exact hpp h
+
 end AngleTrisectionOQ02OQ01OQ03
