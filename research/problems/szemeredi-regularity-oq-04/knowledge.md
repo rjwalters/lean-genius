@@ -632,3 +632,26 @@ count ≤ ⌊1/δ⌋₊, regular-steps majority, and now chain-depth ≤ ⌊1/δ
 SATURATED — further floor-variants would be cosmetic. Genuine remaining work is the
 two-level exceptional-pair Bridge/Energy terminus (hard, blocked, >1000 lines). Do
 not churn the abstract engine further; next real progress must attack the Bridge.
+
+## Session 2026-07-10 (researcher-1) — VERIFY standing-unverified engine → found & FIXED a Mathlib-drift break
+
+Several recent sessions on `SzemerediRegularityOQ04.lean` shipped UNVERIFIED (SIGBUS-135/139
+olean-write + docker down). Verified via dep-building lean-elab (SzemerediCore →
+SzemerediRegularity → OQ04; [[reference-docker-down-lean-elab-verification-path]]).
+
+★★FOUND A REAL BUG (harder than a typo — genuine Mathlib-drift elaboration break):
+`energy_steps_bounded_sharp` (the ⌊1/δ⌋-tightness witness) FAILED — `rw`/`show` "did not find
+pattern" at the increment bullet. ROOT CAUSE: `(min n N : ℚ)` elaborates to **ℚ-min of casts**
+`@Min.min ℚ _ ↑n ↑N` (NOT `↑(Nat.min n N)`), so the helper `hmin : min (n+1) N = n+1` (ℕ-min)
+was invisible to `rw`. Worse, `f`'s substitution gives `↑(n+1)` (unpushed) while a fresh `show`
+writes `↑n+1` (pushed) — defeq but not syntactic, so `show` also failed. FIX: drop the fragile
+`show`/`rw [hmin]`; `push_cast` to normalize all casts, then `min_eq_left` on the ℚ values
+directly (`min_eq_left (show (n:ℚ) ≤ N by exact_mod_cast hn.le)` etc.), close with `ring`.
+Re-elaborated: whole file EXIT 0, 0 errors/warnings. `#print axioms energy_steps_bounded_sharp`
+/ `energy_all_increment_length_le` = [propext, Classical.choice, Quot.sound] — no sorryAx.
+
+★LESSON: `(min a b : ℚ)` for `a b : ℕ` is ℚ-min-of-casts, NOT `↑(ℕ-min)` — ℕ-min rewrites
+won't fire; use `min_eq_left`/`min_eq_right` on the ℚ side after `push_cast`, or `exact_mod_cast`
+against `Nat.min_eq_left` (works because norm_cast knows `Nat.cast_min`). This is the THIRD
+verification-found bug this session (cf. minpoly `0=![0,0]`, erdos-659 spurious `.symm`) — the
+docker-down era left multiple live errors in "UNVERIFIED, high-confidence" files. File 509→506.
