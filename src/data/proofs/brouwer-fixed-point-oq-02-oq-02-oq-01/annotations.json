@@ -1,0 +1,98 @@
+[
+  {
+    "id": "ann-geometric-decay",
+    "proofId": "brouwer-fixed-point-oq-02-oq-02-oq-01",
+    "range": { "startLine": 36, "endLine": 70 },
+    "type": "technique",
+    "title": "Geometric decay and one-step control of the unknown distance",
+    "content": "`iterate_dist` reproves, self-containedly by induction, that the iteration error contracts geometrically: |xₙ − x*| ≤ Lⁿ·|x₀ − x*|. Each step applies the contraction bound |f xₙ − f x*| ≤ L·|xₙ − x*| together with f x* = x* and xₙ₊₁ = f xₙ. `initial_dist` then controls the *unknown* distance |x₀ − x*| by the *computable* first increment: (1 − L)·|x₀ − x*| ≤ |x₁ − x₀|, via the triangle inequality |x₀ − x*| ≤ |x₀ − x₁| + |x₁ − x*| and |x₁ − x*| ≤ L·|x₀ − x*|. Together these are the two ingredients from which both computable estimates follow.",
+    "mathContext": "$|x_n - x^*| \\le L^n |x_0 - x^*|$ and $(1-L)\\,|x_0 - x^*| \\le |x_1 - x_0|$, so the unavoidable dependence on the unknown $|x_0-x^*|$ is replaced by the observable first step.",
+    "significance": "key",
+    "relatedConcepts": ["contraction mapping", "geometric convergence", "triangle inequality", "fixed-point iteration"],
+    "prerequisites": ["Banach fixed-point theorem", "induction on the iteration index", "the contraction inequality"]
+  },
+  {
+    "id": "ann-apriori-aposteriori",
+    "proofId": "brouwer-fixed-point-oq-02-oq-02-oq-01",
+    "range": { "startLine": 72, "endLine": 105 },
+    "type": "insight",
+    "title": "A priori and a posteriori error estimates",
+    "content": "The two workhorse estimates of practical fixed-point iteration. `apriori_estimate`: |xₙ − x*| ≤ Lⁿ/(1−L)·|x₁ − x₀| — computable *before* iterating (only the first increment is needed), it answers 'how many steps for accuracy ε?'. `aposteriori_estimate`: |xₙ₊₁ − x*| ≤ L/(1−L)·|xₙ₊₁ − xₙ| — computable *during* iteration from the latest increment, giving a rigorous stopping criterion. Both are obtained by feeding `initial_dist` (or its shifted form) into `iterate_dist` and clearing the 1/(1−L) denominator with `le_div_iff₀`. Crucially, neither estimate requires knowing x*.",
+    "mathContext": "$|x_n - x^*| \\le \\dfrac{L^n}{1-L}\\,|x_1 - x_0|$ (a priori) and $|x_{n+1} - x^*| \\le \\dfrac{L}{1-L}\\,|x_{n+1} - x_n|$ (a posteriori).",
+    "significance": "key",
+    "relatedConcepts": ["a priori error bound", "a posteriori error bound", "stopping criterion", "numerical analysis"],
+    "prerequisites": ["geometric decay of the iteration error", "the one-step distance estimate", "ordered-field division lemmas"]
+  },
+  {
+    "id": "ann-composition",
+    "proofId": "brouwer-fixed-point-oq-02-oq-02-oq-01",
+    "range": { "startLine": 107, "endLine": 212 },
+    "type": "technique",
+    "title": "Lipschitz composition: contraction constants multiply",
+    "content": "The structural law behind chaining several maps. `lipschitz_comp` shows the composite g∘f is L₂L₁-Lipschitz, and `contraction_comp` that a composite of two contractions is a contraction (product constant < 1). These lift to finite families via `applyAll` and the list lemmas `list_prod_le_one` / `list_prod_lt_one` (a product of factors in [0,1] stays ≤ 1, and over a nonempty list of factors in [0,1) is < 1), culminating in `lipschitz_comp_list` and `contraction_comp_list`: a nonempty finite composite of contractions is again a contraction, with the product of the constants. This is what justifies preconditioning or alternating several contraction steps.",
+    "mathContext": "$|g(f x) - g(f y)| \\le L_2 L_1 |x-y|$; and for a nonempty list $(f_i, L_i)$ with each $L_i < 1$, the composite is a contraction with constant $\\prod_i L_i < 1$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Lipschitz continuity", "function composition", "product of contraction constants", "list induction"],
+    "prerequisites": ["Lipschitz maps", "the contraction inequality", "structural recursion over lists"]
+  },
+  {
+    "id": "ann-uniqueness-sharpness",
+    "proofId": "brouwer-fixed-point-oq-02-oq-02-oq-01",
+    "range": { "startLine": 214, "endLine": 256 },
+    "type": "insight",
+    "title": "Uniqueness of the fixed point and sharpness of the rate",
+    "content": "`fixed_point_unique` shows a contraction with L < 1 has at most one fixed point: for fixed points p, q one has |p − q| = |f p − f q| ≤ L·|p − q|, i.e. (1 − L)·|p − q| ≤ 0, forcing p = q — so the x* appearing in every estimate is well-defined. `iterate_dist_sharp` certifies that the Lⁿ rate cannot be improved: the linear map t ↦ L·t is an L-contraction with fixed point 0 whose iterates satisfy |xₙ − x*| = Lⁿ·|x₀ − x*| *with equality*. Sharpness is thus witnessed by an explicit example, not merely asserted.",
+    "mathContext": "$(1-L)|p-q| \\le 0 \\Rightarrow p=q$; and $t \\mapsto Lt$ attains $|x_n - x^*| = L^n |x_0 - x^*|$, so no smaller rate is provable.",
+    "significance": "key",
+    "relatedConcepts": ["uniqueness of fixed points", "optimality of bounds", "extremal example", "linear contraction"],
+    "prerequisites": ["the contraction inequality", "elementary real inequalities"]
+  },
+  {
+    "id": "ann-existence-banach",
+    "proofId": "brouwer-fixed-point-oq-02-oq-02-oq-01",
+    "range": { "startLine": 257, "endLine": 296 },
+    "type": "technique",
+    "title": "Existence via Mathlib's ContractingWith (Banach on ℝ)",
+    "content": "Discharges the standing hypothesis f x* = x* that every estimate carried. `exists_fixed_point` bridges the raw real bound |f x − f y| ≤ L·|x − y| to `LipschitzWith L.toNNReal f` using `LipschitzWith.of_dist_le_mul` and `Real.dist_eq`, packages it as a `ContractingWith` on the complete space ℝ, and reads off a fixed point from `ContractingWith.exists_fixedPoint`. `exists_unique_fixed_point` combines this with `fixed_point_unique` for the self-contained Banach existence-and-uniqueness statement on ℝ.",
+    "mathContext": "$|f x - f y| \\le L|x-y| \\Rightarrow \\texttt{LipschitzWith } L\\ f$; completeness of $\\mathbb{R}$ + $L<1$ give a unique $x^*$ with $f x^* = x^*$.",
+    "significance": "key",
+    "relatedConcepts": ["ContractingWith", "LipschitzWith", "completeness of ℝ", "Banach fixed-point theorem"],
+    "prerequisites": ["metric-space completeness", "Mathlib's Lipschitz/contraction API"]
+  },
+  {
+    "id": "ann-unconditional",
+    "proofId": "brouwer-fixed-point-oq-02-oq-02-oq-01",
+    "range": { "startLine": 297, "endLine": 331 },
+    "type": "insight",
+    "title": "Hypothesis-free (unconditional) estimates",
+    "content": "Because existence is automatic on ℝ, the practical estimates need no assumed fixed point. `apriori_estimate_unconditional` and `aposteriori_estimate_unconditional` thread `exists_fixed_point` to produce the same a priori / a posteriori bounds while quantifying only over f, L and the iterates xₙ = f^[n] x₀ — exactly the data a numerical routine running xₙ₊₁ = f xₙ actually has. This is what makes the whole suite self-contained rather than conditional on external knowledge of x*.",
+    "mathContext": "For any contraction $f$ on $\\mathbb{R}$ there exists $x^*$ with $|x_n - x^*| \\le \\tfrac{L^n}{1-L}|x_1-x_0|$ and $|x_{n+1}-x^*| \\le \\tfrac{L}{1-L}|x_{n+1}-x_n|$, with no $x^*$ supplied as input.",
+    "significance": "supporting",
+    "relatedConcepts": ["hypothesis discharge", "existential packaging", "computable error control"],
+    "prerequisites": ["existence of the fixed point on ℝ", "the conditional estimates"]
+  },
+  {
+    "id": "ann-convergence",
+    "proofId": "brouwer-fixed-point-oq-02-oq-02-oq-01",
+    "range": { "startLine": 333, "endLine": 379 },
+    "type": "insight",
+    "title": "Convergence of the iteration",
+    "content": "`iterate_tendsto` proves xₙ → x*, the qualitative fact the estimates quantify. The error is squeezed between 0 and Lⁿ·|x₀ − x*|; since `tendsto_pow_atTop_nhds_zero_of_lt_one` gives Lⁿ → 0 for 0 ≤ L < 1, `squeeze_zero` forces |xₙ − x*| → 0. `exists_iterate_tendsto` states the same limit without an assumed fixed point, again by threading existence. This closes the standard Banach package: existence, uniqueness, geometric rate, and limit.",
+    "mathContext": "$0 \\le |x_n - x^*| \\le L^n|x_0-x^*| \\to 0$, so $x_n \\to x^*$ in $\\mathbb{R}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["convergence of sequences", "squeeze theorem", "geometric sequences tending to zero", "limit in a metric space"],
+    "prerequisites": ["Lⁿ → 0 for 0 ≤ L < 1", "the squeeze theorem", "geometric decay of the error"]
+  },
+  {
+    "id": "ann-stability",
+    "proofId": "brouwer-fixed-point-oq-02-oq-02-oq-01",
+    "range": { "startLine": 381, "endLine": 421 },
+    "type": "insight",
+    "title": "Lipschitz stability of the fixed point under perturbation",
+    "content": "`fixed_point_stability` bounds how far the fixed point moves when the map is perturbed: if f is an L-contraction with fixed point x_f, g has fixed point x_g, and |f x − g x| ≤ δ uniformly, then |x_f − x_g| ≤ δ/(1−L). The proof is one triangle-inequality chain: |x_f − x_g| = |f x_f − g x_g| ≤ |f x_f − f x_g| + |f x_g − g x_g| ≤ L·|x_f − x_g| + δ, so (1−L)·|x_f − x_g| ≤ δ. `fixed_point_stability_unconditional` supplies both fixed points from existence when f, g are both contractions. The 1/(1−L) constant shows the fixed point is a 1/(1−L)-Lipschitz function of the map — sensitivity blows up as L → 1.",
+    "mathContext": "$|x_f - x_g| = |f x_f - g x_g| \\le L|x_f - x_g| + \\delta \\Rightarrow |x_f - x_g| \\le \\dfrac{\\delta}{1-L}$.",
+    "significance": "key",
+    "relatedConcepts": ["well-posedness", "perturbation of fixed points", "condition number", "triangle inequality"],
+    "prerequisites": ["the contraction inequality", "existence of fixed points", "elementary real inequalities"]
+  }
+]
