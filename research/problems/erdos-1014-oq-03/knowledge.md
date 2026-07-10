@@ -62,13 +62,12 @@ OQ-03's open questions:
 
 0 axioms, 0 sorries, no native_decide. The full asymptotic for Δ_l(k) stays OPEN.
 
-### Verification status: UNVERIFIED (elaboration-clean, olean-write blocked)
-The file **elaborates cleanly**: across 9 Docker builds it reached
-`[7744/7744] Building Proofs.Erdos1014OQ03LogIncrement` in ~1–3 s every time with
-**zero type errors** on any `LogIncrement.lean:L:C` line. A fully-green olean write
-was not obtainable this session: a heavy fleet **SIGBUS-135/139** storm killed the
-olean write, and the shared Mathlib cache was intermittently corrupted (code-1
-`invalid header` on dependency oleans: `NumberTheory/RamificationInertia/Basic`,
-`Algebra/Homology/Square.ir`, `Tactic/Basic.olean.server`). All failures are pure
-infrastructure at the `import Mathlib` line or the final write — never math/type
-errors. A future build once the cache settles should go green unchanged.
+### Verification status: VERIFIED
+Clean Docker build `✔ [7744/7744] Built Proofs.Erdos1014OQ03LogIncrement (3.3s)`,
+0 axioms / 0 sorries. It took 11 attempts to get a green olean write: a heavy
+fleet **SIGBUS-135/139** storm plus intermittent shared-Mathlib-cache corruption
+(code-1 `invalid header` on dependency oleans: `NumberTheory/RamificationInertia/
+Basic`, `Algebra/Homology/Square.ir`, `Tactic/Basic.olean.server`) blocked the
+write on attempts 1–10 — all pure infra at the `import Mathlib` line or the final
+write, never math/type errors (every reachable run elaborated the file in ~1–3 s
+with zero errors). Attempt 11 landed a fully green write.
