@@ -203,12 +203,93 @@ theorem avoid_one_card_le (n : ℕ) (S : Finset ℕ) (hS : S ⊆ Icc_n n)
   calc S.card ≤ (Finset.Icc 2 n).card := Finset.card_le_card hsub
     _ = n - 1 := by rw [Nat.card_Icc]; omega
 
+/-! ## The next case `m = 2`
+
+The case `m = 2` is just as exact and elementary as `m = 1`. Among distinct positive integers
+the only nonempty subset summing to `2` is the singleton `{2}` (any element `≥ 3` already
+overshoots, and the elements `{0, 1}` together sum to only `1`), so `2` is a subset sum iff
+`2 ∈ S`. Hence the largest `2`-avoiding subset of `{1,…,n}` (for `n ≥ 2`) is `{1,…,n} ∖ {2}`,
+again of size `n − 1`: like `m = 1`, the constraint `m = 2` does not push the value below
+`n − 1`. -/
+
+/-- `2` is a positive subset sum of `S` iff `2 ∈ S`: the only nonempty set of distinct
+    naturals summing to `2` is `{2}` (an element `≥ 3` overshoots; the remaining candidates
+    `{0, 1}` sum to at most `1`). -/
+theorem two_mem_subsetSums_iff (S : Finset ℕ) :
+    (2 : ℕ) ∈ subsetSums S ↔ 2 ∈ S := by
+  constructor
+  · intro h
+    rw [subsetSums, Finset.mem_filter, Finset.mem_image] at h
+    obtain ⟨⟨A, hA, hAsum⟩, _⟩ := h
+    rw [Finset.mem_powerset] at hA
+    have h2A : (2 : ℕ) ∈ A := by
+      by_contra h2
+      have hle : ∀ a ∈ A, a ≤ 1 := by
+        intro a ha
+        by_contra ha1
+        have ha2 : a ≠ 2 := fun he => h2 (he ▸ ha)
+        have ha3 : 3 ≤ a := by omega
+        have hge : 3 ≤ ∑ x ∈ A, x :=
+          le_trans ha3 (Finset.single_le_sum (fun i _ => Nat.zero_le i) ha)
+        omega
+      have hsub : A ⊆ {0, 1} := by
+        intro a ha
+        have := hle a ha
+        simp only [Finset.mem_insert, Finset.mem_singleton]
+        omega
+      have hbound : ∑ x ∈ A, x ≤ ∑ x ∈ ({0, 1} : Finset ℕ), x :=
+        Finset.sum_le_sum_of_subset hsub
+      rw [Finset.sum_pair (by norm_num : (0 : ℕ) ≠ 1)] at hbound
+      omega
+    exact hA h2A
+  · intro h
+    rw [subsetSums, Finset.mem_filter, Finset.mem_image]
+    refine ⟨⟨{2}, ?_, ?_⟩, by norm_num⟩
+    · rw [Finset.mem_powerset]; exact Finset.singleton_subset_iff.mpr h
+    · simp
+
+/-- **The case `m = 2`.** `S` avoids the subset sum `2` iff `2 ∉ S`. Immediate from
+    `two_mem_subsetSums_iff` by negation. -/
+theorem avoid_two_iff (S : Finset ℕ) : AvoidSum S 2 ↔ 2 ∉ S := by
+  unfold AvoidSum
+  rw [two_mem_subsetSums_iff]
+
+/-- **Exact `m = 2` realization.** For `n ≥ 2` the explicit set `{1,…,n} ∖ {2}` witnesses the
+    value `n − 1` at `m = 2`: it sits inside `{1,…,n}`, avoids the subset sum `2` (since
+    `2 ∉ {1,…,n} ∖ {2}`, via `avoid_two_iff`), and has cardinality `n − 1`. -/
+theorem Icc_erase_two_avoid_two (n : ℕ) (hn : 2 ≤ n) :
+    (Icc_n n).erase 2 ⊆ Icc_n n ∧
+      AvoidSum ((Icc_n n).erase 2) 2 ∧
+      ((Icc_n n).erase 2).card = n - 1 := by
+  have hmem : (2 : ℕ) ∈ Icc_n n := by rw [Icc_n, Finset.mem_Icc]; omega
+  refine ⟨Finset.erase_subset _ _, ?_, ?_⟩
+  · rw [avoid_two_iff]
+    exact Finset.notMem_erase 2 _
+  · rw [Finset.card_erase_of_mem hmem, Icc_n, Nat.card_Icc]
+    omega
+
+/-- **Optimality at `m = 2`.** For `n ≥ 2` every `2`-avoiding subset of `{1,…,n}` has size at
+    most `n − 1`: avoiding `2` forces `2 ∉ S` (`avoid_two_iff`), so `S ⊆ {1,…,n} ∖ {2}`.
+    Together with `Icc_erase_two_avoid_two` this pins the exact maximum `n − 1` at `m = 2`. -/
+theorem avoid_two_card_le (n : ℕ) (hn : 2 ≤ n) (S : Finset ℕ) (hS : S ⊆ Icc_n n)
+    (hav : AvoidSum S 2) : S.card ≤ n - 1 := by
+  rw [avoid_two_iff] at hav
+  have hmem : (2 : ℕ) ∈ Icc_n n := by rw [Icc_n, Finset.mem_Icc]; omega
+  have hsub : S ⊆ (Icc_n n).erase 2 := by
+    intro x hx
+    rw [Finset.mem_erase]
+    exact ⟨fun h => hav (h ▸ hx), hS hx⟩
+  calc S.card ≤ ((Icc_n n).erase 2).card := Finset.card_le_card hsub
+    _ = n - 1 := by rw [Finset.card_erase_of_mem hmem, Icc_n, Nat.card_Icc]; omega
+
 /-! ## Summary
 
 Verified here (0 axioms, 0 sorries): the elementary Erdős–Graham construction behind the
 lower bound for `f(n)` — the multiples of a prime `p` in `{1,…,n}` have size `⌊n/p⌋`, avoid
 any `m` with `p ∤ m`, and such a prime exists for every `m ≥ 1`; and, via Bertrand's
-postulate, an `m`-avoiding subset of size `≥ ⌊n/(2m)⌋` exists for every `m ≥ 1`. The deep
+postulate, an `m`-avoiding subset of size `≥ ⌊n/(2m)⌋` exists for every `m ≥ 1`. The two
+smallest cases are pinned exactly: at `m = 1` and (for `n ≥ 2`) at `m = 2` the largest
+avoiding subset of `{1,…,n}` has size `n − 1`, realized by `{1,…,n} ∖ {m}`. The deep
 asymptotics (the matching `(1/2 + o(1)) n / log n` lower and upper bounds) are not addressed
 here.
 -/
