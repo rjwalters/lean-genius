@@ -770,6 +770,36 @@ theorem commutator_eq_top (hp : 5 ≤ p) :
     rw [← hc]
     exact Subgroup.commutator_mem_commutator (Subgroup.mem_top _) (Subgroup.mem_top _)
 
+/-- **Perfectness of `PSL(2, p)` for `p ≥ 5`.**  The projective special linear group
+`PSL(2, p) = SL(2, p)/Z` is perfect: its own commutator subgroup is the whole group.
+
+This transports `commutator_eq_top` (perfectness of the cover `SL(2, p)`) across the
+central quotient homomorphism `mk' : SL(2, p) ↠ PSL(2, p)`.  Since that map is
+surjective it carries `⊤` onto `⊤` and commutes with the commutator bracket
+(`Subgroup.map_commutator`), so the image of the derived subgroup of `SL(2, p)` is the
+derived subgroup of `PSL(2, p)`; as the former is all of `SL(2, p)`, the latter is all
+of `PSL(2, p)`.
+
+Perfectness is one of the two hypotheses of Iwasawa's simplicity criterion (the other
+being a primitive faithful action, here the `2`-transitive action on `P¹(𝔽_p)`).  It is
+exactly the side condition that fails at `p = 2, 3`: `PSL(2,2) ≅ S₃` and
+`PSL(2,3) ≅ A₄` are *not* perfect, which is why the simplicity statement is restricted
+to `p ≥ 5`. -/
+theorem commutator_PSL_eq_top (hp : 5 ≤ p) :
+    commutator (Matrix.ProjectiveSpecialLinearGroup (Fin 2) (ZMod p)) = ⊤ := by
+  set N := Subgroup.center (Matrix.SpecialLinearGroup (Fin 2) (ZMod p)) with hN
+  have hsurj := QuotientGroup.mk'_surjective N
+  -- The central quotient map sends the derived subgroup of `SL` onto that of `PSL`.
+  have key :
+      Subgroup.map (QuotientGroup.mk' N)
+          (commutator (Matrix.SpecialLinearGroup (Fin 2) (ZMod p)))
+        = commutator (Matrix.ProjectiveSpecialLinearGroup (Fin 2) (ZMod p)) := by
+    show Subgroup.map (QuotientGroup.mk' N)
+          ⁅(⊤ : Subgroup (Matrix.SpecialLinearGroup (Fin 2) (ZMod p))), ⊤⁆
+        = ⁅(⊤ : Subgroup (Matrix.ProjectiveSpecialLinearGroup (Fin 2) (ZMod p))), ⊤⁆
+    rw [Subgroup.map_commutator, Subgroup.map_top_of_surjective _ hsurj]
+  rw [← key, commutator_eq_top hp, Subgroup.map_top_of_surjective _ hsurj]
+
 /-!
 ## The order `|SL(2, p)| = p·(p² − 1)`
 
