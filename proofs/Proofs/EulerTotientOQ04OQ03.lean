@@ -2598,4 +2598,81 @@ theorem classifySeed_fiveTimes_gt {q : ℕ} (hq : q.Prime) (hq13 : 13 ≤ q)
   exact (classifySeed_gt_iff hodd (by omega) 1).mp
     (mem_ForwardSet_fiveTimes hq hq13 hq1 hb 1)
 
+-- ----------------------------------------------------------------------------
+-- A prime-triple–indexed REVERSAL family: `n = (18m+3)·2^(k+1)`
+-- ----------------------------------------------------------------------------
+
+/-- **A parametric reversal family.**  For every `m ≥ 1` such that the three
+    numbers `4m+1`, `6m+1`, `14m+3` are *all* prime, the seed `a = 18m+3`
+    (`= 3·(6m+1)`) lands the *entire* family `n = (18m+3)·2^(k+1)` in the reversal
+    regime `φ(n) < φ(D(n))` for all `k`.  This is the reversal analogue of the
+    Sophie–Germain equality family `mem_EqualitySet_sophieGermain` and the
+    parametric forward family `mem_ForwardSet_fiveTimes`, completing the trichotomy
+    of *k*-free parametric seed families (equality / forward / **reversal**).  It
+    unifies the previously isolated reversal seeds `21` (`m=1`) and `129` (`m=7`)
+    into a single parametric statement; the next member is `453` (`m=25`, giving
+    `4m+1=101`, `6m+1=151`, `14m+3=353` all prime).
+
+    Mechanism (a clean collapse of the general reversal criterion
+    `dblIter_reversal_iff_general`):
+
+    * `a = 3·(6m+1)` so `φ(a) = 2·6m = 12m`;
+    * `2a − φ(a) = (36m+6) − 12m = 24m+6 = 2·(12m+3)`, so `s = 1`,
+      `b = 12m+3 = 3·(4m+1)` (odd) and `φ(b) = 2·4m = 8m`;
+    * the landing constant is `C = 2a − φ(b) = (36m+6) − 8m = 28m+6 = (14m+3)·2¹`,
+      so `t = 1`, `e = 14m+3` (odd);
+    * the classifier compares `φ(e)·2^{t−1} = φ(14m+3) = 14m+2` against
+      `φ(a) = 12m`, and `12m < 14m+2` holds for **every** `m`, so the family
+      reverses.
+
+    All three primality conditions are load-bearing: `6m+1` and `4m+1` give the
+    clean totient values `φ(a) = 12m`, `φ(b) = 8m`, while the *reversal* itself
+    needs the lower bound `φ(e) = 14m+2 > 12m`, which requires `14m+3` prime — for a
+    composite landing `φ(e)` could drop below `12m` and the family would not
+    reverse.  (The restriction to the semiprime landing `b = 3·(4m+1)` is why the
+    other observed reversal seeds `55 = 5·11`, `175 = 5²·7` — whose seeds are of the
+    form `5q`, not `3q` — lie outside this particular family; reversals are not
+    confined to it.) -/
+theorem mem_ReversalSet_primeTriple {m : ℕ} (hm : 1 ≤ m)
+    (hp : (4 * m + 1).Prime) (hq : (6 * m + 1).Prime) (he : (14 * m + 3).Prime)
+    (k : ℕ) : (18 * m + 3) * 2 ^ (k + 1) ∈ ReversalSet := by
+  have hcopa : Nat.Coprime 3 (6 * m + 1) :=
+    (Nat.coprime_primes (by norm_num) hq).mpr (by omega)
+  have hcopb : Nat.Coprime 3 (4 * m + 1) :=
+    (Nat.coprime_primes (by norm_num) hp).mpr (by omega)
+  -- φ(a) = 12m  (a = 18m+3 = 3·(6m+1))
+  have hφa : Nat.totient (18 * m + 3) = 12 * m := by
+    rw [show 18 * m + 3 = 3 * (6 * m + 1) from by ring, Nat.totient_mul hcopa,
+        show Nat.totient 3 = 2 from by decide, Nat.totient_prime hq]; omega
+  -- φ(b) = 8m  (b = 12m+3 = 3·(4m+1))
+  have hφb : Nat.totient (12 * m + 3) = 8 * m := by
+    rw [show 12 * m + 3 = 3 * (4 * m + 1) from by ring, Nat.totient_mul hcopb,
+        show Nat.totient 3 = 2 from by decide, Nat.totient_prime hp]; omega
+  -- oddness of the three odd data
+  have ha_odd : Odd (18 * m + 3) := Nat.odd_iff.mpr (by omega)
+  have hb_odd : Odd (12 * m + 3) := Nat.odd_iff.mpr (by omega)
+  have he_odd : Odd (14 * m + 3) := Nat.odd_iff.mpr (by omega)
+  have p0 : (2 : ℕ) ^ (1 - 1) = 1 := by norm_num
+  have p1 : (2 : ℕ) ^ 1 = 2 := by norm_num
+  -- transport data:  2a − φ(a) = 2¹·b  and  2a − φ(b)·2^(s−1) = e·2¹
+  have hstep : 2 * (18 * m + 3) - Nat.totient (18 * m + 3)
+      = 2 ^ 1 * (12 * m + 3) := by rw [hφa, p1]; omega
+  have hC : 2 * (18 * m + 3) - Nat.totient (12 * m + 3) * 2 ^ (1 - 1)
+      = (14 * m + 3) * 2 ^ 1 := by rw [hφb, p0, p1]; omega
+  -- feed the k-free reversal criterion; reversal ⇔ φ(a) < φ(e)·2^(t−1) = 14m+2
+  rw [dblIter_reversal_iff_general ha_odd hb_odd he_odd (le_refl 1) (le_refl 1)
+        hstep hC k, hφa, p0, mul_one, Nat.totient_prime he]
+  omega
+
+/-- **Classifier value on the reversal family seeds.**  Specialising through
+    `classifySeed_lt_iff`: every seed `18m+3` in the parametric reversal family
+    (`m ≥ 1`, `4m+1`, `6m+1`, `14m+3` all prime) is classified `lt` by the total
+    decision procedure. -/
+theorem classifySeed_primeTriple_lt {m : ℕ} (hm : 1 ≤ m)
+    (hp : (4 * m + 1).Prime) (hq : (6 * m + 1).Prime) (he : (14 * m + 3).Prime) :
+    classifySeed (18 * m + 3) = Ordering.lt := by
+  have hodd : Odd (18 * m + 3) := Nat.odd_iff.mpr (by omega)
+  exact (classifySeed_lt_iff hodd (by omega) 1).mp
+    (mem_ReversalSet_primeTriple hm hp hq he 1)
+
 end Erdos1064OQ03

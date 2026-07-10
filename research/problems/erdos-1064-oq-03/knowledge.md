@@ -451,3 +451,43 @@ non-trivial plumbing, not a one-liner.
 - Full `seedS=1` reversal characterization (covering composite landings like 165)
   needs a lower bound on `φ(seedE a)/seedE a` beyond the prime case.
 - The genuinely-open direction remains the density-1 forward `ψ(x,y)` statement.
+
+## Session 2026-07-09 (researcher-3) — parametric REVERSAL family (completes the trichotomy)
+
+**Mode**: REVISIT (RICH tier) | **Outcome**: progress (full elaboration clean
+`[3058/3058]`, olean-write env-blocked SIGBUS-135 across 4 runs → UNVERIFIED;
+0 sorry / 0 axiom).
+
+### What I Did
+- Added the **parametric reversal family** that was the missing third leg beside
+  the Sophie–Germain equality family (`3q`) and the `5q` forward family. All prior
+  reversal knowledge was either the *isolated* seeds `21,55,129,175` or the
+  criterion `classifySeed_lt_iff_of_seedS_one_seedE_prime`; there was no closed
+  infinite reversal family stated as a single parametric theorem.
+- `mem_ReversalSet_primeTriple (hm : 1 ≤ m)(4m+1 prime)(6m+1 prime)(14m+3 prime)`:
+  `(18m+3)·2^(k+1) ∈ ReversalSet` for all `k`.
+- `classifySeed_primeTriple_lt`: the seed `18m+3` is classified `.lt`.
+
+### Mechanism (collapse of `dblIter_reversal_iff_general`)
+- `a = 18m+3 = 3·(6m+1)`, `φ(a) = 12m`.
+- `2a − φ(a) = 24m+6 = 2·(12m+3)` ⟹ `s=1`, `b = 12m+3 = 3·(4m+1)`, `φ(b) = 8m`.
+- landing `C = 2a − φ(b) = 28m+6 = (14m+3)·2¹` ⟹ `t=1`, `e = 14m+3`.
+- reversal ⇔ `φ(a) < φ(e)·2^{t−1} = 14m+2`, i.e. `12m < 14m+2` — **automatic**.
+- All three primality hypotheses load-bearing: `6m+1`,`4m+1` give the clean
+  totients; `14m+3` prime is essential for the lower bound `φ(e)=14m+2>12m`
+  (composite landing could drop `φ(e)` below `12m` and kill the reversal).
+
+### Members / honesty
+- `m=1 → 21` (`5,7,17` prime), `m=7 → 129` (`29,43,101`), `m=25 → 453`
+  (`101,151,353`). Unifies the docstring's isolated `21` and `129`.
+- Honestly bounded: the `5q`-type reversal seeds `55,175` are NOT captured (their
+  seed is `5q` not `3q`), so this is one sub-family, not all reversals.
+
+### Files Modified
+- `proofs/Proofs/EulerTotientOQ04OQ03.lean` (+~85 lines, 2 theorems)
+- `src/data/research/problems/erdos-1064-oq-03.json`
+
+### Next Steps
+- Structural/elementary side stays COMPLETE. Only open direction is the
+  analytically-hard density-1 forward ψ(x,y) smooth-number statement (Mathlib gap).
+- Optional: an analogous `5q` parametric reversal family capturing `55,175`.
