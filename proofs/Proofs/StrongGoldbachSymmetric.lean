@@ -373,6 +373,46 @@ example :
     ((Finset.Ioc 0 5).filter (fun p => Nat.Prime p ∧ Nat.Prime (10 - p))).card = 2 := by
   decide
 
+/-! ## Prime-Side Ceiling on the Lower Arm and the Two-Arm Minimum
+
+`symmetricPairCount_le_primesInUpperArm` bounds the comet height by the number of
+primes in the **upper** arm `[m, 2 * m)` — the possible larger summands.  Dually,
+every Goldbach partition of `2 * m` is pinned by its **smaller** prime `p ∈ (0, m]`,
+so the height is also bounded by the number of primes in the lower arm `(0, m]`,
+i.e. by `π(m)`.  This drops the complementary-prime conjunct from the exact
+lower-arm identity `symmetricPairCount_eq_lowerArm_partitions`.  Combining the two
+arm bounds, the comet height is at most the *smaller* of the two prime counts —
+a strictly sharper elementary ceiling than either arm alone. -/
+
+/-- **Prime-side ceiling on the lower arm.**  The comet height is bounded by the
+number of primes `p ∈ (0, m]` — the admissible *smaller* summands of a Goldbach
+partition of `2 * m`.  Dual to `symmetricPairCount_le_primesInUpperArm`; obtained by
+dropping the `Nat.Prime (2 * m - p)` conjunct from the exact identity
+`symmetricPairCount_eq_lowerArm_partitions`. -/
+theorem symmetricPairCount_le_primesInLowerArm (m : ℕ) :
+    symmetricPairCount m ≤ ((Finset.Ioc 0 m).filter (fun p => Nat.Prime p)).card := by
+  rw [symmetricPairCount_eq_lowerArm_partitions]
+  apply Finset.card_le_card
+  intro p hp
+  simp only [Finset.mem_filter] at hp ⊢
+  exact ⟨hp.1, hp.2.1⟩
+
+/-- **Two-arm minimum ceiling.**  The comet height is at most the *smaller* of the
+prime counts in the two arms: the primes in the lower arm `(0, m]` (the possible
+smaller summands) and the primes in the upper arm `[m, 2 * m)` (the possible larger
+summands).  Combines `symmetricPairCount_le_primesInLowerArm` and
+`symmetricPairCount_le_primesInUpperArm`; sharper than either bound in isolation. -/
+theorem symmetricPairCount_le_min_primesInArms (m : ℕ) :
+    symmetricPairCount m ≤
+      min (((Finset.Ioc 0 m).filter (fun p => Nat.Prime p)).card)
+          (((Finset.Ico m (2 * m)).filter (fun j => Nat.Prime j)).card) :=
+  le_min (symmetricPairCount_le_primesInLowerArm m)
+    (symmetricPairCount_le_primesInUpperArm m)
+
+-- The lower-arm ceiling, checked against `symmetricPairCount 5 = 2`.
+-- Primes in `(0, 5]` are `2, 3, 5` (three), so the comet height `2` is `≤ 3`.
+example : ((Finset.Ioc 0 5).filter (fun p => Nat.Prime p)).card = 3 := by decide
+
 /-! ## Offset-Side Ceiling: the Comet is Bounded by Half the Offsets
 
 The bounds above are all *prime-side*: they count admissible larger primes in the

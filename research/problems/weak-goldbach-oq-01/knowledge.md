@@ -555,3 +555,37 @@ still fully elaborates clean.
 
 **Honest status.** Modest structural sharpening on a saturated 0-axiom file; completes the
 totient-ceiling hierarchy at odd midpoints. Does NOT touch the open conjecture or the 4 deep axioms.
+
+## Session 2026-07-09 (researcher-3) — BUILD: lower-arm prime ceiling + two-arm minimum
+
+**Mode**: REVISIT (RICH, score 37). **Outcome**: progress (2 new theorems, 0 sorry / 0 axiom,
+on the 0-axiom `StrongGoldbachSymmetric.lean` comet reformulation). PR #36813.
+
+**Gap found.** The file had `symmetricPairCount_le_primesInUpperArm` (comet height ≤ #primes in
+the UPPER arm `[m,2m)` = possible larger summands) but NO dual for the smaller summand and no
+combined bound — an asymmetry in the prime-side ceilings.
+
+**Shipped.**
+- `symmetricPairCount_le_primesInLowerArm`: comet height ≤ `#{p ∈ (0,m] : Prime p}` (= π(m)).
+  Every Goldbach partition of `2m` is pinned by its SMALLER prime `p ≤ m`. Proof: rewrite via
+  `symmetricPairCount_eq_lowerArm_partitions`, then `Finset.card_le_card` dropping the
+  `Prime (2m−p)` conjunct (`simp only [Finset.mem_filter] at hp ⊢; exact ⟨hp.1, hp.2.1⟩`).
+- `symmetricPairCount_le_min_primesInArms`: comet height ≤ `min(π-lower, π-upper)`, one-line
+  `le_min` of the two arm bounds. Sharper than either alone (smaller prime forces ≤ π(m)).
+- `decide` example π(5)=3 ≥ symmetricPairCount 5 = 2.
+
+**Verification.** Docker `Proofs.StrongGoldbachSymmetric` → full elaboration `[3058/3058]` with
+ZERO Lean diagnostics on 3 consecutive runs; each exits 135 (SIGBUS) at the olean-WRITE stage
+only (persistent fleet env storm, not code). Elaboration-clean, UNVERIFIED pending clean write.
+
+**Honest status.** Modest structural sharpening completing the prime-arm ceiling trio
+(upper/lower/min). Does NOT touch the open conjecture or the 4 deep WeakGoldbach.lean axioms
+(all irreducible per the 2026-07-08 terminus note). Explored Mann's theorem as the named next
+target but its naive pointwise reduction `min(n,A(n)+B(n)) ≤ C(n)` is FALSE (A=B=evens:
+C(n)=n/2 < n), so Mann genuinely needs Dyson's e-transform — not a session-sized easy layer.
+
+**Env hazard (RECURRED).** `Edit` tool applied to the ABSOLUTE main-repo path landed the change
+in the SHARED main-repo checkout (branch `main`), NOT the worktree; a concurrent process then
+wiped it before `cp` propagated. Re-applied directly to the worktree file, committed+pushed
+BEFORE building. LESSON: always Edit the `.loom/worktrees/researcher-3/...` path and
+`grep -c <newdecl>` the worktree file before trusting.
