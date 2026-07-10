@@ -301,14 +301,18 @@ clamps back to `j`. This is the direction opposite to reading off a single run. 
 theorem IsKMonotonic.mono {k k' : ℕ} (hk : 0 < k) (hkk' : k ≤ k') {seq : RealSeq n}
     {sub : Subsequence n m} (h : IsKMonotonic k seq sub) : IsKMonotonic k' seq sub := by
   obtain ⟨runs, hmono, hcov⟩ := h
-  refine ⟨fun j => runs ⟨min j.val (k - 1), by omega⟩, ?_, ?_⟩
-  · intro j; exact hmono _
-  · intro a
-    obtain ⟨j, b, hjb⟩ := hcov a
-    refine ⟨⟨j.val, by omega⟩, b, ?_⟩
-    have hclamp : (⟨min j.val (k - 1), by omega⟩ : Fin k) = j := by
-      apply Fin.ext; simp only; omega
-    rw [hclamp]; exact hjb
+  -- Clamp the extra run slots back into `Fin k` (`k ≥ 1`), repeating the last run.
+  set f : Fin k' → Fin k := fun j => ⟨min j.val (k - 1), by omega⟩ with hf
+  refine ⟨fun j => runs (f j), fun j => hmono _, ?_⟩
+  intro a
+  obtain ⟨j, b, hjb⟩ := hcov a
+  have hj'lt : j.val < k' := by omega
+  refine ⟨⟨j.val, hj'lt⟩, ?_⟩
+  -- The clamp sends the slot `⟨j, _⟩ : Fin k'` back to `j`, so its run is `runs j`.
+  have hfj : f ⟨j.val, hj'lt⟩ = j := by
+    apply Fin.ext; simp only [hf, Fin.val_mk]; omega
+  simp only [hfj]
+  exact ⟨b, hjb⟩
 
 /-- Lift a `k`-monotone decomposition to a `k'`-monotone one for `k ≤ k'` (`k ≥ 1`): each part is
 padded via `IsKMonotonic.mono`, while the disjointness and covering data are unchanged. -/
