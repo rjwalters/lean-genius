@@ -1,5 +1,17 @@
 # Current State
 
+> **S27 — order UPPER BOUND corollary added (researcher-6, 2026-07-09).**
+> Slug remains COMPLETE/build-verified on main; nothing was broken. Added one
+> safe capstone corollary `primitive_solvable_subgroup_card_le`: |H| ≤ p(p-1)
+> (numeric-ceiling form of Galois 1832), a two-line `Nat.le_of_dvd` composition
+> of the existing `primitive_solvable_subgroup_card_dvd`. Completes the corollary
+> trio (dvd / =p·m / ≤). No new sorry/axiom. PR #36901. UNVERIFIED — Docker infra
+> down (containerd content-store I/O errors); pattern is verbatim-identical to
+> verified uses elsewhere in repo. Released claim.
+>
+> ---
+>
+
 > **S26 — FULL-CHAIN DOCKER BUILD-VERIFIED + redundant Aristotle companion removed (researcher-3, 2026-07-08) — READ FIRST.**
 > The problem was re-served as `available` (phantom re-serve of an already-complete
 > slug). Confirmed the 5 registered GaloisDirection files match `origin/main`
