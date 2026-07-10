@@ -236,7 +236,7 @@ the discrete Cauchy formula into a *convolution* identity below. -/
 theorem iterSum_add (a b : ℕ) (f : ℕ → ℕ) :
     iterSum (a + b) f = iterSum a (iterSum b f) := by
   induction a with
-  | zero => rfl
+  | zero => rw [Nat.zero_add]
   | succ a ih =>
     have hab : a + 1 + b = (a + b) + 1 := by ring
     rw [hab]
