@@ -53,7 +53,7 @@
       "isFriable predicate: P(n) ≤ y condition",
       "dickman_function axiom: the Dickman-de Bruijn function ρ",
       "psi counting function: Ψ(x, y) = #{n ≤ x : P(n) ≤ y}",
-      "dickman_theorem: Ψ(x, x^α)/x → ρ(1/α) (proved as theorem, not a Lean axiom)",
+      "Dickman's theorem Ψ(x, x^α)/x → ρ(1/α): described in a docstring comment (not formalized — neither axiom nor theorem in this file)",
       "consecutiveSmooth definition: both n and n+1 smooth",
       "densityExists predicate: natural density existence",
       "erdos928Question: formal problem statement",
@@ -63,7 +63,7 @@
       "wang_conditional axiom: conditional on Elliott-Halberstam"
     ],
     "axiomCount": 4,
-    "assumptions": "4 axiom declarations: dickman_function (Dickman rho function definition), infinitely_many_exist (Schinzel/Meza: infinitely many consecutive smooth pairs exist), teravainen_log_density (Teravaeinen 2018: logarithmic density equals rho(1/alpha)*rho(1/beta)), wang_conditional (Wang 2021: natural density under Elliott-Halberstam conjecture). Former axioms lpf_divides, lpf_prime, lpf_of_prime, dickman_at_one, dickman_at_two, dickman_positive, dickman_decreasing, dickman_theorem, elliott_halberstam_conjecture, schinzel_product now proved as theorems or definitions.",
+    "assumptions": "4 axiom declarations: dickman_function (Dickman rho function definition), infinitely_many_exist (Schinzel/Meza: infinitely many consecutive smooth pairs exist), teravainen_log_density (Teravaeinen 2018: logarithmic density equals rho(1/alpha)*rho(1/beta)), wang_conditional (Wang 2021: natural density under Elliott-Halberstam conjecture). Supporting facts (P(n) divisibility/primality properties, Dickman function values ρ(1)=1 and ρ(2)=1-ln2, its positivity and monotonicity, Dickman's theorem Ψ(x,x^α)/x→ρ(1/α), the Elliott-Halberstam conjecture, and Schinzel's P(n(n+1)) bound) are described in docstring comments only — they are not formalized in this file (neither axiomatized nor proved as theorems/definitions).",
     "lineCount": 259,
     "theoremCount": 2,
     "definitionCount": 9
@@ -115,7 +115,7 @@
     {
       "id": "dickman-theorem",
       "title": "Dickman's Theorem (1930)",
-      "summary": "psi counting function, dickman_theorem (proved as theorem — not a Lean axiom)",
+      "summary": "psi counting function (defined); Dickman's theorem stated in a docstring comment only (not formalized)",
       "startLine": 114,
       "endLine": 134,
       "mathContext": "$\\Psi(x, x^\\alpha) / x \\to \\rho(1/\\alpha)$ as $x \\to \\infty$ (Dickman, 1930). The density of $\\alpha$-smooth numbers is $\\rho(1/\\alpha)$."
