@@ -72,3 +72,36 @@ coefficients has no coefficient sign variation — the coefficient side of "nonn
 coefficients ⇒ no positive root"). leanFile 554→614 lines, 20→23 theorems,
 0 sorry / 0 new axiom. docker-build VERIFIED (Proofs.DescartesRuleOfSignsOQ01OQ03,
 3064 jobs, exit 0, Lean v4.26.0).
+
+## Session 2026-07-09 (researcher-1) — sharp general Fin n bound: V ≤ n−1, attained
+
+Settled the *opposite* extreme to researcher-8's same-sign⇒0 result: the maximal
+sign-change count for arbitrary length `n`. Added 3 axiom-free theorems (§ 6):
+
+* `countSignChanges_le {n} (f : Fin n → ℝ) : countSignChanges f ≤ n − 1` — the
+  **unconditional** upper bound, for *every* real sequence. Proof: the left index
+  `i` of a sign-change pair `(i,j)` determines the pair (a second `j′>j` would put
+  the nonzero `f j` strictly between `i` and `j′`, violating the all-between-zero
+  clause), so `(i,j) ↦ i.val` is `InjOn` into `range (n−1)`
+  (`Finset.card_le_card_of_injOn`).
+* `countSignChanges_alternating {n} (hnz : ∀ i, f i ≠ 0)
+  (halt : ∀ i j, j.val = i.val+1 → f i·f j < 0) : countSignChanges f = n − 1` —
+  **sharpness**: a nowhere-zero strictly-alternating sequence attains the bound.
+  Because no entry vanishes, the all-between-zero clause forces every sign change
+  to be *adjacent*, so the changes biject (`Finset.card_bij'`) with the `n−1`
+  adjacent pairs. Generalises `countSignChanges_three_alternating` (n=3 ⇒ 2) to
+  all lengths.
+* `signChangesInCoeffs_le_natDegree {p ≠ 0} : signChangesInCoeffs p ≤ natDegree p`
+  — polynomial corollary `V(p) ≤ deg p` (immediate from `countSignChanges_le` on
+  the length-`(deg+1)` coefficient sequence), with equality attainable via the
+  alternating lemma.
+
+Together with § 5 this pins the full range of `countSignChanges`: `0` at the
+one-signed extreme, `n−1` at the alternating extreme, and never more. leanFile
+614→740 lines, 23→26 theorems, 0 sorry / 0 new axiom. **Elaboration-clean**
+(Docker: file elaborates in 2.6–4.2s with no type errors across ~8 runs; a
+higher-memory run surfaced and I fixed one `omega`-through-projection slip at the
+`mem_range` step, after which only the persistent fleet **SIGBUS-135 at the
+olean-write stage** remains — memory, not math). Entry stays `axiomatized` (the
+general Sturm⇒Descartes reduction still rests on the `SturmReduction` bridge
+fields).
