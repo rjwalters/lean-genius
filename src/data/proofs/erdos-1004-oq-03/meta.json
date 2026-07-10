@@ -138,6 +138,16 @@
       "targetId": "erdos-1004",
       "relationship": "extends",
       "description": "Complements the parent's axiomatized EPS upper bound with a fully verified, 0-axiom, unconditional bound K ≤ n−1 on distinct totient run length."
+    },
+    {
+      "targetId": "erdos-1004-oq-02",
+      "relationship": "sibling",
+      "description": "Sibling OQ on the same problem: the elementary fiber bound φ(n)² ≥ n/2 forcing totient fibers to be finite. Both replace analytic machinery with elementary, axiom-free totient estimates."
+    },
+    {
+      "targetId": "erdos-1004-oq-02-oq-01",
+      "relationship": "sibling",
+      "description": "Sibling OQ packaging the optimal totient-run exponent c₀ as a well-defined invariant (c₀ = ⊤ ⇔ the conjecture); this file's unconditional K ≤ n−1 is the crude, threshold-free end of the same run-length question that c₀ measures asymptotically."
     }
   ],
   "references": [
