@@ -146,6 +146,30 @@ theorem qthRoot_distinct (θ : ℝ) (p : ℤ) (q : ℕ) (hq : 0 < q)
   rw [hm0] at h_int; simp at h_int
   exact hjk (by omega)
 
+/-- **Cyclic periodicity of the root index.** Shifting the index `k` by `q`
+returns the *same* root, because it rotates the argument by a full turn `2π`:
+`ζ_{k+q} = exp(i(pθ + 2π(k+q))/q) = exp(i(pθ + 2πk)/q) · exp(2πi) = ζ_k`.
+Together with `qthRoot_distinct` (the `q` indices in `[0, q)` give distinct
+values) this pins the value set to *exactly* `q` roots, indexed cyclically
+modulo `q`. This cyclic identification `k ∼ k + q` of the index is precisely
+the combinatorial seed of the `q`-sheeted Riemann surface of `z ↦ z^{p/q}`:
+the sheets are the residues `k mod q`, and crossing a branch cut advances `k`
+by one, wrapping back to the start after `q` crossings. -/
+theorem qthRoot_periodic (θ : ℝ) (p : ℤ) (q : ℕ) (hq : 0 < q) (k : ℕ) :
+    qthRoot θ p q (k + q) = qthRoot θ p q k := by
+  simp only [qthRoot]
+  have hq_ne_r : (q : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
+  -- The two arguments differ by exactly 2π.
+  have hexp : (↑p * θ + 2 * π * ↑(k + q)) / (q : ℝ) =
+      (↑p * θ + 2 * π * ↑k) / ↑q + 2 * π := by
+    rw [Nat.cast_add]; field_simp; ring
+  rw [show (↑((↑p * θ + 2 * π * ↑(k + q)) / ↑q) : ℂ) * I =
+        ↑((↑p * θ + 2 * π * ↑k) / ↑q + 2 * π) * I from by
+      congr 1; exact_mod_cast hexp]
+  rw [show (↑((↑p * θ + 2 * π * ↑k) / ↑q + 2 * π) : ℂ) * I =
+        ↑((↑p * θ + 2 * π * ↑k) / ↑q) * I + 2 * ↑π * I from by push_cast; ring]
+  rw [Complex.exp_add, Complex.exp_two_pi_mul_I, mul_one]
+
 /-! ## Part IV: Principal Value via cpow -/
 
 /-- Fractional De Moivre (Principal Value): For θ in the principal range,
