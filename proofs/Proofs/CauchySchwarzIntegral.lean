@@ -108,10 +108,24 @@ theorem cauchy_schwarz_L2_eq_iff (f g : Lp ℝ 2 μ) (hf : f ≠ 0) (hg : g ≠ 
     rw [abs_mul, abs_of_nonneg (sq_nonneg ‖g‖)]
     ring
 
+-- Equality Characterization (Integral Form)
+--
+-- The integral-form companion of `cauchy_schwarz_L2_eq_iff`: the whole point of
+-- this file is the integral statement, so the equality case belongs in integral
+-- terms too. For nonzero L² functions, the Bunyakovsky–Schwarz inequality
+-- `|∫ f·g dμ| ≤ ‖f‖·‖g‖` holds with EQUALITY iff `f` and `g` are linearly
+-- dependent (`f = c • g`). Proved by the same `L2_inner_eq_integral` bridge that
+-- turns `bunyakovsky_schwarz_abs` into its `≤` form.
+theorem bunyakovsky_schwarz_abs_eq_iff (f g : Lp ℝ 2 μ) (hf : f ≠ 0) (hg : g ≠ 0) :
+    |∫ a, (f : α → ℝ) a * (g : α → ℝ) a ∂μ| = ‖f‖ * ‖g‖ ↔ ∃ c : ℝ, f = c • g := by
+  rw [← L2_inner_eq_integral]
+  exact cauchy_schwarz_L2_eq_iff f g hf hg
+
 -- Summary check
 #check @bunyakovsky_schwarz_abs
 #check @bunyakovsky_schwarz_sq
 #check @cauchy_schwarz_L2_eq_iff
+#check @bunyakovsky_schwarz_abs_eq_iff
 
 end BunyakovskySchwarz
 
