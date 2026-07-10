@@ -555,6 +555,33 @@ theorem largeSetsFamily_subset_franklFurediOdd_one (n : ℕ) :
   rw [franklFurediOdd, Finset.mem_filter]
   exact ⟨hA.1, Or.inl hA.2⟩
 
+/-!
+### Concrete `r = 1` lower bounds from the Frankl–Füredi construction
+
+`T n r` is a supremum over exponentially many families, so it is not directly
+`decide`-able; but the explicit family `franklFurediOdd n 1 = {A ⊆ [n] : |A| > (n+1)/2
+or A = ∅}` is a *valid* `1`-avoiding family (`franklFurediOdd_avoids_r`), and its
+cardinality — a small, kernel-`decide`-able number — is a certified lower bound for
+`T n 1` (`franklFurediOdd_card_le_T`). For `n = 4` the family is
+`{∅} ∪ {|A| ∈ {3,4}}`, size `1 + C(4,3) + C(4,4) = 6`; for `n = 5` it is
+`{∅} ∪ {|A| ∈ {4,5}}`, size `1 + C(5,4) + C(5,5) = 7`. These give the first concrete
+numeric anchors for the (otherwise only-asymptotically-bounded) `r = 1` line, alongside
+the exact `T n 0 = 2^{n-1}` and `T n n = 2^n - 1`. -/
+
+/-- **`T(4,1) ≥ 6`**: the `n = 4` Frankl–Füredi family `{∅, and all 3- or 4-subsets of
+    [4]}` is `1`-avoiding with `6` members, so it is a concrete lower bound for `T 4 1`. -/
+theorem six_le_T_4_1 : 6 ≤ T 4 1 := by
+  have h : (franklFurediOdd 4 1).card = 6 := by decide
+  have hle := franklFurediOdd_card_le_T 4 1
+  omega
+
+/-- **`T(5,1) ≥ 7`**: the `n = 5` Frankl–Füredi family `{∅, and all 4- or 5-subsets of
+    [5]}` is `1`-avoiding with `7` members, so it is a concrete lower bound for `T 5 1`. -/
+theorem seven_le_T_5_1 : 7 ≤ T 5 1 := by
+  have h : (franklFurediOdd 5 1).card = 7 := by decide
+  have hle := franklFurediOdd_card_le_T 5 1
+  omega
+
 /-
 ## Part V: The Main Question - Exponential Bound
 
