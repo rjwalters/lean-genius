@@ -8,7 +8,7 @@
     },
     "type": "concept",
     "title": "Problem Overview",
-    "content": "**Erdős Problem #482** concerns a nonlinear recurrence a₁ = 1, a_{n+1} = ⌊√2(aₙ + 1/2)⌋ that extracts binary digits of √2. The difference a_{2n+1} - 2·a_{2n-1} gives the n-th binary digit. Graham-Pollak proved this in 1970, and Stoll generalized to quadratic irrationals and beyond in 2005-2006.",
+    "content": "**Erdős Problem #482** concerns a nonlinear recurrence a₁ = 1, a_{n+1} = ⌊√2(aₙ + 1/2)⌋ that extracts binary digits of √2. The difference a_{2n+1} - 2·a_{2n-1} gives the n-th binary digit. Graham-Pollak proved this in 1970, and Stoll generalized to quadratic irrationals and beyond in 2005-2006. The file records the solution as a definition of the recurrence plus two axiomatized results (Graham-Pollak and Stoll), whose full proofs need detailed real/algebraic analysis.",
     "mathContext": "The floor function ⌊·⌋ acts as a systematic rounding mechanism. Combined with the growth factor √2, consecutive differences at odd indices reveal individual binary digits. This is a solved problem from the Erdős-Graham monograph (1980, p.96).",
     "significance": "key",
     "relatedConcepts": [
@@ -27,13 +27,13 @@
     "id": "ann-e482-sequence",
     "proofId": "erdos-482",
     "range": {
-      "startLine": 42,
-      "endLine": 54
+      "startLine": 37,
+      "endLine": 40
     },
     "type": "definition",
-    "title": "Graham-Pollak Sequence",
-    "content": "**grahamPollakSeq** defines the recurrence a₁ = 1, a_{n+1} = ⌊√2(aₙ + 1/2)⌋. The first terms are 1, 2, 3, 4, 7, 10, 14, 20, 28, ... (OEIS A004539-related). The sequence grows roughly as √2^n, with the floor function providing the crucial truncation.",
-    "mathContext": "The definition uses Lean's structural recursion. The floor function Int.floor maps ℝ → ℤ. The seq_values axiom gives concrete computed values since Lean cannot evaluate floor(√2 · x) symbolically.",
+    "title": "The Graham-Pollak Sequence",
+    "content": "**grahamPollakSeq** defines the recurrence a₁ = 1 (encoded as the 0-index base case 1), a_{n+1} = ⌊√2(aₙ + 1/2)⌋. The first terms are 1, 2, 3, 4, 7, 10, 14, 20, 28, ... (related to OEIS A004539). The sequence grows roughly as √2ⁿ, with the floor function providing the crucial truncation. Concrete term values are not computed in-file because Lean cannot evaluate ⌊√2 · x⌋ symbolically.",
+    "mathContext": "The definition uses Lean's structural recursion. The floor function Int.floor maps ℝ → ℤ; each step multiplies by √2 and rounds down after the +1/2 shift.",
     "significance": "key",
     "relatedConcepts": [
       "recursive-definition",
@@ -50,12 +50,12 @@
     "id": "ann-e482-main",
     "proofId": "erdos-482",
     "range": {
-      "startLine": 60,
-      "endLine": 66
+      "startLine": 47,
+      "endLine": 53
     },
     "type": "concept",
-    "title": "Graham-Pollak Digit Extraction Theorem",
-    "content": "**graham_pollak_theorem** states that differences a_{2n+1} - 2·a_{2n-1} are always 0 or 1, corresponding to binary digits. This is the central result: a simple integer recurrence can systematically extract the binary expansion of an irrational number. The proof requires analyzing how the floor function interacts with multiplication by √2.",
+    "title": "Graham-Pollak Digit Extraction Theorem (axiom)",
+    "content": "**graham_pollak_theorem** states that the differences a_{2n+1} - 2·a_{2n-1} are always 0 or 1, corresponding to binary digits. This is the central result: a simple integer recurrence can systematically extract the binary expansion of an irrational number. It is stated here as an axiom — a faithful record of Graham-Pollak (1970) — because the full proof requires detailed analysis of how the floor function interacts with multiplication by √2.",
     "mathContext": "The theorem uses Set.mem with the set {0, 1} : Set ℤ. The key mathematical insight is that the factor of 2 in '2·a_{2n-1}' corresponds to a binary shift, and the difference isolates the next digit.",
     "significance": "key",
     "relatedConcepts": [
@@ -70,39 +70,16 @@
     ]
   },
   {
-    "id": "ann-e482-properties",
-    "proofId": "erdos-482",
-    "range": {
-      "startLine": 72,
-      "endLine": 81
-    },
-    "type": "concept",
-    "title": "Recurrence Growth Rate",
-    "content": "**sqrt2_approx** gives the numerical bound 1.414 < √2 < 1.415. **growth_rate** proves that consecutive term ratios converge to √2 with error O(1/n). This explains why the recurrence captures √2: each term is approximately √2 times the previous one, with the floor function creating controlled rounding errors that encode the binary digits.",
-    "mathContext": "The growth rate bound uses absolute value |·| for the difference between the ratio and √2. The O(1/n) convergence rate means the sequence quickly locks onto √2's arithmetic properties.",
-    "significance": "key",
-    "relatedConcepts": [
-      "convergence-rate",
-      "asymptotic-ratio",
-      "irrational-approximation"
-    ],
-    "prerequisites": [
-      "numerical bounds on √2",
-      "convergence of consecutive term ratios",
-      "O(1/n) asymptotic error estimates"
-    ]
-  },
-  {
     "id": "ann-e482-stoll",
     "proofId": "erdos-482",
     "range": {
-      "startLine": 87,
-      "endLine": 106
+      "startLine": 65,
+      "endLine": 79
     },
     "type": "concept",
-    "title": "Stoll's Generalizations",
-    "content": "**sqrtSeq** generalizes the recurrence to arbitrary √m. **stoll_generalization_sqrt** extends digit extraction to square-free m. **stoll_general** goes further: for any quadratic irrational α (root of aα² + bα + c = 0), there exist recurrence and digit-extraction functions. Stoll's work uses Pisot-Vijayaraghavan number theory.",
-    "mathContext": "The generalization uses the quadratic equation a·α² + b·α + c = 0 with a ≠ 0 to characterize quadratic irrationals. The digit-extraction function produces values in {0, 1} ⊂ ℤ, encoding base-⌊√m⌋ digits.",
+    "title": "Generalization to √m: sqrtSeq and Stoll's Theorem (axiom)",
+    "content": "**sqrtSeq** generalizes the recurrence to arbitrary √m: a₁ = 1, a_{n+1} = ⌊√m(aₙ + 1/2)⌋. **stoll_general** then records Stoll's (2005-2006) result as an axiom: for any quadratic irrational α (a root of aα² + bα + c = 0 with a ≠ 0) there exist a recurrence and a digit-extraction function whose outputs lie in {0, 1}. Stoll's work rests on Pisot-Vijayaraghavan number theory, which is why it is axiomatized rather than proved here.",
+    "mathContext": "The generalization uses the quadratic equation a·α² + b·α + c = 0 with a ≠ 0 to characterize quadratic irrationals. The digit-extraction function produces values in {0, 1} ⊂ ℤ, encoding the base-⌊√m⌋ digits.",
     "significance": "key",
     "relatedConcepts": [
       "quadratic-irrationals",
@@ -116,49 +93,49 @@
     ]
   },
   {
-    "id": "ann-e482-nonperiodic",
+    "id": "ann-e482-characterization",
     "proofId": "erdos-482",
     "range": {
-      "startLine": 112,
-      "endLine": 120
+      "startLine": 91,
+      "endLine": 99
     },
-    "type": "concept",
-    "title": "Non-Periodicity of Digit Sequence",
-    "content": "**sqrt2_nonperiodic** asserts that the extracted digit sequence is never eventually periodic. This follows from the irrationality of √2: a rational number has an eventually periodic binary expansion, so if the digits were periodic, √2 would be rational — a contradiction.",
-    "mathContext": "The negation ¬∃ (p : ℕ) (start : ℕ), p > 0 ∧ ∀ n ≥ start, f(n+p) = f(n) formally states 'not eventually periodic'. This connects the digit-extraction theorem to the classical proof of irrationality of √2.",
-    "significance": "key",
+    "type": "theorem",
+    "title": "The Characterization Theorem",
+    "content": "**erdos_482_characterization** bundles the two defining facts about the √2 recurrence: (1) it satisfies a_{n+1} = ⌊√2(aₙ + 1/2)⌋ — true by definition, proved by rfl — and (2) the digit-extraction property a_{2n+1} - 2·a_{2n-1} ∈ {0, 1}, supplied by graham_pollak_theorem. The anonymous constructor ⟨fun n => rfl, graham_pollak_theorem⟩ pairs the definitional equality with the axiomatized digit result.",
+    "mathContext": "A conjunction: the first conjunct is the recurrence identity (definitional, hence rfl), the second is the Graham-Pollak digit-extraction statement carried over from the axiom.",
+    "significance": "supporting",
     "relatedConcepts": [
-      "irrationality",
-      "periodic-sequences",
-      "binary-expansion"
+      "definitional-equality",
+      "conjunction",
+      "digit-extraction"
     ],
     "prerequisites": [
-      "eventually periodic binary expansions of rationals",
-      "irrationality of √2",
-      "proof by contradiction"
+      "definitional equality proved by rfl",
+      "conjunction via anonymous constructor",
+      "axiomatized digit-extraction result"
     ]
   },
   {
     "id": "ann-e482-summary",
     "proofId": "erdos-482",
     "range": {
-      "startLine": 128,
-      "endLine": 128
+      "startLine": 101,
+      "endLine": 122
     },
-    "type": "concept",
+    "type": "theorem",
     "title": "Main Result: erdos_482",
-    "content": "**erdos_482_characterization** proves the recurrence satisfies a_{n+1} = ⌊√2(aₙ + 1/2)⌋ by definition (rfl) and digit-extraction by axiom. **erdos_482** packages the complete solution: Graham-Pollak for √2 and Stoll's generalization to all quadratic irrationals, proved via ⟨graham_pollak_theorem, stoll_general⟩.",
-    "mathContext": "The characterization theorem uses rfl for the definitional equality and the axiom for the mathematical content. The main theorem is a conjunction combining the original result with the generalization requested by Erdős.",
+    "content": "**erdos_482** packages the complete solution of Erdős Problem #482 as a conjunction: Graham-Pollak's √2 digit-extraction (first conjunct, from graham_pollak_theorem) together with Stoll's generalization to all quadratic irrationals (second conjunct, from stoll_general). It is proved by the anonymous constructor ⟨graham_pollak_theorem, stoll_general⟩, combining the original result with the generalization Erdős requested.",
+    "mathContext": "The main theorem is a conjunction whose two halves are exactly the two axioms of the file; it resolves both the original √2 question and the 'find similar results for √m and other algebraic numbers' extension.",
     "significance": "key",
     "relatedConcepts": [
       "anonymous-constructor",
-      "definitional-equality",
-      "problem-resolution"
+      "problem-resolution",
+      "algebraic-numbers"
     ],
     "prerequisites": [
-      "definitional equality proved by rfl",
       "conjunction via anonymous constructor",
-      "axiomatized digit-extraction result"
+      "axiomatized Graham-Pollak and Stoll results",
+      "quadratic irrationals"
     ]
   }
 ]
