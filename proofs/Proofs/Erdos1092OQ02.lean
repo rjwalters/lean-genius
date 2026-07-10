@@ -73,7 +73,7 @@ theorem canReduce_removeAll {n : ℕ} (H : SGraph n) {r : ℕ} (hr : 1 ≤ r) :
   · -- The reduced graph has no edges (every pair is "removed"), so it is `r`-colorable.
     refine ⟨fun _ => ⟨0, by omega⟩, ?_⟩
     rintro u v ⟨_, hmem, _⟩
-    exact hmem (Finset.mem_univ _)
+    exact absurd (Finset.mem_univ _) hmem
 
 /-- The defining set of `fThreshold r n`: budgets `k` for which "every induced subgraph is
 `r`-reducible with `≤ k` edge deletions" already forces `(r+1)`-colorability of the whole
@@ -98,16 +98,19 @@ theorem fThresholdSet_downClosed {r n k k' : ℕ} (hk : k' ≤ k)
   -- Upgrade the `k'`-hypothesis to a `k`-hypothesis, then apply `hmem`.
   exact hmem G (fun S => CanReduceChromatic_mono_k _ hk (hP' S))
 
-/-- **The defining set is bounded above by `n*n` in the good regime `r + 2 ≤ n`.**
+/-- **The defining set is bounded above by `n*n` in the non-degenerate regime
+`1 ≤ r` and `r + 2 ≤ n`.**
 
 Take `K_n` as a witness. With the full budget `k = n*n`, every induced subgraph of `K_n`
-is `r`-reducible (`canReduce_removeAll`), so `K_n` satisfies the hypothesis; but `K_n` is
-*not* `(r+1)`-colorable when `r + 1 < n` (`completeGraph_not_hasColoring`). Hence
-`n*n ∉ fThresholdSet`, and by downward-closedness every element of the set is `< n*n`. -/
-theorem fThresholdSet_bddAbove {r n : ℕ} (hn : r + 2 ≤ n) :
+is `r`-reducible (`canReduce_removeAll`, which needs `1 ≤ r` — reducing to `0` colors is
+impossible on `n ≥ 1` vertices, the *lower* degeneracy of the problem, complementing the
+parent file's documented *upper* degeneracy `r + 1 ≥ n`), so `K_n` satisfies the
+hypothesis; but `K_n` is *not* `(r+1)`-colorable when `r + 1 < n`
+(`completeGraph_not_hasColoring`). Hence `n*n ∉ fThresholdSet`, and by downward-closedness
+every element of the set is `< n*n`. -/
+theorem fThresholdSet_bddAbove {r n : ℕ} (hr : 1 ≤ r) (hn : r + 2 ≤ n) :
     BddAbove (fThresholdSet r n) := by
   -- `n*n` is not in the set: `K_n` witnesses the failure.
-  have hr1 : 1 ≤ r + 1 := Nat.le_add_left 1 r
   have hnotmem : n * n ∉ fThresholdSet r n := by
     intro hmem
     -- `K_n` satisfies the full-budget hypothesis...
@@ -115,7 +118,7 @@ theorem fThresholdSet_bddAbove {r n : ℕ} (hn : r + 2 ≤ n) :
         (SGraph.mk (fun u v => u ∈ S ∧ v ∈ S ∧ (SGraph.completeGraph n).adj u v)
           (fun u v ⟨hu, hv, h⟩ => ⟨hv, hu, (SGraph.completeGraph n).symm u v h⟩)
           (fun v ⟨_, _, h⟩ => (SGraph.completeGraph n).irrefl v h)) (n * n) r :=
-      fun S => canReduce_removeAll _ hr1
+      fun S => canReduce_removeAll _ hr
     -- ...so `hmem` would make `K_n` be `(r+1)`-colorable, which is false.
     exact completeGraph_not_hasColoring (by omega) (hmem (SGraph.completeGraph n) hP)
   -- `n*n` is an upper bound: any element `> n*n` would drag `n*n` into the set.
@@ -125,25 +128,26 @@ theorem fThresholdSet_bddAbove {r n : ℕ} (hn : r + 2 ≤ n) :
   push_neg at hlt   -- `n*n < k`
   exact hnotmem (fThresholdSet_downClosed (le_of_lt hlt) hk)
 
-/-- **`fThreshold` is a genuine, finite maximum in the good regime.** In the regime
-`r + 2 ≤ n`, `fThreshold r n ≤ n * n`. This upgrades the parent file's prose caveat about
-the `sSup`-pathology into a proved bound: outside the degenerate `r + 1 ≥ n` range, the
-threshold is a real supremum of a bounded set, not the `sSup ℕ = 0` artifact. -/
-theorem fThreshold_le_sq {r n : ℕ} (hn : r + 2 ≤ n) : fThreshold r n ≤ n * n := by
+/-- **`fThreshold` is a genuine, finite maximum in the non-degenerate regime.** For
+`1 ≤ r` and `r + 2 ≤ n`, `fThreshold r n ≤ n * n`. This upgrades the parent file's prose
+caveat about the `sSup`-pathology into a proved bound: away from *both* degeneracies —
+the upper `r + 1 ≥ n` (documented in the parent) and the lower `r = 0` (surfaced here) —
+the threshold is a real supremum of a bounded set, not the `sSup ℕ = 0` artifact. -/
+theorem fThreshold_le_sq {r n : ℕ} (hr : 1 ≤ r) (hn : r + 2 ≤ n) :
+    fThreshold r n ≤ n * n := by
   rw [fThreshold_eq_sSup]
   refine csSup_le' ?_
   -- `n*n` is an upper bound of the defining set (same argument as boundedness).
   intro k hk
   by_contra hlt
   push_neg at hlt
-  have hr1 : 1 ≤ r + 1 := Nat.le_add_left 1 r
   have hnotmem : n * n ∉ fThresholdSet r n := by
     intro hmem
     have hP : ∀ S : Finset (Fin n), CanReduceChromatic
         (SGraph.mk (fun u v => u ∈ S ∧ v ∈ S ∧ (SGraph.completeGraph n).adj u v)
           (fun u v ⟨hu, hv, h⟩ => ⟨hv, hu, (SGraph.completeGraph n).symm u v h⟩)
           (fun v ⟨_, _, h⟩ => (SGraph.completeGraph n).irrefl v h)) (n * n) r :=
-      fun S => canReduce_removeAll _ hr1
+      fun S => canReduce_removeAll _ hr
     exact completeGraph_not_hasColoring (by omega) (hmem (SGraph.completeGraph n) hP)
   exact hnotmem (fThresholdSet_downClosed (le_of_lt hlt) hk)
 
