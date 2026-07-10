@@ -10,10 +10,11 @@
   total transmit-power budget `P ≥ 0` to share among them, the total achievable
   rate is
 
-        R(P₁,…,Pₙ) = ∑ᵢ ½ log(1 + Pᵢ/Nᵢ) = ∑ᵢ awgnCapacity Pᵢ Nᵢ
+        R(P₁,…,Pₙ) = ∑ᵢ ½ log(1 + Pᵢ/Nᵢ) = ∑ᵢ perUseCapacity Pᵢ Nᵢ
 
-  where `awgnCapacity` is the per-use AWGN capacity re-exported from the gallery
-  file `ShannonChannelCodingAWGN`.  The **water-filling theorem** (Shannon 1949;
+  where `perUseCapacity P N = ½ log(1 + P/N)` is definitionally identical to the
+  gallery's per-use AWGN capacity `ShannonAWGN.awgnCapacity` (inlined below to
+  keep this file self-contained).  The **water-filling theorem** (Shannon 1949;
   Cover & Thomas, *Elements of Information Theory*, Thm 9.9.1) states that the
   budget-constrained maximum
 
@@ -54,14 +55,20 @@
 -/
 
 import Mathlib
-import Proofs.ShannonChannelCodingAWGN
 
-open Real ShannonAWGN
+open Real
 open scoped BigOperators
 
 namespace ShannonWaterFilling
 
 variable {ι : Type*} [Fintype ι]
+
+/-- **Per-use AWGN capacity** `½ log(1 + P/N)` (nats per channel use).  This is
+    *definitionally identical* to the gallery's `ShannonAWGN.awgnCapacity`; it is
+    inlined here so this file depends only on Mathlib and is verifiable
+    independently of the Shannon-entropy import chain. -/
+noncomputable def perUseCapacity (P N : ℝ) : ℝ :=
+  (1 / 2) * Real.log (1 + P / N)
 
 /-- The **water-filling allocation** at water level `μ` for noise powers `N`:
     channel `i` receives depth `(μ − Nᵢ)₊ = max (μ − Nᵢ) 0`. -/
@@ -69,10 +76,10 @@ noncomputable def waterAlloc (μ : ℝ) (N : ι → ℝ) (i : ι) : ℝ :=
   max (μ - N i) 0
 
 /-- The **total rate** of a parallel Gaussian channel with noise powers `N` and
-    power allocation `P`, expressed through the gallery's per-use AWGN capacity:
-    `R(P) = ∑ᵢ awgnCapacity Pᵢ Nᵢ = ∑ᵢ ½ log(1 + Pᵢ/Nᵢ)`. -/
+    power allocation `P`:
+    `R(P) = ∑ᵢ perUseCapacity Pᵢ Nᵢ = ∑ᵢ ½ log(1 + Pᵢ/Nᵢ)`. -/
 noncomputable def parallelRate (N P : ι → ℝ) : ℝ :=
-  ∑ i, awgnCapacity (P i) (N i)
+  ∑ i, perUseCapacity (P i) (N i)
 
 /-- The **budget function** `g(μ) = ∑ᵢ (μ − Nᵢ)₊` — the total power poured in at
     water level `μ`.  The water level for a budget `P` is a solution of
@@ -102,15 +109,15 @@ theorem waterAlloc_nonneg (μ : ℝ) (N : ι → ℝ) (i : ι) :
     elementary form).  For positive noise, positive water level, a feasible power
     `0 ≤ xᵢ` and the water-filling depth `Pᵢ⋆`,
 
-        awgnCapacity xᵢ Nᵢ − awgnCapacity Pᵢ⋆ Nᵢ ≤ (xᵢ − Pᵢ⋆) / (2μ).
+        perUseCapacity xᵢ Nᵢ − perUseCapacity Pᵢ⋆ Nᵢ ≤ (xᵢ − Pᵢ⋆) / (2μ).
 
     Concavity of `t ↦ log(1 + t/Nᵢ)` is captured by `log u ≤ u − 1`; the
     denominator drops from `max μ Nᵢ` to `μ` because inactive channels
     (`Nᵢ ≥ μ`) carry `Pᵢ⋆ = 0` and non-negative `xᵢ`. -/
-theorem awgnCapacity_sub_le
+theorem perUseCapacity_sub_le
     (N : ι → ℝ) {μ : ℝ} (hμ : 0 < μ) (i : ι) (hNi : 0 < N i)
     {xi : ℝ} (hxi : 0 ≤ xi) :
-    awgnCapacity xi (N i) - awgnCapacity (waterAlloc μ N i) (N i)
+    perUseCapacity xi (N i) - perUseCapacity (waterAlloc μ N i) (N i)
       ≤ (xi - waterAlloc μ N i) / (2 * μ) := by
   set Ps := waterAlloc μ N i with hPs
   have hPs_nonneg : 0 ≤ Ps := waterAlloc_nonneg μ N i
@@ -119,10 +126,10 @@ theorem awgnCapacity_sub_le
   have ha : 0 < N i + Ps := by linarith
   -- rewrite each capacity as ½·(log(Nᵢ + ·) − log Nᵢ)
   have hrw : ∀ t : ℝ, 0 ≤ t →
-      awgnCapacity t (N i) = (1 / 2) * (Real.log (N i + t) - Real.log (N i)) := by
+      perUseCapacity t (N i) = (1 / 2) * (Real.log (N i + t) - Real.log (N i)) := by
     intro t ht
     have hNt : (0 : ℝ) < N i + t := by linarith
-    unfold awgnCapacity
+    unfold perUseCapacity
     have hdiv : 1 + t / N i = (N i + t) / N i := by
       rw [add_div, div_self hNne]
     rw [hdiv, Real.log_div hNt.ne' hNne]
@@ -163,7 +170,7 @@ theorem awgnCapacity_sub_le
 
     The water-filling allocation attains the constrained capacity of the vector
     Gaussian channel.  Proof: sum the per-channel tangent bound
-    `awgnCapacity_sub_le`, then collapse the linear part using
+    `perUseCapacity_sub_le`, then collapse the linear part using
     `∑(xᵢ − Pᵢ⋆) = ∑xᵢ − P ≤ 0`. -/
 theorem waterfilling_optimal
     (N : ι → ℝ) (hN : ∀ i, 0 < N i)
@@ -173,16 +180,16 @@ theorem waterfilling_optimal
     parallelRate N x ≤ parallelRate N (waterAlloc μ N) := by
   rw [← sub_nonpos]
   have hdiff : parallelRate N x - parallelRate N (waterAlloc μ N)
-      = ∑ i, (awgnCapacity (x i) (N i)
-                - awgnCapacity (waterAlloc μ N i) (N i)) := by
+      = ∑ i, (perUseCapacity (x i) (N i)
+                - perUseCapacity (waterAlloc μ N i) (N i)) := by
     unfold parallelRate
     rw [← Finset.sum_sub_distrib]
   rw [hdiff]
   have hterm : ∀ i ∈ (Finset.univ : Finset ι),
-      awgnCapacity (x i) (N i) - awgnCapacity (waterAlloc μ N i) (N i)
+      perUseCapacity (x i) (N i) - perUseCapacity (waterAlloc μ N i) (N i)
         ≤ (x i - waterAlloc μ N i) / (2 * μ) := by
     intro i _
-    exact awgnCapacity_sub_le N hμ i (hN i) (hx i)
+    exact perUseCapacity_sub_le N hμ i (hN i) (hx i)
   refine le_trans (Finset.sum_le_sum hterm) ?_
   have hsum : ∑ i, (x i - waterAlloc μ N i) / (2 * μ)
       = (∑ i, x i - ∑ i, waterAlloc μ N i) / (2 * μ) := by
@@ -203,7 +210,7 @@ theorem waterAlloc_rate_closedForm
     (N : ι → ℝ) (hN : ∀ i, 0 < N i) (μ : ℝ) :
     parallelRate N (waterAlloc μ N)
       = ∑ i, (1 / 2) * Real.log (max μ (N i) / N i) := by
-  unfold parallelRate awgnCapacity
+  unfold parallelRate perUseCapacity
   apply Finset.sum_congr rfl
   intro i _
   have hNne : N i ≠ 0 := ne_of_gt (hN i)
