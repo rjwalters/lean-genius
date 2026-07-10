@@ -109,6 +109,29 @@
     "path": "Proofs/AngleTrisectionOQ02OQ03ExtOQ01.lean",
     "sorries": 0
   },
+  "references": [
+    {
+      "authors": "Carl Friedrich Gauss",
+      "title": "Disquisitiones Arithmeticae",
+      "year": "1801",
+      "venue": "Leipzig (Fleischer); English transl. Yale University Press, 1965",
+      "note": "Section VII (cyclotomy): the constructibility of the regular 17-gon and the sufficiency half of the criterion — a regular n-gon is constructible when n is a product of a power of 2 and distinct Fermat primes, so φ(n) is a power of 2. The doubling step φ(2n) here is the arithmetic shadow of Gauss's cyclotomic tower."
+    },
+    {
+      "authors": "Pierre Laurent Wantzel",
+      "title": "Recherches sur les moyens de reconnaître si un problème de géométrie peut se résoudre avec la règle et le compas",
+      "year": "1837",
+      "venue": "Journal de Mathématiques Pures et Appliquées 2, 366–372",
+      "note": "Proved the necessity half of Gauss–Wantzel (φ(n) must be a power of 2) and the impossibility of angle trisection and cube duplication with ruler and compass — the classical source for the constructibility criterion this file refines at the prime 2."
+    },
+    {
+      "authors": "Ian Stewart",
+      "title": "Galois Theory",
+      "year": "2015",
+      "venue": "CRC Press (4th ed.)",
+      "note": "Modern field-theoretic proof of the Gauss–Wantzel constructible-polygon theorem via [ℚ(cos 2π/n):ℚ] = φ(n)/2 being a power of 2, and the reduction of constructibility to Fermat primes — the framework in which the TotientIsPow2 predicate and its doubling invariance live."
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "angle-trisection-oq-02-oq-03-ext",
