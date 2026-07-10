@@ -127,6 +127,49 @@ theorem exists_avoiding_multiples_quantitative (m n : ℕ) (hm : 1 ≤ m) :
   rw [prime_multiples_size]
   exact Nat.div_le_div_left hp2m hp.pos
 
+/-! ## The base case `m = 1`
+
+The Erdős–Graham asymptotics concern general `m`, but the smallest case `m = 1` is exact and
+elementary: a set avoids the sum `1` precisely when it does not contain the element `1`. The
+only nonempty subset of positive integers that can sum to `1` is the singleton `{1}` itself,
+so `1` is a subset sum iff `1 ∈ S`. Consequently the largest `1`-avoiding subset of `{1,…,n}`
+is `{2,…,n}`, of size `n − 1`. -/
+
+/-- `1` is a positive subset sum of `S` iff `1 ∈ S`: the only way to add distinct nonnegative
+    integers to `1` is to use the element `1` alone (every other element is `0` or `≥ 2`). -/
+theorem one_mem_subsetSums_iff (S : Finset ℕ) :
+    (1 : ℕ) ∈ subsetSums S ↔ 1 ∈ S := by
+  constructor
+  · intro h
+    rw [subsetSums, Finset.mem_filter, Finset.mem_image] at h
+    obtain ⟨⟨A, hA, hAsum⟩, _⟩ := h
+    rw [Finset.mem_powerset] at hA
+    have h1A : (1 : ℕ) ∈ A := by
+      by_contra h1
+      have hz : ∀ a ∈ A, a = 0 := by
+        intro a ha
+        by_contra ha0
+        have hane1 : a ≠ 1 := fun he => h1 (he ▸ ha)
+        have ha2 : 2 ≤ a := by omega
+        have hge : 2 ≤ ∑ x ∈ A, x :=
+          le_trans ha2 (Finset.single_le_sum (fun i _ => Nat.zero_le i) ha)
+        omega
+      have : ∑ a ∈ A, a = 0 := Finset.sum_eq_zero hz
+      omega
+    exact hA h1A
+  · intro h
+    rw [subsetSums, Finset.mem_filter, Finset.mem_image]
+    refine ⟨⟨{1}, ?_, ?_⟩, by norm_num⟩
+    · rw [Finset.mem_powerset]; exact Finset.singleton_subset_iff.mpr h
+    · simp
+
+/-- **The base case `m = 1`.** `S` avoids the subset sum `1` iff `1 ∉ S`. Immediate from
+    `one_mem_subsetSums_iff` by negation. Hence the largest `1`-avoiding subset of `{1,…,n}`
+    is `{2,…,n}` of size `n − 1`, matching the exact value `f(n) = n − 1` at `m = 1`. -/
+theorem avoid_one_iff (S : Finset ℕ) : AvoidSum S 1 ↔ 1 ∉ S := by
+  unfold AvoidSum
+  rw [one_mem_subsetSums_iff]
+
 /-! ## Summary
 
 Verified here (0 axioms, 0 sorries): the elementary Erdős–Graham construction behind the
