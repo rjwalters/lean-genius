@@ -92,4 +92,53 @@ theorem increment_div_tendsto_zero_of_ratio_tendsto_one (R : ℕ → ℝ)
     Tendsto (fun l => (R (l + 1) - R l) / R l) atTop (𝓝 0) :=
   (increment_div_tendsto_zero_iff_ratio_tendsto_one R hpos).mpr hratio
 
+/-- **Logarithmic increment–ratio bridge.** For an eventually-positive sequence
+`R`, the *additive* increment of `log R` tends to `0` **iff** the consecutive ratio
+tends to `1`:
+
+`Real.log (R(l+1)) − Real.log (R l) → 0  ↔  R(l+1)/R(l) → 1`.
+
+This is the logarithmic companion of `increment_div_tendsto_zero_iff_ratio_tendsto_one`:
+since `log R(l+1) − log R(l) = log(R(l+1)/R(l))`, the log-increment is exactly the
+log of the ratio, and `log` is a homeomorphism near `1` (with `log 1 = 0`). Applied to
+`R(k, ·)`, Erdős #1014's ratio-convergence `R(k,l+1)/R(k,l) → 1` is thus equivalent to
+the additive statement `log R(k,l+1) − log R(k,l) → 0`. -/
+theorem log_increment_tendsto_zero_iff_ratio_tendsto_one (R : ℕ → ℝ)
+    (hpos : ∀ᶠ l in atTop, 0 < R l) :
+    Tendsto (fun l => Real.log (R (l + 1)) - Real.log (R l)) atTop (𝓝 0) ↔
+      Tendsto (fun l => R (l + 1) / R l) atTop (𝓝 1) := by
+  have hpos1 : ∀ᶠ l in atTop, 0 < R (l + 1) := (tendsto_add_atTop_nat 1).eventually hpos
+  -- the additive log-increment is the log of the ratio
+  have heq : (fun l => Real.log (R (l + 1)) - Real.log (R l))
+      =ᶠ[atTop] (fun l => Real.log (R (l + 1) / R l)) := by
+    filter_upwards [hpos, hpos1] with l hl hl1
+    rw [Real.log_div (ne_of_gt hl1) (ne_of_gt hl)]
+  rw [tendsto_congr' heq]
+  constructor
+  · -- `log(ratio) → 0` ⟹ `ratio = exp(log ratio) → exp 0 = 1`
+    intro h
+    have hratio_pos : ∀ᶠ l in atTop, 0 < R (l + 1) / R l := by
+      filter_upwards [hpos, hpos1] with l hl hl1 using div_pos hl1 hl
+    have hexp : (fun l => R (l + 1) / R l)
+        =ᶠ[atTop] (fun l => Real.exp (Real.log (R (l + 1) / R l))) := by
+      filter_upwards [hratio_pos] with l hl using (Real.exp_log hl).symm
+    rw [tendsto_congr' hexp]
+    have := (Real.continuous_exp.tendsto 0).comp h
+    simpa using this
+  · -- `ratio → 1` ⟹ `log(ratio) → log 1 = 0` by continuity of `log` at `1`
+    intro h
+    have := (Real.continuousAt_log (by norm_num : (1 : ℝ) ≠ 0)).tendsto.comp h
+    simpa using this
+
+/-- **Corollary (log-increment vanishes).** If the consecutive ratio tends to `1`
+then the additive log-increment `log R(l+1) − log R(l)` tends to `0`. The forward
+direction packaged for direct use; fed Erdős #1014's `R(k,l+1)/R(k,l) → 1` it yields
+`log R(k,l+1) − log R(k,l) → 0`. -/
+theorem log_increment_tendsto_zero_of_ratio_tendsto_one (R : ℕ → ℝ)
+    (hpos : ∀ᶠ l in atTop, 0 < R l)
+    (hratio : Tendsto (fun l => R (l + 1) / R l) atTop (𝓝 1)) :
+    Tendsto (fun l => Real.log (R (l + 1)) - Real.log (R l)) atTop (𝓝 0) :=
+  (log_increment_tendsto_zero_iff_ratio_tendsto_one R hpos).mpr hratio
+
+
 end Erdos1014OQ03
