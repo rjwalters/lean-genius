@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (VERIFIED 0/0): MRC bound equality case now sharp — mrc_signal_sq_eq_iff proves the Cauchy–Schwarz optimum is attained IFF gains lie on the matched ray aᵢ∝sigᵢ/vᵢ, via a self-contained Lagrange/Binet–Cauchy identity and the general finite-sum CS equality condition. Identifies the max-SNR set as a 1-dim ray (mrc_matched_ray_eq), completing the achievability picture beyond the single matched point. Correlated-noise (aᵀΣa) generalization remains the only genuinely open direction.",
+    "progressSummary": "PROGRESS (VERIFIED 0/0, PR #36590): correlated-noise MRC optimum resolved. Matrix Cauchy-Schwarz (aTSigma b)^2 <= (aTSigma a)(bTSigma b) with SNR bound bTSigma b attained at matched combiner a=b -- the previously-open full-covariance generalization of the diagonal MRC bound. Inverse-free (combiners are scalar RVs). Only open follow-up: the equality-iff-affine-dependent (matched-ray) characterization.",
     "builtItems": [
       "variance_sum_of_pairwise_uncorrelated (ShannonChannelCodingAWGNOQ02OQ02.lean:131): Var[∑ i∈s, Wi] = ∑ Var[Wi] from Set.Pairwise cov=0 + MemLp; [IsFiniteMeasure].",
       "variance_sum_of_pairwise_indep (:150): independence ⟹ uncorrelated ⟹ identity, via IndepFun.covariance_eq_zero — shows the sharp version subsumes IndepFun.variance_sum.",
@@ -72,7 +72,11 @@
       "lagrange_sum_identity (ShannonChannelCodingAWGNOQ02OQ02.lean): ∑ᵢ∑ⱼ(fᵢgⱼ−fⱼgᵢ)² = 2·((∑fᵢ²)(∑gⱼ²)−(∑fᵢgᵢ)²) via Finset.sum_mul_sum + sum_comm",
       "cauchy_schwarz_eq_iff (same file): (∑fᵢgᵢ)²=(∑fᵢ²)(∑gⱼ²) ↔ ∀i,j fᵢgⱼ=fⱼgᵢ, from Lagrange gap = sum of squares (sum_eq_zero_iff_of_nonneg + sq_eq_zero_iff)",
       "mrc_signal_sq_eq_iff (same file): sharp MRC equality characterization, matched ray aᵢvᵢsigⱼ=aⱼvⱼsigᵢ, via CS split aᵢsigᵢ=(aᵢ√vᵢ)(sigᵢ/√vᵢ) then div_eq_div_iff + linear_combination to clear √v",
-      "mrc_matched_ray_eq (same file): every aᵢ=c·sigᵢ/vᵢ attains equality (scale-invariance of the optimum), generalizing mrc_snr_matched from c=1 to whole ray"
+      "mrc_matched_ray_eq (same file): every aᵢ=c·sigᵢ/vᵢ attains equality (scale-invariance of the optimum), generalizing mrc_snr_matched from c=1 to whole ray",
+      "covariance_smul_sum: cov[Sum a_i W_i, Sum b_j W_j] = Sum_ij a_i b_j cov[W_i,W_j] (aTSigma b) in ShannonChannelCodingAWGNOQ02OQ02.lean",
+      "covariance_quadratic_form_cauchy_schwarz: (aTSigma b)^2 <= (aTSigma a)(bTSigma b), correlated generalization of mrc_signal_sq_le",
+      "mrc_correlated_snr_le: (aTSigma b)^2/(aTSigma a) <= bTSigma b (SNR bound)",
+      "mrc_correlated_snr_matched: a=b attains bTSigma b (sharpness). VERIFIED 0/0, PR #36590"
     ],
     "insights": [
       "Bienaymé variance-of-a-sum needs only PAIRWISE UNCORRELATEDNESS (cov[Wi,Wj]=0 for i≠j), not pairwise independence: the off-diagonal covariances of Var[∑Wi]=∑i∑j cov[Wi,Wj] (Mathlib variance_sum´) are exactly what must vanish. Independence is strictly stronger (there exist uncorrelated dependent variables).",
@@ -94,7 +98,8 @@
       "Weighted combining lifts the whole Bienaymé stack by bilinearity: covariance_smul_left/right push each aᵢ,aⱼ out of cov[aᵢWᵢ,aⱼWⱼ]=aᵢaⱼcov, and variance_smul gives the diagonal Var[aᵢWᵢ]=aᵢ²Var[Wᵢ]; no new analysis, just scalar-out rewrites — working in the a•W (smul) form (not fun ω=>a*W ω) aligns directly with Mathlib covariance_smul_*/variance_smul/MemLp.const_smul.",
       "MRC (maximal-ratio-combining) optimality is a direct Cauchy-Schwarz consequence of the weighted power law: splitting aᵢsᵢ=(aᵢ√vᵢ)(sᵢ/√vᵢ) and applying Finset.sum_mul_sq_le_sq_mul_sq gives (∑aᵢsᵢ)²≤(∑aᵢ²vᵢ)(∑sᵢ²/vᵢ); the noise-power factor ∑aᵢ²vᵢ IS the output variance Var[∑aᵢNᵢ] from variance_smul_sum_of_pairwise_uncorrelated, so combiner optimality rests on the Bienaymé structure, not a fresh hypothesis.",
       "The maximum output SNR of a linear combiner over an uncorrelated AWGN branch block equals the sum of per-branch SNRs ∑sᵢ²/vᵢ, attained exactly at matched weights aᵢ=sᵢ/vᵢ (both combined signal ∑(sᵢ/vᵢ)sᵢ and noise power ∑(sᵢ/vᵢ)²vᵢ collapse to S=∑sᵢ²/vᵢ, so SNR=S²/S=S) — the achievability half making mrc_snr_le sharp.",
-      "MRC bound equality is a Cauchy–Schwarz equality case: attained IFF gains are proportional to the matched vector sigᵢ/vᵢ (cross-multiplied aᵢvᵢsigⱼ = aⱼvⱼsigᵢ). The optimum is a full 1-dim RAY, not the isolated point aᵢ=sigᵢ/vᵢ — mrc_snr_matched was only the c=1 slice."
+      "MRC bound equality is a Cauchy–Schwarz equality case: attained IFF gains are proportional to the matched vector sigᵢ/vᵢ (cross-multiplied aᵢvᵢsigⱼ = aⱼvⱼsigᵢ). The optimum is a full 1-dim RAY, not the isolated point aᵢ=sigᵢ/vᵢ — mrc_snr_matched was only the c=1 slice.",
+      "Correlated-noise MRC optimum is inverse/square-root free: the two combiners Sum a_i W_i and Sum b_j W_j are scalar random variables, so the matrix Cauchy-Schwarz (a^T Sigma b)^2 <= (a^T Sigma a)(b^T Sigma b) is exactly the scalar covariance CS (covariance_sq_le_variance_mul_variance) after bilinear expansion via covariance_sum_sum and variance_smul_sum. No whitening / Sigma^{-1/2} needed."
     ],
     "mathlibGaps": [
       "Mathlib has no pairwise-uncorrelated variance-sum lemma (only variance_sum´ double-sum form and IndepFun.variance_sum). Candidate upstream contribution: variance_sum under Set.Pairwise (cov=0).",
@@ -118,7 +123,8 @@
       "MRC equality condition in variance form: (∑aᵢsigᵢ)²=Var[∑aᵢ•Nᵢ]·(∑sigᵢ²/Var[Nᵢ]) iff a is proportional to the matched vector sigᵢ/Var[Nᵢ] — the Cauchy-Schwarz equality case (vectors aᵢ√vᵢ ∥ sigᵢ/√vᵢ).",
       "Correlated-noise MRC: replace diagonal ∑aᵢ²vᵢ by the full quadratic form aᵀΣa (Σ=covariance matrix); optimum SNR = sᵀΣ⁻¹s at a=Σ⁻¹s — needs a PD-matrix Cauchy-Schwarz / whitening argument, a genuine generalisation beyond the uncorrelated diagonal case.",
       "MRC equality in variance/measure-theoretic form: lift mrc_signal_sq_eq_iff so vᵢ = Var[Nᵢ] and state the equality condition on the actual noise variances (companion to mrc_output_signal_sq_le_variance_mul).",
-      "Correlated-noise MRC (still open, harder): replace diagonal ∑aᵢ²vᵢ by full quadratic form aᵀΣa; optimum SNR = sᵀΣ⁻¹s at a=Σ⁻¹s — needs PD-matrix Cauchy–Schwarz / whitening, a genuine generalization beyond the diagonal case."
+      "Correlated-noise MRC (still open, harder): replace diagonal ∑aᵢ²vᵢ by full quadratic form aᵀΣa; optimum SNR = sᵀΣ⁻¹s at a=Σ⁻¹s — needs PD-matrix Cauchy–Schwarz / whitening, a genuine generalization beyond the diagonal case.",
+      "Correlated-noise MRC optimum now DONE (matrix CS, PR #36590). Remaining follow-up: equality/attainment characterization iff combiners are affinely dependent (a proportional to b as random variables), via the abs_correlation_eq_one_iff_affine criterion already referenced in-file -- the correlated analog of mrc_signal_sq_eq_iff (matched ray)."
     ],
     "markdown": "# Knowledge Base: shannon-channel-coding-awgn-oq-02-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
