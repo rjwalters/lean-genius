@@ -1782,4 +1782,36 @@ theorem sqGaussSum_norm_eq_sqrt_of_odd {N : ℕ} [NeZero N] (hodd : Odd N) {r : 
     exact (Nat.prime_two.coprime_iff_not_dvd).mpr hnd
   exact sqGaussSum_norm_eq_sqrt_of_isUnit (h2.mul hr)
 
+/-- **Odd-prime regime.**  When `N` is an odd prime, `ZMod N` is a field, so *every*
+    nonzero frequency `r` is a unit; combined with the oddness of `N` (which makes `2`
+    a unit) this gives the exact Gauss-sum magnitude `‖G(r)‖ = √N` at all `r ≠ 0`.
+    This is the fully checkable, hypothesis-free-per-frequency form: no unit condition on
+    `r` is imposed — nonzero suffices, because a prime modulus turns `ZMod N` into a field. -/
+theorem sqGaussSum_norm_eq_sqrt_of_prime {N : ℕ} [NeZero N] (hp : N.Prime) (hN2 : N ≠ 2)
+    {r : ZMod N} (hr : r ≠ 0) : ‖sqGaussSum r‖ = Real.sqrt N := by
+  haveI := Fact.mk hp
+  exact sqGaussSum_norm_eq_sqrt_of_odd (hp.odd_of_ne_two hN2) (isUnit_iff_ne_zero.mpr hr)
+
+/-- **Sárközy square-difference density bound for odd-prime moduli (unconditional).**
+
+    The capstone of Part VII in the prime case: for `N` an odd prime and any
+    square-difference-free set `A ⊆ ZMod N` (no `x, x + n²` both in `A` with `n² ≠ 0`),
+
+      `|A|² ≤ |A|·#{n : n² = 0} + N⁻¹·(√N·(|A|·N − |A|²))`.
+
+    Every nonzero frequency in a prime field is a unit, so the Weyl-differencing magnitude
+    `sqGaussSum_norm_eq_sqrt_of_prime` supplies the *uniform* bound `‖G(r)‖ = √N` for all
+    `r ≠ 0`, discharging the sole analytic hypothesis of the abstract circle-method
+    reduction `sqDiffFree_density_bound` with `M = √N`.  No kernel-count / `gcd` estimate is
+    needed — that is only required for composite `N`, where distinct frequencies can have
+    nontrivial kernel `{h : 2rh = 0}`.  0 axioms. -/
+theorem sqDiffFree_density_bound_of_prime {N : ℕ} [NeZero N] (hp : N.Prime) (hN2 : N ≠ 2)
+    (A : Finset (ZMod N))
+    (hfree : ∀ x ∈ A, ∀ n : ZMod N, n ^ 2 ≠ 0 → x + n ^ 2 ∉ A) :
+    (A.card : ℝ) ^ 2
+      ≤ (A.card : ℝ) * (Finset.univ.filter (fun n : ZMod N => n ^ 2 = 0)).card
+        + (↑N)⁻¹ * (Real.sqrt N * (↑A.card * ↑N - (↑A.card) ^ 2)) :=
+  sqDiffFree_density_bound A
+    (fun _ hr => le_of_eq (sqGaussSum_norm_eq_sqrt_of_prime hp hN2 hr)) hfree
+
 end Szemeredi.Roth
