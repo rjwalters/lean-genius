@@ -122,6 +122,11 @@
       "targetId": "derangements-convergence",
       "relationship": "related",
       "description": "Establishes the convergence rate |D(n)/n! - e⁻¹| ≤ 1/(n+1)!; this entry works with the integer recurrence directly rather than the analytic limit."
+    },
+    {
+      "targetId": "derangements-convergence-oq-03-oq-03",
+      "relationship": "sibling",
+      "description": "Companion sharpening of the same rounding recurrence in the analytic direction: it tightens the parent's error bound to the two-sided sandwich 1/(n+1) − 1/((n+1)(n+2)) ≤ |D(n) − n!/e| ≤ 1/(n+1), whereas this entry gives the exact ±1 one-term remainder in the discrete/modular direction. Reciprocal to that entry's sibling link here."
     }
   ],
   "conclusion": {

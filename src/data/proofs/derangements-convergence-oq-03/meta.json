@@ -145,6 +145,11 @@
       "targetId": "inclusion-exclusion",
       "relationship": "foundational",
       "description": "The derangement formula D(n) = n! · Σ_{k=0}^n (−1)^k/k! is derived via inclusion-exclusion: subtract from n! all permutations fixing at least one point. This is the foundational formula from which the convergence to e⁻¹ and the rounding characterization both flow."
+    },
+    {
+      "targetId": "derangements-convergence-oq-03-oq-03",
+      "relationship": "refined-by",
+      "description": "Child sharpening this entry's one-sided rounding bound |D(n) − n!/e| ≤ 1/(n+1) to a two-sided sandwich 1/(n+1) − 1/((n+1)(n+2)) ≤ |D(n) − n!/e| ≤ 1/(n+1), pinning the error to an interval of width 1/((n+1)(n+2)) via a refined alternating-series lower bound."
     }
   ],
   "conclusion": {
