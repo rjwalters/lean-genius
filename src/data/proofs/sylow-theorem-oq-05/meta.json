@@ -147,6 +147,11 @@
       "targetId": "lagrange-theorem",
       "relationship": "foundational",
       "description": "Lagrange's Theorem (the order of an element divides the order of the group) is the sole tool separating the two isomorphism types: it forces orderOf g ∈ {1, p, p²}, so a maximal-order element gives the cyclic ℤ/p² case and its absence forces g^p = 1 for all g, the elementary-abelian (ℤ/p)² case."
+    },
+    {
+      "targetId": "conjugacy-class-equation-oq-01-oq-02",
+      "relationship": "foundational",
+      "description": "Supplies the class-equation proof of the step this entry imports: a nontrivial finite p-group has nontrivial centre. That is the first link of the chain inside Mathlib's IsPGroup.commutative_of_card_eq_prime_sq (nontrivial centre ⇒ |Z(G)| ∈ {p, p²} ⇒ G/Z(G) cyclic ⇒ G abelian) which this entry takes as its abelian base before adding the ℤ/p² vs (ℤ/p)² dichotomy."
     }
   ]
 }
