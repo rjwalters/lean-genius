@@ -425,6 +425,51 @@ theorem boundedCliques_of_subgroup (H : Subgroup G) (h : BoundedCliques G) :
   rw [← Finset.card_map e]
   exact hB _ hclique
 
+/-- **Bounded cliques pass to surjective images / quotients (heredity of ω(Γ)).**
+    If `f : G →* K` is a *surjective* homomorphism and `Γ(G)` has finite clique
+    number, then so does `Γ(K)`; in particular `ω(Γ(G/N)) ≤ ω(Γ(G))` for every
+    normal subgroup `N ⊴ G`.
+
+    *Proof.* Choose a set-theoretic section `g : K → G` of `f` (`f ∘ g = id`).
+    Because `f (g k) = k`, the section `g` is injective, and it carries any clique
+    `S ⊆ K` of `Γ(K)` to the clique `g '' S ⊆ G` of the *same* size: if the images
+    `s, t ∈ K` fail to commute then so do their lifts `g s, g t` (applying the
+    homomorphism `f` to `g s · g t = g t · g s` would force `s · t = t · s`).
+    Hence any uniform clique bound `B` for `G` bounds the cliques of `K` as well.
+
+    This is the surjective/quotient dual of `boundedCliques_of_subgroup` (which used
+    an *injective* hom to push cliques *up* into `G`); here a section pulls a clique
+    of the image *back* into `G`.  Both directions are axiom-free — they use only the
+    elementary transfer of cliques, not the BFC core `neumann_hard_direction`.
+    Combined with Neumann's theorem it says finiteness of the central index descends
+    to every quotient: if `[G : Z(G)]` is finite then `[G/N : Z(G/N)]` is finite for
+    every `N ⊴ G`. -/
+theorem boundedCliques_of_surjective {K : Type*} [Group K] (f : G →* K)
+    (hf : Function.Surjective f) (h : BoundedCliques G) : BoundedCliques K := by
+  classical
+  obtain ⟨B, hB⟩ := h
+  refine ⟨B, fun S hS => ?_⟩
+  -- a set-theoretic section `g : K → G` of the surjection `f`
+  choose g hg using hf
+  have hginj : Function.Injective g := by
+    intro a b hab
+    have hfa : f (g a) = f (g b) := by rw [hab]
+    rwa [hg, hg] at hfa
+  -- the section carries the clique `S ⊆ K` to a clique of the same size in `G`
+  have hclique : IsClique (S.image g) := by
+    intro a ha b hb hab
+    rw [Finset.mem_image] at ha hb
+    obtain ⟨a', ha', rfl⟩ := ha
+    obtain ⟨b', hb', rfl⟩ := hb
+    have hne : a' ≠ b' := fun heq => hab (by rw [heq])
+    have key := hS a' ha' b' hb' hne
+    intro hEq
+    apply key
+    have hf2 : f (g a' * g b') = f (g b' * g a') := congrArg f hEq
+    simpa only [map_mul, hg] using hf2
+  rw [← Finset.card_image_of_injective S hginj]
+  exact hB _ hclique
+
 /-- **The hard direction holds unconditionally — and axiom-free — for finite groups.**
     When `G` is finite the centre automatically has finite index (`[G:Z(G)] ≤ |G| < ∞`,
     here via `Subgroup.index_ne_zero_of_finite`), so the forward implication of
