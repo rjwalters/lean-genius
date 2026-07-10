@@ -129,4 +129,31 @@ theorem isPowerForm_iff_mem_closure (p q n : ℕ) :
   rw [← powerFormSubmonoid_eq_closure]
   exact mem_powerFormSubmonoid.symm
 
+/-- **The first base lies in the power-form submonoid.** `p = p^1 q^0`, one of the two
+generators identified by `powerFormSubmonoid_eq_closure`. -/
+theorem self_mem_powerFormSubmonoid_left (p q : ℕ) :
+    p ∈ powerFormSubmonoid p q := ⟨1, 0, by simp⟩
+
+/-- **The second base lies in the power-form submonoid.** `q = p^0 q^1`, the other
+generator. -/
+theorem self_mem_powerFormSubmonoid_right (p q : ℕ) :
+    q ∈ powerFormSubmonoid p q := ⟨0, 1, by simp⟩
+
+/-- **Universal property of the power-form submonoid.** `powerFormSubmonoid p q` is the
+*smallest* submonoid of `(ℕ, ×)` containing both bases: it is `≤ S` exactly when `S`
+already contains `p` and `q`. Mirrors `Submonoid.closure_le` through the identification
+`powerFormSubmonoid_eq_closure`, and reduces any "every power form lies in `S`" goal to the
+two base facts `p ∈ S`, `q ∈ S`. -/
+theorem powerFormSubmonoid_le_iff {p q : ℕ} {S : Submonoid ℕ} :
+    powerFormSubmonoid p q ≤ S ↔ p ∈ S ∧ q ∈ S := by
+  rw [powerFormSubmonoid_eq_closure, Submonoid.closure_le]
+  constructor
+  · intro h
+    exact ⟨h (by simp), h (by simp)⟩
+  · rintro ⟨hp, hq⟩ x hx
+    simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hx
+    rcases hx with rfl | rfl
+    · exact hp
+    · exact hq
+
 end Erdos1110
