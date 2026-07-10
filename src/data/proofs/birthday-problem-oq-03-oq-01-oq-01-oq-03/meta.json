@@ -101,6 +101,11 @@
       "description": "Parent: slot-based recurrence for efficient k=3 birthday counting; its OQ-03 asks for the (6d²ln2)^(1/3) threshold proved here"
     },
     {
+      "targetId": "birthday-problem-oq-03-oq-01-oq-01-oq-03-oq-01",
+      "relationship": "refined-by",
+      "description": "Child: answers this entry's second open question (sharpen the additive O(1) error). Where this entry pins n only to the width-2 band c ≤ n ≤ c + 2 via the corner-cube sandwich (n-2)³ ≤ n(n-1)(n-2) ≤ n³, the child replaces the corner cube by the centered cube (n-1)³ — the exact identity n(n-1)(n-2) = (n-1)³ - (n-1) — to reach c + 1 ≤ n ≤ c + 1 + 1/(3c), i.e. the asymptotically exact n = (6d²ln2)^(1/3) + 1 + o(1) with lower-order term pinned to the constant 1"
+    },
+    {
       "targetId": "birthday-problem",
       "relationship": "related",
       "description": "The base birthday problem (k=2 coincidence, threshold n ≈ √(2d ln2)); this is the triple-coincidence analogue"
