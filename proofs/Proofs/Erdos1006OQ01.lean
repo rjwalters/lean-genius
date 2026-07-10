@@ -515,6 +515,28 @@ theorem triangle_not_robust :
     (show (⊤ : SimpleGraph (Fin 3)).Adj 1 2 by simp only [SimpleGraph.top_adj]; decide)
     (show (⊤ : SimpleGraph (Fin 3)).Adj 0 2 by simp only [SimpleGraph.top_adj]; decide)
 
+/-- **No complete graph on `≥ 3` vertices is robustly orientable (no axiom).** The
+    complete graph `Kₙ = (⊤ : SimpleGraph W)` on any finite vertex set with
+    `3 ≤ #W` admits *no* robustly acyclic orientation — equivalently (via
+    `cover_graph_characterization`) `Kₙ` is not the Hasse diagram of any poset for
+    `n ≥ 3`.
+
+    This generalises `triangle_not_robust` (the case `W = Fin 3`) to arbitrary
+    finite `W`: three distinct vertices of `Kₙ` are pairwise adjacent and form a
+    triangle, so the general obstruction `triangle_not_robust'` applies. It also
+    packages the "`Kₙ` is a chain-plus-one, never a Hasse diagram" folklore fact
+    for every `n ≥ 3` at once. -/
+theorem complete_graph_not_robust {W : Type*} [Fintype W] (h : 3 ≤ Fintype.card W) :
+    ¬ admitsRobustAcyclicOrientation (⊤ : SimpleGraph W) := by
+  obtain ⟨t, -, htcard⟩ :=
+    Finset.exists_subset_card_eq (s := (Finset.univ : Finset W)) (n := 3)
+      (by rw [Finset.card_univ]; exact h)
+  obtain ⟨a, b, c, hab, hac, hbc, -⟩ := Finset.card_eq_three.mp htcard
+  exact triangle_not_robust'
+    (by simp only [SimpleGraph.top_adj]; exact hab)
+    (by simp only [SimpleGraph.top_adj]; exact hbc)
+    (by simp only [SimpleGraph.top_adj]; exact hac)
+
 /-- **The Hasse diagram of a poset is triangle-free.** Combining
     `triangle_not_robust'` with `cover_graph_characterization`: a graph
     containing three mutually adjacent vertices is not a cover graph, i.e. is not
@@ -581,6 +603,53 @@ theorem not_robust_of_subgraph {G H : SimpleGraph V} (hHG : H ≤ G)
     (hH : ¬ admitsRobustAcyclicOrientation H) :
     ¬ admitsRobustAcyclicOrientation G :=
   fun hG => hH (admitsRobust_mono hHG hG)
+
+/-- **Robust acyclic orientability is a graph-isomorphism invariant (no axiom).**
+    If `e : G ≃g H` is an isomorphism of simple graphs and `G` admits a robustly
+    acyclic orientation, then so does `H` — transport the orientation of `G` along
+    `e`, orienting the `H`-edge `x → y` exactly when `O` orients
+    `e⁻¹ x → e⁻¹ y`.
+
+    Acyclicity transports by precomposing the rank function with `e⁻¹`. The
+    "no dependent arc" condition transports because `e⁻¹` maps an alternate
+    directed `H`-path back to an alternate directed `G`-path (`Relation.TransGen`
+    is functorial under `e⁻¹`, which is injective), so a dependent arc in `H`
+    would descend to one in `G`.
+
+    Together with `admitsRobust_mono` (subgraph-monotonicity) this pins down the
+    two basic closure properties of the class of robustly orientable graphs
+    (equivalently, cover graphs): closed under isomorphism and under subgraphs. In
+    particular `isCoverGraph` (existence of *some* compatible poset) is a genuine
+    isomorphism invariant, as it must be. -/
+theorem admitsRobust_iso {W : Type*} {H : SimpleGraph W} (e : G ≃g H)
+    (hG : admitsRobustAcyclicOrientation G) :
+    admitsRobustAcyclicOrientation H := by
+  obtain ⟨O, ⟨rank, hrank⟩, hNoDep⟩ := hG
+  refine ⟨⟨fun x y => O.arc (e.symm x) (e.symm y), ?_, ?_, ?_⟩,
+    ⟨fun x => rank (e.symm x), ?_⟩, ?_⟩
+  · -- covers: an `H`-edge pulls back to a `G`-edge, oriented by `O`.
+    intro x y hadj
+    exact O.covers (e.symm x) (e.symm y) (e.symm.map_adj_iff.mpr hadj)
+  · -- exclusive: inherited from `O`.
+    intro x y
+    exact O.exclusive (e.symm x) (e.symm y)
+  · -- respects: a transported arc pushes forward to an `H`-edge.
+    intro x y h
+    exact e.symm.map_adj_iff.mp (O.respects (e.symm x) (e.symm y) h)
+  · -- acyclic: the pulled-back rank `rank ∘ e⁻¹` is a witness.
+    intro x y h
+    exact hrank (e.symm x) (e.symm y) h
+  · -- no dependent arc: descend a dependent `H`-arc to a dependent `G`-arc via `e⁻¹`.
+    rintro ⟨x, y, harc, hpath⟩
+    refine hNoDep ⟨e.symm x, e.symm y, harc, ?_⟩
+    refine Relation.TransGen.lift (e.symm) ?_ hpath
+    intro a b hr
+    refine ⟨hr.1, ?_⟩
+    intro hc
+    rw [Prod.mk.injEq] at hc
+    exact hr.2 (by
+      rw [Prod.mk.injEq]
+      exact ⟨EmbeddingLike.injective e.symm hc.1, EmbeddingLike.injective e.symm hc.2⟩)
 
 /-- **Edgeless graphs admit a robustly acyclic orientation.** With no arcs to
     place, the empty orientation (`arc := fun _ _ => False`) is vacuously acyclic
@@ -678,6 +747,13 @@ axiom nesetril_rodl_counterexample (g : ℕ) (hg : g ≥ 3) :
     obstruction: every subgraph of a cover graph is a cover graph.
 10b. `not_robust_of_subgraph` - Contrapositive obstruction propagation: a
     non-robust subgraph certifies the ambient graph is non-robust.
+10c. `complete_graph_not_robust` - No complete graph `Kₙ` on `≥ 3` vertices is
+    robustly orientable (generalises `triangle_not_robust` from `Fin 3` to any
+    finite vertex set via `triangle_not_robust'`).
+10d. `admitsRobust_iso` - **Robust orientability is a graph-isomorphism
+    invariant**: `e : G ≃g H` and `G` robust ⟹ `H` robust (transport the
+    orientation along `e`). Together with `admitsRobust_mono` these are the two
+    basic closure properties of the class (isomorphism + subgraphs).
 11. `edgeless_admits_robust` - Any graph with no edges admits a robust
     orientation (generalises `empty_graph_robust` from `⊥`)
 12. `closedWalk_girth_formulation_unsound` - The "every closed walk has length
