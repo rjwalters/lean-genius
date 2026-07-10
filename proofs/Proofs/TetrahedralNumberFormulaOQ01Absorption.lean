@@ -95,4 +95,31 @@ theorem simplexNumber_diag_catalan (d : ℕ) :
   rw [simplexNumber_diag d, ← Nat.centralBinom_eq_two_mul_choose]
   exact succ_mul_catalan_eq_centralBinom d
 
+
+/-- **The central simplex diagonal is Mathlib's central binomial coefficient.**  The
+explicit bridge `P_d(d) = Nat.centralBinom d`, making the identification behind
+`simplexNumber_diag` reusable with Mathlib's `Nat.centralBinom` API (growth bounds,
+positivity, Bertrand's postulate, …). -/
+theorem simplexNumber_diag_eq_centralBinom (d : ℕ) :
+    simplexNumber d d = Nat.centralBinom d := by
+  rw [simplexNumber_diag d, ← Nat.centralBinom_eq_two_mul_choose]
+
+/-- **Exponential lower bound on the central simplex diagonal.**  For `d ≥ 4`,
+`4^d < d · P_d(d)`.  Via `simplexNumber_diag_eq_centralBinom` this is exactly Mathlib's
+`Nat.four_pow_lt_mul_centralBinom`, and it makes precise the docstring remark that the
+diagonal drives the `4^d/√(πd)` central-binomial growth. -/
+theorem four_pow_lt_diag {d : ℕ} (hd : 4 ≤ d) :
+    4 ^ d < d * simplexNumber d d := by
+  rw [simplexNumber_diag_eq_centralBinom d]
+  exact Nat.four_pow_lt_mul_centralBinom d hd
+
+/-- **Exponential lower bound valid for every positive dimension.**  `4^d ≤ 2d · P_d(d)`
+for all `d ≥ 1` — the (weaker but hypothesis-light) diagonal reading of
+`Nat.four_pow_le_two_mul_self_mul_centralBinom`, the bound appearing in Erdős's proof of
+Bertrand's postulate. -/
+theorem four_pow_le_two_mul_diag {d : ℕ} (hd : 0 < d) :
+    4 ^ d ≤ 2 * d * simplexNumber d d := by
+  rw [simplexNumber_diag_eq_centralBinom d]
+  exact Nat.four_pow_le_two_mul_self_mul_centralBinom d hd
+
 end TetrahedralNumberFormulaOQ01
