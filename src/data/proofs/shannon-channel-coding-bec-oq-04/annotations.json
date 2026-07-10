@@ -24,6 +24,18 @@
     "prerequisites": ["DMChannel structure", "binary erasure channel", "binary symmetric channel"]
   },
   {
+    "id": "ann-beec-marginals",
+    "proofId": "shannon-channel-coding-bec-oq-04",
+    "range": { "startLine": 135, "endLine": 152 },
+    "type": "key-step",
+    "title": "Output Marginals: Fixed Erasure Mass ε",
+    "content": "beec_ymarg_none proves the erasure output has probability exactly ε for EVERY input distribution — ∑ₓ p(x)·W(x, none) = ε·∑ₓ p(x) = ε — because the erasure column of W is the constant ε and the input probabilities sum to 1. beec_ymarg_some gives the surviving-symbol marginal P(Y = some y) = (1-ε)·(p(y)(1-q) + p(¬y)q). The input-independence of the erasure mass is the structural fact the converse rests on: it lets H(Y) split as h(ε) + (1-ε)·H₂(surviving split), isolating the erasure entropy from the input-dependent part.",
+    "mathContext": "$P(Y={?}) = \\varepsilon,\\quad P(Y=y) = (1-\\varepsilon)\\big(p(y)(1-q)+p(\\bar y)q\\big)$",
+    "significance": "supporting",
+    "relatedConcepts": ["output marginal distribution", "law of total probability", "erasure mass invariance", "entropy decomposition"],
+    "prerequisites": ["joint distribution of a channel", "input distribution sums to one"]
+  },
+  {
     "id": "ann-beec-conditional-entropy",
     "proofId": "shannon-channel-coding-bec-oq-04",
     "range": { "startLine": 153, "endLine": 211 },
@@ -34,6 +46,18 @@
     "significance": "critical",
     "relatedConcepts": ["conditional entropy", "symmetric channel", "chain rule for mutual information"],
     "prerequisites": ["conditional entropy on the transposed joint distribution", "binary entropy function"]
+  },
+  {
+    "id": "ann-beec-mutual-information",
+    "proofId": "shannon-channel-coding-bec-oq-04",
+    "range": { "startLine": 214, "endLine": 344 },
+    "type": "key-step",
+    "title": "Achievability and Converse for the Mutual Information",
+    "content": "The two halves of the capacity bound, both via the chain rule I(X;Y) = H(Y) - H(Y|X) with the constant H(Y|X) = h(ε) + (1-ε)·h(q). Achievability (beec_uniform_mi): the uniform input makes the surviving marginals both (1-ε)/2, so H(Y) = h(ε) + (1-ε)·log 2 and I = (1-ε)(log 2 - h(q)) exactly. Converse (beec_mi_le): for any full-support input the un-erased marginals a, b satisfy a+b = 1-ε, and the grouping bound mul_log_pair_ge caps H(Y) ≤ h(ε) + (1-ε)·log 2, forcing I ≤ (1-ε)(log 2 - h(q)). beec_mi_le_general extends the converse to degenerate (point-mass) inputs, where H(X) = 0 bounds I ≤ H(X) = 0 ≤ the target via the chain rule and conditionalEntropy_nonneg.",
+    "mathContext": "$I(X;Y)=H(Y)-H(Y\\mid X)\\le \\big(h(\\varepsilon)+(1-\\varepsilon)\\log 2\\big)-\\big(h(\\varepsilon)+(1-\\varepsilon)h(q)\\big)=(1-\\varepsilon)(\\log 2 - h(q))$",
+    "significance": "critical",
+    "relatedConcepts": ["mutual information", "chain rule I = H(Y) - H(Y|X)", "capacity-achieving uniform input", "converse via grouping bound", "point-mass input"],
+    "prerequisites": ["mutual information of a joint distribution", "output entropy H(Y)", "the two-point log inequality", "entropy of a point mass is zero"]
   },
   {
     "id": "ann-beec-capacity",
