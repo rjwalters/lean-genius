@@ -2,22 +2,43 @@
   {
     "id": "ann-isprimitive-def",
     "proofId": "bezout-identity-oq-01-oq-02-oq-02",
-    "range": { "startLine": 56, "endLine": 82 },
+    "range": { "startLine": 55, "endLine": 66 },
     "type": "definition",
     "title": "IsPrimitive: the Coordinate-Free Dual Notion",
-    "content": "Defines IsPrimitive v := ∃ w : Fin n → ℤ, w ⬝ᵥ v = 1 — a vector is primitive when it admits an integer dual pairing to 1. isPrimitive_single shows the standard basis vector eᵢ = Pi.single i 1 is primitive (its own indicator is a dual). isPrimitive_iff_span_eq_top proves this dot-product form agrees with the classical condition that the entries generate the unit ideal, IsPrimitive v ↔ Ideal.span (Set.range v) = ⊤, via Ideal.eq_top_iff_one and Ideal.mem_span_range_iff_exists_fun (matching the dot product to ∑ cᵢ • vᵢ through smul_eq_mul). Over ℤ this is exactly gcd of the entries = 1.",
-    "mathContext": "$v \\text{ primitive} \\iff \\exists w,\\ \\langle w, v\\rangle = 1 \\iff \\langle v_0,\\dots,v_{n-1}\\rangle_{\\mathbb Z} = \\mathbb Z$",
+    "content": "Defines IsPrimitive v := ∃ w : Fin n → ℤ, w ⬝ᵥ v = 1 — a vector is primitive when it admits an integer dual pairing to 1. The dot-product form is chosen precisely because it is manifestly SLₙ(ℤ)-invariant (the dual transforms contravariantly), unlike the classical 'gcd of entries = 1'. isPrimitive_single shows the standard basis vector eᵢ = Pi.single i 1 is primitive, witnessed by its own indicator as the dual (simp with Pi.single_apply and Finset.sum_ite_eq collapses the dot product to the i-th term); eᵢ is the target every primitive vector should reduce to under the SLₙ(ℤ) action.",
+    "mathContext": "$v \\text{ primitive} \\iff \\exists w,\\ \\langle w, v\\rangle = 1, \\qquad e_i \\text{ primitive via } \\langle e_i, e_i\\rangle = 1$",
     "significance": "key",
     "relatedConcepts": [
       "primitive vector",
       "dot product dual",
-      "unit ideal",
-      "n-ary Bézout"
+      "standard basis vector",
+      "SLₙ(ℤ)-invariance"
     ],
     "prerequisites": [
       "Matrix.dotProduct",
+      "Pi.single",
+      "Finset.sum_ite_eq"
+    ]
+  },
+  {
+    "id": "ann-span-bridge",
+    "proofId": "bezout-identity-oq-01-oq-02-oq-02",
+    "range": { "startLine": 68, "endLine": 78 },
+    "type": "theorem",
+    "title": "Bridge to the Classical Unit-Ideal Notion",
+    "content": "isPrimitive_iff_span_eq_top proves the dot-product form agrees with the classical condition that the entries of v generate the unit ideal of ℤ: IsPrimitive v ↔ Ideal.span (Set.range v) = ⊤. The proof rewrites the right side with Ideal.eq_top_iff_one and Ideal.mem_span_range_iff_exists_fun (1 ∈ span ↔ ∃ c, ∑ cᵢ • vᵢ = 1), then matches ∑ cᵢ • vᵢ to the dot product w ⬝ᵥ v in both directions via smul_eq_mul and mul_comm. Over ℤ — a Bézout domain — 'entries generate the unit ideal' is exactly 'gcd of the entries is 1', so this identifies primitivity with the setwise-coprime condition of the parent's n=2 IsCoprime phrasing.",
+    "mathContext": "$v \\text{ primitive} \\iff \\langle v_0,\\dots,v_{n-1}\\rangle_{\\mathbb Z} = \\mathbb Z \\iff \\gcd(v_0,\\dots,v_{n-1}) = 1$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "unit ideal",
+      "n-ary Bézout",
+      "setwise coprime",
+      "Bézout domain"
+    ],
+    "prerequisites": [
       "Ideal.eq_top_iff_one",
-      "Ideal.mem_span_range_iff_exists_fun"
+      "Ideal.mem_span_range_iff_exists_fun",
+      "smul_eq_mul"
     ]
   },
   {
