@@ -339,6 +339,17 @@ theorem motzkinPoly_psd_not_sos {c : ℝ} (hc0 : 0 < c) (hc3 : c ≤ 3) :
     IsPSDMv (motzkinPoly c) ∧ ¬ Hilbert17MotzkinNotSOS.IsSOS (motzkinPoly c) :=
   ⟨(motzkinPoly_psd_iff c).2 hc3, motzkinPoly_not_sos hc0⟩
 
+/-- **The classical Motzkin polynomial is PSD but not a sum of squares.**
+    `motzkinPoly 3 = X₀⁴X₁² + X₀²X₁⁴ + 1 − 3·X₀²X₁²` is Motzkin's (1967) first *explicit*
+    example of a positive-semidefinite polynomial that is not a sum of squares of
+    polynomials — the concrete witness that Hilbert's 17th problem genuinely requires
+    rational functions (denominators), not just polynomials.  It is the `c = 3`
+    PSD-boundary member of the family `motzkinPoly_psd_not_sos`, singled out here as the
+    headline instance the whole file is built around. -/
+theorem motzkin_classical_psd_not_sos :
+    IsPSDMv (motzkinPoly 3) ∧ ¬ Hilbert17MotzkinNotSOS.IsSOS (motzkinPoly 3) :=
+  motzkinPoly_psd_not_sos (by norm_num) (by norm_num)
+
 /-- **SOS membership at `c ≤ 0`.** For a nonpositive coefficient the `−c·x²y²` term has a
     nonnegative sign, so `motzkinPoly c` is a genuine sum of four squares,
 
