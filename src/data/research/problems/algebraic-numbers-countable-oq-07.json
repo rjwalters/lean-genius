@@ -37,14 +37,15 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED + SHARPENED: the algebraic reals are Lebesgue-null (existing) and now shown to have Hausdorff DIMENSION zero — strictly stronger, killing every positive-order Hausdorff gauge μH[d] (Lebesgue-null = d=1 slice). Dimensional corollary yields density of the transcendentals in ℝ and ℂ (dimH 0 < finrank), a route independent of Baire category. 16 theorems, 0 axioms, 0 sorries (elaboration-clean; olean-write blocked by fleet SIGBUS-135).",
+    "progressSummary": "COMPLETED + SHARPENED: the algebraic reals are Lebesgue-null (existing) and now shown to have Hausdorff DIMENSION zero — strictly stronger, killing every positive-order Hausdorff gauge μH[d] (Lebesgue-null = d=1 slice). Dimensional corollary yields density of the transcendentals in ℝ and ℂ (dimH 0 < finrank), a route independent of Baire category. 16 theorems, 0 axioms, 0 sorries (elaboration-clean; olean-write blocked by fleet SIGBUS-135). | Session (researcher-1): added algebraic_complex_hausdorffMeasure_zero — the complex Hausdorff-measure-zero corollary the ℝ branch already had (algebraic_reals_hausdorffMeasure_zero) but ℂ lacked despite having algebraic_complex_dimH_zero. 1 thm, 0 axiom, 0 sorry. UNVERIFIED (Docker infra down).",
     "builtItems": [
       "algebraic_reals_null: volume {x : ℝ | IsAlgebraic ℚ x} = 0 in Proofs/AlgebraicRealsNull.lean",
       "ae_transcendental: almost every real is transcendental (∀ᵐ x ∂volume, Transcendental ℚ x)",
       "transcendental_full_on_interval: transcendentals carry the full measure ofReal (b − a) of any interval",
       "exists_transcendental_of_pos_measure: any positive-measure set contains a transcendental",
       "NoAtoms (volume : Measure ℂ) + algebraic_complex_null: complex algebraic numbers are null",
-      "AlgebraicRealsNull.lean §6 (researcher-2): algebraic_reals_dimH_zero (dimH{alg reals}=0 via Set.Countable.dimH_zero), algebraic_reals_hausdorffMeasure_zero (μH[d]{alg}=0 for d>0 via hausdorffMeasure_of_dimH_lt), algebraic_complex_dimH_zero, transcendental_reals_dense + transcendental_complex_dense (dense_compl_of_dimH_lt_finrank + Module.finrank_pos). File now 16 theorems, 0 axioms, 0 sorries. Elaboration-clean; olean-write blocked by fleet SIGBUS-135."
+      "AlgebraicRealsNull.lean §6 (researcher-2): algebraic_reals_dimH_zero (dimH{alg reals}=0 via Set.Countable.dimH_zero), algebraic_reals_hausdorffMeasure_zero (μH[d]{alg}=0 for d>0 via hausdorffMeasure_of_dimH_lt), algebraic_complex_dimH_zero, transcendental_reals_dense + transcendental_complex_dense (dense_compl_of_dimH_lt_finrank + Module.finrank_pos). File now 16 theorems, 0 axioms, 0 sorries. Elaboration-clean; olean-write blocked by fleet SIGBUS-135.",
+      "algebraic_complex_hausdorffMeasure_zero {d>0}: μH[d]{z|IsAlgebraic ℚ z}=0 — the complex analogue of algebraic_reals_hausdorffMeasure_zero, completing the dimH-zero corollary parity between the ℝ and ℂ branches. AlgebraicRealsNull.lean."
     ],
     "insights": [
       "Countable ⟹ null requires the measure to be atomless; Lebesgue measure qualifies via Real.noAtoms_volume, so Set.Countable.measure_zero applies to the parent's countability theorem in one line.",

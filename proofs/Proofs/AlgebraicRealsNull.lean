@@ -246,6 +246,16 @@ theorem algebraic_complex_dimH_zero :
     dimH {z : ℂ | IsAlgebraic ℚ z} = 0 :=
   (AlgebraicNumbersCountable.algebraic_complex_countable).dimH_zero
 
+/-- **Every positive-order Hausdorff measure of the complex algebraic numbers vanishes.**
+The complex analogue of `algebraic_reals_hausdorffMeasure_zero`: for each `d > 0`,
+`μH[d] {z | IsAlgebraic ℚ z} = 0`.  Hausdorff dimension zero (`algebraic_complex_dimH_zero`)
+kills the entire positive-order gauge scale on `ℂ` at once, sharpening the plane-Lebesgue-null
+fact `algebraic_complex_null` (the order-`d = 2` slice). -/
+theorem algebraic_complex_hausdorffMeasure_zero {d : NNReal} (hd : 0 < d) :
+    μH[(d : ℝ)] {z : ℂ | IsAlgebraic ℚ z} = 0 :=
+  hausdorffMeasure_of_dimH_lt (by
+    rw [algebraic_complex_dimH_zero]; exact_mod_cast hd)
+
 /-- **The transcendental reals are dense**, obtained from the dimensional bound:
 `dimH {algebraic} = 0 < 1 = finrank ℝ ℝ`, so the complement of the algebraic reals
 is dense (`dense_compl_of_dimH_lt_finrank`).  A dimension-theoretic route to the
