@@ -48,9 +48,33 @@
     "prerequisites": ["Lean tactic mode", "by_contra reasoning"]
   },
   {
+    "id": "ann-dual-half",
+    "proofId": "algebraic-numbers-countable-oq-02-oq-03-oq-02-oq-01",
+    "range": { "startLine": 79, "endLine": 95 },
+    "type": "insight",
+    "title": "The dual half: the complement is Gδ but not Fσ",
+    "content": "`dense_countable_compl_isGδ_not_isFσ` turns the main theorem inside out to describe the complement. The Gδ half is immediate: `compl_countable_isDenseGδ` already gives that Dᶜ is a (dense) Gδ. The 'not Fσ' half is the mirror of the 'not Gδ' argument, run through complementation: were Dᶜ an Fσ set, then its complement D = (Dᶜ)ᶜ would be Gδ (`IsFσ.isGδ_compl` gives `IsGδ (Dᶜ)ᶜ`, and `compl_compl` rewrites `(Dᶜ)ᶜ = D`), contradicting `dense_countable_isFσ_and_not_isGδ`. So the single Baire-category obstruction on D transfers verbatim to a dual obstruction on Dᶜ — no new topology is needed, only the closure of the Fσ/Gδ classes under complement.",
+    "mathContext": "$D^c \\in \\mathbf{\\Pi}^0_2(X) \\setminus \\mathbf{\\Sigma}^0_2(X)$",
+    "significance": "key",
+    "relatedConcepts": ["complement", "Fσ set", "Gδ set", "IsFσ.isGδ_compl", "Borel hierarchy duality"],
+    "prerequisites": ["Fσ and Gδ duality under complement", "compl_compl"]
+  },
+  {
+    "id": "ann-packaged-dichotomy",
+    "proofId": "algebraic-numbers-countable-oq-02-oq-03-oq-02-oq-01",
+    "range": { "startLine": 96, "endLine": 105 },
+    "type": "insight",
+    "title": "The complete generic dichotomy, packaged",
+    "content": "`dense_countable_gδ_fσ_dichotomy` is the headline packaged result: it bundles both one-sided theorems into one statement, `(IsFσ D ∧ ¬ IsGδ D) ∧ (IsGδ Dᶜ ∧ ¬ IsFσ Dᶜ)`, by a two-line term-mode pairing of `dense_countable_isFσ_and_not_isGδ` and `dense_countable_compl_isGδ_not_isFσ`. Its content is that a dense countable set and its complement sit on opposite, Fσ-only and Gδ-only, sides of the second Borel level: D lands in Σ⁰₂ ∖ Π⁰₂ while Dᶜ lands in Π⁰₂ ∖ Σ⁰₂. This is precisely the abstract shape of the concrete algebraic-reals-versus-transcendentals dichotomy the parent proves in ℝ — here stripped of everything but the four topological instances that make it run.",
+    "mathContext": "$D \\in \\mathbf{\\Sigma}^0_2 \\setminus \\mathbf{\\Pi}^0_2 \\;\\wedge\\; D^c \\in \\mathbf{\\Pi}^0_2 \\setminus \\mathbf{\\Sigma}^0_2$",
+    "significance": "critical",
+    "relatedConcepts": ["Borel hierarchy", "dichotomy", "Fσ set", "Gδ set", "algebraic vs transcendental reals"],
+    "prerequisites": ["Borel hierarchy levels", "Fσ/Gδ duality"]
+  },
+  {
     "id": "ann-rationals-instance",
     "proofId": "algebraic-numbers-countable-oq-02-oq-03-oq-02-oq-01",
-    "range": { "startLine": 79, "endLine": 88 },
+    "range": { "startLine": 107, "endLine": 115 },
     "type": "insight",
     "title": "The classical ℚ ⊆ ℝ instance in one line",
     "content": "`rationals_isFσ_and_not_isGδ` recovers the classical fact that ℚ is Fσ but not Gδ in ℝ — placing the rationals at Borel level exactly Σ⁰₂ ∖ Π⁰₂ — as a direct application of the abstract theorem. The rationals are `Set.range ((↑) : ℚ → ℝ)`, countable by `Set.countable_range` and dense by `Rat.denseRange_cast`; ℝ is a nonempty perfect T1 Baire space (all four instances found automatically). What was historically a bespoke Baire-category proof becomes a single term-mode line, and the same instance pattern applies to ℚⁿ ⊆ ℝⁿ, dyadic rationals in Cantor space, etc.",
