@@ -91,28 +91,32 @@
       "title": "Overview: closing the last case S₄",
       "startLine": 1,
       "endLine": 50,
-      "summary": "Header docstring and imports. Recalls the parent's solvable-side results (the reduction Aₙ⟹Sₙ and S₂, S₃ via prime-order alternating groups) and frames the two open questions resolved here: A₄ solvable (the one case order 12 leaves open) and the packaged equivalence Sₙ solvable ⟺ n ≤ 4. Imports the parent Proofs.AbelRuffiniOQ06."
+      "summary": "Header docstring and imports. Recalls the parent's solvable-side results (the reduction Aₙ⟹Sₙ and S₂, S₃ via prime-order alternating groups) and frames the two open questions resolved here: A₄ solvable (the one case order 12 leaves open) and the packaged equivalence Sₙ solvable ⟺ n ≤ 4. Imports the parent Proofs.AbelRuffiniOQ06.",
+      "mathContext": "Abel–Ruffini threshold $S_n$ solvable $\\iff n \\le 4$. This file closes the last solvable case $n = 4$ by proving $A_4$ (order $12$) solvable, then packages the full biconditional."
     },
     {
       "id": "a4-solvable",
       "title": "Part I — A₄ is solvable (the metabelian core)",
       "startLine": 52,
       "endLine": 80,
-      "summary": "Proves alternatingFinFour_isSolvable. Takes V₄ = alternatingGroup.kleinFour (Fin 4): normal (normal_kleinFour), solvable because exponent two ⟹ abelian (exponent_kleinFour + mul_comm_of_exponent_two + isSolvable_of_comm). The quotient A₄/V₄ is abelian since V₄ = commutator A₄ (kleinFour_eq_commutator + quotient_commutative_iff_commutator_le), hence solvable. solvable_of_ker_le_range on the SES 1 → V₄ → A₄ → A₄/V₄ → 1 (ker of mk' = V₄ = range of subtype) concludes IsSolvable A₄."
+      "summary": "Proves alternatingFinFour_isSolvable. Takes V₄ = alternatingGroup.kleinFour (Fin 4): normal (normal_kleinFour), solvable because exponent two ⟹ abelian (exponent_kleinFour + mul_comm_of_exponent_two + isSolvable_of_comm). The quotient A₄/V₄ is abelian since V₄ = commutator A₄ (kleinFour_eq_commutator + quotient_commutative_iff_commutator_le), hence solvable. solvable_of_ker_le_range on the SES 1 → V₄ → A₄ → A₄/V₄ → 1 (ker of mk' = V₄ = range of subtype) concludes IsSolvable A₄.",
+      "mathContext": "$A_4$ is metabelian: the derived series $A_4 \\trianglerighteq V_4 \\trianglerighteq 1$ terminates, where $V_4$ is the Klein four-group (exponent $2$, hence abelian) and $V_4 = [A_4,A_4]$ so $A_4/V_4 \\cong \\mathbb{Z}/3$ is abelian."
     },
     {
       "id": "s4-solvable",
       "title": "Part II — S₄ is solvable",
       "startLine": 82,
       "endLine": 89,
-      "summary": "Proves permFinFour_isSolvable by feeding the new A₄ solvability instance into the parent reduction permSolvable_of_alternatingSolvable 4 (the short exact sequence 1 → A₄ → S₄ → ℤˣ with abelian quotient). Closes the last open case of the solvable side."
+      "summary": "Proves permFinFour_isSolvable by feeding the new A₄ solvability instance into the parent reduction permSolvable_of_alternatingSolvable 4 (the short exact sequence 1 → A₄ → S₄ → ℤˣ with abelian quotient). Closes the last open case of the solvable side.",
+      "mathContext": "$S_4$ solvable: lift $A_4$ solvable through the sign SES $1 \\to A_4 \\to S_4 \\xrightarrow{\\mathrm{sgn}} \\{\\pm 1\\} \\to 1$; combined with $A_4 \\trianglerighteq V_4$ this is the full derived series $S_4 \\trianglerighteq A_4 \\trianglerighteq V_4 \\trianglerighteq 1$."
     },
     {
       "id": "full-equivalence",
       "title": "Part III — The packaged threshold Sₙ solvable ⟺ n ≤ 4",
       "startLine": 90,
       "endLine": 105,
-      "summary": "Proves isSolvable_perm_fin_iff. Forward: contraposition through Equiv.Perm.not_solvable for n ≥ 5 (using #(Fin n) = n). Backward: interval_cases on n ≤ 4 — S₀, S₁ subsingleton (infer_instance), S₂, S₃ from the parent, S₄ from permFinFour_isSolvable. Packages the full Abel–Ruffini group-theoretic dichotomy as one biconditional."
+      "summary": "Proves isSolvable_perm_fin_iff. Forward: contraposition through Equiv.Perm.not_solvable for n ≥ 5 (using #(Fin n) = n). Backward: interval_cases on n ≤ 4 — S₀, S₁ subsingleton (infer_instance), S₂, S₃ from the parent, S₄ from permFinFour_isSolvable. Packages the full Abel–Ruffini group-theoretic dichotomy as one biconditional.",
+      "mathContext": "$S_n$ solvable $\\iff n \\le 4$: forward by contraposition (for $n \\ge 5$, $A_5 \\le S_n$ simple non-abelian $\\Rightarrow$ non-solvable); backward by $\\texttt{interval\\_cases}$ over $n \\in \\{0,1,2,3,4\\}$."
     }
   ],
   "references": [
