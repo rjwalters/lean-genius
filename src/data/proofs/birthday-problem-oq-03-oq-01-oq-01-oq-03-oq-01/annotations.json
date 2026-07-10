@@ -38,7 +38,7 @@
   {
     "id": "ann-c-cubed",
     "proofId": "birthday-problem-oq-03-oq-01-oq-01-oq-03-oq-01",
-    "range": { "startLine": 84, "endLine": 91 },
+    "range": { "startLine": 84, "endLine": 97 },
     "type": "tactic",
     "title": "c³ = L and the Depressed Cubic",
     "content": "Writing c = L^{1/3} with L = 6d²ln2, the identity c³ = L is obtained by `Real.rpow_natCast` (turning the natural cube into a real power) and `Real.rpow_mul` (collapsing (L^{1/3})³ = L^{(1/3)·3} = L^1 = L). Combined with the centered identity, this recasts the balance as the depressed cubic m³ - m = c³ — the no-quadratic-term form that makes the centered analysis clean.",
@@ -50,7 +50,7 @@
   {
     "id": "ann-lower-bound",
     "proofId": "birthday-problem-oq-03-oq-01-oq-01-oq-03-oq-01",
-    "range": { "startLine": 100, "endLine": 107 },
+    "range": { "startLine": 99, "endLine": 104 },
     "type": "tactic",
     "title": "Lower Bound: c + 1 ≤ n",
     "content": "From the depressed cubic, m³ = c³ + m ≥ c³ because m ≥ 0. Applying the cube root — monotone via `Real.rpow_le_rpow` and inverse to cubing via `cubeRoot_cube` — gives c = L^{1/3} ≤ (m³)^{1/3} = m. Since m = n - 1, this is the sharpened lower bound n ≥ c + 1, a full unit above the parent's n ≥ c.",
@@ -62,7 +62,7 @@
   {
     "id": "ann-upper-bound",
     "proofId": "birthday-problem-oq-03-oq-01-oq-01-oq-03-oq-01",
-    "range": { "startLine": 108, "endLine": 116 },
+    "range": { "startLine": 105, "endLine": 115 },
     "type": "insight",
     "title": "Upper Bound Collapses to (m−c)² ≥ 0",
     "content": "The target 3c(m-c) ≤ 1 is, after multiplying by the positive quantity m² + mc + c² and using m³ - c³ = m, exactly the trivial inequality (m-c)² ≥ 0. The algebraic identity (m² + mc + c²)(1 - 3c(m-c)) = (m-c)² is proved by `linear_combination (-3c)·(m³ - m = c³)`, and the sign conclusion by `nlinarith` with `sq_nonneg (m-c)` and the positivity of m² + mc + c². Hence m ≤ c + 1/(3c), i.e. n ≤ c + 1 + 1/(3c). The remainder 1/(3c) is sharp for this argument — it is the slack in (m-c)² ≥ 0.",
@@ -74,7 +74,7 @@
   {
     "id": "ann-const-one",
     "proofId": "birthday-problem-oq-03-oq-01-oq-01-oq-03-oq-01",
-    "range": { "startLine": 118, "endLine": 140 },
+    "range": { "startLine": 117, "endLine": 140 },
     "type": "concept",
     "title": "The Exact Lower-Order Constant",
     "content": "`birthday_triple_threshold_const_one` packages the two-sided bound as |n − (c + 1)| ≤ 1/(3c) with c = (6d²ln2)^{1/3}. This exhibits the lower-order term as the explicit constant 1, with a one-sided remainder bounded by 1/(3c) = O(d^{-2/3}) that vanishes as d → ∞. So the threshold is n = (6d²ln2)^{1/3} + 1 + o(1) — a strict refinement of the parent's O(1) band, not merely a smaller constant.",
