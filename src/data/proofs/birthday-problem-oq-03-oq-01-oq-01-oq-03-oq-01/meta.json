@@ -128,6 +128,11 @@
       "description": "Sibling: the general-k threshold (k!·d^(k-1)·ln2)^(1/k) with loose ±(k-1) band; for k=3 it recovers the parent's ±2, which this entry sharpens using the k=3-specific centered cube"
     },
     {
+      "targetId": "birthday-problem-oq-03-oq-01-oq-01-oq-05-oq-01",
+      "relationship": "related",
+      "description": "Complementary exact-count view of the same k=3 problem: it proves the closed form for the number of no-triple seatings, birthdayCount3 n d = Σ_{p≤⌊n/2⌋} C(n,2p)·(2p−1)‼·(d)_{n−p}, for every finite n. Where this entry pins the asymptotic *threshold* (the n at which a triple becomes likely) via the expected-triple balance, that entry gives the exact finite-n count from which the balance heuristic is drawn — the finite-n and d→∞ ends of the k=3 analysis"
+    },
+    {
       "targetId": "birthday-problem",
       "relationship": "extends",
       "description": "The classic k=2 birthday problem (23 people, >50% coincidence) that this whole chain refines: where the classic asks for the first coincidence (two people, threshold ~√(2d·ln2)), this entry extends the question to the first triple coincidence (three people), pinning its sharp threshold at n = (6d²·ln2)^(1/3) + 1 + o(1). Both siblings in this cluster link to the root; this adds the parallel link so the k=3 refinement is reachable from and back to the flagship"
