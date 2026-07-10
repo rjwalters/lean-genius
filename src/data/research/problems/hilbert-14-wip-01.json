@@ -1,0 +1,61 @@
+{
+  "slug": "hilbert-14-wip-01",
+  "title": "Completing the Lean Formalization of Hilbert's 14th Problem (Finiteness of Invariant Systems)",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "R^{G} = \\{\\, f \\in k[x_1, \\ldots, x_n] : g \\cdot f = f \\ \\text{for all } g \\in G \\,\\}\n\\quad\\text{is finitely generated as a } k\\text{-algebra whenever } G \\text{ is reductive.}",
+    "plain": "We want to advance the Lean 4 formalization of Hilbert's 14th problem from an expository scaffold toward genuine machine-checked content. The 14th problem asks whether the ring of polynomial functions left invariant by a group action is always finitely generated; Nagata (1959) showed the answer is no in general, while Hilbert, Mumford, and Haboush showed yes for reductive groups. The current gallery entry `hilbert-14` only formally proves Hilbert's Basis Theorem (re-exported from Mathlib) and defines the ring of invariants and linear reductivity; the substantive resolution is present merely as doc-comment prose. Our goal is to formalize the connective structural steps that are within Mathlib's reach — that $k[x_1,\\ldots,x_n]$ is Noetherian, that $R^{G}$ is a subalgebra, and that a Reynolds operator plus Noetherianity gives finite generation — while keeping the deep inputs (Nagata's counterexample and the existence of the Reynolds operator for reductive groups) as clearly stated assumptions.",
+    "whyMatters": [
+      "Upgrading exposition to formal content"
+    ]
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-07-09T17:33:18-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: hilbert-14-wip-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "invariant-theory",
+    "commutative-algebra",
+    "group-actions",
+    "noetherian-rings",
+    "hilbert-problems",
+    "formalization"
+  ],
+  "relatedProofs": [
+    "hilbert-14"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-07-10T00:41:25.788Z",
+  "lastUpdate": "2026-07-10T00:41:25.930Z",
+  "significance": 8,
+  "tractability": 5
+}
