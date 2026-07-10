@@ -1,0 +1,62 @@
+{
+  "slug": "erdos-53-wip-01",
+  "title": "Complete the Lean Formalization of Erdős Problem #53 (Sums and Products of Distinct Elements)",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\forall k \\geq 1,\\ \\exists N_0,\\ \\forall A \\subseteq \\mathbb{Z} \\text{ finite},\\ |A| \\geq N_0 \\implies \\big|\\{\\textstyle\\sum_{a \\in S} a : S \\subseteq A\\} \\cup \\{\\prod_{a \\in S} a : \\emptyset \\neq S \\subseteq A\\}\\big| \\geq |A|^k.",
+    "plain": "The completion task is to strengthen the work-in-progress Lean 4 formalization of Erdős Problem #53 on sums and products of distinct elements. Given a finite set $A$ of integers, one forms all integers obtainable as a sum of a subset of $A$ or as a product of a subset of $A$. Erdős and Szemerédi (1983) asked whether, for every fixed $k$, a sufficiently large $A$ always produces at least $|A|^k$ such representable integers — the intuition being that additive and multiplicative structure cannot both be sparse. Mei-Chu Chang (2003) proved this affirmatively for all $k$, and Erdős–Szemerédi supplied a matching subexponential upper bound. The current Lean file defines subset sums, subset products, and their union, and states the conjecture and related sum-product conjecture (Problem 52), but Chang's resolution and the upper bound are (or were) carried as axioms. Our goal is to formalize the elementary structural facts and keep Chang's deep theorem cleanly axiomatized.",
+    "whyMatters": [
+      "The sum-product phenomenon"
+    ]
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-07-09T17:33:19-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: erdos-53-wip-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "erdos",
+    "number-theory",
+    "additive-combinatorics",
+    "sum-product",
+    "subset-sums",
+    "sidon-related"
+  ],
+  "relatedProofs": [
+    "erdos-5",
+    "erdos-53"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-07-10T00:41:25.781Z",
+  "lastUpdate": "2026-07-10T00:41:25.928Z",
+  "significance": 7,
+  "tractability": 6
+}

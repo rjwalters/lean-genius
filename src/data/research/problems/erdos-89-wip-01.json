@@ -1,0 +1,62 @@
+{
+  "slug": "erdos-89-wip-01",
+  "title": "Complete the Erdős #89 Distinct-Distances Formalization",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "g(n) = \\min_{\\substack{P \\subseteq \\mathbb{R}^2 \\\\ |P| = n}} \\bigl|\\{\\, \\|p - q\\| : p, q \\in P,\\ p \\neq q \\,\\}\\bigr|, \\qquad \\text{Erdős89Conjecture}:\\ g(n) = \\Omega\\!\\left(\\frac{n}{\\sqrt{\\log n}}\\right).",
+    "plain": "The gallery entry `erdos-89` formalizes the Erdős distinct-distances problem in Lean 4 but carries a `wip` badge: the Guth–Katz bound and the grid upper bound are recorded as external assumptions rather than derived, and the extremal function is stated but its basic properties are not fully developed. This research problem is to strengthen that formalization — discharge the provable supporting lemmas, tighten the definitions, and clearly isolate the genuinely open core — moving the entry toward a `verified` badge without claiming to resolve the open conjecture.",
+    "whyMatters": [
+      "Credibility of the gallery"
+    ]
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-07-09T17:33:18-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: erdos-89-wip-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "erdos",
+    "combinatorial-geometry",
+    "distinct-distances",
+    "incidence-geometry",
+    "formalization",
+    "extremal"
+  ],
+  "relatedProofs": [
+    "erdos-8",
+    "erdos-89"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-07-10T00:41:25.783Z",
+  "lastUpdate": "2026-07-10T00:41:25.930Z",
+  "significance": 7,
+  "tractability": 6
+}

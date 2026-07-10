@@ -1,0 +1,63 @@
+{
+  "slug": "erdos-116-wip-01",
+  "title": "Completing the Lean Formalization of Erdős #116 (Measure of Polynomial Sublevel Sets)",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\forall\\, p \\in \\mathrm{UnitDiskPoly}_n,\\qquad \\frac{c}{\\log n} \\;\\le\\; \\mu\\bigl(\\{\\, z \\in \\mathbb{C} : |p(z)| < 1 \\,\\}\\bigr) \\;\\le\\; \\pi,",
+    "plain": "We want to finish turning a partially-formalized Lean 4 proof about polynomial \"small regions\" into one that is machine-checked as far as possible. For a polynomial whose roots all lie inside the unit disk, look at the region where the polynomial has absolute value below $1$; the Krishnapur–Lundberg–Ramachandran theorem says this region always has area at least $c/\\log n$, which resolved a 1958 question of Erdős, Herzog, and Piranian. The current gallery entry `erdos-116` states the main bounds as unproven assumptions and defines the objects but does not formally verify any nontrivial inequality. Our task is to discharge the pieces that are genuinely provable in Lean/Mathlib (the definitions, Pólya's upper bound $\\pi$, and structural lemmas about the sublevel set) and to cleanly isolate the deep analytic core (the KLR lower bound) as a single stated assumption.",
+    "whyMatters": [
+      "Credibility of the gallery"
+    ]
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-07-09T17:33:18-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: erdos-116-wip-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "complex-analysis",
+    "measure-theory",
+    "polynomial-lemniscates",
+    "erdos-problems",
+    "potential-theory",
+    "formalization"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-11",
+    "erdos-116"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-07-10T00:41:25.778Z",
+  "lastUpdate": "2026-07-10T00:41:25.925Z",
+  "significance": 7,
+  "tractability": 5
+}

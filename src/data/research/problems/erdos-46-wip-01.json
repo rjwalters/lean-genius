@@ -1,0 +1,62 @@
+{
+  "slug": "erdos-46-wip-01",
+  "title": "Complete the Erdős #46 Monochromatic Unit-Fraction Formalization",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\forall\\, r \\ge 1,\\ \\forall\\, c : \\mathbb{N} \\to \\mathrm{Fin}\\,r,\\ \\exists\\, S \\subseteq \\{n : n \\ge 2\\},\\quad \\mathrm{IsMonochromatic}(c, S)\\ \\wedge\\ \\sum_{n \\in S} \\frac{1}{n} = 1.",
+    "plain": "The gallery entry `erdos-46` formalizes Erdős Problem #46 — every finite colouring of $\\mathbb{N}$ contains a monochromatic set of denominators whose reciprocals sum to $1$, proved by Croot (2003) — together with the infinitely-many-disjoint variant and the Erdős–Graham rational generalization. It is `wip`: Croot's theorem, its stronger variant, and the rational generalization are stated as assumptions (the deep density Hales–Jewett input is not in Lean), and some structural facts (singleton exclusion, $|S| \\ge 2$) are asserted rather than proved. This research problem is to discharge the provable structural lemmas, tighten the definitions, and clearly isolate Croot's theorem as the single genuine external input, moving the entry toward `verified`.",
+    "whyMatters": [
+      "Honest labelling of the deep input"
+    ]
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-07-09T17:33:18-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: erdos-46-wip-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "erdos",
+    "number-theory",
+    "unit-fractions",
+    "ramsey-theory",
+    "colouring",
+    "formalization"
+  ],
+  "relatedProofs": [
+    "erdos-4",
+    "erdos-46"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-07-10T00:41:25.781Z",
+  "lastUpdate": "2026-07-10T00:41:25.928Z",
+  "significance": 6,
+  "tractability": 7
+}

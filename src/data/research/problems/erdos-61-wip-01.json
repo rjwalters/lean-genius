@@ -1,0 +1,63 @@
+{
+  "slug": "erdos-61-wip-01",
+  "title": "Complete the Lean Formalization of Erdős #61 (Erdős–Hajnal Conjecture)",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\forall H,\\; \\exists c(H) > 0 \\;:\\; \\forall G \\text{ that is } H\\text{-free},\\; \\max\\big(\\omega(G),\\, \\alpha(G)\\big) \\;\\ge\\; n^{\\,c(H)}, \\quad n = |V(G)|",
+    "plain": "The Erdős–Hajnal conjecture says that if a graph avoids some fixed small pattern as an induced subgraph, then it must contain either a very large clique (all-connected group) or a very large independent set (all-disconnected group) — polynomially large, far bigger than ordinary Ramsey theory guarantees. This conjecture is famously unsolved. This project completes and hardens the existing Lean formalization: we do not attempt to settle the conjecture, but we make the Lean file a precise, auditable statement, prove the easy supporting facts from Mathlib, and mark the deep partial results and the open core as explicit assumptions.",
+    "whyMatters": [
+      "Central Open Problem"
+    ]
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-07-09T17:33:20-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: erdos-61-wip-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "erdos",
+    "graph-theory",
+    "ramsey-theory",
+    "induced-subgraph",
+    "conjecture",
+    "formalization",
+    "structural-graph-theory"
+  ],
+  "relatedProofs": [
+    "erdos-6",
+    "erdos-61"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-07-10T00:41:25.781Z",
+  "lastUpdate": "2026-07-10T00:41:25.929Z",
+  "significance": 8,
+  "tractability": 5
+}

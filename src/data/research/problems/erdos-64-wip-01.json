@@ -1,0 +1,63 @@
+{
+  "slug": "erdos-64-wip-01",
+  "title": "Complete the Lean Formalization of Erdős #64 (Power-of-Two Cycles in Min-Degree-3 Graphs)",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\forall G \\text{ finite},\\; \\delta(G) \\ge 3 \\;\\Longrightarrow\\; \\exists k \\ge 2 \\;:\\; C_{2^k} \\subseteq G",
+    "plain": "The Erdős–Gyárfás conjecture asks whether every finite graph in which every vertex has at least three neighbours must contain a cycle whose length is a power of two (4, 8, 16, 32, and so on). Although powers of two are exponentially sparse, they are conjectured to be unavoidable under this mild degree condition. The problem is famously open at minimum degree exactly three and carries a \\$1000 Erdős prize. This project completes and hardens the existing Lean formalization: we do not attempt to settle the conjecture, but we make the statement precise, prove the routine cycle-and-degree lemmas, and mark the deep results as explicit assumptions.",
+    "whyMatters": [
+      "Prize Open Problem"
+    ]
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-07-09T17:33:20-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: erdos-64-wip-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "erdos",
+    "extremal-graph-theory",
+    "cycles",
+    "minimum-degree",
+    "graph-theory",
+    "formalization",
+    "open-problem"
+  ],
+  "relatedProofs": [
+    "erdos-6",
+    "erdos-64"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-07-10T00:41:25.782Z",
+  "lastUpdate": "2026-07-10T00:41:25.929Z",
+  "significance": 8,
+  "tractability": 5
+}
