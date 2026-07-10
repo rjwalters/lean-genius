@@ -198,4 +198,91 @@ theorem ae_all_transcendental_complex {n : ℕ} :
   rw [Filter.eventually_iff, hset]
   exact compl_mem_ae_iff.mpr atLeastOneAlgebraicComplex_null
 
+-- ============================================================================
+-- § 5. The at-least-one-algebraic set is uncountable once `n ≥ 2`
+-- ============================================================================
+
+/-!
+The null set of `atLeastOneAlgebraicReal_null` is *far larger* than the countable
+all-algebraic set of `allAlgebraicReal_countable`: for `n ≥ 2` it is already
+**uncountable**, of the cardinality of the continuum. This is the precise sense in
+which "Lebesgue-null" is strictly weaker than "countable" once `n ≥ 2` — a
+phenomenon the one-dimensional parent (`algebraic-numbers-countable-oq-07`) never
+sees, since on the line the algebraic reals are *both* null and countable.
+
+The witness is a copy of `ℝ` inside the set: fix coordinate `0` to the algebraic
+value `0` and let coordinate `1` range over all reals. Every such point has an
+algebraic coordinate (namely coordinate `0`), and the map `t ↦ (point with `t` in
+slot `1`)` is injective, so the set has at least the cardinality of `ℝ = 𝔠 > ℵ₀`.
+-/
+
+/-- **For `n ≥ 2`, the points of `ℝⁿ` with at least one algebraic coordinate are
+uncountable.**  Fixing coordinate `0` at the algebraic value `0` and letting
+coordinate `1` range over `ℝ` embeds `ℝ` into the set, so its cardinality is at
+least `𝔠 > ℵ₀`.  Together with `atLeastOneAlgebraicReal_null` this shows a
+*continuum-sized* set can be Lebesgue-null; contrast `allAlgebraicReal_countable`. -/
+theorem atLeastOneAlgebraicReal_uncountable {n : ℕ} (hn : 2 ≤ n) :
+    ¬ {x : Fin n → ℝ | ∃ i, IsAlgebraic ℚ (x i)}.Countable := by
+  intro hc
+  have h0 : 0 < n := by omega
+  have h1 : 1 < n := by omega
+  have hne : (⟨0, h0⟩ : Fin n) ≠ ⟨1, h1⟩ := by decide
+  -- The point with `t` in slot `1` and `0` elsewhere lies in the set: its
+  -- slot-`0` coordinate is `0`, which is algebraic.
+  have hmem : ∀ t : ℝ,
+      Function.update (fun _ : Fin n => (0 : ℝ)) ⟨1, h1⟩ t
+        ∈ {x : Fin n → ℝ | ∃ i, IsAlgebraic ℚ (x i)} := by
+    intro t
+    refine ⟨⟨0, h0⟩, ?_⟩
+    rw [Function.update_of_ne hne]
+    exact isAlgebraic_zero
+  -- This one-parameter family is an injection `ℝ ↪ (the set)`.
+  have key : Function.Injective
+      (fun t : ℝ => (⟨Function.update (fun _ : Fin n => (0 : ℝ)) ⟨1, h1⟩ t, hmem t⟩ :
+        {x : Fin n → ℝ | ∃ i, IsAlgebraic ℚ (x i)})) := by
+    intro s t hst
+    have h := congrFun (congrArg Subtype.val hst) ⟨1, h1⟩
+    simpa [Function.update_self] using h
+  -- `𝔠 = #ℝ ≤ #(set) ≤ ℵ₀`, contradicting `ℵ₀ < 𝔠`.
+  have hcard := Cardinal.mk_le_of_injective key
+  rw [Cardinal.mk_real] at hcard
+  exact absurd (hcard.trans hc.le_aleph0) (not_le.mpr Cardinal.aleph0_lt_continuum)
+
+/-- **For `n ≥ 2`, the points of `ℂⁿ` with at least one algebraic coordinate are
+uncountable.**  The complex analogue of `atLeastOneAlgebraicReal_uncountable`;
+the same real one-parameter family (coordinate `1` ranging over the reals inside
+`ℂ`) already embeds `ℝ`, so the set has cardinality at least `𝔠`. -/
+theorem atLeastOneAlgebraicComplex_uncountable {n : ℕ} (hn : 2 ≤ n) :
+    ¬ {z : Fin n → ℂ | ∃ i, IsAlgebraic ℚ (z i)}.Countable := by
+  intro hc
+  have h0 : 0 < n := by omega
+  have h1 : 1 < n := by omega
+  have hne : (⟨0, h0⟩ : Fin n) ≠ ⟨1, h1⟩ := by decide
+  have hmem : ∀ t : ℝ,
+      Function.update (fun _ : Fin n => (0 : ℂ)) ⟨1, h1⟩ (t : ℂ)
+        ∈ {z : Fin n → ℂ | ∃ i, IsAlgebraic ℚ (z i)} := by
+    intro t
+    refine ⟨⟨0, h0⟩, ?_⟩
+    rw [Function.update_of_ne hne]
+    exact isAlgebraic_zero
+  have key : Function.Injective
+      (fun t : ℝ => (⟨Function.update (fun _ : Fin n => (0 : ℂ)) ⟨1, h1⟩ (t : ℂ), hmem t⟩ :
+        {z : Fin n → ℂ | ∃ i, IsAlgebraic ℚ (z i)})) := by
+    intro s t hst
+    have h := congrFun (congrArg Subtype.val hst) ⟨1, h1⟩
+    simpa [Function.update_self] using h
+  have hcard := Cardinal.mk_le_of_injective key
+  rw [Cardinal.mk_real] at hcard
+  exact absurd (hcard.trans hc.le_aleph0) (not_le.mpr Cardinal.aleph0_lt_continuum)
+
+/-- **Measure-zero is strictly weaker than countable once `n ≥ 2`.**  Both sets
+below are Lebesgue-null (`atLeastOneAlgebraicReal_null`, and
+`allAlgebraicReal_null` for `n ≥ 1`), yet the "at least one algebraic coordinate"
+set is *uncountable* while the "all coordinates algebraic" set is *countable*.
+This crisply separates the two smallness notions that coincide in dimension one. -/
+theorem atLeastOne_uncountable_allAlgebraic_countable {n : ℕ} (hn : 2 ≤ n) :
+    ¬ {x : Fin n → ℝ | ∃ i, IsAlgebraic ℚ (x i)}.Countable
+      ∧ {x : Fin n → ℝ | ∀ i, IsAlgebraic ℚ (x i)}.Countable :=
+  ⟨atLeastOneAlgebraicReal_uncountable hn, allAlgebraicReal_countable⟩
+
 end AlgebraicPointsNull
