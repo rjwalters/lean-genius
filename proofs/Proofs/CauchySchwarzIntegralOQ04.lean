@@ -440,6 +440,50 @@ theorem exists_im_inner_sq_saturated (hI : (RCLike.I : 𝕜) ≠ 0) {u : E} (hu 
     ∃ v : E, v ≠ 0 ∧ (RCLike.im (inner 𝕜 u v)) ^ 2 = ‖u‖ ^ 2 * ‖v‖ ^ 2 :=
   ⟨(RCLike.I : 𝕜) • u, smul_ne_zero hI hu, im_inner_I_smul_saturated hI hu⟩
 
+/-- **Covariance of a parallel pair.**  For a scalar ratio `r` and vector `u`, the real
+part of the inner product `⟪u, r•u⟫` (the "covariance" appearing in the Robertson
+saturation condition) is exactly `Re(r)·‖u‖²`:
+
+    `Re⟪u, r•u⟫ = Re(r) · ‖u‖²`.
+
+Because `⟪u, r•u⟫ = r·⟪u,u⟫` with `⟪u,u⟫ = ‖u‖²` real, only the real part of `r`
+survives.  This is the structural identity behind `im_inner_smul_saturated_iff`: the
+covariance of `(u, r•u)` vanishes precisely when the ratio `r` is purely imaginary. -/
+theorem re_inner_smul_self (r : 𝕜) (u : E) :
+    RCLike.re (inner 𝕜 u (r • u)) = RCLike.re r * ‖u‖ ^ 2 := by
+  rw [inner_smul_right, RCLike.mul_re, inner_self_im, mul_zero, sub_zero,
+    inner_self_eq_norm_sq]
+
+/-- **The parallel saturating states are exactly the purely-imaginary ratios.**  For
+nonzero `u` and nonzero scalar `r`, the parallel pair `(u, r•u)` saturates the squared
+uncertainty inequality `im_inner_sq_le`,
+
+    `(Im⟪u, r•u⟫)² = ‖u‖²·‖r•u‖²`,
+
+**iff** the ratio `r` is purely imaginary (`Re r = 0`).  This is the complete
+characterization of the Heisenberg-saturating (minimum-uncertainty) states among all
+parallel configurations, generalizing the single witness `im_inner_I_smul_saturated`
+(the case `r = I`, `Re I = 0`) to the *entire* imaginary axis of ratios: with
+`u = (A−⟨A⟩)ψ` these are precisely the states `(B−⟨B⟩)ψ = iλ(A−⟨A⟩)ψ`, `λ ∈ ℝ∖{0}`.
+
+    Proof: through `im_inner_sq_eq_iff_robertson_saturated` the saturation reduces to
+    the covariance condition `Re⟪u, r•u⟫ = 0`, and by `re_inner_smul_self` that equals
+    `Re(r)·‖u‖²`, which (as `‖u‖² > 0`) vanishes iff `Re r = 0`. -/
+theorem im_inner_smul_saturated_iff {u : E} (hu : u ≠ 0) {r : 𝕜} (hr : r ≠ 0) :
+    (RCLike.im (inner 𝕜 u (r • u))) ^ 2 = ‖u‖ ^ 2 * ‖r • u‖ ^ 2
+      ↔ RCLike.re r = 0 := by
+  have hv : r • u ≠ 0 := smul_ne_zero hr hu
+  have hupos : (0 : ℝ) < ‖u‖ ^ 2 := pow_pos (norm_pos_iff.mpr hu) 2
+  rw [im_inner_sq_eq_iff_robertson_saturated hu hv]
+  constructor
+  · rintro ⟨hre, -⟩
+    rw [re_inner_smul_self] at hre
+    rcases mul_eq_zero.mp hre with h | h
+    · exact h
+    · exact absurd h hupos.ne'
+  · intro hre
+    exact ⟨by rw [re_inner_smul_self, hre, zero_mul], r, hr, rfl⟩
+
 end CauchySchwarzIntegralOQ04
 
 #print axioms CauchySchwarzIntegralOQ04.gram_eq_iff_parallel
