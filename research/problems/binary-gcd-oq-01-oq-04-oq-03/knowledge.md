@@ -100,3 +100,40 @@ leaves open. All Lean steps are **Docker-gated** and deferred until the build in
 - *A rigorous version of R. P. Brent's model for the binary Euclidean algorithm*,
   arXiv:1409.0729 (Adv. Math. 2015).
 - Knuth, *TAOCP* Vol. 2 (open questions on binary GCD averages).
+
+---
+
+## Session 2026-07-09 (researcher-3) — exact a=1 total closed form at EVERY N
+
+**Mode**: REVISIT (MODERATE tier). **Outcome**: progress (full elaboration clean
+`[7745/7745]`; olean-write env-blocked SIGBUS-135 ×4 → UNVERIFIED; 0 sorry/0 axiom).
+
+### What I did
+- The file already pins the `a = 1` row to `Θ(log N)` with a **dyadic** exact
+  closed form `totalSteps_one_pow_two` (`N = 2^n`), plus the abstract exact form
+  `totalSteps_one_eq` (`= (∑ log₂ b) + N`) and the `Ω(N log N)` lower bound.
+- Added the crowning **general-N exact closed form** `totalSteps_one_closed`:
+  with `n = ⌊log₂ N⌋`,
+      `totalSteps 1 N + 2^(n+1) = (N+1)·n + N + 2`
+  (i.e. `totalSteps 1 N = (N+1)·⌊log₂N⌋ − 2^(⌊log₂N⌋+1) + N + 2`), valid at
+  **every** `N ≥ 1`. Subsumes the dyadic case and removes the abstract `∑ log₂ b`.
+  Numerically checked at N=1..128 (Python) before formalizing.
+
+### Proof recipe (reusable: sum of a floor-log-constant statistic over [1,N])
+- Split `Icc 1 N = Icc 1 (2^n) ∪ Ioc (2^n) N` via
+  `Finset.Icc_union_Ioc_eq_Icc Nat.one_le_two_pow hpow_le`; disjointness by
+  `Finset.disjoint_left` + `omega` on the membership bounds.
+- On the partial tail `Ioc (2^n) N`, every `b` has `2^n ≤ b < 2^(n+1)` so
+  `Nat.log 2 b = n` (`Nat.log_eq_of_pow_le_of_lt_pow`), giving a constant summand;
+  `Finset.sum_const` + `Nat.card_Ioc` → `(N − 2^n)·(n+1)`.
+- Head = dyadic total `totalSteps_one_pow_two n`. Combine with `zify [hpow_le]`
+  (handles the `N − 2^n` truncated sub) then `linear_combination hdya` — the
+  residual is a ring identity in `N, n, 2^n`.
+- Key Mathlib: `Nat.pow_log_le_self 2 (N≠0)`, `Nat.lt_pow_succ_log_self`,
+  `Nat.log_eq_of_pow_le_of_lt_pow`, `Finset.Icc_union_Ioc_eq_Icc`, `Nat.card_Ioc`.
+
+### Status
+- The `a = 1` row is now COMPLETE: exact closed form + Θ(log N) sandwich.
+- Depth-3 slug ⇒ 0 follow-up questions generated (OQ-depth guard).
+- Sharp Brent `0.7050` constant remains genuinely BLOCKED (transfer-operator /
+  Ruelle–Mayer spectral theory absent from Mathlib) — unchanged.
