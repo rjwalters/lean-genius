@@ -21,8 +21,8 @@
     "dateAdded": "2026-06-21",
     "axiomCount": 0,
     "assumptions": "None. Fully machine-verified. The operator-norm bounds assemble Mathlib's norm_inner_le_norm (scalar Cauchy-Schwarz) and ContinuousLinearMap.le_opNorm; the positive-operator (Kadison–Schwarz) inequality is an original derivation from the nonnegativity of the quadratic t ↦ ⟪T(x+t·y), x+t·y⟫ via discrim_le_zero, with positivity and symmetry of T carried as explicit hypotheses (no structure-encoded assumptions).",
-    "lineCount": 201,
-    "theoremCount": 11,
+    "lineCount": 245,
+    "theoremCount": 13,
     "definitionCount": 0,
     "mathlibDependencies": [
       {
@@ -86,9 +86,9 @@
   },
   "leanFile": {
     "namespace": "CauchySchwarzOperatorNorm",
-    "lineCount": 201,
+    "lineCount": 245,
     "axiomCount": 0,
-    "theoremCount": 11,
+    "theoremCount": 13,
     "definitionCount": 0,
     "path": "Proofs/CauchySchwarzOQ02OQ04.lean",
     "sorries": 0,
