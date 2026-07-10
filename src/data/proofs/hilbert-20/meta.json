@@ -36,17 +36,17 @@
       }
     ],
     "originalContributions": [
-      "Dirichlet problem formulation and existence",
-      "Lax-Milgram theorem statement",
-      "Weak formulation framework",
-      "Poisson equation existence",
-      "Lewy's counterexample demonstration"
+      "Dirichlet problem formulation (DirichletProblem definition; harmonicity via the opaque IsHarmonic axiom — existence is not proved)",
+      "Weak-formulation framework: bounded/coercive bilinear forms and bounded functionals (IsBoundedBilinear, IsCoercive, IsBoundedFunctional)",
+      "Energy-functional definition for symmetric Lax-Milgram (EnergyFunctional; the Lax-Milgram theorem itself is described in prose, not stated as a Lean declaration)",
+      "Sobolev space H₀¹ and the weak Poisson problem declared as opaque axioms (H1_zero, WeakPoisson — no existence theorem)",
+      "Lewy's operator declared as an axiom (LewyOperator — non-existence of solutions is discussed in prose, not demonstrated in Lean)"
     ],
     "dateAdded": "2025-12-29",
     "hilbertNumber": 20,
     "axiomCount": 4,
     "lineCount": 244,
-    "assumptions": "4 axioms: IsHarmonic, H1_zero, WeakPoisson, and 1 more. See Lean source for complete statements.",
+    "assumptions": "4 axioms: IsHarmonic, H1_zero, WeakPoisson, LewyOperator. The core PDE results (Lax-Milgram existence, Dirichlet/Poisson solvability, Lewy non-existence) are axiomatized or sketched in prose, not proved in Lean; the sole theorem hilbert_20_status is a trivially-true placeholder conjunction. See Lean source for complete statements.",
     "mathlib_version": "4.26.0",
     "theoremCount": 1,
     "definitionCount": 8
@@ -210,10 +210,10 @@
   ],
   "mainTheorems": [
     {
-      "name": "hilbert20_existence",
-      "type": "core",
-      "description": "Solutions to elliptic boundary value problems exist under Hilbert's conditions",
-      "leanType": "EllipticOperator L -> BoundaryData g -> exists u, L u = f and u|_boundary = g"
+      "name": "hilbert_20_status",
+      "type": "summary",
+      "description": "A placeholder status summary asserting the qualified resolution of Hilbert's 20th problem. The statement is a conjunction of four trivially-true existential propositions (∃ _ : Prop, True) and carries no mathematical content; the substantive existence/non-existence results (Lax-Milgram, Dirichlet, Poisson, Lewy) are only sketched via definitions, opaque axioms, and docstrings. No hilbert20_existence theorem exists in the source.",
+      "leanType": "(∃ _ : Prop, True) ∧ (∃ _ : Prop, True) ∧ (∃ _ : Prop, True) ∧ (∃ _ : Prop, True)"
     }
   ],
   "sorries": 0
