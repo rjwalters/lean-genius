@@ -49,6 +49,32 @@ theorem canon_base_has_large_coord {d N : ℕ} (t : GridSimplex d N) :
     ∃ j : Fin (d + 1), d ≤ (t.verts 0).coords j :=
   ⟨t.miss, t.base_miss_ge_d⟩
 
+/-- **General small-lex-minimum obstruction.**  The formal content of the prose
+"cells whose lex-minimum is small in every coordinate are unreachable": if a grid
+simplex `t` has a vertex `v` that is the lex-minimum of its vertex set (`v` is
+`lexLE` every vertex and lies in the range) and *every* coordinate of `v` is
+`< d`, then `t` is not canonical.  Indeed `IsCanon t` would force the base
+`t.verts 0` to be `lexLE v`; with `v` `lexLE` the base, antisymmetry
+(`lexLE_antisymm`) pins `t.verts 0 = v`, so the base inherits `v`'s small
+coordinates — contradicting `base_miss_ge_d`, which forces the base's `miss`
+coordinate to be `≥ d`.  This is the single principle behind the concrete witness
+below (`sBad_no_canon_rep`): its lex-minimum `(0,1,1)` has all coordinates `≤ 1 < 2`. -/
+theorem not_canon_of_lexMin_small {d N : ℕ} (t : GridSimplex d N) (v : BaryPoint d N)
+    (hmem : v ∈ Set.range t.verts) (hmin : ∀ k, v.lexLE (t.verts k))
+    (hsmall : ∀ j, (v.coords j) < d) :
+    ¬ IsCanon t := by
+  intro hcanon
+  -- Canonicality against the vertex realising `v` gives `base ≤ v`.
+  have h1 : (t.verts 0).lexLE v := by
+    obtain ⟨k, hk⟩ := hmem; have := hcanon k; rwa [hk] at this
+  -- `v` is the lex-minimum, so `v ≤ base`.
+  have h2 : v.lexLE (t.verts 0) := hmin 0
+  -- Antisymmetry pins the base to `v`, which is small in every coordinate.
+  have hbase : t.verts 0 = v := BaryPoint.lexLE_antisymm h1 h2
+  have hge : d ≤ (t.verts 0).coords t.miss := t.base_miss_ge_d
+  rw [hbase] at hge
+  exact absurd hge (by have := hsmall t.miss; omega)
+
 /-- The three barycentric points of the witness cell. -/
 def p2 : BaryPoint 2 2 := ⟨![2, 0, 0], by decide⟩
 def p1 : BaryPoint 2 2 := ⟨![1, 1, 0], by decide⟩
