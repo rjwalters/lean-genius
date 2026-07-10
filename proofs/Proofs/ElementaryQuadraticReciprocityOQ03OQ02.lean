@@ -937,6 +937,42 @@ theorem kronecker_sq_right_eq_one_of_coprime (a : ℤ) (n : ℕ) (hn : 0 < n) (h
   rw [kronecker_sq_right a (n : ℤ) (by exact_mod_cast hn.ne')]
   exact kronecker_sq_eq_one_of_coprime a n hn hno h
 
+/-- **A square numerator is a residue or a non-unit — never a non-residue.**
+For nonzero `a`, `(a²/n) ∈ {0, 1}`: by `kronecker_sq_left` the value is `(a/n)²`,
+which is `{0,1}`-valued (`kronecker_sq_mem`).  Sharpens `kronecker_sq_left_nonneg`
+(`0 ≤ (a²/n)`) with the matching upper bound, pinning the square-numerator value
+to exactly the two residue possibilities. -/
+theorem kronecker_sq_left_eq_zero_or_one (a n : ℤ) (ha : a ≠ 0) :
+    kronecker (a ^ 2) n = 0 ∨ kronecker (a ^ 2) n = 1 := by
+  rw [kronecker_sq_left a n ha]; exact kronecker_sq_mem a n
+
+/-- **A square numerator vanishes exactly when its base does.**  `(a²/n) = 0 ↔
+(a/n) = 0` for nonzero `a`: the value `(a/n)²` is zero iff `(a/n)` is
+(`sq_eq_zero_iff`, `ℤ` having no zero divisors).  So `(a²/n)` is the same
+non-coprimality indicator as `(a/n)` — squaring the numerator never creates or
+destroys a common factor with `n`. -/
+theorem kronecker_sq_left_eq_zero_iff (a n : ℤ) (ha : a ≠ 0) :
+    kronecker (a ^ 2) n = 0 ↔ kronecker a n = 0 := by
+  rw [kronecker_sq_left a n ha, sq_eq_zero_iff]
+
+/-- **A square numerator is a residue exactly when its base is nonzero.**  `(a²/n)
+= 1 ↔ (a/n) ≠ 0` for nonzero `a`.  Since `(a²/n) ∈ {0, 1}`
+(`kronecker_sq_left_eq_zero_or_one`) and vanishes iff `(a/n)` does
+(`kronecker_sq_left_eq_zero_iff`), the value is `1` precisely on the nonvanishing
+locus.  This is the general-modulus refinement of `kronecker_sq_left_eq_one_of_coprime`
+(which needs `n` odd positive and coprimality): here the criterion is simply
+`(a/n) ≠ 0`, valid for *every* modulus. -/
+theorem kronecker_sq_left_eq_one_iff (a n : ℤ) (ha : a ≠ 0) :
+    kronecker (a ^ 2) n = 1 ↔ kronecker a n ≠ 0 := by
+  constructor
+  · intro h hz
+    have h0 : kronecker (a ^ 2) n = 0 := (kronecker_sq_left_eq_zero_iff a n ha).mpr hz
+    rw [h] at h0; exact one_ne_zero h0
+  · intro h
+    rcases kronecker_sq_left_eq_zero_or_one a n ha with h0 | h1
+    · exact absurd ((kronecker_sq_left_eq_zero_iff a n ha).mp h0) h
+    · exact h1
+
 /-!
 ## Module note: what remains open
 
