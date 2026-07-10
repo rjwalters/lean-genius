@@ -536,7 +536,7 @@ theorem two_family_bound_gt_upperHalf (n : ℕ) (hn : 3 ≤ n) :
   set U : Finset ℕ := Finset.Icc (n / 2 + 1) n with hU
   -- `1 ∈ O` (odd, in `[1,n]`) but `1 ∉ U` (since `n/2 + 1 ≥ 2` for `n ≥ 3`).
   have h1O : (1 : ℕ) ∈ O := by
-    simp only [hO, Finset.mem_filter, Finset.mem_range]; omega
+    rw [hO, Finset.mem_filter, Finset.mem_range]; exact ⟨by omega, by omega⟩
   have h1U : (1 : ℕ) ∉ U := by
     simp only [hU, Finset.mem_Icc]; omega
   -- Therefore `O ∩ U ⊊ O`, so `|O ∩ U| < |O|`.
@@ -571,6 +571,45 @@ theorem two_family_bound_ge_oddFamily (n : ℕ) :
                 ∩ Finset.Icc (n / 2 + 1) n).card
               ≤ 2 ^ (Finset.Icc (n / 2 + 1) n).card :=
     Nat.pow_le_pow_right (by norm_num) hsub
+  omega
+
+/--
+**The two-family bound STRICTLY dominates the single *odd-family* bound for `n ≥ 2`.**
+Strict counterpart of `two_family_bound_ge_oddFamily`, mirroring
+`two_family_bound_gt_upperHalf` on the other side: the right-hand side of
+`two_family_lower_bound`, `2^{|O|} + 2^{|U|} − 2^{|O ∩ U|}`, is *strictly* greater
+than `2^{|O|}` for all `n ≥ 2`. The witness is the largest even number `w = 2⌊n/2⌋`
+in `[1,n]`: it is even (so `w ∉ O`) yet lies in the upper half `U = {⌊n/2⌋+1,…,n}`
+(since `⌊n/2⌋+1 ≤ 2⌊n/2⌋ ≤ n` once `⌊n/2⌋ ≥ 1`, i.e. `n ≥ 2`). Hence `O ∩ U ⊊ U`,
+giving `|O ∩ U| < |U|` and therefore `2^{|O∩U|} < 2^{|U|}`; the surplus
+`2^{|U|} − 2^{|O∩U|}` is then strictly positive. Together with
+`two_family_bound_gt_upperHalf` this shows the two dominant sum-free families jointly
+count *strictly* more sets than *either* single family alone — the structural reason
+the leading constant genuinely combines both the odd and upper-half constructions. -/
+theorem two_family_bound_gt_oddFamily (n : ℕ) (hn : 2 ≤ n) :
+    2 ^ ((Finset.range (n + 1)).filter (fun k => k % 2 = 1)).card
+      + 2 ^ (Finset.Icc (n / 2 + 1) n).card
+      - 2 ^ (((Finset.range (n + 1)).filter (fun k => k % 2 = 1))
+              ∩ Finset.Icc (n / 2 + 1) n).card
+    > 2 ^ ((Finset.range (n + 1)).filter (fun k => k % 2 = 1)).card := by
+  set O : Finset ℕ := (Finset.range (n + 1)).filter (fun k => k % 2 = 1) with hO
+  set U : Finset ℕ := Finset.Icc (n / 2 + 1) n with hU
+  -- `w = 2⌊n/2⌋` (the largest even number ≤ n) is in `U` but not in `O` (it is even).
+  have hwU : (2 * (n / 2) : ℕ) ∈ U := by
+    simp only [hU, Finset.mem_Icc]; omega
+  have hwO : (2 * (n / 2) : ℕ) ∉ O := by
+    intro h
+    rw [hO] at h
+    simp only [Finset.mem_filter, Finset.mem_range] at h
+    omega
+  -- Therefore `O ∩ U ⊊ U`, so `|O ∩ U| < |U|`.
+  have hssub : O ∩ U ⊂ U :=
+    (Finset.ssubset_iff_of_subset Finset.inter_subset_right).2
+      ⟨2 * (n / 2), hwU, fun h => hwO (Finset.mem_of_mem_inter_left h)⟩
+  have hcard : (O ∩ U).card < U.card := Finset.card_lt_card hssub
+  -- Strictly monotone `2^·` turns the strict cardinality gap into a strict power gap.
+  have hpow : 2 ^ (O ∩ U).card < 2 ^ U.card :=
+    Nat.pow_lt_pow_right (by norm_num) hcard
   omega
 
 /--
