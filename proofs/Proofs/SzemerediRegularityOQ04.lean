@@ -224,4 +224,129 @@ theorem partitionEnergy_regular_step_exists_floor
   · intro n; exact partitionEnergy_nonneg G (parts n)
   · intro n; exact partitionEnergy_le_one G (parts n) (hcover n) (hdisjoint n)
 
+-- ═══════════════════════════════════════════════════════════════════
+-- PART V: THE INCREMENT (IRREGULAR) STEPS ARE GLOBALLY RARE
+-- ═══════════════════════════════════════════════════════════════════
+
+/-  Parts I–IV bound the *first* non-increment step: within any window of
+    `N > 1/δ` steps at least one is regular.  But for the AFKS iteration the
+    potential is *monotone* (a refinement never decreases the energy), and that
+    extra structure upgrades "one regular step exists" to the far stronger
+    statement that the increment steps are **globally rare**: only `⌊1/δ⌋` of
+    them can ever occur, across the whole run, no matter how long.  Hence in any
+    window of `N` steps at least `N − 1/δ` are regular — asymptotically *all*
+    refinements are already regular, and the irregular ones are a bounded
+    exceptional set.  This is the quantitative heart of why the strong lemma's
+    partition is "almost everywhere regular". -/
+
+/-- **The increment steps carry bounded total weight.**  For a *monotone*
+    `[0,1]`-valued potential `f`, the set of steps `n < N` at which `f` genuinely
+    climbs by `≥ δ` satisfies `card • δ ≤ 1`.  Unlike `energy_steps_bounded`
+    (which assumes *every* step increments), here non-increment steps are
+    allowed: monotonicity ensures they never subtract from the telescoped total
+    `f N − f 0 ≤ 1`, so the δ-increment steps alone are pinned in number
+    regardless of how large the window `N` is. -/
+theorem energy_increment_steps_card_bound (f : ℕ → ℚ) (N : ℕ) (δ : ℚ)
+    (h0 : ∀ n, 0 ≤ f n) (h1 : ∀ n, f n ≤ 1) (hmono : ∀ n, f n ≤ f (n + 1)) :
+    (((Finset.range N).filter (fun n => f n + δ ≤ f (n + 1))).card : ℚ) * δ ≤ 1 := by
+  set S := (Finset.range N).filter (fun n => f n + δ ≤ f (n + 1)) with hS
+  -- Telescoping over the whole window.
+  have htel : ∑ n ∈ Finset.range N, (f (n + 1) - f n) = f N - f 0 :=
+    Finset.sum_range_sub f N
+  -- Restricting to `S` only drops nonnegative (monotone) terms.
+  have hsub : ∑ n ∈ S, (f (n + 1) - f n)
+      ≤ ∑ n ∈ Finset.range N, (f (n + 1) - f n) := by
+    apply Finset.sum_le_sum_of_subset_of_nonneg (Finset.filter_subset _ _)
+    intro i _ _; linarith [hmono i]
+  -- Every increment term is `≥ δ`, so their sum dominates `card • δ`.
+  have hlow : (S.card : ℚ) * δ ≤ ∑ n ∈ S, (f (n + 1) - f n) := by
+    have hcmp : ∑ _n ∈ S, δ ≤ ∑ n ∈ S, (f (n + 1) - f n) := by
+      apply Finset.sum_le_sum
+      intro n hn
+      have hfn : f n + δ ≤ f (n + 1) := (Finset.mem_filter.mp hn).2
+      linarith
+    simpa [Finset.sum_const, nsmul_eq_mul] using hcmp
+  have hchain : (S.card : ℚ) * δ ≤ f N - f 0 := by
+    calc (S.card : ℚ) * δ ≤ ∑ n ∈ S, (f (n + 1) - f n) := hlow
+      _ ≤ ∑ n ∈ Finset.range N, (f (n + 1) - f n) := hsub
+      _ = f N - f 0 := htel
+  linarith [h0 0, h1 N]
+
+/-- **At most `1/δ` increment steps in total.**  The count form of
+    `energy_increment_steps_card_bound`: a monotone `[0,1]`-valued potential has
+    at most `⌊1/δ⌋` steps at which it climbs by `≥ δ`, in *any* window `[0, N)`
+    — the number is independent of `N`. -/
+theorem energy_increment_count_le (f : ℕ → ℚ) (N : ℕ) (δ : ℚ) (hδ : 0 < δ)
+    (h0 : ∀ n, 0 ≤ f n) (h1 : ∀ n, f n ≤ 1) (hmono : ∀ n, f n ≤ f (n + 1)) :
+    (((Finset.range N).filter (fun n => f n + δ ≤ f (n + 1))).card : ℚ) ≤ 1 / δ := by
+  rw [le_div_iff₀ hδ]
+  exact energy_increment_steps_card_bound f N δ h0 h1 hmono
+
+/-- **The regular steps are the overwhelming majority.**  For a monotone
+    `[0,1]`-valued potential, at least `N − 1/δ` of the first `N` steps are
+    *regular* (non-increment).  Since the deficit `1/δ` is a fixed constant, the
+    fraction of regular steps tends to `1` as `N → ∞`: the AFKS energy-increment
+    iteration is regular at all but a bounded exceptional set of times. -/
+theorem energy_regular_steps_card_ge (f : ℕ → ℚ) (N : ℕ) (δ : ℚ) (hδ : 0 < δ)
+    (h0 : ∀ n, 0 ≤ f n) (h1 : ∀ n, f n ≤ 1) (hmono : ∀ n, f n ≤ f (n + 1)) :
+    (N : ℚ) - 1 / δ ≤
+      (((Finset.range N).filter (fun n => ¬ (f n + δ ≤ f (n + 1)))).card : ℚ) := by
+  have hpart :
+      ((Finset.range N).filter (fun n => f n + δ ≤ f (n + 1))).card
+      + ((Finset.range N).filter (fun n => ¬ (f n + δ ≤ f (n + 1)))).card
+      = (Finset.range N).card :=
+    Finset.filter_card_add_filter_neg_card_eq_card _
+  rw [Finset.card_range] at hpart
+  have hcast :
+      (((Finset.range N).filter (fun n => f n + δ ≤ f (n + 1))).card : ℚ)
+      + (((Finset.range N).filter (fun n => ¬ (f n + δ ≤ f (n + 1)))).card : ℚ)
+      = (N : ℚ) := by exact_mod_cast hpart
+  have hinc := energy_increment_count_le f N δ hδ h0 h1 hmono
+  linarith
+
+/-- **Graph instantiation: at most `1/δ` energy-increment refinements in total.**
+    A sequence of covering, pairwise-disjoint partitions whose `partitionEnergy`
+    is *monotone* (each refinement never decreases it) has at most `⌊1/δ⌋` steps
+    `n < N` at which the energy climbs by `≥ δ`, independent of the window `N`.
+    The monotonicity hypothesis is exactly refinement-monotonicity of
+    `partitionEnergy`, which holds along any AFKS refinement chain. -/
+theorem partitionEnergy_increment_count_le
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (parts : ℕ → Finset (Finset V)) (N : ℕ) (δ : ℚ) (hδ : 0 < δ)
+    (hcover : ∀ n, ∀ v : V, ∃ P ∈ parts n, v ∈ P)
+    (hdisjoint : ∀ n, ∀ P Q : Finset V, P ∈ parts n → Q ∈ parts n → P ≠ Q →
+      Disjoint P Q)
+    (hmono : ∀ n,
+      partitionEnergy G (parts n) ≤ partitionEnergy G (parts (n + 1))) :
+    (((Finset.range N).filter (fun n =>
+        partitionEnergy G (parts n) + δ ≤ partitionEnergy G (parts (n + 1)))).card
+      : ℚ) ≤ 1 / δ := by
+  refine energy_increment_count_le
+    (fun n => partitionEnergy G (parts n)) N δ hδ ?_ ?_ hmono
+  · intro n; exact partitionEnergy_nonneg G (parts n)
+  · intro n; exact partitionEnergy_le_one G (parts n) (hcover n) (hdisjoint n)
+
+/-- **Graph instantiation: almost every refinement step is regular.**  Along a
+    monotone AFKS refinement chain, at least `N − 1/δ` of the first `N` steps are
+    *regular* (non-increment).  The exceptional (energy-increment, "irregular")
+    steps form a set of bounded size `⌊1/δ⌋`, so as `N → ∞` the regular steps are
+    an overwhelming majority — the quantitative form of "the strong regularity
+    partition is almost everywhere regular". -/
+theorem partitionEnergy_regular_steps_card_ge
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (parts : ℕ → Finset (Finset V)) (N : ℕ) (δ : ℚ) (hδ : 0 < δ)
+    (hcover : ∀ n, ∀ v : V, ∃ P ∈ parts n, v ∈ P)
+    (hdisjoint : ∀ n, ∀ P Q : Finset V, P ∈ parts n → Q ∈ parts n → P ≠ Q →
+      Disjoint P Q)
+    (hmono : ∀ n,
+      partitionEnergy G (parts n) ≤ partitionEnergy G (parts (n + 1))) :
+    (N : ℚ) - 1 / δ ≤
+      (((Finset.range N).filter (fun n =>
+        ¬ (partitionEnergy G (parts n) + δ ≤ partitionEnergy G (parts (n + 1))))).card
+      : ℚ) := by
+  refine energy_regular_steps_card_ge
+    (fun n => partitionEnergy G (parts n)) N δ hδ ?_ ?_ hmono
+  · intro n; exact partitionEnergy_nonneg G (parts n)
+  · intro n; exact partitionEnergy_le_one G (parts n) (hcover n) (hdisjoint n)
+
 end Szemeredi.RegularityOQ04
