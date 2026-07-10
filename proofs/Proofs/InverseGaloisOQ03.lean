@@ -192,6 +192,23 @@ theorem Monster_commutator_eq_top : commutator Monster = ⊤ := by
     exact (Subgroup.mem_center_iff.mp ha b).symm
   · exact h
 
+/-- 𝕄 has trivial center: `Z(𝕄) = ⊥`.
+
+    The center is a normal subgroup, so by simplicity it is `⊥` or `⊤`. It cannot be
+    `⊤`, since that would force `a * b = b * a` for all `a, b` and make 𝕄 abelian,
+    contradicting `Monster_not_commutative`. Hence the center is trivial — as it must
+    be for every non-abelian simple group. -/
+theorem Monster_center_eq_bot : Subgroup.center Monster = ⊥ := by
+  haveI := Monster_isSimple
+  rcases Monster_isSimple.eq_bot_or_eq_top_of_normal (Subgroup.center Monster) inferInstance with
+    h | h
+  · exact h
+  · exfalso
+    apply Monster_not_commutative
+    intro a b
+    have ha : a ∈ Subgroup.center Monster := h ▸ Subgroup.mem_top a
+    exact (Subgroup.mem_center_iff.mp ha b).symm
+
 /-- 𝕄 is not solvable.
 
     A solvable simple group is abelian (`IsSimpleGroup.comm_iff_isSolvable`), but
@@ -243,6 +260,31 @@ theorem Monster_realized_beyond_Shafarevich :
       (∃ (K : Type) (_ : Field K) (_ : Algebra ℚ K) (_ : FiniteDimensional ℚ K)
         (_ : IsGalois ℚ K), Nonempty (Monster ≃* (K ≃ₐ[ℚ] K))) :=
   ⟨Monster_not_solvable, Monster_realizable_over_Q⟩
+
+/-- The realizability axiom is not merely qualitative: it pins the **degree** of the
+    realizing field exactly. Any field `K` with `Gal(K/ℚ) ≅ 𝕄` satisfies
+
+      `[K : ℚ] = |Gal(K/ℚ)| = |𝕄| = 2⁴⁶·3²⁰·5⁹·7⁶·11²·13³·17·19·23·29·31·41·47·59·71`,
+
+    since for a finite Galois extension the degree equals the order of the Galois group
+    (`IsGalois.card_aut_eq_finrank`), and the isomorphism `𝕄 ≃* Gal(K/ℚ)` transports
+    `Monster_card` across. So Thompson's field is a ℚ-vector space of dimension ≈ 8·10⁵³,
+    a concrete numerical consequence extracted from the (otherwise purely existential)
+    realizability input. -/
+theorem Monster_realizing_field_finrank :
+    ∃ (K : Type) (_ : Field K) (_ : Algebra ℚ K) (_ : FiniteDimensional ℚ K)
+      (_ : IsGalois ℚ K),
+      Module.finrank ℚ K =
+        808017424794512875886459904961710757005754368000000000 := by
+  obtain ⟨K, fK, aK, fdK, gK, ⟨e⟩⟩ := Monster_realizable_over_Q
+  haveI := fK; haveI := aK; haveI := fdK; haveI := gK
+  refine ⟨K, fK, aK, fdK, gK, ?_⟩
+  have hgal : Nat.card (K ≃ₐ[ℚ] K) = Module.finrank ℚ K :=
+    IsGalois.card_aut_eq_finrank ℚ K
+  have hcard : Nat.card (K ≃ₐ[ℚ] K) = Nat.card Monster :=
+    Nat.card_congr e.toEquiv.symm
+  rw [hcard, Nat.card_eq_fintype_card, Monster_card] at hgal
+  exact hgal.symm
 
 -- ============================================================================
 -- Part VI: The Sporadic Realizability Census

@@ -39,9 +39,9 @@
         "relationship": "Sister entry on the non-solvable frontier and the solvability divide"
       }
     ],
-    "lineCount": 261,
+    "lineCount": 303,
     "mathlib_version": "4.26.0",
-    "theoremCount": 14,
+    "theoremCount": 16,
     "definitionCount": 0,
     "additionalFiles": []
   },
@@ -90,28 +90,28 @@
       "id": "non-solvability",
       "title": "Part III: Non-Solvability — The Core Structural Result",
       "startLine": 153,
-      "endLine": 203,
-      "summary": "𝕄 is non-commutative, perfect ([𝕄,𝕄] = 𝕄), and not solvable — all derived without sorry"
+      "endLine": 220,
+      "summary": "𝕄 is non-commutative, perfect ([𝕄,𝕄] = 𝕄), has trivial center (Z(𝕄) = ⊥), and is not solvable — all derived without sorry"
     },
     {
       "id": "shafarevich-gap",
       "title": "Part IV: Position in the Inverse Galois Program",
-      "startLine": 205,
-      "endLine": 218,
+      "startLine": 222,
+      "endLine": 235,
       "summary": "Since 𝕄 is non-solvable, Shafarevich's theorem does not cover it; realization needs the rigidity method"
     },
     {
       "id": "realizability",
       "title": "Part V: The Realizability Theorem (Thompson 1984)",
-      "startLine": 220,
-      "endLine": 246,
-      "summary": "Thompson's theorem (axiom): 𝕄 is realizable over ℚ; the explicit contrast with the open M₂₃ case"
+      "startLine": 237,
+      "endLine": 288,
+      "summary": "Thompson's theorem (axiom): 𝕄 is realizable over ℚ; the explicit contrast with the open M₂₃ case; and the extracted numerical consequence that any realizing field K has degree [K:ℚ] = |𝕄| over ℚ"
     },
     {
       "id": "sporadic-census",
       "title": "Part VI: The Sporadic Realizability Census",
-      "startLine": 248,
-      "endLine": 261,
+      "startLine": 290,
+      "endLine": 303,
       "summary": "25 sporadic groups realized over ℚ (including 𝕄) + 1 open (M₂₃) = 26"
     }
   ],
@@ -145,10 +145,10 @@
   "sorries": 0,
   "leanFile": {
     "path": "Proofs/InverseGaloisOQ03.lean",
-    "lineCount": 261,
+    "lineCount": 303,
     "axiomCount": 6,
     "sorries": 0,
-    "theoremCount": 14,
+    "theoremCount": 16,
     "definitionCount": 0,
     "imports": [
       "Mathlib",
