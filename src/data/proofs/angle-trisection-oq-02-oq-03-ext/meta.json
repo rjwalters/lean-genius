@@ -152,5 +152,25 @@
       "significance": "Complete Gauss-Wantzel classification for small n"
     }
   ],
+  "references": [
+    {
+      "authors": "Gauss, Carl Friedrich",
+      "title": "Disquisitiones Arithmeticae",
+      "year": "1801",
+      "note": "§365–366 — the sufficiency direction: a regular n-gon is constructible when φ(n) is a power of 2 (famously the 17-gon), the classification this file makes explicit for n ≤ 50."
+    },
+    {
+      "authors": "Wantzel, Pierre L.",
+      "title": "Recherches sur les moyens de reconnaître si un problème de géométrie peut se résoudre avec la règle et le compas",
+      "year": "1837",
+      "note": "J. Math. Pures Appl. 2, 366–372 — the necessity direction and the impossibility of trisecting a general angle, the root result this strand formalizes."
+    },
+    {
+      "authors": "Stewart, Ian",
+      "title": "Galois Theory (4th ed.)",
+      "year": "2015",
+      "note": "CRC Press, Ch. 7 & 19 — constructibility via field-extension degrees and the Gauss-Wantzel theorem [ℚ(cos 2π/n):ℚ] = φ(n)/2, the degree bridge assembled here."
+    }
+  ],
   "sorries": 0
 }
