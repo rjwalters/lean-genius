@@ -329,4 +329,31 @@ theorem exists_transcendental_of_pos_measure_noAtoms {μ : Measure ℝ} [NoAtoms
   rw [hz] at hs
   exact lt_irrefl 0 hs
 
+/-- **Almost every complex number is transcendental, for any atomless measure `μ` on `ℂ`.**
+The complex analogue of `ae_transcendental_of_noAtoms`, and the atomless-measure
+generalization of `ae_transcendental_complex`: countability of the algebraic complex
+numbers forces them to be `μ`-null whenever `μ` has no atoms. -/
+theorem ae_transcendental_complex_of_noAtoms (μ : Measure ℂ) [NoAtoms μ] :
+    ∀ᵐ z : ℂ ∂μ, Transcendental ℚ z := by
+  have hset : {z : ℂ | Transcendental ℚ z} = {z : ℂ | IsAlgebraic ℚ z}ᶜ := by
+    ext z; simp only [mem_setOf_eq, mem_compl_iff, Transcendental]
+  rw [Filter.eventually_iff, hset]
+  exact compl_mem_ae_iff.mpr (algebraic_complex_null_of_noAtoms μ)
+
+/-- **Positive-measure sets in `ℂ` contain transcendentals, for any atomless `μ`.** If `μ`
+has no atoms and `μ s > 0`, then `s` contains a transcendental complex number — otherwise
+`s ⊆ {algebraic}` would be `μ`-null. The complex analogue of
+`exists_transcendental_of_pos_measure_noAtoms`. -/
+theorem exists_transcendental_of_pos_measure_noAtoms_complex {μ : Measure ℂ} [NoAtoms μ]
+    {s : Set ℂ} (hs : 0 < μ s) : ∃ z ∈ s, Transcendental ℚ z := by
+  by_contra h
+  push_neg at h
+  have hsub : s ⊆ {z : ℂ | IsAlgebraic ℚ z} := by
+    intro z hz
+    have := h z hz
+    simpa only [mem_setOf_eq, Transcendental, not_not] using this
+  have hz : μ s = 0 := measure_mono_null hsub (algebraic_complex_null_of_noAtoms μ)
+  rw [hz] at hs
+  exact lt_irrefl 0 hs
+
 end AlgebraicRealsNull
