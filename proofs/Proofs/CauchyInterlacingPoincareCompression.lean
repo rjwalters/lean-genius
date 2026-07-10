@@ -1352,4 +1352,173 @@ theorem compress_eigenvalue_mem_Icc_of_poincare
   ⟨bot_le_compress_eigenvalue_of_poincare hT hVdim H hHdim k,
    compress_eigenvalue_le_top_of_poincare hT hVdim H hHdim k⟩
 
+/-! ## Minimal polynomial: the compression's minpoly *divides* the ambient one
+
+Every polynomial invariant recorded above — trace, determinant, characteristic
+polynomial, eigenvalue multiset — is *additive / multiplicative* across a reducing
+pair: `charpoly T = charpoly (compress T H) · charpoly (compress T Hᗮ)`, and
+likewise for the trace (sum), determinant (product) and root multiset.  The
+**minimal** polynomial behaves differently — it does *not* multiply.  On an
+invariant block the correct statement is a **divisibility**: every polynomial that
+annihilates `T` annihilates its restriction to an invariant subspace, so
+
+  `minpoly (compress T H) ∣ minpoly T`.
+
+Across a reducing pair the ambient minimal polynomial is squeezed — each block
+minpoly divides it, and it in turn divides their product
+
+  `minpoly T ∣ minpoly (compress T H) · minpoly (compress T Hᗮ)`
+
+— i.e. `minpoly T = lcm (minpoly (compress T H)) (minpoly (compress T Hᗮ))`.  This
+is the minimal-polynomial companion of the charpoly *product* factorisation
+`charpoly_eq_mul_compress_of_reducing`, and it is symmetry-free throughout: the
+compression is the honest restriction on an invariant block
+(`compress_eq_restrict_of_invariant`), and restriction commutes with polynomial
+evaluation. -/
+
+/-- **Polynomial evaluation transports across the invariant-block compression.**
+
+On a `T`-invariant subspace `H`, evaluating a polynomial `p` at the compression
+`compress T H` and coercing back to `V` agrees with evaluating `p` at `T` on the
+included vector:
+
+  `↑(aeval (compress T H) p y) = aeval T p ↑y`.
+
+On an invariant block the compression is the honest restriction
+(`compress_eq_restrict_of_invariant`), so this is the standard "evaluation
+commutes with restriction", proved by polynomial induction through
+`Module.End.pow_restrict` (`(T.restrict)^n = (T^n).restrict`). -/
+theorem coe_aeval_compress_of_invariant {T : V →ₗ[𝕜] V} (H : Submodule 𝕜 V)
+    (hinv : ∀ y ∈ H, T y ∈ H) (p : Polynomial 𝕜) (y : H) :
+    ((Polynomial.aeval (compress T H) p y : H) : V) = Polynomial.aeval T p (y : V) := by
+  rw [compress_eq_restrict_of_invariant H hinv]
+  induction p using Polynomial.induction_on' with
+  | add p q hp hq =>
+      simp only [map_add, LinearMap.add_apply, Submodule.coe_add, hp, hq]
+  | monomial n a =>
+      simp only [Polynomial.aeval_monomial, Module.algebraMap_end_eq_smul_id,
+        LinearMap.mul_apply, LinearMap.smul_apply, LinearMap.id_coe, id_eq,
+        Submodule.coe_smul, Module.End.pow_restrict, LinearMap.restrict_coe_apply]
+
+/-- **Annihilation transports to the invariant-block compression.**
+
+If a polynomial `p` annihilates `T` (`aeval T p = 0`) then it annihilates the
+compression `compress T H` onto any `T`-invariant subspace `H`.  Immediate from
+the pointwise transport `coe_aeval_compress_of_invariant`: every value
+`aeval (compress T H) p y` coerces to `aeval T p ↑y = 0`, hence vanishes. -/
+theorem aeval_compress_eq_zero_of_aeval_eq_zero_of_invariant {T : V →ₗ[𝕜] V}
+    (H : Submodule 𝕜 V) (hinv : ∀ y ∈ H, T y ∈ H) {p : Polynomial 𝕜}
+    (hp : Polynomial.aeval T p = 0) :
+    Polynomial.aeval (compress T H) p = 0 := by
+  ext y
+  refine Subtype.ext ?_
+  rw [coe_aeval_compress_of_invariant H hinv, hp]
+  simp
+
+/-- **The compression's minimal polynomial divides the ambient one (invariant
+block).**
+
+On a `T`-invariant subspace `H`, the minimal polynomial of the orthogonal
+compression `compress T H` divides the minimal polynomial of `T`:
+
+  `minpoly 𝕜 (compress T H) ∣ minpoly 𝕜 T`.
+
+This is the minimal-polynomial analogue of the spectrum containment
+`spectrum_compress_subset_of_invariant`: the minimal polynomial of a restriction
+to an invariant subspace divides the ambient one.  Proof: `minpoly 𝕜 T`
+annihilates `T` (`minpoly.aeval`), hence annihilates the compression
+(`aeval_compress_eq_zero_of_aeval_eq_zero_of_invariant`), so `minpoly.dvd`
+concludes.  Symmetry-free. -/
+theorem minpoly_compress_dvd_of_invariant {T : V →ₗ[𝕜] V} (H : Submodule 𝕜 V)
+    (hinv : ∀ y ∈ H, T y ∈ H) :
+    minpoly 𝕜 (compress T H) ∣ minpoly 𝕜 T :=
+  minpoly.dvd 𝕜 (compress T H)
+    (aeval_compress_eq_zero_of_aeval_eq_zero_of_invariant H hinv (minpoly.aeval 𝕜 T))
+
+/-- **Both block minpolys divide the ambient one (reducing pair).**
+
+If `H` reduces `T` (both `H` and `Hᗮ` are `T`-invariant) then the minimal
+polynomials of *both* compression blocks divide `minpoly 𝕜 T`:
+
+  `minpoly (compress T H) ∣ minpoly T`  and  `minpoly (compress T Hᗮ) ∣ minpoly T`.
+
+Each block is invariant, so this is two instances of
+`minpoly_compress_dvd_of_invariant`.  Combined with the product divisibility
+`minpoly_dvd_mul_compress_of_reducing`, these pin `minpoly T` as the least common
+multiple of the two block minpolys. -/
+theorem minpoly_compress_dvd_of_reducing {T : V →ₗ[𝕜] V} (H : Submodule 𝕜 V)
+    (hH : ∀ y ∈ H, T y ∈ H) (hHp : ∀ y ∈ Hᗮ, T y ∈ Hᗮ) :
+    minpoly 𝕜 (compress T H) ∣ minpoly 𝕜 T ∧
+      minpoly 𝕜 (compress T Hᗮ) ∣ minpoly 𝕜 T :=
+  ⟨minpoly_compress_dvd_of_invariant H hH, minpoly_compress_dvd_of_invariant Hᗮ hHp⟩
+
+/-- **A polynomial in `T` preserves any `T`-invariant subspace.**
+
+If `H` is `T`-invariant then it is invariant under every polynomial `aeval T q`:
+`aeval T q y ∈ H` whenever `y ∈ H`.  Polynomial induction reduces to the monomial
+`a • T^n`, and `Module.End.pow_apply_mem_of_forall_mem` supplies `T^n y ∈ H`. -/
+theorem aeval_mem_of_invariant {T : V →ₗ[𝕜] V} {H : Submodule 𝕜 V}
+    (hinv : ∀ y ∈ H, T y ∈ H) (q : Polynomial 𝕜) {y : V} (hy : y ∈ H) :
+    Polynomial.aeval T q y ∈ H := by
+  induction q using Polynomial.induction_on' with
+  | add p q hp hq => rw [map_add, LinearMap.add_apply]; exact H.add_mem hp hq
+  | monomial n a =>
+      rw [Polynomial.aeval_monomial, Module.algebraMap_end_eq_smul_id,
+        LinearMap.mul_apply, LinearMap.smul_apply, LinearMap.id_coe, id_eq]
+      exact H.smul_mem a (Module.End.pow_apply_mem_of_forall_mem n hinv y hy)
+
+/-- **The ambient minpoly divides the product of the block minpolys (reducing
+pair).**
+
+If `H` reduces `T` then the minimal polynomial of `T` divides the product of the
+two block minimal polynomials:
+
+  `minpoly 𝕜 T ∣ minpoly 𝕜 (compress T H) · minpoly 𝕜 (compress T Hᗮ)`.
+
+Together with `minpoly_compress_dvd_of_reducing` (each block minpoly divides
+`minpoly T`), this identifies `minpoly T` with the least common multiple of the
+two block minpolys — the minimal-polynomial reading of the block-diagonal
+decomposition, and the `lcm`-shaped counterpart of the charpoly *product*
+`charpoly_eq_mul_compress_of_reducing`.
+
+Proof: writing `M := aeval T (minpoly (compress T H))` and
+`N := aeval T (minpoly (compress T Hᗮ))`, the transport lemma
+`coe_aeval_compress_of_invariant` shows `M` annihilates `H` and `N` annihilates
+`Hᗮ`.  For any `v`, split `v = P_H v + (v - P_H v)`: `N` kills the `Hᗮ` component,
+so `N v = N (P_H v)`, which lies back in `H` (invariance under a polynomial in
+`T`, `aeval_mem_of_invariant`); then `M` kills it.  Hence `M · N = aeval T (·)` of
+the product vanishes, and `minpoly.dvd` concludes.  Symmetry-free. -/
+theorem minpoly_dvd_mul_compress_of_reducing {T : V →ₗ[𝕜] V} (H : Submodule 𝕜 V)
+    (hH : ∀ y ∈ H, T y ∈ H) (hHp : ∀ y ∈ Hᗮ, T y ∈ Hᗮ) :
+    minpoly 𝕜 T ∣
+      minpoly 𝕜 (compress T H) * minpoly 𝕜 (compress T Hᗮ) := by
+  -- `M := aeval T (minpoly (compress T H))` kills `H`.
+  have hMkill : ∀ w ∈ H,
+      Polynomial.aeval T (minpoly 𝕜 (compress T H)) w = 0 := fun w hw => by
+    have h := coe_aeval_compress_of_invariant H hH (minpoly 𝕜 (compress T H)) ⟨w, hw⟩
+    rw [minpoly.aeval, LinearMap.zero_apply, ZeroMemClass.coe_zero] at h
+    exact h.symm
+  -- `N := aeval T (minpoly (compress T Hᗮ))` kills `Hᗮ`.
+  have hNkill : ∀ w ∈ Hᗮ,
+      Polynomial.aeval T (minpoly 𝕜 (compress T Hᗮ)) w = 0 := fun w hw => by
+    have h := coe_aeval_compress_of_invariant Hᗮ hHp (minpoly 𝕜 (compress T Hᗮ)) ⟨w, hw⟩
+    rw [minpoly.aeval, LinearMap.zero_apply, ZeroMemClass.coe_zero] at h
+    exact h.symm
+  apply minpoly.dvd
+  rw [map_mul]
+  ext v
+  simp only [LinearMap.mul_apply, LinearMap.zero_apply]
+  -- Orthogonal split `v = P_H v + (v - P_H v)`, `P_H v ∈ H`, `v - P_H v ∈ Hᗮ`.
+  have haH : H.starProjection v ∈ H := H.starProjection_apply_mem v
+  have hbHp : v - H.starProjection v ∈ Hᗮ := H.sub_starProjection_mem_orthogonal v
+  have hav : H.starProjection v + (v - H.starProjection v) = v := by abel
+  -- `N` kills the `Hᗮ` component, so `N v = N (P_H v)`.
+  have hNv : Polynomial.aeval T (minpoly 𝕜 (compress T Hᗮ)) v
+      = Polynomial.aeval T (minpoly 𝕜 (compress T Hᗮ)) (H.starProjection v) := by
+    conv_lhs => rw [← hav]
+    rw [map_add, hNkill _ hbHp, add_zero]
+  rw [hNv]
+  -- `N (P_H v)` lies back in `H`; `M` kills it.
+  exact hMkill _ (aeval_mem_of_invariant hH (minpoly 𝕜 (compress T Hᗮ)) haH)
+
 end CauchyInterlacing.PoincareCompression
