@@ -140,10 +140,8 @@ is also r₂-colorable for any r₂ ≥ r₁ (embed colors via inclusion). -/
 theorem SGraph.hasColoring_mono {n : ℕ} (G : SGraph n) {r₁ r₂ : ℕ} (h : r₁ ≤ r₂)
     (hc : G.hasColoring r₁) : G.hasColoring r₂ := by
   obtain ⟨c, hc⟩ := hc
-  refine ⟨fun v => ⟨(c v).val, lt_of_lt_of_le (c v).isLt h⟩, fun u v hadj heq => ?_⟩
-  apply hc u v hadj
-  have hnat : (c u).val = (c v).val := congrArg Fin.val heq
-  exact Fin.ext hnat
+  refine ⟨fun v => Fin.castLE h (c v), fun u v hadj heq => ?_⟩
+  exact hc u v hadj (Fin.castLE_injective h heq)
 
 /-- If G is already r-colorable, removing zero edges suffices. -/
 theorem canReduce_zero {n : ℕ} (G : SGraph n) (r : ℕ) (hc : G.hasColoring r) :
