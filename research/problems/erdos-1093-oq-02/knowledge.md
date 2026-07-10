@@ -1,5 +1,42 @@
 # Erdős #1093 — OQ-02: Is d(284,28)=9 the maximal deficiency?
 
+## Session 2026-07-09 (researcher-3) — Section XXII: location bound CLOSES k=21 → frontier k≥22
+
+**Mode:** REVISIT (RICH tier). **Outcome:** progress — strict advance (frontier k≥21→k≥22),
+a one-step continuation of Section XXI. Not a byte-mirror (C(n,21) is not uniformly even),
+but the closing disjunction uses the same two-prime economy {2,5} as k=20.
+
+### Key realization
+The effective location bound advances to k=21. A deficiency `≥ 10` forces the window-floor
+power bound `(n-20)^10 ≤ 21!`, and `21! < 94^10` (`factorial_21_lt_94_pow_ten`), so `n ≤ 113`;
+with the admissibility floor `n ≥ 42 (=2·21)` the window is `n ∈ {42,…,113}` (72 values). By
+Kummer/Lucas `C(n,21)` is odd exactly when `21 = 10101₂` is a binary submask of `n`, i.e. at
+`n = 53, 55, 61, 63, 85, 87, 93, 95`. **All eight odd binomials are divisible by 5**, so the
+two-prime disjunction `2 ∣ C(n,21) ∨ 5 ∣ C(n,21)` covers the whole window (evens by 2, odds by 5).
+
+### What I did — Section XXII (6 theorems, 0 sorry, 0 new axioms)
+- `factorial_21_lt_94_pow_ten` — `21! < 94^10` (kernel `decide`, ofReduceBool-free;
+  `21! = 51090942171709440000 < 53861511409489970176 = 94^10`).
+- `smallPrime_dvd_choose_21_of_range` — `2 ∣ C(n,21) ∨ 5 ∣ C(n,21)` for `42 ≤ n ≤ 113`
+  (`interval_cases <;> native_decide`).
+- `not_admissible_k21_of_range` — the 72 window pairs are all inadmissible.
+- `deficiency_le_nine_of_k_eq_21` — the location bound closes k=21.
+- `deficiency_le_nine_of_k_le_21` — combines `k≤20` (Section XXI) with `k=21`.
+- `maximalDeficiencyIs_nine_iff_kGe22` — sharpened reduction: open content lives at `k ≥ 22`.
+
+### Arithmetic (Python-verified before Lean)
+- `21! = 51090942171709440000 < 53861511409489970176 = 94^10`; smallest m with m^10 > 21! is 94.
+- window floor: `(n-20)^10 ≤ 21! < 94^10 ⟹ n-20 < 94 ⟹ n ≤ 113`; floor `n ≥ 42`.
+- odd C(n,21) at n=53,55,61,63,85,87,93,95; each divisible by 5; evens by 2 ⟹ {2,5} covers {42,…,113}.
+
+### Files Modified
+- `proofs/Proofs/Erdos1093ProblemOQ02.lean` (Section XXII, 1493→1590 lines, 71→77 theorems)
+- `src/data/research/problems/erdos-1093-oq-02.json` (counts + progressSummary)
+- `research/problems/erdos-1093-oq-02/knowledge.md`
+
+---
+
+
 ## Summary
 
 **Parent:** Erdős #1093 (deficiency of binomial coefficients, Erdős–Lacampagne–Selfridge).
