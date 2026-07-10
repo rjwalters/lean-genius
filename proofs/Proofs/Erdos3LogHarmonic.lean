@@ -626,7 +626,7 @@ private lemma h₄_antitone (hδ : 0 ≤ δ) :
   have hlogmn : Real.log ((m : ℝ) + 3) ≤ Real.log ((n : ℝ) + 3) :=
     Real.log_le_log (by have := Nat.cast_nonneg (α := ℝ) m; linarith) hmn3
   have hllmn : Real.log (Real.log ((m : ℝ) + 3)) ≤ Real.log (Real.log ((n : ℝ) + 3)) :=
-    Real.log_le_log hllm0 (Real.log_le_log hlogm0 hlogmn)
+    Real.log_le_log hlogm0 hlogmn
   have hllmn_rpow : (Real.log (Real.log ((m : ℝ) + 3))) ^ (1 + δ)
       ≤ (Real.log (Real.log ((n : ℝ) + 3))) ^ (1 + δ) :=
     Real.rpow_le_rpow hllm0.le hllmn (by linarith)
@@ -651,7 +651,8 @@ private lemma cond_upper₄ (hδ : 0 ≤ δ) (k : ℕ) (hk : 2 ≤ k) :
     calc (4 : ℝ) = 2 ^ 2 := by norm_num
       _ ≤ 2 ^ k := pow_le_pow_right₀ (by norm_num) hk
   -- `k·log 2 ≥ 2·log 2 > 1`
-  have hklog2_pos : 0 < (k : ℝ) * Real.log 2 := by positivity
+  have hkpos : (0 : ℝ) < (k : ℝ) := by linarith
+  have hklog2_pos : 0 < (k : ℝ) * Real.log 2 := mul_pos hkpos hlog2
   have h2log2 : (2 : ℝ) * Real.log 2 ≤ (k : ℝ) * Real.log 2 :=
     mul_le_mul_of_nonneg_right hk2 hlog2.le
   have hklog2_gt1 : (1 : ℝ) < (k : ℝ) * Real.log 2 := by linarith
@@ -692,8 +693,10 @@ private lemma cond_upper₄ (hδ : 0 ≤ δ) (k : ℕ) (hk : 2 ≤ k) :
   have hg : (2 : ℝ) ^ k * h₄ δ (2 ^ k) = (2 : ℝ) ^ k / (b * L * LL ^ (1 + δ)) := by
     rw [hLLdef, hLdef, hbdef]; unfold h₄; rw [hcast, mul_one_div]
   -- drop the `2^k / b ≤ 1` factor
+  have hfull_pos : 0 < b * L * LL ^ (1 + δ) :=
+    mul_pos (mul_pos hb0 hL0) (Real.rpow_pos_of_pos hLL0 _)
   have hstep1 : (2 : ℝ) ^ k / (b * L * LL ^ (1 + δ)) ≤ 1 / (L * LL ^ (1 + δ)) := by
-    rw [div_le_div_iff₀ (by positivity) hD'_pos, one_mul, mul_assoc b L (LL ^ (1 + δ))]
+    rw [div_le_div_iff₀ hfull_pos hD'_pos, one_mul, mul_assoc b L (LL ^ (1 + δ))]
     exact mul_le_mul_of_nonneg_right hbpk hD'_pos.le
   -- enlarge the remaining denominator
   have hstep2 : 1 / (L * LL ^ (1 + δ))
@@ -712,25 +715,12 @@ private lemma summable_h₄ (hδ : 0 < δ) : Summable (h₄ δ) := by
   -- reduce to the `k ≥ 2` tail (the comparison needs `k·log 2 > 1`)
   apply (summable_nat_add_iff 2).mp
   -- dominating series: `(log 2)⁻¹` times the shifted convergent constant-in-log series
-  set D : ℕ → ℝ := fun n => (1 / Real.log 2) *
-    (1 / (((n : ℝ) + 2) * (Real.log (((n : ℝ) + 2) * Real.log 2)) ^ (1 + δ))) with hDdef
-  have hDsum : Summable D := by
-    have hbase := summable_one_div_nat_mul_log_mul_const (c := Real.log 2) (δ := δ)
-      (Real.log_pos (by norm_num)) hδ
-    have hshift := (summable_nat_add_iff 2).mpr hbase
-    refine (hshift.mul_left (1 / Real.log 2)).congr (fun n => ?_)
-    rw [hDdef]; push_cast; ring
-  refine Summable.of_nonneg_of_le (fun n => ?_) (fun n => ?_) hDsum
+  have hbase := summable_one_div_nat_mul_log_mul_const (c := Real.log 2) (δ := δ)
+    (Real.log_pos (by norm_num)) hδ
+  have hdom := ((summable_nat_add_iff 2).mpr hbase).mul_left (1 / Real.log 2)
+  refine Summable.of_nonneg_of_le (fun n => ?_) (fun n => ?_) hdom
   · exact mul_nonneg (by positivity) (h₄_nonneg δ _)
-  · have hb := cond_upper₄ δ hδ.le (n + 2) (by omega)
-    rw [hDdef]
-    calc (2 : ℝ) ^ (n + 2) * h₄ δ (2 ^ (n + 2))
-        ≤ (1 / Real.log 2) *
-            (1 / (((n + 2 : ℕ) : ℝ) *
-              (Real.log (((n + 2 : ℕ) : ℝ) * Real.log 2)) ^ (1 + δ))) := hb
-      _ = (1 / Real.log 2) *
-            (1 / (((n : ℝ) + 2) *
-              (Real.log (((n : ℝ) + 2) * Real.log 2)) ^ (1 + δ))) := by push_cast; ring
+  · exact cond_upper₄ δ hδ.le (n + 2) (by omega)
 
 /-- **The convergent second-axis (iterated-log) Bertrand series
     `∑ 1/(n · log n · (log log n)^{1+δ})` converges for every `δ > 0`.**
