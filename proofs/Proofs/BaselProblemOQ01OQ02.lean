@@ -264,6 +264,44 @@ theorem zeta_even_div_pi_pow_rational (n : ℕ) (hn : 0 < n) :
   obtain ⟨q, _, hq⟩ := zeta_even_eq_rat_mul_pi_pow n hn
   exact ⟨q, by rw [hq, mul_div_assoc, div_self (pow_ne_zero (2 * n) Real.pi_ne_zero), mul_one]⟩
 
+/-- **Structural power identity for even zeta values — axiom-free.**  Every positive integer
+    power of an even zeta value is again a *nonzero-rational* multiple of a *positive* even power
+    of π:  `ζ(2n)^j = (qₙ · π^(2n))^j = qₙ^j · π^(2nj)`,  with `2nj ≥ 2`.
+
+    The `j`-fold companion of `zeta_even_product_eq_rat_mul_pi_pow` (which multiplies two possibly
+    distinct values): the class `ℚ∖{0} · π^(even>0)` housing the even zeta values is closed under
+    taking powers, not merely pairwise products.  Uses only Euler's closed form
+    (`zeta_even_eq_rat_mul_pi_pow`), **no** `hermite_lindemann`. -/
+theorem zeta_even_pow_eq_rat_mul_pi_pow (n j : ℕ) (hn : 0 < n) (hj : 0 < j) :
+    ∃ q : ℚ, q ≠ 0 ∧
+      (∑' k : ℕ, 1 / (k : ℝ) ^ (2 * n)) ^ j = (q : ℝ) * π ^ (2 * n * j) := by
+  obtain ⟨qn, hqn, hqn_eq⟩ := zeta_even_eq_rat_mul_pi_pow n hn
+  refine ⟨qn ^ j, pow_ne_zero j hqn, ?_⟩
+  rw [hqn_eq, mul_pow, ← pow_mul]
+  push_cast; ring
+
+/-- **Positive integer powers of even zeta values are transcendental over ℚ.**
+
+    For `n, j ≥ 1`, `ζ(2n)^j = qₙ^j · π^(2nj)` is a nonzero rational multiple of a *positive*
+    even power of π, hence transcendental over ℚ (`transcendental_ratCast_mul` applied to
+    `Transcendental.pow` of `π`).  Concretely `ζ(2)² = π⁴/36`, `ζ(2)³ = π⁶/216`, … are all
+    transcendental.  The power companion of `zeta_even_product_transcendental`.
+
+    **Assumption:** `hermite_lindemann` (transcendence of π). -/
+theorem zeta_even_pow_transcendental (n j : ℕ) (hn : 0 < n) (hj : 0 < j) :
+    Transcendental ℚ ((∑' k : ℕ, 1 / (k : ℝ) ^ (2 * n)) ^ j) := by
+  obtain ⟨q, hq, hpow⟩ := zeta_even_pow_eq_rat_mul_pi_pow n j hn hj
+  rw [hpow]
+  exact transcendental_ratCast_mul
+    (pi_transcendental_over_rationals.pow (Nat.mul_pos (Nat.mul_pos (by norm_num) hn) hj)) hq
+
+/-- **ζ(2)² = (∑' k, 1/k²)² is transcendental over ℚ** — a concrete power instance
+    (`ζ(2)² = π⁴/36`). -/
+theorem zeta_two_sq_transcendental :
+    Transcendental ℚ ((∑' k : ℕ, 1 / (k : ℝ) ^ 2) ^ 2) := by
+  have := zeta_even_pow_transcendental 1 2 one_pos (by norm_num)
+  simpa using this
+
 /-!
 ## The open odd case (documentation only)
 
