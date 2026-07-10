@@ -306,6 +306,17 @@ def torusCGB (n : ℕ) : CGBManifold where
 /-- The flat torus has vanishing total Pfaffian. -/
 theorem torusCGB_totalPfaffian (n : ℕ) : (torusCGB n).totalPfaffian = 0 := rfl
 
+/-- The even-dimensional torus `T^{2n}` has dimension `2n`.  The `dim` companion of
+    `torusCGB_totalPfaffian`, matching `sphereCGB_dim` / `prodCGB_dim`. -/
+theorem torusCGB_dim (n : ℕ) : (torusCGB n).dim = 2 * n := rfl
+
+/-- The even-dimensional torus `T^{2n}` has vanishing Euler characteristic — the
+    defining feature that makes `torusCGB_totalPfaffian` an instance of
+    `totalPfaffian_eq_zero_of_chi_zero`.  The `chi` companion completing the torus's
+    invariant triple `(dim, chi, totalPfaffian) = (2n, 0, 0)`, matching the
+    `sphereCGB` / `prodCGB` / `genusSurfaceCGB` constructions. -/
+theorem torusCGB_chi (n : ℕ) : (torusCGB n).chi = 0 := rfl
+
 /-- A closed odd-dimensional manifold has vanishing Euler characteristic (Poincaré
     duality), which is *why* the Chern-Gauss-Bonnet integrand — built from the Pfaffian,
     an even-dimensional invariant — carries no information there. We record the
