@@ -79,4 +79,31 @@ theorem fourierCoeffOn_deriv2_periodic (f : ℝ → ℝ) (hf : ContDiff ℝ 2 f)
       I_mul_I]
   ring
 
+/-- The **second** derivative of a periodic function is periodic with the same period.
+    Iterating `deriv_periodic_of_periodic`: `deriv f` is periodic (first application),
+    hence so is `deriv (deriv f)` (second application).  This is the periodicity input
+    that `fourierCoeffOn_deriv2_periodic` uses internally, packaged as a reusable fact. -/
+theorem deriv2_periodic_of_periodic (f : ℝ → ℝ) (T : ℝ)
+    (hperiod : ∀ t, f (t + T) = f t) (t : ℝ) :
+    deriv (deriv f) (t + T) = deriv (deriv f) t :=
+  deriv_periodic_of_periodic (deriv f) T
+    (fun s => deriv_periodic_of_periodic f T hperiod s) t
+
+/-- **Recovering `f` from `f''` on nonzero modes.**  Since `ĉₙ(f'') = −n²·ĉₙ(f)` and
+    `n ≠ 0`, the `n`-th Fourier coefficient of `f` is recovered by dividing:
+
+        ĉₙ(f) = −ĉₙ(f'') / n².
+
+    This inverts the second-derivative operator on every nonzero Fourier mode — the
+    algebraic heart of solving `f'' = g` by Fourier series (each mode `n ≠ 0` is divided
+    by the eigenvalue `−n²`, while the `n = 0` mode is the obstruction/mean). -/
+theorem fourierCoeffOn_eq_of_deriv2_periodic (f : ℝ → ℝ) (hf : ContDiff ℝ 2 f)
+    (hperiod : ∀ t, f (t + 2 * π) = f t)
+    (hab : (0 : ℝ) < 2 * π) (n : ℤ) (hn : n ≠ 0) :
+    fourierCoeffOn hab (ofReal ∘ f) n
+      = -(fourierCoeffOn hab (ofReal ∘ deriv (deriv f)) n) / (n : ℂ) ^ 2 := by
+  have hn2 : (n : ℂ) ^ 2 ≠ 0 := pow_ne_zero 2 (Int.cast_ne_zero.mpr hn)
+  rw [fourierCoeffOn_deriv2_periodic f hf hperiod hab n hn, eq_div_iff hn2]
+  ring
+
 end IsoperimetricFourier
