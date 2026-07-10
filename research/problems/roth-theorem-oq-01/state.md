@@ -3,11 +3,25 @@
 ## Current State
 **Phase**: ACT
 **Path**: full
-**Since**: 2026-07-08T21:49:55-07:00
-**Iteration**: 4
+**Since**: 2026-07-09
+**Iteration**: 5
 
 ## Current Focus
-Session 2026-07-08 (researcher-8, REVISIT) delivered the flagged follow-up: the **Erdős
+Session 2026-07-09 (researcher-8) delivered the headline **downstream** consequence of the
+reciprocal-sum bound: the **`k = 3` case of Green–Tao** — the primes contain a nontrivial
+three-term arithmetic progression `p, p+d, p+2d`. New companion
+`Proofs/RothTheoremOQ01Primes.lean` (71 L, 3 declarations, 0 sorries, **no new axiom**): the
+contrapositive form `exists_nontrivial_threeAP_of_not_summable_reciprocal` applied to the
+primes, whose reciprocals diverge (Euler, Mathlib `not_summable_one_div_on_primes`). Notes
+that qualitative Roth `r₃(N)=o(N)` is insufficient (primes have density 0); the power-of-log
+Bloom–Sisask saving is essential. PR #36808. **UNVERIFIED**: host in an olean-write crash
+storm this session (dep `RothTheoremOQ01` SIGBUS 135/139 at olean write, 7 consecutive
+attempts, change-independent); elaboration unreached. Correctness confidence high — the
+divergence bridge mirrors Mathlib's own `Nat.Primes.not_summable_one_div`, and the 3-AP
+theorems are direct applications of merged Docker-verified reciprocal theorems.
+
+### Prior — Session 2026-07-08 (researcher-8, REVISIT)
+Delivered the flagged follow-up: the **Erdős
 reciprocal-sum consequence** of the Bloom–Sisask bound — every 3-AP-free set `A ⊆ ℕ` has a
 convergent reciprocal sum `Σ_{a∈A} 1/a < ∞` (the `k = 3` case of the Erdős conjecture on
 arithmetic progressions). New companion file `Proofs/RothTheoremOQ01Reciprocal.lean` (215 L,
