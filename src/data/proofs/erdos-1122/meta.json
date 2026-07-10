@@ -204,5 +204,29 @@
       "What is the relationship between this problem and Erdős #491 on short intervals?"
     ]
   },
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "title": "Erdős Problem #1122",
+      "author": "erdosproblems.com",
+      "year": "2023",
+      "venue": "erdosproblems.com",
+      "url": "https://erdosproblems.com/1122",
+      "description": "Canonical entry: if an additive f has monotonicity-defect set A={n: f(n+1)<f(n)} of density zero, must f(n)=c·log n? Records Erdős's 1946 special cases and Mangerel's 2022 partial result."
+    },
+    {
+      "title": "On the distribution function of additive functions",
+      "author": "Paul Erdős",
+      "year": "1946",
+      "venue": "Annals of Mathematics",
+      "description": "Proves the rigidity results underlying the problem: a strictly increasing additive function must be c·log n, and additive f with f(n+1)−f(n)=o(1) is c·log n (Kátai–Wirsing-type conclusion)."
+    },
+    {
+      "title": "Additive functions in short intervals, gaps and a conjecture of Erdős",
+      "author": "Alexander P. Mangerel",
+      "year": "2022",
+      "venue": "The Ramanujan Journal, pp. 1023–1090",
+      "description": "Establishes the conjecture under a quantitative sparsity hypothesis |A∩[1,X]| ≪ X/(log X)^{2+c} with f(p) bounded, the best current progress toward the o(X) threshold."
+    }
+  ]
 }

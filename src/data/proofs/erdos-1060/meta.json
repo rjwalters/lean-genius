@@ -222,5 +222,29 @@
     "path": "Proofs/Erdos1060Problem.lean",
     "sorries": 0
   },
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "title": "Erdős Problem #1060",
+      "author": "erdosproblems.com",
+      "year": "2023",
+      "venue": "erdosproblems.com",
+      "url": "https://erdosproblems.com/1060",
+      "description": "Canonical entry: bound the number f(n) of solutions k to k·σ(k)=n, where σ is the sum-of-divisors function. Open whether f(n) ≤ n^{o(1/log log n)} or even (log n)^{O(1)}."
+    },
+    {
+      "title": "Unsolved Problems in Number Theory",
+      "author": "Richard K. Guy",
+      "year": "2004",
+      "venue": "Springer (Problem Books in Mathematics), 3rd ed.",
+      "description": "Lists this counting question as Problem B11; surveys the multiplicative structure of k·σ(k) and related divisor-sum equations."
+    },
+    {
+      "title": "Introduction to Analytic Number Theory",
+      "author": "Tom M. Apostol",
+      "year": "1976",
+      "venue": "Springer (Undergraduate Texts in Mathematics)",
+      "description": "Standard reference for the sum-of-divisors function σ(k), its multiplicativity, and the average-order/estimate machinery underlying counting solutions of k·σ(k)=n."
+    }
+  ]
 }
