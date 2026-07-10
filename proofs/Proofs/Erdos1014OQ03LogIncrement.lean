@@ -100,4 +100,39 @@ theorem logIncrement_tendsto_zero_of_ratio_tendsto_one (R : ℕ → ℝ)
     Tendsto (fun l => Real.log (R (l + 1)) - Real.log (R l)) atTop (𝓝 0) :=
   (logIncrement_tendsto_zero_iff_ratio_tendsto_one R hpos).mpr hratio
 
+/-- **Gap log-increment equals log of the gap-ratio.** For an eventually-positive
+sequence `R` and any fixed gap `m`, eventually
+`log R(l+m) − log R(l) = log ( R(l+m) / R(l) )`. The unit-gap case (`m = 1`) is
+`log_increment_eventuallyEq_log_ratio`. -/
+theorem logIncrement_gap_eventuallyEq_log_ratio_gap (R : ℕ → ℝ) (m : ℕ)
+    (hpos : ∀ᶠ l in atTop, 0 < R l) :
+    (fun l => Real.log (R (l + m)) - Real.log (R l))
+      =ᶠ[atTop] (fun l => Real.log (R (l + m) / R l)) := by
+  have hpos_m : ∀ᶠ l in atTop, 0 < R (l + m) :=
+    (tendsto_add_atTop_nat m).eventually hpos
+  filter_upwards [hpos, hpos_m] with l h0 hm
+  rw [Real.log_div hm.ne' h0.ne']
+
+/-- **Bounded-gap log-flatness.** Under Erdős #1014's ratio convergence
+`R(l+1)/R(l) → 1`, for *every fixed gap* `m` the gap log-increment
+`log R(l+m) − log R(l)` tends to `0`.
+
+The gap-ratio `R(l+m)/R(l) → 1` (parent's `ratio_gap_tendsto_one`), and eventually
+the gap log-increment equals `log ( R(l+m)/R(l) )`, so continuity of `log` at `1`
+sends it to `log 1 = 0`. This completes the gap-level trio alongside the parent's
+`ratio_gap_tendsto_one` (ratio → 1) and `increment_gap_div_tendsto_zero`
+(normalized increment → 0): applied to `R(k, ·)`, Ramsey growth is log-flat over
+*any* bounded window of the second index, not merely between neighbours. The
+unit-gap case (`m = 1`) is `logIncrement_tendsto_zero_of_ratio_tendsto_one`. -/
+theorem logIncrement_gap_tendsto_zero (R : ℕ → ℝ) (m : ℕ)
+    (hpos : ∀ᶠ l in atTop, 0 < R l)
+    (hratio : Tendsto (fun l => R (l + 1) / R l) atTop (𝓝 1)) :
+    Tendsto (fun l => Real.log (R (l + m)) - Real.log (R l)) atTop (𝓝 0) := by
+  rw [tendsto_congr' (logIncrement_gap_eventuallyEq_log_ratio_gap R m hpos)]
+  have hgap := ratio_gap_tendsto_one R m hpos hratio
+  have hlog : Tendsto Real.log (𝓝 1) (𝓝 (Real.log 1)) :=
+    (Real.continuousAt_log (by norm_num)).tendsto
+  have := hlog.comp hgap
+  simpa using this
+
 end Erdos1014OQ03Log
