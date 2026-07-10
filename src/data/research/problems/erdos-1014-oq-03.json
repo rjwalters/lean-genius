@@ -42,19 +42,23 @@
     }
   },
   "knowledge": {
-    "progressSummary": "VERIFIED (researcher-8, 2026-07-09, [7743] 0 sorry/0 axiom): new file Erdos1014OQ03.lean. KEY FINDING: the proposed Approach A (deriving the increment asymptotic from R(k,l) ~ c*l^{k-1}/(log l)^{k-2}) is INVALID from asymptotic equivalence alone — a sequence's consecutive difference is not determined by its ~-class (l^2 vs l^2+l*sin l are equivalent, different increments); the expansion secretly assumes the ratio asymptotic. Proved the CORRECT unconditional increment-ratio bridge instead: (R(l+1)-R(l))/R(l) = R(l+1)/R(l)-1 (increment_div_eq_ratio_sub_one), hence the normalized increment -> 0 IFF the consecutive ratio -> 1 (increment_div_tendsto_zero_iff_ratio_tendsto_one). Fed Erdos #1014's proven R(k,l+1)/R(k,l)->1, this yields the rigorous, hypothesis-free increment consequence Delta_l(k) = o(R(k,l)). Abstract over positive real sequences (no Ramsey import). The full asymptotic Delta_l(k) ~ g_k(l) remains OPEN (needs a ratio/regular-variation hypothesis, not derivable from ~ alone).",
+    "progressSummary": "PROGRESS (UNVERIFIED, docker image-build infra down): formalized the previously-prose negative meta-result that the increment asymptotic is not determined by the ~-class of R(k,.) (Erdos1014OQ03Obstruction.lean). Elementary explicit witness u l=l, v l=l+(-1)^l. This closes the justification gap for rejecting the naive power-law Approach A; the honest increment-ratio bridge (prior sessions) remains the correct route. Full increment asymptotic for k=3 remains OPEN (constant-matching obstruction).",
     "builtItems": [
       "increment_div_eq_ratio_sub_one — (R(l+1)-R(l))/R(l) = R(l+1)/R(l)-1 (algebraic engine).",
       "increment_div_tendsto_zero_iff_ratio_tendsto_one — normalized increment ->0 IFF consecutive ratio ->1; converts #1014's ratio convergence into Delta_l(k)=o(R(k,l)).",
-      "increment_div_tendsto_zero_of_ratio_tendsto_one — forward corollary packaged for direct use."
+      "increment_div_tendsto_zero_of_ratio_tendsto_one — forward corollary packaged for direct use.",
+      "Erdos1014OQ03Obstruction.lean: increment_asymptotic_not_determined_by_asymptotic_class (packaged existential) + increment_ratio_not_tendsto_one (crux, even-subsequence limit-uniqueness argument) + asymptotic_equiv (u~v via squeeze (-1)^l/l -> 0) + u_increment/v_increment closed forms. 0 axiom/0 sorry, UNVERIFIED (docker image-build down: containerd meta.db I/O error)."
     ],
-    "insights": [],
+    "insights": [
+      "The consecutive increment of a sequence is provably NOT a function of its asymptotic (~) equivalence class: witness u l = l, v l = l + (-1)^l have v/u -> 1 (u ~ v) yet increment ratio (v(l+1)-v l)/(u(l+1)-u l) = 1 - 2(-1)^l does not converge (=-1 on evens, =3 on odds). This is the rigorous form of the prose sin-based caution and formally justifies why the naive power-law Approach A is invalid."
+    ],
     "mathlibGaps": [],
     "nextSteps": [
       "Formalize the real-analysis lemma: g ~ c·l^a/(log l)^b implies g(l+1) - g(l) ~ a·c·l^{a-1}/(log l)^b.",
       "Prove the conditional increment asymptotic Δ_l(k) ~ (k-1)·c_k·l^{k-2}/(log l)^{k-2} from the power-law hypothesis on R(k,l).",
       "Relate the increment asymptotic to ratio_equiv_difference and ratio_from_asymptotics in the parent file.",
-      "Document the constant-matching obstruction that keeps the k=3 case open."
+      "Document the constant-matching obstruction that keeps the k=3 case open.",
+      "Optional: strengthen the obstruction to show the two normalized increments (v(l+1)-v l)/v l and (u(l+1)-u l)/u l BOTH tend to 0 for this witness, exhibiting that even o(R)-agreement does not pin the increment asymptotic ratio."
     ],
     "markdown": "# Knowledge Base: erdos-1014-oq-03\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\nThis is an open question spun off from Erdős Problem #1014. The parent asks whether R(k,l+1)/R(k,l) → 1; this asks the stronger question of whether the raw increment Δ_l(k) = R(k,l+1) - R(k,l) has a meaningful asymptotic formula for fixed k.\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
