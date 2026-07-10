@@ -128,6 +128,11 @@
       "id": "area-of-circle-oq-07-oq-04-oq-01-oq-01-oq-01",
       "question": "Recover the (n-1)-sphere surface area explicitly: prove ∫_{ℝⁿ} e^{-b‖x‖²} = (π/b)^{n/2} a second time via n-dimensional spherical coordinates (radial r^{n-1} dr times the unit-sphere measure), and equate the two evaluations to read off the surface area ω_{n-1} = 2π^{n/2}/Γ(n/2) of the unit (n-1)-sphere.",
       "significance": "medium"
+    },
+    {
+      "id": "area-of-circle-oq-07-oq-04-oq-01-oq-01-oq-02",
+      "question": "Turn the mass identity into the isotropic multivariate normal: setting b = 1/(2σ²) gives ∫_{ℝⁿ} e^{-‖x‖²/(2σ²)} = (2πσ²)^{n/2}, the normalizing constant of the n-dimensional Gaussian density. From the same separable factorization derive the second-moment (energy) identity E[‖X‖²] = nσ² and the diagonal covariance E[Xᵢ Xⱼ] = σ² δᵢⱼ, so the geometric integral becomes a probabilistic statement about the standard Gaussian on ℝⁿ.",
+      "significance": "medium"
     }
   ],
   "crossReferences": [
@@ -170,7 +175,8 @@
     "summary": "For every natural number n the n-dimensional Gaussian integral over ℝⁿ = Fin n → ℝ factors as the n-th power of the one-dimensional line integral: ∫_{ℝⁿ} e^{-b ∑ᵢ xᵢ²} = (∫_ℝ e^{-b x²})ⁿ (gaussian_pow_eq_integral_pi), valid for every real b with no positivity hypothesis. The separable integrand e^{-b ∑ᵢ xᵢ²} is rewritten as the product ∏ᵢ e^{-b xᵢ²} (Real.exp_sum) and the n-variable Fubini theorem integral_fintype_prod_volume_eq_pow collapses the product integral to a power. Substituting Mathlib's closed form ∫_ℝ e^{-b x²} = √(π/b) gives (√(π/b))ⁿ (integral_pi_gaussian_eq_sqrt_pow), and for b > 0 the rpow algebra delivers the standard form (π/b)^{n/2} (integral_pi_gaussian_eq_rpow). The b = 1 case is π^{n/2} (integral_pi_gaussian_eq_pi). 85 lines, 4 theorems, 0 definitions, 0 axioms, 0 sorries. Every Mathlib dependency was checked against the Mathlib v4 source (integral_fintype_prod_volume_eq_pow, integral_gaussian, Real.exp_sum, Real.sqrt_eq_rpow, Real.rpow_natCast, Real.rpow_mul, Fintype.card_fin, Finset.mul_sum); kernel verification (#print axioms) is gated through the deployer's Docker rebuild because the local Docker daemon was unresponsive during this session.",
     "implications": "This lifts the parent's planar Gaussian identity to all dimensions by the product (separable) route, exhibiting (π/b)^{n/2} as the n-fold Fubini factorization of the radially symmetric Gaussian over ℝⁿ. The n = 1 case is Mathlib's base integral and the n = 2 case is the parent's 2-D area identity, so a single theorem subsumes the whole family. The complementary spherical-coordinate evaluation — which would additionally expose the (n-1)-sphere surface area 2π^{n/2}/Γ(n/2) — is left as the open follow-up.",
     "openQuestions": [
-      "Evaluate ∫_{ℝⁿ} e^{-b‖x‖²} a second time via spherical coordinates to read off the unit (n-1)-sphere surface area ω_{n-1} = 2π^{n/2}/Γ(n/2)."
+      "Evaluate ∫_{ℝⁿ} e^{-b‖x‖²} a second time via spherical coordinates to read off the unit (n-1)-sphere surface area ω_{n-1} = 2π^{n/2}/Γ(n/2).",
+      "Specialize b = 1/(2σ²) to recover the multivariate-normal normalizing constant (2πσ²)^{n/2}, and derive the second-moment identity E[‖X‖²] = nσ² and diagonal covariance E[Xᵢ Xⱼ] = σ² δᵢⱼ for the standard Gaussian on ℝⁿ."
     ]
   }
 }
