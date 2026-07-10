@@ -234,7 +234,8 @@ second row is `v` rotated a quarter turn and pairs to `0`.  Together with
 case of the open question, recovering the parent proof's `bezoutSL`. -/
 theorem exists_special_mulVec_eq_single_fin_two (v : Fin 2 → ℤ)
     (h : IsPrimitive v) :
-    ∃ A : Matrix.SpecialLinearGroup (Fin 2) ℤ, ↑ₘA *ᵥ v = Pi.single 0 1 := by
+    ∃ A : Matrix.SpecialLinearGroup (Fin 2) ℤ,
+      (A : Matrix (Fin 2) (Fin 2) ℤ) *ᵥ v = Pi.single 0 1 := by
   obtain ⟨w, hw⟩ := h
   have hw2 : w 0 * v 0 + w 1 * v 1 = 1 := by
     simpa [dotProduct, Fin.sum_univ_two] using hw
@@ -244,12 +245,11 @@ theorem exists_special_mulVec_eq_single_fin_two (v : Fin 2 → ℤ)
   refine ⟨⟨!![w 0, w 1; -v 1, v 0], hdet⟩, ?_⟩
   funext k
   fin_cases k
-  · simp only [SpecialLinearGroup.coe_mk, mulVec, dotProduct, Fin.sum_univ_two,
-      Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Pi.single_eq_same,
-      Fin.isValue]
+  · simp only [Fin.mk_zero, Fin.isValue, Matrix.mulVec, Matrix.of_apply, dotProduct,
+      Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one, Pi.single_eq_same]
     linear_combination hw2
-  · simp only [SpecialLinearGroup.coe_mk, mulVec, dotProduct, Fin.sum_univ_two,
-      Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Fin.isValue]
+  · simp only [Fin.mk_one, Fin.isValue, Matrix.mulVec, Matrix.of_apply, dotProduct,
+      Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one]
     rw [Pi.single_eq_of_ne (by decide : (1 : Fin 2) ≠ 0)]
     ring
 
