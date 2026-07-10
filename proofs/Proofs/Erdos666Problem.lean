@@ -320,6 +320,20 @@ theorem conder_counterexamples_unbounded :
   obtain ⟨N, hN⟩ := h
   exact conder_no_threshold ⟨N, hN⟩
 
+/-- **The unbounded counterexamples persist across the whole interval `ε ≤ 1/3`.**
+The interval-level strengthening of `conder_counterexamples_unbounded`, standing to it
+exactly as `conder_no_threshold_le` stands to `conder_no_threshold`.  For *every* density
+`ε ≤ 1/3` and *every* candidate threshold `N`, some `n ≥ N` fails to force `C₆` at density
+`ε`: a `C₆`-free subgraph that is already `(1/3)`-dense is a fortiori `ε`-dense, so the
+Conder counterexamples witnessing `¬ DenseForcesC6 n (1/3)` witness `¬ DenseForcesC6 n ε`
+too (contrapositive of `denseForcesC6_mono`).  No new axioms — pure monotonicity applied to
+the single `conder_no_threshold`. -/
+theorem conder_counterexamples_unbounded_le {ε : ℝ} (hε : ε ≤ 1/3) :
+    ∀ N : ℕ, ∃ n, N ≤ n ∧ ¬ DenseForcesC6 n ε := by
+  intro N
+  obtain ⟨n, hn, hnd⟩ := conder_counterexamples_unbounded N
+  exact ⟨n, hn, fun h => hnd (denseForcesC6_mono hε h)⟩
+
 /-
 ## Part V: Chung's Result (1992)
 
