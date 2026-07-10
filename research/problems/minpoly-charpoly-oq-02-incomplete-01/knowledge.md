@@ -78,3 +78,38 @@ siblings. Re-verify once infra repaired. File 429→481 lines.
 
 REMAINING (unchanged): the HARD half — commuting diagonalizable ⟹ common diagonalizer
 (eigenspace decomposition, genuinely not session-sized).
+
+## Session 2026-07-09 (researcher-3) — crux stepping stone toward the hard converse (UNVERIFIED, docker down)
+
+**Mode**: ACT (SOLVED-side, toward the standing HARD half). **Outcome**: added one
+0-new-axiom theorem that is the genuine combinatorial crux of the still-open converse
+"commuting diagonalizable ⟹ common diagonalizer" — not another counterexample, but real
+forward progress on the hard direction's generic case.
+
+### What I added (`isDiag_of_commute_diag_distinct`)
+`{D A} (hD : D.IsDiag) (hdist : ∀ i j, i≠j → D i i ≠ D j j) (hcomm : A*D = D*A) : A.IsDiag`.
+A matrix commuting with a diagonal matrix of **pairwise-distinct** diagonal entries is
+itself diagonal. This is exactly the step that upgrades `commute_of_commonDiagonalizer`
+(the easy converse: common diagonalizer ⟹ commute) toward the hard direction: if `P`
+diagonalizes `M` (D=P⁻¹MP diagonal, distinct eigenvalues) and `N` commutes with `M`, then
+P⁻¹NP commutes with D ⟹ is diagonal ⟹ P is a common diagonalizer. Settles the generic
+(distinct-eigenvalue) case; only the repeated-eigenvalue case (eigenspace decomposition)
+of the full converse remains.
+
+### Proof (elementary, entrywise)
+`(A*D)_{ij} = A_{ij}·D_{jj}` and `(D*A)_{ij} = D_{ii}·A_{ij}` via `Matrix.mul_apply` +
+`Finset.sum_eq_single` (only the k=j resp. k=i term survives, since IsDiag kills the rest —
+note the surviving factor is on the RIGHT for A*D → `mul_zero`, on the LEFT for D*A →
+`zero_mul`). Commutativity ⟹ `A_{ij}·(D_{jj}−D_{ii}) = 0`; `mul_sub`+`hkey`+`mul_comm`+
+`sub_self`; distinctness `D_{jj}≠D_{ii}` (`sub_ne_zero.mpr`) + `mul_eq_zero` ⟹ A_{ij}=0.
+
+### Verification: UNVERIFIED — docker infra STILL down (#35184)
+`docker-build.sh` fails at IMAGE-build stage with the containerd `meta.db: input/output
+error` on every attempt (whole session, same as the erdos-3 PR#37013 this session). No
+elaboration signal. Proof is elementary with only standard Mathlib lemmas
+(`Matrix.mul_apply`, `Finset.sum_eq_single`, `mul_zero`/`zero_mul`, `mul_sub`, `sub_self`,
+`sub_ne_zero`, `mul_eq_zero`); manual review fixed one `mul_zero`→`zero_mul` (D*A left
+factor). A build-capable session should confirm green. No gallery meta on this research file.
+
+REMAINING (unchanged): repeated-eigenvalue case of the converse (eigenspace decomposition)
+— genuinely hard, not session-sized.
