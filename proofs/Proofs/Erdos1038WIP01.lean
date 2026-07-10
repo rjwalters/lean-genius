@@ -423,4 +423,113 @@ theorem sublevelInf'_le_two_attained (n : ℕ) (hn : n ≠ 0) :
     (iInf_le_of_le (translate_pow_admissible' (by norm_num) hn)
       (sublevelMeasure_translate_pow 0 hn).le)
 
+/-! ### A distinct-root family filling `(2, 2√2)`: the quadratics `X² − d`
+
+The measure-`2` witnesses above all cluster a *single* root (multiplicity `n`), so they
+attain only the value `2`.  To reach the intermediate measures `2 < m < 2√2` one needs
+genuinely **distinct** roots.  The one-parameter family `X² − d` (`0 ≤ d ≤ 1`), which
+factors as `(X − √d)(X + √d)` with two roots `±√d ∈ [-1,1]`, does exactly this: for
+`0 ≤ d < 1` its sublevel set is the interval `(−√(d+1), √(d+1))` (the lower constraint
+`d − 1 < x²` is vacuous since `d < 1 ≤ x² + 1`), so its measure is `2√(d+1)`, which sweeps
+continuously from `2` (at `d = 0`, a double root — the `X²` member of the previous family)
+up towards `2√2` (as `d → 1`, recovering the extremal `q = X² − 1`).  Thus every value in
+`(2, 2√2)` is a faithful sublevel measure, realised by a *distinct-root* quadratic. -/
+
+/-- **Sublevel set of `X² − d`** for `0 ≤ d < 1`: the open interval `(−√(d+1), √(d+1))`.
+    The condition `|x² − d| < 1` is `d − 1 < x² < d + 1`; since `d < 1` the left half is
+    automatic (`x² ≥ 0 > d − 1`), leaving `x² < d + 1`, i.e. `|x| < √(d+1)`. -/
+theorem sublevelSet_Xsq_sub_C {d : ℝ} (hd : 0 ≤ d) (hd1 : d < 1) :
+    sublevelSet (X ^ 2 - C d) = Set.Ioo (-Real.sqrt (d + 1)) (Real.sqrt (d + 1)) := by
+  have hsq : Real.sqrt (d + 1) ^ 2 = d + 1 := Real.sq_sqrt (by linarith)
+  have hpos : 0 < Real.sqrt (d + 1) := Real.sqrt_pos.mpr (by linarith)
+  ext x
+  have hev : (X ^ 2 - C d : Polynomial ℝ).eval x = x ^ 2 - d := by simp
+  simp only [sublevelSet, Set.mem_setOf_eq, hev, abs_lt, Set.mem_Ioo]
+  constructor
+  · rintro ⟨_, h2⟩
+    refine ⟨?_, ?_⟩
+    · nlinarith [hsq, hpos, sq_nonneg (x + Real.sqrt (d + 1))]
+    · nlinarith [hsq, hpos, sq_nonneg (x - Real.sqrt (d + 1))]
+  · rintro ⟨h1, h2⟩
+    refine ⟨?_, ?_⟩
+    · nlinarith [sq_nonneg x]
+    · nlinarith [hsq, hpos, h1, h2]
+
+/-- **Sublevel measure of `X² − d` is `2√(d+1)`** for `0 ≤ d < 1` — the length of the
+    interval `(−√(d+1), √(d+1))`.  As `d` ranges over `[0, 1)` this sweeps `[2, 2√2)`,
+    filling the gap between the clustered-root family (fixed at `2`) and the extremal
+    `q = X² − 1` (measure `2√2`). -/
+theorem sublevelMeasure_Xsq_sub_C {d : ℝ} (hd : 0 ≤ d) (hd1 : d < 1) :
+    sublevelMeasure (X ^ 2 - C d) = ENNReal.ofReal (2 * Real.sqrt (d + 1)) := by
+  unfold sublevelMeasure
+  rw [sublevelSet_Xsq_sub_C hd hd1, Real.volume_Ioo]
+  congr 1
+  ring
+
+/-- **`X² − d` is faithfully admissible for `d ∈ [0,1]`.**  It factors as
+    `(X − √d)(X + √d)`, hence is monic with both roots `±√d ∈ [-1,1]` (as `0 ≤ √d ≤ 1`)
+    and splits completely (`roots.card = 2 = natDegree`).  For `d ∈ (0,1)` the two roots
+    are *distinct*, distinguishing this family from the pure powers `(X − c)^n`. -/
+theorem Xsq_sub_C_admissible' {d : ℝ} (hd : d ∈ Set.Icc (0 : ℝ) 1) :
+    MonicRealRootedIn01' (X ^ 2 - C d) := by
+  obtain ⟨hd0, hd1⟩ := hd
+  have hval : Real.sqrt d * Real.sqrt d = d := Real.mul_self_sqrt hd0
+  have hsd0 : 0 ≤ Real.sqrt d := Real.sqrt_nonneg d
+  have hsd : Real.sqrt d ≤ 1 := by
+    have := Real.sqrt_le_sqrt hd1
+    simpa using this
+  have hfac : (X ^ 2 - C d : Polynomial ℝ)
+      = (X - C (Real.sqrt d)) * (X - C (-Real.sqrt d)) := by
+    have h1 : (X - C (Real.sqrt d)) * (X - C (-Real.sqrt d))
+        = X ^ 2 - C (Real.sqrt d) * C (Real.sqrt d) := by
+      simp only [map_neg]; ring
+    rw [h1, ← map_mul, hval]
+  have hmonic : (X ^ 2 - C d : Polynomial ℝ).Monic := by
+    rw [hfac]; exact (monic_X_sub_C _).mul (monic_X_sub_C _)
+  have hne : (X ^ 2 - C d : Polynomial ℝ) ≠ 0 := hmonic.ne_zero
+  refine ⟨⟨hmonic, ?_⟩, ?_⟩
+  · intro r hr
+    rw [hfac, Polynomial.roots_mul (by rw [← hfac]; exact hne),
+      Polynomial.roots_X_sub_C, Polynomial.roots_X_sub_C, Multiset.mem_add,
+      Multiset.mem_singleton, Multiset.mem_singleton] at hr
+    rw [Set.mem_Icc]
+    rcases hr with h | h <;> subst h <;> constructor <;> linarith
+  · have hcard : (X ^ 2 - C d : Polynomial ℝ).roots.card = 2 := by
+      rw [hfac, Polynomial.roots_mul (by rw [← hfac]; exact hne),
+        Polynomial.roots_X_sub_C, Polynomial.roots_X_sub_C]
+      simp
+    have hnd : (X ^ 2 - C d : Polynomial ℝ).natDegree = 2 := by compute_degree!
+    rw [hcard, hnd]
+
+/-- **Every measure `2√(d+1)` (`0 ≤ d < 1`) is a faithful lower bound for `sublevelSup'`.**
+    The distinct-root quadratic `X² − d` is faithfully admissible with sublevel measure
+    `2√(d+1)`, so `2√(d+1) ≤ sublevelSup'`.  As `d → 1` this reproduces the extremal
+    `2√2 ≤ sublevelSup'` (`le_sublevelSup'`) as a limit of distinct-root witnesses. -/
+theorem le_sublevelSup'_Xsq {d : ℝ} (hd0 : 0 ≤ d) (hd1 : d < 1) :
+    ENNReal.ofReal (2 * Real.sqrt (d + 1)) ≤ sublevelSup' :=
+  le_iSup_of_le (X ^ 2 - C d)
+    (le_iSup_of_le (Xsq_sub_C_admissible' ⟨hd0, le_of_lt hd1⟩)
+      (sublevelMeasure_Xsq_sub_C hd0 hd1).ge)
+
+/-! ### The faithful and literal extremal objects are ordered
+
+The faithful predicate `MonicRealRootedIn01'` is *stronger* than `MonicRealRootedIn01`
+(it adds `roots.card = natDegree`), so the supremum/infimum over the smaller faithful
+family are pinched inside the literal ones: `sublevelSup' ≤ sublevelSup` and
+`sublevelInf ≤ sublevelInf'`.  Together with `le_sublevelSup'` (`2√2 ≤ sublevelSup'`)
+this sandwiches the faithful supremum: `2√2 ≤ sublevelSup' ≤ sublevelSup`. -/
+
+/-- **`sublevelSup' ≤ sublevelSup`.**  Every faithfully admissible `f` is admissible, so the
+    supremum over the faithful family is bounded by the supremum over the larger literal
+    family. -/
+theorem sublevelSup'_le_sublevelSup : sublevelSup' ≤ sublevelSup :=
+  iSup_le fun f => iSup_le fun hf => le_iSup_of_le f (le_iSup_of_le hf.1 le_rfl)
+
+/-- **`sublevelInf ≤ sublevelInf'`.**  Every faithfully admissible `f` is admissible, so the
+    infimum over the larger literal family is bounded by the infimum over the faithful one.
+    (The literal side is in fact `0` by `sublevelInf_eq_zero`; this records the qualitative
+    ordering that survives independent of that collapse.) -/
+theorem sublevelInf_le_sublevelInf' : sublevelInf ≤ sublevelInf' :=
+  le_iInf fun f => le_iInf fun hf => iInf_le_of_le f (iInf_le_of_le hf.1 le_rfl)
+
 end Erdos1038WIP01
