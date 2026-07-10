@@ -49,7 +49,7 @@
       "Verified the necessity side (mod-8 obstruction) of the arithmetic characterization: not_representable_of_mod8 proves no integer ≡ 5 or 7 (mod 8) is a value of x²+2y² (finite decide over ZMod 8), with five_not_representable / seven_not_representable as the smallest concrete witnesses — the first non-representability results in the file, showing the form is not universal (5, 7 are inert in ℤ[√-2])"
     ],
     "axiomCount": 1,
-    "lineCount": 421,
+    "lineCount": 482,
     "assumptions": "1 axiom: moreeOsburnWorks (the two deep geometric facts about the box-truncated lattice — the 4-point property and the Landau/x²+2y² distinct-distance bound m/√(log m); not available in Mathlib 4.26). The cardinality (2k+1)² is now a verified theorem (moreeOsburnLattice_card), not an assumption. 0 sorries.",
     "theoremCount": 18,
     "definitionCount": 9
