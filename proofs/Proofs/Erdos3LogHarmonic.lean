@@ -296,7 +296,7 @@ theorem summable_one_div_nat_mul_log_mul_const {c δ : ℝ} (hc : 0 < c) (hδ : 
     set m : ℝ := ((n + N₀ : ℕ) : ℝ) with hm
     have hmN : (N₀ : ℝ) ≤ m := by rw [hm]; exact_mod_cast Nat.le_add_left N₀ n
     have hm2 : (2 : ℝ) ≤ m := le_trans hN₀2 hmN
-    have hmc : (2 : ℝ) ≤ m * c := (div_le_iff hc).mp (le_trans hN₀2c hmN)
+    have hmc : (2 : ℝ) ≤ m * c := (div_le_iff₀ hc).mp (le_trans hN₀2c hmN)
     have hlogmc : 0 ≤ Real.log (m * c) := Real.log_nonneg (by linarith)
     positivity
   · -- termwise domination
@@ -305,8 +305,8 @@ theorem summable_one_div_nat_mul_log_mul_const {c δ : ℝ} (hc : 0 < c) (hδ : 
     have hm2 : (2 : ℝ) ≤ m := le_trans hN₀2 hmN
     have hm_pos : 0 < m := by linarith
     have hm1 : (1 : ℝ) ≤ m := by linarith
-    have hmc : (2 : ℝ) ≤ m * c := (div_le_iff hc).mp (le_trans hN₀2c hmN)
-    have hmc2 : (1 : ℝ) ≤ m * c ^ 2 := (div_le_iff hc2).mp (le_trans hN₀c2 hmN)
+    have hmc : (2 : ℝ) ≤ m * c := (div_le_iff₀ hc).mp (le_trans hN₀2c hmN)
+    have hmc2 : (1 : ℝ) ≤ m * c ^ 2 := (div_le_iff₀ hc2).mp (le_trans hN₀c2 hmN)
     have hlogmc_pos : 0 < Real.log (m * c) := Real.log_pos (by linarith)
     -- key comparison `log m ≤ 2·log(m·c)`, i.e. `0 ≤ log(m·c²)`
     have hmc_eq : Real.log (m * c) = Real.log m + Real.log c :=
@@ -326,7 +326,7 @@ theorem summable_one_div_nat_mul_log_mul_const {c δ : ℝ} (hc : 0 < c) (hδ : 
     have hP_pos : 0 < (Real.log m) ^ (1 + δ) :=
       Real.rpow_pos_of_pos (Real.log_pos (by linarith)) _
     have hQ_pos : 0 < (Real.log (m * c)) ^ (1 + δ) := Real.rpow_pos_of_pos hlogmc_pos _
-    rw [mul_one_div, div_le_div_iff (by positivity) (by positivity), one_mul]
+    rw [mul_one_div, div_le_div_iff₀ (by positivity) (by positivity), one_mul]
     calc m * (Real.log m) ^ (1 + δ)
         ≤ m * ((2 : ℝ) ^ (1 + δ) * (Real.log (m * c)) ^ (1 + δ)) :=
           mul_le_mul_of_nonneg_left hPQ hm_pos.le
@@ -453,7 +453,7 @@ private lemma cond_lower₃ (k : ℕ) (hk : 2 ≤ k) :
     mul_pos (mul_pos (by norm_num) hlog2) (mul_pos (by linarith) hlogk2)
   have hden2 : 0 < b * L * LL := mul_pos (mul_pos hb0 hL0) hLL0
   have hf2 : f₂ k = 1 / (((k : ℝ) + 2) * Real.log ((k : ℝ) + 2)) := rfl
-  rw [hg, hf2, one_div_mul_one_div, div_le_div_iff hden1 hden2, one_mul]
+  rw [hg, hf2, one_div_mul_one_div, div_le_div_iff₀ hden1 hden2, one_mul]
   -- goal is now exactly `b·L·LL ≤ 2^k · (2 log2 · (k+2) · log(k+2))`
   exact hprod
 
