@@ -675,4 +675,45 @@ theorem kAPCount_count_univ {N : ℕ} [NeZero N] (k : ℕ) :
       Finset.card_univ, Fintype.card_prod, ZMod.card]
   ring
 
+-- ============================================================
+-- Empty-set base case
+--
+-- The degenerate companion of the `A = univ` saturation block: the empty
+-- set carries no `k`-AP mass at all.  Its indicator is the zero function
+-- (`indicatorZMod_empty`), so — for `k ≥ 1`, where the `i = 0` term forces
+-- the starting point into `A` — both the combinatorial count and the
+-- analytic operator `Λ_k` vanish.  This is the `δ = 0` end of the density
+-- scale, opposite the `Λ_k(1_univ) = 1` normalization.
+-- ============================================================
+
+/-- The indicator of the empty set is the zero function: `1_∅ = 0`.  The
+    degenerate companion of `indicatorZMod_univ` (`1_univ = 1`), feeding the
+    additive/multiplicative base points of the `1_A = δ·1 + (1_A − δ)`
+    decomposition. -/
+@[simp] theorem indicatorZMod_empty {N : ℕ} :
+    indicatorZMod (∅ : Finset (ZMod N)) = fun _ => (0 : ℂ) := by
+  funext x
+  simp [indicatorZMod]
+
+/-- **The empty set carries no `k`-AP mass.**  For `k ≥ 1`, no pair `(x, d)` has its
+    length-`k` progression inside `∅` — the `i = 0` term `x` would have to lie in `∅` —
+    so the count is `0`.  Immediate from the trivial upper bound `kAPCount_count_le`
+    (`≤ #∅ · N = 0`), and the `A = ∅` degenerate case of the exact univ count
+    `kAPCount_count_univ`. -/
+theorem kAPCount_count_empty {N : ℕ} [NeZero N] {k : ℕ} (hk : 0 < k) :
+    (Finset.univ.filter (fun p : ZMod N × ZMod N =>
+        ∀ i : Fin k, p.1 + i.val • p.2 ∈ (∅ : Finset (ZMod N)))).card = 0 := by
+  simpa using kAPCount_count_le hk (∅ : Finset (ZMod N))
+
+/-- **`Λ_k(1_∅) = 0`.**  For `k ≥ 1`, the analytic `k`-AP operator on the empty
+    indicator vanishes: `1_∅ = 0` (`indicatorZMod_empty`) is the zero function, and a
+    single zero slot annihilates the count (`kAPCount_eq_zero_of_zero`).  The degenerate
+    companion of `kAPCount_indicator_univ` (`Λ_k(1_univ) = 1`), and the analytic shadow of
+    the combinatorial `kAPCount_count_empty`. -/
+theorem kAPCount_indicator_empty {N : ℕ} [NeZero N] {k : ℕ} (hk : 0 < k) :
+    kAPCount k (fun _ : Fin k => indicatorZMod (∅ : Finset (ZMod N))) = 0 := by
+  refine kAPCount_eq_zero_of_zero k _ ⟨0, hk⟩ ?_
+  funext x
+  simp [indicatorZMod]
+
 end RothTheoremOQ03OQ01
