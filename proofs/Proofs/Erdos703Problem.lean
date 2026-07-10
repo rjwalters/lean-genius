@@ -483,6 +483,66 @@ theorem T_eq_pow_of_lt (n r : ℕ) (h : n < r) : T n r = 2 ^ n := by
     _ ≤ _ := Finset.le_sup hmem
 
 /--
+**For subsets of `[n]`, an intersection of size `n` fills the ground set.**
+If `A, B ⊆ [n]` and `|A ∩ B| = n`, then `A ∩ B = [n]` (it is an `n`-element subset
+of the `n`-element set `[n]`), forcing `A = B = [n]`. This is the structural fact
+behind the diagonal value `T(n,n)`. -/
+theorem inter_card_eq_n_iff {n : ℕ} {A B : Finset ℕ}
+    (hA : A ⊆ Finset.range n) (hB : B ⊆ Finset.range n) :
+    (A ∩ B).card = n ↔ A = Finset.range n ∧ B = Finset.range n := by
+  constructor
+  · intro h
+    have hsub : A ∩ B ⊆ Finset.range n := (Finset.inter_subset_left).trans hA
+    have heq : A ∩ B = Finset.range n :=
+      Finset.eq_of_subset_of_card_le hsub (by rw [Finset.card_range, h])
+    have hAn : Finset.range n ⊆ A := heq ▸ Finset.inter_subset_left
+    have hBn : Finset.range n ⊆ B := heq ▸ Finset.inter_subset_right
+    exact ⟨Finset.Subset.antisymm hA hAn, Finset.Subset.antisymm hB hBn⟩
+  · rintro ⟨rfl, rfl⟩
+    rw [Finset.inter_self, Finset.card_range]
+
+/--
+**The diagonal value `T(n,n) = 2^n − 1`.**
+A family `F ⊆ 2^{[n]}` avoids `n`-intersection iff it omits the full ground set
+`[n]`: the *only* pair of subsets of `[n]` meeting in `n` elements is `[n]` with
+itself (`inter_card_eq_n_iff`), and `avoidsRIntersection` forbids that self-pair.
+Hence the largest `n`-avoiding family is the powerset minus the single set `[n]`,
+of size `2^n − 1`. Together with `T(n,0) = 2^{n-1}` and `T(n,r) = 2^n` for `n < r`,
+this pins the third exactly-known boundary value of `T`, at the diagonal `r = n`. -/
+theorem T_n_n (n : ℕ) : T n n = 2 ^ n - 1 := by
+  apply le_antisymm
+  · -- Upper bound: every avoiding family omits `[n]`, so embeds in `powerset \ {[n]}`.
+    apply Finset.sup_le
+    intro F hF
+    rw [Finset.mem_filter, Finset.mem_powerset] at hF
+    obtain ⟨hFsub, hFavoid⟩ := hF
+    have hnotmem : Finset.range n ∉ F := fun hmem =>
+      hFavoid (Finset.range n) (Finset.range n) hmem hmem
+        (by rw [Finset.inter_self, Finset.card_range])
+    have hsub : F ⊆ (Finset.range n).powerset.erase (Finset.range n) := by
+      intro A hA
+      rw [Finset.mem_erase]
+      exact ⟨fun h => hnotmem (h ▸ hA), hFsub hA⟩
+    calc F.card ≤ ((Finset.range n).powerset.erase (Finset.range n)).card :=
+          Finset.card_le_card hsub
+      _ = (Finset.range n).powerset.card - 1 :=
+          Finset.card_erase_of_mem (Finset.mem_powerset.mpr (Finset.Subset.refl _))
+      _ = 2 ^ n - 1 := by rw [Finset.card_powerset, Finset.card_range]
+  · -- Lower bound: `powerset \ {[n]}` is itself `n`-avoiding, of size `2^n − 1`.
+    have hmem : (Finset.range n).powerset.erase (Finset.range n) ∈
+        ((Finset.range n).powerset.powerset).filter (avoidsRIntersection n) := by
+      rw [Finset.mem_filter, Finset.mem_powerset]
+      refine ⟨Finset.erase_subset _ _, ?_⟩
+      intro A B hA hB
+      rw [Finset.mem_erase, Finset.mem_powerset] at hA hB
+      intro hcontra
+      exact hA.1 ((inter_card_eq_n_iff hA.2 hB.2).mp hcontra).1
+    calc 2 ^ n - 1 = ((Finset.range n).powerset.erase (Finset.range n)).card := by
+          rw [Finset.card_erase_of_mem (Finset.mem_powerset.mpr (Finset.Subset.refl _)),
+            Finset.card_powerset, Finset.card_range]
+      _ ≤ T n n := Finset.le_sup hmem
+
+/--
 **The `r = 1` large-set family is contained in `franklFurediOdd n 1`.**
 `largeSetsFamily n` filters on `|A| > (n+1)/2`, exactly the "large" disjunct of
 `franklFurediOdd n 1` (whose threshold `(n+1)/2` coincides). So the general-`r`
