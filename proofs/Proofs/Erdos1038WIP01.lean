@@ -510,6 +510,44 @@ theorem le_sublevelSup'_Xsq {d : ℝ} (hd0 : 0 ≤ d) (hd1 : d < 1) :
     (le_iSup_of_le (Xsq_sub_C_admissible' ⟨hd0, le_of_lt hd1⟩)
       (sublevelMeasure_Xsq_sub_C hd0 hd1).ge)
 
+/-- **Every measure `m ∈ [2, 2√2)` is realised exactly by a faithful distinct-root
+    quadratic.**  This formalizes the surjectivity claim above: solving `2√(d+1) = m`
+    gives `d = m²/4 − 1`, which lies in `[0, 1)` precisely when `2 ≤ m < 2√2`, so the
+    faithfully-admissible `X² − d` has sublevel measure exactly `ofReal m`.  Thus the whole
+    half-open interval `[2, 2√2)` of measure values is *attained* by genuinely distinct-root
+    witnesses — the elementary lower half of the extremal spectrum `[2, 2√2]`. -/
+theorem exists_faithful_sublevelMeasure_eq {m : ℝ} (hm : 2 ≤ m)
+    (hm2 : m < 2 * Real.sqrt 2) :
+    ∃ f : Polynomial ℝ, MonicRealRootedIn01' f ∧
+      sublevelMeasure f = ENNReal.ofReal m := by
+  have hsqrt2 : Real.sqrt 2 ^ 2 = 2 := Real.sq_sqrt (by norm_num)
+  have hm0 : (0 : ℝ) ≤ m := by linarith
+  set d : ℝ := m ^ 2 / 4 - 1 with hd_def
+  have hmsq : m ^ 2 < 8 := by
+    have hlt : m ^ 2 < (2 * Real.sqrt 2) ^ 2 :=
+      sq_lt_sq' (by linarith [Real.sqrt_nonneg 2]) hm2
+    calc m ^ 2 < (2 * Real.sqrt 2) ^ 2 := hlt
+      _ = 8 := by rw [mul_pow, hsqrt2]; norm_num
+  have hd0 : 0 ≤ d := by rw [hd_def]; nlinarith
+  have hd1 : d < 1 := by rw [hd_def]; linarith
+  refine ⟨X ^ 2 - C d, Xsq_sub_C_admissible' ⟨hd0, hd1.le⟩, ?_⟩
+  rw [sublevelMeasure_Xsq_sub_C hd0 hd1]
+  congr 1
+  have hdp1 : d + 1 = (m / 2) ^ 2 := by rw [hd_def]; ring
+  rw [hdp1, Real.sqrt_sq (by linarith : (0 : ℝ) ≤ m / 2)]
+  ring
+
+/-- **Every value in `[2, 2√2)` is a lower bound for the faithful supremum.**  Combining
+    `exists_faithful_sublevelMeasure_eq` (each such `m` is an attained faithful measure)
+    with the definition of `sublevelSup'` as a supremum shows `ofReal m ≤ sublevelSup'` for
+    all `2 ≤ m < 2√2`.  Letting `m → 2√2` this recovers `le_sublevelSup'` as the supremum of
+    a whole continuum of distinct-root witnesses, not just the single extremal `X² − 1`. -/
+theorem le_sublevelSup'_of_mem {m : ℝ} (hm : 2 ≤ m) (hm2 : m < 2 * Real.sqrt 2) :
+    ENNReal.ofReal m ≤ sublevelSup' := by
+  obtain ⟨f, hf, hmeas⟩ := exists_faithful_sublevelMeasure_eq hm hm2
+  rw [← hmeas]
+  exact le_iSup_of_le f (le_iSup_of_le hf le_rfl)
+
 /-! ### The faithful and literal extremal objects are ordered
 
 The faithful predicate `MonicRealRootedIn01'` is *stronger* than `MonicRealRootedIn01`
