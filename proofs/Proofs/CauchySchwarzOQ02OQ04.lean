@@ -30,7 +30,7 @@ symmetric operator (a Kadison–Schwarz-type inequality),
 proved from the nonnegativity of the quadratic `t ↦ ⟪T(x + t•y), x + t•y⟫` via the
 discriminant criterion `discrim_le_zero`.
 
-## Main Results (11 theorems, 0 definitions, 0 sorries)
+## Main Results (13 theorems, 0 definitions, 0 sorries)
 
 1. `operator_cauchy_schwarz`        — ‖⟪T x, y⟫‖ ≤ ‖T‖ * ‖x‖ * ‖y‖
 2. `operator_cauchy_schwarz_right`  — same with the operator in the right slot
@@ -195,6 +195,50 @@ theorem positive_operator_cs_abs (T : F →L[ℝ] F)
   apply Real.sqrt_le_sqrt
   rw [abs_mul_abs_self]
   nlinarith [hcs]
+
+/-- **Absolute homogeneity of the induced seminorm.**  For *any* operator `T`, the
+functional `p(x) = √⟪T x, x⟫` scales absolutely: `p(c • x) = |c| · p(x)`.  This is the
+homogeneity axiom of a seminorm and needs neither symmetry nor positivity of `T`. -/
+theorem positive_operator_seminorm_smul (T : F →L[ℝ] F) (c : ℝ) (x : F) :
+    Real.sqrt ⟪T (c • x), c • x⟫ = |c| * Real.sqrt ⟪T x, x⟫ := by
+  have h : ⟪T (c • x), c • x⟫ = c ^ 2 * ⟪T x, x⟫ := by
+    rw [map_smul, real_inner_smul_left, real_inner_smul_right]; ring
+  rw [h, Real.sqrt_mul (by positivity), Real.sqrt_sq_eq_abs]
+
+/-- **Triangle inequality for the induced seminorm** (Minkowski form).  For a positive
+symmetric operator `T`, the functional `p(x) = √⟪T x, x⟫` is subadditive:
+
+      √⟪T (x + y), x + y⟫ ≤ √⟪T x, x⟫ + √⟪T y, y⟫.
+
+Together with `positive_operator_seminorm_smul` (absolute homogeneity) and the
+nonnegativity `hpos`, this shows the sesquilinear form of a positive symmetric operator
+induces a genuine **seminorm** on `F`.  The proof expands the diagonal
+`⟪T (x + y), x + y⟫ = ⟪T x, x⟫ + 2⟪T x, y⟫ + ⟪T y, y⟫` and bounds the cross term via the
+Kadison–Schwarz inequality `positive_operator_cs_abs`. -/
+theorem positive_operator_seminorm_triangle (T : F →L[ℝ] F)
+    (hsymm : ∀ a b : F, ⟪T a, b⟫ = ⟪a, T b⟫)
+    (hpos : ∀ a : F, 0 ≤ ⟪T a, a⟫) (x y : F) :
+    Real.sqrt ⟪T (x + y), x + y⟫ ≤ Real.sqrt ⟪T x, x⟫ + Real.sqrt ⟪T y, y⟫ := by
+  -- symmetry of the form
+  have hsy : ⟪T y, x⟫ = ⟪T x, y⟫ := by rw [hsymm y x, real_inner_comm]
+  -- expand the diagonal at `x + y`
+  have hexp : ⟪T (x + y), x + y⟫ = ⟪T x, x⟫ + 2 * ⟪T x, y⟫ + ⟪T y, y⟫ := by
+    rw [map_add]
+    simp only [inner_add_left, inner_add_right]
+    rw [hsy]; ring
+  -- bound the cross term by the Kadison–Schwarz inequality
+  have hcs := positive_operator_cs_abs T hsymm hpos x y
+  have hle : ⟪T x, y⟫ ≤ Real.sqrt ⟪T x, x⟫ * Real.sqrt ⟪T y, y⟫ :=
+    (le_abs_self _).trans hcs
+  have e1 : Real.sqrt ⟪T x, x⟫ ^ 2 = ⟪T x, x⟫ := Real.sq_sqrt (hpos x)
+  have e2 : Real.sqrt ⟪T y, y⟫ ^ 2 = ⟪T y, y⟫ := Real.sq_sqrt (hpos y)
+  have hbound : ⟪T (x + y), x + y⟫ ≤
+      (Real.sqrt ⟪T x, x⟫ + Real.sqrt ⟪T y, y⟫) ^ 2 := by
+    rw [hexp]; nlinarith [hle, e1, e2]
+  calc Real.sqrt ⟪T (x + y), x + y⟫
+      ≤ Real.sqrt ((Real.sqrt ⟪T x, x⟫ + Real.sqrt ⟪T y, y⟫) ^ 2) :=
+        Real.sqrt_le_sqrt hbound
+    _ = Real.sqrt ⟪T x, x⟫ + Real.sqrt ⟪T y, y⟫ := Real.sqrt_sq (by positivity)
 
 end PositiveOperator
 
