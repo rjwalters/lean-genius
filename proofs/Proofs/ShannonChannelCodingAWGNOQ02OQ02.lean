@@ -1695,4 +1695,105 @@ theorem awgn_weighted_power_eq_covariance_quadratic_form [IsProbabilityMeasure �
   have hSum0 : μ[∑ i ∈ s, a i • W i] = 0 := sum_mean_zero hV hVmean
   rw [second_moment_eq_variance hSum hSum0, variance_smul_sum' a hW]
 
+/-!
+### Correlated-noise MRC optimum (matrix Cauchy–Schwarz)
+
+The uncorrelated MRC theory above (`mrc_signal_sq_le`, `mrc_signal_sq_eq_iff`,
+`mrc_snr_matched`) bounds the output SNR of a linear combiner when the branch noises are
+*uncorrelated*, so the output power collapses to the diagonal `∑ᵢ aᵢ²·vᵢ`.  The genuinely
+open direction is the **correlated** case, where the output power is the full quadratic form
+`aᵀΣa = ∑ᵢ∑ⱼ aᵢ·aⱼ·cov[Wᵢ, Wⱼ]` (`awgn_weighted_power_eq_covariance_quadratic_form`).
+
+The classical resolution passes through matrix square-roots / whitening (`Σ^{-1/2}`), but that
+machinery is heavy in Lean.  The observation that makes it session-sized here is that the two
+combiners `∑ᵢ aᵢ·Wᵢ` and `∑ⱼ bⱼ·Wⱼ` are *themselves* scalar random variables, so the entire
+matrix Cauchy–Schwarz reduces to the **scalar** covariance Cauchy–Schwarz
+`covariance_sq_le_variance_mul_variance` after expanding the covariance/variance quadratic
+forms bilinearly (`covariance_sum_sum'`, `variance_smul_sum'`).  No matrix inverse or square
+root is needed, and the optimum `sᵀΣ⁻¹s` is realized (inverse-free) as the matched power
+`bᵀΣb` at the matched combiner `s = Σb`.
+-/
+
+/-- **Bilinear covariance expansion for two weighted combiners.**  The cross-covariance of two
+deterministically-weighted combinations of a common family `W` expands as the bilinear form of
+the covariance matrix `Σᵢⱼ = cov[Wᵢ, Wⱼ]`:
+
+    cov[∑ᵢ aᵢ·Wᵢ, ∑ⱼ bⱼ·Wⱼ] = ∑ᵢ∑ⱼ aᵢ·bⱼ·cov[Wᵢ, Wⱼ]  (= aᵀΣb).
+
+The polarised / two-vector companion of the diagonal Bienaymé identity `variance_smul_sum'`
+(recovered at `b = a`): Mathlib's `covariance_sum_sum'` distributes the covariance over both
+finite sums, and `covariance_smul_left`/`covariance_smul_right` pull out the scalar gains. -/
+theorem covariance_smul_sum' [IsFiniteMeasure μ] {ι : Type*}
+    {W : ι → Ω → ℝ} {s : Finset ι} (a b : ι → ℝ) (hW : ∀ i ∈ s, MemLp (W i) 2 μ) :
+    cov[∑ i ∈ s, a i • W i, ∑ j ∈ s, b j • W j; μ]
+      = ∑ i ∈ s, ∑ j ∈ s, a i * b j * cov[W i, W j; μ] := by
+  have hVa : ∀ i ∈ s, MemLp (a i • W i) 2 μ := fun i hi => (hW i hi).const_smul (a i)
+  have hVb : ∀ i ∈ s, MemLp (b i • W i) 2 μ := fun i hi => (hW i hi).const_smul (b i)
+  rw [covariance_sum_sum' hVa hVb]
+  refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
+  rw [covariance_smul_left, covariance_smul_right]
+  ring
+
+/-- **Correlated-noise generalized Cauchy–Schwarz (matrix MRC bound).**  For an arbitrary noise
+covariance matrix `Σᵢⱼ = cov[Wᵢ, Wⱼ]` and any two gain vectors `a, b`, the bilinear form is
+bounded by the geometric mean of the two quadratic forms:
+
+    (∑ᵢ∑ⱼ aᵢ·bⱼ·cov[Wᵢ, Wⱼ])²  ≤  (∑ᵢ∑ⱼ aᵢ·aⱼ·cov[Wᵢ, Wⱼ]) · (∑ᵢ∑ⱼ bᵢ·bⱼ·cov[Wᵢ, Wⱼ]),
+
+i.e. `(aᵀΣb)² ≤ (aᵀΣa)(bᵀΣb)`.  This is the correlated-noise generalisation of the diagonal
+combining bound `mrc_signal_sq_le` (where `Σ` is diagonal and the forms collapse to
+`∑ aᵢbᵢvᵢ`, `∑ aᵢ²vᵢ`, `∑ bᵢ²vᵢ`).  The proof is inverse/square-root free: the two combiners
+`X = ∑ᵢ aᵢ·Wᵢ`, `Y = ∑ⱼ bⱼ·Wⱼ` are scalar random variables, so this is exactly the scalar
+covariance Cauchy–Schwarz `covariance_sq_le_variance_mul_variance` with the covariance and
+variances expanded by `covariance_smul_sum'` and `variance_smul_sum'`. -/
+theorem covariance_quadratic_form_cauchy_schwarz [IsFiniteMeasure μ] {ι : Type*}
+    {W : ι → Ω → ℝ} {s : Finset ι} (a b : ι → ℝ) (hW : ∀ i ∈ s, MemLp (W i) 2 μ) :
+    (∑ i ∈ s, ∑ j ∈ s, a i * b j * cov[W i, W j; μ]) ^ 2
+      ≤ (∑ i ∈ s, ∑ j ∈ s, a i * a j * cov[W i, W j; μ])
+        * (∑ i ∈ s, ∑ j ∈ s, b i * b j * cov[W i, W j; μ]) := by
+  have hVa : MemLp (∑ i ∈ s, a i • W i) 2 μ :=
+    memLp_finset_sum' s (fun i hi => (hW i hi).const_smul (a i))
+  have hVb : MemLp (∑ i ∈ s, b i • W i) 2 μ :=
+    memLp_finset_sum' s (fun i hi => (hW i hi).const_smul (b i))
+  have h := covariance_sq_le_variance_mul_variance hVa hVb
+  rwa [covariance_smul_sum' a b hW, variance_smul_sum' a hW, variance_smul_sum' b hW] at h
+
+/-- **Correlated-noise MRC output-SNR bound.**  For any combiner `a` with strictly positive
+output power `aᵀΣa > 0`, the output SNR — the ratio of the squared matched signal
+`(∑ᵢ∑ⱼ aᵢ·bⱼ·cov[Wᵢ, Wⱼ])² = (aᵀΣb)²` to the output power `aᵀΣa` — is bounded by the matched
+power `bᵀΣb`:
+
+    (aᵀΣb)² / (aᵀΣa)  ≤  bᵀΣb.
+
+This is the correlated-noise generalisation of `mrc_snr_le`: dividing the matrix Cauchy–Schwarz
+`covariance_quadratic_form_cauchy_schwarz` by the (positive) output power identifies `bᵀΣb` as
+a uniform upper bound on the attainable SNR over all combiners `a`.  With the matched vector
+`s = Σb`, `bᵀΣb = sᵀΣ⁻¹s`, recovering the classical optimum `SNR ≤ sᵀΣ⁻¹s`. -/
+theorem mrc_correlated_snr_le [IsFiniteMeasure μ] {ι : Type*}
+    {W : ι → Ω → ℝ} {s : Finset ι} (a b : ι → ℝ) (hW : ∀ i ∈ s, MemLp (W i) 2 μ)
+    (hpos : 0 < ∑ i ∈ s, ∑ j ∈ s, a i * a j * cov[W i, W j; μ]) :
+    (∑ i ∈ s, ∑ j ∈ s, a i * b j * cov[W i, W j; μ]) ^ 2
+        / (∑ i ∈ s, ∑ j ∈ s, a i * a j * cov[W i, W j; μ])
+      ≤ ∑ i ∈ s, ∑ j ∈ s, b i * b j * cov[W i, W j; μ] := by
+  rw [div_le_iff₀ hpos, mul_comm]
+  exact covariance_quadratic_form_cauchy_schwarz a b hW
+
+/-- **Matched combiner attains the correlated-noise SNR optimum (sharpness).**  Taking the
+combiner equal to the matched vector `a = b`, the output SNR of `mrc_correlated_snr_le` is met
+with equality:
+
+    (bᵀΣb)² / (bᵀΣb)  =  bᵀΣb.
+
+So the upper bound `bᵀΣb` in `mrc_correlated_snr_le` is not merely valid but *sharp* — it is
+achieved by the matched combiner, exactly as in the uncorrelated case `mrc_snr_matched`.  Hence
+`bᵀΣb` is the true maximal attainable output SNR over all combiners with positive output
+power. -/
+theorem mrc_correlated_snr_matched [IsFiniteMeasure μ] {ι : Type*}
+    {W : ι → Ω → ℝ} {s : Finset ι} (b : ι → ℝ)
+    (hpos : 0 < ∑ i ∈ s, ∑ j ∈ s, b i * b j * cov[W i, W j; μ]) :
+    (∑ i ∈ s, ∑ j ∈ s, b i * b j * cov[W i, W j; μ]) ^ 2
+        / (∑ i ∈ s, ∑ j ∈ s, b i * b j * cov[W i, W j; μ])
+      = ∑ i ∈ s, ∑ j ∈ s, b i * b j * cov[W i, W j; μ] := by
+  rw [sq, mul_div_assoc, div_self (ne_of_gt hpos), mul_one]
+
 end ShannonAWGNMultiSymbolPower
