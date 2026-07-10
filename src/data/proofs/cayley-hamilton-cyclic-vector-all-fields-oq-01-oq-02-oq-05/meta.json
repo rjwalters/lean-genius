@@ -116,6 +116,16 @@
       "targetId": "cayley-hamilton-cyclic-vector-all-fields",
       "relationship": "related",
       "description": "Base of the chain — 'Nonderogatory → Cyclic Vector: All Fields (Primary Decomposition)': establishes the nonderogatory ⇒ cyclic-vector direction over an arbitrary field via primary decomposition. The CRT collapse proved here is the coprime instance of that primary-decomposition picture, where two coprime primary parts merge into one cyclic block."
+    },
+    {
+      "targetId": "chinese-remainder-constructive",
+      "relationship": "related",
+      "description": "The ring-level statement this entry realizes at the matrix level: the constructive Chinese Remainder Theorem gives K[X]/(p·q) ≅ K[X]/(p) × K[X]/(q) for coprime p, q. Here that isomorphism becomes a similarity of matrices C(p) ⊕ C(q) ~ C(p·q), with the single arithmetic input lcm p q = p·q playing the role of the coprimality/Bézout hypothesis that drives the constructive CRT splitting."
+    },
+    {
+      "targetId": "chinese-remainder-non-coprime",
+      "relationship": "related",
+      "description": "The complementary non-coprime regime — the exact obstruction flagged in this entry's third open question. When p, q share a factor, lcm p q ∣ p·q strictly, minpoly ≠ charpoly, and the block sum stays derogatory; the CRT isomorphism fails and overlapping blocks must be renormalized into the invariant-factor divisibility chain d₁ ∣ d₂ ∣ ⋯. This entry settles the coprime case; that one studies where coprimality breaks down."
     }
   ],
   "references": [
