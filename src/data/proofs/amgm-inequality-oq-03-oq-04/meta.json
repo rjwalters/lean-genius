@@ -190,7 +190,26 @@
       "description": "Negative Power Mean Monotonicity ( \\leq M_s$ for  \\leq s < 0$) corresponds to the Rényi entropy ordering for /bin/zsh < \\alpha < \\beta < 1$: larger $\\alpha$ gives smaller entropy. This entry handles the full equivalence; amgm-inequality-oq-03-oq-01 provides the monotonicity for the negative-$ regime that corresponds to $\\alpha < 1$ in the Rényi entropy formula."
     }
   ],
-  "sorries": 0,
+  "references": [
+    {
+      "authors": "Hardy, G. H.; Littlewood, J. E.; Pólya, G.",
+      "title": "Inequalities (2nd ed.)",
+      "year": "1952",
+      "note": "Cambridge University Press, Ch. II — the classical treatment of weighted power means M_r and their monotonicity in r, the analytic half of the equivalence proved here."
+    },
+    {
+      "authors": "Rényi, Alfréd",
+      "title": "On measures of entropy and information",
+      "year": "1961",
+      "note": "Proc. 4th Berkeley Symp. on Math. Statist. and Prob., Vol. 1, 547–561 — introduces the Rényi entropy H_α and its monotone decrease in α, the information-theoretic half of the equivalence."
+    },
+    {
+      "authors": "Bullen, P. S.",
+      "title": "Handbook of Means and Their Inequalities",
+      "year": "2003",
+      "note": "Kluwer (Mathematics and Its Applications 560) — comprehensive reference on power means, including the monotonicity and limiting (max/min) cases that this entry mirrors on the Rényi side."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Analysis.MeanInequalities",
