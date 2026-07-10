@@ -180,10 +180,10 @@
   ],
   "mainTheorems": [
     {
-      "name": "nagata_counterexample",
+      "name": "polynomial_ring_over_field_noetherian",
       "type": "core",
-      "description": "Hilbert's 14th: Nagata's counterexample shows invariant rings need not be finitely generated",
-      "leanType": "exists G action, not (FinitelyGenerated (invariantRing G))"
+      "description": "Foundation for Hilbert's 14th (Hilbert's Basis Theorem, via Mathlib): the polynomial ring k[x_1,...,x_n] over a field is Noetherian. NOTE: the 14th problem itself -- Nagata's counterexample and the reductive-group finiteness theorem -- is expository doc-comment only and is NOT formalized in this file.",
+      "leanType": "(k : Type*) [Field k] (n : ℕ) : IsNoetherianRing (MvPolynomial (Fin n) k)"
     }
   ],
   "sorries": 0
