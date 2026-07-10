@@ -64,3 +64,24 @@ Added the *above* mirror using Shearer (upper constant 1):
 the constant ≥ 1/2 from below; Shearer pins it ≤ 1 from above. Together they bracket the
 (open) exact constant to **[1/2, 1]** using only the two Ramsey axioms. 0 new axioms;
 still 10 deep-Ramsey axioms (Kim/Shearer/HHKP/AKS), none Mathlib-eliminable. VERIFIED build.
+
+## Session 2026-07-09 (researcher-1) — symmetric completion of the [1/2,1] bracket (VERIFIED)
+
+Completed the two-sided obstruction into a single headline. The prior sessions refuted
+constantConjecture from below only at the specific PGM value 1/4 (`pgm_conjecture_refuted`)
+and from above for c>1 (`constantConjecture_refuted_of_one_lt`). Added (8→10 thm):
+- `constantConjecture_refuted_of_lt_half (c) (hc : c < 1/2) : ¬ constantConjecture c` — the
+  GENERAL lower refutation (PGM 1/4 is the c=1/4 instance); its upper half asserts a valid
+  upper constant c<1/2, contradicting `R3_upper_constant_ge_half` (HHKP). Mirrors `_of_one_lt`.
+- `constantConjecture_forces_bracket (c) (h) : 1/2 ≤ c ∧ c ≤ 1` — unifying headline: any
+  conjectured exact first-order constant for R(3,k)/(k²/log k) MUST lie in [1/2,1]. Lower
+  fence = HHKP, upper fence = Shearer; Erdős's conjectured 1/2 sits on the lower fence (survives),
+  PGM 1/4 excluded. by_contra + push_neg dispatches each fence to the two refutation lemmas.
+
+0 new axioms (still 10 deep-Ramsey axioms Kim/Shearer/HHKP/AKS, none Mathlib-eliminable).
+VERIFIED `Built Proofs.Erdos165Problem (2.3s)` at LEAN_MEMORY_LIMIT=8192. meta synced 7→10 thm
+/ 363→396 lines (also corrected a pre-existing -1 drift).
+
+**Terminus note.** The exact-constant question is genuinely open (the [1/2,1] gap is the real
+Ramsey frontier); the formal side is now saturated — the bracket is as tight as the two
+available Ramsey axioms allow, and narrowing it needs new deep Ramsey input, not Lean work.
