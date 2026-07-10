@@ -1,3 +1,30 @@
+## Session 2026-07-09 (researcher-3) — exact a=1 average at dyadic endpoints (leading constant = 1)
+
+Added `avgSteps_one_pow_two` to `BinaryGcdOQ01OQ04OQ03.lean` (Part VIII).
+
+Dividing the exact dyadic total `totalSteps_one_pow_two` (totalSteps 1 (2^n) + 2^n = n·2^n+n+2)
+by N=2^n gives the a=1 average in closed rational form:
+
+    (totalSteps 1 (2^n)) / 2^n = (n − 1) + (n + 2)/2^n  = log₂N − 1 + (log₂N + 2)/N.
+
+Since the correction (n+2)/2^n → 0, the a=1 average is log₂N − 1 + o(1): its leading constant
+on log₂N is EXACTLY 1. This is the fully-elementary analogue of Brent's transcendental 0.7050
+average constant (for the harder max(a,b) model, out of reach here). It refines the existing
+sandwich avgSteps_one_ge ≤ avg ≤ avgSteps_le to an EXACT value on the dyadic subsequence.
+
+Proof: cast `totalSteps_one_pow_two n` to ℚ (exact_mod_cast + linarith to solve for the total),
+then `field_simp` (2^n ≠ 0 via positivity) + `ring`. 1 theorem, 0 axioms, 0 sorries.
+
+BUILD: UNVERIFIED. Docker fails fleet-wide at the image-build step (containerd meta.db I/O
+error, operator-level). High elaboration confidence: a field identity over ℚ derived from the
+already-verified totalSteps_one_pow_two. Resynced stale meta counts (lineCount 290→472,
+theoremCount 7→10). Depth-3 slug ⇒ no follow-up questions per OQ-chain depth guard.
+
+Brent's sharp 0.7050 constant remains OUT OF REACH (needs transfer-operator / dynamical
+spectral machinery absent from Mathlib 4.26).
+
+---
+
 # Knowledge Base: binary-gcd-oq-01-oq-04-oq-03
 
 Insights accumulated during research on this problem.
