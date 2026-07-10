@@ -110,6 +110,26 @@ theorem sylow_count_mod_p (p : ℕ) [hp : Fact p.Prime] :
     card (Sylow p G) % p = 1 := by
   exact Sylow.card_sylow_modEq_one p G |>.out
 
+/-- The Sylow count `n_p` is **not** divisible by `p` — equivalently, `n_p` is coprime
+    to `p`.  Immediate from `sylow_count_mod_p`: a multiple of `p` would have residue `0`,
+    but `n_p ≡ 1 (mod p)`.  This is the residue-form companion to `sylow_count_mod_p`
+    used, e.g., to rule out `n_p = p` in the classification of groups of small order. -/
+theorem sylow_count_not_dvd_p (p : ℕ) [hp : Fact p.Prime] :
+    ¬ p ∣ card (Sylow p G) := by
+  rw [Nat.dvd_iff_mod_eq_zero, sylow_count_mod_p]
+  exact one_ne_zero
+
+/-- **Hall property of Sylow subgroups**: the index `[G : P]` of a Sylow p-subgroup is
+    prime to `p`.  Since `|P| = p^(vₚ(|G|))` is the *full* p-power in `|G|`
+    (`sylow_card_eq`), the complementary index carries no factor of `p`.  This is exactly
+    what makes a Sylow subgroup a *Hall* subgroup (`|P|` and `[G:P]` coprime) and the
+    defining maximality property behind the First Sylow Theorem.  From
+    `Sylow.not_dvd_index` (the `[P.FiniteIndex]` and `Finite (Sylow p G)` instances are
+    supplied automatically by `[Fintype G]`). -/
+theorem sylow_index_not_dvd_p (p : ℕ) [hp : Fact p.Prime] (P : Sylow p G) :
+    ¬ p ∣ P.toSubgroup.index :=
+  P.not_dvd_index
+
 /-
 ═══════════════════════════════════════════════════════════════════════════════
 PART IV-B: THE NORMALITY CRITERION (STRUCTURAL COROLLARY OF SYLOW III)
@@ -181,6 +201,7 @@ end LagrangeOQ01
   - Sylow existence (First Sylow Theorem)
   - Sylow conjugacy (Second Sylow Theorem)
   - Sylow counting (Third Sylow Theorem): n_p ≡ 1 mod p, n_p | [G:P]
+  - Coprimality: p ∤ n_p, and the Hall property p ∤ [G:P] (index prime to p)
   - Normality criterion: P normal ⟺ n_p = 1; a normal Sylow is characteristic
   - Partial converse: p^k | |G| implies ∃ subgroup of order p^k
   - Cauchy's theorem: p | |G| implies ∃ element of order p
