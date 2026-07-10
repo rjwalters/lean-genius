@@ -41,23 +41,16 @@ namespace Erdos729Legendre
 
 open Nat
 
-/-- Recursive base-`p` digit sum, matching `Erdos729Problem.digitSum`. -/
-noncomputable def digitSum (p n : ℕ) : ℕ :=
-  if n = 0 then 0
-  else n % p + digitSum p (n / p)
+/-- Base-`p` digit sum, matching `Erdos729Problem.digitSum`.  Defined directly as
+`(Nat.digits p n).sum`: the naive recursion `n % p + digitSum p (n / p)` is ill-founded for
+`p ≤ 1` (`n / 1 = n` never decreases), so — exactly as the repaired
+`Erdos729Problem.digitSum` — we take Mathlib's digit list and sum it. -/
+def digitSum (p n : ℕ) : ℕ := (p.digits n).sum
 
-/-- The recursive `digitSum p n` agrees with Mathlib's `(p.digits n).sum` for `p > 1`. -/
-theorem digitSum_eq_digits_sum (p : ℕ) (hp : 1 < p) (n : ℕ) :
-    digitSum p n = (p.digits n).sum := by
-  induction n using Nat.strong_induction_on with
-  | _ n ih =>
-    rcases eq_or_ne n 0 with rfl | hn
-    · simp [digitSum]
-    · have hpos : 0 < n := Nat.pos_of_ne_zero hn
-      have hunfold : digitSum p n = n % p + digitSum p (n / p) := by
-        rw [digitSum.eq_def, if_neg hn]
-      rw [hunfold, Nat.digits_def' hp hpos, List.sum_cons,
-        ih (n / p) (Nat.div_lt_self hpos hp)]
+/-- The `digitSum p n` agrees with Mathlib's `(p.digits n).sum`.  Definitional; the `1 < p`
+hypothesis is retained for call-site compatibility with the recursive shape. -/
+theorem digitSum_eq_digits_sum (p : ℕ) (_hp : 1 < p) (n : ℕ) :
+    digitSum p n = (p.digits n).sum := rfl
 
 /-- **Legendre's identity, classical division form (Mathlib digit sum).**
 
@@ -81,6 +74,25 @@ theorem legendre_digit_sum_identity (p n : ℕ) (hp : p.Prime) :
     padicValNat p n.factorial = (n - digitSum p n) / (p - 1) := by
   rw [digitSum_eq_digits_sum p hp.one_lt n, padicValNat_factorial_eq_div p n hp]
 
+/-- **Legendre's identity, multiplied form (recursive `digitSum` shape).**
+The un-divided companion of `legendre_digit_sum_identity`: `(p-1)·v_p(n!) = n - s_p(n)`, the
+recursive-`digitSum` restatement of Mathlib's `sub_one_mul_padicValNat_factorial`. Unlike the
+division form it carries no truncated-division rounding, so it is the convenient starting
+point for Kummer-type valuation arguments. -/
+theorem sub_one_mul_padicValNat_factorial_digitSum (p n : ℕ) (hp : p.Prime) :
+    (p - 1) * padicValNat p n.factorial = n - digitSum p n := by
+  haveI : Fact p.Prime := ⟨hp⟩
+  rw [digitSum_eq_digits_sum p hp.one_lt n]
+  exact sub_one_mul_padicValNat_factorial (p := p) n
+
+/-- **The base-`p` digit-sum defect is divisible by `p - 1`.**
+For every prime `p`, `(p - 1) ∣ (n - s_p(n))` — the classical "casting out nines" fact
+generalized to base `p` (`n ≡ s_p(n) (mod p - 1)`), here obtained as a corollary of
+Legendre's formula: the defect `n - s_p(n)` equals `(p - 1)·v_p(n!)`. -/
+theorem sub_one_dvd_sub_digitSum (p n : ℕ) (hp : p.Prime) :
+    (p - 1) ∣ (n - digitSum p n) :=
+  ⟨padicValNat p n.factorial, (sub_one_mul_padicValNat_factorial_digitSum p n hp).symm⟩
+
 -- The numerical content (v_p(n!) = (n - s_p(n))/(p-1) for many p, n) is certified
 -- independently in `research/problems/erdos-729-oq-02/verify_legendre_general.py`
 -- (no Lean `decide` on `Nat.digits`, which is well-founded and does not reduce
@@ -88,5 +100,7 @@ theorem legendre_digit_sum_identity (p n : ℕ) (hp : p.Prime) :
 
 #check @padicValNat_factorial_eq_div
 #check @legendre_digit_sum_identity
+#check @sub_one_mul_padicValNat_factorial_digitSum
+#check @sub_one_dvd_sub_digitSum
 
 end Erdos729Legendre
