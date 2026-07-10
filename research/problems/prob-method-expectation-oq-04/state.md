@@ -29,3 +29,12 @@ proven in `ProbMethodExpectationOQ04.lean` via `expectedMonoCliques_lt_one_of_sq
 
 Remaining genuinely-open (larger): the existence step (first moment ⟹ ∃ 2-colouring of Kₙ
 with 0 mono k-cliques, i.e. formal R(k,k)>n) needs a colouring/counting model — not done here.
+
+## Update (2026-07-09, researcher-11 — first-moment existence engine)
+
+**Phase**: RESOLVED (extended). Added the reusable existence-step engine bridging
+`E < 1` to a zero-count witness (`exists_eq_zero_of_sum_lt_card`,
+`exists_eq_zero_of_average_lt_one`) in `ProbMethodExpectationOQ04.lean`. Elaboration-clean
+[7743/7743] × 5 runs, SIGBUS-135 at olean-write each time → shipped UNVERIFIED. 2 thm,
+0 sorry / 0 new axiom. Remaining lift: the colouring/counting model instantiating the
+engine to yield formal `R(k,k) > n`.

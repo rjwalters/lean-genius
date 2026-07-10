@@ -88,3 +88,31 @@ witness `n = 2^⌊(k-1)/2⌋` satisfies `n² = 2^{2⌊(k-1)/2⌋} < 2^k` because
 `expectedMonoCliques_lt_one_of_sq_lt`. VERIFIED 0 axioms / 0 sorries, no `native_decide`.
 Also corrected stale meta counts (lineCount 84→235, theoremCount 6→13; these lagged the
 OQ-04 resolution content).
+
+## Follow-up: first-moment EXISTENCE step for integer counts (researcher-11, 2026-07-09)
+
+The prior sessions closed the *quantitative* side (E(n,k) < 1 whenever n² < 2^k, plus
+witness/monotone/real-half-power forms). The knowledge base flagged the remaining-open
+piece as the *existence* step: turning `E < 1` into `∃ 2-colouring with 0 monochromatic
+k-cliques`. Added the reusable abstract engine for that jump, independent of the colouring
+model:
+
+```lean
+theorem exists_eq_zero_of_sum_lt_card {g : α → ℕ} (h : s.sum g < s.card) :
+    ∃ a ∈ s, g a = 0
+theorem exists_eq_zero_of_average_lt_one (hs : s.Nonempty) {g : α → ℕ}
+    (h : (s.sum (fun a => (g a : ℚ))) / s.card < 1) : ∃ a ∈ s, g a = 0
+```
+
+The qualitative content: a real average `< 1` only bounds a witness *below 1* (via the
+existing `exists_le_average`); integrality of the ℕ-valued count `g` then forces that
+witness to be exactly `0`. This is precisely the probabilistic-method existence conclusion
+the *strict* `first_moment_principle` cannot reach, phrased as a standalone engine. To
+finish OQ-04's `R(k,k) > n` one instantiates this with `s = colourings of Kₙ` and
+`g = #monochromatic k-cliques`, whose average is `E(n,k)` — the colouring/counting model
+is still the genuinely-remaining lift.
+
+Build: elaboration-clean `[7743/7743]` (no unsolved goals / sorries / warnings) across 5
+runs; every run then hit the stochastic SIGBUS exit-135 at olean-write (documented infra
+crash, not a proof error). Shipped UNVERIFIED per that pattern. 2 theorems, 0 sorry, 0 new
+axiom.
