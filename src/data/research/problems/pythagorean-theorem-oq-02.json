@@ -55,6 +55,7 @@
   ],
   "relatedProofs": [
     "pythagorean-theorem",
+    "pythagorean-theorem-oq-01",
     "pythagorean-theorem-oq-03",
     "pythagorean-theorem-oq-03-oq-02",
     "pythagorean-theorem-oq-04",
@@ -81,6 +82,39 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PythagoreanTheorem.lean"
+    },
+    {
+      "path": "Proofs/PythagoreanTheoremOQ01.lean",
+      "filename": "PythagoreanTheoremOQ01.lean",
+      "lineCount": 300,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PythagoreanTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/PythagoreanTheoremOQ01Dissection.lean",
+      "filename": "PythagoreanTheoremOQ01Dissection.lean",
+      "lineCount": 205,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PythagoreanTheoremOQ01Dissection.lean"
+    },
+    {
+      "path": "Proofs/PythagoreanTheoremOQ01Garfield.lean",
+      "filename": "PythagoreanTheoremOQ01Garfield.lean",
+      "lineCount": 234,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PythagoreanTheoremOQ01Garfield.lean"
     },
     {
       "path": "Proofs/PythagoreanTheoremOQ03.lean",
@@ -136,6 +170,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PythagoreanTheoremOQ05.lean"
+    },
+    {
+      "path": "Proofs/PythagoreanTheoremOQ06.lean",
+      "filename": "PythagoreanTheoremOQ06.lean",
+      "lineCount": 128,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PythagoreanTheoremOQ06.lean"
     }
   ]
 }

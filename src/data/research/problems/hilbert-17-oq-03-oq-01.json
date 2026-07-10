@@ -73,7 +73,8 @@
     "hilbert-17-oq-03-oq-02",
     "hilbert-17-oq-03-oq-03",
     "hilbert-17-oq-03-oq-04",
-    "hilbert-17-oq-03-oq-05"
+    "hilbert-17-oq-03-oq-05",
+    "hilbert-17-oq-03-oq-06"
   ],
   "references": [
     {
@@ -191,8 +192,8 @@
     {
       "path": "Proofs/Hilbert17OQ03OQ05.lean",
       "filename": "Hilbert17OQ03OQ05.lean",
-      "lineCount": 143,
-      "theoremCount": 8,
+      "lineCount": 346,
+      "theoremCount": 20,
       "axiomCount": 0,
       "defCount": 3,
       "sorryCount": 0,
@@ -220,6 +221,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert17RobinsonNotSOS.lean"
+    },
+    {
+      "path": "Proofs/Hilbert17RobinsonRationalSOS.lean",
+      "filename": "Hilbert17RobinsonRationalSOS.lean",
+      "lineCount": 192,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 11,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert17RobinsonRationalSOS.lean"
     },
     {
       "path": "Proofs/Hilbert17SumOfSquares.lean",

@@ -57,6 +57,7 @@
     "research"
   ],
   "relatedProofs": [
+    "abel-ruffini",
     "abel-ruffini-obstruction-oq-06"
   ],
   "references": {
@@ -71,5 +72,18 @@
   },
   "started": "2026-07-09T16:43:19-07:00",
   "significance": 5,
-  "tractability": 5
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/AbelRuffiniObstructionOQ06.lean",
+      "filename": "AbelRuffiniObstructionOQ06.lean",
+      "lineCount": 216,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffiniObstructionOQ06.lean"
+    }
+  ]
 }

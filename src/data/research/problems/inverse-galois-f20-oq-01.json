@@ -49,5 +49,34 @@
   "started": "2026-07-09T00:00:00Z",
   "lastUpdate": "2026-07-09T00:00:00Z",
   "significance": 6,
-  "tractability": 5
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/InverseGaloisF20.lean",
+      "filename": "InverseGaloisF20.lean",
+      "lineCount": 530,
+      "theoremCount": 27,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InverseGaloisF20.lean"
+    },
+    {
+      "path": "Proofs/InverseGaloisF20OQ02.lean",
+      "filename": "InverseGaloisF20OQ02.lean",
+      "lineCount": 195,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InverseGaloisF20OQ02.lean"
+    }
+  ],
+  "relatedProofs": [
+    "inverse-galois",
+    "inverse-galois-f20",
+    "inverse-galois-f20-oq-02"
+  ]
 }

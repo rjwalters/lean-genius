@@ -57,7 +57,18 @@
     "research"
   ],
   "relatedProofs": [
-    "cayleys-theorem-oq-01-oq-02"
+    "cayleys-theorem-oq-01",
+    "cayleys-theorem-oq-01-oq-01",
+    "cayleys-theorem-oq-01-oq-01-oq-01",
+    "cayleys-theorem-oq-01-oq-01-oq-02",
+    "cayleys-theorem-oq-01-oq-01-oq-02-oq-01",
+    "cayleys-theorem-oq-01-oq-01-oq-02-oq-01-oq-02",
+    "cayleys-theorem-oq-01-oq-01-oq-02-oq-01-oq-02-oq-01",
+    "cayleys-theorem-oq-01-oq-01-oq-02-oq-01-oq-02-oq-01-oq-01",
+    "cayleys-theorem-oq-01-oq-01-oq-02-oq-02",
+    "cayleys-theorem-oq-01-oq-01-oq-02-oq-02-oq-01",
+    "cayleys-theorem-oq-01-oq-02",
+    "cayleys-theorem-oq-01-oq-02-oq-02"
   ],
   "references": {
     "papers": [],
@@ -70,5 +81,139 @@
   },
   "started": "2026-07-09T16:43:20-07:00",
   "significance": 5,
-  "tractability": 5
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/CayleysTheoremOQ01.lean",
+      "filename": "CayleysTheoremOQ01.lean",
+      "lineCount": 90,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleysTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/CayleysTheoremOQ01OQ01.lean",
+      "filename": "CayleysTheoremOQ01OQ01.lean",
+      "lineCount": 108,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleysTheoremOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/CayleysTheoremOQ01OQ01OQ01.lean",
+      "filename": "CayleysTheoremOQ01OQ01OQ01.lean",
+      "lineCount": 162,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleysTheoremOQ01OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/CayleysTheoremOQ01OQ01OQ02.lean",
+      "filename": "CayleysTheoremOQ01OQ01OQ02.lean",
+      "lineCount": 164,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleysTheoremOQ01OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/CayleysTheoremOQ01OQ01OQ02OQ01.lean",
+      "filename": "CayleysTheoremOQ01OQ01OQ02OQ01.lean",
+      "lineCount": 120,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleysTheoremOQ01OQ01OQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/CayleysTheoremOQ01OQ01OQ02OQ01OQ02.lean",
+      "filename": "CayleysTheoremOQ01OQ01OQ02OQ01OQ02.lean",
+      "lineCount": 91,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleysTheoremOQ01OQ01OQ02OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/CayleysTheoremOQ01OQ01OQ02OQ01OQ02OQ01.lean",
+      "filename": "CayleysTheoremOQ01OQ01OQ02OQ01OQ02OQ01.lean",
+      "lineCount": 203,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleysTheoremOQ01OQ01OQ02OQ01OQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/CayleysTheoremOQ01OQ01OQ02OQ01OQ02OQ01OQ01.lean",
+      "filename": "CayleysTheoremOQ01OQ01OQ02OQ01OQ02OQ01OQ01.lean",
+      "lineCount": 144,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleysTheoremOQ01OQ01OQ02OQ01OQ02OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/CayleysTheoremOQ01OQ01OQ02OQ02.lean",
+      "filename": "CayleysTheoremOQ01OQ01OQ02OQ02.lean",
+      "lineCount": 186,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleysTheoremOQ01OQ01OQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/CayleysTheoremOQ01OQ01OQ02OQ02OQ01.lean",
+      "filename": "CayleysTheoremOQ01OQ01OQ02OQ02OQ01.lean",
+      "lineCount": 179,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleysTheoremOQ01OQ01OQ02OQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/CayleysTheoremOQ01OQ02.lean",
+      "filename": "CayleysTheoremOQ01OQ02.lean",
+      "lineCount": 123,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleysTheoremOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/CayleysTheoremOQ01OQ02OQ02.lean",
+      "filename": "CayleysTheoremOQ01OQ02OQ02.lean",
+      "lineCount": 157,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleysTheoremOQ01OQ02OQ02.lean"
+    }
+  ]
 }

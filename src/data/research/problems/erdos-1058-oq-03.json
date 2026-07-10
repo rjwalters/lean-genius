@@ -30,5 +30,36 @@
       "Connect to Brocard-Ramanujan (n!+1 = m²) formalization if/when Mathlib gains the needed Diophantine tools."
     ],
     "progressSummary": "PROGRESS: Answered oq-03 constructively and axiom-free — Wilson yields an exact characterization of n!±1 divisibility (flagship + sibling), plus axiom-free small-case prime-power classification. 11 theorems, VERIFIED 0 sorries / 0 axioms."
-  }
+  },
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1058OQ03.lean",
+      "filename": "Erdos1058OQ03.lean",
+      "lineCount": 319,
+      "theoremCount": 23,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1058OQ03.lean"
+    },
+    {
+      "path": "Proofs/Erdos1058Problem.lean",
+      "filename": "Erdos1058Problem.lean",
+      "lineCount": 181,
+      "theoremCount": 9,
+      "axiomCount": 2,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1058Problem.lean"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-10",
+    "erdos-105",
+    "erdos-1058",
+    "erdos-1058-oq-03"
+  ]
 }

@@ -49,5 +49,47 @@
   "started": "2026-07-09T00:00:00Z",
   "lastUpdate": "2026-07-09T00:00:00Z",
   "significance": 6,
-  "tractability": 5
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos485OQ01.lean",
+      "filename": "Erdos485OQ01.lean",
+      "lineCount": 452,
+      "theoremCount": 8,
+      "axiomCount": 3,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos485OQ01.lean"
+    },
+    {
+      "path": "Proofs/Erdos485OQ02.lean",
+      "filename": "Erdos485OQ02.lean",
+      "lineCount": 328,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos485OQ02.lean"
+    },
+    {
+      "path": "Proofs/Erdos485Problem.lean",
+      "filename": "Erdos485Problem.lean",
+      "lineCount": 226,
+      "theoremCount": 3,
+      "axiomCount": 1,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos485Problem.lean"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-4",
+    "erdos-48",
+    "erdos-485",
+    "erdos-485-oq-01",
+    "erdos-485-oq-02"
+  ]
 }

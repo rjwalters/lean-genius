@@ -48,5 +48,47 @@
   "started": "2026-07-09T00:00:00Z",
   "lastUpdate": "2026-07-09T00:00:00Z",
   "significance": 6,
-  "tractability": 5
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos909OQ01OQ02.lean",
+      "filename": "Erdos909OQ01OQ02.lean",
+      "lineCount": 265,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos909OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/Erdos909OQ01Problem.lean",
+      "filename": "Erdos909OQ01Problem.lean",
+      "lineCount": 256,
+      "theoremCount": 10,
+      "axiomCount": 2,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos909OQ01Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos909Problem.lean",
+      "filename": "Erdos909Problem.lean",
+      "lineCount": 126,
+      "theoremCount": 2,
+      "axiomCount": 3,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos909Problem.lean"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-9",
+    "erdos-90",
+    "erdos-909",
+    "erdos-909-oq-01",
+    "erdos-909-oq-01-oq-02"
+  ]
 }

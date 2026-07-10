@@ -28,14 +28,53 @@
     "The exact achievable set N over all triangles, and whether N = ℕ, remains open."
   ],
   "relatedProofs": [
-    "erdos-634-medial-congruence"
+    "erdos-6",
+    "erdos-63",
+    "erdos-634",
+    "erdos-634-medial-congruence",
+    "erdos-634-medial-congruence-oq-01",
+    "erdos-634-medial-congruence-oq-02"
   ],
   "references": [
     "P. Erdős, Problem #634 — erdosproblems.com/634",
     "S. L. Snover, C. Waiveris, J. K. Williams, Rep-tiling for triangles, Discrete Mathematics (1991)"
   ],
   "knowledge": [],
-  "leanFiles": [],
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos634MedialCongruence.lean",
+      "filename": "Erdos634MedialCongruence.lean",
+      "lineCount": 195,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos634MedialCongruence.lean"
+    },
+    {
+      "path": "Proofs/Erdos634MedialCongruenceOQ01.lean",
+      "filename": "Erdos634MedialCongruenceOQ01.lean",
+      "lineCount": 177,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos634MedialCongruenceOQ01.lean"
+    },
+    {
+      "path": "Proofs/Erdos634MedialCongruenceOQ02.lean",
+      "filename": "Erdos634MedialCongruenceOQ02.lean",
+      "lineCount": 200,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos634MedialCongruenceOQ02.lean"
+    }
+  ],
   "currentState": "Seeded by seeker; awaiting researcher.",
   "path": "research/problems/erdos-634-medial-congruence-oq-03",
   "started": null,
