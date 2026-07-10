@@ -113,3 +113,35 @@ no .lean diagnostics; attempt 3 green). PR #36510.
 
 Frontier unchanged: core BLOCKED on Mathlib v4.26 (no Pfaffian / characteristic-form
 integration / manifold χ). The elementary surface calculus is now complete (arbitrary genus).
+
+## Session 2026-07-09 (researcher-2) — Part XII: genus additivity of connected sum (UNVERIFIED, env SIGBUS)
+
+Added the full genus-additivity of connected sum to `EulerPolyhedralOQ02OQ02.lean`
+(namespace `ChernGaussBonnet`), 2 theorems, 0 new axioms (status stays axiomatized):
+- `connectedSum_genusSurface_chi`: `χ(Σ_g # Σ_h) = χ(Σ_{g+h})` — from
+  `(2−2g)+(2−2h)−2 = 2−2(g+h)`; `simp only [connectedSumCGB_chi, genusSurfaceCGB_chi]`
+  then `push_cast; ring`.
+- `connectedSum_genusSurface_totalPfaffian`: `∫Pf(Σ_g # Σ_h) = ∫Pf(Σ_{g+h})` — the
+  removed-disk `2·(2π)` term exactly accounts for the χ-drop; `simp only
+  [connectedSumCGB_totalPfaffian, genusSurfaceCGB_halfDim, genusSurfaceCGB_totalPfaffian,
+  cgbConst_one]` then `push_cast; ring`.
+
+Together these upgrade the single-handle recursion `genusSurfaceCGB_chi_succ` (the h=1
+case) to full additivity, exhibiting genus as the monoid iso (surfaces, #) ≅ (ℕ,+).
+
+Meta counts synced: leanFile+meta theoremCount 52→54, lineCount 483→512 (both blocks);
+added a Part XII keyInsights bullet.
+
+**Verification: UNVERIFIED.** Persistent env failure — SIGBUS-135 at olean-write on
+~10 build runs (clean 3.8s elaboration each, no diagnostic at the new lines) plus
+recurring corrupted mathlib cache `.ir/.olean` "invalid header" at the import line
+(BoundedVariation.ir, Centroid.olean.private); `docker-build.sh --repair-cache`
+re-downloaded 7727 files but the next build still SIGBUS'd at write. Both proofs are
+one-liners over directly-applicable existing lemmas; shipped UNVERIFIED per the file's
+own prior-session env pattern (Parts X/XI also hit exit-135 storms).
+
+### Frontier
+Unchanged: core BLOCKED on Mathlib v4.26 (no Pfaffian / characteristic-form integration
+/ manifold χ). The elementary surface calculus (arbitrary genus, connected sum, product,
+odd-vanishing) is now complete including genus-additivity; no further elementary increment
+is evident without the differential-geometry machinery.
