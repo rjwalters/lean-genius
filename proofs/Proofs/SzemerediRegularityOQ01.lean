@@ -366,4 +366,21 @@ theorem card_irregularOrderedPairs_le (G : SimpleGraph V) [DecidableRel G.Adj]
         Finset.card_le_card (irregularOrderedPairs_subset_offDiag G eps parts)
     _ = parts.card * parts.card - parts.card := Finset.offDiag_card parts
 
+/-- **A partition with at most one part has no irregular pairs.**  The base case
+    of any regularity-partition induction: with `#parts ≤ 1` there are no two
+    *distinct* parts to be irregular, so the ordered irregular set is empty.
+    Reads off the trivial upper bound `card_irregularOrderedPairs_le` at
+    `parts.card ≤ 1`, where the off-diagonal ceiling `n·n − n` collapses to `0`.
+    Pairs with `card_irregularOrderedPairs_le` (the general ceiling) to pin the
+    count exactly at the degenerate end of the range. -/
+theorem card_irregularOrderedPairs_eq_zero_of_card_le_one
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (eps : ℚ) (parts : Finset (Finset V)) (h : parts.card ≤ 1) :
+    (irregularOrderedPairs G eps parts).card = 0 := by
+  have hle := card_irregularOrderedPairs_le G eps parts
+  have hz : parts.card * parts.card - parts.card = 0 := by
+    interval_cases parts.card <;> decide
+  rw [hz] at hle
+  exact Nat.le_zero.mp hle
+
 end Szemeredi.Regularity.OQ01
