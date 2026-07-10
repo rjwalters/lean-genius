@@ -1083,6 +1083,115 @@ theorem iSup_puiseuxRamificationSubring {K : Type*} [Ring K] :
 end Filtration
 
 /-! ═══════════════════════════════════════════════════════════════════════════════
+PART XII: THE RAMIFICATION TOWER AT THE FIELD LEVEL
+═══════════════════════════════════════════════════════════════════════════════ -/
+
+/-!
+### The colimit of Laurent *fields*
+
+Part XI built the ramification tower at the **ring** level
+(`puiseuxRamificationSubring`), stopping short of the field structure that the
+running commentary keeps invoking ("the colimit of Laurent *fields* along the
+ramification maps `x ↦ x^{1/n}`"). Over a `Field K` each level is in fact
+**inverse-closed**: the general inverse-closure `isPuiseux_inv` (Part X) preserves
+the ramification index, so `f⁻¹` stays at the *same* level `n` as `f`. Hence each
+floor `puiseuxRamificationSubring K n` is really a `Subfield` — the Laurent field
+`K((x^{1/n}))` — and the tower of these subfields, indexed by divisibility, has the
+full Puiseux subfield `K⦃⦃x⦄⦄` as its directed union. This makes the informal
+colimit-of-Laurent-fields description a machine-checked lattice identity.
+-/
+
+section FieldFiltration
+
+/-- **Level-`n` inverse-closure.** If `f` is a `(1/n)`-Laurent series (`support ⊆
+(1/n)ℤ`) over a field, then so is `f⁻¹`: the inverse-closure argument of `isPuiseux_inv`
+factors `f` through the field homomorphism induced by `ℤ ↪o ℚ, k ↦ k/n`, and `f⁻¹`'s
+support lands back in the range of that *same* embedding — the ramification index does
+not grow. This is the fixed-level refinement of `isPuiseux_inv` (Part X), and it is the
+one field-axiom missing from `puiseuxRamificationSubring`. -/
+theorem isPuiseuxOfRamification_inv {K : Type*} [Field K] {n : ℕ+} {f : HahnSeries ℚ K}
+    (hf : IsPuiseuxOfRamification n f) : IsPuiseuxOfRamification n f⁻¹ := by
+  have hn0 : (0 : ℚ) < (n : ℚ) := by exact_mod_cast n.pos
+  -- the additive hom `ℤ →+ ℚ`, `k ↦ k / n`
+  let φ₀ : ℤ →+ ℚ :=
+    { toFun := fun k => (k : ℚ) / (n : ℚ)
+      map_zero' := by simp
+      map_add' := fun a b => by push_cast; ring }
+  have hmono : ∀ g g' : ℤ, φ₀ g ≤ φ₀ g' ↔ g ≤ g' := by
+    intro g g'
+    show (g : ℚ) / (n : ℚ) ≤ (g' : ℚ) / (n : ℚ) ↔ g ≤ g'
+    rw [div_le_div_iff_of_pos_right hn0, Int.cast_le]
+  have hfi : Function.Injective φ₀ := fun a b hab =>
+    le_antisymm ((hmono a b).1 hab.le) ((hmono b a).1 hab.ge)
+  let emb : ℤ ↪o ℚ := ⟨⟨φ₀, hfi⟩, hmono _ _⟩
+  -- `f` is supported on the range of `emb = (1/n)ℤ`
+  have hfr : f.support ⊆ Set.range emb := by
+    intro q hq
+    obtain ⟨k, hk⟩ := hf q hq
+    exact ⟨k, hk.symm⟩
+  obtain ⟨g, hg⟩ := exists_embDomain_of_support_subset_range emb hfr
+  have key : ∀ x : HahnSeries ℤ K,
+      HahnSeries.embDomainRingHom φ₀ hfi hmono x = HahnSeries.embDomain emb x :=
+    fun _ => rfl
+  have hgf : HahnSeries.embDomainRingHom φ₀ hfi hmono g = f := by rw [key]; exact hg
+  have hinv : f⁻¹ = HahnSeries.embDomain emb g⁻¹ := by
+    rw [← hgf, ← map_inv₀ (HahnSeries.embDomainRingHom φ₀ hfi hmono) g, key]
+  rw [hinv]
+  intro q hq
+  obtain ⟨k, hk⟩ := Set.image_subset_range _ _ (HahnSeries.support_embDomain_subset hq)
+  exact ⟨k, hk.symm⟩
+
+/-- **The level-`n` Puiseux series form a subfield** — the Laurent field `K((x^{1/n}))`
+of `(1/n)`-ramified series. Upgrades `puiseuxRamificationSubring K n` (Part XI) to a
+`Subfield` using the level-preserving inverse-closure `isPuiseuxOfRamification_inv`; its
+carrier is again `{f | IsPuiseuxOfRamification n f}`. -/
+def puiseuxRamificationSubfield (K : Type*) [Field K] (n : ℕ+) : Subfield (HahnSeries ℚ K) where
+  carrier := {f | IsPuiseuxOfRamification n f}
+  zero_mem' := isPuiseuxOfRamification_zero n
+  one_mem' := isPuiseuxOfRamification_one n
+  add_mem' := fun ha hb => isPuiseuxOfRamification_add ha hb
+  mul_mem' := fun ha hb => isPuiseuxOfRamification_mul ha hb
+  neg_mem' := fun ha => isPuiseuxOfRamification_neg ha
+  inv_mem' := fun _ hx => isPuiseuxOfRamification_inv hx
+
+/-- Membership in the level-`n` subfield is definitionally ramification by `n`. -/
+@[simp] theorem mem_puiseuxRamificationSubfield {K : Type*} [Field K] (n : ℕ+)
+    (y : HahnSeries ℚ K) :
+    y ∈ puiseuxRamificationSubfield K n ↔ IsPuiseuxOfRamification n y := Iff.rfl
+
+/-- **The ramification subfields form an increasing tower.** If `n ∣ n'` then every
+`(1/n)`-Laurent series is a `(1/n')`-Laurent series, so
+`puiseuxRamificationSubfield K n ≤ puiseuxRamificationSubfield K n'`. This is the
+field-level refinement of `puiseuxRamificationSubring_mono`. -/
+theorem puiseuxRamificationSubfield_mono {K : Type*} [Field K] {n n' : ℕ+} (hdvd : n ∣ n') :
+    puiseuxRamificationSubfield K n ≤ puiseuxRamificationSubfield K n' :=
+  fun _ hx => IsPuiseuxOfRamification.mono hdvd hx
+
+/-- **Every level sits inside the full Puiseux subfield.** A `(1/n)`-ramified series is
+a fortiori a Puiseux series, so each floor of the field tower is bounded above by
+`puiseuxSubfield K`. -/
+theorem puiseuxRamificationSubfield_le_puiseuxSubfield {K : Type*} [Field K] (n : ℕ+) :
+    puiseuxRamificationSubfield K n ≤ puiseuxSubfield K :=
+  fun _ hx => ⟨n, hx⟩
+
+/-- **The Puiseux field is the colimit of the Laurent fields `K((x^{1/n}))`.** The
+directed union `⨆ n, puiseuxRamificationSubfield K n` of the level-`n` Laurent subfields
+is exactly the full Puiseux subfield: every level embeds
+(`puiseuxRamificationSubfield_le_puiseuxSubfield`) and every Puiseux series lands in
+*some* level (`isPuiseux_iff_exists_ramification`). This is the field-level capstone of
+the ramification filtration — the machine-checked form of
+`K⦃⦃x⦄⦄ = colim_n K((x^{1/n}))`. -/
+theorem iSup_puiseuxRamificationSubfield {K : Type*} [Field K] :
+    (⨆ n : ℕ+, puiseuxRamificationSubfield K n) = puiseuxSubfield K := by
+  refine le_antisymm (iSup_le puiseuxRamificationSubfield_le_puiseuxSubfield) ?_
+  intro x hx
+  rw [mem_puiseuxSubfield] at hx
+  obtain ⟨n, hn⟩ := hx
+  exact (le_iSup (puiseuxRamificationSubfield K) n) hn
+
+end FieldFiltration
+
+/-! ═══════════════════════════════════════════════════════════════════════════════
 SUMMARY
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
