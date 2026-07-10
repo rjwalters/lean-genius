@@ -2971,4 +2971,75 @@ theorem four_dvd_totient_all_regimes :
    ⟨15, by rw [totient_15]; norm_num, classifySeed_15⟩,
    ⟨13, by rw [totient_13]; norm_num, classifySeed_13⟩⟩
 
+-- ----------------------------------------------------------------------------
+-- Quantitative sharpening: the EXACT reversal gap of the prime-triple family
+-- ----------------------------------------------------------------------------
+-- `mem_ReversalSet_primeTriple` shows the family `n = (18m+3)·2^(k+1)` reverses
+-- (`φ(n) < φ(D(n))`) whenever `4m+1, 6m+1, 14m+3` are all prime.  That is purely
+-- qualitative.  Here we compute the gap EXACTLY: `φ(D(n)) − φ(n) = (2m+2)·2^k`.
+-- The mechanism gives `φ(n) = 12m·2^k` (from `a = 3·(6m+1)`) and, via the
+-- transport lemma, `D(n) = (14m+3)·2^(k+1)` so `φ(D(n)) = (14m+2)·2^k`; the
+-- difference `(14m+2 − 12m)·2^k = (2m+2)·2^k` grows without bound in BOTH `m`
+-- (across successive prime-triple seeds) and `k` (down each family).  So the
+-- reversal margin is not merely positive but diverges — a strict quantitative
+-- refinement of the membership statement.
+
+/-- **Exact reversal gap of the prime-triple family.**  For a seed `a = 18m+3`
+    with `4m+1`, `6m+1`, `14m+3` all prime (`m ≥ 1`), the reversal along
+    `n = (18m+3)·2^(k+1)` has the explicit gap
+    `φ(D(n)) − φ(n) = (2m+2)·2^k`.  This sharpens the qualitative membership
+    `mem_ReversalSet_primeTriple` (`φ(n) < φ(D(n))`) to an exact difference that
+    grows without bound in both `m` and `k`. -/
+theorem reversal_gap_primeTriple {m : ℕ} (hm : 1 ≤ m)
+    (hp : (4 * m + 1).Prime) (hq : (6 * m + 1).Prime) (he : (14 * m + 3).Prime)
+    (k : ℕ) :
+    Nat.totient (dblIter ((18 * m + 3) * 2 ^ (k + 1)))
+      - Nat.totient ((18 * m + 3) * 2 ^ (k + 1)) = (2 * m + 2) * 2 ^ k := by
+  have hcopa : Nat.Coprime 3 (6 * m + 1) :=
+    (Nat.coprime_primes (by norm_num) hq).mpr (by omega)
+  have hcopb : Nat.Coprime 3 (4 * m + 1) :=
+    (Nat.coprime_primes (by norm_num) hp).mpr (by omega)
+  have hφa : Nat.totient (18 * m + 3) = 12 * m := by
+    rw [show 18 * m + 3 = 3 * (6 * m + 1) from by ring, Nat.totient_mul hcopa,
+        show Nat.totient 3 = 2 from by decide, Nat.totient_prime hq]; omega
+  have hφb : Nat.totient (12 * m + 3) = 8 * m := by
+    rw [show 12 * m + 3 = 3 * (4 * m + 1) from by ring, Nat.totient_mul hcopb,
+        show Nat.totient 3 = 2 from by decide, Nat.totient_prime hp]; omega
+  have ha_odd : Odd (18 * m + 3) := Nat.odd_iff.mpr (by omega)
+  have hb_odd : Odd (12 * m + 3) := Nat.odd_iff.mpr (by omega)
+  have hp2 : Nat.totient (2 ^ (k + 1)) = 2 ^ k := by
+    rw [Nat.totient_prime_pow Nat.prime_two (Nat.succ_pos k)]; simp
+  -- φ(n) = φ(18m+3)·2^k = 12m·2^k
+  have copa : Nat.Coprime (18 * m + 3) (2 ^ (k + 1)) :=
+    ((Nat.prime_two.coprime_iff_not_dvd).mpr (by omega)).symm.pow_right (k + 1)
+  have hφn : Nat.totient ((18 * m + 3) * 2 ^ (k + 1)) = 12 * m * 2 ^ k := by
+    rw [Nat.totient_mul copa, hp2, hφa]
+  -- transport: D(n) = (2a − φ(b))·2^k = (14m+3)·2^(k+1)
+  have hstep : 2 * (18 * m + 3) - Nat.totient (18 * m + 3) = 2 * (12 * m + 3) := by
+    rw [hφa]; omega
+  have hD : dblIter ((18 * m + 3) * 2 ^ (k + 1)) = (14 * m + 3) * 2 ^ (k + 1) := by
+    rw [dblIter_transport ha_odd hb_odd hstep k, hφb,
+        show 2 * (18 * m + 3) - 8 * m = (14 * m + 3) * 2 from by omega]
+    ring
+  have cope : Nat.Coprime (14 * m + 3) (2 ^ (k + 1)) :=
+    ((Nat.prime_two.coprime_iff_not_dvd).mpr (by omega)).symm.pow_right (k + 1)
+  have hφD : Nat.totient (dblIter ((18 * m + 3) * 2 ^ (k + 1))) = (14 * m + 2) * 2 ^ k := by
+    rw [hD, Nat.totient_mul cope, hp2, Nat.totient_prime he,
+        show 14 * m + 3 - 1 = 14 * m + 2 from by omega]
+  rw [hφD, hφn, ← Nat.sub_mul, show 14 * m + 2 - 12 * m = 2 * m + 2 from by omega]
+
+/-- **The prime-triple reversal margin is unbounded below by `2^(k+2)`.**  A direct
+    corollary of `reversal_gap_primeTriple`: since `2m+2 ≥ 4` for `m ≥ 1`, the
+    reversal gap `φ(D(n)) − φ(n) = (2m+2)·2^k` is at least `2^(k+2)` along every
+    prime-triple family, and grows with `m` — so the family reverses by an
+    arbitrarily large amount even at fixed `k`. -/
+theorem reversal_gap_primeTriple_ge {m : ℕ} (hm : 1 ≤ m)
+    (hp : (4 * m + 1).Prime) (hq : (6 * m + 1).Prime) (he : (14 * m + 3).Prime)
+    (k : ℕ) :
+    2 ^ (k + 2) ≤ Nat.totient (dblIter ((18 * m + 3) * 2 ^ (k + 1)))
+      - Nat.totient ((18 * m + 3) * 2 ^ (k + 1)) := by
+  rw [reversal_gap_primeTriple hm hp hq he k]
+  calc 2 ^ (k + 2) = 4 * 2 ^ k := by rw [pow_add]; ring
+    _ ≤ (2 * m + 2) * 2 ^ k := by gcongr; omega
+
 end Erdos1064OQ03
