@@ -321,7 +321,7 @@ theorem kst_edge_bound (G : SimpleGraph V) [DecidableRel G.Adj] [Nonempty V] (κ
       (Fintype.card V : ℝ) *
         (1 + Real.sqrt (1 + 4 * (κ : ℝ) * ((Fintype.card V : ℝ) - 1))) := by
   have hn1 : (1 : ℝ) ≤ (Fintype.card V : ℝ) := by
-    have : 1 ≤ Fintype.card V := Fintype.card_pos.mpr ‹Nonempty V›
+    have : 1 ≤ Fintype.card V := Fintype.card_pos
     exact_mod_cast this
   have harg : (0 : ℝ) ≤ 1 + 4 * (κ : ℝ) * ((Fintype.card V : ℝ) - 1) := by
     have : (0 : ℝ) ≤ (κ : ℝ) * ((Fintype.card V : ℝ) - 1) :=
@@ -350,8 +350,7 @@ theorem commonNbrs_card_lt_of_free (G : SimpleGraph V) [DecidableRel G.Adj]
   by_contra h
   push_neg at h
   exact hfree ⟨a, b, commonNbrs G a b, hab, h, fun y hy => by
-    rw [commonNbrs, Finset.mem_inter, SimpleGraph.mem_neighborFinset,
-      SimpleGraph.mem_neighborFinset] at hy
+    simp only [commonNbrs, Finset.mem_inter, SimpleGraph.mem_neighborFinset] at hy
     exact hy⟩
 
 /-- **K_{2,t}-free edge bound.**  A genuinely K_{2,t}-free nonempty graph
@@ -370,7 +369,7 @@ theorem kst_edge_bound_of_free (G : SimpleGraph V) [DecidableRel G.Adj] [Nonempt
     have := commonNbrs_card_lt_of_free G t hfree a b hab; omega
   have h := kst_edge_bound G (t - 1) hbound
   have hcast : ((t - 1 : ℕ) : ℝ) = (t : ℝ) - 1 := by
-    rw [Nat.cast_sub ht]; push_cast; ring
+    rw [Nat.cast_sub ht, Nat.cast_one]
   rwa [hcast] at h
 
 end GraphLevel
