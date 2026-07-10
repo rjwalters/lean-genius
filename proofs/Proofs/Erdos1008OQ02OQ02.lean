@@ -118,6 +118,44 @@ theorem kst_root_exact (t n s : ℝ) (hs2 : s ^ 2 = 1 + 4 * (t - 1) * (n - 1)) :
   simp only [R]
   nlinarith [hs2]
 
+/-- **Classical Kővári–Sós–Turán closed form.**  From the generalised KST quadratic
+`4 m² ≤ (t-1)·n²(n-1) + 2 n m` (for `t ≥ 2`, `n ≥ 1`, `m ≥ 0`) the edge count obeys the
+textbook bound
+
+      m ≤ ½ · (√(t-1) · n^{3/2} + n).
+
+This is the recognizable form `ex(n ; K_{2,t}) ≤ ½(√(t-1)·n^{3/2} + n)` of Kővári, Sós
+and Turán (1954), obtained from the exact upper root `n(1+s)/4` of
+`kst_quadratic_solve` by the elementary discriminant estimate
+`s = √(1 + 4(t-1)(n-1)) ≤ 1 + 2√(t-1)·√n` (squaring reduces it to
+`0 ≤ 4√(t-1)·√n + 4(t-1)`).  Here `n^{3/2}` is written `n · √n`. -/
+theorem kst_bound_classical (t m n : ℝ) (ht : 2 ≤ t) (hn : 1 ≤ n) (_hm : 0 ≤ m)
+    (hkst : 4 * m ^ 2 ≤ (t - 1) * n ^ 2 * (n - 1) + 2 * n * m) :
+    m ≤ (Real.sqrt (t - 1) * (n * Real.sqrt n) + n) / 2 := by
+  have ht1 : (0 : ℝ) ≤ t - 1 := by linarith
+  have hn0 : (0 : ℝ) ≤ n := by linarith
+  set a := Real.sqrt (t - 1) with ha_def
+  set b := Real.sqrt n with hb_def
+  have ha : 0 ≤ a := Real.sqrt_nonneg _
+  have hb : 0 ≤ b := Real.sqrt_nonneg _
+  have ha2 : a ^ 2 = t - 1 := Real.sq_sqrt ht1
+  have hb2 : b ^ 2 = n := Real.sq_sqrt hn0
+  have hdisc : (0 : ℝ) ≤ 1 + 4 * (t - 1) * (n - 1) := by nlinarith
+  set s := Real.sqrt (1 + 4 * (t - 1) * (n - 1)) with hs_def
+  have hs0 : 0 ≤ s := Real.sqrt_nonneg _
+  have hs2 : s ^ 2 = 1 + 4 * (t - 1) * (n - 1) := Real.sq_sqrt hdisc
+  have hsolve : 4 * m ≤ n * (1 + s) := kst_quadratic_solve t m n s hn hs0 hs2 hkst
+  have hYnn : (0 : ℝ) ≤ 1 + 2 * a * b := by nlinarith [mul_nonneg ha hb]
+  have hsle : s ≤ 1 + 2 * a * b := by
+    have hXY : 1 + 4 * (t - 1) * (n - 1) ≤ (1 + 2 * a * b) ^ 2 := by
+      nlinarith [mul_nonneg ha hb, ha2, hb2, sq_nonneg a]
+    calc s = Real.sqrt (1 + 4 * (t - 1) * (n - 1)) := hs_def
+      _ ≤ Real.sqrt ((1 + 2 * a * b) ^ 2) := Real.sqrt_le_sqrt hXY
+      _ = 1 + 2 * a * b := Real.sqrt_sq hYnn
+  have hcomb : 4 * m ≤ n * (1 + (1 + 2 * a * b)) := by
+    nlinarith [hsolve, mul_le_mul_of_nonneg_left hsle hn0]
+  nlinarith [hcomb]
+
 /-! ### Graph-level Kővári–Sós–Turán bound for K_{2,t}
 
 The algebraic core above (`kst_quadratic_solve`) is fed by a genuinely
