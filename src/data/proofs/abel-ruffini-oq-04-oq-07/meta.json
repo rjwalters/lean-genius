@@ -227,9 +227,9 @@
   },
   "mainTheorems": [
     {
-      "name": "linear_tschirnhaus_depresses",
+      "name": "depressed_quintic_forward",
       "type": "key",
-      "description": "The substitution y = x + a₄/5 eliminates the x⁴ term from any monic quintic (proved via polynomial identity)"
+      "description": "The linear Tschirnhaus substitution y = x + a₄/5 sends a root of any monic quintic to a root of the depressed quintic (no x⁴ term), proved via polynomial identity"
     },
     {
       "name": "bringRadical",
