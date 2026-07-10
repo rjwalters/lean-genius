@@ -140,6 +140,29 @@
       "description": "Grandparent's group-agnostic master formula |Fix(g)| = k^{cyc(g)} drives the whole chain; this entry expresses its cyclic Burnside average in the closed totient-divisor form used in textbooks."
     }
   ],
+  "references": [
+    {
+      "authors": "William Burnside",
+      "title": "Theory of Groups of Finite Order",
+      "year": "1911",
+      "venue": "Cambridge University Press (2nd ed.)",
+      "note": "The orbit-counting lemma (number of orbits = average number of fixed points of the group action), the engine behind the cyclic necklace count. Historically due to Cauchy and Frobenius; the necklace total here is its cyclic-group instance."
+    },
+    {
+      "authors": "George Pólya",
+      "title": "Kombinatorische Anzahlbestimmungen für Gruppen, Graphen und chemische Verbindungen",
+      "year": "1937",
+      "venue": "Acta Mathematica 68, 145–254",
+      "note": "The cycle-index / enumeration theorem; for the cyclic group Cₙ it yields the necklace-counting formula (1/n)∑_{d∣n} φ(d)·k^{n/d}, the closed divisor form this entry proves."
+    },
+    {
+      "authors": "Jacobus H. van Lint, Richard M. Wilson",
+      "title": "A Course in Combinatorics",
+      "year": "2001",
+      "venue": "Cambridge University Press (2nd ed.)",
+      "note": "Textbook treatment of Burnside/Pólya counting and the cyclic necklace formula (1/n)∑_{d∣n} φ(n/d)·k^d, together with Gauss's identity ∑_{d∣n} φ(d) = n underlying the fiber-cardinality count φ(n/d)."
+    }
+  ],
   "leanFile": {
     "lineCount": 105,
     "path": "Proofs/BurnsideCountingOQ03OQ02OQ01OQ02.lean",
