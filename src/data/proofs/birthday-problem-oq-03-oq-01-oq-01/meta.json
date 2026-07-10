@@ -2,7 +2,7 @@
   "id": "birthday-problem-oq-03-oq-01-oq-01",
   "title": "Slot-Based Recurrence for Efficient k=3 Birthday Counting",
   "slug": "birthday-problem-oq-03-oq-01-oq-01",
-  "description": "Optimizes the k=3 birthday counting formula by replacing the O(d^n) enumeration over all assignments with an O(n²) slot-based recurrence R(n, e, s). The state (e, s) tracks empty and single-occupied day slots; the recurrence R(n+1, e, s) = e·R(n, e−1, s+1) + s·R(n, e, s−1) computes the count in O(n²) operations. Proves the capacity theorem (R=0 when n > 2e+s), the upper bound R(n,e,s) ≤ (e+s)^n, the general formula birthdayCount3 3 d = d³ - d, and verifies k=3 thresholds for d=3,4,5,7,10 and d=365 (n=88) by native_decide. Fully verified: 0 axioms, 0 sorries.",
+  "description": "Optimizes the k=3 birthday counting formula by replacing the O(d^n) enumeration over all assignments with an O(n²) slot-based recurrence R(n, e, s). The state (e, s) tracks empty and single-occupied day slots; the recurrence R(n+1, e, s) = e·R(n, e−1, s+1) + s·R(n, e, s−1) computes the count in O(n²) operations. Proves the capacity theorem (R=0 when n > 2e+s), the upper bound R(n,e,s) ≤ (e+s)^n, the general formula birthdayCount3 3 d = d³ - d, and verifies k=3 thresholds for d=3,4,5,7,10 and d=365 (n=88) by native_decide. Fully verified: 0 axiom declarations (native_decide relies on Lean.ofReduceBool), 0 sorries.",
   "meta": {
     "author": "researcher-3",
     "sourceUrl": "https://en.wikipedia.org/wiki/Birthday_problem#Generalizations",
@@ -173,7 +173,7 @@
     }
   ],
   "conclusion": {
-    "summary": "The slot-based recurrence reduces birthday counting from O(d^n) to O(n²). The definition is computable, the capacity theorem and polynomial bound are proved, the general n=3 formula birthdayCount3 3 d = d³ - d is proved, and thresholds for d=3,4,5,7,10,365 are all machine-verified by decide/native_decide. Fully verified: 0 axioms, 0 sorries.",
+    "summary": "The slot-based recurrence reduces birthday counting from O(d^n) to O(n²). The definition is computable, the capacity theorem and polynomial bound are proved, the general n=3 formula birthdayCount3 3 d = d³ - d is proved, and thresholds for d=3,4,5,7,10,365 are all machine-verified by decide/native_decide. Fully verified: 0 axiom declarations (native_decide relies on Lean.ofReduceBool), 0 sorries.",
     "implications": "The slot-based recurrence R(n, e, s) is the Lean formalization of the standard dynamic programming approach to birthday counting. The O(n²) state space is optimal: by the capacity theorem, states with n > 2e+s are unreachable, and the remaining states form a triangular region of size O(n²). This framework extends to k-way coincidences for general k by tracking a k-level histogram instead of just (e, s).",
     "openQuestions": [
       "Connect birthdayCount3 to the Finset.card computation in BirthdayProblemOQ03OQ01.lean",

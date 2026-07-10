@@ -83,7 +83,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Establishes the key factorization bound $p^{v_p\\binom{2n}{n}} \\leq 2n$ for Chebyshev's argument, proved in one line via Mathlib's `Nat.pow_factorization_choose_le`. Also proves the central binomial lower bound $(2n+1)\\binom{2n}{n} \\geq 4^n$ and synthesizes Chebyshev's combined inequality. The carry-counting infrastructure (Legendre formula, carry bound, vanishing for large powers) and the product bound corollary are fully proved with 0 axioms and 0 sorries.",
+    "summary": "Establishes the key factorization bound $p^{v_p\\binom{2n}{n}} \\leq 2n$ for Chebyshev's argument, proved in one line via Mathlib's `Nat.pow_factorization_choose_le`. Also proves the central binomial lower bound $(2n+1)\\binom{2n}{n} \\geq 4^n$ and synthesizes Chebyshev's combined inequality. The carry-counting infrastructure (Legendre formula, carry bound, vanishing for large powers) and the product bound corollary are fully proved with 0 axiom declarations (native_decide relies on Lean.ofReduceBool) and 0 sorries.",
     "implications": "This factorization bound is the combinatorial core of Chebyshev's elementary approach to prime distribution. Combined with the central binomial lower bound, it gives $\\pi(x) \\geq c \\cdot x/\\ln x$ without any analytic machinery — a remarkable result that predated the Prime Number Theorem by nearly 50 years. The complete formal chain from Kummer's theorem to Chebyshev's bound is now established.",
     "openQuestions": [
       "Can this be extended to prove Bertrand's postulate ($\\exists$ prime $p$ with $n < p \\leq 2n$) by refining the upper bound on $\\binom{2n}{n}$ to exclude primes in $(\\sqrt{2n}, 2n/3)$?",

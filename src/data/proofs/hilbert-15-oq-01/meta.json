@@ -2,7 +2,7 @@
   "id": "hilbert-15-oq-01",
   "title": "Chow Ring of Gr(2,4): Schubert Calculus with Explicit Multiplication",
   "slug": "hilbert-15-oq-01",
-  "description": "Formalizes the Chow ring (intersection ring) of the Grassmannian Gr(2,4) with an explicit Littlewood–Richardson multiplication table on 6 Schubert basis classes. Proves σ₁⁴ = 2 (the four lines number) by direct computation with 0 axioms and 0 sorries. Verifies Poincaré duality, Giambelli's formula, and several classical enumerative results.",
+  "description": "Formalizes the Chow ring (intersection ring) of the Grassmannian Gr(2,4) with an explicit Littlewood–Richardson multiplication table on 6 Schubert basis classes. Proves σ₁⁴ = 2 (the four lines number) by direct computation with 0 axiom declarations (native_decide relies on Lean.ofReduceBool) and 0 sorries. Verifies Poincaré duality, Giambelli's formula, and several classical enumerative results.",
   "meta": {
     "author": "Schubert (1879), Hilbert (1900); Chow ring formalized 2026",
     "sourceUrl": "https://en.wikipedia.org/wiki/Schubert_calculus",
@@ -146,7 +146,7 @@
     }
   ],
   "conclusion": {
-    "summary": "The Chow ring of Gr(2,4) is fully formalized with 0 axioms, 0 sorries, 22 theorems. The four lines number σ₁⁴ = 2 is proved by direct computation from the explicit Littlewood–Richardson multiplication table.",
+    "summary": "The Chow ring of Gr(2,4) is fully formalized with 0 axiom declarations (native_decide relies on Lean.ofReduceBool), 0 sorries, 22 theorems. The four lines number σ₁⁴ = 2 is proved by direct computation from the explicit Littlewood–Richardson multiplication table.",
     "implications": "**Mathematical Significance**:\n\n**1. Axiom-Free Schubert Calculus**: The four lines theorem is proved computationally with 0 axioms, eliminating the sigma1_fourth_power axiom from the parent file.\n\n**2. Complete Multiplication Table**: All 36 basis products in A*(Gr(2,4)) are formalized and verified.\n\n**3. Foundation for Generalization**: The ChowGr24 structure and basisMul approach can be extended to Gr(k,n) for any small k,n.\n\n**4. Hilbert's 15th Problem**: This provides a concrete, machine-verified instance of Schubert's enumerative calculus on rigorous foundations.",
     "openQuestions": [
       "Extend to Gr(2,5) and Gr(3,6) with larger multiplication tables",

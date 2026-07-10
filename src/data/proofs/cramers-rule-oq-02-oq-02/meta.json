@@ -137,7 +137,7 @@
     }
   ],
   "conclusion": {
-    "summary": "The formalization answers affirmatively: **yes**, the complexity comparison extends to LU decomposition and QR factorization. Both O(n³) algorithms beat Cramer's rule super-polynomially. The proof is complete with 0 sorries and 0 axioms, establishing exact comparisons and asymptotic bounds for the entire cubic algorithm family.",
+    "summary": "The formalization answers affirmatively: **yes**, the complexity comparison extends to LU decomposition and QR factorization. Both O(n³) algorithms beat Cramer's rule super-polynomially. The proof is complete with 0 sorries and 0 axiom declarations (native_decide relies on Lean.ofReduceBool), establishing exact comparisons and asymptotic bounds for the entire cubic algorithm family.",
     "implications": "**Implications**\n\n1. **Algorithm Family Formalization**: Establishes that the Gaussian complexity result is robust across the entire O(n³) family, not a special property of one algorithm.\n2. **QR Threshold**: Formally verifies the subtle threshold difference: QR beats Cramer starting at n=3 (not n=4 like Gaussian), due to the 2× constant factor.\n3. **Unified Asymptotic**: All three cubic algorithms (Gaussian, LU, QR) are eventually K-times better than Cramer for any K — the constant factor differences within O(n³) are irrelevant at the asymptotic level.\n4. **Practical Justification**: Provides machine-checked support for the textbook claim that all standard direct solvers are vastly preferable to Cramer's rule for n > 3.",
     "openQuestions": [
       "Can the QR complexity model be tightened from 2n³ to 4n³/3 (the exact Householder count)?",

@@ -143,7 +143,7 @@
     }
   ],
   "conclusion": {
-    "summary": "The non-coprime CRT efficiency result extends cleanly to k moduli. The key abstraction is kLCM = Finset.lcm over ℤ's GCDMonoid, which encodes the LCM universality property. All 22 theorems compile with 0 sorries and 0 axioms. The iterative reduction theorem shows that k-moduli CRT is computationally equivalent to (k-1) successive 2-modulus CRT applications.",
+    "summary": "The non-coprime CRT efficiency result extends cleanly to k moduli. The key abstraction is kLCM = Finset.lcm over ℤ's GCDMonoid, which encodes the LCM universality property. All 22 theorems compile with 0 sorries and 0 axiom declarations (native_decide relies on Lean.ofReduceBool). The iterative reduction theorem shows that k-moduli CRT is computationally equivalent to (k-1) successive 2-modulus CRT applications.",
     "implications": "**For Algorithms**: The iterative construction (kModuli_iterative) directly corresponds to the standard CRT algorithm: solve pairwise, accumulate the solution modulo the running lcm. This is O(k) two-modulus CRT steps.\n\n**For Cryptography**: Multi-prime RSA and threshold schemes use k-moduli CRT. This formalization shows the space savings from non-coprime moduli (lcm < product) and the correctness of iterative reconstruction.\n\n**For Mathlib**: Demonstrates that Finset.lcm + ℤ GCDMonoid is a clean, short path to k-moduli LCM results. No new Mathlib infrastructure needed.",
     "openQuestions": [
       "Formalize the full Garner algorithm for k moduli with runtime complexity bounds",

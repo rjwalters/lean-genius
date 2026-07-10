@@ -115,7 +115,7 @@
     }
   ],
   "conclusion": {
-    "summary": "11 theorems with 0 sorries and 0 axioms. The main identity derives from Mathlib's ascFactorial_eq_factorial_mul_choose; independent contributions include the explicit product formula (by induction) and structural corollaries. The rising factorial identity connects simplicial numbers to ordered selections, explaining why binomial coefficients are integers.",
+    "summary": "11 theorems with 0 sorries and 0 axiom declarations (native_decide relies on Lean.ofReduceBool). The main identity derives from Mathlib's ascFactorial_eq_factorial_mul_choose; independent contributions include the explicit product formula (by induction) and structural corollaries. The rising factorial identity connects simplicial numbers to ordered selections, explaining why binomial coefficients are integers.",
     "implications": "**Integrality of binomial coefficients**: The divisibility k! | (n+1)(n+2)...(n+k) provides a clean proof that C(n+k,k) is always a natural number. **Permutation counting**: C(n+k,k) * k! counts the number of k-permutations from a set of n+k elements that include all of the last k elements. **Connection to Stirling numbers**: The rising factorial is the fundamental building block for Stirling number identities and the conversion between ordinary and factorial powers.",
     "openQuestions": [
       "Can the descending factorial analogue n * (n-1) * ... * (n-k+1) = C(n,k) * k! be formalized with the same modular structure?",

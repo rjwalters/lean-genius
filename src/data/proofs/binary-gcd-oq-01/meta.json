@@ -130,7 +130,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Fully verified step count analysis for Binary GCD vs Euclidean algorithm. Both logarithmic bounds proved: Lamé's theorem via bridge to GCDAlgorithmOQ01, Binary GCD bound via strong induction with log-decrease potential. 0 axioms, 0 sorries.",
+    "summary": "Fully verified step count analysis for Binary GCD vs Euclidean algorithm. Both logarithmic bounds proved: Lamé's theorem via bridge to GCDAlgorithmOQ01, Binary GCD bound via strong induction with log-decrease potential. 0 axiom declarations (native_decide relies on Lean.ofReduceBool), 0 sorries.",
     "implications": "The step counting infrastructure enables formal comparison of GCD algorithm variants. The concrete examples verify the expected behavior: Fibonacci inputs maximize Euclidean steps, while Binary GCD has more uniform behavior across input types.",
     "openQuestions": [
       "Total cost model: formalize the weighted complexity W(a,b) = Σ cost(step_i) where each Euclidean step costs O(log a) bit operations and each Binary GCD step costs O(1); prove W_binary ≤ W_euclid asymptotically for multi-precision integers",

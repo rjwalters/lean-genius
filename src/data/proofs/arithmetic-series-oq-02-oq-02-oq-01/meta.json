@@ -2,7 +2,7 @@
   "id": "arithmetic-series-oq-02-oq-02-oq-01",
   "title": "k-Dimensional Hockey Stick Identity",
   "slug": "arithmetic-series-oq-02-oq-02-oq-01",
-  "description": "Proves the k-dimensional hockey stick identity by induction on dimension k. Defines multiHockeySum [a₁,...,aₖ] n = Σ_{i₁+...+iₖ ≤ n} C(i₁+a₁,a₁)·...·C(iₖ+aₖ,aₖ) and proves it equals C(n + Σaⱼ + k, Σaⱼ + k). The induction step applies the parallel Vandermonde convolution from the parent file. Includes 1D, 2D, 3D special cases and concrete numerical verification. 8 theorems, 1 definition, 0 axioms.",
+  "description": "Proves the k-dimensional hockey stick identity by induction on dimension k. Defines multiHockeySum [a₁,...,aₖ] n = Σ_{i₁+...+iₖ ≤ n} C(i₁+a₁,a₁)·...·C(iₖ+aₖ,aₖ) and proves it equals C(n + Σaⱼ + k, Σaⱼ + k). The induction step applies the parallel Vandermonde convolution from the parent file. Includes 1D, 2D, 3D special cases and concrete numerical verification. 8 theorems, 1 definition, 0 axiom declarations (native_decide relies on Lean.ofReduceBool).",
   "meta": {
     "author": "Lean Genius",
     "sourceUrl": "https://en.wikipedia.org/wiki/Hockey-stick_identity",
@@ -117,7 +117,7 @@
     }
   ],
   "conclusion": {
-    "summary": "The k-dimensional hockey stick identity is proved by list induction with parallel Vandermonde as the induction engine. The parameter list encoding (length = dimension $k$, sum = offset $\\sum a_j$) makes the inductive step a clean one-application-of-convolution argument. Concrete checks confirm $C(5,3)=10$ (3-simplex at $n=2$) and $C(6,3)=20$. 8 theorems, 0 axioms, 165 lines.",
+    "summary": "The k-dimensional hockey stick identity is proved by list induction with parallel Vandermonde as the induction engine. The parameter list encoding (length = dimension $k$, sum = offset $\\sum a_j$) makes the inductive step a clean one-application-of-convolution argument. Concrete checks confirm $C(5,3)=10$ (3-simplex at $n=2$) and $C(6,3)=20$. 8 theorems, 0 axiom declarations (native_decide relies on Lean.ofReduceBool), 165 lines.",
     "implications": "This formalization demonstrates that multi-dimensional combinatorial identities often reduce to repeated 1D convolutions. The list induction structure is a clean architectural choice: it makes the $k$-dimensional case literally a consequence of the $(k-1)$-dimensional case plus one Vandermonde step. The parallel between the algebraic structure (list sum + length) and the combinatorial content (weight offset + dimension) is the insight that makes the proof work.",
     "openQuestions": [
       "Generalize to weighted sums over other polytopes: for the standard cube $\\{0 \\leq i_j \\leq n_j\\}$, the generating function is $\\prod (1/(1-z^{n_j+1}))/(1-z)$. Does the hockey stick have a cube analog?",
