@@ -279,12 +279,12 @@
     "additionalFiles": [
       {
         "path": "Proofs/BallotProblemOQ02OQ05.lean",
-        "lineCount": 283,
-        "theorems": 5,
+        "lineCount": 357,
+        "theorems": 6,
         "definitions": 7,
         "axioms": 1,
-        "sorries": 4,
-        "description": "OQ-05: Donsker's functional CLT statement layer connecting the discrete ballot problem to its continuous-time Brownian-motion shadow. Defines the interpolated rescaled random walk S_n*(t), an ad hoc weak-convergence predicate WeakConvergesInC01 (Mathlib v4.26.0 lacks Polish structure on C([0,1],ℝ)), and axiomatizes donsker_fclt (Wiedijk #45). Discrete reflection identity + first-passage / Sparre-Andersen / arcsine pipeline is staged across S3-S7 (4 acknowledged sorries scaffolding R4-sub/R5/LOW/R6)."
+        "sorries": 2,
+        "description": "OQ-05: Donsker's functional CLT statement layer connecting the discrete ballot problem to its continuous-time Brownian-motion shadow. Defines the interpolated rescaled random walk S_n*(t), an ad hoc weak-convergence predicate WeakConvergesInC01 (Mathlib v4.26.0 lacks Polish structure on C([0,1],ℝ)), and axiomatizes donsker_fclt (Wiedijk #45). Discrete reflection identity + first-passage / Sparre-Andersen / arcsine pipeline is staged across S3-S7 (R4/R5 now proved; 2 acknowledged sorries scaffolding LOW/R6)."
       }
     ]
   },
