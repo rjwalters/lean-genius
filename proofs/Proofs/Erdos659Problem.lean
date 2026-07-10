@@ -452,6 +452,31 @@ theorem five_not_representable : 5 ∉ representable_x2_2y2 :=
 theorem seven_not_representable : 7 ∉ representable_x2_2y2 :=
   not_representable_of_mod8 7 (Or.inr rfl)
 
+/-- **Residue restriction from the representable side.** The contrapositive of the mod-8
+    obstruction `not_representable_of_mod8`: a value of `x² + 2y²` never lies in the inert
+    residue classes, i.e. `n % 8 ≠ 5` and `n % 8 ≠ 7`. Stating the obstruction as a property
+    of representable `n` makes it directly usable as a *filter* on representable numbers
+    (their residues mod 8 lie in `{0,1,2,3,4,6}`). -/
+theorem representable_mod8_ne_five_seven {n : ℕ} (hn : n ∈ representable_x2_2y2) :
+    n % 8 ≠ 5 ∧ n % 8 ≠ 7 :=
+  ⟨fun h => not_representable_of_mod8 n (Or.inl h) hn,
+   fun h => not_representable_of_mod8 n (Or.inr h) hn⟩
+
+/-- **Strict upper count once a gap appears: `B₂(N) < N` for `N ≥ 5`.** Sharpening `B2_le`
+    (`B₂(N) ≤ N`): as soon as the window reaches the first non-representable integer `5`
+    (`five_not_representable`), the counted set is a *proper* subset of `Icc 1 N`, so the
+    count drops strictly below `N`. Combined with `one_le_B2` this refines the sandwich to
+    `1 ≤ B₂(N) < N` for every `N ≥ 5` — the counting shadow of the mod-8 obstruction. -/
+theorem B2_lt_of_five_le {N : ℕ} (hN : 5 ≤ N) : B2 N < N := by
+  unfold B2
+  have hssub : representable_x2_2y2 ∩ Set.Icc 1 N ⊂ Set.Icc (1 : ℕ) N :=
+    (Set.ssubset_iff_of_subset Set.inter_subset_right).mpr
+      ⟨5, Set.mem_Icc.mpr ⟨by norm_num, hN⟩, fun h => five_not_representable h.1⟩
+  have hlt := Set.ncard_lt_ncard hssub (Set.finite_Icc 1 N)
+  have hcard : (Set.Icc (1 : ℕ) N).ncard = N := by
+    rw [← Finset.coe_Icc, Set.ncard_coe_finset, Nat.card_Icc]; omega
+  omega
+
 /-! ### Insufficiency of congruence obstructions: a bounded search reduction
 
 The mod-8 obstruction above rules out residues `5, 7 (mod 8)`, but it is **not** the
