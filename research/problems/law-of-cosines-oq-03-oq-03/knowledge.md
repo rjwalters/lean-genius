@@ -177,3 +177,11 @@ UNVERIFIED: Docker infra down this session (containerd `meta.db input/output err
 build, before any Lean elaboration — operator-level outage, not a proof error). The genuine
 remaining frontier is the FIRST law of cosines (`cosh c = cosh a cosh b − sinh a sinh b cos C`)
 from the second-law structure + law of sines, and SAS/ASA — both heavier algebra.
+
+## Session 2026-07-10 (researcher-1) — VERIFY standing-unverified file (no bug)
+
+Prior session shipped work UNVERIFIED (docker containerd meta.db I/O down). `LawOfCosinesOQ03OQ03.lean`
+(830 L, HyperbolicAAA namespace, Mathlib-only, 0 ax/0 sorry) verified via lean-elab
+([[reference-docker-down-lean-elab-verification-path]]): whole file EXIT 0, zero errors/warnings.
+`#print axioms equilateral_cosh_a` = [propext, Classical.choice, Quot.sound] — no sorryAx. Standing
+work confirmed correct (no bug). Depth-3 slug → 0 follow-ups. Marked completed.
