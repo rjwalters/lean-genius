@@ -59,5 +59,22 @@
   },
   "significance": 6,
   "tractability": 6,
-  "category": "extension"
+  "category": "extension",
+  "knowledge": {
+    "insights": [
+      "Commutant dimension dim_K C(M)=n for nonderogatory M is the equality case of Frobenius bound dim_K C(M)≥n; assembled purely from sibling lemmas (commuting_matrix_is_polynomial, finrank_adjoin_eq_natDegree_minpoly, nonderogatory_iff_has_cyclic_vector).",
+      "Completed the (ii)⟺(iii) edge of the triple equivalence: prior work had only (iii)⟹(ii); this adds the forward (ii)⟹(iii) nonderogatory⟹C(M)=K[M]."
+    ],
+    "builtItems": [
+      "centralizer_eq_adjoin_of_nonderogatory, centralizer_eq_adjoin_iff_nonderogatory, finrank_centralizer_eq_of_nonderogatory (=n), finrank_centralizer_eq_natDegree_charpoly, cayley_hamilton_oq02_oq02_summary in proofs/Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ02OQ02.lean (PR #36663)"
+    ],
+    "mathlibGaps": [
+      "ENV BLOCKER (not mathlib): shared docker cache had isModule:true poisoned setup.json for dependency OQ02OQ01, blocking build of the whole cayley-hamilton chain in Lean 4.26."
+    ],
+    "nextSteps": [
+      "Rebuild PR #36663 in a clean docker cache to obtain machine verification; clear isModule:true poisoning of Proofs setup.json for cayley-hamilton chain.",
+      "Possible follow-up: converse dim_K C(M)=n ⟹ nonderogatory (needs full Frobenius invariant-factor dimension formula, not yet built)."
+    ],
+    "progressSummary": "PROGRESS (UNVERIFIED build, env-blocked): proved forward edge (ii)⟹(iii) + headline dim_K C(M)=n; source 0-sorry/0-axiom, machine verification blocked by poisoned shared cache (dependency OQ02OQ01 isModule flag)."
+  }
 }
