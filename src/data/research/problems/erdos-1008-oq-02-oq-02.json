@@ -37,7 +37,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (UNVERIFIED, docker down): graph-level K_{2,t} KST bound COMPLETE — cherry count + quadratic assembly + closed-form edge bound + K_{2,t}-free bridge, feeding the merged algebraic core; closes the graph-level gap (parent had only t=2/C4)",
+    "progressSummary": "PROGRESS (researcher-6 2026-07-09): added leading-order closed-form corollary kst_edge_bound_leading completing the docstring-stated ex(n;K_{2,t}) leading estimate; UNVERIFIED (docker containerd meta.db/content-store I/O error, no build possible). Remaining: C₄ t=2 bridge to sibling file.",
     "builtItems": [
       "kst_quadratic_solve (Erdos1008OQ02OQ02.lean): solves the general K_{2,t} KST quadratic 4m^2 <= (t-1)n^2(n-1)+2nm for the upper root 4m <= n(1+s), s=sqrt(1+4(t-1)(n-1))",
       "reiman_quadratic_solve_of_kst: t=2 specialisation recovering the sibling C4 lemma verbatim (1+4(t-1)(n-1)=4n-3)",
@@ -45,18 +45,20 @@
       "kst_cherry_count_nat (Erdos1008OQ02OQ02.lean): graph-level double count ∑_v d_v(d_v-1) ≤ κ·n(n-1) for graphs whose distinct vertex pairs share ≤ κ common neighbours (K_{2,κ+1}-free); cherry (a,b) fibre = |N(a)∩N(b)| via sum_comm double count",
       "kst_graph_quadratic (Erdos1008OQ02OQ02.lean): assembles cherry count + handshaking + CS (sq_sum_le_card) into 4m² ≤ κ·n²(n-1)+2nm — the graph-theoretic input kst_quadratic_solve needed",
       "kst_edge_bound (Erdos1008OQ02OQ02.lean): graph-level closed form 4m ≤ n(1+√(1+4κ(n-1))) via kst_quadratic_solve with t=κ+1",
-      "HasK2t + commonNbrs_card_lt_of_free + kst_edge_bound_of_free: connects the common-neighbour-bound hypothesis to the genuine forbidden-subgraph definition of K_{2,t}-freeness"
+      "HasK2t + commonNbrs_card_lt_of_free + kst_edge_bound_of_free: connects the common-neighbour-bound hypothesis to the genuine forbidden-subgraph definition of K_{2,t}-freeness",
+      "kst_edge_bound_leading: leading-order closed form m ≤ ½(√(t-1)·n^{3/2}+n) for K_{2,t}-free graphs (t≥2), via discriminant bound √(1+4(t-1)(n-1)) ≤ 2√(t-1)·√n — Erdos1008OQ02OQ02.lean GraphLevel"
     ],
     "insights": [
       "The C4 algebraic core generalises to K_{2,t} with zero structural change: replace the single-common-neighbour bound by (t-1), so s^2=4n-3 becomes s^2=1+4(t-1)(n-1) and the KST quadratic gains a (t-1) factor on the n^2(n-1) term. Same nlinarith case-split proof works.",
-      "Leading-order closed form is ex(n;K_{2,t}) <= (1/2)(sqrt(t-1)*n^{3/2}+n), matching the classical Kovari-Sos-Turan asymptotic."
+      "Leading-order closed form is ex(n;K_{2,t}) <= (1/2)(sqrt(t-1)*n^{3/2}+n), matching the classical Kovari-Sos-Turan asymptotic.",
+      "The docstring-quoted leading-order form ½(√(t-1)·n^{3/2}+n) follows from the exact bound by the crude discriminant estimate 1+4(t-1)(n-1) ≤ 4(t-1)n, which needs 4(t-1)≥1 i.e. t≥2; at t=1 the estimate degenerates to an equality m≤n/2 not covered by the strict sqrt bound."
     ],
     "mathlibGaps": [
       "No graph-level general cherry-count sum_v C(d_v,2) <= (t-1)*C(n,2) for K_{2,t}-free graphs in the gallery; parent Erdos1008Problem only proves the t=2 (C4) case kovari_sos_turan."
     ],
     "nextSteps": [
-      "VERIFY the graph-level GraphLevel section of Erdos1008OQ02OQ02.lean once containerd/docker build backend is repaired (this session: meta.db + content-store blob I/O errors)",
-      "Optional: derive the leading-order asymptotic ex(n;K_{2,t}) ≤ ½(√(t-1)·n^{3/2}+n) as an explicit ℝ corollary of kst_edge_bound"
+      "Bridge kst_edge_bound_of_free at t=2 to sibling C₄ file (c4free_edge_bound_explicit): ¬HasK2t G 2 ↔ IsC4Free G to unify at graph level",
+      "Re-verify GraphLevel + kst_edge_bound_leading in docker once containerd backend is repaired"
     ]
   },
   "tags": [

@@ -46,11 +46,12 @@ Colloq. Math. 3 (1954), 50–57.
 
 Status: 0 sorries, 0 axioms.  The algebraic core (`kst_quadratic_solve`,
 `reiman_quadratic_solve_of_kst`, `kst_root_exact`) is docker-VERIFIED
-(PR #36875).  The graph-level section added in this session
-(`kst_cherry_count_nat`, `kst_graph_quadratic`, `kst_edge_bound`,
-`kst_edge_bound_of_free`) is elaboration-checked but UNVERIFIED in docker —
-the containerd build backend was down (meta.db / content-store I/O errors) at
-authoring time.  It should be re-verified once the build infra is repaired.
+(PR #36875).  The graph-level section (`kst_cherry_count_nat`,
+`kst_graph_quadratic`, `kst_edge_bound`, `kst_edge_bound_of_free`) and the
+leading-order corollary `kst_edge_bound_leading` (`m ≤ ½(√(t-1)·n^{3/2}+n)`,
+`t ≥ 2`) are elaboration-checked but UNVERIFIED in docker — the containerd
+build backend was down (meta.db / content-store I/O errors) at authoring time.
+They should be re-verified once the build infra is repaired.
 -/
 
 import Mathlib
@@ -377,6 +378,58 @@ theorem kst_edge_bound_of_free (G : SimpleGraph V) [DecidableRel G.Adj] [Nonempt
   have hcast : ((t - 1 : ℕ) : ℝ) = (t : ℝ) - 1 := by
     rw [Nat.cast_sub ht, Nat.cast_one]
   rwa [hcast] at h
+
+/-- **Leading-order closed form for the K_{2,t}-free edge bound (`t ≥ 2`).**
+
+Bounding the discriminant crudely, `1 + 4(t-1)(n-1) ≤ 4(t-1)·n` (valid once
+`4(t-1) ≥ 1`, i.e. `t ≥ 2`), gives `√(1 + 4(t-1)(n-1)) ≤ 2√(t-1)·√n`, and the
+exact bound `kst_edge_bound_of_free` collapses to the textbook leading-order
+estimate
+
+      m ≤ ½·(√(t-1)·n^{3/2} + n),
+
+with `n^{3/2}` spelled `n·√n`.  This is the form usually quoted for
+`ex(n ; K_{2,t})`.  The hypothesis `t ≥ 2` is genuine: at `t = 1` the exact
+bound reads `4m ≤ 2n` while the estimate degenerates to `m ≤ n/2` (an equality,
+not covered by the strict discriminant bound used here). -/
+theorem kst_edge_bound_leading (G : SimpleGraph V) [DecidableRel G.Adj] [Nonempty V]
+    (t : ℕ) (ht : 2 ≤ t) (hfree : ¬ HasK2t G t) :
+    (G.edgeFinset.card : ℝ) ≤
+      (1 / 2) * (Real.sqrt ((t : ℝ) - 1) *
+          ((Fintype.card V : ℝ) * Real.sqrt (Fintype.card V : ℝ)) + (Fintype.card V : ℝ)) := by
+  set n : ℝ := (Fintype.card V : ℝ) with hn
+  have hn1 : (1 : ℝ) ≤ n := by
+    have hpos : 1 ≤ Fintype.card V := Fintype.card_pos
+    rw [hn]; exact_mod_cast hpos
+  have ht1 : (1 : ℝ) ≤ (t : ℝ) - 1 := by
+    have : (2 : ℝ) ≤ (t : ℝ) := by exact_mod_cast ht
+    linarith
+  have htpos : (0 : ℝ) ≤ (t : ℝ) - 1 := by linarith
+  have hn0 : (0 : ℝ) ≤ n := by linarith
+  -- The exact bound, phrased in terms of `n`.
+  have hedge := kst_edge_bound_of_free G t (by omega) hfree
+  rw [← hn] at hedge
+  -- `R = 2√(t-1)·√n` dominates the discriminant square-root.
+  set R : ℝ := 2 * Real.sqrt ((t : ℝ) - 1) * Real.sqrt n with hR
+  have hR0 : 0 ≤ R := by rw [hR]; positivity
+  have hRsq : R ^ 2 = 4 * ((t : ℝ) - 1) * n := by
+    rw [hR, mul_pow, mul_pow, Real.sq_sqrt htpos, Real.sq_sqrt hn0]; ring
+  have hX : 1 + 4 * ((t : ℝ) - 1) * (n - 1) ≤ 4 * ((t : ℝ) - 1) * n := by
+    nlinarith [ht1]
+  have hs : Real.sqrt (1 + 4 * ((t : ℝ) - 1) * (n - 1)) ≤ R := by
+    rw [← Real.sqrt_sq hR0, hRsq]; exact Real.sqrt_le_sqrt hX
+  have hnR : n * Real.sqrt (1 + 4 * ((t : ℝ) - 1) * (n - 1)) ≤ n * R :=
+    mul_le_mul_of_nonneg_left hs hn0
+  have hRexp : n * R = 2 * (Real.sqrt ((t : ℝ) - 1) * (n * Real.sqrt n)) := by
+    rw [hR]; ring
+  have key : 4 * (G.edgeFinset.card : ℝ) ≤
+      n + 2 * (Real.sqrt ((t : ℝ) - 1) * (n * Real.sqrt n)) :=
+    calc 4 * (G.edgeFinset.card : ℝ)
+        ≤ n * (1 + Real.sqrt (1 + 4 * ((t : ℝ) - 1) * (n - 1))) := hedge
+      _ = n + n * Real.sqrt (1 + 4 * ((t : ℝ) - 1) * (n - 1)) := by ring
+      _ ≤ n + n * R := by linarith [hnR]
+      _ = n + 2 * (Real.sqrt ((t : ℝ) - 1) * (n * Real.sqrt n)) := by rw [hRexp]
+  linarith [key, hn1]
 
 end GraphLevel
 
