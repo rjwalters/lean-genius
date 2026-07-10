@@ -601,4 +601,32 @@ theorem A_le_primorial (k : ℕ) : A k ≤ (k - 1) * primorialUpTo k := by
     exact mul_le_mul_right' (by omega) N
   exact le_trans (A_le hcard hadm) hsup
 
+/- ## The two-sided sandwich and the divergence of `A(k)`
+
+The lower bound `two_mul_sub_one_le_A` and the upper bound `A_le_primorial`
+promised (in prose) to *sandwich* `A(k)`; we record that sandwich as a single
+statement, and read off its qualitative consequence: `A(k) → ∞`.  While the
+sharp rate `A(k) ∼ k log k` is open, the fact that the extremal quantity is
+*unbounded* is already forced by the prime-`2` lower bound alone. -/
+
+/-- **Two-sided sandwich for `A(k)`.**  Packaging the prime-`2` lower bound
+`two_mul_sub_one_le_A` with the primorial upper bound `A_le_primorial`:
+`2(k-1) ≤ A(k) ≤ (k-1)·∏_{p ≤ k} p`.  This is the explicit bracket promised in
+the file header; the conjectured truth `A(k) ∼ k log k` lies strictly inside
+it. -/
+theorem A_sandwich (k : ℕ) :
+    2 * (k - 1) ≤ A k ∧ A k ≤ (k - 1) * primorialUpTo k :=
+  ⟨two_mul_sub_one_le_A k, A_le_primorial k⟩
+
+/-- **`A(k)` diverges.**  The minimal-largest-element function tends to infinity:
+`A(k) → ∞` as `k → ∞`.  This is immediate from the trivial packing bound
+`k - 1 ≤ A(k)` (`sub_one_le_A`), and is the unconditional qualitative core of
+the growth-rate question of Problem #1204 — no admissible `k`-tuple can be kept
+in a bounded window once `k` is large. -/
+theorem A_tendsto_atTop : Filter.Tendsto A Filter.atTop Filter.atTop := by
+  have hsub : Filter.Tendsto (fun k : ℕ => k - 1) Filter.atTop Filter.atTop := by
+    rw [Filter.tendsto_atTop_atTop]
+    exact fun b => ⟨b + 1, fun k hk => by omega⟩
+  exact Filter.tendsto_atTop_mono (f := fun k : ℕ => k - 1) sub_one_le_A hsub
+
 end Erdos1204
