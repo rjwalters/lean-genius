@@ -41,12 +41,14 @@ The file isolates Einstein's argument into three fully verified layers.
   `cA² + cB² = h²`. This is the "cancel `k`" step, verified without any geometry.
 
 - **Layer 3 — the altitude decomposition realised** (`altitudeFoot`, `foot_perp`,
-  `geometric_mean_A`, `geometric_mean_B`, `segments_sum`, `pythagorean_via_altitude`):
+  `geometric_mean_A`, `geometric_mean_B`, `segments_sum`, `altitude_geometric_mean`,
+  `pythagorean_via_altitude`):
   we build the altitude foot `H` explicitly in a real inner-product space, prove it is
-  perpendicular to the hypotenuse, and verify the two **geometric-mean relations**
-  `cA² = h·|AH|` and `cB² = h·|HB|` together with the betweenness identity
-  `|AH| + |HB| = h`. These are exactly the numerical shadows of "`T₁`, `T₂` are similar
-  to `T`", and summing them reconstructs `h² = cA² + cB²`.
+  perpendicular to the hypotenuse, and verify the two **leg geometric-mean relations**
+  `cA² = h·|AH|` and `cB² = h·|HB|`, the **altitude geometric-mean relation**
+  `|CH|² = |AH|·|HB|`, and the betweenness identity `|AH| + |HB| = h`. These are exactly
+  the numerical shadows of "`T₁`, `T₂` are similar to `T`" (and to each other), and
+  summing the leg relations reconstructs `h² = cA² + cB²`.
 
 ## Honesty note
 
@@ -244,6 +246,36 @@ theorem pythagorean_via_altitude (hperp : ⟪A - C, B - C⟫ = (0 : ℝ)) :
       = ‖A - B‖ * (‖A - altitudeFoot A B C‖ + ‖altitudeFoot A B C - B‖) := by
     rw [hsum]; ring
   rw [key, mul_add, ← hgA, ← hgB]
+
+include hAB in
+/-- **Geometric-mean (altitude) theorem.** The altitude from the right-angle vertex is the
+geometric mean of the two hypotenuse segments it cuts: `|CH|² = |AH| · |HB|`.  This is the
+third classical member of the altitude family (alongside the two leg relations
+`geometric_mean_A`, `geometric_mean_B`) and the numerical form of "the two sub-triangles
+`T₁`, `T₂` are similar to each other".  Proof: the altitude splits `T` into the right
+sub-triangle `A H C` (right angle at the foot `H`, by `foot_perp`), so `pythagorean_core`
+gives `|AC|² = |AH|² + |CH|²`; substituting `|AC|² = |AB|·|AH|` (`geometric_mean_A`) and
+`|HB| = |AB| − |AH|` (`segments_sum`) collapses the difference to `|AH|·|HB|`. -/
+theorem altitude_geometric_mean (hperp : ⟪A - C, B - C⟫ = (0 : ℝ)) :
+    ‖C - altitudeFoot A B C‖ ^ 2
+      = ‖A - altitudeFoot A B C‖ * ‖altitudeFoot A B C - B‖ := by
+  -- The altitude segment `A - H` is parallel to the hypotenuse `A - B`.
+  have hAHpar : A - altitudeFoot A B C = (‖A - C‖ ^ 2 / ‖A - B‖ ^ 2) • (A - B) := by
+    unfold altitudeFoot; rw [smul_sub, smul_sub]; abel
+  -- so the altitude `C - H` meets it at a right angle at the foot `H`.
+  have hCHperp : ⟪C - altitudeFoot A B C, A - B⟫ = (0 : ℝ) := foot_perp A B C hAB hperp
+  have hperp2 : ⟪A - altitudeFoot A B C, C - altitudeFoot A B C⟫ = (0 : ℝ) := by
+    rw [hAHpar, real_inner_smul_left,
+        real_inner_comm (A - B) (C - altitudeFoot A B C), hCHperp, mul_zero]
+  -- Pythagoras on the right sub-triangle `A H C`: `|AC|² = |AH|² + |CH|²`.
+  have hsub := pythagorean_core A C (altitudeFoot A B C) hperp2
+  have hgA := geometric_mean_A A B C hAB          -- `|AC|² = |AB|·|AH|`
+  have hsum := segments_sum A B C hAB hperp        -- `|AH| + |HB| = |AB|`
+  have hCH : ‖C - altitudeFoot A B C‖ ^ 2
+      = ‖A - C‖ ^ 2 - ‖A - altitudeFoot A B C‖ ^ 2 := by linarith
+  have hBsub : ‖altitudeFoot A B C - B‖
+      = ‖A - B‖ - ‖A - altitudeFoot A B C‖ := by linarith
+  rw [hCH, hgA, hBsub]; ring
 
 end Geometric
 
