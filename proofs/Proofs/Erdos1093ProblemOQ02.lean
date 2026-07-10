@@ -1986,3 +1986,101 @@ theorem maximalDeficiencyIs_nine_iff_kGe25 :
     by_cases hk : k ≤ 24
     · exact deficiency_le_nine_of_k_le_24 hv.1 hv.2 hk
     · exact h n k (by omega) hv
+
+/-
+## Section XXVI: The location bound closes `k = 25` — frontier `k ≥ 25` → `k ≥ 26`
+
+Section XXV cashed out the effective, ELS-free location bound at the open frontier
+`k = 24`.  The same mechanism advances one further step, to `k = 25`.  A deficiency
+`≥ 10` forces the window-floor power bound `(n - 24)^{10} ≤ 25!`, and `25! < 331^{10}`
+(`factorial_25_lt_331_pow_ten`), so `n - 24 < 331`, i.e. `n ≤ 354`.  With the admissibility
+floor `n ≥ 50` (`= 2·25`) this leaves the finite window `n ∈ {50, 51, …, 354}` (three
+hundred and five values).
+
+As at `k = 18, …, 24`, `C(n,25)` is **not** uniformly even on this window: by
+Kummer/Lucas `C(n,25)` is odd exactly when the binary digits of `25 = 11001₂` sit inside
+those of `n`, which happens for forty values of `n` in the window, so the single prime `2`
+no longer certifies inadmissibility.  It remains true — and this is what closes the slice —
+that *some* prime `≤ 25` divides `C(n,25)` for every one of the three hundred and five
+values: `2` for the two hundred and sixty-five even ones, `3` for all but two of the forty
+odd ones, `7` for the odd exception `n = 349`, and `11` for the last odd exception
+`n = 187` (which no prime `≤ 7` reaches).  So already the four-prime disjunction
+`2 ∣ C(n,25) ∨ 3 ∣ C(n,25) ∨ 7 ∣ C(n,25) ∨ 11 ∣ C(n,25)` holds throughout the window —
+one convenient certificate (`5` is now dispensable, while a prime as large as `11` is needed
+to catch `n = 187`), reflecting that the two-prime economy of the earlier slices no longer
+suffices — so no pair is admissible and no admissible pair at `k = 25` has deficiency
+exceeding `9`.
+
+As before the `(k!)²` factorial method is powerless here
+(`sharp_bound_permits_deficiency_ten` permits deficiency `10` for every `k ≥ 16`); only
+the *location* bound closes the slice, through the uniform engine
+`deficiency_le_nine_of_location` (Section XVIIB).  The elementary resolution of OQ-02 now
+covers **all `k ≤ 25`**, moving the open frontier to `k ≥ 26`.  The structural results
+remain `ofReduceBool`-free; only the concrete divisibility facts use `native_decide`. -/
+
+/-- `25! < 331^10`, the numeric input that pins the `k = 25` window: `(n-24)^{10} ≤ 25!`
+forces `n - 24 < 331`.  `ofReduceBool`-free (`Nat.factorial` and `Nat.pow` on literals
+reduce under kernel `decide`; `25! = 15511210043330985984000000 <
+15786284949774657045043801 = 331^{10}`). -/
+theorem factorial_25_lt_331_pow_ten : Nat.factorial 25 < 331 ^ 10 := by decide
+
+/-- For `50 ≤ n ≤ 354` some prime `≤ 25` divides `C(n,25)`: `2` for the even values, `3`
+for all but two of the odd binomials, `7` for the odd exception `n = 349`, and `11` for the
+last odd exception `n = 187`.  Stated as the disjunction `2 ∣ · ∨ 3 ∣ · ∨ 7 ∣ · ∨ 11 ∣ ·`,
+which holds across the whole window.  Uses `native_decide` (⇒ `Lean.ofReduceBool`) because
+the naive `Nat.choose` recursion is infeasible for kernel `decide`. -/
+theorem smallPrime_dvd_choose_25_of_range {n : ℕ} (hlo : 50 ≤ n) (hhi : n ≤ 354) :
+    2 ∣ Nat.choose n 25 ∨ 3 ∣ Nat.choose n 25 ∨ 7 ∣ Nat.choose n 25 ∨
+      11 ∣ Nat.choose n 25 := by
+  interval_cases n <;> native_decide
+
+/-- The three hundred and five small pairs left by the `k = 25` location window are all
+inadmissible: some prime `p ∈ {2, 3, 7, 11}` (each `≤ 25`) divides `C(n,25)`, contradicting
+`NoSmallPrimeFactors n 25` (which would force `25 < p`). -/
+theorem not_admissible_k25_of_range {n : ℕ} (hlo : 50 ≤ n) (hhi : n ≤ 354) :
+    ¬ NoSmallPrimeFactors n 25 := by
+  intro h
+  rcases smallPrime_dvd_choose_25_of_range hlo hhi with hd | hd | hd | hd
+  · have := h 2 Nat.prime_two hd; omega
+  · have := h 3 Nat.prime_three hd; omega
+  · have := h 7 (by norm_num) hd; omega
+  · have := h 11 (by norm_num) hd; omega
+
+/-- **The location bound closes `k = 25`.**  For an admissible pair with `k = 25` the
+deficiency never exceeds `9`.  A deficiency `≥ 10` would force, via the window-floor
+bound, `(n - 24)^{10} ≤ 25! < 331^{10}`, hence `n ≤ 354`; with the admissibility floor
+`n ≥ 50` this leaves only `n ∈ {50,…,354}`, none admissible (some prime `≤ 25` divides
+`C(n,25)`, even where `C(n,25)` is odd).  A one-line instantiation of the uniform engine
+`deficiency_le_nine_of_location` at `k = 25, M = 331`. -/
+theorem deficiency_le_nine_of_k_eq_25 {n : ℕ} (hn : 50 ≤ n)
+    (h : NoSmallPrimeFactors n 25) : deficiency n 25 ≤ 9 :=
+  deficiency_le_nine_of_location (k := 25) (M := 331) (by omega) h
+    factorial_25_lt_331_pow_ten
+    (fun m hlo hhi => not_admissible_k25_of_range (by omega) (by omega))
+
+/-- **Elementary resolution of OQ-02 for all `k ≤ 25`.**  Combines the location bound at
+`k ≤ 24` (`deficiency_le_nine_of_k_le_24`) with the location bound at `k = 25`
+(`deficiency_le_nine_of_k_eq_25`).  Strictly extends the `k ≤ 24` reach of Section XXV. -/
+theorem deficiency_le_nine_of_k_le_25 {n k : ℕ} (hn : 2 * k ≤ n)
+    (h : NoSmallPrimeFactors n k) (hk : k ≤ 25) : deficiency n k ≤ 9 := by
+  by_cases hk24 : k ≤ 24
+  · exact deficiency_le_nine_of_k_le_24 hn h hk24
+  · have hk25 : k = 25 := by omega
+    subst hk25
+    exact deficiency_le_nine_of_k_eq_25 (by omega) h
+
+/-- **Sharpened reduction to `k ≥ 26`.**  `MaximalDeficiencyIs 9` is equivalent to the
+open universal bound restricted to `k ≥ 26`: the cases `k ≤ 24` are discharged by the
+sharp/location bounds and `k = 25` by the location bound (`deficiency_le_nine_of_k_le_25`).
+Strictly sharper than `maximalDeficiencyIs_nine_iff_kGe25`; the entire remaining open
+content of OQ-02 now lives at `k ≥ 26`. -/
+theorem maximalDeficiencyIs_nine_iff_kGe26 :
+    MaximalDeficiencyIs 9 ↔
+      ∀ n k, 26 ≤ k → ValidDeficiencyExample n k → deficiency n k ≤ 9 := by
+  rw [maximalDeficiencyIs_nine_iff_upperBound]
+  constructor
+  · intro h n k _ hv; exact h n k hv
+  · intro h n k hv
+    by_cases hk : k ≤ 25
+    · exact deficiency_le_nine_of_k_le_25 hv.1 hv.2 hk
+    · exact h n k (by omega) hv

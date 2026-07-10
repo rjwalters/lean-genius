@@ -44,7 +44,7 @@
     }
   ],
   "knowledge": {
-    "progressSummary": "SATURATED (elementary): added uniform transfer lemma deficiency_le_of_sq_factorial_lt generalizing the per-k sharp ceilings; open content requires analytic input.",
+    "progressSummary": "SATURATED-BUT-EXTENSIBLE: the uniform location engine deficiency_le_of_windowFloor_pow_lt lets each k-slice be closed by a finite native_decide check; Section XXVI closes k=25 (frontier now k>=26). Rungs k=26,27 remain before the k=28 record; k>=28 needs analytic ELS input.",
     "builtItems": [
       "noSmallPrimeFactors_iff (Erdos1093ProblemOQ02.lean) — decidable reduction of the admissibility side-condition (unbounded ∀ prime) to a bounded check over primes p ≤ k; ofReduceBool-free.",
       "noSmallPrimeFactors_284_28 — the record pair (284,28) is admissible: no prime ≤ 28 divides C(284,28) (parent verified only the count = 9, never admissibility).",
@@ -116,6 +116,6 @@
     "erdos-1093"
   ],
   "currentState": {
-    "nextAction": "None session-sized. Terminus: no gallery entry for this slug; parent axiom-blocked (els_upper_bound). De-native_decide is possible but valueless (no entry to flip). Real advance requires formalizing ELS (multi-month)."
+    "nextAction": "Section XXVI (this cycle) extended the ELS-free location ladder to close k=25 (deficiency_le_nine_of_k_eq_25 / _le_25 / maximalDeficiencyIs_nine_iff_kGe26), moving the elementary open frontier to k>=26. The ladder mechanically continues one rung at a time (k=26,27) until it meets the record pair (284,28) at k=28, where an admissible deficiency-9 example lives in the location window and the window-inadmissibility disjunction genuinely fails. Remaining universal open content (k>=28) requires the ELS analytic upper bound (multi-month). UNVERIFIED: docker image build down (containerd blob I/O)."
   }
 }
