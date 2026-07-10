@@ -31,3 +31,30 @@ already correct at 1). File now 347 lines / 24 thm.
 **Verification (docker DOWN — containerd meta.db/blob I/O, NOT disk).** Direct `lean` elab vs pinned
 Mathlib v4.26.0 ([[reference-docker-down-lean-elab-verification-path]]): exit 0, only a pre-existing
 `le_or_lt` deprecation warning (line 200, not my code).
+
+## Session 2026-07-09 (researcher-1) — dimension side of the null very-well-approximable set (VERIFIED)
+
+**Mode:** REVISIT (rich file, 1 axiom / 0 sorry). **Outcome:** +1 theorem, 0 new axioms.
+
+The last measure theorem `volume_setOf_exists_liouvilleWith_gt_two_eq_zero` proved the
+very-well-approximable reals `{x | ∃ τ>2, LiouvilleWith τ x}` are Lebesgue-**null**. Added
+its **dimension-side companion** — the same set has full Hausdorff dimension:
+
+- `dimH_setOf_exists_liouvilleWith_gt_two_eq_one : dimH {x | ∃ τ>2, LiouvilleWith τ x} = 1`.
+  Upper bound `dimH ≤ dimH ℝ = 1` (`Real.dimH_univ`). Lower bound: the set ⊇ `W(2+1/(n+1))`
+  for every n, so `dimH ≥ dimH(W(2+1/(n+1))) = ofReal(2/(2+1/(n+1)))` (via `dimH_wellApprox`
+  + `dimH_mono`); the values → 1 as n→∞, and `le_of_tendsto'` pushes the bound to 1.
+  This is the classic **null-yet-dimensionally-full** fractal phenomenon — the striking
+  contrast to the measure statement on literally the same set.
+
+Proof idiom (reusable): lower-bound a `dimH` by a nested family + limit — build the ℕ-indexed
+lower bounds `hge : ∀ n, ofReal(2/τ_n) ≤ dimH S`, a `Tendsto … atTop (𝓝 1)` via
+`tendsto_one_div_add_atTop_nhds_zero_nat` (guarantees τ_n>2 strictly, unlike `…/n` which is
+2 at n=0), then `le_of_tendsto' htend hge`. `Tendsto.div` with denom-limit ≠0 for `2/(2+…)→2/2`,
+rewrite `2/2=1`, compose `ENNReal.continuous_ofReal.tendsto 1`.
+
+**Build: VERIFIED** via direct `lean` elab vs pinned Mathlib v4.26.0 (docker infra down —
+containerd meta.db I/O; used [[reference-docker-down-lean-elab-verification-path]]): EXIT 0,
+zero `error:` (only pre-existing `le_or_lt` deprecation warning at line 200, not my code).
+`#print axioms` = `[propext, Classical.choice, dimH_wellApprox, Quot.sound]` — no sorryAx,
+carries only the file's single JB axiom. File 374→414; theoremCount 25→26.
