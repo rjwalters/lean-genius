@@ -20,7 +20,7 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 1,
-    "lineCount": 1973,
+    "lineCount": 2115,
     "dateAdded": "2026-05-08",
     "mathlibDependencies": [
       {
@@ -155,7 +155,7 @@
       "g_pow_three_iff_mem_some_sylow_three (Iteration 14, private, axiom-free): pointwise membership characterization for the S10 element-counting closure."
     ],
     "assumptions": "1 axiom (narrowed in Iteration 4, unchanged in Iterations 5/7/9/11): `burnside_pq_nontrivial` — Burnside's pᵃqᵇ theorem for the residual non-trivial case (`p ≠ q`, `a ≥ 1`, `b ≥ 1`, AND `2 ≤ a ∨ 2 ≤ b`). The trivial cases (`a = 0`, `b = 0`, `p = q`) reduce to Mathlib's `IsPGroup → IsNilpotent → IsSolvable`; the `a = b = 1` case (squarefree |G| = p·q) reduces to `IsZGroup.of_squarefree → IsSolvable`. Iteration 5 adds two axiom-free reduction lemmas (`burnside_pq_with_normal_pSylow`, `burnside_pq_with_normal_qSylow`) that discharge the axiom outright whenever a normal Sylow subgroup of either prime can be exhibited. Iteration 7 (S7), 7.5, and 9 progressively cover the three sub-cases of the `(a, b) = (2, 1)` shape: S7 proves Burnside axiom-free whenever `|G| = p² · q` with `p > q`; S7.5 covers `p < q` with `(p, q) ≠ (2, 3)`; S9 covers the exceptional `(p, q) = (2, 3), |G| = 12` (its S10 element-counting closure, the `sylow_two_unique_when_n3_four` lemma, was completed in S21–S24, so this sub-case is now axiom-free and the file is sorry-free). Iteration 11 (S11) mirrors this trio for the symmetric `(a, b) = (1, 2)` shape: `burnside_p_q_squared_p_lt_q` (mirror of S7), `burnside_p_q_squared_q_lt_p` excluding `(p, q) = (3, 2)` (mirror of S7.5), and `burnside_p_q_squared_twelve_mirror` reusing S9 for `|G| = 12 = 3 · 2²`. The current `burnside_pq` dispatch (S25/S31/S32) peels off — axiom-free — the cases `a = b = 1`, `(2, 1)`, `(1, 2)`, `(a, 1)` with `q < p`, and `(1, b)` with `p < q`, invoking `burnside_pq_nontrivial` only for the residue `a + b ≥ 4` not covered by those peels (which always involves an order divisible by `p²` or `q²` for distinct primes); a full proof of that residual axiom would be a substantial Mathlib upstream contribution (estimated 400-1000 lines, depending on proof route — character theory + algebraic integers à la Burnside 1904, or transfer + focal subgroup à la Goldschmidt-Matsuyama 1970s).",
-    "theoremCount": 40,
+    "theoremCount": 43,
     "definitionCount": 0
   },
   "overview": {
@@ -323,9 +323,9 @@
     ],
     "opens": [],
     "namespace": "BurnsidePQ",
-    "lineCount": 1973,
+    "lineCount": 2115,
     "axiomCount": 1,
-    "theoremCount": 40,
+    "theoremCount": 43,
     "substantiveTheoremCount": 18,
     "definitionCount": 0,
     "path": "Proofs/AbelRuffiniGaloisExtensionsOQ07.lean",

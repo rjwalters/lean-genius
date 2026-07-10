@@ -1672,6 +1672,148 @@ theorem burnside_p_q_squared
       exact burnside_p_q_squared_twelve_mirror h12
     · exact burnside_p_q_squared_q_lt_p hgt hexc hcard
 
+/-! ### The `(a, b) = (2, 2)` shape: `|G| = p² · q²`
+
+    Beyond the `(2,1)` and `(1,2)` shapes already peeled off, the next
+    two-prime order of interest is `|G| = p² · q²`.  Here the Sylow
+    `q`-subgroup `Q` has order `q²` and **index `p²`**, so the Sylow
+    counting constraint `n_q ∣ p²`, `n_q ≡ 1 [MOD q]` is *identical* to
+    the one arising in the `|G| = p² · q` analysis.  Consequently the
+    same helper `sylow_count_eq_one_of_lt_prime_pow_two` forces `n_q = 1`
+    for `p < q` away from the single exceptional pair `(p, q) = (2, 3)`,
+    where `q = p + 1` makes `n_q = p² = 4` compatible with `≡ 1 [MOD q]`.
+    That lone exception is exactly the order `|G| = 36 = 2² · 3²`, whose
+    resolution needs finer element-counting (mirroring the `|G| = 12`
+    treatment) and is therefore excluded here.
+
+    These theorems are axiom-free.  They are *not* yet wired into the
+    `burnside_pq` dispatch (which still routes `4 ≤ a + b` through
+    `burnside_pq_nontrivial`), because a complete `(2,2)` peel-off would
+    additionally require the `|G| = 36` element-counting closure. -/
+
+/-- **Burnside `|G| = p² · q²`, case `p < q`** (axiom-free), excluding the
+    exceptional pair `(p, q) = (2, 3)` (i.e. `|G| = 36`).  The Sylow
+    `q`-subgroup has order `q²` and index `p²`; Sylow's third theorem plus
+    `sylow_count_eq_one_of_lt_prime_pow_two` force a unique — hence normal —
+    Sylow `q`-subgroup, and the discharge proceeds via
+    `burnside_pq_with_normal_qSylow` with exponents `(2, 2)`. -/
+theorem burnside_p_squared_q_squared_p_lt_q
+    {G : Type*} [Group G] [Finite G]
+    {p q : ℕ} [hp : Fact p.Prime] [hq : Fact q.Prime]
+    (hpq : p < q) (hexc : ¬ (p = 2 ∧ q = 3))
+    (hcard : Nat.card G = p ^ 2 * q ^ 2) :
+    IsSolvable G := by
+  -- Step 1: pick a Sylow q-subgroup; |Q| = q² by `Sylow.card_eq_multiplicity`.
+  obtain ⟨Q⟩ : Nonempty (Sylow q G) := inferInstance
+  have hp_ne_q : p ≠ q := by omega
+  have hq_ne_p : q ≠ p := fun h => hp_ne_q h.symm
+  have hq_not_dvd_p2 : ¬ q ∣ p ^ 2 := by
+    intro hdvd
+    have : q ∣ p := hq.out.dvd_of_dvd_pow hdvd
+    exact hq_ne_p ((Nat.prime_dvd_prime_iff_eq hq.out hp.out).mp this)
+  have hcop : Nat.Coprime (p ^ 2) (q ^ 2) :=
+    (((Nat.coprime_primes hp.out hq.out).mpr hp_ne_q).pow_left 2).pow_right 2
+  have hQ_card : Nat.card (Q : Subgroup G) = q ^ 2 := by
+    have hmult := Sylow.card_eq_multiplicity Q
+    have hfact : Nat.factorization (Nat.card G) q = 2 := by
+      rw [hcard, Nat.factorization_mul_apply_of_coprime hcop,
+          Nat.factorization_eq_zero_of_not_dvd hq_not_dvd_p2,
+          Nat.Prime.factorization_pow hq.out]
+      simp
+    rw [hfact] at hmult
+    exact hmult
+  -- Step 2: index of Q is p² (Lagrange + cancellation).
+  have hq2_pos : 0 < q ^ 2 := pow_pos hq.out.pos 2
+  have hQ_index : (Q : Subgroup G).index = p ^ 2 := by
+    have h := Subgroup.card_mul_index (Q : Subgroup G)
+    rw [hQ_card, hcard, mul_comm (p ^ 2) (q ^ 2)] at h
+    exact Nat.eq_of_mul_eq_mul_left hq2_pos h
+  -- Step 3: n_q ≡ 1 [MOD q] and n_q ∣ p²; helper forces n_q = 1.
+  have hnq_mod : Nat.card (Sylow q G) ≡ 1 [MOD q] := card_sylow_modEq_one q G
+  have hnq_dvd : Nat.card (Sylow q G) ∣ p ^ 2 :=
+    hQ_index ▸ Sylow.card_dvd_index Q
+  have hnq_eq_one : Nat.card (Sylow q G) = 1 :=
+    sylow_count_eq_one_of_lt_prime_pow_two hp.out hq.out hpq hexc hnq_mod hnq_dvd
+  -- Step 4: n_q = 1 ⇒ Subsingleton (Sylow q G) ⇒ Q.Normal.
+  haveI hSub : Subsingleton (Sylow q G) :=
+    (Nat.card_eq_one_iff_unique.mp hnq_eq_one).1
+  haveI hQ_normal : (Q : Subgroup G).Normal := Sylow.normal_of_subsingleton Q
+  -- Step 5: discharge via burnside_pq_with_normal_qSylow with (a, b) = (2, 2).
+  exact burnside_pq_with_normal_qSylow (a := 2) (b := 2) hcard (Q : Subgroup G) hQ_card
+
+/-- **Burnside `|G| = p² · q²`, case `q < p`** (axiom-free), excluding the
+    exceptional pair `(p, q) = (3, 2)` (again `|G| = 36`).  Mirror of
+    `burnside_p_squared_q_squared_p_lt_q` with the primes swapped: the
+    Sylow `p`-subgroup has order `p²` and index `q²`, so
+    `sylow_count_eq_one_of_lt_prime_pow_two` (applied with the smaller
+    prime `q`) forces a normal Sylow `p`-subgroup, discharged via
+    `burnside_pq_with_normal_pSylow`. -/
+theorem burnside_p_squared_q_squared_q_lt_p
+    {G : Type*} [Group G] [Finite G]
+    {p q : ℕ} [hp : Fact p.Prime] [hq : Fact q.Prime]
+    (hpq : q < p) (hexc : ¬ (q = 2 ∧ p = 3))
+    (hcard : Nat.card G = p ^ 2 * q ^ 2) :
+    IsSolvable G := by
+  -- Step 1: pick a Sylow p-subgroup; |P| = p² by `Sylow.card_eq_multiplicity`.
+  obtain ⟨P⟩ : Nonempty (Sylow p G) := inferInstance
+  have hp_ne_q : p ≠ q := by omega
+  have hp_not_dvd_q2 : ¬ p ∣ q ^ 2 := by
+    intro hdvd
+    have : p ∣ q := hp.out.dvd_of_dvd_pow hdvd
+    exact hp_ne_q ((Nat.prime_dvd_prime_iff_eq hp.out hq.out).mp this)
+  have hcop : Nat.Coprime (p ^ 2) (q ^ 2) :=
+    (((Nat.coprime_primes hp.out hq.out).mpr hp_ne_q).pow_left 2).pow_right 2
+  have hP_card : Nat.card (P : Subgroup G) = p ^ 2 := by
+    have hmult := Sylow.card_eq_multiplicity P
+    have hfact : Nat.factorization (Nat.card G) p = 2 := by
+      rw [hcard, Nat.factorization_mul_apply_of_coprime hcop,
+          Nat.Prime.factorization_pow hp.out,
+          Nat.factorization_eq_zero_of_not_dvd hp_not_dvd_q2]
+      simp
+    rw [hfact] at hmult
+    exact hmult
+  -- Step 2: index of P is q² (Lagrange + cancellation).
+  have hp2_pos : 0 < p ^ 2 := pow_pos hp.out.pos 2
+  have hP_index : (P : Subgroup G).index = q ^ 2 := by
+    have h := Subgroup.card_mul_index (P : Subgroup G)
+    rw [hP_card, hcard] at h
+    exact Nat.eq_of_mul_eq_mul_left hp2_pos h
+  -- Step 3: n_p ≡ 1 [MOD p] and n_p ∣ q²; helper (smaller prime q) forces n_p = 1.
+  have hnp_mod : Nat.card (Sylow p G) ≡ 1 [MOD p] := card_sylow_modEq_one p G
+  have hnp_dvd : Nat.card (Sylow p G) ∣ q ^ 2 :=
+    hP_index ▸ Sylow.card_dvd_index P
+  have hnp_eq_one : Nat.card (Sylow p G) = 1 :=
+    sylow_count_eq_one_of_lt_prime_pow_two hq.out hp.out hpq hexc hnp_mod hnp_dvd
+  -- Step 4: n_p = 1 ⇒ Subsingleton (Sylow p G) ⇒ P.Normal.
+  haveI hSub : Subsingleton (Sylow p G) :=
+    (Nat.card_eq_one_iff_unique.mp hnp_eq_one).1
+  haveI hP_normal : (P : Subgroup G).Normal := Sylow.normal_of_subsingleton P
+  -- Step 5: discharge via burnside_pq_with_normal_pSylow with (a, b) = (2, 2).
+  exact burnside_pq_with_normal_pSylow (a := 2) (b := 2) hcard (P : Subgroup G) hP_card
+
+/-- **Burnside `|G| = p² · q²`** (consolidated, axiom-free), excluding only
+    the exceptional order `|G| = 36 = 2² · 3²`.  Combines the two directed
+    theorems `burnside_p_squared_q_squared_p_lt_q` and
+    `burnside_p_squared_q_squared_q_lt_p` via trichotomy on `p` versus `q`.
+
+    The single excluded pair `{p, q} = {2, 3}` is genuinely harder: it is
+    the only pair of primes with `q = p + 1`, for which Sylow's third
+    theorem alone does not force a normal Sylow subgroup (`A₄ × C₃` and
+    similar order-36 groups realize `n_3 = 4`).  Its resolution mirrors
+    the `|G| = 12` element-counting argument and is left for future work. -/
+theorem burnside_p_squared_q_squared
+    {G : Type*} [Group G] [Finite G]
+    {p q : ℕ} [hp : Fact p.Prime] [hq : Fact q.Prime]
+    (hpq : p ≠ q)
+    (hne36 : ¬ ((p = 2 ∧ q = 3) ∨ (p = 3 ∧ q = 2)))
+    (hcard : Nat.card G = p ^ 2 * q ^ 2) :
+    IsSolvable G := by
+  rcases lt_trichotomy p q with hlt | heq | hgt
+  · exact burnside_p_squared_q_squared_p_lt_q hlt (fun h => hne36 (Or.inl h)) hcard
+  · exact absurd heq hpq
+  · exact burnside_p_squared_q_squared_q_lt_p hgt
+      (fun h => hne36 (Or.inr ⟨h.2, h.1⟩)) hcard
+
 -- ═══════════════════════════════════════════════════════════════════════
 -- PART IV: Main theorem
 -- ═══════════════════════════════════════════════════════════════════════
