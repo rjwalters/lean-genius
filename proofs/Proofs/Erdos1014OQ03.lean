@@ -191,5 +191,26 @@ theorem log_increment_tendsto_zero_of_ratio_tendsto_one (R : ℕ → ℝ)
     Tendsto (fun l => Real.log (R (l + 1)) - Real.log (R l)) atTop (𝓝 0) :=
   (log_increment_tendsto_zero_iff_ratio_tendsto_one R hpos).mpr hratio
 
+/-- **Additive–multiplicative increment equivalence.** For an eventually-positive
+sequence `R`, the *normalized (multiplicative) increment* `(R(l+1) − R(l))/R(l)`
+tends to `0` **iff** the *additive log-increment* `log R(l+1) − log R(l)` tends to
+`0`.
+
+Both quantities are, by the two bridges above, equivalent to the consecutive ratio
+`R(l+1)/R(l)` tending to `1`, so they are equivalent to each other. This packages the
+multiplicative bridge `increment_div_tendsto_zero_iff_ratio_tendsto_one` and the
+logarithmic bridge `log_increment_tendsto_zero_iff_ratio_tendsto_one` into a single
+statement that the two natural senses of "the increment is small" — additive on the
+log scale, multiplicative relative to `R` — coincide for positive sequences. Applied
+to `R(k, ·)`, Erdős #1014's ratio-convergence makes the two increment-smallness
+notions interchangeable, so `Δ_l(k) = o(R(k,l))` and `log R(k,l+1) − log R(k,l) → 0`
+carry exactly the same information. -/
+theorem increment_div_tendsto_zero_iff_log_increment_tendsto_zero (R : ℕ → ℝ)
+    (hpos : ∀ᶠ l in atTop, 0 < R l) :
+    Tendsto (fun l => (R (l + 1) - R l) / R l) atTop (𝓝 0) ↔
+      Tendsto (fun l => Real.log (R (l + 1)) - Real.log (R l)) atTop (𝓝 0) := by
+  rw [increment_div_tendsto_zero_iff_ratio_tendsto_one R (hpos.mono fun _ hl => ne_of_gt hl),
+    log_increment_tendsto_zero_iff_ratio_tendsto_one R hpos]
+
 
 end Erdos1014OQ03
