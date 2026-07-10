@@ -190,5 +190,28 @@
       "description": "Another special case over a structured ground set: Erdős #1206 concerns Sidon subsets of the cubes {1³,…,N³}. As with #773 (squares), the arithmetic of the ambient set governs the answer; the cube case was solved in the short-interval regime (Gabdullin–Konyagin 2024, size ≫N^{1/2}), again exceeding what the generic #530 bound predicts for an unstructured N-element set."
     }
   ],
+  "references": [
+    {
+      "title": "On a problem of Sidon in additive number theory, and on some related problems",
+      "author": "Paul Erdős and Pál Turán",
+      "year": "1941",
+      "venue": "Journal of the London Mathematical Society 16, pp. 212–215",
+      "description": "The foundational paper on Sidon (B₂) sets, establishing the ~N^{1/2} bound on Sidon sets in {1,…,N} that frames the growth of ℓ(N) studied here."
+    },
+    {
+      "title": "Linear problems in combinatorial number theory",
+      "author": "János Komlós, Miklós Sulyok, and Endre Szemerédi",
+      "year": "1975",
+      "venue": "Acta Mathematica Academiae Scientiarum Hungaricae 26, pp. 113–121",
+      "description": "Improves the lower bound to ℓ(N) ≫ N^{1/2}, showing every N-element set contains a Sidon subset of size ≫ √N and nearly matching Erdős's upper bound (1+o(1))N^{1/2}."
+    },
+    {
+      "title": "Erdős Problem #530",
+      "author": "Thomas F. Bloom (ed.)",
+      "year": "2024",
+      "venue": "erdosproblems.com/530",
+      "description": "The catalogued entry (OPEN), recording Riddell's 1969 origin, Erdős's bounds N^{1/3} ≪ ℓ(N) ≤ (1+o(1))N^{1/2}, the KSS improvement, and the conjecture ℓ(N) ~ N^{1/2}."
+    }
+  ],
   "sorries": 0
 }
