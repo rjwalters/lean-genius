@@ -1,4 +1,27 @@
 {
+  "references":   [
+    {
+      "authors": "A. Cayley",
+      "title": "A Memoir on the Theory of Matrices",
+      "year": "1858",
+      "venue": "Philosophical Transactions of the Royal Society of London, 148, 17–37",
+      "note": "Founding paper of matrix algebra; introduces the adjugate and the identity A·adj(A) = det(A)·I on which the adjugate's multiplicative structure rests."
+    },
+    {
+      "authors": "R. A. Horn and C. R. Johnson",
+      "title": "Matrix Analysis",
+      "year": "2013",
+      "venue": "Cambridge University Press, 2nd ed.",
+      "note": "Standard reference for adjugate (adjoint) identities: adj(AB) = adj(B)·adj(A), det(adj A) = (det A)^{n-1}, and the interaction of the adjugate with transpose and powers."
+    },
+    {
+      "authors": "F. R. Gantmacher",
+      "title": "The Theory of Matrices, Vol. 1",
+      "year": "1959",
+      "venue": "Chelsea Publishing Company",
+      "note": "Classical treatment of the adjugate as an algebraic operation, including its behaviour under conjugation and multiplication."
+    }
+  ],
   "id": "cramers-rule-oq-06",
   "title": "Cramer's Rule OQ-06: The Adjugate Algebra — Multiplicative and Conjugation Identities",
   "slug": "cramers-rule-oq-06",

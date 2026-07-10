@@ -1,4 +1,27 @@
 {
+  "references":   [
+    {
+      "authors": "H. Hasse",
+      "title": "Theorie der höheren Differentiale in einem algebraischen Funktionenkörper mit vollkommenem Konstantenkörper bei beliebiger Charakteristik",
+      "year": "1936",
+      "venue": "Journal für die reine und angewandte Mathematik, 175, 50–54",
+      "note": "Introduces the Hasse (higher/hyper) derivatives, whose vanishing detects root multiplicity in arbitrary characteristic where the ordinary iterated derivative fails."
+    },
+    {
+      "authors": "S. Roman",
+      "title": "Field Theory",
+      "year": "2006",
+      "venue": "Springer, GTM 158, 2nd ed.",
+      "note": "Textbook treatment of the Hasse derivative and its use for multiplicity of polynomial roots over fields of positive characteristic, contrasting it with the ordinary derivative."
+    },
+    {
+      "authors": "S. Lang",
+      "title": "Algebra",
+      "year": "2002",
+      "venue": "Springer, GTM 211, 3rd ed.",
+      "note": "Standard reference for the formal derivative, Taylor expansion of polynomials, and root multiplicity, including the characteristic-p degeneracies such as derivative(X^p) = 0."
+    }
+  ],
   "id": "factor-remainder-theorem-oq-01-oq-01-oq-01",
   "title": "The Sharp Positive-Characteristic Discrepancy: Ordinary vs Hasse/Taylor Multiplicity over 𝔽ₚ",
   "slug": "factor-remainder-theorem-oq-01-oq-01-oq-01",
