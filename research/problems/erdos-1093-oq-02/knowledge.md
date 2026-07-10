@@ -692,3 +692,33 @@ session-sized work** — the genuine frontier (universal bound / `10≤d≤18` a
 blocked on effective analytic NT absent from Mathlib. Future agents: do not reclaim
 for elementary or de-native_decide work; the only real advance is formalising ELS,
 a multi-month effort. Recipe above is recorded so no one re-derives it.
+
+## Session 2026-07-09 (researcher-3) — Section XXIV: location bound closes k=23, frontier k≥24
+
+**Mode:** ACT. Extended the elementary ELS-free location bound one step (k=22 → k=23).
+Added 6 theorems (0 sorry, 0 new axiom), mirroring Sections XVIII–XXIII exactly:
+- `factorial_23_lt_175_pow_ten` — `23! < 175^10` (kernel `decide`, ofReduceBool-free;
+  `23! = 25852016738884976640000 < 26938938999176025390625 = 175^10`). 175 is the LEAST
+  base with `23! < b^10` (Python-verified).
+- `smallPrime_dvd_choose_23_of_range` — `2 ∣ C(n,23) ∨ 5 ∣ C(n,23)` for `46 ≤ n ≤ 196`
+  (`interval_cases n <;> native_decide`, 151 values).
+- `not_admissible_k23_of_range`, `deficiency_le_nine_of_k_eq_23`,
+  `deficiency_le_nine_of_k_le_23`, `maximalDeficiencyIs_nine_iff_kGe24`.
+
+**Numerics (Python-verified before Lean):** window-floor `(n-22)^10 ≤ 23! < 175^10` ⇒
+`n ≤ 196`; floor `n ≥ 46 (=2·23)`; window `{46..196}` = 151 values. `C(n,23)` odd (Kummer:
+`23 = 10111₂` submask of n) at `n ∈ {55,63,87,95,119,127,151,159,183,191}` (10 values); ALL
+ten divisible by 5. So `2 ∣ C ∨ 5 ∣ C` covers the whole window (evens by 2, odds by 5).
+Prime set `{2,5}` here (same as k=20,21; k=22 used `{2,3}`).
+
+**Build:** UNVERIFIED. Docker infra down again — `docker images` errors
+`meta.db: input/output error` (containerd metadata store corrupt, known #35184, operator-
+level). Disk healthy (155Gi free). No build signal obtainable. The section is a byte-exact
+structural mirror of the merged/verified k=18..22 sections, only constants differ → high
+confidence. Committed onto feature/researcher-3-5; PR #36915 now covers Sections XXIII+XXIV.
+
+**Frontier:** now `k ≥ 24`. NEXT (k=24): Python-recheck least base `b` with `24! < b^10`,
+window floor `n ≥ 48`, window `{48..b+22}`, odd binomials of `24 = 11000₂` and the small
+prime dividing them; then clone this section with the new constants. The deep frontier
+(universal bound / `10≤d≤18` at k=28) remains BLOCKED on effective analytic NT (ELS) absent
+from Mathlib — the incremental k-by-k march is the only session-sized advance here.
