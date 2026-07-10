@@ -208,5 +208,28 @@
       "description": "Both concern additive completeness: #123 studies d-complete sequences (every sufficiently large integer as a sum of d elements), #1147 asks about order-2 additive bases from approximation sets"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "title": "Erdős Problem #1147",
+      "author": "erdosproblems.com",
+      "year": "2023",
+      "venue": "erdosproblems.com",
+      "url": "https://erdosproblems.com/1147",
+      "description": "Canonical entry: for irrational α>0, is A={n≥1 : ‖αn²‖<1/log n} an additive basis of order 2? Disproved by Konieczny."
+    },
+    {
+      "title": "Konieczny's disproof of the additive-basis conjecture (Ko16b)",
+      "author": "Jakub Konieczny",
+      "year": "2016",
+      "description": "Disproves the conjecture: the Diophantine-approximation set A={n:‖αn²‖<1/log n} is NOT an additive basis of order 2. Cited in the problem file as [Ko16b]; see erdosproblems.com/1147 for the exact bibliographic entry."
+    },
+    {
+      "title": "An Introduction to the Theory of Numbers",
+      "author": "G. H. Hardy and E. M. Wright",
+      "year": "2008",
+      "venue": "Oxford University Press, 6th ed.",
+      "description": "Standard reference for Diophantine approximation and the distribution of ‖αn²‖ (distance to nearest integer), the background for defining the set A."
+    }
+  ]
 }
