@@ -254,5 +254,56 @@ theorem increment_div_tendsto_zero_iff_log_increment_tendsto_zero (R : ℕ → �
   rw [increment_div_tendsto_zero_iff_ratio_tendsto_one R (hpos.mono fun _ hl => ne_of_gt hl),
     log_increment_tendsto_zero_iff_ratio_tendsto_one R hpos]
 
+/-- **Bounded-gap ratio convergence.** If the consecutive ratio `R(l+1)/R(l)` tends to
+`1` (Erdős #1014) and `R` is eventually positive, then for *every fixed gap* `m` the
+gap-ratio `R(l+m)/R(l)` also tends to `1`.
+
+Telescoping `R(l+m)/R(l) = ∏_{i<m} R(l+i+1)/R(l+i)` into `m` consecutive ratios — each
+`→ 1` (the `i`-th being the unit-gap ratio shifted by `i`) — the product of finitely many
+null-ratios is `1`; formally by induction on `m`, splitting off one factor with
+`div_mul_div_cancel₀`. Applied to `R(k, ·)`, #1014's unit-gap convergence self-strengthens
+to `R(k,l+m)/R(k,l) → 1` for every fixed `m`: Ramsey growth is smooth over any bounded
+window of the second index, not merely between neighbours. -/
+theorem ratio_gap_tendsto_one (R : ℕ → ℝ) (m : ℕ)
+    (hpos : ∀ᶠ l in atTop, 0 < R l)
+    (hratio : Tendsto (fun l => R (l + 1) / R l) atTop (𝓝 1)) :
+    Tendsto (fun l => R (l + m) / R l) atTop (𝓝 1) := by
+  induction m with
+  | zero =>
+      have heq : (fun l => R (l + 0) / R l) =ᶠ[atTop] (fun _ => (1 : ℝ)) := by
+        filter_upwards [hpos] with l hl
+        simp [div_self (ne_of_gt hl)]
+      rw [tendsto_congr' heq]
+      exact tendsto_const_nhds
+  | succ m ih =>
+      have hpos_m : ∀ᶠ l in atTop, 0 < R (l + m) :=
+        (tendsto_add_atTop_nat m).eventually hpos
+      have hmul : Tendsto
+          (fun l => R (l + m + 1) / R (l + m) * (R (l + m) / R l)) atTop (𝓝 1) := by
+        have hshift := hratio.comp (tendsto_add_atTop_nat m)
+        simpa using hshift.mul ih
+      refine hmul.congr' ?_
+      filter_upwards [hpos_m] with l hlm
+      show R (l + m + 1) / R (l + m) * (R (l + m) / R l) = R (l + m + 1) / R l
+      exact div_mul_div_cancel₀ (ne_of_gt hlm)
+
+/-- **Corollary (bounded-gap increment is `o(R)`).** Under #1014's ratio convergence,
+the increment `R(l+m) − R(l)` over any fixed gap `m` is `o(R(l))`:
+`(R(l+m) − R(l))/R(l) → 0`. Immediate from `ratio_gap_tendsto_one`, since
+`(R(l+m) − R(l))/R(l) = R(l+m)/R(l) − 1`; the `m = 1` case is
+`increment_div_tendsto_zero_of_ratio_tendsto_one`. -/
+theorem increment_gap_div_tendsto_zero (R : ℕ → ℝ) (m : ℕ)
+    (hpos : ∀ᶠ l in atTop, 0 < R l)
+    (hratio : Tendsto (fun l => R (l + 1) / R l) atTop (𝓝 1)) :
+    Tendsto (fun l => (R (l + m) - R l) / R l) atTop (𝓝 0) := by
+  have hgap := ratio_gap_tendsto_one R m hpos hratio
+  have heq : (fun l => (R (l + m) - R l) / R l)
+      =ᶠ[atTop] (fun l => R (l + m) / R l - 1) := by
+    filter_upwards [hpos] with l hl
+    rw [sub_div, div_self (ne_of_gt hl)]
+  rw [tendsto_congr' heq]
+  have := hgap.sub_const 1
+  simpa using this
+
 
 end Erdos1014OQ03
