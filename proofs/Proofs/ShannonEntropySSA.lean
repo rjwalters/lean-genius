@@ -15,15 +15,17 @@
   each term of which is bounded below by a KL-divergence (Gibbs) inequality
   `p·log(p/q) ≥ p - q`, the block sum telescoping to `1 - 1 = 0`.
 
-  This file records that theorem and derives its two standard corollaries in the
+  This file records that theorem and derives its standard corollaries in the
   three-variable setting, which are *not* present in the parent file:
 
   * `conditioning_reduces_entropy_general` — conditioning on more variables cannot
     increase entropy: `H(X | Y, Z) ≤ H(X | Y)`;
+  * `conditioning_reduces_entropy_general'` — the `X ↔ Z` dual of the same
+    inequality: `H(Z | X, Y) ≤ H(Z | Y)`;
   * `conditional_mi_nonneg` — the conditional mutual information is non-negative:
     `I(X ; Z | Y) ≥ 0`.
 
-  Both are immediate linear rearrangements of strong subadditivity.
+  All three are immediate linear rearrangements of strong subadditivity.
 
   A previous revision of this file re-derived the entire marginal / chain-rule /
   strong-subadditivity infrastructure inline while also `import`ing the parent
@@ -75,6 +77,22 @@ theorem conditioning_reduces_entropy_general {pXYZ : α × β × γ → ℝ}
     (hsum : ∑ xyz : α × β × γ, pXYZ xyz = 1) :
     shannonEntropy pXYZ - shannonEntropy (marginalYZ pXYZ) ≤
       shannonEntropy (marginalXY pXYZ) - shannonEntropy (marginalY pXYZ) := by
+  linarith [InformationTheory.strong_subadditivity hp hsum]
+
+/-- **Conditioning reduces entropy (three-variable form, `X ↔ Z` dual).**
+
+    `H(Z | X, Y) ≤ H(Z | Y)`, where `H(Z | X, Y) = H(X, Y, Z) − H(X, Y)` and
+    `H(Z | Y) = H(Y, Z) − H(Y)`.  Strong subadditivity is symmetric under
+    exchanging `X` and `Z` (it swaps `H(X, Y)` and `H(Y, Z)` while fixing
+    `H(X, Y, Z)` and `H(Y)`), so the *same* inequality also bounds the entropy of
+    `Z` conditioned on the extra variable `X`; the deficit is again
+    `I(X ; Z | Y) ≥ 0`.  Together with `conditioning_reduces_entropy_general` this
+    completes the symmetric conditioning pair. -/
+theorem conditioning_reduces_entropy_general' {pXYZ : α × β × γ → ℝ}
+    (hp : ∀ xyz, 0 ≤ pXYZ xyz)
+    (hsum : ∑ xyz : α × β × γ, pXYZ xyz = 1) :
+    shannonEntropy pXYZ - shannonEntropy (marginalXY pXYZ) ≤
+      shannonEntropy (marginalYZ pXYZ) - shannonEntropy (marginalY pXYZ) := by
   linarith [InformationTheory.strong_subadditivity hp hsum]
 
 /-- **Conditional mutual information is non-negative.**
