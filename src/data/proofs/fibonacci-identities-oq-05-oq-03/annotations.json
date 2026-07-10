@@ -1,5 +1,22 @@
 [
   {
+    "id": "ann-fiboq0503-imports",
+    "proofId": "fibonacci-identities-oq-05-oq-03",
+    "range": { "startLine": 1, "endLine": 2 },
+    "type": "context",
+    "title": "The Single Mathlib Import",
+    "content": "**One import, three roles.** `import Mathlib` pulls in everything the entry needs, and it is worth naming the three distinct dependencies it satisfies. (1) *The object.* The 0-indexed Fibonacci sequence `Nat.fib` and its defining recurrence `Nat.fib_add_two` ($F_{n+2} = F_n + F_{n+1}$) — the sole facts about Fibonacci numbers the proofs consume; everything else (Cassini, d'Ocagne, the gap-two sum) is built here. (2) *The summation layer.* `Finset` and its big-operator $\\sum$ notation together with `Finset.sum_range_succ`, the peel-the-last-term lemma driving the induction. (3) *The tactic toolkit.* `linear_combination` (closes the Cassini and d'Ocagne algebra in one line each), `omega` (finishes the linearized induction step over $\\mathbb{N}$), and the coercion tactics `push_cast` / `zify` that move between $\\mathbb{N}$ and $\\mathbb{Z}$ so the sign $(-1)^n$ can be manipulated. The blanket `import Mathlib` is the ordinary gallery convention (contrast the stricter per-module imports required only for files bound for upstream Mathlib submission).",
+    "mathContext": "`Nat.fib_add_two`: $F_{n+2} = F_n + F_{n+1}$, with $F_0 = 0,\\ F_1 = 1$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Nat.fib and Nat.fib_add_two",
+      "Finset big-operator summation",
+      "linear_combination / omega / push_cast / zify tactics"
+    ],
+    "prerequisites": ["Lean 4 imports", "The Mathlib library"],
+    "tags": ["imports", "mathlib", "setup"]
+  },
+  {
     "id": "ann-fiboq0503-1",
     "proofId": "fibonacci-identities-oq-05-oq-03",
     "range": { "startLine": 3, "endLine": 30 },
