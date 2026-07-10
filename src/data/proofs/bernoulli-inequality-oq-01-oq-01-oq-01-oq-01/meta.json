@@ -93,10 +93,10 @@
     },
     {
       "id": "strict-mono",
-      "title": "The Residual Cubic Is Strictly Increasing",
+      "title": "The Residual Cubic Is Strictly Increasing (and Continuous)",
       "startLine": 68,
       "endLine": 83,
-      "summary": "g(b) − g(a) = (b−a)·(a²+ab+b²+5a+5b+10); the bracket is positive-definite since 12·bracket = (3a+3b+10)² + 3(a−b)² + 20, so g is strictly monotone (hence injective, giving a unique endpoint).",
+      "summary": "g(b) − g(a) = (b−a)·(a²+ab+b²+5a+5b+10); the bracket is positive-definite since 12·bracket = (3a+3b+10)² + 3(a−b)² + 20, so g is strictly monotone (hence injective, giving a unique endpoint). A one-line companion (continuous_residualCubic, by fun_prop) records that g is continuous — the second hypothesis the intermediate value theorem needs to locate the endpoint.",
       "mathContext": "StrictMono (a ↦ a³ + 5a² + 10a + 10)."
     },
     {
