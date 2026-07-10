@@ -208,5 +208,28 @@
       "relationship": "foundation",
       "description": "Fundamental Theorem of Arithmetic — unique factorization underlies ω(n), the identity n = ∏ p^v_p(n), and the powerset bijection between subsets of the primes and unitary divisors."
     }
+  ],
+  "references": [
+    {
+      "authors": "Eckford Cohen",
+      "title": "Arithmetical functions associated with the unitary divisors of an integer",
+      "year": "1960",
+      "venue": "Mathematische Zeitschrift 74, 66–80",
+      "note": "The standard reference defining unitary divisors (d ∣ n with gcd(d, n/d) = 1) and proving that their number is the unitary divisor function d*(n) = 2^ω(n) — exactly the count unitaryDivisors_card established here."
+    },
+    {
+      "authors": "R. Vaidyanathaswamy",
+      "title": "The theory of multiplicative arithmetic functions",
+      "year": "1931",
+      "venue": "Transactions of the American Mathematical Society 33 (2), 579–662",
+      "note": "Origin of the unitary (block/direct) convolution of arithmetic functions, in which a unitary divisor selects, at each prime, either the full prime-power p^{v_p(n)} or 1 — the structural fact underlying the powerset bijection s ↦ ∏_{p∈s} p^{v_p(n)}."
+    },
+    {
+      "authors": "Tom M. Apostol",
+      "title": "Introduction to Analytic Number Theory",
+      "year": "1976",
+      "venue": "Springer, Undergraduate Texts in Mathematics",
+      "note": "Standard source for ω(n) = #{distinct primes ∣ n}, multiplicative arithmetic functions, and the appearance of 2^ω(n) as the number of squarefree divisors — the sibling interpretation this entry matches to the unitary-divisor count."
+    }
   ]
 }
