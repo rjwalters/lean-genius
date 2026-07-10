@@ -29,7 +29,7 @@
     ],
     "axiomCount": 5,
     "lineCount": 276,
-    "assumptions": "5 axioms: n3_unique, n4_two_optima, kovacs_2024_n5_unique, and 2 more. See Lean source for complete statements.",
+    "assumptions": "5 axioms: n3_unique, n4_two_optima, kovacs_2024_n5_unique, n6_to_9_nonunique, guth_katz_bound. 0 sorries. Scaffolding note: the similarity relation AreSimilar stubs its geometric transform with a True placeholder ('Simplified; actual transform is complex'), so AreSimilar holds for any two equal-cardinality nonempty sets and AreNonSimilar is correspondingly vacuous. The small-case axioms (n4_two_optima, n6_to_9_nonunique) are therefore stated over these simplified predicates rather than a faithful encoding of Euclidean similarity; minDistinctDistances is likewise a simplified placeholder definition. This entry is an axiomatized scaffold for an OPEN problem, not a verified formalization of the geometry.",
     "mathlib_version": "4.26.0",
     "theoremCount": 2,
     "definitionCount": 10
@@ -79,7 +79,7 @@
       "title": "Part III: Similarity of Point Sets",
       "startLine": 88,
       "endLine": 110,
-      "summary": "AreSimilar and AreNonSimilar definitions"
+      "summary": "AreSimilar and AreNonSimilar definitions. Note: AreSimilar stubs the geometric transform with a True placeholder ('Simplified; actual transform is complex'), so these predicates do not faithfully capture Euclidean similarity — the downstream small-case axioms are scaffolding stated over these simplified relations."
     },
     {
       "id": "small-cases",
