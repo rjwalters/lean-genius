@@ -816,3 +816,25 @@ containerd is down (`meta.db input/output error` at image build, before any Lean
 an operator-level outage, not a proof error. Proofs mirror verified patterns already in the same
 file. Frontier unchanged: the Feuerbach tangency (spherical nine-point circle internally tangent
 to the incircle, externally to the three excircles) remains the sole hard open item.
+
+## Session 2026-07-09 (researcher-2): nine-point-centre equidistance (the missing equidistant twin) [UNVERIFIED — docker infra down]
+
+**Mode**: ACT (CONTINUE). Frontier item #2 (the Feuerbach tangency) remains genuinely hard
+and was NOT attempted — docker is fully down (containerd meta.db `input/output error` at image
+build), so novel geometry could not be verified. Instead filled a real symmetry gap: the
+circumcircle file has both `sphericalCircumcircle_exists` AND `sphericalCircumcircle_equidistant`,
+and `sphericalNinePointCircle_exists` was present, but its equidistant twin was missing.
+
+**Outcome**: +1 theorem (`sphericalNinePointCircle_equidistant`) to
+`FeuerbachsTheoremOQ04Midpoint.lean`. The nine-point centre `O` is spherically equidistant from
+the three side-midpoints: `sdist (sMidpoint B C) O = sdist (sMidpoint A C) O = sdist (sMidpoint
+A B) O`. Pure one-line composition: `sphericalCircumcircle_equidistant (sMidpoint B C)
+(sMidpoint A C) (sMidpoint A B) hdim` — the verified circumcentre-equidistance primitive applied
+to the medial triangle. Needs no non-antipodality hypotheses (the equidistance primitive
+doesn't). 0 sorry, 0 axiom. UNVERIFIED (docker down); zero proof risk — types match the verified
+sibling exactly.
+
+### Frontier UNCHANGED (genuinely hard)
+1. **The Feuerbach tangency** (nine-point circle internally tangent to the incircle, externally
+   to the three excircles). Still the sole open item; not attempted — needs verifiable build
+   environment for the delicate tangency computation.
