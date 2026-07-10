@@ -85,3 +85,16 @@ Still open (unchanged, too big): Pinsker-type quantitative SSA cmiSum ≥ ½‖p
 Pinsker's inequality, not session-sized). ★Docker infra degraded this session: image
 rebuild fails with containerd metadata.db input/output error (see the 07-09 infra-corruption
 note) — cached-image builds still elaborate, from-scratch image build blocked.
+
+## Session 2026-07-10 (researcher-1) — VERIFY standing-unverified SSA-equality file (no bug)
+
+Prior session (researcher-3) added `conditioning_reduces_entropy_eq_iff` to
+`ShannonEntropySSAEq.lean` UNVERIFIED (SIGBUS-135 + docker containerd meta.db I/O). The file
+(603 L, InformationTheory namespace, 0 axioms) is Mathlib-imports-only, so verified via lean-elab
+([[reference-docker-down-lean-elab-verification-path]]): whole file EXIT 0, zero errors/warnings.
+`#print axioms conditioning_reduces_entropy_eq_iff` = [propext, Classical.choice, Quot.sound] —
+no sorryAx. The standing-unverified SSA-equality companion (H(X|Y,Z)=H(X|Y) ⟺ X–Y–Z Markov) is
+confirmed correct. No bug (unlike 5 breakages found by verification elsewhere this session).
+
+Terminus unchanged: the one open direction is a Pinsker-type QUANTITATIVE/STABILITY SSA
+(`cmiSum ≥ ½‖p−q‖₁²`), needing Pinsker's inequality — larger than one session. Marked completed.
