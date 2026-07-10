@@ -339,6 +339,39 @@ theorem motzkinPoly_psd_not_sos {c : ℝ} (hc0 : 0 < c) (hc3 : c ≤ 3) :
     IsPSDMv (motzkinPoly c) ∧ ¬ Hilbert17MotzkinNotSOS.IsSOS (motzkinPoly c) :=
   ⟨(motzkinPoly_psd_iff c).2 hc3, motzkinPoly_not_sos hc0⟩
 
+/-- **SOS membership at `c ≤ 0`.** For a nonpositive coefficient the `−c·x²y²` term has a
+    nonnegative sign, so `motzkinPoly c` is a genuine sum of four squares,
+
+        Mₐ = (x²y)² + (xy²)² + 1² + (√(-c)·xy)²,
+
+    the last square carrying the coefficient `(√(-c))² = -c ≥ 0`.  This is the exact
+    complement of `motzkinPoly_not_sos` (which fails for `c > 0`). -/
+theorem motzkinPoly_sos_of_nonpos {c : ℝ} (hc : c ≤ 0) :
+    Hilbert17MotzkinNotSOS.IsSOS (motzkinPoly c) := by
+  refine ⟨4, ![X 0 ^ 2 * X 1, X 0 * X 1 ^ 2, 1, C (Real.sqrt (-c)) * (X 0 * X 1)], ?_⟩
+  have hsq : (C (Real.sqrt (-c)) : MvPolynomial (Fin 2) ℝ) ^ 2 = - C c := by
+    rw [← map_pow, Real.sq_sqrt (by linarith : (0 : ℝ) ≤ -c), map_neg]
+  rw [motzkinPoly, Fin.sum_univ_four]
+  simp only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+    Matrix.cons_val_two, Matrix.tail_cons, Matrix.cons_val_three, mul_pow]
+  rw [hsq]
+  ring
+
+/-- **Sharp SOS threshold of the Motzkin family: `SOS ⟺ c ≤ 0`.** Combining
+    `motzkinPoly_sos_of_nonpos` (`c ≤ 0 ⟹ SOS`) with `motzkinPoly_not_sos`
+    (`c > 0 ⟹ not SOS`).  The SOS threshold `c ≤ 0` sits strictly below the PSD
+    threshold `c ≤ 3` (`motzkinPoly_psd_iff`): the entire segment `0 < c ≤ 3` is
+    PSD-but-not-SOS, a one-parameter family of witnesses to the Hilbert-17 gap with the
+    Motzkin polynomial (`c = 3`) at the far PSD-boundary end. -/
+theorem motzkinPoly_sos_iff (c : ℝ) :
+    Hilbert17MotzkinNotSOS.IsSOS (motzkinPoly c) ↔ c ≤ 0 := by
+  constructor
+  · intro hsos
+    by_contra hc
+    push_neg at hc
+    exact motzkinPoly_not_sos hc hsos
+  · exact motzkinPoly_sos_of_nonpos
+
 /-! ## Structure of the family: the diagonal value, the boundary zero, monotonicity
 
 Three elementary structural facts that expose *why* `c = 3` is the sharp threshold.
