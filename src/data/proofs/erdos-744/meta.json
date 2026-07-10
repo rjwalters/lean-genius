@@ -59,7 +59,7 @@
       "erdos_744_statement theorem: combined main result"
     ],
     "axiomCount": 1,
-    "lineCount": 578,
+    "lineCount": 614,
     "assumptions": "1 axiom: rodl_tuza_theorem (the deep Rödl–Tuza 1985 result, stated as an assumption since a full formalization of the extremal argument is out of scope). The chromatic number is now defined intrinsically (least number of colors admitting a proper coloring) rather than axiomatized, and is proved well-defined by chromaticNumber_le_card. 0 sorries.",
     "theoremCount": 14,
     "definitionCount": 14
@@ -185,9 +185,9 @@
       "Finset"
     ],
     "namespace": "Erdos744",
-    "lineCount": 578,
+    "lineCount": 614,
     "axiomCount": 1,
-    "theoremCount": 20,
+    "theoremCount": 22,
     "definitionCount": 15,
     "path": "Proofs/Erdos744Problem.lean",
     "sorries": 0

@@ -94,3 +94,27 @@ warnings in the untouched `f_*` theorems. `#print axioms` clean (above).
 
 **Counts.** Erdos744Problem.lean → 578 lines, 20 thm, 15 def, 1 axiom (unchanged), 0 sorry;
 src/data/proofs/erdos-744/meta.json synced.
+
+## Session 2026-07-09 (researcher-3) — max-cut ≤ edgeCount + edgeless zero-case (VERIFIED)
+
+The `bipartitionNumber`/`maxCut` engine already had complementarity
+(`bipartitionNumber_add_maxCut`), `bipartitionNumber_le_edgeCount`, and the saturated-case
+`maxCut_eq_edgeCount_iff`. Added the two missing companions (both axiom-free):
+
+- `maxCut_le_edgeCount`: the dual of `bipartitionNumber_le_edgeCount` — one-line `omega`
+  off the complementarity identity.
+- `maxCut_eq_zero_iff`: `maxCut G = 0 ↔ edgeCount G = 0` (max-cut vanishes iff `G` edgeless),
+  the zero-case dual of `maxCut_eq_edgeCount_iff`. Forward direction is a construction: if
+  `edgeCount > 0` pick an edge `p` (`Finset.card_pos`), the isolating coloring
+  `c = fun w => decide (w = p.1)` cuts it (`c p.1 = true ≠ false = c p.2` since `p.2 ≠ p.1`
+  from `p.1 < p.2`), so `bichromaticEdges G c ≥ 1 ≤ maxCut` contradicts `maxCut = 0`; reverse
+  is `omega` off `maxCut_le_edgeCount`. Membership discharge mirrors `monochromaticEdges_eq_zero_iff`
+  (`filter_eq_empty_iff` + `⟨hlt, hadj, by simp only [hc]; simp [hne_uv]⟩`).
+
+The tautological `rodl_tuza_theorem` axiom is untouched (converting it overclaims — prior
+integrity finding); axiomCount unchanged, status stays `axiomatized`.
+
+VERIFIED green via direct lean-elab vs pinned Mathlib v4.26.0 (docker containerd blob I/O down):
+exit 0, no errors; `#print axioms` on both = `[propext, Classical.choice, Quot.sound]`.
+Gallery meta erdos-744: lineCount 578→614, leanFile.theoremCount 20→22 (top-level curated
+theoremCount 14 left as-is — different convention).
