@@ -152,6 +152,11 @@
       "targetId": "bernoulli-inequality-oq-01-oq-01",
       "relationship": "extends",
       "description": "The grandparent proves strict Bernoulli on the full weak domain −2 ≤ a; this entry continues the per-exponent endpoint analysis into the quintic case"
+    },
+    {
+      "targetId": "bernoulli-inequality-oq-01-oq-01-oq-02",
+      "relationship": "related",
+      "description": "A sibling branch off the same grandparent: rather than locating per-exponent endpoints aₙ* below −2, it isolates the magnitude argument used on the hard subrange −2 ≤ a ≤ −1 (the line-escapes-a-bounded-power lemma, |1 + a| ≤ 1 traps the power in [−1, 1] while the line escapes). The two branches are complementary readings of the same −2 ≤ a domain — this entry sharpens the sign structure at the endpoint, that one sharpens the magnitude structure in the interior"
     }
   ],
   "leanFile": {
