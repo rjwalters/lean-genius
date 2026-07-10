@@ -360,4 +360,63 @@ theorem exists_iterate_tendsto (f : ℝ → ℝ) (L : ℝ) (hL0 : 0 ≤ L) (hL1 
   obtain ⟨xstar, hfp⟩ := exists_fixed_point f L hL0 hL1 hf
   exact ⟨xstar, hfp, iterate_tendsto f L hL0 hL1 hf x hx xstar hfp⟩
 
+/-! ### Stability of the fixed point under perturbation of the map
+
+The estimates above all concern a *single* contraction `f` and quantify how its
+iterates approach its fixed point.  A complementary — and, for numerical work,
+equally basic — question is how the fixed point itself *moves* when the map is
+perturbed: if `g` is a second map that is uniformly `δ`-close to `f`
+(`|f x − g x| ≤ δ` for all `x`), how far apart are their fixed points?  The answer
+is the classic Lipschitz-stability bound
+
+    |x*_f − x*_g| ≤ δ / (1 − L),
+
+so the fixed point depends on the map in a `1/(1−L)`-Lipschitz way: the closer `L`
+is to `1` (the weaker the contraction) the more sensitive the fixed point.  It is a
+one-line consequence of the contraction hypothesis and the triangle inequality —
+`|x*_f − x*_g| = |f x*_f − g x*_g| ≤ |f x*_f − f x*_g| + |f x*_g − g x*_g|
+≤ L·|x*_f − x*_g| + δ` — and it is not recorded anywhere above, which only ever
+compares iterates of one fixed map to one fixed point. -/
+
+/-- **Stability of the fixed point under perturbation (conditional).**  If `f` is an
+    `L`-contraction with `L < 1` and fixed point `xf`, and `g` is any map with a
+    fixed point `xg` that is uniformly `δ`-close to `f` (`|f x − g x| ≤ δ` for all
+    `x`), then the two fixed points satisfy `|xf − xg| ≤ δ / (1 − L)`.  Only `f`
+    need be a contraction; `g` enters solely through its fixed-point equation and
+    the closeness bound. -/
+theorem fixed_point_stability (f g : ℝ → ℝ) (L δ : ℝ) (hL1 : L < 1)
+    (hf : ∀ x y, |f x - f y| ≤ L * |x - y|)
+    (xf xg : ℝ) (hxf : f xf = xf) (hxg : g xg = xg)
+    (hclose : ∀ x, |f x - g x| ≤ δ) :
+    |xf - xg| ≤ δ / (1 - L) := by
+  have h1L : 0 < 1 - L := by linarith
+  have hstep : |xf - xg| ≤ L * |xf - xg| + δ := by
+    have e1 : xf - xg = (f xf - f xg) + (f xg - g xg) := by rw [hxf, hxg]; ring
+    calc |xf - xg| = |(f xf - f xg) + (f xg - g xg)| := by rw [e1]
+      _ ≤ |f xf - f xg| + |f xg - g xg| := abs_add _ _
+      _ ≤ L * |xf - xg| + δ := by
+          have ha := hf xf xg
+          have hb := hclose xg
+          linarith
+  rw [le_div_iff₀ h1L]
+  have hexp : |xf - xg| * (1 - L) = |xf - xg| - L * |xf - xg| := by ring
+  rw [hexp]; linarith [hstep]
+
+/-- **Stability of the fixed point under perturbation (unconditional).**  If `f` and
+    `g` are contractions on `ℝ` (constants `L, M < 1`) that are uniformly `δ`-close
+    (`|f x − g x| ≤ δ`), then each has a (unique) fixed point and the two are within
+    `δ / (1 − L)`:  `∃ xf xg, f xf = xf ∧ g xg = xg ∧ |xf − xg| ≤ δ/(1−L)`.  The
+    fixed points are produced by `exists_fixed_point` and the bound is
+    `fixed_point_stability`; the asymmetry `1/(1−L)` (vs `1/(1−M)`) reflects that
+    only `f`'s contraction rate is used to absorb the coupled term. -/
+theorem fixed_point_stability_unconditional (f g : ℝ → ℝ) (L M δ : ℝ)
+    (hL0 : 0 ≤ L) (hL1 : L < 1) (hM0 : 0 ≤ M) (hM1 : M < 1)
+    (hf : ∀ x y, |f x - f y| ≤ L * |x - y|)
+    (hg : ∀ x y, |g x - g y| ≤ M * |x - y|)
+    (hclose : ∀ x, |f x - g x| ≤ δ) :
+    ∃ xf xg : ℝ, f xf = xf ∧ g xg = xg ∧ |xf - xg| ≤ δ / (1 - L) := by
+  obtain ⟨xf, hxf⟩ := exists_fixed_point f L hL0 hL1 hf
+  obtain ⟨xg, hxg⟩ := exists_fixed_point g M hM0 hM1 hg
+  exact ⟨xf, xg, hxf, hxg, fixed_point_stability f g L δ hL1 hf xf xg hxf hxg hclose⟩
+
 end BrouwerOQ02OQ02OQ01

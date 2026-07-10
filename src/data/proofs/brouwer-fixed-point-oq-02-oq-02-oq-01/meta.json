@@ -1,0 +1,223 @@
+{
+  "id": "brouwer-fixed-point-oq-02-oq-02-oq-01",
+  "title": "Banach Contraction on ℝ: a priori / a posteriori Error Estimates, Convergence, and Fixed-Point Stability",
+  "slug": "brouwer-fixed-point-oq-02-oq-02-oq-01",
+  "description": "Open question OQ-02-OQ-02-OQ-01 of the Brouwer fixed-point family. The parent BrouwerFixedPointOQ02OQ02 studies the query complexity of approximating fixed points of contractions, proving the a-posteriori-free bound |xₙ − x*| ≤ Lⁿ·|x₀ − x*| (which presupposes the unknown distance |x₀ − x*|). This child makes the contraction iteration practically computable and closes the standing hypotheses. It supplies the a priori estimate |xₙ − x*| ≤ Lⁿ/(1−L)·|x₁ − x₀| (computable from the first step) and the a posteriori estimate |xₙ₊₁ − x*| ≤ L/(1−L)·|xₙ₊₁ − xₙ| (a computable stopping criterion), both in conditional and hypothesis-free (unconditional) forms; the Lipschitz composition law and its list generalisation (a composite of contractions is a contraction); uniqueness of the fixed point and sharpness of the geometric decay; existence of the fixed point on ℝ by bridging the raw contraction bound to Mathlib's ContractingWith (full Banach existence + uniqueness); convergence of the iterates xₙ → x*; and the Lipschitz stability of the fixed point under perturbation of the map, |x*_f − x*_g| ≤ δ/(1−L) when |f x − g x| ≤ δ. All results are on the abstract contraction |f x − f y| ≤ L·|x − y| over ℝ, 0 axioms, 0 sorries.",
+  "meta": {
+    "author": "researcher-11",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Banach_fixed-point_theorem",
+    "date": "2026-07-10",
+    "status": "verified",
+    "tags": [
+      "analysis",
+      "fixed-point",
+      "banach",
+      "contraction",
+      "numerical-analysis",
+      "error-estimates",
+      "convergence",
+      "stability",
+      "open-question",
+      "research"
+    ],
+    "proofRepoPath": "Proofs/BrouwerFixedPointOQ02OQ02OQ01.lean",
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 422,
+    "dateAdded": "2026-07-10",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "ContractingWith.exists_fixedPoint",
+        "description": "Banach fixed-point existence for a ContractingWith map on a complete space; used to discharge the standing f x* = x* hypothesis on ℝ.",
+        "module": "Mathlib.Topology.MetricSpace.Contracting"
+      },
+      {
+        "theorem": "LipschitzWith.of_dist_le_mul",
+        "description": "Bridges the raw real contraction bound |f x − f y| ≤ L·|x − y| to Mathlib's LipschitzWith L.toNNReal f.",
+        "module": "Mathlib.Topology.MetricSpace.Lipschitz"
+      },
+      {
+        "theorem": "tendsto_pow_atTop_nhds_zero_of_lt_one",
+        "description": "Lⁿ → 0 for 0 ≤ L < 1; squeezed against the geometric error bound to prove xₙ → x*.",
+        "module": "Mathlib.Analysis.SpecificLimits.Basic"
+      },
+      {
+        "theorem": "le_div_iff₀",
+        "description": "a ≤ b / c ↔ a·c ≤ b for c > 0; clears the 1/(1−L) denominators in the a priori and stability bounds.",
+        "module": "Mathlib.Algebra.Order.GroupWithZero.Unbundled.Basic"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "The Banach fixed-point theorem (1922) states that a contraction on a complete metric space has a unique fixed point, approached geometrically by the iteration xₙ₊₁ = f xₙ. In numerical analysis the theorem is inseparable from its two computable error estimates — the a priori bound (in terms of the first increment |x₁ − x₀|, answering 'how many steps for accuracy ε?') and the a posteriori bound (in terms of the latest increment |xₙ₊₁ − xₙ|, giving a stopping criterion) — and from the stability of the fixed point under perturbation of the map. The Brouwer fixed-point family studies fixed points on the interval; the parent OQ-02-OQ-02 quantifies the query complexity of the contraction case but leaves x* as an assumption and omits the practical estimates. This entry supplies the estimates, discharges the existence hypothesis via Mathlib's ContractingWith, records convergence, and adds the Lipschitz stability of the fixed point — the complete practically-computable Banach picture on ℝ.",
+    "problemStatement": "**OQ-02-OQ-02-OQ-01**: Make the contraction iteration on ℝ practically computable and self-contained. For an abstract contraction |f x − f y| ≤ L·|x − y| with 0 ≤ L < 1: (1) prove the a priori estimate |xₙ − x*| ≤ Lⁿ/(1−L)·|x₁ − x₀| and the a posteriori estimate |xₙ₊₁ − x*| ≤ L/(1−L)·|xₙ₊₁ − xₙ|, in both conditional and hypothesis-free forms; (2) prove uniqueness and sharpness, and discharge the standing fixed-point hypothesis by existence on ℝ (Banach); (3) prove convergence xₙ → x*; and (4) prove the stability of the fixed point under perturbation of the map, |x*_f − x*_g| ≤ δ/(1−L) for uniformly δ-close maps.",
+    "proofStrategy": "The geometric decay |xₙ − x*| ≤ Lⁿ·|x₀ − x*| (iterate_dist) is reproved self-containedly by induction, and the one-step estimate (1−L)·|x₀ − x*| ≤ |x₁ − x₀| (initial_dist) controls the unknown distance by the computable first increment; the a priori and a posteriori bounds follow by combining them. Uniqueness is (1−L)·|p − q| ≤ 0; sharpness exhibits t ↦ L·t as an equality-case contraction. Existence bridges the contraction bound to LipschitzWith via LipschitzWith.of_dist_le_mul and reads off ContractingWith.exists_fixedPoint, upgrading the setup to full Banach existence + uniqueness and yielding the unconditional (hypothesis-free) estimates. Convergence squeezes |xₙ − x*| between 0 and Lⁿ·|x₀ − x*| → 0. Stability is a one-line triangle-inequality argument: |x*_f − x*_g| = |f x*_f − g x*_g| ≤ |f x*_f − f x*_g| + |f x*_g − g x*_g| ≤ L·|x*_f − x*_g| + δ, whence (1−L)·|x*_f − x*_g| ≤ δ.",
+    "keyInsights": [
+      "The a priori and a posteriori estimates are the two faces of practical computability: the a priori bound is computable before iterating (from |x₁ − x₀|) and sizes the work; the a posteriori bound is computable during iteration (from the latest increment) and certifies when to stop — neither requires knowing x*.",
+      "The standing hypothesis f x* = x* carried by every estimate is not an extra assumption on ℝ: completeness makes existence automatic (ContractingWith.exists_fixedPoint), so each estimate has a hypothesis-free unconditional form invoking only f, L and the iterates.",
+      "The geometric decay is best possible: the linear contraction t ↦ L·t attains |xₙ − x*| = Lⁿ·|x₀ − x*| with equality, so no smaller rate is provable — sharpness is witnessed, not merely asserted.",
+      "Convergence xₙ → x* is the qualitative fact the estimates quantify: it is a two-line squeeze of the error between 0 and Lⁿ·|x₀ − x*|, tying the whole suite (existence, uniqueness, rate, limit) into the standard Banach picture.",
+      "The fixed point is a 1/(1−L)-Lipschitz function of the map: uniformly δ-close maps have fixed points within δ/(1−L), so the sensitivity blows up precisely as L → 1 (the contraction weakens) — the stability counterpart to the convergence-rate degradation, and only f's contraction constant is needed to absorb the coupled term."
+    ],
+    "prerequisites": [
+      "brouwer-fixed-point-oq-02-oq-02 — the parent query-complexity study of approximate fixed points of contractions",
+      "The Banach fixed-point theorem and the contraction iteration xₙ₊₁ = f xₙ",
+      "Mathlib's ContractingWith / LipschitzWith API and completeness of ℝ",
+      "Elementary real analysis: the triangle inequality, geometric series, and Lⁿ → 0 for 0 ≤ L < 1"
+    ]
+  },
+  "sections": [
+    {
+      "id": "estimates",
+      "title": "Geometric decay and the a priori / a posteriori estimates",
+      "startLine": 27,
+      "endLine": 107,
+      "summary": "iterate_dist (|xₙ − x*| ≤ Lⁿ·|x₀ − x*|, reproved self-containedly), initial_dist ((1−L)·|x₀ − x*| ≤ |x₁ − x₀|), and the two computable estimates apriori_estimate (Lⁿ/(1−L)·|x₁ − x₀|) and aposteriori_estimate (L/(1−L)·|xₙ₊₁ − xₙ|).",
+      "mathContext": "The a priori bound answers 'how many steps for accuracy ε?' before iterating; the a posteriori bound is a computable stopping criterion using only the latest increment."
+    },
+    {
+      "id": "composition",
+      "title": "Lipschitz composition and composites of contractions",
+      "startLine": 109,
+      "endLine": 204,
+      "summary": "lipschitz_comp (|g(f x) − g(f y)| ≤ L₂L₁·|x − y|) and contraction_comp (a composite of two contractions is a contraction), together with the List generalisations list_prod_le_one, list_prod_lt_one, lipschitz_comp_list and contraction_comp_list (a nonempty composite of contractions is a contraction with product constant).",
+      "mathContext": "The structural fact behind iterating several maps: contraction constants multiply, and a finite composite of contractions is again a contraction."
+    },
+    {
+      "id": "well-definedness",
+      "title": "Uniqueness and sharpness",
+      "startLine": 205,
+      "endLine": 245,
+      "summary": "fixed_point_unique (a contraction with L < 1 has at most one fixed point, so the x* of every estimate is well-defined) and iterate_dist_sharp (the linear map t ↦ L·t attains the geometric decay with equality, so iterate_dist cannot be improved).",
+      "mathContext": "(1−L)·|p − q| ≤ 0 forces p = q; the equality-case witness shows the Lⁿ rate is best possible."
+    },
+    {
+      "id": "existence",
+      "title": "Existence of the fixed point (Banach on ℝ)",
+      "startLine": 246,
+      "endLine": 285,
+      "summary": "exists_fixed_point (a contraction on the complete space ℝ has a fixed point, by bridging to Mathlib's ContractingWith) and exists_unique_fixed_point (the self-contained Banach existence-and-uniqueness statement), discharging the standing f x* = x* hypothesis.",
+      "mathContext": "LipschitzWith.of_dist_le_mul + Real.dist_eq turn the raw bound into LipschitzWith L.toNNReal f; ContractingWith.exists_fixedPoint yields x*."
+    },
+    {
+      "id": "unconditional",
+      "title": "Unconditional (hypothesis-free) estimates",
+      "startLine": 286,
+      "endLine": 322,
+      "summary": "apriori_estimate_unconditional and aposteriori_estimate_unconditional: the two computable estimates with no assumed fixed point, produced by threading exists_fixed_point so they invoke only f, L and the iterates.",
+      "mathContext": "Since existence is automatic on ℝ, the practical estimates need no x* input — exactly what a computation with xₙ₊₁ = f xₙ can call."
+    },
+    {
+      "id": "convergence",
+      "title": "Convergence of the iteration",
+      "startLine": 323,
+      "endLine": 362,
+      "summary": "iterate_tendsto (xₙ → x*, by squeezing the error between 0 and Lⁿ·|x₀ − x*| → 0) and its hypothesis-free form exists_iterate_tendsto.",
+      "mathContext": "The qualitative limit behind the quantitative estimates: geometric decay plus Lⁿ → 0 gives convergence via squeeze_zero."
+    },
+    {
+      "id": "stability",
+      "title": "Stability of the fixed point under perturbation",
+      "startLine": 363,
+      "endLine": 421,
+      "summary": "fixed_point_stability (|xf − xg| ≤ δ/(1−L) when |f x − g x| ≤ δ, f an L-contraction; conditional on both fixed points) and fixed_point_stability_unconditional (both maps contractions ⟹ their fixed points exist and lie within δ/(1−L)).",
+      "mathContext": "|xf − xg| = |f xf − g xg| ≤ |f xf − f xg| + |f xg − g xg| ≤ L·|xf − xg| + δ, so (1−L)·|xf − xg| ≤ δ — the fixed point is a 1/(1−L)-Lipschitz function of the map."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "brouwer-fixed-point-oq-02-oq-02",
+      "relationship": "extends",
+      "description": "Parent query-complexity study of approximate fixed points of contractions; it proves |xₙ − x*| ≤ Lⁿ·|x₀ − x*| but leaves x* as a hypothesis and omits the practical estimates. This child supplies the a priori / a posteriori estimates, discharges existence, and adds convergence and stability."
+    },
+    {
+      "targetId": "brouwer-fixed-point",
+      "relationship": "depends-on",
+      "description": "The Brouwer fixed-point family; the contraction (Banach) case studied here is the quantitative, constructive counterpart of Brouwer's topological existence theorem."
+    }
+  ],
+  "conclusion": {
+    "summary": "A self-contained, fully practical Banach fixed-point theory on ℝ for an abstract contraction |f x − f y| ≤ L·|x − y| (0 ≤ L < 1): the a priori and a posteriori error estimates (conditional and hypothesis-free), Lipschitz composition and finite composites of contractions, uniqueness and sharpness of the geometric decay, existence via Mathlib's ContractingWith (full Banach existence + uniqueness), convergence xₙ → x*, and the Lipschitz stability of the fixed point under perturbation of the map, |x*_f − x*_g| ≤ δ/(1−L). 0 axioms, 0 sorries.",
+    "implications": "The entry turns the abstract contraction hypothesis into a complete computational toolkit: sizing the iteration in advance, certifying when to stop, guaranteeing and locating the fixed point, and bounding how it moves under model perturbation — all with explicit 1/(1−L) constants that quantify the loss of robustness as the contraction weakens.",
+    "openQuestions": [
+      "Extend the a priori / a posteriori / stability suite from ℝ to a general complete metric or Banach space, replacing the interval-specific bounds by their metric analogues.",
+      "Quantify the perturbation stability in the operator norm (|x*_f − x*_g| ≤ ‖f − g‖_∞/(1−L)) and compare with the sharp query-complexity bounds of the parent OQ-02-OQ-02.",
+      "Give a matching lower bound showing the 1/(1−L) stability constant is optimal, in analogy with iterate_dist_sharp for the geometric decay."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "BrouwerOQ02OQ02OQ01",
+    "lineCount": 422,
+    "axiomCount": 0,
+    "theoremCount": 20,
+    "substantiveTheoremCount": 20,
+    "definitionCount": 0,
+    "path": "Proofs/BrouwerFixedPointOQ02OQ02OQ01.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Banach, S.",
+      "title": "Sur les opérations dans les ensembles abstraits et leur application aux équations intégrales",
+      "year": "1922",
+      "note": "Fundamenta Mathematicae 3, 133-181. The contraction mapping principle."
+    },
+    {
+      "authors": "Atkinson, K.; Han, W.",
+      "title": "Theoretical Numerical Analysis: A Functional Analysis Framework",
+      "year": "2009",
+      "note": "Springer. A priori / a posteriori error estimates and perturbation stability for fixed-point iteration."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "exists_unique_fixed_point",
+      "type": "core",
+      "description": "Banach fixed-point theorem on ℝ: a contraction with 0 ≤ L < 1 has a unique fixed point",
+      "leanType": "(f : ℝ → ℝ) → (L : ℝ) → 0 ≤ L → L < 1 → (∀ x y, |f x - f y| ≤ L * |x - y|) → ∃! xstar, f xstar = xstar"
+    },
+    {
+      "name": "apriori_estimate",
+      "type": "core",
+      "description": "A priori error estimate in terms of the first increment |x₁ − x₀| (computable before iterating)",
+      "leanType": "… → ∀ n, |x n - xstar| ≤ L ^ n / (1 - L) * |x 1 - x 0|"
+    },
+    {
+      "name": "aposteriori_estimate",
+      "type": "core",
+      "description": "A posteriori error estimate in terms of the latest increment |xₙ₊₁ − xₙ| (a computable stopping criterion)",
+      "leanType": "… → ∀ n, |x (n + 1) - xstar| ≤ L / (1 - L) * |x (n + 1) - x n|"
+    },
+    {
+      "name": "fixed_point_stability",
+      "type": "core",
+      "description": "Lipschitz stability of the fixed point under perturbation: uniformly δ-close maps have fixed points within δ/(1−L)",
+      "leanType": "(f g : ℝ → ℝ) → (L δ : ℝ) → L < 1 → (∀ x y, |f x - f y| ≤ L * |x - y|) → (xf xg : ℝ) → f xf = xf → g xg = xg → (∀ x, |f x - g x| ≤ δ) → |xf - xg| ≤ δ / (1 - L)"
+    },
+    {
+      "name": "iterate_tendsto",
+      "type": "supporting",
+      "description": "Convergence of the iteration xₙ → x*, by squeezing the error against Lⁿ·|x₀ − x*| → 0",
+      "leanType": "… → Filter.Tendsto x Filter.atTop (nhds xstar)"
+    },
+    {
+      "name": "iterate_dist_sharp",
+      "type": "supporting",
+      "description": "Sharpness of the geometric decay: t ↦ L·t attains |xₙ − x*| = Lⁿ·|x₀ − x*| with equality",
+      "leanType": "(L : ℝ) → 0 ≤ L → (x0 : ℝ) → (Lipschitz-equality ∧ fixed-point ∧ recurrence ∧ decay-equality)"
+    },
+    {
+      "name": "contraction_comp_list",
+      "type": "supporting",
+      "description": "A nonempty finite composite of contractions is a contraction with the product constant",
+      "leanType": "(fL : List ((ℝ → ℝ) × ℝ)) → fL ≠ [] → … → (product < 1 ∧ contraction bound)"
+    }
+  ],
+  "sorries": 0
+}
