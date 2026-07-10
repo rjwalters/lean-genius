@@ -69,6 +69,34 @@ noncomputable def compress (T : V →ₗ[𝕜] V) (H : Submodule 𝕜 V) : H →
 @[simp] theorem compress_apply (T : V →ₗ[𝕜] V) (H : Submodule 𝕜 V) (y : H) :
     compress T H y = H.orthogonalProjection (T (y : V)) := rfl
 
+/-- **Projection-adjoint identity for the compression (unconditional, left slot).**
+For *any* operator `T`, *any* subspace `H`, and *any* `y z : H`, the compression's inner
+product agrees with the ambient one in the left slot:
+
+  `⟪compress T H y, z⟫_H = ⟪T ↑y, ↑z⟫_V`.
+
+No symmetry of `T` and no invariance / special-position hypothesis on `H` is required: the
+orthogonal projection in `compress` is adjoint to the inclusion
+(`Submodule.inner_orthogonalProjection_eq_of_mem_right`), so it is inert against the in-`H`
+test vector `z`.  This is the single unconditional primitive behind both
+`isSymmetric_compress` and `rayleigh_compress_eq`, and the bilinear generalisation of the
+latter (the Rayleigh quotient is its diagonal `z = y` real part). -/
+theorem inner_compress_eq (T : V →ₗ[𝕜] V) (H : Submodule 𝕜 V) (y z : H) :
+    @inner 𝕜 H _ (compress T H y) z = @inner 𝕜 V _ (T (y : V)) (z : V) := by
+  rw [compress_apply, Submodule.inner_orthogonalProjection_eq_of_mem_right]
+
+/-- **Projection-adjoint identity for the compression (unconditional, right slot).**
+The right-slot companion of `inner_compress_eq`:
+
+  `⟪y, compress T H z⟫_H = ⟪↑y, T ↑z⟫_V`  for any `T`, any subspace `H`, any `y z : H`.
+
+Same reasoning via `Submodule.inner_orthogonalProjection_eq_of_mem_left`.  Together with
+`inner_compress_eq` this is the full unconditional two-sided adjoint identity for the
+orthogonal compression; `isSymmetric_compress` is their combination when `T` is symmetric. -/
+theorem inner_compress_eq' (T : V →ₗ[𝕜] V) (H : Submodule 𝕜 V) (y z : H) :
+    @inner 𝕜 H _ y (compress T H z) = @inner 𝕜 V _ (y : V) (T (z : V)) := by
+  rw [compress_apply, Submodule.inner_orthogonalProjection_eq_of_mem_left]
+
 /-- The compression of a symmetric operator is symmetric.  Both inner products
 collapse to `⟪T ↑y, ↑z⟫_V` via the projection adjoint identity, and that is
 symmetric because `T` is. -/
