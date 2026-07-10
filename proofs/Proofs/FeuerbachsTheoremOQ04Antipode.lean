@@ -45,12 +45,27 @@ theorem scos_neg_right (P Q : E) : scos P (-Q) = - scos P Q := by
 theorem scos_neg_left (P Q : E) : scos (-P) Q = - scos P Q := by
   unfold scos; rw [inner_neg_left]
 
+/-- **The antipodal map preserves the spherical cosine.**  Negating *both* points cancels the
+two single-slot sign flips (`scos_neg_left`, `scos_neg_right`), so `scos (−P) (−Q) = scos P Q`:
+the involution `P ↦ −P` is a symmetry of the spherical-cosine pairing.  The paired counterpart
+of the individual slot-flip lemmas. -/
+theorem scos_neg_neg (P Q : E) : scos (-P) (-Q) = scos P Q := by
+  rw [scos_neg_left, scos_neg_right, neg_neg]
+
 /-- **A model point and its antipode are at maximal spherical distance `π`.**  The inner
 product `⟪P, −P⟫ = −‖P‖² = −1`, and `arccos (−1) = π`. -/
 theorem sdist_antipode {P : E} (hP : OnSphere P) : sdist P (-P) = Real.pi := by
   unfold sdist
   rw [inner_neg_right, real_inner_self_eq_norm_sq, hP, one_pow]
   exact Real.arccos_neg_one
+
+/-- **The antipodal map is a spherical isometry.**  Negating both points leaves the spherical
+distance unchanged: `sdist (−P) (−Q) = sdist P Q`.  Since `sdist = arccos ∘ ⟪·,·⟫` and the two
+inner-product sign flips cancel (`⟪−P, −Q⟫ = ⟪P, Q⟫`), the arccos argument is unchanged.  The
+distance form of `scos_neg_neg`; makes precise that the antipodal involution acts on the model
+sphere as a distance-preserving symmetry. -/
+theorem sdist_neg_neg (P Q : E) : sdist (-P) (-Q) = sdist P Q := by
+  unfold sdist; rw [inner_neg_left, inner_neg_right, neg_neg]
 
 /-- **The two-pole identity.**  A spherical circle has two centres: the angular-radius-`ρ`
 circle about a model point `O` is the *same set* as the angular-radius-`(π − ρ)` circle about
