@@ -260,4 +260,52 @@ theorem gap_isLittleO_rpow_of_rpow_bound {θ a : ℝ} (hθa : θ < a)
   rw [h0] at hrp
   exact absurd hrp (lt_irrefl 0)
 
+-- ============================================================================
+-- Individual-gap bridge: from the maximal gap `sSup` back to actual gaps
+-- ============================================================================
+
+/-- **Bridge: an individual consecutive-prime gap is at most the maximal gap.**
+
+Every result above bounds the *maximal* gap `maxPrimeGap x = sSup (primeGapSet x)`. But the
+object of Erdős #1138 is an *individual* gap `q - p` between consecutive primes `p < q ≤ x`.
+This lemma connects the two: any such gap lies in `primeGapSet x`, hence is `≤` its supremum.
+It is the `le_csSup` half complementing the parent's `csSup_le`-based upper bounds, and is what
+lets the sup-level asymptotics below be read as statements about genuine prime gaps. -/
+theorem consecutive_gap_le_maxPrimeGap {x p q : ℕ}
+    (hp : Nat.Prime p) (hq : Nat.Prime q) (hpq : p < q) (hqx : q ≤ x)
+    (hcons : ∀ r, Nat.Prime r → p < r → q ≤ r) :
+    q - p ≤ maxPrimeGap x := by
+  unfold maxPrimeGap
+  exact le_csSup (primeGapSet_bddAbove x) ⟨p, q, hp, hq, hpq, hqx, hcons, rfl⟩
+
+/-- **Individual consecutive-prime gaps obey the Baker–Harman–Pintz bound.**
+
+Composing the bridge `consecutive_gap_le_maxPrimeGap` with `baker_harman_pintz`: for `x ≥ 25`,
+*every* gap `q - p` between consecutive primes with `q ≤ x` satisfies `q - p ≤ x^0.525`.
+This is the concrete, gap-level statement of the BHP bound (the parent axiom is phrased for the
+supremum only). -/
+theorem consecutive_gap_le_rpow {x p q : ℕ} (hx : 25 ≤ x)
+    (hp : Nat.Prime p) (hq : Nat.Prime q) (hpq : p < q) (hqx : q ≤ x)
+    (hcons : ∀ r, Nat.Prime r → p < r → q ≤ r) :
+    ((q - p : ℕ) : ℝ) ≤ (x : ℝ) ^ (0.525 : ℝ) := by
+  calc ((q - p : ℕ) : ℝ)
+      ≤ (maxPrimeGap x : ℝ) := by
+        exact_mod_cast consecutive_gap_le_maxPrimeGap hp hq hpq hqx hcons
+    _ ≤ (x : ℝ) ^ (0.525 : ℝ) := baker_harman_pintz x hx
+
+/-- **Normalised individual gap bound.** The gap-level counterpart of `gap_div_le_rpow_neg`:
+for `x ≥ 25` and any consecutive primes `p < q ≤ x`, the normalised gap `(q - p) / x` is at most
+`x^(-0.475)`. As `x → ∞` this envelope vanishes, so every consecutive-prime gap below `x` is
+eventually negligible compared with `x` — the sublinearity of `bhp_implies_gap_littleo` made
+pointwise and gap-explicit. -/
+theorem consecutive_gap_div_le_rpow_neg {x p q : ℕ} (hx : 25 ≤ x)
+    (hp : Nat.Prime p) (hq : Nat.Prime q) (hpq : p < q) (hqx : q ≤ x)
+    (hcons : ∀ r, Nat.Prime r → p < r → q ≤ r) :
+    ((q - p : ℕ) : ℝ) / x ≤ (x : ℝ) ^ (-(0.475 : ℝ)) := by
+  have hbridge : ((q - p : ℕ) : ℝ) ≤ (maxPrimeGap x : ℝ) := by
+    exact_mod_cast consecutive_gap_le_maxPrimeGap hp hq hpq hqx hcons
+  calc ((q - p : ℕ) : ℝ) / x
+      ≤ (maxPrimeGap x : ℝ) / x := by gcongr
+    _ ≤ (x : ℝ) ^ (-(0.475 : ℝ)) := gap_div_le_rpow_neg x hx
+
 end Erdos1138OQ03
