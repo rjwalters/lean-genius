@@ -3,23 +3,27 @@
 ## Current State
 **Phase**: ACT
 **Path**: full
-**Since**: 2026-07-09T20:50:32-07:00
-**Iteration**: 1
+**Since**: 2026-07-10
+**Iteration**: 2
 
 ## Current Focus
-Initial problem understanding. Read problem.md and gather context.
+Capstone added: pairwise transitivity of the SLₙ(ℤ) action on primitive vectors.
 
 ## Active Approach
-None yet.
+Constructive Euclidean descent (block-embedding engine `embedOne`/`headBlockN`),
+capped by composing the reduce-to-e₀ maps to relate any two primitive vectors.
 
 ## Attempt Count
-- Total attempts: 0
-- Current approach attempts: 0
-- Approaches tried: 0
+- Total attempts: 2
+- Current approach attempts: 2
+- Approaches tried: 1 (constructive descent)
 
 ## Blockers
-None.
+Docker build infrastructure DOWN (containerd content-store blob I/O error) — cannot
+machine-verify this session. Contribution hand-audited against local Mathlib pin.
 
 ## Next Action
-Read problem.md thoroughly and acquire full context.
-Then move to ORIENT phase to explore literature and related proofs.
+When docker is restored: build-verify BezoutIdentityOQ01OQ02OQ02Transitive.lean
+(all three companion files), then register Transitive.lean/Descent.lean as
+`additionalFiles` in the gallery meta so the completed converse + capstone surface
+in the gallery. Mathematical content is otherwise COMPLETE (both directions).
