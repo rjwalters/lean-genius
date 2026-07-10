@@ -62,7 +62,9 @@
       "The moon_f3 statement in Erdos1015OQ01.lean is over a fully abstract `axiom f : ℕ → ℕ`, so it is literally uninterpreted and cannot be discharged there; genuine progress requires the real definition of f via CliquePartition.",
       "A clique partition covers exactly (number of cliques)·t vertices — the disjointness of the cliques turns the fold-union cardinality into an exact sum, not just an upper bound.",
       "Consequently leftover ≡ n (mod t): the leftover residue is forced by n alone, independent of the coloring. For t=3, n ≡ 1 (mod 3) already forbids a perfect packing.",
-      "Mirroring the parent definitions but omitting its axioms keeps the file provably assumption-free: #print axioms shows only the three foundational axioms."
+      "Mirroring the parent definitions but omitting its axioms keeps the file provably assumption-free: #print axioms shows only the three foundational axioms.",
+      "The residue mechanism bounds the *class* but not the *magnitude* of the leftover: mod t alone forces leftover ∈ {0,…,t−1}, so it can never certify leftover ≥ t. Moon's f(3)=4 exceeds this ceiling (4 > 2 = t−1), which locates precisely what is elementary (the congruence class) versus deep (the extremal value) in the determination of f(t).",
+      "Generalizing the fold accumulator is what upgrades card(⋃ cliques) ≤ Σ card to an exact equality: the disjoint-union card lemma only fires because the induction threads a running-disjoint init through each cons step. Without that invariant one recovers merely the trivial upper bound, too weak to pin any residue."
     ]
   },
   "sections": [
@@ -128,6 +130,7 @@
     "implications": "Separating the verifiable structural core (the residue invariant) from the deep extremal content (the exact value 4) is honest formalization: it advances the proof without inflating what Lean has actually checked. The fold-cardinality lemma and the areDisjoint ⟹ Pairwise bridge are reusable for any clique-partition or disjoint-packing argument.",
     "openQuestions": [
       "Can the upper bound f(3) ≤ 4 be formalized by exhibiting, for every 2-coloring of Kₙ, a triangle packing with ≤ 4 leftover? This is the extremal heart of Moon's theorem.",
+      "Can the matching lower bound f(3) ≥ 4 be formalized by constructing an explicit family of 2-colorings that forces at least 4 leftover vertices? The residue argument here only rules out leftover 0 when 3 ∤ n; it cannot reach the value 4.",
       "Does Mathlib's SimpleGraph / clique API suffice to state and manipulate monochromatic triangle packings, or is dedicated infrastructure needed first?"
     ]
   },
