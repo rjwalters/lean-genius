@@ -424,6 +424,26 @@ theorem motzkinFun_antitone_in_coeff {c₁ c₂ : ℝ} (h : c₁ ≤ c₂) (x y 
   unfold motzkinFun
   nlinarith [mul_nonneg (sub_nonneg.mpr h) (mul_nonneg (sq_nonneg x) (sq_nonneg y))]
 
+/-- **Reflection symmetry of the family.** The Motzkin function is invariant under
+    swapping the two variables: `Mₐ(x,y) = Mₐ(y,x)`.  Both the AM–GM core `x⁴y²+x²y⁴+1`
+    and the `−c·x²y²` term are symmetric in `x, y`, so the whole family inherits the
+    diagonal reflection symmetry of the plane — which is why the sharp threshold is
+    detected on the diagonal `x = y` (indeed at `(1,1)`, via `motzkinFun_at_one_one`). -/
+theorem motzkinFun_symm (c x y : ℝ) : motzkinFun c x y = motzkinFun c y x := by
+  unfold motzkinFun; ring
+
+/-- **The boundary member is PSD but not positive definite.** At the sharp threshold
+    `c = 3` the family is non-negative (`motzkin_nonneg`) yet fails *strict* positivity:
+    it cannot be everywhere `> 0`, because it vanishes at `(1,1)`
+    (`motzkinFun_three_zero_at_one_one`).  This is the formal content of "`M₃` sits on the
+    PSD-cone boundary": PSD but with a genuine real zero, hence not in the cone's interior.
+    It is exactly the property that makes `c = 3` extremal rather than interior. -/
+theorem motzkinFun_three_not_posDef : ¬ ∀ x y : ℝ, 0 < motzkinFun 3 x y := by
+  intro h
+  have h11 := h 1 1
+  rw [motzkinFun_three_zero_at_one_one] at h11
+  exact lt_irrefl 0 h11
+
 end Hilbert17OQ03OQ05
 
 -- Axiom audit: should list only propext, Classical.choice, Quot.sound.
