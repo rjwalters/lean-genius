@@ -73,23 +73,18 @@
         "module": "Mathlib.Data.Complex.Basic"
       },
       {
-        "theorem": "div_eq_zero_iff",
-        "description": "a / b = 0 ↔ a = 0 ∨ b = 0, used to extract the vanishing factor in the converse",
-        "module": "Mathlib.Algebra.Order.Field.Basic"
+        "theorem": "mul_eq_zero",
+        "description": "a * b = 0 ↔ a = 0 ∨ b = 0, used to extract the vanishing factor (1 − p·conj p) from the defect identity in the converse",
+        "module": "Mathlib.Algebra.GroupWithZero.Basic"
       }
     ],
     "originalContributions": [
-      "Closed-form perpendicular foot onto a unit-circle chord: foot u v p = (u + v + p - u·v·conj p)/2",
-      "Foot characterization split into perpendicularity (foot_perp, Re = 0) and incidence (foot_on_chord, Im = 0)",
-      "Difference identity foot bc p − foot ab p = (c − a)(1 − b·conj p)/2 as a pure ring fact",
-      "Collinearity reduced to the complex criterion w = conj w (simson_key), then to vanishing signed area w.im = 0 (simson_collinear)",
-      "Whole theorem discharged by conj z = z⁻¹ substitution + field_simp + ring, no axioms or sorries",
-      "Bisection theorem: the Simson line of P passes through the midpoint of PH (H = orthocenter = A+B+C for the unit circumcircle), proved by the same conj z = z^-1 + field_simp + ring engine (simson_bisects_orthocenter_segment)",
-      "Antipodal perpendicularity: the Simson lines of P and its antipode -P are perpendicular (antipodal_simson_perp); the antipode flips conj p -> -conj p, collapsing the Hermitian product of the two foot-difference directions to |c-a|²/4·(conj b·p - b·conj p), purely imaginary, so its real part vanishes — same conj z = z⁻¹ + field_simp + ring engine",
-      "Master identity simson_area_identity: keeping conj p free gives w - conj w = (c-a)(b-c)(a-b)(1 - p*conj p)/(4abc), valid for ANY P (off the circle too)",
-      "Converse direction simson_converse: for a nondegenerate triangle, collinearity of the three feet forces |P|² = 1 (P concyclic with A,B,C), via the nonzero triangle prefactor",
-      "Headline biconditional simson_iff: the three pedal feet are collinear if and only if P lies on the circumcircle — the complete statement of Simson's (Wallace's) theorem",
-      "Nine-point circle membership: the Simson bisection point M = (P+H)/2 (where the Simson line meets segment PH) lies on the nine-point circle of △ABC, which has centre N = H/2 (ninePointCenter) and radius 1/2; proved via the pure-ring identity M − N = P/2 (simsonMidpoint_sub_ninePointCenter), so |M − N|² = |P|²/4 = 1/4 on the unit circumcircle (simsonMidpoint_on_nine_point_circle)"
+      "FeetCollinear a b c p: the pedal-triangle collinearity criterion (F_BC − F_AB)·conj(F_CA − F_AB) = conj(F_BC − F_AB)·(F_CA − F_AB) packaged as a reusable predicate over an arbitrary point P (no unit-circle assumption on P)",
+      "simson_defect: the sharp collinearity-defect identity (F_BC − F_AB)·conj(F_CA − F_AB) − conj(F_BC − F_AB)·(F_CA − F_AB) = (a−c)(c−b)(a−b)/(4abc)·(1 − p·conj p), the off-circle generalisation of the base file's simson_key, proved by foot_diff/foot_diff' + conj z = z⁻¹ + field_simp + ring",
+      "feet_collinear_iff: the full biconditional — for a nondegenerate triangle on the unit circle, the three pedal feet are collinear if and only if Complex.normSq p = 1 (P on the circumcircle); the nonzero triangle prefactor is factored out so vanishing of the defect is equivalent to 1 − |P|² = 0",
+      "feet_collinear_iff_signed_area: FeetCollinear is equivalent to the vanishing signed area ((F_BC − F_AB)·conj(F_CA − F_AB)).im = 0, bridging the conjugate-equality criterion to the base file's simson_collinear form",
+      "simson_forward: the classical forward direction of Simson's theorem recovered as the trivial mpr half of the biconditional",
+      "Four self-contained unit-circle helper lemmas (ne_zero_of_normSq_one, conj_eq_inv, im_eq_zero_of_conj_eq, conj_eq_of_im_eq_zero) supplying the conj z = z⁻¹ substitution and the real-axis bridges used throughout; entire development axiom-free and sorry-free"
     ],
     "dateAdded": "2026-06-16",
     "axiomCount": 0,
@@ -101,74 +96,66 @@
   },
   "sections": [
     {
-      "title": "Foot of the Perpendicular",
+      "title": "Overview: Closing the Converse",
+      "startLine": 1,
+      "endLine": 38,
+      "description": "Imports the base development Proofs/SimsonLineTheorem.lean (which proves the forward direction) and states the goal of this file: the genuinely new converse, upgrading Simson's theorem to the full biconditional 'feet collinear ⟺ P on the circumcircle'. Opens the Complex, ComplexConjugate and SimsonLineTheorem namespaces.",
+      "summary": "Overview: Closing the Converse",
+      "id": "overview-converse"
+    },
+    {
+      "title": "Unit-Circle Helper Lemmas",
       "startLine": 40,
-      "endLine": 45,
-      "description": "Closed-form definition foot u v p = (u + v + p − u·v·conj p)/2 for the perpendicular foot from p onto the chord through unit-circle points u, v.",
-      "summary": "Foot of the Perpendicular",
-      "id": "foot-of-the-perpendicular"
+      "endLine": 61,
+      "description": "Four private lemmas about a point on the unit circle: ne_zero_of_normSq_one (normSq z = 1 ⟹ z ≠ 0), conj_eq_inv (conj z = z⁻¹ on the circle), and the two real-axis bridges im_eq_zero_of_conj_eq (conj z = z ⟹ z.im = 0) and conj_eq_of_im_eq_zero (z.im = 0 ⟹ conj z = z).",
+      "summary": "Unit-Circle Helper Lemmas",
+      "id": "unit-circle-helpers"
     },
     {
-      "title": "Unit-Circle Algebra",
-      "startLine": 46,
-      "endLine": 68,
-      "description": "Helper lemmas: a unit-circle point is nonzero, conj z = z⁻¹ on the unit circle, and the real/imaginary collinearity bridges (conj z = z ⟹ im = 0, conj z = −z ⟹ re = 0).",
-      "summary": "Unit-Circle Algebra",
-      "id": "unit-circle-algebra"
+      "title": "The Collinearity Predicate",
+      "startLine": 63,
+      "endLine": 69,
+      "description": "def FeetCollinear a b c p: the complex criterion (F_BC − F_AB)·conj(F_CA − F_AB) = conj(F_BC − F_AB)·(F_CA − F_AB) that the pedal-triangle cross product is real — the conclusion of SimsonLineTheorem.simson_key, packaged as a reusable predicate.",
+      "summary": "The Collinearity Predicate",
+      "id": "collinearity-predicate"
     },
     {
-      "title": "Difference Identities",
-      "startLine": 69,
-      "endLine": 80,
-      "description": "The two foot-difference identities foot bc − foot ab = (c−a)(1−b·conj p)/2 and foot ca − foot ab = (c−b)(1−a·conj p)/2, both pure ring facts independent of the unit-circle constraint.",
-      "summary": "Difference Identities",
-      "id": "difference-identities"
+      "title": "The Collinearity-Defect Identity",
+      "startLine": 71,
+      "endLine": 88,
+      "description": "theorem simson_defect: with a, b, c on the unit circle but P free, the collinearity defect of the three pedal feet collapses to (a−c)(c−b)(a−b)/(4abc)·(1 − p·conj p). Proved by rewriting with the base file's foot_diff/foot_diff', substituting conj z = z⁻¹, then field_simp and ring. This off-circle generalisation of simson_key is the crux of the converse.",
+      "summary": "The Collinearity-Defect Identity",
+      "id": "collinearity-defect"
     },
     {
-      "title": "Foot Characterization",
-      "startLine": 81,
-      "endLine": 108,
-      "description": "foot_perp: the segment P→foot is perpendicular to the chord (Re = 0). foot_on_chord: the foot lies on the chord line (Im = 0). Together they certify foot is the genuine orthogonal projection.",
-      "summary": "Foot Characterization",
-      "id": "foot-characterization"
+      "title": "The Biconditional",
+      "startLine": 90,
+      "endLine": 119,
+      "description": "theorem feet_collinear_iff: for a nondegenerate triangle (a ≠ b, b ≠ c, c ≠ a) on the unit circle, the pedal feet are collinear ⟺ Complex.normSq p = 1. The nonzero triangle prefactor is factored out (hK), so the defect vanishes iff 1 − p·conj p = 0; both directions are read off via mul_eq_zero and mul_conj.",
+      "summary": "The Biconditional",
+      "id": "biconditional"
     },
     {
-      "title": "Simson's Theorem",
-      "startLine": 109,
-      "endLine": 136,
-      "description": "simson_key: the complex collinearity criterion w = conj w for the triangle of feet. simson_collinear: the equivalent vanishing signed area w.im = 0, proving the three feet are collinear.",
-      "summary": "Simson's Theorem",
-      "id": "simsons-theorem"
-    },
-    {
-      "title": "The Converse & Biconditional",
-      "startLine": 142,
-      "endLine": 230,
-      "description": "Completes Simson's theorem to a biconditional. Keeping conj p free in the collinearity computation yields the master identity w - conj w = (c-a)(b-c)(a-b)(1 - p*conj p)/(4abc) (simson_area_identity), valid for any P. For a nondegenerate triangle the prefactor is nonzero, so the feet are collinear iff 1 - |P|² = 0, i.e. P is concyclic with A, B, C.",
-      "summary": "Master identity simson_area_identity (any P) gives the converse simson_converse (collinear feet ⇒ |P|²=1) and the headline biconditional simson_iff.",
-      "id": "converse-biconditional"
-    },
-    {
-      "title": "Nine-Point Circle Membership",
-      "startLine": 333,
-      "endLine": 363,
-      "description": "ninePointCenter N = H/2; simsonMidpoint_sub_ninePointCenter: the bisection point M = (P+H)/2 satisfies M − N = P/2 (pure ring); simsonMidpoint_on_nine_point_circle: hence |M − N|² = 1/4, placing M on the nine-point circle (centre H/2, radius 1/2) for any P on the unit circumcircle.",
-      "summary": "Nine-Point Circle Membership",
-      "id": "nine-point-circle-membership"
+      "title": "Signed-Area Form & Forward Direction",
+      "startLine": 121,
+      "endLine": 146,
+      "description": "theorem feet_collinear_iff_signed_area: FeetCollinear is equivalent to the vanishing of the signed area ((F_BC − F_AB)·conj(F_CA − F_AB)).im = 0, using the conj/im bridges. theorem simson_forward: the classical forward statement recovered as the easy mpr half of feet_collinear_iff.",
+      "summary": "Signed-Area Form & Forward Direction",
+      "id": "signed-area-forward"
     }
   ],
   "overview": {
     "historicalContext": "The Simson line is named after the Scottish mathematician Robert Simson (1687–1768), though the result does not appear in his surviving work; it was first explicitly published by William Wallace in 1797 and is sometimes called the Wallace line. The theorem is a cornerstone of triangle geometry: it characterizes the circumcircle as exactly the locus of points whose three perpendicular feet onto the side-lines are collinear (a point off the circumcircle produces a genuine 'pedal triangle' of positive area).\n\nThe Simson line carries a rich further structure. As P traverses the circumcircle, the Simson line envelopes a deltoid (Steiner's deltoid), and the Simson lines of diametrically opposite points are perpendicular. The Simson line of P also bisects the segment joining P to the orthocenter of the triangle. These refinements make the Simson line a gateway to the deeper projective and metric geometry of the triangle.\n\nThe complex-number proof used here is the standard modern treatment: placing the circumcircle at the unit circle turns the orthogonal projection onto a chord into a rational expression in the vertices and their conjugates, and the unit-circle constraint conj z = 1/z collapses the collinearity condition to a polynomial identity.",
     "problemStatement": "**Simson's Line Theorem**: Let ABC be a triangle and P a point on its circumcircle. Let F_AB, F_BC, F_CA be the feet of the perpendiculars dropped from P onto the lines AB, BC, CA respectively. Then F_AB, F_BC, F_CA are collinear; the line through them is called the Simson line (or Wallace line) of P with respect to the triangle.",
     "text": "For a point P on the circumcircle of a triangle, the three feet of the perpendiculars from P to the sides of the triangle lie on a single line — the Simson line.",
-    "proofStrategy": "The proof uses **complex coordinates** with the circumcircle normalised to the **unit circle**.\n\n1. **Foot formula**: For u, v on the unit circle, the foot of the perpendicular from any p onto the chord-line uv has the closed form foot(u,v,p) = (u + v + p − u·v·conj p)/2. This is verified to be the orthogonal projection by checking perpendicularity (Re((p−foot)·conj(v−u)) = 0) and incidence on the line (Im((foot−u)·conj(v−u)) = 0).\n\n2. **Difference identity**: foot(b,c,p) − foot(a,b,p) = (c−a)(1 − b·conj p)/2, a pure algebraic identity. Symmetrically, foot(c,a,p) − foot(a,b,p) = (c−b)(1 − a·conj p)/2.\n\n3. **Collinearity criterion**: three complex points are collinear iff w = (z₂−z₁)·conj(z₃−z₁) is real, i.e. w = conj w (equivalently Im w = 0, the vanishing of the signed area). Applying this to the three feet and substituting conj z = z⁻¹ (valid on the unit circle) reduces the statement to a rational-function identity, closed by field_simp and ring.\n\n4. **Converse (biconditional)**: keeping conj p free turns the collinearity computation into the master identity w − conj w = (c−a)(b−c)(a−b)(1 − p·conj p)/(4abc) (simson_area_identity). For distinct vertices the prefactor is nonzero, so collinearity (w real) forces 1 − |P|² = 0, i.e. P lies on the circumcircle (simson_converse). Combined with the forward direction this is the headline biconditional simson_iff.",
+    "proofStrategy": "The proof uses **complex coordinates** with the circumcircle normalised to the **unit circle**.\n\n1. **Foot formula**: For u, v on the unit circle, the foot of the perpendicular from any p onto the chord-line uv has the closed form foot(u,v,p) = (u + v + p − u·v·conj p)/2. This is verified to be the orthogonal projection by checking perpendicularity (Re((p−foot)·conj(v−u)) = 0) and incidence on the line (Im((foot−u)·conj(v−u)) = 0).\n\n2. **Difference identity**: foot(b,c,p) − foot(a,b,p) = (c−a)(1 − b·conj p)/2, a pure algebraic identity. Symmetrically, foot(c,a,p) − foot(a,b,p) = (c−b)(1 − a·conj p)/2.\n\n3. **Collinearity criterion**: three complex points are collinear iff w = (z₂−z₁)·conj(z₃−z₁) is real, i.e. w = conj w (equivalently Im w = 0, the vanishing of the signed area). Applying this to the three feet and substituting conj z = z⁻¹ (valid on the unit circle) reduces the statement to a rational-function identity, closed by field_simp and ring.\n\n4. **Converse (biconditional)**: this file keeps conj p free, turning the defect computation into the identity (F_BC − F_AB)·conj(F_CA − F_AB) − conj(…)·(…) = (a−c)(c−b)(a−b)/(4abc)·(1 − p·conj p) (simson_defect). For distinct vertices the prefactor is nonzero, so collinearity of the feet forces 1 − |P|² = 0, i.e. P lies on the circumcircle. This gives the headline biconditional feet_collinear_iff, with the forward direction recovered as its mpr half (simson_forward) and a signed-area restatement (feet_collinear_iff_signed_area).",
     "keyInsights": [
       "**Unit-circle normalisation**: placing the circumcircle at |z| = 1 makes conj z = z⁻¹, turning conjugation into a rational operation and the whole theorem into a polynomial identity",
       "**Closed-form foot**: foot(u,v,p) = (u+v+p − u·v·conj p)/2 packages the orthogonal projection onto a chord; it needs only u, v on the circle, not p",
       "**Difference identity**: foot(b,c,p) − foot(a,b,p) = (c−a)(1 − b·conj p)/2 is a pure ring fact — the geometric content is entirely in this factorisation through the chord direction c−a",
       "**Real-ratio = collinear**: the classical criterion that (z₂−z₁)·conj(z₃−z₁) ∈ ℝ encodes collinearity (its imaginary part is twice the signed area of the triangle of feet)",
       "**Circumcircle is essential**: the same computation off the unit circle yields a nonzero signed area, recovering the converse that only circumcircle points give a degenerate pedal triangle",
-      "**Free conj p ⇒ biconditional**: not assuming P on the circle yields the master identity w - conj w = (c-a)(b-c)(a-b)(1 - p·conj p)/(4abc); the factor 1 - |P|² makes collinearity of the feet equivalent to P being on the circumcircle, giving the full iff (simson_iff)"
+      "**Free conj p ⇒ biconditional**: not assuming P on the circle yields the defect identity (a-c)(c-b)(a-b)/(4abc)·(1 - p·conj p) (simson_defect); the factor 1 - |P|² makes collinearity of the feet equivalent to P being on the circumcircle, giving the full iff (feet_collinear_iff)"
     ],
     "prerequisites": [
       "Complex numbers and arithmetic in ℂ",
@@ -178,15 +165,17 @@
     ],
     "openQuestions": [
       "Can the Steiner deltoid (the envelope of all Simson lines as P moves on the circumcircle) be formalized? This needs a tangency/envelope argument rather than the pure-ring engine used here.",
-      "The bisection of segment PH (simson_bisects_orthocenter_segment) and the nine-point-circle membership of that bisection point (simsonMidpoint_on_nine_point_circle) are now formalized; can the full nine-point circle (all nine classical points) be characterized in this framework?"
+      "The defect identity simson_defect measures how far the pedal feet are from collinear when P is off the circumcircle; can this quantitative defect be related to the distance from P to the circle, or to the area of the pedal triangle, in closed form?",
+      "The imported base development already formalizes the bisection of segment PH and the nine-point-circle membership of that bisection point; can the full nine-point circle (all nine classical points) be characterized in the same complex-coordinate framework?"
     ]
   },
   "conclusion": {
-    "summary": "Simson's theorem is formalized as a complete biconditional in complex coordinates with the circumcircle normalised to the unit circle. The closed-form perpendicular foot foot(u,v,p) = (u+v+p − u·v·conj p)/2 and its difference identity reduce collinearity of the three feet to the complex criterion w = conj w. Keeping conj p free upgrades this to the master identity w − conj w = (c−a)(b−c)(a−b)(1 − p·conj p)/(4abc), whose 1 − |P|² factor delivers both directions: the feet are collinear iff P lies on the circumcircle (simson_iff). All steps are discharged by the conj z = z⁻¹ substitution with field_simp and ring; no axioms, no sorries.",
-    "implications": "**Theoretical Significance**: The proof again demonstrates the leverage of complex coordinates in classical plane geometry: a metric statement about perpendicular feet on a circle becomes a rational identity. The unit-circle substitution conj z = z⁻¹ is the same device that powers the complex proofs of Ptolemy's and Napoleon's theorems, situating Simson's line within a common algebraic toolkit for circle and triangle geometry.",
+    "summary": "Building on the imported base development (which proves the forward direction via the closed-form perpendicular foot foot(u,v,p) = (u+v+p − u·v·conj p)/2), this file closes the converse and completes Simson's theorem to a full biconditional. Keeping conj p free yields the collinearity-defect identity simson_defect = (a−c)(c−b)(a−b)/(4abc)·(1 − p·conj p), whose 1 − |P|² factor delivers both directions: for a nondegenerate triangle on the unit circle the pedal feet are collinear iff P lies on the circumcircle (feet_collinear_iff), with the forward half recovered as simson_forward and a signed-area restatement in feet_collinear_iff_signed_area. All steps are discharged by the conj z = z⁻¹ substitution with field_simp and ring; no axioms, no sorries.",
+    "implications": "**Theoretical Significance**: The proof again demonstrates the leverage of complex coordinates in classical plane geometry: a metric statement about perpendicular feet on a circle becomes a rational identity. The unit-circle substitution conj z = z⁻¹ is the same device that powers the complex proofs of Ptolemy's and Napoleon's theorems, situating Simson's line within a common algebraic toolkit for circle and triangle geometry. Isolating the converse as a single defect identity valid for an arbitrary P shows that the circumcircle is not merely sufficient but necessary for collinearity of the pedal feet.",
     "openQuestions": [
       "Can the Steiner deltoid envelope of Simson lines be formalized (needs a tangency/envelope argument)?",
-      "The Simson-line/orthocenter bisection and the nine-point-circle membership of the bisection point are now formalized; can the complete nine-point circle be characterized in this framework?"
+      "Can the quantitative collinearity defect (nonzero when P is off the circumcircle) be expressed in closed form in terms of the distance from P to the circle?",
+      "The base development already formalizes the Simson-line/orthocenter bisection and the nine-point-circle membership of the bisection point; can the complete nine-point circle be characterized in this framework?"
     ]
   },
   "crossReferences": [
