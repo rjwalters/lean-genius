@@ -413,6 +413,47 @@ theorem partitionEnergy_increment_count_le_floor
   apply Nat.le_floor
   exact_mod_cast partitionEnergy_increment_count_le G parts N δ hδ hcover hdisjoint hmono
 
+/-- **At least `N − ⌊1/δ⌋₊` regular steps (integer bound).**  The integer/`ℕ`
+    sharpening of the rational `energy_regular_steps_card_ge`: since the increment
+    steps number at most `⌊1/δ⌋₊` (`energy_increment_count_le_floor`) and the increment
+    and regular steps partition the window `[0, N)`, at least `N − ⌊1/δ⌋₊` of the first
+    `N` steps of a monotone `[0,1]`-valued potential are *regular* (non-increment).
+    Stated with truncated `ℕ` subtraction, so no `1/δ ≤ N` side condition is required —
+    the complement of the Part VI increment-count floor bound. -/
+theorem energy_regular_steps_card_ge_floor (f : ℕ → ℚ) (N : ℕ) (δ : ℚ) (hδ : 0 < δ)
+    (h0 : ∀ n, 0 ≤ f n) (h1 : ∀ n, f n ≤ 1) (hmono : ∀ n, f n ≤ f (n + 1)) :
+    N - ⌊1 / δ⌋₊ ≤
+      ((Finset.range N).filter (fun n => ¬ (f n + δ ≤ f (n + 1)))).card := by
+  have hpart :
+      ((Finset.range N).filter (fun n => f n + δ ≤ f (n + 1))).card
+      + ((Finset.range N).filter (fun n => ¬ (f n + δ ≤ f (n + 1)))).card = N := by
+    have h := Finset.filter_card_add_filter_neg_card_eq_card
+      (s := Finset.range N) (p := fun n => f n + δ ≤ f (n + 1))
+    rwa [Finset.card_range] at h
+  have hinc := energy_increment_count_le_floor f N δ hδ h0 h1 hmono
+  omega
+
+/-- **Graph instantiation: at least `N − ⌊1/δ⌋₊` regular refinement steps (integer
+    bound).**  Along a monotone AFKS refinement chain, at least `N − ⌊1/δ⌋₊` of the
+    first `N` steps are regular (do not raise `partitionEnergy` by `≥ δ`).  The `ℕ`
+    sharpening of `partitionEnergy_regular_steps_card_ge`, delegating to the general
+    `energy_regular_steps_card_ge_floor` with `f := partitionEnergy G (parts ·)`. -/
+theorem partitionEnergy_regular_steps_card_ge_floor
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (parts : ℕ → Finset (Finset V)) (N : ℕ) (δ : ℚ) (hδ : 0 < δ)
+    (hcover : ∀ n, ∀ v : V, ∃ P ∈ parts n, v ∈ P)
+    (hdisjoint : ∀ n, ∀ P Q : Finset V, P ∈ parts n → Q ∈ parts n → P ≠ Q →
+      Disjoint P Q)
+    (hmono : ∀ n,
+      partitionEnergy G (parts n) ≤ partitionEnergy G (parts (n + 1))) :
+    N - ⌊1 / δ⌋₊ ≤
+      ((Finset.range N).filter (fun n =>
+        ¬ (partitionEnergy G (parts n) + δ ≤ partitionEnergy G (parts (n + 1))))).card := by
+  refine energy_regular_steps_card_ge_floor
+    (fun n => partitionEnergy G (parts n)) N δ hδ ?_ ?_ hmono
+  · intro n; exact partitionEnergy_nonneg G (parts n)
+  · intro n; exact partitionEnergy_le_one G (parts n) (hcover n) (hdisjoint n)
+
 /-- **Refinement-depth bound: an all-increment chain has length `≤ ⌊1/δ⌋₊`.**  If a
     monotone `[0,1]`-valued potential climbs by `≥ δ` at *every* one of the first `N`
     steps (`hall`), then `N ≤ ⌊1/δ⌋₊`.  This is the contrapositive "termination"
