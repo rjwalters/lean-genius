@@ -80,6 +80,37 @@ theorem energy_steps_bounded (f : ℕ → ℚ) (N : ℕ) (δ : ℚ)
   have hN := key N le_rfl
   linarith [h0 0, h1 N, hN]
 
+/-- **Sharpness of the telescoping energy bound.**  The bound `N • δ ≤ 1` of
+    `energy_steps_bounded` is *tight*: for `δ = 1 / N` the potential
+    `f n = min(n, N) / N` stays in `[0, 1]`, increases by *exactly* `δ` at each of
+    the first `N` steps, and attains `N • δ = 1` with equality.  Hence the AFKS
+    finiteness bound cannot be improved — an energy-increment iteration can genuinely
+    require the full `⌊1/δ⌋` refinement steps before a regular step is forced. -/
+theorem energy_steps_bounded_sharp (N : ℕ) (hN : 0 < N) :
+    ∃ f : ℕ → ℚ, (∀ n, 0 ≤ f n) ∧ (∀ n, f n ≤ 1) ∧
+      (∀ n, n < N → f n + (1 / (N : ℚ)) ≤ f (n + 1)) ∧
+      (N : ℚ) * (1 / (N : ℚ)) = 1 := by
+  have hNQ : (0 : ℚ) < (N : ℚ) := by exact_mod_cast hN
+  refine ⟨fun n => (min n N : ℚ) / (N : ℚ), ?_, ?_, ?_, ?_⟩
+  · -- `0 ≤ f n`
+    intro n; positivity
+  · -- `f n ≤ 1`
+    intro n
+    rw [div_le_one hNQ]
+    exact_mod_cast Nat.min_le_right n N
+  · -- exact `δ`-increment on each of the first `N` steps
+    intro n hn
+    refine le_of_eq ?_
+    have h1 : (min n N : ℚ) = (n : ℚ) := by
+      exact_mod_cast Nat.min_eq_left (Nat.le_of_lt hn)
+    have h2 : (min (n + 1) N : ℚ) = (n : ℚ) + 1 := by
+      have hmin : min (n + 1) N = n + 1 := Nat.min_eq_left hn
+      rw [hmin]; push_cast; ring
+    show (min n N : ℚ) / (N : ℚ) + 1 / (N : ℚ) = (min (n + 1) N : ℚ) / (N : ℚ)
+    rw [h1, h2, div_add_div_same]
+  · -- equality `N • δ = 1`
+    rw [mul_one_div, div_self hNQ.ne']
+
 /-- **Iteration-count bound.**  With a genuine positive increment `δ`, an
     `[0,1]`-valued potential can perform at most `1 / δ` increment steps. -/
 theorem energy_iteration_count_le (f : ℕ → ℚ) (N : ℕ) (δ : ℚ) (hδ : 0 < δ)
