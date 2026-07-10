@@ -259,6 +259,22 @@ theorem dimH_wellApprox_tendsto_zero :
   filter_upwards [eventually_ge_atTop (2 : ℝ)] with τ hτ
   exact (dimH_wellApprox τ hτ).symm
 
+/-- **The Jarník–Besicovitch dimension spectrum is exactly `(0, 1]`.** Every value
+`d` with `0 < d ≤ 1` is attained as the Hausdorff dimension of some well-approximable
+set: taking `τ = 2/d ≥ 2` gives `dimH (W τ) = d`. Together with
+`dimH_wellApprox_pos` (`0 < dimH (W τ)`) and `dimH_wellApprox_two` /
+`dimH_wellApprox_eq_one_of_le_two` (the value `1` is realized at `τ = 2`), this shows
+the family `τ ↦ dimH (W τ)` sweeps out the *entire* interval `(0, 1]` of admissible
+fractal dimensions — the surjectivity companion of the strict monotonicity
+(`dimH_wellApprox_strictAntitone`) and vanishing (`dimH_wellApprox_tendsto_zero`). -/
+theorem dimH_wellApprox_surjOn {d : ℝ} (hd0 : 0 < d) (hd1 : d ≤ 1) :
+    ∃ τ : ℝ, 2 ≤ τ ∧ dimH (wellApprox τ) = ENNReal.ofReal d := by
+  have hτ2 : (2 : ℝ) ≤ 2 / d := by rw [le_div_iff₀ hd0]; linarith
+  refine ⟨2 / d, hτ2, ?_⟩
+  have hval : (2 : ℝ) / (2 / d) = d := by
+    rw [div_div_eq_mul_div, mul_comm, mul_div_assoc]; norm_num
+  rw [dimH_wellApprox (2 / d) hτ2, hval]
+
 /-! ## Part V: Liouville numbers have Hausdorff dimension zero -/
 
 /-- For every `τ ≥ 2`, the Liouville set is dimension-bounded by `2/τ`.
