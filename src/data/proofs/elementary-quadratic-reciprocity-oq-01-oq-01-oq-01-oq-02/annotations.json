@@ -172,7 +172,7 @@
   {
     "id": "ann-eqr-oq01x4-verifications",
     "proofId": "elementary-quadratic-reciprocity-oq-01-oq-01-oq-01-oq-02",
-    "range": { "startLine": 208, "endLine": 252 },
+    "range": { "startLine": 208, "endLine": 243 },
     "type": "concept",
     "title": "Concrete Verifications via native_decide",
     "content": "Five private `Fact` instances make small primes 3, 5, 7, 11, 13 available, then four `example` declarations verify QR for the prime pairs $(3,5), (3,7), (5,7), (11,13)$ via `native_decide`. **Each example is a closed term of QR for two specific primes** — a strong validation that the formalization is operationally correct, not just propositionally derivable. The closing comment block summarizes the full assembly with a status table.",

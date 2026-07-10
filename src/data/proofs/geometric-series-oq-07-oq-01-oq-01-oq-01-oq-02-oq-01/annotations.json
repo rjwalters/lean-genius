@@ -81,7 +81,7 @@
   {
     "id": "ann-card-descentfree",
     "proofId": "geometric-series-oq-07-oq-01-oq-01-oq-01-oq-02-oq-01",
-    "range": { "startLine": 115, "endLine": 125 },
+    "range": { "startLine": 115, "endLine": 122 },
     "type": "insight",
     "title": "The Descent-Free Base Rung ⟨n+1,0⟩ = 1",
     "content": "card_descentFree: the descent-free permutations of Fin (n+1) number exactly the Eulerian number ⟨n+1,0⟩ = 1. Using eulerian_succ_zero (the left border of the Eulerian triangle is 1) and Finset.card_eq_one, the goal reduces to exhibiting a unique element of the descent-free class — which descentCount_eq_zero_iff identifies as the identity. This is the k = 0 case of the open claim |{σ : descentCount σ = k}| = ⟨n+1,k⟩, the first rung where the abstract Eulerian number is matched against an actual descent-class cardinality.",

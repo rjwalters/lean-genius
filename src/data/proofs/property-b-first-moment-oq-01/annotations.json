@@ -74,7 +74,7 @@
   {
     "id": "propb-upper-oq01-ann-sharp",
     "proofId": "property-b-first-moment-oq-01",
-    "range": { "startLine": 141, "endLine": 152 },
+    "range": { "startLine": 141, "endLine": 151 },
     "type": "concept",
     "title": "Sharp bound m(3) ≤ 7 and why it beats the general bound",
     "content": "`exists_notTwoColorable_three` packages the Fano plane into $m(3) \\le 7$, and `fano_beats_general` (`decide`) records $7 < \\binom{5}{3} = 10$, so the Fano witness strictly improves the general bound at $k=3$. In fact $m(3) = 7$, so the Fano plane is extremal — the upper bound meets the truth here, while the parent's $2^{3-1}=4$ lower bound is not tight.",

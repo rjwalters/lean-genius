@@ -119,7 +119,7 @@
       "id": "bring-radical",
       "title": "Bring Radical: Definition and Properties",
       "startLine": 296,
-      "endLine": 377,
+      "endLine": 376,
       "summary": "Defines bringRadical t = the unique real root of x⁵+x+t=0. Proves: bringRadical_spec (satisfies equation), bringRadical_unique, bringRadical_anti_mono, bringRadical_zero, bringRadical_neg (odd function). (An earlier degenerate axiom bringRadical_not_in_radicals was removed as unsound; the genuine axiom-free replacement lives in the sibling entry OQ-04-OQ-07-OQ-02.) Summary theorem packages the main results.",
       "mathContext": "BR$(t)$ satisfies BR$(t)^5 + \\mathrm{BR}(t) + t = 0$, is strictly anti-monotone, odd, and BR$(0) = 0$. Not expressible by nested radicals (axiom).",
       "theorems": [

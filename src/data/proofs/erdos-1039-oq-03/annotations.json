@@ -86,7 +86,7 @@
   {
     "id": "erdos1039-oq03-ann-obstruction",
     "proofId": "erdos-1039-oq-03",
-    "range": { "startLine": 143, "endLine": 165 },
+    "range": { "startLine": 143, "endLine": 164 },
     "type": "insight",
     "title": "The critical-point obstruction — why the conformal route stalls",
     "content": "`conformal_estimate_vacuous_at_critical_point` exhibits the limitation as a theorem. The witness $f \\equiv 0$ has sublevel set all of $\\mathbb{C}$ (every disc inscribed) yet $f' \\equiv 0$, so the radius bound becomes $r \\le 1/0 = 0$ (Lean junk value) — false for $r>0$. This certifies that the $f'(c)\\ne 0$ hypothesis is genuinely necessary. Because the extremal inscribed disc of a real lemniscate tends to sit near a critical point where $f$ is flat, the direct conformal estimate carries no information exactly where it is needed — the structural reason KLR fall back on the area approach. The degeneracy is *proved*, not informally argued.",

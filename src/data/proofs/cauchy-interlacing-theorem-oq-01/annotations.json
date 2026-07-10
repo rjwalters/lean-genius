@@ -50,7 +50,7 @@
   {
     "id": "ann-corollary",
     "proofId": "cauchy-interlacing-theorem-oq-01",
-    "range": { "startLine": 98, "endLine": 139 },
+    "range": { "startLine": 98, "endLine": 138 },
     "type": "insight",
     "title": "The Unconditional Compression Corollary",
     "content": "`cauchy_interlacing_compression`: the spectral data of `T` on `V` and of `compress T H` on `H` are pulled from Mathlib's spectral theorem (`eigenvectorBasis`, `eigenvalues`, `eigenvalues_antitone`), `rayleigh_compress_eq` supplies the Rayleigh hypothesis, and the parent's `cauchy_interlacing` then yields `λ(k.succ) ≤ μ(k) ∧ μ(k) ≤ λ(k.castSucc)`. No hypothesis is needed beyond 'T symmetric, H a codimension-one subspace'.",

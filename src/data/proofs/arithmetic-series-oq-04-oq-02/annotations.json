@@ -50,7 +50,7 @@
   {
     "id": "ann-concrete-coefficients",
     "proofId": "arithmetic-series-oq-04-oq-02",
-    "range": { "startLine": 140, "endLine": 164 },
+    "range": { "startLine": 140, "endLine": 163 },
     "type": "concept",
     "title": "Grounding the Abstraction in Computable Coefficients",
     "content": "To check the abstract generating functions describe the intended object, three coefficients are computed directly with `coeff_mk` followed by `norm_num`/`simp`: the X¹ coefficient for n=4 is S₁(4)/1! = 0+1+2+3 = 6; the X² coefficient is S₂(4)/2! = (0+1+4+9)/2 = 7; and the constant coefficient S₀(n) = ∑_{k<n} k⁰ = n (using 0⁰ = 1 in this Finset.range convention).",

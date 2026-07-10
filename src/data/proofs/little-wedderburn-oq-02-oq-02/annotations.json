@@ -50,7 +50,7 @@
   {
     "id": "moebius-necklace",
     "proofId": "little-wedderburn-oq-02-oq-02",
-    "range": { "startLine": 171, "endLine": 202 },
+    "range": { "startLine": 171, "endLine": 201 },
     "type": "theorem",
     "title": "Möbius Inversion: Gauss's Necklace Formula",
     "content": "With the intrinsic count Nirr p d in hand, degree_identity reads p^m = Σ_{d∣m} d·N(d) for all m. Casting to ℤ and applying ArithmeticFunction.sum_eq_iff_sum_mul_moebius_eq inverts this divisor-sum relation into necklace_formula: n·N(n) = Σ_{(a,b): ab=n} μ(a)·p^b, i.e. n·N(n) = Σ_{d∣n} μ(n/d)·p^d — Gauss's count of monic irreducible polynomials of degree n over 𝔽_p.",

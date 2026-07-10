@@ -74,7 +74,7 @@
   {
     "id": "ann-concrete-instances",
     "proofId": "elementary-quadratic-reciprocity-oq-01-oq-01-oq-01",
-    "range": { "startLine": 175, "endLine": 212 },
+    "range": { "startLine": 175, "endLine": 210 },
     "type": "concept",
     "title": "Verification for Small Primes",
     "content": "The concrete instances for p = 3, 5, 7, 13 serve as **existential sanity checks** for the abstract theorem. They assert the existence of a complex number τ with τ² = ±p, not a specific value of τ.\n\nThe actual Gauss sums for small primes are: τ(3) = e^{2πi/3} - e^{4πi/3} ≈ i√3 (so τ² = -3); τ(5) = 2cos(2π/5) - 2cos(4π/5) = √5 (so τ² = 5); τ(7) ≈ i√7 (so τ² = -7); τ(13) = √13 (so τ² = 13). These values illustrate the general pattern: τ ∈ {±√p, ±i√p} depending on p mod 4, and τ² is always a **rational integer** despite τ itself being a transcendental complex number.\n\nThe closing summary table confirms **7 theorems proved with 0 sorries and 0 axioms**, fully discharging the goal stated in the opening docstring.",
