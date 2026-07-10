@@ -5,6 +5,7 @@
   "description": "The Cauchy-interlacing keystone and the principal-submatrix identification (cauchy-interlacing-theorem-oq-01-oq-01, #27917) both flag the same step as 'future work': bridging the abstract operator eigenvalues LinearMap.IsSymmetric.eigenvalues to the concrete Matrix.IsHermitian.eigenvalues₀, so that the compression-form Cauchy interlacing can be read off as the familiar principal-submatrix interlacing. The single mathematical fact powering that bridge — and absent from Mathlib — is that a self-adjoint operator's sorted eigenvalue list is determined by the operator alone; equivalently, it is invariant under unitary (isometric) conjugation. This entry proves it via the characteristic polynomial. eigenvalues_eq_of_eigenbasis: if (b, f) is ANY orthonormal eigenbasis of a self-adjoint T (so T (b i) = f i • b i) with f antitone, then hT.eigenvalues = f. The matrix of T in b is diagonal f, so T.charpoly = ∏(X − f i); equating this with the canonical eigenbasis gives equal root multisets, and two antitone tuples with the same multiset are equal by uniqueness of the sorted enumeration (List.eq_of_perm_of_sorted). eigenvalues_isometryConj: the immediate corollary, that S = e ∘ T ∘ e⁻¹ for a linear isometry equivalence e : E ≃ₗᵢ F has the same sorted eigenvalue list as T. This is exactly the tool needed to finish principal-submatrix Cauchy interlacing: the orthogonal compression of a Hermitian A to the coordinate hyperplane e_jᗮ is the isometric conjugate of the principal-submatrix operator toEuclideanLin (A.submatrix j.succAbove j.succAbove) (the sesquilinear-form identification proved in the parent #27917), so eigenvalues_isometryConj identifies their sorted spectra and the parent's cauchy_interlacing_compression reads off as λ_{k+1}(A) ≤ λ_k(A⁽ʲ⁾) ≤ λ_k(A). Holds over any RCLike field (ℝ and ℂ).",
   "meta": {
     "author": "Cauchy (interlacing); formalized for lean-genius",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Cauchy_interlacing_theorem",
     "status": "verified",
     "proofRepoPath": "Proofs/CauchyInterlacingOQ01OQ01OQ01.lean",
     "tags": [
@@ -150,6 +151,36 @@
       "proofId": "cauchy-interlacing-theorem",
       "relationship": "related",
       "description": "The Cauchy interlacing keystone; the unitary-conjugation invariance proved here is the tool that turns its compression-form interlacing into the classical principal-submatrix statement."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Augustin-Louis Cauchy",
+      "title": "Sur l'équation à l'aide de laquelle on détermine les inégalités séculaires des mouvements des planètes",
+      "year": "1829",
+      "venue": "Exercices de Mathématiques, Vol. 4; Œuvres complètes, 2nd series, Vol. 9",
+      "note": "Origin of the interlacing theorem: the eigenvalues of a principal submatrix of a symmetric/Hermitian matrix interlace those of the full matrix — the keystone this entry's eigenvalue-invariance lemma completes."
+    },
+    {
+      "authors": "Richard Courant, David Hilbert",
+      "title": "Methoden der mathematischen Physik, Band I",
+      "year": "1924",
+      "venue": "Springer, Berlin",
+      "note": "The Courant–Fischer min-max variational characterization of Hermitian eigenvalues, which makes the sorted eigenvalue list an intrinsic (conjugation-invariant) invariant of the operator — the fact this entry formalizes via the characteristic polynomial."
+    },
+    {
+      "authors": "Roger A. Horn, Charles R. Johnson",
+      "title": "Matrix Analysis",
+      "year": "1985",
+      "venue": "Cambridge University Press (2nd ed. 2013)",
+      "note": "Standard modern reference for the spectral theorem, unitary invariance of the eigenvalue multiset, Cauchy interlacing, and the Poincaré separation theorem (openQuestions[2])."
+    },
+    {
+      "authors": "Hermann Weyl",
+      "title": "Das asymptotische Verteilungsgesetz der Eigenwerte linearer partieller Differentialgleichungen",
+      "year": "1912",
+      "venue": "Mathematische Annalen 71 (4), 441–479",
+      "note": "The Weyl inequalities for Hermitian perturbations, the broader eigenvalue-monotonicity family (Weyl, interlacing, Poincaré separation) that Cauchy interlacing prototypes."
     }
   ]
 }
