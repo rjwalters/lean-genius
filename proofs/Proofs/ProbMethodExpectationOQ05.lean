@@ -153,8 +153,8 @@ theorem variance_eq_zero_iff_forall_eq_mean :
   have hnn : ∀ a ∈ s, 0 ≤ (f a - mean s f) ^ 2 := fun a _ => sq_nonneg _
   rw [Finset.sum_eq_zero_iff_of_nonneg hnn]
   refine ⟨fun h a ha => ?_, fun h a ha => ?_⟩
-  · exact sub_eq_zero.1 ((pow_eq_zero_iff (by norm_num : 2 ≠ 0)).1 (h a ha))
-  · rw [h a ha, sub_self]; ring
+  · exact sub_eq_zero.1 ((pow_eq_zero_iff (by decide : (2 : ℕ) ≠ 0)).1 (h a ha))
+  · rw [h a ha, sub_self, pow_two, mul_zero]
 
 /-- **Zero spread ⟺ constant on `s`.** Packaged with an explicit constant: the sum of squared
 deviations from the mean vanishes exactly when `f` takes a single value on `s`. This is the
