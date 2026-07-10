@@ -212,5 +212,35 @@
       "description": "Related Erdős problem sharing themes: number theory, prime gaps"
     }
   ],
+  "references": [
+    {
+      "title": "The difference between consecutive prime numbers",
+      "author": "Robert A. Rankin",
+      "year": "1938",
+      "venue": "Journal of the London Mathematical Society 13, pp. 242–247",
+      "description": "The 1938 lower-bound construction for large gaps / covering congruences that underlies the early lower bounds for Y(x), later improved by Ford–Green–Konyagin–Maynard–Tao."
+    },
+    {
+      "title": "On the problem of Jacobsthal",
+      "author": "Henryk Iwaniec",
+      "year": "1978",
+      "venue": "Demonstratio Mathematica 11, no. 1, pp. 225–231",
+      "description": "Proves the upper bound Y(x) = g(P(x)) ≪ x² for the Jacobsthal function on primorials, still the best known upper bound for this problem."
+    },
+    {
+      "title": "Long gaps between primes",
+      "author": "Kevin Ford, Ben Green, Sergei Konyagin, James Maynard, and Terence Tao",
+      "year": "2018",
+      "venue": "Journal of the American Mathematical Society 31, no. 1, pp. 65–105",
+      "description": "Establishes the current best lower bound Y(x) ≫ x·(log x)(log log log x)/(log log x), the FGKMT breakthrough on the Erdős large-gaps / Jacobsthal problem."
+    },
+    {
+      "title": "Erdős Problem #687",
+      "author": "Thomas F. Bloom (ed.)",
+      "year": "2024",
+      "venue": "erdosproblems.com/687",
+      "description": "The catalogued entry ($1,000 prize, OPEN), collecting the Iwaniec upper bound, the FGKMT lower bound, and the Maier–Pomerance conjecture Y(x) ≪ x·(log x)^{2+o(1)}."
+    }
+  ],
   "sorries": 0
 }
