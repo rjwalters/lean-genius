@@ -116,6 +116,6 @@ theorem finrank_adjoin_cbrt_two :
   have hα : ((2 : ℝ) ^ (((3 : ℕ) : ℝ)⁻¹)) ^ 3 = ((2 : ℕ) : ℝ) := by
     have h := Real.rpow_inv_natCast_pow (x := (2 : ℝ)) (n := 3) (by norm_num) (by norm_num)
     simpa using h
-  exact finrank_adjoin_eq Nat.prime_three (by norm_num) hα
+  exact finrank_adjoin_eq Nat.prime_two (by norm_num) hα
 
 end EisensteinCriterionOQ01OQ02
