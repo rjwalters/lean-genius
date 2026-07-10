@@ -367,6 +367,58 @@ theorem side_lt_of_angle_lt (t : HyperbolicTriangle) (hAB : t.A < t.B) : t.a < t
     linarith
   exact (Real.cosh_strictMonoOn.lt_iff_lt (mem_Ici.mpr t.ha.le) (mem_Ici.mpr t.hb.le)).mp hcosh
 
+/-- **Relabeling a hyperbolic triangle by swapping vertices `A` and `B`** (fixing `C`).
+    The three second-law-of-cosines fields are symmetric under `(A,a) ↔ (B,b)`
+    (`lawA ↔ lawB`, `lawC` invariant up to commutativity), so the swap is again a valid
+    `HyperbolicTriangle`.  It lets the `A`-vs-`B` ordering lemmas be applied with the two
+    roles exchanged, without re-deriving the `cosh` comparison. -/
+def HyperbolicTriangle.swapAB (t : HyperbolicTriangle) : HyperbolicTriangle where
+  a := t.b; b := t.a; c := t.c
+  A := t.B; B := t.A; C := t.C
+  ha := t.hb; hb := t.ha; hc := t.hc
+  hA := t.hB; hB := t.hA; hC := t.hC
+  hA_lt := t.hB_lt; hB_lt := t.hA_lt; hC_lt := t.hC_lt
+  lawA := t.lawB
+  lawB := t.lawA
+  lawC := by rw [t.lawC]; ring
+
+/-- **Smaller angle, shorter side (the `B`-side companion).** `B < A` forces `b < a`,
+    obtained from `side_lt_of_angle_lt` applied to the `A ↔ B` relabeling `swapAB`. -/
+theorem side_gt_of_angle_gt (t : HyperbolicTriangle) (hBA : t.B < t.A) : t.b < t.a :=
+  side_lt_of_angle_lt t.swapAB hBA
+
+/-- **Converse side–angle inequality: shorter side ⟹ smaller opposite angle.** Within one
+    hyperbolic triangle, `a < b` forces `A < B`. Together with `side_lt_of_angle_lt` this is
+    the full order-equivalence `a < b ↔ A < B` (`side_lt_iff_angle_lt`). Proof by trichotomy on
+    `A` vs `B`: equality would give `a = b` (`isosceles_of_angle_eq`) and `B < A` would give
+    `b < a` (`side_gt_of_angle_gt`), both contradicting `a < b`. -/
+theorem angle_lt_of_side_lt (t : HyperbolicTriangle) (hab : t.a < t.b) : t.A < t.B := by
+  rcases lt_trichotomy t.A t.B with h | h | h
+  · exact h
+  · exact absurd (isosceles_of_angle_eq t h) (ne_of_lt hab)
+  · exact absurd (side_gt_of_angle_gt t h) (not_lt.mpr hab.le)
+
+/-- **Converse of the isosceles criterion: equal sides ⟹ equal opposite angles.**
+    `a = b → A = B`, completing `isosceles_of_angle_eq` to the equivalence
+    `a = b ↔ A = B` (`side_eq_iff_angle_eq`). Trichotomy on `A` vs `B`: either strict order
+    would force the corresponding strict side inequality, contradicting `a = b`. -/
+theorem angle_eq_of_side_eq (t : HyperbolicTriangle) (h : t.a = t.b) : t.A = t.B := by
+  rcases lt_trichotomy t.A t.B with hlt | heq | hgt
+  · exact absurd (side_lt_of_angle_lt t hlt) (by rw [h]; exact lt_irrefl _)
+  · exact heq
+  · exact absurd (side_gt_of_angle_gt t hgt) (by rw [h]; exact lt_irrefl _)
+
+/-- **Hyperbolic side–angle order-equivalence (strict).** `a < b ↔ A < B`: the opposite side
+    of the larger angle is strictly longer, and conversely. Packages `angle_lt_of_side_lt`
+    with `side_lt_of_angle_lt`. -/
+theorem side_lt_iff_angle_lt (t : HyperbolicTriangle) : t.a < t.b ↔ t.A < t.B :=
+  ⟨angle_lt_of_side_lt t, side_lt_of_angle_lt t⟩
+
+/-- **Hyperbolic side–angle equality-equivalence.** `a = b ↔ A = B`: a hyperbolic triangle is
+    isosceles in two sides iff it is isosceles in the two opposite angles. -/
+theorem side_eq_iff_angle_eq (t : HyperbolicTriangle) : t.a = t.b ↔ t.A = t.B :=
+  ⟨angle_eq_of_side_eq t, isosceles_of_angle_eq t⟩
+
 -- ============================================================
 -- PART 4b: Angle–side monotonicity — a larger opposite angle forces a shorter side
 -- ============================================================

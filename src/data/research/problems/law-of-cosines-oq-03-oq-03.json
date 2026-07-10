@@ -13,7 +13,7 @@
   "significance": "AAA congruence is one of the sharpest qualitative differences between hyperbolic and Euclidean geometry, and underlies the rigidity of hyperbolic structures (Thurston). Completes the basic congruence theory alongside the parent law of cosines and sibling law of sines.",
   "currentState": "COMPLETED. Proved AAA congruence: the second law of cosines inverts to cosh c = (cos C + cos A cos B)/(sin A sin B), a function of the angles alone; injectivity of cosh on [0,∞) turns equal angles into equal sides. Also proved internal consistency (the defect A+B+C<π is exactly what makes the formula exceed 1) and the equilateral closed form cosh(side)=cos θ/(1-cos θ).",
   "knowledge": {
-    "progressSummary": "COMPLETE: AAA congruence + hyperbolic law of sines + realizability (defect condition is necessary AND sufficient; angles↦triangle is a bijection). 0 sorries, structure-encoded second-law assumptions only.",
+    "progressSummary": "COMPLETE: AAA congruence + hyperbolic law of sines + realizability (defect condition is necessary AND sufficient; angles↦triangle is a bijection). 0 sorries, structure-encoded second-law assumptions only. | Session (researcher-1): completed the side-angle ORDER-EQUIVALENCE — added the converse direction (a<b ⟹ A<B, a=b ⟹ A=B) via a HyperbolicTriangle.swapAB relabeling (valid since the 3 second-law fields are A↔B symmetric), giving side_lt_iff_angle_lt / side_eq_iff_angle_eq. 0 sorry, 0 new axioms. UNVERIFIED (Docker infra down).",
     "builtItems": [
       "LawOfCosinesOQ03OQ03.lean: hyperbolic AAA congruence (0 sorries, 7 structure-encoded axioms)",
       "HyperbolicTriangle: structure with sides a,b,c, angles A,B,C, side positivity, angle bounds, defect, and three second laws of cosines lawA/lawB/lawC",
@@ -27,7 +27,8 @@
       "LawOfCosinesOQ03OQ03.lean PART 9: hyperbolic law of sines derived from the second law of cosines. gramNumerator (symmetric Gram numerator of the three angles); sinh_a/b/c_num_sq: (sinh side · product of the two adjacent sines)^2 = gramNumerator; law_of_sines_ab/bc/ac (cross form sinh a sin B = sinh b sin A); hyperbolic_law_of_sines (ratio form sinh a/sin A = sinh b/sin B = sinh c/sin C); gramNumerator_nonneg.",
       "angle_ineq (LawOfCosinesOQ03OQ03.lean Part 10): raw-real form sin A sin B < cos C + cos A cos B from 0<A,B,C and A+B+C<π; applied under cyclic permutations to bound all three inverted-side quotients above 1",
       "exists_triangle_of_defect (Part 10): constructs a HyperbolicTriangle from any A,B,C∈(0,π) with A+B+C<π, sides = arcosh of inverted second-law quotients (Real.cosh_arcosh, Real.arcosh_pos); laws proved by field_simp;ring",
-      "exists_iff_defect + exists_equilateral (Part 10): full bijection characterization (realized ⟺ defect>0) and equilateral existence for every θ∈(0,π/3)"
+      "exists_iff_defect + exists_equilateral (Part 10): full bijection characterization (realized ⟺ defect>0) and equilateral existence for every θ∈(0,π/3)",
+      "swapAB relabeling (A↔B, fixing C) + side_gt_of_angle_gt + angle_lt_of_side_lt + angle_eq_of_side_eq + side_lt_iff_angle_lt + side_eq_iff_angle_eq: the CONVERSE side↔angle ordering, completing the strict order-equivalence a<b ↔ A<B and a=b ↔ A=B. LawOfCosinesOQ03OQ03.lean."
     ],
     "insights": [
       "The second law of cosines is linear in cosh of the opposite side, so it inverts algebraically — no Euclidean analogue, since the Euclidean law relates a side to the other two sides, not purely to angles.",
