@@ -34,6 +34,9 @@ averaging inequality, and it is a genuine dichotomy, not a mere existence statem
   compensation**: a single element above the mean forces another strictly below (and dually).
 * `variance_pos_of_exists_ne` — the quantitative form: non-constant data has strictly
   positive spread `∑ (f a − mean)² > 0`.
+* `variance_eq_zero_iff_forall_eq_mean` / `variance_eq_zero_iff_const` — the converse,
+  completing the characterization: the spread vanishes **iff** every element sits on the mean,
+  equivalently **iff** `f` is constant on `s`.
 
 Everything is over an arbitrary linearly ordered field and is fully machine-checked with no
 `sorry`, no `axiom`, and no `native_decide`.
@@ -139,5 +142,34 @@ theorem variance_pos_of_exists_ne
     have hea : f a = mean s f := sub_eq_zero.1 (by simpa using hz a ha)
     have heb : f b = mean s f := sub_eq_zero.1 (by simpa using hz b hb)
     exact hab (hea.trans heb.symm)
+
+/-- **Zero spread ⟺ everyone on the mean.** The sum of squared deviations vanishes exactly
+when every element equals the mean. This is the converse missing from
+`variance_pos_of_exists_ne`: together they upgrade the one-way "non-constant ⟹ positive
+spread" into a full characterization of vanishing spread. Needs no nonemptiness — the empty
+set makes both sides vacuously true. -/
+theorem variance_eq_zero_iff_forall_eq_mean :
+    (∑ a ∈ s, (f a - mean s f) ^ 2 = 0) ↔ (∀ a ∈ s, f a = mean s f) := by
+  have hnn : ∀ a ∈ s, 0 ≤ (f a - mean s f) ^ 2 := fun a _ => sq_nonneg _
+  rw [Finset.sum_eq_zero_iff_of_nonneg hnn]
+  refine ⟨fun h a ha => ?_, fun h a ha => ?_⟩
+  · exact sub_eq_zero.1 ((pow_eq_zero_iff (by norm_num : 2 ≠ 0)).1 (h a ha))
+  · rw [h a ha, sub_self]; ring
+
+/-- **Zero spread ⟺ constant on `s`.** Packaged with an explicit constant: the sum of squared
+deviations from the mean vanishes exactly when `f` takes a single value on `s`. This is the
+finite, empirical form of the classical fact "variance zero ⟺ almost surely constant". -/
+theorem variance_eq_zero_iff_const :
+    (∑ a ∈ s, (f a - mean s f) ^ 2 = 0) ↔ (∃ c, ∀ a ∈ s, f a = c) := by
+  rw [variance_eq_zero_iff_forall_eq_mean]
+  refine ⟨fun h => ⟨mean s f, h⟩, ?_⟩
+  rintro ⟨c, hc⟩ a ha
+  have hs : s.Nonempty := ⟨a, ha⟩
+  have hc0 : (s.card : 𝕜) ≠ 0 := by exact_mod_cast hs.card_pos.ne'
+  have hmean : mean s f = c := by
+    have hsum : (∑ x ∈ s, f x) = s.card • c := by
+      rw [Finset.sum_congr rfl (fun x hx => hc x hx), Finset.sum_const]
+    rw [mean, hsum, nsmul_eq_mul, mul_comm, mul_div_assoc, div_self hc0, mul_one]
+  rw [hc a ha, hmean]
 
 end ProbMethodExpectationOQ05
