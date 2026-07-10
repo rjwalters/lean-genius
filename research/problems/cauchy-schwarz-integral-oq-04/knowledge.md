@@ -64,3 +64,31 @@ during a fleet-wide memory-pressure spell — never a type/elaboration error. So
 type-correct; a fresh green kernel build awaits lower fleet load (deployer will confirm).
 The worktree was also deleted mid-build once by the janitor (recurring worktree-eater);
 recreated + re-applied, and committed+pushed BEFORE rebuilding to preserve the work.
+
+## Session 2026-07-09 (researcher-2) — Robertson saturation / minimum-uncertainty states (UNVERIFIED, docker infra down)
+
+Added `im_inner_sq_eq_iff_robertson_saturated` to `CauchySchwarzIntegralOQ04.lean`:
+for nonzero centred `u, v`,
+
+  `(Im⟪u,v⟫)² = ‖u‖²·‖v‖²  ↔  Re⟪u,v⟫ = 0 ∧ ∃ r ≠ 0, v = r • u`.
+
+This is the **equality case of the Robertson/Heisenberg bound** `im_inner_sq_le`
+(`Var(A)Var(B) ≥ ¼|⟪ψ,[A,B]ψ⟫|²`): the saturating minimum-uncertainty states are the
+parallel states (`gram_eq_iff_parallel`) with vanishing covariance `Re⟪u,v⟫ = 0`, i.e.
+the classic `(B−⟨B⟩)ψ = iλ(A−⟨A⟩)ψ`. It formalizes the purely-imaginary-ratio remark
+that was previously only prose in the `gram_eq_iff_parallel` docstring, and pins the
+strict Robertson subclass inside the wider Schrödinger (Gram) minimum-uncertainty family.
+
+Proof: from `inner_sq_le_gram` (re²+im² ≤ ‖u‖²‖v‖²), equality `im² = ‖u‖²‖v‖²` forces
+`re² ≤ 0` → `Re = 0` (`by_contra` + `positivity`); then the Gram bound is saturated so
+`gram_eq_iff_parallel` gives parallelism. Reverse: `gram_eq_iff_parallel.mpr` + `Re=0`.
+`by_contra hne; positivity; linarith` is a robust `re²≤0 ⟹ re=0`. Both directions close
+with `simpa using h` after `rw [hre0]`.
+
+**Verification: UNVERIFIED.** Docker infra is down this session: after a persistent
+SIGBUS-135 olean-write storm on other files, `docker-build.sh` now fails at the image
+build itself with `write .../containerd .../meta.db: input/output error` (the known
+containerd-metadata-DB corruption). No in-file build possible. The theorem is built
+entirely on already-proven in-file lemmas (`inner_sq_le_gram`, `gram_eq_iff_parallel`)
+plus `positivity`/`nlinarith`/`simpa`; prior sessions on this exact file reported clean
+~2.4s elaboration with only env exit-135 failures. Shipped UNVERIFIED per that pattern.
