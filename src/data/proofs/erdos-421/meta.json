@@ -269,5 +269,26 @@
       "description": "Related Erdős problem sharing themes: density, number-theory, open"
     }
   ],
+  "references": [
+    {
+      "authors": "Paul Erdős, Ronald L. Graham",
+      "title": "Old and New Problems and Results in Combinatorial Number Theory (p. 84)",
+      "year": "1980",
+      "venue": "Monographies de L'Enseignement Mathématique 28, Geneva",
+      "note": "States this problem ([ErGr80, p.84]) and records Selfridge's construction of a sequence of density > 1/e − ε with all consecutive-block products ∏_{u≤i≤v} dᵢ distinct; the density-1 version remains open."
+    },
+    {
+      "authors": "H. Halberstam, K. F. Roth",
+      "title": "Sequences",
+      "year": "1966",
+      "venue": "Oxford University Press (reprinted Springer, 1983)",
+      "note": "Standard monograph on the density theory of integer sequences and multiplicative/additive Sidon-type conditions, the framework in which 'all subproducts distinct' density questions like this one are posed."
+    },
+    {
+      "title": "Erdős Problem #421 (erdosproblems.com) — distinct products in dense sequences",
+      "url": "https://www.erdosproblems.com/421",
+      "note": "Source problem (OPEN): is there a density-1 increasing sequence all of whose consecutive-block products are distinct?"
+    }
+  ],
   "sorries": 0
 }
