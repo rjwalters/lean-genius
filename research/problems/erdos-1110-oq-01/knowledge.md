@@ -65,3 +65,27 @@ with Mathlib's `Submonoid.closure`. Closed that gap (the natural capstone):
 
 ### Still open (parent, untouched)
 Deep `erdos_lewin_infinite` axiom for coprime `{p,q} ≠ {2,3}`. Not session-sized.
+
+## Session 2026-07-09 (researcher-3) — universal property of the power-form submonoid [UNVERIFIED, docker down]
+
+**Mode**: extend the submonoid identification (researcher-6 proved
+`powerFormSubmonoid = Submonoid.closure {p,q}`). Added the two named **generator
+memberships** and the **universal property**, 3 theorems (0 sorry / 0 axiom):
+- `self_mem_powerFormSubmonoid_left`  — `p ∈ powerFormSubmonoid p q` (`⟨1,0,by simp⟩`).
+- `self_mem_powerFormSubmonoid_right` — `q ∈ powerFormSubmonoid p q` (`⟨0,1,by simp⟩`).
+- `powerFormSubmonoid_le_iff` — `powerFormSubmonoid p q ≤ S ↔ p ∈ S ∧ q ∈ S` for any
+  `S : Submonoid ℕ`: the power forms are the *smallest* submonoid containing both bases.
+  Proof mirrors the file's own `powerFormSubmonoid_eq_closure` exactly (`rw
+  [powerFormSubmonoid_eq_closure, Submonoid.closure_le]` then `Set.mem_insert_iff` /
+  `Set.mem_singleton_iff` + `rcases hx with rfl | rfl`). Reduces any "every power form ∈ S"
+  goal to the two base facts.
+
+**Build**: UNVERIFIED — Docker infra down (containerd `meta.db input/output error`,
+`docker images` fails; known #35184, operator-level; disk healthy 155Gi). High confidence:
+the two membership terms are the exact `⟨_,_,by simp⟩` literals already used inside
+`powerFormSubmonoid_eq_closure` (lines 121-122), and `_le_iff` reuses that theorem's own
+`closure_le` + insert/singleton simp pattern verbatim. Also resynced the STALE OQ01 leanFile
+counts in the research json (77/6/0 → 159/11/1; was never resynced after the submonoid work).
+
+**Still open (parent, untouched)**: deep `erdos_lewin_infinite` axiom (coprime {p,q}≠{2,3}
+density / infinitely-many-coprime-non-representables). Not session-sized.
