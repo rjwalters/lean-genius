@@ -126,6 +126,16 @@
       "targetId": "chinese-remainder-non-coprime",
       "relationship": "related",
       "description": "The complementary non-coprime regime — the exact obstruction flagged in this entry's third open question. When p, q share a factor, lcm p q ∣ p·q strictly, minpoly ≠ charpoly, and the block sum stays derogatory; the CRT isomorphism fails and overlapping blocks must be renormalized into the invariant-factor divisibility chain d₁ ∣ d₂ ∣ ⋯. This entry settles the coprime case; that one studies where coprimality breaks down."
+    },
+    {
+      "targetId": "cayley-hamilton-cyclic-vector-all-fields-oq-01-oq-01",
+      "relationship": "related",
+      "description": "Sibling in the same chain — 'Cyclic Vector Theorem: Full Biconditional': the two-way nonderogatory ⟺ cyclic-vector equivalence over an arbitrary field. This entry supplies exactly the nonderogatory side (minpoly = charpoly) of that biconditional for a coprime companion block sum, so its output feeds directly into the biconditional as a concrete cyclic instance."
+    },
+    {
+      "targetId": "cayley-hamilton-cyclic-vector-all-fields-oq-03",
+      "relationship": "related",
+      "description": "Sibling — 'Nonderogatory Operator Has a Cyclic Vector (coordinate-free)': the operator-level (basis-free) statement of the nonderogatory ⇒ cyclic-vector implication that this entry invokes at the matrix level to conclude C(p) ⊕ C(q) is cyclic and similar to C(p·q). The two are the coordinate-free and matrix incarnations of the same criterion."
     }
   ],
   "references": [
