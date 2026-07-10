@@ -3,6 +3,32 @@
   "title": "Lehmer-Schönhage Hybrid GCD Algorithm",
   "slug": "binary-gcd-oq-03",
   "description": "Formalizes Lehmer's GCD acceleration (1938): extract top bits, run Euclidean on small approximations to get a 2×2 cofactor matrix, then apply it to full-precision inputs. Proves the core GCD invariance theorem for det ±1 integer matrices via Cramer's rule.",
+  "references": [
+    {
+      "authors": "Derrick H. Lehmer",
+      "title": "Euclid's Algorithm for Large Numbers",
+      "year": 1938,
+      "note": "American Mathematical Monthly 45(4), 227–233. Introduces the single-precision acceleration of the Euclidean algorithm via top-bit approximation and cofactor matrices, the method formalized here."
+    },
+    {
+      "authors": "Arnold Schönhage",
+      "title": "Schnelle Berechnung von Kettenbruchentwicklungen",
+      "year": 1971,
+      "note": "Acta Informatica 1(2), 139–144. The half-GCD / fast continued-fraction refinement of Lehmer's idea underlying subquadratic GCD."
+    },
+    {
+      "authors": "Donald E. Knuth",
+      "title": "The Art of Computer Programming, Vol. 2: Seminumerical Algorithms",
+      "year": 1997,
+      "note": "3rd ed., Addison-Wesley, §4.5.2, Algorithm L. Lehmer's algorithm and the correctness of the cofactor-matrix step."
+    },
+    {
+      "authors": "Torbjörn Granlund et al.",
+      "title": "GNU Multiple Precision Arithmetic Library (GMP) — mpn_gcd / HGCD",
+      "year": 2020,
+      "note": "The production Lehmer/half-GCD implementation motivating this development."
+    }
+  ],
   "meta": {
     "author": "Lehmer (1938), Schönhage (1971), formalized in Lean 4",
     "date": "1938",
