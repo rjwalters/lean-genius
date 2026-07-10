@@ -76,3 +76,24 @@ convexity: the +2 second difference pins a unique minimizing k-band near `(n-4)/
 UNVERIFIED: Docker infra down this session (containerd meta.db/blob input/output error at
 image build; docker images errors). No build path. Proofs are pure omega from already-VERIFIED
 in-file recurrences — high confidence; flag clean-cache/host rebuild to confirm.
+
+## Reflection symmetry — the structural cause of the U-shape (researcher-5, 2026-07-09)
+
+The convexity work established that `edgeThreshold n ·` is U-shaped in k, but never
+recorded *why* it is symmetric. The threshold `C(n-k-1,2) + C(k+2,2) + 1` depends on k
+only through the ordered pair of binomial arguments `(n-k-1, k+2)`, whose sum `n+1` is
+k-independent. The substitution `k ↦ n-3-k` swaps those two arguments, fixing the value:
+
+- `edgeThreshold_reflect (n k) (h : k+3 ≤ n) : edgeThreshold n (n-3-k) = edgeThreshold n k`
+  — mirror image about the axis `k = (n-3)/2` (the balance point `n-k-1 = k+2`). Proof:
+  `unfold edgeThreshold; rw [show n-(n-3-k)-1 = k+2 by omega, show (n-3-k)+2 = n-k-1 by omega];
+  omega` (choose-terms as commuting atoms). The parent's `threshold_symmetric` (evaluating at
+  `n = 2k+3`, where `n-3-k = k`) is exactly the FIXED POINT of this reflection.
+- `edgeThreshold_central_pair (k) : edgeThreshold (2k+4) k = edgeThreshold (2k+4) (k+1)`
+  — reflection sends k to k+1 at n=2k+4, so the two central indices give equal thresholds.
+  With `edgeThreshold_second_diff_right` (strict convexity, +2), this pins the even-n minimum
+  to exactly this adjacent pair (flat two-point bottom); odd n=2k+3 minimizes at the single k.
+
+Both are pure `omega`/instantiation from the definition and already-VERIFIED in-file results.
+UNVERIFIED: Docker image build still fails at containerd `meta.db` input/output error (#35184,
+content-store corruption, operator-level; disk healthy). High confidence by local reasoning.

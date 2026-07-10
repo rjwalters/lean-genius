@@ -340,4 +340,35 @@ theorem edgeThreshold_second_diff_right (n k : ℕ) (h : k + 3 ≤ n) :
   rw [show k + 1 + 1 = k + 2 by omega] at h2
   omega
 
+/-- **Reflection symmetry in `k`.**  For `n ≥ k+3`,
+    `edgeThreshold n (n - 3 - k) = edgeThreshold n k`.
+
+    The threshold `C(n-k-1, 2) + C(k+2, 2) + 1` depends on `k` only through the ordered
+    pair of binomial arguments `(n-k-1, k+2)`, whose sum `n+1` is independent of `k`.  The
+    substitution `k ↦ n-3-k` swaps those two arguments (`n-k-1 ↔ k+2`), leaving the value
+    fixed.  This is the exact symmetry underlying the U-shape: the graph of `edgeThreshold n ·`
+    is a mirror image about the axis `k = (n-3)/2`, the balanced point where the two binomials
+    coincide (`n-k-1 = k+2`).  The parent's `threshold_symmetric` — evaluating at the extremal
+    `n = 2k+3`, where `n-3-k = k` — is precisely the fixed point of this reflection. -/
+theorem edgeThreshold_reflect (n k : ℕ) (h : k + 3 ≤ n) :
+    edgeThreshold n (n - 3 - k) = edgeThreshold n k := by
+  unfold edgeThreshold
+  rw [show n - (n - 3 - k) - 1 = k + 2 by omega,
+      show (n - 3 - k) + 2 = n - k - 1 by omega]
+  omega
+
+/-- **Equal central values when `n` is even.**  Reflection sends `k` to `k+1` at
+    `n = 2k+4` (the reflected index `(2k+4)-3-k = k+1`), so the two central indices flanking
+    the balance point `k = (n-4)/2` give the *same* threshold:
+    `edgeThreshold (2k+4) k = edgeThreshold (2k+4) (k+1)`.
+
+    Combined with strict convexity (`edgeThreshold_second_diff_right`), this pins the minimum
+    of the U-shape to exactly these two adjacent indices when `n` is even (a flat two-point
+    bottom), and — via `threshold_symmetric` — to the single index `k` when `n = 2k+3` is odd. -/
+theorem edgeThreshold_central_pair (k : ℕ) :
+    edgeThreshold (2 * k + 4) k = edgeThreshold (2 * k + 4) (k + 1) := by
+  have h := edgeThreshold_reflect (2 * k + 4) k (by omega)
+  rw [show (2 * k + 4) - 3 - k = k + 1 by omega] at h
+  exact h.symm
+
 end Erdos1012OQ01OQ02
