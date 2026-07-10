@@ -2,18 +2,18 @@
   {
     "id": "ann-simson-header",
     "proofId": "simson-line-theorem-oq-01",
-    "range": { "startLine": 7, "endLine": 38 },
+    "range": { "startLine": 3, "endLine": 34 },
     "type": "concept",
-    "title": "Simson's Line: Collinear Perpendicular Feet via Complex Coordinates",
-    "content": "Simson's theorem (published by William Wallace, 1797; named for Robert Simson) states that for a point P on the circumcircle of triangle ABC, the feet of the perpendiculars from P onto the three side-lines AB, BC, CA are collinear. The line they span is the Simson line of P. The proof models the points as complex numbers and normalises the circumcircle to the unit circle, so that the perpendicular foot onto a chord has a closed rational form and the unit-circle constraint conj z = 1/z reduces collinearity to a polynomial identity. Zero axioms, zero sorries — fully verified.",
-    "mathContext": "On the unit circle, conjugation becomes inversion: $\\bar z = 1/z$. The foot of the perpendicular from $p$ onto the chord through unit-circle points $u,v$ is $f(u,v,p) = \\tfrac12(u+v+p-uv\\bar p)$. Three complex points $z_1,z_2,z_3$ are collinear iff $(z_2-z_1)\\overline{(z_3-z_1)}$ is real, equivalently iff its imaginary part — twice the signed area of the triangle — vanishes.",
+    "title": "Closing the Converse: Simson's Theorem as a Biconditional",
+    "content": "Simson's theorem (published by William Wallace, 1797; named for Robert Simson) states that for a point P on the circumcircle of triangle ABC, the feet of the perpendiculars from P onto the three side-lines AB, BC, CA are collinear. The base development Proofs/SimsonLineTheorem (imported on line 1) proves the FORWARD direction (simson_key, simson_collinear). This file closes the open question — the genuinely new CONVERSE — upgrading the result to the full biconditional: the three pedal feet are collinear if and only if P lies on the circumcircle. The new ingredient is the collinearity-defect identity carried out for an arbitrary point p (no unit-circle hypothesis on p), whose factored form isolates the factor 1 − p·conj p. Zero axioms, zero sorries — fully verified.",
+    "mathContext": "Forward (base file): $P$ on circle $\\Rightarrow$ feet collinear. This file adds the converse to get $\\text{feet collinear} \\iff \\operatorname{normSq} p = 1$. Key device: on the unit circle $\\bar z = 1/z$; the collinearity defect of the pedal feet factors with an explicit $(1 - p\\bar p)$ factor, which vanishes exactly on the circumcircle.",
     "significance": "supporting",
     "relatedConcepts": [
       "Simson line",
       "Wallace line",
       "circumcircle",
       "pedal triangle",
-      "complex coordinate geometry"
+      "biconditional / converse"
     ],
     "prerequisites": [
       "complex numbers in Lean 4",
@@ -23,63 +23,75 @@
     ]
   },
   {
-    "id": "ann-simson-foot",
+    "id": "ann-simson-helpers",
     "proofId": "simson-line-theorem-oq-01",
-    "range": { "startLine": 41, "endLine": 45 },
+    "range": { "startLine": 40, "endLine": 61 },
+    "type": "lemma",
+    "title": "Unit-Circle Algebra Helpers",
+    "content": "Four private lemmas supply the algebraic plumbing. ne_zero_of_normSq_one: a point with normSq z = 1 is nonzero (needed to divide by a, b, c). conj_eq_inv: on the unit circle conj z = z⁻¹ — the single substitution that turns conjugation into a rational operation and the whole argument into a field computation. im_eq_zero_of_conj_eq and its converse conj_eq_of_im_eq_zero: the bridge between the algebraic collinearity form (conj w = w, 'w is real') and the metric form (w.im = 0, 'signed area vanishes').",
+    "mathContext": "$\\operatorname{normSq} z = 1 \\Rightarrow z \\neq 0$; $\\ \\bar z = z^{-1}$ from $z\\bar z = \\operatorname{normSq} z = 1$; $\\ \\bar w = w \\iff \\operatorname{Im} w = 0$ (w lies on the real axis).",
+    "significance": "supporting",
+    "relatedConcepts": ["complex conjugation", "unit circle", "real axis", "conj z = z⁻¹"],
+    "prerequisites": ["complex conjugation", "Complex.normSq"]
+  },
+  {
+    "id": "ann-simson-predicate",
+    "proofId": "simson-line-theorem-oq-01",
+    "range": { "startLine": 63, "endLine": 69 },
     "type": "definition",
-    "title": "Closed-Form Perpendicular Foot",
-    "content": "The foot of the perpendicular from p onto the chord-line through u and v is defined as foot u v p = (u + v + p − u·v·conj p)/2. For u, v on the unit circle this is exactly the orthogonal projection of p onto the line uv, as certified by foot_perp (perpendicularity) and foot_on_chord (incidence). The definition is the single geometric ingredient of the whole proof.",
-    "mathContext": "Derivation: the line through unit-circle points $u,v$ consists of points $z$ with $z + uv\\bar z = u+v$ (since $\\bar u = 1/u,\\ \\bar v = 1/v$). The foot is the unique such $z$ with $z-p \\perp v-u$. Solving the two linear conditions gives $z = \\tfrac12(u+v+p-uv\\bar p)$.",
-    "significance": "key",
-    "relatedConcepts": ["perpendicular foot", "orthogonal projection", "chord of a circle"],
-    "prerequisites": ["complex conjugation", "unit circle"]
-  },
-  {
-    "id": "ann-simson-diff",
-    "proofId": "simson-line-theorem-oq-01",
-    "range": { "startLine": 69, "endLine": 80 },
-    "type": "lemma",
-    "title": "Foot Difference Identity",
-    "content": "foot b c p − foot a b p = (c − a)(1 − b·conj p)/2, a pure ring identity that holds with no unit-circle hypothesis. The companion foot c a p − foot a b p = (c − b)(1 − a·conj p)/2 is symmetric. These factorisations through the chord directions c−a and c−b are the algebraic heart of the theorem: collinearity of the three feet becomes a statement about these two vectors being parallel.",
-    "mathContext": "Both differences are linear in the foot formula, so subtraction cancels the shared midpoint/projection terms and leaves a single chord-direction factor times $(1-\\cdot\\,\\bar p)$. This is why the proof needs no case analysis on the position of P along the circle.",
-    "significance": "key",
-    "relatedConcepts": ["chord direction", "parallel vectors", "ring identity"],
-    "prerequisites": ["polynomial arithmetic"]
-  },
-  {
-    "id": "ann-simson-perp",
-    "proofId": "simson-line-theorem-oq-01",
-    "range": { "startLine": 80, "endLine": 91 },
-    "type": "lemma",
-    "title": "The Foot Is Perpendicular to the Chord",
-    "content": "foot_perp certifies the first half of 'foot u v p is the orthogonal projection': the segment P → foot u v p is perpendicular to the chord uv, expressed as Re((p − foot u v p)·conj(v − u)) = 0. The proof reduces perpendicularity to conj w = −w (a purely imaginary cross-term) via re_eq_zero_of_conj_eq_neg, substitutes conj z = z⁻¹ for the unit-circle points u, v, and closes with field_simp; ring. Notably it needs no constraint on p — only u, v on the unit circle.",
-    "mathContext": "Two complex segments are perpendicular iff the real part of one times the conjugate of the other vanishes: $\\operatorname{Re}\\big((p-f)\\,\\overline{(v-u)}\\big)=0$, equivalently $(p-f)\\overline{(v-u)}$ is purely imaginary ($\\bar w=-w$).",
+    "title": "The Pedal-Feet Collinearity Predicate",
+    "content": "FeetCollinear a b c p is the complex collinearity criterion for the three pedal feet F_AB = foot a b p, F_BC = foot b c p, F_CA = foot c a p: the cross product w = (F_BC − F_AB)·conj(F_CA − F_AB) equals its own conjugate, i.e. w is real. This is exactly the conclusion of the base file's simson_key, packaged here as a reusable Prop so the biconditional can be stated cleanly.",
+    "mathContext": "$\\text{FeetCollinear}(a,b,c,p) :\\iff (F_{BC}-F_{AB})\\,\\overline{(F_{CA}-F_{AB})} = \\overline{(F_{BC}-F_{AB})}\\,(F_{CA}-F_{AB})$, i.e. the cross product is real — three points are collinear iff this product lies on the real axis.",
     "significance": "supporting",
-    "relatedConcepts": ["perpendicularity", "orthogonal projection", "purely imaginary number"],
-    "prerequisites": ["complex inner product geometry", "conj z = z⁻¹ on the unit circle"]
+    "relatedConcepts": ["collinearity", "cross product", "pedal triangle", "signed area"],
+    "prerequisites": ["complex coordinate geometry", "foot of perpendicular"]
   },
   {
-    "id": "ann-simson-onchord",
+    "id": "ann-simson-defect",
     "proofId": "simson-line-theorem-oq-01",
-    "range": { "startLine": 93, "endLine": 104 },
-    "type": "lemma",
-    "title": "The Foot Lies on the Chord Line",
-    "content": "foot_on_chord certifies the second half: foot u v p actually lies on the line through u and v, expressed as Im((foot u v p − u)·conj(v − u)) = 0 (the displacement from u is a real multiple of the chord direction). The proof mirrors foot_perp but reduces incidence to conj w = w (a real cross-term) via im_eq_zero_of_conj_eq. Together foot_perp and foot_on_chord prove the closed-form foot really is the orthogonal projection — the geometric justification of the definition.",
-    "mathContext": "A point $f$ lies on the line $uv$ iff $f-u$ is a real multiple of $v-u$, i.e. $\\operatorname{Im}\\big((f-u)\\,\\overline{(v-u)}\\big)=0$ (the cross product / signed area is zero).",
-    "significance": "supporting",
-    "relatedConcepts": ["collinearity", "chord line", "real multiple of a direction"],
-    "prerequisites": ["complex coordinate geometry", "conj z = z⁻¹ on the unit circle"]
-  },
-  {
-    "id": "ann-simson-main",
-    "proofId": "simson-line-theorem-oq-01",
-    "range": { "startLine": 109, "endLine": 136 },
+    "range": { "startLine": 71, "endLine": 88 },
     "type": "theorem",
-    "title": "Simson's Theorem: Collinearity of the Feet",
-    "content": "simson_key proves the complex collinearity criterion w = conj w for w = (F_BC − F_AB)·conj(F_CA − F_AB), and simson_collinear restates it as the vanishing signed area w.im = 0. Together they establish that the three perpendicular feet are collinear. The proof rewrites the foot differences, substitutes conj z = z⁻¹ from the unit-circle hypotheses, and closes with field_simp followed by ring.",
-    "mathContext": "Writing $w=(F_{BC}-F_{AB})\\overline{(F_{CA}-F_{AB})}$, collinearity is $\\operatorname{Im} w = 0$. Equivalently $w=\\bar w$. After substituting $\\bar z = z^{-1}$ for the four unit-circle points, $w-\\bar w$ becomes a rational function that simplifies identically to $0$, so the feet are collinear precisely when $A,B,C,P$ share the circle.",
+    "title": "The Collinearity-Defect Identity (Arbitrary P)",
+    "content": "simson_defect is the crux of the converse. With a, b, c on the unit circle but p FREE (no circle hypothesis), the collinearity defect of the three pedal feet — the difference (F_BC − F_AB)·conj(F_CA − F_AB) − conj(F_BC − F_AB)·(F_CA − F_AB) — collapses to the factored form (a − c)(c − b)(a − b)/(4abc)·(1 − p·conj p). This is the off-circle generalisation of simson_key: the base file only computes the defect under normSq p = 1, whereas here it is computed for every p. The proof rewrites the foot differences (foot_diff, foot_diff'), substitutes conj z = z⁻¹ for the unit-circle points a, b, c, then clears denominators with field_simp and closes with ring.",
+    "mathContext": "$w - \\bar w = \\dfrac{(a-c)(c-b)(a-b)}{4abc}\\,(1 - p\\bar p)$. The whole geometric content lives in the leading rational factor (the triangle) times the single scalar $1 - p\\bar p = 1 - \\operatorname{normSq} p$.",
     "significance": "key",
-    "relatedConcepts": ["Simson line", "collinearity", "signed area", "circumcircle"],
-    "prerequisites": ["foot difference identity", "conj z = z⁻¹ on the unit circle"]
+    "relatedConcepts": ["collinearity defect", "off-circle identity", "field_simp", "ring identity"],
+    "prerequisites": ["foot difference identity", "conj z = z⁻¹ on the unit circle", "field arithmetic in ℂ"]
+  },
+  {
+    "id": "ann-simson-iff",
+    "proofId": "simson-line-theorem-oq-01",
+    "range": { "startLine": 90, "endLine": 119 },
+    "type": "theorem",
+    "title": "Simson's Theorem: The Biconditional",
+    "content": "feet_collinear_iff is the headline result: for a non-degenerate triangle (a ≠ b, b ≠ c, c ≠ a on the unit circle), the three pedal feet are collinear if and only if Complex.normSq p = 1, i.e. P lies on the circumcircle. The proof feeds simson_defect into ← sub_eq_zero and mul_eq_zero: since the triangle prefactor (a − c)(c − b)(a − b)/(4abc) is nonzero (a product of nonzero chord differences over nonzero vertices), the defect vanishes exactly when 1 − p·conj p = 0, which is normSq p = 1 after casting. This turns Simson's forward theorem into a full characterization of the circumcircle.",
+    "mathContext": "With the prefactor $K = \\tfrac{(a-c)(c-b)(a-b)}{4abc} \\neq 0$: $\\ w - \\bar w = K(1 - p\\bar p) = 0 \\iff 1 - p\\bar p = 0 \\iff \\operatorname{normSq} p = 1$. The nonzero triangle factor is what makes the circumcircle the exact locus of collinear pedal feet.",
+    "significance": "key",
+    "relatedConcepts": ["Simson line", "circumcircle characterization", "converse", "non-degenerate triangle"],
+    "prerequisites": ["collinearity-defect identity", "mul_eq_zero", "Complex.mul_conj"]
+  },
+  {
+    "id": "ann-simson-signed-area",
+    "proofId": "simson-line-theorem-oq-01",
+    "range": { "startLine": 121, "endLine": 135 },
+    "type": "lemma",
+    "title": "Signed-Area Form of the Criterion",
+    "content": "feet_collinear_iff_signed_area re-expresses the FeetCollinear predicate (w = conj w) as the vanishing of the signed area ((F_BC − F_AB)·conj(F_CA − F_AB)).im = 0 — the real-geometry form used by the base file's simson_collinear. The equivalence is the conjugation bridge: a complex number equals its own conjugate iff its imaginary part is zero. This connects the algebraic 'the cross product is real' to the geometric 'the pedal triangle has zero area'.",
+    "mathContext": "$w = \\bar w \\iff \\operatorname{Im} w = 0$, where $\\operatorname{Im} w$ is (twice) the signed area of the triangle of pedal feet. Vanishing signed area is precisely collinearity of the three feet.",
+    "significance": "supporting",
+    "relatedConcepts": ["signed area", "collinearity", "real axis", "pedal triangle"],
+    "prerequisites": ["complex conjugation", "Complex.conj_conj"]
+  },
+  {
+    "id": "ann-simson-forward",
+    "proofId": "simson-line-theorem-oq-01",
+    "range": { "startLine": 137, "endLine": 146 },
+    "type": "theorem",
+    "title": "The Forward Direction, Recovered",
+    "content": "simson_forward recovers the classical forward Simson theorem — if P lies on the circumcircle (normSq p = 1) then the three pedal feet are collinear — as the easy mpr half of the biconditional feet_collinear_iff. This is the statement of the base file's simson_key, now obtained for free from the stronger iff, confirming the converse machinery subsumes the original result.",
+    "mathContext": "$\\operatorname{normSq} p = 1 \\Rightarrow \\text{FeetCollinear}(a,b,c,p)$, the $\\Leftarrow$ of the biconditional. The forward direction is the trivial half once the defect identity is in hand.",
+    "significance": "supporting",
+    "relatedConcepts": ["Simson line", "forward direction", "circumcircle", "biconditional"],
+    "prerequisites": ["the biconditional feet_collinear_iff"]
   }
 ]
