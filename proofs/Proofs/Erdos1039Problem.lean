@@ -504,7 +504,10 @@ theorem area_implies_disc_bound :
     have hsq :
         (sSup {r : ℝ | ∃ c : ℂ, isInscribedDisc (sublevelSet f) c r}) ^ 2
           ≤ sublevelArea f / Real.pi := by
-      have hs := Real.sq_sqrt (div_nonneg ENNReal.toReal_nonneg hpi.le)
+      have harea : (0 : ℝ) ≤ sublevelArea f := by
+        unfold sublevelArea; exact ENNReal.toReal_nonneg
+      have hs : Real.sqrt (sublevelArea f / Real.pi) ^ 2 = sublevelArea f / Real.pi :=
+        Real.sq_sqrt (div_nonneg harea hpi.le)
       nlinarith [hsup_bound, hsup_nonneg, hs, Real.sqrt_nonneg (sublevelArea f / Real.pi)]
     calc Real.pi * (sSup {r : ℝ | ∃ c : ℂ, isInscribedDisc (sublevelSet f) c r}) ^ 2
         ≤ Real.pi * (sublevelArea f / Real.pi) := mul_le_mul_of_nonneg_left hsq hpi.le
