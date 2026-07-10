@@ -1777,7 +1777,9 @@ theorem sqGaussSum_norm_eq_sqrt_of_odd {N : ℕ} [NeZero N] (hodd : Odd N) {r : 
   have h2 : IsUnit (2 : ZMod N) := by
     have hcast : ((2 : ℕ) : ZMod N) = (2 : ZMod N) := by norm_cast
     rw [← hcast, ZMod.isUnit_iff_coprime]
-    exact (Nat.coprime_two_left_iff_odd).mpr hodd
+    have hmod : N % 2 = 1 := Nat.odd_iff.mp hodd
+    have hnd : ¬ (2 ∣ N) := by rw [Nat.dvd_iff_mod_eq_zero]; omega
+    exact (Nat.prime_two.coprime_iff_not_dvd).mpr hnd
   exact sqGaussSum_norm_eq_sqrt_of_isUnit (h2.mul hr)
 
 end Szemeredi.Roth
