@@ -62,17 +62,16 @@ theorem semidirectProduct_subtype_zpowers_not_comm {N : Type*} [Group N] {p : �
       a * b ≠ b * a := by
   -- `σ` is a nontrivial automorphism, so it moves some element `n`.
   have hσ1 : σ ≠ 1 := by intro h; rw [h, orderOf_one] at hσ; omega
-  obtain ⟨n, hn⟩ : ∃ n : N, σ n ≠ n := by
-    by_contra h
-    push_neg at h
-    exact hσ1 (MulEquiv.ext fun x => (h x).trans (MulAut.one_apply x).symm)
+  obtain ⟨n, hn⟩ := DFunLike.ne_iff.mp hσ1
+  rw [MulAut.one_apply] at hn
+  -- `hn : σ n ≠ n`.
   refine ⟨SemidirectProduct.inr ⟨σ, Subgroup.mem_zpowers σ⟩, SemidirectProduct.inl n, ?_⟩
   intro hcomm
   -- Compare left components of the two products; they are `σ n` and `n`.
   have hkey := congrArg (·.left) hcomm
   simp only [SemidirectProduct.mul_left, SemidirectProduct.left_inl, SemidirectProduct.left_inr,
     SemidirectProduct.right_inl, SemidirectProduct.right_inr, map_one, MulAut.one_apply,
-    one_mul, mul_one] at hkey
+    one_mul, mul_one, Subgroup.coe_subtype] at hkey
   -- `hkey : σ n = n`, contradicting `hn`.
   exact hn hkey
 
@@ -122,9 +121,7 @@ theorem exists_noncyclic_card_eq_prime_mul_prime_iff_dvd_sub_one
   haveI : Fact p.Prime := ⟨hp⟩
   constructor
   · rintro ⟨M, instG, instF, hcard, hnc⟩
-    haveI := instG
-    haveI := instF
-    exact dvd_sub_one_of_not_isCyclic_card_eq_prime_mul_prime hp hq hpq hcard hnc
+    exact @dvd_sub_one_of_not_isCyclic_card_eq_prime_mul_prime M instG instF p q hp hq hpq hcard hnc
   · exact fun hdvd =>
       exists_noncyclic_group_of_card_eq_prime_mul_prime_of_dvd_sub_one hq hdvd
 
