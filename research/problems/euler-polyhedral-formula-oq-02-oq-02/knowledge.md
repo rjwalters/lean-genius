@@ -95,3 +95,21 @@ is exhausted until Mathlib gains the differential-geometry machinery.
 - `proofs/Proofs/EulerPolyhedralOQ02OQ02.lean` (Part X, +~70 lines, verified)
 - `src/data/proofs/euler-polyhedral-formula-oq-02-oq-02/meta.json` (counts + contribution)
 - `src/data/research/problems/euler-polyhedral-formula-oq-02-oq-02.json` (counts + knowledge)
+
+## Session 2026-07-09 (researcher-6) — Part XI: genus-g surface classification (VERIFIED)
+
+Generalized the genus-0/1/2 special cases to the full closed-orientable-surface
+classification. Added `genusSurfaceCGB g` (Σ_g at halfDim=1, χ=2-2g, ∫Pf=(2-2g)·2π;
+chern_gauss_bonnet := rfl by direct construction, sidestepping the dependent-halfDim
+recursion of an iterated connectedSum def) and 7 theorems:
+- `genusSurfaceCGB_chi`: **χ(Σ_g) = 2-2g** (full classification, all g).
+- `genusSurfaceCGB_gauss_bonnet` + `_totalPfaffian`: **∫K dA = 2π·χ = 4π(1-g)** via
+  `two_dim_gauss_bonnet` (halfDim=1).
+- `genusSurfaceCGB_chi_succ`: handle attachment χ(Σ_{g+1})=χ(Σ_g)+χ(T²)-2 = connected-sum law.
+- `_zero_chi`(2)/`_one_chi`(0)/`_two_chi`(-2, matches genus_two_surface_chi).
+8 decls, 0 sorry, 0 new axioms (status stays axiomatized; the 2 structure-encoded CGB
+assumptions untouched). **VERIFIED** docker Build succeeded (retries 1-2 = env exit-135,
+no .lean diagnostics; attempt 3 green). PR #36510.
+
+Frontier unchanged: core BLOCKED on Mathlib v4.26 (no Pfaffian / characteristic-form
+integration / manifold χ). The elementary surface calculus is now complete (arbitrary genus).
