@@ -155,6 +155,29 @@
       "Can these series convergence results be proved in Lean using Mathlib's analysis infrastructure?"
     ]
   },
+  "references": [
+    {
+      "title": "Mathematical Constants",
+      "author": "Steven R. Finch",
+      "year": "2003",
+      "venue": "Cambridge University Press (Encyclopedia of Mathematics and its Applications 94)",
+      "description": "Catalogues the constants this family produces — Catalan's G = β(2), the Dirichlet beta values β(1) = π/4 and β(3) = π³/32, and the eta values η(1) = ln 2 and η(2) = π²/12 — with their Leibniz-type alternating series and the open irrationality status of G."
+    },
+    {
+      "title": "Introduction to Analytic Number Theory",
+      "author": "Tom M. Apostol",
+      "year": "1976",
+      "venue": "Springer (Undergraduate Texts in Mathematics)",
+      "description": "Develops Dirichlet L-functions and the beta/eta functions β(s) = ∑ (−1)ⁿ/(2n+1)^s and η(s) = ∑ (−1)^{n−1}/n^s as L-functions of Dirichlet characters — the unifying structure that places Leibniz's π/4 = β(1) as the first member of the family."
+    },
+    {
+      "title": "Pi and the AGM: A Study in Analytic Number Theory and Computational Complexity",
+      "author": "Jonathan M. Borwein and Peter B. Borwein",
+      "year": "1987",
+      "venue": "Wiley",
+      "description": "Standard reference for series representations of π and related constants, including the alternating (Leibniz–Gregory) series and their acceleration, the analytic backdrop for the Dirichlet-beta family formalized here."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Analysis.SpecialFunctions.Trigonometric.Arctan",
