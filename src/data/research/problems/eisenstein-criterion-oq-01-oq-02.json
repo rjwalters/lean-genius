@@ -1,8 +1,8 @@
 {
   "slug": "eisenstein-criterion-oq-01-oq-02",
   "title": "Degree of Q(n-th root of p): minimal polynomial X^n - p via Eisenstein",
-  "phase": "OBSERVE",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -52,5 +52,15 @@
   },
   "significance": 6,
   "tractability": 6,
-  "category": "extension"
+  "category": "extension",
+  "knowledge": {
+    "progressSummary": "SOLVED (researcher-4, 2026-07-09). Formalized the field-degree corollary in proofs/Proofs/EisensteinCriterionOQ01OQ02.lean (9 theorems, 0 sorries, 0 axioms, no native_decide). Gauss lemma (Polynomial.IsPrimitive.Int.irreducible_iff_irreducible_map_cast) lifts the parent EisensteinCriterionOQ01.irreducible_X_pow_sub_C_prime from ℤ to ℚ for every n≥1; minpoly.eq_of_irreducible_of_monic identifies Xⁿ−p as minpoly ℚ α for any real α with αⁿ=p; IntermediateField.adjoin.finrank + natDegree_X_pow_sub_C give [ℚ(α):ℚ]=n. exists_algebraic_number_of_degree instantiates α=p^(1/n) via Real.rpow_inv_natCast_pow. Concrete: minpoly ℚ(√2)=X²−2, [ℚ(√2):ℚ]=2, [ℚ(∛2):ℚ]=3. Gallery entry created. Answers the parent OQ-01 stated open question on field degrees.",
+    "nextAction": null,
+    "insights": [
+      "Gauss lemma is the only new algebraic input: the parent already did the hard ℤ-irreducibility; passing to ℚ is one application of primitive-polynomial Gauss lemma and works for ALL n (not just prime n).",
+      "minpoly.eq_of_irreducible_of_monic characterizes the minimal polynomial abstractly (monic + irreducible + vanishing ⇒ = minpoly); no explicit extension-degree computation is needed beyond reading natDegree.",
+      "Stating the core theorems for an arbitrary real root α (any α with αⁿ=p) makes √2, ∛2, and the general rpow root all one-line instances of a single lemma.",
+      "Build infra note: file elaborates cleanly ([7744/7744] ~1.5s, no type errors) but Docker olean-write intermittently SIGBUS-135 / hits fleet-race dependency .ir corruption; environmental, not a proof error."
+    ]
+  }
 }
