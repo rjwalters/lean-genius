@@ -47,6 +47,10 @@ file adds no axioms and no sorries.
   equality case of the triangle inequality placing `M` on the geodesic segment `AB`.
 * `sphericalNinePointCircle_exists` — **existence of the spherical nine-point circle**: the
   three side-midpoints of a spherical triangle lie on a common spherical circle.
+* `sphericalNinePointCircle_equidistant` — the **nine-point centre** is spherically
+  equidistant from the three side-midpoints: `sdist (sMidpoint B C) O = sdist (sMidpoint A C) O
+  = sdist (sMidpoint A B) O`.  The equidistant twin of `sphericalNinePointCircle_exists`,
+  mirroring `sphericalCircumcircle_equidistant`.
 -/
 import Mathlib
 import Proofs.FeuerbachsTheoremOQ04
@@ -245,5 +249,21 @@ theorem sphericalNinePointCircle_exists [FiniteDimensional ℝ E]
       sMidpoint A B ∈ sCircle O ρ :=
   sphericalCircumcircle_exists (sMidpoint B C) (sMidpoint A C) (sMidpoint A B)
     (onSphere_sMidpoint hBC) (onSphere_sMidpoint hAC) (onSphere_sMidpoint hAB) hdim
+
+/-- **The spherical nine-point centre is equidistant from the three side-midpoints.**  The
+centre `O` of the nine-point circle satisfies `sdist (sMidpoint B C) O = sdist (sMidpoint A C) O
+= sdist (sMidpoint A B) O` — the defining "circumcentre of the medial triangle" property.  This
+is the equidistant twin of `sphericalNinePointCircle_exists`, obtained by feeding the three
+side-midpoints to the verified circumcentre-equidistance primitive
+`sphericalCircumcircle_equidistant`.  Unlike the existence statement it needs no
+non-antipodality hypotheses: the perpendicular-bisector intersection producing `O` yields equal
+spherical cosines (hence equal `sdist`) to the three midpoints unconditionally, even in the
+degenerate cases where the medial triangle collapses. -/
+theorem sphericalNinePointCircle_equidistant [FiniteDimensional ℝ E]
+    (A B C : E) (hdim : 2 < Module.finrank ℝ E) :
+    ∃ O : E, OnSphere O ∧
+      sdist (sMidpoint B C) O = sdist (sMidpoint A C) O ∧
+      sdist (sMidpoint A C) O = sdist (sMidpoint A B) O :=
+  sphericalCircumcircle_equidistant (sMidpoint B C) (sMidpoint A C) (sMidpoint A B) hdim
 
 end FeuerbachsTheoremOQ04
