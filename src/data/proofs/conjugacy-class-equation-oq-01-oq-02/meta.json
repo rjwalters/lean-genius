@@ -136,6 +136,11 @@
       "targetId": "conjugacy-class-equation-oq-01-oq-01",
       "relationship": "uses",
       "description": "Sibling entry proving the class equation in index form |G| = |Z(G)| + Σ [G : C_G(gᵢ)]. That is precisely the identity this entry applies: for a p-group each nontrivial-class index [G : C_G(gᵢ)] is divisible by p, so p divides |Z(G)|, forcing the center to be nontrivial."
+    },
+    {
+      "targetId": "sylow-theorem-oq-05",
+      "relationship": "applied-in",
+      "description": "Flagship application in the Sylow chain: 'Groups of Order p² are Abelian'. Its abelianness step is Mathlib's IsPGroup.commutative_of_card_eq_prime_sq, whose proof is exactly the chain formalized here — class equation ⇒ nontrivial centre ⇒ |Z(G)| ∈ {p, p²} ⇒ G/Z(G) cyclic ⇒ G abelian. This entry supplies the first, foundational link (nontrivial centre) of that classification; oq-05 then refines the p²-order case into its cyclic vs elementary-abelian dichotomy."
     }
   ],
   "conclusion": {
