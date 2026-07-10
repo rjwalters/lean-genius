@@ -380,4 +380,40 @@ theorem partitionEnergy_regular_steps_card_ge
   · intro n; exact partitionEnergy_nonneg G (parts n)
   · intro n; exact partitionEnergy_le_one G (parts n) (hcover n) (hdisjoint n)
 
+/-! ## Part VI: the increment count as an explicit natural number `⌊1/δ⌋₊`
+
+`energy_increment_count_le` bounds the increment-step count by the *rational* `1/δ`.
+Since the count is a natural number, it is in fact bounded by the integer `⌊1/δ⌋₊`.
+This is the increment-count analogue of the Part IV horizon sharpening
+`energy_regular_step_exists_floor`, pinning the exceptional-set size to a concrete
+natural number. -/
+
+/-- **At most `⌊1/δ⌋₊` increment steps (integer bound).**  Sharpens
+    `energy_increment_count_le` from the rational bound `1/δ` to the natural number
+    `⌊1/δ⌋₊`: a monotone `[0,1]`-valued potential has at most `⌊1/δ⌋₊` steps at which
+    it climbs by `≥ δ`, in *any* window `[0, N)`. -/
+theorem energy_increment_count_le_floor (f : ℕ → ℚ) (N : ℕ) (δ : ℚ) (hδ : 0 < δ)
+    (h0 : ∀ n, 0 ≤ f n) (h1 : ∀ n, f n ≤ 1) (hmono : ∀ n, f n ≤ f (n + 1)) :
+    ((Finset.range N).filter (fun n => f n + δ ≤ f (n + 1))).card ≤ ⌊1 / δ⌋₊ := by
+  apply Nat.le_floor
+  exact_mod_cast energy_increment_count_le f N δ hδ h0 h1 hmono
+
+/-- **Graph instantiation: at most `⌊1/δ⌋₊` energy-increment refinements (integer
+    bound).**  Along a monotone AFKS refinement chain, the number of window-`[0,N)`
+    steps at which `partitionEnergy` climbs by `≥ δ` is at most the explicit natural
+    number `⌊1/δ⌋₊`, independent of `N`. -/
+theorem partitionEnergy_increment_count_le_floor
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (parts : ℕ → Finset (Finset V)) (N : ℕ) (δ : ℚ) (hδ : 0 < δ)
+    (hcover : ∀ n, ∀ v : V, ∃ P ∈ parts n, v ∈ P)
+    (hdisjoint : ∀ n, ∀ P Q : Finset V, P ∈ parts n → Q ∈ parts n → P ≠ Q →
+      Disjoint P Q)
+    (hmono : ∀ n,
+      partitionEnergy G (parts n) ≤ partitionEnergy G (parts (n + 1))) :
+    ((Finset.range N).filter (fun n =>
+        partitionEnergy G (parts n) + δ ≤ partitionEnergy G (parts (n + 1)))).card
+      ≤ ⌊1 / δ⌋₊ := by
+  apply Nat.le_floor
+  exact_mod_cast partitionEnergy_increment_count_le G parts N δ hδ hcover hdisjoint hmono
+
 end Szemeredi.RegularityOQ04
