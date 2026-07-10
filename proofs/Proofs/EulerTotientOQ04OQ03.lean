@@ -2443,4 +2443,77 @@ theorem classifySeed_sophieGermain_eq {q : ℕ} (hq : q.Prime) (hq5 : 5 ≤ q)
   exact (classifySeed_eq_iff hodd3q (by omega) 1).mp
     (mem_EqualitySet_sophieGermain hq hq5 hsg 1)
 
+-- ----------------------------------------------------------------------------
+-- A prime-indexed FORWARD family: `n = 5q·2^(k+1)` with `q ≡ 1 (mod 4)`,
+-- `q ≥ 13`, and `3q+2` prime
+-- ----------------------------------------------------------------------------
+
+/-- **A parametric forward family.**  For every prime `q ≥ 13` with `q ≡ 1 (mod 4)`
+    whose associate `3q+2` is *also* prime, the seed `a = 5q` lands the *entire*
+    family `n = 5q·2^(k+1)` in the forward regime `φ(D(n)) < φ(n)` for all `k`.
+    This is the forward analogue of the Sophie–Germain equality family
+    `mem_EqualitySet_sophieGermain`: a single prime side-condition pins the whole
+    2-power tower into one regime, giving a new infinite *candidate* family of
+    forward seeds `5q ∈ {65, 85, 145, 185, …}` (one per prime `q ≡ 1 (mod 4)` with
+    `3q+2` prime).
+
+    The mechanism is again a clean collapse of the general criterion, writing
+    `q = 4m+1` (so `m ≥ 3`):
+
+    * `2a − φ(a) = 10q − 4(q−1) = 6q+4 = 2·(3q+2)`, so `s = 1`, `b = 3q+2` (odd);
+    * because `3q+2` is prime, `φ(b) = 3q+1`, and the landing constant is
+      `C = 2a − φ(b) = 10q − (3q+1) = 7q−1 = (14m+3)·2¹`, so `t = 1`, `e = 14m+3`
+      (odd, since `7q−1 ≡ 2 (mod 4)` when `q ≡ 1`);
+    * the classifier then compares `φ(e)·2^{t−1} = φ(14m+3)` with `φ(a) = 16m`.
+
+    Crucially the forward direction needs **no** knowledge of the factorisation of
+    the landing `e`: the uniform upper bound `φ(e) ≤ e−1 = 14m+2` already beats
+    `φ(a) = 16m` for every `m ≥ 2` (i.e. `q ≥ 9`), so `φ(e) < φ(a)` and the family
+    is forward.  This is the same "bound `φ(e) ≤ e−1` from above" device that ruled
+    the reversal regime out of the prime-triple family — here it *establishes* a
+    regime instead of excluding one.  The boundary case `q = 5` (`a = 25 = 5²`) is
+    excluded by `q ≥ 13`; there the inequality degenerates to equality. -/
+theorem mem_ForwardSet_fiveTimes {q : ℕ} (hq : q.Prime) (hq13 : 13 ≤ q)
+    (hq1 : q % 4 = 1) (hb : (3 * q + 2).Prime) (k : ℕ) :
+    5 * q * 2 ^ (k + 1) ∈ ForwardSet := by
+  obtain ⟨m, rfl⟩ : ∃ m, q = 4 * m + 1 := ⟨q / 4, by omega⟩
+  have hm3 : 3 ≤ m := by omega
+  have hcop : Nat.Coprime 5 (4 * m + 1) :=
+    (Nat.coprime_primes (by norm_num) hq).mpr (by omega)
+  -- φ(a) = 16m
+  have hφa : Nat.totient (5 * (4 * m + 1)) = 16 * m := by
+    rw [Nat.totient_mul hcop, show Nat.totient 5 = 4 from by decide,
+        Nat.totient_prime hq]; omega
+  -- φ(b) = 12m+4  (b = 3q+2 = 12m+5 prime)
+  have hφb : Nat.totient (3 * (4 * m + 1) + 2) = 12 * m + 4 := by
+    rw [Nat.totient_prime hb]; omega
+  -- oddness of the three odd data
+  have ha_odd : Odd (5 * (4 * m + 1)) := Nat.odd_iff.mpr (by omega)
+  have hb_odd : Odd (3 * (4 * m + 1) + 2) := Nat.odd_iff.mpr (by omega)
+  have he_odd : Odd (14 * m + 3) := Nat.odd_iff.mpr (by omega)
+  -- transport data:  2a − φ(a) = 2¹·b  and  2a − φ(b)·2^(s−1) = e·2¹
+  have p0 : (2 : ℕ) ^ (1 - 1) = 1 := by norm_num
+  have p1 : (2 : ℕ) ^ 1 = 2 := by norm_num
+  have hstep : 2 * (5 * (4 * m + 1)) - Nat.totient (5 * (4 * m + 1))
+      = 2 ^ 1 * (3 * (4 * m + 1) + 2) := by rw [hφa, p1]; omega
+  have hC : 2 * (5 * (4 * m + 1)) - Nat.totient (3 * (4 * m + 1) + 2) * 2 ^ (1 - 1)
+      = (14 * m + 3) * 2 ^ 1 := by rw [hφb, p0, p1]; omega
+  -- feed the k-free forward criterion; the sign inequality needs only φ(e) ≤ e−1
+  rw [dblIter_forward_iff_general ha_odd hb_odd he_odd (le_refl 1) (le_refl 1)
+        hstep hC k, hφa, p0, mul_one]
+  have hpe : Nat.totient (14 * m + 3) < 14 * m + 3 := Nat.totient_lt _ (by omega)
+  omega
+
+/-- **Classifier value on the forward family seeds.**  Specialising through
+    `classifySeed_gt_iff`: every seed `5q` in the parametric forward family
+    (`q` prime, `q ≥ 13`, `q ≡ 1 (mod 4)`, `3q+2` prime) is classified `gt` by the
+    total decision procedure. -/
+theorem classifySeed_fiveTimes_gt {q : ℕ} (hq : q.Prime) (hq13 : 13 ≤ q)
+    (hq1 : q % 4 = 1) (hb : (3 * q + 2).Prime) : classifySeed (5 * q) = Ordering.gt := by
+  have hodd : Odd (5 * q) := by
+    have hqodd : Odd q := hq.odd_of_ne_two (by omega)
+    rcases hqodd with ⟨j, hj⟩; exact ⟨5 * j + 2, by omega⟩
+  exact (classifySeed_gt_iff hodd (by omega) 1).mp
+    (mem_ForwardSet_fiveTimes hq hq13 hq1 hb 1)
+
 end Erdos1064OQ03
