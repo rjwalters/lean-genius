@@ -130,7 +130,29 @@
     "beta-integral-recurrence-oq-01-oq-02-oq-01",
     "stirling-formula-oq-03-oq-02"
   ],
-  "references": [],
+  "references": [
+    {
+      "authors": "Emil Artin",
+      "title": "The Gamma Function",
+      "year": "1964",
+      "venue": "Holt, Rinehart and Winston (transl. Michael Butler)",
+      "note": "The classic monograph on the Gamma and Beta functions: B(x,y) = Γ(x)Γ(y)/Γ(x+y), the Legendre duplication formula, and Stirling's asymptotic — the analytic backbone of the diagonal Beta asymptotic B(x,x) ~ 2^{1−2x}√(π/x) instantiated here at x = n+½."
+    },
+    {
+      "authors": "E. T. Whittaker, G. N. Watson",
+      "title": "A Course of Modern Analysis",
+      "year": "1927",
+      "venue": "Cambridge University Press (4th ed.)",
+      "note": "§12 on the Gamma and Beta functions, including Stirling's series and the duplication formula from which the prefactor 2^{1−2x} = 4^{−n} in the half-integer diagonal asymptotic descends."
+    },
+    {
+      "authors": "NIST Digital Library of Mathematical Functions (F. W. J. Olver et al., eds.)",
+      "title": "NIST DLMF, §5.12 (Beta function) and §5.11 (Gamma asymptotics)",
+      "year": "2024",
+      "venue": "dlmf.nist.gov",
+      "note": "Reference formulas for B(a,b), the central binomial coefficient asymptotic C(2n,n) ~ 4ⁿ/√(πn), and Stirling's approximation — the exact ingredients combined to obtain B(n+½,n+½) ~ √(π/n)·4^{−n}."
+    }
+  ],
   "sorries": [],
   "conclusion": {
     "summary": "The diagonal half-integer Euler Beta value is shown to satisfy B(n+1/2,n+1/2) ~ √(π/n)·4^(-n) as n→∞, an Asymptotics.IsEquivalent statement. The result answers and corrects the parent entry's open question, which conjectured the asymptotic √(π/n): the true rate carries an exponentially decaying factor 4^(-n) because the central binomial grows like 4^n against the 4^(2n) in the denominator. 139 lines, 4 theorems, 1 definition, 0 axioms, 0 sorries.",
