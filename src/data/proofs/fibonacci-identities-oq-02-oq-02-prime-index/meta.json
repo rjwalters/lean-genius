@@ -127,6 +127,11 @@
       "targetId": "fibonacci-identities-oq-02-oq-01",
       "relationship": "related",
       "description": "Sibling entry on the Lucas companion sequence's divisibility law. Both explore the divisibility structure exposed by the parent's index-divisibility characterization; this entry applies it to primality of the values."
+    },
+    {
+      "targetId": "fibonacci-divisibility-oq-07",
+      "relationship": "foundational",
+      "description": "The precise index-divisibility characterization this proof rests on: Fₘ ∣ Fₙ ⟺ m ∣ n, sharp at m = 2 (where F₂ = 1 is a unit and divides every Fₙ). It is exactly this sharpness at 2 that produces the unique exceptional index n = 4 here — 4's only proper divisor above 1 is 2, whose Fibonacci value is a unit — so the m = 2 boundary of that entry and the n = 4 escape of this one are the same phenomenon."
     }
   ],
   "conclusion": {
