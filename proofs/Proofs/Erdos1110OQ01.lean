@@ -248,4 +248,41 @@ theorem powerForm_incomparable_iff {p q : ℕ} (hp : p.Prime) (hq : q.Prime) (hp
       ↔ (¬ (k ≤ k' ∧ l ≤ l') ∧ ¬ (k' ≤ k ∧ l' ≤ l)) := by
   rw [powerForm_dvd_iff hp hq hpq, powerForm_dvd_iff hp hq hpq]
 
+/-! ### Closure under the divisibility lattice: divisors, `gcd` and `lcm`
+
+The divisibility order on power forms (`powerForm_dvd_iff`) is the product order on
+exponent pairs, which is a lattice with `min`/`max` as meet/join. The following lemmas
+show the power-form set is *closed* under the corresponding arithmetic operations:
+every divisor of a power form is a power form, and hence power forms are closed under
+`Nat.gcd` and `Nat.lcm`. This completes the picture of `{p^k q^l}` (for prime bases) as a
+**sublattice** of `(ℕ, ∣)` on top of its submonoid structure — the natural home for
+Erdős #1110's divisibility/antichain arguments. -/
+
+/-- **Divisors of a power form are power forms.** For prime bases `p, q`, if `n = p^k q^l`
+is a power form and `d ∣ n`, then `d = p^a q^b` for some `a ≤ k`, `b ≤ l`, hence a power
+form. Since `ℕ` is a decomposition monoid, `d` splits as `d₁ d₂` with `d₁ ∣ p^k`,
+`d₂ ∣ q^l`; each factor of a prime power is a prime power (`Nat.dvd_prime_pow`). No
+distinctness of `p, q` is needed. -/
+theorem isPowerForm_of_dvd {p q d n : ℕ} (hp : p.Prime) (hq : q.Prime)
+    (hn : IsPowerForm p q n) (hd : d ∣ n) : IsPowerForm p q d := by
+  obtain ⟨k, l, rfl⟩ := hn
+  obtain ⟨d₁, d₂, hd₁, hd₂, rfl⟩ := exists_dvd_and_dvd_of_dvd_mul hd
+  obtain ⟨a, _, rfl⟩ := (Nat.dvd_prime_pow hp).mp hd₁
+  obtain ⟨b, _, rfl⟩ := (Nat.dvd_prime_pow hq).mp hd₂
+  exact ⟨a, b, rfl⟩
+
+/-- **Power forms are closed under `gcd`.** For prime bases `p, q`, the `gcd` of a power
+form `m` with any `n` is a power form, because `Nat.gcd m n ∣ m`. (The meet of two power
+forms in the divisibility order.) -/
+theorem isPowerForm_gcd {p q m : ℕ} (hp : p.Prime) (hq : q.Prime)
+    (hm : IsPowerForm p q m) (n : ℕ) : IsPowerForm p q (Nat.gcd m n) :=
+  isPowerForm_of_dvd hp hq hm (Nat.gcd_dvd_left m n)
+
+/-- **Power forms are closed under `lcm`.** For prime bases `p, q`, the `lcm` of two power
+forms is a power form: `Nat.lcm m n ∣ m * n`, and `m * n` is a power form by
+`isPowerForm_mul`. (The join of two power forms in the divisibility order.) -/
+theorem isPowerForm_lcm {p q m n : ℕ} (hp : p.Prime) (hq : q.Prime)
+    (hm : IsPowerForm p q m) (hn : IsPowerForm p q n) : IsPowerForm p q (Nat.lcm m n) :=
+  isPowerForm_of_dvd hp hq (isPowerForm_mul hm hn) (Nat.lcm_dvd_mul m n)
+
 end Erdos1110
