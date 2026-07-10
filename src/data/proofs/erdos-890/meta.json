@@ -31,7 +31,7 @@
     "historicalContext": "Erdős and Selfridge studied $S_k(n) = \\sum_{i=0}^{k-1} \\omega(n+i)$ in their 1967 paper [ErSe67], where $\\omega(m)$ counts the distinct prime divisors of $m$. The Hardy-Ramanujan theorem (1917) established that $\\omega(n) \\sim \\log\\log n$ for 'almost all' $n$, and the Erdős-Kac theorem (1940) showed $(\\omega(n) - \\log\\log n)/\\sqrt{\\log\\log n}$ is asymptotically normal. For the cumulative function $S_k(n)$, Erdős and Selfridge proved the lower bound $\\liminf_{n \\to \\infty} S_k(n) \\geq k + \\pi(k) - 1$ using Pólya's 1918 theorem that $k$-smooth numbers (those with all prime factors $\\leq k$) have unbounded gaps: among $n, n+1, \\ldots, n+k-1$, all but at most one must have a prime factor $> k$. This yields at least $k + \\pi(k) - 1$ distinct prime factors in total. The two open conjectures sharpen this: (1) $\\liminf S_k(n) \\leq k + \\pi(k)$, which combined with the lower bound would pin the liminf to $k + \\pi(k) - 1$ or $k + \\pi(k)$; and (2) $\\limsup S_k(n) \\cdot \\log\\log n / \\log n = 1$, generalizing the classical single-integer result to consecutive blocks. The problem connects to Jacobsthal's function $g(k)$ (the maximal gap in $\\{1, \\ldots, m\\}$ coprime to the first $k$ primes) and to recent work on the distribution of $\\omega$ in short intervals.",
     "problemStatement": "Let $\\omega(n)$ denote the number of distinct prime factors of $n$, and define $S_k(n) = \\sum_{i=0}^{k-1} \\omega(n+i)$. Two conjectures: (1) For every $k \\geq 1$, $\\liminf_{n \\to \\infty} S_k(n) \\leq k + \\pi(k)$. (2) $\\limsup_{n \\to \\infty} S_k(n) \\cdot \\frac{\\log\\log n}{\\log n} = 1$. Both remain open.",
     "text": "Is lim inf S_k(n) ≤ k + π(k) where S_k(n) = ∑ ω(n+i)? Is lim sup S_k(n) · log log n / log n = 1? Known: lim inf ≥ k + π(k) − 1 (Erdős–Selfridge). OPEN.",
-    "proofStrategy": "The formalization defines `cumulativeOmega k n` using Mathlib's `ArithmeticFunction.omega` and `Finset.range k`. Liminf and limsup are captured by custom predicates `LiminfAtMost`, `LiminfAtLeast`, and `LimsupRatioIsOne` (using $\\varepsilon$-neighborhoods with `Real.log`). The Erdős-Selfridge lower bound and Hardy-Ramanujan $\\omega$ limsup are axiomatized. Four theorems are proved in Lean: monotonicity $S_{k+1}(n) \\geq S_k(n)$ via `Finset.sum_le_sum_of_subset`, the lower bound at $k=1$, the sandwich theorem conditional on Conjecture 1, and a restated lower bound.",
+    "proofStrategy": "The formalization defines `cumulativeOmega k n` using Mathlib's `ArithmeticFunction.omega` and `Finset.range k`. Liminf and limsup are captured by custom predicates `LiminfAtMost`, `LiminfAtLeast`, and `LimsupRatioIsOne` (using $\\varepsilon$-neighborhoods with `Real.log`). The Erdős-Selfridge lower bound and Hardy-Ramanujan $\\omega$ limsup are axiomatized. Nine theorems are proved in Lean: monotonicity $S_{k+1}(n) \\geq S_k(n)$ via `Finset.sum_le_sum_of_subset`, the lower bound at $k=1$, the sandwich theorem conditional on Conjecture 1, a restated lower bound, the boundary identities $S_0(n) = 0$ and $S_1(n) = \\omega(n)$, additivity $S_{k+j}(n) = S_k(n) + S_j(n+k)$, $\\omega(p) = 1$ for primes $p$, and an unconditional verification of Conjecture 1 at $k = 1$ (`conjecture1_k1`, using Euclid's infinitude of primes).",
     "keyInsights": [
       "**Cumulative prime factors**: $S_k(n) = \\sum_{i<k} \\omega(n+i)$ counts total distinct prime factors across $k$ consecutive integers. For $k = 1$, this reduces to $\\omega(n)$ itself.",
       "**Erdős-Selfridge lower bound**: The product $n(n+1)\\cdots(n+k-1)$ is divisible by all primes $\\leq k$, so $S_k(n) \\geq k + \\pi(k) - 1$ eventually. The proof uses Pólya's 1918 theorem that $k$-smooth numbers have gaps tending to infinity.",
@@ -95,10 +95,24 @@
       "startLine": 132,
       "endLine": 172,
       "summary": "Proves `cumulativeOmega_mono`: $S_k(n) \\leq S_{k+1}(n)$ via `Finset.sum_le_sum_of_subset`. Proves `erdos_890_lower_bound_k1`: the Erdős-Selfridge bound at $k=1$. Proves `erdos_890_liminf_sandwich`: conditional on Conjecture 1, $k + \\pi(k) - 1 \\leq \\liminf S_k(n) \\leq k + \\pi(k)$. Proves `erdos_890_known_lower_bound`: restates the Erdős-Selfridge axiom."
+    },
+    {
+      "id": "additional-lemmas",
+      "title": "Additional Structural Lemmas",
+      "startLine": 172,
+      "endLine": 187,
+      "summary": "Proves `cumulativeOmega_zero`: $S_0(n) = 0$ (empty sum). Proves `cumulativeOmega_one`: $S_1(n) = \\omega(n)$ via `Finset.sum_range_one`. Proves `cumulativeOmega_add`: additivity $S_{k+j}(n) = S_k(n) + S_j(n+k)$ via `Finset.sum_range_add`."
+    },
+    {
+      "id": "conjecture1-k1",
+      "title": "Conjecture 1 Verified for k = 1",
+      "startLine": 188,
+      "endLine": 210,
+      "summary": "Proves `omega_prime`: $\\omega(p) = 1$ for any prime $p$. Proves `conjecture1_k1`: an unconditional verification of Conjecture 1 at $k = 1$ ($\\text{LiminfAtMost}\\,(S_1)\\,(1 + \\pi(1))$), using Euclid's infinitude of primes (`Nat.exists_infinite_primes`) since $S_1(p) = \\omega(p) = 1 \\leq 1 + \\pi(1)$ for infinitely many primes $p$."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #890 formalizes two open conjectures about the sum $S_k(n) = \\sum_{i<k} \\omega(n+i)$ of distinct prime factors across consecutive integers. The Lean file includes genuine proofs of monotonicity ($S_{k+1} \\geq S_k$ via `Finset.sum_le_sum_of_subset`), the Erdős-Selfridge bound at $k=1$, a conditional sandwich theorem, and a restated lower bound. The Erdős-Selfridge lower bound $\\liminf S_k(n) \\geq k + \\pi(k) - 1$ and the Hardy-Ramanujan $\\omega$ limsup are axiomatized.",
+    "summary": "Erdős Problem #890 formalizes two open conjectures about the sum $S_k(n) = \\sum_{i<k} \\omega(n+i)$ of distinct prime factors across consecutive integers. The Lean file includes genuine proofs of monotonicity ($S_{k+1} \\geq S_k$ via `Finset.sum_le_sum_of_subset`), the Erdős-Selfridge bound at $k=1$, a conditional sandwich theorem, a restated lower bound, structural identities ($S_0 = 0$, $S_1 = \\omega$, additivity), and an unconditional verification of Conjecture 1 at $k = 1$ via Euclid's infinitude of primes. The Erdős-Selfridge lower bound $\\liminf S_k(n) \\geq k + \\pi(k) - 1$ and the Hardy-Ramanujan $\\omega$ limsup are axiomatized.",
     "implications": "Resolving Conjecture 1 would determine $\\liminf S_k(n)$ to within 1, revealing how 'smooth' the distribution of prime factors is across consecutive integer blocks. Conjecture 2 would show that the maximum rate of prime factor accumulation in a block of $k$ consecutive integers matches the single-integer Hardy-Ramanujan rate — the dominant contribution comes from one highly composite number in the block.",
     "openQuestions": [
       "Is $\\liminf S_k(n)$ exactly $k + \\pi(k) - 1$ or $k + \\pi(k)$ for each $k$?",
