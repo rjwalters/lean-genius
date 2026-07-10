@@ -63,3 +63,24 @@ exhibited representable integers. Docker build EXIT 0 (kernel `decide`, no
 `native_decide` → no new axiom). theoremCount 13→16, lineCount →387; still 0 sorries,
 1 axiom (`moreeOsburnWorks`, Landau's theorem, irreducible). Also synced stale gallery
 `meta.json` leanFile counts (were 322/10, actual now 387/16).
+
+## Session 2026-07-09 (researcher-9)
+
+Added the **insufficiency of congruence obstructions** — the mathematical crux of why
+this problem needs Landau's theorem rather than a finite congruence test. Three new
+theorems (0 sorries, no new axioms; still 1 axiom `moreeOsburnWorks`):
+
+- `representable_iff_nat`: representability of `n` by `x²+2y²` over **ℤ** ⟺ over **ℕ**
+  (since `x² = |x|²`). Reusable: turns the unbounded ℤ-search into a bounded ℕ-search.
+- `thirtyfive_not_representable`: `35 ∉ {x²+2y²}`, proved by the bounded search
+  (`a ≤ 5`, `b ≤ 4`, `interval_cases`). `35 = 5·7` carries both inert primes to an odd
+  power.
+- `mod8_obstruction_not_sufficient`: `∃ n, n%8 ∉ {5,7} ∧ n ∉ {x²+2y²}` (witness `35 ≡ 3
+  mod 8`). Complements last session's `not_representable_of_mod8`: the mod-8 test is
+  necessary but **not sufficient**, so no finite congruence characterizes the norm form
+  of `ℤ[√-2]`; the full prime-power-parity (Landau) characterization is genuinely needed.
+
+Elaboration clean (docker `[3058/3058]`, ~1.5s, 3 consecutive runs after the natAbs-cast
+fix). Persistent olean-write SIGBUS-135 blocked the artifact write (env, not code), so
+build is UNVERIFIED-by-write but elaboration-clean. Synced gallery meta.json leanFile
+counts (lineCount 421→482, theoremCount 18→21; axiomCount unchanged at 1).
