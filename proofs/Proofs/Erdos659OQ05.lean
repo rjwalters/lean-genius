@@ -19,6 +19,9 @@
 
     * `Q_mul`             : the Brahmagupta composition law for D = 2,
     * `Q_eq_zsqrtd_norm`  : Q is exactly the norm of `ℤ√(-2)`,
+    * `Q_eq_zero_iff`     : anisotropy — Q vanishes only at the origin (the norm
+                            has trivial kernel, so `ℤ[√-2]` is a domain),
+    * `Q_eq_one_iff`      : the units are `±1` — the only norm-1 vectors are `(±1,0)`,
     * `isRepresented_mul` : the integers represented by Q are closed under
                             multiplication (a submonoid of (ℤ, ·)),
     * `dist_sq_lattice`   : the squared Euclidean distance between two lattice
@@ -68,6 +71,52 @@ theorem isRepresented_two : IsRepresented 2 := ⟨0, 1, by decide⟩
 theorem isRepresented_nonneg {n : ℤ} (hn : IsRepresented n) : 0 ≤ n := by
   obtain ⟨x, y, rfl⟩ := hn
   unfold Q; positivity
+
+/-- **Anisotropy (positive-definiteness).**  The form `Q(x, y) = x² + 2y²` vanishes
+    *only* at the origin: `Q x y = 0 ↔ x = 0 ∧ y = 0`.  Equivalently the norm map
+    `ℤ√(-2) → ℤ` has trivial kernel, which is the algebraic reason `ℤ[√-2]` is an
+    integral domain — the multiplicative structure `Q_mul` never collapses a nonzero
+    lattice vector to a zero distance. -/
+theorem Q_eq_zero_iff (x y : ℤ) : Q x y = 0 ↔ x = 0 ∧ y = 0 := by
+  unfold Q
+  constructor
+  · intro h
+    have hx2 : (0 : ℤ) ≤ x ^ 2 := sq_nonneg x
+    have hy2 : (0 : ℤ) ≤ y ^ 2 := sq_nonneg y
+    have hxz : x ^ 2 = 0 := by omega
+    have hyz : y ^ 2 = 0 := by omega
+    exact ⟨pow_eq_zero_iff (by norm_num) |>.mp hxz,
+           pow_eq_zero_iff (by norm_num) |>.mp hyz⟩
+  · rintro ⟨rfl, rfl⟩; norm_num
+
+/-- **The value `1` is represented only trivially — the unit group is `{±1}`.**
+    `Q x y = 1 ↔ (x = 1 ∨ x = -1) ∧ y = 0`.  Since `2y² ≤ 1` forces `y = 0` and then
+    `x² = 1` forces `x = ±1`, the only lattice vectors at squared distance `1` from the
+    origin are `(±1, 0)`.  This is exactly the statement that the units of `ℤ[√-2]`
+    (norm-`1` elements) are just `±1`, complementing the anisotropy `Q_eq_zero_iff`. -/
+theorem Q_eq_one_iff (x y : ℤ) : Q x y = 1 ↔ (x = 1 ∨ x = -1) ∧ y = 0 := by
+  unfold Q
+  constructor
+  · intro h
+    have hx2 : (0 : ℤ) ≤ x ^ 2 := sq_nonneg x
+    have hy2 : (0 : ℤ) ≤ y ^ 2 := sq_nonneg y
+    have hyz : y ^ 2 = 0 := by omega
+    have hxone : x ^ 2 = 1 := by omega
+    have hy : y = 0 := pow_eq_zero_iff (by norm_num) |>.mp hyz
+    have hfac : (x - 1) * (x + 1) = 0 := by linear_combination hxone
+    rcases mul_eq_zero.mp hfac with hh | hh
+    · exact ⟨Or.inl (by linarith), hy⟩
+    · exact ⟨Or.inr (by linarith), hy⟩
+  · rintro ⟨hx | hx, rfl⟩ <;> subst hx <;> norm_num
+
+/-- **Strict positivity off the origin.**  Every nonzero lattice vector sits at a
+    strictly positive squared distance from the origin: `Q x y > 0` whenever
+    `(x, y) ≠ (0, 0)`.  A direct consequence of `isRepresented_nonneg` and the
+    anisotropy `Q_eq_zero_iff`. -/
+theorem Q_pos_of_ne (x y : ℤ) (h : ¬(x = 0 ∧ y = 0)) : 0 < Q x y := by
+  rcases lt_or_eq_of_le (isRepresented_nonneg ⟨x, y, rfl⟩) with hlt | heq
+  · exact hlt
+  · exact absurd ((Q_eq_zero_iff x y).mp heq.symm) h
 
 /-- **Multiplicative closure.**
 
