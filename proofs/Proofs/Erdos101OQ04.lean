@@ -3141,4 +3141,54 @@ theorem oblique_quadruple_onQuartic_collinear :
     (by norm_num) (by norm_num) (by norm_num) (by norm_num)]
   exact oblique_quadruple_criterion
 
+/-! ### The full solution surface: the two-parameter ternary-conic family
+
+`symmetric_quadruple_criterion` and `oblique_quadruple_criterion` each verify the arithmetic
+four-point-line criterion `Σx = 0 ∧ Σx² = 10` for one *shape* of quadruple — the symmetric
+`(a, −a, b, −b)` circle and the single rational point `(−8/3, 1/3, 1, 4/3)`.  Both are
+special cases of one general fact: after eliminating the fourth abscissa via `Σx = 0`
+(so `x₃ = −(x₀+x₁+x₂)`), the criterion becomes `x₀²+x₁²+x₂²+x₀x₁+x₁x₂+x₂x₀ = 5`
+(`quartic_quadruple_sum_zero_sq_iff_ternary`) — the fixed ternary conic `Q = 5`.  The two
+lemmas below package that: **every** point `(p, q, r)` on the quadric surface `Q = 5` yields a
+four-point line on the quartic, with the fourth abscissa `−(p+q+r)` determined.
+
+This makes the docstring remark on `quartic_fourPointLineCount_from_quadruples` precise:
+solutions of `Σx = 0 ∧ Σx² = 10` form a whole *two-parameter surface* (not a sporadic list),
+so the OPEN super-linear-growth question is purely one of selecting super-linearly many of
+them with *pairwise-distinct abscissa sets* — never one of existence.  The symmetric family
+is the slice `q = −p` (where `Q` collapses to the circle `p² + r² = 5`, quadruple
+`(p, −p, r, −r)`), and the single oblique witness is the surface point
+`(p, q, r) = (−8/3, 1/3, 1)`. -/
+
+/-- **The full ternary-conic family solves the arithmetic four-point-line criterion.**
+For any `p q r : ℝ` on the fixed ternary conic `p² + q² + r² + pq + qr + rp = 5`, the
+abscissae `(p, q, r, −(p+q+r))` satisfy the two Vieta/sum-of-squares relations `Σx = 0`
+and `Σx² = 10`.  The sum is immediate; the sum of squares is
+`Σx² = 2·(p²+q²+r²+pq+qr+rp) = 2·5 = 10`.  Subsumes `symmetric_quadruple_criterion`
+(slice `q = −p`) and `oblique_quadruple_criterion` (surface point `(−8/3, 1/3, 1)`). -/
+theorem quartic_quadruple_family_criterion (p q r : ℝ)
+    (h : p ^ 2 + q ^ 2 + r ^ 2 + p * q + q * r + r * p = 5) :
+    p + q + r + (-(p + q + r)) = 0 ∧
+      p ^ 2 + q ^ 2 + r ^ 2 + (-(p + q + r)) ^ 2 = 10 := by
+  refine ⟨by ring, ?_⟩
+  linear_combination 2 * h
+
+/-- **The full ternary-conic family forms a four-point line on the quartic.**
+For `p q r : ℝ` on the conic `p² + q² + r² + pq + qr + rp = 5` with the four abscissae
+`p, q, r, −(p+q+r)` pairwise distinct, the four points above them on `y = x⁴ − 5x²` are
+collinear — a genuine four-point line anchored through the `(p, ·)` and `(q, ·)` points.
+Derived from the sum-of-squares criterion `four_onQuartic_collinear_iff_sq` via
+`quartic_quadruple_family_criterion`.  This is the common generalization of
+`symmetric_quadruple_onQuartic_collinear` and `oblique_quadruple_onQuartic_collinear`:
+every point of the solution surface `Q = 5` gives one four-point line on the quartic. -/
+theorem quartic_quadruple_family_onQuartic_collinear (p q r : ℝ)
+    (h : p ^ 2 + q ^ 2 + r ^ 2 + p * q + q * r + r * p = 5)
+    (hpq : p ≠ q) (hqr : q ≠ r) (hrp : r ≠ p)
+    (hqd : q ≠ -(p + q + r)) (hdp : -(p + q + r) ≠ p) (hrd : r ≠ -(p + q + r)) :
+    collinear (p, p ^ 4 - 5 * p ^ 2) (q, q ^ 4 - 5 * q ^ 2) (r, r ^ 4 - 5 * r ^ 2) ∧
+      collinear (p, p ^ 4 - 5 * p ^ 2) (q, q ^ 4 - 5 * q ^ 2)
+        (-(p + q + r), (-(p + q + r)) ^ 4 - 5 * (-(p + q + r)) ^ 2) := by
+  rw [four_onQuartic_collinear_iff_sq rfl rfl rfl rfl hpq hqr hrp hqd hdp hrd]
+  exact quartic_quadruple_family_criterion p q r h
+
 end Erdos101OQ04
