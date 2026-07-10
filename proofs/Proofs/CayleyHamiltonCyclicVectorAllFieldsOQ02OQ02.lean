@@ -149,6 +149,83 @@ theorem finrank_centralizer_eq_of_centralizer_eq_adjoin
   finrank_centralizer_eq_of_nonderogatory M
     ((centralizer_eq_adjoin_iff_nonderogatory M).mp h)
 
+/-! ### A dimensional criterion for `C(M) = K[M]` -/
+
+/-- `K[M] ⊆ C(M)` always: polynomials in `M` commute with `M`.  (The easy half of
+    the (ii) ⟹ (iii) inclusion, isolated here for the dimensional argument.) -/
+theorem adjoin_le_centralizer
+    (M : Matrix (Fin n) (Fin n) K) :
+    Algebra.adjoin K ({M} : Set (Matrix (Fin n) (Fin n) K))
+      ≤ Subalgebra.centralizer K ({M} : Set (Matrix (Fin n) (Fin n) K)) := by
+  apply Algebra.adjoin_le
+  intro x hx
+  rw [Set.mem_singleton_iff] at hx
+  subst hx
+  rw [SetLike.mem_coe, Subalgebra.mem_centralizer_iff]
+  intro g hg
+  rw [Set.mem_singleton_iff] at hg
+  subst hg
+  rfl
+
+/-- **Dimensional criterion for the commutant.**  Since `K[M] ⊆ C(M)` always holds
+    and `dim_K K[M] = deg(minpoly K M)`, the centralizer coincides with the
+    polynomial algebra **iff** its dimension is no larger than it has to be:
+
+      `C(M) = K[M]  ⟺  dim_K C(M) = deg(minpoly K M)`.
+
+    The forward direction is immediate.  For the converse, `K[M] ⊆ C(M)` are nested
+    subspaces of the finite-dimensional matrix algebra with equal `K`-dimension, so
+    they coincide (`Submodule.eq_of_le_of_finrank_eq`).  This is the "no room above
+    the polynomials" test: the commutant is exactly `K[M]` precisely when it does
+    not grow past `deg(minpoly K M)`. -/
+theorem centralizer_eq_adjoin_iff_finrank_eq_natDegree_minpoly
+    (M : Matrix (Fin n) (Fin n) K) :
+    Subalgebra.centralizer K ({M} : Set (Matrix (Fin n) (Fin n) K))
+        = Algebra.adjoin K ({M} : Set (Matrix (Fin n) (Fin n) K))
+      ↔ Module.finrank K
+          ↥(Subalgebra.centralizer K ({M} : Set (Matrix (Fin n) (Fin n) K)))
+        = (minpoly K M).natDegree := by
+  constructor
+  · intro h
+    rw [h]
+    exact CyclicCommutantConverse.finrank_adjoin_eq_natDegree_minpoly M
+  · intro hf
+    -- `K[M] ⊆ C(M)` as submodules, with equal finrank, hence equal.
+    have hlesub :
+        (Algebra.adjoin K ({M} : Set (Matrix (Fin n) (Fin n) K))).toSubmodule
+          ≤ (Subalgebra.centralizer K ({M} : Set (Matrix (Fin n) (Fin n) K))).toSubmodule := by
+      intro x hx
+      rw [Subalgebra.mem_toSubmodule] at hx ⊢
+      exact adjoin_le_centralizer M hx
+    have hfeq :
+        Module.finrank K
+            (Algebra.adjoin K ({M} : Set (Matrix (Fin n) (Fin n) K))).toSubmodule
+          = Module.finrank K
+            (Subalgebra.centralizer K ({M} : Set (Matrix (Fin n) (Fin n) K))).toSubmodule := by
+      rw [Subalgebra.finrank_toSubmodule, Subalgebra.finrank_toSubmodule,
+        CyclicCommutantConverse.finrank_adjoin_eq_natDegree_minpoly M, hf]
+    exact (Subalgebra.toSubmodule_injective
+      (Submodule.eq_of_le_of_finrank_eq hlesub hfeq)).symm
+
+/-- **Commutant dimension as a nonderogatory test.**  Chaining the dimensional
+    criterion with the commutant characterization
+    `centralizer_eq_adjoin_iff_nonderogatory`, the centralizer of `M` has dimension
+    exactly `deg(minpoly K M)` **iff** `M` is nonderogatory:
+
+      `dim_K C(M) = deg(minpoly K M)  ⟺  minpoly K M = charpoly M`.
+
+    (For a nonderogatory `M` this reads `dim_K C(M) = n`, the headline; for a
+    derogatory `M` the strict Frobenius bound `dim_K C(M) > deg(minpoly K M)`
+    fails this equality.) -/
+theorem finrank_centralizer_eq_natDegree_minpoly_iff_nonderogatory
+    (M : Matrix (Fin n) (Fin n) K) :
+    Module.finrank K
+        ↥(Subalgebra.centralizer K ({M} : Set (Matrix (Fin n) (Fin n) K)))
+        = (minpoly K M).natDegree
+      ↔ minpoly K M = M.charpoly :=
+  (centralizer_eq_adjoin_iff_finrank_eq_natDegree_minpoly M).symm.trans
+    (centralizer_eq_adjoin_iff_nonderogatory M)
+
 /-! ### Summary -/
 
 /-- **De Moivre / Cayley–Hamilton OQ-02-OQ-02 summary.**  For an `n × n` matrix
