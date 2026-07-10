@@ -303,6 +303,22 @@ theorem practical_top_segment {m : ℕ} (hp : IsPractical m) {k : ℕ}
   have hcancel : (divisors m).sum id - ((divisors m).sum id - k) = k := by omega
   rwa [hcancel] at hrep
 
+/-- **Full-range representation when the abundancy is at most `2`.**  The two known
+    segments — the bottom `[0, m]` (`practical_represents_le`) and the top
+    `[σ(m) - m, σ(m)]` (`practical_top_segment`) — together tile the whole range
+    `[0, σ(m)]` exactly when they meet, i.e. when `σ(m) - m ≤ m`, that is
+    `σ(m) ≤ 2m` (abundancy `σ(m)/m ≤ 2`).  Under that hypothesis a practical `m`
+    represents *every* `k ≤ σ(m)` — a partial form of the classical fact that a
+    practical number represents all of `[1, σ(m)]`.  The hypothesis holds for e.g.
+    `2, 4, 8` and every `2^k` (and, with equality, for `6`), though it can fail for
+    more abundant practicals such as `12` (`σ(12) = 28 > 24`). -/
+theorem practical_represents_all_of_sigma_le_two_mul {m : ℕ} (hp : IsPractical m)
+    (hσ : (divisors m).sum id ≤ 2 * m) {k : ℕ} (hk : k ≤ (divisors m).sum id) :
+    IsRepresentable k m := by
+  rcases le_or_lt k m with hle | hgt
+  · exact practical_represents_le hp hle
+  · exact practical_top_segment hp (by omega) hk
+
 /-! ## Multiplicative closure under doubling
 
 If `m` is practical, so is `2m`.  This is the smallest case of the
