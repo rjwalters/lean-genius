@@ -107,4 +107,47 @@ theorem conditional_mi_nonneg {pXYZ : α × β × γ → ℝ}
       shannonEntropy pXYZ - shannonEntropy (marginalY pXYZ) ≥ 0 := by
   linarith [InformationTheory.strong_subadditivity hp hsum]
 
+/-! ## Conditional mutual information as a first-class quantity -/
+
+/-- **Conditional mutual information** `I(X ; Z | Y)`, defined directly from the
+    joint distribution as
+
+      `I(X ; Z | Y) = H(X, Y) + H(Y, Z) − H(X, Y, Z) − H(Y)`.
+
+    Packaging the expression bounded by `conditional_mi_nonneg` as a named object
+    lets the two information-theoretic facts below — its non-negativity and its
+    conditional-entropy-reduction identity — be stated about a single reusable
+    quantity rather than an anonymous four-term difference. -/
+noncomputable def conditionalMutualInfo (pXYZ : α × β × γ → ℝ) : ℝ :=
+  shannonEntropy (marginalXY pXYZ) + shannonEntropy (marginalYZ pXYZ) -
+    shannonEntropy pXYZ - shannonEntropy (marginalY pXYZ)
+
+/-- **Conditional mutual information is non-negative**, `0 ≤ I(X ; Z | Y)`. This is
+    strong subadditivity read as a statement about the named quantity
+    `conditionalMutualInfo`; it is definitionally `conditional_mi_nonneg`. -/
+theorem conditionalMutualInfo_nonneg {pXYZ : α × β × γ → ℝ}
+    (hp : ∀ xyz, 0 ≤ pXYZ xyz)
+    (hsum : ∑ xyz : α × β × γ, pXYZ xyz = 1) :
+    0 ≤ conditionalMutualInfo pXYZ := by
+  unfold conditionalMutualInfo
+  linarith [conditional_mi_nonneg hp hsum]
+
+/-- **Conditional mutual information equals the conditioning deficit.** With the
+    conditional entropies `H(X | Y) = H(X, Y) − H(Y)` and
+    `H(X | Y, Z) = H(X, Y, Z) − H(Y, Z)`,
+
+      `I(X ; Z | Y) = H(X | Y) − H(X | Y, Z)`.
+
+    This formalizes the identity asserted in prose in the docstrings of
+    `conditioning_reduces_entropy_general` and `conditional_mi_nonneg` — that the
+    deficit by which the extra variable `Z` reduces the conditional entropy of `X`
+    is *exactly* the conditional mutual information. It is a pure rearrangement of
+    the definition, so it holds unconditionally (no probability hypotheses). -/
+theorem conditionalMutualInfo_eq_conditioning_deficit (pXYZ : α × β × γ → ℝ) :
+    conditionalMutualInfo pXYZ =
+      (shannonEntropy (marginalXY pXYZ) - shannonEntropy (marginalY pXYZ)) -
+        (shannonEntropy pXYZ - shannonEntropy (marginalYZ pXYZ)) := by
+  unfold conditionalMutualInfo
+  ring
+
 end InformationTheory.SSA

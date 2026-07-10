@@ -39,12 +39,13 @@
     ],
     "originalContributions": [
       "Three-variable 'conditioning reduces entropy' H(X|Y,Z) ≤ H(X|Y) as a corollary of SSA",
-      "Non-negativity of conditional mutual information I(X;Z|Y) ≥ 0"
+      "Non-negativity of conditional mutual information I(X;Z|Y) ≥ 0",
+      "Conditional mutual information as a first-class definition (conditionalMutualInfo), with the deficit identity I(X;Z|Y) = H(X|Y) − H(X|Y,Z) formalizing the prose claim of the conditioning corollaries"
     ],
     "dateAdded": "2026-03-30",
-    "lineCount": 110,
-    "theoremCount": 4,
-    "definitionCount": 0,
+    "lineCount": 153,
+    "theoremCount": 6,
+    "definitionCount": 1,
     "additionalFiles": [],
     "mathlib_version": "4.26.0",
     "verifiedAt": "2026-07-07"
@@ -96,6 +97,14 @@
       "endLine": 92,
       "summary": "Three three-variable corollaries derived from strong subadditivity by linear rearrangement (linarith), not present in the parent file: conditioning_reduces_entropy_general (H(X|Y,Z) ≤ H(X|Y), extra conditioning cannot increase entropy), conditioning_reduces_entropy_general′ (H(Z|X,Y) ≤ H(Z|Y), the X↔Z dual), and conditional_mi_nonneg (I(X;Z|Y) ≥ 0, the conditional mutual information is non-negative).",
       "mathContext": "SSA implies (1) $H(X|Y,Z) \\leq H(X|Y)$ and (2) $I(X;Z|Y) = H(X,Y) + H(Y,Z) - H(X,Y,Z) - H(Y) \\geq 0$."
+    },
+    {
+      "title": "Conditional mutual information as a first-class quantity",
+      "id": "conditional-mutual-info",
+      "startLine": 111,
+      "endLine": 153,
+      "summary": "Packages the SSA deficit as a named definition conditionalMutualInfo pXYZ = H(X,Y) + H(Y,Z) − H(X,Y,Z) − H(Y), and proves two facts about it: conditionalMutualInfo_nonneg (0 ≤ I(X;Z|Y), reusing conditional_mi_nonneg) and conditionalMutualInfo_eq_conditioning_deficit (I(X;Z|Y) = H(X|Y) − H(X|Y,Z), a hypothesis-free ring rearrangement that formalizes the prose claim of the conditioning corollaries).",
+      "mathContext": "Defines $I(X;Z|Y)$ and proves the identity $I(X;Z|Y) = H(X|Y) - H(X|Y,Z)$, i.e. the deficit by which conditioning additionally on $Z$ reduces the entropy of $X$ equals the conditional mutual information."
     }
   ],
   "conclusion": {
@@ -163,10 +172,10 @@
       "Finset"
     ],
     "namespace": "InformationTheory.SSA",
-    "lineCount": 110,
+    "lineCount": 153,
     "axiomCount": 0,
-    "theoremCount": 4,
-    "definitionCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 1,
     "path": "Proofs/ShannonEntropySSA.lean",
     "sorries": 0,
     "additionalFiles": []
