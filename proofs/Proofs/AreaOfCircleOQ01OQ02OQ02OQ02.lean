@@ -134,4 +134,44 @@ theorem norm_fourierCoeffOn_le_deriv2 (f : ℝ → ℝ) (hf : ContDiff ℝ 2 f)
       _ = (n : ℝ) ^ 2 := by push_cast; ring
   nlinarith [norm_nonneg (fourierCoeffOn hab (ofReal ∘ f) n), hn1]
 
+/-- **Exact per-mode magnitude under the second derivative.**  Sharpening
+    `norm_fourierCoeffOn_le_deriv2` from an inequality to the exact identity: for a `C²`
+    periodic function and any nonzero mode `n`,
+
+        ‖ĉₙ(f'')‖ = n² · ‖ĉₙ(f)‖.
+
+    The eigenvalue `−n²` of the second-derivative operator acts on the mode's magnitude by
+    the factor `n²`.  The `≤` bound is the immediate corollary `n² ≥ 1`; here the constant
+    is pinned exactly, which is what makes the Wirtinger equality analysis (below) possible. -/
+theorem norm_fourierCoeffOn_deriv2_eq (f : ℝ → ℝ) (hf : ContDiff ℝ 2 f)
+    (hperiod : ∀ t, f (t + 2 * π) = f t)
+    (hab : (0 : ℝ) < 2 * π) (n : ℤ) (hn : n ≠ 0) :
+    ‖fourierCoeffOn hab (ofReal ∘ deriv (deriv f)) n‖
+      = (n : ℝ) ^ 2 * ‖fourierCoeffOn hab (ofReal ∘ f) n‖ := by
+  rw [fourierCoeffOn_deriv2_periodic f hf hperiod hab n hn]
+  simp only [norm_mul, norm_neg]
+  have hnorm_eq : ‖(n : ℂ) ^ 2‖ = (n : ℝ) ^ 2 := by
+    rw [norm_pow, Complex.norm_intCast, sq_abs]
+  rw [hnorm_eq]
+
+/-- **Wirtinger equality case: the first harmonic.**  On the modes `n = ±1` the
+    second-derivative magnitude identity degenerates to an equality of norms,
+
+        ‖ĉₙ(f'')‖ = ‖ĉₙ(f)‖   for   |n| = 1,
+
+    because the eigenvalue factor `n²` is exactly `1`.  This is the mode where Wirtinger's
+    inequality is *tight* — the extremal configuration of the isoperimetric problem is the
+    first harmonic, i.e. the circle.  For every higher mode `|n| ≥ 2` the factor `n² ≥ 4 > 1`
+    makes the inequality strict, so equality in the Fourier (Hurwitz) proof forces all but
+    the first harmonic to vanish. -/
+theorem norm_fourierCoeffOn_deriv2_eq_of_natAbs_one (f : ℝ → ℝ) (hf : ContDiff ℝ 2 f)
+    (hperiod : ∀ t, f (t + 2 * π) = f t)
+    (hab : (0 : ℝ) < 2 * π) (n : ℤ) (hn : n.natAbs = 1) :
+    ‖fourierCoeffOn hab (ofReal ∘ deriv (deriv f)) n‖
+      = ‖fourierCoeffOn hab (ofReal ∘ f) n‖ := by
+  have hn0 : n ≠ 0 := by rintro rfl; simp at hn
+  have hsq : (n : ℝ) ^ 2 = 1 := by
+    rcases Int.natAbs_eq_iff.mp hn with h | h <;> subst h <;> norm_num
+  rw [norm_fourierCoeffOn_deriv2_eq f hf hperiod hab n hn0, hsq, one_mul]
+
 end IsoperimetricFourier
