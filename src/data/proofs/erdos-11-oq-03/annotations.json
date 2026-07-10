@@ -50,7 +50,7 @@
   {
     "id": "ann-erdos11oq03-range",
     "proofId": "erdos-11-oq-03",
-    "range": { "startLine": 168, "endLine": 182 },
+    "range": { "startLine": 168, "endLine": 181 },
     "type": "tactic",
     "title": "Verified redundancy: ≥ 2 representations on 1 < n < 100 by one kernel decide",
     "content": "reprCount_odd_ge_two_range: ∀ n ∈ range 100, Odd n → 1 < n → 2 ≤ reprCount n. Because reprCount is a kernel-computable Nat (SquarefreeCheck reduces where Squarefree's minSqFac instance does not), a Finset.card inequality over the whole odd range discharges by a single kernel `decide` — no native_decide, hence no Lean.ofReduceBool. The bound is a genuine strengthening of the parent's 'verified representable' range to 'verified doubly representable': at least two distinct powers of two work, the minimum 2 being attained at n = 3, 5, 13, 29. isSquarefreePlusPow2_odd_range recovers the existence range as a weaker corollary. maxRecDepth 10000 lets the kernel walk the nested Finset.range recursions in the card computation — a resource budget, not a trust knob — and the trailing #print axioms confirms only propext / Classical.choice / Quot.sound.",
