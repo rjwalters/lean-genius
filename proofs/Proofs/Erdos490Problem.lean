@@ -118,6 +118,26 @@ theorem hasDistinctProducts_comm (A B : Finset ℕ) :
   rw [HasDistinctProducts, HasDistinctProducts, productSet_comm A B,
     Nat.mul_comm A.card B.card]
 
+/-- **The product set is monotone in both factors**: enlarging either `A` or `B`
+can only enlarge `A·B`.  Immediate from `productSet_eq_image` and monotonicity of
+`Finset.image` along `A' ×ˢ B' ⊆ A ×ˢ B`. -/
+theorem productSet_mono {A A' B B' : Finset ℕ} (hA : A' ⊆ A) (hB : B' ⊆ B) :
+    productSet A' B' ⊆ productSet A B := by
+  rw [productSet_eq_image, productSet_eq_image]
+  exact image_subset_image (product_subset_product hA hB)
+
+/-- **Distinct products is inherited by subsets**: if every product `a·b` over
+`A × B` is distinct, then so are the products over any subsets `A' ⊆ A`, `B' ⊆ B`.
+Distinctness is a downward-closed property — a subpair of a "good" pair is again
+"good" — so in the extremal problem one may always pass to subsets freely.  Proved
+through the elementwise `ProductMapInjective` characterization. -/
+theorem HasDistinctProducts.subset {A A' B B' : Finset ℕ}
+    (h : HasDistinctProducts A B) (hA : A' ⊆ A) (hB : B' ⊆ B) :
+    HasDistinctProducts A' B' := by
+  rw [← productMapInjective_iff_hasDistinctProducts] at h ⊢
+  intro a₁ a₂ b₁ b₂ ha₁ ha₂ hb₁ hb₂ heq
+  exact h a₁ a₂ b₁ b₂ (hA ha₁) (hA ha₂) (hB hb₁) (hB hb₂) heq
+
 /-
 ## Part II: The Erdős Question
 -/
