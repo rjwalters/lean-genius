@@ -419,6 +419,12 @@ theorem side_lt_iff_angle_lt (t : HyperbolicTriangle) : t.a < t.b ↔ t.A < t.B 
 theorem side_eq_iff_angle_eq (t : HyperbolicTriangle) : t.a = t.b ↔ t.A = t.B :=
   ⟨angle_eq_of_side_eq t, isosceles_of_angle_eq t⟩
 
+/-- **Hyperbolic side–angle order-equivalence (non-strict).** `a ≤ b ↔ A ≤ B`, the `≤`
+    companion completing the order trio with `side_lt_iff_angle_lt` (`<`) and
+    `side_eq_iff_angle_eq` (`=`). Immediate by splitting each `≤` into `<` or `=`. -/
+theorem side_le_iff_angle_le (t : HyperbolicTriangle) : t.a ≤ t.b ↔ t.A ≤ t.B := by
+  rw [le_iff_lt_or_eq, side_lt_iff_angle_lt, side_eq_iff_angle_eq, ← le_iff_lt_or_eq]
+
 -- ============================================================
 -- PART 4b: Angle–side monotonicity — a larger opposite angle forces a shorter side
 -- ============================================================
