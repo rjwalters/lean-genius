@@ -3,6 +3,32 @@
   "title": "Riemann Zeta at Four: ζ(4) = π⁴/90",
   "slug": "basel-problem-oq-06",
   "description": "Euler's evaluation ζ(4) = ∑ 1/n⁴ = π⁴/90, the fourth-power companion of the Basel problem ζ(2)=π²/6, recorded both as a real series (HasSum/tsum) and as the complex value riemannZeta 4 = π⁴/90. Building on Mathlib's hasSum_zeta_four and riemannZeta_four, the entry derives — with 0 axioms and 0 sorries — the even/odd decomposition of the ζ(4) series: the sum of reciprocal even fourth powers ∑ 1/(2k)⁴ = π⁴/1440 (the series scaled by 1/16), and, by uniqueness of infinite sums, the sum of reciprocal odd fourth powers ∑ 1/(2k+1)⁴ = π⁴/96 (the value λ(4)). This mirrors the sibling ζ(2)→π²/8 odd-squares result at the fourth power.",
+  "references": [
+    {
+      "authors": "Leonhard Euler",
+      "title": "De summis serierum reciprocarum (On the sums of series of reciprocals)",
+      "year": 1740,
+      "note": "Commentarii academiae scientiarum Petropolitanae 7 (1740), 123–134 (E41). Euler's solution of the Basel problem, giving ζ(2)=π²/6 and, by the same technique, ζ(4)=π⁴/90 and further even values."
+    },
+    {
+      "authors": "Leonhard Euler",
+      "title": "Institutiones calculi differentialis",
+      "year": 1755,
+      "note": "Part II, Ch. 5–6 (E212). The general closed form ζ(2n) = (−1)^{n+1} B_{2n} (2π)^{2n} / (2·(2n)!) via Bernoulli numbers, of which ζ(4)=π⁴/90 (B₄ = −1/30) is the n=2 case."
+    },
+    {
+      "authors": "Tom M. Apostol",
+      "title": "Introduction to Analytic Number Theory",
+      "year": 1976,
+      "note": "Springer, Undergraduate Texts in Mathematics. The Bernoulli-number evaluation of ζ(2n) and the Dirichlet lambda/eta relatives λ(s)=(1−2^{−s})ζ(s), giving the odd value λ(4)=π⁴/96."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib4: Mathlib.NumberTheory.ZetaValues and HurwitzZetaValues",
+      "year": 2024,
+      "note": "hasSum_zeta_four and riemannZeta_four supply ζ(4)=π⁴/90; HasSum.even_add_odd drives the even/odd decomposition used to isolate ∑ 1/(2k)⁴ and ∑ 1/(2k+1)⁴."
+    }
+  ],
   "meta": {
     "author": "Leonhard Euler (1735/1741); Robb Walters (formalization)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Riemann_zeta_function",
