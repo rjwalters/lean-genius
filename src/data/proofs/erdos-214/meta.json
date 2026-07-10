@@ -52,7 +52,8 @@
       "Metric helpers dist_self (dist p p = 0) and dist_comm (symmetry) — basic coordinate-distance facts previously absent.",
       "isUnitSquare_of_isometry: any distance-preserving map carries a unit square to a unit square — the reusable geometric heart of the reduction unit_square_from_stronger (a congruent copy of the standard unit square is again a unit square precisely because the witness is an isometry).",
       "IsUnitSquare.distinct: a unit square has four pairwise-distinct vertices (edges have length 1≠0, diagonals length √2≠0, and dist p p = 0), certifying ContainsUnitSquare is a genuinely non-degenerate 4-point statement.",
-      "complement_contains_distinct_unit_square: capstone — the complement of any unit-distance-free set contains a unit square on four PAIRWISE-DISTINCT points, sharpening the problem's 'four points' phrasing (combines erdos_214_solved with vertex-distinctness)."
+      "complement_contains_distinct_unit_square: capstone — the complement of any unit-distance-free set contains a unit square on four PAIRWISE-DISTINCT points, sharpening the problem's 'four points' phrasing (combines erdos_214_solved with vertex-distinctness).",
+      "scaledLatticeGen_unitDistanceFree: generalizes the √2·ℤ² unit-distance-free construction to the one-parameter family c·ℤ² for every real c with c²>1 (squared distance c²·m, m a nonnegative-integer sum of two squares, never equals 1); scaledLattice_eq_gen (rfl) recovers the √2 case."
     ],
     "relatedProblems": [
       {
@@ -85,10 +86,10 @@
       }
     ],
     "axiomCount": 1,
-    "lineCount": 414,
+    "lineCount": 460,
     "assumptions": "1 axiom: juhasz_stronger (Juhász 1979 — a unit-distance-free set's complement contains a congruent copy of ANY 4-point configuration). The original Problem #214 statement (juhasz_1979 : Erdos214Statement) is no longer a separate axiom: it is DERIVED from juhasz_stronger via the proved reduction unit_square_from_stronger (a unit square is a special 4-point configuration, transported into the complement by Juhász's isometry). 0 sorries. The problem's hypothesis is now shown non-vacuous: scaledLattice_unitDistanceFree proves √2·ℤ² is an explicit infinite unit-distance-free set (no assumptions).",
-    "theoremCount": 23,
-    "definitionCount": 13,
+    "theoremCount": 25,
+    "definitionCount": 14,
     "additionalFiles": [
       "Proofs/Erdos214ProblemAristotle.lean"
     ]
@@ -198,10 +199,10 @@
       "Real"
     ],
     "namespace": "Erdos214",
-    "lineCount": 414,
+    "lineCount": 460,
     "axiomCount": 1,
-    "theoremCount": 23,
-    "definitionCount": 13,
+    "theoremCount": 25,
+    "definitionCount": 14,
     "path": "Proofs/Erdos214Problem.lean",
     "sorries": 0,
     "additionalFiles": [
