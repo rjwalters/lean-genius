@@ -95,3 +95,36 @@ that content ladder. General obstruction below unchanged.
 induction on `n` (base n=2 = grandparent) alternating `embedOne` and `headBlockN`. Right inductive
 statement = **content reduction** (`∃ M ∈ SLₙ, M ·ᵥ v = (gcd v, 0,…,0)`); primitive-vector
 transitivity (`→ e₀`) is the `gcd = 1` corollary for `n ≥ 2`.
+
+## Session 2026-07-10 — capstone: pairwise transitivity (researcher-8, UNVERIFIED)
+
+**Outcome**: added `sln_acts_transitive` to `BezoutIdentityOQ01OQ02OQ02Transitive.lean`
+(namespace `BezoutDescent`), 0 sorry / 0 axiom. Docker infra DOWN all session (containerd
+content-store blob input/output error at `docker images`; no cached oleans) → UNVERIFIED,
+hand-audited against the local Mathlib pin.
+
+### The gap this closes
+`sln_transitive` (landed #37170) only proves the *reduce-to-`e₀`* form: every primitive
+`v ∈ ℤ^{2+m}` reaches the fixed target `gcdForm m 1 = (1,0,…,0)`. The open question's headline
+is the genuine group-action statement — `SLₙ(ℤ)` *acts transitively* on primitive vectors, i.e.
+the orbit of any primitive vector is the whole primitive set. That pairwise form was missing.
+
+### Decl (0 sorry / 0 axiom)
+- `sln_acts_transitive {m} (v w) (hv hw : IsPrimitive)` : `∃ U : SL₍₂₊ₘ₎(ℤ), U ·ᵥ v = w`.
+  Proof: `M_v ·ᵥ v = e₀` and `M_w ·ᵥ w = e₀` from `sln_transitive`; take `U := M_w⁻¹ * M_v`;
+  then `U ·ᵥ v = M_w⁻¹ ·ᵥ (M_v ·ᵥ v) = M_w⁻¹ ·ᵥ e₀ = M_w⁻¹ ·ᵥ (M_w ·ᵥ w) = w`. `sln_transitive`
+  is now the special case `w = e₀`.
+
+### Proof idiom (verified against local pin, mirrors `reduce_to_gcd` line 157)
+`rw [SpecialLinearGroup.coe_mul, ← mulVec_mulVec, hMv, ← hMw, mulVec_mulVec,
+     ← SpecialLinearGroup.coe_mul, inv_mul_cancel, SpecialLinearGroup.coe_one, one_mulVec]`.
+Key lemmas confirmed in pin: `mulVec_mulVec : M *ᵥ N *ᵥ v = (M*N) *ᵥ v` (so `←` splits a product
+action, forward recombines), `SpecialLinearGroup.coe_mul/coe_one`, group `inv_mul_cancel (a): a⁻¹*a=1`,
+`Matrix.one_mulVec`. No use of `coe_inv` (adjugate) needed — the cancellation stays at group level.
+
+### Status of the whole slug
+Mathematical content is now COMPLETE both directions: necessity (`orbit_e_isPrimitive`, base file)
++ sufficiency (`sln_transitive`) + the packaged group-action transitivity (`sln_acts_transitive`).
+NB: gallery meta tracks only the base file `BezoutIdentityOQ01OQ02OQ02.lean` with `additionalFiles: []`,
+so `Transitive.lean`/`Descent.lean` (incl. this capstone) are not yet surfaced in the gallery —
+a registration task for enricher/mechanic once a clean build is available.

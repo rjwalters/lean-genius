@@ -22,7 +22,11 @@
     * `sln_transitive` : a **primitive** `v ∈ ℤ^{2+m}` is carried to the first standard basis vector
       `e₀ = (1, 0, …, 0)` by `SL₍₂₊ₘ₎(ℤ)` — exactly the converse (sufficiency) direction the open
       question asks for, and the arbitrary-`n` generalization of the grandparent's `n = 2` Bézout
-      reduction.
+      reduction;
+    * `sln_acts_transitive` : the pairwise "acts transitively" statement — *any two* primitive
+      vectors `v, w ∈ ℤ^{2+m}` are related by some `U ∈ SL₍₂₊ₘ₎(ℤ)` with `U · v = w`, obtained by
+      reducing both to `e₀` and composing (`U = M_w⁻¹ M_v`).  The orbit of a primitive vector is thus
+      the whole set of primitive vectors.
 
   The induction is the two-step template `headBlockN` ∘ `embedOne` made uniform in `n`: `embedOne`
   of the `SL₍₂₊ₘ₎` gcd-reducer of the tail clears coordinates `2 … n` against coordinate `1`,
@@ -179,5 +183,28 @@ theorem sln_transitive {m : ℕ} (v : Fin (2 + m) → ℤ) (h : BezoutPrimitive.
   have : g = 1 := Int.eq_one_of_dvd_one hg0 hg1
   rw [this] at hM
   exact ⟨M, hM⟩
+
+/-! ### Capstone: the group action is transitive -/
+
+/-- **`SLₙ(ℤ)` acts transitively on primitive vectors — the pairwise statement** (`n = 2 + m ≥ 2`).
+Given *any two* primitive vectors `v, w ∈ ℤ^{2+m}`, there is a single `U ∈ SL₍₂₊ₘ₎(ℤ)` carrying `v`
+to `w`.  This is the actual "acts transitively" assertion of the open question — the orbit of any
+primitive vector under `SLₙ(ℤ)` is the *whole* set of primitive vectors — of which `sln_transitive`
+(the reduction to the fixed target `e₀ = gcdForm m 1`) is the special case `w = e₀`.
+
+Proof: reduce both `v` and `w` to the common normal form `e₀` by `sln_transitive`, giving
+`M_v · v = e₀` and `M_w · w = e₀`; then `U := M_w⁻¹ * M_v` satisfies
+`U · v = M_w⁻¹ · (M_v · v) = M_w⁻¹ · e₀ = M_w⁻¹ · (M_w · w) = w`.  `SL₍₂₊ₘ₎(ℤ)` being a group, the
+inverse `M_w⁻¹` is again unimodular, so `U ∈ SL₍₂₊ₘ₎(ℤ)`; no new axioms are used. -/
+theorem sln_acts_transitive {m : ℕ} (v w : Fin (2 + m) → ℤ)
+    (hv : BezoutPrimitive.IsPrimitive v) (hw : BezoutPrimitive.IsPrimitive w) :
+    ∃ U : Matrix.SpecialLinearGroup (Fin (2 + m)) ℤ,
+      (U : Matrix (Fin (2 + m)) (Fin (2 + m)) ℤ) *ᵥ v = w := by
+  obtain ⟨Mv, hMv⟩ := sln_transitive v hv
+  obtain ⟨Mw, hMw⟩ := sln_transitive w hw
+  refine ⟨Mw⁻¹ * Mv, ?_⟩
+  rw [Matrix.SpecialLinearGroup.coe_mul, ← Matrix.mulVec_mulVec, hMv, ← hMw,
+    Matrix.mulVec_mulVec, ← Matrix.SpecialLinearGroup.coe_mul, inv_mul_cancel,
+    Matrix.SpecialLinearGroup.coe_one, Matrix.one_mulVec]
 
 end BezoutDescent
