@@ -199,5 +199,28 @@
       "description": "Related Erdős problem sharing themes: analytic-number-theory, number-theory, prime-factors"
     }
   ],
+  "references": [
+    {
+      "title": "On the largest prime factors of n and n + 1",
+      "author": "Paul Erdős and Carl Pomerance",
+      "year": "1978",
+      "venue": "Aequationes Mathematicae 17, no. 2–3, pp. 311–321",
+      "description": "Introduces the study of consecutive largest prime factors P(n), P(n+1) and proves the ascending case P(n) < P(n+1) < P(n+2) holds infinitely often, posing the descending analogue resolved here."
+    },
+    {
+      "title": "On triplets with descending largest prime factors",
+      "author": "Antal Balog",
+      "year": "2001",
+      "venue": "Studia Scientiarum Mathematicarum Hungarica 38, pp. 45–50",
+      "description": "Proves the descending case: #{n ≤ x : P(n) > P(n+1) > P(n+2)} ≫ √x, giving infinitely many n and thereby answering Erdős Problem #372 in the affirmative."
+    },
+    {
+      "title": "Erdős Problem #372",
+      "author": "Thomas F. Bloom (ed.)",
+      "year": "2024",
+      "venue": "erdosproblems.com/372",
+      "description": "The catalogued entry, recording the SOLVED status (Balog, 2001) and the De Koninck–Doyon (2011) conjecture that the descending triplets have natural density 1/6."
+    }
+  ],
   "sorries": 0
 }
