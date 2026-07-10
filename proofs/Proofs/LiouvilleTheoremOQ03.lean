@@ -307,4 +307,41 @@ theorem jarnik_besicovitch_summary :
    dimH_wellApprox_two,
    dimH_liouville_eq_zero⟩
 
+/-! ## Part VII: The measure side — Khintchine null sets
+
+The dimension law has an immediate **measure-theoretic** shadow. For `τ > 2` the
+well-approximable set has Hausdorff dimension `< 1` (`dimH_wellApprox_lt_one`), so
+its `1`-dimensional Hausdorff measure vanishes; and on `ℝ` that measure *is*
+Lebesgue measure (`hausdorffMeasure_real : μH[1] = volume`). Hence `W τ` is
+Lebesgue-null for every `τ > 2` — the "easy" (convergence) half of Khintchine's
+theorem: almost every real number is *not* `τ`-well-approximable once `τ > 2`. The
+classical corollary is that the **Liouville numbers form a null set** (they lie in
+`W 3`), a companion to `dimH_liouville_eq_zero` on the measure side. -/
+
+open MeasureTheory in
+/-- **`W τ` has Hausdorff `1`-measure zero for `τ > 2`.** From `dimH (W τ) < 1`
+(`dimH_wellApprox_lt_one`) via `hausdorffMeasure_of_dimH_lt`. -/
+theorem hausdorffMeasure_one_wellApprox_eq_zero {τ : ℝ} (hτ : 2 < τ) :
+    μH[(1 : ℝ)] (wellApprox τ) = 0 := by
+  simpa using
+    hausdorffMeasure_of_dimH_lt (X := ℝ) (s := wellApprox τ) (d := 1)
+      (by exact_mod_cast dimH_wellApprox_lt_one hτ)
+
+open MeasureTheory in
+/-- **`W τ` is Lebesgue-null for `τ > 2`** (Khintchine's convergence half): almost
+every real is not `τ`-well-approximable. Immediate from the Hausdorff-`1`-measure
+statement and `hausdorffMeasure_real : μH[1] = volume` on `ℝ`. -/
+theorem volume_wellApprox_eq_zero {τ : ℝ} (hτ : 2 < τ) :
+    volume (wellApprox τ) = 0 := by
+  rw [← hausdorffMeasure_real]
+  exact hausdorffMeasure_one_wellApprox_eq_zero hτ
+
+open MeasureTheory in
+/-- **The Liouville numbers form a Lebesgue-null set.** They are contained in the
+`τ = 3 > 2` well-approximable set, which is null. The measure-side companion to
+`dimH_liouville_eq_zero`. -/
+theorem volume_liouville_eq_zero :
+    volume {x : ℝ | Liouville x} = 0 :=
+  measure_mono_null (liouville_subset_wellApprox 3) (volume_wellApprox_eq_zero (by norm_num))
+
 end LiouvilleTheoremOQ03
