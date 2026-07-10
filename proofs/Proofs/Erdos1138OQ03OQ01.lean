@@ -308,4 +308,21 @@ theorem consecutive_gap_div_le_rpow_neg {x p q : ℕ} (hx : 25 ≤ x)
       ≤ (maxPrimeGap x : ℝ) / x := by gcongr
     _ ≤ (x : ℝ) ^ (-(0.475 : ℝ)) := gap_div_le_rpow_neg x hx
 
+/-- **Effective individual-gap bound.** The gap-level counterpart of
+`bhp_gap_le_eps_effective`: for any `ε` and `x ≥ 25` at which the explicit threshold
+`1 ≤ ε · x^0.475` holds (equivalently `x^(-0.475) ≤ ε`, the point where the envelope has
+dropped below `ε`), *every* consecutive-prime gap `q - p` with `q ≤ x` already satisfies
+`q - p ≤ ε · x`.  Composes the bridge `consecutive_gap_le_maxPrimeGap` with the effective
+sup-level bound, completing the gap-level trilogy alongside `consecutive_gap_le_rpow`
+(`≤ x^0.525`) and `consecutive_gap_div_le_rpow_neg` (`/x ≤ x^(-0.475)`).  As with the
+sup-level version, positivity of `ε` is forced by the threshold, not assumed. -/
+theorem consecutive_gap_le_eps_effective {x p q : ℕ} (ε : ℝ)
+    (hx25 : 25 ≤ x) (hthr : 1 ≤ ε * (x : ℝ) ^ (0.475 : ℝ))
+    (hp : Nat.Prime p) (hq : Nat.Prime q) (hpq : p < q) (hqx : q ≤ x)
+    (hcons : ∀ r, Nat.Prime r → p < r → q ≤ r) :
+    ((q - p : ℕ) : ℝ) ≤ ε * x := by
+  have hbridge : ((q - p : ℕ) : ℝ) ≤ (maxPrimeGap x : ℝ) := by
+    exact_mod_cast consecutive_gap_le_maxPrimeGap hp hq hpq hqx hcons
+  exact le_trans hbridge (bhp_gap_le_eps_effective ε x hx25 hthr)
+
 end Erdos1138OQ03
