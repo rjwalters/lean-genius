@@ -578,4 +578,21 @@ theorem admissibleCoeff_ge_two_pow_of_card (hV : 0 < Fintype.card V) (k : ℕ) :
         Nat.mul_le_mul (le_refl _) hpos
     _ ≤ firstMomentThreshold (Fintype.card V + 1 + k) / Fintype.card V := hmul
 
+/-- **Closed single-index exponential lower bound on the coefficient.**  The two-index
+    iterate `admissibleCoeff_ge_two_pow_of_card` (`2^k ≤ c(|V|+1+k)`) collapsed to a
+    single variable by setting `k = t − |V| − 1`: for every minimum set size `t > |V|`,
+
+        `2^{t − |V| − 1}  ≤  c(t) = ⌊2^{t-1}/|V|⌋`.
+
+    This makes precise the remark (in `admissibleCoeff_ge_two_pow_of_le`'s docstring)
+    that "writing `t₀` for the positivity threshold, `c(t) ≥ 2^{t−t₀}` for all `t ≥ t₀`":
+    here `t₀ = |V| + 1` is the concrete, unconditional threshold, so this is the explicit
+    exponential growth law of the admissible sparseness coefficient as a function of the
+    minimum set size `t` alone, with no auxiliary index. -/
+theorem admissibleCoeff_ge_two_pow_sub (hV : 0 < Fintype.card V) (t : ℕ)
+    (ht : Fintype.card V < t) :
+    2 ^ (t - Fintype.card V - 1) ≤ firstMomentThreshold t / Fintype.card V := by
+  have hk := admissibleCoeff_ge_two_pow_of_card hV (t - Fintype.card V - 1)
+  rwa [show Fintype.card V + 1 + (t - Fintype.card V - 1) = t from by omega] at hk
+
 end Erdos1022OQ02
