@@ -339,3 +339,62 @@ reciprocal-base identity, the incDir rotations are mutual inverses).
    constructions produce).
 2. Total `adj` with geometric none-fibre exactly `{Fin.last d}`; discharge `boundary_face`.
 3. Assemble `SpernerTriangulation`; Phase-2 door-parity induction on `d`; apply `sperner_ndim`.
+
+## Session 2026-07-09 (Session 23, researcher-1) — reverse pivot reciprocity (two-sided involution)
+
+**Mode**: ACT (CONTINUE Phase-1). **Outcome**: PROGRESS — proved the OTHER
+composition of the two cross-facet pivots is the identity, upgrading the partial
+involution to a genuine two-sided involution on the feasible regime. Does NOT close
+the crux (cross-`miss` terminal partner for `base_miss = d` remains). **+3 theorems,
+file 3688→3803 L. 0-sorry, 0-axiom**; `docker-build.sh Proofs.SpernerNDimOQ02` →
+`Built (7.5s)`, 7745 jobs, exit 0 (clean elaboration on first non-SIGBUS run; caught 4
+real errors first — see gotchas). Branch `feature/researcher-1-4-...`.
+
+### What was delivered
+Session 22 (#…) proved `topPivotCell_zeroPivotCell : topPivotCell (zeroPivotCell s) = s`
+(one composition = id). This session proves the DUAL:
+- **`topPivotCell_zeroFeasible`** — feasibility bridge: the facet-`0` pivot is ALWAYS
+  applicable to `topPivotCell u`. Its apex is `u.verts (d-1)`, whose `miss` coord is
+  `base_miss − (d−1) ≥ d − (d−1) = 1` (`miss_coord_at` descends by 1/step +
+  `base_miss_ge_d`). So no side hypothesis is needed — feasibility is automatic.
+- **`zeroPivotTop_topPivotCell`** (crux, mirror of `topPivotBottom_zeroPivotCell`) —
+  the new apex the facet-`0` pivot appends above `topPivotCell u`'s chain reconstructs
+  `u`'s deleted apex `u.verts (Fin.last d)`, coordinate-by-coordinate via `u`'s LAST
+  chain step at `k = ⟨d-1⟩`: `step_inc` at the reversed `lastIncDir`, `step_dec` at
+  `miss`, `step_same` elsewhere.
+- **`zeroPivotCell_topPivotCell`** (capstone) — `zeroPivotCell (topPivotCell u) = u`.
+  With Session 22's forward identity, `zeroPivotCell` and `topPivotCell` are now
+  MUTUALLY INVERSE bijections on the feasible regime — the well-definedness the
+  boundary `adj` needs (each of the two cells filling a shared cross-chain facet maps
+  to the other and back).
+
+### Lean gotchas caught this session (all found by the build, fixed pre-merge)
+- `.incDir` field access on `zeroPivotCell t` is NOT syntactically `zeroPivotInc t hd1`
+  — `rw [zeroPivotInc_of_lt …]` fails ("did not find pattern `zeroPivotInc ?m hd1 k`").
+  Prefix the funext branch with `show zeroPivotInc (topPivotCell u hd1 hfeas) hd1 k =
+  u.incDir k` (defeq) to expose the field, then the `zeroPivotInc_*` rewrites fire.
+- `congr 1` on `u.verts A = u.verts B` / `u.incDir A = u.incDir B` with `A`, `B`
+  DEFEQ (`⟨(Fin.last d).val-1,_⟩` vs `⟨d-1⟩.castSucc`; `⟨(k+1)-1,_⟩` vs `k`) closes the
+  goal OUTRIGHT — a trailing `apply Fin.ext; …` then errors "No goals to be solved".
+  Drop everything after `congr 1` in those cases. (When `A`, `B` are only propositionally
+  equal — `⟨d-1,_⟩` vs `k` under `k+1=d` — keep `congr 1; apply Fin.ext; show d-1=k.val;
+  omega`.)
+- `hinc : (topPivotCell u ..).incDir ⟨0,hd1⟩ = u.incDir ⟨d-1,hlt⟩` typechecks directly as
+  `topPivotInc_eq_lastIncDir u hd1 ⟨0,hd1⟩ rfl` (whose stated type ends in `lastIncDir u
+  hd1`) — Lean accepts by defeq (`lastIncDir = u.incDir ⟨d-1, _⟩`, proof-irrelevant mk).
+- Use `k.castSucc`/`k.succ` (from `k : Fin d`) for the Fin(d+1) vertex indices, NOT a raw
+  `⟨d-1, hlt⟩` — hlt : d-1<d does NOT typecheck as the Fin(d+1) bound; going through the
+  step index `k=⟨d-1,hlt⟩:Fin d` lets `step_inc/dec/same` line up with `hapex` (which uses
+  `k.castSucc`) after a single `rw [hsucc]` (`k.succ = Fin.last d`), no `hcast` needed.
+- `simp only [Fin.val_mk, Fin.val_last]` → `Fin.val_mk` flagged unused by the
+  `unusedSimpArgs` linter (Fin.val_last's normalisation already reduces the mk); drop it.
+
+### Frontier UNCHANGED (genuine blocker — same as sessions 16–22)
+1. **(crux)** Cross-`miss` TERMINAL partner for the infeasible regime `base_miss = d`.
+2. Total `adj` with geometric none-fibre exactly `{Fin.last d}`; discharge `boundary_face`.
+3. Assemble `SpernerTriangulation`; Phase-2 door-parity induction on `d`; apply `sperner_ndim`.
+
+### Next steps
+1. **(crux)** Cross-`miss` terminal partner for `base_miss = d`.
+2. Total `adj` from the now two-sided pivot involution + `gridNeighbor` on interior facets.
+3. Phase-2 parity.
