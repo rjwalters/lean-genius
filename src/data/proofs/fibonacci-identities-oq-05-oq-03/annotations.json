@@ -1,5 +1,22 @@
 [
   {
+    "id": "ann-fiboq0503-imports",
+    "proofId": "fibonacci-identities-oq-05-oq-03",
+    "range": { "startLine": 1, "endLine": 1 },
+    "type": "context",
+    "title": "The Blanket `import Mathlib`",
+    "content": "**What the single import pulls in.** As a gallery-only entry the file opens with the blanket `import Mathlib` rather than the minimal module list — the concrete dependencies are the 0-indexed Fibonacci API `Nat.fib` with its recurrence `Nat.fib_add_two` (`Mathlib.Data.Nat.Fib.Basic`), the big-operator layer `Finset.range` / `Finset.sum_range_succ` (`Mathlib.Algebra.BigOperators.Basic`), the parity primitives `Nat.even_or_odd`, `Nat.even_add_one`, and `Even.neg_one_pow` / `Odd.neg_one_pow` (`Mathlib.Algebra.Parity`, `Mathlib.Algebra.GroupPower.Basic`), and the decision procedures `linear_combination` and `omega` (`Mathlib.Tactic`). Nothing here is proof-specific: the entire mathematical content lives in the eight theorems below, and the import merely makes the ambient `ℕ`/`ℤ` Fibonacci and summation infrastructure available. Note `Mathlib` records Cassini only over `Int.fib`, so even with the full library the `Nat.fib` Cassini and d'Ocagne identities this file needs are proved from scratch rather than imported.",
+    "mathContext": "$F_0 = 0,\\ F_1 = 1,\\ F_{n+2} = F_{n+1} + F_n$ — Mathlib's 0-indexed `Nat.fib`.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Nat.fib and the recurrence Nat.fib_add_two",
+      "Finset.sum_range_succ big-operator layer",
+      "Gallery blanket import vs minimal Mathlib module list"
+    ],
+    "prerequisites": ["Lean 4 imports", "Mathlib module organization"],
+    "tags": ["imports", "mathlib", "setup"]
+  },
+  {
     "id": "ann-fiboq0503-1",
     "proofId": "fibonacci-identities-oq-05-oq-03",
     "range": { "startLine": 3, "endLine": 30 },
