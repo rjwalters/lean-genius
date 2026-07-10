@@ -191,6 +191,49 @@ theorem log_increment_tendsto_zero_of_ratio_tendsto_one (R : ℕ → ℝ)
     Tendsto (fun l => Real.log (R (l + 1)) - Real.log (R l)) atTop (𝓝 0) :=
   (log_increment_tendsto_zero_iff_ratio_tendsto_one R hpos).mpr hratio
 
+/-- **General-limit logarithmic increment–ratio bridge.** For an eventually-positive
+sequence `R` and any real limit `L > 0`, the additive log-increment
+`log R(l+1) − log R(l)` tends to `log L` **iff** the consecutive ratio `R(l+1)/R(l)`
+tends to `L`:
+
+`log R(l+1) − log R(l) → log L  ↔  R(l+1)/R(l) → L`.
+
+The special case `L = 1` (where `log 1 = 0`) is
+`log_increment_tendsto_zero_iff_ratio_tendsto_one`. This is the logarithmic companion
+of the general-limit multiplicative bridge `increment_div_tendsto_iff_ratio_tendsto`:
+for a geometrically-growing sequence whose ratio tends to `L` — e.g. the *diagonal*
+Ramsey number `R(k,k)`, whose growth ratio `R(k+1,k+1)/R(k,k)` tends to `4` — the
+additive log-increment reads off the limit `log L` directly (here `log 4`), exhibiting
+#1014's off-diagonal `o(R)` conclusion (`L = 1`, `log 1 = 0`) as the borderline case of
+a statement covering all positive geometric limits. -/
+theorem log_increment_tendsto_iff_ratio_tendsto (R : ℕ → ℝ) (L : ℝ) (hL : 0 < L)
+    (hpos : ∀ᶠ l in atTop, 0 < R l) :
+    Tendsto (fun l => Real.log (R (l + 1)) - Real.log (R l)) atTop (𝓝 (Real.log L)) ↔
+      Tendsto (fun l => R (l + 1) / R l) atTop (𝓝 L) := by
+  have hpos1 : ∀ᶠ l in atTop, 0 < R (l + 1) := (tendsto_add_atTop_nat 1).eventually hpos
+  -- the additive log-increment is the log of the ratio
+  have heq : (fun l => Real.log (R (l + 1)) - Real.log (R l))
+      =ᶠ[atTop] (fun l => Real.log (R (l + 1) / R l)) := by
+    filter_upwards [hpos, hpos1] with l hl hl1
+    rw [Real.log_div (ne_of_gt hl1) (ne_of_gt hl)]
+  rw [tendsto_congr' heq]
+  constructor
+  · -- `log(ratio) → log L` ⟹ `ratio = exp(log ratio) → exp(log L) = L`
+    intro h
+    have hratio_pos : ∀ᶠ l in atTop, 0 < R (l + 1) / R l := by
+      filter_upwards [hpos, hpos1] with l hl hl1 using div_pos hl1 hl
+    have hexp : (fun l => R (l + 1) / R l)
+        =ᶠ[atTop] (fun l => Real.exp (Real.log (R (l + 1) / R l))) := by
+      filter_upwards [hratio_pos] with l hl using (Real.exp_log hl).symm
+    rw [tendsto_congr' hexp]
+    have hc := (Real.continuous_exp.tendsto (Real.log L)).comp h
+    rw [Real.exp_log hL] at hc
+    simpa using hc
+  · -- `ratio → L` ⟹ `log(ratio) → log L` by continuity of `log` at `L > 0`
+    intro h
+    have := (Real.continuousAt_log hL.ne').tendsto.comp h
+    simpa using this
+
 /-- **Additive–multiplicative increment equivalence.** For an eventually-positive
 sequence `R`, the *normalized (multiplicative) increment* `(R(l+1) − R(l))/R(l)`
 tends to `0` **iff** the *additive log-increment* `log R(l+1) − log R(l)` tends to
