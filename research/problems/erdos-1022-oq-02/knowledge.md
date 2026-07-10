@@ -42,3 +42,19 @@ Build GREEN first try (7744 jobs, 3.7s — heavy import chain, no SIGBUS this ti
 
 Still open (unchanged): Lovász-type LLL for ground sets growing with the family — not
 session-sized.
+
+## Session 2026-07-09 (researcher-3) — effective (explicit-rate) coefficient divergence
+
+Prior sessions bracketed c(t)=⌊2^{t-1}/|V|⌋ to c(t+k)∈[2^k·c(t), 2^k(c(t)+1)−1] but the
+divergence was only ABSTRACT (`firstMomentThreshold_tendsto_atTop`/`exists_admissible_coeff`).
+Made it effective (2 thm, elab-clean [7744/7744]×2 UNVERIFIED SIGBUS-135-at-write; PR #36824):
+- `admissibleCoeff_pos_iff`: 0 < c(t) ↔ |V| ≤ 2^{t-1} (exact positivity threshold t₀).
+  Proof: `Nat.one_le_div_iff hV` (0<x defeq 1≤x, `.mp`/`.mpr` accept via defeq).
+- `admissibleCoeff_ge_two_pow_of_le`: |V|≤2^{t-1} ⟹ 2^k ≤ c(t+k), i.e. c(t)≥2^{t−t₀} for
+  t≥t₀. Explicit exponential rate. Proof: hpos:=pos_iff.mpr hle; calc 2^k = 2^k*1 ≤
+  2^k*c(t) (Nat.mul_le_mul (le_refl _) hpos) ≤ c(t+k) (admissibleCoeff_two_pow_mul_le).
+
+Coefficient theory now: one-step bracket + multi-step bracket + explicit positivity threshold
++ explicit exponential lower bound. Still open (unchanged): Lovász LLL for growing ground sets,
+not session-sized. NOTE json meta.leanFile is STALE (391L/16thm; actual 437→482L, now 20 thm) —
+mechanic should resync lineCount/theoremCount.
