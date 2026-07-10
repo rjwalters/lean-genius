@@ -205,4 +205,52 @@ theorem univariate_psd_is_sos (p : ℝ[X]) (h : IsPSD p) :
   rw [huv, Fin.sum_univ_two]
   simp
 
+/-! ## The converse and the univariate PSD ⟺ SOS equivalence
+
+Hilbert's theorem gives PSD ⟹ SOS in one variable; the reverse implication —
+a sum of squares is non-negative — is trivial and holds in every dimension.
+Recording it upgrades the one-directional theorem to a genuine *characterization*
+`IsPSD p ↔ p is SOS`, which is exactly the statement that in a single variable
+PSD-membership is *decidable by a sum-of-squares certificate*.  This is the
+tractable end of the complexity spectrum of Hilbert's 17th problem: in two or
+more variables PSD ⊋ (polynomial-)SOS (the Motzkin / Robinson witnesses in the
+sibling files), and the analogous decision problem is NP-hard. -/
+
+/-- **The converse (all dimensions).**  A sum of squares of polynomials is PSD:
+non-negativity of `∑ qᵢ²` is immediate since each `qᵢ(x)²  ≥ 0`. -/
+theorem sos_is_psd {m : ℕ} (q : Fin m → ℝ[X]) : IsPSD (∑ i, q i ^ 2) := by
+  intro x
+  rw [eval_finset_sum]
+  refine Finset.sum_nonneg (fun i _ => ?_)
+  rw [eval_pow]
+  exact sq_nonneg _
+
+/-- A sum of *two* squares is PSD (the shape actually produced by
+`psd_eq_sq_add_sq_aux`). -/
+theorem two_sq_is_psd (u v : ℝ[X]) : IsPSD (u ^ 2 + v ^ 2) := by
+  intro x
+  simp only [eval_add, eval_pow]
+  positivity
+
+/-- **Sharp univariate characterization: PSD ⟺ a sum of two squares.**  Combining
+Hilbert's theorem (which in fact yields *two* squares) with the trivial converse,
+a univariate real polynomial is non-negative on all of `ℝ` iff it is `u² + v²`
+for some polynomials `u, v`.  Two squares always suffice. -/
+theorem univariate_psd_iff_two_sq (p : ℝ[X]) :
+    IsPSD p ↔ ∃ u v : ℝ[X], p = u ^ 2 + v ^ 2 := by
+  refine ⟨fun h => psd_eq_sq_add_sq_aux p.natDegree p rfl h, ?_⟩
+  rintro ⟨u, v, rfl⟩
+  exact two_sq_is_psd u v
+
+/-- **Univariate PSD ⟺ SOS.**  A univariate real polynomial is positive
+semidefinite iff it is a sum of squares.  The forward direction is Hilbert's
+1888 theorem (`univariate_psd_is_sos`); the reverse is `sos_is_psd`.  This
+biconditional is the decidability statement for the univariate instance of
+Hilbert's 17th problem. -/
+theorem univariate_psd_iff_sos (p : ℝ[X]) :
+    IsPSD p ↔ ∃ (m : ℕ) (q : Fin m → ℝ[X]), p = ∑ i, q i ^ 2 := by
+  refine ⟨univariate_psd_is_sos p, ?_⟩
+  rintro ⟨m, q, rfl⟩
+  exact sos_is_psd q
+
 end Hilbert17UnivariatePSDSOS
