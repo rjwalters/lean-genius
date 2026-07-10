@@ -35,8 +35,8 @@
       }
     ],
     "assumptions": "The general Jacobi four-square theorem is NOT proved — it is a genuine Mathlib gap requiring either Hurwitz-quaternion order arithmetic or weight-2 modular forms (θ⁴∈M₂(Γ₀(4))), each ≫1000 LOC of absent number theory. This entry proves (a) a 0-axiom general lemma jacobiCount_odd (for odd n the 4∤d filter is vacuous, so jacobiCount n = 8·σ(n)), and (b) a machine-checked oracle jacobi_oracle : ∀ n∈[1,24], r₄ n = jacobiCount n, discharged by native_decide. native_decide trusts the Lean compiler and depends on the Lean.ofReduceBool axiom (#print axioms lists it, together with Lean.trustCompiler); naive_sigma_fails and r4_anchor_values also use native_decide. The entry is therefore axiomatized, not axiom-free. The literal `axiom` declaration count in the Lean file is 0; the single counted assumption is Lean.ofReduceBool introduced via native_decide.",
-    "lineCount": 117,
-    "theoremCount": 4,
+    "lineCount": 126,
+    "theoremCount": 5,
     "definitionCount": 3,
     "originalContributions": [
       "r4: the ordered, signed four-square representation count r₄(n), defined as a computable Finset.card over the integer box [-√n,√n]⁴ — an object Mathlib lacks entirely",
@@ -123,12 +123,12 @@
     }
   ],
   "leanFile": {
-    "lineCount": 117,
+    "lineCount": 126,
     "path": "Proofs/LagrangeFourSquaresOQ01OQ03.lean",
     "axiomCount": 0,
     "sorries": 0,
     "definitionCount": 3,
-    "theoremCount": 4
+    "theoremCount": 5
   },
   "sorries": 0
 }

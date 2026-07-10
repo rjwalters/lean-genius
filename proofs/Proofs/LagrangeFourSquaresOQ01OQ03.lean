@@ -90,6 +90,15 @@ theorem jacobiCount_odd {n : ℕ} (hn : Odd n) :
   have : (2 : ℕ) ∣ n := dvd_trans hd4 hd.1
   exact (Nat.not_even_iff_odd.mpr hn) (even_iff_two_dvd.mpr this)
 
+/-- **Prime specialization (0-axiom, general).** For an odd prime `p` the only
+divisors are `1` and `p`, both coprime to `4`, so Jacobi's count is the closed form
+`jacobiCount p = 8·(p+1)`. Combined with `jacobi_oracle` this pins `r₄(p) = 8(p+1)`
+for the small odd primes in range (`r₄(3)=32=8·4`, `r₄(5)=48=8·6`, `r₄(7)=64=8·8`). -/
+theorem jacobiCount_prime {p : ℕ} (hp : p.Prime) (hodd : Odd p) :
+    jacobiCount p = 8 * (p + 1) := by
+  rw [jacobiCount_odd hodd, hp.divisors, Finset.sum_pair hp.one_lt.ne]
+  ring
+
 /-- **Convention guard (0-axiom).** The naive formula `8·σ(n)` is WRONG for `n = 4`:
 `8·σ(4) = 8·(1+2+4) = 56`, whereas the true count is `r4 4 = 24`. Equivalently the
 `4 ∤ d` exclusion drops the divisor `d = 4`. This is exactly why the general formula
