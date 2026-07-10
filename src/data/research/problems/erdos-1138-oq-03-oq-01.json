@@ -32,16 +32,18 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: bhp_implies_gap_littleo proved (maxPrimeGap x / x -> 0) from the inherited baker_harman_pintz axiom; unconditional twin of the parent conditional cramer_implies_gap_sublinear. 0 sorries, 0 new axioms. Gallery entry + PR #35062.",
+    "progressSummary": "COMPLETE + generalized: bhp_implies_gap_littleo (θ=0.525) now subsumed by the abstract engine gap_littleo_of_rpow_bound (any θ<1 power envelope ⟹ sublinear). Only assumption remains the deep parent axiom baker_harman_pintz (BHP theorem, unprovable from Mathlib). 0 sorries, 0 new axioms.",
     "builtItems": [
       "gap_div_le_rpow_neg (Erdos1138OQ03OQ01.lean:37): maxPrimeGap x / x <= x^(-0.475) for x >= 25",
       "bhp_implies_gap_littleo (Erdos1138OQ03OQ01.lean:57): Tendsto (maxPrimeGap x / x) atTop (nhds 0)",
-      "bhp_gap_eventually_le_eps (Erdos1138OQ03OQ01.lean:74): forall eps>0, eventually maxPrimeGap x <= eps*x"
+      "bhp_gap_eventually_le_eps (Erdos1138OQ03OQ01.lean:74): forall eps>0, eventually maxPrimeGap x <= eps*x",
+      "Erdos1138OQ03OQ01.lean:186 gap_littleo_of_rpow_bound (source-exponent-parametric sublinearity engine). Elaboration-clean; olean-write blocked by fleet SIGBUS storm."
     ],
     "insights": [
       "BHP exponent 0.525 < 1: one division by x yields a negative power x^(-0.475) that vanishes at infinity - no finer analysis needed",
       "x^0.525 / x must be rewritten via Real.rpow_sub on x^(0.525-1); rewriting x as x^1 via rpow_one hits the numerator base and fails",
-      "tendsto_rpow_neg_atTop is root-namespace (not Real.); the earlier survey mis-quoted it"
+      "tendsto_rpow_neg_atTop is root-namespace (not Real.); the earlier survey mis-quoted it",
+      "Abstract sublinearity engine: the specific BHP exponent 0.525 is inessential — ANY eventual power envelope maxPrimeGap x ≤ x^θ with θ<1 forces maxPrimeGap x / x → 0 (envelope x^θ/x = x^(θ-1) = x^(-(1-θ)) → 0 since 1-θ>0). gap_littleo_of_rpow_bound {θ} (hθ:θ<1) (H: ∀ᶠ x, gap ≤ x^θ). bhp_implies_gap_littleo is the θ=0.525 instance; future BHP tightenings (0.5+ε) plug in with no re-proof."
     ],
     "mathlibGaps": [],
     "nextSteps": [],

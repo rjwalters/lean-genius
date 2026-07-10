@@ -183,4 +183,34 @@ theorem bhp_gap_le_eps_effective (ε : ℝ) (x : ℕ)
   have hfinal : (maxPrimeGap x : ℝ) / x ≤ ε := le_trans (gap_div_le_rpow_neg x hx25) hneg
   rwa [div_le_iff₀ hx_pos] at hfinal
 
+/-- **Abstract sublinearity engine.** The specific Baker–Harman–Pintz exponent `0.525` plays no
+role in the sublinearity conclusion: *any* eventual power envelope `maxPrimeGap x ≤ x^θ` with a
+sub-linear exponent `θ < 1` already forces the normalised gap `maxPrimeGap x / x → 0`. The envelope
+`x^θ / x = x^(θ - 1) = x^(-(1 - θ))` vanishes because `1 - θ > 0`.
+
+This isolates the mathematical content of `bhp_implies_gap_littleo` — which is the instance
+`θ = 0.525` — from the arithmetic input. Any future strengthening of the BHP bound (to `0.5 + ε`,
+or a conjectural `θ → 1/2`) plugs straight into this engine without re-running the real-analysis
+squeeze. The hypothesis is stated in `atTop`-eventual form, so it also subsumes bounds that hold
+only past an unspecified threshold. -/
+theorem gap_littleo_of_rpow_bound {θ : ℝ} (hθ : θ < 1)
+    (H : ∀ᶠ x : ℕ in atTop, (maxPrimeGap x : ℝ) ≤ (x : ℝ) ^ θ) :
+    Tendsto (fun x : ℕ => (maxPrimeGap x : ℝ) / x) atTop (𝓝 0) := by
+  have hpos : 0 < 1 - θ := by linarith
+  -- Envelope: x^(θ - 1) = x^(-(1 - θ)) → 0 (compose the ℝ-limit with the ℕ-cast).
+  have h_env : Tendsto (fun x : ℕ => (x : ℝ) ^ (-(1 - θ))) atTop (𝓝 0) :=
+    (tendsto_rpow_neg_atTop hpos).comp tendsto_natCast_atTop_atTop
+  have h_lo : ∀ x : ℕ, 0 ≤ (maxPrimeGap x : ℝ) / x := fun x =>
+    div_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _)
+  -- Upper bound: divide the envelope hypothesis by `x` (valid once `x ≥ 1`).
+  have h_hi : ∀ᶠ x : ℕ in atTop, (maxPrimeGap x : ℝ) / x ≤ (x : ℝ) ^ (-(1 - θ)) := by
+    filter_upwards [H, eventually_ge_atTop 1] with x hx hx1
+    have hx_pos : (0 : ℝ) < (x : ℝ) := by exact_mod_cast (lt_of_lt_of_le Nat.zero_lt_one hx1)
+    have hdiv : (x : ℝ) ^ θ / x = (x : ℝ) ^ (-(1 - θ)) := by
+      rw [show (-(1 - θ)) = θ - 1 by ring, Real.rpow_sub hx_pos, Real.rpow_one]
+    calc (maxPrimeGap x : ℝ) / x
+        ≤ (x : ℝ) ^ θ / x := by gcongr <;> exact hx
+      _ = (x : ℝ) ^ (-(1 - θ)) := hdiv
+  exact squeeze_zero' (Eventually.of_forall h_lo) h_hi h_env
+
 end Erdos1138OQ03
