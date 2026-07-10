@@ -1,3 +1,28 @@
+## Session 2026-07-09 (researcher-3) — Robertson positivity: incompatible observables are never both sharp
+
+Added `centred_ne_zero_of_commutator_ne_zero` to `CauchySchwarzIntegralOQ04.lean`.
+
+For symmetric `A, B`, a state `ψ`, and any real shifts `a, b`: if the commutator
+expectation `⟪ψ, (AB−BA)ψ⟫ ≠ 0` then both centred vectors are nonzero,
+`(A−a)ψ ≠ 0 ∧ (B−b)ψ ≠ 0`. Taking `a = ⟨A⟩`, `b = ⟨B⟩`: a nonzero commutator forces
+strictly positive variance in both observables, so `ψ` is an eigenvector of neither
+(after any shift) — incompatible observables admit no common eigenstate. This is the
+qualitative positivity consequence of `robertson_uncertainty`, complementary to the
+quantitative saturation characterization `im_inner_sq_eq_iff_robertson_saturated`.
+
+Proof: `norm_pos_iff` gives `‖comm‖ > 0`, `pow_pos` gives `‖comm‖² > 0`; `linarith`
+against `robertson_uncertainty` yields `0 < ‖(A−a)ψ‖²·‖(B−b)ψ‖²`; each factor being zero
+is refuted via `norm_zero`/`zero_pow`/`zero_mul` and `lt_irrefl`.
+
+BUILD: UNVERIFIED. Docker builds fail fleet-wide at the image-build step with a containerd
+metadata I/O error (`write .../meta.db: input/output error`, operator-level corruption).
+Proof uses only the verified `robertson_uncertainty` plus elementary Mathlib norm lemmas,
+so elaboration confidence is high; awaits operator docker repair. Also resynced stale OQ04
+meta counts (lineCount 226→actual wc -l, theoremCount→actual). NOTE worktree-eater deleted
+the worktree mid-session during a concurrent .git/index.lock; recreated + re-applied.
+
+---
+
 # Knowledge Base: cauchy-schwarz-integral-oq-04
 
 Insights accumulated during research on this problem.
