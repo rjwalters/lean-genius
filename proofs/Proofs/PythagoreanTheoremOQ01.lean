@@ -296,6 +296,22 @@ theorem altitude_length (hperp : ⟪A - C, B - C⟫ = (0 : ℝ)) :
     rw [hgm, hAH, hHB]; field_simp; ring
   rw [← Real.sqrt_sq hlhs, hsq, Real.sqrt_sq hrhs]
 
+include hAB in
+/-- **Area computed two ways agree** — the hypotenuse–leg area identity underpinning
+Einstein's dissection. Computing the triangle's area with the hypotenuse as base and the
+altitude `|CH|` as height, `½·|AB|·|CH|`, yields the same value as computing it from the two
+perpendicular legs, `½·|CA|·|CB|`. This is exactly `altitude_length`
+(`|CH| = |CA|·|CB|/|AB|`) cleared of its denominator, and it ties Layer 1's area functional
+`triArea` back to the Layer 3 altitude decomposition — the "same area, two bases" fact that
+makes the area–square law (`triArea_scale`) applicable to Einstein's three similar pieces. -/
+theorem triArea_hypotenuse_eq_legs (hperp : ⟪A - C, B - C⟫ = (0 : ℝ)) :
+    triArea ‖A - B‖ ‖C - altitudeFoot A B C‖ = triArea ‖A - C‖ ‖B - C‖ := by
+  have hne := hnorm_ne A B hAB
+  unfold triArea
+  rw [altitude_length A B C hAB hperp]
+  field_simp
+  ring
+
 end Geometric
 
 -- ============================================================
