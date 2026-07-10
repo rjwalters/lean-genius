@@ -45,7 +45,7 @@
       "Eliminated the optimal_lower axiom: proved maxProd(N) ≥ c·N²/log N (0-axiom) by transferring the sibling file's verified bound_is_optimal through maxProd_is_upper (axiom count 2 → 1)"
     ],
     "axiomCount": 1,
-    "lineCount": 343,
+    "lineCount": 371,
     "assumptions": "1 axiom (a deep number-theoretic result): the Szemerédi upper bound maxProd(N) ≤ C·N²/log N. The optimal-example lower bound maxProd(N) ≥ c·N²/log N is now a proved theorem (`optimal_lower`, 0-axiom): it is transferred from the sibling file's verified `Erdos490.bound_is_optimal` via `maxProd_is_upper` (the maximum dominates the optimal example's product), with small cases N ∈ {2,3} handled by `maxProd_ge_self`. The existence/achievability of the maximum (`maxProd_exists`) is likewise a proved theorem — the optimization ranges over subsets of the finite set {1,...,N}, so the achievable-value set is a nonempty finite Finset of naturals and the maximum is its Finset.max'. Fully machine-checked apart from the single stated axiom (#print axioms of optimal_lower lists only propext/Classical.choice/Quot.sound — no sorryAx, no Lean.ofReduceBool).",
     "mathlib_version": "4.26.0",
     "theoremCount": 13,
