@@ -382,6 +382,34 @@ theorem A_add_S_le_S_succ (k : ℕ) : A (k + 1) + S k ≤ S (k + 1) := by
   rw [← hsum, hsplit]
   omega
 
+/- ## Divergence of the sum and average extremal quantities
+
+The diameter `A(k)` diverges (`A_tendsto_atTop` in `Erdos1204Problem`). Since the
+minimal sum dominates the minimal diameter (`A_le_S`) and the minimal average is
+bounded below by `k - 1` (`sub_one_le_B`), both `S(k)` and `B(k)` diverge too. The
+sharp rates (`A(k) ∼ k log k`, and the analogous unknown rates for `S` and `B`)
+remain OPEN; only the qualitative unboundedness is recorded here. -/
+
+/-- **`S(k)` diverges.** The minimal admissible sum tends to infinity as `k → ∞`.
+Immediate from `A(k) ≤ S(k)` (`A_le_S`) and the divergence of the diameter
+`A(k) → ∞` (`A_tendsto_atTop`), by domination — no admissible `k`-tuple can keep
+its total bounded once `k` is large. -/
+theorem S_tendsto_atTop : Filter.Tendsto S Filter.atTop Filter.atTop :=
+  Filter.tendsto_atTop_mono A_le_S A_tendsto_atTop
+
+/-- **`B(k)` diverges.** The minimal admissible average tends to infinity as
+`k → ∞`. Immediate from the general lower bound `k - 1 ≤ B(k)` (`sub_one_le_B`,
+valid for `k ≥ 1`) and `(k : ℚ) - 1 → ∞`, by eventual domination. In particular the
+average — like the diameter and the sum — cannot be kept bounded, even though its
+sharp growth rate is OPEN. -/
+theorem B_tendsto_atTop : Filter.Tendsto B Filter.atTop Filter.atTop := by
+  have hsub : Filter.Tendsto (fun k : ℕ => (k : ℚ) - 1) Filter.atTop Filter.atTop := by
+    simpa [sub_eq_add_neg] using
+      Filter.tendsto_atTop_add_const_right Filter.atTop (-1 : ℚ) tendsto_natCast_atTop_atTop
+  refine Filter.tendsto_atTop_mono' _ ?_ hsub
+  filter_upwards [Filter.eventually_ge_atTop 1] with k hk
+  exact sub_one_le_B k hk
+
 /- ## Open Problem
 
 The asymptotic behaviour of `B(k) = min (a₁ + ⋯ + a_k)/k` over admissible
@@ -403,3 +431,5 @@ end Erdos1204
 #print axioms Erdos1204.A_le_sum
 #print axioms Erdos1204.A_le_S
 #print axioms Erdos1204.A_add_S_le_S_succ
+#print axioms Erdos1204.S_tendsto_atTop
+#print axioms Erdos1204.B_tendsto_atTop
