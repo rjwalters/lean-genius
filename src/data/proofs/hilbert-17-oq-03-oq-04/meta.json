@@ -58,7 +58,7 @@
       "Root multiplicity and the factorization p = (X − C r)^m · g with g(r) ≠ 0.",
       "The Brahmagupta–Fibonacci two-square identity (a²+b²)(c²+d²) = (ac−bd)²+(ad+bc)²."
     ],
-    "lineCount": 208,
+    "lineCount": 256,
     "relatedProblems": [
       {
         "id": "hilbert-17",
@@ -74,12 +74,12 @@
       }
     ],
     "assumptions": "0 axioms. #print axioms Hilbert17UnivariatePSDSOS.univariate_psd_is_sos reports only propext, Classical.choice, Quot.sound. No sorryAx, no native_decide / Lean.ofReduceBool. The PSD predicate and the SOS predicate are definitionally equal to the parent entry's IsPositiveSemidefinite / IsSumOfSquaresPolynomial, so the parent axiom univariate_psd_is_sos_aux is discharged by exact reference.",
-    "theoremCount": 5,
+    "theoremCount": 9,
     "definitionCount": 1,
     "additionalFiles": []
   },
   "leanFile": {
-    "lineCount": 208,
+    "lineCount": 256,
     "namespace": "Hilbert17UnivariatePSDSOS",
     "opens": [
       "Polynomial",
@@ -88,8 +88,8 @@
     ],
     "structureCount": 0,
     "axiomCount": 0,
-    "theoremCount": 5,
-    "substantiveTheoremCount": 3,
+    "theoremCount": 9,
+    "substantiveTheoremCount": 6,
     "computationalVerifications": 0,
     "lemmaCount": 0,
     "imports": [
