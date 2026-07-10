@@ -556,4 +556,204 @@ theorem not_summable_one_div_nat_mul_log_mul_loglog :
     unfold g₃; push_cast; ring
   exact not_summable_g₃ hshift
 
+/-!
+### Convergent second-axis (iterated-log) Bertrand series
+
+The divergent `not_summable_one_div_nat_mul_log_mul_loglog` above brackets the Erdős #3
+divergence borderline on the *second* logarithmic axis only on its **divergent** side
+(`∑ 1/(n·log n·log log n) = ∞`).  The convergent twin, raising the inner `log log` to a
+power `1+δ`, was missing.  We supply it here:
+
+    ∑ₙ 1 / (n · log n · (log log n)^{1+δ})  converges  for every `δ > 0`.
+
+This is the exact second-axis analogue of how the first axis is bracketed by
+`not_summable_one_div_nat_mul_log` (`∑ 1/(n·log n) = ∞`) versus
+`summable_one_div_nat_mul_log_rpow` (`∑ 1/(n·(log n)^{1+δ}) < ∞`).  With this lemma the
+second-axis borderline `1/(n·log n·log log n)` is now sharp on **both** sides:
+divergent at exponent `1`, convergent at every exponent `> 1` on the `log log` factor.
+
+**Proof.**  Cauchy condensation absorbs one logarithm: the condensed term
+`2^k · (2^k · log(2^k) · (log log 2^k)^{1+δ})⁻¹ = (log(2^k) · (log log 2^k)^{1+δ})⁻¹
+≍ (log 2)⁻¹ · (k · (log (k·log 2))^{1+δ})⁻¹`, the general term of the convergent
+*constant-in-log* first-axis series `summable_one_div_nat_mul_log_mul_const` (`c = log 2`).
+So the condensed series is a constant multiple of a convergent series, hence the original
+converges.  (The `log log` factor becomes a plain `log` after condensation — this is why
+the first-axis convergent lemma suffices, exactly mirroring how `not_summable_g₃` reduces
+to the first-tier divergence.)
+-/
+
+section LoglogConvergent
+
+variable (δ : ℝ)
+
+/-- Shifted second-axis convergent term `1/((n+3)·log(n+3)·(log log(n+3))^{1+δ})`;
+    positive and antitone.  The shift `+3 > e` guarantees `log(n+3) > 1`, so the inner
+    `log log` is positive (and the `(·)^{1+δ}` power well-behaved). -/
+private noncomputable def h₄ (n : ℕ) : ℝ :=
+  1 / (((n : ℝ) + 3) * Real.log ((n : ℝ) + 3) *
+        (Real.log (Real.log ((n : ℝ) + 3))) ^ (1 + δ))
+
+private lemma h₄_nonneg (n : ℕ) : 0 ≤ h₄ δ n := by
+  unfold h₄
+  have hn3 : (3 : ℝ) ≤ (n : ℝ) + 3 := by have := Nat.cast_nonneg (α := ℝ) n; linarith
+  have hlog : 1 < Real.log ((n : ℝ) + 3) := by
+    rw [Real.lt_log_iff_exp_lt (by linarith)]
+    calc Real.exp 1 < 2.7182818286 := Real.exp_one_lt_d9
+      _ ≤ (n : ℝ) + 3 := by linarith
+  have hll : 0 ≤ Real.log (Real.log ((n : ℝ) + 3)) := Real.log_nonneg hlog.le
+  have hllrpow : 0 ≤ (Real.log (Real.log ((n : ℝ) + 3))) ^ (1 + δ) := Real.rpow_nonneg hll _
+  refine div_nonneg (by norm_num) ?_
+  exact mul_nonneg (mul_nonneg (by linarith) (le_of_lt (lt_trans one_pos hlog))) hllrpow
+
+private lemma h₄_antitone (hδ : 0 ≤ δ) :
+    ∀ ⦃m n : ℕ⦄, 0 < m → m ≤ n → h₄ δ n ≤ h₄ δ m := by
+  intro m n _ hmn
+  unfold h₄
+  have hmc : (m : ℝ) ≤ (n : ℝ) := by exact_mod_cast hmn
+  have hmn3 : ((m : ℝ) + 3) ≤ ((n : ℝ) + 3) := by linarith
+  have hlogm : 1 < Real.log ((m : ℝ) + 3) := by
+    rw [Real.lt_log_iff_exp_lt (by have := Nat.cast_nonneg (α := ℝ) m; linarith)]
+    calc Real.exp 1 < 2.7182818286 := Real.exp_one_lt_d9
+      _ ≤ (m : ℝ) + 3 := by have := Nat.cast_nonneg (α := ℝ) m; linarith
+  have hlogm0 : 0 < Real.log ((m : ℝ) + 3) := lt_trans one_pos hlogm
+  have hllm0 : 0 < Real.log (Real.log ((m : ℝ) + 3)) := Real.log_pos hlogm
+  have hllmrpow0 : 0 < (Real.log (Real.log ((m : ℝ) + 3))) ^ (1 + δ) :=
+    Real.rpow_pos_of_pos hllm0 _
+  have hDm : 0 < ((m : ℝ) + 3) * Real.log ((m : ℝ) + 3) *
+      (Real.log (Real.log ((m : ℝ) + 3))) ^ (1 + δ) :=
+    mul_pos (mul_pos (by have := Nat.cast_nonneg (α := ℝ) m; linarith) hlogm0) hllmrpow0
+  apply one_div_le_one_div_of_le hDm
+  have hlogmn : Real.log ((m : ℝ) + 3) ≤ Real.log ((n : ℝ) + 3) :=
+    Real.log_le_log (by have := Nat.cast_nonneg (α := ℝ) m; linarith) hmn3
+  have hllmn : Real.log (Real.log ((m : ℝ) + 3)) ≤ Real.log (Real.log ((n : ℝ) + 3)) :=
+    Real.log_le_log hllm0 (Real.log_le_log hlogm0 hlogmn)
+  have hllmn_rpow : (Real.log (Real.log ((m : ℝ) + 3))) ^ (1 + δ)
+      ≤ (Real.log (Real.log ((n : ℝ) + 3))) ^ (1 + δ) :=
+    Real.rpow_le_rpow hllm0.le hllmn (by linarith)
+  exact mul_le_mul
+    (mul_le_mul hmn3 hlogmn hlogm0.le (by have := Nat.cast_nonneg (α := ℝ) n; linarith))
+    hllmn_rpow hllmrpow0.le
+    (mul_nonneg (by have := Nat.cast_nonneg (α := ℝ) n; linarith)
+      (le_trans hlogm0.le hlogmn))
+
+/-- Upper bound on the Cauchy-condensed term `2^k · h₄(2^k)`, compared against the general
+    term of the convergent constant-in-log first-axis series
+    `1/(k·(log (k·log 2))^{1+δ})` (up to the constant `(log 2)⁻¹`).  Valid for `k ≥ 2`
+    (so `k·log 2 > 1`, giving `log(k·log 2) > 0`). -/
+private lemma cond_upper₄ (hδ : 0 ≤ δ) (k : ℕ) (hk : 2 ≤ k) :
+    (2 : ℝ) ^ k * h₄ δ (2 ^ k)
+      ≤ (1 / Real.log 2) *
+          (1 / ((k : ℝ) * (Real.log ((k : ℝ) * Real.log 2)) ^ (1 + δ))) := by
+  have hlog2 : (0 : ℝ) < Real.log 2 := Real.log_pos (by norm_num)
+  have hlog2_gt : (0.6931471803 : ℝ) < Real.log 2 := Real.log_two_gt_d9
+  have hk2 : (2 : ℝ) ≤ (k : ℝ) := by exact_mod_cast hk
+  have h4 : (4 : ℝ) ≤ (2 : ℝ) ^ k := by
+    calc (4 : ℝ) = 2 ^ 2 := by norm_num
+      _ ≤ 2 ^ k := pow_le_pow_right₀ (by norm_num) hk
+  -- `k·log 2 ≥ 2·log 2 > 1`
+  have hklog2_pos : 0 < (k : ℝ) * Real.log 2 := by positivity
+  have h2log2 : (2 : ℝ) * Real.log 2 ≤ (k : ℝ) * Real.log 2 :=
+    mul_le_mul_of_nonneg_right hk2 hlog2.le
+  have hklog2_gt1 : (1 : ℝ) < (k : ℝ) * Real.log 2 := by linarith
+  have hlogkl2_pos : 0 < Real.log ((k : ℝ) * Real.log 2) := Real.log_pos hklog2_gt1
+  have hlogkl2_nonneg : 0 ≤ Real.log ((k : ℝ) * Real.log 2) := hlogkl2_pos.le
+  set b : ℝ := (2 : ℝ) ^ k + 3 with hbdef
+  have hb : (7 : ℝ) ≤ b := by rw [hbdef]; linarith
+  have hb0 : 0 < b := by linarith
+  have hbpk : (2 : ℝ) ^ k ≤ b := by rw [hbdef]; linarith
+  set L : ℝ := Real.log b with hLdef
+  have hL1 : 1 < L := by
+    rw [hLdef, Real.lt_log_iff_exp_lt hb0]
+    calc Real.exp 1 < 2.7182818286 := Real.exp_one_lt_d9
+      _ ≤ b := by linarith
+  have hL0 : 0 < L := lt_trans one_pos hL1
+  set LL : ℝ := Real.log L with hLLdef
+  have hLL0 : 0 < LL := by rw [hLLdef]; exact Real.log_pos hL1
+  -- `L = log b ≥ log(2^k) = k·log 2`
+  have hL_ge : (k : ℝ) * Real.log 2 ≤ L := by
+    have hstep : Real.log ((2 : ℝ) ^ k) ≤ Real.log b :=
+      Real.log_le_log (by positivity) hbpk
+    rwa [Real.log_pow] at hstep
+  -- `LL = log L ≥ log(k·log 2)`
+  have hLL_ge : Real.log ((k : ℝ) * Real.log 2) ≤ LL := by
+    rw [hLLdef]; exact Real.log_le_log hklog2_pos hL_ge
+  -- lift through `(·)^{1+δ}`
+  have hrpow_ge : (Real.log ((k : ℝ) * Real.log 2)) ^ (1 + δ) ≤ LL ^ (1 + δ) :=
+    Real.rpow_le_rpow hlogkl2_nonneg hLL_ge (by linarith)
+  -- positivity of the two composite denominators
+  have hD'_pos : 0 < L * LL ^ (1 + δ) := mul_pos hL0 (Real.rpow_pos_of_pos hLL0 _)
+  have hT_pos : 0 < (k : ℝ) * Real.log 2 * (Real.log ((k : ℝ) * Real.log 2)) ^ (1 + δ) :=
+    mul_pos hklog2_pos (Real.rpow_pos_of_pos hlogkl2_pos _)
+  have hden_ge : (k : ℝ) * Real.log 2 * (Real.log ((k : ℝ) * Real.log 2)) ^ (1 + δ)
+      ≤ L * LL ^ (1 + δ) :=
+    mul_le_mul hL_ge hrpow_ge (Real.rpow_nonneg hlogkl2_nonneg _) hL0.le
+  -- unfold the condensed term
+  have hcast : ((2 ^ k : ℕ) : ℝ) = (2 : ℝ) ^ k := by push_cast; ring
+  have hg : (2 : ℝ) ^ k * h₄ δ (2 ^ k) = (2 : ℝ) ^ k / (b * L * LL ^ (1 + δ)) := by
+    rw [hLLdef, hLdef, hbdef]; unfold h₄; rw [hcast, mul_one_div]
+  -- drop the `2^k / b ≤ 1` factor
+  have hstep1 : (2 : ℝ) ^ k / (b * L * LL ^ (1 + δ)) ≤ 1 / (L * LL ^ (1 + δ)) := by
+    rw [div_le_div_iff₀ (by positivity) hD'_pos, one_mul, mul_assoc b L (LL ^ (1 + δ))]
+    exact mul_le_mul_of_nonneg_right hbpk hD'_pos.le
+  -- enlarge the remaining denominator
+  have hstep2 : 1 / (L * LL ^ (1 + δ))
+      ≤ 1 / ((k : ℝ) * Real.log 2 * (Real.log ((k : ℝ) * Real.log 2)) ^ (1 + δ)) :=
+    one_div_le_one_div_of_le hT_pos hden_ge
+  -- fold the constant into the target shape
+  have hRHS : (1 / Real.log 2) *
+      (1 / ((k : ℝ) * (Real.log ((k : ℝ) * Real.log 2)) ^ (1 + δ)))
+      = 1 / ((k : ℝ) * Real.log 2 * (Real.log ((k : ℝ) * Real.log 2)) ^ (1 + δ)) := by
+    rw [one_div_mul_one_div]; congr 1; ring
+  rw [hg, hRHS]
+  exact le_trans hstep1 hstep2
+
+private lemma summable_h₄ (hδ : 0 < δ) : Summable (h₄ δ) := by
+  rw [← summable_condensed_iff_of_nonneg (h₄_nonneg δ) (h₄_antitone δ hδ.le)]
+  -- reduce to the `k ≥ 2` tail (the comparison needs `k·log 2 > 1`)
+  apply (summable_nat_add_iff 2).mp
+  -- dominating series: `(log 2)⁻¹` times the shifted convergent constant-in-log series
+  set D : ℕ → ℝ := fun n => (1 / Real.log 2) *
+    (1 / (((n : ℝ) + 2) * (Real.log (((n : ℝ) + 2) * Real.log 2)) ^ (1 + δ))) with hDdef
+  have hDsum : Summable D := by
+    have hbase := summable_one_div_nat_mul_log_mul_const (c := Real.log 2) (δ := δ)
+      (Real.log_pos (by norm_num)) hδ
+    have hshift := (summable_nat_add_iff 2).mpr hbase
+    refine (hshift.mul_left (1 / Real.log 2)).congr (fun n => ?_)
+    rw [hDdef]; push_cast; ring
+  refine Summable.of_nonneg_of_le (fun n => ?_) (fun n => ?_) hDsum
+  · exact mul_nonneg (by positivity) (h₄_nonneg δ _)
+  · have hb := cond_upper₄ δ hδ.le (n + 2) (by omega)
+    rw [hDdef]
+    calc (2 : ℝ) ^ (n + 2) * h₄ δ (2 ^ (n + 2))
+        ≤ (1 / Real.log 2) *
+            (1 / (((n + 2 : ℕ) : ℝ) *
+              (Real.log (((n + 2 : ℕ) : ℝ) * Real.log 2)) ^ (1 + δ))) := hb
+      _ = (1 / Real.log 2) *
+            (1 / (((n : ℝ) + 2) *
+              (Real.log (((n : ℝ) + 2) * Real.log 2)) ^ (1 + δ))) := by push_cast; ring
+
+/-- **The convergent second-axis (iterated-log) Bertrand series
+    `∑ 1/(n · log n · (log log n)^{1+δ})` converges for every `δ > 0`.**
+
+    This is the convergent twin of `not_summable_one_div_nat_mul_log_mul_loglog`
+    (`∑ 1/(n·log n·log log n) = ∞`): together they pin the second-axis Bertrand boundary
+    exactly at exponent `p = 1` on the `log log` factor — divergent at `p = 1`, convergent
+    at every `p = 1+δ > 1` — exactly as `not_summable_one_div_nat_mul_log` and
+    `summable_one_div_nat_mul_log_rpow` do on the first (`log n`) axis.  The Erdős #3
+    divergence borderline `N/(log N · log log N)` is now sharp on both sides of the second
+    logarithmic axis.
+
+    Proof by Cauchy condensation: the condensed term is a constant multiple of the general
+    term of the convergent constant-in-log series `summable_one_div_nat_mul_log_mul_const`
+    (the inner `log log` collapses to a plain `log` after condensation). -/
+theorem summable_one_div_nat_mul_log_mul_loglog_rpow {δ : ℝ} (hδ : 0 < δ) :
+    Summable (fun n : ℕ =>
+      1 / ((n : ℝ) * Real.log n * (Real.log (Real.log n)) ^ (1 + δ))) := by
+  -- shift by three (dropping `n = 0, 1, 2`, where the summand is junk `0`) lands on `h₄`
+  apply (summable_nat_add_iff 3).mp
+  refine (summable_h₄ δ hδ).congr (fun n => ?_)
+  unfold h₄; push_cast; ring
+
+end LoglogConvergent
+
 end Erdos3Bertrand
