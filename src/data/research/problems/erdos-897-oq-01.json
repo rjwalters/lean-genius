@@ -38,7 +38,8 @@
       "stronglyAdditive_unboundedOnPrimePowers_iff: a strongly-additive reduction collapsing UnboundedOnPrimePowers f to 'f(p)/log p unbounded over primes', the strongly-additive counterpart of the parent file's completely-additive reduction. The cancellation is different: the value is constant in k, so the binding case is k = 1, and the M < 0 branch is handled by invoking the hypothesis at 0.",
       "Gallery entry src/data/proofs/erdos-897-oq-01 (meta.json + annotations.json); Lean source proofs/Proofs/Erdos897OQ01.lean.",
       "Section (7) structural properties of logSqWeight (researcher-2, PR pending): logSqWeight_nonneg, logSqWeight_eq_of_primeFactors_eq (prime-support determination), logSqWeight_mono_of_dvd (divisor monotonicity), logSqWeight_eq_zero_iff (exact zero-set {0,1}). Characterizes the witness as a nonnegative, divisor-monotone, prime-support-determined functional vanishing exactly on the units. PLUS a bundled Mathlib-drift repair of the pre-existing unboundedOnPrimePowers_smul (mul_lt_mul_left -> mul_lt_mul_of_pos_left; dropped a now-redundant ring after field_simp) that had silently stopped building against current pinned Mathlib. Whole file VERIFIED green, 0 axioms / 0 sorries.",
-      "Erdos897OQ01.lean (8) dual boundary: not_unboundedOnPrimePowers_of_le (anti-domination, g fails + f<=g on prime powers => f fails; contrapositive of the section-6 domination lemma unboundedOnPrimePowers_of_ge, one-liner fun hf => hg (…)) and not_unboundedOnPrimePowers_of_le_const_mul_log (f(p^k)<=C*log(p^k) on prime powers => f fails; eval hypothesis at M=C, absurd hgt (not_lt.mpr hf)). The O(log) criterion is the exact boundary of the hypothesis and subsumes both selectivity results: logN (C=1, equality) and omega (C=1/log2, since omega(p^k)=1<=(1/log2)log(p^k)). VERIFIED 0 axioms / 0 sorries."
+      "Erdos897OQ01.lean (8) dual boundary: not_unboundedOnPrimePowers_of_le (anti-domination, g fails + f<=g on prime powers => f fails; contrapositive of the section-6 domination lemma unboundedOnPrimePowers_of_ge, one-liner fun hf => hg (…)) and not_unboundedOnPrimePowers_of_le_const_mul_log (f(p^k)<=C*log(p^k) on prime powers => f fails; eval hypothesis at M=C, absurd hgt (not_lt.mpr hf)). The O(log) criterion is the exact boundary of the hypothesis and subsumes both selectivity results: logN (C=1, equality) and omega (C=1/log2, since omega(p^k)=1<=(1/log2)log(p^k)). VERIFIED 0 axioms / 0 sorries.",
+      "not_unboundedOnPrimePowers_of_bounded (Section 10) — boundedness selectivity criterion: any function bounded above by a constant C on prime powers (f(p^k) ≤ C) fails the #897 hypothesis, since C is dominated by (max(C,0)/log2)·log(p^k) (log(p^k) ≥ log2 > 0), reducing to the O(log) criterion of section (8). Generalizes ω selectivity to any prime-power-bounded function."
     ],
     "insights": [
       "**Non-vacuity matters for open problems**: without an explicit witness, Part I could be vacuously true. logSqWeight certifies the hypothesis is genuinely satisfiable — and by a strongly additive function, the most structured class.",
@@ -63,8 +64,8 @@
     {
       "path": "Proofs/Erdos897OQ01.lean",
       "filename": "Erdos897OQ01.lean",
-      "lineCount": 273,
-      "theoremCount": 13,
+      "lineCount": 545,
+      "theoremCount": 27,
       "axiomCount": 0,
       "defCount": 1,
       "sorryCount": 0,
