@@ -1,0 +1,104 @@
+[
+  {
+    "id": "ann-rowsum-overview",
+    "proofId": "catalan-numbers-oq-05-oq-02-oq-01",
+    "range": { "startLine": 3, "endLine": 47 },
+    "type": "concept",
+    "title": "Row sums of Catalan's triangle and the seed correction",
+    "content": "The parent entry (catalan-numbers-oq-05-oq-02) formalizes the individual ballot numbers T(n,k) = C(n+k,k) − C(n+k,n+1) — Catalan's triangle A009766, whose diagonal T(n,n) is the Catalan number. This leaf aggregates a whole row: Σ_{k=0}^{n} T(n,k) = catalan (n+1). Combinatorially, summing over all valid endpoints of row n collects every diagonal-bounded lattice path of the next length, so the row total is the next ballot count. The docstring also records a correction: the seed problem stated the closed form as C(2n+1,n), which is FALSE at the first nontrivial row — for n=1 the row T(1,0)+T(1,1)=1+1=2 while C(3,1)=3 — and the true value catalan (n+1) = 1,2,5,14,… (A000108) is what is proved.",
+    "mathContext": "$\\sum_{k=0}^{n} T(n,k) = C_{n+1}$, where $T(n,k) = \\binom{n+k}{k} - \\binom{n+k}{n+1}$ and $C_{n+1}$ is the $(n{+}1)$-st Catalan number.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Catalan's triangle",
+      "ballot numbers",
+      "row sums",
+      "Catalan numbers",
+      "hockey-stick identity"
+    ],
+    "prerequisites": ["Catalan numbers", "binomial coefficients", "reflection principle"]
+  },
+  {
+    "id": "ann-rowsum-def",
+    "proofId": "catalan-numbers-oq-05-oq-02-oq-01",
+    "range": { "startLine": 53, "endLine": 57 },
+    "type": "concept",
+    "title": "The ballot number ballotNumber n k (restated)",
+    "content": "ballotNumber n k := (n+k).choose k − (n+k).choose (n+1), identical to the parent's definition and restated locally so this file depends only on Mathlib (not on the heavy parent module). The first term counts unrestricted monotone lattice paths to (n,k); the reflected second term C(n+k,n+1) = C(n+k,k−1) counts the 'bad' paths that cross the diagonal, so the difference is the diagonal-bounded count. Encoding the reflected term as C(n+k,n+1) rather than C(n+k,k−1) keeps every binomial index a genuine natural number even at k=0.",
+    "mathContext": "$T(n,k) = \\binom{n+k}{k} - \\binom{n+k}{n+1}$.",
+    "significance": "key",
+    "relatedConcepts": ["ballot numbers", "Catalan's triangle", "lattice paths", "reflection principle"],
+    "prerequisites": ["binomial coefficients"]
+  },
+  {
+    "id": "ann-rowsum-wellposed",
+    "proofId": "catalan-numbers-oq-05-oq-02-oq-01",
+    "range": { "startLine": 59, "endLine": 76 },
+    "type": "tactic",
+    "title": "Well-posedness: C(n+k,n+1) ≤ C(n+k,k)",
+    "content": "choose_reflected_le self-contained re-derives the parent's ordering, the single inequality the whole argument needs. The absorption law Nat.choose_succ_right_eq (n+k) n gives C(n+k,n+1)·(n+1) = C(n+k,n)·k; rewriting C(n+k,n)=C(n+k,k) by symmetry (Nat.choose_symm) turns this into C(n+k,n+1)·(n+1) = C(n+k,k)·k ≤ C(n+k,k)·(n+1) since k ≤ n ≤ n+1 (gcongr). Cancelling the positive factor n+1 with Nat.le_of_mul_le_mul_right yields the bound. This makes the additive split later legitimate — no truncated subtraction ever appears inside a choose.",
+    "mathContext": "$k \\le n+1 \\Rightarrow \\binom{n+k}{n+1}(n+1) = k\\binom{n+k}{k} \\le (n+1)\\binom{n+k}{k}$, hence $\\binom{n+k}{n+1} \\le \\binom{n+k}{k}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["choose_succ_right_eq", "choose_symm", "monotonicity", "gcongr", "cancellation"],
+    "prerequisites": ["binomial symmetry", "ordered cancellation in ℕ"]
+  },
+  {
+    "id": "ann-rowsum-hockey-diag",
+    "proofId": "catalan-numbers-oq-05-oq-02-oq-01",
+    "range": { "startLine": 78, "endLine": 92 },
+    "type": "tactic",
+    "title": "Hockey stick I: Σ C(n+k,k) = C(2n+1,n+1)",
+    "content": "sum_choose_diag evaluates the main-diagonal half A(n). Each summand is first rewritten C(n+k,k)=C(n+k,n) by symmetry, aligning it with the fixed-lower-index shape that the hockey-stick identity Nat.sum_Icc_choose consumes. The target central binomial C(2n+1,n+1) is unfolded through Nat.sum_Icc_choose (2n) n, and the Icc n (2n) sum is converted to the range (n+1) form via Nat.Ico_succ_right and Finset.sum_Ico_eq_sum_range (with 2n+1−n = n+1). The result is a verbatim instance of parallel summation Σ_{m=n}^{2n} C(m,n) = C(2n+1,n+1).",
+    "mathContext": "$\\sum_{k=0}^{n}\\binom{n+k}{k} = \\sum_{m=n}^{2n}\\binom{m}{n} = \\binom{2n+1}{n+1}$ (hockey stick).",
+    "significance": "key",
+    "relatedConcepts": ["hockey-stick identity", "parallel summation", "sum_Icc_choose", "reindexing", "binomial symmetry"],
+    "prerequisites": ["hockey-stick identity", "Finset range/Icc reindexing"]
+  },
+  {
+    "id": "ann-rowsum-hockey-reflected",
+    "proofId": "catalan-numbers-oq-05-oq-02-oq-01",
+    "range": { "startLine": 94, "endLine": 108 },
+    "type": "tactic",
+    "title": "Hockey stick II: Σ C(n+k,n+1) = C(2n+1,n+2)",
+    "content": "sum_choose_reflected evaluates the reflected half B(n). Finset.sum_range_succ' peels off the k=0 summand C(n,n+1), which vanishes (n < n+1, Nat.choose_eq_zero_of_lt). The remaining sum runs the same hockey-stick machinery at raised index (2n)(n+1): Nat.sum_Icc_choose, Nat.Ico_succ_right, and Finset.sum_Ico_eq_sum_range (with 2n+1−(n+1) = n) give C(2n+1,n+2). Both halves of the row sum are thus hockey-stick sums in disguise, differing only by the index shift.",
+    "mathContext": "$\\sum_{k=0}^{n}\\binom{n+k}{n+1} = \\sum_{m=n+1}^{2n}\\binom{m}{n+1} = \\binom{2n+1}{n+2}$; the $k=0$ term $\\binom{n}{n+1}=0$ drops.",
+    "significance": "key",
+    "relatedConcepts": ["hockey-stick identity", "sum_range_succ'", "vanishing term", "sum_Icc_choose"],
+    "prerequisites": ["hockey-stick identity", "choose_eq_zero_of_lt"]
+  },
+  {
+    "id": "ann-rowsum-arith-core",
+    "proofId": "catalan-numbers-oq-05-oq-02-oq-01",
+    "range": { "startLine": 110, "endLine": 139 },
+    "type": "tactic",
+    "title": "Arithmetic core: C(2n+1,n+1) = catalan (n+1) + C(2n+1,n+2)",
+    "content": "choose_sub_eq_catalan is the bridge turning the pure-binomial closed form A(n)−B(n) into a Catalan number, done entirely in honest ℕ arithmetic (no division). Multiply the goal by n+2. The Catalan side becomes (n+2)·catalan (n+1) = centralBinom (n+1) (succ_mul_catalan_eq_centralBinom) = 2·C(2n+1,n+1), where the last step splits centralBinom (n+1) = C(2n+2,n+1) = C(2n+1,n) + C(2n+1,n+1) = 2·C(2n+1,n+1) by Pascal (Nat.choose_succ_succ') and symmetry (hsym: C(2n+1,n)=C(2n+1,n+1)). The reflected term becomes (n+2)·C(2n+1,n+2) = n·C(2n+1,n+1) by the absorption law (Nat.choose_succ_right_eq). A calc equates both scaled sides and Nat.eq_of_mul_eq_mul_left cancels the positive n+2.",
+    "mathContext": "$(n{+}2)C_{n+1} = \\binom{2n+2}{n+1} = 2\\binom{2n+1}{n+1}$ and $(n{+}2)\\binom{2n+1}{n+2} = n\\binom{2n+1}{n+1}$, so $\\binom{2n+1}{n+1} = C_{n+1} + \\binom{2n+1}{n+2}$.",
+    "significance": "key",
+    "relatedConcepts": ["central binomial coefficient", "Pascal's rule", "absorption law", "Catalan–central binomial bridge", "cancellation"],
+    "prerequisites": ["succ_mul_catalan_eq_centralBinom", "choose_succ_succ'", "choose_succ_right_eq"]
+  },
+  {
+    "id": "ann-rowsum-additive-split",
+    "proofId": "catalan-numbers-oq-05-oq-02-oq-01",
+    "range": { "startLine": 141, "endLine": 154 },
+    "type": "tactic",
+    "title": "Additive split of the row sum",
+    "content": "sum_add_reflected states (Σ ballotNumber n k) + (Σ C(n+k,n+1)) = Σ C(n+k,k), the device that keeps the whole proof inside ℕ. Rather than computing the subtractive row sum directly (where truncated ℕ subtraction would obstruct the algebra), it sums the per-term identity T(n,k) + C(n+k,n+1) = C(n+k,k). Finset.sum_add_distrib merges the two sums, and the termwise goal is discharged by Nat.sub_add_cancel using the well-posedness bound choose_reflected_le — turning A(n)−B(n) into the honest equation (Σ T) + B(n) = A(n).",
+    "mathContext": "$\\sum_k T(n,k) + \\sum_k \\binom{n+k}{n+1} = \\sum_k \\binom{n+k}{k}$, from the termwise $T(n,k) + \\binom{n+k}{n+1} = \\binom{n+k}{k}$.",
+    "significance": "key",
+    "relatedConcepts": ["sum_add_distrib", "sub_add_cancel", "truncated subtraction", "additive reformulation"],
+    "prerequisites": ["well-posedness bound", "Finset sum distributivity"]
+  },
+  {
+    "id": "ann-rowsum-main",
+    "proofId": "catalan-numbers-oq-05-oq-02-oq-01",
+    "range": { "startLine": 156, "endLine": 170 },
+    "type": "concept",
+    "title": "Main theorem and Catalan sanity checks",
+    "content": "sum_ballotNumber_row assembles the pieces: the additive split (with A(n) and B(n) rewritten by the two hockey-stick evaluations) gives (Σ T) + C(2n+1,n+2) = C(2n+1,n+1), and the arithmetic core supplies C(2n+1,n+1) = catalan (n+1) + C(2n+1,n+2); omega treats the binomial and Catalan values as opaque atoms and reads off Σ_{k=0}^{n} ballotNumber n k = catalan (n+1). Four closed examples confirm the first row sums 1, 2, 5, 14 by kernel decide — matching the Catalan numbers and refuting the seed's C(2n+1,n).",
+    "mathContext": "$\\sum_{k=0}^{n} T(n,k) = C_{n+1}$; first rows $1,2,5,14$ for $n = 0,1,2,3$.",
+    "significance": "key",
+    "relatedConcepts": ["Catalan numbers", "omega", "opaque atoms", "sanity check"],
+    "prerequisites": ["all preceding lemmas"]
+  }
+]
