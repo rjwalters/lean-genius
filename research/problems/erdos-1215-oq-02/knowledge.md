@@ -172,3 +172,39 @@ elaboration clean `[7746/7746]`; olean-write env-blocked SIGBUS-135 → UNVERIFI
   recovered by copying the file to a fresh external worktree `/Users/rwalters/lg-r3-cyclo`
   off origin/main and restoring main. Elaboration errors ARE visible before the
   SIGBUS write, so correctness is verifiable even when the olean write fails.
+
+## Session 2026-07-09 (researcher-2) — AXIOM ELIMINATION: discharge `maclane_1953` (parent 2→1 axioms)
+
+**Mode**: AXIOM HUNT on the parent `Erdos1215Problem.lean` (score 15). **Outcome**: real axiom
+elimination — VERIFIED axiom-free.
+
+The parent file axiomatized `maclane_1953 : ∀ C>1, ∃ P unit-circle, ¬HasBoundedLevelPath P C`
+under the label "Mac Lane's deep theorem". But the **literal escape-to-∞ formulation is
+elementary**: the degree-one cyclotomic `P = X + 1` is a unit-circle polynomial (`P(0)=1`, sole
+root `-1`) whose level set `{z : ‖z+1‖ < C}` is a bounded disc, so `‖z‖ ≤ ‖z+1‖+1 < C+1` there and
+no path can escape to `∞`. Prior sessions proved this only in a companion
+(`CyclotomicPolynomialsOQ02OQ05.erdos_1215_via_cyclotomic`) — they could NOT discharge the parent
+axiom because the cyclotomic file *imports* the parent (circular). This session proves it **directly
+and self-contained in the parent** with a short inline argument (no new imports, no cyclotomic
+machinery), converting `axiom maclane_1953` → `theorem`. **axiomCount 2 → 1.**
+
+Now `maclane_1953` and the headline `erdos_1215` both `#print axioms` = `[propext,
+Classical.choice, Quot.sound]` only. The genuinely deep Mac Lane content — the labyrinth forcing
+paths through neighbourhoods of `0` in the `C>1` regime — is the *strictly stronger*
+`maclane_labyrinth`, which REMAINS axiomatized, so the entry correctly stays `status: axiomatized`,
+`badge: axiom` (no overclaim). This is an integrity improvement: a mislabeled "deep" axiom (actually
+elementary) is removed while the real depth stays honestly axiomatized.
+
+**Proof mechanics (reusable).** No-escape contradiction: from `Tendsto (‖γ ·‖) atTop atTop` get
+`htend.eventually_gt_atTop (C+1)` and `Filter.eventually_ge_atTop 0`; `(h1.and h2).exists` (atTop
+NeBot) yields a `t ≥ 0` with `‖γ t‖ > C+1`, contradicting the level-set bound `‖γ t‖ < C+1`
+(`norm_sub_norm_le (γ t) (γ t + 1)` with `γ t - (γ t + 1) = -1` by `ring`, `norm_neg`/`norm_one`).
+Root on circle: `IsRoot.def, eval_add, eval_X, eval_one` → `z+1=0`, then
+`eq_neg_of_add_eq_zero_left`. NOTE the `C>1` hypothesis is UNUSED (compactness needs no lower bound
+on C) → binder renamed `_hC`.
+
+**Verification (docker DOWN).** Containerd meta.db/blob `input/output error` at image build
+(operator-level, NOT disk — 157Gi free). Verified by direct `lean` elaboration vs pinned Mathlib
+v4.26.0 oleans (see [[reference-docker-down-lean-elab-verification-path]]): exit 0, `#print axioms`
+clean. Metas synced: src/data/proofs/erdos-1215/meta.json (axiomCount 2→1, 70→100 lines, 1→2 thm,
+assumptions text) + research json leanFiles.

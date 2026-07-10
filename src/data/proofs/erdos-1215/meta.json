@@ -16,15 +16,15 @@
       "topology",
       "unit-circle"
     ],
-    "lineCount": 70,
+    "lineCount": 100,
     "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 1215,
     "erdosUrl": "https://erdosproblems.com/1215",
     "erdosProblemStatus": "solved",
-    "axiomCount": 2,
-    "assumptions": "2 axiom(s) and 0 sorry(s). See the Lean source for the axiom declarations.",
-    "theoremCount": 1,
+    "axiomCount": 1,
+    "assumptions": "1 axiom(s) and 0 sorry(s). The remaining axiom `maclane_labyrinth` encodes Mac Lane's deep labyrinth phenomenon; the escape-to-∞ negative answer (`maclane_1953`, `erdos_1215`) is now proved axiom-free via the compact witness P = X + 1.",
+    "theoremCount": 2,
     "definitionCount": 3
   },
   "overview": {
@@ -109,9 +109,9 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 70,
-    "axiomCount": 2,
-    "theoremCount": 1,
+    "lineCount": 100,
+    "axiomCount": 1,
+    "theoremCount": 2,
     "definitionCount": 3,
     "sorries": 0,
     "path": "Proofs/Erdos1215Problem.lean"
