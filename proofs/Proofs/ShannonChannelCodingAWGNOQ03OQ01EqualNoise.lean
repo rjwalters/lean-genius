@@ -221,4 +221,63 @@ theorem rate_equalNoise_eq_zero_iff [Nonempty ι] {c : ℝ} (hc : 0 < c) {P : �
     subst h
     simp
 
+/-! ## Strict power-monotonicity and concavity of the equal-noise capacity -/
+
+/-- **Strict power-monotonicity of the equal-noise capacity.**  For `c > 0`, a
+    *strict* increase in the power budget yields a *strictly* larger rate:
+    `P₁ < P₂ ⟹ C(P₁) < C(P₂)`.  This sharpens `rate_equalNoise_mono_power` from `≤`
+    to `<`, mirroring how `rate_equalNoise_pos` sharpens `rate_equalNoise_nonneg`:
+    every extra nat of power buys strictly positive rate. -/
+theorem rate_equalNoise_strictMono_power [Nonempty ι] {c : ℝ} (hc : 0 < c)
+    {P₁ P₂ : ℝ} (hP₁ : 0 ≤ P₁) (h : P₁ < P₂) :
+    (Fintype.card ι : ℝ) / 2 * Real.log (1 + P₁ / (Fintype.card ι * c))
+      < (Fintype.card ι : ℝ) / 2 * Real.log (1 + P₂ / (Fintype.card ι * c)) := by
+  have hn : 0 < (Fintype.card ι : ℝ) := by exact_mod_cast Fintype.card_pos
+  have hnc : 0 < (Fintype.card ι : ℝ) * c := mul_pos hn hc
+  have hx1 : (0 : ℝ) < 1 + P₁ / (Fintype.card ι * c) := by
+    have : 0 ≤ P₁ / (Fintype.card ι * c) := div_nonneg hP₁ hnc.le
+    linarith
+  have hlt : 1 + P₁ / (Fintype.card ι * c) < 1 + P₂ / (Fintype.card ι * c) := by
+    gcongr
+  exact mul_lt_mul_of_pos_left (Real.log_lt_log hx1 hlt) (by positivity)
+
+/-- **Concavity of the equal-noise capacity in the power budget.**  For `c > 0` the
+    capacity `C(P) = (n/2)·log(1 + P/(n·c))` is concave on `[0, ∞)`.  This is the
+    formal statement behind the classical "capacity is a concave function of power":
+    it makes power time-sharing sub-optimal (a convex combination of budgets is at
+    least as good as splitting time between them), and underlies the water-filling
+    and rate-region arguments for parallel Gaussian channels.  The proof composes the
+    concavity of `Real.log` (`strictConcaveOn_log_Ioi`) with the affine reparametrisation
+    `P ↦ 1 + P/(n·c)` and the nonnegative scaling `n/2`. -/
+theorem rate_equalNoise_concaveOn_power [Nonempty ι] {c : ℝ} (hc : 0 < c) :
+    ConcaveOn ℝ (Set.Ici 0)
+      (fun P => (Fintype.card ι : ℝ) / 2 * Real.log (1 + P / (Fintype.card ι * c))) := by
+  have hn : 0 < (Fintype.card ι : ℝ) := by exact_mod_cast Fintype.card_pos
+  have hnc : 0 < (Fintype.card ι : ℝ) * c := mul_pos hn hc
+  set k := (Fintype.card ι : ℝ) * c with hk
+  have hkne : k ≠ 0 := hnc.ne'
+  have hN : (0 : ℝ) ≤ (Fintype.card ι : ℝ) / 2 := by positivity
+  refine ⟨convex_Ici 0, fun x hx y hy a b ha hb hab => ?_⟩
+  simp only [Set.mem_Ici] at hx hy
+  have hux : (0 : ℝ) < 1 + x / k := by
+    have : 0 ≤ x / k := div_nonneg hx hnc.le; linarith
+  have huy : (0 : ℝ) < 1 + y / k := by
+    have : 0 ≤ y / k := div_nonneg hy hnc.le; linarith
+  have hsum : a * (1 + x / k) + b * (1 + y / k) = 1 + (a * x + b * y) / k := by
+    field_simp
+    linear_combination k * hab
+  have hstep : a * Real.log (1 + x / k) + b * Real.log (1 + y / k)
+      ≤ Real.log (a * (1 + x / k) + b * (1 + y / k)) := by
+    have := (strictConcaveOn_log_Ioi.concaveOn).2 (Set.mem_Ioi.mpr hux)
+      (Set.mem_Ioi.mpr huy) ha hb hab
+    simpa only [smul_eq_mul] using this
+  simp only [smul_eq_mul]
+  calc a * ((Fintype.card ι : ℝ) / 2 * Real.log (1 + x / k))
+        + b * ((Fintype.card ι : ℝ) / 2 * Real.log (1 + y / k))
+      = (Fintype.card ι : ℝ) / 2
+          * (a * Real.log (1 + x / k) + b * Real.log (1 + y / k)) := by ring
+    _ ≤ (Fintype.card ι : ℝ) / 2 * Real.log (a * (1 + x / k) + b * (1 + y / k)) :=
+        mul_le_mul_of_nonneg_left hstep hN
+    _ = (Fintype.card ι : ℝ) / 2 * Real.log (1 + (a * x + b * y) / k) := by rw [hsum]
+
 end ShannonWaterFilling
