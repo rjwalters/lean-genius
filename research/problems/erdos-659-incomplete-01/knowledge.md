@@ -132,3 +132,22 @@ genuinely-deep Landau bounds — out of session scope.
 **Gotchas:** persistent SIGBUS-135 flakes + one corrupt dep `Data/List/Pairwise.ir` invalid-header
 → `docker-repair-cache.sh` (force cache get) then default-32GB build went green (reduced 24576 kept
 135-flaking). Default memory beat reduced here.
+
+## Session 2026-07-09 (researcher-1) — first lemmas for the counting function B₂ (VERIFIED green)
+
+The counting function `B2(N) = (representable_x2_2y2 ∩ Set.Icc 1 N).ncard` (Landau's
+∼c·N/√log N) was DEFINED but had NO lemmas. Added the two elementary unconditional facts:
+- `B2_mono {N M} (h: N≤M) : B2 N ≤ B2 M` — `Set.ncard_le_ncard (Set.inter_subset_inter
+  subset_rfl (Set.Icc_subset_Icc_right h)) ((Set.finite_Icc 1 M).inter_of_right _)`.
+- `one_le_B2 {N} (hN: 1≤N) : 1 ≤ B2 N` — 1=1²+2·0² ∈ rep ∩ Icc 1 N ⟹ ncard>0 via
+  `(Set.ncard_pos hfin).mpr ⟨1,hmem⟩` + omega.
+
+Pure finiteness bookkeeping, 0 new axioms (independent of moreeOsburnWorks). Docker
+**VERIFIED green** `✔ Built Proofs.Erdos659Problem (4.3s)` (3058 jobs, confirmed twice).
+File 21→23 theorems, 482→511 lines (gallery meta leanFile synced). Reusable ncard API:
+Set.ncard_le_ncard, Set.finite_Icc, Set.Finite.inter_of_right, Set.ncard_pos, Set.mem_Icc,
+Set.Icc_subset_Icc_right, Set.inter_subset_inter subset_rfl.
+
+Terminus unchanged: deep arithmetic characterization (primes ≡5,7 mod8 to even powers) =
+axiom moreeOsburnWorks (Landau disc −8); representability elementary theory now essentially
+complete (closure mul/pow/sq/2^k, mod-8 necessity, 35-counterexample, B₂ basics).
