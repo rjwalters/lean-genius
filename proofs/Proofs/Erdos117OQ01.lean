@@ -231,6 +231,17 @@ theorem convergent_limit_in_pyber_window (L : ℝ)
       exact hlog
     exact le_of_tendsto hconv hev
 
+/-- **A convergent growth-rate limit is automatically positive.** If `growthRate n → L`,
+    then `L > 0`. Combining `convergent_limit_in_pyber_window` (which pins `L ≥ log c₁`)
+    with `c₁ > 1` (so `log c₁ > 0`) shows the limit inherits the strict positivity of the
+    growth rate itself (`growthRate_pos`). Consequently the hypothesis `L > 0` in
+    `limit_determines_base` is never a genuine restriction: any limit that exists already
+    satisfies it, so the exponential base `exp L` is forced to exceed `1`. -/
+theorem convergent_limit_pos (L : ℝ)
+    (hconv : Filter.Tendsto growthRate atTop (nhds L)) : 0 < L := by
+  obtain ⟨c₁, _, hc1, _, hL1, _⟩ := convergent_limit_in_pyber_window L hconv
+  exact lt_of_lt_of_le (Real.log_pos hc1) hL1
+
 /-- Convergence implies exponential behavior:
     for `ε ∈ (0, c)`, eventually `(c-ε)ⁿ ≤ h(n) ≤ (c+ε)ⁿ`.
 
@@ -357,6 +368,22 @@ theorem behavior_implies_base (c : ℝ) (hc : c > 1)
 theorem exponential_behavior_iff_base (c : ℝ) (hc : c > 1) :
     Filter.Tendsto growthRate atTop (nhds (Real.log c)) ↔ ExponentialBehavior c :=
   ⟨base_implies_behavior c hc, behavior_implies_base c hc⟩
+
+/-- **The two open-question formulations coincide.** Part IV states the open problem in two
+    apparently different ways — `growthRateConverges` (the growth rate has *some* limit) and
+    `exponentialBaseExists` (there is a base `c > 1` with `growthRate → log c`). They are in
+    fact equivalent. The reverse direction is immediate (a base gives convergence to `log c`);
+    the forward direction is exactly where `convergent_limit_pos` does the work: any limit `L`
+    is positive, so `limit_determines_base` upgrades it to the genuine base `exp L > 1`. Hence
+    "the growth rate converges" and "`h(n)` has a well-defined exponential base" are one and the
+    same open question, not two. -/
+theorem exponentialBaseExists_iff_converges :
+    exponentialBaseExists ↔ growthRateConverges := by
+  constructor
+  · rintro ⟨c, _, hconv⟩
+    exact ⟨Real.log c, hconv⟩
+  · rintro ⟨L, hconv⟩
+    exact limit_determines_base L (convergent_limit_pos L hconv) hconv
 
 /-
 ## Part V: Known Implications
