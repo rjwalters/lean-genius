@@ -223,6 +223,47 @@ theorem zeta_four_div_zeta_two_transcendental :
   have := zeta_even_ratio_transcendental 2 1 one_pos (by norm_num)
   simpa using this
 
+/-- **Structural product identity for even zeta values — axiom-free.**  The product of two
+    even zeta values is a *nonzero-rational* multiple of a *positive* even power of π:
+    `ζ(2n)·ζ(2m) = (qₙqₘ)·π^(2n+2m)`.  Companion to `zeta_even_ratio_eq_rat_mul_pi_pow`: the
+    quotient strips π-powers, the product adds them, and both stay inside `ℚ·π^(even)`.  Uses
+    only Euler's closed form (`zeta_even_eq_rat_mul_pi_pow`), **no** `hermite_lindemann`. -/
+theorem zeta_even_product_eq_rat_mul_pi_pow (n m : ℕ) (hn : 0 < n) (hm : 0 < m) :
+    ∃ q : ℚ, q ≠ 0 ∧
+      (∑' k : ℕ, 1 / (k : ℝ) ^ (2 * n)) * (∑' k : ℕ, 1 / (k : ℝ) ^ (2 * m))
+        = (q : ℝ) * π ^ (2 * n + 2 * m) := by
+  obtain ⟨qn, hqn, hqn_eq⟩ := zeta_even_eq_rat_mul_pi_pow n hn
+  obtain ⟨qm, hqm, hqm_eq⟩ := zeta_even_eq_rat_mul_pi_pow m hm
+  refine ⟨qn * qm, mul_ne_zero hqn hqm, ?_⟩
+  rw [hqn_eq, hqm_eq, pow_add]
+  push_cast; ring
+
+/-- **Products of even zeta values are transcendental over ℚ.**
+
+    For `n, m ≥ 1`, `ζ(2n)·ζ(2m) = (qₙqₘ)·π^(2n+2m)` is a nonzero rational multiple of a
+    positive even power of π, hence transcendental over ℚ.  Concretely `ζ(2)·ζ(4) = π⁶/540`,
+    etc.  The multiplicative companion of `zeta_even_ratio_transcendental`: the even zeta
+    values are closed under multiplication into the transcendental class `ℚ∖{0} · π^(even>0)`.
+
+    **Assumption:** `hermite_lindemann` (transcendence of π). -/
+theorem zeta_even_product_transcendental (n m : ℕ) (hn : 0 < n) (hm : 0 < m) :
+    Transcendental ℚ
+      ((∑' k : ℕ, 1 / (k : ℝ) ^ (2 * n)) * (∑' k : ℕ, 1 / (k : ℝ) ^ (2 * m))) := by
+  obtain ⟨q, hq, hprod⟩ := zeta_even_product_eq_rat_mul_pi_pow n m hn hm
+  rw [hprod]
+  exact transcendental_ratCast_mul (pi_transcendental_over_rationals.pow (by omega)) hq
+
+/-- **Normalization returns to ℚ — the sharp axiom-free contrast.**  Dividing `ζ(2n)` by the
+    *matching* power `π^(2n)` lands back in the rationals: `ζ(2n)/π^(2n) = qₙ ∈ ℚ`.  This pins
+    down exactly which factor carries the transcendence — it is precisely the `π^(2n)` and
+    nothing else.  Together with `zeta_even_transcendental` (the value itself is transcendental)
+    it isolates the transcendental content to a single π-power.  Uses only Euler's closed form,
+    **no** `hermite_lindemann`. -/
+theorem zeta_even_div_pi_pow_rational (n : ℕ) (hn : 0 < n) :
+    ∃ q : ℚ, (∑' k : ℕ, 1 / (k : ℝ) ^ (2 * n)) / π ^ (2 * n) = (q : ℝ) := by
+  obtain ⟨q, _, hq⟩ := zeta_even_eq_rat_mul_pi_pow n hn
+  exact ⟨q, by rw [hq, mul_div_assoc, div_self (pow_ne_zero (2 * n) Real.pi_ne_zero), mul_one]⟩
+
 /-!
 ## The open odd case (documentation only)
 
