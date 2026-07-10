@@ -74,6 +74,24 @@ def hypercubeVertices (n : ℕ) : ℕ := 2^n
 -/
 def hypercubeEdges (n : ℕ) : ℕ := n * 2^(n-1)
 
+/-- **`Qₙ` always has vertices:** `|V(Qₙ)| = 2ⁿ > 0`. -/
+theorem hypercubeVertices_pos (n : ℕ) : 0 < hypercubeVertices n :=
+  pow_pos (by norm_num) n
+
+/-- **Handshake identity for the hypercube:** `2·|E(Qₙ)| = n·|V(Qₙ)|`.  Every one of
+    the `2ⁿ` vertices of `Qₙ` has degree exactly `n` (one neighbour per coordinate
+    flip), so the degree sum is `n·2ⁿ`, which by the handshake lemma is twice the edge
+    count.  Concretely `2·(n·2ⁿ⁻¹) = n·2ⁿ`.  This ties the file's two basic counts
+    `hypercubeVertices` and `hypercubeEdges` together. -/
+theorem two_mul_hypercubeEdges (n : ℕ) :
+    2 * hypercubeEdges n = n * hypercubeVertices n := by
+  cases n with
+  | zero => simp [hypercubeEdges, hypercubeVertices]
+  | succ m =>
+    unfold hypercubeEdges hypercubeVertices
+    rw [Nat.succ_sub_one, pow_succ]
+    ring
+
 /-
 **Degree in Qₙ:** every vertex has degree n.
 -/
