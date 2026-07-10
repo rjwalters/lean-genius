@@ -60,9 +60,9 @@
     "dateAdded": "2026-03-11",
     "mathlib_version": "4.26.0",
     "axioms": 3,
-    "axiomCount": 2,
+    "axiomCount": 3,
     "lineCount": 373,
-    "assumptions": "2 axiom(s): hall_existence, hall_conjugacy. See Lean source for complete statements.",
+    "assumptions": "3 assumptions: 2 axioms (hall_existence, hall_conjugacy — Hall's theorem on the existence and conjugacy of Hall subgroups in finite solvable groups) plus Lean.ofReduceBool, introduced by native_decide in the A₄ counterexample theorems a4_card (|A₄| = 12) and a4_squares_card (9 distinct squares). See Lean source for complete statements. (leanFile.axiomCount = 2 counts only the literal axiom declarations.)",
     "theoremCount": 27,
     "definitionCount": 1
   },
@@ -188,7 +188,7 @@
     "implications": "**Theoretical Significance**: Hall's theorem is foundational for the structure theory of solvable groups, providing a complete description of which subgroup orders are realized.\n\nThe Schur-Zassenhaus complement gives semidirect product decompositions $G \\cong N \\rtimes K$ for normal Hall subgroups. In applications, Hall subgroups appear in the classification of finite solvable groups (Hall's theorem is the solvable-group analogue of the Sylow theorems) and in computational group theory where finding Hall subgroups is a key algorithmic primitive.",
     "openQuestions": [
       "Can Hall existence be proved constructively in Lean using derived series induction?",
-      "Can the A₄ counterexample be computationally verified using native_decide on the explicit group table?",
+      "The A₄ counterexample is already verified computationally via native_decide (a4_card, a4_squares_card, relying on Lean.ofReduceBool); can the same cardinalities be established by a kernel-checkable decide or an explicit combinatorial proof that avoids the compiler-trust axiom?",
       "What is the relationship between Hall subgroups and Burnside's p^a·q^b theorem for solvable groups of order p^a·q^b?",
       "Can the formalization be extended to π-separable groups (Chunikhin's generalization of Hall's theorem)?"
     ]
