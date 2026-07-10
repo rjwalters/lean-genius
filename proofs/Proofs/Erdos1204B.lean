@@ -1,4 +1,5 @@
 import Proofs.Erdos1204Problem
+import Proofs.Erdos1204A4
 
 /-
 # Erdős #1204 — the second extremal quantity `B(k)`
@@ -31,9 +32,10 @@ by a set with least element `0`; the `sInf` handles this automatically.)
   `≥ 0, 2, 4, …, 2(k-1)`, whose sum is `k(k-1)`. Proved by strong induction
   removing the maximum, reusing `admissible_two_mul_card_sub_one_le_sup`.
 * **Exact small values** `S(0)=S(1)=0`, `S(2)=2` (so `B(2)=1`, where the general
-  bound is *tight*), and `S(3)=8` (so `B(3)=8/3`) — the first place the average
+  bound is *tight*), `S(3)=8` (so `B(3)=8/3`) — the first place the average
   is forced strictly above the parity floor `k-1=2`, by the same mod-`3`
-  obstruction that makes `A(3)=6`.
+  obstruction that makes `A(3)=6` — and `S(4)=16` (so `B(4)=4`), via the bootstrap
+  `S(k) ≥ A(k) + S(k-1)` off the already-proven `A(4)=8`.
 
 The asymptotic estimate for `B(k)` (like `A(k) ∼ k log k`) needs sieve theory and
 remains **OPEN**; it is not asserted here.
@@ -182,6 +184,44 @@ theorem S_three : S 3 = 8 := by
     have hge := admissible_three_sum_ge hcard ha
     omega
 
+/-- **Lower-bound core for `S(4)`.** Every admissible `4`-set has element sum at
+least `16`. The maximum `M` is `≥ 8` (`admissible_four_sup_ge`, the `A(4)` lower
+bound), and the remaining admissible `3`-set has sum `≥ 8` (`admissible_three_sum_ge`),
+so the total is `≥ 8 + 8 = 16`. This continues the bootstrap `S(k) ≥ A(k) + S(k-1)`:
+each exact `S(k)` is the `A(k)` sup bound plus the previous minimal sum, needing no
+fresh mod-`p` enumeration beyond the already-proven `A(k)` values. -/
+theorem admissible_four_sum_ge {a : Finset ℕ} (hcard : a.card = 4)
+    (ha : Admissible a) : 16 ≤ a.sum id := by
+  have hne : a.Nonempty := by rw [← Finset.card_pos, hcard]; omega
+  set M := a.max' hne with hMdef
+  have hMmem : M ∈ a := a.max'_mem hne
+  -- `M ≥ 8` from the `A(4)` lower bound `sup ≥ 8`
+  have hsup8 : 8 ≤ a.sup id := admissible_four_sup_ge hcard ha
+  have hsupM : a.sup id ≤ M :=
+    Finset.sup_le (fun x hx => by simpa using a.le_max' x hx)
+  have hM8 : 8 ≤ M := le_trans hsup8 hsupM
+  -- the erased `3`-set has sum `≥ 8`
+  have haer : Admissible (a.erase M) := ha.subset (a.erase_subset M)
+  have hcarderase : (a.erase M).card = 3 := by
+    rw [Finset.card_erase_of_mem hMmem, hcard]
+  have h3 : 8 ≤ (a.erase M).sum id := admissible_three_sum_ge hcarderase haer
+  have hsum : a.sum id = M + (a.erase M).sum id := by
+    rw [← Finset.add_sum_erase a id hMmem]; simp
+  omega
+
+/-- **`S(4) = 16`.** Upper bound from the witness `{0, 2, 6, 8}` (sum `16`, the
+`A(4)` extremal set); lower bound `16 ≤ S 4` from `admissible_four_sum_ge`. So the
+minimal average is `B(4) = 4`, again strictly above the parity floor `k - 1 = 3`. -/
+theorem S_four : S 4 = 16 := by
+  apply le_antisymm
+  · have h := S_le (k := 4) (a := ({0, 2, 6, 8} : Finset ℕ)) (by decide)
+      admissible_zero_two_six_eight
+    have hs : ({0, 2, 6, 8} : Finset ℕ).sum id = 16 := by decide
+    rwa [hs] at h
+  · obtain ⟨a, hcard, ha, hsum⟩ := S_mem 4
+    have hge := admissible_four_sum_ge hcard ha
+    omega
+
 /- ## The minimal average `B(k)` -/
 
 /-- **`B(k) = S(k)/k`**, the minimal average `(a₁ + ⋯ + a_k)/k` over admissible
@@ -211,6 +251,13 @@ mod-`3` obstruction forces the minimal average up, mirroring `A(3) = 6`. -/
 theorem B_three : B 3 = 8 / 3 := by
   rw [B, S_three]; norm_num
 
+/-- **`B(4) = 4`.** From `S(4) = 16`. Like `B(3)`, this sits strictly above the
+parity floor `k - 1 = 3`; the extremal set `{0, 2, 6, 8}` (which also realizes
+`A(4) = 8`) is here the minimal-sum set as well, so at `k = 4` the min-average and
+min-diameter optima still coincide. -/
+theorem B_four : B 4 = 4 := by
+  rw [B, S_four]; norm_num
+
 /- ## Open Problem
 
 The asymptotic behaviour of `B(k) = min (a₁ + ⋯ + a_k)/k` over admissible
@@ -224,3 +271,5 @@ end Erdos1204
 #print axioms Erdos1204.S_three
 #print axioms Erdos1204.B_three
 #print axioms Erdos1204.sub_one_le_B
+#print axioms Erdos1204.S_four
+#print axioms Erdos1204.B_four
