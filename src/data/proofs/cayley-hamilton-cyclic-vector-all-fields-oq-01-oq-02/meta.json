@@ -188,6 +188,11 @@
       "description": "Source of the open question (overview.openQuestions[2]) and provider of nonderogatory_has_cyclic_vector — the existence theorem this entry consumes to obtain a cyclic vector v."
     },
     {
+      "targetId": "cayley-hamilton-cyclic-vector-all-fields-oq-01-oq-02-oq-05",
+      "relationship": "extended-by",
+      "description": "Child: takes this entry's single-block nonderogatory ⟺ cyclic ⟺ similar-to-companion equivalence toward the multi-block rational canonical form. It settles the coprime two-block case — for coprime monic p, q the block sum C(p) ⊕ C(q) has minpoly = charpoly = p·q, hence is nonderogatory and similar to the single companion C(p·q) — the matrix incarnation of the Chinese Remainder Theorem K[X]/(p·q) ≅ K[X]/(p) × K[X]/(q)."
+    },
+    {
       "targetId": "cayley-hamilton-cyclic-vector-all-fields-oq-01-oq-01",
       "relationship": "uses",
       "description": "Sibling: provides cyclic_implies_nonderogatory (the converse of the parent's existence theorem) and minpoly_natDegree_of_cyclic. The latter is used to establish (minpoly K M).natDegree = n inside the conjugation-identity proof."
