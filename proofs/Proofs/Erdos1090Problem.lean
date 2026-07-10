@@ -803,6 +803,62 @@ theorem ramseyNumberColored_mono {C : Type*} [Finite C] {k k' : ℕ} (hk' : 3 �
   refine Nat.sInf_le ⟨A, ?_, hasRamseyPropertyColored_antitone hkk hA⟩
   simpa [ramseyNumberColored] using hcard
 
+/--
+**The colored Ramsey number is an attained minimum.**  For a finite palette `C` and `k ≥ 3` the
+defining set is nonempty (`hasRamseyPropertyColored_construction` supplies a witness), so the
+infimum `R_C(k)` is *realized* by an actual optimal configuration: there is a finite `A` with
+`|A| = R_C(k)` that already has the `C`-colored Ramsey property.  Together with
+`ramseyNumberColored_lower_bound` (`k ≤ R_C(k)`) this pins `R_C(k)` down as a genuine minimum
+rather than a mere infimum.  The colored analogue of
+`exists_hasRamseyProperty_card_eq_ramseyNumber`. -/
+theorem exists_hasRamseyPropertyColored_card_eq_ramseyNumberColored
+    (C : Type*) [Finite C] (k : ℕ) (hk : k ≥ 3) :
+    ∃ A : Finset Point, A.card = ramseyNumberColored C k ∧ HasRamseyPropertyColored C A k := by
+  have hne : {n : ℕ | ∃ A : Finset Point, A.card = n ∧ HasRamseyPropertyColored C A k}.Nonempty := by
+    obtain ⟨A, hA⟩ := hasRamseyPropertyColored_construction C k hk
+    exact ⟨A.card, A, rfl, hA⟩
+  obtain ⟨A, hcard, hA⟩ := Nat.sInf_mem hne
+  exact ⟨A, hcard, hA⟩
+
+/--
+**Every size above `R_C(k)` is realizable (colored).**  For a finite palette `C`, `k ≥ 3` and any
+`n ≥ R_C(k)` there is a configuration of *exactly* `n` points with the `C`-colored Ramsey property.
+Take the extremal witness of size `R_C(k)`
+(`exists_hasRamseyPropertyColored_card_eq_ramseyNumberColored`) and pad it with fresh plane points,
+one at a time: the plane is infinite, so a point outside the current set always exists, and
+enlarging preserves the colored property (`hasRamseyPropertyColored_mono`).  The colored analogue
+of `exists_hasRamseyProperty_card_eq`. -/
+theorem exists_hasRamseyPropertyColored_card_eq {C : Type*} [Finite C] {k : ℕ} (hk : k ≥ 3)
+    {n : ℕ} (hn : ramseyNumberColored C k ≤ n) :
+    ∃ A : Finset Point, A.card = n ∧ HasRamseyPropertyColored C A k := by
+  obtain ⟨A, hAcard, hA⟩ := exists_hasRamseyPropertyColored_card_eq_ramseyNumberColored C k hk
+  have hAn : A.card ≤ n := hAcard ▸ hn
+  clear hAcard hn
+  induction n, hAn using Nat.le_induction with
+  | base => exact ⟨A, rfl, hA⟩
+  | succ m _ ih =>
+    obtain ⟨B, hBcard, hB⟩ := ih
+    obtain ⟨p, hp⟩ := Infinite.exists_notMem_finset B
+    exact ⟨insert p B, by rw [Finset.card_insert_of_notMem hp, hBcard],
+      hasRamseyPropertyColored_mono (Finset.subset_insert p B) hB⟩
+
+/--
+**Realizable cardinalities are exactly the ray `[R_C(k), ∞)` (colored).**  For a finite palette `C`
+and `k ≥ 3`, a finite point set of size `n` with the `C`-colored Ramsey property exists *iff*
+`R_C(k) ≤ n`.  The forward direction is `ramseyNumberColored_le_of_hasRamseyProperty` (any witness
+bounds the infimum from above); the reverse is the padding argument
+`exists_hasRamseyPropertyColored_card_eq`.  This pins down the realizable-size set completely as the
+full up-set above the threshold, with no gaps — the colored analogue of
+`hasRamseyProperty_realizable_card_iff`. -/
+theorem hasRamseyPropertyColored_realizable_card_iff {C : Type*} [Finite C] {k : ℕ} (hk : k ≥ 3)
+    (n : ℕ) :
+    (∃ A : Finset Point, A.card = n ∧ HasRamseyPropertyColored C A k) ↔
+      ramseyNumberColored C k ≤ n := by
+  constructor
+  · rintro ⟨A, hcard, hA⟩
+    exact hcard ▸ ramseyNumberColored_le_of_hasRamseyProperty hA
+  · exact exists_hasRamseyPropertyColored_card_eq hk
+
 /-
 **R(3) is Small:**
 The k = 3 case can be achieved with a small set of points.
