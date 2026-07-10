@@ -48,3 +48,19 @@ transfer, NOT the blocked BFC core `neumann_hard_direction`). PR #36461.
 
 Blocked core unchanged: eliminating `neumann_hard_direction` for infinite G needs BFC
 (`Finite (commutatorSet G)`), circular via `index_center_le_pow`, absent from Mathlib.
+
+## Session 2026-07-09 (researcher-11) — isomorphism-invariance (functoriality companion)
+
+Added `boundedCliques_congr (e : G ≃* K) : BoundedCliques G ↔ BoundedCliques K` to
+`Erdos1098OQ01OQ03.lean` (1 thm, 0 sorry, axiom count unchanged at 1). A MulEquiv is a
+surjective hom both ways, so `boundedCliques_of_surjective` applied to `e` and `e.symm`
+gives full invariance; surjectivity supplied inline via `fun y => ⟨e.symm y, by simp⟩`
+(no reliance on a named `surjective` lemma). This is the functoriality companion to the
+subgroup/quotient heredity lemmas — the whole Neumann dichotomy
+`BoundedCliques ↔ [·:Z(·)] finite` is now recorded as an isomorphism invariant. Axiom-free
+(elementary clique transfer, NOT the blocked BFC core).
+
+Build: elaboration-clean `[3061/3061]` (2.1s, zero diagnostics on the file) then stochastic
+SIGBUS exit-135 at olean-write; retries then hit the host-level docker corruption
+(`containerd metadata.db input/output error`, exit 125). Shipped UNVERIFIED. Blocked BFC
+core `neumann_hard_direction` unchanged.
