@@ -611,4 +611,129 @@ theorem signChangesInCoeffs_eq_zero_of_coeff_nonneg {p : ℝ[X]}
   · rfl
   · exact countSignChanges_eq_zero_of_nonneg fun i => h _
 
+/- ## § 6. The sharp general `Fin n` bound: `V ≤ n − 1`, attained by alternation
+   (verified, axiom-free)
+
+Section 5 handled the *one-signed* extreme (`V = 0`).  Here we settle the opposite
+extreme for arbitrary length `n`.  Two facts, both general in `n` and axiom-free:
+
+* **Upper bound (unconditional).**  `countSignChanges f ≤ n − 1` for *every*
+  `f : Fin n → ℝ`.  The point is that a sign-change pair `(i, j)` is determined by
+  its *left* index `i`: if `(i, j)` and `(i, j′)` were both sign changes with
+  `j < j′`, then `f j ≠ 0` (from the first) contradicts "all entries strictly
+  between `i` and `j′` vanish" (from the second).  So `i ↦ (i, j)` is injective and
+  `i < j < n` forces `i ≤ n − 2`; there are at most `n − 1` such left indices.
+
+* **Sharpness (attained).**  A *nowhere-zero, strictly sign-alternating* sequence
+  (`f i ≠ 0` for all `i`, and `f i · f j < 0` whenever `j = i + 1`) has
+  `countSignChanges f = n − 1` exactly.  Because no entry vanishes, the "all-between
+  zero" clause forces every sign-change pair to be *adjacent* (`j = i + 1`), and
+  every adjacent pair alternates, so the sign changes biject with the `n − 1`
+  adjacent index pairs.  This generalises `countSignChanges_three_alternating`
+  (`n = 3`, value `2`) to all lengths, and shows the upper bound above is sharp.
+
+Together these say: at the coefficient level Descartes' variation count `V(p)` never
+exceeds the degree and is realised at the degree by a fully alternating coefficient
+pattern (corollary `signChangesInCoeffs_le_natDegree`). -/
+
+/-- **Unconditional upper bound on the sign-change count.**  For every real sequence
+`f : Fin n → ℝ`, `countSignChanges f ≤ n − 1`.  Proof: the left index `i` of a
+sign-change pair `(i, j)` determines the pair (a second `j′ > j` would put the
+nonzero `f j` strictly between `i` and `j′`, contradicting the all-between-zero
+clause), so `(i, j) ↦ i.val` is injective from the sign-change set into
+`{0, …, n − 2}`.  Axiom-free, general in `n`. -/
+theorem countSignChanges_le {n : ℕ} (f : Fin n → ℝ) :
+    DescartesRuleOfSigns.countSignChanges f ≤ n - 1 := by
+  unfold DescartesRuleOfSigns.countSignChanges
+  rw [← Finset.card_range (n - 1)]
+  apply Finset.card_le_card_of_injOn (fun p => p.1.val)
+  · -- MapsTo: the left index of any sign-change pair lies in `{0, …, n-2}`.
+    intro p hp
+    simp only [Finset.mem_coe, Finset.mem_filter, Finset.mem_univ, true_and,
+      decide_eq_true_eq, DescartesRuleOfSigns.SignChangeBetween] at hp
+    obtain ⟨hlt, -, -, -, -⟩ := hp
+    have hij : p.1.val < p.2.val := Fin.lt_def.mp hlt
+    have hj : p.2.val < n := p.2.isLt
+    simp only [Finset.coe_range, Set.mem_Iio]
+    omega
+  · -- InjOn: the left index determines the pair.
+    intro p hp q hq hpq
+    simp only [Finset.mem_coe, Finset.mem_filter, Finset.mem_univ, true_and,
+      decide_eq_true_eq, DescartesRuleOfSigns.SignChangeBetween,
+      DescartesRuleOfSigns.oppositeSign] at hp hq
+    obtain ⟨hplt, -, hp2ne, hpbtw, -⟩ := hp
+    obtain ⟨hqlt, -, hq2ne, hqbtw, -⟩ := hq
+    have hp1 : p.1 = q.1 := Fin.ext hpq
+    have hkey : p.2.val = q.2.val := by
+      rcases lt_trichotomy p.2.val q.2.val with h | h | h
+      · exact absurd (hqbtw p.2 (hp1 ▸ hplt) (Fin.lt_def.mpr h)) hp2ne
+      · exact h
+      · exact absurd (hpbtw q.2 (hp1 ▸ hqlt) (Fin.lt_def.mpr h)) hq2ne
+    exact Prod.ext_iff.mpr ⟨hp1, Fin.ext hkey⟩
+
+/-- **The upper bound is sharp: alternation attains `n − 1`.**  If `f : Fin n → ℝ`
+is nowhere zero (`hnz`) and every adjacent pair alternates in sign
+(`halt : ∀ i j, j = i + 1 ⟹ f i · f j < 0`), then `countSignChanges f = n − 1`.
+Because no entry vanishes, the all-between-zero clause of a sign change forces the
+pair to be adjacent, so the sign changes biject with the `n − 1` adjacent pairs.
+Axiom-free, general in `n`; generalises `countSignChanges_three_alternating`. -/
+theorem countSignChanges_alternating {n : ℕ} {f : Fin n → ℝ}
+    (hnz : ∀ i, f i ≠ 0)
+    (halt : ∀ i j : Fin n, j.val = i.val + 1 → f i * f j < 0) :
+    DescartesRuleOfSigns.countSignChanges f = n - 1 := by
+  -- Every sign-change pair is adjacent: no zeros means nothing can lie between.
+  have adj : ∀ i j : Fin n,
+      DescartesRuleOfSigns.SignChangeBetween f i j → j.val = i.val + 1 := by
+    intro i j h
+    unfold DescartesRuleOfSigns.SignChangeBetween at h
+    obtain ⟨hij, -, -, hbtw, -⟩ := h
+    have hlt : i.val < j.val := Fin.lt_def.mp hij
+    by_contra hne
+    have hgap : i.val + 1 < j.val := by omega
+    have hk : i.val + 1 < n := lt_trans hgap j.isLt
+    exact hnz _ (hbtw ⟨i.val + 1, hk⟩ (Fin.lt_def.mpr (Nat.lt_succ_self _))
+      (Fin.lt_def.mpr hgap))
+  unfold DescartesRuleOfSigns.countSignChanges
+  rw [show n - 1 = (Finset.range (n - 1)).card from (Finset.card_range _).symm]
+  refine Finset.card_bij' (fun p _ => p.1.val)
+    (fun m hm => (⟨m, by have := Finset.mem_range.mp hm; omega⟩,
+                  ⟨m + 1, by have := Finset.mem_range.mp hm; omega⟩))
+    ?_ ?_ ?_ ?_
+  · -- left index of a sign-change pair lands in `range (n-1)`
+    rintro ⟨i, j⟩ hp
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and, decide_eq_true_eq] at hp
+    have hadj := adj i j hp
+    have hj : j.val < n := j.isLt
+    exact Finset.mem_range.mpr (by omega)
+  · -- each adjacent pair is a genuine sign change
+    intro m hm
+    have hmr : m < n - 1 := Finset.mem_range.mp hm
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and, decide_eq_true_eq,
+      DescartesRuleOfSigns.SignChangeBetween, DescartesRuleOfSigns.oppositeSign]
+    refine ⟨Fin.lt_def.mpr (Nat.lt_succ_self _), hnz _, hnz _, ?_, halt _ _ rfl⟩
+    intro k hk1 hk2
+    have h1 : m < k.val := Fin.lt_def.mp hk1
+    have h2 : k.val < m + 1 := Fin.lt_def.mp hk2
+    omega
+  · -- round trip: pair ↦ left index ↦ pair
+    rintro ⟨i, j⟩ hp
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and, decide_eq_true_eq] at hp
+    have hadj := adj i j hp
+    exact Prod.ext_iff.mpr ⟨Fin.ext rfl, Fin.ext hadj.symm⟩
+  · -- round trip: index ↦ pair ↦ index
+    intro m _
+    rfl
+
+/-- **Descartes' variation count is bounded by the degree.**  For any nonzero real
+polynomial `p`, the number of coefficient sign changes is at most `natDegree p`.
+Immediate from `countSignChanges_le` on the length-`(natDegree p + 1)` coefficient
+sequence.  Classical reading: `V(p) ≤ deg p`, with equality attainable when the
+coefficients strictly alternate (`countSignChanges_alternating`). -/
+theorem signChangesInCoeffs_le_natDegree {p : ℝ[X]} (hp : p ≠ 0) :
+    DescartesRuleOfSigns.signChangesInCoeffs p ≤ p.natDegree := by
+  unfold DescartesRuleOfSigns.signChangesInCoeffs
+  rw [dif_neg hp]
+  have h := countSignChanges_le (DescartesRuleOfSigns.coeffSequence p p.natDegree)
+  simpa using h
+
 end DescartesRuleOfSignsOQ01OQ03
