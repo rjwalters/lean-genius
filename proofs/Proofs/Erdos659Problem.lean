@@ -384,6 +384,69 @@ theorem five_not_representable : 5 ∉ representable_x2_2y2 :=
 theorem seven_not_representable : 7 ∉ representable_x2_2y2 :=
   not_representable_of_mod8 7 (Or.inr rfl)
 
+/-! ### Insufficiency of congruence obstructions: a bounded search reduction
+
+The mod-8 obstruction above rules out residues `5, 7 (mod 8)`, but it is **not** the
+whole story: the arithmetic characterization is about *odd powers of inert primes*, not
+a single congruence. The cleanest witness is `35 = 5 · 7`. Both prime factors are inert
+(`≡ 5, 7 mod 8`), so `35` is not representable — yet `35 ≡ 3 (mod 8)`, a residue the
+mod-8 test *permits*. This is precisely why the deep analytic input `moreeOsburnWorks`
+(Landau's theorem for discriminant `−8`) cannot be replaced by any finite set of
+congruences.
+
+To verify `35 ∉ representable_x2_2y2` we first record that representability by *integers*
+is equivalent to representability by *naturals* (`x² = |x|²`), which turns the unbounded
+search over `ℤ` into a bounded search over `ℕ` closed by `interval_cases`. -/
+
+/-- **Reduction to a bounded natural search.** A natural number is representable as
+    `x² + 2y²` over the *integers* iff it is representable over the *naturals*, because
+    `x² = (|x|)²`. This makes representability of a concrete `n` decidable by a finite
+    search: `a² ≤ n` and `2b² ≤ n` bound the two variables. -/
+theorem representable_iff_nat (n : ℕ) :
+    n ∈ representable_x2_2y2 ↔ ∃ a b : ℕ, n = a ^ 2 + 2 * b ^ 2 := by
+  constructor
+  · rintro ⟨x, y, hxy⟩
+    refine ⟨x.natAbs, y.natAbs, ?_⟩
+    have hx : ((x.natAbs : ℤ)) ^ 2 = x ^ 2 := by
+      have h := Int.natAbs_mul_self (a := x); push_cast at h; rw [sq, sq]; exact h
+    have hy : ((y.natAbs : ℤ)) ^ 2 = y ^ 2 := by
+      have h := Int.natAbs_mul_self (a := y); push_cast at h; rw [sq, sq]; exact h
+    have : (n : ℤ) = ((x.natAbs ^ 2 + 2 * y.natAbs ^ 2 : ℕ) : ℤ) := by
+      push_cast [hx, hy]; rw [hxy]
+    exact_mod_cast this
+  · rintro ⟨a, b, hab⟩
+    exact ⟨a, b, by exact_mod_cast hab⟩
+
+/-- **`35` is not representable as `x² + 2y²`.** Since `35 = 5 · 7` and both primes are
+    inert in `ℤ[√-2]` (`5 ≡ 5`, `7 ≡ 7 mod 8`), the product carries each to an *odd*
+    power and is not a norm. Verified here by the bounded search from
+    `representable_iff_nat` (`a ≤ 5`, `b ≤ 4`). -/
+theorem thirtyfive_not_representable : 35 ∉ representable_x2_2y2 := by
+  rw [representable_iff_nat]
+  rintro ⟨a, b, hab⟩
+  have ha : a ≤ 5 := by
+    by_contra hcon; push_neg at hcon
+    have h36 : 36 ≤ a ^ 2 := by
+      calc 36 = 6 ^ 2 := by norm_num
+        _ ≤ a ^ 2 := Nat.pow_le_pow_left hcon 2
+    omega
+  have hb : b ≤ 4 := by
+    by_contra hcon; push_neg at hcon
+    have h25 : 25 ≤ b ^ 2 := by
+      calc 25 = 5 ^ 2 := by norm_num
+        _ ≤ b ^ 2 := Nat.pow_le_pow_left hcon 2
+    omega
+  interval_cases a <;> interval_cases b <;> omega
+
+/-- **The mod-8 obstruction is not sufficient.** There is an integer that passes the
+    mod-8 test (its residue is neither `5` nor `7`) yet is *not* representable as
+    `x² + 2y²` — namely `35 ≡ 3 (mod 8)`. Hence no finite congruence condition can
+    characterize the norm form of `ℤ[√-2]`; the full (Landau/`moreeOsburnWorks`)
+    arithmetic characterization by prime-power parities is genuinely needed. -/
+theorem mod8_obstruction_not_sufficient :
+    ∃ n : ℕ, n % 8 ≠ 5 ∧ n % 8 ≠ 7 ∧ n ∉ representable_x2_2y2 :=
+  ⟨35, by decide, by decide, thirtyfive_not_representable⟩
+
 /-- The 4-point property follows from avoiding all six two-distance configurations,
     **together with** the geometric lower bound that no 4-point subset collapses to
     fewer than two distinct distances.
