@@ -406,7 +406,7 @@ theorem zeta_even_weighted_prod_eq_rat_mul_pi_pow {ι : Type*} (f g : ι → ℕ
       obtain ⟨qa, hqa, hqaeq⟩ :=
         zeta_even_pow_eq_rat_mul_pi_pow (f a) (g a)
           (hf a (Finset.mem_insert_self a s)) (hg a (Finset.mem_insert_self a s))
-      refine ⟨qa ^ g a * q, mul_ne_zero (pow_ne_zero _ hqa) hq, ?_⟩
+      refine ⟨qa * q, mul_ne_zero hqa hq, ?_⟩
       rw [Finset.prod_insert ha, Finset.sum_insert ha, hqeq, hqaeq, mul_add, pow_add]
       push_cast; ring
 
@@ -428,6 +428,73 @@ theorem zeta_even_weighted_prod_transcendental {ι : Type*} (f g : ι → ℕ) (
   have hpos : 0 < ∑ i ∈ s, f i * g i :=
     Finset.sum_pos (fun i hi => Nat.mul_pos (hf i hi) (hg i hi)) hs
   omega
+
+open Polynomial in
+/-- **Master transcendence engine: every nonconstant rational polynomial of π is transcendental.**
+
+    If `f ∈ ℚ[X]` has `natDegree f ≠ 0` (i.e. `f` is nonconstant) then the value `f(π)` is
+    transcendental over ℚ.  This single lemma *unifies* every transcendence result above: each of
+    `zeta_even_transcendental` (`f = C qₙ · X^(2n)`), `zeta_even_product_transcendental`,
+    `zeta_even_pow_transcendental`, and the ratio results is merely the special case of a *monomial*
+    `f`.  Its genuinely new payoff is **additive**: a `ℚ`-linear combination of even zeta values —
+    which leaves the multiplicative class `ℚ∖{0}·π^(even)` — is *still* transcendental, because it
+    is a nonconstant polynomial in π (see `zeta_even_add_transcendental` below).
+
+    Proof: `f` nonconstant ⟹ `f ≠ 0` ⟹ `leadingCoeff f ≠ 0`, which over the field ℚ lies in the
+    non-zero-divisors; `Transcendental.aeval` then lifts `Transcendental ℚ π`
+    (`pi_transcendental_over_rationals`) to `aeval π f`.
+
+    **Assumption:** `hermite_lindemann` (transcendence of π). -/
+theorem transcendental_aeval_pi (f : ℚ[X]) (hf : f.natDegree ≠ 0) :
+    Transcendental ℚ (Polynomial.aeval π f) := by
+  have hfne : f ≠ 0 := fun h => hf (by rw [h, natDegree_zero])
+  exact pi_transcendental_over_rationals.aeval f hf
+    (mem_nonZeroDivisors_of_ne_zero (leadingCoeff_ne_zero.mpr hfne))
+
+open Polynomial in
+/-- **Sums of two distinct even zeta values are transcendental — the additive frontier.**
+
+    For `n ≠ m` (both `≥ 1`), `ζ(2n) + ζ(2m)` is transcendental over ℚ.  This is a *new* kind of
+    result: the multiplicative structure theorems above (`zeta_even_product_transcendental`,
+    `zeta_even_pow_transcendental`, …) all stay inside the class `ℚ∖{0}·π^(even>0)`, but a sum of
+    two *distinct* even zeta values leaves that class — `qₙ·π^(2n) + qₘ·π^(2m)` is a genuine
+    *two-term* polynomial in π, not a single monomial `q·π^(2k)`.  Transcendence nevertheless
+    survives, because this is a nonconstant polynomial in the transcendental π
+    (`transcendental_aeval_pi`); the two exponents `2n ≠ 2m` cannot cancel and neither leading
+    coefficient vanishes, so the polynomial `C qₙ·X^(2n) + C qₘ·X^(2m)` has degree `max(2n,2m) ≥ 2`.
+    Concretely `ζ(2)+ζ(4) = π²/6 + π⁴/90` and `ζ(2)+ζ(6) = π²/6 + π⁶/945` are transcendental.
+
+    **Assumption:** `hermite_lindemann` (transcendence of π). -/
+theorem zeta_even_add_transcendental (n m : ℕ) (hn : 0 < n) (hm : 0 < m) (hnm : n ≠ m) :
+    Transcendental ℚ
+      ((∑' k : ℕ, 1 / (k : ℝ) ^ (2 * n)) + (∑' k : ℕ, 1 / (k : ℝ) ^ (2 * m))) := by
+  obtain ⟨qn, hqn, hqn_eq⟩ := zeta_even_eq_rat_mul_pi_pow n hn
+  obtain ⟨qm, hqm, hqm_eq⟩ := zeta_even_eq_rat_mul_pi_pow m hm
+  -- Express the sum as a two-term polynomial in π.
+  have hsum : (∑' k : ℕ, 1 / (k : ℝ) ^ (2 * n)) + (∑' k : ℕ, 1 / (k : ℝ) ^ (2 * m))
+      = Polynomial.aeval π (C qn * X ^ (2 * n) + C qm * X ^ (2 * m)) := by
+    rw [hqn_eq, hqm_eq]
+    simp [map_add, map_mul, aeval_C, map_pow, aeval_X]
+  rw [hsum]
+  -- The polynomial is nonconstant: distinct exponents 2n ≠ 2m, both coefficients nonzero.
+  refine transcendental_aeval_pi _ ?_
+  rcases Nat.lt_or_ge (2 * n) (2 * m) with h | h
+  · rw [natDegree_add_eq_right_of_natDegree_lt
+        (by rw [natDegree_C_mul_X_pow _ _ hqn, natDegree_C_mul_X_pow _ _ hqm]; exact h),
+        natDegree_C_mul_X_pow _ _ hqm]
+    omega
+  · have h' : 2 * m < 2 * n := by omega
+    rw [natDegree_add_eq_left_of_natDegree_lt
+        (by rw [natDegree_C_mul_X_pow _ _ hqn, natDegree_C_mul_X_pow _ _ hqm]; exact h'),
+        natDegree_C_mul_X_pow _ _ hqn]
+    omega
+
+/-- **ζ(2) + ζ(4) = π²/6 + π⁴/90 is transcendental over ℚ** — a concrete two-term sum leaving the
+    multiplicative class `ℚ∖{0}·π^(even)` yet remaining transcendental. -/
+theorem zeta_two_add_zeta_four_transcendental :
+    Transcendental ℚ ((∑' k : ℕ, 1 / (k : ℝ) ^ 2) + (∑' k : ℕ, 1 / (k : ℝ) ^ 4)) := by
+  have := zeta_even_add_transcendental 1 2 one_pos (by norm_num) (by norm_num)
+  simpa using this
 
 /-!
 ## The open odd case (documentation only)
