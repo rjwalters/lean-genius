@@ -71,12 +71,14 @@
       "collinear_three_root / onLine_root_collinear / isKCollinear_root_collinear (0-axiom): bridge the entry's three bespoke collinearity predicates (three-point Collinear p q r, geometric OnLine/Line, IsKCollinear) to Mathlib's canonical Collinear ℝ via collinear_iff_exists_forall_eq_smul_vadd — closing the implicit faithfulness gap that the file-local notions agree with the standard vectorSpan-rank-≤-1 definition",
       "erdos1090_construction_root_collinear (0-axiom): the faithful form of the affirmative answer — restates the main construction so its k monochromatic points are Collinear ℝ in Mathlib's standard sense, confirming Erdős #1090 holds for the canonical meaning of \"collinear\", not merely the bespoke IsKCollinear",
       "HasRamseyPropertyColored / ramseyNumberColored (0-axiom): the r-coloring Ramsey number R_C(k) over an arbitrary finite palette C, quantifying the previously existence-only ramsey_construction_general; HasRamseyPropertyColored Bool = HasRamseyProperty definitionally (ramseyNumberColored_bool : R_Bool = ramseyNumber)",
-      "ramseyNumberColored_mono_colors (0-axiom): palette monotonicity — if C ↪ C' then R_C(k) ≤ R_{C'}(k); more colors cannot lower the threshold. Proved via hasRamseyPropertyColored_of_embedding (a C-coloring pushes forward along e, and injectivity of e pulls monochromaticity back). ramseyNumberColored_congr gives recoloring invariance (C ≃ C' ⟹ equal), ramseyNumberColored_mono_fin the monotone chain R_{Fin r} ≤ R_{Fin r'} for r ≤ r', and ramseyNumber_le_ramseyNumberColored_fin the bound R(k) ≤ R_{Fin r}(k) for r ≥ 2 (via finTwoEquiv)"
+      "ramseyNumberColored_mono_colors (0-axiom): palette monotonicity — if C ↪ C' then R_C(k) ≤ R_{C'}(k); more colors cannot lower the threshold. Proved via hasRamseyPropertyColored_of_embedding (a C-coloring pushes forward along e, and injectivity of e pulls monochromaticity back). ramseyNumberColored_congr gives recoloring invariance (C ≃ C' ⟹ equal), ramseyNumberColored_mono_fin the monotone chain R_{Fin r} ≤ R_{Fin r'} for r ≤ r', and ramseyNumber_le_ramseyNumberColored_fin the bound R(k) ≤ R_{Fin r}(k) for r ≥ 2 (via finTwoEquiv)",
+      "ramseyNumber_isLeast / ramseyNumberColored_isLeast: IsLeast packaging pinning R(k) (resp. R_C(k)) as the MINIMUM realizable point-set size — combining the attained-infimum witness (exists_..._card_eq_ramseyNumber...) with the lower bound (..._le_of_hasRamseyProperty) into one reusable least-element object.",
+      "ramseyNumber_pos: 0 < R(k) for k>=3 (from ramsey_lower_bound R(k)>=k>=3)."
     ],
     "axiomCount": 0,
-    "lineCount": 1179,
+    "lineCount": 1214,
     "assumptions": "None. 0 axiom declarations, 0 sorries. Both former axioms (graham_selfridge, hunter_observation) are now theorems proved from Mathlib's Hales-Jewett theorem. #print axioms reports only the standard foundational axioms [propext, Classical.choice, Quot.sound]; no sorryAx, no Lean.ofReduceBool. The Line structure's `nonzero` field is constructive data (a witnessed direction), not an assumption.",
-    "theoremCount": 40,
+    "theoremCount": 43,
     "definitionCount": 20
   },
   "overview": {
@@ -113,9 +115,9 @@
       "Finset"
     ],
     "namespace": "Erdos1090",
-    "lineCount": 1179,
+    "lineCount": 1214,
     "axiomCount": 0,
-    "theoremCount": 40,
+    "theoremCount": 43,
     "definitionCount": 20,
     "path": "Proofs/Erdos1090Problem.lean",
     "sorries": 0
