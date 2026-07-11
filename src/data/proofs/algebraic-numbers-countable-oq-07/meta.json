@@ -20,8 +20,8 @@
     "badge": "mathlib",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 438,
-    "theoremCount": 16,
+    "lineCount": 487,
+    "theoremCount": 30,
     "definitionCount": 0,
     "dateAdded": "2026-06-21",
     "mathlibDependencies": [
@@ -136,10 +136,18 @@
       "endLine": 205,
       "summary": "Local instance `NoAtoms (volume : Measure ℂ)` by transporting singletons through ℂ ≃ᵐ ℝ × ℝ. `algebraic_complex_null`: complex algebraic numbers have planar measure zero. `ae_transcendental_complex`: almost every complex number is transcendental.",
       "mathContext": "$\\mathrm{vol}\\{z : \\mathbb{C} \\mid \\mathrm{IsAlgebraic}_\\mathbb{Q}\\,z\\} = 0$ via the atomless planar Lebesgue measure."
+    },
+    {
+      "id": "section-6-cantor-bendixson",
+      "title": "§6. Cantor–Bendixson: Empty Perfect Kernel",
+      "startLine": 438,
+      "endLine": 487,
+      "summary": "A fourth, order-topological smallness notion. `perfect_not_countable`: a nonempty perfect set in a complete metric space is uncountable, via the injection from Cantor space ℕ → Bool (`Perfect.exists_nat_bool_injection`) whose cardinality is the continuum 2^ℵ₀ > ℵ₀. `algebraic_reals_no_perfect_subset` and `algebraic_complex_no_perfect_subset`: the countable algebraic reals (resp. complex algebraic numbers) contain no nonempty perfect subset, so their Cantor–Bendixson kernel is empty.",
+      "mathContext": "A nonempty perfect $P\\subseteq\\mathbb{R}$ satisfies $|P|\\ge 2^{\\aleph_0}>\\aleph_0$, so $P\\subseteq\\{x\\mid\\mathrm{IsAlgebraic}_\\mathbb{Q}\\,x\\}$ (a countable set) forces $P=\\varnothing$."
     }
   ],
   "conclusion": {
-    "summary": "This entry completes the smallness trichotomy for the algebraic numbers by supplying its measure-theoretic pillar: the algebraic reals (and complex algebraic numbers) have Lebesgue measure zero, so almost every real (and complex) number is transcendental. The proof is short — a countable set is null because Lebesgue measure is atomless — but it records the one of the three independent smallness notions (cardinality, Baire category, measure) that was missing from the gallery. All 11 theorems are proved with 0 sorries and 0 axioms.",
+    "summary": "This entry completes the smallness trichotomy for the algebraic numbers by supplying its measure-theoretic pillar: the algebraic reals (and complex algebraic numbers) have Lebesgue measure zero, so almost every real (and complex) number is transcendental. The proof is short — a countable set is null because Lebesgue measure is atomless — but it records the one of the three independent smallness notions (cardinality, Baire category, measure) that was missing from the gallery. A fourth, order-topological, pillar is also recorded: since a nonempty perfect set in a complete metric space is uncountable (it injects Cantor space ℕ → Bool, of cardinality 2^ℵ₀ > ℵ₀), the countable algebraic reals contain no nonempty perfect subset, so their Cantor–Bendixson kernel is empty. All 30 theorems are proved with 0 sorries and 0 axioms.",
     "implications": "With this entry, the gallery records all three senses in which 'almost every real is transcendental': cardinality (ℵ₀ < 𝔠, parent entry), Baire category (the transcendentals are comeagre, `algebraic-reals-meager`), and measure (the transcendentals are conull, this entry). Because the three notions are logically independent, each is a genuinely separate theorem, and only by proving all three is the statement 'the algebraic reals are negligible' established in every standard sense.\n\nThe measure-theoretic existence corollary adds a third route to the existence of transcendentals — any positive-measure set contains one — complementing Cantor's counting proof and Liouville's explicit construction. This is the prototype of a probabilistic/measure-theoretic existence argument: a randomly chosen real (uniform on any interval) is transcendental with probability one.",
     "openQuestions": [
       "Refine 'measure zero' to 'Hausdorff dimension zero': a countable set has Hausdorff dimension 0, which is strictly stronger than Lebesgue-null. Formalizing $\\dim_H\\{x : \\mathrm{IsAlgebraic}_\\mathbb{Q}\\,x\\} = 0$ would sharpen this entry and connect to the fractal-geometry hierarchy of negligible sets.",
@@ -177,8 +185,8 @@
   ],
   "leanFile": {
     "path": "Proofs/AlgebraicRealsNull.lean",
-    "lineCount": 438,
-    "theoremCount": 28,
+    "lineCount": 487,
+    "theoremCount": 30,
     "axiomCount": 0,
     "definitionCount": 0,
     "sorries": 0
