@@ -50,7 +50,8 @@
       "Realizability of finite groups as Galois groups is unconditional and elementary over an auxiliary base field — Artin's theorem turns any faithful finite field action into a Galois extension whose group is the acting group. The whole difficulty of the inverse Galois problem is the demand that the base be ℚ.",
       "The structural half (F/F^G is Galois) needs no faithfulness at all: IsGalois.of_fixed_field holds for any finite group action; faithfulness is needed only to identify G with the full Galois group (rather than a quotient) and to pin the degree to |G|.",
       "Cayley + permutation action gives the universal statement: G ↪ Sym(G) acts faithfully on K(x_g : g ∈ G) by permuting variables, so every finite group is a Galois group over the corresponding fixed field — the verified Artin lemmas here are the engine, only the faithful-action construction is left to the docstring.",
-      "This is the honest, axiom-free mirror of the parent: where Shafarevich asserts Gal(L/ℚ) ≅ G (axiomatized, class field theory), Artin gives Gal(F/F^G) ≅ G (verified, elementary) — the same conclusion shape with a different, freely-chosen base field."
+      "This is the honest, axiom-free mirror of the parent: where Shafarevich asserts Gal(L/ℚ) ≅ G (axiomatized, class field theory), Artin gives Gal(F/F^G) ≅ G (verified, elementary) — the same conclusion shape with a different, freely-chosen base field.",
+      "Existentializing the base is what turns a fixed-field construction into a genuine inverse-Galois statement: artin_realizability names the base concretely as F^G, while realizable_over_some_subfield hides it behind an ∃ k. The two forms carry the same content, but the existence form is precisely the reformulation that isolates 'which base field' as the sole remaining difficulty — everything else (Galois-ness, group identification, degree [F:k]=|G|) is already discharged unconditionally."
     ],
     "prerequisites": [
       "Galois extensions L/K (Mathlib IsGalois); the Galois group as the type L ≃ₐ[K] L of K-algebra automorphisms.",
@@ -114,10 +115,19 @@
     },
     {
       "id": "realizability",
-      "title": "Section III — bundled and existence-form realizability",
+      "title": "Section III — bundled realizability",
       "startLine": 77,
+      "endLine": 86,
+      "summary": "artin_realizability bundles the three facts of Sections I–II into one statement for a faithful finite action: IsGalois (F^G) F ∧ (G ≃* Gal(F/F^G)) ∧ [F:F^G] = |G|, proved simply as ⟨extension_isGalois, ⟨galoisGroupEquiv⟩, degree_eq_card⟩. This is the verified, axiom-free counterpart of the Shafarevich axiom in the parent file, with the base taken to be F^G rather than ℚ.",
+      "mathContext": "For a finite $G$ acting faithfully on $F$: $\\mathrm{IsGalois}\\,F^G\\,F \\ \\wedge\\ G \\cong \\mathrm{Gal}(F/F^G)\\ \\wedge\\ [F:F^G]=|G|$."
+    },
+    {
+      "id": "realizable-subfield",
+      "title": "Section IV — existence form (inverse-Galois shape)",
+      "startLine": 87,
       "endLine": 97,
-      "summary": "artin_realizability bundles the three facts (Galois, group iso, degree) for a faithful finite action. realizable_over_some_subfield states the existence form: G is the Galois group of F over some subfield k ⊆ F with [F:k] = |G| — the inverse-Galois shape with an auxiliary base field, the verified mirror of the Shafarevich axiom."
+      "summary": "realizable_over_some_subfield repackages the bundle existentially: a finite group acting faithfully on F is the Galois group of F over *some* subfield k ⊆ F with [F:k] = |G| (witnessed by k = F^G). This is the shape that mirrors the inverse Galois statement 'G is a Galois group over the base' — here the base is an auxiliary subfield rather than ℚ, which is exactly what makes it unconditional.",
+      "mathContext": "$\\exists\\,k \\subseteq F$ a subfield with $\\mathrm{IsGalois}\\,k\\,F$, $G \\cong \\mathrm{Gal}(F/k)$, and $[F:k]=|G|$ — realized by $k=F^G$."
     }
   ],
   "crossReferences": [
