@@ -56,10 +56,10 @@
       "Repaired latent Mathlib-drift breakage in erdos_165 (linarith could not widen 5/4 to 2 without k²/log k ≥ 0)"
     ],
     "axiomCount": 10,
-    "lineCount": 418,
+    "lineCount": 448,
     "assumptions": "10 axioms (unchanged): ramseyNumber, ramseyNumber_symm, ramseyNumber_recurrence, R3_small_values, aks_upper_bound, shearer_upper_bound, kim_lower_bound, bk_pgm_bound, cjms_bound, hhkp_bound. 0 sorries. New theorems add no axioms; asymptotic_constant_le is fully axiom-free; pgm_conjecture_refuted depends only on the existing hhkp_bound.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 11,
+    "theoremCount": 14,
     "definitionCount": 4,
     "additionalFiles": [
       "Proofs/Stubs/Erdos165Aristotle.lean"
@@ -166,9 +166,9 @@
       "Real"
     ],
     "namespace": "Erdos165",
-    "lineCount": 418,
+    "lineCount": 448,
     "axiomCount": 10,
-    "theoremCount": 11,
+    "theoremCount": 14,
     "definitionCount": 4,
     "path": "Proofs/Erdos165Problem.lean",
     "sorries": 0,

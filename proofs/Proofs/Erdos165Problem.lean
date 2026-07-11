@@ -398,6 +398,36 @@ theorem constantConjecture_unique (c₁ c₂ : ℝ)
       (fun ε hε => by obtain ⟨k₀, hk₀⟩ := h₁ ε hε; exact ⟨k₀, fun k hk => (hk₀ k hk).2⟩)
   linarith
 
+/-- **`mainConjecture` is the `constantConjecture` at `c = 1/2`.**  The Erdős main
+    conjecture `R(3,k) ~ (1/2)·k²/log k` (`mainConjecture`) is definitionally the
+    generic exact-constant conjecture instantiated at `c = 1/2`.  This wires the
+    standalone `mainConjecture` def into the general `constantConjecture` machinery
+    (`_unique`, `_forces_bracket`, the refutation lemmas). -/
+theorem mainConjecture_iff_constant : mainConjecture ↔ constantConjecture (1/2) :=
+  Iff.rfl
+
+/-- **`pgmConjecture` is the `constantConjecture` at `c = 1/4`.**  The PGM conjecture
+    `R(3,k) ~ (1/4)·k²/log k` (`pgmConjecture`) is definitionally the generic
+    exact-constant conjecture at `c = 1/4`, connecting it to the general machinery. -/
+theorem pgmConjecture_iff_constant : pgmConjecture ↔ constantConjecture (1/4) :=
+  Iff.rfl
+
+/-- **The main and PGM conjectures are mutually exclusive.**  `mainConjecture`
+    (`c = 1/2`) and `pgmConjecture` (`c = 1/4`) cannot both hold: they assert two
+    different exact asymptotic constants for the *same* sequence `R(3,k)`, and
+    `constantConjecture_unique` forces any two such constants to coincide, whereas
+    `1/2 ≠ 1/4`.  This is the machine-checked form of the "in particular … mutually
+    exclusive" remark in `constantConjecture_unique`'s docstring, and — unlike
+    `pgm_conjecture_refuted` (which invokes the Ramsey bound `hhkp_bound`) — it uses
+    *no* Ramsey input at all: it is a purely structural incompatibility of two
+    exact-constant claims, holding for any sequence whatsoever. -/
+theorem main_pgm_mutually_exclusive : ¬ (mainConjecture ∧ pgmConjecture) := by
+  rintro ⟨hm, hp⟩
+  have h : (1 : ℝ) / 2 = 1 / 4 :=
+    constantConjecture_unique (1/2) (1/4)
+      (mainConjecture_iff_constant.mp hm) (pgmConjecture_iff_constant.mp hp)
+  norm_num at h
+
 /- ## Part VII: Related Problems -/
 
 /-
