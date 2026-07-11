@@ -843,6 +843,65 @@ theorem avoidsLIntersections_insert {r : ℕ} {L : Finset ℕ} {F : Finset (Fins
   rw [Finset.insert_eq, avoidsLIntersections_union,
       avoidsRIntersection_iff_avoidsLIntersections_singleton]
 
+/--
+**T_L(n, L):** the maximum size of a family `F ⊆ 2^{[n]}` avoiding *every* intersection
+size in `L` — the Frankl–Wilson `L`-avoiding analogue of `T(n,r)`. The maximisation ranges
+over the same families as `T` (`F ∈ (range n).powerset.powerset`) but under the stronger
+`avoidsLIntersections L` constraint, so `T_L` interpolates the whole `T`-theory across the
+hierarchy: `T_L n {r} = T n r`, and forbidding more sizes can only shrink the maximum.
+-/
+noncomputable def T_L (n : ℕ) (L : Finset ℕ) : ℕ :=
+  (((Finset.range n).powerset.powerset).filter (avoidsLIntersections L)).sup
+    (fun F => F.card)
+
+/--
+**`T_L` specializes to `T` at a singleton.** Forbidding the single intersection size `r`
+recovers exactly `T(n,r)`, since `avoidsLIntersections {r}` and `avoidsRIntersection r` cut
+out the same families (`avoidsRIntersection_iff_avoidsLIntersections_singleton`). This is the
+statement that `T_L` genuinely generalizes the extremal quantity `T`.
+-/
+theorem T_L_singleton (n r : ℕ) : T_L n {r} = T n r := by
+  have hfilt :
+      ((Finset.range n).powerset.powerset).filter (avoidsLIntersections {r})
+        = ((Finset.range n).powerset.powerset).filter (avoidsRIntersection r) := by
+    apply Finset.ext
+    intro F
+    simp only [Finset.mem_filter, and_congr_right_iff]
+    intro _
+    exact (avoidsRIntersection_iff_avoidsLIntersections_singleton r F).symm
+  unfold T_L T
+  rw [hfilt]
+
+/--
+**`T_L` is antitone in the forbidden-size set.** Forbidding a *larger* set of intersection
+sizes is a stronger constraint, so it can only shrink the extremal family: `L ⊆ L'` gives
+`T_L n L' ≤ T_L n L`. Proved from `avoidsLIntersections_of_subset_forbidden` — every family
+counted by `T_L n L'` is also counted by `T_L n L` — via `Finset.sup_mono`.
+-/
+theorem T_L_antitone_forbidden {n : ℕ} {L L' : Finset ℕ} (hL : L ⊆ L') :
+    T_L n L' ≤ T_L n L := by
+  unfold T_L
+  apply Finset.sup_mono
+  intro F hF
+  rw [Finset.mem_filter] at hF ⊢
+  exact ⟨hF.1, avoidsLIntersections_of_subset_forbidden hL hF.2⟩
+
+/--
+**Adding a forbidden size cannot increase `T_L`.** The `insert` corollary of antitonicity:
+`T_L n (insert r L) ≤ T_L n L`. Assembling the forbidden set one size at a time (cf.
+`avoidsLIntersections_insert`) only tightens the bound. -/
+theorem T_L_insert_le {n r : ℕ} {L : Finset ℕ} : T_L n (insert r L) ≤ T_L n L :=
+  T_L_antitone_forbidden (Finset.subset_insert r L)
+
+/--
+**An `L`-avoiding maximum is bounded by the `r`-avoiding maximum for any forbidden `r ∈ L`.**
+If `r ∈ L` then `T_L n L ≤ T n r`: an `L`-avoiding family is in particular `r`-avoiding, so it
+cannot beat the single-size extremal `T(n,r)`. Ties the `L`-avoiding hierarchy back to the
+concrete quantities `T(n,r)` computed in Parts II–VI. -/
+theorem T_L_le_T_of_mem {n r : ℕ} {L : Finset ℕ} (hr : r ∈ L) : T_L n L ≤ T n r := by
+  rw [← T_L_singleton]
+  exact T_L_antitone_forbidden (Finset.singleton_subset_iff.mpr hr)
+
 /-
 ## Part VIII: Summary
 -/
