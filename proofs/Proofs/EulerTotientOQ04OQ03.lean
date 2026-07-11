@@ -3118,4 +3118,90 @@ theorem forward_gap_fiveTimes_ge_pow {m : ℕ} (hm : 3 ≤ m)
   calc 2 ^ (k + 2) = 4 * 2 ^ k := by rw [pow_add]; ring
     _ ≤ (2 * m - 2) * 2 ^ k := by gcongr; omega
 
+-- ----------------------------------------------------------------------------
+-- Quantitative closure of the EQUALITY regime: the exact zero gap of the
+-- Sophie–Germain family `n = 3q·2^(k+1)`
+-- ----------------------------------------------------------------------------
+-- `mem_EqualitySet_sophieGermain` shows `φ(n) = φ(D(n))` for the Sophie–Germain
+-- seeds `a = 3q` (`q, 2q+1` prime, `q ≥ 5`), but only *qualitatively* — it asserts
+-- equality without exhibiting the landing `D(n)` or the common totient value.  Here
+-- we compute both exactly, completing the quantitative trichotomy alongside
+-- `reversal_gap_primeTriple` (exact gap `(2m+2)·2^k > 0`) and
+-- `forward_gap_fiveTimes_ge` (margin `≥ (2m−2)·2^k > 0`):
+--
+--   D(3q·2^(k+1)) = q·2^(k+2)  and  φ(n) = φ(D(n)) = (q−1)·2^(k+1),
+--
+-- so the equality-regime "gap" `φ(D(n)) − φ(n)` is not merely small but *identically
+-- zero* along the whole family, for every `k`.  Mechanism (via `dblIter_transport`
+-- with `a = 3q`, `b = 2q+1`): `2a − φ(a) = 6q − 2(q−1) = 2(2q+1)`, so the first
+-- cototient step lands on `(2q+1)·2^(k+1)`; then `D(n) = (2a − φ(b))·2^k =
+-- (6q − 2q)·2^k = q·2^(k+2)`.
+
+/-- **Exact double-iterate landing of the Sophie–Germain equality family.**  For a
+    seed `a = 3q` with `q` and `2q+1` both prime (`q ≥ 5`), the double iterate collapses
+    the entire family `n = 3q·2^(k+1)` onto the pure form `q·2^(k+2)`:
+    `D(3q·2^(k+1)) = q·2^(k+2)`.  (First cototient step lands on `(2q+1)·2^(k+1)`; the
+    second recombines to `q·2^(k+2)`.)  This is the equality-regime analogue of the
+    reversal landing `D(21·2^(k+1)) = 17·2^(k+1)` and generalizes the concrete
+    `dblIter_eq_family` (`q = 5`: `D(15·2^(k+1)) = 5·2^(k+2)`) to the whole family. -/
+theorem sophieGermain_dblIter_landing {q : ℕ} (hq : q.Prime) (hq5 : 5 ≤ q)
+    (hsg : (2 * q + 1).Prime) (k : ℕ) :
+    dblIter (3 * q * 2 ^ (k + 1)) = q * 2 ^ (k + 2) := by
+  have hqodd : Odd q := hq.odd_of_ne_two (by omega)
+  have hcop : Nat.Coprime 3 q := (Nat.coprime_primes (by norm_num) hq).mpr (by omega)
+  have hφ3q : Nat.totient (3 * q) = 2 * (q - 1) := by
+    rw [Nat.totient_mul hcop, Nat.totient_prime hq, show Nat.totient 3 = 2 from by decide]
+  have hodd3q : Odd (3 * q) := by rcases hqodd with ⟨j, hj⟩; exact ⟨3 * j + 1, by omega⟩
+  have hodd2q1 : Odd (2 * q + 1) := ⟨q, by ring⟩
+  have hφ2q1 : Nat.totient (2 * q + 1) = 2 * q := by rw [Nat.totient_prime hsg]; omega
+  have hstep : 2 * (3 * q) - Nat.totient (3 * q) = 2 * (2 * q + 1) := by rw [hφ3q]; omega
+  rw [dblIter_transport hodd3q hodd2q1 hstep k, hφ2q1,
+      show 2 * (3 * q) - 2 * q = 4 * q from by omega,
+      show (2 : ℕ) ^ (k + 2) = 4 * 2 ^ k from by rw [pow_succ, pow_succ]; ring]
+  ring
+
+/-- **Exact common totient value of the Sophie–Germain equality family.**  For a seed
+    `a = 3q` with `q`, `2q+1` both prime (`q ≥ 5`), both `φ(n)` and `φ(D(n))` along
+    `n = 3q·2^(k+1)` equal the same closed form `(q−1)·2^(k+1)`.  The first is a direct
+    totient computation (`φ(3q·2^(k+1)) = φ(3q)·2^k = 2(q−1)·2^k`); the second uses the
+    exact landing `sophieGermain_dblIter_landing` (`D(n) = q·2^(k+2)`, so
+    `φ(D(n)) = φ(q)·2^(k+1) = (q−1)·2^(k+1)`).  This is the quantitative refinement of
+    `mem_EqualitySet_sophieGermain`, which only asserted the two are equal. -/
+theorem sophieGermain_totient_eq_value {q : ℕ} (hq : q.Prime) (hq5 : 5 ≤ q)
+    (hsg : (2 * q + 1).Prime) (k : ℕ) :
+    Nat.totient (3 * q * 2 ^ (k + 1)) = (q - 1) * 2 ^ (k + 1) ∧
+      Nat.totient (dblIter (3 * q * 2 ^ (k + 1))) = (q - 1) * 2 ^ (k + 1) := by
+  have hqodd : Odd q := hq.odd_of_ne_two (by omega)
+  have oddCop : ∀ (c m : ℕ), Odd c → Nat.Coprime c (2 ^ m) := by
+    intro c m hc
+    have h2 : ¬ (2 ∣ c) := by
+      intro hd; rw [Nat.dvd_iff_mod_eq_zero] at hd; have := Nat.odd_iff.mp hc; omega
+    exact ((Nat.prime_two.coprime_iff_not_dvd).mpr h2).symm.pow_right m
+  have hcop : Nat.Coprime 3 q := (Nat.coprime_primes (by norm_num) hq).mpr (by omega)
+  have hφ3q : Nat.totient (3 * q) = 2 * (q - 1) := by
+    rw [Nat.totient_mul hcop, Nat.totient_prime hq, show Nat.totient 3 = 2 from by decide]
+  have hodd3q : Odd (3 * q) := by rcases hqodd with ⟨j, hj⟩; exact ⟨3 * j + 1, by omega⟩
+  have hp2 : Nat.totient (2 ^ (k + 1)) = 2 ^ k := by
+    rw [Nat.totient_prime_pow Nat.prime_two (Nat.succ_pos k)]; simp
+  have hp2' : Nat.totient (2 ^ (k + 2)) = 2 ^ (k + 1) := by
+    rw [Nat.totient_prime_pow Nat.prime_two (Nat.succ_pos (k + 1))]; simp
+  refine ⟨?_, ?_⟩
+  · rw [Nat.totient_mul (oddCop (3 * q) (k + 1) hodd3q), hφ3q, hp2,
+        show (2 : ℕ) ^ (k + 1) = 2 * 2 ^ k from by rw [pow_succ]; ring]
+    ring
+  · rw [sophieGermain_dblIter_landing hq hq5 hsg k,
+        Nat.totient_mul (oddCop q (k + 2) hqodd), Nat.totient_prime hq, hp2']
+
+/-- **The equality regime has an identically-zero gap.**  Completing the quantitative
+    trichotomy: where the reversal family has gap `φ(D(n)) − φ(n) = (2m+2)·2^k > 0`
+    (`reversal_gap_primeTriple`) and the forward family has margin `≥ (2m−2)·2^k > 0`
+    (`forward_gap_fiveTimes_ge`), the Sophie–Germain equality family sits exactly on the
+    diagonal for *every* `k`: `φ(D(n)) − φ(n) = 0`. -/
+theorem sophieGermain_gap_zero {q : ℕ} (hq : q.Prime) (hq5 : 5 ≤ q)
+    (hsg : (2 * q + 1).Prime) (k : ℕ) :
+    Nat.totient (dblIter (3 * q * 2 ^ (k + 1)))
+      - Nat.totient (3 * q * 2 ^ (k + 1)) = 0 := by
+  obtain ⟨h1, h2⟩ := sophieGermain_totient_eq_value hq hq5 hsg k
+  rw [h1, h2, Nat.sub_self]
+
 end Erdos1064OQ03
