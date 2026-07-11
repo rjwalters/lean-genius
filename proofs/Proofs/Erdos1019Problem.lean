@@ -262,9 +262,10 @@ theorem K4_saturated_planar (G : SimpleGraph V) [DecidableRel G.Adj]
     rw [heq, hScard]
     have h6 : (3 : ℕ) * 4 - 6 = 6 := by norm_num
     rw [h6]
-    -- Routine: complete graph on a 4-element type has C(4,2) = 6 edges
-    -- Mathlib hint: card_edgeFinset_top or equivFin + native_decide
-    sorry
+    -- Complete graph on ↥S (|↥S| = 4) has C(4,2) = 6 edges.
+    -- card_edgeFinset_top_eq_card_choose_two rewrites to (Fintype.card ↥S).choose 2,
+    -- hScard rewrites to Nat.choose 4 2, which rw closes by rfl.
+    rw [card_edgeFinset_top_eq_card_choose_two, hScard]
 
 /-- K₄ gives a saturated planar subgraph on 4 vertices. -/
 theorem K4_gives_large_saturated (G : SimpleGraph V) [DecidableRel G.Adj] :
