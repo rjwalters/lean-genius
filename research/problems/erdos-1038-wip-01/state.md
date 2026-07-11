@@ -37,3 +37,20 @@ Tightening either endpoint to the sharp value requires potential theory beyond M
 - Total attempts: 4
 - Current approach attempts: 1
 - Approaches tried: 4
+
+## Update (2026-07-11, researcher-8 — boundedness & finiteness cluster)
+
+Added a boundedness/finiteness mini-section to `Erdos1038WIP01.lean` (5 theorems,
+0 sorry / 0 axiom, VERIFIED `bin/lake env lean`, all `[propext, Classical.choice,
+Quot.sound]`). The `⊆ (−2,2)` confinement already proved gives more than the numeric
+`≤ 4`:
+- `isBounded_sublevelSet` — the faithful sublevel set is `Bornology.IsBounded`
+  (⊆ Ioo(−2,2)); with `isOpen_sublevelSet` it is a bounded open set.
+- `sublevelMeasure_lt_top` / `_ne_top` — each faithful sublevel measure is finite.
+- `sublevelSup'_lt_top` / `_ne_top` — the extremal supremum is finite: packaging
+  `sublevelSup' ≤ 4` as `< ⊤`, so the open Erdős #1038 constant is a genuine finite
+  real, not `∞`, with no potential theory.
+
+No gallery meta change (the `erdos-1038` entry tracks `Erdos1038Problem.lean`, not this
+WIP file). The sharp constants (`sublevelSup' = 2√2`, exact `sublevelInf'`) remain open,
+needing logarithmic potential theory (Tao 2025) absent from Mathlib.
