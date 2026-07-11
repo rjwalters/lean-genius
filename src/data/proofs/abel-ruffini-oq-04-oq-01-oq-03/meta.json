@@ -86,7 +86,8 @@
       "The three orders 10, 20, 40 differ only in the 5′-part m ∈ {2, 4, 8}; every other line of the three original lemmas is byte-for-byte identical. The right abstraction is therefore a lemma quantified over the group order 5·m, with the arithmetic that varies (which divisors of m are ≡ 1 mod 5) packaged as a single hypothesis huniq.",
       "Uniqueness of the Sylow 5-subgroup, not its explicit description, is what delivers normality; Sylow's third theorem (n₅ ∣ m and n₅ ≡ 1 mod 5) is exactly the mechanism that turns a statement about the order into n₅ = 1 for all three m simultaneously.",
       "The divisibility hypothesis in huniq is genuinely needed for m = 8: the divisor 6 satisfies 6 ≡ 1 (mod 5), and only 6 ∤ 8 rules it out. The congruence alone does not suffice — this is why huniq takes both d ∣ m and d % 5 = 1.",
-      "Abstracting away from S₅ eliminates the concrete native_decide calls used in the private lemmas to compute the Sylow order; the arithmetic v₅(5·m) = 1 is proved symbolically via Nat.factorization_mul, making the generic lemma 0-axiom where the specializations were not."
+      "Abstracting away from S₅ eliminates the concrete native_decide calls used in the private lemmas to compute the Sylow order; the arithmetic v₅(5·m) = 1 is proved symbolically via Nat.factorization_mul, making the generic lemma 0-axiom where the specializations were not.",
+      "Normality of ⟨c⟩ is only the entry point: the N/C theorem ([G : C_G(c)] ∣ p − 1) plus the class equation turn 'the Sylow subgroup is normal' into a full structural classification. When the index m is coprime to p − 1 the element c becomes central, yielding a normal p-complement and hence an internal direct product G ≅ ⟨c⟩ × H — and from there solvability (for m a prime power), the sharp upgrade to nilpotency (in the coprime regime), and the classical facts that every group of order 15, 33, or 35 is cyclic all follow. The Abel–Ruffini orders 20 and 40 sit precisely on the non-coprime side, the exact boundary where nilpotency fails while solvability survives."
     ],
     "prerequisites": [
       "Sylow's theorems: existence, conjugacy, and the count n_p ≡ 1 (mod p) with n_p dividing the index",
@@ -101,33 +102,105 @@
       "id": "header-setup",
       "title": "Framing and Setup",
       "startLine": 1,
-      "endLine": 62,
-      "summary": "Module docstring identifying the three verbatim private lemmas gal_card_ne_10/_20/_40 of the verified Abel–Ruffini x⁵−4x+2 proof and the shared Sylow skeleton they instantiate at orders 10, 20, 40. Then `import Mathlib`, `namespace AbelRuffiniSylowElim`, and the statement of zpowers_order5_normal over an arbitrary finite group G with the order/divisor hypotheses.",
-      "mathContext": "$|G| = 5m,\\ 5 \\nmid m,\\ (\\forall d \\mid m,\\ d \\equiv 1 \\ (\\mathrm{mod}\\ 5) \\Rightarrow d = 1).$"
+      "endLine": 56,
+      "summary": "Module docstring: the verified Abel–Ruffini x⁵−4x+2 proof rules out |Gal| ∈ {10, 20, 40} with three verbatim private lemmas gal_card_ne_10/_20/_40, each a Sylow argument on a subgroup of order 5·m. This file factors that shared core into one generic lemma and lifts it from the fixed prime 5 to an arbitrary prime p — a genuine generalization (the mod-p and cancellation steps that omega/interval_cases dispatch on numerals now need Nat.mod_eq_of_lt and Nat.eq_of_mul_eq_mul_right). Fully abstract, native_decide-free, 0-sorry/0-axiom. `import Mathlib`; `namespace AbelRuffiniSylowElim`; `open scoped Classical`.",
+      "mathContext": "$|G| = pm,\\ p \\nmid m,\\ (\\forall d \\mid m,\\ d \\equiv 1\\ (\\mathrm{mod}\\ p) \\Rightarrow d = 1).$"
     },
     {
-      "id": "sylow-order-and-uniqueness",
-      "title": "Sylow 5-Subgroup Has Order 5 and Is Unique",
-      "startLine": 63,
-      "endLine": 95,
-      "summary": "The 5-part of |G| = 5·m is exactly 5 (Nat.factorization_mul + factorization_eq_zero_of_not_dvd, no native_decide), so |P₅| = 5. Its index is m, and Sylow's third theorem (card_sylow_modEq_one, Sylow.card_dvd_index) gives n₅ ∣ m with n₅ ≡ 1 (mod 5); huniq forces n₅ = 1.",
-      "mathContext": "$|P_5| = 5,\\quad n_5 \\mid m,\\quad n_5 \\equiv 1\\ (\\mathrm{mod}\\ 5) \\;\\Rightarrow\\; n_5 = 1.$"
+      "id": "sylow-normality-core",
+      "title": "Section 1 — the generic Sylow-elimination core",
+      "startLine": 57,
+      "endLine": 202,
+      "summary": "zpowers_sylow_normal: in a finite group of order p·m with p ∤ m and no divisor d ∣ m with d ≡ 1 (mod p) other than d = 1, the Sylow p-subgroup is unique — hence normal — and equals ⟨c⟩ for any order-p element c, so ⟨c⟩ ⊴ G. Uses the p-part of |G| = p·m (Nat.factorization), Sylow's third theorem (card_sylow_modEq_one, Sylow.card_dvd_index) forcing nₚ = 1, and a cardinality bijection to identify Pₚ = ⟨c⟩. conj_mem_zpowers_sylow: consequently every g normalizes ⟨c⟩. involution_conj_eq_self_or_inv: conjugation by an involution fixes or inverts c.",
+      "mathContext": "$P_p$ unique $\\Rightarrow P_p = \\langle c\\rangle \\trianglelefteq G$; every $g$ normalizes $\\langle c\\rangle$."
     },
     {
-      "id": "normal-and-cyclic",
-      "title": "Normality and Identification with ⟨c⟩",
-      "startLine": 96,
-      "endLine": 128,
-      "summary": "Uniqueness gives Subsingleton (Sylow 5 G), hence P₅ is normal via Sylow.smul_eq_iff_mem_normalizer. For an order-5 element c, IsPGroup.exists_le_sylow puts ⟨c⟩ ≤ P₅; a cardinality bijection (both order 5) upgrades this to P₅ = ⟨c⟩, and normality transports to ⟨c⟩.",
-      "mathContext": "$P_5 = \\langle c \\rangle \\text{ and } \\langle c \\rangle \\trianglelefteq G.$"
+      "id": "involutions-to-order",
+      "title": "Section 2 — from involutions to arbitrary automorphism order",
+      "startLine": 203,
+      "endLine": 260,
+      "summary": "conj_pow_eq_zpow_pow and conj_exponent_pow_modEq_one lift the involution computation to conjugation by an element of arbitrary order: the induced automorphism of ⟨c⟩ ≅ ℤ/p is an integer power, and its order divides p − 1 (the order of Aut(ℤ/p) = (ℤ/p)ˣ), giving the modular relation that drives the N/C bound.",
+      "mathContext": "$g c g^{-1} = c^{k}$ with $k^{e} \\equiv 1\\ (\\mathrm{mod}\\ p)$, $e \\mid p-1$."
     },
     {
-      "id": "corollary-and-examples",
-      "title": "Normalization Corollary and the Three Orders",
-      "startLine": 129,
-      "endLine": 142,
-      "summary": "conj_mem_zpowers_order5: every g normalizes ⟨c⟩ (Normal.conj_mem). Three examples verify the divisor hypothesis for m = 2, 4, 8, recovering the original orders 10 = 5·2, 20 = 5·4, 40 = 5·8; the m = 8 case highlights that 6 ≡ 1 (mod 5) is excluded only because 6 ∤ 8.",
-      "mathContext": "$g c g^{-1} \\in \\langle c \\rangle; \\quad m \\in \\{2, 4, 8\\} \\leftrightarrow |G| \\in \\{10, 20, 40\\}.$"
+      "id": "nc-bound",
+      "title": "Section 3 — the N/C bound: centralizer index divides p − 1",
+      "startLine": 261,
+      "endLine": 363,
+      "summary": "conjNormal_ker_eq_centralizer identifies the kernel of the conjugation action on the normal ⟨c⟩ with the centralizer of c; conjNormal_ker_index_dvd_sub_one and centralizer_index_dvd_sub_one then give [G : C_G(c)] ∣ p − 1 (the N/C theorem: G/C embeds in Aut(⟨c⟩) of order p − 1). huniq_of_lt discharges the divisor side-condition for m < p.",
+      "mathContext": "$[G : C_G(c)] \\mid p - 1$ since $G/C_G(c) \\hookrightarrow \\mathrm{Aut}(\\langle c\\rangle) \\cong (\\mathbb{Z}/p)^\\times$."
+    },
+    {
+      "id": "not-simple",
+      "title": "Section 4 — structural consequence: the group is not simple",
+      "startLine": 364,
+      "endLine": 412,
+      "summary": "zpowers_index_eq computes [G : ⟨c⟩] = m, and not_isSimpleGroup_of_sylow concludes G is not simple: the proper nontrivial normal subgroup ⟨c⟩ obstructs simplicity whenever 1 < m, the abstract form of 'S₅ has a proper normal 5-subgroup here' that powered the original elimination.",
+      "mathContext": "$1 < m \\Rightarrow \\langle c\\rangle$ a proper nontrivial normal subgroup $\\Rightarrow G$ not simple."
+    },
+    {
+      "id": "class-equation",
+      "title": "Section 5 — conjugacy-class size and coprime-index centrality",
+      "startLine": 413,
+      "endLine": 531,
+      "summary": "The conjugacy-class-size form of the N/C bound: orbit_conjAct_card_eq_centralizer_index and conjClass_card_dvd_sub_one give |cl(c)| ∣ p − 1, while zpowers_le_centralizer, centralizer_index_dvd_index_zpowers and conjClass_card_dvd_gcd sharpen this to |cl(c)| ∣ gcd(m, p − 1). mem_center_of_coprime_index: if gcd(m, p − 1) = 1 then |cl(c)| = 1, i.e. c is central.",
+      "mathContext": "$|\\mathrm{cl}(c)| \\mid \\gcd(m, p-1);\\quad \\gcd(m, p-1) = 1 \\Rightarrow c \\in Z(G).$"
+    },
+    {
+      "id": "global-structure",
+      "title": "Section 6 — central Sylow, p ∣ |Z(G)|, and the normal p-complement",
+      "startLine": 532,
+      "endLine": 626,
+      "summary": "In the coprime regime: zpowers_le_center_of_coprime_index puts ⟨c⟩ ≤ Z(G) and prime_dvd_card_center_of_coprime_index gives p ∣ |Z(G)|. exists_pComplement and exists_normal_pComplement_of_coprime_index produce a (normal) p-complement H with |H| = m and G = ⟨c⟩ ⋉ H — the structural skeleton of the internal direct-product decomposition proved later.",
+      "mathContext": "$\\langle c\\rangle \\le Z(G),\\ p \\mid |Z(G)|,\\ \\exists H \\trianglelefteq G,\\ |H| = m,\\ \\langle c\\rangle \\cap H = 1.$"
+    },
+    {
+      "id": "fixed-prime-5-and-orders",
+      "title": "Section 7 — the fixed prime p = 5 and the orders 10, 20, 40",
+      "startLine": 627,
+      "endLine": 722,
+      "summary": "The p = 5 specialisations recovering the Abel–Ruffini inputs as one-liners: zpowers_order5_normal, conj_mem_zpowers_order5, not_isSimpleGroup_order5, mem_center_order5_of_coprime_index. The 'Recovering the three original orders' block instantiates m ∈ {2, 4, 8} to give |G| ∈ {10, 20, 40}; the m = 8 case highlights that 6 ≡ 1 (mod 5) is harmless only because 6 ∤ 8.",
+      "mathContext": "$m \\in \\{2, 4, 8\\} \\leftrightarrow |G| \\in \\{10, 20, 40\\}$ — the divisor hypothesis holds in each case."
+    },
+    {
+      "id": "solvability",
+      "title": "Section 8 — solvability when the index is a prime power",
+      "startLine": 723,
+      "endLine": 821,
+      "summary": "isSolvable_zpowers (abelian ⟨c⟩ is solvable) and isSolvable_of_normal_solvable_quotient combine with the normal p-complement so that isSolvable_of_sylow_primePow_index proves G solvable whenever m = qᵏ: G is an extension of the solvable p-complement by the abelian ⟨c⟩. isSolvable_order5_primePow_index is the p = 5 form.",
+      "mathContext": "$m = q^{k} \\Rightarrow G$ solvable (extension of solvable $H$ by abelian $\\langle c\\rangle$)."
+    },
+    {
+      "id": "nilpotency",
+      "title": "Section 9 — the sharp strengthening: nilpotency in the coprime regime",
+      "startLine": 822,
+      "endLine": 892,
+      "summary": "isNilpotent_of_sylow_central_primePow_index: in the coprime regime gcd(qᵏ, p − 1) = 1 the central Sylow p-subgroup makes G nilpotent, not merely solvable — a strictly stronger conclusion. isNilpotent_order5_central_primePow_index is the p = 5 form. The Abel–Ruffini orders 20, 40 sit on the non-coprime side (F₂₀ is solvable but not nilpotent), pinpointing exactly where the strengthening fails.",
+      "mathContext": "$\\gcd(q^{k}, p-1) = 1 \\Rightarrow G$ nilpotent; e.g. $F_{20}$ (non-coprime) is solvable but not nilpotent."
+    },
+    {
+      "id": "abelian-cyclic",
+      "title": "Section 10 — central Sylow to abelian, and cyclicity of order 15",
+      "startLine": 893,
+      "endLine": 1017,
+      "summary": "The G ⧸ ⟨c⟩ cyclic upgrade: zpowers_normal_of_mem_center, mul_comm_of_center_zpowers_cyclic_quotient and isCyclic_quotient_zpowers_of_prime_index show that a central ⟨c⟩ with cyclic prime-index quotient forces G abelian (mul_comm_of_prime_index_coprime, mul_comm_of_card_fifteen). isCyclic_of_comm_card_eq_prime_mul_prime and isCyclic_of_card_fifteen conclude that every group of order 15 is cyclic.",
+      "mathContext": "$Z \\supseteq \\langle c\\rangle,\\ G/\\langle c\\rangle$ cyclic $\\Rightarrow G$ abelian; $|G| = 15 \\Rightarrow G \\cong \\mathbb{Z}/15$."
+    },
+    {
+      "id": "pq-classification",
+      "title": "Section 11 — the general order-pq classification and its converse",
+      "startLine": 1018,
+      "endLine": 1089,
+      "summary": "The positive half and its sharp converse: mul_comm_of_card_eq_prime_mul_prime_of_not_dvd and isCyclic_of_card_eq_prime_mul_prime_of_not_dvd give that a group of order p·q with p ∤ (q − 1) (and q ∤ (p − 1)) is cyclic, while dvd_sub_one_of_not_isCyclic_card_eq_prime_mul_prime is the converse. isCyclic_of_card_thirtyfive (35) and isCyclic_of_card_thirtythree (33) are concrete instances.",
+      "mathContext": "$|G| = pq,\\ p \\nmid q-1 \\Rightarrow G$ cyclic; e.g. orders $15, 33, 35$."
+    },
+    {
+      "id": "direct-product-endgame",
+      "title": "Section 12 — the internal direct product G ≃* ⟨c⟩ × H",
+      "startLine": 1090,
+      "endLine": 1282,
+      "summary": "The structural endgame: exists_mulEquiv_prod_zpowers_of_coprime_index upgrades the semidirect-product data to a genuine isomorphism G ≃* ⟨c⟩ × H, specialised in exists_mulEquiv_prod_of_card_fifteen. exists_pComplement_isCyclic_iff / _isNilpotent_iff (and their order-15 forms) characterise exactly when the complement — hence G — is cyclic or nilpotent, closing the classification.",
+      "mathContext": "$G \\cong \\langle c\\rangle \\times H$ (coprime central regime); complement cyclic/nilpotent $\\iff G$ is."
     }
   ],
   "references": [
