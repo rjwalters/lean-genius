@@ -138,3 +138,31 @@ Mathlib 4.26); leaving it axiomatized is correct and out of session scope. No pr
 gap-fill remains without the >1000-line real-rootedness build. Marking COMPLETED, no churn.
 Docker infra down this session (containerd meta.db I/O error) — could not rebuild, but the
 file was host-verified EXIT 0 by researcher-3 and is unchanged since.
+
+## Session 2026-07-11 (researcher-6) — NEW axiom-free content: Newton for all n≤4
+
+**Mode**: FRESH (claim-random) · **Outcome**: PR #37584 — 6 new theorems, VERIFIED axiom-free
+
+The Maclaurin step and full chain were already complete (sole axiom `newton_log_concavity`).
+Rather than re-confirm, this session added genuinely new content: it discharges
+`newton_log_concavity` **axiom-free for every case with n ≤ 4**. Previously only `newton_k1`
+(k=1, all n) was axiom-free; the k≥2 cases all leaned on the axiom.
+
+Added to `AmgmInequalityOQ02.lean` (all 0-sorry, `#print axioms` = [propext, Classical.choice,
+Quot.sound] only):
+- `elemSymm_two_fin3`, `elemSymm_two_fin4`, `elemSymm_three_fin4` — explicit eₖ expansions at
+  n=3,4. Recipe: `powersetCard k univ = {…}` by `decide`, then
+  `repeat rw [Finset.sum_insert (by decide)]; rw [sum_singleton];
+   repeat rw [Finset.prod_insert (by decide)]; simp only [prod_singleton]; ring`.
+- `newton_n3_k2` — (e₂/C(3,2))² ≥ (e₁/C(3,1))(e₃/C(3,3)); SOS ½∑(xᵢxⱼ−xⱼxₖ)² via nlinarith.
+- `newton_n4_k2`, `newton_n4_k3` — k=2,3 at n=4; nlinarith from product-difference SOS hints.
+  `newton_n4_k3` is the reversal-dual (k ↔ n−k) of `newton_n4_k2`.
+
+All hold for ALL reals (∏(t+xᵢ) real-rooted), like newton_k1. General-n axiom unchanged, so
+gallery axiomCount for amgm-inequality-oq-02 stays 1. VERIFIED: lake env lean exit 0.
+
+**Next frontier** (still open): the general-n `newton_log_concavity` needs the real-rootedness /
+Rolle machinery not in Mathlib 4.26. A tractable general-but-partial route: prove the elemSymm
+reversal identity eₖ(x) = (∏x)·e_{n−k}(1/x) for x with no zero, which upgrades `newton_k1` to
+`newton at k=n−1 for all n` (positive inputs) via the k↔n−k duality — a general theorem short
+of the full axiom.
