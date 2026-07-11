@@ -45,6 +45,16 @@
         "theorem": "Nat.Prime",
         "description": "Prime number predicate",
         "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Finset.exists_lt_card_fiber_of_mul_lt_card_of_maps_to",
+        "description": "pigeonhole: if t.card * n < s.card and f maps s into t, some fiber exceeds n",
+        "module": "Mathlib.Combinatorics.Pigeonhole"
+      },
+      {
+        "theorem": "Nat.modEq_and_modEq_iff_modEq_mul",
+        "description": "CRT: for coprime m,n, a≡b [MOD m] ∧ a≡b [MOD n] ↔ a≡b [MOD m*n]",
+        "module": "Mathlib.Data.Nat.ModEq"
       }
     ],
     "originalContributions": [
@@ -67,7 +77,9 @@
       "A_seven: the exact value A(7)=20 (= Hardy–Littlewood minimal diameter H(7)) in companion file Erdos1204A7.lean. Upper bound from the admissible witness {0,2,6,8,12,18,20} (even, residues miss class 1 mod 3, class 4 mod 5, class 3 mod 7); lower bound (admissible_seven_sup_ge) — any admissible 7-set with max ≤ 19 is single-parity, hence sits among the ten evens {0,2,4,6,8,10,12,14,16,18} or ten odds {1,3,5,7,9,11,13,15,17,19}; within each window the mod-3 classes have sizes 4,3,3, so missing the size-4 class leaves only six slots (too few for a 7-set) while missing either size-3 class leaves a forced 7-set — for evens {0,2,6,8,12,14,18} / {0,4,6,10,12,16,18}, for odds {1,5,7,11,13,17,19} / {1,3,7,9,13,15,19} — and all four forced sets cover EVERY residue class mod 5, failing admissibility at p=5. Unlike a naive 'one further prime per value' extrapolation, A(7)=20 does NOT need the prime 7 in its lower bound: the two size-3 mod-3 classes yield two forced 7-sets per parity (vs one at A(6)), but p=5 still kills all four (Proofs/Erdos1204A7.lean)",
       "S(k) / B(k): the SECOND extremal quantity of Problem #1204 — the minimal average B(k)=min(a1+...+ak)/k, carried by the minimal sum S(k)=sInf of admissible k-set sums — is now defined in Lean (companion file Erdos1204B.lean). Every prior session worked only on A(k); B(k) was untouched. Includes S_set_nonempty/S_mem (the defining infimum is attained) and S_le (S(k) lower-bounds every admissible k-set sum) (Proofs/Erdos1204B.lean)",
       "admissible_sum_ge / sub_mul_le_S / sub_one_le_B: general lower bound k*(k-1) <= S(k), equivalently B(k) >= k-1 — the average analogue of the diameter bound A(k) >= 2(k-1). The prime 2 forces every admissible set to be single-parity, so its k distinct elements, translated to start at 0, are >= 0,2,4,...,2(k-1), whose sum is k(k-1). Proved by strong induction removing the maximum (which is >= 2(card-1) by admissible_two_mul_card_sub_one_le_sup) and applying the inductive hypothesis to the still-admissible remainder; the identity 2(k-1)+(k-1)(k-2)=k(k-1) closes the step. Sharp at k=2 (Proofs/Erdos1204B.lean)",
-      "S(2)=2 and S(3)=8 exact, giving the first exact averages B(2)=1 and B(3)=8/3. B(2)=1 attains the parity floor k-1=1 (the general bound is tight); B(3)=8/3 > 2 is the first place the mod-3 obstruction — the same one that makes A(3)=6 — forces the average strictly above the floor. The S(3) >= 8 lower bound combines the A(3) fact sup >= 6 (admissible_three_sup_ge) with admissible_sum_ge on the erased admissible 2-set: 6+2=8 (Proofs/Erdos1204B.lean)"
+      "S(2)=2 and S(3)=8 exact, giving the first exact averages B(2)=1 and B(3)=8/3. B(2)=1 attains the parity floor k-1=1 (the general bound is tight); B(3)=8/3 > 2 is the first place the mod-3 obstruction — the same one that makes A(3)=6 — forces the average strictly above the floor. The S(3) >= 8 lower bound combines the A(3) fact sup >= 6 (admissible_three_sup_ge) with admissible_sum_ge on the erased admissible 2-set: 6+2=8 (Proofs/Erdos1204B.lean)",
+      "same_mod_sup_ge: a general spacing lemma — a finite set of naturals all congruent modulo d has largest element ≥ d·(card−1) (the exact d-modulus generalization of the parity diameter bound admissible_diam_ge)",
+      "three_mul_sub_two_le_A / admissible_three_sub_two_le_sup (Erdos1204C.lean): the joint prime-{2,3} lower bound A(k) ≥ 3(k−2), sharpening the slope of the general lower bound from 2 to 3 — an admissible set occupies ≤ 2 residue classes mod 6 (CRT: one class mod 2, two mod 3), so a pigeonholed class of ≥ ⌈k/2⌉ elements is 6-separated. Strictly beats 2(k−1) for all k ≥ 5; axiom-free"
     ],
     "axiomCount": 0,
     "lineCount": 632,
@@ -86,7 +98,8 @@
       "**Only small primes matter:** for p > k there are more classes than elements, so a class is always free — admissibility reduces to primes p ≤ k.",
       "**Minimal example:** {0,2} is admissible but {0,1} is not, because {0,1} hits both classes mod 2 (this is why twin-prime-like patterns must avoid such coverage).",
       "**Connection:** this is exactly the admissible-tuple notion underlying bounded gaps between primes (Zhang, Maynard).",
-      "**A(k) is now defined and computed for small k:** k-1 ≤ A(k), with A(0)=A(1)=0, A(2)=2, A(3)=6, A(4)=8, A(5)=12, A(6)=16, and A(7)=20 — each equal to the Hardy–Littlewood minimal diameter H(k), proved by a finite parity-then-mod-p slot-counting argument (no admissible k-set fits below the stated value). At A(5)=12 the mod-3 constraint beyond parity is binding (12 > 8 = 2(k−1)); at A(6)=16 the prime 5 first becomes binding; A(7)=20 still closes with primes 2,3,5 (the prime 7 is not yet needed)."
+      "**A(k) is now defined and computed for small k:** k-1 ≤ A(k), with A(0)=A(1)=0, A(2)=2, A(3)=6, A(4)=8, A(5)=12, A(6)=16, and A(7)=20 — each equal to the Hardy–Littlewood minimal diameter H(k), proved by a finite parity-then-mod-p slot-counting argument (no admissible k-set fits below the stated value). At A(5)=12 the mod-3 constraint beyond parity is binding (12 > 8 = 2(k−1)); at A(6)=16 the prime 5 first becomes binding; A(7)=20 still closes with primes 2,3,5 (the prime 7 is not yet needed).",
+      "**Joint {2,3} sieve raises the slope:** using primes 2 and 3 together confines an admissible set to ≤ 2 residue classes mod 6, forcing A(k) ≥ 3(k−2) — a slope-3 lower bound, strictly stronger than the parity bound 2(k−1) once k ≥ 5."
     ],
     "prerequisites": [
       "Number theory",
@@ -175,11 +188,19 @@
       "endLine": 561,
       "mathContext": "$2(k-1) \\le A(k) \\le (k-1)\\cdot\\!\\!\\prod_{p \\le k}\\! p$; the primorial spacing $N=\\prod_{p\\le k}p$ gives the admissible set $\\{0,N,\\dots,(k-1)N\\}$.",
       "summary": "primorialUpTo k = ∏_{p ≤ k} p (product of primes ≤ k) and A_le_primorial: A(k) ≤ (k−1)·primorialUpTo k. The arithmetic progression {0, N, …, (k−1)N} with N = primorialUpTo k is admissible (every element ≡ 0 mod each prime p ≤ k, so class 1 is missed), has k elements, and largest element (k−1)N; feeding it to A_le gives the bound. Together with two_mul_sub_one_le_A this sandwiches A(k) between 2(k−1) and (k−1)·∏_{p≤k}p — an elementary two-sided companion far from the conjectured A(k) ∼ k log k, since N grows like e^{(1+o(1))k}."
+    },
+    {
+      "id": "joint-2-3-lower-bound",
+      "title": "A Slope-3 Lower Bound A(k) ≥ 3(k−2) (companion Erdos1204C.lean)",
+      "startLine": 1,
+      "endLine": 213,
+      "mathContext": "Erdos1204C.lean. Sharpens the general lower bound on A(k) from slope 2 to slope 3 by combining the mod-2 and mod-3 obstructions.",
+      "summary": "An admissible set misses a class mod 2 (one surviving class) and mod 3 (two surviving classes), so by CRT it occupies at most 1·2 = 2 residue classes mod 6 (two_classes_prod, a finite decide-check). Pigeonholing the k elements into those ≤ 2 classes (Finset.exists_lt_card_fiber_of_mul_lt_card_of_maps_to) yields a class with ≥ ⌈k/2⌉ elements; being pairwise congruent mod 6 they are 6-separated (same_mod_sup_ge, the general d-modulus spacing lemma), so the diameter is ≥ 6(⌈k/2⌉−1) ≥ 3(k−2). Hence three_mul_sub_two_le_A: A(k) ≥ 3(k−2), strictly stronger than 2(k−1) for k ≥ 5 (three_bound_gt_two_bound). Axiom-free."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #1204 asks for the asymptotics of the minimal diameter A(k) and minimal average B(k) of admissible k-tuples, conjecturally A(k) ∼ k log k. This entry formalizes the admissibility framework: the definition, the reduction showing only primes p ≤ k impose constraints, the extremal quantity A(k) itself (as an attained infimum), exact values A(0)=A(1)=0, A(2)=2, A(3)=6, A(4)=8, A(5)=12 (the last two in companion files), and a verified parity-sharpened lower bound A(k) ≥ 2(k−1) — the prime 2 forces all elements to share parity, doubling the trivial packing bound k−1 (sharp at k=2). Each exact value matches the Hardy–Littlewood minimal diameter H(k); at A(5)=12 the mod-3 constraint beyond parity first pushes the value strictly above 2(k−1). The full asymptotic questions remain open and are not asserted.",
-    "implications": "Gives a fully verified elementary foundation for the admissible-tuple constant A(k) — the same admissibility notion underlying the Hardy–Littlewood prime k-tuples conjecture and the bounded-gaps program (Zhang, Maynard–Tao). The parity-sharpened bound A(k) ≥ 2(k−1) isolates the leading prime-2 contribution to the conjectural k log k growth, and the attained-infimum framing makes A(k) a well-defined target for future sieve-theoretic asymptotics rather than an informal quantity.",
+    "summary": "Erdős Problem #1204 asks for the asymptotics of the minimal diameter A(k) and minimal average B(k) of admissible k-tuples, conjecturally A(k) ∼ k log k. This entry formalizes the admissibility framework: the definition, the reduction showing only primes p ≤ k impose constraints, the extremal quantity A(k) itself (as an attained infimum), exact values A(0)=A(1)=0, A(2)=2, A(3)=6, A(4)=8, A(5)=12 (the last two in companion files), and a verified parity-sharpened lower bound A(k) ≥ 2(k−1) — the prime 2 forces all elements to share parity, doubling the trivial packing bound k−1 (sharp at k=2). Each exact value matches the Hardy–Littlewood minimal diameter H(k); at A(5)=12 the mod-3 constraint beyond parity first pushes the value strictly above 2(k−1). The full asymptotic questions remain open and are not asserted. A companion file (Erdos1204C.lean) further sharpens the general lower bound to A(k) ≥ 3(k−2): the primes 2 and 3 acting jointly confine any admissible set to at most two residue classes mod 6, raising the provable slope from 2 to 3 (strictly better than 2(k−1) for k ≥ 5).",
+    "implications": "Gives a fully verified elementary foundation for the admissible-tuple constant A(k) — the same admissibility notion underlying the Hardy–Littlewood prime k-tuples conjecture and the bounded-gaps program (Zhang, Maynard–Tao). The parity-sharpened bound A(k) ≥ 2(k−1) isolates the leading prime-2 contribution to the conjectural k log k growth, and the attained-infimum framing makes A(k) a well-defined target for future sieve-theoretic asymptotics rather than an informal quantity. Extending the prime-2 parity bound, the joint prime-{2,3} bound A(k) ≥ 3(k−2) shows how successive small primes each lift the linear slope toward the conjectural k log k growth — a template that a full sieve makes quantitative.",
     "openQuestions": [
       "Is A(k) ∼ k log k?",
       "What is the correct order of B(k) = min (a₁+⋯+a_k)/k?"
