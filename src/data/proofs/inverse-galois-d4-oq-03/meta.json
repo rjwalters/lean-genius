@@ -254,18 +254,33 @@
     }
   ],
   "sorries": 0,
-  "references": {
-    "papers": [
-      "Velez, W. Y. (1979). 'On the Galois groups of X^n - a.' Acta Arithmetica 35, 191-198.",
-      "Schinzel, A. (2000). *Polynomials with Special Regard to Reducibility.* Cambridge Univ. Press, §III.2.",
-      "Capelli, A. (1897). 'Sulla riduttibilità delle equazioni algebriche.' Giornale di Matematiche 36, 73-88.",
-      "Kappe, L.-C. and Warren, B. (1989). 'An elementary test for the Galois group of a quartic polynomial.' Amer. Math. Monthly 96, 133-137.",
-      "Cox, D. A. (2012). *Galois Theory* (2nd ed.). Wiley, §13.3."
-    ],
-    "urls": [
-      "https://leanprover-community.github.io/mathlib4_docs/Mathlib/GroupTheory/SpecificGroups/Dihedral.html",
-      "https://leanprover-community.github.io/mathlib4_docs/Mathlib/FieldTheory/SplittingField/Basic.html",
-      "https://en.wikipedia.org/wiki/Inverse_Galois_problem"
-    ]
-  }
+  "references": [
+    {
+      "citation": "Velez, W. Y. (1979). 'On the Galois groups of X^n - a.' Acta Arithmetica 35, 191-198."
+    },
+    {
+      "citation": "Schinzel, A. (2000). *Polynomials with Special Regard to Reducibility.* Cambridge Univ. Press, §III.2."
+    },
+    {
+      "citation": "Capelli, A. (1897). 'Sulla riduttibilità delle equazioni algebriche.' Giornale di Matematiche 36, 73-88."
+    },
+    {
+      "citation": "Kappe, L.-C. and Warren, B. (1989). 'An elementary test for the Galois group of a quartic polynomial.' Amer. Math. Monthly 96, 133-137."
+    },
+    {
+      "citation": "Cox, D. A. (2012). *Galois Theory* (2nd ed.). Wiley, §13.3."
+    },
+    {
+      "text": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/GroupTheory/SpecificGroups/Dihedral.html",
+      "url": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/GroupTheory/SpecificGroups/Dihedral.html"
+    },
+    {
+      "text": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/FieldTheory/SplittingField/Basic.html",
+      "url": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/FieldTheory/SplittingField/Basic.html"
+    },
+    {
+      "text": "https://en.wikipedia.org/wiki/Inverse_Galois_problem",
+      "url": "https://en.wikipedia.org/wiki/Inverse_Galois_problem"
+    }
+  ]
 }

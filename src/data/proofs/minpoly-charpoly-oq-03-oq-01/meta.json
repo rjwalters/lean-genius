@@ -237,16 +237,27 @@
     }
   ],
   "sorries": 0,
-  "references": {
-    "papers": [
-      "Dummit & Foote. *Abstract Algebra* (3rd ed., 2004), §12.2 — K^n as an F[X]-module via M.",
-      "Hungerford, T. *Algebra* (1974), §VII.4 — structure theorem for finitely generated PID-modules.",
-      "Lang, S. *Algebra* (3rd ed., 2002), §III.7 — polynomial actions on modules."
-    ],
-    "urls": [
-      "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Algebra/Polynomial/Module/AEval.html",
-      "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Algebra/Module/Torsion/Basic.html",
-      "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Algebra/Module/PID.html"
-    ]
-  }
+  "references": [
+    {
+      "citation": "Dummit & Foote. *Abstract Algebra* (3rd ed., 2004), §12.2 — K^n as an F[X]-module via M."
+    },
+    {
+      "citation": "Hungerford, T. *Algebra* (1974), §VII.4 — structure theorem for finitely generated PID-modules."
+    },
+    {
+      "citation": "Lang, S. *Algebra* (3rd ed., 2002), §III.7 — polynomial actions on modules."
+    },
+    {
+      "text": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Algebra/Polynomial/Module/AEval.html",
+      "url": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Algebra/Polynomial/Module/AEval.html"
+    },
+    {
+      "text": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Algebra/Module/Torsion/Basic.html",
+      "url": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Algebra/Module/Torsion/Basic.html"
+    },
+    {
+      "text": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Algebra/Module/PID.html",
+      "url": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Algebra/Module/PID.html"
+    }
+  ]
 }
