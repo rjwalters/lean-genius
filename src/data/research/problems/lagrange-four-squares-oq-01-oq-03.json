@@ -11,7 +11,9 @@
     "whyMatters": []
   },
   "knownResults": {
-    "proven": [],
+    "proven": [
+      "`jacobiCount_of_not_four_dvd` (0-axiom, general): `4 ∤ n` ⟹ the `4∤d` filter is vacuous ⟹ `jacobiCount n = 8·σ(n)` — the common root of `jacobiCount_odd` and the even case; `jacobiCount_two_mul` (0-axiom, general): `m` odd ⟹ `jacobiCount(2m) = 3·jacobiCount(m)`; `jacobiCount_two_mul_odd_eq`: closed form `24·σ(m)` (classical `r₄(2m)`)."
+    ],
     "open": [],
     "goal": ""
   },
@@ -32,20 +34,22 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SHIPPED tractable increment (PR #32310): computable r4 + Jacobi oracle. General Jacobi theorem confirmed BLOCKED (Mathlib gap: no r4/r2 count; needs Hurwitz-quaternion orders or weight-2 modular forms, each >>1000 LOC). Built LagrangeFourSquaresOQ01OQ03.lean (117L, 0 sorries): r4(n) as computable Finset.card over [-sqrt n,sqrt n]^4 in Z^4; jacobiCount n = 8*sum_{d|n,4!|d}d; jacobiCount_odd (0-axiom, general: odd n => filter vacuous => 8*sigma(n)); naive_sigma_fails (0-axiom guard: 8*sigma(4)=56 wrong, r4(4)=24); jacobi_oracle (native_decide: r4=jacobiCount for 1<=n<=24). Verified via lake env lean v4.26.0; #print axioms confirms jacobiCount_odd 0-axiom and oracles carry Lean.ofReduceBool (entry axiomatized).",
+    "progressSummary": "PROGRESS (researcher-8, 2026-07-11): added 3 elementary 0-axiom GENERAL lemmas to LagrangeFourSquaresOQ01OQ03.lean (118→217L, +3 thm), extending the even-side structure of Jacobi's four-square count. jacobiCount_of_not_four_dvd: whenever 4∤n the 4∤d filter is vacuous so jacobiCount n = 8·σ(n) (common root of jacobiCount_odd and the 2·odd case; v₂(n)≤1). jacobiCount_two_mul: for odd m, jacobiCount(2m)=3·jacobiCount(m) — 'first doubling triples the count' (via v₂(2m)=1 filter-vacuous + σ multiplicativity on coprime {2,m}, ∑_{d|2}d=3). jacobiCount_two_mul_odd_eq: closed form 24·σ(m) = classical r₄(2m) (matches oracle r4 6=96=24·σ(3)). All #print axioms=[propext,Classical.choice,Quot.sound]. General theorem still Mathlib-blocked (no r4/r2 count). SHIPPED tractable increment (PR #32310): computable r4 + Jacobi oracle. General Jacobi theorem confirmed BLOCKED (Mathlib gap: no r4/r2 count; needs Hurwitz-quaternion orders or weight-2 modular forms, each >>1000 LOC). Built LagrangeFourSquaresOQ01OQ03.lean (117L, 0 sorries): r4(n) as computable Finset.card over [-sqrt n,sqrt n]^4 in Z^4; jacobiCount n = 8*sum_{d|n,4!|d}d; jacobiCount_odd (0-axiom, general: odd n => filter vacuous => 8*sigma(n)); naive_sigma_fails (0-axiom guard: 8*sigma(4)=56 wrong, r4(4)=24); jacobi_oracle (native_decide: r4=jacobiCount for 1<=n<=24). Verified via lake env lean v4.26.0; #print axioms confirms jacobiCount_odd 0-axiom and oracles carry Lean.ofReduceBool (entry axiomatized).",
     "builtItems": [
       "r4 : computable Finset.card count of ordered signed four-square reps over box [-sqrt n, sqrt n]^4 in Z^4 (object Mathlib lacks)",
       "jacobiCount : filtered divisor-sum RHS 8*sum_{d|n,4!|d} d",
       "jacobiCount_odd : 0-axiom general lemma, odd n => 4!|d vacuous => jacobiCount n = 8*sigma(n)",
       "naive_sigma_fails : 0-axiom convention guard, 8*sigma(4)=56 != r4(4)=jacobiCount(4)=24",
       "jacobi_oracle : native_decide regression oracle r4(n)=jacobiCount(n) for all 1<=n<=24",
-      "r4_anchor_values : r4(1)=8,r4(2)=24,r4(3)=32,r4(4)=24,r4(5)=48,r4(7)=64"
+      "r4_anchor_values : r4(1)=8,r4(2)=24,r4(3)=32,r4(4)=24,r4(5)=48,r4(7)=64",
+      "jacobiCount_of_not_four_dvd / jacobiCount_two_mul / jacobiCount_two_mul_odd_eq (LagrangeFourSquaresOQ01OQ03.lean): elementary 0-axiom general lemmas for the even side of Jacobi's count — filter vacuous when 4∤n gives 8·σ(n); first doubling of an odd m triples the count (3·jacobiCount m) via σ-multiplicativity on coprime {2,m}; closed form jacobiCount(2m)=24·σ(m)=classical r₄(2m). Verified lake env lean 4.26.0, #print axioms clean."
     ],
     "insights": [
       "The odd half of Jacobi is elementary and 0-axiom: for odd n every divisor is odd so the 4!|d exclusion is vacuous and jacobiCount collapses to 8*sigma(n).",
       "The 4!|d exclusion is load-bearing: at n=4 naive 8*sigma(4)=56 more than doubles the true r4(4)=24; overcount 32 = 8*(excluded divisor 4).",
       "Defining r4 as a computable Finset.card makes native_decide a valid regression oracle (finite box + decidable sum-of-squares test), pinning the ordered/signed convention r4(1)=8,r4(2)=24,r4(4)=24.",
-      "General theorem BLOCKED: r4 = r2 convolution is the one elementary Lean-able reduction but bottoms out on the missing r2 count; full proof needs Hurwitz-quaternion orders or theta^4 in M2(Gamma0(4))."
+      "General theorem BLOCKED: r4 = r2 convolution is the one elementary Lean-able reduction but bottoms out on the missing r2 count; full proof needs Hurwitz-quaternion orders or theta^4 in M2(Gamma0(4)).",
+      "The elementary half of Jacobi's r₄ splits cleanly by 2-adic valuation: when v₂(n)≤1 (i.e. 4∤n) NO divisor is a multiple of 4, so the load-bearing 4∤d filter is vacuous and jacobiCount n = 8·σ(n). Multiplicativity of σ on the coprime factorization 2^a·m (m odd) then gives the whole even side: 8·σ(m) for a=0 (odd), 24·σ(m) for a=1 (jacobiCount_two_mul via ∑_{d|2}d=3). Only a≥2 (4|n) needs the genuine filter and remains the interesting/blocked structure."
     ],
     "mathlibGaps": [
       "No four-square representation count r4 (only existence Nat.sum_four_squares)",
@@ -98,7 +102,7 @@
     "mathlib": []
   },
   "started": "2026-06-16T04:40:01.670Z",
-  "lastUpdate": "2026-06-16T04:40:01.734Z",
+  "lastUpdate": "2026-07-11T19:10:00.000Z",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [
@@ -138,8 +142,8 @@
     {
       "path": "Proofs/LagrangeFourSquaresOQ01OQ03.lean",
       "filename": "LagrangeFourSquaresOQ01OQ03.lean",
-      "lineCount": 118,
-      "theoremCount": 4,
+      "lineCount": 217,
+      "theoremCount": 10,
       "axiomCount": 0,
       "defCount": 3,
       "sorryCount": 0,
