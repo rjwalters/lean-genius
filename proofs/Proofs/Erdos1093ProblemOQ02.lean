@@ -2084,3 +2084,96 @@ theorem maximalDeficiencyIs_nine_iff_kGe26 :
     by_cases hk : k ≤ 25
     · exact deficiency_le_nine_of_k_le_25 hv.1 hv.2 hk
     · exact h n k (by omega) hv
+
+/-
+## Section XXVII: The location bound closes `k = 26` — frontier `k ≥ 26` → `k ≥ 27`
+
+Section XXVI cashed out the effective, ELS-free location bound at the open frontier
+`k = 25`.  The same mechanism advances one further step, to `k = 26`.  A deficiency
+`≥ 10` forces the window-floor power bound `(n - 25)^{10} ≤ 26!`, and `26! < 458^{10}`
+(`factorial_26_lt_458_pow_ten`), so `n - 25 < 458`, i.e. `n ≤ 482`.  With the admissibility
+floor `n ≥ 52` (`= 2·26`) this leaves the finite window `n ∈ {52, 51, …, 482}` (four
+hundred and thirty-one values).
+
+As at `k = 18, …, 25`, `C(n,26)` is **not** uniformly even on this window: by
+Kummer/Lucas `C(n,26)` is odd exactly when the binary digits of `26 = 11010₂` sit inside
+those of `n`, so the single prime `2` no longer certifies inadmissibility.  It remains
+true — and this is what closes the slice — that *some* prime `≤ 26` divides `C(n,26)` for
+every one of the four hundred and thirty-one values.  Here the two-prime economy of the
+earliest slices very nearly returns: `2` divides the even binomials, `3` divides all of the
+odd ones save the single exception `n = 350`, and that lone odd non-multiple of `3` is
+caught by `5` (`5 ∣ C(350,26)`).  So already the three-prime disjunction
+`2 ∣ C(n,26) ∨ 3 ∣ C(n,26) ∨ 5 ∣ C(n,26)` holds throughout the window — no pair is
+admissible and no admissible pair at `k = 26` has deficiency exceeding `9`.
+
+As before the `(k!)²` factorial method is powerless here
+(`sharp_bound_permits_deficiency_ten` permits deficiency `10` for every `k ≥ 16`); only
+the *location* bound closes the slice, through the uniform engine
+`deficiency_le_nine_of_location` (Section XVIIB).  The elementary resolution of OQ-02 now
+covers **all `k ≤ 26`**, moving the open frontier to `k ≥ 27`.  The structural results
+remain `ofReduceBool`-free; only the concrete divisibility facts use `native_decide`. -/
+
+/-- `26! < 458^10`, the numeric input that pins the `k = 26` window: `(n-25)^{10} ≤ 26!`
+forces `n - 25 < 458`.  `ofReduceBool`-free (`Nat.factorial` and `Nat.pow` on literals
+reduce under kernel `decide`; `26! = 403291461126605635584000000 <
+406120376413199518554317824 = 458^{10}`). -/
+theorem factorial_26_lt_458_pow_ten : Nat.factorial 26 < 458 ^ 10 := by decide
+
+/-- For `52 ≤ n ≤ 482` some prime `≤ 26` divides `C(n,26)`: `2` for the even values, `3`
+for all but one of the odd binomials, and `5` for the single odd exception `n = 350`.
+Stated as the disjunction `2 ∣ · ∨ 3 ∣ · ∨ 5 ∣ ·`, which holds across the whole window.
+Uses `native_decide` (⇒ `Lean.ofReduceBool`) because the naive `Nat.choose` recursion is
+infeasible for kernel `decide`. -/
+theorem smallPrime_dvd_choose_26_of_range {n : ℕ} (hlo : 52 ≤ n) (hhi : n ≤ 482) :
+    2 ∣ Nat.choose n 26 ∨ 3 ∣ Nat.choose n 26 ∨ 5 ∣ Nat.choose n 26 := by
+  interval_cases n <;> native_decide
+
+/-- The four hundred and thirty-one small pairs left by the `k = 26` location window are all
+inadmissible: some prime `p ∈ {2, 3, 5}` (each `≤ 26`) divides `C(n,26)`, contradicting
+`NoSmallPrimeFactors n 26` (which would force `26 < p`). -/
+theorem not_admissible_k26_of_range {n : ℕ} (hlo : 52 ≤ n) (hhi : n ≤ 482) :
+    ¬ NoSmallPrimeFactors n 26 := by
+  intro h
+  rcases smallPrime_dvd_choose_26_of_range hlo hhi with hd | hd | hd
+  · have := h 2 Nat.prime_two hd; omega
+  · have := h 3 Nat.prime_three hd; omega
+  · have := h 5 (by norm_num) hd; omega
+
+/-- **The location bound closes `k = 26`.**  For an admissible pair with `k = 26` the
+deficiency never exceeds `9`.  A deficiency `≥ 10` would force, via the window-floor
+bound, `(n - 25)^{10} ≤ 26! < 458^{10}`, hence `n ≤ 482`; with the admissibility floor
+`n ≥ 52` this leaves only `n ∈ {52,…,482}`, none admissible (some prime `≤ 26` divides
+`C(n,26)`, even where `C(n,26)` is odd).  A one-line instantiation of the uniform engine
+`deficiency_le_nine_of_location` at `k = 26, M = 458`. -/
+theorem deficiency_le_nine_of_k_eq_26 {n : ℕ} (hn : 52 ≤ n)
+    (h : NoSmallPrimeFactors n 26) : deficiency n 26 ≤ 9 :=
+  deficiency_le_nine_of_location (k := 26) (M := 458) (by omega) h
+    factorial_26_lt_458_pow_ten
+    (fun m hlo hhi => not_admissible_k26_of_range (by omega) (by omega))
+
+/-- **Elementary resolution of OQ-02 for all `k ≤ 26`.**  Combines the location bound at
+`k ≤ 25` (`deficiency_le_nine_of_k_le_25`) with the location bound at `k = 26`
+(`deficiency_le_nine_of_k_eq_26`).  Strictly extends the `k ≤ 25` reach of Section XXVI. -/
+theorem deficiency_le_nine_of_k_le_26 {n k : ℕ} (hn : 2 * k ≤ n)
+    (h : NoSmallPrimeFactors n k) (hk : k ≤ 26) : deficiency n k ≤ 9 := by
+  by_cases hk25 : k ≤ 25
+  · exact deficiency_le_nine_of_k_le_25 hn h hk25
+  · have hk26 : k = 26 := by omega
+    subst hk26
+    exact deficiency_le_nine_of_k_eq_26 (by omega) h
+
+/-- **Sharpened reduction to `k ≥ 27`.**  `MaximalDeficiencyIs 9` is equivalent to the
+open universal bound restricted to `k ≥ 27`: the cases `k ≤ 25` are discharged by the
+sharp/location bounds and `k = 26` by the location bound (`deficiency_le_nine_of_k_le_26`).
+Strictly sharper than `maximalDeficiencyIs_nine_iff_kGe26`; the entire remaining open
+content of OQ-02 now lives at `k ≥ 27`. -/
+theorem maximalDeficiencyIs_nine_iff_kGe27 :
+    MaximalDeficiencyIs 9 ↔
+      ∀ n k, 27 ≤ k → ValidDeficiencyExample n k → deficiency n k ≤ 9 := by
+  rw [maximalDeficiencyIs_nine_iff_upperBound]
+  constructor
+  · intro h n k _ hv; exact h n k hv
+  · intro h n k hv
+    by_cases hk : k ≤ 26
+    · exact deficiency_le_nine_of_k_le_26 hv.1 hv.2 hk
+    · exact h n k (by omega) hv
