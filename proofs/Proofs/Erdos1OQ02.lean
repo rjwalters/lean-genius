@@ -578,23 +578,42 @@ theorem f_three :
   have hT' : T ∈ ({1, 2, 4} : Finset ℕ).powerset := Finset.mem_powerset.mpr hT
   fin_cases hS' <;> fin_cases hT' <;> revert heq <;> decide
 
+/-- f(4) = 7: the Conway–Guy set `{3, 5, 6, 7}` has `2⁴ = 16` distinct subset sums
+    (`0, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 18, 21`) with maximum element
+    `7`.  This is the `n = 4` entry of OEIS A005318, and the FIRST case where the
+    minimal largest element beats the greedy powers-of-two witness: `{1, 2, 4, 8}`
+    also has distinct subset sums but maximum `8 > 7`.  So the naive doubling
+    construction (`f_zero`/`f_one`/`f_two_max`/`f_three` witnesses `{}`, `{1}`,
+    `{1,2}`, `{1,2,4}`) is no longer extremal at `n = 4` — a genuinely non-trivial
+    input to the Erdős distinct-subset-sums problem, and the reason `f(n)` is not
+    simply `2ⁿ⁻¹`.  The `hasDistinctSubsetSums {3,5,6,7}` obligation is discharged
+    by enumerating the sixteen subsets (`fin_cases` over the powerset) and deciding
+    each subset-pair sum comparison, exactly as in `f_two_max`/`f_three`. -/
+theorem f_four :
+    ∃ (A : Finset ℕ), A.card = 4 ∧ hasDistinctSubsetSums A ∧ A.sup id = 7 := by
+  refine ⟨{3, 5, 6, 7}, by decide, ?_, by decide⟩
+  intro S T hS hT heq
+  have hS' : S ∈ ({3, 5, 6, 7} : Finset ℕ).powerset := Finset.mem_powerset.mpr hS
+  have hT' : T ∈ ({3, 5, 6, 7} : Finset ℕ).powerset := Finset.mem_powerset.mpr hT
+  fin_cases hS' <;> fin_cases hT' <;> revert heq <;> decide
+
 /-! ## Conclusion
 
 The DFX framework is formalized with:
-- 1 axiom (Chebyshev anticoncentration bound `2ⁿ ≤ 3√Q + 2`, true and in
-  principle dischargeable from Mathlib's Chebyshev inequality)
+- 0 axioms (the Chebyshev anticoncentration bound `2ⁿ ≤ 3√Q + 2` is now the
+  fully proved theorem `anticoncentration_bound`, no longer an axiom)
 - 0 sorries (dfx_lower_bound fully proved)
 - Variance bounds and Cauchy–Schwarz (proved)
-- Small case verifications (proved)
-- The probability-free CORE of the axiom's discharge now proved in-file
-  (`second_moment_identity` and `card_mul_le_second_moment`, both 0-axiom); only
-  the same-parity distinct-integer interval count remains to fully eliminate the
-  axiom. See the "Verified ingredients toward discharging" section above.
+- Small case verifications `f_zero`…`f_four` (proved; `f_four` shows `f(4)=7`
+  beats the greedy powers-of-two witness `{1,2,4,8}` of maximum `8`)
 
-The axiom isolates the probability theory (the variance computation plus
-Chebyshev's inequality) that requires Mathlib probability infrastructure to
-formalize directly. The algebraic framework (variance bounds, Cauchy–Schwarz,
-sqrt manipulation) is fully proved.
+The anticoncentration bound is discharged entirely by the probability-free CORE
+built up in the "Verified ingredients toward discharging" section
+(`second_moment_identity`, `card_mul_le_second_moment`,
+`card_doubledDrop_image_of_distinct`, `card_le_of_sameParity_interval`,
+`card_mul_le_sum_of_nonneg`), so no probability-theory / measure infrastructure
+is needed: the whole file is elementary `Finset`/`Int`/`Real.sqrt` algebra with
+0 axioms and 0 sorries.
 
 NOTE (2026-06-27 integrity fix): the previous `anticoncentration_bound` axiom
 `2ⁿ ≤ √(2/π)·2(S+1)/√Q` was mathematically FALSE (it fails already for
