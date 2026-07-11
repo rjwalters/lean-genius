@@ -1171,6 +1171,41 @@ theorem erdos_1090_summary :
     (∀ k ≥ 3, ∃ A : Finset Point, HasRamseyProperty A k) :=
   ⟨graham_selfridge, fun k hk => hunter_observation k hk⟩
 
+/-! ## The Ramsey number as a least element
+
+`ramseyNumber` / `ramseyNumberColored` are defined as `sInf` of a set of realizable sizes.
+The two `exists_…_card_eq_ramseyNumber…` theorems show that infimum is *attained*, and the
+`…_le_of_hasRamseyProperty` theorems show it lower-bounds every realizable size.  The `IsLeast`
+packagings below combine these into the single reusable fact that `R(k)` (resp. `R_C(k)`) is the
+**minimum** realizable size — the "genuine minimum, not a mere infimum" the API's prose asserts —
+handing downstream users both membership and lower-bound-ness in one object. -/
+
+/-- **`R(k)` is positive** for `k ≥ 3`: it is at least `k ≥ 3 > 0` (`ramsey_lower_bound`). -/
+theorem ramseyNumber_pos (k : ℕ) (hk : k ≥ 3) : 0 < ramseyNumber k :=
+  lt_of_lt_of_le (by omega) (ramsey_lower_bound k hk)
+
+/-- **`R(k)` is the least realizable size.**  For `k ≥ 3`, `ramseyNumber k` is the minimum of
+the set of cardinalities of finite point sets with the Ramsey property: it is realized by an
+extremal witness (`exists_hasRamseyProperty_card_eq_ramseyNumber`) and bounds every realizable
+size from below (`ramseyNumber_le_of_hasRamseyProperty`).  The `IsLeast` packaging of
+`hasRamseyProperty_realizable_card_iff`. -/
+theorem ramseyNumber_isLeast (k : ℕ) (hk : k ≥ 3) :
+    IsLeast {n : ℕ | ∃ A : Finset Point, A.card = n ∧ HasRamseyProperty A k}
+      (ramseyNumber k) :=
+  ⟨exists_hasRamseyProperty_card_eq_ramseyNumber k hk,
+   fun _ ⟨_A, hcard, hA⟩ => hcard ▸ ramseyNumber_le_of_hasRamseyProperty hA⟩
+
+/-- **`R_C(k)` is the least realizable size (colored).**  For a finite palette `C` and `k ≥ 3`,
+`ramseyNumberColored C k` is the minimum cardinality of a finite point set with the `C`-colored
+Ramsey property — realized by `exists_hasRamseyPropertyColored_card_eq_ramseyNumberColored` and a
+lower bound via `ramseyNumberColored_le_of_hasRamseyProperty`.  The colored analogue of
+`ramseyNumber_isLeast`. -/
+theorem ramseyNumberColored_isLeast (C : Type*) [Finite C] (k : ℕ) (hk : k ≥ 3) :
+    IsLeast {n : ℕ | ∃ A : Finset Point, A.card = n ∧ HasRamseyPropertyColored C A k}
+      (ramseyNumberColored C k) :=
+  ⟨exists_hasRamseyPropertyColored_card_eq_ramseyNumberColored C k hk,
+   fun _ ⟨_A, hcard, hA⟩ => hcard ▸ ramseyNumberColored_le_of_hasRamseyProperty hA⟩
+
 /--
 The main theorem: Erdős #1090 is solved affirmatively.
 -/
