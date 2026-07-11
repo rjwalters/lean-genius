@@ -492,6 +492,41 @@ theorem simplexNumber_strictMono_dim (n : ℕ) :
   exact simplexNumber_strictMono_size n hab
 
 
+/-! ### The forward-difference operator: inverse to partial summation
+
+`partialSum` and `iterSum` build the figurate ladder up by *summation*. The forward
+difference `Δf n = f(n+1) - f n` is the operator that runs the ladder back *down*.
+The two are inverse: differencing a running total recovers the summand
+(`forwardDiff_partialSum`, the discrete Fundamental Theorem of Calculus
+`Δ ∘ ∑ = shift`), and dually, differencing the `(d+1)`-dimensional figurate ladder
+strips one dimension back to the `d`-dimensional one (`forwardDiff_simplexNumber`).
+This closes the summation ↔ difference duality: `sum_simplex` sends `P_d ↦ P_{d+1}`,
+and `forwardDiff` sends `P_{d+1} ↦ P_d`. -/
+
+/-- **Forward-difference operator.** `forwardDiff f n = f (n + 1) - f n`, the discrete
+analogue of the derivative and the one-step inverse of `partialSum`. -/
+def forwardDiff (f : ℕ → ℕ) (n : ℕ) : ℕ := f (n + 1) - f n
+
+/-- **Discrete Fundamental Theorem of Calculus.** The forward difference of a running
+total recovers the summand at the next index: `Δ(∑f)(n) = f(n+1)`. This is the exact
+inverse of `partialSum`, dual to how `sum_simplex` inverts `forwardDiff` on the
+figurate ladder. `ℕ`-subtraction is exact here because `partialSum f` is monotone. -/
+theorem forwardDiff_partialSum (f : ℕ → ℕ) (n : ℕ) :
+    forwardDiff (partialSum f) n = f (n + 1) := by
+  simp only [forwardDiff, partialSum, Finset.sum_range_succ]
+  rw [Nat.add_sub_cancel_left]
+
+/-- **Differencing drops a figurate dimension.** The forward difference of the
+`(d+1)`-dimensional simplex ladder is the `d`-dimensional ladder shifted by one:
+`Δ P_{d+1}(n) = P_d(n+1)`. The exact converse of the hockey stick `sum_simplex`
+(`∑ P_d = P_{d+1}`); immediate from the figurate Pascal recurrence
+`simplexNumber_succ_succ`. -/
+theorem forwardDiff_simplexNumber (d n : ℕ) :
+    forwardDiff (simplexNumber (d + 1)) n = simplexNumber d (n + 1) := by
+  simp only [forwardDiff]
+  rw [simplexNumber_succ_succ, Nat.add_sub_cancel_left]
+
+
 /-! ### Linearity of the discrete Cauchy transform
 
 The file above builds iterated summation `iterSum` and the discrete Cauchy
