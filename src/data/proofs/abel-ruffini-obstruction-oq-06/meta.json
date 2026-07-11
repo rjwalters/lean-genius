@@ -79,12 +79,28 @@
       "mathContext": "solvable by radicals $\\iff$ $\\mathrm{Gal}$ solvable; $S_n$ solvable $\\iff n \\le 4$."
     },
     {
-      "id": "part-i-symmetric-obstruction",
-      "title": "Part I: The Symmetric-Group Obstruction",
+      "id": "part-i-obstruction",
+      "title": "Part I(a): Sₙ is not solvable for n ≥ 5",
       "startLine": 42,
+      "endLine": 67,
+      "summary": "symmetricGroup_not_solvable: the symmetric group on n symbols is not solvable once n ≥ 5, generalizing Mathlib's Fin 5 case (Equiv.Perm.fin_5_not_solvable) to every n ≥ 5 — any such Sₙ contains a copy of S₅, whose derived series never reaches the trivial subgroup because A₅ is perfect (its own commutator subgroup) and nonabelian simple. This is the obstruction itself.",
+      "mathContext": "$A_5$ perfect nonabelian simple $\\Rightarrow$ $S_n$ not solvable for all $n \\ge 5$."
+    },
+    {
+      "id": "part-i-small-groups",
+      "title": "Part I(b): S₂, S₃, S₄, A₄ are solvable",
+      "startLine": 68,
+      "endLine": 144,
+      "summary": "The solvable side, each built as a one-step (or two-step) extension closed by solvable_of_ker_le_range: perm_fin_two_solvable (S₂ abelian), perm_fin_three_solvable (A₃ cyclic of prime order 3, quotient via the sign map), alt_fin_four_solvable (A₄ ⊳ V₄ ⊳ 1 with Klein-four kernel of exponent 2 and cyclic order-3 quotient), and perm_fin_four_solvable (S₄ over the sign sequence with A₄ as kernel). These are the concrete low-degree witnesses making the threshold sharp.",
+      "mathContext": "$S_2$ abelian; $A_3 \\cong C_3$; $A_4 \\rhd V_4 \\rhd 1$; $S_4 \\rhd A_4 \\rhd V_4 \\rhd 1$ — all solvable."
+    },
+    {
+      "id": "part-i-threshold",
+      "title": "Part I(c): the sharp threshold Sₙ solvable ⟺ n ≤ 4",
+      "startLine": 145,
       "endLine": 176,
-      "summary": "The full group-theoretic threshold. symmetricGroup_not_solvable: Sₙ is not solvable for every n ≥ 5 (via Equiv.Perm.not_solvable, generalizing Mathlib's Fin 5 case). The solvable side, each built as a one-step extension closed by solvable_of_ker_le_range: perm_fin_two_solvable (S₂ abelian), perm_fin_three_solvable (A₃ cyclic of prime order 3, quotient via sign), alt_fin_four_solvable (A₄ ⊳ V₄ ⊳ 1 with Klein-four kernel of exponent 2 and cyclic order-3 quotient), and perm_fin_four_solvable (S₄ over the sign sequence with A₄ kernel). symmetric_threshold and symmetric_threshold_full package the dividing line Sₙ solvable ⟺ n ≤ 4.",
-      "mathContext": "$A_5$ perfect simple $\\Rightarrow S_n$ unsolvable for $n\\ge5$; $S_2,S_3,S_4$ solvable via derived series $A_4 \\rhd V_4 \\rhd 1$."
+      "summary": "symmetric_threshold and symmetric_threshold_full package the two sides into a single dividing line: S₂, S₃ (and S₄, in the full form) are solvable while Sₙ is not solvable for any n ≥ 5. This is the group-theoretic skeleton of Abel–Ruffini — solvability of the symmetric group is exactly what separates the radically-solvable low degrees from the radically-unsolvable high ones.",
+      "mathContext": "$S_n$ solvable $\\iff n \\le 4$ — the sharp group-theoretic dividing line behind Abel–Ruffini."
     },
     {
       "id": "part-ii-radical-criterion",
