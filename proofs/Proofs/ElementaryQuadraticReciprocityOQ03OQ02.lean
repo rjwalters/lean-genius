@@ -1017,6 +1017,63 @@ theorem kronecker_sq_right_eq_one_iff (a n : ℤ) (hn : n ≠ 0) :
     · exact absurd ((kronecker_sq_right_eq_zero_iff a n hn).mp h0) h
     · exact h1
 
+-- ============================================================
+-- Section 14: Power numerators and moduli — the character on higher powers
+-- ============================================================
+
+/-! Section 6 established the denominator-side power law `kronecker_pow_right`
+`(a/nᵏ) = (a/n)ᵏ` and its even-power positivity `kronecker_even_pow_right_nonneg`.
+Section 13's square laws `kronecker_sq_left`/`kronecker_sq_right` are the `k = 2`
+slice of the general power law in *each* argument.  This section supplies the
+missing numerator-side power law `kronecker_pow_left` `(aᵏ/n) = (a/n)ᵏ` (the exact
+dual of `kronecker_pow_right`), and completes the even-power residue picture in
+both arguments: even powers are non-negative and equal `1` on units, generalizing
+`kronecker_sq_*` from `k = 2` to every exponent. -/
+
+/-- **The symbol at a power numerator is the power of the symbol.**  For nonzero
+`a` and every exponent `k`, `(aᵏ/n) = (a/n)ᵏ`.  The numerator-side dual of the
+Section-6 law `kronecker_pow_right`, by induction on `k` off first-argument
+multiplicativity `kronecker_mul_left` (base case `(a⁰/n) = (1/n) = 1`, from
+`kronecker_one_left`); the `k = 2` case is Section 13's `kronecker_sq_left`. -/
+theorem kronecker_pow_left (a n : ℤ) (k : ℕ) (ha : a ≠ 0) :
+    kronecker (a ^ k) n = kronecker a n ^ k := by
+  induction k with
+  | zero => simp [kronecker_one_left]
+  | succ k ih =>
+      rw [pow_succ, kronecker_mul_left (a ^ k) a n (mul_ne_zero (pow_ne_zero k ha) ha),
+        ih, pow_succ]
+
+/-- **The symbol is non-negative at even-power numerators.**  For nonzero `a` and
+every `k`, `0 ≤ (a^{2k}/n)`: by `kronecker_pow_left` the value is `((a/n)²)ᵏ`, a
+power of a square.  Generalizes `kronecker_sq_left_nonneg` (`k = 1`): even powers of
+the numerator are never quadratic non-residues at any modulus. -/
+theorem kronecker_even_pow_left_nonneg (a n : ℤ) (k : ℕ) (ha : a ≠ 0) :
+    0 ≤ kronecker (a ^ (2 * k)) n := by
+  rw [kronecker_pow_left a n (2 * k) ha, pow_mul]
+  exact pow_nonneg (sq_nonneg _) k
+
+/-- **Even-power numerators coprime to an odd modulus are residues.**  For odd
+positive `n` coprime to nonzero `a`, `(a^{2k}/n) = 1`: by `kronecker_pow_left` the
+value is `((a/n)²)ᵏ`, and `(a/n)² = 1` on units (`kronecker_sq_eq_one_of_coprime`).
+The `k = 1` case is `kronecker_sq_left_eq_one_of_coprime`; every even power of a unit
+numerator is a quadratic residue. -/
+theorem kronecker_even_pow_left_eq_one_of_coprime (a : ℤ) (n k : ℕ)
+    (hn : 0 < n) (hno : n % 2 = 1) (h : Int.gcd a n = 1) (ha : (a : ℤ) ≠ 0) :
+    kronecker ((a : ℤ) ^ (2 * k)) (n : ℤ) = 1 := by
+  rw [kronecker_pow_left (a : ℤ) (n : ℤ) (2 * k) ha, pow_mul,
+    kronecker_sq_eq_one_of_coprime a n hn hno h, one_pow]
+
+/-- **Even-power moduli coprime to the numerator give the trivial value.**  For odd
+positive `n` coprime to `a`, `(a/n^{2k}) = 1`: by `kronecker_pow_right` the value is
+`((a/n)²)ᵏ = 1` on units.  The denominator-side dual of
+`kronecker_even_pow_left_eq_one_of_coprime` and the power generalization of
+`kronecker_sq_right_eq_one_of_coprime` (`k = 1`). -/
+theorem kronecker_even_pow_right_eq_one_of_coprime (a : ℤ) (n k : ℕ)
+    (hn : 0 < n) (hno : n % 2 = 1) (h : Int.gcd a n = 1) :
+    kronecker (a : ℤ) ((n : ℤ) ^ (2 * k)) = 1 := by
+  rw [kronecker_pow_right (a : ℤ) (n : ℤ) (2 * k) (by exact_mod_cast hn.ne'), pow_mul,
+    kronecker_sq_eq_one_of_coprime a n hn hno h, one_pow]
+
 /-!
 ## Module note: what remains open
 
