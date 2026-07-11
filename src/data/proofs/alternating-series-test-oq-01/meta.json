@@ -74,29 +74,44 @@
   },
   "sections": [
     {
+      "id": "overview-setup",
+      "title": "Overview and Setup",
+      "startLine": 1,
+      "endLine": 28,
+      "summary": "Module docstring: Mathlib provides alternating-series convergence and the one-sided bracketing lemmas but not the symmetric remainder estimate |S_N − l| ≤ f N; this file supplies it and specialises to the alternating harmonic series. Imports Mathlib; opens Finset, Filter, Topology; fixes f : ℕ → ℝ and l : ℝ.",
+      "mathContext": "Goal: $|S_N - l| \\le f_N$ for antitone $f \\to 0$, with $S_N = \\sum_{i<N}(-1)^i f_i$ and $l = \\lim S_N$ — the practical remainder bound absent from Mathlib."
+    },
+    {
       "id": "recurrence",
       "title": "The Partial-Sum Recurrence",
-      "startLine": 1,
+      "startLine": 29,
       "endLine": 35,
-      "summary": "S_{N+1} = S_N + (-1)^N f N, from Finset.sum_range_succ.",
-      "mathContext": "$S_{N+1} = S_N + (-1)^N f_N$.",
-      "description": "Imports, module docstring, and setup (namespace, `open`, `variable`), then `partialSum_succ`: the one-step recurrence `S_{n+1} = S_n + (-1)^n f n` that drives the parity split."
+      "summary": "partialSum_succ: S_{N+1} = S_N + (-1)^N f N, immediate from Finset.sum_range_succ. This one-step recurrence is what lets the two-sided bound relate consecutive partial sums under the parity split.",
+      "mathContext": "$S_{N+1} = S_N + (-1)^N f_N$."
     },
     {
       "id": "error-bound",
       "title": "The Two-Sided Error Bound",
       "startLine": 36,
       "endLine": 68,
-      "summary": "|S_N − l| ≤ f N, by trapping l between S_N and S_{N+1} and splitting on the parity of N.",
-      "mathContext": "$|S_N - l| \\le f_N$."
+      "summary": "abs_partialSum_sub_limit_le: |S_N − l| ≤ f N for antitone f → 0 with S_N → l. The limit l is trapped between consecutive partial sums by Mathlib's bracketing lemmas (alternating_series_le_tendsto / tendsto_le_alternating_series); a parity split on N (even ⟹ S_N ≤ l ≤ S_N + f N; odd ⟹ S_N − f N ≤ l ≤ S_N), combined with the recurrence, yields the symmetric bound.",
+      "mathContext": "$|S_N - l| \\le f_N$: even $N$ gives $S_N \\le l \\le S_N + f_N$, odd $N$ gives $S_N - f_N \\le l \\le S_N$."
     },
     {
-      "id": "alternating-harmonic",
-      "title": "Alternating Harmonic Series",
+      "id": "antitone-coeffs",
+      "title": "The Harmonic Coefficients Are Antitone",
       "startLine": 69,
+      "endLine": 75,
+      "summary": "antitone_one_div_succ: the coefficients f i = 1/(i+1) are antitone, via one_div_le_one_div_of_le on the positive denominators. This is the sole hypothesis (beyond tending to 0) the general bound needs, verifying the alternating harmonic series qualifies.",
+      "mathContext": "$i \\le j \\Rightarrow \\frac{1}{j+1} \\le \\frac{1}{i+1}$, so $f_i = \\frac{1}{i+1}$ is antitone."
+    },
+    {
+      "id": "harmonic-capstone",
+      "title": "Capstone: Alternating Harmonic Series",
+      "startLine": 76,
       "endLine": 88,
-      "summary": "f i = 1/(i+1) is antitone and tends to 0, so ∑ (-1)^i/(i+1) converges with partial-sum error at most 1/(N+1).",
-      "mathContext": "$\\left|\\sum_{i<N}\\frac{(-1)^i}{i+1} - l\\right| \\le \\frac{1}{N+1}$."
+      "summary": "abs_alternatingHarmonic_sub_limit_le: ∑ (-1)^i/(i+1) converges to some l (namely log 2, though the value is never needed) and each partial sum approximates l with error at most 1/(N+1). Assembles antitone_one_div_succ, tendsto_one_div_add_atTop_nhds_zero_nat, and the general two-sided bound.",
+      "mathContext": "$\\left|\\sum_{i<N}\\frac{(-1)^i}{i+1} - l\\right| \\le \\frac{1}{N+1}$, with $l = \\log 2$."
     }
   ],
   "mainTheorems": [
