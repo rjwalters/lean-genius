@@ -220,6 +220,21 @@
       "targetId": "algebraic-numbers-countable",
       "relationship": "related",
       "description": "Ancestor: the algebraic reals are countable. That countability is the Fσ input reused here — a countable set is Fσ, so its complement (the transcendentals) is Gδ."
+    },
+    {
+      "targetId": "algebraic-numbers-countable-oq-02-oq-03-oq-02-oq-01",
+      "relationship": "extendedBy",
+      "description": "Direct child: abstracts this entry's concrete ℝ dichotomy into the space-agnostic theorem that any dense countable set is Fσ-but-not-Gδ in a nonempty perfect T1 Baire (Polish) space, recovering ℚ ⊆ ℝ as a one-line corollary. This realizes open question #1 posed here (a generic 'dense countable ⇒ Fσ ∖ Gδ' theorem)."
+    },
+    {
+      "targetId": "algebraic-numbers-countable-oq-07",
+      "relationship": "complements",
+      "description": "The measure-theoretic pillar of the smallness trichotomy: the algebraic reals are Lebesgue-null (measure zero), dually the transcendentals have full measure. Together with the Gδ/Fσ classification here this answers open question #2 — pairing category-smallness (this entry) with measure-smallness on ℝ."
+    },
+    {
+      "targetId": "algebraic-reals-meager-dense-gdelta",
+      "relationship": "related",
+      "description": "Parallel derivation of the same headline: the transcendental reals {x : ℝ | ¬ IsAlgebraic ℚ x} are an explicit dense Gδ, obtained from the meagre parent via the countable-complement-is-Gδ lemma. This entry additionally pins the algebraic reals as Fσ-but-not-Gδ via the disjoint-dense-Gδ obstruction."
     }
   ]
 }
