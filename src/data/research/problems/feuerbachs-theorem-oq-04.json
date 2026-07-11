@@ -21,7 +21,7 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-06-28T10:40:00.000Z",
-    "iteration": 3,
+    "iteration": 4,
     "focus": "Spherical circles (level sets of scos) + internal/external tangency relations formalized on top of the metric layer; level-set circle identified with the metric circle (mem_sCircle_iff_sdist).",
     "blockers": [],
     "nextAction": "Tangent-point existence: exhibit the unique common point on the geodesic between centres for tangent circles (spherical slerp) and verify it lies on both sCircles; then build spherical incircle / nine-point circle and attempt the spherical Feuerbach tangency.",
@@ -32,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: side-midpoint API rounded out with geodesic-membership (span{A,B}) and self-midpoint lemmas; frontier remains the Feuerbach tangency (nine-point circle ↔ incircle/excircles).",
+    "progressSummary": "SHIPPED bundled MetricSpace instance (researcher-11, 2026-07-11, VERIFIED axiom-free): new FeuerbachsTheoremOQ04Metric.lean turns sdist_isMetric's four-axiom conjunction into an actual typeclass instance. Defines SphereModel E := {P : E // OnSphere P} (unit-vector subtype) and registers `noncomputable instance MetricSpace (SphereModel E)` with dist = sdist (arccos of inner product), each field drawn from sdist_self/sdist_comm/sdist_triangle/sdist_eq_zero_iff; edist/uniformity/bornology take canonical dist-derived defaults. So the spherical model now plugs into Mathlib's full metric-space API (balls, Metric.sphere, continuity, bornology, uniformity). Records dist_eq (rfl to sdist), dist_eq_arccos, and diameter bound dist_le_pi (dist P Q <= pi via Real.arccos_le_pi). #print axioms: instance + dist_le_pi [propext,Classical.choice,Quot.sound] only. Closes nextStep #1 (bundle S^n as a MetricSpace instance). || PRIOR: PROGRESS: side-midpoint API rounded out with geodesic-membership (span{A,B}) and self-midpoint lemmas; frontier remains the Feuerbach tangency (nine-point circle ↔ incircle/excircles).",
     "builtItems": [
       "FeuerbachsTheoremOQ04.chord_sq (Proofs/FeuerbachsTheoremOQ04.lean) — chord-cosine bridge: for unit vectors, ||P-Q||^2 = 2 - 2*scos P Q; turns spherical tangency into an inner-product equation. 0-axiom.",
       "FeuerbachsTheoremOQ04.abs_scos_le_one/scos_le_one/neg_one_le_scos — spherical cosine in [-1,1] (Cauchy-Schwarz on unit vectors)",
@@ -56,7 +56,8 @@
       "sphericalIncircle_contact_points — incircle meets each of the 3 sides in exactly one point (explicit feet)",
       "sphericalCircumcircle_exists in FeuerbachsTheoremOQ04Circumcircle.lean: any three model points lie on a common sCircle O rho (circumcircle), via greatCircles_inter on poles A-B, B-C. [VERIFIED, 0-axiom]",
       "sphericalCircumcircle_equidistant + inner_sub_eq_zero_iff_scos_eq in FeuerbachsTheoremOQ04Circumcircle.lean: circumcentre is spherically equidistant sdist A O = sdist B O = sdist C O. [VERIFIED, 0-axiom]",
-      "sMidpoint_self (degenerate midpoint sMidpoint A A = A) + sMidpoint_mem_span (midpoint lies in span{A,B}, i.e. on the geodesic through A,B) in FeuerbachsTheoremOQ04Midpoint.lean"
+      "sMidpoint_self (degenerate midpoint sMidpoint A A = A) + sMidpoint_mem_span (midpoint lies in span{A,B}, i.e. on the geodesic through A,B) in FeuerbachsTheoremOQ04Midpoint.lean",
+      "FeuerbachsTheoremOQ04Metric.lean: SphereModel E subtype + noncomputable MetricSpace instance (dist=sdist) from sdist_isMetric components + dist_eq/dist_eq_arccos/dist_le_pi. 0-axiom VERIFIED."
     ],
     "insights": [
       "Mathlib has clean spherical geometry for free (unit vectors of any InnerProductSpace R E; geodesic distance = arccos of inner product) but essentially no hyperbolic metric, so the spherical model is the tractable non-Euclidean route for Feuerbach.",
@@ -73,7 +74,6 @@
       "No spherical-triangle incircle / nine-point-circle construction in Mathlib; must be built on scos/sdist."
     ],
     "nextSteps": [
-      "Bundle (S^n, sdist) as an actual Mathlib MetricSpace instance on the sphere subtype (sdist_isMetric supplies all four axioms; the remaining work is the subtype packaging).",
       "Tangent-point existence for tangent spherical circles (slerp midpoint on the geodesic between centres), using sdist_triangle for the betweenness/uniqueness argument.",
       "Construct the spherical incircle and nine-point circle for a spherical triangle, then attempt the tangency conclusion.",
       "Relate the common tangent direction to a spherical Feuerbach configuration (incircle/nine-point-analogue tangency) building on the contact-point tangent structure.",
