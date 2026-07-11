@@ -277,13 +277,15 @@ theorem summable_one_div_nat_mul_log_mul_const {c δ : ℝ} (hc : 0 < c) (hδ : 
   have hc2 : (0 : ℝ) < c ^ 2 := by positivity
   -- threshold `N₀` above `2`, `2/c` and `1/c²` (so `m·c ≥ 2` and `m·c² ≥ 1` on the tail)
   set N₀ : ℕ := max 2 (⌈2 / c⌉₊ + ⌈1 / c ^ 2⌉₊) with hN₀def
-  have hN₀2 : (2 : ℝ) ≤ (N₀ : ℝ) := by exact_mod_cast le_max_left 2 (⌈2 / c⌉₊ + ⌈1 / c ^ 2⌉₊)
-  have hN₀2c : 2 / c ≤ (N₀ : ℝ) :=
-    le_trans (Nat.le_ceil _) (by exact_mod_cast le_trans (Nat.le_add_right _ _)
-      (le_max_right 2 (⌈2 / c⌉₊ + ⌈1 / c ^ 2⌉₊)))
-  have hN₀c2 : 1 / c ^ 2 ≤ (N₀ : ℝ) :=
-    le_trans (Nat.le_ceil _) (by exact_mod_cast le_trans (Nat.le_add_left _ _)
-      (le_max_right 2 (⌈2 / c⌉₊ + ⌈1 / c ^ 2⌉₊)))
+  have hN₀2 : (2 : ℝ) ≤ (N₀ : ℝ) := by
+    have h : (2 : ℕ) ≤ N₀ := le_max_left _ _
+    exact_mod_cast h
+  have hN₀2c : 2 / c ≤ (N₀ : ℝ) := by
+    have h : ⌈2 / c⌉₊ ≤ N₀ := le_trans (Nat.le_add_right _ _) (le_max_right _ _)
+    exact le_trans (Nat.le_ceil _) (by exact_mod_cast h)
+  have hN₀c2 : 1 / c ^ 2 ≤ (N₀ : ℝ) := by
+    have h : ⌈1 / c ^ 2⌉₊ ≤ N₀ := le_trans (Nat.le_add_left _ _) (le_max_right _ _)
+    exact le_trans (Nat.le_ceil _) (by exact_mod_cast h)
   -- dominating series: the constant-free convergent series, shifted and scaled by `2^{1+δ}`
   have hbase : Summable (fun n : ℕ => 1 / ((n : ℝ) * (Real.log n) ^ (1 + δ))) :=
     summable_one_div_nat_mul_log_rpow hδ
@@ -350,11 +352,9 @@ theorem not_summable_one_div_nat_mul_log_mul_const {c : ℝ} (hc : 0 < c) :
   set N₀ : ℕ := max 2 (⌈c⌉₊ + ⌈2 / c⌉₊) with hN₀def
   have hN₀2 : (2 : ℝ) ≤ (N₀ : ℝ) := by exact_mod_cast le_max_left 2 (⌈c⌉₊ + ⌈2 / c⌉₊)
   have hN₀c : c ≤ (N₀ : ℝ) :=
-    le_trans (Nat.le_ceil _) (by exact_mod_cast le_trans (Nat.le_add_right _ _)
-      (le_max_right 2 (⌈c⌉₊ + ⌈2 / c⌉₊)))
+    le_trans (Nat.le_ceil _) (by exact_mod_cast le_trans (Nat.le_add_right _ _) (le_max_right 2 (⌈c⌉₊ + ⌈2 / c⌉₊)))
   have hN₀2c : 2 / c ≤ (N₀ : ℝ) :=
-    le_trans (Nat.le_ceil _) (by exact_mod_cast le_trans (Nat.le_add_left _ _)
-      (le_max_right 2 (⌈c⌉₊ + ⌈2 / c⌉₊)))
+    le_trans (Nat.le_ceil _) (by exact_mod_cast le_trans (Nat.le_add_left _ _) (le_max_right 2 (⌈c⌉₊ + ⌈2 / c⌉₊)))
   -- the given series, shifted past the threshold and scaled by `2`, dominates `1/(n·log n)`
   have hdom : Summable (fun n : ℕ => (2 : ℝ) *
       (1 / (((n + N₀ : ℕ) : ℝ) * Real.log (((n + N₀ : ℕ) : ℝ) * c)))) :=

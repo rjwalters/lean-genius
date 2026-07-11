@@ -785,7 +785,7 @@ theorem summable_of_sharpBound {A : Set ℕ} {C δ : ℝ} (hδ : 0 < δ) (hC : 0
   -- Strong bound: for j ≥ Nthr, block mass ≤ g j.
   have hstrong : ∀ j, Nthr ≤ j → block j ≤ g j := by
     intro j hj
-    have hgj : g j = full j := by rw [hgdef]; exact Set.indicator_of_mem hj
+    have hgj : g j = full j := by rw [hgdef]; exact Set.indicator_of_mem hj full
     rw [hgj]
     have hbe : block j
         = ∑ i ∈ (Finset.Ico (2 ^ j) (2 ^ (j + 1))).filter (· ∈ A), F i := by
@@ -837,7 +837,6 @@ theorem summable_of_sharpBound {A : Set ℕ} {C δ : ℝ} (hδ : 0 < δ) (hC : 0
           have hpw : (Real.log (((j : ℝ) + 1) * Real.log 2)) ^ (1 + δ) ≠ 0 :=
             ne_of_gt (Real.rpow_pos_of_pos hlp _)
           field_simp
-          ring
   -- Combine into a uniform partial-sum bound and conclude summability.
   have hcombine : ∀ j, block j ≤ (if j < Nthr then (1 : ℝ) else 0) + g j := by
     intro j
@@ -921,8 +920,6 @@ theorem sharp_required_bound_implies_conjecture :
           exact_mod_cast countingFunction_le_rothNumber A (max k 3) N hApf
       _ ≤ C * (N : ℝ) / (Real.log N * (Real.log (Real.log N)) ^ (1 + δ)) := hN
   exact hdiv (summable_of_sharpBound hδ hC hcount)
-
-/-- **Divergent reciprocal sum forces super-`(log)^{1+δ}` density infinitely often.**
 
 /-- **Divergent reciprocal sum forces super-`(log)^{1+δ}` density infinitely often.**
     The contrapositive of `summable_of_strongBound`, packaged as a positive density
@@ -1010,7 +1007,7 @@ theorem strongRequiredBound_implies_sharpRequiredBound {k : ℕ}
   have hlog : Filter.Tendsto (fun N : ℕ => Real.log (N : ℝ)) Filter.atTop Filter.atTop :=
     Real.tendsto_log_atTop.comp tendsto_natCast_atTop_atTop
   have hr : (0 : ℝ) < δ / 2 := by linarith
-  have hlittle := (Real.isLittleO_log_rpow_atTop hr).comp_tendsto hlog
+  have hlittle := (isLittleO_log_rpow_atTop hr).comp_tendsto hlog
   have hbound := Asymptotics.isLittleO_iff.mp hlittle (one_pos)
   simp only [Function.comp_apply] at hbound
   have hLgt : ∀ᶠ N : ℕ in Filter.atTop, 1 < Real.log (N : ℝ) :=

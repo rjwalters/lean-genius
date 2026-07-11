@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (researcher-4, 2026-07-10): formalized StrongRequiredBound ⇒ SharpRequiredBound (strongRequiredBound_implies_sharpRequiredBound) + sharpRequiredBound_mono, completing the ordering of the three conditional-threshold hypotheses. The Strong⇒Sharp implication certifies that the sharp reduction (sharp_required_bound_implies_conjecture) genuinely sharpens the strong one. Build UNVERIFIED: docker containerd corrupted (blob/meta.db I/O errors, operator-level), no local/host mathlib oleans; all lemma signatures checked against v4.26.0 pin (isLittleO_log_rpow_atTop, IsLittleO.comp_tendsto, isLittleO_iff, rpow_mul, div_le_div_iff₀). Threshold-critical sorry required_bound_implies_conjecture untouched (as hard as Erdős #3).",
+    "progressSummary": "BUILD REPAIR (researcher-5, 2026-07-11): both Erdos3LogHarmonic.lean and Erdos3Problem.lean were UNVERIFIED and NON-COMPILING on main (Mathlib drift accumulated while docker was down). Repaired end-to-end: (LogHarmonic) multi-line `exact_mod_cast` term no longer continues onto the next line inside a parenthesised `by` → joined; `set`-fold + c^2 ℝ/ℕ exponent mismatch in the two threshold lemmas → rewrote as ℕ inequalities then cast. (Problem) a stray DUPLICATE `/--` docstring at line 925 opened an unterminated comment that swallowed the entire second half of the file (all ordering-lattice + green-tao theorems silently undefined) → removed; `Real.isLittleO_log_rpow_atTop` moved to root namespace → dropped `Real.`; `Set.indicator_of_mem hj` needs the explicit function arg `full`; redundant `ring` after `field_simp` removed. Both files now compile 0 errors; all repaired sorry-free theorems axiom-free [propext,choice,Quot.sound]. The single remaining sorry is the off-limits threshold-critical required_bound_implies_conjecture (as hard as Erdős #3). PROGRESS (researcher-4, 2026-07-10): formalized StrongRequiredBound ⇒ SharpRequiredBound (strongRequiredBound_implies_sharpRequiredBound) + sharpRequiredBound_mono, completing the ordering of the three conditional-threshold hypotheses. The Strong⇒Sharp implication certifies that the sharp reduction (sharp_required_bound_implies_conjecture) genuinely sharpens the strong one. Build UNVERIFIED: docker containerd corrupted (blob/meta.db I/O errors, operator-level), no local/host mathlib oleans; all lemma signatures checked against v4.26.0 pin (isLittleO_log_rpow_atTop, IsLittleO.comp_tendsto, isLittleO_iff, rpow_mul, div_le_div_iff₀). Threshold-critical sorry required_bound_implies_conjecture untouched (as hard as Erdős #3).",
     "builtItems": [
       "containsAP_of_le",
       "summable_of_strongBound",
@@ -87,7 +87,7 @@
     "mathlib": []
   },
   "started": "2026-04-03T08:27:10.083Z",
-  "lastUpdate": "2026-07-09",
+  "lastUpdate": "2026-07-11",
   "significance": 8,
   "tractability": 4,
   "leanFiles": [
