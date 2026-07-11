@@ -934,4 +934,45 @@ theorem equilateral_cosh_a (t : HyperbolicTriangle)
   obtain ⟨hab, hbc⟩ := equilateral_sides_eq t hAB hBC
   rw [hab, hbc, equilateral_cosh t hAB hBC]
 
+-- ============================================================
+-- PART 12: The full equilateral ⟺ equiangular characterization
+-- ============================================================
+
+/-- **Cyclic relabeling of a hyperbolic triangle** `(A,B,C) ↦ (B,C,A)`,
+    `(a,b,c) ↦ (b,c,a)`. The three second-law-of-cosines fields permute cyclically
+    (`lawA ↦ lawB ↦ lawC ↦ lawA`, each up to commutativity of the products), so the
+    rotation is again a valid `HyperbolicTriangle`. It carries the `B`-vs-`C` pair into the
+    `A`-vs-`B` slots, letting the `(a,b)/(A,B)` order and isosceles lemmas be reused for the
+    `(b,c)/(B,C)` pair without re-deriving the `cosh` comparison. -/
+def HyperbolicTriangle.rotate (t : HyperbolicTriangle) : HyperbolicTriangle where
+  a := t.b; b := t.c; c := t.a
+  A := t.B; B := t.C; C := t.A
+  ha := t.hb; hb := t.hc; hc := t.ha
+  hA := t.hB; hB := t.hC; hC := t.hA
+  hA_lt := t.hB_lt; hB_lt := t.hC_lt; hC_lt := t.hA_lt
+  lawA := by rw [t.lawB]; ring
+  lawB := by rw [t.lawC]; ring
+  lawC := t.lawA
+
+/-- **Isosceles criterion for the `(b,c)/(B,C)` pair.** `b = c ↔ B = C`, the companion of
+    `side_eq_iff_angle_eq` (`a = b ↔ A = B`), obtained by applying it to the cyclic
+    relabeling `rotate` (which puts `(B,C,b,c)` into the `(A,B,a,b)` roles). -/
+theorem side_eq_iff_angle_eq_bc (t : HyperbolicTriangle) : t.b = t.c ↔ t.B = t.C :=
+  side_eq_iff_angle_eq t.rotate
+
+/-- **Equilateral ⟺ equiangular.** A hyperbolic triangle has all three sides equal iff it
+    has all three angles equal. The `⟸` direction is `equilateral_sides_eq` (equal angles
+    force equal sides); the `⟹` direction combines the two isosceles criteria
+    `side_eq_iff_angle_eq` (for `a, b`) and `side_eq_iff_angle_eq_bc` (for `b, c`).
+    Together with hyperbolic AAA congruence this pins down the equilateral triangles as
+    exactly the equiangular ones — a single congruence class for each admissible common
+    angle `θ ∈ (0, π/3)`. -/
+theorem equilateral_iff_equiangular (t : HyperbolicTriangle) :
+    (t.a = t.b ∧ t.b = t.c) ↔ (t.A = t.B ∧ t.B = t.C) := by
+  constructor
+  · rintro ⟨hab, hbc⟩
+    exact ⟨(side_eq_iff_angle_eq t).mp hab, (side_eq_iff_angle_eq_bc t).mp hbc⟩
+  · rintro ⟨hAB, hBC⟩
+    exact equilateral_sides_eq t hAB hBC
+
 end HyperbolicAAA
