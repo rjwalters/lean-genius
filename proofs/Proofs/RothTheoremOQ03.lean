@@ -44,22 +44,19 @@ def IsKAPFreeZMod {N : ℕ} (A : Finset (ZMod N)) (k : ℕ) : Prop :=
 theorem apFree_of_isKAPFreeZMod_three {N : ℕ} {A : Finset (ZMod N)}
     (h : IsKAPFreeZMod A 3) : Szemeredi.Roth.APFree A := by
   intro a d hd ha had hadd
-  exact h a d hd fun i => by
-    fin_cases i
-    · rw [show (0 : Fin 3).val = 0 from rfl, zero_nsmul, add_zero]; exact ha
-    · rw [show (1 : Fin 3).val = 1 from rfl, one_nsmul]; exact had
-    · rw [show (2 : Fin 3).val = 2 from rfl, two_nsmul, ← two_mul]; exact hadd
+  refine h a d hd (fun i => ?_)
+  fin_cases i
+  · simpa using ha
+  · simpa using had
+  · simpa [nsmul_eq_mul, two_mul] using hadd
 
 /-- Converse: Szemeredi.Roth.APFree implies IsKAPFreeZMod for k=3. -/
 theorem isKAPFreeZMod_three_of_apFree {N : ℕ} {A : Finset (ZMod N)}
     (h : Szemeredi.Roth.APFree A) : IsKAPFreeZMod A 3 := by
   intro a d hd hAP
-  have ha : a ∈ A := by
-    have := hAP ⟨0, by omega⟩; rwa [show (0 : Fin 3).val = 0 from rfl, zero_nsmul, add_zero] at this
-  have had : a + d ∈ A := by
-    have := hAP ⟨1, by omega⟩; rwa [show (1 : Fin 3).val = 1 from rfl, one_nsmul] at this
-  have hadd : a + 2 * d ∈ A := by
-    have := hAP ⟨2, by omega⟩; rwa [show (2 : Fin 3).val = 2 from rfl, two_nsmul, ← two_mul] at this
+  have ha : a ∈ A := by simpa using hAP ⟨0, by omega⟩
+  have had : a + d ∈ A := by simpa using hAP ⟨1, by omega⟩
+  have hadd : a + 2 * d ∈ A := by simpa [nsmul_eq_mul, two_mul] using hAP ⟨2, by omega⟩
   exact h a d hd ha had hadd
 
 -- ============================================================
@@ -94,6 +91,15 @@ theorem isKAPFreeZMod_succ {N k : ℕ} {A : Finset (ZMod N)}
     (h : IsKAPFreeZMod A k) : IsKAPFreeZMod A (k + 1) :=
   fun a d hd hAP => h a d hd (fun i => hAP i.castSucc)
 
+/-- Monotonicity in k (general form): if A is j-AP-free and j ≤ k then A is
+    k-AP-free. Generalizes `isKAPFreeZMod_succ` (the j → j+1 step). Reason: a
+    putative k-AP `{a, a+d, …, a+(k-1)d}` contains the j-AP
+    `{a, a+d, …, a+(j-1)d}` as its initial segment (indices embedded via
+    `Fin.castLE`, which preserves `.val`), which A already excludes. -/
+theorem isKAPFreeZMod_le {N j k : ℕ} {A : Finset (ZMod N)}
+    (hjk : j ≤ k) (h : IsKAPFreeZMod A j) : IsKAPFreeZMod A k :=
+  fun a d hd hAP => h a d hd (fun i => hAP (Fin.castLE hjk i))
+
 /-- A singleton is k-AP-free for any k ≥ 2.
     Reason: the positions 0 and 1 in a putative AP would give
     a = x and a + d = x, forcing d = 0. -/
@@ -102,12 +108,8 @@ theorem isKAPFreeZMod_singleton {N : ℕ} (x : ZMod N) {k : ℕ} (hk : 2 ≤ k) 
   intro a d hd hAP
   have h0 : (0 : ℕ) < k := by omega
   have h1 : (1 : ℕ) < k := by omega
-  have ha : a ∈ ({x} : Finset (ZMod N)) := by
-    have := hAP ⟨0, h0⟩
-    rwa [show (⟨0, h0⟩ : Fin k).val = 0 from rfl, zero_nsmul, add_zero] at this
-  have had : a + d ∈ ({x} : Finset (ZMod N)) := by
-    have := hAP ⟨1, h1⟩
-    rwa [show (⟨1, h1⟩ : Fin k).val = 1 from rfl, one_nsmul] at this
+  have ha : a ∈ ({x} : Finset (ZMod N)) := by simpa using hAP ⟨0, h0⟩
+  have had : a + d ∈ ({x} : Finset (ZMod N)) := by simpa using hAP ⟨1, h1⟩
   rw [Finset.mem_singleton] at ha had
   apply hd
   -- a = x and a + d = x ⟹ d = 0
@@ -153,11 +155,11 @@ noncomputable def conjugateByWeight {s : ℕ} (ω : Fin s → Bool) (z : ℂ) : 
     ||f||_{U^s}^{2^s} = |E_{x, h₁,...,hₛ} ∏_{ω ∈ {0,1}^s} C^{|ω|} f(x + ω·h)|
     Defined constructively as a finite sum over ZMod N. -/
 noncomputable def gowersNorm (N s : ℕ) [NeZero N] (f : ZMod N → ℂ) : ℝ :=
-  Complex.abs (
+  ‖(
     ((N : ℂ)⁻¹) ^ (s + 1) *
     ∑ x : ZMod N, ∑ h : Fin s → ZMod N,
       ∏ ω : Fin s → Bool,
-        conjugateByWeight ω (f (x + hypercubeShift h ω)))
+        conjugateByWeight ω (f (x + hypercubeShift h ω)))‖
 
 -- ============================================================
 -- PART III: k-AP Counting Operator
@@ -179,6 +181,57 @@ noncomputable def kAPCount {N : ℕ} [NeZero N] (k : ℕ)
   ((N : ℂ)⁻¹) ^ 2 * ∑ x : ZMod N, ∑ d : ZMod N,
     ∏ i : Fin k, f i (x + i.val • d)
 
+/-- **Diagonal-only identity for k-AP-free sets.**
+    If `A` is k-AP-free (`k ≥ 1`), then the normalized k-AP count of its
+    indicator `1_A` collapses to `A.card / N²`: only the *trivial* progressions
+    (`d = 0`, i.e. the diagonal `x = x = ⋯ = x`) contribute.
+
+    This is the combinatorial content that makes `kAPCount` a genuine detector
+    of AP-freeness. For any `d ≠ 0` the AP-free hypothesis forces some term
+    `x + i·d ∉ A`, killing the product; the surviving `d = 0` slice sums the
+    indicator to `A.card`. In the density-increment method, the excess of
+    `kAPCount(1_A)` over this diagonal value is exactly what a nonuniformity
+    (large Gowers norm) would have to supply — here it is provably zero. -/
+theorem kAPCount_indicator_apFree {N : ℕ} [NeZero N] {A : Finset (ZMod N)}
+    {k : ℕ} (hk : 1 ≤ k) (hA : IsKAPFreeZMod A k) :
+    kAPCount k (fun _ => (fun y => if y ∈ A then (1 : ℂ) else 0))
+      = (A.card : ℂ) / (N : ℂ) ^ 2 := by
+  set ind : ZMod N → ℂ := fun y => if y ∈ A then (1 : ℂ) else 0 with hind
+  -- For each base point x, the inner d-sum sees only the diagonal d = 0.
+  have key : ∀ x : ZMod N,
+      (∑ d : ZMod N, ∏ i : Fin k, ind (x + i.val • d)) = ind x := by
+    intro x
+    -- The d = 0 term is `(ind x)^k = ind x` (indicators are idempotent, k ≥ 1).
+    have hdiag : (∏ i : Fin k, ind (x + i.val • (0 : ZMod N))) = ind x := by
+      have hc : ∀ i : Fin k, ind (x + i.val • (0 : ZMod N)) = ind x := by
+        intro i; simp
+      rw [Finset.prod_congr rfl (fun i _ => hc i), Finset.prod_const,
+          Finset.card_univ, Fintype.card_fin]
+      by_cases hx : x ∈ A
+      · simp [hind, hx]
+      · simp [hind, hx, zero_pow (show k ≠ 0 by omega)]
+    -- Every d ≠ 0 term vanishes: AP-freeness forces a missing term.
+    have hzero : ∀ d ∈ Finset.univ \ {(0 : ZMod N)},
+        (∏ i : Fin k, ind (x + i.val • d)) = 0 := by
+      intro d hd
+      have hd0 : d ≠ 0 := by
+        simp only [Finset.mem_sdiff, Finset.mem_singleton] at hd; exact hd.2
+      have hnot : ¬ (∀ i : Fin k, x + i.val • d ∈ A) := fun hall => hA x d hd0 hall
+      push_neg at hnot
+      obtain ⟨i, hi⟩ := hnot
+      exact Finset.prod_eq_zero (Finset.mem_univ i)
+        (by simp only [hind]; exact if_neg hi)
+    rw [Finset.sum_eq_add_sum_diff_singleton (Finset.mem_univ (0 : ZMod N)),
+        Finset.sum_eq_zero hzero, add_zero, hdiag]
+  simp only [kAPCount]
+  rw [Finset.sum_congr rfl (fun x _ => key x)]
+  -- The diagonal sum of the indicator is just the cardinality of A.
+  have hsum : (∑ x : ZMod N, ind x) = (A.card : ℂ) := by
+    simp only [hind]
+    rw [Finset.sum_ite_mem, Finset.univ_inter, Finset.sum_const, nsmul_eq_mul, mul_one]
+  rw [hsum, inv_pow]
+  ring
+
 -- ============================================================
 -- PART IV: Generalized von Neumann Theorem
 -- ============================================================
@@ -196,7 +249,7 @@ Proof requires the Gowers-Cauchy-Schwarz inequality (iterated
 Cauchy-Schwarz over the hypercube), which is beyond current scope.
 -/
 
-/-- Generalized von Neumann: the k-AP count is controlled by U^{k-1}. -/
+/- Generalized von Neumann: the k-AP count is controlled by U^{k-1}. -/
 
 -- ============================================================
 -- PART V: The Inverse Theorem
@@ -336,7 +389,7 @@ theorem szemeredi_from_density_increment (k : ℕ) (hk : k ≥ 3) :
   -- `0 < d < N` rules this out.
   have h_d_ne_zero : (d : ZMod N) ≠ 0 := by
     intro h0
-    have hdvd : (N : ℕ) ∣ d := (ZMod.natCast_zmod_eq_zero_iff_dvd d N).mp h0
+    have hdvd : (N : ℕ) ∣ d := (ZMod.natCast_eq_zero_iff d N).mp h0
     have := Nat.le_of_dvd hd_pos hdvd
     omega
   -- Lift the AP back to ZMod N. For each `i : Fin k`, the i-th term
