@@ -1,8 +1,8 @@
 {
   "slug": "bezout-identity-oq-01-oq-02-oq-02",
   "title": "Transitivity of SLₙ(ℤ) on Primitive Vectors",
-  "phase": "OBSERVE",
-  "status": "available",
+  "phase": "ACT",
+  "status": "in-progress",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -42,26 +42,34 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Built the SLₙ(ℤ)-invariant foundation for transitivity on primitive vectors — coordinate-free primitivity (dot-product dual), its SLₙ(ℤ)-invariance (both directions), transvection generators with explicit action, and the necessity half of transitivity. The Euclidean-descent converse (sufficiency) remains for a follow-up session.",
+    "progressSummary": "PROGRESS (VERIFIED axiom-free, single-file lake env lean exit 0): proved the general-n converse direction exists_sl_mulVec_single_of_isPrimitive — every primitive integer vector is SLn(Z)-equivalent to a unit multiple of a basis vector, by strong induction on the l1 measure sum_k|v_k| via the transvection Euclidean-reduction step sum_natAbs_update_emod_lt. This discharges the open converse (sufficiency) half that orbit_e_isPrimitive recorded as remaining work, in EVERY dimension (previously only n=2 was closed, closed-form). Plus the clean characterization isPrimitive_iff_exists_sl_single. File 302->443 lines, +3 verified theorems. Sole remaining: the n>=2 corollary reaching exactly e0 (rotation assembly).",
     "builtItems": [
       "IsPrimitive (Fin n → ℤ) := ∃ w, w ⬝ᵥ v = 1 — BezoutIdentityOQ01OQ02OQ02.lean",
       "isPrimitive_iff_span_eq_top: IsPrimitive v ↔ Ideal.span (range v) = ⊤ (bridge to classical gcd=1 via Ideal.mem_span_range_iff_exists_fun)",
       "IsPrimitive.mulVec + isPrimitive_mulVec_iff: SLₙ(ℤ) preserves primitivity, both directions",
       "transvectionSL i j h c: elementary generator in SpecialLinearGroup (Fin n) ℤ; transvectionSL_mulVec: explicit vector action",
-      "orbit_e_isPrimitive: the easy half — every vector in the SLₙ(ℤ)-orbit of eᵢ is primitive"
+      "orbit_e_isPrimitive: the easy half — every vector in the SLₙ(ℤ)-orbit of eᵢ is primitive",
+      "sum_natAbs_update_emod_lt (BezoutIdentityOQ01OQ02OQ02.lean): the Euclidean reduction step strictly lowers sum_k|v_k|. VERIFIED 0-sorry/0-axiom.",
+      "exists_sl_mulVec_single_of_isPrimitive (BezoutIdentityOQ01OQ02OQ02.lean): general-n converse — every primitive v is SLn(Z)-equivalent to Pi.single k c with IsUnit c, by strong induction on l1 measure. VERIFIED axiom-free (propext/Classical.choice/Quot.sound only).",
+      "isPrimitive_iff_exists_sl_single (BezoutIdentityOQ01OQ02OQ02.lean): clean iff — IsPrimitive v iff exists A k c, IsUnit c and A *v v = Pi.single k c. VERIFIED."
     ],
     "insights": [
       "Primitivity of an integer vector v is cleanly captured coordinate-free as: ∃ dual w with w ⬝ᵥ v = 1. This dot-product form is manifestly SLₙ(ℤ)-invariant, unlike the gcd-of-entries phrasing.",
       "SLₙ(ℤ) preserves primitivity in BOTH directions: if w ⬝ᵥ v = 1 then (w ᵥ* ↑ₘA⁻¹) ⬝ᵥ (↑ₘA *ᵥ v) = 1, because ↑ₘA⁻¹ * ↑ₘA = 1. This is the exact invariant the transitivity action must respect — the necessity half of the transitivity characterization.",
-      "The Euclidean-descent generators are Mathlib transvections: transvection i j c = I + c·Eᵢⱼ (i≠j) has det 1 (det_transvection_of_ne), so it packages directly into SLₙ(ℤ); its action adds c·vⱼ to vᵢ (Function.update)."
+      "The Euclidean-descent generators are Mathlib transvections: transvection i j c = I + c·Eᵢⱼ (i≠j) has det 1 (det_transvection_of_ne), so it packages directly into SLₙ(ℤ); its action adds c·vⱼ to vᵢ (Function.update).",
+      "CONVERSE ALREADY PROVED (Transitive.lean, unverified): working in the Fin (2+m) index convention makes 2+(m+1) DEFINITIONALLY (2+m)+1, so Fin.cons / embedOne / headBlockN types line up with no transport. Induction template per step: embedOne of the SL₍₂₊ₘ₎ gcd-reducer of the tail clears coords 2…n against coord 1 (giving (v₀,g_tail,0,…,0)); then headBlockN of the SL₂ gcd-reducer of (v₀,g_tail) clears coord 1 against coord 0. Single content bridge cons_gcdForm repackages the Fin.cons output as the Fin.append input. Primitivity collapses g to 1 via g ∣ (w ⬝ᵥ v)=1 ⇒ Int.eq_one_of_dvd_one. This is the arbitrary-n generalization of the parent bezoutMatrix reduction.",
+      "The Transitive.lean converse file is NOT yet registered in Proofs.lean nor listed in this problem's leanFiles registry (added after the last metadata regen), and there is no gallery entry for it — so once it builds it still needs registration + a gallery meta.json before it can be presented as verified.",
+      "The converse (sufficiency) direction of SLn(Z)-transitivity on primitive vectors — every primitive v is SLn(Z)-equivalent to a unit multiple of a basis vector — holds in EVERY dimension by strong induction on the l1 measure sum_k |v_k|, no analytic input needed (elementary Euclidean descent).",
+      "The termination measure is sum_k (v k).natAbs; a single transvection T_{i,j}(-(v i / v j)) replaces the pivot v i by v i % v j, and 0 <= v i % v j < |v j| <= |v i| makes exactly the i-th summand shrink (sum_natAbs_update_emod_lt).",
+      "Base case: a primitive vector with a single nonzero coordinate must have that entry a unit (from exists w, w dot v = 1 collapsing to w k * v k = 1), so it already equals Pi.single k (v k) with IsUnit (v k) — A = 1.",
+      "Reaching EXACTLY e0 (not just a unit multiple c*e_k) is only true for n >= 2; in n = 1, SL1(Z)={1} fixes -e0 != e0 though both are primitive, so the unit-multiple form is the sharp general-n statement."
     ],
     "mathlibGaps": [
       "Mathlib has no packaged transitivity of SLₙ(ℤ) on primitive vectors (only n=2 pieces via bezoutSL in the parent). Foundation built here; the Euclidean-descent converse (every primitive vector reaches eᵢ) remains.",
       "No IsPrimitive predicate for integer vectors in Mathlib; defined here via the dot-product dual."
     ],
     "nextSteps": [
-      "Prove the converse (open direction): every primitive v is SLₙ(ℤ)-equivalent to e₀, via strong induction on ∑ᵢ|vᵢ| using transvectionSL_mulVec (Euclidean algorithm across coordinates), accumulating the transvection product.",
-      "Add the sign-fixing rotation (3 transvections, det 1) to convert coordinate swaps without leaving SLₙ(ℤ).",
+      "Add the n >= 2 corollary reaching exactly e0: a unit multiple c*e_k is SLn(Z)-equivalent to Pi.single 0 1. Needs a plane-rotation SLn element sending c*e_k to e0 (buildable as a product of 3 transvections via the S = T T T identity, avoiding a new matrix constructor).",
       "Bridge IsPrimitive to Finset.univ.gcd of entries = 1 to connect explicitly with the parent n=2 IsCoprime phrasing."
     ]
   },
@@ -272,8 +280,8 @@
     {
       "path": "Proofs/BezoutIdentityOQ01OQ02OQ02.lean",
       "filename": "BezoutIdentityOQ01OQ02OQ02.lean",
-      "lineCount": 185,
-      "theoremCount": 10,
+      "lineCount": 440,
+      "theoremCount": 19,
       "axiomCount": 0,
       "defCount": 2,
       "sorryCount": 0,
@@ -283,13 +291,24 @@
     {
       "path": "Proofs/BezoutIdentityOQ01OQ02OQ02Descent.lean",
       "filename": "BezoutIdentityOQ01OQ02OQ02Descent.lean",
-      "lineCount": 250,
-      "theoremCount": 8,
+      "lineCount": 314,
+      "theoremCount": 10,
       "axiomCount": 0,
       "defCount": 5,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BezoutIdentityOQ01OQ02OQ02Descent.lean"
+    },
+    {
+      "path": "Proofs/BezoutIdentityOQ01OQ02OQ02Transitive.lean",
+      "filename": "BezoutIdentityOQ01OQ02OQ02Transitive.lean",
+      "lineCount": 211,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BezoutIdentityOQ01OQ02OQ02Transitive.lean"
     },
     {
       "path": "Proofs/BezoutIdentityOQ02.lean",
