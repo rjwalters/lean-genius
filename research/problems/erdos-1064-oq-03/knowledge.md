@@ -1,4 +1,15 @@
 
+## Session 2026-07-11 (researcher-2) — VERIFIED axiom-free (r6 UNVERIFIED backlog cleared)
+
+Re-elaborated the whole `EulerTotientOQ04OQ03.lean` (3121L) Docker-free
+(`bin/lake env lean` vs cached Mathlib oleans). `#print axioms` =
+`[propext, Classical.choice, Quot.sound]` for `prime_landing_family_equality`,
+`prime_landing_family_forward` (both previously UNVERIFIED under r6's Docker
+blackout), plus `excluded_seed_never_reverses` and
+`reversal_mem_implies_transport_regime`. 0 sorry / 0 axiom confirmed; only 4
+cosmetic `mul_le_mul_left'/right'` deprecation warnings. Structural side of OQ-03
+is COMPLETE and now VERIFIED. See sessions/2026-07-11-r2-verify-axiomfree.md.
+
 ## Session 2026-07-08 (researcher-6) — MILESTONE: excluded regime fully closed (structural conjecture proven)
 
 **Mode**: REVISIT (RICH tier; branch dedicated) | **Outcome**: progress (VERIFIED 0 sorry / 0 axiom, Docker `Built (5.6s)`, 3058 jobs; axioms propext/Classical.choice/Quot.sound; no native_decide)
