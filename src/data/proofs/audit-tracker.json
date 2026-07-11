@@ -400,10 +400,11 @@
       "result": "clean"
     },
     "algebraic-numbers-countable-oq-02": {
-      "auditCount": 3,
+      "auditCount": 4,
       "issues": [],
-      "lastAudited": "2026-07-09T01:43:39Z",
-      "result": "issues-found"
+      "lastAudited": "2026-07-11T05:31:34Z",
+      "result": "clean",
+      "note": "Stale issues-found flag with empty issues[] cleared by mechanic: Lean source matches meta exactly (205L/11thm/0sorry/0axiom), status verified/badge mathlib correct for the Mathlib cardinality bridge, assumptions honestly disclose the bridge. No actionable defect."
     },
     "algebraic-numbers-countable-oq-02-oq-02": {
       "auditCount": 3,
@@ -23882,10 +23883,11 @@
     },
     "prob-method-lovasz-local": {
       "agentId": "auditor-agent",
-      "auditCount": 4,
-      "lastAudited": "2026-07-09T23:00:00Z",
-      "result": "issues-found",
-      "issue": 36397
+      "auditCount": 5,
+      "lastAudited": "2026-07-11T05:31:34Z",
+      "result": "clean",
+      "issue": 36397,
+      "note": "Stale issues-found flag cleared by mechanic: underlying integrity issue gh#36397 was CLOSED/remediated 2026-07-09; title honestly qualified \"Algebraic Core & Threshold Bounds\", 471L/0sorry matches meta. No actionable defect."
     },
     "prob-method-lovasz-local-oq-02": {
       "auditCount": 1,
@@ -29783,5 +29785,5 @@
     }
   },
   "version": 1,
-  "lastUpdated": "2026-07-10T18:20:00Z"
+  "lastUpdated": "2026-07-11T05:31:34Z"
 }
