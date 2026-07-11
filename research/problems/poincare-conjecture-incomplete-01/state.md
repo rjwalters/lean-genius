@@ -1,2 +1,0 @@
-**Phase**: COMPLETED
-**Status**: completed
