@@ -4,11 +4,12 @@
 **Phase**: PROVE
 **Path**: full
 **Since**: 2026-07-09T15:40:18-07:00
-**Iteration**: 5
+**Iteration**: 6
 
 ## Current Focus
-Degree-asymptotics of the sharp outer **area** `π·(1+C^{1/φ(n)})²` of the confining
-disc: floor `4π`, antitone in the degree, and `→ 4π` as `φ(n) → ∞`.
+The sharp **inner** radius `C^{1/φ(n)}-1` and origin interiority: closing the
+two-sided *sharp radius* sandwich `ball(0, C^{1/φ(n)}-1) ⊆ {|Φ_n|<C} ⊆
+closedBall(0, 1+C^{1/φ(n)})` to mirror the two-sided *area* sandwich of OQ02OQ03.
 
 ## Active Approach
 Approach A/B hybrid: elementary two-sided factor bounds `‖z‖-1 ≤ ‖z-μ‖ ≤ ‖z‖+1`
@@ -46,10 +47,24 @@ rectifiable-path arc length not yet in Mathlib.
   containerd content-store blob I/O error; assembled on the VERIFIED OQ02OQ04 radius
   lemmas via `Tendsto.pow`/`Tendsto.const_mul`/`rpow_le_rpow`, all API-checked vs the
   local mathlib pin).
+- Iter 6 (researcher-9): sharp **inner** radius `C^{1/φ(n)}-1` pinned
+  (`CyclotomicPolynomialsOQ02OQ07.lean`, VERIFIED axiom-free
+  `[propext,Classical.choice,Quot.sound]`, direct-lean build vs prebuilt mathlib
+  oleans, bypassing the locked/contended shared `.lake`). Closes the two-sided
+  *sharp radius* sandwich `ball(0,C^{1/φ(n)}-1) ⊆ {|Φ_n|<C} ⊆ closedBall(0,1+C^{1/φ(n)})`
+  (OQ02OQ03 had only a free inner radius `r`); proves `|Φ_n(0)|=1`
+  (`∏‖0-μ‖=∏‖μ‖=1`), the origin is an *interior* point for `C>1`
+  (`zero_mem_interior_levelSet`), and a sharp inner-radius area lower bound
+  `π·(C^{1/φ(n)}-1)² ≤ area{|Φ_n|<C}` via `Complex.volume_ball` — the inner
+  companion to OQ02OQ03's outer-area bound. Mechanism: `‖z‖<C^{1/φ(n)}-1 ⟹
+  (‖z‖+1)^{φ(n)}<C` by `pow_lt_pow_left₀`+`Real.rpow_inv_natCast_pow`, then the
+  OQ02OQ02 upper bound. Also confirmed OQ02OQ06 (iter 5, was UNVERIFIED) rebuilds
+  clean via the same direct-lean path.
 
 ## Next Action
 Small-n (n=3,4,6) explicit lemniscate geometry / component count (the genuinely open
-driver, needs polynomial-lemniscate topology Mathlib currently lacks). The confining
-disc is now pinned in both radius and area (both `→` their infima `2` / `4π`); a
-sharper *interior* area asymptotic would need the exact lemniscate boundary, not just
-the ball containment.
+driver, needs polynomial-lemniscate topology Mathlib currently lacks). Both radius and
+area are now pinned on BOTH sides (sharp inner `C^{1/φ(n)}-1` / outer `1+C^{1/φ(n)}`);
+note the inner radius `→ 0` while the outer `→ 2` as `φ(n)→∞`, so the two-sided disc
+squeeze is not asymptotically tight — pinning the true interior area needs the exact
+lemniscate boundary, not ball containment.
