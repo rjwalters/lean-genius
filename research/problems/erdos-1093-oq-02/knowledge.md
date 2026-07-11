@@ -1,5 +1,64 @@
 # Erdős #1093 — OQ-02: Is d(284,28)=9 the maximal deficiency?
 
+## Session 2026-07-11 (researcher-6) — Section XXIX: window-check CLOSES k=28 (the record slice!) → frontier k≥29
+
+**Mode:** REVISIT (RICH tier). **Outcome:** BREAKTHROUGH — closes `k = 28`, the slice
+*containing the record pair* `(284, 28)`. Prior sessions (up to Section XXVIII in the Lean
+file, which had already silently advanced far past this knowledge.md's Section XXIII) called
+`k = 28` the **terminal** elementary step, because the pure **inadmissibility** engine
+(`deficiency_le_nine_of_location`: *some* prime `≤ k` divides `C(n,k)` for *every* window `n`)
+provably fails at `k = 28` — the location window is inhabited by the admissible record.
+
+### Key realization — the window is finite, so USE the deficiency, don't just rule out admissibility
+The inadmissibility engine is not the only elementary tool. A deficiency `≥ 10` at `k = 28`
+forces `(n-27)^{10} ≤ 28!`, and `28! = 304888344611713860501504000000 < 889^{10} =
+308331296938836253127540655601` (`889` sharp: `888^{10} = 304880506868562346036873396224 ≤
+28!`), so `n - 27 < 889 ⟹ n ≤ 915`. With floor `n ≥ 56 (=2·28)` the window is
+`n ∈ {56,…,915}` (860 values). **Python-verified: exactly ONE admissible pair in the whole
+window — the record `(284,28)` itself — with deficiency exactly 9 (not ≥10).** Every other
+`n` is inadmissible via a prime in `{2,3,5,7,11,13,17,19,23}` dividing `C(n,28)`. So no
+admissible `k=28` pair has deficiency `≥10`.
+
+### What I did — Section XXIX (7 theorems, 0 sorry, 0 NEW axioms), VERIFIED
+- `factorial_28_lt_889_pow_ten` — `28! < 889^10` (kernel `decide`, `ofReduceBool`-free).
+- `window_k28_admissible_deficiency_le_nine` — the single `native_decide` fact: `∀ m ∈
+  Icc 56 915`, (small prime `∈{2,…,23}` divides `C(m,28)`) `∨ deficiency m 28 ≤ 9`.
+  Compiled in ~5s standalone; full-file build clean.
+- `admissible_k28_window_deficiency_le_nine` — admissible ⟹ divisibility impossible ⟹
+  `deficiency ≤ 9` (the 9-prime `rcases`, each `h p prime hd; omega`).
+- `deficiency_le_nine_of_location_window` — NEW **window-check engine** (variant of
+  `deficiency_le_nine_of_location` whose finite-window hyp is "admissible ⟹ deficiency ≤ 9"
+  not "inadmissible"); `ofReduceBool`-FREE `[propext,choice,Quot.sound]`.
+- `deficiency_le_nine_of_k_eq_28` — one-line instantiation at `k=28, M=889`.
+- `deficiency_le_nine_of_k_le_28`, `maximalDeficiencyIs_nine_iff_kGe29`.
+
+### Verification — VERIFIED axiom-free engine (Docker-free)
+`proofs/bin/lake env lean` (v4.26.0, prebuilt mathlib oleans). Full file compiles clean
+(exit 0). `#print axioms`: `deficiency_le_nine_of_location_window` and
+`factorial_28_lt_889_pow_ten` are `ofReduceBool`-free; `maximalDeficiencyIs_nine_iff_kGe29`
+carries `[propext, Classical.choice, Lean.ofReduceBool, Lean.trustCompiler, Quot.sound]` —
+the `ofReduceBool`/`trustCompiler` come from the single `native_decide` window fact, exactly
+as every prior section. **No new axiom declaration.**
+
+### Why this is more than the mechanical k-ladder
+Sections XVII–XXVIII each closed one `k` by the *inadmissibility* engine and stopped at `k=27`
+because `k=28`'s window contains the record. This is a genuinely different (strictly stronger)
+argument that resolves the record slice by isolating `(284,28)` as the *unique admissible pair*
+in its location window. The elementary resolution of OQ-02 now covers **all `k ≤ 28`**; open
+content is confined to `k ≥ 29`, where no record pair survives and the remaining universal
+bound is the irreducibly analytic Erdős–Lacampagne–Selfridge input.
+
+### Gotcha logged
+Shared-main-checkout thrash bit again: my first `Edit` targeted the main checkout path
+(`/Users/rwalters/GitHub/lean-genius/proofs/...`, on an unrelated enricher branch) and a
+concurrent `git reset` reverted it before build. FIX: edit the researcher-6-2 *worktree*
+file, build it (`.lake` symlinked to main's prebuilt oleans), commit immediately.
+
+### Files Modified
+- `proofs/Proofs/Erdos1093ProblemOQ02.lean` (Section XXIX, +~150 lines, +7 theorems)
+
+---
+
 ## Session 2026-07-09 (researcher-3) — Section XXIII: location bound CLOSES k=22 → frontier k≥23
 
 **Mode:** REVISIT (RICH tier). **Outcome:** progress — strict advance (frontier k≥22→k≥23),
