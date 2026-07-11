@@ -1074,6 +1074,54 @@ theorem kronecker_even_pow_right_eq_one_of_coprime (a : ℤ) (n k : ℕ)
   rw [kronecker_pow_right (a : ℤ) (n : ℤ) (2 * k) (by exact_mod_cast hn.ne'), pow_mul,
     kronecker_sq_eq_one_of_coprime a n hn hno h, one_pow]
 
+-- ============================================================
+-- Section 14: Denominator sign law (behaviour under n ↦ -n)
+-- ============================================================
+
+/-! The numerator-negation family of Section 10 records how the symbol twists when the
+*numerator* changes sign: `(-a/n) = (-1/n)·(a/n)`. Its exact dual — how the symbol behaves
+when the *denominator* changes sign — is the following. Because `kronecker` is multiplicative
+in the second argument (`kronecker_mul_right`) and `-n = (-1)·n`, negating the modulus twists
+the symbol by the value `(a/(-1)) = kroneckerNeg1 a`, the sign character of the *numerator*.
+Concretely the symbol is even in the modulus sign for `a ≥ 0` and odd for `a < 0` — the
+reflection of how the numerator law depends on `n mod 4`, here depending instead on the sign of
+`a` (which is exactly what `(a/(-1))` measures). All proofs are one line off second-argument
+multiplicativity and hold for the symbol exactly as defined. -/
+
+/-- **Denominator negation, general modulus.** For any numerator `a` and any nonzero modulus
+`n`, `(a/(-n)) = (a/(-1))·(a/n)`. The second-argument dual of `kronecker_neg_numerator`; an
+instance of `kronecker_mul_right` applied to `-n = (-1)·n`. -/
+theorem kronecker_neg_denominator (a n : ℤ) (hn : n ≠ 0) :
+    kronecker a (-n) = kronecker a (-1) * kronecker a n := by
+  rw [show (-n : ℤ) = (-1) * n by ring]
+  exact kronecker_mul_right a (-1) n (mul_ne_zero (by norm_num) hn)
+
+/-- **The symbol at modulus `-1` is the numerator sign character.** `(a/(-1)) = kroneckerNeg1 a`
+(namely `1` for `a ≥ 0` and `-1` for `a < 0`). Via `kronecker_eq_sign_jacobi` at `n = -1`,
+where `|n| = 1` and `jacobiSym a 1 = 1`. -/
+theorem kronecker_neg_one_denominator (a : ℤ) :
+    kronecker a (-1) = kroneckerNeg1 a := by
+  rw [kronecker_eq_sign_jacobi a (-1) (by norm_num)]
+  norm_num [jacobiSym.one_right]
+
+/-- **Denominator negation via the sign character.** `(a/(-n)) = kroneckerNeg1 a · (a/n)`:
+the explicit form of `kronecker_neg_denominator` with `(a/(-1))` evaluated. -/
+theorem kronecker_neg_denominator_eq_kroneckerNeg1 (a n : ℤ) (hn : n ≠ 0) :
+    kronecker a (-n) = kroneckerNeg1 a * kronecker a n := by
+  rw [kronecker_neg_denominator a n hn, kronecker_neg_one_denominator]
+
+/-- **The symbol is even in the modulus sign for a nonnegative numerator.** For `0 ≤ a` and
+`n ≠ 0`, `(a/(-n)) = (a/n)`, since the sign character `kroneckerNeg1 a = 1`. -/
+theorem kronecker_neg_denominator_nonneg (a n : ℤ) (ha : 0 ≤ a) (hn : n ≠ 0) :
+    kronecker a (-n) = kronecker a n := by
+  rw [kronecker_neg_denominator_eq_kroneckerNeg1 a n hn, kroneckerNeg1_nonneg a ha, one_mul]
+
+/-- **The symbol is odd in the modulus sign for a negative numerator.** For `a < 0` and
+`n ≠ 0`, `(a/(-n)) = -(a/n)`, since the sign character `kroneckerNeg1 a = -1`. -/
+theorem kronecker_neg_denominator_neg (a n : ℤ) (ha : a < 0) (hn : n ≠ 0) :
+    kronecker a (-n) = - kronecker a n := by
+  rw [kronecker_neg_denominator_eq_kroneckerNeg1 a n hn, kroneckerNeg1_neg a ha, neg_one_mul]
+
 /-!
 ## Module note: what remains open
 

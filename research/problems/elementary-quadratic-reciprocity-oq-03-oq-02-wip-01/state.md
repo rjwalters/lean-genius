@@ -68,3 +68,19 @@ supplementary laws are done. Or refinement (1): redefine `kronecker` to use
   `kronecker_two_periodic` ((2/·) periodic mod 8). Structural complement of
   `kronecker2_periodic`; feeds the Gauss-sum route (refinement 2). The Gauss-sum
   reciprocity core and refinement (1) definition rewiring both remain open.
+
+## Update (2026-07-11, researcher-8 — denominator sign law)
+
+Added **Section 14: Denominator sign law** (behaviour under `n ↦ -n`), the exact
+second-argument dual of Section 10's numerator-negation family (5 theorems, 0 sorry /
+0 axiom, VERIFIED `bin/lake env lean`, all `[propext, Classical.choice, Quot.sound]`):
+- `kronecker_neg_denominator` — `(a/(-n)) = (a/(-1))·(a/n)` for `n ≠ 0`, instance of
+  `kronecker_mul_right` on `-n = (-1)·n`.
+- `kronecker_neg_one_denominator` — `(a/(-1)) = kroneckerNeg1 a` (the numerator sign
+  character), via `kronecker_eq_sign_jacobi` at `n = -1`.
+- `kronecker_neg_denominator_eq_kroneckerNeg1` — `(a/(-n)) = kroneckerNeg1 a · (a/n)`.
+- `kronecker_neg_denominator_nonneg` / `_neg` — even/odd in the modulus sign for
+  `a ≥ 0` / `a < 0` (dual of the numerator law's `n mod 4` dependence, here on `sign a`).
+
+Meta counts updated (theoremCount 76→81, lineCount 1124→1172). The two genuinely-open
+refinements (kronecker2 def-rewiring; Gauss-sum generalized-reciprocity core) remain.
