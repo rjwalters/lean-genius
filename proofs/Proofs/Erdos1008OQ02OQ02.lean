@@ -527,6 +527,43 @@ theorem kst_exact_bound_mono_t (t t' : ℕ) (htt' : t ≤ t') (n : ℝ) (hn : 1 
   have hsqrt := Real.sqrt_le_sqrt harg
   exact mul_le_mul_of_nonneg_left (by linarith) (by linarith)
 
+/-- **Monotonicity of the exact KST bound in `n`.**  For fixed `t ≥ 1` and `1 ≤ n ≤ n'`
+the Reiman/KST right-hand side is non-decreasing in the vertex count `n`:
+
+      n · (1 + √(1 + 4(t-1)(n-1)))  ≤  n' · (1 + √(1 + 4(t-1)(n'-1))).
+
+Both factors grow: the leading `n ≤ n'`, and the radicand `1 + 4(t-1)(n-1)` increases
+with `n` because `(t-1) ≥ 0`, so its `√` increases; the product of two nonnegative
+non-decreasing factors is non-decreasing.  This is the `n`-companion of
+`kst_exact_bound_mono_t`, recording that the extremal count `ex(n ; K_{2,t})` grows with
+the number of vertices. -/
+theorem kst_exact_bound_mono_n (t : ℕ) (ht : 1 ≤ t) {n n' : ℝ} (hn : 1 ≤ n)
+    (hnn' : n ≤ n') :
+    n * (1 + Real.sqrt (1 + 4 * ((t : ℝ) - 1) * (n - 1))) ≤
+      n' * (1 + Real.sqrt (1 + 4 * ((t : ℝ) - 1) * (n' - 1))) := by
+  have htm1 : (0 : ℝ) ≤ (t : ℝ) - 1 := by
+    have : (1 : ℝ) ≤ (t : ℝ) := by exact_mod_cast ht
+    linarith
+  have hstep : (0 : ℝ) ≤ 4 * ((t : ℝ) - 1) * (n' - n) :=
+    mul_nonneg (mul_nonneg (by norm_num) htm1) (by linarith)
+  have harg : 1 + 4 * ((t : ℝ) - 1) * (n - 1) ≤ 1 + 4 * ((t : ℝ) - 1) * (n' - 1) := by
+    nlinarith [hstep]
+  have hsqrt := Real.sqrt_le_sqrt harg
+  have hc : (0 : ℝ) ≤ 1 + Real.sqrt (1 + 4 * ((t : ℝ) - 1) * (n - 1)) := by positivity
+  exact mul_le_mul hnn' (by linarith) hc (by linarith)
+
+/-- **Joint monotonicity of the exact KST bound.**  Combining the `t`- and `n`-directions:
+for `t ≤ t'` (with `t ≥ 1`) and `1 ≤ n ≤ n'`, the Reiman/KST bound at `(t, n)` is dominated
+by the one at `(t', n')`.  A single order statement folding `kst_exact_bound_mono_t` and
+`kst_exact_bound_mono_n`: forbidding a larger `K_{2,t'}` on more vertices only loosens the
+edge bound. -/
+theorem kst_exact_bound_mono (t t' : ℕ) (ht : 1 ≤ t) (htt' : t ≤ t')
+    {n n' : ℝ} (hn : 1 ≤ n) (hnn' : n ≤ n') :
+    n * (1 + Real.sqrt (1 + 4 * ((t : ℝ) - 1) * (n - 1))) ≤
+      n' * (1 + Real.sqrt (1 + 4 * ((t' : ℝ) - 1) * (n' - 1))) :=
+  le_trans (kst_exact_bound_mono_n t ht hn hnn')
+    (kst_exact_bound_mono_t t t' htt' n' (le_trans hn hnn'))
+
 /-- **Monotone (weaker-forbidden) KST bound.**  A `K_{2,t}`-free nonempty graph
 (`t ≥ 1`) also satisfies the KST edge bound for every *larger* forbidden parameter
 `t' ≥ t`:
