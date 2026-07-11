@@ -212,6 +212,58 @@ theorem maxAvoidingSize_eq_of_lt (n m : ℕ) (h : n * n < m) :
     maxAvoidingSize n m = n :=
   le_antisymm (maxAvoidingSize_le n m) (le_maxAvoidingSize_of_lt n m h)
 
+/-- **Avoiding the target `1` means omitting `1`.**  For `S ⊆ {1,…,n}`, `AvoidSum S 1`
+    holds iff `1 ∉ S`: every element is a positive integer, so the only nonempty subset
+    that can sum to `1` is the singleton `{1}`.  (`→` uses `self_mem_subsetSums`; `←` uses
+    `avoid_of_forall_lt`, since all remaining elements are `≥ 2 > 1`.) -/
+theorem avoidSum_one_iff (n : ℕ) {S : Finset ℕ} (hS : S ⊆ Icc_n n) :
+    AvoidSum S 1 ↔ 1 ∉ S := by
+  constructor
+  · intro havoid h1
+    exact havoid (self_mem_subsetSums S 1 h1 (by norm_num))
+  · intro h1
+    apply avoid_of_forall_lt
+    intro a ha
+    have haI : a ∈ Icc_n n := hS ha
+    rw [Icc_n, Finset.mem_Icc] at haI
+    have hane : a ≠ 1 := fun he => h1 (he ▸ ha)
+    omega
+
+/-- **Exact value at the small target `1`:** `maxAvoidingSize n 1 = n - 1`.  The largest
+    subset of `{1,…,n}` avoiding the target `1` is `{2,…,n}` (drop the element `1`), of size
+    `n-1`; conversely any `1`-avoiding subset omits `1` (`avoidSum_one_iff`), hence embeds in
+    `{2,…,n}`.  This pins down `maxAvoidingSize` at the small-target endpoint `m = 1`, the
+    companion of `maxAvoidingSize_eq_of_lt` (`m > n²`) at the large-target endpoint. -/
+theorem maxAvoidingSize_one (n : ℕ) : maxAvoidingSize n 1 = n - 1 := by
+  classical
+  apply le_antisymm
+  · -- upper bound: every `1`-avoiding subset of `{1,…,n}` omits `1`, so sits in `{2,…,n}`.
+    unfold maxAvoidingSize
+    apply Finset.sup_le
+    intro S hS
+    rw [Finset.mem_filter, Finset.mem_powerset] at hS
+    obtain ⟨hSsub, havoid⟩ := hS
+    have h1 : 1 ∉ S := (avoidSum_one_iff n hSsub).mp havoid
+    have hsub : S ⊆ Finset.Icc 2 n := by
+      intro x hx
+      rw [Finset.mem_Icc]
+      have hxI : x ∈ Icc_n n := hSsub hx
+      rw [Icc_n, Finset.mem_Icc] at hxI
+      have hxne : x ≠ 1 := fun he => h1 (he ▸ hx)
+      omega
+    have hcard := Finset.card_le_card hsub
+    rw [Nat.card_Icc] at hcard
+    omega
+  · -- lower bound: `{2,…,n}` is a `1`-avoiding witness of size `n-1`.
+    rw [← maxAvoidingSize_ge_iff]
+    refine ⟨Finset.Icc 2 n, ?_, ?_, ?_⟩
+    · rw [Icc_n]; exact Finset.Icc_subset_Icc (by norm_num) (le_refl n)
+    · rw [Nat.card_Icc]; omega
+    · apply avoid_of_forall_lt
+      intro a ha
+      rw [Finset.mem_Icc] at ha
+      omega
+
 /-- f(n) is the largest k satisfying f_property. -/
 theorem f_characterization (n : ℕ) (hn : n ≥ 1) :
     f_property n (f n) ∧ ∀ k > f n, ¬f_property n k := by
@@ -251,6 +303,24 @@ theorem f_characterization (n : ℕ) (hn : n ≥ 1) :
       (maxAvoidingSize_ge_iff n m₀ k).mp ⟨S, hSsub, hScard, hSavoid⟩
     have hfm0 : f n = maxAvoidingSize n m₀ := by rw [hf, hm₀eq]
     omega
+
+/-- **Sharpened universal upper bound:** `f n ≤ n - 1` for `n ≥ 1`.  The target `m = 1`
+    always lies in the range `{1,…,n²}` that `f` minimises over, and
+    `maxAvoidingSize n 1 = n - 1` (`maxAvoidingSize_one`), so
+    `f n ≤ maxAvoidingSize n 1 = n - 1`.  This strictly improves the trivial `f n ≤ n`
+    (the ambient box `{1,…,n}` can never itself be `1`-avoiding, as it contains `1`), and is
+    consistent with the conjectured asymptotic `f n = (1/2+o(1))·n/log n`. -/
+theorem f_le_pred (n : ℕ) (hn : n ≥ 1) : f n ≤ n - 1 := by
+  have hn0 : n ≠ 0 := by omega
+  have H : (Finset.Icc 1 (n * n)).Nonempty :=
+    Finset.nonempty_Icc.mpr (Nat.one_le_iff_ne_zero.mpr (Nat.mul_ne_zero hn0 hn0))
+  have hf : f n = (Finset.Icc 1 (n * n)).inf' H (fun m => maxAvoidingSize n m) := by
+    unfold f; rw [dif_neg hn0]
+  rw [hf]
+  calc (Finset.Icc 1 (n * n)).inf' H (fun m => maxAvoidingSize n m)
+      ≤ maxAvoidingSize n 1 :=
+        Finset.inf'_le _ (Finset.mem_Icc.mpr ⟨le_refl 1, by nlinarith [hn]⟩)
+    _ = n - 1 := maxAvoidingSize_one n
 
 /-
 ## Part III: The Erdős-Graham Conjecture
@@ -503,7 +573,7 @@ def smallPrimeConstruction (m n : ℕ) : Finset ℕ :=
 theorem minFac_succ_not_dvd (m : ℕ) (hm : 1 ≤ m) : ¬ Nat.minFac (m + 1) ∣ m := by
   intro hdvd
   have hp : (Nat.minFac (m + 1)).Prime := Nat.minFac_prime (by omega)
-  have hdsub : Nat.minFac (m + 1) ∣ (m + 1 - m) := Nat.dvd_sub' (Nat.minFac_dvd _) hdvd
+  have hdsub : Nat.minFac (m + 1) ∣ (m + 1 - m) := dvd_sub (Nat.minFac_dvd _) hdvd
   rw [show m + 1 - m = 1 by omega] at hdsub
   exact hp.one_lt.ne' (Nat.dvd_one.mp hdsub)
 
