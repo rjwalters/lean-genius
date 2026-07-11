@@ -517,6 +517,59 @@ theorem weighted_variance_eq {ι : Type*} (s : Finset ι) (w x : ι → ℚ) (μ
       ← Finset.mul_sum, ← Finset.mul_sum, hmean]
   ring
 
+/-- **Weighted variance is nonnegative.**  For nonnegative weights with weighted mean `μ`,
+    the weighted second moment about the mean is `≥ 0`:
+    `0 ≤ (∑ wᵢxᵢ²) − (∑ wᵢ)·μ²`.  The `d = 0` skeleton of `weighted_variance_atom_bound`,
+    recording that the energy of a partition never drops below that of its coarsening. -/
+theorem weighted_variance_nonneg {ι : Type*} (s : Finset ι) (w x : ι → ℚ) (μ : ℚ)
+    (hw : ∀ i ∈ s, 0 ≤ w i)
+    (hmean : ∑ i ∈ s, w i * x i = (∑ i ∈ s, w i) * μ) :
+    0 ≤ (∑ i ∈ s, w i * x i ^ 2) - (∑ i ∈ s, w i) * μ ^ 2 := by
+  rw [← weighted_variance_eq s w x μ hmean]
+  exact Finset.sum_nonneg (fun i hi => mul_nonneg (hw i hi) (sq_nonneg _))
+
+/-- **The weighted mean minimizes the weighted mean-squared deviation.**  For nonnegative
+    weights and *any* centre `c`, the weighted sum of squared deviations about the true
+    weighted mean `μ` is no larger than about `c`:
+    `∑ wᵢ(xᵢ − μ)² ≤ ∑ wᵢ(xᵢ − c)²`.
+
+    This is the abstract heart of *energy monotonicity under refinement* in AFKS: replacing
+    a part's single mean density by the sub-cell means (the conditional means on a refinement)
+    can only *decrease* the residual variance, i.e. *increase* the partition energy.  The
+    proof is the parallel-axis expansion `∑ wᵢ(xᵢ − c)² = ∑ wᵢ(xᵢ − μ)² + (∑ wᵢ)(μ − c)²`,
+    whose extra term is a nonnegative multiple of `(μ − c)²`. -/
+theorem weighted_variance_le_of_mean {ι : Type*} (s : Finset ι) (w x : ι → ℚ) (μ : ℚ)
+    (hw : ∀ i ∈ s, 0 ≤ w i)
+    (hmean : ∑ i ∈ s, w i * x i = (∑ i ∈ s, w i) * μ) (c : ℚ) :
+    ∑ i ∈ s, w i * (x i - μ) ^ 2 ≤ ∑ i ∈ s, w i * (x i - c) ^ 2 := by
+  have hsw : (0 : ℚ) ≤ ∑ i ∈ s, w i := Finset.sum_nonneg hw
+  have hmeandev : ∑ i ∈ s, w i * (x i - μ) = 0 := by
+    have hrw : ∑ i ∈ s, w i * (x i - μ)
+        = (∑ i ∈ s, w i * x i) - (∑ i ∈ s, w i) * μ := by
+      rw [Finset.sum_mul, ← Finset.sum_sub_distrib]
+      exact Finset.sum_congr rfl (fun i _ => by ring)
+    rw [hrw, hmean]; ring
+  have hkey : ∑ i ∈ s, w i * (x i - c) ^ 2
+      = ∑ i ∈ s, w i * (x i - μ) ^ 2
+        + 2 * (μ - c) * (∑ i ∈ s, w i * (x i - μ))
+        + (μ - c) ^ 2 * (∑ i ∈ s, w i) := by
+    rw [Finset.mul_sum, Finset.mul_sum, ← Finset.sum_add_distrib, ← Finset.sum_add_distrib]
+    exact Finset.sum_congr rfl (fun i _ => by ring)
+  rw [hkey, hmeandev]
+  have hnn : 0 ≤ (μ - c) ^ 2 * (∑ i ∈ s, w i) := mul_nonneg (sq_nonneg _) hsw
+  linarith
+
+/-- **Variance is bounded by any centred second moment.**  The directly-consumable form of
+    `weighted_variance_le_of_mean` in the file's multiplicative variance notation: for any
+    centre `c`, `(∑ wᵢxᵢ²) − (∑ wᵢ)·μ² ≤ ∑ wᵢ(xᵢ − c)²`.  Combines the Huygens identity
+    `weighted_variance_eq` with the minimizing property. -/
+theorem weighted_variance_le_second_moment {ι : Type*} (s : Finset ι) (w x : ι → ℚ) (μ : ℚ)
+    (hw : ∀ i ∈ s, 0 ≤ w i)
+    (hmean : ∑ i ∈ s, w i * x i = (∑ i ∈ s, w i) * μ) (c : ℚ) :
+    (∑ i ∈ s, w i * x i ^ 2) - (∑ i ∈ s, w i) * μ ^ 2 ≤ ∑ i ∈ s, w i * (x i - c) ^ 2 := by
+  rw [← weighted_variance_eq s w x μ hmean]
+  exact weighted_variance_le_of_mean s w x μ hw hmean c
+
 /-- **The variance atom: a single deviating cell forces a positive second moment.**
     Weighted values with nonnegative weights and weighted mean `μ` have their
     weighted second moment about `μ` bounded below by the single-cell contribution:

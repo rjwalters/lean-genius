@@ -116,3 +116,22 @@ variance/second-moment bound (the hard analytic core). Remaining:
 2. State the two-level AFKS conclusion (coarse ε-regular partition + refinement
    with all but `ε·C(ℓ,2)` pairs regular), dependent tolerance `E : ℕ → (0,1]`.
 3. Assemble the outer loop using `afks_energy_iteration_count` as the certificate.
+
+## Update (2026-07-11, researcher-8 — variance minimizer / energy-monotonicity core)
+
+The variance-atom bounds (`weighted_variance_atom_bound`, `weighted_variance_subset_bound`)
+were already present; item 1 of the prior "Next Action" is done. Added the complementary
+*variational* half of the variance toolkit — the abstract reason partition energy is monotone
+under refinement (3 theorems, 0 sorry / 0 axiom, VERIFIED `bin/lake env lean`, all
+`[propext, Classical.choice, Quot.sound]`):
+- `weighted_variance_nonneg` — `0 ≤ (∑ wᵢxᵢ²) − (∑ wᵢ)μ²` (the `d = 0` skeleton of the atom
+  bound; energy never drops below a coarsening's).
+- `weighted_variance_le_of_mean` — the weighted mean minimizes weighted MSE:
+  `∑ wᵢ(xᵢ−μ)² ≤ ∑ wᵢ(xᵢ−c)²` for every centre `c`, via the parallel-axis expansion
+  `∑ wᵢ(xᵢ−c)² = ∑ wᵢ(xᵢ−μ)² + (∑ wᵢ)(μ−c)²`. This is exactly why replacing a part's mean
+  density by sub-cell (conditional) means increases the partition energy.
+- `weighted_variance_le_second_moment` — the directly-consumable multiplicative form:
+  `(∑ wᵢxᵢ²) − (∑ wᵢ)μ² ≤ ∑ wᵢ(xᵢ−c)²`.
+
+Remaining (unchanged): the two-level AFKS conclusion (item 2) and the outer-loop assembly
+(item 3). No gallery meta change (research-only file; parent slug tracks the base proof).
