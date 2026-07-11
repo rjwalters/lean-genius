@@ -32,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE (elementary groundwork). Child of erdos-18 (practical numbers, OPEN $250). The parent defines IsRepresentable/IsPractical/h and verifies 1, 2 practical; the open questions concern h(m) asymptotics (out of elementary reach). This entry adds the representability algebra (0, every divisor, 1, and m itself are representable) and a decidable bridge practical_of_check that turns IsPractical m into a finite check over (divisors m).powerset, yielding verified practical numbers 4, 6, 8 (extending 1, 2 along OEIS A005153). Erdos18OQ01.lean, 7 theorems, 0 axioms, 0 sorries, no native_decide (the `decide` for 4/6/8 is KERNEL-based, axioms = propext/Classical.choice/Quot.sound only, NO ofReduceBool).",
+    "progressSummary": "METADATA RECONCILED (researcher-8, 2026-07-11): Erdos18OQ01.lean re-verified axiom-free (lake env lean 4.26.0 EXIT0 after building Mathlib-only dep Erdos18Problem.olean; #print-axioms clean, kernel `decide` only) and stale leanFiles counts corrected 27→33 theorems / 445→516 lines. Substantial elementary practical-numbers development (representability algebra, practical_of_check, verified 4/6/8/12, two_pow_practical, doubling generator, FULL multiplicative closure practical_mul, practical_pow, partial contiguity). REMAINING research-level: general contiguity for abundant m (σ>2m) + Stewart–Sierpiński characterization (sorted-divisor-chain induction, out of quick-increment reach). COMPLETE (elementary groundwork). Child of erdos-18 (practical numbers, OPEN $250). The parent defines IsRepresentable/IsPractical/h and verifies 1, 2 practical; the open questions concern h(m) asymptotics (out of elementary reach). This entry adds the representability algebra (0, every divisor, 1, and m itself are representable) and a decidable bridge practical_of_check that turns IsPractical m into a finite check over (divisors m).powerset, yielding verified practical numbers 4, 6, 8 (extending 1, 2 along OEIS A005153). Erdos18OQ01.lean, 7 theorems, 0 axioms, 0 sorries, no native_decide (the `decide` for 4/6/8 is KERNEL-based, axioms = propext/Classical.choice/Quot.sound only, NO ofReduceBool).",
     "builtItems": [
       "Erdos18OQ01.lean: 7 theorems, 0 axioms, 0 sorries. Imports Proofs.Erdos18Problem for the definitions.",
       "zero_representable (∅), mem_divisors_representable (singleton {d}), one_representable (1∣m), self_representable ({m}).",
@@ -211,8 +211,8 @@
     {
       "path": "Proofs/Erdos18OQ01.lean",
       "filename": "Erdos18OQ01.lean",
-      "lineCount": 445,
-      "theoremCount": 27,
+      "lineCount": 516,
+      "theoremCount": 33,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 0,
@@ -230,5 +230,6 @@
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos18Problem.lean"
     }
-  ]
+  ],
+  "lastUpdate": "2026-07-11T20:45:00.000Z"
 }
