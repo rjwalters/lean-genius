@@ -967,4 +967,46 @@ theorem x3_minus_x2_plus_x_minus_1_signChanges :
   · rw [hdeg]; intro k hk; interval_cases k <;> norm_num [c0, c1, c2, c3]
   · rw [hdeg]; intro k hk; interval_cases k <;> norm_num [c0, c1, c2, c3]
 
+/-- **Reversal invariance for polynomials.**  For a polynomial with nonzero
+constant term (`p.coeff 0 ≠ 0`, so `0` is not a root and the reversal keeps the
+same degree), Descartes' coefficient sign-change count is unchanged by reversing
+the coefficient list: `V(reverse p) = V(p)`.  This lifts the sequence-level
+`countSignChanges_comp_rev` to polynomials, completing the invariance trio
+alongside scaling (`signChangesInCoeffs_C_mul`) and negation
+(`signChangesInCoeffs_neg`).  The coefficient sequence of `reverse p` is exactly
+that of `p` read backwards (`Fin.rev`): `(reverse p).coeff (d − i) = p.coeff i`
+via `coeff_reverse` and `revAt_le`, which is `coeffSequence p d (i.rev)`.
+Classically this is the reciprocal-polynomial symmetry `p ↦ Xⁿ p(1/X)`, whose
+positive roots are the reciprocals of those of `p` — the same count.  Axiom-free. -/
+theorem signChangesInCoeffs_reverse {p : ℝ[X]} (h0 : p.coeff 0 ≠ 0) :
+    DescartesRuleOfSigns.signChangesInCoeffs (reverse p)
+      = DescartesRuleOfSigns.signChangesInCoeffs p := by
+  have hp : p ≠ 0 := fun h => h0 (by rw [h]; simp)
+  have hrev0 : reverse p ≠ 0 := fun h => hp (reverse_eq_zero.mp h)
+  have htd : p.natTrailingDegree = 0 := Nat.le_zero.mp (natTrailingDegree_le_of_ne_zero h0)
+  have hdeg : (reverse p).natDegree = p.natDegree := by
+    rw [reverse_natDegree, htd, Nat.sub_zero]
+  unfold DescartesRuleOfSigns.signChangesInCoeffs
+  rw [dif_neg hrev0, dif_neg hp, hdeg]
+  have hcoe : DescartesRuleOfSigns.coeffSequence (reverse p) p.natDegree
+      = fun i => DescartesRuleOfSigns.coeffSequence p p.natDegree i.rev := by
+    funext i
+    have hi : i.val ≤ p.natDegree := Nat.lt_succ_iff.mp i.isLt
+    simp only [DescartesRuleOfSigns.coeffSequence]
+    rw [coeff_reverse, revAt_le (Nat.sub_le _ _), Fin.val_rev]
+    congr 1
+    omega
+  rw [hcoe]
+  exact countSignChanges_comp_rev _
+
+/-- **Reversal and negation together.**  Combining `signChangesInCoeffs_reverse`
+with `signChangesInCoeffs_neg`: reversing *and* negating a polynomial with nonzero
+constant term leaves Descartes' sign-change count fixed, `V(reverse (−p)) = V(p)`.
+Axiom-free. -/
+theorem signChangesInCoeffs_reverse_neg {p : ℝ[X]} (h0 : p.coeff 0 ≠ 0) :
+    DescartesRuleOfSigns.signChangesInCoeffs (reverse (-p))
+      = DescartesRuleOfSigns.signChangesInCoeffs p := by
+  have h0' : (-p).coeff 0 ≠ 0 := by rw [coeff_neg]; exact neg_ne_zero.mpr h0
+  rw [signChangesInCoeffs_reverse h0', signChangesInCoeffs_neg]
+
 end DescartesRuleOfSignsOQ01OQ03
