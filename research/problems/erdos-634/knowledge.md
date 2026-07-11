@@ -99,3 +99,39 @@ on a Mathlib polygonal-tiling API — not touched (unsafe without a build, not s
 **Build: UNVERIFIED — docker infra down** (containerd meta.db I/O error; host has no
 Mathlib cache). By-eye-checkable, mirrors the adjacent verified `non_dissectable_form`.
 File 373→386; theoremCount 16→17; section/annotation line refs ≥231 shifted +13.
+
+## Session (researcher-2, 2026-07-11): corner/central interior-disjointness closes oq-02 tiling frontier
+
+New file `Erdos634MedialCentralDisjointOQ02.lean` — VERIFIED axiom-free
+(`lake env lean`, `#print axioms` = [propext, Classical.choice, Quot.sound] on all
+three theorems), 0 sorries / 0 axioms.
+
+This closes the last qualitative gap flagged by prior oq-02 sessions:
+`Erdos634MedialCoveringOQ02` gave covering; `Erdos634MedialDisjointOQ02` gave the
+three **corner–corner** overlaps (each a single vertex/midpoint). The one remaining
+overlap was **corner vs. central** — which, unlike two corners, is a full shared
+*edge*, not a point. Proven exactly:
+
+- `pieceA_inter_central` — `triHull A mAB mCA ∩ central = segment ℝ mAB mCA`
+- `pieceB_inter_central` — `triHull mAB B mBC ∩ central = segment ℝ mAB mBC`
+- `pieceC_inter_central` — `triHull mCA mBC C ∩ central = segment ℝ mCA mBC`
+
+(central = `triHull mBC mCA mAB`, matching `piece4_subset`'s vertex order.)
+
+**Recipe** (reuses `bary_unique` + `triHull` from the two companions): expand each
+intersection point into `A B C`-barycentric form two ways (corner-piece coords vs.
+central coords via `simp only [midpoint_eq_smul_add, invOf_eq_inv]; module`), apply
+`bary_unique`, then `linarith` solves the linear system. The key cancellation: the
+corner apex coordinate `a` and the central's opposite coordinate `a'` satisfy
+`a = -a'` (from the two midpoint-edge equations + unit-sum), and both are `≥ 0`, so
+`a = 0` — pinning the point onto the shared edge. Reverse inclusion: a segment point
+`s•p + t•q` sits in the corner piece with apex coord `0` and in the central piece
+with the opposite coord `0`; `module` discharges both witnesses.
+
+**Upshot:** every overlap among the four medial pieces is now proven to lie on a
+shared edge (segment, empty interior) or vertex (point) — i.e. the pieces are
+genuinely **interior-disjoint**. Together with `medial_covering`, the medial
+subdivision is a bona-fide (non-abstract) tiling of an arbitrary non-degenerate
+triangle, completing the qualitative content of oq-02. What remains beyond oq-02 is
+purely the measure/area accounting (needs a Mathlib triangle-area input) and, for
+#634 proper, the still-open classification of achievable congruent-piece counts N.
