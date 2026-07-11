@@ -790,4 +790,58 @@ theorem kAPCount_nondeg_singleton {N : ℕ} [NeZero N] {k : ℕ} (hk : 2 ≤ k)
   rw [add_zero]
   exact h1
 
+/-- **Exact total `k`-AP count of a singleton.**  For `k ≥ 2` the singleton `{a}` supports
+    exactly one length-`k` progression lying inside it: the constant diagonal `x = a, d = 0`.
+    Its diagonal contribution is `#{a} = 1` (`kAPCount_count_split`) and its nondegenerate
+    contribution is `0` (`kAPCount_nondeg_singleton`), so the total count is `1`.  Together
+    with the empty (`0`) and univ (`N²`) counts this pins the third natural boundary value of
+    the total `k`-AP count. -/
+theorem kAPCount_count_singleton {N : ℕ} [NeZero N] {k : ℕ} (hk : 2 ≤ k) (a : ZMod N) :
+    (Finset.univ.filter (fun p : ZMod N × ZMod N =>
+        ∀ i : Fin k, p.1 + i.val • p.2 ∈ ({a} : Finset (ZMod N)))).card = 1 := by
+  rw [kAPCount_count_split (show 0 < k by omega) ({a} : Finset (ZMod N)),
+      kAPCount_nondeg_singleton hk a]
+  simp
+
+/-- **`Λ_k(1_{a}) = (N⁻¹)²`.**  For `k ≥ 2` the analytic `k`-AP operator on a singleton
+    indicator equals `(N⁻¹)²`: the only counted progression is the constant diagonal
+    (`kAPCount_count_singleton` gives count `1`), so the combinatorial bridge
+    `kAPCount_indicator_eq_count` yields `(N⁻¹)²·1`.  This is the singleton value on the
+    density scale between `Λ_k(1_∅) = 0` and `Λ_k(1_univ) = 1`. -/
+theorem kAPCount_indicator_singleton {N : ℕ} [NeZero N] {k : ℕ} (hk : 2 ≤ k) (a : ZMod N) :
+    kAPCount k (fun _ : Fin k => indicatorZMod ({a} : Finset (ZMod N)))
+      = ((N : ℂ)⁻¹) ^ 2 := by
+  rw [kAPCount_indicator_eq_count, kAPCount_count_singleton hk]
+  simp
+
+/-- **Global upper bound on the `k`-AP count.**  Since every set embeds in `univ` and the
+    `k`-AP count is monotone (`kAPCount_count_mono`), the count for any `A` is at most the
+    count for `univ`, which is exactly `N²` (`kAPCount_count_univ`).  The uniform (`A`-free)
+    ceiling refining the set-dependent bound `kAPCount_count_le` (`≤ #A·N`). -/
+theorem kAPCount_count_le_sq {N : ℕ} [NeZero N] (k : ℕ) (A : Finset (ZMod N)) :
+    (Finset.univ.filter (fun p : ZMod N × ZMod N =>
+        ∀ i : Fin k, p.1 + i.val • p.2 ∈ A)).card ≤ N ^ 2 := by
+  calc
+    (Finset.univ.filter (fun p : ZMod N × ZMod N =>
+        ∀ i : Fin k, p.1 + i.val • p.2 ∈ A)).card
+        ≤ (Finset.univ.filter (fun p : ZMod N × ZMod N =>
+            ∀ i : Fin k, p.1 + i.val • p.2 ∈ (Finset.univ : Finset (ZMod N)))).card :=
+          kAPCount_count_mono (Finset.subset_univ A)
+    _ = N ^ 2 := kAPCount_count_univ k
+
+/-- **Global upper bound on the nondegenerate `k`-AP count.**  The `d ≠ 0` count is monotone
+    (`kAPCount_nondeg_mono`) and saturates at `univ`, where it equals `N² − N`
+    (`kAPCount_nondeg_univ`).  Hence the nondegenerate count of any `A` is at most `N² − N`,
+    the uniform ceiling refining the set-dependent `kAPCount_nondeg_le` (`≤ #A·(N−1)`). -/
+theorem kAPCount_nondeg_le_sq {N : ℕ} [NeZero N] {k : ℕ} (hk : 0 < k) (A : Finset (ZMod N)) :
+    (Finset.univ.filter (fun p : ZMod N × ZMod N =>
+        (∀ i : Fin k, p.1 + i.val • p.2 ∈ A) ∧ p.2 ≠ 0)).card ≤ N ^ 2 - N := by
+  calc
+    (Finset.univ.filter (fun p : ZMod N × ZMod N =>
+        (∀ i : Fin k, p.1 + i.val • p.2 ∈ A) ∧ p.2 ≠ 0)).card
+        ≤ (Finset.univ.filter (fun p : ZMod N × ZMod N =>
+            (∀ i : Fin k, p.1 + i.val • p.2 ∈ (Finset.univ : Finset (ZMod N))) ∧ p.2 ≠ 0)).card :=
+          kAPCount_nondeg_mono (Finset.subset_univ A)
+    _ = N ^ 2 - N := kAPCount_nondeg_univ hk
+
 end RothTheoremOQ03OQ01
