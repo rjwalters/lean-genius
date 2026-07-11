@@ -206,4 +206,34 @@ theorem not_surjective_nat_real (f : ℕ → ℝ) : ¬ Function.Surjective f := 
 theorem not_exists_surjective_nat_real : ¬ ∃ f : ℕ → ℝ, Function.Surjective f :=
   fun ⟨f, hf⟩ => not_surjective_nat_real f hf
 
+/-! ## Standard consequences, derived from the explicit diagonal
+
+The two headline statements below are the textbook corollaries of Cantor's
+diagonal argument.  We obtain them *from the bespoke construction above* — the
+only input is `not_surjective_nat_real`, never `Cardinal.not_countable_real` —
+so the entry's originality is preserved while it still delivers the expected
+`Uncountable ℝ` conclusion in Mathlib's own vocabulary. -/
+
+/-- **`ℝ` is uncountable** (`Uncountable` instance), obtained purely from the explicit
+diagonal `diagonalReal`.  Were `ℝ` countable, `exists_surjective_nat` would supply a
+surjection `ℕ → ℝ`, which `not_exists_surjective_nat_real` forbids.  No appeal to
+`Cardinal.not_countable_real`. -/
+theorem uncountable_real : Uncountable ℝ := by
+  rw [← not_countable_iff]
+  exact fun _ => not_exists_surjective_nat_real (exists_surjective_nat ℝ)
+
+/-- **No countable type surjects onto `ℝ`.**  The diagonal argument scales from `ℕ`
+to any countable index type `α`: a surjection `g : α → ℝ` with `α` countable would,
+composed with a surjection `ℕ → α` (from `exists_surjective_nat`), yield a surjection
+`ℕ → ℝ`; and if `α` is empty there is no surjection onto the non-empty `ℝ` at all.
+Either way `not_surjective_nat_real` closes it.  So `ℝ` is not the surjective image of
+any countable set — the general form of the uncountability statement. -/
+theorem not_surjective_of_countable {α : Type*} [Countable α] (g : α → ℝ) :
+    ¬ Function.Surjective g := by
+  intro hg
+  rcases isEmpty_or_nonempty α with hα | hα
+  · exact (hg 0).elim (fun a _ => (IsEmpty.false a))
+  · obtain ⟨e, he⟩ := exists_surjective_nat α
+    exact not_surjective_nat_real (g ∘ e) (hg.comp he)
+
 end CantorDiagonalizationOQ06OQ01
