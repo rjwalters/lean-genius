@@ -117,14 +117,14 @@
       "id": "equiv",
       "title": "§2: Identification with the abstract AlgebraicClosure ℚ",
       "startLine": 90,
-      "endLine": 116,
+      "endLine": 103,
       "summary": "algebraicNumbersEquivAlgebraicClosure : algebraicNumbersField ≃ₐ[ℚ] AlgebraicClosure ℚ from IsAlgClosure.equiv; algebraicNumbersEquivAlgebraicClosure_commutes records that it fixes ℚ pointwise.",
       "mathContext": "Any two algebraic closures of the same field are isomorphic over it (Steinitz uniqueness). Here it bridges the concrete closure inside ℂ and Mathlib's abstract construction from ℚ."
     },
     {
       "id": "cardinality",
       "title": "§3: Cardinality transport — AlgebraicClosure ℚ is countably infinite",
-      "startLine": 118,
+      "startLine": 104,
       "endLine": 140,
       "summary": "cardinalMk_algebraicNumbersField (#= ℵ₀ for the concrete carrier, via Algebraic.cardinalMk_of_countable_of_charZero) is transported across the isomorphism to cardinalMk_algebraicClosure_rat : #(AlgebraicClosure ℚ) = ℵ₀. From that single cardinal equality both countable_algebraicClosure_rat (Cardinal.mk_le_aleph0_iff) and infinite_algebraicClosure_rat (Cardinal.infinite_iff) follow, pinning down 'countably infinite' rather than mere countability.",
       "mathContext": "$\\#(\\mathrm{AlgebraicClosure}\\,\\mathbb{Q}) = \\#\\{z:\\mathbb{C}\\mid \\mathrm{IsAlgebraic}\\,\\mathbb{Q}\\,z\\} = \\aleph_0$, so the type is Countable and Infinite."
