@@ -367,6 +367,64 @@ works is the remaining quantitative question; here we only pin the barrier from 
 theorem conjectureAt_imp_gt_third {ε : ℝ} (h : ConjectureAt ε) : 1/3 < ε :=
   not_le.mp (fun hle => conder_no_threshold_le hle h)
 
+/-!
+### Part IV.6: The elementary boundary — where the deep axiom is *not* needed
+
+The refutations above (`conder_no_threshold_le`, `conjectureAt_imp_gt_third`) rest on
+the single deep axiom `conder_no_threshold`.  It is worth isolating exactly how much
+they buy over what is provable *outright*: for every **nonpositive** density the
+conjecture fails for an elementary reason — the required edge count `ε·Eₙ ≤ 0` is met
+by the *empty* graph `⊥`, which has no edges and hence no `C₆`.  So `⊥` is a
+`C₆`-free `ε`-dense "subgraph" at every `n`, refuting the conjecture with no
+combinatorics at all.
+
+The axiom-free necessary condition this yields is `ConjectureAt ε → 0 < ε`
+(`conjectureAt_imp_pos`).  Conder's axiom is precisely what upgrades that barrier from
+`0` to `1/3` (`conjectureAt_imp_gt_third`): all of the genuinely combinatorial content
+of Erdős #666 lives in the window `0 < ε ≤ 1/3`.
+-/
+
+unseal HasC6 HasCycle in
+/-- **The empty graph has no `C₆`.**  The reusable form of the witness already used in
+`chung_c6free`: `⊥` has no edges, so it contains no cycle of any length. -/
+theorem not_hasC6_bot {n : ℕ} : ¬ HasC6 (⊥ : SimpleGraph (Fin (2^n))) := by
+  rintro ⟨cycle, -, hadj, -⟩
+  simpa using hadj 0
+
+unseal EpsilonDenseSubgraph in
+/-- **At nonpositive density the empty graph is `ε`-dense.**  For `ε ≤ 0` the required
+edge count `ε·Eₙ` is `≤ 0`, and `⊥` has `0` edges, so `Nat.card ⊥.edgeSet = 0 ≥ ε·Eₙ`. -/
+theorem epsilonDense_bot_of_nonpos {n : ℕ} {ε : ℝ} (hε : ε ≤ 0) :
+    EpsilonDenseSubgraph n ε (⊥ : SimpleGraph (Fin (2^n))) := by
+  show (Nat.card (⊥ : SimpleGraph (Fin (2^n))).edgeSet : ℝ) ≥ ε * hypercubeEdges n
+  have hle : ε * (hypercubeEdges n : ℝ) ≤ 0 :=
+    mul_nonpos_of_nonpos_of_nonneg hε (Nat.cast_nonneg _)
+  simp only [SimpleGraph.edgeSet_bot, Nat.card_coe_set_eq, Set.ncard_empty,
+    Nat.cast_zero, ge_iff_le]
+  linarith
+
+/-- **The conjecture fails at every `n` for nonpositive density.**  `⊥` is a `C₆`-free
+`ε`-dense graph, so `DenseForcesC6 n ε` is false for every `n` (not merely large `n`)
+whenever `ε ≤ 0`.  Axiom-free. -/
+theorem not_denseForcesC6_of_nonpos {n : ℕ} {ε : ℝ} (hε : ε ≤ 0) :
+    ¬ DenseForcesC6 n ε :=
+  fun h => not_hasC6_bot (h ⊥ (epsilonDense_bot_of_nonpos hε))
+
+/-- **`ConjectureAt` fails at every nonpositive density.**  Immediate from
+`not_denseForcesC6_of_nonpos`: any threshold `N` already fails at `n = N`.  Axiom-free —
+this half of the refutation needs no combinatorics. -/
+theorem not_conjectureAt_of_nonpos {ε : ℝ} (hε : ε ≤ 0) : ¬ ConjectureAt ε := by
+  rintro ⟨N, hN⟩
+  exact not_denseForcesC6_of_nonpos hε (hN N le_rfl)
+
+/-- **Axiom-free necessary condition: any working density is positive.**  The
+elementary lower barrier `ConjectureAt ε → 0 < ε`, proved without `conder_no_threshold`.
+Conder's axiom sharpens this to `1/3 < ε` (`conjectureAt_imp_gt_third`); the gap
+between the two — the interval `(0, 1/3]` — is exactly where the deep combinatorial
+input is required. -/
+theorem conjectureAt_imp_pos {ε : ℝ} (h : ConjectureAt ε) : 0 < ε :=
+  not_le.mp (fun hle => not_conjectureAt_of_nonpos hle h)
+
 /-- **Conder's counterexamples recur for arbitrarily large hypercubes.**
 The axiom `conder_no_threshold` is stated in the compact negation form `¬ ConjectureAt (1/3)`
 (no threshold `N` works), which conceals its positive content.  Unfolding the two nested
