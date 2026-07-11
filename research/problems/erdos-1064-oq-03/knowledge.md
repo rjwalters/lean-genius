@@ -640,3 +640,35 @@ families), reversals confined to `seedS = 1`, and now `4 ∣ φ` necessary-but-n
 Sole open direction remains the analytic density-1 forward `ψ(x,y)` smooth-number statement
 (genuine Mathlib gap, not session-sized). No follow-up questions (depth-2 OQ already; open
 direction is beyond elementary methods).
+
+## Session 2026-07-11 (researcher-10) — exact ZERO gap of the Sophie–Germain equality family (VERIFIED)
+
+**Mode**: REVISIT (RICH terminus) · **Outcome**: 3 theorems, 0 axioms, **VERIFIED** (host
+lake env lean exit 0, no drift; #print axioms all = [propext,Classical.choice,Quot.sound],
+no sorryAx/ofReduceBool).
+
+Completed the QUANTITATIVE TRICHOTOMY of φ(n) vs φ(D(n)). The reversal & forward regimes
+already had exact/lower-bound gaps (reversal_gap_primeTriple = (2m+2)·2^k, forward_gap_
+fiveTimes_ge ≥ (2m−2)·2^k); the equality regime had only qualitative membership
+(mem_EqualitySet_sophieGermain: φ(n)=φ(D(n)), no landing/value). Added to
+EulerTotientOQ04OQ03.lean (3121→3225):
+- `sophieGermain_dblIter_landing`: D(3q·2^(k+1)) = q·2^(k+2) for a=3q (q,2q+1 prime,q≥5).
+  Via dblIter_transport (a=3q,b=2q+1: 2a−φ(a)=6q−2(q−1)=2(2q+1); landing (2a−φ(b))·2^k=
+  (6q−2q)·2^k=q·2^(k+2)). Generalizes concrete dblIter_eq_family (q=5→5·2^(k+2)).
+- `sophieGermain_totient_eq_value`: φ(n)=φ(D(n))=(q−1)·2^(k+1) EXACTLY (∧-pair).
+- `sophieGermain_gap_zero`: φ(D(n))−φ(n)=0 ∀k (Nat.sub_self on the ∧-pair).
+
+★RECIPE reuse: dblIter_transport {a b}(Odd a)(Odd b)(hstep: 2a−φ(a)=2b)(k): dblIter(a·2^(k+1))
+=(2a−φ(b))·2^k is the workhorse for landing values. For abstract-q nat arithmetic, factor
+2^k out (`rw [Nat.totient_mul cop, ...]` then `show (2:ℕ)^(k+1)=2*2^k from by rw[pow_succ];
+ring` + `ring`) — plain `omega` FAILS (q·2^k is nonlinear). Odd→coprime-2^m helper lifted
+verbatim from dblIter_transport_general.
+★HAZARD dodged: to strip temp `#print axioms` lines used `cp /tmp/backup` NOT `git checkout`
+(checkout would revert the tracked file to base, wiping the new uncommitted theorems too).
+
+VERIFY-PATH: file imports ONLY Mathlib (no Proofs deps) → `./bin/lake env lean File.lean`
+from any worktree w/ prebuilt mathlib oleans, exit 0. External worktree /Users/rwalters/lg-r10-*
++ symlink proofs/.lake (original .loom worktree reaped mid-session, irrelevant). PR #37629.
+
+REMAINING (unchanged): elementary/structural side COMPLETE. Sole open direction = analytic
+density-1 forward ψ(x,y) smooth-number statement (genuine Mathlib gap, not session-sized).
