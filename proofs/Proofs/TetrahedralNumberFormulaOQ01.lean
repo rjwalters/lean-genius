@@ -686,5 +686,41 @@ theorem iterForwardDiff_self_simplexNumber (a n : ℕ) :
   rw [h]
   simp [simplexNumber]
 
+/-- **Discrete convexity in the size argument.**  For every dimension `d ≥ 1`, the
+figurate sequence `n ↦ P_d(n) = C(n+d, d)` is (discretely) convex:
+
+`2·P_d(n+1) ≤ P_d(n) + P_d(n+2)`.
+
+The order-2 companion of the monotonicity `simplexNumber_mono_size`.  Proof: two
+applications of the Pascal recurrence `simplexNumber_succ_succ` reduce the claim to
+`P_{d-1}(n+1) ≤ P_{d-1}(n+2)`, i.e. the monotonicity of the one-lower ladder — the
+successive first differences `P_d(n+1) − P_d(n) = P_{d-1}(n+1)` are themselves
+non-decreasing. -/
+theorem simplexNumber_convex_size (d n : ℕ) :
+    2 * simplexNumber (d + 1) (n + 1)
+      ≤ simplexNumber (d + 1) n + simplexNumber (d + 1) (n + 2) := by
+  have h1 := simplexNumber_succ_succ d n
+  have h2 := simplexNumber_succ_succ d (n + 1)
+  rw [show n + 1 + 1 = n + 2 from rfl] at h2
+  have hmono : simplexNumber d (n + 1) ≤ simplexNumber d (n + 2) :=
+    simplexNumber_mono_size d (Nat.le_succ _)
+  omega
+
+/-- **Discrete convexity in the dimension argument.**  Symmetric companion of
+`simplexNumber_convex_size`: `d ↦ P_d(n) = C(n+d, d)` is convex in the dimension,
+
+`2·P_{d+1}(n) ≤ P_d(n) + P_{d+2}(n)`   (here at size `n+1`),
+
+obtained from the size version through the reflection symmetry `simplexNumber_symm`
+(`P_d(n) = P_n(d)`).  Together with `simplexNumber_convex_size` this gives convexity of
+the figurate ladder along *both* axes, extending the two-axis monotonicity pair
+`simplexNumber_mono_size` / `simplexNumber_mono_dim`. -/
+theorem simplexNumber_convex_dim (d n : ℕ) :
+    2 * simplexNumber (d + 1) (n + 1)
+      ≤ simplexNumber d (n + 1) + simplexNumber (d + 2) (n + 1) := by
+  rw [simplexNumber_symm (d + 1) (n + 1), simplexNumber_symm d (n + 1),
+      simplexNumber_symm (d + 2) (n + 1)]
+  exact simplexNumber_convex_size n d
+
 end TetrahedralNumberFormulaOQ01
 
