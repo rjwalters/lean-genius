@@ -27,13 +27,16 @@
       "sum_mem_subsetSums (∑A is a subset sum, realized by the full subset), subsetSums_le_sum (every subset sum ≤ ∑A), subsetSums_subset_Icc_sum (sharp range subsetSums A ⊆ Icc 1 (∑A)), and max'_subsetSums_eq_sum (the maximum subset sum equals ∑A) — the extremal-value layer. All 0-axiom verified (7743 jobs).",
       "min'_le_subsetSums (every non-empty subset sum ≥ A.min', via Finset.min'_le on any summand then Finset.single_le_sum) and min'_subsetSums_eq_min' (the MINIMUM subset sum equals A.min' — exact dual of max'_subsetSums_eq_sum). Together the two extremal-value results pin BOTH endpoints of the subset-sum range to attained values: [A.min', ∑A]. All 0-axiom verified (7743 jobs).",
       "subsetSums_insert (insertion recursion, ext + erase/insert case split, 0-axiom) and subsetSums_card_insert_superincreasing (doubling law via Finset.disjoint_left + card_union_of_disjoint + card_image_of_injective(add_right_injective) + omega, 0-axiom). Both in Erdos882ProblemOQ03.lean. Elaboration clean [7743/7743]; olean write blocked by persistent fleet SIGBUS-135 (memory, not math — zero type errors on 6 builds).",
-      "Erdos882ProblemOQ03.lean: added Superincreasing (def) + Superincreasing.pos + Superincreasing.mono + sum_erase_max_lt + subsetSums_card_superincreasing (|subsetSums A|=2^|A|-1). Now 5 defs + 22 theorems, 0 axioms, 0 sorries, self-contained. Elaboration clean [7743/7743] across 5 builds (0 type errors); olean write blocked by persistent fleet SIGBUS-135 (memory, not math)."
+      "Erdos882ProblemOQ03.lean: added Superincreasing (def) + Superincreasing.pos + Superincreasing.mono + sum_erase_max_lt + subsetSums_card_superincreasing (|subsetSums A|=2^|A|-1). Now 5 defs + 22 theorems, 0 axioms, 0 sorries, self-contained. Elaboration clean [7743/7743] across 5 builds (0 type errors); olean write blocked by persistent fleet SIGBUS-135 (memory, not math).",
+      "not_divisibilityFree_of_one_mem: if 1 ∈ S and S has another element, S is not divisibility-free (1 divides everything) — the elementary obstruction [VERIFIED axiom-free]",
+      "not_divisibilityFree_subsetSums_powersOfTwo (k≥2): the counting-extremal powers-of-two family {2^0,…,2^{k-1}} has NON-divisibility-free subset sums (1=2^0 and 2=2^1 are both subset sums, 1|2) [VERIFIED axiom-free]",
+      "exists_superincreasing_not_divisibilityFree (k≥2): HEADLINE separation — for every k≥2 there is a k-element superincreasing set realising all 2^k−1 subset sums whose subset sums are NOT divisibility-free; the subset-sum counting champion is the worst Erdős #882 candidate [VERIFIED axiom-free]"
     ],
-    "progressSummary": "PROGRESS: proved the extremal characterization subsetSums_card_superincreasing — a superincreasing set attains the full 2^|A|-1 distinct subset sums, meeting subsetSums_card_le with equality. Iterates the doubling law via strong induction on the max. 22 theorems + 5 defs, 0-axiom (elaboration clean; olean-write blocked by fleet SIGBUS-135).",
+    "progressSummary": "PROGRESS: proved the extremal characterization subsetSums_card_superincreasing — a superincreasing set attains the full 2^|A|-1 distinct subset sums, meeting subsetSums_card_le with equality. Iterates the doubling law via strong induction on the max. 22 theorems + 5 defs, 0-axiom (elaboration clean; olean-write blocked by fleet SIGBUS-135). | Closed the counting-vs-validity gap: exists_superincreasing_not_divisibilityFree proves the subset-sum-count extremal regime (superincreasing / powers-of-two) is DISJOINT from the Erdős #882 divisibility-free regime — the powers-of-two champion contains 1 as a subset sum and 1 divides everything, so its subset sums are never divisibility-free. 3 new axiom-free theorems.",
     "nextSteps": [
-      "Connect distinct-subset-sums (superincreasing) to DivisibilityFree: a superincreasing set need NOT have divisibility-free subset sums (e.g. {1,2}: sums {1,2,3}, 1|2), so distinct-sum ≠ valid — clarify the gap between the counting-extremal regime and the actual Erdős #882 validity constraint.",
       "Formalize the powers-of-two witness {2^0,…,2^{k-1}} explicitly as a Superincreasing instance to instantiate subsetSums_card_superincreasing on a concrete family.",
-      "Repair the parent Erdos882Problem.lean toolchain drift so the structural lemmas import back."
+      "Repair the parent Erdos882Problem.lean toolchain drift so the structural lemmas import back.",
+      "Quantify the actual Erdős #882 optimum: away from the superincreasing champion, what is max |A| ⊆ {1,…,n} with divisibility-free subset sums? (the genuine open extremal question)."
     ]
   },
   "relatedProofs": [
@@ -86,5 +89,6 @@
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos882ProblemOQ03OQ02.lean"
     }
-  ]
+  ],
+  "lastUpdate": "2026-07-11"
 }
