@@ -1154,6 +1154,52 @@ stops. -/
 theorem colMin_one : colMin 1 = 1 :=
   colMin_eq_self_iff.mpr not_attainsBelow_one
 
+/-- The orbit of `0` is constantly `0`: `collatz 0 = 0 / 2 = 0`, so no iterate of `0`
+is ever positive.  This is the degenerate companion of `collatz_iterate_pos` (which keeps
+`0` out of every *positive* orbit) and is exactly what forces a start that reaches `1`
+to be positive. -/
+theorem collatz_iterate_zero (k : ℕ) : collatz^[k] 0 = 0 := by
+  induction k with
+  | zero => rfl
+  | succ k ih => rw [Function.iterate_succ_apply', ih]; simp [collatz]
+
+/-- **The orbit minimum is `1` exactly when the trajectory reaches `1`.**  The Collatz
+conjecture asserts every positive integer eventually reaches `1`; this lemma re-expresses
+that terminal event through the file's central object, the orbit minimum:
+`colMin n = 1 ↔ ∃ k, collatz^[k] n = 1`.  Forward, `1` is the *attained* minimum, so it
+literally occurs on the orbit (`colMin_mem_orbit`).  Backward, an orbit value `1` forces
+the start positive — the orbit of `0` is constantly `0` (`collatz_iterate_zero`) — whence
+`1 ≤ colMin n ≤ 1` by `colMin_pos` and `colMin_le_iterate`.  So `colMin n = 1` is precisely
+the statement "the Collatz conjecture holds for `n`", pinning the conjecture to a single
+value of the orbit minimum. -/
+theorem colMin_eq_one_iff_reaches_one {n : ℕ} :
+    colMin n = 1 ↔ ∃ k, collatz^[k] n = 1 := by
+  constructor
+  · intro h
+    obtain ⟨k, hk⟩ := colMin_mem_orbit n
+    exact ⟨k, by rw [hk, h]⟩
+  · rintro ⟨k, hk⟩
+    have hn : 0 < n := by
+      rcases Nat.eq_zero_or_pos n with h0 | hpos
+      · rw [h0, collatz_iterate_zero k] at hk; omega
+      · exact hpos
+    have hle : colMin n ≤ 1 := by rw [← hk]; exact colMin_le_iterate n k
+    have hpos := colMin_pos hn
+    omega
+
+/-- **Collatz conjecture, orbit-minimum form.**  The Collatz conjecture ("every positive
+integer reaches `1`") is *equivalent* to the assertion that every positive integer has
+orbit minimum exactly `1`:
+`(∀ n, 0 < n → ∃ k, collatz^[k] n = 1) ↔ (∀ n, 0 < n → colMin n = 1)`.  This is the global
+package of the per-`n` characterization `colMin_eq_one_iff_reaches_one`, recasting the whole
+conjecture as a statement purely about `colMin` — the same object whose *strict* drop
+`colMin n < n` this file certifies for `115/128` of the integers. -/
+theorem collatz_conjecture_iff_colMin_eq_one :
+    (∀ n, 0 < n → ∃ k, collatz^[k] n = 1) ↔ (∀ n, 0 < n → colMin n = 1) := by
+  constructor
+  · intro h n hn; exact colMin_eq_one_iff_reaches_one.mpr (h n hn)
+  · intro h n hn; exact colMin_eq_one_iff_reaches_one.mp (h n hn)
+
 /-- Consequently the entire three-quarters family of Part II — the even numbers
 and the odd class `1 + 4ℕ` (`n ≥ 5`) — has orbit minimum strictly below the start,
 unconditionally and without Tao's axiom. -/
