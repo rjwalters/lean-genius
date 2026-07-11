@@ -30,14 +30,15 @@ we inline the relevant density definitions below.
 The AlphaProof Nexus proof is 370 lines of highly compressed automated-proof-search
 tactic output. Many lemmas use elaborate one-line proofs that interleave dozens of
 tactics including `bound`, `valid`, and other custom tactics from FormalConjectures.
-Most of these have now been ported to pure Mathlib v4.26.0 (see #20842): the
+These have now all been ported to pure Mathlib v4.26.0 (see #20842): the
 digit-combinatorics layer (`A_max_k`, `B_max_m`, `A_B_gap`, `A_decomp`, `B_decomp`
 and their `head`/`tail` helpers), the irrationality of `log 4 / log 3`, the
 Dirichlet-reduction chain (`exists_small_pos_lin_comb_help`,
 `exists_small_pos_lin_comb`, `exists_small_pos_lin_comb_large_k`,
-`dirichlet_approx`), and the `liminf` bridge (`AB_lowerDensity_eq_zero`).
-One deep lemma still carries a `sorry` placeholder: `scale_step` (the
-multi-scale counting core, tracked in #20842). The high-level structure and
+`dirichlet_approx`), the multi-scale counting core (`scale_step`), and the
+`liminf` bridge (`AB_lowerDensity_eq_zero`). The file is now `sorry`-free and
+axiom-free (`#print axioms AB_lowerDensity_eq_zero` reports only
+`propext`, `Classical.choice`, `Quot.sound`). The high-level structure and
 dependency graph match the AlphaProof source throughout.
 
 ## Proof strategy (from the natural-language note)
@@ -110,8 +111,8 @@ The lemmas below mirror exactly the structure of the AlphaProof Nexus proof
 (see https://github.com/google-deepmind/alphaproof-nexus-results, file
 `APNOutputs/ErdosProblems/erdos_125.variants.positive_lower_density.lean`).
 The AlphaProof one-line `bound`/`valid` tactic proofs were re-derived in pure
-Mathlib v4.26.0 (#20842); one deep lemma — `scale_step`, the multi-scale
-counting core — remains `sorry` and is tracked as follow-up work. -/
+Mathlib v4.26.0 (#20842), including the multi-scale counting core `scale_step`.
+The file is `sorry`-free. -/
 
 lemma zero_in_A : 0 ∈ A := by
   -- AlphaProof: `norm_num`
@@ -628,7 +629,140 @@ lemma scale_step (N : ℕ) (hN : 0 < N) (C : ℝ)
     (hC : (((Finset.Ico 0 N).filter (· ∈ A + B)).card : ℝ) ≤ C * (N : ℝ)) :
     ∃ N' > 0, (((Finset.Ico 0 N').filter (· ∈ A + B)).card : ℝ) ≤
       (11 / 12 : ℝ) * C * (N' : ℝ) := by
-  sorry
+  classical
+  have hNR : (0 : ℝ) < (N : ℝ) := by exact_mod_cast hN
+  have h1N : (1 : ℝ) ≤ (N : ℝ) := by exact_mod_cast hN
+  set ε : ℝ := 1 / (24 * (N : ℝ)) with hεdef
+  have hε_pos : 0 < ε := by rw [hεdef]; positivity
+  have hεN : 2 * ε * (N : ℝ) = 1 / 12 := by rw [hεdef]; field_simp; ring
+  obtain ⟨k, m, hk, hm, hkm_le, hkm_ge, hk_large⟩ := dirichlet_approx ε hε_pos
+  have h3kR : (0 : ℝ) < (3 : ℝ) ^ k := by positivity
+  have h3k_natR : ((3 ^ k : ℕ) : ℝ) = (3 : ℝ) ^ k := by push_cast; ring
+  have h4m_natR : ((4 ^ m : ℕ) : ℝ) = (4 : ℝ) ^ m := by push_cast; ring
+  have h3k_le_4m : 3 ^ k ≤ 4 ^ m := by
+    have : ((3 ^ k : ℕ) : ℝ) ≤ ((4 ^ m : ℕ) : ℝ) := by rw [h3k_natR, h4m_natR]; exact hkm_le
+    exact_mod_cast this
+  set zBound : ℝ := (3 : ℝ) ^ k * (5 / 6 + ε * (N : ℝ) + ε / 3) with hzBdef
+  have hzBound_nonneg : 0 ≤ zBound := by rw [hzBdef]; positivity
+  set M : ℕ := ⌊zBound⌋₊ + 1 with hMdef
+  have hMR_ge : zBound < (M : ℝ) := by rw [hMdef]; push_cast; exact Nat.lt_floor_add_one zBound
+  have hMR_le : (M : ℝ) ≤ (3 : ℝ) ^ k * (5 / 6 + 2 * ε * (N : ℝ)) := by
+    have hstep : (M : ℝ) ≤ zBound + 1 := by
+      rw [hMdef]; push_cast; linarith [Nat.floor_le hzBound_nonneg]
+    calc (M : ℝ) ≤ zBound + 1 := hstep
+      _ ≤ (3 : ℝ) ^ k * (5 / 6 + 2 * ε * (N : ℝ)) := by
+          rw [hzBdef]
+          -- Suffices `1 ≤ 3^k·(εN − ε/3)`.  Since `N ≥ 1`, `εN − ε/3 ≥ 2ε/3`,
+          -- and `3^k·ε ≥ 3` gives `3^k·(2ε/3) ≥ 2 ≥ 1`.
+          have hεN_ge : (N : ℝ) * ((3 : ℝ) ^ k * ε) ≥ (3 : ℝ) ^ k * ε :=
+            le_mul_of_one_le_left (by positivity) h1N
+          have hgap1 : (1 : ℝ) ≤ (3 : ℝ) ^ k * ε * (2 / 3) := by nlinarith [hk_large]
+          have hexpand : (3 : ℝ) ^ k * (5 / 6 + 2 * ε * (N : ℝ))
+              = ((3 : ℝ) ^ k * (5 / 6 + ε * (N : ℝ) + ε / 3))
+                + ((N : ℝ) * ((3 : ℝ) ^ k * ε) - (3 : ℝ) ^ k * ε / 3) := by ring
+          rw [hexpand]
+          have hkey : (1 : ℝ) ≤ (N : ℝ) * ((3 : ℝ) ^ k * ε) - (3 : ℝ) ^ k * ε / 3 := by
+            nlinarith [hεN_ge, hgap1, hk_large]
+          linarith
+  refine ⟨N * 3 ^ k, by positivity, ?_⟩
+  set S := (Finset.Ico 0 (N * 3 ^ k)).filter (· ∈ A + B) with hSdef
+  set T := (Finset.Ico 0 N).filter (· ∈ A + B) with hTdef
+  have h_decomp : ∀ x : ℕ, x ∈ S →
+      ∃ y z : ℕ, y ∈ T ∧ z ∈ Finset.range M ∧ x = y * 3 ^ k + z := by
+    intro x hx
+    rw [hSdef, Finset.mem_filter, Finset.mem_Ico] at hx
+    obtain ⟨⟨_, hx_lt⟩, hx_mem⟩ := hx
+    rcases Set.mem_add.mp hx_mem with ⟨a, ha, b, hb, hab⟩
+    rcases A_decomp k a ha with ⟨a1, a0, ha1, ha0, ha0_lt, ha_eq⟩
+    rcases B_decomp m b hb with ⟨b1, b0, hb1, hb0, hb0_lt, hb_eq⟩
+    have hz_eq : x = (a1 + b1) * 3 ^ k + (a0 + b0 + b1 * (4 ^ m - 3 ^ k)) :=
+      hz_eq_lemma x a b a1 a0 b1 b0 k m h3k_le_4m hab.symm ha_eq hb_eq
+    have hy_lt : a1 + b1 < N := by
+      by_contra hle
+      push_neg at hle
+      have hmul : N * 3 ^ k ≤ (a1 + b1) * 3 ^ k := Nat.mul_le_mul_right _ hle
+      have : N * 3 ^ k ≤ x := by rw [hz_eq]; omega
+      omega
+    refine ⟨a1 + b1, a0 + b0 + b1 * (4 ^ m - 3 ^ k), ?_, ?_, hz_eq⟩
+    · rw [hTdef, Finset.mem_filter, Finset.mem_Ico]
+      exact ⟨⟨Nat.zero_le _, hy_lt⟩, Set.add_mem_add ha1 hb1⟩
+    · rw [Finset.mem_range]
+      have hb1_lt : b1 < N := lt_of_le_of_lt (Nat.le_add_left b1 a1) hy_lt
+      have ha0_le : a0 ≤ (3 ^ k - 1) / 2 := A_max_k k a0 ha0_lt ha0
+      have hb0_le : b0 ≤ (4 ^ m - 1) / 3 := B_max_m m b0 hb0_lt hb0
+      have h2a0 : (2 : ℝ) * (a0 : ℝ) + 1 ≤ (3 : ℝ) ^ k := by
+        have h2a0N : 2 * a0 + 1 ≤ 3 ^ k := by
+          have hP : 1 ≤ 3 ^ k := Nat.one_le_pow _ _ (by norm_num); omega
+        have : ((2 * a0 + 1 : ℕ) : ℝ) ≤ ((3 ^ k : ℕ) : ℝ) := by exact_mod_cast h2a0N
+        rw [h3k_natR] at this; push_cast at this; linarith
+      have h3b0 : (3 : ℝ) * (b0 : ℝ) + 1 ≤ (4 : ℝ) ^ m := by
+        have h3b0N : 3 * b0 + 1 ≤ 4 ^ m := by
+          have hP : 1 ≤ 4 ^ m := Nat.one_le_pow _ _ (by norm_num); omega
+        have : ((3 * b0 + 1 : ℕ) : ℝ) ≤ ((4 ^ m : ℕ) : ℝ) := by exact_mod_cast h3b0N
+        rw [h4m_natR] at this; push_cast at this; linarith
+      have hgap_natR : (((4 ^ m - 3 ^ k : ℕ)) : ℝ) = (4 : ℝ) ^ m - (3 : ℝ) ^ k := by
+        rw [Nat.cast_sub h3k_le_4m, h4m_natR, h3k_natR]
+      have hgapR : (4 : ℝ) ^ m - (3 : ℝ) ^ k ≤ (3 : ℝ) ^ k * ε := by nlinarith [hkm_ge]
+      have hb1R : (b1 : ℝ) < (N : ℝ) := by exact_mod_cast hb1_lt
+      have hzcastR : ((a0 + b0 + b1 * (4 ^ m - 3 ^ k) : ℕ) : ℝ)
+          = (a0 : ℝ) + (b0 : ℝ) + (b1 : ℝ) * ((4 : ℝ) ^ m - (3 : ℝ) ^ k) := by
+        push_cast [hgap_natR]; ring
+      have hz_le_bound : ((a0 + b0 + b1 * (4 ^ m - 3 ^ k) : ℕ) : ℝ) ≤ zBound := by
+        rw [hzcastR, hzBdef]
+        -- `b1·(4^m − 3^k) ≤ N·(3^k·ε)`.
+        have hb1gap : (b1 : ℝ) * ((4 : ℝ) ^ m - (3 : ℝ) ^ k)
+            ≤ (N : ℝ) * ((3 : ℝ) ^ k * ε) := by
+          have hh1 : (b1 : ℝ) * ((4 : ℝ) ^ m - (3 : ℝ) ^ k)
+              ≤ (b1 : ℝ) * ((3 : ℝ) ^ k * ε) :=
+            mul_le_mul_of_nonneg_left hgapR (by positivity)
+          have hh2 : (b1 : ℝ) * ((3 : ℝ) ^ k * ε) ≤ (N : ℝ) * ((3 : ℝ) ^ k * ε) :=
+            mul_le_mul_of_nonneg_right hb1R.le (by positivity)
+          linarith
+        -- `a0 ≤ 3^k/2`.
+        have ha0R : (a0 : ℝ) ≤ (3 : ℝ) ^ k / 2 := by linarith [h2a0]
+        -- `b0 ≤ 3^k/3 + 3^k·ε/3`, from `3·b0 + 1 ≤ 4^m ≤ 3^k·(1+ε)`.
+        have hb0R : (b0 : ℝ) ≤ (3 : ℝ) ^ k / 3 + (3 : ℝ) ^ k * ε / 3 := by
+          have h4m_le : (4 : ℝ) ^ m ≤ (3 : ℝ) ^ k * (1 + ε) := hkm_ge
+          linarith [h3b0, h4m_le]
+        -- Rewrite the target so `linarith` only sees the atoms `3^k`, `3^k·ε`, `N·(3^k·ε)`.
+        have hexpand : (3 : ℝ) ^ k * (5 / 6 + ε * (N : ℝ) + ε / 3)
+            = (3 : ℝ) ^ k / 2 + ((3 : ℝ) ^ k / 3 + (3 : ℝ) ^ k * ε / 3)
+              + (N : ℝ) * ((3 : ℝ) ^ k * ε) := by ring
+        rw [hexpand]
+        linarith [ha0R, hb0R, hb1gap]
+      have hzlt : ((a0 + b0 + b1 * (4 ^ m - 3 ^ k) : ℕ) : ℝ) < (M : ℝ) :=
+        lt_of_le_of_lt hz_le_bound hMR_ge
+      exact_mod_cast hzlt
+  choose! yOf zOf hy_mem hz_mem hxeq using h_decomp
+  have h_card_le : S.card ≤ T.card * M := by
+    have hmap : S.card ≤ (T ×ˢ Finset.range M).card := by
+      apply Finset.card_le_card_of_injOn (fun x => (yOf x, zOf x))
+      · intro x hx
+        simp only [Finset.mem_coe, Finset.mem_product]
+        exact ⟨hy_mem x hx, hz_mem x hx⟩
+      · intro x hx x' hx' heq
+        simp only [Prod.mk.injEq] at heq
+        obtain ⟨hy, hz⟩ := heq
+        rw [hxeq x hx, hxeq x' hx', hy, hz]
+    calc S.card ≤ (T ×ˢ Finset.range M).card := hmap
+      _ = T.card * M := by rw [Finset.card_product, Finset.card_range]
+  have hScast : (S.card : ℝ) ≤ (T.card : ℝ) * (M : ℝ) := by exact_mod_cast h_card_le
+  have hC_nonneg : 0 ≤ C := by
+    by_contra hCneg
+    push_neg at hCneg
+    have hlt : C * (N : ℝ) < 0 := mul_neg_of_neg_of_pos hCneg hNR
+    have hTle : (T.card : ℝ) ≤ C * (N : ℝ) := hC
+    have hTnn := Nat.cast_nonneg (α := ℝ) T.card
+    linarith
+  have hstep1 : (S.card : ℝ)
+      ≤ (C * (N : ℝ)) * ((3 : ℝ) ^ k * (5 / 6 + 2 * ε * (N : ℝ))) := by
+    calc (S.card : ℝ) ≤ (T.card : ℝ) * (M : ℝ) := hScast
+      _ ≤ (C * (N : ℝ)) * ((3 : ℝ) ^ k * (5 / 6 + 2 * ε * (N : ℝ))) :=
+          mul_le_mul hC hMR_le (Nat.cast_nonneg _) (mul_nonneg hC_nonneg hNR.le)
+  have hfinal : (C * (N : ℝ)) * ((3 : ℝ) ^ k * (5 / 6 + 2 * ε * (N : ℝ)))
+      = (11 / 12 : ℝ) * C * ((N * 3 ^ k : ℕ) : ℝ) := by
+    rw [hεN]; push_cast; ring
+  rw [← hfinal]; exact hstep1
 
 /-- Iterated scale step: `(11/12)^d · N` bound. -/
 lemma density_multi_scale (d : ℕ) :
