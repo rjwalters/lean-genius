@@ -199,15 +199,24 @@
     }
   ],
   "sorries": 0,
-  "references": {
-    "papers": [
-      "Dummit, D. S. and Foote, R. M. (2004). *Abstract Algebra* (3rd ed.). Wiley, §5.5 (semidirect products) and §14.2 (Galois groups of X⁴−2).",
-      "Cox, D. A. (2012). *Galois Theory* (2nd ed.). Wiley, §13.3."
-    ],
-    "urls": [
-      "https://leanprover-community.github.io/mathlib4_docs/Mathlib/GroupTheory/SpecificGroups/Dihedral.html",
-      "https://leanprover-community.github.io/mathlib4_docs/Mathlib/GroupTheory/SemidirectProduct.html",
-      "https://en.wikipedia.org/wiki/Dihedral_group"
-    ]
-  }
+  "references": [
+    {
+      "citation": "Dummit, D. S. and Foote, R. M. (2004). *Abstract Algebra* (3rd ed.). Wiley, §5.5 (semidirect products) and §14.2 (Galois groups of X⁴−2)."
+    },
+    {
+      "citation": "Cox, D. A. (2012). *Galois Theory* (2nd ed.). Wiley, §13.3."
+    },
+    {
+      "text": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/GroupTheory/SpecificGroups/Dihedral.html",
+      "url": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/GroupTheory/SpecificGroups/Dihedral.html"
+    },
+    {
+      "text": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/GroupTheory/SemidirectProduct.html",
+      "url": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/GroupTheory/SemidirectProduct.html"
+    },
+    {
+      "text": "https://en.wikipedia.org/wiki/Dihedral_group",
+      "url": "https://en.wikipedia.org/wiki/Dihedral_group"
+    }
+  ]
 }

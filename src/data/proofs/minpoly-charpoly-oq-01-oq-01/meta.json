@@ -85,8 +85,7 @@
     "historicalContext": "The single Jordan block is the atom of Jordan Normal Form: over an algebraically closed field every matrix is similar to a block-diagonal sum of Jordan blocks, and the entire theory reduces to understanding one block. A single block `J = λI + N` splits into a scalar (semisimple) part `λI` and the strict upper-shift `N`, which is nilpotent — this is the Jordan–Chevalley decomposition specialised to one block. That `N` is nilpotent of index exactly equal to the block size, and consequently that the block is non-derogatory (its minimal and characteristic polynomials coincide, both `(X-λ)^d`), are classical facts appearing in every treatment of canonical forms (Axler §8; Dummit & Foote §12.3; Hoffman & Kunze §7). Mathlib v4.26.0 has extensive minpoly/charpoly infrastructure but no `jordanBlock` matrix at all, so this API — the JNF gap flagged in the parent problem's roadmap — is built here from scratch.",
     "problemStatement": "**Sub-open question (minpoly-charpoly-oq-01-oq-01)**: Define the Jordan block `jordanBlock R λ d` and establish its basic spectral API — the power law for the nilpotent shift `N = jordanBlock R 0 d`, that `N^d = 0` while `N^(d-1) ≠ 0`, and that over a field `minpoly K (jordanBlock K λ d) = (X - C λ)^d`. These are the load-bearing facts consumed by the downstream nilpotent-canonical-form (OQ-01-OQ-02) and global-assembly (OQ-01-OQ-04) sub-questions.",
     "text": "**Resolution (complete)**: A single closed-form power law `(N^k) i j = [j = i + k]` (proved by induction on `k`) does all the work. The `d`-th power pushes the diagonal band of `1`s off the matrix, giving `N^d = 0`; the `(d-1)`-th power leaves a single `1` in the top-right corner, giving `N^(d-1) ≠ 0`. The minimal polynomial then follows by a UFD argument: `(A - λI)^d = 0` gives the upper bound `minpoly ∣ (X-C λ)^d`, primality of `X - C λ` pins `minpoly = (X-C λ)^m`, and the sharpness `N^(d-1) ≠ 0` forces `m = d`. The whole entry is build-verified sorry-free and axiom-free.",
-    "proofStrategy": "**Power law (`shift_pow_apply`)**: induction on `k`. The base case is `N^0 = 1`, whose `(i,j)` entry is `[i = j] = [(j:ℕ) = (i:ℕ) + 0]`. The step uses `pow_succ` (`N^(k+1) = N^k · N`) and `Matrix.mul_apply`; right-multiplication by `N` picks out the single surviving index `l = j - 1` (always a valid `Fin d` element when `j ≥ 1`), and `Finset.sum_eq_single_of_mem` collapses the sum. This deliberately multiplies on the *right* so the surviving index is `j - 1` (never overflows) rather than `i + 1` (may overflow the block).\n\n**`N^d = 0` and `N^(d-1) ≠ 0`**: both are immediate corollaries of the power law — the first because `j < d ≤ i + d`, the second because the `(0, d-1)` entry is `1` (needs `R` nontrivial for `1 ≠ 0`).\n\n**Minimal polynomial (`minpoly_jordanBlock`)**:\n1. `aeval A ((X - C λ)^d) = (A - λ•1)^d`; and `A - λ•1 = N` (`jordanBlock_sub_smul_one`), so this is `N^d = 0`. Hence `minpoly K A ∣ (X - C λ)^d` via `minpoly.dvd`.\n2. `X - C λ` is prime, so `dvd_prime_pow` gives `Associated (minpoly K A) ((X - C λ)^m)` with `m ≤ d`; both monic, so `minpoly K A = (X - C λ)^m` (`eq_of_monic_of_associated`).\n3. `minpoly.aeval` gives `(A - λ•1)^m = N^m = 0`. If `m < d` then `N^(d-1) = N^m · N^(d-1-m) = 0`, contradicting `shift_pow_pred_ne_zero`. Hence `m = d`."
-    ,
+    "proofStrategy": "**Power law (`shift_pow_apply`)**: induction on `k`. The base case is `N^0 = 1`, whose `(i,j)` entry is `[i = j] = [(j:ℕ) = (i:ℕ) + 0]`. The step uses `pow_succ` (`N^(k+1) = N^k · N`) and `Matrix.mul_apply`; right-multiplication by `N` picks out the single surviving index `l = j - 1` (always a valid `Fin d` element when `j ≥ 1`), and `Finset.sum_eq_single_of_mem` collapses the sum. This deliberately multiplies on the *right* so the surviving index is `j - 1` (never overflows) rather than `i + 1` (may overflow the block).\n\n**`N^d = 0` and `N^(d-1) ≠ 0`**: both are immediate corollaries of the power law — the first because `j < d ≤ i + d`, the second because the `(0, d-1)` entry is `1` (needs `R` nontrivial for `1 ≠ 0`).\n\n**Minimal polynomial (`minpoly_jordanBlock`)**:\n1. `aeval A ((X - C λ)^d) = (A - λ•1)^d`; and `A - λ•1 = N` (`jordanBlock_sub_smul_one`), so this is `N^d = 0`. Hence `minpoly K A ∣ (X - C λ)^d` via `minpoly.dvd`.\n2. `X - C λ` is prime, so `dvd_prime_pow` gives `Associated (minpoly K A) ((X - C λ)^m)` with `m ≤ d`; both monic, so `minpoly K A = (X - C λ)^m` (`eq_of_monic_of_associated`).\n3. `minpoly.aeval` gives `(A - λ•1)^m = N^m = 0`. If `m < d` then `N^(d-1) = N^m · N^(d-1-m) = 0`, contradicting `shift_pow_pred_ne_zero`. Hence `m = d`.",
     "keyInsights": [
       "**One induction powers everything.** The closed-form `shift_pow_apply` — `(N^k) i j = [j = i + k]` — is the only genuinely inductive step in the file. `N^d = 0`, the exact nilpotency index, and (through the minimal-polynomial argument) non-derogatoriness are all corollaries of this single band-shifting picture: each power moves the band of `1`s one diagonal further up-right.",
       "**Multiply on the right to keep the surviving index in range.** Proving the power law via `N^(k+1) = N^k · N` (rather than `N · N^k`) makes the unique nonzero summand sit at column index `j - 1`, which is *always* a valid `Fin d` element whenever it exists (`j ≥ 1`). The mirror choice `N · N^k` would force the index `i + 1`, which can overflow the block and split the argument into extra cases. This is a small but decisive Lean-engineering choice.",
@@ -226,15 +225,23 @@
     }
   ],
   "sorries": 0,
-  "references": {
-    "papers": [
-      "Axler, S. *Linear Algebra Done Right* (3rd ed., 2015), §8 — nilpotent operators, generalized eigenspaces, and the Jordan form.",
-      "Dummit & Foote. *Abstract Algebra* (3rd ed., 2004), §12.3 — Jordan canonical form and minimal polynomials of Jordan blocks.",
-      "Hoffman, K. & Kunze, R. *Linear Algebra* (2nd ed., 1971), §7 — rational and Jordan forms."
-    ],
-    "urls": [
-      "https://leanprover-community.github.io/mathlib4_docs/Mathlib/LinearAlgebra/Matrix/Charpoly/Minpoly.html",
-      "https://leanprover-community.github.io/mathlib4_docs/Mathlib/FieldTheory/Minpoly/Basic.html"
-    ]
-  }
+  "references": [
+    {
+      "citation": "Axler, S. *Linear Algebra Done Right* (3rd ed., 2015), §8 — nilpotent operators, generalized eigenspaces, and the Jordan form."
+    },
+    {
+      "citation": "Dummit & Foote. *Abstract Algebra* (3rd ed., 2004), §12.3 — Jordan canonical form and minimal polynomials of Jordan blocks."
+    },
+    {
+      "citation": "Hoffman, K. & Kunze, R. *Linear Algebra* (2nd ed., 1971), §7 — rational and Jordan forms."
+    },
+    {
+      "text": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/LinearAlgebra/Matrix/Charpoly/Minpoly.html",
+      "url": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/LinearAlgebra/Matrix/Charpoly/Minpoly.html"
+    },
+    {
+      "text": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/FieldTheory/Minpoly/Basic.html",
+      "url": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/FieldTheory/Minpoly/Basic.html"
+    }
+  ]
 }
