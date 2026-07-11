@@ -45,14 +45,16 @@
       "gap_div_le_rpow_neg: pointwise upper envelope maxPrimeGap x / x <= x^(-0.475) for x >= 25, via BHP divided by x and the identity x^0.525 / x = x^(0.525 - 1)",
       "bhp_implies_gap_littleo: unconditional maxPrimeGap x / x -> 0, squeezing between 0 and the envelope x^(-0.475) -> 0 (unconditional twin of cramer_implies_gap_sublinear)",
       "bhp_gap_eventually_le_eps: epsilon-form, for every epsilon > 0 eventually maxPrimeGap x <= epsilon * x",
-      "gap_eventually_le_eps_of_rpow_bound: abstract epsilon-form engine, from any eventual envelope maxPrimeGap x <= x^theta with theta < 1, for every epsilon > 0 eventually maxPrimeGap x <= epsilon * x (the abstract counterpart of bhp_gap_eventually_le_eps, completing the engine family's term-for-term match with the concrete BHP family)"
+      "gap_eventually_le_eps_of_rpow_bound: abstract epsilon-form engine, from any eventual envelope maxPrimeGap x <= x^theta with theta < 1, for every epsilon > 0 eventually maxPrimeGap x <= epsilon * x (the abstract counterpart of bhp_gap_eventually_le_eps, completing the engine family's term-for-term match with the concrete BHP family)",
+      "gap_div_isBigO_rpow_neg: explicit decay RATE of the normalised gap, maxPrimeGap x / x = O(x^(-0.475)) (Landau big-O idiom, constant 1, x>=25) — sharpens bhp_implies_gap_littleo's qualitative Tendsto to 0 into a quantitative polynomial-rate envelope; the normalised counterpart of gap_isBigO_rpow.",
+      "gap_div_isBigO_rpow_sub_one_of_rpow_bound: abstract normalised-decay-rate engine — from any eventual envelope maxPrimeGap x <= x^theta, maxPrimeGap x / x = O(x^(theta-1)); the source-parametric, axiom-free ([propext,choice,Quot.sound]) twin of the concrete gap_div_isBigO_rpow_neg."
     ],
     "dateAdded": "2026-07-05",
     "mathlib_version": "4.26.0",
     "axiomCount": 1,
-    "lineCount": 376,
+    "lineCount": 418,
     "assumptions": "1 axiom, inherited from the parent Erdos1138OQ03: baker_harman_pintz (maxPrimeGap x <= x^0.525 for x >= 25). No axiom is declared in this file (leanFile.axiomCount = 0); the assumption is imported. #print axioms confirms the results depend only on {propext, Classical.choice, Quot.sound, Erdos1138OQ03.baker_harman_pintz}. No sorries, no native_decide.",
-    "theoremCount": 14,
+    "theoremCount": 16,
     "definitionCount": 0
   },
   "overview": {
@@ -141,9 +143,9 @@
       "Topology"
     ],
     "namespace": "Erdos1138OQ03",
-    "lineCount": 376,
+    "lineCount": 418,
     "axiomCount": 0,
-    "theoremCount": 17,
+    "theoremCount": 20,
     "definitionCount": 0,
     "path": "Proofs/Erdos1138OQ03OQ01.lean",
     "sorries": 0

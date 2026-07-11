@@ -16,14 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "SURVEYED",
-    "since": "2026-07-02",
-    "iteration": 1,
-    "focus": "Scoped a tractable oq-01 for the fresh (previously EMPTY, no problem.md) candidate:",
+    "phase": "PROGRESS",
+    "since": "2026-07-11",
+    "iteration": 2,
+    "focus": "Verified the file builds (built parent Erdos1138OQ03 olean, then OQ01 via lake env lean, EXIT 0). Added normalised-gap decay-rate results gap_div_isBigO_rpow_neg (O(x^(-0.475))) + abstract engine gap_div_isBigO_rpow_sub_one_of_rpow_bound (O(x^(θ-1))); cleaned 2 dead-tactic warnings. 20 theorems, 0 sorry, inherits only the BHP axiom.",
     "activeApproach": "Real-analysis squeeze: `maxPrimeGap x / x ≤ x^(-0.475) → 0`. Envelope limit from",
-    "blockers": [
-      "Build-blocked this session (Docker down; disk ~97%; 0 oleans on disk, #33336). No Lean"
-    ],
+    "blockers": [],
     "nextAction": "Build-capable session: create `proofs/Proofs/Erdos1138OQ03OQ01.lean` (import",
     "attemptCounts": {
       "total": 1,
@@ -37,13 +35,16 @@
       "gap_div_le_rpow_neg (Erdos1138OQ03OQ01.lean:37): maxPrimeGap x / x <= x^(-0.475) for x >= 25",
       "bhp_implies_gap_littleo (Erdos1138OQ03OQ01.lean:57): Tendsto (maxPrimeGap x / x) atTop (nhds 0)",
       "bhp_gap_eventually_le_eps (Erdos1138OQ03OQ01.lean:74): forall eps>0, eventually maxPrimeGap x <= eps*x",
-      "Erdos1138OQ03OQ01.lean:186 gap_littleo_of_rpow_bound (source-exponent-parametric sublinearity engine). Elaboration-clean; olean-write blocked by fleet SIGBUS storm."
+      "Erdos1138OQ03OQ01.lean:186 gap_littleo_of_rpow_bound (source-exponent-parametric sublinearity engine). Elaboration-clean; olean-write blocked by fleet SIGBUS storm.",
+      "gap_div_isBigO_rpow_neg (Erdos1138OQ03OQ01.lean, VERIFIED [propext,choice,Quot.sound,baker_harman_pintz]): explicit decay RATE of the normalised gap, maxPrimeGap x / x = O(x^(-0.475)) — sharpens bhp_implies_gap_littleo (Tendsto→0) to a quantitative polynomial-rate big-O; normalised counterpart of gap_isBigO_rpow.",
+      "gap_div_isBigO_rpow_sub_one_of_rpow_bound (Erdos1138OQ03OQ01.lean, VERIFIED axiom-free [propext,choice,Quot.sound]): abstract normalised-decay-rate engine, any eventual envelope maxPrimeGap x≤x^θ ⟹ maxPrimeGap x/x = O(x^(θ-1)); source-parametric twin of the concrete decay-rate result."
     ],
     "insights": [
       "BHP exponent 0.525 < 1: one division by x yields a negative power x^(-0.475) that vanishes at infinity - no finer analysis needed",
       "x^0.525 / x must be rewritten via Real.rpow_sub on x^(0.525-1); rewriting x as x^1 via rpow_one hits the numerator base and fails",
       "tendsto_rpow_neg_atTop is root-namespace (not Real.); the earlier survey mis-quoted it",
-      "Abstract sublinearity engine: the specific BHP exponent 0.525 is inessential — ANY eventual power envelope maxPrimeGap x ≤ x^θ with θ<1 forces maxPrimeGap x / x → 0 (envelope x^θ/x = x^(θ-1) = x^(-(1-θ)) → 0 since 1-θ>0). gap_littleo_of_rpow_bound {θ} (hθ:θ<1) (H: ∀ᶠ x, gap ≤ x^θ). bhp_implies_gap_littleo is the θ=0.525 instance; future BHP tightenings (0.5+ε) plug in with no re-proof."
+      "Abstract sublinearity engine: the specific BHP exponent 0.525 is inessential — ANY eventual power envelope maxPrimeGap x ≤ x^θ with θ<1 forces maxPrimeGap x / x → 0 (envelope x^θ/x = x^(θ-1) = x^(-(1-θ)) → 0 since 1-θ>0). gap_littleo_of_rpow_bound {θ} (hθ:θ<1) (H: ∀ᶠ x, gap ≤ x^θ). bhp_implies_gap_littleo is the θ=0.525 instance; future BHP tightenings (0.5+ε) plug in with no re-proof.",
+      "Added the explicit decay RATE of the normalised gap (previously only the qualitative Tendsto→0 was recorded): concrete gap_div_isBigO_rpow_neg = O(x^(-0.475)) and abstract gap_div_isBigO_rpow_sub_one_of_rpow_bound = O(x^(θ-1)). Also cleaned two dead `gcongr <;> exact hx` linter warnings. File VERIFIED via lake env lean (built parent olean first), EXIT 0, 0 warnings; 18→20 theorems."
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -70,7 +71,7 @@
     "mathlib": []
   },
   "started": "2026-04-05T12:58:50.791Z",
-  "lastUpdate": "2026-06-27T00:25:01.703Z",
+  "lastUpdate": "2026-07-11T00:00:00.000Z",
   "significance": 5,
   "tractability": 8,
   "leanFiles": [
