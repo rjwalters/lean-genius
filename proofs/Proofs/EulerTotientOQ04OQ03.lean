@@ -3204,4 +3204,82 @@ theorem sophieGermain_gap_zero {q : ℕ} (hq : q.Prime) (hq5 : 5 ≤ q)
   obtain ⟨h1, h2⟩ := sophieGermain_totient_eq_value hq hq5 hsg k
   rw [h1, h2, Nat.sub_self]
 
+-- ----------------------------------------------------------------------------
+-- Exact FORWARD gap under a prime landing: the missing mirror of
+-- `reversal_gap_primeTriple`
+-- ----------------------------------------------------------------------------
+-- `forward_gap_fiveTimes_ge` gives only a *lower bound* `φ(n) − φ(D(n)) ≥ (2m−2)·2^k`
+-- for the forward family `n = 5·(4m+1)·2^(k+1)`, precisely because it makes no
+-- assumption on the landing `14m+3` (`φ(14m+3) ≤ 14m+2` is a one-sided bound).  As
+-- soon as `14m+3` is *prime* the bound tightens to an equality `φ(14m+3) = 14m+2`, and
+-- the forward margin collapses to the EXACT closed form `(2m−2)·2^k` — the direct
+-- forward analogue of the reversal exact gap `(2m+2)·2^k` of `reversal_gap_primeTriple`.
+-- Concrete triple-prime seeds exist: `m = 4` (`a = 5·17 = 85`, landing `59`, gap `6·2^k`),
+-- `m = 7` (`a = 5·29 = 145`, landing `101`, gap `12·2^k`), … , so the statement is not
+-- vacuous.  With this, all three regimes now have an *exact* gap once the landing is
+-- prime:  reversal `+(2m+2)·2^k`, forward `−(2m−2)·2^k`, equality `0`.
+
+/-- **Exact forward gap of the fiveTimes family under a prime landing.**  For a seed
+    `a = 5·(4m+1)` with `4m+1`, `12m+5` (`= 3q+2`) *and* the landing `14m+3` all prime
+    (`m ≥ 3`), the forward margin along `n = 5·(4m+1)·2^(k+1)` is not merely bounded below
+    but *exactly*
+        `φ(n) − φ(D(n)) = (2m−2)·2^k`.
+    This is the sharp mirror of `reversal_gap_primeTriple` (exact reversal gap
+    `(2m+2)·2^k`): the extra hypothesis `(14m+3).Prime` upgrades the one-sided bound of
+    `forward_gap_fiveTimes_ge` to an equality, since then `φ(14m+3) = 14m+2` exactly and
+    `φ(D(n)) = (14m+2)·2^k`, whence `16m·2^k − (14m+2)·2^k = (2m−2)·2^k`. -/
+theorem forward_gap_fiveTimes_eq {m : ℕ} (hm : 3 ≤ m)
+    (hq : (4 * m + 1).Prime) (hb : (12 * m + 5).Prime) (hland : (14 * m + 3).Prime)
+    (k : ℕ) :
+    Nat.totient (5 * (4 * m + 1) * 2 ^ (k + 1))
+        - Nat.totient (dblIter (5 * (4 * m + 1) * 2 ^ (k + 1)))
+      = (2 * m - 2) * 2 ^ k := by
+  have hcop : Nat.Coprime 5 (4 * m + 1) :=
+    (Nat.coprime_primes (by norm_num) hq).mpr (by omega)
+  -- φ(a) = 16m  (a = 5·(4m+1))
+  have hφa : Nat.totient (5 * (4 * m + 1)) = 16 * m := by
+    rw [Nat.totient_mul hcop, show Nat.totient 5 = 4 from by decide,
+        Nat.totient_prime hq]; omega
+  -- φ(b) = 12m+4  (b = 12m+5 prime)
+  have hφb : Nat.totient (12 * m + 5) = 12 * m + 4 := by
+    rw [Nat.totient_prime hb]; omega
+  have ha_odd : Odd (5 * (4 * m + 1)) := Nat.odd_iff.mpr (by omega)
+  have hb_odd : Odd (12 * m + 5) := Nat.odd_iff.mpr (by omega)
+  have hp2 : Nat.totient (2 ^ (k + 1)) = 2 ^ k := by
+    rw [Nat.totient_prime_pow Nat.prime_two (Nat.succ_pos k)]; simp
+  -- φ(n) = φ(5·(4m+1))·2^k = 16m·2^k
+  have copa : Nat.Coprime (5 * (4 * m + 1)) (2 ^ (k + 1)) :=
+    ((Nat.prime_two.coprime_iff_not_dvd).mpr (by omega)).symm.pow_right (k + 1)
+  have hφn : Nat.totient (5 * (4 * m + 1) * 2 ^ (k + 1)) = 16 * m * 2 ^ k := by
+    rw [Nat.totient_mul copa, hp2, hφa]
+  -- transport: D(n) = (2a − φ(b))·2^k = (14m+3)·2^(k+1)
+  have hstep : 2 * (5 * (4 * m + 1)) - Nat.totient (5 * (4 * m + 1)) = 2 * (12 * m + 5) := by
+    rw [hφa]; omega
+  have hD : dblIter (5 * (4 * m + 1) * 2 ^ (k + 1)) = (14 * m + 3) * 2 ^ (k + 1) := by
+    rw [dblIter_transport ha_odd hb_odd hstep k, hφb,
+        show 2 * (5 * (4 * m + 1)) - (12 * m + 4) = (14 * m + 3) * 2 from by omega]
+    ring
+  -- φ(D(n)) = φ(14m+3)·2^k, and with 14m+3 prime this is EXACTLY (14m+2)·2^k
+  have cope : Nat.Coprime (14 * m + 3) (2 ^ (k + 1)) :=
+    ((Nat.prime_two.coprime_iff_not_dvd).mpr (by omega)).symm.pow_right (k + 1)
+  have hφland : Nat.totient (14 * m + 3) = 14 * m + 2 := by
+    rw [Nat.totient_prime hland]; omega
+  have hφD : Nat.totient (dblIter (5 * (4 * m + 1) * 2 ^ (k + 1)))
+      = (14 * m + 2) * 2 ^ k := by
+    rw [hD, Nat.totient_mul cope, hp2, hφland]
+  rw [hφn, hφD, ← Nat.sub_mul, show 16 * m - (14 * m + 2) = 2 * m - 2 from by omega]
+
+/-- **Concrete smallest forward exact-gap witness.**  The least admissible seed for
+    `forward_gap_fiveTimes_eq` is `m = 4`, i.e. `a = 5·17 = 85` (with `4m+1 = 17`,
+    `12m+5 = 53`, landing `14m+3 = 59`, all prime).  Along `n = 85·2^(k+1)` the forward
+    margin is exactly `6·2^k`:
+        `φ(85·2^(k+1)) − φ(D(85·2^(k+1))) = 6 · 2^k`. -/
+theorem forward_gap_fiveTimes_eq_85 (k : ℕ) :
+    Nat.totient (85 * 2 ^ (k + 1))
+        - Nat.totient (dblIter (85 * 2 ^ (k + 1))) = 6 * 2 ^ k := by
+  have h := forward_gap_fiveTimes_eq (m := 4) (by norm_num) (by norm_num)
+    (by norm_num) (by norm_num) k
+  norm_num at h
+  exact h
+
 end Erdos1064OQ03
