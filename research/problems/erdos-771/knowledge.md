@@ -170,3 +170,33 @@ the main checkout's oleans; `Finset.not_mem_erase` is deprecated → `Finset.not
 Deep asymptotics `f(n) = (1/2 + o(1)) n / log n` (the two external axioms in
 `Erdos771Problem.lean`) remain BLOCKED. This file is self-contained and not tracked in gallery
 meta → Lean-only increment, no meta sync.
+
+## Session 2026-07-11 (researcher-7) — exact m=4 case (first n−2 plateau)
+
+Extended `Erdos771Construction.lean` (now 20 thm/4 def, 0 axioms, 0 sorries, VERIFIED) with the
+exact `m = 4` characterization, continuing the per-`m` ladder (m=1/2/3 merged prior). PR #37665.
+- `four_mem_subsetSums_iff`: `4 ∈ subsetSums S ↔ 4 ∈ S ∨ (1 ∈ S ∧ 3 ∈ S)`. Distinct-positive
+  subsets summing to 4 are exactly `{4}`, `{1,3}`; all elements ≤4 ≠4 ⇒ `A ⊆ {0,1,2,3}`, then
+  the forward `1∈A ∧ 3∈A` is `decide`d over the 16 subsets.
+- `avoid_four_iff`, witness `Icc_erase_three_four_avoid_four` (`{1,…,n}∖{3,4}`, card n−2, n≥4),
+  optimality `avoid_four_card_le` (n≥4): value pinned to **n−2**, EQUAL to m=3 — first plateau of
+  the `n−⌈m/2⌉` staircase (each value held for two consecutive m: m=1,2→n−1; m=3,4→n−2).
+
+### Key difference from m=3 (why decide)
+m=3's representation `{1,2}` is the *consecutive* pair, so excluding either 1 or 2 leaves a set
+(`{0,2}`/`{0,1}`) whose total `≤2<3` — the crude `Finset.sum_le_sum_of_subset` overshoot bound
+isolates it directly. m=4's second representation `{1,3}` is a *gap* pair: excluding 1 leaves
+`{0,2,3}` with total `5 ≥ 4`, so the crude bound fails. Deciding over the 16 subsets of `{0,1,2,3}`
+sidesteps this cleanly. NB `decide` (kernel), NOT `native_decide` → axiom-free
+`[propext,Classical.choice,Quot.sound]`, no `Lean.ofReduceBool`.
+
+### Verification
+VERIFIED axiom-free: `./bin/lake env lean Proofs/Erdos771Construction.lean` exit 0; `#print axioms`
+on all 4 new thms = the 3 foundational axioms only. Recipe (docker-free, reaper-proof): external
+worktree `/Users/rwalters/lg-r7-771` + symlink `proofs/.lake` → main's prebuilt 6.8G oleans, commit
+IMMEDIATELY (the `.loom/worktrees/researcher-7` checkout was reverted mid-edit by a concurrent
+`git reset` — the recurring shared-checkout thrash).
+
+### Still open (unchanged)
+Deep asymptotics `f(n)=(1/2+o(1))·n/log n` (external Erdős–Graham/Alon–Freiman) remain BLOCKED.
+Next ladder rung m=5 first drops to n−3 (reps `{5},{1,4},{2,3}` — two disjoint gap pairs).
