@@ -484,4 +484,67 @@ theorem algebraic_complex_no_perfect_subset {P : Set ℂ}
   exact perfect_not_countable hP (Set.nonempty_iff_ne_empty.mpr hne)
     (AlgebraicNumbersCountable.algebraic_complex_countable.mono hsub)
 
+/-!
+## Baire category: the algebraic reals are meagre, the transcendentals comeagre
+
+The measure pillar above shows the transcendentals are *conull* (measure-large) and the
+algebraic reals *null* (measure-small). This section supplies the parallel **Baire-category**
+pillar with its topological structure explicit. Because the algebraic reals are countable,
+they are a countable union of singletons, so their complement — the transcendentals — is a
+**Gδ** set (`Set.Countable.isGδ_compl`, using that `ℝ`/`ℂ` are `T1`). A *dense* Gδ set is
+**residual** (comeagre) (`residual_of_dense_Gδ`), and the transcendentals are dense
+(`transcendental_reals_dense`), so they are comeagre and the algebraic reals are
+**meagre** (`IsMeagre`). This is the category-largeness dual of `transcendental_reals_conull`,
+completing the smallness picture: the algebraic reals are simultaneously null (measure),
+meagre (category), dimension-zero (Hausdorff), countable (cardinality) and perfect-kernel-free
+(descriptive), while the transcendentals are conull, comeagre, full-dimensional and continuum.
+-/
+
+/-- **The transcendental reals form a Gδ set.** The algebraic reals are countable, hence
+(as `ℝ` is `T1`) their complement is a countable intersection of open sets. -/
+theorem transcendental_reals_isGδ : IsGδ {x : ℝ | Transcendental ℚ x} := by
+  have hcompl : {x : ℝ | Transcendental ℚ x} = {x : ℝ | IsAlgebraic ℚ x}ᶜ := by
+    ext x; simp only [mem_setOf_eq, mem_compl_iff, Transcendental]
+  rw [hcompl]
+  exact AlgebraicNumbersCountable.algebraic_reals_countable.isGδ_compl
+
+/-- **The transcendental reals are comeagre (residual).** A dense Gδ set is residual
+(`residual_of_dense_Gδ`); the transcendentals are a Gδ (`transcendental_reals_isGδ`) and
+dense (`transcendental_reals_dense`). This is the Baire-category largeness of the
+transcendentals, dual to their conull measure largeness. -/
+theorem transcendental_reals_residual :
+    {x : ℝ | Transcendental ℚ x} ∈ residual ℝ :=
+  residual_of_dense_Gδ transcendental_reals_isGδ transcendental_reals_dense
+
+/-- **The algebraic reals are meagre.** Their complement (the transcendentals) is residual,
+which is exactly the definition of `IsMeagre`. The category-theoretic smallness pillar,
+sitting alongside `algebraic_reals_null` (measure) and `algebraic_reals_dimH_zero` (dimension). -/
+theorem algebraic_reals_meagre : IsMeagre {x : ℝ | IsAlgebraic ℚ x} := by
+  have hcompl : {x : ℝ | IsAlgebraic ℚ x}ᶜ = {x : ℝ | Transcendental ℚ x} := by
+    ext x; simp only [mem_compl_iff, mem_setOf_eq, Transcendental]
+  rw [IsMeagre, hcompl]
+  exact transcendental_reals_residual
+
+/-- **The transcendental complex numbers form a Gδ set**, by the same argument with the
+countable complex algebraic numbers and `ℂ` being `T1`. -/
+theorem transcendental_complex_isGδ : IsGδ {z : ℂ | Transcendental ℚ z} := by
+  have hcompl : {z : ℂ | Transcendental ℚ z} = {z : ℂ | IsAlgebraic ℚ z}ᶜ := by
+    ext z; simp only [mem_setOf_eq, mem_compl_iff, Transcendental]
+  rw [hcompl]
+  exact AlgebraicNumbersCountable.algebraic_complex_countable.isGδ_compl
+
+/-- **The transcendental complex numbers are comeagre (residual)**: a dense Gδ set, the
+complex analogue of `transcendental_reals_residual`. -/
+theorem transcendental_complex_residual :
+    {z : ℂ | Transcendental ℚ z} ∈ residual ℂ :=
+  residual_of_dense_Gδ transcendental_complex_isGδ transcendental_complex_dense
+
+/-- **The complex algebraic numbers are meagre**, the complex analogue of
+`algebraic_reals_meagre`. -/
+theorem algebraic_complex_meagre : IsMeagre {z : ℂ | IsAlgebraic ℚ z} := by
+  have hcompl : {z : ℂ | IsAlgebraic ℚ z}ᶜ = {z : ℂ | Transcendental ℚ z} := by
+    ext z; simp only [mem_compl_iff, mem_setOf_eq, Transcendental]
+  rw [IsMeagre, hcompl]
+  exact transcendental_complex_residual
+
 end AlgebraicRealsNull
