@@ -385,6 +385,90 @@ theorem franklFurediEven_card_le_T (n r : ℕ) (hn : 1 ≤ n) (hpar : (n + r) % 
   exact Finset.le_sup hmem
 
 /-
+## Part IV.a: The Small-Sets Family and a Polynomial Lower Bound
+
+The "small" disjunct `{A ⊆ [n] : |A| < r}` of the Frankl–Füredi families is itself
+an `r`-avoiding family, for the trivial reason that two sets of size `< r` cannot
+meet in `r` points. Unlike the large-set part it admits an *exact* closed-form count
+`∑_{k<r} C(n,k)`, yielding the first certified **polynomial** lower bound on `T(n,r)`
+across the whole middle range `r ≥ 2` that the Frankl–Rödl question concerns.
+-/
+
+/--
+**The small-sets family.**
+`F = {A ⊆ [n] : |A| < r}` — all subsets of `[n]` of size strictly below the
+forbidden size `r`. It is the "small" disjunct of `franklFurediOdd`/`franklFurediEven`
+isolated on its own.
+-/
+def smallSetsFamily (n r : ℕ) : Finset (Finset ℕ) :=
+  (Finset.range n).powerset.filter (fun A => A.card < r)
+
+/--
+**The small-sets family avoids `r`-intersection.**
+Any two sets of size `< r` meet in fewer than `r` points, since
+`|A ∩ B| ≤ |A| < r`. Holds for every `n, r` with no parity or size hypothesis. -/
+theorem smallSetsFamily_avoids_r (n r : ℕ) :
+    avoidsRIntersection r (smallSetsFamily n r) := by
+  intro A B hA hB
+  rw [smallSetsFamily, Finset.mem_filter, Finset.mem_powerset] at hA hB
+  have hle : (A ∩ B).card ≤ A.card := Finset.card_le_card Finset.inter_subset_left
+  omega
+
+/--
+**Exact cardinality of the small-sets family: `∑_{k<r} C(n,k)`.**
+Partitioning `{A ⊆ [n] : |A| < r}` by exact size `k ∈ {0,…,r−1}` gives a disjoint
+union of the `powersetCard k` layers of `[n]`, each of size `C(n,k)`. -/
+theorem smallSetsFamily_card (n r : ℕ) :
+    (smallSetsFamily n r).card = ∑ k ∈ Finset.range r, n.choose k := by
+  have hbi : smallSetsFamily n r
+      = (Finset.range r).biUnion (fun k => (Finset.range n).powersetCard k) := by
+    ext A
+    simp only [smallSetsFamily, Finset.mem_filter, Finset.mem_powerset, Finset.mem_biUnion,
+      Finset.mem_range, Finset.mem_powersetCard]
+    constructor
+    · rintro ⟨hsub, hlt⟩
+      exact ⟨A.card, hlt, hsub, rfl⟩
+    · rintro ⟨k, hk, hsub, hcard⟩
+      exact ⟨hsub, by omega⟩
+  have hdisj : (↑(Finset.range r) : Set ℕ).PairwiseDisjoint
+      (fun k => (Finset.range n).powersetCard k) := by
+    intro i _ j _ hij
+    apply Finset.disjoint_left.mpr
+    intro A hAi hAj
+    rw [Finset.mem_powersetCard] at hAi hAj
+    apply hij
+    rw [← hAi.2, hAj.2]
+  rw [hbi, Finset.card_biUnion hdisj]
+  apply Finset.sum_congr rfl
+  intro k _
+  rw [Finset.card_powersetCard, Finset.card_range]
+
+/--
+**Polynomial lower bound `T(n,r) ≥ ∑_{k<r} C(n,k)`.**
+The small-sets family is a valid `r`-avoiding subfamily of `2^{[n]}`, so its exact
+binomial-sum cardinality bounds `T(n,r)` from below. Unlike the exponential-order
+large-set constructions this bound is fully explicit and holds for every `n, r`. -/
+theorem sum_choose_le_T (n r : ℕ) : (∑ k ∈ Finset.range r, n.choose k) ≤ T n r := by
+  rw [← smallSetsFamily_card n r]
+  have hmem : smallSetsFamily n r ∈
+      ((Finset.range n).powerset.powerset).filter (avoidsRIntersection r) := by
+    rw [Finset.mem_filter]
+    exact ⟨Finset.mem_powerset.mpr (Finset.filter_subset _ _), smallSetsFamily_avoids_r n r⟩
+  exact Finset.le_sup hmem
+
+/--
+**`T(n,2) ≥ n + 1`.** Specialising `sum_choose_le_T` at `r = 2`:
+`∑_{k<2} C(n,k) = C(n,0) + C(n,1) = 1 + n`. This is a certified *polynomial* lower
+bound on the `r = 2` line — the smallest forbidden size in the middle range that the
+Frankl–Rödl question actually concerns (`r ≥ 2`) — complementing the exact boundary
+values `T(n,0) = 2^{n-1}`, `T(n,n) = 2^n − 1`, and `T(n,r) = 2^n` for `n < r`. -/
+theorem n_add_one_le_T_n_2 (n : ℕ) : n + 1 ≤ T n 2 := by
+  have h := sum_choose_le_T n 2
+  simp only [Finset.sum_range_succ, Finset.sum_range_zero, Nat.choose_zero_right,
+    Nat.choose_one_right] at h
+  omega
+
+/-
 ## Part IV.b: Structural Properties of `T`
 
 Elementary structural facts about the extremal function `T(n,r)` that hold for
