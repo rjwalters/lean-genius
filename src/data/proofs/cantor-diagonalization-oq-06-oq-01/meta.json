@@ -51,13 +51,15 @@
       "diagonalReal f := ∑' n, (db f n)/10^(n+1): the explicit, definable diagonal real witness",
       "digit_diagonalReal: the crux lemma digit (diagonalReal f) n = db f n, proved by a head/tail split with an integer head and a geometric tail 0 ≤ T ≤ 2/9 < 1",
       "diagonalReal_ne: diagonalReal f ≠ f n for every n, by direct digit disagreement",
-      "not_surjective_nat_real / not_exists_surjective_nat_real: Cantor's theorem in enumeration form, witnessed constructively rather than via cardinality"
+      "not_surjective_nat_real / not_exists_surjective_nat_real: Cantor's theorem in enumeration form, witnessed constructively rather than via cardinality",
+      "uncountable_real: ℝ is uncountable (Uncountable instance), derived purely from the explicit diagonalReal witness via exists_surjective_nat — NO appeal to Cardinal.not_countable_real",
+      "not_surjective_of_countable: no countable type α surjects onto ℝ (the general form of uncountability), obtained by composing an α-surjection ℕ→α with the diagonal argument"
     ],
     "dateAdded": "2026-07-11",
-    "lineCount": 209,
+    "lineCount": 239,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries; #print axioms reports only [propext, Classical.choice, Quot.sound]. No use of Cardinal.not_countable_real.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 14,
+    "theoremCount": 16,
     "definitionCount": 4
   },
   "overview": {
