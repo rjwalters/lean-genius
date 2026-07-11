@@ -143,6 +143,21 @@
       "targetId": "pac-learning-bounds",
       "relationship": "extends",
       "description": "Replaces the parent's placeholder growthFunction := 0 with proper trace/shattering definitions and proves genuine VC-dimension foundations, advancing its open question on formalizing the learning-theoretic notions as real Lean types."
+    },
+    {
+      "targetId": "binomial-theorem",
+      "relationship": "foundational",
+      "description": "The growth ceiling |Π_H(S)| ≤ 2^|S| proved here (trace_card_le_pow) is exactly the total subset count ∑_{k=0}^{|S|} C(|S|,k) = 2^|S| — the coefficient-sum identity that entry derives from the Binomial Theorem. The powerset that bounds the trace is the disjoint union of the C(|S|,k)-sized layers the binomial coefficients count."
+    },
+    {
+      "targetId": "combinations-formula",
+      "relationship": "foundational",
+      "description": "The binomial coefficient C(n,k) counting k-element subsets is the elementary object behind the open Sauer–Shelah question: |Π_H(S)| ≤ Σ_{i≤d} C(|S|,i) refines the 2^|S| bound proved here to a polynomial in the VC dimension d. This entry establishes the trivial C(|S|,·)-summed ceiling; the sub-2^|S| improvement is the deeper result that formula supplies the counting for."
+    },
+    {
+      "targetId": "lovasz-local-lemma",
+      "relationship": "thematic",
+      "description": "A companion pillar of probabilistic combinatorics. VC dimension controls uniform convergence and PAC sample complexity — the analytic payoff of the |S| ≤ log₂|H| bound proved here — while the Lovász Local Lemma supplies existence guarantees under sparse dependence; both are core tools of the extremal/probabilistic method underlying learning theory."
     }
   ],
   "references": [
