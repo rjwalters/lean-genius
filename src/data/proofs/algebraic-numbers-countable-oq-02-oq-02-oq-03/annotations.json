@@ -2,7 +2,10 @@
   {
     "id": "ann-algcount-oq020203-01",
     "proofId": "algebraic-numbers-countable-oq-02-oq-02-oq-03",
-    "range": { "startLine": 1, "endLine": 56 },
+    "range": {
+      "startLine": 1,
+      "endLine": 56
+    },
     "type": "concept",
     "title": "The Right Generality: Uncountability is Topological, not Arithmetic",
     "content": "The sibling entries prove ℝ uncountable using features of the real line (nested intervals, the diagonal argument, cardinal arithmetic on 2^ℵ₀). This file asks what those proofs are really about. The answer belongs to topology: any nonempty complete metric space with no isolated points — a perfect space — is uncountable. ℝ inherits uncountability only because it is complete, connected, and has more than one point. The general theorem never mentions the order or field structure of ℝ; the real line appears only in the final one-line application `real_uncountable`.",
@@ -23,7 +26,10 @@
   {
     "id": "ann-algcount-oq020203-02",
     "proofId": "algebraic-numbers-countable-oq-02-oq-02-oq-03",
-    "range": { "startLine": 58, "endLine": 66 },
+    "range": {
+      "startLine": 58,
+      "endLine": 66
+    },
     "type": "theorem",
     "title": "The Cantor Space ℕ → Bool Has Cardinality 𝔠",
     "content": "`card_nat_bool` computes #(ℕ → Bool) = 𝔠 by rewriting through Mathlib's cardinal-arithmetic lemmas: mk_arrow reduces the function space to #Bool ^ #ℕ, mk_bool and mk_nat give 2 and ℵ₀, the lift lemmas normalize universes, and two_power_aleph0 collapses 2^ℵ₀ to 𝔠. `nat_bool_uncountable` then converts this cardinal equation into the `Uncountable (ℕ → Bool)` typeclass instance via aleph0_lt_mk_iff and aleph0_lt_continuum. The Cantor space is the universal uncountable witness that the rest of the proof injects into its target.",
@@ -42,7 +48,10 @@
   {
     "id": "ann-algcount-oq020203-03",
     "proofId": "algebraic-numbers-countable-oq-02-oq-02-oq-03",
-    "range": { "startLine": 68, "endLine": 80 },
+    "range": {
+      "startLine": 68,
+      "endLine": 80
+    },
     "type": "theorem",
     "title": "Core Theorem: Nonempty Perfect Sets are Uncountable",
     "content": "`perfect_nonempty_uncountable` is the mathematical heart. Mathlib's `Perfect.exists_nat_bool_injection` supplies a continuous injection f : (ℕ → Bool) → X whose range lies inside the perfect set C — this is the Cantor scheme, which recursively splits C into two disjoint nonempty perfect pieces of shrinking diameter and reads off the unique nested-intersection point for each binary address. Because the domain ℕ → Bool is uncountable, the codomain of any injection out of it is uncountable too. The one subtlety is landing in the subtype: f maps into X, so it is lifted to g : (ℕ → Bool) → ↥C using the range hypothesis, and `Function.Injective.uncountable` yields `Uncountable ↥C`.",
@@ -62,7 +71,10 @@
   {
     "id": "ann-algcount-oq020203-04",
     "proofId": "algebraic-numbers-countable-oq-02-oq-02-oq-03",
-    "range": { "startLine": 81, "endLine": 88 },
+    "range": {
+      "startLine": 81,
+      "endLine": 88
+    },
     "type": "theorem",
     "title": "Main Theorem: Perfect Complete Metric Spaces are Uncountable",
     "content": "`perfectSpace_uncountable` promotes the core set-level result to the whole space. It specializes C := univ, whose perfectness is exactly the `PerfectSpace` typeclass repackaged by `PerfectSpace.univ_perfect`, and univ is nonempty from the `Nonempty X` instance. The core theorem then hands back `Uncountable ↥(univ)`, which is definitionally `Uncountable X`. The proof is four lines: register the Cantor space's uncountability, extract the injection out of `(PerfectSpace.univ_perfect).exists_nat_bool_injection Set.univ_nonempty`, and close with `hinj.uncountable`. This is the headline statement of the entry — the point at which 'no isolated points' becomes 'uncountable' with no mention of ℝ.",
@@ -82,7 +94,10 @@
   {
     "id": "ann-algcount-oq020203-05",
     "proofId": "algebraic-numbers-countable-oq-02-oq-02-oq-03",
-    "range": { "startLine": 89, "endLine": 103 },
+    "range": {
+      "startLine": 90,
+      "endLine": 103
+    },
     "type": "theorem",
     "title": "Connected Corollary and ℝ Recovered in One Line",
     "content": "The two payoff results need no new mathematics. `uncountable_of_connected` is literally `perfectSpace_uncountable` with a different hypothesis bundle: Mathlib supplies the instance that a connected `T1` space with at least two distinct points has no isolated points (an isolated point would be clopen, splitting the space), so `[ConnectedSpace X] [Nontrivial X]` already synthesizes `[PerfectSpace X]` and the corollary is a bare term-mode reference to the main theorem. `real_uncountable` is then a one-liner: ℝ is a complete, connected, nontrivial metric space, so all instances fire and `uncountable_of_connected` closes it — recovering the classical theorem of the sibling entries with no property of the real line beyond these three used anywhere.",
