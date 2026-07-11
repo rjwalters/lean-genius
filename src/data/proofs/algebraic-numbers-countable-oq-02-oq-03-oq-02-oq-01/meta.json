@@ -142,6 +142,21 @@
       "targetId": "algebraic-numbers-countable-oq-02-oq-03-oq-02",
       "relationship": "extends",
       "description": "Parent: proves the concrete ℝ dichotomy (algebraic reals Fσ-not-Gδ, transcendentals dense Gδ). This entry abstracts the Baire-category engine of the 'not Gδ' half to arbitrary perfect T1 Baire spaces and recovers ℚ ⊆ ℝ as a corollary."
+    },
+    {
+      "targetId": "algebraic-reals-meager-dense-gdelta-oq-01",
+      "relationship": "related",
+      "description": "A concrete instance of the abstract theorem here: the algebraic reals are an explicit Fσ, completing the Gδ/Fσ dichotomy on ℝ. This entry's 'dense countable ⇒ Fσ-but-not-Gδ' specialises to exactly that statement (with density supplied by ℚ ⊆ algebraic reals)."
+    },
+    {
+      "targetId": "algebraic-reals-meager-dense-gdelta",
+      "relationship": "related",
+      "description": "The complement side of the same concrete instance: the transcendental reals as an explicit dense Gδ. Here it is the abstract 'complement of a countable set is a dense Gδ' half, applied to the countable algebraic reals in ℝ."
+    },
+    {
+      "targetId": "baire-category-theorem-oq-01",
+      "relationship": "related",
+      "description": "Foundational input: the BaireSpace hypothesis driving the 'not Gδ' obstruction is the Baire category theorem. That entry establishes it (and derives the uncountability of ℝ); this entry consumes it abstractly via the four typeclass hypotheses (T1, perfect, Baire, nonempty)."
     }
   ],
   "references": [
