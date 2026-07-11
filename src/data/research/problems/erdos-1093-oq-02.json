@@ -4,7 +4,7 @@
   "phase": "ACT",
   "status": "in-progress",
   "started": "2026-07-08T00:00:00.000Z",
-  "lastUpdate": "2026-07-09",
+  "lastUpdate": "2026-07-11",
   "path": "full",
   "parentId": "erdos-1093",
   "tier": "C",
@@ -34,17 +34,17 @@
     {
       "path": "Proofs/Erdos1093ProblemOQ02.lean",
       "filename": "Erdos1093ProblemOQ02.lean",
-      "lineCount": 1591,
-      "theoremCount": 77,
+      "lineCount": 2179,
+      "theoremCount": 83,
       "axiomCount": 0,
       "defCount": 2,
-      "sorryCount": 1,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1093ProblemOQ02.lean"
     }
   ],
   "knowledge": {
-    "progressSummary": "PROGRESS (VERIFIED axiom-free, local lean): added the factorial-growth meta-theorem exists_factorial_add_le_sq establishing that the sharp bound (k+D)!≤(k!)² holds for all fixed D (k≥3D) — hence the sharp bound alone cannot certify a finite maximal deficiency. Structural k-slice engine + this negative meta-result now bracket the problem; only genuinely analytic ELS density input remains open.",
+    "progressSummary": "PROGRESS (VERIFIED 0-sorry, single-file lean elab; PR #37514): the ELS-free location-bound sweep now closes every slice k<=26. Section XXVII adds k=26 (deficiency>=10 forces (n-25)^10<=26!<458^10 => n<=482; the finite window n in {52..482} is uniformly inadmissible via 2|C(n,26) OR 3|C(n,26) OR 5|C(n,26)), advancing the elementary open frontier from k>=26 to k>=27 (maximalDeficiencyIs_nine_iff_kGe27). The (k!)^2 factorial method is provably powerless for all k>=16 (sharp_bound_permits_deficiency_ten), so each further slice needs one location-bound section: pick M=ceil((k!)^(1/10)), pin k!<M^10 by kernel decide, then certify 2k<=n<=k+M-2 inadmissible via a small-prime disjunction (interval_cases <;> native_decide). Only genuinely analytic short-interval smooth-count (Dickman/ELS) input remains for the k->infinity tail.",
     "builtItems": [
       "noSmallPrimeFactors_iff (Erdos1093ProblemOQ02.lean) — decidable reduction of the admissibility side-condition (unbounded ∀ prime) to a bounded check over primes p ≤ k; ofReduceBool-free.",
       "noSmallPrimeFactors_284_28 — the record pair (284,28) is admissible: no prime ≤ 28 divides C(284,28) (parent verified only the count = 9, never admissibility).",
@@ -79,7 +79,8 @@
       "not_admissible_k21_of_range / deficiency_le_nine_of_k_eq_21 / deficiency_le_nine_of_k_le_21",
       "maximalDeficiencyIs_nine_iff_kGe22: reduces open content of OQ-02 to k>=22",
       "deficiency_le_of_sq_factorial_lt (Erdos1093ProblemOQ02.lean:753): uniform transfer principle — for all k, (k!)²<(k+D+1)! ⟹ deficiency n k ≤ D; subsumes the infinite family of per-k sharp ceilings into one theorem. deficiency_record_le_18 refactored to a 1-line corollary (k=28,D=18).",
-      "Erdos1093OQ02FactorialGrowth.lean: exists_factorial_add_le_sq — ∀ D, ∃ k₀, ∀ k≥k₀, (k+D)!≤(k!)² (any k₀=3D works); elementary chain via factorial_mul_ascFactorial + factorial_mul_pow_le_factorial + two_pow_le_succ_factorial helper. VERIFIED axiom-free (local lean v4.26.0, exit 0, deps: propext/Classical.choice/Quot.sound only)."
+      "Erdos1093OQ02FactorialGrowth.lean: exists_factorial_add_le_sq — ∀ D, ∃ k₀, ∀ k≥k₀, (k+D)!≤(k!)² (any k₀=3D works); elementary chain via factorial_mul_ascFactorial + factorial_mul_pow_le_factorial + two_pow_le_succ_factorial helper. VERIFIED axiom-free (local lean v4.26.0, exit 0, deps: propext/Classical.choice/Quot.sound only).",
+      "Section XXVII (researcher-3, 2026-07-11): location bound CLOSES k=26, frontier k>=26 -> k>=27. factorial_26_lt_458_pow_ten (26!=403291461126605635584000000 < 458^10, kernel decide, ofReduceBool-free); smallPrime_dvd_choose_26_of_range (three-prime disjunction 2|C(n,26) OR 3|C(n,26) OR 5|C(n,26) over 52<=n<=482 — 2 on evens, 3 on all odds but n=350, 5 on that lone exception; interval_cases n <;> native_decide); not_admissible_k26_of_range / deficiency_le_nine_of_k_eq_26 / deficiency_le_nine_of_k_le_26 (elementary OQ-02 now covers all k<=26) / maximalDeficiencyIs_nine_iff_kGe27. 6 theorems, 0 sorry, 0 new axiom decls; native_decide=>Lean.ofReduceBool only on the divisibility fact. VERIFIED 0-sorry via single-file lean elab against prebuilt Mathlib oleans (PR #37514)."
     ],
     "insights": [
       "The parent's deficiency_284_28 = 9 alone does NOT exhibit a valid deficiency example: the deficiency count is defined unconditionally, but the ELS problem requires C(n,k) to have no prime factor ≤ k. Checking admissibility only needs primes ≤ k (Kummer is unnecessary): C(284,28) is a ~110-bit bignum, so native_decide computes it and tests divisibility by primes ≤ 28 instantly.",
