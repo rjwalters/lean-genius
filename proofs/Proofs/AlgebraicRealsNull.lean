@@ -3,6 +3,7 @@ import Mathlib.MeasureTheory.Measure.Lebesgue.Complex
 import Mathlib.MeasureTheory.Measure.Haar.NormedSpace
 import Mathlib.MeasureTheory.Measure.Typeclasses.NoAtoms
 import Mathlib.Topology.MetricSpace.HausdorffDimension
+import Mathlib.Topology.MetricSpace.Perfect
 import Mathlib.Analysis.Real.Cardinality
 import Mathlib.Tactic
 import Proofs.AlgebraicNumbersCountable
@@ -434,5 +435,53 @@ theorem exists_transcendental_of_pos_measure_noAtoms_complex {μ : Measure ℂ} 
   have hz : μ s = 0 := measure_mono_null hsub (algebraic_complex_null_of_noAtoms μ)
   rw [hz] at hs
   exact lt_irrefl 0 hs
+
+/-!
+## Cantor–Bendixson: the algebraic reals have an empty perfect kernel
+
+Alongside the measure-, category-, and cardinality-smallness above sits a fourth,
+order-topological, notion from descriptive set theory. The **Cantor–Bendixson kernel**
+of a set is what remains after transfinitely iterating the removal of isolated points;
+for a *countable* closed set it is empty. The engine is the fact that a nonempty perfect
+set in a complete metric space is uncountable — it admits a continuous injection from
+Cantor space `ℕ → Bool`, whose cardinality is the continuum `𝔠 = 2 ^ ℵ₀ > ℵ₀`
+(`Perfect.exists_nat_bool_injection`). Hence the countable algebraic reals — and complex
+algebraic numbers — contain no nonempty perfect subset, so their Cantor–Bendixson
+derivative process terminates at `∅`.
+-/
+
+/-- A nonempty `Perfect` set in a complete metric space is uncountable: it admits a
+continuous injection from Cantor space `ℕ → Bool` (`Perfect.exists_nat_bool_injection`),
+whose cardinality is the continuum `2 ^ ℵ₀ > ℵ₀`. -/
+theorem perfect_not_countable {α : Type*} [MetricSpace α] [CompleteSpace α]
+    {C : Set α} (hC : Perfect C) (hne : C.Nonempty) : ¬ C.Countable := by
+  obtain ⟨f, hrange, -, hinj⟩ := hC.exists_nat_bool_injection hne
+  intro hcount
+  have hrc : (Set.range f).Countable := hcount.mono hrange
+  have hcb : Countable (ℕ → Bool) :=
+    (Equiv.ofInjective f hinj).countable_iff.mpr hrc.to_subtype
+  have hle : #(ℕ → Bool) ≤ ℵ₀ := Cardinal.mk_le_aleph0
+  have hlt : ℵ₀ < #(ℕ → Bool) := by
+    calc ℵ₀ < 2 ^ ℵ₀ := by exact_mod_cast Cardinal.cantor ℵ₀
+      _ = #(ℕ → Bool) := by rw [Cardinal.mk_arrow]; simp
+  exact absurd hle (not_le.mpr hlt)
+
+/-- **The Cantor–Bendixson kernel of the algebraic reals is empty.** Since the algebraic
+reals are countable (`AlgebraicNumbersCountable.algebraic_reals_countable`) they contain
+no nonempty perfect subset: any `Perfect P` with `P ⊆ {x | IsAlgebraic ℚ x}` is `∅`. -/
+theorem algebraic_reals_no_perfect_subset {P : Set ℝ}
+    (hP : Perfect P) (hsub : P ⊆ {x : ℝ | IsAlgebraic ℚ x}) : P = ∅ := by
+  by_contra hne
+  exact perfect_not_countable hP (Set.nonempty_iff_ne_empty.mpr hne)
+    (AlgebraicNumbersCountable.algebraic_reals_countable.mono hsub)
+
+/-- **The Cantor–Bendixson kernel of the complex algebraic numbers is empty.** The
+complex analogue of `algebraic_reals_no_perfect_subset`: the countable set
+`{z : ℂ | IsAlgebraic ℚ z}` contains no nonempty perfect subset. -/
+theorem algebraic_complex_no_perfect_subset {P : Set ℂ}
+    (hP : Perfect P) (hsub : P ⊆ {z : ℂ | IsAlgebraic ℚ z}) : P = ∅ := by
+  by_contra hne
+  exact perfect_not_countable hP (Set.nonempty_iff_ne_empty.mpr hne)
+    (AlgebraicNumbersCountable.algebraic_complex_countable.mono hsub)
 
 end AlgebraicRealsNull
