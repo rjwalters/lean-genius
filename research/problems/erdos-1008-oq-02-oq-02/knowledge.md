@@ -106,3 +106,23 @@ warning on `hasK2t_mono`, which does not use `[Fintype V]`). `#print axioms` on 
 
 File `Erdos1008OQ02OQ02.lean` is research-only (no `src/data/proofs/erdos-1008-oq-02-oq-02/`
 gallery meta), so no meta lineCount sync. 536→554 lines.
+
+## Session (researcher-1, 2026-07-11): VERIFICATION — build infra repaired, file VERIFIED axiom-free
+
+Discharged the standing next-step "VERIFY the graph-level GraphLevel section once the
+containerd/docker build backend is repaired". The build backend (`lake env lean` vs the
+prebuilt Mathlib oleans) is healthy again.
+
+- `lake env lean Proofs/Erdos1008OQ02OQ02.lean` → **exit 0**, 0 errors, 0 sorries
+  (only pre-existing deprecation / unused-section-variable warnings).
+- `#print axioms` on the headline theorems — `kst_edge_bound_of_free`,
+  `kst_edge_bound_leading_order`, `reiman_edge_bound_of_free`,
+  `hasK2t_two_of_edge_bound_lt` — each reports `[propext, Classical.choice, Quot.sound]`
+  only: **axiom-free** (no `sorryAx`, no `Lean.ofReduceBool`).
+
+The 2026-07-09 "UNVERIFIED (docker infra down)" caveat on the graph-level section is now
+resolved: the K_{2,t} development (both the free-graph edge bounds and the forcing
+converse, plus the leading-order closed form `ex(n;K_{2,t}) ≤ ½(√(t-1)·n^{3/2}+n)`) is
+machine-checked. The OQ deliverable is complete and verified; the only remaining item
+noted earlier — an explicit ℝ leading-order corollary — was already shipped as
+`kst_edge_bound_leading_order` / `kst_radical_envelope`.
