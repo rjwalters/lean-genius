@@ -604,4 +604,79 @@ theorem sublevelInf_lt_sublevelSup : sublevelInf < sublevelSup := by
     rw [ENNReal.ofReal_pos]; positivity
   exact lt_of_lt_of_le hpos le_sublevelSup
 
+/-! ### An elementary finite upper bound: `sublevelSup' ≤ 4`
+
+The *sharp* upper bound `sublevelSup' = 2√2` is Tao's 2025 theorem and needs
+logarithmic potential theory absent from Mathlib.  A **non-tight but honest and fully
+elementary** upper bound is nonetheless available and pins the faithful supremum inside a
+concrete finite interval `[2√2, 4]`, so the extremal quantity is provably finite.
+
+The mechanism is purely geometric.  For faithfully admissible `f` (monic, split, all
+roots real in `[-1,1]`) we have `f = ∏_{r ∈ roots} (X − r)`, so for `|x| ≥ 2` every factor
+satisfies `|x − r| ≥ |x| − |r| ≥ 2 − 1 = 1`; the product of such factors has absolute value
+`≥ 1`, hence `x ∉ {|f| < 1}`.  Therefore `sublevelSet f ⊆ (−2, 2)` and
+`sublevelMeasure f ≤ vol(−2, 2) = 4`, uniformly in `f`. -/
+
+/-- Absolute value distributes over a multiset product of reals. -/
+theorem abs_multiset_prod (s : Multiset ℝ) :
+    |s.prod| = (s.map (fun t => |t|)).prod := by
+  refine Multiset.induction (by simp) (fun a s ih => ?_) s
+  simp [Multiset.prod_cons, abs_mul, ih]
+
+/-- **Outside `[−2, 2]` a faithfully admissible polynomial has `|f| ≥ 1`.**  Writing
+`f = ∏_{r} (X − r)` over its (real, `[-1,1]`) roots, each factor obeys
+`|x − r| ≥ |x| − |r| ≥ 2 − 1 = 1` when `|x| ≥ 2`, so the product has absolute value `≥ 1`. -/
+theorem one_le_abs_eval_of_ge_two {f : Polynomial ℝ} (hf : MonicRealRootedIn01' f)
+    {x : ℝ} (hx : 2 ≤ |x|) : 1 ≤ |f.eval x| := by
+  have hrep : (f.roots.map fun a => X - C a).prod = f :=
+    prod_multiset_X_sub_C_of_monic_of_roots_card_eq hf.1.1 hf.2
+  have heval : f.eval x = (f.roots.map (fun r => x - r)).prod := by
+    conv_lhs => rw [← hrep]
+    rw [eval_multiset_prod, Multiset.map_map]
+    exact congrArg _ (Multiset.map_congr rfl (fun r _ => by simp))
+  rw [heval, abs_multiset_prod, Multiset.map_map]
+  refine Multiset.one_le_prod (fun a ha => ?_)
+  simp only [Multiset.mem_map, Function.comp_apply] at ha
+  obtain ⟨r, hr, rfl⟩ := ha
+  have hr1 : r ∈ Set.Icc (-1 : ℝ) 1 := hf.1.2 r hr
+  have hrle : |r| ≤ 1 := abs_le.mpr ⟨hr1.1, hr1.2⟩
+  have hsub : |x| - |r| ≤ |x - r| := by
+    have := abs_sub_abs_le_abs_sub x r; linarith [abs_nonneg (x - r)]
+  linarith
+
+/-- **The faithful sublevel set is confined to `(−2, 2)`.** -/
+theorem sublevelSet_subset_Ioo {f : Polynomial ℝ} (hf : MonicRealRootedIn01' f) :
+    sublevelSet f ⊆ Set.Ioo (-2 : ℝ) 2 := by
+  intro x hx
+  simp only [sublevelSet, Set.mem_setOf_eq] at hx
+  by_contra hcon
+  have hxge : 2 ≤ |x| := by
+    rw [Set.mem_Ioo, not_and_or] at hcon
+    rcases hcon with h | h
+    · rw [not_lt] at h; rw [abs_of_nonpos (by linarith)]; linarith
+    · rw [not_lt] at h; rw [abs_of_nonneg (by linarith)]; linarith
+  exact absurd hx (not_lt.mpr (one_le_abs_eval_of_ge_two hf hxge))
+
+/-- **Uniform bound `sublevelMeasure f ≤ 4`** for every faithfully admissible `f`,
+    from `sublevelSet f ⊆ (−2, 2)` and `vol(−2, 2) = 4`. -/
+theorem sublevelMeasure_le_four {f : Polynomial ℝ} (hf : MonicRealRootedIn01' f) :
+    sublevelMeasure f ≤ ENNReal.ofReal 4 := by
+  have h : sublevelMeasure f ≤ volume (Set.Ioo (-2 : ℝ) 2) :=
+    measure_mono (sublevelSet_subset_Ioo hf)
+  rwa [Real.volume_Ioo, show (2 : ℝ) - (-2) = 4 by norm_num] at h
+
+/-- **`sublevelSup' ≤ 4`.**  The elementary, machine-checked upper bound on the faithful
+    supremum, complementing the lower bound `le_sublevelSup'` (`2√2 ≤ sublevelSup'`).
+    Together they confine `sublevelSup' ∈ [2√2, 4]` with no potential theory; Tao's sharp
+    `= 2√2` sits inside this interval and remains beyond Mathlib. -/
+theorem sublevelSup'_le_four : sublevelSup' ≤ ENNReal.ofReal 4 :=
+  iSup_le fun f => iSup_le fun hf => sublevelMeasure_le_four hf
+
+/-- **The faithful supremum is sandwiched: `2√2 ≤ sublevelSup' ≤ 4`.**  A fully elementary,
+    axiom-free localisation of the open Erdős #1038 extremal constant to a concrete finite
+    interval. -/
+theorem sublevelSup'_mem_Icc :
+    ENNReal.ofReal (2 * Real.sqrt 2) ≤ sublevelSup' ∧ sublevelSup' ≤ ENNReal.ofReal 4 :=
+  ⟨le_sublevelSup', sublevelSup'_le_four⟩
+
 end Erdos1038WIP01
