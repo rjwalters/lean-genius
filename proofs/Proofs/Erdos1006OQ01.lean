@@ -620,6 +620,49 @@ theorem closedWalk_girth_formulation_unsound (g : ℕ) (hg : g ≥ 3) :
     · rw [hlen] at h0; exact absurd h0 (by norm_num)
     · rw [hlen] at hge; omega
 
+/-- **Robustly orientable graphs are triangle-free, in Mathlib's `CliqueFree 3`
+    vocabulary (no axiom).** If `G` admits a robustly acyclic orientation then it
+    contains no 3-clique: `G.CliqueFree 3`. This restates the bespoke obstruction
+    `triangle_not_robust'` in terms of Mathlib's standard clique API
+    (`SimpleGraph.CliqueFree`), so the triangle-freeness of cover graphs can be
+    chained with the library's clique/chromatic/girth machinery. A 3-clique is
+    exactly three mutually adjacent vertices, which `triangle_not_robust'`
+    forbids. -/
+theorem robust_cliqueFree_three (h : admitsRobustAcyclicOrientation G) :
+    G.CliqueFree 3 := by
+  classical
+  intro t ht
+  obtain ⟨a, b, c, hab, hac, hbc, rfl⟩ := Finset.card_eq_three.mp ht.card_eq
+  have hcl := ht.isClique
+  have ha : a ∈ (↑({a, b, c} : Finset V) : Set V) := by simp
+  have hb : b ∈ (↑({a, b, c} : Finset V) : Set V) := by simp
+  have hc : c ∈ (↑({a, b, c} : Finset V) : Set V) := by simp
+  exact triangle_not_robust' (hcl ha hb hab) (hcl hb hc hbc) (hcl ha hc hac) h
+
+/-- **Cover graphs (Hasse diagrams) are triangle-free, in Mathlib's `CliqueFree
+    3` vocabulary (no axiom).** The poset-facing form of `robust_cliqueFree_three`
+    via `cover_graph_characterization`: the Hasse diagram of any partial order on
+    a finite set contains no 3-clique. This is the classical necessary condition
+    for cover graphs, phrased in the standard library predicate. -/
+theorem isCoverGraph_cliqueFree_three [Fintype V] (h : isCoverGraph G) :
+    G.CliqueFree 3 :=
+  robust_cliqueFree_three (cover_graph_characterization.mpr h)
+
+/-- **Complete graphs `Kₙ` with `n ≥ 3` admit no robustly acyclic orientation
+    (no axiom).** Generalises `triangle_not_robust` (the case `V = Fin 3`) to the
+    complete graph on any finite type with at least three vertices: pick three
+    distinct vertices — mutually adjacent in `⊤` — and apply the triangle
+    obstruction. Via `cover_graph_characterization`, no `Kₙ` (`n ≥ 3`) is the
+    Hasse diagram of a poset. -/
+theorem top_not_robust [Fintype V] (h : 3 ≤ Fintype.card V) :
+    ¬ admitsRobustAcyclicOrientation (⊤ : SimpleGraph V) := by
+  classical
+  obtain ⟨t, -, hcard⟩ := Finset.exists_subset_card_eq
+    (show 3 ≤ (Finset.univ : Finset V).card by rw [Finset.card_univ]; exact h)
+  obtain ⟨a, b, c, hab, hac, hbc, rfl⟩ := Finset.card_eq_three.mp hcard
+  exact triangle_not_robust'
+    ((top_adj a b).mpr hab) ((top_adj b c).mpr hbc) ((top_adj a c).mpr hac)
+
 /-- Fisher-Fraughnaugh-Langley-West (1997): if the chromatic number of `G` is
     less than its girth, then `G` admits a robustly acyclic orientation. Girth
     is measured by `SimpleGraph.egirth` (shortest *cycle*, `⊤` if acyclic); the
