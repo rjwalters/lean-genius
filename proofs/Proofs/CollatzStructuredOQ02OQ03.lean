@@ -2136,4 +2136,95 @@ theorem affOrbit_realize_of_interior {v : List Bool} {c d : ℕ} (hv : AffValid 
   have h := affOrbit_realize_interior hv m v.length (le_refl _)
   rwa [List.take_length] at h
 
+/-! ## Part X: Certificate composition — chaining and slicing certified windows
+
+Every prior part treats a certificate `AffValid v c d` as a single monolithic window.
+But windows should *compose*: running the class `c·m + d` through window `v` lands it in
+the class `c'·m + d'` with `(c', d') = affOrbit v (c, d)`, and if a second certificate
+`w` is valid there, the two windows join into one valid certificate `v ++ w` for the
+original class.  The lemmas below establish this monoid-like structure on certified
+windows and its slicing converse:
+
+* `affOrbit_append` / `leadCoeff_append` — the affine fold and its leading coefficient
+  are *functorial* under concatenation: folding `v ++ w` is folding `w` after `v`.
+* `affValid_append` — validity is preserved by concatenation, provided the second
+  window is valid **at the affine class the first one produces**.  This is the
+  composition law: a long certified window is a chain of short ones.
+* `affValid_take` — validity is inherited by every prefix (the slicing converse),
+  the certificate-level companion of Part IX's interior realization.
+* `affOrbit_realize_append` — the payoff: the concatenated window realizes the composed
+  affine map over the summed step count, so drop certificates literally chain.
+
+Everything is axiom-free and structural, matching the rest of the engine. -/
+
+/-- **Affine fold is functorial under concatenation.**  Folding a coefficient pair along
+`v ++ w` is the same as folding along `v` and then along `w` from the result — the affine
+maps of the two windows compose. -/
+theorem affOrbit_append (v w : List Bool) (p : ℕ × ℕ) :
+    affOrbit (v ++ w) p = affOrbit w (affOrbit v p) := by
+  induction v generalizing p with
+  | nil => rfl
+  | cons b v ih =>
+    show affOrbit (v ++ w) (affStep b p) = affOrbit w (affOrbit v (affStep b p))
+    exact ih (affStep b p)
+
+/-- **Leading coefficient is multiplicative under concatenation.**  The Terras leading
+coefficient of a joined window is the second window's coefficient evolution applied to the
+first's — the value-level shadow of `affOrbit_append` on the first component. -/
+theorem leadCoeff_append (v w : List Bool) (c : ℕ) :
+    leadCoeff (v ++ w) c = leadCoeff w (leadCoeff v c) := by
+  induction v generalizing c with
+  | nil => rfl
+  | cons b v ih => cases b <;> exact ih _
+
+/-- **Composition law for certificates.**  If `v` is a valid parity certificate for the
+affine class `c·m + d`, and `w` is a valid certificate for the class produced by running
+`v` — namely `(affOrbit v (c, d)).1 · m + (affOrbit v (c, d)).2` — then the concatenated
+window `v ++ w` is a valid certificate for the original class.  Certified windows compose:
+a long window is a chain of short ones glued at their affine hand-off points. -/
+theorem affValid_append : ∀ {v : List Bool} {c d : ℕ}, AffValid v c d →
+    ∀ {w : List Bool},
+      AffValid w (affOrbit v (c, d)).1 (affOrbit v (c, d)).2 →
+      AffValid (v ++ w) c d := by
+  intro v c d hv
+  induction hv with
+  | nil => intro w hw; simpa using hw
+  | @odd v c d hc hd _ ih => intro w hw; exact AffValid.odd hc hd (ih hw)
+  | @even v c d hc hd _ ih => intro w hw; exact AffValid.even hc hd (ih hw)
+
+/-- **Prefixes of a valid certificate are valid.**  Truncating a certified window `v` to
+any prefix length `i` yields a certificate `v.take i` valid for the *same* starting class
+`c·m + d`.  This is the certificate-level converse of `affValid_append` (slicing rather
+than gluing) and the structural companion of `affOrbit_realize_interior`: not only is the
+interior value affine, the interior window is itself a bona fide certificate. -/
+theorem affValid_take : ∀ {v : List Bool} {c d : ℕ}, AffValid v c d →
+    ∀ i : ℕ, AffValid (v.take i) c d := by
+  intro v c d hv
+  induction hv with
+  | nil => intro i; rw [List.take_nil]; exact AffValid.nil
+  | @odd v c d hc hd _ ih =>
+    intro i
+    cases i with
+    | zero => exact AffValid.nil
+    | succ j => exact AffValid.odd hc hd (ih j)
+  | @even v c d hc hd _ ih =>
+    intro i
+    cases i with
+    | zero => exact AffValid.nil
+    | succ j => exact AffValid.even hc hd (ih j)
+
+/-- **Chained realization — the composition payoff.**  Two certified windows `v` then `w`
+(with `w` valid at the class `v` produces) realize the *composed* affine map over the
+summed step count `v.length + w.length`: the Collatz iterate of every member of the
+original class is the coefficient pair obtained by folding `v` and then `w`.  This is the
+value-level statement that residue-drop certificates literally concatenate — the endpoint
+realization `affOrbit_realize` applied to the glued window `affValid_append hv hw`. -/
+theorem affOrbit_realize_append {v w : List Bool} {c d : ℕ} (hv : AffValid v c d)
+    (hw : AffValid w (affOrbit v (c, d)).1 (affOrbit v (c, d)).2) (m : ℕ) :
+    collatz^[v.length + w.length] (c * m + d)
+      = (affOrbit w (affOrbit v (c, d))).1 * m + (affOrbit w (affOrbit v (c, d))).2 := by
+  have h := affOrbit_realize (affValid_append hv hw) m
+  rw [List.length_append, affOrbit_append] at h
+  exact h
+
 end CollatzStructuredOQ02OQ03
