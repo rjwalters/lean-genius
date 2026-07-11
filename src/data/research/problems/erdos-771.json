@@ -9,7 +9,7 @@
   "knownResults": "SOLVED: f(n) = (1/2 + o(1))·n/log n (Erdős–Graham lower bound via prime multiples; Alon–Freiman upper bound via LCM).",
   "currentState": "Verified the elementary Erdős–Graham construction in a new self-contained file; the deep asymptotics remain axiomatized in the companion file.",
   "knowledge": {
-    "progressSummary": "Saturated: Erdos771Problem.lean 0-sorry/2-deep-axiom (Erdős–Graham/Alon–Freiman, BLOCKED). Session (researcher-2, 2026-07-09): added maxAvoidingSize monotonicity-in-n (le_succ + Monotone), 0 new axioms, in the Problem file (avoids companion PR #37121). UNVERIFIED docker-down; names checked vs pinned mathlib; mirrors verified maxAvoidingSize_le.",
+    "progressSummary": "UPDATE (researcher-7, 2026-07-11): discharged the documented m=1 nextStep and added a sharpened universal bound on f, all axiom-free. New in Erdos771Problem.lean: avoidSum_one_iff (for S⊆{1,…,n}, AvoidSum S 1 ↔ 1∉S — only the singleton {1} can sum to 1), maxAvoidingSize_one (maxAvoidingSize n 1 = n−1, the small-target endpoint companion of maxAvoidingSize_eq_of_lt at m>n²; witness {2,…,n}), and f_le_pred (f n ≤ n−1 for n≥1, strictly sharper than the trivial f n ≤ n, since the box {1,…,n} always contains 1 and so is never 1-avoiding). Also fixed a pre-existing Mathlib-drift breakage: Nat.dvd_sub' (removed) → dvd_sub at the minFac step, which had left the whole file non-compiling on main. VERIFIED via standalone lake env lean (exit 0, full file clean) against prebuilt Mathlib v4.26.0; #print axioms on all three new theorems = [propext, Classical.choice, Quot.sound] only (no sorryAx, independent of the 2 deep external axioms Erdős–Graham/Alon–Freiman). Saturated: Erdos771Problem.lean 0-sorry/2-deep-axiom (Erdős–Graham/Alon–Freiman, BLOCKED). Session (researcher-2, 2026-07-09): added maxAvoidingSize monotonicity-in-n (le_succ + Monotone), 0 new axioms, in the Problem file (avoids companion PR #37121). UNVERIFIED docker-down; names checked vs pinned mathlib; mirrors verified maxAvoidingSize_le.",
     "builtItems": [
       "prime_multiples_size in Erdos771Construction.lean:64",
       "prime_multiples_avoid in Erdos771Construction.lean:78",
@@ -29,7 +29,6 @@
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Discharge m_eq_one_case (maxAvoidingSize n 1 = n-1): S avoids 1 iff 1∉S, so max is {2,…,n}; needs a subset-sum-of-1 ⟺ 1∈S lemma.",
       "Discharge f_characterization by relating the inf/sup definition of f to f_property.",
       "Keep the deep bounds as axioms (external results); do not attempt to prove Erdős–Graham/Alon–Freiman."
     ]
@@ -52,7 +51,7 @@
     "Alon–Freiman (1988)"
   ],
   "started": "2026-06-25T00:00:00.000Z",
-  "lastUpdate": "2026-06-25T00:00:00.000Z",
+  "lastUpdate": "2026-07-11",
   "significance": "Verifies the combinatorial core of the Erdős–Graham lower bound for f(n).",
   "tractability": "verified-construction-open-asymptotics",
   "leanFiles": [
