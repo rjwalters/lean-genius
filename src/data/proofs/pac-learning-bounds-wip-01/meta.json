@@ -78,7 +78,7 @@
     "definitionCount": 3
   },
   "overview": {
-    "historicalContext": "The VC dimension (Vapnik–Chervonenkis, 1971) measures the capacity of a hypothesis class by the size of the largest set it can shatter — realise all labelings of. It governs PAC-learnability and sample complexity, and the Sauer–Shelah lemma (1972) bounds the growth function polynomially below the VC dimension. The parent gallery entry states these results with an axiomatized, placeholder combinatorial core; this entry builds the genuine foundation.",
+    "historicalContext": "The VC dimension arose from Vladimir Vapnik and Alexey Chervonenkis's 1971 study of the uniform convergence of empirical frequencies to probabilities — a problem in empirical process theory rather than learning per se — where the capacity of a family of events is measured by the size of the largest set it can shatter (realise all labelings of). Independently in 1972, Norbert Sauer and Saharon Shelah (the latter from model-theoretic stability theory) proved the growth function of a class is bounded polynomially, of degree its VC dimension — the Sauer–Shelah lemma. The concept re-entered computer science through Leslie Valiant's 1984 PAC model, and Blumer, Ehrenfeucht, Haussler and Warmuth (1989) showed finite VC dimension exactly characterises PAC-learnability, tying sample complexity to this single combinatorial parameter. The parent gallery entry states these results with an axiomatized, placeholder combinatorial core; this entry builds the genuine finite foundation the deeper theory rests on.",
     "problemStatement": "The parent's growthFunction is the constant 0, so no real statement about shattering or growth is expressible. The third open question asks for proper Lean definitions of the learning-theoretic notions. This entry provides correct definitions of the trace (restriction) of a hypothesis class and of shattering, and proves the elementary structural lemmas relating trace size, shattering, and |H|.",
     "proofStrategy": "Model a hypothesis class as a Finset (Finset α); the trace on S is H.image (· ∩ S). Since each h ∩ S ⊆ S, the trace is a subFinset of S.powerset, giving the 2^|S| growth bound (card_powerset). Shattering is trace = S.powerset, equivalently (by eq_of_subset_of_card_le) trace size = 2^|S|. Because the trace is an image of H, its size is ≤ |H| (card_image_le), so shattering forces 2^|S| ≤ |H|, and le_log_iff_pow_le converts this to |S| ≤ log₂|H|. Monotonicity follows from image_subset_image.",
     "keyInsights": [
@@ -97,6 +97,14 @@
     "text": "A 185-line, fully verified (0 sorries, 0 axioms, no native_decide) formalization supplying the combinatorial foundation the parent entry left as a placeholder. It defines the trace of a hypothesis class, shattering, and the VC dimension properly, then proves the growth bound (≤ 2^|S|), the shattering-iff-maximal-trace criterion, the 2^|S| ≤ |H| lower bound, the |S| ≤ log₂|H| VC-vs-size bound, monotonicity of shattering, and — closing this entry's own first open question — that VCDim H := sSup{|S| : H shatters S} satisfies |S| ≤ VCDim H ≤ log₂|H|, with the powerset class 2^S showing both bounds are sharp (VCDim(2^S) = |S|)."
   },
   "sections": [
+    {
+      "id": "sec-preamble",
+      "title": "Motivation: replacing the parent's placeholder core",
+      "startLine": 1,
+      "endLine": 41,
+      "summary": "The module docstring frames the goal: the parent entry pac-learning-bounds is axiomatized with growthFunction H n := 0 (a placeholder returning 0), so no genuine shattering statement is expressible. This file models a hypothesis class as Finset (Finset α) — each hypothesis is the set of points it labels positive — and sets up the trace {h ∩ S : h ∈ H} as the real growth quantity. namespace PACLearningBoundsWIP01, open Finset, and variable {α : Type*} [DecidableEq α] fix the ambient context; DecidableEq α is what makes h ∩ S and the trace image computable as Finsets.",
+      "mathContext": "A hypothesis class $H \\subseteq 2^{2^\\alpha}$; its trace on $S$ is $\\Pi_H(S) = \\{h \\cap S : h \\in H\\}$, replacing the parent's $\\mathrm{growthFunction} := 0$."
+    },
     {
       "id": "sec-defs",
       "title": "Trace and Shattering, Properly Defined",
