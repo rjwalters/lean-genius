@@ -121,6 +121,16 @@
       "targetId": "alternating-series-test-oq-01",
       "relationship": "extends",
       "description": "Parent entry: proves the one-term Leibniz bound |S_N − l| ≤ f N and asks whether it can be sharpened to a two-term estimate. This entry answers that question with the lower bound f N − f (N+1) ≤ |S_N − l|."
+    },
+    {
+      "targetId": "alternating-series-test-oq-01-oq-01-oq-02",
+      "relationship": "extendedBy",
+      "description": "Direct child: shows the two-sided two-term trap f N − f (N+1) ≤ |S_N − l| ≤ f N survives verbatim for every N ≥ M when the coefficients are only eventually antitone (antitone on [M, ∞)), via a shift reduction. Realizes the second open question posed here (do the bounds hold for eventually-antitone coefficients?)."
+    },
+    {
+      "targetId": "alternating-series-test-oq-01-oq-02",
+      "relationship": "related",
+      "description": "The Abel-summation route to the same problem: it drops monotonicity entirely, bounding the truncation error for bounded-variation coefficients via summation by parts (Finset.sum_range_by_parts). This is the other half of the open question raised here — recovering error bounds for coefficients of bounded variation rather than (eventually) antitone."
     }
   ],
   "conclusion": {
