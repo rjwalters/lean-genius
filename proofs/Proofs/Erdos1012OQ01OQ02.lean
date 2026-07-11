@@ -395,7 +395,7 @@ theorem edgeThreshold_monotone_right (n : ℕ) {k j : ℕ} (hkj : k ≤ j)
     single global minimizer — the well-defined minimum underlying `f(k)`. -/
 theorem edgeThreshold_min_at (n : ℕ) (hn : 5 ≤ n) {k : ℕ} (hk : k + 2 ≤ n) :
     edgeThreshold n ((n - 3) / 2) ≤ edgeThreshold n k := by
-  rcases le_or_lt k ((n - 3) / 2) with hle | hlt
+  rcases le_or_gt k ((n - 3) / 2) with hle | hlt
   · exact edgeThreshold_antitone_left n hle (by omega)
   · exact edgeThreshold_monotone_right n (le_of_lt hlt) (by omega) (by omega)
 
@@ -492,8 +492,8 @@ theorem edgeThreshold_min_at_unique_odd (n : ℕ) (hn : 5 ≤ n) (hodd : Odd n) 
   rw [hk0] at hne ⊢
   rcases lt_or_gt_of_ne hne with hlt | hgt
   · -- k < k₀ = m-1: strictly decreasing branch, upper index m-1 with 2(m-1)+3 = n
-    exact edgeThreshold_antitone_left_strict n hlt (by omega)
+    exact edgeThreshold_antitone_left_strict (2 * m + 1) hlt (by omega)
   · -- k > k₀ = m-1: strictly increasing branch, bottom index m-1 with n ≤ 2(m-1)+3
-    exact edgeThreshold_monotone_right_strict n hgt (by omega) (by omega)
+    exact edgeThreshold_monotone_right_strict (2 * m + 1) hgt (by omega) (by omega)
 
 end Erdos1012OQ01OQ02

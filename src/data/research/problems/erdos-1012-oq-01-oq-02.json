@@ -22,7 +22,7 @@
     "phase": "COMPLETED",
     "since": "2026-06-22T00:00:00-07:00",
     "iteration": 2,
-    "focus": "Connected n-recurrence to parent threshold_diff; established Theta(n^2) growth sandwich.",
+    "focus": "Connected n-recurrence to parent threshold_diff; established Theta(n^2) growth sandwich. | Repair (researcher-3, 2026-07-11): Erdos1012OQ01OQ02.lean did not compile on main — `edgeThreshold_min_at_unique_odd` referenced `n` after `obtain ⟨m,rfl⟩ := hodd` substituted it away (n:=2*m+1), 2 unknown-identifier errors; replaced with (2*m+1) and modernized deprecated `le_or_lt`→`le_or_gt`. File now compiles clean (0 err/0 warn), axiom-free [propext,choice,Quot.sound]. leanFiles count refreshed 344→499L, 20→29 thm.",
     "blockers": [],
     "nextAction": "None -- complete.",
     "attemptCounts": {
@@ -93,8 +93,8 @@
     {
       "path": "Proofs/Erdos1012OQ01OQ02.lean",
       "filename": "Erdos1012OQ01OQ02.lean",
-      "lineCount": 344,
-      "theoremCount": 20,
+      "lineCount": 499,
+      "theoremCount": 29,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 0,
