@@ -60,27 +60,30 @@ theorem kroneckerTwoFixed_values (a : ℤ) :
 
 /-! ## Part III: Concrete Verification Against χ₈ -/
 
--- All four odd residue classes mod 8, verified by computation
-example : kroneckerTwoFixed 1 = χ₈ 1 := by native_decide
-example : kroneckerTwoFixed 3 = χ₈ 3 := by native_decide
-example : kroneckerTwoFixed 5 = χ₈ 5 := by native_decide
-example : kroneckerTwoFixed 7 = χ₈ 7 := by native_decide
+-- All four odd residue classes mod 8, verified by kernel computation (`decide`)
+example : kroneckerTwoFixed 1 = χ₈ 1 := by decide
+example : kroneckerTwoFixed 3 = χ₈ 3 := by decide
+example : kroneckerTwoFixed 5 = χ₈ 5 := by decide
+example : kroneckerTwoFixed 7 = χ₈ 7 := by decide
 
 -- The key discrepancy: gallery's kroneckerTwo 7 = -1 (WRONG)
 -- Our fix: kroneckerTwoFixed 7 = 1 (CORRECT)
 theorem kroneckerTwoFixed_seven : kroneckerTwoFixed 7 = 1 := by
   norm_num [kroneckerTwoFixed]
 
--- Mathlib confirms χ₈ 7 = 1 via Jacobi symbol
-theorem chi8_seven : χ₈ 7 = 1 := by native_decide
+-- Mathlib confirms χ₈ 7 = 1 (kernel `decide`, no `Lean.ofReduceBool`)
+theorem chi8_seven : χ₈ 7 = 1 := by decide
 
-theorem jacobiSym_two_seven : jacobiSym 2 7 = 1 := by native_decide
+-- `jacobiSym 2 7 = χ₈ 7 = 1` via the second supplement (`jacobiSym.at_two`),
+-- keeping the proof kernel-checked rather than relying on `native_decide`.
+theorem jacobiSym_two_seven : jacobiSym 2 7 = 1 := by
+  rw [jacobiSym.at_two (by decide)]; decide
 
 /-- `kroneckerTwoFixed` agrees with `χ₈` on small examples. -/
 theorem kroneckerTwoFixed_eq_chi8_small :
     (kroneckerTwoFixed 1 = χ₈ 1) ∧ (kroneckerTwoFixed 3 = χ₈ 3) ∧
     (kroneckerTwoFixed 5 = χ₈ 5) ∧ (kroneckerTwoFixed 7 = χ₈ 7) :=
-  ⟨by native_decide, by native_decide, by native_decide, by native_decide⟩
+  ⟨by decide, by decide, by decide, by decide⟩
 
 /-! ## Part IV: Multiplicativity -/
 
@@ -125,11 +128,13 @@ theorem kroneckerTwoFixed_mul (a b : ℤ) :
 theorem jacobi_two_eq_chi8 (n : ℕ) (hn : Odd n) : jacobiSym 2 n = χ₈ n :=
   jacobiSym.at_two hn
 
-/-- `kroneckerTwoFixed` agrees with `jacobiSym 2` on {1, 3, 5, 7, 9, 11, 13, 15}. -/
+/-- `kroneckerTwoFixed` agrees with `jacobiSym 2` on {1, 3, 5, 7, 9, 11, 13, 15}.
+    Proven case-by-case via `jacobiSym.at_two` + kernel `decide` (no `native_decide`). -/
 theorem kroneckerTwoFixed_agrees_jacobi :
     ∀ n ∈ ([1, 3, 5, 7, 9, 11, 13, 15] : List ℕ),
       (kroneckerTwoFixed n : ℤ) = jacobiSym 2 n := by
-  native_decide
+  intro n hn
+  fin_cases hn <;> (rw [jacobiSym.at_two (by decide)]; decide)
 
 /-! ## Part VI: Summary -/
 
