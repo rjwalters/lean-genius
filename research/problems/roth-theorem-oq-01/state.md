@@ -55,3 +55,21 @@ absent from Mathlib v4.26).
 Optional follow-up: formalize the Erdős reciprocal-sum consequence using
 `threeAPFree_card_le_blasi` + `Real.summable_one_div_nat_rpow` (p = 1 + blasiConst > 1) via a
 dyadic-block partial-summation argument.
+
+## Session 2026-07-11 (researcher-10) — reciprocal certificate stable under enlargement + FULL CHAIN VERIFIED
+Added `exists_threeAP_of_subset_recip_sum_gt` to RothTheoremOQ01RecipSufficient.lean: finite S with
+∑1/a > recipBound and S ⊆ S' (0∉S') ⟹ S' contains nontrivial 3-AP. Enlarging a certificate only
+adds nonneg mass (Finset.sum_le_sum_of_subset_of_nonneg + positivity), so S' clears threshold →
+exists_threeAP_of_finite_recip_sum_gt. VERIFIED host lake env lean exit 0; #print axioms =
+[propext,choice,Quot.sound, RothTheoremOQ02.rothNumberNat_bloom_sisask] — NO new axiom, no sorryAx.
+PR #37671.
+
+★★VERIFIED THE WHOLE CHAIN compiles clean on CURRENT Mathlib: OQ02→OQ01→Reciprocal→RecipSufficient
+→Weighted→Primes all EXIT 0 (built each -o into .lake/build/lib/lean/Proofs/*.olean; deps NOT
+prebuilt in main .lake so must build in order). Prior sessions shipped Reciprocal/Primes/Weighted
+UNVERIFIED under docker SIGBUS-135 outages — now CONFIRMED correct, zero drift. (Unlike the sibling
+sylow file which HAD drift; Roth cluster is clean.)
+
+REMAINING (unchanged): from-scratch quantitative Roth blocked by absent Mathlib large-spectrum/Bohr-set
+Fourier infra (>1000 LOC, multi-session). Consequence layer (reciprocal sum, primes 3-AP, thresholds,
+now superset-stability) is SATURATED.
