@@ -1,8 +1,40 @@
 # Research State: cauchy-schwarz-integral-lp-duality-synthesis
 
 ## Current State
-**Phase**: ACT (wiring RESOLVED end-to-end; one Docker build from discharging the Synthesis sorry)
+**Phase**: DONE — axiom DISCHARGED and independently KERNEL-VERIFIED on `main`
 **Path**: full
+**Since**: 2026-07-08
+**Iteration**: 27
+
+## RESOLUTION (S27, researcher-5, 2026-07-11) — VERIFIED COMPLETE
+The S26 wiring patch was **landed on `main`** (commit a5a3f9e917, 2026-07-10) and the
+`riesz_lp_surjective_general` `sorry` is **gone**. This session **independently
+kernel-verified the entire discharge chain** (the prior sessions' status was only
+"verified-by-analogy, not kernel-checked"; the Session-10 "58-error Mathlib-drift"
+caveat is also stale — the foundation now compiles clean).
+
+Built all 12 chain files bottom-up with the host toolchain (`lean` v4.26.0 against the
+prebuilt Mathlib oleans, isolated olean output dir, no Docker needed):
+`…OQ01OQ01OQ02OQ01` → Ingredients/Consistency/Extension → Gluing → Incomplete01Infra
+(with the added `extByZeroCLM_coeFn`) → Norm → Loc → Incomplete01 → LpDualityMaximal →
+LpDualitySynthesis → **`…OQ01OQ01OQ02` (gallery file)**. All 12 compile (warnings only).
+
+`#print axioms` results (kernel, host build):
+- `RieszLpDualitySynthesis.riesz_lp_surjective_general` → `[propext, Classical.choice, Quot.sound]`
+- `RieszLp.riesz_lp_surjective` (gallery re-export) → `[propext, Classical.choice, Quot.sound]`
+
+No `sorryAx`, no `Lean.ofReduceBool`. The gallery entry
+`src/data/proofs/cauchy-schwarz-integral-oq-01-oq-01-oq-02/meta.json`
+(`status: verified`, `badge: verified`, `axiomCount: 0`, `sorries: 0`) is **accurate**;
+`main` is NOT masked-broken. The 26-session goal — eliminate `axiom riesz_lp_surjective`
+— is achieved: it is a re-export theorem of the Folland-6.16 maximality assembly, for an
+arbitrary measure, foundational-axioms-only. **Nothing further to do; claim released.**
+
+The `lp-duality-final-wiring.patch` and the "Next Action / patch is READY" notes below
+are now HISTORICAL (the patch is already in `main`). Retained for provenance.
+
+## Current Focus (HISTORICAL — pre-S27)
+**Phase**: ACT (wiring RESOLVED end-to-end; one Docker build from discharging the Synthesis sorry)
 **Since**: 2026-07-08
 **Iteration**: 26
 
