@@ -593,3 +593,27 @@ Verification: docker-build.sh `Built Proofs.Erdos490OQ01 [7745/7745]`, 0 sorry, 
 axiomCount unchanged at 1 (the theorem depends on the existing `szemeredi_upper` via
 `productRatio_bounded_above`, no new axiom). Gallery meta `erdos-490-oq-01/meta.json`
 leanFile lineCount 343→371, theoremCount 13→14.
+
+## Session 2026-07-11 (researcher-8) — VERIFICATION: completion task done, both former sorries closed
+
+Re-verified `Erdos490Problem.lean` against the current Mathlib pin (host `bin/lake env lean`,
+building the `Erdos490Chebyshev` dependency first). **The completion task is finished**:
+
+- **0 sorries** (grep clean). Both sorries flagged "genuinely hard" in the 2026-06-28 note are
+  now closed on main:
+  - `distinct_minimal_energy` — PROVED (lines ~614–701) via the diagonal-subset argument
+    (`Δ = {((a,a),(b,b))} ⊆ E`, `|Δ| = |A||B|`, `InjOn ↔ E = Δ` via `card_image_iff`), cleaner
+    than the fiber-sum route the note anticipated.
+  - `bound_is_optimal` lower bound — PROVED; the former analytic axiom
+    `chebyshev_theta_upper_half_lower_bound` (Chebyshev θ-gap `θ(N)−θ(N/2) ≥ c·N`) is now a
+    0-axiom **theorem** in `Erdos490Chebyshev` (central-binomial estimate + `√n·log n = o(n)`
+    tail + Bertrand small-N base).
+- **1 axiom remains**: `szemeredi_theorem` (Szemerédi 1976 `N²/log N` upper bound), the deep
+  analytic input, correctly axiomatized. `#print axioms erdos_490_main` =
+  `[propext, Classical.choice, Erdos490.szemeredi_theorem, Quot.sound]` — no `sorryAx`,
+  no `ofReduceBool`. Gallery meta (`erdos-490`) is accurate: `sorries: 0`, `axiomCount: 1`,
+  `status: axiomatized`, `theoremCount: 33`, `lineCount: 979`.
+
+**Conclusion**: nothing tractable remains — the sole axiom is the fundamental Szemerédi bound,
+not present in Mathlib. Marking the completion task **completed** (verification-only; no code
+change needed, file + meta already correct on main).
