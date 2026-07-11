@@ -85,7 +85,8 @@
       "**Normality is the half of the FTGT that decides which subextensions are Galois.** The bijection of part (i) does not respect Galois-ness automatically; `fixedField H` is Galois over the base *exactly* when `H` is normal. Stating this as a biconditional (not two separate instances) makes the criterion directly usable.",
       "**The reverse direction needs the round trip, not just an instance.** Mathlib gives `H normal ⟹ fixedField H Galois`. To get `K.fixingSubgroup normal ⟹ K Galois` one must recognize `K` as `fixedField K.fixingSubgroup` — the round-trip identity — and transport Galois-ness back. This is why the iff is genuinely assembled rather than read off.",
       "**Restricting the correspondence to normals is a clean `subtypeEquiv`.** Once the predicate `IsGalois F K ↔ K.fixingSubgroup.Normal` holds pointwise, the order-forgetting bijection of OQ-02 restricts mechanically to a bijection between Galois subextensions and normal subgroups, and counting follows.",
-      "**The quotient at each normal step is itself a Galois group.** Combined with OQ-02's `normalQuotientEquiv`, the normal correspondence says a normal subextension K is Galois with `Gal(K/F) ≅ Gal(E/F) ⧸ K.fixingSubgroup` — the structural fact that turns a subnormal series into a chain of Galois steps."
+      "**The quotient at each normal step is itself a Galois group.** Combined with OQ-02's `normalQuotientEquiv`, the normal correspondence says a normal subextension K is Galois with `Gal(K/F) ≅ Gal(E/F) ⧸ K.fixingSubgroup` — the structural fact that turns a subnormal series into a chain of Galois steps.",
+      "**Counting Galois subextensions is a purely group-theoretic problem.** `card_isGalois_intermediateField_eq_card_normal_subgroup` transports the bijection through `Nat.card_congr`, so enumerating the intermediate fields that are Galois over the base reduces to counting normal subgroups of the Galois group. The quintic instantiation is the payoff: the Galois subextensions of the splitting field of X⁵ − 4X + 2 are counted by the normal subgroups of S₅ — of which there are exactly three ({1}, A₅, S₅), so the splitting field has precisely three subextensions Galois over ℚ."
     ],
     "prerequisites": [
       "abel-ruffini-galois-extensions-oq-02 (the Galois correspondence and the one-way normal refinement)",
@@ -105,11 +106,19 @@
     },
     {
       "id": "biconditional",
-      "title": "Part I: the biconditional (FTGT part (ii))",
+      "title": "Part I(a): the core biconditional (FTGT part (ii))",
       "startLine": 61,
+      "endLine": 82,
+      "summary": "`isGalois_iff_fixingSubgroup_normal` (`IsGalois F K ↔ K.fixingSubgroup.Normal`): the `→` direction is the Mathlib instance `IsGalois.fixingSubgroup_normal_of_isGalois`, while the `←` direction takes `IsGalois F (fixedField K.fixingSubgroup)` and rewrites along the round trip `fixedField K.fixingSubgroup = K` to land on `IsGalois F K`.",
+      "mathContext": "An intermediate field $K$ is Galois over the base iff its fixing subgroup is normal in $\\mathrm{Gal}(E/F)$."
+    },
+    {
+      "id": "normal-rephrasing",
+      "title": "Part I(b): the `Normal F K` rephrasing",
+      "startLine": 83,
       "endLine": 92,
-      "summary": "`isGalois_iff_fixingSubgroup_normal` (`IsGalois F K ↔ K.fixingSubgroup.Normal`, the `←` direction via the round trip) and `normal_iff_fixingSubgroup_normal` (the `Normal F K` rephrasing using automatic separability).",
-      "mathContext": "An intermediate field is Galois/normal over the base iff its fixing subgroup is normal in the Galois group."
+      "summary": "`normal_iff_fixingSubgroup_normal` (`Normal F K ↔ K.fixingSubgroup.Normal`): the same criterion stated with `Normal F K`. Separability of `K/F` is supplied automatically by `Algebra.isSeparable_tower_bot_of_isSeparable` (E/F is separable), so `Normal F K` and `IsGalois F K` coincide and the statement reduces to the core biconditional.",
+      "mathContext": "Since $K/F$ inherits separability from the ambient Galois tower, $\\mathrm{Normal}\\,F\\,K \\iff \\mathrm{IsGalois}\\,F\\,K$, so normality of $K$ is likewise equivalent to normality of its fixing subgroup."
     },
     {
       "id": "restricted-bijection",
