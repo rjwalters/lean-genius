@@ -75,7 +75,8 @@
       "Phrasing the inductive statement over H : Type (universe 0) lets the induction hypothesis apply to the subgroup ↥N and the quotient H ⧸ N, which are again Types of strictly smaller order.",
       "The measure |H| occurs inside the type, so 'induction (Nat.card H) generalizing H' is ill-formed; reformulating as ∀ n, ∀ H, Nat.card H = n → … and inducting on n with Nat.strong_induction_on is the clean fix.",
       "The strict drops |N| < |H| and |H ⧸ N| < |H| follow uniformly from card_mul_index / index_mul_card with one_lt_index_of_ne_top (N ≠ ⊤) and one_lt_card_iff_ne_bot (N ≠ ⊥).",
-      "Isolating the one missing input as an explicit hypothesis (rather than an axiom) keeps the contribution honest and machine-checked, and pinpoints exactly what Mathlib still needs."
+      "Isolating the one missing input as an explicit hypothesis (rather than an axiom) keeps the contribution honest and machine-checked, and pinpoints exactly what Mathlib still needs.",
+      "The isolated hypothesis is not an accident of formalization but the genuine mathematical heart of the theorem. Burnside's pᵃqᵇ theorem (1904) was the first major triumph of representation theory applied to pure group theory, and the non-simplicity of a nonabelian pᵃqᵇ-group is precisely the step his character-theoretic argument supplies. No character-free ('elementary') proof was found for roughly 65 years — until Goldschmidt (for odd p, q), Matsuyama, and Bender in the early 1970s — and even those remain substantially harder than the character proof. So leaving not_simple as the single hypothesis cleanly separates the routine group theory (strong induction plus closure of solvability under extensions, both fully verified here) from the one deep input that still awaits formalization in Mathlib."
     ],
     "prerequisites": [
       "Solvable and nilpotent groups (derived series)",
@@ -108,11 +109,20 @@
       "summary": "solvable_of_normal_extension: for N ⊴ G, solvability of N and of G ⧸ N yields solvability of G. Built from Mathlib's solvable_of_ker_le_range applied to the inclusion N ↪ G and the projection G ↠ G ⧸ N, using ker_mk' = N and range_subtype = N."
     },
     {
-      "id": "reduction",
-      "title": "Reduction of Burnside's theorem to non-simplicity",
+      "id": "reduction-predicate",
+      "title": "The two-prime order predicate",
       "startLine": 97,
+      "endLine": 107,
+      "summary": "OrderTwoPrimes p q G captures the pᵃqᵇ hypothesis of Burnside's theorem — every prime divisor of |G| is p or q — as a predicate on the order. Because a subgroup or quotient has order dividing |G|, the predicate is automatically inherited by both, which is exactly what makes the downstream strong induction go through.",
+      "mathContext": "$\\mathrm{OrderTwoPrimes}(p,q,G) \\iff (\\forall r\\ \\text{prime},\\ r \\mid |G| \\Rightarrow r \\in \\{p,q\\}) \\iff |G| = p^{a}q^{b}$; inherited by subgroups and quotients."
+    },
+    {
+      "id": "reduction-theorem",
+      "title": "Reduction of Burnside's theorem to non-simplicity",
+      "startLine": 108,
       "endLine": 166,
-      "summary": "OrderTwoPrimes p q G captures the pᵃqᵇ hypothesis and is inherited by subgroups and quotients. burnside_reduces_to_nonsimplicity then performs strong induction on |G|: abelian groups are solvable; otherwise the supplied non-simplicity hypothesis yields a proper nontrivial normal N, the induction hypothesis applies to the strictly smaller N and G ⧸ N, and solvable_of_normal_extension reassembles G. Fully verified modulo the explicit non-simplicity hypothesis."
+      "summary": "burnside_reduces_to_nonsimplicity performs strong induction on |G|: abelian groups are solvable; otherwise the supplied non-simplicity hypothesis yields a proper nontrivial normal N, the induction hypothesis applies to the strictly smaller N and G ⧸ N (both still pᵃqᵇ), and solvable_of_normal_extension reassembles G. The theorem is fully verified — it isolates the only unproved mathematics into the single character-theoretic hypothesis not_simple (every nonabelian pᵃqᵇ-group has a proper nontrivial normal subgroup), so discharging not_simple from Mathlib would complete Burnside's theorem outright.",
+      "mathContext": "Strong induction on $|G| = p^{a}q^{b}$: $G$ abelian $\\Rightarrow$ solvable; else $\\exists N \\trianglelefteq G$ proper nontrivial, and $N$, $G/N$ solvable $\\Rightarrow G$ solvable."
     }
   ],
   "references": [
