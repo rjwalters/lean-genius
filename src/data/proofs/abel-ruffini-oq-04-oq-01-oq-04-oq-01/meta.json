@@ -34,7 +34,8 @@
       "The Key Group Theory Lemma is not just a structural curiosity: for p ≥ 5 it immediately yields non-solvability, which is the entire group-theoretic content of Abel–Ruffini. G = ⊤ = S_p and S_p is unsolvable.",
       "Non-solvability transports across Subgroup.topEquiv: a solvable ⊤ would force the whole symmetric group to be solvable (solvable_of_surjective), contradicting Equiv.Perm.not_solvable. This is the clean bridge from 'G is everything' to 'G is unsolvable'.",
       "The cardinality hypothesis is exactly p ≥ 5: Equiv.Perm.not_solvable needs 5 ≤ #α, matching the historical degree threshold below which (degree ≤ 4) the symmetric groups S_2, S_3, S_4 ARE solvable and radical formulas exist.",
-      "Via the Galois correspondence (Polynomial.solvableByRad / the Galois solvability criterion) this obstruction says: any polynomial whose Galois group is a transitive subgroup of S_p (p ≥ 5) with a transposition is not solvable by radicals — the abstract template behind every concrete unsolvable quintic."
+      "Via the Galois correspondence (Polynomial.solvableByRad / the Galois solvability criterion) this obstruction says: any polynomial whose Galois group is a transitive subgroup of S_p (p ≥ 5) with a transposition is not solvable by radicals — the abstract template behind every concrete unsolvable quintic.",
+      "Primality of the cardinality is essential to the generation step, not incidental. When |α| = p is prime, transitivity forces the point-stabilizer to have index p, so p divides |G| and Cauchy's theorem produces a p-cycle; a p-cycle together with a single transposition generates all of S_p. For composite n this fails — a transitive subgroup of S_n containing a transposition need not be the whole symmetric group (e.g. imprimitive wreath-product actions) — which is exactly why the Key Lemma is stated for prime cardinality and why irreducibility (forcing transitivity) plus prime degree is the hypothesis package used to certify unsolvable polynomials."
     ]
   },
   "sections": [
@@ -58,14 +59,14 @@
       "id": "not-solvable-top",
       "title": "Non-Solvability of the Top Subgroup (p ≥ 5)",
       "startLine": 83,
-      "endLine": 100,
+      "endLine": 99,
       "summary": "not_isSolvable_top: S_α is not solvable for 5 ≤ card α. A solvable ⊤ would make Perm α solvable via solvable_of_surjective across Subgroup.topEquiv : ⊤ ≃* Perm α, contradicting Equiv.Perm.not_solvable.",
       "mathContext": "$S_n$ is unsolvable for $n \\ge 5$; solvability is preserved by surjections, so transporting across $\\top \\cong \\mathrm{Perm}(\\alpha)$ is valid. The threshold $|\\alpha| \\ge 5$ is exactly the degree bound of Abel–Ruffini."
     },
     {
       "id": "obstruction",
       "title": "The Abel–Ruffini Obstruction (p ≥ 5)",
-      "startLine": 102,
+      "startLine": 100,
       "endLine": 116,
       "summary": "not_isSolvable_of_isPretransitive_of_mem_isSwap: a transitive subgroup of S_p (p prime, p ≥ 5) with a transposition is not solvable — the Key Lemma forces G = ⊤, then not_isSolvable_top applies.",
       "mathContext": "Transitive $G \\le S_p$ ($p \\ge 5$ prime) with a transposition $\\Rightarrow G = S_p \\Rightarrow G$ unsolvable — the group-theoretic heart of Abel–Ruffini; the transposition typically comes from complex conjugation on an irreducible quintic with two non-real roots."
