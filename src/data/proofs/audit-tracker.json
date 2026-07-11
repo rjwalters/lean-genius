@@ -29782,6 +29782,12 @@
       "lastAudited": "2026-07-10T08:05:00Z",
       "result": "clean",
       "issues": []
+    },
+    "cycle-double-cover": {
+      "auditCount": 1,
+      "lastAudited": "2026-07-11T21:56:02Z",
+      "result": "clean",
+      "notes": "External-result axiomatized entry (CDC, resolved 2026). Verified: 1 axiom decl (cycleDoubleCover_of_bridgeless = the CDC theorem, fully disclosed), 0 sorries, native_decide only in comments, 3 theorems (elementary facts proved without the axiom). status=axiomatized/badge=axiom/axiomCount=1/theoremCount=3 all match. Minor: definitionCount=7 vs 8 actual (trivial abbrev F2), cosmetic."
     }
   },
   "version": 1,
