@@ -404,6 +404,118 @@ theorem avoid_three_card_le (n : ℕ) (hn : 3 ≤ n) (S : Finset ℕ) (hS : S �
         rw [Finset.card_erase_of_mem h3e, Finset.card_erase_of_mem h2mem, Icc_n, Nat.card_Icc]
         omega
 
+/-! ## The case `m = 4`: the first plateau at `n − 2`
+
+Like `m = 3`, the number `4` has **two** representations as a sum of distinct positive integers:
+`4 = {4}` and `4 = {1, 3}`. So avoiding the subset sum `4` again costs *two* deletions from
+`{1,…,n}` — remove `4`, and break the pair `{1, 3}` — pinning the maximum at `n − 2` (for
+`n ≥ 4`), exactly the `m = 3` value. This is the first time the value **stays put** as `m`
+increases: `m = 3, 4` both give `n − 2`, the beginning of the `n − ⌈m/2⌉` staircase (each value
+is held for two consecutive `m` before dropping). Unlike `m = 3`, the pair `{1, 3}` is a *gap*
+pair rather than the consecutive `{1, 2}`, so the crude "excluded element overshoots" bound no
+longer identifies it directly; the characterization is instead decided over the `16` subsets of
+`{0, 1, 2, 3}`. -/
+
+/-- `4` is a positive subset sum of `S` iff `4 ∈ S` **or** both `1 ∈ S` and `3 ∈ S`: the only
+    nonempty sets of distinct naturals summing to `4` are `{4}` and `{1, 3}` (any element `≥ 5`
+    overshoots, so all elements lie in `{0, 1, 2, 3}`, over whose `16` subsets the claim is
+    decidable). -/
+theorem four_mem_subsetSums_iff (S : Finset ℕ) :
+    (4 : ℕ) ∈ subsetSums S ↔ (4 ∈ S ∨ (1 ∈ S ∧ 3 ∈ S)) := by
+  constructor
+  · intro h
+    rw [subsetSums, Finset.mem_filter, Finset.mem_image] at h
+    obtain ⟨⟨A, hA, hAsum⟩, _⟩ := h
+    rw [Finset.mem_powerset] at hA
+    have hle : ∀ a ∈ A, a ≤ 4 := by
+      intro a ha
+      have hsum := Finset.single_le_sum (f := fun x => x) (fun i _ => Nat.zero_le i) ha
+      rw [hAsum] at hsum; exact hsum
+    by_cases h4 : (4 : ℕ) ∈ A
+    · exact Or.inl (hA h4)
+    · refine Or.inr ?_
+      have hsub : A ⊆ ({0, 1, 2, 3} : Finset ℕ) := by
+        intro a ha
+        have hle4 := hle a ha
+        have ha4 : a ≠ 4 := fun he => h4 (he ▸ ha)
+        simp only [Finset.mem_insert, Finset.mem_singleton]; omega
+      have key : ∀ B ∈ ({0, 1, 2, 3} : Finset ℕ).powerset,
+          (∑ x ∈ B, x = 4) → (1 ∈ B ∧ 3 ∈ B) := by decide
+      obtain ⟨h1, h3⟩ := key A (Finset.mem_powerset.mpr hsub) hAsum
+      exact ⟨hA h1, hA h3⟩
+  · intro h
+    rw [subsetSums, Finset.mem_filter, Finset.mem_image]
+    rcases h with h4 | ⟨h1, h3⟩
+    · refine ⟨⟨{4}, ?_, ?_⟩, by norm_num⟩
+      · rw [Finset.mem_powerset]; exact Finset.singleton_subset_iff.mpr h4
+      · simp
+    · refine ⟨⟨{1, 3}, ?_, ?_⟩, by norm_num⟩
+      · rw [Finset.mem_powerset, Finset.insert_subset_iff, Finset.singleton_subset_iff]
+        exact ⟨h1, h3⟩
+      · rw [Finset.sum_pair (by norm_num : (1 : ℕ) ≠ 3)]
+
+/-- **The case `m = 4`.** `S` avoids the subset sum `4` iff `4 ∉ S` and not both `1, 3 ∈ S`.
+    Immediate from `four_mem_subsetSums_iff` by negation (`not_or`). -/
+theorem avoid_four_iff (S : Finset ℕ) :
+    AvoidSum S 4 ↔ (4 ∉ S ∧ ¬ (1 ∈ S ∧ 3 ∈ S)) := by
+  unfold AvoidSum
+  rw [four_mem_subsetSums_iff, not_or]
+
+/-- **Exact `m = 4` realization.** For `n ≥ 4` the explicit set `{1,…,n} ∖ {3, 4}` witnesses
+    the value `n − 2` at `m = 4`: it lies inside `{1,…,n}`, avoids the subset sum `4` (since
+    `4 ∉ S` and `3 ∉ S` breaks the pair `{1, 3}`, via `avoid_four_iff`), and has cardinality
+    `n − 2`. -/
+theorem Icc_erase_three_four_avoid_four (n : ℕ) (hn : 4 ≤ n) :
+    (((Icc_n n).erase 3).erase 4) ⊆ Icc_n n ∧
+      AvoidSum (((Icc_n n).erase 3).erase 4) 4 ∧
+      (((Icc_n n).erase 3).erase 4).card = n - 2 := by
+  have h3 : (3 : ℕ) ∈ Icc_n n := by rw [Icc_n, Finset.mem_Icc]; omega
+  have h4 : (4 : ℕ) ∈ (Icc_n n).erase 3 := by
+    rw [Finset.mem_erase, Icc_n, Finset.mem_Icc]; omega
+  refine ⟨(Finset.erase_subset _ _).trans (Finset.erase_subset _ _), ?_, ?_⟩
+  · rw [avoid_four_iff]
+    refine ⟨Finset.notMem_erase 4 _, ?_⟩
+    rintro ⟨_, hmem3⟩
+    have hno3 : (3 : ℕ) ∉ (Icc_n n).erase 3 := Finset.notMem_erase 3 _
+    exact hno3 (Finset.mem_of_mem_erase hmem3)
+  · rw [Finset.card_erase_of_mem h4, Finset.card_erase_of_mem h3, Icc_n, Nat.card_Icc]
+    omega
+
+/-- **Optimality at `m = 4`.** For `n ≥ 4` every `4`-avoiding subset of `{1,…,n}` has size at
+    most `n − 2`: avoiding `4` forces `4 ∉ S` and (`1 ∉ S` or `3 ∉ S`), so `S` misses `4` and at
+    least one of `1, 3` — two distinct elements of `{1,…,n}`. Together with
+    `Icc_erase_three_four_avoid_four` this pins the exact maximum `n − 2` at `m = 4`, equal to
+    the `m = 3` value — the first plateau of the `n − ⌈m/2⌉` staircase. -/
+theorem avoid_four_card_le (n : ℕ) (hn : 4 ≤ n) (S : Finset ℕ) (hS : S ⊆ Icc_n n)
+    (hav : AvoidSum S 4) : S.card ≤ n - 2 := by
+  rw [avoid_four_iff] at hav
+  obtain ⟨h4, h13⟩ := hav
+  have h4mem : (4 : ℕ) ∈ Icc_n n := by rw [Icc_n, Finset.mem_Icc]; omega
+  rw [not_and_or] at h13
+  rcases h13 with h1 | h3
+  · have h1mem : (1 : ℕ) ∈ Icc_n n := by rw [Icc_n, Finset.mem_Icc]; omega
+    have hsub : S ⊆ ((Icc_n n).erase 1).erase 4 := by
+      intro x hx
+      rw [Finset.mem_erase, Finset.mem_erase]
+      exact ⟨fun he => h4 (he ▸ hx), fun he => h1 (he ▸ hx), hS hx⟩
+    calc S.card ≤ (((Icc_n n).erase 1).erase 4).card := Finset.card_le_card hsub
+      _ = n - 2 := by
+        have h4e : (4 : ℕ) ∈ (Icc_n n).erase 1 := by
+          rw [Finset.mem_erase]; exact ⟨by norm_num, h4mem⟩
+        rw [Finset.card_erase_of_mem h4e, Finset.card_erase_of_mem h1mem, Icc_n, Nat.card_Icc]
+        omega
+  · have h3mem : (3 : ℕ) ∈ Icc_n n := by rw [Icc_n, Finset.mem_Icc]; omega
+    have hsub : S ⊆ ((Icc_n n).erase 3).erase 4 := by
+      intro x hx
+      rw [Finset.mem_erase, Finset.mem_erase]
+      exact ⟨fun he => h4 (he ▸ hx), fun he => h3 (he ▸ hx), hS hx⟩
+    calc S.card ≤ (((Icc_n n).erase 3).erase 4).card := Finset.card_le_card hsub
+      _ = n - 2 := by
+        have h4e : (4 : ℕ) ∈ (Icc_n n).erase 3 := by
+          rw [Finset.mem_erase]; exact ⟨by norm_num, h4mem⟩
+        rw [Finset.card_erase_of_mem h4e, Finset.card_erase_of_mem h3mem, Icc_n, Nat.card_Icc]
+        omega
+
 /-! ## Summary
 
 Verified here (0 axioms, 0 sorries): the elementary Erdős–Graham construction behind the
@@ -411,10 +523,13 @@ lower bound for `f(n)` — the multiples of a prime `p` in `{1,…,n}` have size
 any `m` with `p ∤ m`, and such a prime exists for every `m ≥ 1`; and, via Bertrand's
 postulate, an `m`-avoiding subset of size `≥ ⌊n/(2m)⌋` exists for every `m ≥ 1`. The two
 smallest cases are pinned exactly: at `m = 1` and (for `n ≥ 2`) at `m = 2` the largest
-avoiding subset of `{1,…,n}` has size `n − 1`, realized by `{1,…,n} ∖ {m}`; and at `m = 3`
+avoiding subset of `{1,…,n}` has size `n − 1`, realized by `{1,…,n} ∖ {m}`; at `m = 3`
 (for `n ≥ 3`) the maximum drops to `n − 2`, realized by `{1,…,n} ∖ {2, 3}` — the first case
-where the two representations `3 = {3} = {1,2}` force a second deletion. The deep asymptotics
-(the matching `(1/2 + o(1)) n / log n` lower and upper bounds) are not addressed here.
+where the two representations `3 = {3} = {1,2}` force a second deletion; and at `m = 4`
+(for `n ≥ 4`) it **stays** at `n − 2`, realized by `{1,…,n} ∖ {3, 4}` breaking the gap pair
+`4 = {4} = {1,3}` — the first plateau of the `n − ⌈m/2⌉` staircase (each value held for two
+consecutive `m`). The deep asymptotics (the matching `(1/2 + o(1)) n / log n` lower and upper
+bounds) are not addressed here.
 -/
 
 end Erdos771Construction
