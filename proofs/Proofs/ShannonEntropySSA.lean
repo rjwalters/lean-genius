@@ -188,4 +188,62 @@ theorem conditioning_deficit_symm (pXYZ : α × β × γ → ℝ) :
         (shannonEntropy pXYZ - shannonEntropy (marginalXY pXYZ)) := by
   ring
 
+/-! ## The `X ↔ Z` symmetry of `I(X ; Z | Y)` at the level of distributions
+
+`conditioning_deficit_symm` records the symmetry `I(X ; Z | Y) = I(Z ; X | Y)` as an
+*algebraic* rearrangement of the four entropy terms.  The lemmas below upgrade it to a
+genuine statement about the distribution: relabeling outcomes never changes an entropy
+(`shannonEntropy_comp_equiv`), so physically swapping the roles of `X` and `Z` in the joint
+law leaves `I(X ; Z | Y)` invariant. -/
+
+/-- **Shannon entropy is a symmetric function of the probability vector.**  Relabeling the
+outcomes by any bijection `e : α ≃ β` leaves the entropy unchanged: `H(p ∘ e) = H(p)`.
+Entropy depends only on the multiset of probabilities, not on how the outcomes are named. -/
+theorem shannonEntropy_comp_equiv {δ ε : Type*} [Fintype δ] [DecidableEq δ]
+    [Fintype ε] [DecidableEq ε] (e : δ ≃ ε) (p : ε → ℝ) :
+    shannonEntropy (p ∘ e) = shannonEntropy p := by
+  unfold shannonEntropy
+  simp only [Function.comp_apply]
+  congr 1
+  exact Equiv.sum_comp e (fun y => if p y = 0 then (0 : ℝ) else p y * Real.log (p y))
+
+/-- The coordinate reordering `(z, y, x) ↦ (x, y, z)`, packaged as an `Equiv`.  Composing a
+joint law `pXYZ : α × β × γ → ℝ` with it produces the law of the swapped triple `(Z, Y, X)`. -/
+def reorderXZ {α β γ : Type*} : γ × β × α ≃ α × β × γ where
+  toFun := fun p => (p.2.2, p.2.1, p.1)
+  invFun := fun p => (p.2.2, p.2.1, p.1)
+  left_inv := fun _ => rfl
+  right_inv := fun _ => rfl
+
+variable [Fintype α] [Fintype β] [Fintype γ]
+  [DecidableEq α] [DecidableEq β] [DecidableEq γ]
+
+/-- **Conditional mutual information is symmetric in `X` and `Z` (distribution form).**
+Writing `pZYX := pXYZ ∘ reorderXZ` for the joint law with `X` and `Z` swapped,
+`I(X ; Z | Y)` computed from `pZYX` equals `I(X ; Z | Y)` computed from `pXYZ`:
+`conditionalMutualInfo (pXYZ ∘ reorderXZ) = conditionalMutualInfo pXYZ`.
+
+Each of the four entropy terms transports across the swap by relabeling
+(`shannonEntropy_comp_equiv`): `marginalXY` of the swapped law is `marginalYZ` of the
+original up to the coordinate flip `Equiv.prodComm`, `marginalYZ` ↔ `marginalXY` likewise,
+`marginalY` is literally unchanged (a `Finset.sum_comm`), and the full entropy is invariant
+because `reorderXZ` is a bijection.  This is the true `I(X ; Z | Y) = I(Z ; X | Y)`, of which
+`conditioning_deficit_symm` is the shadow after the four terms are already written out. -/
+theorem conditionalMutualInfo_swap (pXYZ : α × β × γ → ℝ) :
+    conditionalMutualInfo (pXYZ ∘ reorderXZ) = conditionalMutualInfo pXYZ := by
+  have hXY : marginalXY (pXYZ ∘ reorderXZ) = marginalYZ pXYZ ∘ Equiv.prodComm γ β := by
+    funext zy; obtain ⟨z, y⟩ := zy; rfl
+  have hYZ : marginalYZ (pXYZ ∘ reorderXZ) = marginalXY pXYZ ∘ Equiv.prodComm β α := by
+    funext yx; obtain ⟨y, x⟩ := yx; rfl
+  have hY : marginalY (pXYZ ∘ reorderXZ) = marginalY pXYZ := by
+    funext y
+    simp only [marginalY, Function.comp_apply, reorderXZ]
+    exact Finset.sum_comm
+  have hP : shannonEntropy (pXYZ ∘ reorderXZ) = shannonEntropy pXYZ :=
+    shannonEntropy_comp_equiv reorderXZ pXYZ
+  unfold conditionalMutualInfo
+  rw [hXY, hYZ, hY, hP, shannonEntropy_comp_equiv (Equiv.prodComm γ β) (marginalYZ pXYZ),
+    shannonEntropy_comp_equiv (Equiv.prodComm β α) (marginalXY pXYZ)]
+  ring
+
 end InformationTheory.SSA
