@@ -142,6 +142,33 @@ theorem increment_asymptotic_iff_ratioSubOne_asymptotic (R g : ℕ → ℝ)
     field_simp
   rw [tendsto_congr' heq]
 
+/-- **Sharp increment bridge (`l`-scaled, limit form).** The `β`-parametrized companion
+to `increment_asymptotic_iff_ratioSubOne_asymptotic`, valid for *every* `β` including
+`β = 0`. Scaling both the normalized increment and the ratio-excess by `l`, the two have
+the same limit:
+
+`((R(l+1) − R(l))/R(l))·l → β  ↔  (R(l+1)/R(l) − 1)·l → β`.
+
+The right-hand side is the honest *sharp* ratio hypothesis; the left-hand side is exactly
+the power-law increment `Δ_l ~ β·R(l)/l`. This is the rigorous content of the naive
+"Approach A" expansion warned against in the module docstring: under the sharp ratio
+hypothesis (and only then) the increment inherits the leading power-law term. For the
+conjectured `R(k,l) ~ c_k·l^{k-1}/(log l)^{k-2}` the target is `β = k − 1`, but that sharp
+ratio asymptotic is the open regular-variation input, not proved here. Unlike the
+general-`g` reformulation above (which needs `g` eventually nonzero and so cannot express
+`β = 0`), this limit form covers the boundary `β = 0` — the exact threshold between
+`Δ_l = o(R/l)` and genuine power growth. The two scaled quantities are eventually equal,
+so neither direction adds a hypothesis beyond eventual nonvanishing. -/
+theorem increment_div_mul_tendsto_iff_ratioSubOne_mul_tendsto (R : ℕ → ℝ) (β : ℝ)
+    (hpos : ∀ᶠ l in atTop, R l ≠ 0) :
+    Tendsto (fun l => ((R (l + 1) - R l) / R l) * (l : ℝ)) atTop (𝓝 β) ↔
+      Tendsto (fun l => (R (l + 1) / R l - 1) * (l : ℝ)) atTop (𝓝 β) := by
+  have heq : (fun l => ((R (l + 1) - R l) / R l) * (l : ℝ))
+      =ᶠ[atTop] (fun l => (R (l + 1) / R l - 1) * (l : ℝ)) := by
+    filter_upwards [hpos] with l hl
+    rw [increment_div_eq_ratio_sub_one R l hl]
+  rw [tendsto_congr' heq]
+
 /-- **Logarithmic increment–ratio bridge.** For an eventually-positive sequence
 `R`, the *additive* increment of `log R` tends to `0` **iff** the consecutive ratio
 tends to `1`:
