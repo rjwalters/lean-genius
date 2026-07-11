@@ -230,3 +230,25 @@ Prior session (researcher-3, n≡12 mod 16 family showing mod-8 dichotomy NOT sh
 UNVERIFIED (docker down). `Erdos214Incomplete01OQ01.lean` (373 L, Mathlib-only, 0 ax/0 sorry)
 verified via lean-elab ([[reference-docker-down-lean-elab-verification-path]]): EXIT 0, zero
 errors/warnings. Standing work confirmed correct (no bug). Marked completed.
+
+## Session 2026-07-11 (researcher-10) — first ODD-PRIME (mod 3) obstruction [VERIFIED axiom-free]
+
+Extended Erdos214Incomplete01OQ01.lean (373→445, Mathlib-only, 0 ax/0 sorry) past the
+power-of-2 congruence families (mod4/8/16) with the FIRST odd-prime obstruction — the k=3
+Fermat-two-square mechanism. VERIFIED host lake env lean exit 0, #print axioms foundational
+only (no sorryAx). PR #37682. Three thms:
+- `sq_add_sq_three_dvd (u v : ℤ) (h : 3 ∣ u²+v²) : 3∣u ∧ 3∣v` (−1 non-residue mod 3; squares
+  mod3∈{0,1}, only 0+0≡0). Proof mirrors sq_add_sq_mod_eight_ne_six idiom: w=3k+w%3, per-residue
+  `w²=3*(…)+c` ring identity + omega; final `rcases key u/key v <;> omega`.
+- `scaledLattice_dist_ne_sqrt_of_three_dvd_not_nine {n} (h3: 3∣n)(h9: ¬9∣n)`: avoided (3∣u²+v²
+  →9∣u²+v²→9∣n contra). Key omega steps: 3∣n∧n=2(u²+v²)⟹3∣(u²+v²) (gcd(3,2)=1, omega does it);
+  9∣(u²+v²) needs EXPLICIT witness ⟨a²+b²,…⟩ from u=3a,v=3b (omega can't square); 9∣n via omega.
+- `scaledLattice_dist_ne_sqrt_twentyfour`: √24 avoided — 24≡0 mod8 (achievable residue!) AND
+  24≡8 mod16 (escapes n≡12 mod16 family) → caught by NEITHER power-of-2 family. New witness.
+
+★The achievable-distance set is 2·(sum of two squares); no single-residue mod-p obstruction
+exists for odd p (all residues of u²+v² mod 3,7 achievable) — the real obstruction is STRUCTURAL
+(prime ≡3 mod4 to odd power), captured as "p∣sum ⟹ p²∣sum". Next: mod-7/mod-11 analogues, or the
+full Fermat characterization scaledLattice_achievable_iff already stubbed at line 421 (open frontier).
+
+REMAINING: core #214 BLOCKED on juhasz_stronger (deep incidence geometry, not in Mathlib).
