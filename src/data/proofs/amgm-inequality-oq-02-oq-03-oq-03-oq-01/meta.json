@@ -128,6 +128,16 @@
       "targetId": "amgm-inequality-oq-02",
       "relationship": "derives-from",
       "description": "Grandparent providing elemSymm, maclaurinMean, the maclaurin_step axiom, and the proved maclaurin_sq_m1_ge_m2_general used by newton_inequality_k1."
+    },
+    {
+      "targetId": "amgm-inequality-oq-02-oq-01-oq-05-oq-01",
+      "relationship": "complements",
+      "description": "The order proof this entry says the identities cannot supply: it proves the k=2 Newton rung e₂² ≥ 3e₁e₃ for all reals via an explicit SOS certificate. Together they make the point precisely — Newton's inequalities need an order argument (Cauchy-Schwarz here, sum-of-squares there), never the ring identities alone."
+    },
+    {
+      "targetId": "amgm-inequality-oq-02-oq-01-oq-03",
+      "relationship": "related",
+      "description": "A concrete instance of exactly the 'Newton identities as order-free ring equalities' this entry analyses: the fully reduced Newton-Girard k=3 closed form p₃ = e₁³ − 3e₁e₂ + 3e₃, derived from Mathlib's psum_eq_mul_esymm_sub_sum — an equality over any CommRing that, as argued here, carries no log-concavity information."
     }
   ],
   "mainTheorems": [
