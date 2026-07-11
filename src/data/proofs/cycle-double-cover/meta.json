@@ -25,7 +25,16 @@
   },
   "overview": {
     "historicalContext": "The Cycle Double Cover Conjecture was posed independently by George Szekeres (1973) and Paul Seymour (1979): every bridgeless graph admits a collection of cycles covering each edge exactly twice. It became one of the central open problems of graph theory, tightly linked to nowhere-zero flows, snarks, and graph embeddings. The classical reduction shows a minimal counterexample must be a snark, and Jaeger's 8-flow theorem (1976) yields a cycle quadruple cover for every bridgeless graph — but closing the gap from four to two resisted five decades of effort. On 2026-07-10, OpenAI announced a proof produced by its GPT-5.6 Sol Ultra model orchestrating up to 64 subagents, accompanied by a complete Lean 4 formalization (openai/cdc-lean). The formal artifact was independently verified for this gallery on 2026-07-11: the pinned-toolchain build succeeds and the final theorem depends only on Lean's three standard foundational axioms.",
-    "keyInsight": "The new mathematical content is a conversion of Jaeger's 8-flow into an exact double cover. A nowhere-zero (ZMod 2)^3-flow on a cubic expansion of the graph classically yields only an even-subgraph 4-cover; the upstream proof constructs a labeling of edges (the CubicLabeling machinery) whose compatibility system is solvable by a linear-algebra argument, forcing each edge into exactly two even subgraphs. Projecting back from the cubic expansion and decomposing even sets into circuits gives the cycle double cover — unconditionally, since the 8-flow theorem is proved internally.",
+    "problemStatement": "Let $G$ be a finite loopless multigraph in which every edge is a primitive object carrying two distinct ends (so parallel edges are allowed and distinct). Say $G$ is *bridgeless* if no vertex subset $S \\subseteq V$ has an edge cut $\\delta(S)$ of cardinality exactly $1$. A *cycle* is a nonempty, inclusion-minimal *even* edge set — a set in which every vertex meets an even number of edges, parity taken over $\\mathbb{F}_2$ — which is precisely the graphic-matroid notion of a circuit. A *cycle double cover* is a multiset $\\mathcal{C}$ of cycles such that every edge of $G$ lies in exactly two members of $\\mathcal{C}$, counted with multiplicity. **Theorem (Szekeres 1973 / Seymour 1979; resolved 2026).** Every finite bridgeless loopless multigraph admits a cycle double cover. Bridgelessness is necessary: a bridge lies on no cycle, so it could not be covered even once.",
+    "proofStrategy": "This gallery entry follows the external-result integration pattern (cf. the AlphaProof Nexus port, #20732): the *statement* is ported to Lean exactly — finite loopless multigraph with primitive edge objects, cut-characterized bridgelessness, cycles as inclusion-minimal even edge sets, and covers as multisets with exact multiplicity two — while the theorem itself is declared as a single axiom with full disclosure, pending a port of the 7,134-line upstream proof to this repository's Mathlib pin. Three elementary sanity lemmas (the edgeless graph is trivially double-covered by the empty cover; no singleton edge set is even; hence every cycle has at least two edges) are proved directly, without the axiom, to pin down the definitional edge cases that adversarial review of any CDC claim must check.\n\nThe upstream proof route (openai/cdc-lean): the Jaeger–Kilpatrick eight-flow theorem — proved internally, so no appeal to Seymour's 6-flow theorem is needed — yields a nowhere-zero $(\\mathbb{Z}/2)^3$-flow on a cubic expansion of $G$. A new labeling of edges (the CubicLabeling machinery) sets up a compatibility system whose solvability is established by a linear-algebra argument, forcing each edge into exactly two even subgraphs. Projecting back from the cubic expansion and decomposing the resulting even sets into circuits produces the cycle double cover — unconditionally. Classically an 8-flow was known to give only an even-subgraph *quadruple* cover (Bermond–Jackson–Jaeger 1983); the conversion of an 8-flow into an *exact double* cover is the genuinely new mathematical content.",
+    "keyInsights": [
+      "The new mathematical content is a conversion of Jaeger's 8-flow into an exact double cover. A nowhere-zero $(\\mathbb{Z}/2)^3$-flow on a cubic expansion of the graph classically yields only an even-subgraph 4-cover; the upstream proof constructs a labeling of edges (the CubicLabeling machinery) whose compatibility system is solvable by a linear-algebra argument, forcing each edge into exactly two even subgraphs. Projecting back from the cubic expansion and decomposing even sets into circuits gives the cycle double cover — unconditionally, since the 8-flow theorem is proved internally.",
+      "Bridgelessness is exactly the right hypothesis: a bridge $e = \\delta(S)$ lies on no cycle at all, so it cannot be covered even once, let alone twice. The theorem shows this single obstruction is also sufficient — no higher connectivity, and in particular no assumption that $G$ is connected, is required.",
+      "The statement uses 'cycle' in the strong graphic-matroid sense — an inclusion-minimal nonempty even edge set, i.e. a circuit — not the weaker 'even subgraph' reading. This makes the formalized theorem the genuine conjecture rather than a diluted variant; the minimal cycles are the parallel-edge 2-cycles.",
+      "The multiset convention is essential. A single cycle graph, or a pair of parallel edges, is double-covered by taking its unique cycle *twice*; if repetition were forbidden the statement would be false. Encoding the cover as a `List` (with `coveredTwice` counting occurrences with multiplicity) captures this faithfully.",
+      "This is a verification-over-refereeing precedent: the artifact of record is a machine-checked Lean proof depending only on `propext`, `Classical.choice`, and `Quot.sound`, independently kernel-rebuilt within a day of the announcement. Formal verification stood in for human peer review of the informal write-up, which was still in progress when the Lean proof already kernel-checked.",
+      "The result subsumes the classical snark reduction: a minimal counterexample to CDC must be a cyclically-4-edge-connected cubic graph of girth $\\ge 5$ with no proper 3-edge-coloring — a snark. The theorem therefore certifies in particular that every snark, the historical stronghold of resistance to the conjecture, has a cycle double cover."
+    ],
     "approachRationale": "This entry follows the gallery's external-result integration pattern (cf. AlphaProof Nexus, #20732): the statement is ported exactly — finite loopless multigraph with primitive edge objects, cut-characterized bridgelessness, cycles as inclusion-minimal even edge sets, covers as multisets with exact multiplicity two — and the theorem is axiomatized with full disclosure while the upstream proof (7,134 lines, Lean v4.31.0) awaits porting to our Mathlib pin. Elementary sanity lemmas (edgeless graphs, no singleton cycles, cycles have ≥ 2 edges) are proved directly without the axiom.",
     "prerequisites": [
       "Multigraphs, bridges, and edge cuts",
@@ -33,9 +42,60 @@
       "Nowhere-zero flows and Jaeger's 8-flow theorem (background for the proof route)"
     ]
   },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Statement, Status & Verification Trail",
+      "startLine": 1,
+      "endLine": 49,
+      "summary": "Docstring recording the Cycle Double Cover Conjecture (Szekeres 1973 / Seymour 1979), its 2026 resolution by GPT-5.6 Sol Ultra, and the verification trail: the upstream openai/cdc-lean artifact was independently rebuilt for this gallery (lake build clean, 1727 jobs) with #print axioms = [propext, Classical.choice, Quot.sound]. Sketches the proof route — Jaeger–Kilpatrick 8-flow on a cubic expansion converted to an exact double cover."
+    },
+    {
+      "id": "finite-graph",
+      "title": "Finite Loopless Multigraph",
+      "startLine": 51,
+      "endLine": 62,
+      "summary": "Sets up F₂ = ZMod 2 for parity bookkeeping and the FiniteGraph structure: each edge is a primitive object with two numbered ends (endAt e : Fin 2 → V) required to be distinct (loopless). Parallel edges are thereby automatically distinct — the correct setting for CDC."
+    },
+    {
+      "id": "bridgeless",
+      "title": "Cuts and Bridgelessness",
+      "startLine": 64,
+      "endLine": 80,
+      "summary": "Crosses/cut define the edge cut δ(S) of a vertex subset, and Bridgeless is the cut characterization: no cut has cardinality exactly one. No connectivity is assumed, so disconnected graphs are permitted — the conjecture's strongest form."
+    },
+    {
+      "id": "cycles",
+      "title": "Even Edge Sets and Cycles",
+      "startLine": 82,
+      "endLine": 98,
+      "summary": "edgeIncidence tracks vertex–edge parity over F₂; IsEvenEdgeSet asks every vertex to meet the set an even number of times. A Cycle is a nonempty, inclusion-minimal even edge set — the graphic-matroid circuit, with parallel-edge 2-cycles as the minimal examples."
+    },
+    {
+      "id": "double-cover",
+      "title": "Cycle Double Cover",
+      "startLine": 100,
+      "endLine": 106,
+      "summary": "CycleDoubleCover packages a List of cycles (a multiset, so repeats are retained) with coveredTwice: every edge occurs in exactly two members counted with multiplicity."
+    },
+    {
+      "id": "theorem",
+      "title": "The Theorem (Axiomatized)",
+      "startLine": 108,
+      "endLine": 122,
+      "summary": "The main result cycleDoubleCover_of_bridgeless is declared as a single axiom, mirroring the kernel-checked upstream theorem CDCLean.cycleDoubleCover_of_bridgeless, pending a port of the 7,134-line proof to this repository's Mathlib pin."
+    },
+    {
+      "id": "elementary",
+      "title": "Elementary Axiom-Free Lemmas",
+      "startLine": 124,
+      "endLine": 155,
+      "summary": "Three facts proved directly without the axiom: edgeless_cdc (empty graph has the empty double cover), singleton_not_even (a single edge is never even), and cycle_card_ge_two (every cycle has ≥ 2 edges). These pin down the definitional edge cases."
+    }
+  ],
   "conclusion": {
     "summary": "The Cycle Double Cover Conjecture is resolved: every finite bridgeless loopless multigraph has a cycle double cover. The proof, produced by an AI system and formalized in Lean 4, was independently kernel-verified for this gallery — the strongest form of assurance available for a mathematical claim. This entry records the exact statement and the verification trail, and axiomatizes the result pending a full port.",
-    "significance": "A 50-year-old central conjecture of graph theory is closed, and notably the artifact of record is a machine-checked formal proof rather than a refereed paper — community peer review of the informal write-up was still in progress when the Lean proof already kernel-checked. For this project it is a landmark precedent: formal verification let us confirm an extraordinary claim within a day of its announcement.",
+    "implications": "A 50-year-old central conjecture of graph theory is closed, and notably the artifact of record is a machine-checked formal proof rather than a refereed paper — community peer review of the informal write-up was still in progress when the Lean proof already kernel-checked. For this project it is a landmark precedent: formal verification let us confirm an extraordinary claim within a day of its announcement.",
     "openQuestions": [
       "Port the full 7,134-line upstream proof to this repository's Mathlib pin so the axiom can be discharged (tracked in #37504).",
       "Does the 8-flow-to-double-cover labeling technique extend to the stronger 5-cycle-double-cover conjecture or to the oriented cycle double cover conjecture?",
