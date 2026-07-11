@@ -1,9 +1,0 @@
--- Root module for the `Proofs` Lean library.
---
--- Individual proof modules under `proofs/Proofs/` are discovered automatically
--- by the Lake `globs` directive in `proofs/lakefile.toml` (`["Proofs", "Proofs.*"]`).
---
--- Do NOT add per-file `import Proofs.X` lines here. This file used to be an
--- auto-generated flat import list of every proof, which made it a merge-conflict
--- bottleneck: every new-proof PR appended a line, so concurrent PRs conflicted
--- en masse. It is intentionally kept empty of imports.
