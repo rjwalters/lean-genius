@@ -339,4 +339,53 @@ theorem afks_regular_step_within_bound
   -- The bound `N ≤ n²/(ε⁴m²)` contradicts the assumed horizon `n²/(ε⁴m²) < N`.
   exact absurd hle (not_le.mpr hN)
 
+-- ═══════════════════════════════════════════════════════════════════
+-- TOWER-FREE k-EXPLICIT ITERATION COUNT (EQUIPARTITION FLOOR)
+-- ═══════════════════════════════════════════════════════════════════
+
+/-- **k-explicit tower-free AFKS iteration count.**  Specialising the sharp
+    per-step-witness bound `afks_sharp_energy_iteration_count_of_prod_witness`
+    (`N ≤ n²/(ε⁴·m²)`, with `n = |V|` and `m` the uniform refined-pair mass floor)
+    to the *equipartition* mass floor `m = n/k` — every refined part carries at least
+    a `1/k` fraction of the vertices, as it does while the partition stays coarser than
+    `k` parts of size `≈ n/k` — collapses the vertex count entirely:
+
+    `N ≤ n² / (ε⁴ · (n/k)²) = k² / ε⁴`.
+
+    This is the textbook *tower-free, dimension-free* AFKS bound: the number of sharp
+    `2×2` irregular-refinement steps sustainable against an equipartition into `k` parts
+    is at most `k²/ε⁴`, independent of the number of vertices `n`.  Everything below the
+    substitution — the size-dependent cell gain, the `[0,1]`-potential termination engine,
+    and the flooring `|A||B| ≥ (n/k)²` — is inherited fully machine-checked from the
+    underlying witness bound; the only new content is eliminating `n` from the estimate. -/
+theorem afks_sharp_iteration_count_equipartition
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (parts : ℕ → Finset (Finset V)) (N k : ℕ) (eps : ℚ)
+    (hε : 0 < eps) (hk : 0 < k) (hcard : 0 < (Fintype.card V : ℚ))
+    (hcover : ∀ n, ∀ v : V, ∃ P ∈ parts n, v ∈ P)
+    (hdisjoint : ∀ n, ∀ P Q : Finset V, P ∈ parts n → Q ∈ parts n → P ≠ Q →
+      Disjoint P Q)
+    (hwit : ∀ n, n < N → ∃ R : Finset (Finset V), ∃ A B A₁ A₂ B₁ B₂ : Finset V,
+      parts n = insert A (insert B R) ∧
+      parts (n + 1) = insert A₁ (insert A₂ (insert B₁ (insert B₂ R))) ∧
+      A₁ ∪ A₂ = A ∧ B₁ ∪ B₂ = B ∧ Disjoint A₁ A₂ ∧ Disjoint B₁ B₂ ∧
+      A ∉ insert B R ∧ B ∉ R ∧
+      A₁ ∉ insert A₂ (insert B₁ (insert B₂ R)) ∧ A₂ ∉ insert B₁ (insert B₂ R) ∧
+      B₁ ∉ insert B₂ R ∧ B₂ ∉ R ∧
+      (Fintype.card V : ℚ) / k ≤ (A.card : ℚ) ∧ (Fintype.card V : ℚ) / k ≤ (B.card : ℚ) ∧
+      eps * A.card ≤ (A₁.card : ℚ) ∧ eps * B.card ≤ (B₁.card : ℚ) ∧
+      eps ≤ |edgeDensity G A₁ B₁ - edgeDensity G A B|) :
+    (N : ℚ) ≤ (k : ℚ) ^ 2 / eps ^ 4 := by
+  have hepsne : eps ≠ 0 := hε.ne'
+  have hcardne : (Fintype.card V : ℚ) ≠ 0 := hcard.ne'
+  have hkq : (0 : ℚ) < (k : ℚ) := by exact_mod_cast hk
+  have hkne : (k : ℚ) ≠ 0 := hkq.ne'
+  have hmpos : (0 : ℚ) < (Fintype.card V : ℚ) / k := div_pos hcard hkq
+  have hle := afks_sharp_energy_iteration_count_of_prod_witness
+    G parts N eps ((Fintype.card V : ℚ) / k) hε hmpos hcard hcover hdisjoint hwit
+  have heq : (Fintype.card V : ℚ) ^ 2 / (eps ^ 4 * ((Fintype.card V : ℚ) / k) ^ 2)
+      = (k : ℚ) ^ 2 / eps ^ 4 := by
+    field_simp
+  rwa [heq] at hle
+
 end Szemeredi.RegularityOQ04Bridge
