@@ -679,4 +679,41 @@ theorem sublevelSup'_mem_Icc :
     ENNReal.ofReal (2 * Real.sqrt 2) ≤ sublevelSup' ∧ sublevelSup' ≤ ENNReal.ofReal 4 :=
   ⟨le_sublevelSup', sublevelSup'_le_four⟩
 
+/-! ### Boundedness and finiteness
+
+The `⊆ (−2, 2)` confinement gives more than the numeric `≤ 4` bound: the faithful sublevel
+set is a *bounded* set (complementing `isOpen_sublevelSet`, so it is a bounded open set), each
+faithful sublevel *measure* is finite, and — packaging the `≤ 4` supremum bound as a
+`⊤`-finiteness statement — the extremal supremum `sublevelSup'` is itself finite. The Erdős
+#1038 extremal constant is therefore a genuine real number, not `∞`, with no potential theory. -/
+
+/-- **The faithful sublevel set is bounded.**  It is confined to `(−2, 2)`
+(`sublevelSet_subset_Ioo`), a bounded interval; together with `isOpen_sublevelSet` this
+exhibits it as a bounded open subset of `ℝ`. -/
+theorem isBounded_sublevelSet {f : Polynomial ℝ} (hf : MonicRealRootedIn01' f) :
+    Bornology.IsBounded (sublevelSet f) :=
+  Metric.isBounded_Ioo (-2 : ℝ) 2 |>.subset (sublevelSet_subset_Ioo hf)
+
+/-- **Each faithful sublevel measure is finite** (`< ⊤`), from the uniform `≤ 4` bound. -/
+theorem sublevelMeasure_lt_top {f : Polynomial ℝ} (hf : MonicRealRootedIn01' f) :
+    sublevelMeasure f < ⊤ :=
+  lt_of_le_of_lt (sublevelMeasure_le_four hf) ENNReal.ofReal_lt_top
+
+/-- **Each faithful sublevel measure is finite** (`≠ ⊤`), the `Ne` form of
+`sublevelMeasure_lt_top`. -/
+theorem sublevelMeasure_ne_top {f : Polynomial ℝ} (hf : MonicRealRootedIn01' f) :
+    sublevelMeasure f ≠ ⊤ :=
+  (sublevelMeasure_lt_top hf).ne
+
+/-- **The faithful extremal supremum is finite** (`sublevelSup' < ⊤`).  Packaging
+`sublevelSup' ≤ 4` as a `⊤`-finiteness statement: the open Erdős #1038 extremal constant is a
+genuine finite real number, not `∞`. -/
+theorem sublevelSup'_lt_top : sublevelSup' < ⊤ :=
+  lt_of_le_of_lt sublevelSup'_le_four ENNReal.ofReal_lt_top
+
+/-- **The faithful extremal supremum is finite** (`sublevelSup' ≠ ⊤`), the `Ne` form of
+`sublevelSup'_lt_top`. -/
+theorem sublevelSup'_ne_top : sublevelSup' ≠ ⊤ :=
+  sublevelSup'_lt_top.ne
+
 end Erdos1038WIP01
