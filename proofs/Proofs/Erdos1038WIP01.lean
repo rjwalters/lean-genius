@@ -548,6 +548,34 @@ theorem le_sublevelSup'_of_mem {m : ℝ} (hm : 2 ≤ m) (hm2 : m < 2 * Real.sqrt
   rw [← hmeas]
   exact le_iSup_of_le f (le_iSup_of_le hf le_rfl)
 
+/-- **The extremal endpoint `2√2` is itself attained** — closing the attained interval.
+    `exists_faithful_sublevelMeasure_eq` realises every `m ∈ [2, 2√2)` by a distinct-root
+    quadratic `X² − d`, but stops *short* of the endpoint (`d < 1`).  The endpoint is
+    supplied by the boundary case `d = 1`, i.e. the extremal quadratic `q = X² − 1`
+    itself, whose sublevel measure is exactly `2√2` (`sublevelMeasure_quadratic`) and which
+    is faithfully admissible (`quadratic_admissible'`).  Hence every measure value in the
+    *closed* interval `[2, 2√2]` is attained by a faithful admissible polynomial — the full
+    elementary sup-side spectrum, endpoint included. -/
+theorem exists_faithful_sublevelMeasure_eq_Icc {m : ℝ} (hm : 2 ≤ m)
+    (hm2 : m ≤ 2 * Real.sqrt 2) :
+    ∃ f : Polynomial ℝ, MonicRealRootedIn01' f ∧
+      sublevelMeasure f = ENNReal.ofReal m := by
+  rcases eq_or_lt_of_le hm2 with hmeq | hmlt
+  · exact ⟨q, quadratic_admissible', by rw [sublevelMeasure_quadratic, hmeq]⟩
+  · exact exists_faithful_sublevelMeasure_eq hm hmlt
+
+/-- **The closed interval `[2, 2√2]` lies inside the attained faithful-measure spectrum.**
+    Set-level form of `exists_faithful_sublevelMeasure_eq_Icc`: every real `m` between the
+    clustered-root minimum `2` and the extremal maximum `2√2` is the (real) sublevel
+    measure of some faithfully admissible monic polynomial.  This is the complete
+    elementary description of the lower half `[2, 2√2]` of the extremal spectrum
+    `[2^(4/3) − 1, 2√2]` — no potential theory, endpoint included. -/
+theorem Icc_subset_faithful_attained :
+    Set.Icc (2 : ℝ) (2 * Real.sqrt 2) ⊆
+      {m : ℝ | ∃ f : Polynomial ℝ, MonicRealRootedIn01' f ∧
+        sublevelMeasure f = ENNReal.ofReal m} :=
+  fun _ hm => exists_faithful_sublevelMeasure_eq_Icc hm.1 hm.2
+
 /-! ### The faithful and literal extremal objects are ordered
 
 The faithful predicate `MonicRealRootedIn01'` is *stronger* than `MonicRealRootedIn01`

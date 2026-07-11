@@ -153,3 +153,40 @@ in-file patterns); flag clean-cache/host rebuild to confirm before treating as v
 STILL OPEN (potential theory beyond Mathlib): exact faithful infimum `2^(4/3)−1`, the matching
 `sublevelSup' = 2√2` upper bound. Cheap next win: the distinct-root cubic/quartic measures, or
 a monotone-in-`d` statement that `2√(d+1)` is strictly increasing (density of attained values).
+
+## Session 2026-07-11 (researcher-6) — close the attained interval to [2, 2√2] (endpoint included)
+
+**Mode:** REVISIT (RICH, saturated). **Outcome:** +2 theorems, 0 axioms / 0 sorries,
+VERIFIED via local lean 4.26.0 (`#print axioms` = [propext, Classical.choice, Quot.sound]).
+
+Prior sessions gave `exists_faithful_sublevelMeasure_eq`: every measure `m ∈ [2, 2√2)` is
+attained by a faithful distinct-root quadratic `X² − d` — but the interval was **half-open**,
+stopping short of the extremal endpoint (`d < 1` in the quadratic family). The endpoint is
+the boundary case `d = 1`, i.e. the extremal quadratic `q = X² − 1` itself, which is already
+in-file proven faithfully admissible (`quadratic_admissible'`) with measure exactly `2√2`
+(`sublevelMeasure_quadratic`). Wired these together:
+
+- `exists_faithful_sublevelMeasure_eq_Icc {m} (2 ≤ m) (m ≤ 2√2)` — every `m` in the
+  **closed** interval `[2, 2√2]` is an attained faithful sublevel measure. Proof:
+  `rcases eq_or_lt_of_le hm2` → endpoint case discharged by `q`/`quadratic_admissible'`/
+  `sublevelMeasure_quadratic`, interior case delegates to `exists_faithful_sublevelMeasure_eq`.
+- `Icc_subset_faithful_attained` — set-level form: `Set.Icc 2 (2√2) ⊆ {m | ∃ f, faithful f ∧
+  sublevelMeasure f = ofReal m}`. One-line `fun _ hm => …_Icc hm.1 hm.2`.
+
+**Upshot:** the elementary lower half `[2, 2√2]` of the extremal spectrum
+`[2^(4/3) − 1, 2√2]` is now *completely* described — every value attained, endpoint and all,
+with no potential theory. Only the sharp upper bound `sublevelSup' = 2√2` and the exact
+faithful infimum `2^(4/3) − 1` remain open (both need logarithmic potential theory, Tao 2025,
+absent from Mathlib).
+
+**Files Modified:** proofs/Proofs/Erdos1038WIP01.lean (+2 thms; 682→710 lines). Gallery
+meta (`src/data/proofs/erdos-1038/meta.json`) tracks the 93-line stub `Erdos1038Problem.lean`,
+NOT this WIP research file, so it is left untouched.
+
+**Verify recipe:** local `~/.elan/.../v4.26.0/bin/lean Proofs/Erdos1038WIP01.lean` with
+`LEAN_PATH` = every `.lake/packages/*/.lake/build/lib/lean` — EXIT 0, 0 errors (two pre-existing
+warnings at 113 simpa / 701 unused-f untouched). Docker not needed. **HAZARD this session:**
+the shared primary checkout `/Users/rwalters/GitHub/lean-genius` was on *another agent's* branch
+(`feature/enricher-5-4-altseries2`, its own 682-line variant) and got `git reset`-wiped mid-edit;
+local `main` ref was also stale (behind origin). Base research worktrees on **`origin/main`**
+(fetch first), external path `/Users/rwalters/lg-r6-*`, symlink `proofs/.lake`, commit immediately.
