@@ -173,6 +173,16 @@
       "targetId": "amgm-inequality",
       "relationship": "related",
       "description": "Recovers the AM–GM inequality as the endpoints M₁ ≥ M₃ of the three-variable Maclaurin chain."
+    },
+    {
+      "targetId": "amgm-inequality-oq-02-oq-01-oq-05-oq-01",
+      "relationship": "related",
+      "description": "Proves the very same k=2 rung e₂² ≥ 3e₁e₃ via an explicit SOS certificate but for ALL reals (no nonnegativity hypothesis), with the exact equality locus xy = yz = zx. This entry establishes it for nonnegative inputs as part of the full n=3 chain; that one is the strict all-reals strengthening of one rung."
+    },
+    {
+      "targetId": "newton-inductive-step-oq-01",
+      "relationship": "related",
+      "description": "The general-n Newton log-concavity inequality eₖ² ≥ eₖ₋₁·eₖ₊₁ for nonnegative reals. This entry discharges its n=3 case (both rungs) axiom-free via explicit SOS symmetrization, giving a self-contained base for the general induction."
     }
   ],
   "references": [
