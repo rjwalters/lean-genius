@@ -145,6 +145,32 @@
       "mathContext": "The full equivalence isolating the sole open combinatorial ingredient of the simplicity theorem."
     }
   ],
+  "theorems": [
+    {
+      "name": "threeCycle_normal_eq_top",
+      "type": "core",
+      "description": "Core reduction: a normal subgroup H of the alternating group on α (with 5 ≤ card α) that contains a 3-cycle must be the whole group. Upgrades Mathlib's IsThreeCycle.alternating_normalClosure (the normal closure of a single 3-cycle) to an arbitrary normal subgroup — the normal closure sits inside H by normality and equals ⊤.",
+      "leanType": "(h5 : 5 ≤ Fintype.card α) → {H : Subgroup (alternatingGroup α)} → H.Normal → {g : alternatingGroup α} → IsThreeCycle (g : Perm α) → g ∈ H → H = ⊤"
+    },
+    {
+      "name": "isSimpleGroup_of_forall_normal_contains_threeCycle",
+      "type": "core",
+      "description": "Simplicity reduction (forward): if every nontrivial normal subgroup of Aₙ (n ≥ 5) contains a 3-cycle, then Aₙ is simple. Each nontrivial normal subgroup is forced up to ⊤ by threeCycle_normal_eq_top.",
+      "leanType": "(h5 : 5 ≤ Fintype.card α) → (∀ H : Subgroup (alternatingGroup α), H.Normal → H ≠ ⊥ → ∃ g, IsThreeCycle (g : Perm α) ∧ g ∈ H) → IsSimpleGroup (alternatingGroup α)"
+    },
+    {
+      "name": "forall_normal_contains_threeCycle_of_isSimpleGroup",
+      "type": "core",
+      "description": "Converse: if Aₙ (n ≥ 5) is simple, then every nontrivial normal subgroup contains a 3-cycle — it must equal ⊤, which contains the concrete 3-cycle (a b)(a c) built from any three distinct points (available since card α ≥ 3).",
+      "leanType": "[IsSimpleGroup (alternatingGroup α)] → (h5 : 5 ≤ Fintype.card α) → (H : Subgroup (alternatingGroup α)) → H.Normal → H ≠ ⊥ → ∃ g, IsThreeCycle (g : Perm α) ∧ g ∈ H"
+    },
+    {
+      "name": "isSimpleGroup_alternating_iff",
+      "type": "core",
+      "description": "Headline characterization: for n ≥ 5, Aₙ is simple iff every nontrivial normal subgroup contains a 3-cycle. The right-hand side is the sole genuinely combinatorial ingredient of the classical simplicity theorem; the equivalence shows everything else is formal.",
+      "leanType": "(h5 : 5 ≤ Fintype.card α) → (IsSimpleGroup (alternatingGroup α) ↔ ∀ H : Subgroup (alternatingGroup α), H.Normal → H ≠ ⊥ → ∃ g, IsThreeCycle (g : Perm α) ∧ g ∈ H)"
+    }
+  ],
   "conclusion": {
     "summary": "For every finite type `α` with `5 ≤ card α`, the alternating group `alternatingGroup α` is simple **iff** every nontrivial normal subgroup contains a 3-cycle (`isSimpleGroup_alternating_iff`), proved with 0 sorries and 0 axioms. The reusable core `threeCycle_normal_eq_top` shows any normal subgroup containing a 3-cycle is already the whole group, upgrading Mathlib's singleton normal-closure computation.",
     "implications": "Mathlib stops at `IsSimpleGroup (alternatingGroup (Fin 5))`. This entry shows that extending simplicity to all `n ≥ 5` requires *exactly one* new ingredient — the criterion that every nontrivial normal subgroup contains a 3-cycle — and that everything else (conjugacy of 3-cycles, their generation of Aₙ, the normal closure computation, the `⊥`/`⊤` dichotomy, nontriviality) is already formal. A future proof of general-`n` simplicity can target that single criterion and obtain `IsSimpleGroup` for free via `isSimpleGroup_of_forall_normal_contains_threeCycle`.",
