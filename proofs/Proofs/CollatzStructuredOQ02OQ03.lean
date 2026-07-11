@@ -1071,6 +1071,31 @@ theorem colMin_pow_two_eq_one (k : ℕ) : colMin (2 ^ k) = 1 := by
   have hpos := colMin_pos (n := 2 ^ k) (by positivity)
   omega
 
+/-- **Doubling-invariance of the orbit minimum.**  `colMin (2n) = colMin n`: the orbit
+minimum is unchanged when the start is doubled.  Indeed `collatz (2n) = n`
+(`collatz_two_mul`), so the orbit of `2n` is `2n` followed by the entire orbit of `n`;
+since `colMin n ≤ n ≤ 2n` the doubled head `2n` is never the minimum, and the two orbits
+share their infimum.  Formally, `colMin (2n) = min (2n) (colMin n) = colMin n` via
+`colMin_eq_min_collatz`.  This is the general structural fact underlying
+`colMin_pow_two_eq_one` (the `n = 1` iterate). -/
+theorem colMin_two_mul (n : ℕ) : colMin (2 * n) = colMin n := by
+  rw [colMin_eq_min_collatz (2 * n), collatz_two_mul]
+  have h : colMin n ≤ n := colMin_le_self n
+  omega
+
+/-- **Invariance of the orbit minimum under multiplication by a power of two.**
+`colMin (2^k · n) = colMin n`: prepending any number of halving steps (i.e. starting from
+`2^k · n` instead of `n`) leaves the orbit minimum unchanged, since each doubling is
+absorbed by `colMin_two_mul`.  Taking `n = 1` recovers `colMin (2^k) = 1`
+(`colMin_pow_two_eq_one`); the `2`-adic valuation of the start is irrelevant to its
+orbit minimum. -/
+theorem colMin_two_pow_mul (k n : ℕ) : colMin (2 ^ k * n) = colMin n := by
+  induction k with
+  | zero => simp
+  | succ k ih =>
+    have hrw : 2 ^ (k + 1) * n = 2 * (2 ^ k * n) := by ring
+    rw [hrw, colMin_two_mul, ih]
+
 /-- **Bridge between Parts II and III.**  Any number that attains a value below
 itself has orbit minimum strictly below its start: `colMin n < n`.  This connects
 the explicit drop-below families to Tao's `Col_min` predicate (the `f n = n`
