@@ -615,4 +615,58 @@ theorem subsetSums_card_powersOfTwo (k : ℕ) :
   have h := subsetSums_card_superincreasing (superincreasing_powersOfTwo k)
   rwa [powersOfTwo_card] at h
 
+/-!
+### The counting-extremal regime is NOT the Erdős #882 validity regime
+
+Everything above characterises the sets that *maximise* the number of distinct
+non-empty subset sums: superincreasing sets, and the canonical witness
+`{2^0,…,2^{k-1}}`.  Erdős #882, however, asks for sets whose subset sums are
+**divisibility-free** (`ValidSubset`), and these two optimality notions are
+genuinely different — indeed *incompatible* on the extremal family.  The reason is
+elementary: the powers-of-two family contains `1` as a subset sum, and `1` divides
+everything, so no set of subset sums containing `1` alongside any other value can be
+divisibility-free.  Thus the subset-sum *counting* champion is the *worst possible*
+candidate for the divisibility-free problem.  These lemmas make that separation
+precise, closing the gap flagged in the file's research notes.
+-/
+
+/-- **A subset sum equal to `1` destroys divisibility-freeness.**  If `1 ∈ S` and `S`
+has any other element `b ≠ 1`, then `S` is not divisibility-free: `1 ∣ b` violates the
+`¬(1 ∣ b)` clause.  (`1` divides every natural, so it can never coexist with a second
+value in a divisibility-free set.) -/
+theorem not_divisibilityFree_of_one_mem {S : Finset ℕ} (h1 : 1 ∈ S)
+    (hb : ∃ b ∈ S, b ≠ 1) : ¬ DivisibilityFree S := by
+  obtain ⟨b, hbS, hb1⟩ := hb
+  intro hdf
+  exact (hdf 1 h1 b hbS (fun h => hb1 h.symm)).1 (one_dvd b)
+
+/-- **The extremal powers-of-two family has non-divisibility-free subset sums.**
+For `k ≥ 2` the counting-optimal set `{2^0,…,2^{k-1}}` (which realises all `2^k − 1`
+distinct subset sums) fails the Erdős #882 constraint: both `1 = 2^0` and `2 = 2^1`
+are subset sums, and `1 ∣ 2`.  So maximising the subset-sum *count* is directly at
+odds with divisibility-freeness. -/
+theorem not_divisibilityFree_subsetSums_powersOfTwo {k : ℕ} (hk : 2 ≤ k) :
+    ¬ DivisibilityFree (subsetSums (powersOfTwo k)) := by
+  have h1mem : (1 : ℕ) ∈ powersOfTwo k := by
+    rw [mem_powersOfTwo]; exact ⟨0, by omega, by norm_num⟩
+  have h2mem : (2 : ℕ) ∈ powersOfTwo k := by
+    rw [mem_powersOfTwo]; exact ⟨1, by omega, by norm_num⟩
+  have h1 : (1 : ℕ) ∈ subsetSums (powersOfTwo k) := subset_subsetSums _ h1mem
+  have h2 : (2 : ℕ) ∈ subsetSums (powersOfTwo k) := subset_subsetSums _ h2mem
+  exact not_divisibilityFree_of_one_mem h1 ⟨2, h2, by norm_num⟩
+
+/-- **Subset-sum counting-extremality does not imply Erdős #882 validity.**
+For every `k ≥ 2` there is a `k`-element superincreasing set — realising the full
+`2^k − 1` distinct non-empty subset sums (`subsetSums_card_superincreasing`) — whose
+subset sums are *not* divisibility-free.  Witnessed by `{2^0,…,2^{k-1}}`.  This
+cleanly separates the two extremal regimes: the family that maximises the number of
+subset sums is exactly the one that maximally violates the divisibility-free
+condition, so Erdős #882's optimum lies strictly away from the superincreasing
+champion. -/
+theorem exists_superincreasing_not_divisibilityFree {k : ℕ} (hk : 2 ≤ k) :
+    ∃ A : Finset ℕ, Superincreasing A ∧ A.card = k ∧
+      ¬ DivisibilityFree (subsetSums A) :=
+  ⟨powersOfTwo k, superincreasing_powersOfTwo k, powersOfTwo_card k,
+    not_divisibilityFree_subsetSums_powersOfTwo hk⟩
+
 end Erdos882OQ03
