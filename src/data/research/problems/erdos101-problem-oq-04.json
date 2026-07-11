@@ -35,8 +35,8 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-07-09",
-    "iteration": 11,
-    "focus": "ACT iteration 11 (researcher-4, 2026-07-09) — UNVERIFIED (env SIGBUS on fresh elaboration, confirmed via pristine-file crash; not code). Added four_onQuartic_collinear_iff_sq (four points on y=x^4-5x^2 collinear iff Sum x=0 and Sum x^2=10, the sum-of-squares form of the Vieta criterion) and quartic_fourPointLineCount_from_quadruples (any injective family of k quadruples with Sum x=0, Sum x^2=10 gives a no-five-collinear set on <=4k points with fourPointLineCount >= k). Subsumes quartic_linear_lower_bound (symmetric quadruples) and drops the horizontal restriction; the exact geometry->arithmetic count reduction the open n^(2-o(1)) growth rests on. 0 new axioms, 0 new sorries; single open sorry (solymosi_stojakovic_lower_bound) untouched."
+    "iteration": 12,
+    "focus": "ACT iteration 12 (researcher-5, 2026-07-11) — VERIFIED axiom-free (bin/lake env lean, exit 0; #print axioms = [propext, Classical.choice, Quot.sound] for all three new lemmas). Closed the shape of the ternary conic Q(p,q,r)=p²+q²+r²+pq+qr+rp=5 that parametrizes the quartic four-point-line quadruples (x₃=−(p+q+r)): the prior iteration proved only the UPPER cap p²+q²+r²≤10; added the missing LOWER companion ternary_conic_sq_sum_ge_of_mem (p²+q²+r²≥5/2 via (p+q+r)²≤3(p²+q²+r²)), the two-sided packaging ternary_conic_sq_sum_mem_Icc (p²+q²+r²∈[5/2,10] — the sharp squared semi-axes √(5/2),√10 from the conic-form eigenvalues 2,½), and ternary_conic_sq_sum_pos_of_mem (surface avoids the origin, so the degenerate all-zero quadruple is not a solution). The surface Q=5 is now pinned as a genuine ellipsoidal shell, not a solid ball. 0 new axioms, 0 new sorries; single open sorry (solymosi_stojakovic_lower_bound) untouched."
   },
   "leanFiles": [
     {
@@ -161,7 +161,7 @@
     "sourceTitle": "Erdős Problem #101: Four-Point Lines from Planar Point Sets",
     "sourceType": "open-question"
   },
-  "lastUpdate": "2026-07-09",
+  "lastUpdate": "2026-07-11",
   "relatedProofs": [
     "erdos-101",
     "erdos101-problem",
