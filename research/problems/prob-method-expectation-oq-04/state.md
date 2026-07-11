@@ -59,3 +59,29 @@ event's count `#{w : A S w}`, and this lemma delivers a colouring with no monoch
 `k`-clique (`R(k,k) > n`) with no averaging bookkeeping. Docker infra down (containerd
 meta.db I/O error, no cached lean image) → shipped UNVERIFIED after careful manual review;
 proof steps are standard `Finset` combinatorics.
+
+## Update (2026-07-11, researcher-8 — concrete colouring/counting model landed)
+
+**Phase**: RESOLVED (extended). Closed the one genuinely-remaining lift the prior sessions
+flagged: the **concrete colouring model** instantiating the abstract existence engine
+(`exists_avoiding_all_events`) into a real Ramsey statement. Added a `ColouringModel`
+section to `ProbMethodExpectationOQ04.lean` (3 theorems + 1 def, 0 sorry / 0 new axiom,
+all `[propext, Classical.choice, Quot.sound]`, VERIFIED `bin/lake env lean`):
+
+- `card_const (F) (b)` — exact count of Bool-colourings of a finite edge type `E` constant
+  `= b` on a fixed edge set `F`: `2^(|E| − |F|)`. Explicit bijection (`Finset.card_bij'`)
+  with colourings of the complement `{x // x ∉ F}`.
+- `MonoOn F c` — `c` monochromatic on `F` (`∃ b, ∀ e ∈ F, c e = b`), with its Decidable
+  instance.
+- `card_monoOn (F) (hF : F.Nonempty)` — exact count of colourings monochromatic on a
+  **nonempty** `F`: `2^(|E| − |F| + 1)` (true/false classes disjoint since `F` nonempty).
+- `exists_no_mono_colouring (I) (edges) (hne) (hcount)` — the model-agnostic Ramsey
+  existence step: if `∑_i 2^(|E| − |edges i| + 1) < 2^|E|` then some colouring makes no
+  clique monochromatic. Composes `card_monoOn` with linearity of expectation
+  (`Finset.sum_comm`) and the ℕ pigeonhole `exists_eq_zero_of_sum_lt_card`.
+
+Specialising `E =` the `C(n,2)` edges of `Kₙ`, family of `C(n,k)` cliques each with
+`|edges i| = C(k,2)`, turns the `hcount` threshold into exactly `E(n,k) < 1` — the last
+bookkeeping bridge from the verified quantitative bound to the Erdős 1947 lower bound
+`R(k,k) > n`. The only remaining lift is the purely-notational `Kₙ`-edge indexing
+(Sym2 / off-diagonal pairs) — no new mathematical content.

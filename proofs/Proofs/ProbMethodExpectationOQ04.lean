@@ -402,4 +402,141 @@ theorem expectedMonoCliques_lt_one_of_lt_sqrt {n k : ℕ} (hk : 3 ≤ k)
   have hcast : ((n ^ 2 : ℕ) : ℝ) < ((2 ^ k : ℕ) : ℝ) := by push_cast; linarith
   exact_mod_cast hcast
 
+/-! ## The concrete colouring/counting model: a self-contained Ramsey existence
+
+The sections above closed the *quantitative* half of OQ-04 (`E(n,k) < 1` whenever
+`n² < 2^k`) and supplied the abstract *existence* engine
+(`exists_avoiding_all_events`) that turns "expected number of bad events `< 1`" into a
+sample avoiding every event.  What was still missing was the **concrete colouring model**
+instantiating that engine — the piece the knowledge base flagged as the genuinely-remaining
+lift.  This section provides it, entirely combinatorially and model-agnostically.
+
+Model a 2-colouring of a finite set of edges `E` as a function `c : E → Bool`.  A "clique"
+is an edge set `F : Finset E`; it is **monochromatic** under `c` when all its edges share a
+colour.  The two facts a probabilistic-method Ramsey argument needs are:
+
+* `card_const` / `card_monoOn` — the *exact* count of colourings monochromatic on a fixed
+  nonempty edge set `F` is `2^(|E| − |F| + 1)` (choose the common colour two ways, the
+  `|E| − |F|` edges outside `F` are free).
+* `exists_no_mono_colouring` — if `∑_F 2^(|E| − |F| + 1) < 2^|E|` over the clique family,
+  some colouring makes **no** clique monochromatic.
+
+Specialising to `E =` the `C(n,2)` edges of `Kₙ` and the family of `C(n,k)` many `k`-cliques
+(each with `|F| = C(k,2)` internal edges) turns the counting threshold into exactly
+`E(n,k) < 1`, delivering the Erdős 1947 bound `R(k,k) > n`. -/
+
+section ColouringModel
+
+variable {E : Type*} [Fintype E] [DecidableEq E] {ι : Type*}
+
+/-- **Count of colourings constant on an edge set.**  The number of Bool-colourings of a
+finite edge set `E` that take the fixed value `b` on every edge of `F` is `2^(|E| − |F|)`:
+the `|E| − |F|` edges outside `F` are unconstrained.  Proved by an explicit bijection with
+the colourings of the complement of `F`. -/
+theorem card_const (F : Finset E) (b : Bool) :
+    (Finset.univ.filter (fun c : E → Bool => ∀ e ∈ F, c e = b)).card
+      = 2 ^ (Fintype.card E - F.card) := by
+  classical
+  have hbij :
+      (Finset.univ.filter (fun c : E → Bool => ∀ e ∈ F, c e = b)).card
+        = (Finset.univ : Finset ({x : E // x ∉ F} → Bool)).card := by
+    refine Finset.card_bij'
+      (fun c _ => fun x : {x : E // x ∉ F} => c x.1)
+      (fun h _ => fun e => if he : e ∈ F then b else h ⟨e, he⟩)
+      ?_ ?_ ?_ ?_
+    · intro c _; exact Finset.mem_univ _
+    · intro h _
+      refine Finset.mem_filter.mpr ⟨Finset.mem_univ _, ?_⟩
+      intro e he; simp [he]
+    · intro c hc
+      have hct : ∀ e ∈ F, c e = b := (Finset.mem_filter.mp hc).2
+      funext e
+      by_cases he : e ∈ F
+      · simp [he, hct e he]
+      · simp [he]
+    · intro h _
+      funext x
+      have : x.1 ∉ F := x.2
+      simp [this]
+  rw [hbij, Finset.card_univ, Fintype.card_fun, Fintype.card_subtype_compl,
+    Fintype.card_coe]
+  norm_num
+
+/-- A colouring `c` is **monochromatic** on the edge set `F` when all edges of `F`
+share a colour. -/
+def MonoOn (F : Finset E) (c : E → Bool) : Prop := ∃ b, ∀ e ∈ F, c e = b
+
+instance (F : Finset E) (c : E → Bool) : Decidable (MonoOn F c) := by
+  unfold MonoOn; infer_instance
+
+/-- **Count of monochromatic colourings on a nonempty edge set.**  For a nonempty `F`, the
+number of colourings monochromatic on `F` is `2^(|E| − |F| + 1)`: two colour choices, then
+the `|E| − |F|` edges outside `F` are free.  The two colour classes are disjoint precisely
+because `F` is nonempty. -/
+theorem card_monoOn (F : Finset E) (hF : F.Nonempty) :
+    (Finset.univ.filter (fun c : E → Bool => MonoOn F c)).card
+      = 2 ^ (Fintype.card E - F.card + 1) := by
+  classical
+  have hsplit :
+      (Finset.univ.filter (fun c : E → Bool => MonoOn F c))
+        = (Finset.univ.filter (fun c : E → Bool => ∀ e ∈ F, c e = true))
+          ∪ (Finset.univ.filter (fun c : E → Bool => ∀ e ∈ F, c e = false)) := by
+    ext c
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_union, MonoOn]
+    constructor
+    · rintro ⟨b, hb⟩; cases b
+      · exact Or.inr hb
+      · exact Or.inl hb
+    · rintro (h | h)
+      · exact ⟨true, h⟩
+      · exact ⟨false, h⟩
+  have hdisj :
+      Disjoint (Finset.univ.filter (fun c : E → Bool => ∀ e ∈ F, c e = true))
+        (Finset.univ.filter (fun c : E → Bool => ∀ e ∈ F, c e = false)) := by
+    rw [Finset.disjoint_left]
+    intro c hct hcf
+    obtain ⟨e, he⟩ := hF
+    have h1 : c e = true := (Finset.mem_filter.mp hct).2 e he
+    have h2 : c e = false := (Finset.mem_filter.mp hcf).2 e he
+    rw [h1] at h2; exact absurd h2 (by decide)
+  rw [hsplit, Finset.card_union_of_disjoint hdisj, card_const, card_const]
+  ring
+
+/-- **Concrete probabilistic-method Ramsey existence.**  Over a finite edge type `E`, a
+finite family of "cliques" indexed by `I`, each carrying a nonempty edge set `edges i`, if
+the total `∑_i 2^(|E| − |edges i| + 1)` of monochromatic-colouring counts is strictly below
+the total number of colourings `2^|E|`, then some 2-colouring makes **no** clique
+monochromatic.  This is exactly the existence step of the probabilistic method with the
+colouring model plugged in: it composes the exact count `card_monoOn` with linearity of
+expectation (`Finset.sum_comm`) and the integrality pigeonhole `exists_eq_zero_of_sum_lt_card`.
+Specialised to `Kₙ` (with `|E| = C(n,2)`, `C(n,k)` cliques of `|edges i| = C(k,2)`) the
+hypothesis becomes `E(n,k) < 1`, yielding the Erdős 1947 bound `R(k,k) > n`. -/
+theorem exists_no_mono_colouring (I : Finset ι) (edges : ι → Finset E)
+    (hne : ∀ i ∈ I, (edges i).Nonempty)
+    (hcount : ∑ i ∈ I, 2 ^ (Fintype.card E - (edges i).card + 1) < 2 ^ Fintype.card E) :
+    ∃ c : E → Bool, ∀ i ∈ I, ¬ MonoOn (edges i) c := by
+  classical
+  set g : (E → Bool) → ℕ := fun c => (I.filter (fun i => MonoOn (edges i) c)).card with hg
+  have hsum : ∑ c ∈ (Finset.univ : Finset (E → Bool)), g c
+      < (Finset.univ : Finset (E → Bool)).card := by
+    have hdc : ∑ c ∈ Finset.univ, g c
+        = ∑ i ∈ I, (Finset.univ.filter (fun c => MonoOn (edges i) c)).card := by
+      simp_rw [hg, Finset.card_filter]
+      rw [Finset.sum_comm]
+    rw [hdc]
+    have hcnt : ∑ i ∈ I, (Finset.univ.filter (fun c => MonoOn (edges i) c)).card
+        = ∑ i ∈ I, 2 ^ (Fintype.card E - (edges i).card + 1) :=
+      Finset.sum_congr rfl (fun i hi => card_monoOn (edges i) (hne i hi))
+    rw [hcnt, Finset.card_univ, Fintype.card_fun]
+    simpa using hcount
+  obtain ⟨c, _, hc0⟩ :=
+    exists_eq_zero_of_sum_lt_card (s := (Finset.univ : Finset (E → Bool))) (g := g) hsum
+  refine ⟨c, fun i hi hmono => ?_⟩
+  have hmem : i ∈ I.filter (fun i => MonoOn (edges i) c) := Finset.mem_filter.mpr ⟨hi, hmono⟩
+  have hempty : (I.filter (fun i => MonoOn (edges i) c)) = ∅ := Finset.card_eq_zero.mp hc0
+  rw [hempty] at hmem
+  exact absurd hmem (Finset.notMem_empty i)
+
+end ColouringModel
+
 end ProbMethod.ExpectationOQ04
