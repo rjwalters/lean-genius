@@ -30,6 +30,9 @@
     `¼‖⟪ψ,[A,B]ψ⟫‖² + (Re⟪u,v⟫)² ≤ ‖(A−a)ψ‖²·‖(B−b)ψ‖²` (via the Gram form).
   * `robertson_of_schrodinger` — Robertson recovered by dropping the covariance term.
   * `heisenberg_variance_form` — the same at `a = ⟨A⟩`, `b = ⟨B⟩` (variance form).
+  * `robertson_std_form` / `heisenberg_std_form` / `heisenberg_canonical_std` — the
+    literal *standard-deviation* form `Δx·Δp ≥ ½‖⟪[A,B]⟫‖`, i.e. `Δx·Δp ≥ ℏ/2`,
+    obtained by taking square roots of the (squared) variance bounds above.
 
   All results are fully machine-checked (0 axioms, 0 sorries).
 
@@ -529,6 +532,80 @@ theorem heisenberg_canonical {A B : E →ₗ[𝕜] E} (hA : A.IsSymmetric)
   have h := robertson_canonical hA hB ψ (RCLike.re (inner 𝕜 ψ (A ψ)))
     (RCLike.re (inner 𝕜 ψ (B ψ))) c hc
   rwa [hψ, one_pow, mul_one] at h
+
+/-! ## The literal `Δx·Δp ≥ ℏ/2` (product-of-standard-deviations form)
+
+All the results above are stated in the **squared / variance** form
+`Var(A)·Var(B) ≥ ¼‖⟪ψ,[A,B]ψ⟫‖²`.  The Heisenberg principle is more often written in
+its **standard-deviation** form `Δx·Δp ≥ ℏ/2`, i.e. with the square roots taken:
+
+  `‖(A−a)ψ‖·‖(B−b)ψ‖ ≥ ½·‖⟪ψ,[A,B]ψ⟫‖`.
+
+Since both sides are nonnegative, this is *equivalent* to `robertson_uncertainty`,
+obtained by taking `Real.sqrt` of both sides (`Real.sqrt_sq` on the nonnegative
+squared quantities).  We record it explicitly because it is the form that appears
+in physics texts and that the OQ-04 prompt literally asks for. -/
+
+/-- **Robertson uncertainty relation, standard-deviation form.**  The un-squared
+`Δx·Δp ≥ ½|⟪[A,B]⟫|`: for symmetric `A, B`, any state `ψ` and any real shifts `a, b`,
+
+  `½·‖⟪ψ, (AB−BA)ψ⟫‖ ≤ ‖(A−a)ψ‖·‖(B−b)ψ‖`.
+
+This is `robertson_uncertainty` with the square roots taken (both sides are
+nonnegative), the physically standard `Δx·Δp ≥ ℏ/2` shape. -/
+theorem robertson_std_form {A B : E →ₗ[𝕜] E} (hA : A.IsSymmetric)
+    (hB : B.IsSymmetric) (ψ : E) (a b : ℝ) :
+    (1 / 2 : ℝ) * ‖inner 𝕜 ψ (A (B ψ) - B (A ψ))‖
+      ≤ ‖A ψ - (a : 𝕜) • ψ‖ * ‖B ψ - (b : 𝕜) • ψ‖ := by
+  have hrob := robertson_uncertainty hA hB ψ a b
+  have hl : (0 : ℝ) ≤ (1 / 2 : ℝ) * ‖inner 𝕜 ψ (A (B ψ) - B (A ψ))‖ := by positivity
+  have hr : (0 : ℝ) ≤ ‖A ψ - (a : 𝕜) • ψ‖ * ‖B ψ - (b : 𝕜) • ψ‖ :=
+    mul_nonneg (norm_nonneg _) (norm_nonneg _)
+  have key : ((1 / 2 : ℝ) * ‖inner 𝕜 ψ (A (B ψ) - B (A ψ))‖) ^ 2
+      ≤ (‖A ψ - (a : 𝕜) • ψ‖ * ‖B ψ - (b : 𝕜) • ψ‖) ^ 2 := by
+    nlinarith [hrob]
+  calc (1 / 2 : ℝ) * ‖inner 𝕜 ψ (A (B ψ) - B (A ψ))‖
+      = Real.sqrt (((1 / 2 : ℝ) * ‖inner 𝕜 ψ (A (B ψ) - B (A ψ))‖) ^ 2) :=
+        (Real.sqrt_sq hl).symm
+    _ ≤ Real.sqrt ((‖A ψ - (a : 𝕜) • ψ‖ * ‖B ψ - (b : 𝕜) • ψ‖) ^ 2) :=
+        Real.sqrt_le_sqrt key
+    _ = ‖A ψ - (a : 𝕜) • ψ‖ * ‖B ψ - (b : 𝕜) • ψ‖ := Real.sqrt_sq hr
+
+/-- **Heisenberg uncertainty principle, standard-deviation form.**  Instantiating
+`robertson_std_form` at the expectation values `⟨A⟩ = Re⟪ψ,Aψ⟫`, `⟨B⟩ = Re⟪ψ,Bψ⟫`
+makes each factor the standard deviation `Δ_ψ A = ‖(A−⟨A⟩)ψ‖`, `Δ_ψ B = ‖(B−⟨B⟩)ψ‖`,
+giving the physically standard
+
+  `Δ_ψ(A)·Δ_ψ(B) ≥ ½·‖⟪ψ, (AB−BA)ψ⟫‖`. -/
+theorem heisenberg_std_form {A B : E →ₗ[𝕜] E} (hA : A.IsSymmetric)
+    (hB : B.IsSymmetric) (ψ : E) :
+    (1 / 2 : ℝ) * ‖inner 𝕜 ψ (A (B ψ) - B (A ψ))‖
+      ≤ ‖A ψ - ((RCLike.re (inner 𝕜 ψ (A ψ)) : ℝ) : 𝕜) • ψ‖
+        * ‖B ψ - ((RCLike.re (inner 𝕜 ψ (B ψ)) : ℝ) : 𝕜) • ψ‖ :=
+  robertson_std_form hA hB ψ (RCLike.re (inner 𝕜 ψ (A ψ)))
+    (RCLike.re (inner 𝕜 ψ (B ψ)))
+
+/-- **The literal `Δx·Δp ≥ ℏ/2`.**  For a normalized state `‖ψ‖ = 1` obeying a canonical
+commutation relation `(AB − BA)ψ = c • ψ` (abstractly `[x, p] = iℏ`, so `‖c‖ = ℏ`), the
+product of standard deviations is bounded below by `½‖c‖`:
+
+  `Δ_ψ(A)·Δ_ψ(B) ≥ ½‖c‖`.
+
+For `‖c‖ = ℏ` this is exactly Heisenberg's `Δx·Δp ≥ ℏ/2` — the un-squared form of
+`heisenberg_canonical`, obtained from `robertson_std_form` since the commutator
+expectation is `⟪ψ, (AB−BA)ψ⟫ = c‖ψ‖² = c`. -/
+theorem heisenberg_canonical_std {A B : E →ₗ[𝕜] E} (hA : A.IsSymmetric)
+    (hB : B.IsSymmetric) (ψ : E) (hψ : ‖ψ‖ = 1) (c : 𝕜)
+    (hc : A (B ψ) - B (A ψ) = c • ψ) :
+    ‖c‖ / 2
+      ≤ ‖A ψ - ((RCLike.re (inner 𝕜 ψ (A ψ)) : ℝ) : 𝕜) • ψ‖
+        * ‖B ψ - ((RCLike.re (inner 𝕜 ψ (B ψ)) : ℝ) : 𝕜) • ψ‖ := by
+  have h := heisenberg_std_form hA hB ψ
+  have hnorm : ‖inner 𝕜 ψ (A (B ψ) - B (A ψ))‖ = ‖c‖ := by
+    rw [hc, inner_smul_right, norm_mul, inner_self_eq_norm_sq_to_K, norm_pow,
+      RCLike.norm_ofReal, abs_of_nonneg (norm_nonneg ψ), hψ, one_pow, mul_one]
+  rw [hnorm] at h
+  linarith [h]
 
 end CauchySchwarzIntegralOQ04
 
