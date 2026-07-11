@@ -200,7 +200,7 @@ theorem exists_avoiding_all_events {ω ι : Type*} (Ω : Finset ω) (hΩ : Ω.No
   rw [Finset.card_eq_zero] at hz
   have hmem : i ∈ I.filter (fun i => A i w) := Finset.mem_filter.mpr ⟨hi, hAi⟩
   rw [hz] at hmem
-  exact absurd hmem (Finset.not_mem_empty i)
+  exact absurd hmem (Finset.notMem_empty i)
 
 /-! ## Application: strengthening `expected_mono_cliques` toward Erdős 1947
 
@@ -401,5 +401,48 @@ theorem expectedMonoCliques_lt_one_of_lt_sqrt {n k : ℕ} (hk : 3 ≤ k)
   -- Descend to `ℕ`.
   have hcast : ((n ^ 2 : ℕ) : ℝ) < ((2 ^ k : ℕ) : ℝ) := by push_cast; linarith
   exact_mod_cast hcast
+
+/-! ## Base values of the expected count
+
+The Ramsey block above pins `E(n,k)` against `1` (the density threshold). The three
+values below pin the *formula* itself at its natural boundary points, dual to the
+sub-threshold range: it vanishes below the diagonal, is positive exactly from the
+diagonal onward, and takes an explicit value at the diagonal. -/
+
+/-- **Below the diagonal the expected count vanishes.**  For `n < k` there are no
+`k`-subsets of an `n`-set, so `C(n,k) = 0` and `E(n,k) = 0`.  The `δ = 0` base value of
+the formula, complementing the positivity characterization `expectedMonoCliques_pos_iff`. -/
+theorem expectedMonoCliques_eq_zero_of_lt {n k : ℕ} (h : n < k) :
+    expectedMonoCliques n k = 0 := by
+  unfold expectedMonoCliques
+  rw [Nat.choose_eq_zero_of_lt h, Nat.cast_zero, zero_mul]
+
+/-- **Positivity characterizes `k ≤ n`.**  The expected number of monochromatic
+`k`-cliques is strictly positive iff the vertex set is large enough to contain a
+`k`-clique at all: `0 < E(n,k) ↔ k ≤ n`.  The `2^{1−C(k,2)}` factor is always positive,
+so positivity is governed entirely by `C(n,k)`; the "iff" companion of
+`expectedMonoCliques_eq_zero_of_lt`. -/
+theorem expectedMonoCliques_pos_iff {n k : ℕ} :
+    0 < expectedMonoCliques n k ↔ k ≤ n := by
+  unfold expectedMonoCliques
+  have hpow : (0 : ℚ) < (2 : ℚ) ^ (1 - (k.choose 2 : ℤ)) := by positivity
+  constructor
+  · intro hpos
+    by_contra hlt
+    push_neg at hlt
+    rw [Nat.choose_eq_zero_of_lt hlt, Nat.cast_zero, zero_mul] at hpos
+    exact lt_irrefl 0 hpos
+  · intro hle
+    have hc : (0 : ℚ) < (n.choose k : ℚ) := by exact_mod_cast Nat.choose_pos hle
+    exact mul_pos hc hpow
+
+/-- **Exact value on the diagonal.**  `E(k,k) = 2^{1−C(k,2)}`: an `n = k` vertex set has a
+single potential `k`-clique (`C(k,k) = 1`), monochromatic with probability `2·2^{−C(k,2)}`.
+The base value at the diagonal; for `k ≥ 3` it is already `< 1` (since `C(k,2) ≥ 3`),
+the trivial endpoint `R(k,k) > k` underneath `expectedMonoCliques_lt_one_pow`. -/
+theorem expectedMonoCliques_self (k : ℕ) :
+    expectedMonoCliques k k = (2 : ℚ) ^ (1 - (k.choose 2 : ℤ)) := by
+  unfold expectedMonoCliques
+  rw [Nat.choose_self, Nat.cast_one, one_mul]
 
 end ProbMethod.ExpectationOQ04
