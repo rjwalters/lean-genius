@@ -135,19 +135,35 @@
   "sections": [
     {
       "id": "preamble",
-      "title": "Preamble: statement, provenance, imports",
+      "title": "Preamble: statement and provenance",
       "startLine": 1,
-      "endLine": 77,
-      "summary": "Module docstring stating the goal (construct an explicit quintic with Galois group S₅), the contrast with the conditional X⁵ − X − 1 sibling entry, provenance of the reproduced Archive lemmas, and the Mathlib imports.",
+      "endLine": 53,
+      "summary": "Module docstring stating the goal (construct an explicit quintic with Galois group S₅), the contrast with the conditional X⁵ − X − 1 sibling entry, and the provenance of the reproduced Archive lemmas (T. Browning's Mathlib AbelRuffini file).",
       "mathContext": "Sets up the constructive direction of Abel–Ruffini: produce a concrete polynomial whose Galois group is the full symmetric group S₅."
     },
     {
+      "id": "imports-setup",
+      "title": "Imports, namespace, and variables",
+      "startLine": 54,
+      "endLine": 77,
+      "summary": "The Mathlib imports pulling in the machinery: LocalExtr.Polynomial and Complex.Polynomial.Basic for the real/complex root analysis, FieldTheory.AbelRuffini for solvableByRad.isSolvable', Eisenstein.Criterion for irreducibility, and GroupTheory.Solvable for the non-solvability of S₅. namespace AbelRuffiniGaloisExtensionsOQ01, open Function Polynomial Polynomial.Gal Ideal (+ scoped Polynomial), and variable (R : Type*) [CommRing R] (a b : ℕ) fix the generic ring context in which the witness Φ is first defined.",
+      "mathContext": "Works generically over a CommRing R with parameters a, b : ℕ, later specialised to R = ℚ and (a,b) = (4,2)."
+    },
+    {
       "id": "phi-properties",
-      "title": "Part I: the witness Φ = X⁵ − a·X + b and its properties",
+      "title": "Part I-a: the witness Φ = X⁵ − a·X + b and its algebraic properties",
       "startLine": 78,
+      "endLine": 133,
+      "summary": "Defines Φ R a b = X⁵ − a·X + b and reproduces (with attribution to T. Browning's Mathlib Archive file) its algebraic properties: map_Phi (functoriality under ring maps), the coefficient lemmas coeff_zero_Phi (= b) and coeff_five_Phi (= 1), degree_Phi / natDegree_Phi (= 5), leadingCoeff_Phi (= 1), monic_Phi, and the Eisenstein irreducibility criterion irreducible_Phi (irreducible whenever a prime p divides a and b but p² ∤ b).",
+      "mathContext": "Eisenstein at a prime dividing a and b (with b not divisible by p²) gives irreducibility of the monic degree-5 polynomial Φ = X⁵ − a·X + b over ℚ."
+    },
+    {
+      "id": "phi-roots-gal",
+      "title": "Part I-b: root counts and the Galois group of Φ",
+      "startLine": 134,
       "endLine": 198,
-      "summary": "Reproduces (with attribution to T. Browning's Mathlib Archive file) the development of Φ R a b = X⁵ − a·X + b: coefficient/degree lemmas, monicity, Eisenstein irreducibility (`irreducible_Phi`), the real-root bounds (`real_roots_Phi_le` ≤ 3 via the derivative/Rolle bound, `real_roots_Phi_ge` ≥ 2 via the intermediate value theorem), the complex-root count (`complex_roots_Phi` = 5), and the resulting full action `gal_Phi : Bijective (galActionHom (Φ ℚ a b) ℂ)`.",
-      "mathContext": "Eisenstein at a prime dividing a, b (but b not divisible by p²) gives irreducibility; calculus pins the real-root count at 3, hence exactly two complex-conjugate roots; the splitting count gives 5 complex roots. An irreducible prime-degree polynomial with two non-real roots has full symmetric Galois action."
+      "summary": "The analytic heart: real_roots_Phi_le bounds the real roots by 3 (the derivative Φ' = 5X⁴ − a has at most two real zeros, so Rolle limits sign changes), real_roots_Phi_ge_aux / real_roots_Phi_ge force ≥ 2 real roots via the intermediate value theorem when b < a, and complex_roots_Phi counts exactly 5 complex roots for a separable Φ. Together these give exactly two non-real (complex-conjugate) roots, and gal_Phi packages this into the full action Bijective (galActionHom (Φ ℚ a b) ℂ) — an irreducible prime-degree polynomial with exactly two non-real roots has symmetric Galois action.",
+      "mathContext": "Calculus pins the real-root count at 3, hence exactly two complex-conjugate roots among the 5; an irreducible prime-degree polynomial with two non-real roots has full symmetric Galois action (S₅)."
     },
     {
       "id": "explicit-s5",
