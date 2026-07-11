@@ -1249,4 +1249,55 @@ theorem hierarchy_rung_gaps :
    tetrahedronDimer_to_octahedron_gap_gt,
    octahedron_to_rhombicDodecahedron_gap_gt⟩
 
+/-!
+## The bottom of the density scale — `δ = 0` is the attained infimum
+
+`isGreatest_packingDensity_range` / `csSup_packingDensity_range_eq_one` (S21–S22) pin
+the *top* of the achievable-density range at the attained maximum `δ = 1` (the
+space-filling rhombic dodecahedron). This section records the dual *bottom*: the
+degenerate density-`0` packing `⟨0, …⟩` realizes `δ = 0`, which is a lower bound of the
+whole range by the `PackingDensity.nonneg` field, so `0` is the attained **minimum**.
+Together with the top these show the density functional's range is contained in `[0, 1]`
+with **both** endpoints attained. No axioms — purely the structure's `nonneg` / `le_one`
+fields (the Ulam/Bezdek–Kuperberg axioms bound only the *shape-restricted* sub-classes,
+not the abstract range). -/
+
+/-- **The density functional attains its infimum (`IsLeast` form).**  `0` is the least
+element of the range of `PackingDensity.density`: it lies in the range (witnessed by the
+degenerate packing `⟨0, le_refl 0, zero_le_one⟩`) and is a lower bound of the whole range
+(every `d.density ≥ 0` by `PackingDensity.nonneg`).  The dual of
+`isGreatest_packingDensity_range` (`δ = 1` attained at the top). No axioms. -/
+theorem isLeast_packingDensity_range :
+    IsLeast (Set.range (PackingDensity.density)) 0 := by
+  refine ⟨⟨⟨0, le_refl 0, zero_le_one⟩, rfl⟩, ?_⟩
+  rintro x ⟨d, rfl⟩
+  exact d.nonneg
+
+/-- **The packing-density infimum equals `0`.**  `sInf (range PackingDensity.density) = 0`:
+the greatest lower bound of all achievable convex-body packing densities is exactly the
+degenerate value `δ = 0`, and it is *attained*, so the infimum is a genuine minimum.  The
+Mathlib-native `sInf` packaging of `isLeast_packingDensity_range`, dual to
+`csSup_packingDensity_range_eq_one`.  No axioms. -/
+theorem csInf_packingDensity_range_eq_zero :
+    sInf (Set.range (PackingDensity.density)) = 0 :=
+  isLeast_packingDensity_range.csInf_eq
+
+/-- **The range of achievable densities is bounded below.**  `BddBelow (range
+PackingDensity.density)`: the density functional is bounded below by the degenerate floor
+`δ = 0`.  Immediate from `isLeast_packingDensity_range`; the dual of
+`bddAbove_packingDensity_range`. No axioms. -/
+theorem bddBelow_packingDensity_range :
+    BddBelow (Set.range (PackingDensity.density)) :=
+  isLeast_packingDensity_range.bddBelow
+
+/-- **Every achievable density lies in `[0, 1]`.**  `range PackingDensity.density ⊆
+Set.Icc 0 1`: each packing density is between `0` and `1` by the structure's `nonneg` and
+`le_one` fields.  Combined with `isLeast_packingDensity_range` (`0` attained) and
+`isGreatest_packingDensity_range` (`1` attained), the range sits inside the unit interval
+with both endpoints realized. No axioms. -/
+theorem packingDensity_range_subset_Icc :
+    Set.range (PackingDensity.density) ⊆ Set.Icc 0 1 := by
+  rintro x ⟨d, rfl⟩
+  exact ⟨d.nonneg, d.le_one⟩
+
 end KeplerConjectureOQ04
