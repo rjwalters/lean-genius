@@ -666,6 +666,41 @@ theorem rho_pos (hf : 0 < f.degree) : 0 < rho f := by
     _ ≤ sSup {r : ℝ | ∃ c : ℂ, isInscribedDisc (sublevelSet f) c r} :=
         le_csSup (bddAbove_inscribed_radii f hf) ⟨z0, hins⟩
 
+/-- **The sublevel set is bounded.** For a polynomial of positive degree, the
+    lemniscate sublevel set `{z : |f(z)| < 1}` sits inside the ball of radius `2`
+    (`sublevelSet_subset_ball`), hence is a bounded subset of `ℂ`. Together with
+    `sublevelSet_isOpen` and `sublevelSet_nonempty` this pins down its basic
+    topology: a nonempty, open, bounded region whose largest inscribed disc is
+    the object of study. -/
+theorem sublevelSet_isBounded (hf : 0 < f.degree) :
+    Bornology.IsBounded (sublevelSet f) :=
+  Metric.isBounded_ball.subset (sublevelSet_subset_ball f hf)
+
+/-- **Universal ceiling `ρ(f) ≤ 2`.** Every inscribed disc `B(c, r)` of the
+    sublevel set is contained in the sublevel set, which itself lies in `B(0, 2)`
+    (`sublevelSet_subset_ball`); comparing the two balls with `inscribed_radius_le`
+    forces `r ≤ 2`, so the supremum `ρ(f)` of all inscribed radii is at most `2`.
+    Combined with `rho_pos`, this bounds `ρ(f) ∈ (0, 2]` for every positive-degree
+    polynomial — a crude but assumption-free ceiling framing the deep lower-bound
+    axioms (`pommerenke_lower`, `klr_lower`), which sharpen the *floor* while this
+    caps the *height*. -/
+theorem rho_le_two (hf : 0 < f.degree) : rho f ≤ 2 := by
+  unfold rho inscribedDiscRadius
+  refine Real.sSup_le ?_ (by norm_num)
+  rintro r ⟨c, hrpos, hsub⟩
+  refine inscribed_radius_le (c := c) (z0 := 0) hrpos (by norm_num : (0 : ℝ) < 2) ?_
+  intro z hz
+  have hzc : z ∈ sublevelSet f := hsub z hz
+  have hb := sublevelSet_subset_ball f hf hzc
+  rw [Metric.mem_ball, dist_zero_right] at hb
+  simpa using hb
+
+/-- **`ρ(f) ∈ (0, 2]`.** Packaging `rho_pos` and `rho_le_two`: for every
+    positive-degree polynomial the inscribed-disc radius is strictly positive and
+    at most `2`. -/
+theorem rho_mem_Ioc (hf : 0 < f.degree) : rho f ∈ Set.Ioc (0 : ℝ) 2 :=
+  ⟨rho_pos f hf, rho_le_two f hf⟩
+
 /-
 ## Random Polynomials
 -/
