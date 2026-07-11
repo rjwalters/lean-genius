@@ -1192,6 +1192,105 @@ theorem iSup_puiseuxRamificationSubfield {K : Type*} [Field K] :
 end FieldFiltration
 
 /-! ═══════════════════════════════════════════════════════════════════════════════
+PART XIII: THE VALUE GROUP OF THE PUISEUX VALUATION
+═══════════════════════════════════════════════════════════════════════════════ -/
+
+/-!
+### Part XIII: The value group — why `K⦃⦃x⦄⦄` is `ℚ`-graded while `K((x))` is `ℤ`-graded
+
+Every earlier part builds the *algebraic* structure (Subring → Subalgebra → Subfield,
+Parts VIII–X) and its *ramification filtration* (Parts XI–XII). This part records the
+single order-theoretic fact that is the whole reason the Puiseux field exists: its
+`orderTop` valuation takes **every** rational value, whereas the Laurent field `K((x))`
+— Hahn series supported on `ℤ` — has value group only `ℤ`.
+
+For a Hahn series `f ≠ 0`, `f.orderTop ∈ WithTop ℚ` is the least exponent in its support
+(`⊤` when `f = 0`); it is the canonical `ℚ`-valued valuation on `HahnSeries ℚ K`. Its
+image on the nonzero elements is the **value group**. We show:
+
+* `exists_puiseux_orderTop_eq` / `puiseux_orderTop_range` — the value group of the full
+  Puiseux field is *all* of `ℚ` (every `q : ℚ` is `orderTop` of a nonzero Puiseux
+  series, namely `single q 1`). This is exactly what a Laurent series can never achieve
+  for `q ∉ ℤ`, so it is the sharpest statement of "`K⦃⦃x⦄⦄` strictly extends `K((x))`".
+* `orderTop_mem_ramification` / `exists_ramification_orderTop_eq` /
+  `ramification_orderTop_range` — the value group of the level-`n` Laurent subfield
+  `K((x^{1/n}))` is *exactly* `(1/n)ℤ = {k/n : k ∈ ℤ}`. Refining the ramification
+  refines the value group `ℤ ⊆ ½ℤ ⊆ ⅓ℤ ⊆ …`, whose union `⋃ₙ (1/n)ℤ = ℚ` recovers the
+  full value group — the valuation-theoretic shadow of the field colimit
+  `iSup_puiseuxRamificationSubfield`.
+-/
+
+section ValueGroup
+
+/-- **The value group of the Puiseux field contains every rational.** For each `q : ℚ`
+the single-term series `single q 1` is a nonzero Puiseux series with `orderTop = q`.
+Over the Laurent field (`ℤ`-supported Hahn series) this is impossible once `q ∉ ℤ`;
+this is the sharpest witness that `K⦃⦃x⦄⦄` extends `K((x))`. -/
+theorem exists_puiseux_orderTop_eq {K : Type*} [Field K] (q : ℚ) :
+    ∃ f : HahnSeries ℚ K, IsPuiseuxSeries f ∧ f ≠ 0 ∧ f.orderTop = (q : WithTop ℚ) :=
+  ⟨HahnSeries.single q 1, isPuiseux_single q 1, HahnSeries.single_ne_zero one_ne_zero,
+    HahnSeries.orderTop_single one_ne_zero⟩
+
+/-- **The value group of the Puiseux field is all of `ℚ`.** The set of `orderTop` values
+attained by nonzero Puiseux series is precisely the finite part of `WithTop ℚ`, i.e. the
+image of `ℚ`. Forward: a nonzero series has a finite `orderTop`. Backward:
+`exists_puiseux_orderTop_eq` realizes every rational. -/
+theorem puiseux_orderTop_range {K : Type*} [Field K] :
+    {v : WithTop ℚ |
+        ∃ f : HahnSeries ℚ K, IsPuiseuxSeries f ∧ f ≠ 0 ∧ f.orderTop = v}
+      = {v : WithTop ℚ | v ≠ ⊤} := by
+  ext v
+  constructor
+  · rintro ⟨f, _, hf0, rfl⟩
+    exact HahnSeries.orderTop_ne_top.2 hf0
+  · intro hv
+    obtain ⟨q, rfl⟩ := WithTop.ne_top_iff_exists.mp hv
+    exact exists_puiseux_orderTop_eq q
+
+/-- **The valuation of a level-`n` series is `(1/n)`-integral.** For a nonzero series
+ramified by `n`, `orderTop` is a finite rational of the form `k/n` (its least exponent,
+which lies in the support and hence in `(1/n)ℤ`). This is the forward inclusion "value
+group of `K((x^{1/n}))` ⊆ `(1/n)ℤ`". -/
+theorem orderTop_mem_ramification {K : Type*} [Field K] {n : ℕ+} {f : HahnSeries ℚ K}
+    (hf : IsPuiseuxOfRamification n f) (hf0 : f ≠ 0) :
+    ∃ k : ℤ, f.orderTop = (((k : ℚ) / (n : ℚ) : ℚ) : WithTop ℚ) := by
+  obtain ⟨q, hq⟩ := WithTop.ne_top_iff_exists.mp (HahnSeries.orderTop_ne_top.2 hf0)
+  have hmem : q ∈ f.support := (HahnSeries.mem_support f q).mpr (HahnSeries.coeff_orderTop_ne hq.symm)
+  obtain ⟨k, hk⟩ := hf q hmem
+  exact ⟨k, by rw [← hq, hk]⟩
+
+/-- **Every `(1/n)`-integral value is attained at level `n`.** For each `k : ℤ` the
+series `single (k/n) 1` is a nonzero level-`n` Laurent series with `orderTop = k/n`. This
+is the backward inclusion "value group of `K((x^{1/n}))` ⊇ `(1/n)ℤ`". -/
+theorem exists_ramification_orderTop_eq {K : Type*} [Field K] (n : ℕ+) (k : ℤ) :
+    ∃ f : HahnSeries ℚ K, IsPuiseuxOfRamification n f ∧ f ≠ 0 ∧
+      f.orderTop = (((k : ℚ) / (n : ℚ) : ℚ) : WithTop ℚ) := by
+  refine ⟨HahnSeries.single ((k : ℚ) / (n : ℚ)) 1, ?_, HahnSeries.single_ne_zero one_ne_zero,
+    HahnSeries.orderTop_single one_ne_zero⟩
+  intro q hq
+  rw [HahnSeries.support_single_of_ne (one_ne_zero (α := K)), Set.mem_singleton_iff] at hq
+  exact ⟨k, hq⟩
+
+/-- **The value group of the level-`n` Laurent field is exactly `(1/n)ℤ`.** Combining the
+two inclusions, the set of `orderTop` values of nonzero `(1/n)`-ramified series is
+precisely `{k/n : k ∈ ℤ}`. The chain of value groups `ℤ ⊆ ½ℤ ⊆ ⅓ℤ ⊆ …` (under
+divisibility) has union `ℚ`, the valuation-theoretic image of the field colimit
+`K⦃⦃x⦄⦄ = colimₙ K((x^{1/n}))`. -/
+theorem ramification_orderTop_range {K : Type*} [Field K] (n : ℕ+) :
+    {v : WithTop ℚ |
+        ∃ f : HahnSeries ℚ K, IsPuiseuxOfRamification n f ∧ f ≠ 0 ∧ f.orderTop = v}
+      = {v : WithTop ℚ | ∃ k : ℤ, v = (((k : ℚ) / (n : ℚ) : ℚ) : WithTop ℚ)} := by
+  ext v
+  constructor
+  · rintro ⟨f, hf, hf0, rfl⟩
+    exact orderTop_mem_ramification hf hf0
+  · rintro ⟨k, rfl⟩
+    obtain ⟨f, hf, hf0, hfv⟩ := exists_ramification_orderTop_eq (K := K) n k
+    exact ⟨f, hf, hf0, hfv⟩
+
+end ValueGroup
+
+/-! ═══════════════════════════════════════════════════════════════════════════════
 SUMMARY
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
