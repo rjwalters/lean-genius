@@ -269,7 +269,7 @@ theorem avgSteps_one_ge (N : ℕ) (hN : 0 < N) :
     have h2 : N ≤ 2 * (N - N / 2) := by omega
     have hge := totalSteps_one_ge N
     calc N * (Nat.log 2 N - 1)
-        ≤ (2 * (N - N / 2)) * (Nat.log 2 N - 1) := mul_le_mul_right' h2 _
+        ≤ (2 * (N - N / 2)) * (Nat.log 2 N - 1) := by gcongr
       _ = 2 * ((N - N / 2) * (Nat.log 2 N - 1)) := by ring
       _ ≤ 2 * totalSteps 1 N := by omega
   have keyQ : (N : ℚ) * ((Nat.log 2 N - 1 : ℕ) : ℚ) ≤ 2 * (totalSteps 1 N : ℚ) := by
@@ -755,5 +755,37 @@ theorem totalSteps_one_mono : Monotone (totalSteps 1) :=
 --   totalSteps 1 8 = totalSteps 1 7 + (log₂ 8 + 1) = totalSteps 1 7 + 4.
 example : totalSteps 1 8 = totalSteps 1 7 + (Nat.log 2 8 + 1) :=
   totalSteps_one_succ 7
+
+-- ═══════════════════════════════════════════════════════════════════
+-- PART XIV: THE AVERAGE IS UNBOUNDED  (a = 1 row)
+-- ═══════════════════════════════════════════════════════════════════
+--
+-- The strict sandwich `avgSteps_one_sandwich_strict` places the a = 1 average in the
+-- width-2 window `log₂N − 1 < avg < log₂N + 1`. Its lower edge `log₂N − 1` is itself
+-- unbounded, so the average grows without bound: binary GCD is NOT `O(1)` on average.
+-- We record this as an explicit ∃-statement (the honest form, since the average is not
+-- monotone in `N`, so a `Tendsto _ atTop atTop` would need the sandwich rather than
+-- monotonicity anyway): every target `M` is exceeded, witnessed on the dyadic
+-- subsequence `N = 2ⁿ` where the floor `log₂(2ⁿ) − 1 = n − 1` is driven past `M` by the
+-- Archimedean property.
+
+/-- **The `a = 1` average step count is unbounded.**  For every target `M : ℚ` there is an
+    argument `N ≥ 1` whose average `a = 1` step count `(totalSteps 1 N) / N` exceeds `M`.
+    Equivalently the binary Euclidean algorithm is *not* `O(1)` on average — its cost grows
+    without bound.  Witnessed on the dyadic subsequence `N = 2 ^ n`: there
+    `avgSteps_one_gt` gives `avg > log₂(2ⁿ) − 1 = n − 1` (using `Nat.log_pow`), and choosing
+    `n > M + 1` by the Archimedean property of `ℚ` (`exists_nat_gt`) forces `avg > M`.  This
+    is the elementary, fully-verified lower shadow of the `Θ(log N)` growth captured by
+    `avgSteps_one_sandwich_strict`. -/
+theorem avgSteps_one_unbounded (M : ℚ) :
+    ∃ N : ℕ, 1 ≤ N ∧ M < (totalSteps 1 N : ℚ) / (N : ℚ) := by
+  obtain ⟨n, hn⟩ := exists_nat_gt (M + 1)
+  have hNpos : 1 ≤ 2 ^ n := Nat.one_le_pow n 2 (by norm_num)
+  refine ⟨2 ^ n, hNpos, ?_⟩
+  have hlog : Nat.log 2 (2 ^ n) = n := Nat.log_pow (by norm_num) n
+  have hgt := avgSteps_one_gt (2 ^ n) hNpos
+  rw [hlog] at hgt
+  have hMn : M < (n : ℚ) - 1 := by linarith
+  linarith
 
 end BinaryGcdOQ01OQ04OQ03
