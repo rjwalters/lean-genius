@@ -285,4 +285,73 @@ theorem isPowerForm_lcm {p q m n : ℕ} (hp : p.Prime) (hq : q.Prime)
     (hm : IsPowerForm p q m) (hn : IsPowerForm p q n) : IsPowerForm p q (Nat.lcm m n) :=
   isPowerForm_of_dvd hp hq (isPowerForm_mul hm hn) (Nat.lcm_dvd_mul m n)
 
+/-! ### Explicit meet and join: the exponent formulas for `gcd` and `lcm`
+
+`isPowerForm_gcd`/`isPowerForm_lcm` show the power forms are *closed* under `gcd` and `lcm`,
+but only qualitatively. For **distinct primes** `p ≠ q` we can pin the exact exponents: since
+`powerForm_dvd_iff` makes divisibility the product order on `(k, l)`, the meet and join in the
+divisibility lattice are the coordinatewise `min` and `max`. Concretely
+
+  `gcd (p^k q^l) (p^{k'} q^{l'}) = p^{min k k'} q^{min l l'}`,
+  `lcm (p^k q^l) (p^{k'} q^{l'}) = p^{max k k'} q^{max l l'}`.
+
+This upgrades the qualitative sublattice closure to an explicit lattice isomorphism
+`{p^k q^l} ≅ (ℕ², min/max)` — the exponent map `(k, l) ↦ p^k q^l` is a lattice isomorphism, not
+merely an order embedding. Each proof reads the exponents of the (already-known-to-be-a-power-form)
+`gcd`/`lcm` off both sides through `powerForm_dvd_iff` and pins them by `Nat.dvd_antisymm`. -/
+
+/-- **`gcd` of power forms is `min` on exponents.** For distinct primes `p ≠ q`,
+
+  `gcd (p^k q^l) (p^{k'} q^{l'}) = p^{min k k'} q^{min l l'}`.
+
+The greatest common divisor is a power form (`isPowerForm_gcd`); its exponents are `≤` both
+`(k, l)` and `(k', l')` (it divides both), hence `≤ (min k k', min l l')`, while
+`p^{min} q^{min}` divides both and so divides the `gcd` — pinning equality via `powerForm_dvd_iff`
+in each coordinate. The explicit meet of the power-form sublattice of `(ℕ, ∣)`. -/
+theorem powerForm_gcd {p q : ℕ} (hp : p.Prime) (hq : q.Prime) (hpq : p ≠ q)
+    (k l k' l' : ℕ) :
+    Nat.gcd (p ^ k * q ^ l) (p ^ k' * q ^ l') = p ^ min k k' * q ^ min l l' := by
+  obtain ⟨a, b, hab⟩ : IsPowerForm p q (Nat.gcd (p ^ k * q ^ l) (p ^ k' * q ^ l')) :=
+    isPowerForm_gcd hp hq ⟨k, l, rfl⟩ _
+  rw [hab]
+  have hdX : p ^ a * q ^ b ∣ p ^ k * q ^ l := by rw [← hab]; exact Nat.gcd_dvd_left _ _
+  have hdY : p ^ a * q ^ b ∣ p ^ k' * q ^ l' := by rw [← hab]; exact Nat.gcd_dvd_right _ _
+  obtain ⟨hak, hbl⟩ := (powerForm_dvd_iff hp hq hpq a b k l).mp hdX
+  obtain ⟨hak', hbl'⟩ := (powerForm_dvd_iff hp hq hpq a b k' l').mp hdY
+  have hmX : p ^ min k k' * q ^ min l l' ∣ p ^ k * q ^ l :=
+    (powerForm_dvd_iff hp hq hpq _ _ _ _).mpr ⟨min_le_left _ _, min_le_left _ _⟩
+  have hmY : p ^ min k k' * q ^ min l l' ∣ p ^ k' * q ^ l' :=
+    (powerForm_dvd_iff hp hq hpq _ _ _ _).mpr ⟨min_le_right _ _, min_le_right _ _⟩
+  have hmg : p ^ min k k' * q ^ min l l' ∣ p ^ a * q ^ b := by
+    rw [← hab]; exact Nat.dvd_gcd hmX hmY
+  obtain ⟨hma, hmb⟩ := (powerForm_dvd_iff hp hq hpq _ _ _ _).mp hmg
+  rw [le_antisymm (le_min hak hak') hma, le_antisymm (le_min hbl hbl') hmb]
+
+/-- **`lcm` of power forms is `max` on exponents.** For distinct primes `p ≠ q`,
+
+  `lcm (p^k q^l) (p^{k'} q^{l'}) = p^{max k k'} q^{max l l'}`.
+
+Dual to `powerForm_gcd`: the least common multiple is a power form (`isPowerForm_lcm`); both
+`(k, l)` and `(k', l')` are `≤` its exponents (they divide it), so `(max k k', max l l')` is,
+while the `lcm` divides `p^{max} q^{max}` (which both factors divide) — pinning equality via
+`powerForm_dvd_iff`. The explicit join of the power-form sublattice of `(ℕ, ∣)`. -/
+theorem powerForm_lcm {p q : ℕ} (hp : p.Prime) (hq : q.Prime) (hpq : p ≠ q)
+    (k l k' l' : ℕ) :
+    Nat.lcm (p ^ k * q ^ l) (p ^ k' * q ^ l') = p ^ max k k' * q ^ max l l' := by
+  obtain ⟨a, b, hab⟩ : IsPowerForm p q (Nat.lcm (p ^ k * q ^ l) (p ^ k' * q ^ l')) :=
+    isPowerForm_lcm hp hq ⟨k, l, rfl⟩ ⟨k', l', rfl⟩
+  rw [hab]
+  have hXl : p ^ k * q ^ l ∣ p ^ a * q ^ b := by rw [← hab]; exact Nat.dvd_lcm_left _ _
+  have hYl : p ^ k' * q ^ l' ∣ p ^ a * q ^ b := by rw [← hab]; exact Nat.dvd_lcm_right _ _
+  obtain ⟨hka, hlb⟩ := (powerForm_dvd_iff hp hq hpq k l a b).mp hXl
+  obtain ⟨hka', hlb'⟩ := (powerForm_dvd_iff hp hq hpq k' l' a b).mp hYl
+  have hXM : p ^ k * q ^ l ∣ p ^ max k k' * q ^ max l l' :=
+    (powerForm_dvd_iff hp hq hpq _ _ _ _).mpr ⟨le_max_left _ _, le_max_left _ _⟩
+  have hYM : p ^ k' * q ^ l' ∣ p ^ max k k' * q ^ max l l' :=
+    (powerForm_dvd_iff hp hq hpq _ _ _ _).mpr ⟨le_max_right _ _, le_max_right _ _⟩
+  have hlM : p ^ a * q ^ b ∣ p ^ max k k' * q ^ max l l' := by
+    rw [← hab]; exact Nat.lcm_dvd hXM hYM
+  obtain ⟨haM, hbM⟩ := (powerForm_dvd_iff hp hq hpq _ _ _ _).mp hlM
+  rw [le_antisymm haM (max_le hka hka'), le_antisymm hbM (max_le hlb hlb')]
+
 end Erdos1110
