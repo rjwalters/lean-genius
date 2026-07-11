@@ -3291,4 +3291,39 @@ theorem ternary_conic_sq_sum_le_of_mem (p q r : ℝ)
     p ^ 2 + q ^ 2 + r ^ 2 ≤ 10 := by
   nlinarith [sq_nonneg (p + q + r), h]
 
+/-- **The solution surface is bounded away from the origin.** On the ternary conic `Q = 5`,
+the squared abscissa radius satisfies `5/2 ≤ p² + q² + r²`.  From
+`Q = ½·((p²+q²+r²) + (p+q+r)²)`: at `Q = 5` we have `(p²+q²+r²) + (p+q+r)² = 10`, and the trace
+obeys `(p+q+r)² ≤ 3·(p²+q²+r²)` (Cauchy–Schwarz, i.e.
+`3·(p²+q²+r²) − (p+q+r)² = (p−q)² + (q−r)² + (r−p)² ≥ 0`).  Substituting,
+`10 = (p²+q²+r²) + (p+q+r)² ≤ 4·(p²+q²+r²)`, so `p²+q²+r² ≥ 5/2`.  This is the missing lower
+companion to `ternary_conic_sq_sum_le_of_mem`: the surface `Q = 5` never approaches the
+origin, so it is a genuine ellipsoidal *shell*, not a full solid ball. -/
+theorem ternary_conic_sq_sum_ge_of_mem (p q r : ℝ)
+    (h : p ^ 2 + q ^ 2 + r ^ 2 + p * q + q * r + r * p = 5) :
+    5 / 2 ≤ p ^ 2 + q ^ 2 + r ^ 2 := by
+  nlinarith [sq_nonneg (p - q), sq_nonneg (q - r), sq_nonneg (r - p), h]
+
+/-- **The squared abscissa radius lives in the closed interval `[5/2, 10]`.** Packaging the two
+one-sided bounds `ternary_conic_sq_sum_ge_of_mem` and `ternary_conic_sq_sum_le_of_mem`: every
+point of the ternary conic `Q = 5` satisfies `p² + q² + r² ∈ [5/2, 10]`.  These are the
+squares of the extreme semi-axes of the ellipsoid (eigenvalues `2` and `½` of the conic form,
+giving radii `√(5/2)` along the trace direction `(1,1,1)` and `√10` in the trace-free plane),
+so the interval is sharp: the surface `Q = 5` is exactly the ellipsoidal shell between the two
+concentric spheres of radius `√(5/2)` and `√10`. -/
+theorem ternary_conic_sq_sum_mem_Icc (p q r : ℝ)
+    (h : p ^ 2 + q ^ 2 + r ^ 2 + p * q + q * r + r * p = 5) :
+    p ^ 2 + q ^ 2 + r ^ 2 ∈ Set.Icc (5 / 2 : ℝ) 10 :=
+  ⟨ternary_conic_sq_sum_ge_of_mem p q r h, ternary_conic_sq_sum_le_of_mem p q r h⟩
+
+/-- **The solution surface avoids the origin.** No point of the ternary conic `Q = 5` is the
+origin: `(p,q,r) = (0,0,0)` would force `p²+q²+r² = 0 < 5/2`, contradicting
+`ternary_conic_sq_sum_ge_of_mem`.  Concretely `0 < p² + q² + r²`, so at least one abscissa is
+nonzero on every family four-point line — the degenerate all-zero "quadruple" is not a
+solution, confirming the surface is a bona-fide shell around (but never through) the origin. -/
+theorem ternary_conic_sq_sum_pos_of_mem (p q r : ℝ)
+    (h : p ^ 2 + q ^ 2 + r ^ 2 + p * q + q * r + r * p = 5) :
+    0 < p ^ 2 + q ^ 2 + r ^ 2 :=
+  lt_of_lt_of_le (by norm_num) (ternary_conic_sq_sum_ge_of_mem p q r h)
+
 end Erdos101OQ04
