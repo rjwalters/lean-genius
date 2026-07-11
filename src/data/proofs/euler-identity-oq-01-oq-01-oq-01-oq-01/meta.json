@@ -171,34 +171,41 @@
       "Can the kernel description 2π·ℤ from the parent be combined with the smooth structure to formalize the covering map exp : ℝ → S¹ as a smooth covering (IsCoveringMap), the next step toward π₁(S¹) ≅ ℤ in the smooth category?"
     ]
   },
-  "references": {
-    "papers": [
-      {
-        "title": "Introductio in analysin infinitorum, Vol. 1, Ch. 8",
-        "authors": [
-          "Leonhard Euler"
-        ],
-        "year": 1748,
-        "description": "Original derivation of e^(ix) = cos x + i sin x via Taylor series."
-      },
-      {
-        "title": "Theorie der Transformationsgruppen",
-        "authors": [
-          "Sophus Lie",
-          "Friedrich Engel"
-        ],
-        "year": 1888,
-        "description": "Foundational text on continuous transformation groups; introduces the exponential map and the Lie algebra as the tangent space at the identity."
-      }
-    ],
-    "urls": [],
-    "mathlib": [
-      "Mathlib.Geometry.Manifold.Instances.Sphere",
-      "Mathlib.Analysis.Complex.Circle",
-      "Mathlib.Analysis.Complex.RealDeriv",
-      "Mathlib.Analysis.SpecialFunctions.ExpDeriv"
-    ]
-  },
+  "references": [
+    {
+      "title": "Introductio in analysin infinitorum, Vol. 1, Ch. 8",
+      "authors": [
+        "Leonhard Euler"
+      ],
+      "year": 1748,
+      "description": "Original derivation of e^(ix) = cos x + i sin x via Taylor series."
+    },
+    {
+      "title": "Theorie der Transformationsgruppen",
+      "authors": [
+        "Sophus Lie",
+        "Friedrich Engel"
+      ],
+      "year": 1888,
+      "description": "Foundational text on continuous transformation groups; introduces the exponential map and the Lie algebra as the tangent space at the identity."
+    },
+    {
+      "text": "Mathlib: Mathlib.Geometry.Manifold.Instances.Sphere",
+      "url": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Geometry/Manifold/Instances/Sphere.html"
+    },
+    {
+      "text": "Mathlib: Mathlib.Analysis.Complex.Circle",
+      "url": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Analysis/Complex/Circle.html"
+    },
+    {
+      "text": "Mathlib: Mathlib.Analysis.Complex.RealDeriv",
+      "url": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Analysis/Complex/RealDeriv.html"
+    },
+    {
+      "text": "Mathlib: Mathlib.Analysis.SpecialFunctions.ExpDeriv",
+      "url": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Analysis/SpecialFunctions/ExpDeriv.html"
+    }
+  ],
   "crossReferences": [
     {
       "type": "extends",
