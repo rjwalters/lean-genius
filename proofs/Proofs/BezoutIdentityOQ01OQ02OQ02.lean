@@ -521,4 +521,28 @@ theorem exists_sl_mulVec_basis_of_isPrimitive (hn : 1 < n) {v : Fin n → ℤ}
     ∃ A : Matrix.SpecialLinearGroup (Fin n) ℤ, ↑ₘA *ᵥ v = Pi.single t (1 : ℤ) :=
   exists_sl_mulVec_eq_of_isPrimitive hn hv (isPrimitive_single t)
 
+/-- **Unimodular column completion (`n ≥ 2`).**  A vector is primitive **iff** it is a
+column of some matrix in `SLₙ(ℤ)`: `IsPrimitive v ↔ ∃ A k, ↑ₘA *ᵥ eₖ = v` — the right side
+says `v` is the `k`-th column of `A` (`↑ₘA *ᵥ Pi.single k 1` extracts that column).  The
+backward direction is `orbit_e_isPrimitive` (any column of a unimodular matrix is
+primitive); the forward direction inverts `exists_sl_mulVec_basis_of_isPrimitive` — the `U`
+carrying `v` onto `e₀` has `U⁻¹` with `v` as its `0`-th column.  This is the classical
+statement that a primitive integer vector **extends to a `ℤ`-basis** (unimodular
+completion): the columns of `SLₙ(ℤ)` are *exactly* the primitive vectors.
+
+The dimension hypothesis `1 < n` is essential and not an artefact: for `n = 1` the only
+unimodular matrix is the identity, whose sole column is `e₀ = (1)`, so the primitive vector
+`(-1)` is *not* a column of any `SL₁(ℤ)` matrix — the same sign obstruction that keeps the
+uniform `c · eₖ` normal form (`isPrimitive_iff_exists_sl_single`) from sharpening at `n = 1`. -/
+theorem isPrimitive_iff_exists_sl_column (hn : 1 < n) (v : Fin n → ℤ) :
+    IsPrimitive v ↔ ∃ (A : Matrix.SpecialLinearGroup (Fin n) ℤ) (k : Fin n),
+      ↑ₘA *ᵥ Pi.single k (1 : ℤ) = v := by
+  refine ⟨fun hv => ?_, ?_⟩
+  · obtain ⟨A, hA⟩ := exists_sl_mulVec_basis_of_isPrimitive hn hv ⟨0, by omega⟩
+    refine ⟨A⁻¹, ⟨0, by omega⟩, ?_⟩
+    rw [← hA, Matrix.mulVec_mulVec, ← SpecialLinearGroup.coe_mul, inv_mul_cancel,
+      SpecialLinearGroup.coe_one, one_mulVec]
+  · rintro ⟨A, k, rfl⟩
+    exact orbit_e_isPrimitive A k
+
 end BezoutPrimitive

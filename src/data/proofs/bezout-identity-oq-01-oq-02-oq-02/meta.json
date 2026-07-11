@@ -23,7 +23,7 @@
     "dateAdded": "2026-07-09",
     "axiomCount": 0,
     "assumptions": "None beyond Mathlib's foundational axioms. Fully machine-checked (0 sorries, 0 axiom declarations, no structure-encoded assumptions, no native_decide). Note: in the local Docker sandbox the file elaborates cleanly across repeated runs but the .olean cache write intermittently aborts with SIGBUS (exit 135), an environment/IO issue independent of the proofs; CI produces the build artifact.",
-    "lineCount": 301,
+    "lineCount": 548,
     "theoremCount": 16,
     "definitionCount": 2,
     "originalContributions": [
@@ -85,13 +85,18 @@
       "name": "isPrimitive_single",
       "type": "supporting",
       "description": "The standard basis vector eᵢ (Pi.single i 1) is primitive, witnessed by its own indicator as the dual. The target of the transitivity reduction."
+    },
+    {
+      "name": "isPrimitive_iff_exists_sl_column",
+      "type": "theorem",
+      "description": "Unimodular column completion (n ≥ 2): a vector is primitive iff it is a column of some matrix in SLₙ(ℤ) (IsPrimitive v ↔ ∃ A k, ↑ₘA *ᵥ eₖ = v). The classical statement that a primitive integer vector extends to a ℤ-basis — the columns of SLₙ(ℤ) are exactly the primitive vectors. Backward is orbit_e_isPrimitive; forward inverts exists_sl_mulVec_basis_of_isPrimitive. The 1<n hypothesis is essential: at n=1 the primitive vector (-1) is no column of SL₁(ℤ)={1}."
     }
   ],
   "leanFile": {
     "namespace": "BezoutPrimitive",
-    "lineCount": 301,
+    "lineCount": 548,
     "axiomCount": 0,
-    "theoremCount": 16,
+    "theoremCount": 24,
     "definitionCount": 2,
     "path": "Proofs/BezoutIdentityOQ01OQ02OQ02.lean",
     "sorries": 0
