@@ -27,6 +27,26 @@ You are a Lean theorem proving researcher. Run one research iteration on the lea
 - A lemma that filled a gap 3 months ago may be trivial now if stronger results exist
 - When uncertain about significance, default to understating rather than overstating
 
+### Artifact-only reporting (MANDATORY)
+
+A session report must be an **artifact, not a status update**. For any step that
+is not yet machine-checked:
+
+- **Do NOT** call an unproved step "routine", "should follow", "straightforward",
+  "standard", or "clearly true" and count it as done. These words claim progress
+  without evidence.
+- A step counts as done only with a **complete audited artifact** (the lemma
+  elaborates with 0 sorries) — or, if it is not done, report the **strongest
+  rigorously proved derivation plus the exact remaining gap**: the precise lemma
+  statement still to prove, or a documented counterexample/obstruction.
+- "The rest is routine" is acceptable *only* when accompanied by the exact
+  statement of what remains, so the next iteration can pick it up cold.
+
+This mirrors the artifact-only reporting requirement in
+[`research/SORRY-CLASSIFICATION.md`](../../research/SORRY-CLASSIFICATION.md) and
+is adopted from the OpenAI CDC prompt (see issue #37505 and
+<https://cdn.openai.com/pdf/04d1d1e4-bc75-476a-97cf-49055cd98d31/cdc_prompt.pdf>).
+
 ---
 
 ## Quick Reference: Modes
@@ -155,6 +175,26 @@ Invalid: "Verify n=7, 9, 11... and keep going" or "extend to n ≤ 1000".
 3. **Lemma on critical path** - actual progress toward goal
 4. **3-5 examples** - demonstrates pattern works
 5. **More examples** - ZERO additional value after 5
+
+### Pin the Statement Before Attacking (MANDATORY)
+
+Before search begins, confirm the target's `research/problems/<slug>/problem.md`
+has a **"Must prove exactly / does not count"** section (element 5 in
+[`research/PROBLEMS-STRUCTURE.md`](../../research/PROBLEMS-STRUCTURE.md)). If it
+is missing, write it first:
+
+- **Definitional pinning** — resolve every edge case of the formal statement
+  (quantification, boundary/degenerate cases, multiplicity/exactness,
+  connectivity/regularity hypotheses) as one-line assertions the final theorem
+  must satisfy.
+- **Near-misses that do NOT count** — name the partial results and restatements
+  that fail to prove the target (wrong multiplicity, restricted subclass,
+  reduction to another open problem, bounded/finite verification, equivalent
+  same-strength restatement, plus problem-specific traps).
+
+This blocks the most common way a "proof" drifts into a weaker theorem. Adopted
+from the OpenAI CDC prompt (see issue #37505 and
+<https://cdn.openai.com/pdf/04d1d1e4-bc75-476a-97cf-49055cd98d31/cdc_prompt.pdf>).
 
 ### Solved/Unsolved Strategy (MANDATORY)
 
