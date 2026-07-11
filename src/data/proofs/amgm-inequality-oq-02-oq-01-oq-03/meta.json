@@ -128,6 +128,16 @@
       "targetId": "vietas-formulas",
       "relationship": "related",
       "description": "The e₁, e₂, e₃ appearing here are exactly Vieta's elementary symmetric polynomials in the roots; the identity expresses the third power sum of roots via coefficients."
+    },
+    {
+      "targetId": "amgm-inequality-oq-02-oq-01-oq-03-oq-01",
+      "relationship": "extendedBy",
+      "description": "Direct child: the next degree, p₄ = e₁⁴ − 4·e₁²·e₂ + 2·e₂² + 4·e₁·e₃ − 4·e₄, in the same universal MvPolynomial and concrete-Finset forms, derived by substituting this k=3 closed form (plus p₂, p₁) into the k=4 Newton recurrence."
+    },
+    {
+      "targetId": "newton-power-sum-identities-oq-01",
+      "relationship": "related",
+      "description": "Parallel derivation of Newton's identities in low degree: it records the explicit closed forms pₖ = eₖ-polynomial that Mathlib's general recurrence psum_eq_mul_esymm_sub_sum leaves implicit, overlapping this entry's k=3 case from the symmetric-function (rather than AM-GM lineage) side."
     }
   ],
   "references": [
