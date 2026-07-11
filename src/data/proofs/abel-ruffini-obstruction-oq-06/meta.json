@@ -54,7 +54,7 @@
     "lineCount": 215,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries. #print axioms reports only the foundational propext, Classical.choice, Quot.sound for all four results (none of which count as assumptions). The two `decide` calls (S₂ commutativity at line 69 and the |A₃| = 3 cardinality at line 82) are kernel decidability, not native_decide, so neither introduces Lean.ofReduceBool. No structure-encoded hypotheses. Scope note: this is the characteristic-independent core; the characteristic-p Abhyankar-conjecture refinements are not formalized.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 5,
+    "theoremCount": 9,
     "definitionCount": 0
   },
   "overview": {
@@ -208,7 +208,7 @@
     }
   ],
   "conclusion": {
-    "summary": "This 121-line, axiom-free, sorry-free file isolates the group-theoretic heart of Abel–Ruffini and makes it directly usable. It proves the symmetric group Sₙ is not solvable for every n ≥ 5 (symmetricGroup_not_solvable, a uniform-in-n generalization of Mathlib's Fin-5-only instance), that S₂ is solvable, and packages both endpoints in symmetric_threshold. It then states the Abel–Ruffini criterion not_solvableByRad_of_not_solvable_gal — non-solvable Galois group implies a root not expressible by radicals — as the contrapositive of Mathlib's solvableByRad.isSolvable', with the converse re-exposed alongside it.",
+    "summary": "This 215-line, axiom-free, sorry-free file isolates the group-theoretic heart of Abel–Ruffini and makes it directly usable. It proves the symmetric group Sₙ is not solvable for every n ≥ 5 (symmetricGroup_not_solvable, a uniform-in-n generalization of Mathlib's Fin-5-only instance) and, on the positive side, that S₂, S₃, S₄, and the non-abelian A₄ are each solvable (perm_fin_two/three/four_solvable, alt_fin_four_solvable). The sharp dividing line is packaged both as symmetric_threshold (the two endpoints) and symmetric_threshold_full (all small cases discharged: Sₙ solvable ⟺ n ≤ 4). It then states the Abel–Ruffini criterion not_solvableByRad_of_not_solvable_gal — non-solvable Galois group implies a root not expressible by radicals — as the contrapositive of Mathlib's solvableByRad.isSolvable', with the converse solvable_gal_of_solvableByRad re-exposed alongside it.",
     "implications": "The criterion is the reusable engine for certifying concrete unsolvable polynomials: any irreducible degree-n polynomial (n ≥ 5) whose Galois group contains a non-solvable symmetric group has roots provably not expressible by radicals. Combined with a route that pins a specific polynomial's Galois group to S₅ — such as the discriminant/Jordan argument for X⁵ − X − 1 — it yields a fully formal proof that a named quintic has no radical solution. The uniform n ≥ 5 statement also means no per-degree re-proof is ever needed downstream.",
     "openQuestions": [
       "Formalize a self-contained construction of an irreducible quintic with Galois group exactly S₅ (e.g. via the discriminant being a non-square plus a transposition from a single real pair of complex roots), so an end-to-end 'this specific polynomial is unsolvable by radicals' theorem chains directly off this criterion.",
