@@ -313,7 +313,9 @@ theorem subsetSums_insert {a : ℕ} {A : Finset ℕ} (ha : a ∉ A) :
         · exact absurd h hxa
         · exact h
       have hsum : S.sum id = a + (S.erase a).sum id := by
-        simp [hSeq, Finset.sum_insert haS']
+        conv_lhs => rw [hSeq]
+        rw [Finset.sum_insert haS']
+        simp only [id_eq]
       by_cases hS'e : (S.erase a).Nonempty
       · -- non-empty remainder ⟹ a value of the shifted image `a + subsetSums A`
         right; right
@@ -340,8 +342,9 @@ theorem subsetSums_insert {a : ℕ} {A : Finset ℕ} (ha : a ∉ A) :
       rw [Finset.mem_filter, Finset.mem_powerset]
       exact ⟨hSA, hSne⟩
   · intro hs
-    rcases hs with rfl | h | ⟨t, ht, rfl⟩
+    rcases hs with heq | h | ⟨t, ht, rfl⟩
     · -- `s = a`: the singleton `{a}` is a non-empty subset of `insert a A`
+      subst s
       exact subset_subsetSums (insert a A) (Finset.mem_insert_self a A)
     · -- `s ∈ subsetSums A`: monotonicity along `A ⊆ insert a A`
       exact subsetSums_mono (Finset.subset_insert a A) h
@@ -551,5 +554,65 @@ theorem exists_superincreasing_extremal (k : ℕ) :
       have hk1 : (1 : ℕ) ≤ 2 ^ k := Nat.one_le_two_pow
       have h2 : 2 ^ (k + 1) = 2 * 2 ^ k := by rw [pow_succ]; ring
       rw [hdouble, hsum]; omega
+
+/-! ## The canonical powers-of-two witness
+
+`exists_superincreasing_extremal` builds *some* `k`-element superincreasing set
+abstractly (inserting a fresh element one above the running sum).  Here we exhibit
+the canonical named family `{2^0, 2^1, …, 2^{k-1}} = {1, 2, 4, …}` explicitly and
+verify it is superincreasing, has exactly `k` elements, and hence — via
+`subsetSums_card_superincreasing` — realises all `2^k − 1` distinct non-empty
+subset sums.  This is the concrete instantiation the existence theorem abstracts:
+every value in `[1, 2^k − 1]` is uniquely a subset sum (binary representation). -/
+
+/-- The powers-of-two set `{2^0, …, 2^{k-1}} = {1, 2, 4, …, 2^{k-1}}`. -/
+def powersOfTwo (k : ℕ) : Finset ℕ := (Finset.range k).image (2 ^ ·)
+
+@[simp] theorem mem_powersOfTwo {k x : ℕ} :
+    x ∈ powersOfTwo k ↔ ∃ i < k, 2 ^ i = x := by
+  simp [powersOfTwo]
+
+/-- `{2^0,…,2^{k-1}}` has exactly `k` elements — the exponent map `2^·` is
+    injective (`Nat.pow_right_injective`). -/
+theorem powersOfTwo_card (k : ℕ) : (powersOfTwo k).card = k := by
+  rw [powersOfTwo,
+      Finset.card_image_of_injective _ (Nat.pow_right_injective (le_refl 2)),
+      Finset.card_range]
+
+/-- **The powers-of-two family is superincreasing.**  For each element `2^i` the
+    strictly smaller elements are exactly `{2^0, …, 2^{i-1}}`, whose total is the
+    geometric sum `2^i − 1 < 2^i`. -/
+theorem superincreasing_powersOfTwo (k : ℕ) : Superincreasing (powersOfTwo k) := by
+  intro a ha
+  rw [mem_powersOfTwo] at ha
+  obtain ⟨i, hik, rfl⟩ := ha
+  -- the elements strictly below `2^i` are precisely `{2^j : j < i}`
+  have hfil : (powersOfTwo k).filter (· < 2 ^ i) = (Finset.range i).image (2 ^ ·) := by
+    ext x
+    simp only [Finset.mem_filter, mem_powersOfTwo, Finset.mem_image, Finset.mem_range]
+    constructor
+    · rintro ⟨⟨j, _, rfl⟩, hlt⟩
+      exact ⟨j, (Nat.pow_lt_pow_iff_right (by norm_num)).mp hlt, rfl⟩
+    · rintro ⟨j, hji, rfl⟩
+      exact ⟨⟨j, lt_trans hji hik, rfl⟩, (Nat.pow_lt_pow_iff_right (by norm_num)).mpr hji⟩
+  rw [hfil]
+  -- ∑_{j<i} 2^j = 2^i − 1
+  have hsum : ((Finset.range i).image (2 ^ ·)).sum id = 2 ^ i - 1 := by
+    rw [Finset.sum_image (fun x _ y _ h => Nat.pow_right_injective (le_refl 2) h)]
+    simp only [id_eq]
+    rw [Nat.geomSum_eq (le_refl 2) i]
+    norm_num
+  rw [hsum]
+  have : 1 ≤ 2 ^ i := Nat.one_le_two_pow
+  omega
+
+/-- **The powers-of-two family attains the extremal subset-sum count.**  For every
+    `k`, the canonical set `{2^0,…,2^{k-1}}` has exactly `2^k − 1` distinct non-empty
+    subset sums — the concrete named witness realising the tight bound of
+    `subsetSums_card_le` (cf. the abstract `exists_superincreasing_extremal`). -/
+theorem subsetSums_card_powersOfTwo (k : ℕ) :
+    (subsetSums (powersOfTwo k)).card = 2 ^ k - 1 := by
+  have h := subsetSums_card_superincreasing (superincreasing_powersOfTwo k)
+  rwa [powersOfTwo_card] at h
 
 end Erdos882OQ03
