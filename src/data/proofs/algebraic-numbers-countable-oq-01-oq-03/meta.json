@@ -92,7 +92,8 @@
       "**Concrete vs. abstract closure.** A formal library distinguishes the algebraic numbers realized inside $\\mathbb{C}$ from the closure $\\mathrm{AlgebraicClosure}\\,\\mathbb{Q}$ built from $\\mathbb{Q}$ alone. Steinitz uniqueness ($\\mathrm{IsAlgClosure.equiv}$) is exactly what pins them together — a step invisible in informal mathematics but required for a machine-checked identification.",
       "**Being an algebraic closure = closed + algebraic.** The only content needed to invoke uniqueness is the two-field predicate $\\mathrm{IsAlgClosure}\\,\\mathbb{Q}\\,\\cdot$: the sibling's algebraic-closedness plus the construction's algebraicity over $\\mathbb{Q}$. Both are already typeclass instances, so the closure recognition is a one-line assembly.",
       "**Cardinality is an isomorphism invariant, so countability is intrinsic.** $\\overline{\\mathbb{Q}}$'s countability is classically proved inside $\\mathbb{C}$; transporting it across the $\\mathbb{Q}$-algebra isomorphism shows the *abstract* $\\mathrm{AlgebraicClosure}\\,\\mathbb{Q}$ — which carries no embedding into $\\mathbb{C}$ — is itself countably infinite.",
-      "**The carrier is definitionally the right subtype.** Because membership in $\\mathrm{algebraicNumbersField}$ reduces (by $\\mathtt{Iff.rfl}$) to $\\mathrm{IsAlgebraic}\\,\\mathbb{Q}\\,\\cdot$, Mathlib's cardinality lemma for algebraic elements applies to the field's carrier with no coercion bookkeeping."
+      "**The carrier is definitionally the right subtype.** Because membership in $\\mathrm{algebraicNumbersField}$ reduces (by $\\mathtt{Iff.rfl}$) to $\\mathrm{IsAlgebraic}\\,\\mathbb{Q}\\,\\cdot$, Mathlib's cardinality lemma for algebraic elements applies to the field's carrier with no coercion bookkeeping.",
+      "**Countability of the intrinsic closure needs Steinitz uniqueness, not just an inclusion.** The concrete $\\overline{\\mathbb{Q}}\\subseteq\\mathbb{C}$ embeds visibly into a countable ambient set, but `AlgebraicClosure ℚ` is built abstractly with *no* a-priori map into ℂ, so its count cannot be read off directly. What bridges them is that any two algebraic closures of a field are ℚ-algebra isomorphic (`IsAlgClosure.equiv`, the formal Steinitz uniqueness theorem); cardinality is an isomorphism invariant, so the concrete count transports to the abstract type. Countability of the abstract closure is therefore a genuine consequence of uniqueness of algebraic closure, not a triviality."
     ]
   },
   "sections": [
@@ -122,11 +123,19 @@
     },
     {
       "id": "cardinality",
-      "title": "§3: Cardinality transport — AlgebraicClosure ℚ is countable",
+      "title": "§3: Cardinality transport — AlgebraicClosure ℚ is countably infinite",
       "startLine": 118,
+      "endLine": 140,
+      "summary": "cardinalMk_algebraicNumbersField (#= ℵ₀ for the concrete carrier, via Algebraic.cardinalMk_of_countable_of_charZero) is transported across the isomorphism to cardinalMk_algebraicClosure_rat : #(AlgebraicClosure ℚ) = ℵ₀. From that single cardinal equality both countable_algebraicClosure_rat (Cardinal.mk_le_aleph0_iff) and infinite_algebraicClosure_rat (Cardinal.infinite_iff) follow, pinning down 'countably infinite' rather than mere countability.",
+      "mathContext": "$\\#(\\mathrm{AlgebraicClosure}\\,\\mathbb{Q}) = \\#\\{z:\\mathbb{C}\\mid \\mathrm{IsAlgebraic}\\,\\mathbb{Q}\\,z\\} = \\aleph_0$, so the type is Countable and Infinite."
+    },
+    {
+      "id": "examples",
+      "title": "§4: Worked examples — bijection, countable, infinite",
+      "startLine": 141,
       "endLine": 153,
-      "summary": "cardinalMk_algebraicNumbersField (#= ℵ₀ for the concrete carrier), transported across the isomorphism to cardinalMk_algebraicClosure_rat : #(AlgebraicClosure ℚ) = ℵ₀, then countable_algebraicClosure_rat and infinite_algebraicClosure_rat.",
-      "mathContext": "Cardinality is an isomorphism invariant; transporting the count establishes that the intrinsically-defined AlgebraicClosure ℚ is countably infinite, the classical countability of the algebraic numbers freed of any embedding into ℂ."
+      "summary": "A short `section Examples` exercising the main results as sanity checks: the isomorphism algebraicNumbersEquivAlgebraicClosure is a genuine Bijective map between the two carriers, and AlgebraicClosure ℚ is both Countable and Infinite (i.e. countably infinite). These `example`s document the intended API and confirm the theorems fire with no extra hypotheses.",
+      "mathContext": "$\\mathrm{Bijective}(\\varphi),\\quad \\mathrm{Countable}(\\overline{\\mathbb{Q}}),\\quad \\mathrm{Infinite}(\\overline{\\mathbb{Q}}).$"
     }
   ],
   "conclusion": {
