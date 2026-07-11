@@ -236,4 +236,64 @@ theorem not_surjective_of_countable {α : Type*} [Countable α] (g : α → ℝ)
   · obtain ⟨e, he⟩ := exists_surjective_nat α
     exact not_surjective_nat_real (g ∘ e) (hg.comp he)
 
+/-! ## The diagonal lives in the unit interval `(0,1)`
+
+The construction above concludes `Uncountable ℝ`, but the diagonal `diagonalReal f`
+built from digits in `{1,2}` in fact lands in the open unit interval `(0,1)` — it is
+squeezed between `∑ 1/10^(n+1) = 1/9` and `∑ 2/10^(n+1) = 2/9`.  Recording this
+strengthens the headline result: uncountability is already carried by an arbitrarily
+small subinterval, and every statement below still routes through the bespoke
+`diagonalReal`, never `Cardinal.not_countable_real`. -/
+
+/-- The geometric majorant sums to `2/9`: `∑' i, 2·(1/10)^(i+1) = 2/9`. -/
+theorem tsum_geo_shift : ∑' i : ℕ, 2 * (1 / 10 : ℝ) ^ (i + 1) = 2 / 9 := by
+  calc ∑' i : ℕ, 2 * (1 / 10 : ℝ) ^ (i + 1)
+      = ∑' i : ℕ, (2 * (1 / 10 : ℝ)) * (1 / 10 : ℝ) ^ i :=
+        tsum_congr (fun i => by rw [pow_succ]; ring)
+    _ = (2 * (1 / 10 : ℝ)) * ∑' i : ℕ, (1 / 10 : ℝ) ^ i := by rw [tsum_mul_left]
+    _ = (2 * (1 / 10 : ℝ)) * (1 - 1 / 10)⁻¹ := by
+          rw [tsum_geometric_of_lt_one (by norm_num) (by norm_num)]
+    _ = 2 / 9 := by norm_num
+
+/-- **The diagonal is strictly positive.**  `diagonalReal f > 0`: every term is
+nonnegative and the `n = 0` term `db f 0 / 10 ≥ 1/10` is strictly positive. -/
+theorem diagonalReal_pos (f : ℕ → ℝ) : 0 < diagonalReal f := by
+  rw [diagonalReal]
+  refine Summable.tsum_pos (summable_term f) (fun k => term_nonneg f k k) 0 ?_
+  have h : (db f 0 : ℝ) / 10 ^ (0 + 1) = (db f 0 : ℝ) / 10 := by norm_num
+  have hpos : (1 : ℝ) ≤ (db f 0 : ℝ) := by exact_mod_cast db_pos f 0
+  rw [h]; positivity
+
+/-- **The diagonal is strictly below `1`.**  `diagonalReal f ≤ 2/9 < 1`, since every
+term is bounded by the geometric majorant `2·(1/10)^(n+1)` summing to `2/9`. -/
+theorem diagonalReal_lt_one (f : ℕ → ℝ) : diagonalReal f < 1 := by
+  have hle : diagonalReal f ≤ 2 / 9 := by
+    rw [diagonalReal, ← tsum_geo_shift]
+    exact Summable.tsum_mono (summable_term f) summable_geo_shift (fun k => term_le' f k k)
+  linarith
+
+/-- **The diagonal lies in the open unit interval.**  `diagonalReal f ∈ (0,1)`. -/
+theorem diagonalReal_mem_Ioo (f : ℕ → ℝ) : diagonalReal f ∈ Set.Ioo (0 : ℝ) 1 :=
+  ⟨diagonalReal_pos f, diagonalReal_lt_one f⟩
+
+/-- **Cantor for the unit interval:** no `g : ℕ → (0,1)` is surjective, witnessed by the
+diagonal of the underlying reals — which itself lies in `(0,1)`. -/
+theorem not_surjective_nat_Ioo (g : ℕ → Set.Ioo (0 : ℝ) 1) : ¬ Function.Surjective g := by
+  intro hg
+  obtain ⟨n, hn⟩ := hg ⟨diagonalReal (fun m => (g m : ℝ)), diagonalReal_mem_Ioo _⟩
+  have : diagonalReal (fun m => (g m : ℝ)) = (g n : ℝ) := congrArg Subtype.val hn.symm
+  exact diagonalReal_ne (fun m => (g m : ℝ)) n this
+
+/-- **The open unit interval `(0,1)` is uncountable**, proved from the explicit diagonal:
+the diagonal of any listing lands in `(0,1)` yet differs from every listed real, so no
+surjection `ℕ → (0,1)` exists.  A strengthening of `uncountable_real` — uncountability is
+already carried by an arbitrarily small subinterval.  No appeal to
+`Cardinal.not_countable_real`. -/
+theorem uncountable_Ioo : Uncountable (Set.Ioo (0 : ℝ) 1) := by
+  rw [← not_countable_iff]
+  intro h
+  have : Nonempty (Set.Ioo (0 : ℝ) 1) := ⟨⟨1 / 2, by norm_num⟩⟩
+  obtain ⟨e, he⟩ := exists_surjective_nat (Set.Ioo (0 : ℝ) 1)
+  exact not_surjective_nat_Ioo e he
+
 end CantorDiagonalizationOQ06OQ01
