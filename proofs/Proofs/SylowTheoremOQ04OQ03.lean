@@ -1027,4 +1027,78 @@ theorem subsingleton_abelianization_PSL (hp : 5 ≤ p) :
   rw [commutator_PSL_eq_top hp]
   exact QuotientGroup.subsingleton_quotient_top
 
+/-!
+## The center of `SL(2, p)` and the order of `PSL(2, p)`
+
+`card_SL2` gives `|SL(2, p)| = p(p²−1)`; passing to the projective quotient
+`PSL(2, p) = SL(2, p)/Z` divides this by the order of the center.  For odd `p` the
+center is exactly the two scalar matrices `{I, −I}`: by `mem_center_iff` every central
+element is a scalar `r·I` with `r² = 1`, and over the field `ZMod p` (odd characteristic)
+the only square roots of unity are `r = ±1` — and `I ≠ −I` because `p ≠ 2`.  Hence
+`|Z(SL(2, p))| = 2` and Lagrange gives `|PSL(2, p)| = p(p²−1)/2`, the classical order of
+the projective group.
+-/
+
+/-- **The center of `SL(2, p)` has order `2` for odd `p`.**  Via
+`SpecialLinearGroup.mem_center_iff` the central elements are the scalar matrices
+`scalar (Fin 2) r` with `r ^ 2 = 1`; over the field `ZMod p` (odd `p`) the only square
+roots of unity are `r = ±1` (`mul_self_eq_one_iff`), so the center is exactly the pair
+`{1, -1}`, which has two elements because `1 ≠ -1` when `p ≠ 2`. -/
+theorem card_center_SL2 (hp : 3 ≤ p) :
+    Nat.card (Subgroup.center (Matrix.SpecialLinearGroup (Fin 2) (ZMod p))) = 2 := by
+  -- `1 ≠ -1` in `SL(2, p)`, because otherwise `2 = 0` in `ZMod p`, forcing `p ∣ 2`.
+  have hne : (1 : Matrix.SpecialLinearGroup (Fin 2) (ZMod p)) ≠ -1 := by
+    intro h
+    have h00 := congrArg
+      (fun M : Matrix.SpecialLinearGroup (Fin 2) (ZMod p) =>
+        (M : Matrix (Fin 2) (Fin 2) (ZMod p)) 0 0) h
+    simp only [Matrix.SpecialLinearGroup.coe_one, Matrix.SpecialLinearGroup.coe_neg,
+      Matrix.one_apply_eq, Matrix.neg_apply] at h00
+    have hdvd : ((2 : ℕ) : ZMod p) = 0 := by push_cast; linear_combination h00
+    rw [ZMod.natCast_eq_zero_iff] at hdvd
+    have := Nat.le_of_dvd (by norm_num) hdvd
+    omega
+  -- The center is exactly the pair `{1, -1}`.
+  have hset : (Subgroup.center (Matrix.SpecialLinearGroup (Fin 2) (ZMod p)) :
+      Set (Matrix.SpecialLinearGroup (Fin 2) (ZMod p))) = {1, -1} := by
+    ext A
+    simp only [SetLike.mem_coe, Set.mem_insert_iff, Set.mem_singleton_iff]
+    constructor
+    · intro hA
+      obtain ⟨r, hr, hrA⟩ := Matrix.SpecialLinearGroup.mem_center_iff.mp hA
+      rw [Fintype.card_fin] at hr
+      have hrr : r * r = 1 := by rw [← pow_two]; exact hr
+      rcases mul_self_eq_one_iff.mp hrr with h1 | h1
+      · left
+        apply Subtype.ext
+        rw [← hrA, h1]
+        simp [Matrix.SpecialLinearGroup.coe_one]
+      · right
+        apply Subtype.ext
+        rw [← hrA, h1]
+        simp [Matrix.SpecialLinearGroup.coe_neg, Matrix.SpecialLinearGroup.coe_one, map_neg]
+    · rintro (rfl | rfl)
+      · exact Subgroup.one_mem _
+      · rw [Matrix.SpecialLinearGroup.mem_center_iff]
+        refine ⟨-1, by rw [Fintype.card_fin]; ring, ?_⟩
+        simp [Matrix.SpecialLinearGroup.coe_neg, Matrix.SpecialLinearGroup.coe_one, map_neg]
+  rw [← SetLike.coe_sort_coe, Nat.card_coe_set_eq, hset, Set.ncard_pair hne]
+
+/-- **`|PSL(2, p)| = p(p²−1)/2` for odd `p`.**  The projective group is the central
+quotient `PSL(2, p) = SL(2, p)/Z(SL(2, p))`, so by Lagrange
+`|Z| · |PSL| = |SL| = p(p²−1)` (`Subgroup.card_mul_index`, with `|PSL|` the index of the
+center).  Since `|Z| = 2` for odd `p` (`card_center_SL2`) and `|SL| = p(p²−1)`
+(`card_SL2`), the order of `PSL(2, p)` is `p(p²−1)/2` — the classical formula. -/
+theorem card_PSL2 (hp : 3 ≤ p) :
+    Nat.card (Matrix.ProjectiveSpecialLinearGroup (Fin 2) (ZMod p))
+      = p * (p ^ 2 - 1) / 2 := by
+  have hmul :=
+    (Subgroup.center (Matrix.SpecialLinearGroup (Fin 2) (ZMod p))).card_mul_index
+  rw [card_center_SL2 hp, card_SL2] at hmul
+  -- `hmul : 2 * (center).index = p*(p²−1)`, and `(center).index = |PSL|` by definition.
+  have hidx : (Subgroup.center (Matrix.SpecialLinearGroup (Fin 2) (ZMod p))).index
+      = Nat.card (Matrix.ProjectiveSpecialLinearGroup (Fin 2) (ZMod p)) := rfl
+  rw [hidx] at hmul
+  omega
+
 end SylowOQ04OQ03
