@@ -54,7 +54,7 @@
       "unboundedOnPrimePowers_max_left / _max_right / not_unboundedOnPrimePowers_max: PROVED the JOIN (sup) closure completing the file's prime-power domination order into a lattice — the Erdős #897 hypothesis functions form a sup-closed filter (closed under pointwise max with any function), and the failing O(log)-on-prime-powers functions form a sup-closed ideal (closed under max of two, merging the two O(log) constants via log(p^k) ≥ 0)."
     ],
     "axiomCount": 0,
-    "lineCount": 545,
+    "lineCount": 575,
     "assumptions": "None. Fully machine-checked with 0 axioms and 0 sorries; proofs use no native_decide (so #print axioms shows only propext/Classical.choice/Quot.sound). Part I of Erdős #897 — whether the prime-power growth hypothesis forces limsup_n (f(n+1)-f(n))/log n = ∞ — remains OPEN and is NOT asserted; this entry proves only the verified surrounding theory (non-vacuity, selectivity, plain unboundedness, and the strongly-additive reduction).",
     "theoremCount": 26,
     "definitionCount": 1
@@ -130,11 +130,11 @@
       "Finset"
     ],
     "namespace": "Erdos897",
-    "lineCount": 545,
+    "lineCount": 575,
     "axiomCount": 0,
     "sorries": 0,
     "definitionCount": 1,
-    "theoremCount": 27
+    "theoremCount": 28
   },
   "crossReferences": [
     {

@@ -214,6 +214,38 @@ theorem unboundedOnPrimePowers_add_nonneg {f g : ℕ → ℝ}
   have hgnn := hg p k hp hk
   linarith
 
+/-- **Closure under bounded-below perturbation on prime powers.**  If `f` is unbounded on
+prime powers and `g` has a floor at every prime power (`g(p^k) ≥ -C` for some constant
+`C ≥ 0`), then `f + g` is still unbounded on prime powers.  A constant additive shift, or
+any perturbation bounded from below, cannot spoil the unbounded ratio: the deficit `C` is
+absorbed by demanding `f(p^k)/log(p^k)` exceed the larger threshold `M + C/log 2`, which is
+legitimate because `log(p^k) ≥ log 2 > 0` on every prime power (`p ≥ 2`, `k ≥ 1`).  This
+generalizes `unboundedOnPrimePowers_add_nonneg` (the case `C = 0`): unboundedness on prime
+powers is a tail property, insensitive to any bounded-below correction term. -/
+theorem unboundedOnPrimePowers_add_bddBelow {f g : ℕ → ℝ} {C : ℝ} (hC : 0 ≤ C)
+    (hf : UnboundedOnPrimePowers f)
+    (hg : ∀ p k : ℕ, p.Prime → 1 ≤ k → -C ≤ g (p ^ k)) :
+    UnboundedOnPrimePowers (fun n => f n + g n) := by
+  intro M
+  obtain ⟨p, k, hp, hk, hgt⟩ := hf (M + C / Real.log 2)
+  refine ⟨p, k, hp, hk, ?_⟩
+  show f (p ^ k) + g (p ^ k) > M * Real.log (p ^ k)
+  have hgb := hg p k hp hk
+  have hlog2 : (0 : ℝ) < Real.log 2 := Real.log_pos (by norm_num)
+  have hL : Real.log 2 ≤ Real.log (p ^ k) := by
+    apply Real.log_le_log (by norm_num)
+    have h2pk : 2 ≤ p ^ k := le_trans hp.two_le (Nat.le_self_pow (by omega) p)
+    exact_mod_cast h2pk
+  have hdiv_nn : 0 ≤ C / Real.log 2 := div_nonneg hC hlog2.le
+  have key : C ≤ C / Real.log 2 * Real.log (p ^ k) := by
+    have h1 : C / Real.log 2 * Real.log 2 ≤
+        C / Real.log 2 * Real.log (p ^ k) :=
+      mul_le_mul_of_nonneg_left hL hdiv_nn
+    rwa [div_mul_cancel₀ C hlog2.ne'] at h1
+  have hexp : (M + C / Real.log 2) * Real.log (p ^ k) =
+      M * Real.log (p ^ k) + C / Real.log 2 * Real.log (p ^ k) := by ring
+  linarith [hgt, hgb, key, hexp]
+
 /-
 ## (4) A strongly-additive reduction
 
