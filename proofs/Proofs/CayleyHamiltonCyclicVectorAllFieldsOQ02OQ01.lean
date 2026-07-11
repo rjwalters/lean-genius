@@ -56,7 +56,7 @@
   module.  Combined with the dimension bookkeeping (`dim K[M] = deg minpoly`),
   the degree squeeze, and the descent to a cyclic vector, the whole converse edge
   is verified.  The three supporting lemmas (`lmul_finrank_bound`,
-  `aeval_end_bound`, `endK_centralizer_bound`) are field-/module-general and
+  `aeval_end_bound`, `endK_centralizer_bound`) are field- and module-general and
   reusable.  `#print axioms finrank_centralizer_ge` reports only
   `propext, Classical.choice, Quot.sound`.
 -/
