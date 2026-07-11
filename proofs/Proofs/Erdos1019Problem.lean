@@ -263,9 +263,16 @@ theorem K4_saturated_planar (G : SimpleGraph V) [DecidableRel G.Adj]
     have h6 : (3 : ℕ) * 4 - 6 = 6 := by norm_num
     rw [h6]
     -- Complete graph on ↥S (|↥S| = 4) has C(4,2) = 6 edges.
-    -- card_edgeFinset_top_eq_card_choose_two rewrites to (Fintype.card ↥S).choose 2,
-    -- hScard rewrites to Nat.choose 4 2, which rw closes by rfl.
-    rw [card_edgeFinset_top_eq_card_choose_two, hScard]
+    -- NOTE: the goal's `edgeFinset` carries the `Fintype (edgeSet)` instance derived
+    -- from the local `[DecidableRel (inducedSubgraph G S).Adj]` binder, transported to
+    -- `⊤` through `heq`.  That instance is not syntactically the one
+    -- `card_edgeFinset_top_eq_card_choose_two` infers from `DecidableEq ↥S`, so a plain
+    -- `rw` of the lemma into the goal does not match.  We instead prove the fact against
+    -- the canonically-inferred instance and bridge the (subsingleton) instance gap with
+    -- `simpa`.
+    have hcard : (⊤ : SimpleGraph ↥S).edgeFinset.card = 6 := by
+      rw [card_edgeFinset_top_eq_card_choose_two, hScard]
+    simpa using hcard
 
 /-- K₄ gives a saturated planar subgraph on 4 vertices. -/
 theorem K4_gives_large_saturated (G : SimpleGraph V) [DecidableRel G.Adj] :
