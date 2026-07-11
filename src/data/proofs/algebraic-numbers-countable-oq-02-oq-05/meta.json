@@ -106,12 +106,20 @@
       "mathContext": "This is the structural heart: countable syntax ⟹ countably many definitions. It is stated for an arbitrary countable language and arbitrary structure on ℝ, so it subsumes the grandparent (algebraic reals countable, via Tarski for ordered rings) and every countable language expansion."
     },
     {
-      "id": "undefinable-uncountable",
-      "title": "§4: Most Reals are Not First-Order Definable",
+      "id": "exists-undefinable",
+      "title": "§4: There Is an Undefinable Real",
       "startLine": 161,
+      "endLine": 178,
+      "summary": "exists_non_foDefinable_real: if every real were ∅-definable the definable set would be all of ℝ, contradicting that it is countable (foDefinable_reals_countable) while ℝ is not (not_countable). So at least one real escapes every one-variable formula — no countable language can name every real.",
+      "mathContext": "$\\exists r \\in \\mathbb{R},\\ \\neg\\,\\mathrm{FODefinable}(r)$: a countable language cannot pin down a continuum of points, obtained by contradiction from $\\aleph_0 = |\\text{definable}| < \\mathfrak{c} = |\\mathbb{R}|$."
+    },
+    {
+      "id": "undefinable-uncountable",
+      "title": "§5: The Undefinable Reals are Uncountable",
+      "startLine": 179,
       "endLine": 192,
-      "summary": "exists_non_foDefinable_real and non_foDefinable_reals_uncountable: since ℝ is uncountable (Cantor, parent) but the definable reals are countable, the undefinable reals cannot be countable. A countable language names only ℵ₀ of the continuum-many reals.",
-      "mathContext": "The Skolem/Tarski punchline and definability analogue of the parent OQ-03's 'transcendental reals are uncountable': removing a countable definable set from an uncountable ℝ leaves an uncountable remainder."
+      "summary": "non_foDefinable_reals_uncountable sharpens the existence result: definable ∪ undefinable = ℝ, so if the undefinable reals were countable then ℝ would be a union of two countable sets, hence countable — contradiction. Definability misses not just one real but a full continuum's worth.",
+      "mathContext": "$\\neg\\,\\{r : \\neg\\mathrm{FODefinable}(r)\\}.\\mathrm{Countable}$: the definability analogue of the parent OQ-03's 'transcendental reals are uncountable' — removing a countable definable set from an uncountable ℝ leaves an uncountable remainder."
     }
   ],
   "crossReferences": [
@@ -138,21 +146,27 @@
   ],
   "references": [
     {
-      "authors": ["Alfred Tarski"],
+      "authors": [
+        "Alfred Tarski"
+      ],
       "title": "A Decision Method for Elementary Algebra and Geometry",
       "year": 1951,
       "venue": "University of California Press",
       "note": "Quantifier elimination for real closed fields; identifies the ∅-definable reals of the ordered field ℝ with the real algebraic numbers."
     },
     {
-      "authors": ["Thoralf Skolem"],
+      "authors": [
+        "Thoralf Skolem"
+      ],
       "title": "Einige Bemerkungen zur axiomatischen Begründung der Mengenlehre",
       "year": 1922,
       "venue": "Matematikerkongressen i Helsingfors",
       "note": "The Löwenheim–Skolem observations: a countable language has only countably many definitions."
     },
     {
-      "authors": ["Georg Cantor"],
+      "authors": [
+        "Georg Cantor"
+      ],
       "title": "Über eine Eigenschaft des Inbegriffes aller reellen algebraischen Zahlen",
       "year": 1874,
       "venue": "Journal für die reine und angewandte Mathematik",
