@@ -66,6 +66,16 @@
       "proofId": "hall-marriage-theorem-oq-01",
       "relationship": "related",
       "description": "The root Hall biconditional. exists_sdr_of_regular instantiates its existence direction for the special case of k-regular families, where Hall's condition is automatic."
+    },
+    {
+      "proofId": "hall-marriage-theorem-oq-01-oq-01",
+      "relationship": "related",
+      "description": "The defect (Ore) form of Hall's theorem — the ultimate source of the deficiency calculus this entry consumes. Its deficiency machinery is packaged one level down by the parent hall-marriage-theorem-oq-01-oq-01-oq-01; here the k-regular case is the extreme deficiency-zero instance, where the defect form's matching saturates all of ι."
+    },
+    {
+      "proofId": "hall-marriage-theorem-oq-01-oq-02",
+      "relationship": "related",
+      "description": "König–Egerváry min–max duality (max matching = min vertex cover), a sibling consequence of the same defect-Hall calculus. The perfect matching produced here for a k-regular family is the case where every index is matched, so the minimum vertex cover has size #ι."
     }
   ],
   "sections": [
