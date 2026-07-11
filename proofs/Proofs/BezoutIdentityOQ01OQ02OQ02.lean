@@ -440,4 +440,85 @@ theorem isPrimitive_iff_exists_sl_single (v : Fin n → ℤ) :
     exact isPrimitive_of_isUnit_apply (i := k) (by rw [Pi.single_eq_same]; exact hc)
   exact (isPrimitive_mulVec_iff A v).mp hp
 
+/-! ### Sharp transitivity for `n ≥ 2`
+
+`isPrimitive_iff_exists_sl_single` reaches only a *unit multiple* `c · eₖ` of a
+basis vector, and this weaker form is the best possible *uniformly in `n`*.  For
+`n ≥ 2` it sharpens to the classical statement of the open question: `SLₙ(ℤ)` acts
+**transitively** on primitive vectors, so any primitive vector is carried onto any
+other — in particular onto the first basis vector `e₁ = (1, 0, …, 0)`, exactly as
+the parent 2×2 `bezoutSL` does for a coprime pair.
+
+The dimension hypothesis is genuinely necessary, not an artefact of the proof.  For
+`n = 1` the only unimodular matrix is the identity (`SL₁(ℤ) = {1}`), so the two
+primitive vectors `(1)` and `(-1)` lie in *distinct* orbits — no `SL₁(ℤ)` move
+connects them.  That is precisely the sign ambiguity the uniform `c · eₖ`
+description is forced to leave open. -/
+
+/-- **Core normalizing move.**  For distinct coordinates `k ≠ t` and signs
+`c, d` (units, i.e. `±1`), the two-transvection product
+`T_{k,t}(-cd) · T_{t,k}(dc)` carries `c · eₖ` to `d · eₜ`.  No lower bound on `n`
+is needed here: the two coordinates `k` and `t` already supply the scratch space
+for the `2×2` rotation.  This is the atomic step that reshuffles sign and position
+after the descent has collapsed a primitive vector onto one coordinate. -/
+theorem exists_sl_single_orbit_ne {c d : ℤ} (hc : IsUnit c) (hd : IsUnit d)
+    {k t : Fin n} (hkt : k ≠ t) :
+    ∃ B : Matrix.SpecialLinearGroup (Fin n) ℤ,
+      ↑ₘB *ᵥ Pi.single k c = Pi.single t d := by
+  classical
+  refine ⟨transvectionSL k t hkt (-(c * d)) * transvectionSL t k hkt.symm (d * c), ?_⟩
+  rw [SpecialLinearGroup.coe_mul, ← Matrix.mulVec_mulVec, transvectionSL_mulVec,
+    transvectionSL_mulVec]
+  funext i
+  simp only [Function.update_apply, Pi.single_apply]
+  rcases Int.isUnit_iff.mp hc with rfl | rfl <;>
+    rcases Int.isUnit_iff.mp hd with rfl | rfl <;>
+      by_cases hik : i = k <;> by_cases hit : i = t <;>
+        simp_all [Fin.ext_iff] <;> omega
+
+/-- **Reduction to any signed basis vector (`n ≥ 2`).**  Any signed basis vector
+`c · eₖ` (`c` a unit) is `SLₙ(ℤ)`-equivalent to any other signed basis vector
+`d · eₜ`.  When `k ≠ t` this is one core move; when `k = t` a second coordinate —
+available because `n ≥ 2` — is used as a scratch register to flip the sign. -/
+theorem exists_sl_single_to_single (hn : 1 < n) {c d : ℤ} (hc : IsUnit c)
+    (hd : IsUnit d) (k t : Fin n) :
+    ∃ B : Matrix.SpecialLinearGroup (Fin n) ℤ,
+      ↑ₘB *ᵥ Pi.single k c = Pi.single t d := by
+  rcases eq_or_ne k t with rfl | hkt
+  · haveI : Nontrivial (Fin n) := Fin.nontrivial_iff_two_le.mpr hn
+    obtain ⟨j, hj⟩ := exists_ne k
+    obtain ⟨B₁, hB₁⟩ :=
+      exists_sl_single_orbit_ne hc isUnit_one (k := k) (t := j) (Ne.symm hj)
+    obtain ⟨B₂, hB₂⟩ :=
+      exists_sl_single_orbit_ne isUnit_one hd (k := j) (t := k) hj
+    refine ⟨B₂ * B₁, ?_⟩
+    rw [SpecialLinearGroup.coe_mul, ← Matrix.mulVec_mulVec, hB₁, hB₂]
+  · exact exists_sl_single_orbit_ne hc hd hkt
+
+/-- **`SLₙ(ℤ)` acts transitively on primitive vectors (`n ≥ 2`).**  Any two
+primitive integer vectors are related by a unimodular matrix.  Together with
+`orbit_e_isPrimitive` (primitivity is *necessary* to be `SLₙ(ℤ)`-equivalent to a
+basis vector), this pins down the orbit structure completely: for `n ≥ 2` the
+primitive vectors form a **single** `SLₙ(ℤ)`-orbit. -/
+theorem exists_sl_mulVec_eq_of_isPrimitive (hn : 1 < n) {v w : Fin n → ℤ}
+    (hv : IsPrimitive v) (hw : IsPrimitive w) :
+    ∃ A : Matrix.SpecialLinearGroup (Fin n) ℤ, ↑ₘA *ᵥ v = w := by
+  obtain ⟨A, k, c, hc, hAv⟩ := exists_sl_mulVec_single_of_isPrimitive v hv
+  obtain ⟨A', k', c', hc', hA'w⟩ := exists_sl_mulVec_single_of_isPrimitive w hw
+  obtain ⟨B, hB⟩ := exists_sl_single_to_single hn hc hc' k k'
+  refine ⟨A'⁻¹ * (B * A), ?_⟩
+  rw [SpecialLinearGroup.coe_mul, SpecialLinearGroup.coe_mul, ← Matrix.mulVec_mulVec,
+    ← Matrix.mulVec_mulVec, hAv, hB, ← hA'w, Matrix.mulVec_mulVec,
+    ← SpecialLinearGroup.coe_mul, inv_mul_cancel, SpecialLinearGroup.coe_one, one_mulVec]
+
+/-- **Transitivity onto a basis vector, matching the open-question statement.**  For
+`n ≥ 2`, every primitive vector is carried by some `U ∈ SLₙ(ℤ)` exactly onto the
+basis vector `eₜ`.  Taking `t = 0` gives `U · v = e₁ = (1, 0, …, 0)`, the
+`n`-dimensional generalization of the parent `bezoutSL` construction — now with the
+sign fully pinned down, which the uniform `c · eₖ` statement cannot do. -/
+theorem exists_sl_mulVec_basis_of_isPrimitive (hn : 1 < n) {v : Fin n → ℤ}
+    (hv : IsPrimitive v) (t : Fin n) :
+    ∃ A : Matrix.SpecialLinearGroup (Fin n) ℤ, ↑ₘA *ᵥ v = Pi.single t (1 : ℤ) :=
+  exists_sl_mulVec_eq_of_isPrimitive hn hv (isPrimitive_single t)
+
 end BezoutPrimitive
