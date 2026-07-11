@@ -53,14 +53,18 @@ exhibiting *exactly* the two roots `n(1±s)/4`) are local-lean verified
 (Lean v4.26.0 + pinned Mathlib oleans, 0 errors).  The graph-level section
 (`kst_cherry_count_nat`,
 `kst_graph_quadratic`, `kst_edge_bound`, `kst_edge_bound_of_free`) and the
-leading-order closed form added in this session (`kst_radical_envelope`,
+leading-order closed form (`kst_radical_envelope`,
 `kst_edge_bound_leading_order`, giving the recognisable
 `ex(n ; K_{2,t}) ≤ ½(√(t-1)·n^{3/2}+n)`), together with the exact C₄
 specialisations `reiman_edge_bound_of_free` (the graph-level Reiman bound
 `4 m ≤ n(1+√(4n-3))`) and its forcing contrapositive `hasK2t_two_of_edge_bound_lt`,
-are elaboration-checked but UNVERIFIED in docker — the containerd build backend was
-down (meta.db / content-store I/O errors) at authoring time.  They should be
-re-verified once the build infra is repaired.
+were authored while the docker containerd backend was down; the *entire file* has
+since been re-verified local-lean (Lean v4.26.0 + pinned Mathlib oleans, 0 errors,
+every key theorem `#print axioms` = `[propext, Classical.choice, Quot.sound]`).
+This session further adds the Vieta relations `kst_vieta_sum` / `kst_vieta_prod`
+(pinning `R⁺+R⁻ = n/2` and `R⁺·R⁻ = -(t-1)n²(n-1)/4` to the quadratic's
+coefficients) and the `K_{2,3}` closed form `k23_quadratic_solve_of_kst`
+(discriminant `8n-7`, `m ≤ ¼ n(1+√(8n-7))`), also local-lean verified.
 -/
 
 import Mathlib
@@ -106,6 +110,22 @@ theorem reiman_quadratic_solve_of_kst (m n s : ℝ)
     (hkst : 4 * m ^ 2 ≤ n ^ 2 * (n - 1) + 2 * n * m) :
     4 * m ≤ n * (1 + s) := by
   refine kst_quadratic_solve 2 m n s hn hs ?_ ?_
+  · rw [hs2]; ring
+  · nlinarith [hkst]
+
+/-- **The `K_{2,3}` case is `t = 3`.**  The next explicit instance of the family
+above `C₄`: for a `K_{2,3}`-free graph the Kővári–Sós–Turán quadratic is
+`4 m² ≤ 2 n²(n-1) + 2 n m` (coefficient `t-1 = 2`), whose discriminant collapses to
+`1 + 4·2·(n-1) = 8n - 7`.  Solving it gives the explicit closed form
+`m ≤ ¼ n(1 + √(8n-7))`, one rung of the Zarankiewicz ladder above the C₄ bound
+`¼ n(1 + √(4n-3))`.  This is the direct analogue of `reiman_quadratic_solve_of_kst`
+at `t = 3`, obtained by specialising `kst_quadratic_solve`. -/
+theorem k23_quadratic_solve_of_kst (m n s : ℝ)
+    (hn : 1 ≤ n) (hs : 0 ≤ s)
+    (hs2 : s ^ 2 = 8 * n - 7)
+    (hkst : 4 * m ^ 2 ≤ 2 * n ^ 2 * (n - 1) + 2 * n * m) :
+    4 * m ≤ n * (1 + s) := by
+  refine kst_quadratic_solve 3 m n s hn hs ?_ ?_
   · rw [hs2]; ring
   · nlinarith [hkst]
 
@@ -160,6 +180,26 @@ theorem kst_quadratic_factor (t n s x : ℝ)
     4 * x ^ 2 - 2 * n * x - (t - 1) * n ^ 2 * (n - 1) =
       4 * (x - n * (1 + s) / 4) * (x - n * (1 - s) / 4) := by
   linear_combination (n ^ 2 / 4) * hs2
+
+/-- **Vieta's sum relation.**  The two roots `R^± = n(1 ± s)/4` of the generalised
+Kővári–Sós–Turán quadratic `4 x² - 2 n x - (t-1) n²(n-1)` sum to `n/2`, matching
+`-b/a = 2n/4` read off from the leading coefficient `a = 4` and linear coefficient
+`b = -2n`.  Note this holds for *any* `s` (the sum is discriminant-free), reflecting
+that the axis of symmetry `n/4` of the parabola does not depend on `t`. -/
+theorem kst_vieta_sum (n s : ℝ) :
+    n * (1 + s) / 4 + n * (1 - s) / 4 = n / 2 := by
+  ring
+
+/-- **Vieta's product relation.**  The two roots `R^± = n(1 ± s)/4`, with
+`s² = 1 + 4(t-1)(n-1)`, multiply to `-(t-1) n²(n-1) / 4`, matching `c/a` read off
+from the leading coefficient `a = 4` and constant coefficient `c = -(t-1)n²(n-1)`.
+Together with `kst_vieta_sum` these are the Vieta relations promised in the
+`kst_quadratic_factor` docstring, pinning both symmetric functions of the roots to
+the quadratic's coefficients; the product carries the whole discriminant dependence
+via `1 - s² = -4(t-1)(n-1)`. -/
+theorem kst_vieta_prod (t n s : ℝ) (hs2 : s ^ 2 = 1 + 4 * (t - 1) * (n - 1)) :
+    (n * (1 + s) / 4) * (n * (1 - s) / 4) = -((t - 1) * n ^ 2 * (n - 1)) / 4 := by
+  nlinarith [hs2]
 
 /-- **Classical Kővári–Sós–Turán closed form.**  From the generalised KST quadratic
 `4 m² ≤ (t-1)·n²(n-1) + 2 n m` (for `t ≥ 2`, `n ≥ 1`, `m ≥ 0`) the edge count obeys the
