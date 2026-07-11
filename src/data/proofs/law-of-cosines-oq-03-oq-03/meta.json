@@ -2,7 +2,7 @@
   "id": "law-of-cosines-oq-03-oq-03",
   "title": "Hyperbolic AAA Congruence",
   "slug": "law-of-cosines-oq-03-oq-03",
-  "description": "Formalizes hyperbolic AAA congruence: in hyperbolic geometry the three angles determine the triangle, so there are no non-trivial similar triangles. Inverts the second law of cosines to express each side purely in terms of the angles, cosh(c) = (cos C + cos A cos B)/(sin A sin B), then uses injectivity of cosh on [0,∞) to conclude equal angles force equal sides. Also proves an internal-consistency theorem (the angular defect A+B+C<π is exactly what makes the angle formula exceed 1, so cosh c > 1) and a closed form for the equilateral triangle, cosh(side) = cos θ/(1-cos θ). The angular defect is derived, not assumed: 6 structure-encoded axioms, 0 sorries.",
+  "description": "Formalizes hyperbolic AAA congruence: in hyperbolic geometry the three angles determine the triangle, so there are no non-trivial similar triangles. Inverts the second law of cosines to express each side purely in terms of the angles, cosh(c) = (cos C + cos A cos B)/(sin A sin B), then uses injectivity of cosh on [0,∞) to conclude equal angles force equal sides. Also proves an internal-consistency theorem (the angular defect A+B+C<π is exactly what makes the angle formula exceed 1, so cosh c > 1) and a closed form for the equilateral triangle, cosh(side) = cos θ/(1-cos θ). The side–angle order-equivalences (a<b ↔ A<B, a=b ↔ A=B) are packaged into the full equilateral ⟺ equiangular characterization (equilateral_iff_equiangular): a hyperbolic triangle has all three sides equal iff all three angles are equal, via a cyclic relabeling (rotate) that carries the (b,c)/(B,C) pair into the (a,b)/(A,B) isosceles lemma. The angular defect is derived, not assumed: 6 structure-encoded axioms, 0 sorries.",
   "leanFile": {
     "path": "Proofs/LawOfCosinesOQ03OQ03.lean",
     "namespace": "HyperbolicAAA",
@@ -17,9 +17,9 @@
     ],
     "axiomCount": 0,
     "sorries": 0,
-    "lineCount": 937,
-    "theoremCount": 57,
-    "definitionCount": 3
+    "lineCount": 978,
+    "theoremCount": 59,
+    "definitionCount": 4
   },
   "openQuestion": {
     "id": "law-of-cosines-oq-03-oq-03",
@@ -83,65 +83,137 @@
       "id": "sec-overview",
       "title": "Overview: Hyperbolic AAA Congruence",
       "startLine": 1,
-      "endLine": 65,
-      "summary": "Imports and module docstring for hyperbolic AAA congruence: unlike Euclidean geometry, the three angles of a hyperbolic triangle determine its sides. These head lines invert the second hyperbolic law of cosines cos C = −cos A·cos B + sin A·sin B·cosh c to cosh c = (cos C + cos A·cos B)/(sin A·sin B), note that cosh injective on [0,∞) forces congruence (no non-trivial similar triangles), and record two consequences — the angular defect A+B+C<π is exactly what makes the formula exceed 1, and the equilateral closed form cosh(side)=cos θ/(1−cos θ) — before the HyperbolicAAA namespace opens.",
-      "mathContext": "The second hyperbolic law of cosines relates an angle to the opposite side's cosh; inverting all three expresses each side via the three angles, and injectivity of cosh yields AAA congruence — hyperbolic geometry has no similar triangles, the angular defect (= area) being forced. The three law-of-cosines relations and the defect are encoded as structure fields (geometric assumptions, as in the parent), so the entry is axiomatized; all theorems are derived from those fields with no further axioms and no sorries."
+      "endLine": 79,
+      "summary": "Imports and module docstring for hyperbolic AAA congruence: unlike Euclidean geometry, the three angles of a hyperbolic triangle determine its sides. Inverts the second hyperbolic law of cosines cos C = −cos A·cos B + sin A·sin B·cosh c to cosh c = (cos C + cos A·cos B)/(sin A·sin B); cosh injective on [0,∞) forces congruence (no non-trivial similar triangles). The HyperbolicAAA namespace opens here.",
+      "mathContext": "The three law-of-cosines relations and the side/angle positivity are encoded as structure fields (geometric assumptions); the entry is axiomatized (6 assumptions), and every theorem is derived from those fields with no further axioms and no sorries."
     },
     {
       "id": "structure",
       "title": "HyperbolicTriangle Structure",
-      "startLine": 66,
-      "endLine": 94,
-      "summary": "Defines HyperbolicTriangle with side lengths a,b,c, angles A,B,C, side positivity (ha,hb,hc), angle range bounds (hA,hB,hC and hA_lt,hB_lt,hC_lt), and the three second laws of cosines (lawA, lawB, lawC). The angular defect A+B+C<π is NOT a field — it is derived as HyperbolicTriangle.defect. The 6 mathematical axioms are ha,hb,hc,lawA,lawB,lawC; angle-range fields are domain constraints.",
-      "mathContext": "The second law of cosines cos C = -cos A cos B + sin A sin B cosh c has no Euclidean analogue and is the source of AAA rigidity. Axiomatizing it as a structure field is consistent with the parent LawOfCosinesOQ03 and the sibling law of sines."
+      "startLine": 80,
+      "endLine": 103,
+      "summary": "Defines HyperbolicTriangle with sides a,b,c, angles A,B,C, side positivity (ha,hb,hc), angle range bounds (hA,hB,hC and hA_lt,hB_lt,hC_lt), and the three second laws of cosines (lawA, lawB, lawC). The angular defect A+B+C<π is NOT a field — it is derived (HyperbolicTriangle.defect).",
+      "mathContext": "The second law of cosines cos C = -cos A cos B + sin A sin B cosh c has no Euclidean analogue and is the source of AAA rigidity."
     },
     {
       "id": "sin-positivity",
       "title": "Sine Positivity on (0, π)",
-      "startLine": 96,
-      "endLine": 107,
+      "startLine": 104,
+      "endLine": 116,
       "summary": "sin_A_pos, sin_B_pos, sin_C_pos: each angle lies in (0,π), so its sine is positive (Real.sin_pos_of_pos_of_lt_pi). These provide the nonzero denominators for inverting the law.",
-      "mathContext": "sin x > 0 for x ∈ (0, π); the product sin A · sin B is therefore positive and the formula is well-defined."
+      "mathContext": "sin x > 0 for x ∈ (0, π); the product sin A · sin B is therefore positive and the inversion formula is well-defined."
+    },
+    {
+      "id": "defect-derived",
+      "title": "The Angular Defect is Derived, Not Assumed",
+      "startLine": 117,
+      "endLine": 193,
+      "summary": "cos_half_prod_pos (a sum-to-product half-angle sign lemma) feeds defect_of_laws: from the two numerator inequalities that side positivity forces, A+B+C<π follows for any three angles in (0,π). HyperbolicTriangle.defect exports the defect for an actual triangle, reducing the assumption count 7→6.",
+      "mathContext": "The angular defect (= hyperbolic area) is a theorem, not an axiom: it is entailed by the law-of-cosines fields together with the angle-range constraints."
     },
     {
       "id": "inversion",
       "title": "Inverting the Second Law: Sides from Angles",
-      "startLine": 109,
-      "endLine": 142,
-      "summary": "cosh_c_eq, cosh_a_eq, cosh_b_eq express each cosh-side as the angle ratio (cos opp + cos·cos)/(sin·sin). Each is proved by eq_div_iff (nonzero product of sines) followed by linear_combination of the corresponding law field.",
-      "mathContext": "cosh c = (cos C + cos A cos B)/(sin A sin B). The right-hand side depends only on the angles — the algebraic statement of AAA determinacy."
+      "startLine": 194,
+      "endLine": 228,
+      "summary": "cosh_c_eq, cosh_a_eq, cosh_b_eq express each cosh-side as the angle ratio (cos opp + cos·cos)/(sin·sin), by eq_div_iff on the nonzero sine product and linear_combination of the corresponding law field.",
+      "mathContext": "cosh c = (cos C + cos A cos B)/(sin A sin B): the right-hand side depends only on the angles — the algebraic statement of AAA determinacy."
     },
     {
       "id": "consistency",
-      "title": "The Defect Makes the Formula Valid",
-      "startLine": 144,
-      "endLine": 176,
-      "summary": "angle_formula_gt_one: the angle ratio exceeds 1, using only the angle bounds and defect. After lt_div_iff₀ the goal is sin A sin B < cos C + cos A cos B; rewriting cos A cos B - sin A sin B = cos(A+B) and using cos strictly antitone on [0,π] (A+B < π-C) gives cos(A+B) > cos(π-C) = -cos C. cosh_c_gt_one then concludes cosh c > 1.",
-      "mathContext": "Existence of a valid hyperbolic side (cosh c > 1) is equivalent to positive angular defect. This ties the metric quantity to the area defect A+B+C<π."
+      "title": "Internal Consistency: the Defect Makes cosh > 1",
+      "startLine": 229,
+      "endLine": 262,
+      "summary": "angle_formula_gt_one: the angle ratio exceeds 1, using the angle bounds and defect (cos(A+B) > cos(π−C) = −cos C via cos antitone on [0,π]); cosh_c_gt_one concludes cosh c > 1, so the side length exists.",
+      "mathContext": "Existence of a valid hyperbolic side (cosh c > 1) is equivalent to positive angular defect, tying the metric to the area defect."
     },
     {
       "id": "congruence",
       "title": "AAA Congruence",
-      "startLine": 178,
-      "endLine": 225,
-      "summary": "cosh_{a,b,c}_determined: equal angles give equal cosh-sides (rewrite by the formula). {a,b,c}_determined: upgrade to equal sides via cosh injectivity on [0,∞) (Real.cosh_strictMonoOn.injOn with side positivity). aaa_congruence packages all three side equalities.",
-      "mathContext": "cosh is injective on [0,∞); side lengths are positive, so cosh t₁.c = cosh t₂.c forces t₁.c = t₂.c. Two hyperbolic triangles with equal angles are congruent."
+      "startLine": 263,
+      "endLine": 311,
+      "summary": "cosh_{a,b,c}_determined: equal angles give equal cosh-sides. {a,b,c}_determined: upgrade to equal sides via cosh injectivity on [0,∞) (Real.cosh_strictMonoOn.injOn with side positivity). aaa_congruence packages the three side equalities.",
+      "mathContext": "cosh is injective on [0,∞) and sides are positive, so equal angles force congruent triangles — no similar triangles in hyperbolic geometry."
     },
     {
-      "id": "equilateral",
+      "id": "side-angle-order",
+      "title": "Side–Angle Order Within a Triangle",
+      "startLine": 312,
+      "endLine": 428,
+      "summary": "isosceles_of_angle_eq (A=B ⟹ a=b) and side_lt_of_angle_lt (A<B ⟹ a<b, via a factored cosh comparison). The swapAB relabeling gives the converses side_gt_of_angle_gt, angle_lt_of_side_lt, angle_eq_of_side_eq, packaged as the order-equivalences side_lt_iff_angle_lt, side_eq_iff_angle_eq, side_le_iff_angle_le.",
+      "mathContext": "The hyperbolic analogue of the Euclidean side–angle inequality: within one triangle the opposite side of the larger angle is strictly longer, and conversely."
+    },
+    {
+      "id": "angle-side-monotone",
+      "title": "Angle–Side Monotonicity",
+      "startLine": 429,
+      "endLine": 459,
+      "summary": "cosh_c_antitone_in_C and side_antitone_in_angle: across triangles sharing the other two angles, increasing the opposite angle C strictly decreases the side c.",
+      "mathContext": "A larger opposite angle forces a shorter side — the between-triangle counterpart of the within-triangle order equivalence."
+    },
+    {
+      "id": "equilateral-closed-form",
       "title": "Equilateral Closed Form",
-      "startLine": 227,
-      "endLine": 252,
-      "summary": "equilateral_cosh: with A=B=C, cosh(side) = cos θ/(1-cos θ). Uses sin²θ = (1-cos θ)(1+cos θ) and div_eq_div_iff; the (1+cos θ) factors cancel.",
-      "mathContext": "cosh(side) = cos θ/(1-cos θ) → ∞ as θ→0 and → 1 (side→0) as θ→π/3 (Euclidean limit)."
+      "startLine": 460,
+      "endLine": 486,
+      "summary": "equilateral_cosh: with A=B=C=θ, cosh(side) = cos θ/(1−cos θ), using sin²θ = (1−cos θ)(1+cos θ) and cancelling the (1+cos θ) factors.",
+      "mathContext": "cosh(side) → ∞ as θ→0 and → 1 (side→0) as θ→π/3, the Euclidean limit."
     },
     {
-      "id": "defect-exports",
-      "title": "Angle Sum and Area",
-      "startLine": 254,
-      "endLine": 265,
+      "id": "geo-exports",
+      "title": "Re-exported Geometric Facts",
+      "startLine": 487,
+      "endLine": 499,
       "summary": "angle_sum_lt_pi and area_positive re-export the angular defect and its positivity (the hyperbolic area).",
-      "mathContext": "The defect π-(A+B+C) equals the hyperbolic area (Gauss-Bonnet, curvature -1)."
+      "mathContext": "The defect π−(A+B+C) equals the hyperbolic area (Gauss–Bonnet, curvature −1)."
+    },
+    {
+      "id": "equilateral-value",
+      "title": "Equilateral Angle Bound and a Concrete Value",
+      "startLine": 500,
+      "endLine": 532,
+      "summary": "equilateral_angle_lt_pi_third: an equilateral triangle's common angle is < π/3; equilateral_pi_four_cosh: at θ=π/4 the side has cosh = 1+√2.",
+      "mathContext": "The equilateral angle ranges over (0, π/3); π/3 is the degenerate Euclidean boundary."
+    },
+    {
+      "id": "equilateral-family",
+      "title": "The Equilateral Family: Side Decreases in the Angle",
+      "startLine": 533,
+      "endLine": 574,
+      "summary": "equilateral_cosh_antitone and equilateral_side_antitone: for the equilateral family, the side length strictly decreases as the common angle increases.",
+      "mathContext": "Smaller angles ⟺ larger (more hyperbolic) equilateral triangles — a one-parameter monotone family."
+    },
+    {
+      "id": "law-of-sines",
+      "title": "The Hyperbolic Law of Sines",
+      "startLine": 575,
+      "endLine": 792,
+      "summary": "gramNumerator with the squared-sinh computations (sinh_{a,b,c}_num_sq), positivity (gramNumerator_pos), and the ratio identities law_of_sines_ab/bc/ac assemble hyperbolic_law_of_sines: sinh a / sin A = sinh b / sin B = sinh c / sin C, derived purely from the second-law inversion.",
+      "mathContext": "The hyperbolic law of sines: the common ratio sinh(side)/sin(opposite angle) is the Gram determinant normalization, recovered here from the second law of cosines alone."
+    },
+    {
+      "id": "realizability",
+      "title": "Realizability: the Defect Condition is Sufficient",
+      "startLine": 793,
+      "endLine": 887,
+      "summary": "angle_ineq and exists_triangle_of_defect construct a HyperbolicTriangle for any three angles in (0,π) with A+B+C<π; exists_iff_defect packages the biconditional and exists_equilateral specializes to equal angles.",
+      "mathContext": "The angular defect A+B+C<π is not only necessary but SUFFICIENT: every admissible angle triple is realized by an actual hyperbolic triangle."
+    },
+    {
+      "id": "equilateral-arcosh",
+      "title": "Equilateral Side Lengths in Closed Form",
+      "startLine": 888,
+      "endLine": 937,
+      "summary": "equilateral_side and equilateral_pi_four_side upgrade the cosh values to explicit side lengths via Real.arcosh_cosh (arcosh(cos θ/(1−cos θ)); arcosh(1+√2) at θ=π/4). equilateral_sides_eq (A=B=C ⟹ a=b∧b=c) and equilateral_cosh_a complete the side-metric picture.",
+      "mathContext": "arcosh inverts cosh on [0,∞), turning the implicit cosh values into genuine metric side lengths."
+    },
+    {
+      "id": "equilateral-iff",
+      "title": "The Full Equilateral ⟺ Equiangular Characterization",
+      "startLine": 938,
+      "endLine": 978,
+      "summary": "HyperbolicTriangle.rotate is the cyclic relabeling (A,B,C)↦(B,C,A), (a,b,c)↦(b,c,a) permuting the law fields; side_eq_iff_angle_eq_bc (b=c ↔ B=C) is its payoff. equilateral_iff_equiangular packages both isosceles criteria into (a=b ∧ b=c) ↔ (A=B ∧ B=C): a hyperbolic triangle is equilateral iff it is equiangular.",
+      "mathContext": "With AAA congruence this pins down the equilateral triangles as exactly the equiangular ones — a single congruence class for each admissible common angle θ ∈ (0, π/3)."
     }
   ],
   "mainTheorems": [
@@ -313,6 +385,13 @@
       "type": "theorem",
       "statement": "For angles each in (0,π): (∃ hyperbolic triangle with those angles) ↔ A+B+C<π.",
       "significance": "Combined with AAA congruence (Part 4), this makes angles↦triangle a bijection between the open defect region {0<A,B,C<π, A+B+C<π} and congruence classes of hyperbolic triangles — the hyperbolic analogue of the Euclidean angle-sum law A+B+C=π (an identity there, a strict-inequality region here)."
+    },
+    {
+      "name": "equilateral_iff_equiangular",
+      "type": "theorem",
+      "statement": "For a hyperbolic triangle t: (t.a = t.b ∧ t.b = t.c) ↔ (t.A = t.B ∧ t.B = t.C).",
+      "significance": "The full equilateral ⟺ equiangular characterization: a hyperbolic triangle has all three sides equal iff all three angles are equal. With AAA congruence and the realizability of each angle in (0,π/3), this pins down the equilateral triangles as exactly the equiangular ones — a single congruence class for each admissible common angle. The ⟸ direction is equilateral_sides_eq (Part 11); the ⟹ direction is new here.",
+      "description": "Combines the two isosceles order-equivalences: side_eq_iff_angle_eq (a=b ↔ A=B) for the first pair and the new side_eq_iff_angle_eq_bc (b=c ↔ B=C) for the second. The latter is obtained by applying side_eq_iff_angle_eq to the cyclic relabeling HyperbolicTriangle.rotate, which sends (A,B,C)↦(B,C,A) and (a,b,c)↦(b,c,a) and permutes the three law-of-cosines fields (lawA↦lawB↦lawC↦lawA, up to commutativity), so it is again a valid HyperbolicTriangle carrying the (b,c)/(B,C) pair into the (a,b)/(A,B) roles. #print axioms: only propext, Classical.choice, Quot.sound."
     }
   ],
   "references": [
@@ -350,7 +429,7 @@
     "openQuestions": [
       "Derive the three second laws of cosines from a single first law of cosines (and the metric), further reducing the structure-encoded axiom count (the angular-defect field has already been eliminated via HyperbolicTriangle.defect, 7→6).",
       "Formalize SAS and ASA congruence for hyperbolic triangles using the same inversion technique.",
-      "Quantify the size-from-angles map: prove monotonicity of cosh(side) in the opposite angle and recover the area defect as the integral of the side formulas."
+      "Recover the area defect π−(A+B+C) as the integral of the side formulas, quantifying the size-from-angles map. (Monotonicity of cosh(side) in the opposite angle, both within and across triangles, is now proved: side_lt_of_angle_lt / side_antitone_in_angle, and the equilateral ⟺ equiangular characterization equilateral_iff_equiangular packages the equality case.)"
     ]
   },
   "crossReferences": [
@@ -384,9 +463,9 @@
     ],
     "sorries": 0,
     "axiomCount": 6,
-    "lineCount": 937,
-    "theoremCount": 57,
-    "definitionCount": 3,
+    "lineCount": 978,
+    "theoremCount": 59,
+    "definitionCount": 4,
     "originalContributions": [
       "HyperbolicTriangle structure encoding the three second laws of cosines plus the angular defect",
       "cosh_c_eq / cosh_a_eq / cosh_b_eq: inversion of the second law giving each side as a function of the angles",
@@ -398,7 +477,8 @@
       "Equilateral corollaries (Part 7): equilateral_angle_lt_pi_third (an equilateral hyperbolic triangle has common angle < π/3, the sharp defect-driven counterpart of the Euclidean π/3) and equilateral_pi_four_cosh (the all-angles-π/4 equilateral triangle has every side arcosh(1+√2), i.e. cosh = 1+√2) — no new assumptions",
       "Equilateral-family monotonicity (Part 8): equilateral_cosh_antitone and equilateral_side_antitone — along the one-parameter equilateral family, the side is a strictly decreasing function of the common angle θ ∈ (0, π/3). This sharpens AAA congruence (Part 4) into a strict order statement across the family, complementing the two-angles-fixed monotonicity of Part 4b.",
       "Realizability of hyperbolic triangles (Part 10): exists_triangle_of_defect — every angle triple with each angle in (0,π) and A+B+C<π is realized by an actual HyperbolicTriangle. The construction inverts each decoupled second law independently (cosh a = (cos A+cos B cos C)/(sin B sin C), etc.), with angle_ineq (a raw-real form of the Part-3 defect inequality, applied under the three cyclic permutations) guaranteeing each quotient exceeds 1 so that arcosh yields a genuine positive side. This is the converse of the structure-encoded defect field.",
-      "Bijection characterization and equilateral existence (Part 10): exists_iff_defect — an angle triple is realized iff A+B+C<π, so (with Part 4 AAA congruence) the map angles↦triangle is a bijection between the open defect region and congruence classes, the exact hyperbolic replacement for the Euclidean angle-sum identity A+B+C=π; and exists_equilateral — a hyperbolic equilateral triangle exists for every common angle θ∈(0,π/3), showing the equilateral results of Parts 5/7/8 are non-vacuous. No new assumptions."
+      "Bijection characterization and equilateral existence (Part 10): exists_iff_defect — an angle triple is realized iff A+B+C<π, so (with Part 4 AAA congruence) the map angles↦triangle is a bijection between the open defect region and congruence classes, the exact hyperbolic replacement for the Euclidean angle-sum identity A+B+C=π; and exists_equilateral — a hyperbolic equilateral triangle exists for every common angle θ∈(0,π/3), showing the equilateral results of Parts 5/7/8 are non-vacuous. No new assumptions.",
+      "Full equilateral ⟺ equiangular characterization (Part 12): equilateral_iff_equiangular — (a=b ∧ b=c) ↔ (A=B ∧ B=C), a hyperbolic triangle is equilateral iff equiangular. The forward direction uses side_eq_iff_angle_eq_bc (b=c ↔ B=C), a new companion of side_eq_iff_angle_eq obtained via the cyclic relabeling HyperbolicTriangle.rotate ((A,B,C)↦(B,C,A), permuting the three law fields), which lets the (a,b)/(A,B) isosceles criterion be reused for the (b,c)/(B,C) pair. No new assumptions."
     ],
     "proofStrategy": "Invert each second law of cosines (linear in cosh of the opposite side) via eq_div_iff + linear_combination to get cosh(side) as a ratio of angle functions. Prove the angle ratio exceeds 1 from the defect using cos(A+B) > cos(π-C) = -cos C (strict antitonicity of cos on [0,π]). Conclude AAA congruence by cosh injectivity on [0,∞). Specialize to the equilateral case for a closed form.",
     "openQuestions": [
