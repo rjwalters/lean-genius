@@ -599,4 +599,92 @@ theorem simplexConv_const (d c n : ℕ) :
     simpa using this
   rw [← iterSum_eq_simplexConv, h, iterSum_one]
 
+
+/-! ### The iterated forward difference: two-sided inverse of iterated summation
+
+The single-step forward difference `forwardDiff` inverts a single `partialSum`
+(`forwardDiff_partialSum`) and strips one figurate dimension (`forwardDiff_simplexNumber`).
+Iterating it `a` times gives the operator `iterForwardDiff a = Δ^a`, and the two
+constructions become *two-sided* inverses: `iterSum a` raises the figurate ladder by
+`a` dimensions (`iterSum_simplexNumber`), and `Δ^a` runs it back down.
+
+The headline is the **general discrete Fundamental Theorem of Calculus**
+`iterForwardDiff_iterSum`: for *any* sequence `f`, differencing an `a`-fold running
+total `a` times recovers the original summand up to the intrinsic shift,
+`Δ^a (∑^a f)(n) = f(n + a)` — the exact discrete analogue of
+`(d/dx)^a ∫^a f = f`. Everything below is a corollary: `iterSum_simplexNumber`
+turns the figurate case `Δ^a P_{a+b} = P_b(· + a)` into a one-line consequence, and
+the `b = 0` slice is the dual of `iterSum_one` (the `a`-fold sum of `1` is `P_a`):
+the `a`-th forward difference of the `a`-dimensional ladder is the constant `1`.
+-/
+
+/-- **Iterated forward-difference operator.** `iterForwardDiff a` applies the forward
+difference `Δ` a total of `a` times: `Δ⁰ = id`, `Δ^{a+1} = Δ ∘ Δ^a`. It is the
+downward-running operator on the figurate ladder, dual to `iterSum`. -/
+def iterForwardDiff : ℕ → (ℕ → ℕ) → (ℕ → ℕ)
+  | 0,     f => f
+  | a + 1, f => forwardDiff (iterForwardDiff a f)
+
+/-- **General discrete Fundamental Theorem of Calculus.** Differencing an `a`-fold
+iterated partial sum `a` times returns the original summand, shifted by `a`:
+
+`Δ^a (∑^a f)(n) = f(n + a)`.
+
+This is the two-sided companion of the single-step `forwardDiff_partialSum`
+(`Δ ∘ ∑ = shift`) and the exact discrete analogue of `(d/dx)^a ∘ ∫^a = id`.
+The shift is intrinsic: each `Δ` reads a running total one index ahead, so `a`
+differences advance the argument by `a`. Proved by induction on `a`, peeling one
+summation layer to `partialSum` via the semigroup law `iterSum_add` and collapsing it
+with `forwardDiff_partialSum`. -/
+theorem iterForwardDiff_iterSum (a : ℕ) (f : ℕ → ℕ) (n : ℕ) :
+    iterForwardDiff a (iterSum a f) n = f (n + a) := by
+  induction a generalizing f n with
+  | zero => rfl
+  | succ a ih =>
+    have hstep : iterSum (a + 1) f = iterSum a (partialSum f) := (iterSum_add a 1 f).symm
+    show forwardDiff (iterForwardDiff a (iterSum (a + 1) f)) n = f (n + (a + 1))
+    rw [hstep]
+    simp only [forwardDiff]
+    rw [ih (partialSum f) (n + 1), ih (partialSum f) n]
+    have hfd := forwardDiff_partialSum f (n + a)
+    simp only [forwardDiff] at hfd
+    have e1 : n + 1 + a = n + a + 1 := by omega
+    have e2 : n + (a + 1) = n + a + 1 := by omega
+    rw [e1, e2, hfd]
+
+/-- **Iterated differencing strips figurate dimensions** — the inverse of the
+dimension-additivity law `iterSum_simplexNumber` (`iterSum a P_b = P_{a+b}`).
+Applying the forward difference `a` times to the `(a+b)`-dimensional simplex sequence
+recovers the `b`-dimensional one, shifted by `a`:
+
+`Δ^a P_{a+b}(n) = P_b(n + a)`.
+
+Immediate from the discrete FTC `iterForwardDiff_iterSum` once `P_{a+b}` is written as
+`iterSum a P_b`. The single-step `forwardDiff_simplexNumber` (`Δ P_{d+1} = P_d(· + 1)`)
+is the case `a = 1`. -/
+theorem iterForwardDiff_simplexNumber (a b n : ℕ) :
+    iterForwardDiff a (simplexNumber (a + b)) n = simplexNumber b (n + a) := by
+  have hfun : (simplexNumber (a + b) : ℕ → ℕ) = iterSum a (simplexNumber b) := by
+    funext m; rw [iterSum_simplexNumber]
+  rw [hfun, iterForwardDiff_iterSum]
+
+/-- **The `a`-th forward difference of the `a`-dimensional ladder is constant `1`** —
+the exact dual of the ladder characterisation `iterSum_one` (the `a`-fold *sum* of the
+constant `1` is `P_a`). Differencing the `a`-dimensional figurate sequence `a` times
+brings it all the way back down to the constant sequence `P_0 ≡ 1`:
+
+`Δ^a P_a(n) = 1`.
+
+The `b = 0` slice of `iterForwardDiff_simplexNumber`, since `P_0 ≡ 1`. Together with
+`iterSum_one` this closes the loop: summation `1 → n → triangular → tetrahedral → …`
+and differencing `… → tetrahedral → triangular → n → 1` are mutually inverse ladders. -/
+theorem iterForwardDiff_self_simplexNumber (a n : ℕ) :
+    iterForwardDiff a (simplexNumber a) n = 1 := by
+  have h : iterForwardDiff a (simplexNumber (a + 0)) n = simplexNumber 0 (n + a) :=
+    iterForwardDiff_simplexNumber a 0 n
+  rw [Nat.add_zero] at h
+  rw [h]
+  simp [simplexNumber]
+
 end TetrahedralNumberFormulaOQ01
+
