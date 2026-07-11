@@ -460,4 +460,55 @@ theorem not_countable_setOf_exists_liouvilleWith_gt_two :
   rw [dimH_setOf_exists_liouvilleWith_gt_two_eq_one] at h
   exact one_ne_zero h
 
+/-! ## Part IX: The topological & structural face — axiom-free
+
+Parts II–VIII all measure how *small* `W τ` is: for `τ > 2` it is Lebesgue-null
+(`volume_wellApprox_eq_zero`) and of sub-line Hausdorff dimension
+(`dimH_wellApprox_lt_one`).  This part records the complementary fact that each `W τ` is
+nonetheless topologically *large* — it is nonempty and dense — and identifies the exact
+common core of the whole scale.  None of these use the Jarník–Besicovitch axiom
+`dimH_wellApprox`; they rest only on Mathlib's Liouville-number theory. -/
+
+/-- **The whole scale intersects in the Liouville numbers.**  `⋂_{τ} W τ = {x | Liouville x}`:
+a real is well-approximable to *every* order iff it is a Liouville number
+(`forall_liouvilleWith_iff`).  So the Liouville set is precisely the "infinitely
+well-approximable" reals — the common core of the entire `W τ` family, and the object
+whose dimension `0` (`dimH_liouville_eq_zero`) sits below every `dimH (W τ)`. -/
+theorem iInter_wellApprox_eq_liouville :
+    (⋂ τ : ℝ, wellApprox τ) = {x : ℝ | Liouville x} := by
+  ext x
+  simp only [Set.mem_iInter, mem_wellApprox, Set.mem_setOf_eq]
+  exact forall_liouvilleWith_iff
+
+/-- **Every well-approximable set is nonempty.**  It contains the explicit Liouville
+number `liouvilleNumber 2 = ∑ₖ 2^{−k!}`, which is `τ`-well-approximable for every real `τ`
+(`liouville_liouvilleNumber`, `Liouville.liouvilleWith`).  So the family `W τ` never
+degenerates to the empty set, however large the exponent. -/
+theorem wellApprox_nonempty (τ : ℝ) : (wellApprox τ).Nonempty :=
+  ⟨liouvilleNumber 2, (liouville_liouvilleNumber (le_refl 2)).liouvilleWith τ⟩
+
+/-- **Every well-approximable set is dense.**  `W τ` contains the dense set of Liouville
+numbers (`dense_liouville`, `liouville_subset_wellApprox`), hence is dense in `ℝ` for every
+exponent `τ`.  This is the topological counterpart of the metric smallness: for `τ > 2`,
+`W τ` is Lebesgue-null and sub-dimensional yet still meets every open interval — a dense set
+of measure zero. -/
+theorem wellApprox_dense (τ : ℝ) : Dense (wellApprox τ) :=
+  dense_liouville.mono (liouville_subset_wellApprox τ)
+
+/-- **Universal dimension upper bound.**  `dimH (W τ) ≤ 1` for *every* `τ`, with no appeal
+to the axiom: `W τ ⊆ ℝ` and `dimH ℝ = 1` (`Real.dimH_univ`).  The Jarník–Besicovitch axiom
+pins the exact value `2/τ` for `τ ≥ 2`; this trivial upper half holds unconditionally, for
+all exponents including `τ < 2`. -/
+theorem dimH_wellApprox_le_one_univ (τ : ℝ) : dimH (wellApprox τ) ≤ 1 := by
+  calc dimH (wellApprox τ) ≤ dimH (Set.univ : Set ℝ) := dimH_mono (Set.subset_univ _)
+    _ = 1 := Real.dimH_univ
+
+/-- **Full dimension below `τ = 1`, axiom-free.**  For `τ ≤ 1` we have `W τ = univ`
+(`wellApprox_le_one`), so `dimH (W τ) = dimH ℝ = 1` with no analytic input — the
+sub-threshold full-dimension regime that needs none of the Jarník–Besicovitch machinery
+(contrast `dimH_wellApprox_eq_one_of_le_two`, which routes through the axiom at `τ = 2`). -/
+theorem dimH_wellApprox_eq_one_of_le_one {τ : ℝ} (hτ : τ ≤ 1) :
+    dimH (wellApprox τ) = 1 := by
+  rw [wellApprox_le_one hτ]; exact Real.dimH_univ
+
 end LiouvilleTheoremOQ03
