@@ -33,6 +33,11 @@ divisor-sum formula reproduces the brute-force lattice count for a range of smal
 2. `jacobiCount n = 8·Σ_{d|n, 4∤d} d` — the right-hand side of Jacobi's formula.
 3. `jacobiCount_odd` (0-axiom, **general**): for odd `n` the `4∤d` filter is vacuous,
    so `jacobiCount n = 8·σ(n)`. This isolates the elementary half of the formula.
+   `jacobiCount_of_not_four_dvd` (0-axiom, **general**) is its common root: whenever
+   `4 ∤ n` the filter is vacuous, so `jacobiCount n = 8·σ(n)`. The doubling relation
+   `jacobiCount_two_mul` (0-axiom, **general**) gives `jacobiCount (2·m) = 3·jacobiCount m`
+   for odd `m`, and `jacobiCount_two_mul_odd_eq` its closed form `24·σ(m)` — the classical
+   `r₄(2m)` value, matching the oracle (`r4 6 = 96 = 24·σ(3)`).
 4. `naive_sigma_fails` (0-axiom): the naive `8·σ(4) = 56` is WRONG; the true count
    is `r4 4 = 24`. The `4∤d` exclusion is load-bearing — this guards the convention.
 5. `jacobi_oracle` : `r4 n = jacobiCount n` for `1 ≤ n ≤ 24`, by `native_decide`
@@ -137,6 +142,53 @@ power of two `2^k` with `k ≥ 1`. -/
 theorem jacobiCount_two_pow_const {j k : ℕ} (hj : 1 ≤ j) (hk : 1 ≤ k) :
     jacobiCount (2 ^ j) = jacobiCount (2 ^ k) := by
   rw [jacobiCount_two_pow hj, jacobiCount_two_pow hk]
+
+/-- **General filter-vacuous lemma (0-axiom).** If `4 ∤ n` then *no* divisor of `n` is
+divisible by `4` (a divisor of `4` in `n` would force `4 ∣ n`), so the `4 ∤ d` exclusion
+is vacuous and `jacobiCount n = 8·σ(n)`. This is the common root of both `jacobiCount_odd`
+(odd `n` ⟹ `4 ∤ n`) and the `n = 2·(odd)` case below: the Jacobi count collapses to
+`8·σ` exactly when the 2-adic valuation of `n` is at most `1`. -/
+theorem jacobiCount_of_not_four_dvd {n : ℕ} (h : ¬ (4 ∣ n)) :
+    jacobiCount n = 8 * ∑ d ∈ n.divisors, d := by
+  unfold jacobiCount
+  congr 1
+  apply Finset.sum_congr _ (fun _ _ => rfl)
+  apply Finset.filter_true_of_mem
+  intro d hd
+  rw [Nat.mem_divisors] at hd
+  intro hdvd
+  exact h (dvd_trans hdvd hd.1)
+
+/-- **First doubling triples the count (0-axiom, general).** For every odd `m`,
+`jacobiCount (2·m) = 3·jacobiCount m`. Since `2·m` has 2-adic valuation `1`, no divisor
+is divisible by `4`, so `jacobiCount (2m) = 8·σ(2m)`; multiplicativity of `σ` on the
+coprime factors `2, m` gives `σ(2m) = σ(2)·σ(m) = 3·σ(m)`, while `jacobiCount m = 8·σ(m)`.
+This is the even-side companion to `jacobiCount_odd`, and its `m = 1` instance
+`jacobiCount 2 = 24` matches `jacobiCount_two_pow`. -/
+theorem jacobiCount_two_mul {m : ℕ} (hm : Odd m) :
+    jacobiCount (2 * m) = 3 * jacobiCount m := by
+  have h4 : ¬ (4 ∣ 2 * m) := by
+    intro hdvd
+    have h2 : (2 : ℕ) * 2 ∣ 2 * m := by simpa using hdvd
+    have : 2 ∣ m := (mul_dvd_mul_iff_left (by norm_num : (2 : ℕ) ≠ 0)).mp h2
+    exact (Nat.not_even_iff_odd.mpr hm) (even_iff_two_dvd.mpr this)
+  have h4m : ¬ (4 ∣ m) := fun hdvd =>
+    (Nat.not_even_iff_odd.mpr hm) (even_iff_two_dvd.mpr (dvd_trans ⟨2, rfl⟩ hdvd))
+  have hcop : Nat.Coprime 2 m := by rw [Nat.coprime_two_left]; exact hm
+  rw [jacobiCount_of_not_four_dvd h4, jacobiCount_of_not_four_dvd h4m,
+      hcop.sum_divisors_mul]
+  have hdiv2 : ∑ d ∈ (2 : ℕ).divisors, d = 3 := by decide
+  rw [hdiv2]; ring
+
+/-- **Closed form for `2·(odd)` (0-axiom, general).** Combining the doubling relation
+with `jacobiCount_odd`, for odd `m` the count is `jacobiCount (2·m) = 24·σ(m)` — the
+classical value of `r₄(2m)` (matching `r4 2 = 24 = 24·σ(1)`, `r4 6 = 96 = 24·σ(3)`, …).
+Together with `jacobiCount_odd` (`8·σ` on the odd part) this exhibits the elementary
+half of Jacobi's formula: on `n = 2^a·m` with `a ≤ 1` the count is a pure multiple of
+`σ` of the odd part. -/
+theorem jacobiCount_two_mul_odd_eq {m : ℕ} (hm : Odd m) :
+    jacobiCount (2 * m) = 24 * ∑ d ∈ m.divisors, d := by
+  rw [jacobiCount_two_mul hm, jacobiCount_odd hm]; ring
 
 /-- **Convention guard (0-axiom).** The naive formula `8·σ(n)` is WRONG for `n = 4`:
 `8·σ(4) = 8·(1+2+4) = 56`, whereas the true count is `r4 4 = 24`. Equivalently the
