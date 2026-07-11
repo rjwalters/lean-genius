@@ -177,32 +177,33 @@
       "**The dual character lattice $\\widehat{S^1} \\cong \\mathbb{Z}$ via Pontryagin duality applied to this `≃+`.** A foundational Fourier-analytic identity that does *not* follow purely formally from the present packaging — it requires three additional ingredients, each clearly tractable but cumulatively a sub-project. **The structural chain.** Pontryagin duality (Pontryagin 1934, *Topological groups*; Mathlib's `PontryaginDual G := ContinuousMonoidHom G circle`) is a contravariant functor sending $\\mathbb{R}/2\\pi\\mathbb{Z}$ to $\\widehat{\\mathbb{R}/2\\pi\\mathbb{Z}}$. The classical computation proceeds in three steps: (i) $\\widehat{\\mathbb{R}/2\\pi\\mathbb{Z}}$ is the kernel of restriction $\\widehat{\\mathbb{R}} \\to \\widehat{2\\pi\\mathbb{Z}}$ via the exact sequence $0 \\to 2\\pi\\mathbb{Z} \\to \\mathbb{R} \\to \\mathbb{R}/2\\pi\\mathbb{Z} \\to 0$ and Pontryagin's functoriality on short exact sequences; (ii) $\\widehat{\\mathbb{R}} \\cong \\mathbb{R}$ self-duality with characters $\\chi_\\xi(t) = e^{i\\xi t}$ (Plancherel's theorem, Mathlib's `Real.continuousMonoidHomEquivReal`); (iii) the kernel condition $\\chi_\\xi|_{2\\pi\\mathbb{Z}} = 1$ forces $\\xi \\cdot 2\\pi \\in 2\\pi\\mathbb{Z}$, i.e. $\\xi \\in \\mathbb{Z}$, giving $\\widehat{\\mathbb{R}/2\\pi\\mathbb{Z}} \\cong \\mathbb{Z}$ with the character-by-integer indexing $\\chi_n(\\theta) = e^{in\\theta}$. Composing with this file's `addCircleEquivAdditiveCircle.symm` then yields $\\widehat{S^1} \\cong \\mathbb{Z}$, the form used throughout harmonic analysis (Fourier series $f(\\theta) = \\sum_{n \\in \\mathbb{Z}} \\hat{f}(n) e^{in\\theta}$). **Formalization status (2026).** Mathlib v4.26.0 has `PontryaginDual` as a typeclass but does *not* yet have $\\widehat{\\mathbb{R}} \\cong \\mathbb{R}$ as a named `AddEquiv` (it has the underlying characters but not the duality `AddEquiv` itself — the proof requires the Plancherel theorem on $\\mathbb{R}$, partially formalized via `Real.fourierIntegral` in `Mathlib.Analysis.Fourier.FourierTransform` but the full $L^2$-isometry is still under construction in `Mathlib.Analysis.Fourier.Inversion`). Step (iii) — the kernel calculation $\\widehat{S^1} = \\ker(\\widehat{\\mathbb{R}} \\to \\widehat{2\\pi\\mathbb{Z}}) \\cong \\mathbb{Z}$ — would chain cleanly once $\\widehat{\\mathbb{R}} \\cong \\mathbb{R}$ is named. Estimated formalization cost: $\\sim$200 LOC once the `Real.continuousMonoidHomEquivReal` packaging lands (currently *the* missing Mathlib piece blocking this follow-up). **Why downstream users care.** Three Fourier-analytic theorems sit one step beyond the `$\\widehat{S^1} \\cong \\mathbb{Z}$` packaging: (a) the **Fourier series isomorphism** $L^2(S^1) \\cong \\ell^2(\\mathbb{Z})$ via the orthonormal basis $\\{e^{in\\theta}\\}_{n \\in \\mathbb{Z}}$ (Plancherel for the circle, Mathlib's `Real.Fourier.fourierSeries` infrastructure); (b) the **Poisson summation formula** $\\sum_{n \\in \\mathbb{Z}} f(n) = \\sum_{k \\in \\mathbb{Z}} \\hat{f}(k)$ for $f \\in \\mathcal{S}(\\mathbb{R})$ (a special case of the Pontryagin self-dual lattice formula $\\mathbb{Z}^\\vee \\cong \\mathbb{Z}$ inside $\\mathbb{R}^\\vee \\cong \\mathbb{R}$); (c) the **Pontryagin double-dual reflection** $S^1 \\cong \\widehat{\\widehat{S^1}} = \\widehat{\\mathbb{Z}}$, which composed with the present `≃+` would express $\\widehat{\\mathbb{Z}}$ explicitly as `AddCircle (2π)`, anchoring discrete-time Fourier transforms in the gallery. **Cross-references.** The character lattice connects directly to `dirichlets-theorem` (where $\\widehat{(\\mathbb{Z}/n\\mathbb{Z})^\\times}$ is the finite analog used in Dirichlet $L$-series), to `primitive-roots` (the cyclic group $(\\mathbb{Z}/p\\mathbb{Z})^\\times$ has $\\widehat{(\\mathbb{Z}/p\\mathbb{Z})^\\times} \\cong \\mathbb{Z}/(p-1)\\mathbb{Z}$), and to the broader `inverse-galois` / abelian Galois theory cluster via Kronecker-Weber's identification of abelian extensions of $\\mathbb{Q}$ with finite quotients of the idèle class character group $\\widehat{C_\\mathbb{Q}}$. The $\\widehat{S^1} \\cong \\mathbb{Z}$ packaging is the gateway theorem — the simplest non-finite Pontryagin pair, and the model for every richer character-theoretic identity downstream."
     ]
   },
-  "references": {
-    "papers": [
-      {
-        "title": "Introductio in analysin infinitorum, Vol. 1, Ch. 8",
-        "authors": [
-          "Leonhard Euler"
-        ],
-        "year": 1748,
-        "description": "Original derivation of e^(ix) = cos x + i sin x, the analytic identification underlying the additive-group structure on S¹."
-      },
-      {
-        "title": "Theorie der Transformationsgruppen",
-        "authors": [
-          "Sophus Lie",
-          "Friedrich Engel"
-        ],
-        "year": 1888,
-        "description": "Foundational text on continuous transformation groups; the prototype Lie group exponential ℝ → S¹ is the model for the construction here."
-      }
-    ],
-    "urls": [],
-    "mathlib": [
-      "Mathlib.Analysis.SpecialFunctions.Complex.Circle",
-      "Mathlib.Topology.Instances.AddCircle"
-    ]
-  },
+  "references": [
+    {
+      "title": "Introductio in analysin infinitorum, Vol. 1, Ch. 8",
+      "authors": [
+        "Leonhard Euler"
+      ],
+      "year": 1748,
+      "description": "Original derivation of e^(ix) = cos x + i sin x, the analytic identification underlying the additive-group structure on S¹."
+    },
+    {
+      "title": "Theorie der Transformationsgruppen",
+      "authors": [
+        "Sophus Lie",
+        "Friedrich Engel"
+      ],
+      "year": 1888,
+      "description": "Foundational text on continuous transformation groups; the prototype Lie group exponential ℝ → S¹ is the model for the construction here."
+    },
+    {
+      "text": "Mathlib: Mathlib.Analysis.SpecialFunctions.Complex.Circle",
+      "url": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Analysis/SpecialFunctions/Complex/Circle.html"
+    },
+    {
+      "text": "Mathlib: Mathlib.Topology.Instances.AddCircle",
+      "url": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Topology/Instances/AddCircle.html"
+    }
+  ],
   "crossReferences": [
     {
       "type": "extends",

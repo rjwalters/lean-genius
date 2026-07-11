@@ -156,24 +156,30 @@
       "description": "An elementary proof of QR via Gauss sums; provides the theoretical foundation that this algorithmic packaging makes computational."
     }
   ],
-  "references": {
-    "papers": [
-      {
-        "title": "Disquisitiones Arithmeticae",
-        "author": "C. F. Gauss",
-        "year": 1801,
-        "url": "https://en.wikipedia.org/wiki/Disquisitiones_Arithmeticae"
-      }
-    ],
-    "urls": [
-      "https://en.wikipedia.org/wiki/Quadratic_reciprocity",
-      "https://en.wikipedia.org/wiki/Legendre_symbol"
-    ],
-    "mathlib": [
-      "Mathlib.NumberTheory.LegendreSymbol.QuadraticReciprocity",
-      "Mathlib.NumberTheory.LegendreSymbol.Basic"
-    ]
-  },
+  "references": [
+    {
+      "title": "Disquisitiones Arithmeticae",
+      "author": "C. F. Gauss",
+      "year": 1801,
+      "url": "https://en.wikipedia.org/wiki/Disquisitiones_Arithmeticae"
+    },
+    {
+      "text": "https://en.wikipedia.org/wiki/Quadratic_reciprocity",
+      "url": "https://en.wikipedia.org/wiki/Quadratic_reciprocity"
+    },
+    {
+      "text": "https://en.wikipedia.org/wiki/Legendre_symbol",
+      "url": "https://en.wikipedia.org/wiki/Legendre_symbol"
+    },
+    {
+      "text": "Mathlib: Mathlib.NumberTheory.LegendreSymbol.QuadraticReciprocity",
+      "url": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/NumberTheory/LegendreSymbol/QuadraticReciprocity.html"
+    },
+    {
+      "text": "Mathlib: Mathlib.NumberTheory.LegendreSymbol.Basic",
+      "url": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/NumberTheory/LegendreSymbol/Basic.html"
+    }
+  ],
   "leanFile": {
     "namespace": "QRAlgorithm",
     "lineCount": 118,

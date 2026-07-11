@@ -208,34 +208,41 @@
       "Does this construction lift to a similar homomorphism description for the Lie group exponential on $SU(2)$ or other compact Lie groups, where Mathlib's representation theory is still developing?"
     ]
   },
-  "references": {
-    "papers": [
-      {
-        "title": "Introductio in analysin infinitorum, Vol. 1, Ch. 8",
-        "authors": [
-          "Leonhard Euler"
-        ],
-        "year": 1748,
-        "description": "Original derivation of e^(ix) = cos x + i sin x via Taylor series."
-      },
-      {
-        "title": "Theorie der Transformationsgruppen",
-        "authors": [
-          "Sophus Lie",
-          "Friedrich Engel"
-        ],
-        "year": 1888,
-        "description": "Foundational text on continuous transformation groups; introduces exponential map for Lie groups."
-      }
-    ],
-    "urls": [],
-    "mathlib": [
-      "Mathlib.Analysis.SpecialFunctions.Complex.Circle",
-      "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
-      "Mathlib.Analysis.SpecialFunctions.Complex.Log",
-      "Mathlib.Topology.Algebra.Group.Basic"
-    ]
-  },
+  "references": [
+    {
+      "title": "Introductio in analysin infinitorum, Vol. 1, Ch. 8",
+      "authors": [
+        "Leonhard Euler"
+      ],
+      "year": 1748,
+      "description": "Original derivation of e^(ix) = cos x + i sin x via Taylor series."
+    },
+    {
+      "title": "Theorie der Transformationsgruppen",
+      "authors": [
+        "Sophus Lie",
+        "Friedrich Engel"
+      ],
+      "year": 1888,
+      "description": "Foundational text on continuous transformation groups; introduces exponential map for Lie groups."
+    },
+    {
+      "text": "Mathlib: Mathlib.Analysis.SpecialFunctions.Complex.Circle",
+      "url": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Analysis/SpecialFunctions/Complex/Circle.html"
+    },
+    {
+      "text": "Mathlib: Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
+      "url": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Analysis/SpecialFunctions/Trigonometric/Basic.html"
+    },
+    {
+      "text": "Mathlib: Mathlib.Analysis.SpecialFunctions.Complex.Log",
+      "url": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Analysis/SpecialFunctions/Complex/Log.html"
+    },
+    {
+      "text": "Mathlib: Mathlib.Topology.Algebra.Group.Basic",
+      "url": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Topology/Algebra/Group/Basic.html"
+    }
+  ],
   "crossReferences": [
     {
       "type": "extends",
