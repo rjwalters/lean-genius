@@ -43,6 +43,13 @@ What survives is exactly `‖u×v‖² + ‖v×w‖² + ‖w×u‖²`, i.e. the 
 - `deGua_zero`       — apex-at-origin form: `sqArea u v w = sqArea 0 u v + sqArea 0 v w + sqArea 0 w u`.
 - `deGua_scalar`     — the recognisable closed form with axis-aligned edges of lengths
                        `a, b, c`: hypotenuse area² `= (½ab)² + (½bc)² + (½ca)²`.
+- `deGua_general`    — the **tetrahedral law of cosines**: for an arbitrary corner (no
+                       right angle) the hypotenuse-face area² equals the sum of the three
+                       leg-face areas² plus a cross-product correction term.
+- `deGua_general_dot`— the same correction written explicitly in the six edge dot products
+                       via the Binet–Cauchy identity.
+- `deGua_of_general` — de Gua's theorem recovered as the orthogonal special case in which
+                       the correction vanishes.
 
 All results are proved with no `sorry` and no additional axioms.
 -/
@@ -122,6 +129,64 @@ theorem deGua_scalar (a b c : ℝ) :
   simp only [sqArea, cross_apply, vec3_dotProduct, Pi.sub_apply]
   norm_num [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
     Matrix.cons_val_two, Matrix.tail_cons]
+  ring
+
+/-- **Generalized de Gua identity** (no orthogonality assumed).
+
+For an *arbitrary* corner `O` with three edge vectors `u, v, w` (no right angle
+required), the squared area of the face opposite `O` equals the sum of the three
+squared leg-face areas *plus a correction term* built from the mixed cross products.
+This is the tetrahedral analogue of the plane **law of cosines**: de Gua's theorem is
+the special case where the correction vanishes. -/
+theorem deGua_general (O u v w : Fin 3 → ℝ) :
+    sqArea (O + u) (O + v) (O + w)
+      = sqArea O (O + u) (O + v)
+      + sqArea O (O + v) (O + w)
+      + sqArea O (O + w) (O + u)
+      + (1 / 2) * ((u ⨯₃ v) ⬝ᵥ (v ⨯₃ w)
+          + (v ⨯₃ w) ⬝ᵥ (w ⨯₃ u)
+          + (w ⨯₃ u) ⬝ᵥ (u ⨯₃ v)) := by
+  -- The dot product is symmetric, so the three "reversed" mixed terms coincide with the
+  -- three we keep; identify them before letting `ring` combine the nine expanded pieces.
+  have c1 : (v ⨯₃ w) ⬝ᵥ (u ⨯₃ v) = (u ⨯₃ v) ⬝ᵥ (v ⨯₃ w) := dotProduct_comm _ _
+  have c2 : (w ⨯₃ u) ⬝ᵥ (v ⨯₃ w) = (v ⨯₃ w) ⬝ᵥ (w ⨯₃ u) := dotProduct_comm _ _
+  have c3 : (u ⨯₃ v) ⬝ᵥ (w ⨯₃ u) = (w ⨯₃ u) ⬝ᵥ (u ⨯₃ v) := dotProduct_comm _ _
+  simp only [sqArea, add_sub_cancel_left, add_sub_add_left_eq_sub]
+  rw [hyp_edge_cross]
+  simp only [dotProduct_add, add_dotProduct, c1, c2, c3]
+  ring
+
+/-- **Closed dot-product form of the correction.** Applying the Binet–Cauchy identity
+(`cross_dot_cross`) to each mixed term rewrites the correction of `deGua_general` purely
+in terms of the six edge dot products. Every summand carries a factor that is a dot
+product between two *distinct* edges, so the whole correction collapses to `0` exactly
+when the edges are mutually perpendicular. -/
+theorem deGua_general_dot (O u v w : Fin 3 → ℝ) :
+    sqArea (O + u) (O + v) (O + w)
+      = sqArea O (O + u) (O + v)
+      + sqArea O (O + v) (O + w)
+      + sqArea O (O + w) (O + u)
+      + (1 / 2) * ((u ⬝ᵥ v) * (v ⬝ᵥ w) - (u ⬝ᵥ w) * (v ⬝ᵥ v)
+          + (v ⬝ᵥ w) * (w ⬝ᵥ u) - (v ⬝ᵥ u) * (w ⬝ᵥ w)
+          + (w ⬝ᵥ u) * (u ⬝ᵥ v) - (w ⬝ᵥ v) * (u ⬝ᵥ u)) := by
+  rw [deGua_general]
+  simp only [cross_dot_cross]
+  ring
+
+/-- **de Gua recovered from the general identity.** When the three edges are mutually
+perpendicular, every mixed dot product vanishes, so the correction of `deGua_general_dot`
+is `0` and the general identity collapses to `deGua`. This exhibits de Gua's theorem as a
+strict special case of the tetrahedral law of cosines. -/
+theorem deGua_of_general (O u v w : Fin 3 → ℝ)
+    (huv : u ⬝ᵥ v = 0) (hvw : v ⬝ᵥ w = 0) (hwu : w ⬝ᵥ u = 0) :
+    sqArea (O + u) (O + v) (O + w)
+      = sqArea O (O + u) (O + v)
+      + sqArea O (O + v) (O + w)
+      + sqArea O (O + w) (O + u) := by
+  have huw : u ⬝ᵥ w = 0 := by rw [dotProduct_comm]; exact hwu
+  have hvu : v ⬝ᵥ u = 0 := by rw [dotProduct_comm]; exact huv
+  have hwv : w ⬝ᵥ v = 0 := by rw [dotProduct_comm]; exact hvw
+  rw [deGua_general_dot, huv, hvw, hwu, huw, hvu, hwv]
   ring
 
 end PythagoreanDeGua
