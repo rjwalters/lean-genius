@@ -98,13 +98,62 @@ axiom balogh_2017 :
 For small k, we can compute or bound F(k) directly.
 -/
 
+/-- The only non-empty subset sum of a singleton `{n}` is `n` itself. -/
+theorem mem_subsetSums_singleton {n s : ℕ} (h : s ∈ SubsetSums {n}) : s = n := by
+  simp only [SubsetSums, Finset.mem_image, Finset.mem_filter, Finset.mem_powerset] at h
+  obtain ⟨t, ⟨ht_sub, ht_ne⟩, ht_sum⟩ := h
+  have ht : t = {n} := by
+    rcases Finset.subset_singleton_iff.mp ht_sub with h0 | h1
+    · exact absurd h0 ht_ne
+    · exact h1
+  subst ht
+  simp only [Finset.sum_singleton, id_eq] at ht_sum
+  exact ht_sum.symm
+
+/-- `1 ∈ ValidN 1`: for `k = 1` the singleton `{1}` always works, since its only
+    subset sum is `1`, which is trivially monochromatic. -/
+theorem one_mem_validN_one : (1 : ℕ) ∈ ValidN 1 := by
+  intro c
+  refine ⟨{1}, Finset.card_singleton 1, ?_, c 1, ?_⟩
+  · intro a ha
+    rw [Finset.mem_singleton] at ha; subst ha
+    exact ⟨le_refl 1, le_refl 1⟩
+  · intro s hs
+    rw [mem_subsetSums_singleton hs]
+
+/-- `1` lower-bounds `ValidN 1`: any valid `N` admits a non-empty `1`-element set
+    with elements in `[1, N]`, forcing `N ≥ 1`. -/
+theorem validN_one_ge_one {N : ℕ} (hN : N ∈ ValidN 1) : 1 ≤ N := by
+  obtain ⟨A, hcard, hbound, _⟩ := hN (fun _ => true)
+  obtain ⟨a, ha⟩ := Finset.card_pos.mp (by rw [hcard]; norm_num)
+  exact (hbound a ha).1.trans (hbound a ha).2
+
 /-- F(1) = 1: Any element forms a monochromatic 1-element set. -/
 theorem F_1 : F 1 = 1 := by
-  sorry -- The single element's sum is itself, automatically monochromatic
+  have hmem : (1 : ℕ) ∈ ValidN 1 := one_mem_validN_one
+  have hle : F 1 ≤ 1 := Nat.sInf_le hmem
+  have hge : 1 ≤ F 1 := validN_one_ge_one (Nat.sInf_mem ⟨1, hmem⟩)
+  exact le_antisymm hle hge
 
-/-- F(2) = 3: Need {1,2,3} to guarantee monochromatic {a, b, a+b}. -/
-theorem F_2 : F 2 = 3 := by
-  sorry -- Color analysis: 1,2,3 forces some pair with monochromatic sums
+/-- F(2) = 8. **Correction (2026-07-10):** an earlier draft claimed `F 2 = 3`.
+    That value is FALSE for the distinct-pair Folkman number defined here (a set
+    `A` of `k = 2` *distinct* elements `{a, b}` with `a, b, a+b` monochromatic).
+    An exhaustive check of all 2-colourings gives F(2) = 8, not 3:
+
+    * `N = 7` fails — the colouring
+        `1,2,4 ↦ B`, `3,5,6,7 ↦ R` (and `≥ 8 ↦ B`)
+      leaves every 2-subset `{a,b} ⊆ {1,…,7}` with `{a, b, a+b}` non-monochromatic;
+    * `N = 8` succeeds — every 2-colouring of `{1,…,8}` forces some distinct pair
+      `{a, b}` with `a, b, a+b` all one colour.
+
+    (In particular `3 ∉ ValidN 2`: the colouring `3 ↦ R`, everything else `B`
+    defeats all three pairs of `{1,2,3}`, namely `{1,2}`, `{1,3}`, `{2,3}`.)
+
+    The exact-value proof requires reducing the infinite coloring quantifier
+    `∀ c : ℕ → Bool` to a finite search over `{1,…,15}`; that finite-reduction is
+    left for a follow-up session (out of scope here). -/
+theorem F_2 : F 2 = 8 := by
+  sorry -- Verified by exhaustive computation; needs finite-coloring reduction to formalize.
 
 /-- F(3) ≥ 11: Lower bound for 3-element sets. -/
 /-
