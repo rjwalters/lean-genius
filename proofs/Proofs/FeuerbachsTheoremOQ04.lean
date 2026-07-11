@@ -1307,4 +1307,44 @@ theorem excircleB_excircleC_distinct {Na Nb Nc O : E} {ρ : ℝ}
   rw [h0] at hpos
   exact lt_irrefl 0 hpos
 
+/-! ### Antipodal-centre symmetry of spherical circles
+
+A spherical circle is cut by *two* poles: the centre `O` at radius `ρ` and its antipode `-O`
+at the complementary radius `π − ρ`.  This intrinsic two-centre ambiguity is precisely the
+`±⟪O, ·⟫` sign symmetry that the incircle/excircle contact analysis above turns on
+(`incircle_excircleAB_signs_exclusive`, the `excircle*_distinct` family): swapping a centre
+for its antipode negates every `scos` and complements every radius.  The lemmas below make
+that symmetry a checked identity. -/
+
+omit [InnerProductSpace ℝ E] in
+/-- **The antipode lies on the sphere.**  If `P` is a unit vector then so is `-P`; the
+spherical model is closed under antipodal reflection (`‖-P‖ = ‖P‖`). -/
+theorem onSphere_neg {P : E} (hP : OnSphere P) : OnSphere (-P) := by
+  rw [OnSphere, norm_neg]; exact hP
+
+/-- **Spherical cosine flips sign under antipodal reflection of the second argument.**
+`scos P (-Q) = -scos P Q`, directly from `⟪P, -Q⟫ = -⟪P, Q⟫`. -/
+theorem scos_neg_right (P Q : E) : scos P (-Q) = -scos P Q := by
+  rw [scos, scos, inner_neg_right]
+
+/-- **Antipodal points are at spherical distance `π`.**  For a unit vector `O`,
+`sdist O (-O) = π`: the antipode is the unique farthest model point, since
+`⟪O, -O⟫ = -‖O‖² = -1` and `arccos (-1) = π`. -/
+theorem sdist_antipode {O : E} (hO : OnSphere O) : sdist O (-O) = Real.pi := by
+  have h : (⟪O, -O⟫ : ℝ) = -1 := by
+    rw [inner_neg_right, real_inner_self_eq_norm_sq, hO]; norm_num
+  rw [sdist, h, Real.arccos_neg_one]
+
+/-- **Every spherical circle has an antipodal centre with complementary radius.**
+`sCircle O ρ = sCircle (-O) (π − ρ)`: a point `P` satisfies `⟪P, O⟫ = cos ρ` iff it satisfies
+`⟪P, -O⟫ = cos (π − ρ)`, because `⟪P, -O⟫ = -⟪P, O⟫` and `cos (π − ρ) = -cos ρ`.  The same
+locus is therefore cut by the pole `O` at radius `ρ` and by its antipode `-O` at the
+complementary radius `π − ρ` — the intrinsic *two-centre ambiguity* of a spherical circle, and
+exactly the `±⟪O, ·⟫` sign symmetry underlying the incircle/excircle contact analysis above.
+No hypothesis on `O` is needed: it is an identity of level sets of the inner product. -/
+theorem sCircle_antipodal_center (O : E) (ρ : ℝ) :
+    sCircle O ρ = sCircle (-O) (Real.pi - ρ) := by
+  ext P
+  simp only [sCircle, Set.mem_setOf_eq, scos, inner_neg_right, Real.cos_pi_sub, neg_inj]
+
 end FeuerbachsTheoremOQ04

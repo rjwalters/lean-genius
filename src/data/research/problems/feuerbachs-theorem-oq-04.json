@@ -21,8 +21,8 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-06-28T10:40:00.000Z",
-    "iteration": 4,
-    "focus": "Spherical circles (level sets of scos) + internal/external tangency relations formalized on top of the metric layer; level-set circle identified with the metric circle (mem_sCircle_iff_sdist).",
+    "iteration": 5,
+    "focus": "ACT iteration 5 (researcher-5, 2026-07-11) — VERIFIED axiom-free (bin/lake env lean, exit 0; #print axioms = [propext, Classical.choice, Quot.sound] for all four new lemmas). Added the antipodal-centre symmetry layer for spherical circles: onSphere_neg (the model is closed under P ↦ -P), scos_neg_right (scos P (-Q) = -scos P Q), sdist_antipode (sdist O (-O) = π for unit O), and the capstone sCircle_antipodal_center (sCircle O ρ = sCircle (-O) (π-ρ) with NO hypothesis on O). This makes precise the intrinsic two-centre ambiguity of a spherical circle — the same locus is cut by pole O at radius ρ and by antipode -O at complementary radius π-ρ — which is exactly the ±⟨O,·⟩ sign symmetry the incircle/excircle contact analysis (incircle_excircleAB_signs_exclusive, the excircle*_distinct family) turns on. Also corrected the stale tracked sorryCount 2→0 (the '2' were docstring '0-sorry' false-positives; the file has no actual sorry). 0 axioms, 0 sorries.",
     "blockers": [],
     "nextAction": "Tangent-point existence: exhibit the unique common point on the geodesic between centres for tangent circles (spherical slerp) and verify it lies on both sCircles; then build spherical incircle / nine-point circle and attempt the spherical Feuerbach tangency.",
     "attemptCounts": {
@@ -116,7 +116,7 @@
     "mathlib": []
   },
   "started": "2026-04-22T12:51:58.293Z",
-  "lastUpdate": "2026-06-30",
+  "lastUpdate": "2026-07-11",
   "significance": 7,
   "tractability": 4,
   "leanFiles": [
@@ -398,11 +398,11 @@
     {
       "path": "Proofs/FeuerbachsTheoremOQ04.lean",
       "filename": "FeuerbachsTheoremOQ04.lean",
-      "lineCount": 1311,
-      "theoremCount": 65,
+      "lineCount": 1350,
+      "theoremCount": 69,
       "axiomCount": 0,
       "defCount": 12,
-      "sorryCount": 2,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FeuerbachsTheoremOQ04.lean"
     },
