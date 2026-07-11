@@ -84,6 +84,14 @@
       "mathContext": "$p_3 = e_1^3 - 3 e_1 e_2 + 3 e_3$; concretely $a^3+b^3+c^3 = (a+b+c)^3 - 3(a+b+c)(ab+ac+bc) + 3abc$."
     },
     {
+      "id": "imports-setup",
+      "title": "Imports and Sibling-Recurrence Lineage",
+      "startLine": 28,
+      "endLine": 37,
+      "summary": "Imports Mathlib and the sibling recurrence file Proofs.AmgmInequalityOQ02OQ01OQ02OQ01 — the source of psum_three_eq (p₃ = e₁p₂ − e₂p₁ + 3e₃), psum_two_eq (p₂ = e₁² − 2e₂), and psum_one_eq_esymm_one (p₁ = e₁) that the closed form substitutes. Opens MvPolynomial, Finset, BigOperators. This import is the entire proof-theoretic input: the file adds only a ring normalization on top of the sibling's Newton-Girard recurrence.",
+      "mathContext": "Recurrence supplied by the import: $p_3 = e_1 p_2 - e_2 p_1 + 3 e_3$."
+    },
+    {
       "id": "universal",
       "title": "Universal Closed Form (MvPolynomial)",
       "startLine": 39,
@@ -94,9 +102,9 @@
     {
       "id": "concrete",
       "title": "Concrete 3-Variable Instance (Sum of Cubes)",
-      "startLine": 65,
-      "endLine": 78,
-      "summary": "cube_sum_three: the classical factorization a³+b³+c³ = (a+b+c)³ − 3(a+b+c)(ab+ac+bc) + 3abc over any CommRing, closed by ring — the smallest concrete Finset instance.",
+      "startLine": 61,
+      "endLine": 80,
+      "summary": "cube_sum_three: the classical factorization a³+b³+c³ = (a+b+c)³ − 3(a+b+c)(ab+ac+bc) + 3abc over any CommRing, closed by ring — the smallest concrete Finset instance. (The fully general char-2-safe Finset form lives in the companion file AmgmInequalityOQ02OQ01OQ03Finset.lean, described in the docstring annotations.)",
       "mathContext": "$a^3+b^3+c^3 = (a+b+c)^3 - 3(a+b+c)(ab+ac+bc) + 3abc$."
     }
   ],
