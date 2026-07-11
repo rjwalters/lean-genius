@@ -1,8 +1,8 @@
 {
   "slug": "cantor-diagonalization-oq-06-oq-01",
   "title": "Explicit Diagonal Real Missing From Any Listed Enumeration",
-  "phase": "ORIENT",
-  "status": "available",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -23,14 +23,12 @@
     "goal": "Define the witness x as an explicit function of the enumeration f (e.g. a bit sequence b n = if nthDigit (f n) n = 0 then 1 else 0 summed into [0,1]) and prove x ≠ f n for every n by exhibiting the differing digit, with no appeal to Cardinal.not_countable_real or #ℝ = 𝔠."
   },
   "currentState": {
-    "phase": "ORIENT",
-    "since": "2026-07-09T16:43:20-07:00",
+    "phase": "COMPLETED",
+    "since": "2026-07-11",
     "iteration": 2,
-    "focus": "Approach identified: explicit diagonalReal via floor/emod decimal digits (in {1,2}) with geometric tail bound. Verifiable BUILD plan recorded; ~150-250 lines.",
-    "blockers": [
-      "Verification environment: docker lean image absent (docker system df shows 0 images) and disk ~121Mi; no build/verify path this session."
-    ],
-    "nextAction": "Execute the BUILD in a working docker env per knowledge.nextSteps: define digit/db/diagonalReal, prove crux digit(diagonalReal f) n = db f n, then diagonalReal_ne.",
+    "focus": "SOLVED & VERIFIED (researcher-1, 2026-07-11). Explicit constructive diagonal real implemented and machine-checked: proofs/Proofs/CantorDiagonalizationOQ06OQ01.lean, 209 lines, 14 theorems / 4 defs, 0 sorry / 0 axiom. #print axioms reports only [propext, Classical.choice, Quot.sound]. digit r n = ⌊r·10^(n+1)⌋%10; db f n ∈ {1,2} disagrees with digit(f n) n; diagonalReal f = ∑ n, db f n/10^(n+1); crux digit_diagonalReal via head/tail split (integer head A, geometric tail 0≤T≤2/9<1) ⟹ diagonalReal_ne and not_surjective_nat_real. No Cardinal.not_countable_real.",
+    "blockers": [],
+    "nextAction": "Done — gallery entry src/data/proofs/cantor-diagonalization-oq-06-oq-01/meta.json created.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -38,7 +36,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "ORIENT (researcher-11, 2026-07-10): Designed a COMPLETE verifiable construction for the explicit diagonalReal:(N->R)->R with x!=f n by decimal-digit comparison — no cardinality, no Cardinal.not_countable. Digits restricted to {1,2} sidestep the 0.999...=1.000... expansion-uniqueness obstruction; digit defined via floor/emod; disagreement proven through a geometric 2/9<1 tail bound. NO Lean written or verified this session — environment hard-blocked (docker lean image absent [docker system df: 0 images], disk 121Mi, worktree reaped). Ready-to-execute BUILD plan with exact Mathlib lemma names recorded in nextSteps. NOT yet proven.",
+    "progressSummary": "COMPLETED (researcher-1, 2026-07-11): the BUILD designed in the ORIENT phase was executed and verified. CantorDiagonalizationOQ06OQ01.lean (0 sorry / 0 axiom, foundational axioms only) gives an explicit definable diagonalReal:(ℕ→ℝ)→ℝ with diagonalReal f ≠ f n for all n by digit disagreement (digits in {1,2}, floor/emod digit extraction, geometric 2/9<1 tail bound), answering the parent OQ06 open question with no appeal to cardinality.",
     "builtItems": [],
     "insights": [
       "Parent CantorDiagonalization.lean (176L, 0 sorry) proves the diagonal only over BinarySeq = N->Bool via fun n => !(f n n); it never touches actual reals. Its remark (lines 102-107) that binary sequences correspond to reals in [0,1] is exactly the UNPROVEN bridge — supplying it is the genuine open content of this OQ.",
@@ -522,5 +520,6 @@
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorDiagonalizationOQ07OQ01.lean"
     }
-  ]
+  ],
+  "completed": "2026-07-11"
 }
