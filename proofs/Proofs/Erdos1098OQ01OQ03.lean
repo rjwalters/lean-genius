@@ -53,6 +53,11 @@ the size of every clique", i.e. ω(Γ(G)) finite) and prove the full equivalence
   and finite-commutator-set (BFC) classes, via the Mathlib Schur endgame
   `Subgroup.finiteIndex_center`. These pin the axiom's residual content to the single
   implication `BoundedCliques G → Finite (commutatorSet G)`.
+* `boundedCliques_prod_iff` — **(fully proved, new)** the multiplicativity capstone:
+  `BoundedCliques (G × K) ↔ BoundedCliques G ∧ BoundedCliques K`, completing the product
+  story of `boundedCliques_of_prod_left` / `boundedCliques_of_prod_right` /
+  `boundedCliques_prod_of_finiteIndex`. (Reverse routes through Neumann's dichotomy, so this
+  equivalence carries the theory's single BFC axiom rather than being axiom-free.)
 
 ## Honesty
 
@@ -622,5 +627,29 @@ theorem boundedCliques_of_prod_left {K : Type*} [Group K]
 theorem boundedCliques_of_prod_right {K : Type*} [Group K]
     (h : BoundedCliques (G × K)) : BoundedCliques K :=
   boundedCliques_of_surjective (MonoidHom.snd G K) (fun k => ⟨(1, k), rfl⟩) h
+
+/-- **The class of `BoundedCliques` groups is exactly closed under finite direct products.**
+    `Γ(G × K)` has finite clique number if and only if *both* `Γ(G)` and `Γ(K)` do:
+
+    > `BoundedCliques (G × K) ↔ BoundedCliques G ∧ BoundedCliques K`.
+
+    This is the capstone the projection lemmas `boundedCliques_of_prod_left` /
+    `boundedCliques_of_prod_right` explicitly advertise: forward is their pair (each factor
+    inherits bounded cliques from the product, via the elementary surjective clique transfer),
+    while the reverse is `boundedCliques_prod_of_finiteIndex` fed by Neumann's dichotomy
+    `neumann_full_theorem` on each factor — turning bounded cliques into finite central index
+    on `G` and `K`, whose product then has finite central index and hence bounded cliques.
+
+    The reverse implication routes through `neumann_hard_direction` (via `neumann_full_theorem`),
+    so — unlike the individual heredity lemmas — this equivalence is *not* axiom-free; it inherits
+    exactly the one BFC assumption of the theory. Combined with `boundedCliques_congr` it says the
+    `BoundedCliques` groups form an isomorphism-closed class that is closed under finite products
+    and factors, i.e. Neumann's finiteness property is genuinely multiplicative. -/
+theorem boundedCliques_prod_iff {K : Type*} [Group K] :
+    BoundedCliques (G × K) ↔ BoundedCliques G ∧ BoundedCliques K := by
+  refine ⟨fun h => ⟨boundedCliques_of_prod_left h, boundedCliques_of_prod_right h⟩, ?_⟩
+  rintro ⟨hG, hK⟩
+  exact boundedCliques_prod_of_finiteIndex
+    (neumann_full_theorem.mp hG) ((neumann_full_theorem (G := K)).mp hK)
 
 end Erdos1098OQ01OQ03
