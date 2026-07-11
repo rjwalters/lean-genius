@@ -1,5 +1,41 @@
 # Knowledge: tetrahedral-number-formula-oq-01
 
+## Session 2026-07-11 (researcher-9) — Iterated forward difference: two-sided inverse of iterated summation [VERIFIED]
+
+**Mode:** REVISIT (RICH; base solved). **Outcome:** progress — 1 def + 3 theorems,
+**VERIFIED 0 sorry / 0 axiom** (`lake env lean`, EXIT 0; `#print axioms` = [propext, Classical.choice, Quot.sound] only).
+
+### What I did — the iterated inverse operator (602→690 lines, 35→38 theorems)
+Completed the summation↔difference duality at the ITERATED level. The file already had the
+single-step `forwardDiff` (`Δ ∘ ∑ = shift`, `Δ P_{d+1} = P_d(·+1)`); I added its `a`-fold iterate
+and proved it is the two-sided inverse of `iterSum a`:
+- `iterForwardDiff` — `Δ^a`, defined by `Δ⁰=id`, `Δ^{a+1}=Δ∘Δ^a` (outside peel, mirroring `iterSum`).
+- `iterForwardDiff_iterSum` — **general discrete FTC**: `Δ^a(∑^a f)(n) = f(n+a)` for *arbitrary* `f`.
+  Induction on `a`, peeling `iterSum (a+1) f = iterSum a (partialSum f)` via `iterSum_add a 1 f`, then
+  collapsing the outer `Δ` with `forwardDiff_partialSum`. The discrete analogue of `(d/dx)^a ∘ ∫^a = id`.
+- `iterForwardDiff_simplexNumber` — `Δ^a P_{a+b}(n) = P_b(n+a)`, the exact inverse of the
+  dimension-additivity law `iterSum_simplexNumber` (`iterSum a P_b = P_{a+b}`). One-line corollary of
+  the FTC after `funext` rewriting `P_{a+b} = iterSum a P_b`.
+- `iterForwardDiff_self_simplexNumber` — `Δ^a P_a = 1`, the dual of `iterSum_one` (`a`-fold sum of `1`
+  is `P_a`). Closes the loop: the summation ladder `1→n→triangular→…` and the differencing ladder
+  `…→triangular→n→1` are mutually inverse.
+
+### Key Lean notes (reusable)
+- The shift is intrinsic and unavoidable (`Δ^a` advances the argument by `a`) because
+  `forwardDiff_partialSum` reads the total one index ahead. State theorems with the `(·+a)` shift
+  rather than fighting it — keeps `ℕ`-subtraction exact (all sequences here are monotone).
+- `iterSum (a+1) f = iterSum a (partialSum f)` is `(iterSum_add a 1 f).symm` (uses `iterSum 1 f ≡ partialSum f`
+  definitionally); lets an outside-peel induction reuse the IH on `partialSum f`.
+- Corollaries via `funext m; rw [iterSum_simplexNumber]` to swap `simplexNumber (a+b)` for `iterSum a (simplexNumber b)`
+  as *functions* before applying the FTC — avoids re-running the induction.
+
+### Files Modified
+- `proofs/Proofs/TetrahedralNumberFormulaOQ01.lean` (+`iterForwardDiff`, +3 theorems; 602→690 lines, 35→38 thm)
+- `src/data/research/problems/tetrahedral-number-formula-oq-01.json` (leanFile counts 602/35/5 → 690/38/6 + knowledge)
+
+---
+
+
 ## Session 2026-07-09 (researcher-8) — Semigroup law of iterated summation + dimension-additivity [VERIFIED]
 
 **Mode:** REVISIT (RICH; base already solved by my PR #36499). **Outcome:** progress —
