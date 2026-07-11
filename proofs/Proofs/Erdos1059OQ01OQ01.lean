@@ -761,6 +761,62 @@ theorem nonqualifying_deficit_surplus_at_factorials (k M : ℕ) : ∃ N : ℕ, �
   exact ⟨N, fun n hn => (deficit_add_le_iff_density_surplus _ k M).mpr (hN n hn)⟩
 
 /-
+## Part XI: Absolute Growth of the Qualifying Count at Factorial Points
+
+All of the results above are *relative* (ratio / deficit) statements: they compare
+`C(n!)` to `π(n!)`. They leave open the crude but basic question of how large
+`C(n!)` is in absolute terms. Here we record the direct absolute lower bound.
+
+Every level `l ≥ 3` contributes at least one qualifying prime
+(`qualifyingInLevel_pos`), and `C(n!) = Σ_{l<n} q(l)` (`qualifyingCount_decomposition`),
+so summing the `≥ 1` contributions over the `n − 3` levels `3 ≤ l < n` gives the
+explicit linear lower bound `C(n!) ≥ n − 3`. In particular the qualifying primes are
+*infinite*: `C(n!) → ∞`. This is exactly the (weak-axiom-level) infinitude conclusion
+for Erdős 1059 read at factorial evaluation points, now stated as an absolute count
+rather than a density ratio.
+-/
+
+/-- **Absolute lower bound on the qualifying count at factorial points.**
+    For `n ≥ 3`,
+
+      `C(n!) ≥ n − 3`.
+
+    Since `C(n!) = Σ_{l<n} q(l)` (`qualifyingCount_decomposition`) and every level
+    `l ≥ 3` contributes at least one qualifying prime (`qualifyingInLevel_pos`), the
+    `n − 3` levels `3 ≤ l < n` each contribute `≥ 1`, giving the explicit linear
+    lower bound. This is the absolute (non-ratio) counterpart of the density results:
+    it shows the qualifying primes genuinely accumulate, not merely keep pace with a
+    shrinking fraction. -/
+theorem qualifyingCount_factorial_ge (n : ℕ) (hn : n ≥ 3) :
+    Erdos1059OQ01.qualifyingPrimeCount (Nat.factorial n) ≥ n - 3 := by
+  rw [qualifyingCount_decomposition n (by omega)]
+  -- Split range n = range 3 ∪ Ico 3 n and bound the high part by its cardinality.
+  have h3n : 3 ≤ n := hn
+  have hsplit : (Finset.range n).sum qualifyingInLevel
+      = (Finset.range 3).sum qualifyingInLevel
+        + (Finset.Ico 3 n).sum qualifyingInLevel := by
+    rw [← Finset.sum_range_add_sum_Ico _ h3n]
+  have hle : (Finset.Ico 3 n).sum (fun _ => (1 : ℕ)) ≤
+      (Finset.Ico 3 n).sum qualifyingInLevel := by
+    apply Finset.sum_le_sum
+    intro l hl
+    simp only [Finset.mem_Ico] at hl
+    exact qualifyingInLevel_pos l (by omega)
+  have hone : (Finset.Ico 3 n).sum (fun _ => (1 : ℕ)) = n - 3 := by
+    simp [Finset.sum_const, Nat.card_Ico]
+  omega
+
+/-- **The qualifying count is unbounded at factorial points** (infinitude of
+    qualifying primes, factorial-point form). For every `M` there is an `N` such
+    that `C(n!) ≥ M` for all `n ≥ N`; hence `C(n!) → ∞`. Immediate from the linear
+    lower bound `qualifyingCount_factorial_ge`. -/
+theorem qualifyingCount_factorial_unbounded (M : ℕ) : ∃ N : ℕ, ∀ n : ℕ, n ≥ N →
+    Erdos1059OQ01.qualifyingPrimeCount (Nat.factorial n) ≥ M := by
+  refine ⟨M + 3, fun n hn => ?_⟩
+  have hge := qualifyingCount_factorial_ge n (by omega)
+  omega
+
+/-
 ## Summary
 
 **Proved from first principles** (no sorry):
@@ -789,6 +845,11 @@ theorem nonqualifying_deficit_surplus_at_factorials (k M : ℕ) : ∃ N : ℕ, �
     (needs the subset bound C(x) ≤ π(x); the M=0 case is deficit_le_iff_density)
 17. nonqualifying_deficit_surplus_at_factorials — sharp deficit form of the unbounded
     surplus: (π(n!)−C(n!))·(k+1) + M ≤ π(n!) eventually, for every margin M
+18. qualifyingCount_factorial_ge — absolute linear lower bound C(n!) ≥ n − 3 (each
+    level l ≥ 3 contributes ≥1 qualifying prime), the non-ratio counterpart of the
+    density results
+19. qualifyingCount_factorial_unbounded — infinitude at factorial points: C(n!) → ∞
+    (for every M eventually C(n!) ≥ M), immediate from qualifyingCount_factorial_ge
 
 **This file is now sorry-free** — the previous two `sorry`s (the interval
 decompositions) are discharged by `count_decomp`.
