@@ -51,14 +51,15 @@
       "inter_card_eq_n_iff: the supporting characterization that for A, B ⊆ [n], |A ∩ B| = n iff A = B = [n]; the combinatorial core of the diagonal value.",
       "Structural lemmas on T: T_le_pow (T(n,r) ≤ 2^n), T_mono_ground (monotone in the ground-set size n), one_le_T (positivity), and full_powerset_avoids_r_of_lt / T_eq_pow_of_lt (T(n,r) = 2^n whenever n < r); plus largeSetsFamily_subset_franklFurediOdd_one linking Frankl's r=1 family into the general Frankl-Füredi construction.",
       "T_le_pow_sub_choose / T_le_pow_sub_one: sharpened upper bound T(n,r) ≤ 2^n − C(n,r), machine-checked. An r-avoiding family can contain no set of size exactly r (its self-pair A,A meets in |A| = r), so the family omits all C(n,r) subsets of size r, giving T(n,r) ≤ 2^n − C(n,r); for r ≤ n this yields the uniform strict improvement T(n,r) ≤ 2^n − 1 over the trivial ceiling, and it is tight at the diagonal r = n (C(n,n) = 1 recovers T(n,n) = 2^n − 1).",
-      "smallSetsFamily / smallSetsFamily_avoids_r / smallSetsFamily_card / sum_choose_le_T / n_add_one_le_T_n_2: the 'small' disjunct {A ⊆ [n] : |A| < r} of the Frankl–Füredi families, isolated as its own r-avoiding family (|A ∩ B| ≤ |A| < r). It admits an EXACT binomial-sum cardinality ∑_{k<r} C(n,k) (proved by partitioning into powersetCard k layers), giving the first certified POLYNOMIAL lower bound T(n,r) ≥ ∑_{k<r} C(n,k) for all n,r — specialising to T(n,2) ≥ n+1, a nontrivial bound on the r=2 line at the start of the middle range the Frankl–Rödl question concerns. Axiom-free ([propext, Classical.choice, Quot.sound])."
+      "smallSetsFamily / smallSetsFamily_avoids_r / smallSetsFamily_card / sum_choose_le_T / n_add_one_le_T_n_2: the 'small' disjunct {A ⊆ [n] : |A| < r} of the Frankl–Füredi families, isolated as its own r-avoiding family (|A ∩ B| ≤ |A| < r). It admits an EXACT binomial-sum cardinality ∑_{k<r} C(n,k) (proved by partitioning into powersetCard k layers), giving the first certified POLYNOMIAL lower bound T(n,r) ≥ ∑_{k<r} C(n,k) for all n,r — specialising to T(n,2) ≥ n+1, a nontrivial bound on the r=2 line at the start of the middle range the Frankl–Rödl question concerns. Axiom-free ([propext, Classical.choice, Quot.sound]).",
+      "T_L(n,L) + T_L_singleton / T_L_antitone_forbidden / T_L_insert_le / T_L_le_T_of_mem: the Frankl–Wilson L-avoiding analogue of the extremal quantity T — T_L(n,L) is the max size of a family avoiding EVERY intersection size in L. It faithfully generalizes T (T_L n {r} = T n r), is antitone in the forbidden-size set (L ⊆ L' ⟹ T_L n L' ≤ T_L n L, via Finset.sup_mono), and is bounded by any single-size extremal it forbids (r ∈ L ⟹ T_L n L ≤ T n r), tying the L-avoiding hierarchy back to the concrete T(n,r) values. Axiom-free ([propext, Classical.choice, Quot.sound])."
     ],
     "axiomCount": 1,
-    "lineCount": 879,
+    "lineCount": 938,
     "assumptions": "1 axiom: frankl_rodl_1987 (the deep Frankl–Rödl 1987 exponential bound — the affirmative answer to the main question). 0 sorries: the trivial case T(n,0)=2^{n-1} is fully machine-checked (#print axioms T_n_0 = [propext, Classical.choice, Quot.sound]) via a complement-pairing upper bound and a star-family witness. The unused opaque chromaticNumber axiom was removed; the geometric chromatic-number consequence is recorded as prose only since infinite unit-distance chromatic numbers are not yet in Mathlib.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 37,
-    "definitionCount": 9
+    "theoremCount": 41,
+    "definitionCount": 10
   },
   "crossReferences": [
     {
@@ -184,10 +185,10 @@
       "Finset"
     ],
     "namespace": "Erdos703",
-    "lineCount": 879,
+    "lineCount": 938,
     "axiomCount": 1,
-    "theoremCount": 37,
-    "definitionCount": 9,
+    "theoremCount": 41,
+    "definitionCount": 10,
     "path": "Proofs/Erdos703Problem.lean",
     "sorries": 0
   },

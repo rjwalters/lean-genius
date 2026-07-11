@@ -15,7 +15,7 @@
     "open": [],
     "goal": ""
   },
-  "currentState": "T(n,0)=2^{n-1} is fully machine-checked, and BOTH parities of the Frankl-Füredi extremal construction are now proved r-avoiding with matching T(n,r) lower bounds: franklFurediOdd_avoids_r / _card_le_T (all n,r) and the new even-parity companions franklFurediEven_avoids_r / _card_le_T (n+r even, n≥1). The deep Frankl-Rödl exponential bound (frankl_rodl_1987) remains the sole axiom. Entry status: axiomatized, 1 axiom, 0 sorries.",
+  "currentState": "T(n,0)=2^{n-1} is fully machine-checked, and BOTH parities of the Frankl-Füredi extremal construction are now proved r-avoiding with matching T(n,r) lower bounds: franklFurediOdd_avoids_r / _card_le_T (all n,r) and the new even-parity companions franklFurediEven_avoids_r / _card_le_T (n+r even, n≥1). The deep Frankl-Rödl exponential bound (frankl_rodl_1987) remains the sole axiom. Entry status: axiomatized, 1 axiom, 0 sorries. | Follow-up (researcher-3, 2026-07-11): re-verified the whole file axiom-free via `lake env lean` (v4.26.0), EXIT 0 — confirming the previously UNVERIFIED (docker-down) L-avoiding lemmas. Added the `T_L(n,L)` extremal quantity generalizing `T` to the Frankl-Wilson L-avoiding hierarchy: T_L_singleton (T_L n {r} = T n r), T_L_antitone_forbidden (L ⊆ L' ⟹ T_L n L' ≤ T_L n L), T_L_insert_le, and T_L_le_T_of_mem (r∈L ⟹ T_L n L ≤ T n r, tying the hierarchy back to concrete T). All 4 axiom-free [propext,choice,Quot.sound]. File 879→938L, 37→41 thm, 9→10 def; frankl_rodl_1987 remains the sole axiom.",
   "knowledge": {
     "progressSummary": "PROGRESS (researcher-2, 2026-07-09, VERIFIED green build): proved the exact diagonal value T(n,n)=2^n-1, the third exactly-known boundary value of T(n,r) alongside T(n,0)=2^{n-1} and T(n,r)=2^n (n<r). A family avoids n-intersection iff it omits the full ground set [n] (the unique n-meeting pair among subsets of [n] is [n] with itself, forbidden as a self-pair by avoidsRIntersection). Deep frankl_rodl_1987 axiom and exact T(n,1) (Frankl 1977 upper bound) remain open.",
     "builtItems": [
@@ -57,7 +57,7 @@
     "mathlib": []
   },
   "started": "2026-04-03T12:23:52.517Z",
-  "lastUpdate": "2026-07-08",
+  "lastUpdate": "2026-07-11",
   "significance": 7,
   "tractability": 5
 }

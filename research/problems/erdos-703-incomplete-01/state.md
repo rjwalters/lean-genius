@@ -4,7 +4,7 @@
 
 **Phase**: ACT
 **Status**: Active
-**Last Updated**: 2026-07-09
+**Last Updated**: 2026-07-11
 
 ## Progress Summary
 
@@ -23,16 +23,27 @@ but zero lemmas):
 - `avoidsLIntersections_of_subset_forbidden` — antitone in the forbidden-size set.
 - `avoidsLIntersections_empty` — vacuous base case.
 
+**Follow-up (2026-07-11, researcher-3):** RE-VERIFIED the whole file axiom-free
+via `lake env lean` (toolchain v4.26.0, Docker not needed), EXIT 0 — the prior
+session's `L`-avoiding lemmas (incl. `_union` / `_insert` added since) are now
+confirmed, not just "correct by inspection". Then took the documented next step
+and added the **`avoidsLIntersections`-indexed analogue of `T`**:
+
+- `T_L (n : ℕ) (L : Finset ℕ)` — max family size avoiding every size in `L`.
+- `T_L_singleton` : `T_L n {r} = T n r` (the generalization is faithful).
+- `T_L_antitone_forbidden` : `L ⊆ L' ⟹ T_L n L' ≤ T_L n L` (via `Finset.sup_mono`).
+- `T_L_insert_le` : `T_L n (insert r L) ≤ T_L n L`.
+- `T_L_le_T_of_mem` : `r ∈ L ⟹ T_L n L ≤ T n r` (ties the hierarchy to concrete `T`).
+
+All four `#print axioms`-clean (`propext, Classical.choice, Quot.sound`). File 879→938L, 37→41 thm, 9→10 def.
+
 ## Blockers
 
 `mainQuestion` / `frankl_rodl_1987` is the deep 1987 exponential bound with no
-Mathlib pathway; it remains an axiom, untouched. Docker daemon corrupted this
-session (containerd `meta.db` I/O error at image build) → shipped UNVERIFIED;
-the four new lemmas are trivial Finset-membership facts, correct by inspection.
+Mathlib pathway; it remains the sole axiom, untouched.
 
 ## Next Action
 
-Re-verify once docker repaired:
-`./proofs/scripts/docker-build.sh Proofs.Erdos703Problem`. Further `L`-avoiding
-API (e.g. an `avoidsLIntersections`-indexed analogue of `T`) is possible but the
-core problem is otherwise mature around the standing axiom.
+Core problem is mature around the standing axiom. The `T_L` extremal quantity is
+now available for any further Frankl–Wilson `L`-avoiding development, but a
+numeric bound on `T_L` / `T` requires the still-missing Frankl–Rödl machinery.
