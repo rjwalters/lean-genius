@@ -17,14 +17,14 @@
       "turan-theory"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "erdosNumber": 1019,
     "erdosUrl": "https://erdosproblems.com/1019",
     "erdosProblemStatus": "solved",
     "relatedProblems": [],
     "axiomCount": 3,
     "lineCount": 478,
-    "assumptions": "3 axioms: cyclePlus2K1_saturated_planar, erdos_construction_exists, simonovits_theorem. K4_saturated_planar converted from axiom to theorem (1 sorry remains for edge count: C(4,2)=6 on generic 4-element type). isPlanar defined via Wagner forbidden minor characterization. K3_saturated_planar and bipartite_not_saturated fully proved.",
+    "assumptions": "3 axioms carry the mathematical content: simonovits_theorem (the K₄-or-C_l+2K₁ dichotomy), cyclePlus2K1_saturated_planar (C_l+2K₁ is a triangulation), and erdos_construction_exists (tightness). The capstone erdos_1019_solved depends only on simonovits_theorem and cyclePlus2K1_saturated_planar (verified via #print axioms). K4_saturated_planar and turan_triangle are fully proved and axiom-free (only propext/Classical.choice/Quot.sound). The prior edge-count sorry (C(4,2)=6 on a generic 4-element type) is now closed via SimpleGraph.card_edgeFinset_top_eq_card_choose_two after rewriting the induced subgraph to ⊤ with edgeFinset_inj. isPlanar is defined via Wagner's forbidden-minor characterization (no K₅ or K₃,₃ minor). K3_saturated_planar uses native_decide for its 3-edge count (adds Lean.ofReduceBool, but this is off the capstone dependency path). File compiles with 0 sorries under Lean 4.26.0 / Mathlib.",
     "mathlib_version": "4.26.0",
     "theoremCount": 13,
     "definitionCount": 23,
@@ -318,7 +318,7 @@
     "theoremCount": 13,
     "definitionCount": 23,
     "path": "Proofs/Erdos1019Problem.lean",
-    "sorries": 1,
+    "sorries": 0,
     "additionalFiles": [
       "Proofs/Erdos1019Aristotle.lean"
     ]
@@ -340,5 +340,5 @@
     "Proof of the 1-edge threshold gap via `omega`",
     "Definition of `completeBipartite` on `Fin m ⊕ Fin n` with adjacency between parts"
   ],
-  "sorries": 1
+  "sorries": 0
 }

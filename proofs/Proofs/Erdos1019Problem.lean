@@ -273,6 +273,7 @@ theorem K4_saturated_planar (G : SimpleGraph V) [DecidableRel G.Adj]
     have hfe : (inducedSubgraph G S).edgeFinset = (⊤ : SimpleGraph ↥S).edgeFinset :=
       edgeFinset_inj.mpr heq
     rw [hfe, card_edgeFinset_top_eq_card_choose_two, hScard]
+    rfl
 
 /-- K₄ gives a saturated planar subgraph on 4 vertices. -/
 theorem K4_gives_large_saturated (G : SimpleGraph V) [DecidableRel G.Adj] :
