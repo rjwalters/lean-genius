@@ -453,6 +453,23 @@ theorem erdos_378_density_positive (r : ℕ) :
   rw [atLeastSquarefree_eq_compl]
   exact natDensity_compl hd_density
 
+/-- **The explicit Granville–Ramaré density formula.**  Beyond mere existence and
+positivity, the density of `atLeastSquarefree r` has the closed value
+
+    density(r) = 1 − Σ_{0 ≤ m ≤ (r-1)/2} η_m,
+
+the complement of the Granville–Ramaré partial sum of the exact-count densities `η_m`.
+This is the quantitative answer to Erdős #378: `erdos_378_density_exists` /
+`erdos_378_density_positive` assert *that* the density exists and is positive, while this
+records *what it is* — the value that `erdos_378_density_positive` obtains as `1 − d` with
+`d < 1`, here pinned to the explicit sum. No new axiom beyond `complement_density`. -/
+theorem erdos_378_density_eq (r : ℕ) :
+    NaturalDensity (atLeastSquarefree r)
+      (1 - ∑ m ∈ range ((r - 1) / 2 + 1), eta m) := by
+  obtain ⟨d, hd_eq, hd_density, _⟩ := complement_density r
+  rw [atLeastSquarefree_eq_compl, ← hd_eq]
+  exact natDensity_compl hd_density
+
 /-- **Erdős Problem #378 — full resolution.**
 
 For every `r`, the set of `n` with at least `r` squarefree interior binomials has a

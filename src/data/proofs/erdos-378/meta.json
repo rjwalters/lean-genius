@@ -61,12 +61,13 @@
       "granville_ramare_density_exists axiom: Granville-Ramaré (1996) Input 1 — density η_m of exactlySquarefree m exists",
       "complement_density axiom: Granville-Ramaré (1996) Input 2 — {n : squarefreeCount n < r} has density Σ η_m < 1",
       "erdos_378_density_exists / erdos_378_density_positive (no sorries): derived from the two axioms by complementation",
+      "erdos_378_density_eq (no sorries, no new axiom): the explicit Granville–Ramaré density formula density(r) = 1 − Σ_{0≤m≤(r-1)/2} η_m — the quantitative answer, pinning the value that density_positive obtains as 1−d to the explicit partial sum of the exact-count densities",
       "erdos_378, erdos_378_answer (no sorries): combined resolution of both questions"
     ],
     "axiomCount": 2,
-    "lineCount": 565,
+    "lineCount": 637,
     "assumptions": "2 axioms, both isolating the deep analytic content of Granville-Ramaré (1996): granville_ramare_density_exists (the density η_m of n with exactly 2m+2 squarefree binomials exists) and complement_density (the set of n with fewer than r squarefree binomials has density Σ_{0≤m≤(r-1)/2} η_m, which is < 1). 0 sorries. All other results, including the resolution of both questions and the parity theorems squarefreeCount_even_of_odd (odd rows have an even count) and squarefreeCount_odd_iff_central_squarefree (an even row has an odd count iff its central binomial C(n,n/2) is squarefree), are fully machine-checked (depend only on propext/Classical.choice/Quot.sound).",
-    "theoremCount": 20,
+    "theoremCount": 26,
     "definitionCount": 8,
     "additionalFiles": [
       "Proofs/Erdos378Aristotle.lean"
@@ -162,9 +163,9 @@
       "Finset"
     ],
     "namespace": "Erdos378",
-    "lineCount": 620,
+    "lineCount": 637,
     "axiomCount": 2,
-    "theoremCount": 19,
+    "theoremCount": 26,
     "definitionCount": 8,
     "path": "Proofs/Erdos378Problem.lean",
     "sorries": 0,
