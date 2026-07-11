@@ -91,12 +91,20 @@
       "mathContext": "$A_n$ solvable $\\Rightarrow S_n$ solvable: the short exact sequence $1 \\to A_n \\to S_n \\xrightarrow{\\mathrm{sgn}} \\{\\pm 1\\} \\to 1$ has abelian quotient, and an extension of a solvable group by a solvable group is solvable."
     },
     {
-      "id": "base-cases",
-      "title": "A₂ and A₃ Solvable",
+      "id": "base-case-a3",
+      "title": "A₃ Solvable (prime order ⟹ cyclic ⟹ abelian)",
       "startLine": 67,
+      "endLine": 73,
+      "summary": "alternatingFinThree_isSolvable: |A₃| = 3 via nat_card_alternatingGroup; prime order forces cyclicity (isCyclic_of_prime_card), hence commutativity (IsCyclic.commutative), hence solvability (isSolvable_of_comm). Registered as an instance so the reduction can pick it up automatically — no permutation-specific reasoning, only the order count and arithmetic.",
+      "mathContext": "$|A_3| = 3$ prime $\\Rightarrow A_3$ cyclic $\\Rightarrow$ abelian $\\Rightarrow$ solvable. This is the deepest base case: $A_3 \\cong \\mathbb{Z}/3$ is the whole nontrivial layer of $S_3$'s composition series."
+    },
+    {
+      "id": "base-case-a2",
+      "title": "A₂ Solvable (trivial group)",
+      "startLine": 75,
       "endLine": 80,
-      "summary": "alternatingFinTwo_isSolvable: |A₂| = 1, subsingleton, solvable. alternatingFinThree_isSolvable: |A₃| = 3 (nat_card_alternatingGroup); prime order ⟹ cyclic (isCyclic_of_prime_card) ⟹ abelian (IsCyclic.commutative) ⟹ solvable (isSolvable_of_comm). perm_fin_three_solvable adds S₃ via A₃=ker(sign) (prime order 3 ⇒ cyclic ⇒ solvable) and the abelian quotient S₃/A₃, through solvable_of_ker_le_range.",
-      "mathContext": "$|A_2| = 1$ (trivial, solvable); $|A_3| = 3$ prime $\\Rightarrow A_3$ cyclic $\\Rightarrow$ abelian $\\Rightarrow$ solvable. These abelian base cases are exactly why $S_2, S_3$ stay below the threshold."
+      "summary": "alternatingFinTwo_isSolvable: |A₂| = 1 (card_alternatingGroup), so the group is a Subsingleton (Fintype.card_le_one_iff_subsingleton) and solvability follows by infer_instance. The uniform reduction subsumes the abelian n = 2 endpoint that the companion obstruction file proved by an ad hoc commutativity decide.",
+      "mathContext": "$|A_2| = 1$: the trivial group, vacuously solvable. $S_2 \\cong \\mathbb{Z}/2$ then follows from the reduction with the abelian sign quotient."
     },
     {
       "id": "symmetric-cases",
