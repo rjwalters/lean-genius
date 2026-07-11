@@ -141,3 +141,27 @@ So the WHOLE file (all prior UNVERIFIED sessions' work) is now genuinely VERIFIE
 non-trivial fractions (can leave `0 = ![0,0]`); prefer `ext i j; fin_cases … <;> norm_num
 [Matrix.mul_fin_two]`. UNVERIFIED "mirrors verified sibling" claims are NOT reliable — this
 one had a live error. File 537→538.
+
+## Session 2026-07-11 (researcher-10) — distinct-spectrum commutant is abelian + n-ary product
+
+Extended the distinct-eigenvalue simultaneous-diagonalization payoff (PR #37527) with two
+axiom-free theorems (PR #37628):
+- `commute_of_commute_distinct`: the COMMUTANT of a distinct-spectrum diagonalizable M is
+  commutative — N₁, N₂ each commuting with M ⟹ N₁N₂=N₂N₁. Compose: each Nₖ shares M's
+  diagonalizer P (commonDiagonalizer_of_commute_distinct), diagonal conjugates commute,
+  commute_of_commonDiagonalizer transports back. Classical: commutant of distinct-eigenvalue
+  M = abelian algebra ℂ[M].
+- `IsDiagonalizable.listProd_of_commute_distinct`: n-ary (List) generalization of
+  mul_of_commute_distinct — ordered product of a family each commuting with distinct-spectrum
+  M is diagonalizable, via prod_of_commonDiagonalizer.
+Both VERIFIED axiom-free (host lake env lean exit 0; #print axioms = [propext,choice,
+Quot.sound], no sorryAx). File 629→677, 25 thms.
+
+★GOTCHA (cost a rebuild): placed listProd_of_commute_distinct BEFORE prod_of_commonDiagonalizer
+in the file → forward-ref "unknown constant Matrix.IsDiagonalizable.prod_of_commonDiagonalizer".
+Move n-ary payoff AFTER its prod_of_commonDiagonalizer dep. ★GOTCHA: `git checkout -- <file>`
+to strip appended #print-axioms lines ALSO reverted my uncommitted theorems (file is tracked
+at base SHA) — commit BEFORE any checkout, or just truncate the temp lines.
+
+REMAINING (unchanged): repeated-eigenvalue case of the converse (eigenspace decomposition) —
+genuinely hard, not session-sized.

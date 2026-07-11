@@ -461,6 +461,24 @@ theorem IsDiagonalizable.mul_of_commute_distinct {M N P : Matrix n n K}
   have hNdiag := commonDiagonalizer_of_commute_distinct hPdet hMdiag hdist hcomm
   exact IsDiagonalizable.mul_of_commonDiagonalizer hP hMdiag hNdiag
 
+/-- **The commutant of a distinct-spectrum diagonalizable matrix is commutative.**
+    If `P` diagonalizes `M` with pairwise *distinct* eigenvalues, then any two matrices
+    `N₁`, `N₂` that each commute with `M` also commute with **each other**.  Because `M` has
+    distinct eigenvalues, commuting with `M` forces each `Nₖ` to be diagonalized by the same
+    `P` (`commonDiagonalizer_of_commute_distinct`); the two diagonal conjugates `P⁻¹NₖP`
+    commute, so `commute_of_commonDiagonalizer` transports the commutation back to `N₁N₂ =
+    N₂N₁`.  This is the classical fact that the commutant of a matrix with distinct
+    eigenvalues is an abelian algebra (it is exactly the algebra of polynomials in `M`). -/
+theorem commute_of_commute_distinct {M N₁ N₂ P : Matrix n n K}
+    (hP : IsUnit P) (hMdiag : (P⁻¹ * M * P).IsDiag)
+    (hdist : ∀ i j, i ≠ j → (P⁻¹ * M * P) i i ≠ (P⁻¹ * M * P) j j)
+    (hcomm₁ : M * N₁ = N₁ * M) (hcomm₂ : M * N₂ = N₂ * M) :
+    N₁ * N₂ = N₂ * N₁ := by
+  have hPdet : IsUnit P.det := (Matrix.isUnit_iff_isUnit_det P).mp hP
+  have hN₁diag := commonDiagonalizer_of_commute_distinct hPdet hMdiag hdist hcomm₁
+  have hN₂diag := commonDiagonalizer_of_commute_distinct hPdet hMdiag hdist hcomm₂
+  exact commute_of_commonDiagonalizer hP hN₁diag hN₂diag
+
 /-- **The (ordered) product of a list of diagonal matrices is diagonal.**  The
     multiplicative companion of `isDiag_sum`.  Because matrix multiplication is
     *not* commutative, the product must be taken over an ordered `List` rather than
@@ -512,6 +530,27 @@ theorem IsDiagonalizable.prod_of_commonDiagonalizer {P : Matrix n n K} (hP : IsU
   rw [List.mem_map] at hA
   obtain ⟨B, hB, rfl⟩ := hA
   exact hM B hB
+
+/-- **Distinct-eigenvalue simultaneous diagonalization — the (ordered) product of a whole
+    family.**  If `P` diagonalizes `M` with pairwise distinct eigenvalues and *every* matrix
+    in a list `L` commutes with `M`, then the ordered product `L.prod` is diagonalizable.
+    Each `N ∈ L` is forced to share `M`'s diagonalizer `P`
+    (`commonDiagonalizer_of_commute_distinct`), after which the shared-`P` product law
+    `prod_of_commonDiagonalizer` applies.  The list-indexed generalization of
+    `mul_of_commute_distinct`: no independent diagonalizability hypothesis on the members of
+    `L` is needed — commuting with the distinct-spectrum `M` supplies it.  Ordering matters
+    (matrix multiplication is non-commutative), so this is a `List`, not a `Finset`
+    statement; the members themselves need not be assumed to pairwise commute for the
+    *ordered* product to diagonalize, though in fact `commute_of_commute_distinct` shows
+    they do. -/
+theorem IsDiagonalizable.listProd_of_commute_distinct {M P : Matrix n n K}
+    (hP : IsUnit P) (hMdiag : (P⁻¹ * M * P).IsDiag)
+    (hdist : ∀ i j, i ≠ j → (P⁻¹ * M * P) i i ≠ (P⁻¹ * M * P) j j)
+    (L : List (Matrix n n K)) (hL : ∀ N ∈ L, M * N = N * M) :
+    L.prod.IsDiagonalizable := by
+  have hPdet : IsUnit P.det := (Matrix.isUnit_iff_isUnit_det P).mp hP
+  refine IsDiagonalizable.prod_of_commonDiagonalizer hP L (fun N hN => ?_)
+  exact commonDiagonalizer_of_commute_distinct hPdet hMdiag hdist (hL N hN)
 
 /-! ### Necessity of the common-diagonalizer hypothesis
 
