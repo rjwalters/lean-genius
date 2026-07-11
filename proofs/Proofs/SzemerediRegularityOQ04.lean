@@ -571,6 +571,34 @@ theorem weighted_variance_subset_bound {ι : Type*} (s : Finset ι) (w x : ι �
   rw [Finset.sum_mul]
   linarith [hsubset, hfloor]
 
+/-- **The variance atom in count form.**  Specialising `weighted_variance_subset_bound`
+    to a *uniform weight floor*: if every deviating cell `j ∈ J` carries weight at least
+    `w₀` (`w₀ ≤ wⱼ`) and deviates from the mean by at least `d`, then the energy floor
+    scales with the *number* of deviating cells,
+
+      `(|J| : ℚ)·w₀·d² ≤ (∑ wᵢxᵢ²) − (∑ wᵢ)·μ²`.
+
+    This is the shape the AFKS energy-increment step needs when it counts irregular
+    sub-cells: "`≥ N` cells of weight `≥ w₀` each deviating by `≥ d`" raises the
+    partition energy by a fixed `δ = N·w₀·d²`, exactly the per-step jump that
+    `energy_steps_bounded` / `energy_iteration_count_le` cap in number (giving an
+    iteration bound `≤ 1/(N·w₀·d²)`).  The pooled-weight bound
+    `weighted_variance_subset_bound` is recovered when the weights are not assumed
+    uniform; this trades that generality for a floor that depends only on `|J|`. -/
+theorem weighted_variance_card_bound {ι : Type*} (s : Finset ι) (w x : ι → ℚ)
+    (μ d w₀ : ℚ) (hw : ∀ i ∈ s, 0 ≤ w i)
+    (hmean : ∑ i ∈ s, w i * x i = (∑ i ∈ s, w i) * μ)
+    {J : Finset ι} (hJ : J ⊆ s) (hdev : ∀ j ∈ J, d ^ 2 ≤ (x j - μ) ^ 2)
+    (hw0 : ∀ j ∈ J, w₀ ≤ w j) :
+    (J.card : ℚ) * w₀ * d ^ 2 ≤ (∑ i ∈ s, w i * x i ^ 2) - (∑ i ∈ s, w i) * μ ^ 2 := by
+  have hsub := weighted_variance_subset_bound s w x μ d hw hmean hJ hdev
+  have hcard : (J.card : ℚ) * w₀ ≤ ∑ j ∈ J, w j := by
+    have h : ∑ _j ∈ J, w₀ ≤ ∑ j ∈ J, w j := Finset.sum_le_sum (fun j hj => hw0 j hj)
+    simpa [Finset.sum_const, nsmul_eq_mul] using h
+  have hstep : (J.card : ℚ) * w₀ * d ^ 2 ≤ (∑ j ∈ J, w j) * d ^ 2 :=
+    mul_le_mul_of_nonneg_right hcard (sq_nonneg d)
+  linarith [hstep, hsub]
+
 /-- **Energy monotonicity: square of the mean ≤ weighted mean of squares (Jensen).**
     With nonnegative weights `w` and weighted mean `μ` (`∑ wᵢxᵢ = (∑ wᵢ)·μ`), the total
     weighted second moment about `0` dominates the mean scaled by the total weight:
