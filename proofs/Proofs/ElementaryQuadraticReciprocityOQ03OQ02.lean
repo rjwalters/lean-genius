@@ -488,6 +488,52 @@ theorem kronecker_two_odd (n : ℕ) (hn : 0 < n) (hno : n % 2 = 1) :
   rw [kronecker_eq_jacobi 2 n hn hno, jacobiSym.at_two (Nat.odd_iff.mpr hno),
     ZMod.χ₈_nat_eq_if_mod_eight, if_neg (show ¬ n % 2 = 0 by omega)]
 
+/-- **First supplementary law in exponent form** `(-1/n) = (-1)^((n-1)/2)`.
+    The classical closed form of the sign supplementary character at odd positive
+    `n`. This is the shape usually quoted as *the* first supplementary law of
+    quadratic reciprocity; the residue-table form is `kronecker_neg_one_odd` and
+    the canonical-character form is `kronecker_neg_one_eq_χ₄`. The exponent
+    `(n-1)/2` is even exactly when `n ≡ 1 (mod 4)` (so the symbol is `+1`) and odd
+    when `n ≡ 3 (mod 4)` (so it is `-1`), which is precisely the residue table of
+    `kronecker_neg_one_odd` read through `Even`/`Odd.neg_one_pow`.
+    `sorry`-free, axiom-free. -/
+theorem kronecker_neg_one_pow (n : ℕ) (hn : 0 < n) (hno : n % 2 = 1) :
+    kronecker (-1) n = (-1 : ℤ) ^ ((n - 1) / 2) := by
+  rw [kronecker_neg_one_odd n hn hno]
+  rcases (by omega : n % 4 = 1 ∨ n % 4 = 3) with h | h
+  · rw [if_pos h, (show Even ((n - 1) / 2) by rw [Nat.even_iff]; omega).neg_one_pow]
+  · rw [if_neg (by omega), (show Odd ((n - 1) / 2) by rw [Nat.odd_iff]; omega).neg_one_pow]
+
+/-- **Second supplementary law in exponent form** `(2/n) = (-1)^((n²-1)/8)`.
+    The classical closed form of the `2`-supplementary character at odd positive
+    `n`; the residue-table form is `kronecker_two_odd` and the canonical-character
+    form is `kronecker_two_eq_χ₈`. For odd `n`, `8 ∣ n² - 1`, and the quotient
+    `(n²-1)/8` is even exactly on `n ≡ ±1 (mod 8)` (symbol `+1`) and odd on
+    `n ≡ ±3 (mod 8)` (symbol `-1`) — the residue table of `kronecker_two_odd`.
+    The proof splits `n` into the four odd residues mod `8`, expands `n²` as
+    `64k² + …` to expose the parity of `(n²-1)/8`, and reads it off with
+    `Even`/`Odd.neg_one_pow`. `sorry`-free, axiom-free. -/
+theorem kronecker_two_pow (n : ℕ) (hn : 0 < n) (hno : n % 2 = 1) :
+    kronecker 2 n = (-1 : ℤ) ^ ((n ^ 2 - 1) / 8) := by
+  rw [kronecker_two_odd n hn hno]
+  rcases (by omega : n % 8 = 1 ∨ n % 8 = 3 ∨ n % 8 = 5 ∨ n % 8 = 7) with h | h | h | h
+  · obtain ⟨k, rfl⟩ : ∃ k, n = 8 * k + 1 := ⟨n / 8, by omega⟩
+    have hsq : (8 * k + 1) ^ 2 = 64 * k ^ 2 + 16 * k + 1 := by ring
+    rw [if_pos (Or.inl (by omega)),
+      (show Even (((8 * k + 1) ^ 2 - 1) / 8) by rw [Nat.even_iff]; omega).neg_one_pow]
+  · obtain ⟨k, rfl⟩ : ∃ k, n = 8 * k + 3 := ⟨n / 8, by omega⟩
+    have hsq : (8 * k + 3) ^ 2 = 64 * k ^ 2 + 48 * k + 9 := by ring
+    rw [if_neg (by omega),
+      (show Odd (((8 * k + 3) ^ 2 - 1) / 8) by rw [Nat.odd_iff]; omega).neg_one_pow]
+  · obtain ⟨k, rfl⟩ : ∃ k, n = 8 * k + 5 := ⟨n / 8, by omega⟩
+    have hsq : (8 * k + 5) ^ 2 = 64 * k ^ 2 + 80 * k + 25 := by ring
+    rw [if_neg (by omega),
+      (show Odd (((8 * k + 5) ^ 2 - 1) / 8) by rw [Nat.odd_iff]; omega).neg_one_pow]
+  · obtain ⟨k, rfl⟩ : ∃ k, n = 8 * k + 7 := ⟨n / 8, by omega⟩
+    have hsq : (8 * k + 7) ^ 2 = 64 * k ^ 2 + 112 * k + 49 := by ring
+    rw [if_pos (Or.inr (by omega)),
+      (show Even (((8 * k + 7) ^ 2 - 1) / 8) by rw [Nat.even_iff]; omega).neg_one_pow]
+
 /-- **Self-reciprocity of the prime 2.** For odd positive `n`, the value of the
     `(·/2)` character `kronecker2` at `n` equals the fixed-numerator symbol
     `(2/n) = kronecker 2 n`:

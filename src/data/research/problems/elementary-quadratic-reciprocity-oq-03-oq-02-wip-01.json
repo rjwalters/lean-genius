@@ -24,9 +24,9 @@
   },
   "currentState": {
     "phase": "PROGRESS",
-    "since": "2026-07-07T00:00:00Z",
-    "iteration": 3,
-    "focus": "Repaired v4.26 drift across the whole file (dead trailing tactics, omega/split_ifs breakage in kronecker_eq_jacobi, Int.natAbs_ofNat rename, dangling Section-5 docstring, simp_all-shaped kroneckerNeg1_mul) and fixed a false concrete value: kronecker_neg4_values claimed (-4/3)=1 but (-4/3)=J(2|3)=-1. Machine-verified via docker-build.",
+    "since": "2026-07-11T00:00:00Z",
+    "iteration": 4,
+    "focus": "Added the two classical supplementary laws in EXPONENT FORM (kronecker_neg_one_pow: (-1/n)=(-1)^((n-1)/2); kronecker_two_pow: (2/n)=(-1)^((n²-1)/8)), the closed forms previously only referenced in prose. Both VERIFIED axiom-free via lake env lean. File 80→82 theorems, 0 sorry / 0 axiom.",
     "blockers": [],
     "nextAction": "Optional: general mul-in-n via 2-adic valuation + odd part factorization.",
     "attemptCounts": {
@@ -53,7 +53,9 @@
       "kronecker_neg_two_eq_mul — (-2/n)=(-1/n)(2/n) for EVERY integer n (pure kronecker_mul_left, no oddness), the multiplicative bridge between the supplementary numerators",
       "χ₈'_eq_χ₄_mul_χ₈_of_odd — the classical character identity χ₈'=χ₄·χ₈ on odd residues, reproved via the local symbol rather than ZMod's character algebra",
       "kronecker_at_two (ElementaryQuadraticReciprocityOQ03OQ02.lean Section 12): the file's symbol at n=2 equals the TRIVIAL character — kronecker a 2 = if a%2=0 then 0 else 1 — because the general branch routes n through jacobiSym a |n| and J(a|2) is trivial mod 2. Machine-checks the previously prose-only scope caveat. Via jacobiSym.mod_left + jacobiSym.zero_left/one_left. UNVERIFIED-by-infra (elaboration clean, containerd corruption blocks olean write/image build).",
-      "kronecker_two_ne_kronecker2 (Section 12): concrete witness kronecker 3 2 = 1 ≠ -1 = kronecker2 3, proving the file's kronecker is genuinely NOT the classical (·/2)=χ₈ symbol at even moduli — any classical refinement must change the value at 2. UNVERIFIED-by-infra."
+      "kronecker_two_ne_kronecker2 (Section 12): concrete witness kronecker 3 2 = 1 ≠ -1 = kronecker2 3, proving the file's kronecker is genuinely NOT the classical (·/2)=χ₈ symbol at even moduli — any classical refinement must change the value at 2. UNVERIFIED-by-infra.",
+      "kronecker_neg_one_pow (ElementaryQuadraticReciprocityOQ03OQ02.lean Section 8, VERIFIED 0/0 [propext,choice,Quot.sound]): first supplementary law in CLASSICAL EXPONENT FORM (-1/n)=(-1)^((n-1)/2) for odd positive n — the closed form usually quoted as *the* law, complementing the pre-existing if-form kronecker_neg_one_odd and character form kronecker_neg_one_eq_χ₄. Parity of (n-1)/2 read off mod 4 via Even/Odd.neg_one_pow.",
+      "kronecker_two_pow (ElementaryQuadraticReciprocityOQ03OQ02.lean Section 8, VERIFIED 0/0 [propext,choice,Quot.sound]): second supplementary law in CLASSICAL EXPONENT FORM (2/n)=(-1)^((n²-1)/8) for odd positive n — closed form complementing if-form kronecker_two_odd and character form kronecker_two_eq_χ₈. Splits n into 4 odd residues mod 8, expands n²=64k²+… to expose parity of (n²-1)/8."
     ],
     "insights": [
       "For odd positive moduli the Kronecker symbol IS the Jacobi symbol (kronecker_eq_jacobi), so mul-in-n and QR come for free from jacobiSym.mul_right' and jacobiSym.quadratic_reciprocity.",
@@ -69,7 +71,8 @@
       "BUILD: local Docker build SIGSEGVs (exit 135/139) on the #print axioms commands (stack overflow); origin/main replays its cached olean so the crash only surfaces after editing. Commented the block out; file then builds in ~2s.",
       "Session 2026-07-08 (researcher-4): Mathlib ALREADY has the (·/2) character as ZMod.χ₈ with a matching if-then-else value lemma χ₈_int_eq_if_mod_eight and the bridge jacobiSym.at_two : J(2|b)=χ₈ b (odd b). So the local kronecker2 character theory (mul/periodic/neg/values/sq) is now certified equal to χ₈, and Target-2 Gauss-sum work can lean on Mathlib's χ₈/jacobiSym API instead of re-deriving it.",
       "The supplementary laws are most reusable as the canonical character objects ZMod.χ₄/χ₈/χ₈' (not if-forms): jacobiSym.at_neg_one/at_two/at_neg_two give J(-1|n)=χ₄ n, J(2|n)=χ₈ n, J(-2|n)=χ₈' n directly, so composing with kronecker_eq_jacobi yields one-line character bridges. These are exactly the Gauss-sum inputs for Target 2.",
-      "The wip scope caveat (kronecker ≠ classical Kronecker at even moduli) is now a THEOREM, not prose: at n=2 the file's symbol is the trivial character (jacobiSym's value at 2), whereas the classical (·/2)=kronecker2=χ₈ takes ±1 on odd residues. kronecker_two_ne_kronecker2 exhibits the disagreement at a=3. This pins the exact scope boundary and quantifies what a future classical-symbol refinement must change."
+      "The wip scope caveat (kronecker ≠ classical Kronecker at even moduli) is now a THEOREM, not prose: at n=2 the file's symbol is the trivial character (jacobiSym's value at 2), whereas the classical (·/2)=kronecker2=χ₈ takes ±1 on odd residues. kronecker_two_ne_kronecker2 exhibits the disagreement at a=3. This pins the exact scope boundary and quantifies what a future classical-symbol refinement must change.",
+      "The classical exponent forms of the two supplementary laws — (-1)^((n-1)/2) and (-1)^((n²-1)/8) — were only referenced in prose/docstrings, never stated as theorems; now added as kronecker_neg_one_pow/kronecker_two_pow. Proof pattern: rw the existing if-form lemma, rcases on n mod 4 (resp. mod 8), then Even/Odd.neg_one_pow with the parity discharged by omega (for mod-8, expand n² via a `ring` hsq so omega sees the quotient parity)."
     ],
     "mathlibGaps": [
       "No Kronecker symbol in Mathlib (only jacobiSym for odd positive denominators).",
@@ -99,7 +102,7 @@
     "mathlib": []
   },
   "started": "2026-04-05T08:58:43.841Z",
-  "lastUpdate": "2026-07-08T00:00:00.000Z",
+  "lastUpdate": "2026-07-11T00:00:00.000Z",
   "significance": 7,
   "tractability": 6
 }
