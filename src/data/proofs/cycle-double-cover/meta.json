@@ -102,8 +102,24 @@
       "Can the CubicLabeling compatibility argument be simplified or upstreamed into Mathlib's flow/matroid libraries?"
     ]
   },
-  "references": {
-    "papers": [
+  "crossReferences": [
+    {
+      "proofId": "four-color-theorem",
+      "relationship": "Deeply linked via nowhere-zero flows and a shared machine-proof lineage",
+      "description": "For planar bridgeless cubic graphs the Four Color Theorem is equivalent to the existence of a nowhere-zero 4-flow, which in turn yields a cycle double cover — so CDC is a non-planar generalization of the flow content behind four-colorability. Both are landmark graph-theory results whose accepted artifact of record is machine-produced: Appel–Haken's 1976 computer case-check for four colors, and a kernel-checked Lean formalization for CDC."
+    },
+    {
+      "proofId": "euler-polyhedral-formula",
+      "relationship": "Embedding view: cycle double covers and Euler's formula both concern faces of graph embeddings",
+      "description": "A cycle double cover corresponds to a closed 2-cell (circular) embedding of the graph on some surface, whose faces are the covering cycles — each edge borders exactly two faces. Euler's polyhedral formula V − E + F = 2 is the genus-0 case of the same face-counting bookkeeping, and the strong embedding conjecture strengthens CDC to demand such an embedding exists."
+    },
+    {
+      "proofId": "erdos-12",
+      "relationship": "Sibling instance of the gallery's AI-resolved / formally-verified external-result pattern",
+      "description": "Erdős Problem #12 (parts i and ii) was resolved by DeepMind's AlphaProof Nexus in 2026 and integrated here with Mathlib-only Lean companions; CDC is the same pattern with OpenAI's GPT-5.6 Sol Ultra — a recent open problem closed by an AI system, ported and independently checked for this gallery rather than accepted on a paper's authority."
+    }
+  ],
+  "references": [
       {
         "title": "A Proof of the Cycle Double Cover Conjecture",
         "authors": "GPT-5.6 Sol Ultra (OpenAI)",
@@ -134,6 +150,5 @@
         "year": 1979,
         "url": "https://doi.org/10.1016/0095-8956(79)90057-1"
       }
-    ]
-  }
+  ]
 }
