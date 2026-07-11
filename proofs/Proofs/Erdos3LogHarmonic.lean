@@ -277,13 +277,17 @@ theorem summable_one_div_nat_mul_log_mul_const {c δ : ℝ} (hc : 0 < c) (hδ : 
   have hc2 : (0 : ℝ) < c ^ 2 := by positivity
   -- threshold `N₀` above `2`, `2/c` and `1/c²` (so `m·c ≥ 2` and `m·c² ≥ 1` on the tail)
   set N₀ : ℕ := max 2 (⌈2 / c⌉₊ + ⌈1 / c ^ 2⌉₊) with hN₀def
-  have hN₀2 : (2 : ℝ) ≤ (N₀ : ℝ) := by exact_mod_cast le_max_left 2 (⌈2 / c⌉₊ + ⌈1 / c ^ 2⌉₊)
-  have hN₀2c : 2 / c ≤ (N₀ : ℝ) :=
-    le_trans (Nat.le_ceil _) (by exact_mod_cast le_trans (Nat.le_add_right _ _)
-      (le_max_right 2 (⌈2 / c⌉₊ + ⌈1 / c ^ 2⌉₊)))
-  have hN₀c2 : 1 / c ^ 2 ≤ (N₀ : ℝ) :=
-    le_trans (Nat.le_ceil _) (by exact_mod_cast le_trans (Nat.le_add_left _ _)
-      (le_max_right 2 (⌈2 / c⌉₊ + ⌈1 / c ^ 2⌉₊)))
+  have hN₀2 : (2 : ℝ) ≤ (N₀ : ℝ) := by
+    have h : (2 : ℕ) ≤ N₀ := le_max_left _ _
+    exact_mod_cast h
+  have hN₀2c : 2 / c ≤ (N₀ : ℝ) := by
+    refine (Nat.le_ceil _).trans ?_
+    have h : ⌈2 / c⌉₊ ≤ N₀ := (Nat.le_add_right _ _).trans (le_max_right _ _)
+    exact_mod_cast h
+  have hN₀c2 : 1 / c ^ 2 ≤ (N₀ : ℝ) := by
+    refine (Nat.le_ceil _).trans ?_
+    have h : ⌈1 / c ^ 2⌉₊ ≤ N₀ := (Nat.le_add_left _ _).trans (le_max_right _ _)
+    exact_mod_cast h
   -- dominating series: the constant-free convergent series, shifted and scaled by `2^{1+δ}`
   have hbase : Summable (fun n : ℕ => 1 / ((n : ℝ) * (Real.log n) ^ (1 + δ))) :=
     summable_one_div_nat_mul_log_rpow hδ
@@ -348,13 +352,17 @@ theorem not_summable_one_div_nat_mul_log_mul_const {c : ℝ} (hc : 0 < c) :
   intro hsum
   -- threshold `N₀ ≥ 2`, `≥ c`, `≥ 2/c` (so `m ≥ 2`, `c ≤ m`, `m·c ≥ 2` on the tail)
   set N₀ : ℕ := max 2 (⌈c⌉₊ + ⌈2 / c⌉₊) with hN₀def
-  have hN₀2 : (2 : ℝ) ≤ (N₀ : ℝ) := by exact_mod_cast le_max_left 2 (⌈c⌉₊ + ⌈2 / c⌉₊)
-  have hN₀c : c ≤ (N₀ : ℝ) :=
-    le_trans (Nat.le_ceil _) (by exact_mod_cast le_trans (Nat.le_add_right _ _)
-      (le_max_right 2 (⌈c⌉₊ + ⌈2 / c⌉₊)))
-  have hN₀2c : 2 / c ≤ (N₀ : ℝ) :=
-    le_trans (Nat.le_ceil _) (by exact_mod_cast le_trans (Nat.le_add_left _ _)
-      (le_max_right 2 (⌈c⌉₊ + ⌈2 / c⌉₊)))
+  have hN₀2 : (2 : ℝ) ≤ (N₀ : ℝ) := by
+    have h : (2 : ℕ) ≤ N₀ := le_max_left _ _
+    exact_mod_cast h
+  have hN₀c : c ≤ (N₀ : ℝ) := by
+    refine (Nat.le_ceil _).trans ?_
+    have h : ⌈c⌉₊ ≤ N₀ := (Nat.le_add_right _ _).trans (le_max_right _ _)
+    exact_mod_cast h
+  have hN₀2c : 2 / c ≤ (N₀ : ℝ) := by
+    refine (Nat.le_ceil _).trans ?_
+    have h : ⌈2 / c⌉₊ ≤ N₀ := (Nat.le_add_left _ _).trans (le_max_right _ _)
+    exact_mod_cast h
   -- the given series, shifted past the threshold and scaled by `2`, dominates `1/(n·log n)`
   have hdom : Summable (fun n : ℕ => (2 : ℝ) *
       (1 / (((n + N₀ : ℕ) : ℝ) * Real.log (((n + N₀ : ℕ) : ℝ) * c)))) :=
@@ -745,5 +753,156 @@ theorem summable_one_div_nat_mul_log_mul_loglog_rpow {δ : ℝ} (hδ : 0 < δ) :
   unfold h₄; push_cast; ring
 
 end LoglogConvergent
+
+/-!
+### Constant-in-log second-axis (iterated-log) convergent Bertrand series
+
+`summable_one_div_nat_mul_log_mul_loglog_rpow` (`∑ 1/(n·log n·(log log n)^{1+δ}) < ∞`)
+is the *constant-free* second-axis convergent series.  The Erdős #3 dyadic-blocking
+argument, however, feeds a *multiplicative constant* `c = log 2` into every logarithm
+(because `log 2^{j+1} = (j+1)·log 2`), so the block masses of a hypothetical
+`N/(log N · log log N · (log log log N)^{1+δ})` threshold reduction form the
+**constant-in-log** second-axis series
+
+    ∑ₙ  1 / (n · log (n·c) · (log log (n·c))^{1+δ}).
+
+This lemma supplies its convergence for every `c > 0`, `δ > 0`.  It is the exact
+second-axis analogue of `summable_one_div_nat_mul_log_mul_const` (the *first*-axis
+constant-in-log series that powers `summable_of_sharpBound`), and is precisely the
+analytic input a `SuperSharpRequiredBound` reduction — one iterated logarithm below the
+sharp threshold — would consume.
+
+**Proof.**  A tail comparison against the constant-free
+`summable_one_div_nat_mul_log_mul_loglog_rpow`.  On the tail `n ≥ 64`, `n·c ≥ 3`,
+`n·c² ≥ 1` one has both
+`log n ≤ 2·log(n·c)` (first axis, as in `summable_one_div_nat_mul_log_mul_const`) and
+`log log n ≤ 2·log log(n·c)` (because `log(n·c) ≥ ½·log n` gives
+`log log(n·c) ≥ log log n − log 2`, and `log log n ≥ 2·log 2` on the tail).  Multiplying,
+each term is at most `2·2^{1+δ} = 2^{2+δ}` times the corresponding constant-free term,
+which is summable.
+-/
+
+/-- **Constant-in-log second-axis (iterated-log) convergent Bertrand series.**
+    For every `c > 0` and `δ > 0`, `∑ 1/(n·log(n·c)·(log log(n·c))^{1+δ})` converges.
+    This is the constant-carrying generalisation of
+    `summable_one_div_nat_mul_log_mul_loglog_rpow` (`c = 1`) — the exact second-axis
+    analogue of `summable_one_div_nat_mul_log_mul_const`, and the analytic input the
+    Erdős #3 dyadic-blocking argument needs at the sharper
+    `N/(log N · log log N · (log log log N)^{1+δ})` threshold (with `c = log 2`).
+    Proof: on the tail `n ≥ 64`, `n·c ≥ 3`, `n·c² ≥ 1` each term is `≤ 2^{2+δ}` times the
+    constant-free term (`log n ≤ 2·log(n·c)` and `log log n ≤ 2·log log(n·c)`). -/
+theorem summable_one_div_nat_mul_log_mul_loglog_rpow_const {c δ : ℝ}
+    (hc : 0 < c) (hδ : 0 < δ) :
+    Summable (fun n : ℕ =>
+      1 / ((n : ℝ) * Real.log ((n : ℝ) * c) *
+        (Real.log (Real.log ((n : ℝ) * c))) ^ (1 + δ))) := by
+  have hc2 : (0 : ℝ) < c ^ 2 := by positivity
+  -- threshold `N₀` above `64`, `3/c` and `1/c²`
+  set N₀ : ℕ := max 64 (⌈3 / c⌉₊ + ⌈1 / c ^ 2⌉₊) with hN₀def
+  have hN₀64 : (64 : ℝ) ≤ (N₀ : ℝ) := by
+    have h : (64 : ℕ) ≤ N₀ := le_max_left _ _
+    exact_mod_cast h
+  have hN₀3c : 3 / c ≤ (N₀ : ℝ) := by
+    refine (Nat.le_ceil _).trans ?_
+    have h : ⌈3 / c⌉₊ ≤ N₀ := (Nat.le_add_right _ _).trans (le_max_right _ _)
+    exact_mod_cast h
+  have hN₀c2 : 1 / c ^ 2 ≤ (N₀ : ℝ) := by
+    refine (Nat.le_ceil _).trans ?_
+    have h : ⌈1 / c ^ 2⌉₊ ≤ N₀ := (Nat.le_add_left _ _).trans (le_max_right _ _)
+    exact_mod_cast h
+  -- dominating series: the constant-free second-axis series, shifted and scaled by `2^{2+δ}`
+  have hbase : Summable (fun n : ℕ =>
+      1 / ((n : ℝ) * Real.log n * (Real.log (Real.log n)) ^ (1 + δ))) :=
+    summable_one_div_nat_mul_log_mul_loglog_rpow hδ
+  have hdom : Summable (fun n : ℕ => (2 * (2 : ℝ) ^ (1 + δ)) *
+      (1 / (((n + N₀ : ℕ) : ℝ) * Real.log ((n + N₀ : ℕ) : ℝ) *
+        (Real.log (Real.log ((n + N₀ : ℕ) : ℝ))) ^ (1 + δ)))) :=
+    ((summable_nat_add_iff N₀).mpr hbase).mul_left _
+  apply (summable_nat_add_iff N₀).mp
+  refine Summable.of_nonneg_of_le (fun n => ?_) (fun n => ?_) hdom
+  · -- nonnegativity of the shifted target term
+    set m : ℝ := ((n + N₀ : ℕ) : ℝ) with hm
+    have hmN : (N₀ : ℝ) ≤ m := by rw [hm]; exact_mod_cast Nat.le_add_left N₀ n
+    have hm_pos : 0 < m := by linarith [hN₀64, hmN]
+    have hmc3 : (3 : ℝ) ≤ m * c := (div_le_iff₀ hc).mp (le_trans hN₀3c hmN)
+    have hlogmc1 : 1 < Real.log (m * c) := by
+      rw [Real.lt_log_iff_exp_lt (by linarith : (0 : ℝ) < m * c)]
+      calc Real.exp 1 < 2.7182818286 := Real.exp_one_lt_d9
+        _ ≤ m * c := by linarith
+    have hllmc_nonneg : 0 ≤ Real.log (Real.log (m * c)) := Real.log_nonneg hlogmc1.le
+    have hpow_nonneg : 0 ≤ (Real.log (Real.log (m * c))) ^ (1 + δ) :=
+      Real.rpow_nonneg hllmc_nonneg _
+    have hDt_nonneg : 0 ≤ m * Real.log (m * c) * (Real.log (Real.log (m * c))) ^ (1 + δ) :=
+      mul_nonneg (mul_nonneg hm_pos.le (by linarith [hlogmc1])) hpow_nonneg
+    exact div_nonneg zero_le_one hDt_nonneg
+  · -- termwise domination
+    set m : ℝ := ((n + N₀ : ℕ) : ℝ) with hm
+    have hmN : (N₀ : ℝ) ≤ m := by rw [hm]; exact_mod_cast Nat.le_add_left N₀ n
+    have hm_pos : 0 < m := by linarith [hN₀64, hmN]
+    have hmc3 : (3 : ℝ) ≤ m * c := (div_le_iff₀ hc).mp (le_trans hN₀3c hmN)
+    have hmc2 : (1 : ℝ) ≤ m * c ^ 2 := (div_le_iff₀ hc2).mp (le_trans hN₀c2 hmN)
+    -- first axis: `log m ≤ 2·log(m·c)`
+    have hmc_eq : Real.log (m * c) = Real.log m + Real.log c :=
+      Real.log_mul (ne_of_gt hm_pos) (ne_of_gt hc)
+    have hmc2_eq : Real.log (m * c ^ 2) = Real.log m + 2 * Real.log c := by
+      rw [Real.log_mul (ne_of_gt hm_pos) (by positivity), Real.log_pow]; push_cast; ring
+    have hmc2_nonneg : 0 ≤ Real.log m + 2 * Real.log c := hmc2_eq ▸ Real.log_nonneg hmc2
+    have hcrux : Real.log m ≤ 2 * Real.log (m * c) := by rw [hmc_eq]; linarith
+    -- `log m ≥ 4` on the tail `m ≥ 64` (via `log 64 = 6·log 2`)
+    have hlogm4 : (4 : ℝ) ≤ Real.log m := by
+      have h64m : (64 : ℝ) ≤ m := le_trans hN₀64 hmN
+      have hmono : Real.log 64 ≤ Real.log m := Real.log_le_log (by norm_num) h64m
+      have hlog64 : Real.log 64 = 6 * Real.log 2 := by
+        rw [show (64 : ℝ) = 2 ^ (6 : ℕ) by norm_num, Real.log_pow]; push_cast; ring
+      have hlog2 : (0.6931471803 : ℝ) < Real.log 2 := Real.log_two_gt_d9
+      linarith [hmono, hlog64, hlog2]
+    have hlogm_pos : 0 < Real.log m := by linarith [hlogm4]
+    -- second axis: `log log m ≥ 2·log 2` on the tail
+    have hllm_ge : 2 * Real.log 2 ≤ Real.log (Real.log m) := by
+      have h4log : Real.log 4 ≤ Real.log (Real.log m) := Real.log_le_log (by norm_num) hlogm4
+      have hlog4 : Real.log 4 = 2 * Real.log 2 := by
+        rw [show (4 : ℝ) = 2 ^ (2 : ℕ) by norm_num, Real.log_pow]; push_cast; ring
+      linarith [h4log, hlog4]
+    have hllm_pos : 0 < Real.log (Real.log m) := by
+      have h2 : 0 < Real.log 2 := Real.log_pos (by norm_num)
+      linarith [hllm_ge, h2]
+    have hlogmc_pos : 0 < Real.log (m * c) := by linarith [hcrux, hlogm_pos]
+    -- `log log m ≤ 2·log log(m·c)` from `log(m·c) ≥ ½·log m`
+    have hlogmc_ge : Real.log m / 2 ≤ Real.log (m * c) := by linarith [hcrux]
+    have hlogmhalf_pos : 0 < Real.log m / 2 := by linarith [hlogm_pos]
+    have hllmc_ge : Real.log (Real.log m) - Real.log 2 ≤ Real.log (Real.log (m * c)) := by
+      have hmono : Real.log (Real.log m / 2) ≤ Real.log (Real.log (m * c)) :=
+        Real.log_le_log hlogmhalf_pos hlogmc_ge
+      have hdiv : Real.log (Real.log m / 2) = Real.log (Real.log m) - Real.log 2 :=
+        Real.log_div (ne_of_gt hlogm_pos) (by norm_num)
+      linarith [hmono, hdiv]
+    have hll_double : Real.log (Real.log m) ≤ 2 * Real.log (Real.log (m * c)) := by
+      linarith [hllmc_ge, hllm_ge]
+    have hllmc_pos : 0 < Real.log (Real.log (m * c)) := by linarith [hll_double, hllm_pos]
+    -- lift the second-axis comparison through `(·)^{1+δ}`
+    have hLLpow : (Real.log (Real.log m)) ^ (1 + δ)
+        ≤ (2 : ℝ) ^ (1 + δ) * (Real.log (Real.log (m * c))) ^ (1 + δ) := by
+      calc (Real.log (Real.log m)) ^ (1 + δ)
+          ≤ (2 * Real.log (Real.log (m * c))) ^ (1 + δ) :=
+            Real.rpow_le_rpow hllm_pos.le hll_double (by linarith)
+        _ = (2 : ℝ) ^ (1 + δ) * (Real.log (Real.log (m * c))) ^ (1 + δ) :=
+            Real.mul_rpow (by norm_num) hllmc_pos.le
+    -- positivity of the two composite denominators
+    have hDt_pos : 0 < m * Real.log (m * c) * (Real.log (Real.log (m * c))) ^ (1 + δ) :=
+      mul_pos (mul_pos hm_pos hlogmc_pos) (Real.rpow_pos_of_pos hllmc_pos _)
+    have hDd_pos : 0 < m * Real.log m * (Real.log (Real.log m)) ^ (1 + δ) :=
+      mul_pos (mul_pos hm_pos hlogm_pos) (Real.rpow_pos_of_pos hllm_pos _)
+    rw [mul_one_div, div_le_div_iff₀ hDt_pos hDd_pos, one_mul]
+    have hstep : Real.log m * (Real.log (Real.log m)) ^ (1 + δ)
+        ≤ (2 * Real.log (m * c)) *
+            ((2 : ℝ) ^ (1 + δ) * (Real.log (Real.log (m * c))) ^ (1 + δ)) :=
+      mul_le_mul hcrux hLLpow (Real.rpow_nonneg hllm_pos.le _) (by linarith [hlogmc_pos])
+    calc m * Real.log m * (Real.log (Real.log m)) ^ (1 + δ)
+        = m * (Real.log m * (Real.log (Real.log m)) ^ (1 + δ)) := by ring
+      _ ≤ m * ((2 * Real.log (m * c)) *
+            ((2 : ℝ) ^ (1 + δ) * (Real.log (Real.log (m * c))) ^ (1 + δ))) :=
+          mul_le_mul_of_nonneg_left hstep hm_pos.le
+      _ = (2 * (2 : ℝ) ^ (1 + δ)) *
+            (m * Real.log (m * c) * (Real.log (Real.log (m * c))) ^ (1 + δ)) := by ring
 
 end Erdos3Bertrand
