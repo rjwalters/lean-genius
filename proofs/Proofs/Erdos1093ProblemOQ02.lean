@@ -2180,3 +2180,107 @@ theorem maximalDeficiencyIs_nine_iff_kGe27 :
     by_cases hk : k ≤ 26
     · exact deficiency_le_nine_of_k_le_26 hv.1 hv.2 hk
     · exact h n k (by omega) hv
+
+/-
+## Section XXVIII: The location bound closes `k = 27` — frontier `k ≥ 27` → `k ≥ 28`
+
+Section XXVII cashed out the effective, ELS-free location bound at the open frontier
+`k = 26`.  The same mechanism advances one further — and final elementary — step, to
+`k = 27`.  A deficiency `≥ 10` forces the window-floor power bound `(n - 26)^{10} ≤ 27!`,
+and `27! < 637^{10}` (`factorial_27_lt_637_pow_ten`), so `n - 26 < 637`, i.e. `n ≤ 662`.
+With the admissibility floor `n ≥ 54` (`= 2·27`) this leaves the finite window
+`n ∈ {54, 55, …, 662}` (six hundred and nine values).
+
+As at `k = 18, …, 26`, `C(n,27)` is **not** uniformly even on this window: by
+Kummer/Lucas `C(n,27)` is odd exactly when the binary digits of `27 = 11011₂` sit inside
+those of `n`, which happens for thirty-eight values of `n` in the window, so the single
+prime `2` no longer certifies inadmissibility.  It remains true — and this is what closes
+the slice — that *some* prime `≤ 27` divides `C(n,27)` for every one of the six hundred and
+nine values: `2` for the five hundred and seventy-one even ones, `3` for twelve of the
+thirty-eight odd ones, `7` for twenty-four more, and `11` for the last two odd exceptions
+`n = 223` and `n = 475` (which no prime `≤ 7` reaches).  So the four-prime disjunction
+`2 ∣ C(n,27) ∨ 3 ∣ C(n,27) ∨ 7 ∣ C(n,27) ∨ 11 ∣ C(n,27)` holds throughout the window —
+the same four-prime economy that closed `k = 25` (`5` again dispensable, `11` again the
+largest prime required) — so no pair is admissible and no admissible pair at `k = 27` has
+deficiency exceeding `9`.
+
+As before the `(k!)²` factorial method is powerless here
+(`sharp_bound_permits_deficiency_ten` permits deficiency `10` for every `k ≥ 16`); only
+the *location* bound closes the slice, through the uniform engine
+`deficiency_le_nine_of_location` (Section XVIIB).  The elementary resolution of OQ-02 now
+covers **all `k ≤ 27`**, moving the open frontier to `k ≥ 28` — the exact slice where the
+record pair `(284, 28)` lives, at which the location window is inhabited by a genuine
+admissible deficiency-`9` example and the ladder terminates.  The structural results remain
+`ofReduceBool`-free; only the concrete divisibility facts use `native_decide`. -/
+
+/-- `27! < 637^10`, the numeric input that pins the `k = 27` window: `(n-26)^{10} ≤ 27!`
+forces `n - 26 < 637`.  `ofReduceBool`-free (`Nat.factorial` and `Nat.pow` on literals
+reduce under kernel `decide`; `27! = 10888869450418352160768000000 <
+11000041493002581448023079849 = 637^{10}`; and `637` is sharp: `636^{10} =
+10828571200835477863557758976 ≤ 27!`). -/
+theorem factorial_27_lt_637_pow_ten : Nat.factorial 27 < 637 ^ 10 := by decide
+
+/-- For `54 ≤ n ≤ 662` some prime `≤ 27` divides `C(n,27)`: `2` for the even values, `3`
+for twelve of the odd binomials, `7` for twenty-four more, and `11` for the two odd
+exceptions `n = 223` and `n = 475`.  Stated as the disjunction
+`2 ∣ · ∨ 3 ∣ · ∨ 7 ∣ · ∨ 11 ∣ ·`, which holds across the whole window.  Uses
+`native_decide` (⇒ `Lean.ofReduceBool`) because the naive `Nat.choose` recursion is
+infeasible for kernel `decide`. -/
+theorem smallPrime_dvd_choose_27_of_range {n : ℕ} (hlo : 54 ≤ n) (hhi : n ≤ 662) :
+    2 ∣ Nat.choose n 27 ∨ 3 ∣ Nat.choose n 27 ∨ 7 ∣ Nat.choose n 27 ∨
+      11 ∣ Nat.choose n 27 := by
+  interval_cases n <;> native_decide
+
+/-- The six hundred and nine small pairs left by the `k = 27` location window are all
+inadmissible: some prime `p ∈ {2, 3, 7, 11}` (each `≤ 27`) divides `C(n,27)`, contradicting
+`NoSmallPrimeFactors n 27` (which would force `27 < p`). -/
+theorem not_admissible_k27_of_range {n : ℕ} (hlo : 54 ≤ n) (hhi : n ≤ 662) :
+    ¬ NoSmallPrimeFactors n 27 := by
+  intro h
+  rcases smallPrime_dvd_choose_27_of_range hlo hhi with hd | hd | hd | hd
+  · have := h 2 Nat.prime_two hd; omega
+  · have := h 3 Nat.prime_three hd; omega
+  · have := h 7 (by norm_num) hd; omega
+  · have := h 11 (by norm_num) hd; omega
+
+/-- **The location bound closes `k = 27`.**  For an admissible pair with `k = 27` the
+deficiency never exceeds `9`.  A deficiency `≥ 10` would force, via the window-floor
+bound, `(n - 26)^{10} ≤ 27! < 637^{10}`, hence `n ≤ 662`; with the admissibility floor
+`n ≥ 54` this leaves only `n ∈ {54,…,662}`, none admissible (some prime `≤ 27` divides
+`C(n,27)`, even where `C(n,27)` is odd).  A one-line instantiation of the uniform engine
+`deficiency_le_nine_of_location` at `k = 27, M = 637`. -/
+theorem deficiency_le_nine_of_k_eq_27 {n : ℕ} (hn : 54 ≤ n)
+    (h : NoSmallPrimeFactors n 27) : deficiency n 27 ≤ 9 :=
+  deficiency_le_nine_of_location (k := 27) (M := 637) (by omega) h
+    factorial_27_lt_637_pow_ten
+    (fun m hlo hhi => not_admissible_k27_of_range (by omega) (by omega))
+
+/-- **Elementary resolution of OQ-02 for all `k ≤ 27`.**  Combines the location bound at
+`k ≤ 26` (`deficiency_le_nine_of_k_le_26`) with the location bound at `k = 27`
+(`deficiency_le_nine_of_k_eq_27`).  Strictly extends the `k ≤ 26` reach of Section XXVII. -/
+theorem deficiency_le_nine_of_k_le_27 {n k : ℕ} (hn : 2 * k ≤ n)
+    (h : NoSmallPrimeFactors n k) (hk : k ≤ 27) : deficiency n k ≤ 9 := by
+  by_cases hk26 : k ≤ 26
+  · exact deficiency_le_nine_of_k_le_26 hn h hk26
+  · have hk27 : k = 27 := by omega
+    subst hk27
+    exact deficiency_le_nine_of_k_eq_27 (by omega) h
+
+/-- **Sharpened reduction to `k ≥ 28`.**  `MaximalDeficiencyIs 9` is equivalent to the
+open universal bound restricted to `k ≥ 28`: the cases `k ≤ 26` are discharged by the
+sharp/location bounds and `k = 27` by the location bound (`deficiency_le_nine_of_k_le_27`).
+Strictly sharper than `maximalDeficiencyIs_nine_iff_kGe27`.  This is the terminal
+elementary reduction: the open content of OQ-02 now lives entirely at `k ≥ 28`, the slice
+containing the record pair `(284, 28)`, where the location window admits a genuine
+deficiency-`9` example and no elementary window-inadmissibility argument can succeed — the
+remaining bound is the irreducibly analytic Erdős–Lacampagne–Selfridge input. -/
+theorem maximalDeficiencyIs_nine_iff_kGe28 :
+    MaximalDeficiencyIs 9 ↔
+      ∀ n k, 28 ≤ k → ValidDeficiencyExample n k → deficiency n k ≤ 9 := by
+  rw [maximalDeficiencyIs_nine_iff_upperBound]
+  constructor
+  · intro h n k _ hv; exact h n k hv
+  · intro h n k hv
+    by_cases hk : k ≤ 27
+    · exact deficiency_le_nine_of_k_le_27 hv.1 hv.2 hk
+    · exact h n k (by omega) hv
