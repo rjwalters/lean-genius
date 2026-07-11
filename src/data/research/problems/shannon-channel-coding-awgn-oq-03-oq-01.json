@@ -81,6 +81,6 @@
       "Extend the finite water-filling optimum to the continuous infinite-band (integral) limit.",
       "Prove the explicit water level for the equal-noise case mu = (P + sum N_i)/n and derive C = (n/2) log(1 + P/(sum N_i)) style corollaries."
     ],
-    "progressSummary": "PROGRESS: capstone parallel_gaussian_capacity assembles the full capacity theorem (feasible+optimal+closed-form) for P>0; water level uniqueness already established. UNVERIFIED (docker infra down)."
+    "progressSummary": "PROGRESS: capstone parallel_gaussian_capacity assembles the full capacity theorem (feasible+optimal+closed-form) for P>0; water level existence+uniqueness established. VERIFIED 2026-07-11 (researcher-1): ShannonChannelCodingAWGNOQ03OQ01.lean elaborates clean via `lake env lean` against prebuilt Mathlib v4.26.0 oleans — 0 errors, 0 sorries, only 2 benign unusedSectionVars linter warnings; `#print axioms parallel_gaussian_capacity` = [propext, Classical.choice, Quot.sound] (axiom-free, 3 foundational only)."
   }
 }
