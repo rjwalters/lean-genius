@@ -64,10 +64,10 @@ def HasMinor {α : Type*} {β : Type*} (G : SimpleGraph α) (H : SimpleGraph β)
   Nonempty (GraphMinorWitness G H)
 
 /-- K₅: the complete graph on 5 vertices. -/
-abbrev K5 : SimpleGraph (Fin 5) := completeGraph 5
+abbrev K5 : SimpleGraph (Fin 5) := ⊤
 
 /-- K₃,₃: the complete bipartite graph on 3+3 vertices. -/
-abbrev K33 : SimpleGraph (Fin 3 ⊕ Fin 3) := completeBipartite 3 3
+abbrev K33 : SimpleGraph (Fin 3 ⊕ Fin 3) := completeBipartiteGraph (Fin 3) (Fin 3)
 
 /-- No graph on fewer vertices than H can contain H as a minor.
     Pigeonhole: injecting branch set representatives requires |V| ≥ |W|. -/
@@ -81,8 +81,10 @@ private theorem no_minor_of_card_lt {α : Type*} {β : Type*}
   have hf : Function.Injective f := by
     intro i j heq
     by_contra hij
-    exact Set.disjoint_left.mp (w.disjoint hij)
-      (w.nonempty i).choose_spec (heq ▸ (w.nonempty j).choose_spec)
+    have hi : f i ∈ w.branchSet i := (w.nonempty i).choose_spec
+    have hj : f j ∈ w.branchSet j := (w.nonempty j).choose_spec
+    rw [← heq] at hj
+    exact Set.disjoint_left.mp (w.disjoint hij) hi hj
   exact absurd (Fintype.card_le_of_injective f hf) (by omega)
 
 /-
@@ -96,7 +98,7 @@ A graph is planar iff it has no K₅ or K₃,₃ minor (Wagner's theorem, 1937).
 def isPlanar (G : SimpleGraph V) : Prop :=
   ¬HasMinor G K5 ∧ ¬HasMinor G K33
 
-/-- Euler's formula bound: planar graphs have ≤ 3n - 6 edges. -/
+-- Euler's formula bound: planar graphs have ≤ 3n - 6 edges.
 /-
 ## Saturated Planar Graphs
 
@@ -186,10 +188,14 @@ theorem turan_triangle (G : SimpleGraph V) [DecidableRel G.Adj] :
     exact hnadj (hClique (Finset.mem_coe.mpr hu) (Finset.mem_coe.mpr hv) huv)
   -- By Mathlib Turán bound, |E| ≤ n²/4
   unfold edgeCount turanEdges at hedge
-  have hbound := hcf.card_edgeFinset_le
+  -- Turán bound for triangle-free (CliqueFree 3, i.e. r = 2) graphs.
+  have hbound : G.edgeFinset.card ≤
+      (Fintype.card V ^ 2 - (Fintype.card V % 2) ^ 2) * (2 - 1) / (2 * 2)
+        + (Fintype.card V % 2).choose 2 := hcf.card_edgeFinset_le
   set n := Fintype.card V
-  have hmod : n % 2 = 0 ∨ n % 2 = 1 := Nat.mod_two_eq_zero_or_one n
-  rcases hmod with hm | hm <;> simp only [hm] at hbound <;> omega
+  set E := G.edgeFinset.card with hE
+  rcases Nat.mod_two_eq_zero_or_one n with hm | hm <;>
+    simp only [hm] at hbound <;> norm_num at hbound <;> omega
 
 /-
 ## The Induced Subgraph
@@ -242,8 +248,10 @@ theorem K4_saturated_planar (G : SimpleGraph V) [DecidableRel G.Adj]
     constructor
     · -- G.Adj u v → u ≠ v (as subtypes)
       intro hadj heq
-      -- heq : ⟨u,hu⟩ = ⟨v,hv⟩, so v = u
-      exact G.loopless u ((congr_arg Subtype.val heq).symm ▸ hadj)
+      -- heq : ⟨u,hu⟩ = ⟨v,hv⟩, so u = v
+      have huv : u = v := congr_arg Subtype.val heq
+      rw [huv] at hadj
+      exact G.loopless v hadj
     · -- ⟨u,hu⟩ ≠ ⟨v,hv⟩ → G.Adj u v
       intro hne
       exact hClique u hu v hv (fun h => hne (Subtype.ext h))
@@ -253,18 +261,18 @@ theorem K4_saturated_planar (G : SimpleGraph V) [DecidableRel G.Adj]
       rw [hScard, Fintype.card_fin]; norm_num)
   · -- No K₃,₃ minor: |↥S| = 4 < 6 = |Fin 3 ⊕ Fin 3|
     exact no_minor_of_card_lt _ K33 (by
-      rw [hScard, Fintype.card_sum, Fintype.card_fin, Fintype.card_fin]; norm_num)
+      rw [hScard, Fintype.card_sum, Fintype.card_fin]; norm_num)
   · -- |↥S| ≥ 3
     omega
   · -- edgeCount = 3 * 4 - 6 = 6
     -- (⊤ : SimpleGraph ↥S).edgeFinset.card = C(4,2) = 6
+    -- Complete graph on a 4-element type has C(4,2) = 6 = 3·4 - 6 edges.
+    -- Rewrite the induced subgraph to ⊤ via edgeFinset_inj (instance-safe),
+    -- then #(⊤).edgeFinset = (Fintype.card ↥S).choose 2 = 4.choose 2 = 6.
     unfold edgeCount
-    rw [heq, hScard]
-    have h6 : (3 : ℕ) * 4 - 6 = 6 := by norm_num
-    rw [h6]
-    -- Routine: complete graph on a 4-element type has C(4,2) = 6 edges
-    -- Mathlib hint: card_edgeFinset_top or equivFin + native_decide
-    sorry
+    have hfe : (inducedSubgraph G S).edgeFinset = (⊤ : SimpleGraph ↥S).edgeFinset :=
+      edgeFinset_inj.mpr heq
+    rw [hfe, card_edgeFinset_top_eq_card_choose_two, hScard]
 
 /-- K₄ gives a saturated planar subgraph on 4 vertices. -/
 theorem K4_gives_large_saturated (G : SimpleGraph V) [DecidableRel G.Adj] :
@@ -363,7 +371,7 @@ Erdős also proved a quantitative lower bound on the size of saturated planar su
 /-- The lower bound on saturated planar subgraph size. -/
 def saturatedPlanarSize (n k : ℕ) : ℕ := k / n
 
-/-- Erdős (1969): Graphs with n²/4 + k edges have saturated planar subgraphs on ≫ k/n vertices. -/
+-- Erdős (1969): Graphs with n²/4 + k edges have saturated planar subgraphs on ≫ k/n vertices.
 /-
 ## Connection to Turán Theory
 
