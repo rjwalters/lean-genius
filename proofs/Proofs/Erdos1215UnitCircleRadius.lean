@@ -30,6 +30,8 @@ Main results:
 * `norm_lt_sharp_of_mem_levelSet` : `|P(z)| < C ⟹ ‖z‖ < 1 + C^{1/deg P}`.
 * `levelSet_subset_closedBall`    : the level set ⊆ `closedBall(0, 1 + C^{1/deg P})`.
 * `isBounded_levelSet`            : every unit-circle level set is bounded.
+* `isCompact_closedLevelSet`      : the *closed* sublevel set `{z : |P(z)| ≤ C}` is
+                                    compact (closed + bounded, Heine–Borel).
 
 All results are `0`-axiom / `0`-sorry.  (The parent `maclane_labyrinth` — the *deep*
 Mac Lane phenomenon of paths forced through neighbourhoods of `0` — remains
@@ -172,5 +174,68 @@ theorem isBounded_levelSet (h : Erdos1215.IsUnitCirclePolynomial P)
     (hdeg : 0 < P.natDegree) (C : ℝ) :
     Bornology.IsBounded (Erdos1215.levelSet P C) :=
   Metric.isBounded_closedBall.subset (levelSet_subset_closedBall h hdeg C)
+
+/-! ## Compactness of the closed sublevel set
+
+The confinement above is for the *open* level set `{z : |P(z)| < C}`.  For the
+path-geometry programme (Mac Lane's labyrinth lives on the *level curves*
+`{|P| = c}` and the path threads the sublevel region) the relevant object is the
+**closed** sublevel set `{z : |P(z)| ≤ C}`.  Being closed (preimage of a closed ball
+under the continuous map `z ↦ |P(z)|`) and bounded (same sharp radius), it is
+**compact** by Heine–Borel in `ℂ`.  This is the geometric precondition the nextStep
+"the sublevel set is compact, so path-length reduces to component geometry" asks for. -/
+
+/-- **`≤`-variant of the sharp confinement radius.** If `|P(z)| ≤ C` then
+`‖z‖ ≤ 1 + C^{1/deg P}` — the closed-ball companion of `norm_lt_sharp_of_mem_levelSet`. -/
+theorem norm_le_sharp_of_norm_eval_le (h : Erdos1215.IsUnitCirclePolynomial P)
+    (hdeg : 0 < P.natDegree) (C : ℝ) (hC : 0 ≤ C) (z : ℂ) (hz : ‖P.eval z‖ ≤ C) :
+    ‖z‖ ≤ 1 + C ^ ((P.natDegree : ℝ)⁻¹) := by
+  have hd0 : P.natDegree ≠ 0 := hdeg.ne'
+  have hkpos : (0 : ℝ) < (P.natDegree : ℝ)⁻¹ := by
+    apply inv_pos.mpr; exact_mod_cast hdeg
+  have hCr : 0 ≤ C ^ ((P.natDegree : ℝ)⁻¹) := Real.rpow_nonneg hC _
+  by_cases h1 : ‖z‖ < 1
+  · linarith
+  · push_neg at h1
+    have ha : (0 : ℝ) ≤ ‖z‖ - 1 := by linarith
+    have hlow := pow_sub_one_le_norm_eval h z h1
+    have hak : (‖z‖ - 1) ^ P.natDegree ≤ C := le_trans hlow hz
+    have hmono : ((‖z‖ - 1) ^ P.natDegree) ^ ((P.natDegree : ℝ)⁻¹)
+        ≤ C ^ ((P.natDegree : ℝ)⁻¹) :=
+      Real.rpow_le_rpow (pow_nonneg ha _) hak (le_of_lt hkpos)
+    rw [Real.pow_rpow_inv_natCast ha hd0] at hmono
+    linarith
+
+/-- The **closed sublevel set** `{z : |P(z)| ≤ C}` of `P`. -/
+def closedLevelSet (P : ℂ[X]) (C : ℝ) : Set ℂ := {z | ‖P.eval z‖ ≤ C}
+
+/-- The closed sublevel set is closed: it is the preimage of `[0, C]` under the
+continuous real map `z ↦ |P(z)|`. -/
+theorem isClosed_closedLevelSet (C : ℝ) : IsClosed (closedLevelSet P C) :=
+  isClosed_le P.continuous.norm continuous_const
+
+/-- The closed sublevel set lies in the closed ball of the sharp radius. -/
+theorem closedLevelSet_subset_closedBall (h : Erdos1215.IsUnitCirclePolynomial P)
+    (hdeg : 0 < P.natDegree) (C : ℝ) (hC : 0 ≤ C) :
+    closedLevelSet P C ⊆ Metric.closedBall (0 : ℂ) (1 + C ^ ((P.natDegree : ℝ)⁻¹)) := by
+  intro z hz
+  simp only [closedLevelSet, Set.mem_setOf_eq] at hz
+  rw [Metric.mem_closedBall, dist_zero_right]
+  exact norm_le_sharp_of_norm_eval_le h hdeg C hC z hz
+
+/-- The closed sublevel set is bounded. -/
+theorem isBounded_closedLevelSet (h : Erdos1215.IsUnitCirclePolynomial P)
+    (hdeg : 0 < P.natDegree) (C : ℝ) (hC : 0 ≤ C) :
+    Bornology.IsBounded (closedLevelSet P C) :=
+  Metric.isBounded_closedBall.subset (closedLevelSet_subset_closedBall h hdeg C hC)
+
+/-- **The closed sublevel set is compact.** Closed (continuity of `|P|`) and bounded
+(sharp radius) in `ℂ`, so Heine–Borel gives compactness. This is the geometric
+precondition for reducing the Mac Lane path-length problem to component geometry. -/
+theorem isCompact_closedLevelSet (h : Erdos1215.IsUnitCirclePolynomial P)
+    (hdeg : 0 < P.natDegree) (C : ℝ) (hC : 0 ≤ C) :
+    IsCompact (closedLevelSet P C) :=
+  Metric.isCompact_of_isClosed_isBounded (isClosed_closedLevelSet C)
+    (isBounded_closedLevelSet h hdeg C hC)
 
 end Erdos1215UnitCircleRadius
