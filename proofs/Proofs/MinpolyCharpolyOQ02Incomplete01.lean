@@ -400,6 +400,67 @@ theorem commonDiagonalizer_of_commute_distinct {M N P : Matrix n n K}
     rw [h1, h2, hcomm]
   exact isDiag_of_commute_diag_distinct hMdiag hdist hAD
 
+/-!
+### Simultaneous diagonalization — the distinct-eigenvalue payoff
+
+`commonDiagonalizer_of_commute_distinct` supplies the hard half (commuting with a
+distinct-spectrum diagonalizable `M` forces the same `P` to diagonalize `N`) and the
+`*_of_commonDiagonalizer` laws supply the easy half (a shared `P` diagonalizes the
+sum/product).  Composing them settles the **generic (distinct-eigenvalue) case of the
+classical simultaneous-diagonalization theorem**: if `M` is diagonalizable with pairwise
+distinct eigenvalues and `N` commutes with `M`, then `N` is itself diagonalizable and both
+`M + N` and `M * N` are diagonalizable — *without any separate diagonalizability hypothesis
+on `N`*, which comes for free.  Only the repeated-eigenvalue case (needing eigenspace
+decomposition) of the full converse remains open.
+-/
+
+/-- **Distinct-eigenvalue case: a matrix commuting with a diagonalizable matrix of
+    distinct eigenvalues is itself diagonalizable, sharing its diagonalizer.**  If `P`
+    diagonalizes `M` (`P⁻¹MP` diagonal) with pairwise *distinct* diagonal entries and `N`
+    commutes with `M`, then the same `P` diagonalizes `N`
+    (`commonDiagonalizer_of_commute_distinct`), so `N` is diagonalizable.  No independent
+    diagonalizability hypothesis on `N` is required — commuting with a distinct-spectrum
+    diagonalizable matrix supplies it. -/
+theorem IsDiagonalizable.of_commute_distinct {M N P : Matrix n n K}
+    (hP : IsUnit P) (hMdiag : (P⁻¹ * M * P).IsDiag)
+    (hdist : ∀ i j, i ≠ j → (P⁻¹ * M * P) i i ≠ (P⁻¹ * M * P) j j)
+    (hcomm : M * N = N * M) :
+    N.IsDiagonalizable := by
+  have hPdet : IsUnit P.det := (Matrix.isUnit_iff_isUnit_det P).mp hP
+  exact ⟨P, hP, commonDiagonalizer_of_commute_distinct hPdet hMdiag hdist hcomm⟩
+
+/-- **Distinct-eigenvalue simultaneous diagonalization — the sum.**  If `P` diagonalizes
+    `M` with pairwise distinct eigenvalues and `N` commutes with `M`, then `M + N` is
+    diagonalizable.  Commuting with the distinct-spectrum `M` forces `N` to share `M`'s
+    diagonalizer (`commonDiagonalizer_of_commute_distinct`), after which the shared-`P` sum
+    law `add_of_commonDiagonalizer` applies.  The additive generic case of the classical
+    "commuting diagonalizable ⟹ sum diagonalizable". -/
+theorem IsDiagonalizable.add_of_commute_distinct {M N P : Matrix n n K}
+    (hP : IsUnit P) (hMdiag : (P⁻¹ * M * P).IsDiag)
+    (hdist : ∀ i j, i ≠ j → (P⁻¹ * M * P) i i ≠ (P⁻¹ * M * P) j j)
+    (hcomm : M * N = N * M) :
+    (M + N).IsDiagonalizable := by
+  have hPdet : IsUnit P.det := (Matrix.isUnit_iff_isUnit_det P).mp hP
+  have hNdiag := commonDiagonalizer_of_commute_distinct hPdet hMdiag hdist hcomm
+  exact IsDiagonalizable.add_of_commonDiagonalizer hP hMdiag hNdiag
+
+/-- **Distinct-eigenvalue simultaneous diagonalization — the product.**  If `P`
+    diagonalizes `M` with pairwise distinct eigenvalues and `N` commutes with `M`, then
+    `M * N` is diagonalizable.  As in the additive case, commuting with the distinct-spectrum
+    `M` forces `N` to share `M`'s diagonalizer, so the shared-`P` product law
+    `mul_of_commonDiagonalizer` applies.  This is the generic (distinct-eigenvalue) case of
+    the classical theorem that commuting diagonalizable matrices have a diagonalizable
+    product; the counterexample `exists_diagonalizable_mul_not_diagonalizable` shows the
+    commuting hypothesis is essential (its witnesses do *not* commute). -/
+theorem IsDiagonalizable.mul_of_commute_distinct {M N P : Matrix n n K}
+    (hP : IsUnit P) (hMdiag : (P⁻¹ * M * P).IsDiag)
+    (hdist : ∀ i j, i ≠ j → (P⁻¹ * M * P) i i ≠ (P⁻¹ * M * P) j j)
+    (hcomm : M * N = N * M) :
+    (M * N).IsDiagonalizable := by
+  have hPdet : IsUnit P.det := (Matrix.isUnit_iff_isUnit_det P).mp hP
+  have hNdiag := commonDiagonalizer_of_commute_distinct hPdet hMdiag hdist hcomm
+  exact IsDiagonalizable.mul_of_commonDiagonalizer hP hMdiag hNdiag
+
 /-- **The (ordered) product of a list of diagonal matrices is diagonal.**  The
     multiplicative companion of `isDiag_sum`.  Because matrix multiplication is
     *not* commutative, the product must be taken over an ordered `List` rather than

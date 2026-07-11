@@ -176,7 +176,7 @@ theorem v_normalizedIncrement_tendsto_zero :
   have hden : (l : ℝ) / 2 ≤ v l := by simp only [v, ← ha_def]; linarith
   -- Squeeze: `|(v(l+1) − v l)/v l| ≤ 6/l`.
   simp only [Real.norm_eq_abs, abs_div, abs_of_pos hvpos]
-  rw [div_le_div_iff hvpos hlpos]
+  rw [div_le_div_iff₀ hvpos hlpos]
   nlinarith [mul_le_mul_of_nonneg_right hnum hlpos.le, hden, hlpos]
 
 /-- **Increment not determined by the asymptotic class (packaged existential).**
