@@ -764,6 +764,59 @@ theorem erdos_748_summary :
   · obtain ⟨ce, co, hce, hco, _⟩ := precise_asymptotic
     exact ⟨ce, co, hce, hco⟩
 
+/-!
+## Part VI: The lower half of the log-asymptotic is unconditional
+
+The Cameron–Erdős conjecture `cameronErdosConjecture` is a two-sided estimate on
+`log₂ (f n) = Real.log (f n) / Real.log 2`. Its upper half needs the deep Green/Sapozhenko
+input (the axiom `green_upper_bound`). Its **lower** half, however, is elementary: the
+sharp counting bound `sharp_lower_bound` (`f n ≥ 2^⌈n/2⌉`) gives `log₂ (f n) ≥ ⌈n/2⌉ ≥ n/2`
+with no axiom at all — and it holds for *every* `n`, not merely eventually. The theorems
+below isolate this axiom-free lower half.
+-/
+
+/-- **Unconditional log₂ lower bound.**  For every `n`, `log₂ (f n) ≥ n/2`.  Taking the
+base-2 logarithm of the sharp counting bound `f n ≥ 2^⌈n/2⌉` (`sharp_lower_bound`) and
+using `⌈n/2⌉ = (n+1)/2 ≥ n/2`.  Axiom-free: the lower half of the Cameron–Erdős asymptotic
+needs none of the Green/Sapozhenko machinery. -/
+theorem logDiv_log_two_f_ge (n : ℕ) :
+    (n : ℝ) / 2 ≤ Real.log (f n) / Real.log 2 := by
+  have hlog2 : 0 < Real.log 2 := Real.log_pos (by norm_num)
+  -- real-cast lower bound on `f n`
+  have hfge : (2 : ℝ) ^ ((n + 1) / 2) ≤ (f n : ℝ) := by
+    have h := sharp_lower_bound n
+    calc (2 : ℝ) ^ ((n + 1) / 2) = ((2 ^ ((n + 1) / 2) : ℕ) : ℝ) := by push_cast; ring
+      _ ≤ (f n : ℝ) := by exact_mod_cast h
+  have hfpos : (0 : ℝ) < f n := lt_of_lt_of_le (by positivity) hfge
+  -- log of the power bound
+  have hloglb : ((n + 1) / 2 : ℕ) * Real.log 2 ≤ Real.log (f n) := by
+    calc ((n + 1) / 2 : ℕ) * Real.log 2
+          = Real.log ((2 : ℝ) ^ ((n + 1) / 2)) := by rw [Real.log_pow]
+      _ ≤ Real.log (f n) := Real.log_le_log (by positivity) hfge
+  -- `n/2 ≤ ⌈n/2⌉ = (n+1)/2` as reals
+  have hceil : (n : ℝ) / 2 ≤ ((n + 1) / 2 : ℕ) := by
+    have h2 : n ≤ 2 * ((n + 1) / 2) := by omega
+    have : (n : ℝ) ≤ 2 * (((n + 1) / 2 : ℕ) : ℝ) := by exact_mod_cast h2
+    linarith
+  rw [le_div_iff₀ hlog2]
+  calc (n : ℝ) / 2 * Real.log 2
+        ≤ ((n + 1) / 2 : ℕ) * Real.log 2 :=
+          mul_le_mul_of_nonneg_right hceil (le_of_lt hlog2)
+    _ ≤ Real.log (f n) := hloglb
+
+/-- **The Cameron–Erdős lower bound, unconditionally and for all `n`.**  The lower conjunct
+of `cameronErdosConjecture` — `(1 − ε)·(n/2) ≤ log₂ (f n)` — holds for *every* `ε > 0` and
+*every* `n`, with no threshold `N` and no axiom.  It follows from the exact bound
+`log₂ (f n) ≥ n/2` (`logDiv_log_two_f_ge`) since `(1 − ε)·(n/2) ≤ n/2`.  So only the upper
+half of the conjecture carries the Green/Sapozhenko content. -/
+theorem cameronErdos_lower_unconditional {ε : ℝ} (hε : 0 < ε) (n : ℕ) :
+    (1 - ε) * (n / 2 : ℝ) ≤ Real.log (f n) / Real.log 2 := by
+  have hhalf : (0 : ℝ) ≤ (n / 2 : ℝ) := by positivity
+  calc (1 - ε) * (n / 2 : ℝ)
+        ≤ 1 * (n / 2 : ℝ) := mul_le_mul_of_nonneg_right (by linarith) hhalf
+    _ = (n / 2 : ℝ) := one_mul _
+    _ ≤ Real.log (f n) / Real.log 2 := logDiv_log_two_f_ge n
+
 /--
 **Erdős Problem #748: PROVED**
 -/
