@@ -4,7 +4,7 @@
   "phase": "ACT",
   "status": "in-progress",
   "started": "2026-07-08T00:00:00.000Z",
-  "lastUpdate": "2026-07-11T22:07:16Z",
+  "lastUpdate": "2026-07-11T22:10:18Z",
   "path": "full",
   "parentId": "erdos-1093",
   "tier": "C",
@@ -34,8 +34,8 @@
     {
       "path": "Proofs/Erdos1093ProblemOQ02.lean",
       "filename": "Erdos1093ProblemOQ02.lean",
-      "lineCount": 2182,
-      "theoremCount": 112,
+      "lineCount": 2286,
+      "theoremCount": 118,
       "axiomCount": 0,
       "defCount": 2,
       "sorryCount": 0,
@@ -44,7 +44,7 @@
     }
   ],
   "knowledge": {
-    "progressSummary": "PROGRESS (VERIFIED axiom-free of new axiom declarations, local `lake env lean`): Section XXVII extends the ELS-free location ladder to close k=26 (factorial_26_lt_458_pow_ten, smallPrime_dvd_choose_26_of_range, not_admissible_k26_of_range, deficiency_le_nine_of_k_eq_26 / _le_26 / maximalDeficiencyIs_nine_iff_kGe27). A deficiency >=10 at k=26 forces (n-25)^10 <= 26! < 458^10, pinning the finite window n in {52,...,482}; the three-prime disjunction 2|C(n,26) v 3|C(n,26) v 5|C(n,26) certifies every one of the 431 values inadmissible (375 even, 55 odd divisible by 3, and n=350 caught by 5). The elementary open frontier now moves to k>=27; only concrete divisibility facts use native_decide (Lean.ofReduceBool), the structural results stay ofReduceBool-free. Remaining universal open content (the record pair (284,28) lives at k=28) requires the ELS analytic short-interval smooth-count bound (multi-month, absent from Mathlib).",
+    "progressSummary": "PROGRESS (VERIFIED, local `lake env lean` exit 0): Sections XXVII+XXVIII extend the ELS-free location ladder to close k=26 AND k=27, moving the elementary open frontier to k>=28 (deficiency_le_nine_of_k_eq_26/_27, _le_26/_27, maximalDeficiencyIs_nine_iff_kGe28 — the terminal elementary reduction, since k=28 is exactly where the record pair (284,28) lives). Each rung: a deficiency>=10 forces (n-(k-1))^10 <= k! < M^10 (k=26:M=458, k=27:M=637, both sharp), pinning a finite window 2k..k+M-2 on which a small-prime disjunction certifies every value inadmissible (k=26: {2,3,5} over 431 vals; k=27: {2,3,7,11} over 609 vals). Concrete divisibility uses native_decide (Lean.ofReduceBool); structural results ofReduceBool-free; no new axiom declarations. Remaining open content (k>=28) is irreducibly analytic — needs the ELS short-interval smooth-count bound absent from Mathlib; the ladder cannot continue past k=28 where the location window admits a genuine deficiency-9 example.",
     "builtItems": [
       "noSmallPrimeFactors_iff (Erdos1093ProblemOQ02.lean) — decidable reduction of the admissibility side-condition (unbounded ∀ prime) to a bounded check over primes p ≤ k; ofReduceBool-free.",
       "noSmallPrimeFactors_284_28 — the record pair (284,28) is admissible: no prime ≤ 28 divides C(284,28) (parent verified only the count = 9, never admissibility).",
@@ -120,6 +120,6 @@
     "erdos-1093"
   ],
   "currentState": {
-    "nextAction": "Section XXVII (this cycle) closed k=26 (deficiency_le_nine_of_k_eq_26 / _le_26 / maximalDeficiencyIs_nine_iff_kGe27), VERIFIED via `lake env lean` (exit 0). The mechanical ladder continues one rung at a time (k=27) until it meets the record pair (284,28) at k=28, where an admissible deficiency-9 example lives in the location window and the window-inadmissibility disjunction genuinely fails. Remaining universal open content (k>=28) requires the ELS analytic upper bound (multi-month). Next elementary rung: replicate for k=27 (M with 27!<M^10, covering primes <=27 over window n in {54,...,25+M})."
+    "nextAction": "Sections XXVII+XXVIII (this cycle) closed k=26 and k=27; maximalDeficiencyIs_nine_iff_kGe28 is the TERMINAL elementary reduction — the ladder meets the record pair (284,28) at k=28, where the window-inadmissibility disjunction genuinely fails (an admissible deficiency-9 example lives in the window). No further elementary rung exists. Remaining universal open content (k>=28) requires the analytic Erdos-Lacampagne-Selfridge short-interval k-smooth-count upper bound (psi(x,x+k)/Dickman rho), absent from Mathlib (multi-month infrastructure). Treat OQ-02 as elementary-frontier-exhausted, analytically BLOCKED."
   }
 }
