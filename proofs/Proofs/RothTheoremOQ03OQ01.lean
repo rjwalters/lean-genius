@@ -844,4 +844,86 @@ theorem kAPCount_nondeg_le_sq {N : ℕ} [NeZero N] {k : ℕ} (hk : 0 < k) (A : F
           kAPCount_nondeg_mono (Finset.subset_univ A)
     _ = N ^ 2 - N := kAPCount_nondeg_univ hk
 
+/-- **Translation invariance of the `k`-AP count.**  Translating `A` by any `t` leaves the
+    number of length-`k` progressions unchanged: the map `(x, d) ↦ (x + t, d)` bijects the
+    progressions of `A` with those of `A + t` (it fixes the common difference `d` and shifts
+    the start).  The `k`-AP count is thus a *translation-invariant* functional of the set — the
+    companion symmetry to `kAPCount_count_mono`, and the reason Roth's problem may fix a
+    normalisation (e.g. `0 ∈ A`) without loss. -/
+theorem kAPCount_count_translate {N : ℕ} [NeZero N] {k : ℕ} (A : Finset (ZMod N))
+    (t : ZMod N) :
+    (Finset.univ.filter (fun p : ZMod N × ZMod N =>
+        ∀ i : Fin k, p.1 + i.val • p.2 ∈ A.image (fun a => a + t))).card
+      = (Finset.univ.filter (fun p : ZMod N × ZMod N =>
+          ∀ i : Fin k, p.1 + i.val • p.2 ∈ A)).card := by
+  classical
+  have hmem : ∀ (x : ZMod N), x ∈ A.image (fun a => a + t) ↔ x - t ∈ A := by
+    intro x
+    rw [Finset.mem_image]
+    exact ⟨by rintro ⟨a, ha, rfl⟩; simpa using ha, fun h => ⟨x - t, h, by ring⟩⟩
+  have hset :
+      (Finset.univ.filter (fun p : ZMod N × ZMod N =>
+          ∀ i : Fin k, p.1 + i.val • p.2 ∈ A.image (fun a => a + t)))
+        = (Finset.univ.filter (fun p : ZMod N × ZMod N =>
+            ∀ i : Fin k, p.1 + i.val • p.2 ∈ A)).image (fun p => (p.1 + t, p.2)) := by
+    ext p
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_image, hmem]
+    constructor
+    · intro h
+      refine ⟨(p.1 - t, p.2), fun i => ?_, by simp⟩
+      have := h i
+      rwa [show p.1 - t + i.val • p.2 = p.1 + i.val • p.2 - t from by abel]
+    · rintro ⟨q, hq, rfl⟩ i
+      have := hq i
+      rwa [show q.1 + t + i.val • q.2 - t = q.1 + i.val • q.2 from by abel]
+  rw [hset, Finset.card_image_of_injective]
+  intro a b hab
+  simp only [Prod.mk.injEq, add_left_inj] at hab
+  exact Prod.ext hab.1 hab.2
+
+/-- **Translation invariance of the nondegenerate `k`-AP count.**  The `d ≠ 0` restriction of
+    `kAPCount_count_translate`: since the bijection `(x, d) ↦ (x + t, d)` fixes the common
+    difference `d`, it preserves the nondegeneracy condition `d ≠ 0`.  Hence the genuine
+    (nondiagonal) `k`-AP count that Roth's theorem controls is likewise translation-invariant. -/
+theorem kAPCount_nondeg_translate {N : ℕ} [NeZero N] {k : ℕ} (A : Finset (ZMod N))
+    (t : ZMod N) :
+    (Finset.univ.filter (fun p : ZMod N × ZMod N =>
+        (∀ i : Fin k, p.1 + i.val • p.2 ∈ A.image (fun a => a + t)) ∧ p.2 ≠ 0)).card
+      = (Finset.univ.filter (fun p : ZMod N × ZMod N =>
+          (∀ i : Fin k, p.1 + i.val • p.2 ∈ A) ∧ p.2 ≠ 0)).card := by
+  classical
+  have hmem : ∀ (x : ZMod N), x ∈ A.image (fun a => a + t) ↔ x - t ∈ A := by
+    intro x
+    rw [Finset.mem_image]
+    exact ⟨by rintro ⟨a, ha, rfl⟩; simpa using ha, fun h => ⟨x - t, h, by ring⟩⟩
+  have hset :
+      (Finset.univ.filter (fun p : ZMod N × ZMod N =>
+          (∀ i : Fin k, p.1 + i.val • p.2 ∈ A.image (fun a => a + t)) ∧ p.2 ≠ 0))
+        = (Finset.univ.filter (fun p : ZMod N × ZMod N =>
+            (∀ i : Fin k, p.1 + i.val • p.2 ∈ A) ∧ p.2 ≠ 0)).image (fun p => (p.1 + t, p.2)) := by
+    ext p
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_image, hmem]
+    constructor
+    · rintro ⟨h, hd⟩
+      refine ⟨(p.1 - t, p.2), ⟨fun i => ?_, hd⟩, by simp⟩
+      have := h i
+      rwa [show p.1 - t + i.val • p.2 = p.1 + i.val • p.2 - t from by abel]
+    · rintro ⟨q, ⟨hq, hd⟩, rfl⟩
+      refine ⟨fun i => ?_, hd⟩
+      have := hq i
+      rwa [show q.1 + t + i.val • q.2 - t = q.1 + i.val • q.2 from by abel]
+  rw [hset, Finset.card_image_of_injective]
+  intro a b hab
+  simp only [Prod.mk.injEq, add_left_inj] at hab
+  exact Prod.ext hab.1 hab.2
+
+/-- **Analytic translation invariance.**  The normalized `k`-AP operator on an indicator is
+    unchanged by translating the set: `Λ_k(1_{A+t}) = Λ_k(1_A)`.  Immediate from the
+    combinatorial bridge `kAPCount_indicator_eq_count` and `kAPCount_count_translate`. -/
+theorem kAPCount_indicator_translate {N : ℕ} [NeZero N] (k : ℕ) (A : Finset (ZMod N))
+    (t : ZMod N) :
+    kAPCount k (fun _ : Fin k => indicatorZMod (A.image (fun a => a + t)))
+      = kAPCount k (fun _ : Fin k => indicatorZMod A) := by
+  rw [kAPCount_indicator_eq_count, kAPCount_indicator_eq_count, kAPCount_count_translate]
+
 end RothTheoremOQ03OQ01
