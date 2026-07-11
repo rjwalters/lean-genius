@@ -265,8 +265,9 @@ theorem altitude_geometric_mean (hperp : ⟪A - C, B - C⟫ = (0 : ℝ)) :
   -- so the altitude `C - H` meets it at a right angle at the foot `H`.
   have hCHperp : ⟪C - altitudeFoot A B C, A - B⟫ = (0 : ℝ) := foot_perp A B C hAB hperp
   have hperp2 : ⟪A - altitudeFoot A B C, C - altitudeFoot A B C⟫ = (0 : ℝ) := by
-    rw [hAHpar, real_inner_smul_left,
-        real_inner_comm (A - B) (C - altitudeFoot A B C), hCHperp, mul_zero]
+    have hflip : (⟪A - B, C - altitudeFoot A B C⟫ : ℝ) = 0 := by
+      rw [real_inner_comm]; exact hCHperp
+    rw [hAHpar, real_inner_smul_left, hflip, mul_zero]
   -- Pythagoras on the right sub-triangle `A H C`: `|AC|² = |AH|² + |CH|²`.
   have hsub := pythagorean_core A C (altitudeFoot A B C) hperp2
   have hgA := geometric_mean_A A B C hAB          -- `|AC|² = |AB|·|AH|`
@@ -293,7 +294,7 @@ theorem altitude_length (hperp : ⟪A - C, B - C⟫ = (0 : ℝ)) :
   have hlhs : 0 ≤ ‖C - altitudeFoot A B C‖ := norm_nonneg _
   have hrhs : 0 ≤ ‖A - C‖ * ‖B - C‖ / ‖A - B‖ := by positivity
   have hsq : ‖C - altitudeFoot A B C‖ ^ 2 = (‖A - C‖ * ‖B - C‖ / ‖A - B‖) ^ 2 := by
-    rw [hgm, hAH, hHB]; field_simp; ring
+    rw [hgm, hAH, hHB]; field_simp
   rw [← Real.sqrt_sq hlhs, hsq, Real.sqrt_sq hrhs]
 
 include hAB in
@@ -310,7 +311,6 @@ theorem triArea_hypotenuse_eq_legs (hperp : ⟪A - C, B - C⟫ = (0 : ℝ)) :
   unfold triArea
   rw [altitude_length A B C hAB hperp]
   field_simp
-  ring
 
 include hAB in
 /-- **Einstein's key step, leg-`CA` piece: the similar sub-triangle's area scales as the
@@ -332,7 +332,6 @@ theorem triArea_sub_A_ratio (hperp : ⟪A - C, B - C⟫ = (0 : ℝ)) :
   unfold triArea
   rw [dist_A_foot A B C hAB]
   field_simp
-  ring
 
 include hAB in
 /-- **Einstein's key step, leg-`CB` piece.**  The altitude from `C` cuts off the sub-triangle
@@ -351,7 +350,6 @@ theorem triArea_sub_B_ratio (hperp : ⟪A - C, B - C⟫ = (0 : ℝ)) :
   unfold triArea
   rw [dist_foot_B A B C hAB hperp]
   field_simp
-  ring
 
 include hAB in
 /-- **The area-level dissection: the two similar pieces reconstitute the whole.**  The altitude
@@ -436,6 +434,42 @@ theorem einstein_matches_core (A B C : F) (hAB : A ≠ B)
     ‖A - C‖ ^ 2 + ‖B - C‖ ^ 2 = ‖A - B‖ ^ 2 ∧
     ‖A - B‖ ^ 2 = ‖A - C‖ ^ 2 + ‖B - C‖ ^ 2 :=
   ⟨pythagorean_via_altitude A B C hAB hperp, pythagorean_core A B C hperp⟩
+
+-- ============================================================
+-- Euclid VI.31: the generalized Pythagorean theorem
+-- ============================================================
+
+/-- **Euclid VI.31 — the generalized Pythagorean theorem.**  For a right angle at `C`, erect
+*similar* figures of one common shape on the three sides.  By similarity the area of a figure
+of fixed shape spanned on a segment of length `s` is `figArea s = shapeConst · s²` — area scales
+as the *square* of the linear dimension — so the entire shape is encoded in the single constant
+`shapeConst`.  Then the figure on the hypotenuse has area equal to the sum of the areas of the
+figures on the two legs:
+
+`figArea ‖A − B‖ = figArea ‖A − C‖ + figArea ‖B − C‖.`
+
+Pythagoras is the special case of squares (`shapeConst = 1`); Euclid's Proposition VI.31 allows
+semicircles (below), similar triangles, regular polygons, or any fixed shape.  The proof is
+immediate from `pythagorean_core` together with the degree-2 homogeneity `hfig`: pulling the
+common constant out reduces the three-figure identity to the metric Pythagorean identity. -/
+theorem euclid_VI_31 (figArea : ℝ → ℝ) (shapeConst : ℝ)
+    (hfig : ∀ s : ℝ, figArea s = shapeConst * s ^ 2)
+    (A B C : F) (hperp : ⟪A - C, B - C⟫ = (0 : ℝ)) :
+    figArea ‖A - B‖ = figArea ‖A - C‖ + figArea ‖B - C‖ := by
+  simp only [hfig]
+  rw [pythagorean_core A B C hperp]; ring
+
+/-- **Semicircles on the three sides — a concrete instance of Euclid VI.31.**  The semicircle
+erected on a segment of length `s` (taken as diameter) has area `π s² / 8` (half of `π (s/2)²`).
+Feeding this shape functional to `euclid_VI_31` gives that the semicircle on the hypotenuse has
+area equal to the sum of the semicircles on the two legs — the additivity identity underlying
+Hippocrates' quadrature of the lunes. -/
+theorem semicircles_on_sides (A B C : F) (hperp : ⟪A - C, B - C⟫ = (0 : ℝ)) :
+    Real.pi * ‖A - B‖ ^ 2 / 8
+      = Real.pi * ‖A - C‖ ^ 2 / 8 + Real.pi * ‖B - C‖ ^ 2 / 8 := by
+  have h := euclid_VI_31 (fun s => Real.pi * s ^ 2 / 8) (Real.pi / 8)
+    (fun s => by ring) A B C hperp
+  simpa using h
 
 #check @einstein_pythagorean
 #check @pythagorean_via_altitude
