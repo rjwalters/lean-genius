@@ -97,6 +97,24 @@ theorem gap_isBigO_rpow :
     abs_of_nonneg (Nat.cast_nonneg (maxPrimeGap x)), abs_of_nonneg hnn]
   exact baker_harman_pintz x hx
 
+/-- **Explicit decay rate of the normalised gap.** The normalised maximal prime gap not only
+    tends to `0` (`bhp_implies_gap_littleo`) but does so at a concrete polynomial rate:
+    `maxPrimeGap x / x = O(x^(-0.475))`. This sharpens the qualitative `Tendsto … (𝓝 0)` to a
+    quantitative envelope with an explicit exponent `-(1 - 0.525) = -0.475`, packaged in Mathlib's
+    asymptotics idiom (constant `1`, valid for `x ≥ 25`). It is the normalised counterpart of
+    `gap_isBigO_rpow` (`maxPrimeGap = O(x^0.525)`), obtained by dividing that envelope by `x`. -/
+theorem gap_div_isBigO_rpow_neg :
+    (fun x : ℕ => (maxPrimeGap x : ℝ) / x) =O[atTop]
+      (fun x : ℕ => (x : ℝ) ^ (-(0.475 : ℝ))) := by
+  rw [isBigO_iff]
+  refine ⟨1, ?_⟩
+  filter_upwards [eventually_ge_atTop 25] with x hx
+  have hnn : (0 : ℝ) ≤ (x : ℝ) ^ (-(0.475 : ℝ)) := Real.rpow_nonneg (Nat.cast_nonneg x) _
+  have hlo : (0 : ℝ) ≤ (maxPrimeGap x : ℝ) / x :=
+    div_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _)
+  rw [one_mul, Real.norm_eq_abs, Real.norm_eq_abs, abs_of_nonneg hlo, abs_of_nonneg hnn]
+  exact gap_div_le_rpow_neg x hx
+
 /-- **Generalised sublinearity.** For every exponent `a > 0.525`, the normalised gap
     `maxPrimeGap x / x^a` tends to `0`. This uses the full strength of the BHP exponent:
     `bhp_implies_gap_littleo` is the `a = 1` case, but sublinearity in fact holds for any
@@ -209,7 +227,7 @@ theorem gap_littleo_of_rpow_bound {θ : ℝ} (hθ : θ < 1)
     have hdiv : (x : ℝ) ^ θ / x = (x : ℝ) ^ (-(1 - θ)) := by
       rw [show (-(1 - θ)) = θ - 1 by ring, Real.rpow_sub hx_pos, Real.rpow_one]
     calc (maxPrimeGap x : ℝ) / x
-        ≤ (x : ℝ) ^ θ / x := by gcongr <;> exact hx
+        ≤ (x : ℝ) ^ θ / x := by gcongr
       _ = (x : ℝ) ^ (-(1 - θ)) := hdiv
   exact squeeze_zero' (Eventually.of_forall h_lo) h_hi h_env
 
@@ -241,7 +259,7 @@ theorem gap_div_rpow_littleo_of_rpow_bound {θ a : ℝ} (hθa : θ < a)
     have hdiv : (x : ℝ) ^ θ / (x : ℝ) ^ a = (x : ℝ) ^ (-(a - θ)) := by
       rw [← Real.rpow_sub hx_pos]; congr 1; ring
     calc (maxPrimeGap x : ℝ) / (x : ℝ) ^ a
-        ≤ (x : ℝ) ^ θ / (x : ℝ) ^ a := by gcongr <;> exact hx
+        ≤ (x : ℝ) ^ θ / (x : ℝ) ^ a := by gcongr
       _ = (x : ℝ) ^ (-(a - θ)) := hdiv
   exact squeeze_zero' (Eventually.of_forall h_lo) h_hi h_env
 
@@ -275,6 +293,30 @@ theorem gap_isBigO_rpow_of_rpow_bound {θ : ℝ}
   rw [one_mul, Real.norm_eq_abs, Real.norm_eq_abs,
     abs_of_nonneg (Nat.cast_nonneg (maxPrimeGap x)), abs_of_nonneg hnn]
   exact hx
+
+/-- **Master engine, normalised decay rate.** From *any* eventual power envelope
+`maxPrimeGap x ≤ x^θ`, the normalised gap decays at the explicit rate
+`maxPrimeGap x / x = O(x^(θ - 1))` — the envelope divided by `x`. This is the abstract counterpart
+of the concrete `gap_div_isBigO_rpow_neg` (the BHP instance `θ = 0.525`, giving `O(x^(-0.475))`),
+and the big-O sharpening of the `Tendsto (·/x) → 0` engine `gap_littleo_of_rpow_bound`: no
+sub-linearity of `θ` is needed for the big-O (the rate is negative exactly when `θ < 1`, which is
+when it also gives sublinearity). -/
+theorem gap_div_isBigO_rpow_sub_one_of_rpow_bound {θ : ℝ}
+    (H : ∀ᶠ x : ℕ in atTop, (maxPrimeGap x : ℝ) ≤ (x : ℝ) ^ θ) :
+    (fun x : ℕ => (maxPrimeGap x : ℝ) / x) =O[atTop] (fun x : ℕ => (x : ℝ) ^ (θ - 1)) := by
+  rw [isBigO_iff]
+  refine ⟨1, ?_⟩
+  filter_upwards [H, eventually_ge_atTop 1] with x hx hx1
+  have hx_pos : (0 : ℝ) < (x : ℝ) := by exact_mod_cast (lt_of_lt_of_le Nat.zero_lt_one hx1)
+  have hnn : (0 : ℝ) ≤ (x : ℝ) ^ (θ - 1) := Real.rpow_nonneg (Nat.cast_nonneg x) _
+  have hlo : (0 : ℝ) ≤ (maxPrimeGap x : ℝ) / x :=
+    div_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _)
+  rw [one_mul, Real.norm_eq_abs, Real.norm_eq_abs, abs_of_nonneg hlo, abs_of_nonneg hnn]
+  have hdiv : (x : ℝ) ^ θ / x = (x : ℝ) ^ (θ - 1) := by
+    rw [Real.rpow_sub hx_pos, Real.rpow_one]
+  calc (maxPrimeGap x : ℝ) / x
+      ≤ (x : ℝ) ^ θ / x := by gcongr
+    _ = (x : ℝ) ^ (θ - 1) := hdiv
 
 /-- **Master engine, little-o against `id`.** From *any* eventual power envelope
 `maxPrimeGap x ≤ x^θ` with sub-linear exponent `θ < 1`, `maxPrimeGap =o[atTop] id`. This is the
