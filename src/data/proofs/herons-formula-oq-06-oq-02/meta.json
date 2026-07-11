@@ -12,7 +12,7 @@
     ]
   },
   "overview": {
-    "historicalContext": "Gerretsen's inequalities s² ≤ 4R² + 4Rr + 3r² and s² ≥ 16Rr - 5r² (J. C. H. Gerretsen, 1953) refine Euler's inequality R ≥ 2r and form, together with Blundon's inequalities, the classical fundamental constraints among the semi-perimeter s, circumradius R and inradius r of a triangle. The upper bound proved here is sharp, with equality for the equilateral triangle.",
+    "historicalContext": "The question of which triples (s, R, r) of semi-perimeter, circumradius and inradius actually arise from a genuine triangle — the 'fundamental triangle inequality' problem — has a layered history. Euler proved R ≥ 2r in 1765, the first constraint linking the two radii. J. C. H. Gerretsen (1953) sharpened this to the two-sided bounds 16Rr − 5r² ≤ s² ≤ 4R² + 4Rr + 3r², pinning the semi-perimeter between explicit functions of R and r. W. J. Blundon (1965) then determined the exact necessary-and-sufficient region, replacing the upper bound by the sharp s ≤ 2R + (3√3 − 4)r. Together these form the Euler–Gerretsen–Blundon hierarchy of classical triangle inequalities. The upper Gerretsen bound proved here is sharp, with equality exactly for the equilateral triangle, and its Ravi-substitution reduction is the same sum-of-squares engine that settles Euler's R ≥ 2r in the parent entry.",
     "problemStatement": "For a triangle with side lengths a, b, c (strict triangle inequalities), let s = (a+b+c)/2, Area = √(s(s-a)(s-b)(s-c)) (Heron), R = abc/(4·Area) and r = Area/s. Prove s² ≤ 4R² + 4Rr + 3r².",
     "proofStrategy": "As with the parent Euler bound, avoid constructing O and I; argue algebraically from the radius formulas. The cross term is already area-free: 4Rr = abc/s. The square terms 4R² = (abc)²/(4·Area²) and 3r² = 3·Area²/s² each carry only Area² (never a bare Area), so substituting Heron's Area² = s(s-a)(s-b)(s-c) clears every square root. With the Ravi variables x = s-a, y = s-b, z = s-c (all positive), the difference (4R²+4Rr+3r²) - s² equals gerretsenPoly(x,y,z)/(4·Area²), where gerretsenPoly x y z = ((x+y)(y+z)(z+x))² + 4xyz(x+y)(y+z)(z+x) + 12(xyz)² - 4(x+y+z)³xyz. Nonnegativity of gerretsenPoly is the whole content.",
     "keyInsights": [
@@ -72,9 +72,17 @@
       "id": "sec-overview",
       "title": "Overview: Gerretsen's Inequality via the Ravi Sum-of-Squares Engine",
       "startLine": 1,
-      "endLine": 54,
-      "summary": "The docstring states Gerretsen's inequality s² ≤ 4R² + 4Rr + 3r² for a nondegenerate triangle and explains the strategy: the Ravi substitution x=s-a, y=s-b, z=s-c (all positive) with Area²=s·xyz, R=abc/(4·Area), r=Area/s reduces the whole inequality to the area-free polynomial statement 0 ≤ gerretsenPoly x y z. The algebraic heart gerretsenPoly ≥ 0 is settled by an explicit sum-of-squares certificate with a Schur-type bracket handled by a WLOG ordering, tight at the equilateral x=y=z. Builds on the verified parent HeronsFormulaOQ06 (Euler inequality R ≥ 2r), reusing its triangle data. Imports the parent and Mathlib.Tactic; namespace GerretsenHeronOQ06OQ02; opens Real EulerInequalityHeronOQ06.",
+      "endLine": 44,
+      "summary": "The docstring states Gerretsen's inequality s² ≤ 4R² + 4Rr + 3r² for a nondegenerate triangle and explains the strategy: the Ravi substitution x=s-a, y=s-b, z=s-c (all positive) with Area²=s·xyz, R=abc/(4·Area), r=Area/s reduces the whole inequality to the area-free polynomial statement 0 ≤ gerretsenPoly x y z. The algebraic heart gerretsenPoly ≥ 0 is settled by an explicit sum-of-squares certificate with a Schur-type bracket handled by a WLOG ordering, tight at the equilateral x=y=z.",
       "mathContext": "$s^2 \\le 4R^2 + 4Rr + 3r^2$ reduces via Ravi substitution to $0 \\le \\mathrm{gerretsenPoly}(s-a,s-b,s-c)$, proved by an explicit SOS certificate, sharp at the equilateral triangle."
+    },
+    {
+      "id": "sec-setup",
+      "title": "Imports, Namespace, and Reused Parent Data",
+      "startLine": 45,
+      "endLine": 54,
+      "summary": "import Proofs.HeronsFormulaOQ06 brings in the verified parent (Euler inequality R ≥ 2r) and its triangle data — semiperimeter, area, circumradius, inradius, area_sq — so this file re-proves none of that infrastructure; import Mathlib.Tactic supplies nlinarith for the SOS certificate. namespace GerretsenHeronOQ06OQ02 isolates the Gerretsen-specific declarations, and open Real EulerInequalityHeronOQ06 brings the parent's triangle definitions into scope unqualified. The PART I banner then opens the algebraic core.",
+      "mathContext": "Reuses the parent's $R=abc/(4\\,\\mathrm{Area})$, $r=\\mathrm{Area}/s$, and $\\mathrm{Area}^2 = s(s-a)(s-b)(s-c)$ verbatim; only the Gerretsen-specific content is new."
     },
     {
       "id": "algebraic-core",
