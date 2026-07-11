@@ -562,4 +562,59 @@ theorem erdos_378_density_zero : NaturalDensity (atLeastSquarefree 0) 1 := by
   rw [atLeastSquarefree_zero_eq_univ]
   exact natDensity_univ
 
+/-
+## Part IX: Monotonicity of natural density — the density is order-preserving
+
+The framework already records the two extreme bounds `natDensity_nonneg` (density `≥ 0`)
+and `natDensity_le_one` (density `≤ 1`). Both are instances of a single structural fact:
+natural density is *monotone* under set inclusion. Below we prove that general law and
+apply it to the decreasing filtration `atLeastSquarefree_antitone`, obtaining that the
+Erdős #378 densities are **antitone in the threshold** — a larger demand `r` on the number
+of squarefree interior binomials cannot increase the density of qualifying integers. All
+axiom-free (independent of the Granville–Ramaré inputs).
+-/
+
+/-- **Natural density is monotone under inclusion.**  If `S ⊆ T` and both have natural
+densities `d` and `d'`, then `d ≤ d'`.  For every `N` the counting cardinalities satisfy
+`|S ∩ [0,N)| ≤ |T ∩ [0,N)|`, so the ratios are ordered; taking `N` past both convergence
+thresholds forces the limits to be ordered too.  This subsumes both `natDensity_nonneg`
+(the case `S = ∅`, `d = 0`) and `natDensity_le_one` (the case `T = univ`, `d' = 1`).
+Elementary ε-argument, uses none of the axioms. -/
+theorem natDensity_mono {S T : Set ℕ} {d d' : ℝ} (hst : S ⊆ T)
+    (hS : NaturalDensity S d) (hT : NaturalDensity T d') : d ≤ d' := by
+  by_contra hlt
+  push_neg at hlt  -- `d' < d`
+  set ε : ℝ := (d - d') / 2 with hεdef
+  have hε : 0 < ε := by rw [hεdef]; linarith
+  obtain ⟨N₁, hN₁⟩ := hS ε hε
+  obtain ⟨N₂, hN₂⟩ := hT ε hε
+  set N := max (max N₁ N₂) 1 with hNdef
+  have hNpos : 0 < N := lt_of_lt_of_le Nat.zero_lt_one (le_max_right _ _)
+  have hNR : (0 : ℝ) < N := by exact_mod_cast hNpos
+  have hb1 := hN₁ N (le_trans (le_max_left _ _) (le_max_left _ _))
+  have hb2 := hN₂ N (le_trans (le_max_right _ _) (le_max_left _ _))
+  -- counting-ratio monotonicity from the cardinality inclusion
+  have hsub : (S ∩ Set.Iio N) ⊆ (T ∩ Set.Iio N) :=
+    Set.inter_subset_inter_left _ hst
+  have hfinT : (T ∩ Set.Iio N).Finite := (Set.finite_Iio N).inter_of_right T
+  have hcardR : ((S ∩ Set.Iio N).ncard : ℝ) ≤ ((T ∩ Set.Iio N).ncard : ℝ) := by
+    exact_mod_cast Set.ncard_le_ncard hsub hfinT
+  have hratio : ((S ∩ Set.Iio N).ncard : ℝ) / (N : ℝ)
+      ≤ ((T ∩ Set.Iio N).ncard : ℝ) / (N : ℝ) :=
+    div_le_div_of_nonneg_right hcardR (le_of_lt hNR)
+  rw [abs_lt] at hb1 hb2
+  linarith [hb1.1, hb2.2, hratio]
+
+/-- **The Erdős #378 densities are antitone in the threshold.**  For thresholds `r ≤ r'`,
+if the answer sets at both thresholds have natural densities `d` and `d'`, then `d' ≤ d`:
+raising the required number of squarefree interior binomials shrinks the qualifying set
+(`atLeastSquarefree_antitone`), so by `natDensity_mono` its density cannot increase.  This
+is the monotone structure of the density profile `r ↦ d(r)` descending from `d(0) = 1`
+(`erdos_378_density_zero`).  Axiom-free (the densities are supplied as hypotheses, so the
+Granville–Ramaré existence input is not invoked). -/
+theorem erdos_378_density_antitone {r r' : ℕ} {d d' : ℝ} (hr : r ≤ r')
+    (hd : NaturalDensity (atLeastSquarefree r) d)
+    (hd' : NaturalDensity (atLeastSquarefree r') d') : d' ≤ d :=
+  natDensity_mono (atLeastSquarefree_antitone hr) hd' hd
+
 end Erdos378

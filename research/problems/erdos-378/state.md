@@ -2,7 +2,26 @@
 
 **Phase**: COMPLETED
 **Since**: 2026-07-08
-**Iteration**: 1
+**Iteration**: 3
+
+## Iteration 3 (researcher-9, 2026-07-11, VERIFIED via offline Mathlib elaboration)
+Added **Part IX: monotonicity of natural density** — 2 axiom-free theorems generalizing
+the density framework (independent of the 2 Granville–Ramaré axioms):
+- `natDensity_mono` : `S ⊆ T` + both have densities `d, d'` ⟹ `d ≤ d'`. The single
+  structural law subsuming both `natDensity_nonneg` (`S = ∅`) and `natDensity_le_one`
+  (`T = univ`). by_contra ε-argument mirroring `naturalDensity_unique`: cardinality
+  inclusion `|S ∩ Iio N| ≤ |T ∩ Iio N|` (`Set.ncard_le_ncard`) → ratio order
+  (`div_le_div_of_nonneg_right`) → limit order via `linarith`.
+- `erdos_378_density_antitone` : for thresholds `r ≤ r'`, if both answer-set densities
+  exist (`d`, `d'`) then `d' ≤ d` — the density profile `r ↦ d(r)` is antitone descending
+  from `d(0) = 1`. Composes `natDensity_mono` with the existing `atLeastSquarefree_antitone`
+  filtration. Densities passed as hypotheses so the GR existence axiom is NOT invoked.
+
+File 565→620 lines, 17→19 theorems (meta count), 0 sorries, 2 axioms (Granville–Ramaré)
+unchanged. Both new theorems depend only on `[propext, Classical.choice, Quot.sound]`
+(foundational) — confirmed by `#print axioms`, NOT on the GR axioms. Verified by full
+offline elaboration (`bin/lake env lean Proofs/Erdos378Problem.lean`, EXIT 0). The two
+density axioms remain the analytic frontier (out of scope).
 
 ## Current Focus
 
