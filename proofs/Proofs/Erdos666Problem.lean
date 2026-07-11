@@ -92,6 +92,30 @@ theorem two_mul_hypercubeEdges (n : ℕ) :
     rw [Nat.succ_sub_one, pow_succ]
     ring
 
+/-- **Vertices double with each dimension:** `|V(Q_{n+1})| = 2·|V(Qₙ)|`.  Passing
+from `Qₙ` to `Q_{n+1}` glues two disjoint copies of `Qₙ` (the `xₙ = 0` and `xₙ = 1`
+half-cubes), so the vertex count doubles.  Concretely `2^{n+1} = 2·2ⁿ`. -/
+theorem hypercubeVertices_succ (n : ℕ) :
+    hypercubeVertices (n + 1) = 2 * hypercubeVertices n := by
+  unfold hypercubeVertices
+  rw [pow_succ, Nat.mul_comm]
+
+/-- **Recursive edge count of the hypercube:** `|E(Q_{n+1})| = 2·|E(Qₙ)| + |V(Qₙ)|`.
+This encodes the fundamental product structure `Q_{n+1} = Qₙ □ K₂`: the edges of
+`Q_{n+1}` are the edges *inside* the two copies of `Qₙ` (that is `2·|E(Qₙ)|`) together
+with the perfect matching joining corresponding vertices across the two copies (one
+edge per vertex of `Qₙ`, i.e. `|V(Qₙ)|` further edges).  Concretely
+`(n+1)·2ⁿ = 2·(n·2ⁿ⁻¹) + 2ⁿ`.  Combined with `two_mul_hypercubeEdges` this pins the
+edge count `n·2ⁿ⁻¹` by its Cartesian-product recurrence rather than the closed form. -/
+theorem hypercubeEdges_succ (n : ℕ) :
+    hypercubeEdges (n + 1) = 2 * hypercubeEdges n + hypercubeVertices n := by
+  cases n with
+  | zero => simp [hypercubeEdges, hypercubeVertices]
+  | succ m =>
+    unfold hypercubeEdges hypercubeVertices
+    rw [Nat.succ_sub_one, Nat.succ_sub_one, pow_succ]
+    ring
+
 /-
 **Degree in Qₙ:** every vertex has degree n.
 -/
@@ -284,6 +308,26 @@ Instantiating Erdős's conjecture at `ε = 1/4` would supply a threshold `N` mak
 theorem erdos_conjecture_false : ¬ErdosConjecture := fun hConj =>
   chung_no_threshold (hConj (1/4) (by norm_num))
 
+/-- **Erdős's conjecture is determined entirely by arbitrarily small densities.**
+For *any* fixed positive cutoff `c`, the full conjecture `ErdosConjecture` (which
+quantifies over every `ε > 0`) is equivalent to its restriction to the sliver of
+small densities `0 < ε ≤ c`.  The forward direction just forgets the extra bound
+`ε ≤ c`; the reverse uses monotonicity (`conjectureAt_mono`): any density `ε > c` is
+handled by the cutoff instance `ConjectureAt c` pushed up to `ε`.  So the conjecture's
+truth value never depends on its large-density behaviour — it is decided at the bottom
+of the density scale.  In particular, coupled with `conder_no_threshold_le` (failure
+throughout `(0, 1/3]`), this re-exhibits `erdos_conjecture_false` from the small-density
+end.  No new axioms — pure monotonicity. -/
+theorem erdosConjecture_iff_small {c : ℝ} (hc : 0 < c) :
+    ErdosConjecture ↔ ∀ ε : ℝ, 0 < ε → ε ≤ c → ConjectureAt ε := by
+  constructor
+  · intro h ε hε _
+    exact h ε hε
+  · intro h ε hε
+    rcases le_total ε c with hle | hge
+    · exact h ε hε hle
+    · exact conjectureAt_mono hge (h c hc le_rfl)
+
 /-!
 ### Part IV.5: Each refutation holds on a whole interval of densities
 
@@ -433,13 +477,13 @@ def GeneralizedConjecture : Prop :=
           (Nat.card H.edgeSet : ℝ) ≥ c * (n : ℝ)^aₖ * 2^n →
           HasC2k H k
 
+unseal HasC6 in
 /-- **The `k = 3` case of the generalized conjecture is exactly the C₆ problem.**
 `HasC2k H 3` (a `2·3 = 6`-cycle) coincides with `HasC6 H`, so the generalized
 `C_{2k}` conjecture specialises at `k = 3` to Erdős's original — and refuted — C₆
 question.  (Proved by reducing the length index `2·3` to `6`; it does **not** unfold
 `HasCycle` itself, whose body is kept `irreducible` to avoid the documented
 elaborator stack overflow.) -/
-unseal HasC6 in
 theorem hasC2k_three_iff_hasC6 {V : Type*} (H : SimpleGraph V) :
     HasC2k H 3 ↔ HasC6 H := by
   show HasCycle H (2 * 3) ↔ HasCycle H 6
