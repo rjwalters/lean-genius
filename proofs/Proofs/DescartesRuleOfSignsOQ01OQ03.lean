@@ -967,4 +967,80 @@ theorem x3_minus_x2_plus_x_minus_1_signChanges :
   · rw [hdeg]; intro k hk; interval_cases k <;> norm_num [c0, c1, c2, c3]
   · rw [hdeg]; intro k hk; interval_cases k <;> norm_num [c0, c1, c2, c3]
 
+/- ## § 9. The negative-roots substitution `X ↦ −X` (verified, axiom-free)
+
+Descartes' rule bounds *positive* real roots by `V(p)`.  Its second, equally classical
+half bounds the *negative* real roots of `p` by `V(p(−X))` — the sign-change count of
+the reflected polynomial `p(−X)`, whose positive roots are exactly the negatives of the
+negative roots of `p`.  This section formalises the coefficient-level substitution that
+underlies that half: `p(−X)` has coefficient sequence obtained from `p` by flipping the
+sign of the degree-`k` coefficient by `(−1)^k`.  We record the coefficient identity, the
+degree/nonzero invariants, the induced sign-alternated coefficient sequence, and a first
+concrete negative-side evaluation.  All axiom-free. -/
+
+/-- **Coefficient identity for the reflection `X ↦ −X`.**  `(p(−X)).coeff k = (−1)^k · p.coeff k`.
+The single algebraic fact behind Descartes' negative-roots bound: substituting `−X`
+flips the sign of every odd-degree coefficient.  Proved by `induction_on'`: additive in
+`p`, and on a monomial `a·Xⁿ` the composite is `a·(−X)ⁿ = a·(−1)ⁿ·Xⁿ`. -/
+theorem coeff_comp_neg_X (p : ℝ[X]) (k : ℕ) :
+    (p.comp (-X)).coeff k = (-1) ^ k * p.coeff k := by
+  induction p using Polynomial.induction_on' with
+  | add p q hp hq => simp [add_comp, coeff_add, hp, hq, mul_add]
+  | monomial n a =>
+      have hC : C ((-1:ℝ) ^ n) = ((-1:ℝ[X])) ^ n := by rw [map_pow, map_neg, map_one]
+      have key : (C a * (-X : ℝ[X]) ^ n) = C (a * (-1) ^ n) * X ^ n := by
+        rw [neg_pow, ← hC, C_mul]; ring
+      rw [monomial_comp, key, coeff_C_mul, coeff_X_pow, coeff_monomial]
+      by_cases h : n = k
+      · subst h; simp [mul_comm]
+      · rw [if_neg h, if_neg (by rintro rfl; exact h rfl)]; ring
+
+/-- The reflection `X ↦ −X` preserves the degree: `deg p(−X) = deg p`
+(`natDegree(−X) = 1`, so `natDegree_comp` gives `deg p · 1`). -/
+theorem natDegree_comp_neg_X (p : ℝ[X]) : (p.comp (-X)).natDegree = p.natDegree := by
+  rw [natDegree_comp]; simp
+
+/-- The reflection `X ↦ −X` preserves nonzeroness: `p ≠ 0 ⟹ p(−X) ≠ 0`.  The
+leading coefficient survives — `(p(−X)).coeff(deg p) = (−1)^{deg p}·leadingCoeff p ≠ 0`. -/
+theorem comp_neg_X_ne_zero {p : ℝ[X]} (hp : p ≠ 0) : p.comp (-X) ≠ 0 := by
+  intro hc
+  have h0 : (p.comp (-X)).coeff p.natDegree = 0 := by rw [hc]; simp
+  rw [coeff_comp_neg_X] at h0
+  have hlc : p.coeff p.natDegree ≠ 0 := leadingCoeff_ne_zero.mpr hp
+  rcases mul_eq_zero.mp h0 with h | h
+  · exact absurd h (pow_ne_zero _ (by norm_num))
+  · exact hlc h
+
+/-- **Sign-alternated coefficient sequence.**  The Descartes coefficient sequence of
+the reflection `p(−X)` (read highest-to-lowest degree) is the coefficient sequence of
+`p` with entry `i` scaled by `(−1)^{deg p − i}`.  This is the sequence-level object fed
+into `signChangesInCoeffs (p(−X))` to count negative roots; a direct consequence of
+`coeff_comp_neg_X` at the natDegree-indexed entries. -/
+theorem coeffSequence_comp_neg_X (p : ℝ[X]) (i : Fin (p.natDegree + 1)) :
+    DescartesRuleOfSigns.coeffSequence (p.comp (-X)) p.natDegree i
+      = (-1) ^ (p.natDegree - i.val)
+        * DescartesRuleOfSigns.coeffSequence p p.natDegree i := by
+  simp only [DescartesRuleOfSigns.coeffSequence, coeff_comp_neg_X]
+
+/-- **Negative-roots validation.**  `X² − X + 1` has two coefficient sign changes
+(`x2_minus_x_plus_1_signChanges`, bounding its positive real roots by two), whereas its
+reflection `p(−X) = X² + X + 1` has *zero* sign changes — so Descartes' rule bounds the
+number of *negative* real roots of `X² − X + 1` by `0`.  Indeed `X² − X + 1` has no real
+roots at all (discriminant `−3`), consistent with `0` positive and `0` negative real
+roots.  First negative-side sign-change evaluation in the file; discharged axiom-free via
+`signChangesInCoeffs_eq_zero_of_coeff_nonneg` after simplifying the reflection to
+`X² + X + 1` (all coefficients nonnegative). -/
+theorem x2_minus_x_plus_1_comp_neg_X_signChanges :
+    signChangesInCoeffs ((X ^ 2 - X + 1 : ℝ[X]).comp (-X)) = 0 := by
+  have hcomp : (X ^ 2 - X + 1 : ℝ[X]).comp (-X) = X ^ 2 + X + 1 := by
+    simp [comp]
+  rw [hcomp]
+  apply signChangesInCoeffs_eq_zero_of_coeff_nonneg
+  intro k
+  rcases k with _ | _ | _ | k
+  · norm_num [coeff_add, coeff_X_pow, coeff_X, coeff_one]
+  · norm_num [coeff_add, coeff_X_pow, coeff_X, coeff_one]
+  · norm_num [coeff_add, coeff_X_pow, coeff_X, coeff_one]
+  · simp [coeff_add, coeff_X_pow, coeff_X, coeff_one, Nat.succ_ne_zero]
+
 end DescartesRuleOfSignsOQ01OQ03
