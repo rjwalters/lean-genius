@@ -78,28 +78,44 @@
   },
   "sections": [
     {
-      "id": "two-step-recurrence",
-      "title": "The Two-Step Recurrence",
-      "startLine": 38,
-      "endLine": 73,
-      "summary": "S_{N+2} = S_N + (-1)^N (f N − f (N+1)), with the even/odd specialisations giving the signed two-term gap.",
-      "mathContext": "$S_{N+2} = S_N + (-1)^N (f_N - f_{N+1})$."
+      "id": "overview-setup",
+      "title": "Overview and Setup",
+      "startLine": 1,
+      "endLine": 36,
+      "summary": "Module docstring: the parent proves the classical Leibniz upper bound |S_N − l| ≤ f N; this file adds the matching LOWER bound f N − f (N+1) ≤ |S_N − l|, giving a two-sided trap by two consecutive omitted terms and showing the Leibniz estimate is essentially sharp. The mechanism is the nesting of partial sums. Imports Mathlib; opens Finset, Filter, Topology; fixes f : ℕ → ℝ and l : ℝ.",
+      "mathContext": "Target: $f_N - f_{N+1} \\le |S_N - l| \\le f_N$, sharpening the one-term Leibniz bound of the parent (AlternatingSeriesTestOQ01)."
+    },
+    {
+      "id": "recurrences",
+      "title": "The One- and Two-Step Recurrences",
+      "startLine": 37,
+      "endLine": 69,
+      "summary": "partialSum_succ (S_{N+1} = S_N + (-1)^N f N) and partialSum_add_two (S_{N+2} = S_N + (-1)^N (f N − f (N+1)), by iterating the one-step twice and collapsing the two signed terms via (-1)^{N+1} = −(-1)^N). The even/odd specialisations partialSum_even_add_two and partialSum_odd_add_two record the signed two-term gap S_{N+2} = S_N ± (f N − f (N+1)) that drives the lower bound.",
+      "mathContext": "$S_{N+2} = S_N + (-1)^N (f_N - f_{N+1})$; even $N$: $S_{N+2} = S_N + (f_N - f_{N+1})$, odd $N$: $S_{N+2} = S_N - (f_N - f_{N+1})$."
     },
     {
       "id": "two-term-trap",
       "title": "The Two-Sided Two-Term Trap",
-      "startLine": 75,
-      "endLine": 142,
-      "summary": "f N − f (N+1) ≤ |S_N − l| ≤ f N, by trapping l between S_{N+1} and S_{N+2} for the lower bound and between S_N and S_{N+1} for the upper bound, splitting on parity.",
-      "mathContext": "$f_N - f_{N+1} \\le |S_N - l| \\le f_N$."
+      "startLine": 71,
+      "endLine": 136,
+      "summary": "abs_partialSum_sub_limit_trapped: f N − f (N+1) ≤ |S_N − l| ≤ f N. Upper bound is Leibniz (l between S_N and S_{N+1}); lower bound (the new content) uses that l lies between S_{N+1} and S_{N+2}, and S_{N+2} sits a full f N − f (N+1) past S_N — a parity split closes both. abs_partialSum_sub_limit_le and sub_le_abs_partialSum_sub_limit extract the two halves for convenience.",
+      "mathContext": "$f_N - f_{N+1} \\le |S_N - l| \\le f_N$: the lower bound holds because $l$ is trapped between $S_{N+1}$ and $S_{N+2}$, which differ from $S_N$ by the two-term gap."
     },
     {
-      "id": "alternating-harmonic",
-      "title": "Alternating Harmonic Series",
-      "startLine": 144,
+      "id": "harmonic-lemmas",
+      "title": "Harmonic Coefficient Lemmas",
+      "startLine": 138,
+      "endLine": 152,
+      "summary": "antitone_one_div_succ: the coefficients f i = 1/(i+1) are antitone. oneDiv_gap: their two-term gap telescopes to the product form 1/(N+1) − 1/(N+2) = 1/((N+1)(N+2)) (via field_simp; ring). These two facts turn the abstract trap into the concrete harmonic rate.",
+      "mathContext": "$\\frac{1}{N+1} - \\frac{1}{N+2} = \\frac{1}{(N+1)(N+2)}$, and $f_i = \\frac{1}{i+1}$ is antitone."
+    },
+    {
+      "id": "harmonic-capstone",
+      "title": "Capstone: The Alternating Harmonic Rate",
+      "startLine": 154,
       "endLine": 186,
-      "summary": "f i = 1/(i+1): the two-term gap telescopes to 1/((N+1)(N+2)), giving 1/((N+1)(N+2)) ≤ |S_N − l| ≤ 1/(N+1).",
-      "mathContext": "$\\frac{1}{(N+1)(N+2)} \\le \\left|\\sum_{i<N}\\frac{(-1)^i}{i+1} - l\\right| \\le \\frac{1}{N+1}$."
+      "summary": "alternatingHarmonic_error_trapped: ∑ (-1)^i/(i+1) converges to some l (namely log 2, never needed) with 1/((N+1)(N+2)) ≤ |S_N − l| ≤ 1/(N+1). The convergence is exactly first-order: the error is Θ(1/N) above and Θ(1/N²) below, so it neither beats nor is beaten by those rates.",
+      "mathContext": "$\\frac{1}{(N+1)(N+2)} \\le \\left|\\sum_{i<N}\\frac{(-1)^i}{i+1} - l\\right| \\le \\frac{1}{N+1}$, with $l = \\log 2$."
     }
   ],
   "references": [
