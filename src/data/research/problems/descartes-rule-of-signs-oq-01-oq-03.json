@@ -49,7 +49,9 @@
       "countSignChanges_three_alternating (r7): both adjacent pairs opposite => count 2 (the maximal Fin 3 count, unreachable with a zero middle) — axiom-free",
       "countSignChanges_three_mid_ne_left / _mid_ne_right (r7): exactly one adjacent pair opposite (nonzero middle) => count 1 — axiom-free",
       "countSignChanges_three_mid_ne_zero (r7): nonzero middle, neither adjacent pair opposite => count 0 — axiom-free; the four nonzero-middle lemmas + the middle-zero pair complete the Fin 3 count for every length-3 real sequence",
-      "x2_minus_x_plus_1_signChanges (r7): axiom-free evaluation signChangesInCoeffs (X^2 - X + 1) = 2 (coefficient sequence [1,-1,1]) — the first count-2 (Descartes-tight) quadratic validation"
+      "x2_minus_x_plus_1_signChanges (r7): axiom-free evaluation signChangesInCoeffs (X^2 - X + 1) = 2 (coefficient sequence [1,-1,1]) — the first count-2 (Descartes-tight) quadratic validation",
+      "signChangesInCoeffs_eq_natDegree_of_alternating (r6): polynomial-level SHARPNESS of Descartes' degree bound — a nowhere-zero, strictly sign-alternating coefficient sequence gives V(p) = natDegree p exactly; lifts the sequence-level countSignChanges_alternating to polynomials, the companion of signChangesInCoeffs_le_natDegree — axiom-free",
+      "x3_minus_x2_plus_x_minus_1_signChanges (r6): first concrete degree-3 validation, signChangesInCoeffs (X^3 - X^2 + X - 1) = 3 (coeff sequence [1,-1,1,-1], Descartes-tight cubic), derived from the general sharpness theorem — axiom-free"
     ],
     "insights": [
       "The entire 'exact count => bound + parity' content reduces to two omega lemmas once the count is written as a non-increasing difference hi - lo; the inequality and the parity fall out of upper_bound_core and parity_core respectively.",
@@ -57,7 +59,8 @@
       "The bridge structure is inhabitable: for linear factors X - c the three comparison facts trivialise to 1 <= 1, Even 0, Even 0, giving an end-to-end axiom-free instance via linearReduction.",
       "Gallery base file DescartesRuleOfSigns.lean had rotted against Mathlib 4.26.0 (Polynomial.card_roots_le_degree removed; Fin.castSucc_lt_succ arg now implicit; Multiset.countP_le_card needs explicit multiset) and required repair before any dependent could build.",
       "The base file's axiomatised concrete counts (example_x2_minus_1_sign_changes = 1, example_x2_plus_1_sign_changes = 0) are removable: with a Fin 3 middle-zero sign-change lemma the coefficient sequences [1,0,-1] and [1,0,1] are counted axiom-free (natDegree via compute_degree!, coefficients via simp on coeffSequence/coeff_X_pow/coeff_one).",
-      "The full Fin 3 sign-change count is governed by the two ADJACENT pairs: count = [f0*f1<0] + [f1*f2<0] whenever the middle f1 is nonzero (the jump-over pair (0,2) is impossible once f1 != 0). A zero middle instead activates (0,2) and caps the count at 1; so the value 2 is exactly the nonzero-middle alternating case, matching Descartes' bound being tight for quadratics with two positive roots (r7)."
+      "The full Fin 3 sign-change count is governed by the two ADJACENT pairs: count = [f0*f1<0] + [f1*f2<0] whenever the middle f1 is nonzero (the jump-over pair (0,2) is impossible once f1 != 0). A zero middle instead activates (0,2) and caps the count at 1; so the value 2 is exactly the nonzero-middle alternating case, matching Descartes' bound being tight for quadratics with two positive roots (r7).",
+      "The degree bound V(p) <= natDegree p is SHARP at the polynomial level: any p whose coefficients are all nonzero and strictly alternate in sign attains V(p) = natDegree p (signChangesInCoeffs_eq_natDegree_of_alternating), a direct lift of the sequence-level countSignChanges_alternating via coeffSequence; the cubic X^3-X^2+X-1 realises the degree-3 case (r6)."
     ],
     "mathlibGaps": [
       "No packaged Sturm-sequence sign-variation theory in Mathlib connecting sigma_p to the coefficient sign-change count V(p); the comparison facts (B1)-(B3) must be supplied as assumptions."
@@ -175,8 +178,8 @@
     {
       "path": "Proofs/DescartesRuleOfSignsOQ01OQ03.lean",
       "filename": "DescartesRuleOfSignsOQ01OQ03.lean",
-      "lineCount": 871,
-      "theoremCount": 30,
+      "lineCount": 970,
+      "theoremCount": 32,
       "axiomCount": 0,
       "defCount": 1,
       "sorryCount": 0,

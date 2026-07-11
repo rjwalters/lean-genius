@@ -901,4 +901,70 @@ theorem signChangesInCoeffs_leadingCoeff_inv_smul {p : ℝ[X]} (hp : p ≠ 0) :
       = DescartesRuleOfSigns.signChangesInCoeffs p :=
   signChangesInCoeffs_smul (inv_ne_zero (leadingCoeff_ne_zero.mpr hp)) p
 
+/- ## § 8. Polynomial-level sharpness of Descartes' bound (verified, axiom-free)
+
+`signChangesInCoeffs_le_natDegree` shows `V(p) ≤ deg p` for every nonzero `p`.  The
+companion fact is that this bound is *attained*: a polynomial whose coefficient
+sequence is nowhere zero and strictly sign-alternating has `V(p) = deg p` exactly.
+This lifts the sequence-level sharpness `countSignChanges_alternating` to the
+polynomial level, so the pair "`V(p) ≤ deg p`, and equality for a fully alternating
+coefficient pattern" is now stated directly for polynomials.  Classical reading:
+Descartes' upper bound cannot be improved in general — for every degree `d` there is
+a degree-`d` polynomial with `d` positive real roots realising `V(p) = d`. -/
+
+/-- **The degree bound is sharp: a strictly alternating coefficient pattern attains
+`V(p) = deg p`.**  If every coefficient `p.coeff k` for `k ≤ natDegree p` is nonzero
+(`hnz`) and consecutive coefficients have opposite signs
+(`halt : p.coeff k · p.coeff (k+1) < 0` for `k < natDegree p`), then the coefficient
+sign-change count equals the degree.  Direct application of the sequence-level
+`countSignChanges_alternating` to `coeffSequence p (natDegree p)` (whose entries read
+`p.coeff (natDegree p − i)`, so the sequence is nowhere zero and adjacent-alternating).
+The polynomial-level companion of `signChangesInCoeffs_le_natDegree`; axiom-free. -/
+theorem signChangesInCoeffs_eq_natDegree_of_alternating {p : ℝ[X]} (hp : p ≠ 0)
+    (hnz : ∀ k, k ≤ p.natDegree → p.coeff k ≠ 0)
+    (halt : ∀ k, k < p.natDegree → p.coeff k * p.coeff (k + 1) < 0) :
+    DescartesRuleOfSigns.signChangesInCoeffs p = p.natDegree := by
+  unfold DescartesRuleOfSigns.signChangesInCoeffs
+  rw [dif_neg hp]
+  have h := countSignChanges_alternating
+    (f := DescartesRuleOfSigns.coeffSequence p p.natDegree)
+    (by -- nowhere zero: every entry is a coefficient of index `≤ natDegree`
+      intro i
+      simp only [DescartesRuleOfSigns.coeffSequence]
+      exact hnz _ (Nat.sub_le _ _))
+    (by -- adjacent alternation: entries `i` and `i+1` read consecutive coefficients
+      intro i j hj
+      simp only [DescartesRuleOfSigns.coeffSequence]
+      have hjle : j.val ≤ p.natDegree := Nat.lt_succ_iff.mp j.isLt
+      set k := p.natDegree - j.val with hk
+      have e1 : p.natDegree - i.val = k + 1 := by omega
+      have hklt : k < p.natDegree := by omega
+      rw [e1, mul_comm]
+      exact halt k hklt)
+  simpa using h
+
+/-- **`X³ − X² + X − 1` has three coefficient sign changes, computed axiom-free.**
+The coefficient sequence is `[1, −1, 1, −1]` (leading to constant): a strictly
+alternating length-4 pattern, so `V = 3 = deg`, the maximal (Descartes-tight) count
+for a cubic — the polynomial `(X−1)(X²+1)` indeed has its lone positive root at the
+count parity permits.  First concrete degree-3 validation in this file, obtained by
+feeding the four coefficient facts through the general
+`signChangesInCoeffs_eq_natDegree_of_alternating`. -/
+theorem x3_minus_x2_plus_x_minus_1_signChanges :
+    signChangesInCoeffs (X ^ 3 - X ^ 2 + X - 1 : ℝ[X]) = 3 := by
+  set p : ℝ[X] := X ^ 3 - X ^ 2 + X - 1 with hp_def
+  have c0 : p.coeff 0 = -1 := by
+    simp [hp_def, coeff_add, coeff_sub, coeff_X_pow, coeff_X, coeff_one]
+  have c1 : p.coeff 1 = 1 := by
+    simp [hp_def, coeff_add, coeff_sub, coeff_X_pow, coeff_X, coeff_one]
+  have c2 : p.coeff 2 = -1 := by
+    simp [hp_def, coeff_add, coeff_sub, coeff_X_pow, coeff_X, coeff_one]
+  have c3 : p.coeff 3 = 1 := by
+    simp [hp_def, coeff_add, coeff_sub, coeff_X_pow, coeff_X, coeff_one]
+  have hne : p ≠ 0 := by intro h; rw [h] at c3; simp at c3
+  have hdeg : p.natDegree = 3 := by rw [hp_def]; compute_degree!
+  rw [signChangesInCoeffs_eq_natDegree_of_alternating hne ?_ ?_, hdeg]
+  · rw [hdeg]; intro k hk; interval_cases k <;> norm_num [c0, c1, c2, c3]
+  · rw [hdeg]; intro k hk; interval_cases k <;> norm_num [c0, c1, c2, c3]
+
 end DescartesRuleOfSignsOQ01OQ03
