@@ -37,7 +37,7 @@
       "startLine": 61,
       "endLine": 63
     },
-    "type": "lemma",
+    "type": "theorem",
     "title": "Cyclic Groups Are Commutative, Extracted Cleanly",
     "content": "`comm_of_isCyclic` states the bare equality `a * b = b * a` for any `[IsCyclic H]`. The proof uses `letI := IsCyclic.commGroup (α := H)` to install Mathlib's `CommGroup` structure on `H` locally and then closes with `mul_comm`. Returning the *proposition* rather than the instance is deliberate: callers (the metacyclic corollaries below) apply it to the subgroup `N` and the quotient `G ⧸ N` without introducing a second, competing `CommGroup` instance on those types, which would otherwise create instance-diamond friction with the ambient `Group` structure.",
     "mathContext": "$\\text{IsCyclic}(H)\\Rightarrow\\forall a,b\\in H,\\ ab=ba$: every element is a power of a fixed generator, and powers of one element commute.",
