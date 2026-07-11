@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Saturated RICH file (0 sorries, 2 deep BLOCKED axioms Green/Sapozhenko). Session (researcher-2, 2026-07-09): added two_family_bound_gt_upperHalf — the STRICT (>) sharpening of two_family_bound_ge_upperHalf for n≥3, formalizing the previously prose-only strictness claim. 0 new axioms. UNVERIFIED (docker down, no local oleans) but every lemma name/signature checked against pinned mathlib and proof is line-for-line analogue of verified sibling.",
+    "progressSummary": "Saturated RICH file (0 sorries, 2 deep BLOCKED axioms Green/Sapozhenko). Session (researcher-3, 2026-07-11): added oddNumbers_card (|O| = (n+1)/2 = ⌈n/2⌉, by induction) and oddFamily_lower_bound_ceil (f(n) ≥ 2^{⌈n/2⌉} via the ODD family, distinct construction from sharp_lower_bound). Together they discharge the prose-only '|O| = ⌈n/2⌉' claim in oddFamily_lower_bound. 0 new axioms. VERIFIED axiom-free ([propext,Classical.choice,Quot.sound]) via `lake env lean` against prebuilt mathlib oleans, exit 0. Prior session (researcher-2, 2026-07-09): two_family_bound_gt_upperHalf.",
     "builtItems": [
       "Proved trivial_lower_bound in Erdos748Problem.lean: U.powerset ⊆ sumFreeSubsets n ⇒ f n ≥ 2^|U| ≥ 2^{⌊n/2⌋}",
       "Added decidableIsSumFree instance (sum-free predicate is decidable via bounded ∀∈A form)",
@@ -37,7 +37,9 @@
       "f_2 : f 2 = 3 (decide, axiom-free) in Erdos748Aristotle.lean:38",
       "f_3 : f 3 = 6 (decide, axiom-free) in Erdos748Aristotle.lean:44",
       "two_family_bound_ge_upperHalf: the two-family lower bound 2^|O|+2^|U|-2^|O∩U| ≥ 2^|U| (dominates sharp_lower_bound), formalising the prose domination claim. Erdos748Problem.lean.",
-      "two_family_bound_gt_upperHalf (Erdos748Problem.lean): strict version of two_family_bound_ge_upperHalf for n≥3 — formalizes the prose strictness claim in two_family_lower_bound. Witness 1∈O\\U ⇒ O∩U⊊O ⇒ 2^|O∩U|<2^|O| ⇒ RHS > 2^⌈n/2⌉."
+      "two_family_bound_gt_upperHalf (Erdos748Problem.lean): strict version of two_family_bound_ge_upperHalf for n≥3 — formalizes the prose strictness claim in two_family_lower_bound. Witness 1∈O\\U ⇒ O∩U⊊O ⇒ 2^|O∩U|<2^|O| ⇒ RHS > 2^⌈n/2⌉.",
+      "oddNumbers_card (Erdos748Problem.lean, VERIFIED axiom-free): |O| = (n+1)/2 = ⌈n/2⌉ — exact size of the odd family in [1,n], by induction on n (Finset.range_add_one + filter_insert + card_insert_of_notMem, omega on the ⌈·⌉ increment). Discharges the previously prose-only '|O| = ⌈n/2⌉' claim in oddFamily_lower_bound.",
+      "oddFamily_lower_bound_ceil (Erdos748Problem.lean, VERIFIED axiom-free): f(n) ≥ 2^{⌈n/2⌉} via the ODD family, a genuinely distinct witnessing construction from sharp_lower_bound's upper half. Follows by rewriting oddFamily_lower_bound with oddNumbers_card."
     ],
     "insights": [
       "The trivial lower bound needs no analysis: every subset of the upper half {⌊n/2⌋+1,…,n} is sum-free (upperHalf_sumFree), giving 2^{n-⌊n/2⌋} ≥ 2^{⌊n/2⌋} distinct sum-free sets",

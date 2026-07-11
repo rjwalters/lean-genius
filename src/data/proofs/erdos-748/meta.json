@@ -55,12 +55,14 @@
       "green_upper_bound axiom: f(n) ≪ 2^{n/2}",
       "precise_asymptotic axiom: f(n) ~ c_n · 2^{n/2}",
       "oddNumbers_sumFree theorem: odds form sum-free set",
+      "oddNumbers_card theorem (PROVED, 0 axioms): |O| = ⌈n/2⌉ = (n+1)/2, the exact size of the odd family in [1,n] — discharges the previously prose-only claim in oddFamily_lower_bound by induction on n",
+      "oddFamily_lower_bound_ceil theorem (PROVED, 0 axioms): f(n) ≥ 2^{⌈n/2⌉} re-derived through the ODD family (a genuinely distinct witnessing construction from sharp_lower_bound's upper half), combining oddFamily_lower_bound with the exact count oddNumbers_card",
       "erdos_748_summary: combining all results"
     ],
     "axiomCount": 2,
-    "lineCount": 739,
+    "lineCount": 772,
     "assumptions": "2 axiom(s): green_upper_bound (Green 2004), precise_asymptotic (Green/Sapozhenko). Both are deep results from the literature. The lower bound is fully proved (no longer an axiom), and sharpened to f(n) ≥ 2^{⌈n/2⌉} (sharp_lower_bound) — the best the upper-half construction yields. See the Lean source for details.",
-    "theoremCount": 24,
+    "theoremCount": 26,
     "definitionCount": 5,
     "additionalFiles": [
       "Proofs/Erdos748Aristotle.lean"
@@ -180,9 +182,9 @@
       "Finset"
     ],
     "namespace": "Erdos748",
-    "lineCount": 739,
+    "lineCount": 772,
     "axiomCount": 2,
-    "theoremCount": 25,
+    "theoremCount": 27,
     "definitionCount": 5,
     "path": "Proofs/Erdos748Problem.lean",
     "sorries": 0,

@@ -625,6 +625,39 @@ theorem oddFamily_lower_bound (n : ℕ) :
     f n ≥ 2 ^ ((Finset.range (n + 1)).filter (fun k => k % 2 = 1)).card :=
   le_trans (two_family_bound_ge_oddFamily n) (two_family_lower_bound n)
 
+/--
+**The odd family has size exactly `⌈n/2⌉`.**
+`|O| = (n+1)/2`, where `O` is the set of odd numbers in `[1,n]` (the odd elements
+of `{0,…,n}`, since `0` is even). This discharges the previously prose-only claim
+in `oddFamily_lower_bound` that "`|O| = ⌈n/2⌉`". The proof is a direct induction on
+`n`: passing from `{0,…,n}` to `{0,…,n+1}` adds the new top element `n+1`, which is
+counted iff it is odd, and `omega` checks that this matches the increment of the
+ceiling `(n+1)/2 ↦ (n+2)/2`. In `ℕ` the ceiling `⌈n/2⌉` is written `(n+1)/2`. -/
+theorem oddNumbers_card (n : ℕ) :
+    ((Finset.range (n + 1)).filter (fun k => k % 2 = 1)).card = (n + 1) / 2 := by
+  induction n with
+  | zero => decide
+  | succ m ih =>
+    rw [Finset.range_add_one, Finset.filter_insert]
+    by_cases h : (m + 1) % 2 = 1
+    · rw [if_pos h, Finset.card_insert_of_notMem (by simp), ih]
+      omega
+    · rw [if_neg h, ih]
+      omega
+
+/--
+**Sharp lower bound via the *odd* family:** `f(n) ≥ 2^{⌈n/2⌉}`.
+This re-derives the exponent of `sharp_lower_bound` through a genuinely different
+witnessing construction: instead of the upper half `U = {⌊n/2⌋+1,…,n}`, it uses the
+`⌈n/2⌉` odd numbers in `[1,n]`, all of whose `2^{⌈n/2⌉}` subsets are sum-free
+(`oddFamily_lower_bound`). Combining `oddFamily_lower_bound` with the exact count
+`oddNumbers_card` (`|O| = (n+1)/2`) yields the same `2^{⌈n/2⌉}` bound as
+`sharp_lower_bound`, confirming that the odd family alone already attains the sharp
+trivial exponent — the "type 2" dominant family of Part VII carries full weight. -/
+theorem oddFamily_lower_bound_ceil (n : ℕ) : f n ≥ 2 ^ ((n + 1) / 2) := by
+  have h := oddFamily_lower_bound n
+  rwa [oddNumbers_card] at h
+
 /-
 ## Part VII: Structure of Sum-Free Sets
 -/
