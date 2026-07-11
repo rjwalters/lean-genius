@@ -75,6 +75,14 @@
   ],
   "sections": [
     {
+      "id": "preamble-setup",
+      "title": "Imports, goal, and typeclass context",
+      "startLine": 1,
+      "endLine": 43,
+      "summary": "import Proofs.HallMarriageTheoremOQ01OQ01 brings in the parent defect (Ore) theorem — deficiency_matching_iff, exists_matching_of_deficiency_le, deficiency_le_of_matching — the only external facts consumed. The module docstring states the goal: pin the parent's sharp threshold d to δ = maxₛ (#s − #(s.biUnion t)) so the parametrised biconditional becomes the single optimum #ι − δ. open Finset Function and namespace HallDefect isolate deficiency and the optimum theorems from the parent's identically-named lemmas.",
+      "mathContext": "Reuse the parent iff (matches all but $d$) $\\iff \\forall s,\\ \\#s \\le \\#(s.\\mathrm{biUnion}\\,t)+d$ at the sharp $d = \\delta(t)$."
+    },
+    {
       "id": "deficiency-def",
       "title": "The deficiency as a Finset-sup",
       "startLine": 44,
