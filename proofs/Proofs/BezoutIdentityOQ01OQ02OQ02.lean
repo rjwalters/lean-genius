@@ -31,9 +31,13 @@ must respect, all fully machine-checked with no new axioms:
   moves of the Euclidean descent, and (being in `SLₙ(ℤ)`) they preserve
   primitivity by the general lemma.
 * `orbit_e_isPrimitive` — the "easy half" of transitivity assembled from the
-  above: everything in the `SLₙ(ℤ)`-orbit of `eᵢ` is primitive.  The converse
-  (every primitive vector is in the orbit) is the remaining Euclidean-descent
-  step recorded for future work.
+  above: everything in the `SLₙ(ℤ)`-orbit of `eᵢ` is primitive.
+* `exists_sl_mulVec_single_of_isPrimitive` — the **converse (hard) half in every
+  dimension**: a strong induction on the ℓ¹ measure `∑ₖ |vₖ|`, via the transvection
+  Euclidean-reduction step `sum_natAbs_update_emod_lt`, carries any primitive vector
+  to a unit multiple `c · eₖ` of a basis vector.  Combined with the easy half this
+  gives `isPrimitive_iff_exists_sl_single`, the coordinate-free description of the
+  `SLₙ(ℤ)`-orbits on primitive vectors.
 -/
 import Mathlib.LinearAlgebra.Matrix.SpecialLinearGroup
 import Mathlib.LinearAlgebra.Matrix.Transvection
@@ -167,8 +171,8 @@ theorem IsPrimitive.transvection (i j : Fin n) (h : i ≠ j) (c : ℤ) {v : Fin 
 /-- **Every vector in the `SLₙ(ℤ)`-orbit of a basis vector is primitive.**  This
 is the "necessity" half of the transitivity characterization: primitivity is a
 necessary condition for a vector to be `SLₙ(ℤ)`-equivalent to `eᵢ`.  The converse
-— that primitivity is also *sufficient* (every primitive vector is in the orbit)
-— is the remaining Euclidean-descent construction. -/
+— that primitivity is also *sufficient* — is discharged in every dimension by the
+Euclidean descent `exists_sl_mulVec_single_of_isPrimitive` below. -/
 theorem orbit_e_isPrimitive (A : Matrix.SpecialLinearGroup (Fin n) ℤ) (i : Fin n) :
     IsPrimitive (↑ₘA *ᵥ Pi.single i (1 : ℤ)) :=
   (isPrimitive_single i).mulVec A
@@ -297,5 +301,143 @@ theorem isPrimitive_fin_two_iff_orbit (v : Fin 2 → ℤ) :
   have h : IsPrimitive ((A : Matrix (Fin 2) (Fin 2) ℤ) *ᵥ v) := by
     rw [hA]; exact isPrimitive_single 0
   exact (isPrimitive_mulVec_iff A v).mp h
+
+/-! ### The Euclidean descent in arbitrary dimension
+
+The `n = 2` argument above is a *single* closed-form Bézout move.  For general `n`
+the reduction is iterated: repeatedly apply a transvection that replaces the larger
+of two nonzero coordinates by its remainder modulo the smaller, driving the ℓ¹ size
+`∑ₖ |vₖ|` strictly down until a single unit coordinate remains.  The two ingredients
+below package that descent.  Together they discharge the converse (sufficiency) half
+of transitivity that `orbit_e_isPrimitive` recorded as remaining work, in **every**
+dimension: a primitive vector is exactly one that is `SLₙ(ℤ)`-equivalent to a unit
+multiple of a basis vector. -/
+
+/-- **The Euclidean reduction step strictly decreases the ℓ¹ measure.**  Replacing
+the `i`-th coordinate of `v` by the remainder `v i % v j` — the effect of the
+transvection with `c = -(v i / v j)`, see `transvectionSL_mulVec` — lowers the total
+`∑ₖ |vₖ|`, provided the reducing coordinate `v j` is nonzero and no larger in absolute
+value than the pivot `v i`.  This is the well-founded measure that makes the descent
+terminate: `0 ≤ v i % v j < |v j| ≤ |v i|`, so exactly the `i`-th summand shrinks. -/
+theorem sum_natAbs_update_emod_lt {v : Fin n → ℤ} {i j : Fin n}
+    (hj : v j ≠ 0) (hle : (v j).natAbs ≤ (v i).natAbs) :
+    (∑ k, (Function.update v i (v i % v j) k).natAbs) < ∑ k, (v k).natAbs := by
+  have h0 : 0 ≤ v i % v j := Int.emod_nonneg (v i) hj
+  have hlt : (v i % v j).natAbs < (v i).natAbs := by
+    have h1 : ((v i % v j).natAbs : ℤ) < ((v j).natAbs : ℤ) := by
+      rw [Int.natAbs_of_nonneg h0, ← Int.abs_eq_natAbs]
+      exact Int.emod_lt_abs (v i) hj
+    exact lt_of_lt_of_le (by exact_mod_cast h1) hle
+  apply Finset.sum_lt_sum
+  · intro k _
+    rcases eq_or_ne k i with rfl | hk
+    · simpa using hlt.le
+    · simp [Function.update_of_ne hk]
+  · exact ⟨i, Finset.mem_univ i, by rw [Function.update_self]; exact hlt⟩
+
+/-- **Transitivity of the `SLₙ(ℤ)`-action, converse (sufficiency) half — every
+dimension.**  Every primitive vector `v` is carried by some `A ∈ SLₙ(ℤ)` to a unit
+multiple `c · eₖ` of a standard basis vector.  This is the general-`n` Euclidean
+descent that `orbit_e_isPrimitive` recorded as remaining work: proved by strong
+induction on the ℓ¹ measure `∑ₖ |vₖ|`.
+
+*Descent (`≥ 2` nonzero coordinates).*  Pick two distinct nonzero coordinates and let
+`i` be the one of larger absolute value.  A single transvection replaces `v i` by
+`v i % v j`, strictly lowering the measure (`sum_natAbs_update_emod_lt`) while
+preserving primitivity (`IsPrimitive.mulVec`); the inductive hypothesis handles the
+smaller vector and we prepend the transvection.
+
+*Base (`1` nonzero coordinate).*  The vector is `v = (v k) · eₖ`; primitivity forces
+its single entry `v k` to be a unit, and `A = 1` already exhibits it as `Pi.single k
+(v k)`.
+
+For `n ≥ 2` this immediately upgrades to the full orbit statement (a unit multiple of
+a basis vector is `SLₙ(ℤ)`-equivalent to `e₀`); the `n = 1` case genuinely stops here,
+since `SL₁(ℤ) = {1}` fixes `-e₀ ≠ e₀`, both primitive. -/
+theorem exists_sl_mulVec_single_of_isPrimitive (v : Fin n → ℤ) (hv : IsPrimitive v) :
+    ∃ (A : Matrix.SpecialLinearGroup (Fin n) ℤ) (k : Fin n) (c : ℤ),
+      IsUnit c ∧ ↑ₘA *ᵥ v = Pi.single k c := by
+  -- Strong induction on the ℓ¹ measure `∑ₖ |vₖ|`.
+  suffices H : ∀ N, ∀ v : Fin n → ℤ, IsPrimitive v → (∑ k, (v k).natAbs) = N →
+      ∃ (A : Matrix.SpecialLinearGroup (Fin n) ℤ) (k : Fin n) (c : ℤ),
+        IsUnit c ∧ ↑ₘA *ᵥ v = Pi.single k c by
+    exact H _ v hv rfl
+  intro N
+  induction' N using Nat.strong_induction_on with N ih
+  intro v hv hN
+  classical
+  set S : Finset (Fin n) := Finset.univ.filter (fun i => v i ≠ 0) with hS
+  by_cases hcard : 1 < S.card
+  · -- Descent: at least two nonzero coordinates.
+    obtain ⟨a, ha, b, hb, hab⟩ := Finset.one_lt_card.mp hcard
+    have hva : v a ≠ 0 := (Finset.mem_filter.mp ha).2
+    have hvb : v b ≠ 0 := (Finset.mem_filter.mp hb).2
+    -- One reduction step, applied to the appropriately ordered pair.
+    have step : ∀ i j : Fin n, i ≠ j → v j ≠ 0 → (v j).natAbs ≤ (v i).natAbs →
+        ∃ (A : Matrix.SpecialLinearGroup (Fin n) ℤ) (k : Fin n) (c : ℤ),
+          IsUnit c ∧ ↑ₘA *ᵥ v = Pi.single k c := by
+      intro i j hij hjne hle
+      have hval : v i + -(v i / v j) * v j = v i % v j := by
+        linear_combination -Int.emod_add_mul_ediv (v i) (v j)
+      have hTact : ↑ₘ(transvectionSL i j hij (-(v i / v j))) *ᵥ v
+          = Function.update v i (v i % v j) := by
+        rw [transvectionSL_mulVec, hval]
+      have hprim' : IsPrimitive (Function.update v i (v i % v j)) := by
+        rw [← hTact]; exact hv.mulVec _
+      have hmeas : (∑ k, (Function.update v i (v i % v j) k).natAbs) < N := by
+        have hstep := sum_natAbs_update_emod_lt hjne hle
+        rw [hN] at hstep; exact hstep
+      obtain ⟨A', k, c', hc'unit, hA'eq⟩ :=
+        ih _ hmeas (Function.update v i (v i % v j)) hprim' rfl
+      refine ⟨A' * transvectionSL i j hij (-(v i / v j)), k, c', hc'unit, ?_⟩
+      rw [SpecialLinearGroup.coe_mul, ← Matrix.mulVec_mulVec, hTact, hA'eq]
+    rcases le_total (v a).natAbs (v b).natAbs with hle | hle
+    · exact step b a (fun h => hab h.symm) hva hle
+    · exact step a b hab hvb hle
+  · -- Base case: exactly one nonzero coordinate.
+    have hne : S.Nonempty := by
+      obtain ⟨i0, hi0⟩ := Function.ne_iff.mp hv.ne_zero
+      exact ⟨i0, Finset.mem_filter.mpr ⟨Finset.mem_univ i0, hi0⟩⟩
+    have hcard1 : S.card = 1 :=
+      le_antisymm (Nat.lt_succ_iff.mp (lt_of_not_ge (fun h => hcard h)))
+        (Finset.card_pos.mpr hne)
+    obtain ⟨k, hk⟩ := Finset.card_eq_one.mp hcard1
+    have hvk : v k ≠ 0 := by
+      have hmem : k ∈ S := hk ▸ Finset.mem_singleton_self k
+      exact (Finset.mem_filter.mp hmem).2
+    have hzero : ∀ j, j ≠ k → v j = 0 := by
+      intro j hjk
+      by_contra hj0
+      have hmem : j ∈ S := Finset.mem_filter.mpr ⟨Finset.mem_univ j, hj0⟩
+      rw [hk, Finset.mem_singleton] at hmem
+      exact hjk hmem
+    have hvsingle : v = Pi.single k (v k) := by
+      funext j
+      rcases eq_or_ne j k with rfl | hjk
+      · rw [Pi.single_eq_same]
+      · rw [Pi.single_eq_of_ne hjk]; exact hzero j hjk
+    obtain ⟨w, hw⟩ := hv
+    rw [hvsingle, dotProduct_single] at hw
+    have hvw : v k * w k = 1 := by rw [mul_comm]; exact hw
+    have hunit : IsUnit (v k) := IsUnit.of_mul_eq_one (w k) hvw
+    refine ⟨1, k, v k, hunit, ?_⟩
+    rw [SpecialLinearGroup.coe_one, Matrix.one_mulVec]
+    exact hvsingle
+
+/-- **Primitivity ⇔ `SLₙ(ℤ)`-reducibility to a unit basis multiple.**  Combining the
+descent `exists_sl_mulVec_single_of_isPrimitive` (forward) with `SLₙ(ℤ)`-invariance of
+primitivity (`isPrimitive_mulVec_iff`, backward), a vector is primitive exactly when
+some unimodular matrix carries it to `c · eₖ` for a unit `c`.  This is the
+coordinate-count-free characterization of the `SLₙ(ℤ)`-orbits on primitive vectors,
+valid in every dimension. -/
+theorem isPrimitive_iff_exists_sl_single (v : Fin n → ℤ) :
+    IsPrimitive v ↔ ∃ (A : Matrix.SpecialLinearGroup (Fin n) ℤ) (k : Fin n) (c : ℤ),
+      IsUnit c ∧ ↑ₘA *ᵥ v = Pi.single k c := by
+  refine ⟨exists_sl_mulVec_single_of_isPrimitive v, ?_⟩
+  rintro ⟨A, k, c, hc, hAv⟩
+  have hp : IsPrimitive (↑ₘA *ᵥ v) := by
+    rw [hAv]
+    exact isPrimitive_of_isUnit_apply (i := k) (by rw [Pi.single_eq_same]; exact hc)
+  exact (isPrimitive_mulVec_iff A v).mp hp
 
 end BezoutPrimitive
