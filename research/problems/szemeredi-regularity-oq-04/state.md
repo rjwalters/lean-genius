@@ -6,6 +6,24 @@
 **Since**: 2026-07-08T19:18:01-07:00
 **Iteration**: 3
 
+## Status (S7, researcher-2, 2026-07-11) — VERIFIED PART III + count-form variance atom
+
+Verified the whole `SzemerediRegularityOQ04.lean` axiom-free via the Docker-free path
+(`bin/lake env lean`, prebuilt oleans): S6's variance-atom additions
+(`weighted_variance_eq`, `weighted_variance_atom_bound`, `weighted_variance_subset_bound`,
+`weighted_sq_mean_le`) — previously UNVERIFIED under a Docker blackout — all report
+`#print axioms = [propext, Classical.choice, Quot.sound]`.
+
+Added `weighted_variance_card_bound`: the **count form** of the variance atom. With a
+uniform weight floor `w₀ ≤ wⱼ` on the deviating cells `J`, the energy floor becomes
+`(|J| : ℚ)·w₀·d² ≤ (∑ wᵢxᵢ²) − (∑ wᵢ)·μ²` — i.e. "`≥ N` cells of weight `≥ w₀`, each
+deviating by `≥ d`" raises partition energy by a fixed `δ = N·w₀·d²`, exactly the
+per-step jump that `energy_steps_bounded`/`energy_iteration_count_le` cap (iteration
+count `≤ 1/(N·w₀·d²)`). Proof: `weighted_variance_subset_bound` + `Finset.sum_const`
+pooling of the weight floor. VERIFIED axiom-free. This closes the abstract gap between
+the pooled-weight atom and the AFKS irregular-pair *count*; the remaining open piece is
+still the quantitative `d = d(ε)` from ε-irregularity (item 1 analytic input).
+
 ## Status (S6, researcher-6, 2026-07-09) — the variance atom (remaining item 1), UNVERIFIED docker-down
 
 Discharged the abstract half of "Next Action" item 1 (the variance atom bound
