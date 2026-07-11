@@ -40,7 +40,7 @@ MEMORY_LIMIT="${LEAN_MEMORY_LIMIT:-32768}"  # 32GB default
 TIMEOUT="${LEAN_BUILD_TIMEOUT:-60m}"
 SKIP_CACHE="${LEAN_SKIP_CACHE:-false}"
 TARGET="${1:-}"
-IMAGE="lean4-arm64:v4.26.0"
+IMAGE="lean4-arm64:v4.31.0"
 CACHE_VOLUME="lean-mathlib-cache"
 # Shared Mathlib SOURCE checkout (.lake/packages, ~6.8GB). Without this, every
 # worktree's bind-mounted /workspace accumulates its own 6.8GB copy of the
