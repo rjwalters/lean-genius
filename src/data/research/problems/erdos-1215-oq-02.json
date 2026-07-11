@@ -40,7 +40,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (researcher-3 2026-07-09): New file CyclotomicPolynomialsOQ02OQ04 formalizes OQ02OQ02's prose observation that the sharp outer radius 1+C^(1/phi(n)) of the cyclotomic level set decreases to 2 as phi(n)->inf. sharpRadius_antitone (antitone in degree), tendsto_sharpRadius (limit=2, via C^(1/k)=exp(log C * 1/k)->1), eventually_levelSet_subset_closedBall (for any eps>0 all high-degree cyclotomic level sets {|Phi_n|<C} with phi(n)>=K fit in closedBall 0 (2+eps) — uniform confinement, antithesis of a Mac Lane labyrinth). Elementary quantitative side of OQ-02 now essentially complete (bounded->sharp radii->area->radius shrinkage). Full elaboration clean [7746/7746]; olean-write env-blocked (SIGBUS-135) -> UNVERIFIED. Open driver (small-n lemniscate component/path topology) still needs Mathlib machinery.",
+    "progressSummary": "PROGRESS (researcher-2 2026-07-11): The general-P confinement frontier is now formalized and machine-verified. New file Erdos1215UnitCircleRadius.lean (176L, 6 results, 0-sorry / 0-axiom; #print axioms of the capstone theorems shows only [propext, Classical.choice, Quot.sound]) lifts the cyclotomic-specific level-set confinement (CyclotomicPolynomialsOQ02OQ02) to EVERY Erdos1215.IsUnitCirclePolynomial P (P(0)=1, all roots on the unit circle). Chain: norm_multiset_prod + pow_card_le_multiset_prod give the elementary factor bound; norm_leadingCoeff_eq_one (from 1=|P(0)|=‖lc‖·prod‖r‖) and eval_eq_leadingCoeff_mul_prod (IsAlgClosed.splits) give the product formula |P(z)|=prod‖z-r‖; pow_sub_one_le_norm_eval yields (‖z‖-1)^deg<=|P(z)| for ‖z‖>=1; norm_lt_sharp_of_mem_levelSet then gives the sharp radius ‖z‖<1+C^(1/deg), and levelSet_subset_closedBall / isBounded_levelSet package the confinement. Verified via single-file `lake env lean` against prebuilt Mathlib oleans. The elementary quantitative side of OQ-02 is now complete; the residual open content is the deep Mac Lane labyrinth phenomenon (parent maclane_labyrinth axiom, Erdős #1215 proper). PROGRESS (researcher-3 2026-07-09): New file CyclotomicPolynomialsOQ02OQ04 formalizes OQ02OQ02's prose observation that the sharp outer radius 1+C^(1/phi(n)) of the cyclotomic level set decreases to 2 as phi(n)->inf. sharpRadius_antitone (antitone in degree), tendsto_sharpRadius (limit=2, via C^(1/k)=exp(log C * 1/k)->1), eventually_levelSet_subset_closedBall (for any eps>0 all high-degree cyclotomic level sets {|Phi_n|<C} with phi(n)>=K fit in closedBall 0 (2+eps) — uniform confinement, antithesis of a Mac Lane labyrinth). Elementary quantitative side of OQ-02 now essentially complete (bounded->sharp radii->area->radius shrinkage). Full elaboration clean [7746/7746]; olean-write env-blocked (SIGBUS-135) -> UNVERIFIED. Open driver (small-n lemniscate component/path topology) still needs Mathlib machinery.",
     "builtItems": [
       "norm_cyclotomic_eval (CyclotomicPolynomialsOQ02OQ01.lean): |Phi_n(z)| = prod distances to primitive roots, via cyclotomic_eq_prod_X_sub_primitiveRoots + norm_prod (VERIFIED 0/0)",
       "pow_sub_one_le_norm_cyclotomic_eval: (|z|-1)^{phi(n)} <= |Phi_n(z)| for |z|>=1 (Finset.prod_le_prod + norm_sub_norm_le + IsPrimitiveRoot.norm'_eq_one + card_primitiveRoots)",
@@ -101,6 +101,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1215Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos1215UnitCircleRadius.lean",
+      "filename": "Erdos1215UnitCircleRadius.lean",
+      "lineCount": 176,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1215UnitCircleRadius.lean"
     }
   ],
   "lastUpdate": "2026-07-09"
