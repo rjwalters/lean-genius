@@ -82,7 +82,8 @@
       "**A₄ is metabelian, not simple**: unlike $A_5$ (simple, non-solvable), $A_4$ sits in a two-step derived series $A_4 \\rhd V_4 \\rhd 1$. The Klein-four subgroup $V_4$ is exactly the commutator subgroup, so it is both abelian (Klein four) and yields an abelian quotient (quotient by the commutator) — the two ingredients solvability needs.",
       "**Exponent two does all the work for V₄**: the Klein-four group's defining property — every non-identity element has order 2 — means $a b = (ab)^{-1} = b^{-1}a^{-1} = ba$, so $V_4$ is abelian and trivially solvable. Mathlib packages this as mul_comm_of_exponent_two.",
       "**The same subgroup gives both extension factors**: because $V_4 = \\mathrm{commutator}(A_4)$, one subgroup simultaneously serves as the solvable normal kernel AND certifies the quotient is abelian. The short exact sequence $1 \\to V_4 \\to A_4 \\to A_4/V_4 \\to 1$ closes solvability through solvable_of_ker_le_range.",
-      "**The threshold is exactly n ≤ 4**: combining this positive half with Mathlib's negative half ($n \\ge 5$) packages the full Abel–Ruffini dichotomy $\\mathrm{IsSolvable}(S_n) \\iff n \\le 4$ as a single theorem. This is the precise group-theoretic boundary between degrees solvable by radicals ($n \\le 4$: the quadratic, cubic, quartic formulas) and those that are not ($n \\ge 5$)."
+      "**The threshold is exactly n ≤ 4**: combining this positive half with Mathlib's negative half ($n \\ge 5$) packages the full Abel–Ruffini dichotomy $\\mathrm{IsSolvable}(S_n) \\iff n \\le 4$ as a single theorem. This is the precise group-theoretic boundary between degrees solvable by radicals ($n \\le 4$: the quadratic, cubic, quartic formulas) and those that are not ($n \\ge 5$).",
+      "**V₄ is the group behind the resolvent cubic**: the Klein-four subgroup used here is not an abstract convenience — its three non-identity elements are the three double transpositions of $S_4$, corresponding exactly to the three ways to partition four roots into two pairs. The quotient $S_4 / V_4 \\cong S_3$ acts on those three partitions, which is precisely the resolvent cubic of a quartic. So this metabelian tower is the abstract shadow of Ferrari's method: solving a quartic by first solving its resolvent cubic is the field-theoretic image of the derived series $S_4 \\rhd A_4 \\rhd V_4 \\rhd 1$, and A₄ being the last solvable alternating group is why $n = 4$ is the last degree with a radical formula."
     ]
   },
   "sections": [
@@ -97,23 +98,23 @@
     {
       "id": "a4-solvable",
       "title": "Part I — A₄ is solvable (the metabelian core)",
-      "startLine": 52,
-      "endLine": 80,
+      "startLine": 51,
+      "endLine": 75,
       "summary": "Proves alternatingFinFour_isSolvable. Takes V₄ = alternatingGroup.kleinFour (Fin 4): normal (normal_kleinFour), solvable because exponent two ⟹ abelian (exponent_kleinFour + mul_comm_of_exponent_two + isSolvable_of_comm). The quotient A₄/V₄ is abelian since V₄ = commutator A₄ (kleinFour_eq_commutator + quotient_commutative_iff_commutator_le), hence solvable. solvable_of_ker_le_range on the SES 1 → V₄ → A₄ → A₄/V₄ → 1 (ker of mk' = V₄ = range of subtype) concludes IsSolvable A₄.",
       "mathContext": "$A_4$ is metabelian: the derived series $A_4 \\trianglerighteq V_4 \\trianglerighteq 1$ terminates, where $V_4$ is the Klein four-group (exponent $2$, hence abelian) and $V_4 = [A_4,A_4]$ so $A_4/V_4 \\cong \\mathbb{Z}/3$ is abelian."
     },
     {
       "id": "s4-solvable",
       "title": "Part II — S₄ is solvable",
-      "startLine": 82,
-      "endLine": 89,
+      "startLine": 76,
+      "endLine": 82,
       "summary": "Proves permFinFour_isSolvable by feeding the new A₄ solvability instance into the parent reduction permSolvable_of_alternatingSolvable 4 (the short exact sequence 1 → A₄ → S₄ → ℤˣ with abelian quotient). Closes the last open case of the solvable side.",
       "mathContext": "$S_4$ solvable: lift $A_4$ solvable through the sign SES $1 \\to A_4 \\to S_4 \\xrightarrow{\\mathrm{sgn}} \\{\\pm 1\\} \\to 1$; combined with $A_4 \\trianglerighteq V_4$ this is the full derived series $S_4 \\trianglerighteq A_4 \\trianglerighteq V_4 \\trianglerighteq 1$."
     },
     {
       "id": "full-equivalence",
       "title": "Part III — The packaged threshold Sₙ solvable ⟺ n ≤ 4",
-      "startLine": 90,
+      "startLine": 83,
       "endLine": 105,
       "summary": "Proves isSolvable_perm_fin_iff. Forward: contraposition through Equiv.Perm.not_solvable for n ≥ 5 (using #(Fin n) = n). Backward: interval_cases on n ≤ 4 — S₀, S₁ subsingleton (infer_instance), S₂, S₃ from the parent, S₄ from permFinFour_isSolvable. Packages the full Abel–Ruffini group-theoretic dichotomy as one biconditional.",
       "mathContext": "$S_n$ solvable $\\iff n \\le 4$: forward by contraposition (for $n \\ge 5$, $A_5 \\le S_n$ simple non-abelian $\\Rightarrow$ non-solvable); backward by $\\texttt{interval\\_cases}$ over $n \\in \\{0,1,2,3,4\\}$."
