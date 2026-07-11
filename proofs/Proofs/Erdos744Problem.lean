@@ -396,6 +396,65 @@ theorem bipartitionNumber_eq_edgeCount_iff {V : Type*} [Fintype V] [LinearOrder 
   have h := bipartitionNumber_add_maxCut G
   omega
 
+/-
+# Part 3c: Monotonicity of the cut quantities under edge addition
+
+The dual side of `monochromaticEdges_mono` / `bipartitionNumber_mono`: the
+*cut* quantities (`edgeCount`, `bichromaticEdges`, `maxCut`) are likewise
+monotone when edges are added. Together the two groups say that adding an edge
+can only push a colouring's monochromatic and bichromatic counts *up*, and
+hence both extremal invariants `bipartitionNumber` and `maxCut` grow with the
+graph — the "quantities increase with the graph" intuition behind Erdős #744.
+All axiom-free.
+-/
+
+/-- **The edge count is monotone under edge addition.** If every edge of `G` is
+    an edge of `H` then `edgeCount G ≤ edgeCount H`: a supergraph has at least as
+    many edges. -/
+theorem edgeCount_mono {V : Type*} [Fintype V] [LinearOrder V]
+    (G H : SimpleGraph' V) [DecidableRel G.Adj] [DecidableRel H.Adj]
+    (hsub : ∀ u v, G.Adj u v → H.Adj u v) :
+    edgeCount G ≤ edgeCount H := by
+  unfold edgeCount
+  apply Finset.card_le_card
+  intro p hp
+  simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hp ⊢
+  exact ⟨hp.1, hsub p.1 p.2 hp.2⟩
+
+/-- **Bichromatic edges are monotone under edge addition.** Dual to
+    `monochromaticEdges_mono`: if every edge of `G` is an edge of `H`, then for a
+    *fixed* 2-colouring the supergraph `H` cuts at least as many edges as `G`.
+    A newly added edge either is or is not separated by `c`, but it can never
+    remove one of `G`'s already-separated edges. -/
+theorem bichromaticEdges_mono {V : Type*} [Fintype V] [LinearOrder V]
+    (G H : SimpleGraph' V) [DecidableRel G.Adj] [DecidableRel H.Adj]
+    (hsub : ∀ u v, G.Adj u v → H.Adj u v) (c : V → Bool) :
+    bichromaticEdges G c ≤ bichromaticEdges H c := by
+  unfold bichromaticEdges
+  apply Finset.card_le_card
+  intro p hp
+  simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hp ⊢
+  exact ⟨hp.1, hsub p.1 p.2 hp.2.1, hp.2.2⟩
+
+/-- **The max-cut is monotone under edge addition.** If every edge of `G` is an
+    edge of `H` then `maxCut G ≤ maxCut H`: a supergraph can be cut at least as
+    deeply. The exact dual of `bipartitionNumber_mono`, and the max-cut side of
+    the "both invariants grow with the graph" phenomenon. The optimal cut of `G`
+    already separates `maxCut G` edges of `H` (`bichromaticEdges_mono`), so the
+    best cut of `H` does at least that well. -/
+theorem maxCut_mono {V : Type*} [Fintype V] [LinearOrder V]
+    (G H : SimpleGraph' V) [DecidableRel G.Adj] [DecidableRel H.Adj]
+    (hsub : ∀ u v, G.Adj u v → H.Adj u v) :
+    maxCut G ≤ maxCut H := by
+  unfold maxCut
+  obtain ⟨c, -, hc⟩ :=
+    Finset.exists_mem_eq_sup' (Finset.univ_nonempty (α := V → Bool)) (bichromaticEdges G)
+  rw [hc]
+  calc bichromaticEdges G c
+      ≤ bichromaticEdges H c := bichromaticEdges_mono G H hsub c
+    _ ≤ (Finset.univ : Finset (V → Bool)).sup' Finset.univ_nonempty (bichromaticEdges H) :=
+        Finset.le_sup' (bichromaticEdges H) (Finset.mem_univ c)
+
 /--
 **The f_k(n) Function**
 
