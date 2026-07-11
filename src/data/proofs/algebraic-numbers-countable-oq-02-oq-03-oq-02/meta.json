@@ -121,25 +121,33 @@
       "id": "overview",
       "title": "Overview: From Meagre to Gδ",
       "startLine": 1,
-      "endLine": 53,
+      "endLine": 56,
       "summary": "File docstring and imports. States the open question inherited from the parent meagre entry — exhibit the transcendentals as an explicit dense Gδ — and frames the two results: the transcendentals are a dense Gδ, and the algebraic reals are Fσ-but-not-Gδ, distinguishing the three smallness notions at the level of the Borel hierarchy.",
       "mathContext": "A countable set is Fσ; its complement is Gδ. Residuality only gives a dense Gδ subset, but countability promotes the complement itself to a dense Gδ."
     },
     {
       "id": "abstract",
       "title": "Abstract Layer: Countable Complements and Disjoint Dense Gδ Sets",
-      "startLine": 55,
-      "endLine": 90,
+      "startLine": 57,
+      "endLine": 83,
       "summary": "compl_countable_isDenseGδ proves that in a nonempty perfect T1 Baire space the complement of a countable set is a dense Gδ (Gδ via Set.Countable.isGδ_compl, dense via meagreness and dense_of_mem_residual). not_isGδ_of_dense_of_disjoint_denseGδ proves that a dense set disjoint from a dense Gδ cannot be Gδ, using Dense.inter_of_Gδ against the empty intersection.",
       "mathContext": "If $s$ countable then $s^c$ is Gδ and (in a perfect Baire space) dense; and two disjoint dense Gδ sets force a dense empty intersection, impossible."
     },
     {
       "id": "concrete",
       "title": "Concrete Layer: Algebraic and Transcendental Reals",
-      "startLine": 92,
-      "endLine": 136,
+      "startLine": 84,
+      "endLine": 131,
       "summary": "transcendentalReals_isGδ and transcendentalReals_isDenseGδ instantiate the abstract result at ℝ. algebraicReals_dense shows the algebraic reals contain the dense rationals. algebraicReals_not_isGδ is the headline: the algebraic reals are not Gδ, derived from the abstract obstruction applied to the dense algebraics and the dense Gδ transcendentals.",
       "mathContext": "Transcendentals $= \\{x : \\mathbb{R} \\mid \\neg\\,\\text{IsAlgebraic}\\ \\mathbb{Q}\\ x\\}$ is a dense Gδ; the algebraic reals are dense, hence not Gδ."
+    },
+    {
+      "id": "axiom-audit",
+      "title": "Axiom Audit",
+      "startLine": 132,
+      "endLine": 136,
+      "summary": "#print axioms on compl_countable_isDenseGδ, transcendentalReals_isDenseGδ, and algebraicReals_not_isGδ confirms the file rests only on the standard propext / Classical.choice / Quot.sound — no extra axioms, matching axiomCount 0.",
+      "mathContext": "Verified: axiom footprint $= \\{\\text{propext}, \\text{Classical.choice}, \\text{Quot.sound}\\}$."
     }
   ],
   "theorems": [
