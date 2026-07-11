@@ -967,4 +967,45 @@ theorem x3_minus_x2_plus_x_minus_1_signChanges :
   · rw [hdeg]; intro k hk; interval_cases k <;> norm_num [c0, c1, c2, c3]
   · rw [hdeg]; intro k hk; interval_cases k <;> norm_num [c0, c1, c2, c3]
 
+/- ## § 9. Reversal invariance at the polynomial level (verified, axiom-free)
+
+`countSignChanges_comp_rev` (§ 7) shows the *sequence-level* sign-change count is
+invariant under reading a sequence backwards.  The polynomial operation this
+implements is coefficient reversal `p ↦ p.reverse`, classically the reciprocal
+substitution `x ↦ 1/x` (`p.reverse = Xⁿ · p(1/X)` up to the leading power), which
+reciprocates the positive roots and so must leave `V(p)` unchanged.  When the
+constant term is nonzero (`p.coeff 0 ≠ 0`) there is no trailing-degree collapse, the
+degree is preserved (`natDegree p.reverse = natDegree p`), and the reversed
+coefficient sequence is *exactly* the original read backwards
+(`coeffSequence p.reverse = coeffSequence p ∘ Fin.rev`).  The sequence-level lemma
+then delivers `V(p.reverse) = V(p)` directly. -/
+
+/-- **Reversal invariance for polynomials.**  For a polynomial with nonzero constant
+term (`p.coeff 0 ≠ 0`), coefficient reversal preserves Descartes' sign-change count:
+`V(p.reverse) = V(p)`.  The nonzero constant term keeps `natTrailingDegree p = 0`, so
+`natDegree p.reverse = natDegree p` and `coeffSequence p.reverse` is
+`coeffSequence p ∘ Fin.rev`; the sequence-level `countSignChanges_comp_rev` closes it.
+Classically the reciprocal-polynomial symmetry `x ↦ 1/x`, which permutes the positive
+roots and hence leaves the count invariant.  Axiom-free. -/
+theorem signChangesInCoeffs_reverse {p : ℝ[X]} (h0 : p.coeff 0 ≠ 0) :
+    DescartesRuleOfSigns.signChangesInCoeffs p.reverse
+      = DescartesRuleOfSigns.signChangesInCoeffs p := by
+  have hp : p ≠ 0 := fun h => h0 (by rw [h]; simp)
+  have hrev : p.reverse ≠ 0 := fun h => hp (reverse_eq_zero.mp h)
+  have htd : p.natTrailingDegree = 0 := natTrailingDegree_eq_zero.mpr (Or.inr h0)
+  have hdeg : p.reverse.natDegree = p.natDegree := by
+    rw [reverse_natDegree, htd, Nat.sub_zero]
+  unfold DescartesRuleOfSigns.signChangesInCoeffs
+  rw [dif_neg hrev, dif_neg hp, hdeg]
+  have hseq : DescartesRuleOfSigns.coeffSequence p.reverse p.natDegree
+      = fun i => DescartesRuleOfSigns.coeffSequence p p.natDegree i.rev := by
+    funext i
+    simp only [DescartesRuleOfSigns.coeffSequence]
+    rw [coeff_reverse]
+    congr 1
+    have hrevval : (i.rev).val = p.natDegree - i.val := by rw [Fin.val_rev]; omega
+    rw [revAt_le (Nat.sub_le _ _), hrevval]
+  rw [hseq]
+  exact countSignChanges_comp_rev _
+
 end DescartesRuleOfSignsOQ01OQ03
