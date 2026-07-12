@@ -953,7 +953,7 @@ theorem card_unipotentHom_range :
     Nat.card (unipotentHom (p := p)).range = p := by
   haveI : NeZero p := ⟨(Fact.out : p.Prime).pos.ne'⟩
   have e : Multiplicative (ZMod p) ≃* (unipotentHom (p := p)).range :=
-    MulEquiv.ofInjective unipotentHom_injective
+    MonoidHom.ofInjective unipotentHom_injective
   rw [← Nat.card_congr e.toEquiv]
   show Nat.card (ZMod p) = p
   rw [Nat.card_eq_fintype_card, ZMod.card]
@@ -966,7 +966,7 @@ theorem not_dvd_sq_sub_one : ¬ (p ∣ p ^ 2 - 1) := by
   intro hdvd
   have hp_sq : p ∣ p ^ 2 := dvd_pow_self p (by norm_num)
   have h1 : p ∣ 1 := by
-    have hd := Nat.dvd_sub' hp_sq hdvd
+    have hd := Nat.dvd_sub hp_sq hdvd
     rwa [Nat.sub_sub_self hsq] at hd
   have := Nat.le_of_dvd one_pos h1
   omega
@@ -981,7 +981,7 @@ theorem factorization_card_SL2 :
     have : 4 ≤ p ^ 2 := by nlinarith [hp.two_le]
     omega
   rw [card_SL2, Nat.factorization_mul hp0 hq0, Finsupp.add_apply,
-    hp.prime.factorization_self, Nat.factorization_eq_zero_of_not_dvd not_dvd_sq_sub_one,
+    hp.factorization_self, Nat.factorization_eq_zero_of_not_dvd not_dvd_sq_sub_one,
     add_zero]
 
 /-- **The unipotent subgroup `U` is a Sylow `p`-subgroup of `SL(2, p)`.**  Its order is
@@ -1201,5 +1201,79 @@ theorem isCyclic_unipotentSylow :
     IsCyclic (unipotentSylow (p := p) :
       Subgroup (Matrix.SpecialLinearGroup (Fin 2) (ZMod p))) :=
   isCyclic_unipotentHom_range
+
+/-!
+## Sylow counting: at least `p + 1` Sylow `p`-subgroups of `SL(2, p)`
+
+The unipotent subgroup `U = range unipotentHom` is a Sylow `p`-subgroup
+(`unipotentSylow`), but it is **not normal**: its normal closure is all of
+`SL(2, p)` (`unipotent_normalClosure_eq_top`), whereas `|U| = p < |SL(2, p)|`.
+A group with a *unique* Sylow `p`-subgroup would have it normal
+(`Sylow.normal_of_subsingleton`), so `SL(2, p)` has more than one Sylow
+`p`-subgroup.  Sylow's third theorem forces the number `n_p` to be `≡ 1 (mod p)`
+(`card_sylow_modEq_one`); together with `n_p ≠ 1` this jumps the count straight
+to `n_p ≥ p + 1` — the classical value `n_p = p + 1 = |P¹(𝔽_p)|`, obtained here as
+a lower bound *purely by Sylow counting*, the very route named in the problem
+statement.  (The Sylow `p`-subgroups of `SL(2, p)` are exactly the conjugates of
+`U`, i.e. the unipotent radicals of the `p + 1` Borel subgroups / points of the
+projective line, so this bound is in fact sharp.)
+-/
+
+/-- **The unipotent Sylow subgroup `U` is not normal in `SL(2, p)` for `p ≥ 5`.**
+If `U = range unipotentHom` were normal, the normal closure of its underlying set
+would be contained in `U`; but `unipotent_normalClosure_eq_top` shows that closure
+is the whole group, forcing `U = ⊤` and hence the absurdity
+`p = |U| = |SL(2, p)| = p·(p² − 1)` (impossible since `p² − 1 ≥ 24 > 1`).  This is
+the non-normality that makes the Sylow count `n_p > 1`. -/
+theorem unipotent_range_not_normal (hp : 5 ≤ p) :
+    ¬ ((unipotentHom (p := p)).range).Normal := by
+  intro hN
+  -- The carrier of `U` sits inside the normal subgroup, so its normal closure does too.
+  have hsub : Set.range (unipotentUpper (p := p)) ⊆
+      ((unipotentHom (p := p)).range : Set _) := by
+    rintro _ ⟨t, rfl⟩
+    rw [MonoidHom.coe_range]
+    exact ⟨Multiplicative.ofAdd t, rfl⟩
+  have hle := Subgroup.normalClosure_le_normal hsub
+  rw [unipotent_normalClosure_eq_top] at hle
+  have htop : (unipotentHom (p := p)).range = ⊤ := top_le_iff.mp hle
+  -- Cardinalities collide: `|U| = p` but `|⊤| = |SL(2, p)| = p·(p² − 1)`.
+  have hcard : Nat.card ((unipotentHom (p := p)).range) = p := card_unipotentHom_range
+  rw [htop, Nat.card_congr (Subgroup.topEquiv).toEquiv, card_SL2] at hcard
+  have hp0 : 0 < p := (Fact.out : p.Prime).pos
+  have h1 : p * (p ^ 2 - 1) = p * 1 := by rw [mul_one]; exact hcard
+  have h2 : p ^ 2 - 1 = 1 := Nat.eq_of_mul_eq_mul_left hp0 h1
+  have hsq : 4 ≤ p ^ 2 := by nlinarith [(Fact.out : p.Prime).two_le]
+  omega
+
+/-- **Sylow counting bound: `SL(2, p)` has at least `p + 1` Sylow `p`-subgroups for
+`p ≥ 5`.**  The unipotent Sylow `U` is not normal (`unipotent_range_not_normal`), so
+the number `n_p` of Sylow `p`-subgroups is not `1` (a unique Sylow would be normal,
+`Sylow.normal_of_subsingleton`).  Sylow's third theorem gives `n_p ≡ 1 (mod p)`
+(`card_sylow_modEq_one`), and `n_p ≠ 1` then forces `n_p ≥ p + 1`.  This realises the
+"Sylow counting argument" of the problem statement: the lower bound matches the
+`p + 1` points of the projective line `P¹(𝔽_p)` on which `PSL(2, p)` acts. -/
+theorem card_sylow_ge (hp : 5 ≤ p) :
+    p + 1 ≤ Nat.card (Sylow p (Matrix.SpecialLinearGroup (Fin 2) (ZMod p))) := by
+  haveI : NeZero p := ⟨(Fact.out : p.Prime).pos.ne'⟩
+  haveI : Finite (Matrix.SpecialLinearGroup (Fin 2) (ZMod p)) := Finite.of_fintype _
+  set n := Nat.card (Sylow p (Matrix.SpecialLinearGroup (Fin 2) (ZMod p))) with hn
+  -- Sylow III congruence: `n_p ≡ 1 (mod p)`.
+  have hmod : n ≡ 1 [MOD p] :=
+    card_sylow_modEq_one p (Matrix.SpecialLinearGroup (Fin 2) (ZMod p))
+  -- `n_p ≠ 1`: a single Sylow subgroup would be normal, but `U` is not.
+  have hne : n ≠ 1 := by
+    intro h1
+    haveI : Subsingleton (Sylow p (Matrix.SpecialLinearGroup (Fin 2) (ZMod p))) :=
+      (Nat.card_eq_one_iff_unique.mp h1).1
+    have hnorm : ((unipotentHom (p := p)).range).Normal :=
+      Sylow.normal_of_subsingleton (unipotentSylow (p := p))
+    exact unipotent_range_not_normal hp hnorm
+  -- Sylow subgroups exist, so `n_p ≥ 1`.
+  have hpos : 1 ≤ n := Nat.card_pos
+  -- `p ∣ n_p − 1` from the congruence; with `n_p − 1 ≥ 1` this gives `p ≤ n_p − 1`.
+  have hdvd : p ∣ n - 1 := (Nat.modEq_iff_dvd' hpos).mp hmod.symm
+  have hle : p ≤ n - 1 := Nat.le_of_dvd (by omega) hdvd
+  omega
 
 end SylowOQ04OQ03
