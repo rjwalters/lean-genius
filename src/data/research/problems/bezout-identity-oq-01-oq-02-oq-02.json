@@ -42,7 +42,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (VERIFIED axiom-free, single-file lake env lean exit 0): proved the general-n converse direction exists_sl_mulVec_single_of_isPrimitive — every primitive integer vector is SLn(Z)-equivalent to a unit multiple of a basis vector, by strong induction on the l1 measure sum_k|v_k| via the transvection Euclidean-reduction step sum_natAbs_update_emod_lt. This discharges the open converse (sufficiency) half that orbit_e_isPrimitive recorded as remaining work, in EVERY dimension (previously only n=2 was closed, closed-form). Plus the clean characterization isPrimitive_iff_exists_sl_single. File 302->443 lines, +3 verified theorems. Sole remaining: the n>=2 corollary reaching exactly e0 (rotation assembly).",
+    "progressSummary": "SOLVED core + sharpness: transitivity of SLn(Z) on primitive vectors is fully proved (n>=2); added the column/basis-extension characterization (isPrimitive_iff_exists_sl_col) and machine-checked that the 1<n hypothesis is sharp (SL1(Z) trivial => (1),(-1) in distinct orbits). File 524->611 lines, +4 axiom-free theorems (27 theorems total, 0 sorry, 0 axiom).",
     "builtItems": [
       "IsPrimitive (Fin n → ℤ) := ∃ w, w ⬝ᵥ v = 1 — BezoutIdentityOQ01OQ02OQ02.lean",
       "isPrimitive_iff_span_eq_top: IsPrimitive v ↔ Ideal.span (range v) = ⊤ (bridge to classical gcd=1 via Ideal.mem_span_range_iff_exists_fun)",
@@ -51,7 +51,11 @@
       "orbit_e_isPrimitive: the easy half — every vector in the SLₙ(ℤ)-orbit of eᵢ is primitive",
       "sum_natAbs_update_emod_lt (BezoutIdentityOQ01OQ02OQ02.lean): the Euclidean reduction step strictly lowers sum_k|v_k|. VERIFIED 0-sorry/0-axiom.",
       "exists_sl_mulVec_single_of_isPrimitive (BezoutIdentityOQ01OQ02OQ02.lean): general-n converse — every primitive v is SLn(Z)-equivalent to Pi.single k c with IsUnit c, by strong induction on l1 measure. VERIFIED axiom-free (propext/Classical.choice/Quot.sound only).",
-      "isPrimitive_iff_exists_sl_single (BezoutIdentityOQ01OQ02OQ02.lean): clean iff — IsPrimitive v iff exists A k c, IsUnit c and A *v v = Pi.single k c. VERIFIED."
+      "isPrimitive_iff_exists_sl_single (BezoutIdentityOQ01OQ02OQ02.lean): clean iff — IsPrimitive v iff exists A k c, IsUnit c and A *v v = Pi.single k c. VERIFIED.",
+      "isPrimitive_iff_exists_sl_col (n>=2): primitive <-> t-th column of an SLn(Z) matrix (basis-extension/column characterization), BezoutIdentityOQ01OQ02OQ02.lean",
+      "special_linear_fin_one_eq_one + Subsingleton instance: SL1(Z) is the trivial group (det of 1x1 = single entry = 1)",
+      "not_exists_sl_mulVec_single_neg_fin_one: (1) and (-1) are in distinct SL1(Z) orbits",
+      "not_forall_isPrimitive_sl_equiv_fin_one: transitivity conclusion is FALSE at n=1, proving the 1<n hypothesis sharp (n=0 holds vacuously)"
     ],
     "insights": [
       "Primitivity of an integer vector v is cleanly captured coordinate-free as: ∃ dual w with w ⬝ᵥ v = 1. This dot-product form is manifestly SLₙ(ℤ)-invariant, unlike the gcd-of-entries phrasing.",
@@ -62,15 +66,15 @@
       "The converse (sufficiency) direction of SLn(Z)-transitivity on primitive vectors — every primitive v is SLn(Z)-equivalent to a unit multiple of a basis vector — holds in EVERY dimension by strong induction on the l1 measure sum_k |v_k|, no analytic input needed (elementary Euclidean descent).",
       "The termination measure is sum_k (v k).natAbs; a single transvection T_{i,j}(-(v i / v j)) replaces the pivot v i by v i % v j, and 0 <= v i % v j < |v j| <= |v i| makes exactly the i-th summand shrink (sum_natAbs_update_emod_lt).",
       "Base case: a primitive vector with a single nonzero coordinate must have that entry a unit (from exists w, w dot v = 1 collapsing to w k * v k = 1), so it already equals Pi.single k (v k) with IsUnit (v k) — A = 1.",
-      "Reaching EXACTLY e0 (not just a unit multiple c*e_k) is only true for n >= 2; in n = 1, SL1(Z)={1} fixes -e0 != e0 though both are primitive, so the unit-multiple form is the sharp general-n statement."
+      "Reaching EXACTLY e0 (not just a unit multiple c*e_k) is only true for n >= 2; in n = 1, SL1(Z)={1} fixes -e0 != e0 though both are primitive, so the unit-multiple form is the sharp general-n statement.",
+      "The open question (SLn(Z) transitivity on primitive vectors, n>=2) is fully resolved in the file; remaining outward work is sharpness/structural consequences, not the core theorem."
     ],
     "mathlibGaps": [
       "Mathlib has no packaged transitivity of SLₙ(ℤ) on primitive vectors (only n=2 pieces via bezoutSL in the parent). Foundation built here; the Euclidean-descent converse (every primitive vector reaches eᵢ) remains.",
       "No IsPrimitive predicate for integer vectors in Mathlib; defined here via the dot-product dual."
     ],
     "nextSteps": [
-      "Add the n >= 2 corollary reaching exactly e0: a unit multiple c*e_k is SLn(Z)-equivalent to Pi.single 0 1. Needs a plane-rotation SLn element sending c*e_k to e0 (buildable as a product of 3 transvections via the S = T T T identity, avoiding a new matrix constructor).",
-      "Bridge IsPrimitive to Finset.univ.gcd of entries = 1 to connect explicitly with the parent n=2 IsCoprime phrasing."
+      "Possible further outward work: quantify SLn(Z)-orbit invariants beyond primitivity, or an effective/algorithmic version bounding the number of transvections in the descent."
     ]
   },
   "tags": [

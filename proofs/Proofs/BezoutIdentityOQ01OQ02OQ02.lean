@@ -521,4 +521,89 @@ theorem exists_sl_mulVec_basis_of_isPrimitive (hn : 1 < n) {v : Fin n → ℤ}
     ∃ A : Matrix.SpecialLinearGroup (Fin n) ℤ, ↑ₘA *ᵥ v = Pi.single t (1 : ℤ) :=
   exists_sl_mulVec_eq_of_isPrimitive hn hv (isPrimitive_single t)
 
+/-! ### Structural consequence: primitive ⇔ column of a unimodular matrix
+
+Transitivity has an equivalent classical face.  A vector is primitive **iff** it occurs
+as a column of some `n × n` unimodular integer matrix, equivalently iff it extends to a
+`ℤ`-basis of `ℤⁿ`.  The forward direction is transitivity run backwards (`U · v = eₜ`
+gives `U⁻¹ · eₜ = v`, so `v` is the `t`-th column of `U⁻¹ ∈ SLₙ(ℤ)`); the reverse is the
+easy-half invariance `IsPrimitive.mulVec` applied to the primitive vector `eₜ`. -/
+
+/-- **Primitive ⇔ column of a unimodular matrix (`n ≥ 2`).**  A vector `v` is primitive
+iff it is the `t`-th column of some `A ∈ SLₙ(ℤ)`, i.e. `A · eₜ = v`.  This is the
+column form of the basis-extension theorem: over `ℤ`, a vector extends to a basis of the
+free module `ℤⁿ` exactly when its entries are setwise coprime.  Note the reverse
+implication needs no dimension hypothesis — any column of a unimodular matrix is
+primitive — while the forward one uses transitivity, hence `1 < n`. -/
+theorem isPrimitive_iff_exists_sl_col (hn : 1 < n) (v : Fin n → ℤ) (t : Fin n) :
+    IsPrimitive v ↔ ∃ A : Matrix.SpecialLinearGroup (Fin n) ℤ,
+      ↑ₘA *ᵥ Pi.single t (1 : ℤ) = v := by
+  constructor
+  · intro hv
+    obtain ⟨U, hU⟩ := exists_sl_mulVec_basis_of_isPrimitive hn hv t
+    refine ⟨U⁻¹, ?_⟩
+    rw [← hU, Matrix.mulVec_mulVec, ← SpecialLinearGroup.coe_mul, inv_mul_cancel,
+      SpecialLinearGroup.coe_one, one_mulVec]
+  · rintro ⟨A, hA⟩
+    rw [← hA]
+    exact (isPrimitive_single t).mulVec A
+
+/-! ### The dimension hypothesis `1 < n` is sharp
+
+`exists_sl_mulVec_eq_of_isPrimitive` collapses the primitive vectors into a *single*
+`SLₙ(ℤ)`-orbit only for `n ≥ 2`.  The lemmas below make the failure at `n = 1`
+machine-checked, upgrading the prose remark above `exists_sl_single_orbit_ne` to a
+theorem: `SL₁(ℤ)` is the trivial group, so its action fixes every vector and cannot
+connect the two primitive vectors `e₀ = (1)` and `-e₀ = (-1)`.  These therefore lie in
+*distinct* orbits, and the unit-multiple `c · eₖ` description of
+`isPrimitive_iff_exists_sl_single` — which does leave the sign free — is the best
+possible uniformly in `n`. -/
+
+/-- **`SL₁(ℤ)` is trivial.**  The determinant of a `1 × 1` matrix is its single entry,
+so the unimodularity constraint `det = 1` pins that entry to `1`: the only element of
+`SpecialLinearGroup (Fin 1) ℤ` is the identity.  This is the group-theoretic root of the
+`n = 1` sign obstruction — there simply are no nontrivial moves. -/
+theorem special_linear_fin_one_eq_one (A : Matrix.SpecialLinearGroup (Fin 1) ℤ) :
+    A = 1 := by
+  have hdet : (A : Matrix (Fin 1) (Fin 1) ℤ) 0 0 = 1 := by
+    have h := A.det_coe
+    rwa [Matrix.det_fin_one] at h
+  ext i j
+  fin_cases i; fin_cases j
+  simpa using hdet
+
+instance : Subsingleton (Matrix.SpecialLinearGroup (Fin 1) ℤ) :=
+  ⟨fun A B => by
+    rw [special_linear_fin_one_eq_one A, special_linear_fin_one_eq_one B]⟩
+
+/-- **`e₀` and `-e₀` are not `SL₁(ℤ)`-equivalent.**  No element of the trivial group
+`SL₁(ℤ)` carries `(1)` to `(-1)`: the only available move is the identity, which fixes
+`(1)`.  This is the concrete witness that the sign left free by the uniform `c · eₖ`
+statement genuinely cannot be removed in dimension `1`. -/
+theorem not_exists_sl_mulVec_single_neg_fin_one :
+    ¬ ∃ A : Matrix.SpecialLinearGroup (Fin 1) ℤ,
+        (A : Matrix (Fin 1) (Fin 1) ℤ) *ᵥ Pi.single (0 : Fin 1) (1 : ℤ)
+          = Pi.single (0 : Fin 1) (-1 : ℤ) := by
+  rintro ⟨A, hA⟩
+  rw [special_linear_fin_one_eq_one A, SpecialLinearGroup.coe_one, one_mulVec] at hA
+  have h0 := congrFun hA 0
+  rw [Pi.single_eq_same, Pi.single_eq_same] at h0
+  exact absurd h0 (by norm_num)
+
+/-- **Transitivity fails in dimension `1`.**  There are primitive vectors `v, w : Fin 1 → ℤ`
+— namely `e₀` and `-e₀` — with no `A ∈ SL₁(ℤ)` satisfying `A · v = w`.  So the conclusion
+of `exists_sl_mulVec_eq_of_isPrimitive` is false without the hypothesis `1 < n`, proving
+that hypothesis sharp.  (For `n = 0` transitivity holds *vacuously* — there are no
+primitive vectors at all, by `not_isPrimitive_fin_zero` — so `n = 1` is the unique
+genuine counterexample.) -/
+theorem not_forall_isPrimitive_sl_equiv_fin_one :
+    ¬ ∀ (v w : Fin 1 → ℤ), IsPrimitive v → IsPrimitive w →
+        ∃ A : Matrix.SpecialLinearGroup (Fin 1) ℤ,
+          (A : Matrix (Fin 1) (Fin 1) ℤ) *ᵥ v = w := by
+  intro h
+  have hv : IsPrimitive (Pi.single (0 : Fin 1) (1 : ℤ)) := isPrimitive_single 0
+  have hw : IsPrimitive (Pi.single (0 : Fin 1) (-1 : ℤ)) :=
+    isPrimitive_of_isUnit_apply (i := 0) (by rw [Pi.single_eq_same]; exact isUnit_one.neg)
+  exact not_exists_sl_mulVec_single_neg_fin_one (h _ _ hv hw)
+
 end BezoutPrimitive
