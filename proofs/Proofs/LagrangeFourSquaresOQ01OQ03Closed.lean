@@ -109,6 +109,106 @@ theorem jacobiCount_even_ordCompl {n : ℕ} (hn : n ≠ 0) (h2 : 2 ∣ n) :
   have key := jacobiCount_two_pow_mul_odd ha hodd
   rwa [Nat.ordProj_mul_ordCompl_eq_self n 2] at key
 
+/-! ## Multiplicativity of the Jacobi RHS as an arithmetic function
+
+Jacobi's four-square count is *not* multiplicative on the nose (there is a fixed
+factor of `8`), but the normalized function `r₄/8 = Σ_{d|n, 4∤d} d` **is** a
+multiplicative arithmetic function.  This is the structural heart of Jacobi's
+formula and the property none of the closed-form lemmas above records: it says the
+whole count is determined by its values on prime powers.  The proof is a clean
+consequence of the elementary closed forms — the odd collapse `jacobiCount n = 8σ(n)`
+(`4 ∤ n`) and the even form `jacobiCount n = 24σ(oddPart n)` — together with
+multiplicativity of `σ` (`Nat.Coprime.sum_divisors_mul`).  Coprimality forces at most
+one of the two arguments to be even, so a parity split reduces every case to
+`σ`-multiplicativity. -/
+
+/-- Odd numbers are their own `2`-odd part: `ordCompl[2] n = n` when `n` is odd (its
+`2`-adic valuation vanishes). -/
+private theorem ordCompl_two_of_odd {n : ℕ} (hn : Odd n) : ordCompl[2] n = n := by
+  have h2 : ¬ (2 : ℕ) ∣ n := fun hdvd =>
+    (Nat.not_even_iff_odd.mpr hn) (even_iff_two_dvd.mpr hdvd)
+  rw [Nat.factorization_eq_zero_of_not_dvd h2]
+  simp
+
+/-- No odd number is divisible by `4`. -/
+private theorem not_four_dvd_of_odd {n : ℕ} (hn : Odd n) : ¬ (4 : ℕ) ∣ n := fun hdvd =>
+  (Nat.not_even_iff_odd.mpr hn) (even_iff_two_dvd.mpr (dvd_trans ⟨2, rfl⟩ hdvd))
+
+/-- Multiplicativity, the asymmetric `m` even / `n` odd branch.  On this branch the
+even closed form `jacobiCount m = 24·σ(oddPart m)` and the odd collapse
+`jacobiCount n = 8·σ(n)` combine — using `ordCompl[2] (m·n) = ordCompl[2] m · n`
+(as `n` is odd) and multiplicativity of `σ` on the coprime factors — into
+`jacobiCount (m·n) = 24·σ(oddPart m)·σ(n)`, whence the `8·` relation. -/
+private theorem jacobiCount_mul_coprime_even_left {m n : ℕ}
+    (hm0 : m ≠ 0) (hn0 : n ≠ 0) (h : Nat.Coprime m n) (hme : 2 ∣ m) (hno : Odd n) :
+    8 * jacobiCount (m * n) = jacobiCount m * jacobiCount n := by
+  have hjn : jacobiCount n = 8 * ∑ d ∈ n.divisors, d :=
+    jacobiCount_of_not_four_dvd (not_four_dvd_of_odd hno)
+  have hjm : jacobiCount m = 24 * ∑ d ∈ (ordCompl[2] m).divisors, d :=
+    jacobiCount_even_ordCompl hm0 hme
+  have hmn0 : m * n ≠ 0 := Nat.mul_ne_zero hm0 hn0
+  have h2mn : 2 ∣ m * n := hme.mul_right n
+  have hjmn : jacobiCount (m * n) = 24 * ∑ d ∈ (ordCompl[2] (m * n)).divisors, d :=
+    jacobiCount_even_ordCompl hmn0 h2mn
+  have hoc : ordCompl[2] (m * n) = ordCompl[2] m * n := by
+    rw [Nat.ordCompl_mul, ordCompl_two_of_odd hno]
+  have hcop : Nat.Coprime (ordCompl[2] m) n := h.coprime_dvd_left (Nat.ordCompl_dvd m 2)
+  rw [hjmn, hoc, hcop.sum_divisors_mul, hjm, hjn]
+  ring
+
+/-- **Multiplicativity of the Jacobi four-square RHS.**  For coprime positive `m, n`,
+`8 · jacobiCount (m·n) = jacobiCount m · jacobiCount n`.  Equivalently the normalized
+count `r₄/8 = Σ_{d|n, 4∤d} d` is a multiplicative arithmetic function — the structural
+feature that distinguishes Jacobi's formula and pins the count from its prime-power
+values.  Coprimality forces at most one argument even; the three parity branches each
+reduce to `σ`-multiplicativity via the odd (`8σ`) and even (`24σ(oddpart)`) closed
+forms.  Axiom-free (`propext`/`Classical.choice`/`Quot.sound`). -/
+theorem jacobiCount_mul_coprime {m n : ℕ} (hm0 : m ≠ 0) (hn0 : n ≠ 0)
+    (h : Nat.Coprime m n) :
+    8 * jacobiCount (m * n) = jacobiCount m * jacobiCount n := by
+  rcases Nat.even_or_odd m with hme | hmo
+  · -- `m` even ⟹ `n` odd, else `2 ∣ gcd m n = 1`
+    have hno : Odd n := by
+      rcases Nat.even_or_odd n with hne | hno
+      · exfalso
+        have hgcd : Nat.gcd m n = 1 := h
+        have h2 : (2 : ℕ) ∣ 1 :=
+          hgcd ▸ Nat.dvd_gcd (even_iff_two_dvd.mp hme) (even_iff_two_dvd.mp hne)
+        exact absurd h2 (by decide)
+      · exact hno
+    exact jacobiCount_mul_coprime_even_left hm0 hn0 h (even_iff_two_dvd.mp hme) hno
+  · rcases Nat.even_or_odd n with hne | hno
+    · -- `m` odd, `n` even: reduce to the even-left branch by swapping the factors
+      have hswap := jacobiCount_mul_coprime_even_left hn0 hm0 h.symm
+        (even_iff_two_dvd.mp hne) hmo
+      rw [Nat.mul_comm n m] at hswap
+      rw [hswap]; exact Nat.mul_comm _ _
+    · -- both odd: the `4 ∤ d` filter is vacuous everywhere, so `σ`-multiplicativity closes it
+      rw [jacobiCount_of_not_four_dvd (not_four_dvd_of_odd (hmo.mul hno)),
+          jacobiCount_of_not_four_dvd (not_four_dvd_of_odd hmo),
+          jacobiCount_of_not_four_dvd (not_four_dvd_of_odd hno), h.sum_divisors_mul]
+      ring
+
+/-- **The Jacobi normalized count `Σ_{d|n, 4∤d} d` is multiplicative.**  The `8`-free
+restatement of `jacobiCount_mul_coprime`: for coprime positive `m, n` the filtered
+divisor sum is multiplicative as an arithmetic function.  This is exactly the sense in
+which `r₄` "factors" over coprime parts. -/
+theorem filter_four_sum_mul_coprime {m n : ℕ} (hm0 : m ≠ 0) (hn0 : n ≠ 0)
+    (h : Nat.Coprime m n) :
+    ∑ d ∈ (m * n).divisors.filter (fun d => ¬ 4 ∣ d), d
+      = (∑ d ∈ m.divisors.filter (fun d => ¬ 4 ∣ d), d)
+        * (∑ d ∈ n.divisors.filter (fun d => ¬ 4 ∣ d), d) := by
+  have hkey := jacobiCount_mul_coprime hm0 hn0 h
+  unfold jacobiCount at hkey
+  set A := ∑ d ∈ (m * n).divisors.filter (fun d => ¬ 4 ∣ d), d with hA
+  set B := ∑ d ∈ m.divisors.filter (fun d => ¬ 4 ∣ d), d with hB
+  set C := ∑ d ∈ n.divisors.filter (fun d => ¬ 4 ∣ d), d with hC
+  -- hkey : 8 * (8 * A) = (8 * B) * (8 * C)
+  have hrw : (8 * B) * (8 * C) = 8 * (8 * (B * C)) := by ring
+  rw [hrw] at hkey
+  have h1 : 8 * A = 8 * (B * C) := Nat.eq_of_mul_eq_mul_left (by norm_num) hkey
+  exact Nat.eq_of_mul_eq_mul_left (by norm_num) h1
+
 /-- Sanity check at `n = 4 = 2² · 1`: `jacobiCount 4 = 24 · σ(1) = 24`. -/
 example : jacobiCount (2 ^ 2 * 1) = 24 := by
   rw [jacobiCount_two_pow_mul_odd (by norm_num) (by norm_num)]; decide
@@ -117,5 +217,13 @@ example : jacobiCount (2 ^ 2 * 1) = 24 := by
 example : jacobiCount 12 = 96 := by
   have : (12 : ℕ) = 2 ^ 2 * 3 := by norm_num
   rw [this, jacobiCount_two_pow_mul_odd (by norm_num) (by norm_num)]; decide
+
+/-- Sanity check of multiplicativity, both-odd: `8·jacobiCount 15 = jacobiCount 3 · jacobiCount 5`
+(`8·192 = 32·48`). Kernel `decide`, no `ofReduceBool`. -/
+example : 8 * jacobiCount 15 = jacobiCount 3 * jacobiCount 5 := by decide
+
+/-- Sanity check of multiplicativity, mixed parity: `8·jacobiCount 6 = jacobiCount 2 · jacobiCount 3`
+(`8·96 = 24·32`). Kernel `decide`, no `ofReduceBool`. -/
+example : 8 * jacobiCount 6 = jacobiCount 2 * jacobiCount 3 := by decide
 
 end LagrangeFourSquaresOQ01OQ03Closed
