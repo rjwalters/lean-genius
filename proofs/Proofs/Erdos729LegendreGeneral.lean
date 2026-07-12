@@ -379,6 +379,66 @@ theorem centralBinom_even (n : ℕ) (hn : 0 < n) : 2 ∣ Nat.centralBinom n := b
   have hpos : 0 < digitSum 2 n := digitSum_pos (p := 2) (by omega)
   omega
 
+/-! ### The carry-count form: bridging `digitSum` to Mathlib's `padicValNat_choose'`
+
+The Kummer identities above are phrased through the base-`p` **digit sum**.  Mathlib's
+`padicValNat_choose'` phrases the same valuation through the explicit **carry count**
+`#{ i ∈ Ico 1 b | pⁱ ≤ m % pⁱ + n % pⁱ }`.  The two theorems below make the link
+explicit — answering the standing `carries`-form follow-up.  The first is Kummer's
+theorem in its most recognisable shape ("digit-sum defect `= (p−1)·(number of
+carries)`"); the second refines the no-carry criterion into a position-by-position
+statement. -/
+
+/-- **Kummer's theorem: digit-sum defect `= (p − 1)·(carry count)`.**  For every prime
+`p` and any bound `b > log_p (m + n)`,
+
+  `s_p(m) + s_p(n) − s_p(m+n) = (p − 1) · #{ i ∈ Ico 1 b | pⁱ ≤ m % pⁱ + n % pⁱ }`.
+
+Bridges the gallery `digitSum` machinery (`sub_one_mul_padicValNat_choose_add_digitSum`)
+to Mathlib's explicit carry-count form of Kummer's theorem (`padicValNat_choose'`):
+the base-`p` digit-sum shortfall of `m + n` is exactly `p − 1` times the number of
+carries produced when adding `m` and `n`. -/
+theorem digitSum_defect_eq_sub_one_mul_carries (p m n : ℕ) {b : ℕ} (hp : p.Prime)
+    (hnb : Nat.log p (m + n) < b) :
+    digitSum p m + digitSum p n - digitSum p (m + n)
+      = (p - 1) *
+          ((Finset.Ico 1 b).filter (fun i => p ^ i ≤ m % p ^ i + n % p ^ i)).card := by
+  haveI : Fact p.Prime := ⟨hp⟩
+  have hcomm : (m + n).choose m = (n + m).choose m := by rw [Nat.add_comm]
+  have hcar : padicValNat p ((m + n).choose m)
+      = ((Finset.Ico 1 b).filter (fun i => p ^ i ≤ m % p ^ i + n % p ^ i)).card := by
+    rw [hcomm]
+    exact padicValNat_choose' (p := p) (n := n) (k := m) (b := b)
+      (by rw [Nat.add_comm n m]; exact hnb)
+  have hadd := sub_one_mul_padicValNat_choose_add_digitSum p m n hp
+  have hle := digitSum_add_le p m n hp
+  rw [hcar] at hadd
+  omega
+
+/-- **Kummer no-carry criterion, position-by-position form.**  For every prime `p`
+and any bound `b > log_p (m + n)`,
+
+  `p ∤ C(m+n, m) ↔ ∀ i ∈ Ico 1 b, m % pⁱ + n % pⁱ < pⁱ`,
+
+i.e. `p` misses the binomial coefficient exactly when adding `m` and `n` in base `p`
+carries at **no** position.  The explicit-carry refinement of the digit-sum criterion
+`not_dvd_choose_iff_digitSum_add`, obtained from `padicValNat_choose'` via
+`Finset.filter_eq_empty_iff`. -/
+theorem not_dvd_choose_iff_no_carries (p m n : ℕ) {b : ℕ} (hp : p.Prime)
+    (hnb : Nat.log p (m + n) < b) :
+    ¬ p ∣ (m + n).choose m ↔ ∀ i ∈ Finset.Ico 1 b, m % p ^ i + n % p ^ i < p ^ i := by
+  haveI : Fact p.Prime := ⟨hp⟩
+  have hcne : (m + n).choose m ≠ 0 := (Nat.choose_pos (Nat.le_add_right m n)).ne'
+  have hcomm : (m + n).choose m = (n + m).choose m := by rw [Nat.add_comm]
+  have hcar : padicValNat p ((m + n).choose m)
+      = ((Finset.Ico 1 b).filter (fun i => p ^ i ≤ m % p ^ i + n % p ^ i)).card := by
+    rw [hcomm]
+    exact padicValNat_choose' (p := p) (n := n) (k := m) (b := b)
+      (by rw [Nat.add_comm n m]; exact hnb)
+  rw [dvd_iff_padicValNat_ne_zero hcne, not_not, hcar, Finset.card_eq_zero,
+    Finset.filter_eq_empty_iff]
+  simp only [not_le]
+
 #check @padicValNat_factorial_eq_div
 #check @legendre_digit_sum_identity
 #check @sub_one_mul_padicValNat_factorial_digitSum
@@ -398,5 +458,7 @@ theorem centralBinom_even (n : ℕ) (hn : 0 < n) : 2 ∣ Nat.centralBinom n := b
 #check @padicValNat_centralBinom_eq_div
 #check @not_dvd_centralBinom_iff
 #check @centralBinom_even
+#check @digitSum_defect_eq_sub_one_mul_carries
+#check @not_dvd_choose_iff_no_carries
 
 end Erdos729Legendre
