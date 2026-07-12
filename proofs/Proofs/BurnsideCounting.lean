@@ -741,3 +741,25 @@ theorem pow_prime_sub_one_modEq_one {p : ℕ} (hp : p.Prime) {k : ℕ} (hk : ¬ 
   have hstep : k * k ^ (p - 1) ≡ k * 1 [MOD p] := by
     rw [mul_one, hrw]; exact pow_prime_modEq_self hp k
   exact Nat.ModEq.cancel_left_of_coprime hcop hstep
+
+/-- **At least the constant necklaces.**  For a prime `p`, the number of `k`-colored
+necklaces of length `p` is at least `k` — the `k` monochromatic colorings are each fixed
+by every rotation, so each is its own singleton orbit.  Immediate from the closed form
+`card_necklaces_prime_length = (kᵖ − k)/p + k`, whose leading term is a nonnegative
+`ℕ`-quotient. -/
+theorem card_necklaces_prime_length_ge {p : ℕ} [NeZero p] (hp : p.Prime) (k : ℕ) :
+    k ≤ @Fintype.card (Quotient (@coloringSetoid p k _)) (coloringQuotientFintype p k) := by
+  rw [card_necklaces_prime_length hp k]
+  exact Nat.le_add_left k _
+
+/-- **Aperiodic prime-length necklace count.**  Subtracting the `k` constant necklaces from
+the total leaves exactly `(kᵖ − k)/p` necklaces — the *aperiodic* ones.  Because `p` is
+prime, a coloring of length `p` has trivial rotational stabiliser unless it is constant, so
+every non-constant coloring lies in a free orbit of size exactly `p`; the `kᵖ − k`
+non-constant colorings therefore split into `(kᵖ − k)/p` necklaces.  This is the exact-orbit
+refinement underlying the combinatorial Fermat proof `prime_dvd_pow_sub_self`, and for prime
+`p` it equals the number of length-`p` Lyndon words up to rotation. -/
+theorem card_aperiodic_necklaces_prime_length {p : ℕ} [NeZero p] (hp : p.Prime) (k : ℕ) :
+    @Fintype.card (Quotient (@coloringSetoid p k _)) (coloringQuotientFintype p k) - k
+      = (k ^ p - k) / p := by
+  rw [card_necklaces_prime_length hp k, Nat.add_sub_cancel]
