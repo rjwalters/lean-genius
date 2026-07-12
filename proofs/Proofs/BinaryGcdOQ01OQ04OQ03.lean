@@ -857,4 +857,45 @@ theorem single_le_totalSteps {a k N : ℕ} (hk1 : 1 ≤ k) (hkN : k ≤ N) :
   exact Finset.single_le_sum (f := fun b => binaryGcdSteps a b)
     (fun b _ => Nat.zero_le _) (Finset.mem_Icc.2 ⟨hk1, hkN⟩)
 
+/-- **A positive-argument binary-GCD run takes at least one step.** For `a, b ≥ 1`,
+    `1 ≤ binaryGcdSteps a b`: reducing to the successor case, every branch of the
+    defining recurrence contributes an explicit leading `1 + …`, so the count is never
+    `0`. (The count is `0` *only* when one argument is `0`, the two base cases of the
+    definition.) This is the per-call positivity that the general-`a` running total
+    inherits below. -/
+theorem one_le_binaryGcdSteps {a b : ℕ} (ha : 0 < a) (hb : 0 < b) :
+    1 ≤ binaryGcdSteps a b := by
+  rcases a with _ | a'
+  · omega
+  rcases b with _ | b'
+  · omega
+  rw [binaryGcdSteps]
+  split_ifs <;> omega
+
+/-- **General-`a` lower bound on the running total: `N ≤ totalSteps a N`.** For `a ≥ 1`
+    every one of the `N` calls in `[1, N]` costs at least one step
+    (`one_le_binaryGcdSteps`), so the total is at least `N`. This is the elementary
+    lower-bound companion of the `O(log N)` *upper* bound `totalSteps_le`, sandwiching
+    the general-`a` total as `N ≤ totalSteps a N ≤ N·(2·(log₂ a + log₂ N) + 2)`. -/
+theorem card_le_totalSteps {a : ℕ} (ha : 0 < a) (N : ℕ) : N ≤ totalSteps a N := by
+  unfold totalSteps
+  have hcard : (Finset.Icc 1 N).card = N := by rw [Nat.card_Icc]; omega
+  calc N = (Finset.Icc 1 N).card := hcard.symm
+    _ = ∑ _b ∈ Finset.Icc 1 N, 1 := by rw [Finset.sum_const, smul_eq_mul, mul_one]
+    _ ≤ ∑ b ∈ Finset.Icc 1 N, binaryGcdSteps a b :=
+        Finset.sum_le_sum fun b hb => one_le_binaryGcdSteps ha (Finset.mem_Icc.1 hb).1
+
+/-- **The running total is *strictly* monotone in `N` for every `a ≥ 1`.** Strengthens
+    `totalSteps_mono` (which holds unconditionally) on the positive-`a` rows: each new
+    argument `N + 1` costs `binaryGcdSteps a (N+1) ≥ 1` (`one_le_binaryGcdSteps`, valid
+    because `a ≥ 1`), so the running total never plateaus. This generalizes
+    `totalSteps_one_strictMono` from `a = 1` to all `a ≥ 1` — the per-call positivity,
+    not the exact `a = 1` increment `log₂(N+1)+1`, is what strictness actually needs. -/
+theorem totalSteps_strictMono {a : ℕ} (ha : 0 < a) : StrictMono (totalSteps a) := by
+  apply strictMono_nat_of_lt_succ
+  intro N
+  rw [totalSteps_succ]
+  have : 1 ≤ binaryGcdSteps a (N + 1) := one_le_binaryGcdSteps ha (by omega)
+  omega
+
 end BinaryGcdOQ01OQ04OQ03
