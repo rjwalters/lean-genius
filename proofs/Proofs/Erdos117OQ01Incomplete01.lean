@@ -81,4 +81,19 @@ theorem not_exponentialBaseExists_iff_oscillation_pos :
   rw [exponentialBaseExists_iff_oscillation_zero]
   exact ⟨fun h => lt_of_le_of_ne growthRate_oscillation_nonneg (Ne.symm h), fun h => h.ne'⟩
 
+/-- **Both endpoints of the oscillation lie in Pyber's window individually.**  The parent's
+`limInfLimSup_window` bounds `growthRateLimInf` from *below* by `log c₁` and `growthRateLimSup`
+from *above* by `log c₂`.  Chaining with `limInf_le_limSup` closes the gap: *each* of the
+liminf and the limsup lies in the full closed window `[log c₁, log c₂]`.  This is the
+individual-endpoint companion of `oscillation_mem_window` (which traps only their *difference*),
+and in particular shows both are genuine finite reals confined to Pyber's exponential window,
+whether or not the growth rate converges. -/
+theorem limInf_limSup_mem_window :
+    ∃ c₁ c₂ : ℝ, 1 < c₁ ∧ c₁ < c₂ ∧
+      growthRateLimInf ∈ Set.Icc (Real.log c₁) (Real.log c₂) ∧
+      growthRateLimSup ∈ Set.Icc (Real.log c₁) (Real.log c₂) := by
+  obtain ⟨c₁, c₂, hc1, hc12, hlo, hhi⟩ := limInfLimSup_window
+  have hle := limInf_le_limSup
+  exact ⟨c₁, c₂, hc1, hc12, ⟨hlo, hle.trans hhi⟩, ⟨hlo.trans hle, hhi⟩⟩
+
 end Erdos117OQ01Incomplete01
