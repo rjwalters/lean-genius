@@ -14,7 +14,9 @@
       "The n=0 companion is governed by FTC, not the i·n divide-by-n identity: fourier 0 = 1 so c₀(f') is the period-average of f', and intervalIntegral.integral_deriv_eq_sub + periodicity forces it to 0. Together with the -n² eigenvalue (n≠0) this pins the full differentiation spectrum: 0 on constants, i·n on the n-th harmonic.",
       "Wirtinger inequality ∫f²≤∫(f')² (mean-zero, period 2π) is a clean termwise hasSum_le on the two Parseval sums: |ĉₙ(f')|²=n²|ĉₙ(f)|² and n²≥1 for n≠0, with the n=0 mode killed on both sides (ĉ₀(f')=0 companion, ĉ₀(f)=0 zero-mean).",
       "Hurwitz assembly: the analytic Wirtinger inequality (∫f² ≤ ∫(f′)²) yields the isoperimetric area bound A ≤ π in one line via 0 ≤ ∫(y′−x)², which expands to 2A ≤ ∫(y′)²+∫x²; Wirtinger upgrades ∫x² to ∫(x′)² and the arc-length normalisation ∫((x′)²+(y′)²)=2π collapses the RHS to 2π.",
-      "The k-th derivative eigenvalue ĉₙ(f⁽ᵏ⁾)=(i·n)ᵏ·ĉₙ(f) makes ALL magnitude/kernel/damping corollaries order-uniform, erasing the hardcoded k=2,4 split: ‖(i·n)ᵏ‖=|n|ᵏ (norm_mul, Complex.norm_I, Complex.norm_intCast) gives ‖ĉₙ(f⁽ᵏ⁾)‖=|n|ᵏ·‖ĉₙ(f)‖ (even AND odd orders, since the modulus erases the phase iᵏ); (i·n)ᵏ≠0 gives the shared nonzero-mode kernel; |n|ᵏ≥1 for n≠0 (one_le_pow₀ ∘ Int.one_le_abs) gives the all-orders damping ‖ĉₙ(f)‖≤‖ĉₙ(f⁽ᵏ⁾)‖. 0 custom axioms (PR#38382)."
+      "The k-th derivative eigenvalue ĉₙ(f⁽ᵏ⁾)=(i·n)ᵏ·ĉₙ(f) makes ALL magnitude/kernel/damping corollaries order-uniform, erasing the hardcoded k=2,4 split: ‖(i·n)ᵏ‖=|n|ᵏ (norm_mul, Complex.norm_I, Complex.norm_intCast) gives ‖ĉₙ(f⁽ᵏ⁾)‖=|n|ᵏ·‖ĉₙ(f)‖ (even AND odd orders, since the modulus erases the phase iᵏ); (i·n)ᵏ≠0 gives the shared nonzero-mode kernel; |n|ᵏ≥1 for n≠0 (one_le_pow₀ ∘ Int.one_le_abs) gives the all-orders damping ‖ĉₙ(f)‖≤‖ĉₙ(f⁽ᵏ⁾)‖. 0 custom axioms (PR#38382).",
+      "The n≠0 hypothesis on the k-th derivative eigenvalue identity is removable: at n=0 the eigenvalue (i·0)^k is 1 for k=0 (identity) and 0 for k≥1, exactly matching ĉ₀(f^(k))=0. So dᵏ/dtᵏ acts diagonally with eigenvalue (i·n)^k across the ENTIRE integer spectrum in one hypothesis-free statement.",
+      "Phase classification by parity of order k is now complete: even order 2m gives real eigenvalue (-1)^m n^(2m); odd order 2m+1 gives pure-imaginary (-1)^m·i·n^(2m+1). The magnitude |n|^k erases the phase, so both parities share the same damping law."
     ],
     "builtItems": [
       "AreaOfCircleOQ01OQ02OQ02OQ02.lean: 2 theorems, 0 axioms, 0 sorries, imports and reuses the parent IBP identity.",
@@ -23,14 +25,20 @@
       "fourierCoeffOn_deriv_zero_periodic: c₀(f') = 0 for C¹ periodic f (zero mode), via FTC ∫ f' = f(2π)-f(0) = 0.",
       "wirtinger_inequality in AreaOfCircleOQ01OQ02OQ02OQ02.lean (VERIFIED 0/0): ∫₀^2π f² ≤ ∫₀^2π (f')² for C¹ period-2π mean-zero f",
       "memLp_two_of_continuous helper: continuous ℝ→ℂ is L² on Ioc(0,2π) via MemLp.of_bound + IsCompact.exists_bound_of_continuousOn",
-      "hurwitz_area_bound in AreaOfCircleOQ01OQ02OQ02OQ02OQ02.lean: for C¹ (x,y) with period-2π mean-zero x and ∫((x′)²+(y′)²)=2π, ∫ x·y′ ≤ π (VERIFIED 0/0, Docker-built)"
+      "hurwitz_area_bound in AreaOfCircleOQ01OQ02OQ02OQ02OQ02.lean: for C¹ (x,y) with period-2π mean-zero x and ∫((x′)²+(y′)²)=2π, ∫ x·y′ ≤ π (VERIFIED 0/0, Docker-built)",
+      "iterate_deriv_periodic + contDiff_infty_iterate_deriv (AreaOfCircleOQ01OQ02OQ02OQ02OQ01.lean): periodicity & C^∞ preserved by every iterate of deriv (induction via deriv_periodic_of_periodic / contDiff_infty_iff_deriv)",
+      "fourierCoeffOn_iteratedDeriv_zero (same file): ĉ₀(f^(k+1))=0 — positive-order derivatives annihilate the mean, all-orders generalization of fourierCoeffOn_deriv2_zero (FTC + periodicity)",
+      "fourierCoeffOn_iteratedDeriv_all (same file): UNCONDITIONAL whole-spectrum identity ĉₙ(f^(k))=(i·n)^k·ĉₙ(f) for EVERY n:ℤ (no n≠0), merging nonzero-mode identity with zero-mode annihilation",
+      "norm_fourierCoeffOn_iteratedDeriv_all + fourierCoeffOn_iteratedDeriv_odd (same file): whole-spectrum magnitude ‖ĉₙ(f^(k))‖=|n|^k‖ĉₙ(f)‖ (drops n≠0) and odd-order pure-imaginary phase (i·n)^(2m+1)=(-1)^m·i·n^(2m+1)"
     ],
-    "progressSummary": "PROGRESS: general-order Fourier magnitude/kernel/damping added to child OQ...OQ01 (PR#38382, 0-axiom). From the k-th eigenvalue ĉₙ(f⁽ᵏ⁾)=(i·n)ᵏ·ĉₙ(f), stated at ALL orders: ‖ĉₙ(f⁽ᵏ⁾)‖=|n|ᵏ·‖ĉₙ(f)‖, kernel ĉₙ(f⁽ᵏ⁾)=0↔ĉₙ(f)=0, and damping ‖ĉₙ(f)‖≤‖ĉₙ(f⁽ᵏ⁾)‖ — unifying the parent hardcoded k=2 (−n²) and k=4 (n⁴) magnitude/kernel/damping corollaries into single all-orders laws. Analytic Wirtinger→Hurwitz A≤π assembled elsewhere in the tree.",
+    "progressSummary": "PROGRESS: SECTION IV closes the whole-spectrum gap — the k-th derivative Fourier eigenvalue identity ĉₙ(f⁽ᵏ⁾)=(i·n)ᵏ·ĉₙ(f) now holds UNCONDITIONALLY for every n:ℤ (n=0 handled via new zero-mode annihilation ĉ₀(f⁽ᵏ⁺¹⁾)=0), plus whole-spectrum magnitude and odd-order phase. 6 new thms, all 0-axiom [propext/Classical.choice/Quot.sound], PR#38382. Infra: periodicity & C^∞ preserved by deriv^[k].",
     "nextSteps": [
       "Assemble the full isoperimetric inequality C²≥4πA: express area A and perimeter C via Fourier coefficients of the (mean-adjusted) boundary parametrisation and apply wirtinger_inequality mode-by-mode; equality iff only n=±1 harmonics survive (circle). Requires Greens-theorem area formula A=½∮(x dy − y dx) in Fourier form.",
       "Characterise the equality case of wirtinger_inequality: ∫f²=∫(f')² iff ĉₙ(f)=0 for all |n|≥2 (only the first harmonic), i.e. f(t)=a cos t + b sin t.",
       "Equality/circle characterisation: A = π forces y′ = x pointwise (from ∫(y′−x)²=0) and Wirtinger equality (only the first harmonic survives) → the curve is a circle.",
-      "General scale-invariant form L² ≥ 4πA: drop the arc-length normalisation and relate L² to 2π·∫((x′)²+(y′)²) via Cauchy–Schwarz."
+      "General scale-invariant form L² ≥ 4πA: drop the arc-length normalisation and relate L² to 2π·∫((x′)²+(y′)²) via Cauchy–Schwarz.",
+      "Assemble Wirtinger over the whole spectrum via Parseval using fourierCoeffOn_iteratedDeriv_all at k=1: ∫(f)² = Σ n⁴‖ĉₙ‖² etc., now with n=0 handled uniformly (mean drops automatically).",
+      "Even-order whole-spectrum companion: fourierCoeffOn_iteratedDeriv_even_all (drop n≠0 from _even) is now immediate from _all + (i·0)^(2m)=0 for m≥1."
     ],
     "mathlibGaps": [
       "Mathlib has Parseval on an interval (hasSum_sq_fourierCoeffOn / tsum_sq_fourierCoeffOn, AddCircle.lean) — no gap; the L² isometry is available directly, so Wirtinger did NOT need custom infrastructure."
