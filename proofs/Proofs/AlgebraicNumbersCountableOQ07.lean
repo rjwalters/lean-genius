@@ -70,4 +70,19 @@ theorem isMeagre_setOf_isAlgebraic : IsMeagre {x : ℝ | IsAlgebraic ℤ x} := b
 theorem exists_null_comeagre : ∃ S : Set ℝ, volume S = 0 ∧ S ∈ residual ℝ :=
   ⟨{x : ℝ | Liouville x}, liouville_null, liouville_comeagre⟩
 
+/-- **The transcendental reals are dense.**  A comeagre subset of the Baire space `ℝ` is
+    dense (`dense_of_mem_residual`), so `comeagre_setOf_transcendental` immediately gives that
+    the transcendentals are dense in `ℝ`: between any two reals lies a transcendental.  The
+    topological ubiquity counterpart to the meagreness of the algebraics
+    (`isMeagre_setOf_isAlgebraic`). -/
+theorem dense_setOf_transcendental : Dense {x : ℝ | Transcendental ℤ x} :=
+  dense_of_mem_residual comeagre_setOf_transcendental
+
+/-- **The Liouville numbers are dense.**  Likewise the comeagre Liouville set is dense in
+    `ℝ` — every open interval contains a Liouville number — so Baire-smallness of the
+    algebraics coexists with a topologically ubiquitous (and Lebesgue-null, by
+    `liouville_null`) set of transcendentals. -/
+theorem dense_setOf_liouville : Dense {x : ℝ | Liouville x} :=
+  dense_of_mem_residual liouville_comeagre
+
 end AlgebraicNumbersCountableOQ07
