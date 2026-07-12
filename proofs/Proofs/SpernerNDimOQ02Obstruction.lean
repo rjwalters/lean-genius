@@ -75,6 +75,26 @@ theorem not_canon_of_lexMin_small {d N : ℕ} (t : GridSimplex d N) (v : BaryPoi
   rw [hbase] at hge
   exact absurd hge (by have := hsmall t.miss; omega)
 
+/-- **General no-canonical-representative theorem.**  The abstract principle behind
+the concrete `sBad_no_canon_rep`: if a grid simplex `t` has a vertex `v` that is the
+lex-minimum of its vertex set (`v` is `lexLE` every vertex *in the range*) and every
+coordinate of `v` is `< d`, then **no** grid simplex `t'` sharing `t`'s vertex set is
+canonical.  Any such `t'` would have the same lex-minimum `v` — forcing its base to
+`v` by canonicality and antisymmetry — but `base_miss_ge_d` demands a base coordinate
+`≥ d`, which `v`'s small coordinates cannot supply (`not_canon_of_lexMin_small`).  This
+lifts the single-witness obstruction to *every* cell with a small lex-minimum: the
+`IsCanon` carrier omits the entire family of such cells, not just `sBad`. -/
+theorem no_canon_rep_of_lexMin_small {d N : ℕ} (t : GridSimplex d N) (v : BaryPoint d N)
+    (hmem : v ∈ Set.range t.verts)
+    (hmin : ∀ w ∈ Set.range t.verts, v.lexLE w)
+    (hsmall : ∀ j, (v.coords j) < d) :
+    ¬ ∃ t' : GridSimplex d N, IsCanon t' ∧ Set.range t'.verts = Set.range t.verts := by
+  rintro ⟨t', hcanon, hrange⟩
+  have hvmem : v ∈ Set.range t'.verts := by rw [hrange]; exact hmem
+  have hmin' : ∀ k, v.lexLE (t'.verts k) := fun k =>
+    hmin (t'.verts k) (by rw [← hrange]; exact ⟨k, rfl⟩)
+  exact not_canon_of_lexMin_small t' v hvmem hmin' hsmall hcanon
+
 /-- The three barycentric points of the witness cell. -/
 def p2 : BaryPoint 2 2 := ⟨![2, 0, 0], by decide⟩
 def p1 : BaryPoint 2 2 := ⟨![1, 1, 0], by decide⟩
