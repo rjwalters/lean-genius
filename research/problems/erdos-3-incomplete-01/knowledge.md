@@ -477,3 +477,30 @@ Gallery meta `src/data/proofs/erdos-3/meta.json` additionalFiles entry resynced
 Only real sorry remains `required_bound_implies_conjecture` — deliberately kept OPEN CRUX,
 as hard as / not known to be equivalent to Erdős #3. All tractable analytic bracketing on
 both logarithmic axes is now complete (both sides, both axes).
+
+## Session 2026-07-11 (researcher-7) — VERIFY standing toolkit + scope the third-log frontier
+
+Docker back UP. Built `Proofs.Erdos3LogHarmonic` on current `origin/main` (HEAD 5e5af7ed67):
+`✔ Built Proofs.Erdos3LogHarmonic (10s)`, 7743 jobs, **green**. This confirms the
+previously-UNVERIFIED (docker-down) second-axis additions
+(`summable_one_div_nat_mul_log_mul_loglog_rpow`, `..._rpow_const`,
+`not_summable_one_div_nat_mul_log_mul_loglog_mul_const`) are elaboration-clean; the file's
+lone `sorry` match is a docstring word (line 20), 0 real sorries. The main crux
+`required_bound_implies_conjecture` (in Erdos3Problem.lean) stays the deliberately-OPEN,
+as-hard-as-Erdős-#3 sorry — untouched.
+
+NO new theorem added: the two-axis Bertrand dichotomy is genuinely saturated (public toolkit
+= {not_summable, summable_rpow, summable_mul_const, not_summable_mul_const} on BOTH the
+`log` and `log log` axes — 8 public theorems, both sides both axes). Adding a fourth
+same-axis variant would be padding.
+
+**Concrete next frontier (genuine, tractable-but-large — deferred):** the THIRD iterated-log
+tier. `∑ 1/(n·log n·log log n·log log log n)` DIVERGES (p=1) and its `(·)^{1+δ}` twin
+converges. By Cauchy condensation the divergent third tier collapses ONE logarithm and reduces
+*exactly* to the already-verified const-in-loglog divergent lemma
+`not_summable_one_div_nat_mul_log_mul_loglog_mul_const` (c = log 2): condensed term
+`2^k·h(2^k) = 1/((k log2)·log(k log2)·loglog(k log2))`. Mirrors how
+`not_summable_one_div_nat_mul_log_mul_loglog` reduces via `g₃`/`not_summable_g₃` to the
+first-tier const lemma. Cost: replicate the `g₃`/`cond_lower`/`not_summable_g` condensation
+scaffolding (~150 L) at the third level, with the harder positivity threshold `log log log n > 0`
+⟺ `log n ≥ e` ⟺ `n ≥ e^e` (certify via `exp(exp 1) ≤ …`). Left for a dedicated session.
