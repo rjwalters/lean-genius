@@ -63,6 +63,14 @@
   },
   "sections": [
     {
+      "id": "preamble",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 63,
+      "summary": "Imports (GroupTheory.OrderOfElement, Perm.Cycle.Type, ZMod.Basic, Tactic) and the module docstring, which frames the theme: consequences of odd group order — squaring is a bijection, there are no involutions, and the connection to the odd-order setting of the Feit–Thompson programme. Enters the namespace and fixes the ambient group variable {G}.",
+      "mathContext": "Odd $|G|$ ⟹ $x \\mapsto x^2$ bijective and no element of order 2; the standing hypothesis of the Feit–Thompson odd-order theorem."
+    },
+    {
       "id": "squaring",
       "title": "Squaring in Odd-Order Groups",
       "startLine": 64,
