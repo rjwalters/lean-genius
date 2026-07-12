@@ -1155,6 +1155,102 @@ theorem maxAvoidingSize_ge_sub_ceil_half (n m : ℕ) (hm : 1 ≤ m) (hmn : m ≤
   calc n - c = S.card := hcardS.symm
     _ ≤ _ := Finset.le_sup hmemS
 
+/-- **Matching upper bound `maxAvoidingSize n m ≤ n − ⌈m/2⌉`** (with
+    `⌈m/2⌉ = (m+1)/2` in `ℕ`), for `1 ≤ m ≤ n`.
+
+    Any `m`-avoiding `S ⊆ {1,…,n}` contains **at most `⌊m/2⌋` elements of `{1,…,m}`**:
+    the involution `x ↦ m − x` on `{1,…,m−1}` pairs the low interval, and `S` can
+    keep at most one element from each pair (both would sum to `m`) and must drop
+    `m` itself (its singleton sums to `m`).  Concretely the map `x ↦ min x (m−x)`
+    injects `S ∩ {1,…,m}` into `{1,…,⌊m/2⌋}` — a collision `min x (m−x) = min y (m−y)`
+    with `x ≠ y` forces `x + y = m`, a forbidden two-element subset sum.  Adding the
+    at-most `n − m` elements of `S` above `m` gives
+    `|S| ≤ ⌊m/2⌋ + (n − m) = n − ⌈m/2⌉`.  Together with
+    `maxAvoidingSize_ge_sub_ceil_half` this pins the exact value. -/
+theorem maxAvoidingSize_le_sub_ceil_half (n m : ℕ) (hm : 1 ≤ m) (hmn : m ≤ n) :
+    maxAvoidingSize n m ≤ n - (m + 1) / 2 := by
+  classical
+  unfold maxAvoidingSize
+  apply Finset.sup_le
+  intro S hS
+  rw [Finset.mem_filter, Finset.mem_powerset] at hS
+  obtain ⟨hSsub, hSavoid⟩ := hS
+  have hSIcc : S ⊆ Finset.Icc 1 n := by
+    intro x hx; have := hSsub hx; rwa [Icc_n] at this
+  -- `m` itself cannot be in `S` (its singleton sum is `m`).
+  have hmnotinS : m ∉ S := fun h => hSavoid (self_mem_subsetSums S m h (by omega))
+  set Slow := S ∩ Finset.Icc 1 m with hSlow
+  set Shigh := S ∩ Finset.Icc (m + 1) n with hShigh
+  -- `S` is the disjoint union of its low (`≤ m`) and high (`> m`) parts.
+  have hunion : Slow ∪ Shigh = S := by
+    rw [hSlow, hShigh, ← Finset.inter_union_distrib_left]
+    have hIcc : Finset.Icc 1 m ∪ Finset.Icc (m + 1) n = Finset.Icc 1 n := by
+      ext a; simp only [Finset.mem_union, Finset.mem_Icc]; omega
+    rw [hIcc, Finset.inter_eq_left.mpr hSIcc]
+  have hdisj : Disjoint Slow Shigh := by
+    rw [hSlow, hShigh, Finset.disjoint_left]
+    intro a ha1 ha2
+    simp only [Finset.mem_inter, Finset.mem_Icc] at ha1 ha2
+    omega
+  have hcard : S.card = Slow.card + Shigh.card := by
+    rw [← hunion, card_union_eq_card_add_card.mpr hdisj]
+  -- The high part has at most `n − m` elements.
+  have hShighcard : Shigh.card ≤ n - m := by
+    rw [hShigh]
+    calc (S ∩ Finset.Icc (m + 1) n).card ≤ (Finset.Icc (m + 1) n).card :=
+          Finset.card_le_card Finset.inter_subset_right
+      _ = n - m := by rw [Nat.card_Icc]; omega
+  -- The low part injects into `{1,…,⌊m/2⌋}` via `x ↦ min x (m − x)`.
+  have hmap : Set.MapsTo (fun x => min x (m - x)) (Slow : Set ℕ)
+      (Finset.Icc 1 (m / 2) : Set ℕ) := by
+    intro x hx
+    rw [Finset.mem_coe, hSlow, Finset.mem_inter, Finset.mem_Icc] at hx
+    obtain ⟨hxS, hx1, hxm⟩ := hx
+    have hxne : x ≠ m := fun h => hmnotinS (h ▸ hxS)
+    have hv1 : 1 ≤ min x (m - x) := Nat.le_min.mpr ⟨by omega, by omega⟩
+    have hvx : min x (m - x) ≤ x := Nat.min_le_left _ _
+    have hvmx : min x (m - x) ≤ m - x := Nat.min_le_right _ _
+    rw [Finset.mem_coe, Finset.mem_Icc]
+    refine ⟨hv1, ?_⟩
+    show min x (m - x) ≤ m / 2
+    omega
+  have hinj : Set.InjOn (fun x => min x (m - x)) (Slow : Set ℕ) := by
+    intro x hx y hy hxy
+    rw [Finset.mem_coe, hSlow, Finset.mem_inter, Finset.mem_Icc] at hx hy
+    obtain ⟨hxS, hx1, hxm⟩ := hx
+    obtain ⟨hyS, hy1, hym⟩ := hy
+    simp only at hxy
+    have hcase : x = y ∨ x + y = m := by
+      rcases le_total x (m - x) with h1 | h1 <;> rcases le_total y (m - y) with h2 | h2
+      · rw [Nat.min_eq_left h1, Nat.min_eq_left h2] at hxy; omega
+      · rw [Nat.min_eq_left h1, Nat.min_eq_right h2] at hxy; omega
+      · rw [Nat.min_eq_right h1, Nat.min_eq_left h2] at hxy; omega
+      · rw [Nat.min_eq_right h1, Nat.min_eq_right h2] at hxy; omega
+    rcases hcase with h | h
+    · exact h
+    · by_cases hxyeq : x = y
+      · exact hxyeq
+      · exact absurd (h ▸ pair_mem_subsetSums S x y hxS hyS hxyeq (by omega)) hSavoid
+  have hSlowcard : Slow.card ≤ m / 2 := by
+    have hle := Finset.card_le_card_of_injOn (fun x => min x (m - x)) hmap hinj
+    rwa [Nat.card_Icc, show m / 2 + 1 - 1 = m / 2 by omega] at hle
+  omega
+
+/-- **Sharp exact closed form `maxAvoidingSize n m = n − ⌈m/2⌉`** (with
+    `⌈m/2⌉ = (m+1)/2` in `ℕ`), for `1 ≤ m ≤ n`.
+
+    Combines the construction lower bound `maxAvoidingSize_ge_sub_ceil_half`
+    (witness `{⌈m/2⌉,…,n} \ {m}`) with the hitting-set upper bound
+    `maxAvoidingSize_le_sub_ceil_half`.  This is the complete answer for the
+    benchmark family: the maximum size of a subset of `{1,…,n}` no subset of which
+    sums to `m` is exactly `n − ⌈m/2⌉`.  It recovers the tabulated small-`m` values
+    `n−1, n−1, n−2, n−2` for `m = 1,2,3,4` uniformly, and upgrades the previously
+    one-sided closed-form bound to an equality. -/
+theorem maxAvoidingSize_eq_sub_ceil_half (n m : ℕ) (hm : 1 ≤ m) (hmn : m ≤ n) :
+    maxAvoidingSize n m = n - (m + 1) / 2 :=
+  le_antisymm (maxAvoidingSize_le_sub_ceil_half n m hm hmn)
+    (maxAvoidingSize_ge_sub_ceil_half n m hm hmn)
+
 /-- Small primes give good constructions. -/
 def smallPrimeConstruction (m n : ℕ) : Finset ℕ :=
   let p := Nat.minFac (m + 1)  -- A prime not dividing m
