@@ -681,6 +681,97 @@ theorem hasDistinctSubsetSums_iff_card (A : Finset ℕ) :
   · intro h S T hS hT heq
     exact h (Finset.mem_powerset.mpr hS) (Finset.mem_powerset.mpr hT) heq
 
+/-! ## Structural properties of `hasDistinctSubsetSums`
+
+The small-case witnesses `f_zero`…`f_four` above certify the property by brute
+force, which the note on `hasDistinctSubsetSums_iff_card` explains cannot scale
+past `|A| = 4` axiom-free.  The lemmas below are the *structural* counterpart:
+elementary, brute-force-free facts that hold for **all** finite sets and are
+reusable engines for building and analysing witnesses of any size (including the
+Conway–Guy sets `f(5)=13`, `f(6)=24` the brute-force route cannot reach).
+
+* **Hereditary**: every subset of a distinct-subset-sums set again has distinct
+  subset sums (`hasDistinctSubsetSums_subset`, `hasDistinctSubsetSums_erase`).
+* **Base cases**: `∅` and any nonzero singleton qualify.
+* **No zero / positivity**: a distinct-subset-sums set never contains `0`, so all
+  its elements are positive — matching the `0 < a` hypothesis in
+  `erdos_1_conjecture`.
+* **Scale invariance**: multiplying every element by a positive constant preserves
+  the property (`hasDistinctSubsetSums_image_mul`), the algebraic engine behind
+  rescaling a witness.
+-/
+
+/-- **Hereditary**: any subset of a distinct-subset-sums set again has distinct
+subset sums.  Subsets of `B ⊆ A` are subsets of `A`, so the distinctness
+hypothesis on `A` applies verbatim.  This is the reusable downward-closure engine:
+distinct subset sums is a hereditary (monotone-decreasing) property. -/
+theorem hasDistinctSubsetSums_subset {A B : Finset ℕ}
+    (hA : hasDistinctSubsetSums A) (hBA : B ⊆ A) : hasDistinctSubsetSums B :=
+  fun S T hS hT hsum => hA S T (hS.trans hBA) (hT.trans hBA) hsum
+
+/-- Removing an element preserves distinct subset sums — the `erase` special case
+of `hasDistinctSubsetSums_subset`. -/
+theorem hasDistinctSubsetSums_erase {A : Finset ℕ}
+    (hA : hasDistinctSubsetSums A) (a : ℕ) : hasDistinctSubsetSums (A.erase a) :=
+  hasDistinctSubsetSums_subset hA (Finset.erase_subset a A)
+
+/-- The empty set trivially has distinct subset sums: its only subset is `∅`. -/
+theorem hasDistinctSubsetSums_empty : hasDistinctSubsetSums (∅ : Finset ℕ) := by
+  intro S T hS hT _
+  rw [Finset.subset_empty] at hS hT
+  rw [hS, hT]
+
+/-- A nonzero singleton `{a}` has distinct subset sums: its subsets are `∅` (sum
+`0`) and `{a}` (sum `a`), which differ exactly when `a ≠ 0`.  (The singleton
+`{0}` fails, since `∅` and `{0}` then share the sum `0` — consistent with
+`hasDistinctSubsetSums_zero_not_mem`.) -/
+theorem hasDistinctSubsetSums_singleton {a : ℕ} (ha : a ≠ 0) :
+    hasDistinctSubsetSums ({a} : Finset ℕ) := by
+  intro S T hS hT hsum
+  rw [Finset.subset_singleton_iff] at hS hT
+  rcases hS with hS | hS <;> rcases hT with hT | hT <;>
+    subst hS <;> subst hT <;> simp_all
+
+/-- **A distinct-subset-sums set never contains `0`.**  If `0 ∈ A` then the
+distinct subsets `{0}` and `∅` would share the sum `0`, contradicting
+distinctness. -/
+theorem hasDistinctSubsetSums_zero_not_mem {A : Finset ℕ}
+    (hA : hasDistinctSubsetSums A) : 0 ∉ A := fun h0 =>
+  Finset.singleton_ne_empty 0 <|
+    hA {0} ∅ (Finset.singleton_subset_iff.mpr h0) (Finset.empty_subset _) (by simp)
+
+/-- **Every element of a distinct-subset-sums set is positive.**  Immediate from
+`hasDistinctSubsetSums_zero_not_mem`; this matches the `0 < a` positivity
+hypothesis in the statement of `erdos_1_conjecture`, so the conjecture's
+constraint is automatic given distinctness. -/
+theorem hasDistinctSubsetSums_pos_of_mem {A : Finset ℕ}
+    (hA : hasDistinctSubsetSums A) {a : ℕ} (ha : a ∈ A) : 0 < a :=
+  Nat.pos_of_ne_zero fun h => hasDistinctSubsetSums_zero_not_mem hA (h ▸ ha)
+
+/-- **Scale invariance**: multiplying every element by a positive constant `c`
+preserves distinct subset sums.  Each subset of `A.image (c * ·)` is `S.image
+(c * ·)` for a unique `S ⊆ A` (as `c * ·` is injective), and its sum is `c` times
+the sum of `S`; since `c > 0` is cancellable, equal scaled sums force equal
+sums, hence equal subsets.  The algebraic engine behind rescaling a witness
+(e.g. clearing denominators, or interleaving two witnesses on disjoint scales). -/
+theorem hasDistinctSubsetSums_image_mul {A : Finset ℕ}
+    (hA : hasDistinctSubsetSums A) {c : ℕ} (hc : 0 < c) :
+    hasDistinctSubsetSums (A.image (fun x => c * x)) := by
+  have hinj : Function.Injective (fun x : ℕ => c * x) :=
+    fun x y h => Nat.eq_of_mul_eq_mul_left hc h
+  intro S' T' hS' hT' hsum
+  rw [Finset.subset_image_iff] at hS' hT'
+  obtain ⟨S, hSA, rfl⟩ := hS'
+  obtain ⟨T, hTA, rfl⟩ := hT'
+  have hsumS : (S.image (fun x => c * x)).sum id = c * S.sum id := by
+    rw [Finset.sum_image (fun x _ y _ h => hinj h)]
+    simp [id, Finset.mul_sum]
+  have hsumT : (T.image (fun x => c * x)).sum id = c * T.sum id := by
+    rw [Finset.sum_image (fun x _ y _ h => hinj h)]
+    simp [id, Finset.mul_sum]
+  rw [hsumS, hsumT] at hsum
+  rw [hA S T hSA hTA (Nat.eq_of_mul_eq_mul_left hc hsum)]
+
 /-! ## Conclusion
 
 The DFX framework is formalized with:
