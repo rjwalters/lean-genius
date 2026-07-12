@@ -931,6 +931,77 @@ theorem inner_commutator_smul_I_isReal {A B : E →ₗ[𝕜] E} (hA : A.IsSymmet
   have hz : (starRingEnd 𝕜) (inner 𝕜 ψ (C ψ)) = inner 𝕜 ψ (C ψ) := by rw [← hconj, heq]
   exact RCLike.conj_eq_iff_im.mp hz
 
+/-! ## Saturation of the operator-level Robertson inequality
+
+    The file characterizes saturation of the *abstract* Cauchy–Schwarz step
+    (`im_inner_sq_eq_iff_robertson_saturated`, in terms of `Im⟪u,v⟫`) and exhibits a
+    minimum-uncertainty *witness* (`exists_im_inner_sq_saturated`).  What was missing is
+    the saturation condition for the *operator* statement `robertson_uncertainty` itself,
+    whose right-hand side is the physical commutator expectation `¼‖⟪ψ,[A,B]ψ⟫‖²`.
+
+    Over a field with a genuine imaginary unit (`RCLike.I ≠ 0`, i.e. `ℂ`) the bridge
+    `⟪ψ,[A,B]ψ⟫ = ⟪u,v⟫ − ⟪v,u⟫ = 2i·Im⟪u,v⟫` gives the *exact* identity
+    `¼‖⟪ψ,[A,B]ψ⟫‖² = (Im⟪u,v⟫)²`, so operator-level saturation is equivalent to abstract
+    saturation, and the state-space characterization transfers verbatim. -/
+
+/-- **When the Robertson inequality is saturated (minimum-uncertainty states).**  Over a
+    field with a genuine imaginary unit (`RCLike.I ≠ 0`, i.e. `ℂ`), and for symmetric
+    `A, B` with both centred vectors `u = (A−a)ψ`, `v = (B−b)ψ` nonzero, the operator
+    Robertson bound `robertson_uncertainty` holds with **equality**
+
+      `¼‖⟪ψ,[A,B]ψ⟫‖² = ‖(A−a)ψ‖²·‖(B−b)ψ‖²`
+
+    if and only if the symmetrized covariance vanishes and `v` is a (nonzero) scalar
+    multiple of `u`:  `Re⟪u,v⟫ = 0 ∧ ∃ r ≠ 0, v = r • u`.  At `a = ⟨A⟩`, `b = ⟨B⟩` these
+    are exactly the *minimum-uncertainty* (coherent / squeezed) states.  This lifts the
+    abstract Cauchy–Schwarz saturation `im_inner_sq_eq_iff_robertson_saturated` to the
+    physical commutator-expectation form of the inequality, via the exact norm identity
+    `¼‖⟪ψ,[A,B]ψ⟫‖² = (Im⟪u,v⟫)²` (valid over `ℂ` where `‖I‖ = 1`). -/
+theorem robertson_saturated_iff (hI : (RCLike.I : 𝕜) ≠ 0) {A B : E →ₗ[𝕜] E}
+    (hA : A.IsSymmetric) (hB : B.IsSymmetric) (ψ : E) (a b : ℝ)
+    (hu : A ψ - (a : 𝕜) • ψ ≠ 0) (hv : B ψ - (b : 𝕜) • ψ ≠ 0) :
+    (1 / 4 : ℝ) * ‖inner 𝕜 ψ (A (B ψ) - B (A ψ))‖ ^ 2
+        = ‖A ψ - (a : 𝕜) • ψ‖ ^ 2 * ‖B ψ - (b : 𝕜) • ψ‖ ^ 2
+      ↔ RCLike.re (inner 𝕜 (A ψ - (a : 𝕜) • ψ) (B ψ - (b : 𝕜) • ψ)) = 0
+        ∧ ∃ r : 𝕜, r ≠ 0 ∧ B ψ - (b : 𝕜) • ψ = r • (A ψ - (a : 𝕜) • ψ) := by
+  set u := A ψ - (a : 𝕜) • ψ with hudef
+  set v := B ψ - (b : 𝕜) • ψ with hvdef
+  have hid : inner 𝕜 ψ (A (B ψ) - B (A ψ)) = inner 𝕜 u v - inner 𝕜 v u :=
+    inner_commutator_eq_sub hA hB ψ a b
+  have hconj : inner 𝕜 v u = (starRingEnd 𝕜) (inner 𝕜 u v) := (inner_conj_symm v u).symm
+  have hInorm : ‖(RCLike.I : 𝕜)‖ = 1 := RCLike.norm_I_of_ne_zero hI
+  have h2 : ‖(2 : 𝕜)‖ = 2 := RCLike.norm_two
+  -- exact norm identity over ℂ:  ‖⟪ψ,[A,B]ψ⟫‖ = 2·|Im⟪u,v⟫|
+  have hnorm : ‖inner 𝕜 ψ (A (B ψ) - B (A ψ))‖ = 2 * |RCLike.im (inner 𝕜 u v)| := by
+    rw [hid, hconj, RCLike.sub_conj, norm_mul, norm_mul, RCLike.norm_ofReal, h2, hInorm]
+    ring
+  -- hence  ¼‖⟪ψ,[A,B]ψ⟫‖² = (Im⟪u,v⟫)²
+  have hsq : (1 / 4 : ℝ) * ‖inner 𝕜 ψ (A (B ψ) - B (A ψ))‖ ^ 2
+      = (RCLike.im (inner 𝕜 u v)) ^ 2 := by
+    rw [hnorm, mul_pow, sq_abs]; ring
+  rw [hsq]
+  exact im_inner_sq_eq_iff_robertson_saturated hu hv
+
+/-- **Strict Robertson inequality away from minimum-uncertainty states.**  Over `ℂ`
+    (`RCLike.I ≠ 0`), whenever the saturation condition of `robertson_saturated_iff`
+    fails — i.e. `ψ` is *not* a minimum-uncertainty state for `(A, B)` after the shifts
+    `a, b` — the Robertson bound is **strict**:
+
+      `¼‖⟪ψ,[A,B]ψ⟫‖² < ‖(A−a)ψ‖²·‖(B−b)ψ‖²`.
+
+    Combines the non-strict bound `robertson_uncertainty` with the equality
+    characterization `robertson_saturated_iff` (a `≤` that is not an `=` is a `<`). -/
+theorem robertson_uncertainty_strict (hI : (RCLike.I : 𝕜) ≠ 0) {A B : E →ₗ[𝕜] E}
+    (hA : A.IsSymmetric) (hB : B.IsSymmetric) (ψ : E) (a b : ℝ)
+    (hu : A ψ - (a : 𝕜) • ψ ≠ 0) (hv : B ψ - (b : 𝕜) • ψ ≠ 0)
+    (hns : ¬ (RCLike.re (inner 𝕜 (A ψ - (a : 𝕜) • ψ) (B ψ - (b : 𝕜) • ψ)) = 0
+        ∧ ∃ r : 𝕜, r ≠ 0 ∧ B ψ - (b : 𝕜) • ψ = r • (A ψ - (a : 𝕜) • ψ))) :
+    (1 / 4 : ℝ) * ‖inner 𝕜 ψ (A (B ψ) - B (A ψ))‖ ^ 2
+      < ‖A ψ - (a : 𝕜) • ψ‖ ^ 2 * ‖B ψ - (b : 𝕜) • ψ‖ ^ 2 := by
+  refine lt_of_le_of_ne (robertson_uncertainty hA hB ψ a b) ?_
+  intro heq
+  exact hns ((robertson_saturated_iff hI hA hB ψ a b hu hv).mp heq)
+
 end CauchySchwarzIntegralOQ04
 
 #print axioms CauchySchwarzIntegralOQ04.gram_eq_iff_parallel
@@ -938,3 +1009,5 @@ end CauchySchwarzIntegralOQ04
 #print axioms CauchySchwarzIntegralOQ04.norm_inner_commutator_eq
 #print axioms CauchySchwarzIntegralOQ04.commutator_smul_I_isSymmetric
 #print axioms CauchySchwarzIntegralOQ04.inner_commutator_smul_I_isReal
+#print axioms CauchySchwarzIntegralOQ04.robertson_saturated_iff
+#print axioms CauchySchwarzIntegralOQ04.robertson_uncertainty_strict
