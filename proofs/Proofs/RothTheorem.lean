@@ -5208,4 +5208,115 @@ theorem two_pow_omega_le_maxSqDiffFreeCard_of_squarefree {N : ℕ} [NeZero N]
     congr 1
   exact heq ▸ key
 
+/-! ### Part XXXIX — the GENERAL value-`1` characterization at every modulus
+
+Parts XXXVI–XXXVII pinned `maxSqDiffFreeCard p` at *primes* via the residue of `p` mod `4`
+(`= 1 ↔ p ≡ 3`, `≥ 2 ↔ p ≡ 1`).  Both directions there are instances of a single elementary
+equivalence that holds at **every** modulus `N`, prime or not:
+
+  `2 ≤ maxSqDiffFreeCard N  ↔  ∃ d ≠ 0, ¬ IsSquare d ∧ ¬ IsSquare (-d)`,
+
+equivalently
+
+  `maxSqDiffFreeCard N = 1  ↔  ∀ d ≠ 0, IsSquare d ∨ IsSquare (-d)`.
+
+The point is purely combinatorial: square-difference-freeness is translation invariant, so a
+set of size `≥ 2` exists **iff** some translate `{0, d}` is square-difference-free, and `{0, d}`
+is square-difference-free **iff** neither `d` nor `-d` is a nonzero square (the two directions of
+the single forbidden step `0 ⇝ d` and `d ⇝ 0`).  No field structure, primality, or character
+theory is used — those enter only when one *evaluates* the right-hand condition (Parts XXXVI–XXXVII
+did exactly that at primes via whether `-1` is a square).
+
+This generalisation has genuine teeth beyond the prime case: it explains the *composite collapse*
+`maxSqDiffFreeCard 6 = 1` (where every nonzero `d ∈ ℤ/6ℤ` has `d` or `-d` a square, even though
+`6 = 2·3` is not prime), a value **not** reachable from the prime dichotomy, and it makes the
+value-`1` set decidable at any concrete `N` by checking the `±`-square covering condition. -/
+
+/-- **The two-element existence criterion, at every modulus.**  A square-difference-free set of
+size `≥ 2` exists in `ℤ/Nℤ` **iff** there is a nonzero `d` such that neither `d` nor `-d` is a
+(nonzero) square.  Forward: two distinct elements `a ≠ b` of an extremal free set force `d = b - a`
+and `-d = a - b` to both avoid the nonzero squares (else the single step `a ⇝ b` or `b ⇝ a` would
+break freeness).  Backward: `{0, d}` is then square-difference-free of cardinality `2`. -/
+theorem two_le_maxSqDiffFreeCard_iff {N : ℕ} [NeZero N] :
+    2 ≤ maxSqDiffFreeCard N ↔ ∃ d : ZMod N, d ≠ 0 ∧ ¬ IsSquare d ∧ ¬ IsSquare (-d) := by
+  constructor
+  · intro h2
+    obtain ⟨A, hAfree, hAcard⟩ := exists_isSqDiffFree_card_eq_max N
+    rw [← hAcard] at h2
+    obtain ⟨a, ha, b, hb, hab⟩ := Finset.one_lt_card.mp (by omega : 1 < A.card)
+    have hd0 : b - a ≠ 0 := sub_ne_zero.mpr (fun h => hab h.symm)
+    refine ⟨b - a, hd0, ?_, ?_⟩
+    · rintro ⟨r, hr⟩
+      have hn2 : r ^ 2 ≠ 0 := by rw [pow_two, ← hr]; exact hd0
+      have hbeq : a + r ^ 2 = b := by rw [pow_two, ← hr]; ring
+      exact hAfree a ha r hn2 (hbeq ▸ hb)
+    · rintro ⟨r, hr⟩
+      have hn2 : r ^ 2 ≠ 0 := by
+        rw [pow_two, ← hr]; exact neg_ne_zero.mpr hd0
+      have haeq : b + r ^ 2 = a := by rw [pow_two, ← hr]; ring
+      exact hAfree b hb r hn2 (haeq ▸ ha)
+  · rintro ⟨d, hd0, hnsq, hnsqneg⟩
+    have hfree : IsSqDiffFree ({0, d} : Finset (ZMod N)) := by
+      intro x hx n hn hmem
+      simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+      rcases hx with rfl | rfl
+      · rw [zero_add] at hmem
+        simp only [Finset.mem_insert, Finset.mem_singleton] at hmem
+        rcases hmem with h | h
+        · exact hn h
+        · exact hnsq ⟨n, by rw [← h]; ring⟩
+      · simp only [Finset.mem_insert, Finset.mem_singleton] at hmem
+        rcases hmem with h | h
+        · exact hnsqneg ⟨n, by linear_combination -h⟩
+        · exact hn (by linear_combination h)
+    have h0 : (0 : ZMod N) ∉ ({d} : Finset (ZMod N)) := by
+      simp only [Finset.mem_singleton]; exact fun h => hd0 h.symm
+    have hc : ({0, d} : Finset (ZMod N)).card = 2 := by
+      rw [Finset.card_insert_of_notMem h0, Finset.card_singleton]
+    have := le_maxSqDiffFreeCard_of_isSqDiffFree hfree
+    omega
+
+/-- **The value-`1` characterization, at every modulus.**  `maxSqDiffFreeCard N = 1` exactly when
+the nonzero squares and their negatives cover every nonzero residue: `∀ d ≠ 0, IsSquare d ∨
+IsSquare (-d)`.  This is the negation of `two_le_maxSqDiffFreeCard_iff` (the count is always `≥ 1`
+via `one_le_maxSqDiffFreeCard`, so `= 1` is equivalent to `< 2`).  It subsumes the prime collapse
+`maxSqDiffFreeCard_eq_one_of_mod_four_eq_three` (whose hypothesis `p ≡ 3 (mod 4)` supplies the
+right-hand covering via `-1` being a non-residue) and, unlike it, applies to composite moduli. -/
+theorem maxSqDiffFreeCard_eq_one_iff {N : ℕ} [NeZero N] :
+    maxSqDiffFreeCard N = 1 ↔ ∀ d : ZMod N, d ≠ 0 → IsSquare d ∨ IsSquare (-d) := by
+  have h1 := one_le_maxSqDiffFreeCard N
+  constructor
+  · intro heq d hd
+    by_contra hcon
+    push_neg at hcon
+    have : 2 ≤ maxSqDiffFreeCard N :=
+      two_le_maxSqDiffFreeCard_iff.mpr ⟨d, hd, hcon.1, hcon.2⟩
+    omega
+  · intro hall
+    by_contra hne
+    obtain ⟨d, hd0, hnsq, hnsqneg⟩ :=
+      (two_le_maxSqDiffFreeCard_iff (N := N)).mp (by omega)
+    rcases hall d hd0 with h | h
+    · exact hnsq h
+    · exact hnsqneg h
+
+/-- **Composite collapse `maxSqDiffFreeCard 6 = 1`.**  A value not reachable from the prime
+dichotomy (`6 = 2·3` is not prime), obtained by checking the `±`-square covering condition of
+`maxSqDiffFreeCard_eq_one_iff` over the six residues of `ℤ/6ℤ`.  Concretely every nonzero
+`d ∈ ℤ/6ℤ` has `d` or `-d` among the nonzero squares `{1, 3, 4}`, so no two-element
+square-difference-free set exists. -/
+theorem maxSqDiffFreeCard_six : maxSqDiffFreeCard 6 = 1 := by
+  rw [maxSqDiffFreeCard_eq_one_iff]
+  decide
+
+/-- **Re-derivation of the prime `p ≡ 3 (mod 4)` collapse from the general criterion.**  The
+covering hypothesis of `maxSqDiffFreeCard_eq_one_iff` is exactly what
+`isSquare_or_isSquare_neg_of_mod_four_eq_three` supplies, so the Part XXXVI collapse is the
+`N = p` instance of the modulus-agnostic characterization. -/
+theorem maxSqDiffFreeCard_eq_one_of_mod_four_eq_three' {p : ℕ} (hp : p.Prime) [NeZero p]
+    (h3 : p % 4 = 3) : maxSqDiffFreeCard p = 1 := by
+  haveI := Fact.mk hp
+  rw [maxSqDiffFreeCard_eq_one_iff]
+  exact fun d hd => isSquare_or_isSquare_neg_of_mod_four_eq_three h3 hd
+
 end Szemeredi.Roth
