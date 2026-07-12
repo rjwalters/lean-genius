@@ -156,7 +156,6 @@ theorem cauchy_schwarz_equality_prime {p : ℕ} (hp : p.Prime) (hn : 2 ≤ p) :
 example :
     ∑ k ∈ Finset.range (Nat.totient 7 - 1), (gap 7 (by norm_num) k) ^ 2 = 5 := by
   have h := sumSq_gaps_prime (p := 7) (by norm_num) (by norm_num)
-  rw [show ((7 : ℝ) - 2) = 5 from by norm_num] at h
-  exact h
+  rw [h]; norm_num
 
 end Erdos220Incomplete01OQ01
