@@ -383,4 +383,59 @@ theorem powerForm_coprime_iff' {p q : ℕ} (hp : p.Prime) (hq : q.Prime) (hpq : 
       ↔ ((k = 0 ∨ k' = 0) ∧ (l = 0 ∨ l' = 0)) := by
   rw [powerForm_coprime_iff hp hq hpq, Nat.min_eq_zero_iff, Nat.min_eq_zero_iff]
 
+/-! ### The divisor set of a power form: a finite exponent grid
+
+The divisibility order on power forms is the product order on exponent pairs
+(`powerForm_dvd_iff`), and every divisor of a power form is again a power form
+(`isPowerForm_of_dvd`). Together these pin the *divisor set* of `p^k q^l` exactly: for
+distinct primes `p ≠ q` the divisors are precisely the `(k+1)(l+1)` power forms
+`p^a q^b` with `a ≤ k`, `b ≤ l` — the integer grid `[0,k] × [0,l]` under the exponent
+map. The lemmas below record the two halves of this picture: the divisor set as the
+image of that grid, and its cardinality `(k+1)(l+1)` (the classical divisor-count
+formula `τ(p^k q^l) = (k+1)(l+1)`, here as a consequence of the sublattice structure). -/
+
+/-- **Every divisor of a power form is a power form.** The `Finset` form of
+`isPowerForm_of_dvd`: if `n = p^k q^l` and `d ∈ n.divisors` then `d` is a power form. -/
+theorem isPowerForm_of_mem_divisors {p q n d : ℕ} (hp : p.Prime) (hq : q.Prime)
+    (hn : IsPowerForm p q n) (hd : d ∈ n.divisors) : IsPowerForm p q d :=
+  isPowerForm_of_dvd hp hq hn (Nat.dvd_of_mem_divisors hd)
+
+/-- **The divisor set of a power form is the exponent grid.** For distinct primes `p ≠ q`,
+the divisors of `p^k q^l` are exactly the power forms `p^a q^b` with `a ≤ k`, `b ≤ l`:
+
+    (p^k q^l).divisors = (range (k+1) ×ˢ range (l+1)).image (fun (a,b) ↦ p^a q^b).
+
+Forward: any divisor is a power form (`isPowerForm_of_dvd`) whose exponents are `≤ (k,l)`
+(`powerForm_dvd_iff`); backward: any such `p^a q^b` divides `p^k q^l`. This realizes the
+divisor lattice of a power form as the concrete integer grid `[0,k] × [0,l]`. -/
+theorem powerForm_divisors_eq_grid {p q : ℕ} (hp : p.Prime) (hq : q.Prime) (hpq : p ≠ q)
+    (k l : ℕ) :
+    (p ^ k * q ^ l).divisors =
+      (Finset.range (k + 1) ×ˢ Finset.range (l + 1)).image (fun ab => p ^ ab.1 * q ^ ab.2) := by
+  ext d
+  rw [Nat.mem_divisors, Finset.mem_image]
+  constructor
+  · rintro ⟨hd, _⟩
+    obtain ⟨a, b, rfl⟩ := isPowerForm_of_dvd hp hq ⟨k, l, rfl⟩ hd
+    obtain ⟨ha, hb⟩ := (powerForm_dvd_iff hp hq hpq a b k l).mp hd
+    refine ⟨(a, b), ?_, rfl⟩
+    rw [Finset.mem_product, Finset.mem_range, Finset.mem_range]
+    exact ⟨Nat.lt_succ_of_le ha, Nat.lt_succ_of_le hb⟩
+  · rintro ⟨⟨a, b⟩, hab, rfl⟩
+    rw [Finset.mem_product, Finset.mem_range, Finset.mem_range,
+        Nat.lt_succ_iff, Nat.lt_succ_iff] at hab
+    refine ⟨(powerForm_dvd_iff hp hq hpq a b k l).mpr ⟨hab.1, hab.2⟩, ?_⟩
+    exact mul_ne_zero (pow_ne_zero k hp.pos.ne') (pow_ne_zero l hq.pos.ne')
+
+/-- **Divisor-count formula `τ(p^k q^l) = (k+1)(l+1)`.** For distinct primes `p ≠ q`, the
+number of divisors of the power form `p^k q^l` is `(k+1)(l+1)`. Since `p^k` and `q^l` are
+coprime the divisor count is multiplicative (`Nat.Coprime.card_divisors_mul`), and each prime
+power `p^k` has exactly `k+1` divisors (`Nat.divisors_prime_pow`). This counts the exponent
+grid `[0,k] × [0,l]` of `powerForm_divisors_eq_grid`. -/
+theorem powerForm_card_divisors {p q : ℕ} (hp : p.Prime) (hq : q.Prime) (hpq : p ≠ q)
+    (k l : ℕ) : (p ^ k * q ^ l).divisors.card = (k + 1) * (l + 1) := by
+  have hcop : Nat.Coprime (p ^ k) (q ^ l) := Nat.coprime_pow_primes k l hp hq hpq
+  rw [Nat.Coprime.card_divisors_mul hcop, Nat.divisors_prime_pow hp, Nat.divisors_prime_pow hq,
+      Finset.card_map, Finset.card_map, Finset.card_range, Finset.card_range]
+
 end Erdos1110
