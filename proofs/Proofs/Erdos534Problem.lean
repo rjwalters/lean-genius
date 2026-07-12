@@ -28,6 +28,8 @@ import Mathlib.Data.Nat.Factorization.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
 
+open scoped Classical
+
 open Nat Finset
 
 namespace Erdos534

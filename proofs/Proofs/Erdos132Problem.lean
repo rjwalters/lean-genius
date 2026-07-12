@@ -33,6 +33,8 @@ import Mathlib.Data.Finset.Card
 import Mathlib.Data.Real.Sqrt
 import Mathlib.Topology.MetricSpace.Basic
 
+open scoped Classical
+
 open Finset
 
 namespace Erdos132
@@ -58,11 +60,11 @@ theorem dist_nonneg (p q : Point) : dist p q ≥ 0 := norm_nonneg _
 /--
 The set of unordered pairs {p, q} with p ≠ q at distance d.
 -/
-def pairsAtDistance (A : Finset Point) (d : ℝ) : Finset (Finset Point) :=
+noncomputable def pairsAtDistance (A : Finset Point) (d : ℝ) : Finset (Finset Point) :=
   A.powerset.filter (fun s => s.card = 2 ∧ ∃ p q, p ∈ s ∧ q ∈ s ∧ p ≠ q ∧ dist p q = d)
 
 /-- The number of pairs of distinct points in A at distance d -/
-def multiplicity (A : Finset Point) (d : ℝ) : ℕ :=
+noncomputable def multiplicity (A : Finset Point) (d : ℝ) : ℕ :=
   (pairsAtDistance A d).card
 
 /- ## Part III: Rare Distances -/

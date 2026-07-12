@@ -55,6 +55,8 @@ import Mathlib.Algebra.BigOperators.Ring.Finset
 import Mathlib.Algebra.Order.Antidiag.Pi
 import Mathlib.Tactic
 
+open scoped Classical
+
 namespace BinomialTheoremOQ02OQ04
 
 open Finset BigOperators Nat

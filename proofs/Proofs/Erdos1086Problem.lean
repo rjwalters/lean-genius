@@ -100,7 +100,7 @@ axiom upper_bound_raz_sharir_2017 (n : ℕ) (hn : n ≥ 2) :
   ∃ C > 0, g n ≤ C * n^(20/9 : ℝ)
 
 /-- The exponent 20/9 ≈ 2.222 is the current best upper bound -/
-def bestUpperExponent : ℝ := 20 / 9
+noncomputable def bestUpperExponent : ℝ := 20 / 9
 
 /- ## Part 4: Higher-Dimensional Generalizations
 

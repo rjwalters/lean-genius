@@ -36,6 +36,8 @@ import Mathlib.Data.Int.Basic
 import Mathlib.Data.Nat.Prime.Defs
 import Mathlib.Data.Real.Basic
 
+open scoped Classical
+
 open Nat Polynomial
 
 namespace Erdos978

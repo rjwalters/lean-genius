@@ -42,6 +42,8 @@ import Mathlib.Data.Nat.Choose.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Powerset
 
+open scoped Classical
+
 open Nat Finset
 
 namespace Erdos722

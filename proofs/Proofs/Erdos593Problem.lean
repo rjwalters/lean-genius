@@ -18,6 +18,10 @@ import Mathlib.Data.Set.Basic
 import Mathlib.SetTheory.Cardinal.Basic
 import Mathlib.Tactic
 
+open scoped Classical
+
+open Cardinal
+
 /-
 ## Section I: Hypergraph Definitions
 -/

@@ -36,6 +36,8 @@ import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
 
+open scoped Classical
+
 open SimpleGraph Finset
 
 namespace Erdos914

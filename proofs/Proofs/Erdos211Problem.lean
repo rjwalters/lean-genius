@@ -29,6 +29,8 @@ import Mathlib.Data.Set.Card
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Real.Basic
 
+open scoped Classical
+
 namespace Erdos211
 
 /-

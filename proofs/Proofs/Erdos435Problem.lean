@@ -29,6 +29,8 @@ import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Data.Nat.Factorization.Basic
 import Mathlib.Data.Finset.Basic
 
+open scoped Classical
+
 namespace Erdos435
 
 /-

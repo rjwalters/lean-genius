@@ -33,6 +33,8 @@ import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Tactic
 
+open scoped Classical
+
 namespace Erdos35
 
 open Set

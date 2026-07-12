@@ -170,7 +170,7 @@ theorem primitive_solvable_subgroup_embeds_AGL1Z_capstone
   obtain ⟨σ, hcyc, hcard, hgen, hσH⟩ :=
     sylow_p_is_pcycle_strong H hPrim hSolv P
   -- Step 5: H ≤ N_{S_p}(⟨σ⟩).
-  have hHN : H ≤ (Subgroup.zpowers σ).normalizer :=
+  have hHN : H ≤ Subgroup.normalizer (Subgroup.zpowers σ) :=
     H_le_normalizer H P hPnorm σ hcyc hcard hgen hσH
   -- Step 4: N_{S_p}(⟨σ⟩) ≅ AGL(1, p); take the injective half.
   obtain ⟨φ, hφinj, _hφsurj⟩ := normalizer_iso_AGL1Z σ hcyc hcard

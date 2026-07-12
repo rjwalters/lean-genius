@@ -40,6 +40,8 @@ Noble in 2016, extending House's methods.
 import Mathlib
 import Proofs.Erdos1007Problem
 
+open scoped Classical
+
 open Finset
 
 namespace Erdos1007OQ05

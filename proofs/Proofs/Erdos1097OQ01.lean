@@ -25,6 +25,8 @@ For k ≥ 4 the bounds should be different since k-APs are rarer.
 import Mathlib.Tactic
 import Mathlib.Data.Finset.Basic
 
+open scoped Classical
+
 open Finset
 
 /- ## Core Definitions -/

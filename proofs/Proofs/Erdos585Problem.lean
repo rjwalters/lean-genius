@@ -18,6 +18,8 @@ import Mathlib.Data.Finset.Card
 import Mathlib.Order.Filter.Basic
 import Mathlib.Tactic
 
+open scoped Classical
+
 /- ## Cycles and Edge-Disjointness -/
 
 /-- A cycle in a simple graph on Fin m, given as an injective sequence of

@@ -26,6 +26,8 @@ This is a problem of Erdős and Simonovits (1982). Related to Problem #180.
 import Mathlib.Tactic
 import Mathlib.Combinatorics.SimpleGraph.Basic
 
+open scoped Classical
+
 open SimpleGraph Finset
 
 /- ## Core Definitions -/

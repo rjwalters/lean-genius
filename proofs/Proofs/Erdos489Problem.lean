@@ -23,6 +23,8 @@ import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Real.Basic
 
+open scoped Classical
+
 open Asymptotics Filter
 
 namespace Erdos489

@@ -23,6 +23,8 @@ import Mathlib.Combinatorics.SimpleGraph.Connectivity.WalkCounting
 import Mathlib.Data.Fintype.Basic
 import Mathlib.Tactic
 
+open scoped Classical
+
 namespace Erdos622
 
 open SimpleGraph Finset

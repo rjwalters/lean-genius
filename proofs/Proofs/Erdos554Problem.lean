@@ -32,10 +32,10 @@ namespace Erdos554
 axiom ramseyNumber (graphSize : ℕ) (k : ℕ) : ℕ
 
 /-- R(K_3; k): the k-color Ramsey number of the triangle. -/
-def triangleRamsey (k : ℕ) : ℕ := ramseyNumber 3 k
+noncomputable def triangleRamsey (k : ℕ) : ℕ := ramseyNumber 3 k
 
 /-- R(C_{2n+1}; k): the k-color Ramsey number of the odd (2n+1)-cycle. -/
-def oddCycleRamsey (n k : ℕ) : ℕ := ramseyNumber (2 * n + 1) k
+noncomputable def oddCycleRamsey (n k : ℕ) : ℕ := ramseyNumber (2 * n + 1) k
 
 /- ## Part II: The Conjecture -/
 

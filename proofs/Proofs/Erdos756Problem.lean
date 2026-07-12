@@ -33,6 +33,8 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
 import Mathlib.Analysis.InnerProductSpace.EuclideanDist
 
+open scoped Classical
+
 open Real
 
 namespace Erdos756

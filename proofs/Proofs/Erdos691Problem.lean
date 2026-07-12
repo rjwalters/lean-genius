@@ -23,6 +23,8 @@ import Mathlib.Data.Finset.Card
 import Mathlib.Data.Real.Basic
 import Mathlib.Tactic
 
+open scoped Classical
+
 open Finset Set Filter
 
 namespace Erdos691

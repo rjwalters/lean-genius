@@ -37,6 +37,8 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Data.Real.Basic
 
+open scoped Classical
+
 open Nat Real Finset BigOperators
 
 namespace Erdos858

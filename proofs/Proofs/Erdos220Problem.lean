@@ -171,7 +171,7 @@ Gaps of size g > n/φ(n) can occur at most φ(n)/g times, limiting large-gap con
 
 /-- Connection to Jacobsthal's function g(n): maximum gap. -/
 noncomputable def jacobsthal (n : ℕ) : ℕ :=
-  (gapList n).maximum?.getD 0
+  (gapList n).max?.getD 0
 
 /-- The maximum gap is at most n/φ(n) · (log n)² asymptotically. -/
 axiom maximum_gap_bound (n : ℕ) (hn : n ≥ 2) :

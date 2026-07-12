@@ -26,6 +26,8 @@ import Mathlib.Combinatorics.SimpleGraph.Connectivity.Subgraph
 import Mathlib.Combinatorics.SimpleGraph.DegreeSum
 import Mathlib.Data.Fintype.Card
 
+open scoped Classical
+
 open SimpleGraph Finset
 
 namespace Erdos816

@@ -60,9 +60,9 @@ def GroupQuotIso (X Y : Subgroup G × Subgroup G) : Prop :=
 -- PART II: Key Normalizer Lemma
 -- ============================================================
 
-/-- If H is relatively normal in H ⊔ K, then K ≤ H.normalizer. -/
+/-- If H is relatively normal in H ⊔ K, then K ≤ Subgroup.normalizer H. -/
 lemma le_normalizer_of_normal_in_sup {H K : Subgroup G}
-    (hn : (H.subgroupOf (H ⊔ K)).Normal) : K ≤ H.normalizer :=
+    (hn : (H.subgroupOf (H ⊔ K)).Normal) : K ≤ Subgroup.normalizer H :=
   le_sup_right.trans ((normal_subgroupOf_iff_le_normalizer le_sup_left).mp hn)
 
 -- ============================================================
@@ -110,7 +110,7 @@ noncomputable instance instJordanHolderLatticeSubgroup :
       · simp only [h, sup_idem] at hx; exact lt_irrefl _ hx.1
       · exact absurd h.symm hx.1.ne'
     · -- (x ⊓ y).subgroupOf x is Normal
-      have hxle_yn : x ≤ y.normalizer := by
+      have hxle_yn : x ≤ Subgroup.normalizer y := by
         have := (normal_subgroupOf_iff_le_normalizer le_sup_right).mp hy.2.1
         exact le_trans le_sup_left this
       have : (y.subgroupOf x).Normal := normal_subgroupOf_of_le_normalizer hxle_yn
@@ -124,10 +124,10 @@ noncomputable instance instJordanHolderLatticeSubgroup :
       have hNy_le : N ⊔ y ≤ x ⊔ y := sup_le_sup_right hN_hi y
       have hy_le_Ny : y ≤ N ⊔ y := le_sup_right
       -- (y.subgroupOf (N⊔y)).Normal: need y normal in N⊔y
-      have hxle_yn : x ≤ y.normalizer := by
+      have hxle_yn : x ≤ Subgroup.normalizer y := by
         have := (normal_subgroupOf_iff_le_normalizer le_sup_right).mp hy.2.1
         exact le_trans le_sup_left this
-      have hN_le_yn : N ≤ y.normalizer := hN_hi.trans hxle_yn
+      have hN_le_yn : N ≤ Subgroup.normalizer y := hN_hi.trans hxle_yn
       have hn_y_Ny : (y.subgroupOf (N ⊔ y)).Normal :=
         (normal_subgroupOf_iff_le_normalizer hy_le_Ny).mpr
           (sup_le hN_le_yn (le_normalizer y))
@@ -177,7 +177,7 @@ noncomputable instance instJordanHolderLatticeSubgroup :
        Apply quotientKerEquivOfSurjective to get the isomorphism. -/
     intro x y hx
     have hn_sup : (x.subgroupOf (x ⊔ y)).Normal := hx.2.1
-    have hle : y ≤ x.normalizer := le_normalizer_of_normal_in_sup hn_sup
+    have hle : y ≤ Subgroup.normalizer x := le_normalizer_of_normal_in_sup hn_sup
     have hn_inf : ((x ⊓ y).subgroupOf y).Normal := by
       rw [inf_comm, inf_subgroupOf_right]
       exact normal_subgroupOf_of_le_normalizer hle

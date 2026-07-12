@@ -38,6 +38,8 @@ import Mathlib.Data.Real.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Data.Fintype.Basic
 
+open scoped Classical
+
 open SimpleGraph Real
 
 namespace Erdos920

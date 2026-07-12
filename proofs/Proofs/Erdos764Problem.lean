@@ -24,6 +24,8 @@ import Mathlib.Data.Real.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 
+open scoped Classical
+
 namespace Erdos764
 
 /- ## Part I: Basic Definitions

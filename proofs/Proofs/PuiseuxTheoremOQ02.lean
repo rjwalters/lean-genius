@@ -2,6 +2,8 @@ import Mathlib.RingTheory.HahnSeries.Basic
 import Mathlib.FieldTheory.IsAlgClosed.Basic
 import Mathlib.Tactic
 
+open scoped Classical
+
 /-
 # Puiseux's Theorem OQ-02: Multivariate Generalization
 

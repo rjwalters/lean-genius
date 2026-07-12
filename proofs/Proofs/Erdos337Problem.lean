@@ -36,6 +36,8 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
 import Mathlib.Data.Set.Basic
 
+open scoped Classical
+
 open Nat Finset Set
 
 namespace Erdos337
@@ -173,7 +175,7 @@ For sparse additive bases:
 
 This is a modified version where the range is scaled by 3.
 -/
-def scaledSumsetRatio (A : Set ℕ) (N : ℕ) : ℝ :=
+noncomputable def scaledSumsetRatio (A : Set ℕ) (N : ℕ) : ℝ :=
   (countingFunction (hFoldSumset 3 A) (3 * N) : ℝ) / countingFunction A N
 
 /-

@@ -37,6 +37,8 @@ import Mathlib.Data.Real.Basic
 import Mathlib.Topology.MetricSpace.Basic
 import Mathlib.Tactic
 
+open scoped Classical
+
 open Set Real MeasureTheory
 
 namespace Erdos989

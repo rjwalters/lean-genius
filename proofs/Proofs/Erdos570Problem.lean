@@ -28,6 +28,8 @@ import Mathlib.Combinatorics.SimpleGraph.Basic
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Finset.Basic
 
+open scoped Classical
+
 open Nat
 
 namespace Erdos570

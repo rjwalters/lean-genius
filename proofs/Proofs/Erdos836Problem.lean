@@ -32,6 +32,8 @@ Tags: combinatorics, hypergraphs, chromatic-number, intersecting-families
 
 import Mathlib
 
+open scoped Classical
+
 namespace Erdos836
 
 /-

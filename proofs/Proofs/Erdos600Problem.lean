@@ -25,6 +25,8 @@ Tags: combinatorics, extremal-graph-theory, triangle-counting
 
 import Mathlib
 
+open scoped Classical
+
 open Nat Finset Filter
 
 namespace Erdos600

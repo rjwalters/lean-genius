@@ -36,6 +36,8 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Set.Basic
 import Mathlib.Data.Real.Basic
 
+open scoped Classical
+
 open Finset BigOperators
 
 namespace Erdos344

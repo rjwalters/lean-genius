@@ -35,6 +35,8 @@ import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Order.Interval.Finset.Nat
 
+open scoped Classical
+
 open Nat Finset
 
 namespace Erdos711

@@ -29,6 +29,8 @@ import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Data.Real.Basic
 
+open scoped Classical
+
 namespace Erdos878
 
 open Real Nat BigOperators

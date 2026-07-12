@@ -33,6 +33,8 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.NumberTheory.PrimeCounting
 
+open scoped Classical
+
 open Nat Finset BigOperators
 
 namespace Erdos983

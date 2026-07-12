@@ -20,6 +20,8 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Tactic
 
+open scoped Classical
+
 /- ## Definitions -/
 
 /-- A graph on n vertices represented by its adjacency predicate. -/

@@ -40,6 +40,8 @@ import Mathlib.Data.Nat.GCD.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Set.Basic
 
+open scoped Classical
+
 namespace Erdos246
 
 /-

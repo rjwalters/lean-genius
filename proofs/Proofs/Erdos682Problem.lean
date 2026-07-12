@@ -38,6 +38,8 @@ import Mathlib.Data.Real.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Order.OrderIsoNat
 
+open scoped Classical
+
 open Nat
 
 namespace Erdos682

@@ -29,6 +29,8 @@ import Mathlib.Combinatorics.SimpleGraph.Subgraph
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Real.Basic
 
+open scoped Classical
+
 open SimpleGraph
 
 namespace Erdos714

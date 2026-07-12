@@ -21,6 +21,8 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.Order.Filter.Basic
 import Mathlib.Tactic
 
+open scoped Classical
+
 /- ## Even Cycles and Colorings -/
 
 /-- A cycle of length n in a simple graph, represented as a list of

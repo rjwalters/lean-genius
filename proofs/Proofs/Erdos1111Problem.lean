@@ -27,6 +27,7 @@ References:
 Tags: graph-theory, chromatic-number, clique-number, anticomplete, open
 -/
 
+import Mathlib
 import Mathlib.Combinatorics.SimpleGraph.Basic
 import Mathlib.Combinatorics.SimpleGraph.Clique
 import Mathlib.Data.Finset.Basic

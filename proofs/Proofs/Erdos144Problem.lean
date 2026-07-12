@@ -34,6 +34,8 @@ import Mathlib.Data.Real.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Tactic
 
+open scoped Classical
+
 namespace Erdos144
 
 /- ## Part I: Basic Definitions -/

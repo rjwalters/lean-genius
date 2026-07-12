@@ -38,6 +38,8 @@ import Mathlib.Data.Nat.Choose.Basic
 import Mathlib.Analysis.SpecialFunctions.Exp
 import Mathlib.Analysis.SpecialFunctions.Sqrt
 
+open scoped Classical
+
 open Real Filter
 
 namespace Erdos607

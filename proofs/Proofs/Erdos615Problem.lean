@@ -35,6 +35,8 @@ import Mathlib.Data.Real.Basic
 import Mathlib.Data.Nat.Log
 import Mathlib.Data.Set.Finite.Basic
 
+open scoped Classical
+
 open SimpleGraph
 
 namespace Erdos615

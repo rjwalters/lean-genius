@@ -27,6 +27,8 @@ Tags: number-theory, divisor-functions, density, arithmetic-functions
 
 import Mathlib
 
+open scoped Classical
+
 open Nat Finset Real Filter
 
 namespace Erdos955

@@ -30,6 +30,8 @@ import Mathlib.Combinatorics.SimpleGraph.Connectivity.Subgraph
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Finset.Card
 
+open scoped Classical
+
 namespace Erdos742
 
 open SimpleGraph

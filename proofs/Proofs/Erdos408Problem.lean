@@ -88,7 +88,7 @@ private theorem iteratedTotient_reaches_one (n : ℕ) (hn : n > 1) :
   induction n using Nat.strongRecOn with
   | _ n ih =>
     have htot_lt := Nat.totient_lt n hn
-    have htot_pos : 0 < n.totient := Nat.totient_pos (by omega)
+    have htot_pos : 0 < n.totient := Nat.totient_pos.mpr (by omega)
     by_cases heq : n.totient = 1
     · exact ⟨1, heq⟩
     · obtain ⟨k, hk⟩ := ih n.totient htot_lt (by omega)
@@ -269,7 +269,7 @@ P(n) = max{p : p prime and p | n}, with P(1) = 1.
 -/
 noncomputable def largestPrimeFactor (n : ℕ) : ℕ :=
   if n ≤ 1 then 1
-  else n.factors.maximum?.getD 1
+  else n.primeFactorsList.max?.getD 1
 
 /-- Notation for largest prime factor. -/
 notation "P(" n ")" => largestPrimeFactor n

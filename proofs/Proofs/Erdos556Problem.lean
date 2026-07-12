@@ -26,6 +26,8 @@ import Mathlib.Combinatorics.SimpleGraph.Clique
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Fin.Basic
 
+open scoped Classical
+
 namespace Erdos556
 
 open Nat SimpleGraph

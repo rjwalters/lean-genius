@@ -67,13 +67,14 @@ axiom F (t n : ℕ) (α : ℝ) : ℕ
 /- ## Classical Ramsey Case (α = 0) -/
 
 /-- For α = 0, F^(t)(n, 0) is related to the Ramsey number -/
-def FZero (t n : ℕ) : ℕ := F t n 0
+noncomputable def FZero (t n : ℕ) : ℕ := F t n 0
 
 /-  Erdős-Hajnal-Rado Conjecture (#562): F^(t)(n, 0) ≍ log_{t-1}(n) -/
 /-- The iterated logarithm log_{t-1} -/
 noncomputable def iterLog (base : ℕ) : ℕ → ℝ
   | 0 => 0
   | n + 1 => if n < base then 1 else 1 + iterLog base (Nat.log base n)
+  decreasing_by exact Nat.lt_succ_of_le (Nat.log_le_self _ _)
 
 /- ## Positive α: Lower Bounds -/
 

@@ -279,11 +279,9 @@ theorem summable_one_div_nat_mul_log_mul_const {c δ : ℝ} (hc : 0 < c) (hδ : 
   set N₀ : ℕ := max 2 (⌈2 / c⌉₊ + ⌈1 / c ^ 2⌉₊) with hN₀def
   have hN₀2 : (2 : ℝ) ≤ (N₀ : ℝ) := by exact_mod_cast le_max_left 2 (⌈2 / c⌉₊ + ⌈1 / c ^ 2⌉₊)
   have hN₀2c : 2 / c ≤ (N₀ : ℝ) :=
-    le_trans (Nat.le_ceil _) (by exact_mod_cast le_trans (Nat.le_add_right _ _)
-      (le_max_right 2 (⌈2 / c⌉₊ + ⌈1 / c ^ 2⌉₊)))
+    le_trans (Nat.le_ceil _) (by exact_mod_cast le_trans (Nat.le_add_right _ _) (le_max_right 2 (⌈2 / c⌉₊ + ⌈1 / c ^ 2⌉₊)))
   have hN₀c2 : 1 / c ^ 2 ≤ (N₀ : ℝ) :=
-    le_trans (Nat.le_ceil _) (by exact_mod_cast le_trans (Nat.le_add_left _ _)
-      (le_max_right 2 (⌈2 / c⌉₊ + ⌈1 / c ^ 2⌉₊)))
+    le_trans (Nat.le_ceil _) (by exact_mod_cast le_trans (Nat.le_add_left _ _) (le_max_right 2 (⌈2 / c⌉₊ + ⌈1 / c ^ 2⌉₊)))
   -- dominating series: the constant-free convergent series, shifted and scaled by `2^{1+δ}`
   have hbase : Summable (fun n : ℕ => 1 / ((n : ℝ) * (Real.log n) ^ (1 + δ))) :=
     summable_one_div_nat_mul_log_rpow hδ

@@ -36,6 +36,8 @@ import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Nat.Factorial.Basic
 import Mathlib.Data.Real.Basic
 
+open scoped Classical
+
 open Nat SimpleGraph
 
 namespace Erdos426

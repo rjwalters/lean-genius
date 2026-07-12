@@ -1,0 +1,306 @@
+===== Erdos910Problem
+error: Proofs/Erdos910Problem.lean:121:51: Ambiguous term
+  continuum
+Possible interpretations:
+error: Proofs/Erdos910Problem.lean:129:0: declaration `ContinuumHypothesis` contains universe level metavariables at the expression
+  Eq.{?u.6 + 2} (DFunLike.coe.{?u.6 + 2, ?u.6 + 2, ?u.6 + 2} aleph.{?u.6} (OfNat.ofNat.{?u.6 + 1} 1))
+    (HPow.hPow.{?u.6 + 1, ?u.6 + 1, ?u.6 + 1} (OfNat.ofNat.{?u.6 + 1} 2)
+error: Proofs/Erdos910Problem.lean:141:33: Ambiguous term
+  continuum
+Possible interpretations:
+error: Proofs/Erdos910Problem.lean:166:13: Invalid field notation: Function `Function.nontrivial` does not have a usable parameter of type `Function` for which to substitute `S`
+
+Note: Such a parameter must be explicit, or implicit with a unique name, to be used by field notation
+===== Erdos910ProblemProvable
+error: Proofs/Erdos910ProblemProvable.lean:121:51: Ambiguous term
+  continuum
+Possible interpretations:
+error: Proofs/Erdos910ProblemProvable.lean:129:0: declaration `ContinuumHypothesis` contains universe level metavariables at the expression
+  Eq.{?u.6 + 2} (DFunLike.coe.{?u.6 + 2, ?u.6 + 2, ?u.6 + 2} aleph.{?u.6} (OfNat.ofNat.{?u.6 + 1} 1))
+    (HPow.hPow.{?u.6 + 1, ?u.6 + 1, ?u.6 + 1} (OfNat.ofNat.{?u.6 + 1} 2)
+error: Proofs/Erdos910ProblemProvable.lean:141:33: Ambiguous term
+  continuum
+Possible interpretations:
+error: Proofs/Erdos910ProblemProvable.lean:162:13: Invalid field notation: Function `Function.nontrivial` does not have a usable parameter of type `Function` for which to substitute `S`
+
+Note: Such a parameter must be explicit, or implicit with a unique name, to be used by field notation
+===== Erdos911Problem
+error: Proofs/Erdos911Problem.lean:166:30: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 0
+error: Proofs/Erdos911Problem.lean:171:34: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 0
+error: Proofs/Erdos911Problem.lean:196:29: unknown tactic
+error: Proofs/Erdos911Problem.lean:196:25: unsolved goals
+f : ℕ → ℕ
+a : ℕ
+===== Erdos913Problem
+error: Proofs/Erdos913Problem.lean:294:4: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  e ≤ 0
+error: Proofs/Erdos913Problem.lean:296:4: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  e ≤ 0
+error: Proofs/Erdos913Problem.lean:310:4: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  2 ≤ c ≤ 3
+error: Proofs/Erdos913Problem.lean:319:83: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 1
+===== Erdos915Problem
+error: Proofs/Erdos915Problem.lean:49:31: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 0
+error: Proofs/Erdos915Problem.lean:49:64: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 0
+error: Proofs/Erdos915Problem.lean:64:38: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 0
+error: Proofs/Erdos915Problem.lean:64:73: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 0
+===== Erdos916Problem
+error: Proofs/Erdos916Problem.lean:46:23: failed to synthesize instance of type class
+  Fintype ↑G.edgeSet
+
+error: Proofs/Erdos916Problem.lean:95:27: failed to prove index is valid, possible solutions:
+  - Use `have`-expressions to prove the index is valid
+  - Use `a[i]!` notation instead, runtime check is performed, and 'Panic' error message is produced if index is not valid
+error: Proofs/Erdos916Problem.lean:108:24: failed to prove index is valid, possible solutions:
+  - Use `have`-expressions to prove the index is valid
+  - Use `a[i]!` notation instead, runtime check is performed, and 'Panic' error message is produced if index is not valid
+error: Proofs/Erdos916Problem.lean:200:2: omega could not prove the goal:
+No usable constraints found. You may need to unfold definitions so `omega` can see linear arithmetic facts about `Nat` and `Int`, which may also involve multiplication, division, and modular remainder by constants.
+error: Proofs/Erdos916Problem.lean:215:3: unknown tactic
+===== Erdos918Problem
+error: Proofs/Erdos918Problem.lean:111:25: omega could not prove the goal:
+No usable constraints found. You may need to unfold definitions so `omega` can see linear arithmetic facts about `Nat` and `Int`, which may also involve multiplication, division, and modular remainder by constants.
+error: Proofs/Erdos918Problem.lean:113:25: omega could not prove the goal:
+No usable constraints found. You may need to unfold definitions so `omega` can see linear arithmetic facts about `Nat` and `Int`, which may also involve multiplication, division, and modular remainder by constants.
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.Erdos918Problem
+error: build failed
+===== Erdos919Problem
+error: Proofs/Erdos919Problem.lean:170:54: unknown tactic
+error: Proofs/Erdos919Problem.lean:170:50: unsolved goals
+⊢ 0 < 1
+error: Proofs/Erdos919Problem.lean:169:59: unsolved goals
+this : ℵ_ 0 < ℵ_ 1
+⊢ ℵ₀ < ℵ_ 1
+error: Proofs/Erdos919Problem.lean:175:2: 'show' tactic failed, pattern
+  ℵ_ 1 = Order.succ (ℵ_ 0)
+is not definitionally equal to target
+===== Erdos91Problem
+error: Proofs/Erdos91Problem.lean:76:2: failed to synthesize instance of type class
+  Decidable (∃ A, #A = n)
+
+error: Proofs/Erdos91Problem.lean:77:57: Invalid `⟨...⟩` notation: The expected type of this term could not be determined
+warning: Proofs/Erdos91Problem.lean:99:13: Variable name `θ` is not explicitly referenced.
+
+error: Proofs/Erdos91Problem.lean:234:20: Function expected at
+  log
+but this term has type
+error: Proofs/Erdos91Problem.lean:235:62: Function expected at
+  log
+but this term has type
+===== Erdos922Aristotle
+error: Proofs/Erdos922Aristotle.lean:36:11: Unknown constant `Nat.le_or_lt`
+error: Proofs/Erdos922Aristotle.lean:36:33: Tactic `rcases` failed: `x✝ : ?m.76` is not an inductive datatype
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.Erdos922Aristotle
+error: build failed
+===== Erdos923Problem
+error: Proofs/GraphCore.lean:74:16: Function expected at
+  G.symm
+but this term has type
+error: Proofs/GraphCore.lean:75:18: Function expected at
+  G.loopless
+but this term has type
+error: Proofs/GraphCore.lean:146:58: Application type mismatch: The argument
+  hadj
+has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.GraphCore
+===== Erdos932Problem
+error: Proofs/Erdos932Problem.lean:138:16: unsolved goals
+case cons
+l₁ l₂ : List ℕ
+error: Proofs/Erdos932Problem.lean:145:18: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  0 ≤ e ≤ 1
+error: Proofs/Erdos932Problem.lean:230:86: unsolved goals
+⊢ {r | 2 ≤ #({m ∈ Ioo (nthPrime r) (nthPrime (r + 1)) | maxPrimeFactor m < nthPrime (r + 1) - nthPrime r})} =
+    {r | erdos932Condition r}
+error: Proofs/Erdos932Problem.lean:263:79: unsolved goals
+⊢ {r | 1 ≤ #({m ∈ Ioo (nthPrime r) (nthPrime (r + 1)) | maxPrimeFactor m < nthPrime (r + 1) - nthPrime r})} =
+    {r | erdos932WeakCondition r}
+===== Erdos934ProblemAristotle
+error: Proofs/Erdos934ProblemAristotle.lean:88:48: unsolved goals
+⊢ 5 * 2 ^ 2 / 4 + 1 = 6
+error: Proofs/Erdos934ProblemAristotle.lean:90:49: unsolved goals
+⊢ 5 * 3 ^ 2 / 4 + 1 = 12
+error: Proofs/Erdos934ProblemAristotle.lean:92:49: unsolved goals
+⊢ 5 * 4 ^ 2 / 4 + 1 = 21
+error: Proofs/Erdos934ProblemAristotle.lean:94:49: unsolved goals
+⊢ 5 * 5 ^ 2 / 4 + 1 = 32
+error: Proofs/Erdos934ProblemAristotle.lean:96:52: unsolved goals
+===== Erdos936Problem
+error: Proofs/Erdos936Problem.lean:71:3: unknown tactic
+error: Proofs/Erdos936Problem.lean:68:37: unsolved goals
+p : ℕ
+a✝ : Nat.Prime p
+error: Proofs/Erdos936Problem.lean:78:8: Unknown constant `Nat.pow_dvd_pow_of_dvd`
+error: Proofs/Erdos936Problem.lean:88:27: unknown tactic
+error: Proofs/Erdos936Problem.lean:88:23: unsolved goals
+⊢ 36 = 6 ^ 2
+===== Erdos949Problem
+error: Proofs/Erdos949Problem.lean:162:2: No goals to be solved
+error: Proofs/Erdos949Problem.lean:173:31: Application type mismatch: The argument
+  rfl
+has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.Erdos949Problem
+error: build failed
+===== Erdos94Problem
+error: Proofs/Erdos94Problem.lean:71:2: Type mismatch
+  {x ∈ (P ×ˢ P) ×ˢ P ×ˢ P | ?m.15}
+has type
+error: Proofs/Erdos94Problem.lean:72:4: Invalid field notation: Field projection operates on types of the form `C ...` where C is a constant. The expression
+  p ≠ q ∧ r ≠ s ∧ dist p q = dist r s
+has type `Prop` which does not have the necessary form.
+error: Proofs/Erdos94Problem.lean:87:5: Unknown identifier `Collinear`
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.Erdos94Problem
+===== Erdos950Problem
+error: Proofs/Erdos950Problem.lean:130:50: Application type mismatch: The argument
+  fun m hm => ?m.32
+has type
+error: Proofs/Erdos950Problem.lean:134:2: 'calc' expression has type
+  0 < ∑ p ∈ primesLessThan n, 1 / (n - p)
+but is expected to have type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.Erdos950Problem
+error: build failed
+===== Erdos956Aristotle
+error: Proofs/Erdos956Aristotle.lean:74:54: unsolved goals
+case convert_4
+C : Set (EuclideanSpace ℝ (Fin 2))
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.Erdos956Aristotle
+error: build failed
+===== Erdos958Problem
+error: Proofs/Erdos958Problem.lean:119:52: failed to synthesize instance of type class
+  OfNat (Multiset ℕ) 1
+numerals are polymorphic in Lean, but the numeral `1` cannot be used in a context where the expected type is
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.Erdos958Problem
+error: build failed
+===== Erdos95Problem
+error: Proofs/Erdos95Problem.lean:72:0: (deterministic) timeout at `whnf`, maximum number of heartbeats (200000) has been reached
+
+Note: Use `set_option maxHeartbeats <num>` to set the limit.
+error: Proofs/Erdos95Problem.lean:144:4: linarith failed to find a contradiction
+ε : ℕ
+hε : ε > 0
+error: Proofs/Erdos95Problem.lean:147:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  m ^ (?y + ?z)
+in the target expression
+error: Proofs/Erdos95Problem.lean:155:18: Application type mismatch: The argument
+  hε
+has type
+===== Erdos960Problem
+error: Proofs/Erdos960Problem.lean:278:36: Unknown identifier `p`
+error: Proofs/Erdos960Problem.lean:278:38: Unknown identifier `q`
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.Erdos960Problem
+error: build failed
+===== Erdos964Aristotle
+error: Proofs/Erdos964Aristotle.lean:26:31: unsolved goals
+⊢ #({x ∈ {1} | x = 1}) = 1
+error: Proofs/Erdos964Aristotle.lean:31:13: Unknown constant `Nat.divisors_prime`
+error: Proofs/Erdos964Aristotle.lean:30:60: unsolved goals
+p : ℕ
+hp : Nat.Prime p
+error: Proofs/Erdos964Aristotle.lean:76:28: omega could not prove the goal:
+No usable constraints found. You may need to unfold definitions so `omega` can see linear arithmetic facts about `Nat` and `Int`, which may also involve multiplication, division, and modular remainder by constants.
+error: Lean exited with code 1
+===== Erdos965Problem
+error: Proofs/Erdos965Problem.lean:67:4: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'aleph', which is 'noncomputable'
+error: Proofs/Erdos965Problem.lean:136:4: Invalid field notation: Function `Function.nontrivial` does not have a usable parameter of type `Function` for which to substitute `A`
+
+Note: Such a parameter must be explicit, or implicit with a unique name, to be used by field notation
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.Erdos965Problem
+error: build failed
+===== Erdos967Problem
+error: Proofs/Erdos967Problem.lean:210:15: Unknown identifier `pow_lt_pow_right`
+error: Proofs/Erdos967Problem.lean:210:4: `simp` made no progress
+error: Proofs/Erdos967Problem.lean:214:48: unsolved goals
+n : ℕ
+⊢ 0 < ?m.38
+error: Proofs/Erdos967Problem.lean:214:65: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 0
+===== Erdos96Problem
+error: Proofs/Erdos96Problem.lean:72:2: failed to synthesize instance of type class
+  DecidablePred fun s => #s = 2 ∧ ∃ p q, p ∈ s ∧ q ∈ s ∧ p ≠ q ∧ IsUnitDistance p q
+
+error: Proofs/Erdos96Problem.lean:187:3: failed to synthesize instance of type class
+  DecidablePred fun s => #s = 2 ∧ ∃ p q, p ∈ s ∧ q ∈ s ∧ p ≠ q ∧ dist' x p = dist' x q
+
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.Erdos96Problem
+error: build failed
+===== Erdos977Aristotle
+error: Proofs/Erdos977Aristotle.lean:33:30: Unknown constant `Nat.primeFactors_nonempty`
+warning: Proofs/Erdos977Aristotle.lean:47:8: declaration uses `sorry`
+warning: Proofs/Erdos977Aristotle.lean:52:8: declaration uses `sorry`
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.Erdos977Aristotle
+error: build failed
+===== Erdos977ProblemAristotle
+error: Proofs/Erdos977ProblemAristotle.lean:112:2: Unknown constant `Nat.primeFactors_nonempty`
+error: Proofs/Erdos977ProblemAristotle.lean:124:25: Unknown constant `Nat.primeFactors_nonempty`
+error: Proofs/Erdos977ProblemAristotle.lean:129:25: Unknown constant `Nat.primeFactors_nonempty`
+error: Proofs/Erdos977ProblemAristotle.lean:134:26: Unknown constant `Nat.primeFactors_nonempty`
+error: Proofs/Erdos977ProblemAristotle.lean:139:29: Unknown constant `Nat.primeFactors_nonempty`
+warning: Proofs/Erdos977ProblemAristotle.lean:148:8: declaration uses `sorry`
+===== Erdos97Problem
+error: Proofs/Erdos97Problem.lean:31:6: unexpected token 'ℝ'; expected identifier
+error: Proofs/Erdos97Problem.lean:33:5: unknown namespace `EuclideanGeometry`
+error: Proofs/Erdos97Problem.lean:43:49: unexpected token '²'; expected ')'
+error: Proofs/Erdos97Problem.lean:50:49: unexpected token '²'; expected ')'
+error: Proofs/Erdos97Problem.lean:57:50: unexpected token '²'; expected ')'
+error: Proofs/Erdos97Problem.lean:73:16: unexpected token '²'; expected ','
+===== Erdos986Problem
+error: Proofs/RamseysTheorem.lean:69:2: Type mismatch
+  fun x y h => ?m.11
+has type
+error: Proofs/RamseysTheorem.lean:70:2: Type mismatch
+  fun x h => ?m.19
+has type
+error: Proofs/RamseysTheorem.lean:69:16: Invalid `⟨...⟩` notation: The expected type of this term could not be determined
+error: Proofs/RamseysTheorem.lean:70:21: `simp` made no progress
+error: Proofs/RamseysTheorem.lean:75:2: Type mismatch
+  fun x y h => ?m.11
+===== Erdos990Problem
+error: Proofs/Erdos990Problem.lean:55:4: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'Complex.instDecidableEq', which is 'noncomputable'
+error: Proofs/Erdos990Problem.lean:60:23: Unknown identifier `arg`
+error: Proofs/Erdos990Problem.lean:60:35: Unknown identifier `arg`
+error: Proofs/Erdos990Problem.lean:60:54: Unknown identifier `π`
+error: Proofs/Erdos990Problem.lean:70:21: Unknown constant `Complex.abs`
+error: Proofs/Erdos990Problem.lean:74:12: Unknown constant `Complex.abs`

@@ -28,6 +28,8 @@ import Mathlib.Combinatorics.SimpleGraph.Basic
 import Mathlib.Combinatorics.SimpleGraph.Connectivity.Subgraph
 import Mathlib.Data.Nat.Basic
 
+open scoped Classical
+
 open SimpleGraph
 
 namespace Erdos619

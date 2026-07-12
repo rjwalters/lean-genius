@@ -36,6 +36,8 @@ import Mathlib.Data.Finset.Card
 import Mathlib.Data.Set.Card
 import Mathlib.Topology.MetricSpace.Basic
 
+open scoped Classical
+
 open Finset Set
 
 namespace Erdos982

@@ -18,6 +18,8 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
 import Mathlib.Tactic
 
+open scoped Classical
+
 /- ## Square-free product sets -/
 
 /-- A number is a perfect square. -/

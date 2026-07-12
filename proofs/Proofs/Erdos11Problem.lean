@@ -16,12 +16,14 @@
 
 import Mathlib
 
+set_option maxRecDepth 40000
+
 open Nat Finset
 
 /- ## Core Definitions -/
 
 /-- A number is squarefree if no prime square divides it -/
-def IsSquarefree (n : ℕ) : Prop := Squarefree n
+abbrev IsSquarefree (n : ℕ) : Prop := Squarefree n
 
 /-- The set of powers of 2: {1, 2, 4, 8, 16, ...} -/
 def IsPowerOfTwo (n : ℕ) : Prop := ∃ k : ℕ, n = 2^k

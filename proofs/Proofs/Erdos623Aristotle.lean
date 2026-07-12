@@ -20,7 +20,7 @@ import Mathlib.Tactic
 
 namespace Erdos623Aristotle
 
-open Cardinal Set
+open Cardinal Set Ordinal
 
 noncomputable def aleph_omega : Cardinal := Cardinal.aleph ω
 

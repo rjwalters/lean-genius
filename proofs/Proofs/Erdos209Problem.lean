@@ -32,6 +32,8 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
 import Mathlib.Geometry.Euclidean.Basic
 
+open scoped Classical
+
 open Set Finset
 
 namespace Erdos209

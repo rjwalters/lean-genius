@@ -30,6 +30,8 @@
 import Mathlib
 import Proofs.Erdos860Problem
 
+open scoped Classical
+
 namespace Erdos860.Aristotle
 
 open Erdos860 Nat Filter Asymptotics Real

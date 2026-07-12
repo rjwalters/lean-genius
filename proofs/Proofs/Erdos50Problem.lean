@@ -29,6 +29,8 @@ import Mathlib.Tactic
 import Mathlib.Data.Nat.Totient
 import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
 
+open scoped Classical
+
 open Filter Finset
 
 /- ## Core Definitions -/

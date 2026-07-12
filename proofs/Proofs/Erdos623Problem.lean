@@ -32,14 +32,14 @@ import Mathlib.Tactic
 
 namespace Erdos623
 
-open Cardinal Set
+open Cardinal Set Ordinal
 
 /- ## Part I: Cardinal Background -/
 
 /-- ℵ_ω (aleph-omega) is the first singular cardinal.
     It's the supremum of ℵ_0, ℵ_1, ℵ_2, ... but not equal to any of them.
     This is the critical cardinality in Problem #623. -/
-def aleph_omega : Cardinal := ℵ_ ω
+noncomputable def aleph_omega : Cardinal := ℵ_ ω
 
 /-- ℵ_ω is a limit cardinal (supremum of smaller alephs). -/
 theorem aleph_omega_is_limit : aleph_omega.IsLimit := by

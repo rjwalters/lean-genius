@@ -116,8 +116,8 @@ theorem stdChain_isChain (n : ℕ) : IsChain (stdChain n) := by
 theorem initialSeg_injective (n : ℕ) : Function.Injective (initialSeg n) := by
   intro j k hjk
   by_contra hne
-  wlog h : j < k with
-  | _ => exact this n k j hjk.symm (Ne.symm hne) (lt_of_le_of_ne (le_of_not_lt h) (Ne.symm hne))
+  wlog h : j < k
+  · exact this n k j hjk.symm (Ne.symm hne) (lt_of_le_of_ne (le_of_not_gt h) (Ne.symm hne))
   -- j < k, but initialSeg j = initialSeg k
   -- The element ⟨j.val, ...⟩ : Fin n is in initialSeg k but not initialSeg j
   have hj_lt_n : j.val < n := by omega

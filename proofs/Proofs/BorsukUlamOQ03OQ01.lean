@@ -914,7 +914,7 @@ private lemma signZ_eq_iff {a b : ℤ} (ha : a ≠ 0) (hb : b ≠ 0) :
 
 /-- Count of sign changes along a path of nonzero integers.
     Defined using ℕ indices to avoid Fin manipulation in proofs. -/
-private def signChangeCount (L : ℕ → ℤ) (hL : ∀ k, L k ≠ 0) (len : ℕ) : ℕ :=
+private noncomputable def signChangeCount (L : ℕ → ℤ) (hL : ∀ k, L k ≠ 0) (len : ℕ) : ℕ :=
   (Finset.range len).filter (fun i => signZ (L i) (hL i) ≠ signZ (L (i + 1)) (hL _)) |>.card
 
 /-- **Sign change parity (ℕ-indexed version)**: The parity of sign changes

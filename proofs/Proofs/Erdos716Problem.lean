@@ -86,7 +86,7 @@ axiom extremalHypergraph (n v e : ℕ) : ℕ
 
 /-- **The (6,3)-Extremal Number:**
 f^(3)(n; 6, 3) = max edges in n-vertex 3-uniform hypergraph that is (6,3)-free. -/
-def ex63 (n : ℕ) : ℕ := extremalHypergraph n 6 3
+noncomputable def ex63 (n : ℕ) : ℕ := extremalHypergraph n 6 3
 
 /-  **Trivial Upper Bound:**
 The trivial upper bound is O(n²) since there are ≈ n³/6 possible 3-edges. -/

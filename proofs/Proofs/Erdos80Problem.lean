@@ -38,6 +38,8 @@ import Mathlib.Data.Finset.Card
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 
+open scoped Classical
+
 open SimpleGraph Finset Real
 
 namespace Erdos80

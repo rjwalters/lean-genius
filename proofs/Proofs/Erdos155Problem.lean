@@ -25,6 +25,8 @@ Reference: https://erdosproblems.com/155
 
 import Mathlib
 
+open scoped Classical
+
 /- ## Core Definitions -/
 
 /-- A Sidon set (B₂ set): a set of natural numbers where all pairwise sums

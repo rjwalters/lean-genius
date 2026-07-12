@@ -32,6 +32,8 @@ import Mathlib.Data.Real.Basic
 import Mathlib.Data.Real.Sqrt
 import Mathlib.Data.Finset.Basic
 
+open scoped Classical
+
 open Real Set Finset
 
 namespace Erdos99

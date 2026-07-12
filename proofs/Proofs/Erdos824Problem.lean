@@ -31,6 +31,8 @@ References:
 
 import Mathlib
 
+open scoped Classical
+
 open Nat Finset BigOperators Filter
 
 namespace Erdos824

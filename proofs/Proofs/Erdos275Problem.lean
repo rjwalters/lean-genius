@@ -25,6 +25,8 @@ import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
 
+open scoped Classical
+
 namespace Erdos275
 
 /- ## Part I: Basic Definitions -/

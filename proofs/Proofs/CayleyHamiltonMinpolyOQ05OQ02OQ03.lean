@@ -1,5 +1,7 @@
 import Mathlib
 
+open scoped Classical
+
 /-!
 # The Primitive Element Theorem: deg(minpoly K α) = [L:K]
 

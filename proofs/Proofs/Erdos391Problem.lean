@@ -33,6 +33,8 @@ import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Analysis.SpecialFunctions.ExpDeriv
 import Mathlib.Data.Finset.Basic
 
+open scoped Classical
+
 open Finset BigOperators Real
 
 namespace Erdos391

@@ -27,6 +27,8 @@
 
 import Mathlib
 
+open scoped Classical
+
 namespace Erdos636
 
 open Finset Function

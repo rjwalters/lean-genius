@@ -37,6 +37,8 @@ import Mathlib.Data.Finset.Card
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Analysis.SpecialFunctions.ExpDeriv
 
+open scoped Classical
+
 open Nat Real Finset BigOperators
 
 namespace Erdos300

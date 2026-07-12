@@ -35,6 +35,8 @@ import Mathlib.Data.Real.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Order.Filter.Basic
 
+open scoped Classical
+
 open Nat Real Filter Finset
 
 namespace Erdos692

@@ -79,7 +79,7 @@ This connects the orbit construction to classical normalizer theory.
 /-- The stabilizer of P under G-conjugation is exactly the normalizer N_G(P).
     Proof: g stabilizes P iff gPg⁻¹ = P iff g ∈ N_G(P). -/
 theorem stabilizer_eq_normalizer (P : Sylow p G) :
-    stabilizer G P = P.normalizer :=
+    stabilizer G P = Subgroup.normalizer P :=
   Sylow.stabilizer_eq_normalizer P
 
 /-!
@@ -98,7 +98,7 @@ Combining the orbit = ⊤ fact with orbit-stabilizer gives the count formula:
     3. stab G P = N_G(P)          (by stabilizer_eq_normalizer)
     4. Therefore |Sylow p G| = [G : N_G(P)] -/
 theorem sylow_count_eq_normalizer_index [Finite (Sylow p G)] (P : Sylow p G) :
-    Nat.card (Sylow p G) = P.normalizer.index :=
+    Nat.card (Sylow p G) = (Subgroup.normalizer P).index :=
   Sylow.card_eq_index_normalizer P
 
 /-- **Bijective enumeration**: There is an explicit bijection between the set of
@@ -106,7 +106,7 @@ theorem sylow_count_eq_normalizer_index [Finite (Sylow p G)] (P : Sylow p G) :
     This provides the concrete orbit enumeration algorithm:
     list all cosets gN_G(P) and map each to g • P. -/
 noncomputable def sylowEquivQuotientNormalizer [Finite (Sylow p G)] (P : Sylow p G) :
-    Sylow p G ≃ G ⧸ P.normalizer :=
+    Sylow p G ≃ G ⧸ Subgroup.normalizer P :=
   Sylow.equivQuotientNormalizer P
 
 /-- The number of Sylow p-subgroups divides the index of P in G. -/
@@ -127,9 +127,9 @@ The orbit-stabilizer theorem, specialized to Sylow subgroups:
     This is the group-theoretic version of the orbit-stabilizer theorem:
       |G| = |orbit G P| × |stabilizer G P| = n_p × |N_G(P)| -/
 theorem sylow_orbit_stabilizer_formula [Finite (Sylow p G)] (P : Sylow p G) :
-    Nat.card G = Nat.card (Sylow p G) * Nat.card P.normalizer := by
+    Nat.card G = Nat.card (Sylow p G) * Nat.card (Subgroup.normalizer P) := by
   rw [sylow_count_eq_normalizer_index P, mul_comm]
-  exact P.normalizer.card_mul_index.symm
+  exact (Subgroup.normalizer P).card_mul_index.symm
 
 /-!
 ## Part V: Normality Criterion

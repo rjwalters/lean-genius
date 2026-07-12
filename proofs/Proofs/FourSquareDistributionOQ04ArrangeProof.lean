@@ -167,7 +167,7 @@ theorem exists_perm_of_map_univ_eq {m : ℕ} {x y : Fin m → ℤ}
   refine ⟨Tuple.sort y * (Tuple.sort x)⁻¹, ?_⟩
   ext i
   have hpt := congrFun hfun ((Tuple.sort x)⁻¹ i)
-  simp only [Function.comp_apply, Equiv.Perm.apply_inv_self] at hpt
+  simp only [Function.comp_apply, Equiv.Perm.inv_def, Equiv.apply_symm_apply] at hpt
   simpa [Function.comp_apply, Equiv.Perm.mul_apply] using hpt
 
 /-- **Nonemptiness.** A multiset `s` of cardinality `m` is realized by some

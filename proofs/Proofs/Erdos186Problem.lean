@@ -32,6 +32,8 @@ import Mathlib.Data.Finset.Card
 import Mathlib.Data.Nat.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 
+open scoped Classical
+
 open Finset Nat
 
 namespace Erdos186

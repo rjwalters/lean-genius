@@ -22,6 +22,8 @@ import Mathlib.Data.Finset.Card
 import Mathlib.Order.Filter.Basic
 import Mathlib.Tactic
 
+open scoped Classical
+
 /- ## B₂[r] Sets -/
 
 /-- The number of representations of n as a + b with a ≤ b, a, b ∈ A -/

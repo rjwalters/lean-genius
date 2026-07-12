@@ -35,6 +35,8 @@ import Mathlib.Combinatorics.SimpleGraph.Basic
 import Mathlib.Order.Filter.Basic
 import Mathlib.Data.Finset.Basic
 
+open scoped Classical
+
 open Real Filter
 
 namespace Erdos720

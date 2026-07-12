@@ -86,7 +86,7 @@ def IsAdmissible (A : Finset ℕ) (N : ℕ) : Prop :=
 The maximum size of (A+A) ∩ [1,N] over all admissible A.
 -/
 noncomputable def f (N : ℕ) : ℕ :=
-  sSup {(restrictedSumset A N).card | A : Finset ℕ, IsAdmissible A N}
+  sSup {(restrictedSumset A N).card | (A : Finset ℕ) (_ : IsAdmissible A N)}
 
 /- 
 The supremum defining f(N) is attained because we optimize over a finite

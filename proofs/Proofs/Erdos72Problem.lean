@@ -32,6 +32,8 @@ import Mathlib.Combinatorics.SimpleGraph.Subgraph
 import Mathlib.Data.Finset.Card
 import Mathlib.Tactic
 
+open scoped Classical
+
 namespace Erdos72
 
 open SimpleGraph Finset Filter

@@ -35,6 +35,8 @@ import Mathlib.NumberTheory.Divisors
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 
+open scoped Classical
+
 open Finset BigOperators
 
 namespace Erdos928

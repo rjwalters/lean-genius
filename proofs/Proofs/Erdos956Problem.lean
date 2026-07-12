@@ -24,6 +24,8 @@
 
 import Mathlib
 
+open scoped Classical
+
 namespace Erdos956
 
 open Set Metric Finset

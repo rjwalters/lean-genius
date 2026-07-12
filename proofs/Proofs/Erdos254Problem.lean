@@ -30,6 +30,8 @@ import Mathlib.Data.Real.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 
+open scoped Classical
+
 open Nat Real Set
 
 namespace Erdos254

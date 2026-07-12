@@ -118,8 +118,8 @@ The sum of squared gaps between reduced residues is O(n²/φ(n)).
 
 ∑_{k=1}^{φ(n)-1} (a_{k+1} - a_k)² ≪ n²/φ(n)
 -/
-theorem montgomery_vaughan_squared : := by sorry
-    ∃ C : ℝ, C > 0 ∧ ∀ n ≥ 1, (sumSquaredGaps n : ℝ) ≤ C * boundedSquaredGaps n
+theorem montgomery_vaughan_squared :
+    ∃ C : ℝ, C > 0 ∧ ∀ n ≥ 1, (sumSquaredGaps n : ℝ) ≤ C * boundedSquaredGaps n := by sorry
 
 /--
 **Montgomery-Vaughan General Theorem:**

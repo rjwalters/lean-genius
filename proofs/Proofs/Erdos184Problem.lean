@@ -36,6 +36,8 @@ import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 
+open scoped Classical
+
 open Finset
 
 namespace Erdos184

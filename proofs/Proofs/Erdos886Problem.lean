@@ -64,7 +64,7 @@ noncomputable def intervalWidth (n : ℕ) (ε : ℝ) : ℝ :=
 -/
 
 /-- The set of divisors of n lying in the interval (a, b). -/
-def divisorsInInterval (n : ℕ) (a b : ℝ) : Finset ℕ :=
+noncomputable def divisorsInInterval (n : ℕ) (a b : ℝ) : Finset ℕ :=
   (divisorsOf n).filter (fun d => a < (d : ℝ) ∧ (d : ℝ) < b)
 
 /-- The number of divisors of n in the critical interval. -/

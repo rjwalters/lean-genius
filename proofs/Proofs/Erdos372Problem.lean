@@ -25,6 +25,8 @@ import Mathlib.Data.Nat.Factorization.Basic
 import Mathlib.Topology.Instances.Nat
 import Mathlib.Data.Real.Basic
 
+open scoped Classical
+
 open Filter
 
 namespace Erdos372

@@ -21,6 +21,8 @@ import Mathlib.Data.Real.Basic
 import Mathlib.Order.Filter.Basic
 import Mathlib.Tactic
 
+open scoped Classical
+
 /-
 ## Section I: Digit-Restricted Sets
 -/

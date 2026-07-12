@@ -42,7 +42,7 @@ namespace Erdos962
 The largest prime dividing n, or 0 if n ≤ 1.
 -/
 noncomputable def lpf (n : ℕ) : ℕ :=
-  if h : n > 1 then n.factors.maximum?.getD 0 else 0
+  if h : n > 1 then n.primeFactorsList.max?.getD 0 else 0
 
 /--
 **Property: Divisible by Prime > k:**

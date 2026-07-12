@@ -75,7 +75,8 @@ lemma tau0_apply (x : ZMod p) : τ₀ x = x + 1 := by
 /-- `τ₀⁻¹` is the `-1` translation. -/
 lemma tau0_inv_apply (x : ZMod p) : τ₀⁻¹ x = x - 1 := by
   apply (τ₀).injective
-  rw [Equiv.Perm.apply_inv_self, tau0_apply]
+  show τ₀ (Equiv.symm τ₀ x) = τ₀ (x - 1)
+  rw [Equiv.apply_symm_apply, tau0_apply]
   ring
 
 /-- Natural powers of `τ₀` are translations by the corresponding integer. -/
@@ -149,7 +150,7 @@ lemma conj_mem (g : AGL1Z p) (n : Equiv.Perm (ZMod p))
 /-- **Affine characterization (standard translation).**
     The normalizer of `⟨τ₀⟩` in `S_p` is exactly the affine group. -/
 theorem normalizer_eq_range :
-    (Subgroup.zpowers τ₀).normalizer = (AGL1Z.toPerm p).range := by
+    Subgroup.normalizer (Subgroup.zpowers τ₀) = (AGL1Z.toPerm p).range := by
   haveI : NeZero p := ⟨hp.out.pos.ne'⟩
   apply le_antisymm
   · -- normalizer ≤ range : every normalizing permutation is affine
@@ -235,14 +236,14 @@ lemma tau0_isCycle : (τ₀).IsCycle := by
   exact Equiv.Perm.isCycle_of_prime_order hprime hsupp_lt
 
 /-- `AGL1Z p ≃* N(⟨τ₀⟩)` for the standard translation. -/
-noncomputable def isoStd : AGL1Z p ≃* (Subgroup.zpowers τ₀).normalizer :=
+noncomputable def isoStd : AGL1Z p ≃* Subgroup.normalizer (Subgroup.zpowers τ₀) :=
   (MonoidHom.ofInjective (AGL1Z.toPerm_injective p)).trans
     (MulEquiv.subgroupCongr normalizer_eq_range.symm)
 
 /-- **Step 4.** The normalizer of `⟨σ⟩` for any `p`-cycle `σ` is `≅ AGL(1, p)`. -/
 theorem normalizer_iso_AGL1Z
     (σ : Equiv.Perm (ZMod p)) (hσ : σ.IsCycle) (hσ_card : σ.support.card = p) :
-    ∃ φ : (Subgroup.zpowers σ).normalizer →* AGL1Z p,
+    ∃ φ : Subgroup.normalizer (Subgroup.zpowers σ) →* AGL1Z p,
       Function.Injective φ ∧ Function.Surjective φ := by
   -- `σ` and `τ₀` are conjugate (same cycle type `{p}`)
   have hconj : IsConj σ τ₀ := by
@@ -257,14 +258,14 @@ theorem normalizer_iso_AGL1Z
     rw [MonoidHom.map_zpowers,
       show e.toMonoidHom σ = τ₀ from hes]
   -- normalizers correspond under `e`
-  have hN : (Subgroup.zpowers σ).normalizer.map e.toMonoidHom
-      = (Subgroup.zpowers τ₀).normalizer := by
+  have hN : (Subgroup.normalizer (Subgroup.zpowers σ)).map e.toMonoidHom
+      = Subgroup.normalizer (Subgroup.zpowers τ₀) := by
     rw [Subgroup.map_equiv_normalizer_eq (Subgroup.zpowers σ) e, hmapz]
   -- assemble `N(⟨σ⟩) ≃* N(⟨τ₀⟩) ≃* AGL1Z`
-  let isoConj : (Subgroup.zpowers σ).normalizer ≃* (Subgroup.zpowers τ₀).normalizer :=
+  let isoConj : Subgroup.normalizer (Subgroup.zpowers σ) ≃* Subgroup.normalizer (Subgroup.zpowers τ₀) :=
     (Subgroup.equivMapOfInjective _ e.toMonoidHom
       e.injective).trans (MulEquiv.subgroupCongr hN)
-  let φe : (Subgroup.zpowers σ).normalizer ≃* AGL1Z p := isoConj.trans isoStd.symm
+  let φe : Subgroup.normalizer (Subgroup.zpowers σ) ≃* AGL1Z p := isoConj.trans isoStd.symm
   exact ⟨φe.toMonoidHom, φe.injective, φe.surjective⟩
 
 end AbelRuffiniGaloisExtensionsOQ06GaloisDirectionStep4

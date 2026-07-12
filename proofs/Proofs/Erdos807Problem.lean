@@ -31,6 +31,8 @@ import Mathlib.Data.Fintype.Basic
 import Mathlib.Data.Finset.Card
 import Mathlib.Probability.ProbabilityMassFunction.Basic
 
+open scoped Classical
+
 open SimpleGraph Finset
 
 namespace Erdos807

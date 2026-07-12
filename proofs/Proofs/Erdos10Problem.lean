@@ -30,6 +30,8 @@ import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Topology.Algebra.InfiniteSum.Real
 import Mathlib.Order.Filter.AtTopBot.Group
 
+open scoped Classical
+
 open Set Filter
 
 /- ## Core Definitions -/

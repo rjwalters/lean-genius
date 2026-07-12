@@ -28,6 +28,8 @@ References:
 
 import Mathlib
 
+open scoped Classical
+
 open SimpleGraph Finset
 
 namespace Erdos917

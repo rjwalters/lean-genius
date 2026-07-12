@@ -37,6 +37,8 @@ import Mathlib.Data.Set.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 
+open scoped Classical
+
 open Real Set
 
 namespace Erdos221

@@ -24,6 +24,8 @@ import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 
+open scoped Classical
+
 open Nat Real SimpleGraph
 
 namespace Erdos803

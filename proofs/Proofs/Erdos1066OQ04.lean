@@ -1,5 +1,7 @@
 import Mathlib
 
+open scoped Classical
+
 /-
 # Erdős 1066 — OQ-04: Higher-Dimensional g_d(n)
 

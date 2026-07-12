@@ -30,6 +30,8 @@ Bukh-Conlon finite family result.
 
 import Mathlib
 
+open scoped Classical
+
 namespace Erdos571
 
 /- ## Part I: Graph Definitions -/

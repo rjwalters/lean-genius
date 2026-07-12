@@ -23,6 +23,8 @@
 import Mathlib
 import Proofs.Erdos622Problem
 
+open scoped Classical
+
 open SimpleGraph Finset Erdos622
 
 namespace Erdos622OQ04

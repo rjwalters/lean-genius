@@ -21,6 +21,8 @@ import Mathlib.Data.Fin.Basic
 import Mathlib.Order.Filter.Basic
 import Mathlib.Tactic
 
+open scoped Classical
+
 open SimpleGraph Finset
 
 /- ## Hypercube graph -/

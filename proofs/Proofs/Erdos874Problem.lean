@@ -31,6 +31,8 @@ import Mathlib.Data.Finset.Card
 import Mathlib.Data.Real.Sqrt
 import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 
+open scoped Classical
+
 open Finset Nat
 
 namespace Erdos874

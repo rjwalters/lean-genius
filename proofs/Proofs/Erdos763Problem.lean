@@ -31,6 +31,8 @@ import Mathlib.Data.Nat.Basic
 import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 import Mathlib.Data.Set.Function
 
+open scoped Classical
+
 open Finset BigOperators Filter Asymptotics
 
 namespace Erdos763
