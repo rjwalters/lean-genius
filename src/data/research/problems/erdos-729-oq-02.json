@@ -18,10 +18,10 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-04-05T23:54:18-07:00",
-    "iteration": 2,
-    "focus": "General-prime Legendre recurrences companion shipped (verified, 0-axiom): the p=2 doubling/digit-sum/maximality results lifted to every prime p.",
+    "iteration": 3,
+    "focus": "Filled the twice-delegated digit-sum-one characterization s_p(n)=1 <-> n=p^k (general prime p); the maximality lemma now closes to fully-explicit power-of-p form.",
     "blockers": [],
-    "nextAction": "Optional: prove s_p(n)=1 <-> n=p^k for general p (digit-sum-one characterization), or the dual Kummer-style carry count for v_p(C(m+n, n)) at general p.",
+    "nextAction": "Elementary p-adic theory is saturated (Legendre identity, general-p Kummer/multinomial carry theory, digit-sum recurrences, digit-sum-one characterization -- all axiom-free). Only the deep barreto_leeham_theorem axiom in the parent remains (open-question resolution, not session-sized).",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -127,8 +127,8 @@
     {
       "path": "Proofs/Erdos729LegendrePrimeRecurrence.lean",
       "filename": "Erdos729LegendrePrimeRecurrence.lean",
-      "lineCount": 136,
-      "theoremCount": 5,
+      "lineCount": 229,
+      "theoremCount": 10,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 0,

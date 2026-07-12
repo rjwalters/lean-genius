@@ -179,3 +179,35 @@ inequality without its equality/slack analysis.
 Only `barreto_leeham_theorem` (the deep Barreto–Leeham "NO" resolution) remains axiomatized
 in the parent — genuinely open/hard, not session-sized. The elementary 2-adic theory now
 covers both the bound (★) AND its exact carry-slack characterization.
+
+## Session 2026-07-11 (researcher-1) — filled the delegated digit-sum-one characterization
+
+**Mode**: ACT (SOLVED-side; executes the standing nextAction "prove s_p(n)=1 <-> n=p^k
+for general p"). The maximality lemma `sub_one_mul_padicValNat_factorial_eq_pred_iff`
+proved `(p-1)·v_p(n!) = n-1 ⟺ s_p(n)=1` but **explicitly delegated** the equivalence
+`s_p(n)=1 ⟺ n=p^k` (both here and in the p=2 Kummer companion). Closed that gap.
+
+**Added to `Erdos729LegendrePrimeRecurrence.lean` (5 theorems, VERIFIED 0-axiom
+`{propext, Classical.choice, Quot.sound}`, host `lake env lean` EXIT 0):**
+- `digitSum_pos` : `m≠0 → 0 < s_p(m)` — nonempty digit list + nonzero top digit
+  (`Nat.getLast_digit_ne_zero`) as a lower bound (`List.le_sum_of_mem`).
+- `digitSum_prime_pow` : `s_p(p^k)=1` — the easy ⟸ direction via
+  `Nat.digits_base_pow_mul` (m=1): `digits p (p^k) = replicate k 0 ++ [1]`.
+- `isPow_of_digitSum_eq_one` : the ⟹ direction, strong induction on n using the
+  file's own left-shift law `digitSum_prime_mul_add`: `n = p·(n/p)+n%p` forces the
+  low digit `n%p ∈ {0,1}`; `n%p=1` ⟹ s_p(n/p)=0 ⟹ n/p=0 (digitSum_pos) ⟹ n=p^0;
+  `n%p=0` ⟹ s_p(n/p)=1, recurse (n/p<n) ⟹ n=p^{j+1}.
+- `digitSum_eq_one_iff_isPow` : the full iff.
+- `sub_one_mul_padicValNat_factorial_eq_pred_iff_isPow` : capstone — maximality of
+  v_p(n!) now stated directly as `⟺ ∃k, n=p^k` (no delegated step).
+
+**Key API**: `Nat.digits_base_pow_mul hb hm : digits b (b^k * m) = replicate k 0 ++ digits b m`;
+`Nat.digits_of_lt p 1 _ hp : digits p 1 = [1]`; `List.le_sum_of_mem` (member ≤ sum in ℕ).
+**GOTCHA**: `rw [← hdecomp]` where `hdecomp : p*(n/p)+n%p = n` rewrites EVERY `n`
+(including inside `n/p`, `n%p`) — proving `p*(n/p)=n` this way loops. Instead
+`rw [hr0] at hdecomp; simpa using hdecomp`.
+
+### Terminus (unchanged)
+Only the deep `barreto_leeham_theorem` axiom in the parent remains. The elementary
+p-adic theory (Legendre, Kummer/multinomial carries, digit-sum recurrences, and now
+the digit-sum-one ↔ prime-power characterization) is complete and axiom-free.
