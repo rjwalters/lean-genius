@@ -4,6 +4,56 @@ Insights accumulated during research on this problem.
 
 ---
 
+## Session 2026-07-12 (researcher-8) — m-fold whole-partition refinement MONOTONICITY
+
+**Mode:** FRESH (RICH tier, claimed via lock). **Outcome:** progress — the documented
+`2×2 → m×k` next step discharged at the monotonicity level.
+
+### What I did — new file `SzemerediRegularityOQ04FamilySplit.lean` (3 thm, 0 ax, 0 sorry)
+The `partitionEnergy` docstring asserts, in full generality, that "splitting a part never
+decreases energy", but the OQ-04 development only proved this for a **two-piece** single-part
+split (`partitionEnergy_single_split_mono`, Bridge) and the sharp **2×2** product refinement.
+This session generalizes the monotonicity to an **arbitrary disjoint family**:
+
+- `pairEnergy_biUnion_split_mono` — `pe (⋃ᵢ Aᵢ) B ≤ Σᵢ pe (Aᵢ) B`, the m-fold left analogue
+  of the two-piece `pairEnergy_split_mono`, by `Finset.induction` on `I` folding the two-piece
+  split over `Finset.biUnion` (disjointness of the head cell against the tail biUnion via
+  `Finset.disjoint_biUnion_right` + the `PairwiseDisjoint` hypothesis).
+- `pairEnergy_biUnion_split_mono_right` — the second-argument mirror, transported through
+  `pairEnergy_comm`.
+- `partitionEnergy_biUnion_split_mono` — **the whole-partition statement:** refining one part
+  `A = ⋃ᵢ Aᵢ` (with `As` injective on `I`, each `Aᵢ ∉ R`, `⋃ᵢ Aᵢ ∉ R`) into its family never
+  decreases `partitionEnergy`:
+  `partitionEnergy G (insert (⋃ᵢ Aᵢ) R) ≤ partitionEnergy G (I.image As ∪ R)`.
+  Proof mirrors `partitionEnergy_single_split_mono`: expand both sides via the bridge
+  `partitionEnergy_eq_sum_pairEnergy` into a diagonal `(A,A)` block, row `(A,R)` block,
+  column `(R,A)` block and untouched `R×R` block; the three affected blocks are each bounded
+  by the m-fold pair split lemmas (`Finset.sum_image` over the injective family, `Finset.sum_comm`
+  to align the row block, then `linarith`).
+
+### Verification — docker-VERIFIED (clean, no SIGBUS)
+`./proofs/scripts/docker-build.sh Proofs.SzemerediRegularityOQ04FamilySplit` → `Build completed
+successfully (7749 jobs)` on first try; Bridge dependency built in 22s with no exit-135 this cycle.
+`#print axioms` on all three theorems: `[propext, Classical.choice, Quot.sound]` — genuinely
+axiom-free, 0 sorries. (One transient hazard: the `researcher-8-2` worktree was deleted mid-build
+by a fleet sweep before the first commit; recovered by recreating the file in a dedicated worktree
+`lg-r8-szem-mxk` and committing before rebuilding — commit early on shared infra.)
+
+### Why this matters / honesty
+This is the **structural** half of the true AFKS refinement (every part split simultaneously
+into many pieces). It is genuine reusable infrastructure and closes the documented next step at
+the monotonicity level, but it is a lateral move relative to the standing analytic blocker: it
+adds no strict energy *gain* and does not touch the equipartition-realizability question. The
+`≥` here is non-strict; the meaningful `mxk` GAIN (variance surplus among the fine cells) and the
+two-sided product refinement remain the next steps.
+
+### Files Modified
+- `proofs/Proofs/SzemerediRegularityOQ04FamilySplit.lean` (NEW, 173 lines, 3 theorems)
+- `src/data/research/problems/szemeredi-regularity-oq-04.json` (leanFiles entry + knowledge)
+
+---
+
+
 ## Session 2026-07-09 (researcher-8) — TERMINATION capstone: a regular step is reached in bounded time
 
 **Mode:** REVISIT (RICH tier). **Outcome:** progress — the conclusion the whole development
