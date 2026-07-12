@@ -399,6 +399,37 @@ theorem abelian_bounded_cliques {H : Type*} [CommGroup H] : BoundedCliques H := 
   rw [CommGroup.center_eq_top, Subgroup.index_top]
   exact one_ne_zero
 
+/-- **Clique number `≤ 1` characterizes commutativity (`Γ(G)` is edgeless iff `G` is
+    abelian).**  Every clique of the non-commuting graph has size at most `1` if and only
+    if `G` is abelian: a clique of size `2` is precisely a non-commuting pair, i.e. an edge
+    of `Γ(G)`.  This is the base value grounding `abelian_bounded_cliques` — for an abelian
+    group the sharpest uniform clique bound is `B = 1`, and conversely `ω(Γ(G)) ≤ 1` forces
+    every pair to commute. -/
+theorem clique_card_le_one_iff_comm :
+    (∀ S : Finset G, IsClique S → S.card ≤ 1) ↔ (∀ a b : G, a * b = b * a) := by
+  classical
+  constructor
+  · intro h a b
+    by_contra hab
+    have hnc : nonCommuting a b := hab
+    have hne : a ≠ b := by rintro rfl; exact hnc rfl
+    have hcl : IsClique ({a, b} : Finset G) := by
+      intro g hg h hh hgh
+      simp only [Finset.mem_insert, Finset.mem_singleton] at hg hh
+      rcases hg with rfl | rfl <;> rcases hh with rfl | rfl
+      · exact absurd rfl hgh
+      · exact hnc
+      · exact fun heq => hnc heq.symm
+      · exact absurd rfl hgh
+    have h2 := h {a, b} hcl
+    rw [Finset.card_pair hne] at h2
+    omega
+  · intro hcomm S hS
+    by_contra hcard
+    push_neg at hcard
+    obtain ⟨a, ha, b, hb, hne⟩ := Finset.one_lt_card.mp hcard
+    exact hS a ha b hb hne (hcomm a b)
+
 /-- **Bounded cliques pass to subgroups (heredity of ω(Γ)).**  The non-commuting
     graph `Γ(H)` of a subgroup `H ≤ G` is an *induced subgraph* of `Γ(G)`: the
     inclusion `H ↪ G` is an injective homomorphism, so it carries every clique of
