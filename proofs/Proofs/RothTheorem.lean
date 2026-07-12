@@ -3074,5 +3074,131 @@ theorem sqDiffFree_density_le_of_prime {N : ℕ} [NeZero N] (hp : N.Prime) (hN2 
   rw [div_le_iff₀ hNpos, ← hts, ← mul_assoc, inv_mul_cancel₀ (ne_of_gt htpos), one_mul]
   exact h
 
+/-! ### Part XIX — The master explicit cardinality bound (any Weyl sup-norm `M`)
+
+Parts VII–XVIII derive, for *every* modulus, the circle-method **inequality**
+`|A|² ≤ |A|·c + N⁻¹·M·(|A|·N − |A|²)` (`sqDiffFree_density_bound`, with
+`c = #{n : n² = 0}` and any Weyl sup-norm `M ≥ ‖G(r)‖`) and, at a prime, solve it
+*by hand* for `|A| ≤ √N` (`sqDiffFree_card_le_sqrt_of_prime`).  That final
+"solve the quadratic for `|A|`" step is not special to the prime value `M = √N`:
+for **any** admissible sup-norm `M ≥ 0` the same algebra collapses to one closed form
+
+    |A|·(N + M) ≤ N·(c + M),     i.e.   |A| ≤ N·(c + M)/(N + M).
+
+This section extracts that step as a standalone lemma (`sqDiffFree_card_le_of_supNorm`)
+plus its division form, then reads off two instances:
+
+  * the **sharp prime bound** `√N` (`M = √N`, `c = 1`): the master lemma *is* the
+    prime capstone — `sqDiffFree_card_le_sqrt_of_prime_via_master` is one substitution;
+  * the first **explicit all-`N` cardinality bound**, with the unconditional sup-norm
+    `M = N/√2` (`sqDiffFree_card_le_of_ne_zero`): honest but quantitatively weak
+    (`N + N/√2 = Θ(N)`, so it does **not** force `|A| = o(N)`), the cardinality-level
+    counterpart of the density inequality `sqDiffFree_density_bound_of_ne_zero`.
+
+The value is *reusability*: any future sharper sup-norm `M = o(N)` on a class of
+moduli plugs straight into `sqDiffFree_card_le_of_supNorm` to yield `|A| = o(N)`
+Sárközy on that class with no further algebra.  0 axioms. -/
+
+/-- **Master explicit cardinality bound from a Weyl sup-norm.**  If every nonzero
+    frequency satisfies `‖G(r)‖ ≤ M` (with `M ≥ 0`) and `A` is square-difference-free,
+    then solving the circle-method inequality `sqDiffFree_density_bound` for `|A|`
+    gives the closed form
+
+    `|A|·(N + M) ≤ N·(#{n : n² = 0} + M)`.
+
+    The `−N⁻¹·M·|A|²` term a crude `M·|A|` bound throws away is exactly the gain that
+    makes the right-hand side sub-`M`.  Dividing by `N + M > 0` gives
+    `|A| ≤ N·(c + M)/(N + M)` (`sqDiffFree_card_le_of_supNorm_div`).  Substituting
+    `M = √N`, `c = 1` collapses the bound to `√N`, recovering the prime capstone. -/
+theorem sqDiffFree_card_le_of_supNorm {N : ℕ} [NeZero N] {M : ℝ} (hM : 0 ≤ M)
+    (A : Finset (ZMod N))
+    (hG : ∀ r : ZMod N, r ≠ 0 → ‖sqGaussSum r‖ ≤ M)
+    (hfree : ∀ x ∈ A, ∀ n : ZMod N, n ^ 2 ≠ 0 → x + n ^ 2 ∉ A) :
+    (A.card : ℝ) * ((N : ℝ) + M)
+      ≤ (N : ℝ) * (((Finset.univ.filter (fun n : ZMod N => n ^ 2 = 0)).card : ℝ) + M) := by
+  have hden := sqDiffFree_density_bound A hG hfree
+  have hNpos : (0 : ℝ) < N := by exact_mod_cast Nat.pos_of_ne_zero (NeZero.ne N)
+  set a : ℝ := (A.card : ℝ) with ha
+  set c : ℝ := ((Finset.univ.filter (fun n : ZMod N => n ^ 2 = 0)).card : ℝ) with hc
+  have ha0 : (0 : ℝ) ≤ a := by positivity
+  have hc0 : (0 : ℝ) ≤ c := by positivity
+  -- Clear `N⁻¹` by multiplying the inequality through by `N`.
+  have hmulN := mul_le_mul_of_nonneg_right hden (le_of_lt hNpos)
+  have hexp : (a * c + (N : ℝ)⁻¹ * (M * (a * N - a ^ 2))) * N
+      = a * c * N + M * (a * N - a ^ 2) := by field_simp
+  have key : a ^ 2 * N ≤ a * c * N + M * (a * N - a ^ 2) := by
+    rw [hexp] at hmulN; exact hmulN
+  -- Rearrange to `a²·(N+M) ≤ a·(N·(c+M))`, then cancel one factor of `a`.
+  have hbase : a ^ 2 * ((N : ℝ) + M) ≤ a * ((N : ℝ) * (c + M)) := by nlinarith [key]
+  rcases eq_or_lt_of_le ha0 with h0 | hapos
+  · rw [← h0, zero_mul]
+    exact mul_nonneg (le_of_lt hNpos) (by linarith)
+  · nlinarith [hbase, hapos]
+
+/-- **Division form of the master cardinality bound: `|A| ≤ N·(c + M)/(N + M)`.**
+    The explicit closed-form solution of the circle-method inequality for any Weyl
+    sup-norm `M ≥ 0`. -/
+theorem sqDiffFree_card_le_of_supNorm_div {N : ℕ} [NeZero N] {M : ℝ} (hM : 0 ≤ M)
+    (A : Finset (ZMod N))
+    (hG : ∀ r : ZMod N, r ≠ 0 → ‖sqGaussSum r‖ ≤ M)
+    (hfree : ∀ x ∈ A, ∀ n : ZMod N, n ^ 2 ≠ 0 → x + n ^ 2 ∉ A) :
+    (A.card : ℝ)
+      ≤ (N : ℝ) * (((Finset.univ.filter (fun n : ZMod N => n ^ 2 = 0)).card : ℝ) + M)
+          / ((N : ℝ) + M) := by
+  have hNpos : (0 : ℝ) < N := by exact_mod_cast Nat.pos_of_ne_zero (NeZero.ne N)
+  have hNM : (0 : ℝ) < (N : ℝ) + M := by linarith
+  rw [le_div_iff₀ hNM]
+  exact sqDiffFree_card_le_of_supNorm hM A hG hfree
+
+/-- **The master lemma subsumes the prime capstone `|A| ≤ √N`.**  Instantiating
+    `sqDiffFree_card_le_of_supNorm` at the exact prime magnitude `M = √N` and the
+    field count `c = 1` (a prime field has a unique square root of `0`) collapses the
+    right-hand side `N·(1 + √N)/(N + √N)` to `√N`.  This re-derives
+    `sqDiffFree_card_le_sqrt_of_prime` through the general lemma — evidence the
+    abstraction is faithful and sharp. -/
+theorem sqDiffFree_card_le_sqrt_of_prime_via_master {N : ℕ} [NeZero N] (hp : N.Prime)
+    (hN2 : N ≠ 2) (A : Finset (ZMod N))
+    (hfree : ∀ x ∈ A, ∀ n : ZMod N, n ^ 2 ≠ 0 → x + n ^ 2 ∉ A) :
+    (A.card : ℝ) ≤ Real.sqrt N := by
+  haveI := Fact.mk hp
+  have hc1 : (Finset.univ.filter (fun n : ZMod N => n ^ 2 = 0)).card = 1 := by
+    have hset : (Finset.univ.filter (fun n : ZMod N => n ^ 2 = 0)) = {0} := by
+      ext n
+      simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_singleton]
+      exact ⟨fun h => sq_eq_zero_iff.mp h, fun h => by rw [h]; ring⟩
+    rw [hset, Finset.card_singleton]
+  have hmaster := sqDiffFree_card_le_of_supNorm (Real.sqrt_nonneg (N : ℝ)) A
+    (fun _ hr => le_of_eq (sqGaussSum_norm_eq_sqrt_of_prime hp hN2 hr)) hfree
+  rw [hc1] at hmaster
+  push_cast at hmaster
+  have hNpos : (0 : ℝ) < N := by exact_mod_cast hp.pos
+  set a : ℝ := (A.card : ℝ) with ha
+  set t : ℝ := Real.sqrt N with ht
+  have htpos : (0 : ℝ) < t := Real.sqrt_pos.mpr hNpos
+  have hts : t ^ 2 = N := Real.sq_sqrt (le_of_lt hNpos)
+  -- `hmaster : a·(N + t) ≤ N·(1 + t)`; substitute `N = t²` and cancel `t·(t+1) > 0`.
+  rw [← hts] at hmaster
+  have hfac : a * (t * (t + 1)) ≤ t * (t * (t + 1)) := by nlinarith [hmaster]
+  exact le_of_mul_le_mul_right hfac (mul_pos htpos (by linarith))
+
+/-- **Explicit cardinality bound at every modulus (unconditional in `N`).**  The
+    master lemma fed by the all-`N` Weyl sup-norm `M = √(N²/2) = N/√2`
+    (`sqGaussSum_norm_le_of_ne_zero`): a square-difference-free `A ⊆ ℤ/Nℤ` satisfies
+
+    `|A|·(N + N/√2) ≤ N·(#{n : n² = 0} + N/√2)`.
+
+    This is the first explicit *cardinality*-level statement valid for all moduli
+    (the composite branch had only the density inequality
+    `sqDiffFree_density_bound_of_ne_zero`).  Honesty note: `N/√2 = Θ(N)`, so both
+    sides are `Θ(N²)` and this does **not** give `|A| = o(N)`; a sharper sub-`N`
+    sup-norm on a class of moduli would, via `sqDiffFree_card_le_of_supNorm`. -/
+theorem sqDiffFree_card_le_of_ne_zero {N : ℕ} [NeZero N] (A : Finset (ZMod N))
+    (hfree : ∀ x ∈ A, ∀ n : ZMod N, n ^ 2 ≠ 0 → x + n ^ 2 ∉ A) :
+    (A.card : ℝ) * ((N : ℝ) + Real.sqrt ((N : ℝ) ^ 2 / 2))
+      ≤ (N : ℝ) * (((Finset.univ.filter (fun n : ZMod N => n ^ 2 = 0)).card : ℝ)
+          + Real.sqrt ((N : ℝ) ^ 2 / 2)) :=
+  sqDiffFree_card_le_of_supNorm (Real.sqrt_nonneg _) A
+    (fun _ hr => sqGaussSum_norm_le_of_ne_zero hr) hfree
+
 end Szemeredi.Roth
 
