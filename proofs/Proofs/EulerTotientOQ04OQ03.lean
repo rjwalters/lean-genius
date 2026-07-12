@@ -3689,4 +3689,58 @@ theorem shared_landing_triple_verdict_917 (k : ℕ) :
     rw [hD1097, hφ1097, hφ917]
     exact mul_lt_mul_of_pos_right (by norm_num) pos
 
+/-! ## The three regimes partition ℕ
+
+`ReversalSet`, `EqualitySet`, and `ForwardSet` are defined by the three cases of the
+comparison `φ(n)` vs `φ(D(n))` (with `D = dblIter`).  Being the `<`, `=`, `>` slices of a
+single `Nat` comparison, they are automatically **pairwise disjoint** and **cover ℕ** — every
+`n` lands in *exactly one* regime.  This is the global well-definedness of the whole
+classification (of which `classifySeed_classifies` is the seed-family decision procedure):
+no `n` is both a reversal and a forward point, and none escapes classification.  These hold
+for *all* `n`, needing none of the seed/transport machinery — only the trichotomy of `φ(n)`
+against `φ(D(n))`. -/
+
+/-- Reversal and equality are disjoint: `φ(n) < φ(D(n))` and `φ(n) = φ(D(n))` cannot both hold. -/
+theorem reversalSet_disjoint_equalitySet : Disjoint ReversalSet EqualitySet := by
+  rw [Set.disjoint_left]
+  intro n hR hE
+  rw [ReversalSet, Set.mem_setOf_eq] at hR
+  rw [EqualitySet, Set.mem_setOf_eq] at hE
+  omega
+
+/-- Reversal and forward are disjoint: `φ(n) < φ(D(n))` and `φ(D(n)) < φ(n)` cannot both hold. -/
+theorem reversalSet_disjoint_forwardSet : Disjoint ReversalSet ForwardSet := by
+  rw [Set.disjoint_left]
+  intro n hR hF
+  rw [ReversalSet, Set.mem_setOf_eq] at hR
+  rw [ForwardSet, Set.mem_setOf_eq] at hF
+  omega
+
+/-- Equality and forward are disjoint: `φ(n) = φ(D(n))` and `φ(D(n)) < φ(n)` cannot both hold. -/
+theorem equalitySet_disjoint_forwardSet : Disjoint EqualitySet ForwardSet := by
+  rw [Set.disjoint_left]
+  intro n hE hF
+  rw [EqualitySet, Set.mem_setOf_eq] at hE
+  rw [ForwardSet, Set.mem_setOf_eq] at hF
+  omega
+
+/-- **The three regimes cover ℕ.**  Every `n` is a reversal, equality, or forward point,
+by the trichotomy of `φ(n)` against `φ(D(n))`. -/
+theorem reversalSet_union_equalitySet_union_forwardSet :
+    ReversalSet ∪ EqualitySet ∪ ForwardSet = Set.univ := by
+  ext n
+  simp only [Set.mem_union, ReversalSet, EqualitySet, ForwardSet, Set.mem_setOf_eq,
+    Set.mem_univ, iff_true]
+  omega
+
+/-- **Exactly one regime per `n`.**  The three sets partition ℕ: every `n` lies in one of
+`ReversalSet`, `EqualitySet`, `ForwardSet` and in neither of the other two.  The global
+trichotomy behind the classifier. -/
+theorem regime_trichotomy (n : ℕ) :
+    (n ∈ ReversalSet ∧ n ∉ EqualitySet ∧ n ∉ ForwardSet) ∨
+      (n ∉ ReversalSet ∧ n ∈ EqualitySet ∧ n ∉ ForwardSet) ∨
+      (n ∉ ReversalSet ∧ n ∉ EqualitySet ∧ n ∈ ForwardSet) := by
+  simp only [ReversalSet, EqualitySet, ForwardSet, Set.mem_setOf_eq]
+  omega
+
 end Erdos1064OQ03
