@@ -680,6 +680,53 @@ theorem genusSurfaceCGB_totalPfaffian_neg_iff (g : ℕ) :
     have : (2 : ℝ) ≤ (g : ℝ) := by exact_mod_cast hg
     linarith
 
+-- ============================================================================
+-- Part XV: Order and parity of the genus Euler characteristic, and the
+--          Euler characteristic of product surfaces `Σ_g × Σ_h`
+-- ============================================================================
+
+/-- **`χ(Σ_g)` is strictly decreasing in the genus.**  Each added handle drops the
+    Euler characteristic by exactly `2`, so `g ↦ χ(Σ_g) = 2 − 2g` is strictly
+    antitone: `g < h ⇒ χ(Σ_h) < χ(Σ_g)`.  This upgrades the injectivity
+    `genusSurfaceCGB_chi_inj` to a genuine order-reversing structure on the
+    connected-sum monoid `(surfaces, #) ≅ (ℕ, +)`. -/
+theorem genusSurfaceCGB_chi_strictAnti :
+    StrictAnti (fun g : ℕ => (genusSurfaceCGB g).chi) := by
+  intro a b hab
+  simp only [genusSurfaceCGB_chi]
+  omega
+
+/-- **`χ(Σ_g)` is (weakly) antitone in the genus**, the `≤`-form of
+    `genusSurfaceCGB_chi_strictAnti`. -/
+theorem genusSurfaceCGB_chi_antitone :
+    Antitone (fun g : ℕ => (genusSurfaceCGB g).chi) :=
+  genusSurfaceCGB_chi_strictAnti.antitone
+
+/-- **The Euler characteristic of a closed orientable surface is even.**  `χ(Σ_g) =
+    2 − 2g = 2(1 − g)` is even for every genus `g` — the parity obstruction that no
+    closed orientable surface has odd Euler characteristic. -/
+theorem genusSurfaceCGB_chi_even (g : ℕ) : Even (genusSurfaceCGB g).chi :=
+  ⟨1 - (g : ℤ), by rw [genusSurfaceCGB_chi]; ring⟩
+
+/-- **Euler characteristic of the product surface `Σ_g × Σ_h`.**  Since `χ` is
+    multiplicative under products (`prodCGB_chi`), the product `4`-manifold
+    `Σ_g × Σ_h` has `χ = (2 − 2g)(2 − 2h)`.  Generalises `sphere_prod_sphere_chi`
+    (the `g = h = 0` case, `χ = 4`) to arbitrary genera. -/
+theorem prodCGB_genusSurface_chi (g h : ℕ) :
+    (prodCGB (genusSurfaceCGB g) (genusSurfaceCGB h)).chi
+      = (2 - 2 * (g : ℤ)) * (2 - 2 * (h : ℤ)) := by
+  rw [prodCGB_chi, genusSurfaceCGB_chi, genusSurfaceCGB_chi]
+
+/-- **Total Gauss-Bonnet curvature of the product surface `Σ_g × Σ_h`.**  The total
+    Pfaffian multiplies under products (`prodCGB_totalPfaffian`), giving the closed
+    form `∫Pf(Σ_g × Σ_h) = [4π(1−g)]·[4π(1−h)] = 16π²(1−g)(1−h)` for the product
+    `4`-manifold — the Chern-Gauss-Bonnet content `(2π)²·χ(Σ_g × Σ_h)` written out. -/
+theorem prodCGB_genusSurface_totalPfaffian (g h : ℕ) :
+    (prodCGB (genusSurfaceCGB g) (genusSurfaceCGB h)).totalPfaffian
+      = 16 * π ^ 2 * (1 - (g : ℝ)) * (1 - (h : ℝ)) := by
+  rw [prodCGB_totalPfaffian, genusSurfaceCGB_totalPfaffian, genusSurfaceCGB_totalPfaffian]
+  ring
+
 end ChernGaussBonnet
 
 end
