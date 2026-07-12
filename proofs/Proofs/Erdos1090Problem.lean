@@ -1319,6 +1319,18 @@ theorem hasRamseyPropertyColored_realizable_setOf_eq_Ici {C : Type*} [Finite C] 
   simpa only [Set.mem_setOf_eq, Set.mem_Ici] using
     hasRamseyPropertyColored_realizable_card_iff hk n
 
+/-- **The colored realizable-size set is infinite.**  For a finite palette `C` and `k ≥ 3`
+there are arbitrarily large finite point sets with the `C`-colored Ramsey property: the
+realizable cardinalities form the infinite up-ray `Set.Ici (ramseyNumberColored C k)`
+(`hasRamseyPropertyColored_realizable_setOf_eq_Ici`), and `ℕ` has no maximal element.  The
+colored analogue of `hasRamseyProperty_realizable_setOf_infinite`, completing the colored
+realizable-set characterization. -/
+theorem hasRamseyPropertyColored_realizable_setOf_infinite {C : Type*} [Finite C] {k : ℕ}
+    (hk : k ≥ 3) :
+    {n : ℕ | ∃ A : Finset Point, A.card = n ∧ HasRamseyPropertyColored C A k}.Infinite := by
+  rw [hasRamseyPropertyColored_realizable_setOf_eq_Ici hk]
+  exact Set.Ici_infinite _
+
 /--
 The main theorem: Erdős #1090 is solved affirmatively.
 -/
