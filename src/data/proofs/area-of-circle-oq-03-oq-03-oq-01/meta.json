@@ -138,6 +138,16 @@
       "targetId": "area-of-circle",
       "relationship": "related",
       "description": "The circle area π·r² is recovered here as the a = b = r special case (circle_area_special)."
+    },
+    {
+      "targetId": "area-of-circle-oq-03",
+      "relationship": "related",
+      "description": "The complementary route to the same area. That entry derives the circle's area by Archimedes' method of exhaustion (inscribed/circumscribed polygons); this entry derives the more general ellipse area by an affine change of variables in the integral. Exhaustion versus change-of-variables are the two classical paths to area, here applied to the circle and its affine image."
+    },
+    {
+      "targetId": "area-of-circle-oq-03-oq-03-oq-02",
+      "relationship": "related",
+      "description": "Sibling addressing the parent's SECOND open question — the one this entry's own open questions flag as the natural complement. It formalizes the sub-triangle area ratios in Archimedes' parabolic exhaustion (the 4/3 rule), the exhaustion counterpart to this entry's change-of-variables computation of a conic-section area."
     }
   ],
   "references": [
