@@ -968,5 +968,64 @@ theorem weighted_sum_simplex_over_dim (d n : ℕ) :
     Finset.sum_congr rfl fun k _ => by rw [simplexNumber_symm k d]
   rw [h, weighted_sum_simplex, simplexNumber_symm (d + 2) n]
 
+/-! ### General falling-factorial moment hockey stick
+
+The plain hockey stick `sum_simplex` (`∑ P_d(k) = P_{d+1}(n)`) and the first-moment
+`weighted_sum_simplex` (`∑ k·P_d(k) = (d+1)·P_{d+2}(n)`) are the `r = 0` and `r = 1`
+instances of a single identity: weighting a figurate row by the **falling factorial**
+`(k)_r = k(k-1)⋯(k-r+1)` and summing collapses to one higher-dimensional simplex number.
+Falling factorials are the natural discrete moment basis (each forward difference lowers the
+order, mirroring `d/dx xʳ = r·xʳ⁻¹`), so this is the exact discrete analogue of the
+continuous moment `∫₀ⁿ xʳ·x^d = n^{d+r+1}/(d+r+1)`. The proof iterates the absorption
+identity `succ_mul_simplexNumber` once per order, by induction on `r`. -/
+
+/-- **General falling-factorial moment hockey stick.** Weighting a figurate row by the
+falling factorial `(k)_r = k(k-1)⋯(k-r+1) = k.descFactorial r` and summing collapses to a
+single higher-dimensional simplex number:
+
+`∑_{k ≤ n+r} (k)_r · P_d(k) = (d+r)_r · P_{d+r+1}(n)`,
+
+where the coefficient `(d+r)_r = (d+1)(d+2)⋯(d+r)` is itself a falling factorial. The plain
+hockey stick `sum_simplex` is the case `r = 0` (weight `(k)_0 ≡ 1`, coefficient `1`) and the
+first moment `weighted_sum_simplex` is `r = 1` (weight `k`, coefficient `d+1`); each further
+order applies the pointwise absorption identity `succ_mul_simplexNumber` one more time. This
+exhibits the falling factorials as the natural discrete moment basis for the figurate ladder
+— the summation-side analogue of the continuous moment `∫₀ⁿ xʳ·x^d = n^{d+r+1}/(d+r+1)`.
+Proved by induction on the order `r`, generalizing the dimension `d`: reindexing `k = j+1`
+(`Finset.sum_range_succ'`) and `Nat.succ_descFactorial_succ` peel one falling-factorial factor
+`(j+1)`, the absorption identity turns `(j+1)·P_d(j+1)` into `(d+1)·P_{d+1}(j)`, and the
+inductive hypothesis at dimension `d+1` closes it; the coefficient bookkeeping is exactly
+`Nat.descFactorial_succ`. -/
+theorem descFactorial_moment_sum_simplex (r d n : ℕ) :
+    ∑ k ∈ range (n + r + 1), k.descFactorial r * simplexNumber d k
+      = (d + r).descFactorial r * simplexNumber (d + r + 1) n := by
+  induction r generalizing d with
+  | zero =>
+    simp only [Nat.descFactorial_zero, Nat.add_zero, Nat.one_mul]
+    exact sum_simplex d n
+  | succ r ih =>
+    rw [show n + (r + 1) + 1 = (n + r + 1) + 1 from by ring]
+    rw [Finset.sum_range_succ'
+      (fun k => k.descFactorial (r + 1) * simplexNumber d k) (n + r + 1)]
+    have hz : (0 : ℕ).descFactorial (r + 1) * simplexNumber d 0 = 0 := by
+      rw [Nat.descFactorial_succ, Nat.zero_sub, Nat.zero_mul, Nat.zero_mul]
+    rw [hz, Nat.add_zero]
+    have hstep : ∀ j ∈ range (n + r + 1),
+        (j + 1).descFactorial (r + 1) * simplexNumber d (j + 1)
+          = (d + 1) * (j.descFactorial r * simplexNumber (d + 1) j) := by
+      intro j _
+      rw [Nat.succ_descFactorial_succ]
+      have hab := succ_mul_simplexNumber d j
+      calc (j + 1) * j.descFactorial r * simplexNumber d (j + 1)
+          = j.descFactorial r * ((j + 1) * simplexNumber d (j + 1)) := by ring
+        _ = j.descFactorial r * ((d + 1) * simplexNumber (d + 1) j) := by rw [hab]
+        _ = (d + 1) * (j.descFactorial r * simplexNumber (d + 1) j) := by ring
+    rw [Finset.sum_congr rfl hstep, ← Finset.mul_sum, ih (d + 1)]
+    rw [show d + 1 + r = d + (r + 1) from by ring, ← Nat.mul_assoc]
+    congr 1
+    rw [Nat.descFactorial_succ]
+    congr 1
+    omega
+
 end TetrahedralNumberFormulaOQ01
 
