@@ -28,7 +28,7 @@
       {
         "theorem": "Real.sqrt_le_sqrt / Real.sqrt_sq",
         "description": "monotonicity of √ and √(a²) = a; turn the polynomial bounds √m ≤ m and √(m+1) ≤ m/8 into the m/log m normalization",
-        "module": "Mathlib.Analysis.SpecialFunctions.Sqrt"
+        "module": "Mathlib.Data.Real.Sqrt"
       },
       {
         "theorem": "Real.log_two_gt_d9",

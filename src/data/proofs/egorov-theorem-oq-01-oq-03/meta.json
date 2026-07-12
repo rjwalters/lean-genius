@@ -85,7 +85,7 @@
       {
         "theorem": "MeasureTheory.integral_indicator",
         "description": "∫ x, (s.indicator f) x ∂μ = ∫ x in s, f x ∂μ for measurable s. Reduces ∫ marching n to a set integral over [n,n+1], used to compute ∫ fₙ = 1.",
-        "module": "Mathlib.MeasureTheory.Integral.SetIntegral"
+        "module": "Mathlib.MeasureTheory.Integral.Bochner.Set"
       },
       {
         "theorem": "Real.volume_real_Icc_of_le",

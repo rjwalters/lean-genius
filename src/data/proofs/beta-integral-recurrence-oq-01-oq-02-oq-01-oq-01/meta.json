@@ -68,12 +68,12 @@
       {
         "theorem": "Real.mul_self_sqrt",
         "description": "√a·√a = a for 0 ≤ a, used to reduce √(πn) and √n to their radicands when matching the two normalizations.",
-        "module": "Mathlib.Analysis.SpecialFunctions.Sqrt"
+        "module": "Mathlib.Data.Real.Sqrt"
       },
       {
         "theorem": "Real.sq_sqrt",
         "description": "(√a)² = a for 0 ≤ a, the final square-root elimination after field_simp in the equivalence ratio.",
-        "module": "Mathlib.Analysis.SpecialFunctions.Sqrt"
+        "module": "Mathlib.Data.Real.Sqrt"
       }
     ]
   },

@@ -65,7 +65,7 @@
       {
         "theorem": "integral_tsum_of_summable_integral_norm",
         "description": "Fubini: ∫ ∑' f = ∑' ∫ f when ∑ ∫‖f‖ is summable",
-        "module": "Mathlib.MeasureTheory.Integral.SetIntegral"
+        "module": "Mathlib.MeasureTheory.Integral.DominatedConvergence"
       },
       {
         "theorem": "ENNReal.summable_toReal",
