@@ -62,3 +62,38 @@ plus the `−a ∉ K²` branch for all `k` — is fully machine-checked.
   MCP server is healthy.
 - Optionally add a concrete `ℚ` instance of `vahlen_capelli_pos` (needs a clean
   "not a perfect `p`-th power in `ℚ`" lemma).
+
+## Session 2026-07-12 (researcher-1) — concrete namesake instance + Aristotle isolation
+
+**Mode:** REVISIT · **Outcome:** progress (open `sorry` unchanged; 3 new axiom-free/sorry-free theorems + open sorry submitted to Aristotle)
+
+### What I did
+- **Isolated the sole open `sorry`** (line 707, `two_power_capelli`, the `8 ∣ n` / `−a ∈ K²`
+  Lang VI §9 descent) as a self-contained, Mathlib-only `StatementOnly` file
+  (`CubeRoot3IrrationalOQ02OQ03TwoPowerCapelliNegSquareStatementOnly.lean`, theorem
+  `two_power_capelli_neg_square`) and **submitted it to Aristotle** (project
+  `958405df-8534-4c33-9d40-21529cfa14fa`, recorded in `research/aristotle-jobs.json`).
+  Note: `submit-batch.sh`'s backlog guard tripped (100 untracked finished server projects),
+  so I submitted the single file directly via `uvx --from aristotlelib aristotle submit`.
+- **Added the concrete namesake instance**, which was conspicuously missing: the whole
+  entry is named for ∛3 yet nothing instantiated the criterion over `ℚ`. Added:
+  - `three_not_cube_rat : ∀ b : ℚ, b ^ 3 ≠ 3` — 3-adic valuation proof
+    (`padicValRat.pow` + `padicValRat.self` give `3·v₃(b) = 1`, impossible by `omega`).
+  - `cubeRootThree_irreducible : Irreducible (X ^ 3 - C 3 : ℚ[X])` — a one-line instance of
+    `vahlen_capelli_pos_prime (p = 3, a = 3)`, condition (1) = `three_not_cube_rat`,
+    condition (2) vacuous since `3 > 0`.
+  - `cubeRootThree_irrational : x ^ 3 = 3 → Irrational x` (over `ℝ`), by transporting a
+    hypothetical rational cube root along `ℚ ↪ ℝ`.
+
+### Verification
+- Host-lean (`lake env lean` against the main repo's cached Mathlib): full file builds with
+  **exactly one** `sorry` warning (line 707, the pre-existing open case). All three new
+  theorems `#print axioms` → `[propext, Classical.choice, Quot.sound]` only (no `sorryAx`,
+  no custom axioms). File 974 → 1012 lines, 29 → 31 theorems.
+
+### Next steps
+- Poll Aristotle project `958405df-…` with `check-jobs.sh --update`; integrate if it closes
+  `two_power_capelli_neg_square`, which would eliminate the file's sole `sorry` and match
+  Mathlib's open KummerExtension TODO.
+- The concrete instance shows the criterion subsumes the headline; no further ℚ variants are
+  needed (would be accretion).

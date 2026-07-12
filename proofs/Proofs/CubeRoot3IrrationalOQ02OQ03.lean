@@ -971,4 +971,42 @@ theorem vahlen_capelli_pos_prime {K : Type*} [Field K] [LinearOrder K]
   have h := vahlen_capelli_pos_prime_pow hp (le_refl 1) ha (a := a)
   rwa [pow_one] at h
 
+-- ============================================================
+-- PART 8: The concrete namesake instance — `X³ − 3` over `ℚ`
+-- ============================================================
+
+/-- **`3` is not a cube in `ℚ`.** No rational number cubes to `3`.
+
+This is the concrete arithmetic input that the general criterion needs to conclude that
+`X³ − 3` is irreducible (see `cubeRootThree_irreducible`). The proof is a one-prime
+valuation argument: if `b³ = 3` with `b ≠ 0`, then applying the `3`-adic valuation gives
+`3 · v₃(b) = v₃(3) = 1`, which is impossible in `ℤ` (`1` is not a multiple of `3`). This
+is exactly the ∛3-irrationality fact at the head of this gallery entry, phrased over `ℚ`. -/
+theorem three_not_cube_rat : ∀ b : ℚ, b ^ 3 ≠ 3 := by
+  intro b hb
+  have hb0 : b ≠ 0 := by rintro rfl; norm_num at hb
+  have h1 : padicValRat 3 (3 : ℚ) = 1 := by
+    have := padicValRat.self (p := 3) (by norm_num); simpa using this
+  have key : padicValRat 3 (b ^ 3) = 1 := by rw [hb, h1]
+  rw [padicValRat.pow hb0] at key
+  omega
+
+/-- **`X³ − 3` is irreducible over `ℚ` — the namesake instance (`sorry`-free, axiom-free).**
+
+This is the polynomial witnessing that `∛3` is irrational, recovered here as a direct
+instance of the general Vahlen–Capelli criterion `vahlen_capelli_pos_prime` (prime exponent
+`p = 3`, positive radicand `a = 3`): condition (1) is precisely `three_not_cube_rat`
+(`3` is not a cube) and condition (2) is vacuous because `3 > 0`. Closing the loop from the
+abstract criterion back to the concrete cube-root-of-3 headline of this entry. -/
+theorem cubeRootThree_irreducible : Irreducible (X ^ 3 - C 3 : ℚ[X]) :=
+  (vahlen_capelli_pos_prime (by norm_num : Nat.Prime 3) (by norm_num : (0 : ℚ) < 3)).mpr
+    three_not_cube_rat
+
+/-- **`∛3` is irrational.** There is no real number whose cube is `3` lying in the image of
+`ℚ`; equivalently the real cube root of `3` is irrational. Follows from `three_not_cube_rat`
+by transporting a hypothetical rational cube root along the `ℚ ↪ ℝ` ring embedding. -/
+theorem cubeRootThree_irrational {x : ℝ} (hx : x ^ 3 = 3) : Irrational x := by
+  rintro ⟨q, rfl⟩
+  exact three_not_cube_rat q (by exact_mod_cast hx)
+
 end CubeRoot3IrrationalOQ02OQ03
