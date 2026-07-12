@@ -65,6 +65,14 @@
   },
   "sections": [
     {
+      "id": "setup",
+      "title": "Setup: goal, strategy, and sibling reuse",
+      "startLine": 1,
+      "endLine": 46,
+      "summary": "Module docstring stating the two results — symmetry binaryGcdSteps a b = binaryGcdSteps b a and the b = 1 slice closed form — and the strategy: prove symmetry directly, then transport the sibling BinaryGcdOQ01OQ04OQ01's a = 1 analysis across it. Imports Mathlib, the parent BinaryGcdOQ01 (definition + upper bound), and the a = 1 sibling; opens the BinaryGcdOQ01 and Nat namespaces.",
+      "mathContext": "binaryGcdSteps counts the recursion steps of Stein's binary GCD. The a = 1 slice binaryGcdSteps 1 b = Nat.log 2 b + 1 is established in the sibling; this leaf supplies symmetry and thereby the transposed b = 1 slice."
+    },
+    {
       "id": "symmetry",
       "title": "Symmetry of the step count",
       "startLine": 47,
@@ -73,17 +81,25 @@
       "mathContext": "Even/even → 1 + steps(a/2, b/2) vs 1 + steps(b/2, a/2); even/odd ↔ odd/even are transposes; odd/odd with a > b → 1 + steps((a-b)/2, b) matches the other orientation's b < a branch; a = b unfolds identically. Each recursive pair has strictly smaller argument sum, so the IH applies."
     },
     {
-      "id": "b-one-slice",
-      "title": "The b = 1 slice (mirror of the a = 1 closed form)",
-      "startLine": 88,
-      "endLine": 114,
-      "summary": "From symmetry plus OQ-01: binaryGcdSteps_one_right_eq_log_succ (binaryGcdSteps a 1 = Nat.log 2 a + 1 for a ≥ 1), binaryGcdSteps_one_right_eq_dyadic (constant n+1 on each dyadic block [2^n, 2^(n+1))), binaryGcdSteps_one_right_mono (monotone in a), and binaryGcdSteps_one_right_pow2_sub_one (the transposed worst-case family (2^n - 1, 1) takes n steps).",
-      "mathContext": "binaryGcdSteps a 1 = binaryGcdSteps 1 a = Nat.log 2 a + 1. The b = 1 cost depends only on the bit-length of a, so the worst case below 2^N is again an entire top dyadic block, now in the first argument."
+      "id": "b-one-closed-form",
+      "title": "The b = 1 slice: bit-length closed form",
+      "startLine": 87,
+      "endLine": 100,
+      "summary": "Transporting the sibling's a = 1 analysis across symmetry: binaryGcdSteps_one_right_eq_log_succ (binaryGcdSteps a 1 = Nat.log 2 a + 1 for a ≥ 1) and binaryGcdSteps_one_right_eq_dyadic (the cost is constant n+1 on each dyadic block [2^n, 2^(n+1))). Each is a one-line rw [binaryGcdSteps_comm, <sibling lemma>].",
+      "mathContext": "binaryGcdSteps a 1 = binaryGcdSteps 1 a = Nat.log 2 a + 1: the b = 1 cost depends only on the bit-length of a, constant on each dyadic block."
+    },
+    {
+      "id": "b-one-mono-worstcase",
+      "title": "The b = 1 slice: monotonicity and worst case",
+      "startLine": 101,
+      "endLine": 112,
+      "summary": "The order-theoretic consequences of the b = 1 closed form: binaryGcdSteps_one_right_mono (monotone non-decreasing in a, via symmetry on both arguments then the sibling's monotonicity) and binaryGcdSteps_one_right_pow2_sub_one (the transposed worst-case family (2^n - 1, 1) takes exactly n steps — the transpose of the parent's (1, 2^n - 1) family).",
+      "mathContext": "The worst case below 2^N is again an entire top dyadic block, now in the first argument: (2^n - 1, 1) attains the n-step maximum, transposing the parent's (1, 2^n - 1)."
     },
     {
       "id": "cross-checks",
       "title": "Symbolic cross-checks",
-      "startLine": 116,
+      "startLine": 113,
       "endLine": 124,
       "summary": "Axiom-free spot checks: binaryGcdSteps 12 8 = binaryGcdSteps 8 12 (symmetry on a concrete asymmetric pair, no decide) and binaryGcdSteps 7 1 = 3 via the transposed worst-case corollary.",
       "mathContext": "Concrete instances that exercise the symmetry theorem and the b = 1 closed form without native_decide."
