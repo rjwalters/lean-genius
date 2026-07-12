@@ -803,4 +803,18 @@ theorem two_pow_le_of_distinct_bounded {A : Finset ℕ} {n : ℕ}
   have hp : 1 ≤ 2 ^ A.card := Nat.one_le_two_pow
   omega
 
+/-- **Explicit `log₂` cardinality bound for distinct-subset-sum sets.**  Rewriting the
+    quantitative bound `two_pow_le_of_distinct_bounded` (`2^{|A|} ≤ n·|A|+1`) through
+    `Nat.pow_le_iff_le_log` turns it into a statement on the cardinality itself:
+    `|A| ≤ log₂(n·|A|+1)`.  This is the closed logarithmic form of the `O(log₂ n)` growth —
+    the right-hand side still mentions `|A|`, but since `log₂(n·|A|+1) = log₂|A| + log₂ n +
+    O(1)` grows only logarithmically in `|A|`, the inequality already pins `|A|` to
+    `(1+o(1))·log₂ n`.  Discharging the `Nat.log` step was the standing next task after
+    `two_pow_le_of_distinct_bounded`. -/
+theorem card_le_log_of_distinct_bounded {A : Finset ℕ} {n : ℕ}
+    (hpos : ∀ a ∈ A, 1 ≤ a) (hle : ∀ a ∈ A, a ≤ n) (hd : DistinctSubsetSums A) :
+    A.card ≤ Nat.log 2 (n * A.card + 1) := by
+  have h := two_pow_le_of_distinct_bounded hpos hle hd
+  exact (Nat.pow_le_iff_le_log (by norm_num) (by omega)).mp h
+
 end Erdos882OQ03
