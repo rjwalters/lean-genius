@@ -1960,4 +1960,159 @@ theorem tsum_gap_normSq_fourierCoeffOn_le_isoperimetric_deficit
   rw [hRHS] at hmul
   exact hmul
 
+-- ============================================================
+-- SECTION XVII: plain (unweighted) L² Fuglede stability
+--   — stripping the harmonic weight to the standard
+--     L²-distance-to-circle deficit bound (constant 2)
+-- ============================================================
+
+/-- **Half the plain tail energy is dominated by the harmonic-weighted gap summand.**
+    Writing the *unweighted* higher-harmonic indicator summand
+    `1_{|n|≥2}·(‖ĉₙf‖²+‖ĉₙg‖²)`, twice it lies below the frequency-weighted gap summand
+    `(|n|²−|n|)·(‖ĉₙf‖²+‖ĉₙg‖²)`.  On `|n| ≥ 2` this is exactly the uniform coefficient bound
+    `|n|²−|n| ≥ 2`; on the circle modes `|n| ≤ 1` the indicator is `0` while the weight is
+    nonnegative (`deficit_gap_coef_nonneg`).  Summed, this converts the weighted (`H¹`) aggregate
+    stability estimate into a plain (`L²`) one with the sharp constant `2`. -/
+private theorem two_mul_tail_le_gap {f g : ℝ → ℝ} (hab : (0 : ℝ) < 2 * π) (n : ℤ) :
+    2 * (if 2 ≤ n.natAbs then
+          ‖fourierCoeffOn hab (ofReal ∘ f) n‖ ^ 2
+            + ‖fourierCoeffOn hab (ofReal ∘ g) n‖ ^ 2
+        else 0)
+      ≤ (|(n : ℝ)| ^ 2 - |(n : ℝ)|)
+        * (‖fourierCoeffOn hab (ofReal ∘ f) n‖ ^ 2
+            + ‖fourierCoeffOn hab (ofReal ∘ g) n‖ ^ 2) := by
+  by_cases hn : 2 ≤ n.natAbs
+  · rw [if_pos hn]
+    have hm : (2 : ℝ) ≤ |(n : ℝ)| := by
+      rw [← Int.cast_abs]
+      exact_mod_cast (show (2 : ℤ) ≤ |n| by rw [Int.abs_eq_natAbs]; exact_mod_cast hn)
+    have hcoef : (2 : ℝ) ≤ |(n : ℝ)| ^ 2 - |(n : ℝ)| := by
+      nlinarith [hm, mul_nonneg (by linarith [hm] : (0 : ℝ) ≤ |(n : ℝ)| - 2)
+        (by linarith [hm] : (0 : ℝ) ≤ |(n : ℝ)| + 1)]
+    have hP : (0 : ℝ) ≤ ‖fourierCoeffOn hab (ofReal ∘ f) n‖ ^ 2
+        + ‖fourierCoeffOn hab (ofReal ∘ g) n‖ ^ 2 := by positivity
+    nlinarith [hcoef, hP, mul_nonneg
+      (by linarith [hcoef] : (0 : ℝ) ≤ |(n : ℝ)| ^ 2 - |(n : ℝ)| - 2) hP]
+  · simp only [if_neg hn, mul_zero]
+    exact mul_nonneg (deficit_gap_coef_nonneg n) (by positivity)
+
+/-- **The plain tail energy is summable.**  For smooth (`C^∞`) period-`2π` coordinates `f, g`,
+    the *unweighted* higher-harmonic energy
+    `∑ₙ 1_{|n|≥2}·(‖ĉₙ(f)‖² + ‖ĉₙ(g)‖²)` converges.  This is the squared `L²`-distance of the
+    curve from the family of circles (the mean and first harmonics `n ∈ {−1,0,1}` are dropped).
+    Summability follows by comparison: each term is nonnegative and, being `≤` its own double,
+    is dominated by the convergent weighted gap series
+    (`summable_gap_normSq_fourierCoeffOn`, via `two_mul_tail_le_gap`). -/
+theorem summable_tail_normSq_fourierCoeffOn
+    {f g : ℝ → ℝ} (hf : ContDiff ℝ ∞ f) (hg : ContDiff ℝ ∞ g)
+    (hfper : ∀ t, f (t + 2 * π) = f t) (hgper : ∀ t, g (t + 2 * π) = g t)
+    (hab : (0 : ℝ) < 2 * π) :
+    Summable (fun n : ℤ => if 2 ≤ n.natAbs then
+        ‖fourierCoeffOn hab (ofReal ∘ f) n‖ ^ 2
+          + ‖fourierCoeffOn hab (ofReal ∘ g) n‖ ^ 2
+      else 0) := by
+  have hsum_gap := summable_gap_normSq_fourierCoeffOn hf hg hfper hgper hab
+  refine Summable.of_nonneg_of_le (fun n => ?_) (fun n => ?_) hsum_gap
+  · split_ifs <;> positivity
+  · have h2 := two_mul_tail_le_gap (f := f) (g := g) hab n
+    have h0 : (0 : ℝ) ≤ (if 2 ≤ n.natAbs then
+        ‖fourierCoeffOn hab (ofReal ∘ f) n‖ ^ 2
+          + ‖fourierCoeffOn hab (ofReal ∘ g) n‖ ^ 2
+      else 0) := by split_ifs <;> positivity
+    linarith
+
+/-- **Plain (unweighted) L² isoperimetric stability — analytic form.**  For smooth (`C^∞`)
+    period-`2π` real coordinates `f, g` of a closed plane curve, twice the *entire* unweighted
+    higher-harmonic energy is bounded by the normalized Hurwitz deficit:
+
+        2 · ∑ₙ 1_{|n|≥2}·(‖ĉₙ(f)‖² + ‖ĉₙ(g)‖²)
+          ≤  (2π)⁻¹ · [ ∫₀^{2π}((f')²+(g')²) − 2 ∫₀^{2π} f·g' ] .
+
+    Where the aggregate bound `tsum_gap_normSq_fourierCoeffOn_le_normalized_deficit` weights each
+    harmonic by `|n|²−|n|` (an `H¹`/Sobolev distance), this drops the weight to the plain
+    `L²`-distance of the curve from the nearest circle, at the cost of the uniform constant `2`.
+    This is the form in which Fuglede's stability theorem is usually stated: the squared
+    `L²`-deviation from a circle is at most half the deficit.
+
+    Proof.  Pull the constant `2` inside the tsum (`tsum_mul_left`), dominate termwise by the
+    weighted gap summand (`two_mul_tail_le_gap`) via `Summable.tsum_le_tsum`, then apply the
+    aggregate weighted bound. -/
+theorem two_mul_tsum_tail_le_normalized_deficit
+    {f g : ℝ → ℝ} (hf : ContDiff ℝ ∞ f) (hg : ContDiff ℝ ∞ g)
+    (hfper : ∀ t, f (t + 2 * π) = f t) (hgper : ∀ t, g (t + 2 * π) = g t)
+    (hab : (0 : ℝ) < 2 * π) :
+    2 * ∑' n : ℤ, (if 2 ≤ n.natAbs then
+          ‖fourierCoeffOn hab (ofReal ∘ f) n‖ ^ 2
+            + ‖fourierCoeffOn hab (ofReal ∘ g) n‖ ^ 2
+        else 0)
+      ≤ (2 * π)⁻¹ * ((∫ x in (0 : ℝ)..(2 * π), ((deriv f x) ^ 2 + (deriv g x) ^ 2))
+          - 2 * ∫ x in (0 : ℝ)..(2 * π), f x * deriv g x) := by
+  have hcore := tsum_gap_normSq_fourierCoeffOn_le_normalized_deficit hf hg hfper hgper hab
+  have hsum_tail := summable_tail_normSq_fourierCoeffOn hf hg hfper hgper hab
+  have hsum_gap := summable_gap_normSq_fourierCoeffOn hf hg hfper hgper hab
+  calc 2 * ∑' n : ℤ, (if 2 ≤ n.natAbs then
+            ‖fourierCoeffOn hab (ofReal ∘ f) n‖ ^ 2
+              + ‖fourierCoeffOn hab (ofReal ∘ g) n‖ ^ 2
+          else 0)
+        = ∑' n : ℤ, 2 * (if 2 ≤ n.natAbs then
+            ‖fourierCoeffOn hab (ofReal ∘ f) n‖ ^ 2
+              + ‖fourierCoeffOn hab (ofReal ∘ g) n‖ ^ 2
+          else 0) := by rw [tsum_mul_left]
+      _ ≤ ∑' n : ℤ, (|(n : ℝ)| ^ 2 - |(n : ℝ)|)
+            * (‖fourierCoeffOn hab (ofReal ∘ f) n‖ ^ 2
+                + ‖fourierCoeffOn hab (ofReal ∘ g) n‖ ^ 2) :=
+          Summable.tsum_le_tsum (fun n => two_mul_tail_le_gap hab n)
+            (hsum_tail.mul_left 2) hsum_gap
+      _ ≤ _ := hcore
+
+/-- **Plain (unweighted) L² isoperimetric stability — geometric (Fuglede) form.**  For a smooth
+    period-`2π` closed curve `t ↦ (f(t), g(t))` of *constant speed* `(f')² + (g')² = c` — so
+    `L² = (2π)²·c` and `A = ∫₀^{2π} f·g'` — twice the plain `L²`-distance of the curve from the
+    family of circles is controlled by the isoperimetric deficit `L² − 4πA`:
+
+        2·(2π)² · ∑ₙ 1_{|n|≥2}·(‖ĉₙ(f)‖² + ‖ĉₙ(g)‖²)  ≤  L² − 4πA .
+
+    This is the sharp textbook Fuglede stability inequality: the deficit dominates the squared
+    `L²`-deviation of the curve from a circle (all higher harmonics summed, unweighted), with
+    equality **iff** every higher harmonic vanishes — the circle
+    (`isoperimetric_saturation_iff_circle`).  It is the plain-`L²` companion of the weighted
+    `tsum_gap_normSq_fourierCoeffOn_le_isoperimetric_deficit`.
+
+    Proof.  Scale the analytic plain bound `two_mul_tsum_tail_le_normalized_deficit` by
+    `(2π)² > 0`, evaluate the constant-speed perimeter energy `∫((f')²+(g')²) = 2π·c`, and
+    simplify. -/
+theorem two_mul_tsum_tail_le_isoperimetric_deficit
+    {f g : ℝ → ℝ} (hf : ContDiff ℝ ∞ f) (hg : ContDiff ℝ ∞ g)
+    (hfper : ∀ t, f (t + 2 * π) = f t) (hgper : ∀ t, g (t + 2 * π) = g t)
+    (hab : (0 : ℝ) < 2 * π) {c : ℝ}
+    (hspeed : ∀ t, (deriv f t) ^ 2 + (deriv g t) ^ 2 = c) :
+    2 * (2 * π) ^ 2 * ∑' n : ℤ, (if 2 ≤ n.natAbs then
+          ‖fourierCoeffOn hab (ofReal ∘ f) n‖ ^ 2
+            + ‖fourierCoeffOn hab (ofReal ∘ g) n‖ ^ 2
+        else 0)
+      ≤ (2 * π) ^ 2 * c - 4 * π * ∫ x in (0 : ℝ)..(2 * π), f x * deriv g x := by
+  have hcore := two_mul_tsum_tail_le_normalized_deficit hf hg hfper hgper hab
+  have hperim : (∫ x in (0 : ℝ)..(2 * π), ((deriv f x) ^ 2 + (deriv g x) ^ 2)) = (2 * π) * c := by
+    have hEqOn : Set.EqOn (fun x => (deriv f x) ^ 2 + (deriv g x) ^ 2) (fun _ => c)
+        (Set.uIcc 0 (2 * π)) := fun x _ => hspeed x
+    rw [intervalIntegral.integral_congr hEqOn, intervalIntegral.integral_const]
+    simp
+  rw [hperim] at hcore
+  set S := ∑' n : ℤ, (if 2 ≤ n.natAbs then
+      ‖fourierCoeffOn hab (ofReal ∘ f) n‖ ^ 2
+        + ‖fourierCoeffOn hab (ofReal ∘ g) n‖ ^ 2
+    else 0) with hS
+  set IA := ∫ x in (0 : ℝ)..(2 * π), f x * deriv g x with hIA
+  have hpos : (0 : ℝ) < (2 * π) ^ 2 := by positivity
+  have hmul := mul_le_mul_of_nonneg_left hcore (le_of_lt hpos)
+  have h2πne : (2 * π) ≠ 0 := ne_of_gt hab
+  have hRHS : (2 * π) ^ 2 * ((2 * π)⁻¹ * ((2 * π) * c - 2 * IA))
+      = (2 * π) ^ 2 * c - 4 * π * IA := by
+    field_simp
+    ring
+  rw [hRHS] at hmul
+  have hLHS : (2 * π) ^ 2 * (2 * S) = 2 * (2 * π) ^ 2 * S := by ring
+  rw [hLHS] at hmul
+  exact hmul
+
 end IsoperimetricFourier
