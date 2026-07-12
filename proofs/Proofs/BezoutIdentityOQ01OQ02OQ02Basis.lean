@@ -560,4 +560,70 @@ theorem isPrimitive_iff_noZeroSMulDivisors_quotient {v : Fin n → ℤ} (hv0 : v
     · exact absurd hc0 hc
     · rwa [Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero] at hx0
 
+/-! ### Rank form: the quotient `ℤⁿ / (ℤ·v)` is free of rank `n − 1`
+
+The torsion-free characterization `isPrimitive_iff_noZeroSMulDivisors_quotient` plugs the
+whole primitivity triad into Mathlib's structure theory of finitely generated modules over
+the PID `ℤ`.  Two consequences complete the unimodular-completion story numerically:
+
+* **Rank.** For *any* nonzero `v`, `finrank ℤ (ℤⁿ / ℤ·v) = n − 1`.  This needs no
+  primitivity: the line `ℤ·v` is free of rank `1` (`v ≠ 0`), and rank-nullity over the
+  domain `ℤ` (`Submodule.finrank_quotient_add_finrank`, available since `ℤ` is an
+  `IsDomain`, hence `HasRankNullity`) makes rank additive across the short exact sequence
+  `0 → ℤ·v → ℤⁿ → ℤⁿ/ℤ·v → 0`.
+* **Freeness.** For *primitive* `v` the quotient is moreover **free**: it is finitely
+  generated and — by the torsion-free criterion — has `NoZeroSMulDivisors ℤ`, so
+  `Module.free_of_finite_type_torsion_free'` (the PID structure theorem) applies.  This is
+  exactly where primitivity is used; for a *non*-primitive nonzero `v` the quotient still
+  has `finrank = n − 1` but carries torsion and is not free.
+
+Combining them, `ℤⁿ / (ℤ·v) ≃ₗ ℤ^(n-1)` for primitive `v` — the coordinate-free rank
+statement of unimodular completion, dual to the explicit completing basis
+`isPrimitive_iff_mem_basis_all`.  Everything stays `propext`/`Classical.choice`/
+`Quot.sound`-only. -/
+
+/-- **Rank of the quotient line (`v ≠ 0`).**  For any nonzero `v`, the quotient
+`ℤⁿ / (ℤ·v)` has `finrank` equal to `n − 1`.  The line `ℤ·v` is free of rank `1` (via
+`LinearEquiv.toSpanNonzeroSingleton`), and rank-nullity over the domain `ℤ`
+(`Submodule.finrank_quotient_add_finrank`) makes rank additive, so
+`finrank (ℤⁿ/ℤ·v) + 1 = n`.  No primitivity is required — `finrank` is insensitive to the
+torsion that a non-primitive `v` would introduce. -/
+theorem finrank_quotient_span_singleton {v : Fin n → ℤ} (hv0 : v ≠ 0) :
+    finrank ℤ ((Fin n → ℤ) ⧸ Submodule.span ℤ ({v} : Set (Fin n → ℤ))) = n - 1 := by
+  have hrankN : finrank ℤ (Submodule.span ℤ ({v} : Set (Fin n → ℤ))) = 1 := by
+    rw [← LinearEquiv.finrank_eq (LinearEquiv.toSpanNonzeroSingleton ℤ (Fin n → ℤ) v hv0),
+      finrank_self]
+  have hadd := Submodule.finrank_quotient_add_finrank
+      (R := ℤ) (M := Fin n → ℤ) (Submodule.span ℤ ({v} : Set (Fin n → ℤ)))
+  rw [hrankN, Module.finrank_fin_fun] at hadd
+  omega
+
+/-- **A primitive vector's quotient is free.**  For primitive `v`, `ℤⁿ / (ℤ·v)` is a free
+`ℤ`-module.  It is finitely generated (a quotient of the finite free `ℤⁿ`) and torsion-free
+(`isPrimitive_iff_noZeroSMulDivisors_quotient`), so the PID structure theorem
+`Module.free_of_finite_type_torsion_free'` — fired here as an instance — makes it free.
+This is the single place primitivity is essential: a non-primitive nonzero `v` gives a
+quotient with torsion, which is not free. -/
+theorem IsPrimitive.free_quotient {v : Fin n → ℤ} (hv : IsPrimitive v) :
+    Module.Free ℤ ((Fin n → ℤ) ⧸ Submodule.span ℤ ({v} : Set (Fin n → ℤ))) := by
+  have hnz : NoZeroSMulDivisors ℤ
+      ((Fin n → ℤ) ⧸ Submodule.span ℤ ({v} : Set (Fin n → ℤ))) :=
+    (isPrimitive_iff_noZeroSMulDivisors_quotient hv.ne_zero).mp hv
+  infer_instance
+
+/-- **Unimodular completion, rank form.**  For primitive `v`, the quotient `ℤⁿ / (ℤ·v)` is
+`ℤ`-linearly isomorphic to `ℤ^(n-1)`.  Combining freeness (`IsPrimitive.free_quotient`) with
+the rank count (`finrank_quotient_span_singleton`), the quotient is a free `ℤ`-module of
+`finrank n − 1`, hence admits a basis indexed by `Fin (n-1)` (`Module.finBasisOfFinrankEq`)
+whose coordinate isomorphism `Basis.equivFun` is the required equivalence.  This is the
+coordinate-free numerical face of unimodular completion: a primitive vector is precisely one
+whose quotient line is a clean rank-`(n-1)` free complement. -/
+theorem IsPrimitive.quotientEquiv_fin {v : Fin n → ℤ} (hv : IsPrimitive v) :
+    Nonempty (((Fin n → ℤ) ⧸ Submodule.span ℤ ({v} : Set (Fin n → ℤ)))
+      ≃ₗ[ℤ] (Fin (n - 1) → ℤ)) := by
+  have hfree := hv.free_quotient
+  have hrank : finrank ℤ ((Fin n → ℤ) ⧸ Submodule.span ℤ ({v} : Set (Fin n → ℤ))) = n - 1 :=
+    finrank_quotient_span_singleton hv.ne_zero
+  exact ⟨(Module.finBasisOfFinrankEq ℤ _ hrank).equivFun⟩
+
 end BezoutPrimitive
