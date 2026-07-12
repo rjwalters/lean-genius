@@ -399,6 +399,34 @@ theorem edgeThreshold_min_at (n : ℕ) (hn : 5 ≤ n) {k : ℕ} (hk : k + 2 ≤ 
   · exact edgeThreshold_antitone_left n hle (by omega)
   · exact edgeThreshold_monotone_right n (le_of_lt hlt) (by omega) (by omega)
 
+/-- **Reflection symmetry of the `k`-profile.**  The threshold is invariant under the
+    involution `k ↦ n − k − 3`, which *swaps* its two binomial terms: since
+    `edgeThreshold n k = C(n−k−1, 2) + C(k+2, 2) + 1`, replacing `k` by `n−k−3` sends
+    `n−k−1 ↦ k+2` and `k+2 ↦ n−k−1`, exchanging the two coefficients.  For `k + 3 ≤ n`,
+    `edgeThreshold n (n−k−3) = edgeThreshold n k`.  This is the general symmetry behind the
+    parent's balanced-point value `threshold_symmetric` (its fixed point `k = n−k−3`, i.e.
+    `n = 2k+3`) and the reason the profile is centred at `k₀ = (n−3)/2` — the unique fixed
+    point of the reflection, hence the (odd-`n`) minimizer of `edgeThreshold_min_at`. -/
+theorem edgeThreshold_reflect (n k : ℕ) (h : k + 3 ≤ n) :
+    edgeThreshold n (n - k - 3) = edgeThreshold n k := by
+  unfold edgeThreshold
+  have e1 : n - (n - k - 3) - 1 = k + 2 := by omega
+  have e2 : (n - k - 3) + 2 = n - k - 1 := by omega
+  rw [e1, e2]
+  ring
+
+/-- **Palindrome form: equal thresholds for clique sizes summing to `n − 3`.**  Two
+    admissible clique sizes `k, k'` give the *same* edge threshold whenever `k + k' = n − 3`
+    (equivalently `k' = n − k − 3`): `edgeThreshold n k = edgeThreshold n k'`.  The symmetric
+    restatement of `edgeThreshold_reflect`, making the profile's palindromic structure about
+    the centre `k₀ = (n−3)/2` explicit — e.g. it identifies the even-`n` minimizing band
+    `{k₀, k₀+1}` (`edgeThreshold_flat_at_turning`) as a single reflection pair. -/
+theorem edgeThreshold_eq_of_sum (n k k' : ℕ) (h : k + k' + 3 = n) :
+    edgeThreshold n k = edgeThreshold n k' := by
+  have hk' : k' = n - k - 3 := by omega
+  subst hk'
+  exact (edgeThreshold_reflect n k (by omega)).symm
+
 /-! ## Strict convexity: the minimizing band and a *unique* minimizer for odd `n`
 
 The `k`-profile results above are all weak (`≤`): the branch lemmas
