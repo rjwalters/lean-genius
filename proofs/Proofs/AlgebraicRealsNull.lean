@@ -344,6 +344,19 @@ theorem algebraic_complex_hausdorffMeasure_zero {d : NNReal} (hd : 0 < d) :
   hausdorffMeasure_of_dimH_lt (by
     rw [algebraic_complex_dimH_zero]; exact_mod_cast hd)
 
+/-- **The algebraic reals are dense** — despite being null (`algebraic_reals_null`),
+meagre (`algebraic_reals_meagre`), and of Hausdorff dimension `0`
+(`algebraic_reals_dimH_zero`).  They contain every rational (`isAlgebraic_rat`), and the
+rationals are dense in `ℝ` (`Rat.denseRange_cast`), so the algebraic reals are dense a
+fortiori.  Together with `transcendental_reals_dense` this exhibits `ℝ` as the union of two
+disjoint dense sets — the archetypal "small yet dense" set alongside its "large yet also
+dense" complement: topological density is orthogonal to measure/category/dimension smallness. -/
+theorem algebraic_reals_dense :
+    Dense {x : ℝ | IsAlgebraic ℚ x} := by
+  apply Dense.mono _ (Rat.denseRange_cast (𝕜 := ℝ))
+  rintro _ ⟨q, rfl⟩
+  exact isAlgebraic_rat ℚ q
+
 /-- **The transcendental reals are dense**, obtained from the dimensional bound:
 `dimH {algebraic} = 0 < 1 = finrank ℝ ℝ`, so the complement of the algebraic reals
 is dense (`dense_compl_of_dimH_lt_finrank`).  A dimension-theoretic route to the
