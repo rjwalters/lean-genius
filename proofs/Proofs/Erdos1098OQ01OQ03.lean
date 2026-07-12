@@ -506,6 +506,18 @@ theorem boundedCliques_of_surjective {K : Type*} [Group K] (f : G →* K)
   rw [← Finset.card_image_of_injective S hginj]
   exact hB _ hclique
 
+/-- **Bounded cliques pass to quotients (`ω(Γ(G/N)) ≤ ω(Γ(G))`).**  If `Γ(G)` has finite
+    clique number, then so does `Γ(G/N)` for every normal subgroup `N`: the canonical
+    projection `QuotientGroup.mk' N : G →* G/N` is surjective, so this is the special case
+    `f = mk' N` of `boundedCliques_of_surjective` (surjections push cliques back to a clique
+    of the same size in `G`).  Complements `boundedCliques_of_subgroup`
+    (`f = H.subtype`, injective, heredity downward): quotients and subgroups of a
+    bounded-clique group are again bounded-clique.  Axiom-free — only the elementary clique
+    transfer, not the BFC core `neumann_hard_direction`. -/
+theorem boundedCliques_quotient (N : Subgroup G) [N.Normal] (h : BoundedCliques G) :
+    BoundedCliques (G ⧸ N) :=
+  boundedCliques_of_surjective (QuotientGroup.mk' N) (QuotientGroup.mk'_surjective N) h
+
 /-- **Bounded cliques pull back along any injective homomorphism (heredity of ω(Γ)).**
     If `f : G →* K` is an *injective* homomorphism and `Γ(K)` has finite clique number,
     then so does `Γ(G)`: `ω(Γ(G)) ≤ ω(Γ(K))`.  The embedding `f` carries each clique
