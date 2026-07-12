@@ -205,4 +205,100 @@ theorem isPrimitive_iff_mem_basis_all (v : Fin n → ℤ) :
   rintro ⟨b, i, rfl⟩
   exact isPrimitive_of_mem_basis b i
 
+
+/-! ### Orientation-preserving (determinant `+1`) completion, and the sharp `n = 1` obstruction
+
+The `n ≥ 2` completions built above are not merely `GLₙ(ℤ)` (transition determinant `±1`)
+but genuinely `SLₙ(ℤ)` (determinant `+1`): the column basis of a unimodular matrix inherits
+its determinant `+1`, so the completing basis is **orientation-preserving**.  This turns the
+prose `SL`-versus-`GL` distinction of the parent file into a machine-checked statement.  The
+distinction is sharp exactly at `n = 1`: there the primitive vector `(−1)` provably admits *no*
+determinant-`+1` completion — its unique completion `{(−1)}` has determinant `−1`.  So the
+orientation obstruction that keeps the `SL`-action from being transitive at `n = 1`
+(`not_forall_isPrimitive_sl_equiv_fin_one`) is *precisely* the failure of orientation-preserving
+completion, and it evaporates for every `n ≥ 2`. -/
+
+/-- The determinant of the column basis of `A ∈ SLₙ(ℤ)`, read against the standard basis, is
+`+1`.  Indeed `Basis.toMatrix` of `slColumnBasis A` is literally `↑ₘA` (its `(i,j)` entry is the
+`i`-th coordinate of the `j`-th column of `A`), whose determinant is `1` by definition of
+`SLₙ(ℤ)`. -/
+@[simp]
+theorem slColumnBasis_det (A : Matrix.SpecialLinearGroup (Fin n) ℤ) :
+    (Pi.basisFun ℤ (Fin n)).det ⇑(slColumnBasis A) = 1 := by
+  rw [Basis.det_apply]
+  have hmat : (Pi.basisFun ℤ (Fin n)).toMatrix ⇑(slColumnBasis A) = ↑ₘA := by
+    ext i j
+    rw [Basis.toMatrix_apply, Pi.basisFun_repr, slColumnBasis_apply]
+    show ((↑ₘA) i) ⬝ᵥ (Pi.single j (1 : ℤ)) = ↑ₘA i j
+    rw [dotProduct_single _ (1 : ℤ), mul_one]
+  rw [hmat]
+  exact Matrix.SpecialLinearGroup.det_coe A
+
+/-- **Orientation-preserving unimodular completion (`n ≥ 2`, prescribed slot).**  A primitive
+vector `v` is the `i`-th member of some `ℤ`-basis of `ℤⁿ` **whose determinant against the
+standard basis is `+1`** — i.e. the completion can always be taken in `SLₙ(ℤ)`, not just
+`GLₙ(ℤ)`.  Same construction as `exists_basis_apply_eq_of_isPrimitive`, now recording that the
+completing basis `slColumnBasis U⁻¹` is orientation-preserving via `slColumnBasis_det`. -/
+theorem exists_basis_apply_eq_of_isPrimitive_det_one (hn : 1 < n) {v : Fin n → ℤ}
+    (hv : IsPrimitive v) (i : Fin n) :
+    ∃ b : Basis (Fin n) ℤ (Fin n → ℤ),
+      b i = v ∧ (Pi.basisFun ℤ (Fin n)).det ⇑b = 1 := by
+  obtain ⟨U, hU⟩ := exists_sl_mulVec_basis_of_isPrimitive hn hv i
+  refine ⟨slColumnBasis U⁻¹, ?_, slColumnBasis_det _⟩
+  rw [slColumnBasis_apply, ← hU, Matrix.mulVec_mulVec, ← Matrix.SpecialLinearGroup.coe_mul,
+    inv_mul_cancel, Matrix.SpecialLinearGroup.coe_one, Matrix.one_mulVec]
+
+/-- **Primitive ⇔ orientation-preserving completion (`n ≥ 2`).**  For `n ≥ 2` a vector is
+primitive iff it occurs as a member of some `ℤ`-basis of determinant `+1`.  The extra
+determinant datum costs nothing on the forward direction (the `SL`-completion already has it)
+and is discarded on the backward direction (`isPrimitive_of_mem_basis` needs only membership).
+So at `n ≥ 2` primitivity is *exactly* orientation-preserving completability, the same strength
+as plain completability (`isPrimitive_iff_mem_basis`). -/
+theorem isPrimitive_iff_orientation_completion (hn : 1 < n) (v : Fin n → ℤ) (i : Fin n) :
+    IsPrimitive v ↔
+      ∃ b : Basis (Fin n) ℤ (Fin n → ℤ),
+        b i = v ∧ (Pi.basisFun ℤ (Fin n)).det ⇑b = 1 := by
+  refine ⟨fun hv => exists_basis_apply_eq_of_isPrimitive_det_one hn hv i, ?_⟩
+  rintro ⟨b, rfl, -⟩
+  exact isPrimitive_of_mem_basis b i
+
+/-- The determinant of any `ℤ`-basis of `ℤ¹`, against the standard basis, is just its single
+entry `b 0 0` (the `1 × 1` determinant).  This is the computational heart of the `n = 1`
+orientation obstruction. -/
+theorem basis_det_fin_one (b : Basis (Fin 1) ℤ (Fin 1 → ℤ)) :
+    (Pi.basisFun ℤ (Fin 1)).det ⇑b = b 0 0 := by
+  rw [Basis.det_apply, Matrix.det_fin_one, Basis.toMatrix_apply, Pi.basisFun_repr]
+
+/-- **Sharp `n = 1` orientation dichotomy.**  A vector `v : Fin 1 → ℤ` admits a
+determinant-`+1` completion iff `v 0 = 1`.  Forward: any completion `b` with `b 0 = v` has
+determinant `b 0 0 = v 0`, forced to `1`.  Backward: when `v 0 = 1` the standard basis itself
+is the (orientation-preserving) completion.  So at `n = 1` orientation-preserving completion is
+*strictly* stronger than plain completion — every primitive `v` (i.e. `v 0 = ±1`) completes to
+a basis, but only `v 0 = 1` completes with determinant `+1`. -/
+theorem exists_det_one_completion_fin_one_iff (v : Fin 1 → ℤ) :
+    (∃ b : Basis (Fin 1) ℤ (Fin 1 → ℤ),
+        b 0 = v ∧ (Pi.basisFun ℤ (Fin 1)).det ⇑b = 1) ↔ v 0 = 1 := by
+  constructor
+  · rintro ⟨b, hb, hdet⟩
+    rw [basis_det_fin_one, hb] at hdet
+    exact hdet
+  · intro hv0
+    refine ⟨Pi.basisFun ℤ (Fin 1), ?_, Basis.det_self _⟩
+    funext j
+    have hj : j = 0 := Subsingleton.elim _ _
+    subst hj
+    rw [Pi.basisFun_apply, Pi.single_eq_same]
+    exact hv0.symm
+
+/-- **The concrete orientation obstruction at `n = 1`.**  The primitive vector `(−1) : Fin 1 → ℤ`
+extends to a `ℤ`-basis (namely `{(−1)}`, via `exists_basis_apply_eq_of_isPrimitive_fin_one`) but
+to **no** basis of determinant `+1`.  This is the exact `n = 1` witness separating
+orientation-preserving completion from plain completion, dual to the parent's
+`not_forall_isPrimitive_sl_equiv_fin_one`. -/
+theorem no_det_one_completion_neg_fin_one :
+    ¬ ∃ b : Basis (Fin 1) ℤ (Fin 1 → ℤ),
+        b 0 = (fun _ => -1) ∧ (Pi.basisFun ℤ (Fin 1)).det ⇑b = 1 := by
+  rw [exists_det_one_completion_fin_one_iff]
+  norm_num
+
 end BezoutPrimitive
