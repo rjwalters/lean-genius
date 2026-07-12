@@ -88,6 +88,14 @@
   },
   "sections": [
     {
+      "id": "preamble",
+      "title": "Module Header and the Open Question",
+      "startLine": 1,
+      "endLine": 41,
+      "summary": "Module docstring stating the open question: the binomial theorem's coefficient-comparison yields the Chu–Vandermonde convolution C(m+n,k) = Σ_i C(m,i)·C(n,k−i). Notes that Mathlib proves only the antidiagonal form (Nat.add_choose_eq) and that this file develops the textbook range-indexed form plus the diagonal convolution and the sum-of-squares specialization (none in Mathlib), all axiom-free. Imports Mathlib, opens Finset, enters the namespace.",
+      "mathContext": "Chu–Vandermonde: $\\binom{m+n}{k} = \\sum_{i=0}^{k} \\binom{m}{i}\\binom{n}{k-i}$; the single Mathlib input is the antidiagonal form $\\texttt{Nat.add\\_choose\\_eq}$."
+    },
+    {
       "id": "rangeform",
       "title": "Chu–Vandermonde Identity (Range Form)",
       "startLine": 42,
