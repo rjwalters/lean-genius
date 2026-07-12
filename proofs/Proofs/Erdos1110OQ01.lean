@@ -180,7 +180,7 @@ theorem factorization_powerForm_left {p q : ℕ} (hp : p.Prime) (hq : q.Prime)
   have hq0 : q ^ l ≠ 0 := pow_ne_zero l hq.pos.ne'
   rw [Nat.factorization_mul hp0 hq0, Finsupp.add_apply, hp.factorization_pow,
       hq.factorization_pow, Finsupp.single_eq_same,
-      Finsupp.single_eq_of_ne (Ne.symm hpq), add_zero]
+      Finsupp.single_eq_of_ne hpq, add_zero]
 
 /-- **The `q`-adic exponent of a power form.** For distinct primes `p ≠ q`, the
 `q`-factorization of `p^k q^l` is exactly `l`. -/
@@ -189,7 +189,7 @@ theorem factorization_powerForm_right {p q : ℕ} (hp : p.Prime) (hq : q.Prime)
   have hp0 : p ^ k ≠ 0 := pow_ne_zero k hp.pos.ne'
   have hq0 : q ^ l ≠ 0 := pow_ne_zero l hq.pos.ne'
   rw [Nat.factorization_mul hp0 hq0, Finsupp.add_apply, hp.factorization_pow,
-      hq.factorization_pow, Finsupp.single_eq_of_ne hpq, Finsupp.single_eq_same,
+      hq.factorization_pow, Finsupp.single_eq_of_ne (Ne.symm hpq), Finsupp.single_eq_same,
       zero_add]
 
 /-- **Divisibility of power forms is the product order on exponents.** For distinct
@@ -353,5 +353,34 @@ theorem powerForm_lcm {p q : ℕ} (hp : p.Prime) (hq : q.Prime) (hpq : p ≠ q)
     rw [← hab]; exact Nat.lcm_dvd hXM hYM
   obtain ⟨haM, hbM⟩ := (powerForm_dvd_iff hp hq hpq _ _ _ _).mp hlM
   rw [le_antisymm haM (max_le hka hka'), le_antisymm hbM (max_le hlb hlb')]
+
+/-- **Coprimality criterion for power forms.**  For distinct primes `p ≠ q`, two power
+forms are coprime exactly when they share no prime factor — neither `p` nor `q` divides
+both:
+
+    Nat.Coprime (p^k q^l) (p^{k'} q^{l'}) ↔ (min k k' = 0 ∧ min l l' = 0).
+
+Immediate from `powerForm_gcd` (the gcd is `p^{min k k'} q^{min l l'}`), with the
+`gcd = 1` collapse pinned by `powerForm_exponents_unique`.  The `min`-form meet of the
+divisibility lattice bottoming out at `1`. -/
+theorem powerForm_coprime_iff {p q : ℕ} (hp : p.Prime) (hq : q.Prime) (hpq : p ≠ q)
+    (k l k' l' : ℕ) :
+    Nat.Coprime (p ^ k * q ^ l) (p ^ k' * q ^ l') ↔ (min k k' = 0 ∧ min l l' = 0) := by
+  rw [Nat.Coprime, powerForm_gcd hp hq hpq]
+  constructor
+  · intro h
+    have h1 : p ^ min k k' * q ^ min l l' = p ^ 0 * q ^ 0 := by simpa using h
+    exact powerForm_exponents_unique hp hq hpq h1
+  · rintro ⟨ha, hb⟩
+    rw [ha, hb, pow_zero, pow_zero, mul_one]
+
+/-- **Coprimality criterion, disjunction form.**  `powerForm_coprime_iff` rephrased with
+`Nat.min_eq_zero_iff`: coprimality means that for each prime, at least one of the two forms
+omits it. -/
+theorem powerForm_coprime_iff' {p q : ℕ} (hp : p.Prime) (hq : q.Prime) (hpq : p ≠ q)
+    (k l k' l' : ℕ) :
+    Nat.Coprime (p ^ k * q ^ l) (p ^ k' * q ^ l')
+      ↔ ((k = 0 ∨ k' = 0) ∧ (l = 0 ∨ l' = 0)) := by
+  rw [powerForm_coprime_iff hp hq hpq, Nat.min_eq_zero_iff, Nat.min_eq_zero_iff]
 
 end Erdos1110
