@@ -49,12 +49,12 @@
     "proofId": "de-moivre-oq-06-oq-02",
     "range": {
       "startLine": 78,
-      "endLine": 118
+      "endLine": 96
     },
     "type": "technique",
-    "title": "Removing the θ-Dependence by Reciprocal Monotonicity",
-    "content": "`dirichlet_kernel_uniform_bound` and `dirichlet_conjugate_uniform_bound` apply the parent's pointwise bounds and then dominate the $\\theta$-dependent denominator. Since $\\sin(\\theta/2)\\ge\\sin(\\delta/2)>0$ we have $|\\sin(\\theta/2)|=\\sin(\\theta/2)$, and reciprocal monotonicity (`one_div_le_one_div_of_le`) gives $\\frac{1}{2\\sin(\\theta/2)}\\le\\frac{1}{2\\sin(\\delta/2)}$ (resp. $\\frac{1}{\\sin(\\theta/2)}\\le\\frac{1}{\\sin(\\delta/2)}$). Chaining with the pointwise bound yields the uniform constant. The bound is independent of both $n$ and $\\theta$.",
-    "mathContext": "$|\\sum_{k\\le n}\\cos(k\\theta)-\\tfrac12|\\le\\frac{1}{2\\sin(\\delta/2)}$ and $|\\sum_{k\\le n}\\sin(k\\theta)|\\le\\frac{1}{\\sin(\\delta/2)}$ for all $n$ and all $\\theta\\in[\\delta,2\\pi-\\delta]$.",
+    "title": "The Cosine Kernel: Removing θ-Dependence by Reciprocal Monotonicity",
+    "content": "`dirichlet_kernel_uniform_bound` upgrades the parent's *pointwise* cosine estimate to a bound uniform in $n$ and $\\theta$. The cosine partial sum $\\sum_{k\\le n}\\cos(k\\theta)$ centred at $\\tfrac12$ is exactly the Dirichlet kernel $D_n(\\theta)=\\tfrac{\\sin((n+\\frac12)\\theta)}{2\\sin(\\theta/2)}$, so the parent bound has the $\\theta$-dependent denominator $2\\sin(\\theta/2)$. Since $\\sin(\\theta/2)\\ge\\sin(\\delta/2)>0$ on the arc, $|\\sin(\\theta/2)|=\\sin(\\theta/2)$ and reciprocal monotonicity (`one_div_le_one_div_of_le`) replaces it by the constant denominator: $\\frac{1}{2\\sin(\\theta/2)}\\le\\frac{1}{2\\sin(\\delta/2)}$. Chaining with the pointwise bound (`le_trans`) yields the uniform constant $\\frac{1}{2\\sin(\\delta/2)}$, independent of both $n$ and $\\theta$.",
+    "mathContext": "$|\\sum_{k\\le n}\\cos(k\\theta)-\\tfrac12|\\le\\frac{1}{2\\sin(\\delta/2)}$ for all $n$ and all $\\theta\\in[\\delta,2\\pi-\\delta]$; the Dirichlet kernel $D_n(\\theta)=\\tfrac{\\sin((n+\\frac12)\\theta)}{2\\sin(\\theta/2)}$.",
     "significance": "key",
     "relatedConcepts": [
       "reciprocal monotonicity",
@@ -64,6 +64,30 @@
     "prerequisites": [
       "parent pointwise bounds",
       "one_div_le_one_div_of_le"
+    ]
+  },
+  {
+    "id": "ann-dm0602-conjugate",
+    "proofId": "de-moivre-oq-06-oq-02",
+    "range": {
+      "startLine": 97,
+      "endLine": 118
+    },
+    "type": "concept",
+    "title": "The Conjugate (Sine) Kernel and the Conjugate Fourier Series",
+    "content": "`dirichlet_conjugate_uniform_bound` gives the companion estimate for the *sine* partial sums $\\widetilde{D}_n(\\theta)=\\sum_{k\\le n}\\sin(k\\theta)$ — the **conjugate Dirichlet kernel**. The proof is the same reciprocal-monotonicity chain applied to the parent's conjugate bound (now with a single $\\sin(\\theta/2)$ in the denominator, so the uniform constant is $\\frac{1}{\\sin(\\delta/2)}$ — twice the cosine constant). Its significance is distinct from the cosine kernel: $\\widetilde{D}_n$ is the kernel of the *conjugate partial sums* $\\widetilde{S}_n f$, whose limit is the conjugate function $\\widetilde f$ — the circle analogue of the Hilbert transform, and the boundary value of the harmonic conjugate. A uniform bound on $\\widetilde{D}_n$ away from the singularities $\\theta\\in 2\\pi\\mathbb{Z}$ is exactly what Dirichlet's test needs to establish convergence of the *conjugate* Fourier series, in parallel with the ordinary one.",
+    "mathContext": "$|\\sum_{k\\le n}\\sin(k\\theta)|\\le\\frac{1}{\\sin(\\delta/2)}$ for all $n$, $\\theta\\in[\\delta,2\\pi-\\delta]$; conjugate kernel $\\widetilde{D}_n(\\theta)=\\sum_{k=1}^n\\sin(k\\theta)=\\tfrac{\\cos(\\theta/2)-\\cos((n+\\frac12)\\theta)}{2\\sin(\\theta/2)}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "conjugate Dirichlet kernel",
+      "conjugate function / Hilbert transform",
+      "conjugate Fourier series",
+      "reciprocal monotonicity"
+    ],
+    "prerequisites": [
+      "parent conjugate pointwise bound",
+      "one_div_le_one_div_of_le",
+      "conjugate function on the circle"
     ]
   },
   {

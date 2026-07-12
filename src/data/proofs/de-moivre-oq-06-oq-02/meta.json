@@ -96,11 +96,19 @@
     },
     {
       "id": "uniform-bounds",
-      "title": "Part II: Uniform Dirichlet-Kernel Bounds",
-      "summary": "dirichlet_kernel_uniform_bound and dirichlet_conjugate_uniform_bound: the cosine and sine partial sums bounded by 1/(2 sin(δ/2)) and 1/sin(δ/2) uniformly in n and θ, from the parent's pointwise bounds plus reciprocal monotonicity",
+      "title": "Part IIa: Uniform Bound for the Cosine (Dirichlet) Kernel",
+      "summary": "dirichlet_kernel_uniform_bound: the cosine partial sums (centred at 1/2) — the Dirichlet kernel D_n — bounded by 1/(2 sin(δ/2)) uniformly in n and θ, from the parent's pointwise bound plus reciprocal monotonicity of the denominator sin(θ/2) ≥ sin(δ/2).",
       "startLine": 78,
-      "endLine": 118,
+      "endLine": 96,
       "mathContext": "$|\\sin(\\theta/2)|=\\sin(\\theta/2)\\ge\\sin(\\delta/2)>0\\Rightarrow \\tfrac{1}{2\\sin(\\theta/2)}\\le\\tfrac{1}{2\\sin(\\delta/2)}$."
+    },
+    {
+      "id": "conjugate-bound",
+      "title": "Part IIb: Uniform Bound for the Conjugate (Sine) Kernel",
+      "summary": "dirichlet_conjugate_uniform_bound: the sine partial sums — the conjugate Dirichlet kernel D̃_n, kernel of the conjugate Fourier series / harmonic-conjugate (Hilbert-transform) partial sums — bounded by 1/sin(δ/2) uniformly in n and θ, by the same reciprocal-monotonicity chain applied to the parent's conjugate pointwise bound.",
+      "startLine": 97,
+      "endLine": 118,
+      "mathContext": "$|\\sum_{k\\le n}\\sin(k\\theta)|\\le\\tfrac{1}{\\sin(\\theta/2)}\\le\\tfrac{1}{\\sin(\\delta/2)}$ on $[\\delta,2\\pi-\\delta]$."
     },
     {
       "id": "packaged-uniform-boundedness",
