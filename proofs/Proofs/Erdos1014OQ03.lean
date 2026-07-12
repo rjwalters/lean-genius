@@ -280,6 +280,34 @@ theorem increment_div_tendsto_zero_iff_log_increment_tendsto_zero (R : ℕ → �
   rw [increment_div_tendsto_zero_iff_ratio_tendsto_one R (hpos.mono fun _ hl => ne_of_gt hl),
     log_increment_tendsto_zero_iff_ratio_tendsto_one R hpos]
 
+/-- **The gap increment telescopes into unit increments.** The `m`-step increment is the exact
+(unconditional) sum of the `m` consecutive unit increments:
+
+`R(l+m) − R(l) = ∑_{i<m} (R(l+i+1) − R(l+i))`.
+
+This is the additive backbone of the gap-convergence theorems below (`increment_gap_div_tendsto_zero`
+etc.): each summand is a shifted unit increment, so a bound on unit increments controls the whole
+window exactly, not merely asymptotically. -/
+theorem increment_gap_eq_sum (R : ℕ → ℝ) (l m : ℕ) :
+    R (l + m) - R l = ∑ i ∈ Finset.range m, (R (l + i + 1) - R (l + i)) := by
+  have h := Finset.sum_range_sub (fun i => R (l + i)) m
+  simpa using h.symm
+
+/-- **The log-gap increment telescopes into unit log-increments.** Applying `increment_gap_eq_sum`
+to `log ∘ R`: the `m`-step log-increment is the exact sum of the `m` consecutive unit
+log-increments,
+
+`log R(l+m) − log R(l) = ∑_{i<m} (log R(l+i+1) − log R(l+i))`.
+
+The multiplicative telescoping `R(l+m)/R(l) = ∏_{i<m} R(l+i+1)/R(l+i)` referenced by
+`ratio_gap_tendsto_one`, read additively through the logarithm — the exact identity underlying
+`log_increment_gap_tendsto_zero`. -/
+theorem log_increment_gap_eq_sum (R : ℕ → ℝ) (l m : ℕ) :
+    Real.log (R (l + m)) - Real.log (R l)
+      = ∑ i ∈ Finset.range m, (Real.log (R (l + i + 1)) - Real.log (R (l + i))) := by
+  have h := Finset.sum_range_sub (fun i => Real.log (R (l + i))) m
+  simpa using h.symm
+
 /-- **Bounded-gap ratio convergence.** If the consecutive ratio `R(l+1)/R(l)` tends to
 `1` (Erdős #1014) and `R` is eventually positive, then for *every fixed gap* `m` the
 gap-ratio `R(l+m)/R(l)` also tends to `1`.
