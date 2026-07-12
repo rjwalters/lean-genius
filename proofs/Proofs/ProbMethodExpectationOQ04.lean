@@ -514,6 +514,7 @@ theorem expectedMonoCliques_nonneg (n k : ℕ) : 0 ≤ expectedMonoCliques n k :
   unfold expectedMonoCliques
   exact mul_nonneg (Nat.cast_nonneg _) (zpow_nonneg (by norm_num : (0 : ℚ) ≤ 2) _)
 
+<<<<<<< Updated upstream
 /-- **The diagonal is already sub-threshold: `E(k,k) < 1` for `k ≥ 3`.**  Turning the
 `expectedMonoCliques_self` docstring remark into a theorem: at `n = k` the single potential
 clique is monochromatic with probability `2^{1−C(k,2)}`, and for `k ≥ 3` (so `C(k,2) ≥ 3`)
@@ -534,5 +535,34 @@ theorem expectedMonoCliques_self_lt_one {k : ℕ} (hk : 3 ≤ k) :
           apply pow_lt_pow_right₀ (by norm_num : (1 : ℚ) < 2); omega
   rw [div_lt_one (by positivity)]
   exact hden
+=======
+/-- **The `≥ 1` threshold — dual of `expectedMonoCliques_lt_one_iff`.**  The expected count
+is at least `1` *exactly* when `2^{C(k,2)} ≤ C(n,k)·2`.  Together with the strict `< 1`
+criterion this pins the sharp cutoff of the first-moment method: below it (`E < 1`) a
+clique-free 2-colouring is forced to exist, while at or above it the first moment no longer
+delivers one.  Proof: `one_le_div` on the `zpow`-free quotient `expectedMonoCliques_eq_div`. -/
+theorem expectedMonoCliques_one_le_iff (n k : ℕ) :
+    1 ≤ expectedMonoCliques n k ↔ (2 : ℚ) ^ (k.choose 2) ≤ (n.choose k : ℚ) * 2 := by
+  rw [expectedMonoCliques_eq_div,
+    le_div_iff₀ (by positivity : (0 : ℚ) < (2 : ℚ) ^ (k.choose 2)), one_mul]
+
+/-- **Diagonal endpoint `E(k,k) < 1` for `k ≥ 3`.**  The value `expectedMonoCliques_self`
+computes `E(k,k) = 2^{1−C(k,2)}`, and for `k ≥ 3` the exponent `1 − C(k,2) ≤ −2` (since
+`C(k,2) ≥ C(3,2) = 3`), so `E(k,k) ≤ 2^{−2} = 1/4 < 1`.  This is the trivial diagonal Ramsey
+bound `R(k,k) > k` underneath `expectedMonoCliques_lt_one_pow`, promoted from the prose
+remark in `expectedMonoCliques_self`'s docstring to a lemma.  Notably it is *not* an instance
+of `expectedMonoCliques_lt_one_of_sq_lt` (which needs `k² < 2^k`, false at `k = 3`: `9 > 8`) —
+on the diagonal the bound is governed directly by the negative exponent, not the square. -/
+theorem expectedMonoCliques_self_lt_one {k : ℕ} (hk : 3 ≤ k) :
+    expectedMonoCliques k k < 1 := by
+  rw [expectedMonoCliques_self]
+  have hc2 : 3 ≤ k.choose 2 := by
+    have h := Nat.choose_mono 2 hk
+    simpa using h
+  have hexp : (1 : ℤ) - (k.choose 2 : ℤ) ≤ -2 := by omega
+  calc (2 : ℚ) ^ (1 - (k.choose 2 : ℤ))
+      ≤ (2 : ℚ) ^ (-2 : ℤ) := zpow_le_zpow_right₀ (by norm_num) hexp
+    _ < 1 := by norm_num
+>>>>>>> Stashed changes
 
 end ProbMethod.ExpectationOQ04
