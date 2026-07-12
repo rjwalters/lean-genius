@@ -1,4 +1,5 @@
 import Proofs.CombinationsFormulaOQ03
+import Mathlib
 
 /-
 # Self-Reciprocity (Palindromy) of Gaussian q-Binomial Coefficients
@@ -33,13 +34,28 @@ cancellation is q^{(k+1)(n-k)}·(1/q)^{k+1} = q^{(k+1)(n-k-1)}, valid since q �
 - [x] Self-reciprocity / palindromy: [n,k]_q = q^{k(n-k)}·[n,k]_{1/q}  (main)
 - [x] Reflected form: q^{k(n-k)}·[n,k]_{1/q} = [n,k]_q
 - [x] Involutivity sanity check of the reflection
+- [x] Structural facts of the Gaussian *polynomial* `qBinom X n k` over `ℤ[X]`:
+      monicity, `natDegree = k(n-k)`, constant term `= 1`, nonnegative coefficients,
+      and hence both extreme coefficients pinned to `1`
 - [ ] OPEN: coefficient unimodality (Sylvester/Proctor) — not attempted here
 
 ## Honesty Note
-This is the palindromy/symmetry ingredient only. It does NOT prove unimodality,
-which is the substantive content of the open question. Full unimodality requires
-either an sl₂-action argument or an explicit injection between coefficient levels
-and is not formalized here.
+This is the palindromy/symmetry ingredient plus the structural scaffolding
+(degree, monicity, coefficient nonnegativity, pinned extreme coefficients). It does
+NOT prove unimodality, which is the substantive content of the open question. Full
+unimodality requires either an sl₂-action argument or an explicit injection between
+coefficient levels and is not formalized here.
+
+## Gaussian polynomial layer (over `ℤ[X]`)
+The palindromy above lives over a field (it uses `q⁻¹`). To reason about the actual
+*coefficient array* of `[n,k]_q` we specialise the ambient ring to `ℤ[X]` with `q = X`,
+so `qBinom X n k : ℤ[X]` is the Gaussian polynomial. By induction on the q-Pascal
+recurrence `qBinom X (n+1)(k+1) = qBinom X n k + X^{k+1}·qBinom X n (k+1)` we prove it is
+monic of degree `k(n-k)` with constant term `1` and nonnegative coefficients. In the
+recurrence the `X^{k+1}`-shifted summand strictly dominates in degree (since `n-k ≥ 1`),
+which supplies both the degree and the leading coefficient. Together with the palindromy
+`qBinom_reciprocal`, the pinned extreme coefficients are the structural precursor of the
+symmetric-unimodal shape asserted by Sylvester's theorem.
 -/
 
 namespace QBinomialCoefficients
@@ -117,5 +133,130 @@ involution on the q-binomial, as a palindrome reflection must be. -/
 theorem qBinom_reciprocal_involutive (q : R) (hq : q ≠ 0) (n k : ℕ) :
     qBinom q n k = q ^ (k * (n - k)) * ((q⁻¹) ^ (k * (n - k)) * qBinom q n k) := by
   rw [← mul_assoc, ← mul_pow, mul_inv_cancel₀ hq, one_pow, one_mul]
+
+/-! ## The Gaussian polynomial over `ℤ[X]`: degree, monicity, coefficients
+
+Specialising the ambient ring to `ℤ[X]` with `q = X` turns `qBinom X n k` into the
+Gaussian polynomial whose coefficient sequence is the object of Sylvester's unimodality
+theorem. The results below establish its structural invariants directly from the q-Pascal
+recurrence, needing no field hypothesis (they hold over `ℤ`, an ordered ring, so that
+"nonnegative coefficients" is meaningful). -/
+
+open Polynomial in
+/-- **Monicity and degree of the Gaussian polynomial.** For `k ≤ n`, the polynomial
+`qBinom X n k : ℤ[X]` is monic of `natDegree = k·(n-k)`.
+
+Proof by induction on the q-Pascal recurrence
+`qBinom X (n+1)(k+1) = qBinom X n k + X^{k+1}·qBinom X n (k+1)`. On the diagonal (`k = n`)
+and the left edge (`k = 0`) the polynomial is `1`. In the interior (`k < n`, so `n-k ≥ 1`)
+the shifted summand `X^{k+1}·qBinom X n (k+1)` has degree `(k+1) + (k+1)(n-k-1) = (k+1)(n-k)`,
+strictly exceeding `deg (qBinom X n k) = k(n-k)`, so it supplies both the degree and the
+(monic) leading term of the sum. -/
+theorem qBinom_X_monic_natDegree :
+    ∀ (n k : ℕ), k ≤ n →
+      (qBinom (X : ℤ[X]) n k).Monic ∧
+      (qBinom (X : ℤ[X]) n k).natDegree = k * (n - k)
+  | n, 0, _ => by
+      rw [qBinom_zero_right]; exact ⟨monic_one, by simp⟩
+  | 0, k + 1, h => by omega
+  | n + 1, k + 1, h => by
+      rcases eq_or_lt_of_le h with heq | hlt
+      · have hkn : k = n := by omega
+        subst hkn
+        rw [qBinom_self]; exact ⟨monic_one, by simp⟩
+      · have hk1n : k + 1 ≤ n := by omega
+        have hkn : k ≤ n := by omega
+        have hnk1 : 1 ≤ n - k := by omega
+        obtain ⟨mA, dA⟩ := qBinom_X_monic_natDegree n k hkn
+        obtain ⟨mB, dB⟩ := qBinom_X_monic_natDegree n (k + 1) hk1n
+        rw [qBinom_pascal]
+        set A := qBinom (X : ℤ[X]) n k with hAdef
+        set B := qBinom (X : ℤ[X]) n (k + 1) with hBdef
+        have hBne : B ≠ 0 := mB.ne_zero
+        have hXpow : (X : ℤ[X]) ^ (k + 1) ≠ 0 := pow_ne_zero _ X_ne_zero
+        have mP : ((X : ℤ[X]) ^ (k + 1) * B).Monic := (monic_X_pow (k + 1)).mul mB
+        obtain ⟨t, ht⟩ : ∃ t, n - k = t + 1 := ⟨n - k - 1, by omega⟩
+        have hnk1' : n - (k + 1) = t := by omega
+        have dP : ((X : ℤ[X]) ^ (k + 1) * B).natDegree = (k + 1) * (n - k) := by
+          rw [natDegree_mul hXpow hBne, natDegree_X_pow, dB, hnk1', ht]; ring
+        have hdeglt : A.natDegree < ((X : ℤ[X]) ^ (k + 1) * B).natDegree := by
+          rw [dA, dP, ht]; nlinarith
+        have hdA : A.degree < ((X : ℤ[X]) ^ (k + 1) * B).degree := degree_lt_degree hdeglt
+        refine ⟨?_, ?_⟩
+        · rw [add_comm]
+          exact mP.add_of_left hdA
+        · rw [add_comm,
+            natDegree_eq_of_degree_eq (degree_add_eq_left_of_degree_lt hdA), dP]
+          congr 1
+          omega
+
+open Polynomial in
+/-- **Constant term is `1`.** For `k ≤ n`, `(qBinom X n k).coeff 0 = 1`. Induction on the
+q-Pascal recurrence: the `X^{k+1}`-shifted summand contributes nothing to the constant term
+(`k+1 ≥ 1`), leaving the inductive value `1`. -/
+theorem qBinom_X_coeff_zero :
+    ∀ (n k : ℕ), k ≤ n → (qBinom (X : ℤ[X]) n k).coeff 0 = 1
+  | n, 0, _ => by rw [qBinom_zero_right]; simp
+  | 0, k + 1, h => by omega
+  | n + 1, k + 1, h => by
+      rcases eq_or_lt_of_le h with heq | hlt
+      · have hkn : k = n := by omega
+        subst hkn; rw [qBinom_self]; simp
+      · have hkn : k ≤ n := by omega
+        rw [qBinom_pascal, coeff_add, mul_comm, coeff_mul_X_pow']
+        simp only [Nat.le_zero, Nat.add_one_ne_zero, if_false]
+        rw [qBinom_X_coeff_zero n k hkn]; ring
+
+open Polynomial in
+/-- **Coefficients are nonnegative.** Every coefficient of `qBinom X n k : ℤ[X]` is `≥ 0`.
+Induction on the q-Pascal recurrence: the sum of a polynomial with nonnegative coefficients
+and an `X^{k+1}`-shift of one is again coefficientwise nonnegative. -/
+theorem qBinom_X_coeff_nonneg :
+    ∀ (n k j : ℕ), 0 ≤ (qBinom (X : ℤ[X]) n k).coeff j
+  | n, 0, j => by
+      rw [qBinom_zero_right]
+      rcases eq_or_ne j 0 with rfl | hj
+      · simp
+      · simp [coeff_one, hj]
+  | 0, k + 1, j => by simp
+  | n + 1, k + 1, j => by
+      rw [qBinom_pascal, coeff_add, mul_comm, coeff_mul_X_pow']
+      have h1 := qBinom_X_coeff_nonneg n k j
+      have h2 : 0 ≤ (if k + 1 ≤ j then (qBinom (X : ℤ[X]) n (k + 1)).coeff (j - (k + 1)) else 0) := by
+        split_ifs with h
+        · exact qBinom_X_coeff_nonneg n (k + 1) _
+        · exact le_refl 0
+      linarith
+
+open Polynomial in
+/-- Convenience: the Gaussian polynomial is monic. -/
+theorem qBinom_X_monic {n k : ℕ} (h : k ≤ n) : (qBinom (X : ℤ[X]) n k).Monic :=
+  (qBinom_X_monic_natDegree n k h).1
+
+open Polynomial in
+/-- Convenience: `natDegree (qBinom X n k) = k · (n - k)`. -/
+theorem qBinom_X_natDegree {n k : ℕ} (h : k ≤ n) :
+    (qBinom (X : ℤ[X]) n k).natDegree = k * (n - k) :=
+  (qBinom_X_monic_natDegree n k h).2
+
+open Polynomial in
+/-- The top coefficient (at degree `k(n-k)`) is `1`: it is the leading coefficient of the
+monic Gaussian polynomial. -/
+theorem qBinom_X_coeff_top {n k : ℕ} (h : k ≤ n) :
+    (qBinom (X : ℤ[X]) n k).coeff (k * (n - k)) = 1 := by
+  have hmon := qBinom_X_monic h
+  rw [← qBinom_X_natDegree h]
+  exact hmon
+
+open Polynomial in
+/-- **Extreme coefficients are pinned to `1`.** For `k ≤ n` both the constant term and the
+top coefficient (degree `k(n-k)`) of the Gaussian polynomial equal `1`. Combined with the
+coefficient nonnegativity `qBinom_X_coeff_nonneg` and the palindromy `qBinom_reciprocal`,
+this pins the two ends of the symmetric coefficient array of `[n,k]_q` — the structural
+precursor to Sylvester's unimodality theorem. -/
+theorem qBinom_X_extreme_coeffs {n k : ℕ} (h : k ≤ n) :
+    (qBinom (X : ℤ[X]) n k).coeff 0 = 1 ∧
+    (qBinom (X : ℤ[X]) n k).coeff (k * (n - k)) = 1 :=
+  ⟨qBinom_X_coeff_zero n k h, qBinom_X_coeff_top h⟩
 
 end QBinomialCoefficients
