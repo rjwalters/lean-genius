@@ -565,6 +565,39 @@ theorem optimal_has_distinct_products (N : ℕ) (hN : N ≥ 4) :
   exact optimal_works_because_primes a₁ a₂ b₁ b₂ ha₁1 ha₂1 ha₁2 ha₂2
     hb₁p hb₂p hb₁lt hb₂lt heq
 
+/-- **The explicit optimal example is a valid witness for `maxProductSize`** (0-axiom).
+The pair `A = optimalA N`, `B = optimalB N` satisfies `IsSubsetUpTo _ N` (both sit inside
+`[1, N]`) and `HasDistinctProducts` (by `optimal_has_distinct_products`), so it is one of
+the pairs over which `maxProductSize N` is defined as the least upper bound.  Hence the
+extremal function dominates the size of the explicit construction — the missing link
+tying Part IV (the optimal example) to Part II (the extremal function `maxProductSize`).
+Combined with `optimal_example_upper_bound`, this pins `maxProductSize N` from below by a
+`Θ(N²/log N)` construction with no dependence on `szemeredi_theorem`. -/
+theorem optimal_example_le_maxProductSize (N : ℕ) (hN : N ≥ 4) :
+    (optimalA N).card * (optimalB N).card ≤ maxProductSize N := by
+  unfold maxProductSize
+  refine Nat.find_spec (maxProductSize.max_exists N)
+    (optimalA N) (optimalB N) ?_ ?_ (optimal_has_distinct_products N hN)
+  · -- `optimalA N = Icc 1 (N/2) ⊆ [1, N]`
+    intro a ha
+    simp only [optimalA, Finset.mem_filter, Finset.mem_range] at ha
+    obtain ⟨_, ha1, ha2⟩ := ha
+    exact ⟨ha1, by omega⟩
+  · -- every `p ∈ optimalB N` is a prime in `(N/2, N] ⊆ [1, N]`
+    intro p hp
+    simp only [optimalB, Finset.mem_filter, Finset.mem_range] at hp
+    obtain ⟨_, hpp, _, hpN⟩ := hp
+    exact ⟨hpp.one_lt.le, hpN⟩
+
+/-- **The extremal function is at least `⌊N/2⌋ · |{primes in (N/2, N]}|`** (0-axiom).
+Rewriting `optimal_example_le_maxProductSize` with `optimalA_card` gives an explicit
+`maxProductSize` lower bound in terms of the number of upper-half primes counted by
+`optimalB N`. -/
+theorem maxProductSize_ge_optimal (N : ℕ) (hN : N ≥ 4) :
+    (N / 2) * (optimalB N).card ≤ maxProductSize N := by
+  have h := optimal_example_le_maxProductSize N hN
+  rwa [optimalA_card] at h
+
 /-
 ## Part V: The Limit Question (Open)
 -/

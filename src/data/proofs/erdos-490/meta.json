@@ -79,12 +79,14 @@
       "optimalB_card_pos: |optimalB N| ≥ 1 for N ≥ 2 (0-axiom, via Bertrand)",
       "primeCounting_half_lt: π(N/2) < π(N) for N ≥ 2 (0-axiom) — the strict prime-counting gap, combining optimalB_card_pos with optimalB_card_eq_primeCounting",
       "Erdos490Chebyshev.lean (NEW, standalone, 0-axiom/0-sorry): verified central-binomial decomposition centralBinom_le_small_mul_large (centralBinom n ≤ (2n)^√(2n)·4^(2n/3)·∏_{n<p≤2n}p, the combinatorial crux of Chebyshev's θ lower bound — Mathlib's own stated TODO), plus theta_gap_lower_bound reducing θ(2n)−θ(n) to the elementary explicit lower bound n·log4 − ⌊2n/3⌋·log4 − log n − √(2n)·log(2n). Reduces (does NOT yet eliminate) the axiom chebyshev_theta_upper_half_lower_bound to the analytic tail √n·log n = o(n) + small-n Bertrand reconciliation.",
-      "erdos490_analytic_tail (in Erdos490Chebyshev.lean, 0-axiom): ∃c>0,∃N₀,∀n≥N₀, the elementary θ-gap lower bound (n/3)·log4 − log n − √(2n)·log(2n) ≥ c·n, proved from Real.isLittleO_log_id_atTop and isLittleO_log_rpow_atTop (exponent 1/2). This is the single analytic input that converted the Chebyshev θ-gap axiom into a theorem."
+      "erdos490_analytic_tail (in Erdos490Chebyshev.lean, 0-axiom): ∃c>0,∃N₀,∀n≥N₀, the elementary θ-gap lower bound (n/3)·log4 − log n − √(2n)·log(2n) ≥ c·n, proved from Real.isLittleO_log_id_atTop and isLittleO_log_rpow_atTop (exponent 1/2). This is the single analytic input that converted the Chebyshev θ-gap axiom into a theorem.",
+      "optimal_example_le_maxProductSize: |optimalA N|·|optimalB N| ≤ maxProductSize N for N ≥ 4 (0-axiom) — the missing witness bridge showing the explicit construction A=[1,N/2], B={primes in (N/2,N]} is one of the pairs over which the extremal function maxProductSize (a Nat.find) is the least upper bound, connecting Part IV (optimal example) to Part II (extremal function); with optimal_example_upper_bound this brackets maxProductSize by a Θ(N²/logN) construction independent of szemeredi_theorem.",
+      "maxProductSize_ge_optimal: ⌊N/2⌋·|optimalB N| ≤ maxProductSize N for N ≥ 4 (0-axiom) — optimal_example_le_maxProductSize rewritten via optimalA_card, an explicit maxProductSize lower bound in terms of the upper-half prime count."
     ],
     "axiomCount": 1,
-    "lineCount": 979,
+    "lineCount": 1083,
     "assumptions": "1 axiom, 0 sorries. Axiom: szemeredi_theorem (Szemerédi 1976 N²/log N upper bound, deep — the hard analytic input of the problem). The former second axiom chebyshev_theta_upper_half_lower_bound (the classical Chebyshev θ-gap lower bound θ(N)−θ(N/2) ≥ c·N) is NOW A THEOREM (0-axiom), proved by combining the verified central-binomial estimate Erdos490Cheb.theta_gap_lower_bound with the analytic tail Erdos490Cheb.erdos490_analytic_tail (log n and √(2n)·log(2n) are o(n)) and a Bertrand-based θ(N)−θ(N/2) ≥ log 2 for the finitely many small N. Only the deep Szemerédi upper bound remains axiomatized; status stays 'axiomatized'.",
-    "theoremCount": 33,
+    "theoremCount": 35,
     "definitionCount": 15,
     "additionalFiles": [
       "Proofs/Erdos490ProblemAristotle.lean",
@@ -217,9 +219,9 @@
       "Real"
     ],
     "namespace": "Erdos490",
-    "lineCount": 1050,
+    "lineCount": 1083,
     "axiomCount": 1,
-    "theoremCount": 35,
+    "theoremCount": 37,
     "definitionCount": 15,
     "path": "Proofs/Erdos490Problem.lean",
     "sorries": 0,
