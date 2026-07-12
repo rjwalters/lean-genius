@@ -20,7 +20,7 @@
     "badge": "verified",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 806,
+    "lineCount": 863,
     "assumptions": "0 axioms. The former anticoncentration_bound axiom (2^n ≤ 3√Q + 2 for distinct-subset-sums sets) is now PROVED in-file (theorem anticoncentration_bound) by an elementary, probability-free discharge: the second-moment identity over the powerset, a parity-aware central-interval count, and a discrete Chebyshev tail. dfx_lower_bound and pow2_dss proved; sum_sq_cauchy_schwarz proved. Fully machine-checked, 0 sorries.",
     "dateAdded": "2026-03-30",
     "mathlib_version": "4.26.0",
@@ -53,9 +53,11 @@
       "anticoncentration_bound axiom: Berry-Esseen step 2^n ≤ √(2/π)·2(ΣA+1)/√(Σa²) for distinct subset sum sets",
       "dfx_lower_bound: N ≥ √(2/π)·2ⁿ/√n (1 sorry for base-case arithmetic) — assembles the DFX framework",
       "dfx_improves_counting: DFX bound is asymptotically better than counting bound (n < n² for n ≥ 2)",
-      "Concrete cases: f(1)=1 via Finset.subset_singleton_iff, f(2)=2 via simp"
+      "Concrete cases: f(1)=1 via Finset.subset_singleton_iff, f(2)=2 via simp",
+      "two_pow_card_le_sum_succ: 2^|A| ≤ (ΣA)+1 (intrinsic, parameter-free pigeonhole counting wall — sharper than and subsuming the ambient-N erdos_1_counting_bound, since ΣA ≤ |A|·N)",
+      "two_pow_card_le_card_mul_sup_succ: 2^|A| ≤ |A|·(sup A)+1 (sharpest N-form wall for A itself, using the exact maximum; derived from the sum wall via sum_le_card_mul_max)"
     ],
-    "theoremCount": 27,
+    "theoremCount": 29,
     "definitionCount": 0
   },
   "overview": {
@@ -217,9 +219,9 @@
       "Mathlib"
     ],
     "namespace": "Erdos1OQ02",
-    "lineCount": 806,
+    "lineCount": 863,
     "axiomCount": 0,
-    "theoremCount": 31,
+    "theoremCount": 33,
     "definitionCount": 0,
     "path": "Proofs/Erdos1OQ02.lean",
     "sorries": 0
