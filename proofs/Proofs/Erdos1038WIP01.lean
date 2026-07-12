@@ -885,4 +885,210 @@ theorem sublevelInfPos_le_two : sublevelInfPos ≤ ENNReal.ofReal 2 :=
 theorem sublevelInf'_le_sublevelInfPos : sublevelInf' ≤ sublevelInfPos :=
   le_iInf fun f => le_iInf fun hf => iInf_le_of_le f (iInf_le_of_le hf.1 le_rfl)
 
+/-! ### The general faithful quadratic `(X − a)(X − b)` and the exact degree-`2` spectrum
+
+The quadratic families studied so far are *special*: `X² − d` centres its two roots at
+`±√d` (symmetric about `0`), and `(X − c)^n` clusters a *single* root.  The **general**
+monic real quadratic with two roots in `[-1,1]` is `(X − a)(X − b)` for arbitrary
+`a, b ∈ [-1,1]`.  Completing the square,
+`(X − a)(X − b) = (X − m)² − ((a − b)/2)²` with `m = (a + b)/2`, reduces it to the centred
+family shifted by `m`.  Two fully elementary consequences:
+
+* its sublevel measure is exactly `√((a − b)² + 4)` — a closed form for the *entire*
+  degree-`2` spectrum in terms of the root separation `|a − b|` alone
+  (`sublevelMeasure_quadraticGen`).  As `|a − b|` runs over `[0, 2]` this sweeps `[2, 2√2]`,
+  matching (and re-deriving) the symmetric `X² − d` family without the `d < 1` restriction;
+* since `0 ≤ (a − b)² ≤ 4`, this measure is `≥ 2`, with equality iff `a = b`
+  (`sublevelMeasure_quadraticGen_ge_two`).
+
+The second point pins the **degree-`2` infimum exactly**: `sublevelInfDeg2 = 2`
+(`sublevelInfDeg2_eq_two`), attained by any double root `(X − c)²`.  This sharply separates
+the elementary degree-`2` slice from the conjectured true infimum `2^(4/3) − 1 ≈ 1.52 < 2`:
+the extremal small-measure witnesses **cannot** be quadratic — they require unboundedly many
+distinct roots (degree `→ ∞`), beyond the reach of the degree-`2` analysis. -/
+
+/-- The **general monic real quadratic** with roots `a, b`: `(X − a)(X − b)`. -/
+noncomputable def quadraticGen (a b : ℝ) : Polynomial ℝ := (X - C a) * (X - C b)
+
+/-- Evaluation of the general quadratic: `(x − a)(x − b)`. -/
+theorem quadraticGen_eval (a b x : ℝ) :
+    (quadraticGen a b).eval x = (x - a) * (x - b) := by
+  simp [quadraticGen]
+
+/-- The general quadratic is monic (a product of two monic linear factors). -/
+theorem quadraticGen_monic (a b : ℝ) : (quadraticGen a b).Monic :=
+  (monic_X_sub_C a).mul (monic_X_sub_C b)
+
+/-- The general quadratic has degree `2`. -/
+theorem quadraticGen_natDegree (a b : ℝ) : (quadraticGen a b).natDegree = 2 := by
+  rw [quadraticGen]; compute_degree!
+
+/-- **`(X − a)(X − b)` is faithfully admissible for `a, b ∈ [-1,1]`.**  It is monic with
+    both roots `a, b ∈ [-1,1]` and splits completely (`roots.card = 2 = natDegree`). -/
+theorem quadraticGen_admissible' {a b : ℝ} (ha : a ∈ Set.Icc (-1 : ℝ) 1)
+    (hb : b ∈ Set.Icc (-1 : ℝ) 1) : MonicRealRootedIn01' (quadraticGen a b) := by
+  have hne : ((X - C a) * (X - C b) : Polynomial ℝ) ≠ 0 :=
+    mul_ne_zero (monic_X_sub_C a).ne_zero (monic_X_sub_C b).ne_zero
+  refine ⟨⟨quadraticGen_monic a b, ?_⟩, ?_⟩
+  · intro r hr
+    rw [quadraticGen, Polynomial.roots_mul hne, Polynomial.roots_X_sub_C,
+      Polynomial.roots_X_sub_C, Multiset.mem_add, Multiset.mem_singleton,
+      Multiset.mem_singleton] at hr
+    rcases hr with h | h <;> subst h <;> assumption
+  · have hcard : (quadraticGen a b).roots.card = 2 := by
+      rw [quadraticGen, Polynomial.roots_mul hne, Polynomial.roots_X_sub_C,
+        Polynomial.roots_X_sub_C]
+      simp
+    rw [hcard, quadraticGen_natDegree]
+
+/-- **Every faithful quadratic has sublevel measure `≥ 2`.**  Completing the square,
+    `(x − a)(x − b) = (x − m)² − ((a − b)/2)²` with `m = (a + b)/2`.  Since `(a − b)² ≤ 4`
+    (as `a, b ∈ [-1,1]`), on the punctured interval `(m − 1, m + 1) ∖ {m}` — where
+    `0 < (x − m)²` and `(x − m)² < 1` — the value `(x − a)(x − b)` stays in `(−1, 1)`.  That
+    punctured interval, of Lebesgue measure `2`, is contained in the sublevel set, so the
+    sublevel measure is `≥ 2`; equality forces the two roots to coincide. -/
+theorem sublevelMeasure_quadraticGen_ge_two {a b : ℝ} (ha : a ∈ Set.Icc (-1 : ℝ) 1)
+    (hb : b ∈ Set.Icc (-1 : ℝ) 1) :
+    ENNReal.ofReal 2 ≤ sublevelMeasure (quadraticGen a b) := by
+  obtain ⟨ha1, ha2⟩ := ha
+  obtain ⟨hb1, hb2⟩ := hb
+  have hD : (a - b) ^ 2 ≤ 4 := by
+    nlinarith [mul_nonneg (by linarith : (0:ℝ) ≤ a - b + 2)
+      (by linarith : (0:ℝ) ≤ 2 - (a - b))]
+  have hsub : Set.Ioo ((a + b) / 2 - 1) ((a + b) / 2 + 1) \ {(a + b) / 2}
+      ⊆ sublevelSet (quadraticGen a b) := by
+    intro x hx
+    obtain ⟨hxIoo, hxne⟩ := hx
+    rw [Set.mem_Ioo] at hxIoo
+    rw [Set.mem_singleton_iff] at hxne
+    have hxm : 2 * x - a - b ≠ 0 := fun h => hxne (by linarith)
+    have hsqpos : 0 < (2 * x - a - b) ^ 2 :=
+      (sq_nonneg _).lt_of_ne (Ne.symm (pow_ne_zero 2 hxm))
+    simp only [sublevelSet, Set.mem_setOf_eq, quadraticGen_eval, abs_lt]
+    refine ⟨?_, ?_⟩
+    · nlinarith [hsqpos, hD]
+    · nlinarith [mul_pos (by linarith [hxIoo.2] : (0:ℝ) < 2 - (2 * x - a - b))
+        (by linarith [hxIoo.1] : (0:ℝ) < 2 + (2 * x - a - b)), sq_nonneg (a - b)]
+  have hvol : volume (Set.Ioo ((a + b) / 2 - 1) ((a + b) / 2 + 1) \ {(a + b) / 2})
+      = ENNReal.ofReal 2 := by
+    rw [measure_diff_null (measure_singleton _), Real.volume_Ioo]
+    congr 1; ring
+  calc ENNReal.ofReal 2
+      = volume (Set.Ioo ((a + b) / 2 - 1) ((a + b) / 2 + 1) \ {(a + b) / 2}) := hvol.symm
+    _ ≤ sublevelMeasure (quadraticGen a b) := by
+        unfold sublevelMeasure; exact measure_mono hsub
+
+/-- **Exact sublevel measure of the general quadratic: `√((a − b)² + 4)`.**  Completing the
+    square gives `(x − a)(x − b) = (x − m)² − ((a − b)/2)²` with `m = (a + b)/2`, so
+    `{x : |f(x)| < 1}` is the interval `((a + b − s)/2, (a + b + s)/2)` with
+    `s = √((a − b)² + 4)` (up to the single measure-zero centre `m` when the two roots are
+    exactly `±1`), of length `s`.  This is a closed form for the *entire* degree-`2` spectrum
+    in terms of the root separation `|a − b|`: it equals `2` when `a = b` and `2√2` when
+    `{a, b} = {−1, 1}`, and interpolates monotonically between. -/
+theorem sublevelMeasure_quadraticGen {a b : ℝ} (ha : a ∈ Set.Icc (-1 : ℝ) 1)
+    (hb : b ∈ Set.Icc (-1 : ℝ) 1) :
+    sublevelMeasure (quadraticGen a b) = ENNReal.ofReal (Real.sqrt ((a - b) ^ 2 + 4)) := by
+  obtain ⟨ha1, ha2⟩ := ha
+  obtain ⟨hb1, hb2⟩ := hb
+  set s : ℝ := Real.sqrt ((a - b) ^ 2 + 4) with hs
+  have hspos : 0 < s := Real.sqrt_pos.mpr (by positivity)
+  have hs2 : s ^ 2 = (a - b) ^ 2 + 4 := Real.sq_sqrt (by positivity)
+  have hD : (a - b) ^ 2 ≤ 4 := by
+    nlinarith [mul_nonneg (by linarith : (0:ℝ) ≤ a - b + 2)
+      (by linarith : (0:ℝ) ≤ 2 - (a - b))]
+  have hup : sublevelSet (quadraticGen a b)
+      ⊆ Set.Ioo ((a + b - s) / 2) ((a + b + s) / 2) := by
+    intro x hx
+    simp only [sublevelSet, Set.mem_setOf_eq, quadraticGen_eval, abs_lt] at hx
+    obtain ⟨hx1, hx2⟩ := hx
+    have hkey : (2 * x - a - b) ^ 2 < s ^ 2 := by nlinarith [hx2, hs2]
+    rw [Set.mem_Ioo]
+    refine ⟨?_, ?_⟩
+    · nlinarith [hkey, hspos, sq_nonneg (2 * x - a - b + s)]
+    · nlinarith [hkey, hspos, sq_nonneg (2 * x - a - b - s)]
+  have hlo : Set.Ioo ((a + b - s) / 2) ((a + b + s) / 2) \ {(a + b) / 2}
+      ⊆ sublevelSet (quadraticGen a b) := by
+    intro x hx
+    obtain ⟨hxIoo, hxne⟩ := hx
+    rw [Set.mem_Ioo] at hxIoo
+    rw [Set.mem_singleton_iff] at hxne
+    have hxm : 2 * x - a - b ≠ 0 := fun h => hxne (by linarith)
+    have hsqpos : 0 < (2 * x - a - b) ^ 2 :=
+      (sq_nonneg _).lt_of_ne (Ne.symm (pow_ne_zero 2 hxm))
+    have hkey : (2 * x - a - b) ^ 2 < s ^ 2 := by
+      nlinarith [mul_pos (by linarith [hxIoo.2] : (0:ℝ) < a + b + s - 2 * x)
+        (by linarith [hxIoo.1] : (0:ℝ) < 2 * x - (a + b - s)), hspos]
+    simp only [sublevelSet, Set.mem_setOf_eq, quadraticGen_eval, abs_lt]
+    refine ⟨?_, ?_⟩
+    · nlinarith [hsqpos, hD]
+    · nlinarith [hkey, hs2]
+  have hvolIoo : volume (Set.Ioo ((a + b - s) / 2) ((a + b + s) / 2)) = ENNReal.ofReal s := by
+    rw [Real.volume_Ioo]; congr 1; ring
+  have hupM : sublevelMeasure (quadraticGen a b) ≤ ENNReal.ofReal s := by
+    unfold sublevelMeasure
+    calc volume (sublevelSet (quadraticGen a b))
+        ≤ volume (Set.Ioo ((a + b - s) / 2) ((a + b + s) / 2)) := measure_mono hup
+      _ = ENNReal.ofReal s := hvolIoo
+  have hloM : ENNReal.ofReal s ≤ sublevelMeasure (quadraticGen a b) := by
+    unfold sublevelMeasure
+    calc ENNReal.ofReal s
+        = volume (Set.Ioo ((a + b - s) / 2) ((a + b + s) / 2) \ {(a + b) / 2}) := by
+            rw [measure_diff_null (measure_singleton _), hvolIoo]
+      _ ≤ volume (sublevelSet (quadraticGen a b)) := measure_mono hlo
+  exact le_antisymm hupM hloM
+
+/-! ### The degree-`2` faithful infimum is exactly `2` -/
+
+/-- Positive-degree faithful admissibility restricted to **degree exactly `2`**: a monic
+    quadratic that splits into two real roots, both in `[-1,1]`. -/
+def MonicRealRootedIn01Deg2 (f : Polynomial ℝ) : Prop :=
+  MonicRealRootedIn01' f ∧ f.natDegree = 2
+
+/-- The **degree-`2` faithful infimum** of sublevel-set measures. -/
+noncomputable def sublevelInfDeg2 : ℝ≥0∞ :=
+  ⨅ (f : Polynomial ℝ) (_ : MonicRealRootedIn01Deg2 f), sublevelMeasure f
+
+/-- **Every faithful degree-`2` polynomial is `(X − a)(X − b)` with `a, b ∈ [-1,1]`**, so it
+    has sublevel measure `≥ 2`.  A monic degree-`2` polynomial that splits completely has a
+    root multiset of card `2 = {a, b}`, hence factors as `(X − a)(X − b)`
+    (`prod_multiset_X_sub_C_of_monic_of_roots_card_eq`); admissibility puts `a, b ∈ [-1,1]`,
+    and `sublevelMeasure_quadraticGen_ge_two` applies. -/
+theorem two_le_sublevelMeasure_of_deg2 {f : Polynomial ℝ}
+    (hf : MonicRealRootedIn01Deg2 f) : ENNReal.ofReal 2 ≤ sublevelMeasure f := by
+  obtain ⟨hf', hdeg⟩ := hf
+  have hc2 : f.roots.card = 2 := by rw [hf'.2, hdeg]
+  obtain ⟨a, b, hab⟩ := Multiset.card_eq_two.mp hc2
+  have hprod : (f.roots.map fun r => X - C r).prod = f :=
+    prod_multiset_X_sub_C_of_monic_of_roots_card_eq hf'.1.1 hf'.2
+  have hfeq : f = quadraticGen a b := by
+    rw [hab] at hprod
+    simp only [Multiset.insert_eq_cons, Multiset.map_cons, Multiset.map_singleton,
+      Multiset.prod_cons, Multiset.prod_singleton] at hprod
+    show f = (X - C a) * (X - C b)
+    exact hprod.symm
+  have ha : a ∈ Set.Icc (-1 : ℝ) 1 := hf'.1.2 a (by rw [hab]; simp)
+  have hb : b ∈ Set.Icc (-1 : ℝ) 1 := hf'.1.2 b (by rw [hab]; simp)
+  rw [hfeq]
+  exact sublevelMeasure_quadraticGen_ge_two ha hb
+
+/-- **The degree-`2` faithful infimum is `≤ 2`**, attained by the double root `X² = (X − 0)²`
+    (`quadraticGen 0 0`), whose sublevel set `(−1, 1)` has measure `2`. -/
+theorem sublevelInfDeg2_le_two : sublevelInfDeg2 ≤ ENNReal.ofReal 2 := by
+  have hadm : MonicRealRootedIn01Deg2 (quadraticGen 0 0) :=
+    ⟨quadraticGen_admissible' (by norm_num) (by norm_num), quadraticGen_natDegree 0 0⟩
+  have hmeas : sublevelMeasure (quadraticGen 0 0) = ENNReal.ofReal 2 := by
+    have hpow : quadraticGen 0 0 = (X - C (0 : ℝ)) ^ 2 := by rw [quadraticGen]; ring
+    rw [hpow, sublevelMeasure_translate_pow 0 (by norm_num)]
+  exact iInf_le_of_le (quadraticGen 0 0) (iInf_le_of_le hadm hmeas.le)
+
+/-- **The degree-`2` faithful infimum is exactly `2`.**  Every monic quadratic splitting into
+    two real roots in `[-1,1]` has sublevel measure `≥ 2` (`two_le_sublevelMeasure_of_deg2`),
+    and the double root `X²` attains `2` (`sublevelInfDeg2_le_two`).  This pins the degree-`2`
+    slice of the extremal spectrum: **the conjectured true infimum `2^(4/3) − 1 ≈ 1.52 < 2`
+    cannot be realised by a quadratic** — small-measure witnesses require unboundedly many
+    distinct roots (degree `→ ∞`), beyond this elementary degree-`2` analysis. -/
+theorem sublevelInfDeg2_eq_two : sublevelInfDeg2 = ENNReal.ofReal 2 :=
+  le_antisymm sublevelInfDeg2_le_two
+    (le_iInf fun _ => le_iInf fun hf => two_le_sublevelMeasure_of_deg2 hf)
+
 end Erdos1038WIP01
