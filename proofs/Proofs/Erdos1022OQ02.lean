@@ -230,6 +230,28 @@ theorem firstMoment_threshold_ge_self (t : ℕ) (ht : 1 ≤ t) :
 theorem firstMomentThreshold_two : firstMomentThreshold 2 = 2 := by
   unfold firstMomentThreshold; norm_num
 
+/-- The first-moment threshold is always strictly positive: `2^{t-1} ≥ 1`.  A base
+    positivity fact for the sparseness bound `c · n ≤ 2^{t-1}` — the admissible density is
+    never vacuously zero. -/
+theorem firstMomentThreshold_pos (t : ℕ) : 0 < firstMomentThreshold t := by
+  unfold firstMomentThreshold; positivity
+
+/-- **Lovász base case `t = 1`** (companion to `firstMomentThreshold_two`).  The threshold
+    at `t = 1` is `1`: `2^0 = 1`.  A single-element set family is trivially 2-colorable, and
+    the crude first-moment bound reflects this with the minimal threshold `1`. -/
+theorem firstMomentThreshold_one : firstMomentThreshold 1 = 1 := by
+  unfold firstMomentThreshold; norm_num
+
+/-- **The threshold is `1` exactly on the degenerate regime `t ≤ 1`.**  `2^{t-1} = 1 ↔ t ≤ 1`:
+    the first-moment sparseness threshold sits at its minimal value `1` precisely for the two
+    truncated-subtraction-collapsed cases `t = 0, 1`, and is `≥ 2` (strictly growing) from
+    `t = 2` onward.  This pins the boundary of the exponential-growth regime driving
+    `firstMoment_threshold_lt` / `_doubles`. -/
+theorem firstMomentThreshold_eq_one_iff (t : ℕ) : firstMomentThreshold t = 1 ↔ t ≤ 1 := by
+  unfold firstMomentThreshold
+  rw [Nat.pow_eq_one]
+  omega
+
 -- ══════════════════════════════════════════════════════════════════
 -- § 6: The threshold diverges — a formal `c_t → ∞`
 -- ══════════════════════════════════════════════════════════════════
