@@ -2227,4 +2227,64 @@ example {N : ℕ} [NeZero N] {r : ZMod N} (hr2 : 2 * r = 0) (hr0 : r ≠ 0) :
 theorem sqGaussSum_four_eq_zero_mod_24 : sqGaussSum (4 : ZMod 24) = 0 :=
   sqGaussSum_eq_zero_of_shift (t := 3) (by decide) (by decide)
 
+/-!
+## Part XI: Uniform sub-maximal magnitude at every modulus
+
+The two-torsion vanishing theorem (`sqGaussSum_eq_zero_of_two_mul_eq_zero`) closes
+the one gap that forced the Part VII magnitude bounds to assume `Odd N`.  The
+off-two-torsion bound `sqGaussSum_normSq_le_half_of_two_mul_ne` already gives
+`‖G(r)‖² ≤ N²/2` whenever `2r ≠ 0`; the only frequencies it could not reach were
+the two-torsion ones `2r = 0`, where the kernel is all of `ZMod N` and the gcd
+bound degrades to the trivial `‖G(r)‖ ≤ N`.  But a *nonzero* two-torsion frequency
+has `G(r) = 0` outright, so it satisfies the same `N²/2` bound with room to spare.
+
+Splitting on `2r = 0` therefore removes the oddness hypothesis entirely: at **every**
+modulus `N`, every nonzero frequency obeys `‖G(r)‖ ≤ N/√2`.  This supplies the single
+magnitude `M = N/√2` to `sqDiffFree_density_bound` unconditionally in `N`, superseding
+`sqDiffFree_density_bound_of_odd` (which needed `Odd N`) and the field-only
+`sqDiffFree_density_bound_of_prime`.
+
+Honesty note: `M = N/√2` is still of order `N`, so — exactly as in the odd case — it
+does **not** by itself force `|A| = o(N)`.  The point here is the removal of a
+hypothesis, not a quantitative sharpening: the unconditional Sárközy density for all
+moduli still needs the residual-phase cancellation in `Σ_{h : 2rh=0} ψ(−rh²)` that the
+triangle inequality in `sqGaussSum_normSq_le` discards. -/
+
+/-- **Uniform sub-maximal magnitude at every modulus.**  For *any* `N` and any nonzero
+    frequency `r`, `‖G(r)‖² ≤ N²/2`.  Split on the two-torsion: if `2r = 0` then `r ≠ 0`
+    forces `G(r) = 0` (`sqGaussSum_eq_zero_of_two_mul_eq_zero`), so the bound holds with
+    the left side `0`; otherwise `sqGaussSum_normSq_le_half_of_two_mul_ne` applies.  Drops
+    the `Odd N` hypothesis of `sqGaussSum_normSq_le_half_of_odd`. -/
+theorem sqGaussSum_normSq_le_half_of_ne_zero {N : ℕ} [NeZero N] {r : ZMod N}
+    (hr : r ≠ 0) : ‖sqGaussSum r‖ ^ 2 ≤ (N : ℝ) ^ 2 / 2 := by
+  rcases eq_or_ne (2 * r) 0 with h2 | h2
+  · rw [sqGaussSum_norm_eq_zero_of_two_mul_eq_zero h2 hr]
+    have hpos : (0 : ℝ) ≤ (N : ℝ) ^ 2 / 2 := by positivity
+    simpa using hpos
+  · exact sqGaussSum_normSq_le_half_of_two_mul_ne h2
+
+/-- **`‖G(r)‖ ≤ N / √2` at every modulus.**  Square-root form of
+    `sqGaussSum_normSq_le_half_of_ne_zero`, supplying a *single* magnitude `M = √(N²/2)`
+    for `sqDiffFree_density_bound` over all `N`.  Supersedes `sqGaussSum_norm_le_of_odd`
+    by dropping the `Odd N` hypothesis. -/
+theorem sqGaussSum_norm_le_of_ne_zero {N : ℕ} [NeZero N] {r : ZMod N} (hr : r ≠ 0) :
+    ‖sqGaussSum r‖ ≤ Real.sqrt ((N : ℝ) ^ 2 / 2) := by
+  have hmono := Real.sqrt_le_sqrt (sqGaussSum_normSq_le_half_of_ne_zero hr)
+  rwa [Real.sqrt_sq (norm_nonneg _)] at hmono
+
+/-- **Square-difference density bound at every modulus (unconditional in `N`).**  The
+    uniform magnitude `‖G(r)‖ ≤ √(N²/2)` discharges the analytic hypothesis of
+    `sqDiffFree_density_bound` with `M = N/√2` for *every* `N` — even moduli included —
+    extending `sqDiffFree_density_bound_of_odd` past the oddness restriction.
+
+    Honesty note: `M = N/√2` is of the same order as `N`, so this does **not** by itself
+    force `|A| = o(N)`; it is a genuine unconditional statement for all moduli but
+    quantitatively weak, for the same reason as the odd case. -/
+theorem sqDiffFree_density_bound_of_ne_zero {N : ℕ} [NeZero N] (A : Finset (ZMod N))
+    (hfree : ∀ x ∈ A, ∀ n : ZMod N, n ^ 2 ≠ 0 → x + n ^ 2 ∉ A) :
+    (A.card : ℝ) ^ 2
+      ≤ (A.card : ℝ) * (Finset.univ.filter (fun n : ZMod N => n ^ 2 = 0)).card
+        + (↑N)⁻¹ * (Real.sqrt ((N : ℝ) ^ 2 / 2) * (↑A.card * ↑N - (↑A.card) ^ 2)) :=
+  sqDiffFree_density_bound A (fun _ hr => sqGaussSum_norm_le_of_ne_zero hr) hfree
+
 end Szemeredi.Roth
