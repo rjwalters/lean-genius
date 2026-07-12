@@ -828,7 +828,7 @@ squares are `≥ 0`, so `b² = −a` would force `−a ≥ 0`, i.e. `a ≤ 0`.
 This is the field-order input that makes the entire even-case difficulty disappear for
 `a > 0`: the residual `−a ∈ K²` branch of `two_power_capelli` (the open Lang VI §9 descent,
 the file's sole `sorry`) is exactly the case ruled out here. -/
-theorem neg_not_square_of_pos {K : Type*} [LinearOrderedField K] {a : K} (ha : 0 < a) :
+theorem neg_not_square_of_pos {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K] {a : K} (ha : 0 < a) :
     ∀ b : K, b ^ 2 ≠ -a := by
   intro b hb
   have hb2 : (0 : K) ≤ b ^ 2 := sq_nonneg b
@@ -839,7 +839,7 @@ theorem neg_not_square_of_pos {K : Type*} [LinearOrderedField K] {a : K} (ha : 0
 `a ≠ −(4·b⁴)` for every `b`, since `4·b⁴ ≥ 0` forces `−(4·b⁴) ≤ 0 < a`. So the `−4·K⁴`
 obstruction — the genuinely two-dimensional content of the criterion — is a purely
 non-formally-real phenomenon. -/
-theorem capelli_cond_two_of_pos {K : Type*} [LinearOrderedField K] {a : K} (ha : 0 < a) :
+theorem capelli_cond_two_of_pos {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K] {a : K} (ha : 0 < a) :
     ∀ b : K, a ≠ -(4 * b ^ 4) := by
   intro b hb
   have h4 : (0 : K) ≤ 4 * b ^ 4 := by positivity
@@ -854,7 +854,7 @@ The open even-case obstruction (`−a ∈ K²`, the `−4·K⁴` descent of Lang
 `sorry` in `two_power_capelli`) never arises here: `−a < 0` cannot be a square, so the
 norm-descent keystone `two_power_capelli_of_neg_not_square` applies directly, with condition
 (2) unused. Thus the whole Capelli even-case difficulty is confined to non-real fields. -/
-theorem two_power_capelli_pos {K : Type*} [LinearOrderedField K] {k : ℕ} (hk : 1 ≤ k)
+theorem two_power_capelli_pos {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K] {k : ℕ} (hk : 1 ≤ k)
     {a : K} (ha : 0 < a) (h1 : ∀ b : K, b ^ 2 ≠ a) :
     Irreducible (X ^ 2 ^ k - C a : K[X]) :=
   two_power_capelli_of_neg_not_square hk h1 (neg_not_square_of_pos ha)
@@ -869,7 +869,7 @@ is the clean "not a prime power" condition (1) alone. Unlike the general `vahlen
 this is **fully machine-checked with no `sorry`**: the only place the general proof invokes
 the open even-case lemma `two_power_capelli` is the `8 ∣ n` branch, and there the pure
 `2`-power base is discharged unconditionally by `two_power_capelli_pos`. -/
-theorem vahlen_capelli_pos {K : Type*} [LinearOrderedField K] {n : ℕ} (hn : 1 ≤ n)
+theorem vahlen_capelli_pos {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K] {n : ℕ} (hn : 1 ≤ n)
     {a : K} (ha : 0 < a) :
     Irreducible (X ^ n - C a) ↔ ∀ p : ℕ, Nat.Prime p → p ∣ n → ∀ b : K, b ^ p ≠ a := by
   have hcap : (4 ∣ n → ∀ b : K, a ≠ -(4 * b ^ 4)) := fun _ => capelli_cond_two_of_pos ha
@@ -928,7 +928,7 @@ so condition (1) collapses to "not a square": over a `LinearOrderedField` with `
 
 A clean corollary of `vahlen_capelli_pos` / `two_power_capelli_pos`; e.g. over `ℚ` it makes
 `X² − a`, `X⁴ − a`, `X⁸ − a`, … simultaneously irreducible for any positive non-square `a`. -/
-theorem vahlen_capelli_pos_two_pow {K : Type*} [LinearOrderedField K] {k : ℕ} (hk : 1 ≤ k)
+theorem vahlen_capelli_pos_two_pow {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K] {k : ℕ} (hk : 1 ≤ k)
     {a : K} (ha : 0 < a) :
     Irreducible (X ^ 2 ^ k - C a) ↔ ∀ b : K, b ^ 2 ≠ a := by
   constructor
