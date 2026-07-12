@@ -308,6 +308,54 @@ theorem log_increment_gap_eq_sum (R : ℕ → ℝ) (l m : ℕ) :
   have h := Finset.sum_range_sub (fun i => Real.log (R (l + i))) m
   simpa using h.symm
 
+/-- **The gap-ratio telescopes into a product of unit ratios.** The multiplicative
+companion of `increment_gap_eq_sum` (additive) and `log_increment_gap_eq_sum`
+(log-additive): whenever `R` is nonzero across the window `[l, l+m]`, the `m`-step
+ratio is the exact product of the `m` consecutive unit ratios,
+
+`R(l+m) / R l = ∏_{i<m} R(l+i+1) / R(l+i)`.
+
+This is the multiplicative telescoping `R(l+m)/R(l) = ∏ R(l+i+1)/R(l+i)` invoked (but
+not previously stated) in the docstrings of `ratio_gap_tendsto_one` and
+`ratio_gap_tendsto_pow`; it is their exact algebraic backbone, made explicit here.
+Proof: induction on `m`, splitting off one factor with `div_mul_div_cancel₀` (exactly
+as in `ratio_gap_tendsto_one`'s inductive step). -/
+theorem ratio_gap_eq_prod (R : ℕ → ℝ) (l m : ℕ) (hne : ∀ i ≤ m, R (l + i) ≠ 0) :
+    R (l + m) / R l = ∏ i ∈ Finset.range m, (R (l + i + 1) / R (l + i)) := by
+  revert hne
+  induction m with
+  | zero =>
+      intro hne
+      simp only [Finset.range_zero, Finset.prod_empty, Nat.add_zero]
+      exact div_self (by simpa using hne 0 le_rfl)
+  | succ m ih =>
+      intro hne
+      show R (l + m + 1) / R l = ∏ i ∈ Finset.range (m + 1), (R (l + i + 1) / R (l + i))
+      rw [Finset.prod_range_succ,
+          ← ih (fun i hi => hne i (Nat.le_succ_of_le hi)),
+          mul_comm, div_mul_div_cancel₀ (hne m (Nat.le_succ m))]
+
+/-- **The product of consecutive ratios tends to `1`.** Under Erdős #1014's ratio
+convergence `R(l+1)/R(l) → 1`, for every fixed gap `m` the product form of the
+gap-ratio converges,
+
+`∏_{i<m} R(l+i+1) / R(l+i) → 1`.
+
+The product-form reading of `ratio_gap_tendsto_one` (to which it is equal on the
+nonvanishing window by `ratio_gap_eq_prod`): each of the `m` factors is a shifted copy
+of the unit ratio, so each tends to `1`, and the finite product of null-factors tends to
+`∏ 1 = 1` (`tendsto_finset_prod`). Notably this needs **no** positivity hypothesis — it
+holds for the product of shifted ratios directly. -/
+theorem prod_consecutive_ratios_tendsto_one (R : ℕ → ℝ) (m : ℕ)
+    (hratio : Tendsto (fun l => R (l + 1) / R l) atTop (𝓝 1)) :
+    Tendsto (fun l => ∏ i ∈ Finset.range m, (R (l + i + 1) / R (l + i))) atTop (𝓝 1) := by
+  have h : Tendsto (fun l => ∏ i ∈ Finset.range m, (R (l + i + 1) / R (l + i))) atTop
+      (𝓝 (∏ _i ∈ Finset.range m, (1 : ℝ))) := by
+    refine tendsto_finset_prod _ (fun i _ => ?_)
+    have hi := hratio.comp (tendsto_add_atTop_nat i)
+    simpa using hi
+  simpa using h
+
 /-- **Bounded-gap ratio convergence.** If the consecutive ratio `R(l+1)/R(l)` tends to
 `1` (Erdős #1014) and `R` is eventually positive, then for *every fixed gap* `m` the
 gap-ratio `R(l+m)/R(l)` also tends to `1`.
