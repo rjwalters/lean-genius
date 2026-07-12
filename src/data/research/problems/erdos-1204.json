@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (researcher-6): bracketed the next frontier value A(9) into 27 <= A(9) <= 30 (companion Erdos1204A9.lean). Witness {0,2,6,8,12,18,20,26,30} gives A(9)<=30=H(9); strict monotonicity A_lt_A_succ off the exact A(8)=26 gives A(9)>=27. Extends the exact-value frontier A(2..8) one step. 0 sorries/0 axioms, docker-verified Lean v4.26.0.",
+    "progressSummary": "PROGRESS (researcher-1, 2026-07-12): proved the EXACT value A(9)=30 (companion Erdos1204A9.lean), tightening the earlier 27<=A(9)<=30 bracket to equality and extending the exact frontier to A(2..9)=2,6,8,12,16,20,26,30. New lower bound admissible_nine_sup_ge: an admissible set misses one residue class mod each of 2,3,5, so within {0,..,29} it survives at most 30*(1/2)*(2/3)*(4/5)=8 residues (checked by decide over all 2*3*5=30 class-triples), which is < 9 — so any admissible 9-set has an element >=30. Notably p=7 is NOT needed (unlike A(8)=26): the primorial 2*3*5=30 equals the window length {0,..,29}, forcing the mod-2,3,5 density below 9. 0 sorries / 0 axioms ([propext,Classical.choice,Quot.sound] only, no native_decide), docker-verified Lean v4.26.0 (7746 jobs).",
     "builtItems": [
       "Erdos1204.Admissible (def) in Proofs/Erdos1204Problem.lean",
       "Erdos1204.missing_class_of_card_lt",
@@ -46,7 +46,10 @@
       "Erdos1204Problem.lean: primorialUpTo k := ((range(k+1)).filter Nat.Prime).prod id + A_le_primorial (A k ≤ (k-1)*primorialUpTo k). Reuses the exists_admissible_card construction, adding the sup bound. 0 new axioms/sorries. Elaboration-clean; olean-write blocked by fleet SIGBUS-135.",
       "Erdos1204B.lean: S_tendsto_atTop (Filter.tendsto_atTop_mono A_le_S A_tendsto_atTop) + B_tendsto_atTop (tendsto_atTop_mono` off sub_one_le_B eventual bound). 0 axioms/0 sorries; verified local Lean v4.26.0 (docker image build down, containerd meta.db I/O).",
       "A_pos / A_eq_zero_iff / two_le_A_iff (Erdos1204Problem.lean): characterized the vanishing locus of A(k)=min a_k — A vanishes exactly on {0,1} and is ≥2 from k=2 onward, from the prime-2 bound 2(k-1)≤A(k)",
-      "Erdos1204A9.lean: admissible_witness_nine + A_nine_le (A(9)<=30) + A_nine_ge (A(9)>=27 via A_lt_A_succ at A(8)=26) + A_nine_bounds; 0 axioms/0 sorries"
+      "Erdos1204A9.lean: admissible_witness_nine + A_nine_le (A(9)<=30) + A_nine_ge (A(9)>=27 via A_lt_A_succ at A(8)=26) + A_nine_bounds; 0 axioms/0 sorries",
+      "theorem admissible_nine_sup_ge — every admissible 9-set has sup ≥ 30, via the mod-2,3,5 CRT filter-card bound (8<9).",
+      "theorem A_nine : A 9 = 30 — the exact Hardy–Littlewood minimal diameter H(9), closing the 27≤A(9)≤30 bracket.",
+      "theorem A_nine_ge : 30 ≤ A 9 and updated A_nine_bounds sharp sandwich."
     ],
     "insights": [
       "Admissibility is purely local: only the residue pattern mod each prime matters.",
@@ -60,14 +63,15 @@
       "Formalized the explicit weak UPPER bound A(k) ≤ (k-1)·∏_{p≤k prime}p (A_le_primorial), previously only asserted in a docstring. Uses the arithmetic progression {0,N,2N,…,(k-1)N} with N=primorialUpTo k (product of primes ≤k): admissible because every element ≡0 mod each prime p≤k so class 1 is missed (larger primes automatic via missing_class_of_card_lt), k elements (injective ·*N since N>0), largest element (k-1)·N (Finset.sup_le, i*N≤(k-1)*N via mul_le_mul_right'), fed to A_le. This SANDWICHES A(k) between the parity lower bound 2(k-1) (two_mul_sub_one_le_A) and (k-1)·primorial — the elementary two-sided companion, far from the conjectured A(k)∼k log k (primorial grows like e^{(1+o(1))k}). Elaboration-clean [7743/7743] (olean-write SIGBUS-135).",
       "Divergence extends from A to all three extremal quantities: S(k)→∞ (via A(k)≤S(k), A_le_S + A_tendsto_atTop domination) and B(k)→∞ (via k-1≤B(k), sub_one_le_B + (k:ℚ)-1→∞ eventual domination). No admissible k-tuple can keep its diameter, sum, OR average bounded as k→∞; the sharp rates all remain OPEN (sieve theory).",
       "The vanishing locus of A is exactly {0,1}: A(0)=A(1)=0 (∅ and {0}), while every admissible k-set with k≥2 is forced by the prime 2 to have maximum ≥2(k-1)≥2, so A is strictly positive from k=2.",
-      "A(9) sits in 27 <= A(9) <= 30 (H(9)=30). The exact value needs the exhaustive p=2,3,5,7 pruning over {0,..,29} (as A(8)=26 required over {0,..,25}); the general slope ladder Erdos1204C..F (slopes 3, 15/4, 35/8, 77/16) gives only A(9)>=3(9-2)=21, weaker than the monotonicity bound 27, so per-value exact computation and the asymptotic ladder are complementary."
+      "A(9) sits in 27 <= A(9) <= 30 (H(9)=30). The exact value needs the exhaustive p=2,3,5,7 pruning over {0,..,29} (as A(8)=26 required over {0,..,25}); the general slope ladder Erdos1204C..F (slopes 3, 15/4, 35/8, 77/16) gives only A(9)>=3(9-2)=21, weaker than the monotonicity bound 27, so per-value exact computation and the asymptotic ladder are complementary.",
+      "A(9)=30 exact (OEIS A008407): the mod-2,3,5 sieve alone closes the lower bound because 2*3*5=30 equals the window length {0,..,29}; by CRT exactly 1*2*4=8 residues survive avoiding one class each mod 2,3,5, and 8<9. p=7 is unnecessary here, unlike A(8)=26 where the 13-per-parity window leaves 9-slot pools that only p=7 kills.",
+      "Formalization pattern for these primorial-window lower bounds: bound a by (Finset.range N).filter (fun x:ℕ => (x:ZMod p1)≠r1 ∧ ...), then close all class-choices at once with fin_cases r1 <;> ... <;> decide proving the filter card ≤ target-1. Much shorter than the per-branch forced-set case bash used for A(8). GOTCHA: annotate the lambda binder `fun x : ℕ =>` — a bare `(x : ZMod 2)` ascription makes Lean infer x:ZMod 2 and the later (x:ZMod 3) mismatches."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Investigate a lower-bound argument toward A(k) ≳ k log k (needs sieve theory / prime distribution) — remains OPEN.",
-      "Sharpen the lower bound beyond parity 2(k-1) by also sieving mod 3 (and small primes) — a mod-2-and-3 combined lower bound would be the next elementary improvement.",
-      "Prove A(8)=26 (Hardy–Littlewood minimal diameter H(8)) extending the A4-A7 files; needs pruning mod 2,3,5,7 over {0,..,25}.",
-      "The headline A(k)∼k log k and B(k) estimate need sieve theory / prime distribution — remain OPEN."
+      "Prove A(10)=32: window {0,..,31}, need to rule out admissible 10-sets with sup ≤ 31. The clean mod-2,3,5 density is 32*(1/2)*(2/3)*(4/5)=8.53→ up to ~10-11 survive, so p=7 becomes binding again (as at A(8)); expect an A(8)-style forced-set case analysis. Non-trivial but mechanical.",
+      "Generalize the primorial-window observation: when the search window {0,..,P-1} has length equal to a primorial P=2·3·…·p_j, the mod-2..p_j sieve density is exactly φ-like ∏(p_i-1)/p_i · P, giving a clean closed-form lower bound A(k) ≥ P whenever that density < k. This is the elementary mod-small-primes lower bound flagged in prior nextSteps.",
+      "The headline A(k)∼k log k asymptotic needs sieve theory / prime distribution — remains OPEN."
     ],
     "markdown": "# Erdős #1204 - Knowledge Base\n\n## Problem Statement\n\nWe call a sequence of integers $0\\leq a_1<\\cdots <a_k$ admissible if it is missing at least one congruence class modulo every prime $p$. Let $A(k)=\\min a_k$. Estimate $A(k)$ - in particular, is it true that\\[A(k)\\sim k\\log k?\\]Estimate\\[B(k)=\\min \\frac{a_1+\\cdots+a_k}{k}.\\]\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #337\n- Problem #2000\n- Problem #60\n- Problem #2\n- Problem #855\n- Problem #1203\n- Problem #1205\n- Problem #39\n- Problem #1\n\n## References\n\n- Er80\n- HeRi73\n- Po14c\n- El65\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-04-16*\n",
     "score": 27
@@ -87,7 +91,7 @@
     "mathlib": []
   },
   "started": "2026-04-16T17:08:10.942Z",
-  "lastUpdate": "2026-06-25T00:00:00.000Z",
+  "lastUpdate": "2026-07-12T09:08:15.000Z",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [
