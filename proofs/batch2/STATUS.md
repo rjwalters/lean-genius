@@ -4,8 +4,7 @@
 - verify-results.tsv: 658 tracked files — 190 GREEN / 468 RESIDUAL (before wave H merge)
 - Wave F 159 (repo-wide orphan-doc sweep 129 + double-binder 4 + autoImplicit 11 + import-Mathlib 16): 47 green
 - Wave G 8 (AbelRuffini): 2 green (OQ03, OQ03OQ01 via Nat.card retype)
-- Wave H 298 (bad-import repair, 294 files + 4 AbelRuffini re-checks): see results-H1/H2.txt —
-  IF NOT MERGED YET run: `python3 merge_results.py --results results-H1.txt results-H2.txt --diag diag-D1.txt diag-D2.txt diag-F1.txt diag-F2.txt diag-G.txt diag-H1.txt diag-H2.txt`
+- Wave H 298 COMPLETE: 74 green (38 H1 + 36 H2, 25%); MERGED into tsv: 928 tracked, 264 GREEN.
 - fails-D.txt (134) DIAGNOSED: diag-D1/D2.txt, classes merged into tsv. Mostly Doctor-class
   (instance-synth 27, proof-drift 25, type-mismatch 19, parse 9, singleton drift ~30).
 
