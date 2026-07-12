@@ -413,4 +413,76 @@ theorem norm_fourierCoeffOn_deriv4_eq (f : ℝ → ℝ) (hf : ContDiff ℝ 4 f)
     rw [norm_pow, Complex.norm_intCast, ← abs_pow, abs_of_nonneg (by positivity)]
   rw [hnorm_eq]
 
+/-- **Biharmonic Wirtinger equality on the first harmonic.**  The fourth-order analogue of
+    `norm_fourierCoeffOn_deriv2_eq_of_natAbs_one`: on the modes `|n| = 1` the biharmonic
+    magnitude identity `‖ĉₙ(f'''')‖ = n⁴·‖ĉₙ(f)‖` degenerates to an equality of norms,
+
+        ‖ĉₙ(f'''')‖ = ‖ĉₙ(f)‖   for   |n| = 1,
+
+    because the eigenvalue factor `n⁴` is exactly `1` there.  The first harmonic is the
+    unique mode fixed (in magnitude) by every even derivative — the circle of the higher
+    order (clamped-plate) Wirtinger analysis. -/
+theorem norm_fourierCoeffOn_deriv4_eq_of_natAbs_one (f : ℝ → ℝ) (hf : ContDiff ℝ 4 f)
+    (hperiod : ∀ t, f (t + 2 * π) = f t)
+    (hab : (0 : ℝ) < 2 * π) (n : ℤ) (hn : n.natAbs = 1) :
+    ‖fourierCoeffOn hab (ofReal ∘ deriv (deriv (deriv (deriv f)))) n‖
+      = ‖fourierCoeffOn hab (ofReal ∘ f) n‖ := by
+  have hsq : (n : ℝ) ^ 4 = 1 := by
+    rcases Int.natAbs_eq_iff.mp hn with h | h <;> subst h <;> norm_num
+  rw [norm_fourierCoeffOn_deriv4_eq f hf hperiod hab n, hsq, one_mul]
+
+/-- **Biharmonic factor-`16` damping past the first harmonic.**  The fourth-order analogue of
+    `four_mul_norm_fourierCoeffOn_le_deriv2`: away from the first harmonic every Fourier mode
+    is damped by at least `16` under the fourth derivative,
+
+        16 · ‖ĉₙ(f)‖ ≤ ‖ĉₙ(f'''')‖   for   |n| ≥ 2,
+
+    since the biharmonic eigenvalue magnitude `n⁴ ≥ 16`.  The steeper (`16` vs `4`) gap is why
+    higher-order Wirtinger / clamped-plate estimates force all but the first harmonic to vanish
+    even faster than the classical second-order Hurwitz proof. -/
+theorem sixteen_mul_norm_fourierCoeffOn_le_deriv4 (f : ℝ → ℝ) (hf : ContDiff ℝ 4 f)
+    (hperiod : ∀ t, f (t + 2 * π) = f t)
+    (hab : (0 : ℝ) < 2 * π) (n : ℤ) (hn : 2 ≤ n.natAbs) :
+    16 * ‖fourierCoeffOn hab (ofReal ∘ f) n‖
+      ≤ ‖fourierCoeffOn hab (ofReal ∘ deriv (deriv (deriv (deriv f)))) n‖ := by
+  rw [norm_fourierCoeffOn_deriv4_eq f hf hperiod hab n]
+  have hi : (2 : ℤ) ≤ |n| := by rw [Int.abs_eq_natAbs]; exact_mod_cast hn
+  have h2 : (2 : ℝ) ≤ |(n : ℝ)| := by rw [← Int.cast_abs]; exact_mod_cast hi
+  have hn2 : (4 : ℝ) ≤ (n : ℝ) ^ 2 := by
+    nlinarith [sq_abs (n : ℝ), abs_nonneg (n : ℝ), h2]
+  have hn4 : (16 : ℝ) ≤ (n : ℝ) ^ 4 := by
+    nlinarith [hn2, sq_nonneg ((n : ℝ) ^ 2 - 4)]
+  nlinarith [norm_nonneg (fourierCoeffOn hab (ofReal ∘ f) n), hn4]
+
+/-- **Biharmonic kernel: `f''''` kills mode `n` iff `f` has no mode `n`.**  The fourth-order
+    analogue of `fourierCoeffOn_deriv2_eq_zero_iff`: for any nonzero mode `n`,
+
+        ĉₙ(f'''') = 0  ↔  ĉₙ(f) = 0,
+
+    immediate from the biharmonic identity `ĉₙ(f'''') = n⁴·ĉₙ(f)` and `n⁴ ≠ 0` — the fourth
+    derivative scales each nonzero mode by the nonzero factor `n⁴`, so it has the same kernel
+    as the identity on `{n ≠ 0}`. -/
+theorem fourierCoeffOn_deriv4_eq_zero_iff (f : ℝ → ℝ) (hf : ContDiff ℝ 4 f)
+    (hperiod : ∀ t, f (t + 2 * π) = f t)
+    (hab : (0 : ℝ) < 2 * π) (n : ℤ) (hn : n ≠ 0) :
+    fourierCoeffOn hab (ofReal ∘ deriv (deriv (deriv (deriv f)))) n = 0 ↔
+      fourierCoeffOn hab (ofReal ∘ f) n = 0 := by
+  rw [fourierCoeffOn_deriv4_periodic_all f hf hperiod hab n]
+  have hn4 : (n : ℂ) ^ 4 ≠ 0 := pow_ne_zero 4 (Int.cast_ne_zero.mpr hn)
+  rw [mul_eq_zero]
+  simp [hn4]
+
+/-- **Fourth derivative kills the mean.**  The `n = 0` companion of the biharmonic suite and
+    the fourth-order analogue of `fourierCoeffOn_deriv2_zero`: the biharmonic eigenvalue `n⁴`
+    vanishes at `n = 0`, so
+
+        ĉ₀(f'''') = 0.
+
+    Immediate from the whole-spectrum identity `fourierCoeffOn_deriv4_periodic_all` at `n = 0`
+    (`0⁴ = 0`): the fourth derivative annihilates the mean, just as the second derivative does. -/
+theorem fourierCoeffOn_deriv4_zero (f : ℝ → ℝ) (hf : ContDiff ℝ 4 f)
+    (hperiod : ∀ t, f (t + 2 * π) = f t) (hab : (0 : ℝ) < 2 * π) :
+    fourierCoeffOn hab (ofReal ∘ deriv (deriv (deriv (deriv f)))) 0 = 0 := by
+  simpa using fourierCoeffOn_deriv4_periodic_all f hf hperiod hab 0
+
 end IsoperimetricFourier
