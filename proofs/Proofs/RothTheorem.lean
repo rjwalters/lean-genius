@@ -5447,4 +5447,68 @@ theorem maxSqDiffFreeCard_two_mul_prime_eq_one {p : ℕ} (hp : p.Prime) [NeZero 
   rw [maxSqDiffFreeCard_two_mul hodd]
   exact maxSqDiffFreeCard_eq_one_of_mod_four_eq_three hp h3
 
+/-! ### Part XLI — the necessity half: a prime factor `p ≡ 1 (mod 4)` forces `2 ≤ maxSqDiffFreeCard N`
+
+The value-`1` characterization `maxSqDiffFreeCard_eq_one_iff` shows the collapse `= 1` is
+equivalent to the `±`-square covering `∀ d ≠ 0, IsSquare d ∨ IsSquare (-d)`.  Parts XXXVI and XL
+proved the *sufficiency* half of the value-`1` locus `{1, 2} ∪ {p, 2p : p prime ≡ 3 mod 4}`.
+Here we begin the *necessity* half by ruling out any modulus divisible by a prime `p ≡ 1 (mod 4)`.
+
+A quadratic non-residue `e ∈ ℤ/pℤ` exists (`FiniteField.exists_nonsquare`).  The reduction
+`f : ℤ/Nℤ → ℤ/pℤ` (the ring hom `ZMod.castHom (p ∣ N)`) is *surjective* and *preserves squares*
+(`IsSquare.map`), so any natural lift `d = (k : ℤ/Nℤ)` of `e` is again a non-residue: `IsSquare d`
+would push forward to `IsSquare e`.  Likewise `-d` is a non-residue because its reduction `-e` is
+one — `-1` is a square mod `p` (as `p ≡ 1 mod 4`), so `-e = (-1)·e` is a non-residue whenever `e`
+is (`not_isSquare_neg_of_mod_four_eq_one`).  Thus `{0, d}` is a two-element square-difference-free
+subset of `ℤ/Nℤ`, giving `2 ≤ maxSqDiffFreeCard N` via `two_le_maxSqDiffFreeCard_iff`.
+
+Combined with the sufficiency half, this pins the odd part of the value-`1` locus: an odd `N` with
+any prime factor `≡ 1 (mod 4)` is excluded from `{N : maxSqDiffFreeCard N = 1}`. -/
+theorem two_le_maxSqDiffFreeCard_of_prime_dvd_of_mod_four_eq_one
+    {N p : ℕ} [NeZero N] (hp : p.Prime) (h1 : p % 4 = 1) (hdvd : p ∣ N) :
+    2 ≤ maxSqDiffFreeCard N := by
+  haveI := Fact.mk hp
+  haveI : NeZero p := ⟨hp.pos.ne'⟩
+  -- a quadratic non-residue `e` mod `p`
+  obtain ⟨e, he⟩ : ∃ a : ZMod p, ¬ IsSquare a := by
+    apply FiniteField.exists_nonsquare
+    rw [ZMod.ringChar_zmod_n]; omega
+  have he0 : e ≠ 0 := by rintro rfl; exact he ⟨0, by ring⟩
+  -- the square-preserving surjection `f : ℤ/Nℤ → ℤ/pℤ`, and a natural lift `↑k` of `e`
+  set f : ZMod N →+* ZMod p := ZMod.castHom hdvd (ZMod p) with hf
+  obtain ⟨k, hk⟩ := ZMod.natCast_zmod_surjective e
+  have hfk : f (k : ZMod N) = e := by rw [map_natCast]; exact hk
+  refine two_le_maxSqDiffFreeCard_iff.mpr ⟨(k : ZMod N), ?_, ?_, ?_⟩
+  · -- `↑k ≠ 0` : otherwise `e = f ↑k = 0`
+    intro h
+    apply he0
+    rw [← hfk, h, map_zero]
+  · -- `↑k` is a non-residue : else `IsSquare (f ↑k) = IsSquare e`
+    intro hsq
+    apply he
+    rw [← hfk]; exact hsq.map f
+  · -- `-↑k` is a non-residue : else `IsSquare (f (-↑k)) = IsSquare (-e)`
+    intro hsq
+    apply not_isSquare_neg_of_mod_four_eq_one h1 he
+    have hfneg : f (-(k : ZMod N)) = -e := by rw [map_neg, hfk]
+    rw [← hfneg]; exact hsq.map f
+
+/-- **Necessity half of the value-`1` locus, odd part.**  If an odd modulus `N` has
+`maxSqDiffFreeCard N = 1`, then every odd prime factor of `N` is `≡ 3 (mod 4)`: a factor
+`p ≡ 1 (mod 4)` would force `2 ≤ maxSqDiffFreeCard N` by
+`two_le_maxSqDiffFreeCard_of_prime_dvd_of_mod_four_eq_one`.  (An odd prime is `≡ 1` or `≡ 3`
+mod `4`; the `≡ 1` case is excluded.)  This is the converse-flavoured complement to the
+sufficiency results of Parts XXXVI and XL. -/
+theorem prime_factors_mod_four_eq_three_of_maxSqDiffFreeCard_eq_one
+    {N : ℕ} [NeZero N] (hN : maxSqDiffFreeCard N = 1) {p : ℕ} (hp : p.Prime)
+    (hodd : p % 2 = 1) (hdvd : p ∣ N) : p % 4 = 3 := by
+  by_contra hne
+  -- an odd prime is `1` or `3` mod `4`; rule out `≡ 1`
+  have h1 : p % 4 = 1 := by
+    have := hp.two_le
+    omega
+  have h2 : 2 ≤ maxSqDiffFreeCard N :=
+    two_le_maxSqDiffFreeCard_of_prime_dvd_of_mod_four_eq_one hp h1 hdvd
+  omega
+
 end Szemeredi.Roth
