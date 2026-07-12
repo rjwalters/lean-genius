@@ -94,7 +94,12 @@
       {
         "theorem": "Real.sq_sqrt",
         "description": "0 ≤ a → √a ^ 2 = a — used to square √π back to π in gaussian_integral_sq.",
-        "module": "Mathlib.Analysis.SpecialFunctions.Sqrt"
+        "module": "Mathlib.Data.Real.Sqrt"
+      },
+      {
+        "theorem": "Real.pi_nonneg",
+        "description": "0 ≤ π — the side condition supplied to Real.sq_sqrt so that (√π)² = π; π ≥ 0 is exactly the hypothesis Real.sq_sqrt requires.",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
       }
     ]
   },
