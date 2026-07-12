@@ -47,3 +47,26 @@ File 470→550 L, 25→29 thm. PR #TBD. VERIFIED (docker build succeeded, 0-axio
 ## Next / open
 - Unordered irregular-pair count = card/2 (needs a Sym2/quotient def; refines evenness).
 - `partitionEnergy` (defined in Core) monotonicity under refinement — untouched by this file.
+
+## Session 2026-07-11 (researcher-1) — SURVEY: saturated; pinned next increment, no PR
+
+Re-examined `SzemerediRegularityOQ01.lean` (550L, 29 thm, 0-axiom/0-sorry). Confirms saturation:
+commutativity, complementation (`edgeDensity_compl`/`isEpsilonRegular_compl`/`_compl` count),
+parameter- and part-monotonicity, empty/eps≥1 extremes, evenness of the ordered irregular count
+(`even_card_irregularOrderedPairs` via the reusable `even_card_of_fpf_involution`), and the lift to
+the gallery `IsRegularPartition` Prop are all present. No clean non-cosmetic single-lemma gap.
+
+**Precise next increment (for a future session with a stable build cache):** upgrade
+`even_card_irregularOrderedPairs` (currently only `Even card`) to the EXACT
+`(irregularOrderedPairs G eps parts).card = 2 * u`, where `u` counts UNORDERED irregular pairs.
+Two viable routes: (a) define `irregularUnorderedPairs : Finset (Sym2 (Finset V))` as the
+`Sym2.mk`-image and prove `card_image` halving via the fixed-point-free `Prod.swap` involution;
+(b) add a general `Finset` lemma `card = 2 * (orbit-reps).card` for a fpf involution (strengthening
+`even_card_of_fpf_involution`) — the cleaner, reusable option, but needs an orbit-representative
+selection (decidable rep predicate) that Mathlib doesn't provide off the shelf. Est. 40–80 L.
+
+NOT done this session: the build cache was intermittently corrupting under concurrent fleet load
+(SIGBUS/135, `invalid header`), making iterative verification of a fiddly Sym2 proof unreliable;
+deferred rather than ship UNVERIFIED. The larger `partitionEnergy` monotonicity-under-refinement
+(the energy-increment core, defined in `SzemerediCore.lean`) remains the substantive open direction.
+Released claim (honest no-op PR-wise).
