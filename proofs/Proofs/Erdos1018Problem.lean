@@ -51,6 +51,17 @@ A graph is (1+ε)-dense if it has at least n^(1+ε) edges.
 def isDense (G : SimpleGraph V) [DecidableRel G.Adj] (ε : ℝ) : Prop :=
   (edgeCount G : ℝ) ≥ (Fintype.card V : ℝ) ^ (1 + ε)
 
+/-- **Density is antitone in the exponent.** On a nonempty vertex set (`1 ≤ n`), the
+    threshold `n^(1+ε)` grows with `ε` (base `≥ 1`), so being `(1+ε)`-dense implies being
+    `(1+ε')`-dense for every smaller `ε' ≤ ε`: a stronger density bound entails all weaker
+    ones. Via `Real.rpow_le_rpow_of_exponent_le`. -/
+theorem isDense_of_le (G : SimpleGraph V) [DecidableRel G.Adj] {ε ε' : ℝ}
+    (hV : 1 ≤ (Fintype.card V : ℝ)) (hle : ε' ≤ ε) (h : isDense G ε) : isDense G ε' := by
+  unfold isDense at h ⊢
+  have hexp : (Fintype.card V : ℝ) ^ (1 + ε') ≤ (Fintype.card V : ℝ) ^ (1 + ε) :=
+    Real.rpow_le_rpow_of_exponent_le hV (by linarith)
+  linarith
+
 /-
 ## Complete Graphs K₅ and K₃,₃
 
@@ -162,6 +173,30 @@ theorem K5_nonplanar : isNonPlanar (completeGraph 5) :=
 /-- K₃,₃ is non-planar: it contains a subdivision of itself. Previously an axiom. -/
 theorem K33_nonplanar : isNonPlanar (completeBipartite 3 3) :=
   (kuratowski_theorem _).mpr (Or.inr (self_containsSubdivision _))
+
+/-- **A topological minor has no more branch vertices than its host.** If `G` contains a
+    subdivision of `H` then `H` has at most as many vertices as `G`: the branch map
+    `φ : W → V` is injective (`Fintype.card_le_of_injective`). This is the vertex-count
+    obstruction underlying every "small forbidden subdivision needs enough vertices"
+    statement in this file. -/
+theorem card_le_of_containsSubdivision {W : Type*} [Fintype W] (H : SimpleGraph W)
+    (G : SimpleGraph V) (h : containsSubdivision G H) :
+    Fintype.card W ≤ Fintype.card V := by
+  obtain ⟨φ, hφ, _⟩ := h
+  exact Fintype.card_le_of_injective φ hφ
+
+/-- **Non-planarity needs at least five vertices.** A non-planar graph contains a `K₅`-
+    (5 vertices) or `K₃,₃`- (6 vertices) subdivision, so by `card_le_of_containsSubdivision`
+    its vertex set has size `≥ 5`. The clean vertex-count floor for non-planarity, recovering
+    the classical fact that `K₄` and smaller are planar. -/
+theorem nonPlanar_imp_five_le_card (G : SimpleGraph V) (h : isNonPlanar G) :
+    5 ≤ Fintype.card V := by
+  rcases (kuratowski_theorem G).mp h with h5 | h33
+  · have hc := card_le_of_containsSubdivision (completeGraph 5) G h5
+    simpa [Fintype.card_fin] using hc
+  · have hc := card_le_of_containsSubdivision (completeBipartite 3 3) G h33
+    simp only [Fintype.card_sum, Fintype.card_fin] at hc
+    omega
 
 omit [Fintype V] [DecidableEq V] in
 /-- **Sufficient condition for non-planarity (K₅ branch).** A graph that contains a
