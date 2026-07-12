@@ -1,0 +1,50 @@
+[
+  {
+    "id": "ann-overview",
+    "proofId": "cauchy-interlacing-theorem-oq-02-oq-02-oq-01",
+    "range": { "startLine": 4, "endLine": 39 },
+    "type": "concept",
+    "title": "Restating Interlacing in Native Matrix Eigenvalues",
+    "content": "The parent entry oq-02-oq-02 proves the principal-submatrix Poincaré separation λ⟨k+m⟩ ≤ μ⟨k⟩ ≤ λ⟨k⟩ but phrases the eigenvalues through the operator layer — LinearMap.IsSymmetric.eigenvalues of toEuclideanLin A. This file answers that entry's first open question by restating the same inequalities through Mathlib's native matrix eigenvalues Matrix.IsHermitian.eigenvalues₀. The subtlety is purely reindexing: eigenvalues₀ is DEFINED as the operator eigenvalues, but built from the finrank witness finrank_euclideanSpace (right-hand side Fintype.card (Fin (n+m))), whereas the parent uses finrank_euclideanSpace_fin (right-hand side n+m). Since Fintype.card (Fin k) = k is not definitional, a Fin.cast separates the two presentations.",
+    "mathContext": "$A \\in \\mathrm{Herm}_{n+m}(\\mathbb{K})$, $e:\\mathrm{Fin}\\,n \\hookrightarrow \\mathrm{Fin}(n{+}m)$: $\\lambda_{k+m} \\le \\mu_k \\le \\lambda_k$ with $\\lambda = \\mathtt{eigenvalues_0}\\,A$, $\\mu = \\mathtt{eigenvalues_0}\\,(A_{e,e})$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Matrix.IsHermitian.eigenvalues₀", "Poincaré separation", "eigenvalue interlacing", "reindexing", "toEuclideanLin"],
+    "prerequisites": ["the parent principal-submatrix interlacing (oq-02-oq-02)", "Hermitian matrix eigenvalues", "EuclideanSpace finrank"]
+  },
+  {
+    "id": "ann-eigenvalues-cast",
+    "proofId": "cauchy-interlacing-theorem-oq-02-oq-02-oq-01",
+    "range": { "startLine": 50, "endLine": 64 },
+    "type": "theorem",
+    "title": "The finrank-witness bridge (eigenvalues_cast)",
+    "content": "LinearMap.IsSymmetric.eigenvalues_cast: the sorted (descending) eigenvalues hT.eigenvalues of a symmetric operator do not depend on WHICH proof finrank 𝕜 E = N is supplied — only on the natural number N — beyond the canonical Fin.cast between the two index bounds. The proof is a two-line collapse: obtain rfl : N₁ = N₂ identifies the two dimensions; the Fin.cast then goes Fin N₁ → Fin N₁ and equals the identity (Fin.ext rfl on the value); and the two finrank witnesses h₁, h₂ are now inhabitants of the same Prop, hence definitionally equal by Lean 4 proof irrelevance. Notably this needs no fact about how eigenvalues are actually computed.",
+    "mathContext": "$\\mathtt{eigenvalues}\\,h_1\\,i = \\mathtt{eigenvalues}\\,h_2\\,(\\mathrm{Fin.cast}\\,(h_1^{-1}\\cdot h_2)\\,i)$; proof irrelevance makes $h_1 \\equiv h_2$ once $N_1 = N_2$.",
+    "significance": "key",
+    "relatedConcepts": ["proof irrelevance", "Fin.cast", "subst / obtain rfl", "LinearMap.IsSymmetric.eigenvalues"],
+    "prerequisites": ["symmetric-operator eigenvalues", "Lean Prop proof irrelevance", "Fin.ext"]
+  },
+  {
+    "id": "ann-eigenvalues0-eq-op",
+    "proofId": "cauchy-interlacing-theorem-oq-02-oq-02-oq-01",
+    "range": { "startLine": 65, "endLine": 77 },
+    "type": "theorem",
+    "title": "eigenvalues₀ as the operator eigenvalues (eigenvalues₀_eq_op)",
+    "content": "eigenvalues₀_eq_op specialises eigenvalues_cast to a Hermitian matrix: hB.eigenvalues₀ i equals (isHermitian_iff_isSymmetric.1 hB).eigenvalues finrank_euclideanSpace_fin at the coordinate reindexed by the Fintype.card (Fin N) = N cast. Since eigenvalues₀ is by definition the operator eigenvalues built with finrank_euclideanSpace, the first step is rfl; eigenvalues_cast then bridges the finrank_euclideanSpace / finrank_euclideanSpace_fin gap. This is the exact interface that lets the native matrix eigenvalues be substituted into the parent's operator-layer theorem.",
+    "mathContext": "$(\\mathtt{eigenvalues_0}\\,B)\\,i = \\mathtt{eigenvalues}\\,\\mathtt{finrank\\_euclideanSpace\\_fin}\\,(\\mathrm{Fin.cast}\\,(\\mathrm{card\\_fin}\\,N)\\,i)$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Matrix.IsHermitian.eigenvalues₀", "finrank_euclideanSpace", "Fintype.card_fin"],
+    "prerequisites": ["the definition of eigenvalues₀", "eigenvalues_cast"]
+  },
+  {
+    "id": "ann-main",
+    "proofId": "cauchy-interlacing-theorem-oq-02-oq-02-oq-01",
+    "range": { "startLine": 80, "endLine": 111 },
+    "type": "theorem",
+    "title": "Matrix-eigenvalue interlacing (poincare_separation_submatrix_eigenvalues₀)",
+    "content": "The main result: for a Hermitian A and injective e, the native eigenvalues₀ of A and of A.submatrix e e interlace as λ⟨k+m⟩ ≤ μ⟨k⟩ ≤ λ⟨k⟩. The proof invokes the parent poincare_separation_submatrix A hA e he k to get the operator-layer inequalities, rewrites every eigenvalues₀ via simp only [eigenvalues₀_eq_op], and closes each inequality with convert … using 2 — whose only residual, that the Fin.cast of the explicit index literal ⟨k+m⟩ / ⟨k⟩ equals that literal (same underlying value), is discharged by Fin.ext. No new spectral theory enters; the mathematical content is entirely inherited from the parent.",
+    "mathContext": "$\\lambda_{k+m} \\le \\mu_k$ and $\\mu_k \\le \\lambda_k$ for all $k:\\mathrm{Fin}\\,n$, with $\\lambda = \\mathtt{eigenvalues_0}\\,A$, $\\mu = \\mathtt{eigenvalues_0}\\,(A_{e,e})$ — a fully matrix-facing signature.",
+    "significance": "key",
+    "relatedConcepts": ["poincare_separation_submatrix", "principal submatrix", "convert", "eigenvalue interlacing"],
+    "prerequisites": ["the parent poincare_separation_submatrix", "eigenvalues₀_eq_op", "Fin.ext"]
+  }
+]
