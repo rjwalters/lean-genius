@@ -42,7 +42,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SOLVED/enriched: added the classical-coprimality bridges — literal Finset.univ.gcd v=1 (all n) and IsCoprime/Int.gcd=1 (n=2) characterisations of IsPrimitive, connecting the SLₙ(ℤ)-invariant dot-product definition to the parent n=2 Int.gcd/bezoutMatrix phrasing. All axiom-free (propext/Classical.choice/Quot.sound only). BezoutIdentityOQ01OQ02OQ02Coprime.lean companion, verified via lake env lean 4.26.0.",
+    "progressSummary": "SOLVED + capstone: unimodular completion now formalized as an actual Module.Basis object (isPrimitive_iff_mem_basis, n≥2) with an all-n converse (isPrimitive_of_mem_basis). New companion BezoutIdentityOQ01OQ02OQ02Basis.lean, axiom-free, verified via lake env lean 4.26.0.",
     "builtItems": [
       "IsPrimitive (Fin n → ℤ) := ∃ w, w ⬝ᵥ v = 1 — BezoutIdentityOQ01OQ02OQ02.lean",
       "isPrimitive_iff_span_eq_top: IsPrimitive v ↔ Ideal.span (range v) = ⊤ (bridge to classical gcd=1 via Ideal.mem_span_range_iff_exists_fun)",
@@ -55,7 +55,11 @@
       "coe_sl_fin_one_eq_one, sl_fin_one_mulVec, not_exists_sl_fin_one_single_neg, not_forall_sl_fin_one_orbit (BezoutIdentityOQ01OQ02OQ02.lean): the n=1 obstruction package. VERIFIED axiom-free [propext,Classical.choice,Quot.sound]. File 584→646L, 27→31 thm.",
       "isPrimitive_iff_finset_gcd_eq_one (BezoutIdentityOQ01OQ02OQ02Coprime.lean): IsPrimitive v ↔ Finset.univ.gcd v = 1 for all n — literal computed-gcd value form, upgrading isPrimitive_iff_forall_isUnit_of_dvd via Finset.gcd_dvd/dvd_gcd + normalize_eq_one. 0-axiom.",
       "isPrimitive_iff_isCoprime_fin_two + isPrimitive_iff_int_gcd_eq_one_fin_two: for v:Fin 2→ℤ, IsPrimitive v ↔ IsCoprime (v 0)(v 1) ↔ Int.gcd(v 0)(v 1)=1 — the classical-coprimality bridge to the parent BezoutIdentityOQ01OQ02 Int.gcd/bezoutMatrix phrasing. 0-axiom.",
-      "finset_gcd_eq_one_iff_int_gcd_eq_one_fin_two: Finset.gcd and Int.gcd agree on the Fin 2 primitive locus."
+      "finset_gcd_eq_one_iff_int_gcd_eq_one_fin_two: Finset.gcd and Int.gcd agree on the Fin 2 primitive locus.",
+      "slColumnBasis (Proofs/BezoutIdentityOQ01OQ02OQ02Basis.lean): the ℤ-basis of ℤⁿ given by the columns of A ∈ SLₙ(ℤ), plus slColumnBasis_apply (k-th member = ↑ₘA *ᵥ e_k) and slColumnBasis_isPrimitive.",
+      "isPrimitive_of_mem_basis (Basis.lean): all-n converse — every member of any ℤ-basis of ℤⁿ is primitive.",
+      "exists_basis_apply_eq_of_isPrimitive (Basis.lean, n≥2): explicit unimodular completion — a primitive vector is the i-th member of slColumnBasis U⁻¹ for any prescribed slot i.",
+      "isPrimitive_iff_mem_basis (Basis.lean, n≥2): the characterization primitive ⇔ member of a ℤ-basis, turning the parent files prose extends-to-a-ℤ-basis claim into a machine-checked Module.Basis. 1 def + 6 theorems, 0 sorries, 0 axioms."
     ],
     "insights": [
       "Primitivity of an integer vector v is cleanly captured coordinate-free as: ∃ dual w with w ⬝ᵥ v = 1. This dot-product form is manifestly SLₙ(ℤ)-invariant, unlike the gcd-of-entries phrasing.",
@@ -68,15 +72,18 @@
       "Base case: a primitive vector with a single nonzero coordinate must have that entry a unit (from exists w, w dot v = 1 collapsing to w k * v k = 1), so it already equals Pi.single k (v k) with IsUnit (v k) — A = 1.",
       "Reaching EXACTLY e0 (not just a unit multiple c*e_k) is only true for n >= 2; in n = 1, SL1(Z)={1} fixes -e0 != e0 though both are primitive, so the unit-multiple form is the sharp general-n statement.",
       "Sharpness of transitivity: SL₁(ℤ)={(1)} acts trivially (coe_sl_fin_one_eq_one via det_fin_one), so (1) and (-1) — both primitive — lie in DISTINCT orbits. SL₁(ℤ) has exactly 2 primitive-vector orbits vs a single orbit for n≥2. This proves the previously prose-only claim that the 1<n hypothesis in exists_sl_mulVec_eq_of_isPrimitive is genuinely necessary.",
-      "The parent file already had two primitivity reformulations (span=⊤, every-common-divisor-is-unit) but NOT the literal Finset.gcd=1 value nor the ring-theoretic IsCoprime form; both are cheap corollaries of isPrimitive_iff_forall_isUnit_of_dvd + Finset.gcd_dvd/dvd_gcd and Fin.sum_univ_two respectively."
+      "The parent file already had two primitivity reformulations (span=⊤, every-common-divisor-is-unit) but NOT the literal Finset.gcd=1 value nor the ring-theoretic IsCoprime form; both are cheap corollaries of isPrimitive_iff_forall_isUnit_of_dvd + Finset.gcd_dvd/dvd_gcd and Fin.sum_univ_two respectively.",
+      "Module.Basis is the current Mathlib name for the Basis type (moved into the Module namespace, Lean/Mathlib 4.26 module system); granular `import Mathlib.LinearAlgebra.StdBasis` does not re-export `Basis` to a non-module file — use `import Mathlib` + `open Module`.",
+      "SpecialLinearGroup.toLin A : (n→R) ≃ₗ[R] n→R gives the linear equivalence of a unimodular matrix directly (no Invertible-instance juggling); its action on the standard basis vector e_k extracts the k-th column via toLin_apply + Matrix.toLin_apply + mulVec_single_one.",
+      "The converse `member of a ℤ-basis ⇒ primitive` needs NO dimension hypothesis: the dual coordinate functional b.coord i is a ℤ-linear map ℤⁿ→ℤ sending b i to 1; representing it by its values w j = b.coord i (e_j) on the standard basis gives an explicit integer dual with w · (b i) = 1 (= primitivity). This even covers n=1 where SLₙ transitivity fails."
     ],
     "mathlibGaps": [
       "Mathlib has no packaged transitivity of SLₙ(ℤ) on primitive vectors (only n=2 pieces via bezoutSL in the parent). Foundation built here; the Euclidean-descent converse (every primitive vector reaches eᵢ) remains.",
       "No IsPrimitive predicate for integer vectors in Mathlib; defined here via the dot-product dual."
     ],
     "nextSteps": [
-      "Add the n >= 2 corollary reaching exactly e0: a unit multiple c*e_k is SLn(Z)-equivalent to Pi.single 0 1. Needs a plane-rotation SLn element sending c*e_k to e0 (buildable as a product of 3 transvections via the S = T T T identity, avoiding a new matrix constructor).",
-      "Bridge IsPrimitive to Finset.univ.gcd of entries = 1 to connect explicitly with the parent n=2 IsCoprime phrasing."
+      "Optional: upgrade isPrimitive_iff_mem_basis to hold at n=1 too (the (-1) singleton basis) by supplying the trivial construction there, giving an all-n characterization.",
+      "Optional: an effective/computable version of the completing basis (the whyMatters reusable reduction tool), replacing the existence quantifier by a def."
     ]
   },
   "tags": [
