@@ -713,4 +713,62 @@ theorem fundamental_error_lower_unconditional (f : ℝ → ℝ) (L : ℝ) (hL0 :
   obtain ⟨xstar, hfp⟩ := exists_fixed_point f L hL0 hL1 hf
   exact ⟨xstar, hfp, fun x => fundamental_error_lower f L hL0 hf xstar hfp x⟩
 
+/-! ### Total path length of the orbit and vanishing of the increments
+
+The Cauchy estimate `cauchy_estimate` bounds the *net displacement* `|x_{n+m} − xₙ|`
+between two iterates.  A strictly stronger, genuinely fixed-point-free companion bounds
+the **total path length** — the sum of the individual step sizes:
+
+    ∑_{k<m} |x_{k+1} − x_k| ≤ |x₁ − x₀| / (1 − L),   for every `m`.
+
+Because the increments decay geometrically (`step_dist`, `|x_{k+1} − x_k| ≤ Lᵏ·|x₁ − x₀|`),
+their sum is dominated by the geometric series `∑Lᵏ ≤ 1/(1−L)`.  The bound is *uniform in
+`m`*, so the orbit has finite total length no matter how long one iterates — the quantitative
+form of the fact that the iteration is a Cauchy sequence (arc length ≥ net displacement, so
+this dominates `cauchy_estimate`).  Its qualitative shadow is that the step sizes themselves
+vanish, `|x_{n+1} − xₙ| → 0`, squeezed by `Lⁿ·|x₁ − x₀| → 0`. -/
+
+/-- **Total path length of the orbit.**  `∑_{k<m} |x_{k+1} − x_k| ≤ |x₁ − x₀| / (1 − L)`
+    for every `m`: the total length travelled by the iteration is bounded — *uniformly in
+    the number of steps* — by the first increment scaled by `1/(1−L)`.  No fixed point is
+    assumed.  This dominates the net-displacement bound `cauchy_estimate` (arc length ≥
+    displacement) and is the quantitative statement that the orbit is Cauchy.  Proof: each
+    increment obeys `step_dist` (`|x_{k+1} − x_k| ≤ Lᵏ·|x₁ − x₀|`) and the partial geometric
+    sum satisfies `∑_{k<m} Lᵏ = (1 − Lᵐ)/(1 − L) ≤ 1/(1 − L)`. -/
+theorem total_path_length_bound (f : ℝ → ℝ) (L : ℝ) (hL0 : 0 ≤ L) (hL1 : L < 1)
+    (hf : ∀ x y, |f x - f y| ≤ L * |x - y|)
+    (x : ℕ → ℝ) (hx : ∀ n, x (n + 1) = f (x n)) (m : ℕ) :
+    ∑ k ∈ Finset.range m, |x (k + 1) - x k| ≤ |x 1 - x 0| / (1 - L) := by
+  have hc : (0 : ℝ) < 1 - L := by linarith
+  -- exact partial geometric sum, cleared of the division
+  have hgs : ∀ j, (∑ k ∈ Finset.range j, L ^ k) * (1 - L) = 1 - L ^ j := by
+    intro j
+    induction j with
+    | zero => simp
+    | succ j ih => rw [Finset.sum_range_succ, add_mul, ih, pow_succ]; ring
+  have hgeom : (∑ k ∈ Finset.range m, L ^ k) ≤ 1 / (1 - L) := by
+    rw [le_div_iff₀ hc, hgs m]
+    linarith [pow_nonneg hL0 m]
+  calc ∑ k ∈ Finset.range m, |x (k + 1) - x k|
+      ≤ ∑ k ∈ Finset.range m, L ^ k * |x 1 - x 0| :=
+        Finset.sum_le_sum (fun k _ => step_dist f L hL0 hf x hx k)
+    _ = (∑ k ∈ Finset.range m, L ^ k) * |x 1 - x 0| := by rw [← Finset.sum_mul]
+    _ ≤ (1 / (1 - L)) * |x 1 - x 0| := mul_le_mul_of_nonneg_right hgeom (abs_nonneg _)
+    _ = |x 1 - x 0| / (1 - L) := by ring
+
+/-- **Vanishing of the increments.**  `|x_{n+1} − xₙ| → 0` as `n → ∞`: the step sizes of the
+    iteration tend to `0`.  The qualitative companion of `total_path_length_bound`, and the
+    proximate reason the orbit is Cauchy.  Proved by squeezing the increment between `0` and
+    the geometric bound `Lⁿ·|x₁ − x₀| → 0` (`step_dist` +
+    `tendsto_pow_atTop_nhds_zero_of_lt_one`).  No fixed point is assumed. -/
+theorem increment_tendsto_zero (f : ℝ → ℝ) (L : ℝ) (hL0 : 0 ≤ L) (hL1 : L < 1)
+    (hf : ∀ x y, |f x - f y| ≤ L * |x - y|)
+    (x : ℕ → ℝ) (hx : ∀ n, x (n + 1) = f (x n)) :
+    Filter.Tendsto (fun n => |x (n + 1) - x n|) Filter.atTop (nhds 0) := by
+  have hbound : ∀ n, |x (n + 1) - x n| ≤ L ^ n * |x 1 - x 0| := step_dist f L hL0 hf x hx
+  have hg : Filter.Tendsto (fun n : ℕ => L ^ n * |x 1 - x 0|) Filter.atTop (nhds 0) := by
+    have h0 := tendsto_pow_atTop_nhds_zero_of_lt_one hL0 hL1
+    simpa using h0.mul_const |x 1 - x 0|
+  exact squeeze_zero (fun _ => abs_nonneg _) hbound hg
+
 end BrouwerOQ02OQ02OQ01
