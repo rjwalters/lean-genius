@@ -30,34 +30,22 @@
       "startLine": 39,
       "endLine": 43
     },
-    "type": "technique",
-    "title": "The ambient setting and the reusable unrolling recipe",
-    "content": "`variable (σ : Type*) (R : Type*) [CommRing R] [Fintype σ]` fixes the generality for all seven lemmas: an arbitrary commutative ring R and any finite index type σ, with no stronger hypothesis. The degree-4 and degree-5 proofs then reuse — at larger index sets — the same four-step recipe that settled degrees 2 and 3: (1) apply `psum_eq_mul_esymm_sub_sum` at the target k; (2) rewrite the recurrence's inner index set {a ∈ antidiagonal k | 0 < a.1 < k} to an explicit finite set via an `omega`-proved `ext` lemma; (3) collapse the finite sum with `Finset.sum_insert`/`sum_pair`/`sum_singleton`; (4) substitute the already-proved lower-degree identities and close with `push_cast; ring`. Only steps (2)–(3) grow with k — {(1,3),(2,2),(3,1)} for k=4 and {(1,4),(2,3),(3,2),(4,1)} for k=5 — so the method is purely mechanical to continue.",
-    "mathContext": "For fixed k the recurrence's inner sum $\\sum_{0<i<k}(-1)^i e_i\\,p_{k-i}$ is finite; the only per-degree work is enumerating $\\{(i,k-i):0<i<k\\}$, a linear-arithmetic fact `omega` settles, after which `ring` over the bare `CommRing` discharges the algebra.",
-    "significance": "key",
-    "relatedConcepts": [
-      "MvPolynomial over a commutative ring",
-      "Fintype index type",
-      "proof-by-recurrence-unrolling",
-      "omega + ring"
-    ],
-    "prerequisites": [
-      "Lean variable / instance binders",
-      "the Newton recurrence psum_eq_mul_esymm_sub_sum",
-      "Finset.antidiagonal enumeration"
-    ]
-  },
-  {
-    "id": "newton-ps-oq0101-setup",
-    "proofId": "newton-power-sum-identities-oq-01-oq-01",
-    "range": { "startLine": 39, "endLine": 43 },
     "type": "concept",
     "title": "Universality: identities in MvPolynomial σ R for any finite σ, any commutative ring",
     "content": "`variable (σ : Type*) (R : Type*) [CommRing R] [Fintype σ]` fixes the maximal generality. The results are proven inside the polynomial ring `MvPolynomial σ R`, so they are *universal symmetric-function identities* — one formula that holds no matter how the variables Xᵢ are later specialized, over any commutative ring (no field, no characteristic-zero hypothesis, and no invertibility of the integer coefficients 2, 4, 5 is required, since the recurrence produces them by repeated addition rather than division). Only `CommRing` and `Fintype σ` are assumed; the finiteness of σ makes the sums pₖ = ∑ᵢ Xᵢᵏ and eⱼ well-defined. When `card σ < k`, the elementary symmetric polynomial eₖ is the empty sum 0, so the higher terms silently vanish and the identities degenerate correctly (a single variable ⇒ p₄ = e₁⁴, p₅ = e₁⁵). This universality is exactly why the same statement specializes to the root-power relations of a quartic or quintic and to the trace-power/coefficient conversion of 4×4 and 5×5 matrices.",
     "mathContext": "$p_k,\\,e_j \\in \\mathrm{MvPolynomial}\\,\\sigma\\,R,\\quad R\\ \\text{any CommRing},\\ \\sigma\\ \\text{finite};\\ \\ \\mathrm{card}\\,\\sigma < k \\Rightarrow e_k = 0$",
     "significance": "supporting",
-    "relatedConcepts": ["MvPolynomial", "symmetric function identity", "commutative ring generality", "esymm vanishing"],
-    "prerequisites": ["MvPolynomial", "Fintype", "elementary symmetric polynomial"]
+    "relatedConcepts": [
+      "MvPolynomial",
+      "symmetric function identity",
+      "commutative ring generality",
+      "esymm vanishing"
+    ],
+    "prerequisites": [
+      "MvPolynomial",
+      "Fintype",
+      "elementary symmetric polynomial"
+    ]
   },
   {
     "id": "newton-ps-oq0101-deg123",
