@@ -4767,4 +4767,96 @@ theorem le_maxSqDiffFreeCard_mod_441 : 63 ≤ maxSqDiffFreeCard (21 ^ 2) := by
   rw [hAcard, hc] at h
   omega
 
+/-! ### Part XXXIV — CRT multiplicativity of the extremal count
+
+The prime-square lift (Parts XXX–XXXIII) is a *super-multiplicative* step `N ↦ N²`.
+Orthogonal to it is the behaviour across **coprime** moduli.  The Chinese Remainder
+isomorphism `e : ℤ/(MN)ℤ ≃+* ℤ/Mℤ × ℤ/Nℤ` carries squares to *pairs of squares*
+componentwise — because a ring isomorphism preserves squaring, and in the product ring
+`(u,v)` is a square iff each of `u,v` is (any `(x_M,x_N)` is realised by a single `x`).
+Consequently the (transported) product `S × T` of a square-difference-free set
+`S ⊆ ℤ/Mℤ` and `T ⊆ ℤ/Nℤ` is again square-difference-free: a nonzero square difference
+in `ℤ/(MN)ℤ` would force a nonzero square difference in at least one factor.  This yields
+the genuine **multiplicativity**
+  `maxSqDiffFreeCard (M·N) ≥ maxSqDiffFreeCard M · maxSqDiffFreeCard N`  for `gcd(M,N)=1`,
+the second half of the multiplicative structure of the extremal square-difference-free
+function — together with the `N ↦ N²` lift it drives the classical density lower bound. -/
+
+/-- **The CRT product of two square-difference-free sets is square-difference-free.**
+For coprime `M, N` the Chinese Remainder isomorphism `e : ℤ/(MN)ℤ ≃+* ℤ/Mℤ × ℤ/Nℤ`
+transports the product `S ×ˢ T` of a square-difference-free set `S ⊆ ℤ/Mℤ` and
+`T ⊆ ℤ/Nℤ` to a square-difference-free set of `|S|·|T|` elements in `ℤ/(MN)ℤ`. -/
+theorem sqDiffFree_crt_prod {M N : ℕ} [NeZero M] [NeZero N] (h : Nat.Coprime M N)
+    (S : Finset (ZMod M)) (T : Finset (ZMod N))
+    (hS : IsSqDiffFree S) (hT : IsSqDiffFree T) :
+    ∃ A : Finset (ZMod (M * N)), IsSqDiffFree A ∧ A.card = S.card * T.card := by
+  classical
+  set e := ZMod.chineseRemainder h with he
+  -- `x` lies in the transported product iff its CRT image lands in `S ×ˢ T`.
+  have hmem : ∀ y : ZMod (M * N),
+      y ∈ (S ×ˢ T).image (fun p => e.symm p) ↔ e y ∈ S ×ˢ T := by
+    intro y
+    rw [Finset.mem_image]
+    constructor
+    · rintro ⟨p, hp, rfl⟩; rwa [e.apply_symm_apply]
+    · intro hy; exact ⟨e y, hy, e.symm_apply_apply y⟩
+  refine ⟨(S ×ˢ T).image (fun p => e.symm p), ?_, ?_⟩
+  · -- square-difference-free
+    intro x hx n hn hcon
+    rw [hmem] at hx hcon
+    rw [Finset.mem_product] at hx
+    rw [map_add, map_pow, Finset.mem_product] at hcon
+    obtain ⟨hxM, hxN⟩ := hx
+    obtain ⟨hcM, hcN⟩ := hcon
+    -- `n² ≠ 0` transports to a nonzero square in the product ring.
+    have hne : (e n) ^ 2 ≠ 0 := fun h0 =>
+      hn (e.injective (show e (n ^ 2) = e 0 by rw [map_pow, map_zero]; exact h0))
+    -- at least one component of the square `(e n)²` is nonzero
+    have hcomp : ((e n).1) ^ 2 ≠ 0 ∨ ((e n).2) ^ 2 ≠ 0 := by
+      by_contra hc
+      push_neg at hc
+      apply hne
+      simp only [Prod.ext_iff, Prod.fst_zero, Prod.snd_zero]
+      exact ⟨by simpa using hc.1, by simpa using hc.2⟩
+    -- the offending component contradicts freeness of the corresponding factor
+    rcases hcomp with h1 | h2
+    · exact hS (e x).1 hxM (e n).1 h1 hcM
+    · exact hT (e x).2 hxN (e n).2 h2 hcN
+  · rw [Finset.card_image_of_injective _ e.symm.injective, Finset.card_product]
+
+/-- **Multiplicativity of the extremal square-difference-free count across coprime moduli.**
+For `gcd(M,N)=1`, extremal square-difference-free sets in `ℤ/Mℤ` and `ℤ/Nℤ` combine via the
+Chinese Remainder isomorphism to a square-difference-free set in `ℤ/(MN)ℤ` of the product
+size, so
+  `maxSqDiffFreeCard (M·N) ≥ maxSqDiffFreeCard M · maxSqDiffFreeCard N`.
+This is the coprime-multiplicative companion of the prime-square super-multiplicativity
+`maxSqDiffFreeCard_sq_ge_of_squarefree`. -/
+theorem maxSqDiffFreeCard_mul_ge_of_coprime {M N : ℕ} [NeZero M] [NeZero N]
+    (h : Nat.Coprime M N) :
+    maxSqDiffFreeCard M * maxSqDiffFreeCard N ≤ maxSqDiffFreeCard (M * N) := by
+  haveI : NeZero (M * N) := ⟨Nat.mul_ne_zero (NeZero.ne M) (NeZero.ne N)⟩
+  obtain ⟨S, hS, hScard⟩ := exists_isSqDiffFree_card_eq_max M
+  obtain ⟨T, hT, hTcard⟩ := exists_isSqDiffFree_card_eq_max N
+  obtain ⟨A, hAfree, hAcard⟩ := sqDiffFree_crt_prod h S T hS hT
+  calc maxSqDiffFreeCard M * maxSqDiffFreeCard N = S.card * T.card := by rw [hScard, hTcard]
+    _ = A.card := hAcard.symm
+    _ ≤ maxSqDiffFreeCard (M * N) := le_maxSqDiffFreeCard_of_isSqDiffFree hAfree
+
+/-- **A coprime-composite witness from CRT multiplicativity.**  The three-element base
+`{0,2,7} ⊆ ℤ/13ℤ` and the two-element base `{0,2} ⊆ ℤ/5ℤ` are square-difference-free, and
+`13, 5` are coprime, so their CRT product is a square-difference-free set of `3·2 = 6`
+elements in `ℤ/65ℤ`: `maxSqDiffFreeCard 65 ≥ 6`.  Neither `65 = 5·13` nor its factors are
+prime squares, so the Part XXX–XXXIII lifts do not reach this modulus. -/
+theorem le_maxSqDiffFreeCard_mod_65 : 6 ≤ maxSqDiffFreeCard (13 * 5) := by
+  have hcop : Nat.Coprime 13 5 := by decide
+  have hS : IsSqDiffFree ({0, 2, 7} : Finset (ZMod 13)) := by decide
+  have hT : IsSqDiffFree ({0, 2} : Finset (ZMod 5)) := by decide
+  obtain ⟨A, hAfree, hAcard⟩ :=
+    sqDiffFree_crt_prod hcop ({0, 2, 7} : Finset (ZMod 13)) ({0, 2} : Finset (ZMod 5)) hS hT
+  have hcS : ({0, 2, 7} : Finset (ZMod 13)).card = 3 := by decide
+  have hcT : ({0, 2} : Finset (ZMod 5)).card = 2 := by decide
+  have hle := le_maxSqDiffFreeCard_of_isSqDiffFree (A := A) hAfree
+  rw [hAcard, hcS, hcT] at hle
+  omega
+
 end Szemeredi.Roth
