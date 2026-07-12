@@ -1912,6 +1912,137 @@ theorem sqGaussSum_norm_le_sqrt_gcd {N : ℕ} [NeZero N] (r : ZMod N) :
   have hmono := Real.sqrt_le_sqrt (sqGaussSum_normSq_le_gcd r)
   rwa [Real.sqrt_sq (norm_nonneg _)] at hmono
 
+/-!
+## Part XV: L²-averaged circle-method bound (Cauchy–Schwarz, composite `N`)
+
+The pointwise density bound `sqDiffFree_density_bound` needs a *uniform*
+Gauss-sum bound `M = max_{r≠0} ‖G(r)‖`.  For composite `N` this maximum is
+genuinely large: `‖G(r)‖ = √(N·gcd(2r,N))` reaches `Θ(N)` at high-gcd
+frequencies (e.g. the `2`-torsion), so the sup-form bound is too weak to give
+`o(N)` density.
+
+The circle-method error is really the sum `Σ_{r≠0} ‖Â(r)‖²·G(r)`, and only its
+*root-mean-square* over the Gauss sum matters.  Cauchy–Schwarz replaces the
+supremum `max ‖G(r)‖` with the second moment `√(Σ_{r≠0} ‖G(r)‖²)` — a genuine
+average, far smaller than `(#freqs)·max²` when `‖G‖` is spread out (which it is:
+`Σ_r ‖G(r)‖² = N·Σ_r gcd(2r,N)` concentrates).  This converts the last analytic
+obstruction (evaluating a quadratic Gauss sum, which needs reciprocity not in
+Mathlib) into the **elementary arithmetic estimate** `Σ_{r≠0} gcd((2r).val, N) =
+o(N²)`.
+-/
+
+/-- **L²-averaged circle-method error bound (Cauchy–Schwarz form).**  Bounds the
+square-difference count's deviation from its `|A|²` main term by the *root-mean-
+square* of the Gauss sum rather than its supremum:
+
+    ‖SD(A) − |A|²‖  ≤  N⁻¹ · |A| · √(|A|N − |A|²) · √(Σ_{r≠0} ‖G(r)‖²).
+
+Proof: the error is `N⁻¹·Σ_{r≠0} ‖Â(r)‖²·G(r)` (`sqDiffCount_fourier_main`);
+pull one factor `‖Â(r)‖ ≤ |A|` (`fourierCoeff_norm_le`) out of `‖Â(r)‖²`, then
+Cauchy–Schwarz (`Finset.sum_mul_sq_le_sq_mul_sq`) on the residual
+`Σ ‖Â(r)‖·‖G(r)‖` against Parseval (`Σ_{r≠0}‖Â(r)‖² = |A|N − |A|²`).  Strictly
+sharper than `sqDiff_error_le` whenever the Gauss sum is spread out, which is the
+composite-`N` regime. -/
+theorem sqDiff_error_le_l2 {N : ℕ} [NeZero N] (A : Finset (ZMod N)) :
+    ‖(sqDiffCount A : ℂ) - (↑A.card) ^ 2‖
+      ≤ (↑N)⁻¹ * (↑A.card * (Real.sqrt (↑A.card * ↑N - (↑A.card) ^ 2)
+          * Real.sqrt ((Finset.univ \ {(0 : ZMod N)}).sum
+              (fun r => ‖sqGaussSum r‖ ^ 2)))) := by
+  have hsub : (sqDiffCount A : ℂ) - (↑A.card) ^ 2
+      = (↑N)⁻¹ * (Finset.univ \ {(0 : ZMod N)}).sum
+          (fun r => (↑(‖fourierCoeff A r‖ ^ 2) : ℂ) * sqGaussSum r) := by
+    rw [sqDiffCount_fourier_main A]; ring
+  rw [hsub, norm_mul, norm_inv, Complex.norm_natCast]
+  refine mul_le_mul_of_nonneg_left ?_ (by positivity)
+  set T := Finset.univ \ {(0 : ZMod N)} with hT
+  -- Cauchy–Schwarz: `Σ ‖Â‖·‖G‖ ≤ √(Σ‖Â‖²)·√(Σ‖G‖²)`.
+  have hCS : T.sum (fun r => ‖fourierCoeff A r‖ * ‖sqGaussSum r‖)
+      ≤ Real.sqrt (T.sum (fun r => ‖fourierCoeff A r‖ ^ 2))
+          * Real.sqrt (T.sum (fun r => ‖sqGaussSum r‖ ^ 2)) := by
+    have hsq := Finset.sum_mul_sq_le_sq_mul_sq T
+      (fun r => ‖fourierCoeff A r‖) (fun r => ‖sqGaussSum r‖)
+    have hnn : 0 ≤ T.sum (fun r => ‖fourierCoeff A r‖ * ‖sqGaussSum r‖) :=
+      Finset.sum_nonneg (fun r _ => by positivity)
+    calc T.sum (fun r => ‖fourierCoeff A r‖ * ‖sqGaussSum r‖)
+        = Real.sqrt ((T.sum (fun r => ‖fourierCoeff A r‖ * ‖sqGaussSum r‖)) ^ 2) := by
+          rw [Real.sqrt_sq hnn]
+      _ ≤ Real.sqrt ((T.sum (fun r => ‖fourierCoeff A r‖ ^ 2))
+              * (T.sum (fun r => ‖sqGaussSum r‖ ^ 2))) := Real.sqrt_le_sqrt hsq
+      _ = Real.sqrt (T.sum (fun r => ‖fourierCoeff A r‖ ^ 2))
+              * Real.sqrt (T.sum (fun r => ‖sqGaussSum r‖ ^ 2)) :=
+          Real.sqrt_mul (Finset.sum_nonneg (fun r _ => by positivity)) _
+  calc ‖T.sum (fun r => (↑(‖fourierCoeff A r‖ ^ 2) : ℂ) * sqGaussSum r)‖
+      ≤ T.sum (fun r => ‖(↑(‖fourierCoeff A r‖ ^ 2) : ℂ) * sqGaussSum r‖) := norm_sum_le _ _
+    _ = T.sum (fun r => ‖fourierCoeff A r‖ ^ 2 * ‖sqGaussSum r‖) := by
+        refine Finset.sum_congr rfl (fun r _ => ?_)
+        rw [norm_mul, Complex.norm_real, Real.norm_of_nonneg (by positivity)]
+    _ ≤ T.sum (fun r => (↑A.card : ℝ) * (‖fourierCoeff A r‖ * ‖sqGaussSum r‖)) := by
+        refine Finset.sum_le_sum (fun r _ => ?_)
+        have hb := fourierCoeff_norm_le A r
+        have hrw : ‖fourierCoeff A r‖ ^ 2 * ‖sqGaussSum r‖
+            = ‖fourierCoeff A r‖ * (‖fourierCoeff A r‖ * ‖sqGaussSum r‖) := by ring
+        rw [hrw]
+        exact mul_le_mul_of_nonneg_right hb (by positivity)
+    _ = (↑A.card : ℝ) * T.sum (fun r => ‖fourierCoeff A r‖ * ‖sqGaussSum r‖) := by
+        rw [← Finset.mul_sum]
+    _ ≤ (↑A.card : ℝ) * (Real.sqrt (T.sum (fun r => ‖fourierCoeff A r‖ ^ 2))
+            * Real.sqrt (T.sum (fun r => ‖sqGaussSum r‖ ^ 2))) := by
+        exact mul_le_mul_of_nonneg_left hCS (by positivity)
+    _ = (↑A.card : ℝ) * (Real.sqrt (↑A.card * ↑N - (↑A.card) ^ 2)
+            * Real.sqrt (T.sum (fun r => ‖sqGaussSum r‖ ^ 2))) := by
+        rw [parseval_nonzero A]
+
+/-- **Second moment ≤ kernel-gcd sum.**  Summing the per-frequency bound
+`‖G(r)‖² ≤ N·gcd((2r).val, N)` (`sqGaussSum_normSq_le_gcd`) over the nonzero
+frequencies bounds the root-mean-square in `sqDiff_error_le_l2` by an elementary
+divisor sum:
+
+    Σ_{r≠0} ‖G(r)‖²  ≤  N · Σ_{r≠0} gcd((2r).val, N).
+
+This pins the *sole* remaining input to the composite-`N` Sárközy bound to a
+purely arithmetic estimate on `Σ_r gcd((2r).val, N)` — no Gauss-sum reciprocity
+required. -/
+theorem sqGaussSum_normSq_sum_le_gcd_sum {N : ℕ} [NeZero N] :
+    (Finset.univ \ {(0 : ZMod N)}).sum (fun r => ‖sqGaussSum r‖ ^ 2)
+      ≤ (N : ℝ) * (Finset.univ \ {(0 : ZMod N)}).sum
+          (fun r => (Nat.gcd (2 * r).val N : ℝ)) := by
+  rw [Finset.mul_sum]
+  exact Finset.sum_le_sum (fun r _ => sqGaussSum_normSq_le_gcd r)
+
+/-- **L²-averaged Sárközy density inequality (unconditional).**  Combining the
+Cauchy–Schwarz error bound `sqDiff_error_le_l2` (one-sided, via `|·|`) with the
+square-difference-free upper bound `sqDiffCount_le_of_free` gives, for any
+square-difference-free `A ⊆ ℤ/Nℤ`,
+
+    |A|²  ≤  |A|·#{n : n² = 0}  +  N⁻¹·|A|·√(|A|N − |A|²)·√(Σ_{r≠0} ‖G(r)‖²).
+
+Unlike `sqDiffFree_density_bound`, the Gauss-sum input is the *second moment*
+`Σ_{r≠0}‖G(r)‖²` (an average), not the pointwise maximum.  Chained with
+`sqGaussSum_normSq_sum_le_gcd_sum` (`Σ‖G‖² ≤ N·Σgcd`), the last analytic
+ingredient becomes the elementary bound `Σ_{r≠0} gcd((2r).val,N) = o(N²)`. -/
+theorem sqDiffFree_density_bound_l2 {N : ℕ} [NeZero N] (A : Finset (ZMod N))
+    (hfree : ∀ x ∈ A, ∀ n : ZMod N, n ^ 2 ≠ 0 → x + n ^ 2 ∉ A) :
+    (A.card : ℝ) ^ 2
+      ≤ (A.card : ℝ) * (Finset.univ.filter (fun n : ZMod N => n ^ 2 = 0)).card
+        + (↑N)⁻¹ * (↑A.card * (Real.sqrt (↑A.card * ↑N - (↑A.card) ^ 2)
+            * Real.sqrt ((Finset.univ \ {(0 : ZMod N)}).sum
+                (fun r => ‖sqGaussSum r‖ ^ 2)))) := by
+  have herr := sqDiff_error_le_l2 A
+  have key : |(sqDiffCount A : ℝ) - (A.card : ℝ) ^ 2|
+      ≤ (↑N)⁻¹ * (↑A.card * (Real.sqrt (↑A.card * ↑N - (↑A.card) ^ 2)
+          * Real.sqrt ((Finset.univ \ {(0 : ZMod N)}).sum
+              (fun r => ‖sqGaussSum r‖ ^ 2)))) := by
+    have e : ‖(sqDiffCount A : ℂ) - (↑A.card) ^ 2‖
+        = |(sqDiffCount A : ℝ) - (A.card : ℝ) ^ 2| := by
+      rw [show (sqDiffCount A : ℂ) - (↑A.card) ^ 2
+            = (((sqDiffCount A : ℝ) - (A.card : ℝ) ^ 2 : ℝ) : ℂ) by push_cast; ring,
+        Complex.norm_real, Real.norm_eq_abs]
+    rwa [e] at herr
+  have hupp : (sqDiffCount A : ℝ)
+      ≤ (A.card : ℝ) * (Finset.univ.filter (fun n : ZMod N => n ^ 2 = 0)).card := by
+    exact_mod_cast sqDiffCount_le_of_free A hfree
+  linarith [(abs_le.mp key).1]
+
 /-- A proper divisor is at most half: if `0 < m < N` then `2 · gcd(m, N) ≤ N`.  The gcd
     divides `N` and is at most `m < N`, hence a *proper* divisor, so `N / gcd ≥ 2`. -/
 private theorem two_mul_gcd_le {m N : ℕ} (hpos : 0 < m) (hlt : m < N) :
@@ -2609,3 +2740,4 @@ example : sqGaussSum (2 : ZMod 8) ≠ 0 :=
   sqGaussSum_ne_zero_of_gcd_phase_zero (by decide)
 
 end Szemeredi.Roth
+
