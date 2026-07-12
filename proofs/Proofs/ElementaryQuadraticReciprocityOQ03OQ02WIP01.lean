@@ -36,6 +36,16 @@ Together with the parent's `kronecker2_mul` / `kronecker2_neg` these complete th
 identification of `(·/2)` and `(·/n)` (odd `n`) as genuine periodic characters — the
 structural input the Gauss-sum route to generalized quadratic reciprocity rests on.
 
+## Anti-periodicity and the orthogonality relations of `χ₈ = (·/2)`
+
+* `kronecker2_add_four`         — `(a+4/2) = −(a/2)`: a half-period shift *flips the sign*,
+                                  the sharp form of "period `8` does not descend to `4`".
+* `kronecker2_sum_shifted_period` — `∑_{a=0}^{7} (c+a/2) = 0` for every `c`: the mean of
+                                  `χ₈` over *any* full period vanishes (generalizes the
+                                  parent-window `kronecker2_sum_period`, `c = 0`).
+* `kronecker2_sq_sum_period`    — `∑_{a=0}^{7} (a/2)² = φ(8) = 4`: the self-orthogonality /
+                                  `L²`-norm normalizing the Gauss sum `|τ(χ₈)|² = 8`.
+
 All results are fully machine-checked (0 axioms, 0 sorries).
 
 Reference: Kronecker (1885); Hardy–Wright ch. 6; parent `ElementaryQuadraticReciprocityOQ03OQ02`.
@@ -199,6 +209,71 @@ theorem kronecker2_abs_le_one (a : ℤ) : |kronecker2 a| ≤ 1 := by
     Gauss sum `∑ χ₈(a) ζ^a` has no constant-mode contribution. -/
 theorem kronecker2_sum_period :
     (∑ a ∈ Finset.range 8, kronecker2 (a : ℤ)) = 0 := by
+  simp only [Finset.sum_range_succ, Finset.sum_range_zero, Nat.cast_ofNat,
+    Nat.cast_zero, Nat.cast_one]
+  decide
+
+-- ============================================================
+-- Section E: Anti-periodicity, translation-invariant orthogonality, and the
+--            self-orthogonality (L²) normalization of χ₈ = (·/2)
+-- ============================================================
+
+/-- **`χ₈` is anti-periodic with anti-period `4`: `(a+4/2) = −(a/2)`.**  Shifting the
+    numerator by `4` negates the Kronecker symbol at `2`, for *every* integer `a` (on the
+    even residues both sides are `0`).  Concretely `1↦5, 3↦7, 5↦1, 7↦3` swaps the two unit
+    classes `{1,7}` (value `+1`) and `{3,5}` (value `−1`) mod `8`.  This anti-periodicity is
+    the structural reason the period `8` does **not** descend to `4` — it upgrades
+    `kronecker2_not_period_four` from "`4` is not a period" to the exact statement that a
+    half-period shift *flips the sign*, the hallmark of a primitive character of conductor
+    `8`.  Proved by reducing both sides to the residue mod `8` (`kronecker2_mod_eight`) and
+    checking the eight classes. -/
+theorem kronecker2_add_four (a : ℤ) : kronecker2 (a + 4) = - kronecker2 a := by
+  have key : kronecker2 (a + 4) = kronecker2 (a % 8 + 4) := by
+    rw [kronecker2_mod_eight (a + 4), kronecker2_mod_eight (a % 8 + 4)]
+    congr 1
+    omega
+  rw [key, kronecker2_mod_eight a]
+  have hr : a % 8 = 0 ∨ a % 8 = 1 ∨ a % 8 = 2 ∨ a % 8 = 3 ∨ a % 8 = 4 ∨
+      a % 8 = 5 ∨ a % 8 = 6 ∨ a % 8 = 7 := by omega
+  rcases hr with h | h | h | h | h | h | h | h <;> rw [h] <;> decide
+
+/-- **Translation-invariant orthogonality: `χ₈` sums to zero over *any* full period.**
+
+        ∀ c, ∑_{a = 0}^{7} kronecker2 (c + a) = 0.
+
+    The parent's `kronecker2_sum_period` proves this only for the window `[0, 8)`; this is
+    the full non-principal-character statement that the mean over *every* length-`8` window
+    vanishes (the `c = 0` case recovers `kronecker2_sum_period`).  Clean proof from the
+    anti-periodicity `kronecker2_add_four`: the second half of the window cancels the first,
+    `kronecker2 (c+a+4) = −kronecker2 (c+a)`, so the eight terms pair off to `0`.  This is
+    the translation invariance of the character mean that the Gauss-sum evaluation uses when
+    it re-centers the sum `∑ χ₈(a) ζ^a` at an arbitrary residue. -/
+theorem kronecker2_sum_shifted_period (c : ℤ) :
+    (∑ a ∈ Finset.range 8, kronecker2 (c + a)) = 0 := by
+  have h1 : kronecker2 (c + 5) = - kronecker2 (c + 1) := by
+    have h := kronecker2_add_four (c + 1)
+    rwa [show (c + 1 + 4 : ℤ) = c + 5 by ring] at h
+  have h2 : kronecker2 (c + 6) = - kronecker2 (c + 2) := by
+    have h := kronecker2_add_four (c + 2)
+    rwa [show (c + 2 + 4 : ℤ) = c + 6 by ring] at h
+  have h3 : kronecker2 (c + 7) = - kronecker2 (c + 3) := by
+    have h := kronecker2_add_four (c + 3)
+    rwa [show (c + 3 + 4 : ℤ) = c + 7 by ring] at h
+  simp only [Finset.sum_range_succ, Finset.sum_range_zero, Nat.cast_ofNat,
+    Nat.cast_zero, Nat.cast_one, add_zero, zero_add]
+  linarith [kronecker2_add_four c, h1, h2, h3]
+
+/-- **Self-orthogonality: the `L²`-norm of `χ₈` over a period is `φ(8) = 4`.**
+
+        ∑_{a = 0}^{7} (kronecker2 a)² = 4.
+
+    Since `χ₈` takes the value `±1` on the four units mod `8` (`{1,3,5,7}`) and `0` on the
+    four evens, its second moment counts the units: `⟨χ₈, χ₈⟩ = 4`.  This is the diagonal
+    orthogonality relation complementing the mean-zero `kronecker2_sum_period`; together they
+    are the `⟨χ_i, χ_j⟩ = φ(8)·δ_{ij}` normalization that fixes the modulus of the Gauss sum
+    (`|τ(χ₈)|² = 8`) in the Gauss-sum route to generalized reciprocity. -/
+theorem kronecker2_sq_sum_period :
+    (∑ a ∈ Finset.range 8, kronecker2 (a : ℤ) * kronecker2 (a : ℤ)) = 4 := by
   simp only [Finset.sum_range_succ, Finset.sum_range_zero, Nat.cast_ofNat,
     Nat.cast_zero, Nat.cast_one]
   decide
