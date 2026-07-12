@@ -522,4 +522,83 @@ theorem fourierCoeffOn_eq_zero_of_iteratedDeriv_energy_eq
   · exact absurd h hn1
   · exact h
 
+-- ============================================================
+-- SECTION VII: discharging Parseval — the self-contained
+--              integral energy statement (only the circle)
+-- ============================================================
+
+/-- **`L²` membership of the complexification of a continuous real function on `(0, 2π]`.**
+    A continuous `g : ℝ → ℝ` is bounded on the compact `[0, 2π]`, so `ofReal ∘ g` is dominated
+    by the constant `sSup (|g| '' [0, 2π])` (which is `L²` on the finite-measure set
+    `Ioc 0 (2π)`).  This supplies the hypothesis of Mathlib's Parseval identity
+    `hasSum_sq_fourierCoeffOn`, letting us turn the abstract `HasSum` hypotheses of
+    `fourierCoeffOn_eq_zero_of_iteratedDeriv_energy_eq` into a genuine integral statement. -/
+private theorem memLp_two_ofReal_of_continuous {g : ℝ → ℝ} (hg : Continuous g) :
+    MemLp (ofReal ∘ g) 2 (volume.restrict (Set.Ioc 0 (2 * π))) := by
+  refine MeasureTheory.MemLp.mono'
+    (memLp_const (sSup ((fun y => |g y|) '' Set.Icc 0 (2 * π))))
+    (Complex.continuous_ofReal.comp hg).aestronglyMeasurable ?_
+  filter_upwards [MeasureTheory.ae_restrict_mem measurableSet_Ioc] with x hx
+  simpa using le_csSup
+    (IsCompact.bddAbove (isCompact_Icc.image (continuous_abs.comp hg)))
+    (Set.mem_image_of_mem _ (Set.Ioc_subset_Icc_self hx))
+
+/-- `‖(ofReal x : ℂ)‖² = x²`: complexification preserves the square modulus. -/
+private theorem norm_ofReal_sq (x : ℝ) : ‖(ofReal x : ℂ)‖ ^ 2 = x ^ 2 := by
+  rw [Complex.norm_real, Real.norm_eq_abs, sq_abs]
+
+/-- **Parseval `HasSum` for a smooth periodic real function** (specialization of Mathlib's
+    `hasSum_sq_fourierCoeffOn` to `[0, 2π]` composed with the real-square rewrite):
+    the coefficient-square family of a continuous real `g` sums to `(2π)⁻¹ ∫₀^{2π} g²`. -/
+private theorem hasSum_sq_fourierCoeffOn_real {g : ℝ → ℝ} (hg : Continuous g)
+    (hab : (0 : ℝ) < 2 * π) :
+    HasSum (fun n : ℤ => ‖fourierCoeffOn hab (ofReal ∘ g) n‖ ^ 2)
+      ((2 * π - 0)⁻¹ • ∫ x in (0 : ℝ)..(2 * π), (g x) ^ 2) := by
+  have h := hasSum_sq_fourierCoeffOn hab (memLp_two_ofReal_of_continuous hg)
+  have hint : (∫ x in (0 : ℝ)..(2 * π), ‖(ofReal ∘ g) x‖ ^ 2)
+      = ∫ x in (0 : ℝ)..(2 * π), (g x) ^ 2 := by
+    apply intervalIntegral.integral_congr
+    intro x _
+    simp only [Function.comp_apply]
+    exact norm_ofReal_sq (g x)
+  rwa [hint] at h
+
+/-- **Self-contained integral form of the equality case: only the first harmonic survives —
+    the circle.**  Fix a smooth (`C^∞`) period-`2π` function `f` with zero mean
+    (`ĉ₀(f) = 0`) and an order `k ≥ 1`.  If the `k`-th derivative has the *same*
+    `L²` energy as `f`,
+
+        ∫₀^{2π} f²  =  ∫₀^{2π} (f⁽ᵏ⁾)² ,
+
+    then **every mode other than the first harmonic is absent**:
+
+        ∀ n, |n| ≠ 1 → ĉₙ(f) = 0 ,
+
+    i.e. `f(t) = a·cos t + b·sin t`.  This is the integral (Wirtinger-equality) statement of the
+    Hurwitz proof that the isoperimetric bound is attained *only* by the circle — now fully
+    self-contained (no `HasSum`/Parseval hypotheses), the two spectral energies having been
+    discharged via Mathlib's `hasSum_sq_fourierCoeffOn`.
+
+    Proof.  Continuity of `f` and of every iterate `f⁽ᵏ⁾` (`contDiff_infty_iterate_deriv`) feeds
+    the per-function Parseval `HasSum`s (`hasSum_sq_fourierCoeffOn_real`) with totals
+    `(2π)⁻¹∫f²` and `(2π)⁻¹∫(f⁽ᵏ⁾)²`; the energy identity makes those totals equal, and the
+    coefficient-level equality case `fourierCoeffOn_eq_zero_of_iteratedDeriv_energy_eq` finishes. -/
+theorem fourierCoeffOn_eq_zero_of_iteratedDeriv_integral_energy_eq
+    (f : ℝ → ℝ) (hf : ContDiff ℝ ∞ f) (hper : ∀ t, f (t + 2 * π) = f t)
+    (hab : (0 : ℝ) < 2 * π) (k : ℕ) (hk : 1 ≤ k)
+    (hmean : fourierCoeffOn hab (ofReal ∘ f) 0 = 0)
+    (henergy : (∫ x in (0 : ℝ)..(2 * π), (f x) ^ 2)
+        = ∫ x in (0 : ℝ)..(2 * π), (deriv^[k] f x) ^ 2) :
+    ∀ n : ℤ, n.natAbs ≠ 1 → fourierCoeffOn hab (ofReal ∘ f) n = 0 := by
+  have hcont_f : Continuous f := hf.continuous
+  have hcont_d : Continuous (deriv^[k] f) := (contDiff_infty_iterate_deriv f hf k).continuous
+  have hfHS := hasSum_sq_fourierCoeffOn_real hcont_f hab
+  have hdHS := hasSum_sq_fourierCoeffOn_real hcont_d hab
+  -- The two Parseval totals coincide by the energy identity.
+  have htot : ((2 * π - 0)⁻¹ • ∫ x in (0 : ℝ)..(2 * π), (deriv^[k] f x) ^ 2)
+      = ((2 * π - 0)⁻¹ • ∫ x in (0 : ℝ)..(2 * π), (f x) ^ 2) := by
+    rw [henergy]
+  rw [htot] at hdHS
+  exact fourierCoeffOn_eq_zero_of_iteratedDeriv_energy_eq f hf hper hab k hk hmean hfHS hdHS
+
 end IsoperimetricFourier
