@@ -415,4 +415,38 @@ theorem consecutive_gap_le_eps_effective {x p q : ℕ} (ε : ℝ)
     exact_mod_cast consecutive_gap_le_maxPrimeGap hp hq hpq hqx hcons
   exact le_trans hbridge (bhp_gap_le_eps_effective ε x hx25 hthr)
 
+/-- **θ-generic bridge from a sup-level power bound to individual gaps.** Given *any*
+power bound `maxPrimeGap x ≤ x^θ` at a point `x`, every consecutive-prime gap `q - p`
+with `q ≤ x` already satisfies `q - p ≤ x^θ`.  This decouples the arithmetic input (the
+exponent `θ` and the bound) from the sup→gap bridge exactly as the sup-level engines
+`gap_littleo_of_rpow_bound` / `gap_div_rpow_littleo_of_rpow_bound` do for the asymptotics;
+`consecutive_gap_le_rpow` is the instance `θ = 0.525` with the bound supplied by
+`baker_harman_pintz`.  Any future strengthening of BHP plugs straight in. -/
+theorem consecutive_gap_le_rpow_of_bound {θ : ℝ} {x p q : ℕ}
+    (hbound : (maxPrimeGap x : ℝ) ≤ (x : ℝ) ^ θ)
+    (hp : Nat.Prime p) (hq : Nat.Prime q) (hpq : p < q) (hqx : q ≤ x)
+    (hcons : ∀ r, Nat.Prime r → p < r → q ≤ r) :
+    ((q - p : ℕ) : ℝ) ≤ (x : ℝ) ^ θ :=
+  le_trans (by exact_mod_cast consecutive_gap_le_maxPrimeGap hp hq hpq hqx hcons) hbound
+
+/-- **θ-generic normalised individual-gap bound.** The normalised counterpart of
+`consecutive_gap_le_rpow_of_bound`: from a power bound `maxPrimeGap x ≤ x^θ` at `x > 0`,
+every normalised consecutive gap `(q - p) / x` is at most `x^(θ-1)`.  This is the θ-generic
+form of `consecutive_gap_div_le_rpow_neg` (whose exponent `-0.475 = 0.525 - 1`), and makes
+the sublinearity envelope explicit for any envelope exponent: for `θ < 1` the bound
+`x^(θ-1) → 0`.  Axiom input is only whatever supplies `hbound`. -/
+theorem consecutive_gap_div_le_rpow_sub_one_of_bound {θ : ℝ} {x p q : ℕ}
+    (hx : 0 < x) (hbound : (maxPrimeGap x : ℝ) ≤ (x : ℝ) ^ θ)
+    (hp : Nat.Prime p) (hq : Nat.Prime q) (hpq : p < q) (hqx : q ≤ x)
+    (hcons : ∀ r, Nat.Prime r → p < r → q ≤ r) :
+    ((q - p : ℕ) : ℝ) / x ≤ (x : ℝ) ^ (θ - 1) := by
+  have hx_pos : (0 : ℝ) < (x : ℝ) := by exact_mod_cast hx
+  have h1 : ((q - p : ℕ) : ℝ) ≤ (x : ℝ) ^ θ :=
+    consecutive_gap_le_rpow_of_bound hbound hp hq hpq hqx hcons
+  have hdiv : (x : ℝ) ^ θ / x = (x : ℝ) ^ (θ - 1) := by
+    rw [Real.rpow_sub hx_pos, Real.rpow_one]
+  calc ((q - p : ℕ) : ℝ) / x
+      ≤ (x : ℝ) ^ θ / x := by gcongr
+    _ = (x : ℝ) ^ (θ - 1) := hdiv
+
 end Erdos1138OQ03
