@@ -28,11 +28,7 @@ References:
 - [ErGr80] Erdős-Graham (1980): Old and new problems and results in combinatorial number theory
 -/
 
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Finset.Card
-import Mathlib.NumberTheory.Primorial
-import Mathlib.Data.Real.Basic
+import Mathlib
 
 namespace Erdos425
 

@@ -1,12 +1,7 @@
 /-
 Test file for hl_conjectures_tension proof approach
 -/
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Nat.Prime.Nth
-import Mathlib.Data.Finset.Card
-import Mathlib.Data.Finset.Basic
-import Mathlib.NumberTheory.PrimeCounting
-import Mathlib.Tactic
+import Mathlib
 
 namespace TestHLTension
 

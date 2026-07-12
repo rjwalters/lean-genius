@@ -1,9 +1,4 @@
-import Mathlib.Combinatorics.SimpleGraph.Basic
-import Mathlib.Combinatorics.SimpleGraph.Coloring
-import Mathlib.Combinatorics.SimpleGraph.DegreeSum
-import Mathlib.Data.Fintype.Basic
-import Mathlib.Data.Finset.Card
-import Mathlib.Tactic
+import Mathlib
 
 /-
 # Is There a Human-Readable Proof of the Four Color Theorem?

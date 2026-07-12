@@ -24,11 +24,7 @@
   - [Go79b] Gol'dberg, Sibirsk. Mat. Zh. (1979), 512-518
 -/
 
-import Mathlib.Data.Complex.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Analysis.Complex.Basic
-import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
-import Mathlib.Analysis.SpecialFunctions.Log.Basic
+import Mathlib
 
 open Complex Real MeasureTheory Set
 

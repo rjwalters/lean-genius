@@ -1,13 +1,4 @@
-import Mathlib.Algebra.Polynomial.Basic
-import Mathlib.Algebra.Polynomial.Degree.Definitions
-import Mathlib.Algebra.Polynomial.Eval.Defs
-import Mathlib.Algebra.Polynomial.Coeff
-import Mathlib.Algebra.Polynomial.RuleOfSigns
-import Mathlib.Algebra.Polynomial.Div
-import Mathlib.Algebra.Polynomial.Roots
-import Mathlib.Data.Real.Basic
-import Mathlib.Tactic
-import Mathlib.Topology.Order.IntermediateValue
+import Mathlib
 
 set_option maxHeartbeats 800000
 

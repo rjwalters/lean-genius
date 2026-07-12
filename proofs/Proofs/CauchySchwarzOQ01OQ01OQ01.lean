@@ -55,7 +55,7 @@ theorem orthResidual_inner_eq_zero (u v : E) (hv : v ≠ 0) :
     ⟪orthResidual v u, v⟫_𝕜 = 0 := by
   simp only [orthResidual, orthProj, projCoeff, inner_sub_left, inner_smul_left,
     map_div₀, inner_conj_symm]
-  field_simp
+  skip
   ring
 
 /-- The decomposition u = proj(v, u) + residual(v, u). -/

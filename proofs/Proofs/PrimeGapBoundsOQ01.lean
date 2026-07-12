@@ -31,13 +31,7 @@ from PrimeGapBounds.lean.
   arXiv:1002.0442.
 -/
 
-import Mathlib.NumberTheory.PrimeCounting
-import Mathlib.Data.Nat.Prime.Nth
-import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.Analysis.SpecificLimits.Basic
-import Mathlib.Order.Filter.Basic
-import Mathlib.Topology.Order.Basic
-import Mathlib.Tactic
+import Mathlib
 
 noncomputable section
 

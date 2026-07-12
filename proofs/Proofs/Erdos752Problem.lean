@@ -27,11 +27,7 @@ References:
 Tags: graph-theory, cycles, girth, extremal-combinatorics
 -/
 
-import Mathlib.Combinatorics.SimpleGraph.Basic
-import Mathlib.Combinatorics.SimpleGraph.Connectivity.WalkCounting
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Nat.Basic
-import Mathlib.Order.Basic
+import Mathlib
 
 namespace Erdos752
 

@@ -1,7 +1,4 @@
-import Mathlib.Analysis.InnerProductSpace.Basic
-import Mathlib.Analysis.InnerProductSpace.PiL2
-import Mathlib.Data.Real.Basic
-import Mathlib.Tactic
+import Mathlib
 
 /-!
 # Product of Segments of Chords — 3D Generalization (OQ-01)

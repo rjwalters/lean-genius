@@ -36,10 +36,7 @@ Removed: jacobsthalSet_bddAbove axiom → proved as theorem
 Sorries: 0
 -/
 
-import Mathlib.Tactic
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Order.ConditionallyCompleteLattice.Basic
-import Mathlib.Analysis.SpecialFunctions.Pow.Asymptotics
+import Mathlib
 
 open Finset Filter
 

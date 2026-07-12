@@ -1,7 +1,4 @@
-import Mathlib.NumberTheory.Transcendental.Liouville.LiouvilleWith
-import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.Tactic
+import Mathlib
 
 /-!
 # A CF-independent reduction for the upper bound `μ(e) ≤ 2`

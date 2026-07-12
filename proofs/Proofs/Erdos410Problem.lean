@@ -101,7 +101,7 @@ theorem sigma_prime (p : ℕ) (hp : p.Prime) : sigma 1 p = p + 1 := by
 
 /-- σ is multiplicative -/
 theorem sigma_multiplicative : ArithmeticFunction.IsMultiplicative (sigma 1) :=
-  sigma_isMultiplicative
+  isMultiplicative_sigma
 
 -- ## Part 2: Iterated Sum of Divisors
 

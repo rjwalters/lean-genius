@@ -25,11 +25,7 @@ References:
 - [GKLO20] Glock-Kühn-Lo-Osthus, "On a conjecture of Erdős..." (2020)
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Order.Filter.Basic
-import Mathlib.Topology.Basic
+import Mathlib
 
 open Real Filter
 

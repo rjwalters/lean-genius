@@ -35,14 +35,14 @@ For general n: exponential growth is known, but the exact base is open.
 /-- The unit distance graph in ℝⁿ: vertices at distance 1 are adjacent. -/
 def UnitDistanceGraph (n : ℕ) : SimpleGraph (EuclideanSpace ℝ (Fin n)) where
   Adj x y := ‖x - y‖ = 1 ∧ x ≠ y
-  symm := by
+  symm.symm := by
     constructor
     intro x y ⟨h1, h2⟩
     constructor
     · simp only [norm_sub_rev]
       exact h1
     · exact h2.symm
-  loopless := by
+  loopless.irrefl := by
     constructor
     intro x ⟨_, h⟩
     exact h rfl

@@ -464,8 +464,8 @@ noncomputable def edgeSet (G : SimpleGraph V) [DecidableRel G.Adj] : Finset (V �
     Both orientations (v,w) and (w,v) are removed to maintain symmetry. -/
 def removeEdges (G : SimpleGraph V) (R : Set (V × V)) : SimpleGraph V where
   Adj v w := G.Adj v w ∧ (v, w) ∉ R ∧ (w, v) ∉ R
-  symm v w h := ⟨G.symm h.1, h.2.2, h.2.1⟩
-  loopless v h := G.loopless v h.1
+  symm.symm v w h := ⟨G.symm h.1, h.2.2, h.2.1⟩
+  loopless.irrefl v h := G.loopless.irrefl v h.1
 
 /-- **Triangle Removal Lemma**: For every delta > 0, there exists gamma > 0
     such that every graph on n vertices with at most gamma * n^3 triangles

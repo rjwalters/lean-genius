@@ -37,13 +37,7 @@ References:
   - Matousek, "Using the Borsuk-Ulam Theorem" (2003) - excellent textbook
 -/
 
-import Mathlib.Topology.Basic
-import Mathlib.Topology.MetricSpace.Basic
-import Mathlib.Analysis.InnerProductSpace.Basic
-import Mathlib.Analysis.InnerProductSpace.PiL2
-import Mathlib.GroupTheory.OrderOfElement
-import Mathlib.Data.ZMod.Basic
-import Mathlib.Tactic
+import Mathlib
 
 set_option linter.unusedVariables false
 set_option linter.unusedTactic false

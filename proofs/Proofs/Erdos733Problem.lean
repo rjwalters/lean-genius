@@ -27,11 +27,7 @@ References:
 - Related to Erdős Problems #607 and #732.
 -/
 
-import Mathlib.Data.Finset.Card
-import Mathlib.Data.List.Sort
-import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Mathlib.SetTheory.Cardinal.Finite
+import Mathlib
 
 open Finset Real
 

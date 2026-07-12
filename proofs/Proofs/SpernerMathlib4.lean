@@ -542,7 +542,7 @@ theorem even_card_interiorDoors
         K.adj (adjMap K p).1 (adjMap K p).2 ≠ none
       simp only [adjMap, hadj_eq]
       exact ⟨(isDoor_iff_of_adj hadj_eq).mp hdoor,
-        by rw [hadj_back]; exact Option.noConfusion⟩
+        by rw [hadj_back]; exact (Option.some_ne_none _)⟩
   · intro p hp
     simp only [S, mem_filter, mem_univ,
       true_and] at hp

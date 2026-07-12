@@ -252,7 +252,7 @@ noncomputable def SylowProP.conjBy (P : SylowProP G p) (g : G)
         hcontains (Subgroup.mem_map.mpr ⟨x, hx, rfl⟩),
         by simp [MulAut.conj_apply]; group⟩
     have step := congr_arg (fun K => K.map (MulAut.conj g).toMonoidHom) key
-    dsimp only at step
+    skip
     rw [Subgroup.map_map] at step
     have hcomp : (MulAut.conj g).toMonoidHom.comp (MulAut.conj g⁻¹).toMonoidHom =
         MonoidHom.id G := by

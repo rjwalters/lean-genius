@@ -30,9 +30,7 @@ is independent of the scale a, which is exactly why π appears with the single p
 **Sorry count**: 0. All steps fully proved.
 -/
 
-import Mathlib.Analysis.SpecialFunctions.Gaussian.GaussianIntegral
-import Mathlib.Analysis.SpecialFunctions.PolarCoord
-import Mathlib.Tactic
+import Mathlib
 import Proofs.AreaOfCircleOQ05
 import Proofs.AreaOfCircleOQ05OQ01
 

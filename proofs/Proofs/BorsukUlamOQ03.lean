@@ -4820,7 +4820,7 @@ theorem no_odd_map_between_spheres (n : ℕ) (hn : 1 ≤ n)
   have h_zero : g x.1 = 0 := by
     ext j
     have hj := congr_fun h_eq_neg j
-    simp only [Pi.neg_apply] at hj
+    skip
     simp only [Pi.zero_apply]
     linarith
   -- Step 4: But g(x) ∈ S^{n-1}, so ∑ g(x)_j² = 1

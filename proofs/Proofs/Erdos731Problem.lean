@@ -18,14 +18,7 @@ least integer m with m ∤ C(2n, n) satisfies m ~ f(n).
 - <https://erdosproblems.com/731>
 -/
 
-import Mathlib.Data.Nat.Choose.Central
-import Mathlib.Data.Nat.Choose.Dvd
-import Mathlib.Data.Nat.Choose.Factorization
-import Mathlib.Data.Nat.Choose.Sum
-import Mathlib.Data.Nat.Log
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.NumberTheory.Bertrand
-import Mathlib.Tactic
+import Mathlib
 
 /- ## Core Definitions -/
 

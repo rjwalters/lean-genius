@@ -1,8 +1,4 @@
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Nat.Factorial.Basic
-import Mathlib.Data.ZMod.Basic
-import Mathlib.NumberTheory.SumTwoSquares
-import Mathlib.Tactic
+import Mathlib
 
 /-!
 # Infinitude of Primes ≡ 1 (mod 4)

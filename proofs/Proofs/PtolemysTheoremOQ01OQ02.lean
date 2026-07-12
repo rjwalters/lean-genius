@@ -1,8 +1,5 @@
 import Proofs.PtolemysTheorem
-import Mathlib.Analysis.InnerProductSpace.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.Inverse
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
-import Mathlib.Tactic
+import Mathlib
 
 /-!
 # Ptolemy's Theorem: Spherical Geometry Extension

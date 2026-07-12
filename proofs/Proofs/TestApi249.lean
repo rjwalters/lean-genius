@@ -1,12 +1,7 @@
 /-
   Test API availability for Erdős #249 proof
 -/
-import Mathlib.Data.Nat.Totient
-import Mathlib.NumberTheory.Real.Irrational
-import Mathlib.Topology.Algebra.InfiniteSum.Basic
-import Mathlib.Topology.Algebra.InfiniteSum.Order
-import Mathlib.Analysis.SpecificLimits.Basic
-import Mathlib.Tactic
+import Mathlib
 
 -- Test: Summable.of_nonneg_of_le
 #check Summable.of_nonneg_of_le

@@ -79,7 +79,7 @@ theorem ce895Adj_comm (a b : Fin 18) : ce895Adj a b = ce895Adj b a := by
 /-- Barber's sharp counterexample as a genuine simple graph on `Fin 18`. -/
 def G895 : SimpleGraph (Fin 18) where
   Adj a b := ce895Adj a b = true ∧ a ≠ b
-  symm := by
+  symm.symm := by
     constructor
     rintro a b ⟨hadj, hne⟩
     exact ⟨by rw [ce895Adj_comm]; exact hadj, hne.symm⟩

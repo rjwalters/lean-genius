@@ -27,12 +27,7 @@ The two open conjectures are stated as Prop definitions.
 The Erdős–Selfridge lower bound is axiomatized as a known but deep result.
 -/
 
-import Mathlib.NumberTheory.ArithmeticFunction.Defs
-import Mathlib.NumberTheory.PrimeCounting
-import Mathlib.Data.Finset.Basic
-import Mathlib.Order.Filter.Basic
-import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.Tactic
+import Mathlib
 
 open Nat Finset Filter
 

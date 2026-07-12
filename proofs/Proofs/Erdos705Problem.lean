@@ -60,11 +60,11 @@ and edges between all pairs at distance 1.
 -/
 def unitDistGraph (V : Set (EuclideanSpace ℝ (Fin 2))) : SimpleGraph V where
   Adj := fun p q => unitDistAdj p.val q.val
-  symm := by
+  symm.symm := by
     constructor
     intro p q ⟨hne, hd⟩
     exact ⟨hne.symm, by rw [dist_comm]; exact hd⟩
-  loopless := by
+  loopless.irrefl := by
     constructor
     intro p ⟨hne, _⟩
     exact hne rfl

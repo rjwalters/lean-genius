@@ -12,9 +12,7 @@ Posed by Erdős, Eggleton, and Selfridge.
 *Reference:* [erdosproblems.com/681](https://www.erdosproblems.com/681)
 -/
 
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Nat.Basic
-import Mathlib.Tactic
+import Mathlib
 
 /- ## Least prime factor -/
 

@@ -222,7 +222,7 @@ theorem gal_card_dvd_120 :
     Subgroup.card_dvd_of_injective _ hinj
   rw [Nat.card_eq_fintype_card, Nat.card_eq_fintype_card] at hdvd
   rw [Fintype.card_perm, q_rootSet_card] at hdvd
-  simpa using hdvd
+  simpa [Nat.factorial] using hdvd
 
 /-
 ## Discriminant Analysis

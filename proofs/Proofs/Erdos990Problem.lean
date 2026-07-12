@@ -27,12 +27,7 @@
   Tags: analysis, polynomials, equidistribution, discrepancy
 -/
 
-import Mathlib.Data.Complex.Basic
-import Mathlib.Analysis.Complex.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Algebra.Polynomial.Basic
-import Mathlib.Topology.MetricSpace.Basic
+import Mathlib
 
 namespace Erdos990
 

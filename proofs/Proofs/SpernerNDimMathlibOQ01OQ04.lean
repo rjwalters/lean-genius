@@ -194,7 +194,7 @@ theorem signed_interior_doors_sum_zero (K : SignedCellComplex V d)
       · show K.adj (signedAdjMap K p).1 (signedAdjMap K p).2 ≠ none
         simp only [signedAdjMap, hadj_eq]
         rw [hadj_back]
-        exact Option.noConfusion
+        exact (Option.some_ne_none _)
   -- Involution: signedAdjMap K (signedAdjMap K p) = p
   case invol =>
     intro p hp

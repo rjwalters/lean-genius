@@ -97,7 +97,7 @@ theorem schnirelmannDensity_le_one (A : Set ℕ) : d_s A ≤ 1 := by
   unfold schnirelmannDensity
   apply ciInf_le_of_le ⟨⟨1, le_refl 1⟩⟩
   unfold densityRatio
-  simp only [↓reduceIte, Nat.cast_one, div_one]
+  skip
   -- countingFunction A 1 ≤ 1 since we only count in {1}
   suffices h : countingFunction A 1 ≤ 1 by exact_mod_cast h
   unfold countingFunction

@@ -55,8 +55,8 @@ noncomputable def edgeCount {n : ℕ} (G : SGraph n) : ℕ :=
     This enables using Mathlib's clique, independent set, and Ramsey theory results. -/
 def SGraph.toSimpleGraph {n : ℕ} (G : SGraph n) : SimpleGraph (Fin n) where
   Adj i j := G.adj i j
-  symm := fun hab => G.symm _ _ hab
-  loopless := G.irrefl
+  symm.symm := fun hab => G.symm _ _ hab
+  loopless.irrefl := G.irrefl
 
 @[simp]
 theorem SGraph.toSimpleGraph_adj {n : ℕ} (G : SGraph n) (i j : Fin n) :

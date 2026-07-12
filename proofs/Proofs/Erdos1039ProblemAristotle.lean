@@ -28,7 +28,7 @@ open Erdos1039 Finset Complex
 theorem eval_degree_one (f : UnitDiscPolynomial) (hf : f.degree = 1) (z : ℂ) :
     f.eval z = z - f.roots ⟨0, hf ▸ Nat.zero_lt_one⟩ := by
   simp only [UnitDiscPolynomial.eval, hf]
-  simp [Fin.prod_univ_one]
+  skip
 
 /-- The sublevel set of a degree-1 polynomial is the open disc of radius 1 around the root. -/
 theorem sublevelSet_degree_one (f : UnitDiscPolynomial) (hf : f.degree = 1) :

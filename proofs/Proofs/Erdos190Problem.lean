@@ -30,9 +30,7 @@ References:
 - Erdős-Graham [ErGr80, p.17]
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Algebra.BigOperators.Group.Finset.Basic
+import Mathlib
 
 open Finset
 

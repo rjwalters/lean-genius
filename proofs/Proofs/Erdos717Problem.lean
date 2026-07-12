@@ -71,8 +71,8 @@ The graph where every pair of distinct vertices is adjacent.
 -/
 def completeGraph (k : ℕ) : SimpleGraph (Fin k) where
   Adj x y := x ≠ y
-  symm x y h := h.symm
-  loopless x := (fun h => h rfl)
+  symm.symm x y h := h.symm
+  loopless.irrefl x := (fun h => h rfl)
 
 /--
 **Subdivision of a Graph:**

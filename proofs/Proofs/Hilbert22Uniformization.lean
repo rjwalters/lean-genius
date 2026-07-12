@@ -1,10 +1,4 @@
-import Mathlib.Analysis.Complex.Basic
-import Mathlib.Analysis.Complex.Circle
-import Mathlib.Topology.Connected.PathConnected
-import Mathlib.Topology.Covering
-import Mathlib.Topology.Homotopy.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Tactic
+import Mathlib
 
 /-!
 # Hilbert's Twenty-Second Problem: Uniformization by Automorphic Functions

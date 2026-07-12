@@ -16,9 +16,7 @@
   - FundamentalArithmetic.lean (parent proof)
 -/
 
-import Mathlib.Data.Nat.Factorization.Basic
-import Mathlib.Data.Nat.GCD.Basic
-import Mathlib.Tactic
+import Mathlib
 
 namespace FundamentalArithmeticOQ01
 

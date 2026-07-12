@@ -23,11 +23,7 @@ References:
 - Green's Open Problems List, Problem 59
 -/
 
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.NumberTheory.Divisors
-import Mathlib.Data.Finset.Basic
-import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.Analysis.SpecialFunctions.Pow.Real
+import Mathlib
 
 open Nat Real
 

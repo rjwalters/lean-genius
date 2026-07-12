@@ -32,7 +32,7 @@ and ALL events P simultaneously, via a single general theorem.
 -/
 
 import Proofs.BallotProblemOQ01OQ02OQ01
-import Mathlib.Tactic
+import Mathlib
 
 open ProbabilityTheory Set
 

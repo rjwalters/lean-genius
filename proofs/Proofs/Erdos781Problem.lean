@@ -23,10 +23,7 @@ References:
 - Alon, Spencer (1989): Ascending waves
 -/
 
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Order.Filter.AtTopBot.Basic
+import Mathlib
 
 open Finset
 

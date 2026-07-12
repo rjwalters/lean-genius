@@ -24,8 +24,7 @@ References:
 Tags: extremal-set-theory, intersecting-families, frankl
 -/
 
-import Mathlib.Data.Finset.Basic
-import Mathlib.Combinatorics.SimpleGraph.Basic
+import Mathlib
 
 namespace Erdos702
 

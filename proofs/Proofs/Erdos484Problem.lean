@@ -25,9 +25,7 @@ References:
 - Ben Green: Problem 25 (refinement)
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Data.Finset.Basic
+import Mathlib
 
 namespace Erdos484
 

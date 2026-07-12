@@ -146,7 +146,7 @@ theorem pow_not_tendstoUniformlyOn_Ico :
   obtain ⟨N, hN⟩ := key
   obtain ⟨x, hx, hxpow⟩ := exists_pow_ge_half N
   have hlt := hN N (le_refl N) x hx
-  simp only at hlt
+  skip
   rw [Real.dist_eq, zero_sub, abs_neg, abs_of_nonneg (pow_nonneg hx.1 N)] at hlt
   linarith
 

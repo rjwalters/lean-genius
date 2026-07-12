@@ -22,9 +22,7 @@ which constrains how many squares can form a Sidon set.
 Tags: number-theory, sidon-sets, squares
 -/
 
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Nat.Basic
-import Mathlib.Analysis.SpecialFunctions.Log.Basic
+import Mathlib
 
 open scoped Classical
 

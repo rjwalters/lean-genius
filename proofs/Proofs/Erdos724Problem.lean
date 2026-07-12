@@ -36,10 +36,7 @@ References:
 - OEIS A001438: Maximum number of MOLS of order n
 -/
 
-import Mathlib.Data.Matrix.Basic
-import Mathlib.Data.Fintype.Card
-import Mathlib.Data.Fin.Basic
-import Mathlib.Order.BoundedOrder.Basic
+import Mathlib
 
 open Matrix Finset
 

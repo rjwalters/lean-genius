@@ -164,7 +164,7 @@ private lemma irrational_sqrt_of_not_sq {n : ℕ} (hn : 0 < n) (hns : ¬ IsSquar
     refine ⟨k.natAbs, ?_⟩
     have habs : k.natAbs ^ 2 = n := by
       have h1 := Int.natAbs_pow k 2
-      rw [hk2, Int.natAbs_ofNat] at h1
+      rw [hk2, Int.natAbs_natCast] at h1
       omega
     linarith [show k.natAbs * k.natAbs = k.natAbs ^ 2 from by ring]
   · norm_num

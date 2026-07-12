@@ -1,7 +1,4 @@
-import Mathlib.Order.FixedPoints
-import Mathlib.Data.Set.Lattice
-import Mathlib.Logic.Equiv.Defs
-import Mathlib.Tactic
+import Mathlib
 
 /-
 # Knaster-Tarski Proof of Schroeder-Bernstein

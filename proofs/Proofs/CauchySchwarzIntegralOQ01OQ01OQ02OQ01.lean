@@ -572,7 +572,7 @@ private theorem signedMeasureOfFunctional_ac [IsFiniteMeasure μ]
   intro s hμs
   simp only [signedMeasureOfFunctional]
   by_cases hE : MeasurableSet s
-  · simp only [dif_pos hE]
+  · skip
     -- μ.toENNRealVectorMeasure s = 0 → μ s = 0 (for measurable s)
     have hzero : μ s = 0 := by
       rwa [Measure.toENNRealVectorMeasure_apply_measurable hE] at hμs

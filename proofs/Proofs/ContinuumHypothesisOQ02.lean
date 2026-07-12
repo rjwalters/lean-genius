@@ -1,9 +1,4 @@
-import Mathlib.SetTheory.Cardinal.Basic
-import Mathlib.SetTheory.Cardinal.Ordinal
-import Mathlib.SetTheory.Cardinal.Cofinality
-import Mathlib.Order.SuccPred.Basic
-import Mathlib.Logic.Basic
-import Mathlib.Tactic
+import Mathlib
 import Proofs.ContinuumHypothesis
 import Proofs.ContinuumHypothesisOQ01
 

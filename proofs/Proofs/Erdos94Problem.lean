@@ -25,10 +25,7 @@ among all convex $n$-gons (for large $n$).
 - https://erdosproblems.com/94
 -/
 
-import Mathlib.Analysis.InnerProductSpace.PiL2
-import Mathlib.Analysis.Convex.Hull
-import Mathlib.Data.Finset.Basic
-import Mathlib.Tactic
+import Mathlib
 
 namespace Erdos94
 

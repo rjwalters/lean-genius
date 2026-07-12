@@ -25,9 +25,7 @@ References:
 Tags: differential-geometry, isoperimetric, surfaces, curvature
 -/
 
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Tactic
+import Mathlib
 
 open Real
 

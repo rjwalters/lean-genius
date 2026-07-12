@@ -85,6 +85,6 @@ theorem pos_of_sq_eq (a b c : ℕ) (hc : c > 0) (h : 4 * a * b = c ^ 2) : a * b 
   by_contra hab
   push_neg at hab
   interval_cases (a * b)
-  simp at h; omega
+  skip; omega
 
 end Erdos674.Aristotle

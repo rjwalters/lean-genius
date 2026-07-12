@@ -25,11 +25,7 @@
   - Mathlib: Nat.nth, Nat.nth_mem_of_infinite, Nat.nth_strictMono
 -/
 
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Nat.Prime.Nth
-import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Analysis.Convex.Basic
+import Mathlib
 
 open Nat Real
 

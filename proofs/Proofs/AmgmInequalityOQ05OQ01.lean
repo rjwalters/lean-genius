@@ -183,7 +183,7 @@ theorem holder_sum_eq_iff {ι : Type*} (s : Finset ι) (f g : ι → ℝ) {p q :
         have h1 : ∑ i ∈ s, (f i / cF) * (g i / cG) = 1 := by
           rw [hsum', heq, div_self hcFcG]
         have h2 := hnorm.mp h1 i hi
-        dsimp only at h2
+        skip
         rw [Real.div_rpow (hf i hi) hcFpos.le p, Real.div_rpow (hg i hi) hcGpos.le q,
           hcFp, hcGq, div_eq_div_iff hFpos.ne' hGpos.ne'] at h2
         linear_combination h2

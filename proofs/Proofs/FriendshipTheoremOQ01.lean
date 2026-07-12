@@ -103,7 +103,7 @@ lemma ucn_ne_left (hF : IsFriendshipGraph G) (u v : V) (huv : u ≠ v) :
   intro h
   have := ucn_adj_left G hF u v huv
   rw [h] at this
-  exact G.loopless u this
+  exact G.loopless.irrefl u this
 
 /-- ucn(u,v) ≠ v (since otherwise v would be adjacent to itself). -/
 lemma ucn_ne_right (hF : IsFriendshipGraph G) (u v : V) (huv : u ≠ v) :
@@ -111,7 +111,7 @@ lemma ucn_ne_right (hF : IsFriendshipGraph G) (u v : V) (huv : u ≠ v) :
   intro h
   have := ucn_adj_right G hF u v huv
   rw [h] at this
-  exact G.loopless v this
+  exact G.loopless.irrefl v this
 
 /-- **Separation lemma**: For adjacent u and v, any other neighbor x of u
     has u as its unique common neighbor with v.
@@ -401,7 +401,7 @@ This file provides the infrastructure to eliminate the axiom
     (adjMatrix ℤ)ᵢᵢ = 0 for any simple graph. -/
 theorem adjMatrix_diag_zero (v : V) :
     (G.adjMatrix ℤ) v v = 0 := by
-  simp [SimpleGraph.adjMatrix_apply, G.loopless v]
+  simp [SimpleGraph.adjMatrix_apply, G.loopless.irrefl v]
 
 /-- The trace of the adjacency matrix is zero for any simple graph.
     This follows because adjMatrix has 0 on the diagonal (no self-loops).
@@ -604,7 +604,7 @@ theorem k_equals_two_from_perfect_square (k s : ℕ) (hk : k ≥ 2)
 theorem trace_adjacency_zero (hF : IsFriendshipGraph G) :
     -- For simple graph: ∀ v, ¬G.Adj v v (no loops)
     ∀ v : V, ¬G.Adj v v :=
-  fun v => G.loopless v
+  fun v => G.loopless.irrefl v
 
 /-- The trace of A equals the sum of eigenvalues.
     For a k-regular friendship graph on n vertices:

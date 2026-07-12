@@ -358,7 +358,7 @@ theorem quartic_to_depressed (a b c d : ℂ) :
     have := depressed_quartic_backward a b c d (x + a / 4)
     simp only [depressedQuartic, depressionCoeffs, eval_add, eval_mul, eval_pow, eval_X, eval_C] at this
     have h2 := this h
-    simp only at h2
+    skip
     ring_nf at h2 ⊢
     exact h2
 

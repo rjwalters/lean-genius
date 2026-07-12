@@ -25,11 +25,7 @@ References:
 - [PoZa22] Pohoata, Zakharov: "Convex polytopes from fewer points" (arXiv:2208.04878)
 -/
 
-import Mathlib.Analysis.Convex.Basic
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.LinearAlgebra.AffineSpace.Independent
+import Mathlib
 
 open Finset Set
 

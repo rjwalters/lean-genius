@@ -24,11 +24,7 @@ References:
 - [CFS13] Conlon, Fox, Sudakov: Tight lower bound
 -/
 
-import Mathlib.Data.Real.Basic
-import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Finset.Card
-import Mathlib.Combinatorics.SimpleGraph.Basic
+import Mathlib
 
 open Real Finset
 

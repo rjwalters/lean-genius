@@ -22,9 +22,7 @@ References:
 - Erdős-Sárközy [ErSa80]: Complete solution
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Data.Set.Basic
+import Mathlib
 
 namespace Erdos444
 

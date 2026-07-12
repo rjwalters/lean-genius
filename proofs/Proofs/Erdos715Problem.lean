@@ -86,7 +86,7 @@ theorem alon_friedland_kalai {V : Type*} [Fintype V] [DecidableEq V]
                 symm := by constructor; intro u v; simp [Set.pair_comm]; tauto
                 loopless := by constructor; intro v h; cases h with
                   | inl h => exact G.loopless v h
-                  | inr h => simp at h }
+                  | inr h => skip
     ∃ (H : SimpleGraph' V) (_ : DecidableRel H.adj), IsSubgraph H G' ∧ IsRegular H 3 := by
   sorry -- Alon-Friedland-Kalai (1984)
 

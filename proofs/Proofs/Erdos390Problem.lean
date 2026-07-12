@@ -12,10 +12,7 @@ References:
 - OEIS A193429
 -/
 
-import Mathlib.Data.Nat.Factorial.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Order.Filter.Basic
-import Mathlib.Tactic
+import Mathlib
 
 /- ## Section I: Formal Definition -/
 

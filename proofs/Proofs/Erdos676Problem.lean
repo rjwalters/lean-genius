@@ -70,7 +70,7 @@ theorem conjecture_equiv : ErdosConjecture676 ↔ ErdosConjecture676' := by
       intro n hn
       simp only [ExceptionSet, Set.mem_setOf_eq] at hn
       by_contra h
-      simp only [Finset.mem_range, not_lt] at h
+      skip
       exact hn (hN n h)
     exact Set.Finite.subset (Finset.finite_toSet _) this
   · intro hfin

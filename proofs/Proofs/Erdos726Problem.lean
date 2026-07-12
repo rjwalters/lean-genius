@@ -16,10 +16,7 @@ that the "upper half" residues contribute exactly half of Mertens' sum.
 **Reference:** erdosproblems.com/726, EGRS75
 -/
 
-import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Finset.Card
-import Mathlib.Tactic
+import Mathlib
 
 /-
 ## Core Definitions

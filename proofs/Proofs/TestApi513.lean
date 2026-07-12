@@ -1,6 +1,4 @@
-import Mathlib.Tactic
-import Mathlib.Analysis.Complex.Basic
-import Mathlib.Order.LiminfLimsup
+import Mathlib
 
 -- Test: division lemmas for ratio proofs
 example (a b : ℝ) (ha : 0 ≤ a) (hb : 0 < b) (hab : a ≤ b) : a / b ≤ 1 := by

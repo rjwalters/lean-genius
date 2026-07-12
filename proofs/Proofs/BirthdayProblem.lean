@@ -1,10 +1,4 @@
-import Mathlib.Data.Fintype.BigOperators
-import Mathlib.Data.Fintype.Card
-import Mathlib.Data.Nat.Factorial.Basic
-import Mathlib.Logic.Embedding.Basic
-import Mathlib.Algebra.BigOperators.Fin
-import Mathlib.Algebra.Order.Field.Basic
-import Mathlib.Tactic
+import Mathlib
 
 /-!
 # The Birthday Problem

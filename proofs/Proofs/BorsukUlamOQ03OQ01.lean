@@ -933,7 +933,7 @@ private lemma sign_change_parity_nat (n : ℕ) (L : ℕ → ℤ) (hL : ∀ k, L 
       rw [this]; exact ⟨0, by ring⟩
     · intro ⟨k, hk⟩
       by_contra h
-      push_neg at h
+      skip
       have : ({0} : Finset ℕ).filter (fun i =>
           signZ (L i) (hL i) ≠ signZ (L (i + 1)) (hL _)) = ∅ := by
         simp [Finset.filter_singleton, h]

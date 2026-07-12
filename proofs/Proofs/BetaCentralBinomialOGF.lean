@@ -260,7 +260,7 @@ theorem centralBeta_ogf_kernel_integral {x : ℝ} (hx0 : 0 < x) (hx4 : x < 4) :
       MeasureTheory.volume 0 1 := hcont.intervalIntegrable
   rw [intervalIntegral.integral_eq_sub_of_hasDerivAt hderiv hint]
   -- boundary evaluation
-  simp only []
+  skip
   rw [show (2 * x * 1 - x) = x by ring, show (2 * x * 0 - x) = -x by ring,
       neg_div, Real.arctan_neg, hk, arctan_div_sqrt_eq_arcsin hx0 hx4]
   ring

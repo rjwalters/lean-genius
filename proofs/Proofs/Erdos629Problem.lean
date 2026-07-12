@@ -221,7 +221,7 @@ lemma IsKListColorable_card {V : Type*} [Fintype V] [DecidableEq V] (G : SimpleG
     by_cases hV : Nonempty V;
     · exact Exists.imp ( fun g hg v => by simpa using hg v ( Finset.mem_univ v ) ) ( h_distinct_colors Finset.univ ⟨ hV.some, Finset.mem_univ _ ⟩ );
     · aesop;
-  exact ⟨ g, fun v => hg v |>.1, fun u v huv => hg v |>.2 u ( by rintro rfl; exact G.loopless _ huv ) ⟩
+  exact ⟨ g, fun v => hg v |>.1, fun u v huv => hg v |>.2 u ( by rintro rfl; exact G.loopless.irrefl _ huv ) ⟩
 
 /-
 If every vertex has a list of size at least |V|, we can pick a distinct element from each list.
@@ -852,11 +852,11 @@ def completeBipartite (m n : ℕ) : SimpleGraph (Fin m ⊕ Fin n) where
     | Sum.inl _, Sum.inr _ => True
     | Sum.inr _, Sum.inl _ => True
     | _, _ => False
-  symm := by
+  symm.symm := by
     constructor
     intro u v h
     cases u <;> cases v <;> simp_all [h]
-  loopless := by
+  loopless.irrefl := by
     constructor
     intro v
     cases v <;> simp

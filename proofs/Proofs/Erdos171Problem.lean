@@ -79,8 +79,8 @@ namespace Erdos171
     pairs at distance exactly 1. -/
 def UnitDistanceGraph : SimpleGraph (EuclideanSpace ℝ (Fin 2)) where
   Adj x y := dist x y = 1
-  symm _ _ h := by simp [dist_comm]; exact h
-  loopless x h := by simp [dist_self] at h
+  symm.symm _ _ h := by simp [dist_comm]; exact h
+  loopless.irrefl x h := by simp [dist_self] at h
 
 /- ## Chromatic Number -/
 

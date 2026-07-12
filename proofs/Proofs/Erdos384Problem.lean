@@ -17,11 +17,7 @@
   Tags: number-theory, binomial-coefficients, prime-divisors, solved
 -/
 
-import Mathlib.Data.Nat.Choose.Basic
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Nat.Factorization.Basic
-import Mathlib.NumberTheory.Primorial
-import Mathlib.Algebra.Order.Field.Basic
+import Mathlib
 
 namespace Erdos384
 

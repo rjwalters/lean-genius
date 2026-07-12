@@ -98,7 +98,7 @@ theorem nonCommuting_distinct_cosets {g h : G} (hnc : nonCommuting g h) :
     ∀ z ∈ Subgroup.center G, g ≠ h * z := by
   intro z hz heq
   apply hnc
-  simp only [commuting]
+  skip
   rw [heq]
   -- Goal: h * z * h = h * (h * z)
   -- h * z * h = h * (z * h) [assoc] = h * (h * z) [z central]

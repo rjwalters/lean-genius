@@ -25,9 +25,7 @@ This file makes every step of the polar-coordinate proof explicit as a named the
 - polar_integral_factorization: restrict_prod + integral_prod + Integrable.comp_fst
 -/
 
-import Mathlib.Analysis.SpecialFunctions.Gaussian.GaussianIntegral
-import Mathlib.Analysis.SpecialFunctions.PolarCoord
-import Mathlib.Tactic
+import Mathlib
 import Proofs.AreaOfCircleOQ05
 
 open MeasureTheory Real Set Filter Prod

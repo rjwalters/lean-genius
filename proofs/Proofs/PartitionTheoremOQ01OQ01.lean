@@ -20,7 +20,7 @@ and confirms the definitions are consistent with the classical results.
 -/
 
 import Proofs.PartitionTheoremOQ01
-import Mathlib.Tactic
+import Mathlib
 
 namespace PartitionTheoremOQ01OQ01
 

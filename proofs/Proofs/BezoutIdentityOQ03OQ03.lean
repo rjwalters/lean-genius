@@ -1,6 +1,4 @@
-import Mathlib.Data.Int.GCD
-import Mathlib.Algebra.BigOperators.Fin
-import Mathlib.Tactic
+import Mathlib
 
 /-!
 # Multi-Variable Bézout and Diophantine Solvability Criterion
@@ -47,7 +45,7 @@ theorem gcdFin_succ {n : ℕ} (a : Fin (n + 1) → ℤ) :
 /-- The family GCD equals Int.gcd applied to the sub-GCD and last element -/
 private theorem gcdFin_eq_int_gcd {n : ℕ} (a : Fin (n + 1) → ℤ) :
     gcdFin a = Int.gcd (gcdFin (a ∘ Fin.castSucc) : ℤ) (a (Fin.last n)) := by
-  simp only [gcdFin_succ, Int.gcd, Int.natAbs_ofNat]
+  simp only [gcdFin_succ, Int.gcd, Int.natAbs_natCast]
 
 -- ============================================================
 -- Part 2: gcdFin divides each component

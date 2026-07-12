@@ -22,11 +22,7 @@ the subsequence of σ-values of superabundant numbers.
 Reference: https://erdosproblems.com/1054
 -/
 
-import Mathlib.NumberTheory.Divisors
-import Mathlib.Data.Finset.Sort
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Tactic
+import Mathlib
 
 open Nat Finset
 

@@ -1,7 +1,4 @@
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Nat.Factorization.Basic
-import Mathlib.Order.Filter.Basic
-import Mathlib.Data.Set.Finite.Basic
+import Mathlib
 
 -- Test: minFac APIs
 #check Nat.minFac_sq_le_self

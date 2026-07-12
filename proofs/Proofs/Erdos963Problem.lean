@@ -23,12 +23,7 @@ Sorry count: 0
 - <https://erdosproblems.com/963>
 -/
 
-import Mathlib.Data.Finset.Card
-import Mathlib.Data.Finset.Powerset
-import Mathlib.Data.Real.Basic
-import Mathlib.Data.Nat.Log
-import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.Tactic
+import Mathlib
 
 /- ## Core Definitions -/
 

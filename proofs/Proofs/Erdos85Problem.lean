@@ -44,8 +44,8 @@ This is a cycle: 0 - 1 - 2 - 3 - 0.
 -/
 def C4 : SimpleGraph (Fin 4) where
   Adj := fun i j => (i.val + 1) % 4 = j.val ∨ (j.val + 1) % 4 = i.val
-  symm := fun i j h => by cases h <;> simp_all [or_comm]
-  loopless := fun i h => by fin_cases i <;> simp_all
+  symm.symm := fun i j h => by cases h <;> simp_all [or_comm]
+  loopless.irrefl := fun i h => by fin_cases i <;> simp_all
 
 /--
 A graph G **contains a 4-cycle** if C₄ is a subgraph of G.
@@ -125,8 +125,8 @@ The **star graph** K_{1,n} has one central vertex connected to n leaves.
 -/
 def starGraph (n : ℕ) : SimpleGraph (Fin (n + 1)) where
   Adj := fun i j => (i = 0 ∧ j ≠ 0) ∨ (j = 0 ∧ i ≠ 0)
-  symm := fun i j h => by cases h <;> simp_all [or_comm]
-  loopless := fun i h => by cases h <;> simp_all
+  symm.symm := fun i j h => by cases h <;> simp_all [or_comm]
+  loopless.irrefl := fun i h => by cases h <;> simp_all
 
 /--
 **Ramsey Connection**

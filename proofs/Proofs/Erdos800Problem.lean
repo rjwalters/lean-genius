@@ -111,8 +111,8 @@ K_N is the graph where every pair of distinct vertices is adjacent.
 -/
 def completeGraph (N : ℕ) : SimpleGraph (Fin N) where
   Adj u v := u ≠ v
-  symm := fun _ _ h => h.symm
-  loopless := fun _ h => h rfl
+  symm.symm := fun _ _ h => h.symm
+  loopless.irrefl := fun _ h => h rfl
 
 /--
 **Edge 2-Coloring:**

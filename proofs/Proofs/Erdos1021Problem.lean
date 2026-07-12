@@ -64,11 +64,11 @@ def Gk (k : ℕ) : SimpleGraph (Gk_vertex k) where
     | Sum.inl i, Sum.inr ⟨(a, b), _⟩ => i = a ∨ i = b
     | Sum.inr ⟨(a, b), _⟩, Sum.inl i => i = a ∨ i = b
     | _, _ => False
-  symm := by
+  symm.symm := by
     constructor
     intro v w h
     rcases v with i | ⟨⟨a, b⟩, hab⟩ <;> rcases w with j | ⟨⟨c, d⟩, hcd⟩ <;> exact h
-  loopless := by
+  loopless.irrefl := by
     constructor
     intro v h
     rcases v with i | ⟨⟨a, b⟩, hab⟩ <;> exact h
@@ -92,8 +92,8 @@ When k = 3, G_3 is the 6-cycle.
 /-- The cycle graph C_n. -/
 def cycleGraph (n : ℕ) (hn : n ≥ 3) : SimpleGraph (Fin n) where
   Adj i j := (i.val + 1) % n = j.val ∨ (j.val + 1) % n = i.val
-  symm := fun i j h => by simp only [or_comm]; exact h
-  loopless := fun i h => by
+  symm.symm := fun i j h => by simp only [or_comm]; exact h
+  loopless.irrefl := fun i h => by
     simp at h
     omega
 

@@ -64,13 +64,13 @@ variable {V : Type*} [Fintype V] [DecidableEq V]
 /-- A cycle graph C_k on k vertices. -/
 def cycleGraph (k : ℕ) : SimpleGraph (Fin k) where
   Adj := fun i j => (i.val + 1) % k = j.val ∨ (j.val + 1) % k = i.val
-  symm := by
+  symm.symm := by
     constructor
     intro i j h
     cases h with
     | inl h => right; exact h
     | inr h => left; exact h
-  loopless := by
+  loopless.irrefl := by
     constructor
     intro i h
     simp at h

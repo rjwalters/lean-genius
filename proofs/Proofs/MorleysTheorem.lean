@@ -1,10 +1,4 @@
-import Mathlib.Analysis.InnerProductSpace.Basic
-import Mathlib.Analysis.InnerProductSpace.PiL2
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Data.Real.Sqrt
-import Mathlib.Geometry.Euclidean.Angle.Unoriented.Basic
-import Mathlib.Tactic
+import Mathlib
 
 /-!
 # Morley's Theorem (Wiedijk #84)

@@ -31,14 +31,7 @@ References:
 Tags: graph-theory, chromatic-number, infinite-graphs, set-theory
 -/
 
-import Mathlib.Combinatorics.SimpleGraph.Basic
-import Mathlib.Combinatorics.SimpleGraph.Subgraph
-import Mathlib.Combinatorics.SimpleGraph.Coloring
-import Mathlib.Combinatorics.SimpleGraph.Finsubgraph
-import Mathlib.SetTheory.Cardinal.Basic
-import Mathlib.SetTheory.Cardinal.Ordinal
-import Mathlib.SetTheory.Cardinal.Regular
-import Mathlib.Data.Fintype.Basic
+import Mathlib
 
 open Cardinal SimpleGraph
 

@@ -44,7 +44,7 @@ lemma h_hasDerivAt (p : ℝ) (hp0 : 0 < p) (hp1 : p < 1) :
       simp only [id, one_mul] at h
       rwa [mul_inv_cancel₀ (ne_of_gt h1p0)] at h
     have hd_sub : HasDerivAt (fun x => 1 - x) (-1) p := by
-      simpa [id, zero_sub] using (hasDerivAt_const p 1).sub (hasDerivAt_id p)
+      exact (hasDerivAt_id p).const_sub 1
     have h := hd_at.comp p hd_sub
     convert h using 1; ring
   -- h = -(x*log x + (1-x)*log(1-x))
@@ -62,7 +62,7 @@ lemma h_hasDerivAt2 (p : ℝ) (hp0 : 0 < p) (hp1 : p < 1) :
   have h1p0 : (0:ℝ) < 1 - p := by linarith
   have hd_log1x : HasDerivAt (fun x => Real.log (1 - x)) (-1 / (1 - p)) p := by
     have hd_sub : HasDerivAt (fun x => 1 - x) (-1) p := by
-      simpa [id, zero_sub] using (hasDerivAt_const p 1).sub (hasDerivAt_id p)
+      exact (hasDerivAt_id p).const_sub 1
     have hd_log : HasDerivAt Real.log (1 - p)⁻¹ (1 - p) :=
       Real.hasDerivAt_log (ne_of_gt h1p0)
     have h := hd_log.comp p hd_sub

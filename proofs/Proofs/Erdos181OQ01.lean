@@ -21,10 +21,7 @@ Ramsey theory, we require c(i,j) = c(j,i). This file uses `ramseyNumberSymm` wit
 the symmetric coloring constraint to correctly model undirected Ramsey numbers.
 -/
 
-import Mathlib.Combinatorics.SimpleGraph.Basic
-import Mathlib.Data.Fin.Basic
-import Mathlib.Data.Nat.Basic
-import Mathlib.Tactic
+import Mathlib
 
 namespace Erdos181OQ01
 

@@ -134,7 +134,7 @@ theorem achievableRates_mono {α β : Type*} [Fintype α] [Fintype β]
 def hammingDistortion (α : Type*) [DecidableEq α] : DistortionMeasure α α where
   d x y := if x = y then 0 else 1
   nonneg x y := by
-    simp only
+    skip
     split_ifs <;> norm_num
 
 /-- Hamming distortion is bounded by 1. -/

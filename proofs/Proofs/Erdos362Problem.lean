@@ -237,7 +237,7 @@ private lemma cexp_pow_eq (z : ℂ) (n : ℕ) :
 private lemma cexp_zpow (z : ℂ) (n : ℤ) :
     Complex.exp z ^ n = Complex.exp (↑n * z) := by
   rcases n with (k | k)
-  · simp only [zpow_natCast, Int.cast_natCast]; exact cexp_pow_eq z k
+  · skip; exact cexp_pow_eq z k
   · rw [zpow_negSucc, cexp_pow_eq z (k + 1), ← Complex.exp_neg]
     congr 1; push_cast; ring
 

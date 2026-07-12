@@ -90,7 +90,7 @@ theorem exp_eq_of_coeffs (A : Matrix (Fin 2) (Fin 2) ℝ) (α β : ℝ → ℝ)
     (hα : ∀ t, HasDerivAt α (-(A.det) * β t) t)
     (hβ : ∀ t, HasDerivAt β (α t + A.trace * β t) t)
     (h0 : α 0 = 1) (h0' : β 0 = 0) (t : ℝ) :
-    exp ℝ (t • A) = α t • 1 + β t • A := by
+    exp (t • A) = α t • 1 + β t • A := by
   -- The algebraic cancellation underlying `φ' = 0`.
   have key : ∀ s : ℝ, (-A) * (α s • (1 : Matrix (Fin 2) (Fin 2) ℝ) + β s • A)
       + ((-(A.det) * β s) • (1 : Matrix (Fin 2) (Fin 2) ℝ)
@@ -103,40 +103,40 @@ theorem exp_eq_of_coeffs (A : Matrix (Fin 2) (Fin 2) ℝ) (α β : ℝ → ℝ)
     module
   -- `φ s = exp(−s•A) · (α s • 1 + β s • A)` has zero derivative at every `s`.
   have hφderiv : ∀ s : ℝ, HasDerivAt
-      (fun x => exp ℝ (x • (-A)) * (α x • (1 : Matrix (Fin 2) (Fin 2) ℝ) + β x • A)) 0 s := by
+      (fun x => exp (x • (-A)) * (α x • (1 : Matrix (Fin 2) (Fin 2) ℝ) + β x • A)) 0 s := by
     intro s
-    have hu : HasDerivAt (fun u : ℝ => exp ℝ (u • (-A))) (exp ℝ (s • (-A)) * (-A)) s :=
+    have hu : HasDerivAt (fun u : ℝ => exp (u • (-A))) (exp (s • (-A)) * (-A)) s :=
       hasDerivAt_exp_smul_const (-A) s
     have hMd : HasDerivAt (fun x => α x • (1 : Matrix (Fin 2) (Fin 2) ℝ) + β x • A)
         ((-(A.det) * β s) • (1 : Matrix (Fin 2) (Fin 2) ℝ)
           + (α s + A.trace * β s) • A) s :=
       ((hα s).smul_const _).add ((hβ s).smul_const _)
     have hprod := hu.mul hMd
-    have hzero : exp ℝ (s • (-A)) * (-A) * (α s • (1 : Matrix (Fin 2) (Fin 2) ℝ) + β s • A)
-        + exp ℝ (s • (-A)) * ((-(A.det) * β s) • (1 : Matrix (Fin 2) (Fin 2) ℝ)
+    have hzero : exp (s • (-A)) * (-A) * (α s • (1 : Matrix (Fin 2) (Fin 2) ℝ) + β s • A)
+        + exp (s • (-A)) * ((-(A.det) * β s) • (1 : Matrix (Fin 2) (Fin 2) ℝ)
           + (α s + A.trace * β s) • A) = 0 := by
       rw [mul_assoc, ← mul_add, key s, mul_zero]
     rw [hzero] at hprod
     exact hprod
   -- Zero derivative everywhere ⇒ constant ⇒ equals its value `1` at `0`.
   have hdiff : Differentiable ℝ
-      (fun x => exp ℝ (x • (-A)) * (α x • (1 : Matrix (Fin 2) (Fin 2) ℝ) + β x • A)) :=
+      (fun x => exp (x • (-A)) * (α x • (1 : Matrix (Fin 2) (Fin 2) ℝ) + β x • A)) :=
     fun s => (hφderiv s).differentiableAt
   have hderiv0 : ∀ s : ℝ,
-      deriv (fun x => exp ℝ (x • (-A)) * (α x • (1 : Matrix (Fin 2) (Fin 2) ℝ) + β x • A)) s = 0 :=
+      deriv (fun x => exp (x • (-A)) * (α x • (1 : Matrix (Fin 2) (Fin 2) ℝ) + β x • A)) s = 0 :=
     fun s => (hφderiv s).deriv
-  have hφt : exp ℝ (t • (-A)) * (α t • (1 : Matrix (Fin 2) (Fin 2) ℝ) + β t • A) = 1 := by
+  have hφt : exp (t • (-A)) * (α t • (1 : Matrix (Fin 2) (Fin 2) ℝ) + β t • A) = 1 := by
     have hconst := is_const_of_deriv_eq_zero hdiff hderiv0 t 0
     simpa [h0, h0'] using hconst
   -- Multiply by `exp(t•A)` on the left to extract the closed form.
   have hcomm : Commute (t • A) (t • (-A)) := by
     rw [smul_neg]; exact (Commute.refl (t • A)).neg_right
-  have hinv : exp ℝ (t • A) * exp ℝ (t • (-A)) = 1 := by
+  have hinv : exp (t • A) * exp (t • (-A)) = 1 := by
     rw [← exp_add_of_commute ℝ _ _ hcomm, smul_neg, add_neg_cancel, exp_zero]
-  calc exp ℝ (t • A)
-      = exp ℝ (t • A) * 1 := (mul_one _).symm
-    _ = exp ℝ (t • A) * (exp ℝ (t • (-A)) * (α t • 1 + β t • A)) := by rw [hφt]
-    _ = (exp ℝ (t • A) * exp ℝ (t • (-A))) * (α t • 1 + β t • A) := by rw [mul_assoc]
+  calc exp (t • A)
+      = exp (t • A) * 1 := (mul_one _).symm
+    _ = exp (t • A) * (exp (t • (-A)) * (α t • 1 + β t • A)) := by rw [hφt]
+    _ = (exp (t • A) * exp (t • (-A))) * (α t • 1 + β t • A) := by rw [mul_assoc]
     _ = 1 * (α t • 1 + β t • A) := by rw [hinv]
     _ = α t • 1 + β t • A := one_mul _
 
@@ -145,7 +145,7 @@ theorem exp_eq_of_coeffs (A : Matrix (Fin 2) (Fin 2) ℝ) (α β : ℝ → ℝ)
 `exp(t•A) = (e^{λ₁t} − λ₁ β(t)) • 1 + β(t) • A` where `β(t) = (e^{λ₁t} − e^{λ₂t})/(λ₁ − λ₂)`. -/
 theorem exp_two_two_distinct (A : Matrix (Fin 2) (Fin 2) ℝ) (lam1 lam2 : ℝ)
     (hne : lam1 ≠ lam2) (hτ : A.trace = lam1 + lam2) (hδ : A.det = lam1 * lam2) (t : ℝ) :
-    exp ℝ (t • A)
+    exp (t • A)
       = (Real.exp (lam1 * t)
           - lam1 * ((Real.exp (lam1 * t) - Real.exp (lam2 * t)) / (lam1 - lam2))) • 1
         + ((Real.exp (lam1 * t) - Real.exp (lam2 * t)) / (lam1 - lam2)) • A := by
@@ -195,7 +195,7 @@ theorem exp_two_two_distinct (A : Matrix (Fin 2) (Fin 2) ℝ) (lam1 lam2 : ℝ)
 `exp(t•A) = (e^{λt} − λ t e^{λt}) • 1 + (t e^{λt}) • A`. -/
 theorem exp_two_two_repeated (A : Matrix (Fin 2) (Fin 2) ℝ) (lam : ℝ)
     (hτ : A.trace = 2 * lam) (hδ : A.det = lam ^ 2) (t : ℝ) :
-    exp ℝ (t • A)
+    exp (t • A)
       = (Real.exp (lam * t) - lam * (t * Real.exp (lam * t))) • 1
         + (t * Real.exp (lam * t)) • A := by
   refine exp_eq_of_coeffs A

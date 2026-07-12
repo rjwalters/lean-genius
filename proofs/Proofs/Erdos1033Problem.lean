@@ -14,12 +14,7 @@ a triangle whose vertices have degrees summing to at least h(n). Estimate h(n).
 Reference: https://erdosproblems.com/1033
 -/
 
-import Mathlib.Combinatorics.SimpleGraph.Basic
-import Mathlib.Combinatorics.SimpleGraph.Clique
-import Mathlib.Combinatorics.SimpleGraph.DegreeSum
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Data.Real.Sqrt
+import Mathlib
 
 open Finset
 
@@ -500,7 +495,7 @@ private def turanPlus1 (n : ℕ) : SimpleGraph (Fin n) where
   Adj i j :=
     (i.val < n / 2 ∧ j.val ≥ n / 2) ∨ (i.val ≥ n / 2 ∧ j.val < n / 2) ∨
     (i.val = 0 ∧ j.val = 1) ∨ (i.val = 1 ∧ j.val = 0)
-  symm := by
+  symm.symm := by
     constructor
     intro i j h
     rcases h with ⟨hi, hj⟩ | ⟨hi, hj⟩ | ⟨hi, hj⟩ | ⟨hi, hj⟩
@@ -874,7 +869,7 @@ theorem h_three : h 3 = 6 := by
     Has 5 edges (> Turán threshold of 4), and all triangles have degree sum 8. -/
 private def G4 : SimpleGraph (Fin 4) where
   Adj i j := i ≠ j ∧ ¬(i = 2 ∧ j = 3) ∧ ¬(i = 3 ∧ j = 2)
-  symm := by
+  symm.symm := by
     constructor
     intro i j ⟨hij, h1, h2⟩
     exact ⟨hij.symm, fun ⟨ha, hb⟩ => h2 ⟨hb, ha⟩, fun ⟨ha, hb⟩ => h1 ⟨hb, ha⟩⟩

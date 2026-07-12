@@ -1,9 +1,5 @@
 import Proofs.CantorsTheoremOQ01
-import Mathlib.SetTheory.Cardinal.Basic
-import Mathlib.SetTheory.Cardinal.Ordinal
-import Mathlib.SetTheory.Cardinal.Continuum
-import Mathlib.Order.SuccPred.Basic
-import Mathlib.Tactic
+import Mathlib
 
 /-
 # |𝒫(𝒫(ℝ))| = ℶ₃: The Iterated Power Set Hierarchy

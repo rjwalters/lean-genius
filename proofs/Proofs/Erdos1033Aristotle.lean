@@ -64,8 +64,8 @@ theorem triangle_min_degree (G : SimpleGraph V) [DecidableRel G.Adj] (T : Triang
     vertexDegree G T.v1 ≥ 2 ∧ vertexDegree G T.v2 ≥ 2 ∧ vertexDegree G T.v3 ≥ 2 := by
   unfold vertexDegree
   exact ⟨degree_ge_two_of_adj_pair G T.v1 T.v2 T.v3 T.distinct23 T.adj12 T.adj13,
-         degree_ge_two_of_adj_pair G T.v2 T.v1 T.v3 T.distinct13 (G.symm T.adj12) T.adj23,
-         degree_ge_two_of_adj_pair G T.v3 T.v1 T.v2 T.distinct12 (G.symm T.adj13) (G.symm T.adj23)⟩
+         degree_ge_two_of_adj_pair G T.v2 T.v1 T.v3 T.distinct13 (G.adj_symm T.adj12) T.adj23,
+         degree_ge_two_of_adj_pair G T.v3 T.v1 T.v2 T.distinct12 (G.adj_symm T.adj13) (G.adj_symm T.adj23)⟩
 
 -- Routine: Triangle degree sum is at least 6 (each vertex has degree ≥ 2)
 theorem triangle_sum_min (G : SimpleGraph V) [DecidableRel G.Adj] (T : Triangle G) :

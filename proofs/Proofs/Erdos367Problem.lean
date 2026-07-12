@@ -24,13 +24,7 @@ Reference: https://erdosproblems.com/367
 Adapted from formal-conjectures (Apache 2.0 License)
 -/
 
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Nat.Factorization.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Mathlib.Data.Nat.Squarefree
-import Mathlib.Tactic
+import Mathlib
 
 open Nat Finset
 

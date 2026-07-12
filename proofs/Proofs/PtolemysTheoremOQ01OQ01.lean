@@ -1,6 +1,4 @@
-import Mathlib.Analysis.Complex.Basic
-import Mathlib.Analysis.InnerProductSpace.Convex
-import Mathlib.Tactic
+import Mathlib
 import Proofs.PtolemysTheoremOQ01
 import Proofs.PtolemysComplexProofOQ01
 

@@ -1,5 +1,4 @@
-import Mathlib.Algebra.BigOperators.Group.Finset.Basic
-import Mathlib.Tactic
+import Mathlib
 
 /-
 # Directed Euler Paths: In-Degree/Out-Degree Characterization

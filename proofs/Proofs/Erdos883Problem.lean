@@ -44,8 +44,8 @@ iff they are coprime (gcd = 1).
 -/
 def coprimeGraph (A : Finset ℕ) : SimpleGraph ℕ where
   Adj := fun a b => a ∈ A ∧ b ∈ A ∧ a ≠ b ∧ Nat.Coprime a b
-  symm := fun a b ⟨ha, hb, hne, hcop⟩ => ⟨hb, ha, hne.symm, hcop.symm⟩
-  loopless := fun a ⟨_, _, hne, _⟩ => hne rfl
+  symm.symm := fun a b ⟨ha, hb, hne, hcop⟩ => ⟨hb, ha, hne.symm, hcop.symm⟩
+  loopless.irrefl := fun a ⟨_, _, hne, _⟩ => hne rfl
 
 /--
 The threshold value ⌊n/2⌋ + ⌊n/3⌋ - ⌊n/6⌋.

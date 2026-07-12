@@ -49,9 +49,7 @@
              `Mathlib/NumberTheory/ArithmeticFunction/Carmichael.lean`
 -/
 
-import Mathlib.RingTheory.ZMod.UnitsCyclic
-import Mathlib.NumberTheory.ArithmeticFunction.Carmichael
-import Mathlib.Tactic
+import Mathlib
 
 namespace EulerTotientOQ01OQ02OQ03
 

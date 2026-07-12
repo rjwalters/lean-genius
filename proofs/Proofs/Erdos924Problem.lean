@@ -86,14 +86,14 @@ For a coloring χ and color c, the subgraph of edges colored c.
 def MonochromaticSubgraph [Fintype V] (G : SimpleGraph V) [DecidableRel G.Adj]
     (χ : EdgeColoring G k) (c : Fin k) : SimpleGraph V where
   Adj u v := G.Adj u v ∧ ∃ h : G.Adj u v, χ ⟨s(u, v), G.mem_edgeSet.mpr h⟩ = c
-  symm u v := by
+  symm.symm u v := by
     intro ⟨hadj, h, hcolor⟩
     constructor
     · exact hadj.symm
     · use hadj.symm
       simp only [Sym2.eq_swap] at hcolor ⊢
       exact hcolor
-  loopless v := by simp [G.loopless]
+  loopless.irrefl v := by simp [G.loopless]
 
 /--
 **Monochromatic Clique:**

@@ -170,7 +170,7 @@ example : isAbelianSquare ['a', 'b', 'b', 'a'] := by
   · rfl
   · ext c
     simp [parikhVector, count]
-    cases c <;> simp
+    cases c <;> skip
 
 /-- Example: A length-16 abelian-square-free string over 4 letters
     (mentioned by Erdős as counterexample for 2^4). -/

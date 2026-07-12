@@ -56,8 +56,8 @@ structure GameState (n : ℕ) where
 /-- The complete graph K_n (all distinct pairs connected) -/
 def Kn (n : ℕ) : SimpleGraph (Fin n) where
   Adj x y := x ≠ y
-  symm := fun _ _ h => h.symm
-  loopless := fun x h => h rfl
+  symm.symm := fun _ _ h => h.symm
+  loopless.irrefl := fun x h => h rfl
 
 /-- Number of edges in K_n: n(n-1)/2 -/
 def numEdges (n : ℕ) : ℕ := n * (n - 1) / 2
@@ -70,14 +70,14 @@ Extract the red and blue subgraphs from a game state.
 /-- The red subgraph: edges colored Red by Alice -/
 def redSubgraph (n : ℕ) (state : GameState n) : SimpleGraph (Fin n) where
   Adj x y := x ≠ y ∧ state.color x y = EdgeColor.Red
-  symm := fun x y ⟨hne, hred⟩ => ⟨hne.symm, by rw [state.symm]; exact hred⟩
-  loopless := fun _ ⟨hne, _⟩ => hne rfl
+  symm.symm := fun x y ⟨hne, hred⟩ => ⟨hne.symm, by rw [state.symm]; exact hred⟩
+  loopless.irrefl := fun _ ⟨hne, _⟩ => hne rfl
 
 /-- The blue subgraph: edges colored Blue by Bob -/
 def blueSubgraph (n : ℕ) (state : GameState n) : SimpleGraph (Fin n) where
   Adj x y := x ≠ y ∧ state.color x y = EdgeColor.Blue
-  symm := fun x y ⟨hne, hblue⟩ => ⟨hne.symm, by rw [state.symm]; exact hblue⟩
-  loopless := fun _ ⟨hne, _⟩ => hne rfl
+  symm.symm := fun x y ⟨hne, hblue⟩ => ⟨hne.symm, by rw [state.symm]; exact hblue⟩
+  loopless.irrefl := fun _ ⟨hne, _⟩ => hne rfl
 
 /-- A graph contains a clique of size k -/
 def hasClique (G : SimpleGraph (Fin n)) (k : ℕ) : Prop :=

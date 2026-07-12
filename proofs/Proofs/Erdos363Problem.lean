@@ -17,11 +17,7 @@ Is it true that there are only finitely many such collections with
 Reference: https://erdosproblems.com/363
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Int.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.List.Basic
-import Mathlib.Algebra.BigOperators.Group.Finset.Basic
+import Mathlib
 
 open BigOperators
 

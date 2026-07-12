@@ -89,8 +89,8 @@ def hasAleph1ChromaticNumber (G : SimpleGraph V) : Prop :=
 def inducedSubgraph (G : SimpleGraph V) (S : Set V) :
     SimpleGraph S where
   Adj u v := G.Adj u.val v.val
-  symm u v h := G.symm h
-  loopless u h := G.loopless u.val h
+  symm.symm u v h := G.adj_symm h
+  loopless.irrefl u h := G.loopless.irrefl u.val h
 
 /- ## Part IV: Main Conjecture -/
 

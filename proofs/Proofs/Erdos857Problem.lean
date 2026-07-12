@@ -33,11 +33,7 @@ References:
 - Naslund-Sawin [NaSa17]: Current best bounds for k=3
 -/
 
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Finset.Powerset
-import Mathlib.Data.Nat.Choose.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Combinatorics.SetFamily.Shadow
+import Mathlib
 
 open Finset
 

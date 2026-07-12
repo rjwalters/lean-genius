@@ -62,8 +62,8 @@ def IsTriangleFree {V : Type*} (G : SimpleGraph V) : Prop :=
 def inducedSubgraphOn {V : Type*} (G : SimpleGraph V) (S : Set V) :
     SimpleGraph S where
   Adj := fun x y => G.Adj x.val y.val
-  symm := fun x y h => G.symm h
-  loopless := fun x => G.loopless x.val
+  symm.symm := fun x y h => G.symm h
+  loopless.irrefl := fun x => G.loopless x.val
 
 /-- A graph G has a triangle-free subgraph with chromatic number at least κ. -/
 def HasTriangleFreeSubgraphWithChromatic {V : Type*}

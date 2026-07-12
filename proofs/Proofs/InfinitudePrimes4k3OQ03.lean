@@ -1,8 +1,4 @@
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Nat.Factorial.Basic
-import Mathlib.Data.ZMod.Basic
-import Mathlib.NumberTheory.SumTwoSquares
-import Mathlib.Tactic
+import Mathlib
 import Proofs.InfinitudePrimes4k3
 import Proofs.InfinitudePrimes4k1
 

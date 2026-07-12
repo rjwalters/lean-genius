@@ -81,8 +81,8 @@ def inducedSubgraph {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj] (S : Finset V) :
     SimpleGraph S where
   Adj := fun u v => G.Adj u.val v.val
-  symm := fun u v h => G.symm h
-  loopless := fun u h => G.loopless u.val h
+  symm.symm := fun u v h => G.adj_symm h
+  loopless.irrefl := fun u h => G.loopless.irrefl u.val h
 
 /-
 # Part 3: Regular Induced Subgraph Size

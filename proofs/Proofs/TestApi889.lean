@@ -1,10 +1,5 @@
 -- Test API availability for Erdos889
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Nat.Factorization.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Order.ConditionallyCompleteLattice.Basic
-import Mathlib.Tactic
+import Mathlib
 
 -- Check how to get factorization positivity from primeFactors membership
 #check @Nat.mem_primeFactors

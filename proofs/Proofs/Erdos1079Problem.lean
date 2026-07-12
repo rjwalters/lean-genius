@@ -46,8 +46,8 @@ def neighborhood {V : Type*} (G : SimpleGraph V) (v : V) : Set V :=
 /-- Induced subgraph on a vertex set -/
 def inducedSubgraph {V : Type*} (G : SimpleGraph V) (S : Set V) : SimpleGraph S where
   Adj := fun ⟨u, _⟩ ⟨v, _⟩ => G.Adj u v
-  symm := fun ⟨u, _⟩ ⟨v, _⟩ h => G.symm h
-  loopless := fun ⟨v, _⟩ => G.loopless v
+  symm.symm := fun ⟨u, _⟩ ⟨v, _⟩ h => G.symm h
+  loopless.irrefl := fun ⟨v, _⟩ => G.loopless v
 
 /-- Number of edges in a finite simple graph -/
 noncomputable def numEdges {V : Type*} [Fintype V] [DecidableEq V]

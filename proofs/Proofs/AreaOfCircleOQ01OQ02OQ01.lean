@@ -24,6 +24,8 @@
 
 import Mathlib
 
+open scoped Topology
+
 open Real MeasureTheory
 
 noncomputable section

@@ -25,11 +25,7 @@ Related: Problem #510 (Chowla cosine problem)
 Tags: analysis, harmonic-analysis, unit-circle, products
 -/
 
-import Mathlib.Data.Complex.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Mathlib.Data.Finset.Basic
+import Mathlib
 
 open Real Complex
 open scoped BigOperators

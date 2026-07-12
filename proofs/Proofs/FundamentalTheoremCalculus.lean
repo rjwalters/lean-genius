@@ -1,9 +1,4 @@
-import Mathlib.Analysis.Calculus.FDeriv.Basic
-import Mathlib.Analysis.Calculus.Deriv.Basic
-import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
-import Mathlib.MeasureTheory.Integral.Bochner.FundThmCalculus
-import Mathlib.Analysis.Calculus.MeanValue
-import Mathlib.Topology.Basic
+import Mathlib
 
 /-!
 # Fundamental Theorem of Calculus

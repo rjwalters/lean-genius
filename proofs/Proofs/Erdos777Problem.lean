@@ -242,7 +242,7 @@ theorem singleton_comparable (a b : α) (ha : a ≠ b) :
   cases h with
   | inl h1 =>
     have : a ∈ ({b} : Finset α) := h1 (mem_singleton.mpr rfl)
-    simp only [mem_singleton] at this
+    skip
     exact ha this
   | inr h2 =>
     have : b ∈ ({a} : Finset α) := h2 (mem_singleton.mpr rfl)

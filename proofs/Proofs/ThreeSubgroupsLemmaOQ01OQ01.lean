@@ -1,5 +1,4 @@
-import Mathlib.GroupTheory.Nilpotent
-import Mathlib.Tactic
+import Mathlib
 import Proofs.ThreeSubgroupsLemmaOQ01
 
 /-

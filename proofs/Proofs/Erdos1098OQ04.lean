@@ -34,8 +34,8 @@ variable {G : Type*} [Group G] [Fintype G] [DecidableEq G]
 /-- The non-commuting graph Γ(G): edges between non-commuting distinct elements -/
 noncomputable def nonCommGraph : SimpleGraph G where
   Adj g h := ¬Commute g h ∧ g ≠ h
-  symm := fun g h ⟨hnc, hne⟩ => ⟨fun hc => hnc hc.symm, hne.symm⟩
-  loopless := fun g ⟨_, hg⟩ => hg rfl
+  symm.symm := fun g h ⟨hnc, hne⟩ => ⟨fun hc => hnc hc.symm, hne.symm⟩
+  loopless.irrefl := fun g ⟨_, hg⟩ => hg rfl
 
 /-
 ## The 5/8 Theorem (Statement)

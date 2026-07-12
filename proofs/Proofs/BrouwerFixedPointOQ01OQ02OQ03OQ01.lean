@@ -1,7 +1,4 @@
-import Mathlib.Tactic
-import Mathlib.Analysis.InnerProductSpace.Basic
-import Mathlib.Analysis.InnerProductSpace.PiL2
-import Mathlib.Topology.MetricSpace.Basic
+import Mathlib
 import Proofs.BrouwerFixedPoint
 
 open Set Metric Real

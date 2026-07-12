@@ -67,7 +67,7 @@ theorem triangleFree_neighbor_disjoint {n : ℕ} (G : GraphOnInterval n)
   rw [Finset.disjoint_left]
   intro w hwu hwv
   rw [SimpleGraph.mem_neighborFinset] at hwu hwv
-  exact hG u w v ⟨hwu, G.symm hwv, huv⟩
+  exact hG u w v ⟨hwu, G.adj_symm hwv, huv⟩
 
 -- ═══════════════════════════════════════════════════════════════════
 -- Section 3: Degree Sum Bound (Key Step for Mantel)

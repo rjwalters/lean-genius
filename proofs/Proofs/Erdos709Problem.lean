@@ -28,12 +28,7 @@ References:
   combinatorics. Matematiche (1992).
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Nat.Log
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Finset.Card
-import Mathlib.Data.Real.Basic
+import Mathlib
 
 namespace Erdos709
 

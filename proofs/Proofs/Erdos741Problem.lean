@@ -31,10 +31,7 @@ remains useful but is now distinct from the AlphaProof Nexus development.
 **Reference:** erdosproblems.com/741, Er94b, arXiv:2605.22763v1
 -/
 
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Set.Finite.Basic
-import Mathlib.Order.Filter.Basic
-import Mathlib.Tactic
+import Mathlib
 
 open Set Filter
 
@@ -277,7 +274,7 @@ theorem cofinite_density_one {S : Set ℕ} (h : ∀ᶠ n in atTop, n ∈ S) :
       intro m hm
       simp only [Finset.coe_Icc, Set.mem_Icc] at hm
       exact ⟨hN₀ m hm.1, hm.2⟩
-    calc n - N₀ + 1 = (Finset.Icc N₀ n).card := by simp [Finset.card_Icc]; omega
+    calc n - N₀ + 1 = (Finset.Icc N₀ n).card := by simp [Nat.card_Icc]; omega
       _ = ((Finset.Icc N₀ n : Set ℕ)).ncard := (Set.ncard_coe_finset _).symm
       _ ≤ (S ∩ Set.Iic n).ncard := Set.ncard_le_ncard hincl hfin
   -- The ratio sequence is eventually ≥ 1 - N₀/(n+1)

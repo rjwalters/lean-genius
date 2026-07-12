@@ -52,7 +52,7 @@ noncomputable def minPairwiseDistance (A : Finset Plane) : ℝ :=
   if h : A.card ≥ 2 then
     Finset.inf' (A.product A).filter (fun pq => pq.1 ≠ pq.2)
       (by
-        simp only [Finset.filter_nonempty_iff, Finset.mem_product]
+        skip
         obtain ⟨a, ha⟩ := Finset.card_pos.mp (Nat.lt_of_lt_of_le Nat.one_lt_two h)
         obtain ⟨b, hb, hab⟩ := Finset.exists_ne_of_one_lt_card (Nat.lt_of_lt_of_le Nat.one_lt_two h) a
         exact ⟨(a, b), ⟨ha, hb⟩, hab⟩)

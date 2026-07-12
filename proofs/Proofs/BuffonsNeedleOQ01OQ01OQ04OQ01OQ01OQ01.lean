@@ -67,7 +67,7 @@ theorem integral_sin_mul_cos_pow (m : ℕ) :
     have hne : ((m : ℝ) + 1) ≠ 0 := by positivity
     convert hd using 1
     push_cast
-    field_simp
+    skip
     ring
   have hcont : Continuous (fun θ : ℝ => Real.sin θ * Real.cos θ ^ m) :=
     Real.continuous_sin.mul (Real.continuous_cos.pow m)

@@ -1,8 +1,4 @@
-import Mathlib.Algebra.BigOperators.Intervals
-import Mathlib.Algebra.BigOperators.Ring.Finset
-import Mathlib.NumberTheory.Bernoulli
-import Mathlib.NumberTheory.BernoulliPolynomials
-import Mathlib.Tactic
+import Mathlib
 
 /-
 # Sum of kth Powers (Faulhaber's Formulas)

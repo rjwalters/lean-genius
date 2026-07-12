@@ -90,7 +90,7 @@ theorem problem_equivalence :
   · intro ⟨m, hs, hnc⟩ hall
     exact hnc (hall m hs)
   · intro h
-    push_neg at h
+    skip
     exact h
 
 /- ## Part IV: Known Sierpinski Numbers -/

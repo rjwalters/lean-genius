@@ -32,11 +32,7 @@ References:
   (1974), 155-180. (Problem 2.31, attributed to Erdős)
 -/
 
-import Mathlib.Analysis.Complex.Basic
-import Mathlib.Topology.MetricSpace.Basic
-import Mathlib.Data.Set.Countable
-import Mathlib.Topology.Order.Basic
-import Mathlib.Tactic
+import Mathlib
 
 open Complex Set
 

@@ -283,7 +283,7 @@ theorem even_count_lower_bound (N : ℕ) (hN : N ≥ 2) :
       simp only [Set.mem_Icc] at hk
       constructor
       · exact ⟨k, rfl⟩
-      · simp only
+      · skip
         constructor
         · calc 1 ≤ k := hk.1
             _ ≤ k + k := Nat.le_add_right k k

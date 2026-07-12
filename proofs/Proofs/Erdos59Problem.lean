@@ -51,7 +51,7 @@ def IsBipartite (G : SimpleGraph V) : Prop :=
 def cycleGraph (n : ℕ) (hn : 3 ≤ n) : SimpleGraph (Fin n) where
   Adj i j := (i.val + 1) % n = j.val ∨ (j.val + 1) % n = i.val
   symm := by constructor; intro i j h; cases h with | inl h => exact Or.inr h | inr h => exact Or.inl h
-  loopless := by
+  loopless.irrefl := by
     constructor
     intro ⟨i, hi⟩ h
     simp only at h

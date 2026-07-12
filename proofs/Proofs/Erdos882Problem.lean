@@ -22,13 +22,7 @@ Key Results:
 Tags: number-theory, combinatorics, subset-sums, divisibility
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Nat.Log
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Finset.Card
-import Mathlib.Data.Finset.Powerset
-import Mathlib.Algebra.BigOperators.Group.Finset.Basic
-import Mathlib.Data.Set.Finite.Basic
+import Mathlib
 
 namespace Erdos882
 

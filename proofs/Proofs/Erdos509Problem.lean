@@ -28,10 +28,7 @@ References:
 - Formal Conjectures Project (Google DeepMind)
 -/
 
-import Mathlib.Data.Complex.Basic
-import Mathlib.Topology.MetricSpace.Basic
-import Mathlib.Analysis.Normed.Field.Basic
-import Mathlib.Algebra.Polynomial.Basic
+import Mathlib
 
 open Polynomial Set Metric
 

@@ -554,7 +554,7 @@ theorem sphere3_locally_euclidean : ∀ x : ↥Sphere3, ∃ U : Set ↥Sphere3, 
   constructor
   · simp only [chart, sphereChartToR3, OpenPartialHomeomorph.transHomeomorph_source]
     rw [stereographic_source]
-    simp only [Set.mem_compl_iff, Set.mem_singleton_iff]
+    skip
     exact sphere_ne_neg x
   · have htarget : chart.target = Set.univ := by
       simp only [chart, sphereChartToR3, OpenPartialHomeomorph.transHomeomorph_target]

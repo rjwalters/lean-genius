@@ -15,10 +15,7 @@ For k ≥ 2, does ((n+k)!)² | (2n)! for infinitely many n?
 Reference: https://erdosproblems.com/727
 -/
 
-import Mathlib.Data.Nat.Factorial.Basic
-import Mathlib.Data.Nat.Choose.Central
-import Mathlib.Data.Set.Finite.Basic
-import Mathlib.Analysis.SpecialFunctions.Log.Basic
+import Mathlib
 
 open Nat Set
 

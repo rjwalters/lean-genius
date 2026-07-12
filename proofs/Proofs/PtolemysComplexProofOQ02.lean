@@ -35,9 +35,7 @@ Proved — 0 sorries, 0 axioms.
 -/
 
 import Proofs.PtolemysTheoremOQ01
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
-import Mathlib.Analysis.Complex.Basic
-import Mathlib.Tactic
+import Mathlib
 
 open Complex Real
 

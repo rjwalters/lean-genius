@@ -16,10 +16,7 @@ Reference: https://erdosproblems.com/424
 OEIS: A005244
 -/
 
-import Mathlib.Data.Finset.Card
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Set.Basic
-import Mathlib.Tactic
+import Mathlib
 
 /- ## Definitions -/
 

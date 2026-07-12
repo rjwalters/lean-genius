@@ -187,7 +187,7 @@ theorem equal_params_ceva_iff (t : ℝ) (ht0 : t ≠ 0) (ht1 : t ≠ 1) :
   intro cfg
   rw [cevas_theorem]
   unfold cevaParameterCondition
-  simp only
+  skip
   constructor
   · intro h
     -- t³ = (1-t)³ implies t = 1-t (for real positive solutions)

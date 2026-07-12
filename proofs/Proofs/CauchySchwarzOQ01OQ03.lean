@@ -1,5 +1,4 @@
-import Mathlib.Analysis.InnerProductSpace.Basic
-import Mathlib.Tactic
+import Mathlib
 
 /-
 # Heisenberg Uncertainty from Complex Cauchy-Schwarz

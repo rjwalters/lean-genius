@@ -25,9 +25,7 @@ Proved from these 2 axioms:
 Sorries: 0
 -/
 
-import Mathlib.Data.Real.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Tactic
+import Mathlib
 
 /- ## Points in General Position -/
 

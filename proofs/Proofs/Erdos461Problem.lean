@@ -13,11 +13,7 @@ Erdős and Graham proved the weaker bound `f(n, t) ≫ t / log t`.
 Erdős–Graham (1980), p. 92.
 -/
 
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Finset.Card
-import Mathlib.Data.Real.Basic
-import Mathlib.Tactic
+import Mathlib
 
 /- ## Smooth components -/
 

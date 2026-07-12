@@ -22,11 +22,7 @@
   Tags: set-theory, partition-calculus, ordinals, GCH, CH
 -/
 
-import Mathlib.SetTheory.Ordinal.Arithmetic
-import Mathlib.SetTheory.Ordinal.Exponential
-import Mathlib.SetTheory.Cardinal.Basic
-import Mathlib.SetTheory.Cardinal.Ordinal
-import Mathlib.Tactic
+import Mathlib
 
 set_option linter.unusedTactic false
 set_option linter.unusedVariables false

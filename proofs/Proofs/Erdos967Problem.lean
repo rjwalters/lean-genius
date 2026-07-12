@@ -17,11 +17,7 @@ Is it true that for every t ∈ ℝ, we have 1 + ∑ₖ 1/aₖ^(1+it) ≠ 0?
 Reference: https://erdosproblems.com/967
 -/
 
-import Mathlib.Analysis.SpecialFunctions.Complex.Log
-import Mathlib.Analysis.SpecialFunctions.Pow.Complex
-import Mathlib.Data.Complex.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Topology.Instances.Complex
+import Mathlib
 
 open Complex
 
@@ -207,7 +203,7 @@ def geometricSequence : IntegerSequence := {
   seq := fun n => 2^(n + 1)
   strictly_increasing := by
     intro n
-    simp only [pow_lt_pow_right (by norm_num : 1 < 2)]
+    simp only [pow_lt_pow_right₀ (by norm_num : 1 < 2)]
     omega
   all_greater_than_one := by
     intro n

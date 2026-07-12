@@ -46,7 +46,7 @@ def NoIsolatedVertices (G : SimpleGraph V) : Prop :=
 /-- The complement graph: edges between non-adjacent distinct vertices. -/
 def complementGraph (G : SimpleGraph V) : SimpleGraph V where
   Adj v w := v ≠ w ∧ ¬G.Adj v w
-  symm := by constructor; intro v w ⟨hne, hnadj⟩; exact ⟨hne.symm, fun h => hnadj (G.symm h)⟩
+  symm := by constructor; intro v w ⟨hne, hnadj⟩; exact ⟨hne.symm, fun h => hnadj (G.adj_symm h)⟩
   loopless := by constructor; intro v ⟨hne, _⟩; exact hne rfl
 
 /-- A bipartite graph (2-colorable): vertex set splits into parts A, B
@@ -130,7 +130,7 @@ def pathGraph (n : ℕ) : SimpleGraph (Fin n) where
 def cycleGraph (n : ℕ) (hn : n ≥ 3) : SimpleGraph (Fin n) where
   Adj i j := (i.val + 1 = j.val % n) ∨ (j.val + 1 = i.val % n)
   symm := by constructor; intro i j h; cases h with | inl h => right; exact h | inr h => left; exact h
-  loopless := by constructor; intro i h; cases h with | inl h => simp at h | inr h => simp at h
+  loopless := by constructor; intro i h; cases h with | inl h => skip
 
 /-- Complete bipartite graph K_{a,b}: left part Fin a, right part Fin b,
     all cross-edges present. -/

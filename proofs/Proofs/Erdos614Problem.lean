@@ -30,12 +30,7 @@ Axioms: 2 (f_lower_bound, f_mono_k)
 Sorries: 0
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Finset.Card
-import Mathlib.Combinatorics.SimpleGraph.Basic
-import Mathlib.Combinatorics.SimpleGraph.Clique
-import Mathlib.Tactic
+import Mathlib
 
 open SimpleGraph Finset
 
@@ -132,7 +127,7 @@ private lemma card_lt_pairs (n : ℕ) :
     have : (Finset.univ : Finset (Fin n × Fin n)).filter (fun p => p.1 ≠ p.2) =
         (Finset.univ : Finset (Fin n)).offDiag := by
       ext ⟨a, b⟩; simp [Finset.mem_offDiag]
-    rw [this, Finset.card_offDiag, Finset.card_univ, Fintype.card_fin]
+    rw [this, Finset.offDiag_card, Finset.card_univ, Fintype.card_fin]
   -- Partition: {i ≠ j} = {i < j} ∪ {i > j}
   have h_split : ((Finset.univ : Finset (Fin n × Fin n)).filter (fun p => p.1 ≠ p.2)).card =
       ((Finset.univ : Finset (Fin n × Fin n)).filter (fun p => p.1 < p.2)).card +
@@ -441,8 +436,8 @@ def partialStar (n : ℕ) : SimpleGraph (Fin n) where
   Adj a b :=
     (a.val = 0 ∧ 1 ≤ b.val ∧ b.val + 1 < n) ∨
     (b.val = 0 ∧ 1 ≤ a.val ∧ a.val + 1 < n)
-  symm := fun _ _ h => h.symm
-  loopless := fun a h => by
+  symm.symm := fun _ _ h => h.symm
+  loopless.irrefl := fun a h => by
     rcases h with ⟨h0, h1, _⟩ | ⟨h0, h1, _⟩ <;> omega
 
 instance partialStar_decAdj (n : ℕ) : DecidableRel (partialStar n).Adj := by

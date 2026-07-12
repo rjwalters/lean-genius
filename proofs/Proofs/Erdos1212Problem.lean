@@ -13,8 +13,7 @@ and at least one of x, y is composite?
 Answer: YES — proved.
 -/
 
-import Mathlib.Data.Nat.GCD.Basic
-import Mathlib.Combinatorics.SimpleGraph.Basic
+import Mathlib
 
 namespace Erdos1212
 

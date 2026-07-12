@@ -1,5 +1,4 @@
-import Mathlib.Algebra.BigOperators.Group.Finset.Basic
-import Mathlib.Tactic
+import Mathlib
 import Proofs.KonigsbergOQ02
 
 /-

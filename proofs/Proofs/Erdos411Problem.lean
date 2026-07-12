@@ -11,10 +11,7 @@ is it true that g_{k+r}(n) = 2·g_k(n) for all sufficiently large k?
 - Steinerberger (2025)
 -/
 
-import Mathlib.Data.Nat.Totient
-import Mathlib.Data.Nat.Basic
-import Mathlib.Order.Filter.Basic
-import Mathlib.Tactic
+import Mathlib
 
 /-
 ## Section I: The Iteration Function

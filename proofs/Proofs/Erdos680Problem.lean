@@ -17,12 +17,7 @@ Related to Problems #681 and #682.
 Reference: https://erdosproblems.com/680
 -/
 
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Order.Filter.Basic
-import Mathlib.Topology.Algebra.Order.LiminfLimsup
-import Mathlib.Data.Real.Basic
-import Mathlib.Data.Real.Sqrt
-import Mathlib.Tactic
+import Mathlib
 
 /- ## Least Prime Factor and the Main Conjecture -/
 

@@ -71,13 +71,13 @@ The graph G' obtained by adding a set of edges E to G.
 -/
 def addEdges (G : SimpleGraph V) (E : Set (Sym2 V)) : SimpleGraph V where
   Adj u v := G.Adj u v ∨ ⟦(u, v)⟧ ∈ E
-  symm := by
+  symm.symm := by
     constructor
     intro u v h
     cases h with
-    | inl h => left; exact G.symm h
+    | inl h => left; exact G.adj_symm h
     | inr h => right; simp [Sym2.eq_swap]; exact h
-  loopless := by
+  loopless.irrefl := by
     constructor
     intro v h
     cases h with

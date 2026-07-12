@@ -13,14 +13,7 @@
 -- Status: OPEN
 -- Reference: erdosproblems.com/852, Er85c
 
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Nat.Prime.Nth
-import Mathlib.Data.Finset.Basic
-import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Mathlib.Analysis.Asymptotics.Defs
-import Mathlib.Order.Filter.Basic
-import Mathlib.Tactic
+import Mathlib
 
 open Filter Asymptotics Real
 
@@ -244,4 +237,4 @@ theorem distinct_run_bounded_by_max_gap (n k M : ℕ)
     _ = ((Finset.range k).image (fun i => primeGap (n + i))).card :=
         (Finset.card_image_of_injOn hinj).symm
     _ ≤ (Finset.Icc 1 M).card := Finset.card_le_card hsub
-    _ = M := by rw [Finset.card_Icc]; omega
+    _ = M := by rw [Nat.card_Icc]; omega

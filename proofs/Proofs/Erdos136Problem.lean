@@ -39,10 +39,7 @@ Related: Problem 135
 Tags: ramsey-theory, graph-coloring, complete-graphs
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Combinatorics.SimpleGraph.Basic
+import Mathlib
 
 open Finset
 

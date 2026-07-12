@@ -5,15 +5,15 @@ import Mathlib.Data.Nat.Prime.Basic
 
 open Nat BigOperators Finset ArithmeticFunction
 
--- Test that sigma_isMultiplicative is available
+-- Test that isMultiplicative_sigma is available
 #check ArithmeticFunction.IsMultiplicative
-#check sigma_isMultiplicative
+#check isMultiplicative_sigma
 
 -- Test sigma_apply
 #check ArithmeticFunction.sigma
 
 -- Test that we can state and use multiplicativity
-example : ArithmeticFunction.IsMultiplicative (σ 1) := sigma_isMultiplicative
+example : ArithmeticFunction.IsMultiplicative (σ 1) := isMultiplicative_sigma
 
 -- Test Nat.Coprime API
 #check Nat.Coprime
@@ -25,4 +25,4 @@ example : ArithmeticFunction.IsMultiplicative (σ 1) := sigma_isMultiplicative
 -- Test multiplicative application
 example (m n : ℕ) (hm : m ≠ 0) (hn : n ≠ 0) (hmn : Nat.Coprime m n) :
     (σ 1) (m * n) = (σ 1) m * (σ 1) n :=
-  ArithmeticFunction.IsMultiplicative.map_mul_of_coprime sigma_isMultiplicative hmn
+  ArithmeticFunction.IsMultiplicative.map_mul_of_coprime isMultiplicative_sigma hmn

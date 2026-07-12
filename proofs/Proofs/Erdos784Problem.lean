@@ -159,7 +159,7 @@ When 1 ∈ A, everything is divisible.
 theorem one_in_A_trivial (A : Finset ℕ) (x : ℕ) (h1 : 1 ∈ A) :
     sievedCount A x = 0 := by
   unfold sievedCount sievedSet
-  simp only [Finset.filter_eq_empty_iff, Finset.mem_range]
+  skip
   intro m _
   push_neg
   intro _

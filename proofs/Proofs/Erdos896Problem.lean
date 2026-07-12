@@ -18,9 +18,7 @@ Source: https://erdosproblems.com/896
 Adapted from erdosproblems.com (Apache 2.0 License)
 -/
 
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Tactic
+import Mathlib
 
 /-
 ## Product Representations

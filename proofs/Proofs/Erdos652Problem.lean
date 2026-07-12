@@ -28,11 +28,7 @@ Mathialagan (2021): For 2 ≤ k ≤ n^{1/3}, R(xₖ) ≫ √(kn)
 Tags: combinatorial-geometry, distinct-distances, point-sets
 -/
 
-import Mathlib.Analysis.InnerProductSpace.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Finset.Card
-import Mathlib.Tactic
+import Mathlib
 
 namespace Erdos652
 

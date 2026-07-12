@@ -25,10 +25,7 @@ Reference: [Va99, 7.84]
 Reference: [Ba89b] Baumgartner
 -/
 
-import Mathlib.SetTheory.Ordinal.Arithmetic
-import Mathlib.SetTheory.Cardinal.Basic
-import Mathlib.SetTheory.Cardinal.Ordinal
-import Mathlib.Tactic
+import Mathlib
 
 noncomputable section
 

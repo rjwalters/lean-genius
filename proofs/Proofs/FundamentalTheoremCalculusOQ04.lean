@@ -21,12 +21,7 @@ Main results in this file:
 - `ftc2_pi`: Concrete instance for (Fin n → ℝ)-valued functions
 -/
 
-import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus
-import Mathlib.MeasureTheory.Integral.Bochner.Basic
-import Mathlib.Analysis.Calculus.FDeriv.Basic
-import Mathlib.Analysis.Calculus.Deriv.Basic
-import Mathlib.Topology.Basic
-import Mathlib.Tactic
+import Mathlib
 
 set_option maxHeartbeats 400000
 

@@ -22,11 +22,7 @@ References:
 - [Va99] Verstraëte, "Turán-type problems" (1999)
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Data.Finset.Powerset
-import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Mathlib.Order.ConditionallyCompleteLattice.Basic
+import Mathlib
 
 namespace Erdos1157
 

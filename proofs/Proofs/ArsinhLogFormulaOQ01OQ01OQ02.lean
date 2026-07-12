@@ -72,7 +72,7 @@ theorem hasDerivAt_sqrtAntideriv (t : ℝ) :
   convert hsum using 1
   have hs : Real.sqrt (1 + t ^ 2) ^ 2 = 1 + t ^ 2 := sq_sqrt_one_add_sq t
   have hpos : 0 < Real.sqrt (1 + t ^ 2) := sqrt_one_add_sq_pos t
-  field_simp
+  skip
   nlinarith [hs, hpos]
 
 /-- The integrand `t ↦ √(1 + t²)` is interval-integrable on every `[a, b]`. -/

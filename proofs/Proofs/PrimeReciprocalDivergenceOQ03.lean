@@ -1,9 +1,4 @@
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Nat.Squarefree
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Finset.Card
-import Mathlib.Data.Finset.Powerset
-import Mathlib.Tactic
+import Mathlib
 
 /-
 # Divergence of Prime Reciprocals — Erdős's Elementary Proof (OQ-03)

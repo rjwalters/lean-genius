@@ -28,10 +28,7 @@ References:
 - Łuczak (1990): "Component behavior near the critical point"
 -/
 
-import Mathlib.Combinatorics.SimpleGraph.Basic
-import Mathlib.Probability.Notation
-import Mathlib.Data.Real.Basic
-import Mathlib.Analysis.SpecialFunctions.Log.Basic
+import Mathlib
 
 open SimpleGraph Real
 

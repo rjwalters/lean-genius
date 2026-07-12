@@ -51,8 +51,8 @@ A complete graph on 3 vertices (K₃).
 -/
 def TriangleGraph : SimpleGraph (Fin 3) where
   Adj := fun i j => i ≠ j
-  symm := fun _ _ h => Ne.symm h
-  loopless := fun _ h => h rfl
+  symm.symm := fun _ _ h => Ne.symm h
+  loopless.irrefl := fun _ h => h rfl
 
 /--
 **Triangle graph is K₃:**
@@ -113,7 +113,7 @@ def TriangleHamiltonianGraph (n : ℕ) (hn : n > 0) : SimpleGraph (Fin (3 * n)) 
     v ≠ w ∧
     ((sameTriangle n v w ∧ trianglePosition n v ≠ trianglePosition n w) ∨
      isHamiltonianEdge n hn v w)
-  symm := by
+  symm.symm := by
     constructor
     intro v w ⟨hne, hdisj⟩
     constructor

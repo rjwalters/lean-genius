@@ -21,8 +21,7 @@ correctness with no new content beyond the `natAbs` reduction.
 - Stein (1967), Knuth TAOCP §4.5.2
 - Mathlib: `Int.gcd` (defined as `m.natAbs.gcd n.natAbs`)
 -/
-import Mathlib.Data.Int.GCD
-import Mathlib.Tactic
+import Mathlib
 import Proofs.GcdAlgorithmOQ02
 
 namespace BinaryGcdOQ02

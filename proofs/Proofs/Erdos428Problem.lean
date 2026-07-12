@@ -1,8 +1,4 @@
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Order.Filter.Basic
-import Mathlib.Topology.Algebra.Order.LiminfLimsup
-import Mathlib.Tactic
+import Mathlib
 
 /-
 # Erdős Problem #428: Prime Offsets with Positive Density

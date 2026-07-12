@@ -138,7 +138,7 @@ theorem erdos_756_answer : ErdosPachQuestion := by
   · norm_num
   intro n hn
   obtain ⟨A, hcard, hrich⟩ := bhowmick_main n hn
-  exact ⟨A, hcard, by simp only [hcard]; linarith [hrich]⟩
+  exact ⟨A, hcard, by skip; linarith [hrich]⟩
 
 /-- The rich distances question has a positive answer. -/
 theorem rich_distances_exist :

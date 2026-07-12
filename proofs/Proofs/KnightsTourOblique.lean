@@ -83,7 +83,7 @@ theorem neg_knight_offset {dx dy : Int} (h : isKnightOffset dx dy = true) :
     Vertices are squares, edges connect knight-adjacent squares. -/
 def knightGraph : SimpleGraph Square where
   Adj := knightAdj
-  symm := by
+  symm.symm := by
     constructor
     intro s1 s2 h
     simp only [knightAdj] at h ⊢
@@ -1492,7 +1492,7 @@ theorem applyD4_inv_left (g : Bool × Fin 4) (s : Square) :
   fin_cases k <;> cases b <;>
     simp only [applyD4, d4Inv, rotateSquareN, reflectSquare, rotateSquare90,
                Bool.false_eq_true, if_false, if_true, ite_false, ite_true, Fin.isValue] <;>
-    (ext <;> simp only [Fin.ext_iff] <;> omega)
+    (ext <;> skip <;> omega)
 
 /-- Rotation by 90° is injective -/
 theorem rotateSquare90_injective : Function.Injective rotateSquare90 := by

@@ -15,10 +15,7 @@ We also verify Mersenne numbers (2^{k+1}-1) as representable via 2^k.
 References: Erdős Problem #1054, https://erdosproblems.com/1054
 -/
 
-import Mathlib.NumberTheory.Divisors
-import Mathlib.Data.Finset.Sort
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Tactic
+import Mathlib
 
 open Nat Finset
 

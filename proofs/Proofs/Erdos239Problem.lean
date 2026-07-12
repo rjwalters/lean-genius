@@ -207,7 +207,7 @@ theorem constOne_in_mult_pm : constOne ∈ MultPlusMinusOne :=
 /-- The mean of the constant 1 function is 1. -/
 theorem constOne_mean (N : ℕ) (hN : N ≥ 1) : meanValue constOne N = 1 := by
   simp [meanValue, partialSum, constOne]
-  field_simp
+  skip
   ring
 
 /-

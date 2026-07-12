@@ -89,7 +89,7 @@ structure NonCommGraph (G : Type*) [Group G] where
   vertices : Set G := Set.univ
   adj : G → G → Prop := nonCommuting
   symm : ∀ g h, adj g h ↔ adj h g := fun g h => nonCommuting_symm g h
-  irrefl : ∀ g, ¬adj g g := fun g => by simp [nonCommuting]
+  irrefl : ∀ g, ¬adj g g := fun g => by skip
 
 /--
 **Clique in Non-Commuting Graph:**

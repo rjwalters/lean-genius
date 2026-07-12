@@ -21,11 +21,7 @@
   Tags: density, affine-maps, recursively-defined-sets, number-theory
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Set.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.Topology.Basic
+import Mathlib
 
 namespace Erdos1134
 

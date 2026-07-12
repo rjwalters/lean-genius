@@ -183,7 +183,7 @@ theorem prime_cpow_norm_le_two (p : Nat.Primes) {s : ℂ} (hs : 1 < s.re) :
       Real.rpow_neg (by norm_num : (0 : ℝ) ≤ 2)]
   -- 2^s.re ≤ p^s.re since 2 ≤ p and s.re ≥ 0
   -- Hence (p^s.re)⁻¹ ≤ (2^s.re)⁻¹
-  apply inv_le_inv_of_le (Real.rpow_pos_of_pos (by norm_num) s.re)
+  apply inv_anti₀ (Real.rpow_pos_of_pos (by norm_num) s.re)
   exact Real.rpow_le_rpow (by norm_num) (prime_cast_ge_two p) (le_of_lt hs_pos)
 
 /-- For Re(s) > 1: ‖(p : ℂ)^(-s)‖ < 1/2 for all primes p.

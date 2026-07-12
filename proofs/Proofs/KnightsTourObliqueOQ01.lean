@@ -64,7 +64,7 @@ theorem neg_knight_offset {dx dy : Int} (h : isKnightOffset dx dy = true) :
 /-- The knight graph on the n×n board -/
 def knightGraphN (n : ℕ) : SimpleGraph (SquareN n) where
   Adj := knightAdjN n
-  symm := by
+  symm.symm := by
     constructor
     intro s1 s2 h
     simp only [knightAdjN] at h ⊢
@@ -228,7 +228,7 @@ theorem cornerTL_oblique (n : ℕ) (hn : n ≥ 5) (prev next : SquareN n)
     (hne : prev ≠ next) :
     isOblique (getMoveVector prev (cornerTL n (by omega)))
               (getMoveVector (cornerTL n (by omega)) next) := by
-  have hp := cornerTL_neighbors n hn prev ((knightGraphN n).symm hadj_prev)
+  have hp := cornerTL_neighbors n hn prev ((knightGraphN n).adj_symm hadj_prev)
   have hn' := cornerTL_neighbors n hn next hadj_next
   rcases hp with rfl | rfl <;> rcases hn' with rfl | rfl
   · exact absurd rfl hne
@@ -250,7 +250,7 @@ theorem cornerTR_oblique (n : ℕ) (hn : n ≥ 5) (prev next : SquareN n)
     (hne : prev ≠ next) :
     isOblique (getMoveVector prev (cornerTR n (by omega)))
               (getMoveVector (cornerTR n (by omega)) next) := by
-  have hp := cornerTR_neighbors n hn prev ((knightGraphN n).symm hadj_prev)
+  have hp := cornerTR_neighbors n hn prev ((knightGraphN n).adj_symm hadj_prev)
   have hn' := cornerTR_neighbors n hn next hadj_next
   rcases hp with rfl | rfl <;> rcases hn' with rfl | rfl
   · exact absurd rfl hne
@@ -274,7 +274,7 @@ theorem cornerBL_oblique (n : ℕ) (hn : n ≥ 5) (prev next : SquareN n)
     (hne : prev ≠ next) :
     isOblique (getMoveVector prev (cornerBL n (by omega)))
               (getMoveVector (cornerBL n (by omega)) next) := by
-  have hp := cornerBL_neighbors n hn prev ((knightGraphN n).symm hadj_prev)
+  have hp := cornerBL_neighbors n hn prev ((knightGraphN n).adj_symm hadj_prev)
   have hn' := cornerBL_neighbors n hn next hadj_next
   rcases hp with rfl | rfl <;> rcases hn' with rfl | rfl
   · exact absurd rfl hne
@@ -298,7 +298,7 @@ theorem cornerBR_oblique (n : ℕ) (hn : n ≥ 5) (prev next : SquareN n)
     (hne : prev ≠ next) :
     isOblique (getMoveVector prev (cornerBR n (by omega)))
               (getMoveVector (cornerBR n (by omega)) next) := by
-  have hp := cornerBR_neighbors n hn prev ((knightGraphN n).symm hadj_prev)
+  have hp := cornerBR_neighbors n hn prev ((knightGraphN n).adj_symm hadj_prev)
   have hn' := cornerBR_neighbors n hn next hadj_next
   rcases hp with rfl | rfl <;> rcases hn' with rfl | rfl
   · exact absurd rfl hne

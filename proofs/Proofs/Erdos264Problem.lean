@@ -132,6 +132,6 @@ example : ∀ n, 2^(2^(n+1)) / 2^(2^n) = 2^(2^n) := by
 example : ∀ n, Nat.factorial (n+1) / Nat.factorial n = n + 1 := by
   intro n
   rw [Nat.factorial_succ]
-  simp [Nat.mul_div_cancel_left]
+  skip
 
 end Erdos264

@@ -450,7 +450,7 @@ theorem fermat_little_theorem (r p : ℕ) (hp : Nat.Prime p) (hr : r % p ≠ 0) 
     rwa [ZMod.natCast_eq_zero_iff, Nat.dvd_iff_mod_eq_zero] at h
   -- Apply Mathlib's FLT: (r : ZMod p)^(card - 1) = 1
   have h := ZMod.pow_card_sub_one_eq_one hr_zmod
-  simp at h
+  skip
   -- h : (↑r : ZMod p) ^ (p - 1) = 1
   -- This means r^(p-1) ≡ 1 (mod p) in ZMod
   -- Use: (a : ZMod n) = (b : ZMod n) → a % n = b % n (via natCast)

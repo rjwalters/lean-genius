@@ -25,11 +25,7 @@
 
   See also: CayleyHamiltonMinpolyOQ03.lean (Krylov complexity for μ_M)
 -/
-import Mathlib.LinearAlgebra.Matrix.Charpoly.Minpoly
-import Mathlib.LinearAlgebra.Matrix.Charpoly.Basic
-import Mathlib.LinearAlgebra.LinearIndependent.Basic
-import Mathlib.RingTheory.Polynomial.Basic
-import Mathlib.Tactic
+import Mathlib
 
 namespace MinpolyVec
 

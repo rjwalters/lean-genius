@@ -1,7 +1,4 @@
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Data.Nat.Choose.Sum
-import Mathlib.Algebra.BigOperators.Ring.Finset
-import Mathlib.Tactic
+import Mathlib
 
 /-
 # Multinomial Distribution and Moment-Generating Function

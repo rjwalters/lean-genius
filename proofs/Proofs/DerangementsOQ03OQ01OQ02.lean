@@ -64,7 +64,7 @@ private lemma summable_altFactTerm : Summable altFactTerm :=
 
 private theorem exp_neg_one_eq_tsum_alt :
     rexp (-1) = ∑' k, altFactTerm k := by
-  rw [show rexp (-1) = NormedSpace.exp ℝ (-1 : ℝ) from Real.exp_eq_exp_ℝ,
+  rw [show rexp (-1) = NormedSpace.exp (-1 : ℝ) from Real.exp_eq_exp_ℝ,
       NormedSpace.exp_eq_tsum (𝕂 := ℝ) (𝔸 := ℝ)]
   apply tsum_congr; intro k; simp only [altFactTerm, smul_eq_mul]; ring
 

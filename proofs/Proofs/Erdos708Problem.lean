@@ -30,11 +30,7 @@ References:
   Wettbewerbs." Mat. Lapok (1959), 39-48.
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Finset.Card
-import Mathlib.Algebra.BigOperators.Group.Finset.Basic
-import Mathlib.Data.Nat.Prime.Basic
+import Mathlib
 
 open BigOperators Finset
 

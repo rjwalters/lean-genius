@@ -73,7 +73,7 @@ theorem finite_geom_sum' {R : Type*} [Ring R] (r : R) (n : ℕ) :
 theorem finite_geom_sum_div {R : Type*} [DivisionRing R] (r : R) (n : ℕ) (hr : r ≠ 1) :
     ∑ k ∈ range n, r ^ k = (1 - r ^ n) / (1 - r) := by
   have h1r : 1 - r ≠ 0 := sub_ne_zero.mpr (ne_comm.mpr hr)
-  field_simp
+  skip
   exact _root_.geom_sum_mul_neg r n
 
 /-! ## Infinite Geometric Series

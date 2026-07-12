@@ -59,13 +59,13 @@ Vertices are 0, 1, 2, 3, 4 with edges forming a cycle:
 -/
 def cycleGraph5 : SimpleGraph (Fin 5) where
   Adj x y := (x.val + 1) % 5 = y.val ∨ (y.val + 1) % 5 = x.val
-  symm := by
+  symm.symm := by
     constructor
     intro x y h
     cases h with
     | inl h => right; exact h
     | inr h => left; exact h
-  loopless := by
+  loopless.irrefl := by
     constructor
     intro x h
     cases h with
@@ -105,14 +105,14 @@ This graph has 5n vertices, is triangle-free, and contains exactly n⁵ copies o
 -/
 def balancedBlowupC5 (n : ℕ) : SimpleGraph (Fin 5 × Fin n) where
   Adj x y := cycleGraph5.Adj x.1 y.1
-  symm := by
+  symm.symm := by
     constructor
     intro x y h
-    exact cycleGraph5.symm h
-  loopless := by
+    exact cycleGraph5.adj_symm h
+  loopless.irrefl := by
     constructor
     intro x h
-    exact cycleGraph5.loopless x.1 h
+    exact cycleGraph5.loopless.irrefl x.1 h
 
 /-- The balanced blow-up of C₅ is triangle-free.
 

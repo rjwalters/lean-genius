@@ -11,13 +11,7 @@ Status: OPEN ($100 bounty)
 Reference: https://erdosproblems.com/43
 -/
 
-import Mathlib.Combinatorics.SimpleGraph.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Finset.Card
-import Mathlib.Data.Int.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Data.Real.Sqrt
-import Mathlib.Tactic
+import Mathlib
 
 /- ## Sidon Sets -/
 
@@ -88,7 +82,7 @@ theorem sidon_pair_bound (A : Finset ℤ) (N : ℕ)
   rw [Nat.choose_two_right]
   suffices h : A.card * (A.card - 1) ≤ 2 * N by omega
   -- n*(n-1) = |A.offDiag| (off-diagonal pairs)
-  rw [← Finset.card_offDiag]
+  rw [← Finset.offDiag_card]
   -- The difference map (a,b) ↦ a-b is injective on A.offDiag (by Sidon)
   -- and maps into Finset.Icc (1-N) (N-1) which has ≤ 2N elements
   set f : ℤ × ℤ → ℤ := fun p => p.1 - p.2
@@ -128,7 +122,7 @@ theorem disjoint_diff_combined_bound (A B : Finset ℤ) (N : ℕ)
   -- Reduce to: |A|*(|A|-1) + |B|*(|B|-1) ≤ 2*N
   simp only [Nat.choose_two_right]
   suffices h : A.card * (A.card - 1) + B.card * (B.card - 1) ≤ 2 * N by omega
-  rw [← Finset.card_offDiag, ← Finset.card_offDiag]
+  rw [← Finset.offDiag_card, ← Finset.offDiag_card]
   set f : ℤ × ℤ → ℤ := fun p => p.1 - p.2
   set T := Finset.Icc (1 - (N : ℤ)) ((N : ℤ) - 1)
   -- Images of A.offDiag and B.offDiag under f are disjoint
@@ -280,7 +274,7 @@ theorem sidon_diff_count (A : Finset ℤ) (hS : IsSidonSet A) (hA : A.Nonempty) 
     _ = 1 + A.offDiag.card + A.card := by
           rw [hdiag_image, Finset.card_singleton, Finset.card_image_of_injOn hinj]
     _ = A.card * A.card + 1 := by
-          rw [Finset.card_offDiag]
+          rw [Finset.offDiag_card]
           cases A.card with
           | zero => simp at hA
           | succ n => simp [Nat.succ_mul, Nat.mul_succ]; omega

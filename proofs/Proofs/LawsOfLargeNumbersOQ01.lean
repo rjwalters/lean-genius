@@ -353,7 +353,7 @@ theorem slln_negated_integral_eq
       (fun n : ℕ => (↑n : ℝ)⁻¹ • ∑ i ∈ Finset.range n, -X i ω)
       Filter.atTop
       (nhds (-(∫ x, X 0 x ∂μ))) := by
-  simp only [MeasureTheory.integral_neg]
+  skip
   exact slln_negated X hint hindep hident
 
 /-- **SLLN for affinely transformed distributions**.

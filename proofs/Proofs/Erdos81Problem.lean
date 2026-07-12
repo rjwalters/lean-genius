@@ -91,7 +91,7 @@ The minimum number of cliques needed to partition all edges.
 -/
 def cliquePartitionNumber (G : SimpleGraph V) : ℕ :=
   -- The minimum over all clique partitions of their size
-  Nat.find (⟨Fintype.card V * Fintype.card V, by simp⟩ :
+  Nat.find (⟨Fintype.card V * Fintype.card V, by skip⟩ :
     ∃ k, ∃ P : CliquePartition G, P.cliques.card ≤ k) -- simplified axiomatization
 
 /- ## Part II: Split Graphs

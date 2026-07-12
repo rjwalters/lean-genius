@@ -86,8 +86,8 @@ theorem rsAdj_loopless {N : ℕ} [NeZero N] (A : Finset (ZMod N))
 noncomputable def ruzsaSzemerediGraph {N : ℕ} [NeZero N]
     (A : Finset (ZMod N)) : SimpleGraph (RSVertex N) where
   Adj := rsAdj A
-  symm := rsAdj_symm A
-  loopless := rsAdj_loopless A
+  symm.symm := rsAdj_symm A
+  loopless.irrefl := rsAdj_loopless A
 
 -- ═══════════════════════════════════════════════════════════════════
 -- PART II: TRIANGLE ↔ 3-AP CORRESPONDENCE

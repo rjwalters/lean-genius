@@ -30,10 +30,7 @@ References:
 Tags: graph-theory, extremal-combinatorics, edge-distance, bounded-degree
 -/
 
-import Mathlib.Combinatorics.SimpleGraph.Basic
-import Mathlib.Combinatorics.SimpleGraph.Metric
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Real.Basic
+import Mathlib
 
 namespace Erdos934
 

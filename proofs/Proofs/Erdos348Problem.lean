@@ -215,7 +215,7 @@ private lemma fib_strictMono : StrictMono fib := by
   | zero => show (1 : ℕ) < 2; omega
   | succ k =>
     show fib (k + 1) < fib k + fib (k + 1)
-    have : 0 < fib k := by cases k <;> simp [fib]; omega
+    have : 0 < fib k := by cases k <;> skip; omega
     omega
 
 /-- fib(k) ≥ k + 1 for k ≥ 1 (fib grows faster than linear). -/

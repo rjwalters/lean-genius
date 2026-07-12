@@ -39,10 +39,7 @@
   Axioms: 0.
 -/
 
-import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
-import Mathlib.MeasureTheory.Integral.Prod
-import Mathlib.MeasureTheory.Measure.Prod
-import Mathlib.Tactic
+import Mathlib
 
 open MeasureTheory intervalIntegral Set MeasureTheory.Measure
 

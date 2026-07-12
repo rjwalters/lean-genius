@@ -29,7 +29,7 @@ theorem card_le_of_subset_up_to (A : Finset ℕ) (N : ℕ) (hA : IsSubsetUpTo A 
   have hsub : A ⊆ Finset.Icc 1 N := by
     intro a ha; exact Finset.mem_Icc.mpr (hA a ha)
   calc A.card ≤ (Finset.Icc 1 N).card := Finset.card_le_card hsub
-    _ = N := by simp [Finset.card_Icc]
+    _ = N := by simp [Nat.card_Icc]
 
 /-- Trivial bound: |A||B| ≤ N² for A, B ⊆ {1,...,N}. -/
 theorem trivial_product_bound (A B : Finset ℕ) (N : ℕ)

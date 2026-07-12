@@ -41,7 +41,7 @@ open SimpleGraph Finset
 def cycleGraph (n : ℕ) : SimpleGraph (Fin n) where
   Adj := fun i j => (i.val + 1) % n = j.val ∨ (j.val + 1) % n = i.val
   symm := by constructor; intro i j h; cases h <;> (right; assumption) <|> (left; assumption)
-  loopless := by
+  loopless.irrefl := by
     constructor
     intro i h
     cases h with
@@ -67,7 +67,7 @@ def ContainsSubgraph {V W : Type*} [Fintype V] [Fintype W]
 /-- The complement of a graph. -/
 def complement {V : Type*} (G : SimpleGraph V) : SimpleGraph V where
   Adj := fun u v => u ≠ v ∧ ¬G.Adj u v
-  symm := by constructor; intro u v ⟨hne, hadj⟩; exact ⟨hne.symm, fun h => hadj (G.symm h)⟩
+  symm := by constructor; intro u v ⟨hne, hadj⟩; exact ⟨hne.symm, fun h => hadj (G.adj_symm h)⟩
   loopless := by constructor; intro v ⟨hne, _⟩; exact hne rfl
 
 /-- R(H₁, H₂) = minimum N such that every 2-coloring of K_N contains

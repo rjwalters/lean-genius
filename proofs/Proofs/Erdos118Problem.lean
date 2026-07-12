@@ -17,10 +17,7 @@ The problem was posed by Erdős and Hajnal. Partition ordinals satisfying
 Reference: https://erdosproblems.com/118
 -/
 
-import Mathlib.SetTheory.Ordinal.Arithmetic
-import Mathlib.SetTheory.Ordinal.Exponential
-import Mathlib.SetTheory.Cardinal.Basic
-import Mathlib.Tactic
+import Mathlib
 
 /- ## Core Definitions -/
 

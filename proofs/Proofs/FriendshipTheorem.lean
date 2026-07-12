@@ -302,12 +302,12 @@ instance : DecidableRel windmill2Adj := fun u v => by
 /-- The 5-vertex windmill W₂ with two triangles sharing vertex 0. -/
 def windmill2 : SimpleGraph (Fin 5) where
   Adj := windmill2Adj
-  symm := by
+  symm.symm := by
     constructor
     intro u v h
     unfold windmill2Adj at *
     tauto
-  loopless := by
+  loopless.irrefl := by
     constructor
     intro v h
     unfold windmill2Adj at h

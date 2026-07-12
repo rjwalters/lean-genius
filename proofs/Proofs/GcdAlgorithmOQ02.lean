@@ -1,5 +1,4 @@
-import Mathlib.Data.Nat.GCD.Basic
-import Mathlib.Tactic
+import Mathlib
 
 /-
 # Binary GCD (Stein's Algorithm)

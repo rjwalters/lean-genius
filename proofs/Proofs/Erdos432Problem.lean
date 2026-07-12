@@ -22,10 +22,7 @@ We define sumsets, pairwise coprimality, counting functions, and
 state the conjecture on density bounds.
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Nat.GCD.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Tactic
+import Mathlib
 
 namespace Erdos432
 

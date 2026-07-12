@@ -41,12 +41,7 @@ Hölder exponent α played in the polynomial case.
 Source: Extension of Fourier Series OQ-02-OQ-03
 -/
 
-import Mathlib.Analysis.Fourier.AddCircle
-import Mathlib.Analysis.Fourier.FourierTransform
-import Mathlib.MeasureTheory.Function.L2Space
-import Mathlib.Analysis.SpecialFunctions.ExpDeriv
-import Mathlib.Topology.Algebra.InfiniteSum.NatInt
-import Mathlib.Tactic
+import Mathlib
 
 noncomputable section
 

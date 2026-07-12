@@ -69,8 +69,8 @@ def IsRamseyGraph (G : SimpleGraph V) : Prop :=
 /-- An induced subgraph on a vertex set S. -/
 def inducedSubgraph (G : SimpleGraph V) (S : Finset V) : SimpleGraph S where
   Adj := fun u v => G.Adj u.val v.val
-  symm := fun _ _ h => G.symm h
-  loopless := fun v => G.loopless v.val
+  symm.symm := fun _ _ h => G.symm h
+  loopless.irrefl := fun v => G.loopless v.val
 
 /-- The number of distinct degrees in the induced subgraph on S. -/
 noncomputable def inducedDistinctDegrees (G : SimpleGraph V) (S : Finset V) : ℕ :=
