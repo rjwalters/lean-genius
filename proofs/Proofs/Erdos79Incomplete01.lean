@@ -49,9 +49,11 @@ open Erdos79
 def K4MinusEdge (p q : ℕ) : SimpleGraph ℕ where
   Adj u v := (completeGraphN 4).Adj u v ∧ ¬ ((u = p ∧ v = q) ∨ (u = q ∧ v = p))
   symm := by
+    constructor
     rintro u v ⟨h1, h2⟩
     exact ⟨h1.symm, fun h => h2 (by tauto)⟩
   loopless := by
+    constructor
     rintro u ⟨h1, -⟩
     exact (completeGraphN 4).loopless u h1
 

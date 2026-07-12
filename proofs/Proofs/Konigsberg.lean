@@ -111,8 +111,8 @@ symmetric and irreflexive (no self-loops).
 @[simps]
 def graph : SimpleGraph Verts where
   Adj v w := adj v w
-  symm := by dsimp [Symmetric, adj]; decide
-  loopless := by dsimp [Irreflexive, adj]; decide
+  symm := by constructor; dsimp [Symmetric, adj]; decide
+  loopless := by constructor; dsimp [Irreflexive, adj]; decide
 
 instance : DecidableRel graph.Adj := fun a b => inferInstanceAs <| Decidable (adj a b)
 

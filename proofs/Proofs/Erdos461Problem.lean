@@ -24,7 +24,7 @@ import Mathlib.Tactic
 /-- The `t`-smooth component of `n`: product of prime factors of `n`
 (with multiplicity) that are strictly less than `t`. -/
 noncomputable def smoothComponent (t n : ℕ) : ℕ :=
-    (n.factors.filter (· < t)).prod
+    (n.primeFactorsList.filter (· < t)).prod
 
 /- ### Infrastructure lemmas -/
 
@@ -65,14 +65,14 @@ private lemma prime_dvd_list_prod_mem {p : ℕ} (hp : p.Prime) :
 /-- `smoothComponent t n` always divides `n` (for positive `n`). -/
 theorem smoothComponent_dvd (t n : ℕ) (hn : n ≠ 0) : smoothComponent t n ∣ n := by
   unfold smoothComponent
-  have h := list_prod_filter_dvd n.factors (fun x => decide (x < t))
+  have h := list_prod_filter_dvd n.primeFactorsList (fun x => decide (x < t))
   rwa [Nat.prod_factors hn] at h
 
 /-- `smoothComponent t n` is `t`-smooth: every prime factor is `< t`. -/
 theorem smoothComponent_smooth (t n p : ℕ) (hp : p.Prime)
     (hd : p ∣ smoothComponent t n) : p < t := by
   unfold smoothComponent at hd
-  have hall : ∀ q ∈ n.factors.filter (· < t), q.Prime := fun q hq =>
+  have hall : ∀ q ∈ n.primeFactorsList.filter (· < t), q.Prime := fun q hq =>
     Nat.prime_of_mem_factors (List.mem_filter.mp hq).1
   have hmem := prime_dvd_list_prod_mem hp _ hall hd
   exact (List.mem_filter.mp hmem).2
@@ -86,9 +86,9 @@ theorem smoothComponent_pos (t n : ℕ) : 0 < smoothComponent t n := by
 
 /-- No prime `< t` divides the complement part of the factorization. -/
 private lemma no_small_prime_in_complement (t n p : ℕ) (hp : p.Prime)
-    (hpt : p < t) (hd : p ∣ (n.factors.filter (fun x => ¬ decide (x < t))).prod) :
+    (hpt : p < t) (hd : p ∣ (n.primeFactorsList.filter (fun x => ¬ decide (x < t))).prod) :
     False := by
-  have hall : ∀ q ∈ n.factors.filter (fun x => ¬ decide (x < t)), q.Prime := fun q hq =>
+  have hall : ∀ q ∈ n.primeFactorsList.filter (fun x => ¬ decide (x < t)), q.Prime := fun q hq =>
     Nat.prime_of_mem_factors (List.mem_filter.mp hq).1
   have hmem := prime_dvd_list_prod_mem hp _ hall hd
   have := (List.mem_filter.mp hmem).2
@@ -117,7 +117,7 @@ theorem smoothComponent_largest (t n d : ℕ) (hn : n ≠ 0) :
     d ∣ n → (∀ p : ℕ, p.Prime → p ∣ d → p < t) → d ∣ smoothComponent t n := by
   intro hdn hsmooth
   -- Define the complement part: product of prime factors ≥ t
-  set comp := (n.factors.filter (fun x => ¬ x < t)).prod with hcomp_def
+  set comp := (n.primeFactorsList.filter (fun x => ¬ x < t)).prod with hcomp_def
   -- Key fact: n = smoothComponent * comp (partition of prime factorization)
   have hfact : smoothComponent t n * comp = n := by
     unfold smoothComponent
@@ -173,7 +173,7 @@ theorem smoothComponent_one (t : ℕ) : smoothComponent t 1 = 1 := by
 theorem smoothComponent_t_le_one {t : ℕ} (n : ℕ) (ht : t ≤ 1) :
     smoothComponent t n = 1 := by
   simp only [smoothComponent]
-  suffices h : n.factors.filter (· < t) = [] by simp [h]
+  suffices h : n.primeFactorsList.filter (· < t) = [] by simp [h]
   apply List.filter_eq_nil.mpr
   intro p hp
   simp only [decide_eq_true_eq, not_lt]
@@ -218,9 +218,9 @@ theorem smoothComponent_prime_ge (t p : ℕ) (hp : p.Prime) (hpt : t ≤ p) :
 
 /-- If all prime factors of n are < t, then smoothComponent t n = n. -/
 theorem smoothComponent_id_of_smooth (t n : ℕ) (hn : n ≠ 0)
-    (h : ∀ p ∈ n.factors, p < t) : smoothComponent t n = n := by
+    (h : ∀ p ∈ n.primeFactorsList, p < t) : smoothComponent t n = n := by
   unfold smoothComponent
-  rw [show n.factors.filter (· < t) = n.factors from
+  rw [show n.primeFactorsList.filter (· < t) = n.primeFactorsList from
     List.filter_eq_self.mpr (fun x hx => by simpa using h x hx)]
   exact Nat.prod_factors hn
 
@@ -243,17 +243,17 @@ theorem smoothComponent_mul (t m n : ℕ) (hm : m ≠ 0) (hn : n ≠ 0) :
 
 /-- The smooth component is 1 iff no prime factor of n is less than t. -/
 theorem smoothComponent_eq_one_iff (t n : ℕ) (hn : n ≠ 0) :
-    smoothComponent t n = 1 ↔ ∀ p ∈ n.factors, ¬(p < t) := by
+    smoothComponent t n = 1 ↔ ∀ p ∈ n.primeFactorsList, ¬(p < t) := by
   constructor
   · intro h p hp hpt
-    have hmem : p ∈ n.factors.filter (· < t) := List.mem_filter.mpr ⟨hp, by simpa⟩
-    have hp_dvd : p ∣ (n.factors.filter (· < t)).prod := List.dvd_prod hmem
+    have hmem : p ∈ n.primeFactorsList.filter (· < t) := List.mem_filter.mpr ⟨hp, by simpa⟩
+    have hp_dvd : p ∣ (n.primeFactorsList.filter (· < t)).prod := List.dvd_prod hmem
     unfold smoothComponent at h; rw [h] at hp_dvd
     exact absurd (Nat.le_of_dvd one_pos hp_dvd)
       (by have := (Nat.prime_of_mem_factors hp).two_le; omega)
   · intro h
     unfold smoothComponent
-    have : n.factors.filter (· < t) = [] :=
+    have : n.primeFactorsList.filter (· < t) = [] :=
       List.filter_eq_nil.mpr (fun p hp => by simpa using h p hp)
     simp [this]
 

@@ -64,7 +64,7 @@ The main asymptotic result for small k.
 
 /-- The Erdős-Kaplansky asymptotic formula:
     L(k,n) ~ e^{-C(k,2)} · (n!)^k -/
-def ErdosKaplanskyFormula (k n : ℕ) : ℝ :=
+noncomputable def ErdosKaplanskyFormula (k n : ℕ) : ℝ :=
   Real.exp (-(choose2 k : ℝ)) * ((factorial n : ℕ) : ℝ)^k
 
 /-- Condition: k = o((log n)^{3/2-ε}) -/

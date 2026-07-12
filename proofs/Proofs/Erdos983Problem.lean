@@ -33,6 +33,8 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.NumberTheory.PrimeCounting
 
+open scoped Classical
+
 open Nat Finset BigOperators
 
 namespace Erdos983
@@ -68,7 +70,7 @@ def IsSmooth (P : Finset ℕ) (m : ℕ) : Prop :=
 **P-smooth elements of a set:**
 The elements of A that are smooth with respect to P.
 -/
-def smoothElements (P : Finset ℕ) (A : Finset ℕ) : Finset ℕ :=
+noncomputable def smoothElements (P : Finset ℕ) (A : Finset ℕ) : Finset ℕ :=
   A.filter (fun a => ∀ p : ℕ, Nat.Prime p → p ∣ a → p ∈ P)
 
 /--

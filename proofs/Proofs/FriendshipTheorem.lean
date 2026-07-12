@@ -303,10 +303,12 @@ instance : DecidableRel windmill2Adj := fun u v => by
 def windmill2 : SimpleGraph (Fin 5) where
   Adj := windmill2Adj
   symm := by
+    constructor
     intro u v h
     unfold windmill2Adj at *
     tauto
   loopless := by
+    constructor
     intro v h
     unfold windmill2Adj at h
     omega

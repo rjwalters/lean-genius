@@ -56,7 +56,7 @@ M(r) = max_{|z|=r} |f(z)| for r ≥ 0.
 
 For an entire function, M(r) captures how large f can be on circles of radius r.
 -/
-def maxModulus (f : ℂ → ℂ) (r : ℝ) : ℝ :=
+noncomputable def maxModulus (f : ℂ → ℂ) (r : ℝ) : ℝ :=
   sSup {y : ℝ | ∃ z : ℂ, Complex.abs z = r ∧ y = Complex.abs (f z)}
 
 /-- Notation for maximum modulus. -/
@@ -215,13 +215,13 @@ Classical examples to illustrate the concepts.
 **Exponential Function:**
 f(z) = e^z is transcendental entire.
 -/
-def expFunction : ℂ → ℂ := Complex.exp
+noncomputable def expFunction : ℂ → ℂ := Complex.exp
 
 /--
 **Sine Function:**
 f(z) = sin(z) is transcendental entire.
 -/
-def sinFunction : ℂ → ℂ := Complex.sin
+noncomputable def sinFunction : ℂ → ℂ := Complex.sin
 
 /- 
 **Maximum Modulus of Exponential:**

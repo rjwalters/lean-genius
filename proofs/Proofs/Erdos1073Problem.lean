@@ -104,6 +104,7 @@ theorem factorialCompositeCount_mono :
     Monotone factorialCompositeCount := by
   intro x y hxy
   exact Set.ncard_le_ncard (compositeFactorialSet_mono hxy)
+    ((Set.finite_Iio y).subset fun u hu => hu.1)
 
 /- ## Structural observations -/
 

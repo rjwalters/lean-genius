@@ -93,7 +93,7 @@ def ComponentSizes (G : SimpleGraph V) [Fintype V] [DecidableRel G.Adj] : List â
 The size of the largest connected component.
 -/
 def largestComponentSize (G : SimpleGraph V) [Fintype V] [DecidableRel G.Adj] : â„• :=
-  (ComponentSizes G).maximum?.getD 0
+  (ComponentSizes G).max?.getD 0
 
 /--
 **Second largest component size:**

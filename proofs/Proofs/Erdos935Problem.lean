@@ -77,8 +77,7 @@ theorem powerfulPart_is_powerful (n : ℕ) (p : ℕ) (hp : p.Prime)
     subst hpq
     -- p^2 | p^(n.factorization p) since 2 ≤ exponent, and that factor divides the product
     exact dvd_trans (pow_dvd_pow p h2)
-      (by simp only [Finsupp.prod]; simpa [h2] using Finset.dvd_prod_of_mem
-        (fun i => if 2 ≤ n.factorization i then i ^ n.factorization i else 1) hq_mem)
+      (by simp only [Finsupp.prod]; simpa [h2] using Finset.dvd_prod_of_mem (fun i => if 2 ≤ n.factorization i then i ^ n.factorization i else 1) hq_mem)
   · -- Factor for q is 1; p ∤ 1 contradicts p prime
     simp only [h2, ite_false] at hq_dvd
     exact absurd (Nat.eq_one_of_dvd_one hq_dvd) hp.one_lt.ne'

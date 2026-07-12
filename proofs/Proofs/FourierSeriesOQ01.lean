@@ -165,9 +165,9 @@ theorem carlesonConstant_nonneg : (0 : ℝ) ≤ carlesonConstant := carlesonData
 /-- **Carleson-Hunt Maximal Inequality** (Axiomatized)
 
 For any f ∈ L²(𝕋), the Carleson maximal function S*f satisfies the weak-type
-estimate: for any λ > 0,
+estimate: for any lam > 0,
 
-  μ({x : S*f(x) > λ}) ≤ (C/λ)² · ‖f‖²_{L²}
+  μ({x : S*f(x) > lam}) ≤ (C/lam)² · ‖f‖²_{L²}
 
 This is the weak-(2,2) form. The strong-(2,2) form (‖S*f‖_{L²} ≤ C‖f‖_{L²})
 implies this by Chebyshev's inequality, but the weak form suffices for proving
@@ -176,9 +176,9 @@ a.e. convergence.
 Note: We state this for measurable f : AddCircle T → ℂ with finite L² norm. -/
 axiom carleson_hunt_maximal
     (f : AddCircle T → ℂ) (hf : MemLp f 2 haarAddCircle)
-    (λ : ℝ) (hλ : 0 < λ) :
-    haarAddCircle {x : AddCircle T | ENNReal.ofReal λ < carlesonMaximal f x} ≤
-      ENNReal.ofReal ((carlesonConstant / λ) ^ 2 *
+    (lam : ℝ) (hlam : 0 < lam) :
+    haarAddCircle {x : AddCircle T | ENNReal.ofReal lam < carlesonMaximal f x} ≤
+      ENNReal.ofReal ((carlesonConstant / lam) ^ 2 *
         ∫ x, ‖f x‖ ^ 2 ∂haarAddCircle)
 /-
 ═══════════════════════════════════════════════════════════════════════════════
@@ -527,7 +527,7 @@ The argument is:
 4. So |S_N f(x) - f(x)| = |S_N g(x) - g(x) + S_N h(x) - h(x)|
                           ≤ |S_N g(x) - g(x)| + |S_N h(x)| + |h(x)|
 5. For large N the first term vanishes. The maximal inequality controls S_N h.
-6. By Chebyshev: μ({S*h > λ}) ≤ (C/λ)² · ‖h‖² ≤ (Cε/λ)²
+6. By Chebyshev: μ({S*h > lam}) ≤ (C/lam)² · ‖h‖² ≤ (Cε/lam)²
 7. Since ε is arbitrary, the divergence set has measure 0.
 -/
 

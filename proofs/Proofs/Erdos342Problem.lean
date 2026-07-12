@@ -72,7 +72,7 @@ def buildUlam : ℕ → List ℕ
 /-- The Ulam sequence U(1,2) as a computable function.
     ulam n returns the (n+1)-th Ulam number (0-indexed). -/
 def ulam (n : ℕ) : ℕ :=
-  match (buildUlam (n + 1)).get? n with
+  match (buildUlam (n + 1))[n]? with
   | some v => v
   | none => 0
 

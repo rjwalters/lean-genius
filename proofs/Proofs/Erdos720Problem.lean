@@ -35,6 +35,8 @@ import Mathlib.Combinatorics.SimpleGraph.Basic
 import Mathlib.Order.Filter.Basic
 import Mathlib.Data.Finset.Basic
 
+open scoped Classical
+
 open Real Filter
 
 namespace Erdos720
@@ -53,16 +55,16 @@ noncomputable def numEdges (G : GraphOnN n) : ℕ :=
 /-- The path graph on n vertices (n-1 edges). -/
 def PathGraph (n : ℕ) : GraphOnN n where
   Adj := fun i j => (i.val + 1 = j.val) ∨ (j.val + 1 = i.val)
-  symm := by intro i j h; cases h <;> simp [*]
-  loopless := by intro i h; cases h <;> omega
+  symm := by constructor; intro i j h; cases h <;> simp [*]
+  loopless := by constructor; intro i h; cases h <;> omega
 
 /-- The cycle graph on n vertices (n edges). -/
 def CycleGraph (n : ℕ) (hn : n ≥ 3) : GraphOnN n where
   Adj := fun i j =>
     (i.val + 1 = j.val) ∨ (j.val + 1 = i.val) ∨
     (i.val = 0 ∧ j.val = n - 1) ∨ (j.val = 0 ∧ i.val = n - 1)
-  symm := by intro i j h; rcases h with h1|h2|h3|h4 <;> simp [*]
-  loopless := by intro i h; rcases h with h1|h2|h3|h4 <;> omega
+  symm := by constructor; intro i j h; rcases h with h1|h2|h3|h4 <;> simp [*]
+  loopless := by constructor; intro i h; rcases h with h1|h2|h3|h4 <;> omega
 
 /-  The number of edges in a path Pₙ.
     A path on n vertices has exactly n-1 edges: connecting consecutive vertices. -/

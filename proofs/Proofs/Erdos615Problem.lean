@@ -35,6 +35,8 @@ import Mathlib.Data.Real.Basic
 import Mathlib.Data.Nat.Log
 import Mathlib.Data.Set.Finite.Basic
 
+open scoped Classical
+
 open SimpleGraph
 
 namespace Erdos615
@@ -99,7 +101,7 @@ For the Ramsey-Turán number rt(n; 4, ℓ), the value 1/8 is critical.
 Turán's theorem: ex(n, K₄) = (1/3 + o(1))(n choose 2) ≈ (1/6)n²
 But with independence number constraints, we get rt(n; 4, εn) ≈ (1/8)n²
 -/
-def threshold_one_eighth : ℝ := 1 / 8
+noncomputable def threshold_one_eighth : ℝ := 1 / 8
 
 /--
 **The Conjecture (Erdős et al., 1993):**

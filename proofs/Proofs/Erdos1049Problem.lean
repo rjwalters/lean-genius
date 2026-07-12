@@ -125,7 +125,7 @@ theorem geometric_divisor (t : ℝ) (d : ℕ) (ht : t > 1) (hd : d ≥ 1) :
   have htd_ne : t ^ d ≠ 0 := ne_of_gt htd_pos
   set r := (t ^ d)⁻¹ with hr_def
   have hr_pos : (0 : ℝ) < r := inv_pos_of_pos htd_pos
-  have hr_lt : r < 1 := by rwa [inv_lt_one_iff_of_pos htd_pos]
+  have hr_lt : r < 1 := by rwa [inv_lt_one₀ htd_pos]
   -- Rewrite terms: 1/t^{dm} = r^m
   have hterm : ∀ m : ℕ, (if m = 0 then (0 : ℝ) else 1 / t ^ (d * m)) =
       if m = 0 then (0 : ℝ) else r ^ m := by

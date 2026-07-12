@@ -501,6 +501,7 @@ private def turanPlus1 (n : ℕ) : SimpleGraph (Fin n) where
     (i.val < n / 2 ∧ j.val ≥ n / 2) ∨ (i.val ≥ n / 2 ∧ j.val < n / 2) ∨
     (i.val = 0 ∧ j.val = 1) ∨ (i.val = 1 ∧ j.val = 0)
   symm := by
+    constructor
     intro i j h
     rcases h with ⟨hi, hj⟩ | ⟨hi, hj⟩ | ⟨hi, hj⟩ | ⟨hi, hj⟩
     · exact Or.inr (Or.inl ⟨hj, hi⟩)
@@ -508,6 +509,7 @@ private def turanPlus1 (n : ℕ) : SimpleGraph (Fin n) where
     · exact Or.inr (Or.inr (Or.inr ⟨hj, hi⟩))
     · exact Or.inr (Or.inr (Or.inl ⟨hj, hi⟩))
   loopless := by
+    constructor
     intro i h
     simp only [lt_irrefl, ge_iff_le, le_refl, not_lt] at h
     rcases h with ⟨hi, hj⟩ | ⟨hi, hj⟩ | ⟨hi, hj⟩ | ⟨hi, hj⟩
@@ -873,9 +875,10 @@ theorem h_three : h 3 = 6 := by
 private def G4 : SimpleGraph (Fin 4) where
   Adj i j := i ≠ j ∧ ¬(i = 2 ∧ j = 3) ∧ ¬(i = 3 ∧ j = 2)
   symm := by
+    constructor
     intro i j ⟨hij, h1, h2⟩
     exact ⟨hij.symm, fun ⟨ha, hb⟩ => h2 ⟨hb, ha⟩, fun ⟨ha, hb⟩ => h1 ⟨hb, ha⟩⟩
-  loopless := by intro i ⟨h, _⟩; exact h rfl
+  loopless := by constructor; intro i ⟨h, _⟩; exact h rfl
 
 private instance : DecidableRel G4.Adj := by
   intro i j; fin_cases i <;> fin_cases j <;> decide

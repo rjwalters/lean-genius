@@ -32,6 +32,8 @@ import Mathlib.Combinatorics.SimpleGraph.Subgraph
 import Mathlib.Data.Finset.Card
 import Mathlib.Tactic
 
+open scoped Classical
+
 namespace Erdos72
 
 open SimpleGraph Finset Filter
@@ -39,7 +41,7 @@ open SimpleGraph Finset Filter
 /- ## Part I: Density of Sets of Natural Numbers -/
 
 /-- The counting function for a set A up to n. -/
-def countingFunction (A : Set ℕ) (n : ℕ) : ℕ :=
+noncomputable def countingFunction (A : Set ℕ) (n : ℕ) : ℕ :=
   (Finset.filter (· ∈ A) (Finset.range (n + 1))).card
 
 /-- A set A ⊂ ℕ has density 0 if |A ∩ [1,n]|/n → 0 as n → ∞. -/

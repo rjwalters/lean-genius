@@ -65,11 +65,13 @@ variable {V : Type*} [Fintype V] [DecidableEq V]
 def cycleGraph (k : ℕ) : SimpleGraph (Fin k) where
   Adj := fun i j => (i.val + 1) % k = j.val ∨ (j.val + 1) % k = i.val
   symm := by
+    constructor
     intro i j h
     cases h with
     | inl h => right; exact h
     | inr h => left; exact h
   loopless := by
+    constructor
     intro i h
     simp at h
     cases h with
@@ -200,8 +202,8 @@ theorem lower_bound (k n : ℕ) (hk : k ≥ 3) (hn : n ≥ 3) :
 def LowerBoundGraph (k n : ℕ) : SimpleGraph (Fin ((k-1)*(n-1))) where
   Adj := fun i j =>
     i.val / (k-1) = j.val / (k-1) ∧ i ≠ j
-  symm := by intro i j ⟨h1, h2⟩; exact ⟨h1.symm, h2.symm⟩
-  loopless := by intro i ⟨_, h⟩; exact h rfl
+  symm := by constructor; intro i j ⟨h1, h2⟩; exact ⟨h1.symm, h2.symm⟩
+  loopless := by constructor; intro i ⟨_, h⟩; exact h rfl
 
 /- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
 

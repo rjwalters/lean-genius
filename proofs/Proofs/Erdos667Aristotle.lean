@@ -28,8 +28,8 @@ def HasDensity {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj] (p q : ℕ) : Prop :=
   ∀ S : Finset V, S.card = p → edgeCount G S ≥ q
 
-/-- H(n; p, q): the largest clique size guaranteed. -/
 open scoped Classical in
+/-- H(n; p, q): the largest clique size guaranteed. -/
 noncomputable def cliqueGuarantee (n p q : ℕ) : ℕ :=
   sSup {m : ℕ | m ≤ n ∧ ∀ (G : SimpleGraph (Fin n)),
     HasDensity G p q → ¬G.CliqueFree m}

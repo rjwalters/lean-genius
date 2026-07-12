@@ -118,8 +118,8 @@ The sum of squared gaps between reduced residues is O(n²/φ(n)).
 
 ∑_{k=1}^{φ(n)-1} (a_{k+1} - a_k)² ≪ n²/φ(n)
 -/
-theorem montgomery_vaughan_squared : := by sorry
-    ∃ C : ℝ, C > 0 ∧ ∀ n ≥ 1, (sumSquaredGaps n : ℝ) ≤ C * boundedSquaredGaps n
+theorem montgomery_vaughan_squared :
+    ∃ C : ℝ, C > 0 ∧ ∀ n ≥ 1, (sumSquaredGaps n : ℝ) ≤ C * boundedSquaredGaps n := by sorry
 
 /--
 **Montgomery-Vaughan General Theorem:**
@@ -184,7 +184,7 @@ theorem primorial_case :
 
 /-- Connection to Jacobsthal's function g(n): maximum gap. -/
 noncomputable def jacobsthal (n : ℕ) : ℕ :=
-  (gapList n).maximum?.getD 0
+  (gapList n).max?.getD 0
 
 /-- The maximum gap is at most n/φ(n) · (log n)² asymptotically. -/
 theorem maximum_gap_bound (n : ℕ) (hn : n ≥ 2) : := by sorry

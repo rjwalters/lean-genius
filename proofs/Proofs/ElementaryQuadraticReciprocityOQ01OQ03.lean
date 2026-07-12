@@ -105,10 +105,8 @@ PART III: SIGN OF A PRODUCT PERMUTATION  (general, absent from Mathlib)
     (since `ℤˣ = {±1}` has exponent 2). -/
 theorem units_pow_odd (u : ℤˣ) {k : ℕ} (hk : Odd k) : u ^ k = u := by
   rcases Int.units_eq_one_or u with rfl | rfl
-  · rw [one_pow]
-  · refine Units.ext ?_
-    rw [Units.val_pow_eq_pow_val]
-    simpa using hk.neg_one_pow
+  · exact one_pow k
+  · exact hk.neg_one_pow
 
 /-- The sign of a product permutation `σ ×ₚ τ` on `α × β` is
     `sign σ ^ |β| * sign τ ^ |α|`.  This is not in Mathlib; we derive it from

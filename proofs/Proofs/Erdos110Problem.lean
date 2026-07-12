@@ -24,6 +24,8 @@ Tags: graph-theory, chromatic-number, infinite-graphs, set-theory, counterexampl
 
 import Mathlib
 
+open scoped Classical
+
 namespace Erdos110
 
 open Cardinal Set
@@ -80,7 +82,7 @@ def typeCard (V : Type*) : Cardinal := Cardinal.mk V
 def aleph0 : Cardinal := Cardinal.aleph0
 
 /-- ℵ₁ = the first uncountable cardinal. -/
-def aleph1 : Cardinal := Cardinal.aleph 1
+noncomputable def aleph1 : Cardinal := Cardinal.aleph 1
 
 /-- ℵ₁ is the successor of ℵ₀. -/
 theorem aleph1_eq_succ_aleph0 : aleph1 = Cardinal.aleph0.succ := by

@@ -88,12 +88,12 @@ axiom baker_1981 (x : ℕ → ℕ) (hx : StrictlyIncreasingSeq x) :
 ## Part IV: Lacunary Sequences (Special Case)
 -/
 
-/-- A sequence is lacunary if xₙ₊₁/xₙ > λ > 1 for all n -/
-def Lacunary (x : ℕ → ℕ) (λ : ℝ) : Prop :=
-  λ > 1 ∧ ∀ n, (x (n + 1) : ℝ) / x n > λ
+/-- A sequence is lacunary if xₙ₊₁/xₙ > lam > 1 for all n -/
+def Lacunary (x : ℕ → ℕ) (lam : ℝ) : Prop :=
+  lam > 1 ∧ ∀ n, (x (n + 1) : ℝ) / x n > lam
 
 /-- Erdős-Gál (unpublished): Lacunary sequences satisfy stronger bound -/
-axiom erdos_gal_lacunary (x : ℕ → ℕ) (λ : ℝ) (hx : Lacunary x λ) :
+axiom erdos_gal_lacunary (x : ℕ → ℕ) (lam : ℝ) (hx : Lacunary x lam) :
     ∃ C k : ℝ, C > 0 ∧ k > 0 ∧
     ∀ᵐ α ∂volume.restrict (Set.Icc 0 1),
       ∀ N : ℕ, N ≥ 3 →
@@ -132,9 +132,9 @@ def conjecture_loglog_polynomial (x : ℕ → ℕ) : Prop :=
 def naturalSeq : ℕ → ℕ := id
 
 theorem natural_seq_strictly_increasing : StrictlyIncreasingSeq naturalSeq := by
-  intro n; simp [naturalSeq]; omega
+  intro n; simp only [naturalSeq, id]; omega
 
-/-- Example: x_n = 2^n (powers of 2, lacunary with λ = 2) -/
+/-- Example: x_n = 2^n (powers of 2, lacunary with lam = 2) -/
 def powersOfTwo (n : ℕ) : ℕ := 2 ^ n
 
 /-  Powers of 2 satisfy the stronger loglog bound -/
@@ -152,11 +152,11 @@ theorem erdos_992_summary :
       ∀ᵐ α ∂volume.restrict (Set.Icc 0 1),
         ∀ N : ℕ, N ≥ 2 →
           discrepancy x α N ≤ C * Real.sqrt N * (Real.log N) ^ (3/2 : ℝ)) ∧
-    (∀ x : ℕ → ℕ, ∀ λ : ℝ, Lacunary x λ →
+    (∀ x : ℕ → ℕ, ∀ lam : ℝ, Lacunary x lam →
       ∃ C k : ℝ, C > 0 ∧ k > 0 ∧
       ∀ᵐ α ∂volume.restrict (Set.Icc 0 1),
         ∀ N : ℕ, N ≥ 3 →
           discrepancy x α N ≤ C * Real.sqrt N * (Real.log (Real.log N)) ^ k) :=
-  ⟨fun x hx => baker_1981 x hx, fun x λ hλ => erdos_gal_lacunary x λ hλ⟩
+  ⟨fun x hx => baker_1981 x hx, fun x lam hlam => erdos_gal_lacunary x lam hlam⟩
 
 end Erdos992

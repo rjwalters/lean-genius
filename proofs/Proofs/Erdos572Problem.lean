@@ -36,6 +36,8 @@ import Mathlib.Combinatorics.SimpleGraph.Finite
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Real.Basic
 
+open scoped Classical
+
 open SimpleGraph
 
 namespace Erdos572

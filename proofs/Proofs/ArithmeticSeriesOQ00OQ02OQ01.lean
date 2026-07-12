@@ -3,6 +3,8 @@ import Mathlib.Algebra.BigOperators.Ring.Finset
 import Mathlib.Tactic
 import Proofs.ArithmeticSeriesOQ00
 
+open scoped Classical
+
 /-
 # Alternative Weights for Nicomachus-Type Sums (OQ-00-OQ-02-OQ-01)
 

@@ -17,6 +17,8 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
 import Mathlib.Tactic
 
+open scoped Classical
+
 /- ## Increasing totient sets -/
 
 /-- A set `A ⊆ {1,…,N}` has strictly increasing Euler totient values

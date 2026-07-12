@@ -32,6 +32,8 @@ import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 
+open scoped Classical
+
 open Nat Real Finset
 
 namespace Erdos796
@@ -93,7 +95,7 @@ The maximum exists since we're optimizing over a finite set.
 Count of n-smooth integers with exactly r distinct prime factors.
 -/
 noncomputable def omega_count (n r : ℕ) : ℕ :=
-  (Finset.range (n + 1)).filter (fun m => m.factors.toFinset.card = r) |>.card
+  (Finset.range (n + 1)).filter (fun m => m.primeFactorsList.toFinset.card = r) |>.card
 
 /- 
 **Asymptotic Formula for omega_count:**

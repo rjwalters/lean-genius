@@ -42,13 +42,13 @@ abbrev ZXY := MvPolynomial (Fin 2) ℤ
 -/
 
 /-- The constant polynomial 2 in ℤ[X,Y]. -/
-def gen2 : ZXY := C 2
+noncomputable def gen2 : ZXY := C 2
 
 /-- The variable X₀ in ℤ[X,Y]. -/
-def genX : ZXY := X (0 : Fin 2)
+noncomputable def genX : ZXY := X (0 : Fin 2)
 
 /-- The ideal I = (2, X₀) ⊆ ℤ[X,Y]. -/
-def I : Ideal ZXY := Ideal.span {gen2, genX}
+noncomputable def I : Ideal ZXY := Ideal.span {gen2, genX}
 
 /-!
 ## Step 1: The ideal I is proper — it does not contain 1.

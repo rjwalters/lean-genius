@@ -28,6 +28,8 @@ Tags: number-theory, density, additive-combinatorics, sum-free-sets
 
 import Mathlib
 
+open scoped Classical
+
 open Finset Filter
 
 namespace Erdos1136

@@ -64,7 +64,7 @@ def risingProduct (n k : ℕ) : ℕ :=
 **Series Term:**
 The n-th term of the series is 1/((n+1)(n+2)⋯(n+f(n))).
 -/
-def seriesTerm (f : ℕ → ℕ) (n : ℕ) : ℝ :=
+noncomputable def seriesTerm (f : ℕ → ℕ) (n : ℕ) : ℝ :=
   if risingProduct n (f n) = 0 then 0
   else 1 / (risingProduct n (f n) : ℝ)
 

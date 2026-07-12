@@ -61,9 +61,11 @@ def completeBipartiteGraph (n : ℕ) : SimpleGraph (Fin n ⊕ Fin n) where
     | Sum.inr _, Sum.inl _ => True
     | _, _ => False
   symm := by
+    constructor
     intro v w h
     cases v <;> cases w <;> simp_all
   loopless := by
+    constructor
     intro v h
     cases v <;> simp_all
 

@@ -53,24 +53,24 @@ H(n; p, q) is the largest m such that every n-vertex graph with the
 (p,q)-density condition contains a complete subgraph on m vertices.
 -/
 
+open scoped Classical in
 /-- H(n; p, q): the largest clique size guaranteed in any n-vertex graph
     satisfying the (p,q)-density condition.
     Defined as: sup {m ≤ n | every n-vertex graph with (p,q)-density has an m-clique}.
 
     Previously axiomatized; now defined concretely using sSup.
     Uses Classical.dec for decidability of graph predicates. -/
-open scoped Classical in
 noncomputable def cliqueGuarantee (n p q : ℕ) : ℕ :=
   sSup {m : ℕ | m ≤ n ∧ ∀ (G : SimpleGraph (Fin n)),
     HasDensity G p q → ¬G.CliqueFree m}
 
 -- Notation: H(n; p, q) = cliqueGuarantee n p q
 
+open scoped Classical in
 /-- H is monotone in n: more vertices can only help.
     Proof sketch: S_n ⊆ S_{n+1} because for any G on Fin (n+1) with density,
     pulling back to G' = G.comap castSucc on Fin n preserves the density condition
     (edgeCount unchanged by injective embedding). Any m-clique in G' lifts to G. -/
-open scoped Classical in
 theorem cliqueGuarantee_mono_n (p q n : ℕ) :
     cliqueGuarantee n p q ≤ cliqueGuarantee (n + 1) p q := by
   simp only [cliqueGuarantee]
@@ -163,12 +163,12 @@ The function c(p,q) has known values at the endpoints.
     For p=3, q=C(2,2)+1=2: the complement of any satisfying graph is a matching,
     giving clique number ⌈n/2⌉, so c(3,2) = lim inf log(⌈n/2⌉)/log(n) = 1. -/
 
+open scoped Classical in
 /-- When q = 0, there is no constraint, so H(n; p, 0) = 1 trivially.
     Every graph has at least one vertex (when n ≥ 1), forming a trivial 1-clique.
     The empty graph on n vertices shows we can't guarantee 2-cliques.
     Proof: S = {m ≤ n | ∀ G, ¬CliqueFree G m} = {0, 1} since the empty graph
     is CliqueFree m for m ≥ 2, and every nonempty graph has a 0-clique and 1-clique. -/
-open scoped Classical in
 theorem cliqueGuarantee_zero (n p : ℕ) (hn : 1 ≤ n) :
     cliqueGuarantee n p 0 = 1 := by
   simp only [cliqueGuarantee]

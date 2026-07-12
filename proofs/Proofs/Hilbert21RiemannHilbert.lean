@@ -107,7 +107,7 @@ Formally, it is a homomorphism from the fundamental group of the punctured
 plane to GL(n, ℂ).
 -/
 
-/-- The dimension of the linear system -/
+/- The dimension of the linear system -/
 variable (n : ℕ) [NeZero n]
 
 /-- A monodromy representation is a group homomorphism from a free group

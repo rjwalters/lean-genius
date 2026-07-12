@@ -28,6 +28,8 @@ import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Algebra.Order.Field.Basic
 
+open scoped Classical
+
 namespace Erdos302
 
 /-

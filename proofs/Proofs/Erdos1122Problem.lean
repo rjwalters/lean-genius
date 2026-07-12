@@ -28,6 +28,8 @@ import Mathlib.Data.Real.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Order.Filter.Basic
 
+open scoped Classical
+
 open Nat Real Filter
 
 namespace Erdos1122

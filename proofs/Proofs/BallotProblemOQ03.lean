@@ -333,7 +333,7 @@ private lemma countP_false_cons_true (xs : List Bool) :
 def pathSplitEquiv (m n : ℕ) : pathType (m + 1) (n + 1) ≃ pathType m (n + 1) ⊕ pathType (m + 1) n where
   toFun := fun ⟨l, hlen, heast⟩ => by
     match l with
-    | [] => exact absurd hlen (by simp; omega)
+    | [] => exact absurd hlen (by simp)
     | false :: xs =>
       have heast' : xs.countP (· = false) = m := by
         rw [countP_false_cons_false] at heast; omega
@@ -354,7 +354,7 @@ def pathSplitEquiv (m n : ℕ) : pathType (m + 1) (n + 1) ≃ pathType m (n + 1)
       exact ⟨true :: xs, by simp; omega, heast'⟩
   left_inv := fun ⟨l, hlen, _⟩ => by
     match l with
-    | [] => exact absurd hlen (by simp; omega)
+    | [] => exact absurd hlen (by simp)
     | false :: _ => rfl
     | true :: _ => rfl
   right_inv := fun s => by
@@ -1628,14 +1628,16 @@ Given that point p is visited by path l, recover the step index. -/
     Uses Exists.choose to pick a witness. -/
 noncomputable def stepIndexOf (l : LPath) (a : ℕ) (p : ℕ × ℕ)
     (h : p ∈ visitedPoints l a) : ℕ :=
-  (by simp [visitedPoints, Finset.mem_image, Finset.mem_range] at h; exact h :
+  (by simp [visitedPoints, Finset.mem_image, Finset.mem_range] at h
+      obtain ⟨i, hi, hp⟩ := h; exact ⟨i, by omega, hp⟩ :
     ∃ i, i < l.length + 1 ∧ posAfter l a i = p).choose
 
 theorem stepIndexOf_spec (l : LPath) (a : ℕ) (p : ℕ × ℕ)
     (h : p ∈ visitedPoints l a) :
     posAfter l a (stepIndexOf l a p h) = p ∧ stepIndexOf l a p h < l.length + 1 := by
   have h_exists : ∃ i, i < l.length + 1 ∧ posAfter l a i = p := by
-    simp [visitedPoints, Finset.mem_image, Finset.mem_range] at h; exact h
+    simp [visitedPoints, Finset.mem_image, Finset.mem_range] at h
+    obtain ⟨i, hi, hp⟩ := h; exact ⟨i, by omega, hp⟩
   have := h_exists.choose_spec
   exact ⟨this.2, this.1⟩
 

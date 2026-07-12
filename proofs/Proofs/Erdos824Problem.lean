@@ -31,6 +31,8 @@ References:
 
 import Mathlib
 
+open scoped Classical
+
 open Nat Finset BigOperators Filter
 
 namespace Erdos824
@@ -178,7 +180,7 @@ than coprimality.
 def IsSquarefree (n : ℕ) : Prop :=
   ∀ p : ℕ, p.Prime → ¬(p^2 ∣ n)
 
-def hSquarefree (x : ℕ) : ℕ :=
+noncomputable def hSquarefree (x : ℕ) : ℕ :=
   (Finset.filter (fun p : ℕ × ℕ =>
     1 ≤ p.1 ∧ p.1 < p.2 ∧ p.2 < x ∧
     IsSquarefree p.1 ∧ IsSquarefree p.2 ∧ sigma p.1 = sigma p.2)

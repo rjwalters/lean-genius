@@ -44,7 +44,7 @@ namespace Erdos717
 ## Part I: Basic Definitions
 -/
 
-/--
+/-
 **Graph Definition:**
 We work with finite simple graphs on n vertices.
 -/

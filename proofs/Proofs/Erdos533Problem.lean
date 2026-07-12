@@ -16,6 +16,8 @@ Reference: https://erdosproblems.com/533
 
 import Mathlib
 
+open scoped Classical
+
 /- ## Definitions -/
 
 /-- A simple graph on n vertices, represented by its edge set. -/

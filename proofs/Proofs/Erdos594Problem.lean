@@ -46,13 +46,13 @@ We need uncountable cardinals ℵ₀, ℵ₁, ℵ₂ to state this problem.
 -/
 
 /-- ℵ₀ is the first infinite cardinal. -/
-abbrev aleph0 : Cardinal := Cardinal.aleph 0
+noncomputable abbrev aleph0 : Cardinal := Cardinal.aleph 0
 
 /-- ℵ₁ is the first uncountable cardinal. -/
-abbrev aleph1 : Cardinal := Cardinal.aleph 1
+noncomputable abbrev aleph1 : Cardinal := Cardinal.aleph 1
 
 /-- ℵ₂ is the second uncountable cardinal. -/
-abbrev aleph2 : Cardinal := Cardinal.aleph 2
+noncomputable abbrev aleph2 : Cardinal := Cardinal.aleph 2
 
 /-- Key property: ℵ₀ < ℵ₁ < ℵ₂. -/
 theorem aleph_strict_mono : aleph0 < aleph1 ∧ aleph1 < aleph2 := by
@@ -79,7 +79,7 @@ noncomputable def chromaticNumber (G : SimpleGraph V) : Cardinal :=
 
 /-- A graph has chromatic number at least κ if it's not (< κ)-colorable. -/
 def chromaticNumberAtLeast (G : SimpleGraph V) (κ : Cardinal) : Prop :=
-  ∀ λ < κ, ¬IsColorable G λ
+  ∀ mu < κ, ¬IsColorable G mu
 
 /-- Alternative: chromatic number ≥ κ means any coloring needs ≥ κ colors. -/
 def hasLargeChromaticNumber (G : SimpleGraph V) (κ : Cardinal) : Prop :=

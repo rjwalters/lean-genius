@@ -329,7 +329,7 @@ private lemma log_stirlingSeq_ratio_bound (m : ℕ) (hm : 1 ≤ m) (L : ℕ) :
       rw [show (1 : ℝ) / 4 * (1 / (↑(m + L) * ↑(m + L + 1))) =
           1 / (4 * (↑(m + L) * ↑(m + L + 1))) from by ring]
       -- Now: 1/(4(k+1)²) ≤ 1/(4k(k+1)), i.e., k(k+1) ≤ (k+1)², i.e., k ≤ k+1
-      rw [div_le_div_iff (by positivity) (by positivity)]
+      rw [div_le_div_iff₀ (by positivity) (by positivity)]
       nlinarith [show (↑(m + L) : ℝ) ≤ ↑(m + L + 1) from by exact_mod_cast Nat.le_succ _]
     -- Combine with telescope: 1/4 * (1/m - 1/(m+(L+1))) = 1/4 * (1/m - 1/(m+L)) + 1/4 * (1/(m+L) - 1/(m+L+1))
     have hdecomp : (1 : ℝ) / 4 * (1 / ↑m - 1 / ↑(m + (L + 1))) =
@@ -427,7 +427,7 @@ theorem stirling_error_bound_ge_2 (n : ℕ) (hn : n ≥ 2) :
   have h4m1 : (0 : ℝ) < 4 * ↑m - 1 := by linarith
   have hxsimp : x / (1 - x) = 1 / (4 * ↑m - 1) := by
     rw [hx_def]; field_simp
-  rw [hxsimp, div_le_div_iff h4m1 hn_pos, one_mul, one_mul]
+  rw [hxsimp, div_le_div_iff₀ h4m1 hn_pos, one_mul, one_mul]
   -- Goal: ↑n ≤ 4 * ↑m - 1
   -- m + 1 = n, so 4m - 1 = 4(n-1) - 1 = 4n - 5 ≥ n for n ≥ 2
   have hmn : (↑m : ℝ) + 1 = ↑n := by exact_mod_cast (show m + 1 = n from by omega)

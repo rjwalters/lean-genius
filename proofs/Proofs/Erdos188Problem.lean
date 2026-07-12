@@ -21,6 +21,9 @@ Adapted from formal-conjectures (Apache 2.0 License)
 
 import Mathlib
 
+/-- v4.31 migration compat: `Complex.abs` was removed from Mathlib in favor of `‖·‖`. -/
+noncomputable def Complex.abs (z : ℂ) : ℝ := ‖z‖
+
 open Set Metric
 
 namespace Erdos188
@@ -111,9 +114,11 @@ The problem relates to the unit distance graph of ℝ².
 def UnitDistanceGraph : SimpleGraph ℂ where
   Adj z₁ z₂ := z₁ ≠ z₂ ∧ dist z₁ z₂ = 1
   symm := by
+    constructor
     intro z₁ z₂ ⟨hne, hd⟩
     exact ⟨hne.symm, by rw [dist_comm]; exact hd⟩
   loopless := by
+    constructor
     intro z ⟨hne, _⟩
     exact hne rfl
 

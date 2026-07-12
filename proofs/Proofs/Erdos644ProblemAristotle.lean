@@ -21,6 +21,8 @@
 import Mathlib
 import Proofs.Erdos644Problem
 
+open scoped Classical
+
 open Finset Set
 
 namespace Erdos644Aristotle

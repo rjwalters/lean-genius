@@ -14,6 +14,8 @@
 import Mathlib
 import Proofs.Erdos338Problem
 
+open scoped Classical
+
 namespace Erdos338
 
 /-- k*k belongs to the squares set, directly by definition. -/

@@ -33,6 +33,8 @@ import Mathlib.Combinatorics.SimpleGraph.Clique
 import Mathlib.Data.Nat.Basic
 import Mathlib.Order.Filter.Basic
 
+open scoped Classical
+
 open SimpleGraph Asymptotics Filter
 
 namespace Erdos618

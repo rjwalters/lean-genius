@@ -22,6 +22,8 @@ import Mathlib.Data.Finset.Card
 import Mathlib.Data.Set.Basic
 import Mathlib.Tactic
 
+open scoped Classical
+
 /- ## Monochromatic subset sums -/
 
 /-- A 2-colouring of a set `A`. -/

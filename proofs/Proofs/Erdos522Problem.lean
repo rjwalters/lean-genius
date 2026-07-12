@@ -25,6 +25,7 @@ References:
          are inside the disk"
 -/
 
+import Mathlib
 import Mathlib.Analysis.Complex.Basic
 import Mathlib.Algebra.Polynomial.Basic
 import Mathlib.Algebra.Polynomial.Eval.Defs

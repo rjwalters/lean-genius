@@ -28,6 +28,9 @@ import Mathlib
 /-- v4.31 migration compat: `Complex.abs` was removed from Mathlib in favor of `‖·‖`. -/
 noncomputable def Complex.abs (z : ℂ) : ℝ := ‖z‖
 
+/-- v4.31 compat: `Complex.continuous_abs` in terms of the norm. -/
+theorem Complex.continuous_abs : Continuous Complex.abs := continuous_norm
+
 
 open Real Complex MeasureTheory
 

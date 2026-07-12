@@ -20,6 +20,8 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
 import Mathlib.Tactic
 
+open scoped Classical
+
 /- ## K₂,₂,₂-Free Graphs -/
 
 /-- The complete tripartite graph K₂,₂,₂: three independent pairs

@@ -23,6 +23,8 @@ import Mathlib.Order.Filter.Basic
 import Mathlib.Analysis.Asymptotics.Lemmas
 import Mathlib.Tactic
 
+open scoped Topology
+
 open Filter Asymptotics Real
 
 namespace Erdos357

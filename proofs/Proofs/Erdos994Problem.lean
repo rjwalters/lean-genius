@@ -33,6 +33,8 @@ import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
 import Mathlib.Order.Filter.Basic
 import Mathlib.Topology.Basic
 
+open scoped Classical
+
 open MeasureTheory Filter Real
 
 namespace Erdos994

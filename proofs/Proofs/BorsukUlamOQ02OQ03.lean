@@ -178,7 +178,7 @@ mathematical foundation.
 -/
 
 /-- buDim defined via Dold index: buDim(g, d) = ind_{Z/g}(S^{d-1}). -/
-def buDimFromDold (g d : ℕ) : ℕ := doldIndex g (d - 1)
+noncomputable def buDimFromDold (g d : ℕ) : ℕ := doldIndex g (d - 1)
 
 /-- buDim(1, d) = 0: trivial group has no equivariance constraint. -/
 theorem buDim_one_from_dold (d : ℕ) : buDimFromDold 1 d = 0 := by

@@ -27,6 +27,8 @@
 
 import Mathlib
 
+open scoped Classical
+
 namespace Erdos636
 
 open Finset Function
@@ -122,7 +124,7 @@ The weaker bound they proved.
 
 /-  **Erdős-Faudree-Sós Theorem**: Ramsey graphs have ≥ cn^(3/2) distinct signatures. -/
 /-- The EFS bound is n^(3/2). -/
-def efs_exponent : ℝ := 3/2
+noncomputable def efs_exponent : ℝ := 3/2
 
 /-
 ## Part VI: The Kwan-Sudakov Theorem
@@ -137,7 +139,7 @@ axiom kwan_sudakov (C : ℝ) (hC : C > 0) :
         distinctSignatureCount G ≥ Nat.floor (c * n^(5/2 : ℝ))
 
 /-- The Kwan-Sudakov exponent is 5/2. -/
-def ks_exponent : ℝ := 5/2
+noncomputable def ks_exponent : ℝ := 5/2
 
 /-- The improvement from EFS to KS. -/
 theorem ks_improves_efs : ks_exponent > efs_exponent := by norm_num

@@ -271,7 +271,7 @@ theorem chord_length_eq
   have hsc : (inner ℝ (P - Z) (X - Z) : ℝ) / ‖X - Z‖ ^ 2
       = 1 - inner ℝ (P - X) (Z - X) / ‖Z - X‖ ^ 2 := by
     have hb' : ‖Z - X‖ ^ 2 ≠ 0 := by rw [← real_inner_self_eq_norm_sq]; exact hb
-    rw [norm_sub_rev X Z, eq_sub_iff_add_eq, div_add_div_same, div_eq_one_iff_eq hb']
+    rw [norm_sub_rev X Z, eq_sub_iff_add_eq, ← add_div, div_eq_one_iff_eq hb']
     have e1 : (P - Z : EuclideanSpace ℝ (Fin 2)) = (P - X) - (Z - X) := by abel
     have e2 : (X - Z : EuclideanSpace ℝ (Fin 2)) = -(Z - X) := by abel
     rw [e1, e2, inner_sub_left, inner_neg_right, inner_neg_right, real_inner_self_eq_norm_sq]
@@ -394,7 +394,7 @@ theorem footDiff_pedal_ZX (P X Z : EuclideanSpace ℝ (Fin 2)) (hXZ : X ≠ Z) :
     pow_ne_zero 2 (norm_ne_zero_iff.mpr (sub_ne_zero.mpr (Ne.symm hXZ)))
   have hsc : (inner ℝ (P - Z) (X - Z) : ℝ) / ‖X - Z‖ ^ 2
       = 1 - inner ℝ (P - X) (Z - X) / ‖Z - X‖ ^ 2 := by
-    rw [norm_sub_rev X Z, eq_sub_iff_add_eq, div_add_div_same, div_eq_one_iff_eq hb]
+    rw [norm_sub_rev X Z, eq_sub_iff_add_eq, ← add_div, div_eq_one_iff_eq hb]
     have e1 : (P - Z : EuclideanSpace ℝ (Fin 2)) = (P - X) - (Z - X) := by abel
     have e2 : (X - Z : EuclideanSpace ℝ (Fin 2)) = -(Z - X) := by abel
     rw [e1, e2, inner_sub_left, inner_neg_right, inner_neg_right, real_inner_self_eq_norm_sq]

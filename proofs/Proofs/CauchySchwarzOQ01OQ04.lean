@@ -3,6 +3,8 @@ import Mathlib.Analysis.InnerProductSpace.l2Space
 import Mathlib.Analysis.Normed.Lp.lpSpace
 import Mathlib.Tactic
 
+open scoped Classical
+
 /-
 # Bessel's Inequality for Hilbert Spaces (CauchySchwarzOQ01, OQ-04)
 

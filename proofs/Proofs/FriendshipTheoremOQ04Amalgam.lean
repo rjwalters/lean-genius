@@ -90,9 +90,11 @@ def amalgam (G : SimpleGraph V) (u v : V) : SimpleGraph (Option V) where
     | none, some b   => b = u ∨ b = v
     | none, none     => False
   symm := by
+    constructor
     intro p q h
     cases p <;> cases q <;> simp_all [G.adj_comm]
   loopless := by
+    constructor
     intro p h
     cases p <;> simp_all
 

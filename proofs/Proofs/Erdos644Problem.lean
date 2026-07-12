@@ -28,6 +28,8 @@ import Mathlib.Data.Finset.Card
 import Mathlib.Combinatorics.SetFamily.Intersecting
 import Mathlib.Tactic
 
+open scoped Classical
+
 namespace Erdos644
 
 open Finset Set

@@ -37,6 +37,8 @@ import Mathlib.Data.Finset.Card
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Analysis.SpecialFunctions.ExpDeriv
 
+open scoped Classical
+
 open Nat Real Finset BigOperators
 
 namespace Erdos300
@@ -110,7 +112,7 @@ Axiomatized because the proof requires careful asymptotic analysis.
 Take all n ∈ {1,...,N} with n > e (small unit fractions).
 These contribute < 1 to any finite sum, so no subset sums to exactly 1.
 -/
-def smallUnitFractionSet (N : ℕ) : Finset ℕ :=
+noncomputable def smallUnitFractionSet (N : ℕ) : Finset ℕ :=
   (intervalN N).filter (fun n => (n : ℝ) > Real.exp 1)
 
 /--

@@ -28,6 +28,8 @@ import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Real.Basic
 
+open scoped Classical
+
 open Nat Finset BigOperators
 
 namespace Erdos343
@@ -40,7 +42,7 @@ This means the counting function grows at least linearly.
 -/
 
 /-- The counting function: how many elements of A are ≤ N -/
-def countingFunction (A : Set ℕ) (N : ℕ) : ℕ :=
+noncomputable def countingFunction (A : Set ℕ) (N : ℕ) : ℕ :=
   (Finset.range (N + 1)).filter (· ∈ A) |>.card
 
 /-- A has positive lower density if |A ∩ {1,...,N}| ≥ cN for some c > 0 and all large N -/

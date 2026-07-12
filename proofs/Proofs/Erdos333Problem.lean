@@ -32,6 +32,8 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Set.Card
 
+open scoped Classical
+
 open Asymptotics Filter
 open scoped BigOperators
 

@@ -285,8 +285,8 @@ instance triangleAdjDec : DecidableRel triangleAdj := fun a b => by
 @[simps]
 def triangle : SimpleGraph TriVerts where
   Adj v w := triangleAdj v w
-  symm := by intro a b h; cases a <;> cases b <;> simp_all [triangleAdj]
-  loopless := by intro a h; cases a <;> simp_all [triangleAdj]
+  symm := by constructor; intro a b h; cases a <;> cases b <;> simp_all [triangleAdj]
+  loopless := by constructor; intro a h; cases a <;> simp_all [triangleAdj]
 
 instance : DecidableRel triangle.Adj := triangleAdjDec
 

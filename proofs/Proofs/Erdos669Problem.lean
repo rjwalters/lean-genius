@@ -26,6 +26,8 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
 import Mathlib.Data.Nat.Choose.Basic
 
+open scoped Classical
+
 open Set Finset Nat
 
 namespace Erdos669

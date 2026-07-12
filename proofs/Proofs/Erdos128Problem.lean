@@ -22,6 +22,8 @@ import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Combinatorics.SimpleGraph.Basic
 
+open scoped Classical
+
 /- ## Definitions -/
 
 /-- A simple graph on n vertices. -/

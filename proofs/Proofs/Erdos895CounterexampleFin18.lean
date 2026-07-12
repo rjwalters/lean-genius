@@ -80,9 +80,10 @@ theorem ce895Adj_comm (a b : Fin 18) : ce895Adj a b = ce895Adj b a := by
 def G895 : SimpleGraph (Fin 18) where
   Adj a b := ce895Adj a b = true ∧ a ≠ b
   symm := by
+    constructor
     rintro a b ⟨hadj, hne⟩
     exact ⟨by rw [ce895Adj_comm]; exact hadj, hne.symm⟩
-  loopless := by rintro a ⟨_, hne⟩; exact hne rfl
+  loopless := by constructor; rintro a ⟨_, hne⟩; exact hne rfl
 
 instance : DecidableRel G895.Adj := fun a b =>
   inferInstanceAs (Decidable (ce895Adj a b = true ∧ a ≠ b))

@@ -1,0 +1,2017 @@
+===== AbelRuffiniOQ04OQ04
+error: Proofs/InverseGaloisF20.lean:84:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Fintype.card ↑((X ^ 5 - C 2).rootSet p.SplittingField)
+in the target expression
+error: Proofs/InverseGaloisF20.lean:88:2: Type mismatch: After simplification, term
+  hdvd
+ has type
+error: Proofs/InverseGaloisF20.lean:113:32: unexpected token '('; expected ')'
+error: Proofs/InverseGaloisF20.lean:176:20: Unknown identifier `cyclotomic_5_has_root_in_splitting_field`
+error: Proofs/InverseGaloisF20.lean:176:9: Tactic `rcases` failed: `x✝ : ?m.36` is not an inductive datatype
+error: Proofs/InverseGaloisF20.lean:385:4: failed to synthesize instance of type class
+===== AbelRuffiniOQ04OQ09Cyclic
+error: Proofs/InverseGalois.lean:95:2: failed to synthesize instance of type class
+  IsCyclotomicExtension {n} ℚ (CyclotomicField n ℚ)
+
+error: Proofs/InverseGalois.lean:106:2: failed to synthesize instance of type class
+  IsCyclotomicExtension {n} ℚ (CyclotomicField n ℚ)
+
+error: Proofs/InverseGalois.lean:147:2: failed to synthesize instance of type class
+  IsCyclotomicExtension {n} ℚ (CyclotomicField n ℚ)
+
+error: Proofs/InverseGalois.lean:480:42: Application type mismatch: The argument
+  hα
+has type
+===== AbelRuffiniOQ06OQ01
+error: Proofs/AbelRuffiniOQ06OQ01.lean:69:4: Type mismatch
+  Subgroup.Normal.quotient_commutative_iff_commutator_le.mpr hcomm_le
+has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.AbelRuffiniOQ06OQ01
+error: build failed
+===== AbelRuffiniOQ06OQ01OQ03
+error: Proofs/AbelRuffiniOQ06OQ01OQ03.lean:76:74: Invalid field `comm`: The environment does not contain `IsMulCommutative.comm`, so it is not possible to project the field `comm` from an expression
+  Subgroup.Normal.quotient_commutative_iff_commutator_le.mpr le_rfl
+of type
+error: Proofs/AbelRuffiniOQ06OQ01OQ03.lean:100:76: Invalid field `comm`: The environment does not contain `IsMulCommutative.comm`, so it is not possible to project the field `comm` from an expression
+  Subgroup.Normal.quotient_commutative_iff_commutator_le.mpr hcomm_le
+of type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.AbelRuffiniOQ06OQ01OQ03
+error: build failed
+===== AbelRuffiniOQ07NotSolvable
+error: Proofs/AbelRuffiniOQ07NotSolvable.lean:81:56: Application type mismatch: The argument
+  hα
+has type
+error: Proofs/AbelRuffiniOQ07NotSolvable.lean:81:42: Application type mismatch: The argument
+  f_irreducible
+has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.AbelRuffiniOQ07NotSolvable
+error: build failed
+===== AbelRuffiniOQ07Order6
+error: Proofs/AbelRuffiniOQ07Order6.lean:81:37: unsolved goals
+σ : Perm (Fin 5)
+hσ : orderOf σ = 6
+error: Proofs/AbelRuffiniOQ07Order6.lean:121:65: unsolved goals
+σ : Perm (Fin 5)
+hσ : orderOf σ = 6
+error: Proofs/AbelRuffiniOQ07Order6.lean:126:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  (-1) ^ (k * 2 + k)
+in the target expression
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.AbelRuffiniOQ07Order6
+===== AbelRuffiniOQ09
+error: Proofs/AbelRuffiniOQ09.lean:308:9: Tactic `unfold` failed to unfold `rischOp` in
+  instAddCommGroup = normedCommRing.toAddCommGroup
+error: Proofs/AbelRuffiniOQ09.lean:359:23: Invalid field `div`: The environment does not contain `HasFDerivAtFilter.div`, so it is not possible to project the field `div` from an expression
+  Polynomial.hasDerivAt p x
+of type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.AbelRuffiniOQ09
+error: build failed
+===== AbelRuffiniOQ11
+error: Proofs/AbelRuffiniOQ11.lean:62:13: Type mismatch: After simplification, term
+  gal_one_isSolvable
+ has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.AbelRuffiniOQ11
+error: build failed
+===== AlgebraicNumbersCountableOQ01OQ01
+error: Proofs/AlgebraicNumbersCountableOQ01OQ01.lean:157:2: failed to synthesize instance of type class
+  IsAlgClosed ℂ
+
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.AlgebraicNumbersCountableOQ01OQ01
+error: build failed
+===== AlgebraicNumbersCountableOQ01OQ01OQ01
+error: Proofs/AlgebraicNumbersCountableOQ01OQ01.lean:157:2: failed to synthesize instance of type class
+  IsAlgClosed ℂ
+
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.AlgebraicNumbersCountableOQ01OQ01
+error: build failed
+===== AlgebraicNumbersCountableOQ01OQ03
+error: Proofs/AlgebraicNumbersCountableOQ01OQ01.lean:157:2: failed to synthesize instance of type class
+  IsAlgClosed ℂ
+
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.AlgebraicNumbersCountableOQ01OQ01
+error: build failed
+===== AlgebraicNumbersCountableOQ02OQ02OQ01
+error: Proofs/AlgebraicNumbersCountableOQ02OQ02.lean:154:21: No goals to be solved
+warning: Proofs/AlgebraicNumbersCountableOQ02OQ02.lean:155:27: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+error: Proofs/AlgebraicNumbersCountableOQ02OQ02.lean:211:17: Invalid `⟨...⟩` notation: The expected type of this term could not be determined
+error: Proofs/AlgebraicNumbersCountableOQ02OQ02.lean:256:20: Function expected at
+  exists_surjective_nat ℝ
+but this term has type
+error: Proofs/AlgebraicNumbersCountableOQ02OQ02.lean:256:9: Tactic `rcases` failed: `x✝ : ?m.15` is not an inductive datatype
+error: Lean exited with code 1
+Some required targets logged failures:
+===== AlgebraicNumbersCountableOQ02OQ04
+error: Proofs/AlgebraicNumbersCountableOQ02OQ04.lean:800:35: Invalid field `isGδ_compl`: The environment does not contain `Countable.isGδ_compl`, so it is not possible to project the field `isGδ_compl` from an expression
+  computable_reals_countable
+of type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.AlgebraicNumbersCountableOQ02OQ04
+error: build failed
+===== AlgebraicNumbersCountableOQ02OQ04OQ01
+error: Proofs/AlgebraicNumbersCountableOQ02OQ04.lean:800:35: Invalid field `isGδ_compl`: The environment does not contain `Countable.isGδ_compl`, so it is not possible to project the field `isGδ_compl` from an expression
+  computable_reals_countable
+of type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.AlgebraicNumbersCountableOQ02OQ04
+error: build failed
+===== AlgebraicPointsNull
+error: Proofs/AlgebraicRealsNull.lean:345:70: Function expected at
+  zero_le
+but this term has type
+error: Proofs/AlgebraicRealsNull.lean:339:45: unsolved goals
+hcompl : {x | Transcendental ℚ x} = {x | IsAlgebraic ℚ x}ᶜ
+huniv : {x | IsAlgebraic ℚ x} ∪ {x | Transcendental ℚ x} = univ
+error: Proofs/AlgebraicRealsNull.lean:360:47: Function expected at
+  zero_le
+but this term has type
+error: Proofs/AlgebraicRealsNull.lean:353:45: unsolved goals
+hcompl : {z | Transcendental ℚ z} = {z | IsAlgebraic ℚ z}ᶜ
+huniv : {z | IsAlgebraic ℚ z} ∪ {z | Transcendental ℚ z} = univ
+===== AMGMInequality
+error: Proofs/AMGMInequality.lean:121:46: Unknown identifier `pow_eq_zero`
+error: Proofs/AMGMInequality.lean:173:8: Unknown constant `Real.sqrt_eq_iff_sq_eq`
+info: Proofs/AMGMInequality.lean:220:0: AMGMInequality.am_gm_two (a b : ℝ) (ha : 0 ≤ a) (hb : 0 ≤ b) : (a + b) / 2 ≥ √(a * b)
+info: Proofs/AMGMInequality.lean:221:0: AMGMInequality.am_gm_two_eq_iff (a b : ℝ) (ha : 0 ≤ a) (hb : 0 ≤ b) : (a + b) / 2 = √(a * b) ↔ a = b
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.AMGMInequality
+error: build failed
+===== AmgmInequalityOQ02
+error: Proofs/AmgmInequalityOQ02.lean:175:65: Invalid field `toSet`: The environment does not contain `Finset.toSet`, so it is not possible to project the field `toSet` from an expression
+  powersetCard 1 (map (csEmb n) univ)
+of type `Finset (Finset (Fin (n + 1)))`
+error: Proofs/AmgmInequalityOQ02.lean:592:65: Invalid field `toSet`: The environment does not contain `Finset.toSet`, so it is not possible to project the field `toSet` from an expression
+  powersetCard k (map (csEmb n) univ)
+of type `Finset (Finset (Fin (n + 1)))`
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.AmgmInequalityOQ02
+error: build failed
+===== AmgmInequalityOQ02Defs
+error: Proofs/AmgmInequalityOQ02Defs.lean:165:65: Invalid field `toSet`: The environment does not contain `Finset.toSet`, so it is not possible to project the field `toSet` from an expression
+  powersetCard 1 (map (csEmb n) univ)
+of type `Finset (Finset (Fin (n + 1)))`
+error: Proofs/AmgmInequalityOQ02Defs.lean:341:65: Invalid field `toSet`: The environment does not contain `Finset.toSet`, so it is not possible to project the field `toSet` from an expression
+  powersetCard k (map (csEmb n) univ)
+of type `Finset (Finset (Fin (n + 1)))`
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.AmgmInequalityOQ02Defs
+error: build failed
+===== AmgmInequalityOQ02OQ01OQ02
+error: Proofs/AmgmInequalityOQ02OQ01OQ02.lean:112:83: unsolved goals
+R : Type u_1
+inst✝² : CommRing R
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.AmgmInequalityOQ02OQ01OQ02
+error: build failed
+===== AmgmInequalityOQ02OQ01OQ02OQ01Aristotle
+error: Proofs/AmgmInequalityOQ02OQ01OQ02OQ01Aristotle.lean:59:51: Application type mismatch: The argument
+  one_ne_zero
+has type
+error: Proofs/AmgmInequalityOQ02OQ01OQ02OQ01Aristotle.lean:58:32: unsolved goals
+σ : Type u_1
+R : Type u_2
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.AmgmInequalityOQ02OQ01OQ02OQ01Aristotle
+error: build failed
+===== AmgmInequalityOQ02OQ01OQ02OQ01OQ01OQ01OQ01OQ01
+error: Proofs/AmgmInequalityOQ02OQ01OQ02OQ01OQ01OQ01OQ01OQ01.lean:65:7: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'AddMonoidAlgebra.semiring', which is 'noncomputable'
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.AmgmInequalityOQ02OQ01OQ02OQ01OQ01OQ01OQ01OQ01
+error: build failed
+===== AmgmInequalityOQ02OQ01OQ02OQ01OQ03
+error: Proofs/AmgmInequalityOQ02.lean:175:65: Invalid field `toSet`: The environment does not contain `Finset.toSet`, so it is not possible to project the field `toSet` from an expression
+  powersetCard 1 (map (csEmb n) univ)
+of type `Finset (Finset (Fin (n + 1)))`
+error: Proofs/AmgmInequalityOQ02.lean:592:65: Invalid field `toSet`: The environment does not contain `Finset.toSet`, so it is not possible to project the field `toSet` from an expression
+  powersetCard k (map (csEmb n) univ)
+of type `Finset (Finset (Fin (n + 1)))`
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.AmgmInequalityOQ02
+error: build failed
+===== AmgmInequalityOQ02OQ02
+error: Proofs/AmgmInequalityOQ02.lean:175:65: Invalid field `toSet`: The environment does not contain `Finset.toSet`, so it is not possible to project the field `toSet` from an expression
+  powersetCard 1 (map (csEmb n) univ)
+of type `Finset (Finset (Fin (n + 1)))`
+error: Proofs/AmgmInequalityOQ02.lean:592:65: Invalid field `toSet`: The environment does not contain `Finset.toSet`, so it is not possible to project the field `toSet` from an expression
+  powersetCard k (map (csEmb n) univ)
+of type `Finset (Finset (Fin (n + 1)))`
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.AmgmInequalityOQ02
+error: build failed
+===== AmgmInequalityOQ02OQ02OQ02
+error: Proofs/AmgmInequalityOQ02.lean:175:65: Invalid field `toSet`: The environment does not contain `Finset.toSet`, so it is not possible to project the field `toSet` from an expression
+  powersetCard 1 (map (csEmb n) univ)
+of type `Finset (Finset (Fin (n + 1)))`
+error: Proofs/AmgmInequalityOQ02.lean:592:65: Invalid field `toSet`: The environment does not contain `Finset.toSet`, so it is not possible to project the field `toSet` from an expression
+  powersetCard k (map (csEmb n) univ)
+of type `Finset (Finset (Fin (n + 1)))`
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.AmgmInequalityOQ02
+error: build failed
+===== AmgmInequalityOQ02OQ03
+error: Proofs/AmgmInequalityOQ02.lean:175:65: Invalid field `toSet`: The environment does not contain `Finset.toSet`, so it is not possible to project the field `toSet` from an expression
+  powersetCard 1 (map (csEmb n) univ)
+of type `Finset (Finset (Fin (n + 1)))`
+error: Proofs/AmgmInequalityOQ02.lean:592:65: Invalid field `toSet`: The environment does not contain `Finset.toSet`, so it is not possible to project the field `toSet` from an expression
+  powersetCard k (map (csEmb n) univ)
+of type `Finset (Finset (Fin (n + 1)))`
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.AmgmInequalityOQ02
+error: build failed
+===== AmgmInequalityOQ02OQ03OQ03
+error: Proofs/AmgmInequalityOQ02.lean:175:65: Invalid field `toSet`: The environment does not contain `Finset.toSet`, so it is not possible to project the field `toSet` from an expression
+  powersetCard 1 (map (csEmb n) univ)
+of type `Finset (Finset (Fin (n + 1)))`
+error: Proofs/AmgmInequalityOQ02.lean:592:65: Invalid field `toSet`: The environment does not contain `Finset.toSet`, so it is not possible to project the field `toSet` from an expression
+  powersetCard k (map (csEmb n) univ)
+of type `Finset (Finset (Fin (n + 1)))`
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.AmgmInequalityOQ02
+error: build failed
+===== AmgmInequalityOQ02OQ03OQ03OQ01
+error: Proofs/AmgmInequalityOQ02.lean:175:65: Invalid field `toSet`: The environment does not contain `Finset.toSet`, so it is not possible to project the field `toSet` from an expression
+  powersetCard 1 (map (csEmb n) univ)
+of type `Finset (Finset (Fin (n + 1)))`
+error: Proofs/AmgmInequalityOQ02.lean:592:65: Invalid field `toSet`: The environment does not contain `Finset.toSet`, so it is not possible to project the field `toSet` from an expression
+  powersetCard k (map (csEmb n) univ)
+of type `Finset (Finset (Fin (n + 1)))`
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.AmgmInequalityOQ02
+error: build failed
+===== AmgmInequalityOQ02OQ03OQ03OQ02
+error: Proofs/AmgmInequalityOQ02.lean:175:65: Invalid field `toSet`: The environment does not contain `Finset.toSet`, so it is not possible to project the field `toSet` from an expression
+  powersetCard 1 (map (csEmb n) univ)
+of type `Finset (Finset (Fin (n + 1)))`
+error: Proofs/AmgmInequalityOQ02.lean:592:65: Invalid field `toSet`: The environment does not contain `Finset.toSet`, so it is not possible to project the field `toSet` from an expression
+  powersetCard k (map (csEmb n) univ)
+of type `Finset (Finset (Fin (n + 1)))`
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.AmgmInequalityOQ02
+error: build failed
+===== AmgmInequalityOQ03OQ02OQ01OQ02
+error: Proofs/AmgmInequalityOQ03OQ02OQ01OQ02.lean:115:2: `simp` made no progress
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.AmgmInequalityOQ03OQ02OQ01OQ02
+error: build failed
+===== AmgmInequalityOQ03OQ04
+error: Proofs/AmgmInequalityOQ03OQ04.lean:82:28: Application type mismatch: The argument
+  LT.lt.ne' hx
+has type
+error: Proofs/AmgmInequalityOQ03OQ04.lean:108:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ∑ i ∈ s, p i * p i ^ (?α - 1)
+in the target expression
+error: Proofs/AmgmInequalityOQ03OQ04.lean:221:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Real.log ?x⁻¹
+in the target expression
+error: Proofs/AmgmInequalityOQ03OQ04.lean:230:2: Type mismatch
+  renyi_eq_neg_log_powerMean s p hp hs 2
+    (Mathlib.Meta.NormNum.isNat_eq_false (Mathlib.Meta.NormNum.isNat_ofNat ℝ (Eq.refl 2))
+===== AmgmInequalityOQ03OQ04OQ02
+error: Proofs/AmgmInequalityOQ03OQ04OQ02.lean:199:40: Invalid field `const_mul`: The environment does not contain `HasFDerivAtFilter.const_mul`, so it is not possible to project the field `const_mul` from an expression
+  hasDerivAt_id 0
+of type
+error: Proofs/AmgmInequalityOQ03OQ04OQ02.lean:201:15: Unknown constant `Real.hasDerivAt_exp`
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.AmgmInequalityOQ03OQ04OQ02
+error: build failed
+===== AmgmInequalityOQ04OQ02
+error: Proofs/AmgmInequalityOQ04OQ02.lean:1590:4: Application type mismatch: The argument
+  hε_pos
+has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.AmgmInequalityOQ04OQ02
+error: build failed
+===== AmgmInequalityOQ05OQ01
+error: Proofs/AmgmInequalityOQ05OQ01.lean:186:8: `dsimp` made no progress
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.AmgmInequalityOQ05OQ01
+error: build failed
+===== AngleTrisection
+error: Proofs/AngleTrisectionCos20Gal.lean:78:58: unsolved goals
+⊢ (8 * X ^ 3 - 6 * X - 1).natDegree = 3
+warning: Proofs/AngleTrisectionCos20Gal.lean:160:63: This simp argument is unused:
+error: Proofs/AngleTrisectionCos20Gal.lean:311:2: Type mismatch: After simplification, term
+  hdvd
+ has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.AngleTrisectionCos20Gal
+error: build failed
+===== AngleTrisectionCos20Gal
+error: Proofs/AngleTrisectionCos20Gal.lean:78:58: unsolved goals
+⊢ (8 * X ^ 3 - 6 * X - 1).natDegree = 3
+warning: Proofs/AngleTrisectionCos20Gal.lean:160:63: This simp argument is unused:
+error: Proofs/AngleTrisectionCos20Gal.lean:311:2: Type mismatch: After simplification, term
+  hdvd
+ has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.AngleTrisectionCos20Gal
+error: build failed
+===== AngleTrisectionCos20GalOQ01
+error: Proofs/AngleTrisectionCos20GalOQ01.lean:67:66: unsolved goals
+⊢ (8 * X ^ 3 - 4 * X ^ 2 - 4 * X + 1).natDegree = 3
+warning: Proofs/AngleTrisectionCos20GalOQ01.lean:140:13: This simp argument is unused:
+error: Proofs/AngleTrisectionCos20GalOQ01.lean:269:2: Type mismatch: After simplification, term
+  hdvd
+ has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.AngleTrisectionCos20GalOQ01
+error: build failed
+===== AngleTrisectionCos20GalOQ01OQ01
+error: Proofs/AngleTrisectionCos20Gal.lean:78:58: unsolved goals
+⊢ (8 * X ^ 3 - 6 * X - 1).natDegree = 3
+warning: Proofs/AngleTrisectionCos20Gal.lean:160:63: This simp argument is unused:
+error: Proofs/AngleTrisectionCos20Gal.lean:311:2: Type mismatch: After simplification, term
+  hdvd
+ has type
+error: Lean exited with code 1
+✖ [8577/8578] Building Proofs.AngleTrisectionCos20GalOQ01 (3.4s)
+trace: .> LEAN_PATH=/workspace/proofs/.lake/packages/Cli/.lake/build/lib/lean:/workspace/proofs/.lake/packages/batteries/.lake/build/lib/lean:/workspace/proofs/.lake/packages/Qq/.lake/build/lib/lean:/workspace/proofs/.lake/packages/aesop/.lake/build/lib/lean:/workspace/proofs/.lake/packages/proofwidgets/.lake/build/lib/lean:/workspace/proofs/.lake/packages/importGraph/.lake/build/lib/lean:/workspace/proofs/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/workspace/proofs/.lake/packages/plausible/.lake/build/lib/lean:/workspace/proofs/.lake/packages/mathlib/.lake/build/lib/lean:/workspace/proofs/.lake/build/lib/lean /root/.elan/toolchains/leanprover--lean4---v4.31.0/bin/lean /workspace/proofs/Proofs/AngleTrisectionCos20GalOQ01.lean -o /workspace/proofs/.lake/build/lib/lean/Proofs/AngleTrisectionCos20GalOQ01.olean -i /workspace/proofs/.lake/build/lib/lean/Proofs/AngleTrisectionCos20GalOQ01.ilean -c /workspace/proofs/.lake/build/ir/Proofs/AngleTrisectionCos20GalOQ01.c --setup /workspace/proofs/.lake/build/ir/Proofs/AngleTrisectionCos20GalOQ01.setup.json --json
+error: Proofs/AngleTrisectionCos20GalOQ01.lean:67:66: unsolved goals
+⊢ (8 * X ^ 3 - 4 * X ^ 2 - 4 * X + 1).natDegree = 3
+warning: Proofs/AngleTrisectionCos20GalOQ01.lean:140:13: This simp argument is unused:
+===== AngleTrisectionCos20GalOQ01OQ02
+error: Proofs/AngleTrisectionCos20Gal.lean:78:58: unsolved goals
+⊢ (8 * X ^ 3 - 6 * X - 1).natDegree = 3
+warning: Proofs/AngleTrisectionCos20Gal.lean:160:63: This simp argument is unused:
+error: Proofs/AngleTrisectionCos20Gal.lean:311:2: Type mismatch: After simplification, term
+  hdvd
+ has type
+error: Lean exited with code 1
+✖ [8577/8578] Building Proofs.AngleTrisectionCos20GalOQ01 (3.3s)
+trace: .> LEAN_PATH=/workspace/proofs/.lake/packages/Cli/.lake/build/lib/lean:/workspace/proofs/.lake/packages/batteries/.lake/build/lib/lean:/workspace/proofs/.lake/packages/Qq/.lake/build/lib/lean:/workspace/proofs/.lake/packages/aesop/.lake/build/lib/lean:/workspace/proofs/.lake/packages/proofwidgets/.lake/build/lib/lean:/workspace/proofs/.lake/packages/importGraph/.lake/build/lib/lean:/workspace/proofs/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/workspace/proofs/.lake/packages/plausible/.lake/build/lib/lean:/workspace/proofs/.lake/packages/mathlib/.lake/build/lib/lean:/workspace/proofs/.lake/build/lib/lean /root/.elan/toolchains/leanprover--lean4---v4.31.0/bin/lean /workspace/proofs/Proofs/AngleTrisectionCos20GalOQ01.lean -o /workspace/proofs/.lake/build/lib/lean/Proofs/AngleTrisectionCos20GalOQ01.olean -i /workspace/proofs/.lake/build/lib/lean/Proofs/AngleTrisectionCos20GalOQ01.ilean -c /workspace/proofs/.lake/build/ir/Proofs/AngleTrisectionCos20GalOQ01.c --setup /workspace/proofs/.lake/build/ir/Proofs/AngleTrisectionCos20GalOQ01.setup.json --json
+error: Proofs/AngleTrisectionCos20GalOQ01.lean:67:66: unsolved goals
+⊢ (8 * X ^ 3 - 4 * X ^ 2 - 4 * X + 1).natDegree = 3
+warning: Proofs/AngleTrisectionCos20GalOQ01.lean:140:13: This simp argument is unused:
+===== AngleTrisectionCos20GalOQ01OQ02OQ02
+error: Proofs/AngleTrisectionCos20Gal.lean:78:58: unsolved goals
+⊢ (8 * X ^ 3 - 6 * X - 1).natDegree = 3
+warning: Proofs/AngleTrisectionCos20Gal.lean:160:63: This simp argument is unused:
+error: Proofs/AngleTrisectionCos20Gal.lean:311:2: Type mismatch: After simplification, term
+  hdvd
+ has type
+error: Lean exited with code 1
+✖ [8577/8581] Building Proofs.AngleTrisectionEmbedding (3.4s)
+trace: .> LEAN_PATH=/workspace/proofs/.lake/packages/Cli/.lake/build/lib/lean:/workspace/proofs/.lake/packages/batteries/.lake/build/lib/lean:/workspace/proofs/.lake/packages/Qq/.lake/build/lib/lean:/workspace/proofs/.lake/packages/aesop/.lake/build/lib/lean:/workspace/proofs/.lake/packages/proofwidgets/.lake/build/lib/lean:/workspace/proofs/.lake/packages/importGraph/.lake/build/lib/lean:/workspace/proofs/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/workspace/proofs/.lake/packages/plausible/.lake/build/lib/lean:/workspace/proofs/.lake/packages/mathlib/.lake/build/lib/lean:/workspace/proofs/.lake/build/lib/lean /root/.elan/toolchains/leanprover--lean4---v4.31.0/bin/lean /workspace/proofs/Proofs/AngleTrisectionEmbedding.lean -o /workspace/proofs/.lake/build/lib/lean/Proofs/AngleTrisectionEmbedding.olean -i /workspace/proofs/.lake/build/lib/lean/Proofs/AngleTrisectionEmbedding.ilean -c /workspace/proofs/.lake/build/ir/Proofs/AngleTrisectionEmbedding.c --setup /workspace/proofs/.lake/build/ir/Proofs/AngleTrisectionEmbedding.setup.json --json
+error: Proofs/AngleTrisectionEmbedding.lean:30:2: failed to synthesize instance of type class
+  IsCyclotomicExtension {n} ℚ (CyclotomicField n ℚ)
+
+===== AngleTrisectionCos20GalOQ03
+error: Proofs/AngleTrisectionCos20GalOQ03.lean:152:19: Tactic `unfold` failed to unfold `p` in
+  eval (2 * x - 2) (X ^ 3 + C 6 * X ^ 2 + C 9 * X + C 3) = eval x 8 * eval x (X ^ 3) - eval x 6 * x + 1
+warning: Proofs/AngleTrisectionCos20GalOQ03.lean:181:50: This simp argument is unused:
+error: Proofs/AngleTrisectionCos20GalOQ03.lean:293:2: Type mismatch: After simplification, term
+  hdvd
+ has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.AngleTrisectionCos20GalOQ03
+error: build failed
+===== AngleTrisectionCos20GalOQ03OQ01
+error: Proofs/AngleTrisectionCos20GalOQ03OQ01.lean:56:2: linarith failed to find a contradiction
+R : Type u_1
+inst✝ : CommRing R
+error: Proofs/AngleTrisectionCos20GalOQ03OQ01.lean:135:59: Application type mismatch: The argument
+  q_eis_int
+has type
+error: Proofs/AngleTrisectionCos20GalOQ03OQ01.lean:140:59: Application type mismatch: The argument
+  q_eis_int
+has type
+error: Proofs/AngleTrisectionCos20GalOQ03OQ01.lean:159:59: Application type mismatch: The argument
+  q_eis_int
+has type
+===== AngleTrisectionEmbedding
+error: Proofs/AngleTrisectionEmbedding.lean:30:2: failed to synthesize instance of type class
+  IsCyclotomicExtension {n} ℚ (CyclotomicField n ℚ)
+
+error: Proofs/AngleTrisectionEmbedding.lean:34:2: failed to synthesize instance of type class
+  IsCyclotomicExtension {n} ℚ (CyclotomicField n ℚ)
+
+error: Proofs/AngleTrisectionEmbedding.lean:47:32: Function expected at
+  ?m.10
+but this term has type
+error: Proofs/AngleTrisectionEmbedding.lean:97:18: failed to synthesize instance of type class
+  IsCyclotomicExtension {n} ℚ (CyclotomicField n ℚ)
+
+===== AngleTrisectionOQ02
+error: Proofs/AngleTrisectionCos20Gal.lean:78:58: unsolved goals
+⊢ (8 * X ^ 3 - 6 * X - 1).natDegree = 3
+warning: Proofs/AngleTrisectionCos20Gal.lean:160:63: This simp argument is unused:
+error: Proofs/AngleTrisectionCos20Gal.lean:311:2: Type mismatch: After simplification, term
+  hdvd
+ has type
+error: Lean exited with code 1
+✖ [8578/8580] Building Proofs.InverseGaloisD4 (4.3s)
+trace: .> LEAN_PATH=/workspace/proofs/.lake/packages/Cli/.lake/build/lib/lean:/workspace/proofs/.lake/packages/batteries/.lake/build/lib/lean:/workspace/proofs/.lake/packages/Qq/.lake/build/lib/lean:/workspace/proofs/.lake/packages/aesop/.lake/build/lib/lean:/workspace/proofs/.lake/packages/proofwidgets/.lake/build/lib/lean:/workspace/proofs/.lake/packages/importGraph/.lake/build/lib/lean:/workspace/proofs/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/workspace/proofs/.lake/packages/plausible/.lake/build/lib/lean:/workspace/proofs/.lake/packages/mathlib/.lake/build/lib/lean:/workspace/proofs/.lake/build/lib/lean /root/.elan/toolchains/leanprover--lean4---v4.31.0/bin/lean /workspace/proofs/Proofs/InverseGaloisD4.lean -o /workspace/proofs/.lake/build/lib/lean/Proofs/InverseGaloisD4.olean -i /workspace/proofs/.lake/build/lib/lean/Proofs/InverseGaloisD4.ilean -c /workspace/proofs/.lake/build/ir/Proofs/InverseGaloisD4.c --setup /workspace/proofs/.lake/build/ir/Proofs/InverseGaloisD4.setup.json --json
+error: Proofs/InverseGaloisD4.lean:60:5: failed to synthesize instance of type class
+  IsCyclotomicExtension {p} ℚ (CyclotomicField p ℚ)
+
+===== AngleTrisectionOQ02OQ01OQ02Aristotle
+error: Proofs/AngleTrisectionOQ02OQ01OQ02Aristotle.lean:59:2: interval_cases failed: could not find upper bound on k
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.AngleTrisectionOQ02OQ01OQ02Aristotle
+error: build failed
+===== AngleTrisectionOQ02OQ01OQ02Incomplete01
+error: Proofs/AngleTrisectionOQ02OQ01OQ02Incomplete01.lean:160:4: failed to synthesize instance of type class
+  Module ↥Ka ↥(Ka ⊔ ℚ⟮β⟯)
+
+error: Proofs/AngleTrisectionOQ02OQ01OQ02Incomplete01.lean:166:8: Function expected at
+  le_sup_right
+but this term has type
+error: Proofs/AngleTrisectionOQ02OQ01OQ02Incomplete01.lean:170:17: failed to synthesize instance of type class
+  Algebra ↥Ka ↥(Ka ⊔ ℚ⟮β⟯)
+
+error: Proofs/AngleTrisectionOQ02OQ01OQ02Incomplete01.lean:174:17: failed to synthesize instance of type class
+  Algebra ↥Ka ↥(Ka ⊔ ℚ⟮β⟯)
+
+===== AngleTrisectionOQ02OQ03
+error: Proofs/AngleTrisectionEmbedding.lean:30:2: failed to synthesize instance of type class
+  IsCyclotomicExtension {n} ℚ (CyclotomicField n ℚ)
+
+error: Proofs/AngleTrisectionEmbedding.lean:34:2: failed to synthesize instance of type class
+  IsCyclotomicExtension {n} ℚ (CyclotomicField n ℚ)
+
+error: Proofs/AngleTrisectionEmbedding.lean:47:32: Function expected at
+  ?m.10
+but this term has type
+error: Proofs/AngleTrisectionEmbedding.lean:97:18: failed to synthesize instance of type class
+  IsCyclotomicExtension {n} ℚ (CyclotomicField n ℚ)
+
+===== AngleTrisectionOQ02OQ03Ext
+error: Proofs/AngleTrisectionOQ02OQ03Ext.lean:38:23: unsolved goals
+m : ℕ
+hm : 2 ∣ m
+error: Proofs/AngleTrisectionOQ02OQ03Ext.lean:45:16: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  2 * ?m.38 / 2
+in the target expression
+error: Proofs/AngleTrisectionOQ02OQ03Ext.lean:56:29: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  0 ≤ b ≤ 2
+error: Proofs/AngleTrisectionOQ02OQ03Ext.lean:72:88: unexpected identifier; expected '⟩'
+warning: Proofs/AngleTrisectionOQ02OQ03Ext.lean:67:6: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+===== AngleTrisectionOQ02OQ03OQ01
+error: Proofs/AngleTrisectionEmbedding.lean:30:2: failed to synthesize instance of type class
+  IsCyclotomicExtension {n} ℚ (CyclotomicField n ℚ)
+
+error: Proofs/AngleTrisectionEmbedding.lean:34:2: failed to synthesize instance of type class
+  IsCyclotomicExtension {n} ℚ (CyclotomicField n ℚ)
+
+error: Proofs/AngleTrisectionEmbedding.lean:47:32: Function expected at
+  ?m.10
+but this term has type
+error: Proofs/AngleTrisectionEmbedding.lean:97:18: failed to synthesize instance of type class
+  IsCyclotomicExtension {n} ℚ (CyclotomicField n ℚ)
+
+===== AngleTrisectionOQ02OQ04
+error: Proofs/AngleTrisectionOQ02OQ04.lean:63:27: Invalid field `Gal`: The environment does not contain `Polynomial.Gal`, so it is not possible to project the field `Gal` from an expression
+  minpoly ℚ α
+of type `ℚ[X]`
+error: Proofs/AngleTrisectionOQ02OQ04.lean:98:4: Unknown constant `Group.IsSolvable`
+error: Proofs/AngleTrisectionOQ02OQ04.lean:99:2: Unknown constant `IsPGroup.isSolvable`
+error: Proofs/AngleTrisectionOQ02OQ04.lean:108:47: failed to synthesize instance of type class
+  Group (Fin 1 → Fin 1)
+
+===== AngleTrisectionOQ02OQ04OQ01
+error: Proofs/AngleTrisectionCos20Gal.lean:78:58: unsolved goals
+⊢ (8 * X ^ 3 - 6 * X - 1).natDegree = 3
+warning: Proofs/AngleTrisectionCos20Gal.lean:160:63: This simp argument is unused:
+error: Proofs/AngleTrisectionCos20Gal.lean:311:2: Type mismatch: After simplification, term
+  hdvd
+ has type
+error: Lean exited with code 1
+✖ [8579/8582] Building Proofs.InverseGaloisD4 (4.8s)
+trace: .> LEAN_PATH=/workspace/proofs/.lake/packages/Cli/.lake/build/lib/lean:/workspace/proofs/.lake/packages/batteries/.lake/build/lib/lean:/workspace/proofs/.lake/packages/Qq/.lake/build/lib/lean:/workspace/proofs/.lake/packages/aesop/.lake/build/lib/lean:/workspace/proofs/.lake/packages/proofwidgets/.lake/build/lib/lean:/workspace/proofs/.lake/packages/importGraph/.lake/build/lib/lean:/workspace/proofs/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/workspace/proofs/.lake/packages/plausible/.lake/build/lib/lean:/workspace/proofs/.lake/packages/mathlib/.lake/build/lib/lean:/workspace/proofs/.lake/build/lib/lean /root/.elan/toolchains/leanprover--lean4---v4.31.0/bin/lean /workspace/proofs/Proofs/InverseGaloisD4.lean -o /workspace/proofs/.lake/build/lib/lean/Proofs/InverseGaloisD4.olean -i /workspace/proofs/.lake/build/lib/lean/Proofs/InverseGaloisD4.ilean -c /workspace/proofs/.lake/build/ir/Proofs/InverseGaloisD4.c --setup /workspace/proofs/.lake/build/ir/Proofs/InverseGaloisD4.setup.json --json
+error: Proofs/InverseGaloisD4.lean:60:5: failed to synthesize instance of type class
+  IsCyclotomicExtension {p} ℚ (CyclotomicField p ℚ)
+
+===== AngleTrisectionOQ02OQ04OQ01Aristotle
+error: Proofs/AngleTrisectionCos20Gal.lean:78:58: unsolved goals
+⊢ (8 * X ^ 3 - 6 * X - 1).natDegree = 3
+warning: Proofs/AngleTrisectionCos20Gal.lean:160:63: This simp argument is unused:
+error: Proofs/AngleTrisectionCos20Gal.lean:311:2: Type mismatch: After simplification, term
+  hdvd
+ has type
+error: Lean exited with code 1
+✖ [8579/8583] Building Proofs.InverseGaloisD4 (4.2s)
+trace: .> LEAN_PATH=/workspace/proofs/.lake/packages/Cli/.lake/build/lib/lean:/workspace/proofs/.lake/packages/batteries/.lake/build/lib/lean:/workspace/proofs/.lake/packages/Qq/.lake/build/lib/lean:/workspace/proofs/.lake/packages/aesop/.lake/build/lib/lean:/workspace/proofs/.lake/packages/proofwidgets/.lake/build/lib/lean:/workspace/proofs/.lake/packages/importGraph/.lake/build/lib/lean:/workspace/proofs/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/workspace/proofs/.lake/packages/plausible/.lake/build/lib/lean:/workspace/proofs/.lake/packages/mathlib/.lake/build/lib/lean:/workspace/proofs/.lake/build/lib/lean /root/.elan/toolchains/leanprover--lean4---v4.31.0/bin/lean /workspace/proofs/Proofs/InverseGaloisD4.lean -o /workspace/proofs/.lake/build/lib/lean/Proofs/InverseGaloisD4.olean -i /workspace/proofs/.lake/build/lib/lean/Proofs/InverseGaloisD4.ilean -c /workspace/proofs/.lake/build/ir/Proofs/InverseGaloisD4.c --setup /workspace/proofs/.lake/build/ir/Proofs/InverseGaloisD4.setup.json --json
+error: Proofs/InverseGaloisD4.lean:60:5: failed to synthesize instance of type class
+  IsCyclotomicExtension {p} ℚ (CyclotomicField p ℚ)
+
+===== AngleTrisectionOQ03
+error: Proofs/AngleTrisectionCos20Gal.lean:78:58: unsolved goals
+⊢ (8 * X ^ 3 - 6 * X - 1).natDegree = 3
+warning: Proofs/AngleTrisectionCos20Gal.lean:160:63: This simp argument is unused:
+error: Proofs/AngleTrisectionCos20Gal.lean:311:2: Type mismatch: After simplification, term
+  hdvd
+ has type
+error: Lean exited with code 1
+✖ [8580/8583] Building Proofs.AngleTrisectionEmbedding (3.6s)
+trace: .> LEAN_PATH=/workspace/proofs/.lake/packages/Cli/.lake/build/lib/lean:/workspace/proofs/.lake/packages/batteries/.lake/build/lib/lean:/workspace/proofs/.lake/packages/Qq/.lake/build/lib/lean:/workspace/proofs/.lake/packages/aesop/.lake/build/lib/lean:/workspace/proofs/.lake/packages/proofwidgets/.lake/build/lib/lean:/workspace/proofs/.lake/packages/importGraph/.lake/build/lib/lean:/workspace/proofs/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/workspace/proofs/.lake/packages/plausible/.lake/build/lib/lean:/workspace/proofs/.lake/packages/mathlib/.lake/build/lib/lean:/workspace/proofs/.lake/build/lib/lean /root/.elan/toolchains/leanprover--lean4---v4.31.0/bin/lean /workspace/proofs/Proofs/AngleTrisectionEmbedding.lean -o /workspace/proofs/.lake/build/lib/lean/Proofs/AngleTrisectionEmbedding.olean -i /workspace/proofs/.lake/build/lib/lean/Proofs/AngleTrisectionEmbedding.ilean -c /workspace/proofs/.lake/build/ir/Proofs/AngleTrisectionEmbedding.c --setup /workspace/proofs/.lake/build/ir/Proofs/AngleTrisectionEmbedding.setup.json --json
+error: Proofs/AngleTrisectionEmbedding.lean:30:2: failed to synthesize instance of type class
+  IsCyclotomicExtension {n} ℚ (CyclotomicField n ℚ)
+
+===== AngleTrisectionOQ03OQ01
+error: Proofs/AngleTrisectionCos20Gal.lean:78:58: unsolved goals
+⊢ (8 * X ^ 3 - 6 * X - 1).natDegree = 3
+warning: Proofs/AngleTrisectionCos20Gal.lean:160:63: This simp argument is unused:
+error: Proofs/AngleTrisectionCos20Gal.lean:311:2: Type mismatch: After simplification, term
+  hdvd
+ has type
+error: Lean exited with code 1
+✖ [8580/8584] Building Proofs.AngleTrisectionEmbedding (3.6s)
+trace: .> LEAN_PATH=/workspace/proofs/.lake/packages/Cli/.lake/build/lib/lean:/workspace/proofs/.lake/packages/batteries/.lake/build/lib/lean:/workspace/proofs/.lake/packages/Qq/.lake/build/lib/lean:/workspace/proofs/.lake/packages/aesop/.lake/build/lib/lean:/workspace/proofs/.lake/packages/proofwidgets/.lake/build/lib/lean:/workspace/proofs/.lake/packages/importGraph/.lake/build/lib/lean:/workspace/proofs/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/workspace/proofs/.lake/packages/plausible/.lake/build/lib/lean:/workspace/proofs/.lake/packages/mathlib/.lake/build/lib/lean:/workspace/proofs/.lake/build/lib/lean /root/.elan/toolchains/leanprover--lean4---v4.31.0/bin/lean /workspace/proofs/Proofs/AngleTrisectionEmbedding.lean -o /workspace/proofs/.lake/build/lib/lean/Proofs/AngleTrisectionEmbedding.olean -i /workspace/proofs/.lake/build/lib/lean/Proofs/AngleTrisectionEmbedding.ilean -c /workspace/proofs/.lake/build/ir/Proofs/AngleTrisectionEmbedding.c --setup /workspace/proofs/.lake/build/ir/Proofs/AngleTrisectionEmbedding.setup.json --json
+error: Proofs/AngleTrisectionEmbedding.lean:30:2: failed to synthesize instance of type class
+  IsCyclotomicExtension {n} ℚ (CyclotomicField n ℚ)
+
+===== AngleTrisectionOQ03OQ02
+error: Proofs/AngleTrisectionEmbedding.lean:30:2: failed to synthesize instance of type class
+  IsCyclotomicExtension {n} ℚ (CyclotomicField n ℚ)
+
+error: Proofs/AngleTrisectionEmbedding.lean:34:2: failed to synthesize instance of type class
+  IsCyclotomicExtension {n} ℚ (CyclotomicField n ℚ)
+
+error: Proofs/AngleTrisectionEmbedding.lean:47:32: Function expected at
+  ?m.10
+but this term has type
+error: Proofs/AngleTrisectionEmbedding.lean:97:18: failed to synthesize instance of type class
+  IsCyclotomicExtension {n} ℚ (CyclotomicField n ℚ)
+
+===== AngleTrisectionOQ03OQ02OQ03
+error: Proofs/AngleTrisectionCos20Gal.lean:78:58: unsolved goals
+⊢ (8 * X ^ 3 - 6 * X - 1).natDegree = 3
+warning: Proofs/AngleTrisectionCos20Gal.lean:160:63: This simp argument is unused:
+error: Proofs/AngleTrisectionCos20Gal.lean:311:2: Type mismatch: After simplification, term
+  hdvd
+ has type
+error: Lean exited with code 1
+✖ [8580/8585] Building Proofs.AngleTrisectionEmbedding (3.3s)
+trace: .> LEAN_PATH=/workspace/proofs/.lake/packages/Cli/.lake/build/lib/lean:/workspace/proofs/.lake/packages/batteries/.lake/build/lib/lean:/workspace/proofs/.lake/packages/Qq/.lake/build/lib/lean:/workspace/proofs/.lake/packages/aesop/.lake/build/lib/lean:/workspace/proofs/.lake/packages/proofwidgets/.lake/build/lib/lean:/workspace/proofs/.lake/packages/importGraph/.lake/build/lib/lean:/workspace/proofs/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/workspace/proofs/.lake/packages/plausible/.lake/build/lib/lean:/workspace/proofs/.lake/packages/mathlib/.lake/build/lib/lean:/workspace/proofs/.lake/build/lib/lean /root/.elan/toolchains/leanprover--lean4---v4.31.0/bin/lean /workspace/proofs/Proofs/AngleTrisectionEmbedding.lean -o /workspace/proofs/.lake/build/lib/lean/Proofs/AngleTrisectionEmbedding.olean -i /workspace/proofs/.lake/build/lib/lean/Proofs/AngleTrisectionEmbedding.ilean -c /workspace/proofs/.lake/build/ir/Proofs/AngleTrisectionEmbedding.c --setup /workspace/proofs/.lake/build/ir/Proofs/AngleTrisectionEmbedding.setup.json --json
+error: Proofs/AngleTrisectionEmbedding.lean:30:2: failed to synthesize instance of type class
+  IsCyclotomicExtension {n} ℚ (CyclotomicField n ℚ)
+
+===== AngleTrisectionOQ05OQ02
+error: Proofs/AngleTrisectionOQ05OQ02.lean:112:4: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  f ≥ 0
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.AngleTrisectionOQ05OQ02
+error: build failed
+===== AngleTrisectionOQ05OQ03
+error: Proofs/AngleTrisectionOQ05OQ02.lean:112:4: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  f ≥ 0
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.AngleTrisectionOQ05OQ02
+error: build failed
+===== AreaFromCircumferenceIntegral
+error: Proofs/AreaFromCircumferenceIntegral.lean:65:25: Invalid field `const_mul`: The environment does not contain `HasFDerivAtFilter.const_mul`, so it is not possible to project the field `const_mul` from an expression
+  hasDerivAt_pow 2 r
+of type
+error: Proofs/AreaFromCircumferenceIntegral.lean:89:6: Unknown identifier `integral_eq_sub_of_hasDerivAt`
+error: Proofs/AreaFromCircumferenceIntegral.lean:83:57: unsolved goals
+r : ℝ
+h_deriv : ∀ x ∈ Set.uIcc 0 r, HasDerivAt circleArea (circumference x) x
+error: Proofs/AreaFromCircumferenceIntegral.lean:109:6: Unknown identifier `integral_eq_sub_of_hasDerivAt`
+error: Proofs/AreaFromCircumferenceIntegral.lean:104:70: unsolved goals
+r₁ r₂ : ℝ
+===== AreaOfCircleOQ01OQ02OQ01
+error: Proofs/AreaOfCircleOQ01OQ02OQ01.lean:104:2: No goals to be solved
+error: Proofs/AreaOfCircleOQ01OQ02OQ01.lean:115:2: `ring_nf` made no progress on the goal
+error: Proofs/AreaOfCircleOQ01OQ02OQ01.lean:158:67: Unknown identifier `𝓝`
+error: Proofs/AreaOfCircleOQ01OQ02OQ01.lean:232:33: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ?a * ?b * ?c
+in the target expression
+===== AreaOfCircleOQ01OQ02OQ01OQ01OQ01
+error: Proofs/AreaOfCircleOQ01OQ02OQ01OQ01.lean:83:14: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ↑(n + 2) / 2 + 1
+in the target expression
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.AreaOfCircleOQ01OQ02OQ01OQ01
+error: build failed
+===== AreaOfCircleOQ01OQ02OQ01OQ03
+error: Proofs/AreaOfCircleOQ01OQ02OQ01OQ03.lean:59:14: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ↑(n + 2) / 2 + 1
+in the target expression
+error: Proofs/AreaOfCircleOQ01OQ02OQ01OQ03.lean:75:39: Unknown identifier `pi_lt_3141593`
+error: Proofs/AreaOfCircleOQ01OQ02OQ01OQ03.lean:119:44: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ?m.116 / M < ?m.115
+in the target expression
+error: Proofs/AreaOfCircleOQ01OQ02OQ01OQ03.lean:164:12: don't know how to synthesize implicit argument `a`
+  @Tendsto.sub ℝ ℕ PseudoMetricSpace.toUniformSpace.toTopologicalSpace instSub IsTopologicalAddGroup.to_continuousSub
+    (fun x => ?m.120) (fun n => (1 - ε) ^ n) atTop ?m.120 0 tendsto_const_nhds h_pow
+===== AreaOfCircleOQ01OQ02OQ02
+error: Proofs/AreaOfCircleOQ01OQ02OQ02.lean:32:61: Application type mismatch: The argument
+  le_rfl
+has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.AreaOfCircleOQ01OQ02OQ02
+error: build failed
+===== AreaOfCircleOQ01OQ02OQ02OQ01OQ01
+error: Proofs/AreaOfCircleOQ01OQ02OQ02OQ01OQ01.lean:109:45: Function expected at
+  ContDiff
+but this term has type
+error: Proofs/AreaOfCircleOQ01OQ02OQ02OQ01OQ01.lean:109:67: Function expected at
+  ContDiff
+but this term has type
+error: Proofs/AreaOfCircleOQ01OQ02OQ02OQ01OQ01.lean:120:10: Function expected at
+  ContDiff
+but this term has type
+error: Proofs/AreaOfCircleOQ01OQ02OQ02OQ01OQ01.lean:120:32: Function expected at
+  ContDiff
+but this term has type
+===== AreaOfCircleOQ01OQ02OQ02OQ01OQ01Fourier
+error: Proofs/AreaOfCircleOQ01OQ02OQ02.lean:32:61: Application type mismatch: The argument
+  le_rfl
+has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.AreaOfCircleOQ01OQ02OQ02
+error: build failed
+===== AreaOfCircleOQ01OQ02OQ02OQ01OQ01IFT
+error: Proofs/AreaOfCircleOQ01OQ02OQ02OQ01OQ01Reparam.lean:194:39: Application type mismatch: The argument
+  le_rfl
+has type
+error: Proofs/AreaOfCircleOQ01OQ02OQ02OQ01OQ01Reparam.lean:206:39: Application type mismatch: The argument
+  le_rfl
+has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.AreaOfCircleOQ01OQ02OQ02OQ01OQ01Reparam
+error: build failed
+===== AreaOfCircleOQ01OQ02OQ02OQ01OQ01Iso
+error: Proofs/AreaOfCircleOQ01OQ02OQ02.lean:32:61: Application type mismatch: The argument
+  le_rfl
+has type
+error: Lean exited with code 1
+✖ [8580/8582] Building Proofs.AreaOfCircleOQ01OQ02OQ02OQ01OQ01Reparam (2.5s)
+trace: .> LEAN_PATH=/workspace/proofs/.lake/packages/Cli/.lake/build/lib/lean:/workspace/proofs/.lake/packages/batteries/.lake/build/lib/lean:/workspace/proofs/.lake/packages/Qq/.lake/build/lib/lean:/workspace/proofs/.lake/packages/aesop/.lake/build/lib/lean:/workspace/proofs/.lake/packages/proofwidgets/.lake/build/lib/lean:/workspace/proofs/.lake/packages/importGraph/.lake/build/lib/lean:/workspace/proofs/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/workspace/proofs/.lake/packages/plausible/.lake/build/lib/lean:/workspace/proofs/.lake/packages/mathlib/.lake/build/lib/lean:/workspace/proofs/.lake/build/lib/lean /root/.elan/toolchains/leanprover--lean4---v4.31.0/bin/lean /workspace/proofs/Proofs/AreaOfCircleOQ01OQ02OQ02OQ01OQ01Reparam.lean -o /workspace/proofs/.lake/build/lib/lean/Proofs/AreaOfCircleOQ01OQ02OQ02OQ01OQ01Reparam.olean -i /workspace/proofs/.lake/build/lib/lean/Proofs/AreaOfCircleOQ01OQ02OQ02OQ01OQ01Reparam.ilean -c /workspace/proofs/.lake/build/ir/Proofs/AreaOfCircleOQ01OQ02OQ02OQ01OQ01Reparam.c --setup /workspace/proofs/.lake/build/ir/Proofs/AreaOfCircleOQ01OQ02OQ02OQ01OQ01Reparam.setup.json --json
+error: Proofs/AreaOfCircleOQ01OQ02OQ02OQ01OQ01Reparam.lean:194:39: Application type mismatch: The argument
+  le_rfl
+has type
+error: Proofs/AreaOfCircleOQ01OQ02OQ02OQ01OQ01Reparam.lean:206:39: Application type mismatch: The argument
+  le_rfl
+has type
+===== AreaOfCircleOQ01OQ02OQ02OQ01OQ01OQ01
+error: Proofs/AreaOfCircleOQ01OQ02OQ02.lean:32:61: Application type mismatch: The argument
+  le_rfl
+has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.AreaOfCircleOQ01OQ02OQ02
+error: build failed
+===== AreaOfCircleOQ01OQ02OQ02OQ01OQ01OQ02
+error: Proofs/AreaOfCircleOQ01OQ02OQ02.lean:32:61: Application type mismatch: The argument
+  le_rfl
+has type
+error: Lean exited with code 1
+✖ [8580/8582] Building Proofs.AreaOfCircleOQ01OQ02OQ02OQ01OQ01Reparam (2.5s)
+trace: .> LEAN_PATH=/workspace/proofs/.lake/packages/Cli/.lake/build/lib/lean:/workspace/proofs/.lake/packages/batteries/.lake/build/lib/lean:/workspace/proofs/.lake/packages/Qq/.lake/build/lib/lean:/workspace/proofs/.lake/packages/aesop/.lake/build/lib/lean:/workspace/proofs/.lake/packages/proofwidgets/.lake/build/lib/lean:/workspace/proofs/.lake/packages/importGraph/.lake/build/lib/lean:/workspace/proofs/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/workspace/proofs/.lake/packages/plausible/.lake/build/lib/lean:/workspace/proofs/.lake/packages/mathlib/.lake/build/lib/lean:/workspace/proofs/.lake/build/lib/lean /root/.elan/toolchains/leanprover--lean4---v4.31.0/bin/lean /workspace/proofs/Proofs/AreaOfCircleOQ01OQ02OQ02OQ01OQ01Reparam.lean -o /workspace/proofs/.lake/build/lib/lean/Proofs/AreaOfCircleOQ01OQ02OQ02OQ01OQ01Reparam.olean -i /workspace/proofs/.lake/build/lib/lean/Proofs/AreaOfCircleOQ01OQ02OQ02OQ01OQ01Reparam.ilean -c /workspace/proofs/.lake/build/ir/Proofs/AreaOfCircleOQ01OQ02OQ02OQ01OQ01Reparam.c --setup /workspace/proofs/.lake/build/ir/Proofs/AreaOfCircleOQ01OQ02OQ02OQ01OQ01Reparam.setup.json --json
+error: Proofs/AreaOfCircleOQ01OQ02OQ02OQ01OQ01Reparam.lean:194:39: Application type mismatch: The argument
+  le_rfl
+has type
+error: Proofs/AreaOfCircleOQ01OQ02OQ02OQ01OQ01Reparam.lean:206:39: Application type mismatch: The argument
+  le_rfl
+has type
+===== AreaOfCircleOQ01OQ02OQ02OQ01OQ01Reparam
+error: Proofs/AreaOfCircleOQ01OQ02OQ02OQ01OQ01Reparam.lean:194:39: Application type mismatch: The argument
+  le_rfl
+has type
+error: Proofs/AreaOfCircleOQ01OQ02OQ02OQ01OQ01Reparam.lean:206:39: Application type mismatch: The argument
+  le_rfl
+has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.AreaOfCircleOQ01OQ02OQ02OQ01OQ01Reparam
+error: build failed
+===== AreaOfCircleOQ01OQ02OQ02OQ02
+error: Proofs/AreaOfCircleOQ01OQ02OQ02.lean:32:61: Application type mismatch: The argument
+  le_rfl
+has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.AreaOfCircleOQ01OQ02OQ02
+error: build failed
+===== AreaOfCircleOQ01OQ02OQ02OQ02OQ01
+error: Proofs/AreaOfCircleOQ01OQ02OQ02.lean:32:61: Application type mismatch: The argument
+  le_rfl
+has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.AreaOfCircleOQ01OQ02OQ02
+error: build failed
+===== AreaOfCircleOQ01OQ02OQ02OQ02OQ02
+error: Proofs/AreaOfCircleOQ01OQ02OQ02.lean:32:61: Application type mismatch: The argument
+  le_rfl
+has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.AreaOfCircleOQ01OQ02OQ02
+error: build failed
+===== AreaOfCircleOQ01OQ02OQ03OQ03
+error: Proofs/AreaOfCircleOQ01OQ02OQ03OQ03.lean:120:24: No goals to be solved
+error: Proofs/AreaOfCircleOQ01OQ02OQ03OQ03.lean:148:2: `ring_nf` made no progress on the goal
+error: Proofs/AreaOfCircleOQ01OQ02OQ03OQ03.lean:188:7: Unknown constant `Filter.eventually_nhdsWithin_of_forall`
+error: Proofs/AreaOfCircleOQ01OQ02OQ03OQ03.lean:184:54: Unknown identifier `𝓝`
+error: Proofs/AreaOfCircleOQ01OQ02OQ03OQ03.lean:184:60: Unknown identifier `𝓝`
+info: Proofs/AreaOfCircleOQ01OQ02OQ03OQ03.lean:260:15: Try this:
+===== AreaOfCircleOQ01OQ03
+error: Proofs/AreaOfCircleOQ01OQ02OQ02.lean:32:61: Application type mismatch: The argument
+  le_rfl
+has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.AreaOfCircleOQ01OQ02OQ02
+error: build failed
+===== AreaOfCircleOQ01OQ03Aristotle
+error: Proofs/AreaOfCircleOQ01OQ03Aristotle.lean:93:2: unsolved goals
+f : ℝ → ℝ
+hf : ContDiff ℝ 1 f
+error: Proofs/AreaOfCircleOQ01OQ03Aristotle.lean:98:53: No goals to be solved
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.AreaOfCircleOQ01OQ03Aristotle
+error: build failed
+===== AreaOfCircleOQ01OQ03OQ01
+error: Proofs/AreaOfCircleOQ01OQ02OQ02.lean:32:61: Application type mismatch: The argument
+  le_rfl
+has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.AreaOfCircleOQ01OQ02OQ02
+error: build failed
+===== AreaOfCircleOQ01OQ03OQ02
+error: Proofs/AreaOfCircleOQ01OQ02OQ02.lean:32:61: Application type mismatch: The argument
+  le_rfl
+has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.AreaOfCircleOQ01OQ02OQ02
+error: build failed
+===== AreaOfCircleOQ02
+error: Proofs/AreaOfCircleOQ02.lean:120:63: unsolved goals
+n : ℕ
+hn : 2 ≤ n
+error: Proofs/AreaOfCircleOQ02.lean:167:26: unsolved goals
+r : ℝ
+hr : 0 ≤ r
+error: Proofs/AreaOfCircleOQ02.lean:167:62: Invalid field `le`: The environment does not contain `Real.le.le`, so it is not possible to project the field `le` from an expression
+  hr
+of type `Real.le✝ 0 r`
+error: Proofs/AreaOfCircleOQ02.lean:163:72: unsolved goals
+r : ℝ
+hr : 0 ≤ r
+===== AreaOfCircleOQ02OQ01
+error: Proofs/AreaOfCircleOQ02.lean:120:63: unsolved goals
+n : ℕ
+hn : 2 ≤ n
+error: Proofs/AreaOfCircleOQ02.lean:167:26: unsolved goals
+r : ℝ
+hr : 0 ≤ r
+error: Proofs/AreaOfCircleOQ02.lean:167:62: Invalid field `le`: The environment does not contain `Real.le.le`, so it is not possible to project the field `le` from an expression
+  hr
+of type `Real.le✝ 0 r`
+error: Proofs/AreaOfCircleOQ02.lean:163:72: unsolved goals
+r : ℝ
+hr : 0 ≤ r
+===== AreaOfCircleOQ02OQ04
+error: Proofs/AreaOfCircleOQ02OQ04.lean:107:47: unexpected token 'λ'; expected ')'
+error: Proofs/AreaOfCircleOQ02OQ04.lean:238:2: No goals to be solved
+warning: Proofs/AreaOfCircleOQ02OQ04.lean:267:37: Variable name `hr` is not explicitly referenced.
+
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.AreaOfCircleOQ02OQ04
+error: build failed
+===== AreaOfCircleOQ03OQ01
+error: Proofs/AreaOfCircleOQ03OQ01.lean:106:4: `simp` made no progress
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.AreaOfCircleOQ03OQ01
+error: build failed
+===== AreaOfCircleOQ03OQ02OQ01
+error: Proofs/AreaOfCircleOQ03OQ02OQ01.lean:170:4: Type mismatch: After simplification, term
+  this
+ has type
+error: Proofs/AreaOfCircleOQ03OQ02OQ01.lean:495:4: Type mismatch: After simplification, term
+  this
+ has type
+error: Proofs/AreaOfCircleOQ03OQ02OQ01.lean:503:2: Type mismatch: After simplification, term
+  hdiv
+ has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.AreaOfCircleOQ03OQ02OQ01
+===== AreaOfCircleOQ03OQ02OQ02
+error: Proofs/AreaOfCircleOQ03OQ02OQ02.lean:90:37: `ring_nf` made no progress on the goal
+error: Proofs/AreaOfCircleOQ03OQ02OQ02.lean:93:37: `ring_nf` made no progress on the goal
+error: Proofs/AreaOfCircleOQ03OQ02OQ02.lean:96:37: `ring_nf` made no progress on the goal
+error: Proofs/AreaOfCircleOQ03OQ02OQ02.lean:99:37: `ring_nf` made no progress on the goal
+error: Proofs/AreaOfCircleOQ03OQ02OQ02.lean:102:26: `simp` made no progress
+error: Proofs/AreaOfCircleOQ03OQ02OQ02.lean:105:26: `ring_nf` made no progress on the goal
+===== AreaOfCircleOQ03OQ02OQ02OQ01
+error: Proofs/AreaOfCircleOQ03OQ02OQ02.lean:90:37: `ring_nf` made no progress on the goal
+error: Proofs/AreaOfCircleOQ03OQ02OQ02.lean:93:37: `ring_nf` made no progress on the goal
+error: Proofs/AreaOfCircleOQ03OQ02OQ02.lean:96:37: `ring_nf` made no progress on the goal
+error: Proofs/AreaOfCircleOQ03OQ02OQ02.lean:99:37: `ring_nf` made no progress on the goal
+error: Proofs/AreaOfCircleOQ03OQ02OQ02.lean:102:26: `simp` made no progress
+error: Proofs/AreaOfCircleOQ03OQ02OQ02.lean:105:26: `ring_nf` made no progress on the goal
+===== AreaOfCircleOQ03OQ03OQ02
+error: Proofs/AreaOfCircleOQ03OQ03OQ02.lean:75:65: unsolved goals
+a b : ℝ
+⊢ b * a ^ 2 * (-3 / 8) + b ^ 2 * a * (3 / 8) + b ^ 3 * (-1 / 8) + a ^ 3 * (1 / 8) =
+error: Proofs/AreaOfCircleOQ03OQ03OQ02.lean:95:24: unsolved goals
+a b : ℝ
+⊢ a * b ^ 2 * (3 / 64) + a ^ 2 * b * (-3 / 64) + a ^ 3 * (1 / 64) + b ^ 3 * (-1 / 64) =
+error: Proofs/AreaOfCircleOQ03OQ03OQ02.lean:103:24: unsolved goals
+a b : ℝ
+⊢ b * a ^ 2 * (-3 / 64) + b ^ 2 * a * (3 / 64) + b ^ 3 * (-1 / 64) + a ^ 3 * (1 / 64) =
+error: Proofs/AreaOfCircleOQ03OQ03OQ02.lean:189:0: Unexpected name `AreaOfCircleOQ03OQ03OQ02` after `end`: The current section is unnamed
+
+Hint: Delete the name `AreaOfCircleOQ03OQ03OQ02` to end the current unnamed scope; outer named scopes can then be closed using additional `end` command(s):
+===== AreaOfCircleOQ05OQ01
+error: Proofs/AreaOfCircleOQ05OQ01.lean:55:13: `simp` made no progress
+error: Proofs/AreaOfCircleOQ05OQ01.lean:64:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ∫ (z : ℝ × ℝ), rexp (-z.1 ^ 2) * rexp (-z.2 ^ 2) ∂volume.prod volume
+in the target expression
+error: Proofs/AreaOfCircleOQ05OQ01.lean:99:8: Unknown identifier `set_integral_congr`
+error: Proofs/AreaOfCircleOQ05OQ01.lean:100:2: No goals to be solved
+error: Proofs/AreaOfCircleOQ05OQ01.lean:118:6: Unknown identifier `set_integral_const`
+error: Proofs/AreaOfCircleOQ05OQ01.lean:117:65: unsolved goals
+===== AreaOfCircleOQ05OQ01Aristotle
+error: Proofs/AreaOfCircleOQ05OQ01Aristotle.lean:45:13: `simp` made no progress
+warning: Proofs/AreaOfCircleOQ05OQ01Aristotle.lean:62:8: declaration uses `sorry`
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.AreaOfCircleOQ05OQ01Aristotle
+error: build failed
+===== AreaOfCircleOQ05OQ01Incomplete01
+error: Proofs/AreaOfCircleOQ05OQ01.lean:55:13: `simp` made no progress
+error: Proofs/AreaOfCircleOQ05OQ01.lean:64:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ∫ (z : ℝ × ℝ), rexp (-z.1 ^ 2) * rexp (-z.2 ^ 2) ∂volume.prod volume
+in the target expression
+error: Proofs/AreaOfCircleOQ05OQ01.lean:99:8: Unknown identifier `set_integral_congr`
+error: Proofs/AreaOfCircleOQ05OQ01.lean:100:2: No goals to be solved
+error: Proofs/AreaOfCircleOQ05OQ01.lean:118:6: Unknown identifier `set_integral_const`
+error: Proofs/AreaOfCircleOQ05OQ01.lean:117:65: unsolved goals
+===== AreaOfCircleOQ05OQ03OQ05
+error: Proofs/AreaOfCircleOQ05OQ03OQ05.lean:156:4: Invalid argument name `ε` for function `hasDerivAt_integral_of_dominated_loc_of_deriv_le`
+
+Hint: Perhaps you meant one of the following parameter names:
+error: Proofs/AreaOfCircleOQ05OQ03OQ05.lean:162:4: Application type mismatch: The argument
+  one_pos
+has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.AreaOfCircleOQ05OQ03OQ05
+error: build failed
+===== AreaOfCircleOQ07OQ02OQ02
+error: Proofs/AreaOfCircleOQ07OQ02OQ02.lean:81:4: `field_simp` made no progress on the goal
+error: Proofs/AreaOfCircleOQ07OQ02OQ02.lean:109:4: `simp` made no progress
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.AreaOfCircleOQ07OQ02OQ02
+error: build failed
+===== AreaOfCircleOQ07OQ03OQ02
+error: Proofs/AreaOfCircleOQ07OQ03OQ02.lean:67:4: Type mismatch: After simplification, term
+  h
+ has type
+error: Proofs/AreaOfCircleOQ07OQ03OQ02.lean:84:4: No goals to be solved
+error: Proofs/AreaOfCircleOQ07OQ03OQ02.lean:109:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ↑x ^ (1 / 2 - 1)
+in the target expression
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.AreaOfCircleOQ07OQ03OQ02
+===== AreaOfCircleOQ07OQ04OQ01
+error: Proofs/AreaOfCircleOQ07OQ04OQ01.lean:62:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ↑(∫ (x : ?m.302), ?m.307 x ∂?m.304)
+in the target expression
+error: Proofs/AreaOfCircleOQ07OQ04OQ01.lean:100:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ∫ (z : ℝ × ℝ) in Ioi 0 ×ˢ Ioo (-π) π, z.1 * rexp (-b * z.1 ^ 2) * 1 ∂Measure.prod ?m.403 ?m.404
+in the target expression
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.AreaOfCircleOQ07OQ04OQ01
+error: build failed
+===== AreaOfCircleOQ07OQ04OQ01OQ01
+error: Proofs/AreaOfCircleOQ07OQ04OQ01OQ01.lean:60:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ∏ x ∈ ?s, rexp (?f x)
+in the target expression
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.AreaOfCircleOQ07OQ04OQ01OQ01
+error: build failed
+===== AreaOfCircleOQ07OQ05
+error: Proofs/AreaOfCircleOQ07OQ05.lean:61:4: Type mismatch: After simplification, term
+  hasDerivAt_id x
+ has type
+error: Proofs/AreaOfCircleOQ07OQ05.lean:67:6: Type mismatch: After simplification, term
+  HasDerivAt.neg (hasDerivAt_pow 2 x)
+ has type
+error: Proofs/AreaOfCircleOQ07OQ05.lean:71:4: `ring_nf` made no progress on the goal
+error: Proofs/AreaOfCircleOQ07OQ05.lean:101:4: Application type mismatch: The argument
+  hu
+has type
+===== AreaOfCircleOQ07OQ05OQ01
+error: Proofs/AreaOfCircleOQ07OQ05OQ01.lean:90:6: Type mismatch: After simplification, term
+  HasDerivAt.neg (hasDerivAt_pow 2 x)
+ has type
+error: Proofs/AreaOfCircleOQ07OQ05OQ01.lean:94:4: `ring_nf` made no progress on the goal
+error: Proofs/AreaOfCircleOQ07OQ05OQ01.lean:128:4: Application type mismatch: The argument
+  hu
+has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.AreaOfCircleOQ07OQ05OQ01
+===== AreaOfCircleOQ07OQ05OQ01OQ01
+error: Proofs/AreaOfCircleOQ07OQ05OQ01.lean:90:6: Type mismatch: After simplification, term
+  HasDerivAt.neg (hasDerivAt_pow 2 x)
+ has type
+error: Proofs/AreaOfCircleOQ07OQ05OQ01.lean:94:4: `ring_nf` made no progress on the goal
+error: Proofs/AreaOfCircleOQ07OQ05OQ01.lean:128:4: Application type mismatch: The argument
+  hu
+has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.AreaOfCircleOQ07OQ05OQ01
+===== AreaOfCircleOQ07OQ05OQ01OQ02
+error: Proofs/AreaOfCircleOQ07OQ05OQ01.lean:90:6: Type mismatch: After simplification, term
+  HasDerivAt.neg (hasDerivAt_pow 2 x)
+ has type
+error: Proofs/AreaOfCircleOQ07OQ05OQ01.lean:94:4: `ring_nf` made no progress on the goal
+error: Proofs/AreaOfCircleOQ07OQ05OQ01.lean:128:4: Application type mismatch: The argument
+  hu
+has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.AreaOfCircleOQ07OQ05OQ01
+===== AreaOfCircleOQ07OQ05OQ02
+error: Proofs/AreaOfCircleOQ07OQ05.lean:61:4: Type mismatch: After simplification, term
+  hasDerivAt_id x
+ has type
+error: Proofs/AreaOfCircleOQ07OQ05.lean:67:6: Type mismatch: After simplification, term
+  HasDerivAt.neg (hasDerivAt_pow 2 x)
+ has type
+error: Proofs/AreaOfCircleOQ07OQ05.lean:71:4: `ring_nf` made no progress on the goal
+error: Proofs/AreaOfCircleOQ07OQ05.lean:101:4: Application type mismatch: The argument
+  hu
+has type
+===== ArithmeticSeriesOQ00OQ02
+error: Proofs/ArithmeticSeriesOQ00OQ02.lean:112:60: unsolved goals
+case e_f
+n k : ℕ
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.ArithmeticSeriesOQ00OQ02
+error: build failed
+===== ArithmeticSeriesOQ00OQ02OQ01
+error: Proofs/ArithmeticSeriesOQ00OQ02OQ01.lean:96:27: failed to synthesize instance of type class
+  HAdd ℕ ℕ ℤ
+
+error: Proofs/ArithmeticSeriesOQ00OQ02OQ01.lean:109:2: omega could not prove the goal:
+No usable constraints found. You may need to unfold definitions so `omega` can see linear arithmetic facts about `Nat` and `Int`, which may also involve multiplication, division, and modular remainder by constants.
+error: Proofs/ArithmeticSeriesOQ00OQ02OQ01.lean:119:20: failed to synthesize instance of type class
+  LocallyFiniteOrder ℚ
+
+error: Proofs/ArithmeticSeriesOQ00OQ02OQ01.lean:119:27: failed to synthesize instance of type class
+  HAdd ℕ ℕ ℚ
+
+===== ArithmeticSeriesOQ02OQ02OQ03
+error: Proofs/ArithmeticSeriesOQ02OQ02OQ03.lean:76:47: Application type mismatch: The argument
+  ℕ
+has type
+error: Proofs/ArithmeticSeriesOQ02OQ02OQ03.lean:85:22: Application type mismatch: The argument
+  ℕ
+has type
+error: Proofs/ArithmeticSeriesOQ02OQ02OQ03.lean:139:10: Unknown constant `Finset.Nat.antidiagonal`
+error: Proofs/ArithmeticSeriesOQ02OQ02OQ03.lean:139:50: Invalid projection: Type of
+  p
+is not known; cannot resolve projection `1`
+===== ArithmeticSeriesOQ02OQ02OQ03OQ01
+error: Proofs/ArithmeticSeriesOQ02OQ02OQ03OQ01.lean:122:66: unsolved goals
+⊢ Fintype.card (Fin 4 → Fin 2) = 16
+warning: Proofs/ArithmeticSeriesOQ02OQ02OQ03OQ01.lean:123:25: This simp argument is unused:
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.ArithmeticSeriesOQ02OQ02OQ03OQ01
+error: build failed
+===== ArithmeticSeriesOQ02OQ04OQ01
+error: Proofs/ArithmeticSeriesOQ02OQ04OQ01.lean:43:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Nat.factorial ?k * Nat.choose ?n ?k
+in the target expression
+error: Proofs/ArithmeticSeriesOQ02OQ04OQ01.lean:67:2: Type mismatch
+  Nat.factorial_mul_descFactorial h
+has type
+error: Proofs/ArithmeticSeriesOQ02OQ04OQ01.lean:73:19: Application type mismatch: The argument
+  Eq.symm (choose_descFactorial n k)
+has type
+error: Proofs/ArithmeticSeriesOQ02OQ04OQ01.lean:104:21: unexpected identifier after decimal point; consider parenthesizing the number
+error: Proofs/ArithmeticSeriesOQ02OQ04OQ01.lean:109:21: unexpected identifier after decimal point; consider parenthesizing the number
+error: Proofs/ArithmeticSeriesOQ02OQ04OQ01.lean:116:21: unexpected identifier after decimal point; consider parenthesizing the number
+===== ArsinhLogFormulaOQ01OQ01OQ01
+error: Proofs/ArsinhLogFormulaOQ01OQ01OQ01.lean:77:2: `field_simp` made no progress on the goal
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.ArsinhLogFormulaOQ01OQ01OQ01
+error: build failed
+===== ArsinhLogFormulaOQ01OQ01OQ01OQ01
+error: Proofs/ArsinhLogFormulaOQ01OQ01OQ01OQ01.lean:85:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ?a * ?a
+in the target expression
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.ArsinhLogFormulaOQ01OQ01OQ01OQ01
+error: build failed
+===== ArsinhLogFormulaOQ01OQ01OQ02
+error: Proofs/ArsinhLogFormulaOQ01OQ01OQ02.lean:75:2: `field_simp` made no progress on the goal
+error: Proofs/ArsinhLogFormulaOQ01OQ01OQ02.lean:132:2: linarith failed to find a contradiction
+case e'_4
+t : ℝ
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.ArsinhLogFormulaOQ01OQ01OQ02
+error: build failed
+===== BallotProblem
+error: Proofs/BallotProblem.lean:146:4: Function expected at
+  condCount
+but this term has type
+error: Proofs/BallotProblem.lean:151:5: Function expected at
+  condCount
+but this term has type
+error: Proofs/BallotProblem.lean:159:4: Function expected at
+  condCount
+but this term has type
+error: Proofs/BallotProblem.lean:165:4: Function expected at
+  condCount
+but this term has type
+===== BallotProblemOQ01OQ02OQ01
+error: Proofs/BallotProblemOQ01OQ02OQ01.lean:53:6: Unknown constant `Set.ncard_biUnion`
+error: Proofs/BallotProblemOQ01OQ02OQ01.lean:52:42: unsolved goals
+α : Type u_1
+ι : Type u_2
+error: Proofs/BallotProblemOQ01OQ02OQ01.lean:72:4: Function expected at
+  multiCountedSequence
+but this term has type
+error: Proofs/BallotProblemOQ01OQ02OQ01.lean:73:38: Function expected at
+  multiProjectionFiber
+but this term has type
+===== BallotProblemOQ01OQ02OQ01Aristotle
+error: Proofs/BallotProblemOQ01OQ02OQ01.lean:53:6: Unknown constant `Set.ncard_biUnion`
+error: Proofs/BallotProblemOQ01OQ02OQ01.lean:52:42: unsolved goals
+α : Type u_1
+ι : Type u_2
+error: Proofs/BallotProblemOQ01OQ02OQ01.lean:72:4: Function expected at
+  multiCountedSequence
+but this term has type
+error: Proofs/BallotProblemOQ01OQ02OQ01.lean:73:38: Function expected at
+  multiProjectionFiber
+but this term has type
+===== BallotProblemOQ01OQ02OQ01OQ02
+error: Proofs/BallotProblemOQ01OQ02OQ01.lean:53:6: Unknown constant `Set.ncard_biUnion`
+error: Proofs/BallotProblemOQ01OQ02OQ01.lean:52:42: unsolved goals
+α : Type u_1
+ι : Type u_2
+error: Proofs/BallotProblemOQ01OQ02OQ01.lean:72:4: Function expected at
+  multiCountedSequence
+but this term has type
+error: Proofs/BallotProblemOQ01OQ02OQ01.lean:73:38: Function expected at
+  multiProjectionFiber
+but this term has type
+===== BallotProblemOQ01OQ02OQ01OQ02OQ01
+error: Proofs/BallotProblemOQ01OQ02OQ01.lean:53:6: Unknown constant `Set.ncard_biUnion`
+error: Proofs/BallotProblemOQ01OQ02OQ01.lean:52:42: unsolved goals
+α : Type u_1
+ι : Type u_2
+error: Proofs/BallotProblemOQ01OQ02OQ01.lean:72:4: Function expected at
+  multiCountedSequence
+but this term has type
+error: Proofs/BallotProblemOQ01OQ02OQ01.lean:73:38: Function expected at
+  multiProjectionFiber
+but this term has type
+===== BallotProblemOQ01OQ04
+error: Proofs/BallotProblemOQ03.lean:336:40: No goals to be solved
+error: Proofs/BallotProblemOQ03.lean:357:40: No goals to be solved
+warning: Proofs/BallotProblemOQ03.lean:362:41: This simp argument is unused:
+  countP_false_cons_false
+error: Proofs/BallotProblemOQ03.lean:1631:69: Type mismatch
+  h
+has type
+error: Proofs/BallotProblemOQ03.lean:1638:67: Type mismatch
+  h
+has type
+===== BallotProblemOQ01OQ04Core
+error: Proofs/BallotProblemOQ03.lean:336:40: No goals to be solved
+error: Proofs/BallotProblemOQ03.lean:357:40: No goals to be solved
+warning: Proofs/BallotProblemOQ03.lean:362:41: This simp argument is unused:
+  countP_false_cons_false
+error: Proofs/BallotProblemOQ03.lean:1631:69: Type mismatch
+  h
+has type
+error: Proofs/BallotProblemOQ03.lean:1638:67: Type mismatch
+  h
+has type
+===== BallotProblemOQ02OQ02
+error: Proofs/BallotProblemOQ02OQ02.lean:41:58: invalid binder annotation, type is not a class instance
+  ?m.3
+
+error: Proofs/BallotProblemOQ02OQ02.lean:45:21: invalid binder annotation, type is not a class instance
+  ?m.3
+
+error: Proofs/BallotProblemOQ02OQ02.lean:49:41: Function expected at
+  BrownianMotion
+but this term has type
+error: Proofs/BallotProblemOQ02OQ02.lean:52:19: Function expected at
+  BrownianMotion
+but this term has type
+===== BallotProblemOQ02OQ02OQ05
+error: Proofs/BallotProblemOQ02OQ02.lean:41:58: invalid binder annotation, type is not a class instance
+  ?m.3
+
+error: Proofs/BallotProblemOQ02OQ02.lean:45:21: invalid binder annotation, type is not a class instance
+  ?m.3
+
+error: Proofs/BallotProblemOQ02OQ02.lean:49:41: Function expected at
+  BrownianMotion
+but this term has type
+error: Proofs/BallotProblemOQ02OQ02.lean:52:19: Function expected at
+  BrownianMotion
+but this term has type
+===== BallotProblemOQ02OQ03
+error: Proofs/BallotProblemOQ02OQ03.lean:113:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  √x ^ 2
+in the target expression
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.BallotProblemOQ02OQ03
+error: build failed
+===== BallotProblemOQ03
+error: Proofs/BallotProblemOQ03.lean:336:40: No goals to be solved
+error: Proofs/BallotProblemOQ03.lean:357:40: No goals to be solved
+warning: Proofs/BallotProblemOQ03.lean:362:41: This simp argument is unused:
+  countP_false_cons_false
+error: Proofs/BallotProblemOQ03.lean:1631:69: Type mismatch
+  h
+has type
+error: Proofs/BallotProblemOQ03.lean:1638:67: Type mismatch
+  h
+has type
+===== BallotProblemOQ03OQ01OQ01
+error: Proofs/BallotProblemOQ03OQ02.lean:415:40: No goals to be solved
+error: Proofs/BallotProblemOQ03OQ02.lean:436:40: No goals to be solved
+warning: Proofs/BallotProblemOQ03OQ02.lean:441:41: This simp argument is unused:
+  countP_false_cons_false
+error: Proofs/BallotProblemOQ03OQ02.lean:2101:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ↑(PermPathTuple.toPathTuple hσ' (gvCanonInv cfg hwf t hht).snd ci)
+in the target expression
+Full error:
+  Application type mismatch: The argument
+    gvCanonInv cfg hwf t ⋯
+===== BallotProblemOQ03OQ01OQ01OQ01
+error: Proofs/BallotProblemOQ03OQ02.lean:415:40: No goals to be solved
+error: Proofs/BallotProblemOQ03OQ02.lean:436:40: No goals to be solved
+warning: Proofs/BallotProblemOQ03OQ02.lean:441:41: This simp argument is unused:
+  countP_false_cons_false
+error: Proofs/BallotProblemOQ03OQ02.lean:2101:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ↑(PermPathTuple.toPathTuple hσ' (gvCanonInv cfg hwf t hht).snd ci)
+in the target expression
+Full error:
+  Application type mismatch: The argument
+    gvCanonInv cfg hwf t ⋯
+===== BallotProblemOQ03OQ01OQ01OQ01Aristotle
+error: Proofs/BallotProblemOQ03OQ02.lean:415:40: No goals to be solved
+error: Proofs/BallotProblemOQ03OQ02.lean:436:40: No goals to be solved
+warning: Proofs/BallotProblemOQ03OQ02.lean:441:41: This simp argument is unused:
+  countP_false_cons_false
+error: Proofs/BallotProblemOQ03OQ02.lean:2101:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ↑(PermPathTuple.toPathTuple hσ' (gvCanonInv cfg hwf t hht).snd ci)
+in the target expression
+Full error:
+  Application type mismatch: The argument
+    gvCanonInv cfg hwf t ⋯
+===== BallotProblemOQ03OQ01OQ02
+error: Proofs/BallotProblemOQ03OQ02.lean:415:40: No goals to be solved
+error: Proofs/BallotProblemOQ03OQ02.lean:436:40: No goals to be solved
+warning: Proofs/BallotProblemOQ03OQ02.lean:441:41: This simp argument is unused:
+  countP_false_cons_false
+error: Proofs/BallotProblemOQ03OQ02.lean:2101:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ↑(PermPathTuple.toPathTuple hσ' (gvCanonInv cfg hwf t hht).snd ci)
+in the target expression
+Full error:
+  Application type mismatch: The argument
+    gvCanonInv cfg hwf t ⋯
+===== BallotProblemOQ03OQ01OQ02Aristotle
+error: Proofs/BallotProblemOQ03OQ02.lean:415:40: No goals to be solved
+error: Proofs/BallotProblemOQ03OQ02.lean:436:40: No goals to be solved
+warning: Proofs/BallotProblemOQ03OQ02.lean:441:41: This simp argument is unused:
+  countP_false_cons_false
+error: Proofs/BallotProblemOQ03OQ02.lean:2101:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ↑(PermPathTuple.toPathTuple hσ' (gvCanonInv cfg hwf t hht).snd ci)
+in the target expression
+Full error:
+  Application type mismatch: The argument
+    gvCanonInv cfg hwf t ⋯
+===== BallotProblemOQ03OQ01OQ02Helpers
+error: Proofs/BallotProblemOQ03OQ02.lean:415:40: No goals to be solved
+error: Proofs/BallotProblemOQ03OQ02.lean:436:40: No goals to be solved
+warning: Proofs/BallotProblemOQ03OQ02.lean:441:41: This simp argument is unused:
+  countP_false_cons_false
+error: Proofs/BallotProblemOQ03OQ02.lean:2101:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ↑(PermPathTuple.toPathTuple hσ' (gvCanonInv cfg hwf t hht).snd ci)
+in the target expression
+Full error:
+  Application type mismatch: The argument
+    gvCanonInv cfg hwf t ⋯
+===== BallotProblemOQ03OQ02
+error: Proofs/BallotProblemOQ03OQ02.lean:415:40: No goals to be solved
+error: Proofs/BallotProblemOQ03OQ02.lean:436:40: No goals to be solved
+warning: Proofs/BallotProblemOQ03OQ02.lean:441:41: This simp argument is unused:
+  countP_false_cons_false
+error: Proofs/BallotProblemOQ03OQ02.lean:2101:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ↑(PermPathTuple.toPathTuple hσ' (gvCanonInv cfg hwf t hht).snd ci)
+in the target expression
+Full error:
+  Application type mismatch: The argument
+    gvCanonInv cfg hwf t ⋯
+===== BallotProblemOQ03OQ02OQ01
+error: Proofs/BallotProblemOQ03OQ02OQ03.lean:103:84: unsolved goals
+case e_a
+R : Type u_1
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.BallotProblemOQ03OQ02OQ03
+error: build failed
+===== BallotProblemOQ03OQ02OQ03
+error: Proofs/BallotProblemOQ03OQ02OQ03.lean:103:84: unsolved goals
+case e_a
+R : Type u_1
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.BallotProblemOQ03OQ02OQ03
+error: build failed
+===== BallotProblemOQ03OQ03
+error: Proofs/BallotProblemOQ03.lean:336:40: No goals to be solved
+error: Proofs/BallotProblemOQ03.lean:357:40: No goals to be solved
+warning: Proofs/BallotProblemOQ03.lean:362:41: This simp argument is unused:
+  countP_false_cons_false
+error: Proofs/BallotProblemOQ03.lean:1631:69: Type mismatch
+  h
+has type
+error: Proofs/BallotProblemOQ03.lean:1638:67: Type mismatch
+  h
+has type
+===== BallotProblemOQ04OQ02
+error: Proofs/BallotProblemOQ04OQ02.lean:130:2: `simp` made no progress
+info: Proofs/BallotProblemOQ04OQ02.lean:148:0: @isNonCrossingFp_ofSetoid_iff : ∀ {n : ℕ} (s : Setoid (Fin n)) [inst : DecidableRel ⇑s],
+  IsNonCrossingFp (Finpartition.ofSetoid s) ↔ IsNonCrossing s
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.BallotProblemOQ04OQ02
+error: build failed
+===== BallotProblemOQ04OQ02OQ01
+error: Proofs/BallotProblemOQ04OQ02.lean:130:2: `simp` made no progress
+info: Proofs/BallotProblemOQ04OQ02.lean:148:0: @isNonCrossingFp_ofSetoid_iff : ∀ {n : ℕ} (s : Setoid (Fin n)) [inst : DecidableRel ⇑s],
+  IsNonCrossingFp (Finpartition.ofSetoid s) ↔ IsNonCrossing s
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.BallotProblemOQ04OQ02
+error: build failed
+===== BallVolumeSurfaceDuality
+error: Proofs/CircumferenceViaDifferentiationOQ01.lean:184:72: unsolved goals
+r : ℝ
+h : HasDerivAt CircumferenceViaDifferentiation.areaFn (2 * π * r) r
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.CircumferenceViaDifferentiationOQ01
+error: build failed
+===== BaselProblemOQ01OQ01
+error: Proofs/BaselProblemOQ01OQ01.lean:46:2: failed to synthesize
+  CanonicallyOrderedAdd ℝ
+
+error: Proofs/BaselProblemOQ01OQ01.lean:74:34: Application type mismatch: The argument
+  one_pos
+has type
+error: Proofs/BaselProblemOQ01OQ01.lean:85:2: Type mismatch
+  tail_term_le_inverse_sq (k + n)
+has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.BaselProblemOQ01OQ01
+===== BaselProblemOQ01OQ01OQ02
+error: Proofs/BaselProblemOQ01OQ01OQ02.lean:816:42: `ring_nf` made no progress on the goal
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.BaselProblemOQ01OQ01OQ02
+error: build failed
+===== BaselProblemOQ01OQ01OQ02Aristotle
+error: Proofs/BaselProblemOQ01OQ01OQ02Aristotle.lean:192:52: unsolved goals
+m : ℕ
+ih : ∀ m_1 < 2 * m, lcmUpTo m_1 ≤ 4 ^ m_1
+error: Proofs/BaselProblemOQ01OQ01OQ02Aristotle.lean:202:154: Ambiguous term
+  pow_succ'
+Possible interpretations:
+error: Proofs/BaselProblemOQ01OQ01OQ02Aristotle.lean:202:154: Ambiguous term
+  pow_succ'
+Possible interpretations:
+error: Proofs/BaselProblemOQ01OQ01OQ02Aristotle.lean:202:154: Ambiguous term
+  pow_succ'
+Possible interpretations:
+===== BaselProblemOQ02
+error: Proofs/BaselProblemOQ02.lean:267:23: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  e ≥ 0
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.BaselProblemOQ02
+error: build failed
+===== BaselProblemOQ03OQ01
+error: Proofs/BaselProblemOQ03OQ01.lean:64:2: Type mismatch: After simplification, term
+  Real.summable_one_div_nat_pow.mpr
+    (Mathlib.Meta.NormNum.isNat_lt_true (Mathlib.Meta.NormNum.isNat_ofNat ℕ (Eq.refl 1))
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.BaselProblemOQ03OQ01
+error: build failed
+===== BaselProblemOQ05
+error: Proofs/BaselProblemOQ05.lean:90:76: unsolved goals
+N : ℕ
+hN : 0 < N
+error: Proofs/BaselProblemOQ05.lean:172:31: linarith failed to find a contradiction
+x : ℝ
+hx : |x| < 1
+error: Proofs/BaselProblemOQ05.lean:175:4: linarith failed to find a contradiction
+x : ℝ
+hx : |x| < 1
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.BaselProblemOQ05
+===== BaselProblemOQ09
+error: Proofs/BaselProblemOQ09.lean:98:4: Type mismatch: After simplification, term
+  h
+ has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.BaselProblemOQ09
+error: build failed
+===== BaselProblemOQ0901
+error: Proofs/BaselProblemOQ0901.lean:95:4: Type mismatch: After simplification, term
+  h
+ has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.BaselProblemOQ0901
+error: build failed
+===== BaselProblemOQ09OQ01
+error: Proofs/BaselProblemOQ09OQ01.lean:91:4: Type mismatch: After simplification, term
+  h
+ has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.BaselProblemOQ09OQ01
+error: build failed
+===== BaselProblemOQ10OQ01
+error: Proofs/BaselProblemOQ10OQ01.lean:128:2: Type mismatch: After simplification, term
+  Tendsto.comp tendsto_inv_atTop_zero hden
+ has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.BaselProblemOQ10OQ01
+error: build failed
+===== BaselProblemOQ10OQ03
+error: Proofs/BaselProblemOQ10OQ03.lean:95:6: `ring_nf` made no progress on the goal
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.BaselProblemOQ10OQ03
+error: build failed
+===== BaselProblemOQ11
+error: Proofs/BaselProblemOQ11.lean:48:2: `ring_nf` made no progress on the goal
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.BaselProblemOQ11
+error: build failed
+===== BaselProblemOQ13
+error: Proofs/BaselProblemOQ13.lean:43:2: `ring_nf` made no progress on the goal
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.BaselProblemOQ13
+error: build failed
+===== BaselProblemOQ13OQ01
+error: Proofs/BaselProblemOQ13.lean:43:2: `ring_nf` made no progress on the goal
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.BaselProblemOQ13
+error: build failed
+===== BaselProblemOQ13OQ02
+error: Proofs/BaselProblemOQ13OQ02.lean:112:2: `ring_nf` made no progress on the goal
+error: Proofs/BaselProblemOQ13OQ02.lean:123:2: `ring_nf` made no progress on the goal
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.BaselProblemOQ13OQ02
+error: build failed
+===== BaselProblemOQ14
+error: Proofs/BaselProblemOQ14.lean:48:2: `ring_nf` made no progress on the goal
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.BaselProblemOQ14
+error: build failed
+===== BernoulliInequalityOQ01OQ02
+error: Proofs/BernoulliInequalityOQ01OQ02.lean:76:6: linarith failed to find a contradiction
+case succ
+a : ℝ
+error: Proofs/BernoulliInequalityOQ01OQ02.lean:101:6: linarith failed to find a contradiction
+case succ
+a : ℝ
+error: Proofs/BernoulliInequalityOQ01OQ02.lean:144:4: unsolved goals
+case inr
+a : ℝ
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.BernoulliInequalityOQ01OQ02
+===== BernoulliInequalityOQ01OQ02OQ01
+error: Proofs/BernoulliInequalityOQ01OQ02OQ01.lean:77:23: failed to synthesize
+  SetLike ?S ?m.189
+maximum recursion depth has been reached
+error: Proofs/BernoulliInequalityOQ01OQ02OQ01.lean:132:25: failed to synthesize
+  SetLike ?S ?m.212
+maximum recursion depth has been reached
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.BernoulliInequalityOQ01OQ02OQ01
+error: build failed
+===== BertrandsPostulateOQ03OQ04
+error: Proofs/BertrandsPostulateOQ03OQ04.lean:250:4: No goals to be solved
+error: Proofs/BertrandsPostulateOQ03OQ04.lean:278:2: No goals to be solved
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.BertrandsPostulateOQ03OQ04
+error: build failed
+===== BertrandsPostulateOQ03OQ04Aristotle
+error: Proofs/BertrandsPostulateOQ03OQ04Aristotle.lean:82:2: No goals to be solved
+error: Proofs/BertrandsPostulateOQ03OQ04Aristotle.lean:120:2: No goals to be solved
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.BertrandsPostulateOQ03OQ04Aristotle
+error: build failed
+===== BertrandsPostulateOQ03OQ04OQ03
+error: Proofs/BertrandsPostulateOQ03OQ04.lean:250:4: No goals to be solved
+error: Proofs/BertrandsPostulateOQ03OQ04.lean:278:2: No goals to be solved
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.BertrandsPostulateOQ03OQ04
+error: build failed
+===== BetaCentralBinomialExplicitRate
+error: Proofs/BetaCentralBinomialExplicitRate.lean:93:2: Type mismatch
+  LE.le.trans hstep ?m.86
+has type
+error: Proofs/BetaCentralBinomialExplicitRate.lean:136:6: Type mismatch: After simplification, term
+  log_gap_le_telescope m j hm
+ has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.BetaCentralBinomialExplicitRate
+error: build failed
+===== BetaCentralBinomialExplicitRateOQ02
+error: Proofs/BetaCentralBinomialExplicitRate.lean:93:2: Type mismatch
+  LE.le.trans hstep ?m.86
+has type
+error: Proofs/BetaCentralBinomialExplicitRate.lean:136:6: Type mismatch: After simplification, term
+  log_gap_le_telescope m j hm
+ has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.BetaCentralBinomialExplicitRate
+error: build failed
+===== BetaCentralBinomialOGF
+error: Proofs/BetaCentralBinomialOGF.lean:187:21: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  √x * √x
+in the target expression
+error: Proofs/BetaCentralBinomialOGF.lean:193:72: unsolved goals
+case hc
+x : ℝ
+error: Proofs/BetaCentralBinomialOGF.lean:234:6: Type mismatch
+  HasDerivAt.comp t ?m.607 hg
+has type
+error: Proofs/BetaCentralBinomialOGF.lean:263:2: `simp` made no progress
+error: Lean exited with code 1
+Some required targets logged failures:
+===== BetaIntegralRecurrenceOQ01OQ03OQ01
+error: Proofs/BetaIntegralRecurrenceOQ01OQ03OQ01.lean:99:15: `ring_nf` made no progress on the goal
+error: Proofs/BetaIntegralRecurrenceOQ01OQ03OQ01.lean:108:4: `field_simp` made no progress on the goal
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.BetaIntegralRecurrenceOQ01OQ03OQ01
+error: build failed
+===== BetaIntegralRecurrenceOQ01OQ03OQ01OQ02
+error: Proofs/BetaIntegralRecurrenceOQ01OQ03OQ01.lean:99:15: `ring_nf` made no progress on the goal
+error: Proofs/BetaIntegralRecurrenceOQ01OQ03OQ01.lean:108:4: `field_simp` made no progress on the goal
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.BetaIntegralRecurrenceOQ01OQ03OQ01
+error: build failed
+===== BezoutIdentity
+error: Proofs/BezoutIdentity.lean:144:58: Unknown constant `Int.natAbs_ofNat`
+error: Proofs/BezoutIdentity.lean:180:39: Type mismatch
+  Int.gcd_dvd_left
+has type
+error: Proofs/BezoutIdentity.lean:181:39: Type mismatch
+  Int.gcd_dvd_right
+has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.BezoutIdentity
+===== BezoutIdentityOQ01OQ02OQ02Descent
+error: Proofs/BezoutIdentityOQ01OQ02OQ02Descent.lean:284:4: typeclass instance problem is stuck
+  Fintype (Fin (2 + ?m.5))
+
+error: Proofs/BezoutIdentityOQ01OQ02OQ02Descent.lean:311:8: Unknown identifier `det_headBlockN`
+error: Proofs/BezoutIdentityOQ01OQ02OQ02Descent.lean:310:46: unsolved goals
+m : ℕ
+N : Matrix.SpecialLinearGroup (Fin 2) ℤ
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.BezoutIdentityOQ01OQ02OQ02Descent
+===== BezoutIdentityOQ01OQ02OQ02Transitive
+error: Proofs/BezoutIdentityOQ01OQ02OQ02Descent.lean:284:4: typeclass instance problem is stuck
+  Fintype (Fin (2 + ?m.5))
+
+error: Proofs/BezoutIdentityOQ01OQ02OQ02Descent.lean:311:8: Unknown identifier `det_headBlockN`
+error: Proofs/BezoutIdentityOQ01OQ02OQ02Descent.lean:310:46: unsolved goals
+m : ℕ
+N : Matrix.SpecialLinearGroup (Fin 2) ℤ
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.BezoutIdentityOQ01OQ02OQ02Descent
+===== BezoutIdentityOQ02OQ01OQ01OQ01OQ01
+error: Proofs/BezoutIdentityOQ02OQ01OQ01OQ01OQ01.lean:45:4: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'AddMonoidAlgebra.nonAssocSemiring', which is 'noncomputable'
+error: Proofs/BezoutIdentityOQ02OQ01OQ01OQ01OQ01.lean:48:4: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'X', which is 'noncomputable'
+error: Proofs/BezoutIdentityOQ02OQ01OQ01OQ01OQ01.lean:51:4: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'AddMonoidAlgebra.semiring', which is 'noncomputable'
+error: Proofs/BezoutIdentityOQ02OQ01OQ01OQ01OQ01.lean:71:2: omega could not prove the goal:
+No usable constraints found. You may need to unfold definitions so `omega` can see linear arithmetic facts about `Nat` and `Int`, which may also involve multiplication, division, and modular remainder by constants.
+warning: Proofs/BezoutIdentityOQ02OQ01OQ01OQ01OQ01.lean:68:40: This simp argument is unused:
+===== BezoutIdentityOQ02OQ01OQ02
+error: Proofs/BezoutIdentityOQ02OQ01OQ02.lean:49:35: invalid binder annotation, type is not a class instance
+  CancelCommMonoidWithZero α
+
+error: Proofs/BezoutIdentityOQ02OQ01OQ02.lean:59:16: Application type mismatch: The argument
+  Int.gcd_dvd_left
+has type
+error: Proofs/BezoutIdentityOQ02OQ01OQ02.lean:59:34: Application type mismatch: The argument
+  Int.gcd_dvd_right
+has type
+error: Proofs/BezoutIdentityOQ02OQ01OQ02.lean:60:20: Type mismatch
+  Int.dvd_gcd ?m.24 ?m.25
+has type
+===== BezoutIdentityOQ02OQ01OQ02OQ02OQ03
+error: Proofs/BezoutIdentityOQ02OQ01OQ02OQ02OQ03.lean:36:6: unexpected token 'ℤ√'; expected identifier
+error: Proofs/BezoutIdentityOQ02OQ01OQ02OQ02OQ03.lean:45:2: linarith failed to find a contradiction
+neg2 : ℤ
+z : ℤ√neg2
+error: Proofs/BezoutIdentityOQ02OQ01OQ02OQ02OQ03.lean:54:30: linarith failed to find a contradiction
+case h1
+neg2 : ℤ
+error: Proofs/BezoutIdentityOQ02OQ01OQ02OQ02OQ03.lean:55:30: linarith failed to find a contradiction
+case h1
+neg2 : ℤ
+===== BezoutIdentityOQ02OQ01OQ02OQ03
+error: Proofs/BezoutIdentityOQ02OQ01OQ02.lean:49:35: invalid binder annotation, type is not a class instance
+  CancelCommMonoidWithZero α
+
+error: Proofs/BezoutIdentityOQ02OQ01OQ02.lean:59:16: Application type mismatch: The argument
+  Int.gcd_dvd_left
+has type
+error: Proofs/BezoutIdentityOQ02OQ01OQ02.lean:59:34: Application type mismatch: The argument
+  Int.gcd_dvd_right
+has type
+error: Proofs/BezoutIdentityOQ02OQ01OQ02.lean:60:20: Type mismatch
+  Int.dvd_gcd ?m.24 ?m.25
+has type
+===== BezoutIdentityOQ02OQ02
+error: Proofs/BezoutIdentityOQ02OQ02.lean:155:44: invalid binder annotation, type is not a class instance
+  CancelCommMonoidWithZero M
+
+error: Proofs/BezoutIdentityOQ02OQ02.lean:161:47: invalid binder annotation, type is not a class instance
+  CancelCommMonoidWithZero M
+
+error: Proofs/BezoutIdentityOQ02OQ02.lean:282:8: Unknown identifier `euclids_lemma_irreducible`
+info: Proofs/BezoutIdentityOQ02OQ02.lean:283:0: @isBezout_coprime_iff : ∀ {R : Type u_1} [inst : CommRing R] [IsBezout R] {a b : R}, IsCoprime a b ↔ IsRelPrime a b
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.BezoutIdentityOQ02OQ02
+===== BezoutIdentityOQ02OQ02OQ01OQ03
+error: Proofs/BezoutIdentityOQ02OQ02OQ01OQ03.lean:245:6: Type mismatch: After simplification, term
+  hb
+ has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.BezoutIdentityOQ02OQ02OQ01OQ03
+error: build failed
+===== BezoutIdentityOQ02OQ04
+error: Proofs/BezoutIdentityOQ02OQ04.lean:62:2: failed to synthesize instance of type class
+  NormalizedGCDMonoid R
+
+error: Proofs/BezoutIdentityOQ02OQ04.lean:69:19: failed to synthesize instance of type class
+  NormalizedGCDMonoid R
+
+error: Proofs/BezoutIdentityOQ02OQ04.lean:69:37: failed to synthesize instance of type class
+  NormalizedGCDMonoid R
+
+error: Proofs/BezoutIdentityOQ02OQ04.lean:69:49: failed to synthesize instance of type class
+  NormalizedGCDMonoid R
+
+===== BezoutIdentityOQ03OQ01OQ01OQ02OQ02
+error: Proofs/BezoutIdentityOQ03OQ01OQ01OQ02OQ02.lean:150:2: Type mismatch: After simplification, term
+  h
+ has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.BezoutIdentityOQ03OQ01OQ01OQ02OQ02
+error: build failed
+===== BezoutIdentityOQ03OQ02OQ01
+error: Proofs/BezoutIdentityOQ03OQ02OQ01.lean:153:2: Tactic `assumption` failed
+
+h23 : ∀ (i : Fin 3), 23 ≡ a357 i [ZMOD m357 i]
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.BezoutIdentityOQ03OQ02OQ01
+error: build failed
+===== BezoutIdentityOQ03OQ03
+error: Proofs/BezoutIdentityOQ03OQ03.lean:50:35: Unknown constant `Int.natAbs_ofNat`
+error: Proofs/BezoutIdentityOQ03OQ03.lean:49:75: unsolved goals
+n : ℕ
+a : Fin (n + 1) → ℤ
+error: Proofs/BezoutIdentityOQ03OQ03.lean:73:38: mod_cast has type
+  (gcdFin (a ∘ Fin.castSucc)).gcd (a (Fin.last k)).natAbs ∣ (a (Fin.last k)).natAbs
+but is expected to have type
+error: Proofs/BezoutIdentityOQ03OQ03.lean:79:23: Unknown constant `Int.coe_nat_dvd.mpr`
+info: Proofs/BezoutIdentityOQ03OQ03.lean:122:43: Try this:
+  [apply] ring_nf
+===== BezoutIdentityOQ03OQ04
+error: Proofs/BezoutIdentityOQ03OQ04.lean:76:8: Unknown constant `Int.Coprime.mul_dvd_of_dvd_of_dvd`
+error: Proofs/BezoutIdentityOQ03OQ04.lean:95:37: Application type mismatch: The argument
+  Eq.symm (Int.gcd_eq_gcd_ab m n)
+has type
+error: Proofs/BezoutIdentityOQ03OQ04.lean:116:6: Unknown constant `Int.Coprime`
+error: Proofs/BezoutIdentityOQ03OQ04.lean:115:32: unsolved goals
+m₁ m₂ m₃ : ℤ
+h12 : m₁.gcd m₂ = 1
+===== BezoutIdentityOQ04OQ01
+error: Proofs/BezoutIdentityOQ04OQ01.lean:246:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  snf.D ⟨0, ⋯⟩ ⟨1, ⋯⟩
+in the target expression
+Full error:
+  function expected
+    snf.U ⟨0, ⋯⟩
+error: Proofs/BezoutIdentityOQ04OQ01.lean:255:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  snf.D ⟨0, ⋯⟩ ⟨1, ⋯⟩
+in the target expression
+Full error:
+  function expected
+    snf.U ⟨0, ⋯⟩
+===== BinaryGcdOQ02
+error: Proofs/GcdAlgorithmOQ02.lean:41:35: Application type mismatch: The argument
+  h1
+has type
+error: Proofs/GcdAlgorithmOQ02.lean:51:58: Application type mismatch: The argument
+  hb
+has type
+error: Proofs/GcdAlgorithmOQ02.lean:52:2: Type mismatch
+  Eq.symm (Nat.Coprime.gcd_mul_left_cancel a hcop)
+has type
+error: Proofs/GcdAlgorithmOQ02.lean:95:17: Unknown identifier `a`
+error: Proofs/GcdAlgorithmOQ02.lean:113:47: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+===== BinaryGcdOQ02OQ01
+error: Proofs/GCDAlgorithmOQ02.lean:41:35: Application type mismatch: The argument
+  h1
+has type
+error: Proofs/GCDAlgorithmOQ02.lean:51:58: Application type mismatch: The argument
+  hb
+has type
+error: Proofs/GCDAlgorithmOQ02.lean:52:2: Type mismatch
+  Eq.symm (Nat.Coprime.gcd_mul_left_cancel a hcop)
+has type
+error: Proofs/GCDAlgorithmOQ02.lean:95:17: Unknown identifier `a`
+error: Proofs/GCDAlgorithmOQ02.lean:113:47: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+===== BinomialTheoremOQ01
+error: Proofs/BinomialTheoremOQ01.lean:154:5: Unknown constant `Polynomial.descPochhammer`
+error: Proofs/BinomialTheoremOQ01.lean:157:9: unsolved goals
+case zero
+α : ℝ
+error: Proofs/BinomialTheoremOQ01.lean:189:21: expected token
+warning: Proofs/BinomialTheoremOQ01.lean:187:19: `EMetric.ball` has been deprecated: Use `Metric.eball` instead
+
+error: Proofs/BinomialTheoremOQ01.lean:188:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  @Membership.mem ?m.43 (Set ?m.43) Set.instMembership (Metric.eball ?m.45 ?m.47) ?m.46
+in the target expression
+===== BinomialTheoremOQ02OQ01
+error: Proofs/BinomialTheoremOQ02OQ01.lean:232:12: Unknown identifier `HasDerivAt`
+error: Proofs/BinomialTheoremOQ02OQ01.lean:234:17: Unknown identifier `HasDerivAt`
+error: Proofs/BinomialTheoremOQ02OQ01.lean:235:20: Unknown constant `Real.hasDerivAt_exp`
+error: Proofs/BinomialTheoremOQ02OQ01.lean:241:12: Unknown identifier `HasDerivAt`
+error: Proofs/BinomialTheoremOQ02OQ01.lean:327:22: Unknown identifier `HasDerivAt`
+error: Proofs/BinomialTheoremOQ02OQ01.lean:330:17: Unknown identifier `HasDerivAt`
+===== BinomialTheoremOQ02OQ01OQ01OQ02
+error: Proofs/BinomialTheoremOQ02OQ01.lean:232:12: Unknown identifier `HasDerivAt`
+error: Proofs/BinomialTheoremOQ02OQ01.lean:234:17: Unknown identifier `HasDerivAt`
+error: Proofs/BinomialTheoremOQ02OQ01.lean:235:20: Unknown constant `Real.hasDerivAt_exp`
+error: Proofs/BinomialTheoremOQ02OQ01.lean:241:12: Unknown identifier `HasDerivAt`
+error: Proofs/BinomialTheoremOQ02OQ01.lean:327:22: Unknown identifier `HasDerivAt`
+error: Proofs/BinomialTheoremOQ02OQ01.lean:330:17: Unknown identifier `HasDerivAt`
+===== BinomialTheoremOQ02OQ01OQ03
+error: Proofs/BinomialTheoremOQ02OQ01OQ03.lean:266:29: `ring_nf` made no progress on the goal
+error: Proofs/BinomialTheoremOQ02OQ01OQ03.lean:316:31: `ring_nf` made no progress on the goal
+warning: Proofs/BinomialTheoremOQ02OQ01OQ03.lean:161:15: This simp argument is unused:
+  Function.comp
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.BinomialTheoremOQ02OQ01OQ03
+error: build failed
+===== BinomialTheoremOQ02OQ01OQ04
+error: Proofs/BinomialTheoremOQ02OQ01OQ03.lean:266:29: `ring_nf` made no progress on the goal
+error: Proofs/BinomialTheoremOQ02OQ01OQ03.lean:316:31: `ring_nf` made no progress on the goal
+warning: Proofs/BinomialTheoremOQ02OQ01OQ03.lean:161:15: This simp argument is unused:
+  Function.comp
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.BinomialTheoremOQ02OQ01OQ03
+error: build failed
+===== BinomialTheoremOQ02OQ02
+error: Proofs/BinomialTheoremOQ02OQ02.lean:88:67: unsolved goals
+m n r : ℕ
+⊢ ∑ ij ∈ antidiagonal r, n.choose ij.1 * m.choose ij.2 = ∑ ij ∈ antidiagonal r, m.choose ij.2 * n.choose ij.1
+error: Proofs/BinomialTheoremOQ02OQ02.lean:111:9: unsolved goals
+case zero
+m : ℕ
+error: Proofs/BinomialTheoremOQ02OQ02.lean:112:14: Type mismatch
+  choose_succ_succ m r
+has type
+error: Proofs/BinomialTheoremOQ02OQ02.lean:119:2: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  g ≥ 0
+===== BinomialTheoremOQ02OQ03
+error: Proofs/BinomialTheoremOQ02OQ03.lean:108:54: Application type mismatch: The argument
+  mem_univ i
+has type
+error: Proofs/BinomialTheoremOQ02OQ03.lean:113:62: unsolved goals
+R : Type u_1
+inst✝ : CommRing R
+error: Proofs/BinomialTheoremOQ02OQ03.lean:140:8: Function expected at
+  single_le_sum (fun j x => Nat.zero_le (?m.75 j)) ?m.82
+but this term has type
+error: Proofs/BinomialTheoremOQ02OQ03.lean:170:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ∑ i, k i.succ
+in the target expression
+===== BinomialTheoremOQ02OQ04
+error: Proofs/BinomialTheoremOQ02OQ04.lean:71:39: failed to synthesize instance of type class
+  DecidableEq α
+
+error: Proofs/BinomialTheoremOQ02OQ04.lean:90:10: failed to synthesize instance of type class
+  DecidableEq α
+
+error: Proofs/BinomialTheoremOQ02OQ04.lean:99:11: unsolved goals
+case empty.zero
+α : Type u_1
+error: Proofs/BinomialTheoremOQ02OQ04.lean:100:13: unsolved goals
+case empty.succ
+α : Type u_1
+===== BinomialTheoremOQ02OQ04OQ02
+error: Proofs/BinomialTheoremOQ02OQ04OQ02.lean:80:24: Application type mismatch: The argument
+  ↑M
+has type
+error: Proofs/BinomialTheoremOQ02OQ04OQ02.lean:122:4: Application type mismatch: The argument
+  ↑M
+has type
+error: Proofs/BinomialTheoremOQ02OQ04OQ02.lean:138:20: Application type mismatch: The argument
+  ↑M
+has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.BinomialTheoremOQ02OQ04OQ02
+===== BinomialTheoremOQ03OQ02OQ03
+error: Proofs/BinomialTheoremOQ03OQ02OQ03.lean:82:72: unsolved goals
+case e'_4
+t : ℝ
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.BinomialTheoremOQ03OQ02OQ03
+error: build failed
+===== BinomialTheoremOQ04
+error: Proofs/BinomialTheoremOQ04.lean:157:36: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  d ≥ 0
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.BinomialTheoremOQ04
+error: build failed
+===== BirchSwinnertonDyer
+error: Proofs/BirchSwinnertonDyer.lean:132:44: Unknown identifier `proofIrrel`
+warning: Proofs/BirchSwinnertonDyer.lean:130:13: This simp argument is unused:
+  EllipticCurveQ.a
+error: Proofs/BirchSwinnertonDyer.lean:860:46: No goals to be solved
+info: Proofs/BirchSwinnertonDyer.lean:1620:2: Try this:
+  [apply] ring_nf
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.BirchSwinnertonDyer
+error: build failed
+===== BirchSwinnertonDyerOQ01
+error: Proofs/BirchSwinnertonDyer.lean:132:44: Unknown identifier `proofIrrel`
+warning: Proofs/BirchSwinnertonDyer.lean:130:13: This simp argument is unused:
+  EllipticCurveQ.a
+error: Proofs/BirchSwinnertonDyer.lean:860:46: No goals to be solved
+info: Proofs/BirchSwinnertonDyer.lean:1620:2: Try this:
+  [apply] ring_nf
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.BirchSwinnertonDyer
+error: build failed
+===== BirchSwinnertonDyerOQ06
+error: Proofs/BirchSwinnertonDyer.lean:132:44: Unknown identifier `proofIrrel`
+warning: Proofs/BirchSwinnertonDyer.lean:130:13: This simp argument is unused:
+  EllipticCurveQ.a
+error: Proofs/BirchSwinnertonDyer.lean:860:46: No goals to be solved
+info: Proofs/BirchSwinnertonDyer.lean:1620:2: Try this:
+  [apply] ring_nf
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.BirchSwinnertonDyer
+error: build failed
+===== BirthdayProblem
+error: Proofs/BirthdayProblem.lean:109:6: Unknown constant `Fintype.card_embedding_eq`
+error: Proofs/BirthdayProblem.lean:108:60: unsolved goals
+n m : ℕ
+⊢ Fintype.card (Fin n ↪ Fin m) = m.descFactorial n
+error: Proofs/BirthdayProblem.lean:116:6: Unknown constant `Fintype.card_embedding_eq`
+error: Proofs/BirthdayProblem.lean:115:64: unsolved goals
+n : ℕ
+⊢ Fintype.card (Fin n ↪ Day) = numDays.descFactorial n
+===== BirthdayProblemOQ01
+error: Proofs/BirthdayProblemOQ01.lean:410:14: Unknown constant `Nat.choose_three_right`
+error: Proofs/BirthdayProblemOQ01.lean:420:4: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  f ≥ 0
+error: Proofs/BirthdayProblemOQ01.lean:476:46: Tactic `native_decide` evaluated that the proposition
+  Nat.choose 188 4 = 51895981
+is false
+error: Proofs/BirthdayProblemOQ01.lean:483:46: Tactic `native_decide` evaluated that the proposition
+  Nat.choose 187 4 = 47791135
+is false
+===== BirthdayProblemOQ01OQ01Aristotle
+error: Proofs/BirthdayProblemOQ01.lean:410:14: Unknown constant `Nat.choose_three_right`
+error: Proofs/BirthdayProblemOQ01.lean:420:4: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  f ≥ 0
+error: Proofs/BirthdayProblemOQ01.lean:476:46: Tactic `native_decide` evaluated that the proposition
+  Nat.choose 188 4 = 51895981
+is false
+error: Proofs/BirthdayProblemOQ01.lean:483:46: Tactic `native_decide` evaluated that the proposition
+  Nat.choose 187 4 = 47791135
+is false
+===== BirthdayProblemOQ01OQ01OQ03
+error: Proofs/BirthdayProblemOQ01.lean:410:14: Unknown constant `Nat.choose_three_right`
+error: Proofs/BirthdayProblemOQ01.lean:420:4: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  f ≥ 0
+error: Proofs/BirthdayProblemOQ01.lean:476:46: Tactic `native_decide` evaluated that the proposition
+  Nat.choose 188 4 = 51895981
+is false
+error: Proofs/BirthdayProblemOQ01.lean:483:46: Tactic `native_decide` evaluated that the proposition
+  Nat.choose 187 4 = 47791135
+is false
+===== BirthdayProblemOQ03OQ01
+error: Proofs/BirthdayProblemOQ03OQ01.lean:211:2: Tactic `apply` failed: could not unify the conclusion of `@card_le_card`
+  #?s ≤ #?t
+with the goal
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.BirthdayProblemOQ03OQ01
+error: build failed
+===== BorsukUlamOQ02
+error: Proofs/BorsukUlamOQ02.lean:112:4: unsolved goals
+case mp.«0»
+n m : ℕ
+error: Proofs/BorsukUlamOQ02.lean:190:23: Unknown constant `EuclideanSpace.equiv_symm_pi_lp_apply`
+error: Proofs/BorsukUlamOQ02.lean:189:84: unsolved goals
+p : ℕ
+hp : 0 < p
+error: Proofs/BorsukUlamOQ02.lean:192:23: Unknown constant `EuclideanSpace.equiv_symm_pi_lp_apply`
+warning: Proofs/BorsukUlamOQ02.lean:192:10: Possibly looping simp theorem: `zp_rotation.eq_1`
+
+===== BorsukUlamOQ02OQ02
+error: Proofs/BorsukUlamOQ02OQ02.lean:57:52: typeclass instance problem is stuck
+  SMul ?m.1 α
+
+error: Proofs/BorsukUlamOQ02OQ02.lean:63:35: typeclass instance problem is stuck
+  SMul ?m.1 β
+
+error: Proofs/BorsukUlamOQ02OQ02.lean:70:14: typeclass instance problem is stuck
+  SMul ?m.1 β
+
+error: Proofs/BorsukUlamOQ02OQ02.lean:94:22: typeclass instance problem is stuck
+  SMul ?m.1 β
+
+===== BorsukUlamOQ02OQ03
+error: Proofs/BorsukUlamOQ02OQ03.lean:156:53: Application type mismatch: The argument
+  mul_comm q p
+has type
+error: Proofs/BorsukUlamOQ02OQ03.lean:181:4: `BorsukUlamOQ02OQ03.doldIndex` not supported by code generator; consider marking definition as `noncomputable`
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.BorsukUlamOQ02OQ03
+error: build failed
+===== BorsukUlamOQ03
+error: Proofs/BorsukUlamOQ03.lean:1970:2: unsolved goals
+case e'_2
+n : ℕ
+error: Proofs/BorsukUlamOQ03.lean:4823:4: `simp` made no progress
+warning: Proofs/BorsukUlamOQ03.lean:4885:80: this tactic is never executed
+
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.BorsukUlamOQ03
+error: build failed
+===== BorsukUlamOQ03OQ01
+error: Proofs/BorsukUlamOQ03OQ01.lean:867:27: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  a + b ≤ -1
+error: Proofs/BorsukUlamOQ03OQ01.lean:867:27: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  a - b ≥ 1
+error: Proofs/BorsukUlamOQ03OQ01.lean:917:12: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'signZ', which is 'noncomputable'
+error: Proofs/BorsukUlamOQ03OQ01.lean:933:10: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  {i ∈ {0} | signZ (L i) ⋯ ≠ signZ (L (i + 1)) ⋯}
+in the target expression
+===== BorsukUlamOQ03OQ02
+error: Proofs/BorsukUlamOQ03OQ02.lean:82:4: Type mismatch: After simplification, term
+  this
+ has type
+error: Proofs/BorsukUlamOQ03OQ02.lean:99:2: Type mismatch: After simplification, term
+  this
+ has type
+error: Proofs/BorsukUlamOQ03OQ02.lean:124:4: Type mismatch: After simplification, term
+  this
+ has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.BorsukUlamOQ03OQ02
+===== BorsukUlamOQ03OQ03
+error: Proofs/BorsukUlamOQ03OQ03.lean:367:44: `simp` made no progress
+error: Proofs/BorsukUlamOQ03OQ03.lean:368:44: `simp` made no progress
+warning: Proofs/BorsukUlamOQ03OQ03.lean:521:5: Variable name `hi` is not explicitly referenced.
+
+error: Proofs/BorsukUlamOQ03OQ03.lean:774:53: `simp` made no progress
+error: Proofs/BorsukUlamOQ03OQ03.lean:775:54: `simp` made no progress
+warning: Proofs/BorsukUlamOQ03OQ03.lean:866:37: Variable name `hN` is not explicitly referenced.
+
+===== BorsukUlamOQ04OQ03
+error: Proofs/BorsukUlamOQ04OQ03.lean:181:2: failed to synthesize instance of type class
+  Subsingleton universalZ2Bundle.Total
+
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.BorsukUlamOQ04OQ03
+error: build failed

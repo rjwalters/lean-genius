@@ -150,11 +150,13 @@ theorem six_dimensional_coefficient :
 def diameterGraph {d n : ℕ} (A : PointConfig d n) : SimpleGraph (Fin n) where
   Adj i j := i ≠ j ∧ pointDist (A i) (A j) = diameter A
   symm := by
+    constructor
     intro i j ⟨hne, hdist⟩
     constructor
     · exact hne.symm
     · simp [pointDist, dist_comm, hdist]
   loopless := by
+    constructor
     intro i ⟨hne, _⟩
     exact hne rfl
 

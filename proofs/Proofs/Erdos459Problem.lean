@@ -24,6 +24,8 @@ import Mathlib.Data.Nat.Factorization.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Real.Basic
 
+open scoped Classical
+
 open Finset Nat
 
 namespace Erdos459

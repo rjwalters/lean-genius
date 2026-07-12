@@ -29,6 +29,8 @@ import Mathlib.Combinatorics.SimpleGraph.Subgraph
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Real.Basic
 
+open scoped Classical
+
 open SimpleGraph
 
 namespace Erdos714
@@ -98,7 +100,7 @@ axiom kovari_sos_turan (r : ℕ) (hr : r ≥ 2) :
 - r = 4: exponent = 7/4 = 1.75
 - As r → ∞: exponent → 2
 -/
-def kstExponent (r : ℕ) : ℝ := 2 - 1 / (r : ℝ)
+noncomputable def kstExponent (r : ℕ) : ℝ := 2 - 1 / (r : ℝ)
 
 /-
 ## Part IV: The Conjecture and Partial Results

@@ -39,6 +39,10 @@ import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Order.Filter.Basic
 import Mathlib.Tactic
 
+open scoped Classical
+
+open scoped Topology
+
 namespace Erdos859
 
 open Nat Finset Filter Asymptotics Real

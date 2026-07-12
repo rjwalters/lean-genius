@@ -23,6 +23,8 @@ import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Real.Basic
 
+open scoped Classical
+
 open Asymptotics Filter
 
 namespace Erdos489
@@ -35,7 +37,7 @@ namespace Erdos489
 **Counting Function:**
 |A ∩ [1,x]| = number of elements of A up to x.
 -/
-def countingFunction (A : Set ℕ) (x : ℕ) : ℕ :=
+noncomputable def countingFunction (A : Set ℕ) (x : ℕ) : ℕ :=
   (Finset.filter (fun n => n ∈ A) (Finset.range (x + 1))).card
 
 /--
@@ -76,7 +78,7 @@ axiom nthElement (B : Set ℕ) (n : ℕ) : ℕ
 **Gap Function:**
 g_i = b_{i+1} - b_i is the gap between consecutive elements.
 -/
-def gap (B : Set ℕ) (i : ℕ) : ℕ :=
+noncomputable def gap (B : Set ℕ) (i : ℕ) : ℕ :=
   nthElement B (i + 1) - nthElement B i
 
 /--

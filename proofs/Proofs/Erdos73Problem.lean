@@ -30,6 +30,8 @@ import Mathlib.Data.Finset.Card
 import Mathlib.Data.Fintype.Basic
 import Mathlib.Tactic
 
+open scoped Classical
+
 namespace Erdos73
 
 open SimpleGraph Finset

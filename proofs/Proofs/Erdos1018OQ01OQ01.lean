@@ -73,8 +73,8 @@ set. Two vertices are adjacent iff they differ and at least one lies in the
 universal part. This is the extremal `k`-degenerate graph. -/
 def splitGraph (n k : ℕ) : SimpleGraph (Fin n) where
   Adj i j := i ≠ j ∧ ((i : ℕ) < k ∨ (j : ℕ) < k)
-  symm := by rintro i j ⟨hij, h⟩; exact ⟨hij.symm, h.symm⟩
-  loopless := by rintro i ⟨h, _⟩; exact h rfl
+  symm := by constructor; rintro i j ⟨hij, h⟩; exact ⟨hij.symm, h.symm⟩
+  loopless := by constructor; rintro i ⟨h, _⟩; exact h rfl
 
 @[simp] lemma splitGraph_adj (n k : ℕ) (i j : Fin n) :
     (splitGraph n k).Adj i j ↔ i ≠ j ∧ ((i : ℕ) < k ∨ (j : ℕ) < k) := Iff.rfl

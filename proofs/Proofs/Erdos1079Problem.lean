@@ -20,6 +20,8 @@ import Mathlib.Combinatorics.SimpleGraph.Clique
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Real.Basic
 
+open scoped Classical
+
 open SimpleGraph Finset
 
 namespace Erdos1079

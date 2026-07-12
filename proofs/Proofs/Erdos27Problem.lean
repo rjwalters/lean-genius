@@ -38,6 +38,8 @@ import Mathlib.Data.Real.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Tactic
 
+open scoped Classical
+
 namespace Erdos27
 
 open Finset Real Filter

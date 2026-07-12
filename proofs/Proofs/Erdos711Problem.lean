@@ -35,6 +35,8 @@ import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Order.Interval.Finset.Nat
 
+open scoped Classical
+
 open Nat Finset
 
 namespace Erdos711
@@ -92,7 +94,7 @@ notation "f(" n ", " m ")" => minimalIntervalLength n m
 **Connection to Problem #710:**
 f(n,n) is exactly the function f(n) from Problem #710.
 -/
-def fnn (n : ℕ) : ℕ := f(n, n)
+noncomputable def fnn (n : ℕ) : ℕ := f(n, n)
 
 /-
 ## Part III: Known Upper Bounds
@@ -141,7 +143,7 @@ noncomputable def maxFnm (n : ℕ) : ℕ :=
 **Difference from f(n,n):**
 For fixed n, the difference f(n,m) - f(n,n) can vary with m.
 -/
-def differenceFnm (n m : ℕ) : ℤ :=
+noncomputable def differenceFnm (n m : ℕ) : ℤ :=
   (f(n, m) : ℤ) - (f(n, n) : ℤ)
 
 /--

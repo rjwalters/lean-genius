@@ -32,6 +32,7 @@ Erdős Problem #1179: Uniform Subset Sum Representations in Abelian Groups
   - [ErHa76] Erdős, Hall (1976)
 -/
 
+import Mathlib
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Powerset
 import Mathlib.Data.Finset.Card

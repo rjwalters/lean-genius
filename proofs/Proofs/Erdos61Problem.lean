@@ -127,8 +127,8 @@ def triangleGraph : SimpleGraph (Fin 3) := completeGraph (Fin 3)
 /-- The path graph P₃ on 3 vertices (a-b-c with edges ab, bc). -/
 def threePathGraph : SimpleGraph (Fin 3) where
   Adj := fun i j => (i = 0 ∧ j = 1) ∨ (i = 1 ∧ j = 0) ∨ (i = 1 ∧ j = 2) ∨ (i = 2 ∧ j = 1)
-  symm := by intro i j h; rcases h with ⟨_, _⟩ | ⟨_, _⟩ | ⟨_, _⟩ | ⟨_, _⟩ <;> simp_all
-  loopless := by intro i h; rcases h with ⟨_, _⟩ | ⟨_, _⟩ | ⟨_, _⟩ | ⟨_, _⟩ <;> simp_all
+  symm := by constructor; intro i j h; rcases h with ⟨_, _⟩ | ⟨_, _⟩ | ⟨_, _⟩ | ⟨_, _⟩ <;> simp_all
+  loopless := by constructor; intro i h; rcases h with ⟨_, _⟩ | ⟨_, _⟩ | ⟨_, _⟩ | ⟨_, _⟩ <;> simp_all
 
 /-
 The Erdős-Hajnal conjecture is known to be true for several specific graphs H,

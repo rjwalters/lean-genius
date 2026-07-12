@@ -31,6 +31,8 @@ import Mathlib.Tactic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 
+open scoped Classical
+
 open Finset
 
 /- ## Core Definitions -/

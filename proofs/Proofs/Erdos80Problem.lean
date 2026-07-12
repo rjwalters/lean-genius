@@ -38,6 +38,8 @@ import Mathlib.Data.Finset.Card
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 
+open scoped Classical
+
 open SimpleGraph Finset Real
 
 namespace Erdos80
@@ -76,7 +78,7 @@ def isTriangleSaturated (G : SimpleGraph V) : Prop :=
 A book of size m is an edge (u, v) that is shared by at least m triangles.
 The edge is the "spine" and the triangles are the "pages".
 -/
-def bookSize (G : SimpleGraph V) (u v : V) : ℕ :=
+noncomputable def bookSize (G : SimpleGraph V) (u v : V) : ℕ :=
   (Finset.univ.filter fun w => isTriangle G u v w).card
 
 /--
@@ -174,7 +176,7 @@ The threshold c = 1/4 separates two regimes:
 - c > 1/4: Linear books (f_c(n) ≥ n/6)
 - c < 1/4: Subpolynomial books (f_c(n) ≤ n^{o(1)})
 -/
-def critical_threshold : ℝ := 1/4
+noncomputable def critical_threshold : ℝ := 1/4
 
 /--
 **Above threshold: Linear growth**

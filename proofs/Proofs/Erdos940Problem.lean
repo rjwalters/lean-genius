@@ -32,6 +32,8 @@ import Mathlib.Order.Filter.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Tactic
 
+open scoped Classical
+
 namespace Erdos940
 
 open Filter Finset

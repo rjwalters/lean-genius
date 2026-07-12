@@ -26,6 +26,8 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Nat.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 
+open scoped Classical
+
 open Nat Finset Real
 
 namespace Erdos773

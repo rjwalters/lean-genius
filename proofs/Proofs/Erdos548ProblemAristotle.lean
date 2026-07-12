@@ -27,11 +27,13 @@ noncomputable def edgeCount (G : SimpleGraph V) : ℕ := G.edgeFinset.card
 def starGraph (k : ℕ) : SimpleGraph (Fin (k + 1)) where
   Adj i j := (i.val = 0 ∧ j.val ≠ 0) ∨ (j.val = 0 ∧ i.val ≠ 0)
   symm := by
+    constructor
     intro i j h
     cases h with
     | inl h => right; exact ⟨h.2, h.1⟩
     | inr h => left; exact ⟨h.2, h.1⟩
   loopless := by
+    constructor
     intro i h
     cases h with
     | inl h => exact h.2 h.1

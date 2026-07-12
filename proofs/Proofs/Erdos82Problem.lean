@@ -32,6 +32,8 @@ import Mathlib.Order.Filter.Basic
 import Mathlib.Topology.Algebra.Order.LiminfLimsup
 import Mathlib.Tactic
 
+open scoped Classical
+
 open Nat Filter
 
 namespace Erdos82

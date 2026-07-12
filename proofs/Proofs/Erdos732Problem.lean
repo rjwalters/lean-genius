@@ -34,6 +34,8 @@ Tags: combinatorics, block-designs, enumeration
 
 import Mathlib
 
+open scoped Classical
+
 namespace Erdos732
 
 /-

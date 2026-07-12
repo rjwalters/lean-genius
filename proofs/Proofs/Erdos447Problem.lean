@@ -28,6 +28,8 @@ import Mathlib.Data.Nat.Choose.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Combinatorics.SetFamily.Compression.Down
 
+open scoped Classical
+
 open Finset Nat
 
 namespace Erdos447

@@ -34,6 +34,8 @@ import Mathlib.Data.Real.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Tactic
 
+open scoped Classical
+
 namespace Erdos543
 
 open Finset Real

@@ -105,7 +105,7 @@ theorem autPerm_conj_leftReg (φ : MulAut G) (g : G) :
 
 /-- Every automorphism normalizes the left-regular image `L(G)`. -/
 theorem autPerm_mem_normalizer (φ : MulAut G) :
-    autPerm φ ∈ (leftReg G).range.normalizer := by
+    autPerm φ ∈ Subgroup.normalizer (leftReg G).range := by
   rw [Subgroup.mem_normalizer_iff]
   intro h
   constructor
@@ -128,7 +128,7 @@ theorem autPerm_mem_normalizer (φ : MulAut G) :
 normalizes the left-regular image and fixes the identity **iff** it is the
 permutation underlying an automorphism of `G`. -/
 theorem mem_normalizer_and_fixes_one_iff (σ : Equiv.Perm G) :
-    (σ ∈ (leftReg G).range.normalizer ∧ σ 1 = 1) ↔ ∃ φ : MulAut G, autPerm φ = σ := by
+    (σ ∈ Subgroup.normalizer (leftReg G).range ∧ σ 1 = 1) ↔ ∃ φ : MulAut G, autPerm φ = σ := by
   constructor
   · rintro ⟨hN, h1⟩
     rw [Subgroup.mem_normalizer_iff] at hN
@@ -159,13 +159,13 @@ theorem mem_normalizer_and_fixes_one_iff (σ : Equiv.Perm G) :
 image **iff** it factors as a left translation composed with (the permutation of)
 an automorphism: `N_{Sym(G)}(L(G)) = L(G) · Aut(G)`. -/
 theorem mem_normalizer_iff_exists (σ : Equiv.Perm G) :
-    σ ∈ (leftReg G).range.normalizer ↔
+    σ ∈ Subgroup.normalizer (leftReg G).range ↔
       ∃ (g : G) (φ : MulAut G), σ = leftReg G g * autPerm φ := by
   constructor
   · intro hN
-    have hgN : leftReg G (σ 1) ∈ (leftReg G).range.normalizer :=
+    have hgN : leftReg G (σ 1) ∈ Subgroup.normalizer (leftReg G).range :=
       Subgroup.le_normalizer ⟨σ 1, rfl⟩
-    have hτN : (leftReg G (σ 1))⁻¹ * σ ∈ (leftReg G).range.normalizer :=
+    have hτN : (leftReg G (σ 1))⁻¹ * σ ∈ Subgroup.normalizer (leftReg G).range :=
       Subgroup.mul_mem _ (Subgroup.inv_mem _ hgN) hN
     have hτ1 : ((leftReg G (σ 1))⁻¹ * σ) 1 = 1 := by
       rw [Equiv.Perm.mul_apply, ← map_inv, leftReg_apply, inv_mul_cancel]

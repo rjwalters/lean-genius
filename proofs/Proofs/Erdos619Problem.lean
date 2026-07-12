@@ -28,6 +28,8 @@ import Mathlib.Combinatorics.SimpleGraph.Basic
 import Mathlib.Combinatorics.SimpleGraph.Connectivity.Subgraph
 import Mathlib.Data.Nat.Basic
 
+open scoped Classical
+
 open SimpleGraph
 
 namespace Erdos619
@@ -70,11 +72,13 @@ The graph G' obtained by adding a set of edges E to G.
 def addEdges (G : SimpleGraph V) (E : Set (Sym2 V)) : SimpleGraph V where
   Adj u v := G.Adj u v ∨ ⟦(u, v)⟧ ∈ E
   symm := by
+    constructor
     intro u v h
     cases h with
     | inl h => left; exact G.symm h
     | inr h => right; simp [Sym2.eq_swap]; exact h
   loopless := by
+    constructor
     intro v h
     cases h with
     | inl h => exact G.loopless v h
@@ -158,8 +162,8 @@ The path on n vertices has diameter n-1.
 -/
 def pathGraph (n : ℕ) : SimpleGraph (Fin n) where
   Adj i j := (i.val + 1 = j.val) ∨ (j.val + 1 = i.val)
-  symm := by intro i j h; cases h <;> (right; assumption) <;> (left; assumption)
-  loopless := by intro v h; cases h <;> omega
+  symm := by constructor; intro i j h; cases h <;> (right; assumption) <;> (left; assumption)
+  loopless := by constructor; intro v h; cases h <;> omega
 
 /-  The path graph is triangle-free. -/
 /-  Pₙ has diameter n-1. -/

@@ -83,10 +83,12 @@ hemisphere pair. -/
 def equatorGraph : SimpleGraph (Facet n) where
   Adj s t := t = equatorFlip n s
   symm := by
+    constructor
     intro s t h
     subst h
     exact (equatorFlip_involutive n s).symm
   loopless := by
+    constructor
     intro s h
     exact equatorFlip_free n s h.symm
 

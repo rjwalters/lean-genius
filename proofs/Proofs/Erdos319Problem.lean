@@ -23,6 +23,8 @@ import Mathlib.Data.Finset.Card
 import Mathlib.Data.Nat.Basic
 import Mathlib.Tactic
 
+open scoped Classical
+
 /- ## Definitions -/
 
 /-- A signing function assigns ±1 to each element of a finite set. -/

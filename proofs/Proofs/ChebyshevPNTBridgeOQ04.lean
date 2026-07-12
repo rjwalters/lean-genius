@@ -176,7 +176,7 @@ theorem lambdaRecip_eq (N : ℕ) (hN : 1 ≤ N) :
   have hNpos : (0 : ℝ) < N := by exact_mod_cast hN
   have hN0 : (N : ℝ) ≠ 0 := ne_of_gt hNpos
   have h := mul_lambdaRecip_eq N
-  rw [div_add_div_same, eq_div_iff hN0]
+  rw [← add_div, eq_div_iff hN0]
   linear_combination h
 
 /-- The two analytic inputs to Mertens' first theorem, packaged as hypotheses.

@@ -105,8 +105,7 @@ private theorem card_transcendentals_ge_aleph0 :
     Proof: ℵ₀ + κ ≤ κ + κ = κ (by Cardinal.add_eq_self), and κ ≤ ℵ₀ + κ trivially. -/
 private theorem aleph0_add_of_ge {κ : Cardinal} (h : ℵ₀ ≤ κ) : ℵ₀ + κ = κ :=
   le_antisymm
-    (calc ℵ₀ + κ ≤ κ + κ := add_le_add_right h κ
-              _ = κ := Cardinal.add_eq_self h)
+    (le_trans (add_le_add_right h κ) (le_of_eq (Cardinal.add_eq_self h)))
     (le_add_left κ ℵ₀)
 
 /-- **Lower bound**: 𝔠 ≤ #transcendentalReals.

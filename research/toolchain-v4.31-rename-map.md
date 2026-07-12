@@ -291,3 +291,69 @@ Left unresolved for Doctor (#38065): `Nat.nth_prime_strictMono`/`nth_prime_zero`
 **Unresolved (could not map):** `Nat.choose_two_middle`, `MeasureTheory.Measure.restrict_prod_eq_prod_restrict`, `Finset.sum_sort`, `Nat.factorial_le_factorial`, `ciSup_empty`, `Nat.coprime_iff_disjoint` — all single-file; resolve during the batch with `exact?`/loogle.
 
 *Re-harvest procedure:* the inventory is still running; rerun the extraction one-liners in this file's git history (deprecation-pair grep + unknown-constant grep over `proofs/spike-logs-full/shard-*/**.log`) before finalizing #38064's batch list.
+
+## 7. Doctor-batch recipes (#38065, discovered 2026-07-12)
+
+### 7a. Classical decidability loss (biggest instance-synth recipe)
+Defs using `Finset.filter` / `Nat.find` / `if-then-else` / `Finset.sup` / graph
+`degree`/`neighborFinset` over undecidable predicates no longer synthesize
+`Decidable`/`DecidablePred`/`DecidableEq`/`Fintype` instances on v4.31.
+**Recipe:** insert `open scoped Classical` after the import block
+(`proofs/batch2/add_open_classical.py <modules.txt>`), then run the wave and feed
+the diag through `proofs/batch2/fix_noncomputable.py <diag files>` — the classical
+instances make flagged defs noncomputable, and the compiler names each def that
+now needs the `noncomputable` keyword ("failed to compile definition / not
+supported by code generator"). Two-pass; both scripts idempotent. Validated:
+Erdos860/600/270/440/725/886/554/716 + ~140 swept.
+
+### 7b. `Subgroup.normalizer` now takes `Set G`
+`def normalizer (S : Set G) : Subgroup G` (Algebra/Group/Subgroup/Defs.lean:668) —
+`H.normalizer` dot-notation on a `Subgroup` fails ("does not have a usable
+parameter"). **Recipe:** `H.normalizer` → `Subgroup.normalizer H` (coercion is
+automatic in argument position); wrap when projections follow:
+`P.normalizer.index` → `(Subgroup.normalizer P).index`. Lemma names
+(`mem_normalizer_iff`, `le_normalizer`, `normalizer_eq_top_iff`) unchanged.
+
+### 7c. `SimpleGraph` fields are now `Std.Symm` / `Std.Irrefl` wrappers
+`structure SimpleGraph … symm : Std.Symm Adj; loopless : Std.Irrefl Adj`.
+- Use sites: `G.symm h` → `h.symm` (via `SimpleGraph.Adj.symm`, Basic.lean:169).
+- Structure-instance sites: `symm x y h := …` → `symm.symm x y h := …`,
+  `loopless x h := …` → `loopless.irrefl x h := …` (nested-field syntax, cf.
+  Mathlib's own `supSet` instance).
+
+### 7d. Misc verified renames/removals (Doctor batch)
+| old | new | notes |
+|---|---|---|
+| `NormedSpace.exp 𝕂 x` | `NormedSpace.exp x` | 𝕂 parameter dropped; `exp_eq_tsum (𝔸 := _)` |
+| `Equiv.Perm.apply_inv_self` | `Equiv.Perm.inv_def` + `Equiv.apply_symm_apply` | rw/simp chains; or `show … (Equiv.symm σ x) …` |
+| `List.maximum?` | `List.max?` | |
+| `List.bind` | `List.flatMap` | |
+| `List.get? l n` | `l[n]?` | |
+| `Nat.choose_three_right` | REMOVED | derive via `Nat.descFactorial_eq_factorial_mul_choose n 3` + `descFactorial_succ` rewrites (BirthdayProblemOQ01 pattern) |
+| `Nat.totient_pos h` | `Nat.totient_pos.mpr h` | now an iff |
+| `Set.ncard_biUnion` | `Set.Finite.ncard_biUnion` | RHS is now `∑ᶠ` (finsum) — proof rework, not a rename |
+| `Set.piecewise_eq_of_not_mem` | `Set.piecewise_eq_of_notMem` | notMem wave |
+| `proofIrrel` | `Subsingleton.elim` | |
+| `Real.logb` unknown | umbrella `import Mathlib` | import loss |
+| `tendsto_integral_of_dominated_convergence` unknown | umbrella `import Mathlib` | import loss (Integral.DominatedConvergence) |
+| σ (divisor function) notation | `open scoped ArithmeticFunction.sigma` | moved to sub-locale (Misc.lean:147) |
+| ω (Ordinal) notation | `open Ordinal` (+ `Ordinal.omega0`) | scoped notation, Basic.lean:813 |
+| 𝓝 notation | `open scoped Topology` | |
+| `IsCyclotomicExtension {n} ℚ (CyclotomicField n ℚ)` synth | UNRESOLVED | instance `[CharZero K]` exists (Cyclotomic/Basic.lean:702) yet synthesis fails in project files (InverseGalois, AngleTrisectionEmbedding) — needs in-container debugging |
+
+### 7e. Parse/elaboration drift (Doctor batch)
+- `λ` can no longer be a *binder/identifier name* (`(λ : ℝ)`) — rename to `lam`.
+- `prefix`/`suffix` are reserved tokens — rename binders (`pre`/`suf`).
+- doc-comment directly before `open … in def` hard-errors — move `open … in`
+  above the doc-comment.
+- doc-comment before `variable` hard-errors — demote to `/- … -/`.
+- `{f x | x : T, p x}` set-builder comma form — use `{f x | (x : T) (_ : p x)}`.
+- multi-line term continuation after `by <tac> …` at lower indent breaks —
+  join lines or restructure.
+- `decide` on `Nat.Prime` of 3-digit numbers hits maxRecDepth —
+  `set_option maxRecDepth 40000`.
+- `Set.ncard_le_ncard` autoparam `toFinite_tac` weaker — pass finiteness
+  explicitly (`(Set.finite_Iio y).subset fun u hu => hu.1` pattern).
+- `natDegree`-of-explicit-polynomial `norm_num` sets drift — `compute_degree!`.
+- structure-field `where` defs with removed doc-comment support: `-/` inside
+  docstring prose (`field-/module`) terminates the comment — spell `field/module`.

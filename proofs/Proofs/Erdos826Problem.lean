@@ -25,6 +25,8 @@ import Mathlib
 import Mathlib.Data.Real.Basic
 import Mathlib.Tactic
 
+open scoped ArithmeticFunction.sigma
+
 open scoped ArithmeticFunction
 open Nat
 
@@ -245,7 +247,7 @@ n+1, n+2, ..., n+⌊log(n)/C⌋ to all have unusually few divisors.
 By multiplicative number theory heuristics, such "smooth intervals"
 should occur infinitely often, but proving this is hard.
 -/
-def heuristicCriticalRange (n : ℕ) (C : ℝ) : ℕ :=
+noncomputable def heuristicCriticalRange (n : ℕ) (C : ℝ) : ℕ :=
   ⌈Real.log n / C⌉₊
 
 /-

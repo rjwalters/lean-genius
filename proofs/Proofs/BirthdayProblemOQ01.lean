@@ -407,9 +407,16 @@ theorem three_mul_choose_three (n : ℕ) (hn : 2 ≤ n) :
     -- Use the identity: (m+2).choose 3 = (m+2) * (m+1) * m / 6
     -- which follows from Nat.choose applied to a product
     have six_choose : 6 * (m + 2).choose 3 = (m + 2) * (m + 1) * m := by
-      have := Nat.choose_three_right (m + 2)
-      -- Nat.choose_three_right gives: C(n, 3) = n * (n-1) * (n-2) / 6
-      omega
+      have h := Nat.descFactorial_eq_factorial_mul_choose (m + 2) 3
+      rw [Nat.descFactorial_succ, Nat.descFactorial_succ, Nat.descFactorial_succ,
+          Nat.descFactorial_zero] at h
+      have e2 : m + 2 - 2 = m := by omega
+      have e1 : m + 2 - 1 = m + 1 := by omega
+      have e0 : m + 2 - 0 = m + 2 := by omega
+      rw [e2, e1, e0] at h
+      have hf : Nat.factorial 3 = 6 := rfl
+      rw [hf] at h
+      rw [← h]; ring
     -- Now: 3 * C(m+2, 3) = (m+2)*(m+1)*m/2
     -- And: (m+2)*(m+1)/2 * m = (m+2)*(m+1)*m/2
     have even_prod : 2 ∣ (m + 2) * (m + 1) := by

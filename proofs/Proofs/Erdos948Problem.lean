@@ -24,6 +24,8 @@ direction and growth constraints.
 
 import Mathlib
 
+open scoped Classical
+
 open Finset
 
 namespace Erdos948

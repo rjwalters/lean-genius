@@ -35,6 +35,8 @@ import Mathlib
 import Mathlib.NumberTheory.PrimeCounting
 import Mathlib.Data.Nat.Prime.Basic
 
+open scoped Classical
+
 namespace Erdos860
 
 open Nat Filter Asymptotics

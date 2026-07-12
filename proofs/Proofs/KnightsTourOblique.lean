@@ -84,6 +84,7 @@ theorem neg_knight_offset {dx dy : Int} (h : isKnightOffset dx dy = true) :
 def knightGraph : SimpleGraph Square where
   Adj := knightAdj
   symm := by
+    constructor
     intro s1 s2 h
     simp only [knightAdj] at h ⊢
     have hdx : (s1.1 : Int) - (s2.1 : Int) = -((s2.1 : Int) - (s1.1 : Int)) := by ring
@@ -91,6 +92,7 @@ def knightGraph : SimpleGraph Square where
     rw [hdx, hdy]
     exact neg_knight_offset h
   loopless := by
+    constructor
     intro s h
     simp only [knightAdj, isKnightOffset, knightOffsets] at h
     -- (0, 0) is not in knightOffsets
@@ -983,7 +985,7 @@ theorem filter_length_ge_of_distinct_indices {α : Type*} (l : List α) (p : α 
   induction l with
   | nil =>
     simp only [List.length_nil] at indices
-    have : indices = ∅ := Finset.eq_empty_of_forall_not_mem fun i => i.elim0
+    have : indices = ∅ := Finset.eq_empty_of_forall_notMem fun i => i.elim0
     simp [this]
   | cons hd tl ih =>
     by_cases hp : p hd

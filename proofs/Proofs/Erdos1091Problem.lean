@@ -117,12 +117,14 @@ def PentagonalWheel : SimpleGraph (Fin 6) where
     -- Spokes: center (5) to all outer vertices
     (i.val = 5 ∧ j.val < 5) ∨ (j.val = 5 ∧ i.val < 5)
   symm := by
+    constructor
     intro i j h
     rcases h with ⟨hi, hj, hAdj⟩ | ⟨hi, hj⟩ | ⟨hi, hj⟩
     · left; exact ⟨hj, hi, hAdj.symm⟩
     · right; right; exact ⟨hj, hi⟩
     · right; left; exact ⟨hj, hi⟩
   loopless := by
+    constructor
     intro i h
     rcases h with ⟨_, _, hAdj⟩ | ⟨hi, hj⟩ | ⟨hi, hj⟩
     · omega

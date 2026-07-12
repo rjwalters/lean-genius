@@ -57,7 +57,7 @@ def countingFunction (A : IncreasingSeq) (x : ℕ) : ℕ :=
 **The normalized ratio:**
 A(x) / √x measures how many consecutive pairs have small LCM.
 -/
-def normalizedRatio (A : IncreasingSeq) (x : ℕ) : ℝ :=
+noncomputable def normalizedRatio (A : IncreasingSeq) (x : ℕ) : ℝ :=
   (countingFunction A x : ℝ) / Real.sqrt x
 
 /-

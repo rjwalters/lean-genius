@@ -4,6 +4,8 @@ import Mathlib.SetTheory.Cardinal.Basic
 import Mathlib.Data.Set.Countable
 import Mathlib.Tactic
 
+open scoped Classical
+
 /-
 # De-axiomatizing the Bounding Number Lower Bound: ℵ₁ ≤ 𝔟
 

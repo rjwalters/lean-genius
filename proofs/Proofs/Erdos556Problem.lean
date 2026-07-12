@@ -26,6 +26,8 @@ import Mathlib.Combinatorics.SimpleGraph.Clique
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Fin.Basic
 
+open scoped Classical
+
 namespace Erdos556
 
 open Nat SimpleGraph
@@ -43,11 +45,13 @@ def EdgeColoring3 (n : ℕ) := Fin n × Fin n → Fin 3
 def cycleGraph (n : ℕ) : SimpleGraph (Fin n) where
   Adj i j := (i.val + 1) % n = j.val ∨ (j.val + 1) % n = i.val
   symm := by
+    constructor
     intro i j h
     cases h with
     | inl h => right; exact h
     | inr h => left; exact h
   loopless := by
+    constructor
     intro i h
     cases h with
     | inl h => omega

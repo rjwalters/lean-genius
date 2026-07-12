@@ -84,7 +84,7 @@ noncomputable def primorialTotient (k : ℕ) : ℕ :=
 **Coprime set:**
 The set of integers < Nₖ that are coprime to Nₖ.
 -/
-def coprimeSet (k : ℕ) : Finset ℕ :=
+noncomputable def coprimeSet (k : ℕ) : Finset ℕ :=
   Finset.filter (fun a => Nat.Coprime a (primorial k)) (Finset.range (primorial k))
 
 /--

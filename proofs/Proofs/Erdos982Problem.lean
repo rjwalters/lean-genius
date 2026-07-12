@@ -36,6 +36,8 @@ import Mathlib.Data.Finset.Card
 import Mathlib.Data.Set.Card
 import Mathlib.Topology.MetricSpace.Basic
 
+open scoped Classical
+
 open Finset Set
 
 namespace Erdos982
@@ -57,14 +59,14 @@ abbrev Plane : Type := EuclideanSpace ℝ (Fin 2)
 Given a point p and a finite set S, this counts how many distinct
 distances occur from p to points in S.
 -/
-def distinctDistancesFrom (p : Plane) (S : Finset Plane) : ℕ :=
+noncomputable def distinctDistancesFrom (p : Plane) (S : Finset Plane) : ℕ :=
   (S.image (fun q => dist p q)).card
 
 /--
 **Maximum Distinct Distances:**
 The maximum number of distinct distances achieved by any point in the set.
 -/
-def maxDistinctDistances (S : Finset Plane) : ℕ :=
+noncomputable def maxDistinctDistances (S : Finset Plane) : ℕ :=
   S.sup (fun p => distinctDistancesFrom p (S.erase p))
 
 /-

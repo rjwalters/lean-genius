@@ -55,7 +55,7 @@ P(n) = max{p prime : p | n}, with P(1) = 1 by convention.
 -/
 def greatestPrimeDivisor (n : ℕ) : ℕ :=
   if n ≤ 1 then 1
-  else Nat.primeFactorsList n |>.maximum? |>.getD 1
+  else Nat.primeFactorsList n |>.max? |>.getD 1
 
 /--
 **The function F_f(n):**
@@ -64,7 +64,7 @@ Equivalently, greatest prime divisor of ∏_{m=1}^n f(m).
 -/
 def F_f (f : Polynomial ℤ) (n : ℕ) : ℕ :=
   (List.range n).map (fun m => greatestPrimeDivisor (f.eval (m + 1)).natAbs)
-    |>.maximum? |>.getD 1
+    |>.max? |>.getD 1
 
 /-
 ## Part II: Known Lower Bounds

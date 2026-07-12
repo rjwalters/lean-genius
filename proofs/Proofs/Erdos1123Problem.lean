@@ -30,6 +30,8 @@ import Mathlib.Data.Set.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Topology.Basic
 
+open scoped Classical
+
 namespace Erdos1123
 
 /- ## Part I: Density Definitions -/

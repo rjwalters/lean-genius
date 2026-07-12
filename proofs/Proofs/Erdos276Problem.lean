@@ -28,6 +28,10 @@ import Mathlib.Tactic
 def IsLucasSequence (a : ℕ → ℕ) : Prop :=
   ∀ n, a (n + 2) = a (n + 1) + a n
 
+/-- v4.31 compat: `Nat.Composite` is not in Mathlib; a natural number is
+composite iff it is at least 2 and not prime. -/
+def Nat.Composite (n : ℕ) : Prop := 2 ≤ n ∧ ¬ n.Prime
+
 /-- A sequence is primefree if every term is composite. -/
 def IsPrimefree (a : ℕ → ℕ) : Prop :=
   ∀ k, (a k).Composite

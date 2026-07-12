@@ -38,6 +38,8 @@ import Mathlib.Data.Fintype.Card
 import Mathlib.Data.Real.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 
+open scoped Classical
+
 open SimpleGraph
 
 namespace Erdos134

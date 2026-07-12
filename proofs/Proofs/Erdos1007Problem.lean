@@ -44,6 +44,8 @@
 
 import Mathlib
 
+open scoped Classical
+
 open Finset
 
 /-

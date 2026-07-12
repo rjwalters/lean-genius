@@ -36,6 +36,28 @@ def classify(errs):
         return 'proof-drift'
     if 'Invalid field' in txt: return 'dot-notation-drift'
     if 'noncomputable' in txt: return 'noncomputable'
+    if 'Function expected' in txt or 'Application type mismatch' in txt:
+        return 'signature-drift'
+    if 'already been declared' in txt: return 'duplicate-decl'
+    if 'typeclass instance problem is stuck' in txt: return 'instance-synth'
+    if re.search(r'interval_cases failed|`grind` failed|push Not|Missing cases|mod_cast|decide failed|omega could not', txt):
+        return 'proof-drift'
+    if re.search(r'Invalid alternative name|Ambiguous term|cannot omit referenced section variable|Insufficient number of fields|not definitionally equal', txt):
+        return 'elab-drift'
+    if 'unexpected identifier' in txt: return 'parse-error'
+    if 'exited with code 137' in txt: return 'oom-killed'
+    if 'unterminated comment' in txt or 'expected token' in txt: return 'parse-error'
+    if 'universe level' in txt or 'metavariables' in txt or 'failed to infer' in txt:
+        return 'elab-drift'
+    if re.search(r'Unknown identifier|unknown identifier', txt): return 'unknown-ident'
+    if 'fail to show termination' in txt or 'termination' in txt: return 'termination-drift'
+    if 'No goals to be solved' in txt or 'no goals' in txt: return 'proof-drift'
+    if 'could not synthesize default value' in txt: return 'autoparam-drift'
+    if re.search(r"don't know how to synthesize|universe level metavariables|Invalid pattern|Invalid `⟨\.\.\.⟩` notation|invalid", txt):
+        return 'elab-drift'
+    if 'sorry' in txt: return 'uses-sorry'
+    if 'TIMEOUT' in txt or 'timeout' in txt: return 'slow-timeout'
+    if re.search(r'Tactic .* failed|tactic .* failed', txt): return 'proof-drift'
     return 'unclassified'
 
 args = sys.argv[1:]

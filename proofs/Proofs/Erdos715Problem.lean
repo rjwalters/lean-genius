@@ -83,8 +83,8 @@ theorem alon_friedland_kalai {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph' V) [DecidableRel G.adj]
     (hG : IsRegular G 4) (e : V × V) (he : ¬G.adj e.1 e.2) :
     let G' := { adj := fun u v => G.adj u v ∨ ({u, v} = {e.1, e.2})
-                symm := by intro u v; simp [Set.pair_comm]; tauto
-                loopless := by intro v h; cases h with
+                symm := by constructor; intro u v; simp [Set.pair_comm]; tauto
+                loopless := by constructor; intro v h; cases h with
                   | inl h => exact G.loopless v h
                   | inr h => simp at h }
     ∃ (H : SimpleGraph' V) (_ : DecidableRel H.adj), IsSubgraph H G' ∧ IsRegular H 3 := by
@@ -160,8 +160,8 @@ def petersenGraph : SimpleGraph' (Fin 10) where
       spoke ⟨v.val, h.2⟩ ⟨u.val - 5, by omega⟩
     else
       False
-  symm := by intro u v; simp; sorry
-  loopless := by intro v; simp; sorry
+  symm := by constructor; intro u v; simp; sorry
+  loopless := by constructor; intro v; simp; sorry
 
 theorem petersen_is_3_regular : IsRegular petersenGraph 3 := by
   sorry

@@ -23,6 +23,8 @@ import Mathlib.Combinatorics.SimpleGraph.Connectivity.WalkCounting
 import Mathlib.Data.Fintype.Basic
 import Mathlib.Tactic
 
+open scoped Classical
+
 namespace Erdos622
 
 open SimpleGraph Finset
@@ -92,8 +94,8 @@ def completeBipartite (n : ℕ) : SimpleGraph (Fin n ⊕ Fin n) where
     | Sum.inl _, Sum.inr _ => true
     | Sum.inr _, Sum.inl _ => true
     | _, _ => false
-  symm := by intro x y; simp only; cases x <;> cases y <;> simp
-  loopless := by intro x; cases x <;> simp
+  symm := by constructor; intro x y; simp only; cases x <;> cases y <;> simp
+  loopless := by constructor; intro x; cases x <;> simp
 
 /-- K_{n,n} has only O(n!) cycle-spanned subsets, not 2^{Θ(n)}. -/
 axiom knn_few_cycles (n : ℕ) (hn : n ≥ 2) :
@@ -108,8 +110,8 @@ def knn_with_stars (n : ℕ) : SimpleGraph (Fin n ⊕ Fin n) where
     | Sum.inr j, Sum.inl i => true
     | Sum.inl i, Sum.inl j => i = 0 ∨ j = 0  -- star centered at 0
     | Sum.inr i, Sum.inr j => i = 0 ∨ j = 0  -- star centered at 0
-  symm := by intro x y; simp only; cases x <;> cases y <;> simp [or_comm]
-  loopless := by intro x; cases x <;> simp
+  symm := by constructor; intro x y; simp only; cases x <;> cases y <;> simp [or_comm]
+  loopless := by constructor; intro x; cases x <;> simp
 
 /- ## Part VII: Examples of Erdős-Faudree Graphs -/
 

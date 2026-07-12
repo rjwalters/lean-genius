@@ -35,6 +35,8 @@ import Mathlib.NumberTheory.Divisors
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 
+open scoped Classical
+
 open Finset BigOperators
 
 namespace Erdos928
@@ -47,7 +49,7 @@ The largest prime divisor of n, or 1 if n ≤ 1.
 -/
 noncomputable def largestPrimeFactor (n : ℕ) : ℕ :=
   if h : n > 1 then
-    (n.primeFactors.toList.maximum?).getD 1
+    (n.primeFactors.toList.max?).getD 1
   else 1
 
 /- 
@@ -124,7 +126,7 @@ This is the fundamental result on smooth number distribution.
 **Consecutive Smooth Numbers:**
 The set of n where both n and n+1 are appropriately smooth.
 -/
-def consecutiveSmooth (α β : ℝ) (N : ℕ) : Finset ℕ :=
+noncomputable def consecutiveSmooth (α β : ℝ) (N : ℕ) : Finset ℕ :=
   (Finset.range N).filter (fun n =>
     n > 0 ∧ isSmooth α n ∧ isSmooth β (n + 1))
 
@@ -210,7 +212,7 @@ control of error terms in sieve methods.
 Alternative notation for the largest prime factor, used in much
 of the literature on this problem.
 -/
-abbrev Pplus := largestPrimeFactor
+noncomputable abbrev Pplus := largestPrimeFactor
 
 /- 
 **Related: P(n(n+1))**

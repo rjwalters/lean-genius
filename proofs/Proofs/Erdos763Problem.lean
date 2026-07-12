@@ -31,6 +31,8 @@ import Mathlib.Data.Nat.Basic
 import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 import Mathlib.Data.Set.Function
 
+open scoped Classical
+
 open Finset BigOperators Filter Asymptotics
 
 namespace Erdos763
@@ -85,7 +87,7 @@ def HasLinearGrowthBounded (A : ℕ → Finset ℕ) (c : ℝ) : Prop :=
 /--
 **For infinite sets:** We consider sets A ⊆ ℕ via their truncations to [0, n].
 -/
-def truncate (A : Set ℕ) (n : ℕ) : Finset ℕ :=
+noncomputable def truncate (A : Set ℕ) (n : ℕ) : Finset ℕ :=
   (Finset.range (n + 1)).filter (· ∈ A)
 
 /-
