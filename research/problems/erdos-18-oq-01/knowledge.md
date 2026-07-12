@@ -117,3 +117,36 @@ Verified 0 axioms / 0 sorries, no native_decide; theoremCount 37→39
 Remaining open (unchanged): abundancy ≥ 4 full range needs the greedy sorted-divisor
 characterization (d_{i+1} ≤ σ_i+1), a larger project; asymptotic h(m)/Vose density stays
 out of elementary reach.
+
+## Session 2026-07-12 (researcher-2) — third-smallest divisor `d₃ ≤ 4`
+
+SOLVED-state look-outward. The file had one structural divisibility constraint,
+`practical_even` (`d₂ = 2`: every practical `m ≥ 2` is even). Added the next
+constraint from requiring **`4` itself** to be a sum of distinct divisors:
+
+- `practical_three_or_four_dvd : 4 < m → IsPractical m → 3 ∣ m ∨ 4 ∣ m` — the only
+  distinct-divisor sums equal to `4` are `{4}` and `{1,3}`, so `4 ∈ S` (⇒ `4 ∣ m`) or
+  `3 ∈ S` (⇒ `3 ∣ m`); otherwise `S ⊆ {1,2}` and `S.sum ≤ 3 < 4`. This is `d₃ ≤ 4`.
+- `practical_four_or_six_dvd : 4 < m → IsPractical m → 4 ∣ m ∨ 6 ∣ m` — combining the
+  `3 ∣ m` case with `practical_even` (`2 ∣ m`) via `Nat.Coprime 2 3` gives `6 ∣ m`.
+  So every practical number `> 4` is a multiple of `4` or of `6` (the two smallest
+  practical numbers above `2`). Verified against OEIS A005153 (6,8,12,16,18,20,24,…).
+
+Proof reuses the `four_not_representable_ten` / `practical_even` bounding pattern:
+each element of the representing set is positive and `≤ 4` (`Finset.single_le_sum`),
+excluding `3,4` pins it into `{1,2}`, then `Finset.sum_le_sum_of_subset` caps the sum.
+
+★Gotchas (v4.26, built first try, 7744 jobs, `✔ Built (8.3s)`, 0 axioms / 0 sorries):
+- `Nat.Coprime.mul_dvd_of_dvd_of_dvd (h : Coprime k n) (k∣m) (n∣m) : k*n ∣ m` gives
+  `2*3 ∣ m`; `norm_num at h6` rewrites `2*3 → 6` to land the `6 ∣ m` goal.
+- Elements-are-`{1,2}` step: `by rintro rfl; exact h3 hx` for `x ≠ 3` (substitutes and
+  reuses the `3 ∉ S` hypothesis), then `simp only [Finset.mem_insert, Finset.mem_singleton]`
+  reduces `x ∈ {1,2}` to `x = 1 ∨ x = 2`, closed by `omega` from `1 ≤ x ≤ 4, x≠3, x≠4`.
+
+Two pre-existing warnings untouched (unused `n` in Erdos18Problem:47, `le_or_lt`
+deprecation at Erdos18OQ01:318). theoremCount 43→45 (grep), lineCount 660→725.
+
+Remaining open (unchanged): abundancy ≥ 4 full range needs the greedy sorted-divisor
+characterization (d_{i+1} ≤ σ_i+1); asymptotic h(m)/Vose density out of elementary reach.
+The `dₖ` chain could continue (`5,6` representable ⇒ further constraints) but grows in
+subset-enumeration complexity.

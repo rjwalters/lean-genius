@@ -657,4 +657,69 @@ theorem sigma_lower_bound_tight (k : ℕ) :
     IsPractical (2 ^ k) ∧ (divisors (2 ^ k)).sum id = 2 * 2 ^ k - 1 :=
   ⟨two_pow_practical k, sigma_two_pow_eq_two_mul_pred k⟩
 
+/-! ## The third-smallest divisor: `d₃ ≤ 4`
+
+`practical_even` shows the smallest prime factor of a practical `m ≥ 2` is `2`
+(equivalently the second-smallest divisor is `d₂ = 2`).  The next structural
+constraint comes from requiring `4` itself to be a sum of distinct divisors: the
+only such sums are `{4}` and `{1, 3}`, so a practical `m > 4` must be divisible by
+`4` or by `3` — its third-smallest divisor is at most `4`.  Combined with
+`practical_even` (`2 ∣ m`), the `3`-case sharpens to `6 ∣ m`, so **every practical
+number exceeding `4` is a multiple of `4` or of `6`** (the two smallest practical
+numbers above `2`).  This is the `d₃ ≤ 4` step of the classical
+Stewart–Sierpiński divisor ordering, stated in divisibility form; it mirrors the
+`four_not_representable_ten` obstruction (`10` fails practicality precisely because
+`4 = {1,3}` needs `3 ∣ 10`, which is false, and `4 ∤ 10`). -/
+
+/-- **A practical number `> 4` is divisible by `3` or by `4`.**  Since `4 < m`, the
+    value `4` must be a sum of distinct divisors of `m` (`hp.2`).  The representing
+    set `S ⊆ divisors m` has `S.sum id = 4` with all elements positive, so each is
+    `≤ 4`.  If neither `3 ∈ S` nor `4 ∈ S`, every element lies in `{1, 2}`, forcing
+    `S ⊆ {1, 2}` and `S.sum id ≤ 3 < 4` — contradiction.  Hence `3 ∈ S` or `4 ∈ S`,
+    i.e. `3 ∣ m` or `4 ∣ m`: the third-smallest divisor of `m` is at most `4`. -/
+theorem practical_three_or_four_dvd {m : ℕ} (hm : 4 < m) (hp : IsPractical m) :
+    3 ∣ m ∨ 4 ∣ m := by
+  obtain ⟨S, hSsub, hSsum⟩ := hp.2 4 (by norm_num) hm
+  by_cases h4 : (4 : ℕ) ∈ S
+  · exact Or.inr (Nat.dvd_of_mem_divisors (hSsub h4))
+  by_cases h3 : (3 : ℕ) ∈ S
+  · exact Or.inl (Nat.dvd_of_mem_divisors (hSsub h3))
+  -- Neither `3` nor `4` is in `S`, so every element is `1` or `2`.
+  exfalso
+  have hsub : S ⊆ ({1, 2} : Finset ℕ) := by
+    intro x hx
+    have hx1 : 1 ≤ x := Nat.pos_of_mem_divisors (hSsub hx)
+    have hxle : x ≤ 4 := by
+      calc x = id x := rfl
+        _ ≤ S.sum id := Finset.single_le_sum (fun i _ => Nat.zero_le _) hx
+        _ = 4 := hSsum
+    have hx3 : x ≠ 3 := by rintro rfl; exact h3 hx
+    have hx4 : x ≠ 4 := by rintro rfl; exact h4 hx
+    simp only [Finset.mem_insert, Finset.mem_singleton]
+    omega
+  have hpair : ({1, 2} : Finset ℕ).sum id = 3 := by
+    rw [Finset.sum_pair (by norm_num)]; rfl
+  have hle : S.sum id ≤ 3 := by
+    have h := Finset.sum_le_sum_of_subset (f := id) hsub
+    rwa [hpair] at h
+  rw [hSsum] at hle
+  omega
+
+/-- **Every practical number `> 4` is a multiple of `4` or of `6`.**  By
+    `practical_three_or_four_dvd` a practical `m > 4` satisfies `3 ∣ m ∨ 4 ∣ m`.  In
+    the `4 ∣ m` case we are done; in the `3 ∣ m` case combine it with `2 ∣ m`
+    (`practical_even`, valid since `m ≥ 2`) via coprimality of `2` and `3` to get
+    `6 ∣ m`.  So the third-smallest divisor being `≤ 4` forces `m` into the two
+    residue families `4 ∣ m` and `6 ∣ m` — the divisibility shadow of the fact that
+    `4` and `6` are the two smallest practical numbers above `2`. -/
+theorem practical_four_or_six_dvd {m : ℕ} (hm : 4 < m) (hp : IsPractical m) :
+    4 ∣ m ∨ 6 ∣ m := by
+  rcases practical_three_or_four_dvd hm hp with h3 | h4
+  · refine Or.inr ?_
+    have h2 : 2 ∣ m := practical_even (by omega) hp
+    have h6 := Nat.Coprime.mul_dvd_of_dvd_of_dvd (show Nat.Coprime 2 3 by decide) h2 h3
+    norm_num at h6
+    exact h6
+  · exact Or.inl h4
+
 end Erdos18OQ01
