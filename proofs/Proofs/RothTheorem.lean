@@ -4408,4 +4408,124 @@ theorem exists_sqDiffFree_card_gt_two_sqrt_mod_169 :
   rw [hcard, Nat.sqrt_eq']
   norm_num
 
+/-! ### Part XXXI — the coset-lift is an EXACT correspondence
+
+Part XXX proved one direction: `S` square-difference-free in `ℤ/pℤ` **implies** its
+coset-union lift `⋃_{s∈S}(s + pℤ)` is square-difference-free in `ℤ/p²ℤ`.  Here we prove
+the **converse**, upgrading the reduction to a genuine iff: the lift is
+square-difference-free **iff** the base residue set `S` is.
+
+The converse rests on a membership characterization — `y` lies in the `s`-coset **iff**
+`φ y = s`, so each coset is *exactly* the fibre `φ⁻¹{s}`.  Given a square difference
+`t = s + m²` inside `S` (`m² ≠ 0` in `ℤ/pℤ`), lift `s` and `m` naturally to `ℤ/p²ℤ`:
+`x := (s.val : ℤ/p²ℤ)` sits in the `s`-coset, and `n := (m.val : ℤ/p²ℤ)` has
+`(φ n)² = m² ≠ 0`, forcing `n² ≠ 0`.  Then `φ(x + n²) = s + m² = t`, so `x + n²` lands in
+the `t`-coset — a square difference inside the lift.  Contrapositive: lift
+square-difference-free ⟹ `S` square-difference-free.
+
+Combined with Part XXX and the exact count `|⋃ coset| = |S|·p`, this pins the maximal
+**coset-structured** square-difference-free set in `ℤ/p²ℤ` to `p` times the largest
+square-difference-free residue set in `ℤ/pℤ` (the Paley independence number), on the nose. -/
+
+/-- **The coset-lift is an exact correspondence.**  For `coset s := {s + pℤ}` realized as
+`(range p).image (k ↦ s.val + p·k)` in `ℤ/p²ℤ`, the union `⋃_{s∈S} coset s` is
+square-difference-free **iff** `S ⊆ ℤ/pℤ` is square-difference-free.  The `←` direction is
+Part XXX (`sqDiffFree_lift_prime_sq`); the `→` direction is new and makes the lower-bound
+reduction of Part XXX tight for coset-structured sets. -/
+theorem sqDiffFree_lift_prime_sq_iff {p : ℕ} (hp : p.Prime)
+    (S : Finset (ZMod p))
+    (coset : ZMod p → Finset (ZMod (p ^ 2)))
+    (hcoset : ∀ s, coset s
+      = (Finset.range p).image (fun k => ((s.val + p * k : ℕ) : ZMod (p ^ 2)))) :
+    (∀ x ∈ S.biUnion coset, ∀ n : ZMod (p ^ 2), n ^ 2 ≠ 0 → x + n ^ 2 ∉ S.biUnion coset)
+      ↔ (∀ s ∈ S, ∀ n : ZMod p, n ^ 2 ≠ 0 → s + n ^ 2 ∉ S) := by
+  haveI : Fact p.Prime := ⟨hp⟩
+  haveI : NeZero p := ⟨hp.pos.ne'⟩
+  haveI : NeZero (p ^ 2) := ⟨pow_ne_zero 2 hp.pos.ne'⟩
+  have hpdvd : p ∣ p ^ 2 := ⟨p, (sq p)⟩
+  set φ : ZMod (p ^ 2) →+* ZMod p := ZMod.castHom hpdvd (ZMod p) with hφ
+  -- `φ` restricted to natural lifts is the reduction of the underlying `.val`
+  have hφval : ∀ y : ZMod (p ^ 2), φ y = ((y.val : ℕ) : ZMod p) := by
+    intro y
+    conv_lhs => rw [← ZMod.natCast_zmod_val y]
+    exact map_natCast φ _
+  -- `φ n = 0 ⟹ n² = 0`
+  have hnzero : ∀ n : ZMod (p ^ 2), φ n = 0 → n ^ 2 = 0 := by
+    intro n hn0
+    rw [hφval] at hn0
+    have hpv : p ∣ n.val := (ZMod.natCast_eq_zero_iff _ _).mp hn0
+    obtain ⟨s, hs⟩ := hpv
+    have hp2 : p ^ 2 ∣ n.val * n.val := ⟨s * s, by rw [hs]; ring⟩
+    have hval : (n ^ 2).val = (n.val * n.val) % p ^ 2 := by rw [pow_two n, ZMod.val_mul]
+    have hz : (n ^ 2).val = 0 := by
+      rw [hval]; obtain ⟨t, ht⟩ := hp2; rw [ht, Nat.mul_mod_right]
+    exact (ZMod.val_eq_zero _).mp hz
+  -- forward membership: elements of `coset s` reduce to `s`
+  have hφcoset : ∀ s : ZMod p, ∀ y ∈ coset s, φ y = s := by
+    intro s y hy
+    rw [hcoset, Finset.mem_image] at hy
+    obtain ⟨k, hk, rfl⟩ := hy
+    rw [Finset.mem_range] at hk
+    rw [hφval, ZMod.val_natCast, Nat.mod_eq_of_lt]
+    · push_cast; rw [ZMod.natCast_self, ZMod.natCast_zmod_val]; ring
+    · have hs := ZMod.val_lt s; rw [sq]
+      calc s.val + p * k < p + p * k := Nat.add_lt_add_right hs (p * k)
+        _ = p * (k + 1) := by ring
+        _ ≤ p * p := by gcongr; omega
+  -- reverse membership: the `s`-coset is *exactly* the fibre `φ⁻¹{s}`
+  have hmem : ∀ s : ZMod p, ∀ y : ZMod (p ^ 2), φ y = s → y ∈ coset s := by
+    intro s y hys
+    rw [hcoset, Finset.mem_image]
+    refine ⟨y.val / p, ?_, ?_⟩
+    · rw [Finset.mem_range, Nat.div_lt_iff_lt_mul hp.pos]
+      have hlt : y.val < p ^ 2 := ZMod.val_lt y
+      have hpp : p ^ 2 = p * p := sq p
+      omega
+    · -- `s.val + p·(y.val/p) = y.val`
+      have hmod : y.val % p = s.val := by
+        have h1 : ((y.val : ℕ) : ZMod p) = s := by rw [← hφval]; exact hys
+        have h2 := ZMod.val_natCast (n := p) y.val
+        rw [h1] at h2
+        omega
+      have hdm := Nat.div_add_mod y.val p
+      have hval_eq : s.val + p * (y.val / p) = y.val := by omega
+      rw [hval_eq, ZMod.natCast_zmod_val]
+  constructor
+  · -- (→) lift square-difference-free ⟹ `S` square-difference-free
+    intro hA s hsS m hm hcontra
+    have hple : p ≤ p ^ 2 := by nlinarith [hp.pos]
+    -- natural lift of `s` sits in the lift
+    set x : ZMod (p ^ 2) := ((s.val : ℕ) : ZMod (p ^ 2)) with hx
+    have hsval : s.val < p ^ 2 := lt_of_lt_of_le (ZMod.val_lt s) hple
+    have hφx : φ x = s := by
+      rw [hx, hφval, ZMod.val_natCast, Nat.mod_eq_of_lt hsval, ZMod.natCast_zmod_val]
+    have hxmem : x ∈ S.biUnion coset :=
+      Finset.mem_biUnion.mpr ⟨s, hsS, hmem s x hφx⟩
+    -- natural lift of `m`
+    set n : ZMod (p ^ 2) := ((m.val : ℕ) : ZMod (p ^ 2)) with hn
+    have hmval : m.val < p ^ 2 := lt_of_lt_of_le (ZMod.val_lt m) hple
+    have hφn : φ n = m := by
+      rw [hn, hφval, ZMod.val_natCast, Nat.mod_eq_of_lt hmval, ZMod.natCast_zmod_val]
+    have hn2 : n ^ 2 ≠ 0 := by
+      intro h
+      apply hm
+      rw [← hφn, ← map_pow, h, map_zero]
+    -- `x + n²` lands in the `t = s + m²` coset
+    have hφxn : φ (x + n ^ 2) = s + m ^ 2 := by rw [map_add, map_pow, hφx, hφn]
+    have hxnmem : x + n ^ 2 ∈ S.biUnion coset :=
+      Finset.mem_biUnion.mpr ⟨s + m ^ 2, hcontra, hmem _ _ hφxn⟩
+    exact hA x hxmem n hn2 hxnmem
+  · -- (←) `S` square-difference-free ⟹ lift square-difference-free (Part XXX)
+    intro hS x hx n hn hmem'
+    rw [Finset.mem_biUnion] at hx hmem'
+    obtain ⟨s, hsS, hxs⟩ := hx
+    obtain ⟨t, htS, hts⟩ := hmem'
+    have hφx : φ x = s := hφcoset s x hxs
+    have hφt : φ (x + n ^ 2) = t := hφcoset t (x + n ^ 2) hts
+    have hφn0 : φ n ≠ 0 := fun h => hn (hnzero n h)
+    have hsqne : (φ n) ^ 2 ≠ 0 := pow_ne_zero 2 hφn0
+    have hsplit : φ (x + n ^ 2) = s + (φ n) ^ 2 := by rw [map_add, map_pow, hφx]
+    rw [hφt] at hsplit
+    exact hS s hsS (φ n) hsqne (hsplit ▸ htS)
+
 end Szemeredi.Roth
