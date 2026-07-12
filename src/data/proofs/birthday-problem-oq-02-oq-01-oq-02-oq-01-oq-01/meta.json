@@ -58,21 +58,24 @@
       "title": "Module Header and Imports",
       "startLine": 1,
       "endLine": 68,
-      "summary": "Imports Mathlib. Module docstring explaining the globalization of the parent's local smoothing step into the doubly-stochastic (Hardy–Littlewood–Pólya) form of Schur-convexity. Opens Finset and Matrix and the BirthdaySchurConvexity namespace."
+      "summary": "Imports Mathlib. Module docstring explaining the globalization of the parent's local smoothing step into the doubly-stochastic (Hardy–Littlewood–Pólya) form of Schur-convexity. Opens Finset and Matrix and the BirthdaySchurConvexity namespace.",
+      "mathContext": "Collision probability $C(p) = \\sum_i p_i^2$; by the Hardy–Littlewood–Pólya theorem $p \\prec q$ (p majorized by q) $\\iff p = Dq$ for some doubly stochastic $D$."
     },
     {
       "id": "global-inequality",
       "title": "The Global Schur-Convexity Inequality",
       "startLine": 69,
       "endLine": 96,
-      "summary": "sum_sq_mulVec_le_of_mem_doublyStochastic: for doubly stochastic D, ∑ᵢ (Dq)ᵢ² ≤ ∑ᵢ qᵢ². Per-row Jensen (convexity of x², row sums = 1) followed by a sum_comm swap and column-sum collapse."
+      "summary": "sum_sq_mulVec_le_of_mem_doublyStochastic: for doubly stochastic D, ∑ᵢ (Dq)ᵢ² ≤ ∑ᵢ qᵢ². Per-row Jensen (convexity of x², row sums = 1) followed by a sum_comm swap and column-sum collapse.",
+      "mathContext": "$\\sum_i (Dq)_i^2 \\le \\sum_i q_i^2$ for doubly stochastic $D$: per-row Jensen $(Dq)_i^2 = \\bigl(\\sum_j D_{ij} q_j\\bigr)^2 \\le \\sum_j D_{ij} q_j^2$, then column-stochasticity $\\sum_i D_{ij} = 1$ collapses the double sum."
     },
     {
       "id": "uniform-endpoint",
       "title": "Recovering the Uniform-Minimizer Endpoint",
       "startLine": 97,
       "endLine": 135,
-      "summary": "uniformAveraging_mem_doublyStochastic: the all-1/d matrix is doubly stochastic. one_div_card_le_sum_sq: 1/d ≤ ∑ qᵢ² for probability vectors, obtained by applying the global inequality to the all-1/d matrix whose output is the uniform vector."
+      "summary": "uniformAveraging_mem_doublyStochastic: the all-1/d matrix is doubly stochastic. one_div_card_le_sum_sq: 1/d ≤ ∑ qᵢ² for probability vectors, obtained by applying the global inequality to the all-1/d matrix whose output is the uniform vector.",
+      "mathContext": "The all-$1/d$ matrix $J$ is doubly stochastic and $Jq$ = the uniform vector, so the global inequality gives $1/d \\le \\sum_i q_i^2$ — the uniform distribution uniquely minimizes collision probability."
     }
   ],
   "references": [
