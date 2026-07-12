@@ -3550,4 +3550,163 @@ theorem sqGaussSum_norm_sum_le_of_odd {N : ℕ} [NeZero N] (hodd : Odd N) :
       = (N : ℝ) ^ 2 * ((N : ℝ) * ((N.divisors.card : ℝ) - 1)) by ring,
     Real.sqrt_mul (by positivity), Real.sqrt_sq (by positivity)]
 
+/-! ### Part XXIV — Exact pointwise maximum of the Weyl coefficient (odd modulus)
+
+Parts X–XXIII bounded the Gauss-sum *moments* (`L¹`, `L²`) and the pointwise magnitude
+by inequalities.  Here we pin the **exact maximum** of `‖G(r)‖` over the nonzero
+frequencies:
+
+    `max_{r ≠ 0} ‖G(r)‖² = N · (N / minFac N) = N² / minFac N`,
+
+*achieved* at a concrete frequency.  Because `‖G(r)‖² = N · gcd((2r).val, N)`
+(`sqGaussSum_normSq_eq_gcd_of_odd`), the maximum is governed by the largest **proper**
+divisor of `N`, which is exactly `N / minFac N`.
+
+This turns the informal caveat repeated throughout Parts XI–XXIII ("the sup-norm / Weyl
+reduction cannot reach `o(N)` when `N` has a bounded smallest prime factor") into a
+**proven no-go**: the density theorem `sqDiffFree_card_le_of_supNorm` needs a bound
+`M ≥ ‖G(r)‖` for every `r ≠ 0`, and the *smallest* such `M` is exactly
+`N / √(minFac N)`.  For `N = p^k` an odd prime power this is `N / √p = Θ(N)`, useless for
+`o(N)`.  Combined with the exact `Θ(N²)` second moment (`sqGaussSum_normSq_sum_eq_of_odd`),
+*both* elementary single-frequency reductions are now rigorously exhausted for
+bounded-`minFac` moduli — genuine cross-frequency (minor-arc) cancellation is required. -/
+
+/-- **Pointwise gcd is a proper divisor, hence `≤ N / minFac N` (odd modulus).**  For odd
+`N > 1` and any nonzero frequency `r`, since `2` is a unit the doubled residue `(2r).val`
+is a nonzero element of `{1, …, N-1}`, so `gcd((2r).val, N)` is a *proper* divisor of `N`
+and is therefore at most the largest proper divisor `N / minFac N`. -/
+theorem gcd_two_val_le_div_minFac_of_odd {N : ℕ} [NeZero N] (hodd : Odd N) (hN : 1 < N)
+    {r : ZMod N} (hr : r ≠ 0) :
+    Nat.gcd (2 * r).val N ≤ N / N.minFac := by
+  have h2 : IsUnit (2 : ZMod N) := by
+    have hcast : ((2 : ℕ) : ZMod N) = (2 : ZMod N) := by norm_cast
+    rw [← hcast, ZMod.isUnit_iff_coprime]
+    have hmod : N % 2 = 1 := Nat.odd_iff.mp hodd
+    have hnd : ¬ (2 ∣ N) := by rw [Nat.dvd_iff_mod_eq_zero]; omega
+    exact (Nat.prime_two.coprime_iff_not_dvd).mpr hnd
+  have h2r : (2 : ZMod N) * r ≠ 0 := fun hz => hr (h2.mul_right_eq_zero.mp hz)
+  set g := Nat.gcd (2 * r).val N with hgdef
+  have hgN : g ∣ N := Nat.gcd_dvd_right _ _
+  have hval_pos : 0 < (2 * r).val := (ZMod.val_pos).mpr h2r
+  have hval_lt : (2 * r).val < N := ZMod.val_lt _
+  have hg_le_val : g ≤ (2 * r).val := Nat.le_of_dvd hval_pos (Nat.gcd_dvd_left _ _)
+  have hg_lt : g < N := lt_of_le_of_lt hg_le_val hval_lt
+  have hg_pos : 0 < g := Nat.gcd_pos_of_pos_right _ (by omega)
+  have hdivmul : (N / g) * g = N := Nat.div_mul_cancel hgN
+  have hcofactor_dvd : (N / g) ∣ N := Nat.div_dvd_of_dvd hgN
+  have hq2 : 2 ≤ N / g := by
+    have h1 : 1 ≤ N / g := (Nat.one_le_div_iff hg_pos).mpr (le_of_lt hg_lt)
+    rcases Nat.eq_or_lt_of_le h1 with heq | hlt
+    · exfalso; rw [← heq, one_mul] at hdivmul; omega
+    · omega
+  have hminfac_le : N.minFac ≤ N / g := Nat.minFac_le_of_dvd hq2 hcofactor_dvd
+  rw [Nat.le_div_iff_mul_le (Nat.minFac_pos N)]
+  calc g * N.minFac ≤ g * (N / g) := Nat.mul_le_mul (le_refl g) hminfac_le
+    _ = (N / g) * g := Nat.mul_comm _ _
+    _ = N := hdivmul
+
+/-- **The pointwise maximum `N / minFac N` is achieved (odd modulus).**  Choosing the
+frequency `r = 2⁻¹ · (N / minFac N)` gives `(2r).val = N / minFac N`, a divisor of `N`,
+so `gcd((2r).val, N) = N / minFac N`.  This is the witness making
+`gcd_two_val_le_div_minFac_of_odd` an equality. -/
+theorem exists_gcd_two_val_eq_div_minFac_of_odd {N : ℕ} [NeZero N] (hodd : Odd N)
+    (hN : 1 < N) :
+    ∃ r : ZMod N, r ≠ 0 ∧ Nat.gcd (2 * r).val N = N / N.minFac := by
+  have h2 : IsUnit (2 : ZMod N) := by
+    have hcast : ((2 : ℕ) : ZMod N) = (2 : ZMod N) := by norm_cast
+    rw [← hcast, ZMod.isUnit_iff_coprime]
+    have hmod : N % 2 = 1 := Nat.odd_iff.mp hodd
+    have hnd : ¬ (2 ∣ N) := by rw [Nat.dvd_iff_mod_eq_zero]; omega
+    exact (Nat.prime_two.coprime_iff_not_dvd).mpr hnd
+  obtain ⟨w, hw⟩ := isUnit_iff_exists_inv.mp h2
+  have hmf_dvd : N.minFac ∣ N := Nat.minFac_dvd N
+  have hmf_ge2 : 2 ≤ N.minFac := (Nat.minFac_prime (by omega)).two_le
+  set d := N / N.minFac with hddef
+  have hd_dvd : d ∣ N := Nat.div_dvd_of_dvd hmf_dvd
+  have hd_lt : d < N := Nat.div_lt_self (by omega) hmf_ge2
+  have hd_pos : 0 < d := Nat.div_pos (Nat.minFac_le (by omega)) (Nat.minFac_pos N)
+  set a : ZMod N := (d : ZMod N) with hadef
+  have hval_a : a.val = d := by rw [hadef, ZMod.val_natCast_of_lt hd_lt]
+  have h2wa : (2 : ZMod N) * (w * a) = a := by rw [← mul_assoc, hw, one_mul]
+  refine ⟨w * a, ?_, ?_⟩
+  · intro hz
+    have ha0 : a = 0 := by rw [hz, mul_zero] at h2wa; exact h2wa.symm
+    rw [ha0, ZMod.val_zero] at hval_a
+    omega
+  · rw [h2wa, hval_a]
+    exact Nat.gcd_eq_left hd_dvd
+
+/-- **Exact greatest nonzero Weyl coefficient — squared form (odd modulus).**  Combining
+`gcd_two_val_le_div_minFac_of_odd` (upper) with `exists_gcd_two_val_eq_div_minFac_of_odd`
+(achieved) and the exact per-frequency magnitude `sqGaussSum_normSq_eq_gcd_of_odd`:
+
+    `IsGreatest {‖G(r)‖² : r ≠ 0} (N · (N / minFac N))`.
+
+So `max_{r≠0} ‖G(r)‖² = N² / minFac N` exactly. -/
+theorem sqGaussSum_normSq_isGreatest_of_odd {N : ℕ} [NeZero N] (hodd : Odd N) (hN : 1 < N) :
+    IsGreatest
+      ((fun r : ZMod N => ‖sqGaussSum r‖ ^ 2) ''
+        (↑(Finset.univ \ {(0 : ZMod N)}) : Set (ZMod N)))
+      ((N : ℝ) * ((N / N.minFac : ℕ) : ℝ)) := by
+  constructor
+  · obtain ⟨r, hr, hgcd⟩ := exists_gcd_two_val_eq_div_minFac_of_odd hodd hN
+    refine ⟨r, ?_, ?_⟩
+    · rw [Finset.mem_coe, Finset.mem_sdiff]
+      exact ⟨Finset.mem_univ r, by simpa using hr⟩
+    · dsimp only
+      rw [sqGaussSum_normSq_eq_gcd_of_odd hodd r, hgcd]
+  · rintro x ⟨r, hrmem, rfl⟩
+    rw [Finset.mem_coe, Finset.mem_sdiff] at hrmem
+    have hr : r ≠ 0 := by simpa using hrmem.2
+    dsimp only
+    rw [sqGaussSum_normSq_eq_gcd_of_odd hodd r]
+    have hle := gcd_two_val_le_div_minFac_of_odd hodd hN hr
+    have hcast : ((Nat.gcd (2 * r).val N : ℕ) : ℝ) ≤ ((N / N.minFac : ℕ) : ℝ) := by
+      exact_mod_cast hle
+    exact mul_le_mul_of_nonneg_left hcast (Nat.cast_nonneg N)
+
+/-- **Exact greatest nonzero Weyl coefficient — norm form (odd modulus).**  The square
+root of `sqGaussSum_normSq_isGreatest_of_odd`:
+
+    `IsGreatest {‖G(r)‖ : r ≠ 0} (√(N · (N / minFac N)))`. -/
+theorem sqGaussSum_norm_isGreatest_of_odd {N : ℕ} [NeZero N] (hodd : Odd N) (hN : 1 < N) :
+    IsGreatest
+      ((fun r : ZMod N => ‖sqGaussSum r‖) ''
+        (↑(Finset.univ \ {(0 : ZMod N)}) : Set (ZMod N)))
+      (Real.sqrt ((N : ℝ) * ((N / N.minFac : ℕ) : ℝ))) := by
+  constructor
+  · obtain ⟨r, hr, hgcd⟩ := exists_gcd_two_val_eq_div_minFac_of_odd hodd hN
+    refine ⟨r, ?_, ?_⟩
+    · rw [Finset.mem_coe, Finset.mem_sdiff]
+      exact ⟨Finset.mem_univ r, by simpa using hr⟩
+    · dsimp only
+      rw [sqGaussSum_norm_eq_sqrt_gcd_of_odd hodd r, hgcd]
+  · rintro x ⟨r, hrmem, rfl⟩
+    rw [Finset.mem_coe, Finset.mem_sdiff] at hrmem
+    have hr : r ≠ 0 := by simpa using hrmem.2
+    dsimp only
+    rw [sqGaussSum_norm_eq_sqrt_gcd_of_odd hodd r]
+    apply Real.sqrt_le_sqrt
+    have hle := gcd_two_val_le_div_minFac_of_odd hodd hN hr
+    have hcast : ((Nat.gcd (2 * r).val N : ℕ) : ℝ) ≤ ((N / N.minFac : ℕ) : ℝ) := by
+      exact_mod_cast hle
+    exact mul_le_mul_of_nonneg_left hcast (Nat.cast_nonneg N)
+
+/-- **The exact sup-norm floor is `N / √(minFac N)` (odd modulus).**  Rewriting the value
+in `sqGaussSum_norm_isGreatest_of_odd` in closed form, using `minFac N ∣ N`:
+
+    `√(N · (N / minFac N)) = N / √(minFac N)`.
+
+Hence the least valid Weyl sup-norm bound for `sqDiffFree_card_le_of_supNorm` is exactly
+`N / √(minFac N)`.  For `N` with bounded smallest prime factor `p` (e.g. odd prime powers,
+`minFac = p`) this is `Θ(N)` — the sup-norm reduction provably cannot deliver `o(N)`. -/
+theorem sqGaussSum_norm_max_value_eq_of_odd {N : ℕ} [NeZero N] (hN : 1 < N) :
+    Real.sqrt ((N : ℝ) * ((N / N.minFac : ℕ) : ℝ)) = (N : ℝ) / Real.sqrt (N.minFac) := by
+  have hmf_dvd : N.minFac ∣ N := Nat.minFac_dvd N
+  have hmf_ne : (N.minFac : ℝ) ≠ 0 := by exact_mod_cast (Nat.minFac_pos N).ne'
+  have hcast : ((N / N.minFac : ℕ) : ℝ) = (N : ℝ) / (N.minFac : ℝ) :=
+    Nat.cast_div hmf_dvd hmf_ne
+  rw [hcast, show (N : ℝ) * ((N : ℝ) / (N.minFac : ℝ)) = (N : ℝ) ^ 2 / (N.minFac : ℝ) by ring,
+    Real.sqrt_div (by positivity), Real.sqrt_sq (by positivity)]
+
 end Szemeredi.Roth
