@@ -130,5 +130,22 @@
       "venue": "dlmf.nist.gov, §5.11 (Gamma function asymptotics) and §5.12 (Beta function)",
       "description": "Standard modern reference for the Beta function and the Stirling/Wallis asymptotics quantified here."
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "stirling-formula-oq-03-oq-02",
+      "relationship": "depends on",
+      "description": "Supplies the central binomial asymptotic C(2n,n) ~ 4ⁿ/√(πn) (via centralBinom_isEquivalent) that drives the diagonal Beta decay rate proved here."
+    },
+    {
+      "targetId": "beta-central-binomial-explicit-rate",
+      "relationship": "extended by",
+      "description": "Upgrades this bare asymptotic B(n+1,n+1) ~ √(πn)/((2n+1)·4ⁿ) to an explicit two-sided 1 + O(1/n) rate with effective constants."
+    },
+    {
+      "targetId": "beta-integral-recurrence-oq-01-oq-02-oq-01",
+      "relationship": "related",
+      "description": "The half-integer diagonal B(n+1/2,n+1/2) = π·C(2n,n)/4^(2n); this entry treats the integer diagonal B(n+1,n+1) with the same central-binomial engine."
+    }
   ]
 }
