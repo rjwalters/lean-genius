@@ -202,7 +202,9 @@ Before starting work, classify the problem state and choose strategy:
 
 **STUCK (sorries remain, no clear path forward):**
 - Do NOT generalize or broaden scope
-- Decompose into concrete subgoals or intermediate lemmas
+- Decompose into concrete subgoals or intermediate lemmas — but apply the
+  equivalent-strength check (see Follow-Up Question Generation below): a subgoal
+  as strong as the target itself is a blocked route, not decomposition progress
 - Try a different decomposition of the same target
 - Check if the blocking sorry can be submitted to Aristotle
 - If 3+ sessions stuck on same sorry: flag as BLOCKED, move on
@@ -226,6 +228,17 @@ Generate 1-2 strong follow-up questions. Apply quality criteria:
 - REJECT: variable renamings, trivial corollaries, shallow specializations
 
 If no strong follow-up exists, generate 0 questions. This is preferable to weak proposals.
+
+**Equivalent-strength check (MANDATORY at OQ spawn).** Every proposed child OQ
+must include an explicit note stating whether the child is **materially weaker**
+than the parent target. The test: would proving the child immediately yield the
+parent by a known argument? If yes, the child is of equivalent strength — record
+it on the parent as a **blocked route** (reopen bar: "materially new mechanism
+required"), NOT as decomposition progress. An elegant reduction that ends at a
+lemma as strong as the target earns zero progress credit. Judge strength against
+the parent's "Must prove exactly / does not count" section (see
+[Pin the Statement Before Attacking](#pin-the-statement-before-attacking-mandatory)
+— an equivalent same-strength restatement is already a named near-miss there).
 
 ---
 
