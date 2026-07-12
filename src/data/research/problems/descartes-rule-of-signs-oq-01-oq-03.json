@@ -28,9 +28,9 @@
     "phase": "SOLVED",
     "since": "2026-07-08T00:00:00.000Z",
     "iteration": 4,
-    "focus": "Solved as a verified, axiom-free reduction with an unconditional linear-polynomial validation.",
+    "focus": "Added §9 reflection layer: V(p)+V(p(-X))=deg p complementarity (Descartes for negative roots), via the nowhere-zero sequence identity V(f)+V(alt f)=n-1.",
     "blockers": [],
-    "nextAction": "Prove (B1)-(B3) for general polynomials to upgrade the reduction to an unconditional result.",
+    "nextAction": "§9 reflection complementarity closes the invariance/transformation family (scaling, negation, reversal, positive-dilation, and now reflection). Remaining open work is the deep (B1)-(B3) Sturm/Descartes comparison for general polynomials (structure-encoded, multi-week).",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -178,8 +178,8 @@
     {
       "path": "Proofs/DescartesRuleOfSignsOQ01OQ03.lean",
       "filename": "DescartesRuleOfSignsOQ01OQ03.lean",
-      "lineCount": 970,
-      "theoremCount": 32,
+      "lineCount": 1297,
+      "theoremCount": 45,
       "axiomCount": 0,
       "defCount": 1,
       "sorryCount": 0,
