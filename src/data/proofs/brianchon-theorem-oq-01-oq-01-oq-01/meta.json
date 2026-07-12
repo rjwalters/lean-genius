@@ -59,22 +59,38 @@
   "sections": [
     {
       "id": "preamble",
-      "title": "Module Header and the ℝ³ Projective Model",
+      "title": "Module Header and Roadmap",
       "startLine": 1,
-      "endLine": 99,
-      "summary": "Docstring framing the entry as the projective-covariance half of the parent's Sylvester transfer. Reproduces the ℝ³ model (cross, det3, Collinear, conicPt) and introduces the linear map applyM, its determinant detM, and the cofactor matrix cof — all as explicit component formulas so every covariance identity is a single ring call."
+      "endLine": 56,
+      "summary": "Docstring framing the entry as the projective-covariance half of the parent's Sylvester transfer of Pascal's theorem, with the checklist confirming no sorry/axiom/native_decide, and the namespace declaration."
+    },
+    {
+      "id": "r3-model",
+      "title": "The Homogeneous ℝ³ Projective Model",
+      "startLine": 57,
+      "endLine": 77,
+      "summary": "The projective model reproduced from the parent so the file is self-contained: cross (cross product = projective join/meet), det3 (3×3 determinant), Collinear p q r := det3 p q r = 0, and the rational-normal conic parametrization conicPt t = ![t², t, 1]. All are explicit component formulas so incidence identities reduce to a single ring call.",
+      "mathContext": "Points of ℝP² as rays in ℝ³; the line through p, q is p × q, and p, q, r are collinear iff det₃(p,q,r) = 0."
+    },
+    {
+      "id": "linear-map",
+      "title": "A Linear Map and its Determinant / Cofactor Matrix",
+      "startLine": 78,
+      "endLine": 103,
+      "summary": "The linear map applyM m u (matrix–vector product), its determinant detM m, and the cofactor matrix cof m — all as explicit component formulas. These are the objects whose covariance under the join/meet operations makes the projective transfer work.",
+      "mathContext": "applyM m is a projective transformation of ℝP²; cof m is the adjugate/cofactor matrix satisfying (m u) × (m v) = cof(m)·(u × v)."
     },
     {
       "id": "covariance",
       "title": "The Two Covariance Identities",
-      "startLine": 100,
-      "endLine": 138,
+      "startLine": 104,
+      "endLine": 136,
       "summary": "`cross_applyM`: (m u) × (m v) = cof(m)·(u × v), proved component-wise by fin_cases + ring. `det3_applyM`: det₃(m u, m v, m w) = det(m)·det₃(u, v, w). `collinear_applyM_iff`: for det m ≠ 0, the images are collinear iff the originals are — collinearity is a projective invariant."
     },
     {
       "id": "pascal-transfer",
       "title": "Pascal Transfers to Every Linear Image",
-      "startLine": 139,
+      "startLine": 137,
       "endLine": 203,
       "summary": "Pascal points pascalX/Y/Z; `pascalX_applyM` etc. show each transformed Pascal point equals cof(cof m) applied to the original (three uses of cross_applyM). `pascal_parametrized` re-proves Pascal for xz = y². `pascal_image`: the main theorem — for any linear m, the image points have collinear Pascal points, via det3_applyM applied to the parent's zero determinant."
     }
