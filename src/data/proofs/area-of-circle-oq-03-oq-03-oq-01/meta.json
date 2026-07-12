@@ -164,6 +164,20 @@
       "year": "2020",
       "venue": "CPP 2020",
       "note": "integral_sqrt_one_sub_sq, intervalIntegral.integral_comp_div, and volume_regionBetween_eq_integral"
+    },
+    {
+      "authors": "Apostol, Tom M.",
+      "title": "Calculus, Volume I: One-Variable Calculus, with an Introduction to Linear Algebra",
+      "year": "1967",
+      "venue": "2nd ed., Wiley",
+      "note": "Develops area as a definite integral and the substitution (change-of-variables) rule for integrals — the 1D content behind ellipse_halfheight_integral, where x ↦ x/a reduces the ellipse arc integral to the unit-circle integral ∫√(1−x²)=π/2."
+    },
+    {
+      "authors": "Folland, Gerald B.",
+      "title": "Real Analysis: Modern Techniques and Their Applications",
+      "year": "1999",
+      "venue": "2nd ed., Wiley",
+      "note": "Product measures, Fubini–Tonelli, and the measure of a region between two graphs — the measure-theoretic foundation of volume_regionBetween_eq_integral that certifies the 1D integral π·a·b is the genuine 2D Lebesgue measure of the filled ellipse (ellipse_volume)."
     }
   ],
   "sorries": [],
