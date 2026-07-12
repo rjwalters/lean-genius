@@ -229,6 +229,52 @@ theorem isLowerBoundConstruction_mono {P Q : PlanarPointSet} {t : ℝ}
     IsLowerBoundConstruction Q t :=
   ⟨hQ, hP.2.trans (Nat.cast_le.mpr (fourPointLineCount_mono hPQ))⟩
 
+/-- **Trivial upper cap on the four-point-line count.**  Every four-point line is in
+particular a `4`-element subset of `P.points`, so `fourPointLineCount P` is at most the
+number of such subsets, `C(|P|, 4)`.  This is the crude combinatorial ceiling against which
+the whole problem is measured: the parent's sharp bound `n(n-1)/12` improves this `Θ(n⁴)`
+count to `Θ(n²)`, and the Solymosi–Stojaković construction shows the truth sits at
+`n^{2-o(1)}` — but even the trivial cap already forces `fourPointLineCount = O(n⁴)` with no
+geometry at all.  The defining powerset-filter is contained in the `4`-uniform layer
+`powersetCard 4 P.points` (dropping the collinearity clause), whose card is `C(n,4)`. -/
+theorem fourPointLineCount_le_choose (P : PlanarPointSet) :
+    fourPointLineCount P ≤ P.points.card.choose 4 := by
+  rw [fourPointLineCount, ← Finset.card_powersetCard]
+  apply Finset.card_le_card
+  intro S hS
+  rw [Finset.mem_filter, Finset.mem_powerset] at hS
+  rw [Finset.mem_powersetCard]
+  exact ⟨hS.1, hS.2.1⟩
+
+/-- **One-shot lower-bound constructor from an injective family.**  Packages the counting
+engine `fourPointLineCount_ge_of_injOn_family` together with the `NoFiveCollinear`
+certificate into the `IsLowerBoundConstruction` predicate directly: an injective family of
+`k` four-point collinear subsets of a no-five-collinear `P` certifies
+`IsLowerBoundConstruction P k`.  This is the exact shape every explicit witness in this file
+produces, so it removes the boilerplate of re-deriving the `Nat.cast`/`fourPointLineCount`
+plumbing at each construction. -/
+theorem isLowerBoundConstruction_of_injOn_family (P : PlanarPointSet)
+    (hP : NoFiveCollinear P) (k : ℕ) (L : Fin k → Finset (ℝ × ℝ))
+    (hmem : ∀ i, L i ⊆ P.points) (hcard : ∀ i, (L i).card = 4)
+    (hcol : ∀ i, ∃ a b : ℝ × ℝ, a ∈ L i ∧ b ∈ L i ∧ a ≠ b ∧
+      ∀ p ∈ L i, collinear a b p)
+    (hinj : Function.Injective L) :
+    IsLowerBoundConstruction P (k : ℝ) :=
+  ⟨hP, by exact_mod_cast fourPointLineCount_ge_of_injOn_family P k L hmem hcard hcol hinj⟩
+
+/-- **One-shot lower-bound constructor from a finite family of lines (set form).**  The
+`Finset`-indexed companion of `isLowerBoundConstruction_of_injOn_family`, wrapping
+`fourPointLineCount_ge_of_subset`: a finite collection `T` of four-point collinear subsets
+of a no-five-collinear `P` certifies `IsLowerBoundConstruction P T.card`.  Distinctness is
+carried by `T.card` itself, so the caller supplies only the per-line geometry. -/
+theorem isLowerBoundConstruction_of_family (P : PlanarPointSet)
+    (hP : NoFiveCollinear P) (T : Finset (Finset (ℝ × ℝ)))
+    (hmem : ∀ S ∈ T, S ⊆ P.points) (hcard : ∀ S ∈ T, S.card = 4)
+    (hcol : ∀ S ∈ T, ∃ a b : ℝ × ℝ, a ∈ S ∧ b ∈ S ∧ a ≠ b ∧
+      ∀ p ∈ S, collinear a b p) :
+    IsLowerBoundConstruction P (T.card : ℝ) :=
+  ⟨hP, by exact_mod_cast fourPointLineCount_ge_of_subset P T hmem hcard hcol⟩
+
 /-- **Lower bound vacuous below size 4**: for `P` with fewer than 4
 points, no four-point line exists.  Restatement of
 `fourPointLineCount_lt_four` to fix the OQ-04 namespace conventions. -/
