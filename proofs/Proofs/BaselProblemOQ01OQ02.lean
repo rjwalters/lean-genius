@@ -625,6 +625,33 @@ theorem zeta_even_sub_ratCast_transcendental (n : ℕ) (hn : 0 < n) (q : ℚ) :
     Transcendental ℚ ((∑' k : ℕ, 1 / (k : ℝ) ^ (2 * n)) - (q : ℝ)) :=
   transcendental_sub_ratCast (zeta_even_transcendental n hn) q
 
+/-- **The multiplicative inverse preserves transcendence over ℚ — axiom-free.**  The
+    reciprocal companion of `transcendental_ratCast_mul`/`transcendental_div_ratCast`,
+    completing the *field*-operation closure (`+`, `−`, `×`, `⁻¹`): if `x` is transcendental
+    over ℚ then so is `x⁻¹`.  Since the algebraic elements of a field are closed under inverse
+    (`IsAlgebraic.inv_iff`), an algebraic `x⁻¹` would force `x = (x⁻¹)⁻¹` algebraic, contradicting
+    transcendence of `x`.  (For `x = 0`, transcendence already fails, so the hypothesis excludes
+    that degenerate case.) -/
+theorem transcendental_inv {x : ℝ} (hx : Transcendental ℚ x) : Transcendental ℚ x⁻¹ :=
+  fun h => hx (IsAlgebraic.inv_iff.mp h)
+
+/-- **Reciprocals of even zeta values are transcendental over ℚ.**  For `n ≥ 1`,
+    `1/ζ(2n) = qₙ⁻¹·π^(−2n)` is transcendental — the multiplicative-inverse closure of the even
+    zeta values, immediate from `zeta_even_transcendental` and the axiom-free engine
+    `transcendental_inv`.  Together with the sum/difference/product/ratio/power results this
+    closes the field operations on the even zeta values: every one keeps the value transcendental.
+
+    **Assumption:** `hermite_lindemann` (transcendence of π). -/
+theorem zeta_even_inv_transcendental (n : ℕ) (hn : 0 < n) :
+    Transcendental ℚ ((∑' k : ℕ, 1 / (k : ℝ) ^ (2 * n))⁻¹) :=
+  transcendental_inv (zeta_even_transcendental n hn)
+
+/-- **1/ζ(2) = 6/π² is transcendental over ℚ** — a concrete reciprocal instance. -/
+theorem zeta_two_inv_transcendental :
+    Transcendental ℚ ((∑' k : ℕ, 1 / (k : ℝ) ^ 2)⁻¹) := by
+  have := zeta_even_inv_transcendental 1 one_pos
+  simpa using this
+
 /-!
 ## The open odd case (documentation only)
 
