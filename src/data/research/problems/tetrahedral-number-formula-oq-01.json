@@ -75,7 +75,8 @@
     "nextSteps": [
       "Optional: Norlund/finite-difference expansion of iterSum on a polynomial base sequence now follows by combining iterSum_eq_simplexConv with a binomial expansion of P_d(n-k).",
       "Optional: express card_sym as an explicit nested multi-index Finset sum over {0<=i1<=...<=id<=n} to make the weakly-increasing-tuple face literal.",
-      "Convolution of arithmetic-progression / polynomial sequences against the simplex kernel, now reducible via the linearity package to simplexConv of id and constants."
+      "Convolution of arithmetic-progression / polynomial sequences against the simplex kernel, now reducible via the linearity package to simplexConv of id and constants.",
+      "Follow-up (distinct): ordinary power moments ∑ k^m·P_d(k) via Stirling numbers of the second kind, expressing k^m as a sum of falling factorials (k)_r and applying descFactorial_moment_sum_simplex termwise — connects the figurate moment theory to Stirling/Bell number combinatorics."
     ],
     "markdown": "# Knowledge Base: tetrahedral-number-formula-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
