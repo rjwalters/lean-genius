@@ -119,6 +119,10 @@
     {
       "proofId": "area-of-circle-oq-01-oq-03",
       "relationship": "Grandparent: supplies the axiom-free Fourier decomposition (Parseval for f and f' via integration by parts) reused here as IsoperimetricOQ.fourier_decomposition."
+    },
+    {
+      "proofId": "area-of-circle",
+      "relationship": "Root of the chain (Wiedijk #9, Area of a Circle = πr²). The isoperimetric inequality C²≥4πA is the sharp companion of this area formula, and the rigidity case proved here — equality iff the extremiser is a first harmonic (a circle) — is precisely what makes the disk of area πr² the unique isoperimetric optimum among all curves of given perimeter."
     }
   ],
   "conclusion": {
