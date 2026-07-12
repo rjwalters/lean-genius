@@ -179,4 +179,28 @@ theorem kronecker2_eq_neg_one_iff (a : ℤ) : kronecker2 a = -1 ↔ a % 8 = 3 �
   · exact ⟨fun h => by norm_num at h, fun h => by omega⟩
   · exact ⟨fun _ => by omega, fun _ => rfl⟩
 
+-- Section D: Boundedness and orthogonality of the character χ₈ = (·/2)
+
+/-- **`(·/2)` is bounded by `1` in absolute value.**  Since `kronecker2` takes values in
+    `{−1, 0, 1}` (`kronecker2_values`), `|kronecker2 a| ≤ 1` for every `a`.  The pointwise
+    bound a character sum consumes term-by-term — the elementary input to the Gauss-sum /
+    Pólya–Vinogradov estimates of the generalized-reciprocity route. -/
+theorem kronecker2_abs_le_one (a : ℤ) : |kronecker2 a| ≤ 1 := by
+  rcases kronecker2_values a with h | h | h <;> rw [h] <;> decide
+
+/-- **Orthogonality: `χ₈ = (·/2)` sums to zero over a full period.**
+
+        ∑_{a = 0}^{7} kronecker2 a = 0.
+
+    The defining property of a *non-principal* Dirichlet character — its sum over any full
+    period vanishes.  Concretely the residue table (`0` on evens, `+1` on `{1,7}`, `−1` on
+    `{3,5}` mod `8`) gives `0 + 1 + 0 − 1 + 0 − 1 + 0 + 1 = 0`.  This is the orthogonality
+    relation that opens the Gauss-sum evaluation (Target 2): the mean of `χ₈` is `0`, so the
+    Gauss sum `∑ χ₈(a) ζ^a` has no constant-mode contribution. -/
+theorem kronecker2_sum_period :
+    (∑ a ∈ Finset.range 8, kronecker2 (a : ℤ)) = 0 := by
+  simp only [Finset.sum_range_succ, Finset.sum_range_zero, Nat.cast_ofNat,
+    Nat.cast_zero, Nat.cast_one]
+  decide
+
 end KroneckerSymbol
