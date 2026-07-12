@@ -979,6 +979,117 @@ theorem primeCount_factorial_unbounded (M : ℕ) : ∃ N : ℕ, ∀ n : ℕ, n �
   omega
 
 /-
+## Part XIII: Absolute Growth of the Non-Qualifying (Bad) Prime Count
+
+Parts XI and XII gave the absolute-growth theory for the qualifying count `C(n!)`
+and the underlying prime count `π(n!)`. The third member of the trilogy — the
+*non-qualifying* (bad) count `D(n!) := π(n!) − C(n!)`, the primes up to `n!` that
+fail the AFSC property — was only ever treated *relatively* (Parts VIII and X give
+the pointwise equivalences `D(x)·(k+1) ≤ π(x) ⇔ C(x)·(k+1) ≥ π(x)·k`, but never
+decompose `D` into level contributions).
+
+Here we record the missing absolute structure. Since every level's qualifying
+count is bounded by its prime count (`qualifyingInLevel_le_primesInLevel`), the
+deficit decomposes level-by-level,
+
+    D(n!) = Σ_{l<n} (p(l) − q(l)),
+
+giving an exact one-step recurrence `D((n+1)!) = D(n!) + (p(n) − q(n))` and
+monotonicity `D(n!) ≤ D(m!)`. Unlike the qualifying/prime counts the deficit need
+*not* strictly increase — a level all of whose primes qualify contributes `0` — so
+only the non-strict statements hold. Finally, the sieve axiom enters through
+`nonqualifying_fraction_bound` to control each increment: the per-step growth of
+`D`, scaled by `n+1`, never exceeds the level prime count `p(n)`.
+-/
+
+/-- **Interval decomposition for the non-qualifying (bad) prime count**:
+    `π(n!) − C(n!) = Σ_{l<n} (primesInLevel l − qualifyingInLevel l)`.
+
+    The deficit dual of `primeCount_decomposition` / `qualifyingCount_decomposition`.
+    Because `q(l) ≤ p(l)` at every level (`qualifyingInLevel_le_primesInLevel`), the
+    truncated subtraction distributes over the sum: `Σ q(l) + Σ(p(l)−q(l)) = Σ p(l)`
+    termwise, and the two cumulative decompositions turn this into the claim. -/
+theorem badCount_decomposition (n : ℕ) (hn : n ≥ 1) :
+    Erdos1059OQ01.primeCount (Nat.factorial n) -
+      Erdos1059OQ01.qualifyingPrimeCount (Nat.factorial n) =
+    (Finset.range n).sum (fun l => primesInLevel l - qualifyingInLevel l) := by
+  rw [primeCount_decomposition n hn, qualifyingCount_decomposition n hn]
+  have key : (Finset.range n).sum qualifyingInLevel
+      + (Finset.range n).sum (fun l => primesInLevel l - qualifyingInLevel l)
+      = (Finset.range n).sum primesInLevel := by
+    rw [← Finset.sum_add_distrib]
+    apply Finset.sum_congr rfl
+    intro l _
+    have := qualifyingInLevel_le_primesInLevel l
+    omega
+  omega
+
+/-- **Exact one-step recurrence for the bad count at factorial points.**  For
+    `n ≥ 1`,
+
+      `(π((n+1)!) − C((n+1)!)) = (π(n!) − C(n!)) + (primesInLevel n − qualifyingInLevel n)`.
+
+    Passing from `n!` to `(n+1)!` adjoins exactly level `n`, whose bad-prime
+    contribution `p(n) − q(n)` is added to the running deficit. Directly from
+    `badCount_decomposition` and `Finset.sum_range_succ`; the deficit dual of
+    `qualifyingCount_factorial_succ` and `primeCount_factorial_succ`. -/
+theorem badCount_factorial_succ {n : ℕ} (hn : n ≥ 1) :
+    Erdos1059OQ01.primeCount (Nat.factorial (n + 1)) -
+      Erdos1059OQ01.qualifyingPrimeCount (Nat.factorial (n + 1))
+      = (Erdos1059OQ01.primeCount (Nat.factorial n) -
+          Erdos1059OQ01.qualifyingPrimeCount (Nat.factorial n))
+        + (primesInLevel n - qualifyingInLevel n) := by
+  rw [badCount_decomposition (n + 1) (by omega), badCount_decomposition n hn,
+      Finset.sum_range_succ]
+
+/-- **Monotonicity of the bad count at factorial points.**  For `1 ≤ n ≤ m`,
+
+      `π(n!) − C(n!) ≤ π(m!) − C(m!)`.
+
+    From the level decomposition `badCount_decomposition`, enlarging the evaluation
+    point only adjoins the non-negative bad contributions `p(l) − q(l)` for
+    `n ≤ l < m`. The deficit dual of `qualifyingCount_factorial_mono` /
+    `primeCount_factorial_mono`. Note there is *no* strict counterpart: a level all
+    of whose primes qualify (`q(l) = p(l)`) contributes `0`, so the deficit is only
+    non-decreasing. -/
+theorem badCount_factorial_mono {n m : ℕ} (hn : n ≥ 1) (hnm : n ≤ m) :
+    Erdos1059OQ01.primeCount (Nat.factorial n) -
+      Erdos1059OQ01.qualifyingPrimeCount (Nat.factorial n) ≤
+    Erdos1059OQ01.primeCount (Nat.factorial m) -
+      Erdos1059OQ01.qualifyingPrimeCount (Nat.factorial m) := by
+  rw [badCount_decomposition n hn, badCount_decomposition m (by omega)]
+  apply Finset.sum_le_sum_of_subset
+  intro x hx
+  simp only [Finset.mem_range] at hx ⊢
+  omega
+
+/-- **The bad-count increment obeys the sieve density bound.**  For `n ≥ 3`, the
+    one-step growth of the non-qualifying count, scaled by `n+1`, is at most the
+    level prime count:
+
+      `((π((n+1)!) − C((n+1)!)) − (π(n!) − C(n!))) · (n+1) ≤ primesInLevel n`.
+
+    The increment equals the level-`n` bad count `p(n) − q(n)` (by
+    `badCount_factorial_succ`), and the strong Selberg density axiom bounds it via
+    `nonqualifying_fraction_bound` (`(p(n) − q(n))·(n+1) ≤ p(n)`). So each factorial
+    step contributes at most a `1/(n+1)` fraction of that level's primes to the
+    deficit — the absolute-growth reading of the level-wise density prediction. -/
+theorem badCount_factorial_increment_fraction (n : ℕ) (hn : n ≥ 3) :
+    ((Erdos1059OQ01.primeCount (Nat.factorial (n + 1)) -
+        Erdos1059OQ01.qualifyingPrimeCount (Nat.factorial (n + 1))) -
+      (Erdos1059OQ01.primeCount (Nat.factorial n) -
+        Erdos1059OQ01.qualifyingPrimeCount (Nat.factorial n))) * (n + 1) ≤
+    primesInLevel n := by
+  have hrec := badCount_factorial_succ (n := n) (by omega)
+  have hstep : (Erdos1059OQ01.primeCount (Nat.factorial (n + 1)) -
+      Erdos1059OQ01.qualifyingPrimeCount (Nat.factorial (n + 1))) -
+      (Erdos1059OQ01.primeCount (Nat.factorial n) -
+        Erdos1059OQ01.qualifyingPrimeCount (Nat.factorial n))
+      = primesInLevel n - qualifyingInLevel n := by omega
+  rw [hstep]
+  exact nonqualifying_fraction_bound n hn
+
+/-
 ## Summary
 
 **Proved from first principles** (no sorry):
@@ -1012,6 +1123,17 @@ theorem primeCount_factorial_unbounded (M : ℕ) : ∃ N : ℕ, ∀ n : ℕ, n �
     density results
 19. qualifyingCount_factorial_unbounded — infinitude at factorial points: C(n!) → ∞
     (for every M eventually C(n!) ≥ M), immediate from qualifyingCount_factorial_ge
+20. badCount_decomposition — deficit decomposition D(n!) = Σ_{l<n}(p(l)−q(l)), the
+    non-qualifying dual of the prime/qualifying decompositions (Part XIII)
+21. badCount_factorial_succ — exact recurrence D((n+1)!) = D(n!) + (p(n)−q(n))
+22. badCount_factorial_mono — deficit is non-decreasing (no strict form: a level whose
+    primes all qualify contributes 0)
+23. badCount_factorial_increment_fraction — the scaled deficit increment obeys the
+    sieve bound ((D((n+1)!)−D(n!))·(n+1) ≤ p(n)), the absolute reading of the
+    level-wise density prediction
+
+(Part XII prime-count duals primeCount_factorial_{succ,mono,ge,lt_succ,strictMono,
+unbounded} are likewise present; Part XIII completes the absolute-growth trilogy.)
 
 **This file is now sorry-free** — the previous two `sorry`s (the interval
 decompositions) are discharged by `count_decomp`.
