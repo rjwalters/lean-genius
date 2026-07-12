@@ -19,12 +19,7 @@ where r_A(n) = |{(a,b) ∈ A² : a + b = n}| counts sum representations?
 - <https://erdosproblems.com/40>
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Data.Real.Sqrt
-import Mathlib.Data.Set.Basic
-import Mathlib.Data.Set.Card
-import Mathlib.Tactic
+import Mathlib
 
 /- ## Core Definitions -/
 
@@ -201,7 +196,7 @@ private lemma b2g_counting_sq_bound (A : Set ℕ) (g N : ℕ) (hN : N ≥ 1)
         -- F_le.card ≤ g
         have hle_bound : F_le.card ≤ g :=
           calc F_le.card
-              = Set.ncard (↑F_le : Set (ℕ × ℕ)) := (Set.ncard_coe_Finset F_le).symm
+              = Set.ncard (↑F_le : Set (ℕ × ℕ)) := (Set.ncard_coe_finset F_le).symm
             _ ≤ Set.ncard R := Set.ncard_le_ncard hle_sub hR_fin
             _ ≤ g := hrep m
         -- F_gt.image(swap) ⊆ R (swap injection)
@@ -222,7 +217,7 @@ private lemma b2g_counting_sq_bound (A : Set ℕ) (g N : ℕ) (hN : N ≥ 1)
               = (F_gt.image Prod.swap).card :=
                 (Finset.card_image_of_injective F_gt Prod.swap_injective).symm
             _ = Set.ncard (↑(F_gt.image Prod.swap) : Set (ℕ × ℕ)) :=
-                (Set.ncard_coe_Finset _).symm
+                (Set.ncard_coe_finset _).symm
             _ ≤ Set.ncard R := Set.ncard_le_ncard hgt_sub hR_fin
             _ ≤ g := hrep m
         linarith

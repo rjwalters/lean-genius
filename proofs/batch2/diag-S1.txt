@@ -117,3 +117,57 @@ error: Proofs/Erdos395Problem.lean:79:14: failed to synthesize instance of type 
 error: Proofs/Erdos395Problem.lean:94:15: failed to synthesize instance of type class
 error: Lean exited with code 1
 error: build failed
+===== Erdos40Problem
+error: Proofs/Erdos40Problem.lean:82:20: omega could not prove the goal:
+error: Proofs/Erdos40Problem.lean:112:37: failed to prove strict positivity, but it would be possible to prove nonnegativity if desired
+error: Proofs/Erdos40Problem.lean:154:4: Tactic `tauto` failed
+error: Proofs/Erdos40Problem.lean:204:52: Unknown constant `Set.ncard_coe_Finset`
+error: Proofs/Erdos40Problem.lean:225:17: Unknown constant `Set.ncard_coe_Finset`
+===== Erdos420Problem
+error: Proofs/Erdos420Problem.lean:62:56: unsolved goals
+error: Lean exited with code 1
+error: build failed
+===== Erdos434Problem
+error: Proofs/Erdos434Problem.lean:116:6: Unknown constant `Set.ncard_Icc_nat`
+error: Proofs/Erdos434Problem.lean:114:28: unsolved goals
+error: Proofs/Erdos434Problem.lean:147:22: Unknown constant `Nat.strong_rec_on`
+error: Proofs/Erdos434Problem.lean:174:10: Unknown identifier `sylvester_frobenius`
+error: Proofs/Erdos434Problem.lean:173:62: unsolved goals
+===== Erdos440Problem
+error: Proofs/Erdos440Problem.lean:60:4: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'Real.instDivInvMonoid', which is 'noncomputable'
+error: Lean exited with code 1
+error: build failed
+===== Erdos445Problem
+error: Proofs/Erdos445Problem.lean:45:44: failed to synthesize instance of type class
+error: Proofs/Erdos445Problem.lean:46:44: failed to synthesize instance of type class
+error: Proofs/Erdos445Problem.lean:115:6: 'calc' expression has type
+error: Lean exited with code 1
+error: build failed
+===== Erdos453Problem
+error: Proofs/Erdos453Problem.lean:71:27: No goals to be solved
+error: Proofs/Erdos453Problem.lean:72:27: No goals to be solved
+error: Proofs/Erdos453Problem.lean:73:27: No goals to be solved
+error: Proofs/Erdos453Problem.lean:74:27: No goals to be solved
+error: Proofs/Erdos453Problem.lean:82:2: `simp` made no progress
+===== Erdos478Problem
+error: Proofs/Erdos478Problem.lean:81:40: omega could not prove the goal:
+error: Proofs/Erdos478Problem.lean:84:42: Tactic `subst` failed: invalid equality proof, it is not of the form (x = t) or (t = x)
+error: Proofs/Erdos478Problem.lean:91:19: Type mismatch
+error: Proofs/Erdos478Problem.lean:104:46: Type mismatch
+error: Proofs/Erdos478Problem.lean:105:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+===== Erdos488Problem
+error: Proofs/Erdos488Problem.lean:219:4: omega could not prove the goal:
+error: Proofs/Erdos488Problem.lean:234:37: Type mismatch
+error: Proofs/Erdos488Problem.lean:246:37: No goals to be solved
+error: Proofs/Erdos488Problem.lean:265:53: don't know how to synthesize placeholder
+error: Proofs/Erdos488Problem.lean:265:19: unsolved goals
+===== Erdos48Problem
+error: Proofs/Erdos48Problem.lean:80:67: unsolved goals
+error: Proofs/Erdos48Problem.lean:87:32: Application type mismatch: The argument
+error: Proofs/Erdos48Problem.lean:112:59: Type mismatch
+error: Proofs/Erdos48Problem.lean:115:60: Function expected at
+error: Lean exited with code 1
+===== Erdos498Problem
+error: Proofs/Erdos498Problem.lean:42:15: failed to synthesize instance of type class
+error: Lean exited with code 1
+error: build failed

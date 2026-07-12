@@ -4,3 +4,140 @@ error: Proofs/Erdos512Problem.lean:51:66: unsolved goals
 error: Proofs/Erdos512Problem.lean:57:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
 error: Proofs/Erdos512Problem.lean:106:10: Unknown constant `Complex.continuous_abs.comp`
 error: Proofs/Erdos512Problem.lean:107:4: No goals to be solved
+===== Erdos514Problem
+error: Proofs/Erdos514Problem.lean:59:4: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'Real.instSupSet', which is 'noncomputable'
+error: Proofs/Erdos514Problem.lean:218:4: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'exp', which is 'noncomputable'
+error: Proofs/Erdos514Problem.lean:224:4: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'sin', which is 'noncomputable'
+error: Lean exited with code 1
+error: build failed
+===== Erdos533Problem
+error: Proofs/Erdos533Problem.lean:47:15: failed to synthesize instance of type class
+error: Proofs/Erdos533Problem.lean:56:10: Type mismatch
+error: Proofs/Erdos533Problem.lean:57:14: Type mismatch
+error: Proofs/Erdos533Problem.lean:93:26: Type mismatch
+error: Proofs/Erdos533Problem.lean:120:61: Type mismatch
+===== Erdos600Problem
+error: Proofs/Erdos600Problem.lean:57:3: failed to synthesize instance of type class
+error: Lean exited with code 1
+error: build failed
+===== Erdos668Problem
+error: Proofs/Erdos668Problem.lean:75:4: Type mismatch: After simplification, term
+error: Proofs/Erdos668Problem.lean:215:56: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+error: Lean exited with code 1
+error: build failed
+===== Erdos682Problem
+error: Proofs/Erdos682Problem.lean:73:2: Type mismatch
+error: Proofs/Erdos682Problem.lean:81:2: Type mismatch
+error: Proofs/Erdos682Problem.lean:102:2: unsolved goals
+error: Proofs/Erdos682Problem.lean:110:2: unsolved goals
+error: Proofs/Erdos682Problem.lean:192:5: failed to synthesize instance of type class
+===== Erdos741Problem
+error: Proofs/Erdos741Problem.lean:220:84: unsolved goals
+error: Proofs/Erdos741Problem.lean:255:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+error: Proofs/Erdos741Problem.lean:280:57: Unknown constant `Finset.card_Icc`
+error: Proofs/Erdos741Problem.lean:288:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+error: Proofs/Erdos741Problem.lean:296:4: Tactic `apply` failed: could not unify the conclusion of `Tendsto.sub tendsto_const_nhds`
+===== Erdos774Problem
+error: Proofs/Erdos774Problem.lean:198:2: failed to synthesize instance of type class
+error: Proofs/Erdos774Problem.lean:198:19: Tactic `assumption` failed
+error: Lean exited with code 1
+error: build failed
+===== Erdos827Problem
+error: Proofs/Erdos827Problem.lean:107:2: omega could not prove the goal:
+error: Proofs/Erdos827Problem.lean:244:38: Application type mismatch: The argument
+error: Proofs/Erdos827Problem.lean:244:43: Application type mismatch: The argument
+error: Proofs/Erdos827Problem.lean:244:52: Unknown identifier `allDistinctCircumradii_subset`
+error: Lean exited with code 1
+===== Erdos841Problem
+error: Proofs/Erdos841Problem.lean:50:60: omega could not prove the goal:
+error: Lean exited with code 1
+error: build failed
+===== Erdos858Problem
+error: Proofs/Erdos858Problem.lean:112:10: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+error: Proofs/Erdos858Problem.lean:148:21: linarith failed to find a contradiction
+error: Proofs/Erdos858Problem.lean:178:41: Ambiguous term
+error: Proofs/Erdos858Problem.lean:260:2: failed to synthesize instance of type class
+error: Proofs/Erdos858Problem.lean:273:9: failed to infer `have` declaration type
+===== Erdos933Problem
+error: Proofs/Erdos933Problem.lean:192:2: Type mismatch
+error: Lean exited with code 1
+error: build failed
+===== Erdos940Problem
+error: Proofs/Erdos940Problem.lean:59:4: interval_cases failed: could not find upper bound on p
+error: Proofs/Erdos940Problem.lean:110:2: failed to synthesize instance of type class
+error: Proofs/Erdos940Problem.lean:160:11: failed to synthesize instance of type class
+error: Proofs/Erdos940Problem.lean:163:11: failed to synthesize instance of type class
+error: Proofs/Erdos940Problem.lean:161:14: failed to synthesize instance of type class
+===== Erdos955Problem
+error: Proofs/Erdos955Problem.lean:71:2: failed to synthesize instance of type class
+error: Lean exited with code 1
+error: build failed
+===== Erdos957Problem
+error: Proofs/Erdos957Problem.lean:153:34: failed to prove strict positivity, but it would be possible to prove nonnegativity if desired
+error: Proofs/Erdos957Problem.lean:155:57: linarith failed to find a contradiction
+error: Proofs/Erdos957Problem.lean:185:2: linarith failed to find a contradiction
+error: Proofs/Erdos957Problem.lean:304:11: typeclass instance problem is stuck
+error: Lean exited with code 1
+===== Erdos964Problem
+error: Proofs/Erdos964Problem.lean:54:31: unsolved goals
+error: Proofs/Erdos964Problem.lean:57:60: unsolved goals
+error: Proofs/Erdos964Problem.lean:69:35: unsolved goals
+error: Proofs/Erdos964Problem.lean:158:8: Unknown identifier `div_lt_iff`
+error: Proofs/Erdos964Problem.lean:164:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+===== Erdos976Problem
+error: Proofs/Erdos976Problem.lean:44:4: Invalid field `degree`: The environment does not contain `Polynomial.degree`, so it is not possible to project the field `degree` from an expression
+error: Proofs/Erdos976Problem.lean:44:53: Invalid field `degree`: The environment does not contain `Polynomial.degree`, so it is not possible to project the field `degree` from an expression
+error: Proofs/Erdos976Problem.lean:44:68: Invalid field `degree`: The environment does not contain `Polynomial.degree`, so it is not possible to project the field `degree` from an expression
+error: Proofs/Erdos976Problem.lean:50:43: Invalid field `natDegree`: The environment does not contain `Polynomial.natDegree`, so it is not possible to project the field `natDegree` from an expression
+error: Proofs/Erdos976Problem.lean:58:7: Unknown constant `Nat.primeFactorsList`
+===== Erdos987Problem
+error: Proofs/Erdos987Problem.lean:218:6: unexpected identifier; expected ')'
+error: Lean exited with code 1
+error: build failed
+===== FactorRemainderNullstellensatzOQ02
+error: Proofs/FactorRemainderNullstellensatzOQ02.lean:75:51: Unknown identifier `card_roots_le_degree`
+error: Proofs/FactorRemainderNullstellensatzOQ02.lean:158:2: omega could not prove the goal:
+error: Lean exited with code 1
+error: build failed
+===== FourierSeriesOQ01
+error: Proofs/FourierSeriesOQ01.lean:179:5: unexpected token 'λ'; expected '_' or identifier
+error: Proofs/FourierSeriesOQ01.lean:214:30: unsolved goals
+error: Proofs/FourierSeriesOQ01.lean:245:26: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+error: Proofs/FourierSeriesOQ01.lean:270:6: Tactic `apply` failed: could not unify the conclusion of `hc_zero`
+error: Proofs/FourierSeriesOQ01.lean:281:25: invalid 'ext' conv tactic, function or arrow expected
+===== LawsOfLargeNumbersOQ02
+error: Proofs/LawsOfLargeNumbersOQ02.lean:130:4: Type mismatch: After simplification, term
+error: Proofs/LawsOfLargeNumbersOQ02.lean:137:2: No goals to be solved
+error: Proofs/LawsOfLargeNumbersOQ02.lean:195:10: typeclass instance problem is stuck
+error: Proofs/LawsOfLargeNumbersOQ02.lean:325:50: Type mismatch
+error: Lean exited with code 1
+===== LiouvilleTheorem
+error: Proofs/LiouvilleTheorem.lean:183:19: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+error: Proofs/LiouvilleTheorem.lean:222:32: failed to synthesize instance of type class
+error: Proofs/LiouvilleTheorem.lean:222:60: linarith failed to find a contradiction
+error: Proofs/LiouvilleTheorem.lean:223:18: not a positivity goal
+error: Proofs/LiouvilleTheorem.lean:225:72: not a positivity goal
+===== NapoleonsTheorem
+error: Proofs/NapoleonsTheorem.lean:154:4: linarith failed to find a contradiction
+error: Proofs/NapoleonsTheorem.lean:160:4: linarith failed to find a contradiction
+error: Proofs/NapoleonsTheorem.lean:176:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+error: Proofs/NapoleonsTheorem.lean:193:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+error: Proofs/NapoleonsTheorem.lean:205:9: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+===== NapoleonsTheoremOQ02
+error: Proofs/NapoleonsTheorem.lean:154:4: linarith failed to find a contradiction
+error: Proofs/NapoleonsTheorem.lean:160:4: linarith failed to find a contradiction
+error: Proofs/NapoleonsTheorem.lean:176:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+error: Proofs/NapoleonsTheorem.lean:193:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+error: Proofs/NapoleonsTheorem.lean:205:9: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+===== NewtonInductiveStepOQ03
+error: Proofs/NewtonInductiveStepOQ03.lean:74:2: Function expected at
+error: Proofs/NewtonInductiveStepOQ03.lean:78:2: Function expected at
+error: Proofs/NewtonInductiveStepOQ03.lean:99:4: Function expected at
+error: Proofs/NewtonInductiveStepOQ03.lean:102:2: No goals to be solved
+error: Proofs/NewtonInductiveStepOQ03.lean:139:40: unsolved goals
+===== StirlingFormula
+error: Proofs/StirlingFormula.lean:280:38: unexpected token '/-!'; expected 'lemma'
+error: Proofs/StirlingFormula.lean:306:4: linarith failed to find a contradiction
+error: Proofs/StirlingFormula.lean:320:6: Type mismatch
+error: Proofs/StirlingFormula.lean:328:45: unsolved goals
+error: Proofs/StirlingFormula.lean:332:10: Unknown identifier `div_le_div_iff`

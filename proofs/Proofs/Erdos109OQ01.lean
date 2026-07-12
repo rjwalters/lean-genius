@@ -204,7 +204,7 @@ theorem sumset_density_constraint (A B C : Set ℕ)
       simp only [fA]
       rcases Nat.eq_zero_or_pos N with rfl | hN
       · simp
-      · apply div_le_one_of_le _ (Nat.cast_nonneg _)
+      · apply div_le_one_of_le₀ _ (Nat.cast_nonneg _)
         have h1 : (A ∩ Set.Icc 1 N).ncard ≤ (Set.Icc 1 N).ncard :=
           Set.ncard_le_ncard Set.inter_subset_right (Set.finite_Icc 1 N)
         have h2 : (Set.Icc 1 N).ncard = N := by

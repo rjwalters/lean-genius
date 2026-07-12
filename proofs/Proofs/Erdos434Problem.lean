@@ -28,11 +28,7 @@
   Tags: number-theory, combinatorics, frobenius-problem
 -/
 
-import Mathlib.Data.Multiset.Basic
-import Mathlib.Data.Set.Card
-import Mathlib.Data.Nat.GCD.Basic
-import Mathlib.Order.BoundedOrder.Basic
-import Mathlib.Tactic
+import Mathlib
 
 namespace Erdos434
 

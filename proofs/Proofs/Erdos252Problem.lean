@@ -22,11 +22,7 @@ Conditional results:
 Reference: Guy's "Unsolved Problems in Number Theory" Problem B14
 -/
 
-import Mathlib.NumberTheory.ArithmeticFunction.Defs
-import Mathlib.NumberTheory.ArithmeticFunction.Misc
-import Mathlib.NumberTheory.Real.Irrational
-import Mathlib.Topology.Algebra.InfiniteSum.Basic
-import Mathlib.Tactic
+import Mathlib
 
 open scoped Nat ArithmeticFunction
 open ArithmeticFunction
@@ -189,7 +185,7 @@ theorem sigma_le_pow (n k : ℕ) : sigma k n ≤ n ^ (k + 1) := by
                 intro d hd
                 simp only [Finset.mem_Icc]
                 exact ⟨Nat.pos_of_mem_divisors hd, Nat.divisor_le (Nat.mem_divisors.mp hd).1⟩
-            _ = n := by simp [Finset.card_Icc]; omega
+            _ = n := by simp [Nat.card_Icc]; omega
 
 /-- The series converges (proof sketch via comparison test).
 
