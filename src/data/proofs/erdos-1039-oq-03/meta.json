@@ -70,10 +70,10 @@
     ],
     "dateAdded": "2026-06-23",
     "axiomCount": 0,
-    "lineCount": 164,
+    "lineCount": 181,
     "assumptions": "0 axioms. 0 sorries. The core estimate is the C = 1 specialization of Mathlib's Cauchy estimate Complex.norm_deriv_le_of_forall_mem_sphere_norm_le; the inscribed-disc and polynomial results are corollaries, and the obstruction is an explicit witness. The parent open problem (is ρ(f) ≫ 1/n?) is NOT asserted — only the elementary conformal estimate and its critical-point degeneracy. The obstruction witness f ≡ 0 is a constant, not a monic polynomial; it is used solely to certify that the hypothesis f'(c) ≠ 0 in the radius bound is necessary, which is the mathematical point. Build note: local kernel verification was blocked by an unresponsive Docker build host this session (docker info timed out; the container never materialized). The proof uses only Mathlib v4.26.0 lemma signatures grep-confirmed against the pinned toolchain (Complex.norm_deriv_le_of_forall_mem_sphere_norm_le, Differentiable.diffContOnCl, closure_ball with the r ≠ 0 hypothesis, isClosed_le, sphere_subset_closedBall, DifferentiableAt.fun_finset_prod via fun_prop, le_div_iff₀, deriv_const'); arithmetic was hand-checked. It is gated by the deployer build before merge.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 7,
+    "theoremCount": 9,
     "definitionCount": 2
   },
   "sections": [
@@ -184,9 +184,9 @@
       "Set"
     ],
     "namespace": "Erdos1039Conformal",
-    "lineCount": 207,
+    "lineCount": 224,
     "axiomCount": 0,
-    "theoremCount": 9,
+    "theoremCount": 11,
     "definitionCount": 2,
     "sorries": 0,
     "path": "Proofs/Erdos1039Conformal.lean"

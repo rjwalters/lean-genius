@@ -152,6 +152,23 @@ theorem rootPoly_differentiable {n : ℕ} (roots : Fin n → ℂ) :
   unfold rootPoly
   fun_prop
 
+/-- **Each root is a zero of the polynomial.**  `f(rootⱼ) = ∏ᵢ (rootⱼ − rootsᵢ) = 0`,
+    since the `i = j` factor vanishes. -/
+theorem rootPoly_root_eq_zero {n : ℕ} (roots : Fin n → ℂ) (j : Fin n) :
+    rootPoly roots (roots j) = 0 := by
+  unfold rootPoly
+  exact Finset.prod_eq_zero (Finset.mem_univ j) (sub_self _)
+
+/-- **Every root lies in the lemniscate interior.**  `rootⱼ ∈ {z : ‖f z‖ < 1}`, because
+    `f` vanishes there (`rootPoly_root_eq_zero`), so `‖f(rootⱼ)‖ = 0 < 1`.  Thus the `n`
+    roots are always interior points of the sublevel set whose inscribed discs define
+    `ρ(f)` — the elementary geometric fact underlying the whole inscribed-radius question. -/
+theorem root_mem_sublevel {n : ℕ} (roots : Fin n → ℂ) (j : Fin n) :
+    roots j ∈ sublevel (rootPoly roots) := by
+  show ‖rootPoly roots (roots j)‖ < 1
+  rw [rootPoly_root_eq_zero, norm_zero]
+  exact one_pos
+
 /-- **Conformal inscribed-radius bound for a monic polynomial.**
 If the open disc `D(c, r)` is inscribed in the lemniscate interior
 `{z : ‖∏ᵢ (z - rootsᵢ)‖ < 1}` and the centre is not a critical point, then
