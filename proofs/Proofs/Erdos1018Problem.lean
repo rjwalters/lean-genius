@@ -467,6 +467,17 @@ theorem nonPlanar_of_edgeCount_gt {G : SimpleGraph V} [DecidableRel G.Adj]
   intro hPlanar
   exact absurd (planar_linear_bound V G hPlanar) (Nat.not_le.mpr h)
 
+/-- **Edge excess forces five vertices.** If a graph exceeds the planar Euler budget
+    `3n − 6`, then not only is it non-planar (`nonPlanar_of_edgeCount_gt`) but its vertex
+    set already has `≥ 5` elements (`nonPlanar_imp_five_le_card`).  A purely combinatorial
+    corollary: you cannot cram more than `3n − 6` edges onto `≤ 4` vertices while staying
+    a simple graph *and* certifying non-planarity — the moment the Euler budget is beaten,
+    at least five vertices are present.  Carries the same single planar-bound axiom as
+    `nonPlanar_of_edgeCount_gt`. -/
+theorem five_le_card_of_edgeCount_gt {G : SimpleGraph V} [DecidableRel G.Adj]
+    (h : 3 * Fintype.card V - 6 < edgeCount G) : 5 ≤ Fintype.card V :=
+  nonPlanar_imp_five_le_card G (nonPlanar_of_edgeCount_gt h)
+
 /-- **Pure crossover inequality (axiom-free).** For every ε > 0 there is a
     threshold N — explicitly `⌈3^(1/ε)⌉ + 1` — beyond which super-linear growth
     strictly dominates any linear bound: `n^(1+ε) > 3n` for all `n ≥ N`.
@@ -498,6 +509,34 @@ theorem superlinear_gt_linear (ε : ℝ) (hε : ε > 0) :
     rw [Real.rpow_add hnpos, Real.rpow_one]
   rw [hsplit]
   have hmul : (n : ℝ) * 3 < (n : ℝ) * (n : ℝ) ^ ε := mul_lt_mul_of_pos_left hmono hnpos
+  linarith
+
+/-- **Crossover against an arbitrary linear coefficient (axiom-free).** The `3` in
+    `superlinear_gt_linear` is not special: for *every* positive coefficient `c` and
+    every `ε > 0` there is a threshold `N = ⌈c^(1/ε)⌉ + 1` beyond which `n^(1+ε) > c·n`.
+    The crossover happens exactly when `n^ε > c`, i.e. `n > c^(1/ε)`; taking `c = 3`
+    recovers `superlinear_gt_linear`.  This isolates the general fact that any fixed
+    super-linear power eventually dominates every linear function, with no
+    graph-theoretic content and no axioms. -/
+theorem superlinear_gt_linear_const (ε c : ℝ) (hε : ε > 0) (hc : 0 < c) :
+    ∃ N : ℕ, ∀ n : ℕ, n ≥ N → (n : ℝ) ^ (1 + ε) > c * n := by
+  refine ⟨⌈c ^ (1 / ε)⌉₊ + 1, ?_⟩
+  intro n hN
+  have hn1 : 1 ≤ n := le_trans (Nat.le_add_left 1 _) hN
+  have hnpos : (0 : ℝ) < (n : ℝ) := by exact_mod_cast hn1
+  have hTpos : (0 : ℝ) ≤ c ^ (1 / ε) := Real.rpow_nonneg (le_of_lt hc) _
+  have hnT : c ^ (1 / ε) < (n : ℝ) := by
+    have hceil : c ^ (1 / ε) ≤ (⌈c ^ (1 / ε)⌉₊ : ℝ) := Nat.le_ceil _
+    have hstep : ((⌈c ^ (1 / ε)⌉₊ : ℝ)) + 1 ≤ (n : ℝ) := by exact_mod_cast hN
+    linarith
+  have hmono : (c ^ (1 / ε)) ^ ε < (n : ℝ) ^ ε := Real.rpow_lt_rpow hTpos hnT hε
+  have hcollapse : (c ^ (1 / ε)) ^ ε = c := by
+    rw [← Real.rpow_mul (le_of_lt hc), one_div, inv_mul_cancel₀ (ne_of_gt hε), Real.rpow_one]
+  rw [hcollapse] at hmono
+  have hsplit : (n : ℝ) ^ (1 + ε) = (n : ℝ) * (n : ℝ) ^ ε := by
+    rw [Real.rpow_add hnpos, Real.rpow_one]
+  rw [hsplit]
+  have hmul : (n : ℝ) * c < (n : ℝ) * (n : ℝ) ^ ε := mul_lt_mul_of_pos_left hmono hnpos
   linarith
 
 /-- Super-linear edges force non-planarity somewhere.
