@@ -148,6 +148,26 @@
       "targetId": "solution-of-cubic",
       "relationship": "extends",
       "description": "The casus irreducibilis is a fundamental limitation of Cardano's cubic formula from the parent proof"
+    },
+    {
+      "targetId": "solution-of-cubic-oq-03-oq-01",
+      "relationship": "related",
+      "description": "Computes the discriminant Δ = −4p³ − 27q² = (x₁−x₂)²(x₁−x₃)²(x₂−x₃)² of the depressed cubic and reads root nature from its sign. The casus irreducibilis is precisely the Δ > 0 branch — three distinct real roots — so this sibling supplies the exact quantity whose sign this entry uses to detect when Cardano's formula is forced through non-real cube roots."
+    },
+    {
+      "targetId": "angle-trisection",
+      "relationship": "related",
+      "description": "Casus irreducibilis is the algebraic mechanism behind the impossibility of trisecting a general angle: trisecting 60° reduces to solving 8x³ − 6x − 1 = 0 (the cos 20° cubic), an irreducible cubic with three real roots whose Cardano solution needs complex cube roots. The triple-angle identity 4cos³φ − 3cosφ = cos 3φ in this entry's second open question is exactly the bridge to that geometric problem."
+    },
+    {
+      "targetId": "angle-trisection-cos-20-gal",
+      "relationship": "related",
+      "description": "A fully worked casus-irreducibilis cubic: 8X³ − 6X − 1 (minimal polynomial of cos 20°) is irreducible over ℚ with three real roots, and its Galois group has order 3. That order-3 (non-2-power) Galois group is the group-theoretic form of this entry's first open question — the splitting field admits no tower of real radical/quadratic extensions, so the real roots cannot be expressed by real radicals."
+    },
+    {
+      "targetId": "abel-ruffini",
+      "relationship": "related",
+      "description": "Wantzel's impossibility statement recorded here sits inside the Galois-solvability framework: constructibility/solvability by radicals is governed by the Galois group of the minimal polynomial. Abel–Ruffini formalizes that framework (via Mathlib's Galois theory), the setting this entry's first open question proposes to use to prove the splitting field of a casus-irreducibilis cubic has no real radical tower."
     }
   ],
   "sorries": 0
