@@ -51,12 +51,13 @@
       "not_unboundedOnPrimePowers_logN and not_unboundedOnPrimePowers_omega: SELECTIVITY — the parent file's flagship additive functions log and ω both FAIL the hypothesis. log sits exactly at the boundary (log(p^k)/log(p^k)=1); ω is bounded on prime powers (ω(p^k)=1). The hypothesis isolates functions growing strictly faster than log on prime powers",
       "unboundedOnPrimePowers_unbounded: the hypothesis forces plain unboundedness of f on prime powers (for every B some f(p^k) > B), by dialing the multiplier against the uniform lower bound log(p^k) ≥ log 2 > 0",
       "stronglyAdditive_unboundedOnPrimePowers_iff: a strongly-additive reduction collapsing UnboundedOnPrimePowers f to 'f(p)/log p unbounded over primes' — the strongly-additive counterpart of the parent's completely-additive reduction. Since f(p^k)=f(p) is constant in k, the binding case is k=1; the M<0 branch is handled by invoking the hypothesis at 0 (then f(p) > 0 ≥ M·log p)",
-      "unboundedOnPrimePowers_max_left / _max_right / not_unboundedOnPrimePowers_max: PROVED the JOIN (sup) closure completing the file's prime-power domination order into a lattice — the Erdős #897 hypothesis functions form a sup-closed filter (closed under pointwise max with any function), and the failing O(log)-on-prime-powers functions form a sup-closed ideal (closed under max of two, merging the two O(log) constants via log(p^k) ≥ 0)."
+      "unboundedOnPrimePowers_max_left / _max_right / not_unboundedOnPrimePowers_max: PROVED the JOIN (sup) closure completing the file's prime-power domination order into a lattice — the Erdős #897 hypothesis functions form a sup-closed filter (closed under pointwise max with any function), and the failing O(log)-on-prime-powers functions form a sup-closed ideal (closed under max of two, merging the two O(log) constants via log(p^k) ≥ 0).",
+      "not_unboundedOnPrimePowers_add / _min_left / _min_right: PROVED the MEET (min) and ADDITIVE closure of the failing class, completing the lattice picture. The O(log)-on-prime-powers functions form a genuine order IDEAL — closed under max of two AND min with any function — that is additionally an additive convex cone (f ≤ Mf·log, g ≤ Mg·log ⟹ f+g ≤ (Mf+Mg)·log, no sign input needed). Dual to the filter side, which is only join-closed (never meet-closed). Axiom-free."
     ],
     "axiomCount": 0,
-    "lineCount": 575,
+    "lineCount": 650,
     "assumptions": "None. Fully machine-checked with 0 axioms and 0 sorries; proofs use no native_decide (so #print axioms shows only propext/Classical.choice/Quot.sound). Part I of Erdős #897 — whether the prime-power growth hypothesis forces limsup_n (f(n+1)-f(n))/log n = ∞ — remains OPEN and is NOT asserted; this entry proves only the verified surrounding theory (non-vacuity, selectivity, plain unboundedness, and the strongly-additive reduction).",
-    "theoremCount": 26,
+    "theoremCount": 29,
     "definitionCount": 1
   },
   "overview": {
@@ -130,11 +131,11 @@
       "Finset"
     ],
     "namespace": "Erdos897",
-    "lineCount": 575,
+    "lineCount": 650,
     "axiomCount": 0,
     "sorries": 0,
     "definitionCount": 1,
-    "theoremCount": 28
+    "theoremCount": 31
   },
   "crossReferences": [
     {
