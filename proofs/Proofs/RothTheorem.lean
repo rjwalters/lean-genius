@@ -7116,4 +7116,107 @@ theorem exists_dense_coset_relative_density {N : ℕ} [NeZero N] {g : ℕ} [NeZe
   rw [div_lt_div_iff₀ hNpos hMpos, hNeq]
   nlinarith [hj, hMpos]
 
+/-! ### Part LVIII — the exact main-term deficit: a square-difference-free set pins the
+Gauss-weighted Fourier energy *exactly* to `N·|A|·(κ − |A|)`
+
+Every density bound so far (Parts VI–LII) fed the square-difference framework through the
+*inequality* `sqDiffCount A ≤ |A|·κ` (`sqDiffCount_le_of_free`, `κ = #{n : n² = 0}`).  But for a
+square-difference-free set that inequality is in fact an **equality**: a pair `(x, n)` with `n² = 0`
+is *always* counted (since `x + n² = x ∈ A`), and freeness kills every pair with `n² ≠ 0`, so no
+pair is lost either way.  Pinning `sqDiffCount A = |A|·κ` exactly, and substituting into the verified
+principal-term split `sqDiffCount_fourier_main`
+(`sqDiffCount A = |A|² + N⁻¹·Σ_{r≠0} ‖Â(r)‖²·G(r)`), yields the **exact deficit identity**
+
+    Σ_{r ≠ 0} ‖Â(r)‖² · G(r)  =  N · (|A|·κ − |A|²)  =  N · |A| · (κ − |A|).
+
+This is the precise quantitative engine of Sárközy's theorem, stated as an *equality* rather than a
+bound: a square-difference-free set with `|A| > κ` (any large set, since `κ = #{n : n² = 0}` is
+`o(N)`) is *forced* to carry Gauss-weighted nonzero-frequency Fourier energy of magnitude
+*exactly* `N·|A|·(|A| − κ) > 0`.  The circle method cannot avoid finding this much structure — it is
+not an upper bound to be beaten but a lower bound that must be *explained* by concentration of `A`.
+This is the exact hypothesis any density-increment argument consumes, and it complements the
+circle-method *upper* bound `sqDiff_error_le` (the two together pin the energy from both sides).
+Everything here is 0-axiom, built on `sqDiffCount_fourier_main` (Part V) and the exact free count. -/
+
+/-- **Exact square-difference count for a free set.**  Upgrades `sqDiffCount_le_of_free` from `≤`
+to `=`: for a square-difference-free `A` (no `x ∈ A`, `n` with `n² ≠ 0`, `x + n² ∈ A`),
+
+    sqDiffCount A  =  |A| · #{n : n² = 0}.
+
+Every trivial pair `(x, n)` with `n² = 0` is counted (as `x + n² = x ∈ A`), and freeness excludes
+every pair with `n² ≠ 0`; hence the filtered set is *exactly* `A ×ˢ {n : n² = 0}`. -/
+theorem sqDiffCount_eq_of_free {N : ℕ} [NeZero N] (A : Finset (ZMod N))
+    (hfree : ∀ x ∈ A, ∀ n : ZMod N, n ^ 2 ≠ 0 → x + n ^ 2 ∉ A) :
+    sqDiffCount A = A.card * (Finset.univ.filter (fun n : ZMod N => n ^ 2 = 0)).card := by
+  unfold sqDiffCount
+  have hset : (A ×ˢ (Finset.univ : Finset (ZMod N))).filter
+        (fun p : ZMod N × ZMod N => p.1 + p.2 ^ 2 ∈ A)
+      = A ×ˢ (Finset.univ.filter (fun n : ZMod N => n ^ 2 = 0)) := by
+    ext p
+    simp only [Finset.mem_filter, Finset.mem_product, Finset.mem_univ, true_and, and_true]
+    constructor
+    · rintro ⟨hx, hin⟩
+      refine ⟨hx, ?_⟩
+      by_contra hne
+      exact hfree p.1 hx p.2 hne hin
+    · rintro ⟨hx, hn⟩
+      exact ⟨hx, by rw [hn, add_zero]; exact hx⟩
+  rw [hset, Finset.card_product]
+
+/-- **Exact main-term deficit (complex form).**  Substituting the exact free count
+`sqDiffCount A = |A|·κ` into the principal-term split `sqDiffCount_fourier_main` pins the
+nonzero-frequency Gauss-weighted Fourier energy *exactly*:
+
+    Σ_{r ≠ 0} ‖Â(r)‖² · G(r)  =  N · (|A|·κ − |A|²),      κ = #{n : n² = 0}.
+
+This is the density-increment engine as an equality: the "bad mass" is not merely bounded, it is
+*determined* by the size of `A`.  For `|A| > κ` the right side is a nonzero multiple of `N`, forcing
+a genuine amount of Gauss-weighted structure. -/
+theorem sqDiffFree_badMass_eq {N : ℕ} [NeZero N] (A : Finset (ZMod N))
+    (hfree : ∀ x ∈ A, ∀ n : ZMod N, n ^ 2 ≠ 0 → x + n ^ 2 ∉ A) :
+    (Finset.univ \ {(0 : ZMod N)}).sum
+        (fun r : ZMod N => (↑(‖fourierCoeff A r‖ ^ 2) : ℂ) * sqGaussSum r)
+      = (↑N : ℂ) * ((↑A.card : ℂ) * (↑(Finset.univ.filter (fun n : ZMod N => n ^ 2 = 0)).card)
+          - (↑A.card : ℂ) ^ 2) := by
+  have hN : (↑N : ℂ) ≠ 0 := Nat.cast_ne_zero.mpr (NeZero.ne N)
+  have hmain := sqDiffCount_fourier_main A
+  have hcount : (sqDiffCount A : ℂ)
+      = (↑A.card : ℂ) * (↑(Finset.univ.filter (fun n : ZMod N => n ^ 2 = 0)).card) := by
+    rw [sqDiffCount_eq_of_free A hfree]; push_cast; ring
+  rw [hcount] at hmain
+  -- `hmain : |A|·κ = |A|² + N⁻¹ · S`; solve for `S`.
+  have h2 : (↑A.card : ℂ) * (↑(Finset.univ.filter (fun n : ZMod N => n ^ 2 = 0)).card)
+        - (↑A.card : ℂ) ^ 2
+      = (↑N : ℂ)⁻¹ * (Finset.univ \ {(0 : ZMod N)}).sum
+          (fun r : ZMod N => (↑(‖fourierCoeff A r‖ ^ 2) : ℂ) * sqGaussSum r) := by
+    linear_combination hmain
+  rw [h2, ← mul_assoc, mul_inv_cancel₀ hN, one_mul]
+
+/-- **Exact deficit magnitude (the unavoidable structure lower bound).**  Taking magnitudes in
+`sqDiffFree_badMass_eq`, the nonzero-frequency Gauss-weighted Fourier energy of a
+square-difference-free set has magnitude *exactly*
+
+    ‖Σ_{r ≠ 0} ‖Â(r)‖² · G(r)‖  =  N · |A| · | |A| − κ |.
+
+When `|A| > κ = #{n : n² = 0}` (any set beyond the trivial `n² = 0` locus, so certainly any set of
+positive density for large `N`, as `κ = o(N)`), this reads `= N·|A|·(|A| − κ) > 0`: a strict,
+exact lower bound on the Gauss-weighted "bad mass".  This is the honest form of "the circle method
+must find structure" — the quantity the circle-method *upper* bound `sqDiff_error_le` bounds from
+above is here pinned from below, so the two together force `|A| − κ ≤ max_{r≠0} ‖G(r)‖` (the source
+of every density bound in Parts VI–LII). -/
+theorem sqDiffFree_badMass_norm {N : ℕ} [NeZero N] (A : Finset (ZMod N))
+    (hfree : ∀ x ∈ A, ∀ n : ZMod N, n ^ 2 ≠ 0 → x + n ^ 2 ∉ A) :
+    ‖(Finset.univ \ {(0 : ZMod N)}).sum
+        (fun r : ZMod N => (↑(‖fourierCoeff A r‖ ^ 2) : ℂ) * sqGaussSum r)‖
+      = (↑N : ℝ) * ((↑A.card : ℝ)
+          * |(↑A.card : ℝ) - (↑(Finset.univ.filter (fun n : ZMod N => n ^ 2 = 0)).card : ℝ)|) := by
+  rw [sqDiffFree_badMass_eq A hfree]
+  set κ : ℕ := (Finset.univ.filter (fun n : ZMod N => n ^ 2 = 0)).card with hκ
+  have hinner : (↑A.card : ℂ) * (↑κ : ℂ) - (↑A.card : ℂ) ^ 2
+      = (((↑A.card : ℝ) * (↑κ : ℝ) - (↑A.card : ℝ) ^ 2 : ℝ) : ℂ) := by push_cast; ring
+  rw [hinner, norm_mul, Complex.norm_natCast, Complex.norm_real, Real.norm_eq_abs]
+  have hfac : (↑A.card : ℝ) * (↑κ : ℝ) - (↑A.card : ℝ) ^ 2
+      = (↑A.card : ℝ) * ((↑κ : ℝ) - (↑A.card : ℝ)) := by ring
+  rw [hfac, abs_mul, abs_of_nonneg (by positivity : (0 : ℝ) ≤ (↑A.card : ℝ)), abs_sub_comm]
+
 end Szemeredi.Roth
