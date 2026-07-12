@@ -94,6 +94,23 @@ axiom pommerenke_lower (f : UnitDiscPolynomial) (hf : f.degree > 0) :
 /-- The Pommerenke exponent is 2 (quadratic in n). -/
 def pommerenkeExponent : ℕ := 2
 
+/-- **Two-sided bracket for the benchmark family.**  Applying the general Pommerenke lower
+    bound to the concrete extremal polynomial `zⁿ − 1` (`rootsOfUnity n`, degree `n`) and
+    pairing it with the benchmark upper bound gives
+    `1/(2e·n²) ≤ ρ(zⁿ − 1) ≤ π/(2n)`.
+    This is the first statement that pins the *actual* inscribed-disc radius of the benchmark
+    family (rather than comparing abstract bound functions): the extremal polynomial's `ρ`
+    lies in a band of order between `1/n²` and `1/n`, with multiplicative width `π·e·n`.
+    Directly combines `pommerenke_lower` (specialized to `rootsOfUnity n`) and
+    `benchmark_upper`. -/
+theorem benchmark_family_bracket (n : ℕ) (hn : n > 0) :
+    1 / (2 * Real.exp 1 * (n : ℝ) ^ 2) ≤ rho (rootsOfUnity n hn) ∧
+      rho (rootsOfUnity n hn) ≤ Real.pi / (2 * n) := by
+  refine ⟨?_, benchmark_upper n hn⟩
+  have hdeg : (rootsOfUnity n hn).degree > 0 := hn
+  have hlow := pommerenke_lower (rootsOfUnity n hn) hdeg
+  simpa using hlow
+
 /-
 ## Krishnapur-Lundberg-Ramachandran Bound (2025)
 -/
