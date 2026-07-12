@@ -84,11 +84,19 @@
       "mathContext": "$p_6 = e_1^6 - 6 e_1^4 e_2 + 9 e_1^2 e_2^2 - 2 e_2^3 + 6 e_1^3 e_3 - 12 e_1 e_2 e_3 + 3 e_3^2 - 6 e_1^2 e_4 + 6 e_2 e_4 + 6 e_1 e_5 - 6 e_6$."
     },
     {
-      "id": "universal",
-      "title": "Universal Closed Form (MvPolynomial)",
+      "id": "universal-recurrence",
+      "title": "Universal Recurrence Form (MvPolynomial)",
       "startLine": 65,
+      "endLine": 96,
+      "summary": "psum_six_recurrence extracts p₆ = e₁p₅ − e₂p₄ + e₃p₃ − e₄p₂ + e₅p₁ − 6e₆ from Mathlib's psum_eq_mul_esymm_sub_sum at n=6. The antidiagonal filter {a : a₁+a₂=6, 0<a₁<6} = {(1,5),(2,4),(3,3),(4,2),(5,1)} (five terms now) is pinned by omega and the lead term is (−1)⁷·6·e₆ = −6e₆; five sum_insert steps + ring finish it.",
+      "mathContext": "Recurrence: $p_6 = e_1 p_5 - e_2 p_4 + e_3 p_3 - e_4 p_2 + e_5 p_1 - 6 e_6$."
+    },
+    {
+      "id": "universal-closed",
+      "title": "Universal Closed Form (MvPolynomial)",
+      "startLine": 97,
       "endLine": 119,
-      "summary": "psum_six_recurrence extracts p₆ = e₁p₅ − e₂p₄ + e₃p₃ − e₄p₂ + e₅p₁ − 6e₆ from psum_eq_mul_esymm_sub_sum at n=6 (antidiagonal {(1,5),(2,4),(3,3),(4,2),(5,1)}). psum_six_closed substitutes the proven p₅, p₄, p₃, p₂, p₁ closed forms and ring-normalises.",
+      "summary": "psum_six_closed substitutes the already-reduced psum_five_closed (p₅), psum_four_closed (p₄), psum_three_closed (p₃), psum_two_eq (p₂) and psum_one_eq_esymm_one (p₁) into the recurrence and ring-normalises. k=6 is the first rung whose reduced form carries cubic-in-a-single-eₖ terms: −2·e₂³ and +3·e₃² (the partitions 6=2+2+2 and 6=3+3), on top of the mixed −12·e₁e₂e₃.",
       "mathContext": "In MvPolynomial σ R: $p_6 = e_1^6 - 6 e_1^4 e_2 + 9 e_1^2 e_2^2 - 2 e_2^3 + 6 e_1^3 e_3 - 12 e_1 e_2 e_3 + 3 e_3^2 - 6 e_1^2 e_4 + 6 e_2 e_4 + 6 e_1 e_5 - 6 e_6$."
     },
     {
