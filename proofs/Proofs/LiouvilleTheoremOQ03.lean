@@ -511,4 +511,48 @@ theorem dimH_wellApprox_eq_one_of_le_one {τ : ℝ} (hτ : τ ≤ 1) :
     dimH (wellApprox τ) = 1 := by
   rw [wellApprox_le_one hτ]; exact Real.dimH_univ
 
+/-! ## Part X: The category (Baire) face — comeagre yet null
+
+Parts II–VIII established that for `τ > 2` the well-approximable set is *metrically*
+small: Lebesgue-null (`volume_wellApprox_eq_zero`) and of sub-line Hausdorff dimension
+(`dimH_wellApprox_lt_one`).  `wellApprox_dense` already noted it is topologically dense.
+The sharp topological statement is stronger still: each `W τ` is **comeagre
+(residual)** — it contains a dense `Gδ`.  This is inherited for free from Mathlib's
+`eventually_residual_liouville` (the Liouville numbers are residual) because the
+residual filter is upward closed and `{x | Liouville x} ⊆ W τ`.  Combined with the
+measure side it exhibits the textbook **category/measure dichotomy**: for `τ > 2`,
+`W τ` is a comeagre set of Lebesgue measure zero, so `ℝ` decomposes into the meagre
+full-measure complement `(W τ)ᶜ` and the comeagre null set `W τ`. -/
+
+/-- **Each well-approximable set is residual (comeagre).**  `W τ ∈ residual ℝ` for
+every exponent `τ`: it contains the residual Liouville set
+(`eventually_residual_liouville`) and the residual filter is upward closed
+(`Filter.mem_of_superset`).  Axiom-free — strengthens `wellApprox_dense`
+(`dense_of_mem_residual`). -/
+theorem wellApprox_residual (τ : ℝ) : wellApprox τ ∈ residual ℝ :=
+  Filter.mem_of_superset eventually_residual_liouville (liouville_subset_wellApprox τ)
+
+/-- **Comeagre form.**  A residual-a.e. real is `τ`-well-approximable:
+`∀ᶠ x in residual ℝ, x ∈ W τ`.  The `Filter.Eventually` restatement of
+`wellApprox_residual`. -/
+theorem eventually_residual_wellApprox (τ : ℝ) : ∀ᶠ x in residual ℝ, x ∈ wellApprox τ :=
+  wellApprox_residual τ
+
+/-- **The complement is meagre.**  `(W τ)ᶜ` is a meagre set for every `τ`: the reals
+that are *not* `τ`-well-approximable form a first-category set.  Immediate from
+`wellApprox_residual` since `IsMeagre s ↔ sᶜ ∈ residual`. -/
+theorem meagre_compl_wellApprox (τ : ℝ) : IsMeagre (wellApprox τ)ᶜ := by
+  rw [IsMeagre, compl_compl]; exact wellApprox_residual τ
+
+open MeasureTheory in
+/-- **Category/measure dichotomy.**  For `τ > 2` the well-approximable set is
+*simultaneously* comeagre (`wellApprox_residual`) and Lebesgue-null
+(`volume_wellApprox_eq_zero`).  Thus `W τ` is a residual set of measure zero — the
+classical demonstration that Baire category and Lebesgue measure can disagree
+completely: the "typical" real in the category sense lies in `W τ`, while the
+"typical" real in the measure sense does not. -/
+theorem wellApprox_residual_and_volume_zero {τ : ℝ} (hτ : 2 < τ) :
+    wellApprox τ ∈ residual ℝ ∧ volume (wellApprox τ) = 0 :=
+  ⟨wellApprox_residual τ, volume_wellApprox_eq_zero hτ⟩
+
 end LiouvilleTheoremOQ03
