@@ -759,4 +759,17 @@ polynomials with roots in the unit disc.
 **Status**: OPEN - the gap between 1/(n√log n) and 1/n remains.
 -/
 
+/-- **The sublevel set has positive area.**  For a positive-degree polynomial the
+sublevel set `{z : |f(z)| < 1}` is open (`sublevelSet_isOpen`), nonempty
+(`sublevelSet_nonempty` — it contains every root) and bounded (`sublevelSet_isBounded`),
+so its Lebesgue area is strictly positive and finite: `0 < sublevelArea f`.  The positive
+counterpart of the boundedness ceiling, and the reason the inscribed-disc problem is
+non-degenerate (`sublevelArea` is a genuine positive real, not `0` or `∞`). -/
+theorem sublevelArea_pos (hf : 0 < f.degree) : 0 < sublevelArea f := by
+  unfold sublevelArea
+  have hpos : 0 < volume (sublevelSet f) :=
+    (sublevelSet_isOpen f).measure_pos volume (sublevelSet_nonempty f hf)
+  have hlt : volume (sublevelSet f) < ⊤ := (sublevelSet_isBounded f hf).measure_lt_top
+  exact ENNReal.toReal_pos hpos.ne' hlt.ne
+
 end Erdos1039
