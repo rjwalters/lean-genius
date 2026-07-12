@@ -19,7 +19,8 @@
       "First-mode rigidity is a clean sum-of-squares identity: ‖a‖²+‖b‖²−2·Im(a·conj b) = (a.im−b.re)²+(a.re+b.im)², so vanishing ⟺ a.im=b.re ∧ a.re=−b.im ⟺ a = i·b.",
       "SECTION XIV converse: from the circle spectral signature (all modes |n|>=2 dead and c1f=I*c1g) every Hurwitz deficit summand vanishes, so total deficit=0 => Wirtinger saturation 2*int f*g' = int (f'^2+g'^2); full analytic + geometric equality-IFF-circle now COMPLETE, all 0-axiom.",
       "Reality relation conj(cn(f))=c(-n)(f) for real f (fourierCoeffOn_conj_neg) is the key new lemma: conjugation passes through the real (b-a)^-1 scalar (Complex.conj_ofReal) and the interval integral (integral_conj on Ioc via integral_of_le), fixes the real integrand, and flips the kernel conj(fourier(-n))=fourier n (fourier_neg); handles the n=-1 mode not covered by hone/hhigh.",
-      "n=-1 deficit summand: with c(-1)=conj c1, (conj a * conj conj b).im = -(a * conj b).im (since conj a * b = conj(a*conj b)); the (-1)^2 and -2*(-1) signs combine to reproduce the n=1 summand => 0 via firstMode_deficit_zero."
+      "n=-1 deficit summand: with c(-1)=conj c1, (conj a * conj conj b).im = -(a * conj b).im (since conj a * b = conj(a*conj b)); the (-1)^2 and -2*(-1) signs combine to reproduce the n=1 summand => 0 via firstMode_deficit_zero.",
+      "Quantitative isoperimetric stability (Bonnesen/Fuglede-type): the Hurwitz deficit is not merely nonnegative-with-equality-at-the-circle but CONTROLS each higher harmonic. Extracting one nonnegative term from the deficit HasSum (le_hasSum) and bounding it below via the sharpened per-mode gap (area_deficit_summand_ge_gap, coefficient |n|²−|n|≥2 on |n|≥2) yields 2·(‖ĉₙf‖²+‖ĉₙg‖²) ≤ normalized deficit — a mode-by-mode L²-stability estimate that has the qualitative equality-iff-circle rigidity as its degenerate (deficit=0) case."
     ],
     "builtItems": [
       "AreaOfCircleOQ01OQ02OQ02OQ02OQ01.lean: 4 theorems, 0 axioms (propext/Classical.choice/Quot.sound only), 0 sorries. Imports Proofs.AreaOfCircleOQ01OQ02OQ02OQ02 (transitively the first-order grandparent).",
@@ -39,11 +40,13 @@
       "firstMode_deficit_zero: a=I*b => ||a||^2+||b||^2-2*Im(a conj b)=0 (converse of firstMode_rigidity)",
       "deficit_summand_zero_of_spectrum: spectral signature => every n-mode Hurwitz summand =0 (interval_cases n in {-1,0,1} + reality)",
       "wirtinger_saturation_of_fourier_spectrum + wirtinger_saturation_iff_fourier_spectrum: analytic equality-IFF (0-axiom)",
-      "isoperimetric_saturation_of_fourier_spectrum + isoperimetric_saturation_iff_circle: geometric constant-speed equality-IFF-circle capstone (0-axiom)"
+      "isoperimetric_saturation_of_fourier_spectrum + isoperimetric_saturation_iff_circle: geometric constant-speed equality-IFF-circle capstone (0-axiom)",
+      "two_mul_normSq_fourierCoeffOn_le_normalized_deficit (AreaOfCircleOQ01OQ02OQ02OQ02OQ01.lean, SECTION XV): ∀|n|≥2, 2·(‖ĉₙf‖²+‖ĉₙg‖²) ≤ (2π)⁻¹·(∫(f²+g²)deriv − 2∫f·g′). 0-axiom.",
+      "two_mul_normSq_fourierCoeffOn_le_isoperimetric_deficit (SECTION XV): geometric constant-speed form, 2·(2π)²·(‖ĉₙf‖²+‖ĉₙg‖²) ≤ L²−4πA = (2π)²c − 4π∫f·g′ for every |n|≥2. Bonnesen/Fuglede stability. 0-axiom."
     ],
-    "progressSummary": "COMPLETE: full Hurwitz isoperimetric equality-iff-circle in both analytic (wirtinger_saturation_iff_fourier_spectrum) and geometric constant-speed (isoperimetric_saturation_iff_circle) forms; forward (SECTIONS XI-XIII) + converse (SECTION XIV) both 0-axiom.",
+    "progressSummary": "COMPLETE + QUANTITATIVE: full Hurwitz isoperimetric equality-iff-circle (analytic wirtinger_saturation_iff_fourier_spectrum + geometric isoperimetric_saturation_iff_circle, forward SECTIONS XI-XIII + converse XIV), now STRENGTHENED by SECTION XV quantitative isoperimetric stability (Bonnesen/Fuglede): the deficit controls each higher harmonic 2·(2π)²·(‖ĉₙf‖²+‖ĉₙg‖²) ≤ L²−4πA (|n|≥2), with the equality-iff-circle rigidity as the deficit=0 degenerate case. All 0-axiom.",
     "nextSteps": [
-      "Explicit reconstruction: from the spectral characterization exhibit the parametrization t->(x0+r*cos(t+phi), y0+r*sin(t+phi)) with r=2||c1f||, center (c0f,c0g), turning the Fourier characterization into the pointwise geometric circle equation (x-x0)^2+(y-y0)^2=r^2."
+      "Sum the per-mode stability bounds over |n|≥2 into a single L²-distance-to-circle estimate: deficit ≥ Σ_{|n|≥2}(|n|²−|n|)(‖ĉₙf‖²+‖ĉₙg‖²) ≥ 2·(‖f−(first harmonic)‖²_{L²}+‖g−…‖²) via a tsum over the complement of {−1,0,1} (needs HasSum restriction/subtraction of the low modes)."
     ]
   },
   "relatedProofs": [

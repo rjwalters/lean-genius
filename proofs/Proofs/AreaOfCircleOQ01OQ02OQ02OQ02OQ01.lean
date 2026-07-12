@@ -1665,5 +1665,125 @@ theorem isoperimetric_saturation_iff_circle
   · rintro ⟨hhigh, hone⟩
     exact isoperimetric_saturation_of_fourier_spectrum hf hg hfper hgper hab hspeed hhigh hone
 
+-- ============================================================
+-- SECTION XV: quantitative isoperimetric stability
+--   (Bonnesen / Fuglede-type) — the deficit controls each higher harmonic
+-- ============================================================
+
+/-- **Quantitative isoperimetric stability — analytic (normalized) form.**  For smooth (`C^∞`)
+    period-`2π` real coordinates `f, g` and any frequency `n` with `|n| ≥ 2`, the energy of the
+    `n`-th Fourier harmonic is controlled by the *normalized* Hurwitz deficit:
+
+        2·(‖ĉₙ(f)‖² + ‖ĉₙ(g)‖²)
+          ≤  (2π)⁻¹ · [ ∫₀^{2π}((f')²+(g')²)  −  2 ∫₀^{2π} f·g' ] .
+
+    This is a *quantitative* strengthening of the equality case
+    `fourierCoeff_eq_zero_of_wirtinger_saturation`: rather than merely asserting that a
+    *vanishing* deficit annihilates every mode above the first, it bounds each higher harmonic's
+    amplitude by the *size* of the deficit — a Bonnesen/Fuglede-type stability estimate.
+    Setting the deficit to `0` recovers `ĉₙf = ĉₙg = 0` for all `|n| ≥ 2` (spectral rigidity), so
+    the qualitative "equality ⇒ circle" theorem is the degenerate case of this inequality.
+
+    Proof.  The deficit is the total of the nonnegative `HasSum` `HSdef` whose frequency-`n`
+    summand is `n²(‖ĉₙf‖²+‖ĉₙg‖²) − 2n·Im(ĉₙf·conj ĉₙg)`.  A single nonnegative term is `≤` the
+    whole sum (`le_hasSum`), and the sharpened per-mode bound `area_deficit_summand_ge_gap`
+    dominates that summand below by `(|n|²−|n|)(‖ĉₙf‖²+‖ĉₙg‖²)`; on `|n| ≥ 2` the coefficient
+    `|n|²−|n| ≥ 2`, giving the stated factor `2`. -/
+theorem two_mul_normSq_fourierCoeffOn_le_normalized_deficit
+    {f g : ℝ → ℝ} (hf : ContDiff ℝ ∞ f) (hg : ContDiff ℝ ∞ g)
+    (hfper : ∀ t, f (t + 2 * π) = f t) (hgper : ∀ t, g (t + 2 * π) = g t)
+    (hab : (0 : ℝ) < 2 * π) (n : ℤ) (hn : 2 ≤ n.natAbs) :
+    2 * (‖fourierCoeffOn hab (ofReal ∘ f) n‖ ^ 2
+        + ‖fourierCoeffOn hab (ofReal ∘ g) n‖ ^ 2)
+      ≤ (2 * π)⁻¹ * ((∫ x in (0 : ℝ)..(2 * π), ((deriv f x) ^ 2 + (deriv g x) ^ 2))
+          - 2 * ∫ x in (0 : ℝ)..(2 * π), f x * deriv g x) := by
+  have HSf := hasSum_nsq_normSq_fourierCoeffOn hf hfper hab
+  have HSg := hasSum_nsq_normSq_fourierCoeffOn hg hgper hab
+  have HSA := hasSum_fourier_area_formula hf.continuous hg hgper hab
+  have HSdef := (HSf.add HSg).sub (HSA.mul_left 2)
+  -- The frequency-`n` summand is `≤` the whole (nonnegative) deficit sum.
+  have hle := le_hasSum HSdef n (fun m _ => by
+    convert area_deficit_summand_nonneg
+      (fourierCoeffOn hab (ofReal ∘ f) m) (fourierCoeffOn hab (ofReal ∘ g) m) m using 1
+    ring)
+  simp only [smul_eq_mul, sub_zero] at hle
+  set a := fourierCoeffOn hab (ofReal ∘ f) n with ha
+  set b := fourierCoeffOn hab (ofReal ∘ g) n with hb
+  set If := ∫ x in (0 : ℝ)..(2 * π), (deriv f x) ^ 2 with hIf
+  set Ig := ∫ x in (0 : ℝ)..(2 * π), (deriv g x) ^ 2 with hIg
+  set IA := ∫ x in (0 : ℝ)..(2 * π), f x * deriv g x with hIA
+  -- Sharpened lower bound on the summand, and `|n|²−|n| ≥ 2` on the high band.
+  have hgap := area_deficit_summand_ge_gap a b n
+  have hm : (2 : ℝ) ≤ |(n : ℝ)| := by
+    rw [← Int.cast_abs]
+    exact_mod_cast (show (2 : ℤ) ≤ |n| by rw [Int.abs_eq_natAbs]; exact_mod_cast hn)
+  have hcoef : (2 : ℝ) ≤ |(n : ℝ)| ^ 2 - |(n : ℝ)| := by
+    nlinarith [hm, mul_nonneg (by linarith [hm] : (0 : ℝ) ≤ |(n : ℝ)| - 2)
+      (by linarith [hm] : (0 : ℝ) ≤ |(n : ℝ)| + 1)]
+  have hP : (0 : ℝ) ≤ ‖a‖ ^ 2 + ‖b‖ ^ 2 := by positivity
+  have hstep : 2 * (‖a‖ ^ 2 + ‖b‖ ^ 2)
+      ≤ (2 * π)⁻¹ * If + (2 * π)⁻¹ * Ig - 2 * ((2 * π)⁻¹ * IA) := by
+    nlinarith [hle, hgap, hcoef, hP,
+      mul_nonneg (by linarith [hcoef] : (0 : ℝ) ≤ |(n : ℝ)| ^ 2 - |(n : ℝ)| - 2) hP]
+  -- Recombine into the normalized-deficit form; split the perimeter integral.
+  have hcomb : (2 * π)⁻¹ * ((If + Ig) - 2 * IA)
+      = (2 * π)⁻¹ * If + (2 * π)⁻¹ * Ig - 2 * ((2 * π)⁻¹ * IA) := by ring
+  have hdfc : Continuous (deriv f) := by
+    have h := (contDiff_infty_iterate_deriv f hf 1).continuous
+    rwa [Function.iterate_one] at h
+  have hdgc : Continuous (deriv g) := by
+    have h := (contDiff_infty_iterate_deriv g hg 1).continuous
+    rwa [Function.iterate_one] at h
+  have hsplit : (∫ x in (0 : ℝ)..(2 * π), ((deriv f x) ^ 2 + (deriv g x) ^ 2)) = If + Ig := by
+    rw [hIf, hIg]
+    exact intervalIntegral.integral_add
+      ((hdfc.pow 2).intervalIntegrable _ _) ((hdgc.pow 2).intervalIntegrable _ _)
+  rw [hsplit, hcomb]
+  exact hstep
+
+/-- **Quantitative isoperimetric stability — geometric (Bonnesen/Fuglede) form.**  For a smooth
+    period-`2π` closed curve `t ↦ (f(t), g(t))` parametrized with *constant speed*
+    `(f')² + (g')² = c` — so its length is `L = 2π√c`, hence `L² = (2π)²·c`, and its enclosed
+    area is `A = ∫₀^{2π} f·g'` — every Fourier harmonic above the first is controlled by the
+    isoperimetric deficit `L² − 4πA`:
+
+        2·(2π)²·(‖ĉₙ(f)‖² + ‖ĉₙ(g)‖²)  ≤  L² − 4πA        (for every `|n| ≥ 2`).
+
+    In particular `L² − 4πA ≥ 0` (the isoperimetric inequality) and the deficit vanishes **iff**
+    every higher harmonic vanishes — i.e. the curve is a circle
+    (`isoperimetric_saturation_iff_circle`).  This inequality is the quantitative refinement: the
+    *magnitude* of the deficit bounds the `L²`-distance of the curve from the nearest circle,
+    mode by mode.  It is obtained from the normalized analytic bound
+    `two_mul_normSq_fourierCoeffOn_le_normalized_deficit` by evaluating the constant-speed
+    perimeter energy `∫((f')²+(g')²) = 2π·c` and scaling by `(2π)² > 0`. -/
+theorem two_mul_normSq_fourierCoeffOn_le_isoperimetric_deficit
+    {f g : ℝ → ℝ} (hf : ContDiff ℝ ∞ f) (hg : ContDiff ℝ ∞ g)
+    (hfper : ∀ t, f (t + 2 * π) = f t) (hgper : ∀ t, g (t + 2 * π) = g t)
+    (hab : (0 : ℝ) < 2 * π) {c : ℝ}
+    (hspeed : ∀ t, (deriv f t) ^ 2 + (deriv g t) ^ 2 = c)
+    (n : ℤ) (hn : 2 ≤ n.natAbs) :
+    2 * (2 * π) ^ 2 * (‖fourierCoeffOn hab (ofReal ∘ f) n‖ ^ 2
+        + ‖fourierCoeffOn hab (ofReal ∘ g) n‖ ^ 2)
+      ≤ (2 * π) ^ 2 * c - 4 * π * ∫ x in (0 : ℝ)..(2 * π), f x * deriv g x := by
+  have hcore := two_mul_normSq_fourierCoeffOn_le_normalized_deficit hf hg hfper hgper hab n hn
+  have hperim : (∫ x in (0 : ℝ)..(2 * π), ((deriv f x) ^ 2 + (deriv g x) ^ 2)) = (2 * π) * c := by
+    have hEqOn : Set.EqOn (fun x => (deriv f x) ^ 2 + (deriv g x) ^ 2) (fun _ => c)
+        (Set.uIcc 0 (2 * π)) := fun x _ => hspeed x
+    rw [intervalIntegral.integral_congr hEqOn, intervalIntegral.integral_const]
+    simp
+  rw [hperim] at hcore
+  set P := ‖fourierCoeffOn hab (ofReal ∘ f) n‖ ^ 2 + ‖fourierCoeffOn hab (ofReal ∘ g) n‖ ^ 2 with hP
+  set IA := ∫ x in (0 : ℝ)..(2 * π), f x * deriv g x with hIA
+  have hpos : (0 : ℝ) < (2 * π) ^ 2 := by positivity
+  have hmul := mul_le_mul_of_nonneg_left hcore (le_of_lt hpos)
+  have h2πne : (2 * π) ≠ 0 := ne_of_gt hab
+  have hRHS : (2 * π) ^ 2 * ((2 * π)⁻¹ * ((2 * π) * c - 2 * IA))
+      = (2 * π) ^ 2 * c - 4 * π * IA := by
+    field_simp
+    ring
+  rw [hRHS] at hmul
+  have hLHS : (2 * π) ^ 2 * (2 * P) = 2 * (2 * π) ^ 2 * P := by ring
+  rw [hLHS] at hmul
+  exact hmul
 
 end IsoperimetricFourier
