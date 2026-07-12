@@ -119,7 +119,15 @@
     ]
   },
   "crossReferences": [
-    "stars-and-bars-weak-compositions",
-    "stars-and-bars-weak-compositions-oq-04"
+    {
+      "targetId": "stars-and-bars-weak-compositions",
+      "relationship": "extends",
+      "description": "Builds on this entry’s parent line: Stars and Bars: Weak Compositions of n into k Parts Number C(n+k−1, n). The present entry extends/refines that result."
+    },
+    {
+      "targetId": "stars-and-bars-weak-compositions-oq-04",
+      "relationship": "related",
+      "description": "Related result in the stars-and-bars / weak-compositions family: Convolution law of weak compositions W(k₁)·W(k₂)=W(k₁+k₂) and the negative-binomial Vandermonde identity."
+    }
   ]
 }
