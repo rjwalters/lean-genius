@@ -1,0 +1,84 @@
+[
+  {
+    "id": "ann-cf0304-header",
+    "proofId": "combinations-formula-oq-03-oq-04",
+    "range": { "startLine": 1, "endLine": 44 },
+    "type": "concept",
+    "title": "Palindromy: the Symmetric Half of Sylvester's Theorem",
+    "content": "The module docstring frames the open question honestly. The seeker's target combinations-formula-oq-03-oq-04 asks for *unimodality* of the Gaussian q-binomial coefficient sequence — Sylvester's 1878 theorem that the coefficients of $[n,k]_q$ rise to a peak and then fall. Unimodality is the deep half (first rigorous proof by Proctor 1982 via an $\\mathfrak{sl}_2$-action) and is **not** attempted here. What is proved is the *symmetric* precursor: the sequence is palindromic, $a_j = a_{k(n-k)-j}$, stated over a field as $[n,k]_q = q^{k(n-k)}\\,[n,k]_{q^{-1}}$. Cleanly separating the symmetric half (elementary, reduces to the two q-Pascal recurrences) from the unimodal half (open) is the honest way to report partial progress.",
+    "mathContext": "$[n,k]_q$ is a polynomial in $q$ of degree $k(n-k)$ with nonnegative integer coefficients; palindromy is $a_j = a_{k(n-k)-j}$, equivalently $[n,k]_q = q^{k(n-k)}[n,k]_{q^{-1}}$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Gaussian q-binomial coefficient",
+      "Sylvester's unimodality theorem",
+      "palindromic (self-reciprocal) polynomial",
+      "subspaces of F_q^n"
+    ],
+    "prerequisites": [
+      "q-binomial coefficients (parent combinations-formula-oq-03)",
+      "polynomial reciprocity",
+      "the two q-Pascal recurrences"
+    ]
+  },
+  {
+    "id": "ann-cf0304-reciprocal",
+    "proofId": "combinations-formula-oq-03-oq-04",
+    "range": { "startLine": 51, "endLine": 104 },
+    "type": "theorem",
+    "title": "The Palindromy Identity, by Induction on n",
+    "content": "`qBinom_reciprocal` proves $[n,k]_q = q^{k(n-k)}\\,[n,k]_{q^{-1}}$ for $q \\neq 0$ over an arbitrary field, by induction on $n$ with a case split on $k$. Boundary cases are direct: $k=0$ (both sides $=1$), $k>n$ (both q-binomials vanish, via `qBinom_eq_zero_of_lt`), and the diagonal $k=n$ (both $=1$). The generic interior case $k<n$ is the crux — and the decisive trick is that the two sides are expanded by **different** q-Pascal identities. The left $[n+1,k+1]_q$ uses the second identity `qBinom_pascal'` ($=q^{n-k}[n,k]_q + [n,k+1]_q$); the reflected right $[n+1,k+1]_{q^{-1}}$ uses the first identity `qBinom_pascal` ($=[n,k]_q + q^{k+1}[n,k+1]_q$). After substituting the induction hypothesis at $(n,k)$ and $(n,k+1)$, the two reflected atoms $A=[n,k]_{q^{-1}}$, $B=[n,k+1]_{q^{-1}}$ acquire matching coefficients once the powers of $q$ are collected.",
+    "mathContext": "$[n{+}1,k{+}1]_q = q^{n-k}[n,k]_q + [n,k{+}1]_q$ (P2) matches $q^{k(n-k)}\\big([n,k{+}1]_{q^{-1}} + q^{-(k+1)}[n,k]_{q^{-1}}\\big)$ from expanding the reflection by P1.",
+    "significance": "key",
+    "relatedConcepts": [
+      "q-Pascal recurrences (both directions)",
+      "structural induction on n",
+      "qBinom_eq_zero_of_lt",
+      "reflection q ↦ q⁻¹"
+    ],
+    "prerequisites": [
+      "qBinom_pascal and qBinom_pascal'",
+      "induction with case analysis",
+      "field arithmetic with q ≠ 0"
+    ]
+  },
+  {
+    "id": "ann-cf0304-power-cancellation",
+    "proofId": "combinations-formula-oq-03-oq-04",
+    "range": { "startLine": 82, "endLine": 97 },
+    "type": "technique",
+    "title": "The Power-Cancellation that Aligns the Coefficients",
+    "content": "The heart of the interior case is two power identities on the reflected atoms $A,B$. For $A=[n,k]_{q^{-1}}$: $q^{n-k}\\cdot q^{k(n-k)} = q^{(k+1)(n-k)}$, a pure exponent sum (`pow_add`, `ring` on $\\mathbb{N}$). For $B=[n,k+1]_{q^{-1}}$: $q^{(k+1)(n-k-1)} = q^{(k+1)(n-k)}\\cdot(q^{-1})^{k+1}$, which is where invertibility genuinely bites — it uses `mul_inv_cancel_left₀ (pow_ne_zero (k+1) hq)` to cancel $q^{k+1}\\cdot(q^{-1})^{k+1}=1$. The exponent bookkeeping needs $n-k=(n-k-1)+1$ (valid because the branch is entered only when $k<n$, so $n-k\\ge1$ and the truncated $\\mathbb{N}$ subtraction is exact). With both coefficients aligned, a final `ring` closes the goal.",
+    "mathContext": "$q^{(k+1)(n-k)}\\cdot(q^{-1})^{k+1} = q^{(k+1)(n-k-1)}$, valid since $q\\neq0$ so $q^{k+1}(q^{-1})^{k+1}=1$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "mul_inv_cancel_left₀",
+      "pow_ne_zero / inv_pow",
+      "truncated ℕ subtraction (omega)",
+      "essential use of q ≠ 0"
+    ],
+    "prerequisites": [
+      "power laws pow_add, mul_pow",
+      "inverses in a field",
+      "the ring and omega tactics"
+    ]
+  },
+  {
+    "id": "ann-cf0304-corollaries",
+    "proofId": "combinations-formula-oq-03-oq-04",
+    "range": { "startLine": 106, "endLine": 121 },
+    "type": "insight",
+    "title": "Reflected Form and Involutivity Check",
+    "content": "Two short corollaries package and validate the main identity. `qBinom_reflect` is `qBinom_reciprocal` read right-to-left — $q^{k(n-k)}[n,k]_{q^{-1}} = [n,k]_q$ — the convenient direction when recovering the original from its reflection. `qBinom_reciprocal_involutive` is a sanity check: applying the twisted reflection $q\\mapsto q^{-1}$ (with the $q^{k(n-k)}$ scaling) twice returns the original, because $q^{k(n-k)}(q^{-1})^{k(n-k)}=1$. This confirms the reflection is a genuine involution — exactly what a palindrome's forward/backward symmetry must be.",
+    "mathContext": "$q^{k(n-k)}\\,[n,k]_{q^{-1}} = [n,k]_q$; and $q^{k(n-k)}(q^{-1})^{k(n-k)} = 1$ makes the reflection involutive.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "involution",
+      "self-reciprocal polynomial",
+      "mul_inv_cancel₀ / one_pow"
+    ],
+    "prerequisites": [
+      "the main reciprocity identity",
+      "involutions and symmetry"
+    ]
+  }
+]
