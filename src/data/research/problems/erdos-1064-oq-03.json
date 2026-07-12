@@ -4,7 +4,7 @@
   "phase": "ACT",
   "status": "in-progress",
   "started": "2026-07-08T00:00:00.000Z",
-  "lastUpdate": "2026-07-10",
+  "lastUpdate": "2026-07-11",
   "path": "full",
   "parentId": "erdos-1064",
   "tier": "B",
@@ -35,7 +35,7 @@
     }
   ],
   "knowledge": {
-    "progressSummary": "PROGRESS (structural, axiom-free, 176→189 thm): general shared-landing CRITERION dblIter_eq_iff_landing_value (landing coincidence ⟺ landing-value coincidence, subsumes all concrete shared landings) + THREE-way shared landing shared_landing_triple_verdict_917 (seeds 1137/1179/1097 → 917·2^(k+1), realising reversal+equality+forward simultaneously; L=917 least such). Sole OPEN direction remains the analytic density-1 forward statement (Mathlib gap, unchanged). PR #38110.",
+    "progressSummary": "PROGRESS (structural, axiom-free, 176→189 thm): general shared-landing CRITERION dblIter_eq_iff_landing_value (landing coincidence ⟺ landing-value coincidence, subsumes all concrete shared landings) + THREE-way shared landing shared_landing_triple_verdict_917 (seeds 1137/1179/1097 → 917·2^(k+1), realising reversal+equality+forward simultaneously; L=917 least such). Sole OPEN direction remains the analytic density-1 forward statement (Mathlib gap, unchanged). PR #38110. | Session (researcher-5, 2026-07-11): added the global partition of ℕ by the three regimes (EulerTotientOQ04OQ03.lean, 197→202 thm). reversalSet/equalitySet/forwardSet pairwise Disjoint (3 lemmas) + reversalSet_union_equalitySet_union_forwardSet = univ + regime_trichotomy (every n in EXACTLY one regime). All 5 axiom-free, host-lean EXIT 0. Global well-definedness of the classification (of which classifySeed_classifies is the seed-family decision procedure) — holds for ALL n via the trichotomy of φ(n) vs φ(D(n)), needing no seed/transport machinery. File 3692→3746 lines.",
     "builtItems": [
       "dblIter (EulerTotientOQ04OQ03.lean) — the double cototient iterate D(n) = n − φ(n − φ(n)), the object of OQ-03.",
       "dblIter_prime — collapse lemma: for EVERY prime p, D(p) = p − 1 exactly (φ(p)=p−1 ⟹ p−φ(p)=1 ⟹ φ(1)=1 ⟹ D(p)=p−1).",
@@ -153,7 +153,8 @@
       "The prime-triple reversal family (a=18m+3, with 4m+1,6m+1,14m+3 all prime) reverses by an EXACT gap phi(D(n))-phi(n) = (2m+2)*2^k along n=(18m+3)*2^(k+1); the margin diverges in both m and k (contrast the isolated 5q seed 55 whose margin is bounded). So reversal in this family is quantitatively robust, not marginal.",
       "SHARED LANDING, OPPOSITE VERDICT: the prime-triple reversal seed 18m+3=3(6m+1) and the fiveTimes forward seed 20m+5=5(4m+1) — two distinct odd seeds — transport onto the IDENTICAL double iterate D(n)=(14m+3)·2^(k+1). So φ(D(n)) is common to both families, yet one reverses (φ(n)<φ(D(n))) and the other goes forward (φ(D(n))<φ(n)). The double-iterate trichotomy is therefore NOT a function of the landing point D(n); it is decided by the seed own totient (12m·2^k vs 16m·2^k) relative to the shared φ(D(n))=(14m+2)·2^k. Concrete m=7: seeds 129=3·43 (reversal) and 145=5·29 (forward) both land on 101·2^(k+1).",
       "At a shared prime landing the two verdict margins straddle the common φ(D(n)) and differ by EXACTLY 2^(k+2): reversal margin (2m+2)·2^k minus forward margin (2m-2)·2^k = 4·2^k, independent of m; their sum 4m·2^k is the seed-totient gap 16m·2^k−12m·2^k.",
-      "THREE-way shared landing exists: odd seeds 1137=3·379 (rev, φ=756), 1179=3²·131 (eq, φ=780), 1097 prime (fwd, φ=1096) all transport onto 917·2^(k+1) (917=7·131, φ=780) — one shared D(n) compatible with reversal, equality AND forward at once. L=917 is the LEAST such common landing (exhaustive search over odd seeds). Sharpest landing-independence statement."
+      "THREE-way shared landing exists: odd seeds 1137=3·379 (rev, φ=756), 1179=3²·131 (eq, φ=780), 1097 prime (fwd, φ=1096) all transport onto 917·2^(k+1) (917=7·131, φ=780) — one shared D(n) compatible with reversal, equality AND forward at once. L=917 is the LEAST such common landing (exhaustive search over odd seeds). Sharpest landing-independence statement.",
+      "PARTITION (researcher-5, 2026-07-11): the three regime sets are the <,=,> slices of φ(n) vs φ(D(n)), so they automatically partition ℕ — pairwise Disjoint (Set.disjoint_left + omega on the two totient comparisons), union = univ (Set.mem_union + omega trichotomy), and regime_trichotomy (exactly one per n). This is the global counterpart of the seed-restricted classifySeed_classifies, and uses only totient trichotomy — zero transport machinery. Complements the many concrete mem_*Set_* witnesses with the structural fact that no n escapes or double-counts."
     ],
     "mathlibGaps": [
       "Kernel `decide` on Nat.totient of a seed (e.g. totient 21) blows the stack → SIGBUS (Lean exit 135, line-less); must prove totient values by factorisation (Nat.totient_mul + Nat.totient_prime). Reconfirms the file's existing note."
