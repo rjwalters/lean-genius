@@ -143,3 +143,43 @@ refresh if the repo Mathlib pin was bumped — worth a mechanic/auditor look.
 `git worktree add .loom/worktrees/researcher-3 <branch>`; the fresh worktree LACKS the
 `proofs/.lake` symlink (gitignored) → had to `ln -s <main>/proofs/.lake proofs/.lake` before
 lean-elab. Committed+pushed the .lean edit BEFORE re-verifying (worktree-eater insurance).
+
+## Session 2026-07-11 (researcher-6) — divisor set = exponent grid, τ = (k+1)(l+1) [VERIFIED]
+
+**Mode**: extend the mature lattice-structure file (submonoid → closure → divisibility
+order → gcd/lcm meet/join → coprimality). **Outcome**: progress, 3 new axiom-free theorems
+(**VERIFIED green, `#print axioms` = [propext, Classical.choice, Quot.sound] only**;
+23→26 thm, 386→441 L). Baseline re-verified green — the earlier "Finsupp pin-drift" verify
+block was STALE (origin/main OQ01 elaborates cleanly under the current Mathlib pin).
+
+### What I did
+The file had made divisibility of power forms the product order on exponents and shown all
+divisors are power forms (`isPowerForm_of_dvd`), but never pinned the **divisor set / count**.
+Closed that — the finite-grid capstone of the sublattice picture:
+- `isPowerForm_of_mem_divisors` — Finset form of `isPowerForm_of_dvd` (`d ∈ n.divisors →
+  IsPowerForm p q d`), via `Nat.dvd_of_mem_divisors`.
+- `powerForm_divisors_eq_grid` — for distinct primes `p≠q`, `(p^k q^l).divisors =
+  (range(k+1) ×ˢ range(l+1)).image (a,b ↦ p^a q^b)`: the divisor set is exactly the integer
+  grid `[0,k]×[0,l]` under the exponent map. Forward: `isPowerForm_of_dvd` + `powerForm_dvd_iff`
+  read exponents `≤(k,l)`; backward: `powerForm_dvd_iff.mpr` + `mul_ne_zero pow_ne_zero`.
+- `powerForm_card_divisors` — classical `τ(p^k q^l) = (k+1)(l+1)`, via
+  `Nat.Coprime.card_divisors_mul` (mult. of τ on coprimes) + `Nat.divisors_prime_pow`
+  (`#(p^k).divisors = k+1` after `card_map`/`card_range`). Coprimality of `p^k`,`q^l` is
+  the one-liner `Nat.coprime_pow_primes k l hp hq hpq`.
+
+### Lean notes
+- `Nat.coprime_pow_primes (n m) (pp pq) (h : p≠q) : Coprime (p^n) (q^m)` — direct, no manual `.pow`.
+- `Nat.Coprime.card_divisors_mul` lives in `NumberTheory/ArithmeticFunction/Misc.lean` (namespace
+  `Nat.Coprime`); `Nat.divisors_prime_pow` gives divisors as `(range(k+1)).map ⟨(p^·),…⟩`.
+- grid membership: `Finset.mem_product` + `Finset.mem_range` + `Nat.lt_succ_iff`/`Nat.lt_succ_of_le`.
+- ★GOTCHA: worktree is `.loom/worktrees/researcher-6-2`; `cd .../lean-genius/proofs` compiles the
+  MAIN-repo copy (unmodified) → a false "green". Compile the file IN the worktree proofs dir
+  (its `.lake` is symlinked to main). Always `grep -c <newname>` the file you're actually elaborating.
+
+### Files
+- `proofs/Proofs/Erdos1110OQ01.lean` (+3 thm; 26 thm / 1 def / 0 sorry / 0 axiom)
+- `src/data/research/problems/erdos-1110-oq-01.json` (resynced OQ01 leanFiles 288/19 → 441/26)
+
+### Still open (parent, untouched)
+Deep `erdos_lewin_infinite` axiom (coprime `{p,q}≠{2,3}` non-representable density / infinitude).
+Not session-sized.
