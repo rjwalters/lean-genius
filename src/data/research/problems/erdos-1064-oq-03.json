@@ -35,7 +35,7 @@
     }
   ],
   "knowledge": {
-    "progressSummary": "PROGRESS (structural, axiom-free): established SHARED-LANDING OPPOSITE-VERDICT — the reversal seed 18m+3 and forward seed 20m+5 transport onto the same double iterate (14m+3)·2^(k+1) yet fall on opposite sides of the totient trichotomy (shared_landing_opposite_verdict: ReversalSet vs ForwardSet), proving the double-iterate comparison is NOT a function of D(n). Added the shared-landing bridge (dblIter_primeTriple/dblIter_fiveTimes/_eq_fiveTimes), the exact 2^(k+2) margin difference (shared_landing_gap_difference, reusing the concurrently-added forward_gap_fiveTimes_eq), and a concrete m=7 witness (seeds 129,145 → landing 101). All axiom-free [propext,Classical.choice,Quot.sound]. The sole OPEN direction remains the analytic density-1 forward statement (Mathlib gap, unchanged).",
+    "progressSummary": "PROGRESS (structural, axiom-free, 176→189 thm): general shared-landing CRITERION dblIter_eq_iff_landing_value (landing coincidence ⟺ landing-value coincidence, subsumes all concrete shared landings) + THREE-way shared landing shared_landing_triple_verdict_917 (seeds 1137/1179/1097 → 917·2^(k+1), realising reversal+equality+forward simultaneously; L=917 least such). Sole OPEN direction remains the analytic density-1 forward statement (Mathlib gap, unchanged). PR #38110.",
     "builtItems": [
       "dblIter (EulerTotientOQ04OQ03.lean) — the double cototient iterate D(n) = n − φ(n − φ(n)), the object of OQ-03.",
       "dblIter_prime — collapse lemma: for EVERY prime p, D(p) = p − 1 exactly (φ(p)=p−1 ⟹ p−φ(p)=1 ⟹ φ(1)=1 ⟹ D(p)=p−1).",
@@ -111,7 +111,11 @@
       "dblIter_primeTriple_eq_fiveTimes (EulerTotientOQ04OQ03.lean:3411): the reversal and forward families share the identical double iterate",
       "shared_landing_opposite_verdict (EulerTotientOQ04OQ03.lean:3425): MAIN structural theorem — same D(n), opposite trichotomy verdicts (ReversalSet vs ForwardSet); proves the double-iterate comparison is not a function of D(n)",
       "shared_landing_gap_difference (EulerTotientOQ04OQ03.lean:3444): reversal margin exceeds forward margin by exactly 2^(k+2) at the shared landing (reuses the existing forward_gap_fiveTimes_eq)",
-      "shared_landing_opposite_verdict_129_145 (EulerTotientOQ04OQ03.lean:3461): concrete m=7 instance, seeds 129 & 145 both land on 101·2^(k+1) with opposite verdicts"
+      "shared_landing_opposite_verdict_129_145 (EulerTotientOQ04OQ03.lean:3461): concrete m=7 instance, seeds 129 & 145 both land on 101·2^(k+1) with opposite verdicts",
+      "dblIter_eq_iff_landing_value (EulerTotientOQ04OQ03.lean): general shared-landing criterion D(a₁·2^(k+1))=D(a₂·2^(k+1)) ↔ 2a₁−φ(b₁)=2a₂−φ(b₂), via dblIter_transport + cancel 2^k",
+      "dblIter_eq_of_landing_value_eq: constructive ← direction",
+      "shared_landing_triple_verdict_917: three-way witness with ReversalSet/EqualitySet/ForwardSet memberships",
+      "dblIter_seed1097/1137/1179 landings; totient_1097/1137/1179/549/759/789/917 helpers (factorisation, no kernel decide)"
     ],
     "insights": [
       "On primes the higher iterate is trivial: D(p) = p − 1 for all primes p, because the first cototient step p − φ(p) = 1 and φ(1) = 1. So φ(D(p)) = φ(p−1), and φ(p−1) < p−1 = φ(p) for every p ≥ 3 (with equality only at p = 2). This gives the forward direction on an infinite explicit family with a one-line reduction to Nat.totient_lt — no density machinery needed.",
@@ -148,7 +152,8 @@
       "4∣φ(a) is necessary but NOT sufficient for reversal: the transport-admissible EQUALITY regime (seedS a=1 ∧ classifySeed a=.eq, the Sophie-Germain seeds 15,33,69,…) also satisfies 4∣φ(a) yet classifies eq. So the divisibility test only excludes seedS≠1 seeds; distinguishing lt from eq within seedS=1 needs the finer φ(a) vs φ(e)·2^{t-1} comparison, not a totient-divisibility check.",
       "The prime-triple reversal family (a=18m+3, with 4m+1,6m+1,14m+3 all prime) reverses by an EXACT gap phi(D(n))-phi(n) = (2m+2)*2^k along n=(18m+3)*2^(k+1); the margin diverges in both m and k (contrast the isolated 5q seed 55 whose margin is bounded). So reversal in this family is quantitatively robust, not marginal.",
       "SHARED LANDING, OPPOSITE VERDICT: the prime-triple reversal seed 18m+3=3(6m+1) and the fiveTimes forward seed 20m+5=5(4m+1) — two distinct odd seeds — transport onto the IDENTICAL double iterate D(n)=(14m+3)·2^(k+1). So φ(D(n)) is common to both families, yet one reverses (φ(n)<φ(D(n))) and the other goes forward (φ(D(n))<φ(n)). The double-iterate trichotomy is therefore NOT a function of the landing point D(n); it is decided by the seed own totient (12m·2^k vs 16m·2^k) relative to the shared φ(D(n))=(14m+2)·2^k. Concrete m=7: seeds 129=3·43 (reversal) and 145=5·29 (forward) both land on 101·2^(k+1).",
-      "At a shared prime landing the two verdict margins straddle the common φ(D(n)) and differ by EXACTLY 2^(k+2): reversal margin (2m+2)·2^k minus forward margin (2m-2)·2^k = 4·2^k, independent of m; their sum 4m·2^k is the seed-totient gap 16m·2^k−12m·2^k."
+      "At a shared prime landing the two verdict margins straddle the common φ(D(n)) and differ by EXACTLY 2^(k+2): reversal margin (2m+2)·2^k minus forward margin (2m-2)·2^k = 4·2^k, independent of m; their sum 4m·2^k is the seed-totient gap 16m·2^k−12m·2^k.",
+      "THREE-way shared landing exists: odd seeds 1137=3·379 (rev, φ=756), 1179=3²·131 (eq, φ=780), 1097 prime (fwd, φ=1096) all transport onto 917·2^(k+1) (917=7·131, φ=780) — one shared D(n) compatible with reversal, equality AND forward at once. L=917 is the LEAST such common landing (exhaustive search over odd seeds). Sharpest landing-independence statement."
     ],
     "mathlibGaps": [
       "Kernel `decide` on Nat.totient of a seed (e.g. totient 21) blows the stack → SIGBUS (Lean exit 135, line-less); must prove totient values by factorisation (Nat.totient_mul + Nat.totient_prime). Reconfirms the file's existing note."
@@ -158,7 +163,9 @@
       "Possible follow-up (elementary): characterise WHICH transport-admissible seeds (seedS a=1) reverse — i.e. describe {odd a : seedS a=1 ∧ classifySeed a=.lt} beyond its least element a=21. This is the natural next structural question now that the excluded regime is fully closed.",
       "Possible follow-up: is the reversal-seed set (seedS=1, classify=.lt) infinite with positive density among transport-admissible seeds? (21·2^(k+1) family already gives infinitely-often.)",
       "Elementary follow-up: is the reversal gap the LARGEST among transport-admissible (seedS=1) reversal seeds at fixed a-size, or can a 5q/other-shape seed reverse by a wider margin? Compare (2m+2)*2^k against the general classifier margin phi(seedE a)*2^(seedT a-1) - phi(a).",
-      "Do OTHER shared landings occur? Characterise all seed pairs (a1,a2) with 2a1-φ(b1)=2a2-φ(b2) so D(a1·2^(k+1))=D(a2·2^(k+1)); the 3q/5q pair 18m+3,20m+5 is one infinite family. A shared landing whose two seeds hit the reversal and EQUALITY regimes (or all three) would be the sharpest landing-independence statement."
+      "Do OTHER shared landings occur? Characterise all seed pairs (a1,a2) with 2a1-φ(b1)=2a2-φ(b2) so D(a1·2^(k+1))=D(a2·2^(k+1)); the 3q/5q pair 18m+3,20m+5 is one infinite family. A shared landing whose two seeds hit the reversal and EQUALITY regimes (or all three) would be the sharpest landing-independence statement.",
+      "Is the three-way shared landing infinite / does a PARAMETRIC family of triples exist (like 18m+3,20m+5 for the two-way)? Equality seed on the landing L needs φ(seed)=φ(L) with matching transport — a hard Diophantine constraint (e.g. landing 14m+3 forces 7(7m+1)(m−1) a perfect square), so no obvious infinite family; L=917 found only by search.",
+      "ENV: docker-build broken (code 135 SIGBUS on pristine file AND minimal Mathlib import) — verify new work via host elan lean v4.26.0 + project Mathlib LEAN_PATH on a self-contained copy until docker recovers."
     ]
   },
   "relatedProofs": [

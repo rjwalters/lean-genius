@@ -3471,4 +3471,149 @@ theorem shared_landing_opposite_verdict_129_145 (k : ℕ) :
   · simpa using mem_ForwardSet_fiveTimes (q := 29) (by norm_num) (by norm_num)
       (by norm_num) (by norm_num) k
 
+-- ----------------------------------------------------------------------------
+-- General shared-landing criterion, and a THREE-way shared landing
+-- ----------------------------------------------------------------------------
+-- `shared_landing_opposite_verdict` shows two seeds with a common double iterate
+-- falling on OPPOSITE sides of the trichotomy (reversal vs forward).  Two natural
+-- questions remain (both flagged as next steps): (1) is there a *general* principle
+-- behind such coincidences, and (2) can a single shared landing realise ALL THREE
+-- verdicts — reversal, forward AND equality — at once?  Both are answered here.
+
+/-- **General shared-landing criterion.**  Two transport-admissible odd seeds
+    `a₁, a₂` — each with an odd transport partner `bᵢ` (`2aᵢ − φ(aᵢ) = 2bᵢ`) — send
+    their `·2^(k+1)` families onto the SAME double iterate iff their *landing values*
+    `2aᵢ − φ(bᵢ)` agree:
+        `D(a₁·2^(k+1)) = D(a₂·2^(k+1))  ↔  2a₁ − φ(b₁) = 2a₂ − φ(b₂)`.
+    Both sides reduce, via `dblIter_transport`, to `(2aᵢ − φ(bᵢ))·2^k`, and the shared
+    positive factor `2^k` cancels.  This is the general principle underneath every
+    concrete shared landing (`dblIter_primeTriple_eq_fiveTimes`, and the triple
+    `shared_landing_triple_verdict_917` below): a landing coincidence is EXACTLY a
+    coincidence of landing values, uniformly in `k`. -/
+theorem dblIter_eq_iff_landing_value {a₁ a₂ b₁ b₂ : ℕ}
+    (ha₁ : Odd a₁) (hb₁ : Odd b₁) (hstep₁ : 2 * a₁ - Nat.totient a₁ = 2 * b₁)
+    (ha₂ : Odd a₂) (hb₂ : Odd b₂) (hstep₂ : 2 * a₂ - Nat.totient a₂ = 2 * b₂)
+    (k : ℕ) :
+    dblIter (a₁ * 2 ^ (k + 1)) = dblIter (a₂ * 2 ^ (k + 1))
+      ↔ 2 * a₁ - Nat.totient b₁ = 2 * a₂ - Nat.totient b₂ := by
+  rw [dblIter_transport ha₁ hb₁ hstep₁ k, dblIter_transport ha₂ hb₂ hstep₂ k]
+  constructor
+  · exact fun h => mul_right_cancel₀ (pow_ne_zero k (by norm_num)) h
+  · exact fun h => by rw [h]
+
+/-- **Constructive shared landing.**  The `←` direction of
+    `dblIter_eq_iff_landing_value`, packaged for direct use: equal landing values
+    force a shared double iterate for every `k`. -/
+theorem dblIter_eq_of_landing_value_eq {a₁ a₂ b₁ b₂ : ℕ}
+    (ha₁ : Odd a₁) (hb₁ : Odd b₁) (hstep₁ : 2 * a₁ - Nat.totient a₁ = 2 * b₁)
+    (ha₂ : Odd a₂) (hb₂ : Odd b₂) (hstep₂ : 2 * a₂ - Nat.totient a₂ = 2 * b₂)
+    (hval : 2 * a₁ - Nat.totient b₁ = 2 * a₂ - Nat.totient b₂) (k : ℕ) :
+    dblIter (a₁ * 2 ^ (k + 1)) = dblIter (a₂ * 2 ^ (k + 1)) :=
+  (dblIter_eq_iff_landing_value ha₁ hb₁ hstep₁ ha₂ hb₂ hstep₂ k).mpr hval
+
+-- Concrete totients for the three-way witness at landing `917`.  Computed through
+-- the factorisations (NOT kernel `decide` on `Nat.totient`, which blows the stack
+-- for arguments this size — cf. the note near `totient_15`).
+theorem totient_1097 : Nat.totient 1097 = 1096 := Nat.totient_prime (by norm_num)
+
+theorem totient_1137 : Nat.totient 1137 = 756 := by
+  rw [show (1137 : ℕ) = 3 * 379 from rfl, Nat.totient_mul (by decide),
+      Nat.totient_prime (by norm_num), Nat.totient_prime (by norm_num)]
+
+theorem totient_1179 : Nat.totient 1179 = 780 := by
+  rw [show (1179 : ℕ) = 3 ^ 2 * 131 from rfl, Nat.totient_mul (by decide),
+      Nat.totient_prime_pow (by norm_num) (by norm_num), Nat.totient_prime (by norm_num)]
+  norm_num
+
+theorem totient_549 : Nat.totient 549 = 360 := by
+  rw [show (549 : ℕ) = 3 ^ 2 * 61 from rfl, Nat.totient_mul (by decide),
+      Nat.totient_prime_pow (by norm_num) (by norm_num), Nat.totient_prime (by norm_num)]
+  norm_num
+
+theorem totient_759 : Nat.totient 759 = 440 := by
+  rw [show (759 : ℕ) = 3 * 253 from rfl, Nat.totient_mul (by decide),
+      Nat.totient_prime (by norm_num), show (253 : ℕ) = 11 * 23 from rfl,
+      Nat.totient_mul (by decide), Nat.totient_prime (by norm_num),
+      Nat.totient_prime (by norm_num)]
+
+theorem totient_789 : Nat.totient 789 = 524 := by
+  rw [show (789 : ℕ) = 3 * 263 from rfl, Nat.totient_mul (by decide),
+      Nat.totient_prime (by norm_num), Nat.totient_prime (by norm_num)]
+
+theorem totient_917 : Nat.totient 917 = 780 := by
+  rw [show (917 : ℕ) = 7 * 131 from rfl, Nat.totient_mul (by decide),
+      Nat.totient_prime (by norm_num), Nat.totient_prime (by norm_num)]
+
+/-- `D(1137·2^(k+1)) = 917·2^(k+1)` (seed `1137 = 3·379`, partner `759 = 3·11·23`). -/
+theorem dblIter_seed1137 (k : ℕ) :
+    dblIter (1137 * 2 ^ (k + 1)) = 917 * 2 ^ (k + 1) := by
+  have h := dblIter_transport (a := 1137) (b := 759)
+    (by decide) (by decide) (by rw [totient_1137]) k
+  rw [h, totient_759, show (2 * 1137 - 440 : ℕ) = 1834 from by norm_num, pow_succ]
+  ring
+
+/-- `D(1179·2^(k+1)) = 917·2^(k+1)` (seed `1179 = 3²·131`, partner `789 = 3·263`). -/
+theorem dblIter_seed1179 (k : ℕ) :
+    dblIter (1179 * 2 ^ (k + 1)) = 917 * 2 ^ (k + 1) := by
+  have h := dblIter_transport (a := 1179) (b := 789)
+    (by decide) (by decide) (by rw [totient_1179]) k
+  rw [h, totient_789, show (2 * 1179 - 524 : ℕ) = 1834 from by norm_num, pow_succ]
+  ring
+
+/-- `D(1097·2^(k+1)) = 917·2^(k+1)` (seed `1097` prime, partner `549 = 3²·61`). -/
+theorem dblIter_seed1097 (k : ℕ) :
+    dblIter (1097 * 2 ^ (k + 1)) = 917 * 2 ^ (k + 1) := by
+  have h := dblIter_transport (a := 1097) (b := 549)
+    (by decide) (by decide) (by rw [totient_1097]) k
+  rw [h, totient_549, show (2 * 1097 - 360 : ℕ) = 1834 from by norm_num, pow_succ]
+  ring
+
+/-- **Three-way shared landing — all three verdicts at one point.**  The odd seeds
+    `1137 = 3·379`, `1179 = 3²·131` and `1097` (prime) send their `·2^(k+1)` families
+    onto the identical double iterate `917·2^(k+1)` (`917 = 7·131`, `φ(917) = 780`),
+    yet realise all three regimes of the totient trichotomy simultaneously:
+      `1137·2^(k+1) ∈ ReversalSet`  (`φ = 756·2^k < 780·2^k = φ(D)`),
+      `1179·2^(k+1) ∈ EqualitySet`  (`φ = 780·2^k = 780·2^k = φ(D)`),
+      `1097·2^(k+1) ∈ ForwardSet`   (`φ = 1096·2^k > 780·2^k = φ(D)`).
+    This is the sharpest landing-independence statement: one shared value of `D(n)`
+    (hence of `φ(D(n))`) is compatible with reversal, equality AND forward at once,
+    so the trichotomy is decided purely by the seed's own totient, never by `D(n)`.
+    `L = 917` is the least common landing admitting all three verdicts (exhaustive
+    search over odd seeds).  Strengthens the two-way `shared_landing_opposite_verdict`
+    (reversal vs forward only). -/
+theorem shared_landing_triple_verdict_917 (k : ℕ) :
+    dblIter (1137 * 2 ^ (k + 1)) = 917 * 2 ^ (k + 1) ∧
+      dblIter (1179 * 2 ^ (k + 1)) = 917 * 2 ^ (k + 1) ∧
+      dblIter (1097 * 2 ^ (k + 1)) = 917 * 2 ^ (k + 1) ∧
+      1137 * 2 ^ (k + 1) ∈ ReversalSet ∧
+      1179 * 2 ^ (k + 1) ∈ EqualitySet ∧
+      1097 * 2 ^ (k + 1) ∈ ForwardSet := by
+  have hp2 : Nat.totient (2 ^ (k + 1)) = 2 ^ k := by
+    rw [Nat.totient_prime_pow Nat.prime_two (Nat.succ_pos k)]; simp
+  have pos : 0 < 2 ^ k := pow_pos (by norm_num) k
+  have hφ1137 : Nat.totient (1137 * 2 ^ (k + 1)) = 756 * 2 ^ k := by
+    rw [Nat.totient_mul ((by decide : Nat.Coprime 1137 2).pow_right (k + 1)), hp2,
+        totient_1137]
+  have hφ1179 : Nat.totient (1179 * 2 ^ (k + 1)) = 780 * 2 ^ k := by
+    rw [Nat.totient_mul ((by decide : Nat.Coprime 1179 2).pow_right (k + 1)), hp2,
+        totient_1179]
+  have hφ1097 : Nat.totient (1097 * 2 ^ (k + 1)) = 1096 * 2 ^ k := by
+    rw [Nat.totient_mul ((by decide : Nat.Coprime 1097 2).pow_right (k + 1)), hp2,
+        totient_1097]
+  have hφ917 : Nat.totient (917 * 2 ^ (k + 1)) = 780 * 2 ^ k := by
+    rw [Nat.totient_mul ((by decide : Nat.Coprime 917 2).pow_right (k + 1)), hp2,
+        totient_917]
+  have hD1137 := dblIter_seed1137 k
+  have hD1179 := dblIter_seed1179 k
+  have hD1097 := dblIter_seed1097 k
+  refine ⟨hD1137, hD1179, hD1097, ?_, ?_, ?_⟩
+  · show Nat.totient (1137 * 2 ^ (k + 1)) < Nat.totient (dblIter (1137 * 2 ^ (k + 1)))
+    rw [hD1137, hφ1137, hφ917]
+    exact mul_lt_mul_of_pos_right (by norm_num) pos
+  · show Nat.totient (1179 * 2 ^ (k + 1)) = Nat.totient (dblIter (1179 * 2 ^ (k + 1)))
+    rw [hD1179, hφ1179, hφ917]
+  · show Nat.totient (dblIter (1097 * 2 ^ (k + 1))) < Nat.totient (1097 * 2 ^ (k + 1))
+    rw [hD1097, hφ1097, hφ917]
+    exact mul_lt_mul_of_pos_right (by norm_num) pos
+
 end Erdos1064OQ03
