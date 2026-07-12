@@ -204,6 +204,31 @@ theorem fourPointLineCount_ge_of_injOn_family (P : PlanarPointSet) (k : ℕ)
   rwa [Finset.card_image_of_injective _ hinj, Finset.card_univ,
     Fintype.card_fin] at hsub
 
+/-- **Monotonicity of the four-point-line count.**  Adding points to a planar set can only
+increase the number of four-point lines: if `P.points ⊆ Q.points` then
+`fourPointLineCount P ≤ fourPointLineCount Q`.  Every 4-element collinear subset of `P` is
+also a 4-element collinear subset of `Q` — the defining filter predicate depends only on
+the subset `S`, not on the ambient point set — so the powerset-filter defining the count
+is monotone.  This is the external counterpart of `fourPointLineCount_ge_of_subset` and the
+structural fact any growing construction relies on. -/
+theorem fourPointLineCount_mono {P Q : PlanarPointSet} (h : P.points ⊆ Q.points) :
+    fourPointLineCount P ≤ fourPointLineCount Q := by
+  rw [fourPointLineCount, fourPointLineCount]
+  exact Finset.card_le_card (Finset.filter_subset_filter _ (Finset.powerset_mono.mpr h))
+
+/-- **Lower-bound constructions survive point addition in general position.**  If `P` is a
+lower-bound construction for threshold `t` (no five collinear and `t ≤ fourPointLineCount P`)
+and `Q ⊇ P` is still in general position (`NoFiveCollinear Q`), then `Q` is also a
+lower-bound construction for `t`: since `fourPointLineCount` is monotone, the bound is
+inherited.  `NoFiveCollinear` itself is *not* monotone — adding points can create five
+collinear — so it must be assumed for `Q`, which is exactly the no-five-collinear
+certificate a growing construction has to supply at each step. -/
+theorem isLowerBoundConstruction_mono {P Q : PlanarPointSet} {t : ℝ}
+    (hPQ : P.points ⊆ Q.points) (hQ : NoFiveCollinear Q)
+    (hP : IsLowerBoundConstruction P t) :
+    IsLowerBoundConstruction Q t :=
+  ⟨hQ, hP.2.trans (Nat.cast_le.mpr (fourPointLineCount_mono hPQ))⟩
+
 /-- **Lower bound vacuous below size 4**: for `P` with fewer than 4
 points, no four-point line exists.  Restatement of
 `fourPointLineCount_lt_four` to fix the OQ-04 namespace conventions. -/
