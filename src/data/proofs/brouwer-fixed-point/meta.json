@@ -284,6 +284,11 @@
       "description": "Both guarantee existence of special points for continuous functions. The 1D Brouwer theorem follows from IVT (which also implies MVT): for $f:[a,b] \\to [a,b]$ continuous, $g(x) = f(x) - x$ satisfies $g(a) \\geq 0 \\geq g(b)$, so IVT gives $g(c) = 0$, i.e., $f(c) = c$"
     },
     {
+      "targetId": "brouwer-fixed-point-oq-01",
+      "relationship": "extended-by",
+      "description": "The elementary 1D case: proves Brouwer on $[a,b]$ using only the Intermediate Value Theorem — no algebraic topology and, unlike this axiomatized $n$-dimensional entry, entirely axiom-free. It shows 1D Brouwer is equivalent to IVT and derives the 1D No-Retraction theorem and 1D Borsuk–Ulam, giving a from-scratch base case for the general theorem stated here via the No-Retraction axiom."
+    },
+    {
       "targetId": "brouwer-fixed-point-oq-02",
       "relationship": "extended-by",
       "description": "Explores the computational complexity of finding approximate fixed points (PPAD-completeness) — the constructive dimension of Brouwer's inherently non-constructive existence result, with implications for Nash equilibrium computation"
