@@ -51,6 +51,50 @@ theorem iterate_dist (f : ℝ → ℝ) (L : ℝ) (hL0 : 0 ≤ L)
       _ ≤ L * (L ^ n * |x 0 - xstar|) := mul_le_mul_of_nonneg_left ih hL0
       _ = L ^ (n + 1) * |x 0 - xstar| := by ring
 
+/-- **One-step error contraction (linear convergence).**  Each iterate is at least a
+    factor `L` closer to the fixed point than the previous one:
+    `|xₙ₊₁ − x*| ≤ L·|xₙ − x*|`.  This is the per-step core of `iterate_dist` (whose `Lⁿ`
+    bound is just this applied `n` times), isolated as the standalone statement of
+    *q-linear convergence with rate `L`* — the defining quantitative feature of a Banach
+    contraction iteration.  No positivity or `L < 1` hypothesis is needed for the single
+    step; it holds for any Lipschitz `f` fixing `x*`. -/
+theorem error_contraction (f : ℝ → ℝ) (L : ℝ)
+    (hf : ∀ x y, |f x - f y| ≤ L * |x - y|)
+    (x : ℕ → ℝ) (hx : ∀ n, x (n + 1) = f (x n))
+    (xstar : ℝ) (hfp : f xstar = xstar) (n : ℕ) :
+    |x (n + 1) - xstar| ≤ L * |x n - xstar| := by
+  have h := hf (x n) xstar
+  rw [hfp, ← hx n] at h
+  exact h
+
+/-- **Errors never increase.**  When the rate satisfies `L ≤ 1`, one iteration cannot move
+    farther from the fixed point: `|xₙ₊₁ − x*| ≤ |xₙ − x*|`.  Immediate from
+    `error_contraction` and `L·d ≤ 1·d` for `d = |xₙ − x*| ≥ 0`.  The monotone-descent
+    companion to the linear-convergence rate — the iteration is *non-expansive toward `x*`*. -/
+theorem error_le_prev (f : ℝ → ℝ) (L : ℝ) (hL1 : L ≤ 1)
+    (hf : ∀ x y, |f x - f y| ≤ L * |x - y|)
+    (x : ℕ → ℝ) (hx : ∀ n, x (n + 1) = f (x n))
+    (xstar : ℝ) (hfp : f xstar = xstar) (n : ℕ) :
+    |x (n + 1) - xstar| ≤ |x n - xstar| :=
+  calc |x (n + 1) - xstar|
+      ≤ L * |x n - xstar| := error_contraction f L hf x hx xstar hfp n
+    _ ≤ 1 * |x n - xstar| := mul_le_mul_of_nonneg_right hL1 (abs_nonneg _)
+    _ = |x n - xstar| := one_mul _
+
+/-- **The error sequence is antitone.**  For `L ≤ 1` and any `n ≤ m`,
+    `|xₘ − x*| ≤ |xₙ − x*|`: the distance to the fixed point is monotonically
+    non-increasing along the whole orbit, not merely one step at a time.  Proved by
+    `Nat.le_induction` from the one-step descent `error_le_prev`. -/
+theorem error_antitone (f : ℝ → ℝ) (L : ℝ) (hL1 : L ≤ 1)
+    (hf : ∀ x y, |f x - f y| ≤ L * |x - y|)
+    (x : ℕ → ℝ) (hx : ∀ n, x (n + 1) = f (x n))
+    (xstar : ℝ) (hfp : f xstar = xstar) {n m : ℕ} (hnm : n ≤ m) :
+    |x m - xstar| ≤ |x n - xstar| := by
+  induction m, hnm using Nat.le_induction with
+  | base => exact le_refl _
+  | succ k hk ih =>
+    exact le_trans (error_le_prev f L hL1 hf x hx xstar hfp k) ih
+
 /-- **One-step distance estimate.**  `(1 − L)·|x₀ − x*| ≤ |x₁ − x₀|`, equivalently
     `|x₀ − x*| ≤ |x₁ − x₀| / (1 − L)`: the unknown distance to the fixed point is
     controlled by the (computable) first increment. -/
