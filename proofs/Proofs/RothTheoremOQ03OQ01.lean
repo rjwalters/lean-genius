@@ -1130,7 +1130,8 @@ theorem kAPCount_count_dilate {N : ℕ} [NeZero N] {k : ℕ} (A : Finset (ZMod N
   simp only [Prod.mk.injEq] at hab
   have hinj : ∀ {x y : ZMod N}, (c : ZMod N) * x = (c : ZMod N) * y → x = y := by
     intro x y h
-    have h2 := congrArg (fun z => (↑c⁻¹ : ZMod N) * z) h
+    have h2 : (↑c⁻¹ : ZMod N) * ((c : ZMod N) * x) = (↑c⁻¹ : ZMod N) * ((c : ZMod N) * y) := by
+      rw [h]
     rwa [← mul_assoc, Units.inv_mul, one_mul, ← mul_assoc, Units.inv_mul, one_mul] at h2
   exact Prod.ext (hinj hab.1) (hinj hab.2)
 
@@ -1161,7 +1162,7 @@ theorem kAPCount_nondeg_dilate {N : ℕ} [NeZero N] {k : ℕ} (A : Finset (ZMod 
   have hmul_ne : ∀ (u : (ZMod N)ˣ) {y : ZMod N}, y ≠ 0 → (↑u : ZMod N) * y ≠ 0 := by
     intro u y hy hcy
     apply hy
-    have h2 := congrArg (fun z => (↑u⁻¹ : ZMod N) * z) hcy
+    have h2 : (↑u⁻¹ : ZMod N) * ((u : ZMod N) * y) = (↑u⁻¹ : ZMod N) * 0 := by rw [hcy]
     rwa [← mul_assoc, Units.inv_mul, one_mul, mul_zero] at h2
   have hset :
       (Finset.univ.filter (fun p : ZMod N × ZMod N =>
@@ -1191,7 +1192,8 @@ theorem kAPCount_nondeg_dilate {N : ℕ} [NeZero N] {k : ℕ} (A : Finset (ZMod 
   simp only [Prod.mk.injEq] at hab
   have hinj : ∀ {x y : ZMod N}, (c : ZMod N) * x = (c : ZMod N) * y → x = y := by
     intro x y h
-    have h2 := congrArg (fun z => (↑c⁻¹ : ZMod N) * z) h
+    have h2 : (↑c⁻¹ : ZMod N) * ((c : ZMod N) * x) = (↑c⁻¹ : ZMod N) * ((c : ZMod N) * y) := by
+      rw [h]
     rwa [← mul_assoc, Units.inv_mul, one_mul, ← mul_assoc, Units.inv_mul, one_mul] at h2
   exact Prod.ext (hinj hab.1) (hinj hab.2)
 
