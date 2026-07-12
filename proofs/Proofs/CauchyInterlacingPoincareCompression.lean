@@ -1403,6 +1403,30 @@ theorem compress_eigenvalue_mem_Icc_of_poincare
   ⟨bot_le_compress_eigenvalue_of_poincare hT hVdim H hHdim k,
    compress_eigenvalue_le_top_of_poincare hT hVdim H hHdim k⟩
 
+/-- **Spectral confinement onto the span of an orthonormal `n`-frame.**
+
+The orthonormal-frame counterpart of `compress_eigenvalue_mem_Icc_of_poincare`,
+specialising `H` to `span (range f)` for an orthonormal `f : Fin n → V` exactly as
+`poincare_separation_compression_span` does for the interlacing bound itself: every
+eigenvalue `μ_k` of `compress T (span (range f))` lies in the numerical range
+`[λ_{n+m-1}, λ_0]` of `T`.  The dimension hypothesis is discharged automatically from
+`finrank_span_eq_card`, so no separate `finrank H = n` obligation is needed — the
+common application picture (compressing onto the span of a chosen orthonormal frame)
+gets the confinement bound directly. -/
+theorem compress_eigenvalue_mem_Icc_span_of_poincare
+    {T : V →ₗ[𝕜] V} (hT : T.IsSymmetric) {n m : ℕ}
+    (hVdim : Module.finrank 𝕜 V = n + m)
+    (f : Fin n → V) (hf : Orthonormal 𝕜 f)
+    (k : Fin n) :
+    (hT.eigenvalues hVdim) ⟨n + m - 1, by have := k.isLt; omega⟩
+        ≤ (isSymmetric_compress hT (Submodule.span 𝕜 (Set.range f))).eigenvalues
+            ((finrank_span_eq_card hf.linearIndependent).trans (Fintype.card_fin n)) k
+      ∧ (isSymmetric_compress hT (Submodule.span 𝕜 (Set.range f))).eigenvalues
+            ((finrank_span_eq_card hf.linearIndependent).trans (Fintype.card_fin n)) k
+          ≤ (hT.eigenvalues hVdim) ⟨0, by have := k.isLt; omega⟩ :=
+  compress_eigenvalue_mem_Icc_of_poincare hT hVdim (Submodule.span 𝕜 (Set.range f))
+    ((finrank_span_eq_card hf.linearIndependent).trans (Fintype.card_fin n)) k
+
 /-! ## Minimal polynomial: the compression's minpoly *divides* the ambient one
 
 Every polynomial invariant recorded above — trace, determinant, characteristic
@@ -1448,8 +1472,9 @@ theorem coe_aeval_compress_of_invariant {T : V →ₗ[𝕜] V} (H : Submodule �
       simp only [map_add, LinearMap.add_apply, Submodule.coe_add, hp, hq]
   | monomial n a =>
       simp only [Polynomial.aeval_monomial, Module.algebraMap_end_eq_smul_id,
-        LinearMap.mul_apply, LinearMap.smul_apply, LinearMap.id_coe, id_eq,
-        Submodule.coe_smul, Module.End.pow_restrict, LinearMap.restrict_coe_apply]
+        Module.End.mul_apply, LinearMap.smul_apply, LinearMap.id_coe, id_eq,
+        Submodule.coe_smul]
+      rw [Module.End.pow_restrict n hinv, LinearMap.restrict_coe_apply]
 
 /-- **Annihilation transports to the invariant-block compression.**
 
@@ -1462,7 +1487,6 @@ theorem aeval_compress_eq_zero_of_aeval_eq_zero_of_invariant {T : V →ₗ[𝕜]
     (hp : Polynomial.aeval T p = 0) :
     Polynomial.aeval (compress T H) p = 0 := by
   ext y
-  refine Subtype.ext ?_
   rw [coe_aeval_compress_of_invariant H hinv, hp]
   simp
 
@@ -1515,7 +1539,7 @@ theorem aeval_mem_of_invariant {T : V →ₗ[𝕜] V} {H : Submodule 𝕜 V}
   | add p q hp hq => rw [map_add, LinearMap.add_apply]; exact H.add_mem hp hq
   | monomial n a =>
       rw [Polynomial.aeval_monomial, Module.algebraMap_end_eq_smul_id,
-        LinearMap.mul_apply, LinearMap.smul_apply, LinearMap.id_coe, id_eq]
+        Module.End.mul_apply, LinearMap.smul_apply, LinearMap.id_coe, id_eq]
       exact H.smul_mem a (Module.End.pow_apply_mem_of_forall_mem n hinv y hy)
 
 /-- **The ambient minpoly divides the product of the block minpolys (reducing
@@ -1558,7 +1582,7 @@ theorem minpoly_dvd_mul_compress_of_reducing {T : V →ₗ[𝕜] V} (H : Submodu
   apply minpoly.dvd
   rw [map_mul]
   ext v
-  simp only [LinearMap.mul_apply, LinearMap.zero_apply]
+  simp only [Module.End.mul_apply, LinearMap.zero_apply]
   -- Orthogonal split `v = P_H v + (v - P_H v)`, `P_H v ∈ H`, `v - P_H v ∈ Hᗮ`.
   have haH : H.starProjection v ∈ H := H.starProjection_apply_mem v
   have hbHp : v - H.starProjection v ∈ Hᗮ := H.sub_starProjection_mem_orthogonal v
