@@ -75,10 +75,10 @@
   {
     "id": "ann-bezout-fp-contrast",
     "proofId": "bezout-identity-oq-02-oq-01-oq-01-oq-02",
-    "range": { "startLine": 112, "endLine": 128 },
+    "range": { "startLine": 102, "endLine": 128 },
     "type": "insight",
     "title": "Where Fermat Factorization Fails: ℚ vs 𝔽_p",
-    "content": "Fermat factorization is a characteristic-p phenomenon. The scalar 2 makes this concrete: over 𝔽_5, ZMod.pow_card forces 2^5 = 2 so 2 is a root of X^5 − X (as is every element); over ℚ, evaluating gives 2^5 − 2 = 30 ≠ 0, so 2 is not a root and the all-linear split cannot survive. The small case X^3 − X = X(X − 1)(X + 1) does split over ℚ — but only because its roots 0, ±1 happen to be rational; for X^5 − X the rational roots are exhausted by 0, ±1 and the rest stay irreducible over ℚ.",
+    "content": "Section III turns to characteristic 0. The section docstring states the principle — over a field of characteristic 0, X^q − X no longer has every scalar as a root, so it does not split into linear factors — and Fermat factorization is thereby a characteristic-p phenomenon. The scalar 2 makes this concrete: over 𝔽_5, ZMod.pow_card forces 2^5 = 2 so 2 is a root of X^5 − X (as is every element); over ℚ, evaluating gives 2^5 − 2 = 30 ≠ 0, so 2 is not a root and the all-linear split cannot survive. The small case X^3 − X = X(X − 1)(X + 1) (proved by a bare `ring`) does split over ℚ — but only coincidentally, because its roots 0, ±1 happen to be rational; for X^5 − X the rational roots are exhausted by 0, ±1 and the remaining factor X^2 + 1 stays irreducible over ℚ.",
     "mathContext": "$\\operatorname{eval}_2 (X^5 - X) = 30$ over $\\mathbb{Q}$, but $= 0$ over $\\mathbb{F}_5$. Fermat factorization needs $\\operatorname{char} = p$.",
     "significance": "supporting",
     "relatedConcepts": [
