@@ -692,4 +692,38 @@ theorem weighted_variance_pos {ι : Type*} (s : Finset ι) (w x : ι → ℚ) (�
     exact mul_pos hwj hsq
   linarith [hatom, hpos]
 
+/-- **Trivial refinements preserve energy (variance vanishes).**  If every cell either
+    carries no weight (`wᵢ = 0`) or already sits at the parent mean (`xᵢ = μ`), the
+    weighted variance is exactly `0`: `(∑ wᵢxᵢ²) − (∑ wᵢ)·μ² = 0`.  Each summand
+    `wᵢ(xᵢ − μ)²` of `weighted_variance_eq` vanishes.  This is the "no energy gain" side of
+    the monotonicity `weighted_sq_mean_le`: a refinement that splits no part into
+    genuinely different densities leaves the partition energy unchanged. -/
+theorem weighted_variance_eq_zero_of_forall {ι : Type*} (s : Finset ι) (w x : ι → ℚ)
+    (μ : ℚ) (hmean : ∑ i ∈ s, w i * x i = (∑ i ∈ s, w i) * μ)
+    (h : ∀ i ∈ s, w i = 0 ∨ x i = μ) :
+    (∑ i ∈ s, w i * x i ^ 2) - (∑ i ∈ s, w i) * μ ^ 2 = 0 := by
+  rw [← weighted_variance_eq s w x μ hmean]
+  refine Finset.sum_eq_zero (fun i hi => ?_)
+  rcases h i hi with h0 | hμ
+  · rw [h0]; ring
+  · rw [hμ]; ring
+
+/-- **Equality case of energy monotonicity.**  The converse of
+    `weighted_variance_eq_zero_of_forall`, via the strict atom `weighted_variance_pos`: if
+    the weighted variance is `0`, then *every* positive-weight cell already sits at the
+    parent mean, `xⱼ = μ`.  Contrapositive of `weighted_variance_pos` (a single deviating
+    positive-weight cell forces strictly positive variance).  Together the two theorems
+    characterize exactly when refining a part fails to raise the partition energy: precisely
+    when the split is trivial on every cell of positive measure — the equality condition
+    behind `weighted_sq_mean_le`. -/
+theorem weighted_variance_eq_zero_imp {ι : Type*} (s : Finset ι) (w x : ι → ℚ) (μ : ℚ)
+    (hw : ∀ i ∈ s, 0 ≤ w i)
+    (hmean : ∑ i ∈ s, w i * x i = (∑ i ∈ s, w i) * μ)
+    (hvar : (∑ i ∈ s, w i * x i ^ 2) - (∑ i ∈ s, w i) * μ ^ 2 = 0)
+    (j : ι) (hj : j ∈ s) (hwj : 0 < w j) :
+    x j = μ := by
+  by_contra hxj
+  have hpos := weighted_variance_pos s w x μ hw hmean j hj hwj hxj
+  linarith
+
 end Szemeredi.RegularityOQ04
