@@ -88,7 +88,8 @@
       "Determinant/eigenvalue-PRODUCT additivity mirrors the trace/eigenvalue-SUM additivity: the same block-diagonal reconstruction on a reducing subspace yields det via det_conj+det_prodMap (mult) instead of trace map_add (additive). coe_compress_of_invariant makes each honest compression = T on its invariant block, killing off-diagonal terms.",
       "Passing charpoly_eq_mul_compress_of_reducing to roots (Polynomial.roots_mul, valid since charpoly is monic hence nonzero) yields eigenvalue-MULTISET additivity: (charpoly T).roots = (charpoly (compress T H)).roots + (charpoly (compress T Hᗮ)).roots — the with-multiplicity refinement of the set-level spectrum union.",
       "Discovered origin/main charpoly_eq_mul_compress_of_reducing hT-proof was BROKEN: LinearEquiv.conj_apply unfolds to left-associated (↑e∘ₗf)∘ₗ↑e.symm, so the leading ← LinearMap.comp_assoc finds no right-associated pattern (rw fail at conj step). Fix = drop the leading ← comp_assoc, go straight to ← hconj.",
-      "The minimal polynomial is the one polynomial invariant that does NOT multiply across a reducing pair (unlike charpoly/det/trace/roots): on an invariant block it DIVIDES, and across a reducing pair minpoly T = lcm of the two block minpolys."
+      "The minimal polynomial is the one polynomial invariant that does NOT multiply across a reducing pair (unlike charpoly/det/trace/roots): on an invariant block it DIVIDES, and across a reducing pair minpoly T = lcm of the two block minpolys.",
+      "researcher-8 (2026-07-11): completed the minimal-polynomial capstone the section docstrings repeatedly promise. The file proved both one-sided divisibilities (minpoly_compress_dvd_of_reducing: each block minpoly | minpoly T; minpoly_dvd_mul_compress_of_reducing: minpoly T | product) but not the equality minpoly T = lcm of the block minpolys. Added the missing content: aeval_lcm_compress_eq_zero_of_reducing (the lcm of the two block minpolys annihilates T — factor lcm=p*s=q*t, each leading factor kills its invariant block after aeval_mem_of_invariant, then orthogonal split), minpoly_dvd_lcm_compress_of_reducing (sharpens the product divisibility to the lcm via minpoly.dvd), and the capstone minpoly_eq_lcm_compress_of_reducing (mutual divisibility upgraded to equality by normalize: minpoly T monic since T integral over the finite-dim End algebra, lcm normalized). Symmetry-free, VERIFIED [propext,choice,Quot.sound] only."
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -112,7 +113,7 @@
     "mathlib": []
   },
   "started": "2026-07-02T05:53:08.467Z",
-  "lastUpdate": "2026-07-09T00:00:00.000Z",
+  "lastUpdate": "2026-07-11T00:00:00.000Z",
   "completed": "2026-07-02T23:38:28.210Z",
   "significance": 3,
   "tractability": 7

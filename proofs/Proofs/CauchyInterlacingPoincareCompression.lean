@@ -1596,4 +1596,97 @@ theorem minpoly_dvd_mul_compress_of_reducing {T : V →ₗ[𝕜] V} (H : Submodu
   -- `N (P_H v)` lies back in `H`; `M` kills it.
   exact hMkill _ (aeval_mem_of_invariant hH (minpoly 𝕜 (compress T Hᗮ)) haH)
 
+/-- **The lcm of the block minpolys annihilates `T` (reducing pair).**
+
+If `H` reduces `T` (both `H` and `Hᗮ` are `T`-invariant) then the least common
+multiple of the two block minimal polynomials annihilates the ambient operator:
+
+  `aeval T (lcm (minpoly (compress T H)) (minpoly (compress T Hᗮ))) = 0`.
+
+This is the substantive content pinning `minpoly T` as the lcm (rather than merely
+dividing the *product* `minpoly (compress T H) · minpoly (compress T Hᗮ)`, which is
+`minpoly_dvd_mul_compress_of_reducing`).  Writing `L := lcm p q`, both `p ∣ L` and
+`q ∣ L`, so `aeval T L` factors through `aeval T p` on the `H`-block (which
+annihilates `H`, since `compress T H = T` there) and through `aeval T q` on the
+`Hᗮ`-block; splitting any `v = P_H v + (v - P_H v)` orthogonally kills both pieces.
+Symmetry-free. -/
+theorem aeval_lcm_compress_eq_zero_of_reducing {T : V →ₗ[𝕜] V} (H : Submodule 𝕜 V)
+    (hH : ∀ y ∈ H, T y ∈ H) (hHp : ∀ y ∈ Hᗮ, T y ∈ Hᗮ) :
+    Polynomial.aeval T
+        (lcm (minpoly 𝕜 (compress T H)) (minpoly 𝕜 (compress T Hᗮ))) = 0 := by
+  set p := minpoly 𝕜 (compress T H) with hp_def
+  set q := minpoly 𝕜 (compress T Hᗮ) with hq_def
+  -- `aeval T p` annihilates the `H`-block; `aeval T q` annihilates the `Hᗮ`-block.
+  have hMkill : ∀ w ∈ H, Polynomial.aeval T p w = 0 := fun w hw => by
+    have h := coe_aeval_compress_of_invariant H hH p ⟨w, hw⟩
+    rw [minpoly.aeval, LinearMap.zero_apply, ZeroMemClass.coe_zero] at h
+    exact h.symm
+  have hNkill : ∀ w ∈ Hᗮ, Polynomial.aeval T q w = 0 := fun w hw => by
+    have h := coe_aeval_compress_of_invariant Hᗮ hHp q ⟨w, hw⟩
+    rw [minpoly.aeval, LinearMap.zero_apply, ZeroMemClass.coe_zero] at h
+    exact h.symm
+  -- The lcm annihilates each block: `L = p * s = q * t`, and the leading factor kills.
+  obtain ⟨s, hs⟩ := dvd_lcm_left p q
+  obtain ⟨t, ht⟩ := dvd_lcm_right p q
+  have hLkillH : ∀ w ∈ H, Polynomial.aeval T (lcm p q) w = 0 := fun w hw => by
+    rw [hs, map_mul, Module.End.mul_apply]
+    exact hMkill _ (aeval_mem_of_invariant hH s hw)
+  have hLkillHp : ∀ w ∈ Hᗮ, Polynomial.aeval T (lcm p q) w = 0 := fun w hw => by
+    rw [ht, map_mul, Module.End.mul_apply]
+    exact hNkill _ (aeval_mem_of_invariant hHp t hw)
+  -- Split any `v` orthogonally; both pieces are killed.
+  ext v
+  simp only [LinearMap.zero_apply]
+  have haH : H.starProjection v ∈ H := H.starProjection_apply_mem v
+  have hbHp : v - H.starProjection v ∈ Hᗮ := H.sub_starProjection_mem_orthogonal v
+  have hav : H.starProjection v + (v - H.starProjection v) = v := by abel
+  conv_lhs => rw [← hav]
+  rw [map_add, hLkillH _ haH, hLkillHp _ hbHp, add_zero]
+
+/-- **The ambient minpoly divides the lcm of the block minpolys (reducing pair).**
+
+Sharper than the product divisibility `minpoly_dvd_mul_compress_of_reducing`: since
+the lcm of the two block minpolys already annihilates `T`
+(`aeval_lcm_compress_eq_zero_of_reducing`), `minpoly.dvd` gives
+
+  `minpoly T ∣ lcm (minpoly (compress T H)) (minpoly (compress T Hᗮ))`. -/
+theorem minpoly_dvd_lcm_compress_of_reducing {T : V →ₗ[𝕜] V} (H : Submodule 𝕜 V)
+    (hH : ∀ y ∈ H, T y ∈ H) (hHp : ∀ y ∈ Hᗮ, T y ∈ Hᗮ) :
+    minpoly 𝕜 T ∣ lcm (minpoly 𝕜 (compress T H)) (minpoly 𝕜 (compress T Hᗮ)) :=
+  minpoly.dvd 𝕜 T (aeval_lcm_compress_eq_zero_of_reducing H hH hHp)
+
+/-- **Minimal-polynomial reading of the block-diagonal decomposition (capstone).**
+
+If `H` reduces `T` then the minimal polynomial of `T` is *exactly* the least common
+multiple of the two block minimal polynomials:
+
+  `minpoly T = lcm (minpoly (compress T H)) (minpoly (compress T Hᗮ))`.
+
+This is the equality repeatedly promised by the section docstrings, completing the
+`minpoly` picture: unlike the *characteristic* polynomial, which multiplies across a
+reducing pair (`charpoly_eq_mul_compress_of_reducing`), the *minimal* polynomial takes
+the lcm.  The `∣` direction is `minpoly_dvd_lcm_compress_of_reducing`; the `∣`-reverse is
+`lcm_dvd` applied to the two block divisibilities `minpoly_compress_dvd_of_reducing`.
+Both `minpoly T` and the (normalized) lcm are monic, so mutual divisibility upgrades to
+equality via `normalize`.  Symmetry-free. -/
+theorem minpoly_eq_lcm_compress_of_reducing {T : V →ₗ[𝕜] V} (H : Submodule 𝕜 V)
+    (hH : ∀ y ∈ H, T y ∈ H) (hHp : ∀ y ∈ Hᗮ, T y ∈ Hᗮ) :
+    minpoly 𝕜 T =
+      lcm (minpoly 𝕜 (compress T H)) (minpoly 𝕜 (compress T Hᗮ)) := by
+  obtain ⟨hdvdH, hdvdHp⟩ := minpoly_compress_dvd_of_reducing H hH hHp
+  have d1 : minpoly 𝕜 T ∣
+      lcm (minpoly 𝕜 (compress T H)) (minpoly 𝕜 (compress T Hᗮ)) :=
+    minpoly_dvd_lcm_compress_of_reducing H hH hHp
+  have d2 : lcm (minpoly 𝕜 (compress T H)) (minpoly 𝕜 (compress T Hᗮ)) ∣
+      minpoly 𝕜 T := lcm_dvd hdvdH hdvdHp
+  -- `T` is integral (finite-dimensional endomorphism algebra), so `minpoly T` is monic.
+  have hint : IsIntegral 𝕜 T :=
+    have : Algebra.IsIntegral 𝕜 (Module.End 𝕜 V) := Algebra.IsIntegral.of_finite 𝕜 _
+    Algebra.IsIntegral.isIntegral T
+  have hmonic : (minpoly 𝕜 T).Monic := minpoly.monic hint
+  calc minpoly 𝕜 T = normalize (minpoly 𝕜 T) := (hmonic.normalize_eq_self).symm
+    _ = normalize (lcm (minpoly 𝕜 (compress T H)) (minpoly 𝕜 (compress T Hᗮ))) :=
+        normalize_eq_normalize_iff.mpr ⟨d1, d2⟩
+    _ = lcm (minpoly 𝕜 (compress T H)) (minpoly 𝕜 (compress T Hᗮ)) := normalize_lcm _ _
+
 end CauchyInterlacing.PoincareCompression
