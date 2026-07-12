@@ -31,7 +31,8 @@
       "isPrimitive_mulVec_iff: SLₙ(ℤ) preserves primitivity in both directions — the exact invariant transitivity must respect",
       "transvectionSL / transvectionSL_mulVec: the elementary Euclidean-descent generators packaged in SLₙ(ℤ) with their explicit action v ↦ update v i (vᵢ + c·vⱼ)",
       "orbit_e_isPrimitive: the necessity half of transitivity — every SLₙ(ℤ)-orbit of a basis vector consists of primitive vectors",
-      "BezoutIdentityOQ01OQ02OQ02Invariant.lean — the invariance (necessity) complement to the transitivity results: the content (gcd) of an integer vector is a complete SLₙ(ℤ)-invariant. dvd_mulVec (integer matrices carry common divisors forward), common_dvd_mulVec_iff (SLₙ preserves the full set of common divisors, strengthening isPrimitive_mulVec_iff from primitivity to arbitrary content), sameOrbit_common_dvd_eq (content is an orbit invariant), IsPrimitive.common_dvd_isUnit (primitive = trivial content). Axiom-free."
+      "BezoutIdentityOQ01OQ02OQ02Invariant.lean — the invariance (necessity) complement to the transitivity results: the content (gcd) of an integer vector is a complete SLₙ(ℤ)-invariant. dvd_mulVec (integer matrices carry common divisors forward), common_dvd_mulVec_iff (SLₙ preserves the full set of common divisors, strengthening isPrimitive_mulVec_iff from primitivity to arbitrary content), sameOrbit_common_dvd_eq (content is an orbit invariant), IsPrimitive.common_dvd_isUnit (primitive = trivial content). Axiom-free.",
+      "Sharpness of the 1<n hypothesis (n=1 obstruction): coe_sl_fin_one_eq_one (SL₁(ℤ)={(1)} at the matrix level), sl_fin_one_mulVec (SL₁ acts trivially), not_exists_sl_fin_one_single_neg (no SL₁ move carries (1) to (-1)), not_forall_sl_fin_one_orbit (transitivity fails at n=1). Proves the entry's previously prose-only claim that the 1<n hypothesis in exists_sl_mulVec_eq_of_isPrimitive is genuinely necessary — SL₁(ℤ) has two primitive-vector orbits, not one. Axiom-free."
     ]
   },
   "overview": {
@@ -91,13 +92,18 @@
       "name": "isPrimitive_iff_exists_sl_column",
       "type": "theorem",
       "description": "Unimodular column completion (n ≥ 2): a vector is primitive iff it is a column of some matrix in SLₙ(ℤ) (IsPrimitive v ↔ ∃ A k, ↑ₘA *ᵥ eₖ = v). The classical statement that a primitive integer vector extends to a ℤ-basis — the columns of SLₙ(ℤ) are exactly the primitive vectors. Backward is orbit_e_isPrimitive; forward inverts exists_sl_mulVec_basis_of_isPrimitive. The 1<n hypothesis is essential: at n=1 the primitive vector (-1) is no column of SL₁(ℤ)={1}."
+    },
+    {
+      "name": "not_forall_sl_fin_one_orbit",
+      "type": "theorem",
+      "description": "Sharpness of the 1<n hypothesis: transitivity FAILS at n=1. Since SL₁(ℤ)={1} acts trivially on every vector (coe_sl_fin_one_eq_one, sl_fin_one_mulVec), the two primitive vectors (1) and (-1) lie in distinct orbits (not_exists_sl_fin_one_single_neg), so exists_sl_mulVec_eq_of_isPrimitive and its corollaries genuinely require 1<n. This turns the entry's repeated prose 'the dimension hypothesis is genuinely necessary, not an artefact' into a machine-checked theorem: SL₁(ℤ) has exactly two orbits of primitive vectors, versus a single orbit for n ≥ 2."
     }
   ],
   "leanFile": {
     "namespace": "BezoutPrimitive",
-    "lineCount": 584,
+    "lineCount": 646,
     "axiomCount": 0,
-    "theoremCount": 27,
+    "theoremCount": 31,
     "definitionCount": 2,
     "path": "Proofs/BezoutIdentityOQ01OQ02OQ02.lean",
     "sorries": 0
