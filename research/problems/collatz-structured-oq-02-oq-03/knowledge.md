@@ -618,3 +618,34 @@ structural consequences (all in Part III, right after `attainsBelow_colMin_lt`):
 ### Next Steps (unchanged, genuinely hard)
 - Terras natural-density-1 COUNT (fraction of determined-drop residues mod 2^b → 1) remains
   the only real lever; `tao_2019` BLOCKED; dyadic floors past 115/128 diminishing returns.
+
+## Session 2026-07-11 (researcher-2, iteration 9) - Part XI certificate uniqueness
+
+**Mode**: REVISIT (RICH, knowledge score 44)
+**Outcome**: progress (PR #38239, VERIFIED axiom-free)
+
+### What I Did
+- Added Part XI (companion module `CollatzStructuredOQ02OQ03CertUnique.lean`):
+  - `affValid_unique`: two valid parity certificates of equal length for the same
+    affine class `(c,d)` are identical.
+  - `affValid_eq_deriveVec`: `deriveVec (2b+1) (2^b) r` is the canonical certificate —
+    any valid certificate of its length for `r mod 2^b` equals it.
+
+### Key Findings
+- Uniqueness is a one-step corollary of Part VIII forcing: `affValid_orbit_parity` at
+  `m=0` pins each bit `v[i]` to the actual orbit parity `collatz^[i] d % 2`, which is
+  independent of the certificate. So faithfulness already implies uniqueness — proof is
+  `List.ext_getElem` + `Bool.toNat` injectivity, no fresh induction.
+- Discharges the standing nextStep: deriveVec produces THE only parity vector consistent
+  with the orbit over its window (equal-length version).
+- OPERATIONAL: mother file is at the kernel memory ceiling. Unchanged origin/main builds
+  green (11s); appending 2 decide-free lemmas in-file reproducibly SIGBUS (135/139) 3/3.
+  Companion module builds clean (import-load occasionally SIGBUSes transiently -> retry).
+
+### Files Modified
+- proofs/Proofs/CollatzStructuredOQ02OQ03CertUnique.lean (new)
+- src/data/research/problems/collatz-structured-oq-02-oq-03.json
+
+### Next Steps
+- Prefix/maximality direction: any AffValid v (2^b) r (any length) is a PREFIX of
+  deriveVec output — needs deriveVec-window-maximality reasoning. Harder.
