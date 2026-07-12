@@ -312,4 +312,20 @@ theorem p_le_degree_of_pgroup (α : ℝ) (hα : IsIntegral ℚ α)
     p ≤ (minpoly ℚ α).natDegree :=
   Nat.le_of_dvd (by omega) (prime_dvd_degree_of_pgroup α hα hp hgt hP)
 
+/-- **The constructibility obstruction: an odd prime factor of the degree kills the
+2-group.**  If any *odd* prime `q` divides `deg(minpoly ℚ α)`, then the Galois group is
+not a 2-group.  Unlike `odd_degree_gt_one_not_2group'` (which needs the *whole* degree
+odd), this covers mixed-parity degrees such as `6 = 2·3` or `12`: a single odd prime
+factor already obstructs.  Since constructibility forces the Galois group to be a
+2-group, this is exactly the criterion "an odd prime dividing the degree ⟹ not
+constructible".  A one-line instance of the master criterion
+`not_pgroup_of_prime_dvd_degree_ne` at `p = 2`. -/
+theorem not_2group_of_odd_prime_dvd_degree (α : ℝ) (hα : IsIntegral ℚ α)
+    {q : ℕ} (hq : q.Prime) (hodd : Odd q) (hdvd : q ∣ (minpoly ℚ α).natDegree) :
+    ¬ IsPGroup 2 (minpoly ℚ α).Gal := by
+  have hq2 : q ≠ 2 := by
+    rintro rfl
+    exact (Nat.not_even_iff_odd.mpr hodd) (by decide)
+  exact not_pgroup_of_prime_dvd_degree_ne α hα Nat.prime_two hq hq2 hdvd
+
 end AngleTrisectionOQ02OQ01OQ03
