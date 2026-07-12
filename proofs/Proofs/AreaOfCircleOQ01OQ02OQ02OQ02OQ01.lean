@@ -925,4 +925,158 @@ theorem hasSum_fourier_area_formula
   rw [hfun]
   exact H
 
+-- ============================================================
+-- SECTION XI: the Hurwitz isoperimetric inequality itself
+--             — the deficit ∑ₙ [n²(‖aₙ‖²+‖bₙ‖²) − 2n·Im(aₙ·conj bₙ)] ≥ 0
+-- ============================================================
+
+/-- **Perimeter energy of one coordinate in Fourier form.**  For a smooth (`C^∞`)
+    period-`2π` real function `f`, the diagonal Parseval identity applied to the
+    (continuous) derivative `f'`, combined with the derivative eigenvalue
+    `ĉₙ(f') = i·n·ĉₙ(f)`, gives the frequency-weighted energy identity
+
+        ∑ₙ n²·‖ĉₙ(f)‖²  =  (2π)⁻¹ ∫₀^{2π} (f'(t))² dt .
+
+    This is one coordinate's contribution to the perimeter term `(2π)⁻¹∫(f'²+g'²)` of the
+    Hurwitz isoperimetric deficit.
+
+    Proof.  Apply `hasSum_sq_fourierCoeffOn_real` to the continuous function `f'`; the
+    whole-spectrum magnitude law `norm_fourierCoeffOn_iteratedDeriv_all` (at order `k = 1`)
+    rewrites `‖ĉₙ(f')‖² = |n|²·‖ĉₙ(f)‖² = n²·‖ĉₙ(f)‖²`. -/
+private theorem hasSum_nsq_normSq_fourierCoeffOn
+    {f : ℝ → ℝ} (hf : ContDiff ℝ ∞ f) (hper : ∀ t, f (t + 2 * π) = f t)
+    (hab : (0 : ℝ) < 2 * π) :
+    HasSum (fun n : ℤ => (n : ℝ) ^ 2 * ‖fourierCoeffOn hab (ofReal ∘ f) n‖ ^ 2)
+      ((2 * π - 0)⁻¹ • ∫ x in (0 : ℝ)..(2 * π), (deriv f x) ^ 2) := by
+  have hdc : Continuous (deriv f) := by
+    have h := (contDiff_infty_iterate_deriv f hf 1).continuous
+    rwa [Function.iterate_one] at h
+  have HS := hasSum_sq_fourierCoeffOn_real hdc hab
+  have hkey : (fun n : ℤ => ‖fourierCoeffOn hab (ofReal ∘ deriv f) n‖ ^ 2)
+      = (fun n : ℤ => (n : ℝ) ^ 2 * ‖fourierCoeffOn hab (ofReal ∘ f) n‖ ^ 2) := by
+    funext n
+    have h := norm_fourierCoeffOn_iteratedDeriv_all f hf hper hab n 1
+    rw [Function.iterate_one] at h
+    rw [h, mul_pow, pow_one, sq_abs]
+  rwa [hkey] at HS
+
+/-- **Per-mode nonnegativity of the isoperimetric deficit.**  For any `a b : ℂ` and `n : ℤ`,
+
+        0  ≤  n²·‖a‖² + n²·‖b‖² − 2n·Im(a·conj b) .
+
+    This is the frequency-`n` summand of the Hurwitz deficit `L² − 4πA`.  It is the pointwise
+    inequality `2n·Im(a·conj b) ≤ |n|(‖a‖²+‖b‖²) ≤ n²(‖a‖²+‖b‖²)`, built from
+    `|Im(a·conj b)| ≤ ‖a‖‖b‖` (Cauchy–Schwarz in ℂ) and the integer fact `|n| ≤ n²`.
+    Rewritten, the summand dominates `n²(‖a‖−‖b‖)² ≥ 0`; it vanishes exactly on the unit
+    modes with `‖a‖ = ‖b‖` and `a·conj b` purely imaginary — the spectral signature of the
+    circle. -/
+private theorem area_deficit_summand_nonneg (a b : ℂ) (n : ℤ) :
+    0 ≤ (n : ℝ) ^ 2 * ‖a‖ ^ 2 + (n : ℝ) ^ 2 * ‖b‖ ^ 2
+        - 2 * (n : ℝ) * (a * conj b).im := by
+  have himabs : |(a * conj b).im| ≤ ‖a‖ * ‖b‖ := by
+    have h := Complex.abs_im_le_norm (a * conj b)
+    rwa [norm_mul, Complex.norm_conj] at h
+  have hNsq : |(n : ℝ)| ≤ (n : ℝ) ^ 2 := by
+    rcases eq_or_ne n 0 with rfl | hn
+    · simp
+    · have h1 : (1 : ℝ) ≤ |(n : ℝ)| := by
+        rw [← Int.cast_abs]; exact_mod_cast Int.one_le_abs hn
+      nlinarith [h1, sq_abs (n : ℝ), abs_nonneg (n : ℝ)]
+  have hNw : (n : ℝ) * (a * conj b).im ≤ (n : ℝ) ^ 2 * (‖a‖ * ‖b‖) :=
+    calc (n : ℝ) * (a * conj b).im
+        ≤ |(n : ℝ) * (a * conj b).im| := le_abs_self _
+      _ = |(n : ℝ)| * |(a * conj b).im| := abs_mul _ _
+      _ ≤ |(n : ℝ)| * (‖a‖ * ‖b‖) := mul_le_mul_of_nonneg_left himabs (abs_nonneg _)
+      _ ≤ (n : ℝ) ^ 2 * (‖a‖ * ‖b‖) := mul_le_mul_of_nonneg_right hNsq (by positivity)
+  nlinarith [hNw, mul_nonneg (sq_nonneg (n : ℝ)) (sq_nonneg (‖a‖ - ‖b‖))]
+
+/-- **The Hurwitz isoperimetric inequality — analytic (Wirtinger) form.**  For smooth (`C^∞`)
+    period-`2π` real functions `f, g` — the coordinates of a closed plane curve
+    `t ↦ (f(t), g(t))` —
+
+        2 ∫₀^{2π} f·g'  ≤  ∫₀^{2π} ((f')² + (g')²) ,
+
+    the two sides being `4π·A/(2π)` and the perimeter energy.  The nonnegative difference is
+    `∑ₙ [n²(‖ĉₙf‖²+‖ĉₙg‖²) − 2n·Im(ĉₙf·conj ĉₙg)]`, the Hurwitz spectral deficit.
+
+    Proof.  The perimeter energy `(2π)⁻¹∫(f'²+g'²)` is `∑ n²(‖aₙ‖²+‖bₙ‖²)`
+    (`hasSum_nsq_normSq_fourierCoeffOn`, once per coordinate), and the area `(2π)⁻¹∫f·g'` is
+    `∑ n·Im(aₙ·conj bₙ)` (`hasSum_fourier_area_formula`).  Subtracting `2×` the area `HasSum`
+    from the perimeter `HasSum` gives a series whose every term is `≥ 0`
+    (`area_deficit_summand_nonneg`), so its total `(2π)⁻¹[∫(f'²+g'²) − 2∫f·g'] ≥ 0`; clearing
+    the positive factor `(2π)⁻¹` and recombining the two perimeter integrals finishes. -/
+theorem two_mul_integral_mul_deriv_le_integral_add_sq_deriv
+    {f g : ℝ → ℝ} (hf : ContDiff ℝ ∞ f) (hg : ContDiff ℝ ∞ g)
+    (hfper : ∀ t, f (t + 2 * π) = f t) (hgper : ∀ t, g (t + 2 * π) = g t)
+    (hab : (0 : ℝ) < 2 * π) :
+    2 * ∫ x in (0 : ℝ)..(2 * π), f x * deriv g x
+      ≤ ∫ x in (0 : ℝ)..(2 * π), ((deriv f x) ^ 2 + (deriv g x) ^ 2) := by
+  -- Perimeter energy of each coordinate, and the area cross term.
+  have HSf := hasSum_nsq_normSq_fourierCoeffOn hf hfper hab
+  have HSg := hasSum_nsq_normSq_fourierCoeffOn hg hgper hab
+  have HSA := hasSum_fourier_area_formula hf.continuous hg hgper hab
+  -- Deficit = perimeter − 2·area, as a `HasSum` with nonnegative terms.
+  have HSdef := (HSf.add HSg).sub (HSA.mul_left 2)
+  have htot_nonneg :
+      (0 : ℝ) ≤ ((2 * π - 0)⁻¹ • ∫ x in (0 : ℝ)..(2 * π), (deriv f x) ^ 2)
+          + ((2 * π - 0)⁻¹ • ∫ x in (0 : ℝ)..(2 * π), (deriv g x) ^ 2)
+          - 2 * ((2 * π - 0)⁻¹ • ∫ x in (0 : ℝ)..(2 * π), f x * deriv g x) :=
+    HSdef.nonneg (fun n => by
+      convert area_deficit_summand_nonneg
+        (fourierCoeffOn hab (ofReal ∘ f) n) (fourierCoeffOn hab (ofReal ∘ g) n) n using 1
+      ring)
+  -- Clear the positive `(2π)⁻¹` scaling.
+  simp only [smul_eq_mul, sub_zero] at htot_nonneg
+  set If := ∫ x in (0 : ℝ)..(2 * π), (deriv f x) ^ 2 with hIf
+  set Ig := ∫ x in (0 : ℝ)..(2 * π), (deriv g x) ^ 2 with hIg
+  set IA := ∫ x in (0 : ℝ)..(2 * π), f x * deriv g x with hIA
+  have hc : (0 : ℝ) < (2 * π)⁻¹ := inv_pos.mpr hab
+  have hZ : (2 * π)⁻¹ * If + (2 * π)⁻¹ * Ig - 2 * ((2 * π)⁻¹ * IA)
+      = (2 * π)⁻¹ * (If + Ig - 2 * IA) := by ring
+  rw [hZ] at htot_nonneg
+  have hZnn : 0 ≤ If + Ig - 2 * IA := by nlinarith [htot_nonneg, hc]
+  -- Recombine the two perimeter integrals.
+  have hdfc : Continuous (deriv f) := by
+    have h := (contDiff_infty_iterate_deriv f hf 1).continuous
+    rwa [Function.iterate_one] at h
+  have hdgc : Continuous (deriv g) := by
+    have h := (contDiff_infty_iterate_deriv g hg 1).continuous
+    rwa [Function.iterate_one] at h
+  have hsplit : (∫ x in (0 : ℝ)..(2 * π), ((deriv f x) ^ 2 + (deriv g x) ^ 2)) = If + Ig := by
+    rw [hIf, hIg]
+    exact intervalIntegral.integral_add
+      ((hdfc.pow 2).intervalIntegrable _ _) ((hdgc.pow 2).intervalIntegrable _ _)
+  rw [hsplit]
+  linarith [hZnn]
+
+/-- **The classical isoperimetric inequality `4πA ≤ L²` (Hurwitz).**  Let `f, g` be smooth
+    period-`2π` coordinates of a closed plane curve parametrized with *constant speed*
+    `(f'(t))² + (g'(t))² = c`.  Then the perimeter energy is `∫(f'²+g'²) = 2π·c`, so the
+    squared perimeter is `L² = (2π√c)² = (2π)²·c`, and the enclosed area
+    `A = ∮ f dg = ∫₀^{2π} f·g'` obeys
+
+        4π·A  ≤  (2π)²·c  =  L² ,
+
+    with equality iff the curve is a circle.  This is the classical isoperimetric inequality,
+    read off from the analytic Wirtinger form `2∫f·g' ≤ ∫(f'²+g'²)` by evaluating the
+    constant-speed perimeter energy.  (The constant-speed hypothesis is what makes
+    `2π·∫(f'²+g'²)` equal to the true squared perimeter `(∮√(f'²+g'²))²`; in general the
+    former dominates the latter by Cauchy–Schwarz, so the stated inequality is the sharp one.) -/
+theorem isoperimetric_inequality_of_constant_speed
+    {f g : ℝ → ℝ} (hf : ContDiff ℝ ∞ f) (hg : ContDiff ℝ ∞ g)
+    (hfper : ∀ t, f (t + 2 * π) = f t) (hgper : ∀ t, g (t + 2 * π) = g t)
+    (hab : (0 : ℝ) < 2 * π) {c : ℝ}
+    (hspeed : ∀ t, (deriv f t) ^ 2 + (deriv g t) ^ 2 = c) :
+    4 * π * (∫ x in (0 : ℝ)..(2 * π), f x * deriv g x) ≤ (2 * π) ^ 2 * c := by
+  have hmain := two_mul_integral_mul_deriv_le_integral_add_sq_deriv hf hg hfper hgper hab
+  have hperim : (∫ x in (0 : ℝ)..(2 * π), ((deriv f x) ^ 2 + (deriv g x) ^ 2)) = (2 * π) * c := by
+    have hEq : Set.EqOn (fun x => (deriv f x) ^ 2 + (deriv g x) ^ 2) (fun _ => c)
+        (Set.uIcc 0 (2 * π)) := fun x _ => hspeed x
+    rw [intervalIntegral.integral_congr hEq, intervalIntegral.integral_const]
+    simp
+  have h2 : 2 * (∫ x in (0 : ℝ)..(2 * π), f x * deriv g x) ≤ 2 * π * c := by
+    rw [← hperim]; exact hmain
+  nlinarith [h2, le_of_lt hab]
+
+
 end IsoperimetricFourier
