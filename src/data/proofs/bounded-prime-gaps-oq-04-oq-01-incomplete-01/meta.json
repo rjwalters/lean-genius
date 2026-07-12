@@ -71,19 +71,35 @@
     },
     {
       "id": "chord",
-      "title": "Concavity chord bound and the [−1/2,1/2] cosecant bound",
+      "title": "Concavity chord bound on [0, 1/2]",
       "startLine": 40,
-      "endLine": 66,
-      "summary": "two_mul_le_sin_pi_mul: 2θ ≤ sin(πθ) on [0,1/2] (via Real.le_sin_mul). two_mul_abs_le_abs_sin_pi_mul: 2|θ| ≤ |sin(πθ)| for |θ| ≤ 1/2 (via Real.mul_abs_le_abs_sin at x = πθ).",
-      "mathContext": "$2|\\theta| \\leq |\\sin(\\pi\\theta)|$ for $|\\theta| \\leq 1/2$, the Jordan inequality with the $\\pi$ cancelled."
+      "endLine": 53,
+      "summary": "two_mul_le_sin_pi_mul: 2θ ≤ sin(πθ) on [0, 1/2] — the sine curve on [0, π/2] lies above the chord from (0,0) to (1/2,1), obtained from Mathlib's Real.le_sin_mul after rewriting π/2·(2θ) = πθ.",
+      "mathContext": "$2\\theta \\le \\sin(\\pi\\theta)$ for $\\theta \\in [0, 1/2]$: concavity of sine on $[0, \\pi/2]$ read as a chord (Jordan) inequality."
+    },
+    {
+      "id": "abs-extension",
+      "title": "Symmetric extension to [−1/2, 1/2]",
+      "startLine": 54,
+      "endLine": 65,
+      "summary": "two_mul_abs_le_abs_sin_pi_mul: 2|θ| ≤ |sin(πθ)| for |θ| ≤ 1/2, obtained directly from Mathlib's Jordan inequality Real.mul_abs_le_abs_sin at x = πθ (with |πθ| ≤ π/2 and the π factored out).",
+      "mathContext": "$2|\\theta| \\le |\\sin(\\pi\\theta)|$ for $|\\theta| \\le 1/2$: the chord bound made even, the Jordan inequality with the $\\pi$ cancelled."
     },
     {
       "id": "distance",
-      "title": "The distance-to-nearest-integer bound and cosecant form",
-      "startLine": 67,
+      "title": "The distance-to-nearest-integer bound",
+      "startLine": 66,
+      "endLine": 82,
+      "summary": "two_mul_dist_round_le_abs_sin: 2‖θ‖ ≤ |sin(πθ)| for every real θ, where ‖θ‖ = |θ − round θ|. By π·ℤ-periodicity |sin(πθ)| = |sin(π(θ − round θ))| (Real.sin_sub_int_mul_pi) and θ − round θ ∈ [−1/2, 1/2] (abs_sub_round), reducing to the symmetric bound above.",
+      "mathContext": "$2\\lVert\\theta\\rVert \\le |\\sin(\\pi\\theta)|$ for all $\\theta$, with $\\lVert\\theta\\rVert = |\\theta - \\mathrm{round}\\,\\theta|$: the periodic form of the chord bound."
+    },
+    {
+      "id": "cosecant-form",
+      "title": "The cosecant (reciprocal) form",
+      "startLine": 83,
       "endLine": 92,
-      "summary": "two_mul_dist_round_le_abs_sin: 2‖θ‖ ≤ |sin(πθ)| for all θ (π·ℤ-periodicity via sin_sub_int_mul_pi + abs_sub_round). one_div_abs_sin_le_one_div_two_mul_dist: 1/|sin(πθ)| ≤ 1/(2‖θ‖) for θ ∉ ℤ.",
-      "mathContext": "$2\\|\\theta\\| \\leq |\\sin(\\pi\\theta)|$, hence $1/|\\sin(\\pi\\theta)| \\leq 1/(2\\|\\theta\\|)$."
+      "summary": "one_div_abs_sin_le_one_div_two_mul_dist: 1/|sin(πθ)| ≤ 1/(2‖θ‖) for θ ∉ ℤ (‖θ‖ ≠ 0), by inverting the distance bound with one_div_le_one_div_of_le. This is the inequality used to bound the geometric exponential sum of the sibling WIP01 by 1/(2‖θ‖).",
+      "mathContext": "$1/|\\sin(\\pi\\theta)| \\le 1/(2\\lVert\\theta\\rVert)$ for $\\theta \\notin \\mathbb{Z}$: the cosecant bound in the form the exponential-sum estimate consumes."
     }
   ],
   "references": [
