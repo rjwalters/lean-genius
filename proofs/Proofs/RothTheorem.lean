@@ -3200,5 +3200,139 @@ theorem sqDiffFree_card_le_of_ne_zero {N : ℕ} [NeZero N] (A : Finset (ZMod N))
   sqDiffFree_card_le_of_supNorm (Real.sqrt_nonneg _) A
     (fun _ hr => sqGaussSum_norm_le_of_ne_zero hr) hfree
 
+/-! ### Part XX — Exact second moment at *every* odd modulus (Plancherel via Pillai)
+
+Part XVII computed the second moment `Σ_{r≠0} ‖G(r)‖²` *exactly* at an odd **prime**
+modulus (`= N² − N`), using that a prime turns `ZMod N` into a field so every nonzero
+frequency is a unit and `‖G(r)‖² = N` exactly.  This subsection removes the primality
+hypothesis: at *any* odd modulus the residual Weyl phase is trivial (`2` is a unit, so
+`2rh = 0 ⟹ rh = 0 ⟹ rh² = 0`), giving the exact per-frequency magnitude
+`‖G(r)‖² = N·gcd((2r).val, N)`.  Summing and reindexing by the bijection `r ↦ 2r`
+(again `2` a unit) collapses the frequency gcd-sum to Pillai's divisor sum:
+
+    Σ_{r≠0} ‖G(r)‖² = N · (Σ_{k<N} gcd(N,k) − N) = N · (Σ_{d∣N} d·φ(N/d) − N).
+
+At `N = p` prime this is `N·((2p−1) − p) = p² − p`, recovering Part XVII.  This is an
+exact equality for *all* odd `N`, so it simultaneously sharpens the Part XVI upper
+bound `≤ 4N²⌊√N⌋` and extends the Part XVII `Θ(N²)` cap on the L²-averaged circle
+method from primes to every odd modulus. -/
+
+/-- **Exact per-frequency magnitude at an odd modulus.**  For `N` odd, `2` is a unit in
+`ZMod N`; the kernel generator `t₀ = N/gcd((2r).val, N)` satisfies `2r·t₀ = 0`
+(`two_mul_kernel_gen_eq_zero`), so cancelling the unit `2` gives `r·t₀ = 0` and hence the
+canonical residual phase `r·t₀² = 0`.  Feeding this into
+`sqGaussSum_normSq_eq_gcd_of_gcd_phase_zero` yields the maximal (uncancelled) value
+
+    `‖G(r)‖² = N · gcd((2r).val, N)`
+
+at *every* frequency `r` (including `r = 0`, where both sides are `N²`). -/
+theorem sqGaussSum_normSq_eq_gcd_of_odd {N : ℕ} [NeZero N] (hodd : Odd N) (r : ZMod N) :
+    ‖sqGaussSum r‖ ^ 2 = (N : ℝ) * (Nat.gcd (2 * r).val N : ℝ) := by
+  apply sqGaussSum_normSq_eq_gcd_of_gcd_phase_zero
+  have h2 : IsUnit (2 : ZMod N) := by
+    have hcast : ((2 : ℕ) : ZMod N) = (2 : ZMod N) := by norm_cast
+    rw [← hcast, ZMod.isUnit_iff_coprime]
+    have hmod : N % 2 = 1 := Nat.odd_iff.mp hodd
+    have hnd : ¬ (2 ∣ N) := by rw [Nat.dvd_iff_mod_eq_zero]; omega
+    exact (Nat.prime_two.coprime_iff_not_dvd).mpr hnd
+  have hk : (2 : ZMod N) * (r * ((N / Nat.gcd (2 * r).val N : ℕ) : ZMod N)) = 0 := by
+    rw [← mul_assoc]; exact two_mul_kernel_gen_eq_zero r
+  have hrt : r * ((N / Nat.gcd (2 * r).val N : ℕ) : ZMod N) = 0 := (h2.mul_right_eq_zero).mp hk
+  have hexp : r * ((N / Nat.gcd (2 * r).val N : ℕ) : ZMod N) ^ 2
+      = (r * ((N / Nat.gcd (2 * r).val N : ℕ) : ZMod N))
+          * ((N / Nat.gcd (2 * r).val N : ℕ) : ZMod N) := by ring
+  rw [hexp, hrt, zero_mul]
+
+/-- **Second moment as an exact frequency gcd-sum (odd modulus).**  Summing the exact
+per-frequency magnitude `sqGaussSum_normSq_eq_gcd_of_odd` over the nonzero frequencies
+turns the second moment into an *equality* (not the Part XV inequality
+`sqGaussSum_normSq_sum_le_gcd_sum`):
+
+    Σ_{r≠0} ‖G(r)‖² = N · Σ_{r≠0} gcd((2r).val, N). -/
+theorem sqGaussSum_normSq_sum_eq_gcd_sum_of_odd {N : ℕ} [NeZero N] (hodd : Odd N) :
+    (Finset.univ \ {(0 : ZMod N)}).sum (fun r => ‖sqGaussSum r‖ ^ 2)
+      = (N : ℝ) * (Finset.univ \ {(0 : ZMod N)}).sum
+          (fun r => (Nat.gcd (2 * r).val N : ℝ)) := by
+  rw [Finset.mul_sum]
+  exact Finset.sum_congr rfl (fun r _ => sqGaussSum_normSq_eq_gcd_of_odd hodd r)
+
+/-- **Doubling reindex (odd modulus).**  For `N` odd, `2` is a unit, so `r ↦ 2r` is a
+bijection of `ZMod N`.  Reindexing the frequency gcd-sum along it and transporting
+`ZMod.val` to a range sum (`gcd_val_sum_eq_range`) gives
+
+    Σ_{r : ZMod N} gcd((2r).val, N) = Σ_{k<N} gcd(N, k). -/
+theorem gcd_two_shift_full_sum_eq_of_odd {N : ℕ} [NeZero N] (hodd : Odd N) :
+    ∑ r : ZMod N, Nat.gcd (2 * r).val N = ∑ k ∈ Finset.range N, Nat.gcd N k := by
+  have h2 : IsUnit (2 : ZMod N) := by
+    have hcast : ((2 : ℕ) : ZMod N) = (2 : ZMod N) := by norm_cast
+    rw [← hcast, ZMod.isUnit_iff_coprime]
+    have hmod : N % 2 = 1 := Nat.odd_iff.mp hodd
+    have hnd : ¬ (2 ∣ N) := by rw [Nat.dvd_iff_mod_eq_zero]; omega
+    exact (Nat.prime_two.coprime_iff_not_dvd).mpr hnd
+  obtain ⟨u, hu⟩ := h2
+  have hbij : Function.Bijective (fun r : ZMod N => 2 * r) := by
+    apply Function.bijective_iff_has_inverse.mpr
+    refine ⟨fun s => (↑u⁻¹ : ZMod N) * s, ?_, ?_⟩
+    · intro r
+      show (↑u⁻¹ : ZMod N) * (2 * r) = r
+      rw [← hu, ← mul_assoc, Units.inv_mul, one_mul]
+    · intro s
+      show 2 * ((↑u⁻¹ : ZMod N) * s) = s
+      rw [← hu, ← mul_assoc, Units.mul_inv, one_mul]
+  calc ∑ r : ZMod N, Nat.gcd (2 * r).val N
+      = ∑ s : ZMod N, Nat.gcd s.val N := hbij.sum_comp (fun s => Nat.gcd s.val N)
+    _ = ∑ k ∈ Finset.range N, Nat.gcd k N := gcd_val_sum_eq_range
+    _ = ∑ k ∈ Finset.range N, Nat.gcd N k :=
+        Finset.sum_congr rfl (fun k _ => Nat.gcd_comm k N)
+
+/-- **Nonzero-frequency gcd-sum (odd modulus).**  Splitting off the `r = 0` term
+(`gcd((2·0).val, N) = gcd(0, N) = N`) from `gcd_two_shift_full_sum_eq_of_odd`:
+
+    (Σ_{r≠0} gcd((2r).val, N)) + N = Σ_{k<N} gcd(N, k). -/
+theorem gcd_two_shift_sum_nonzero_add_eq_of_odd {N : ℕ} [NeZero N] (hodd : Odd N) :
+    (∑ r ∈ (Finset.univ \ {(0 : ZMod N)}), Nat.gcd (2 * r).val N) + N
+      = ∑ k ∈ Finset.range N, Nat.gcd N k := by
+  have hfull := gcd_two_shift_full_sum_eq_of_odd hodd
+  have h0 : Nat.gcd (2 * (0 : ZMod N)).val N = N := by
+    rw [mul_zero, ZMod.val_zero, Nat.gcd_zero_left]
+  have hsplit : (∑ r ∈ (Finset.univ \ {(0 : ZMod N)}), Nat.gcd (2 * r).val N)
+      + Nat.gcd (2 * (0 : ZMod N)).val N = ∑ r : ZMod N, Nat.gcd (2 * r).val N := by
+    rw [← Finset.erase_eq]
+    exact Finset.sum_erase_add Finset.univ _ (Finset.mem_univ 0)
+  rw [h0] at hsplit
+  rw [hsplit, hfull]
+
+/-- **Exact second moment at any odd modulus (range form).**  Combining the exact
+frequency gcd-sum (`sqGaussSum_normSq_sum_eq_gcd_sum_of_odd`) with the doubling reindex
+(`gcd_two_shift_sum_nonzero_add_eq_of_odd`):
+
+    Σ_{r≠0} ‖G(r)‖² = N · (Σ_{k<N} gcd(N, k) − N).
+
+This is an exact equality (upper *and* lower bound) valid for every odd `N`, generalizing
+the prime-only Part XVII. -/
+theorem sqGaussSum_normSq_sum_eq_of_odd {N : ℕ} [NeZero N] (hodd : Odd N) :
+    (Finset.univ \ {(0 : ZMod N)}).sum (fun r => ‖sqGaussSum r‖ ^ 2)
+      = (N : ℝ) * (((∑ k ∈ Finset.range N, Nat.gcd N k : ℕ) : ℝ) - N) := by
+  rw [sqGaussSum_normSq_sum_eq_gcd_sum_of_odd hodd]
+  congr 1
+  rw [← Nat.cast_sum]
+  have hnat := gcd_two_shift_sum_nonzero_add_eq_of_odd hodd
+  have hR : ((∑ r ∈ (Finset.univ \ {(0 : ZMod N)}), Nat.gcd (2 * r).val N : ℕ) : ℝ)
+      + (N : ℝ) = ((∑ k ∈ Finset.range N, Nat.gcd N k : ℕ) : ℝ) := by exact_mod_cast hnat
+  linarith
+
+/-- **Exact second moment at any odd modulus (Pillai divisor form).**  Rewriting the
+range gcd-sum through Pillai's identity `gcd_sum_pillai`:
+
+    Σ_{r≠0} ‖G(r)‖² = N · (Σ_{d∣N} d·φ(N/d) − N).
+
+The closed Plancherel evaluation of the quadratic-Gauss second moment for all odd `N`.
+At an odd prime `p` the divisors are `{1, p}` and `Σ_{d∣p} d·φ(p/d) = (p−1) + p = 2p−1`,
+so the right side is `p·((2p−1) − p) = p² − p`, exactly `sqGaussSum_normSq_sum_eq_of_prime`. -/
+theorem sqGaussSum_normSq_sum_eq_divisors_of_odd {N : ℕ} [NeZero N] (hodd : Odd N) :
+    (Finset.univ \ {(0 : ZMod N)}).sum (fun r => ‖sqGaussSum r‖ ^ 2)
+      = (N : ℝ) * (((∑ d ∈ N.divisors, d * Nat.totient (N / d) : ℕ) : ℝ) - N) := by
+  rw [sqGaussSum_normSq_sum_eq_of_odd hodd, gcd_sum_pillai N]
+
 end Szemeredi.Roth
 

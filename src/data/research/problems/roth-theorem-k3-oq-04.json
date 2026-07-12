@@ -11,7 +11,7 @@
   "status": "in-progress",
   "knowledge": {
     "score": 15,
-    "progressSummary": "PROGRESS Part XIX: extracted the master explicit cardinality bound sqDiffFree_card_le_of_supNorm — |A|·(N+M)≤N·(c+M) for ANY Weyl sup-norm M≥0, decoupling the analytic input from the solve-for-|A| algebra. Re-derives the sharp prime |A|≤√N through it AND gives the first explicit all-N cardinality bound (M=N/√2, honestly weak). 0 axioms.",
+    "progressSummary": "PROGRESS: prime Sárközy COMPLETE+sharp (|A|≤√N, 0ax). Part XX: EXACT second moment at every ODD modulus Σ_{r≠0}‖G‖²=N·(Σ_{d∣N}dφ(N/d)−N) (0ax), generalizing prime Part XVII. Composite even/prime-power N still blocked on density-increment iteration (out of Mathlib reach).",
     "insights": [
       "The existing Roth Fourier infrastructure is genuine and 0-axiom: RothTheorem.lean defines fourierCoeff A r = ∑_{x∈A} ψ(r·x) on ZMod N, proves Parseval (∑_r ‖Â(r)‖² = |A|·N), and the key linearization triple_count_fourier: tripleCount(A) + |A| = N⁻¹·∑_r Â(r)²·conj(Â(2r)). The 3-AP count linearizes ONLY because the pattern (x, x+d, x+2d) is a linear form: character orthogonality in x forces the frequency relation and collapses two of the three Fourier factors into Â(r) and Â(2r).",
       "Structural answer to the OQ, part (a) — Sárközy/single square difference IS an accessible extension. For A ⊆ ZMod N the square-difference count SD(A) = ∑_{x,n} 1_A(x)·1_A(x+n²) Fourier-expands (identical orthogonality bookkeeping to triple_count_fourier) to SD(A) = N⁻¹·∑_r |Â(r)|²·G(r), where G(r) = ∑_{n∈ZMod N} ψ(r·n²) is a quadratic GAUSS sum. Principal term r=0: G(0)=N, Â(0)=|A| ⇒ |A|². The new ingredient vs 3-APs is that the non-principal terms are weighted by G(r) (size ≈ √N for r≠0 by classical Gauss-sum bounds) instead of a second coefficient Â(2r). So the LINEAR transform + Weyl/Gauss-sum estimates suffice — this is exactly the circle-method route to Sárközy's theorem.",
@@ -26,7 +26,9 @@
       "Part XIV: In the residual case r·t₀²=0 (t₀=N/gcd((2r).val,N)) EVERY kernel element h=k·t₀ has r·h²=k²·(r·t₀²)=0, so every Weyl residual phase ψ(−r·h²)=1 and the residual sum collapses to the full kernel count g; hence ‖G(r)‖²=N·g is MAXIMAL and G(r)≠0. This is the exact converse of the shift criterion, closing the vanishing question to an iff.",
       "Part XVI CLOSES the elementary o(N²) gcd-sum sub-goal from Part XV nextSteps: Σgcd((2r).val,N)=O(N^{3/2}) fully machine-checked, 0 custom axioms, NO Gauss-sum reciprocity needed — replaced the multiplicative-divisor-sum asymptotic plan with the sharper elementary d(N)≤2√N pairing.",
       "HONEST scope: O(N^{3/2}) gcd bound gives Σ‖G‖²≤4N²√N (an explicit o(N³) second moment), but the resulting L²-averaged density in sqDiffFree_density_bound_l2 is NOT yet o(N) density — the RMS √(Σ‖G‖²)~N^{5/4} is too weak; sharp Sárközy still needs the exact second moment Σ‖G‖²=N·#{n²=m²}.",
-      "The prime-case √N algebra is not special to M=√N: for any sup-norm M≥0 the circle-method quadratic solves to |A|≤N(c+M)/(N+M). Extracting this decouples the ANALYTIC input (sharp sup-norm) from the ELEMENTARY solve-for-|A| step — a future sub-N sup-norm on any class of moduli now yields o(N) Sárközy with zero extra algebra."
+      "The prime-case √N algebra is not special to M=√N: for any sup-norm M≥0 the circle-method quadratic solves to |A|≤N(c+M)/(N+M). Extracting this decouples the ANALYTIC input (sharp sup-norm) from the ELEMENTARY solve-for-|A| step — a future sub-N sup-norm on any class of moduli now yields o(N) Sárközy with zero extra algebra.",
+      "Part XX: the exact second moment Σ_{r≠0}‖G(r)‖² is computable for EVERY odd modulus (not just primes) = N·(Pillai(N)−N). Primality was never needed — only that 2 is a unit (odd N), which trivializes the residual Weyl phase. Extends the Part XVII Θ(N²) cap on the L²-averaged circle method from primes to all odd N: second moment is exactly N·(Σ_{d∣N}dφ(N/d)−N), never o(N²).",
+      "The odd-N exact per-frequency magnitude ‖G(r)‖²=N·gcd((2r).val,N) upgrades every Part XV–XVI odd-N inequality (which lost constant factors via triangle/doubling bounds like gcd(2x,N)≤2gcd(x,N)) to an equality."
     ],
     "builtItems": [
       "RothTheorem.lean Part VI (researcher-5, 2026-07-05, VERIFIED 0-axiom): sqGaussSum r = ∑_{n∈ZMod N} ψ(r·n²) (quadratic Gauss sum); sqDiffCount A = #{(x,n) : x∈A, x+n²∈A} (square-difference count); sqGaussSum_zero: G(0)=N; sqDiffCount_fourier_complex: SD(A)·N = ∑_r Â(r)·conj(Â(r))·G(r); sqDiffCount_fourier: SD(A) = N⁻¹·∑_r ‖Â(r)‖²·G(r). Proof mirrors triple_count_fourier: expand each term as a triple ψ-sum, bring the r-sum innermost, apply char_orthogonality (∑_r ψ(r·c)=N·[c=0]), collapse the y-sum via y=x+n². #print axioms → [propext, Classical.choice, Quot.sound].",
@@ -56,7 +58,13 @@
       "Part XIX MASTER lemma sqDiffFree_card_le_of_supNorm: for ANY Weyl sup-norm M≥0, solving the circle-method inequality gives |A|·(N+M)≤N·(#{n²=0}+M) — the reusable heart of the |A|≤√N capstone (RothTheorem.lean)",
       "sqDiffFree_card_le_of_supNorm_div: division form |A|≤N·(c+M)/(N+M) via le_div_iff₀",
       "sqDiffFree_card_le_sqrt_of_prime_via_master: re-derives the sharp prime |A|≤√N through the master lemma (M=√N,c=1 collapses N(1+√N)/(N+√N)=√N) — proves the abstraction is faithful/sharp",
-      "sqDiffFree_card_le_of_ne_zero: FIRST explicit all-N cardinality bound |A|·(N+N/√2)≤N·(#{n²=0}+N/√2) from the unconditional M=N/√2 sup-norm"
+      "sqDiffFree_card_le_of_ne_zero: FIRST explicit all-N cardinality bound |A|·(N+N/√2)≤N·(#{n²=0}+N/√2) from the unconditional M=N/√2 sup-norm",
+      "sqGaussSum_normSq_eq_gcd_of_odd (RothTheorem.lean Part XX): EXACT per-frequency ‖G(r)‖²=N·gcd((2r).val,N) for ALL odd N (all r incl 0), via 2-is-unit cancellation of kernel-generator phase 2r·t₀=0 ⟹ r·t₀²=0 feeding sqGaussSum_normSq_eq_gcd_of_gcd_phase_zero",
+      "sqGaussSum_normSq_sum_eq_gcd_sum_of_odd: exact (=, not ≤) frequency form Σ_{r≠0}‖G‖²=N·Σ_{r≠0}gcd((2r).val,N)",
+      "gcd_two_shift_full_sum_eq_of_odd: doubling reindex r↦2r (2 unit ⟹ Bijective via Function.Bijective.sum_comp) gives Σ_{r:ZMod N}gcd((2r).val,N)=Σ_{k<N}gcd(N,k)",
+      "gcd_two_shift_sum_nonzero_add_eq_of_odd: split r=0 term (gcd(0,N)=N) ⟹ (Σ_{r≠0}gcd((2r).val,N))+N=Σ_{k<N}gcd(N,k)",
+      "sqGaussSum_normSq_sum_eq_of_odd: CAPSTONE exact odd second moment Σ_{r≠0}‖G‖²=N·(Σ_{k<N}gcd(N,k)−N) [0 axioms]",
+      "sqGaussSum_normSq_sum_eq_divisors_of_odd: Pillai divisor form Σ_{r≠0}‖G‖²=N·(Σ_{d∣N}d·φ(N/d)−N); recovers Part XVII p²−p at prime [0 axioms]"
     ],
     "nextSteps": [
       "DONE (researcher-11): two-torsion DICHOTOMY G(r)∈{0,N} at 2r=0 (sqGaussSum_eq_zero_or_eq_natCast_of_two_mul_eq_zero) — the exact characterization at the frequencies the gcd/kernel-count bounds leave vacuous (‖G(r)‖≤N trivially); rules out all intermediate magnitudes 0<‖G(r)‖<N.",
