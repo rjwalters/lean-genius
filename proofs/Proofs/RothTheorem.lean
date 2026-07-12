@@ -6284,6 +6284,96 @@ theorem sqGaussSum_norm_sum_total_mul_of_coprime_odd {m n : ℕ} [NeZero m] [NeZ
     Nat.cast_mul, Real.sqrt_mul (Nat.cast_nonneg m)]
   ring
 
+/-! ### Part LI — the prime-power closed form `C(pᵏ) = pᵏ + pᵏ⁻¹√p − √(pᵏ⁻¹)`
+
+Part L reduced the total `L¹` Gauss-sum mass at an odd modulus to the prime-power values of the
+multiplicative coefficient `C`.  This part *evaluates* those prime-power values in closed form,
+completing the reduction to an explicit product formula.
+
+The engine is a one-step **recursion**.  Peeling the divisor `d = 1` (the `φ(pᵏ⁺¹)·√1` summand)
+from `C(pᵏ⁺¹) = Σ_{d∣pᵏ⁺¹} φ(pᵏ⁺¹/d)·√d` and reindexing the remaining divisors `d = pʲ⁺¹` factors
+a single `√p` out of every `√(pʲ⁺¹) = √p·√(pʲ)`, leaving exactly `C(pᵏ)`:
+
+    `C(pᵏ⁺¹) = φ(pᵏ⁺¹) + √p · C(pᵏ)`.
+
+Solving this linear recursion (base `C(p) = (p−1)+√p`, Part XLVIII) telescopes to
+
+    `C(pᵏ⁺¹) = pᵏ⁺¹ + pᵏ·√p − √(pᵏ)`
+
+(and, at `k = 0`, recovers `C(p) = p + √p − 1`).  Feeding this through Part XLIX gives the total
+`L¹` mass at a prime-power modulus in fully explicit form,
+
+    `Σ_{r ∈ ZMod pᵏ⁺¹} ‖G(r)‖ = √(pᵏ⁺¹)·(pᵏ⁺¹ + pᵏ√p − √(pᵏ))  ~  p^{3(k+1)/2}`,
+
+which is `Θ(N^{3/2}) = o(N²)`.  Note this is a *mass* (`L¹`) statement: as recorded in Part XLVII
+it does not by itself furnish the Sárközy density `o(N)`, which needs cross-frequency cancellation
+rather than a sharper mass bound.  All 0-axiom. -/
+
+/-- **The prime-power recursion for `C`.**  `C(pᵏ⁺¹) = φ(pᵏ⁺¹) + √p·C(pᵏ)`.
+
+    Proof: `Nat.sum_divisors_prime_pow` turns each divisor sum into a `range` sum over the
+    exponents; `Finset.sum_range_succ'` peels the exponent-`0` term (`φ(pᵏ⁺¹)·√1`), and the shift
+    `pʲ ↦ pʲ⁺¹` in the tail pulls one `√p` (via `√(pʲ⁺¹) = √(pʲ)·√p`) out of the sum that remains,
+    which is exactly `C(pᵏ)`. -/
+theorem weylMassCoeff_prime_pow_succ {p : ℕ} (hp : p.Prime) (k : ℕ) :
+    weylMassCoeff (p ^ (k + 1))
+      = (Nat.totient (p ^ (k + 1)) : ℝ) + Real.sqrt p * weylMassCoeff (p ^ k) := by
+  simp only [weylMassCoeff]
+  rw [Nat.sum_divisors_prime_pow hp, Nat.sum_divisors_prime_pow hp, Finset.sum_range_succ',
+    Finset.mul_sum]
+  simp only [pow_zero, Nat.div_one, Nat.cast_one, Real.sqrt_one, mul_one]
+  rw [add_comm]
+  congr 1
+  apply Finset.sum_congr rfl
+  intro x hx
+  simp only [Finset.mem_range] at hx
+  have e1 : p ^ (k + 1) / p ^ (x + 1) = p ^ (k - x) := by
+    rw [Nat.pow_div (by omega) hp.pos]; congr 1; omega
+  have e2 : p ^ k / p ^ x = p ^ (k - x) := Nat.pow_div (by omega) hp.pos
+  have e3 : Real.sqrt ((p ^ (x + 1) : ℕ) : ℝ)
+      = Real.sqrt ((p ^ x : ℕ) : ℝ) * Real.sqrt p := by
+    rw [pow_succ, Nat.cast_mul, Real.sqrt_mul (by positivity)]
+  rw [e1, e2, e3]
+  ring
+
+/-- **Closed form for `C` at a prime power.**  For every prime `p` and every `k`,
+
+    `C(pᵏ⁺¹) = pᵏ⁺¹ + pᵏ·√p − √(pᵏ)`.
+
+    (At `k = 0` this reads `C(p) = p + √p − 1`, matching `weylMassCoeff_prime`.)  Proved by
+    induction on `k` from the recursion `weylMassCoeff_prime_pow_succ`, with the step discharged by
+    `linear_combination` using `√p·√p = p` and `√p·√(pᵏ) = √(pᵏ⁺¹)`. -/
+theorem weylMassCoeff_prime_pow {p : ℕ} (hp : p.Prime) (m : ℕ) :
+    weylMassCoeff (p ^ (m + 1))
+      = (p : ℝ) ^ (m + 1) + (p : ℝ) ^ m * Real.sqrt p - Real.sqrt ((p : ℝ) ^ m) := by
+  induction m with
+  | zero =>
+    simp only [zero_add, pow_one, pow_zero, Real.sqrt_one, weylMassCoeff_prime hp]
+    ring
+  | succ k ih =>
+    rw [weylMassCoeff_prime_pow_succ hp, ih, Nat.totient_prime_pow_succ hp (k + 1)]
+    push_cast [Nat.cast_sub hp.one_le]
+    have hSS : Real.sqrt (p : ℝ) * Real.sqrt (p : ℝ) = (p : ℝ) :=
+      Real.mul_self_sqrt (by positivity)
+    have hST : Real.sqrt (p : ℝ) * Real.sqrt ((p : ℝ) ^ k)
+        = Real.sqrt ((p : ℝ) ^ (k + 1)) := by
+      rw [pow_succ', Real.sqrt_mul (by positivity : (0 : ℝ) ≤ (p : ℝ))]
+    linear_combination (p : ℝ) ^ k * hSS - hST
+
+/-- **Total `L¹` Gauss-sum mass at a prime-power modulus, in closed form.**  For an odd prime `p`,
+
+    `Σ_{r ∈ ZMod pᵏ⁺¹} ‖G(r)‖ = √(pᵏ⁺¹)·(pᵏ⁺¹ + pᵏ·√p − √(pᵏ))`.
+
+    Combines the Part XLIX coefficient form `√N·C(N)` with the closed form
+    `weylMassCoeff_prime_pow`.  The right side is `Θ(p^{3(k+1)/2}) = Θ(N^{3/2}) = o(N²)`. -/
+theorem sqGaussSum_norm_sum_total_prime_pow {p : ℕ} (hp : p.Prime) (hp2 : p ≠ 2) (m : ℕ)
+    [NeZero (p ^ (m + 1))] :
+    (Finset.univ.sum (fun r : ZMod (p ^ (m + 1)) => ‖sqGaussSum r‖))
+      = Real.sqrt ((p : ℝ) ^ (m + 1))
+        * ((p : ℝ) ^ (m + 1) + (p : ℝ) ^ m * Real.sqrt p - Real.sqrt ((p : ℝ) ^ m)) := by
+  have hodd : Odd (p ^ (m + 1)) := (hp.odd_of_ne_two hp2).pow
+  rw [sqGaussSum_norm_sum_total_eq_coeff_of_odd hodd, weylMassCoeff_prime_pow hp, Nat.cast_pow]
+
 end Szemeredi.Roth
 
 
