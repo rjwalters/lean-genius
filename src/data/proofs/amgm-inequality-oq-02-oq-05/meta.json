@@ -103,6 +103,14 @@
   },
   "sections": [
     {
+      "id": "setup",
+      "title": "Docstring and Symmetric-Polynomial Definitions",
+      "startLine": 1,
+      "endLine": 63,
+      "summary": "Module docstring framing the entry as the axiom-free n=4 discharge of the parent's newton_log_concavity axiom (and the answer to the n=3 sibling's open question), followed by the four-variable elementary symmetric definitions e₁ = a+b+c+d, e₂ = Σ pairwise products, e₃ = Σ triple products, e₄ = abcd.",
+      "mathContext": "$e_1 = a+b+c+d,\\ e_2 = \\sum_{i<j} x_i x_j,\\ e_3 = \\sum_{i<j<k} x_i x_j x_k,\\ e_4 = abcd$."
+    },
+    {
       "id": "newton",
       "title": "The Three Newton Inequalities for n=4 (Sum-of-Squares)",
       "startLine": 64,
@@ -119,12 +127,20 @@
       "mathContext": "Clearing the binomial denominators C(4,k) = 1,4,6,4,1 turns each log-concavity step into the corresponding Newton inequality — this is exactly the newton_log_concavity statement the parent axiomatized, now discharged for n=4."
     },
     {
-      "id": "equality-endpoint",
-      "title": "Equality Case and the Four-Variable AM–GM Endpoint",
+      "id": "equality-case",
+      "title": "Equality Characterization for the Boundary Step N1",
       "startLine": 124,
+      "endLine": 155,
+      "summary": "newton_N1_identity exhibits the exact SOS gap 3e₁²−8e₂ = Σ_{i<j}(xᵢ−xⱼ)² (a ring identity); newton_N1_eq_iff then characterizes equality 3e₁² = 8e₂ ⟺ a=b=c=d, since the sum of the six squared pairwise differences vanishes iff all four variables coincide.",
+      "mathContext": "$3 e_1^2 - 8 e_2 = \\sum_{i<j}(x_i - x_j)^2$, so equality holds iff $a=b=c=d$."
+    },
+    {
+      "id": "amgm-endpoint",
+      "title": "Four-Variable AM–GM Endpoint",
+      "startLine": 156,
       "endLine": 177,
-      "summary": "newton_N1_identity exhibits the exact SOS gap 3e₁²−8e₂ = Σ_{i<j}(xᵢ−xⱼ)²; newton_N1_eq_iff characterizes equality as a=b=c=d; amgm_four and amgm_four_mean recover the four-variable AM–GM (a+b+c+d)⁴ ≥ 256abcd as the log-concavity chain's endpoint.",
-      "mathContext": "The exact symmetrization identity doubles as equality analysis (the Lorentzian boundary case), and the extreme normalized means reproduce AM ≥ GM for four nonnegative numbers."
+      "summary": "amgm_four and amgm_four_mean recover the four-variable AM–GM — (a+b+c+d)⁴ ≥ 256abcd, i.e. (a+b+c+d)/4 ≥ (abcd)^(1/4) — for nonnegative inputs, as the p₁⁴ ≥ p₄ endpoint (Maclaurin extreme) of the log-concavity chain.",
+      "mathContext": "Endpoint p₁⁴ ≥ p₄: $\\tfrac{a+b+c+d}{4} \\ge (abcd)^{1/4}$."
     }
   ],
   "conclusion": {
