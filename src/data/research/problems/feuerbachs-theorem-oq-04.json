@@ -32,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SHIPPED bundled MetricSpace instance (researcher-11, 2026-07-11, VERIFIED axiom-free): new FeuerbachsTheoremOQ04Metric.lean turns sdist_isMetric's four-axiom conjunction into an actual typeclass instance. Defines SphereModel E := {P : E // OnSphere P} (unit-vector subtype) and registers `noncomputable instance MetricSpace (SphereModel E)` with dist = sdist (arccos of inner product), each field drawn from sdist_self/sdist_comm/sdist_triangle/sdist_eq_zero_iff; edist/uniformity/bornology take canonical dist-derived defaults. So the spherical model now plugs into Mathlib's full metric-space API (balls, Metric.sphere, continuity, bornology, uniformity). Records dist_eq (rfl to sdist), dist_eq_arccos, and diameter bound dist_le_pi (dist P Q <= pi via Real.arccos_le_pi). #print axioms: instance + dist_le_pi [propext,Classical.choice,Quot.sound] only. Closes nextStep #1 (bundle S^n as a MetricSpace instance). || PRIOR: PROGRESS: side-midpoint API rounded out with geodesic-membership (span{A,B}) and self-midpoint lemmas; frontier remains the Feuerbach tangency (nine-point circle ↔ incircle/excircles).",
+    "progressSummary": "PROGRESS (researcher-5, 2026-07-12): added the far-endpoint near-hemisphere companions scos_sMidpoint_right/_pos_right/_pos_both — the spherical side-midpoint is at positive inner product with BOTH endpoints, the positional bound the Feuerbach contact argument needs. Also corrected STALE nextSteps: tangent points, incircle, 3 excircles, and nine-point circle are all already built axiom-free; the true frontier is the tangency computation itself. All axiom-free (docker 7745, #print axioms standard-3 only).",
     "builtItems": [
       "FeuerbachsTheoremOQ04.chord_sq (Proofs/FeuerbachsTheoremOQ04.lean) — chord-cosine bridge: for unit vectors, ||P-Q||^2 = 2 - 2*scos P Q; turns spherical tangency into an inner-product equation. 0-axiom.",
       "FeuerbachsTheoremOQ04.abs_scos_le_one/scos_le_one/neg_one_le_scos — spherical cosine in [-1,1] (Cauchy-Schwarz on unit vectors)",
@@ -57,7 +57,8 @@
       "sphericalCircumcircle_exists in FeuerbachsTheoremOQ04Circumcircle.lean: any three model points lie on a common sCircle O rho (circumcircle), via greatCircles_inter on poles A-B, B-C. [VERIFIED, 0-axiom]",
       "sphericalCircumcircle_equidistant + inner_sub_eq_zero_iff_scos_eq in FeuerbachsTheoremOQ04Circumcircle.lean: circumcentre is spherically equidistant sdist A O = sdist B O = sdist C O. [VERIFIED, 0-axiom]",
       "sMidpoint_self (degenerate midpoint sMidpoint A A = A) + sMidpoint_mem_span (midpoint lies in span{A,B}, i.e. on the geodesic through A,B) in FeuerbachsTheoremOQ04Midpoint.lean",
-      "FeuerbachsTheoremOQ04Metric.lean: SphereModel E subtype + noncomputable MetricSpace instance (dist=sdist) from sdist_isMetric components + dist_eq/dist_eq_arccos/dist_le_pi. 0-axiom VERIFIED."
+      "FeuerbachsTheoremOQ04Metric.lean: SphereModel E subtype + noncomputable MetricSpace instance (dist=sdist) from sdist_isMetric components + dist_eq/dist_eq_arccos/dist_le_pi. 0-axiom VERIFIED.",
+      "scos_sMidpoint_right / scos_sMidpoint_pos_right / scos_sMidpoint_pos_both (FeuerbachsTheoremOQ04Midpoint.lean): far-endpoint companions of the near-hemisphere positional bound — the spherical side-midpoint sits at positive inner product with BOTH endpoints (within a quarter-turn of each), the exact bound the Feuerbach contact-point argument uses to place contacts on the minor arc. Axiom-free."
     ],
     "insights": [
       "Mathlib has clean spherical geometry for free (unit vectors of any InnerProductSpace R E; geodesic distance = arccos of inner product) but essentially no hyperbolic metric, so the spherical model is the tractable non-Euclidean route for Feuerbach.",
@@ -67,17 +68,17 @@
       "Circle-to-great-circle tangency is the exact primitive a spherical INCIRCLE construction needs: the incircle is tangent to the three side-geodesics (great circles), not to other circles. Distance from a point to a great circle with unit pole N is arcsin|⟪O,N⟫|, so tangency criterion is |⟪O,N⟫| = sin ρ (spherical shadow of Euclidean distance-to-line = radius).",
       "The contact point of a tangent circle and a side is the FOOT OF THE PERPENDICULAR (O - ⟪O,N⟫•N)/cos ρ; it is pure inner-product algebra (no infimum/analysis): ⟪foot,N⟫=0, ⟪foot,O⟫=cos ρ, ‖foot‖=1 via ‖O⊥‖²=1-⟪O,N⟫²=cos²ρ under the criterion. Uniqueness via ⟪Q,foot⟫=1 ⟹ Q=foot (scos_eq_one_iff).",
       "Spherical perpendicular bisector of a segment AB is the great circle with pole A-B: model points equidistant (equal scos) from A and B are exactly those orthogonal to A-B (inner_sub_eq_zero_iff_scos_eq). Dual to the side-pole bisector equidistant_two_sides_iff.",
-      "The spherical midpoint is now located as the intersection of the side geodesic (sMidpoint_mem_span: M ∈ span{A,B}) with the perpendicular bisector (inner_sMidpoint_sub), completing the on-geodesic + equidistant characterisation the docstring asserted."
+      "The spherical midpoint is now located as the intersection of the side geodesic (sMidpoint_mem_span: M ∈ span{A,B}) with the perpendicular bisector (inner_sMidpoint_sub), completing the on-geodesic + equidistant characterisation the docstring asserted.",
+      "NextSteps #1-#4 were STALE: tangent-point existence+uniqueness (externallyTangent_has_common_point / _unique_common_point / sphere_slerp_inter_eq_singleton), common tangent direction (exists_common_perp_tangent, externallyTangent_common_perp_tangent), spherical incircle (sphericalIncircle_exists), 3 excircles (sphericalExcircle{A,B,C}_exists), and nine-point circle (sphericalNinePointCircle_exists) are ALL already built and axiom-free. The true frontier is the Feuerbach TANGENCY computation itself (showing sdist between nine-point centre and incircle/excircle centre = sum/|diff| of radii) plus the tritangent-circle contact/sign structure (incircle_excircle*_distinct, *_signs_exclusive)."
     ],
     "mathlibGaps": [
       "No developed hyperbolic-geometry metric (hyperboloid / Poincare disk distance) in Mathlib — blocks an axiom-free hyperbolic Feuerbach without building the model first.",
       "No spherical-triangle incircle / nine-point-circle construction in Mathlib; must be built on scos/sdist."
     ],
     "nextSteps": [
-      "Tangent-point existence for tangent spherical circles (slerp midpoint on the geodesic between centres), using sdist_triangle for the betweenness/uniqueness argument.",
-      "Construct the spherical incircle and nine-point circle for a spherical triangle, then attempt the tangency conclusion.",
-      "Relate the common tangent direction to a spherical Feuerbach configuration (incircle/nine-point-analogue tangency) building on the contact-point tangent structure.",
-      "Combine sphericalCircumcircle_exists with the in-flight side-midpoints (sMidpoint) to DEFINE the spherical nine-point circle as the circumcircle of the medial triangle."
+      "Feuerbach tangency core: prove the nine-point circle is externally/internally tangent to the incircle and the three excircles — reduce (via externallyTangent_iff_scos / internallyTangent_iff_scos) to inner-product identities between the nine-point centre O_9 and each tritangent centre, then compute using sMidpoint / sphericalCircumcircle machinery. This is the deep remaining crux.",
+      "Compute an explicit nine-point radius ρ_9 in terms of the triangle (analogue of Euclidean R/2) to feed the tangency distance equations.",
+      "Establish the contact-point placement lemma: use scos_sMidpoint_pos_both + sphericalIncircle_contact_points to locate the Feuerbach point on the minor arc between the nine-point centre and each tritangent centre."
     ]
   },
   "tags": [
