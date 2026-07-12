@@ -662,4 +662,96 @@ theorem scaledLattice_dist_ne_sqrt_fiftysix {p q : Plane}
   exact scaledLattice_dist_ne_sqrt_of_prime_dvd_not_sq hp hq (r := 7) (n := 56)
     (by decide) (by decide) (by decide)
 
+/-!
+## Fermat's two-square theorem pins down the realizable prime distances `√(2p)`
+
+Every avoidance result above is *one-directional* about a specific residue or prime
+power.  The exact characterization `dist² = 2·(u² + v²)` combined with **Fermat's
+theorem on sums of two squares** (`Nat.Prime.sq_add_sq`) closes the loop for the
+family `√(2p)`, `p` prime:
+
+  `√(2p)` is a lattice distance  **⟺**  `p ≢ 3 (mod 4)`.
+
+The forward (avoidance) direction is the `u² + v² ≢ 3 (mod 4)` obstruction; the
+converse is Fermat's theorem, writing `p = a² + b²` and realizing `√(2p)` at
+`latticePoint a b` and the origin.  This is the first result in the file to prove a
+*realizability* converse for a whole infinite family (rather than a single hand-picked
+value like `√8`), and the only one using a genuinely deep Mathlib import.
+-/
+
+/-- **Realizability of `√(2p)` for a prime `p ≢ 3 (mod 4)`.**  By Fermat's two-square
+theorem `p = a² + b²`, so `2p = 2·(a² + b²)` is a squared lattice distance, realized by
+`latticePoint a b` and the origin (`scaledLattice_realizes`).  Together with the
+avoidance direction below this makes the prime family `√(2p)` sharp. -/
+theorem scaledLattice_realizes_sqrt_two_mul_prime {p : ℕ} [Fact p.Prime] (hp : p % 4 ≠ 3) :
+    ∃ x y : Plane, x ∈ ScaledLattice ∧ y ∈ ScaledLattice ∧
+      dist x y = Real.sqrt (2 * p) := by
+  obtain ⟨a, b, hab⟩ := Nat.Prime.sq_add_sq hp
+  obtain ⟨x, y, hx, hy, h⟩ := scaledLattice_realizes (a : ℤ) (b : ℤ)
+  refine ⟨x, y, hx, hy, ?_⟩
+  rw [h]
+  congr 1
+  have hp' : ((a : ℝ) ^ 2 + (b : ℝ) ^ 2) = (p : ℝ) := by exact_mod_cast hab
+  push_cast
+  linarith [hp']
+
+/-- **Avoidance of `√(2r)` for `r ≡ 3 (mod 4)`.**  If `√(2r)` were a lattice distance
+then `2r = 2·(u² + v²)`, hence `r = u² + v²`; but `u² + v² ≢ 3 (mod 4)`
+(`sq_add_sq_mod_four_ne_three`), contradicting `r ≡ 3 (mod 4)`.  For a prime `r ≡ 3`
+this is the forward half of the sharp iff below.  (As every such `2r ≡ 6 (mod 8)`, the
+statement also refines `scaledLattice_dist_ne_sqrt_six_mod_eight` to the exact `mod 4`
+criterion on the *half* `r`.) -/
+theorem scaledLattice_dist_ne_sqrt_two_mul_of_mod_four {p q : Plane}
+    (hp : p ∈ ScaledLattice) (hq : q ∈ ScaledLattice)
+    {r : ℕ} (hr : r % 4 = 3) : dist p q ≠ Real.sqrt (2 * r) := by
+  intro h
+  obtain ⟨u, v, huv⟩ := scaledLattice_dist_sq_two_mul_sq_add_sq hp hq
+  have hsq : dist p q ^ 2 = 2 * (r : ℝ) := by rw [h, Real.sq_sqrt (by positivity)]
+  rw [hsq] at huv
+  have hz : (2 : ℤ) * (r : ℤ) = 2 * (u ^ 2 + v ^ 2) := by exact_mod_cast huv
+  have h3 := sq_add_sq_mod_four_ne_three u v
+  omega
+
+/-- **Sharp characterization of the realizable prime distances.**  For a prime `p`, the
+value `√(2p)` is a distance between two points of `√2·ℤ²` **iff** `p ≢ 3 (mod 4)`.
+Forward: `scaledLattice_dist_ne_sqrt_two_mul_of_mod_four`; converse: Fermat's theorem via
+`scaledLattice_realizes_sqrt_two_mul_prime`.  So the realizable prime distances are
+exactly `√4 (= 2, p = 2)` and `√(2p)` for `p ≡ 1 (mod 4)` (`√10, √26, √34, …`), while
+`p ≡ 3 (mod 4)` (`√6, √14, √22, …`) are all avoided. -/
+theorem scaledLattice_realizes_sqrt_two_mul_prime_iff {p : ℕ} [Fact p.Prime] :
+    (∃ x y : Plane, x ∈ ScaledLattice ∧ y ∈ ScaledLattice ∧ dist x y = Real.sqrt (2 * p))
+      ↔ p % 4 ≠ 3 := by
+  constructor
+  · rintro ⟨x, y, hx, hy, h⟩ hp3
+    exact scaledLattice_dist_ne_sqrt_two_mul_of_mod_four hx hy hp3 h
+  · intro hp
+    exact scaledLattice_realizes_sqrt_two_mul_prime hp
+
+/-- **Concrete realization:** `√10` *is* a lattice distance (`p = 5 ≡ 1 (mod 4)`,
+`5 = 1² + 2²`, so `10 = 2·(1² + 2²)`).  The first realized `√(2p)` for an odd prime,
+witnessing the converse direction of the sharp iff. -/
+theorem scaledLattice_realizes_sqrt_ten :
+    ∃ x y : Plane, x ∈ ScaledLattice ∧ y ∈ ScaledLattice ∧ dist x y = Real.sqrt 10 := by
+  haveI : Fact (Nat.Prime 5) := ⟨by norm_num⟩
+  obtain ⟨x, y, hx, hy, h⟩ := scaledLattice_realizes_sqrt_two_mul_prime (p := 5) (by decide)
+  exact ⟨x, y, hx, hy, by rw [h]; congr 1; norm_num⟩
+
+/-- **Multiplicative closure (Brahmagupta–Fibonacci / Gaussian-integer norms).**  The
+half-values `m` for which `√(2m)` is a lattice distance are exactly the sums of two
+squares, and these are *closed under multiplication* via the two-square identity
+`(a² + b²)(c² + d²) = (ac − bd)² + (ad + bc)²`.  Hence `√(2·(a² + b²)(c² + d²))` is
+always a lattice distance — realized by `latticePoint (ac − bd) (ad + bc)` and the
+origin.  This exhibits the realizable squared-half distances as the multiplicative monoid
+of norms of Gaussian integers, the structural reason the avoidance families are governed
+by primes `≡ 3 (mod 4)`. -/
+theorem scaledLattice_realizes_two_mul_sq_add_sq_mul (a b c d : ℤ) :
+    ∃ x y : Plane, x ∈ ScaledLattice ∧ y ∈ ScaledLattice ∧
+      dist x y = Real.sqrt (2 * (((a ^ 2 + b ^ 2) * (c ^ 2 + d ^ 2) : ℤ) : ℝ)) := by
+  obtain ⟨x, y, hx, hy, h⟩ := scaledLattice_realizes (a * c - b * d) (a * d + b * c)
+  refine ⟨x, y, hx, hy, ?_⟩
+  rw [h]
+  congr 1
+  push_cast
+  ring
+
 end Erdos214Incomplete01OQ01
