@@ -50,7 +50,8 @@
       "triBary: a barycentric model of the filled triangle (convex combinations of the three vertices), proven convex (triBary_convex) and shown equal to Mathlib's convexHull of the vertices (triBary_eq_convexHull) — so tri A B C is genuinely THE triangle.",
       "medial_covering: an exact set equality proving the four medial sub-triangles cover the whole triangle. The covering direction is a clean barycentric case split — corner triangle at A when a ≥ ½ (symmetrically B, C), central medial triangle when all three coordinates are ≤ ½ — with explicit convex-combination reweightings; each vertex identity is discharged by match_scalars <;> linarith after expanding midpoints.",
       "medial_covering_convexHull: the same covering statement phrased entirely with Mathlib's convexHull, obtained by rewriting through triBary_eq_convexHull.",
-      "Works over an arbitrary real vector space (AddCommGroup V, Module ℝ V) with no metric assumptions, since covering is a purely affine/convex property; this is strictly weaker than the base entry's normed-space hypotheses."
+      "Works over an arbitrary real vector space (AddCommGroup V, Module ℝ V) with no metric assumptions, since covering is a purely affine/convex property; this is strictly weaker than the base entry's normed-space hypotheses.",
+      "medial_pieces_are_half_homotheties (Erdos634MedialHomothetyOQ02.lean): each of the four medial pieces is exhibited as the image of the whole triangle under an explicit homothety of ratio ±½ — the three corner pieces via x ↦ midpoint {A,B,C} x, the central piece via x ↦ ½•(A+B+C) − ½•x (−½-homothety at the centroid). This is the uniform half-scale-copy description behind the parent congruence claim, tied to the concrete tiling pieces, and phrased both with triHull and with Mathlib convexHull; unconditional and axiom-free."
     ],
     "dateAdded": "2026-07-01",
     "mathlib_version": "4.26.0",
@@ -60,7 +61,7 @@
       "Midpoint API (midpoint_eq_smul_add)",
       "The module / match_scalars tactics for ℝ-linear vector identities"
     ],
-    "relatedNote": "Companion to the k = 2 base entry erdos-634-medial-congruence and its OQ-01 (the square reptiling for all k). Both prove CONGRUENCE of the pieces but explicitly leave the covering/disjointness (analytic) part open; this entry closes the covering direction. Interior-disjointness (measure-zero overlaps in the plane) remains open and would require fixing V = ℝ² and the area measure."
+    "relatedNote": "Companion to the k = 2 base entry erdos-634-medial-congruence and its OQ-01 (the square reptiling for all k). Both prove CONGRUENCE of the pieces but explicitly leave the covering/disjointness (analytic) part open; this entry closes the covering direction. Interior-disjointness is now closed non-metrically in Erdos634MedialInteriorDisjointOQ02.lean (the four open pieces are pairwise disjoint over a non-degenerate triangle); the shape half is supplied by Erdos634MedialHomothetyOQ02.lean (each piece a ±½-homothety of the whole). A Lebesgue/area accounting of the overlaps in the plane (V = ℝ²) remains open."
   },
   "overview": {
     "historicalContext": "Erdős Problem #634 (a $25 problem) asks to understand all triples (T, R, N) such that a triangle T can be tiled by N congruent copies of a triangle R. The medial subdivision — joining the three side midpoints — is the base case k = 2 of the square reptiling. The base gallery entry proved the four medial pieces are pairwise congruent but deliberately did not formalise that they actually tile (cover, with disjoint interiors) the triangle. A dissection into congruent pieces is only a tiling once one verifies the pieces cover the region and overlap only on their boundaries.",
