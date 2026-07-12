@@ -306,6 +306,79 @@ theorem dvd_choose_iff_digitSum_lt (p m n : ℕ) (hp : p.Prime) :
 -- (no Lean `decide` on `Nat.digits`, which is well-founded and does not reduce
 -- reliably in the kernel).
 
+/-! ### Digit-sum invariance under multiplication by the base, and the central
+binomial coefficient
+
+The base-`p` digit sum is unchanged by multiplying the argument by `p` (a trailing
+zero is appended, contributing `0` to the sum).  This general lemma
+(`digitSum_base_mul`) is a Mathlib gap in the same family as `digitSum_add_le`.
+Specialising the Kummer criteria to `m = n` gives the `p`-adic valuation and
+non-divisibility criteria for the **central binomial coefficient** `C(2n, n)`, and
+— combining the two — the classical fact that `C(2n, n)` is even for every `n ≥ 1`. -/
+
+/-- **A positive number has positive digit sum.**  For `n ≠ 0` the base-`p` digit
+list is non-empty and its most significant digit is nonzero, so `s_p(n) > 0`. -/
+theorem digitSum_pos {p n : ℕ} (hn : n ≠ 0) : 0 < digitSum p n := by
+  have hne : p.digits n ≠ [] := Nat.digits_ne_nil_iff_ne_zero.mpr hn
+  have hlast : (p.digits n).getLast hne ≠ 0 := Nat.getLast_digit_ne_zero p hn
+  have hmem : (p.digits n).getLast hne ∈ p.digits n := List.getLast_mem hne
+  have hle : (p.digits n).getLast hne ≤ (p.digits n).sum := List.le_sum_of_mem hmem
+  show 0 < (p.digits n).sum
+  omega
+
+/-- **Digit-sum invariance under multiplication by the base.**  For every base
+`p > 1`, `s_p(p · n) = s_p(n)`: writing `p · n` in base `p` appends a least-significant
+digit `0` (`(p·n) % p = 0`, `(p·n) / p = n`), which does not change the digit sum.
+A general-purpose lemma not named in Mathlib. -/
+theorem digitSum_base_mul (p n : ℕ) (hp : 1 < p) :
+    digitSum p (p * n) = digitSum p n := by
+  rcases Nat.eq_zero_or_pos n with rfl | hn
+  · simp [digitSum]
+  · have hpn : 0 < p * n := Nat.mul_pos (by omega) hn
+    show (p.digits (p * n)).sum = (p.digits n).sum
+    rw [Nat.digits_def' hp hpn, Nat.mul_mod_right,
+      Nat.mul_div_cancel_left n (show 0 < p by omega)]
+    simp
+
+/-- **Kummer's theorem for the central binomial coefficient (division form).**
+For every prime `p`,
+
+  `v_p(C(2n, n)) = (2·s_p(n) − s_p(2n)) / (p − 1)`,
+
+the base-`p` carry count of `n + n`.  The `m = n` case of `padicValNat_choose_eq_div`
+applied to `Nat.centralBinom n = (2n).choose n`. -/
+theorem padicValNat_centralBinom_eq_div (p n : ℕ) (hp : p.Prime) :
+    padicValNat p (Nat.centralBinom n)
+      = (2 * digitSum p n - digitSum p (2 * n)) / (p - 1) := by
+  have h := padicValNat_choose_eq_div p n n hp
+  rw [Nat.centralBinom_eq_two_mul_choose, two_mul n, h]
+  congr 1
+  omega
+
+/-- **Digit-sum criterion for a prime not dividing the central binomial coefficient.**
+For every prime `p`,
+
+  `p ∤ C(2n, n) ↔ s_p(2n) = 2·s_p(n)`,
+
+i.e. `p` misses `C(2n, n)` exactly when doubling `n` in base `p` produces no carries.
+The `m = n` case of `not_dvd_choose_iff_digitSum_add`. -/
+theorem not_dvd_centralBinom_iff (p n : ℕ) (hp : p.Prime) :
+    ¬ (p ∣ Nat.centralBinom n) ↔ digitSum p (2 * n) = 2 * digitSum p n := by
+  rw [Nat.centralBinom_eq_two_mul_choose, two_mul n,
+    not_dvd_choose_iff_digitSum_add p n n hp]
+  constructor <;> intro hh <;> omega
+
+/-- **The central binomial coefficient is even for `n ≥ 1`.**  A classical fact,
+here a corollary of the base-`p` machinery at `p = 2`: `2 ∤ C(2n, n)` would force
+`s_2(2n) = 2·s_2(n)` (no-carry criterion), but `s_2(2n) = s_2(n)` (digit-sum base
+invariance), so `s_2(n) = 0`, hence `n = 0`. -/
+theorem centralBinom_even (n : ℕ) (hn : 0 < n) : 2 ∣ Nat.centralBinom n := by
+  by_contra h
+  rw [not_dvd_centralBinom_iff 2 n Nat.prime_two,
+    digitSum_base_mul 2 n (by norm_num)] at h
+  have hpos : 0 < digitSum 2 n := digitSum_pos (p := 2) (by omega)
+  omega
+
 #check @padicValNat_factorial_eq_div
 #check @legendre_digit_sum_identity
 #check @sub_one_mul_padicValNat_factorial_digitSum
@@ -320,5 +393,10 @@ theorem dvd_choose_iff_digitSum_lt (p m n : ℕ) (hp : p.Prime) :
 #check @padicValNat_choose_eq_div
 #check @not_dvd_choose_iff_digitSum_add
 #check @dvd_choose_iff_digitSum_lt
+#check @digitSum_pos
+#check @digitSum_base_mul
+#check @padicValNat_centralBinom_eq_div
+#check @not_dvd_centralBinom_iff
+#check @centralBinom_even
 
 end Erdos729Legendre
