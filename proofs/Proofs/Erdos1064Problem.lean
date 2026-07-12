@@ -60,6 +60,37 @@ def A_less : Set ℕ := {n : ℕ | totient n < totient (n - totient n)}
 /-- The set A₌ where φ(n) = φ(n - φ(n)) -/
 def A_equal : Set ℕ := {n : ℕ | totient n = totient (n - totient n)}
 
+/-! ### The trichotomy `A₊ / A₋ / A₌` partitions ℕ
+
+Comparing `φ(n)` with `φ(n − φ(n))` places every `n` in exactly one of the three sets
+`A_greater` (`>`), `A_less` (`<`), `A_equal` (`=`). The following record that they are
+pairwise disjoint and jointly exhaust ℕ — the structural backdrop against which the density-1
+(`lucaPomerance_density_one`) and infinitely-often (`glw_infinitely_many`,
+`A_greater_infinite`) results are stated. -/
+
+/-- `A₊` and `A₋` are disjoint: `φ(n)` cannot be both `>` and `<` than `φ(n − φ(n))`. -/
+theorem A_greater_disjoint_A_less : Disjoint A_greater A_less := by
+  rw [Set.disjoint_left]; intro n hn hn'
+  simp only [A_greater, A_less, Set.mem_setOf_eq] at hn hn'; omega
+
+/-- `A₊` and `A₌` are disjoint. -/
+theorem A_greater_disjoint_A_equal : Disjoint A_greater A_equal := by
+  rw [Set.disjoint_left]; intro n hn hn'
+  simp only [A_greater, A_equal, Set.mem_setOf_eq] at hn hn'; omega
+
+/-- `A₋` and `A₌` are disjoint. -/
+theorem A_less_disjoint_A_equal : Disjoint A_less A_equal := by
+  rw [Set.disjoint_left]; intro n hn hn'
+  simp only [A_less, A_equal, Set.mem_setOf_eq] at hn hn'; omega
+
+/-- The trichotomy is exhaustive: `A₊ ∪ A₋ ∪ A₌ = ℕ`. -/
+theorem A_greater_union_A_less_union_A_equal :
+    A_greater ∪ A_less ∪ A_equal = Set.univ := by
+  ext n
+  simp only [A_greater, A_less, A_equal, Set.mem_union, Set.mem_setOf_eq, Set.mem_univ,
+    iff_true]
+  omega
+
 /- ## Concrete Examples -/
 
 /-- φ(1) = 1 -/
