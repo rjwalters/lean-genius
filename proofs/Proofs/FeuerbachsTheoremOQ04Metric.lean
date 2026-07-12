@@ -17,9 +17,17 @@ instance, so the spherical model can be used with Mathlib's entire metric-space 
 (balls, `Metric.sphere`, continuity, `Bornology`, uniformity, …) rather than only the
 bare `sdist` lemmas.
 
-Two immediate consequences are recorded: the distance formula `dist P Q =
+Immediate consequences are recorded: the distance formula `dist P Q =
 arccos ⟪P, Q⟫` (definitional, `rfl`) and the diameter bound `dist P Q ≤ π` (the
 spherical model has diameter `π`, attained at antipodal points).
+
+The bundled instance is then used to lift the raw-vector antipodal identities of
+`FeuerbachsTheoremOQ04` to a genuine self-map `antipode : SphereModel E → SphereModel E`
+(`P ↦ -P`, well-defined by `onSphere_neg`): it is an involution (`antipode_antipode`),
+realises the diameter (`dist_antipode : dist P (antipode P) = π`), is the *unique* point at
+distance `π` (`dist_eq_pi_iff`, the far-end dual of `eq_of_dist_eq_zero`), is an isometry
+of the model (`dist_antipode_antipode`), and reflects distances to their supplement
+(`dist_antipode_right : dist P (antipode Q) = π − dist P Q`).
 
 Axiom-free (`propext`/`Classical.choice`/`Quot.sound` only): no `native_decide`, no
 `sorry`, no `axiom`.
@@ -62,6 +70,52 @@ has diameter `π` (attained at antipodal points).  Immediate from `arccos ≤ π
 theorem dist_le_pi (P Q : SphereModel E) : dist P Q ≤ Real.pi := by
   rw [dist_eq_arccos]
   exact Real.arccos_le_pi _
+
+/-! ### The antipodal map as a bundled self-map of the metric space
+
+`FeuerbachsTheoremOQ04` proves the antipodal identities at the level of raw unit vectors
+(`onSphere_neg`, `sdist_antipode`, `sdist_eq_pi_iff`, `sdist_neg_neg`, `sdist_neg_right`).
+Since `SphereModel E` is closed under `x ↦ -x` (`onSphere_neg`), these package into a
+genuine self-map `antipode : SphereModel E → SphereModel E` and its metric properties
+inside the bundled `MetricSpace`. -/
+
+/-- The **antipodal map** on the spherical model, `P ↦ -P`.  Well-defined because the
+sphere is closed under negation (`onSphere_neg`). -/
+def antipode (P : SphereModel E) : SphereModel E := ⟨-(P : E), onSphere_neg P.2⟩
+
+@[simp] theorem antipode_coe (P : SphereModel E) : (antipode P : E) = -(P : E) := rfl
+
+/-- **The antipodal map is an involution:** `antipode (antipode P) = P`, from `- -P = P`. -/
+@[simp] theorem antipode_antipode (P : SphereModel E) : antipode (antipode P) = P :=
+  Subtype.ext (neg_neg (P : E))
+
+/-- **A point is at distance `π` from its own antipode:** `dist P (antipode P) = π`.  The
+antipode realises the diameter `π` of `dist_le_pi`.  Bundled form of `sdist_antipode`. -/
+theorem dist_antipode (P : SphereModel E) : dist P (antipode P) = Real.pi := by
+  rw [dist_eq]; exact sdist_antipode P.2
+
+/-- **The antipode is the unique point at distance `π`:** `dist P Q = π ↔ Q = antipode P`.
+Bundled form of `sdist_eq_pi_iff`; the metric-space counterpart of the near-end
+separation `dist P Q = 0 ↔ P = Q` (`eq_of_dist_eq_zero`). -/
+theorem dist_eq_pi_iff (P Q : SphereModel E) : dist P Q = Real.pi ↔ Q = antipode P := by
+  rw [dist_eq, sdist_eq_pi_iff P.2 Q.2]
+  constructor
+  · intro h; exact Subtype.ext h
+  · intro h; subst h; rfl
+
+/-- **The antipodal map is an isometry of the spherical model:**
+`dist (antipode P) (antipode Q) = dist P Q`.  Bundled form of `sdist_neg_neg` — the central
+symmetry `x ↦ -x` preserves spherical distance. -/
+@[simp] theorem dist_antipode_antipode (P Q : SphereModel E) :
+    dist (antipode P) (antipode Q) = dist P Q := by
+  rw [dist_eq, dist_eq]; exact sdist_neg_neg (P : E) (Q : E)
+
+/-- **Reflecting one point through the centre sends the distance to its supplement:**
+`dist P (antipode Q) = π − dist P Q`.  Bundled form of `sdist_neg_right`; with `Q = P` it
+recovers `dist_antipode`. -/
+theorem dist_antipode_right (P Q : SphereModel E) :
+    dist P (antipode Q) = Real.pi - dist P Q := by
+  rw [dist_eq, dist_eq]; exact sdist_neg_right (P : E) (Q : E)
 
 end SphereModel
 
