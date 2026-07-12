@@ -387,6 +387,44 @@ theorem cayley_hamilton_oq02_oq02_summary
   ⟨centralizer_eq_adjoin_iff_nonderogatory M,
    finrank_centralizer_eq_of_nonderogatory M⟩
 
+/-! ### The commutant of a nonderogatory matrix is abelian
+
+For a nonderogatory `M` the centralizer is `C(M) = K[M]` (`centralizer_eq_adjoin_of_nonderogatory`),
+and polynomials in a single matrix commute with one another.  So *any two* matrices that each
+commute with `M` automatically commute with *each other*: the commutant is a commutative algebra.
+This is a distinctive feature of the nonderogatory case — for a derogatory `M` the commutant is
+strictly larger than `K[M]` and generally non-abelian. -/
+
+/-- **Commuting matrices with a nonderogatory `M` pairwise commute.**  If `M` is nonderogatory
+    (`minpoly K M = charpoly M`) and both `N₁` and `N₂` commute with `M`, then `N₁` and `N₂`
+    commute with each other: `N₁ N₂ = N₂ N₁`.  Since each `Nᵢ` is a polynomial in `M`
+    (`commute_iff_mem_range_aeval_of_nonderogatory`), write `Nᵢ = p_i(M)`; then
+    `p_1(M) p_2(M) = (p_1 p_2)(M) = (p_2 p_1)(M) = p_2(M) p_1(M)` by `map_mul` and the
+    commutativity of `K[X]`. -/
+theorem commute_of_commute_nonderogatory
+    (M : Matrix (Fin n) (Fin n) K) (hM : minpoly K M = M.charpoly)
+    (N₁ N₂ : Matrix (Fin n) (Fin n) K)
+    (h₁ : N₁ * M = M * N₁) (h₂ : N₂ * M = M * N₂) :
+    N₁ * N₂ = N₂ * N₁ := by
+  obtain ⟨p, rfl⟩ := (commute_iff_mem_range_aeval_of_nonderogatory M hM N₁).mp h₁
+  obtain ⟨q, rfl⟩ := (commute_iff_mem_range_aeval_of_nonderogatory M hM N₂).mp h₂
+  rw [← map_mul, ← map_mul, mul_comm p q]
+
+/-- **The commutant of a nonderogatory matrix is abelian (subalgebra form).**  Any two elements
+    `A, B` of the centralizer `C(M)` of a nonderogatory `M` commute: `A B = B A`.  This is the
+    subalgebra-level reading of `commute_of_commute_nonderogatory` — `C(M) = K[M]` is a
+    commutative algebra — obtained by unfolding centralizer membership to the commuting relations
+    with `M`.  (No `CommRing` instance on the subalgebra is needed.) -/
+theorem centralizer_mul_comm_of_nonderogatory
+    (M : Matrix (Fin n) (Fin n) K) (hM : minpoly K M = M.charpoly)
+    (A B : Matrix (Fin n) (Fin n) K)
+    (hA : A ∈ Subalgebra.centralizer K ({M} : Set (Matrix (Fin n) (Fin n) K)))
+    (hB : B ∈ Subalgebra.centralizer K ({M} : Set (Matrix (Fin n) (Fin n) K))) :
+    A * B = B * A := by
+  rw [Subalgebra.mem_centralizer_iff] at hA hB
+  exact commute_of_commute_nonderogatory M hM A B
+    (hA M (Set.mem_singleton M)).symm (hB M (Set.mem_singleton M)).symm
+
 end CyclicCommutantDimension
 
 end
