@@ -89,17 +89,25 @@
       "id": "resonance",
       "title": "Condensation of Singularities",
       "startLine": 57,
-      "endLine": 69,
+      "endLine": 70,
       "summary": "resonance is the contrapositive: unbounded operator norms force a single point x where ‖g i x‖ is unbounded. Proof negates the goal, `push_neg` recovers the pointwise-bound hypothesis, and the resulting uniform bound contradicts the unboundedness assumption.",
       "mathContext": "The principle of condensation of singularities — a universal resonance point witnesses non-uniform-boundedness."
     },
     {
-      "id": "pointwise-limits",
-      "title": "Pointwise Limits of Operators",
+      "id": "pointwise-limit-clm",
+      "title": "Pointwise Limits Are Continuous Linear Maps",
       "startLine": 71,
+      "endLine": 83,
+      "summary": "pointwise_limit_isClm: a family g : α → E →SL[σ₁₂] F over any countably generated nontrivial filter l (in particular a sequence with l = atTop) that converges pointwise to f has f equal to the coercion of a continuous linear map, via continuousLinearMapOfTendsto. This is the standard closure corollary of Banach–Steinhaus: pointwise boundedness of the convergent family gives equicontinuity, which makes the limit continuous and linear.",
+      "mathContext": "$g_n \\to f$ pointwise (continuous linear maps out of a Banach space) $\\Rightarrow f$ is a continuous linear map."
+    },
+    {
+      "id": "pointwise-limit-additive",
+      "title": "Additivity of the Limit Map",
+      "startLine": 84,
       "endLine": 93,
-      "summary": "pointwise_limit_isClm: a pointwise limit of continuous linear maps (over any countably generated nontrivial filter) is the coercion of a continuous linear map, via `continuousLinearMapOfTendsto`. pointwise_limit_map_add: a concrete consequence — the limit map is additive.",
-      "mathContext": "Closure of continuous linear maps under pointwise limits, a Banach–Steinhaus corollary."
+      "summary": "pointwise_limit_map_add: a concrete consequence of pointwise_limit_isClm — the pointwise limit map f of a convergent family of continuous linear maps is additive, f(x+y) = f x + f y. Proved by extracting the continuous-linear-map witness F' with F' = f and transporting map_add along that equality.",
+      "mathContext": "$f(x+y) = f(x) + f(y)$ for the pointwise limit $f$ of continuous linear maps."
     }
   ],
   "references": [
