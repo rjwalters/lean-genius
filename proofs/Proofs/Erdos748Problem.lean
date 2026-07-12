@@ -703,6 +703,24 @@ theorem exists_sumFree_card_ceil (n : ℕ) :
   · -- `|U| = n − ⌊n/2⌋ = ⌈n/2⌉ = (n+1)/2`.
     rw [hU, Nat.card_Icc]; omega
 
+/-- **Enlarging the ground set only adds sum-free subsets.**  For `m ≤ n`, every sum-free
+subset of `{1,…,m}` is a sum-free subset of `{1,…,n}`: sum-freeness (`IsSumFree`) is a
+property of the set itself, independent of the ambient range, and `{1,…,m} ⊆ {1,…,n}`.
+Hence `sumFreeSubsets m ⊆ sumFreeSubsets n`. -/
+theorem sumFreeSubsets_mono {m n : ℕ} (h : m ≤ n) :
+    sumFreeSubsets m ⊆ sumFreeSubsets n := by
+  intro A hA
+  rw [sumFreeSubsets, Finset.mem_filter, Finset.mem_powerset] at hA ⊢
+  exact ⟨hA.1.trans (Finset.Icc_subset_Icc (le_refl 1) h), hA.2⟩
+
+/-- **The counting function `f` is monotone.**  `f n = #{sum-free subsets of {1,…,n}}` is
+non-decreasing in `n`, since a larger ground set admits every sum-free subset the smaller
+one does (`sumFreeSubsets_mono`).  This is the structural fact behind the OEIS A007865 table
+being non-decreasing (`f_1 ≤ f_2 ≤ ⋯`), and it sharpens the one-sided lower bounds into a
+genuine growth statement.  Axiom-free. -/
+theorem f_mono : Monotone f :=
+  fun _m _n h => Finset.card_le_card (sumFreeSubsets_mono h)
+
 /-
 ## Part VIII: OEIS A007865
 -/
@@ -719,6 +737,9 @@ f(5) = 16
 -- Kernel `decide` suffices (axiom-free): the `decidableIsSumFree` instance reduces
 -- `IsSumFree` to a bounded `∀ … ∈ A` decision, so these small `f n` values compute
 -- in the kernel without `native_decide` (which would add `Lean.ofReduceBool`).
+-- `f 0 = 1`: the ground set `{1,…,0}` is empty, whose only subset is `∅` (sum-free), so the
+-- A007865 table starts at `1` — the base value beneath `f_1` and the base case of `f_mono`.
+theorem f_0 : f 0 = 1 := by decide
 theorem f_1 : f 1 = 2 := by decide
 theorem f_2 : f 2 = 3 := by decide
 theorem f_3 : f 3 = 6 := by decide
