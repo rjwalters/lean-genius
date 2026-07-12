@@ -521,7 +521,7 @@ theorem logConcave_iff_log_seq_concave (p : ℕ → ℝ) (hpos : ∀ j, 0 < p j)
   constructor
   · intro hlc m
     have hmono : Real.log (p m * p (m + 2)) ≤ Real.log ((p (m + 1)) ^ 2) :=
-      Real.log_le_log (by positivity) (hlc m)
+      Real.log_le_log (mul_pos (hpos m) (hpos (m + 2))) (hlc m)
     rw [Real.log_mul (hpos m).ne' (hpos (m + 2)).ne', Real.log_pow] at hmono
     push_cast at hmono
     linarith
@@ -531,7 +531,8 @@ theorem logConcave_iff_log_seq_concave (p : ℕ → ℝ) (hpos : ∀ j, 0 < p j)
       push_cast
       linarith [hcc m]
     have hexp := Real.exp_le_exp.mpr hlog
-    rwa [Real.exp_log (by positivity), Real.exp_log (by positivity)] at hexp
+    rwa [Real.exp_log (mul_pos (hpos m) (hpos (m + 2))),
+      Real.exp_log (pow_pos (hpos (m + 1)) 2)] at hexp
 
 /-- **Strict multiplicative log-concavity ⟺ strict additive midpoint-concavity.** The
 strict analogue of `logConcave_iff_log_seq_concave`: for a positive sequence `p`,
@@ -544,7 +545,7 @@ theorem logConcave_strict_iff_log_seq_concave_strict (p : ℕ → ℝ) (hpos : �
   constructor
   · intro hlc m
     have hmono : Real.log (p m * p (m + 2)) < Real.log ((p (m + 1)) ^ 2) :=
-      Real.log_lt_log (by positivity) (hlc m)
+      Real.log_lt_log (mul_pos (hpos m) (hpos (m + 2))) (hlc m)
     rw [Real.log_mul (hpos m).ne' (hpos (m + 2)).ne', Real.log_pow] at hmono
     push_cast at hmono
     linarith
@@ -554,7 +555,8 @@ theorem logConcave_strict_iff_log_seq_concave_strict (p : ℕ → ℝ) (hpos : �
       push_cast
       linarith [hcc m]
     have hexp := Real.exp_lt_exp.mpr hlog
-    rwa [Real.exp_log (by positivity), Real.exp_log (by positivity)] at hexp
+    rwa [Real.exp_log (mul_pos (hpos m) (hpos (m + 2))),
+      Real.exp_log (pow_pos (hpos (m + 1)) 2)] at hexp
 
 /-! ## Closure: log-concave positive sequences are closed under pointwise product
 
@@ -579,7 +581,8 @@ theorem logConcave_mul (p q : ℕ → ℝ) (hp : ∀ j, 0 < p j) (hq : ∀ j, 0 
   calc (p m * q m) * (p (m + 2) * q (m + 2))
         = (p m * p (m + 2)) * (q m * q (m + 2)) := by ring
     _ ≤ (p (m + 1)) ^ 2 * (q (m + 1)) ^ 2 :=
-        mul_le_mul (hlcp m) (hlcq m) (by positivity) (by positivity)
+        mul_le_mul (hlcp m) (hlcq m) (mul_pos (hq m) (hq (m + 2))).le
+          (pow_pos (hp (m + 1)) 2).le
     _ = (p (m + 1) * q (m + 1)) ^ 2 := by ring
 
 /-- **The pointwise product of normalised log-concave sequences is normalised.** If
