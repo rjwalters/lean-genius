@@ -1359,6 +1359,69 @@ theorem sharpRequiredBound_implies_requiredBound {k : ℕ}
     mul_nonneg (mul_nonneg (Nat.cast_nonneg N) hL0.le) (by linarith)
   nlinarith [hfac]
 
+/-- **The super-sharp threshold implies the weak (`o(N/log N)`) threshold.**
+    `SuperSharpRequiredBound k ⇒ RequiredBound k`.  Even the double-iterated-log bound
+    `r_k(N) = O(N / (log N · log log N · (log log log N)^{1+δ}))` still sits below every
+    `c · N / log N`, because its extra denominator factor `log log N · (log log log N)^{1+δ}`
+    tends to `∞`.  The super-sharp analogue of `sharpRequiredBound_implies_requiredBound`;
+    together with `sharpRequiredBound_implies_superSharpRequiredBound` it places
+    `SuperSharpRequiredBound` fully inside the ordering lattice
+    `Strong ⇒ Sharp ⇒ SuperSharp ⇒ Required`, so `superSharp_required_bound_implies_conjecture`
+    is a genuine conditional sufficient hypothesis strictly weaker than the sharp one yet still
+    below the `o(N/log N)` divergence borderline.  Axiom-free. -/
+theorem superSharpRequiredBound_implies_requiredBound {k : ℕ}
+    (h : SuperSharpRequiredBound k) : RequiredBound k := by
+  obtain ⟨δ, hδ, C, hC, hev⟩ := h
+  intro c hc
+  have hlog : Filter.Tendsto (fun N : ℕ => Real.log (N : ℝ)) Filter.atTop Filter.atTop :=
+    Real.tendsto_log_atTop.comp tendsto_natCast_atTop_atTop
+  have hloglog : Filter.Tendsto (fun N : ℕ => Real.log (Real.log (N : ℝ)))
+      Filter.atTop Filter.atTop := Real.tendsto_log_atTop.comp hlog
+  have hlogloglog : Filter.Tendsto (fun N : ℕ => Real.log (Real.log (Real.log (N : ℝ))))
+      Filter.atTop Filter.atTop := Real.tendsto_log_atTop.comp hloglog
+  have hδ1 : (0 : ℝ) < 1 + δ := by linarith
+  have hMgt : ∀ᶠ N : ℕ in Filter.atTop, 1 < Real.log (Real.log (N : ℝ)) :=
+    hloglog.eventually (eventually_gt_atTop 1)
+  have hLgt : ∀ᶠ N : ℕ in Filter.atTop, 1 < Real.log (N : ℝ) :=
+    hlog.eventually (eventually_gt_atTop 1)
+  -- The extra denominator factor `log log N · (log log log N)^{1+δ}` tends to `∞`.
+  have hextratop : Filter.Tendsto
+      (fun N : ℕ => Real.log (Real.log (N : ℝ)) *
+        (Real.log (Real.log (Real.log (N : ℝ)))) ^ (1 + δ)) Filter.atTop Filter.atTop := by
+    refine Filter.tendsto_atTop_mono' Filter.atTop ?_ ((tendsto_rpow_atTop hδ1).comp hlogloglog)
+    filter_upwards [hMgt] with N hM
+    exact le_mul_of_one_le_left (Real.rpow_nonneg (Real.log_pos hM).le _) hM.le
+  -- Hence `C / (that factor) → 0`, so eventually it is `< c`.
+  have hneg : Filter.Tendsto
+      (fun N : ℕ => C * (Real.log (Real.log (N : ℝ)) *
+        (Real.log (Real.log (Real.log (N : ℝ)))) ^ (1 + δ))⁻¹) Filter.atTop (nhds 0) := by
+    have hmul := hextratop.inv_tendsto_atTop.const_mul C
+    simpa using hmul
+  have hlt : ∀ᶠ N : ℕ in Filter.atTop,
+      C * (Real.log (Real.log (N : ℝ)) *
+        (Real.log (Real.log (Real.log (N : ℝ)))) ^ (1 + δ))⁻¹ < c := by
+    have hmem : Set.Iio c ∈ nhds (0 : ℝ) := isOpen_Iio.mem_nhds hc
+    filter_upwards [hneg.eventually hmem] with N hN using hN
+  filter_upwards [hev, hlt, hLgt, hMgt] with N hN hNlt hL hM
+  set L : ℝ := Real.log (N : ℝ) with hLdef
+  set M : ℝ := Real.log (Real.log (N : ℝ)) with hMdef
+  set P : ℝ := Real.log (Real.log (Real.log (N : ℝ))) with hPdef
+  have hL0 : 0 < L := lt_trans one_pos hL
+  have hM0 : 0 < M := lt_trans one_pos hM
+  have hP0 : 0 < P := Real.log_pos hM
+  have hPpow : (0 : ℝ) < P ^ (1 + δ) := Real.rpow_pos_of_pos hP0 _
+  have hextra_pos : (0 : ℝ) < M * P ^ (1 + δ) := mul_pos hM0 hPpow
+  -- Turn the leading-factor bound into `C ≤ c · (M · P^{1+δ})`.
+  rw [← div_eq_mul_inv] at hNlt
+  have hCle : C ≤ c * (M * P ^ (1 + δ)) := (div_le_iff₀ hextra_pos).mp hNlt.le
+  -- Bigger denominator on the left ⇒ the super-sharp bound transfers to the weak one.
+  refine le_trans hN ?_
+  have hden_pos : (0 : ℝ) < L * M * P ^ (1 + δ) := mul_pos (mul_pos hL0 hM0) hPpow
+  rw [div_le_div_iff₀ hden_pos hL0]
+  have hfac : 0 ≤ (N : ℝ) * L * (c * (M * P ^ (1 + δ)) - C) :=
+    mul_nonneg (mul_nonneg (Nat.cast_nonneg N) hL0.le) (by linarith)
+  nlinarith [hfac]
+
 /-- **The strong threshold hypothesis is downward-closed in the length.**
     `StrongRequiredBound m` implies `StrongRequiredBound k` for every `k ≤ m`: the same
     witnesses `δ, C` work because `r_k(N) ≤ r_m(N) ≤ C·N/(log N)^{1+δ}` by `rothNumber_mono`.
