@@ -95,4 +95,23 @@ theorem exists_factorial_add_le_sq (D : ℕ) :
   obtain ⟨b, rfl⟩ : ∃ b, k = b + D := ⟨k - D, by omega⟩
   exact factorial_add_le_sq_factorial D b (by omega)
 
+/-- **Product of factorials is bounded by the factorial of the sum.**  `a! · b! ≤ (a+b)!`
+for all `a, b`.  This is the divisibility `a! · b! ∣ (a+b)!` (which underlies the
+integrality of the binomial coefficient `C(a+b, a) = (a+b)!/(a!·b!)`) read as an
+inequality, since `(a+b)! > 0`.  The clean lower companion to the *upper* factorial
+bounds of this file. -/
+theorem factorial_mul_factorial_le_factorial_add (a b : ℕ) : a ! * b ! ≤ (a + b)! :=
+  Nat.le_of_dvd (Nat.factorial_pos _) (Nat.factorial_mul_factorial_dvd_factorial_add a b)
+
+/-- **Reverse sharp bound: `(k!)² ≤ (2k)!`.**  The diagonal `a = b = k` case of
+`factorial_mul_factorial_le_factorial_add` — equivalently, the central binomial
+coefficient `C(2k, k) = (2k)!/(k!)²` is a positive integer.  This is the exact companion
+to `factorial_add_le_sq_factorial` (`(k+D)! ≤ (k!)²` for `2D ≤ k−D`): together they sandwich
+`(k!)²` between `(k+D)!` from below and `(2k)!` from above, so the "sharp" factorial square
+`(k!)²` sits strictly between a small window factorial and the full doubled factorial —
+another quantitative reason the size bound alone cannot pin Erdős #1093 OQ-02's deficiency. -/
+theorem sq_factorial_le_factorial_two_mul (k : ℕ) : (k !) ^ 2 ≤ (2 * k)! := by
+  rw [pow_two, two_mul]
+  exact factorial_mul_factorial_le_factorial_add k k
+
 end Erdos1093OQ02
