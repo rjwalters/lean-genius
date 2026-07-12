@@ -6172,5 +6172,118 @@ theorem sqGaussSum_norm_sum_total_of_prime {p : ℕ} [NeZero p] (hp : p.Prime) (
     exact (Finset.add_sum_erase Finset.univ _ (Finset.mem_univ 0)).symm
   rw [hsplit, sqGaussSum_zero, Complex.norm_natCast, sqGaussSum_norm_sum_of_prime hp hN2]
 
+/-! ### Part L — the total-mass coefficient `C(N) = Σ_{d∣N} φ(N/d)√d` is multiplicative
+
+Part XLIX pins the total `L¹` Gauss-sum mass at an odd modulus as `√N · C(N)` with the
+Dirichlet-divisor coefficient
+
+    `C(N) = Σ_{d∣N} φ(N/d)·√d`.
+
+This part identifies `C` as the **Dirichlet convolution** `φ ⋆ √` of two multiplicative
+arithmetic functions — Euler's totient `φ` (multiplicative, `Nat.totient_mul`) and the
+completely multiplicative square root `√` (`Real.sqrt_mul`, needing no coprimality) — and
+transports Mathlib's `ArithmeticFunction.IsMultiplicative.mul` to conclude that `C` itself is
+multiplicative:
+
+    `gcd m n = 1  ⟹  C(m·n) = C(m)·C(n)`.
+
+Because `√` is completely multiplicative, `√(mn) = √m · √n`, so the **entire total mass**
+`√N · C(N)` inherits the multiplicative law across coprime *odd* moduli:
+
+    `Σ_{r ∈ ZMod (m·n)} ‖G(r)‖  =  (Σ_{r ∈ ZMod m} ‖G(r)‖)·(Σ_{r ∈ ZMod n} ‖G(r)‖)`,
+
+reducing the spectral `L¹` mass at any odd `N` to its prime-power values (e.g. the exact prime
+instance `C(p) = (p−1) + √p`, recovering Part XLVIII).  All 0-axiom. -/
+
+/-- The totient as a real-valued arithmetic function `n ↦ φ(n)`. -/
+noncomputable def totientRealAF : ArithmeticFunction ℝ :=
+  ⟨fun n => (Nat.totient n : ℝ), by simp⟩
+
+/-- The square root as a real-valued arithmetic function `n ↦ √n` (with `√0 = 0`). -/
+noncomputable def sqrtAF : ArithmeticFunction ℝ :=
+  ⟨fun n => Real.sqrt n, by simp⟩
+
+@[simp] theorem totientRealAF_apply (n : ℕ) : totientRealAF n = (Nat.totient n : ℝ) := rfl
+
+@[simp] theorem sqrtAF_apply (n : ℕ) : sqrtAF n = Real.sqrt n := rfl
+
+/-- Euler's totient is a multiplicative arithmetic function (`φ(1) = 1`, `Nat.totient_mul`). -/
+theorem isMultiplicative_totientRealAF : totientRealAF.IsMultiplicative := by
+  refine ⟨by simp, fun {m n} h => ?_⟩
+  simp only [totientRealAF_apply, Nat.totient_mul h, Nat.cast_mul]
+
+/-- The square root is a (completely) multiplicative arithmetic function: `√(mn) = √m·√n` for
+    all naturals, so a fortiori for coprime ones. -/
+theorem isMultiplicative_sqrtAF : sqrtAF.IsMultiplicative := by
+  refine ⟨by simp, fun {m n} _ => ?_⟩
+  simp only [sqrtAF_apply, Nat.cast_mul, Real.sqrt_mul (Nat.cast_nonneg m)]
+
+/-- **The total-mass coefficient `C(N) = Σ_{d∣N} φ(N/d)·√d`.**  Part XLIX gives the total odd-`N`
+    Gauss-sum `L¹` mass as `√N · C(N)`. -/
+noncomputable def weylMassCoeff (N : ℕ) : ℝ :=
+  (N.divisors).sum (fun d => (Nat.totient (N / d) : ℝ) * Real.sqrt d)
+
+/-- `C(N)` is the Dirichlet convolution `(φ ⋆ √)(N)`: the antidiagonal sum
+    `Σ_{a·b = N} φ(a)·√b` reindexes (`Nat.map_div_left_divisors`) to the divisor sum
+    `Σ_{d∣N} φ(N/d)·√d`. -/
+theorem weylMassCoeff_eq_convolution (N : ℕ) :
+    (totientRealAF * sqrtAF) N = weylMassCoeff N := by
+  rw [ArithmeticFunction.mul_apply, ← Nat.map_div_left_divisors, Finset.sum_map]
+  rfl
+
+/-- **`C` is multiplicative.**  Both factors of the convolution `φ ⋆ √` are multiplicative
+    (`isMultiplicative_totientRealAF`, `isMultiplicative_sqrtAF`), so `ArithmeticFunction`'s
+    convolution-multiplicativity `IsMultiplicative.mul` gives, for coprime `m, n`,
+
+    `C(m·n) = C(m)·C(n)`. -/
+theorem weylMassCoeff_mul_of_coprime {m n : ℕ} (h : Nat.Coprime m n) :
+    weylMassCoeff (m * n) = weylMassCoeff m * weylMassCoeff n := by
+  rw [← weylMassCoeff_eq_convolution, ← weylMassCoeff_eq_convolution,
+    ← weylMassCoeff_eq_convolution,
+    (isMultiplicative_totientRealAF.mul isMultiplicative_sqrtAF).map_mul_of_coprime h]
+
+/-- `C(1) = 1` (the empty-shifted normalisation of the multiplicative `C`). -/
+@[simp] theorem weylMassCoeff_one : weylMassCoeff 1 = 1 := by
+  simp [weylMassCoeff]
+
+/-- **Prime value `C(p) = (p−1) + √p`.**  The two divisors `1, p` contribute `φ(p)·√1 = p−1`
+    and `φ(1)·√p = √p`; this is the coefficient behind the Part XLVIII prime first moment. -/
+theorem weylMassCoeff_prime {p : ℕ} (hp : p.Prime) :
+    weylMassCoeff p = ((p : ℝ) - 1) + Real.sqrt p := by
+  have h1p : (1 : ℕ) ≠ p := hp.one_lt.ne
+  rw [weylMassCoeff, hp.divisors, Finset.sum_pair h1p, Nat.div_one, Nat.div_self hp.pos,
+    Nat.totient_one, Nat.totient_prime hp, Nat.cast_one, Real.sqrt_one, mul_one, one_mul,
+    Nat.cast_sub hp.one_le, Nat.cast_one]
+
+/-- **Total odd-`N` `L¹` mass in coefficient form** (Part XLIX, restated with `C`):
+
+    `Σ_{r ∈ ZMod N} ‖G(r)‖ = √N · C(N)`. -/
+theorem sqGaussSum_norm_sum_total_eq_coeff_of_odd {N : ℕ} [NeZero N] (hodd : Odd N) :
+    (Finset.univ.sum (fun r : ZMod N => ‖sqGaussSum r‖)) = Real.sqrt N * weylMassCoeff N :=
+  sqGaussSum_norm_sum_total_of_odd hodd
+
+/-- **The total `L¹` Gauss-sum mass is multiplicative across coprime odd moduli.**  Writing the
+    mass as `√N · C(N)` (Part XLIX) and using the complete multiplicativity of `√`
+    (`√(mn) = √m·√n`) together with the multiplicativity of `C`
+    (`weylMassCoeff_mul_of_coprime`):
+
+    `Σ_{r ∈ ZMod (m·n)} ‖G(r)‖ = (Σ_{r ∈ ZMod m} ‖G(r)‖) · (Σ_{r ∈ ZMod n} ‖G(r)‖)`
+
+    for coprime odd `m, n`.  This reduces the entire spectral `L¹` mass at an odd modulus to its
+    prime-power values. -/
+theorem sqGaussSum_norm_sum_total_mul_of_coprime_odd {m n : ℕ} [NeZero m] [NeZero n]
+    (hm : Odd m) (hn : Odd n) (h : Nat.Coprime m n) :
+    (Finset.univ.sum (fun r : ZMod (m * n) => ‖sqGaussSum r‖))
+      = (Finset.univ.sum (fun r : ZMod m => ‖sqGaussSum r‖))
+        * (Finset.univ.sum (fun r : ZMod n => ‖sqGaussSum r‖)) := by
+  haveI : NeZero (m * n) := ⟨Nat.mul_ne_zero (NeZero.ne m) (NeZero.ne n)⟩
+  have hodd : Odd (m * n) := hm.mul hn
+  rw [sqGaussSum_norm_sum_total_eq_coeff_of_odd hodd,
+    sqGaussSum_norm_sum_total_eq_coeff_of_odd hm,
+    sqGaussSum_norm_sum_total_eq_coeff_of_odd hn, weylMassCoeff_mul_of_coprime h,
+    Nat.cast_mul, Real.sqrt_mul (Nat.cast_nonneg m)]
+  ring
+
 end Szemeredi.Roth
+
 
