@@ -601,4 +601,122 @@ theorem fourierCoeffOn_eq_zero_of_iteratedDeriv_integral_energy_eq
   rw [htot] at hdHS
   exact fourierCoeffOn_eq_zero_of_iteratedDeriv_energy_eq f hf hper hab k hk hmean hfHS hdHS
 
+-- ============================================================
+-- SECTION VIII: the integral Wirtinger inequality itself
+--               (∫f² ≤ ∫(f⁽ᵏ⁾)²) and its equality iff
+-- ============================================================
+
+/-- **General-order Wirtinger / Poincaré inequality (integral form).**  For a smooth
+    (`C^∞`) period-`2π` function `f` with zero mean (`ĉ₀(f) = 0`) and any order `k`,
+
+        ∫₀^{2π} f²  ≤  ∫₀^{2π} (f⁽ᵏ⁾)² .
+
+    This is the analytic heart of the Hurwitz proof of the isoperimetric inequality: the
+    energy of a zero-mean periodic function never exceeds that of any of its derivatives,
+    because differentiation multiplies the `n`-th Fourier mode by `|n|ᵏ ≥ 1`.  The companion
+    `fourierCoeffOn_eq_zero_of_iteratedDeriv_integral_energy_eq` shows the bound is *tight*
+    only for the pure first harmonic (the circle).  (The statement is stated for every `k`;
+    `k = 0` is the trivial `∫f² ≤ ∫f²`, and the interesting regime is `k ≥ 1`.)
+
+    Proof.  Both energies are Parseval totals of the coefficient-square families
+    (`hasSum_sq_fourierCoeffOn_real`), which are termwise dominated
+    (`‖ĉₙ(f)‖² ≤ ‖ĉₙ(f⁽ᵏ⁾)‖²`, the `|n|ᵏ ≥ 1` scaling on `n ≠ 0` and the zero-mean
+    hypothesis on `n = 0`); `hasSum_le` compares the totals and the positive Parseval
+    prefactor `(2π)⁻¹` cancels. -/
+theorem integral_sq_le_integral_sq_iteratedDeriv_of_mean_zero
+    (f : ℝ → ℝ) (hf : ContDiff ℝ ∞ f) (hper : ∀ t, f (t + 2 * π) = f t)
+    (hab : (0 : ℝ) < 2 * π) (k : ℕ)
+    (hmean : fourierCoeffOn hab (ofReal ∘ f) 0 = 0) :
+    (∫ x in (0 : ℝ)..(2 * π), (f x) ^ 2)
+      ≤ ∫ x in (0 : ℝ)..(2 * π), (deriv^[k] f x) ^ 2 := by
+  have hcont_f : Continuous f := hf.continuous
+  have hcont_d : Continuous (deriv^[k] f) := (contDiff_infty_iterate_deriv f hf k).continuous
+  have hfHS := hasSum_sq_fourierCoeffOn_real hcont_f hab
+  have hdHS := hasSum_sq_fourierCoeffOn_real hcont_d hab
+  -- Termwise domination of the coefficient squares (as in the equality case).
+  have hdom : ∀ n : ℤ, ‖fourierCoeffOn hab (ofReal ∘ f) n‖ ^ 2
+      ≤ ‖fourierCoeffOn hab (ofReal ∘ deriv^[k] f) n‖ ^ 2 := by
+    intro n
+    rw [norm_fourierCoeffOn_iteratedDeriv_all f hf hper hab n k, mul_pow]
+    rcases eq_or_ne n 0 with rfl | hn
+    · rw [hmean]; simp
+    · have h1n : (1 : ℝ) ≤ |(n : ℝ)| := by
+        rw [← Int.cast_abs]; exact_mod_cast Int.one_le_abs hn
+      have h1 : (1 : ℝ) ≤ |(n : ℝ)| ^ k := one_le_pow₀ h1n
+      have h1sq : (1 : ℝ) ≤ (|(n : ℝ)| ^ k) ^ 2 := by nlinarith [h1]
+      nlinarith [h1sq, sq_nonneg (‖fourierCoeffOn hab (ofReal ∘ f) n‖)]
+  -- Compare the Parseval totals, then cancel the positive prefactor.
+  have hle := hasSum_le hdom hfHS hdHS
+  have hc : (0 : ℝ) < (2 * π - 0)⁻¹ := by
+    have : (0 : ℝ) < 2 * π - 0 := by simpa using hab
+    exact inv_pos.mpr this
+  simp only [smul_eq_mul] at hle
+  exact le_of_mul_le_mul_left hle hc
+
+/-- **Reverse direction: the pure first harmonic saturates the energy.**  If `f` is smooth,
+    period-`2π`, and supported on the first harmonic alone (`ĉₙ(f) = 0` for all `|n| ≠ 1`),
+    then for every order `k ≥ 1` the derivative has *exactly* the same `L²` energy:
+
+        ∫₀^{2π} f²  =  ∫₀^{2π} (f⁽ᵏ⁾)² .
+
+    Together with the forward equality case this makes the Wirtinger bound an iff.
+
+    Proof.  On the first harmonic `|n| = 1` the magnitude law gives `‖ĉₙ(f⁽ᵏ⁾)‖ = 1ᵏ·‖ĉₙ(f)‖`,
+    and off it both sides vanish (the hypothesis kills `ĉₙ(f)`, hence `ĉₙ(f⁽ᵏ⁾) = (in)ᵏ·0`).
+    So the two coefficient-square families are *equal* termwise; the Parseval sums coincide by
+    `HasSum.unique`, and the positive prefactor `(2π)⁻¹` cancels. -/
+theorem integral_sq_iteratedDeriv_eq_of_first_harmonic
+    (f : ℝ → ℝ) (hf : ContDiff ℝ ∞ f) (hper : ∀ t, f (t + 2 * π) = f t)
+    (hab : (0 : ℝ) < 2 * π) (k : ℕ) (hk : 1 ≤ k)
+    (hfirst : ∀ n : ℤ, n.natAbs ≠ 1 → fourierCoeffOn hab (ofReal ∘ f) n = 0) :
+    (∫ x in (0 : ℝ)..(2 * π), (f x) ^ 2)
+      = ∫ x in (0 : ℝ)..(2 * π), (deriv^[k] f x) ^ 2 := by
+  have hcont_f : Continuous f := hf.continuous
+  have hcont_d : Continuous (deriv^[k] f) := (contDiff_infty_iterate_deriv f hf k).continuous
+  have hfHS := hasSum_sq_fourierCoeffOn_real hcont_f hab
+  have hdHS := hasSum_sq_fourierCoeffOn_real hcont_d hab
+  -- Termwise *equality* of the coefficient squares.
+  have hteq : ∀ n : ℤ, ‖fourierCoeffOn hab (ofReal ∘ deriv^[k] f) n‖ ^ 2
+      = ‖fourierCoeffOn hab (ofReal ∘ f) n‖ ^ 2 := by
+    intro n
+    rw [norm_fourierCoeffOn_iteratedDeriv_all f hf hper hab n k, mul_pow]
+    rcases eq_or_ne n.natAbs 1 with h1 | h1
+    · have hp : |(n : ℝ)| ^ k = 1 := (abs_intCast_pow_eq_one_iff n k hk).mpr h1
+      rw [hp]; ring
+    · rw [hfirst n h1]; simp
+  -- Rewrite the derivative's Parseval `HasSum` onto `f`'s coefficient squares.
+  have hfun : (fun n : ℤ => ‖fourierCoeffOn hab (ofReal ∘ deriv^[k] f) n‖ ^ 2)
+      = (fun n : ℤ => ‖fourierCoeffOn hab (ofReal ∘ f) n‖ ^ 2) := funext hteq
+  rw [hfun] at hdHS
+  have huniq := hfHS.unique hdHS
+  have hc_ne : ((2 * π - 0)⁻¹ : ℝ) ≠ 0 := by
+    have : (0 : ℝ) < 2 * π - 0 := by simpa using hab
+    exact ne_of_gt (inv_pos.mpr this)
+  simp only [smul_eq_mul] at huniq
+  exact mul_left_cancel₀ hc_ne huniq
+
+/-- **Equality case of the general-order Wirtinger inequality (integral iff).**  For a smooth
+    period-`2π` function `f` with zero mean and any order `k ≥ 1`,
+
+        ∫₀^{2π} f²  =  ∫₀^{2π} (f⁽ᵏ⁾)²   ⟺   ∀ n, |n| ≠ 1 → ĉₙ(f) = 0 ,
+
+    i.e. the derivative energy equals the function energy **iff** `f` is a pure first harmonic
+    `f(t) = a·cos t + b·sin t`.  This packages the Hurwitz equality analysis at the integral
+    level: the isoperimetric bound (in its Wirtinger form) is attained exactly by the circle.
+
+    The forward implication is `fourierCoeffOn_eq_zero_of_iteratedDeriv_integral_energy_eq`;
+    the reverse is `integral_sq_iteratedDeriv_eq_of_first_harmonic`. -/
+theorem integral_sq_iteratedDeriv_eq_iff_first_harmonic
+    (f : ℝ → ℝ) (hf : ContDiff ℝ ∞ f) (hper : ∀ t, f (t + 2 * π) = f t)
+    (hab : (0 : ℝ) < 2 * π) (k : ℕ) (hk : 1 ≤ k)
+    (hmean : fourierCoeffOn hab (ofReal ∘ f) 0 = 0) :
+    (∫ x in (0 : ℝ)..(2 * π), (f x) ^ 2)
+        = ∫ x in (0 : ℝ)..(2 * π), (deriv^[k] f x) ^ 2
+      ↔ ∀ n : ℤ, n.natAbs ≠ 1 → fourierCoeffOn hab (ofReal ∘ f) n = 0 := by
+  constructor
+  · intro h
+    exact fourierCoeffOn_eq_zero_of_iteratedDeriv_integral_energy_eq f hf hper hab k hk hmean h
+  · intro h
+    exact integral_sq_iteratedDeriv_eq_of_first_harmonic f hf hper hab k hk h
+
 end IsoperimetricFourier
