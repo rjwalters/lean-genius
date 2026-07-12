@@ -77,7 +77,7 @@ power-to-falling-factorial change of basis. -/
 theorem mul_descFactorial_absorb (x r : ℕ) :
     x * x.descFactorial r = x.descFactorial (r + 1) + r * x.descFactorial r := by
   rw [Nat.descFactorial_succ, ← Nat.add_mul]
-  rcases le_or_lt r x with h | h
+  rcases le_or_gt r x with h | h
   · rw [Nat.sub_add_cancel h]
   · rw [Nat.descFactorial_eq_zero_iff_lt.mpr h]
     ring
@@ -227,6 +227,5 @@ theorem sq_moment_sum_simplex (d N : ℕ) (h : 2 ≤ N) :
     show stirlingSecond 2 2 = 1 from rfl, Nat.descFactorial_one, hd2,
     show d + 1 + 1 = d + 2 from rfl, show d + 2 + 1 = d + 3 from rfl,
     Nat.zero_mul, Nat.one_mul, Nat.zero_add]
-  ring
 
 end TetrahedralNumberFormulaOQ01
