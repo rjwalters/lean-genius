@@ -155,39 +155,52 @@
   },
   "sections": [
     {
-      "id": "header",
+      "id": "docs-imports",
       "title": "Documentation and Imports",
       "startLine": 1,
       "endLine": 53,
-      "summary": "Module docstring with classification table, key argument, and references. Imports Mathlib.GroupTheory.Solvable and Mathlib.GroupTheory.SpecificGroups.Alternating. set_option linter flags, open Equiv, and namespace declaration."
+      "summary": "Module docstring stating the goal — a native_decide-free classification of when the alternating group Aₙ is solvable — together with the Mathlib imports and the `namespace AbelRuffiniOQ04OQ02OQ02` declaration.",
+      "mathContext": "$A_n$ is solvable $\\iff n \\le 4$."
     },
     {
-      "id": "small-cases",
-      "title": "Small Alternating Groups Are Solvable (n ≤ 4)",
-      "startLine": 55,
-      "endLine": 80,
-      "summary": "Part I — the base cases $A_0,\\dots,A_4$ (lines 59–134), each discharged by a kernel-checked argument matched to the group's structure."
+      "id": "part1-small",
+      "title": "Part 1a: Small Alternating Groups A₀–A₃ Are Solvable",
+      "startLine": 54,
+      "endLine": 73,
+      "summary": "`a0_solvable`, `a1_solvable` (trivial groups, by `inferInstance`), `a2_solvable` (trivial, hence commutative, via `isSolvable_of_comm`) and `a3_solvable` (A₃ ≅ ℤ/3ℤ is abelian). The commutative cases are discharged by `decide` over the finite group.",
+      "mathContext": "$A_0, A_1, A_2$ are trivial and $A_3 \\cong \\mathbb{Z}/3\\mathbb{Z}$ is abelian, so all are solvable."
     },
     {
-      "id": "large-cases",
-      "title": "Large Alternating Groups Are Not Solvable (n ≥ 5)",
-      "startLine": 82,
-      "endLine": 109,
-      "summary": "The structural heart of the file: a three-lemma cascade translating Mathlib's symmetric-group non-solvability obstruction (`Equiv.Perm.not_solvable`) into the alternating-group setting via a *contrapositive* short-exact-sequence …"
+      "id": "part1-a4",
+      "title": "Part 1b: A₄ Is Solvable via its Klein Four-Group V₄",
+      "startLine": 74,
+      "endLine": 133,
+      "summary": "The structural, native_decide-free proof that A₄ is solvable. Defines the Klein four-subgroup `A4V4 = {g | g² = 1}` (identity plus the three double transpositions), shows `commutator (A₄) ≤ A4V4` (`commutator_le_A4V4`), that V₄ is abelian (`A4V4_comm`) so `⁅V₄,V₄⁆ = ⊥` (`commutator_A4V4_eq_bot`), hence the second derived subgroup `D²(A₄) = ⊥` (`a4_derivedSeries_two_eq_bot`) and finally `a4_solvable` (derived length exactly 2). All `decide` calls range over A₄'s 12 elements — no subgroup-closure decidability instance is needed.",
+      "mathContext": "$D(A_4) \\le V_4$ and $V_4$ abelian $\\Rightarrow D^2(A_4) = \\{e\\}$, so $A_4$ has derived length 2."
     },
     {
-      "id": "classification",
-      "title": "The Complete Classification",
-      "startLine": 111,
-      "endLine": 138,
-      "summary": "alternating_solvable_iff: IsSolvable (alternatingGroup (Fin n)) ↔ n ≤ 4. Forward direction: contradiction via an_not_solvable_of_ge_five. Backward direction: interval_cases n enumerates 0–4, each discharged by the small-case theorems."
+      "id": "part2-large",
+      "title": "Part 2: Large Alternating Groups (n ≥ 5) Are Not Solvable",
+      "startLine": 134,
+      "endLine": 162,
+      "summary": "For n ≥ 5: `sn_solvable_of_an_solvable` lifts solvability of Aₙ to Sₙ through the short exact sequence 1 → Aₙ → Sₙ → ℤ/2ℤ → 1 (`solvable_of_ker_le_range` with `Perm.sign`); `sn_not_solvable` invokes Mathlib's `Perm.not_solvable`; and `an_not_solvable_of_ge_five` combines them contrapositively to conclude Aₙ is not solvable.",
+      "mathContext": "$A_n$ solvable $\\Rightarrow S_n$ solvable, contradicting $S_n$ not solvable for $n \\ge 5$."
     },
     {
-      "id": "corollaries",
-      "title": "Corollaries and Sharp Threshold",
-      "startLine": 140,
-      "endLine": 167,
-      "summary": "Named instances for A₅ and A₆ non-solvability. Convenience lemmas alternating_solvable_of_le_four and alternating_not_solvable_of_ge_five. sharp_threshold witnesses that A₄ is solvable but A₅ is not. Closes namespace AbelRuffiniOQ04OQ02OQ02."
+      "id": "part3-classification",
+      "title": "Part 3: The Complete Classification (Aₙ solvable ↔ n ≤ 4)",
+      "startLine": 163,
+      "endLine": 191,
+      "summary": "`alternating_solvable_iff`: the biconditional `IsSolvable (alternatingGroup (Fin n)) ↔ n ≤ 4`. The forward direction is the contrapositive of `an_not_solvable_of_ge_five`; the reverse `interval_cases n` on n ≤ 4 supplies `a0`–`a4_solvable`. This is the alternating-group analogue of Sₙ solvable ↔ n ≤ 4, sharing the threshold at n = 5.",
+      "mathContext": "$\\mathrm{IsSolvable}(A_n) \\iff n \\le 4$."
+    },
+    {
+      "id": "part4-corollaries",
+      "title": "Part 4: Corollaries, Named Instances, and Sharp Threshold",
+      "startLine": 192,
+      "endLine": 220,
+      "summary": "Named consequences: `a5_not_solvable`, `a6_not_solvable`, the packaged `alternating_solvable_of_le_four` and `alternating_not_solvable_of_ge_five`, and `sharp_threshold` (A₄ IS solvable while A₅ is NOT), witnessing that the boundary at n = 5 is sharp — A₅ being the smallest non-abelian simple group.",
+      "mathContext": "$A_4$ solvable and $A_5$ not solvable: the threshold at $n = 5$ is sharp."
     }
   ],
   "conclusion": {
