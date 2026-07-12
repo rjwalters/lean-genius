@@ -19,7 +19,7 @@
     "title": "The Core Obstruction: One Odd Prime Factor Suffices",
     "content": "`not_isPowTwo_of_odd_prime_dvd`: if an odd prime `q` divides `d`, then `d` is not a power of two. The proof is three steps and no case analysis: assume `d = 2^k`; then `q ∣ 2^k` gives `q ∣ 2` by `Nat.Prime.dvd_of_dvd_pow`; then `q = 2` by `Nat.prime_dvd_prime_iff_eq`, contradicting `q ≠ 2`. This is the entire arithmetic content of every classical compass-and-straightedge impossibility.",
     "mathContext": "If $d = 2^k$ then the only prime dividing $d$ is 2. Contrapositively, any odd prime divisor is an obstruction. For $d = 3$ (the degree of $\\cos 20°$, $\\sqrt[3]{2}$, $\\cos 2\\pi/7$) the odd prime is 3 itself.",
-    "significance": "supporting",
+    "significance": "key",
     "relatedConcepts": ["Euclid's lemma", "prime divisibility", "Wantzel obstruction"],
     "prerequisites": ["a prime dividing a^n divides a", "p ∣ q ↔ p = q for primes"]
   },
