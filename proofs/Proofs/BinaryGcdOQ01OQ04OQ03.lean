@@ -788,4 +788,30 @@ theorem avgSteps_one_unbounded (M : ℚ) :
   have hMn : M < (n : ℚ) - 1 := by linarith
   linarith
 
+/-- **Successor recurrence for the total step count (general base `a`).**  Extending the
+range from `[1, N]` to `[1, N+1]` adds exactly the single term `binaryGcdSteps a (N+1)`:
+
+    totalSteps a (N+1) = totalSteps a N + binaryGcdSteps a (N+1).
+
+The general-`a` companion of `totalSteps_one_succ` (which specialises the added term to
+`log₂(N+1) + 1` via `binaryGcdSteps_one_eq_log`). -/
+theorem totalSteps_succ (a N : ℕ) :
+    totalSteps a (N + 1) = totalSteps a N + binaryGcdSteps a (N + 1) := by
+  unfold totalSteps
+  rw [Finset.sum_Icc_succ_top (by omega : 1 ≤ N + 1)]
+
+/-- **Monotonicity of the total step count (general base `a`).**  For every fixed base
+`a`, the total step count `totalSteps a N = ∑_{b=1}^{N} binaryGcdSteps a b` is monotone in
+the range endpoint `N`: enlarging the range `[1, N]` only adds nonnegative summands.  The
+general-`a` companion of `totalSteps_one_mono` (which was stated only for `a = 1`). -/
+theorem totalSteps_mono (a : ℕ) : Monotone (totalSteps a) := by
+  intro M N hMN
+  unfold totalSteps
+  apply Finset.sum_le_sum_of_subset_of_nonneg
+  · intro b hb
+    rw [Finset.mem_Icc] at hb ⊢
+    omega
+  · intro b _ _
+    exact Nat.zero_le _
+
 end BinaryGcdOQ01OQ04OQ03
