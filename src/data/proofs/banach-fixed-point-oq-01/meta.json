@@ -98,6 +98,16 @@
       "targetId": "schauder-fixed-point",
       "relationship": "related",
       "description": "Schauder extends existence to compact convex sets in Banach spaces (no uniqueness); Banach's contraction principle trades that generality for uniqueness and an explicit convergence rate."
+    },
+    {
+      "targetId": "banach-fixed-point-oq-01-oq-01",
+      "relationship": "extended by",
+      "description": "Direct child answering this entry's first open question: Picard–Lindelöf (Cauchy–Lipschitz) local existence and uniqueness for the initial value problem, obtained by recasting y' = f(y), y(t₀)=x₀ as a fixed point of the Picard integral operator and applying exactly the contraction machinery packaged here."
+    },
+    {
+      "targetId": "banach-fixed-point-oq-01-oq-02",
+      "relationship": "extended by",
+      "description": "Direct child answering this entry's second open question: on a complete normed group, a k-Lipschitz perturbation of the identity f x = x + g x (k < 1) is a homeomorphism with two-sided Lipschitz control — the perturbation-of-identity result that is a step toward the inverse function theorem, built on the contraction principle stated here."
     }
   ],
   "leanFile": {
