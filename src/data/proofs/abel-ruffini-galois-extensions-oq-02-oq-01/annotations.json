@@ -21,6 +21,27 @@
     ]
   },
   {
+    "id": "ann-galois-normal-setup",
+    "proofId": "abel-ruffini-galois-extensions-oq-02-oq-01",
+    "range": { "startLine": 54, "endLine": 65 },
+    "type": "context",
+    "title": "Ambient Hypotheses: an Arbitrary Finite Galois Extension E/F",
+    "content": "Two imports and a single `variable` line fix the setting for the whole file. `import Proofs.AbelRuffiniGaloisExtensionsOQ02` brings in the parent's Galois correspondence (`intermediateFieldEquivSubgroup'`) and its Part VI normal machinery; `import Mathlib.FieldTheory.Galois.Basic` supplies the two one-way implications. The `variable` line `[Field F] [Field E] [Algebra F E] [FiniteDimensional F E] [IsGalois F E]` states the standing assumptions: everything in Parts I–II is proved for an *arbitrary* finite Galois extension E/F. Finiteness is what makes `Nat.card` meaningful in the counting corollary and guarantees `intermediateFieldEquivSubgroup'` is available; `IsGalois F E` (= `Normal F E ∧ Separable F E`) is what makes the separability of every subextension automatic in `normal_iff_fixingSubgroup_normal`. Only Part III specializes to the concrete quintic.",
+    "mathContext": "Standing context: $E/F$ with $[\\mathrm{Field}\\,F]\\,[\\mathrm{Field}\\,E]\\,[\\mathrm{Algebra}\\,F\\,E]\\,[\\mathrm{FiniteDimensional}\\,F\\,E]\\,[\\mathrm{IsGalois}\\,F\\,E]$, i.e. a finite Galois extension with $\\mathrm{IsGalois} = \\mathrm{Normal} \\wedge \\mathrm{Separable}$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "finite Galois extension",
+      "IsGalois = Normal + Separable",
+      "typeclass variable binders",
+      "intermediateFieldEquivSubgroup' (from OQ-02)"
+    ],
+    "prerequisites": [
+      "field extensions and FiniteDimensional",
+      "Lean typeclass variable declarations",
+      "the parent OQ-02 correspondence"
+    ]
+  },
+  {
     "id": "ann-galois-normal-biconditional",
     "proofId": "abel-ruffini-galois-extensions-oq-02-oq-01",
     "range": { "startLine": 66, "endLine": 81 },
