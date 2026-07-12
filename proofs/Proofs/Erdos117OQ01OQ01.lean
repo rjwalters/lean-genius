@@ -170,4 +170,70 @@ theorem abelian_covering_exponential_if_submultiplicative
   -- base_implies_behavior_correct wants the limit as log (exp L) = L
   exact base_implies_behavior_correct (Real.exp L) hexpL_gt_1 (by rwa [Real.log_exp])
 
+/-! ## Converse: exponential behavior determines the growth-rate limit -/
+
+/-- **Converse of `base_implies_behavior_correct`.** If `h` exhibits the corrected
+exponential behavior at base `c > 1`, then the growth rate converges to `log c`.
+Given a target radius `η`, continuity of `log` at `c` supplies a `d`-ball; choosing
+`ε = min(d/2, c/2) ∈ (0, c)` places `log(c ± ε)` within `η` of `log c`; the behavior's
+bounds `(c-ε)ⁿ ≤ h n ≤ (c+ε)ⁿ` then trap `growthRate n` in `(log c − η, log c + η)`.
+Mirrors `Erdos117OQ01.behavior_implies_base` for the corrected predicate. -/
+theorem behavior_correct_implies_base (c : ℝ) (hc : c > 1)
+    (hbehav : ExponentialBehaviorCorrect c) :
+    Tendsto growthRate atTop (𝓝 (Real.log c)) := by
+  rw [Metric.tendsto_atTop]
+  intro η hη
+  have hcont : ContinuousAt Real.log c := Real.continuousAt_log (ne_of_gt (by linarith))
+  obtain ⟨d, hd, hdlog⟩ := Metric.continuousAt_iff.mp hcont η hη
+  set ε := min (d / 2) (c / 2) with hεdef
+  have hε_pos : 0 < ε := lt_min (by linarith) (by linarith)
+  have hε_lt_c : ε < c := lt_of_le_of_lt (min_le_right _ _) (by linarith)
+  have hcmε : 0 < c - ε := by linarith
+  have hεd : ε < d := lt_of_le_of_lt (min_le_left _ _) (by linarith)
+  obtain ⟨N, hN⟩ := hbehav ε ⟨hε_pos, hε_lt_c⟩
+  have hdist_u : dist (Real.log (c + ε)) (Real.log c) < η :=
+    hdlog (by rw [Real.dist_eq]; have : c + ε - c = ε := by ring
+              rw [this, abs_of_pos hε_pos]; exact hεd)
+  have hdist_l : dist (Real.log (c - ε)) (Real.log c) < η :=
+    hdlog (by rw [Real.dist_eq]; have : c - ε - c = -ε := by ring
+              rw [this, abs_neg, abs_of_pos hε_pos]; exact hεd)
+  rw [Real.dist_eq] at hdist_u hdist_l
+  have hu : Real.log (c + ε) < Real.log c + η := by linarith [(abs_lt.mp hdist_u).2]
+  have hl : Real.log c - η < Real.log (c - ε) := by linarith [(abs_lt.mp hdist_l).1]
+  refine ⟨max N 1, fun n hn => ?_⟩
+  have hn_N : N ≤ n := le_of_max_le_left hn
+  have hn_1 : 1 ≤ n := le_of_max_le_right hn
+  have hn_pos : (0 : ℝ) < (n : ℝ) := Nat.cast_pos.mpr (by omega)
+  obtain ⟨hlow, hupp⟩ := hN n hn_N
+  have hgr_l : Real.log (c - ε) ≤ growthRate n := by
+    rw [growthRate_eq' n hn_1, le_div_iff₀ hn_pos]
+    have hlog := Real.log_le_log (by positivity) hlow
+    rwa [Real.log_pow, mul_comm] at hlog
+  have hgr_u : growthRate n ≤ Real.log (c + ε) := by
+    rw [growthRate_eq' n hn_1, div_le_iff₀ hn_pos]
+    have hhn : (1 : ℝ) ≤ (h n : ℝ) := by exact_mod_cast h_pos n hn_1
+    have hlog := Real.log_le_log (by linarith) hupp
+    rwa [Real.log_pow, mul_comm] at hlog
+  rw [Real.dist_eq, abs_lt]
+  exact ⟨by linarith, by linarith⟩
+
+/-- **Corrected exponential behavior ⟺ growth-rate convergence.** For `c > 1`, the
+growth rate `log(h n)/n → log c` exactly when `h` has the corrected exponential
+behavior at `c`. Packages `base_implies_behavior_correct` with its converse
+`behavior_correct_implies_base` into a characterization. -/
+theorem exponential_behavior_correct_iff_base (c : ℝ) (hc : c > 1) :
+    Tendsto growthRate atTop (𝓝 (Real.log c)) ↔ ExponentialBehaviorCorrect c :=
+  ⟨base_implies_behavior_correct c hc, behavior_correct_implies_base c hc⟩
+
+/-- **The exponential base is unique.** If `h` exhibits corrected exponential behavior at
+two bases `c₁, c₂ > 1`, they coincide: each forces `growthRate → log cᵢ`, and limits are
+unique, so `log c₁ = log c₂`, hence `c₁ = c₂` by injectivity of `log` on the positives.
+The base `c` in `ExponentialBehaviorCorrect c` is therefore a genuine invariant of `h`. -/
+theorem exponentialBehaviorCorrect_base_unique {c₁ c₂ : ℝ} (hc₁ : c₁ > 1) (hc₂ : c₂ > 1)
+    (h₁ : ExponentialBehaviorCorrect c₁) (h₂ : ExponentialBehaviorCorrect c₂) : c₁ = c₂ := by
+  have hlog : Real.log c₁ = Real.log c₂ :=
+    tendsto_nhds_unique (behavior_correct_implies_base c₁ hc₁ h₁)
+      (behavior_correct_implies_base c₂ hc₂ h₂)
+  exact Real.log_injOn_pos (Set.mem_Ioi.mpr (by linarith)) (Set.mem_Ioi.mpr (by linarith)) hlog
+
 end Erdos117OQ01OQ01
