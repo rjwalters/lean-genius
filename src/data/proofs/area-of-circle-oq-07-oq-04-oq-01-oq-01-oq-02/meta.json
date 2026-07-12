@@ -145,6 +145,11 @@
       "targetId": "area-of-circle-oq-07-oq-04-oq-01",
       "relationship": "extends",
       "description": "Grandparent. Recovers the planar value as the isotropic n = 2 case ∫_{ℝ²} e^{-b(x²+y²)} = π/b."
+    },
+    {
+      "targetId": "area-of-circle-oq-07",
+      "relationship": "related",
+      "description": "Lineage root (∫_ℝ e^{-x²} = √π). That entry's n-dimensional open question asks for the general positive-definite quadratic-form Gaussian ∫_{ℝⁿ} e^{-⟨Ax,x⟩} = π^{n/2}/√(det A); this entry supplies its diagonal case, since ∏ᵢ bᵢ = det diag(b₁,…,bₙ) makes π^{n/2}/√(∏ᵢ bᵢ) exactly π^{n/2}/√(det A) for A = diag b. Together with the isotropic sibling area-of-circle-oq-07-oq-04-oq-01-oq-01 (the A = bI case), it reduces the general open question to the orthogonal-diagonalization step left as this entry's own follow-up."
     }
   ],
   "references": [
