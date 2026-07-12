@@ -1387,4 +1387,43 @@ theorem sdist_eq_pi_iff {P Q : E} (hP : OnSphere P) (hQ : OnSphere Q) :
     have h1 : scos P Q = -1 := (scos_eq_neg_one_iff hP hQ).mpr h
     rw [scos] at h1; exact h1.le
 
+/-! ## Antipodal metric identities
+
+    `sCircle_antipodal_center` recorded the two-centre ambiguity `sCircle O ρ = sCircle (-O)
+    (π − ρ)` at the level of *circles*.  Its shadow at the level of the *distance* is the
+    pair of supplementary-angle identities `sdist P (-Q) = π − sdist P Q` (and the left
+    version), together with the structural fact that the antipodal map `x ↦ -x` is an
+    *isometry* of the model, `sdist (-P) (-Q) = sdist P Q`.  These unconditional identities
+    (no `OnSphere` hypothesis needed — they are facts about `arccos` of the inner product)
+    are the elementary engine behind the `±⟪O, ·⟫` sign flips used throughout the
+    incircle/excircle contact analysis, and they generalise `sdist_antipode`
+    (`sdist O (-O) = π`, the `P = Q` case of `sdist_neg_right` via `sdist_self`). -/
+
+/-- **Supplementary distance to an antipode (right).**  Reflecting the second point through
+    the centre sends the spherical distance to its supplement: `sdist P (-Q) = π − sdist P Q`.
+    Immediate from `⟪P, -Q⟫ = -⟪P, Q⟫` and `arccos (-x) = π − arccos x`.  With `Q = P` this
+    recovers `sdist_antipode` (`sdist P (-P) = π − 0 = π`). -/
+theorem sdist_neg_right (P Q : E) : sdist P (-Q) = Real.pi - sdist P Q := by
+  unfold sdist
+  rw [inner_neg_right, Real.arccos_neg]
+
+/-- **Supplementary distance to an antipode (left).**  The mirror of `sdist_neg_right`:
+    `sdist (-P) Q = π − sdist P Q`, from `⟪-P, Q⟫ = -⟪P, Q⟫`. -/
+theorem sdist_neg_left (P Q : E) : sdist (-P) Q = Real.pi - sdist P Q := by
+  unfold sdist
+  rw [inner_neg_left, Real.arccos_neg]
+
+/-- **The antipodal map is an isometry of the spherical model.**  Sending *both* points to
+    their antipodes preserves the spherical distance: `sdist (-P) (-Q) = sdist P Q`, because
+    `⟪-P, -Q⟫ = ⟪P, Q⟫`.  Equivalently, applying `sdist_neg_right` then `sdist_neg_left`
+    cancels the two supplements (`π − (π − d) = d`).  This is the metric statement that the
+    central symmetry `x ↦ -x` is a spherical isometry — the symmetry that pairs each
+    spherical circle with its antipodal twin (`sCircle_antipodal_center`). -/
+theorem sdist_neg_neg (P Q : E) : sdist (-P) (-Q) = sdist P Q := by
+  unfold sdist
+  rw [inner_neg_neg]
+
 end FeuerbachsTheoremOQ04
+
+#print axioms FeuerbachsTheoremOQ04.sdist_neg_right
+#print axioms FeuerbachsTheoremOQ04.sdist_neg_neg
