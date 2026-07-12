@@ -460,6 +460,22 @@ theorem powerForm_totient {p q : ℕ} (hp : p.Prime) (hq : q.Prime) (hpq : p ≠
   have hcop : Nat.Coprime (p ^ k) (q ^ l) := Nat.coprime_pow_primes k l hp hq hpq
   rw [Nat.totient_mul hcop, Nat.totient_prime_pow hp hk, Nat.totient_prime_pow hq hl]
 
+/-- **Sum-of-divisors `σ(p^k q^l) = (Σᵢ₌₀ᵏ pⁱ)·(Σⱼ₌₀ˡ qʲ)`.** For distinct primes `p ≠ q`,
+the divisor sum `σ₁` of the power form `p^k q^l` factors through the coprime split
+`p^k ⊥ q^l` (`Nat.Coprime.sum_divisors_mul`, `σ` multiplicative), and each prime-power
+divisor sum reindexes over its exponent range (`Nat.sum_divisors_prime_pow`). Collapsing
+the two geometric series gives the textbook closed form
+`σ(p^k q^l) = ((p^{k+1}−1)/(p−1))·((q^{l+1}−1)/(q−1))`; we keep the pre-collapse product of
+range-sums to avoid `ℕ`-division. This is the `σ` companion of the divisor-count `τ`
+(`powerForm_card_divisors`, `(k+1)(l+1)`) and totient `φ` (`powerForm_totient`), completing
+the standard multiplicative-invariant readouts (`τ, φ, ω, Ω, σ, radical`) of a two-prime
+power form off the single coprime split. -/
+theorem powerForm_sigma {p q : ℕ} (hp : p.Prime) (hq : q.Prime) (hpq : p ≠ q) (k l : ℕ) :
+    ∑ d ∈ (p ^ k * q ^ l).divisors, d
+      = (∑ i ∈ Finset.range (k + 1), p ^ i) * (∑ j ∈ Finset.range (l + 1), q ^ j) := by
+  have hcop : Nat.Coprime (p ^ k) (q ^ l) := Nat.coprime_pow_primes k l hp hq hpq
+  rw [hcop.sum_divisors_mul, Nat.sum_divisors_prime_pow hp, Nat.sum_divisors_prime_pow hq]
+
 /-! ### The remaining classical multiplicative invariants: `ω`, radical, `Ω`, squarefree
 
 The divisor-count `τ(p^k q^l) = (k+1)(l+1)` (`powerForm_card_divisors`) and totient
