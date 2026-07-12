@@ -2151,4 +2151,134 @@ theorem sqGaussSum_second_moment_nonzero {N : ℕ} [NeZero N] :
   rw [h0] at hsum
   linarith [hsum, hall]
 
+/-! ## Part X: Exact odd-modulus magnitude — no residual cancellation
+
+Part VII bounded `‖G(r)‖² ≤ N · gcd((2r).val, N)` (`sqGaussSum_normSq_le_gcd`) via the
+triangle inequality on the residual phase sum `Σ_{h : 2rh=0} ψ(−r·h²)`, and the odd-modulus
+density corollary `sqDiffFree_density_bound_of_odd` flagged this triangle step as the source
+of its quantitative weakness (`M = N/√2`, of order `N`).  For **odd** `N` that triangle step
+loses *nothing*: `2` is a unit, so every kernel element `h` (`2rh = 0`) already satisfies
+`rh = 0`, hence `r·h² = 0` and `ψ(−r·h²) = 1`.  The residual sum has *no cancellation* — it
+equals the kernel size `gcd((2r).val, N)` — and the Weyl identity evaluates the magnitude
+**exactly**:
+
+  `‖G(r)‖² = N · gcd((2r).val, N)`   for every frequency `r`, `N` odd.
+
+At unit frequencies `gcd = 1`, recovering `‖G(r)‖² = N`; at a non-unit nonzero `r` the gcd is
+a *proper* divisor, and since `N` is odd its cofactor `N/gcd` is an odd divisor `> 1`, hence
+`≥ 3`, giving `‖G(r)‖² = N·gcd ≤ N²/3` — a genuine sharpening of the `≤ N²/2` bound
+`sqGaussSum_normSq_le_half_of_odd`. -/
+
+/-- **Exact quadratic Gauss-sum magnitude at odd moduli.**  For `N` odd and *any* frequency
+`r`, the Weyl inequality `sqGaussSum_normSq_le_gcd` is in fact an equality:
+
+`‖G(r)‖² = N · gcd((2r).val, N)`.
+
+Because `2` is a unit mod odd `N`, every solution of `2r·h = 0` has `r·h = 0`, hence
+`r·h² = 0`, so each term of the residual phase sum `Σ_{h : 2rh=0} ψ(−r·h²)` is `1`; the sum
+equals the kernel cardinality `gcd((2r).val, N)` (`kernel_card_eq_gcd`) and the Weyl identity
+`sqGaussSum_mul_conj` gives the exact value.  No residual cancellation occurs at odd moduli. -/
+theorem sqGaussSum_normSq_eq_gcd_of_odd {N : ℕ} [NeZero N] (hodd : Odd N) (r : ZMod N) :
+    ‖sqGaussSum r‖ ^ 2 = (N : ℝ) * (Nat.gcd (2 * r).val N : ℝ) := by
+  have h2 : IsUnit (2 : ZMod N) := by
+    have hcast : ((2 : ℕ) : ZMod N) = (2 : ZMod N) := by norm_cast
+    rw [← hcast, ZMod.isUnit_iff_coprime]
+    have hnd : ¬ (2 ∣ N) := by rw [Nat.dvd_iff_mod_eq_zero, Nat.odd_iff.mp hodd]; omega
+    exact (Nat.prime_two.coprime_iff_not_dvd).mpr hnd
+  -- Every kernel element kills the quadratic phase, so its `ψ`-term is `1`.
+  have hphase : ∀ h ∈ Finset.univ.filter (fun h : ZMod N => 2 * r * h = 0),
+      ψ (-(r * h ^ 2)) = 1 := by
+    intro h hh
+    rw [Finset.mem_filter] at hh
+    have hrh : r * h = 0 := by
+      obtain ⟨u, hu⟩ := h2
+      have hz : (↑u⁻¹ : ZMod N) * (2 * (r * h)) = 0 := by
+        rw [show 2 * (r * h) = 2 * r * h from by ring, hh.2, mul_zero]
+      rwa [← mul_assoc, ← hu, Units.inv_mul, one_mul] at hz
+    have hrh2 : r * h ^ 2 = 0 := by rw [pow_two, ← mul_assoc, hrh, zero_mul]
+    rw [hrh2, neg_zero, psi_zero]
+  -- Hence the residual phase sum collapses to the kernel cardinality.
+  have hsum : (Finset.univ.filter (fun h : ZMod N => 2 * r * h = 0)).sum
+      (fun h => ψ (-(r * h ^ 2)))
+      = ((Finset.univ.filter (fun h : ZMod N => 2 * r * h = 0)).card : ℂ) := by
+    rw [Finset.sum_congr rfl hphase, Finset.sum_const, nsmul_eq_mul, mul_one]
+  have hid := sqGaussSum_mul_conj r
+  rw [hsum] at hid
+  have hGsq : (↑(‖sqGaussSum r‖ ^ 2) : ℂ) = sqGaussSum r * starRingEnd ℂ (sqGaussSum r) := by
+    rw [Complex.mul_conj, Complex.normSq_eq_norm_sq]
+  rw [hid, kernel_card_eq_gcd (2 * r)] at hGsq
+  exact_mod_cast hGsq
+
+/-- **`‖G(r)‖ = √(N · gcd(2r, N))` at odd moduli.**  Square-root form of
+`sqGaussSum_normSq_eq_gcd_of_odd`: the exact magnitude of the quadratic Gauss sum at every
+frequency of an odd modulus.  The upper bound `sqGaussSum_norm_le_sqrt_gcd` is thus attained
+with equality for odd `N`. -/
+theorem sqGaussSum_norm_eq_sqrt_gcd_of_odd {N : ℕ} [NeZero N] (hodd : Odd N) (r : ZMod N) :
+    ‖sqGaussSum r‖ = Real.sqrt ((N : ℝ) * (Nat.gcd (2 * r).val N : ℝ)) := by
+  rw [← sqGaussSum_normSq_eq_gcd_of_odd hodd r, Real.sqrt_sq (norm_nonneg _)]
+
+/-- A proper divisor of an *odd* `N` is at most a third: if `0 < m < N` then
+`3 · gcd(m, N) ≤ N`.  The gcd divides `N` and is `< N`, so its cofactor `N/gcd` is an odd
+divisor `> 1`, hence `≥ 3`. -/
+private theorem three_mul_gcd_le_of_odd {m N : ℕ} (hodd : Odd N) (hpos : 0 < m) (hlt : m < N) :
+    3 * Nat.gcd m N ≤ N := by
+  set d := Nat.gcd m N with hd
+  have hNpos : 0 < N := lt_of_le_of_lt (Nat.zero_le m) hlt
+  have hdvd : d ∣ N := Nat.gcd_dvd_right m N
+  have hdlt : d < N := lt_of_le_of_lt (Nat.gcd_le_left N hpos) hlt
+  obtain ⟨k, hk⟩ := hdvd
+  have hk2 : 2 ≤ k := by
+    rcases Nat.lt_or_ge k 2 with h | h
+    · exfalso; interval_cases k <;> omega
+    · exact h
+  have hkodd : Odd k := by
+    rcases Nat.even_or_odd k with he | ho
+    · exfalso
+      have hNeven : Even N := by rw [hk]; exact he.mul_left d
+      rw [Nat.even_iff] at hNeven
+      rw [Nat.odd_iff] at hodd
+      omega
+    · exact ho
+  have hk3 : 3 ≤ k := by
+    rcases eq_or_lt_of_le hk2 with h | h
+    · rw [← h] at hkodd; exact absurd hkodd (by decide)
+    · omega
+  calc 3 * d ≤ k * d := Nat.mul_le_mul_right d hk3
+    _ = d * k := Nat.mul_comm k d
+    _ = N := hk.symm
+
+/-- **Sharpened sub-maximal magnitude at odd moduli.**  For odd `N` and any nonzero `r`, the
+exact value `sqGaussSum_normSq_eq_gcd_of_odd` together with the fact that a proper divisor of
+an *odd* `N` has cofactor `≥ 3` gives
+
+`‖G(r)‖² ≤ N² / 3`,
+
+improving the `≤ N²/2` of `sqGaussSum_normSq_le_half_of_odd`.  (At a unit `r` the gcd is `1`
+and `‖G(r)‖² = N`; the extremal `N²/3` is approached only when `r` lies over the largest
+proper divisor of `N`.) -/
+theorem sqGaussSum_normSq_le_third_of_odd {N : ℕ} [NeZero N] (hodd : Odd N) {r : ZMod N}
+    (hr : r ≠ 0) : ‖sqGaussSum r‖ ^ 2 ≤ (N : ℝ) ^ 2 / 3 := by
+  have h2 : IsUnit (2 : ZMod N) := by
+    have hcast : ((2 : ℕ) : ZMod N) = (2 : ZMod N) := by norm_cast
+    rw [← hcast, ZMod.isUnit_iff_coprime]
+    have hnd : ¬ (2 ∣ N) := by rw [Nat.dvd_iff_mod_eq_zero, Nat.odd_iff.mp hodd]; omega
+    exact (Nat.prime_two.coprime_iff_not_dvd).mpr hnd
+  have h2r : 2 * r ≠ 0 := by
+    intro h
+    obtain ⟨u, hu⟩ := h2
+    have hz : (↑u⁻¹ : ZMod N) * (2 * r) = 0 := by rw [h, mul_zero]
+    rw [← mul_assoc, ← hu, Units.inv_mul, one_mul] at hz
+    exact hr hz
+  have hpos : 0 < (2 * r).val := ZMod.val_pos.mpr h2r
+  have hlt : (2 * r).val < N := ZMod.val_lt (2 * r)
+  have hnat : 3 * Nat.gcd (2 * r).val N ≤ N := three_mul_gcd_le_of_odd hodd hpos hlt
+  have hgle : (Nat.gcd (2 * r).val N : ℝ) ≤ (N : ℝ) / 3 := by
+    have hcast := (Nat.cast_le (α := ℝ)).mpr hnat
+    push_cast at hcast; linarith
+  have hNnn : (0 : ℝ) ≤ N := Nat.cast_nonneg N
+  rw [sqGaussSum_normSq_eq_gcd_of_odd hodd r]
+  calc (N : ℝ) * (Nat.gcd (2 * r).val N : ℝ)
+      ≤ (N : ℝ) * ((N : ℝ) / 3) := mul_le_mul_of_nonneg_left hgle hNnn
+    _ = (N : ℝ) ^ 2 / 3 := by ring
+
 end Szemeredi.Roth
