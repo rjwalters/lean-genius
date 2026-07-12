@@ -68,13 +68,13 @@ theorem liminf_implies_limsup :
   have hbdd_below : Filter.IsBoundedUnder (· ≥ ·) Filter.atTop f := by
     refine ⟨0, ?_⟩
     simp only [Filter.eventually_map]
-    exact Filter.eventually_of_forall (fun n => primeDensityRatio_nonneg A n)
+    exact Filter.Eventually.of_forall (fun n => primeDensityRatio_nonneg A n)
   -- IsCoboundedUnder: any eventual upper bound for f is ≥ 0 (since f ≥ 0)
   have hcobdd : Filter.IsCoboundedUnder (· ≤ ·) Filter.atTop f := by
     use 0
     intro a ha
     simp only [Filter.eventually_map] at ha
-    obtain ⟨n, h1, h2⟩ := ((Filter.eventually_of_forall
+    obtain ⟨n, h1, h2⟩ := ((Filter.Eventually.of_forall
       (fun n => primeDensityRatio_nonneg A n)).and ha).exists
     linarith
   -- Extract ε = liminf/2 > 0 with eventually ε ≤ f

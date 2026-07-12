@@ -487,7 +487,7 @@ private theorem filter_shift_card_le (x : CantorSpace) (N : ℕ) (S : Set Cantor
   have h_split :
       ((Finset.range (N + 2)).filter (fun m => shift^[m] x ∈ S)).card ≤
       ((Finset.range (N + 1)).filter (fun m => shift^[m] x ∈ S)).card + 1 := by
-    rw [Finset.range_succ, Finset.filter_insert]
+    rw [Finset.range_add_one, Finset.filter_insert]
     split_ifs
     · exact le_of_le_of_eq (Finset.card_insert_le _ _) rfl
     · exact Nat.le_add_right _ _
@@ -671,7 +671,7 @@ theorem density_preserved_at_limit
     c ≤ μ cylinderZero := by
   have htends := ProbabilityMeasure.tendsto_measure_of_isClopen_of_tendsto hconv
     (cylinder_isClopen 0 true)
-  exact ge_of_tendsto htends (Filter.eventually_of_forall hbound)
+  exact ge_of_tendsto htends (Filter.Eventually.of_forall hbound)
 
 /-- Cylinder measure convergence: for any cylinder set, weak convergence
     of probability measures gives pointwise convergence of measures. -/

@@ -230,7 +230,7 @@ theorem four_dim_formula (L d : ℝ) :
     (orthogonal to the hyperplane normal), reducing the expected projection. -/
 theorem two_beats_three : buffonConstant 3 < buffonConstant 2 := by
   rw [buffonConstant_two, buffonConstant_three]
-  rw [div_lt_div_iff two_pos pi_pos]
+  rw [div_lt_div_iff₀ two_pos pi_pos]
   simp only [one_mul]
   linarith [pi_lt_3141593]
 
@@ -244,7 +244,7 @@ theorem crossings_2d_ge_3d (L d : ℝ) (hL : 0 ≤ L) (hd : 0 < d) :
 /-- 2D crossings exceed 4D crossings: c₂ = 2/π > 4/(3π) = c₄ -/
 theorem two_beats_four : buffonConstant 4 < buffonConstant 2 := by
   rw [buffonConstant_two, buffonConstant_four]
-  rw [div_lt_div_iff (mul_pos (by norm_num : (0:ℝ) < 3) pi_pos) pi_pos]
+  rw [div_lt_div_iff₀ (mul_pos (by norm_num : (0:ℝ) < 3) pi_pos) pi_pos]
   linarith [pi_pos]
 
 -- ============================================================

@@ -118,7 +118,7 @@ Tools for proving series convergence by comparison.
 theorem q_pow_gt_one (q : ℕ) (n : ℕ) (hq : q ≥ 2) (hn : n ≥ 1) :
     (1 : ℝ) < (q : ℝ) ^ n := by
   have hq_gt : (1 : ℝ) < q := by exact_mod_cast (show 1 < q by omega)
-  exact one_lt_pow_of_one_lt_of_ne_zero hq_gt (by omega)
+  exact one_lt_pow₀ hq_gt (by omega)
 
 /-- |1/(2^n - 3)| ≤ 2/2^n for n ≥ 3 (comparison for convergence). -/
 theorem abs_term_bound (n : ℕ) (hn : n ≥ 3) :
@@ -126,9 +126,9 @@ theorem abs_term_bound (n : ℕ) (hn : n ≥ 3) :
   -- 2^n ≥ 8 for n ≥ 3, so 2^n - 3 ≥ 5 > 0
   have h8 : (8 : ℝ) ≤ 2 ^ n :=
     calc (8 : ℝ) = 2 ^ 3 := by norm_num
-      _ ≤ 2 ^ n := pow_le_pow_right (by norm_num) hn
+      _ ≤ 2 ^ n := pow_le_pow_right₀ (by norm_num) hn
   have hpos : 0 < (2 : ℝ) ^ n - 3 := by linarith
-  rw [abs_of_pos (div_pos one_pos hpos), div_le_div_iff hpos (two_pow_real_pos n)]
+  rw [abs_of_pos (div_pos one_pos hpos), div_le_div_iff₀ hpos (two_pow_real_pos n)]
   -- goal: 1 * 2^n ≤ 2 * (2^n - 3), i.e., 6 ≤ 2^n
   linarith
 

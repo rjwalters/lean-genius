@@ -268,7 +268,7 @@ finite sum in `p(n) = ∑_{k} (-1)^{k-1} p(n - g_k)` can be evaluated over it. -
 
 /-- The contributing indices of Euler's recurrence at level `n`: the explicit
 `Finset` of `k` with `g(k) ≤ n`, obtained by filtering `[-n, n]`. -/
-def pentIndices (n : ℤ) : Finset ℤ :=
+noncomputable def pentIndices (n : ℤ) : Finset ℤ :=
   (Finset.Icc (-n) n).filter (fun k => genPent k ≤ n)
 
 /-- Membership in `pentIndices n` is exactly the value bound `g(k) ≤ n`; the

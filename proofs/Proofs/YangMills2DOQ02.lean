@@ -157,7 +157,7 @@ theorem post_break_ratio_lt_tension_ratio (sigma_R sigma_fund m_gluelump r : ℝ
     breakDistance_pos sigma_R m_gluelump hsig_R hm
   have hr_pos : r > 0 := lt_trans hr_break_pos hr
   unfold saturationPotential linearPotential
-  rw [div_lt_div_iff (mul_pos hsig_f hr_pos) hsig_f]
+  rw [div_lt_div_iff₀ (mul_pos hsig_f hr_pos) hsig_f]
   -- Goal: 2 * m_gluelump * sigma_fund < sigma_R * (sigma_fund * r)
   have key : 2 * m_gluelump < sigma_R * r :=
     saturation_lt_linear_post_break sigma_R m_gluelump r hsig_R hm hr

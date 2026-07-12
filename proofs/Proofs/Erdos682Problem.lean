@@ -271,7 +271,7 @@ theorem exceptional_density_zero :
       _ < L ^ 2 := by nlinarith [sq_nonneg (L - Real.sqrt (C / ε))]
       _ ≤ (Real.log (↑X)) ^ 2 := by nlinarith [sq_nonneg (Real.log (↑X) - L)]
   have hkey : C / (Real.log (↑X)) ^ 2 < ε := by
-    rwa [div_lt_iff hlog2_pos, ← div_lt_iff hε]
+    rwa [div_lt_iff₀ hlog2_pos, ← div_lt_iff₀ hε]
   -- E(X)/X ≤ C·X/(log X)²/X = C/(log X)² < ε
   calc (exceptionalCount X : ℝ) / ↑X
       ≤ C * ↑X / (Real.log ↑X) ^ 2 / ↑X :=

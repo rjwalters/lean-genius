@@ -33,7 +33,7 @@ theorem reciprocal_sum_le_of_min_ge (ns : List ℕ) (m : ℕ) (hm : m ≥ 1)
     have htl : ∀ n ∈ tl, n ≥ m := fun n hn => hmin n (List.mem_cons_of_mem _ hn)
     have ihm : (tl.map (fun n => (1 : ℚ) / n)).sum ≤ tl.length / m := ih htl
     have h1 : (1 : ℚ) / a ≤ 1 / m := by
-      rw [div_le_div_iff (by positivity : (0 : ℚ) < a) (by positivity : (0 : ℚ) < m)]
+      rw [div_le_div_iff₀ (by positivity : (0 : ℚ) < a) (by positivity : (0 : ℚ) < m)]
       push_cast; linarith
     calc (1 : ℚ) / a + (tl.map (fun n => (1 : ℚ) / n)).sum
         ≤ 1 / m + tl.length / m := by linarith
@@ -47,7 +47,7 @@ theorem partial_harmonic_sum_eq (m k : ℕ) (hm : m ≥ 1) :
 
 /-- For m ≥ 2, we have 1/m ≤ 1/2. -/
 theorem one_div_ge_two (m : ℕ) (hm : m ≥ 2) : (1 : ℚ) / m ≤ 1 / 2 := by
-  rw [div_le_div_iff (by positivity : (0 : ℚ) < m) (by norm_num : (0 : ℚ) < 2)]
+  rw [div_le_div_iff₀ (by positivity : (0 : ℚ) < m) (by norm_num : (0 : ℚ) < 2)]
   push_cast
   linarith
 

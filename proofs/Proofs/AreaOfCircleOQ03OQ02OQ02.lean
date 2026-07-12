@@ -193,7 +193,7 @@ theorem twentytwo_over_seven_minus_pi_pos : (0 : ℝ) < 22 / 7 - Real.pi := by
 /-- Upper bound: x⁴(1-x)⁴/(1+x²) ≤ x⁴(1-x)⁴ on [0,1] -/
 theorem dalzell_integrand_le_numerator {x : ℝ} (hx0 : 0 ≤ x) (hx1 : x ≤ 1) :
     x ^ 4 * (1 - x) ^ 4 / (1 + x ^ 2) ≤ x ^ 4 * (1 - x) ^ 4 := by
-  rw [div_le_iff (by positivity : (0 : ℝ) < 1 + x ^ 2)]
+  rw [div_le_iff₀ (by positivity : (0 : ℝ) < 1 + x ^ 2)]
   have h1 : 1 ≤ 1 + x ^ 2 := le_add_of_nonneg_right (sq_nonneg x)
   calc x ^ 4 * (1 - x) ^ 4
       = x ^ 4 * (1 - x) ^ 4 * 1 := (mul_one _).symm

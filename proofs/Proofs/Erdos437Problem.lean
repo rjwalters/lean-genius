@@ -246,10 +246,10 @@ theorem L_growth_rate :
     linarith
   constructor
   · have h := hL₁ x hx₁
-    rw [ge_iff_le, le_div_iff hxpos]
+    rw [ge_iff_le, le_div_iff₀ hxpos]
     linarith [mul_comm (x : ℝ) (Real.exp (-(Real.sqrt 2 + ε) * u x))]
   · have h := hL₂ x hx₂
-    rw [div_le_iff hxpos]
+    rw [div_le_iff₀ hxpos]
     linarith [mul_comm (x : ℝ) (Real.exp (-(1 / Real.sqrt 2 - ε) * u x))]
 
 /--

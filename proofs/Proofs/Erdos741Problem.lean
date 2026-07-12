@@ -285,7 +285,7 @@ theorem cofinite_density_one {S : Set ℕ} (h : ∀ᶠ n in atTop, n ∈ S) :
       (1 : ℝ) - N₀ / (↑n + 1) ≤ ((S ∩ Set.Iic n).ncard : ℝ) / (↑n + 1) := by
     filter_upwards [Filter.eventually_ge_atTop N₀] with n hn
     have hn_pos : (0 : ℝ) < n + 1 := by positivity
-    rw [div_le_div_iff hn_pos hn_pos]  -- both as cross-multiply
+    rw [div_le_div_iff₀ hn_pos hn_pos]  -- both as cross-multiply
     have hc := Nat.cast_le.mpr (hcard n hn)
     push_cast [Nat.sub_add_cancel hn] at hc ⊢
     linarith

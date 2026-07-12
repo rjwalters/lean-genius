@@ -275,7 +275,7 @@ theorem parseval_ratio_ge_one (p : Polynomial ℂ) (hp : IsLittlewoodPolynomial 
   calc (1 : ℝ) = Real.sqrt ↑p.natDegree / Real.sqrt ↑p.natDegree :=
         (div_self (ne_of_gt hsqrt_pos)).symm
     _ ≤ supNorm p / Real.sqrt ↑p.natDegree :=
-        (div_le_div_right hsqrt_pos).mpr (by linarith)
+        (div_le_div_iff_of_pos_right hsqrt_pos).mpr (by linarith)
 
 /-- The key open question is about the gap between BBMST and ultraflat.
     BBMST shows c₁√n ≤ max|P| ≤ c₂√n for SOME P. But:

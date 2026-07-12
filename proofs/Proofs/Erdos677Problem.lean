@@ -124,7 +124,7 @@ theorem lcmInterval_pos (n k : ℕ) (hk : 0 < k) : 0 < lcmInterval n k := by
 theorem lcmInterval_succ (n k : ℕ) :
     lcmInterval n (k + 1) = Nat.lcm (n + k + 1) (lcmInterval n k) := by
   unfold lcmInterval
-  rw [Finset.range_succ, Finset.fold_insert (Finset.not_mem_range_self)]
+  rw [Finset.range_add_one, Finset.fold_insert (Finset.not_mem_range_self)]
 
 /-- Each element `n + i + 1` (for `i < k`) divides `lcmInterval n k`. -/
 theorem dvd_lcmInterval (n k i : ℕ) (hi : i < k) :
@@ -163,7 +163,7 @@ theorem last_dvd_lcmInterval (n k : ℕ) (hk : 0 < k) :
 theorem consecutiveProduct_succ (n k : ℕ) :
     consecutiveProduct n (k + 1) = consecutiveProduct n k * (n + k + 1) := by
   unfold consecutiveProduct
-  rw [Finset.range_succ, Finset.prod_insert (Finset.not_mem_range_self)]
+  rw [Finset.range_add_one, Finset.prod_insert (Finset.not_mem_range_self)]
   ring
 
 /-- `consecutiveProduct` is positive. -/
@@ -242,7 +242,7 @@ theorem factorization_lcmInterval (n k : ℕ) :
   | succ k ih =>
     rw [lcmInterval_succ,
         Nat.factorization_lcm (by omega) (lcmInterval_ne_zero n k),
-        ih, Finset.range_succ, Finset.sup_insert]
+        ih, Finset.range_add_one, Finset.sup_insert]
 
 /- ## General large-m distinctness bound -/
 

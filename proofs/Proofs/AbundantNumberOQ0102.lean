@@ -54,7 +54,7 @@ theorem listRange_filter_sum_eq (n : ℕ) (p : ℕ → Prop) [DecidablePred p] :
   | zero => simp
   | succ k ih =>
     rw [List.range_succ, List.filter_append, List.sum_append, ih,
-        Finset.range_succ, Finset.filter_insert]
+        Finset.range_add_one, Finset.filter_insert]
     by_cases hk : p k
     · rw [if_pos hk, Finset.sum_insert (by simp)]
       simp [List.filter_cons, hk, Nat.add_comm]

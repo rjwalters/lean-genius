@@ -234,7 +234,7 @@ theorem conjecture_implies_bounded_ratio :
       (ramseyNumber n : ℝ) / 2 ^ n ≤ C := by
   intro ⟨C, hC, hbound⟩
   exact ⟨C, hC, fun n => by
-    rw [div_le_iff (by positivity : (0 : ℝ) < 2 ^ n)]
+    rw [div_le_iff₀ (by positivity : (0 : ℝ) < 2 ^ n)]
     exact hbound n⟩
 
 /-
@@ -348,7 +348,7 @@ theorem conjecture_implies_ratio_bounded :
     ∃ B : ℝ, B > 0 ∧ ∀ n : ℕ, n ≥ 1 → (ramseyNumber n : ℝ) / 2 ^ n ≤ B := by
   intro ⟨C, hC, hbound⟩
   exact ⟨C, hC, fun n _ => by
-    rw [div_le_iff (by positivity : (0 : ℝ) < 2 ^ n)]
+    rw [div_le_iff₀ (by positivity : (0 : ℝ) < 2 ^ n)]
     exact hbound n⟩
 
 /-- Tikhomirov implies R(Q_n) is subexponential relative to the vertex count:

@@ -523,7 +523,7 @@ theorem finite_has_density_zero (B : Set ℕ) (hB : B.Finite) : HasDensityZero B
     (by filter_upwards with N
         rcases Nat.eq_zero_or_pos N with rfl | hN
         · simp [div_zero]
-        · exact (div_le_div_right (Nat.cast_pos.mpr hN)).mpr (hbound N))
+        · exact (div_le_div_iff_of_pos_right (Nat.cast_pos.mpr hN)).mpr (hbound N))
 
 /-- **Erdős #31 for bounded gaps**: If every integer ≥ a₀ is within distance M
     of some element of A, then B = {0, ..., M-1} gives density 0 and full coverage.

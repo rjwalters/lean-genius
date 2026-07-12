@@ -101,7 +101,7 @@ theorem euclideanModelVolume_mono (n : ℕ) (r s : ℝ) (hr : 0 ≤ r) (hrs : r 
     euclideanModelVolume n r ≤ euclideanModelVolume n s := by
   unfold euclideanModelVolume
   apply mul_le_mul_of_nonneg_left _ (le_of_lt (omegaN_pos n))
-  exact pow_le_pow_left hr hrs n
+  exact pow_le_pow_left₀ hr hrs n
 
 /-- Euclidean model volume scaling law: V_0^n(λr) = λ^n · V_0^n(r). -/
 theorem euclideanModelVolume_scaling (n : ℕ) (r λ : ℝ) (hλ : 0 ≤ λ) :
@@ -153,7 +153,7 @@ theorem volume_ratio_bound (r s : ℝ) (hr : 0 < r) (hrs : r ≤ s) :
   have hEs := euclideanModelVolume_pos n s hs
   -- Cross-multiply Bishop–Gromov: vol(s) · V(r) ≤ vol(r) · V(s)
   have hbg := M.bishop_gromov r s hr hrs
-  rw [div_le_div_iff hEs hEr] at hbg
+  rw [div_le_div_iff₀ hEs hEr] at hbg
   -- V(s)/V(r) = (s/r)^n since V(r) = ω_n · r^n
   have hVratio : euclideanModelVolume n s / euclideanModelVolume n r = (s / r) ^ n := by
     simp only [euclideanModelVolume]
@@ -162,7 +162,7 @@ theorem volume_ratio_bound (r s : ℝ) (hr : 0 < r) (hrs : r ≤ s) :
   -- From hbg, divide by V(r):  vol(s) ≤ vol(r) · V(s)/V(r) = vol(r) · (s/r)^n
   calc M.vol s
       ≤ M.vol r * euclideanModelVolume n s / euclideanModelVolume n r :=
-        (le_div_iff hEr).mpr hbg
+        (le_div_iff₀ hEr).mpr hbg
     _ = M.vol r * (euclideanModelVolume n s / euclideanModelVolume n r) :=
         mul_div_assoc _ _ _
     _ = M.vol r * (s / r) ^ n := by rw [hVratio]
@@ -200,7 +200,7 @@ theorem bishop_gromov_euclidean_upper_bound (r s : ℝ) (hr : 0 < r) (hrs : r �
   have hs : 0 < s := lt_of_lt_of_le hr hrs
   have hEs : 0 < euclideanModelVolume n s := euclideanModelVolume_pos n s hs
   have hbg := M.bishop_gromov r s hr hrs
-  rwa [div_le_div_iff hEs hEr] at hbg
+  rwa [div_le_div_iff₀ hEs hEr] at hbg
 
 /-- Halving the radius: Vol(B(p, r/2)) ≥ Vol(B(p, r)) / 2^n.
     (Reverse of doubling, from monotonicity and the ratio bound.) -/

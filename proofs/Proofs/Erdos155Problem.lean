@@ -142,7 +142,7 @@ theorem increase_count_le (M : ℕ) :
   induction M with
   | zero => simp
   | succ M ih =>
-    rw [Finset.range_succ, Finset.filter_insert]
+    rw [Finset.range_add_one, Finset.filter_insert]
     split_ifs with h
     · -- F(M+1) > F(M): count increases by 1
       have hnotmem : M ∉ Finset.filter (fun N => maxSidonSize (N + 1) > maxSidonSize N)

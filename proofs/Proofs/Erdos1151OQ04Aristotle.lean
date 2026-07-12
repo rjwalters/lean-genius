@@ -49,7 +49,7 @@ theorem chebyshevAngle_pos (n : ℕ) (k : Fin n) :
 /-- The Chebyshev node angles are less than π, using k.val < n. -/
 theorem chebyshevAngle_lt_pi (n : ℕ) (hn : 0 < n) (k : Fin n) :
     (2 * k.val + 1 : ℝ) * Real.pi / (2 * n) < Real.pi := by
-  rw [div_lt_iff (by positivity : (0 : ℝ) < 2 * n)]
+  rw [div_lt_iff₀ (by positivity : (0 : ℝ) < 2 * n)]
   have : k.val + 1 ≤ n := k.isLt
   have hcast : (2 * k.val + 1 : ℝ) < 2 * n := by exact_mod_cast by omega
   linarith [Real.pi_pos]

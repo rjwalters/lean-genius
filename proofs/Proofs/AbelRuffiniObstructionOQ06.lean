@@ -196,8 +196,8 @@ roots cannot be written with radicals.
 -/
 theorem not_solvableByRad_of_not_solvable_gal {α : E} {q : F[X]}
     (q_irred : Irreducible q) (q_aeval : aeval α q = 0)
-    (hq : ¬ IsSolvable q.Gal) : ¬ IsSolvableByRad F α :=
-  fun h => hq (solvableByRad.isSolvable' q_irred q_aeval h)
+    (hq : ¬ IsSolvable q.Gal) : α ∉ solvableByRad F E :=
+  fun h => hq (isSolvable_gal_of_irreducible h q_irred q_aeval)
 
 /--
 **Contrapositive restatement: radicals force a solvable Galois group.**
@@ -209,7 +209,7 @@ name so the criterion and its converse sit side by side.)
 -/
 theorem solvable_gal_of_solvableByRad {α : E} {q : F[X]}
     (q_irred : Irreducible q) (q_aeval : aeval α q = 0)
-    (hα : IsSolvableByRad F α) : IsSolvable q.Gal :=
-  solvableByRad.isSolvable' q_irred q_aeval hα
+    (hα : α ∈ solvableByRad F E) : IsSolvable q.Gal :=
+  isSolvable_gal_of_irreducible hα q_irred q_aeval
 
 end AbelRuffiniObstructionOQ06

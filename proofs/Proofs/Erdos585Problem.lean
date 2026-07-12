@@ -77,4 +77,4 @@ theorem cjmm_k_cycles (k : ℕ) (hk : 2 ≤ k) :
       ∀ (G : SimpleGraph (Fin n)),
         G.edgeFinset.card > C₀ * (n : ℝ) * Real.log (n : ℝ) ^ α →
           True  -- G contains k pairwise edge-disjoint cycles on the same vertex set
-  := ⟨1, 1, by norm_num, by norm_num, Filter.eventually_of_forall (fun _ _ _ => trivial)⟩
+  := ⟨1, 1, by norm_num, by norm_num, Filter.Eventually.of_forall (fun _ _ _ => trivial)⟩

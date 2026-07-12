@@ -43,7 +43,7 @@ theorem doubleExp_tail_pos (N : ℕ) :
     · have hexp : k ≤ 2 ^ (k + N + 1) :=
         (nat_le_two_pow k).trans (Nat.pow_le_pow_right (by norm_num) (by omega))
       have h_pow_le : (2 : ℝ) ^ k ≤ (2 : ℝ) ^ (2 ^ (k + N + 1)) :=
-        pow_le_pow_right (by norm_num) hexp
+        pow_le_pow_right₀ (by norm_num) hexp
       calc (1 : ℝ) / (2 : ℝ) ^ (2 ^ (k + N + 1))
           ≤ 1 / (2 : ℝ) ^ k :=
               one_div_le_one_div_of_le (pow_pos (by norm_num) k) h_pow_le
@@ -61,7 +61,7 @@ theorem doubleExp_tail_bound (N : ℕ) :
   have hD_ge2 : (2 : ℝ) ≤ D := by
     have h1 : 1 ≤ 2 ^ N := Nat.one_le_pow N 2 (by norm_num)
     calc (2 : ℝ) = 2 ^ 1 := by norm_num
-      _ ≤ 2 ^ (2 ^ N) := pow_le_pow_right (by norm_num) (by exact_mod_cast h1)
+      _ ≤ 2 ^ (2 ^ N) := pow_le_pow_right₀ (by norm_num) (by exact_mod_cast h1)
   have hD_ge1 : (1 : ℝ) ≤ D := by linarith
   have hD1_pos : (0 : ℝ) < D - 1 := by linarith
   have hD2_pos : (0 : ℝ) < D ^ 2 - 1 := by nlinarith
@@ -92,7 +92,7 @@ theorem doubleExp_tail_bound (N : ℕ) :
     intro k
     calc (1 : ℝ) / D ^ (2 ^ (k + 1))
         ≤ 1 / D ^ (2 * (k + 1)) :=
-            one_div_le_one_div_of_le (by positivity) (pow_le_pow_right hD_ge1 (key_arith k))
+            one_div_le_one_div_of_le (by positivity) (pow_le_pow_right₀ hD_ge1 (key_arith k))
       _ = r ^ (k + 1) := by
             simp only [hr_def]; rw [div_pow, one_pow, ← pow_mul]
   -- Summability
@@ -119,7 +119,7 @@ theorem doubleExp_tail_bound (N : ℕ) :
       ≤ D * (1 / (D ^ 2 - 1)) := mul_le_mul_of_nonneg_left hT_le hD_pos.le
     _ = D / (D ^ 2 - 1) := by ring
     _ < 1 / (D - 1) := by
-          rw [div_lt_div_iff hD2_pos hD1_pos]; nlinarith
+          rw [div_lt_div_iff₀ hD2_pos hD1_pos]; nlinarith
 
 -- Sum splitting: ∑' n, f n = (∑ n in range N, f n) + f N + ∑' n, f (n + N + 1).
 -- This is a standard Mathlib result (tsum_eq_zero_add, sum_add_tsum_compl, etc.).

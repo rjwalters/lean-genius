@@ -176,7 +176,7 @@ theorem isoperimetric_quadrilateral {a b c d : ℝ}
     _ ≤ ((sa + sb) / 2) ^ 2 * ((sc + sd) / 2) ^ 2 := hprod
     _ = (((sa + sb) / 2) * ((sc + sd) / 2)) ^ 2 := by ring
     _ ≤ (((sa + sb + sc + sd) / 4) ^ 2) ^ 2 :=
-        pow_le_pow_left (by positivity) hpair 2
+        pow_le_pow_left₀ (by positivity) hpair 2
     _ = ((sa + sb + sc + sd) / 4) ^ 4 := by ring
     _ = ((a + b + c + d) / 4) ^ 4 := by rw [hfinal]
 

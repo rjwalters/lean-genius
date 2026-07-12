@@ -77,7 +77,7 @@ theorem logHarmonic_antitone :
   · -- m ≥ 2, n ≥ 2: compare 1/(n·log n) ≤ 1/(m·log m)
     push_neg at hm2
     rw [logHarmonic_of_ge_two hm2, logHarmonic_of_ge_two (le_trans hm2 hmn)]
-    rw [div_le_div_iff (mul_log_pos (le_trans hm2 hmn)) (mul_log_pos hm2)]
+    rw [div_le_div_iff₀ (mul_log_pos (le_trans hm2 hmn)) (mul_log_pos hm2)]
     simp only [one_mul]
     -- Need: m · log m ≤ n · log n
     apply mul_le_mul
@@ -216,7 +216,7 @@ theorem logHarmonicSq_antitone :
   · -- m, n ≥ 2: compare 1/(n·(log n)²) ≤ 1/(m·(log m)²)
     push_neg at hm2
     rw [logHarmonicSq_of_ge_two hm2, logHarmonicSq_of_ge_two (le_trans hm2 hmn)]
-    rw [div_le_div_iff (mul_log_sq_pos (le_trans hm2 hmn)) (mul_log_sq_pos hm2)]
+    rw [div_le_div_iff₀ (mul_log_sq_pos (le_trans hm2 hmn)) (mul_log_sq_pos hm2)]
     simp only [one_mul]
     -- Need: m · (log m)² ≤ n · (log n)²
     have hlog_le : Real.log m ≤ Real.log n :=
@@ -226,7 +226,7 @@ theorem logHarmonicSq_antitone :
       Real.log_nonneg (by exact_mod_cast (show 1 ≤ m by omega))
     apply mul_le_mul
     · exact_mod_cast hmn
-    · exact pow_le_pow_left hlog_m_nonneg hlog_le 2
+    · exact pow_le_pow_left₀ hlog_m_nonneg hlog_le 2
     · exact sq_nonneg _
     · exact Nat.cast_nonneg _
 

@@ -59,7 +59,7 @@ theorem one_div_antitone : ∀ ⦃m n : ℕ⦄, 0 < m → m ≤ n → 1 / (n : �
   intro m n hm hmn
   have hm' : (0 : ℝ) < m := Nat.cast_pos.mpr hm
   have hn' : (0 : ℝ) < n := by exact_mod_cast Nat.lt_of_lt_of_le hm hmn
-  rw [div_le_div_iff hn' hm']
+  rw [div_le_div_iff₀ hn' hm']
   simp only [one_mul]
   exact Nat.cast_le.mpr hmn
 

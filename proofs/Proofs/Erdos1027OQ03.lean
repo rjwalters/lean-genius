@@ -47,18 +47,18 @@ theorem badEventProb_nonneg (n : ℕ) : 0 ≤ badEventProb n := by
 theorem badEventProb_le_one (n : ℕ) (hn : 1 ≤ n) : badEventProb n ≤ 1 := by
   unfold badEventProb
   rw [div_le_one (by positivity : (0 : ℚ) < 2 ^ n)]
-  exact pow_le_pow_right (by norm_num : (1 : ℚ) ≤ 2) hn
+  exact pow_le_pow_right₀ (by norm_num : (1 : ℚ) ≤ 2) hn
 
 /-- For n ≥ 3, the bad event probability is at most 1/4.
     This is the key bound: 2/2^n ≤ 1/4 ⟺ 8 ≤ 2^n ⟺ n ≥ 3. -/
 theorem badEventProb_le_quarter (n : ℕ) (hn : 3 ≤ n) : badEventProb n ≤ 1 / 4 := by
   unfold badEventProb
   have h2n : (0 : ℚ) < 2 ^ n := by positivity
-  rw [div_le_div_iff h2n (by norm_num : (0 : ℚ) < 4)]
+  rw [div_le_div_iff₀ h2n (by norm_num : (0 : ℚ) < 4)]
   -- Goal: 2 * 4 ≤ 1 * 2 ^ n
   calc (2 : ℚ) * 4 = 8 := by norm_num
     _ = 2 ^ 3 := by norm_num
-    _ ≤ 2 ^ n := pow_le_pow_right (by norm_num : (1 : ℚ) ≤ 2) hn
+    _ ≤ 2 ^ n := pow_le_pow_right₀ (by norm_num : (1 : ℚ) ≤ 2) hn
     _ = 1 * 2 ^ n := by ring
 
 /-- Strict decrease: p(n+1) = p(n)/2. -/
@@ -96,10 +96,10 @@ theorem lll_condition_empty (n : ℕ) (hn : 3 ≤ n) :
   unfold LLLCondition depDegree badEventProb
   simp only [Nat.mul_zero, Nat.cast_zero, zero_add, mul_one]
   have : (0 : ℚ) < 2 ^ n := by positivity
-  rw [div_le_div_iff this (by norm_num : (0 : ℚ) < 4)]
+  rw [div_le_div_iff₀ this (by norm_num : (0 : ℚ) < 4)]
   calc (2 : ℚ) * 4 = 8 := by norm_num
     _ = 2 ^ 3 := by norm_num
-    _ ≤ 2 ^ n := pow_le_pow_right (by norm_num : (1 : ℚ) ≤ 2) hn
+    _ ≤ 2 ^ n := pow_le_pow_right₀ (by norm_num : (1 : ℚ) ≤ 2) hn
     _ = 1 * 2 ^ n := by ring
 
 /-- The LLL condition holds when nm + 1 ≤ 2^(n-3).
@@ -109,7 +109,7 @@ theorem lll_condition_of_bound (n m : ℕ) (hn : 3 ≤ n)
     LLLCondition n m := by
   unfold LLLCondition badEventProb depDegree
   have h2n_pos : (0 : ℚ) < 2 ^ n := by positivity
-  rw [div_mul_eq_mul_div, div_le_div_iff h2n_pos (by norm_num : (0 : ℚ) < 4)]
+  rw [div_mul_eq_mul_div, div_le_div_iff₀ h2n_pos (by norm_num : (0 : ℚ) < 4)]
   -- Goal: 2 * (↑(n * m) + 1) * 4 ≤ 1 * 2 ^ n
   have hcast : (↑(n * m) + 1 : ℚ) ≤ (2 : ℚ) ^ (n - 3) := by exact_mod_cast hbound
   have h8 : (8 : ℚ) * 2 ^ (n - 3) = 2 ^ n := by
@@ -214,7 +214,7 @@ theorem erdos_bound_stronger (n : ℕ) (hn : 4 ≤ n) :
       ≤ 2 ^ (n - 3) :=
         div_le_self (by positivity) (by exact_mod_cast (show 1 ≤ n by omega))
     _ ≤ 2 ^ (n - 1) :=
-        pow_le_pow_right (by norm_num : (1 : ℚ) ≤ 2) (by omega : n - 3 ≤ n - 1)
+        pow_le_pow_right₀ (by norm_num : (1 : ℚ) ≤ 2) (by omega : n - 3 ≤ n - 1)
 
 /-- The constructive advantage: under the LLL bound, the Moser-Tardos
     algorithm finds a good set in expected ≤ 1 resampling step.

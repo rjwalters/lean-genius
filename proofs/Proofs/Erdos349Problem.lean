@@ -28,7 +28,7 @@ def IsAdditivelyComplete (S : Set ℤ) : Prop :=
     ∃ T : Finset ℤ, (↑T : Set ℤ) ⊆ S ∧ T.sum id = m
 
 /-- The exponential floor sequence: ⌊tα^n⌋ for n = 0, 1, 2, ... -/
-def expFloorSeq (t α : ℝ) (n : ℕ) : ℤ := ⌊t * α ^ n⌋
+noncomputable def expFloorSeq (t α : ℝ) (n : ℕ) : ℤ := ⌊t * α ^ n⌋
 
 /-- A pair (t,α) is "good" if the sequence ⌊tα^n⌋ is complete. -/
 def IsGoodPair (t α : ℝ) : Prop :=

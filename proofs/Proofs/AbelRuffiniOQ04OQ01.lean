@@ -861,7 +861,7 @@ private noncomputable def conjGalAut : SF ≃ₐ[ℚ] SF := sfConjEmb.restrictNo
 private theorem conjGalAut_spec (x : SF) :
     sfEmb (conjGalAut x) = starRingEnd ℂ (sfEmb x) := by
   have h := sfConjEmb.restrictNormal_commutes SF x
-  simp only [Algebra.id.map_eq_id, RingHom.id_apply] at h
+  simp only [Algebra.algebraMap_self, RingHom.id_apply] at h
   exact h
 private theorem conjGalAut_sq : conjGalAut ^ 2 = 1 := by
   ext x; apply sfEmb.injective; show sfEmb ((conjGalAut * conjGalAut) x) = sfEmb x
@@ -1455,12 +1455,12 @@ This gives a CONCRETE witness for the Abel-Ruffini theorem.
 theorem roots_not_solvable_by_rad
     {E : Type*} [Field E] [Algebra ℚ E] (α : E)
     (hroot : Polynomial.aeval α p = 0) :
-    ¬ IsSolvableByRad ℚ α := by
+    α ∉ solvableByRad ℚ E := by
   intro hrad
   -- If α is solvable by radicals and p(α) = 0 with p irreducible,
   -- then Gal(p) is solvable
   have hsol : IsSolvable p.Gal :=
-    solvableByRad.isSolvable' p_irreducible hroot hrad
+    isSolvable_gal_of_irreducible hrad p_irreducible hroot
   -- But Gal(p) is not solvable (it's S₅)
   exact gal_not_solvable hsol
 

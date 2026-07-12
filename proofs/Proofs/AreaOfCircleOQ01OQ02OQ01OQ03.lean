@@ -70,7 +70,7 @@ theorem omega_recurrence (n : ℕ) :
     Proof: 3π < 10 (since π < 3.1416) and n+2 ≥ 10. -/
 theorem ratio_le_two_thirds (n : ℕ) (hn : 8 ≤ n) :
     2 * π / (↑n + 2) ≤ 2 / 3 := by
-  rw [div_le_div_iff (by positivity : (0 : ℝ) < ↑n + 2) (by norm_num : (0 : ℝ) < 3)]
+  rw [div_le_div_iff₀ (by positivity : (0 : ℝ) < ↑n + 2) (by norm_num : (0 : ℝ) < 3)]
   -- Goal: 6π ≤ 2n + 4. From π < 10/3: 6π < 20. From n ≥ 8: 2n + 4 ≥ 20.
   have hπ : π < 10 / 3 := by linarith [pi_lt_3141593]
   have hn' : (8 : ℝ) ≤ (↑n : ℝ) := by exact_mod_cast hn
@@ -116,7 +116,7 @@ theorem tendsto_omega_zero : Tendsto (fun n => ω n) atTop (𝓝 0) := by
   have hM_pos : 0 < M := lt_max_of_lt_left (omega_pos 8)
   -- Find K such that (2/3)^K · M < ε
   obtain ⟨K, hK⟩ := exists_pow_lt_of_lt_one (div_pos hε hM_pos) (by norm_num : (2 : ℝ) / 3 < 1)
-  have hKε : (2 / 3) ^ K * M < ε := by rwa [div_lt_iff hM_pos] at hK
+  have hKε : (2 / 3) ^ K * M < ε := by rwa [div_lt_iff₀ hM_pos] at hK
   -- N = 9 + 2K suffices
   refine ⟨9 + 2 * K, fun n hn => ?_⟩
   simp only [dist_zero_right, Real.norm_eq_abs, abs_of_nonneg (omega_nonneg n)]

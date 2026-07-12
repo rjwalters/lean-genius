@@ -283,7 +283,7 @@ theorem ratio_converges_to_half :
   have h2m_pos : (0 : ℝ) < 2 * m := by linarith
   rw [show u / m - 1 / 2 = (2 * u - m) / (2 * m) from by
     have : m ≠ 0 := ne_of_gt hm_pos; field_simp; ring]
-  rw [abs_div, abs_of_pos h2m_pos, div_lt_iff h2m_pos]
+  rw [abs_div, abs_of_pos h2m_pos, div_lt_iff₀ h2m_pos]
   calc |2 * u - m| < ε := h_num
     _ ≤ ε * (2 * m) := le_mul_of_one_le_right (le_of_lt hε) (by linarith)
 

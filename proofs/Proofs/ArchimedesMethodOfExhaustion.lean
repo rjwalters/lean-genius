@@ -95,7 +95,7 @@ theorem tendsto_two_pi_div_atTop :
     Filter.Tendsto (fun n : ℕ => (2 * Real.pi) / n)
       Filter.atTop (nhdsWithin 0 {(0 : ℝ)}ᶜ) := by
   rw [tendsto_nhdsWithin_iff]
-  exact ⟨tendsto_const_div_atTop_nhds_0_nat _, Filter.eventually_of_forall (by
+  exact ⟨tendsto_const_div_atTop_nhds_zero_nat _, Filter.Eventually.of_forall (by
     filter_upwards [Filter.eventually_ge_atTop 1] with n hn
     exact Set.mem_compl_singleton_iff.mpr
       (div_ne_zero (by positivity) (Nat.cast_ne_zero.mpr (by omega))))⟩
@@ -238,7 +238,7 @@ theorem tendsto_pi_div_atTop :
     Filter.Tendsto (fun n : ℕ => Real.pi / n)
       Filter.atTop (nhdsWithin 0 {(0 : ℝ)}ᶜ) := by
   rw [tendsto_nhdsWithin_iff]
-  exact ⟨tendsto_const_div_atTop_nhds_0_nat _, Filter.eventually_of_forall (by
+  exact ⟨tendsto_const_div_atTop_nhds_zero_nat _, Filter.Eventually.of_forall (by
     filter_upwards [Filter.eventually_ge_atTop 1] with n hn
     exact Set.mem_compl_singleton_iff.mpr
       (div_ne_zero Real.pi_ne_zero (Nat.cast_ne_zero.mpr (by omega))))⟩
@@ -323,7 +323,7 @@ theorem inscribed_le_circumscribed (n : ℕ) (hn : 1 ≤ n) (r : ℝ) (hr : 0 �
       have hn_ge3' : (3 : ℝ) ≤ n := by exact_mod_cast hn_ge3
       have hpn_pos : 0 < Real.pi / n := by positivity
       have hpn_lt : Real.pi / n < Real.pi / 2 := by
-        rw [div_lt_div_iff hn_pos' (by norm_num : (0:ℝ) < 2)]
+        rw [div_lt_div_iff₀ hn_pos' (by norm_num : (0:ℝ) < 2)]
         nlinarith [Real.pi_pos]
       have hcos_pos : 0 < Real.cos (Real.pi / n) :=
         Real.cos_pos_of_mem_Ioo ⟨by linarith, hpn_lt⟩

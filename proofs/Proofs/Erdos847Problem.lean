@@ -230,7 +230,7 @@ theorem finite_union_implies_enr (A : Set ℕ) (k : ℕ) (hk : k > 0)
       rw [← hxa]; exact hassign x hxB
     refine ⟨C, hCsub, isAPFree_subset (hparts i) hCinParts, ?_⟩
     -- Show (1/k) * |B| ≤ |C|
-    rw [div_mul_eq_mul_div, one_mul, le_div_iff hkR]
+    rw [div_mul_eq_mul_div, one_mul, le_div_iff₀ hkR]
     exact_mod_cast hi
 
 /- ## Part VII: Related Problems -/

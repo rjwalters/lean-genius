@@ -216,7 +216,7 @@ theorem besExponent_7_4 : besExponent 3 7 4 = 5 / 3 := by
 theorem besExponent_lt_two_at_bes_threshold (r s : ℕ) (hr : r ≥ 3) (hs : s ≥ 3) :
     besExponent r ((r - 2) * s + 3) s < 2 := by
   unfold besExponent
-  rw [div_lt_iff]
+  rw [div_lt_iff₀]
   · push_cast
     have hr' : (3 : ℝ) ≤ (r : ℝ) := Nat.ofNat_le_cast.mpr hr
     have hs' : (3 : ℝ) ≤ (s : ℝ) := Nat.ofNat_le_cast.mpr hs

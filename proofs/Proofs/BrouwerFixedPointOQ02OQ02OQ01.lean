@@ -438,7 +438,7 @@ theorem fixed_point_stability (f g : ℝ → ℝ) (L δ : ℝ) (hL1 : L < 1)
   have hstep : |xf - xg| ≤ L * |xf - xg| + δ := by
     have e1 : xf - xg = (f xf - f xg) + (f xg - g xg) := by rw [hxf, hxg]; ring
     calc |xf - xg| = |(f xf - f xg) + (f xg - g xg)| := by rw [e1]
-      _ ≤ |f xf - f xg| + |f xg - g xg| := abs_add _ _
+      _ ≤ |f xf - f xg| + |f xg - g xg| := abs_add_le _ _
       _ ≤ L * |xf - xg| + δ := by
           have ha := hf xf xg
           have hb := hclose xg

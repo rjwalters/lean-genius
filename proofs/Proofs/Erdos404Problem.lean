@@ -197,7 +197,7 @@ theorem padic_val_factorial_asymp (p : ℕ) (hp : p.Prime) :
   have h_upper : ∀ᶠ n in atTop, (padicValNat p n.factorial : ℝ) / n ≤ 1 / ((p : ℝ) - 1) := by
     filter_upwards [Filter.eventually_ge_atTop 1] with n hn
     have hn_pos : (0 : ℝ) < n := Nat.cast_pos.mpr (by omega)
-    rw [div_le_div_iff hn_pos hpp1, one_mul]
+    rw [div_le_div_iff₀ hn_pos hpp1, one_mul]
     exact_mod_cast padic_val_factorial_upper n p hp (by omega)
   -- Lower bound limit: 1/(p-1) - (L+1)/n → 1/(p-1)
   have h_lower_lim : Tendsto (fun n : ℕ =>
@@ -229,12 +229,12 @@ theorem padic_val_factorial_asymp (p : ℕ) (hp : p.Prime) :
              abs_of_nonneg hn_pos.le] at h
       -- Step 3: Nat.log p n / n ≤ ε/2 (dividing combined bound by log p)
       have h3 : (Nat.log p n : ℝ) / ↑n ≤ ε / 2 := by
-        rw [div_le_iff hn_pos]
+        rw [div_le_iff₀ hn_pos]
         exact (mul_le_mul_right hlogp).mp
           ((le_trans h1 h2).trans_eq (by ring))
       -- Step 4: 1/n < ε/2 (since n > 2/ε)
       have h4 : 1 / (↑n : ℝ) < ε / 2 := by
-        rw [div_lt_div_iff hn_pos (by norm_num : (0 : ℝ) < 2), one_mul]
+        rw [div_lt_div_iff₀ hn_pos (by norm_num : (0 : ℝ) < 2), one_mul]
         have : (⌈2 / ε⌉₊ : ℝ) + 1 ≤ ↑n := by
           exact_mod_cast le_trans (le_max_right _ _) hn
         nlinarith [Nat.le_ceil (2 / ε)]

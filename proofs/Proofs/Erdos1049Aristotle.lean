@@ -32,7 +32,7 @@ theorem geometric_inverse_pow (t : ℝ) (d : ℕ) (ht : t > 1) (hd : d ≥ 1) :
     HasSum (fun m : ℕ => if m = 0 then (0 : ℝ) else (1 / t ^ d) ^ m)
       (1 / (t ^ d - 1)) := by
   set r := 1 / t ^ d with hr_def
-  have htd : (1 : ℝ) < t ^ d := one_lt_pow_of_one_lt_of_ne_zero ht (by omega)
+  have htd : (1 : ℝ) < t ^ d := one_lt_pow₀ ht (by omega)
   have hr_pos : 0 < r := by positivity
   have hr_lt : r < 1 := by rw [hr_def, div_lt_one (by positivity)]; exact htd
   -- Standard geometric series: HasSum (r^·) ((1-r)⁻¹)
@@ -75,7 +75,7 @@ theorem n_div_pow_summable (t : ℝ) (ht : t > 1) :
 -- Routine: t^n - 1 > 0 for t > 1, n ≥ 1
 theorem pow_sub_one_pos (t : ℝ) (n : ℕ) (ht : t > 1) (hn : n ≥ 1) :
     t ^ n - 1 > 0 := by
-  have h : 1 < t ^ n := one_lt_pow_of_one_lt_of_ne_zero ht (by omega)
+  have h : 1 < t ^ n := one_lt_pow₀ ht (by omega)
   linarith
 
 -- Routine: 1/(t^n - 1) ≤ 2/t^n for t ≥ 2, n ≥ 1
@@ -84,9 +84,9 @@ theorem inv_pow_sub_one_bound (t : ℝ) (n : ℕ) (ht : t ≥ 2) (hn : n ≥ 1) 
     1 / (t ^ n - 1) ≤ 2 / t ^ n := by
   have hp : t ^ n > 0 := by positivity
   have hp1 : t ^ n - 1 > 0 := pow_sub_one_pos t n (by linarith) hn
-  rw [div_le_div_iff hp1 hp]
+  rw [div_le_div_iff₀ hp1 hp]
   have : (2 : ℝ) ≤ t ^ n := le_trans (by norm_num : (2:ℝ) ≤ 2 ^ 1)
-    (le_trans (pow_le_pow_right (by linarith) hn) (pow_le_pow_left (by linarith) ht n))
+    (le_trans (pow_le_pow_right₀ (by linarith) hn) (pow_le_pow_left₀ (by linarith) ht n))
   nlinarith
 
 -- Routine: τ(n) ≤ n (number of divisors bounded by n)

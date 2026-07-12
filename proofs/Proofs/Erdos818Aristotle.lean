@@ -45,7 +45,7 @@ lemma mul_div_ge_div (c x y : ℝ) (hc : c ≥ 1) (hy : y > 0) :
 /-- c * x^2 / log n ≥ x^2 / log n when c ≥ 1 -/
 lemma const_sq_div_log_ge (c x : ℝ) (n : ℕ) (hc : c ≥ 1) (hlog : Real.log n > 0) :
     c * x ^ 2 / Real.log n ≥ x ^ 2 / Real.log n :=
-  (div_le_div_right hlog).mpr (by nlinarith [sq_nonneg x])
+  (div_le_div_iff_of_pos_right hlog).mpr (by nlinarith [sq_nonneg x])
 
 /-
   ## Section 2: Sumset and productSet Properties

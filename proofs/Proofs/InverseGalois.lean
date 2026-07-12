@@ -5,6 +5,7 @@ import Mathlib.FieldTheory.Galois.Basic
 import Mathlib.GroupTheory.SpecificGroups.Cyclic
 import Mathlib.GroupTheory.Solvable
 import Mathlib.GroupTheory.SpecificGroups.Alternating
+import Mathlib.GroupTheory.SpecificGroups.Alternating.Simple
 import Mathlib.FieldTheory.AbelRuffini
 import Mathlib.Algebra.Group.Equiv.Basic
 import Mathlib.RingTheory.Polynomial.Eisenstein.Criterion

@@ -258,8 +258,8 @@ theorem smooth3D_lt_smooth2D (L d : ℝ) (hL : 0 < L) (hd : 0 < d) :
       = (1 / 2) * (L / d) := by ring
     _ < (2 / π) * (L / d) := by
         apply mul_lt_mul_of_pos_right _ hLd
-        rw [div_lt_div_iff (by norm_num : (0:ℝ) < 2) hπ]
-        linarith [pi_lt_four]
+        rw [div_lt_div_iff₀ (by norm_num : (0:ℝ) < 2) hπ]
+        linarith [Real.pi_lt_four]
     _ = 2 * L / (π * d) := by
         field_simp [ne_of_gt hπ, ne_of_gt hd]
 
@@ -289,7 +289,7 @@ theorem smooth3D_mono
     smooth3DExpectedCrossings γ₂ a₂ b₂ d := by
   rw [smooth3D_buffon_eq _ _ _ _ hd h₁ hC1₁,
       smooth3D_buffon_eq _ _ _ _ hd h₂ hC1₂,
-      div_le_div_right (by linarith : (0 : ℝ) < 2 * d)]
+      div_le_div_iff_of_pos_right (by linarith : (0 : ℝ) < 2 * d)]
   exact hlen
 
 /-- **Strict Monotonicity**: A strictly longer C¹ curve has strictly more
@@ -303,7 +303,7 @@ theorem smooth3D_strictMono
     smooth3DExpectedCrossings γ₂ a₂ b₂ d := by
   rw [smooth3D_buffon_eq _ _ _ _ hd h₁ hC1₁,
       smooth3D_buffon_eq _ _ _ _ hd h₂ hC1₂,
-      div_lt_div_right (by linarith : (0 : ℝ) < 2 * d)]
+      div_lt_div_iff_of_pos_right (by linarith : (0 : ℝ) < 2 * d)]
   exact hlen
 
 /-! ## Part VIII: Concrete Examples

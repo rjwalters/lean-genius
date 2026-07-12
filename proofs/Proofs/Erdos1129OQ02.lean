@@ -179,12 +179,12 @@ theorem lebesgueConstantOnInterval_affine_invariant (n : ℕ) (nodes : Fin n →
     · -- -1 ≤ invAffineMap a b t
       unfold invAffineMap
       have hba : 0 < b - a := by linarith
-      rw [le_div_iff hba]
+      rw [le_div_iff₀ hba]
       linarith
     · -- invAffineMap a b t ≤ 1
       unfold invAffineMap
       have hba : 0 < b - a := by linarith
-      rw [div_le_iff hba]
+      rw [div_le_iff₀ hba]
       linarith
     · -- y = LebesgueFunction nodes (invAffineMap a b t)
       rw [hy, ← lebesgueFunction_affine_invariant a b hab nodes (invAffineMap a b t),

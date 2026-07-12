@@ -82,7 +82,7 @@ theorem ValidBound.min_valid {C₁ C₂ : ℝ}
 /-- A valid bound C implies that f(c)/c² ≤ C for all positive c -/
 theorem ValidBound.ratio_le {C : ℝ} (hC : ValidBound C) {c : ℝ} (hc : 0 < c) :
     (boundFunction c : ℝ) / c ^ 2 ≤ C := by
-  rw [div_le_iff (by positivity)]
+  rw [div_le_iff₀ (by positivity)]
   exact hC c hc
 
 /-!

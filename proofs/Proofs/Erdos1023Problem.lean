@@ -319,9 +319,9 @@ theorem erdos_1023_solved : erdos_1023_question := by
     field_simp
   rw [key]
   constructor
-  · rw [neg_lt, neg_div, div_lt_iff hdenom_pos]
+  · rw [neg_lt, neg_div, div_lt_iff₀ hdenom_pos]
     linarith [abs_le.mp hasym]
-  · rw [div_lt_iff hdenom_pos]
+  · rw [div_lt_iff₀ hdenom_pos]
     linarith [abs_le.mp hasym]
 
 /-

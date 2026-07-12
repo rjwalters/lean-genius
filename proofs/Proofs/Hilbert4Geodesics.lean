@@ -314,7 +314,7 @@ theorem taxicab_triangle (n : ℕ) (x y : Fin n → ℝ) :
   calc ∑ i, |x i + y i| ≤ ∑ i, (|x i| + |y i|) := by
          apply Finset.sum_le_sum
          intro i _
-         exact abs_add (x i) (y i)
+         exact abs_add_le (x i) (y i)
        _ = ∑ i, |x i| + ∑ i, |y i| := by
          rw [← Finset.sum_add_distrib]
 

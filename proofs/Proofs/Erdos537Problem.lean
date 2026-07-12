@@ -133,7 +133,7 @@ theorem ratio_bound {a₂ a₃ N : ℕ} (h₂ : N / 2 < a₂ ∧ a₂ ≤ N)
   constructor
   · simp only [gt_iff_lt, one_lt_div (by omega : (0 : ℚ) < a₃)]
     exact Nat.cast_lt.mpr hgt
-  · rw [div_lt_iff (by omega : (0 : ℚ) < a₃)]
+  · rw [div_lt_iff₀ (by omega : (0 : ℚ) < a₃)]
     have : (a₂ : ℚ) ≤ N := Nat.cast_le.mpr h₂.2
     have : (a₃ : ℚ) > N / 2 := by exact_mod_cast h₃.1
     linarith

@@ -107,7 +107,7 @@ theorem approx_to_exact {f : ℝ → ℝ} (hf : Continuous f)
       |f x_star - x_star - (f (x m) - x m)| + |f (x m) - x m| := by
     calc |f x_star - x_star|
         = |(f x_star - x_star - (f (x m) - x m)) + (f (x m) - x m)| := by ring_nf
-      _ ≤ |f x_star - x_star - (f (x m) - x m)| + |f (x m) - x m| := abs_add _ _
+      _ ≤ |f x_star - x_star - (f (x m) - x m)| + |f (x m) - x m| := abs_add_le _ _
   -- |f(x*) - x* - (f(xₘ) - xₘ)| = |(f(xₘ) - xₘ) - (f(x*) - x*)| < ε/2
   have hsym : |f x_star - x_star - (f (x m) - x m)| =
       |f (x m) - x m - (f x_star - x_star)| := abs_sub_comm _ _
@@ -118,7 +118,7 @@ theorem approx_to_exact {f : ℝ → ℝ} (hf : Continuous f)
     apply div_le_div_of_nonneg_left (by norm_num : (0:ℝ) < 1) hN2_cast_pos
     exact_mod_cast hm_ge_N2
   have inv_N2_le : 1 / (↑N₂ : ℝ) ≤ ε / 2 := by
-    rw [div_le_div_iff hN2_cast_pos (by norm_num : (0:ℝ) < 2)]
+    rw [div_le_div_iff₀ hN2_cast_pos (by norm_num : (0:ℝ) < 2)]
     have : 2 / ε < ↑N₂_pred + 1 := by exact_mod_cast Nat.lt_succ_of_lt (by exact_mod_cast ‹_›)
     nlinarith
   linarith [hsym]

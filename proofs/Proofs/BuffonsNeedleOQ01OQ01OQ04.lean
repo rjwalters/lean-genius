@@ -454,7 +454,7 @@ private lemma cauchyCrofton_even_sq_bound (k : ℕ) :
             (((k : ℝ) + 1) * (2 * (k : ℝ) + 3) ^ 2)) := by push_cast; ring
       _ ≤ (2 / π) ^ 2 / ((k : ℝ) + 2) := by
           rw [← mul_div_assoc,
-              div_le_div_iff (by positivity : (0:ℝ) < ((k:ℝ)+1)*((2*(k:ℝ)+3)^2)) hk2]
+              div_le_div_iff₀ (by positivity : (0:ℝ) < ((k:ℝ)+1)*((2*(k:ℝ)+3)^2)) hk2]
           have h2pi : (0 : ℝ) ≤ (2 / π) ^ 2 := by positivity
           nlinarith [mul_le_mul_of_nonneg_left
                        (mul_le_mul_of_nonneg_right hkey (le_of_lt hk1)) h2pi]
@@ -483,7 +483,7 @@ private lemma cauchyCrofton_odd_sq_bound (k : ℕ) :
             (((k : ℝ) + 2) * (2 * (k : ℝ) + 4) ^ 2)) := by push_cast; ring
       _ ≤ (1 / 2 : ℝ) ^ 2 * 2 / ((k : ℝ) + 3) := by
           rw [← mul_div_assoc,
-              div_le_div_iff (by positivity : (0:ℝ) < ((k:ℝ)+2)*((2*(k:ℝ)+4)^2)) hk3]
+              div_le_div_iff₀ (by positivity : (0:ℝ) < ((k:ℝ)+2)*((2*(k:ℝ)+4)^2)) hk3]
           have h12 : (0 : ℝ) ≤ (1/2:ℝ)^2 * 2 := by norm_num
           nlinarith [mul_le_mul_of_nonneg_left hkey h12]
 
@@ -526,7 +526,7 @@ theorem cauchyCroftonConst_tendsto_zero :
         have h2 : (2 : ℝ) / ε ^ 2 * ε ^ 2 = 2 := by field_simp
         rw [h2] at hmul; exact hmul
       rw [show (2/π:ℝ)^2/(m:ℝ) = 4/(π^2*(m:ℝ)) from by ring,
-          div_lt_iff (by positivity)]
+          div_lt_iff₀ (by positivity)]
       nlinarith [mul_lt_mul_of_pos_left h_mε2 (show (0:ℝ) < π^2 from by positivity),
                  pi_gt_three]
     have hcn_sq : cauchyCroftonConst (2 * m) ^ 2 < ε ^ 2 := lt_of_le_of_lt heven hbound
@@ -557,7 +557,7 @@ theorem cauchyCroftonConst_tendsto_zero :
         have h2 : (2 : ℝ) / ε ^ 2 * ε ^ 2 = 2 := by field_simp
         rw [h2] at hmul; exact hmul
       rw [show (1/2:ℝ)^2*2/((m:ℝ)+1) = 1/(2*((m:ℝ)+1)) from by ring,
-          div_lt_iff (by positivity)]
+          div_lt_iff₀ (by positivity)]
       nlinarith [sq_pos_of_pos hε, h_mε2]
     have hcn_sq : cauchyCroftonConst (2 * m + 1) ^ 2 < ε ^ 2 :=
       lt_of_le_of_lt hodd' hbound2

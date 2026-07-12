@@ -283,9 +283,9 @@ theorem conjecture_equiv_exp : ErdosConjecture410 ↔
     unfold growthRate at hge
     have hx_nn : (0 : ℝ) ≤ (sigmaIterate k n : ℝ) := Nat.cast_nonneg _
     have hpow_le : (c + 1) ^ k ≤ (sigmaIterate k n : ℝ) := by
-      have := pow_le_pow_left (by linarith : (0 : ℝ) ≤ c + 1) hge k
+      have := pow_le_pow_left₀ (by linarith : (0 : ℝ) ≤ c + 1) hge k
       rwa [rpow_inv_pow_eq hx_nn hk_ne] at this
-    linarith [pow_lt_pow_left (show c < c + 1 by linarith) (le_of_lt hc) hk_ne]
+    linarith [pow_lt_pow_left₀ (show c < c + 1 by linarith) (le_of_lt hc) hk_ne]
   · -- Backward: eventual domination of any c^k implies growth rate → ∞
     intro h n hn
     rw [tendsto_atTop_atTop]
@@ -305,7 +305,7 @@ theorem conjecture_equiv_exp : ErdosConjecture410 ↔
       by_contra hlt
       push_neg at hlt
       have hle : (sigmaIterate k n : ℝ) ≤ b ^ k := by
-        have := pow_le_pow_left (Real.rpow_nonneg hx_nn _) (le_of_lt hlt) k
+        have := pow_le_pow_left₀ (Real.rpow_nonneg hx_nn _) (le_of_lt hlt) k
         rwa [rpow_inv_pow_eq hx_nn hk_ne] at this
       linarith
 

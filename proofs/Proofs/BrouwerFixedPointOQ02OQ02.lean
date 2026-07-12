@@ -62,7 +62,7 @@ theorem contraction_unique_fixed_point {f : ℝ → ℝ} {L : ℝ}
     calc |x₁ - x₂| = |f x₁ - f x₂| := by rw [hfx1, hfx2]
       _ ≤ L * |x₁ - x₂| := hlip x₁ x₂
   have : 1 ≤ L := by
-    rwa [← div_le_iff hne, div_self (ne_of_gt hne)] at h1
+    rwa [← div_le_iff₀ hne, div_self (ne_of_gt hne)] at h1
   linarith
 
 -- ============================================================
@@ -148,7 +148,7 @@ theorem binary_search_halving (n : ℕ) :
 theorem info_theoretic_bound {n : ℕ} {ε : ℝ} (hε : 0 < ε) (hε1 : ε ≤ 1)
     (hn : (2 : ℝ) ^ n < 1 / ε) :
     1 / (2 : ℝ) ^ n > ε := by
-  rw [gt_iff_lt, ← div_lt_iff (by positivity : (0:ℝ) < 2 ^ n)]
+  rw [gt_iff_lt, ← div_lt_iff₀ (by positivity : (0:ℝ) < 2 ^ n)]
   linarith
 
 /-- **Contrapositive**: To achieve ε-accuracy, need 2^n ≥ 1/ε,
@@ -156,9 +156,9 @@ theorem info_theoretic_bound {n : ℕ} {ε : ℝ} (hε : 0 < ε) (hε1 : ε ≤ 
 theorem queries_needed {n : ℕ} {ε : ℝ} (hε : 0 < ε)
     (hachieve : 1 / (2 : ℝ) ^ n ≤ ε) :
     (2 : ℝ) ^ n ≥ 1 / ε := by
-  rw [ge_iff_le, div_le_iff hε]
+  rw [ge_iff_le, div_le_iff₀ hε]
   have h2n : (0 : ℝ) < 2 ^ n := by positivity
-  rw [div_le_iff h2n] at hachieve
+  rw [div_le_iff₀ h2n] at hachieve
   linarith
 
 -- ============================================================
@@ -171,7 +171,7 @@ theorem contraction_faster_than_bisection {L D : ℝ}
     (hL : 0 ≤ L) (hL_half : L ≤ 1/2) (hD : 0 ≤ D) (n : ℕ) :
     L ^ n * D ≤ (1/2) ^ n * D := by
   apply mul_le_mul_of_nonneg_right _ hD
-  exact pow_le_pow_left hL hL_half n
+  exact pow_le_pow_left₀ hL hL_half n
 
 /-- **Weaker contraction ≤ bisection rate**: For any L ≤ 1,
     L^n ≤ 1 (but not necessarily ≤ (1/2)^n). -/

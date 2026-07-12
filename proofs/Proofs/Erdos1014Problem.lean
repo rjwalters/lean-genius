@@ -149,7 +149,7 @@ private lemma tendsto_log_ratio_pow (b : ℕ) :
       -- Combine: diff/log(n+1) ≤ n⁻¹/log(2)
       have h_frac : (log ((n : ℝ) + 1) - log (n : ℝ)) / log ((n : ℝ) + 1) ≤
           (n : ℝ)⁻¹ / log 2 := by
-        rw [div_le_div_iff hlog_n1 hlog2]
+        rw [div_le_div_iff₀ hlog_n1 hlog2]
         calc (log ((n : ℝ) + 1) - log (n : ℝ)) * log 2
             ≤ (n : ℝ)⁻¹ * log 2 := by nlinarith [h_log_diff]
           _ ≤ (n : ℝ)⁻¹ * log ((n : ℝ) + 1) := by nlinarith [hlog2_le]
@@ -244,12 +244,12 @@ theorem ratio_from_asymptotics (k : ℕ) (hk : k ≥ 3) :
   -- Factor bounds
   have hα_abs : |α| ≤ 1 + δ := by
     calc |α| = |α - 1 + 1| := by ring_nf
-      _ ≤ |α - 1| + |1| := abs_add _ _
+      _ ≤ |α - 1| + |1| := abs_add_le _ _
       _ ≤ δ + 1 := by linarith [le_of_lt hα, abs_of_pos (show (0:ℝ) < 1 by norm_num)]
       _ = 1 + δ := by ring
   have hβ_abs : |β| ≤ 1 + δ := by
     calc |β| = |β - 1 + 1| := by ring_nf
-      _ ≤ |β - 1| + 1 := by linarith [abs_add (β - 1) 1, abs_of_pos (show (0:ℝ) < 1 by norm_num)]
+      _ ≤ |β - 1| + 1 := by linarith [abs_add_le (β - 1) 1, abs_of_pos (show (0:ℝ) < 1 by norm_num)]
       _ ≤ δ + 1 := by linarith [le_of_lt hβ]
       _ = 1 + δ := by ring
   have hγ_abs : |γ - 1| ≤ 4 * δ / 3 := by
@@ -259,15 +259,15 @@ theorem ratio_from_asymptotics (k : ℕ) (hk : k ≥ 3) :
       simp only [γ]; field_simp
     rw [hγ_eq, abs_div, abs_neg, abs_of_pos hRg_pos]
     -- Need: |R/g-1| / (R/g) ≤ 4δ/3, i.e., |R/g-1| ≤ (4δ/3)·(R/g)
-    rw [div_le_iff hRg_pos]
+    rw [div_le_iff₀ hRg_pos]
     -- (4δ/3)·(R/g) ≥ (4δ/3)·(3/4) = δ ≥ |R/g-1|
     nlinarith [le_of_lt hζ, hRg_lb, hδ14, hδ]
   -- Final bound: |αβγ - 1| ≤ |α||β||γ-1| + |α||β-1| + |α-1| < 13δ/3 < ε
   rw [h_decomp, h_expand]
   calc |α * β * (γ - 1) + α * (β - 1) + (α - 1)|
       ≤ |α * β * (γ - 1)| + |α * (β - 1)| + |α - 1| := by
-        linarith [abs_add (α * β * (γ - 1) + α * (β - 1)) (α - 1),
-                  abs_add (α * β * (γ - 1)) (α * (β - 1))]
+        linarith [abs_add_le (α * β * (γ - 1) + α * (β - 1)) (α - 1),
+                  abs_add_le (α * β * (γ - 1)) (α * (β - 1))]
     _ = |α| * |β| * |γ - 1| + |α| * |β - 1| + |α - 1| := by
         rw [abs_mul, abs_mul, abs_mul]
     _ ≤ (1 + δ) * (1 + δ) * (4 * δ / 3) + (1 + δ) * δ + δ := by

@@ -95,8 +95,8 @@ degenerate `bringRadical_not_in_radicals` axiom. -/
 theorem bringRadical_not_solvableByRad (t : ℚ)
     (hirr : Irreducible (bjPoly t))
     (hns : ¬ IsSolvable (bjPoly t).Gal) :
-    ¬ IsSolvableByRad ℚ (bringRadical (t : ℝ)) :=
-  fun h => hns (solvableByRad.isSolvable' hirr (bringRadical_aeval t) h)
+    bringRadical (t : ℝ) ∉ solvableByRad ℚ ℝ :=
+  fun h => hns (isSolvable_gal_of_irreducible h hirr (bringRadical_aeval t))
 
 /-- **The unconditional converse content.** If the Bring radical `BR(↑t)` *were*
 solvable by radicals over `ℚ`, then — given irreducibility of `X⁵ + X + C t` —
@@ -105,9 +105,9 @@ the Galois group of the quintic would be solvable. This is the direct content of
 above. -/
 theorem bringRadical_solvableByRad_imp_gal_solvable (t : ℚ)
     (hirr : Irreducible (bjPoly t))
-    (h : IsSolvableByRad ℚ (bringRadical (t : ℝ))) :
+    (h : bringRadical (t : ℝ) ∈ solvableByRad ℚ ℝ) :
     IsSolvable (bjPoly t).Gal :=
-  solvableByRad.isSolvable' hirr (bringRadical_aeval t) h
+  isSolvable_gal_of_irreducible h hirr (bringRadical_aeval t)
 
 /-- An isomorphism `(bjPoly t).Gal ≃* S₅` forces the Galois group to be **not
 solvable**: `S₅` is not solvable (`Equiv.Perm.fin_5_not_solvable`), and
@@ -135,7 +135,7 @@ theorem with **no axioms and no sorries**. -/
 theorem bringRadical_not_solvableByRad_of_iso_S5 (t : ℚ)
     (hirr : Irreducible (bjPoly t))
     (e : (bjPoly t).Gal ≃* Equiv.Perm (Fin 5)) :
-    ¬ IsSolvableByRad ℚ (bringRadical (t : ℝ)) :=
+    bringRadical (t : ℝ) ∉ solvableByRad ℚ ℝ :=
   bringRadical_not_solvableByRad t hirr (gal_not_solvable_of_iso_S5 e)
 
 end AbelRuffiniOQ04OQ07OQ02

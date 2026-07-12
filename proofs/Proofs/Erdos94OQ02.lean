@@ -131,7 +131,7 @@ theorem dominant_contribution (n : ℕ) (hn : n ≥ 3) :
   have hn_pos : (n : ℝ) > 0 := by linarith
   have : (n / 2 : ℕ) ≥ 1 := by omega
   have h_cast : (↑(n / 2) : ℝ) ≥ ((n : ℝ) - 1) / 2 := by
-    rw [ge_iff_le, div_le_iff (by norm_num : (2:ℝ) > 0)]
+    rw [ge_iff_le, div_le_iff₀ (by norm_num : (2:ℝ) > 0)]
     have := Nat.div_mul_le_self n 2
     push_cast
     linarith [Nat.lt_div_mul_add n (by norm_num : 0 < 2)]

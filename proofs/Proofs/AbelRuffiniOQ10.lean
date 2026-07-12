@@ -1,6 +1,7 @@
 import Mathlib.FieldTheory.AbelRuffini
 import Mathlib.GroupTheory.Solvable
 import Mathlib.GroupTheory.SpecificGroups.Alternating
+import Mathlib.GroupTheory.SpecificGroups.Alternating.Simple
 import Mathlib.FieldTheory.Galois.Basic
 import Mathlib.NumberTheory.PrimeCounting
 import Mathlib.Analysis.SpecificLimits.Basic

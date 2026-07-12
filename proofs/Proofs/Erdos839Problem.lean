@@ -222,7 +222,7 @@ theorem liminf_finite :
   set cnt := ((Finset.range N).filter (fun n => a.val n ≤ N)).card with hcnt_def
   have h_Nlt4cnt : (N : ℝ) < 4 * (cnt : ℝ) := by
     unfold countRatio at hcount_ratio
-    rw [div_lt_div_iff (by norm_num : (0 : ℝ) < 4)
+    rw [div_lt_div_iff₀ (by norm_num : (0 : ℝ) < 4)
         (by exact_mod_cast hN_pos : (0 : ℝ) < (N : ℝ))] at hcount_ratio
     linarith
   -- cnt ≥ M + 2 (so cnt - 1 ≥ M + 1 > M)
@@ -243,7 +243,7 @@ theorem liminf_finite :
   -- a(cnt-1)/(cnt-1+1) = a(cnt-1)/cnt ≤ N/cnt < 4
   rw [h_cast_eq]
   have h_cnt_pos : (0 : ℝ) < (cnt : ℝ) := by exact_mod_cast (show 0 < cnt by omega)
-  rw [div_le_iff h_cnt_pos]
+  rw [div_le_iff₀ h_cnt_pos]
   calc (a.val (cnt - 1) : ℝ) ≤ (N : ℝ) := by exact_mod_cast h_bound
     _ ≤ 4 * (cnt : ℝ) := by linarith
 

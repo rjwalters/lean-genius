@@ -56,7 +56,7 @@ theorem minkowski_p1_real {ι : Type*} (s : Finset ι) (f g : ι → ℝ) :
     ∑ i ∈ s, |f i + g i| ≤ ∑ i ∈ s, |f i| + ∑ i ∈ s, |g i| := by
   calc ∑ i ∈ s, |f i + g i|
       ≤ ∑ i ∈ s, (|f i| + |g i|) :=
-        Finset.sum_le_sum fun i _ => abs_add (f i) (g i)
+        Finset.sum_le_sum fun i _ => abs_add_le (f i) (g i)
     _ = ∑ i ∈ s, |f i| + ∑ i ∈ s, |g i| := Finset.sum_add_distrib
 
 /-

@@ -5,8 +5,8 @@
 
   13 of 15 sorries proved manually:
   - IsSquare helpers (4): ⟨2^k, ring⟩, obtain + ring, ring, Nat.one_le_pow
-  - Division arithmetic (4): le_div_iff/div_le_iff + linarith, Nat.cast_pos, div_le_one_of_le
-  - u/exp/sqrt helpers (5): sqrt_nonneg, exp_le_exp.mpr, exp_lt_one_iff.mpr, sqrt_pos_of_pos, div_lt_iff + ring
+  - Division arithmetic (4): le_div_iff₀/div_le_iff₀ + linarith, Nat.cast_pos, div_le_one_of_le
+  - u/exp/sqrt helpers (5): sqrt_nonneg, exp_le_exp.mpr, exp_lt_one_iff.mpr, sqrt_pos_of_pos, div_lt_iff₀ + ring
 
   2 sorries remain for Aristotle:
   - partial_product_cons: complex List.foldl identity (non-trivial associativity)
@@ -87,11 +87,11 @@ lemma pow_four_range_product (k : ℕ) :
 
 /-- If a ≥ x * c and x > 0, then a / x ≥ c for reals -/
 lemma div_ge_of_ge_mul (a x c : ℝ) (hx : x > 0) (h : a ≥ x * c) : a / x ≥ c :=
-  (le_div_iff hx).mpr (by linarith)
+  (le_div_iff₀ hx).mpr (by linarith)
 
 /-- If a ≤ x * c and x > 0, then a / x ≤ c for reals -/
 lemma div_le_of_le_mul (a x c : ℝ) (hx : x > 0) (h : a ≤ x * c) : a / x ≤ c :=
-  (div_le_iff hx).mpr (by linarith)
+  (div_le_iff₀ hx).mpr (by linarith)
 
 /-- x > 0 as real when x ≥ 1 as natural -/
 lemma cast_pos_of_ge_one (x : ℕ) (hx : x ≥ 1) : (x : ℝ) > 0 :=
@@ -126,6 +126,6 @@ lemma sqrt_two_pos : Real.sqrt 2 > 0 :=
 lemma inv_sqrt_two_lt_sqrt_two : 1 / Real.sqrt 2 < Real.sqrt 2 := by
   have hpos : Real.sqrt 2 > 0 := Real.sqrt_pos_of_pos (by norm_num)
   have h2 : Real.sqrt 2 * Real.sqrt 2 = 2 := Real.mul_self_sqrt (by norm_num)
-  rw [div_lt_iff hpos, h2]; norm_num
+  rw [div_lt_iff₀ hpos, h2]; norm_num
 
 end Erdos437.Aristotle

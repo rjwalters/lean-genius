@@ -171,7 +171,7 @@ theorem partial_product_terms_pos (x : ℝ) (hx : |x| < 1) (n : ℕ) (hn : 0 < n
   have hn_sq : (0 : ℝ) < (n : ℝ) ^ 2 := by positivity
   have hx_sq : x ^ 2 < 1 := by nlinarith [abs_nonneg x]
   have : x ^ 2 / (n : ℝ) ^ 2 ≤ x ^ 2 := by
-    rw [div_le_iff hn_sq]
+    rw [div_le_iff₀ hn_sq]
     nlinarith [sq_nonneg x, sq_nonneg ((n : ℝ) - 1)]
   linarith
 

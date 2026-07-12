@@ -109,7 +109,7 @@ def realSubfield : Subfield ℂ where
 @[simp] theorem mem_realSubfield {z : ℂ} : z ∈ realSubfield ↔ z.im = 0 := Iff.rfl
 
 /-- The reals as an intermediate field `ℚ ⊆ ℝ ⊆ ℂ`. -/
-def realIF : IntermediateField ℚ ℂ :=
+noncomputable def realIF : IntermediateField ℚ ℂ :=
   realSubfield.toIntermediateField (by
     intro q
     rw [mem_realSubfield]

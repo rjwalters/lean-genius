@@ -146,7 +146,7 @@ theorem conjecture_implies_bounded_ratio :
       (ramseyNumberSymm n : ℝ) / (2 : ℝ) ^ n ≤ B := by
   intro ⟨C, hC, hbound⟩
   refine ⟨C, hC, fun n _ => ?_⟩
-  rw [div_le_iff (by positivity)]
+  rw [div_le_iff₀ (by positivity)]
   linarith [hbound n]
 
 /-!

@@ -97,7 +97,7 @@ theorem almost_sidon_exceeds_sidon :
   have h_pos : Real.sqrt (N : ℝ) > 0 := Real.sqrt_pos_of_pos (by linarith)
   -- 2/√3 > 23/20 (from √3 < 40/23)
   have h_23_20 : 2 / Real.sqrt 3 > 23 / 20 := by
-    rw [gt_iff_lt, div_lt_div_iff (by norm_num : (0:ℝ) < 20) h_sqrt3_pos]
+    rw [gt_iff_lt, div_lt_div_iff₀ (by norm_num : (0:ℝ) < 20) h_sqrt3_pos]
     linarith
   -- (2/√3 - 11/10) > 1/20
   have h_gap : 2 / Real.sqrt 3 - 11 / 10 > 1 / 20 := by linarith

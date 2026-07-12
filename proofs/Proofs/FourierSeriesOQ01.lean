@@ -209,7 +209,7 @@ theorem fourierPartialSum_of_trigPoly
 /-- Helper: on `AddCircle T`, `fourier k` is integrable. -/
 private theorem fourier_integrable (k : ℤ) : Integrable (fourier (T := T) k) haarAddCircle :=
   (Memℒp.of_bound (map_continuous (fourier k)).aestronglyMeasurable 1
-    (Filter.eventually_of_forall (fun x => by
+    (Filter.Eventually.of_forall (fun x => by
       have : ‖fourier k x‖ = 1 := by simp [fourier_apply]
       linarith))).integrable (by norm_num)
 
@@ -324,7 +324,7 @@ theorem IsTrigPoly.memℒp_two
           rw [norm_mul, show ‖fourier n x‖ = 1 from by simp [fourier_apply], mul_one]
   -- Apply Memℒp.of_bound (works for finite measures, here a probability measure)
   exact Memℒp.of_bound hg_cont.aestronglyMeasurable _
-    (Filter.eventually_of_forall hbound)
+    (Filter.Eventually.of_forall hbound)
 
 /-
 ═══════════════════════════════════════════════════════════════════════════════
@@ -667,12 +667,12 @@ theorem divergenceSet_measure_bound
         ENNReal.ofReal (∫ x, ‖(f - g) x‖ ^ 2 ∂haarAddCircle) := by
       symm
       exact ofReal_integral_eq_lintegral_ofReal hfmg_sq
-        (Filter.eventually_of_forall fun x => by positivity)
+        (Filter.Eventually.of_forall fun x => by positivity)
     -- {δ/2 < ‖h‖} ⊆ {ENNReal.ofReal((δ/2)²) ≤ ENNReal.ofReal(‖h‖²)}
     have hset_sub : {x : AddCircle T | δ / 2 < ‖(f - g) x‖} ⊆
         {x | ENNReal.ofReal ((δ / 2) ^ 2) ≤ ENNReal.ofReal (‖(f - g) x‖ ^ 2)} :=
       fun x hx => ENNReal.ofReal_le_ofReal
-        (pow_le_pow_left (le_of_lt (half_pos hδ)) (le_of_lt hx) 2)
+        (pow_le_pow_left₀ (le_of_lt (half_pos hδ)) (le_of_lt hx) 2)
     -- Calc: monotone measure + Markov division + integral bound + arithmetic
     calc haarAddCircle {x | δ / 2 < ‖(f - g) x‖}
         ≤ haarAddCircle {x | ENNReal.ofReal ((δ / 2) ^ 2) ≤
@@ -820,7 +820,7 @@ theorem carleson_continuous
   -- Continuous functions on a compact space are in L²
   -- Use Memℒp.of_bound: f is bounded by ‖f‖ (sup norm), and haarAddCircle is finite
   exact Memℒp.of_bound f.continuous.aestronglyMeasurable ‖f‖
-    (Filter.eventually_of_forall f.norm_coe_le_norm)
+    (Filter.Eventually.of_forall f.norm_coe_le_norm)
 
 /-- **Corollary**: Carleson strengthens Parseval.
 

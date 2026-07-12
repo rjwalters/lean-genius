@@ -120,7 +120,7 @@ theorem geometric_divisor (t : ℝ) (d : ℕ) (ht : t > 1) (hd : d ≥ 1) :
   have htd_gt : (1 : ℝ) < t ^ d := by
     calc (1 : ℝ) = 1 ^ d := (one_pow d).symm
     _ < t ^ d := by
-      apply pow_lt_pow_left (by linarith : (1 : ℝ) < t) (by linarith : (0 : ℝ) ≤ 1)
+      apply pow_lt_pow_left₀ (by linarith : (1 : ℝ) < t) (by linarith : (0 : ℝ) ≤ 1)
       omega
   have htd_ne : t ^ d ≠ 0 := ne_of_gt htd_pos
   set r := (t ^ d)⁻¹ with hr_def

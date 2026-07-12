@@ -85,7 +85,7 @@ theorem scalingExponent_mono {k₁ k₂ : ℕ} (hk₁ : 1 ≤ k₁) (h : k₁ �
   simp only [show k₁ ≠ 0 from by omega, show k₂ ≠ 0 from by omega, ite_false]
   -- (k₁-1)/k₁ ≤ (k₂-1)/k₂ iff k₂(k₁-1) ≤ k₁(k₂-1)
   -- iff k₁k₂ - k₂ ≤ k₁k₂ - k₁ iff k₁ ≤ k₂
-  rw [div_le_div_iff (by positivity : (k₁ : ℝ) > 0) (by positivity : (k₂ : ℝ) > 0)]
+  rw [div_le_div_iff₀ (by positivity : (k₁ : ℝ) > 0) (by positivity : (k₂ : ℝ) > 0)]
   push_cast
   nlinarith
 
@@ -124,7 +124,7 @@ theorem thresholdPower_mono_d (k : ℕ) (hk : 1 ≤ k) {d₁ d₂ : ℕ} (h : d�
     thresholdPower k d₁ ≤ thresholdPower k d₂ := by
   unfold thresholdPower
   apply mul_le_mul_of_nonneg_left
-  · exact pow_le_pow_left (Nat.cast_nonneg d₁) (Nat.cast_le.mpr h) _
+  · exact pow_le_pow_left₀ (Nat.cast_nonneg d₁) (Nat.cast_le.mpr h) _
   · exact Nat.cast_nonneg (k.factorial)
 
 /-- Threshold formula is monotone in k: higher k → higher threshold (for d ≥ 2).

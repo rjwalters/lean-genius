@@ -206,7 +206,7 @@ theorem weaklyNonTrilinear_implies_eps (A : Set (Fin 2 → ℝ))
     refine ⟨C, hCsub, ?_, nonTrilinear_mono hCinS (hS i)⟩
     -- Show (1/k) * |B| ≤ |C|
     rw [div_mul_eq_mul_div, one_mul]
-    rw [le_div_iff hkR]
+    rw [le_div_iff₀ hkR]
     exact_mod_cast hi
 
 -- ## Finite sets are always weakly non-trilinear

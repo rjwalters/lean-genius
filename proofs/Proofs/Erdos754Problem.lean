@@ -46,7 +46,7 @@ noncomputable def pointDist {d : ℕ} (x y : EuclideanSpace ℝ (Fin d)) : ℝ :
   dist x y
 
 /-- The set of points equidistant from x at distance r. -/
-def equidistantSet {d n : ℕ} (A : PointConfig d n) (x : Fin n) (r : ℝ) : Finset (Fin n) :=
+noncomputable def equidistantSet {d n : ℕ} (A : PointConfig d n) (x : Fin n) (r : ℝ) : Finset (Fin n) :=
   Finset.univ.filter (fun y => y ≠ x ∧ pointDist (A x) (A y) = r)
 
 /-- The "favorite distance" of point x: the distance appearing most frequently. -/

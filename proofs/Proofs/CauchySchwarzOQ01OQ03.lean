@@ -113,8 +113,8 @@ theorem heisenberg_sqrt (f g : E) (c : ℝ) (hc : (inner f g : ℂ).im = c / 2)
     |c| / 2 ≤ ‖f‖ * ‖g‖ := by
   have h := heisenberg_bound f g c hc
   have hfg : 0 < ‖f‖ * ‖g‖ := mul_pos hf hg
-  rw [div_le_iff (by norm_num : (0:ℝ) < 4)] at h
-  rw [div_le_iff (by norm_num : (0:ℝ) < 2)]
+  rw [div_le_iff₀ (by norm_num : (0:ℝ) < 4)] at h
+  rw [div_le_iff₀ (by norm_num : (0:ℝ) < 2)]
   nlinarith [sq_abs c, sq_nonneg (‖f‖ * ‖g‖ - |c| / 2),
              mul_pow_le_pow_mul_pow_of_sq_le_sq 2 ![‖f‖, ‖g‖] ![‖f‖, ‖g‖]
                (by intro i; fin_cases i <;> simp) (by intro i; fin_cases i <;> simp)]

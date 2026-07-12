@@ -69,7 +69,7 @@ theorem intervalLcm_zero (n : ℕ) : intervalLcm n 0 = 1 := by
 
 /-- LCM of single element is that element -/
 theorem intervalLcm_one (n : ℕ) : intervalLcm n 1 = n + 1 := by
-  simp [intervalLcm, Finset.range_succ,
+  simp [intervalLcm, Finset.range_add_one,
     Finset.fold_insert Finset.not_mem_range_self]
 
 /-- Peeling the top element: `M(n, k+1) = lcm(n+1+k, M(n,k))`.
@@ -77,13 +77,13 @@ theorem intervalLcm_one (n : ℕ) : intervalLcm n 1 = n + 1 := by
     so downstream lemmas stated about `intervalLcm n k` still match syntactically. -/
 theorem intervalLcm_succ (n k : ℕ) :
     intervalLcm n (k + 1) = Nat.lcm (n + 1 + k) (intervalLcm n k) := by
-  rw [intervalLcm, Finset.range_succ, Finset.fold_insert Finset.not_mem_range_self]
+  rw [intervalLcm, Finset.range_add_one, Finset.fold_insert Finset.not_mem_range_self]
   rfl
 
 /-- LCM increases when interval extends -/
 theorem intervalLcm_mono_right (n k : ℕ) :
     intervalLcm n k ∣ intervalLcm n (k + 1) := by
-  simp only [intervalLcm, Finset.range_succ,
+  simp only [intervalLcm, Finset.range_add_one,
     Finset.fold_insert Finset.not_mem_range_self]
   exact Nat.dvd_lcm_right _ _
 
@@ -93,7 +93,7 @@ theorem dvd_intervalLcm (n k i : ℕ) (hi : i < k) :
   induction k with
   | zero => omega
   | succ k ih =>
-    simp only [intervalLcm, Finset.range_succ,
+    simp only [intervalLcm, Finset.range_add_one,
       Finset.fold_insert Finset.not_mem_range_self]
     rcases Nat.lt_succ_iff.mp hi |>.lt_or_eq with h | h
     · exact Nat.dvd_trans (ih h) (Nat.dvd_lcm_right _ _)
@@ -157,7 +157,7 @@ lemma intervalLcm_pos (n k : ℕ) : 0 < intervalLcm n k := by
   induction k with
   | zero => simp [intervalLcm]
   | succ k ih =>
-    rw [intervalLcm, Finset.range_succ, Finset.fold_insert Finset.not_mem_range_self]
+    rw [intervalLcm, Finset.range_add_one, Finset.fold_insert Finset.not_mem_range_self]
     exact Nat.lcm_pos (by omega) ih
 
 /-- The p-adic valuation of intervalLcm n k equals the supremum of the p-adic valuations
@@ -174,7 +174,7 @@ theorem padicValNat_intervalLcm (p : ℕ) (hp : p.Prime) (n k : ℕ) :
   induction k with
   | zero => simp [intervalLcm, padicValNat.one]
   | succ k ih =>
-    rw [intervalLcm_succ, Finset.range_succ, Finset.sup_insert]
+    rw [intervalLcm_succ, Finset.range_add_one, Finset.sup_insert]
     have ha : (n + 1 + k) ≠ 0 := by omega
     have hb : intervalLcm n k ≠ 0 := (intervalLcm_pos n k).ne'
     rw [← factorization_def _ hp, Nat.factorization_lcm ha hb,
@@ -198,7 +198,7 @@ theorem intervalLcm_le_prod (n k : ℕ) :
   induction k with
   | zero => simp [intervalLcm]
   | succ k ih =>
-    rw [intervalLcm, Finset.range_succ,
+    rw [intervalLcm, Finset.range_add_one,
         Finset.fold_insert Finset.not_mem_range_self,
         Finset.prod_insert Finset.not_mem_range_self]
     calc Nat.lcm (n + 1 + k) ((Finset.range k).fold Nat.lcm 1 (fun i => n + 1 + i))

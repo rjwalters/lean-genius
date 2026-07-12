@@ -138,7 +138,7 @@ theorem r3_superlogarithmic (C : ℝ) (hC : C > 0) :
     have hlog_gt : K / ε < Real.log (N : ℝ) := by
       calc K / ε = Real.log (Real.exp (K / ε)) := (Real.log_exp _).symm
         _ < Real.log ↑N := Real.log_lt_log (Real.exp_pos _) hN_gt_exp
-    rwa [div_lt_iff hε] at hlog_gt
+    rwa [div_lt_iff₀ hε] at hlog_gt
   calc (r3 N : ℝ)
       ≤ K * ↑N / (Real.log ↑N) ^ (C + 1) := hbound N hN3
     _ < ε * ↑N / (Real.log ↑N) ^ C := by

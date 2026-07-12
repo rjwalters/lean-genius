@@ -62,13 +62,13 @@ theorem resolvent_monic_form (p q r m : ℂ)
 
 /-- The shift that depresses the resolvent cubic: m = t - 5p/6.
     This eliminates the m² term, giving a depressed cubic in t. -/
-def resolventShift (p : ℂ) : ℂ := -5 * p / 6
+noncomputable def resolventShift (p : ℂ) : ℂ := -5 * p / 6
 
 /-- The depressed coefficient A = (2p² - r) - (5p/2)² / 3 = -p²/12 - r. -/
-def depressedCoeffA (p r : ℂ) : ℂ := -p^2 / 12 - r
+noncomputable def depressedCoeffA (p r : ℂ) : ℂ := -p^2 / 12 - r
 
 /-- The depressed coefficient B (constant term after substitution). -/
-def depressedCoeffB (p q r : ℂ) : ℂ :=
+noncomputable def depressedCoeffB (p q r : ℂ) : ℂ :=
   -p^3 / 108 + p * r / 3 - q^2 / 8
 
 /-- The core ring identity: the resolvent cubic at m = t - 5p/6 equals
@@ -113,8 +113,8 @@ theorem resolvent_depresses (p q r t : ℂ) :
     This means the roots are given by:
       t = u + v  where u³ + v³ = -B and uv = -A/3
     and the resolvent cubic roots are m = t - 5p/6. -/
-def cardanoP (p r : ℂ) : ℂ := depressedCoeffA p r
-def cardanoQ (p q r : ℂ) : ℂ := depressedCoeffB p q r
+noncomputable def cardanoP (p r : ℂ) : ℂ := depressedCoeffA p r
+noncomputable def cardanoQ (p q r : ℂ) : ℂ := depressedCoeffB p q r
 
 /-- The discriminant of the depressed resolvent cubic:
     Δ = -4A³ - 27B².
@@ -130,7 +130,7 @@ noncomputable def resolventDiscriminant (p q r : ℂ) : ℂ :=
 
 /-- Given a root t of the depressed resolvent cubic, we recover
     the Ferrari parameter m = t - 5p/6. -/
-def recoverM (p t : ℂ) : ℂ := t + resolventShift p
+noncomputable def recoverM (p t : ℂ) : ℂ := t + resolventShift p
 
 /-- The recovered m is a root of the resolvent cubic. -/
 theorem recoverM_is_resolvent_root (p q r t : ℂ)

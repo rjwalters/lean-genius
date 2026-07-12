@@ -154,7 +154,7 @@ Step 6: Combine and divide by ‖f+g‖_p^{p-1}
 theorem abs_add_pow_le_pow_add {p : ℝ} (hp : 1 ≤ p)
     (a b : ℝ) :
     |a + b| ^ p ≤ (|a| + |b|) ^ p := by
-  apply Real.rpow_le_rpow (abs_nonneg _) (abs_add a b)
+  apply Real.rpow_le_rpow (abs_nonneg _) (abs_add_le a b)
   linarith
 
 /-- **Key identity**: (p-1) · q = p when 1/p + 1/q = 1.

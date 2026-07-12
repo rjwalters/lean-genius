@@ -21,7 +21,7 @@ import Mathlib.Tactic
 -- #check @Finset.hasSum_compl_iff
 
 -- Test filter
-#check @Filter.eventually_of_forall
+#check @Filter.Eventually.of_forall
 
 -- Test numDerangements recurrence
 #check @numDerangements_add_two

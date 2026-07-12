@@ -75,18 +75,18 @@ theorem rationals_dense_in_positives :
   have hq_pos : (0 : ℝ) < (q : ℝ) := lt_trans (div_pos one_pos hε) hq_cast
   have hq_ge1 : q ≥ 1 := by omega
   have h1q_lt_ε : (1 : ℝ) / q < ε := by
-    rw [div_lt_iff hq_pos]; linarith [mul_comm ε ((q : ℝ)), (div_lt_iff hε).mp hq_cast]
+    rw [div_lt_iff₀ hq_pos]; linarith [mul_comm ε ((q : ℝ)), (div_lt_iff₀ hε).mp hq_cast]
   -- Find p = ⌈r * q⌉₊
   set p := ⌈r * (q : ℝ)⌉₊
   have hrq_pos : r * (q : ℝ) > 0 := mul_pos hr hq_pos
   have hp_pos : 0 < p := Nat.ceil_pos.mpr hrq_pos
   have hp_ge : (p : ℝ) ≥ r * q := Nat.le_ceil _
-  have hpq_ge_r : (p : ℝ) / q ≥ r := (le_div_iff hq_pos).mpr (by linarith)
+  have hpq_ge_r : (p : ℝ) / q ≥ r := (le_div_iff₀ hq_pos).mpr (by linarith)
   refine ⟨p, q, by omega, hq_ge1, ?_⟩
   rw [abs_of_nonneg (by linarith)]
   have hp_lt : (p : ℝ) < r * q + 1 := Nat.ceil_lt_add_one (le_of_lt hrq_pos)
   calc (p : ℝ) / q - r = ((p : ℝ) - r * q) / q := by field_simp
-    _ < 1 / q := (div_lt_div_right hq_pos).mpr (by linarith)
+    _ < 1 / q := (div_lt_div_iff_of_pos_right hq_pos).mpr (by linarith)
     _ < ε := h1q_lt_ε
 
 end Erdos964Aristotle

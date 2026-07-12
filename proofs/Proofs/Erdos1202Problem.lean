@@ -59,7 +59,7 @@ lemma asympThreshold_lt_m {m n : ℝ} (hm : 0 < m) (hn : 1 < n)
   unfold asympThreshold growthCondition at *
   have hlogn : 0 < Real.log n := Real.log_pos hn
   have hn' : 0 < n := lt_trans zero_lt_one hn
-  rw [div_lt_iff (mul_pos hn' hlogn)]
+  rw [div_lt_iff₀ (mul_pos hn' hlogn)]
   nlinarith [Real.sq_sqrt (mul_nonneg (le_of_lt hn') (le_of_lt hlogn)),
              Real.sqrt_pos.mpr (mul_pos hn' hlogn)]
 

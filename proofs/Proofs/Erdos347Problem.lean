@@ -153,7 +153,7 @@ theorem hasDensity_one_of_superset (A B : Set ℕ) (hAB : A ⊆ B)
   have hNpos : (0 : ℚ) < N := by exact_mod_cast Nat.pos_of_ne_zero (Nat.one_le_iff_ne_zero.mp hN1)
   have hA_close := hN₀ N hNN₀
   have step1 : (countIn A N : ℚ) / N ≤ (countIn B N : ℚ) / N :=
-    (div_le_div_right hNpos).mpr (by exact_mod_cast countIn_mono A B hAB N)
+    (div_le_div_iff_of_pos_right hNpos).mpr (by exact_mod_cast countIn_mono A B hAB N)
   have step2 : (countIn B N : ℚ) / N ≤ 1 :=
     div_le_one_of_le (by exact_mod_cast countIn_le B N) hNpos.le
   have step3 : (countIn A N : ℚ) / N ≤ 1 :=

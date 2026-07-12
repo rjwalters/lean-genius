@@ -177,7 +177,7 @@ theorem evenCycleSum_eq_half (m : ℕ) (hm : 2 ≤ m) :
 theorem even_reciprocal_lt (j : ℕ) (hj : 2 ≤ j) :
     (1 : ℝ) / (2 * j) < 1 / j := by
   have hpos : (j : ℝ) > 0 := by exact_mod_cast Nat.lt_of_lt_pred (by omega : 1 < j)
-  rw [div_lt_div_iff (by positivity : (2 : ℝ) * j > 0) (by positivity : (j : ℝ) > 0)]
+  rw [div_lt_div_iff₀ (by positivity : (2 : ℝ) * j > 0) (by positivity : (j : ℝ) > 0)]
   linarith
 
 -- ============================================================

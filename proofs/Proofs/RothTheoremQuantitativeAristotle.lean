@@ -250,7 +250,7 @@ theorem behrend_exponent_vs_poly (c ε : ℝ) (hc : 0 < c) (hε : 0 < ε) :
     exact Real.sqrt_le_sqrt h_log
   -- ε * √(log N) ≥ c
   have h_eps_c : c ≤ ε * Real.sqrt (Real.log N) := by
-    rwa [div_le_iff hε] at h_sqrt_lb
+    rwa [div_le_iff₀ hε] at h_sqrt_lb
   -- c * √(log N) ≤ ε * log N
   have h_key : c * Real.sqrt (Real.log N) ≤ ε * Real.log N := by
     calc c * Real.sqrt (Real.log N)

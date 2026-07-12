@@ -129,7 +129,7 @@ theorem dirichletSet_volume_gt_four (α : ℝ) (Q : ℕ) (hQ : 0 < Q) :
   rw [dirichletSet_volume α Q hQ]
   have hQpos : (0 : ℝ) < (Q : ℝ) := Nat.cast_pos.mpr hQ
   have hlt : (4 : ℝ) < 4 * ((Q : ℝ) + 1) / (Q : ℝ) := by
-    rw [lt_div_iff hQpos]; linarith
+    rw [lt_div_iff₀ hQpos]; linarith
   calc (2 : ENNReal) ^ 2
       = ENNReal.ofReal 4 := by norm_num
     _ < ENNReal.ofReal (4 * ((Q : ℝ) + 1) / (Q : ℝ)) :=
@@ -255,10 +255,10 @@ theorem dirichlet_approximation_corollary (α : ℝ) (Q : ℕ) (hQ : 0 < Q) :
   have hqpos : (0 : ℝ) < (q : ℝ) := by exact_mod_cast Int.lt_of_lt_of_le Int.one_pos hq1
   have hQpos : (0 : ℝ) < (Q : ℝ) := Nat.cast_pos.mpr hQ
   rw [show α - (p : ℝ) / (q : ℝ) = (α * (q : ℝ) - (p : ℝ)) / (q : ℝ) by field_simp; ring,
-      abs_div, abs_of_pos hqpos, div_lt_div_iff hqpos (mul_pos hQpos hqpos)]
+      abs_div, abs_of_pos hqpos, div_lt_div_iff₀ hqpos (mul_pos hQpos hqpos)]
   -- Goal: |α*q - p| * (Q*q) < 1 * q = q
   -- From happrox: |α*q - p| < 1/Q, so |α*q - p| * Q < 1
-  have key : |α * (q : ℝ) - (p : ℝ)| * (Q : ℝ) < 1 := by rwa [lt_div_iff hQpos] at happrox
+  have key : |α * (q : ℝ) - (p : ℝ)| * (Q : ℝ) < 1 := by rwa [lt_div_iff₀ hQpos] at happrox
   nlinarith
 
 end DirichletFromMinkowski

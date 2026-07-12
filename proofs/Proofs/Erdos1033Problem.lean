@@ -272,9 +272,9 @@ theorem conjecture_gives_asymptotic :
   have h_lower := hN n hnN
   have h_upper := erdos_laskar_upper n hn3
   have h_div_le : (h n : ℝ) / n ≤ erdosLaskarConstant := by
-    rwa [div_le_iff hn_pos, mul_comm]
+    rwa [div_le_iff₀ hn_pos, mul_comm]
   have h_div_ge : erdosLaskarConstant - ε / 2 ≤ (h n : ℝ) / n := by
-    rwa [le_div_iff hn_pos, mul_comm]
+    rwa [le_div_iff₀ hn_pos, mul_comm]
   rw [abs_lt]
   constructor <;> linarith
 

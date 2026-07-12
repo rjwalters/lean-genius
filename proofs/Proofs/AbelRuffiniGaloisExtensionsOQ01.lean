@@ -257,13 +257,13 @@ theorem gal_not_solvable : ¬ IsSolvable q.Gal := by
 solvable by radicals: such a root would force the Galois group to be solvable
 (Mathlib's `solvableByRad.isSolvable'` for the irreducible `q`), contradicting
 `gal_not_solvable`. Unlike the `X⁵ − X − 1` entry, this needs **no** assumed isomorphism. -/
-theorem root_not_solvableByRad {x : ℂ} (hx : aeval x q = 0) : ¬ IsSolvableByRad ℚ x :=
-  fun h => gal_not_solvable (solvableByRad.isSolvable' q_irreducible hx h)
+theorem root_not_solvableByRad {x : ℂ} (hx : aeval x q = 0) : x ∉ solvableByRad ℚ ℂ :=
+  fun h => gal_not_solvable (isSolvable_gal_of_irreducible h q_irreducible hx)
 
 /-- A concrete algebraic number that is **not** solvable by radicals: any complex root of
 `X⁵ − 4X + 2`. -/
 theorem exists_root_not_solvableByRad :
-    ∃ x : ℂ, IsAlgebraic ℚ x ∧ ¬ IsSolvableByRad ℚ x := by
+    ∃ x : ℂ, IsAlgebraic ℚ x ∧ x ∉ solvableByRad ℚ ℂ := by
   obtain ⟨x, hx⟩ := (IsAlgClosed.splits (Φ ℂ 4 2)).exists_eval_eq_zero (by simp [degree_Phi])
   rw [← map_Phi 4 2 (algebraMap ℚ ℂ), eval_map] at hx
   have hx' : aeval x q = 0 := hx

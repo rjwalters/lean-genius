@@ -1,5 +1,6 @@
 import Mathlib.GroupTheory.Solvable
 import Mathlib.GroupTheory.SpecificGroups.Alternating
+import Mathlib.GroupTheory.SpecificGroups.Alternating.Simple
 import Mathlib.Tactic
 
 /-

@@ -361,8 +361,8 @@ theorem normalized_error_tendsto :
   obtain ⟨N, hN⟩ : ∃ N : ℕ, (1 : ℝ) / (↑N + 2) < ε := by
     obtain ⟨M, hM⟩ := exists_nat_gt (1 / ε)
     exact ⟨M, by
-      rw [div_lt_iff (show (0 : ℝ) < ↑M + 2 by positivity)]
-      calc (1 : ℝ) < ε * ↑M := by rwa [div_lt_iff hε] at hM
+      rw [div_lt_iff₀ (show (0 : ℝ) < ↑M + 2 by positivity)]
+      calc (1 : ℝ) < ε * ↑M := by rwa [div_lt_iff₀ hε] at hM
         _ ≤ ε * (↑M + 2) := by linarith [hε]⟩
   exact ⟨N, fun n hn => by
     rw [Real.dist_eq]

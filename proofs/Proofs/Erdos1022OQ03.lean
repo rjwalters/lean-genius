@@ -189,7 +189,7 @@ theorem monoProb_anti {s t : ℕ} (hst : s ≤ t) : monoProb t ≤ monoProb s :=
   simp only [monoProb]
   have hs_pos : (0 : ℚ) < 2 ^ s := by positivity
   have ht_pos : (0 : ℚ) < 2 ^ t := by positivity
-  rw [div_le_div_iff ht_pos hs_pos]
+  rw [div_le_div_iff₀ ht_pos hs_pos]
   have : (2 : ℚ) ^ s ≤ 2 ^ t := by
     exact_mod_cast Nat.pow_le_pow_right (by norm_num : 1 ≤ 2) hst
   linarith
@@ -309,7 +309,7 @@ theorem lllThreshold_pos (d : ℕ) (hd : 1 ≤ d) : 0 < lllThreshold d := by
     is in the range where the LLL can potentially help. -/
 theorem monoProb_le_half (t : ℕ) (ht : 2 ≤ t) : monoProb t ≤ 1 / 2 := by
   simp only [monoProb]
-  rw [div_le_div_iff (by positivity : (0 : ℚ) < 2 ^ t) (by norm_num : (0 : ℚ) < 2)]
+  rw [div_le_div_iff₀ (by positivity : (0 : ℚ) < 2 ^ t) (by norm_num : (0 : ℚ) < 2)]
   have h2t : (4 : ℚ) ≤ 2 ^ t := by
     calc (4 : ℚ) = 2 ^ 2 := by norm_num
       _ ≤ 2 ^ t := by

@@ -218,7 +218,7 @@ private lemma lower_bound_sum (p : ℝ[X]) (R : ℝ) (hR : 1 ≤ R)
     _ ≤ ∑ i ∈ Finset.range p.natDegree, (|p.coeff i| * R ^ (p.natDegree - 1)) := by
         apply Finset.sum_le_sum; intro i hi
         apply mul_le_mul_of_nonneg_left _ (abs_nonneg _)
-        apply pow_le_pow_right hR
+        apply pow_le_pow_right₀ hR
         exact Nat.lt_iff_le_pred hd |>.mp (Finset.mem_range.mp hi)
     _ = R ^ (p.natDegree - 1) *
           (Finset.range p.natDegree).sum (fun i => |p.coeff i|) := by

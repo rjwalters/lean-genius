@@ -254,21 +254,21 @@ theorem crossingFactor_succ_succ_lt (n : ℕ) (hn : 1 ≤ n) :
 /-- **Dimension comparison 2D vs 3D**: α₂ = 2/π > 1/2 = α₃. -/
 theorem crossingFactor_three_lt_two : crossingFactor 3 < crossingFactor 2 := by
   simp only [crossingFactor_two, crossingFactor_three]
-  rw [div_lt_div_iff (by norm_num : (0:ℝ) < 2) pi_pos]
+  rw [div_lt_div_iff₀ (by norm_num : (0:ℝ) < 2) pi_pos]
   linarith [pi_lt_four]
 
 /-- **Dimension comparison 3D vs 4D**: α₃ = 1/2 > 4/(3π) = α₄.
     Proof: 1/2 > 4/(3π) ↔ 3π > 8, which holds since π > 3. -/
 theorem crossingFactor_four_lt_three : crossingFactor 4 < crossingFactor 3 := by
   rw [crossingFactor_four, crossingFactor_three]
-  rw [div_lt_div_iff (mul_pos (by norm_num : (0:ℝ) < 3) pi_pos) (by norm_num : (0:ℝ) < 2)]
+  rw [div_lt_div_iff₀ (mul_pos (by norm_num : (0:ℝ) < 3) pi_pos) (by norm_num : (0:ℝ) < 2)]
   linarith [pi_gt_three]
 
 /-- **Dimension comparison 4D vs 5D**: α₄ = 4/(3π) > 3/8 = α₅.
     Proof: 4/(3π) > 3/8 ↔ 32 > 9π, which holds since π < 3.15. -/
 theorem crossingFactor_five_lt_four : crossingFactor 5 < crossingFactor 4 := by
   rw [crossingFactor_five, crossingFactor_four]
-  rw [div_lt_div_iff (by norm_num : (0:ℝ) < 8) (mul_pos (by norm_num : (0:ℝ) < 3) pi_pos)]
+  rw [div_lt_div_iff₀ (by norm_num : (0:ℝ) < 8) (mul_pos (by norm_num : (0:ℝ) < 3) pi_pos)]
   -- Need: 3 * (3 * π) < 4 * 8, i.e., 9π < 32. Since π < 3.15: 9 * 3.15 = 28.35 < 32.
   nlinarith [Real.pi_lt_315]
 

@@ -70,7 +70,7 @@ theorem exp_neg_sub_sq_le_one_sub {x : ℝ} (hx0 : 0 ≤ x) (hx1 : x ≤ 1 / 2) 
           mul_le_mul_of_nonneg_left hT (le_of_lt h1mx_pos)
   -- Step 4: exp(-y) ≤ 1-x
   rw [show -x - x ^ 2 = -y from by rw [hy_def]; ring, Real.exp_neg, inv_eq_one_div]
-  rw [div_le_iff (Real.exp_pos y)]
+  rw [div_le_iff₀ (Real.exp_pos y)]
   linarith
 
 /-- The product formula for the probability that k items are all distinct

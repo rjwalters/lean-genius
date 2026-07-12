@@ -562,7 +562,7 @@ private lemma frequency_cosine_sum_even (n : ℕ) (hn : n ≥ 1) (s : ℕ)
   have hβ_pos : 0 < β := by positivity
   have hβ_lt : β < Real.pi := by
     show ↑s * Real.pi / (2 * ↑n) < Real.pi
-    rw [div_lt_iff h2n_pos]
+    rw [div_lt_iff₀ h2n_pos]
     nlinarith [Real.pi_pos, show (↑s : ℝ) < 2 * ↑n from by exact_mod_cast hs2]
   have hsin_ne : Real.sin β ≠ 0 :=
     ne_of_gt (Real.sin_pos_of_pos_of_lt_pi hβ_pos hβ_lt)
@@ -583,7 +583,7 @@ private lemma frequency_cosine_sum_odd (n : ℕ) (hn : n ≥ 1) (s : ℕ)
   -- β = sπ/(2n) satisfies 0 < β < π since 0 < s < 2n
   have hβ_pos : 0 < ↑s * Real.pi / (2 * (↑n : ℝ)) := by positivity
   have hβ_lt : ↑s * Real.pi / (2 * (↑n : ℝ)) < Real.pi := by
-    rw [div_lt_iff h2n_pos]
+    rw [div_lt_iff₀ h2n_pos]
     have : (↑s : ℝ) < 2 * ↑n := by exact_mod_cast hs2
     nlinarith [Real.pi_pos]
   have hsin_ne : 2 * Real.sin (↑s * Real.pi / (2 * (↑n : ℝ))) ≠ 0 :=

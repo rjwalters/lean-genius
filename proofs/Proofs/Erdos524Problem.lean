@@ -97,12 +97,12 @@ theorem randSignPoly_abs_le (t : ℝ) (n : ℕ) {x : ℝ} (hx : |x| ≤ 1) :
     rw [randSignPoly_succ]
     have h_sign : |(↑(binaryDigit t (n + 1)) : ℝ)| = 1 := binaryDigit_cast_abs t (n + 1)
     have h_pow : |x| ^ (n + 1) ≤ 1 := by
-      calc |x| ^ (n + 1) ≤ 1 ^ (n + 1) := pow_le_pow_left (abs_nonneg x) hx _
+      calc |x| ^ (n + 1) ≤ 1 ^ (n + 1) := pow_le_pow_left₀ (abs_nonneg x) hx _
         _ = 1 := one_pow _
     have h_term : |(↑(binaryDigit t (n + 1)) : ℝ) * x ^ (n + 1)| ≤ 1 := by
       rw [abs_mul, abs_pow, h_sign, one_mul]; exact h_pow
     rw [show (↑(n + 1) : ℝ) = ↑n + 1 from by push_cast; ring]
-    linarith [abs_add (randSignPoly t n x)
+    linarith [abs_add_le (randSignPoly t n x)
       ((↑(binaryDigit t (n + 1)) : ℝ) * x ^ (n + 1))]
 
 /- ## Additional properties of binary digits -/
@@ -236,13 +236,13 @@ theorem polyMax_succ_le (t : ℝ) (n : ℕ) :
   rw [randSignPoly_succ]
   have h_term : |(↑(binaryDigit t (n + 1)) : ℝ) * x ^ (n + 1)| ≤ 1 := by
     rw [abs_mul, abs_pow, binaryDigit_cast_abs, one_mul]
-    calc |x| ^ (n + 1) ≤ 1 ^ (n + 1) := pow_le_pow_left (abs_nonneg x) hx_abs _
+    calc |x| ^ (n + 1) ≤ 1 ^ (n + 1) := pow_le_pow_left₀ (abs_nonneg x) hx_abs _
       _ = 1 := one_pow _
   have h_poly : |randSignPoly t n x| ≤ polyMax t n := by
     unfold polyMax
     apply le_csSup (polyMax_bddAbove t n)
     exact ⟨x, hx, rfl⟩
-  linarith [abs_add (randSignPoly t n x)
+  linarith [abs_add_le (randSignPoly t n x)
     ((↑(binaryDigit t (n + 1)) : ℝ) * x ^ (n + 1))]
 
 /-- Reverse bound: M_n(t) ≤ M_{n+1}(t) + 1. Removing a term changes the max
@@ -266,13 +266,13 @@ theorem polyMax_ge_succ (t : ℝ) (n : ℕ) :
   rw [h_rearrange]
   have h_neg_term : |(-((↑(binaryDigit t (n + 1)) : ℝ) * x ^ (n + 1)))| ≤ 1 := by
     rw [abs_neg, abs_mul, abs_pow, binaryDigit_cast_abs, one_mul]
-    calc |x| ^ (n + 1) ≤ 1 ^ (n + 1) := pow_le_pow_left (abs_nonneg x) hx_abs _
+    calc |x| ^ (n + 1) ≤ 1 ^ (n + 1) := pow_le_pow_left₀ (abs_nonneg x) hx_abs _
       _ = 1 := one_pow _
   have h_poly : |randSignPoly t (n + 1) x| ≤ polyMax t (n + 1) := by
     unfold polyMax
     apply le_csSup (polyMax_bddAbove t (n + 1))
     exact ⟨x, hx, rfl⟩
-  linarith [abs_add (randSignPoly t (n + 1) x)
+  linarith [abs_add_le (randSignPoly t (n + 1) x)
     (-((↑(binaryDigit t (n + 1)) : ℝ) * x ^ (n + 1)))]
 
 /-- The polynomial maximum is 1-Lipschitz in n: |M_{n+1}(t) - M_n(t)| ≤ 1.

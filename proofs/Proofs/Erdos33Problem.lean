@@ -83,7 +83,7 @@ axiom cilleruelo_habsieger_lower_bound (A : Set ℕ)
 
 /-- The lower bound 4/π is approximately 1.273. -/
 theorem four_over_pi_approx : (4 / π : ℝ) > 1.27 := by
-  rw [gt_iff_lt, div_lt_iff Real.pi_pos]
+  rw [gt_iff_lt, div_lt_iff₀ Real.pi_pos]
   -- Need: 1.27 * π < 4, equivalently π < 4/1.27 ≈ 3.1496...
   -- We know π < 3.15 from Mathlib
   have hpi : Real.pi < 3.15 := Real.pi_lt_315

@@ -118,9 +118,9 @@ theorem erdosConstant_approx : erdosConstant > 2.4 ∧ erdosConstant < 2.5 := by
       (Real.sqrt_sq (by norm_num : (0:ℝ) ≤ 5.196)).symm]
     exact Real.sqrt_lt_sqrt (by norm_num) (by norm_num)
   constructor
-  · rw [gt_iff_lt, lt_div_iff hsqrt_pos]
+  · rw [gt_iff_lt, lt_div_iff₀ hsqrt_pos]
     linarith [Real.pi_gt_314]
-  · rw [div_lt_iff hsqrt_pos]
+  · rw [div_lt_iff₀ hsqrt_pos]
     linarith [Real.pi_lt_315]
 
 /-- The conjectured statement: c = 4π/√27 suffices. -/

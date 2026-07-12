@@ -59,7 +59,7 @@ theorem countExcl_succ (A : Set ℕ) (N : ℕ) :
   simp only [countExcl]
   rw [show N + 1 + 1 = N + 2 from by omega]
   rw [show N + 1 = N + 1 from rfl]
-  rw [Finset.range_succ]
+  rw [Finset.range_add_one]
   simp only [Finset.filter_insert, Nat.succ_ne_zero, ne_eq, not_false_eq_true, and_true]
   split_ifs with h
   · rw [Finset.card_insert_of_not_mem]

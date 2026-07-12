@@ -65,11 +65,11 @@ theorem chebyshevNodes_injective (n : ℕ) (hn : 0 < n) :
   have h₁_mem : (2 * ↑k₁.val + 1) * Real.pi / (2 * ↑n) ∈ Set.Icc (0 : ℝ) Real.pi := by
     constructor
     · positivity
-    · rw [div_le_iff hn_pos]; nlinarith [k₁.isLt, Real.pi_pos]
+    · rw [div_le_iff₀ hn_pos]; nlinarith [k₁.isLt, Real.pi_pos]
   have h₂_mem : (2 * ↑k₂.val + 1) * Real.pi / (2 * ↑n) ∈ Set.Icc (0 : ℝ) Real.pi := by
     constructor
     · positivity
-    · rw [div_le_iff hn_pos]; nlinarith [k₂.isLt, Real.pi_pos]
+    · rw [div_le_iff₀ hn_pos]; nlinarith [k₂.isLt, Real.pi_pos]
   -- cos injective on [0, π] gives equal arguments
   have hθ := Real.strictAntiOn_cos.injOn h₁_mem h₂_mem heq
   -- Equal arguments ⟹ equal indices

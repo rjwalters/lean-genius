@@ -205,7 +205,7 @@ theorem chebyshev_finite (D : DiscreteDist k) (n : ℕ) (f : (Fin n → Fin k) �
     (μ : ℝ) (ε : ℝ) (hε : 0 < ε) :
     ∑ x ∈ Finset.univ.filter (fun x => ε < |f x - μ|), jointProb D n x ≤
     expVal D n (fun x => (f x - μ)^2) / ε^2 := by
-  rw [expVal, le_div_iff (sq_pos_of_pos hε)]
+  rw [expVal, le_div_iff₀ (sq_pos_of_pos hε)]
   calc ε^2 * ∑ x ∈ Finset.univ.filter (fun x => ε < |f x - μ|), jointProb D n x
       = ∑ x ∈ Finset.univ.filter (fun x => ε < |f x - μ|), (ε^2 * jointProb D n x) := by
         rw [Finset.mul_sum]

@@ -465,7 +465,7 @@ theorem newton_inequality_means (xs : List ℝ) (hxs : ∀ x ∈ xs, (0 : ℝ) �
                esymm xs (k - 1) * esymm xs (k + 1) /
                  ((Nat.choose n (k - 1) : ℝ) * (Nat.choose n (k + 1) : ℝ)) := by
     field_simp
-  rw [hcomb, div_le_div_iff (mul_pos hckm hckp) (pow_pos hck 2)]
+  rw [hcomb, div_le_div_iff₀ (mul_pos hckm hckp) (pow_pos hck 2)]
   -- Goal: esymm (k-1) * esymm (k+1) * C(n,k)^2 ≤ esymm k^2 * (C(n,k-1) * C(n,k+1))
   linarith
 
@@ -492,7 +492,7 @@ theorem maclaurin_first_step (xs : List ℝ) (hxs : ∀ x ∈ xs, (0 : ℝ) ≤ 
     Nat.cast_pos.mpr (Nat.choose_pos hn)
   unfold esymmMean
   rw [show Nat.choose n 1 = n from Nat.choose_one_right n]
-  rw [ge_iff_le, div_pow, div_le_div_iff hC2_pos (pow_pos hn_pos 2)]
+  rw [ge_iff_le, div_pow, div_le_div_iff₀ hC2_pos (pow_pos hn_pos 2)]
   -- Goal: `esymm xs 2 * (n : ℝ)^2 ≤ esymm xs 1 ^ 2 * Nat.choose n 2`
   linarith
 

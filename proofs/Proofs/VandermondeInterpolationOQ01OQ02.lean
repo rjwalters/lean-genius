@@ -60,7 +60,7 @@ theorem interp_mem_degreeLT (hv : Function.Injective v) (r : Fin n → F) :
 
 /-- **The evaluation-at-nodes map** `p ↦ (j ↦ p.eval (v j))`, as an `F`-linear
 map on the space of polynomials of degree `< n`. -/
-def evalNodes (v : Fin n → F) : degreeLT F n →ₗ[F] (Fin n → F) :=
+noncomputable def evalNodes (v : Fin n → F) : degreeLT F n →ₗ[F] (Fin n → F) :=
   LinearMap.pi fun j => (Polynomial.leval (v j)).comp (degreeLT F n).subtype
 
 @[simp] theorem evalNodes_apply (v : Fin n → F) (p : degreeLT F n) (j : Fin n) :

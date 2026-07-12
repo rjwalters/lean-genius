@@ -541,7 +541,7 @@ theorem erdosTaylor_implies_bound :
   have h1 : (maxVisitCount ω n : ℝ) / (Real.log ↑n) ^ 2 < 1 / Real.pi + 1 := by
     linarith
   have h2 : (maxVisitCount ω n : ℝ) < (1 / Real.pi + 1) * (Real.log ↑n) ^ 2 :=
-    (div_lt_iff hlog2_pos).mp h1
+    (div_lt_iff₀ hlog2_pos).mp h1
   linarith
 
 end Erdos1166

@@ -290,7 +290,7 @@ theorem cpq_mono_q (p q : ℕ) : cpq p q ≤ cpq p (q + 1) := by
           rcases this with rfl | rfl <;> simp)
       have hlog_pos : 0 < Real.log (↑n : ℝ) :=
         Real.log_pos (by exact_mod_cast (show 1 < n by omega))
-      rw [div_le_div_right hlog_pos]
+      rw [div_le_div_iff_of_pos_right hlog_pos]
       have hH_pos : (0 : ℝ) < ↑(cliqueGuarantee n p q) := by
         have := cliqueGuarantee_pos n p q (by omega : 1 ≤ n)
         exact_mod_cast (show 0 < cliqueGuarantee n p q by omega)

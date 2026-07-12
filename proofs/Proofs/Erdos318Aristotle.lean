@@ -53,7 +53,7 @@ lemma odd_count_lower_bound (n : ℕ) :
     induction m with
     | zero => simp
     | succ k ih =>
-      rw [Finset.range_succ, Finset.filter_insert]
+      rw [Finset.range_add_one, Finset.filter_insert]
       split_ifs with hmod
       · -- k is odd: insert k, k ∉ range k so card increases by 1
         rw [Finset.card_insert_of_not_mem (by simp [Finset.mem_filter, Finset.mem_range])]
@@ -142,7 +142,7 @@ theorem counterexample_positive_density (m : ℕ) (hm : m ≥ 1) :
       induction k with
       | zero => simp
       | succ j ihj =>
-        rw [Finset.range_succ, Finset.filter_insert]
+        rw [Finset.range_add_one, Finset.filter_insert]
         split_ifs with hmod
         · rw [Finset.card_insert_of_not_mem (by simp [Finset.mem_filter, Finset.mem_range])]
           omega

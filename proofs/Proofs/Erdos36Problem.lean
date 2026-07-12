@@ -110,7 +110,7 @@ theorem scherk_lower :
     exact Real.sqrt_lt_sqrt (by norm_num) (by norm_num)
   -- 1/√2 > 2/3 (reciprocal inequality)
   have h_inv : 1 / Real.sqrt 2 > 2 / 3 := by
-    rw [div_lt_div_iff (by norm_num : (0:ℝ) < 3) h_sqrt_pos]
+    rw [div_lt_div_iff₀ (by norm_num : (0:ℝ) < 3) h_sqrt_pos]
     linarith
   -- 1 - 1/√2 < 1/3 < 379005/1000000
   linarith
@@ -376,5 +376,5 @@ theorem trivial_lower_bound (N : ℕ) (hN : 1 ≤ N) :
   have hMN_gt : (N : ℝ) / 4 < (M N : ℝ) :=
     (mul_lt_mul_left h4N_pos).mp (lt_of_lt_of_le hstrict hineq_R)
   -- M N / N > 1/4
-  rw [div_lt_div_iff (by norm_num : (0:ℝ) < 4) hN_pos]
+  rw [div_lt_div_iff₀ (by norm_num : (0:ℝ) < 4) hN_pos]
   linarith
