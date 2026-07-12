@@ -444,6 +444,32 @@ theorem motzkinFun_three_not_posDef : ¬ ∀ x y : ℝ, 0 < motzkinFun 3 x y := 
   rw [motzkinFun_three_zero_at_one_one] at h11
   exact lt_irrefl 0 h11
 
+/-- **Evenness in the first argument.** `motzkinFun c` depends on `x` only through the
+    even powers `x⁴`, `x²`, so reflecting `x ↦ -x` leaves the value unchanged:
+    `Mₐ(-x, y) = Mₐ(x, y)`.  Together with `motzkinFun_symm` this exhibits the full
+    `(ℤ/2)² ⋊ swap` dihedral symmetry of the family. -/
+theorem motzkinFun_even_left (c x y : ℝ) : motzkinFun c (-x) y = motzkinFun c x y := by
+  unfold motzkinFun; ring
+
+/-- **Evenness in the second argument.** `Mₐ(x, -y) = Mₐ(x, y)`, symmetric to
+    `motzkinFun_even_left` (equivalently, its conjugate by `motzkinFun_symm`). -/
+theorem motzkinFun_even_right (c x y : ℝ) : motzkinFun c x (-y) = motzkinFun c x y := by
+  unfold motzkinFun; ring
+
+/-- **The boundary member vanishes at all four sign-variants of `(1,1)`.**  Because
+    `motzkinFun 3` is even in each argument (`motzkinFun_even_left`/`_even_right`) and
+    vanishes at `(1,1)` (`motzkinFun_three_zero_at_one_one`), it vanishes at every
+    `(±1, ±1)`.  These four points are exactly the real zeros of the Motzkin polynomial —
+    the geometric obstruction that pins `c = 3` onto the PSD-cone boundary and, classically,
+    the reason it admits no sum-of-squares certificate. -/
+theorem motzkinFun_three_zero_at_sign_ones :
+    motzkinFun 3 1 1 = 0 ∧ motzkinFun 3 (-1) 1 = 0 ∧
+      motzkinFun 3 1 (-1) = 0 ∧ motzkinFun 3 (-1) (-1) = 0 := by
+  refine ⟨motzkinFun_three_zero_at_one_one, ?_, ?_, ?_⟩
+  · rw [motzkinFun_even_left]; exact motzkinFun_three_zero_at_one_one
+  · rw [motzkinFun_even_right]; exact motzkinFun_three_zero_at_one_one
+  · rw [motzkinFun_even_left, motzkinFun_even_right]; exact motzkinFun_three_zero_at_one_one
+
 end Hilbert17OQ03OQ05
 
 -- Axiom audit: should list only propext, Classical.choice, Quot.sound.
