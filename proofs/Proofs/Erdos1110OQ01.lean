@@ -438,4 +438,26 @@ theorem powerForm_card_divisors {p q : ℕ} (hp : p.Prime) (hq : q.Prime) (hpq :
   rw [Nat.Coprime.card_divisors_mul hcop, Nat.divisors_prime_pow hp, Nat.divisors_prime_pow hq,
       Finset.card_map, Finset.card_map, Finset.card_range, Finset.card_range]
 
+/-- **Prime-factor set of a power form.** For distinct primes `p ≠ q` and positive
+exponents, the prime factors of `p^k q^l` are exactly `{p, q}` (both primes actually
+occur, and no others). This is the support of the factorization underlying the exponent
+grid of `powerForm_divisors_eq_grid`. -/
+theorem powerForm_primeFactors {p q : ℕ} (hp : p.Prime) (hq : q.Prime) (hpq : p ≠ q)
+    {k l : ℕ} (hk : 0 < k) (hl : 0 < l) :
+    (p ^ k * q ^ l).primeFactors = {p, q} := by
+  rw [Nat.primeFactors_mul (pow_ne_zero k hp.pos.ne') (pow_ne_zero l hq.pos.ne'),
+      Nat.primeFactors_prime_pow hk.ne' hp, Nat.primeFactors_prime_pow hl.ne' hq,
+      Finset.singleton_union]
+
+/-- **Euler totient of a power form `φ(p^k q^l) = p^{k-1}(p-1)·q^{l-1}(q-1)`.** For distinct
+primes `p ≠ q` and positive exponents. The multiplicative companion of the divisor-count
+formula `powerForm_card_divisors` (`τ(p^k q^l) = (k+1)(l+1)`): since `p^k` and `q^l` are
+coprime, `φ` factors as `φ(p^k)·φ(q^l)` (`Nat.totient_mul`), and each prime-power totient is
+`φ(p^k) = p^{k-1}(p-1)` (`Nat.totient_prime_pow`). -/
+theorem powerForm_totient {p q : ℕ} (hp : p.Prime) (hq : q.Prime) (hpq : p ≠ q)
+    {k l : ℕ} (hk : 0 < k) (hl : 0 < l) :
+    (p ^ k * q ^ l).totient = p ^ (k - 1) * (p - 1) * (q ^ (l - 1) * (q - 1)) := by
+  have hcop : Nat.Coprime (p ^ k) (q ^ l) := Nat.coprime_pow_primes k l hp hq hpq
+  rw [Nat.totient_mul hcop, Nat.totient_prime_pow hp hk, Nat.totient_prime_pow hq hl]
+
 end Erdos1110
