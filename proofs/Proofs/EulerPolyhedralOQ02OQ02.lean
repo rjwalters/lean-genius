@@ -593,6 +593,37 @@ theorem genusSurfaceCGB_genus_of_chi (g : ℕ) :
     2 * (g : ℤ) = 2 - (genusSurfaceCGB g).chi := by
   rw [genusSurfaceCGB_chi]; ring
 
+/-- **Euler characteristic is strictly decreasing in genus.**  `g ↦ χ(Σ_g) = 2 − 2g` is
+    `StrictAnti`: every added handle strictly lowers the Euler characteristic.  This is the
+    order-theoretic sharpening of the injectivity `genusSurfaceCGB_chi_inj` — the embedding
+    `(surfaces, #) ↪ (ℕ, +)` reverses order under `χ` — and the discrete shadow of the
+    Gauss-Bonnet sign trichotomy (`χ` drops from `+2` through `0` into the negatives as `g`
+    grows). -/
+theorem genusSurfaceCGB_chi_strictAnti :
+    StrictAnti (fun g : ℕ => (genusSurfaceCGB g).chi) := by
+  intro a b hab
+  simp only [genusSurfaceCGB_chi]
+  omega
+
+/-- **The sphere maximizes the Euler characteristic: `χ(Σ_g) ≤ 2`.**  Since `χ(Σ_g) = 2 − 2g`
+    and `g ≥ 0`, no closed orientable surface has Euler characteristic above `2`; the bound
+    is attained only at the sphere. -/
+theorem genusSurfaceCGB_chi_le_two (g : ℕ) : (genusSurfaceCGB g).chi ≤ 2 := by
+  rw [genusSurfaceCGB_chi]; omega
+
+/-- **`χ = 2` characterizes the sphere.**  Equality in `genusSurfaceCGB_chi_le_two` holds
+    exactly at genus `0`: `χ(Σ_g) = 2 ↔ g = 0`.  The top of the `χ`-range is the unique
+    positively-curved surface, matching `genusSurfaceCGB_totalPfaffian_pos_iff`. -/
+theorem genusSurfaceCGB_chi_eq_two_iff (g : ℕ) : (genusSurfaceCGB g).chi = 2 ↔ g = 0 := by
+  rw [genusSurfaceCGB_chi]; omega
+
+/-- **The Euler characteristic of a closed orientable surface is even.**  `χ(Σ_g) = 2 − 2g
+    = 2(1 − g)` is always even — the parity constraint that, together with `χ ≤ 2`
+    (`genusSurfaceCGB_chi_le_two`), pins the image of `g ↦ χ(Σ_g)` to exactly the even
+    integers `≤ 2`. -/
+theorem genusSurfaceCGB_chi_even (g : ℕ) : Even (genusSurfaceCGB g).chi :=
+  ⟨1 - (g : ℤ), by rw [genusSurfaceCGB_chi]; ring⟩
+
 -- ============================================================================
 -- Part XIV: The Gauss-Bonnet sign trichotomy — total curvature detects the
 --           uniformization regime (spherical / flat / hyperbolic) from the genus
