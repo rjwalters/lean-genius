@@ -734,6 +734,12 @@ theorem f_4 : f 4 = 9 := by decide
     subsets containing `{1,4,5}` or `{2,3,5}`. -/
 theorem f_5 : f 5 = 16 := by decide
 
+/-- `f 6 = 24`: upgrades the OEIS A007865 table value `f(6) = 24` from prose to a
+    kernel-`decide` fact, extending the machine-checked small-value table one step past
+    `f_5`. Beyond the `n = 5` exclusions this adds the sums `6 = 1+5`, `6 = 2+4`
+    (and `6 = 3+3`), so the count rises from `16` to `24`. -/
+theorem f_6 : f 6 = 24 := by decide
+
 /-
 ## Part IX: Summary
 -/
