@@ -116,9 +116,9 @@ theorem intervalIntegral_swap {f : ℝ → ℝ → E}
     (hf_int : Integrable (fun p : ℝ × ℝ => f p.1 p.2)
       ((volume.restrict (uIcc a b)).prod (volume.restrict (uIcc c d)))) :
     ∫ y in c..d, ∫ x in a..b, f x y = ∫ x in a..b, ∫ y in c..d, f x y := by
-  rcases le_or_lt a b with hab | hab
+  rcases le_or_gt a b with hab | hab
   · -- a ≤ b
-    rcases le_or_lt c d with hcd | hcd
+    rcases le_or_gt c d with hcd | hcd
     · -- Case 1: a ≤ b, c ≤ d → direct
       exact intervalIntegral_swap_of_le a b c d hab hcd hf_meas
         (by rwa [uIcc_of_le hab, uIcc_of_le hcd] at hf_int)
@@ -141,7 +141,7 @@ theorem intervalIntegral_swap {f : ℝ → ℝ → E}
         exact neg_outside_E a b (fun x => ∫ y in c..d, f x y)
       rw [hAB, hBC, hCD, neg_neg]
   · -- b < a
-    rcases le_or_lt c d with hcd | hcd
+    rcases le_or_gt c d with hcd | hcd
     · -- Case 3: b < a, c ≤ d → flip inner
       have hba := le_of_lt hab
       have int3 : Integrable (fun p : ℝ × ℝ => f p.1 p.2)

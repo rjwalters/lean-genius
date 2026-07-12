@@ -34,7 +34,7 @@ def digitSum (n : ℕ) : ℕ := (Nat.digits 10 n).sum
 /-- Sum of digits is at most n for all n. -/
 private theorem digitSum_le_self (n : ℕ) : digitSum n ≤ n := by
   unfold digitSum
-  rcases le_or_lt 10 n with h | h
+  rcases le_or_gt 10 n with h | h
   · exact le_of_lt (Nat.sum_digits_lt n 10 (by omega) h)
   · interval_cases n <;> native_decide
 

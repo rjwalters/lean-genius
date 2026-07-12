@@ -476,11 +476,11 @@ theorem g3_two : g 3 2 = 3 := by
   have hfree13 : IsAPFreeOfLength 3 ({0, 1, 3, 4} : Set ℕ) := by
     intro a d hd
     -- If a ≥ 5, then a ∉ {0,1,3,4} (use i=0)
-    rcases le_or_lt 5 a with ha5 | ha5
+    rcases le_or_gt 5 a with ha5 | ha5
     · exact ⟨0, by omega, by simp only [zero_mul, add_zero, Set.mem_insert_iff,
                                           Set.mem_singleton_iff]; omega⟩
     -- If d ≥ 5, then a+d ≥ 5 ∉ {0,1,3,4} (use i=1)
-    rcases le_or_lt 5 d with hd5 | hd5
+    rcases le_or_gt 5 d with hd5 | hd5
     · exact ⟨1, by omega, by simp only [one_mul, Set.mem_insert_iff,
                                           Set.mem_singleton_iff]; omega⟩
     -- Otherwise a ∈ {0,1,2,3,4}, d ∈ {1,2,3,4}: 20 concrete cases

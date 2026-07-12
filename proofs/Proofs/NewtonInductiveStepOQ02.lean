@@ -138,7 +138,7 @@ theorem esymm_log_concave (xs : List ℝ) (hxs : ∀ x ∈ xs, (0 : ℝ) ≤ x)
       have hE2 : (0 : ℝ) ≤ E2 := esymm_nonneg xs hxs' 2
       -- Inner inequality: E1² ≥ E2 (from IH or direct)
       have h_inner : E1 ^ 2 ≥ E2 := by
-        rcases le_or_lt 2 xs.length with hm | hm
+        rcases le_or_gt 2 xs.length with hm | hm
         · -- xs.length ≥ 2: apply IH at k=1
           have h := ih 1 le_rfl (by omega) hxs'
           simp only [show (1:ℕ) - 1 = 0 from rfl, show (1:ℕ) + 1 = 2 from rfl,
@@ -169,7 +169,7 @@ theorem esymm_log_concave (xs : List ℝ) (hxs : ∀ x ∈ xs, (0 : ℝ) ≤ x)
       have hekm2 : (0 : ℝ) ≤ ekm2 := esymm_nonneg xs hxs' (p + 0)
       -- IH at k = p+2 for xs (Newton at k)
       have h_delta_k : ek ^ 2 ≥ ekm1 * ekp1 := by
-        rcases le_or_lt (p + 3) xs.length with hkm | hkm
+        rcases le_or_gt (p + 3) xs.length with hkm | hkm
         · have h := ih (p + 2) (by omega) (by omega) hxs'
           simp only [show p + 2 - 1 = p + 1 from by omega,
                      show p + 2 + 1 = p + 3 from by omega] at h
@@ -178,7 +178,7 @@ theorem esymm_log_concave (xs : List ℝ) (hxs : ∀ x ∈ xs, (0 : ℝ) ≤ x)
           rw [this, mul_zero]; exact sq_nonneg _
       -- IH at k = p+1 for xs (Newton at k-1)
       have h_delta_km1 : ekm1 ^ 2 ≥ ekm2 * ek := by
-        rcases le_or_lt (p + 2) xs.length with hkm | hkm
+        rcases le_or_gt (p + 2) xs.length with hkm | hkm
         · have h := ih (p + 1) (by omega) (by omega) hxs'
           simp only [show p + 1 - 1 = p from by omega,
                      show p + 1 + 1 = p + 2 from by omega] at h
@@ -296,7 +296,7 @@ theorem newton_inequality_binomial (xs : List ℝ) (hxs : ∀ x ∈ xs, (0 : ℝ
       -- α = C(n+1,2), β = -(n+1)*E_1, γ = C(n+1,2)*E_1² - (n+1)²*E_2
       -- IH at k=1 for xs (if n ≥ 2): C(n,2)*E_1² ≥ n²*E_2
       have h_IH_k1 : (Nat.choose n 2 : ℝ) * E1 ^ 2 ≥ (n : ℝ) ^ 2 * E2 := by
-        rcases le_or_lt 2 n with hm | hm
+        rcases le_or_gt 2 n with hm | hm
         · -- IH for xs at k=1: C(n,0)*C(n,2)*E1^2 ≥ C(n,1)^2*(esymm xs 0)*E2
           have h := ih 1 le_rfl (by omega) hxs'
           simp only [show (1:ℕ) - 1 = 0 from rfl, show (1:ℕ) + 1 = 2 from rfl,
@@ -338,7 +338,7 @@ theorem newton_inequality_binomial (xs : List ℝ) (hxs : ∀ x ∈ xs, (0 : ℝ
         -- Using h2C2: 2*(C₂+n) = n*(n-1)+2n = n*(n+1)
         -- Goal equivalent to: n*(n+1)*E1^2 ≥ 2*(n+1)^2*E2, i.e., n*E1^2 ≥ 2*(n+1)*E2
         -- From h_IH_k1 and h2C2: n*(n-1)*E1^2 ≥ 2*n^2*E2
-        rcases le_or_lt 2 n with hn2 | hn2
+        rcases le_or_gt 2 n with hn2 | hn2
         · have hn_cast : (2 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn2
           -- n*(n-1)*E1^2 ≥ 2*n^2*E2 (from h_IH_k1 and h2C2)
           have hS : (n : ℝ) * ((n : ℝ) - 1) * E1 ^ 2 ≥ 2 * (n : ℝ) ^ 2 * E2 := by
@@ -411,7 +411,7 @@ theorem newton_inequality_binomial (xs : List ℝ) (hxs : ∀ x ∈ xs, (0 : ℝ
       have hekm2 : (0 : ℝ) ≤ ekm2 := esymm_nonneg xs hxs' p
       -- Unnormalized Newton for xs
       have h_unn_k : ek ^ 2 ≥ ekm1 * ekp1 := by
-        rcases le_or_lt (p + 3) n with hkm | hkm
+        rcases le_or_gt (p + 3) n with hkm | hkm
         · have h := esymm_log_concave xs hxs' (p + 2) (by omega) (by omega)
           simp only [show p + 2 - 1 = p + 1 from by omega,
                      show p + 2 + 1 = p + 3 from by omega] at h
@@ -419,7 +419,7 @@ theorem newton_inequality_binomial (xs : List ℝ) (hxs : ∀ x ∈ xs, (0 : ℝ
         · have : ekp1 = 0 := esymm_eq_zero_of_gt xs (p + 3) hkm
           rw [this, mul_zero]; exact sq_nonneg _
       have h_unn_km1 : ekm1 ^ 2 ≥ ekm2 * ek := by
-        rcases le_or_lt (p + 2) n with hkm | hkm
+        rcases le_or_gt (p + 2) n with hkm | hkm
         · have h := esymm_log_concave xs hxs' (p + 1) (by omega) (by omega)
           simp only [show p + 1 - 1 = p from by omega,
                      show p + 1 + 1 = p + 2 from by omega] at h
@@ -439,7 +439,7 @@ theorem newton_inequality_binomial (xs : List ℝ) (hxs : ∀ x ∈ xs, (0 : ℝ
       -- IH at k = p+2 for xs (normalized Newton, if p+3 ≤ n)
       have h_ih_k : ek ^ 2 * ((Nat.choose n (p + 1) : ℝ) * (Nat.choose n (p + 3) : ℝ)) ≥
           ekm1 * ekp1 * (Nat.choose n (p + 2) : ℝ) ^ 2 := by
-        rcases le_or_lt (p + 3) n with hkm | hkm
+        rcases le_or_gt (p + 3) n with hkm | hkm
         · have h := ih (p + 2) (by omega) (by omega) hxs'
           simp only [show p + 2 - 1 = p + 1 from by omega,
                      show p + 2 + 1 = p + 3 from by omega] at h
@@ -451,7 +451,7 @@ theorem newton_inequality_binomial (xs : List ℝ) (hxs : ∀ x ∈ xs, (0 : ℝ
       -- IH at k = p+1 for xs (normalized Newton, if p+2 ≤ n)
       have h_ih_km1 : ekm1 ^ 2 * ((Nat.choose n p : ℝ) * (Nat.choose n (p + 2) : ℝ)) ≥
           ekm2 * ek * (Nat.choose n (p + 1) : ℝ) ^ 2 := by
-        rcases le_or_lt (p + 2) n with hkm | hkm
+        rcases le_or_gt (p + 2) n with hkm | hkm
         · have h := ih (p + 1) (by omega) (by omega) hxs'
           simp only [show p + 1 - 1 = p from by omega,
                      show p + 1 + 1 = p + 2 from by omega] at h
@@ -465,7 +465,7 @@ theorem newton_inequality_binomial (xs : List ℝ) (hxs : ∀ x ∈ xs, (0 : ℝ
       -- Goal: (C(n+1,p+1)*C(n+1,p+3))*(ek+x*ekm1)² ≥ C(n+1,p+2)²*(ekm1+x*ekm2)*(ekp1+x*ek)
       -- Apply newton_cleared_denom_inductive_step
       -- But first, check if p+3 ≤ n (inductive step) or p+3 > n (boundary case)
-      rcases le_or_lt (p + 3) n with hbound | hbound
+      rcases le_or_gt (p + 3) n with hbound | hbound
       · -- Inductive step: p+3 ≤ n, so p+2+1 ≤ n (i.e., k+1 ≤ n)
         have h_key := NewtonLogConcavity.newton_cleared_denom_inductive_step
           n (p + 2) (by omega) (by omega)  -- m = n, k = p+2, hk: 2 ≤ p+2, hm: p+3 ≤ n
@@ -548,7 +548,7 @@ theorem newton_inequality_binomial (xs : List ℝ) (hxs : ∀ x ∈ xs, (0 : ℝ
           nlinarith [h_ih_km1, h2Cp]
         -- n*(n+1)*ekm1^2 ≥ 2*(n+1)^2*ekm2*ek iff n*ekm1^2 ≥ 2*(n+1)*ekm2*ek
         have hα_bound : (n : ℝ) * ((n : ℝ) + 1) * ekm1 ^ 2 ≥ 2 * ((n : ℝ) + 1) ^ 2 * (ekm2 * ek) := by
-          rcases le_or_lt 2 n with hn2 | hn2
+          rcases le_or_gt 2 n with hn2 | hn2
           · have hn_cast : (2 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn2
             have hekm1sq : ekm1 ^ 2 ≥ 2 * (ekm2 * ek) := by
               -- by contradiction: if ekm1^2 < 2*ekm2*ek then n*(n-1)*ekm1^2 < 2*n^2*ekm2*ek

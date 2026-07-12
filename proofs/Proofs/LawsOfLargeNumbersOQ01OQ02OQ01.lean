@@ -1128,7 +1128,7 @@ theorem abs_integral_trunc_le_tail_moment_of_centered
   have hsplit : (fun ω => {ω | |X ω| ≤ t}.indicator X ω
       + {ω | t < |X ω|}.indicator X ω) = X := by
     funext ω
-    rcases le_or_lt (|X ω|) t with h | h
+    rcases le_or_gt (|X ω|) t with h | h
     · rw [Set.indicator_of_mem (by exact h), Set.indicator_of_not_mem (by exact not_lt.mpr h)]
       exact add_zero (X ω)
     · rw [Set.indicator_of_not_mem (by exact not_le.mpr h), Set.indicator_of_mem (by exact h)]
@@ -1509,7 +1509,7 @@ theorem weight_bound_le_moment_add_one {p : ℝ} (hp0 : 0 < p) (hp2 : p < 2) (x 
     (max 1 (|x| ^ p)) ^ (1 - 2 / p) * x ^ 2 ≤ |x| ^ p + 1 := by
   have hpne : p ≠ 0 := ne_of_gt hp0
   have hax : (0 : ℝ) ≤ |x| := abs_nonneg x
-  rcases le_or_lt 1 |x| with hx1 | hx1
+  rcases le_or_gt 1 |x| with hx1 | hx1
   · -- `|x| ≥ 1`: `max = |x|ᵖ`, and the left side collapses to `|x|ᵖ` exactly
     have hpos : (0 : ℝ) < |x| := lt_of_lt_of_le one_pos hx1
     have hxp1 : (1 : ℝ) ≤ |x| ^ p := by

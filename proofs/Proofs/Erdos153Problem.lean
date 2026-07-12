@@ -273,15 +273,15 @@ theorem sidon_distinct_differences (A : Finset ℕ) (h : IsSidon A)
     (a b c d : ℕ) (ha : a ∈ A) (hb : b ∈ A) (hc : c ∈ A) (hd : d ∈ A)
     (hab : a < b) (hcd : c < d) (heq : b - a = d - c) : a = c ∧ b = d := by
   -- Case split on relative orderings, apply IsSidon in each case
-  rcases le_or_lt a d with had | had
-  · rcases le_or_lt c b with hcb | hcb
+  rcases le_or_gt a d with had | had
+  · rcases le_or_gt c b with hcb | hcb
     · -- a ≤ d, c ≤ b: IsSidon on pairs (a,d) and (c,b)
       have := h a ha d hd c hc b hb had hcb (by omega)
       exact ⟨this.1, this.2.symm⟩
     · -- a ≤ d, b < c: IsSidon on (a,d) and (b,c) gives a = b, contradiction
       obtain ⟨h1, _⟩ := h a ha d hd b hb c hc had (le_of_lt hcb) (by omega)
       omega
-  · rcases le_or_lt c b with hcb | hcb
+  · rcases le_or_gt c b with hcb | hcb
     · -- d < a, c ≤ b: IsSidon on (d,a) and (c,b) gives a = b, contradiction
       obtain ⟨_, h2⟩ := h d hd a ha c hc b hb (le_of_lt had) hcb (by omega)
       omega

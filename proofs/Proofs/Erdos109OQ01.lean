@@ -141,7 +141,7 @@ theorem sumset_density_constraint (A B C : Set ℕ)
     have hsub : A ∩ Set.Icc 1 (N + b₀) ⊆
         (A ∩ Set.Icc 1 N) ∪ Set.Icc (N + 1) (N + b₀) := by
       rintro x ⟨hxA, hx1, hxN⟩
-      rcases le_or_lt x N with h | h
+      rcases le_or_gt x N with h | h
       · exact Or.inl ⟨hxA, hx1, h⟩
       · exact Or.inr ⟨by omega, hxN⟩
     have hcard_tail : (Set.Icc (N + 1) (N + b₀)).ncard ≤ b₀ := by
@@ -200,7 +200,7 @@ theorem sumset_density_constraint (A B C : Set ℕ)
       exact le_trans (div_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _)) hN⟩
   -- S_A is nonempty (1 is an eventual upper bound since fA ≤ 1 always)
   have hS_A_ne : S_A.Nonempty :=
-    ⟨1, Filter.eventually_of_forall (fun N => by
+    ⟨1, Filter.Eventually.of_forall (fun N => by
       simp only [fA]
       rcases Nat.eq_zero_or_pos N with rfl | hN
       · simp
@@ -234,13 +234,13 @@ theorem sumset_density_constraint (A B C : Set ℕ)
   -- Eventually b₀/N ≤ ε/2
   have hev_b₀ : ∀ᶠ N in Filter.atTop, (b₀ : ℝ) / N ≤ ε / 2 := by
     rcases Nat.eq_zero_or_pos b₀ with rfl | hb₀_pos
-    · exact Filter.eventually_of_forall (fun N => by simp; linarith)
+    · exact Filter.Eventually.of_forall (fun N => by simp; linarith)
     · rw [Filter.eventually_atTop]
       -- For N ≥ 2*b₀/ε (rounded up), b₀/N ≤ ε/2
       refine ⟨max 1 ⌈2 * (b₀ : ℝ) / ε⌉₊, fun N hN => ?_⟩
       have hN1 : 1 ≤ N := le_trans (le_max_left 1 _) hN
       have hN_pos : (0 : ℝ) < N := by exact_mod_cast (show 0 < N by omega)
-      rw [div_le_div_iff hN_pos (by linarith : (0:ℝ) < 2)]
+      rw [div_le_div_iff₀ hN_pos (by linarith : (0:ℝ) < 2)]
       -- Need: 2 * b₀ ≤ ε * N
       have hNge : (⌈2 * (b₀ : ℝ) / ε⌉₊ : ℕ) ≤ N := le_trans (le_max_right 1 _) hN
       have hceil : 2 * (b₀ : ℝ) / ε ≤ ↑⌈2 * (b₀ : ℝ) / ε⌉₊ := Nat.le_ceil _

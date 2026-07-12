@@ -101,7 +101,7 @@ theorem S_summable : Summable (fun n : ℕ => if n = 0 then 0 else 1 / (2^n - 3 
   apply Summable.of_norm_bounded (fun n : ℕ => 4 * (1 / 2 : ℝ) ^ n)
   · exact (summable_geometric_of_lt_one (by norm_num) (by norm_num)).mul_left 4
   · intro n
-    rcases le_or_lt 3 n with hn | hn
+    rcases le_or_gt 3 n with hn | hn
     · -- n ≥ 3: 2^n ≥ 8, so 2^n - 3 > 0 and 1/(2^n-3) ≤ 4/2^n
       have hn0 : n ≠ 0 := by omega
       simp only [hn0, if_false]
@@ -115,7 +115,7 @@ theorem S_summable : Summable (fun n : ℕ => if n = 0 then 0 else 1 / (2^n - 3 
       rw [Real.norm_of_nonneg (div_nonneg one_nonneg (le_of_lt hdenom_pos))]
       have h12 : (1 / 2 : ℝ) ^ n = 1 / 2 ^ n := by
         rw [one_div, inv_pow, one_div]
-      rw [h12, div_le_div_iff hdenom_pos h2n_pos]
+      rw [h12, div_le_div_iff₀ hdenom_pos h2n_pos]
       nlinarith
     · -- n ∈ {0, 1, 2}: check numerically
       interval_cases n
@@ -128,7 +128,7 @@ theorem S_summable : Summable (fun n : ℕ => if n = 0 then 0 else 1 / (2^n - 3 
 /-- The denominators 2^n - 3 are nonzero for n ≥ 2. -/
 theorem denom_nonzero (n : ℕ) (hn : n ≥ 2) : (2 : ℝ)^n - 3 ≠ 0 := by
   have h : (2 : ℝ) ^ n ≥ 4 := by
-    calc (2 : ℝ) ^ n ≥ 2 ^ 2 := pow_le_pow_right (by norm_num) hn
+    calc (2 : ℝ) ^ n ≥ 2 ^ 2 := pow_le_pow_right₀ (by norm_num) hn
       _ = 4 := by norm_num
   linarith
 
@@ -184,7 +184,7 @@ theorem S_first_terms :
         have hdenom_pos : (0 : ℝ) < 2 ^ n - 3 := by linarith
         rw [Real.norm_of_nonneg (div_nonneg one_nonneg hdenom_pos.le)]
         have h12 : (1 / 2 : ℝ) ^ n = 1 / 2 ^ n := by rw [one_div, inv_pow, one_div]
-        rw [h12, div_le_div_iff hdenom_pos h2n_pos]
+        rw [h12, div_le_div_iff₀ hdenom_pos h2n_pos]
         nlinarith
   -- split: f = finite_part + tail pointwise, so ∑ f = ∑ finite_part + ∑ tail
   rw [show ∑' n : ℕ, (if n = 0 then (0 : ℝ) else 1 / (2 ^ n - 3 : ℝ)) =
@@ -441,7 +441,7 @@ theorem denom_growth (n : ℕ) (hn : n ≥ 3) :
     rw [← pow_succ]; congr 1; omega
   have hge : (2 : ℝ) ^ (n - 1) ≥ 4 := by
     calc (2 : ℝ) ^ (n - 1) ≥ (2 : ℝ) ^ 2 :=
-          pow_le_pow_right (by norm_num) (by omega)
+          pow_le_pow_right₀ (by norm_num) (by omega)
       _ = 4 := by norm_num
   linarith
 

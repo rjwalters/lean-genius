@@ -107,7 +107,7 @@ private lemma foldl_max_eq_init_or_mem : ∀ (l : List ℕ) (init : ℕ),
     simp only [List.foldl_cons]
     rcases foldl_max_eq_init_or_mem as (max init a) with h | h
     · rw [h]
-      rcases le_or_lt a init with hle | hlt
+      rcases le_or_gt a init with hle | hlt
       · left; exact max_eq_left hle
       · right; rw [max_eq_right (le_of_lt hlt)]; exact List.mem_cons_self a as
     · right; exact List.mem_cons_of_mem a h

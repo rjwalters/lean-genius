@@ -171,7 +171,7 @@ theorem thomae_continuous_at_irrational {x : ℝ} (hx : Irrational x) :
   obtain ⟨N, hN_raw⟩ : ∃ N : ℕ, (1 : ℝ) / ε < N := exists_nat_gt (1 / ε)
   have hNpos : (0 : ℝ) < N := by linarith [div_pos one_pos hε]
   have hN : (1 : ℝ) / (↑N + 1) < ε := by
-    rw [div_lt_iff (by linarith), one_mul]
+    rw [div_lt_iff₀ (by linarith), one_mul]
     have h1 : (1 : ℝ) < ε * N := by
       rwa [gt_iff_lt, lt_div_iff hε, mul_comm] at hN_raw
     linarith
@@ -206,7 +206,7 @@ theorem thomae_continuous_at_irrational {x : ℝ} (hx : Irrational x) :
         exact absurd (Nat.lt_succ_of_lt hgt) (Nat.lt_succ_iff.mpr (le_refl _))
     -- q ∈ hS.toFinset means dist(x, q) ≥ δ, but |y - x| < δ — contradiction
     -- unless q.den > N
-    rcases le_or_lt q.den N with hle | hlt
+    rcases le_or_gt q.den N with hle | hlt
     · -- q ∈ S: should have |x - q| ≥ δ, contradicting |y - x| < δ
       have hmem : q ∈ hS.toFinset := by
         rw [Set.Finite.mem_toFinset]

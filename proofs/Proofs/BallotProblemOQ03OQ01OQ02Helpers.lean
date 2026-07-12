@@ -2310,7 +2310,7 @@ private lemma compFin_lRefl {m : ℕ} (S : Finset (Fin (2 * m))) (k : Fin (2 * m
     compFin m (lRefl m S k) = S.filter (· ≤ k) ∪ (compFin m S).filter (k < ·) := by
   ext x
   simp only [lRefl, compFin, mem_union, mem_filter, mem_univ, true_and]
-  rcases le_or_lt x k with hle | hgt <;> rcases em (x ∈ S) with hxS | hxS
+  rcases le_or_gt x k with hle | hgt <;> rcases em (x ∈ S) with hxS | hxS
   · simp [hxS, hle, not_lt.mpr hle]
   · simp [hxS, hle, not_lt.mpr hle]
   · simp [hxS, hgt, not_le.mpr hgt]
@@ -2322,7 +2322,7 @@ private lemma lRefl_invol {m : ℕ} (S : Finset (Fin (2 * m))) (k : Fin (2 * m))
   simp only [lRefl, compFin_lRefl]
   ext x
   simp only [mem_union, mem_filter, mem_univ, true_and]
-  rcases le_or_lt x k with hle | hgt <;> rcases em (x ∈ S) with hxS | hxS
+  rcases le_or_gt x k with hle | hgt <;> rcases em (x ∈ S) with hxS | hxS
   · simp [hxS, hle, not_lt.mpr hle]
   · simp [hxS, hle, not_lt.mpr hle]
   · simp [hxS, hgt, not_le.mpr hgt]
@@ -2527,7 +2527,7 @@ private lemma firstAbove_mem {m : ℕ} (T : Finset (Fin (2 * m))) (hT : T.card =
         ext x; simp only [mem_union, mem_filter, mem_singleton]
         constructor
         · intro ⟨hx, hle⟩
-          rcases le_or_lt x k' with h | h
+          rcases le_or_gt x k' with h | h
           · exact Or.inl ⟨hx, h⟩
           · exact Or.inr (Fin.le_antisymm hle (Fin.le_def.mpr (by
               simp only [Fin.lt_def] at h; omega)))
@@ -2586,7 +2586,7 @@ private lemma firstAbove_count_diff {m : ℕ} (T : Finset (Fin (2 * m))) (hT : T
         ext x; simp only [mem_union, mem_filter, mem_singleton]
         constructor
         · intro ⟨hx, hle⟩
-          rcases le_or_lt x k' with h | h
+          rcases le_or_gt x k' with h | h
           · exact Or.inl ⟨hx, h⟩
           · exact Or.inr (Fin.le_antisymm hle (Fin.le_def.mpr (by
               simp only [Fin.lt_def] at h; omega)))

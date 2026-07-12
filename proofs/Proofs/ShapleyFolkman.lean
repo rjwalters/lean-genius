@@ -982,7 +982,7 @@ theorem reduce_excess_by_one [FiniteDimensional ℝ E]
                   --
                   -- Alternative: use minCaraDepth_le_of_repr with K vertices (just bv's repr)
                   -- when α = 0 (point = bv), and 1+K when α > 0.
-                  rcases le_or_lt (sv (emb l'') - ε * c' l'') 0 with hα | hα
+                  rcases le_or_gt (sv (emb l'') - ε * c' l'') 0 with hα | hα
                   · -- α ≤ 0; since α ≥ 0 (from new_mem_convexHull), α = 0, point = bv
                     have hα_zero : sv (emb l'') - ε * c' l'' = 0 := by
                       have : 0 ≤ sv (emb l'') - ε * c' l'' := by
@@ -1035,7 +1035,7 @@ theorem reduce_excess_by_one [FiniteDimensional ℝ E]
                     -- In the subcase α > 0, β could still be 0 (i.e., α = 1, point = av ∈ S).
                     -- If β = 0: point = av ∈ S, depth ≤ 1 ≤ Nl'' (since Nl'' ≥ 2) ✓.
                     -- If β > 0 and α > 0: build 1+K vertex repr.
-                    rcases le_or_lt (1 - sv (emb l'') + ε * c' l'') 0 with hβ | hβ
+                    rcases le_or_gt (1 - sv (emb l'') + ε * c' l'') 0 with hβ | hβ
                     · have hβ_zero : 1 - sv (emb l'') + ε * c' l'' = 0 := le_antisymm hβ hβ_nn
                       have hα_one : sv (emb l'') - ε * c' l'' = 1 := by linarith
                       have : D'.point (emb l'') = av (emb l'') := by

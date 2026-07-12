@@ -145,7 +145,7 @@ theorem pnt_bound_subexponential :
     | zero => omega
     | succ k ih =>
       -- hn gives 10 ≤ k + 1, so k ≥ 9
-      rcases le_or_lt 10 k with hk | hk
+      rcases le_or_gt 10 k with hk | hk
       · -- Inductive case: k ≥ 10, so ih applies
         have hkk := ih (by omega)
         -- Key: 2k+1 ≤ k² for k ≥ 3 (so (k+1)² = k²+(2k+1) ≤ 2k²)
@@ -244,7 +244,7 @@ theorem dusart_implies_asymptotic_upper :
   have hn_pos : (0 : ℝ) < ↑n := by linarith
   have hnlog_pos : 0 < ↑n * Real.log ↑n := mul_pos hn_pos hlog_pos
   have hupper := dusart_upper_bound n hn
-  rw [div_le_iff hnlog_pos]
+  rw [div_le_iff₀ hnlog_pos]
   calc (1 + Real.log (Real.log ↑n) / Real.log ↑n) * (↑n * Real.log ↑n)
       = ↑n * Real.log ↑n + ↑n * Real.log (Real.log ↑n) := by
         field_simp; ring

@@ -160,7 +160,7 @@ theorem AP_restrictedSumset (a d : ZMod p) (n : ℕ) (hd : d ≠ 0) (hn : n ≥ 
   -- Helper: (k:ZMod p) ≠ 0 when 1 ≤ k < p
   have hk_ne_zero : ∀ k : ℕ, 1 ≤ k → k < p → (k : ZMod p) ≠ 0 := by
     intro k hk1 hkp h
-    rw [ZMod.natCast_zmod_eq_zero_iff_dvd] at h
+    rw [ZMod.natCast_eq_zero_iff] at h
     exact absurd (Nat.le_of_dvd (by omega) h) (by omega)
   -- Key: restricted sumset = image of {1,...,2n-3} under (k ↦ 2a + k·d)
   have hset : restrictedSumset p (arithmeticProgression p a d n) =
@@ -175,7 +175,7 @@ theorem AP_restrictedSumset (a d : ZMod p) (n : ℕ) (hd : d ≠ 0) (hn : n ≥ 
       exact ⟨i + j, ⟨by omega, by omega⟩, by simp only [nsmul_eq_mul]; push_cast; ring⟩
     · rintro ⟨k, ⟨hk1, hk2⟩, rfl⟩
       have hk_lt_p : k < p := by omega
-      rcases le_or_lt k (n - 1) with hkn | hkn
+      rcases le_or_gt k (n - 1) with hkn | hkn
       · -- k ≤ n-1: use pair (a + 0•d, a + k•d)
         refine ⟨(a + (0 : ℕ) • d, a + (k : ℕ) • d),
           ⟨⟨⟨0, by omega, rfl⟩, ⟨k, by omega, rfl⟩⟩, ?_⟩, ?_⟩

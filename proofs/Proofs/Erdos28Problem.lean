@@ -163,7 +163,7 @@ theorem repFunction_pos_of_mem (A : Set ℕ) (n : ℕ) (hn : n ∈ A + A) :
   obtain ⟨x, hxA, y, hyA, hxy⟩ := Set.mem_image2.mp hn
   unfold repFunction
   apply Finset.card_pos.mpr
-  rcases le_or_lt x y with hle | hlt
+  rcases le_or_gt x y with hle | hlt
   · refine ⟨x, Finset.mem_filter.mpr
       ⟨Finset.mem_Icc.mpr ⟨Nat.zero_le _, by omega⟩, hxA, ?_, by omega⟩⟩
     rwa [show n - x = y from by omega]

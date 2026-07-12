@@ -395,7 +395,7 @@ theorem edgeThreshold_monotone_right (n : ℕ) {k j : ℕ} (hkj : k ≤ j)
     single global minimizer — the well-defined minimum underlying `f(k)`. -/
 theorem edgeThreshold_min_at (n : ℕ) (hn : 5 ≤ n) {k : ℕ} (hk : k + 2 ≤ n) :
     edgeThreshold n ((n - 3) / 2) ≤ edgeThreshold n k := by
-  rcases le_or_lt k ((n - 3) / 2) with hle | hlt
+  rcases le_or_gt k ((n - 3) / 2) with hle | hlt
   · exact edgeThreshold_antitone_left n hle (by omega)
   · exact edgeThreshold_monotone_right n (le_of_lt hlt) (by omega) (by omega)
 

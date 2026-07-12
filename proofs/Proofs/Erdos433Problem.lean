@@ -273,7 +273,7 @@ theorem g_two (n : ℕ) (hn : n ≥ 3) : g 2 n = n ^ 2 - 3 * n + 1 := by
           rw [sylvester_frobenius a b ha_pos hb_pos hgcd]
           -- G({a, b}) = a*b - a - b ≤ n²-3n+1
           -- Need a ≤ n-1 or b ≤ n-1 (since a ≠ b and both ≤ n)
-          rcases le_or_lt a b with hab2 | hab2
+          rcases le_or_gt a b with hab2 | hab2
           · -- a ≤ b, a < b (since a ≠ b), so a ≤ n-1
             exact Erdos433Aristotle.frobenius_ub_pair a b n hn ha_pos hb_pos
               (by omega : a ≤ n - 1) hb_le

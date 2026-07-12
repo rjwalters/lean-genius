@@ -99,7 +99,7 @@ private lemma mul_mod_injective {a b : ℕ} (ha : 0 < a) (hab : Nat.Coprime a b)
   intro ⟨k₁, hk₁⟩ ⟨k₂, hk₂⟩ h
   simp only [Fin.mk.injEq] at h ⊢
   -- h : k₁ * b % a = k₂ * b % a
-  rcases le_or_lt k₁ k₂ with hle | hlt
+  rcases le_or_gt k₁ k₂ with hle | hlt
   · -- k₁ ≤ k₂: show k₂ * b - k₁ * b is divisible by a, hence k₂ - k₁ = 0
     have hge : k₁ * b ≤ k₂ * b := Nat.mul_le_mul_right b hle
     have h_dvd : a ∣ (k₂ * b - k₁ * b) := by

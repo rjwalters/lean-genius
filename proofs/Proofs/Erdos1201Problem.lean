@@ -813,7 +813,7 @@ theorem gpfConsecutive_le_of_le_k (n : ℕ) (hn : 2 ≤ n) {k₁ k₂ : ℕ} (hk
 theorem gpfConsecutive_succ_right (n k : ℕ) (hn : 2 ≤ n) :
     gpfConsecutive n (k + 1) = max (gpfConsecutive n k) (greatestPrimeFactor (n + k + 1)) := by
   rw [gpfConsecutive_eq_sup_range n (k + 1) hn, gpfConsecutive_eq_sup_range n k hn,
-      show k + 1 + 1 = (k + 1) + 1 from rfl, Finset.range_succ, Finset.sup_insert]
+      show k + 1 + 1 = (k + 1) + 1 from rfl, Finset.range_add_one, Finset.sup_insert]
   simp only [show n + (k + 1) = n + k + 1 from by ring]
   rw [sup_comm]
 
@@ -1372,7 +1372,7 @@ theorem erdos_1201_density_eventually_large (hE : ErdosProblem1201)
   refine ⟨K, fun k hk => hK.trans (upperDensity_mono ?_)⟩
   intro n hn
   simp only [Set.mem_setOf_eq] at hn ⊢
-  rcases le_or_lt 2 n with hn2 | hn2
+  rcases le_or_gt 2 n with hn2 | hn2
   · exact hn.trans_le (Nat.cast_le.mpr (gpfConsecutive_le_of_le_k n hn2 hk))
   · interval_cases n
     · simp only [Nat.cast_zero] at hn

@@ -1096,7 +1096,7 @@ theorem regSimplexEmbed_dist_sq (m : ℕ) (i k : Fin (m + 2)) (hik : i ≠ k) :
       rw [h_zero_norm, h_zero_inner, regSimplexEmbed_dist_from_origin m i hi]
       ring
     · -- Both nonzero: use inner product
-      rcases le_or_lt (i : ℕ) (k : ℕ) with h_le | h_gt
+      rcases le_or_gt (i : ℕ) (k : ℕ) with h_le | h_gt
       · have h_ne : (i : ℕ) ≠ (k : ℕ) := Fin.val_ne_of_ne hik
         rw [regSimplexEmbed_dist_from_origin m i hi,
             regSimplexEmbed_dist_from_origin m k hk,

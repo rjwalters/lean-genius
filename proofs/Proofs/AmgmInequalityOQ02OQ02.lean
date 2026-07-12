@@ -197,7 +197,7 @@ theorem elemSymm_log_concave : ∀ (n : ℕ) (k : ℕ) (hk : 1 ≤ k) (hkn : k +
       have he2_nn : 0 ≤ e2 := elemSymm_nonneg _ y hy_nn
       -- IH or trivial: e1² ≥ 1 · e2 = e2
       have h_ineq : e1 ^ 2 ≥ e2 := by
-        rcases le_or_lt 2 m with hm2 | hm2
+        rcases le_or_gt 2 m with hm2 | hm2
         · -- m ≥ 2: use IH at k=1 for y
           have h := ih 1 le_rfl (by omega : 1 + 1 ≤ m) y hy_nn
           simp only [show (1 : ℕ) - 1 = 0 from rfl, show (1 : ℕ) + 1 = 2 from rfl,
@@ -237,7 +237,7 @@ theorem elemSymm_log_concave : ∀ (n : ℕ) (k : ℕ) (hk : 1 ≤ k) (hkn : k +
 
       -- Term 1: ek² ≥ ekm1 · ekp1 (Newton for y at k = p+2)
       have h_delta_k : ek ^ 2 ≥ ekm1 * ekp1 := by
-        rcases le_or_lt (p + 3) m with hjm | hjm
+        rcases le_or_gt (p + 3) m with hjm | hjm
         · have h := ih (p + 2) (by omega) (by omega : p + 2 + 1 ≤ m) y hy_nn
           simp only [show p + 2 - 1 = p + 1 from by omega,
                      show p + 2 + 1 = p + 3 from by omega] at h
@@ -247,7 +247,7 @@ theorem elemSymm_log_concave : ∀ (n : ℕ) (k : ℕ) (hk : 1 ≤ k) (hkn : k +
 
       -- Term 3: ekm1² ≥ ekm2 · ek (Newton for y at k = p+1)
       have h_delta_km1 : ekm1 ^ 2 ≥ ekm2 * ek := by
-        rcases le_or_lt (p + 2) m with hpm | hpm
+        rcases le_or_gt (p + 2) m with hpm | hpm
         · have h := ih (p + 1) (by omega) (by omega : p + 1 + 1 ≤ m) y hy_nn
           simp only [show p + 1 - 1 = p from by omega,
                      show p + 1 + 1 = p + 2 from by omega] at h
@@ -607,12 +607,12 @@ theorem newton_cleared_denom : ∀ (n : ℕ) (k : ℕ) (hk : 1 ≤ k) (hkn : k +
       have hekm2_nn : 0 ≤ ekm2 := elemSymm_nonneg _ y hy_nn
       -- Unnormalized Newton for y (already proved)
       have h_unn_k : ek ^ 2 ≥ ekm1 * ekp1 := by
-        rcases le_or_lt (k + 1) m with hkm | hkm
+        rcases le_or_gt (k + 1) m with hkm | hkm
         · exact elemSymm_log_concave m k hk hkm y hy_nn
         · have : ekp1 = 0 := elemSymm_gt_eq_zero (k + 1) (by omega) y
           simp [this]; exact sq_nonneg _
       have h_unn_km1 : ekm1 ^ 2 ≥ ekm2 * ek := by
-        rcases le_or_lt k m with hkm | hkm
+        rcases le_or_gt k m with hkm | hkm
         · have h := elemSymm_log_concave m (k - 1) (by omega) (by omega : k - 1 + 1 ≤ m) y hy_nn
           rwa [show k - 1 - 1 = k - 2 from by omega, show k - 1 + 1 = k from by omega] at h
         · have : ek = 0 := elemSymm_gt_eq_zero k (by omega) y

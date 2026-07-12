@@ -87,7 +87,7 @@ a single coordinate's square never exceeds the total `n`, so `|fᵢ| ≤ n`. -/
 
 theorem abs_le_sq (x : ℤ) : |x| ≤ x ^ 2 := by
   rw [show x ^ 2 = |x| ^ 2 from (sq_abs x).symm]
-  rcases le_or_lt |x| 0 with h | h
+  rcases le_or_gt |x| 0 with h | h
   · have hx : |x| = 0 := le_antisymm h (abs_nonneg x)
     simp [hx]
   · have h1 : (1 : ℤ) ≤ |x| := by omega

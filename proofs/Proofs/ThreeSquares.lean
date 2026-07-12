@@ -1214,7 +1214,7 @@ private lemma exists_int_sqrt_neg_d_mod_p
   -- Step 1: (d : ZMod p) ≠ 0 from 0 < d < p (uses primality only via NeZero p).
   have hd_zmod_ne : (d : ZMod p) ≠ 0 := by
     intro h
-    rw [ZMod.natCast_zmod_eq_zero_iff_dvd] at h
+    rw [ZMod.natCast_eq_zero_iff] at h
     exact absurd (Nat.le_of_dvd hd_pos h) (Nat.not_le.mpr hd_lt_p)
   -- Step 2: ((-d : ℤ) : ZMod p) ≠ 0 follows by push_cast + neg_ne_zero.
   have hneg_d_ne : ((-d : ℤ) : ZMod p) ≠ 0 := by
@@ -1362,7 +1362,7 @@ private lemma multiple_p_eq_p_of_lt_two_mul
   have h_pos' : 0 < p * k := hk ▸ h_pos
   have h_lt' : p * k < 2 * p := hk ▸ h_lt
   have hk_pos : 0 < k := by
-    rcases le_or_lt k 0 with hk_le | hk_gt
+    rcases le_or_gt k 0 with hk_le | hk_gt
     · exfalso
       have : p * k ≤ 0 := mul_nonpos_iff.mpr (Or.inl ⟨hp.le, hk_le⟩)
       linarith

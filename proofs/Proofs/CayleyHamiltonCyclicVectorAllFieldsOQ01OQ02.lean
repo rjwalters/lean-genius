@@ -289,7 +289,7 @@ private theorem companionMx_isCyclic_e0 (p : K[X]) (hn : 0 < n) :
     rw [aeval_eq_sum_range_natDegree q (companionMx p), sum_mulVec_local,
         Finset.sum_apply] at h_at_k
     -- h_at_k : ∑ j ∈ range (deg q + 1), (q.coeff j • C^j).mulVec e0 ⟨k, hk⟩ = 0
-    rcases le_or_lt k q.natDegree with hkd | hkd
+    rcases le_or_gt k q.natDegree with hkd | hkd
     · -- Case k ≤ deg q: isolate j = k in the sum.
       have hk_in : k ∈ Finset.range (q.natDegree + 1) :=
         Finset.mem_range.mpr (Nat.lt_succ_of_le hkd)

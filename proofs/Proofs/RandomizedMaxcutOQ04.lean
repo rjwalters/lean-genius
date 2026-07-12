@@ -64,7 +64,7 @@ noncomputable def greedyContrib {n : ℕ} (G : WeightedGraph n)
 /-- max(a, b) ≥ (a + b) / 2 for nonneg reals. -/
 theorem max_ge_avg {a b : ℝ} (ha : 0 ≤ a) (hb : 0 ≤ b) :
     max a b ≥ (a + b) / 2 := by
-  rcases le_or_lt a b with h | h
+  rcases le_or_gt a b with h | h
   · rw [max_eq_right h]; linarith
   · rw [max_eq_left h.le]; linarith
 

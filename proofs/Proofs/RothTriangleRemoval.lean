@@ -524,7 +524,7 @@ theorem roth_proofs_agree :
       ∃ N₀ : ℕ, ∀ N : ℕ, N ≥ N₀ → Odd N →
         ∀ A : Finset (ZMod N), (A.card : ℝ) ≥ delta * N → ¬APFree A) := by
   intro h delta hdelta
-  rcases le_or_lt delta 1 with hle | hgt
+  rcases le_or_gt delta 1 with hle | hgt
   · obtain ⟨N₀, hN₀⟩ := h delta hdelta hle
     exact ⟨N₀, fun N hN _ A hA => hN₀ N hN A hA⟩
   · obtain ⟨N₀, hN₀⟩ := h 1 one_pos le_rfl

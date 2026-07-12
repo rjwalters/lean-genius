@@ -234,9 +234,9 @@ theorem zp_rotation_free_statement (p : ℕ) (hp : Nat.Prime p) :
     -- n * p = 1 but p ≥ 2, contradiction
     have hp2 : (p : ℝ) ≥ 2 := by exact_mod_cast hp.two_le
     have habs : (n : ℝ) * p ≥ 2 ∨ (n : ℝ) * p ≤ -2 ∨ n = 0 := by
-      rcases le_or_lt 1 n with h | h
+      rcases le_or_gt 1 n with h | h
       · left; nlinarith
-      · rcases le_or_lt n (-1) with h2 | h2
+      · rcases le_or_gt n (-1) with h2 | h2
         · right; left; nlinarith
         · right; right; exact_mod_cast Int.le_antisymm (by exact_mod_cast le_of_lt h2) (by exact_mod_cast le_of_lt h)
     rcases habs with h | h | h

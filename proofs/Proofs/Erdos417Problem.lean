@@ -237,7 +237,7 @@ theorem prime_pred_totient_value (p : ℕ) (hp : p.Prime) : IsTotientValue (p - 
     This structural constraint limits V(x) to counting at most 0, 1, and even numbers. -/
 theorem totient_zero_one_or_even (m : ℕ) :
     totient m = 0 ∨ totient m = 1 ∨ Even (totient m) := by
-  rcases le_or_lt m 2 with hm | hm
+  rcases le_or_gt m 2 with hm | hm
   · interval_cases m
     · left; decide
     · right; left; exact totient_one

@@ -231,7 +231,7 @@ theorem f_characterization (n : ℕ) (hn : n ≥ 1) :
   · -- f_property n (f n)
     intro m hm
     rw [maxAvoidingSize_ge_iff]
-    rcases le_or_lt m (n * n) with hmle | hmgt
+    rcases le_or_gt m (n * n) with hmle | hmgt
     · rw [hf]; exact Finset.inf'_le _ (Finset.mem_Icc.mpr ⟨hm, hmle⟩)
     · have hfull : n ≤ maxAvoidingSize n m := by
         have hmemfull : Icc_n n ∈
@@ -503,7 +503,7 @@ def smallPrimeConstruction (m n : ℕ) : Finset ℕ :=
 theorem minFac_succ_not_dvd (m : ℕ) (hm : 1 ≤ m) : ¬ Nat.minFac (m + 1) ∣ m := by
   intro hdvd
   have hp : (Nat.minFac (m + 1)).Prime := Nat.minFac_prime (by omega)
-  have hdsub : Nat.minFac (m + 1) ∣ (m + 1 - m) := Nat.dvd_sub' (Nat.minFac_dvd _) hdvd
+  have hdsub : Nat.minFac (m + 1) ∣ (m + 1 - m) := Nat.dvd_sub (Nat.minFac_dvd _) hdvd
   rw [show m + 1 - m = 1 by omega] at hdsub
   exact hp.one_lt.ne' (Nat.dvd_one.mp hdsub)
 

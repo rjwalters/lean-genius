@@ -82,7 +82,7 @@ open Finset
 theorem sum_descFactorial_cross (r m n : ℕ) (hr : r ≤ n) :
     ∑ k ∈ range (n + 1), k.descFactorial r * (m.choose k * n.choose k)
       = m.descFactorial r * (m + n - r).choose (n - r) := by
-  rcases le_or_lt r m with hm | hm
+  rcases le_or_gt r m with hm | hm
   · -- Genuine case `r ≤ m` (and `r ≤ n`): absorb on row `m`, close with Vandermonde.
     have split : ∑ k ∈ range (n + 1), k.descFactorial r * (m.choose k * n.choose k)
         = ∑ k ∈ Finset.Ico r (n + 1), k.descFactorial r * (m.choose k * n.choose k) := by

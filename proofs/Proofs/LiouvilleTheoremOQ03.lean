@@ -197,7 +197,7 @@ range. -/
 theorem dimH_wellApprox_eq_min {τ : ℝ} (hτ : 1 ≤ τ) :
     dimH (wellApprox τ) = ENNReal.ofReal (min 1 (2 / τ)) := by
   have hτ0 : (0 : ℝ) < τ := by linarith
-  rcases le_or_lt τ 2 with h2 | h2
+  rcases le_or_gt τ 2 with h2 | h2
   · rw [dimH_wellApprox_eq_one_of_le_two h2]
     have h1 : (1 : ℝ) ≤ 2 / τ := by rw [le_div_iff₀ hτ0]; linarith
     rw [min_eq_left h1, ENNReal.ofReal_one]

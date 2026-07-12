@@ -108,7 +108,7 @@ theorem stdChain_isChain (n : ℕ) : IsChain (stdChain n) := by
   simp only [stdChain, Finset.mem_image, Finset.mem_univ, true_and] at hA hB
   obtain ⟨j, rfl⟩ := hA
   obtain ⟨k, rfl⟩ := hB
-  rcases le_or_lt j k with h | h
+  rcases le_or_gt j k with h | h
   · left; exact initialSeg_mono h
   · right; exact initialSeg_mono (le_of_lt h)
 

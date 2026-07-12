@@ -212,11 +212,11 @@ theorem rn_deriv_memLq_from_trunc (p q : ℝ≥0∞) (hp1 : 1 < p) (hptop : p �
     have abs_clamp : ∀ (r : ℝ) (n : ℕ), |max (min r n) (-(n : ℝ))| = min |r| n := by
       intro r n
       have hn : (0 : ℝ) ≤ n := Nat.cast_nonneg n
-      rcases le_or_lt r (-(n : ℝ)) with h1 | h1
+      rcases le_or_gt r (-(n : ℝ)) with h1 | h1
       · have h1' : r ≤ n := h1.trans (by linarith)
         rw [min_eq_left h1', max_eq_right h1, abs_neg, abs_of_nonneg hn,
             abs_of_nonpos (h1.trans (by linarith)), min_eq_right (by linarith)]
-      rcases le_or_lt (n : ℝ) r with h2 | h2
+      rcases le_or_gt (n : ℝ) r with h2 | h2
       · rw [min_eq_right h2, max_eq_left (by linarith), abs_of_nonneg hn,
             abs_of_nonneg (hn.trans h2), min_eq_right h2]
       · rw [min_eq_left (le_of_lt h2), max_eq_left (le_of_lt h1),
@@ -981,7 +981,7 @@ private theorem holder_extremizer_lq_bound [IsFiniteMeasure μ] [SigmaFinite μ]
       _ = ‖φ‖ * (eLpNorm h_n p μ).toReal := by rw [hn_norm]
   -- Step C6: real arithmetic — x ≤ ‖φ‖
   have hx_le : x ≤ ‖φ‖ := by
-    rcases le_or_lt x 0 with hx | hx
+    rcases le_or_gt x 0 with hx | hx
     · linarith [norm_nonneg φ]
     · -- x > 0: write x^q = x^(q/p) * x, then divide by x^(q/p) > 0
       have hrpow : x ^ q.toReal = x ^ (q.toReal / p.toReal) * x := by

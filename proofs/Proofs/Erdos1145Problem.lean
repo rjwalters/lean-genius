@@ -211,7 +211,7 @@ theorem pow4_mem_ruzsaA (m : ℕ) : 4 ^ m ∈ ruzsaA := by
   intro k
   -- 4^m = 2^(2m), need (2^(2m) / 2^(2k+1)) % 2 = 0
   rw [show (4 : ℕ) ^ m = 2 ^ (2 * m) from by rw [show (4 : ℕ) = 2 ^ 2 from by norm_num, ← pow_mul]]
-  rcases le_or_lt (2 * k + 1) (2 * m) with hle | hlt
+  rcases le_or_gt (2 * k + 1) (2 * m) with hle | hlt
   · -- 2^(2m) / 2^(2k+1) = 2^(2m-(2k+1)), which is even since 2m-(2k+1) ≥ 1
     rw [Nat.pow_div hle (by norm_num : 0 < 2)]
     have hge : 1 ≤ 2 * m - (2 * k + 1) := by omega
@@ -230,7 +230,7 @@ theorem mul2_pow4_mem_ruzsaB (m : ℕ) : 2 * 4 ^ m ∈ ruzsaB := by
   -- 2·4^m = 2^(2m+1), need (2^(2m+1) / 2^(2k)) % 2 = 0
   rw [show 2 * (4 : ℕ) ^ m = 2 ^ (2 * m + 1) from by
     rw [show (4 : ℕ) = 2 ^ 2 from by norm_num, ← pow_mul, ← pow_succ]]
-  rcases le_or_lt (2 * k) (2 * m + 1) with hle | hlt
+  rcases le_or_gt (2 * k) (2 * m + 1) with hle | hlt
   · -- 2^(2m+1) / 2^(2k) = 2^(2m+1-2k), which is even since 2m+1-2k ≥ 1
     rw [Nat.pow_div hle (by norm_num : 0 < 2)]
     have hge : 1 ≤ 2 * m + 1 - 2 * k := by omega
@@ -576,11 +576,11 @@ theorem ruzsa_ratio_not_one : ¬HasAsymptoticRatio ruzsaA ruzsaB := by
   -- Extract upper bounds: cA(2N)/cA(N) < 5/4 and cA(4N+1)/cA(2N) < 5/4
   have h_c2N : (countingFn ruzsaA (2 * N) : ℝ) < 5 / 4 * countingFn ruzsaA N := by
     have h := (abs_lt.mp h2N).2 -- cA(2N)/cA(N) - 1 < 1/4
-    rw [div_sub_one (ne_of_gt hcA), div_lt_iff hcA] at h
+    rw [div_sub_one (ne_of_gt hcA), div_lt_iff₀ hcA] at h
     linarith
   have h_cM : (countingFn ruzsaA (4 * N + 1) : ℝ) < 5 / 4 * countingFn ruzsaA (2 * N) := by
     have h := (abs_lt.mp hM).2 -- cA(4N+1)/cA(2N) - 1 < 1/4
-    rw [div_sub_one (ne_of_gt hcA2), div_lt_iff hcA2] at h
+    rw [div_sub_one (ne_of_gt hcA2), div_lt_iff₀ hcA2] at h
     linarith
   -- From doubling lemma: cA(4N+1) ≥ 2 * cA(N)
   have h_double : 2 * (countingFn ruzsaA N : ℝ) ≤ countingFn ruzsaA (4 * N + 1) := by

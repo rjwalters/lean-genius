@@ -288,7 +288,7 @@ theorem erdos_402_pair (a b : ℕ) (ha : a > 0) (hb : b > 0) (hab : a ≠ b) :
     ∃ x ∈ ({a, b} : Finset ℕ), ∃ y ∈ ({a, b} : Finset ℕ),
     Nat.gcd x y ≤ x / ({a, b} : Finset ℕ).card := by
   have hcard : ({a, b} : Finset ℕ).card = 2 := Finset.card_pair hab
-  rcases le_or_lt a b with h | h
+  rcases le_or_gt a b with h | h
   · -- a ≤ b, a ≠ b ⟹ a < b. Use x = b, y = a.
     have hlt : a < b := lt_of_le_of_ne h hab
     refine ⟨b, by simp, a, by simp, ?_⟩
