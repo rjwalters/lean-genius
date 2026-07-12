@@ -4104,4 +4104,168 @@ theorem exists_sqDiffFree_card_eq_sqrt_of_prime_sq {p : ℕ} (hp : p.Prime) :
   obtain ⟨A, hfree, hcard⟩ := exists_sqDiffFree_card_sqrt_of_prime_sq hp
   exact ⟨A, hfree, by rw [hcard, Nat.sqrt_eq']⟩
 
+/-! ### Part XXIX — The `√N` bound is NOT extremal: a two-coset `2√N` construction (`p ≡ 1 mod 4`)
+
+Part XXVIII exhibits the subgroup `pℤ ⊆ ℤ/p²ℤ` (`√N = p` elements) as a
+square-difference-free set, making the prime upper bound order-tight.  Is that
+subgroup the *largest* square-difference-free set?  No — this part strictly beats
+it whenever `p ≡ 1 (mod 4)`, doubling the lower bound to `2p = 2√N`.
+
+Take a quadratic **non-residue** `d` mod `p` and adjoin the coset `d + pℤ`, giving
+`A = pℤ ∪ (d + pℤ)`.  Reducing mod `p` (the ring map `φ : ℤ/p²ℤ → ℤ/pℤ`), the two
+cosets land on `0` and `d̄`.  For a nonzero square `n²`:
+
+* if `p ∣ n` then `n² = 0` (excluded), so `p ∤ n`, hence `φ n ≠ 0` and `(φ n)²` is
+  a nonzero **residue**;
+* the pairwise differences of `A` reduce mod `p` to `{0, d̄, −d̄}`.
+
+Because `p ≡ 1 (mod 4)`, `−1` is itself a residue, so `d̄` a non-residue forces
+`−d̄` a non-residue too.  A nonzero residue `(φ n)²` therefore never equals `0`,
+`d̄`, or `−d̄`: no nonzero square is a difference, so `A` is square-difference-free
+with `|A| = 2p`.
+
+`p ≡ 1 (mod 4)` is essential: for `p ≡ 3 (mod 4)` exactly one of `d̄, −d̄` is a
+residue for every `d`, so no second coset can be adjoined — the two-coset
+improvement is a genuine `p ≡ 1 (mod 4)` phenomenon.  (The true maximum is
+`Θ(p^{3/2}) = Θ(N^{3/4})`, a Paley-independent family of `√p` cosets matching the
+`N/√minFac = N^{3/4}` single-scale upper bound at `N = p²`; that needs the
+Paley-graph independence number, out of Mathlib-4.26 reach.  Two cosets is the
+clean unconditional rung above the subgroup, and already shows the subgroup
+`pℤ` is *not* extremal.) -/
+
+/-- **The `√N` lower bound is not extremal.**  For a prime `p ≡ 1 (mod 4)` and
+    `N = p²`, the union of the subgroup `pℤ` with a shifted coset `d + pℤ`, where
+    `d` is a quadratic non-residue mod `p`, is square-difference-free and has
+    exactly `2p = 2√N` elements — strictly more than the subgroup's `√N`. -/
+theorem exists_sqDiffFree_card_two_mul_sqrt_of_prime_mod_four_one
+    {p : ℕ} (hp : p.Prime) (hp1 : p % 4 = 1) :
+    ∃ A : Finset (ZMod (p ^ 2)),
+      (∀ x ∈ A, ∀ n : ZMod (p ^ 2), n ^ 2 ≠ 0 → x + n ^ 2 ∉ A) ∧ A.card = 2 * p := by
+  haveI : Fact p.Prime := ⟨hp⟩
+  haveI : NeZero p := ⟨hp.pos.ne'⟩
+  haveI : NeZero (p ^ 2) := ⟨pow_ne_zero 2 hp.pos.ne'⟩
+  have hpdvd : p ∣ p ^ 2 := ⟨p, (sq p)⟩
+  -- reduction map ℤ/p²ℤ → ℤ/pℤ
+  set φ : ZMod (p ^ 2) →+* ZMod p := ZMod.castHom hpdvd (ZMod p) with hφ
+  -- a quadratic non-residue mod `p`
+  obtain ⟨dz, hdz⟩ : ∃ a : ZMod p, ¬ IsSquare a := by
+    apply FiniteField.exists_nonsquare
+    rw [ZMod.ringChar_zmod_n]; omega
+  have hdz0 : dz ≠ 0 := by rintro rfl; exact hdz ⟨0, by ring⟩
+  have hneg1 : IsSquare (-1 : ZMod p) := ZMod.exists_sq_eq_neg_one_iff.mpr (by omega)
+  have hnegdz : ¬ IsSquare (-dz) := by
+    intro h; exact hdz (by simpa using hneg1.mul h)
+  -- integer representative `d` of the non-residue, `0 ≤ d < p`
+  set d : ℕ := dz.val with hd
+  have hdlt : d < p := ZMod.val_lt dz
+  have hdcast : (d : ZMod p) = dz := by rw [hd]; exact ZMod.natCast_zmod_val dz
+  -- the two cosets
+  set f1 : ℕ → ZMod (p ^ 2) := fun k => ((p * k : ℕ) : ZMod (p ^ 2)) with hf1
+  set f2 : ℕ → ZMod (p ^ 2) := fun k => ((d + p * k : ℕ) : ZMod (p ^ 2)) with hf2
+  set S1 : Finset (ZMod (p ^ 2)) := (Finset.range p).image f1 with hS1
+  set S2 : Finset (ZMod (p ^ 2)) := (Finset.range p).image f2 with hS2
+  -- `φ` sends the first coset to `0`, the second to `dz`
+  have hφ1 : ∀ y ∈ S1, φ y = 0 := by
+    intro y hy
+    rw [hS1, Finset.mem_image] at hy
+    obtain ⟨k, _, rfl⟩ := hy
+    have hmap : φ (f1 k) = ((p * k : ℕ) : ZMod p) := by rw [hf1]; exact map_natCast φ _
+    rw [hmap]; push_cast; rw [ZMod.natCast_self]; ring
+  have hφ2 : ∀ y ∈ S2, φ y = dz := by
+    intro y hy
+    rw [hS2, Finset.mem_image] at hy
+    obtain ⟨k, _, rfl⟩ := hy
+    have hmap : φ (f2 k) = ((d + p * k : ℕ) : ZMod p) := by rw [hf2]; exact map_natCast φ _
+    rw [hmap]; push_cast; rw [ZMod.natCast_self, hdcast]; ring
+  have hlevel : ∀ y ∈ S1 ∪ S2, φ y = 0 ∨ φ y = dz := by
+    intro y hy
+    rcases Finset.mem_union.mp hy with h | h
+    · exact Or.inl (hφ1 y h)
+    · exact Or.inr (hφ2 y h)
+  -- `φ n = 0 ⟹ n² = 0`, i.e. `n² ≠ 0 ⟹ φ n ≠ 0`
+  have hnzero : ∀ n : ZMod (p ^ 2), φ n = 0 → n ^ 2 = 0 := by
+    intro n hn0
+    have hφn : φ n = ((n.val : ℕ) : ZMod p) := by
+      conv_lhs => rw [← ZMod.natCast_zmod_val n]
+      exact map_natCast φ _
+    rw [hφn] at hn0
+    have hpv : p ∣ n.val := (ZMod.natCast_eq_zero_iff _ _).mp hn0
+    obtain ⟨s, hs⟩ := hpv
+    have hp2 : p ^ 2 ∣ n.val * n.val := ⟨s * s, by rw [hs]; ring⟩
+    have hval : (n ^ 2).val = (n.val * n.val) % p ^ 2 := by rw [pow_two n, ZMod.val_mul]
+    have hz : (n ^ 2).val = 0 := by
+      rw [hval]; obtain ⟨t, ht⟩ := hp2; rw [ht, Nat.mul_mod_right]
+    exact (ZMod.val_eq_zero _).mp hz
+  refine ⟨S1 ∪ S2, ?_, ?_⟩
+  · -- square-difference-free
+    intro x hx n hn hmem
+    have hφx := hlevel x hx
+    have hφxn := hlevel _ hmem
+    have hsplit : φ (x + n ^ 2) = φ x + (φ n) ^ 2 := by rw [map_add, map_pow]
+    have hφn0 : φ n ≠ 0 := fun h => hn (hnzero n h)
+    have hsq : IsSquare ((φ n) ^ 2) := ⟨φ n, pow_two (φ n)⟩
+    have hsqne : (φ n) ^ 2 ≠ 0 := pow_ne_zero 2 hφn0
+    rw [hsplit] at hφxn
+    rcases hφx with hx0 | hxd <;> rcases hφxn with hxn0 | hxnd
+    · rw [hx0, zero_add] at hxn0; exact hsqne hxn0
+    · rw [hx0, zero_add] at hxnd; exact hdz (hxnd ▸ hsq)
+    · rw [hxd] at hxn0
+      have hsval : (φ n) ^ 2 = -dz := by linear_combination hxn0
+      exact hnegdz (hsval ▸ hsq)
+    · rw [hxd] at hxnd
+      have hsval : (φ n) ^ 2 = 0 := by linear_combination hxnd
+      exact hsqne hsval
+  · -- `|A| = 2p`
+    have hinj1 : Set.InjOn f1 (Finset.range p) := by
+      intro a ha b hb hab
+      rw [Finset.coe_range, Set.mem_Iio] at ha hb
+      have hva : (f1 a).val = p * a := by
+        rw [hf1, ZMod.val_natCast, Nat.mod_eq_of_lt (by rw [sq]; nlinarith [hp.pos, ha])]
+      have hvb : (f1 b).val = p * b := by
+        rw [hf1, ZMod.val_natCast, Nat.mod_eq_of_lt (by rw [sq]; nlinarith [hp.pos, hb])]
+      have : p * a = p * b := by rw [← hva, ← hvb, hab]
+      exact Nat.eq_of_mul_eq_mul_left hp.pos this
+    have hinj2 : Set.InjOn f2 (Finset.range p) := by
+      intro a ha b hb hab
+      rw [Finset.coe_range, Set.mem_Iio] at ha hb
+      have hlta : d + p * a < p ^ 2 := by
+        rw [sq]
+        calc d + p * a < p + p * a := by omega
+          _ = p * (a + 1) := by ring
+          _ ≤ p * p := by gcongr; omega
+      have hltb : d + p * b < p ^ 2 := by
+        rw [sq]
+        calc d + p * b < p + p * b := by omega
+          _ = p * (b + 1) := by ring
+          _ ≤ p * p := by gcongr; omega
+      have hva : (f2 a).val = d + p * a := by rw [hf2, ZMod.val_natCast, Nat.mod_eq_of_lt hlta]
+      have hvb : (f2 b).val = d + p * b := by rw [hf2, ZMod.val_natCast, Nat.mod_eq_of_lt hltb]
+      have heq : d + p * a = d + p * b := by rw [← hva, ← hvb, hab]
+      have : p * a = p * b := by omega
+      exact Nat.eq_of_mul_eq_mul_left hp.pos this
+    have hc1 : S1.card = p := by rw [hS1, Finset.card_image_of_injOn hinj1, Finset.card_range]
+    have hc2 : S2.card = p := by rw [hS2, Finset.card_image_of_injOn hinj2, Finset.card_range]
+    have hdisj : Disjoint S1 S2 := by
+      rw [Finset.disjoint_left]
+      intro y hy1 hy2
+      have e1 := hφ1 y hy1
+      have e2 := hφ2 y hy2
+      rw [e1] at e2
+      exact hdz0 e2.symm
+    rw [Finset.card_union_eq_card_add_card.mpr hdisj, hc1, hc2]; omega
+
+/-- **The subgroup `pℤ` is strictly sub-extremal at `N = p²` for `p ≡ 1 (mod 4)`.**
+    There is a square-difference-free set in `ℤ/p²ℤ` with *more* than `√N = p`
+    elements, so the `√N` construction of Part XXVIII is not the maximum. -/
+theorem exists_sqDiffFree_card_gt_sqrt_of_prime_mod_four_one
+    {p : ℕ} (hp : p.Prime) (hp1 : p % 4 = 1) :
+    ∃ A : Finset (ZMod (p ^ 2)),
+      (∀ x ∈ A, ∀ n : ZMod (p ^ 2), n ^ 2 ≠ 0 → x + n ^ 2 ∉ A)
+        ∧ Nat.sqrt (p ^ 2) < A.card := by
+  obtain ⟨A, hfree, hcard⟩ := exists_sqDiffFree_card_two_mul_sqrt_of_prime_mod_four_one hp hp1
+  refine ⟨A, hfree, ?_⟩
+  rw [hcard, Nat.sqrt_eq']
+  have := hp.two_le
+  omega
+
 end Szemeredi.Roth
