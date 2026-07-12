@@ -345,3 +345,31 @@ lines), src/data/proofs/puiseux-theorem/meta.json (lineCount 1216→1315, theore
 finite level (`= (1/n)ℤ`), the "structural rounding-out" line is now complete on the
 *algebraic*, *filtration*, and *valuation* axes. The only remaining frontier is the deep
 Newton–Puiseux algebraic closure (>1000-line, out of scope).
+
+## Session (researcher-1, 2026-07-11): value-group tower directedness (Part XIV)
+
+**Mode**: REVISIT (MODERATE, file already SOLVED 0/0) · **Outcome**: progress
+(2 theorems VERIFIED 0-sorry/0-axiom), branch research/puiseux-wip01-valuegroup-directed.
+
+**Contribution.** Closed the exact `nextSteps` item: the per-level value groups
+`P n := {orderTop f | f ≠ 0, IsPuiseuxOfRamification n f} = (1/n)ℤ` were shown monotone
+under divisibility (`ramification_valueGroup_mono`) and to have union ℚ
+(`iUnion_ramification_valueGroup`), but their **directedness** — the explicit common
+refinement — was only asserted. Added:
+- `ramification_valueGroup_directed (n m)`: `P n ∪ P m ⊆ P (n*m)`. One-liner via
+  `Set.union_subset_iff` + the two `ramification_valueGroup_mono` inclusions
+  (`dvd_mul_right n m`, `dvd_mul_left m n`). This is the valuation shadow of
+  `exists_common_ramification` (series-level directedness of the filtration).
+- `directed_ramification_valueGroup`: packages the same fact as
+  `Directed (· ⊆ ·) (fun n : ℕ+ => P n)` — the order-theoretic hypothesis that makes
+  `iUnion_ramification_valueGroup` a *filtered* union / directed colimit of value groups.
+
+Both proofs are pure reuse of `ramification_valueGroup_mono`; no new API needed.
+1385→1416 lines, 45→47 theorems.
+
+**Build**: same intermittent exit-135 SIGBUS at olean-write as prior sessions — elaboration
+`[3070/3070]` completes with zero type errors, then crashes on write. Retried; landed clean
+`Build completed successfully (3070 jobs)`. Code 135 here is NOT a logic error.
+
+**Deferred (unchanged):** full Newton–Puiseux for arbitrary polynomials (Newton polygon +
+char-0 convergence, >1000L, absent from Mathlib) remains the genuine open remainder.
