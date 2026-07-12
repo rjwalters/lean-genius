@@ -61,12 +61,12 @@
       {
         "theorem": "Odd.neg_pow",
         "description": "(-a)^n = -(a^n) when n is odd. Applied with the odd exponent 2n+1 (witness ⟨n, rfl⟩ : Odd (2n+1)) to show the integrand x^{2n+1} e^{-x²} is odd.",
-        "module": "Mathlib.Algebra.GroupPower.Basic"
+        "module": "Mathlib.Algebra.Ring.Parity"
       },
       {
         "theorem": "integral_neg",
         "description": "∫ x, -f x = -∫ x, f x, the linearity step that turns the oddness rewrite ∫ f(-x) = ∫ -f into ∫ f(-x) = -∫ f.",
-        "module": "Mathlib.MeasureTheory.Integral.Bochner"
+        "module": "Mathlib.MeasureTheory.Integral.Bochner.Basic"
       },
       {
         "theorem": "AreaOfCircleOQ07OQ05OQ01.gaussian_even_moment",
