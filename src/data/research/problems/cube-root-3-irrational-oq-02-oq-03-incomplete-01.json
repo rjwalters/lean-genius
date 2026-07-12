@@ -1,8 +1,8 @@
 {
   "slug": "cube-root-3-irrational-oq-02-oq-03-incomplete-01",
   "title": "Complete proof of Vahlen–Capelli Criterion for Binomial Irreducibility (1 sorries)",
-  "phase": "ACT",
-  "status": "available",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (open sorry unchanged at line 707): added the concrete namesake instance X³−3 irreducible over ℚ (cubeRootThree_irreducible) + 3-not-a-cube (three_not_cube_rat, 3-adic valuation) + real irrationality of ∛3 (cubeRootThree_irrational), all axiom-free & sorry-free, closing the loop from the abstract criterion to the entry headline. File 974→1012 lines, 29→31 theorems. ALSO isolated the sole open sorry (8∣n, −a∈K², Lang VI§9 descent) as a self-contained Mathlib-only StatementOnly file and submitted to Aristotle (project 958405df). Prior sessions: positive-radicand sorry-free criterion (PR#38109) + prime-power/prime corollaries (PR#38292).",
+    "progressSummary": "COMPLETED (researcher-1, 2026-07-12): closed the SOLE OPEN SORRY (was @707). Retrieved the completed Aristotle proof (project 958405df, task COMPLETE) of two_power_capelli_neg_square — the residual even-case Vahlen–Capelli sub-case (8∣n, −a∈K²) that is an explicit open TODO in Mathlib KummerExtension.lean — repaired 2 v4.28→v4.31 toolchain drifts (a Fin-cardinality vacuous goal and a linear_combination field identity replacing broken grind steps), and inlined it (with helpers quad_repr/quad_indep/descent/two_power_irred) into CubeRoot3IrrationalOQ02OQ03.lean as §VahlenCapelliDescent, closing the sorry with `exact two_power_capelli_neg_square (by omega) h1 h2 hna`. The file is now FULLY 0-sorry / 0-axiom (host-verified via lake env lean): vahlen_capelli (full even+odd iff), two_power_capelli, cubeRootThree_irreducible, and the ∛3 corollaries all depend only on [propext,Classical.choice,Quot.sound]. Updated stale docstrings that claimed a sole remaining sorry; removed the now-redundant StatementOnly companion. The entire Vahlen–Capelli criterion (incl. the even case Mathlib lists as TODO) is machine-checked.",
     "builtItems": [
       "neg_not_square_of_pos: a>0 => forall b, b^2 != -a (CubeRoot3IrrationalOQ02OQ03.lean)",
       "capelli_cond_two_of_pos: a>0 => forall b, a != -(4*b^4) (condition 2 vacuous)",
@@ -39,14 +39,16 @@
       "three_not_cube_rat: forall b:ℚ, b^3 ≠ 3, via 3-adic valuation (padicValRat.pow + padicValRat.self: 3·v₃(b)=1 impossible), SORRY-FREE axiom-free (CubeRoot3IrrationalOQ02OQ03.lean)",
       "cubeRootThree_irreducible: Irreducible(X^3 - C 3 : ℚ[X]) as instance of vahlen_capelli_pos_prime (p=3,a=3) — the namesake ∛3 instance, SORRY-FREE axiom-free",
       "cubeRootThree_irrational: x^3=3 (x:ℝ) => Irrational x, transport of three_not_cube_rat along ℚ↪ℝ, SORRY-FREE axiom-free",
-      "StatementOnly_CubeRoot3...TwoPowerCapelliNegSquare: self-contained Mathlib-only isolation of the sole open sorry (two_power_capelli_neg_square: k≥3, a∉K², a∉−4K⁴, −a∈K² => Irreducible X^(2^k)−C a) submitted to Aristotle project 958405df-8534-4c33-9d40-21529cfa14fa"
+      "StatementOnly_CubeRoot3...TwoPowerCapelliNegSquare: self-contained Mathlib-only isolation of the sole open sorry (two_power_capelli_neg_square: k≥3, a∉K², a∉−4K⁴, −a∈K² => Irreducible X^(2^k)−C a) submitted to Aristotle project 958405df-8534-4c33-9d40-21529cfa14fa",
+      "two_power_capelli_neg_square + helpers (quad_repr, quad_indep, descent, two_power_irred) inlined into CubeRoot3IrrationalOQ02OQ03.lean §VahlenCapelliDescent — CLOSES the sole open sorry@707 (residual even-case Vahlen–Capelli, 8∣n with −a∈K², an explicit Mathlib KummerExtension.lean TODO). Proved by Aristotle (project 958405df) via Lang VI§9 quadratic descent across K(√a); repaired 2 v4.28→v4.31 grind drifts (Fin-cardinality vacuous goal + linear_combination field identity). File now 0-sorry/0-axiom; vahlen_capelli & cubeRootThree_irreducible depend only on [propext,Classical.choice,Quot.sound]. Removed the now-redundant StatementOnly companion."
     ],
     "insights": [
       "The sole remaining sorry (line 707, two_power_capelli) is the -a in K^2 branch of the pure 2-power base X^(2^k)-C a, k>=3 (8|n): the classical Lang VI section 9 Galois descent over L=K(i). It is EXACTLY Mathlibs open TODO (X_pow_sub_C_irreducible_of_prime_pow restricted to p != 2). Not one-session closeable manually.",
       "STRUCTURAL/SHARP-BOUNDARY RESULT: over any ordered field ([Field]+[LinearOrder]+[IsStrictOrderedRing]) the -4K^4 obstruction (condition 2) is VACUOUS for a>0, since -a<0 is never a square and -(4b^4)<=0<a. Hence the entire even-case difficulty (the open sorry) is a purely non-formally-real phenomenon; for positive radicands the criterion is unconditional (condition 1 alone).",
       "The full vahlen_capelli proof invokes the sorry at exactly ONE line (the 8|n branch, via two_power_capelli); every other branch is already sorry-free. Swapping in the positive base two_power_capelli_pos yields a fully sorry-free criterion vahlen_capelli_pos.",
       "COROLLARY (researcher-5, 2026-07-11): for a PRIME-POWER exponent n=p^k the general Vahlen–Capelli condition (1) collapses to the single 'a not a p-th power' (only prime divisor is p, via Nat.prime_dvd_prime_iff_eq + Nat.Prime.dvd_of_dvd_pow), and for a>0 condition (2) is vacuous — so vahlen_capelli_pos_prime_pow is a clean sorry-free iff covering X^{p^k}−C a for ALL primes, unifying the pre-existing p=2 tower (vahlen_capelli_pos_two_pow). The p=3,a=3 instance is exactly X³−3 irreducible = the entry's ∛3-irrationality headline.",
-      "The abstract Vahlen–Capelli criterion had no concrete instantiation despite the entry being named for ∛3; cubeRootThree_irreducible now derives X³−3 irreducible over ℚ straight from vahlen_capelli_pos_prime, with the only arithmetic input being three_not_cube_rat (3 is not a rational cube), proved by a clean 3-adic valuation contradiction rather than Eisenstein — showing the general criterion subsumes the entry headline."
+      "The abstract Vahlen–Capelli criterion had no concrete instantiation despite the entry being named for ∛3; cubeRootThree_irreducible now derives X³−3 irreducible over ℚ straight from vahlen_capelli_pos_prime, with the only arithmetic input being three_not_cube_rat (3 is not a rational cube), proved by a clean 3-adic valuation contradiction rather than Eisenstein — showing the general criterion subsumes the entry headline.",
+      "The residual even-case Vahlen–Capelli sub-case (8∣n, −a∈K²) — an explicit open TODO in Mathlib/FieldTheory/KummerExtension.lean (X_pow_sub_C_irreducible_of_prime_pow is odd-primes-only) — is provable: Lang VI§9 quadratic descent (induct on k via X_pow_mul_sub_C_irreducible peeling one quadratic layer; over F=K(√a) show √a is neither a square nor of form −4b⁴, both reducing to a∈−4K⁴ contradicting condition (2)). Aristotle solved it; the crux descent lemma uses the c₀+c₁√a basis representation + quad_indep linear independence."
     ],
     "mathlibGaps": [
       "Mathlib FieldTheory/KummerExtension.lean: even-n Vahlen-Capelli is an open TODO (Lang Algebra VI section 9); X_pow_sub_C_irreducible_of_prime_pow restricted to p != 2. The -a in K^2, 8|n descent over K(i) remains unformalized.",
