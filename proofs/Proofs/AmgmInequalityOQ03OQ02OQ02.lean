@@ -434,4 +434,63 @@ theorem logConcave_root_ratio_sandwich (p : ℕ → ℝ) (hp0 : p 0 = 1)
   ⟨logConcave_root_ge_last_ratio p hp0 hpos hlc k,
     logConcave_root_le_first p hp0 hpos hlc k⟩
 
+/-! ## Strict sandwich: strict log-concavity separates the root mean from both ratios
+
+The non-strict sandwich `logConcave_root_ratio_sandwich` places each root mean between
+the last consecutive ratio `r_k = p (k+1) / p k` and the first `r_0 = p 1`. Under
+*strict* log-concavity both inclusions become strict past the first index: the strict
+upper separation is `logConcave_root_lt_first` (`p (k+1)^{1/(k+1)} < p 1`), and the
+matching strict *lower* separation is recorded here. Both require `k ≥ 1`, since at
+`k = 0` the root mean, the last ratio and the first ratio all coincide with `p 1`. -/
+
+/-- **Strict lower bound: every later root mean strictly exceeds its last ratio.** For a
+positive, *strictly* log-concave sequence with `p 0 = 1`,
+`p (k+1) / p k < p (k+1)^{1/(k+1)}` for every `k ≥ 1`. The strict companion of
+`logConcave_root_ge_last_ratio`, dual to the strict upper bound
+`logConcave_root_lt_first`. Proof mirrors the non-strict lower bound: both sides are
+nonnegative, so it suffices to compare their `(k+1)`-th powers; the right side powers
+back to `p (k+1)`, and the left side's `(k+1)`-th power is *strictly* below `p (k+1)`
+by the strict multiplicative core `logConcave_pow_antitone_strict`
+(`p (k+1)^k < p k^{k+1}`, valid for `k ≥ 1`). Specialised to `p k = eₖ/C(n,k)` with
+distinct inputs, this strictly separates each Maclaurin mean `Mₖ₊₁` from its
+consecutive ratio. -/
+theorem logConcave_root_gt_last_ratio (p : ℕ → ℝ) (hp0 : p 0 = 1)
+    (hpos : ∀ j, 0 < p j)
+    (hlc : ∀ m, p m * p (m + 2) ≤ (p (m + 1)) ^ 2)
+    (hstrict : ∀ m, p m * p (m + 2) < (p (m + 1)) ^ 2)
+    (k : ℕ) (hk : 0 < k) :
+    p (k + 1) / p k < p (k + 1) ^ ((1 : ℝ) / (k + 1)) := by
+  have ha : 0 < p (k + 1) := hpos (k + 1)
+  have hb : 0 < p k := hpos k
+  have hcore : p (k + 1) ^ k < p k ^ (k + 1) :=
+    logConcave_pow_antitone_strict p hp0 hpos hlc hstrict k hk
+  -- The right side, raised to the `(k+1)`-th power, is `p (k+1)`.
+  have hRpow : (p (k + 1) ^ ((1 : ℝ) / (k + 1))) ^ (k + 1) = p (k + 1) := by
+    rw [one_div, show ((k : ℝ) + 1) = ((k + 1 : ℕ) : ℝ) by push_cast; ring]
+    exact Real.rpow_inv_natCast_pow ha.le (Nat.succ_ne_zero k)
+  refine lt_of_pow_lt_pow_left₀ (k + 1) (Real.rpow_nonneg ha.le _) ?_
+  rw [hRpow, div_pow, div_lt_iff₀ (by positivity : (0 : ℝ) < p k ^ (k + 1))]
+  calc p (k + 1) ^ (k + 1)
+        = p (k + 1) ^ k * p (k + 1) := by rw [pow_succ]
+    _ < p k ^ (k + 1) * p (k + 1) := mul_lt_mul_of_pos_right hcore ha
+    _ = p (k + 1) * p k ^ (k + 1) := by ring
+
+/-- **The strict root-mean sandwich.** For a positive, *strictly* log-concave sequence
+with `p 0 = 1`, every root mean past the first index lies *strictly* between the last
+and first consecutive ratios:
+`p (k+1) / p k < p (k+1)^{1/(k+1)} < p 1` for every `k ≥ 1`. The strict analogue of
+`logConcave_root_ratio_sandwich`, combining the strict lower bound
+`logConcave_root_gt_last_ratio` with the strict upper bound `logConcave_root_lt_first`.
+Specialised to `p k = eₖ/C(n,k)` with distinct inputs, this strictly places each
+Maclaurin mean `Mₖ₊₁` between its consecutive ratio and the arithmetic mean `M₁`. -/
+theorem logConcave_root_ratio_sandwich_strict (p : ℕ → ℝ) (hp0 : p 0 = 1)
+    (hpos : ∀ j, 0 < p j)
+    (hlc : ∀ m, p m * p (m + 2) ≤ (p (m + 1)) ^ 2)
+    (hstrict : ∀ m, p m * p (m + 2) < (p (m + 1)) ^ 2)
+    (k : ℕ) (hk : 0 < k) :
+    p (k + 1) / p k < p (k + 1) ^ ((1 : ℝ) / (k + 1)) ∧
+      p (k + 1) ^ ((1 : ℝ) / (k + 1)) < p 1 :=
+  ⟨logConcave_root_gt_last_ratio p hp0 hpos hlc hstrict k hk,
+    logConcave_root_lt_first p hp0 hpos hlc hstrict k hk⟩
+
 end MaclaurinLogConcave
