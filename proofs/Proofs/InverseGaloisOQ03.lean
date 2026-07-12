@@ -419,4 +419,64 @@ theorem Monster_not_nilpotent : ¬ Group.IsNilpotent Monster := by
 /-- 25 sporadic groups realized + 1 open (M₂₃) = 26 sporadic groups total. -/
 theorem sporadic_census : 25 + 1 = 26 := by norm_num
 
+-- ============================================================================
+-- Part VIII: The uniform Cauchy principle, and further arithmetic transport
+-- ============================================================================
+
+/-
+Parts II and VII produce elements of order `2, 3, 5, 7, 71` one prime at a time.  Each is an
+instance of a single statement: *every* prime dividing `|𝕄|` is realised as an element order.
+We record that uniform principle once (`Monster_cauchy`), then read off two more prime orders
+(`11, 13`) and complete the field-side arithmetic transport begun in Part VI (`2 ∣ [K:ℚ]`,
+`71 ∣ [K:ℚ]`).  Everything is derived from the six axioms of Part I; no new assumptions.
+-/
+
+/-- **Cauchy's theorem for 𝕄 (uniform form).**  For *every* prime `p` dividing `|𝕄|`, the
+    Monster contains an element of order exactly `p`.  This is the single statement behind all
+    the individual `Monster_exists_element_orderOf_*` lemmas (`p = 2, 3, 5, 7, 71`, and `11, 13`
+    below): the fifteen primes `2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 41, 47, 59, 71` of the
+    factorization `Monster_card_factored` are exactly the prime element orders forced by Cauchy. -/
+theorem Monster_cauchy (p : ℕ) (hp : p.Prime) (hdvd : p ∣ Fintype.card Monster) :
+    ∃ g : Monster, orderOf g = p := by
+  haveI : Fact p.Prime := ⟨hp⟩
+  exact exists_prime_orderOf_dvd_card p hdvd
+
+/-- 11 divides |𝕄| (`11² ∥ |𝕄|`). -/
+theorem eleven_dvd_Monster_card : 11 ∣ Fintype.card Monster := by
+  rw [Monster_card]; norm_num
+
+/-- 13 divides |𝕄| (`13³ ∥ |𝕄|`). -/
+theorem thirteen_dvd_Monster_card : 13 ∣ Fintype.card Monster := by
+  rw [Monster_card]; norm_num
+
+/-- **𝕄 contains an element of order 11.**  `Monster_cauchy` applied to `11 ∣ |𝕄|`. -/
+theorem Monster_exists_element_orderOf_11 : ∃ g : Monster, orderOf g = 11 :=
+  Monster_cauchy 11 (by norm_num) eleven_dvd_Monster_card
+
+/-- **𝕄 contains an element of order 13.**  `Monster_cauchy` applied to `13 ∣ |𝕄|`. -/
+theorem Monster_exists_element_orderOf_13 : ∃ g : Monster, orderOf g = 13 :=
+  Monster_cauchy 13 (by norm_num) thirteen_dvd_Monster_card
+
+/-- **Field-side: the Monster-realizing degree is even.**  Since `[K:ℚ] = |𝕄|`
+    (`Monster_realizing_field_finrank`) and `2 ∣ |𝕄|`, Thompson's field has even degree over
+    ℚ — the field-side analogue of `two_dvd_Monster_card`, extending the Part VI transport
+    (`Monster_realizing_field_finrank_factored` / `_not_prime`). -/
+theorem Monster_realizing_field_finrank_even :
+    ∃ (K : Type) (_ : Field K) (_ : Algebra ℚ K) (_ : FiniteDimensional ℚ K)
+      (_ : IsGalois ℚ K), 2 ∣ Module.finrank ℚ K := by
+  obtain ⟨K, fK, aK, fdK, gK, hfr⟩ := Monster_realizing_field_finrank
+  refine ⟨K, fK, aK, fdK, gK, ?_⟩
+  rw [hfr]; norm_num
+
+/-- **Field-side: 71 divides the Monster-realizing degree.**  The field-side analogue of
+    `seventyone_dvd_Monster_card`: since `[K:ℚ] = |𝕄|` and `71 ∣ |𝕄|` (the largest prime
+    factor), the largest prime order of the Monster also divides the degree of Thompson's
+    field over ℚ. -/
+theorem Monster_realizing_field_finrank_71_dvd :
+    ∃ (K : Type) (_ : Field K) (_ : Algebra ℚ K) (_ : FiniteDimensional ℚ K)
+      (_ : IsGalois ℚ K), 71 ∣ Module.finrank ℚ K := by
+  obtain ⟨K, fK, aK, fdK, gK, hfr⟩ := Monster_realizing_field_finrank
+  refine ⟨K, fK, aK, fdK, gK, ?_⟩
+  rw [hfr]; norm_num
+
 end InverseGaloisOQ03
