@@ -310,4 +310,132 @@ theorem fourierCoeffOn_iteratedDeriv_odd
         = (-1 : ℂ) ^ m * I * (n : ℂ) ^ (2 * m + 1) from by
     rw [mul_pow, pow_succ, pow_mul, I_sq]]
 
+-- ============================================================
+-- SECTION V: the spectral equality case of the Wirtinger damping
+-- ============================================================
+
+/-- Arithmetic helper: for `k ≥ 1`, the `k`-th power of `|n|` (as a real) equals `1`
+    exactly on the unit modes `|n| = 1`. -/
+private theorem abs_intCast_pow_eq_one_iff (n : ℤ) (k : ℕ) (hk : 1 ≤ k) :
+    |(n : ℝ)| ^ k = 1 ↔ n.natAbs = 1 := by
+  have hcast : |(n : ℝ)| = (n.natAbs : ℝ) := by
+    simp
+  rw [hcast]
+  constructor
+  · intro h
+    have hnk : n.natAbs ^ k = 1 := by exact_mod_cast h
+    rcases Nat.pow_eq_one.mp hnk with h1 | h1
+    · exact h1
+    · omega
+  · intro h; rw [h]; simp
+
+/-- Arithmetic helper: for `k ≥ 1`, the `k`-th power of `|n|` (as a real) exceeds `1`
+    exactly on the higher modes `|n| ≥ 2`. -/
+private theorem one_lt_abs_intCast_pow_iff (n : ℤ) (k : ℕ) (hk : 1 ≤ k) :
+    1 < |(n : ℝ)| ^ k ↔ 2 ≤ n.natAbs := by
+  have hcast : |(n : ℝ)| = (n.natAbs : ℝ) := by
+    simp
+  rw [hcast]
+  constructor
+  · intro h
+    by_contra hc
+    push_neg at hc
+    have hle : (n.natAbs : ℝ) ≤ 1 := by
+      have : n.natAbs ≤ 1 := by omega
+      exact_mod_cast this
+    have hpow_le : (n.natAbs : ℝ) ^ k ≤ 1 := by
+      calc (n.natAbs : ℝ) ^ k ≤ 1 ^ k := by
+            apply pow_le_pow_left₀ (by positivity) hle
+        _ = 1 := one_pow k
+    linarith
+  · intro h
+    have h2 : (2 : ℝ) ≤ (n.natAbs : ℝ) := by exact_mod_cast h
+    calc (1 : ℝ) < 2 := by norm_num
+      _ ≤ (n.natAbs : ℝ) := h2
+      _ = (n.natAbs : ℝ) ^ 1 := (pow_one _).symm
+      _ ≤ (n.natAbs : ℝ) ^ k := pow_le_pow_right₀ (by linarith) hk
+
+/-- **Explicit Wirtinger deficit at a single mode.**  Subtracting the magnitude identity
+    `‖ĉₙ(f⁽ᵏ⁾)‖ = |n|ᵏ·‖ĉₙ(f)‖` from `‖ĉₙ(f)‖` isolates the per-mode gain of the `k`-th
+    derivative as a clean product,
+
+        ‖ĉₙ(f⁽ᵏ⁾)‖ − ‖ĉₙ(f)‖ = (|n|ᵏ − 1)·‖ĉₙ(f)‖ ,
+
+    valid over the whole spectrum (every `n : ℤ`, every order `k`).  The first factor
+    `|n|ᵏ − 1` is `≥ 0` for `k ≥ 1` and `|n| ≥ 1`, `= 0` on the unit modes `|n| = 1`, and
+    `< 0` only at the mean `n = 0` — so the sign of the deficit is read off the mode index
+    alone once `f` has zero mean.  This makes transparent *why* differentiation inflates the
+    energy: the surplus is supported on the `|n| ≥ 2` modes. -/
+theorem norm_fourierCoeffOn_iteratedDeriv_sub
+    (f : ℝ → ℝ) (hf : ContDiff ℝ ∞ f) (hper : ∀ t, f (t + 2 * π) = f t)
+    (hab : (0 : ℝ) < 2 * π) (n : ℤ) (k : ℕ) :
+    ‖fourierCoeffOn hab (ofReal ∘ deriv^[k] f) n‖
+        - ‖fourierCoeffOn hab (ofReal ∘ f) n‖
+      = (|(n : ℝ)| ^ k - 1) * ‖fourierCoeffOn hab (ofReal ∘ f) n‖ := by
+  rw [norm_fourierCoeffOn_iteratedDeriv_all f hf hper hab n k]; ring
+
+/-- **Spectral equality case of Wirtinger (per mode).**  For a positive order `k ≥ 1`, the
+    `k`-th derivative leaves the *magnitude* of the `n`-th Fourier coefficient unchanged
+    exactly on the first harmonic or where the mode is already absent:
+
+        ‖ĉₙ(f⁽ᵏ⁾)‖ = ‖ĉₙ(f)‖  ↔  (|n| = 1  ∨  ĉₙ(f) = 0).
+
+    This is the coefficient-level statement of the equality case of Wirtinger's inequality
+    `∫f² ≤ ∫(f')²`: summed by Parseval, `∫(f⁽ᵏ⁾)² = ∫f²` forces every surviving mode to have
+    `|n| = 1`, i.e. `f(t) = a·cos t + b·sin t` — the *circle* in the Hurwitz proof of the
+    isoperimetric inequality.  Here it is isolated at one frequency and made an iff, driven
+    only by the eigenvalue magnitude `|n|ᵏ = 1 ↔ |n| = 1` for `k ≥ 1`. -/
+theorem norm_fourierCoeffOn_iteratedDeriv_eq_self_iff
+    (f : ℝ → ℝ) (hf : ContDiff ℝ ∞ f) (hper : ∀ t, f (t + 2 * π) = f t)
+    (hab : (0 : ℝ) < 2 * π) (n : ℤ) (k : ℕ) (hk : 1 ≤ k) :
+    ‖fourierCoeffOn hab (ofReal ∘ deriv^[k] f) n‖
+        = ‖fourierCoeffOn hab (ofReal ∘ f) n‖
+      ↔ (n.natAbs = 1 ∨ fourierCoeffOn hab (ofReal ∘ f) n = 0) := by
+  rw [norm_fourierCoeffOn_iteratedDeriv_all f hf hper hab n k]
+  constructor
+  · intro h
+    have hz : (|(n : ℝ)| ^ k - 1) * ‖fourierCoeffOn hab (ofReal ∘ f) n‖ = 0 := by
+      rw [sub_mul, one_mul, h, sub_self]
+    rcases mul_eq_zero.mp hz with h1 | h1
+    · exact Or.inl ((abs_intCast_pow_eq_one_iff n k hk).mp (by linarith))
+    · exact Or.inr (norm_eq_zero.mp h1)
+  · rintro (h | h)
+    · rw [(abs_intCast_pow_eq_one_iff n k hk).mpr h, one_mul]
+    · rw [norm_eq_zero.mpr h, mul_zero]
+
+/-- **Strict damping exactly on the higher modes.**  The companion of the equality case:
+    for `k ≥ 1`, the `k`-th derivative *strictly* enlarges the `n`-th coefficient magnitude
+    precisely on the modes `|n| ≥ 2` that are actually present,
+
+        ‖ĉₙ(f)‖ < ‖ĉₙ(f⁽ᵏ⁾)‖  ↔  (|n| ≥ 2  ∧  ĉₙ(f) ≠ 0).
+
+    Together with `norm_fourierCoeffOn_iteratedDeriv_eq_self_iff` this is a complete
+    trichotomy for the damping `‖ĉₙ(f)‖ ≤ ‖ĉₙ(f⁽ᵏ⁾)‖`: strict on `|n| ≥ 2` (present modes),
+    equality on `|n| ≤ 1` — the spectral origin of the strict isoperimetric deficit for every
+    non-circular curve. -/
+theorem norm_fourierCoeffOn_lt_iteratedDeriv_iff
+    (f : ℝ → ℝ) (hf : ContDiff ℝ ∞ f) (hper : ∀ t, f (t + 2 * π) = f t)
+    (hab : (0 : ℝ) < 2 * π) (n : ℤ) (k : ℕ) (hk : 1 ≤ k) :
+    ‖fourierCoeffOn hab (ofReal ∘ f) n‖
+        < ‖fourierCoeffOn hab (ofReal ∘ deriv^[k] f) n‖
+      ↔ (2 ≤ n.natAbs ∧ fourierCoeffOn hab (ofReal ∘ f) n ≠ 0) := by
+  rw [norm_fourierCoeffOn_iteratedDeriv_all f hf hper hab n k]
+  have ha_nn : 0 ≤ ‖fourierCoeffOn hab (ofReal ∘ f) n‖ := norm_nonneg _
+  constructor
+  · intro h
+    have hpos : 0 < ‖fourierCoeffOn hab (ofReal ∘ f) n‖ := by
+      rcases eq_or_lt_of_le ha_nn with h0 | h0
+      · exfalso; rw [← h0] at h; simp at h
+      · exact h0
+    have hne : fourierCoeffOn hab (ofReal ∘ f) n ≠ 0 := norm_pos_iff.mp hpos
+    have h1lt : 1 < |(n : ℝ)| ^ k := by
+      by_contra hc
+      push_neg at hc
+      linarith [mul_le_of_le_one_left ha_nn hc, h]
+    exact ⟨(one_lt_abs_intCast_pow_iff n k hk).mp h1lt, hne⟩
+  · rintro ⟨h1, h2⟩
+    have hpos : 0 < ‖fourierCoeffOn hab (ofReal ∘ f) n‖ := norm_pos_iff.mpr h2
+    have h1lt : 1 < |(n : ℝ)| ^ k := (one_lt_abs_intCast_pow_iff n k hk).mpr h1
+    nlinarith [hpos, h1lt]
+
 end IsoperimetricFourier
