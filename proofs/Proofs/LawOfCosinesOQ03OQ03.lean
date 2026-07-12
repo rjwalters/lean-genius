@@ -1251,4 +1251,42 @@ theorem equilateral_iff_equiangular (t : HyperbolicTriangle) :
   · rintro ⟨hAB, hBC⟩
     exact equilateral_sides_eq t hAB hBC
 
+-- ============================================================
+-- PART 12: Cyclic completion of the side–angle order-equivalence
+-- ============================================================
+
+/-- **Side–angle order-equivalence for the `(b,c)/(B,C)` pair (strict).** `b < c ↔ B < C`,
+    the cyclic companion of `side_lt_iff_angle_lt` (`a < b ↔ A < B`), obtained by applying it
+    to the relabeling `rotate` (which cycles `(a,b,c) → (b,c,a)` and `(A,B,C) → (B,C,A)`, so the
+    `(a,b)/(A,B)` slots become the `(b,c)/(B,C)` pair). -/
+theorem side_lt_iff_angle_lt_bc (t : HyperbolicTriangle) : t.b < t.c ↔ t.B < t.C :=
+  side_lt_iff_angle_lt t.rotate
+
+/-- **Side–angle order-equivalence for the `(c,a)/(C,A)` pair (strict).** `c < a ↔ C < A`, the
+    third leg completing the strict order trio, obtained by applying the `(b,c)` criterion to
+    `rotate`. With its two companions this gives the strict order-equivalence for every pair. -/
+theorem side_lt_iff_angle_lt_ca (t : HyperbolicTriangle) : t.c < t.a ↔ t.C < t.A :=
+  side_lt_iff_angle_lt_bc t.rotate
+
+/-- **Non-strict side–angle order-equivalence for the `(b,c)/(B,C)` pair.** `b ≤ c ↔ B ≤ C`,
+    the `≤` companion via `rotate`. -/
+theorem side_le_iff_angle_le_bc (t : HyperbolicTriangle) : t.b ≤ t.c ↔ t.B ≤ t.C :=
+  side_le_iff_angle_le t.rotate
+
+/-- **Non-strict side–angle order-equivalence for the `(c,a)/(C,A)` pair.** `c ≤ a ↔ C ≤ A`,
+    completing the `≤` order trio for every pair of a hyperbolic triangle. -/
+theorem side_le_iff_angle_le_ca (t : HyperbolicTriangle) : t.c ≤ t.a ↔ t.C ≤ t.A :=
+  side_le_iff_angle_le_bc t.rotate
+
+/-- **Global side–angle order correspondence.** Sorting the angles sorts the sides the same
+    way: `A ≤ B ≤ C ⟹ a ≤ b ≤ c`, so the longest side lies opposite the largest angle and the
+    shortest opposite the smallest. The qualitative ordering matches the Euclidean law even
+    though hyperbolic sides are a strictly *decreasing* function of the opposite angle when the
+    other two are pinned (`side_antitone_in_angle`): the two facts are consistent because
+    reordering the angles also reindexes which side is "opposite". Assembles the three cyclic
+    non-strict order-equivalences. -/
+theorem sides_ordered_of_angles_ordered (t : HyperbolicTriangle)
+    (hAB : t.A ≤ t.B) (hBC : t.B ≤ t.C) : t.a ≤ t.b ∧ t.b ≤ t.c :=
+  ⟨(side_le_iff_angle_le t).mpr hAB, (side_le_iff_angle_le_bc t).mpr hBC⟩
+
 end HyperbolicAAA
