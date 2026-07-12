@@ -788,4 +788,37 @@ theorem avgSteps_one_unbounded (M : ℚ) :
   have hMn : M < (n : ℚ) - 1 := by linarith
   linarith
 
+-- ═══════════════════════════════════════════════════════════════════
+-- PART V: GENERAL-`a` STRUCTURE OF THE RUNNING TOTAL
+-- ═══════════════════════════════════════════════════════════════════
+
+/-- **Per-argument recurrence of the running total (general `a`).** Extending the
+    range by one argument adds exactly that argument's step count:
+    `totalSteps a (N+1) = totalSteps a N + binaryGcdSteps a (N+1)`. This is the
+    general-`a` companion of `totalSteps_one_succ` (which specialises the last
+    term to `log₂(N+1) + 1` via `binaryGcdSteps_one_eq_log`). Immediate from
+    `Finset.sum_Icc_succ_top`. -/
+theorem totalSteps_succ (a N : ℕ) :
+    totalSteps a (N + 1) = totalSteps a N + binaryGcdSteps a (N + 1) := by
+  unfold totalSteps
+  rw [Finset.sum_Icc_succ_top (by omega : 1 ≤ N + 1)]
+
+/-- **The running total is monotone in `N` (general `a`).** For every fixed left
+    argument `a`, `N ↦ totalSteps a N` is `Monotone`: each new argument contributes
+    a nonnegative step count, so the running work count never decreases. This is the
+    general-`a` companion of `totalSteps_one_mono` (the `a = 1` total is in fact
+    *strictly* monotone since its increment `log₂(N+1)+1 ≥ 1` is positive; for
+    general `a` a single argument may cost `0` steps, e.g. `binaryGcdSteps a a`, so
+    only monotonicity holds unconditionally). -/
+theorem totalSteps_mono (a : ℕ) : Monotone (totalSteps a) := by
+  apply monotone_nat_of_le_succ
+  intro N
+  rw [totalSteps_succ]
+  omega
+
+/-- **Range-monotonicity in `≤` form (general `a`).** The citable inequality form of
+    `totalSteps_mono`: `M ≤ N ⟹ totalSteps a M ≤ totalSteps a N`. -/
+theorem totalSteps_le_of_le {a M N : ℕ} (h : M ≤ N) : totalSteps a M ≤ totalSteps a N :=
+  totalSteps_mono a h
+
 end BinaryGcdOQ01OQ04OQ03
