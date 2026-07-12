@@ -57,24 +57,40 @@
       "id": "header-imports",
       "title": "Module Header and Imports",
       "startLine": 1,
-      "endLine": 68,
-      "summary": "Imports Mathlib. Module docstring explaining the globalization of the parent's local smoothing step into the doubly-stochastic (Hardy–Littlewood–Pólya) form of Schur-convexity. Opens Finset and Matrix and the BirthdaySchurConvexity namespace.",
-      "mathContext": "Collision probability $C(p) = \\sum_i p_i^2$; by the Hardy–Littlewood–Pólya theorem $p \\prec q$ (p majorized by q) $\\iff p = Dq$ for some doubly stochastic $D$."
+      "endLine": 54,
+      "summary": "Imports Mathlib and carries the module docstring. It frames the entry as the globalization of the parent's local smoothing step (smoothing_sum_sq_le) into the full Schur-convexity of the collision probability, states the two exported results (the doubly-stochastic operator inequality and the recovered uniform-minimizer corollary), and records the 'Why This Is Not the Parent' scoping note: the parent proves a two-coordinate transfer, this file proves the operator inequality for the whole Birkhoff polytope at once.",
+      "mathContext": "Collision probability $C(p) = \\sum_i p_i^2$; by the Hardy–Littlewood–Pólya theorem $p \\prec q$ (p majorized by q) $\\iff p = Dq$ for some doubly stochastic $D$ (Birkhoff–von Neumann)."
+    },
+    {
+      "id": "namespace-setup",
+      "title": "Namespace, Notation and the Global-Inequality Heading",
+      "startLine": 56,
+      "endLine": 62,
+      "summary": "Opens the Finset and Matrix namespaces (bringing mulVec/dotProduct and the doublyStochastic API into scope with unqualified names), declares the BirthdaySchurConvexity namespace, and fixes the ambient dimension variable d : ℕ shared by every theorem. The section-level docstring announces the doubly-stochastic / HLP form of the global Schur-convexity inequality that follows.",
+      "mathContext": "Ambient setup over $\\mathrm{Fin}\\,d$: matrices $D : \\mathrm{Fin}\\,d \\to \\mathrm{Fin}\\,d \\to \\mathbb{R}$, vectors $q : \\mathrm{Fin}\\,d \\to \\mathbb{R}$, and $(D \\ast_v q)_i = \\sum_j D_{ij} q_j$ via Matrix.mulVec / dotProduct."
     },
     {
       "id": "global-inequality",
       "title": "The Global Schur-Convexity Inequality",
-      "startLine": 69,
-      "endLine": 96,
-      "summary": "sum_sq_mulVec_le_of_mem_doublyStochastic: for doubly stochastic D, ∑ᵢ (Dq)ᵢ² ≤ ∑ᵢ qᵢ². Per-row Jensen (convexity of x², row sums = 1) followed by a sum_comm swap and column-sum collapse.",
+      "startLine": 63,
+      "endLine": 94,
+      "summary": "sum_sq_mulVec_le_of_mem_doublyStochastic: for doubly stochastic D, ∑ᵢ (Dq)ᵢ² ≤ ∑ᵢ qᵢ². The single analytic input is Even.convexOn_pow certifying x² is convex; per-row Jensen (ConvexOn.map_sum_le with row sums = 1) gives (Dq)ᵢ² ≤ ∑ⱼ Dᵢⱼ qⱼ², then a Finset.sum_comm swap and the column-sum collapse (sum_col_of_mem_doublyStochastic) return ∑ⱼ qⱼ².",
       "mathContext": "$\\sum_i (Dq)_i^2 \\le \\sum_i q_i^2$ for doubly stochastic $D$: per-row Jensen $(Dq)_i^2 = \\bigl(\\sum_j D_{ij} q_j\\bigr)^2 \\le \\sum_j D_{ij} q_j^2$, then column-stochasticity $\\sum_i D_{ij} = 1$ collapses the double sum."
     },
     {
+      "id": "uniform-doubly-stochastic",
+      "title": "The All-1/d Averaging Matrix Is Doubly Stochastic",
+      "startLine": 96,
+      "endLine": 107,
+      "summary": "uniformAveraging_mem_doublyStochastic: the constant matrix J with every entry 1/d lies in doublyStochastic ℝ (Fin d) for d ≥ 1 — the bridge lemma that supplies the extreme point at which the global inequality will be instantiated. Via mem_doublyStochastic_iff_sum the three obligations (entrywise nonnegativity, row sums = 1, column sums = 1) reduce to the single computation ∑_{k<d} 1/d = d·(1/d) = 1, discharged uniformly because J is symmetric and constant.",
+      "mathContext": "$J = \\mathrm{of}(\\lambda\\,i\\,j.\\ d^{-1})$: entries $d^{-1} \\ge 0$ and each row/column sum $\\sum_{k<d} d^{-1} = d\\cdot d^{-1} = 1$. $J$ is the center of the Birkhoff polytope — the maximally-averaging doubly stochastic matrix."
+    },
+    {
       "id": "uniform-endpoint",
-      "title": "Recovering the Uniform-Minimizer Endpoint",
-      "startLine": 97,
+      "title": "Uniform Distribution Minimizes Collision Probability",
+      "startLine": 108,
       "endLine": 135,
-      "summary": "uniformAveraging_mem_doublyStochastic: the all-1/d matrix is doubly stochastic. one_div_card_le_sum_sq: 1/d ≤ ∑ qᵢ² for probability vectors, obtained by applying the global inequality to the all-1/d matrix whose output is the uniform vector.",
+      "summary": "one_div_card_le_sum_sq: 1/d ≤ ∑ qᵢ² for every probability vector, obtained by applying the global inequality to J. Since J q is the constant uniform vector 1/d, the left side ∑ᵢ (Jq)ᵢ² collapses to d·(1/d)² = 1/d, so the operator bound reads 1/d ≤ ∑ qᵢ² — the parent chain's sharp lower endpoint recovered as one instance of the global statement rather than a separate variance computation.",
       "mathContext": "The all-$1/d$ matrix $J$ is doubly stochastic and $Jq$ = the uniform vector, so the global inequality gives $1/d \\le \\sum_i q_i^2$ — the uniform distribution uniquely minimizes collision probability."
     }
   ],
