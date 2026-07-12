@@ -107,7 +107,8 @@
     "implications": "Passing a vector through any averaging (doubly stochastic) operator can only decrease its sum of squares — the operator form of Schur-convexity of ∑ xᵢ². Via Birkhoff–von Neumann and the HLP theorem this is exactly the majorization statement p ≺ q ⟹ ∑ pᵢ² ≤ ∑ qᵢ², so the parent's two extremal endpoints (uniform minimum, concentration maximum) sit at the two ends of a single monotone order rather than being isolated bounds. The uniform-minimizer corollary shows the bottom endpoint falling out as one instance at the all-1/d matrix.",
     "openQuestions": [
       "Prove the equality case: ∑ᵢ (Dq)ᵢ² = ∑ᵢ qᵢ² holds iff D acts as a permutation on the support of q (each row that meets the support concentrates on a single equal-q coordinate), pinning down exactly when averaging fails to strictly decrease collision.",
-      "Extend the operator inequality from ∑ xᵢ² to ∑ φ(xᵢ) for an arbitrary convex φ — the general Schur-convexity / Karamata statement — and identify which φ are handled verbatim by the same per-row-Jensen + column-collapse argument."
+      "Extend the operator inequality from ∑ xᵢ² to ∑ φ(xᵢ) for an arbitrary convex φ — the general Schur-convexity / Karamata statement — and identify which φ are handled verbatim by the same per-row-Jensen + column-collapse argument.",
+      "Quantify the operator inequality into a stability bound: does a defect estimate ∑ᵢ qᵢ² − ∑ᵢ (Dq)ᵢ² ≥ c·‖Dq − q‖² (or ≥ c·Var of the row combinations) hold uniformly in every doubly stochastic D? This would be the operator-level lift of the sibling entry's two-coordinate Pinsker bound ∑ pᵢ² − 1/d ≥ (4/d)·dTV(p,u)², upgrading 'averaging cannot increase collision' to 'averaging strictly decreases collision by at least how far it moved the vector.'"
     ]
   },
   "crossReferences": [
