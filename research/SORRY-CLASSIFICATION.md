@@ -132,16 +132,24 @@ When you hit a `sorry`, walk this tree before deciding what to do with it:
                              │                        │
                              ▼                        ▼
                 ┌────────────────────────┐  ┌──────────────────────┐
-                │ MCP `prove()` per-     │  │ `*StatementOnly.lean`│
-                │ sorry (preferred)      │  │ single-theorem file  │
-                │                        │  │ for the batch        │
-                │ - extract snippet      │  │ pipeline             │
-                │ - minimal context_files│  │                      │
-                │ - async, poll ~10 min  │  │ (Harmonic format,    │
-                │ - max 3 concurrent     │  │  see section below)  │
-                │   per researcher       │  │                      │
+                │ `*StatementOnly.lean`  │  │ `*StatementOnly.lean`│
+                │ single-theorem file →  │  │ single-theorem file  │
+                │ submit-batch.sh now    │  │ for the batch        │
+                │                        │  │ pipeline             │
+                │ - one theorem/file     │  │                      │
+                │ - informal /- sketch   │  │ (Harmonic format,    │
+                │ - async, poll via      │  │  see section below)  │
+                │   check-jobs.sh        │  │                      │
                 └────────────────────────┘  └──────────────────────┘
 ```
+
+> **Note (issue #38098):** the MCP `prove()` route (`septract/lean-aristotle-mcp`)
+> that earlier revisions listed as the "in-session, interactive" path has been
+> **removed** — the wrapper pinned `aristotlelib ~=0.6.0` and now gets HTTP 426
+> against Harmonic's v1+ API. Both in-session and end-of-session work now go
+> through the same CLI pipeline (`scripts/aristotle/*.sh`): package the sorry as
+> a `*StatementOnly.lean` file and run `submit-batch.sh` / `check-jobs.sh` /
+> `retrieve-integrate.sh`.
 
 **Quick rules of thumb:**
 
@@ -150,8 +158,7 @@ When you hit a `sorry`, walk this tree before deciding what to do with it:
 | `def f := by sorry` | You — Aristotle skips |
 | `axiom foo : ...` | You (or convert to `theorem ... := by sorry` first) |
 | TRIVIAL theorem sorry | You — faster than the round trip |
-| HARD theorem sorry, mid-session | MCP `prove()` (per-sorry, async) |
-| HARD theorem sorry, end-of-session batch | `*StatementOnly.lean` + batch pipeline |
+| HARD theorem sorry (mid- or end-of-session) | `*StatementOnly.lean` + `scripts/aristotle/submit-batch.sh` |
 | OPEN theorem sorry | You — that's the research |
 
 **Hand-curated multi-sorry `*Aristotle.lean` companion files are
@@ -660,23 +667,35 @@ Concurrency limits observed from Harmonic:
 - Our previous configuration targeting 10 concurrent projects exceeds the hard cap and
   produces queue timeouts; current pipelines should target ~3.
 
-Recommended workflow with `aristotlelib`:
+Recommended workflow — use the shell pipeline, which wraps the `aristotlelib`
+v2 CLI (`uvx --from aristotlelib aristotle ...`):
 
 ```bash
-# Submit one StatementOnly_*.lean file as a project (async)
-aristotle submit proofs/Proofs/StatementOnly_Erdos340_SidonLowerBound.lean
+# Confirm the CLI is reachable/authenticated (free, read-only)
+./scripts/aristotle/cli-smoke-test.sh
 
-# Poll later — does NOT block
-aristotle status <project-id>
+# Submit a batch (picks up StatementOnly_*.lean first); respects the ~3-5 cap
+./scripts/aristotle/submit-batch.sh --target 3
 
-# Retrieve the solved file when status is "complete"
-aristotle fetch <project-id> -o aristotle-results/new/
+# Poll and update local tracking — does NOT block
+./scripts/aristotle/check-jobs.sh --update
+
+# Download and integrate finished results into proofs/Proofs/
+./scripts/aristotle/retrieve-integrate.sh
 ```
 
-For an MCP-style integration (one sorry at a time, persistent connection), see
-[`septract/lean-aristotle-mcp`](https://github.com/septract/lean-aristotle-mcp), which
-exposes a `prove_sorry` tool over MCP. That wrapper assumes the same one-theorem-per-file
-discipline.
+If you drive the CLI directly, the v2 verbs are `aristotle submit --project-dir
+<dir> "<prompt>"` (submit), `aristotle show <project-id>` / `aristotle tasks
+<project-id>` (status), and `aristotle download <project-id> --destination
+<path>` (fetch). The v1 `aristotle status` / `aristotle fetch` / `aristotle
+result` verbs no longer exist.
+
+> **MCP note (issue #38098):** an earlier revision pointed here to
+> [`septract/lean-aristotle-mcp`](https://github.com/septract/lean-aristotle-mcp)
+> for a per-sorry MCP integration. That wrapper pins `aristotlelib ~=0.6.0` and
+> gets HTTP 426 against Harmonic's current v1+ API; there is no official MCP
+> server for `aristotlelib` 2.x, and the MCP entry has been removed from
+> `.mcp.json`. Use the CLI pipeline above.
 
 ### Migration from the deprecated companion-file pattern
 
@@ -884,6 +903,6 @@ Sources studied for the Harmonic Submission Format section (all consulted 2026-0
 - `aristotlelib` on PyPI — <https://pypi.org/project/aristotlelib/>
   — The official Aristotle CLI / client library we already use; documents async submission, polling, and the project-based submission model.
 - `septract/lean-aristotle-mcp` GitHub — <https://github.com/septract/lean-aristotle-mcp>
-  — MCP wrapper around Aristotle exposing a `prove_sorry` tool; reference implementation of the async per-sorry usage pattern.
+  — MCP wrapper around Aristotle exposing a `prove_sorry` tool. **Deprecated / removed (issue #38098):** pins `aristotlelib ~=0.6.0` and gets HTTP 426 against Harmonic's v1+ API; no longer registered in `.mcp.json`. Historical reference only; use the CLI pipeline (`scripts/aristotle/*.sh`).
 - Aristotle landing page — <https://aristotle.harmonic.fun/>
   — Harmonic's public-facing description of Aristotle; confirms provenance (Harmonic, not Morph Labs) and high-level positioning.

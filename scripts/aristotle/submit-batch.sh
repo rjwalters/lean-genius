@@ -181,12 +181,17 @@ count_active_jobs() {
 # Check server capacity using the Aristotle CLI.
 # Returns 0 if under limit, 1 if at/over limit.
 # Sets SERVER_ACTIVE to the count.
+#
+# v2 status model (aristotlelib >= 1.0): active projects are those with
+# project-level status RUNNING. The removed v1 enums QUEUED/IN_PROGRESS were
+# project-level and no longer valid for `aristotle list --status`
+# (IN_PROGRESS is now only a *task*-level status). See issue #38098.
 check_server_capacity() {
     local active=0
     local breakdown=""
 
-    # Query active statuses via CLI (exclude NOT_STARTED — these are old zombies that will never run)
-    for status in QUEUED IN_PROGRESS; do
+    # Query active projects via CLI (RUNNING = a solve task is in flight)
+    for status in RUNNING; do
         local output
         output=$(uvx --from aristotlelib aristotle list --status "$status" --limit 100 2>&1) || {
             echo -e "${RED}Server capacity check failed for status $status${NC}" >&2
@@ -225,23 +230,28 @@ check_server_capacity() {
     return 0
 }
 
-# Check whether the server has any NOT_STARTED projects with a creation
-# timestamp newer than 60 seconds. The Aristotle CLI's list output displays
-# the CREATED column as a human-readable relative time
-# ("2 days ago", "45 seconds ago", "1 minute ago", "just now", etc.).
-# We treat anything <= 60 seconds OR "just now" as fresh.
+# Check whether the server has any freshly-created RUNNING projects (created
+# within the last 60 seconds). The Aristotle CLI's list output displays the
+# CREATED column as a human-readable relative time ("2 days ago", "45 seconds
+# ago", "1 min ago", "just now", etc.). We treat anything <= 60 seconds OR
+# "just now" as fresh.
 #
-# This guards against the zombie-creation race: if the server has just
-# accepted a project but hasn't transitioned it to QUEUED yet, submitting
-# another project in the same window can push us over the server's hard
-# cap and produce zombies.
+# This guards against the zombie-creation race: if the server has just accepted
+# a project, submitting another in the same window can push us over the
+# server's hard cap and produce zombies.
 #
-# Returns 0 if no fresh NOT_STARTED entries are present (safe to submit).
+# v2 note (issue #38098): v1 exposed a NOT_STARTED project status for
+# just-accepted-but-not-running projects; v2 transitions accepted projects to
+# RUNNING immediately, so the freshness guard now inspects RUNNING projects.
+# v2 list columns are: ID  CREATED  NAME  STATUS — CREATED is the 2nd field
+# (v1 had STATUS in the 2nd field), so we strip only the leading UUID.
+#
+# Returns 0 if no fresh entries are present (safe to submit).
 # Returns 1 if at least one fresh entry exists (caller should defer).
 check_fresh_not_started() {
     local output
-    output=$(uvx --from aristotlelib aristotle list --status NOT_STARTED --limit 100 2>&1) || {
-        echo -e "${YELLOW}NOT_STARTED freshness check failed; proceeding cautiously${NC}" >&2
+    output=$(uvx --from aristotlelib aristotle list --status RUNNING --limit 100 2>&1) || {
+        echo -e "${YELLOW}RUNNING freshness check failed; proceeding cautiously${NC}" >&2
         return 0
     }
 
@@ -249,10 +259,10 @@ check_fresh_not_started() {
     while IFS= read -r line; do
         [[ "$line" =~ ^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12} ]] || continue
 
-        # Strip the leading UUID + status; the remainder begins with the
-        # human-readable created timestamp, followed by the progress column.
+        # Strip the leading UUID; in v2 the remainder begins with the
+        # human-readable CREATED relative time.
         local rest
-        rest=$(echo "$line" | awk '{ $1=""; $2=""; sub(/^  /, ""); print }')
+        rest=$(echo "$line" | awk '{ $1=""; sub(/^ /, ""); print }')
 
         # Pattern-match the created relative time.
         # Anything matching the patterns below is considered "fresh".
@@ -274,7 +284,7 @@ check_fresh_not_started() {
     done <<< "$output"
 
     if [[ "$fresh" -gt 0 ]]; then
-        echo -e "${YELLOW}Detected $fresh NOT_STARTED project(s) created in the last 60s${NC}"
+        echo -e "${YELLOW}Detected $fresh RUNNING project(s) created in the last 60s${NC}"
         echo -e "${YELLOW}Deferring submission to let server reconcile (avoids zombie race)${NC}"
         return 1
     fi
@@ -490,18 +500,21 @@ main() {
         fi
         echo ""
 
-        # Pre-flight: defer if there are fresh NOT_STARTED projects (<60s old).
-        # These haven't transitioned to QUEUED yet but still occupy server slots,
-        # and submitting on top of them was the root cause of zombie creation.
+        # Pre-flight: defer if there are freshly-created RUNNING projects (<60s
+        # old). Submitting on top of a just-accepted project was the root cause
+        # of zombie creation.
         if ! check_fresh_not_started; then
             return 0
         fi
 
-        # Safety check: if many COMPLETE projects on server are not tracked locally
-        # at all, the recovery pipeline may be broken. This prevents wasting server
-        # resources by resubmitting files whose results were never retrieved.
+        # Safety check: if many finished (IDLE) projects on the server are not
+        # tracked locally at all, the recovery pipeline may be broken. This
+        # prevents wasting server resources by resubmitting files whose results
+        # were never retrieved. v2 note (#38098): terminal projects report the
+        # project-level status IDLE (the v1 COMPLETE enum was removed); the
+        # per-task COMPLETE/FAILED distinction lives under `aristotle tasks`.
         local server_complete_ids
-        server_complete_ids=$(uvx --from aristotlelib aristotle list --status COMPLETE --limit 100 2>&1 | grep -oE '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}' 2>/dev/null || true)
+        server_complete_ids=$(uvx --from aristotlelib aristotle list --status IDLE --limit 100 2>&1 | grep -oE '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}' 2>/dev/null || true)
         if [[ -n "$server_complete_ids" ]]; then
             local tracked_ids
             tracked_ids=$(jq -r '.jobs[].project_id // empty' "$JOBS_FILE" 2>/dev/null | sort -u)
@@ -513,7 +526,7 @@ main() {
                 fi
             done <<< "$server_complete_ids"
             if [[ "$untracked" -gt 10 ]]; then
-                echo -e "${RED}WARNING: $untracked COMPLETE projects on server not tracked locally${NC}"
+                echo -e "${RED}WARNING: $untracked finished (IDLE) projects on server not tracked locally${NC}"
                 echo -e "${RED}Recovery pipeline may be broken — skipping submissions until resolved${NC}"
                 echo -e "${YELLOW}Run: ./scripts/aristotle/retrieve-integrate.sh to recover results${NC}"
                 return 0

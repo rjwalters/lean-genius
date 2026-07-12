@@ -53,30 +53,63 @@ fi
 # Create results directory if needed
 mkdir -p "$RESULTS_DIR"
 
+# --- Aristotle v2 status model (issue #38098) ----------------------------
+# The v2 CLI splits status into two levels:
+#   * PROJECT status (`aristotle list --status`) is only RUNNING | IDLE.
+#   * TASK status (`aristotle tasks <project-id>` STATUS column) carries the
+#     fine-grained terminal states: IN_PROGRESS | COMPLETE |
+#     COMPLETE_WITH_ERRORS | FAILED | CANCELED | ...
+# The removed v1 project-level enums (NOT_STARTED, QUEUED, COMPLETE, etc.) now
+# error with "invalid choice" if passed to `aristotle list --status`.
+
 # Parse project entries from 'aristotle list' table output.
+# v2 columns: ID CREATED NAME STATUS (STATUS is RUNNING | IDLE). NAME may
+# contain spaces, so read the first field (ID) and last field (STATUS).
+# v2 `aristotle list` has no numeric progress column.
 parse_list_entries() {
     local output="$1"
     echo "$output" | grep -E '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}' | while read -r line; do
-        local pid status progress
+        local pid proj_status
         pid=$(echo "$line" | awk '{print $1}')
-        status=$(echo "$line" | awk '{print $2}')
-        progress=$(echo "$line" | awk '{print $NF}' | sed 's/%//')
-        [[ "$progress" == "-" ]] && progress="0"
-        echo "$pid|$status|$progress"
+        proj_status=$(echo "$line" | awk '{print $NF}')
+        echo "$pid|$proj_status"
     done
 }
 
-# Build a server project map from all statuses via CLI
+# Resolve a project's terminal TASK status via `aristotle tasks <project-id>`.
+# Returns the STATUS of the newest task (last column of the first data row),
+# e.g. COMPLETE, COMPLETE_WITH_ERRORS, FAILED, IN_PROGRESS. Empty if none.
+task_status_for_project() {
+    local pid="$1"
+    local tasks_output
+    tasks_output=$(uvx --from aristotlelib aristotle tasks "$pid" --limit 1 2>/dev/null) || return 0
+    echo "$tasks_output" | awk '
+        /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/ { print $NF; exit }
+    '
+}
+
+# Build a server project map via CLI.
+# Enumerate the two valid project statuses (RUNNING | IDLE), then resolve each
+# project's fine-grained task status. Output lines: pid|task_status
 build_server_map() {
-    local all_statuses="NOT_STARTED QUEUED IN_PROGRESS COMPLETE COMPLETE_WITH_ERRORS OUT_OF_BUDGET FAILED CANCELED"
-    for status in $all_statuses; do
+    for proj_status in RUNNING IDLE; do
         local output
-        output=$(uvx --from aristotlelib aristotle list --status "$status" --limit 100 2>&1) || continue
-        parse_list_entries "$output"
+        output=$(uvx --from aristotlelib aristotle list --status "$proj_status" --limit 100 2>&1) || continue
+        while IFS='|' read -r pid plist_status; do
+            [[ -z "$pid" ]] && continue
+            local resolved
+            if [[ "$plist_status" == "RUNNING" ]]; then
+                resolved="IN_PROGRESS"
+            else
+                resolved=$(task_status_for_project "$pid")
+                [[ -z "$resolved" ]] && resolved="COMPLETE"
+            fi
+            echo "$pid|$resolved"
+        done < <(parse_list_entries "$output")
     done
 }
 
-# Look up a project ID in server data (pipe-delimited: pid|status|progress)
+# Look up a project ID in server data (pipe-delimited: pid|status)
 lookup_server_entry() {
     local target_pid="$1"
     local server_data="$2"
@@ -116,8 +149,9 @@ check_and_build_output() {
         local server_entry
         server_entry=$(lookup_server_entry "$pid" "$server_data")
         if [[ -n "$server_entry" ]]; then
+            # v2 server_data carries only the (resolved task) status, no
+            # numeric progress; keep server_progress at its default of 0.
             server_status=$(echo "$server_entry" | cut -d'|' -f1)
-            server_progress=$(echo "$server_entry" | cut -d'|' -f2)
         fi
 
         # Retrieve if complete and requested
@@ -152,8 +186,10 @@ retrieve_solution_cli() {
     tmp_dir=$(mktemp -d "${TMPDIR:-/tmp}/aristotle-retrieve-XXXXXX")
     local archive_path="$tmp_dir/result.tar.gz"
 
+    # v2 (issue #38098): `aristotle result` was removed; use `aristotle
+    # download <project_id> --destination <path>`.
     local cli_output
-    cli_output=$(uvx --from aristotlelib aristotle result "$project_id" --destination "$archive_path" 2>&1) || {
+    cli_output=$(uvx --from aristotlelib aristotle download "$project_id" --destination "$archive_path" 2>&1) || {
         rm -rf "$tmp_dir"
         echo "ERROR: Failed to retrieve $project_id"
         return 1
@@ -233,10 +269,10 @@ echo "$OUTPUT" | jq -r '.results[] | "\(.problem_id)|\(.project_id)|\(.status)|\
             fi
             ;;
         IN_PROGRESS)
-            echo -e "  Status: ${YELLOW}IN_PROGRESS${NC} ($percent%)"
+            echo -e "  Status: ${YELLOW}IN_PROGRESS${NC}"
             ;;
-        QUEUED|NOT_STARTED)
-            echo -e "  Status: ${CYAN}QUEUED${NC}"
+        COMPLETE_WITH_ERRORS)
+            echo -e "  Status: ${YELLOW}COMPLETE_WITH_ERRORS${NC} (results may be partial)"
             ;;
         FAILED)
             echo -e "  Status: ${RED}FAILED${NC}"
