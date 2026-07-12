@@ -34,12 +34,28 @@
   },
   "sections": [
     {
-      "id": "overview",
-      "title": "Overview: the Gaussian integral and the circle-area link",
+      "id": "question",
+      "title": "The Open Question: ∫ e^{-x²} = √π",
       "startLine": 1,
+      "endLine": 11,
+      "summary": "Header docstring stating the open question (area-of-circle-oq-07): the total integral of the Gaussian bell curve e^{-x²} over the whole real line equals √π — the normalization constant behind the standard normal distribution.",
+      "mathContext": "$\\int_{-\\infty}^{\\infty} e^{-x^2}\\,dx = \\sqrt{\\pi}$."
+    },
+    {
+      "id": "answer",
+      "title": "Answer: the b = 1 specialization of integral_gaussian",
+      "startLine": 13,
+      "endLine": 19,
+      "summary": "The answer is YES: it is the b = 1 case of Mathlib's parametrized integral_gaussian b = √(π/b). Setting b = 1 turns exp(-1·x²) into exp(-x²) via neg_one_mul and √(π/1) into √π via div_one.",
+      "mathContext": "$\\int e^{-b x^2} = \\sqrt{\\pi/b}$; at $b=1$, $\\sqrt{\\pi/1}=\\sqrt{\\pi}$."
+    },
+    {
+      "id": "polar-link",
+      "title": "The circle-area link and the squared identity",
+      "startLine": 21,
       "endLine": 29,
-      "summary": "Header docstring stating the open question ∫_{-∞}^{∞} e^{-x²} dx = √π and its answer: the b = 1 specialization of Mathlib's integral_gaussian b = √(π/b). It also recalls the classical evaluation — square the integral and pass to polar coordinates, where the circle-area Jacobian of the parent entry area-of-circle appears — which the squared corollary records algebraically.",
-      "mathContext": "$\\int_{-\\infty}^{\\infty} e^{-x^2}\\,dx = \\sqrt{\\pi}$, the $b=1$ case of $\\int e^{-bx^2} = \\sqrt{\\pi/b}$."
+      "summary": "Recalls the classical evaluation — square the integral and pass to polar coordinates, where the circle-area Jacobian of the parent entry area-of-circle appears. The corollary gaussian_integral_sq records that squared identity (∫ e^{-x²})² = π algebraically. Closes noting no new axioms: a routine specialization of an existing Mathlib result.",
+      "mathContext": "$\\left(\\int e^{-x^2}\\right)^2 = \\iint e^{-(x^2+y^2)}\\,dx\\,dy = \\pi$ via polar coordinates."
     },
     {
       "id": "main",
