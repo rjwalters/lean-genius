@@ -615,6 +615,44 @@ theorem subsetSums_card_powersOfTwo (k : ℕ) :
   have h := subsetSums_card_superincreasing (superincreasing_powersOfTwo k)
   rwa [powersOfTwo_card] at h
 
+/-- The total of the powers-of-two family is the geometric sum
+    `∑_{i<k} 2^i = 2^k − 1`. -/
+theorem sum_powersOfTwo (k : ℕ) : (powersOfTwo k).sum id = 2 ^ k - 1 := by
+  rw [powersOfTwo,
+      Finset.sum_image (fun x _ y _ h => Nat.pow_right_injective (le_refl 2) h)]
+  simp only [id_eq]
+  rw [Nat.geomSum_eq (le_refl 2) k]
+  norm_num
+
+/-- **Binary representation: the powers-of-two family realises the full interval.**
+    `subsetSums {2^0,…,2^{k-1}} = {1,…,2^k − 1}`.  The counting theorem
+    `subsetSums_card_powersOfTwo` gives only the *number* `2^k − 1` of distinct
+    subset sums; here we identify them *exactly* as the initial interval, delivering
+    on the docstring promise that "every value in `[1, 2^k − 1]` is uniquely a subset
+    sum (binary representation)".  Proof: the subset sums are trapped in
+    `[1, ∑ = 2^k − 1]` (`subsetSums_pos`, `subsetSums_le_sum`, `sum_powersOfTwo`) and
+    number exactly `2^k − 1 = |Icc 1 (2^k − 1)|`, so the containment is an equality by
+    cardinality. -/
+theorem subsetSums_powersOfTwo (k : ℕ) :
+    subsetSums (powersOfTwo k) = Finset.Icc 1 (2 ^ k - 1) := by
+  apply Finset.eq_of_subset_of_card_le
+  · intro s hs
+    rw [Finset.mem_Icc]
+    refine ⟨subsetSums_pos (superincreasing_powersOfTwo k).pos s hs, ?_⟩
+    have hle := subsetSums_le_sum s hs
+    rwa [sum_powersOfTwo] at hle
+  · rw [Nat.card_Icc, subsetSums_card_powersOfTwo]
+    omega
+
+/-- **Existence half of the binary-representation identity.**  Every value
+    `m ∈ [1, 2^k − 1]` occurs as a subset sum of `{2^0,…,2^{k-1}}` — its binary
+    expansion selects the subset.  Immediate from the set equality
+    `subsetSums_powersOfTwo`. -/
+theorem mem_subsetSums_powersOfTwo {k m : ℕ} (h1 : 1 ≤ m) (h2 : m ≤ 2 ^ k - 1) :
+    m ∈ subsetSums (powersOfTwo k) := by
+  rw [subsetSums_powersOfTwo, Finset.mem_Icc]
+  exact ⟨h1, h2⟩
+
 /-!
 ### The counting-extremal regime is NOT the Erdős #882 validity regime
 
