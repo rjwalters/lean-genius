@@ -581,4 +581,66 @@ theorem isPrimitive_iff_exists_sl_column (hn : 1 < n) (v : Fin n → ℤ) :
   · rintro ⟨A, k, rfl⟩
     exact orbit_e_isPrimitive A k
 
+/-! ### Sharpness of the dimension hypothesis: the `n = 1` obstruction
+
+Every transitivity statement above (`exists_sl_mulVec_eq_of_isPrimitive`,
+`exists_sl_mulVec_basis_of_isPrimitive`, `isPrimitive_iff_exists_sl_column`) carries the
+hypothesis `1 < n`, and their docstrings assert that this is *genuinely necessary* rather
+than a proof artefact: in dimension `1` the group `SL₁(ℤ)` is trivial, so it acts trivially
+on vectors and cannot connect the two primitive vectors `(1)` and `(-1)`.  The lemmas below
+turn that repeated prose remark into machine-checked statements, pinning down the orbit
+structure at the base dimension: `SL₁(ℤ)` has **two** orbits of primitive vectors
+(`{(1)}` and `{(-1)}`), in contrast with the single orbit for `n ≥ 2`. -/
+
+/-- **`SL₁(ℤ)` is the trivial group at the matrix level.**  The only `1 × 1` integer matrix
+of determinant `1` is the identity `(1)`: the determinant of a `1 × 1` matrix is its sole
+entry (`Matrix.det_fin_one`), so `det = 1` forces that entry to be `1`, and a
+`Fin 1`-indexed matrix is determined by its single entry. -/
+theorem coe_sl_fin_one_eq_one (A : Matrix.SpecialLinearGroup (Fin 1) ℤ) :
+    (A : Matrix (Fin 1) (Fin 1) ℤ) = 1 := by
+  have hdet : (A : Matrix (Fin 1) (Fin 1) ℤ) 0 0 = 1 := by
+    have h : (A : Matrix (Fin 1) (Fin 1) ℤ).det = 1 := A.2
+    rwa [Matrix.det_fin_one] at h
+  ext i j
+  rw [Subsingleton.elim i 0, Subsingleton.elim j 0, Matrix.one_apply_eq]
+  exact hdet
+
+/-- **`SL₁(ℤ)` acts trivially on every vector.**  Immediate from `coe_sl_fin_one_eq_one`:
+multiplying by the identity matrix fixes `v`.  So no `SL₁(ℤ)` move changes a vector at all —
+the one-dimensional orbits are singletons. -/
+theorem sl_fin_one_mulVec (A : Matrix.SpecialLinearGroup (Fin 1) ℤ) (v : Fin 1 → ℤ) :
+    (A : Matrix (Fin 1) (Fin 1) ℤ) *ᵥ v = v := by
+  rw [coe_sl_fin_one_eq_one, Matrix.one_mulVec]
+
+/-- **No `SL₁(ℤ)` move connects `(1)` and `(-1)`.**  Both are primitive
+(`isPrimitive_fin_one_iff`), yet since `SL₁(ℤ)` acts trivially (`sl_fin_one_mulVec`) any
+image of `e₀ = (1)` is `(1)`, never `(-1)`.  This is the sign obstruction that forces the
+`1 < n` hypothesis in the transitivity theorems: the uniform normal form
+`isPrimitive_iff_exists_sl_single` reaches only a *unit multiple* `c · eₖ` precisely because
+the sign `c` cannot be normalized away at `n = 1`. -/
+theorem not_exists_sl_fin_one_single_neg :
+    ¬ ∃ A : Matrix.SpecialLinearGroup (Fin 1) ℤ,
+      (A : Matrix (Fin 1) (Fin 1) ℤ) *ᵥ Pi.single 0 (1 : ℤ) = Pi.single 0 (-1 : ℤ) := by
+  rintro ⟨A, hA⟩
+  rw [sl_fin_one_mulVec] at hA
+  have h0 := congrFun hA 0
+  rw [Pi.single_eq_same, Pi.single_eq_same] at h0
+  norm_num at h0
+
+/-- **Transitivity fails outright at `n = 1`.**  The single-orbit conclusion of
+`exists_sl_mulVec_eq_of_isPrimitive` is false without `1 < n`: the primitive vectors `(1)`
+and `(-1)` are not `SL₁(ℤ)`-equivalent.  Hence the dimension hypothesis in that theorem (and
+all its corollaries) cannot be dropped — the sharpness statement the docstrings claimed. -/
+theorem not_forall_sl_fin_one_orbit :
+    ¬ ∀ (v w : Fin 1 → ℤ), IsPrimitive v → IsPrimitive w →
+      ∃ A : Matrix.SpecialLinearGroup (Fin 1) ℤ,
+        (A : Matrix (Fin 1) (Fin 1) ℤ) *ᵥ v = w := by
+  intro H
+  have hp1 : IsPrimitive (Pi.single (0 : Fin 1) (1 : ℤ)) := isPrimitive_single 0
+  have hp2 : IsPrimitive (Pi.single (0 : Fin 1) (-1 : ℤ)) := by
+    rw [isPrimitive_fin_one_iff]
+    right
+    rw [Pi.single_eq_same]
+  exact not_exists_sl_fin_one_single_neg (H _ _ hp1 hp2)
+
 end BezoutPrimitive
