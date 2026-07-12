@@ -22,9 +22,9 @@ A key discovery: **not every "Unknown constant" in the logs is a migration regre
 | Old name | New name | Evidence | Affected files |
 |---|---|---|---|
 | `IsSolvableByRad` | `solvableByRad` | deprecation msg in logs; **type changed**: `F → E → Prop` is now `IntermediateField F E` (membership `x ∈ solvableByRad F E`) — see §5 | 22 (AbelRuffini, AbelRuffiniGaloisExtensionsOQ02OQ01, …) |
-| `solvableByRad.isSolvable'` | `isSolvable_gal_of_irreducible` | deprecation msg; namespace + argument order changed (dot notation must go) — see §5 | 22 (same cluster) |
-| `alternatingGroup.isSimpleGroup_five` | `alternatingGroup.isSimpleGroup` | deprecation note in v4.31 `GroupTheory/SpecificGroups/Alternating.lean` (since 2026-04-28); A5-specific instance superseded by the general `Fin (n+5)` instance | 15–16 (AbelRuffini family) |
-| `IsCyclic.commutative` | `IsCyclic.isMulCommutative` | deprecation msg; **`.comm` field projection breaks** (`IsMulCommutative` has no `comm` field) — see §5 | 4–5 |
+| `solvableByRad.isSolvable'` | `isSolvable_gal_of_irreducible` | **Batch-1 correction:** the deprecated alias still exists in v4.31 (since 2026-02-28); the real breakage is the *hypothesis type* (`IsSolvableByRad F α` → `α ∈ solvableByRad F E`) and argument order (root-membership hypothesis first) — see §5 | 22 (same cluster) |
+| `alternatingGroup.isSimpleGroup_five` | **NOT removed — import moved** to `Mathlib.GroupTheory.SpecificGroups.Alternating.Simple` | **Batch-1 correction:** the constant still exists in v4.31; the fix is adding the explicit import, not rewriting to the general `isSimpleGroup` | 15–16 (AbelRuffini family) |
+| `IsCyclic.commutative` | `IsCyclic.isMulCommutative` | deprecation msg; **`.comm` field projection breaks** — **Batch-1 confirmed:** the projection is `.is_comm.comm` (`is_comm : Std.Commutative`) — see §5 | 4–5 |
 | `commutative_of_cyclic_center_quotient` | `MonoidHom.isMulCommutative_of_isCyclic_of_ker_le_center` | deprecation msg | 2 |
 | `nilpotent_of_mulEquiv` | `Group.nilpotent_of_mulEquiv` | deprecation msg | 2–4 |
 | `nilpotent_of_surjective` | `Group.nilpotent_of_surjective` | deprecation msg | 2 |
@@ -47,6 +47,11 @@ A key discovery: **not every "Unknown constant" in the logs is a migration regre
 | `pow_eq_zero` | `eq_zero_of_pow_eq_zero` | old-pin alias (2025-10-14); v4.31 `Algebra/GroupWithZero/Basic.lean:195` (note: `[IsReduced R]` hypothesis) | 2 |
 | `isUnit_of_mul_eq_one` | `IsUnit.of_mul_eq_one` | old-pin alias; v4.31 `Algebra/Group/Units/Defs.lean:392` (now needs `[IsDedekindFiniteMonoid M]`, satisfied by comm monoids) | 1 |
 | `mul_le_mul_right'` | `_root_.mul_le_mul_left` | deprecation msg (left/right convention swap — check each use site!) | 1 |
+| `div_le_div_right` | `div_le_div_iff_of_pos_right` | **Batch-1 correction:** NOT the ₀ form | ~5 |
+| `div_lt_div_right` | `div_lt_div_iff_of_pos_right` | **Batch-1 correction:** NOT the ₀ form | ~5 |
+| `abs_add` | `abs_add_le` | Batch-1 verified (v4.31 renamed the triangle inequality) | ~6 |
+| `pi_lt_four` (unqualified) | `Real.pi_lt_four` | Batch-1 verified — needs `Real.` qualification | 1–2 |
+| `tendsto_const_div_atTop_nhds_0_nat` | `tendsto_const_div_atTop_nhds_zero_nat` | Batch-1 verified | 1–2 |
 
 ### 1c. `not_mem` → `notMem` wave
 
@@ -202,6 +207,14 @@ These names do not exist in Mathlib `2df2f0150c27` either; the files referencing
 8. **`push_neg` → `push Not`**: warning-only in v4.31, but slated for removal; 93 files emit it.
 
 ---
+
+## 6. New mechanical classes (discovered in Mechanic batch 1 — not renames, but scriptable)
+
+1. **Orphaned consecutive doc-comments**: `/-- a -/ /-- b -/ decl` now hard-errors (`unexpected token '/--'; expected 'lemma'|'theorem'|…`). Fix: demote all but the last doc-comment before a declaration to regular `/- … -/` comments. Dozens of files (Erdos161/554/716/968, Erdos476OQ05, …). Python demotion script pattern proven in batch 1 (7 files, 5 green).
+2. **Big-operator `in` syntax**: `∑ k in s, …` / `∏ k in s, …` now hard-errors (`unexpected token 'in'; expected '∈'`). Fix: `in` → `∈` **only inside big-operator binders** (never touch `Finset.sum`-applied terms or other ` in ` uses). Widespread (e.g. Erdos524Problem).
+3. **`∃ (L : Type*) [Field L], …` instance binders inside `∃`** now parse errors. v4.31-accepted form: `∃ (L : Type*) (_ : Field L), …` with downstream `letI`/`haveI` to activate the instance (or restructure via a Σ-type). Blocks AbelRuffiniGaloisExtensionsOQ05 → AbelRuffiniOQ10.
+4. **`decide`/`native_decide` maxRecDepth regressions** (TestApi203) — Doctor-class, needs `set_option maxRecDepth` or proof restructure.
+5. **`native_decide` × `noncomputable` catch-22**: def needs `noncomputable` under v4.31 but is evaluated by `native_decide` (PicksTheoremOQ01OQ01OQ01, LagrangeFourSquaresOQ01OQ03, Erdos662Problem) — Doctor-class, needs computable reformulation.
 
 ## Summary counts
 
