@@ -580,6 +580,65 @@ theorem not_robust_of_subgraph {G H : SimpleGraph V} (hHG : H ≤ G)
     ¬ admitsRobustAcyclicOrientation G :=
   fun hG => hH (admitsRobust_mono hHG hG)
 
+/-- A directed `TransGen` path whose relation is the pullback `fun a b => S (g a) (g b)`
+    of a relation `S` along a map `g` pushes forward to a `TransGen` path for `S` between
+    the images. (Used to transport dependent-arc paths across a graph isomorphism.) -/
+private theorem transGen_pushforward {V W : Type*} (g : W → V) (S : V → V → Prop)
+    {x y : W} (h : Relation.TransGen (fun a b => S (g a) (g b)) x y) :
+    Relation.TransGen S (g x) (g y) := by
+  induction h with
+  | single hr => exact Relation.TransGen.single hr
+  | tail _ hr ih => exact Relation.TransGen.tail ih hr
+
+/-- **Robust orientability transports along a graph isomorphism.** If `f : G ≃g H`
+    and `G` admits a robustly acyclic orientation, so does `H`: transport the
+    orientation across `f`, orienting the `H`-edge `a → b` as the `G`-arc
+    `f⁻¹a → f⁻¹b`. Acyclicity is witnessed by `rank ∘ f⁻¹`, and a dependent arc of
+    the transported orientation pulls back — since `f⁻¹` is injective — to a
+    dependent arc of the original, contradicting robustness. This is the
+    well-definedness fact that makes `admitsRobustAcyclicOrientation` (equivalently,
+    by `cover_graph_characterization`, "being a cover graph") a genuine isomorphism
+    invariant of the abstract graph, not an artefact of the vertex labelling. -/
+theorem admitsRobust_of_iso {W : Type*} {H : SimpleGraph W} (f : G ≃g H)
+    (hG : admitsRobustAcyclicOrientation G) :
+    admitsRobustAcyclicOrientation H := by
+  obtain ⟨O, ⟨rank, hrank⟩, hNoDep⟩ := hG
+  have hinj : Function.Injective (f.symm : W → V) := f.symm.injective
+  refine ⟨⟨fun a b => O.arc (f.symm a) (f.symm b), ?_, ?_, ?_⟩,
+    ⟨fun a => rank (f.symm a), ?_⟩, ?_⟩
+  · -- covers: an `H`-edge `a ~ b` is the `G`-edge `f⁻¹a ~ f⁻¹b`, oriented by `O`.
+    intro a b hadj
+    exact O.covers _ _ ((f.symm.map_adj_iff).mpr hadj)
+  · -- exclusive: inherited from `O` at the pulled-back vertices.
+    intro a b; exact O.exclusive (f.symm a) (f.symm b)
+  · -- respects: a transported arc is a `G`-arc at `f⁻¹`, hence an `H`-edge.
+    intro a b harc; exact (f.symm.map_adj_iff).mp (O.respects _ _ harc)
+  · -- acyclic: `rank ∘ f⁻¹` witnesses it, since each transported arc is an `O`-arc.
+    intro a b harc; exact hrank _ _ harc
+  · -- no dependent arc: pull a dependent transported arc back through `f⁻¹`.
+    rintro ⟨u, v, huv, hpath⟩
+    refine hNoDep ⟨f.symm u, f.symm v, huv, ?_⟩
+    -- injectivity lifts a `W`-side disequality `(a,b) ≠ (u,v)` to `V`.
+    have lift : ∀ {a b : W}, (a, b) ≠ (u, v) →
+        (f.symm a, f.symm b) ≠ (f.symm u, f.symm v) := by
+      intro a b hne hc
+      rw [Prod.mk.injEq] at hc
+      exact hne (Prod.ext (hinj hc.1) (hinj hc.2))
+    -- weaken the transported path to the pullback of the `V`-side excluded-arc relation,
+    -- then push it forward along `f⁻¹`.
+    exact transGen_pushforward (f.symm : W → V)
+      (fun c d => O.arc c d ∧ (c, d) ≠ (f.symm u, f.symm v))
+      (hpath.mono (fun a b hr => ⟨hr.1, lift hr.2⟩))
+
+/-- **Robust orientability is a graph-isomorphism invariant.** The two-sided form of
+    `admitsRobust_of_iso`: isomorphic graphs are simultaneously robustly orientable or
+    not (`admitsRobust G ↔ admitsRobust H` for `f : G ≃g H`), by transporting along `f`
+    and its inverse. Equivalently, the class of cover graphs is closed under
+    isomorphism. -/
+theorem admitsRobust_iso_iff {W : Type*} {H : SimpleGraph W} (f : G ≃g H) :
+    admitsRobustAcyclicOrientation G ↔ admitsRobustAcyclicOrientation H :=
+  ⟨admitsRobust_of_iso f, admitsRobust_of_iso f.symm⟩
+
 /-- **Edgeless graphs admit a robustly acyclic orientation.** With no arcs to
     place, the empty orientation (`arc := fun _ _ => False`) is vacuously acyclic
     and has no dependent arc. This generalises `empty_graph_robust` from `⊥` to
