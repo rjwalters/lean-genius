@@ -763,6 +763,35 @@ theorem ramseyNumberColored_subsingleton_le {C : Type*} [Subsingleton C] {k : �
     _ = ramseyNumber k := ramseyNumberColored_bool k
 
 /--
+**The single-colour Ramsey number is exactly `k`.**  Sharpening
+`ramseyNumberColored_subsingleton_le` (`R_C(k) ≤ ramseyNumber k`) to an *equality* at the very
+bottom of the palette hierarchy: for a `Subsingleton` *nonempty* palette `C` and `k ≥ 3`,
+`ramseyNumberColored C k = k`.  With a single colour the monochromaticity constraint is vacuous
+(`hasRamseyPropertyColored_subsingleton_iff`), so the property reduces to "`A` contains `k`
+collinear points"; shrinking the collinear subset supplied by the construction down to exactly
+`k` points gives a witnessing set of size `k`, hence `R_C(k) ≤ k`, while
+`ramseyNumberColored_lower_bound` gives `k ≤ R_C(k)`.  Unlike the genuinely open uncolored
+`ramseyNumber k` (only known to satisfy `≥ k`), the one-colour number is pinned down *exactly* —
+there is no colouring left to defeat, so the Ramsey threshold is simply the collinearity
+threshold `k`. -/
+theorem ramseyNumberColored_subsingleton_eq {C : Type*} [Subsingleton C] [Nonempty C]
+    {k : ℕ} (hk : k ≥ 3) :
+    ramseyNumberColored C k = k := by
+  haveI : Finite C := Finite.of_subsingleton
+  refine le_antisymm ?_ (ramseyNumberColored_lower_bound C k hk)
+  -- Upper bound: exhibit a witnessing set of size exactly `k`.
+  obtain ⟨A, hA⟩ := hasRamseyPropertyColored_construction C k hk
+  obtain ⟨S, hSA, hcard, l, hline⟩ :=
+    (hasRamseyPropertyColored_subsingleton_iff (C := C)).1 hA
+  obtain ⟨S', hS'S, hS'card⟩ := Finset.exists_subset_card_eq hcard
+  have hprop : HasRamseyPropertyColored C S' k :=
+    (hasRamseyPropertyColored_subsingleton_iff (C := C)).2
+      ⟨S', subset_rfl, hS'card.ge, l, fun p hp => hline p (hS'S hp)⟩
+  calc ramseyNumberColored C k
+      ≤ S'.card := Nat.sInf_le ⟨S', rfl, hprop⟩
+    _ = k := hS'card
+
+/--
 **A monotone chain in the number of colors.**  For `r ≤ r'`, `R_{Fin r}(k) ≤ R_{Fin r'}(k)`,
 via the canonical embedding `Fin r ↪ Fin r'`.  Combined with `ramseyNumberColored_bool` and
 `finTwoEquiv`, this gives `R(k) = R_{Fin 2}(k) ≤ R_{Fin r}(k)` for every `r ≥ 2`: passing from

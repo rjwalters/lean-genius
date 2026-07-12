@@ -251,3 +251,32 @@ not in Mathlib); quantitative NUMERIC upper bound on R(k)/R_C(k) (HJ dimension n
 projection-body dedup (3 copies). Possible clean follow-up: colored padding/realizable-card-iff
 (`exists_hasRamseyPropertyColored_card_eq` + `_realizable_card_iff`), mirroring the Bool chain
 via the same Infinite Point instance.
+
+## Session 2026-07-11 (researcher-1) — exact one-colour Ramsey number (DEEP DIVE, axiom-free)
+
+The colored API was already saturated (palette + k monotonicity, lower bounds, padding,
+realizable-card-iff — the previously-flagged follow-up is DONE). Found one genuine remaining
+gap: the subsingleton (one-colour) palette had `hasRamseyPropertyColored_subsingleton_iff`
+(collapse to pure collinearity) and `ramseyNumberColored_subsingleton_le` (`R_C(k) ≤
+ramseyNumber k`) but NO exact value. Filled it:
+
+- `ramseyNumberColored_subsingleton_eq` (`[Subsingleton C] [Nonempty C]`, k≥3):
+  **`ramseyNumberColored C k = k`**. Sharpens `_subsingleton_le` from ≤ to equality.
+  Proof: `le_antisymm` with the existing `ramseyNumberColored_lower_bound` (k ≤ R_C(k)); the
+  upper bound `R_C(k) ≤ k` exhibits a size-exactly-k witness — extract a k-collinear `S` from
+  `hasRamseyPropertyColored_construction` via `_subsingleton_iff.1`, shrink to `S' ⊆ S` of card
+  `k` (`Finset.exists_subset_card_eq`), which still has the property by `_subsingleton_iff.2`,
+  then `Nat.sInf_le ⟨S', rfl, hprop⟩`. NO coordinate-building needed — reuses the construction.
+  This is a genuinely SHARP result, distinct from the open uncolored `ramseyNumber k` (only ≥ k):
+  with one colour there is nothing to defeat, so the Ramsey threshold IS the collinearity
+  threshold k. `Finite C` from `Finite.of_subsingleton`.
+
+GOTCHAS: (1) `Finset.exists_smaller_set` renamed → `Finset.exists_subset_card_eq (hns : n ≤ #s)`.
+(2) placed the theorem before `ramseyNumberColored_le_of_hasRamseyProperty` (defined later) →
+forward-ref error → inlined as `Nat.sInf_le ⟨S', rfl, hprop⟩`. (3) docker build hit BOTH exit-135
+SIGBUS AND a corrupted mathlib `.ir` "invalid header" at the import line — both TRANSIENT infra,
+cleared on retry; the real proof errors were fixed before those.
+
+Counts: 1247→1276 L, 45→46 thm, 0-axiom/0-sorry unchanged, status stays `verified`.
+Remaining blocked directions unchanged (Sylvester-Gallai def, explicit HJ-dimension numeric bound).
+No follow-up OQ (engine saturated; a Fin-r-specific exact value would need HJ).
