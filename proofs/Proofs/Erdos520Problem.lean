@@ -131,7 +131,7 @@ Rademacher multiplicative functions.
 /-- The indicator of square-free integers. -/
 def squarefreeIndicator (n : ℕ) : ℕ := if Squarefree n then 1 else 0
 
-/-- For square-free n with prime factorization n = p₁...pᵣ,
+/- For square-free n with prime factorization n = p₁...pᵣ,
 f(n) = f(p₁)...f(pᵣ) which is uniformly distributed on {-1, 1}. -/
 
 end Erdos520

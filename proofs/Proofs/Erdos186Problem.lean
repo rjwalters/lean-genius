@@ -228,7 +228,7 @@ The o(1) term in the exponent is necessary (upper bound not exactly N^(1/4)).
 ## Part IX: Open Questions
 -/
 
-/--
+/-
 **Open Question 1:** What is the exact asymptotic of F(N)?
 Is F(N) ~ N^(1/4) · (log N)^c for some specific constant c?
 The precise logarithmic factor remains unknown.

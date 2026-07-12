@@ -159,7 +159,7 @@ theorem prime_gaps_oscillate :
   · exact banks_freiberg_turnage_butterbaugh 1 (by norm_num)
   · exact banks_freiberg_turnage_butterbaugh_decreasing 1 (by norm_num)
 
-/-- Average prime gap near n ≈ ln(n) by the Prime Number Theorem. -/
+/- Average prime gap near n ≈ ln(n) by the Prime Number Theorem. -/
 
 /- ## Summary
 

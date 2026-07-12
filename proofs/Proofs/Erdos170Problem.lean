@@ -123,7 +123,7 @@ noncomputable def F' (N : ℕ) : ℕ :=
 
 /-  Example: {0, 1, 3} is a 3-perfect ruler.
     Differences: 1-0=1, 3-0=3, 3-1=2. -/
-/-- Example: {0, 1, 2, 6, 10, 14, 17, 21, 25, 27, 28, 29, 30} is a 30-perfect ruler
+/- Example: {0, 1, 2, 6, 10, 14, 17, 21, 25, 27, 28, 29, 30} is a 30-perfect ruler
     with only 13 marks (instead of 31). This is an optimal ruler for N=30. -/
 /- ## Summary
 

@@ -128,6 +128,6 @@ theorem squarefreeGap_pos (n : ℕ) : 0 < squarefreeGap n := by
 
 /- ## Connection to Gap Distribution -/
 
-/-- The average gap between squarefree numbers up to x is approximately
+/- The average gap between squarefree numbers up to x is approximately
     π²/6, since the density of squarefrees is 6/π². -/
 end Erdos145

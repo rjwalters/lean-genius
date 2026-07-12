@@ -223,7 +223,7 @@ doesn't guarantee any structure on the denominators.
 For the constrained problem, we need more sophisticated methods.
 -/
 
-/-- The greedy algorithm gives an Egyptian fraction, but without
+/- The greedy algorithm gives an Egyptian fraction, but without
 guarantees on the prime structure of denominators. -/
 /-
 ## Summary

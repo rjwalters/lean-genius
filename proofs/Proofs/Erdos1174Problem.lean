@@ -215,7 +215,7 @@ the Ramsey-theoretic forcing power of K_{ℵ₁}-free graphs. -/
 ## Part VIII: Open Status and Summary
 -/
 
-/--
+/-
 **Erdős Problem #1174: OPEN**
 Both parts remain open in ZFC.
 

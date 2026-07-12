@@ -214,5 +214,5 @@ strongly suggests it should be true for all n, but no proof exists.
 -/
 
 /-  **Computational Verification**: The conjecture has been verified for n ≤ 1000. -/
-/-- The heuristic probability that no valid prime exists is extremely small. -/
+/- The heuristic probability that no valid prime exists is extremely small. -/
 end Erdos779

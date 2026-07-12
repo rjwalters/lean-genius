@@ -173,7 +173,7 @@ This limits how large gaps can be - you can't have arbitrarily many consecutive
 non-squarefree numbers.
 -/
 
-/--
+/-
 The maximum gap up to N is O(√N) since there are O(√N) numbers in [1, N]
 divisible by some fixed square. Improving this to subpolynomial bounds
 is the content of the problem.

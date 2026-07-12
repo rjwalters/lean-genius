@@ -263,7 +263,7 @@ theorem smallest_nontrivial_in_setA :
 ## Main Open Problem Statement
 -/
 
-/--
+/-
 Erdős Problem #768 (Open):
 
 Let A be the set of n ∈ ℕ such that for every prime p | n, there exists

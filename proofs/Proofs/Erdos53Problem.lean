@@ -112,5 +112,5 @@ def subsetSumCount (A : Finset ℤ) : ℕ := (subsetSums A).card
 def subsetProductCount (A : Finset ℤ) : ℕ := (subsetProducts A).card
 
 /-  The union count is at least the subset sum count. -/
-/-- The union count is at least the subset product count. -/
+/- The union count is at least the subset product count. -/
 end Erdos53

@@ -168,7 +168,7 @@ theorem multiplesOf_eq_univ {ι : Type*} (A : ι → ℕ) (h : 1 ∈ range A) :
     Proof: MultiplesOf A = ℕ when 1 ∈ A, so density is 1. -/
 /-  A sequence is weakly Behrend with ε ≥ 1 trivially.
     Proof: 1 - ε ≤ 0 ≤ lowerDensity(S) for any S. -/
-/-- A sequence is not weakly Behrend with ε < 0.
+/- A sequence is not weakly Behrend with ε < 0.
     Proof: 1 - ε > 1 ≥ lowerDensity(S) for any S. -/
 /- ## Summary
 

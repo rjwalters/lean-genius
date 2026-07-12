@@ -181,7 +181,7 @@ theorem erdos_conjecture_consistent :
 The probabilistic method gives the best known lower bounds.
 -/
 
-/-- **Refined Probabilistic Lower Bound**:
+/- **Refined Probabilistic Lower Bound**:
     R(k) ≥ (1 + o(1)) · k · 2^{k/2} / (e√2). -/
 
 /-

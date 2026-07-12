@@ -163,5 +163,5 @@ captures an extremal phenomenon: such strong constraints force the sequence
 to be nearly constant.
 -/
 
-/-- The Erdős-Ginzburg-Ziv theorem: 2n-1 integers contain n summing to 0 mod n -/
+/- The Erdős-Ginzburg-Ziv theorem: 2n-1 integers contain n summing to 0 mod n -/
 end Erdos541

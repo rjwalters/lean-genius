@@ -118,7 +118,7 @@ theorem sidon_case_true {A : Set ℕ} (hA : A.Infinite) (hSidon : IsSidonSet A) 
     achieving |A| ≥ √N - o(√N). -/
 /- ## Examples -/
 
-/-- The set of perfect squares {1, 4, 9, 16, 25, ...} is a Sidon set.
+/- The set of perfect squares {1, 4, 9, 16, 25, ...} is a Sidon set.
 
     Proof: If a² + b² = c² + d² with a ≤ b and c ≤ d, then by unique
     factorization in ℤ[i], we get (a², b²) = (c², d²). -/

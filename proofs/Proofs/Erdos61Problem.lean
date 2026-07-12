@@ -130,7 +130,7 @@ def threePathGraph : SimpleGraph (Fin 3) where
   symm := by intro i j h; rcases h with ⟨_, _⟩ | ⟨_, _⟩ | ⟨_, _⟩ | ⟨_, _⟩ <;> simp_all
   loopless := by intro i h; rcases h with ⟨_, _⟩ | ⟨_, _⟩ | ⟨_, _⟩ | ⟨_, _⟩ <;> simp_all
 
-/--
+/-
 The Erdős-Hajnal conjecture is known to be true for several specific graphs H,
 including paths, cycles, and complete bipartite graphs.
 -/

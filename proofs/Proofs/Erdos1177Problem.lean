@@ -191,7 +191,7 @@ theorem forbiddenFamilyNonempty_antimonotone {G G' : Hypergraph3} {kappa : Cardi
     hypergraphs and their forbidden subgraph families. -/
 def erdos_1177 : Prop := Conjecture1 ∧ Conjecture2 ∧ Conjecture3
 
-/-- Problem #1177 is OPEN. We state it without proof. -/
+/- Problem #1177 is OPEN. We state it without proof. -/
 /-
 ## Summary
 

@@ -172,7 +172,7 @@ G contains cycles of all lengths from 3 to n.
 -/
 /- ## Probabilistic Lower Bounds -/
 
-/--
+/-
 **Random Graphs**:
 Random graphs G(n, p) with p ≥ c/n for suitable c almost surely have minimum
 degree at least 3 and contain cycles of all lengths up to some threshold.

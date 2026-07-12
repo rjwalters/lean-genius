@@ -183,5 +183,5 @@ def HigherDimensionalSteinhaus (n : ℕ) : Prop :=
       Isometry f ∧ T = f '' S) →
     ∃! p, p ∈ T ∧ ∀ i, ∃ m : ℤ, p i = m
 
-/-- Jackson-Mauldin generalizes to ℝⁿ for n ≥ 2. -/
+/- Jackson-Mauldin generalizes to ℝⁿ for n ≥ 2. -/
 end Erdos215

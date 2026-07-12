@@ -218,7 +218,7 @@ For a,b,c in (2N/3, N], we have a + b > 4N/3 > N ≥ c.
 def SumFree (A : Finset ℕ) : Prop :=
   ∀ a b c, a ∈ A → b ∈ A → c ∈ A → a + b ≠ c
 
-/-- The upper third is sum-free.
+/- The upper third is sum-free.
 
     Proof: For a,b,c in (2N/3, N], we have a + b > 4N/3 > N ≥ c,
     so a + b > c, hence a + b ≠ c. -/

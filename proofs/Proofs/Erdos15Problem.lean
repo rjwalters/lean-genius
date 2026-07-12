@@ -186,7 +186,7 @@ Computational evidence suggests the partial sums oscillate around a value
 near -1, but this cannot prove convergence.
 -/
 
-/-- Empirical observation: partial sums appear to oscillate around ≈ -1. -/
+/- Empirical observation: partial sums appear to oscillate around ≈ -1. -/
 
 /-
 ## Summary
