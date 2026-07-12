@@ -26,6 +26,15 @@ remaining antipodal-symmetry layer:
   (`sdist (−P) (−Q) = sdist P Q`).
 * `sCircle_neg_centre` — the **two-pole identity** `sCircle O ρ = sCircle (−O) (π − ρ)`:
   a spherical circle is centred on either pole, with complementary angular radius.
+* `sdist_neg_left`, `sdist_neg_right` — the single-slot antipodal distance law
+  `sdist (−P) Q = sdist P (−Q) = π − sdist P Q` (complementary to `sdist_neg_neg`,
+  which cancels both flips), via `Real.arccos_neg`.
+* `sdist_neg_left_add` — `sdist (−P) Q + sdist P Q = π`: a pole and its antipode are
+  seen at supplementary distances from every point.
+* `externallyTangent_iff_internallyTangent_neg_left` — the **tangency-type swap**: for
+  `ρ₁ + ρ₂ ≤ π`, `(O₁, ρ₁)` and `(O₂, ρ₂)` are externally tangent iff the antipodal
+  representation `(−O₁, π − ρ₁)` and `(O₂, ρ₂)` are internally tangent — the two-pole
+  identity read at the level of tangency.
 -/
 import Mathlib
 import Proofs.FeuerbachsTheoremOQ04
@@ -64,5 +73,49 @@ theorem sCircle_neg_centre (O : E) (ρ : ℝ) :
     sCircle O ρ = sCircle (-O) (Real.pi - ρ) := by
   ext P
   simp only [sCircle, Set.mem_setOf_eq, scos_neg_right, Real.cos_pi_sub, neg_inj]
+
+/-- **Antipode in the left slot complements the spherical distance.**  Since
+`sdist = arccos ∘ ⟪·,·⟫`, flipping the left point negates the inner product
+(`scos_neg_left`) and `arccos (−x) = π − arccos x` (`Real.arccos_neg`), so
+`sdist (−P) Q = π − sdist P Q`.  This is the *single-slot* antipodal law behind
+`sdist_neg_neg` (both flips cancel) and `sdist_antipode` (the case `Q = P`), and
+the primitive that turns antipodal centre-swaps into tangency statements. -/
+theorem sdist_neg_left (P Q : E) : sdist (-P) Q = Real.pi - sdist P Q := by
+  unfold sdist; rw [inner_neg_left, Real.arccos_neg]
+
+/-- **Antipode in the right slot complements the spherical distance.**  The
+right-slot companion of `sdist_neg_left`: `sdist P (−Q) = π − sdist P Q`, via
+`⟪P, −Q⟫ = −⟪P, Q⟫` and `Real.arccos_neg`. -/
+theorem sdist_neg_right (P Q : E) : sdist P (-Q) = Real.pi - sdist P Q := by
+  unfold sdist; rw [inner_neg_right, Real.arccos_neg]
+
+/-- **A point and its antipode split the meridian.**  Adding the distance from `P`
+to `Q` and from its antipode `−P` to `Q` always yields a half-turn `π`: the two
+poles `P`, `−P` are diametrically opposite, so every `Q` sees them at
+supplementary spherical distances.  Immediate from `sdist_neg_left`. -/
+theorem sdist_neg_left_add (P Q : E) : sdist (-P) Q + sdist P Q = Real.pi := by
+  rw [sdist_neg_left]; ring
+
+/-- **External tangency is internal tangency of the antipodal centre.**  On the
+sphere the internal/external tangency distinction is *representation-dependent*:
+because a circle `(O₁, ρ₁)` is the same set as `(−O₁, π − ρ₁)`
+(`sCircle_neg_centre`), the two circles `(O₁, ρ₁)` and `(O₂, ρ₂)` are externally
+tangent exactly when `(−O₁, π − ρ₁)` and `(O₂, ρ₂)` are internally tangent.
+Proof: `ExternallyTangent` reads `sdist O₁ O₂ = ρ₁ + ρ₂`, while
+`InternallyTangent (−O₁) (π − ρ₁) O₂ ρ₂` reads `sdist (−O₁) O₂ = |(π − ρ₁) − ρ₂|`;
+by `sdist_neg_left` the left side is `π − sdist O₁ O₂`, and since `ρ₁ + ρ₂ ≤ π`
+(the range where external tangency is geometrically possible) the absolute value
+is `π − (ρ₁ + ρ₂)`, so both equations say the same thing. -/
+theorem externallyTangent_iff_internallyTangent_neg_left
+    {O₁ O₂ : E} {ρ₁ ρ₂ : ℝ} (h : ρ₁ + ρ₂ ≤ Real.pi) :
+    ExternallyTangent O₁ ρ₁ O₂ ρ₂ ↔ InternallyTangent (-O₁) (Real.pi - ρ₁) O₂ ρ₂ := by
+  unfold ExternallyTangent InternallyTangent
+  rw [sdist_neg_left]
+  have habs : |Real.pi - ρ₁ - ρ₂| = Real.pi - (ρ₁ + ρ₂) := by
+    rw [abs_of_nonneg (by linarith)]; ring
+  rw [habs]
+  constructor
+  · intro he; rw [he]
+  · intro hi; linarith
 
 end FeuerbachsTheoremOQ04
