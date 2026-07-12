@@ -7,10 +7,11 @@ The answer `f(n) = (1/2 + o(1)) · n / log n` is known (Erdős–Graham lower bo
 Alon–Freiman upper bound), and both bounds are deep.
 
 This file does NOT reprove the asymptotics. It **fully verifies (0 axioms, 0 sorries)** the
-elementary **construction** at the heart of the Erdős–Graham *lower* bound, which the
-companion `Erdos771Problem.lean` left as `sorry` (and which, in any case, no longer compiles
-under Mathlib 4.26.0 — stale module path, `DecidablePred` gaps, and dangling doc-comments;
-flagged for a Mechanic). The construction is:
+elementary **construction** at the heart of the Erdős–Graham *lower* bound. The companion
+`Erdos771Problem.lean` packages the same lower bound via the axiom `erdos_graham_lower_bound`;
+that file's earlier Mathlib-4.26 drift has since been repaired and it now compiles cleanly, so
+this standalone construction stands alongside it as an axiom-free witness of the underlying
+combinatorial fact. The construction is:
 
 > Take `S = ` the multiples of a prime `p` in `{1,…,n}`. Every subset sum of `S` is a
 > multiple of `p`, so if `p ∤ m` then `m` is **not** a subset sum — `S` avoids `m`.
