@@ -22,6 +22,12 @@ EXCLUDE=("Erdos728FactorialDivisibility")
 
 # Optional caps for time-budgeted runs: LIMIT=N builds only first N files.
 LIMIT="${LIMIT:-0}"
+# Shard support: START=N skips the first N-1 non-excluded files, so shard k of
+# size S runs with START=$(( (k-1)*S + 1 )) LIMIT=$S. Contiguous alphabetical
+# ranges keep proof families (which import each other) inside one shard.
+START="${START:-1}"
+# Per-file wall-clock cap so one pathological file cannot stall a shard.
+FILE_TIMEOUT="${FILE_TIMEOUT:-600}"
 
 echo "=== Spike Failure Inventory (v4.31.0) ==="
 echo "Log dir: $LOGDIR"
@@ -43,17 +49,25 @@ for file in Proofs/*.lean; do
   fi
 
   count=$((count + 1))
-  if [[ "$LIMIT" -gt 0 && "$count" -gt "$LIMIT" ]]; then
+  if [[ "$count" -lt "$START" ]]; then
+    continue
+  fi
+  if [[ "$LIMIT" -gt 0 && "$count" -ge $((START + LIMIT)) ]]; then
     break
   fi
 
-  if lake build "Proofs.$name" > "$LOGDIR/$name.log" 2>&1; then
+  if timeout "$FILE_TIMEOUT" lake build "Proofs.$name" > "$LOGDIR/$name.log" 2>&1; then
     echo -e "$name\tPASS" >> "$RESULTS"
     pass=$((pass + 1))
     # keep log only on failure to save space
     rm -f "$LOGDIR/$name.log"
   else
-    echo -e "$name\tFAIL" >> "$RESULTS"
+    rc=$?
+    if [[ "$rc" -eq 124 ]]; then
+      echo -e "$name\tTIMEOUT" >> "$RESULTS"
+    else
+      echo -e "$name\tFAIL" >> "$RESULTS"
+    fi
     fail=$((fail + 1))
   fi
 done
