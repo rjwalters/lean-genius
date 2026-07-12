@@ -3223,6 +3223,33 @@ theorem affinePullback_cancel_left {a : Rat} (ha : a ≠ 0) (b : Rat) (S : RatSu
   have hb : a * -(a⁻¹ * b) + b = 0 := by rw [mul_neg, ← mul_assoc, h1, one_mul]; ring
   rw [h1, hb, affinePullback_id]
 
+/-! ### The affine action is a Boolean-algebra homomorphism on `RatSubset`
+
+Since `affinePullback a b` is precomposition `S ↦ S ∘ (·a + b)` on `RatSubset = ℚ → Prop`, it
+commutes with the pointwise Boolean operations — complement (`¬`), union (`∨`), intersection
+(`∧`). These structural facts sit underneath its interaction with the Σ/Π definability
+hierarchy (e.g. the complement duality `diophantine_iff_codiophantine_complement` and the
+finite union/intersection closures), and complete the algebraic picture of the affine action
+alongside its group laws `affinePullback_id`/`_comp`/`_cancel`/`_cancel_left`. -/
+
+/-- **Affine pullback commutes with complement.**  Precomposition commutes with pointwise
+negation: the pullback of the complement is the complement of the pullback. -/
+theorem affinePullback_compl (a b : Rat) (S : RatSubset) :
+    affinePullback a b (fun q => ¬ S q) = fun q => ¬ affinePullback a b S q := by
+  funext q; rfl
+
+/-- **Affine pullback commutes with union** (pointwise `∨`). -/
+theorem affinePullback_union (a b : Rat) (S T : RatSubset) :
+    affinePullback a b (fun q => S q ∨ T q)
+      = fun q => affinePullback a b S q ∨ affinePullback a b T q := by
+  funext q; rfl
+
+/-- **Affine pullback commutes with intersection** (pointwise `∧`). -/
+theorem affinePullback_inter (a b : Rat) (S T : RatSubset) :
+    affinePullback a b (fun q => S q ∧ T q)
+      = fun q => affinePullback a b S q ∧ affinePullback a b T q := by
+  funext q; rfl
+
 /-! ### Each definability class is an invariant subset of the affine action
 
 The four closure lemmas `affinePullback_is{,Co}DiophantineDefinition` /
