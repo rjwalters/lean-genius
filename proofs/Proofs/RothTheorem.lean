@@ -2068,4 +2068,75 @@ theorem sqGaussSum_norm_eq_zero_or_eq_natCast_of_two_mul_eq_zero {N : ℕ} [NeZe
   · left; rw [h, norm_zero]
   · right; rw [h, Complex.norm_natCast]
 
+/-! ### Part VIII (cont.): the two-torsion branch is *always* the zero branch
+
+The dichotomy `sqGaussSum_eq_zero_or_eq_natCast_of_two_mul_eq_zero` leaves open
+*which* branch (`0` or `N`) a given two-torsion frequency lands in.  The next
+theorem decides it completely: away from `r = 0`, the branch is **always** `0`.
+Equivalently, the "fully coherent" value `G(r) = N` occurs at a two-torsion
+frequency only at `r = 0` (where `G(0) = N` by `sqGaussSum_zero`); every *nonzero*
+two-torsion frequency is fully cancelled.
+
+The mechanism is a one-line shift.  At a two-torsion frequency `2r = 0` the mixed
+term of `(n+1)²` disappears: `r·(n+1)² = r·n² + (2r)·n + r = r·n² + r`.  Hence the
+`n ↦ n+1` reindexing of the Gauss sum multiplies every term by the *constant*
+phase `ψ(r)`, giving `G(r) = ψ(r)·G(r)`.  Since `r ≠ 0` makes `ψ(r) ≠ 1`
+(`psi_ne_one`), the only solution is `G(r) = 0`.
+
+This is strictly stronger than the flagged sub-goal (the canonical even-modulus
+element `r = N/2`, where `G(N/2) = Σ_n (−1)^n = 0`): it covers the whole
+two-torsion subgroup at once, for every modulus `N`.  It does **not** yield the
+`o(N)` Sárközy density bound — that still needs the residual-phase recursion at
+frequencies with `2r ≠ 0`, which this argument does not touch.
+-/
+
+/-- **Nonzero two-torsion quadratic Gauss sums vanish.**  At any *nonzero*
+    two-torsion frequency (`2r = 0`, `r ≠ 0`) the quadratic Gauss sum is fully
+    cancelled: `G(r) = 0`.  This resolves the two-torsion dichotomy
+    (`sqGaussSum_eq_zero_or_eq_natCast_of_two_mul_eq_zero`): the coherent branch
+    `G(r) = N` never occurs for `r ≠ 0`, only at `r = 0`.
+
+    Proof: since `2r = 0`, the mixed term of `(n+1)²` drops,
+    `r·(n+1)² = r·n² + (2r)·n + r = r·n² + r`, so `ψ(r(n+1)²) = ψ(r n²)·ψ(r)`.
+    Reindexing the sum by the bijection `n ↦ n+1` gives `G(r) = ψ(r)·G(r)`; as
+    `r ≠ 0` forces `ψ(r) ≠ 1`, this forces `G(r) = 0`. -/
+theorem sqGaussSum_eq_zero_of_two_mul_eq_zero {N : ℕ} [NeZero N] {r : ZMod N}
+    (hr2 : 2 * r = 0) (hr0 : r ≠ 0) :
+    sqGaussSum r = 0 := by
+  -- Each shifted term factors off the constant phase ψ(r), using (2r)·n = 0.
+  have hstep : ∀ n : ZMod N, ψ (r * (n + 1) ^ 2) = ψ (r * n ^ 2) * ψ r := by
+    intro n
+    rw [← psi_add]
+    congr 1
+    have hz : 2 * r * n = 0 := by rw [hr2, zero_mul]
+    linear_combination hz
+  -- Reindex n ↦ n+1 (a bijection of ZMod N): ∑ ψ(r(n+1)²) = ∑ ψ(r n²) = G(r).
+  have hreindex :
+      (Finset.univ.sum fun n : ZMod N => ψ (r * (n + 1) ^ 2)) = sqGaussSum r := by
+    rw [sqGaussSum]
+    apply Finset.sum_equiv (Equiv.addRight (1 : ZMod N))
+    · intro n; simp
+    · intro n _; rfl
+  -- Combine the two evaluations of the shifted sum: G(r) = G(r)·ψ(r).
+  have hfix : sqGaussSum r = sqGaussSum r * ψ r := by
+    calc sqGaussSum r
+        = Finset.univ.sum fun n : ZMod N => ψ (r * (n + 1) ^ 2) := hreindex.symm
+      _ = Finset.univ.sum fun n : ZMod N => ψ (r * n ^ 2) * ψ r :=
+            Finset.sum_congr rfl (fun n _ => hstep n)
+      _ = (Finset.univ.sum fun n : ZMod N => ψ (r * n ^ 2)) * ψ r := by
+            rw [← Finset.sum_mul]
+      _ = sqGaussSum r * ψ r := by rw [sqGaussSum]
+  -- ψ(r) ≠ 1 for r ≠ 0, so G(r)·(1 − ψ(r)) = 0 forces G(r) = 0.
+  have hψ : ψ r ≠ 1 := psi_ne_one r hr0
+  have hzero : sqGaussSum r * (1 - ψ r) = 0 := by linear_combination hfix
+  rcases mul_eq_zero.mp hzero with h | h
+  · exact h
+  · exact absurd (sub_eq_zero.mp h).symm hψ
+
+/-- **Norm form.**  Every nonzero two-torsion quadratic Gauss sum has norm `0`. -/
+theorem sqGaussSum_norm_eq_zero_of_two_mul_eq_zero {N : ℕ} [NeZero N] {r : ZMod N}
+    (hr2 : 2 * r = 0) (hr0 : r ≠ 0) :
+    ‖sqGaussSum r‖ = 0 := by
+  rw [sqGaussSum_eq_zero_of_two_mul_eq_zero hr2 hr0, norm_zero]
+
 end Szemeredi.Roth
