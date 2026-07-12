@@ -1,39 +1,36 @@
-# Batch 2/3 verification state (updated batch 3 FINAL, 2026-07-12)
+# Batch 2/3/4 verification state (updated batch 4, 2026-07-12)
 
-## BATCH 3 FINAL NUMBERS
-- verify-results.tsv: 586 tracked files — 141 GREEN / 445 RESIDUAL
-- Wave D 164: 30 green | Wave B2 158: 35 green | Wave C 230: 49 green
-- Wave E 25 (batch-3 fixes): 18 green | E2: Erdos13 green | E3: Erdos683 green
-- Cumulative batches 1-3: ~195 verified green (55 batch-1 + 141 tsv − 1 overlap)
-- The ENTIRE queued verification backlog (targets A/B/C/D) is now verified.
+## BATCH 4 NUMBERS (waves F/G merged; wave H = bad-import repair, results in results-H1/H2)
+- verify-results.tsv: 658 tracked files — 190 GREEN / 468 RESIDUAL (before wave H merge)
+- Wave F 159 (repo-wide orphan-doc sweep 129 + double-binder 4 + autoImplicit 11 + import-Mathlib 16): 47 green
+- Wave G 8 (AbelRuffini): 2 green (OQ03, OQ03OQ01 via Nat.card retype)
+- Wave H 298 (bad-import repair, 294 files + 4 AbelRuffini re-checks): see results-H1/H2.txt —
+  IF NOT MERGED YET run: `python3 merge_results.py --results results-H1.txt results-H2.txt --diag diag-D1.txt diag-D2.txt diag-F1.txt diag-F2.txt diag-G.txt diag-H1.txt diag-H2.txt`
+- fails-D.txt (134) DIAGNOSED: diag-D1/D2.txt, classes merged into tsv. Mostly Doctor-class
+  (instance-synth 27, proof-drift 25, type-mismatch 19, parse 9, singleton drift ~30).
 
-## Verification waves (all results merged into verify-results.tsv)
+## Key batch-4 discoveries (details in rename map §6 batch-4)
 
-- results-A.txt: bigop-root wave COMPLETE (25 targets: 4 PASS / 21 FAIL, diag in diag-A.txt)
-- results-B.txt: doc-comment-root wave, first 44 of 200 (4 PASS / 40 FAIL)
-- results-D1/D2.txt: wave D COMPLETE (164 targets: import fixes + exists-binder +
-  rename roots — 30 PASS / 134 FAIL, fail list in fails-D.txt, NOT yet diagnosed)
-- results-B2.txt: remaining 157 doc-comment-B roots (+Erdos1Wip01) — COMPLETE/see file
-- results-C.txt: 230 doc-comment-C roots — COMPLETE/see file (diag-B2.txt / diag-C.txt
-  hold first-5-error diagnostics for every FAIL, captured inline by runner2.sh)
-- results-E.txt: batch-3 fix re-verification (25 targets: 22 trailing-orphan doc-comment
-  demotions + KummerTheorem emultiplicity + Erdos521 pi-import + Erdos683 one_lt removal)
+1. **BAD-IMPORT CLASS**: 294 not-yet-green files import Mathlib modules removed in v4.31
+   (BigOperators.Group.Finset, Data.Rat.Basic, Order.Filter.AtTopBot, Data.Set.Finite, ...).
+   Repaired wave H: bad imports dropped + umbrella `import Mathlib` prepended.
+   Module list: `docker run --rm -v lean-mathlib-packages-v431:/pkgs alpine sh -c "cd /pkgs/mathlib && find Mathlib -name '*.lean'"`
+2. **NEVER-COMPILED CLASS**: single-letter unknown-identifier files (ι/n/p/k/A/B/X/V) have free
+   vars in def BODIES — `set_option autoImplicit true` does NOT fix (0/11). Landed unverified
+   in ENOSPC eras; never compiled on v4.26. Doctor/out-of-scope tier.
+3. Nat.card migration (alternatingGroup lemmas), Fintype.ofFinite for subgroup/quotient,
+   convert→convert! Archive drift — see map.
 
-## Running tally: proofs/batch2/verify-results.tsv (file <TAB> GREEN|RESIDUAL <TAB> class)
+## Backlog for batch 5
 
-Regenerate/extend with: `python3 merge_results.py --results <res...> --diag <diag...>`
-
-## Backlog for batch 4
-
-1. fails-D.txt (134) has NO diagnostics yet — run `diagnose-fast.sh` (60s cap; classifies
-   the fast-failing = mechanically fixable subset, marks slow ones TIMEOUT-60s).
-2. Doctor-class residual classes tallied in verify-results.tsv column 3
-   ("doctor-unclassified" = not yet diagnosed).
-3. New sweepable class found in batch 3: double set-binder `∀ x y ∈ S` → split
-   (see rename map §6 batch-3 discoveries). Only Erdos174Problem hit so far in diags.
-4. AbelRuffini 5 residuals from batch 1 still open (hypothesis-retype recipe in #38064
-   batch-1 comment); GaloisExtensionsOQ05 exists-binder fix did NOT flip it (re-FAILed
-   in wave D — needs real diagnosis).
+1. Merge wave-H results if not merged (command above); fix its near-misses — files whose only
+   remaining error is a shallow rename now that imports resolve.
+2. AbelRuffini remaining: OQ05+OQ10 (layer-3 check pending in wave H), OQ04OQ01 (3 deep drift
+   sites), InverseGalois (re-target module name `InverseGalois`, NOT AbelRuffiniInverseGalois),
+   LagrangeTheoremOQ01OQ01OQ01ApproachB (unitToAddAut arg rename + instance-synth — Doctor).
+3. Residual-class work is now predominantly Doctor-tier: instance-synth 110, type-mismatch 48,
+   proof-drift 43, unclassified 44 → hand off to #38065 unless wave H unmasks new mechanical
+   classes.
 
 ## Verification recipe (unchanged)
 
