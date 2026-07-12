@@ -29,13 +29,14 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED+extended (Sylow p-side): the |G|=p·q classification now has BOTH primes' normality analysis. New Part VII adds the q≢1(mod p) regime — |P|=p, Sylow p-subgroup normal & unique (n_p=1), and a normal subgroup of order p — the symmetric counterpart of the unconditional q-side. 4 new theorems, 0 sorries, 0 axioms; verified host lean v4.26.0 (docker olean-write hit transient fleet SIGBUS).",
+    "progressSummary": "COMPLETE (order-pq classification closed): the q≢1(mod p) regime now proves G is CYCLIC (isCyclic_of_card_eq_pq), yielding the full dichotomy cyclic_or_q_mod_p_of_card_eq_pq (either q≡1 mod p or G≅ℤ/pq) plus the abelian corollary. 3 new theorems, 0 sorries, 0 axioms; host lean v4.26.0 EXIT 0 (docker codegen SIGBUS135 infra-only, kernel-checked on host, axioms=[propext,Classical.choice,Quot.sound]).",
     "builtItems": [
       "LagrangeTheoremOQ01.lean: ~140 lines, 11 theorems, 0 sorries, 0 axioms",
       "Parts I-V: Lagrange, Sylow existence, conjugacy, counting, partial converse + Cauchy",
       "LagrangeTheoremOQ01.lean: +2 thms — card_sylow_q_of_card_eq_pq (|Q|=q via factorization(pq)=1) and sylow_q_normal_of_card_eq_pq (order-pq groups have normal Sylow q-subgroup)",
       "LagrangeTheoremOQ01.lean: isSolvable_of_card_eq_pq — groups of order p·q (p<q prime) are solvable (IsSolvable G), via cyclic N and G⧸N + solvable_of_ker_le_range. New reasoning VERIFIED host lean v4.26.0 minimal-import standalone (type-check EXIT 0); full-file docker build blocked by shared .lake .ir codegen corruption (infra).",
-      "LagrangeTheoremOQ01.lean Part VII: card_sylow_p_of_card_eq_pq (|P|=p), sylow_p_normal_of_card_eq_pq (q≢1 mod p ⟹ P normal), card_sylow_p_eq_one_of_card_eq_pq (n_p=1), exists_normal_subgroup_card_eq_p_of_card_eq_pq. Now ~30 theorems, 0 axioms/0 sorries. PR (lagrange-oq-01-not-simple)."
+      "LagrangeTheoremOQ01.lean Part VII: card_sylow_p_of_card_eq_pq (|P|=p), sylow_p_normal_of_card_eq_pq (q≢1 mod p ⟹ P normal), card_sylow_p_eq_one_of_card_eq_pq (n_p=1), exists_normal_subgroup_card_eq_p_of_card_eq_pq. Now ~30 theorems, 0 axioms/0 sorries. PR (lagrange-oq-01-not-simple).",
+      "LagrangeTheoremOQ01.lean Part VIII: isCyclic_of_card_eq_pq (|G|=p·q, q≢1 mod p ⟹ G cyclic) — two coprime normal Sylow subgroups P(order p),Q(order q), generators a,b via Subgroup.isCyclic_iff_exists_zpowers_eq_top, Disjoint P Q from |P⊓Q| ∣ gcd(p,q)=1, Commute a b via Subgroup.commute_of_normal_of_disjoint, orderOf(a*b)=p·q via Commute.orderOf_mul_eq_mul_orderOf_of_coprime, then isCyclic_of_orderOf_eq_card. Plus cyclic_or_q_mod_p_of_card_eq_pq (full dichotomy) and mul_comm_of_card_eq_pq (abelian corollary). Now 35 theorems, 0 ax/0 sorries."
     ],
     "insights": [
       "Sylow theorems are fully in Mathlib — file wraps existing API in gallery format",
@@ -46,12 +47,14 @@
       "Groups of order p·q (p<q prime) are SOLVABLE (isSolvable_of_card_eq_pq): strictly strengthens not_isSimpleGroup_of_card_eq_pq. Proof: the normal N (order q) is prime-order hence cyclic hence abelian hence solvable; quotient G⧸N has order p (card_eq_card_quotient_mul_card_subgroup) hence also cyclic/solvable; solvability lifts along 1→N→G→G⧸N→1 via solvable_of_ker_le_range with ker(mk N)=N=range(N.subtype).",
       "Lean recipe: IsSolvable of a prime-order subgroup N — isCyclic_of_prime_card gives IsCyclic N, then isSolvable_of_comm (fun a b => by letI := IsCyclic.commGroup (α:=N); exact mul_comm a b). NOTE: the shorter `letI := IsCyclic.commGroup; inferInstance` route FAILS to synthesize IsSolvable (Group/CommGroup instance diamond) — extract commutativity explicitly and feed isSolvable_of_comm instead.",
       "solvable_of_ker_le_range f g (hfg: g.ker ≤ f.range) with f=N.subtype, g=QuotientGroup.mk N: discharge hfg by le_of_eq (rw [QuotientGroup.ker_mk, Subgroup.range_subtype]) — both sides collapse to N.",
-      "Sylow p-side of pq needs the arithmetic hypothesis q≢1 (mod p): n_p≡1(mod p) divides [G:P]=q, so n_p∈{1,q}, and n_p=q ⟺ q≡1(mod p). S₃ (order 2·3, 3≡1 mod 2) is the extremal witness with three non-normal Sylow 2-subgroups. Under q≢1(mod p) both Sylow subgroups are normal ⟹ two coprime normal subgroups ⟹ internal direct product ⟹ G cyclic."
+      "Sylow p-side of pq needs the arithmetic hypothesis q≢1 (mod p): n_p≡1(mod p) divides [G:P]=q, so n_p∈{1,q}, and n_p=q ⟺ q≡1(mod p). S₃ (order 2·3, 3≡1 mod 2) is the extremal witness with three non-normal Sylow 2-subgroups. Under q≢1(mod p) both Sylow subgroups are normal ⟹ two coprime normal subgroups ⟹ internal direct product ⟹ G cyclic.",
+      "Order-pq classification CLOSED: q≡1(mod p) is the UNIQUE obstruction to cyclicity. When it fails, the two normal Sylow subgroups (Parts VI,VII) are coprime-order, disjoint, hence commute (commutator ⊆ P∩Q=1), and their generators multiply to a full-order element ⟹ cyclic. The nonabelian ℤ/q⋊ℤ/p exists precisely when q≡1(mod p) (S₃ at 2·3).",
+      "Lean recipe for internal-direct-product ⟹ cyclic: get generators of the two normal prime-order subgroups via (Subgroup.isCyclic_iff_exists_zpowers_eq_top H).mp with orderOf from Nat.card_zpowers; disjointness by cardinality (card_dvd_of_le inf_le_left/right into Nat.dvd_gcd, gcd=1); Commute via Subgroup.commute_of_normal_of_disjoint; full order via Commute.orderOf_mul_eq_mul_orderOf_of_coprime (DOT NOTATION on the Commute hyp — bare orderOf_mul_eq_mul_orderOf_of_coprime is unknown, it lives in namespace Commute); conclude isCyclic_of_orderOf_eq_card.",
+      "GOTCHA: docker exit-135 SIGBUS at the codegen (-c *.c) stage MASKED a real elaboration error (unknown identifier) for two builds — host lean type-check (LEAN_PATH from packages .lake, no -o/-c) surfaced it immediately. Always host-verify when docker 135s repeatedly at 2-3s: the worktree .lake already holds the decompressed mathlib oleans after the first docker download."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Capstone: q≢1(mod p) ⟹ G cyclic. Assemble the two coprime normal Sylow subgroups (orders p,q) into an internal direct product (Subgroup.isComplement / disjoint + card) and conclude G ≅ ℤ/p × ℤ/q ≅ ℤ/pq via CRT.",
-      "State the full dichotomy: for |G|=p·q either q≡1(mod p) (nonabelian metacyclic possible) or q≢1(mod p) (G cyclic).",
+      "Classification of order p·q is now complete (cyclic vs metacyclic dichotomy). Possible outward extensions: (a) exhibit the nonabelian witness when q≡1 mod p (construct ℤ/q⋊ℤ/p and show |G|=pq, noncyclic); (b) order-p² groups are abelian (isCyclic or ℤ/p×ℤ/p); (c) order p²q or p³ classifications.",
       "Repair the parent LagrangeTheorem.lean drift if any, to keep the gallery imports coherent."
     ]
   },
