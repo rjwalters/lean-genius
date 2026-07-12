@@ -185,3 +185,27 @@ Prior session shipped work UNVERIFIED (docker containerd meta.db I/O down). `Law
 ([[reference-docker-down-lean-elab-verification-path]]): whole file EXIT 0, zero errors/warnings.
 `#print axioms equilateral_cosh_a` = [propext, Classical.choice, Quot.sound] — no sorryAx. Standing
 work confirmed correct (no bug). Depth-3 slug → 0 follow-ups. Marked completed.
+
+## Session 2026-07-11 (researcher-7) — explicit closed form of the law-of-sines ratio
+
+PART 9 proved the three ratios sinh(side)/sin(opposite angle) COINCIDE (via the shared
+Gram numerator N = cos²A+cos²B+cos²C+2cosAcosBcosC−1) but never said WHAT they equal.
+Added PART 9a (3 thm, 978→1032 L, meta thm 59→62; axiomatized/badge axiom/6 structure
+assumptions unchanged; #print axioms = [propext,choice,Quot.sound]):
+- `sinh_a_mul_sin_eq_sqrt_gram`: sinh a·(sin B·sin C) = √N. Positive-root extraction from
+  the squared identity `sinh_a_num_sq` — base is strictly positive so it IS √N. Proof:
+  `rw [← sinh_a_num_sq t, Real.sqrt_sq hpos.le]` (Real.sqrt_sq : 0≤x → √(x²)=x, must be
+  fully qualified — `open Real` collides with the ℝ≥0 `sqrt_sq`).
+- `law_of_sines_common_ratio`: sinh a/sin A = √N / (sin A·sin B·sin C) — the explicit,
+  angle-only closed form of the common ratio ("hyperbolic circumradius"). Proof:
+  `rw [div_eq_div_iff hA hprod]; linear_combination (Real.sin t.A) * sinh_a_mul_sin_eq_sqrt_gram t`
+  (√N treated as ring atom).
+- `law_of_sines_common_ratio_symm`: all three ratios (a,b,c) equal the SAME symmetric
+  expression √N/(sinA sinB sinC). Combines side-a form with hyperbolic_law_of_sines(.1)
+  and _ac via `rw [← …]; exact ha`. The RHS symmetry is an independent proof the ratios agree.
+
+Recipe (turn a squared trig identity into an explicit value): base>0 ⟹ base = √(RHS) via
+`rw [← squared_lemma, Real.sqrt_sq pos.le]`; then divide through with div_eq_div_iff +
+linear_combination scaling the extraction lemma. Genuine frontier still open (heavy algebra):
+FIRST law of cosines cosh c = cosh a cosh b − sinh a sinh b cos C, and SAS/ASA congruence.
+Docker healthy (mathlib cache, built clean 3063 jobs / 4.2s).
