@@ -750,7 +750,7 @@ theorem prod_sub_eigen_smul_eq_zero [DecidableEq K] {M P : Matrix n n K} (hP : I
     rw [List.mem_map]
     exact ⟨D i i, Finset.mem_toList.mpr (Finset.mem_image.mpr ⟨i, Finset.mem_univ i, rfl⟩),
       sub_self _⟩
-  rw [hzero, Matrix.diagonal_zero] at hconj2
+  simp only [hzero, Matrix.diagonal_zero] at hconj2
   -- undo the conjugation: from `P⁻¹ · prod · P = 0` conclude `prod = 0`
   have hPP : P * P⁻¹ = 1 := Matrix.mul_nonsing_inv P hP
   have hcancel : ∀ X : Matrix n n K, P * (P⁻¹ * X * P) * P⁻¹ = X := by
