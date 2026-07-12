@@ -5733,5 +5733,85 @@ theorem odd_prime_factor_unique_of_maxSqDiffFreeCard_eq_one
     two_le_maxSqDiffFreeCard_of_two_odd_primes hp hq hpodd hqodd hpq hpdvd hqdvd
   omega
 
+/-! ### Part XLIV — CAPSTONE: the complete value-`1` locus classification
+
+Assembling the two halves of Parts XXXVI–XLIII gives the *exact* classification of the moduli whose
+square-difference graph has independence number `1`:
+
+* **Sufficiency** (Parts XXXVI, XL): each of `1`, `2`, a prime `p ≡ 3 (mod 4)`, and `2p` for such a
+  prime collapses to `1` (`maxSqDiffFreeCard_eq_one_of_mod_four_eq_three`,
+  `maxSqDiffFreeCard_two_mul_prime_eq_one`, `decide` for the two small cases).
+* **Necessity** (Parts XLI–XLIII): `maxSqDiffFreeCard N = 1` forces `N` squarefree
+  (`squarefree_of_maxSqDiffFreeCard_eq_one`), its odd prime factors `≡ 3 (mod 4)`
+  (`prime_factors_mod_four_eq_three_of_maxSqDiffFreeCard_eq_one`) and *unique*
+  (`odd_prime_factor_unique_of_maxSqDiffFreeCard_eq_one`).
+
+The number-theoretic bridge is the squarefree factorization `N = ∏_{q ∈ primeFactors N} q`: the
+prime factors lie in `{2, p}` (`p` the unique odd factor if any), so `N ∣ 2p`; writing `N = p·m`
+with `p ∣ N` forces `m ∣ 2`, hence `N ∈ {p, 2p}`.  With no odd factor `N ∣ 2`, hence `N ∈ {1, 2}`.
+
+`maxSqDiffFreeCard N = 1  ↔  N ∈ {1, 2} ∪ {p, 2p : p prime, p ≡ 3 (mod 4)}`. -/
+theorem maxSqDiffFreeCard_eq_one_iff_locus {N : ℕ} [NeZero N] :
+    maxSqDiffFreeCard N = 1 ↔
+      N = 1 ∨ N = 2 ∨ ∃ p : ℕ, p.Prime ∧ p % 4 = 3 ∧ (N = p ∨ N = 2 * p) := by
+  constructor
+  · -- NECESSITY: assemble squarefree + unique odd factor ≡3 mod4 into the explicit locus
+    intro hN
+    have hsf : Squarefree N := squarefree_of_maxSqDiffFreeCard_eq_one hN
+    by_cases hodd : ∃ p, p.Prime ∧ p % 2 = 1 ∧ p ∣ N
+    · -- there is an odd prime factor `p`; it is unique and `≡ 3 (mod 4)`
+      obtain ⟨p, hp, hpodd, hpdvd⟩ := hodd
+      have hp3 : p % 4 = 3 :=
+        prime_factors_mod_four_eq_three_of_maxSqDiffFreeCard_eq_one hN hp hpodd hpdvd
+      -- every prime factor of `N` is `2` or the unique odd factor `p`
+      have hsub : N.primeFactors ⊆ ({2, p} : Finset ℕ) := by
+        intro q hq
+        rw [Nat.mem_primeFactors] at hq
+        obtain ⟨hqp, hqdvd, _⟩ := hq
+        rcases hqp.eq_two_or_odd' with h2 | hqoddq
+        · subst h2; simp
+        · have hqp_eq : q = p :=
+            odd_prime_factor_unique_of_maxSqDiffFreeCard_eq_one hN hqp
+              (Nat.odd_iff.mp hqoddq) hqdvd hp hpodd hpdvd
+          subst hqp_eq; simp
+      -- squarefree factorization ⟹ `N ∣ 2p`
+      have h2p : (2 : ℕ) ≠ p := by omega
+      have hNdvd : N ∣ 2 * p :=
+        calc N = ∏ q ∈ N.primeFactors, q := (Nat.prod_primeFactors_of_squarefree hsf).symm
+          _ ∣ ∏ q ∈ ({2, p} : Finset ℕ), q := Finset.prod_dvd_prod_of_subset _ _ _ hsub
+          _ = 2 * p := by rw [Finset.prod_pair h2p]
+      -- `p ∣ N` gives `N = p·m` with `m ∣ 2`, so `N ∈ {p, 2p}`
+      obtain ⟨m, hm⟩ := hpdvd
+      have key : p * m ∣ p * 2 := by rw [← hm, mul_comm p 2]; exact hNdvd
+      have hm2 : m ∣ 2 := Nat.dvd_of_mul_dvd_mul_left hp.pos key
+      rcases (Nat.dvd_prime Nat.prime_two).mp hm2 with rfl | rfl
+      · exact Or.inr (Or.inr ⟨p, hp, hp3, Or.inl (by rw [hm, mul_one])⟩)
+      · exact Or.inr (Or.inr ⟨p, hp, hp3, Or.inr (by rw [hm]; ring)⟩)
+    · -- no odd prime factor: every prime factor is `2`, so `N ∣ 2` and `N ∈ {1, 2}`
+      push_neg at hodd
+      have hsub : N.primeFactors ⊆ ({2} : Finset ℕ) := by
+        intro q hq
+        rw [Nat.mem_primeFactors] at hq
+        obtain ⟨hqp, hqdvd, _⟩ := hq
+        rcases hqp.eq_two_or_odd' with h2 | hqoddq
+        · subst h2; simp
+        · exact absurd hqdvd (hodd q hqp (Nat.odd_iff.mp hqoddq))
+      have hNdvd : N ∣ 2 :=
+        calc N = ∏ q ∈ N.primeFactors, q := (Nat.prod_primeFactors_of_squarefree hsf).symm
+          _ ∣ ∏ q ∈ ({2} : Finset ℕ), q := Finset.prod_dvd_prod_of_subset _ _ _ hsub
+          _ = 2 := by rw [Finset.prod_singleton]
+      rcases (Nat.dvd_prime Nat.prime_two).mp hNdvd with rfl | rfl
+      · exact Or.inl rfl
+      · exact Or.inr (Or.inl rfl)
+  · -- SUFFICIENCY: each locus member collapses to `1`
+    rintro (rfl | rfl | ⟨p, hp, h3, rfl | rfl⟩)
+    · rw [maxSqDiffFreeCard_eq_one_iff]; decide
+    · rw [maxSqDiffFreeCard_eq_one_iff]; decide
+    · -- `N = p`: `rfl` eliminated `p`, so the modulus is `N` (with `NeZero N` in scope)
+      exact maxSqDiffFreeCard_eq_one_of_mod_four_eq_three hp h3
+    · -- `N = 2 * p`: `rfl` eliminated `N`, so `p` survives; supply `NeZero p`
+      haveI : NeZero p := ⟨hp.pos.ne'⟩
+      exact maxSqDiffFreeCard_two_mul_prime_eq_one hp h3
+
 end Szemeredi.Roth
 
