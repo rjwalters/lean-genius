@@ -115,6 +115,30 @@ theorem isPrimitive_iff_forall_isUnit_of_dvd (v : Fin n → ℤ) :
     rw [← hgen]
     exact Ideal.span_singleton_eq_top.mpr hu
 
+/-- **Primitivity via the `Finset`-gcd (unit form).**  Packaging
+`isPrimitive_iff_forall_isUnit_of_dvd` through the universal property of
+`Finset.gcd`: the single element `Finset.univ.gcd v` is *the* greatest common
+divisor of the entries (it divides each `vᵢ` and is divisible by every common
+divisor), so "every common divisor is a unit" collapses to the single statement
+that this gcd is a unit. -/
+theorem isPrimitive_iff_isUnit_finsetGcd (v : Fin n → ℤ) :
+    IsPrimitive v ↔ IsUnit (Finset.univ.gcd v) := by
+  rw [isPrimitive_iff_forall_isUnit_of_dvd]
+  constructor
+  · intro h
+    exact h _ fun i => Finset.gcd_dvd (Finset.mem_univ i)
+  · intro hu d hd
+    exact isUnit_of_dvd_unit (Finset.dvd_gcd fun i _ => hd i) hu
+
+/-- **Primitivity is setwise coprimality: `gcd(v₁, …, vₙ) = 1`.**  The classical
+entry-level statement named in the opening docstring, now literally in terms of
+the normalized `ℤ`-gcd.  Since `Finset.gcd` over `ℤ` is normalized (nonnegative),
+being a unit is the same as being `1` (`normalize_eq_one`), so this is the unit
+form `isPrimitive_iff_isUnit_finsetGcd` written in normal form. -/
+theorem isPrimitive_iff_finsetGcd_eq_one (v : Fin n → ℤ) :
+    IsPrimitive v ↔ Finset.univ.gcd v = 1 := by
+  rw [isPrimitive_iff_isUnit_finsetGcd, ← normalize_eq_one, Finset.normalize_gcd]
+
 /-! ### `SLₙ(ℤ)` preserves primitivity -/
 
 /-- **`SLₙ(ℤ)` sends primitive vectors to primitive vectors.**  If `w ⬝ᵥ v = 1`
