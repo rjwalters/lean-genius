@@ -1323,4 +1323,76 @@ theorem signChangesInCoeffs_comp_neg_X_eq_zero_iff {p : ℝ[X]} (hp : p ≠ 0)
   have h := signChangesInCoeffs_comp_neg_X_add hp hnz
   omega
 
+/- ## § 6. Monomials have no sign changes (axiom-free)
+
+The base of the whole variation calculus: a sequence with **at most one** nonzero entry has
+zero sign changes (a sign change needs two distinct nonzero entries), so a single monomial
+`c · X^k` — including the constant `C c` and the pure power `X^k` — sits at `V = 0`, the
+minimal Descartes bound, matching the obvious fact that `c · X^k` has no positive roots. -/
+
+/-- **Subsingleton support ⟹ no sign changes.**  If at most one index carries a nonzero value
+(`f i ≠ 0 → f j ≠ 0 → i = j`), then `countSignChanges f = 0`: any sign change supplies two
+distinct nonzero indices `i < j`, contradicting the hypothesis.  Axiom-free, general in `n`.
+Complements `countSignChanges_eq_zero_of_nonneg`/`_nonpos` (all-one-sign) with the
+all-but-one-zero case. -/
+theorem countSignChanges_eq_zero_of_support_subsingleton {n : ℕ} {f : Fin n → ℝ}
+    (h : ∀ i j, f i ≠ 0 → f j ≠ 0 → i = j) :
+    DescartesRuleOfSigns.countSignChanges f = 0 := by
+  unfold DescartesRuleOfSigns.countSignChanges
+  rw [Finset.card_eq_zero, Finset.eq_empty_iff_forall_notMem]
+  intro x hx
+  simp only [Finset.mem_filter, Finset.mem_univ, true_and, decide_eq_true_eq,
+    DescartesRuleOfSigns.SignChangeBetween] at hx
+  obtain ⟨hlt, hi, hj, -, -⟩ := hx
+  exact absurd (h x.1 x.2 hi hj) (ne_of_lt hlt)
+
+/-- **A single monomial has no coefficient sign changes.**  For any `c` and `k`,
+`V(c · X^k) = 0`: after removing the `c = 0` case (`c · X^k = 0`, `V = 0` by definition) the
+coefficient sequence of `monomial k c` is supported at the single index `k`, so
+`countSignChanges_eq_zero_of_support_subsingleton` applies.  Axiom-free. -/
+theorem signChangesInCoeffs_monomial (c : ℝ) (k : ℕ) :
+    DescartesRuleOfSigns.signChangesInCoeffs (monomial k c) = 0 := by
+  by_cases hc : c = 0
+  · subst hc
+    have h0 : (monomial k (0 : ℝ)) = 0 := by simp
+    rw [h0]
+    simp [DescartesRuleOfSigns.signChangesInCoeffs]
+  · have hne : (monomial k c : ℝ[X]) ≠ 0 := by
+      intro h
+      apply hc
+      have hcoe := congrArg (fun q : ℝ[X] => q.coeff k) h
+      simpa [coeff_monomial] using hcoe
+    have hdeg : (monomial k c : ℝ[X]).natDegree = k := by
+      rw [natDegree_monomial]; simp [hc]
+    rw [DescartesRuleOfSigns.signChangesInCoeffs, dif_neg hne]
+    apply countSignChanges_eq_zero_of_support_subsingleton
+    have hzero : ∀ t : Fin ((monomial k c).natDegree + 1),
+        DescartesRuleOfSigns.coeffSequence (monomial k c) (monomial k c).natDegree t ≠ 0 →
+        t.val = 0 := by
+      intro t ht
+      unfold DescartesRuleOfSigns.coeffSequence at ht
+      rw [coeff_monomial] at ht
+      have h2 := t.isLt
+      split_ifs at ht with hcond
+      · omega
+      · exact absurd rfl ht
+    intro i j hi hj
+    have hi0 := hzero i hi
+    have hj0 := hzero j hj
+    exact Fin.ext (by omega)
+
+/-- **A constant polynomial has no coefficient sign changes.**  `V(C c) = 0` for every `c`
+(a constant is the monomial `C c = monomial 0 c`).  Axiom-free. -/
+theorem signChangesInCoeffs_C (c : ℝ) :
+    DescartesRuleOfSigns.signChangesInCoeffs (C c) = 0 := by
+  rw [← monomial_zero_left]
+  exact signChangesInCoeffs_monomial c 0
+
+/-- **A pure power has no coefficient sign changes.**  `V(X^k) = 0` for every `k`
+(`X^k = monomial k 1`).  Axiom-free. -/
+theorem signChangesInCoeffs_X_pow (k : ℕ) :
+    DescartesRuleOfSigns.signChangesInCoeffs (X ^ k : ℝ[X]) = 0 := by
+  rw [X_pow_eq_monomial]
+  exact signChangesInCoeffs_monomial 1 k
+
 end DescartesRuleOfSignsOQ01OQ03
