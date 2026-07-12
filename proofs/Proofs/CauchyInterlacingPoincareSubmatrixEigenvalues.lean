@@ -105,7 +105,7 @@ theorem poincare_separation_submatrix_eigenvalues₀
   -- The remaining `Fin.cast`s of the explicit index literals collapse to the
   -- parent's literals; `hlow`/`hup` are exactly the goals up to `Fin.ext`.
   refine ⟨?_, ?_⟩
-  · convert hlow using 2 <;> exact Fin.ext rfl
-  · convert hup using 2 <;> exact Fin.ext rfl
+  · convert hlow using 2
+  · convert hup using 2
 
 end CauchyInterlacing.PoincareSubmatrix
