@@ -1,6 +1,7 @@
 import Proofs.Erdos1204Problem
 import Proofs.Erdos1204A4
 import Proofs.Erdos1204A5
+import Proofs.Erdos1204A6
 
 /-
 # Erdős #1204 — the second extremal quantity `B(k)`
@@ -389,6 +390,48 @@ minimal sum dominates the minimal diameter (`A_le_S`) and the minimal average is
 bounded below by `k - 1` (`sub_one_le_B`), both `S(k)` and `B(k)` diverge too. The
 sharp rates (`A(k) ∼ k log k`, and the analogous unknown rates for `S` and `B`)
 remain OPEN; only the qualitative unboundedness is recorded here. -/
+
+/-! ### The `k = 6` frontier: `S(6)` and `B(6)` bracketed
+
+Through `k = 5` the minimal-sum and minimal-diameter optima coincided, giving exact
+values `S(2..5)`. At `k = 6` the two optima need not agree: the minimal-diameter witness
+`{0, 4, 6, 10, 12, 16}` (the `A(6) = 16` extremal set) has sum `48`, while the recurrence
+`A_add_S_le_S_succ` only forces `S(6) ≥ A(6) + S(5) = 16 + 28 = 44`. Whether a *lower-sum*
+admissible `6`-set exists (making `S(6) < 48`) is open — it would require a sum-`≤ 47`
+admissible `6`-set, whose admissibility (a condition over *all* primes) is not a finite
+check. We record the resulting exact bracket `44 ≤ S(6) ≤ 48`, hence `22/3 ≤ B(6) ≤ 8`. -/
+
+/-- **Lower bound `44 ≤ S(6)`.** From the sum recurrence `A_add_S_le_S_succ 5`
+(`A(6) + S(5) ≤ S(6)`) with `A(6) = 16` (`A_six`) and `S(5) = 28` (`S_five`). -/
+theorem S_six_ge : 44 ≤ S 6 := by
+  have h : A 6 + S 5 ≤ S 6 := A_add_S_le_S_succ 5
+  rw [A_six, S_five] at h
+  omega
+
+/-- **Upper bound `S(6) ≤ 48`.** The minimal-diameter `A(6)`-extremal set
+`{0, 4, 6, 10, 12, 16}` is admissible (`admissible_witness_six`) with sum `48`, so it bounds
+`S(6)` from above via `S_le`. Together with `S_six_ge` this brackets `44 ≤ S(6) ≤ 48`; the
+exact value is open (it turns on whether a lower-sum admissible `6`-set exists). -/
+theorem S_six_le : S 6 ≤ 48 := by
+  have h := S_le (show ({0, 4, 6, 10, 12, 16} : Finset ℕ).card = 6 by decide)
+    admissible_witness_six
+  have hsum : ({0, 4, 6, 10, 12, 16} : Finset ℕ).sum id = 48 := by decide
+  rw [hsum] at h
+  exact h
+
+/-- **Lower bound `22/3 ≤ B(6)`.** The average form of `S_six_ge`: `B(6) = S(6)/6 ≥ 44/6 = 22/3`. -/
+theorem B_six_ge : (22 : ℚ) / 3 ≤ B 6 := by
+  have h : (44 : ℚ) ≤ (S 6 : ℚ) := by exact_mod_cast S_six_ge
+  rw [B, le_div_iff₀ (by positivity)]
+  push_cast
+  linarith
+
+/-- **Upper bound `B(6) ≤ 8`.** The average form of `S_six_le`: `B(6) = S(6)/6 ≤ 48/6 = 8`. -/
+theorem B_six_le : B 6 ≤ 8 := by
+  have h : (S 6 : ℚ) ≤ 48 := by exact_mod_cast S_six_le
+  rw [B, div_le_iff₀ (by positivity)]
+  push_cast
+  linarith
 
 /-- **`S(k)` diverges.** The minimal admissible sum tends to infinity as `k → ∞`.
 Immediate from `A(k) ≤ S(k)` (`A_le_S`) and the divergence of the diameter
