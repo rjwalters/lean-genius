@@ -28,7 +28,8 @@
       "Part XVII (exact cap on L² direction): at an odd-prime modulus the second moment is computed EXACTLY, Σ_{r≠0}‖G(r)‖²=N²−N=Θ(N²). Since every r≠0 is a unit (field) and 2 is a unit (odd), ‖G(r)‖²=N at all N−1 nonzero frequencies. This is a two-sided (upper AND lower) identity, proving the o(N²) second-moment target implicit in Parts XV–XVI is UNREACHABLE — the L²-averaged direction is capped at Θ(N²), never o(N²).",
       "Corollary sqGaussSum_l2_factor_ge_of_prime: √(Σ_{r≠0}‖G‖²)≥N−1, so the L²-averaged minor-arc factor feeding sqDiffFree_density_bound_l2 does NOT decay at prime N; only the POINTWISE √N magnitude (sqDiffFree_density_bound_of_prime, already built) yields a nontrivial density bound. The L² average destroys the per-frequency √N cancellation.",
       "Second moment tightly bracketed at every odd N: N·φ(N) ≤ Σ_{r≠0}‖G(r)‖² ≤ N²·(d(N)−1), both sides N^{2+o(1)} (Parts XXI+XXII). This CLOSES the order-of-magnitude question and reconfirms the L²-averaged circle-method route is Θ(N²)-capped; the crude explicit Part XVI upper bound ≤4N²⌊√N⌋ (N^2.5) is now superseded by the essentially-optimal N²·d(N).",
-      "The odd-modulus L¹ ceiling ∑_r‖G(r)‖ ≤ √N·∑_{d|N}φ(N/d)√d is SHARP: at every odd prime N it holds with equality, both sides = N+(N-1)√N (only divisors 1,N contribute)."
+      "The odd-modulus L¹ ceiling ∑_r‖G(r)‖ ≤ √N·∑_{d|N}φ(N/d)√d is SHARP: at every odd prime N it holds with equality, both sides = N+(N-1)√N (only divisors 1,N contribute).",
+      "The odd-modulus first-moment ceiling √N·∑_{d|N}φ(N/d)√d is attained with EQUALITY at every odd N, not just primes: the exact pointwise magnitude ‖G(r)‖=√(N·gcd) (no residual cancellation when 2 is a unit) makes the summed triangle inequality tight. Composite example N=9: ∑_r‖G(r)‖=27+6√3."
     ],
     "builtItems": [
       "RothTheorem.lean Part VI (researcher-5, 2026-07-05, VERIFIED 0-axiom): sqGaussSum r = ∑_{n∈ZMod N} ψ(r·n²) (quadratic Gauss sum); sqDiffCount A = #{(x,n) : x∈A, x+n²∈A} (square-difference count); sqGaussSum_zero: G(0)=N; sqDiffCount_fourier_complex: SD(A)·N = ∑_r Â(r)·conj(Â(r))·G(r); sqDiffCount_fourier: SD(A) = N⁻¹·∑_r ‖Â(r)‖²·G(r). Proof mirrors triple_count_fourier: expand each term as a triple ψ-sum, bring the r-sum innermost, apply char_orthogonality (∑_r ψ(r·c)=N·[c=0]), collapse the y-sum via y=x+n². #print axioms → [propext, Classical.choice, Quot.sound].",
@@ -53,7 +54,10 @@
       "Part XXII sqGaussSum_normSq_sum_le_of_odd: Σ_{r≠0}‖G(r)‖² ≤ N²·(d(N)−1) at every odd N — divisor upper bound sharpening Part XVI N^2.5 to true order N^{2+o(1)}",
       "sum_norm_sqGaussSum_eq_of_prime — exact prime first moment ∑_r‖G(r)‖ = N+(N-1)√N (RothTheoremOQ04FirstMoment.lean, 0-axiom)",
       "sum_norm_sqGaussSum_bound_eq_of_prime — divisor sum √N·∑φ(N/d)√d collapses to N+(N-1)√N at primes (RothTheoremOQ04FirstMoment.lean, 0-axiom)",
-      "sum_norm_sqGaussSum_eq_bound_of_prime — sharpness capstone: odd-modulus ≤ bound attained with equality at odd primes (RothTheoremOQ04FirstMoment.lean, 0-axiom)"
+      "sum_norm_sqGaussSum_eq_bound_of_prime — sharpness capstone: odd-modulus ≤ bound attained with equality at odd primes (RothTheoremOQ04FirstMoment.lean, 0-axiom)",
+      "sqGaussSum_normSq_eq_gcd_of_odd (RothTheorem.lean): EXACT odd-modulus magnitude ‖G(r)‖²=N·gcd((2r).val,N) for ALL r — upgrades the ≤ bound sqGaussSum_normSq_le_gcd to equality via no-cancellation of the Weyl residual sum (2 unit ⟹ 2rh=0⟹rh=0⟹rh²=0⟹ψ=1)",
+      "sqGaussSum_norm_eq_sqrt_gcd_of_odd (RothTheorem.lean): square-root form ‖G(r)‖=√(N·gcd((2r).val,N)) exact at odd N",
+      "sum_norm_sqGaussSum_eq_of_odd (RothTheoremOQ04FirstMoment.lean): CAPSTONE exact L¹ first moment ∑_r‖G(r)‖=√N·∑_{d|N}φ(N/d)√d for ALL odd N (composite or prime), upgrading sum_norm_sqGaussSum_le_of_odd from ≤ to =, subsuming prime sharpness as the two-divisor case"
     ],
     "nextSteps": [
       "DONE (researcher-11): two-torsion DICHOTOMY G(r)∈{0,N} at 2r=0 (sqGaussSum_eq_zero_or_eq_natCast_of_two_mul_eq_zero) — the exact characterization at the frequencies the gcd/kernel-count bounds leave vacuous (‖G(r)‖≤N trivially); rules out all intermediate magnitudes 0<‖G(r)‖<N.",
@@ -67,7 +71,8 @@
       "Prove Σ_{r=1}^{N-1} gcd(r,N) = o(N²) (equivalently Σ_{r≠0}gcd((2r).val,N)=o(N²)): classical identity Σ_{r|N-parametrized} = Σ_{d|N} d·φ(N/d) is multiplicative, O(N·d(N))=N^{1+o(1)}. Chain into sqDiffFree_density_bound_l2 via sqGaussSum_normSq_sum_le_gcd_sum to get o(N) density for ALL N (removing the odd/prime restriction).",
       "Alternatively prove the EXACT second moment Σ_r‖G(r)‖²=N·#{(n,m):n²=m²} (Plancherel/char-orthogonality, cf researcher-11 Part IX on a separate branch) and specialize #{n²=m²} for squarefree N to get the sharp √N Sárközy constant.",
       "The genuine open obstruction is now sharply localized: composite N with BOUNDED smallest prime factor (e.g. N even / N=2^k). There pointwise minFac bound gives only ‖G‖≤N/√minFac (useless for o(N)) AND the L² second moment is Θ(N²) (Part XVII cap). Progress requires genuine minor-arc/Weyl-sum estimates that exploit cancellation ACROSS frequencies, not a single-frequency magnitude — i.e. abandon both the pointwise-max and L²-average reductions for those N.",
-      "Prove L¹=o(N²) for composite N: reflect divisor sum to N·∑_{e|N}φ(e)/√e ≤ N·∑_{e|N}√e = N·σ_{1/2}(N); need σ_{1/2}(N)=o(N) i.e. divisor asymptotics d(N)=N^{o(1)} (likely a genuine Mathlib gap)."
+      "Prove L¹=o(N²) for composite N: reflect divisor sum to N·∑_{e|N}φ(e)/√e ≤ N·∑_{e|N}√e = N·σ_{1/2}(N); need σ_{1/2}(N)=o(N) i.e. divisor asymptotics d(N)=N^{o(1)} (likely a genuine Mathlib gap).",
+      "DONE (researcher-11): upgraded odd-modulus first moment to EXACT equality for ALL odd N (sum_norm_sqGaussSum_eq_of_odd) via the exact pointwise magnitude sqGaussSum_normSq_eq_gcd_of_odd (‖G‖²=N·gcd), no residual cancellation at odd N. Genuine open obstruction remains: EVEN N (2 not a unit) where the residual phase sum Σψ(−rh²) over the nontrivial kernel genuinely cancels — needs Gauss-sum reciprocity/CRT, and small-minFac composite N for o(N) Sárközy density."
     ]
   },
   "leanFiles": [

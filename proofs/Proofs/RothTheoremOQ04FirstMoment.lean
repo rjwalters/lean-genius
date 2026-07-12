@@ -38,6 +38,19 @@
     divisors `1, N` contribute).  So the odd-modulus bound holds with equality at
     every odd prime — it is the best possible upper bound of this shape.
 
+  * `sum_norm_sqGaussSum_eq_of_odd` — the capstone: the ceiling is in fact an
+    **equality for *every* odd `N`**, composite or prime.  The pointwise magnitude
+    at odd moduli is not merely bounded but exact — `sqGaussSum_norm_eq_sqrt_gcd_of_odd`
+    (proved in `RothTheorem`: the Weyl residual sum `∑_{2rh=0} ψ(−rh²)` has *no
+    cancellation* at odd `N`, since `2` is a unit) gives `‖G(r)‖ = √(N·gcd(2r,N))`
+    for all `r`.  Hence
+
+      `∑_{r} ‖G(r)‖ = √N · ∑_{d ∣ N} φ(N/d) · √d`   (odd `N`),
+
+    upgrading the `≤` of `sum_norm_sqGaussSum_le_of_odd` to `=` and subsuming the prime
+    sharpness above as the two-divisor case.  It evaluates the first moment at composite
+    odd moduli too — e.g. `N = 9` gives `27 + 6√3` — where no prime-field argument applies.
+
   All results are fully machine-checked, 0 sorries, no `native_decide`.
 -/
 import Mathlib
@@ -169,5 +182,61 @@ theorem sum_norm_sqGaussSum_eq_bound_of_prime {N : ℕ} [NeZero N] (hp : N.Prime
       = Real.sqrt N * ∑ d ∈ N.divisors, ((N / d).totient : ℝ) * Real.sqrt d :=
   (sum_norm_sqGaussSum_eq_of_prime hp hN2).trans
     (sum_norm_sqGaussSum_bound_eq_of_prime hp hN2).symm
+
+/-- **Exact L¹ first moment at *all* odd moduli.**  The odd-modulus magnitude is not merely
+    bounded but *exact* — `sqGaussSum_norm_eq_sqrt_gcd_of_odd` gives
+    `‖G(r)‖ = √(N·gcd((2r).val, N))` for every frequency `r` (the Weyl residual sum has no
+    cancellation at odd `N`, since `2` is a unit).  Summing over all frequencies, factoring
+    out `√N`, reindexing `r ↦ 2r` and collapsing the gcd-weighted residue sum via
+    `sum_weight_gcd_eq_divisor_sum` therefore yields the exact closed form
+
+      `∑_{r} ‖G(r)‖ = √N · ∑_{d ∣ N} φ(N/d) · √d`.
+
+    This upgrades the ceiling `sum_norm_sqGaussSum_le_of_odd` (a `≤`, from the pointwise
+    triangle-inequality bound) to an **equality for every odd `N`**, composite or prime.  It
+    subsumes the prime sharpness `sum_norm_sqGaussSum_eq_bound_of_prime` (the two-divisor
+    special case `N.divisors = {1, N}`) and evaluates the first moment at composite odd
+    moduli — e.g. `N = 9`: `√9·(φ(9)·√1 + φ(3)·√3 + φ(1)·√9) = 3·(6 + 2√3 + 3) = 27 + 6√3` —
+    where no prime-field argument applies.  0 axioms. -/
+theorem sum_norm_sqGaussSum_eq_of_odd {N : ℕ} [NeZero N] (hodd : Odd N) :
+    ∑ r : ZMod N, ‖sqGaussSum r‖
+      = Real.sqrt N * ∑ d ∈ N.divisors, ((N / d).totient : ℝ) * Real.sqrt d := by
+  have hN : 0 < N := Nat.pos_of_ne_zero (NeZero.ne N)
+  -- Step 1: the pointwise magnitude is *exact*, so this is an equality; pull out √N.
+  have step1 : ∑ r : ZMod N, ‖sqGaussSum r‖
+      = Real.sqrt N * ∑ r : ZMod N, Real.sqrt (N.gcd (2 * r).val) := by
+    rw [Finset.mul_sum]
+    refine Finset.sum_congr rfl fun r _ => ?_
+    have h := sqGaussSum_norm_eq_sqrt_gcd_of_odd hodd r
+    rw [Nat.gcd_comm (2 * r).val N, Real.sqrt_mul (by positivity : (0:ℝ) ≤ (N:ℝ))] at h
+    exact h
+  -- Step 2: reindex r ↦ 2r (a bijection of ZMod N, since 2 is a unit at odd N).
+  have hcop : Nat.Coprime 2 N := Nat.coprime_two_left.mpr hodd
+  have hunit : IsUnit (2 : ZMod N) := by
+    have h := (ZMod.isUnit_iff_coprime 2 N).mpr hcop
+    simpa using h
+  have hbij : Function.Bijective (fun r : ZMod N => 2 * r) :=
+    Finite.injective_iff_bijective.mp hunit.mul_right_injective
+  have step2 : ∑ r : ZMod N, Real.sqrt (N.gcd (2 * r).val)
+      = ∑ c : ZMod N, Real.sqrt (N.gcd c.val) :=
+    Fintype.sum_bijective (fun r : ZMod N => 2 * r) hbij
+      (fun r => Real.sqrt (N.gcd (2 * r).val)) (fun c => Real.sqrt (N.gcd c.val))
+      (fun _ => rfl)
+  -- Step 3: transport the residue sum to `range N`.
+  have himg : Finset.image ZMod.val (univ : Finset (ZMod N)) = range N := by
+    ext k
+    simp only [Finset.mem_image, Finset.mem_univ, true_and, Finset.mem_range]
+    constructor
+    · rintro ⟨c, rfl⟩; exact ZMod.val_lt c
+    · intro hk; exact ⟨(k : ZMod N), ZMod.val_natCast_of_lt hk⟩
+  have step3 : ∑ c : ZMod N, Real.sqrt (N.gcd c.val) = ∑ k ∈ range N, Real.sqrt (N.gcd k) := by
+    rw [← himg, Finset.sum_image ((ZMod.val_injective N).injOn)]
+  -- Assemble.
+  calc ∑ r : ZMod N, ‖sqGaussSum r‖
+      = Real.sqrt N * ∑ r : ZMod N, Real.sqrt (N.gcd (2 * r).val) := step1
+    _ = Real.sqrt N * ∑ c : ZMod N, Real.sqrt (N.gcd c.val) := by rw [step2]
+    _ = Real.sqrt N * ∑ k ∈ range N, Real.sqrt (N.gcd k) := by rw [step3]
+    _ = Real.sqrt N * ∑ d ∈ N.divisors, ((N / d).totient : ℝ) * Real.sqrt d := by
+          rw [sum_weight_gcd_eq_divisor_sum N hN (fun m : ℕ => Real.sqrt m)]
 
 end Szemeredi.Roth
