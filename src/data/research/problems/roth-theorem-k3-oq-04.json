@@ -11,7 +11,7 @@
   "status": "in-progress",
   "knowledge": {
     "score": 15,
-    "progressSummary": "PROGRESS: odd-modulus L¹ first moment ∑_r‖G(r)‖ ≤ √N·∑_{d|N}φ(N/d)√d (0-axiom) now shown SHARP at odd primes — exact value N+(N-1)√N attains the bound. Remaining: o(N²) for composite N gated on divisor asymptotics.",
+    "progressSummary": "PROGRESS: exact Lᵖ moment hierarchy (all real s) machine-checked; first moment now bounded ∑‖G(r)‖ ≤ N·√N·τ(N), reducing Sárközy o(N²) to the elementary τ(N)=o(√N) (Wigert; Mathlib gap).",
     "insights": [
       "The existing Roth Fourier infrastructure is genuine and 0-axiom: RothTheorem.lean defines fourierCoeff A r = ∑_{x∈A} ψ(r·x) on ZMod N, proves Parseval (∑_r ‖Â(r)‖² = |A|·N), and the key linearization triple_count_fourier: tripleCount(A) + |A| = N⁻¹·∑_r Â(r)²·conj(Â(2r)). The 3-AP count linearizes ONLY because the pattern (x, x+d, x+2d) is a linear form: character orthogonality in x forces the frequency relation and collapses two of the three Fourier factors into Â(r) and Â(2r).",
       "Structural answer to the OQ, part (a) — Sárközy/single square difference IS an accessible extension. For A ⊆ ZMod N the square-difference count SD(A) = ∑_{x,n} 1_A(x)·1_A(x+n²) Fourier-expands (identical orthogonality bookkeeping to triple_count_fourier) to SD(A) = N⁻¹·∑_r |Â(r)|²·G(r), where G(r) = ∑_{n∈ZMod N} ψ(r·n²) is a quadratic GAUSS sum. Principal term r=0: G(0)=N, Â(0)=|A| ⇒ |A|². The new ingredient vs 3-APs is that the non-principal terms are weighted by G(r) (size ≈ √N for r≠0 by classical Gauss-sum bounds) instead of a second coefficient Â(2r). So the LINEAR transform + Weyl/Gauss-sum estimates suffice — this is exactly the circle-method route to Sárközy's theorem.",
@@ -29,7 +29,8 @@
       "Corollary sqGaussSum_l2_factor_ge_of_prime: √(Σ_{r≠0}‖G‖²)≥N−1, so the L²-averaged minor-arc factor feeding sqDiffFree_density_bound_l2 does NOT decay at prime N; only the POINTWISE √N magnitude (sqDiffFree_density_bound_of_prime, already built) yields a nontrivial density bound. The L² average destroys the per-frequency √N cancellation.",
       "Second moment tightly bracketed at every odd N: N·φ(N) ≤ Σ_{r≠0}‖G(r)‖² ≤ N²·(d(N)−1), both sides N^{2+o(1)} (Parts XXI+XXII). This CLOSES the order-of-magnitude question and reconfirms the L²-averaged circle-method route is Θ(N²)-capped; the crude explicit Part XVI upper bound ≤4N²⌊√N⌋ (N^2.5) is now superseded by the essentially-optimal N²·d(N).",
       "The odd-modulus L¹ ceiling ∑_r‖G(r)‖ ≤ √N·∑_{d|N}φ(N/d)√d is SHARP: at every odd prime N it holds with equality, both sides = N+(N-1)√N (only divisors 1,N contribute).",
-      "The odd-modulus first-moment ceiling √N·∑_{d|N}φ(N/d)√d is attained with EQUALITY at every odd N, not just primes: the exact pointwise magnitude ‖G(r)‖=√(N·gcd) (no residual cancellation when 2 is a unit) makes the summed triangle inequality tight. Composite example N=9: ∑_r‖G(r)‖=27+6√3."
+      "The odd-modulus first-moment ceiling √N·∑_{d|N}φ(N/d)√d is attained with EQUALITY at every odd N, not just primes: the exact pointwise magnitude ‖G(r)‖=√(N·gcd) (no residual cancellation when 2 is a unit) makes the summed triangle inequality tight. Composite example N=9: ∑_r‖G(r)‖=27+6√3.",
+      "The exact L¹ first moment √N·Σ_{d|N}φ(N/d)√d is ≤ N^{3/2}·τ(N): each divisor term φ(N/d)√d ≤ (N/d)·√d ≤ (N/d)·d = N. This REDUCES the analytic Sárközy requirement ∑‖G(r)‖=o(N²) to the elementary divisor-counting statement τ(N)=o(√N) (equiv. N^{3/2}τ(N)=o(N²)), true by Wigert τ(N)=N^{o(1)}."
     ],
     "builtItems": [
       "RothTheorem.lean Part VI (researcher-5, 2026-07-05, VERIFIED 0-axiom): sqGaussSum r = ∑_{n∈ZMod N} ψ(r·n²) (quadratic Gauss sum); sqDiffCount A = #{(x,n) : x∈A, x+n²∈A} (square-difference count); sqGaussSum_zero: G(0)=N; sqDiffCount_fourier_complex: SD(A)·N = ∑_r Â(r)·conj(Â(r))·G(r); sqDiffCount_fourier: SD(A) = N⁻¹·∑_r ‖Â(r)‖²·G(r). Proof mirrors triple_count_fourier: expand each term as a triple ψ-sum, bring the r-sum innermost, apply char_orthogonality (∑_r ψ(r·c)=N·[c=0]), collapse the y-sum via y=x+n². #print axioms → [propext, Classical.choice, Quot.sound].",
@@ -57,7 +58,8 @@
       "sum_norm_sqGaussSum_eq_bound_of_prime — sharpness capstone: odd-modulus ≤ bound attained with equality at odd primes (RothTheoremOQ04FirstMoment.lean, 0-axiom)",
       "sqGaussSum_normSq_eq_gcd_of_odd (RothTheorem.lean): EXACT odd-modulus magnitude ‖G(r)‖²=N·gcd((2r).val,N) for ALL r — upgrades the ≤ bound sqGaussSum_normSq_le_gcd to equality via no-cancellation of the Weyl residual sum (2 unit ⟹ 2rh=0⟹rh=0⟹rh²=0⟹ψ=1)",
       "sqGaussSum_norm_eq_sqrt_gcd_of_odd (RothTheorem.lean): square-root form ‖G(r)‖=√(N·gcd((2r).val,N)) exact at odd N",
-      "sum_norm_sqGaussSum_eq_of_odd (RothTheoremOQ04FirstMoment.lean): CAPSTONE exact L¹ first moment ∑_r‖G(r)‖=√N·∑_{d|N}φ(N/d)√d for ALL odd N (composite or prime), upgrading sum_norm_sqGaussSum_le_of_odd from ≤ to =, subsuming prime sharpness as the two-divisor case"
+      "sum_norm_sqGaussSum_eq_of_odd (RothTheoremOQ04FirstMoment.lean): CAPSTONE exact L¹ first moment ∑_r‖G(r)‖=√N·∑_{d|N}φ(N/d)√d for ALL odd N (composite or prime), upgrading sum_norm_sqGaussSum_le_of_odd from ≤ to =, subsuming prime sharpness as the two-divisor case",
+      "sum_norm_sqGaussSum_le_card_of_odd (RothTheoremOQ04FirstMoment.lean): ∑_r‖G(r)‖ ≤ N·√N·τ(N) for odd N — bounds the exact first moment term-by-term (φ(N/d)√d ≤ (N/d)·d = N), 0-axiom"
     ],
     "nextSteps": [
       "DONE (researcher-11): two-torsion DICHOTOMY G(r)∈{0,N} at 2r=0 (sqGaussSum_eq_zero_or_eq_natCast_of_two_mul_eq_zero) — the exact characterization at the frequencies the gcd/kernel-count bounds leave vacuous (‖G(r)‖≤N trivially); rules out all intermediate magnitudes 0<‖G(r)‖<N.",
@@ -72,7 +74,11 @@
       "Alternatively prove the EXACT second moment Σ_r‖G(r)‖²=N·#{(n,m):n²=m²} (Plancherel/char-orthogonality, cf researcher-11 Part IX on a separate branch) and specialize #{n²=m²} for squarefree N to get the sharp √N Sárközy constant.",
       "The genuine open obstruction is now sharply localized: composite N with BOUNDED smallest prime factor (e.g. N even / N=2^k). There pointwise minFac bound gives only ‖G‖≤N/√minFac (useless for o(N)) AND the L² second moment is Θ(N²) (Part XVII cap). Progress requires genuine minor-arc/Weyl-sum estimates that exploit cancellation ACROSS frequencies, not a single-frequency magnitude — i.e. abandon both the pointwise-max and L²-average reductions for those N.",
       "Prove L¹=o(N²) for composite N: reflect divisor sum to N·∑_{e|N}φ(e)/√e ≤ N·∑_{e|N}√e = N·σ_{1/2}(N); need σ_{1/2}(N)=o(N) i.e. divisor asymptotics d(N)=N^{o(1)} (likely a genuine Mathlib gap).",
-      "DONE (researcher-11): upgraded odd-modulus first moment to EXACT equality for ALL odd N (sum_norm_sqGaussSum_eq_of_odd) via the exact pointwise magnitude sqGaussSum_normSq_eq_gcd_of_odd (‖G‖²=N·gcd), no residual cancellation at odd N. Genuine open obstruction remains: EVEN N (2 not a unit) where the residual phase sum Σψ(−rh²) over the nontrivial kernel genuinely cancels — needs Gauss-sum reciprocity/CRT, and small-minFac composite N for o(N) Sárközy density."
+      "DONE (researcher-11): upgraded odd-modulus first moment to EXACT equality for ALL odd N (sum_norm_sqGaussSum_eq_of_odd) via the exact pointwise magnitude sqGaussSum_normSq_eq_gcd_of_odd (‖G‖²=N·gcd), no residual cancellation at odd N. Genuine open obstruction remains: EVEN N (2 not a unit) where the residual phase sum Σψ(−rh²) over the nontrivial kernel genuinely cancels — needs Gauss-sum reciprocity/CRT, and small-minFac composite N for o(N) Sárközy density.",
+      "Prove/import τ(N)=o(√N) (or any τ(N)=O(N^{1/2-δ})) to conclude ∑_r‖G(r)‖=o(N²) and hence the square-difference-free density o(1) at all odd N."
+    ],
+    "mathlibGaps": [
+      "Mathlib lacks the divisor-count asymptotic τ(N)=N^{o(1)} (Wigert) / τ(N)=o(N^ε); only Nat.card_divisors_le_self (τ≤N) is available. This is the sole remaining ingredient to upgrade ∑‖G(r)‖ ≤ N^{3/2}τ(N) to the o(N²) Sárközy density input."
     ]
   },
   "leanFiles": [

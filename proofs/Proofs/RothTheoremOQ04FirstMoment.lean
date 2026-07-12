@@ -348,4 +348,61 @@ theorem sum_sq_norm_sqGaussSum_eq_of_odd {N : ℕ} [NeZero N] (hodd : Odd N) :
     _ = (N : ℝ) * ∑ d ∈ N.divisors, ((N / d).totient : ℝ) * (d : ℝ) := by
           rw [sum_weight_gcd_eq_divisor_sum N hN (fun m : ℕ => (m : ℝ))]
 
+/-- **Elementary reduction: the first moment is `≤ N·√N·τ(N)`.**  The exact first
+    moment `∑_r ‖G(r)‖ = √N·∑_{d∣N} φ(N/d)·√d` (`sum_norm_sqGaussSum_eq_of_odd`) is
+    bounded, term-by-term, by the constant `N`:
+
+      `φ(N/d)·√d ≤ (N/d)·√d ≤ (N/d)·d = N`,
+
+    using `φ(N/d) ≤ N/d` (`Nat.totient_le`), `√d ≤ d` for `d ≥ 1` (`Real.sqrt_le_iff`)
+    and `(N/d)·d = N` (`Nat.div_mul_cancel`, as `d ∣ N`).  There are `τ(N) = |N.divisors|`
+    divisors, so the divisor sum is `≤ N·τ(N)` and
+
+      `∑_{r} ‖G(r)‖ ≤ N·√N·τ(N) = N^{3/2}·τ(N)`.
+
+    **Why this matters.**  The quantitative Sárközy / square-difference-free density
+    estimate needs the *analytic* input `∑_{r} ‖G(r)‖ = o(N²)`.  This inequality reduces
+    that analytic requirement to the purely **elementary, number-theoretic** statement
+    `τ(N) = o(√N)` — indeed `N^{3/2}·τ(N) = o(N²) ⟺ τ(N) = o(√N)`, which holds because the
+    divisor-counting function satisfies `τ(N) = N^{o(1)}` (Wigert's theorem).  That divisor
+    asymptotic is not currently in Mathlib, so the `o(N²)` bound itself is not yet
+    machine-checkable here; the explicit inequality below is the machine-checked content and
+    isolates the *only* remaining ingredient.  (Note `τ(N) ≤ 2√N` always, so the bound is at
+    worst `2N²`; the genuine `o` gain comes from the sub-polynomial growth of `τ`.)  `0` axioms. -/
+theorem sum_norm_sqGaussSum_le_card_of_odd {N : ℕ} [NeZero N] (hodd : Odd N) :
+    ∑ r : ZMod N, ‖sqGaussSum r‖ ≤ (N : ℝ) * Real.sqrt N * (N.divisors.card : ℝ) := by
+  rw [sum_norm_sqGaussSum_eq_of_odd hodd]
+  -- Per-divisor bound: `φ(N/d)·√d ≤ N` for every `d ∣ N`.
+  have hterm : ∀ d ∈ N.divisors, ((N / d).totient : ℝ) * Real.sqrt d ≤ (N : ℝ) := by
+    intro d hd
+    have hdvd : d ∣ N := Nat.dvd_of_mem_divisors hd
+    have hdpos : 0 < d := Nat.pos_of_mem_divisors hd
+    have hd1 : (1 : ℝ) ≤ (d : ℝ) := by exact_mod_cast hdpos
+    -- `φ(N/d) ≤ N/d`
+    have ht : ((N / d).totient : ℝ) ≤ ((N / d : ℕ) : ℝ) := by exact_mod_cast Nat.totient_le (N / d)
+    -- `√d ≤ d`
+    have hsd : Real.sqrt d ≤ (d : ℝ) := by
+      rw [Real.sqrt_le_iff]
+      exact ⟨by positivity, by nlinarith [hd1]⟩
+    -- `(N/d)·d = N`
+    have hmul : ((N / d : ℕ) : ℝ) * (d : ℝ) = (N : ℝ) := by
+      rw [← Nat.cast_mul, Nat.div_mul_cancel hdvd]
+    calc ((N / d).totient : ℝ) * Real.sqrt d
+        ≤ ((N / d : ℕ) : ℝ) * Real.sqrt d :=
+          mul_le_mul_of_nonneg_right ht (Real.sqrt_nonneg _)
+      _ ≤ ((N / d : ℕ) : ℝ) * (d : ℝ) :=
+          mul_le_mul_of_nonneg_left hsd (by positivity)
+      _ = (N : ℝ) := hmul
+  -- Sum the constant bound over the `τ(N)` divisors.
+  have key : ∑ d ∈ N.divisors, ((N / d).totient : ℝ) * Real.sqrt d
+      ≤ (N : ℝ) * (N.divisors.card : ℝ) := by
+    calc ∑ d ∈ N.divisors, ((N / d).totient : ℝ) * Real.sqrt d
+        ≤ ∑ _d ∈ N.divisors, (N : ℝ) := Finset.sum_le_sum hterm
+      _ = (N.divisors.card : ℝ) * (N : ℝ) := by rw [Finset.sum_const, nsmul_eq_mul]
+      _ = (N : ℝ) * (N.divisors.card : ℝ) := by ring
+  calc Real.sqrt N * ∑ d ∈ N.divisors, ((N / d).totient : ℝ) * Real.sqrt d
+      ≤ Real.sqrt N * ((N : ℝ) * (N.divisors.card : ℝ)) :=
+        mul_le_mul_of_nonneg_left key (Real.sqrt_nonneg _)
+    _ = (N : ℝ) * Real.sqrt N * (N.divisors.card : ℝ) := by ring
+
 end Szemeredi.Roth
