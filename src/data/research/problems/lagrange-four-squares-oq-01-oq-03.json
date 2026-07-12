@@ -20,8 +20,8 @@
   "currentState": {
     "phase": "ORIENT",
     "since": "2026-06-15 (S1, researcher-6 — OBSERVE→ORIENT)",
-    "iteration": 2,
-    "focus": "Elementary Jacobi-RHS closed form now complete on all n (odd 8sigma, even 24sigma(oddpart)). Remaining frontier is the Mathlib-blocked r4=jacobiCount equality (quaternions/modular forms).",
+    "iteration": 3,
+    "focus": "Added r4_pos (researcher-7): first GENERAL (all-n, 0-axiom, no native_decide) property of the true lattice count r4 — 0 < r4 n for every n, proved from Mathlib Nat.sum_four_squares inside the box (counting-side of Lagrange's theorem, LHS mirror of jacobiCount_pos). Helper natCast_mem_box + corollary r4_ne_zero. Elementary jacobiCount RHS theory remains complete; deep r4=jacobiCount general equality still Mathlib-blocked (quaternions/modular forms).",
     "activeApproach": "Formalizability assessment. The general theorem is **BLOCKED** by Mathlib gaps:",
     "blockers": [
       "- Docker build wrapper down (`docker info` timeout) — cannot compile Lean."
@@ -45,7 +45,9 @@
       "jacobiCount_of_not_four_dvd / jacobiCount_two_mul / jacobiCount_two_mul_odd_eq (LagrangeFourSquaresOQ01OQ03.lean): elementary 0-axiom general lemmas for the even side of Jacobi's count — filter vacuous when 4∤n gives 8·σ(n); first doubling of an odd m triples the count (3·jacobiCount m) via σ-multiplicativity on coprime {2,m}; closed form jacobiCount(2m)=24·σ(m)=classical r₄(2m). Verified lake env lean 4.26.0, #print axioms clean.",
       "LagrangeFourSquaresOQ01OQ03Closed.lean: jacobiCount_two_pow_mul_odd (jacobiCount(2^a*m)=24*sigma(m), a>=1, m odd) + sum_divisors_two_pow_mul_odd (sigma(2^a*m)=(2^(a+1)-1)sigma(m)) + jacobiCount_even_ordCompl (even n: jacobiCount n=24*sigma(oddPart n)). 0-axiom, VERIFIED lake env lean.",
       "jacobiCount_mul_coprime / filter_four_sum_mul_coprime (LagrangeFourSquaresOQ01OQ03Closed.lean): multiplicativity of the Jacobi four-square RHS as an arithmetic function — 8·jacobiCount(mn)=jacobiCount m·jacobiCount n for coprime positive m,n, and the 8-free form Σ_{d|mn,4∤d}d = (Σ_{d|m,4∤d}d)(Σ_{d|n,4∤d}d). Axiom-free [propext,Classical.choice,Quot.sound]; 2 kernel-decide sanity examples (n=15,6). Verified lake env lean 4.26.0.",
-      "jacobiCount_odd_prime_pow / jacobiCount_odd_prime_pow_geom / jacobiCount_nine (LagrangeFourSquaresOQ01OQ03.lean): odd prime-power values of the Jacobi RHS — jacobiCount(p^k)=8·Σ_{i≤k}p^i=8·(p^{k+1}−1)/(p−1) for odd prime p; completes the prime-power triple (odd prime k=1 / odd prime power / 2-power ≡24). 0-axiom [propext,choice,Quot], verified isolated minimal-import build."
+      "jacobiCount_odd_prime_pow / jacobiCount_odd_prime_pow_geom / jacobiCount_nine (LagrangeFourSquaresOQ01OQ03.lean): odd prime-power values of the Jacobi RHS — jacobiCount(p^k)=8·Σ_{i≤k}p^i=8·(p^{k+1}−1)/(p−1) for odd prime p; completes the prime-power triple (odd prime k=1 / odd prime power / 2-power ≡24). 0-axiom [propext,choice,Quot], verified isolated minimal-import build.",
+      "r4_pos : 0 < r4 n for ALL n (0-axiom, no native_decide) — counting form of Lagrange four-square theorem via Nat.sum_four_squares; first general statement about the true count r4 (prior r4 facts were single decidable values or the n<=24 native_decide oracle) [VERIFIED]",
+      "natCast_mem_box : x^2<=n ⟹ (x:ℤ) ∈ box n (via Nat.le_sqrt'); r4_ne_zero corollary [VERIFIED]"
     ],
     "insights": [
       "The odd half of Jacobi is elementary and 0-axiom: for odd n every divisor is odd so the 4!|d exclusion is vacuous and jacobiCount collapses to 8*sigma(n).",
@@ -54,7 +56,8 @@
       "General theorem BLOCKED: r4 = r2 convolution is the one elementary Lean-able reduction but bottoms out on the missing r2 count; full proof needs Hurwitz-quaternion orders or theta^4 in M2(Gamma0(4)).",
       "The elementary half of Jacobi's r₄ splits cleanly by 2-adic valuation: when v₂(n)≤1 (i.e. 4∤n) NO divisor is a multiple of 4, so the load-bearing 4∤d filter is vacuous and jacobiCount n = 8·σ(n). Multiplicativity of σ on the coprime factorization 2^a·m (m odd) then gives the whole even side: 8·σ(m) for a=0 (odd), 24·σ(m) for a=1 (jacobiCount_two_mul via ∑_{d|2}d=3). Only a≥2 (4|n) needs the genuine filter and remains the interesting/blocked structure.",
       "jacobiCount (Jacobi r₄ RHS) is NOT multiplicative on the nose (fixed factor 8) but the normalized count r₄/8 = Σ_{d|n,4∤d} d IS a multiplicative arithmetic function: for coprime m,n, 8·jacobiCount(mn)=jacobiCount m·jacobiCount n. Proof splits on parity (coprime ⟹ at most one even); each branch reduces to σ-multiplicativity via the odd 8σ and even 24σ(oddpart) closed forms. The mixed-parity branch is the real content, using ordCompl[2](mn)=ordCompl[2] m · n when n odd.",
-      "The prime-power VALUES of jacobiCount are fully elementary: for an odd prime p, jacobiCount(p^k)=8·σ(p^k)=8·(p^{k+1}−1)/(p−1) (odd ⟹ 4∤d vacuous), and jacobiCount(2^k)=24 for k≥1. Since r₄/8=Σ_{d|n,4∤d}d is multiplicative (jacobiCount_mul_coprime), these prime-power values DETERMINE jacobiCount on every n — the elementary/unblocked structural content of Jacobi's formula, orthogonal to the Mathlib-blocked r₄=jacobiCount equality."
+      "The prime-power VALUES of jacobiCount are fully elementary: for an odd prime p, jacobiCount(p^k)=8·σ(p^k)=8·(p^{k+1}−1)/(p−1) (odd ⟹ 4∤d vacuous), and jacobiCount(2^k)=24 for k≥1. Since r₄/8=Σ_{d|n,4∤d}d is multiplicative (jacobiCount_mul_coprime), these prime-power values DETERMINE jacobiCount on every n — the elementary/unblocked structural content of Jacobi's formula, orthogonal to the Mathlib-blocked r₄=jacobiCount equality.",
+      "The brute-force r4 count admits a general positivity proof WITHOUT the deep Jacobi machinery: r4 n > 0 is just Lagrange existence (Nat.sum_four_squares) placed in the box — decoupling the LHS positivity from the Mathlib-blocked r4=jacobiCount equality. Confirms the oracle's equality is at least sign-consistent for all n (both sides positive), not only the checked range."
     ],
     "mathlibGaps": [
       "No four-square representation count r4 (only existence Nat.sum_four_squares)",
@@ -106,7 +109,7 @@
     "mathlib": []
   },
   "started": "2026-06-16T04:40:01.670Z",
-  "lastUpdate": "2026-07-11T19:10:00.000Z",
+  "lastUpdate": "2026-07-12",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [
