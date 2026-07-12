@@ -2,10 +2,10 @@
   {
     "id": "ann-header",
     "proofId": "bezout-identity-oq-02-oq-01-oq-02-oq-04",
-    "range": { "startLine": 1, "endLine": 31 },
+    "range": { "startLine": 1, "endLine": 39 },
     "type": "concept",
     "title": "OQ-04: Eisenstein in the UFD/Euclidean-Domain Framework",
-    "content": "**Module framing.** The parent (bezout-identity-oq-02-oq-01-oq-02, 'FTA Generalization to Euclidean Domains') asks as its fourth open question whether Eisenstein's criterion — a key application of the UFD framework — is in Mathlib and usable here. The answer is yes, and at greater generality than UFDs: Mathlib's `Polynomial.irreducible_of_eisenstein_criterion` works at any prime ideal of any commutative ring. This file packages it into the clean headline that $X^n - p$ is irreducible over $R[X]$ for any integral domain $R$ and prime $p$, then specializes the domain to exhibit the criterion over $\\mathbb{Z}$ and over the Euclidean domain $\\mathbb{Q}[X]$ (the parent's own theme). Zero axioms, imports only Mathlib.",
+    "content": "**Module framing.** The parent (bezout-identity-oq-02-oq-01-oq-02, 'FTA Generalization to Euclidean Domains') asks as its fourth open question whether Eisenstein's criterion — a key application of the UFD framework — is in Mathlib and usable here. The answer is yes, and at greater generality than UFDs: Mathlib's `Polynomial.irreducible_of_eisenstein_criterion` works at any prime ideal of any commutative ring. This file packages it into the clean headline that $X^n - p$ is irreducible over $R[X]$ for any integral domain $R$ and prime $p$, then specializes the domain to exhibit the criterion over $\\mathbb{Z}$ and over the Euclidean domain $\\mathbb{Q}[X]$ (the parent's own theme). The preamble is minimal: the single blanket `import Mathlib` (gallery convention), `open Polynomial` to bring in the `X`, `C`, `coeff`, `degree` notation the statements use, and the enclosing namespace. Zero axioms.",
     "mathContext": "Eisenstein at a prime ideal $\\mathfrak{p}$: if all non-leading coefficients lie in $\\mathfrak{p}$, the leading does not, and the constant is not in $\\mathfrak{p}^2$, then the primitive polynomial is irreducible.",
     "significance": "supporting",
     "relatedConcepts": [
