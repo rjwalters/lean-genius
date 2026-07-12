@@ -1689,4 +1689,50 @@ theorem minpoly_eq_lcm_compress_of_reducing {T : V →ₗ[𝕜] V} (H : Submodul
         normalize_eq_normalize_iff.mpr ⟨d1, d2⟩
     _ = lcm (minpoly 𝕜 (compress T H)) (minpoly 𝕜 (compress T Hᗮ)) := normalize_lcm _ _
 
+/-- **Each block minpoly has degree at most the ambient one (reducing pair).**
+Since each block minimal polynomial divides `minpoly T`
+(`minpoly_compress_dvd_of_reducing`) and `minpoly T ≠ 0` (it is monic, `T` being a
+finite-dimensional endomorphism), their degrees are bounded by `deg (minpoly T)`.  The
+lower half of the degree bracket for `minpoly T`, complementing the sum upper bound
+`natDegree_minpoly_le_add_compress_of_reducing`. -/
+theorem natDegree_minpoly_compress_le_of_reducing {T : V →ₗ[𝕜] V} (H : Submodule 𝕜 V)
+    (hH : ∀ y ∈ H, T y ∈ H) (hHp : ∀ y ∈ Hᗮ, T y ∈ Hᗮ) :
+    (minpoly 𝕜 (compress T H)).natDegree ≤ (minpoly 𝕜 T).natDegree ∧
+      (minpoly 𝕜 (compress T Hᗮ)).natDegree ≤ (minpoly 𝕜 T).natDegree := by
+  have hint : IsIntegral 𝕜 T :=
+    have : Algebra.IsIntegral 𝕜 (Module.End 𝕜 V) := Algebra.IsIntegral.of_finite 𝕜 _
+    Algebra.IsIntegral.isIntegral T
+  have hT0 : minpoly 𝕜 T ≠ 0 := (minpoly.monic hint).ne_zero
+  obtain ⟨hdvdH, hdvdHp⟩ := minpoly_compress_dvd_of_reducing H hH hHp
+  exact ⟨Polynomial.natDegree_le_of_dvd hdvdH hT0,
+    Polynomial.natDegree_le_of_dvd hdvdHp hT0⟩
+
+/-- **The ambient minpoly degree is at most the sum of the block minpoly degrees
+(reducing pair).**  From the product divisibility `minpoly T ∣ minpoly (compress T H) ·
+minpoly (compress T Hᗮ)` (`minpoly_dvd_mul_compress_of_reducing`) and the fact that both
+block minpolys are monic (hence nonzero, so their product is nonzero and its degree is the
+sum of theirs), `deg (minpoly T) ≤ deg (minpoly (compress T H)) + deg (minpoly (compress T
+Hᗮ))`.  The upper half of the degree bracket; together with
+`natDegree_minpoly_compress_le_of_reducing` this pins `deg (minpoly T)` between the block
+maximum and the block sum — the degree shadow of `minpoly T = lcm` of the two blocks. -/
+theorem natDegree_minpoly_le_add_compress_of_reducing {T : V →ₗ[𝕜] V} (H : Submodule 𝕜 V)
+    (hH : ∀ y ∈ H, T y ∈ H) (hHp : ∀ y ∈ Hᗮ, T y ∈ Hᗮ) :
+    (minpoly 𝕜 T).natDegree ≤
+      (minpoly 𝕜 (compress T H)).natDegree + (minpoly 𝕜 (compress T Hᗮ)).natDegree := by
+  have hpint : IsIntegral 𝕜 (compress T H) :=
+    have : Algebra.IsIntegral 𝕜 (Module.End 𝕜 (↥H)) := Algebra.IsIntegral.of_finite 𝕜 _
+    Algebra.IsIntegral.isIntegral (compress T H)
+  have hqint : IsIntegral 𝕜 (compress T Hᗮ) :=
+    have : Algebra.IsIntegral 𝕜 (Module.End 𝕜 (↥Hᗮ)) := Algebra.IsIntegral.of_finite 𝕜 _
+    Algebra.IsIntegral.isIntegral (compress T Hᗮ)
+  have hp0 : minpoly 𝕜 (compress T H) ≠ 0 := (minpoly.monic hpint).ne_zero
+  have hq0 : minpoly 𝕜 (compress T Hᗮ) ≠ 0 := (minpoly.monic hqint).ne_zero
+  have hprod : minpoly 𝕜 (compress T H) * minpoly 𝕜 (compress T Hᗮ) ≠ 0 :=
+    mul_ne_zero hp0 hq0
+  calc (minpoly 𝕜 T).natDegree
+      ≤ (minpoly 𝕜 (compress T H) * minpoly 𝕜 (compress T Hᗮ)).natDegree :=
+        Polynomial.natDegree_le_of_dvd (minpoly_dvd_mul_compress_of_reducing H hH hHp) hprod
+    _ = (minpoly 𝕜 (compress T H)).natDegree + (minpoly 𝕜 (compress T Hᗮ)).natDegree :=
+        Polynomial.natDegree_mul hp0 hq0
+
 end CauchyInterlacing.PoincareCompression
