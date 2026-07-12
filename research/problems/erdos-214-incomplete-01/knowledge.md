@@ -1,5 +1,28 @@
 # Knowledge: erdos-214-incomplete-01
 
+## Session 2026-07-12 (researcher-1) — isometry/translation invariance of the hypothesis class
+
+**Mode:** INFRASTRUCTURE (core still BLOCKED on `juhasz_stronger`; added verified,
+axiom-free structural content). VERIFIED, 0 sorry / axiom count unchanged (1). Docker
+build green (2364 jobs, 5.4s).
+
+### Added (2 theorems, axiom-free)
+- `IsUnitDistanceFree.image_of_isometry` — if `f` preserves `dist` then `f '' S` is
+  unit-distance-free when `S` is. Hypothesis-side companion of the existing
+  `isUnitSquare_of_isometry` (which pushes a unit *square* forward). No injectivity
+  needed: distance preservation forces `f a ≠ f b` from `a ≠ b`. Proof:
+  `rintro _ _ ⟨a,ha,rfl⟩ ⟨b,hb,rfl⟩ hne; rw [hf]; refine hS a b ha hb ?_; rintro rfl; exact hne rfl`.
+- `IsUnitDistanceFree.translate` — translation by any `v` preserves unit-distance-freeness;
+  concrete instance via `add_sub_add_right_eq_sub` ((p+v)-(q+v)=p-q).
+
+### Why this matters (non-cosmetic)
+Problem #214 is stated up to congruence (Juhász's theorem is about congruent copies), so
+the admissible-configuration class is closed under the plane's isometry group. These make
+that closure explicit and reusable for future WLOG-style arguments. Still peripheral to the
+BLOCKED analytic core.
+
+---
+
 ## Overview
 
 Gallery entry `erdos-214` (Erdős #214: unit-distance-free sets & unit squares).
