@@ -55,12 +55,20 @@
       "gowersNorm_zero: ‖0‖_{U^s} = 0 — every hypercube factor is conjugateByWeight ω 0 = 0, so each 2^s-fold product vanishes and the average is 0",
       "kAPCount_const: Λ_k(c,…,c) = cᵏ — the inner product is ∏ᵢ c = cᵏ and the normalized double average (N⁻¹)²·∑_{x,d} cᵏ cancels the N² pairs against the (N⁻¹)² prefactor",
       "kAPCount_const_one: Λ_k(1,…,1) = 1 — the total normalized k-AP mass, base point of the 1_A = δ·1 + (1_A − δ) decomposition",
-      "kAPCount_eq_zero_of_zero: a single zero slot annihilates the count — if f j = 0 then Λ_k(f₀,…,f_{k-1}) = 0, since the j-th factor of every product term vanishes"
+      "kAPCount_eq_zero_of_zero: a single zero slot annihilates the count — if f j = 0 then Λ_k(f₀,…,f_{k-1}) = 0, since the j-th factor of every product term vanishes",
+      "Multilinear update family (prod_update_factor, kAPCount_update_add / _smul / _sub / _split): Λ_k is linear in each slot via Function.update — the algebraic engine of the generalized von Neumann expansion",
+      "Generalized von Neumann diagonal expansion (kAPCount_diag_eq_sum_subsets, kAPCount_diag_eq_major_add_remainder): the slot-by-slot binomial expansion of Λ_k(g+h) as a sum over subsets, split into the all-g major term plus a remainder",
+      "Indicator↔count bridge and diagonal/nondegenerate split (kAPCount_indicator_eq_count, kAPCount_count_split, kAPCount_indicator_eq_diag_add_nondeg, kAPCount_indicator_univ): identifies the analytic Λ_k(1_A) with the combinatorial k-AP count and separates diagonal (d=0) from nondegenerate (d≠0) progressions",
+      "Structural bounds and monotonicity (kAPCount_count_start_subset, kAPCount_count_le, kAPCount_nondeg_le, kAPCount_count_mono, kAPCount_nondeg_mono, kAPCount_count_ge, kAPCount_count_bracket): the two-sided bracket |A| ≤ count(A) ≤ |A|·N and set-monotonicity",
+      "Positivity/vanishing characterizations (kAPCount_count_pos, kAPCount_count_pos_iff, kAPCount_count_eq_zero_iff): count(A) > 0 ⟺ A ≠ ∅",
+      "Extreme sets and singletons (kAPCount_count_univ = N², the empty-set vanishing family, kAPCount_nondeg_univ, kAPCount_{nondeg,count,indicator}_singleton): exact values at univ, ∅, and singletons",
+      "Global quadratic bounds (kAPCount_count_le_sq, kAPCount_nondeg_le_sq): count ≤ N², the crude ceiling for density arguments",
+      "Translation invariance (kAPCount_count_translate, kAPCount_nondeg_translate, kAPCount_indicator_translate): the affine symmetry Λ_k(1_{A+t}) = Λ_k(1_A) underlying the density-increment method"
     ],
     "axiomCount": 0,
-    "lineCount": 793,
+    "lineCount": 929,
     "assumptions": "0 axioms, 0 sorries. Only the foundational axioms propext / Classical.choice / Quot.sound are used; no native_decide, no sorryAx, no Lean.ofReduceBool. The operators are re-declared self-containedly in this file's namespace; the file imports Mathlib.",
-    "theoremCount": 30,
+    "theoremCount": 38,
     "definitionCount": 5
   },
   "overview": {
@@ -85,42 +93,114 @@
     {
       "id": "operators",
       "title": "The Operators (constructive; norm via ‖·‖)",
-      "summary": "Self-contained re-declaration of hypercubeShift (the ω·h shift), conjugateByWeight (conjugate when the Hamming weight is odd), gowersNorm (the U^s norm as a modulus of a normalized sum), and kAPCount (Λ_k, the normalized double average over ZMod N).",
+      "summary": "Self-contained re-declaration of hypercubeShift (the ω·h shift), conjugateByWeight (conjugate when the Hamming weight is odd), gowersNorm (the U^s norm as a modulus of a normalized sum), kAPCount (Λ_k, the normalized double average over ZMod N), and indicatorZMod (the ℂ-indicator 1_A).",
       "startLine": 45,
-      "endLine": 75,
+      "endLine": 101,
       "mathContext": "$\\Lambda_k(f_0,\\dots,f_{k-1}) = \\mathbb{E}_{x,d\\in\\mathbb{Z}/N\\mathbb{Z}}\\prod_{i<k} f_i(x+i\\cdot d)$; $\\|f\\|_{U^s}^{2^s} = |\\mathbb{E}_{x,h}\\prod_\\omega C^{|\\omega|} f(x+\\omega\\cdot h)|$."
     },
     {
       "id": "conjugation",
       "title": "The Conjugation Factor Fixes 0",
       "summary": "conjugateByWeight_zero: both branches — identity (even weight) and complex conjugation (odd weight) — send 0 to 0.",
-      "startLine": 81,
-      "endLine": 86,
+      "startLine": 102,
+      "endLine": 109,
       "mathContext": "$C^{|\\omega|}(0) = 0$ for either parity of $|\\omega|$."
     },
     {
       "id": "gowers-zero",
       "title": "Gowers Norm of Zero",
       "summary": "gowersNorm_zero: ‖0‖_{U^s} = 0 — every hypercube factor is conjugateByWeight ω 0 = 0, so each 2^s-fold product vanishes (Finset.prod_eq_zero), the average is 0, and ‖0‖ = 0.",
-      "startLine": 88,
-      "endLine": 101,
+      "startLine": 110,
+      "endLine": 125,
       "mathContext": "$\\|0\\|_{U^s} = 0$ via a vanishing factor in every hypercube product."
     },
     {
       "id": "const-count",
       "title": "Λ_k on Constant Tuples and Normalization",
       "summary": "kAPCount_const: Λ_k(c,…,c) = cᵏ, the (N⁻¹)²·N² = 1 normalization cancelling the double average; kAPCount_const_one: the c = 1 specialization Λ_k(1,…,1) = 1, the total normalized k-AP mass.",
-      "startLine": 103,
-      "endLine": 128,
+      "startLine": 126,
+      "endLine": 151,
       "mathContext": "$\\Lambda_k(c,\\dots,c) = c^k$, so $\\Lambda_k(1,\\dots,1) = 1$."
     },
     {
       "id": "annihilation",
-      "title": "A Single Zero Slot Annihilates Λ_k",
-      "summary": "kAPCount_eq_zero_of_zero: if f j = 0 for some slot j then Λ_k(f₀,…,f_{k-1}) = 0, since the j-th factor of every product term vanishes (Finset.prod_eq_zero at index j).",
-      "startLine": 130,
-      "endLine": 141,
-      "mathContext": "$f_j = 0 \\Rightarrow \\Lambda_k(f) = 0$."
+      "title": "A Single Zero Slot Annihilates Λ_k; Multilinear Update Identities",
+      "summary": "kAPCount_eq_zero_of_zero: a zero slot f j = 0 forces Λ_k(f) = 0 (Finset.prod_eq_zero at index j). prod_update_factor and the update family kAPCount_update_add / _smul / _sub / _split record the multilinearity of Λ_k in a single slot via Function.update — the algebraic engine of the generalized von Neumann expansion below.",
+      "startLine": 152,
+      "endLine": 298,
+      "mathContext": "$f_j = 0 \\Rightarrow \\Lambda_k(f) = 0$; $\\Lambda_k$ is linear in each slot (`update` add/smul/sub/split)."
+    },
+    {
+      "id": "von-neumann-diagonal",
+      "title": "Generalized von Neumann Diagonal Expansion",
+      "summary": "kAPCount_diag_eq_sum_subsets expands Λ_k of a diagonal tuple f = g + h slot-by-slot into a sum over subsets (the multilinear binomial expansion); kAPCount_diag_eq_major_add_remainder splits that sum into the all-g major term plus a remainder — the standard first step of the generalized von Neumann inequality.",
+      "startLine": 299,
+      "endLine": 425,
+      "mathContext": "$\\Lambda_k(g+h,\\dots) = \\sum_{S} \\Lambda_k(\\text{g on }S^c,\\text{h on }S)$, split as major (all-$g$) $+$ remainder."
+    },
+    {
+      "id": "indicator-count-bridge",
+      "title": "Indicator↔Count Bridge and the Diagonal/Nondegenerate Split",
+      "summary": "kAPCount_indicator_eq_count identifies the analytic Λ_k of an indicator with the combinatorial k-AP count; kAPCount_count_split and kAPCount_indicator_eq_diag_add_nondeg separate the diagonal (d = 0) progressions from the nondegenerate (d ≠ 0) ones; kAPCount_indicator_univ handles the constant-1 case.",
+      "startLine": 426,
+      "endLine": 524,
+      "mathContext": "$\\Lambda_k(1_A) = N^{-2}\\,\\#\\{k\\text{-APs in }A\\}$; count $=$ diagonal $+$ nondegenerate."
+    },
+    {
+      "id": "structural-bounds",
+      "title": "Every Progression Starts in A; Basic Upper Bounds",
+      "summary": "kAPCount_count_start_subset: a counted pair (x,d) has its progression starting in A; kAPCount_count_le / kAPCount_nondeg_le bound the total and nondegenerate counts by |A|·N (each start point in A pairs with at most N differences).",
+      "startLine": 525,
+      "endLine": 587,
+      "mathContext": "$\\#\\{k\\text{-APs}\\} \\le |A|\\cdot N$; nondegenerate count $\\le |A|\\cdot N$."
+    },
+    {
+      "id": "monotonicity",
+      "title": "Monotonicity in the Set and the Two-Sided Bracket",
+      "summary": "kAPCount_count_mono / kAPCount_nondeg_mono: enlarging A only adds progressions; kAPCount_count_ge: the diagonal contributes exactly |A|; kAPCount_count_bracket packages the two-sided bound |A| ≤ count ≤ |A|·N.",
+      "startLine": 588,
+      "endLine": 643,
+      "mathContext": "$A \\subseteq B \\Rightarrow \\text{count}(A) \\le \\text{count}(B)$; $|A| \\le \\text{count}(A) \\le |A|\\cdot N$."
+    },
+    {
+      "id": "positivity",
+      "title": "Positivity and Vanishing Characterizations",
+      "summary": "kAPCount_count_pos: a nonempty A has positive count (the diagonal alone); kAPCount_count_pos_iff and kAPCount_count_eq_zero_iff characterize positivity/vanishing of the count by nonemptiness/emptiness of A.",
+      "startLine": 644,
+      "endLine": 681,
+      "mathContext": "$\\text{count}(A) > 0 \\iff A \\ne \\emptyset$; $\\text{count}(A) = 0 \\iff A = \\emptyset$."
+    },
+    {
+      "id": "extreme-sets",
+      "title": "Extreme Sets: the Whole Group and the Empty Set",
+      "summary": "kAPCount_count_univ: every pair (x,d) is counted, so count(univ) = N²; kAPCount_count_empty / kAPCount_indicator_empty / kAPCount_nondeg_empty give the vanishing at ∅; kAPCount_nondeg_univ counts the nondegenerate progressions of the whole group.",
+      "startLine": 682,
+      "endLine": 775,
+      "mathContext": "$\\text{count}(\\text{univ}) = N^2$, $\\text{count}(\\emptyset) = 0$, $\\Lambda_k(1_\\emptyset) = 0$."
+    },
+    {
+      "id": "singletons",
+      "title": "Singletons",
+      "summary": "kAPCount_nondeg_singleton: a singleton carries no nondegenerate progression (k ≥ 2); kAPCount_count_singleton: its total count is exactly 1 (the constant progression); kAPCount_indicator_singleton: Λ_k(1_{a}) = (N⁻¹)².",
+      "startLine": 776,
+      "endLine": 820,
+      "mathContext": "$\\text{count}(\\{a\\}) = 1$ (diagonal only); $\\Lambda_k(1_{\\{a\\}}) = N^{-2}$."
+    },
+    {
+      "id": "quadratic-bounds",
+      "title": "Global Quadratic Upper Bounds",
+      "summary": "kAPCount_count_le_sq / kAPCount_nondeg_le_sq: every set embeds in univ, so the total and nondegenerate counts are bounded by N² — the crude global ceiling used in density arguments.",
+      "startLine": 821,
+      "endLine": 852,
+      "mathContext": "$\\text{count}(A) \\le N^2$; nondegenerate count $\\le N^2$."
+    },
+    {
+      "id": "translation-invariance",
+      "title": "Translation Invariance",
+      "summary": "kAPCount_count_translate / kAPCount_nondeg_translate / kAPCount_indicator_translate: translating A by any t ∈ ZMod N leaves the total count, the nondegenerate count, and the analytic operator Λ_k(1_A) unchanged — the affine symmetry underlying the density-increment method.",
+      "startLine": 853,
+      "endLine": 929,
+      "mathContext": "$\\text{count}(A + t) = \\text{count}(A)$ and $\\Lambda_k(1_{A+t}) = \\Lambda_k(1_A)$ for all $t$."
     }
   ],
   "conclusion": {
@@ -142,9 +222,9 @@
       "BigOperators"
     ],
     "namespace": "RothTheoremOQ03OQ01",
-    "lineCount": 847,
+    "lineCount": 929,
     "axiomCount": 0,
-    "theoremCount": 35,
+    "theoremCount": 38,
     "definitionCount": 5,
     "path": "Proofs/RothTheoremOQ03OQ01.lean",
     "sorries": 0
