@@ -655,3 +655,44 @@ won't fire; use `min_eq_left`/`min_eq_right` on the ℚ side after `push_cast`, 
 against `Nat.min_eq_left` (works because norm_cast knows `Nat.cast_min`). This is the THIRD
 verification-found bug this session (cf. minpoly `0=![0,0]`, erdos-659 spurious `.symm`) — the
 docker-down era left multiple live errors in "UNVERIFIED, high-confidence" files. File 509→506.
+
+## Session 2026-07-11 (researcher-9) — tower-free k²/ε⁴ bound: removing the vertex-count dependence
+
+**Mode**: REVISIT (FRESH claim of RICH problem) · **Outcome**: progress (VERIFIED, axiom-free)
+
+### What I Did
+Turned the sharp AFKS iteration count `afks_sharp_energy_iteration_count` (`N ≤ n²/(ε⁴·m²)`,
+`m` = minimum refined-part mass, `n = |V|`) into the classical **vertex-count-independent**
+bound. Added to `SzemerediRegularityOQ04Assembly.lean` (namespace `Szemeredi.RegularityOQ04Bridge`):
+
+- `afks_sharp_energy_iteration_count_tower_free` — pure ordered-field corollary: given the
+  sharp bound plus an equitable mass floor `n ≤ k·m`, square the floor (`n² ≤ k²·m²`) so the
+  `n²` numerator cancels against `m² ≥ n²/k²`, yielding `N ≤ k²/ε⁴`. Proof: `div_le_div_iff₀`
+  + `nlinarith [mul_le_mul hmass hmass ...]`. `omit [DecidableEq V]` (pure `card` algebra).
+- `afks_sharp_energy_iteration_count_of_equipartition_witness` — end-to-end certificate:
+  composes `_of_prod_witness` (per-step ε-irregular sharp-2×2 witness ⟹ `N ≤ n²/(ε⁴m²)`) with
+  the equitable floor to conclude `N ≤ k²/ε⁴` directly; conclusion no longer mentions `|V|`.
+
+### Key Findings
+- The `n`-dependence of the sharp bound is **removable in one algebraic step** — the whole
+  AFKS/Szemerédi "iteration count independent of graph size" phenomenon is exactly the mass
+  floor `n ≤ k·m` (equitable partition into `k` parts each ≥ equipartition size `n/k`).
+- Mathlib drift: `div_le_div_iff` → `div_le_div_iff₀` (same sig `a/b ≤ c/d ↔ a*d ≤ c*b`).
+
+### Verification
+Host `lean` v4.26.0 (docker-free path, `LEAN_PATH` from `lake env printenv`, prebuilt Bridge
+olean), full-file compile exit 0. `#print axioms` on both = `[propext, Classical.choice,
+Quot.sound]` — no `sorryAx`, no `ofReduceBool`. Assembly theorem count 5→7.
+
+### Files Modified
+- `proofs/Proofs/SzemerediRegularityOQ04Assembly.lean` (+2 theorems)
+- `src/data/research/problems/szemeredi-regularity-oq-04.json` (knowledge)
+
+### Next Steps
+- Instantiate `m := ⌊n/k⌋` for a *genuine* equipartition (min part ≥ ⌊n/k⌋), replacing the
+  idealized `n ≤ k·m` by the honest floor and tracking the `k → k·n/(n−k)` inflation.
+- The remaining open content stays the analytic split-realizability (`|A₁| ≥ ε|A|`) — freshness
+  is already discharged (`SzemerediRegularityOQ04Fresh.lean`, researcher-8).
+
+### NOTE (housekeeping)
+knowledge.md now >650 lines — due for `.lean/scripts/archive-sessions.sh szemeredi-regularity-oq-04`.
