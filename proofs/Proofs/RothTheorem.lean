@@ -2986,5 +2986,93 @@ theorem sqGaussSum_l2_factor_ge_of_prime {N : ℕ} [NeZero N] (hp : N.Prime) (hN
   calc (N : ℝ) - 1 = Real.sqrt (((N : ℝ) - 1) ^ 2) := (Real.sqrt_sq h0).symm
     _ ≤ Real.sqrt ((N : ℝ) ^ 2 - N) := Real.sqrt_le_sqrt hsq
 
+/-! ### Part XVIII — The quantitative Sárközy cardinality bound at a prime modulus
+
+Parts VII–XVII assemble the circle-method *inequality*
+`|A|² ≤ |A|·#{n²=0} + N⁻¹·M·(|A|·N − |A|²)` (`sqDiffFree_density_bound`) and
+discharge its sole analytic input `M` at a prime with the exact Weyl magnitude
+`‖G(r)‖ = √N` (`sqDiffFree_density_bound_of_prime`).  What was still missing is
+the step that turns that quadratic inequality into the statement a reader wants:
+the **explicit cardinality bound**.  Solving the inequality for `|A|` — where the
+`−N⁻¹·M·|A|²` term (the gain a crude `M·|A|` bound throws away) is exactly what
+sharpens the estimate — collapses it to
+
+    |A| ≤ √N.
+
+This is the sharp-up-to-constant quantitative Sárközy theorem for
+square-difference-free sets in the prime field `ℤ/Nℤ`: such a set has at most `√N`
+elements, hence density `|A|/N ≤ 1/√N → 0`.  Equivalently it is the classical
+**independence-number bound `α(Paley) ≤ √p`** for the Paley graph (whose edges join
+`x, y` with `x − y` a nonzero square): a square-difference-free set is exactly an
+independent set, and the same quadratic-Gauss-sum / eigenvalue input caps it at
+`√p`.  This is the honest capstone of the prime branch — the pointwise `√N`
+magnitude is precisely strong enough to yield `o(N)` density, unlike the `Θ(N)`
+second-moment (Part XVII) or `N/√2` sup-norm (Part XI) routes, which cannot. -/
+
+/-- **Quantitative Sárközy at a prime modulus: `|A| ≤ √N`.**  For an odd prime `N`,
+    any square-difference-free `A ⊆ ℤ/Nℤ` (no `x, x + n²` both in `A` with `n² ≠ 0`)
+    satisfies `|A| ≤ √N`.  This solves the circle-method inequality
+    `sqDiffFree_density_bound_of_prime` for `|A|`: with the exact prime magnitude
+    `M = √N` and `#{n : n² = 0} = 1` (a field has no nonzero nilpotents), the
+    inequality `|A|²·(1 + 1/√N) ≤ |A|·(1 + √N)` divides down to `|A| ≤ √N`.  This is
+    the independence-number bound `α(Paley graph) ≤ √p`.  0 axioms. -/
+theorem sqDiffFree_card_le_sqrt_of_prime {N : ℕ} [NeZero N] (hp : N.Prime) (hN2 : N ≠ 2)
+    (A : Finset (ZMod N))
+    (hfree : ∀ x ∈ A, ∀ n : ZMod N, n ^ 2 ≠ 0 → x + n ^ 2 ∉ A) :
+    (A.card : ℝ) ≤ Real.sqrt N := by
+  haveI := Fact.mk hp
+  -- (1) A prime field has exactly one square root of `0`, namely `0`.
+  have hc1 : (Finset.univ.filter (fun n : ZMod N => n ^ 2 = 0)).card = 1 := by
+    have hset : (Finset.univ.filter (fun n : ZMod N => n ^ 2 = 0)) = {0} := by
+      ext n
+      simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_singleton]
+      constructor
+      · intro h; exact sq_eq_zero_iff.mp h
+      · rintro rfl; ring
+    rw [hset, Finset.card_singleton]
+  -- (2) The circle-method inequality with `M = √N` and the count `#{n²=0} = 1`.
+  have hden := sqDiffFree_density_bound_of_prime hp hN2 A hfree
+  rw [hc1] at hden
+  push_cast at hden
+  have hNpos : (0 : ℝ) < N := by exact_mod_cast hp.pos
+  have hN0 : (N : ℝ) ≠ 0 := ne_of_gt hNpos
+  set a : ℝ := (A.card : ℝ) with ha
+  set t : ℝ := Real.sqrt N with ht
+  have htpos : (0 : ℝ) < t := Real.sqrt_pos.mpr hNpos
+  have hts : t ^ 2 = N := Real.sq_sqrt (le_of_lt hNpos)
+  have ha0 : (0 : ℝ) ≤ a := by positivity
+  -- (3) Clear `N⁻¹` by multiplying through by `N`, then substitute `N = (√N)²`.
+  have hmulN := mul_le_mul_of_nonneg_right hden (le_of_lt hNpos)
+  have hexp : (a * 1 + (N : ℝ)⁻¹ * (t * (a * N - a ^ 2))) * N
+      = a * N + t * (a * N - a ^ 2) := by
+    field_simp
+  have key : a ^ 2 * (N : ℝ) ≤ a * N + t * (a * N - a ^ 2) := by
+    rw [hexp] at hmulN; exact hmulN
+  have keyS : a ^ 2 * t ^ 2 ≤ a * t ^ 2 + t * (a * t ^ 2 - a ^ 2) := by
+    rw [hts]; exact key
+  -- (4) `a·t·(1+t)·(a − t) ≤ 0` with `a·t·(1+t) > 0` forces `a ≤ t`.
+  rcases eq_or_lt_of_le ha0 with h0 | hapos
+  · rw [← h0]; exact le_of_lt htpos
+  · have hp3 : (0 : ℝ) < a * t * (1 + t) := mul_pos (mul_pos hapos htpos) (by linarith)
+    nlinarith [keyS, hp3, hapos, htpos]
+
+/-- **Square-difference-free density decay at a prime modulus: `|A|/N ≤ 1/√N`.**
+    The immediate density consequence of the cardinality bound
+    `sqDiffFree_card_le_sqrt_of_prime`: a square-difference-free set in the prime
+    field `ℤ/Nℤ` has density at most `(√N)⁻¹`, which tends to `0` as `N → ∞`.  This
+    is Sárközy's `o(1)` density conclusion, made fully explicit and unconditional in
+    the prime case. -/
+theorem sqDiffFree_density_le_of_prime {N : ℕ} [NeZero N] (hp : N.Prime) (hN2 : N ≠ 2)
+    (A : Finset (ZMod N))
+    (hfree : ∀ x ∈ A, ∀ n : ZMod N, n ^ 2 ≠ 0 → x + n ^ 2 ∉ A) :
+    (A.card : ℝ) / N ≤ (Real.sqrt N)⁻¹ := by
+  have hNpos : (0 : ℝ) < N := by exact_mod_cast hp.pos
+  set t : ℝ := Real.sqrt N with ht
+  have htpos : (0 : ℝ) < t := Real.sqrt_pos.mpr hNpos
+  have hts : t * t = N := Real.mul_self_sqrt (le_of_lt hNpos)
+  have h : (A.card : ℝ) ≤ t := sqDiffFree_card_le_sqrt_of_prime hp hN2 A hfree
+  rw [div_le_iff₀ hNpos, ← hts, ← mul_assoc, inv_mul_cancel₀ (ne_of_gt htpos), one_mul]
+  exact h
+
 end Szemeredi.Roth
 
