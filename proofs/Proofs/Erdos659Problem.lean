@@ -350,6 +350,16 @@ theorem representable_pow {m : ℕ} (hm : m ∈ representable_x2_2y2) (k : ℕ) 
 theorem two_pow_representable (k : ℕ) : 2 ^ k ∈ representable_x2_2y2 :=
   representable_pow two_representable k
 
+/-- **The form `x² + 2y²` represents infinitely many integers.** The set
+    `representable_x2_2y2` is infinite, witnessed by the injective family of powers of `2`
+    (`two_pow_representable`, each `2ᵏ` being a norm from `ℤ[√-2]`). This is the qualitative
+    floor beneath Landau's quantitative growth `B₂(N) ∼ c·N/√(log N)` (`moreeOsburnWorks`):
+    the counting function is unbounded regardless of the deep asymptotic. No axioms. -/
+theorem representable_infinite : representable_x2_2y2.Infinite :=
+  Set.infinite_of_injective_forall_mem
+    (f := fun k : ℕ => 2 ^ k)
+    (Nat.pow_right_injective (le_refl 2)) two_pow_representable
+
 /-- **Closure under finite products.** A product `∏ i ∈ s, f i` of representable
     integers is representable. Generalises `representable_pow` (the constant-`f` case)
     from a single repeated factor to an arbitrary finite family, via
@@ -406,6 +416,36 @@ theorem B2_le (N : ℕ) : B2 N ≤ N := by
   have hcard : (Set.Icc (1 : ℕ) N).ncard = N := by
     rw [← Finset.coe_Icc, Set.ncard_coe_finset, Nat.card_Icc]; omega
   omega
+
+/-- **Growth lower bound: `√N ≤ B₂(N)`.** Every perfect square `1², 2², …, ⌊√N⌋²` is `≤ N`
+    and representable (`sq_representable`), and these `⌊√N⌋` squares are distinct, so the
+    counted set has at least `Nat.sqrt N` elements. This is the unconditional *lower* companion
+    to `B2_le` (`B₂(N) ≤ N`): together they bracket `√N ≤ B₂(N) ≤ N`, and in particular `B₂`
+    tends to infinity (the counting reflection of `representable_infinite`), far below yet
+    consistent with Landau's asymptotic `∼ c·N/√(log N)` isolated in `moreeOsburnWorks`. No
+    axioms. -/
+theorem sqrt_le_B2 (N : ℕ) : Nat.sqrt N ≤ B2 N := by
+  unfold B2
+  have hfin : (representable_x2_2y2 ∩ Set.Icc 1 N).Finite :=
+    (Set.finite_Icc 1 N).inter_of_right _
+  set F : Finset ℕ := (Finset.Icc 1 (Nat.sqrt N)).image (fun i => i ^ 2) with hF
+  -- The squares `i²` (`1 ≤ i ≤ √N`) are distinct representable integers inside the window.
+  have hinj : Function.Injective (fun i : ℕ => i ^ 2) :=
+    fun a b h => Nat.pow_left_injective (by decide) h
+  have hcard : F.card = Nat.sqrt N := by
+    rw [hF, Finset.card_image_of_injective _ hinj, Nat.card_Icc]; omega
+  have hsub : (F : Set ℕ) ⊆ representable_x2_2y2 ∩ Set.Icc 1 N := by
+    intro m hm
+    rw [hF, Finset.coe_image, Finset.coe_Icc, Set.mem_image] at hm
+    obtain ⟨i, hi, rfl⟩ := hm
+    rw [Set.mem_Icc] at hi
+    refine ⟨sq_representable i, ?_, ?_⟩
+    · exact Nat.one_le_pow 2 i (by omega)
+    · calc i ^ 2 ≤ (Nat.sqrt N) ^ 2 := Nat.pow_le_pow_left hi.2 2
+        _ ≤ N := Nat.sqrt_le' N
+  calc Nat.sqrt N = F.card := hcard.symm
+    _ = (F : Set ℕ).ncard := (Set.ncard_coe_finset F).symm
+    _ ≤ _ := Set.ncard_le_ncard hsub hfin
 
 /-! ### The mod-8 obstruction (necessity side of the characterization)
 
