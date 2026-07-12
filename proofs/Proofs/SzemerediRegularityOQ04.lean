@@ -498,6 +498,68 @@ theorem partitionEnergy_all_increment_length_le
   have h := partitionEnergy_increment_count_le_floor G parts N δ hδ hcover hdisjoint hmono
   rwa [hfilter, Finset.card_range] at h
 
+/-! ### Part VI.5: regular steps are syndetic (bounded gaps)
+
+Part IV gives *one* regular step in a window `[0, N)` with `N > 1/δ`, and Part V/VI
+bound the *total* number of increment steps by `⌊1/δ⌋₊`.  Combining the two yields a
+strictly stronger localisation: because at most `⌊1/δ⌋₊` increment steps occur *in
+all of `ℕ`*, no window of `⌊1/δ⌋₊ + 1` consecutive steps can be all-increment — every
+such window contains a regular step.  So the regular steps are **syndetic**: the gap
+between consecutive regular steps never exceeds `⌊1/δ⌋₊`.  This upgrades the Part IV
+existence-in-`[0,N)` statement (a regular step somewhere before `N`) to a uniform
+recurrence (a regular step in *every* block of `⌊1/δ⌋₊ + 1` steps), for a monotone
+`[0,1]`-valued potential. -/
+
+/-- **A regular step in every window of `⌊1/δ⌋₊ + 1` steps.**  For a monotone
+    `[0,1]`-valued potential `f` and any start index `a`, at least one of the
+    `⌊1/δ⌋₊ + 1` steps `n ∈ [a, a + ⌊1/δ⌋₊ + 1)` is *regular* (`f n + δ > f (n+1)`).
+
+    If every step in this window incremented, the window (of size `⌊1/δ⌋₊ + 1`) would
+    be a subset of the increment steps in `[0, a + ⌊1/δ⌋₊ + 1)`, whose count is at most
+    `⌊1/δ⌋₊` by `energy_increment_count_le_floor` — impossible.  Hence the regular steps
+    are syndetic with gap `≤ ⌊1/δ⌋₊`, sharpening the Part IV horizon existence result. -/
+theorem energy_regular_step_in_window (f : ℕ → ℚ) (δ : ℚ) (hδ : 0 < δ)
+    (h0 : ∀ n, 0 ≤ f n) (h1 : ∀ n, f n ≤ 1) (hmono : ∀ n, f n ≤ f (n + 1))
+    (a : ℕ) :
+    ∃ n, a ≤ n ∧ n < a + ⌊1 / δ⌋₊ + 1 ∧ ¬ (f n + δ ≤ f (n + 1)) := by
+  set B := ⌊1 / δ⌋₊ with hB
+  by_contra hc
+  push_neg at hc
+  -- hc : every step in the window increments; so the window ⊆ increment steps.
+  have hWsub : Finset.Ico a (a + B + 1) ⊆
+      (Finset.range (a + B + 1)).filter (fun n => f n + δ ≤ f (n + 1)) := by
+    intro n hn
+    rw [Finset.mem_Ico] at hn
+    rw [Finset.mem_filter, Finset.mem_range]
+    exact ⟨by omega, hc n hn.1 hn.2⟩
+  have hcard := Finset.card_le_card hWsub
+  rw [Nat.card_Ico] at hcard
+  have hbound := energy_increment_count_le_floor f (a + B + 1) δ hδ h0 h1 hmono
+  omega
+
+/-- **Graph instantiation: a regular refinement step in every window of
+    `⌊1/δ⌋₊ + 1` steps.**  Along a monotone AFKS refinement chain, every block of
+    `⌊1/δ⌋₊ + 1` consecutive steps contains a step that does *not* raise
+    `partitionEnergy` by `≥ δ` (a regular step).  So the energy-increment
+    ("irregular") steps never occupy `⌊1/δ⌋₊ + 1` consecutive indices — the regular
+    steps recur with gap `≤ ⌊1/δ⌋₊`, the syndetic sharpening of
+    `partitionEnergy_regular_step_exists_floor`. -/
+theorem partitionEnergy_regular_step_in_window
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (parts : ℕ → Finset (Finset V)) (δ : ℚ) (hδ : 0 < δ)
+    (hcover : ∀ n, ∀ v : V, ∃ P ∈ parts n, v ∈ P)
+    (hdisjoint : ∀ n, ∀ P Q : Finset V, P ∈ parts n → Q ∈ parts n → P ≠ Q →
+      Disjoint P Q)
+    (hmono : ∀ n,
+      partitionEnergy G (parts n) ≤ partitionEnergy G (parts (n + 1)))
+    (a : ℕ) :
+    ∃ n, a ≤ n ∧ n < a + ⌊1 / δ⌋₊ + 1 ∧
+      ¬ (partitionEnergy G (parts n) + δ ≤ partitionEnergy G (parts (n + 1))) := by
+  refine energy_regular_step_in_window
+    (fun n => partitionEnergy G (parts n)) δ hδ ?_ ?_ hmono a
+  · intro n; exact partitionEnergy_nonneg G (parts n)
+  · intro n; exact partitionEnergy_le_one G (parts n) (hcover n) (hdisjoint n)
+
 -- ═══════════════════════════════════════════════════════════════════
 -- PART III: THE VARIANCE ATOM (energy-increment lower bound)
 -- ═══════════════════════════════════════════════════════════════════
