@@ -95,6 +95,14 @@
   },
   "sections": [
     {
+      "id": "scope-setup",
+      "title": "Scope: The Question and Imports",
+      "startLine": 1,
+      "endLine": 42,
+      "summary": "Module docstring framing the entry as the algebraic core of [ℚ(cos 2π/n):ℚ] = φ(n)/2 and the Kronecker–Weber classification question it isolates. Imports the trigonometric and Chebyshev analysis libraries and Nat.Totient, opens Complex Polynomial in namespace AngleTrisectionCos20GalOQ02 — fixing the two ingredients the proof composes: the exp/Chebyshev description of cos and the totient arithmetic.",
+      "mathContext": "Target: $[\\mathbb{Q}(\\cos 2\\pi/n):\\mathbb{Q}] = \\varphi(n)/2$."
+    },
+    {
       "id": "index-two",
       "title": "Section I: The Index-2 Quadratic — Source of the ÷2",
       "startLine": 43,
@@ -158,6 +166,11 @@
       "targetId": "angle-trisection-cos-20-gal-oq-01",
       "relationship": "related",
       "description": "Sibling: proves |Gal| = 3 for cos(2π/7) by the same Eisenstein-shift technique; here φ(7)/2 = 3 reproduces that cubic degree from the general formula."
+    },
+    {
+      "targetId": "angle-trisection",
+      "relationship": "related",
+      "description": "The classical impossibility of trisecting a 60° angle rests on [ℚ(cos 20°):ℚ] = 3 not dividing a power of 2. Since cos 20° = cos(2π/18) and φ(18)/2 = φ(9)/2 = 3, the general formula proved here is exactly the degree computation behind that impossibility — this entry supplies the arithmetic (totient) core of the trisection obstruction."
     }
   ],
   "references": [
