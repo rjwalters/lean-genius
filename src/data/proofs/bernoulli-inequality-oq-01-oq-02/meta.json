@@ -24,12 +24,12 @@
       {
         "theorem": "mul_le_mul_of_nonneg_right",
         "description": "Monotonicity of multiplication by a nonnegative constant; the inductive step multiplies the second-order bound by the factor 1 + a ≥ 0.",
-        "module": "Mathlib.Algebra.Order.Ring.Lemmas"
+        "module": "Mathlib.Algebra.Order.GroupWithZero.Unbundled.Defs"
       },
       {
         "theorem": "mul_lt_mul_of_pos_right",
         "description": "Strict monotonicity of multiplication by a positive constant; drives the strict second-order induction for a > 0, n ≥ 3.",
-        "module": "Mathlib.Algebra.Order.Ring.Lemmas"
+        "module": "Mathlib.Algebra.Order.GroupWithZero.Unbundled.Defs"
       },
       {
         "theorem": "Nat.le_induction",

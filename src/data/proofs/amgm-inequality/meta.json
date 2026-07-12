@@ -41,7 +41,7 @@
       {
         "theorem": "sq_nonneg",
         "description": "x^2 >= 0 for all x",
-        "module": "Mathlib.Algebra.Order.Ring.Lemmas"
+        "module": "Mathlib.Algebra.Order.Ring.Unbundled.Basic"
       },
       {
         "theorem": "Real.sq_sqrt",
@@ -61,7 +61,7 @@
       {
         "theorem": "sq_le_sq'",
         "description": "Monotonicity of squaring for non-negative reals, used in the product-sum corollary",
-        "module": "Mathlib.Algebra.Order.Ring.Lemmas"
+        "module": "Mathlib.Algebra.Order.Ring.Abs"
       }
     ],
     "originalContributions": [

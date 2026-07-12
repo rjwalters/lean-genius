@@ -49,7 +49,7 @@
       {
         "theorem": "sq_nonneg",
         "description": "0 ≤ x² in a linearly ordered ring — the family's guiding fact, re-exported locally as square_nonneg_general and applied termwise to the Lagrange sum of squares.",
-        "module": "Mathlib.Algebra.Order.Ring.Lemmas"
+        "module": "Mathlib.Algebra.Order.Ring.Unbundled.Basic"
       },
       {
         "theorem": "Finset.sum_mul_sum",
