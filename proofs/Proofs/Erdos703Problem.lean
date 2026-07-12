@@ -469,6 +469,146 @@ theorem n_add_one_le_T_n_2 (n : ℕ) : n + 1 ≤ T n 2 := by
   omega
 
 /-
+## Part III.b: The large-sets family — the complementary polynomial lower bound
+
+Dual to `smallSetsFamily`: instead of sets too *small* to meet in `r` points, take
+sets too *large* to meet in only `r` points. If `|A|, |B| > (n+r)/2` then, since
+`A, B ⊆ [n]`, `|A ∩ B| = |A| + |B| − |A ∪ B| ≥ |A| + |B| − n > r`, so the intersection
+is never exactly `r`. This yields a second explicit binomial-sum lower bound on
+`T(n,r)`, supported on the *top* layers of the cube (the `r`-general analogue of the
+`r = 1` `largeSetsFamily`). Combined with the small-sets family (whose sizes are
+disjoint from the large ones once `r ≤ n`), the two give a single `r`-avoiding family
+and the summed bound
+`∑_{k<r} C(n,k) + ∑_{(n+r)/2 < k ≤ n} C(n,k) ≤ T(n,r)`.
+-/
+
+/-- The **large-sets family for general `r`**: all subsets of `[n]` of size strictly
+greater than `(n+r)/2`. The `r`-general analogue of `largeSetsFamily` (its `r = 1`
+version). -/
+def largeSetsFamilyR (n r : ℕ) : Finset (Finset ℕ) :=
+  (Finset.range n).powerset.filter (fun A => (n + r) / 2 < A.card)
+
+/-- **The large-sets family avoids `r`-intersection.** Two sets of size `> (n+r)/2`
+inside `[n]` meet in more than `r` points: `|A ∩ B| ≥ |A| + |B| − n > r`. -/
+theorem largeSetsFamilyR_avoids_r (n r : ℕ) :
+    avoidsRIntersection r (largeSetsFamilyR n r) := by
+  intro A B hA hB
+  rw [largeSetsFamilyR, Finset.mem_filter, Finset.mem_powerset] at hA hB
+  obtain ⟨hAsub, hAcard⟩ := hA
+  obtain ⟨hBsub, hBcard⟩ := hB
+  have hunion : (A ∪ B).card ≤ n := by
+    calc (A ∪ B).card ≤ ((Finset.range n)).card :=
+          Finset.card_le_card (Finset.union_subset hAsub hBsub)
+      _ = n := Finset.card_range n
+  have hadd : (A ∪ B).card + (A ∩ B).card = A.card + B.card :=
+    Finset.card_union_add_card_inter A B
+  omega
+
+/-- **Exact cardinality of the large-sets family: `∑_{(n+r)/2 < k ≤ n} C(n,k)`.**
+Partitioning `{A ⊆ [n] : |A| > (n+r)/2}` by exact size gives a disjoint union of the
+`powersetCard k` layers with `k ∈ ((n+r)/2, n]`. -/
+theorem largeSetsFamilyR_card (n r : ℕ) :
+    (largeSetsFamilyR n r).card = ∑ k ∈ Finset.Ioc ((n + r) / 2) n, n.choose k := by
+  have hbi : largeSetsFamilyR n r
+      = (Finset.Ioc ((n + r) / 2) n).biUnion
+          (fun k => (Finset.range n).powersetCard k) := by
+    ext A
+    simp only [largeSetsFamilyR, Finset.mem_filter, Finset.mem_powerset, Finset.mem_biUnion,
+      Finset.mem_Ioc, Finset.mem_powersetCard]
+    constructor
+    · rintro ⟨hsub, hlt⟩
+      refine ⟨A.card, ⟨hlt, ?_⟩, hsub, rfl⟩
+      calc A.card ≤ (Finset.range n).card := Finset.card_le_card hsub
+        _ = n := Finset.card_range n
+    · rintro ⟨k, ⟨hlt, _⟩, hsub, hcard⟩
+      exact ⟨hsub, by omega⟩
+  have hdisj : (↑(Finset.Ioc ((n + r) / 2) n) : Set ℕ).PairwiseDisjoint
+      (fun k => (Finset.range n).powersetCard k) := by
+    intro i _ j _ hij
+    apply Finset.disjoint_left.mpr
+    intro A hAi hAj
+    rw [Finset.mem_powersetCard] at hAi hAj
+    apply hij
+    rw [← hAi.2, hAj.2]
+  rw [hbi, Finset.card_biUnion hdisj]
+  apply Finset.sum_congr rfl
+  intro k _
+  rw [Finset.card_powersetCard, Finset.card_range]
+
+/-- **Large-sets polynomial lower bound `T(n,r) ≥ ∑_{(n+r)/2 < k ≤ n} C(n,k)`.**
+The complement of `sum_choose_le_T`: the top-layer family is a valid `r`-avoiding
+subfamily of `2^{[n]}`, so its cardinality bounds `T(n,r)` from below. -/
+theorem sum_choose_large_le_T (n r : ℕ) :
+    (∑ k ∈ Finset.Ioc ((n + r) / 2) n, n.choose k) ≤ T n r := by
+  rw [← largeSetsFamilyR_card n r]
+  have hmem : largeSetsFamilyR n r ∈
+      ((Finset.range n).powerset.powerset).filter (avoidsRIntersection r) := by
+    rw [Finset.mem_filter]
+    exact ⟨Finset.mem_powerset.mpr (Finset.filter_subset _ _), largeSetsFamilyR_avoids_r n r⟩
+  exact Finset.le_sup hmem
+
+/-- **The small- and large-sets families are disjoint (`r ≤ n`).** A set of size
+`< r` and a set of size `> (n+r)/2` can never coincide, since `r ≤ (n+r)/2 + 1`
+when `r ≤ n`, so the two size ranges do not overlap. -/
+theorem smallSetsFamily_disjoint_largeSetsFamilyR {n r : ℕ} (hr : r ≤ n) :
+    Disjoint (smallSetsFamily n r) (largeSetsFamilyR n r) := by
+  rw [Finset.disjoint_left]
+  intro A hA hB
+  rw [smallSetsFamily, Finset.mem_filter] at hA
+  rw [largeSetsFamilyR, Finset.mem_filter] at hB
+  omega
+
+/-- **The union of the small- and large-sets families avoids `r`-intersection.**
+Small–small pairs meet in `< r` points, large–large in `> r`, and a small–large
+pair in `≤ |small| < r`, so no pair meets in exactly `r`. -/
+theorem smallLargeFamily_avoids_r (n r : ℕ) :
+    avoidsRIntersection r (smallSetsFamily n r ∪ largeSetsFamilyR n r) := by
+  intro A B hA hB
+  rw [Finset.mem_union] at hA hB
+  have hsmall : ∀ S ∈ smallSetsFamily n r, S.card < r := by
+    intro S hS; rw [smallSetsFamily, Finset.mem_filter] at hS; exact hS.2
+  have hsub : ∀ S ∈ largeSetsFamilyR n r, S ⊆ Finset.range n := by
+    intro S hS; rw [largeSetsFamilyR, Finset.mem_filter, Finset.mem_powerset] at hS; exact hS.1
+  have hlarge : ∀ S ∈ largeSetsFamilyR n r, (n + r) / 2 < S.card := by
+    intro S hS; rw [largeSetsFamilyR, Finset.mem_filter] at hS; exact hS.2
+  have hinter_le_left : (A ∩ B).card ≤ A.card := Finset.card_le_card Finset.inter_subset_left
+  have hinter_le_right : (A ∩ B).card ≤ B.card := Finset.card_le_card Finset.inter_subset_right
+  rcases hA with hA | hA <;> rcases hB with hB | hB
+  · have := hsmall A hA; omega
+  · have := hsmall A hA; omega
+  · have := hsmall B hB; omega
+  · have hAl := hlarge A hA; have hBl := hlarge B hB
+    have hunion : (A ∪ B).card ≤ n := by
+      calc (A ∪ B).card ≤ (Finset.range n).card :=
+            Finset.card_le_card (Finset.union_subset (hsub A hA) (hsub B hB))
+        _ = n := Finset.card_range n
+    have hadd : (A ∪ B).card + (A ∩ B).card = A.card + B.card :=
+      Finset.card_union_add_card_inter A B
+    omega
+
+/-- **Combined polynomial lower bound.** For `r ≤ n`, the small- and large-sets
+families are disjoint and their union avoids `r`-intersection, so
+`T(n,r) ≥ ∑_{k<r} C(n,k) + ∑_{(n+r)/2 < k ≤ n} C(n,k)`: both the bottom `r` layers and
+the top `⌊(n−r)/2⌋` layers of the cube can be used simultaneously. -/
+theorem small_add_large_le_T {n r : ℕ} (hr : r ≤ n) :
+    (∑ k ∈ Finset.range r, n.choose k)
+      + (∑ k ∈ Finset.Ioc ((n + r) / 2) n, n.choose k) ≤ T n r := by
+  have hcard : (smallSetsFamily n r ∪ largeSetsFamilyR n r).card
+      = (∑ k ∈ Finset.range r, n.choose k)
+        + (∑ k ∈ Finset.Ioc ((n + r) / 2) n, n.choose k) := by
+    rw [Finset.card_union_of_disjoint (smallSetsFamily_disjoint_largeSetsFamilyR hr),
+      smallSetsFamily_card, largeSetsFamilyR_card]
+  rw [← hcard]
+  have hmem : smallSetsFamily n r ∪ largeSetsFamilyR n r ∈
+      ((Finset.range n).powerset.powerset).filter (avoidsRIntersection r) := by
+    rw [Finset.mem_filter]
+    refine ⟨Finset.mem_powerset.mpr ?_, smallLargeFamily_avoids_r n r⟩
+    apply Finset.union_subset
+    · exact Finset.filter_subset _ _
+    · exact Finset.filter_subset _ _
+  exact Finset.le_sup hmem
+
+/-
 ## Part IV.b: Structural Properties of `T`
 
 Elementary structural facts about the extremal function `T(n,r)` that hold for
