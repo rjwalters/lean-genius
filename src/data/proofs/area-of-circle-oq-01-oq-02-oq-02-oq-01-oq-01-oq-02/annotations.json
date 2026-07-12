@@ -36,6 +36,18 @@
     "prerequisites": ["ordered fields", "square roots", "inequality chaining"]
   },
   {
+    "id": "ann-main-statement",
+    "proofId": "area-of-circle-oq-01-oq-02-oq-02-oq-01-oq-01-oq-02",
+    "range": { "startLine": 112, "endLine": 125 },
+    "type": "theorem",
+    "title": "The Headline Theorem: isoperimetric_inequality_regular",
+    "content": "The statement of the capstone theorem, before its proof. Its subject is a `RegularClosedCurve` γ — a bundled structure carrying C¹, 2π-periodic coordinate functions with the nowhere-vanishing-speed hypothesis baked in as a field — not an arbitrary `SmoothClosedCurve`. This choice of domain is the whole honesty of the result: regularity is exactly the condition under which the inverse-function-theorem reparametrization is valid, so the type of γ, rather than a disclosed axiom, carries the necessary hypothesis. The single side-condition is `hL : 0 < γ.circumference` (a degenerate point-curve has L = 0 and the ratio 4πA/L² is undefined), and the conclusion `4 * π * γ.area ≤ γ.circumference ^ 2` is the isoperimetric inequality in the scale-free form 4πA ≤ L². Reading the signature makes clear the proof takes no axioms: everything it will invoke is a `have` derived from an imported 0-axiom companion.",
+    "mathContext": "$\\gamma : \\mathrm{RegularClosedCurve},\\ 0 < L = \\gamma.\\text{circumference} \\;\\Rightarrow\\; 4\\pi\\,\\gamma.\\text{area} \\le L^2$; equality iff $\\gamma$ is a circle (the rigidity case, deferred to a companion).",
+    "significance": "key",
+    "relatedConcepts": ["RegularClosedCurve structure", "hypothesis-in-the-type vs disclosed axiom", "scale-free isoperimetric ratio", "positive circumference side-condition"],
+    "prerequisites": ["regular closed curves", "bundled structures in Lean", "the isoperimetric ratio 4πA/L²"]
+  },
+  {
     "id": "ann-reparam",
     "proofId": "area-of-circle-oq-01-oq-02-oq-02-oq-01-oq-01-oq-02",
     "range": { "startLine": 123, "endLine": 141 },
