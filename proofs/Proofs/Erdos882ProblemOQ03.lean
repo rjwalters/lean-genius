@@ -729,4 +729,78 @@ theorem exists_superincreasing_not_divisibilityFree {k : ℕ} (hk : 2 ≤ k) :
   ⟨powersOfTwo k, superincreasing_powersOfTwo k, powersOfTwo_card k,
     not_divisibilityFree_subsetSums_powersOfTwo hk⟩
 
+/-!
+### The distinct-subset-sum total lower bound (`∑ A ≥ 2^{|A|} − 1`)
+
+The counting bound `subsetSums_card_le` caps the number of distinct non-empty
+subset sums at `2^{|A|} − 1`.  When that maximum is *attained* — i.e. all
+non-empty subset sums are pairwise distinct, the counting-extremal regime — the
+`2^{|A|} − 1` distinct values are forced to fit inside the attained interval
+`[1, ∑ A]` (`subsetSums_subset_Icc_sum`).  Cardinality then pins the total from
+below: `∑ A ≥ 2^{|A|} − 1`.  This is the classical distinct-subset-sum
+phenomenon (the Erdős distinct-subset-sum / Conway–Guy circle): a set with
+distinct subset sums must have exponentially large total, so with all elements
+`≤ n` its size is `O(log₂ n)` — the quantitative face of the `(1+o(1))log₂ n`
+growth.  The bound is *sharp*: the powers-of-two witness has `∑ = 2^k − 1`
+exactly.
+-/
+
+/-- **Distinct subset sums.**  `A` realises the maximum possible number of
+    distinct non-empty subset sums, `2^{|A|} − 1` — i.e. the counting bound
+    `subsetSums_card_le` is met with equality.  Superincreasing sets (in
+    particular the powers-of-two family) satisfy this; it is the exact opposite
+    of the "collapse" regime where many subsets share a sum. -/
+def DistinctSubsetSums (A : Finset ℕ) : Prop :=
+  (subsetSums A).card = 2 ^ A.card - 1
+
+/-- Superincreasing sets have distinct subset sums — a restatement of
+    `subsetSums_card_superincreasing` in the named predicate. -/
+theorem Superincreasing.distinctSubsetSums {A : Finset ℕ}
+    (hA : Superincreasing A) : DistinctSubsetSums A :=
+  subsetSums_card_superincreasing hA
+
+/-- The powers-of-two family `{2^0,…,2^{k-1}}` has distinct subset sums. -/
+theorem powersOfTwo_distinctSubsetSums (k : ℕ) :
+    DistinctSubsetSums (powersOfTwo k) :=
+  (superincreasing_powersOfTwo k).distinctSubsetSums
+
+/-- **Distinct-subset-sum total lower bound.**  If the non-empty subset sums of a
+    set of positive integers are all distinct (`DistinctSubsetSums`), then the
+    total is at least `2^{|A|} − 1`.  The `2^{|A|} − 1` distinct sums all live in
+    `[1, ∑ A]` (`subsetSums_subset_Icc_sum`), an interval of exactly `∑ A`
+    integers, so `2^{|A|} − 1 = |subsetSums A| ≤ ∑ A`.  Sharp: the powers-of-two
+    witness attains equality (`sum_powersOfTwo_eq_bound`). -/
+theorem two_pow_sub_one_le_sum_of_distinct {A : Finset ℕ}
+    (hpos : ∀ a ∈ A, 1 ≤ a) (hd : DistinctSubsetSums A) :
+    2 ^ A.card - 1 ≤ A.sum id := by
+  have hsub : subsetSums A ⊆ Finset.Icc 1 (A.sum id) :=
+    subsetSums_subset_Icc_sum hpos
+  have hcard : (subsetSums A).card ≤ (Finset.Icc 1 (A.sum id)).card :=
+    Finset.card_le_card hsub
+  rw [Nat.card_Icc, hd] at hcard
+  omega
+
+/-- **The powers-of-two witness attains the total lower bound.**  For the
+    canonical distinct-subset-sum set `{2^0,…,2^{k-1}}` the total is *exactly*
+    `2^{|A|} − 1`, so `two_pow_sub_one_le_sum_of_distinct` cannot be improved. -/
+theorem sum_powersOfTwo_eq_bound (k : ℕ) :
+    (powersOfTwo k).sum id = 2 ^ (powersOfTwo k).card - 1 := by
+  rw [sum_powersOfTwo, powersOfTwo_card]
+
+/-- **Quantitative `O(log₂ n)` size bound for distinct-subset-sum sets.**  If the
+    non-empty subset sums of `A ⊆ {1,…,n}` are all distinct, then
+    `2^{|A|} ≤ n·|A| + 1`.  Combining the total lower bound
+    `2^{|A|} − 1 ≤ ∑ A` (`two_pow_sub_one_le_sum_of_distinct`) with the trivial
+    `∑ A ≤ n·|A|` forces `|A|` to be logarithmic in `n`: this is the quantitative
+    heart of the `(1+o(1))log₂ n` growth in the counting-extremal regime. -/
+theorem two_pow_le_of_distinct_bounded {A : Finset ℕ} {n : ℕ}
+    (hpos : ∀ a ∈ A, 1 ≤ a) (hle : ∀ a ∈ A, a ≤ n) (hd : DistinctSubsetSums A) :
+    2 ^ A.card ≤ n * A.card + 1 := by
+  have h1 : 2 ^ A.card - 1 ≤ A.sum id := two_pow_sub_one_le_sum_of_distinct hpos hd
+  have h2 : A.sum id ≤ n * A.card := by
+    calc A.sum id ≤ ∑ _a ∈ A, n := Finset.sum_le_sum (fun i hi => hle i hi)
+      _ = n * A.card := by rw [Finset.sum_const, smul_eq_mul, Nat.mul_comm]
+  have hp : 1 ≤ 2 ^ A.card := Nat.one_le_two_pow
+  omega
+
 end Erdos882OQ03
