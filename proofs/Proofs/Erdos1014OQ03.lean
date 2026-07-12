@@ -597,4 +597,86 @@ theorem reciprocal_increment_div_tendsto_zero_iff (R : ℕ → ℝ)
   rw [increment_div_tendsto_zero_iff_ratio_tendsto_one (fun l => (R l)⁻¹) hinv]
   exact reciprocal_ratio_tendsto_one_iff R
 
+/-! ## Subexponential growth (the root-test consequence)
+
+The increment–ratio bridge above controls *local* (one-step) behavior of `R`. A
+consecutive ratio tending to `1` also has a *global* consequence for the growth
+*rate*: it forces the geometric root `R(l)^{1/l}` to tend to `1`, i.e. `R` grows
+subexponentially, `R(l) = e^{o(l)}`.
+
+The mechanism is the ratio-test ⇒ root-test passage, made quantitative through the
+logarithm. Writing `c_l = log R(l+1) − log R(l)` for the additive log-increment
+(shown above to vanish exactly when the ratio tends to `1`), the telescoping identity
+`log R(n) − log R(0) = ∑_{i<n} c_i` (`log_increment_gap_eq_sum` with `l = 0`) turns the
+normalized log `(log R(n))/n` into the **Cesàro average** of the `c_i`. Cesàro
+averaging preserves limits (`Filter.Tendsto.cesaro`), so `c_l → 0` gives
+`(log R(n))/n → 0`, and exponentiating gives `R(n)^{1/n} → 1`.
+
+Applied to `R(k, ·)`, Erdős #1014's ratio-convergence `R(k,l+1)/R(k,l) → 1` yields
+`R(k,l)^{1/l} → 1`: the off-diagonal Ramsey numbers are subexponential in `l` for
+fixed `k`. This is consistent with the known polynomial rate `R(3,l) = Θ(l²/log l)`
+(every polynomially-bounded positive sequence is subexponential) but is derived here
+from the ratio hypothesis alone, with no rate input. -/
+
+/-- **Normalized log tends to zero (Cesàro form).** If the consecutive ratio of an
+eventually-positive `R` tends to `1`, then `(log R(l))/l → 0`.
+
+Proof: the log-increment `log R(l+1) − log R(l)` tends to `0`
+(`log_increment_tendsto_zero_of_ratio_tendsto_one`); its Cesàro average
+`n⁻¹ ∑_{i<n} (log R(i+1) − log R(i))` therefore also tends to `0`
+(`Filter.Tendsto.cesaro`); and that sum telescopes to `log R(n) − log R(0)`
+(`Finset.sum_range_sub`), whose `log R(0)/n` tail is negligible. -/
+theorem log_div_nat_tendsto_zero_of_ratio_tendsto_one (R : ℕ → ℝ)
+    (hpos : ∀ᶠ l in atTop, 0 < R l)
+    (hratio : Tendsto (fun l => R (l + 1) / R l) atTop (𝓝 1)) :
+    Tendsto (fun l => Real.log (R l) / (l : ℝ)) atTop (𝓝 0) := by
+  -- the log-increment sequence vanishes …
+  have hc0 : Tendsto (fun l => Real.log (R (l + 1)) - Real.log (R l)) atTop (𝓝 0) :=
+    log_increment_tendsto_zero_of_ratio_tendsto_one R hpos hratio
+  -- … so its Cesàro average vanishes …
+  have hces := hc0.cesaro
+  -- … and the Cesàro sum telescopes to `log R(n) − log R(0)`.
+  have hsum : ∀ n : ℕ,
+      (∑ i ∈ Finset.range n, (Real.log (R (i + 1)) - Real.log (R i)))
+        = Real.log (R n) - Real.log (R 0) :=
+    fun n => Finset.sum_range_sub (fun i => Real.log (R i)) n
+  simp only [hsum] at hces
+  -- the `log R(0)/n` tail tends to `0`
+  have hinv : Tendsto (fun n : ℕ => (n : ℝ)⁻¹) atTop (𝓝 0) :=
+    tendsto_natCast_atTop_atTop.inv_tendsto_atTop
+  have hconst : Tendsto (fun n : ℕ => (n : ℝ)⁻¹ * Real.log (R 0)) atTop (𝓝 0) := by
+    simpa using hinv.mul_const (Real.log (R 0))
+  -- add it back to recover `n⁻¹ · log R(n) → 0`, then rewrite `n⁻¹ · x = x / n`.
+  have hgoal : Tendsto (fun n : ℕ => (n : ℝ)⁻¹ * Real.log (R n)) atTop (𝓝 0) := by
+    have hsum2 := hces.add hconst
+    simp only [add_zero] at hsum2
+    refine hsum2.congr fun n => ?_
+    ring
+  refine hgoal.congr fun n => ?_
+  rw [div_eq_inv_mul]
+
+/-- **Subexponential growth (root test).** If the consecutive ratio of an
+eventually-positive `R` tends to `1`, then the geometric root `R(l)^{1/l}` tends to
+`1`; equivalently `R(l) = e^{o(l)}`.
+
+The global growth-rate companion of the local increment–ratio bridge: fed Erdős
+#1014's `R(k,l+1)/R(k,l) → 1` it gives `R(k,l)^{1/l} → 1`, so for fixed `k` the
+off-diagonal Ramsey numbers grow subexponentially in `l`. Proof: exponentiate
+`log_div_nat_tendsto_zero_of_ratio_tendsto_one`, using `x^{1/l} = exp((1/l)·log x)`
+for `x > 0` and continuity of `exp` at `0`. -/
+theorem rpow_inv_nat_tendsto_one_of_ratio_tendsto_one (R : ℕ → ℝ)
+    (hpos : ∀ᶠ l in atTop, 0 < R l)
+    (hratio : Tendsto (fun l => R (l + 1) / R l) atTop (𝓝 1)) :
+    Tendsto (fun l => (R l) ^ ((l : ℝ)⁻¹)) atTop (𝓝 1) := by
+  have hlog : Tendsto (fun l : ℕ => (l : ℝ)⁻¹ * Real.log (R l)) atTop (𝓝 0) := by
+    have h := log_div_nat_tendsto_zero_of_ratio_tendsto_one R hpos hratio
+    refine h.congr fun n => ?_
+    rw [div_eq_inv_mul]
+  have hexp : Tendsto (fun l : ℕ => Real.exp ((l : ℝ)⁻¹ * Real.log (R l))) atTop (𝓝 1) := by
+    have := (Real.continuous_exp.tendsto 0).comp hlog
+    simpa using this
+  refine hexp.congr' ?_
+  filter_upwards [hpos] with l hl
+  rw [Real.rpow_def_of_pos hl, mul_comm (Real.log (R l)) ((l : ℝ)⁻¹)]
+
 end Erdos1014OQ03
