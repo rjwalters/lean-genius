@@ -32,6 +32,10 @@
       `#{(x,d) : ∀ i, x+i·d ∈ A} = #A + #{(x,d) : d ≠ 0 ∧ …}`, giving
       `Λ_k(1_A) = (N⁻¹)²·(#A + #nondegenerate)` — the trivial diagonal term
       separated from the genuine `d ≠ 0` count Roth's theorem controls.
+    * `kAPCount_count_length_antitone` / `kAPCount_nondeg_length_antitone` — **length
+      monotonicity**: the (nondegenerate) `k`-AP count is antitone in the progression
+      length `k`, since demanding more terms `x + i·d ∈ A` only shrinks the counted set
+      (restrict a witness along `Fin.castLE`).
 
   These are precisely the checks that pin the operators down as genuine
   averages `E_{x,d} ∏ᵢ fᵢ(x+i·d)` (the `(N⁻¹)²·N² = 1` normalization),
@@ -843,6 +847,40 @@ theorem kAPCount_nondeg_le_sq {N : ℕ} [NeZero N] {k : ℕ} (hk : 0 < k) (A : F
             (∀ i : Fin k, p.1 + i.val • p.2 ∈ (Finset.univ : Finset (ZMod N))) ∧ p.2 ≠ 0)).card :=
           kAPCount_nondeg_mono (Finset.subset_univ A)
     _ = N ^ 2 - N := kAPCount_nondeg_univ hk
+
+/-- **Longer progressions are rarer: the `k`-AP count is antitone in the length `k`.**  For
+    `k ≤ k'`, requiring all `k'` terms `x + i·d` (`i < k'`) to lie in `A` is a stronger
+    constraint than requiring only the first `k` of them, so the `k'`-progression pairs `(x, d)`
+    form a subset of the `k`-progression pairs (restrict a witness along `Fin.castLE`).  Hence
+    the count can only decrease as the progression length grows.  Note the `k = 1` case recovers
+    the loose bound `kAPCount_count_le` (`≤ #A·N`) since the length-`1` count is exactly `#A·N`,
+    and combined with `kAPCount_count_univ` it re-proves `kAPCount_count_le_sq`. -/
+theorem kAPCount_count_length_antitone {N : ℕ} [NeZero N] {k k' : ℕ} (hkk : k ≤ k')
+    (A : Finset (ZMod N)) :
+    (Finset.univ.filter (fun p : ZMod N × ZMod N =>
+        ∀ i : Fin k', p.1 + i.val • p.2 ∈ A)).card
+      ≤ (Finset.univ.filter (fun p : ZMod N × ZMod N =>
+        ∀ i : Fin k, p.1 + i.val • p.2 ∈ A)).card := by
+  apply Finset.card_le_card
+  intro p hp
+  rw [Finset.mem_filter] at hp ⊢
+  refine ⟨hp.1, fun i => hp.2 (Fin.castLE hkk i)⟩
+
+/-- **The nondegenerate (`d ≠ 0`) `k`-AP count is antitone in the length `k`.**  The length
+    monotonicity of `kAPCount_count_length_antitone` survives the extra `d ≠ 0` restriction:
+    for `k ≤ k'`, every nondegenerate `k'`-progression pair restricts to a nondegenerate
+    `k`-progression pair (same `d ≠ 0`, fewer membership constraints), so the nondegenerate
+    count decreases with progression length. -/
+theorem kAPCount_nondeg_length_antitone {N : ℕ} [NeZero N] {k k' : ℕ} (hkk : k ≤ k')
+    (A : Finset (ZMod N)) :
+    (Finset.univ.filter (fun p : ZMod N × ZMod N =>
+        (∀ i : Fin k', p.1 + i.val • p.2 ∈ A) ∧ p.2 ≠ 0)).card
+      ≤ (Finset.univ.filter (fun p : ZMod N × ZMod N =>
+        (∀ i : Fin k, p.1 + i.val • p.2 ∈ A) ∧ p.2 ≠ 0)).card := by
+  apply Finset.card_le_card
+  intro p hp
+  rw [Finset.mem_filter] at hp ⊢
+  exact ⟨hp.1, ⟨fun i => hp.2.1 (Fin.castLE hkk i), hp.2.2⟩⟩
 
 /-- **Translation invariance of the `k`-AP count.**  Translating `A` by any `t` leaves the
     number of length-`k` progressions unchanged: the map `(x, d) ↦ (x + t, d)` bijects the
