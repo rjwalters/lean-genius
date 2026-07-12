@@ -285,4 +285,32 @@ theorem three_mul_norm_le_norm_fourierCoeffOn_deriv2_sub (f : ℝ → ℝ) (hf :
     nlinarith [sq_abs (n : ℝ), abs_nonneg (n : ℝ), h2]
   nlinarith [norm_nonneg (fourierCoeffOn hab (ofReal ∘ f) n), hn4]
 
+/-- **General polynomial spectral damping.**  For any natural number `m ≤ |n|`, the
+second derivative damps the `n`-th Fourier mode by at least `m²`:
+
+    m² · ‖ĉₙ(f)‖ ≤ ‖ĉₙ(f'')‖.
+
+This unifies the damping ladder of the file: `m = 1` recovers `norm_fourierCoeffOn_le_deriv2`
+and `m = 2` recovers `four_mul_norm_fourierCoeffOn_le_deriv2`, and it captures every
+threshold `m` at once (`m²` grows without bound as the mode `|n| → ∞`).  Immediate from the
+magnitude identity `‖ĉₙ(f'')‖ = n²·‖ĉₙ(f)‖` together with `m² ≤ n²` (from `m ≤ |n|`). -/
+theorem sq_mul_norm_fourierCoeffOn_le_deriv2 (f : ℝ → ℝ) (hf : ContDiff ℝ 2 f)
+    (hperiod : ∀ t, f (t + 2 * π) = f t)
+    (hab : (0 : ℝ) < 2 * π) (n : ℤ) (m : ℕ) (hmn : m ≤ n.natAbs) :
+    (m : ℝ) ^ 2 * ‖fourierCoeffOn hab (ofReal ∘ f) n‖
+      ≤ ‖fourierCoeffOn hab (ofReal ∘ deriv (deriv f)) n‖ := by
+  rcases Nat.eq_zero_or_pos m with hm0 | hmpos
+  · subst hm0
+    simpa using norm_nonneg (fourierCoeffOn hab (ofReal ∘ deriv (deriv f)) n)
+  · have hn0 : n ≠ 0 := by
+      rintro rfl
+      simp only [Int.natAbs_zero, Nat.le_zero] at hmn
+      omega
+    rw [norm_fourierCoeffOn_deriv2_eq f hf hperiod hab n hn0]
+    have hmle : (m : ℝ) ≤ |(n : ℝ)| := by
+      rw [← Int.cast_abs, Int.abs_eq_natAbs]; exact_mod_cast hmn
+    have hmsq : (m : ℝ) ^ 2 ≤ (n : ℝ) ^ 2 := by
+      nlinarith [sq_abs (n : ℝ), abs_nonneg (n : ℝ), Nat.cast_nonneg (α := ℝ) m, hmle]
+    nlinarith [norm_nonneg (fourierCoeffOn hab (ofReal ∘ f) n), hmsq]
+
 end IsoperimetricFourier
