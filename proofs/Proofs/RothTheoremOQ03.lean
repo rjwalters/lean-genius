@@ -336,7 +336,7 @@ theorem szemeredi_from_density_increment (k : ℕ) (hk : k ≥ 3) :
   -- `0 < d < N` rules this out.
   have h_d_ne_zero : (d : ZMod N) ≠ 0 := by
     intro h0
-    have hdvd : (N : ℕ) ∣ d := (ZMod.natCast_zmod_eq_zero_iff_dvd d N).mp h0
+    have hdvd : (N : ℕ) ∣ d := (ZMod.natCast_eq_zero_iff d N).mp h0
     have := Nat.le_of_dvd hd_pos hdvd
     omega
   -- Lift the AP back to ZMod N. For each `i : Fin k`, the i-th term

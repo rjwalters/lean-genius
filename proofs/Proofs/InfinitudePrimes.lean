@@ -56,7 +56,7 @@ theorem factorial_succ_ge_two (n : ℕ) : n.factorial + 1 ≥ 2 := by
 /-- If p divides both a and a + 1, then p divides 1.
     This is the key observation in Euclid's proof. -/
 theorem dvd_of_dvd_add_one {p a : ℕ} (h1 : p ∣ a) (h2 : p ∣ a + 1) : p ∣ 1 := by
-  have hsub : p ∣ (a + 1) - a := Nat.dvd_sub' h2 h1
+  have hsub : p ∣ (a + 1) - a := Nat.dvd_sub h2 h1
   simp only [add_tsub_cancel_left] at hsub
   exact hsub
 

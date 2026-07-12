@@ -167,7 +167,7 @@ private theorem transitions_parity_bool (n : ℕ) (f : ℕ → Bool) :
   induction n with
   | zero => simp
   | succ m ih =>
-    rw [Finset.range_succ, Finset.filter_insert]
+    rw [Finset.range_add_one, Finset.filter_insert]
     by_cases hm : f m ≠ f (m + 1)
     · rw [if_pos hm]
       have hmem : m ∉ (Finset.range m).filter (fun i => f i ≠ f (i + 1)) := by
@@ -572,7 +572,7 @@ private lemma strip_parity {n : ℕ} (hn : 0 < n) (c : Coloring n) (hc : IsSpern
     -- Convert back: ZMod 2 sum = 0 implies Nat parity equal
     rw [← hTrans_cast, ← hTrans_cast] at hsuff
     rw [← Nat.cast_add] at hsuff
-    rw [ZMod.natCast_zmod_eq_zero_iff_dvd] at hsuff
+    rw [ZMod.natCast_eq_zero_iff] at hsuff
     omega
   set m := n - j with hm_def
   have hm_pos : 0 < m := by omega

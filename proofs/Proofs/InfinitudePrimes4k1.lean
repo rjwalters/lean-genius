@@ -52,7 +52,7 @@ lemma prime_dvd_sq_add_one_mod_four {p k : ℕ} (hp : Nat.Prime p) (hp2 : p ≠ 
     use (k : ZMod p)
     -- k² + 1 ≡ 0 (mod p), so k² ≡ -1 (mod p)
     have hzero : ((k ^ 2 + 1 : ℕ) : ZMod p) = 0 := by
-      rw [ZMod.natCast_zmod_eq_zero_iff_dvd]
+      rw [ZMod.natCast_eq_zero_iff]
       exact hdiv
     simp only [Nat.cast_add, Nat.cast_pow, Nat.cast_one] at hzero
     -- From k² + 1 = 0, we get k² = -1

@@ -1788,7 +1788,7 @@ theorem sqrt_k_sub_one_dvd_k (hF : IsFriendshipGraph G)
     have hs_mod : (φ (↑(s * s) : ℤ) : ZMod p) = 0 := by
       change ((s * s : ℤ) : ZMod p) = 0
       push_cast
-      have : (s : ZMod p) = 0 := by rwa [ZMod.natCast_zmod_eq_zero_iff_dvd]
+      have : (s : ZMod p) = 0 := by rwa [ZMod.natCast_eq_zero_iff]
       rw [this, mul_zero]
     rw [hs_mod, map_zero, sub_zero, ← pow_mul] at h1; exact h1
   have hf_mod_monic : (f.map φ).Monic := Polynomial.Monic.map φ hf_monic
@@ -1805,7 +1805,7 @@ theorem sqrt_k_sub_one_dvd_k (hF : IsFriendshipGraph G)
   have hp_dvd_k : p ∣ k := by
     have h : ((k : ℤ) : ZMod p) = 0 := hcoeff_zero
     rw [show ((k : ℤ) : ZMod p) = ((k : ℕ) : ZMod p) from by push_cast; ring] at h
-    rwa [ZMod.natCast_zmod_eq_zero_iff_dvd] at h
+    rwa [ZMod.natCast_eq_zero_iff] at h
   have hp_dvd_ss : p ∣ s * s := Dvd.dvd.mul_right hp_dvd_s s
   have hp_dvd_one : p ∣ 1 := by
     have h1 : (k : ℤ) - ↑(s * s) = 1 := by push_cast; omega

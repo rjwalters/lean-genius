@@ -204,7 +204,7 @@ theorem prime_sq_dvd_sq_succ_mod_four {p a : ℕ} (hp : p.Prime)
     -- Cast a * a + 1 to ZMod p and show it equals 0
     have hpdvd' : p ∣ a ^ 2 + 1 := by rwa [sq]
     have hzero : ((a ^ 2 + 1 : ℕ) : ZMod p) = 0 := by
-      rw [ZMod.natCast_zmod_eq_zero_iff_dvd]; exact hpdvd'
+      rw [ZMod.natCast_eq_zero_iff]; exact hpdvd'
     simp only [Nat.cast_add, Nat.cast_pow, Nat.cast_one] at hzero
     have h : (a : ZMod p) ^ 2 = -1 := by
       have h0 : (a : ZMod p) ^ 2 + 1 = 0 := hzero
@@ -269,7 +269,7 @@ theorem sq_dvd_succ_mod_congruence {p a b : ℕ} (hp : Nat.Prime p)
     have hpdvd : p ∣ x * x + 1 := dvd_trans ⟨p, rfl⟩ hx
     have hpdvd' : p ∣ x ^ 2 + 1 := by rwa [sq]
     have hzero : ((x ^ 2 + 1 : ℕ) : ZMod p) = 0 := by
-      rw [ZMod.natCast_zmod_eq_zero_iff_dvd]; exact hpdvd'
+      rw [ZMod.natCast_eq_zero_iff]; exact hpdvd'
     simp only [Nat.cast_add, Nat.cast_pow, Nat.cast_one] at hzero
     have h : (x : ZMod p) ^ 2 = -1 := by
       have h0 : (x : ZMod p) ^ 2 + 1 = 0 := hzero

@@ -119,7 +119,7 @@ theorem prime_not_dvd_factor_when_dvd_n (n k p i : ℕ)
     (hi : 1 ≤ i) (hik : i ≤ k) (hpn : p ∣ n) :
     ¬(p ∣ (n - i)) := by
   intro h
-  have hsub := Nat.dvd_sub' hpn h
+  have hsub := Nat.dvd_sub hpn h
   have heq : n - (n - i) = i := by omega
   rw [heq] at hsub
   exact absurd (Nat.le_of_dvd (by omega) hsub) (by omega)

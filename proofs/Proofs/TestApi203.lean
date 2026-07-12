@@ -6,7 +6,7 @@ import Mathlib
 
 -- Test: ZMod basics
 #check ZMod.val_natCast
-#check @ZMod.natCast_zmod_eq_zero_iff_dvd
+#check @ZMod.natCast_eq_zero_iff
 
 -- Test: Nat.pow_mod
 #check Nat.pow_mod

@@ -80,7 +80,7 @@ lemma choose_pred_neg_one_pow (k : ℕ) (hk : k ≤ p - 1) (hp5 : 5 ≤ p) :
   suffices h : (k.factorial : ZMod p) * (Nat.choose (p - 1) k : ZMod p) =
     (k.factorial : ZMod p) * (-1) ^ k by
     have hne : (k.factorial : ZMod p) ≠ 0 := by
-      rw [Ne, ZMod.natCast_zmod_eq_zero_iff_dvd]
+      rw [Ne, ZMod.natCast_eq_zero_iff]
       exact fun hdvd => absurd (hp.out.dvd_factorial.mp hdvd) (by omega)
     exact mul_left_cancel₀ hne h
   -- Cast the ℕ identity k! * C(n, k) = n.descFactorial k
@@ -135,7 +135,7 @@ private lemma b_sq_eq_inv_sq (hp' : Nat.Prime p) (h5 : 5 ≤ p) (k : ℕ)
     ((Nat.choose p k / p : ℕ) : ZMod p) ^ 2 = ((k : ℕ) : ZMod p)⁻¹ ^ 2 := by
   have hm := Finset.mem_Ico.mp hk
   have hk_ne : ((k : ℕ) : ZMod p) ≠ 0 := by
-    rw [Ne, ZMod.natCast_zmod_eq_zero_iff_dvd]
+    rw [Ne, ZMod.natCast_eq_zero_iff]
     exact fun h => absurd (Nat.le_of_dvd (by omega) h) (by omega)
   have h_mul := mul_b_eq p hp' k (by omega) (by omega)
   have h_choose := choose_pred_neg_one_pow p (k - 1) (by omega) h5
@@ -150,7 +150,7 @@ private lemma b_sq_eq_inv_sq (hp' : Nat.Prime p) (h5 : 5 ≤ p) (k : ℕ)
 /-- The key divisibility: p | Σ_{k ∈ Ico 1 p} (C(p,k)/p)² for prime p ≥ 5. -/
 lemma p_dvd_sum_b_sq (hp' : Nat.Prime p) (h5 : 5 ≤ p) :
     (p : ℕ) ∣ ∑ k ∈ Finset.Ico 1 p, (Nat.choose p k / p) ^ 2 := by
-  rw [← ZMod.natCast_zmod_eq_zero_iff_dvd]
+  rw [← ZMod.natCast_eq_zero_iff]
   push_cast
   -- Each bₖ² = k⁻² in ZMod p
   have h_eq : ∑ k ∈ Finset.Ico 1 p, ((Nat.choose p k / p : ℕ) : ZMod p) ^ 2 =
@@ -159,7 +159,7 @@ lemma p_dvd_sum_b_sq (hp' : Nat.Prime p) (h5 : 5 ≤ p) :
   rw [h_eq]
   -- Use Fermat: a⁻¹ = a^(p-2) for a ≠ 0 in ZMod p, so k⁻² = k^(2(p-2))
   have h_ne : ∀ k ∈ Finset.Ico 1 p, ((k : ℕ) : ZMod p) ≠ 0 := by
-    intro k hk; rw [Ne, ZMod.natCast_zmod_eq_zero_iff_dvd]
+    intro k hk; rw [Ne, ZMod.natCast_eq_zero_iff]
     have := Finset.mem_Ico.mp hk
     exact fun h => absurd (Nat.le_of_dvd (by omega) h) (by omega)
   have h_fermat : ∑ k ∈ Finset.Ico 1 p, ((k : ℕ) : ZMod p)⁻¹ ^ 2 =

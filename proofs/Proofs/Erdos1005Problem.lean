@@ -106,7 +106,7 @@ theorem mediant_coprime {a b c d : ℕ} (h : b * c = a * d + 1) :
   rw [Nat.Coprime]
   have h1 := dvd_mul_of_dvd_right (Nat.gcd_dvd_left (a + c) (b + d)) b
   have h2 := dvd_mul_of_dvd_right (Nat.gcd_dvd_right (a + c) (b + d)) a
-  have h3 := Nat.dvd_sub' h1 h2
+  have h3 := Nat.dvd_sub h1 h2
   suffices hsuff : b * (a + c) - a * (b + d) = 1 by rw [hsuff] at h3; exact Nat.dvd_one.mp h3
   suffices b * (a + c) = a * (b + d) + 1 by omega
   nlinarith

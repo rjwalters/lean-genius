@@ -163,7 +163,7 @@ theorem korselt_backward (n : ℕ) (hn : n > 1) (_hnp : ¬n.Prime)
       rw [← pow_two]; exact pow_dvd_pow p hn2
     have hcollapse : p ^ n - (p ^ n - p) = p := by omega
     have hpp_p : p * p ∣ p := by
-      have := Nat.dvd_sub' hpp_pn hpp_diff
+      have := Nat.dvd_sub hpp_pn hpp_diff
       rwa [hcollapse] at this
     have hle : p * p ≤ p := Nat.le_of_dvd hp.pos hpp_p
     have h2 : 2 ≤ p := hp.two_le

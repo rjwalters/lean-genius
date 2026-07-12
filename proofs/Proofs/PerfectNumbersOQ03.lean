@@ -130,20 +130,20 @@ theorem factor_cong_one_mod_p {p q : ℕ} (hp : Nat.Prime p) (hq : Nat.Prime q)
   have hp1 : 1 ≤ 2 ^ p := Nat.one_le_pow p 2 (by norm_num)
   -- (2 : ZMod q) ≠ 0: q ∣ 2^p-1 which is odd, so q is odd, so q ∤ 2
   have h2_ne : (2 : ZMod q) ≠ 0 := by
-    rw [Ne, ZMod.natCast_zmod_eq_zero_iff_dvd]
+    rw [Ne, ZMod.natCast_eq_zero_iff]
     intro hq2  -- assume q ∣ 2 for contradiction
     -- q prime and q ∣ 2 forces q = 2
     have hq2' : q = 2 := le_antisymm (Nat.le_of_dvd (by norm_num) hq2) hq.two_le
     rw [hq2'] at hdvd  -- now 2 ∣ M p = 2^p - 1
     -- 2 ∣ 2^p (trivially) and 2 ∣ 2^p - M p forces 2 ∣ 1: contradiction
     have h2p : 2 ∣ 2 ^ p := dvd_pow_self 2 hp.pos.ne'
-    have h12 : 2 ∣ 2 ^ p - M p := Nat.dvd_sub' h2p hdvd
+    have h12 : 2 ∣ 2 ^ p - M p := Nat.dvd_sub h2p hdvd
     have hval : 2 ^ p - M p = 1 := by simp only [M]; omega
     exact absurd (hval ▸ h12) (by norm_num)
   -- Convert q ∣ 2^p - 1 to (2 : ZMod q)^p = 1
   have h2p_eq : (2 : ZMod q) ^ p = 1 := by
     have hzero : ((2 ^ p - 1 : ℕ) : ZMod q) = 0 := by
-      rw [ZMod.natCast_zmod_eq_zero_iff_dvd]; exact hdvd
+      rw [ZMod.natCast_eq_zero_iff]; exact hdvd
     rw [Nat.cast_sub hp1, Nat.cast_pow, Nat.cast_ofNat, Nat.cast_one] at hzero
     exact sub_eq_zero.mp hzero
   -- orderOf (2 : ZMod q) divides p

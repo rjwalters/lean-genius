@@ -42,7 +42,7 @@ theorem gcd_sub_right {a b : ℕ} (h : b ≤ a) :
     · exact Nat.gcd_dvd_right _ _
   · -- gcd(a, b) | gcd(a-b, b): suffices to show gcd(a,b) | (a-b) and gcd(a,b) | b
     apply Nat.dvd_gcd
-    · exact Nat.dvd_sub' (Nat.gcd_dvd_left a b) (Nat.gcd_dvd_right a b)
+    · exact Nat.dvd_sub (Nat.gcd_dvd_left a b) (Nat.gcd_dvd_right a b)
     · exact Nat.gcd_dvd_right _ _
 
 /-- gcd(2a, b) = gcd(a, b) when b is odd (2 and b are coprime). -/

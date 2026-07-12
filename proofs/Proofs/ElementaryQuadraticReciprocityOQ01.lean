@@ -288,7 +288,7 @@ theorem legendreChar_surjective (hp2 : p ≠ 2) :
     · -- χ(a) = 1: means a is a square, contradicting ha
       exfalso
       rw [quadraticChar_one_iff_isSquare ((ZMod.isUnit_prime_iff_not_dvd hp).mpr
-        (fun hdvd => ha0 ((ZMod.natCast_zmod_eq_zero_iff_dvd _ _).mpr hdvd)))] at hq1
+        (fun hdvd => ha0 ((ZMod.natCast_eq_zero_iff _ _).mpr hdvd)))] at hq1
       exact ha hq1
     · exact hqn1
 

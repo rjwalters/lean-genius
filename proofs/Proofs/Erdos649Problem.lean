@@ -154,7 +154,7 @@ theorem seven_not_divide_two_pow_plus_one (k : ℕ) : ¬(7 ∣ (2 ^ k + 1)) := b
   intro hdvd
   have h6 := two_power_mod_seven k
   have h0 : ((2 ^ k + 1 : ℕ) : ZMod 7) = 0 := by
-    rwa [ZMod.natCast_zmod_eq_zero_iff_dvd]
+    rwa [ZMod.natCast_eq_zero_iff]
   have h1 : (2 : ZMod 7) ^ k = -1 := by
     have : (2 : ZMod 7) ^ k + 1 = 0 := by push_cast at h0; exact h0
     have := eq_neg_of_add_eq_zero_left this; simpa using this

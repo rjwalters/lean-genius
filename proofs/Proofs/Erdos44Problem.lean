@@ -237,7 +237,7 @@ private lemma pow2_sum_inj : ∀ (n : ℕ) (a b c d : ℕ),
           have hlhs_odd : ¬ 2 ∣ (1 + 2 ^ b) := by
             have h2b : 2 ∣ 2 ^ b := dvd_pow_self 2 (by omega : b ≠ 0)
             intro ⟨m, hm⟩
-            have : 2 ∣ (1 + 2 ^ b - 2 ^ b) := Nat.dvd_sub' ⟨m, hm⟩ h2b
+            have : 2 ∣ (1 + 2 ^ b - 2 ^ b) := Nat.dvd_sub ⟨m, hm⟩ h2b
             simp at this
           exact hlhs_odd (heq ▸ hrhs_even)
     · by_cases hc : c = 0
@@ -259,7 +259,7 @@ private lemma pow2_sum_inj : ∀ (n : ℕ) (a b c d : ℕ),
           have hrhs_odd : ¬ 2 ∣ (1 + 2 ^ d) := by
             have h2d : 2 ∣ 2 ^ d := dvd_pow_self 2 (by omega : d ≠ 0)
             intro ⟨m, hm⟩
-            have : 2 ∣ (1 + 2 ^ d - 2 ^ d) := Nat.dvd_sub' ⟨m, hm⟩ h2d
+            have : 2 ∣ (1 + 2 ^ d - 2 ^ d) := Nat.dvd_sub ⟨m, hm⟩ h2d
             simp at this
           exact hrhs_odd (heq.symm ▸ hlhs_even)
       · -- a ≥ 1, c ≥ 1: divide by 2 and recurse

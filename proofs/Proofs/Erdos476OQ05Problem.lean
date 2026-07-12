@@ -210,7 +210,7 @@ private lemma isAP_sdiff_card {A : Finset (ZMod p)} {a d : ZMod p}
       have h_dvd : p ∣ j + 1 := by
         have hcast : ((j + 1 : ℕ) : ZMod p) = 0 := by
           rw [Nat.cast_add, Nat.cast_one]; exact hzero
-        rwa [ZMod.natCast_zmod_eq_zero_iff_dvd] at hcast
+        rwa [ZMod.natCast_eq_zero_iff] at hcast
       exact absurd (Nat.le_of_dvd (by omega) h_dvd) (by omega)
 
 /-- **AP Sdiff Card**: Given IH gives A' = A.erase a₀ and B are APs with same diff d,
@@ -374,7 +374,7 @@ private lemma vosper_ap_sdiff_card
         -- (|A'|+|B|)*d = 0 with d≠0 implies p ∣ (|A'|+|B|), but |A'|+|B| < p
         have hlt' : (A.erase a₀).card + B.card < p := by rw [hA'card]; omega
         have hne : ((A.erase a₀).card + B.card : ZMod p) ≠ 0 := by
-          rw [ZMod.natCast_zmod_eq_zero_iff_dvd]
+          rw [ZMod.natCast_eq_zero_iff]
           intro hdvd
           have := Nat.le_of_dvd (by omega) hdvd
           omega

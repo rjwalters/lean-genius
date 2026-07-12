@@ -55,7 +55,7 @@ theorem wilson_theorem (p : ℕ) (hp : p.Prime) :
     push_cast
     rw [h]
     ring
-  exact (ZMod.natCast_zmod_eq_zero_iff_dvd _ _).mp h2
+  exact (ZMod.natCast_eq_zero_iff _ _).mp h2
 
 /-- Every prime satisfies `DividesFactorialPlusOne` via Wilson's theorem. -/
 theorem prime_divides_factorial_plus_one (p : ℕ) (hp : p.Prime) :
@@ -119,7 +119,7 @@ theorem coprime_of_dvd_factorial_plus_one {u n : ℕ} (hu : 2 ≤ u)
   -- gcd | u | n!+1 and gcd | n!, so gcd | 1
   have h1 : Nat.gcd u (n !) ∣ n ! + 1 := dvd_trans hg1 hdvd
   have h2 : Nat.gcd u (n !) ∣ 1 := by
-    have := Nat.dvd_sub' h1 hg2
+    have := Nat.dvd_sub h1 hg2
     simp [Nat.add_sub_cancel] at this
     exact this
   exact h (Nat.eq_one_of_dvd_one h2)

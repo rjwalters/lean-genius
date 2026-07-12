@@ -177,7 +177,7 @@ theorem constant_2_optimal :
 private lemma dvd_add_period_iff {a P n : ℕ} (haP : a ∣ P) :
     a ∣ n ↔ a ∣ (n + P) :=
   ⟨fun h => dvd_add h haP, fun h => by
-    have := Nat.dvd_sub' h haP; rwa [Nat.add_sub_cancel] at this⟩
+    have := Nat.dvd_sub h haP; rwa [Nat.add_sub_cancel] at this⟩
 
 /-- `lcm(A) > 0` when all elements of `A` are positive. -/
 private lemma lcm_pos_of_pos (A : Finset ℕ) (hA : ∀ a ∈ A, 1 ≤ a) : 0 < A.lcm id := by

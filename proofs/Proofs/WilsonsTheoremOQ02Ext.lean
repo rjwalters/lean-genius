@@ -206,7 +206,7 @@ private theorem pow2_cast_sq_eq_one (k : ℕ) (hk : k ≥ 3) :
       = ((((2 ^ (k - 1) + 1) ^ 2 : ℕ) : ZMod (2 ^ k))) := by push_cast; ring
     _ = ((((2 ^ (k - 1) + 1) ^ 2 - 1 + 1 : ℕ) : ZMod (2 ^ k))) := by rw [this]
     _ = ((((2 ^ (k - 1) + 1) ^ 2 - 1 : ℕ) : ZMod (2 ^ k)) + 1) := by push_cast; ring
-    _ = (0 + 1) := by rw [ZMod.natCast_zmod_eq_zero_iff_dvd.mpr hdvd]
+    _ = (0 + 1) := by rw [ZMod.natCast_eq_zero_iff.mpr hdvd]
     _ = 1 := by ring
 
 /-- For k ≥ 3, the element 2^(k-1)+1 is not 1 in ZMod (2^k). -/

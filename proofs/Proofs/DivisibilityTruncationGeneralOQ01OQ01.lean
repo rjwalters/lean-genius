@@ -52,7 +52,7 @@ theorem dvd_iff_dvd_last_k (s k n : ℕ) (hs : s ∣ 10 ^ k) :
   · intro hn
     have h2 : s ∣ 10 ^ k * (n / 10 ^ k) + n % 10 ^ k := by
       rw [Nat.div_add_mod]; exact hn
-    have hsub := Nat.dvd_sub' h2 h1
+    have hsub := Nat.dvd_sub h2 h1
     have heq : 10 ^ k * (n / 10 ^ k) + n % 10 ^ k - 10 ^ k * (n / 10 ^ k)
         = n % 10 ^ k := by omega
     rwa [heq] at hsub

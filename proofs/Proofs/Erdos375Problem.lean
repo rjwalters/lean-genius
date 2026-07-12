@@ -137,7 +137,7 @@ theorem grimm_k_eq_2 (n : ℕ) (h : isCompositeBlock n 2) :
   -- p ≠ q: if p = q then p | (n+2) - (n+1) = 1, contradicting primality
   have hpq : p ≠ q := by
     intro heq; subst heq
-    have hdvd1 : p ∣ (n + 2) - (n + 1) := Nat.dvd_sub' hqdvd hpdvd
+    have hdvd1 : p ∣ (n + 2) - (n + 1) := Nat.dvd_sub hqdvd hpdvd
     have heq1 : (n + 2) - (n + 1) = 1 := by omega
     rw [heq1] at hdvd1
     exact absurd (Nat.le_of_dvd one_pos hdvd1) (by linarith [hp.one_lt])

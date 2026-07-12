@@ -223,7 +223,7 @@ So if (p-1) | n, then p might divide both k^n - 1 and l^n - 1.
 theorem fermat_little_theorem (k p : ℕ) (hp : Nat.Prime p) (hk : ¬p ∣ k) :
     k^(p - 1) ≡ 1 [MOD p] := by
   have := Fact.mk hp
-  have hk' : (k : ZMod p) ≠ 0 := by rwa [Ne, ZMod.natCast_zmod_eq_zero_iff_dvd]
+  have hk' : (k : ZMod p) ≠ 0 := by rwa [Ne, ZMod.natCast_eq_zero_iff]
   have h : (k : ZMod p) ^ (p - 1) = 1 := by
     rw [← ZMod.card p]; exact ZMod.pow_card_sub_one_eq_one hk'
   have h' : ((k ^ (p - 1) : ℕ) : ZMod p) = ((1 : ℕ) : ZMod p) := by push_cast; exact h

@@ -303,7 +303,7 @@ theorem prime_dvd_pow_sub_one {p : ℕ} (hp : Nat.Prime p) {n : ℕ} (hdvd : (p 
 theorem prime_not_dvd_self_pow_sub_one {p : ℕ} (hp : Nat.Prime p) {n : ℕ} (hn : 0 < n) :
     ¬(p ∣ (p ^ n - 1)) := by
   intro h
-  have h1 : p ∣ p ^ n - (p ^ n - 1) := Nat.dvd_sub' (dvd_pow_self p hn.ne') h
+  have h1 : p ∣ p ^ n - (p ^ n - 1) := Nat.dvd_sub (dvd_pow_self p hn.ne') h
   have h2 : p ^ n - (p ^ n - 1) = 1 := by
     have : 1 ≤ p ^ n := Nat.one_le_pow n p hp.pos; omega
   rw [h2] at h1
@@ -366,7 +366,7 @@ private theorem no_small_prime_dvd_gcdPowerSeq_succ {n q : ℕ}
   have h1 : q ∣ (q ^ n - 1) := dvd_trans hq_dvd (gcdPowerSeq_dvd_term n (n + 1) q hq_mem)
   have h2 : q ∣ q ^ n := dvd_pow_self q hn.ne'
   have h3 : 1 ≤ q ^ n := Nat.one_le_pow n q hq.pos
-  have h4 : q ∣ q ^ n - (q ^ n - 1) := Nat.dvd_sub' h2 h1
+  have h4 : q ∣ q ^ n - (q ^ n - 1) := Nat.dvd_sub h2 h1
   have h5 : q ^ n - (q ^ n - 1) = 1 := by omega
   rw [h5] at h4
   exact absurd (Nat.le_of_dvd one_pos h4) (by omega)
@@ -376,7 +376,7 @@ private theorem zmod_pow_eq_one_of_dvd {q a n : ℕ} [Fact (Nat.Prime q)]
     (h_ge : 1 ≤ a ^ n) (h_dvd : q ∣ (a ^ n - 1)) :
     ((a : ℕ) : ZMod q) ^ n = 1 := by
   have h0 : ((a ^ n - 1 : ℕ) : ZMod q) = 0 :=
-    (ZMod.natCast_zmod_eq_zero_iff_dvd _ _).mpr h_dvd
+    (ZMod.natCast_eq_zero_iff _ _).mpr h_dvd
   rw [Nat.cast_sub h_ge, Nat.cast_one] at h0
   rwa [sub_eq_zero, Nat.cast_pow] at h0
 
