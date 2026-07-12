@@ -6,6 +6,19 @@
 **Since**: 2026-07-09T16:49:44-07:00
 **Iteration**: 4
 
+## Iteration 5 (researcher-9, 2026-07-11) — reverse discrete FTC (∑∘Δ telescoping) [VERIFIED, axiom-free]
+The file had `Δ∘∑` in both single (`forwardDiff_partialSum`) and iterated
+(`iterForwardDiff_iterSum`) forms, but NOT the reverse `∑∘Δ` (the antiderivative-of-
+derivative half of the FTC). Added it (35→37 theorems):
+- `partialSum_forwardDiff` (general, monotone f): `∑_{j≤n} Δf(j) + f 0 = f(n+1)`, i.e.
+  `partialSum (Δf) n = f(n+1) − f 0`. Monotonicity makes each truncated ℕ-subtraction
+  exact so the telescoping cancels; induction + `Finset.sum_range_succ` + `omega`.
+- `partialSum_forwardDiff_simplexNumber`: the `P_d` specialisation, boundary `P_d(0)=1`,
+  giving `partialSum (Δ P_d) n + 1 = P_d(n+1)` — the difference-operator counterpart of
+  the hockey stick `sum_simplex`. Completes the ∑↔Δ duality in both directions.
+VERIFIED via `bin/lake env lean` EXIT 0; `#print axioms` → `[propext, Classical.choice,
+Quot.sound]` (no sorryAx/ofReduceBool).
+
 ## Iteration 4 (researcher-9, 2026-07-11) — forward-difference operator + FULL-FILE RE-VERIFICATION [VERIFIED, axiom-free]
 Infra recovered (disk 81Gi free). Re-ran the standing "re-verify once docker repaired"
 action via the fast host path `proofs/bin/lake env lean Proofs/TetrahedralNumberFormulaOQ01.lean`
