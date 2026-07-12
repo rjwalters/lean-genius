@@ -597,6 +597,25 @@ theorem f_four :
   have hT' : T ∈ ({3, 5, 6, 7} : Finset ℕ).powerset := Finset.mem_powerset.mpr hT
   fin_cases hS' <;> fin_cases hT' <;> revert heq <;> decide
 
+/-- f(5) = 13: the Conway–Guy set `{6, 9, 11, 12, 13}` has `2⁵ = 32` distinct subset
+    sums with maximum element `13`.  This is the `n = 5` entry of OEIS A005318,
+    continuing `f_zero`…`f_four`, and the margin over the greedy powers-of-two witness
+    widens further: `{1, 2, 4, 8, 16}` also has distinct subset sums but maximum `16`,
+    so `f(5) = 13 < 16 = 2⁴`.  Together with `f_four` (`f(4) = 7 < 8`) this shows the
+    doubling construction is strictly beaten for every `n ≥ 4`, and the gap `2ⁿ⁻¹ − f(n)`
+    grows (`8 − 7 = 1` at `n = 4`, `16 − 13 = 3` at `n = 5`) — the phenomenon whose
+    asymptotics the DFX bound `dfx_lower_bound` quantifies.  The
+    `hasDistinctSubsetSums {6,9,11,12,13}` obligation is discharged by enumerating the
+    thirty-two subsets (`fin_cases` over the powerset) and deciding each subset-pair sum
+    comparison, exactly as in `f_two_max`…`f_four`. -/
+theorem f_five :
+    ∃ (A : Finset ℕ), A.card = 5 ∧ hasDistinctSubsetSums A ∧ A.sup id = 13 := by
+  refine ⟨{6, 9, 11, 12, 13}, by decide, ?_, by decide⟩
+  intro S T hS hT heq
+  have hS' : S ∈ ({6, 9, 11, 12, 13} : Finset ℕ).powerset := Finset.mem_powerset.mpr hS
+  have hT' : T ∈ ({6, 9, 11, 12, 13} : Finset ℕ).powerset := Finset.mem_powerset.mpr hT
+  fin_cases hS' <;> fin_cases hT' <;> revert heq <;> decide
+
 /-! ## Conclusion
 
 The DFX framework is formalized with:
@@ -604,8 +623,9 @@ The DFX framework is formalized with:
   fully proved theorem `anticoncentration_bound`, no longer an axiom)
 - 0 sorries (dfx_lower_bound fully proved)
 - Variance bounds and Cauchy–Schwarz (proved)
-- Small case verifications `f_zero`…`f_four` (proved; `f_four` shows `f(4)=7`
-  beats the greedy powers-of-two witness `{1,2,4,8}` of maximum `8`)
+- Small case verifications `f_zero`…`f_five` (proved; `f_four` shows `f(4)=7`
+  beats the greedy powers-of-two witness `{1,2,4,8}` of maximum `8`, and `f_five`
+  shows `f(5)=13 < 16` via the Conway–Guy set `{6,9,11,12,13}`)
 
 The anticoncentration bound is discharged entirely by the probability-free CORE
 built up in the "Verified ingredients toward discharging" section
