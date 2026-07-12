@@ -696,7 +696,7 @@ theorem listProd_diagonal {ι : Type*} (L : List ι) (g : ι → n → K) :
   rw [hhom]
   congr 1
   funext i
-  simp only [Pi.list_prod_apply, List.map_map, Function.comp]
+  rw [Pi.list_prod_apply, List.map_map, Function.comp_def]
 
 /-- **The splitting annihilator of a diagonalizable matrix.**  If `P` diagonalizes `M`
     (so `D = P⁻¹MP` is diagonal), then `M` is annihilated by the ordered product
@@ -744,7 +744,7 @@ theorem prod_sub_eigen_smul_eq_zero [DecidableEq K] {M P : Matrix n n K} (hP : I
       = diagonal (fun i => (S.toList.map (fun s => D i i - s)).prod) := by
     rw [hconj]; exact listProd_diagonal S.toList (fun s i => D i i - s)
   -- every diagonal entry of the conjugated product vanishes (`D i i` is one of the roots)
-  have hzero : (fun i => (S.toList.map (fun s => D i i - s)).prod) = (0 : n → K) := by
+  have hzero : (fun i => (S.toList.map (fun s => D i i - s)).prod) = fun _ : n => (0 : K) := by
     funext i
     apply List.prod_eq_zero
     rw [List.mem_map]
@@ -760,8 +760,8 @@ theorem prod_sub_eigen_smul_eq_zero [DecidableEq K] {M P : Matrix n n K} (hP : I
   calc (S.toList.map (fun s => M - s • (1 : Matrix n n K))).prod
       = P * (P⁻¹ * ((S.toList.map (fun s => M - s • (1 : Matrix n n K))).prod) * P) * P⁻¹ :=
         (hcancel _).symm
-    _ = P * diagonal 0 * P⁻¹ := by rw [hconj2]
-    _ = 0 := by simp
+    _ = P * diagonal (fun _ : n => (0 : K)) * P⁻¹ := by rw [hconj2]
+    _ = 0 := by rw [Matrix.diagonal_zero, Matrix.mul_zero, Matrix.zero_mul]
 
 /-- **A diagonalizable matrix is annihilated by a product of distinct linear factors.**
     The existential, diagonalizer-free form of `prod_sub_eigen_smul_eq_zero`: every
