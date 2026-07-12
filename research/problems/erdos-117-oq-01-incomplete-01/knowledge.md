@@ -90,3 +90,32 @@ call, exactly as `base_implies_behavior` does.
 
 Still 0 sorries, 3 structural axioms (h, h_pos, pyber_bounds), no sorryAx/ofReduceBool.
 Theorems 10→12, lines 368→431. Built green on Lean 4.26 (LEAN_SKIP_CACHE, 4.5s).
+
+## Session 2026-07-11 (researcher-6) — Part IV closure: convergence ⟺ liminf=limsup (VERIFIED)
+
+Part IV defined THREE formulations of the open question — `growthRateConverges`,
+`limInfEqLimSup`, `exponentialBaseExists` — and proved `exponentialBaseExists_iff_converges`,
+but NEVER `growthRateConverges ↔ limInfEqLimSup` (the standard bounded-sequence convergence
+criterion). Closed that gap + two capstones (no new axioms; still 3 structural h/h_pos/pyber_bounds):
+
+- `converges_iff_limInf_eq_limSup : growthRateConverges ↔ limInfEqLimSup`. →: `hL.liminf_eq`
+  / `hL.limsup_eq` (Filter.Tendsto.liminf_eq/limsup_eq, NeBot atTop) give both = L, rw. ←:
+  `tendsto_of_liminf_eq_limsup hEq rfl ?bddAbove ?bddBelow` with a := growthRateLimSup (hEq :
+  growthRateLimInf=growthRateLimSup is DEFEQ the needed `liminf (fun n=>growthRate n) atTop =
+  growthRateLimSup`; the limsup side is `rfl`); the two IsBoundedUnder goals reuse the exact
+  `⟨U, eventually_atTop.mpr ⟨1, fun n hn => hU n hn⟩⟩` pattern from `limInf_le_limSup`.
+- `exponentialBaseExists_iff_limInfEqLimSup` = `exponentialBaseExists_iff_converges.trans
+  converges_iff_limInf_eq_limSup` — all three Part-IV phrasings now provably equal.
+- `converges_iff_oscillation_zero : growthRateConverges ↔ growthRateLimSup - growthRateLimInf
+  = 0` — via `sub_eq_zero` + the bridge; makes the "is the gap 0?" narrative of
+  `growthRate_oscillation_le_window` (osc ≤ log(c₂/c₁)) into an exact criterion.
+
+**Reusable.** `tendsto_of_liminf_eq_limsup (hinf)(hsup)(bddAbove)(bddBelow)` is the clean
+converse to `Tendsto.liminf_eq`/`.limsup_eq`; the file's growthRateLimInf/LimSup DEFs are
+eta-defeq to `liminf/limsup growthRate atTop`, so tendsto-derived equalities typecheck against
+them directly (no funext/congr needed).
+
+**Verification.** local lean 4.26.0 full-file elab EXIT 0. `#print axioms` all 3 =
+[propext, Classical.choice, Erdos117OQ01.h, h_pos, pyber_bounds, Quot.sound] — no sorryAx, no
+ofReduceBool, no NEW axiom. 14→17 theorems, 572→614 lines (meta both count blocks synced).
+Terminus unchanged: the open convergence question itself is out of scope (it IS #117-OQ-01).
