@@ -35,7 +35,8 @@
       "The companion integral is the exact mirror of the parent's: where the parent uses the antiderivative sin^{m+1}(θ)/(m+1) for cos θ · sinᵐ θ, the companion uses -cos^{m+1}(θ)/(m+1) for sin θ · cosᵐ θ. The single sign on the antiderivative (and the resulting endpoint swap cos(π/2)=0, cos(0)=1) is the only difference, confirming the FTC template transfers verbatim.",
       "The reflection θ ↦ π/2 − θ gives a structural, computation-free reason the two integrals share the value 1/(m+1): it is an involution of [0, π/2] that interchanges sin and cos, so the companion is literally the parent with its factors swapped. This answers the parent's second open question (an independent proof) and is captured by a single application of intervalIntegral.integral_comp_sub_left.",
       "The boundary of the method is sharp: the FTC template closes ∫ sin θ · cosᵐ θ (and ∫ cos θ · sinᵐ θ) precisely because one factor is a first power, making the integrand the exact derivative of a power of the other factor. The full two-parameter Beta function B(a,b) = ∫_0^{π/2} sin^{2a-1}θ cos^{2b-1}θ dθ has no elementary antiderivative for general a,b and needs the Gamma recurrence — so 'the same FTC template' answers the companion clause but not the full-Beta clause of the open question.",
-      "Both companion and parent supply the same σ_{n-2}/(n-1) proportionality factor in the n-dimensional angular average; which of sin/cos appears depends only on the choice of polar axis, and the reflection symmetry makes that choice provably immaterial."
+      "Both companion and parent supply the same σ_{n-2}/(n-1) proportionality factor in the n-dimensional angular average; which of sin/cos appears depends only on the choice of polar axis, and the reflection symmetry makes that choice provably immaterial.",
+      "The value 1/(m+1) is exactly the edge of the Beta table where the Gamma recurrence collapses to its base case. Written as a Beta integral, ∫_0^{π/2} sin θ · cosᵐ θ dθ = ½·B(1, (m+1)/2), and B(1, y) = Γ(1)Γ(y)/Γ(1+y) = 1/y because Γ(1) = 1 and the recurrence Γ(1+y) = y·Γ(y) telescopes in a single step. The first-power sine factor pins one Beta parameter to a = 1, precisely the corner where the recurrence terminates immediately — which is the exact reason the single-step FTC template succeeds here and, for general (a,b) in the interior of the table, provably cannot (no elementary antiderivative; the full Gamma recurrence is unavoidable). This sharpens the 'boundary of the method' insight into a precise statement about where in the (a,b)-plane elementarity holds."
     ]
   },
   "sections": [
@@ -48,12 +49,20 @@
       "mathContext": "The mirror antiderivative $F(\\theta) = -\\cos^{m+1}\\theta/(m+1)$ has $F'(\\theta) = \\sin\\theta\\,\\cos^{m}\\theta$; the reflection $\\theta\\mapsto\\pi/2-\\theta$ swaps $\\sin\\leftrightarrow\\cos$."
     },
     {
+      "id": "sec-companion-derivative",
+      "title": "The Mirror Antiderivative and Its Derivative Witness",
+      "startLine": 50,
+      "endLine": 71,
+      "summary": "Statement of integral_sin_mul_cos_pow (∫_0^{π/2} sin θ · cosᵐ θ dθ = 1/(m+1) for all m : ℕ) and the construction of the HasDerivAt witness hderiv: on the interval, -cos^{m+1}(θ)/(m+1) has derivative sin θ · cosᵐ θ. Built from (Real.hasDerivAt_cos θ).pow (m+1), then .neg and .div_const, with Nat.add_sub_cancel fixing the exponent and push_cast/field_simp/ring reconciling the constant factor.",
+      "mathContext": "$F(\\theta) = -\\dfrac{\\cos^{m+1}\\theta}{m+1}$ has $F'(\\theta) = -\\dfrac{(m+1)\\cos^{m}\\theta\\cdot(-\\sin\\theta)}{m+1} = \\sin\\theta\\,\\cos^{m}\\theta$ (chain rule via `HasDerivAt.pow`)."
+    },
+    {
       "id": "sec-companion-ftc",
-      "title": "Companion Beta Integral via FTC",
-      "startLine": 51,
-      "endLine": 76,
-      "summary": "Proves integral_sin_mul_cos_pow: ∫_0^{π/2} sin θ · cosᵐ θ dθ = 1/(m+1) for all m : ℕ. Builds the HasDerivAt witness for -cos^{m+1}(θ)/(m+1) via (hasDerivAt_cos).pow (m+1), neg, and div_const, reconciles the constant with push_cast/field_simp/ring, proves continuity for interval-integrability, applies the FTC bridge, and evaluates at cos(π/2)=0 (zero_pow) and cos(0)=1.",
-      "mathContext": "$F(\\theta) = -\\dfrac{\\cos^{m+1}\\theta}{m+1}$, $F(\\pi/2)-F(0) = 0 - \\left(-\\tfrac{1}{m+1}\\right) = \\tfrac{1}{m+1}$ — the closed-form image of $u=\\cos\\theta$, $\\int_0^1 u^m\\,du$."
+      "title": "Applying the FTC and Evaluating the Endpoints",
+      "startLine": 72,
+      "endLine": 77,
+      "summary": "Completes integral_sin_mul_cos_pow: proves continuity of θ ↦ sin θ · cosᵐ θ (hence interval-integrability), applies the FTC bridge intervalIntegral.integral_eq_sub_of_hasDerivAt to reduce the integral to F(π/2) − F(0), then evaluates cos(π/2)=0 (killing the top endpoint via zero_pow) and cos(0)=1, leaving 0 − (−1/(m+1)) = 1/(m+1).",
+      "mathContext": "$F(\\pi/2)-F(0) = 0 - \\left(-\\tfrac{1}{m+1}\\right) = \\tfrac{1}{m+1}$ — the closed-form image of $u=\\cos\\theta$, $\\int_0^1 u^m\\,du$."
     },
     {
       "id": "sec-dimensional",
