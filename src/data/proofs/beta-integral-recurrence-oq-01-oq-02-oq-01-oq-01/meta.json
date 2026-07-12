@@ -127,8 +127,16 @@
     "Prove the general diagonal asymptotic B(x,x) ~ 2^(1-2x)·√(π/x) for real x → ∞ (not just the half-integer slice), interpolating this entry's discrete result."
   ],
   "crossReferences": [
-    "beta-integral-recurrence-oq-01-oq-02-oq-01",
-    "stirling-formula-oq-03-oq-02"
+    {
+      "targetId": "beta-integral-recurrence-oq-01-oq-02-oq-01",
+      "relationship": "extends",
+      "description": "Parent. Established the exact diagonal value B(n+1/2,n+1/2) = π·C(2n,n)/4^(2n) and listed the large-n asymptotic as an open question, conjecturing the rate √(π/n). This entry supplies — and corrects — that asymptotic to √(π/n)·4^(-n), the exact value's 4^(2n) denominator forcing the extra exponential factor the naive guess dropped."
+    },
+    {
+      "targetId": "stirling-formula-oq-03-oq-02",
+      "relationship": "depends on",
+      "description": "Supplies the central binomial asymptotic C(2n,n)·√(πn)/4^n → 1 (i.e. C(2n,n) ~ 4^n/√(πn)). Combined with the parent's exact Beta value by a pure field identity, it is the sole analytic input to the Beta asymptotic proved here — no fresh limit computation is needed."
+    }
   ],
   "references": [
     {
