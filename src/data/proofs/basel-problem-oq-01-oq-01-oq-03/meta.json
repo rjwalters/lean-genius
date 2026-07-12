@@ -47,18 +47,32 @@
       "summary": "Imports the irrationality predicate, finite-rank/span machinery, and metric-space limits. The header explains the two formalizable Ball–Rivoal ingredients and records 0 axioms / 0 sorries."
     },
     {
-      "id": "linear-form-engine",
-      "title": "Part I: The Linear-Form Irrationality Criterion",
+      "id": "quantitative-floor",
+      "title": "Part I: The Quantitative Floor",
       "startLine": 44,
+      "endLine": 64,
+      "summary": "abs_linearForm_ge_of_rat: for a rational α = a/b, every nonzero integer linear form q·α − p is bounded away from 0 by 1/|b|. The form equals (q·a − p·b)/b whose numerator is a nonzero integer, hence has absolute value ≥ 1 — the single arithmetic fact powering the whole criterion."
+    },
+    {
+      "id": "linear-form-criterion",
+      "title": "Part I: The Linear-Form Irrationality Criterion",
+      "startLine": 66,
       "endLine": 110,
-      "summary": "abs_linearForm_ge_of_rat gives the quantitative floor 1/|b| for nonzero integer linear forms at a rational; irrational_of_linearForm_tendsto_zero turns nonzero forms tending to 0 into irrationality; irrational_of_linearForm_le_tendsto_zero packages the practical decay-bound hypothesis via a two-sided squeeze."
+      "summary": "irrational_of_linearForm_tendsto_zero turns nonzero integer linear forms tending to 0 into irrationality (a rational α would eventually violate the 1/|b| floor); irrational_of_linearForm_le_tendsto_zero repackages this with the practical hypothesis |qₙ·α − pₙ| ≤ Cₙ → 0 via a two-sided squeeze — the abstract engine behind Apéry and Ball–Rivoal."
+    },
+    {
+      "id": "dimension-cap",
+      "title": "Part II: Dimension Cap from Finitely Many Irrationals",
+      "startLine": 112,
+      "endLine": 156,
+      "summary": "finrank_span_le_of_irrational_subset: viewing ℝ as a ℚ-vector space, if every x i outside a finite set T is rational then span{1} ∪ {x i : i ∈ s} sits inside the fixed subspace spanned by {1} ∪ {x i : i ∈ T}, capping its ℚ-dimension at |T|+1 (rational values collapse to ℚ-multiples of 1)."
     },
     {
       "id": "dimension-reduction",
       "title": "Part II: The Ball–Rivoal Dimension Reduction",
-      "startLine": 112,
+      "startLine": 158,
       "endLine": 181,
-      "summary": "finrank_span_le_of_irrational_subset caps the ℚ-dimension of any finite span by |T|+1 when only the indices in T are irrational; infinite_irrational_of_unbounded_finrank is the headline contrapositive: unbounded dimension implies infinitely many irrational values."
+      "summary": "infinite_irrational_of_unbounded_finrank: the headline contrapositive — if the ℚ-dimension of span{1} ∪ {x i : i ∈ s} is unbounded in s, infinitely many x i are irrational. Rivoal's analytic dimension lower bound (~log n/(1+log 2) → ∞ for the odd zeta values) feeds this lemma."
     }
   ],
   "conclusion": {
