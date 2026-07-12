@@ -356,4 +356,60 @@ theorem diagonalReal_mem_Icc (f : ℕ → ℝ) :
     diagonalReal f ∈ Set.Icc (1 / 9 : ℝ) (2 / 9) :=
   ⟨diagonalReal_ge_one_ninth f, diagonalReal_le_two_ninths f⟩
 
+/-! ## Both endpoints of `[1/9, 2/9]` are attained
+
+`diagonalReal_mem_Icc` localizes the diagonal to `[1/9, 2/9]`; its docstring asserts
+that *both endpoints are attained* — the minorant `1/9` by listings whose `n`-th digit
+is never `1` (so `db f n ≡ 1`), the majorant `2/9` by listings whose `n`-th digit is
+always `1` (so `db f n ≡ 2`).  Here we formalize exactly that claim: the two conditional
+evaluations, and explicit witnesses realizing each endpoint (`f ≡ 0` reaches `1/9`;
+`f n = 10^{-(n+1)}`, whose `n`-th digit is `1`, reaches `2/9`).  So the localization
+`[1/9, 2/9]` is *sharp* — neither bound can be tightened.  Still routed entirely through
+the bespoke `diagonalReal`. -/
+
+/-- **The majorant `2/9` is realized by all-`1`-digit listings.**  If every `f n` has
+`n`-th digit equal to `1`, then each disagreeing digit is `db f n = 2`, and the diagonal
+is exactly the geometric majorant `∑ 2/10^(n+1) = 2/9`. -/
+theorem diagonalReal_eq_two_ninths_of {f : ℕ → ℝ} (h : ∀ n, digit (f n) n = 1) :
+    diagonalReal f = 2 / 9 := by
+  have hdb : ∀ n, (db f n : ℝ) = 2 := fun n => by
+    unfold db; rw [if_pos (h n)]; norm_num
+  rw [diagonalReal, ← tsum_geo_shift]
+  apply tsum_congr; intro n
+  rw [hdb n, div_pow, one_pow, mul_one_div]
+
+/-- **The minorant `1/9` is realized by never-`1`-digit listings.**  If no `f n` has
+`n`-th digit equal to `1`, then each disagreeing digit is `db f n = 1`, and the diagonal
+is exactly the geometric minorant `∑ 1/10^(n+1) = 1/9`. -/
+theorem diagonalReal_eq_one_ninth_of {f : ℕ → ℝ} (h : ∀ n, digit (f n) n ≠ 1) :
+    diagonalReal f = 1 / 9 := by
+  have hdb : ∀ n, (db f n : ℝ) = 1 := fun n => by
+    unfold db; rw [if_neg (h n)]; norm_num
+  rw [diagonalReal, ← tsum_geo_shift_one]
+  apply tsum_congr; intro n
+  rw [hdb n, div_pow, one_pow]
+
+/-- **The minorant `1/9` is attained.**  The constant listing `f ≡ 0` has every `n`-th
+digit `0 ≠ 1`, so its diagonal is exactly `1/9` — the lower endpoint of the localization
+interval is achieved. -/
+theorem exists_diagonalReal_eq_one_ninth : ∃ f : ℕ → ℝ, diagonalReal f = 1 / 9 := by
+  refine ⟨fun _ => 0, diagonalReal_eq_one_ninth_of (fun n => ?_)⟩
+  show digit (0 : ℝ) n ≠ 1
+  unfold digit
+  rw [zero_mul, Int.floor_zero]
+  decide
+
+/-- **The majorant `2/9` is attained.**  The listing `f n = 10^{-(n+1)}` has `n`-th digit
+`⌊10^{-(n+1)}·10^(n+1)⌋ % 10 = ⌊1⌋ % 10 = 1`, so its diagonal is exactly `2/9` — the upper
+endpoint of the localization interval is achieved.  Together with
+`exists_diagonalReal_eq_one_ninth` this shows `[1/9, 2/9]` is the *sharp* range of
+`diagonalReal`, matching the `diagonalReal_mem_Icc` docstring. -/
+theorem exists_diagonalReal_eq_two_ninths : ∃ f : ℕ → ℝ, diagonalReal f = 2 / 9 := by
+  refine ⟨fun n => 1 / 10 ^ (n + 1), diagonalReal_eq_two_ninths_of (fun n => ?_)⟩
+  have h10 : (10 : ℝ) ^ (n + 1) ≠ 0 := by positivity
+  show digit (1 / 10 ^ (n + 1) : ℝ) n = 1
+  unfold digit
+  rw [one_div, inv_mul_cancel₀ h10, Int.floor_one]
+  decide
+
 end CantorDiagonalizationOQ06OQ01
