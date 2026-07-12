@@ -64,11 +64,19 @@
       "mathContext": "$\\int x^{2n} e^{-a x^2} = (2n-1)!!\\,\\dfrac{\\sqrt{\\pi/a}}{(2a)^n}$"
     },
     {
-      "id": "consistency-checks",
-      "title": "Consistency Checks",
+      "id": "consistency-check-unit-scale",
+      "title": "Consistency Check: a = 1 Recovers the Parent",
       "startLine": 102,
+      "endLine": 107,
+      "summary": "scaled_gaussian_even_moment_one: specializing a = 1 collapses √(π/1)/(2·1)ⁿ back to the parent's unscaled (2n-1)‼·√π/2ⁿ, confirming the dilation lift is a strict generalization.",
+      "mathContext": "$\\int_{\\mathbb R} x^{2n} e^{-x^2} = \\dfrac{(2n-1)!!\\,\\sqrt{\\pi}}{2^n}$"
+    },
+    {
+      "id": "consistency-check-second-moment",
+      "title": "Consistency Check: the Scaled Second Moment",
+      "startLine": 109,
       "endLine": 119,
-      "summary": "scaled_gaussian_even_moment_one recovers the parent's a = 1 moment; scaled_gaussian_second_moment gives ∫ x² e^{-a x²} = √(π/a)/(2a), twice the half-line sibling value by even symmetry.",
+      "summary": "scaled_gaussian_second_moment: the n = 1 case gives ∫ x² e^{-a x²} = √(π/a)/(2a), which is twice the half-line value √(π/a)/(4a) of sibling area-of-circle-oq-07-oq-02-oq-02, since the even integrand makes the whole line double the (0,∞) half.",
       "mathContext": "$\\int_{\\mathbb R} x^2 e^{-a x^2} = \\dfrac{\\sqrt{\\pi/a}}{2a}$"
     }
   ],
@@ -118,7 +126,7 @@
       {
         "theorem": "Real.sqrt_div",
         "description": "√(x/y) = √x/√y for x ≥ 0, used to simplify √(π/a) = √π/√a so the dilated value matches the stated closed form.",
-        "module": "Mathlib.Analysis.SpecialFunctions.Pow.NNRpow"
+        "module": "Mathlib.Data.Real.Sqrt"
       },
       {
         "theorem": "integrable_rpow_mul_exp_neg_mul_sq",
