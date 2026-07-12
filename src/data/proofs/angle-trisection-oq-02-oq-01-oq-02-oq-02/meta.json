@@ -127,6 +127,21 @@
       "targetId": "abel-ruffini",
       "relationship": "related",
       "description": "Abel–Ruffini uses Galois-group structure (solvability) to prove insolvability of the quintic; here the Galois-group structure at issue is being a 2-group, obstructed by the same odd-prime-factor lemma."
+    },
+    {
+      "targetId": "angle-trisection-cos-20-gal",
+      "relationship": "related",
+      "description": "The concrete group-side witness of this uniform obstruction: the Galois group of 8X³ − 6X − 1 (the minimal polynomial of cos 20°) over ℚ has order 3. Because 3 carries an odd prime factor it is not a power of two — exactly the arithmetic fact isolated here — so cos 20° is non-constructible and the 60° angle cannot be trisected. It instantiates the 'Galois 2-group side' with a specific polynomial."
+    },
+    {
+      "targetId": "angle-trisection-oq-01-oq-02",
+      "relationship": "related",
+      "description": "The arithmetic Gauss–Wantzel criterion: a regular n-gon is constructible iff φ(n) is a power of two. This entry's power-of-two obstruction is the necessity engine — whenever φ(n) has an odd prime factor the n-gon is non-constructible. Feeding φ(11) = 10 (odd factor 5) into that criterion is precisely what would close this entry's second open question on the regular 11-gon."
+    },
+    {
+      "targetId": "angle-trisection-oq-02-oq-01-oq-02-oq-03",
+      "relationship": "related",
+      "description": "A sibling under the same parent covering the opposite (sufficiency) direction: the 2-group backbone — every finite 2-group is nilpotent, hence solvable, with a normal subgroup of index 2. This entry supplies the necessity obstruction (an odd prime factor forces a non-power-of-two order, blocking constructibility); the sibling supplies the group-side backbone of the converse. Together they are the two halves this entry's first open question proposes to merge into wantzel_galois_iff."
     }
   ],
   "mainTheorems": [
