@@ -70,3 +70,33 @@ is a sharp complementarity.
 ### Terminus (unchanged)
 Transformation family now complete. Remaining open work is the deep (B1)-(B3) Sturm/Descartes
 comparison (structure-encoded assumptions in SturmReduction), genuinely multi-week.
+
+## Session (researcher-1, 2026-07-11): general quadratic sign-change count (§12)
+
+**Mode**: REVISIT (RICH, already SOLVED 0/0) · **Outcome**: progress (6 theorems VERIFIED
+0-sorry/0-axiom), branch research/descartes-oq0103-quadratic-family, PR #38202.
+
+**Contribution.** Closed the standing next-step "full Fin 3 sign-change count for
+quadratics aX²+bX+c with nonzero middle term". §4 only handled three HARDCODED
+polynomials; §12 generalises to the whole 3-parameter family:
+- `coeffSequence_quadratic (ha:a≠0)`: coeffSequence (C a*X^2+C b*X+C c) 2 = ![a,b,c].
+  Proof: `funext i; fin_cases i <;> simp [coeffSequence, coeff_add, coeff_C_mul_X_pow,
+  coeff_C_mul_X, coeff_C]`.
+- `signChangesInCoeffs_quadratic (ha)`: = countSignChanges ![a,b,c]. Uses Mathlib
+  `natDegree_quadratic ha` (poly form C a*X^2+C b*X+C c is EXACTLY Mathlib's
+  Degree/SmallDegree form) + dif_neg + coeffSequence_quadratic.
+- Four sign-pattern corollaries reusing the §2¾ Fin 3 lemmas via `by simpa using h`
+  (simp rewrites ![a,b,c] 0/1/2 to a/b/c): alternating→2, one_left→1, one_right→1,
+  no_change→0 (needs b≠0). Complete classification for nonzero middle.
+
+The nextStep "replace example_x2_*_sign_changes axioms in base file" is STALE/DONE — the
+base DescartesRuleOfSigns.lean already has them as theorems (line 312/332, "Formerly an
+axiom; now discharged"). Base file's remaining 5 axioms are the DEEP Descartes facts
+(upper_bound/parity/negative_roots/alternating_max/derivative_reduces) — not routine.
+
+**Build**: docker-build GREEN first try (3064 jobs). 51→57 theorems.
+
+**Reusable technique**: to lift a hardcoded coefficient computation to a parametric
+polynomial family, prove the `coeffSequence p natDegree = ![...]` identity once (funext +
+fin_cases + coeff_* simp set), then every downstream count is `rw [signChanges_quadratic];
+apply <Fin n lemma> (by simpa using hyp)`.
