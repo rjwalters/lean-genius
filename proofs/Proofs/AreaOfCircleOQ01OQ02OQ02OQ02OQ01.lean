@@ -1078,5 +1078,158 @@ theorem isoperimetric_inequality_of_constant_speed
     rw [← hperim]; exact hmain
   nlinarith [h2, le_of_lt hab]
 
+-- ============================================================
+-- SECTION XII: the equality case — saturation forces the circle
+--   (only the 0th and 1st harmonics survive; higher modes vanish)
+-- ============================================================
+
+/-- **Sharpened per-mode deficit bound.**  For any `a b : ℂ` and `n : ℤ`, the frequency-`n`
+    Hurwitz deficit summand dominates `(|n|² − |n|)·(‖a‖² + ‖b‖²)`:
+
+        (|n|² − |n|)·(‖a‖² + ‖b‖²)  ≤  n²‖a‖² + n²‖b‖² − 2n·Im(a·conj b) .
+
+    The gap is `|n|·(‖a‖ − ‖b‖)² ≥ 0`.  On `|n| ≥ 2` the coefficient `|n|² − |n| ≥ 2` is
+    strictly positive, so a *vanishing* summand forces `‖a‖² + ‖b‖² = 0` — the mechanism by
+    which equality in the isoperimetric inequality kills every harmonic above the first. -/
+private theorem area_deficit_summand_ge_gap (a b : ℂ) (n : ℤ) :
+    (|(n : ℝ)| ^ 2 - |(n : ℝ)|) * (‖a‖ ^ 2 + ‖b‖ ^ 2)
+      ≤ (n : ℝ) ^ 2 * ‖a‖ ^ 2 + (n : ℝ) ^ 2 * ‖b‖ ^ 2 - 2 * (n : ℝ) * (a * conj b).im := by
+  have himabs : |(a * conj b).im| ≤ ‖a‖ * ‖b‖ := by
+    have h := Complex.abs_im_le_norm (a * conj b)
+    rwa [norm_mul, Complex.norm_conj] at h
+  have hbound : (n : ℝ) * (a * conj b).im ≤ |(n : ℝ)| * (‖a‖ * ‖b‖) :=
+    calc (n : ℝ) * (a * conj b).im
+        ≤ |(n : ℝ) * (a * conj b).im| := le_abs_self _
+      _ = |(n : ℝ)| * |(a * conj b).im| := abs_mul _ _
+      _ ≤ |(n : ℝ)| * (‖a‖ * ‖b‖) := mul_le_mul_of_nonneg_left himabs (abs_nonneg _)
+  have hsq : |(n : ℝ)| ^ 2 = (n : ℝ) ^ 2 := sq_abs _
+  nlinarith [hbound, hsq, mul_nonneg (abs_nonneg (n : ℝ)) (sq_nonneg (‖a‖ - ‖b‖))]
+
+/-- **A vanishing high-frequency deficit summand annihilates the mode.**  If `|n| ≥ 2` and the
+    frequency-`n` Hurwitz deficit summand is zero, then both Fourier amplitudes vanish:
+    `a = 0` and `b = 0`.  (`|n| ≥ 2` gives `|n|² − |n| ≥ 2 > 0`, and the sharpened bound
+    `area_deficit_summand_ge_gap` then forces `‖a‖² + ‖b‖² = 0`.) -/
+private theorem fourierAmp_eq_zero_of_deficit_zero (a b : ℂ) (n : ℤ) (hn : 2 ≤ n.natAbs)
+    (hzero : (n : ℝ) ^ 2 * ‖a‖ ^ 2 + (n : ℝ) ^ 2 * ‖b‖ ^ 2 - 2 * (n : ℝ) * (a * conj b).im = 0) :
+    a = 0 ∧ b = 0 := by
+  have hge := area_deficit_summand_ge_gap a b n
+  rw [hzero] at hge
+  -- `hge : (|n|² − |n|)·(‖a‖² + ‖b‖²) ≤ 0`
+  have hm : (2 : ℝ) ≤ |(n : ℝ)| := by
+    rw [← Int.cast_abs]
+    exact_mod_cast (show (2 : ℤ) ≤ |n| by rw [Int.abs_eq_natAbs]; exact_mod_cast hn)
+  have hP : (0 : ℝ) ≤ ‖a‖ ^ 2 + ‖b‖ ^ 2 := by positivity
+  have hcoef : (2 : ℝ) ≤ |(n : ℝ)| ^ 2 - |(n : ℝ)| := by
+    nlinarith [hm, mul_nonneg (by linarith [hm] : (0 : ℝ) ≤ |(n : ℝ)| - 2)
+      (by linarith [hm] : (0 : ℝ) ≤ |(n : ℝ)| + 1)]
+  have hPzero : ‖a‖ ^ 2 + ‖b‖ ^ 2 ≤ 0 := by
+    nlinarith [hge, hcoef, hP,
+      mul_nonneg (by linarith [hcoef] : (0 : ℝ) ≤ |(n : ℝ)| ^ 2 - |(n : ℝ)| - 2) hP]
+  have ha2 : ‖a‖ ^ 2 = 0 := le_antisymm (by nlinarith [sq_nonneg ‖b‖, hPzero]) (sq_nonneg _)
+  have hb2 : ‖b‖ ^ 2 = 0 := le_antisymm (by nlinarith [sq_nonneg ‖a‖, hPzero]) (sq_nonneg _)
+  refine ⟨norm_eq_zero.mp ?_, norm_eq_zero.mp ?_⟩
+  · exact (pow_eq_zero_iff (by norm_num)).mp ha2
+  · exact (pow_eq_zero_iff (by norm_num)).mp hb2
+
+/-- **Equality case of the Hurwitz isoperimetric inequality — spectral rigidity.**  For smooth
+    (`C^∞`) period-`2π` real coordinates `f, g`, suppose the analytic Wirtinger inequality is
+    *saturated*:
+
+        2 ∫₀^{2π} f·g'  =  ∫₀^{2π} ((f')² + (g')²) .
+
+    Then **every Fourier mode above the first vanishes**:
+
+        ∀ n, |n| ≥ 2 → ĉₙ(f) = 0 ∧ ĉₙ(g) = 0 ,
+
+    so `f` and `g` are trigonometric polynomials of degree `≤ 1` — the curve `t ↦ (f,g)` is an
+    ellipse, and (with the constant-speed hypothesis, cf. `fourierCoeff_eq_zero_of_isoperimetric_saturation`)
+    a circle.  This is the forward direction of Hurwitz's "equality iff the circle".
+
+    Proof.  The Hurwitz deficit is a `HasSum` of the per-mode terms
+    `n²(‖ĉₙf‖² + ‖ĉₙg‖²) − 2n·Im(ĉₙf·conj ĉₙg)`, each `≥ 0` (`area_deficit_summand_nonneg`),
+    whose total `(2π)⁻¹[∫(f'²+g'²) − 2∫f·g']` is `0` under saturation.  A nonnegative summable
+    family with vanishing total is termwise zero (`le_hasSum`), and on `|n| ≥ 2` a zero summand
+    kills the mode (`fourierAmp_eq_zero_of_deficit_zero`). -/
+theorem fourierCoeff_eq_zero_of_wirtinger_saturation
+    {f g : ℝ → ℝ} (hf : ContDiff ℝ ∞ f) (hg : ContDiff ℝ ∞ g)
+    (hfper : ∀ t, f (t + 2 * π) = f t) (hgper : ∀ t, g (t + 2 * π) = g t)
+    (hab : (0 : ℝ) < 2 * π)
+    (hEq : 2 * ∫ x in (0 : ℝ)..(2 * π), f x * deriv g x
+            = ∫ x in (0 : ℝ)..(2 * π), ((deriv f x) ^ 2 + (deriv g x) ^ 2)) :
+    ∀ n : ℤ, 2 ≤ n.natAbs →
+      fourierCoeffOn hab (ofReal ∘ f) n = 0 ∧ fourierCoeffOn hab (ofReal ∘ g) n = 0 := by
+  -- Continuity of the two derivatives (for the integral split).
+  have hdfc : Continuous (deriv f) := by
+    have h := (contDiff_infty_iterate_deriv f hf 1).continuous
+    rwa [Function.iterate_one] at h
+  have hdgc : Continuous (deriv g) := by
+    have h := (contDiff_infty_iterate_deriv g hg 1).continuous
+    rwa [Function.iterate_one] at h
+  -- The three Fourier `HasSum`s and the deficit series.
+  have HSf := hasSum_nsq_normSq_fourierCoeffOn hf hfper hab
+  have HSg := hasSum_nsq_normSq_fourierCoeffOn hg hgper hab
+  have HSA := hasSum_fourier_area_formula hf.continuous hg hgper hab
+  set If := ∫ x in (0 : ℝ)..(2 * π), (deriv f x) ^ 2 with hIf
+  set Ig := ∫ x in (0 : ℝ)..(2 * π), (deriv g x) ^ 2 with hIg
+  set IA := ∫ x in (0 : ℝ)..(2 * π), f x * deriv g x with hIA
+  have HSdef := (HSf.add HSg).sub (HSA.mul_left 2)
+  -- The total deficit is zero under saturation.
+  have hsplit : (∫ x in (0 : ℝ)..(2 * π), ((deriv f x) ^ 2 + (deriv g x) ^ 2)) = If + Ig := by
+    rw [hIf, hIg]
+    exact intervalIntegral.integral_add
+      ((hdfc.pow 2).intervalIntegrable _ _) ((hdgc.pow 2).intervalIntegrable _ _)
+  have hTzero : ((2 * π - 0)⁻¹ • If) + ((2 * π - 0)⁻¹ • Ig)
+      - 2 * ((2 * π - 0)⁻¹ • IA) = 0 := by
+    simp only [smul_eq_mul, sub_zero]
+    rw [hsplit] at hEq
+    have hfac : (2 * π)⁻¹ * If + (2 * π)⁻¹ * Ig - 2 * ((2 * π)⁻¹ * IA)
+        = (2 * π)⁻¹ * (If + Ig - 2 * IA) := by ring
+    rw [hfac, show If + Ig - 2 * IA = 0 from by linarith, mul_zero]
+  rw [hTzero] at HSdef
+  -- Termwise: each deficit summand is zero, so high modes vanish.
+  intro n hn
+  have hle := le_hasSum HSdef n (fun m _ => by
+    convert area_deficit_summand_nonneg (fourierCoeffOn hab (ofReal ∘ f) m)
+      (fourierCoeffOn hab (ofReal ∘ g) m) m using 1; ring)
+  have hge := area_deficit_summand_nonneg (fourierCoeffOn hab (ofReal ∘ f) n)
+    (fourierCoeffOn hab (ofReal ∘ g) n) n
+  exact fourierAmp_eq_zero_of_deficit_zero (fourierCoeffOn hab (ofReal ∘ f) n)
+    (fourierCoeffOn hab (ofReal ∘ g) n) n hn (le_antisymm (by nlinarith [hle]) hge)
+
+/-- **Geometric equality case: isoperimetric saturation forces the circle.**  Let `f, g` be
+    smooth period-`2π` coordinates parametrized with *constant speed* `(f')² + (g')² = c`.  If
+    the isoperimetric bound `4π·A ≤ L² = (2π)²·c` is *attained*,
+
+        4π · (∫₀^{2π} f·g')  =  (2π)² · c ,
+
+    then every Fourier mode above the first vanishes: `∀ n, |n| ≥ 2 → ĉₙ(f) = ĉₙ(g) = 0`.
+    Together with constant speed this pins the curve to a genuine circle — the sharpness half of
+    `isoperimetric_inequality_of_constant_speed`.
+
+    Proof.  Constant speed gives `∫(f'²+g'²) = 2π·c`, and saturation gives `∫f·g' = π·c`, so
+    `2∫f·g' = 2π·c = ∫(f'²+g'²)`: the analytic Wirtinger inequality is saturated and
+    `fourierCoeff_eq_zero_of_wirtinger_saturation` applies. -/
+theorem fourierCoeff_eq_zero_of_isoperimetric_saturation
+    {f g : ℝ → ℝ} (hf : ContDiff ℝ ∞ f) (hg : ContDiff ℝ ∞ g)
+    (hfper : ∀ t, f (t + 2 * π) = f t) (hgper : ∀ t, g (t + 2 * π) = g t)
+    (hab : (0 : ℝ) < 2 * π) {c : ℝ}
+    (hspeed : ∀ t, (deriv f t) ^ 2 + (deriv g t) ^ 2 = c)
+    (hsat : 4 * π * (∫ x in (0 : ℝ)..(2 * π), f x * deriv g x) = (2 * π) ^ 2 * c) :
+    ∀ n : ℤ, 2 ≤ n.natAbs →
+      fourierCoeffOn hab (ofReal ∘ f) n = 0 ∧ fourierCoeffOn hab (ofReal ∘ g) n = 0 := by
+  set IA := ∫ x in (0 : ℝ)..(2 * π), f x * deriv g x with hIA
+  -- Constant-speed perimeter energy.
+  have hperim : (∫ x in (0 : ℝ)..(2 * π), ((deriv f x) ^ 2 + (deriv g x) ^ 2)) = (2 * π) * c := by
+    have hEqOn : Set.EqOn (fun x => (deriv f x) ^ 2 + (deriv g x) ^ 2) (fun _ => c)
+        (Set.uIcc 0 (2 * π)) := fun x _ => hspeed x
+    rw [intervalIntegral.integral_congr hEqOn, intervalIntegral.integral_const]
+    simp
+  -- Saturation pins `IA = π·c`, hence the analytic Wirtinger equality.
+  have hIAval : IA = π * c := by
+    have h : 4 * π * IA = 4 * π * (π * c) := by rw [hsat]; ring
+    exact mul_left_cancel₀ (ne_of_gt (by positivity : (0 : ℝ) < 4 * π)) h
+  have hEq : 2 * IA = ∫ x in (0 : ℝ)..(2 * π), ((deriv f x) ^ 2 + (deriv g x) ^ 2) := by
+    rw [hperim, hIAval]; ring
+  exact fourierCoeff_eq_zero_of_wirtinger_saturation hf hg hfper hgper hab hEq
 
 end IsoperimetricFourier

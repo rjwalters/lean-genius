@@ -12,20 +12,27 @@
       "Smoothness uses ContDiff ℝ ∞ (C^∞), dodging the finite-C^k succ/cast bookkeeping. KEY API in Lean v4.26 Mathlib: ContDiff smoothness lives in WithTop ℕ∞ where ∞ = ((⊤:ℕ∞):WithTop ℕ∞) is NOT the order-top ⊤ (=ω, analytic). So `1 ≤ ∞` is NOT le_top; use `hf.of_le (by exact_mod_cast le_top)` (mathlib's own idiom). ∞ notation is `open scoped ContDiff`. ContDiff.iterate_deriv / contDiff_infty_iff_deriv / contDiff_infty (↔ ∀n:ℕ, ContDiff n) are the smooth-deriv toolkit.",
       "Corollaries: fourierCoeffOn_deriv2_smooth recovers the parent's −n² as k=2 ((I·n)²=−n² via Complex.I_sq); fourierCoeffOn_iteratedDeriv_even gives the d^{2m} eigenvalue (−1)^m·n^{2m} (mul_pow+pow_mul+I_sq).",
       "Bilinear (polarized) Parseval on an interval is Mathlib-absent: Mathlib provides only the diagonal hasSum_sq_fourierCoeffOn (‖ĉₙ‖²). The cross-term ∑ₙ Re(ĉₙ(f)·conj ĉₙ(g)) = (2π)⁻¹∫f·g follows by polarization from the diagonal via the parallelogram identity ‖u+v‖²−‖u−v‖²=4Re(u·conj v) applied to the coefficients of f±g.",
-      "fourierCoeffOn has no additivity lemma in Mathlib (only fourierCoeffOn.const_smul). Additivity/subtractivity for continuous ℂ-valued functions follows from the integral form fourierCoeffOn_eq_integral + interval-integrability of fourier(-n)•F; coe continuity = (map_continuous (fourier (-n))).comp (AddCircle.continuous_mk' _)."
+      "fourierCoeffOn has no additivity lemma in Mathlib (only fourierCoeffOn.const_smul). Additivity/subtractivity for continuous ℂ-valued functions follows from the integral form fourierCoeffOn_eq_integral + interval-integrability of fourier(-n)•F; coe continuity = (map_continuous (fourier (-n))).comp (AddCircle.continuous_mk' _).",
+      "SECTION XII (equality case / spectral rigidity): saturating the analytic Wirtinger inequality 2∫f·g′=∫(f′²+g′²) forces EVERY Fourier mode |n|≥2 to vanish (ĉₙf=ĉₙg=0), so f,g are degree-≤1 trig polynomials = the circle. Forward direction of Hurwitz equality-iff-circle.",
+      "Mechanism: the Hurwitz deficit is a HasSum of nonnegative per-mode terms with total (2π)⁻¹[∫(f′²+g′²)−2∫f·g′]; under saturation total=0, so le_hasSum forces every summand=0; sharpened bound (|n|²−|n|)(‖a‖²+‖b‖²)≤summand (gap=|n|(‖a‖−‖b‖)²) then kills |n|≥2 modes since |n|²−|n|≥2>0."
     ],
     "builtItems": [
       "AreaOfCircleOQ01OQ02OQ02OQ02OQ01.lean: 4 theorems, 0 axioms (propext/Classical.choice/Quot.sound only), 0 sorries. Imports Proofs.AreaOfCircleOQ01OQ02OQ02OQ02 (transitively the first-order grandparent).",
       "fourierCoeffOn_iteratedDeriv_smooth (induction engine, f quantified inside for the IH), fourierCoeffOn_iteratedDeriv (user-facing explicit-f form).",
       "fourierCoeffOn_deriv2_smooth (k=2 recovery of −n²), fourierCoeffOn_iteratedDeriv_even (d^{2m} eigenvalue (−1)^m·n^{2m}).",
       "hasSum_re_fourierCoeffOn_mul_conj_real (AreaOfCircleOQ01OQ02OQ02OQ02OQ01.lean SECTION IX): bilinear Parseval HasSum (fun n => (ĉₙ(f)·conj ĉₙ(g)).re) ((2π)⁻¹•∫₀^{2π} f·g) for continuous real f,g — the L² inner product in Fourier coordinates; 0-axiom verified.",
-      "fourierCoeffOn_add_continuous / fourierCoeffOn_sub_continuous / norm_add_sq_sub_norm_sub_sq (polarization) helpers (same file), 0-axiom."
+      "fourierCoeffOn_add_continuous / fourierCoeffOn_sub_continuous / norm_add_sq_sub_norm_sub_sq (polarization) helpers (same file), 0-axiom.",
+      "area_deficit_summand_ge_gap: sharpened per-mode deficit lower bound (|n|²−|n|)(‖a‖²+‖b‖²)≤n²‖a‖²+n²‖b‖²−2n·Im(a·conj b), 0-axiom",
+      "fourierAmp_eq_zero_of_deficit_zero: |n|≥2 + zero deficit summand ⟹ a=0∧b=0, 0-axiom",
+      "fourierCoeff_eq_zero_of_wirtinger_saturation: analytic Wirtinger equality ⟹ ĉₙf=ĉₙg=0 ∀|n|≥2 (only 0th/1st harmonics survive), 0-axiom",
+      "fourierCoeff_eq_zero_of_isoperimetric_saturation: geometric 4πA=(2π)²c (constant speed) ⟹ ĉₙf=ĉₙg=0 ∀|n|≥2 = the circle, 0-axiom"
     ],
-    "progressSummary": "PROGRESS: built the bilinear/polarized Parseval identity ∑ Re(ĉₙ(f)·conj ĉₙ(g))=(2π)⁻¹∫f·g (Mathlib-absent; the L² inner product in Fourier coordinates), the missing analytic cross-term for the Hurwitz–Fourier area formula A=∫x·y'. Diagonal Wirtinger energy IFF already complete; remaining = geometric Green-theorem assembly A≤π (equality=circle).",
+    "progressSummary": "COMPLETE + extended: Section XI capstone Hurwitz isoperimetric 4πA≤L² proved; Section XII equality case — saturation ⟹ higher harmonics vanish = the circle (forward direction of equality-iff-circle), analytic + geometric forms, all 0-axiom.",
     "nextSteps": [
       "Assemble the isoperimetric area formula: for a closed C¹ curve t↦(x(t),y(t)) of period 2π, A=∫₀^{2π} x·y' dt (Green/shoelace). Feed x=f, y'=g into hasSum_re_fourierCoeffOn_mul_conj_real to express A via ∑ₙ Re(ĉₙ(x)·conj ĉₙ(y')); with ĉₙ(y')=in·ĉₙ(y) (grandparent identity) this yields the Hurwitz area-in-Fourier form.",
       "Combine the Fourier area form with arc-length ∫(x'²+y'²)=2π and Wirtinger (already proved) mode-by-mode ⟹ A≤π, equality iff only n=±1 survive (the circle).",
-      "General scale-invariant L²≥4πA by Cauchy–Schwarz dropping the arc-length normalisation."
+      "General scale-invariant L²≥4πA by Cauchy–Schwarz dropping the arc-length normalisation.",
+      "Converse (backward direction): first-harmonic-only + amplitude/phase relation (‖a₁‖=‖b₁‖, a₁·conj b₁ purely imaginary) ⟹ Wirtinger equality, completing equality-IFF-circle"
     ]
   },
   "relatedProofs": [
