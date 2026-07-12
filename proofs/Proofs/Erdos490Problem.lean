@@ -650,6 +650,31 @@ theorem primes_products_determine_pair {p₁ q₁ p₂ q₂ : ℕ}
     rw [← hp₁q₂, Nat.mul_comm p₂ p₁] at h
     exact Nat.eq_of_mul_eq_mul_left hp₁.pos h
 
+/-- **The ordered multiplicative-Sidon property is degenerate.**  For the *ordered*
+notion `IsMultiplicativeSidon A = HasDistinctProducts A A` (which demands the product
+map injective on `A ×ˢ A`),
+
+    `IsMultiplicativeSidon A  ↔  A.card ≤ 1`.
+
+This makes precise the observation, sketched in prose above for `A = {2, 3}`, that the
+ordered notion collapses: any two *distinct* elements `a, b ∈ A` give the coincidence
+`a·b = b·a` with `(a, b) ≠ (b, a)`, so injectivity of the product map on `A ×ˢ A` forces
+`A` to have at most one element (and conversely a set of size `≤ 1` trivially satisfies
+it).  Hence the honest multiplicative-Sidon content for `|A| ≥ 2` is the *unordered*
+statement `primes_products_determine_pair`, not this ordered one.  Axiom-free. -/
+theorem isMultiplicativeSidon_iff_card_le_one (A : Finset ℕ) :
+    IsMultiplicativeSidon A ↔ A.card ≤ 1 := by
+  rw [IsMultiplicativeSidon, ← productMapInjective_iff_hasDistinctProducts]
+  constructor
+  · intro h
+    by_contra hc
+    push_neg at hc
+    obtain ⟨a, ha, b, hb, hab⟩ := Finset.one_lt_card.mp hc
+    exact hab (h a b b a ha hb hb ha (by ring)).1
+  · intro h a₁ a₂ b₁ b₂ ha₁ ha₂ hb₁ hb₂ _
+    have hall := Finset.card_le_one.mp h
+    exact ⟨hall a₁ ha₁ a₂ ha₂, hall b₁ hb₁ b₂ hb₂⟩
+
 /-
 ## Part VII: Related Problems
 -/
