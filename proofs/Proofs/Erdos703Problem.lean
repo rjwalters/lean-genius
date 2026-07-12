@@ -1134,6 +1134,7 @@ theorem one_le_T_L_of_zero_notMem {n : ℕ} {L : Finset ℕ} (h : 0 ∉ L) :
     _ ≤ _ := Finset.le_sup hmem
 
 /--
+<<<<<<< Updated upstream
 **When every forbidden size exceeds the ground set, the full powerset is `L`-avoiding.**
 If `n < r` for every `r ∈ L`, then no two subsets `A, B ⊆ [n]` can meet in a forbidden
 size: `|A ∩ B| ≤ n < r` for each `r ∈ L`, so `|A ∩ B| ∉ L`. Hence the entire powerset
@@ -1185,6 +1186,45 @@ soon as any attainable size (`≤ n`) is forbidden. -/
 theorem T_L_le_pow_sub_one {n r : ℕ} {L : Finset ℕ} (hr : r ∈ L) (hrn : r ≤ n) :
     T_L n L ≤ 2 ^ n - 1 :=
   le_trans (T_L_le_T_of_mem hr) (T_le_pow_sub_one hrn)
+=======
+**Fully-forbidden top endpoint `T_L n L = 0`.** If *every* attainable intersection size is
+forbidden — `range (n+1) ⊆ L`, i.e. `0, 1, …, n ∈ L` — then no nonempty family can avoid `L`:
+any set `A` in a family of subsets of `[n]` has the self-pair `A ∩ A = A` with size
+`|A| ≤ n`, which is forbidden. Hence the only admissible family is the empty one and
+`T_L n L = 0`. This is the opposite endpoint of the antitone hierarchy from `T_L_empty`
+(`T_L n ∅ = 2ⁿ`): forbidding nothing gives the full `2ⁿ`, forbidding everything collapses it
+to `0`. -/
+theorem T_L_eq_zero_of_range_subset {n : ℕ} {L : Finset ℕ}
+    (hL : Finset.range (n + 1) ⊆ L) : T_L n L = 0 := by
+  unfold T_L
+  refine Nat.le_zero.mp ?_
+  apply Finset.sup_le
+  intro F hF
+  rw [Finset.mem_filter, Finset.mem_powerset] at hF
+  obtain ⟨hFsub, hFavoid⟩ := hF
+  rw [Nat.le_zero, Finset.card_eq_zero]
+  by_contra hne
+  obtain ⟨A, hA⟩ := Finset.nonempty_iff_ne_empty.mpr hne
+  have hAsub : A ⊆ Finset.range n := Finset.mem_powerset.mp (hFsub hA)
+  have hcard : A.card ≤ n := by
+    calc A.card ≤ (Finset.range n).card := Finset.card_le_card hAsub
+      _ = n := Finset.card_range n
+  have hmem : A.card ∈ L := hL (Finset.mem_range.mpr (by omega))
+  have hself := hFavoid A A hA hA
+  rw [Finset.inter_self] at hself
+  exact hself hmem
+
+/--
+**Union bound at the extremal level.** Forbidding the union `L ∪ L'` is the conjunction of
+the two constraints (`avoidsLIntersections_union`), so at the level of maxima it can only be
+tighter than either: `T_L n (L ∪ L') ≤ min (T_L n L) (T_L n L')`. The extremal-quantity
+companion of `avoidsLIntersections_union`, obtained by applying antitonicity
+`T_L_antitone_forbidden` along `L ⊆ L ∪ L'` and `L' ⊆ L ∪ L'`. -/
+theorem T_L_union_le_min {n : ℕ} {L L' : Finset ℕ} :
+    T_L n (L ∪ L') ≤ min (T_L n L) (T_L n L') :=
+  le_min (T_L_antitone_forbidden Finset.subset_union_left)
+    (T_L_antitone_forbidden Finset.subset_union_right)
+>>>>>>> Stashed changes
 
 /-
 ## Part VIII: Summary
