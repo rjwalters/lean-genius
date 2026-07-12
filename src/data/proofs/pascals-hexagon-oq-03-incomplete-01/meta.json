@@ -24,11 +24,11 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 1,
-    "lineCount": 292,
-    "assumptions": "0 sorries; 0 literal `axiom` declarations. The three census theorems (card_sixCycles = 120, card_doubleThreeCycles = 40, card_tripleTranspositions = 15) and the anchor card_sym6 = 720 are discharged by `native_decide`, which trusts the Lean compiler and so depends on the `Lean.ofReduceBool` axiom (axiomCount = 1). Under the project axiom-integrity policy this makes the entry `axiomatized`. The geometric bijection from these conjugacy classes to the actual Steiner/Kirkman/Plücker/Salmon points and lines is NOT formalized here — only the combinatorial class sizes are certified; the projective concurrence (the open steiner_count_eq_20 / kirkman_count_eq_60 targets in oq-03) remains future work.",
+    "lineCount": 371,
+    "assumptions": "0 sorries; 0 literal `axiom` declarations. The census cardinality theorems (card_sixCycles = 120, card_doubleThreeCycles = 40, card_tripleTranspositions = 15, card_fourTwoCycles = 90, card_fixedPointFree = 265), the anchor card_sym6 = 720, the fixed-point-free classification, and the parity-structure theorems (sixCycle_sign, fourTwo_sign, doubleThreeCycle_sign, tripleTransposition_sign, even_derangement_iff_census, card_even_derangements = 130, card_odd_derangements = 135) are all discharged by `native_decide`, which trusts the Lean compiler and so depends on the `Lean.ofReduceBool` (and `Lean.trustCompiler`) axiom (counted as axiomCount = 1). Under the project axiom-integrity policy this makes the entry `axiomatized`. The geometric bijection from these conjugacy classes to the actual Steiner/Kirkman/Plücker/Salmon points and lines is NOT formalized here — only the combinatorial class sizes are certified; the projective concurrence (the open steiner_count_eq_20 / kirkman_count_eq_60 targets in oq-03) remains future work.",
     "mathlib_version": "4.26.0",
     "dateAdded": "2026-07-04",
-    "theoremCount": 19,
+    "theoremCount": 27,
     "definitionCount": 5,
     "originalContributions": [
       "Identifies the Conway–Ryba (Math. Intelligencer 34 (2012) 4–8) conjugacy-class indexing of the Hexagrammum Mysticum and certifies its three governing class sizes in Lean over the concrete group Equiv.Perm (Fin 6).",
@@ -36,7 +36,8 @@
       "card_sixCycles = 120: the six-cycle class, isolated as fixed-point-free with σ⁶=1 but σ²≠1 and σ³≠1 (the σ⁶=1 clause rules out the (4,2) class, whose elements have σ⁶=σ²≠1). Indexes the 60 Pascal lines and 60 Kirkman points via the outer-automorphism 2:1 split.",
       "card_doubleThreeCycles = 40: the (3,3) class, isolated as fixed-point-free with σ³=1. Indexes the 20 Steiner points and 20 Cayley–Salmon lines.",
       "card_tripleTranspositions = 15: the (2,2,2) class, isolated as fixed-point-free involutions. Self-paired under the outer automorphism: 15 Plücker lines and 15 Salmon points.",
-      "Records the Hexagrammum object counts (60 Pascal lines, 60 Kirkman points, 20 Steiner points, 20 Cayley lines, 15 Plücker lines, 15 Salmon points) and the (95₃, 95₃) configuration totals as arithmetic corollaries of the census under the Conway–Ryba pairing."
+      "Records the Hexagrammum object counts (60 Pascal lines, 60 Kirkman points, 20 Steiner points, 20 Cayley lines, 15 Plücker lines, 15 Salmon points) and the (95₃, 95₃) configuration totals as arithmetic corollaries of the census under the Conway–Ryba pairing.",
+      "Sign/parity structure of the census: each fixed-point-free class has uniform sign (sixCycle_sign, fourTwo_sign, doubleThreeCycle_sign, tripleTransposition_sign) — the 6-cycles (Pascal/Kirkman) and triple transpositions (Plücker/Salmon) are odd, while the double-3-cycles (Steiner/Cayley) and the inert (4,2) class are even. even_derangement_iff_census characterises the even derangements as exactly the (4,2) and (3,3) classes; card_even_derangements = 130 and card_odd_derangements = 135 give the A₆-refinement of the D₆ = 265 derangement count (130 + 135 = 265)."
     ],
     "mathlibDependencies": [
       {
@@ -144,9 +145,9 @@
       "Equiv"
     ],
     "namespace": "PascalsHexagonOQ03Incomplete01",
-    "lineCount": 292,
+    "lineCount": 371,
     "axiomCount": 0,
-    "theoremCount": 19,
+    "theoremCount": 27,
     "definitionCount": 5,
     "path": "Proofs/PascalsHexagonOQ03Incomplete01.lean",
     "sorries": 0
