@@ -470,6 +470,63 @@ theorem motzkinFun_three_zero_at_sign_ones :
   · rw [motzkinFun_even_right]; exact motzkinFun_three_zero_at_one_one
   · rw [motzkinFun_even_left, motzkinFun_even_right]; exact motzkinFun_three_zero_at_one_one
 
+/-! ## The positive-definite threshold: `c < 3`
+
+`motzkinFun_psd_iff` pins the PSD (`≥ 0`) threshold at `c ≤ 3`, and
+`motzkinFun_three_not_posDef` shows the boundary member `c = 3` fails *strict*
+positivity (it has real zeros at `(±1, ±1)`). What the file never states is the
+sharp *positive-definite* threshold: strictly below `c = 3` the family is
+strictly positive **everywhere** on `ℝ²`. Together these give three nested sharp
+thresholds for the Motzkin family,
+
+    positive-definite  ⟺  c < 3      (this section)
+    PSD                ⟺  c ≤ 3      (`motzkinFun_psd_iff`)
+    SOS                ⟺  c ≤ 0      (`motzkinPoly_sos_iff`),
+
+so `c = 3` is exactly where strict positivity is lost while non-negativity
+survives — the geometric meaning of "sitting on the PSD-cone boundary". All
+`0`-axiom. -/
+
+/-- **Strict positivity below the threshold, everywhere.** For every `c < 3` the
+    family `Mₐ` is strictly positive at *all* real `(x, y)`, not merely at the
+    diagonal critical point `(1,1)` (`motzkinFun_pos_at_one_one_of_lt_three`).
+    Hence `c < 3` is exactly the positive-definite regime of the family.
+
+    Proof: split on whether `x²y² = 0`. If it vanishes then only the constant `1`
+    survives (`Mₐ = 1 > 0`). Otherwise `x²y² > 0`, and writing
+    `Mₐ = M₃ + (3−c)·x²y²` with `M₃ ≥ 0` (`motzkinFun_nonneg`) and the strictly
+    positive deficit `(3−c)·x²y² > 0` gives `Mₐ > 0`. -/
+theorem motzkinFun_pos_of_lt_three {c : ℝ} (hc : c < 3) (x y : ℝ) :
+    0 < motzkinFun c x y := by
+  rcases eq_or_ne (x ^ 2 * y ^ 2) 0 with h0 | h0
+  · have hval : motzkinFun c x y = 1 := by
+      unfold motzkinFun; linear_combination (x ^ 2 + y ^ 2 - c) * h0
+    rw [hval]; norm_num
+  · have hpos : 0 < x ^ 2 * y ^ 2 :=
+      (mul_nonneg (sq_nonneg x) (sq_nonneg y)).lt_of_ne (Ne.symm h0)
+    have hM3 : 0 ≤ motzkinFun 3 x y := motzkinFun_nonneg (le_refl 3) x y
+    have heq : motzkinFun c x y = motzkinFun 3 x y + (3 - c) * (x ^ 2 * y ^ 2) := by
+      unfold motzkinFun; ring
+    have hterm : 0 < (3 - c) * (x ^ 2 * y ^ 2) := mul_pos (by linarith) hpos
+    rw [heq]; linarith
+
+/-- **Sharp positive-definite threshold: `posDef ⟺ c < 3`.** The family `Mₐ` is
+    strictly positive on all of `ℝ²` if and only if `c < 3`. This is the exact
+    strict-positivity analogue of the PSD threshold `motzkinFun_psd_iff` (`≥ 0 ⟺
+    c ≤ 3`): the positive-definite region is the *open* half-line `c < 3`, one
+    endpoint short of the (closed) PSD region `c ≤ 3`. The single missing point
+    `c = 3` is the Motzkin polynomial itself — PSD but with genuine real zeros
+    (`motzkinFun_three_not_posDef`), sitting exactly on the PSD-cone boundary. -/
+theorem motzkinFun_posDef_iff (c : ℝ) :
+    (∀ x y : ℝ, 0 < motzkinFun c x y) ↔ c < 3 := by
+  constructor
+  · intro h
+    have h11 := h 1 1
+    rw [motzkinFun_at_one_one] at h11
+    linarith
+  · intro hc x y
+    exact motzkinFun_pos_of_lt_three hc x y
+
 end Hilbert17OQ03OQ05
 
 -- Axiom audit: should list only propext, Classical.choice, Quot.sound.
