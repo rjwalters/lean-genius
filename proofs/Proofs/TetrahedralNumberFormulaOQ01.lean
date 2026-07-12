@@ -722,5 +722,65 @@ theorem simplexNumber_convex_dim (d n : ℕ) :
       simplexNumber_symm (d + 2) (n + 1)]
   exact simplexNumber_convex_size n d
 
+/-! ### Ranged and antidiagonal summation across the figurate array
+
+The hockey stick `sum_simplex` sums a *row* of the figurate array `A(d, n) = C(n+d, d)`
+(fixed dimension `d`, increasing size), and `sum_simplex_over_dim` sums a *column*
+(fixed size, increasing dimension); both collapse to a single simplex number
+`P_{d+1}`. The two lemmas below complete the picture of summing along the natural
+lines of the array:
+
+* `sum_Ioc_simplex` — the **ranged (partial) hockey stick**: summing a row only over
+  a window `m < k ≤ n` gives the *difference* of the two endpoint simplex numbers, the
+  telescoping form of `sum_simplex` (its whole-row special case is `m = 0`);
+* `antidiagonal_sum_simplex` — the **antidiagonal** line `d + size = n` of the array,
+  where `A(k, n-k) = C(n, k)`, sums not to a simplex number but to a *power of two*,
+  `∑_{k≤n} P_k(n-k) = 2^n`. This is the third natural direction through Pascal's simplex
+  and the figurate face of the binomial row-sum `∑ C(n,k) = 2^n`.
+-/
+
+/-- **Ranged (partial) hockey-stick identity.** Summing the `d`-dimensional simplex
+numbers over a window `m < k ≤ n` telescopes to the difference of the two endpoint
+`(d+1)`-dimensional numbers, stated additively to stay in `ℕ`:
+
+`P_{d+1}(m) + ∑_{m < k ≤ n} P_d(k) = P_{d+1}(n)`   (for `m ≤ n`).
+
+The whole-row hockey stick `sum_simplex` is the special case `m = 0` (where the left
+endpoint `P_{d+1}(0) = 1 = P_d(0)` is the first summand). Proof: split the range
+`[0, n]` at `m` into `[0, m]` and `(m, n]` and apply `sum_simplex` to each block; the
+window sum is exactly `P_{d+1}(n) − P_{d+1}(m)`. -/
+theorem sum_Ioc_simplex (d : ℕ) {m n : ℕ} (h : m ≤ n) :
+    simplexNumber (d + 1) m + ∑ k ∈ Finset.Ioc m n, simplexNumber d k
+      = simplexNumber (d + 1) n := by
+  have hIoc : Finset.Ioc m n = Finset.Ico (m + 1) (n + 1) := by
+    ext x; simp only [Finset.mem_Ioc, Finset.mem_Ico]; omega
+  rw [← sum_simplex d m, ← sum_simplex d n, hIoc]
+  simp only [Finset.range_eq_Ico]
+  exact Finset.sum_Ico_consecutive _ (Nat.zero_le _) (by omega)
+
+/-- **Antidiagonal entries are binomial coefficients.** Along the antidiagonal
+`d + size = n` of the figurate array, the simplex number collapses to an ordinary
+binomial coefficient: `P_k(n - k) = C(n, k)` whenever `k ≤ n`. Immediate from the
+definition `P_k(m) = C(m + k, k)` with `m = n - k`, since `(n - k) + k = n`. -/
+theorem simplexNumber_antidiagonal {k n : ℕ} (h : k ≤ n) :
+    simplexNumber k (n - k) = n.choose k := by
+  rw [simplexNumber, Nat.sub_add_cancel h]
+
+/-- **Antidiagonal sum is a power of two.** Summing the figurate array along the
+antidiagonal `d + size = n` yields `2^n`:
+
+`∑_{k≤n} P_k(n - k) = 2^n`.
+
+This is the third natural direction through Pascal's simplex, complementing the row
+sum `sum_simplex` and the column sum `sum_simplex_over_dim` (both of which give a single
+simplex number). Because the antidiagonal entries are the binomials `P_k(n-k) = C(n, k)`
+(`simplexNumber_antidiagonal`), this is the figurate manifestation of the binomial
+row-sum `∑_{k≤n} C(n, k) = 2^n` (`Nat.sum_range_choose`). -/
+theorem antidiagonal_sum_simplex (n : ℕ) :
+    ∑ k ∈ range (n + 1), simplexNumber k (n - k) = 2 ^ n := by
+  rw [← Nat.sum_range_choose n]
+  exact Finset.sum_congr rfl fun k hk =>
+    simplexNumber_antidiagonal (by simpa [Nat.lt_succ_iff] using Finset.mem_range.1 hk)
+
 end TetrahedralNumberFormulaOQ01
 
