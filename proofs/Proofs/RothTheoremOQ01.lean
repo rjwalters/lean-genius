@@ -477,6 +477,58 @@ theorem threeAPFree_card_le_bourgain
           (Real.log (Real.log N) / Real.log N) ^ ((1 : ℝ) / 2) :=
         rothNumberNat_le_bourgain N hN
 
+/-- **Roth's 1953 saving factor vanishes.**  `1 / log log N → 0`.  This is the
+qualitative content of Roth's original theorem (`r₃(N) ≪ N / log log N ⟹ r₃(N) = o(N)`),
+the weakest saving in the landscape table.  Recorded here as the companion of
+`bourgain_factor_tendsto_zero`: since `log log N → ∞` (double composition of
+`Real.tendsto_log_atTop`), its reciprocal tends to `0`.  **Axiom-free** — independent of
+the Bloom–Sisask assumption. -/
+theorem roth_factor_tendsto_zero :
+    Filter.Tendsto (fun N : ℕ => 1 / Real.log (Real.log N)) Filter.atTop (nhds 0) := by
+  have hlogN : Filter.Tendsto (fun N : ℕ => Real.log N) Filter.atTop Filter.atTop :=
+    Real.tendsto_log_atTop.comp tendsto_natCast_atTop_atTop
+  have hloglogN : Filter.Tendsto (fun N : ℕ => Real.log (Real.log N))
+      Filter.atTop Filter.atTop := Real.tendsto_log_atTop.comp hlogN
+  simpa [one_div] using hloglogN.inv_tendsto_atTop
+
+/-- **Bloom–Sisask's saving factor vanishes.**  `1 / (log N)^{1+c} → 0` (with
+`c = blasiConst > 0`).  The strongest saving in the formalized chain; completes the trio
+`roth_factor_tendsto_zero` / `bourgain_factor_tendsto_zero` / this, so *every* density
+factor appearing in the landscape table is certified to tend to `0` (hence each yields
+`r₃(N) = o(N)`).  Proof: `(log N)^{1+c} → ∞` — an `rpow` with positive exponent `1+c` of
+`log N → ∞` — so its reciprocal `→ 0`.  Depends only on `blasiConst_pos`, **not** on the
+Bloom–Sisask bound itself. -/
+theorem blasi_factor_tendsto_zero :
+    Filter.Tendsto (fun N : ℕ => 1 / Real.log N ^ (1 + RothTheoremOQ02.blasiConst))
+      Filter.atTop (nhds 0) := by
+  have hc_pos : 0 < RothTheoremOQ02.blasiConst := RothTheoremOQ02.blasiConst_pos
+  have hlogN : Filter.Tendsto (fun N : ℕ => Real.log N) Filter.atTop Filter.atTop :=
+    Real.tendsto_log_atTop.comp tendsto_natCast_atTop_atTop
+  have hD : Filter.Tendsto (fun N : ℕ => Real.log N ^ (1 + RothTheoremOQ02.blasiConst))
+      Filter.atTop Filter.atTop := by
+    simpa [Function.comp] using
+      (tendsto_rpow_atTop (show (0:ℝ) < 1 + RothTheoremOQ02.blasiConst by positivity)).comp hlogN
+  simpa [one_div] using hD.inv_tendsto_atTop
+
+/-- **Endpoint domination of the whole formalized chain: Bloom–Sisask =o Roth.**
+Composing the two adjacent comparisons `blasi_factor_isLittleO_bourgain_factor`
+(`Bloom–Sisask =o Bourgain`) and `bourgain_factor_isLittleO_roth_factor`
+(`Bourgain =o Roth`) by transitivity of `=o`, the Bloom–Sisask density factor is `o` of
+Roth's original 1953 factor:
+
+  `(fun N => 1 / (log N)^{1+c}) =o[atTop] (fun N => 1 / log log N)`.
+
+This records that the strongest formalized saving beats the weakest one *directly*, not
+merely through the intermediate Bourgain step — the extreme ends of the
+`Roth ⊃ Bourgain ⊃ Bloom–Sisask` ordering are strictly separated.  **Axiom-free** —
+inherits only `blasiConst_pos` from its two factors, touching neither the Bourgain nor the
+Bloom–Sisask *bound*. -/
+theorem blasi_factor_isLittleO_roth_factor :
+    Asymptotics.IsLittleO Filter.atTop
+      (fun N : ℕ => 1 / Real.log N ^ (1 + RothTheoremOQ02.blasiConst))
+      (fun N : ℕ => 1 / Real.log (Real.log N)) :=
+  blasi_factor_isLittleO_bourgain_factor.trans bourgain_factor_isLittleO_roth_factor
+
 #check rothNumberNat_bourgain
 #check bourgainConst
 #check bourgainConst_pos
@@ -493,6 +545,9 @@ theorem threeAPFree_card_le_bourgain
 #check blasi_factor_isLittleO_bourgain_factor
 #check threeAPFree_card_le_blasi
 #check threeAPFree_card_le_bourgain
+#check roth_factor_tendsto_zero
+#check blasi_factor_tendsto_zero
+#check blasi_factor_isLittleO_roth_factor
 
 -- Axiom audit: `rothNumberNat_bourgain` is now a THEOREM.  Its only non-foundational
 -- dependency is the imported `RothTheoremOQ02.rothNumberNat_bloom_sisask` — there is NO
@@ -508,5 +563,11 @@ theorem threeAPFree_card_le_bourgain
 -- assumption via the extremal bounds; they add no new axiom of their own.
 #print axioms threeAPFree_card_le_blasi
 #print axioms threeAPFree_card_le_bourgain
+
+-- The new rate-limit / chain-transitivity results are fully AXIOM-FREE (they touch neither
+-- the Bourgain nor the Bloom–Sisask bound — only Mathlib's log-growth API and `blasiConst_pos`).
+#print axioms roth_factor_tendsto_zero
+#print axioms blasi_factor_tendsto_zero
+#print axioms blasi_factor_isLittleO_roth_factor
 
 end RothTheoremOQ01
