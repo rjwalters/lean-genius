@@ -366,4 +366,51 @@ theorem fourierCoeffOn_deriv2_periodic_all (f : ℝ → ℝ) (hf : ContDiff ℝ 
   · rw [fourierCoeffOn_deriv2_zero f hf hperiod hab]; simp
   · exact fourierCoeffOn_deriv2_periodic f hf hperiod hab n hn
 
+/-- **The `n⁴` biharmonic eigenvalue identity, over the whole spectrum.**  Iterating the
+    second-derivative identity `fourierCoeffOn_deriv2_periodic_all` once more (`f''''` is
+    `(f'')''`, and `f''` is again `C²` and periodic) collapses the two `−n²` factors into
+
+        ĉₙ(f'''') = (−n²)·(−n²)·ĉₙ(f) = n⁴ · ĉₙ(f),
+
+    for **every** `n : ℤ` (no `n ≠ 0` side condition — the mean sits in the kernel, `n⁴ = 0`
+    at `n = 0`).  So the fourth-derivative (biharmonic) operator `d⁴/dt⁴` also acts
+    diagonally on the Fourier basis, with the nonnegative eigenvalues `n⁴`.  This is the
+    spectral input for the *higher-order* Wirtinger / clamped-plate isoperimetric estimates,
+    one order beyond the `−n²` of the classical Hurwitz proof. -/
+theorem fourierCoeffOn_deriv4_periodic_all (f : ℝ → ℝ) (hf : ContDiff ℝ 4 f)
+    (hperiod : ∀ t, f (t + 2 * π) = f t)
+    (hab : (0 : ℝ) < 2 * π) (n : ℤ) :
+    fourierCoeffOn hab (ofReal ∘ deriv (deriv (deriv (deriv f)))) n =
+      (n : ℂ) ^ 4 * fourierCoeffOn hab (ofReal ∘ f) n := by
+  have hf2 : ContDiff ℝ 2 f := hf.of_le (by norm_num)
+  have hdf : ContDiff ℝ 3 (deriv f) := (contDiff_succ_iff_deriv (n := 3)).mp hf |>.2.2
+  have hddf : ContDiff ℝ 2 (deriv (deriv f)) :=
+    (contDiff_succ_iff_deriv (n := 2)).mp hdf |>.2.2
+  have hper2 : ∀ t, deriv (deriv f) (t + 2 * π) = deriv (deriv f) t :=
+    deriv2_periodic_of_periodic f (2 * π) hperiod
+  -- ĉₙ(f'''') = −n²·ĉₙ(f''),  then  ĉₙ(f'') = −n²·ĉₙ(f)
+  have h1 := fourierCoeffOn_deriv2_periodic_all (deriv (deriv f)) hddf hper2 hab n
+  have h2 := fourierCoeffOn_deriv2_periodic_all f hf2 hperiod hab n
+  rw [h1, h2]
+  ring
+
+/-- **Exact per-mode magnitude under the fourth derivative.**  Taking norms in the
+    biharmonic identity `fourierCoeffOn_deriv4_periodic_all` gives, for every `n : ℤ`,
+
+        ‖ĉₙ(f'''')‖ = n⁴ · ‖ĉₙ(f)‖.
+
+    The fourth-order analogue of `norm_fourierCoeffOn_deriv2_eq` (`‖ĉₙ(f'')‖ = n²·‖ĉₙ(f)‖`):
+    the fourth derivative scales each mode's magnitude by `n⁴`, vanishing only on the mean
+    `n = 0` and equal to `1` on the first harmonic `|n| = 1`, with `n⁴ ≥ 16` past it — the
+    steeper spectral gap underlying higher-order Wirtinger estimates. -/
+theorem norm_fourierCoeffOn_deriv4_eq (f : ℝ → ℝ) (hf : ContDiff ℝ 4 f)
+    (hperiod : ∀ t, f (t + 2 * π) = f t)
+    (hab : (0 : ℝ) < 2 * π) (n : ℤ) :
+    ‖fourierCoeffOn hab (ofReal ∘ deriv (deriv (deriv (deriv f)))) n‖
+      = (n : ℝ) ^ 4 * ‖fourierCoeffOn hab (ofReal ∘ f) n‖ := by
+  rw [fourierCoeffOn_deriv4_periodic_all f hf hperiod hab n, norm_mul]
+  have hnorm_eq : ‖(n : ℂ) ^ 4‖ = (n : ℝ) ^ 4 := by
+    rw [norm_pow, Complex.norm_intCast, ← abs_pow, abs_of_nonneg (by positivity)]
+  rw [hnorm_eq]
+
 end IsoperimetricFourier
