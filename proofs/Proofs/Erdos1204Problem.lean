@@ -152,6 +152,27 @@ theorem card_image_add (a : Finset ℕ) (t : ℕ) :
     (a.image (· + t)).card = a.card :=
   Finset.card_image_of_injective _ (add_left_injective t)
 
+/-- **Translation invariance under subtraction.** The downward companion of
+`admissible_image_add`: if every element of an admissible set is at least `t`, then subtracting
+`t` from every element preserves admissibility (`a` missing class `r` mod `p` gives `a - t`
+missing `r - t`). This is what lets an admissible tuple be *normalised to start at `0`* without
+losing admissibility. -/
+theorem admissible_image_sub {a : Finset ℕ} (t : ℕ) (ha : Admissible a)
+    (ht : ∀ x ∈ a, t ≤ x) : Admissible (a.image (· - t)) := by
+  intro p hp
+  obtain ⟨r, hr⟩ := ha p hp
+  refine ⟨r - (t : ZMod p), fun y hy => ?_⟩
+  obtain ⟨x, hx, rfl⟩ := Finset.mem_image.mp hy
+  have hxt : t ≤ x := ht x hx
+  have hx' := hr x hx
+  intro h
+  apply hx'
+  have hcast : ((x - t : ℕ) : ZMod p) = (x : ZMod p) - (t : ZMod p) := by
+    push_cast [Nat.cast_sub hxt]; ring
+  rw [hcast] at h
+  have := congrArg (· + (t : ZMod p)) h
+  simpa using this
+
 /-- **Existence / well-definedness of `A(k)`.** For every `k` there is an admissible set of
 size exactly `k`, so the extremal value `A(k) = min a_k` is taken over a nonempty family.
 
@@ -349,6 +370,67 @@ domain starts at the first strictly-increasing index `k = 1`), `A` is strictly
 monotone. Packages `A_lt_A_succ`, which holds for every `k ≥ 1`. -/
 theorem A_succ_strictMono : StrictMono (fun j => A (j + 1)) :=
   strictMono_nat_of_lt_succ (fun j => A_lt_A_succ (by omega))
+
+/-- **`A(k)` is always even.** Every value of the extremal function is divisible by `2` — the
+structural fact behind the observed table `A(0)=A(1)=0, A(2)=2, A(3)=6, A(4)=8, A(5)=12, …`, all
+even.
+
+Reason: an optimal admissible `k`-set (`A_mem`) can be *normalised to start at `0`* by subtracting
+its minimum (`admissible_image_sub`); the normalised set is still admissible, still has `k`
+elements, and its maximum is no larger — hence equals `A(k)` by minimality. But a set containing
+`0` is (by the prime `2`) entirely even (`admissible_same_parity`), so its maximum `A(k)` is even.
+This is the exact-value analogue of the prime-`2` diameter bound `two_mul_sub_one_le_A`: prime `2`
+does not merely double the packing bound, it pins the *parity* of the optimum. -/
+theorem A_even (k : ℕ) : 2 ∣ A k := by
+  rcases Nat.eq_zero_or_pos k with hk | hk
+  · -- `A 0 = 0` (only the empty set is a `0`-set), which is even.
+    have h00 : A 0 = 0 :=
+      Nat.le_zero.mp (by simpa using A_le (a := (∅ : Finset ℕ)) Finset.card_empty admissible_empty)
+    subst hk; simp [h00]
+  · obtain ⟨a, hcard, ha, hsup⟩ := A_mem k
+    have hne : a.Nonempty := by rw [← Finset.card_pos, hcard]; omega
+    set m := a.min' hne with hm
+    have hmle : ∀ x ∈ a, m ≤ x := fun x hx => a.min'_le x hx
+    set a' := a.image (· - m) with ha'
+    have hinj : Set.InjOn (· - m) a := by
+      intro x hx y hy hxy
+      simp only at hxy
+      have hx' := hmle x hx; have hy' := hmle y hy; omega
+    have hcard' : a'.card = k := by
+      rw [ha', Finset.card_image_of_injOn hinj, hcard]
+    have ha'adm : Admissible a' := admissible_image_sub m ha hmle
+    -- every element of the normalised set is `≤ A k`, so its `sup` is too; minimality gives `=`.
+    have hle_sup : a'.sup id ≤ A k := by
+      rw [ha']
+      apply Finset.sup_le
+      intro y hy
+      obtain ⟨x, hx, rfl⟩ := Finset.mem_image.mp hy
+      simp only [id_eq]
+      have hxle : x ≤ a.sup id := Finset.le_sup (f := id) hx
+      rw [hsup] at hxle; omega
+    have hsup' : a'.sup id = A k := le_antisymm hle_sup (A_le hcard' ha'adm)
+    -- `0 ∈ a'` (the minimum maps to `0`), forcing every element — hence the maximum — even.
+    have h0 : (0 : ℕ) ∈ a' := by
+      rw [ha']
+      refine Finset.mem_image.mpr ⟨m, a.min'_mem hne, ?_⟩
+      omega
+    obtain ⟨z, hz, hzeq⟩ := Finset.exists_mem_eq_sup a' ⟨0, h0⟩ id
+    have hzeven : (z : ZMod 2) = (0 : ZMod 2) := by
+      simpa using admissible_same_parity ha'adm hz h0
+    have hdvd : 2 ∣ z := (ZMod.natCast_eq_zero_iff z 2).mp (by simpa using hzeven)
+    rw [← hsup', hzeq]
+    simpa [id_eq] using hdvd
+
+/-- **Even step size.** For `k ≥ 1`, consecutive values of `A` differ by at least `2`:
+`A(k) + 2 ≤ A(k+1)`. This sharpens the strict step `A_lt_A_succ` (`A(k) < A(k+1)`) using
+evenness (`A_even`): two distinct even numbers differ by at least `2`. Consistent with the table
+(`A(2)=2 → A(3)=6` jumps by `4`, `A(3)=6 → A(4)=8` by `2`), and gives the clean linear consequence
+`A(k) ≥ 2(k-1)` a second, purely order-theoretic derivation. -/
+theorem A_succ_ge_add_two {k : ℕ} (hk : 1 ≤ k) : A k + 2 ≤ A (k + 1) := by
+  have hlt := A_lt_A_succ hk
+  obtain ⟨s, hs⟩ := A_even k
+  obtain ⟨t, ht⟩ := A_even (k + 1)
+  omega
 
 /-- **Trivial lower bound.** `A(k) ≥ k - 1`, since any `k` distinct naturals have maximum
 at least `k - 1`. -/

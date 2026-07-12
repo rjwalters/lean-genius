@@ -79,12 +79,15 @@
       "admissible_sum_ge / sub_mul_le_S / sub_one_le_B: general lower bound k*(k-1) <= S(k), equivalently B(k) >= k-1 — the average analogue of the diameter bound A(k) >= 2(k-1). The prime 2 forces every admissible set to be single-parity, so its k distinct elements, translated to start at 0, are >= 0,2,4,...,2(k-1), whose sum is k(k-1). Proved by strong induction removing the maximum (which is >= 2(card-1) by admissible_two_mul_card_sub_one_le_sup) and applying the inductive hypothesis to the still-admissible remainder; the identity 2(k-1)+(k-1)(k-2)=k(k-1) closes the step. Sharp at k=2 (Proofs/Erdos1204B.lean)",
       "S(2)=2 and S(3)=8 exact, giving the first exact averages B(2)=1 and B(3)=8/3. B(2)=1 attains the parity floor k-1=1 (the general bound is tight); B(3)=8/3 > 2 is the first place the mod-3 obstruction — the same one that makes A(3)=6 — forces the average strictly above the floor. The S(3) >= 8 lower bound combines the A(3) fact sup >= 6 (admissible_three_sup_ge) with admissible_sum_ge on the erased admissible 2-set: 6+2=8 (Proofs/Erdos1204B.lean)",
       "same_mod_sup_ge: a general spacing lemma — a finite set of naturals all congruent modulo d has largest element ≥ d·(card−1) (the exact d-modulus generalization of the parity diameter bound admissible_diam_ge)",
-      "three_mul_sub_two_le_A / admissible_three_sub_two_le_sup (Erdos1204C.lean): the joint prime-{2,3} lower bound A(k) ≥ 3(k−2), sharpening the slope of the general lower bound from 2 to 3 — an admissible set occupies ≤ 2 residue classes mod 6 (CRT: one class mod 2, two mod 3), so a pigeonholed class of ≥ ⌈k/2⌉ elements is 6-separated. Strictly beats 2(k−1) for all k ≥ 5; axiom-free"
+      "three_mul_sub_two_le_A / admissible_three_sub_two_le_sup (Erdos1204C.lean): the joint prime-{2,3} lower bound A(k) ≥ 3(k−2), sharpening the slope of the general lower bound from 2 to 3 — an admissible set occupies ≤ 2 residue classes mod 6 (CRT: one class mod 2, two mod 3), so a pigeonholed class of ≥ ⌈k/2⌉ elements is 6-separated. Strictly beats 2(k−1) for all k ≥ 5; axiom-free",
+      "A_even: the general-k PARITY of the optimum — A(k) is EVEN for every k, the structural fact behind the observed table A(0)=A(1)=0, A(2)=2, A(3)=6, A(4)=8, A(5)=12, A(6)=16, A(7)=20 being all even. An optimal admissible k-set is normalised to start at 0 by subtracting its minimum (new lemma admissible_image_sub, the downward companion of admissible_image_add); the normalised set is still admissible with the same card and no larger max — hence equal to A(k) by minimality — and, containing 0, is entirely even by admissible_same_parity, so its max A(k) is even. Prime 2 does not merely double the packing bound (two_mul_sub_one_le_A), it pins the parity of the optimum. Axiom-free",
+      "A_succ_ge_add_two: even step size — for k ≥ 1, A(k) + 2 ≤ A(k+1), sharpening the strict step A_lt_A_succ (A(k) < A(k+1)) via A_even (two distinct even numbers differ by ≥ 2); gives the linear bound A(k) ≥ 2(k−1) a second purely order-theoretic derivation. Axiom-free",
+      "admissible_image_sub: translation invariance under subtraction — if every element of an admissible set is ≥ t, subtracting t preserves admissibility (a missing class r mod p gives a−t missing r−t). The downward companion of admissible_image_add that enables normalising any admissible tuple to start at 0; the engine behind A_even. Axiom-free"
     ],
     "axiomCount": 0,
-    "lineCount": 632,
+    "lineCount": 714,
     "assumptions": "0 axiom declarations and 0 sorries; every stated lemma is fully proved. Proofs use only kernel `decide` (no `native_decide`) and `Nat.sInf`; #print axioms (incl. admissible_same_parity, admissible_diam_ge, two_mul_sub_one_le_A) shows only propext/Classical.choice/Quot.sound — no Lean.ofReduceBool, no sorryAx. Status is 'axiomatized' because the headline asymptotic questions of Problem #1204 — whether A(k) ∼ k log k and the estimate for B(k) — remain OPEN and are documented but not formalized as theorems. Formalized here: the admissibility framework, the reduction to small primes, existence/well-definedness of A(k), the parity-sharpened two-sided bounds 2(k-1) ≤ A(k) ≤ (k-1)·primorial (doubling the trivial k-1 lower bound for all k), and the exact values A(0)=A(1)=0, A(2)=2, A(3)=6, A(4)=8, A(5)=12, A(6)=16, A(7)=20 (the last four in companion files Erdos1204A4.lean, Erdos1204A5.lean, Erdos1204A6.lean and Erdos1204A7.lean, each verified and axiom-free; A(6)=16 is the first exact value whose lower bound needs three primes 2,3,5, and A(7)=20 shows the prime 7 is not yet binding — two forced 7-sets per parity are all killed at p=5). The companion Erdos1204B.lean (B(k) theory: S/B definitions, the bound k(k-1) <= S(k), and exact S(2)=2/S(3)=8, B(2)=1/B(3)=8/3) is likewise 0 axioms / 0 sorries, kernel decide only (no native_decide), depending only on propext/Classical.choice/Quot.sound.",
-    "theoremCount": 34,
+    "theoremCount": 37,
     "definitionCount": 3,
     "summary": " A companion file (Erdos1204B.lean) now also introduces the SECOND extremal quantity B(k)=min(a1+...+ak)/k (the minimal average, carried by the minimal sum S(k)), previously untouched: it is defined as an attained infimum, satisfies the parity lower bound B(k) >= k-1 (average analogue of A(k) >= 2(k-1)), with first exact values B(2)=1 (tight) and B(3)=8/3 (mod-3 forces the average above the floor). The asymptotics of B(k) remain OPEN."
   },
@@ -244,9 +247,9 @@
       "Finset"
     ],
     "namespace": "Erdos1204",
-    "lineCount": 632,
+    "lineCount": 714,
     "axiomCount": 0,
-    "theoremCount": 34,
+    "theoremCount": 37,
     "definitionCount": 3,
     "path": "Proofs/Erdos1204Problem.lean",
     "sorries": 0
