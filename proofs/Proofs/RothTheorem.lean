@@ -5034,4 +5034,105 @@ theorem maxSqDiffFreeCard_seven : maxSqDiffFreeCard 7 = 1 :=
 theorem maxSqDiffFreeCard_eleven : maxSqDiffFreeCard 11 = 1 :=
   maxSqDiffFreeCard_eq_one_of_mod_four_eq_three (by norm_num) (by norm_num)
 
+/-! ### Part XXXVII — the sharp LOWER bound at primes `p ≡ 1 (mod 4)`, and the full dichotomy
+
+Part XXXVI showed the extremal count *collapses to `1`* at every prime `p ≡ 3 (mod 4)`.  Here
+we prove the exactly complementary statement at the **other** residue class: at every prime
+`p ≡ 1 (mod 4)`,
+  `maxSqDiffFreeCard p ≥ 2`,
+so a two-element square-difference-free set always exists.  Until now the `≥ 2` bound was only
+recorded for the *concrete* primes `5, 13, 17` via `decide`; this is the first *general*
+lower bound at the whole residue class.
+
+The construction mirrors Part XXXVI.  When `p ≡ 1 (mod 4)`, `-1` **is** a square
+(`ZMod.exists_sq_eq_neg_one_iff`), so for a quadratic non-residue `d` the negative `-d` is
+*also* a non-residue (`IsSquare` is multiplicative: `IsSquare (-1) ∧ IsSquare (-d)` would give
+`IsSquare d`).  A non-residue exists (`FiniteField.exists_nonsquare`), and then `{0, d}` is
+square-difference-free: neither `d` (a non-square) nor `-d` (a non-square) is a nonzero square,
+so no nonzero square connects `0` to `d` in either direction.
+
+Combining the two halves gives the **sharp dichotomy** for odd primes:
+  `maxSqDiffFreeCard p = 1  ↔  p ≡ 3 (mod 4)`,   equivalently   `2 ≤ maxSqDiffFreeCard p ↔ p ≡ 1 (mod 4)`.
+The parity of `(p-1)/2` — whether `-1` is a square — *exactly* decides whether the modular
+Sárközy graph has independence number `1` (a tournament orientation of `K_p`) or admits a
+non-trivial square-difference-free set. -/
+
+/-- **At a prime `p ≡ 1 (mod 4)`, the negative of a non-square is a non-square.**  Because `-1`
+is a square (`ZMod.exists_sq_eq_neg_one_iff`), if `-d` were a square then so would
+`(-1)·(-d) = d`, contradicting `¬ IsSquare d`. -/
+private lemma not_isSquare_neg_of_mod_four_eq_one {p : ℕ} [Fact p.Prime] [NeZero p]
+    (h1 : p % 4 = 1) {d : ZMod p} (hd : ¬ IsSquare d) : ¬ IsSquare (-d) := by
+  have hneg1 : IsSquare (-1 : ZMod p) := ZMod.exists_sq_eq_neg_one_iff.mpr (by omega)
+  intro h
+  exact hd (by simpa using hneg1.mul h)
+
+/-- **The extremal square-difference-free count is at least `2` at every prime `p ≡ 1 (mod 4)`.**
+A quadratic non-residue `d ≠ 0` exists (`FiniteField.exists_nonsquare`), and `{0, d}` is
+square-difference-free: `0 + n² = d` would make `d` a square, and `d + n² = 0` would make `-d`
+a square (`not_isSquare_neg_of_mod_four_eq_one`), both impossible.  This is the first *general*
+lower bound at the residue class `p ≡ 1 (mod 4)`, complementing Part XXXVI's collapse at
+`p ≡ 3 (mod 4)`. -/
+theorem two_le_maxSqDiffFreeCard_of_mod_four_eq_one {p : ℕ} (hp : p.Prime) [NeZero p]
+    (h1 : p % 4 = 1) : 2 ≤ maxSqDiffFreeCard p := by
+  haveI := Fact.mk hp
+  obtain ⟨d, hd⟩ : ∃ a : ZMod p, ¬ IsSquare a := by
+    apply FiniteField.exists_nonsquare
+    rw [ZMod.ringChar_zmod_n]; omega
+  have hd0 : d ≠ 0 := by rintro rfl; exact hd ⟨0, by ring⟩
+  have hnegd : ¬ IsSquare (-d) := not_isSquare_neg_of_mod_four_eq_one h1 hd
+  have hfree : IsSqDiffFree ({0, d} : Finset (ZMod p)) := by
+    intro x hx n hn hmem
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+    rcases hx with rfl | rfl
+    · rw [zero_add] at hmem
+      simp only [Finset.mem_insert, Finset.mem_singleton] at hmem
+      rcases hmem with h | h
+      · exact hn h
+      · exact hd ⟨n, by rw [← h]; ring⟩
+    · simp only [Finset.mem_insert, Finset.mem_singleton] at hmem
+      rcases hmem with h | h
+      · exact hnegd ⟨n, by linear_combination -h⟩
+      · exact hn (by linear_combination h)
+  have h0 : (0 : ZMod p) ∉ ({d} : Finset (ZMod p)) := by
+    simp only [Finset.mem_singleton]; exact fun h => hd0 h.symm
+  have hc : ({0, d} : Finset (ZMod p)).card = 2 := by
+    rw [Finset.card_insert_of_notMem h0, Finset.card_singleton]
+  have := le_maxSqDiffFreeCard_of_isSqDiffFree hfree
+  omega
+
+/-- **Sharp dichotomy for odd primes.**  For an odd prime `p`,
+  `maxSqDiffFreeCard p = 1  ↔  p ≡ 3 (mod 4)`.
+The `←` direction is Part XXXVI (`maxSqDiffFreeCard_eq_one_of_mod_four_eq_three`); the `→`
+direction is the contrapositive of Part XXXVII: an odd prime with `p % 4 ≠ 3` has `p % 4 = 1`,
+whence `maxSqDiffFreeCard p ≥ 2 > 1`.  This pins the Paley/square-difference independence
+number of `ℤ/pℤ` to exactly `{1}` for `p ≡ 3` and `≥ 2` for `p ≡ 1`, decided purely by whether
+`-1` is a square. -/
+theorem maxSqDiffFreeCard_eq_one_iff_mod_four_eq_three {p : ℕ} (hp : p.Prime) [NeZero p]
+    (hodd : p % 2 = 1) : maxSqDiffFreeCard p = 1 ↔ p % 4 = 3 := by
+  constructor
+  · intro heq
+    by_contra hne
+    have h14 : p % 4 = 1 := by omega
+    have := two_le_maxSqDiffFreeCard_of_mod_four_eq_one hp h14
+    omega
+  · exact fun h3 => maxSqDiffFreeCard_eq_one_of_mod_four_eq_three hp h3
+
+/-- **Companion form of the dichotomy.**  For an odd prime `p`, a two-element
+square-difference-free set exists iff `p ≡ 1 (mod 4)`:
+  `2 ≤ maxSqDiffFreeCard p  ↔  p ≡ 1 (mod 4)`. -/
+theorem two_le_maxSqDiffFreeCard_iff_mod_four_eq_one {p : ℕ} (hp : p.Prime) [NeZero p]
+    (hodd : p % 2 = 1) : 2 ≤ maxSqDiffFreeCard p ↔ p % 4 = 1 := by
+  constructor
+  · intro h2
+    by_contra hne
+    have h34 : p % 4 = 3 := by omega
+    have := maxSqDiffFreeCard_eq_one_of_mod_four_eq_three hp h34
+    omega
+  · exact two_le_maxSqDiffFreeCard_of_mod_four_eq_one hp
+
+/-- **Concrete general lower bound at `p = 13`.**  `13 ≡ 1 (mod 4)`, so
+`maxSqDiffFreeCard 13 ≥ 2` follows from the *general* theorem (not `decide`). -/
+theorem two_le_maxSqDiffFreeCard_thirteen : 2 ≤ maxSqDiffFreeCard 13 :=
+  two_le_maxSqDiffFreeCard_of_mod_four_eq_one (by norm_num) (by norm_num)
+
 end Szemeredi.Roth
