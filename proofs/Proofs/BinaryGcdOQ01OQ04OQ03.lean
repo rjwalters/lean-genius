@@ -821,4 +821,40 @@ theorem totalSteps_mono (a : ℕ) : Monotone (totalSteps a) := by
 theorem totalSteps_le_of_le {a M N : ℕ} (h : M ≤ N) : totalSteps a M ≤ totalSteps a N :=
   totalSteps_mono a h
 
+/-- **Interval additivity of the running total (general `a`).** For `M ≤ N` the work
+    over `[1, N]` splits exactly at `M` into the work over `[1, M]` and the work over the
+    tail `[M+1, N]`:
+
+      `totalSteps a N = totalSteps a M + ∑_{b=M+1}^{N} binaryGcdSteps a b`.
+
+    This is the multi-step generalization of the per-argument recurrence
+    `totalSteps_succ` (the `N = M+1`, singleton-tail case) and the exact decomposition
+    underlying `totalSteps_mono` — the tail sum is the nonnegative increment that makes
+    the total monotone. Proved by `Nat.le_induction` on `N` from `M`, using
+    `totalSteps_succ` to peel the new argument and `Finset.sum_Icc_succ_top` to grow the
+    tail range in lockstep. -/
+theorem totalSteps_add_Icc {a M N : ℕ} (h : M ≤ N) :
+    totalSteps a N
+      = totalSteps a M + ∑ b ∈ Finset.Icc (M + 1) N, binaryGcdSteps a b := by
+  induction N, h using Nat.le_induction with
+  | base => simp [Finset.Icc_eq_empty_of_lt (by omega : M < M + 1)]
+  | succ N hMN ih =>
+      rw [totalSteps_succ, ih, Finset.sum_Icc_succ_top (by omega : M + 1 ≤ N + 1)]
+      omega
+
+/-- **Single-argument cost is a lower bound on the running total (general `a`).** For any
+    `1 ≤ k ≤ N`, the step count of the single call `binaryGcdSteps a k` is dominated by
+    the total over `[1, N]`:
+
+      `binaryGcdSteps a k ≤ totalSteps a N`.
+
+    The elementary lower-bound companion of the `O(log N)` upper bound `totalSteps_le`:
+    a single summand never exceeds the sum of the (nonnegative) step counts. Immediate
+    from `Finset.single_le_sum`. -/
+theorem single_le_totalSteps {a k N : ℕ} (hk1 : 1 ≤ k) (hkN : k ≤ N) :
+    binaryGcdSteps a k ≤ totalSteps a N := by
+  unfold totalSteps
+  exact Finset.single_le_sum (f := fun b => binaryGcdSteps a b)
+    (fun b _ => Nat.zero_le _) (Finset.mem_Icc.2 ⟨hk1, hkN⟩)
+
 end BinaryGcdOQ01OQ04OQ03
