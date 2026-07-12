@@ -896,5 +896,77 @@ theorem sum_Ioc_simplex_over_dim (d : ℕ) {m n : ℕ} (h : m ≤ n) :
   rw [simplexNumber_symm m (d + 1), simplexNumber_symm n (d + 1), hsum]
   exact sum_Ioc_simplex d h
 
+/-! ### First-moment (weighted) hockey stick
+
+The hockey stick `sum_simplex` computes the *plain* sum of a figurate row,
+`∑_{k≤n} P_d(k) = P_{d+1}(n)` — the discrete analogue of `∫₀ⁿ x^d = n^{d+1}/(d+1)`.
+The lemmas below compute the *first moment* of a figurate row, weighting each term by
+its index `k`. This is the discrete analogue of `∫₀ⁿ x·x^d = n^{d+2}/(d+2)`, and it
+identifies the (unnormalised) centre of mass of the figurate row as, again, a single
+higher-dimensional simplex number.
+
+The one-step engine is the pointwise **figurate absorption identity**
+`(j+1)·P_d(j+1) = (d+1)·P_{d+1}(j)`, the figurate face of Mathlib's binomial absorption
+`Nat.choose_succ_right_eq`. Summing it and collapsing with `sum_simplex` gives the moment.
+-/
+
+/-- **Figurate absorption identity.** Moving the index weight `j+1` inside the simplex
+number raises the dimension and lowers the size:
+
+`(j+1)·P_d(j+1) = (d+1)·P_{d+1}(j)`.
+
+This is the figurate face of the binomial absorption rule `Nat.choose_succ_right_eq`
+(`C(m,k+1)·(k+1) = C(m,k)·(m-k)`): with `m = j+d+1` and `k = d` the top-index difference
+`m - d` is exactly the weight `j+1`. It is the pointwise engine behind the first-moment
+hockey stick `weighted_sum_simplex`. -/
+theorem succ_mul_simplexNumber (d j : ℕ) :
+    (j + 1) * simplexNumber d (j + 1) = (d + 1) * simplexNumber (d + 1) j := by
+  unfold simplexNumber
+  have hm : j + 1 + d = j + d + 1 := by ring
+  have hm2 : j + (d + 1) = j + d + 1 := by ring
+  rw [hm, hm2]
+  have h := Nat.choose_succ_right_eq (j + d + 1) d
+  have hsub : j + d + 1 - d = j + 1 := by omega
+  rw [hsub] at h
+  rw [Nat.mul_comm (j + 1), Nat.mul_comm (d + 1)]
+  exact h.symm
+
+/-- **First-moment (weighted) hockey stick.** Weighting each figurate number in a row by
+its index and summing collapses to a single higher-dimensional simplex number:
+
+`∑_{k≤n+1} k·P_d(k) = (d+1)·P_{d+2}(n)`.
+
+This is the index-weighted companion of the plain hockey stick `sum_simplex`
+(`∑ P_d = P_{d+1}`), and the discrete analogue of the first moment
+`∫₀ⁿ x·x^d = n^{d+2}/(d+2)`. Proof: the `k = 0` term vanishes, so reindexing `k = j+1`
+(`Finset.sum_range_succ'`) turns each term into `(j+1)·P_d(j+1)`, which the absorption
+identity `succ_mul_simplexNumber` rewrites as `(d+1)·P_{d+1}(j)`; pulling the constant
+`d+1` out and applying `sum_simplex (d+1)` collapses the remaining plain row to
+`P_{d+2}(n)`. The `d = 0` case is `∑_{k≤n+1} k = C(n+2,2)`, the triangular numbers. -/
+theorem weighted_sum_simplex (d n : ℕ) :
+    ∑ k ∈ range (n + 2), k * simplexNumber d k
+      = (d + 1) * simplexNumber (d + 2) n := by
+  rw [Finset.sum_range_succ' (fun k => k * simplexNumber d k) (n + 1)]
+  simp only [Nat.zero_mul, Nat.add_zero]
+  rw [Finset.sum_congr rfl (fun i _ => succ_mul_simplexNumber d i),
+      ← Finset.mul_sum, sum_simplex (d + 1) n]
+
+/-- **First-moment hockey stick along the dimension axis.** The dimension-axis companion
+of `weighted_sum_simplex`, mirroring how `sum_simplex_over_dim` shadows `sum_simplex`:
+weighting a *column* of the figurate array (fixed size `d`, increasing dimension) by the
+index and summing gives
+
+`∑_{k≤n+1} k·P_k(d) = (d+1)·P_n(d+2)`.
+
+Immediate from `weighted_sum_simplex` through the reflection symmetry `simplexNumber_symm`
+(`P_a(b) = P_b(a)`), so the two axes of Pascal's simplex carry identical first moments. -/
+theorem weighted_sum_simplex_over_dim (d n : ℕ) :
+    ∑ k ∈ range (n + 2), k * simplexNumber k d
+      = (d + 1) * simplexNumber n (d + 2) := by
+  have h : ∑ k ∈ range (n + 2), k * simplexNumber k d
+      = ∑ k ∈ range (n + 2), k * simplexNumber d k :=
+    Finset.sum_congr rfl fun k _ => by rw [simplexNumber_symm k d]
+  rw [h, weighted_sum_simplex, simplexNumber_symm (d + 2) n]
+
 end TetrahedralNumberFormulaOQ01
 
