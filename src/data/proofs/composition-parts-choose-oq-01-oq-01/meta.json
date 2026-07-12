@@ -117,7 +117,15 @@
     ]
   },
   "crossReferences": [
-    "composition-parts-choose-oq-01",
-    "composition-card-2pow-oq-01"
+    {
+      "targetId": "composition-parts-choose-oq-01",
+      "relationship": "extends",
+      "description": "Ancestor in this entry’s line: Composition Parts OQ-01: Compositions of n into k Parts Number C(n−1, k−1). The present entry extends or refines it."
+    },
+    {
+      "targetId": "composition-card-2pow-oq-01",
+      "relationship": "related",
+      "description": "Related result: Composition Card OQ-01: There Are 2^(n−1) Compositions of n."
+    }
   ]
 }

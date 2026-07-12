@@ -117,10 +117,26 @@
     ]
   },
   "crossReferences": [
-    "dirichlet-approximation-theorem-oq-05",
-    "dirichlet-approximation-theorem",
-    "dirichlet-approximation-theorem-oq-01",
-    "dirichlet-approximation-theorem-oq-03"
+    {
+      "targetId": "dirichlet-approximation-theorem-oq-05",
+      "relationship": "extends",
+      "description": "Ancestor in this entry’s line: Dirichlet Approximation OQ-05: The Golden Ratio is Badly Approximable. The present entry extends or refines it."
+    },
+    {
+      "targetId": "dirichlet-approximation-theorem",
+      "relationship": "extends",
+      "description": "Ancestor in this entry’s line: Dirichlet's Approximation Theorem. The present entry extends or refines it."
+    },
+    {
+      "targetId": "dirichlet-approximation-theorem-oq-01",
+      "relationship": "related",
+      "description": "Related result: Dirichlet Approximation OQ-01: Infinitude of Good Rational Approximations."
+    },
+    {
+      "targetId": "dirichlet-approximation-theorem-oq-03",
+      "relationship": "related",
+      "description": "Related result: Dirichlet Approximation OQ-03: Minkowski Geometry-of-Numbers Re-derivation."
+    }
   ],
   "references": [
     {

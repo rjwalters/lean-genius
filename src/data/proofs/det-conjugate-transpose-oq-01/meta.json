@@ -1,5 +1,5 @@
 {
-  "references":   [
+  "references": [
     {
       "authors": "R. A. Horn and C. R. Johnson",
       "title": "Matrix Analysis",
@@ -167,6 +167,10 @@
     ]
   },
   "crossReferences": [
-    "cramers-rule-oq-05"
+    {
+      "targetId": "cramers-rule-oq-05",
+      "relationship": "related",
+      "description": "Related result: Cramer's Rule OQ-05: Conjugation Invariance of Determinant, Trace, and Characteristic Polynomial."
+    }
   ]
 }

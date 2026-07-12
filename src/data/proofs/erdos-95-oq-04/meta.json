@@ -130,8 +130,16 @@
     ]
   },
   "crossReferences": [
-    "erdos-95",
-    "erdos-94"
+    {
+      "targetId": "erdos-95",
+      "relationship": "extends",
+      "description": "Ancestor in this entry’s line: Erdős Problem #95: Sum of Squared Distance Multiplicities. The present entry extends or refines it."
+    },
+    {
+      "targetId": "erdos-94",
+      "relationship": "related",
+      "description": "Related result: Erdős #94: Distance Multiplicities in Convex Polygons."
+    }
   ],
   "references": [
     {

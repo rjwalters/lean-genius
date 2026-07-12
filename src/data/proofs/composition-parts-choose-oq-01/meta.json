@@ -1,5 +1,5 @@
 {
-  "references":   [
+  "references": [
     {
       "authors": "R. P. Stanley",
       "title": "Enumerative Combinatorics, Volume 1",
@@ -140,7 +140,15 @@
     ]
   },
   "crossReferences": [
-    "composition-card-2pow-oq-01",
-    "dyck-catalan-count-oq-01"
+    {
+      "targetId": "composition-card-2pow-oq-01",
+      "relationship": "related",
+      "description": "Related result: Composition Card OQ-01: There Are 2^(n−1) Compositions of n."
+    },
+    {
+      "targetId": "dyck-catalan-count-oq-01",
+      "relationship": "related",
+      "description": "Related result: Dyck Words Are Counted by the Catalan Numbers."
+    }
   ]
 }

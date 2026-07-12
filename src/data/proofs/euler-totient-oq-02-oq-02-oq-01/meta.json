@@ -122,7 +122,15 @@
     }
   ],
   "crossReferences": [
-    "euler-totient-oq-02-oq-02",
-    "euler-totient"
+    {
+      "targetId": "euler-totient-oq-02-oq-02",
+      "relationship": "extends",
+      "description": "Ancestor in this entry’s line: Euler's Theorem via the Group Structure of (ℤ/nℤ)ˣ. The present entry extends or refines it."
+    },
+    {
+      "targetId": "euler-totient",
+      "relationship": "extends",
+      "description": "Ancestor in this entry’s line: Euler's Generalization of Fermat's Little Theorem. The present entry extends or refines it."
+    }
   ]
 }

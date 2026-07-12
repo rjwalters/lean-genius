@@ -124,9 +124,21 @@
     ]
   },
   "crossReferences": [
-    "navier-stokes-oq-01",
-    "amgm-inequality",
-    "cauchy-schwarz"
+    {
+      "targetId": "navier-stokes-oq-01",
+      "relationship": "extends",
+      "description": "Ancestor in this entry’s line: 2D Navier-Stokes: Quantitative Enstrophy Decay and Energy Identity. The present entry extends or refines it."
+    },
+    {
+      "targetId": "amgm-inequality",
+      "relationship": "related",
+      "description": "Related result: Arithmetic Mean - Geometric Mean Inequality."
+    },
+    {
+      "targetId": "cauchy-schwarz",
+      "relationship": "related",
+      "description": "Related result: Cauchy-Schwarz Inequality."
+    }
   ],
   "references": [
     {

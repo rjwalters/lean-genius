@@ -131,11 +131,19 @@
     ]
   },
   "crossReferences": [
-    "ballot-problem-oq-02"
+    {
+      "targetId": "ballot-problem-oq-02",
+      "relationship": "extends",
+      "description": "Ancestor in this entry’s line: Continuous-Time Ballot Problem via Brownian Motion. The present entry extends or refines it."
+    }
   ],
   "leanFile": {
-    "imports": ["Mathlib"],
-    "opens": ["Real"],
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Real"
+    ],
     "namespace": "ArcsineLaw",
     "lineCount": 199,
     "mainTheorems": [
