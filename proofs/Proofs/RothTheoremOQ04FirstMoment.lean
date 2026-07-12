@@ -405,4 +405,151 @@ theorem sum_norm_sqGaussSum_le_card_of_odd {N : ℕ} [NeZero N] (hodd : Odd N) :
         mul_le_mul_of_nonneg_left key (Real.sqrt_nonneg _)
     _ = (N : ℝ) * Real.sqrt N * (N.divisors.card : ℝ) := by ring
 
+/-- **A proper divisor is at most `N / minFac(N)`.**  If `0 < m < N` then
+    `gcd(m, N)` is a *proper* divisor `d` of `N`, so its cofactor `e = N/d ≥ 2`
+    is a divisor `≥ 2` of `N`, hence `minFac(N) ≤ e` (`Nat.minFac_le_of_dvd`);
+    multiplying `d · minFac(N) ≤ d · e = N` and dividing gives `d ≤ N / minFac(N)`.
+    This upgrades the crude `2·gcd ≤ N` to the sharp largest-proper-divisor ceiling. -/
+private theorem gcd_le_div_minFac {m N : ℕ} (hpos : 0 < m) (hlt : m < N) :
+    Nat.gcd m N ≤ N / N.minFac := by
+  set d := Nat.gcd m N with hd
+  have hNpos : 0 < N := lt_of_le_of_lt (Nat.zero_le m) hlt
+  have hdvd : d ∣ N := Nat.gcd_dvd_right m N
+  have hdpos : 0 < d := Nat.pos_of_dvd_of_pos hdvd hNpos
+  have hdlt : d < N := lt_of_le_of_lt (Nat.gcd_le_left N hpos) hlt
+  obtain ⟨e, he⟩ := hdvd
+  have hepos : 0 < e := by
+    rcases Nat.eq_zero_or_pos e with h | h
+    · rw [h, Nat.mul_zero] at he; omega
+    · exact h
+  have he2 : 2 ≤ e := by
+    by_contra h
+    push_neg at h
+    interval_cases e
+    · rw [Nat.mul_one] at he; omega
+  have hedvd : e ∣ N := ⟨d, by rw [he]; ring⟩
+  have hmf : N.minFac ≤ e := Nat.minFac_le_of_dvd he2 hedvd
+  have key : d * N.minFac ≤ N := by
+    calc d * N.minFac ≤ d * e := Nat.mul_le_mul_left d hmf
+      _ = N := he.symm
+  exact (Nat.le_div_iff_mul_le N.minFac_pos).mpr key
+
+/-- **Sharp gcd-graded magnitude at odd moduli: `‖G(r)‖² ≤ N² / minFac(N)`.**  For odd
+    `N` and any *nonzero* frequency `r`, oddness makes `2` a unit so `2r ≠ 0`, hence
+    `(2r).val` is a nonzero residue `< N` and `gcd((2r).val, N)` is a proper divisor,
+    bounded by the largest proper divisor `N / minFac(N)` (`gcd_le_div_minFac`).  Feeding
+    this into the exact Weyl magnitude `‖G(r)‖² = N·gcd((2r).val, N)` (`sqGaussSum_normSq_le_gcd`)
+    gives
+
+      `‖G(r)‖² ≤ N · (N / minFac(N)) = N² / minFac(N)`.
+
+    This is the *sharp* uniform sub-maximal bound — strictly better than the crude
+    `‖G(r)‖² ≤ N²/2` (`sqGaussSum_normSq_le_half_of_odd`) for every odd `N` (whose smallest
+    prime factor is `≥ 3`), and it degrades gracefully with `minFac`: at a prime `N` the
+    smallest factor is `N` itself, recovering `‖G(r)‖² ≤ N`.  `0` axioms. -/
+theorem sqGaussSum_normSq_le_sq_div_minFac_of_odd {N : ℕ} [NeZero N] (hodd : Odd N)
+    {r : ZMod N} (hr : r ≠ 0) : ‖sqGaussSum r‖ ^ 2 ≤ (N : ℝ) ^ 2 / N.minFac := by
+  -- Oddness ⟹ 2 is a unit ⟹ 2r ≠ 0.
+  have h2r : 2 * r ≠ 0 := by
+    have h2 : IsUnit (2 : ZMod N) := by
+      have hcast : ((2 : ℕ) : ZMod N) = (2 : ZMod N) := by norm_cast
+      rw [← hcast, ZMod.isUnit_iff_coprime]
+      have hnd : ¬ (2 ∣ N) := by rw [Nat.dvd_iff_mod_eq_zero, Nat.odd_iff.mp hodd]; omega
+      exact (Nat.prime_two.coprime_iff_not_dvd).mpr hnd
+    intro h
+    obtain ⟨u, hu⟩ := h2
+    have hz : (↑u⁻¹ : ZMod N) * (2 * r) = 0 := by rw [h, mul_zero]
+    rw [← hu, ← mul_assoc, Units.inv_mul, one_mul] at hz
+    exact hr hz
+  have hpos : 0 < (2 * r).val := ZMod.val_pos.mpr h2r
+  have hlt : (2 * r).val < N := ZMod.val_lt (2 * r)
+  have hg : Nat.gcd (2 * r).val N ≤ N / N.minFac := gcd_le_div_minFac hpos hlt
+  have hmfne : (N.minFac : ℝ) ≠ 0 := by exact_mod_cast (Nat.minFac_pos N).ne'
+  have hgr : (Nat.gcd (2 * r).val N : ℝ) ≤ (N : ℝ) / (N.minFac : ℝ) := by
+    have hcast := (Nat.cast_le (α := ℝ)).mpr hg
+    rwa [Nat.cast_div (Nat.minFac_dvd N) hmfne] at hcast
+  calc ‖sqGaussSum r‖ ^ 2 ≤ (N : ℝ) * (Nat.gcd (2 * r).val N : ℝ) := sqGaussSum_normSq_le_gcd r
+    _ ≤ (N : ℝ) * ((N : ℝ) / (N.minFac : ℝ)) :=
+        mul_le_mul_of_nonneg_left hgr (Nat.cast_nonneg N)
+    _ = (N : ℝ) ^ 2 / N.minFac := by ring
+
+/-- **`‖G(r)‖ ≤ N / √minFac(N)` at odd moduli.**  Square-root form of
+    `sqGaussSum_normSq_le_sq_div_minFac_of_odd`: the sharp uniform magnitude bound valid at
+    *every* nonzero frequency of an odd modulus, interpolating between the crude `N/√2` (which
+    it always beats, as `minFac ≥ 3`) and the sharp prime value `√N` (when `minFac = N`).  It
+    supplies the sharpest single-modulus `M` for `sqDiffFree_density_bound` over all odd `N`. -/
+theorem sqGaussSum_norm_le_div_sqrt_minFac_of_odd {N : ℕ} [NeZero N] (hodd : Odd N)
+    {r : ZMod N} (hr : r ≠ 0) : ‖sqGaussSum r‖ ≤ (N : ℝ) / Real.sqrt N.minFac := by
+  have h := sqGaussSum_normSq_le_sq_div_minFac_of_odd hodd hr
+  have hrhs : Real.sqrt ((N : ℝ) ^ 2 / N.minFac) = (N : ℝ) / Real.sqrt N.minFac := by
+    rw [Real.sqrt_div (by positivity), Real.sqrt_sq (Nat.cast_nonneg N)]
+  have hmono := Real.sqrt_le_sqrt h
+  rwa [Real.sqrt_sq (norm_nonneg _), hrhs] at hmono
+
+/-- **Sharp square-difference density bound at odd moduli.**  Discharging the analytic
+    hypothesis of `sqDiffFree_density_bound` with the *sharp* uniform magnitude
+    `M = N / √minFac(N)` (`sqGaussSum_norm_le_div_sqrt_minFac_of_odd`) gives, for any
+    square-difference-free `A ⊆ ℤ/Nℤ` at odd `N`,
+
+      `|A|² ≤ |A|·#{n : n² = 0} + N⁻¹·(N/√minFac(N))·(|A|·N − |A|²)`.
+
+    This strictly sharpens `sqDiffFree_density_bound_of_odd` (`M = N/√2`): the coefficient
+    `N/√minFac(N)` is smaller for every odd `N` (as `minFac ≥ 3 > 2`), and it collapses to the
+    sharp `M = √N` at prime moduli, recovering `sqDiffFree_density_bound_of_prime`. -/
+theorem sqDiffFree_density_bound_minfac_of_odd {N : ℕ} [NeZero N] (hodd : Odd N)
+    (A : Finset (ZMod N))
+    (hfree : ∀ x ∈ A, ∀ n : ZMod N, n ^ 2 ≠ 0 → x + n ^ 2 ∉ A) :
+    (A.card : ℝ) ^ 2
+      ≤ (A.card : ℝ) * (Finset.univ.filter (fun n : ZMod N => n ^ 2 = 0)).card
+        + (↑N)⁻¹ * ((N : ℝ) / Real.sqrt N.minFac * (↑A.card * ↑N - (↑A.card) ^ 2)) :=
+  sqDiffFree_density_bound A
+    (fun _ hr => sqGaussSum_norm_le_div_sqrt_minFac_of_odd hodd hr) hfree
+
+/-- **Sharp cardinality ceiling for square-difference-free sets at odd moduli.**  Solving the
+    quadratic `sqDiffFree_density_bound_minfac_of_odd` — the error term `N⁻¹·M·(|A|N − |A|²)`
+    is `≤ M·|A|` since `|A|N − |A|² ≤ |A|N` — collapses it to the clean linear ceiling
+
+      `|A| ≤ #{n : n² = 0} + N / √minFac(N)`.
+
+    **The single-modulus Sárközy statement in sharp form.**  For odd `N`:
+    * at a **prime** `N`, `minFac(N) = N` and `#{n² = 0} = 1`, giving `|A| ≤ 1 + √N` — the sharp
+      `√N` Sárközy bound, `o(N)` density;
+    * along any sequence with `minFac(N) → ∞` (e.g. `N` a product of large primes), `N/√minFac(N)
+      = o(N)`, so the density `|A|/N → 0`.
+
+    **Honest limitation.**  When `minFac(N)` is bounded (e.g. `3 ∣ N`), `N/√minFac(N) = Θ(N)` and
+    this bound is `Θ(N)` — *not* `o(N)`.  This is not a formalization gap but a genuine obstruction
+    of the single-modulus circle method: the `φ(minFac) = minFac − 1` frequencies `r` with
+    `gcd(r, N) = N/minFac` each carry the full sub-maximal Gauss sum `‖G(r)‖ = N/√minFac`, and even
+    capping their Fourier mass by `‖Â(r)‖² ≤ |A|²` their combined contribution is `≈ √minFac·|A|²`,
+    which overwhelms the `|A|²` main term.  Resolving `o(N)` for bounded-`minFac` moduli requires a
+    *good modulus* (`minFac → ∞`) or the classical multi-modulus / interval reduction, not a sharper
+    bound at the fixed modulus `N`.  `0` axioms. -/
+theorem sqDiffFree_card_le_of_odd {N : ℕ} [NeZero N] (hodd : Odd N) (A : Finset (ZMod N))
+    (hfree : ∀ x ∈ A, ∀ n : ZMod N, n ^ 2 ≠ 0 → x + n ^ 2 ∉ A) :
+    (A.card : ℝ)
+      ≤ (Finset.univ.filter (fun n : ZMod N => n ^ 2 = 0)).card + (N : ℝ) / Real.sqrt N.minFac := by
+  set a : ℝ := (A.card : ℝ) with ha_def
+  set c₀ : ℝ := ((Finset.univ.filter (fun n : ZMod N => n ^ 2 = 0)).card : ℝ) with hc_def
+  set M : ℝ := (N : ℝ) / Real.sqrt N.minFac with hM_def
+  have hd := sqDiffFree_density_bound_minfac_of_odd hodd A hfree
+  have hNpos : (0 : ℝ) < N := by exact_mod_cast Nat.pos_of_ne_zero (NeZero.ne N)
+  have haNN : 0 ≤ a := Nat.cast_nonneg _
+  have hMnn : 0 ≤ M := by rw [hM_def]; positivity
+  -- The error term `N⁻¹·M·(aN − a²) ≤ M·a`, since `aN − a² ≤ aN`.
+  have hstep : (↑N)⁻¹ * (M * (a * N - a ^ 2)) ≤ M * a := by
+    have hfrac : (a * N - a ^ 2) / N ≤ a := by
+      rw [div_le_iff₀ hNpos]; nlinarith [sq_nonneg a]
+    have heq : (↑N)⁻¹ * (M * (a * N - a ^ 2)) = M * ((a * N - a ^ 2) / N) := by
+      rw [div_eq_mul_inv]; ring
+    rw [heq]
+    exact mul_le_mul_of_nonneg_left hfrac hMnn
+  -- Hence `a² ≤ a·(c₀ + M)`.
+  have hquad : a ^ 2 ≤ a * (c₀ + M) := by nlinarith [hd, hstep]
+  -- Solve the quadratic: `a ≤ c₀ + M`.
+  rcases eq_or_lt_of_le haNN with ha0 | hapos
+  · rw [← ha0]; positivity
+  · have hcancel := le_of_mul_le_mul_left (by nlinarith [hquad] : a * a ≤ a * (c₀ + M)) hapos
+    linarith
+
 end Szemeredi.Roth
