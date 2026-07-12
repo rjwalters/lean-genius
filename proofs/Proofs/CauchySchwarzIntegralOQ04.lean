@@ -774,6 +774,70 @@ theorem heisenberg_weighted_sum_form {A B : E →ₗ[𝕜] E} (hA : A.IsSymmetri
   robertson_weighted_sum_form hA hB ψ (RCLike.re (inner 𝕜 ψ (A ψ)))
     (RCLike.re (inner 𝕜 ψ (B ψ))) ht
 
+/-! ## Structure of the commutator expectation: `⟪ψ,[A,B]ψ⟫` is purely imaginary
+
+Every uncertainty bound above depends on the commutator only through *the imaginary
+part* `Im⟪Aψ,Bψ⟫` — the real part never appears.  The reason is a structural identity:
+for symmetric `A, B` the commutator expectation `⟪ψ, (AB−BA)ψ⟫` is `i` times a **real**
+scalar,
+
+  `⟪ψ, (AB−BA)ψ⟫ = (2·Im⟪Aψ,Bψ⟫)·i`,
+
+so it lies entirely on the imaginary axis (`Re = 0`) and its norm is *exactly*
+`2·|Im⟪Aψ,Bψ⟫|`.  Equivalently `−i[A,B]` (equivalently `i[A,B]`) is a symmetric
+operator — the hermitian "observable" whose expectation is the real number
+`2·Im⟪Aψ,Bψ⟫` that the uncertainty product bounds.  These sharpen the internal
+estimate `‖⟪ψ,[A,B]ψ⟫‖ ≤ 2|Im⟪u,v⟫|` used inside `robertson_uncertainty` to the exact
+value, and explain why only the imaginary part enters Heisenberg's inequality. -/
+
+/-- **The commutator expectation is `i` times a real number.**  For symmetric `A, B`,
+`⟪ψ, (AB−BA)ψ⟫ = ↑(2·Im⟪Aψ,Bψ⟫)·i`.  Since `⟪Aψ,Bψ⟫` and `⟪Bψ,Aψ⟫` are complex
+conjugates (both `A, B` symmetric), their difference is `z − z̄ = 2i·Im z`, purely
+imaginary.  This is the exact structural identity behind the estimate used inside
+`robertson_uncertainty`. -/
+theorem inner_commutator_eq_ofReal_mul_I {A B : E →ₗ[𝕜] E} (hA : A.IsSymmetric)
+    (hB : B.IsSymmetric) (ψ : E) :
+    inner 𝕜 ψ (A (B ψ) - B (A ψ))
+      = ((2 * RCLike.im (inner 𝕜 (A ψ) (B ψ)) : ℝ) : 𝕜) * RCLike.I := by
+  have e1 : inner 𝕜 ψ (A (B ψ)) = inner 𝕜 (A ψ) (B ψ) := (hA ψ (B ψ)).symm
+  have e2 : inner 𝕜 ψ (B (A ψ)) = inner 𝕜 (B ψ) (A ψ) := (hB ψ (A ψ)).symm
+  have hconj : inner 𝕜 (B ψ) (A ψ) = (starRingEnd 𝕜) (inner 𝕜 (A ψ) (B ψ)) :=
+    (inner_conj_symm (B ψ) (A ψ)).symm
+  rw [inner_sub_right, e1, e2, hconj, RCLike.sub_conj]
+  push_cast
+  ring
+
+/-- **The commutator expectation is purely imaginary.**  `Re⟪ψ, (AB−BA)ψ⟫ = 0` for
+symmetric `A, B` — the anticommutator/real-part contribution drops out, so the
+commutator only feeds the *imaginary* part of the Cauchy–Schwarz core.  Valid over
+`ℝ` and `ℂ` alike (over `ℝ` the whole expectation is `0`). -/
+theorem re_inner_commutator_eq_zero {A B : E →ₗ[𝕜] E} (hA : A.IsSymmetric)
+    (hB : B.IsSymmetric) (ψ : E) :
+    RCLike.re (inner 𝕜 ψ (A (B ψ) - B (A ψ))) = 0 := by
+  have e1 : inner 𝕜 ψ (A (B ψ)) = inner 𝕜 (A ψ) (B ψ) := (hA ψ (B ψ)).symm
+  have e2 : inner 𝕜 ψ (B (A ψ)) = inner 𝕜 (B ψ) (A ψ) := (hB ψ (A ψ)).symm
+  have hconj : inner 𝕜 (B ψ) (A ψ) = (starRingEnd 𝕜) (inner 𝕜 (A ψ) (B ψ)) :=
+    (inner_conj_symm (B ψ) (A ψ)).symm
+  rw [inner_sub_right, e1, e2, hconj, map_sub, RCLike.conj_re, sub_self]
+
+/-- **Sharp value of the commutator norm.**  Over a field with a genuine imaginary unit
+(`RCLike.I ≠ 0`, i.e. `ℂ`), the internal estimate
+`‖⟪ψ,[A,B]ψ⟫‖ ≤ 2|Im⟪u,v⟫|` used in `robertson_uncertainty` is in fact an **equality**:
+
+  `‖⟪ψ, (AB−BA)ψ⟫‖ = 2·|Im⟪Aψ,Bψ⟫|`.
+
+Consequently the Robertson lower bound `¼‖⟪ψ,[A,B]ψ⟫‖²` equals `(Im⟪Aψ,Bψ⟫)²`
+exactly, pinning the commutator content of the uncertainty product to the squared
+imaginary part of the centred inner product. -/
+theorem norm_inner_commutator_eq (hI : (RCLike.I : 𝕜) ≠ 0) {A B : E →ₗ[𝕜] E}
+    (hA : A.IsSymmetric) (hB : B.IsSymmetric) (ψ : E) :
+    ‖inner 𝕜 ψ (A (B ψ) - B (A ψ))‖ = 2 * |RCLike.im (inner 𝕜 (A ψ) (B ψ))| := by
+  rw [inner_commutator_eq_ofReal_mul_I hA hB ψ, norm_mul, RCLike.norm_ofReal,
+    RCLike.norm_I_of_ne_zero hI, mul_one, abs_mul]
+  norm_num
+
 end CauchySchwarzIntegralOQ04
 
 #print axioms CauchySchwarzIntegralOQ04.gram_eq_iff_parallel
+#print axioms CauchySchwarzIntegralOQ04.inner_commutator_eq_ofReal_mul_I
+#print axioms CauchySchwarzIntegralOQ04.norm_inner_commutator_eq
