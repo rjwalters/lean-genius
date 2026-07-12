@@ -58,7 +58,7 @@
       {
         "theorem": "Real.sq_sqrt",
         "description": "(√x)² = x for 0 ≤ x, used to prove the rational brackets `sqrt2_bounds` (1.41421 < √2 < 1.41422) and `sqrt3_bounds` (1.73205 < √3 < 1.73206) via `nlinarith`.",
-        "module": "Mathlib.Analysis.SpecialFunctions.Pow.NNRpow"
+        "module": "Mathlib.Data.Real.Sqrt"
       }
     ],
     "assumptions": "0 sorries, 0 axioms. Every theorem is discharged by `nlinarith`/`norm_num`/`linarith`/`positivity` from Mathlib's rational π bounds `Real.pi_gt_d6` (3.141592 < π) and `Real.pi_lt_d6` (π < 3.141593), plus two-sided √2/√3 brackets proved from `Real.sq_sqrt`. The five density constants Δ₄..Δ₈ are taken from the published literature (Conway–Sloane, *Sphere Packings, Lattices and Groups*) as the best-known lattice packing densities; D₅, E₆, E₇ are the densest lattices known in their dimensions (the true optimum is open), D₄ is conjecturally optimal, and only E₈ (Δ₈ = π⁴/384) is a theorem (Viazovska 2016). `#print axioms` on the three headline theorems lists only `propext, Classical.choice, Quot.sound` — no `sorryAx`, no `Lean.ofReduceBool`. The parent `Proofs/KeplerConjecture.lean` separately axiomatizes the 2D/3D optimality results; this file adds NO new assumptions and reuses only the parent's `PackingDensity` structure."
