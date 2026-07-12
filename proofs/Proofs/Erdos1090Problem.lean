@@ -730,6 +730,39 @@ theorem ramseyNumberColored_bool (k : ℕ) :
     ramseyNumberColored Bool k = ramseyNumber k := rfl
 
 /--
+**The single-colour palette collapses to pure collinearity.**  With a `Subsingleton` (at most
+one colour) *nonempty* palette `C`, every colouring is constant, so the monochromaticity
+constraint `c p = c q` is vacuous: `HasRamseyPropertyColored C A k` holds iff `A` already
+contains a `k`-collinear subset, `∃ S ⊆ A, IsKCollinear S k`.  This is the `|C| = 1` boundary
+of the palette hierarchy — the degenerate bottom end below `ramseyNumberColored_bool` (`|C| = 2`),
+where the Ramsey condition strips down to the underlying Erdős collinearity question with no
+colouring content at all. -/
+theorem hasRamseyPropertyColored_subsingleton_iff {C : Type*} [Subsingleton C] [Nonempty C]
+    {A : Finset Point} {k : ℕ} :
+    HasRamseyPropertyColored C A k ↔ ∃ S : Finset Point, S ⊆ A ∧ IsKCollinear S k := by
+  constructor
+  · intro h
+    obtain ⟨S, hSA, hSk, _⟩ := h (fun _ => Classical.arbitrary C)
+    exact ⟨S, hSA, hSk⟩
+  · rintro ⟨S, hSA, hSk⟩ c
+    exact ⟨S, hSA, hSk, fun p q _ _ => Subsingleton.elim _ _⟩
+
+/--
+**One colour is the easiest: the bottom of the palette monotonicity chain.**  For a
+`Subsingleton` palette `C` and `k ≥ 3`, `R_C(k) ≤ ramseyNumber k`: a single colour can only
+*lower* the threshold, since `C` embeds into `Bool` (`ramseyNumberColored_mono_colors`) and
+`R_{Bool}(k) = ramseyNumber k` (`ramseyNumberColored_bool`).  This is the lower counterpart of
+`ramseyNumber_le_ramseyNumberColored_fin` (which bounds the `≥ 2`-colour numbers from *below*
+by `ramseyNumber k`); together they pin `ramseyNumber k` as the value at `|C| = 2`, with the
+whole chain `R_{|C|=1}(k) ≤ ramseyNumber k ≤ R_{Fin r}(k)` monotone in the palette size. -/
+theorem ramseyNumberColored_subsingleton_le {C : Type*} [Subsingleton C] {k : ℕ} (hk : k ≥ 3) :
+    ramseyNumberColored C k ≤ ramseyNumber k := by
+  have e : C ↪ Bool := ⟨fun _ => false, fun a b _ => Subsingleton.elim a b⟩
+  calc ramseyNumberColored C k
+      ≤ ramseyNumberColored Bool k := ramseyNumberColored_mono_colors e hk
+    _ = ramseyNumber k := ramseyNumberColored_bool k
+
+/--
 **A monotone chain in the number of colors.**  For `r ≤ r'`, `R_{Fin r}(k) ≤ R_{Fin r'}(k)`,
 via the canonical embedding `Fin r ↪ Fin r'`.  Combined with `ramseyNumberColored_bool` and
 `finTwoEquiv`, this gives `R(k) = R_{Fin 2}(k) ≤ R_{Fin r}(k)` for every `r ≥ 2`: passing from
