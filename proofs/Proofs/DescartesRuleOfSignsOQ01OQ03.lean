@@ -1395,4 +1395,86 @@ theorem signChangesInCoeffs_X_pow (k : ℕ) :
   rw [X_pow_eq_monomial]
   exact signChangesInCoeffs_monomial 1 k
 
+/-! ## § 12. The general quadratic sign-change count
+
+The `§ 4` quadratic results (`x2_minus_1_signChanges`, `x2_plus_1_signChanges`,
+`x2_minus_x_plus_1_signChanges`) computed `signChangesInCoeffs` for three *hardcoded*
+polynomials.  This section generalises them to the full three-parameter family
+`a·X² + b·X + c` with `a ≠ 0`, closing the standing next-step "full `Fin 3` sign-change
+count for quadratics with nonzero middle term".
+
+The key is a single coefficient-sequence identity: for a genuine quadratic the
+highest-degree-first coefficient vector `coeffSequence p 2` is exactly `![a, b, c]`
+(`coeffSequence_quadratic`).  Feeding that through the `§ 2¾` `Fin 3` engine gives a
+closed form for the coefficient sign-change count in terms of the sign pattern of the
+coefficients `(a, b, c)` — for a nonzero middle `b` this is the complete case split
+(two changes when strictly alternating, one when exactly one adjacent pair alternates,
+zero when neither does).  The three hardcoded `§ 4` examples are special cases (their
+middle coefficient is `0`, handled by the middle-zero lemmas instead). -/
+
+section QuadraticFamily
+
+/-- **Coefficient vector of a genuine quadratic.**  For `a ≠ 0` the highest-degree-first
+coefficient sequence of `a·X² + b·X + c` is `![a, b, c]`.  Combines
+`natDegree_quadratic` with the term-by-term coefficient computation. -/
+theorem coeffSequence_quadratic {a b c : ℝ} (ha : a ≠ 0) :
+    DescartesRuleOfSigns.coeffSequence (C a * X ^ 2 + C b * X + C c) 2 = ![a, b, c] := by
+  funext i
+  fin_cases i <;>
+    simp [DescartesRuleOfSigns.coeffSequence, coeff_add, coeff_C_mul_X_pow,
+      coeff_C_mul_X, coeff_C]
+
+/-- **Sign-change count of a general quadratic.**  For `a ≠ 0`, the coefficient
+sign-change count of `a·X² + b·X + c` is the length-3 sequence sign-change count of
+`![a, b, c]`.  This reduces the whole three-parameter family to the `Fin 3` engine of
+`§ 2¾`, generalising the hardcoded `§ 4` examples. -/
+theorem signChangesInCoeffs_quadratic {a b c : ℝ} (ha : a ≠ 0) :
+    signChangesInCoeffs (C a * X ^ 2 + C b * X + C c)
+      = DescartesRuleOfSigns.countSignChanges ![a, b, c] := by
+  have hdeg : (C a * X ^ 2 + C b * X + C c : ℝ[X]).natDegree = 2 := natDegree_quadratic ha
+  have hne : (C a * X ^ 2 + C b * X + C c : ℝ[X]) ≠ 0 := by
+    intro h; rw [h, natDegree_zero] at hdeg; exact absurd hdeg (by norm_num)
+  unfold signChangesInCoeffs
+  rw [dif_neg hne, hdeg, coeffSequence_quadratic ha]
+
+/-- **Two sign changes — the strictly alternating quadratic.**  If `a·b < 0` and
+`b·c < 0` (sign pattern `+ − +` or `− + −`) then `a·X² + b·X + c` has two coefficient
+sign changes, the maximum for a quadratic (Descartes' bound is *attained*: up to two
+positive roots).  Generalises `x2_minus_x_plus_1_signChanges`. -/
+theorem signChangesInCoeffs_quadratic_alternating {a b c : ℝ} (ha : a ≠ 0)
+    (h01 : a * b < 0) (h12 : b * c < 0) :
+    signChangesInCoeffs (C a * X ^ 2 + C b * X + C c) = 2 := by
+  rw [signChangesInCoeffs_quadratic ha]
+  exact countSignChanges_three_alternating (by simpa using h01) (by simpa using h12)
+
+/-- **One sign change — left pair alternates.**  If `a·b < 0` but `0 ≤ b·c`, then
+`a·X² + b·X + c` has exactly one coefficient sign change (across the `a,b` pair). -/
+theorem signChangesInCoeffs_quadratic_one_left {a b c : ℝ} (ha : a ≠ 0)
+    (h01 : a * b < 0) (h12 : 0 ≤ b * c) :
+    signChangesInCoeffs (C a * X ^ 2 + C b * X + C c) = 1 := by
+  rw [signChangesInCoeffs_quadratic ha]
+  exact countSignChanges_three_mid_ne_left (by simpa using h01) (by simpa using h12)
+
+/-- **One sign change — right pair alternates.**  If `0 ≤ a·b` but `b·c < 0`, then
+`a·X² + b·X + c` has exactly one coefficient sign change (across the `b,c` pair). -/
+theorem signChangesInCoeffs_quadratic_one_right {a b c : ℝ} (ha : a ≠ 0)
+    (h01 : 0 ≤ a * b) (h12 : b * c < 0) :
+    signChangesInCoeffs (C a * X ^ 2 + C b * X + C c) = 1 := by
+  rw [signChangesInCoeffs_quadratic ha]
+  exact countSignChanges_three_mid_ne_right (by simpa using h01) (by simpa using h12)
+
+/-- **No sign change — nonzero middle, neither pair alternates.**  If `b ≠ 0`,
+`0 ≤ a·b` and `0 ≤ b·c` (sign pattern `+ + +` or `− − −`) then `a·X² + b·X + c` has no
+coefficient sign change, hence (Descartes) no positive roots.  Together with the three
+preceding corollaries this is the complete sign-change classification for a quadratic
+with nonzero middle coefficient. -/
+theorem signChangesInCoeffs_quadratic_no_change {a b c : ℝ} (ha : a ≠ 0)
+    (hb : b ≠ 0) (h01 : 0 ≤ a * b) (h12 : 0 ≤ b * c) :
+    signChangesInCoeffs (C a * X ^ 2 + C b * X + C c) = 0 := by
+  rw [signChangesInCoeffs_quadratic ha]
+  exact countSignChanges_three_mid_ne_zero (by simpa using hb)
+    (by simpa using h01) (by simpa using h12)
+
+end QuadraticFamily
+
 end DescartesRuleOfSignsOQ01OQ03
