@@ -1021,8 +1021,7 @@ theorem descFactorial_moment_sum_simplex (r d n : ℕ) :
         _ = j.descFactorial r * ((d + 1) * simplexNumber (d + 1) j) := by rw [hab]
         _ = (d + 1) * (j.descFactorial r * simplexNumber (d + 1) j) := by ring
     rw [Finset.sum_congr rfl hstep, ← Finset.mul_sum, ih (d + 1)]
-    rw [show d + 1 + r = d + (r + 1) from by ring,
-        show d + 1 + r + 1 = d + (r + 1) + 1 from by ring, ← Nat.mul_assoc]
+    rw [show d + 1 + r = d + (r + 1) from by ring, ← Nat.mul_assoc]
     congr 1
     rw [Nat.descFactorial_succ]
     congr 1
