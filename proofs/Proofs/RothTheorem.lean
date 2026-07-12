@@ -3334,5 +3334,79 @@ theorem sqGaussSum_normSq_sum_eq_divisors_of_odd {N : ℕ} [NeZero N] (hodd : Od
       = (N : ℝ) * (((∑ d ∈ N.divisors, d * Nat.totient (N / d) : ℕ) : ℝ) - N) := by
   rw [sqGaussSum_normSq_sum_eq_of_odd hodd, gcd_sum_pillai N]
 
-end Szemeredi.Roth
+/-! ### Part XXI — The odd-modulus second moment is `Θ(N²)`: the L² cap for *every* odd `N`
 
+Part XVII computed the second moment *exactly* at an odd **prime** and derived the L²-cap
+`√(Σ_{r≠0}‖G(r)‖²) ≥ N−1` (`sqGaussSum_l2_factor_ge_of_prime`), proving the L²-averaged
+circle-method route cannot furnish the `o(N)` Sárközy density at primes.  Part XX made the
+second moment an exact Pillai divisor sum for *all* odd `N*.  Here we extract the matching
+**lower** bound at every odd modulus.
+
+The Pillai function `P(N) = Σ_{d∣N} d·φ(N/d)` always contains the two extreme divisor terms
+`d = 1` (contributing `1·φ(N) = φ(N)`) and `d = N` (contributing `N·φ(1) = N`), so
+`P(N) ≥ N + φ(N)` and hence `P(N) − N ≥ φ(N)`.  Feeding this into the Part XX equality
+`Σ_{r≠0}‖G(r)‖² = N·(P(N) − N)` gives
+
+    Σ_{r≠0} ‖G(r)‖² ≥ N·φ(N)      (odd `N > 1`).
+
+At an odd prime `p` this is `p·(p−1) = p² − p`, which *coincides* with the exact prime value
+`sqGaussSum_normSq_sum_eq_of_prime`, so the bound is sharp at primes.  For odd `N` with a
+bounded number of prime factors `φ(N) = Θ(N)`, so the second moment is `Θ(N²)` and the
+L²-averaged density route is capped at every such modulus — exactly the Part XVII obstruction,
+now removed from the primality hypothesis. -/
+
+/-- **Pillai's divisor sum dominates `N + φ(N)`.**  For `N > 1` the divisors `1` and `N` are
+distinct members of `N.divisors`; their Pillai terms are `1·φ(N/1) = φ(N)` and
+`N·φ(N/N) = N·φ(1) = N`.  As every Pillai term is nonnegative, the full sum dominates this
+two-term subsum:
+
+    `N + φ(N) ≤ Σ_{d∣N} d·φ(N/d)`. -/
+theorem pillai_ge_add_totient {N : ℕ} (hN : 1 < N) :
+    N + Nat.totient N ≤ ∑ d ∈ N.divisors, d * Nat.totient (N / d) := by
+  have hN0 : N ≠ 0 := by omega
+  have hsub : ({1, N} : Finset ℕ) ⊆ N.divisors := by
+    apply Finset.insert_subset
+    · exact Nat.one_mem_divisors.mpr hN0
+    · rw [Finset.singleton_subset_iff]; exact Nat.mem_divisors_self N hN0
+  have hpair : ∑ d ∈ ({1, N} : Finset ℕ), d * Nat.totient (N / d)
+      = N + Nat.totient N := by
+    rw [Finset.sum_pair (by omega : (1 : ℕ) ≠ N), Nat.div_one,
+      Nat.div_self (by omega : 0 < N), Nat.totient_one]
+    ring
+  calc N + Nat.totient N
+      = ∑ d ∈ ({1, N} : Finset ℕ), d * Nat.totient (N / d) := hpair.symm
+    _ ≤ ∑ d ∈ N.divisors, d * Nat.totient (N / d) := Finset.sum_le_sum_of_subset hsub
+
+/-- **Second-moment lower bound at any odd modulus.**  Combining the exact Pillai form of
+the second moment (`sqGaussSum_normSq_sum_eq_divisors_of_odd`) with `pillai_ge_add_totient`:
+
+    `N·φ(N) ≤ Σ_{r≠0} ‖G(r)‖²`   (odd `N > 1`).
+
+At an odd prime `p` the left side is `p·(p−1) = p² − p`, matching the exact prime value
+`sqGaussSum_normSq_sum_eq_of_prime`, so the estimate is sharp. -/
+theorem sqGaussSum_normSq_sum_ge_of_odd {N : ℕ} [NeZero N] (hodd : Odd N) (hN : 1 < N) :
+    (N : ℝ) * (Nat.totient N : ℝ) ≤
+      (Finset.univ \ {(0 : ZMod N)}).sum (fun r => ‖sqGaussSum r‖ ^ 2) := by
+  rw [sqGaussSum_normSq_sum_eq_divisors_of_odd hodd]
+  have hpil := pillai_ge_add_totient hN
+  have hR : (Nat.totient N : ℝ)
+      ≤ ((∑ d ∈ N.divisors, d * Nat.totient (N / d) : ℕ) : ℝ) - N := by
+    have hcast : (N : ℝ) + (Nat.totient N : ℝ)
+        ≤ ((∑ d ∈ N.divisors, d * Nat.totient (N / d) : ℕ) : ℝ) := by exact_mod_cast hpil
+    linarith
+  exact mul_le_mul_of_nonneg_left hR (Nat.cast_nonneg N)
+
+/-- **The L²-averaged minor-arc factor does not decay at any odd modulus.**
+`√(N·φ(N)) ≤ √(Σ_{r≠0}‖G(r)‖²)`.  This removes the primality hypothesis from
+`sqGaussSum_l2_factor_ge_of_prime`: for every odd `N > 1` with a bounded number of prime
+factors (`φ(N) = Θ(N)`), the L²-averaged second-moment input to `sqDiffFree_density_bound_l2`
+is `Θ(N)`, so it cannot on its own furnish the `o(N)` Sárközy density — only the pointwise
+`√N` magnitude route can.  The L² average destroys the per-frequency `√N` cancellation at
+every odd modulus, not merely at primes. -/
+theorem sqGaussSum_l2_factor_ge_of_odd {N : ℕ} [NeZero N] (hodd : Odd N) (hN : 1 < N) :
+    Real.sqrt ((N : ℝ) * (Nat.totient N : ℝ)) ≤
+      Real.sqrt ((Finset.univ \ {(0 : ZMod N)}).sum (fun r => ‖sqGaussSum r‖ ^ 2)) :=
+  Real.sqrt_le_sqrt (sqGaussSum_normSq_sum_ge_of_odd hodd hN)
+
+
+end Szemeredi.Roth
