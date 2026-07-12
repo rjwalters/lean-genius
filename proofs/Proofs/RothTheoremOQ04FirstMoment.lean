@@ -239,4 +239,113 @@ theorem sum_norm_sqGaussSum_eq_of_odd {N : ℕ} [NeZero N] (hodd : Odd N) :
     _ = Real.sqrt N * ∑ d ∈ N.divisors, ((N / d).totient : ℝ) * Real.sqrt d := by
           rw [sum_weight_gcd_eq_divisor_sum N hN (fun m : ℕ => Real.sqrt m)]
 
+/-- **Exact `s`-th moment of the quadratic Gauss sum at *all* odd moduli.**  The
+    single divisor-sum evaluation behind `sum_norm_sqGaussSum_eq_of_odd` is not
+    special to the first moment: the exact pointwise magnitude
+    `‖G(r)‖ = √(N·gcd((2r).val, N))` (`sqGaussSum_norm_eq_sqrt_gcd_of_odd`) raised
+    to any real power `s` factors as `(√N)^s · (√gcd)^s` (`Real.mul_rpow`), so the
+    same reindexing `r ↦ 2r` and gcd → divisor collapse (`sum_weight_gcd_eq_divisor_sum`
+    with weight `w(m) = (√m)^s`) gives the exact closed form
+
+      `∑_{r} ‖G(r)‖ˢ = (√N)ˢ · ∑_{d ∣ N} φ(N/d) · (√d)ˢ`   (odd `N`, every real `s`).
+
+    This is the whole `Lᵖ` moment hierarchy of the Gauss sum in one identity:
+    * `s = 1` recovers the first moment `sum_norm_sqGaussSum_eq_of_odd`
+      (`√N·∑φ(N/d)√d`);
+    * `s = 2` recovers the second moment `∑‖G(r)‖² = N·∑ d·φ(N/d)`
+      (`sum_sq_norm_sqGaussSum_eq_of_odd`), the Plancherel `N·#{n²=m²}` in exact
+      divisor form (`∑_{d∣N} d·φ(N/d)` is Pillai's function).
+
+    Since `‖G(r)‖ = √(N·gcd)` is exact at odd `N`, so is every moment: no `s`
+    is bounded rather than evaluated.  `0` axioms. -/
+theorem sum_rpow_norm_sqGaussSum_eq_of_odd {N : ℕ} [NeZero N] (hodd : Odd N) (s : ℝ) :
+    ∑ r : ZMod N, ‖sqGaussSum r‖ ^ s
+      = (Real.sqrt N) ^ s * ∑ d ∈ N.divisors, ((N / d).totient : ℝ) * (Real.sqrt d) ^ s := by
+  have hN : 0 < N := Nat.pos_of_ne_zero (NeZero.ne N)
+  -- Step 1: raise the *exact* pointwise magnitude to the power `s` and split the product.
+  have step1 : ∑ r : ZMod N, ‖sqGaussSum r‖ ^ s
+      = (Real.sqrt N) ^ s * ∑ r : ZMod N, (Real.sqrt (N.gcd (2 * r).val)) ^ s := by
+    rw [Finset.mul_sum]
+    refine Finset.sum_congr rfl fun r _ => ?_
+    have h := sqGaussSum_norm_eq_sqrt_gcd_of_odd hodd r
+    rw [Nat.gcd_comm (2 * r).val N, Real.sqrt_mul (by positivity : (0:ℝ) ≤ (N:ℝ))] at h
+    rw [h, Real.mul_rpow (Real.sqrt_nonneg _) (Real.sqrt_nonneg _)]
+  -- Step 2: reindex r ↦ 2r (a bijection of ZMod N, since 2 is a unit at odd N).
+  have hcop : Nat.Coprime 2 N := Nat.coprime_two_left.mpr hodd
+  have hunit : IsUnit (2 : ZMod N) := by
+    have h := (ZMod.isUnit_iff_coprime 2 N).mpr hcop
+    simpa using h
+  have hbij : Function.Bijective (fun r : ZMod N => 2 * r) :=
+    Finite.injective_iff_bijective.mp hunit.mul_right_injective
+  have step2 : ∑ r : ZMod N, (Real.sqrt (N.gcd (2 * r).val)) ^ s
+      = ∑ c : ZMod N, (Real.sqrt (N.gcd c.val)) ^ s :=
+    Fintype.sum_bijective (fun r : ZMod N => 2 * r) hbij
+      (fun r => (Real.sqrt (N.gcd (2 * r).val)) ^ s) (fun c => (Real.sqrt (N.gcd c.val)) ^ s)
+      (fun _ => rfl)
+  -- Step 3: transport the residue sum to `range N`.
+  have himg : Finset.image ZMod.val (univ : Finset (ZMod N)) = range N := by
+    ext k
+    simp only [Finset.mem_image, Finset.mem_univ, true_and, Finset.mem_range]
+    constructor
+    · rintro ⟨c, rfl⟩; exact ZMod.val_lt c
+    · intro hk; exact ⟨(k : ZMod N), ZMod.val_natCast_of_lt hk⟩
+  have step3 : ∑ c : ZMod N, (Real.sqrt (N.gcd c.val)) ^ s
+      = ∑ k ∈ range N, (Real.sqrt (N.gcd k)) ^ s := by
+    rw [← himg, Finset.sum_image ((ZMod.val_injective N).injOn)]
+  -- Assemble, collapsing the gcd-weighted residue sum with weight `w(m) = (√m)^s`.
+  calc ∑ r : ZMod N, ‖sqGaussSum r‖ ^ s
+      = (Real.sqrt N) ^ s * ∑ r : ZMod N, (Real.sqrt (N.gcd (2 * r).val)) ^ s := step1
+    _ = (Real.sqrt N) ^ s * ∑ c : ZMod N, (Real.sqrt (N.gcd c.val)) ^ s := by rw [step2]
+    _ = (Real.sqrt N) ^ s * ∑ k ∈ range N, (Real.sqrt (N.gcd k)) ^ s := by rw [step3]
+    _ = (Real.sqrt N) ^ s * ∑ d ∈ N.divisors, ((N / d).totient : ℝ) * (Real.sqrt d) ^ s := by
+          rw [sum_weight_gcd_eq_divisor_sum N hN (fun m : ℕ => (Real.sqrt m) ^ s)]
+
+/-- **Exact second moment (Plancherel) at odd moduli, in divisor form.**  At odd
+    `N` the squared magnitude is exact, `‖G(r)‖² = N·gcd((2r).val, N)`
+    (`sqGaussSum_normSq_eq_gcd_of_odd`), so summing over frequencies and collapsing
+    the gcd via `sum_weight_gcd_eq_divisor_sum` (weight `w(m) = m`) gives
+
+      `∑_{r} ‖G(r)‖² = N · ∑_{d ∣ N} d · φ(N/d)`.
+
+    The divisor sum `∑_{d∣N} d·φ(N/d)` is Pillai's arithmetical function, and this
+    equals `N · #{(n,m) : n² = m²}` (`= N·(2N−1)` for odd `N`) — the exact
+    Plancherel/second-moment total in closed arithmetic form, and the `s = 2` case
+    of `sum_rpow_norm_sqGaussSum_eq_of_odd`.  `0` axioms. -/
+theorem sum_sq_norm_sqGaussSum_eq_of_odd {N : ℕ} [NeZero N] (hodd : Odd N) :
+    ∑ r : ZMod N, ‖sqGaussSum r‖ ^ 2
+      = (N : ℝ) * ∑ d ∈ N.divisors, ((N / d).totient : ℝ) * (d : ℝ) := by
+  have hN : 0 < N := Nat.pos_of_ne_zero (NeZero.ne N)
+  -- Step 1: exact pointwise square, then pull out N.
+  have step1 : ∑ r : ZMod N, ‖sqGaussSum r‖ ^ 2
+      = (N : ℝ) * ∑ r : ZMod N, (N.gcd (2 * r).val : ℝ) := by
+    rw [Finset.mul_sum]
+    refine Finset.sum_congr rfl fun r _ => ?_
+    rw [sqGaussSum_normSq_eq_gcd_of_odd hodd r, Nat.gcd_comm (2 * r).val N]
+  -- Step 2: reindex r ↦ 2r (2 is a unit at odd N).
+  have hcop : Nat.Coprime 2 N := Nat.coprime_two_left.mpr hodd
+  have hunit : IsUnit (2 : ZMod N) := by
+    have h := (ZMod.isUnit_iff_coprime 2 N).mpr hcop
+    simpa using h
+  have hbij : Function.Bijective (fun r : ZMod N => 2 * r) :=
+    Finite.injective_iff_bijective.mp hunit.mul_right_injective
+  have step2 : ∑ r : ZMod N, (N.gcd (2 * r).val : ℝ)
+      = ∑ c : ZMod N, (N.gcd c.val : ℝ) :=
+    Fintype.sum_bijective (fun r : ZMod N => 2 * r) hbij
+      (fun r => (N.gcd (2 * r).val : ℝ)) (fun c => (N.gcd c.val : ℝ)) (fun _ => rfl)
+  -- Step 3: transport to range N.
+  have himg : Finset.image ZMod.val (univ : Finset (ZMod N)) = range N := by
+    ext k
+    simp only [Finset.mem_image, Finset.mem_univ, true_and, Finset.mem_range]
+    constructor
+    · rintro ⟨c, rfl⟩; exact ZMod.val_lt c
+    · intro hk; exact ⟨(k : ZMod N), ZMod.val_natCast_of_lt hk⟩
+  have step3 : ∑ c : ZMod N, (N.gcd c.val : ℝ) = ∑ k ∈ range N, (N.gcd k : ℝ) := by
+    rw [← himg, Finset.sum_image ((ZMod.val_injective N).injOn)]
+  calc ∑ r : ZMod N, ‖sqGaussSum r‖ ^ 2
+      = (N : ℝ) * ∑ r : ZMod N, (N.gcd (2 * r).val : ℝ) := step1
+    _ = (N : ℝ) * ∑ c : ZMod N, (N.gcd c.val : ℝ) := by rw [step2]
+    _ = (N : ℝ) * ∑ k ∈ range N, (N.gcd k : ℝ) := by rw [step3]
+    _ = (N : ℝ) * ∑ d ∈ N.divisors, ((N / d).totient : ℝ) * (d : ℝ) := by
+          rw [sum_weight_gcd_eq_divisor_sum N hN (fun m : ℕ => (m : ℝ))]
+
 end Szemeredi.Roth
