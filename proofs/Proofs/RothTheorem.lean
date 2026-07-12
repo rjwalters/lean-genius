@@ -5617,4 +5617,121 @@ theorem squarefree_of_maxSqDiffFreeCard_eq_one {N : ℕ} [NeZero N]
     two_le_maxSqDiffFreeCard_of_prime_sq_dvd hp hdvd2
   omega
 
+/-! ### Part XLIII — Necessity half, final obstruction: two distinct odd prime factors force
+`2 ≤ maxSqDiffFreeCard N`, completing the value-`1` locus
+
+Parts XLI–XLII pinned the value-`1` locus inside the *squarefree* moduli whose odd prime factors
+are all `≡ 3 (mod 4)`.  The only remaining escapees are moduli with **two** distinct odd prime
+factors (e.g. `21 = 3·7`, both `≡ 3 mod 4`): here coprime super-multiplicativity is *useless*
+(each factor contributes only `1`, so the product bound is `1`), yet the count genuinely jumps
+(`maxSqDiffFreeCard 21 ≥ 2`).  The mechanism is the Chinese-Remainder splitting
+`ℤ/pqℤ ≃ ℤ/pℤ × ℤ/qℤ`: choose the witness `d ↔ (u, -s)` with `u` a non-residue mod `p`
+(this kills `IsSquare d` through the first projection) and `s` a non-residue mod `q` (so `-d ↔
+(-u, s)` has `IsSquare (-d)` killed through the second projection).  A general
+*divisibility-monotonicity* lemma then transports the witness up from `ℤ/pqℤ` to any multiple `N`. -/
+
+/-- **Divisibility monotonicity of the extremal count.**  If `m ∣ N` then
+`maxSqDiffFreeCard m ≤ maxSqDiffFreeCard N`.  Lift an extremal square-difference-free set
+`B ⊆ ℤ/mℤ` along the natural section `ι : b ↦ (b.val : ℤ/Nℤ)` of the reduction ring hom
+`f : ℤ/Nℤ → ℤ/mℤ` (`f ∘ ι = id`).  The section is injective on `B` (apply `f`), and its image is
+again square-difference-free: a square step `ι b + n² = ι b'` pushes down under `f` to
+`b' = b + (f n)²`, which either contradicts freeness of `B` (when `(f n)² ≠ 0`) or forces `b' = b`
+and hence `n² = 0` (when `(f n)² = 0`).  Thus the image has the same cardinality as `B`, so
+`maxSqDiffFreeCard m = B.card ≤ maxSqDiffFreeCard N`. -/
+theorem maxSqDiffFreeCard_le_of_dvd {m N : ℕ} [NeZero m] [NeZero N] (hmN : m ∣ N) :
+    maxSqDiffFreeCard m ≤ maxSqDiffFreeCard N := by
+  set f : ZMod N →+* ZMod m := ZMod.castHom hmN (ZMod m) with hf
+  -- `f` retracts the section `ι b = (b.val : ℤ/Nℤ)`
+  have hfι : ∀ b : ZMod m, f ((b.val : ℕ) : ZMod N) = b := fun b => by
+    rw [hf, map_natCast, ZMod.natCast_rightInverse b]
+  obtain ⟨B, hBfree, hBcard⟩ := exists_isSqDiffFree_card_eq_max m
+  have hinj : Set.InjOn (fun b : ZMod m => ((b.val : ℕ) : ZMod N)) (B : Set (ZMod m)) := by
+    intro a _ b _ hab
+    have h := congrArg f hab
+    simp only [hfι] at h
+    exact h
+  refine le_trans (le_of_eq ?_)
+    (le_maxSqDiffFreeCard_of_isSqDiffFree
+      (A := B.image (fun b : ZMod m => ((b.val : ℕ) : ZMod N))) ?_)
+  · rw [Finset.card_image_of_injOn hinj, hBcard]
+  · -- freeness of the lifted image
+    intro x hx n hn hmem
+    rw [Finset.mem_image] at hx
+    obtain ⟨b, hbB, rfl⟩ := hx
+    rw [Finset.mem_image] at hmem
+    obtain ⟨b', hb'B, hb'eq⟩ := hmem
+    -- push the alleged square step down along `f`
+    have hdown : b' = b + (f n) ^ 2 := by
+      have h := congrArg f hb'eq
+      simpa only [map_add, map_pow, hfι] using h
+    by_cases hfn : (f n) ^ 2 = 0
+    · rw [hfn, add_zero] at hdown
+      rw [hdown] at hb'eq
+      exact hn (by linear_combination hb'eq.symm)
+    · exact hBfree b hbB (f n) hfn (hdown ▸ hb'B)
+
+/-- **Two distinct odd primes in a common modulus force a size-`2` free set.**  If `p ≠ q` are odd
+primes both dividing `N`, then `2 ≤ maxSqDiffFreeCard N`.  Working in the CRT factor
+`ℤ/pqℤ ≃ ℤ/pℤ × ℤ/qℤ`, take `d ↔ (u, -s)` where `u, s` are quadratic non-residues mod `p, q`
+(`FiniteField.exists_nonsquare`): the first projection makes `d` a non-square (its image `u` is),
+the second makes `-d ↔ (-u, s)` a non-square (its image `s` is), and `d ≠ 0` because `u ≠ 0`.  The
+witness transports up to any multiple `N` by `maxSqDiffFreeCard_le_of_dvd`.  This closes the last
+gap in the value-`1` locus: a modulus with two distinct odd prime factors is excluded. -/
+theorem two_le_maxSqDiffFreeCard_of_two_odd_primes
+    {N p q : ℕ} [NeZero N] (hp : p.Prime) (hq : q.Prime)
+    (hpodd : p % 2 = 1) (hqodd : q % 2 = 1) (hpq : p ≠ q)
+    (hpdvd : p ∣ N) (hqdvd : q ∣ N) : 2 ≤ maxSqDiffFreeCard N := by
+  haveI := Fact.mk hp
+  haveI := Fact.mk hq
+  haveI : NeZero p := ⟨hp.pos.ne'⟩
+  haveI : NeZero q := ⟨hq.pos.ne'⟩
+  have hcop : Nat.Coprime p q := (Nat.coprime_primes hp hq).mpr hpq
+  haveI : NeZero (p * q) := ⟨Nat.mul_ne_zero hp.pos.ne' hq.pos.ne'⟩
+  have hpqN : p * q ∣ N := hcop.mul_dvd_of_dvd_of_dvd hpdvd hqdvd
+  refine le_trans ?_ (maxSqDiffFreeCard_le_of_dvd hpqN)
+  -- non-residues mod `p` and mod `q`
+  obtain ⟨u, hu⟩ : ∃ a : ZMod p, ¬ IsSquare a := by
+    apply FiniteField.exists_nonsquare; rw [ZMod.ringChar_zmod_n]; omega
+  obtain ⟨s, hs⟩ : ∃ a : ZMod q, ¬ IsSquare a := by
+    apply FiniteField.exists_nonsquare; rw [ZMod.ringChar_zmod_n]; omega
+  have hu0 : u ≠ 0 := by rintro rfl; exact hu ⟨0, by ring⟩
+  -- the CRT isomorphism and the witness `d ↔ (u, -s)`
+  set e := ZMod.chineseRemainder hcop with he
+  set d : ZMod (p * q) := e.symm (u, -s) with hd
+  have hed : e d = (u, -s) := by rw [hd, e.apply_symm_apply]
+  refine two_le_maxSqDiffFreeCard_iff.mpr ⟨d, ?_, ?_, ?_⟩
+  · -- `d ≠ 0` : else the first CRT component `u` would be `0`
+    intro h
+    apply hu0
+    have h2 : ((u, -s) : ZMod p × ZMod q) = 0 := by rw [← hed, h, map_zero]
+    exact (Prod.ext_iff.mp h2).1
+  · -- `¬ IsSquare d` : its first CRT component `u` is a non-residue
+    intro hsq
+    apply hu
+    have hsq2 : IsSquare (e d) := hsq.map e
+    rw [hed] at hsq2
+    simpa using hsq2.map (RingHom.fst (ZMod p) (ZMod q))
+  · -- `¬ IsSquare (-d)` : its second CRT component is `-(-s) = s`, a non-residue
+    intro hsq
+    apply hs
+    have hsq2 : IsSquare (e (-d)) := hsq.map e
+    rw [map_neg, hed] at hsq2
+    simpa using hsq2.map (RingHom.snd (ZMod p) (ZMod q))
+
+/-- **Necessity half: the value-`1` locus has at most one odd prime factor.**  If
+`maxSqDiffFreeCard N = 1` then any two odd prime factors of `N` coincide — two distinct ones would
+force `2 ≤ maxSqDiffFreeCard N` by `two_le_maxSqDiffFreeCard_of_two_odd_primes`.  Combined with
+`squarefree_of_maxSqDiffFreeCard_eq_one` (squarefree) and
+`prime_factors_mod_four_eq_three_of_maxSqDiffFreeCard_eq_one` (odd factors `≡ 3 mod 4`), this pins
+the value-`1` locus to exactly `{1, 2} ∪ {p, 2p : p prime ≡ 3 (mod 4)}`. -/
+theorem odd_prime_factor_unique_of_maxSqDiffFreeCard_eq_one
+    {N : ℕ} [NeZero N] (hN : maxSqDiffFreeCard N = 1) {p q : ℕ}
+    (hp : p.Prime) (hpodd : p % 2 = 1) (hpdvd : p ∣ N)
+    (hq : q.Prime) (hqodd : q % 2 = 1) (hqdvd : q ∣ N) : p = q := by
+  by_contra hpq
+  have h2 : 2 ≤ maxSqDiffFreeCard N :=
+    two_le_maxSqDiffFreeCard_of_two_odd_primes hp hq hpodd hqodd hpq hpdvd hqdvd
+  omega
+
 end Szemeredi.Roth
+
