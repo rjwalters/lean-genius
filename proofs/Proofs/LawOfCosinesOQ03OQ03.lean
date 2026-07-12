@@ -1289,4 +1289,52 @@ theorem sides_ordered_of_angles_ordered (t : HyperbolicTriangle)
     (hAB : t.A ≤ t.B) (hBC : t.B ≤ t.C) : t.a ≤ t.b ∧ t.b ≤ t.c :=
   ⟨(side_le_iff_angle_le t).mpr hAB, (side_le_iff_angle_le_bc t).mpr hBC⟩
 
+-- ============================================================
+-- PART 8: The hyperbolic triangle inequality
+-- ============================================================
+
+/-- **Hyperbolic triangle inequality at side `a`.** In every hyperbolic triangle the
+    side `a` is shorter than the sum of the other two sides: `a < b + c`. This is the
+    metric companion to the AAA / order results above, and it follows cleanly from the
+    *first* law of cosines. Since `cosh(b + c) = cosh b cosh c + sinh b sinh c`
+    (`Real.cosh_add`) while `first_law_of_cosines_A` gives
+    `cosh a = cosh b cosh c − sinh b sinh c cos A`, the difference is
+    `cosh(b + c) − cosh a = sinh b sinh c (1 + cos A) > 0` — positive because
+    `sinh b, sinh c > 0` and `cos A > −1` (from `0 < A < π`, via the antitonicity of
+    `cos` on `[0, π]`). Strict monotonicity of `cosh` on `[0, ∞)` then upgrades
+    `cosh a < cosh(b + c)` to `a < b + c`. -/
+theorem hyperbolic_triangle_inequality_a (t : HyperbolicTriangle) : t.a < t.b + t.c := by
+  have hcosA : -1 < Real.cos t.A := by
+    have h := Real.cos_lt_cos_of_nonneg_of_le_pi t.hA.le le_rfl t.hA_lt
+    rwa [Real.cos_pi] at h
+  have hsb := sinh_b_pos t
+  have hsc := sinh_c_pos t
+  have hcosh_lt : Real.cosh t.a < Real.cosh (t.b + t.c) := by
+    rw [Real.cosh_add, first_law_of_cosines_A t]
+    nlinarith [mul_pos (mul_pos hsb hsc) (show (0 : ℝ) < 1 + Real.cos t.A by linarith)]
+  exact (Real.cosh_strictMonoOn.lt_iff_lt (mem_Ici.mpr t.ha.le)
+    (mem_Ici.mpr (add_pos t.hb t.hc).le)).mp hcosh_lt
+
+/-- **Hyperbolic triangle inequality at side `b`.** `b < a + c`, the cyclic image of
+    `hyperbolic_triangle_inequality_a` under the relabeling `rotate` (which sends
+    `(a, b, c) ↦ (b, c, a)`). -/
+theorem hyperbolic_triangle_inequality_b (t : HyperbolicTriangle) : t.b < t.a + t.c := by
+  have h : t.b < t.c + t.a := hyperbolic_triangle_inequality_a t.rotate
+  linarith
+
+/-- **Hyperbolic triangle inequality at side `c`.** `c < a + b`, the second cyclic image
+    of `hyperbolic_triangle_inequality_a` under `rotate`. Together with the `a` and `b`
+    forms this gives all three hyperbolic triangle inequalities. -/
+theorem hyperbolic_triangle_inequality_c (t : HyperbolicTriangle) : t.c < t.a + t.b :=
+  hyperbolic_triangle_inequality_a t.rotate.rotate
+
+/-- **Reverse hyperbolic triangle inequality at side `a`.** `|b − c| < a`: the side `a`
+    exceeds the absolute difference of the other two sides. This is the two-sided packaging
+    of the `b` and `c` triangle inequalities (`b < a + c` and `c < a + b`), and completes
+    the standard metric bracket `|b − c| < a < b + c` for a hyperbolic triangle. -/
+theorem hyperbolic_abs_sub_lt_a (t : HyperbolicTriangle) : |t.b - t.c| < t.a := by
+  rw [abs_lt]
+  exact ⟨by linarith [hyperbolic_triangle_inequality_c t],
+    by linarith [hyperbolic_triangle_inequality_b t]⟩
+
 end HyperbolicAAA
