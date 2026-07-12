@@ -36,7 +36,9 @@
       "geometric_mean_A / geometric_mean_B: the two geometric-mean relations |CA|² = |AB|·|AH| and |CB|² = |AB|·|HB|, the numerical shadow of 'the two sub-triangles are similar to the whole', proved by computing |AH| = |CA|²/|AB| and |HB| = |CB|²/|AB| from the explicit foot.",
       "segments_sum: betweenness |AH| + |HB| = |AB| — the foot lies inside the hypotenuse, i.e. the dissection Area(T) = Area(T₁) + Area(T₂) at the level of the base.",
       "pythagorean_via_altitude: Einstein's route assembled — |AB|² = |AB|·(|AH| + |HB|) = |AB|·|AH| + |AB|·|HB| = |CA|² + |CB|², reconstructing Pythagoras from the altitude decomposition rather than from the bare polarization identity.",
-      "einstein_matches_core: the altitude route (pythagorean_via_altitude) reproduces the one-line metric identity (pythagorean_core), confirming the similar-triangles decomposition is faithful."
+      "einstein_matches_core: the altitude route (pythagorean_via_altitude) reproduces the one-line metric identity (pythagorean_core), confirming the similar-triangles decomposition is faithful.",
+      "law_of_cosines: the inner-product law of cosines ‖A − B‖² = ‖A − C‖² + ‖B − C‖² − 2⟪A − C, B − C⟫ for ANY three points (no right angle assumed) — since ⟪A − C, B − C⟫ = |CA||CB|cos γ this is c² = a² + b² − 2ab·cos γ, and pythagorean_core is exactly its ⟪⟫ = 0 (γ = 90°) case; both pythagorean_core and its converse are one-line corollaries of this single identity.",
+      "pythagorean_acute_iff / pythagorean_obtuse_iff: the acute/obtuse companions of pythagorean_core_iff — the angle at C is acute iff ‖A − B‖² < ‖A − C‖² + ‖B − C‖² (⟪⟫ > 0) and obtuse iff ‖A − C‖² + ‖B − C‖² < ‖A − B‖² (⟪⟫ < 0). With the right-angle equality case this gives the full right/acute/obtuse trichotomy governed by the law of cosines, each proved in one line by rewriting law_of_cosines and linarith."
     ],
     "additionalFiles": [
       "Proofs/PythagoreanTheoremOQ06.lean",
@@ -74,9 +76,9 @@
   },
   "leanFile": {
     "namespace": "PythagoreanEinstein",
-    "lineCount": 608,
+    "lineCount": 637,
     "axiomCount": 0,
-    "theoremCount": 28,
+    "theoremCount": 31,
     "definitionCount": 2,
     "path": "Proofs/PythagoreanTheoremOQ01.lean",
     "imports": [

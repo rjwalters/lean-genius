@@ -567,6 +567,35 @@ theorem pythagorean_core_iff (A B C : F) :
     ⟪A - C, B - C⟫ = (0 : ℝ) ↔ ‖A - B‖ ^ 2 = ‖A - C‖ ^ 2 + ‖B - C‖ ^ 2 :=
   ⟨pythagorean_core A B C, pythagorean_core_converse A B C⟩
 
+/-- **The law of cosines (inner-product form).**  For *any* three points `A, B, C` — no right
+angle assumed — the squared side opposite `C` equals the sum of the squared legs minus twice the
+inner product at `C`:
+`‖A − B‖² = ‖A − C‖² + ‖B − C‖² − 2⟪A − C, B − C⟫`.
+Since `⟪A − C, B − C⟫ = ‖A − C‖·‖B − C‖·cos γ` with `γ` the angle at `C`, this is exactly the
+classical law of cosines `c² = a² + b² − 2ab·cos γ`, and `pythagorean_core` is precisely its
+`γ = 90°` (`⟪⟫ = 0`) special case.  Because the inner product enters *linearly*, both
+`pythagorean_core` and `pythagorean_core_converse` are one-line corollaries. -/
+theorem law_of_cosines (A B C : F) :
+    ‖A - B‖ ^ 2 = ‖A - C‖ ^ 2 + ‖B - C‖ ^ 2 - 2 * ⟪A - C, B - C⟫ := by
+  have hAB : A - B = (A - C) - (B - C) := by abel
+  rw [hAB, norm_sub_sq_real]; ring
+
+/-- **Acute angle ⇔ sub-Pythagorean.**  Generalizing `pythagorean_core_iff` to the acute case:
+the angle at `C` is acute (`⟪A − C, B − C⟫ > 0`) iff the side opposite `C` is *shorter* than the
+Pythagorean value, i.e. `‖A − B‖² < ‖A − C‖² + ‖B − C‖²`.  Immediate from `law_of_cosines`. -/
+theorem pythagorean_acute_iff (A B C : F) :
+    0 < ⟪A - C, B - C⟫ ↔ ‖A - B‖ ^ 2 < ‖A - C‖ ^ 2 + ‖B - C‖ ^ 2 := by
+  rw [law_of_cosines A B C]; constructor <;> intro h <;> linarith
+
+/-- **Obtuse angle ⇔ super-Pythagorean.**  The angle at `C` is obtuse (`⟪A − C, B − C⟫ < 0`) iff
+the side opposite `C` is *longer* than the Pythagorean value,
+`‖A − C‖² + ‖B − C‖² < ‖A − B‖²`.  Together with `pythagorean_core_iff` (right angle ⇔ equality)
+and `pythagorean_acute_iff`, this completes the right/acute/obtuse trichotomy that the law of
+cosines governs. -/
+theorem pythagorean_obtuse_iff (A B C : F) :
+    ⟪A - C, B - C⟫ < 0 ↔ ‖A - C‖ ^ 2 + ‖B - C‖ ^ 2 < ‖A - B‖ ^ 2 := by
+  rw [law_of_cosines A B C]; constructor <;> intro h <;> linarith
+
 /-- **Converse of Thales' theorem.**  `thales_circumradius` shows the right-angle vertex lies on
 the circle with diameter `AB` (distance exactly `‖A−B‖/2` from the hypotenuse midpoint
 `M = A + ½·(B−A)`).  This is the converse — the classical statement that *any* point `C` on that
