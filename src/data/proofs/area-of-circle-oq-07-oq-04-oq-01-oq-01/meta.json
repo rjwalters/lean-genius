@@ -145,6 +145,11 @@
       "targetId": "area-of-circle-oq-07-oq-04",
       "relationship": "extends",
       "description": "Grandparent. Recovers the squared one-dimensional value (∫_ℝ e^{-b x²})² = π/b as the n = 2 specialization, and the bare line integral as n = 1."
+    },
+    {
+      "targetId": "area-of-circle-oq-07",
+      "relationship": "related",
+      "description": "The √π base entry. This entry's n = 2, b = 1 case is ∫_{ℝ²} e^{-‖x‖²} = π^{2/2} = π, which is exactly the planar integral (∫_ℝ e^{-x²})² = π behind that entry's gaussian_integral_sq — the same Poisson squaring-and-Fubini step, here generalized to every dimension. So this entry is the arbitrary-dimension home of oq-07's squared identity; the isotropic n-dimensional Gaussian mass π^{n/2} it computes is what oq-07's n-dimensional open question asks for."
     }
   ],
   "references": [
