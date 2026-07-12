@@ -115,6 +115,21 @@
       "targetId": "area-of-circle",
       "relationship": "extends",
       "description": "Parent. The classical evaluation of ∫ e^{-x²} squares the integral and passes to polar coordinates, where the circle-area Jacobian r dr dθ — the subject of the parent entry — appears. gaussian_integral_sq records the squared value π that this Jacobian computation produces."
+    },
+    {
+      "targetId": "area-of-circle-oq-05",
+      "relationship": "related",
+      "description": "Companion sibling under the same parent: proves the identical Gaussian integral ∫ e^{-x²} dx = √π and, like this entry, ties the factor of π to the polar-coordinate / circle-area Jacobian. The two are parallel treatments of the same OQ, so an improvement or polar-explicit proof in one applies directly to the other."
+    },
+    {
+      "targetId": "gamma-reflection-formula-oq-01",
+      "relationship": "related",
+      "description": "The Gamma-function view of the same value: Γ(½) = √π is the s = ½ special value of Euler's reflection formula Γ(s)Γ(1−s) = π/sin(πs) (giving Γ(½)² = π). Under the substitution t = x² one has Γ(½) = ∫_ℝ e^{-x²} dx, so this entry's √π and the reflection formula's Γ(½) are literally the same number reached by different routes."
+    },
+    {
+      "targetId": "basel-problem",
+      "relationship": "related",
+      "description": "A sibling landmark where π appears from a non-geometric object: Basel gives ∑ 1/n² = π²/6, as this entry gives ∫ e^{-x²} = √π. Both are canonical instances of π surfacing outside its defining circle — one from an infinite series, one from an integral with no elementary antiderivative."
     }
   ],
   "references": [
