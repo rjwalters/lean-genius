@@ -1232,4 +1232,188 @@ theorem fourierCoeff_eq_zero_of_isoperimetric_saturation
     rw [hperim, hIAval]; ring
   exact fourierCoeff_eq_zero_of_wirtinger_saturation hf hg hfper hgper hab hEq
 
+-- ============================================================
+-- SECTION XIII: first-mode rigidity — the ellipse is a *circle*
+--   (the surviving fundamental harmonic satisfies ĉ₁f = i·ĉ₁g, the 90°
+--    rotation that upgrades the Section-XII ellipse to a genuine circle)
+-- ============================================================
+
+/-- **First-mode rigidity (pointwise).**  If the frequency-`1` Hurwitz deficit summand vanishes,
+
+        ‖a‖² + ‖b‖² − 2·Im(a·conj b) = 0 ,
+
+    then the two amplitudes are `90°` rotations of one another: `a = i·b`.  Writing
+    `a = a.re + a.im·i`, `b = b.re + b.im·i`, the summand is an exact sum of squares
+
+        ‖a‖² + ‖b‖² − 2·Im(a·conj b) = (a.im − b.re)² + (a.re + b.im)² ,
+
+    so it vanishes iff `a.im = b.re` and `a.re = −b.im`, i.e. `a = i·b`.  This is the
+    Cauchy–Schwarz / AM–GM equality signature of the circle at the fundamental frequency:
+    `‖a‖ = ‖b‖` together with `a·conj b` purely imaginary and positive.  Combined with the
+    vanishing of all higher modes (`fourierCoeff_eq_zero_of_wirtinger_saturation`), it pins the
+    saturating curve to `t ↦ (a₀ + 2·Re(a·e^{it}), b₀ + 2·Re(b·e^{it}))` with `b = −i·a`, a
+    circle of radius `2‖a‖`. -/
+private theorem firstMode_rigidity (a b : ℂ)
+    (h : ‖a‖ ^ 2 + ‖b‖ ^ 2 - 2 * (a * conj b).im = 0) :
+    a = Complex.I * b := by
+  -- Expand the two norms and the imaginary cross term into real/imaginary parts.
+  have hna : ‖a‖ ^ 2 = a.re ^ 2 + a.im ^ 2 := by
+    rw [Complex.sq_norm, Complex.normSq_apply]; ring
+  have hnb : ‖b‖ ^ 2 = b.re ^ 2 + b.im ^ 2 := by
+    rw [Complex.sq_norm, Complex.normSq_apply]; ring
+  have him : (a * conj b).im = a.im * b.re - a.re * b.im := by
+    simp only [Complex.mul_im, Complex.conj_re, Complex.conj_im]; ring
+  rw [hna, hnb, him] at h
+  -- The deficit is `(a.im − b.re)² + (a.re + b.im)²`, so each square vanishes.
+  have hsq1 : (a.im - b.re) ^ 2 = 0 :=
+    le_antisymm (by nlinarith [sq_nonneg (a.re + b.im), h]) (sq_nonneg _)
+  have hsq2 : (a.re + b.im) ^ 2 = 0 :=
+    le_antisymm (by nlinarith [sq_nonneg (a.im - b.re), h]) (sq_nonneg _)
+  have e1 : a.im - b.re = 0 := by
+    have := (pow_eq_zero_iff (by norm_num : (2 : ℕ) ≠ 0)).mp hsq1; linarith [this]
+  have e2 : a.re + b.im = 0 := by
+    have := (pow_eq_zero_iff (by norm_num : (2 : ℕ) ≠ 0)).mp hsq2; linarith [this]
+  -- Read off `a = i·b` on real and imaginary parts.
+  apply Complex.ext
+  · simp only [Complex.mul_re, Complex.I_re, Complex.I_im, zero_mul, one_mul, zero_sub]
+    linarith [e2]
+  · simp only [Complex.mul_im, Complex.I_re, Complex.I_im, zero_mul, one_mul, zero_add]
+    linarith [e1]
+
+/-- **Every Hurwitz deficit summand vanishes under Wirtinger saturation.**  If the analytic
+    Wirtinger inequality is saturated,
+
+        2 ∫₀^{2π} f·g'  =  ∫₀^{2π} ((f')² + (g')²) ,
+
+    then for *every* frequency `n` the deficit summand is zero:
+
+        n²‖ĉₙf‖² + n²‖ĉₙg‖² − 2n·Im(ĉₙf·conj ĉₙg)  =  0 .
+
+    A nonnegative summable family (`area_deficit_summand_nonneg`) with total zero is termwise
+    zero.  Section XII reads the `|n| ≥ 2` modes off this (they die); Section XIII reads off the
+    surviving `n = 1` mode (it rotates).  This is the common analytic core of both. -/
+private theorem deficit_summand_eq_zero_of_wirtinger_saturation
+    {f g : ℝ → ℝ} (hf : ContDiff ℝ ∞ f) (hg : ContDiff ℝ ∞ g)
+    (hfper : ∀ t, f (t + 2 * π) = f t) (hgper : ∀ t, g (t + 2 * π) = g t)
+    (hab : (0 : ℝ) < 2 * π)
+    (hEq : 2 * ∫ x in (0 : ℝ)..(2 * π), f x * deriv g x
+            = ∫ x in (0 : ℝ)..(2 * π), ((deriv f x) ^ 2 + (deriv g x) ^ 2)) :
+    ∀ n : ℤ, (n : ℝ) ^ 2 * ‖fourierCoeffOn hab (ofReal ∘ f) n‖ ^ 2
+        + (n : ℝ) ^ 2 * ‖fourierCoeffOn hab (ofReal ∘ g) n‖ ^ 2
+        - 2 * (n : ℝ) * (fourierCoeffOn hab (ofReal ∘ f) n *
+            conj (fourierCoeffOn hab (ofReal ∘ g) n)).im = 0 := by
+  have hdfc : Continuous (deriv f) := by
+    have h := (contDiff_infty_iterate_deriv f hf 1).continuous
+    rwa [Function.iterate_one] at h
+  have hdgc : Continuous (deriv g) := by
+    have h := (contDiff_infty_iterate_deriv g hg 1).continuous
+    rwa [Function.iterate_one] at h
+  have HSf := hasSum_nsq_normSq_fourierCoeffOn hf hfper hab
+  have HSg := hasSum_nsq_normSq_fourierCoeffOn hg hgper hab
+  have HSA := hasSum_fourier_area_formula hf.continuous hg hgper hab
+  set If := ∫ x in (0 : ℝ)..(2 * π), (deriv f x) ^ 2 with hIf
+  set Ig := ∫ x in (0 : ℝ)..(2 * π), (deriv g x) ^ 2 with hIg
+  set IA := ∫ x in (0 : ℝ)..(2 * π), f x * deriv g x with hIA
+  have HSdef := (HSf.add HSg).sub (HSA.mul_left 2)
+  have hsplit : (∫ x in (0 : ℝ)..(2 * π), ((deriv f x) ^ 2 + (deriv g x) ^ 2)) = If + Ig := by
+    rw [hIf, hIg]
+    exact intervalIntegral.integral_add
+      ((hdfc.pow 2).intervalIntegrable _ _) ((hdgc.pow 2).intervalIntegrable _ _)
+  have hTzero : ((2 * π - 0)⁻¹ • If) + ((2 * π - 0)⁻¹ • Ig)
+      - 2 * ((2 * π - 0)⁻¹ • IA) = 0 := by
+    simp only [smul_eq_mul, sub_zero]
+    rw [hsplit] at hEq
+    have hfac : (2 * π)⁻¹ * If + (2 * π)⁻¹ * Ig - 2 * ((2 * π)⁻¹ * IA)
+        = (2 * π)⁻¹ * (If + Ig - 2 * IA) := by ring
+    rw [hfac, show If + Ig - 2 * IA = 0 from by linarith, mul_zero]
+  rw [hTzero] at HSdef
+  intro n
+  have hle := le_hasSum HSdef n (fun m _ => by
+    convert area_deficit_summand_nonneg (fourierCoeffOn hab (ofReal ∘ f) m)
+      (fourierCoeffOn hab (ofReal ∘ g) m) m using 1; ring)
+  have hge := area_deficit_summand_nonneg (fourierCoeffOn hab (ofReal ∘ f) n)
+    (fourierCoeffOn hab (ofReal ∘ g) n) n
+  exact le_antisymm (by nlinarith [hle]) hge
+
+/-- **Equality case, fundamental mode — analytic form.**  If the analytic Wirtinger inequality
+    is saturated, `2∫f·g' = ∫(f'²+g'²)`, the surviving first-harmonic amplitudes of the two
+    coordinates are `90°` rotations of one another:
+
+        ĉ₁(f)  =  i · ĉ₁(g) .
+
+    The `n = 1` deficit summand `‖ĉ₁f‖² + ‖ĉ₁g‖² − 2·Im(ĉ₁f·conj ĉ₁g)` vanishes
+    (`deficit_summand_eq_zero_of_wirtinger_saturation` at `n = 1`), and `firstMode_rigidity`
+    turns that into the rotation identity.  Together with the higher modes dying
+    (`fourierCoeff_eq_zero_of_wirtinger_saturation`), this is exactly the statement that the
+    saturating curve is a circle — not merely the ellipse that vanishing high modes alone allow. -/
+theorem fourierCoeff_first_mode_of_wirtinger_saturation
+    {f g : ℝ → ℝ} (hf : ContDiff ℝ ∞ f) (hg : ContDiff ℝ ∞ g)
+    (hfper : ∀ t, f (t + 2 * π) = f t) (hgper : ∀ t, g (t + 2 * π) = g t)
+    (hab : (0 : ℝ) < 2 * π)
+    (hEq : 2 * ∫ x in (0 : ℝ)..(2 * π), f x * deriv g x
+            = ∫ x in (0 : ℝ)..(2 * π), ((deriv f x) ^ 2 + (deriv g x) ^ 2)) :
+    fourierCoeffOn hab (ofReal ∘ f) 1
+      = Complex.I * fourierCoeffOn hab (ofReal ∘ g) 1 := by
+  have h1 := deficit_summand_eq_zero_of_wirtinger_saturation hf hg hfper hgper hab hEq 1
+  push_cast at h1
+  have h1' : ‖fourierCoeffOn hab (ofReal ∘ f) 1‖ ^ 2
+      + ‖fourierCoeffOn hab (ofReal ∘ g) 1‖ ^ 2
+      - 2 * (fourierCoeffOn hab (ofReal ∘ f) 1 *
+          conj (fourierCoeffOn hab (ofReal ∘ g) 1)).im = 0 := by
+    linear_combination h1
+  exact firstMode_rigidity _ _ h1'
+
+/-- **Equality case, fundamental mode — geometric constant-speed form.**  For smooth
+    period-`2π` coordinates parametrized with *constant speed* `(f')² + (g')² = c`, if the
+    isoperimetric bound `4π·A ≤ L² = (2π)²·c` is *attained*, `4π·∫f·g' = (2π)²·c`, then the
+    fundamental harmonics are `90°` rotations: `ĉ₁(f) = i·ĉ₁(g)`.  This upgrades
+    `fourierCoeff_eq_zero_of_isoperimetric_saturation` (which only kills the modes `|n| ≥ 2`,
+    leaving an ellipse) to the rigidity that makes the curve a genuine circle. -/
+theorem fourierCoeff_first_mode_of_isoperimetric_saturation
+    {f g : ℝ → ℝ} (hf : ContDiff ℝ ∞ f) (hg : ContDiff ℝ ∞ g)
+    (hfper : ∀ t, f (t + 2 * π) = f t) (hgper : ∀ t, g (t + 2 * π) = g t)
+    (hab : (0 : ℝ) < 2 * π) {c : ℝ}
+    (hspeed : ∀ t, (deriv f t) ^ 2 + (deriv g t) ^ 2 = c)
+    (hsat : 4 * π * (∫ x in (0 : ℝ)..(2 * π), f x * deriv g x) = (2 * π) ^ 2 * c) :
+    fourierCoeffOn hab (ofReal ∘ f) 1
+      = Complex.I * fourierCoeffOn hab (ofReal ∘ g) 1 := by
+  set IA := ∫ x in (0 : ℝ)..(2 * π), f x * deriv g x with hIA
+  have hperim : (∫ x in (0 : ℝ)..(2 * π), ((deriv f x) ^ 2 + (deriv g x) ^ 2)) = (2 * π) * c := by
+    have hEqOn : Set.EqOn (fun x => (deriv f x) ^ 2 + (deriv g x) ^ 2) (fun _ => c)
+        (Set.uIcc 0 (2 * π)) := fun x _ => hspeed x
+    rw [intervalIntegral.integral_congr hEqOn, intervalIntegral.integral_const]
+    simp
+  have hIAval : IA = π * c := by
+    have h : 4 * π * IA = 4 * π * (π * c) := by rw [hsat]; ring
+    exact mul_left_cancel₀ (ne_of_gt (by positivity : (0 : ℝ) < 4 * π)) h
+  have hEq : 2 * IA = ∫ x in (0 : ℝ)..(2 * π), ((deriv f x) ^ 2 + (deriv g x) ^ 2) := by
+    rw [hperim, hIAval]; ring
+  exact fourierCoeff_first_mode_of_wirtinger_saturation hf hg hfper hgper hab hEq
+
+/-- **Full equality case of the Hurwitz isoperimetric inequality: saturation ⟹ the circle.**
+    Let `f, g` be smooth period-`2π` coordinates parametrized with *constant speed*
+    `(f')² + (g')² = c`, and suppose the isoperimetric bound is *attained*,
+    `4π·A = (2π)²·c = L²`.  Then the entire Fourier spectrum collapses to the first harmonic,
+
+      • `∀ n, |n| ≥ 2 → ĉₙ(f) = ĉₙ(g) = 0`  (no mode above the fundamental survives), and
+      • `ĉ₁(f) = i·ĉ₁(g)`  (the surviving fundamental is a `90°` rotation),
+
+    which together say `t ↦ (f(t), g(t))` traces a genuine **circle**: `f = ĉ₀f + 2·Re(ĉ₁f·e^{it})`,
+    `g = ĉ₀g + 2·Re(ĉ₁g·e^{it})` with `ĉ₁g = −i·ĉ₁f`, i.e. a circle of radius `2‖ĉ₁f‖` centered at
+    `(ĉ₀f, ĉ₀g)`.  This is the forward (⟹) direction of Hurwitz's *equality holds iff the curve
+    is a circle*, now with the fundamental-mode rigidity that distinguishes the circle from the
+    ellipse the higher-mode collapse alone would permit. -/
+theorem curve_is_circle_of_isoperimetric_saturation
+    {f g : ℝ → ℝ} (hf : ContDiff ℝ ∞ f) (hg : ContDiff ℝ ∞ g)
+    (hfper : ∀ t, f (t + 2 * π) = f t) (hgper : ∀ t, g (t + 2 * π) = g t)
+    (hab : (0 : ℝ) < 2 * π) {c : ℝ}
+    (hspeed : ∀ t, (deriv f t) ^ 2 + (deriv g t) ^ 2 = c)
+    (hsat : 4 * π * (∫ x in (0 : ℝ)..(2 * π), f x * deriv g x) = (2 * π) ^ 2 * c) :
+    (∀ n : ℤ, 2 ≤ n.natAbs →
+        fourierCoeffOn hab (ofReal ∘ f) n = 0 ∧ fourierCoeffOn hab (ofReal ∘ g) n = 0)
+      ∧ fourierCoeffOn hab (ofReal ∘ f) 1
+          = Complex.I * fourierCoeffOn hab (ofReal ∘ g) 1 :=
+  ⟨fourierCoeff_eq_zero_of_isoperimetric_saturation hf hg hfper hgper hab hspeed hsat,
+   fourierCoeff_first_mode_of_isoperimetric_saturation hf hg hfper hgper hab hspeed hsat⟩
+
 end IsoperimetricFourier
