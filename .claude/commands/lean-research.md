@@ -214,10 +214,36 @@ Before starting work, classify the problem state and choose strategy:
 - Document which techniques worked for knowledge propagation
 
 **SOLVED (0 sorries, axiom count acceptable):**
+- Author/update the problem's adversarial checklist BEFORE claiming SOLVED (see below)
 - Generate 1-2 follow-up open questions (see below)
 - Look outward: generalizations, converses, sharp boundaries
 - Check if proved lemmas help other active research problems
 - Update technique index with successful approaches
+
+### Adversarial Checklist Before Claiming SOLVED (MANDATORY)
+
+Before recording a SOLVED claim, author or update the **Adversarial checklist**
+element of the target's `research/problems/<slug>/problem.md` (element 6 in
+[`research/PROBLEMS-STRUCTURE.md`](../../research/PROBLEMS-STRUCTURE.md)). The
+checklist tells whoever audits the claim exactly how THIS claim could be wrong:
+
+- **Statement-mismatch variants** — each way the Lean theorem could differ from
+  the pinned target. Enumerate against the "Must prove exactly / does not
+  count" section (see
+  [Pin the Statement Before Attacking](#pin-the-statement-before-attacking-mandatory)):
+  every definitional pin and named near-miss there becomes a checklist entry
+  ("confirm the theorem does not merely prove <near-miss>").
+- **Multiplicity/exactness and boundary/degenerate-case traps** specific to this
+  claim (empty/trivial instances, off-by-one in bounds, exact-vs-at-least).
+- **Circular use of equivalent statements** — any axiom, hypothesis, or imported
+  lemma as strong as the target itself.
+- **Wrong-multiplicity / restricted-subclass near-misses** the proof could be
+  silently establishing instead of the full result.
+
+Entries must name the actual definitions, hypotheses, and edge cases at risk —
+never generic boilerplate ("verify carefully"). Adopted from the OpenAI CDC
+prompt's per-problem adversarial-checklist technique (see issue #37505 and
+<https://cdn.openai.com/pdf/04d1d1e4-bc75-476a-97cf-49055cd98d31/cdc_prompt.pdf>).
 
 ### Follow-Up Question Generation (after SOLVED)
 
@@ -591,6 +617,41 @@ When Mathlib lacks something, assess before blocking:
 - **Atomic locks** via `mkdir` prevent duplicate claims
 - Stale locks (> 2 hours) auto-cleaned
 - REVISIT: Check knowledge.md timestamps to avoid collision
+
+### Independence Preservation (multi-researcher problems)
+
+When several researchers work one problem or problem family concurrently
+(distinct OQ children of the same parent count as one family):
+
+- **Record your route by mathematical idea, not wording.** In the problem's
+  knowledge tracker (`research/problems/<id>/knowledge.md` and
+  `src/data/research/problems/<id>.json`), label your approach by its
+  underlying mechanism (e.g. "discharging via flows", "second-moment / L²
+  averaging") so two differently-worded write-ups of the same idea are
+  recognizably one route.
+- **Develop your route independently first.** On joining a problem that other
+  researchers are actively working, read the settled artifacts (proved lemmas,
+  dead-ends, the "Must prove exactly / does not count" pinning) but defer
+  reading other active researchers' favored-approach notes until you have
+  committed to your own attack. Cross-pollinate only after independent
+  development, or when stuck. This refines — it does not replace — the
+  "build on prior work" rule: facts are shared immediately; hypotheses are not.
+- **Keep incompatible routes alive.** Do not abandon your route merely because
+  another researcher's route looks favored; converge only when your route is
+  properly blocked. A route stalling at a lemma of equivalent strength to the
+  target is blocked per the equivalent-strength check (see
+  [Follow-Up Question Generation](#follow-up-question-generation-after-solved))
+  — reopen bar: "materially new mechanism required".
+
+**Spawner-side convention (binding on the orchestrator/operator, not just
+researchers):** when dispatching multiple researchers onto one problem family,
+do not seed them all with the currently favored approach; stagger
+cross-pollination so each surviving route is developed independently before
+its author reads the others.
+
+Adopted from the OpenAI CDC prompt's independence-preservation technique (see
+issue #37505 and
+<https://cdn.openai.com/pdf/04d1d1e4-bc75-476a-97cf-49055cd98d31/cdc_prompt.pdf>).
 
 ---
 

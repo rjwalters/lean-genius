@@ -62,6 +62,28 @@ The top-level file is a working brief. It must contain at minimum:
    <https://cdn.openai.com/pdf/04d1d1e4-bc75-476a-97cf-49055cd98d31/cdc_prompt.pdf>).
    It applies to problem.md files created going forward; existing files are not
    retroactively required to add it.
+6. **Adversarial checklist** — a claim-specific list of the ways a SOLVED claim
+   on this problem could be wrong. Authored or updated by the researcher **at
+   SOLVED-claim time** (required before a SOLVED claim, not at problem-creation
+   time) and consumed by whoever audits the claim. Where element 5 pins the
+   target *before* search begins, this element enumerates how the *finished
+   artifact* could still fail:
+   - **Statement-mismatch variants** — each way the Lean theorem could differ
+     from the pinned target of element 5.
+   - **Multiplicity/exactness and boundary/degenerate-case traps** specific to
+     this claim (empty/trivial instances, off-by-one in bounds,
+     exact-vs-at-least).
+   - **Circular use of equivalent statements** — an axiom, hypothesis, or
+     imported lemma as strong as the target itself.
+   - **Wrong-multiplicity or restricted-subclass near-misses** the proof could
+     be silently establishing instead of the full result.
+
+   Entries must be problem-specific — name the actual definitions, hypotheses,
+   and edge cases at risk. Generic boilerplate ("verify carefully", "check it
+   compiles") does not satisfy this element. Like element 5, this is adopted
+   from the OpenAI CDC research prompt's per-problem adversarial-checklist
+   technique (issue #37505) and applies going forward; existing problem.md
+   files are not retroactively required to add it.
 
 Style is functional; this is a working file, not a publication artifact.
 
