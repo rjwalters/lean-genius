@@ -6045,5 +6045,57 @@ theorem sqGaussSum_norm_sum_eq_divisor_sum_of_odd {N : ℕ} [NeZero N] (hodd : O
   rw [Real.sqrt_mul hN0]
   ring
 
+/-! ### Part XLVIII — The `L¹` mass carried by the UNIT frequencies: `Σ_{r unit} ‖G(r)‖ = φ(N)·√N`
+
+Part XLVII's master identity sums `f(‖G(r)‖²)` over *all* `N−1` nonzero frequencies.  On the
+**unit** frequencies the magnitude is flat: the general pointwise evaluation
+`sqGaussSum_norm_eq_sqrt_of_odd` (every unit `r` has `‖G(r)‖ = √N`, the classical `|g(r)| = √N` for a
+primitive quadratic Gauss sum) makes the `L¹` mass over the units a bare constant times a count.
+Summing over the group of units `(ZMod N)ˣ`, whose cardinality is Euler's totient
+(`ZMod.card_units_eq_totient`), gives the exact partial first moment
+
+    Σ_{u ∈ (ZMod N)ˣ} ‖G(u)‖ = φ(N)·√N        (odd `N`).
+
+This is the primitive-frequency slice of the full `L¹` first moment of Part XLVII: it isolates
+exactly the `d = 1` level (the units are precisely the `r` with `gcd((2r).val, N) = 1`, magnitude
+`√N`, and there are `φ(N)` of them).  At a **prime** every nonzero frequency is a unit, so the slice
+becomes the *entire* nonzero sum, recovering the textbook `L¹` first moment `Σ_{r≠0} ‖G(r)‖ =
+(p−1)·√p` (`sqGaussSum_norm_sum_of_prime`). -/
+
+/-- **`L¹` mass of the unit frequencies (odd modulus).**  Every unit frequency contributes the flat
+magnitude `√N` (`sqGaussSum_norm_eq_sqrt_of_odd`), and there are `φ(N)` of them
+(`ZMod.card_units_eq_totient`), so the total absolute mass over the unit group is
+
+    Σ_{u ∈ (ZMod N)ˣ} ‖G(u)‖ = φ(N)·√N.
+
+The primitive (`d = 1`, `gcd((2r).val, N) = 1`) slice of the full `L¹` first moment
+`sqGaussSum_norm_sum_eq_divisor_sum_of_odd` of Part XLVII. -/
+theorem sqGaussSum_norm_sum_units_of_odd {N : ℕ} [NeZero N] (hodd : Odd N) :
+    (Finset.univ.sum (fun u : (ZMod N)ˣ => ‖sqGaussSum (u : ZMod N)‖))
+      = (Nat.totient N : ℝ) * Real.sqrt N := by
+  rw [Finset.sum_congr rfl (fun u _ => sqGaussSum_norm_eq_sqrt_of_odd hodd u.isUnit),
+      Finset.sum_const, Finset.card_univ, ZMod.card_units_eq_totient, nsmul_eq_mul]
+
+/-- **Exact `L¹` first moment at a prime modulus.**  At a prime every nonzero frequency is a unit,
+so the flat magnitude `√p` (`sqGaussSum_norm_eq_sqrt_of_prime`) holds across all `p − 1` of them and
+the total absolute mass of the Weyl coefficient is
+
+    Σ_{r≠0} ‖G(r)‖ = (p−1)·√p.
+
+The prime instance of both the unit slice `sqGaussSum_norm_sum_units_of_odd` (with `φ(p) = p−1`) and
+the divisor-sum first moment `sqGaussSum_norm_sum_eq_divisor_sum_of_odd` (Part XLVII: at a prime the
+only proper divisor is `d = 1`). -/
+theorem sqGaussSum_norm_sum_of_prime {p : ℕ} [NeZero p] (hp : p.Prime) (hN2 : p ≠ 2) :
+    (Finset.univ \ {(0 : ZMod p)}).sum (fun r => ‖sqGaussSum r‖) = ((p : ℝ) - 1) * Real.sqrt p := by
+  rw [Finset.sum_congr rfl (fun r hr => sqGaussSum_norm_eq_sqrt_of_prime hp hN2
+        (by rw [Finset.mem_sdiff, Finset.mem_singleton] at hr; exact hr.2)),
+      Finset.sum_const, nsmul_eq_mul]
+  have hcard : (Finset.univ \ {(0 : ZMod p)}).card = p - 1 := by
+    have h := Finset.card_sdiff_add_card_eq_card
+      (Finset.subset_univ ({0} : Finset (ZMod p)))
+    rw [Finset.card_univ, ZMod.card, Finset.card_singleton] at h
+    omega
+  rw [hcard, Nat.cast_sub hp.one_lt.le, Nat.cast_one]
+
 end Szemeredi.Roth
 
