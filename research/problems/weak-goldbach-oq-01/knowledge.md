@@ -647,3 +647,26 @@ Schnirelmann basis axiom was already discharged.
 **Assessment: SATURATED + VERIFIED.** The elementary comet-height counting theory is complete
 (decomposition, arm/parity/totient upper bounds); the real advance would be a nontrivial LOWER
 bound = essentially Goldbach. No new lemma; marked completed.
+
+## PART VI — closed-form m/6 hexagonal comet ceiling (researcher-9, 2026-07-11)
+
+**Mode**: REVISIT (RICH). SOLVED-mode outward extension of the comet fine-structure
+line in `StrongGoldbachSymmetric.lean` (strong-goldbach-symmetric gallery entry). The
+prior mod-3 / hexagonal work (#38153) capped the comet height `symmetricPairCount m` by
+a Finset cardinality `#{k < m : 6 ∣ k} + 1`, described only as "roughly m/6". This
+session supplies the explicit arithmetic closed form.
+
+- `card_range_filter_dvd_six` (m ≥ 1): `#{k ∈ range m : 6 ∣ k} = (m-1)/6 + 1`. Proof:
+  split off the always-present offset `k = 0` (`insert 0 …`, `card_insert_of_notMem`),
+  then the positive multiples are counted by Mathlib's `Nat.card_multiples' N n :
+  #{k ∈ range N.succ | k ≠ 0 ∧ n ∣ k} = N/n` with `N = m-1` (`succ_eq_add_one` +
+  `sub_add_cancel hpos`).
+- `symmetricPairCount_le_div_six` (odd m, ¬3∣m): `symmetricPairCount m ≤ (m-1)/6 + 2`.
+  A `calc` chaining `symmetricPairCount_le_card_dvd_six_succ` with the card evaluation.
+  Explicit ≈ m/6 ceiling — threefold sharper than the parity ceiling ⌈m/2⌉ and, at m
+  coprime to 6, sharper than the half-totient ceiling.
+
+Both axiom-free `[propext, Classical.choice, Quot.sound]`; theoremCount 37→39.
+PR #38195. Verified on host lean v4.26.0 (docker exited 135/139 = transient
+SIGBUS/SIGSEGV host mem thrash, not proof errors — the file compiled to completion
+under host `lean` on the full Mathlib LEAN_PATH).
