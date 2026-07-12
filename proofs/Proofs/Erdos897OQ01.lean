@@ -572,4 +572,79 @@ theorem not_unboundedOnPrimePowers_of_bounded {f : ℕ → ℝ} {C : ℝ}
     linarith
   exact le_trans (hf p k hp hk) hmid
 
+/-
+## (11) The failing class is a genuine order ideal and additive cone
+
+Sections (9)–(10) established the *join* structure: the large functions are closed
+under `max` with anything (a sup-closed filter), and the failing `O(log)` functions
+are closed under `max` of two (`not_unboundedOnPrimePowers_max`).  This section
+completes the algebraic and lattice picture of the failing class:
+
+* **Additivity.** If `f ≤ Mf·log` and `g ≤ Mg·log` on prime powers, then
+  `f + g ≤ (Mf + Mg)·log`, so the sum fails too — no sign or positivity hypothesis
+  is needed, the two upper bounds simply add (`not_unboundedOnPrimePowers_add`).
+  Thus the failing class is closed under addition, dual to the filter-side
+  `unboundedOnPrimePowers_add_bddBelow` (which added *largeness* to a below-bounded
+  function).
+* **Meet-closure.** Dual to the sup-closure `unboundedOnPrimePowers_max_left`: if `f`
+  fails, then `min (f, g)` fails for *any* `g`, because `min (f, g) ≤ f` on every
+  prime power, and failure transfers downward (`not_unboundedOnPrimePowers_of_le`).
+  So the failing class is closed under `min` with an arbitrary function
+  (`not_unboundedOnPrimePowers_min_left` / `_min_right`).
+
+Combined with (9)–(10) this shows the `O(log)`-on-prime-powers functions form a
+genuine **order ideal** — a down-set closed under both `max` (join of two) and `min`
+(meet with anything) — that is *additionally* an additive convex cone (closed under
+`+` and, by `unboundedOnPrimePowers_smul`'s contrapositive shape, under nonnegative
+scaling).  By contrast the large class is only join-closed (a filter), never
+meet-closed: two functions each large on a different infinite set of primes have a
+pointwise `min` that is small everywhere, so no analogue of `min`-closure holds on
+the filter side.
+-/
+
+/-- **The failing class is closed under addition.**  If both `f` and `g` fail the
+Erdős #897 hypothesis — each bounded above on prime powers by a constant multiple of
+`log`, say `f ≤ Mf·log` and `g ≤ Mg·log` — then their pointwise sum also fails:
+`(f + g)(p^k) ≤ (Mf + Mg)·log(p^k)` on every prime power, so the `O(log)` criterion
+of section (8) applies with `C = Mf + Mg`.  Unlike the `max` case this needs no
+`log ≥ 0` sign input: the two upper bounds add directly.  Together with
+`not_unboundedOnPrimePowers_max` this makes the failing class an additive cone as
+well as a sup-closed ideal. -/
+theorem not_unboundedOnPrimePowers_add {f g : ℕ → ℝ}
+    (hf : ¬ UnboundedOnPrimePowers f) (hg : ¬ UnboundedOnPrimePowers g) :
+    ¬ UnboundedOnPrimePowers (fun n => f n + g n) := by
+  unfold UnboundedOnPrimePowers at hf hg
+  push_neg at hf hg
+  obtain ⟨Mf, hMf⟩ := hf
+  obtain ⟨Mg, hMg⟩ := hg
+  refine not_unboundedOnPrimePowers_of_le_const_mul_log
+    (C := Mf + Mg) (fun p k hp hk => ?_)
+  have h1 := hMf p k hp hk
+  have h2 := hMg p k hp hk
+  have hsum : f (p ^ k) + g (p ^ k) ≤ (Mf + Mg) * Real.log (p ^ k) :=
+    calc f (p ^ k) + g (p ^ k)
+        ≤ Mf * Real.log (p ^ k) + Mg * Real.log (p ^ k) := add_le_add h1 h2
+      _ = (Mf + Mg) * Real.log (p ^ k) := by ring
+  exact hsum
+
+/-- **Meet-closure of the failing class (ideal side, dual of
+`unboundedOnPrimePowers_max_left`).**  If `f` fails the Erdős #897 hypothesis, then so
+does its pointwise minimum with *any* function `g`: `min (f n) (g n) ≤ f n` on every
+prime power, so failure transfers downward through the anti-domination lemma
+`not_unboundedOnPrimePowers_of_le`.  The failing class is therefore closed under `min`
+with an arbitrary function — the exact meet-dual of the filter's `max`-closure, and
+what upgrades "sup-closed ideal" to "genuine order ideal". -/
+theorem not_unboundedOnPrimePowers_min_left {f g : ℕ → ℝ}
+    (hf : ¬ UnboundedOnPrimePowers f) :
+    ¬ UnboundedOnPrimePowers (fun n => min (f n) (g n)) :=
+  not_unboundedOnPrimePowers_of_le hf (fun _ _ _ _ => min_le_left _ _)
+
+/-- **Meet-closure of the failing class (symmetric form).**  Likewise `min` fails when
+the *right* argument fails: `min (f n) (g n) ≤ g n`, so `¬ UnboundedOnPrimePowers g`
+suffices. -/
+theorem not_unboundedOnPrimePowers_min_right {f g : ℕ → ℝ}
+    (hg : ¬ UnboundedOnPrimePowers g) :
+    ¬ UnboundedOnPrimePowers (fun n => min (f n) (g n)) :=
+  not_unboundedOnPrimePowers_of_le hg (fun _ _ _ _ => min_le_right _ _)
+
 end Erdos897
