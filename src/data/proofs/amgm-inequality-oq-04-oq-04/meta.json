@@ -82,6 +82,14 @@
   },
   "sections": [
     {
+      "id": "preamble",
+      "title": "Preamble: statement of the quadratic-convergence problem",
+      "startLine": 1,
+      "endLine": 35,
+      "summary": "Module docstring framing OQ-04: the AGM iteration aₙ₊₁=(aₙ+bₙ)/2, bₙ₊₁=√(aₙbₙ) converges quadratically, so the gap aₙ−bₙ contracts doubly exponentially like (b/a)^{2ⁿ}. States the two ingredients formalized below (per-step gap-squaring identity and abstract recursion-to-rate lemma) and records the 0-axiom provenance.",
+      "mathContext": "Goal: the AGM gap satisfies aₙ − bₙ = O(M·(b/a)^{2ⁿ}) — doubly exponential, not merely geometric, decay."
+    },
+    {
       "id": "gap-identity",
       "title": "Section I: The One-Step Gap Squares",
       "startLine": 36,
