@@ -833,6 +833,46 @@ theorem isCoverGraph_completeBipartiteGraph (V W : Type*) [Fintype (V ⊕ W)] :
     isCoverGraph (completeBipartiteGraph V W) :=
   cover_graph_characterization.mp (completeBipartiteGraph_admits_robust V W)
 
+/-- **The cover-graph property transports along a graph isomorphism (no axiom).**
+    The poset-level companion of `admitsRobust_of_iso`: if `f : G ≃g H` and `G` is a
+    cover graph, then so is `H`. Pull `isCoverGraph G` back to `admitsRobustAcyclic G`
+    (reverse of `cover_graph_characterization`), transport the robust orientation along
+    `f` (`admitsRobust_of_iso`), and read the result back as `isCoverGraph H` (forward
+    of `cover_graph_characterization`, now at `H`). This realizes at the Hasse-diagram
+    level the closure `admitsRobust_of_iso` proves at the orientation level. -/
+theorem isCoverGraph_of_iso {W : Type*} {H : SimpleGraph W} [Fintype V] [Fintype W]
+    (f : G ≃g H) (hG : isCoverGraph G) : isCoverGraph H :=
+  cover_graph_characterization.mp
+    (admitsRobust_of_iso f (cover_graph_characterization.mpr hG))
+
+/-- **The cover-graph property is a graph-isomorphism invariant (no axiom).** The
+    two-sided form of `isCoverGraph_of_iso`: isomorphic graphs are simultaneously
+    cover graphs or not (`isCoverGraph G ↔ isCoverGraph H` for `f : G ≃g H`). This is
+    the poset-level statement that `admitsRobust_iso_iff`'s docstring promises but only
+    states at the orientation level — *"the class of cover graphs is closed under
+    isomorphism"* — now recorded directly on the `isCoverGraph` predicate. -/
+theorem isCoverGraph_iso_iff {W : Type*} {H : SimpleGraph W} [Fintype V] [Fintype W]
+    (f : G ≃g H) : isCoverGraph G ↔ isCoverGraph H :=
+  ⟨isCoverGraph_of_iso f, isCoverGraph_of_iso f.symm⟩
+
+/-- **The empty graph `⊥` is a cover graph (no axiom).** The named base case of the
+    positive cover-graph catalogue: `⊥` has no edges, so it is the Hasse diagram of
+    the discrete (antichain) order on `V`. The specialization of
+    `isCoverGraph_of_edgeless` to the canonical edgeless graph `⊥` (whose adjacency is
+    `False`), and the `≤`-bottom of the subgraph closure `isCoverGraph_mono`. -/
+theorem isCoverGraph_bot [Fintype V] : isCoverGraph (⊥ : SimpleGraph V) :=
+  isCoverGraph_of_edgeless (fun u v => by simp)
+
+/-- **`Kₙ` with `n ≥ 3` is not a cover graph (no axiom).** The standalone negative
+    corollary: no complete graph on at least three vertices is the Hasse diagram of a
+    poset, because it contains a triangle. The poset-level form of `top_not_robust`,
+    obtained by pulling a hypothetical cover-graph structure back through
+    `cover_graph_characterization` to a robust orientation of `⊤` and contradicting
+    `top_not_robust`. (The `n ≤ 2` converse is `isCoverGraph_top_iff`.) -/
+theorem not_isCoverGraph_top [Fintype V] (h : 3 ≤ Fintype.card V) :
+    ¬ isCoverGraph (⊤ : SimpleGraph V) :=
+  fun hcov => top_not_robust h (cover_graph_characterization.mpr hcov)
+
 /-- Fisher-Fraughnaugh-Langley-West (1997): if the chromatic number of `G` is
     less than its girth, then `G` admits a robustly acyclic orientation. Girth
     is measured by `SimpleGraph.egirth` (shortest *cycle*, `⊤` if acyclic); the
