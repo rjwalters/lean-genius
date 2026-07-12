@@ -2933,6 +2933,79 @@ theorem classifySeed_175 : classifySeed 175 = Ordering.lt := by
 theorem mem_ReversalSet_175 (k : ℕ) : 175 * 2 ^ (k + 1) ∈ ReversalSet :=
   (classifySeed_lt_iff (by decide) (by norm_num) k).mpr classifySeed_175
 
+-- ----------------------------------------------------------------------------
+-- A COMPOSITE-landing reversal seed: `165 = 3·5·11`
+-- ----------------------------------------------------------------------------
+-- Every reversal seed exhibited so far (`21, 55, 129, 175, 453`) has a *prime*
+-- landing odd-part `seedE a` (`17, 43, 101, 131, 353` respectively), so each is
+-- reachable by the prime-landing reversal engine
+-- `classifySeed_lt_iff_of_seedS_one_seedE_prime`, whose criterion `φ(seedB a) +
+-- 2^seedT a < 2(a − φ(a))` presupposes `seedE a` prime (using `φ(e) = e − 1`).
+-- The seed `165` breaks this pattern: its landing odd-part is
+-- `seedE 165 = 115 = 5·23`, which is COMPOSITE, so `165` lies genuinely OUTSIDE
+-- the prime-landing engine — yet it still reverses.  Transport data:
+--   `φ(165) = 80`,  `2·165 − 80 = 250 = 125·2¹`  (so `s = 1`, `b = 125 = 5³`);
+--   `C = 2·165 − φ(125) = 330 − 100 = 230 = 115·2¹`  (so `t = 1`, `e = 115 = 5·23`);
+--   classifier compares `φ(165) = 80` against `φ(115)·2^0 = 88`; `80 < 88`, `lt`.
+-- This upgrades the prose observation "reversals are not confined to prime
+-- landings" into a machine-checked theorem, and shows the prime-landing engine
+-- is provably incomplete: it cannot certify the reversal seed `165`.
+
+/-- `φ(165) = 80`  (`165 = 15·11`, coprime factors, `φ(15) = 8`). -/
+theorem totient_165 : Nat.totient 165 = 80 := by
+  rw [show (165 : ℕ) = 15 * 11 from rfl, Nat.totient_mul (by decide), totient_15,
+      Nat.totient_prime (by norm_num)]
+
+/-- `φ(125) = 100`  (`125 = 5³`, so `φ = 5²·(5−1) = 100`). -/
+theorem totient_125 : Nat.totient 125 = 100 := by
+  rw [show (125 : ℕ) = 5 ^ 3 from rfl,
+      Nat.totient_prime_pow (by norm_num : Nat.Prime 5) (by norm_num : 0 < 3)]
+  norm_num
+
+/-- **Classifier value on the seed `165 = 3·5·11`.**  Transport data: `b = 125 = 5³`
+    (`2·165 − φ(165) = 250 = 125·2¹`, so `s = 1`), landing `C = 2·165 − φ(125) = 230 =
+    115·2¹` (so `t = 1`, `e = 115 = 5·23` **composite**), and the classifier compares
+    `φ(165) = 80` against `φ(115)·2^0 = 88`; `80 < 88`, so the total decision procedure
+    classifies `165` as `lt` (reversal) — a reversal seed with a *composite* landing
+    odd-part, hence outside the prime-landing engine. -/
+theorem classifySeed_165 : classifySeed 165 = Ordering.lt := by
+  rw [classifySeed_val (s := 1) (b := 125) (t := 1) (e := 115) (by decide) (by decide)
+      (by norm_num [totient_165]) (by norm_num [totient_125])]
+  rw [totient_165, totient_115]; decide
+
+/-- **The landing odd-part of the reversal seed `165` is composite.**  Extracting
+    the transport data by two 2-adic splits, `seedE 165 = 115 = 5·23`, which is not
+    prime.  This is what places `165` outside the prime-landing reversal engine. -/
+theorem seedE_165 : seedE 165 = 115 := by
+  have hstep : 2 * 165 - Nat.totient 165 = 125 * 2 ^ 1 := by norm_num [totient_165]
+  have hS : seedS 165 = 1 := (factor_two_split (show Odd 125 by decide) hstep).1
+  have hB : seedB 165 = 125 := (factor_two_split (show Odd 125 by decide) hstep).2
+  have hSC : seedC 165 = 115 * 2 ^ 1 := by
+    show 2 * 165 - Nat.totient (seedB 165) * 2 ^ (seedS 165 - 1) = 115 * 2 ^ 1
+    rw [hB, hS]; norm_num [totient_125]
+  exact (factor_two_split (show Odd 115 by decide) hSC).2
+
+/-- `seedE 165 = 115 = 5·23` is not prime. -/
+theorem seedE_165_not_prime : ¬ (seedE 165).Prime := by
+  rw [seedE_165]; norm_num
+
+/-- **Reversal family `165·2^(k+1)` with a composite landing.**  Since
+    `classifySeed 165 = lt`, the whole family lies in `ReversalSet` (`φ(n) < φ(D(n))`
+    for every `k`), yet its landing odd-part `seedE 165 = 115 = 5·23` is composite. -/
+theorem mem_ReversalSet_165 (k : ℕ) : 165 * 2 ^ (k + 1) ∈ ReversalSet :=
+  (classifySeed_lt_iff (by decide) (by norm_num) k).mpr classifySeed_165
+
+/-- **Reversals are not confined to prime landings — classifier form.**  The seed
+    `165` reverses its whole family `165·2^(k+1)` (`φ(n) < φ(D(n))`), yet its landing
+    odd-part `seedE 165 = 115 = 5·23` is composite.  So the prime-landing reversal
+    engine `classifySeed_lt_iff_of_seedS_one_seedE_prime` (which requires
+    `(seedE a).Prime`) is provably incomplete: `165` is a reversal seed it cannot
+    certify.  This upgrades the empirical observation about `165` into a theorem. -/
+theorem reversal_seed_composite_landing :
+    classifySeed 165 = Ordering.lt ∧ ¬ (seedE 165).Prime ∧
+    (∀ k, 165 * 2 ^ (k + 1) ∈ ReversalSet) :=
+  ⟨classifySeed_165, seedE_165_not_prime, mem_ReversalSet_165⟩
+
 /-- **The necessary condition `4 ∣ φ(a)` is not sufficient for reversal.**
 `reversal_seed_four_dvd_totient` proves every reversing seed `a` (`classifySeed a = lt`)
 satisfies `4 ∣ φ(a)`.  The converse *fails*: the Sophie–Germain equality seed `a = 15 = 3·5`
