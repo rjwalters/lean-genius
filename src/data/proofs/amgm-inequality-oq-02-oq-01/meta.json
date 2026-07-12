@@ -192,8 +192,8 @@
     {
       "id": "two-variable-identities",
       "title": "Two-Variable Identities",
-      "startLine": 29,
-      "endLine": 39,
+      "startLine": 28,
+      "endLine": 40,
       "summary": "Proves $(a+b)^2 = a^2 + b^2 + 2ab$ and $(a-b)^2 = a^2 + b^2 - 2ab$ by `ring`. Notes that $(a-b)^2 \\geq 0$ in an ordered ring yields $a^2 + b^2 \\geq 2ab$ — the $n=2$ AM-GM inequality, proved separately in AMGMInequality.lean."
     },
     {
@@ -206,7 +206,7 @@
     {
       "id": "diag-offdiag-decomposition",
       "title": "Diagonal/Off-Diagonal Decomposition",
-      "startLine": 51,
+      "startLine": 50,
       "endLine": 64,
       "summary": "The main Newton-Girard result: $(\\sum_i f(i))^2 = \\sum_i f(i)^2 + \\sum_i \\sum_{j \\neq i} f(i)f(j)$. Proved by rewriting to double sum, then using `Finset.add_sum_erase` to split each inner sum at the diagonal element. Requires `DecidableEq ι` for the erase operation."
     },
