@@ -853,4 +853,76 @@ theorem hasSum_re_fourierCoeffOn_mul_conj_real
   rw [hfun, htot]
   exact (H1.sub H2).mul_left (4 : ℝ)⁻¹
 
+-- ============================================================
+-- SECTION X: the Hurwitz–Fourier area formula
+--            — the enclosed area ∫ f·g' in Fourier coordinates
+-- ============================================================
+
+/-- **Real-part / imaginary-part bridge for the differentiation eigenvalue.**
+    For `u, v : ℂ` and `n : ℤ`,
+
+        Re( u · conj (i·n·v) )  =  n · Im( u · conj v ).
+
+    This is the pointwise algebra that converts the *symmetric* bilinear Parseval summand
+    `Re(ĉₙ(f)·conj ĉₙ(g'))` (Section IX applied to `g'`) into the *antisymmetric* area summand
+    `n·Im(ĉₙ(f)·conj ĉₙ(g))` once the derivative eigenvalue `ĉₙ(g') = i·n·ĉₙ(g)` is substituted:
+    conjugation turns the factor `i·n` into `−i·n`, and `Re(−i·w) = Im(w)`. -/
+private theorem re_mul_conj_I_mul (u v : ℂ) (n : ℤ) :
+    (u * conj (I * (n : ℂ) * v)).re = (n : ℝ) * (u * conj v).im := by
+  have hc : conj (I * (n : ℂ) * v) = -I * (n : ℂ) * conj v := by
+    simp only [map_mul, Complex.conj_I, map_intCast]
+  rw [hc]
+  simp only [Complex.mul_re, Complex.mul_im, Complex.neg_re, Complex.neg_im,
+    Complex.I_re, Complex.I_im, Complex.intCast_re, Complex.intCast_im, Complex.conj_re,
+    Complex.conj_im]
+  ring
+
+/-- **The Hurwitz–Fourier area formula on `[0, 2π]`.**  Let `f` be continuous and `g` smooth
+    (`C^∞`) and `2π`-periodic.  Then the normalised area integral `∫ f·g'` is the antisymmetric
+    Fourier bilinear form of the coefficient sequences of `f` and `g`:
+
+        ∑ₙ n · Im( ĉₙ(f) · conj ĉₙ(g) )  =  (2π)⁻¹ ∫₀^{2π} f(t)·g'(t) dt .
+
+    This is exactly Hurwitz's expression for the *enclosed area* of the closed curve
+    `t ↦ (f(t), g(t))` — the line integral `A = ∮ f dg = ∫ f·g'` — written in Fourier
+    coordinates.  Only the *cross-modes* contribute the imaginary part, weighted linearly by the
+    frequency `n`; the mean mode `n = 0` drops out (its weight is `0`).  Combined with the
+    diagonal Parseval `hasSum_sq_fourierCoeffOn_real` (which gives the perimeter energy
+    `(2π)⁻¹∫(f'²+g'²) = ∑ n²(‖ĉₙ(f)‖²+‖ĉₙ(g)‖²)`), this is the last analytic ingredient of the
+    Hurwitz isoperimetric deficit `L² − 4πA = 4π² ∑ₙ [n²(‖aₙ‖²+‖bₙ‖²) − 2n·Im(aₙ·conj bₙ)] ≥ 0`.
+
+    Proof.  Apply the bilinear (polarized) Parseval identity `hasSum_re_fourierCoeffOn_mul_conj_real`
+    to `f` and the continuous function `g' = deriv g`, giving
+    `∑ₙ Re(ĉₙ(f)·conj ĉₙ(g')) = (2π)⁻¹∫ f·g'`.  The whole-spectrum eigenvalue identity
+    `fourierCoeffOn_iteratedDeriv_all` (at order `k = 1`) rewrites `ĉₙ(g') = i·n·ĉₙ(g)`, and the
+    pointwise bridge `re_mul_conj_I_mul` collapses each summand to `n·Im(ĉₙ(f)·conj ĉₙ(g))`. -/
+theorem hasSum_fourier_area_formula
+    {f g : ℝ → ℝ} (hf : Continuous f) (hg : ContDiff ℝ ∞ g)
+    (hgper : ∀ t, g (t + 2 * π) = g t) (hab : (0 : ℝ) < 2 * π) :
+    HasSum (fun n : ℤ =>
+        (n : ℝ) * (fourierCoeffOn hab (ofReal ∘ f) n *
+          conj (fourierCoeffOn hab (ofReal ∘ g) n)).im)
+      ((2 * π - 0)⁻¹ • ∫ x in (0 : ℝ)..(2 * π), f x * deriv g x) := by
+  -- `g'` is continuous (from `g ∈ C¹`), so Section IX applies to the pair `(f, g')`.
+  have hg1 : ContDiff ℝ 1 g := hg.of_le (by exact_mod_cast le_top)
+  have hderivcont : Continuous (deriv g) := hg1.continuous_deriv (le_refl 1)
+  have H := hasSum_re_fourierCoeffOn_mul_conj_real (f := f) (g := deriv g) hf hderivcont hab
+  -- Derivative eigenvalue at order `k = 1`: `ĉₙ(g') = i·n·ĉₙ(g)`.
+  have hcoef : ∀ n : ℤ, fourierCoeffOn hab (ofReal ∘ deriv g) n
+      = I * (n : ℂ) * fourierCoeffOn hab (ofReal ∘ g) n := by
+    intro n
+    have h := fourierCoeffOn_iteratedDeriv_all g hg hgper hab n 1
+    simpa [Function.iterate_one, pow_one] using h
+  -- Collapse each Section IX summand to the antisymmetric area summand.
+  have hfun : (fun n : ℤ =>
+        (n : ℝ) * (fourierCoeffOn hab (ofReal ∘ f) n *
+          conj (fourierCoeffOn hab (ofReal ∘ g) n)).im)
+      = (fun n : ℤ =>
+        (fourierCoeffOn hab (ofReal ∘ f) n *
+          conj (fourierCoeffOn hab (ofReal ∘ deriv g) n)).re) := by
+    funext n
+    rw [hcoef n, re_mul_conj_I_mul]
+  rw [hfun]
+  exact H
+
 end IsoperimetricFourier
