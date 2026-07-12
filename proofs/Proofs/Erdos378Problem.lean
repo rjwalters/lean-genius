@@ -562,4 +562,71 @@ theorem erdos_378_density_zero : NaturalDensity (atLeastSquarefree 0) 1 := by
   rw [atLeastSquarefree_zero_eq_univ]
   exact natDensity_univ
 
+/-
+## Part IX: Monotonicity of the natural density, and its payoff for #378
+
+The two-sided bounds of Part VII (`natDensity_nonneg`, `natDensity_le_one`) compare a
+single density against the fixed endpoints `0` and `1`. Here we prove the *relative*
+comparison underlying them: densities respect inclusion. For every `N` the counting
+ratios satisfy `|S ∩ [0,N)| / N ≤ |T ∩ [0,N)| / N` when `S ⊆ T`, so the limits obey the
+same inequality. (Indeed `natDensity_le_one` is the special case `T = ℕ` combined with
+`natDensity_univ`.)
+
+The payoff is directly on Erdős #378: the answer sets `atLeastSquarefree r` are nested
+decreasingly in the threshold `r` (`atLeastSquarefree_antitone`), so their densities are
+*antitone* in `r` — raising the required number of squarefree binomials can only shrink
+the density, never grow it. This is the monotone structure behind the filtration
+`atLeastSquarefree 0 ⊇ atLeastSquarefree 1 ⊇ ⋯`, whose top density is exactly `1`
+(`erdos_378_density_zero`) and each of whose densities is positive
+(`erdos_378_density_positive`).
+-/
+
+/-- **Monotonicity of the natural density.**  If `S ⊆ T` and both have natural
+densities, then the density of `S` is at most the density of `T`.
+
+For each `N` the finite sets satisfy `S ∩ [0,N) ⊆ T ∩ [0,N)`, so the counting ratio for
+`S` never exceeds that for `T`; the limits inherit `d_S ≤ d_T`.  Elementary ε/2 argument:
+were `d_T < d_S`, put `ε = (d_S − d_T)/2 > 0`; past both thresholds the ratio for `S`
+exceeds the midpoint `(d_S + d_T)/2` while the ratio for `T` falls below it, contradicting
+`ratio_S ≤ ratio_T`.  Uses none of the Granville–Ramaré axioms. -/
+theorem natDensity_mono {S T : Set ℕ} {dS dT : ℝ} (hST : S ⊆ T)
+    (hS : NaturalDensity S dS) (hT : NaturalDensity T dT) : dS ≤ dT := by
+  by_contra h
+  push_neg at h                     -- `h : dT < dS`
+  set ε := (dS - dT) / 2 with hε
+  have hεpos : 0 < ε := by rw [hε]; linarith
+  obtain ⟨N₁, hN₁⟩ := hS ε hεpos
+  obtain ⟨N₂, hN₂⟩ := hT ε hεpos
+  set N := max (max N₁ N₂) 1 with hNdef
+  have hb1 := hN₁ N (le_trans (le_max_left _ _) (le_max_left _ _))
+  have hb2 := hN₂ N (le_trans (le_max_right _ _) (le_max_left _ _))
+  have hNpos : 0 < N := lt_of_lt_of_le Nat.zero_lt_one (le_max_right _ _)
+  have hNR : (0 : ℝ) < N := by exact_mod_cast hNpos
+  -- The two counting sets are finite and `S`-side is contained in the `T`-side.
+  have hfinT : (T ∩ Set.Iio N).Finite := (Set.finite_Iio N).inter_of_right T
+  have hsub : (S ∩ Set.Iio N) ⊆ (T ∩ Set.Iio N) := fun x hx => ⟨hST hx.1, hx.2⟩
+  have hcard : (S ∩ Set.Iio N).ncard ≤ (T ∩ Set.Iio N).ncard :=
+    Set.ncard_le_ncard hsub hfinT
+  have hle : ((S ∩ Set.Iio N).ncard : ℝ) ≤ ((T ∩ Set.Iio N).ncard : ℝ) := by
+    exact_mod_cast hcard
+  -- Hence the counting ratios are ordered.
+  have hratio : ((S ∩ Set.Iio N).ncard : ℝ) / (N : ℝ)
+      ≤ ((T ∩ Set.Iio N).ncard : ℝ) / (N : ℝ) := by gcongr
+  rw [abs_lt] at hb1 hb2
+  -- `ratio_S > dS − ε = midpoint`, `ratio_T < dT + ε = midpoint`, contradiction.
+  linarith [hb1.1, hb2.2, hratio]
+
+/-- **The Erdős #378 densities are antitone in the threshold `r`.**  If `r' ≤ r` and both
+answer sets have natural densities `d` (at `r`) and `d'` (at `r'`), then `d ≤ d'`: demanding
+more squarefree interior binomials can only decrease the density.
+
+This is `natDensity_mono` applied to the nesting `atLeastSquarefree r ⊆ atLeastSquarefree r'`
+(`atLeastSquarefree_antitone`). Together with `erdos_378_density_zero` (density `1` at `r = 0`)
+and `erdos_378_density_positive` (every density `> 0`), it pins the qualitative shape of the
+whole sequence of Erdős #378 densities: a positive, non-increasing sequence starting at `1`. -/
+theorem erdos_378_density_antitone {r r' : ℕ} (hr : r' ≤ r) {d d' : ℝ}
+    (hd : NaturalDensity (atLeastSquarefree r) d)
+    (hd' : NaturalDensity (atLeastSquarefree r') d') : d ≤ d' :=
+  natDensity_mono (atLeastSquarefree_antitone hr) hd hd'
+
 end Erdos378
