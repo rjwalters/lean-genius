@@ -21,6 +21,13 @@
   no 2-group Galois group — subsuming the degree-3 (cos 20°) case and covering
   degrees `5, 7, 9, …`.
 
+  Two further criteria make the prime-factor obstruction directly checkable:
+  `pgroup_prime_dvd_degree_eq` (every prime dividing the degree of a nontrivial
+  `p`-group extension *is* `p`) and `not_pgroup_any_of_two_primes_dvd` (two
+  distinct prime divisors of the degree — e.g. `6 = 2·3`, `10`, `15`, `12` — rule
+  out a `p`-group for every prime `p`, hence non-constructibility, with no
+  `¬ IsPrimePow` proof required).
+
   Parent: AngleTrisectionOQ02OQ01.lean (natDegree_dvd_card_gal, reused here)
 -/
 
@@ -327,5 +334,43 @@ theorem not_2group_of_odd_prime_dvd_degree (α : ℝ) (hα : IsIntegral ℚ α)
     rintro rfl
     exact (Nat.not_even_iff_odd.mpr hodd) (by decide)
   exact not_pgroup_of_prime_dvd_degree_ne α hα Nat.prime_two hq hq2 hdvd
+
+/-- **Every prime dividing the degree of a nontrivial `p`-group extension equals `p`.**
+    The directly usable form of `pgroup_primeFactors_eq`: for a nontrivial `p`-group Galois
+    group, *any* prime `q` dividing `natDegree(minpoly ℚ α)` is forced to be `p` itself.
+    Where `pgroup_prime_eq_minFac` recovers `p` as the *smallest* prime factor, this says
+    there is no other prime factor to choose from at all — the primitive behind the
+    two-distinct-prime obstruction below. -/
+theorem pgroup_prime_dvd_degree_eq (α : ℝ) (hα : IsIntegral ℚ α)
+    {p q : ℕ} (hp : p.Prime) (hq : q.Prime) (hgt : 1 < (minpoly ℚ α).natDegree)
+    (hqd : q ∣ (minpoly ℚ α).natDegree) (hP : IsPGroup p (minpoly ℚ α).Gal) :
+    q = p := by
+  have hpf := pgroup_primeFactors_eq α hα hp hgt hP
+  have hmem : q ∈ (minpoly ℚ α).natDegree.primeFactors :=
+    Nat.mem_primeFactors.mpr ⟨hq, hqd, by omega⟩
+  rw [hpf, Finset.mem_singleton] at hmem
+  exact hmem
+
+/-- **Two distinct prime divisors of the degree rule out every `p`-group.**  The most
+    directly checkable form of the non-prime-power obstruction `not_pgroup_any_of_not_isPrimePow`:
+    if two *distinct* primes `q₁ ≠ q₂` both divide `natDegree(minpoly ℚ α)`, then the Galois
+    group is not a `p`-group for **any** prime `p` — no `¬ IsPrimePow` proof needed, just two
+    witnessed prime factors.  Since constructibility forces a 2-group, this is the practical
+    "degree `6 = 2·3`, `10 = 2·5`, `15 = 3·5`, `12`, … ⟹ not constructible" criterion.  Both
+    `q₁, q₂` would have to equal `p` (`pgroup_prime_dvd_degree_eq`), contradicting `q₁ ≠ q₂`. -/
+theorem not_pgroup_any_of_two_primes_dvd (α : ℝ) (hα : IsIntegral ℚ α)
+    {q₁ q₂ : ℕ} (hq₁ : q₁.Prime) (hq₂ : q₂.Prime) (hne : q₁ ≠ q₂)
+    (hd₁ : q₁ ∣ (minpoly ℚ α).natDegree) (hd₂ : q₂ ∣ (minpoly ℚ α).natDegree)
+    {p : ℕ} (hp : p.Prime) :
+    ¬ IsPGroup p (minpoly ℚ α).Gal := by
+  intro hP
+  have hpos : 0 < (minpoly ℚ α).natDegree := minpoly.natDegree_pos hα
+  have hgt : 1 < (minpoly ℚ α).natDegree := by
+    have h1 := Nat.le_of_dvd hpos hd₁
+    have h2 := hq₁.two_le
+    omega
+  have e₁ : q₁ = p := pgroup_prime_dvd_degree_eq α hα hp hq₁ hgt hd₁ hP
+  have e₂ : q₂ = p := pgroup_prime_dvd_degree_eq α hα hp hq₂ hgt hd₂ hP
+  exact hne (e₁.trans e₂.symm)
 
 end AngleTrisectionOQ02OQ01OQ03
