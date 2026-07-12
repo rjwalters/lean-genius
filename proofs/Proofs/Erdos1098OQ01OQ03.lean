@@ -112,6 +112,24 @@ def IsClique (S : Finset G) : Prop :=
 def BoundedCliques (G : Type*) [Group G] : Prop :=
   ∃ B : ℕ, ∀ S : Finset G, IsClique S → S.card ≤ B
 
+/-- **The non-commuting graph Γ(G) is undirected: `nonCommuting` is symmetric.**
+    `g` and `h` fail to commute iff `h` and `g` do — the edge relation `g*h ≠ h*g`
+    is symmetric by `ne_comm`. -/
+theorem nonCommuting_comm {g h : G} : nonCommuting g h ↔ nonCommuting h g := by
+  unfold nonCommuting; exact ne_comm
+
+/-- **Γ(G) has no self-loops: `nonCommuting` is irreflexive.**  No element fails to
+    commute with itself, since `g * g = g * g`. -/
+theorem nonCommuting_irrefl (g : G) : ¬ nonCommuting g g := by
+  unfold nonCommuting; simp
+
+/-- **Edges of Γ(G) are exactly the non-commuting pairs.**  The negation of
+    `nonCommuting g h` is Mathlib's `Commute g h`: two elements are joined by no edge
+    iff they commute.  This bridges the local `nonCommuting` relation to the library's
+    `Commute`/`SemiconjBy` API. -/
+theorem not_nonCommuting_iff_commute {g h : G} : ¬ nonCommuting g h ↔ Commute g h := by
+  unfold nonCommuting; rw [not_not]; exact Iff.rfl
+
 -- ============================================================
 -- SECTION II: Cosets of the centre separate non-commuting elements
 -- ============================================================
@@ -173,6 +191,16 @@ theorem clique_card_le_index {S : Finset G} (hS : IsClique S)
 theorem bounded_cliques_of_finite_index
     (hfin : (Subgroup.center G).index ≠ 0) : BoundedCliques G :=
   ⟨(Subgroup.center G).index, fun _ hS => clique_card_le_index hS hfin⟩
+
+/-- **(Base case, fully proved.)** Every *finite* group has bounded cliques: no clique
+    can be larger than the whole group.  Any clique `S` is a `Finset G`, so
+    `S.card ≤ Fintype.card G` unconditionally (`Finset.card_le_univ`).  This is the
+    trivial-but-fundamental base of the theory — finite groups automatically satisfy the
+    ω(Γ(G))-finite hypothesis of Neumann's theorem (and indeed their centre has finite
+    index), so the interesting content is entirely about infinite groups. -/
+theorem boundedCliques_of_finite [Finite G] : BoundedCliques G := by
+  haveI : Fintype G := Fintype.ofFinite G
+  exact ⟨Fintype.card G, fun S _ => Finset.card_le_univ S⟩
 
 -- ============================================================
 -- SECTION III.5: First step of the hard direction — the centralizer cover
