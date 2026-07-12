@@ -935,6 +935,66 @@ theorem card_SL2 :
   exact Nat.eq_of_mul_eq_mul_right hpos key
 
 /-!
+## The unipotent subgroup is a Sylow `p`-subgroup of `SL(2, p)`
+
+Combining the order formula `|SL(2, p)| = p·(p² − 1)` (`card_SL2`) with the coprimality
+`p ∤ (p² − 1)` (modulo `p`, `p² − 1 ≡ −1`), the `p`-part of the group order is exactly `p`.
+The unipotent one-parameter subgroup `U = range unipotentHom` has order exactly `p`
+(`card_unipotentHom_range`), so `U` realises the whole `p`-part and is a Sylow `p`-subgroup
+of `SL(2, p)` (`unipotentSylow`).  This makes precise the header's description of `U` as
+"the order-`p` Sylow-`p` subgroup", and is the concrete Sylow-theoretic anchor of the
+"Sylow counting" framing: the unipotent radical of the Borel is a full Sylow `p`-subgroup.
+-/
+
+/-- The unipotent subgroup `U = range unipotentHom` has cardinality exactly `p`. This is the
+subgroup form of `card_unipotent_range`: `unipotentHom` is an injective homomorphism out of
+`Multiplicative (ZMod p)`, so its range is equinumerous with `ZMod p`. -/
+theorem card_unipotentHom_range :
+    Nat.card (unipotentHom (p := p)).range = p := by
+  haveI : NeZero p := ⟨(Fact.out : p.Prime).pos.ne'⟩
+  have e : Multiplicative (ZMod p) ≃* (unipotentHom (p := p)).range :=
+    MulEquiv.ofInjective unipotentHom_injective
+  rw [← Nat.card_congr e.toEquiv]
+  show Nat.card (ZMod p) = p
+  rw [Nat.card_eq_fintype_card, ZMod.card]
+
+/-- `p` does not divide `p² − 1`.  Modulo `p`, `p² − 1 ≡ −1`; concretely, `p ∣ p²` and
+`p ∣ (p² − 1)` would force `p ∣ p² − (p² − 1) = 1`. -/
+theorem not_dvd_sq_sub_one : ¬ (p ∣ p ^ 2 - 1) := by
+  have hp2 : 2 ≤ p := (Fact.out : p.Prime).two_le
+  have hsq : 1 ≤ p ^ 2 := by nlinarith
+  intro hdvd
+  have hp_sq : p ∣ p ^ 2 := dvd_pow_self p (by norm_num)
+  have h1 : p ∣ 1 := by
+    have hd := Nat.dvd_sub' hp_sq hdvd
+    rwa [Nat.sub_sub_self hsq] at hd
+  have := Nat.le_of_dvd one_pos h1
+  omega
+
+/-- The `p`-part of `|SL(2, p)|` is exactly `p`: `(|SL(2, p)|).factorization p = 1`.
+From `card_SL2`, `|SL(2, p)| = p·(p² − 1)` with `p ∤ (p² − 1)` (`not_dvd_sq_sub_one`). -/
+theorem factorization_card_SL2 :
+    (Nat.card (Matrix.SpecialLinearGroup (Fin 2) (ZMod p))).factorization p = 1 := by
+  have hp : Nat.Prime p := Fact.out
+  have hp0 : p ≠ 0 := hp.pos.ne'
+  have hq0 : p ^ 2 - 1 ≠ 0 := by
+    have : 4 ≤ p ^ 2 := by nlinarith [hp.two_le]
+    omega
+  rw [card_SL2, Nat.factorization_mul hp0 hq0, Finsupp.add_apply,
+    hp.prime.factorization_self, Nat.factorization_eq_zero_of_not_dvd not_dvd_sq_sub_one,
+    add_zero]
+
+/-- **The unipotent subgroup `U` is a Sylow `p`-subgroup of `SL(2, p)`.**  Its order is
+exactly `p` (`card_unipotentHom_range`), which equals the full `p`-part `p ^ 1` of the group
+order `|SL(2, p)| = p·(p² − 1)` (`factorization_card_SL2`).  This realises the abelian
+normal-in-Borel unipotent radical `U` as a genuine Sylow `p`-subgroup — the concrete object
+underlying the "Sylow counting" route to the structure of `SL(2, p)`. -/
+noncomputable def unipotentSylow :
+    Sylow p (Matrix.SpecialLinearGroup (Fin 2) (ZMod p)) :=
+  Sylow.ofCard (unipotentHom (p := p)).range <| by
+    rw [card_unipotentHom_range, factorization_card_SL2, pow_one]
+
+/-!
 ## `SL(2, p)` is not solvable for `p ≥ 5`
 
 Perfectness (`commutator_eq_top`) rules out solvability outright: a *nontrivial

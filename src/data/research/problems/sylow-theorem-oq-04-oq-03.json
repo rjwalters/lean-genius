@@ -6,7 +6,7 @@
   "path": "full",
   "tier": "MODERATE",
   "started": "2026-04-05T03:59:25.465Z",
-  "lastUpdate": "2026-07-09T00:00:00.000Z",
+  "lastUpdate": "2026-07-11T00:00:00.000Z",
   "significance": 7,
   "tractability": 2,
   "tags": [
@@ -56,7 +56,7 @@
     ]
   },
   "knowledge": {
-    "progressSummary": "BUILD (researcher-1, 2026-07-09) [UNVERIFIED — Docker daemon down: containerd blob input/output error, `docker images` itself fails; not a code error]: the prior session's target is now MERGED on main (commutator_eq_top : commutator (SL(2,p))=⊤ for p≥5, and card_SL2 : |SL(2,p)|=p(p²−1), both 0-sorry/0-axiom). Added commutator_PSL_eq_top : commutator (PSL(2,p))=⊤ for p≥5 — perfectness of the TARGET group PSL(2,p)=SL(2,p)/Z, transported from the cover across the surjective central quotient map mk':SL↠PSL via Subgroup.map_commutator + Subgroup.map_top_of_surjective (QuotientGroup.mk'_surjective), closed by commutator_eq_top. This states one of Iwasawa's two hypotheses directly for PSL(2,p) and pins the p≥5 range (PSL(2,2)≅S₃, PSL(2,3)≅A₄ not perfect). File 855→885 L / 0 sorry / 0 axiom; every Mathlib lemma checked vs pinned local mathlib source.",
+    "progressSummary": "BUILD (researcher-1, 2026-07-11) [VERIFIED via Docker, 7743 jobs, 0-sorry/0-axiom]: made the header's description of U as 'the order-p Sylow-p subgroup' formal. Added a Sylow section building on the merged card_SL2 (|SL(2,p)|=p(p²−1)): card_unipotentHom_range (|range unipotentHom|=p, the subgroup form of card_unipotent_range via MulEquiv.ofInjective), not_dvd_sq_sub_one (p∤p²−1 since p²−1≡−1 mod p), factorization_card_SL2 ((|SL(2,p)|).factorization p = 1, so the p-part is exactly p), and unipotentSylow : Sylow p SL(2,p) via Sylow.ofCard (|U|=p=p^1=p-part). This is the concrete Sylow-theoretic anchor of the 'Sylow counting' framing — the unipotent radical of the Borel is a genuine Sylow p-subgroup. File 978→1038 L, 48→51 thm / 0 sorry / 0 axiom. PRIOR: the prior session's target is now MERGED on main (commutator_eq_top : commutator (SL(2,p))=⊤ for p≥5, and card_SL2 : |SL(2,p)|=p(p²−1), both 0-sorry/0-axiom). Added commutator_PSL_eq_top : commutator (PSL(2,p))=⊤ for p≥5 — perfectness of the TARGET group PSL(2,p)=SL(2,p)/Z, transported from the cover across the surjective central quotient map mk':SL↠PSL via Subgroup.map_commutator + Subgroup.map_top_of_surjective (QuotientGroup.mk'_surjective), closed by commutator_eq_top. This states one of Iwasawa's two hypotheses directly for PSL(2,p) and pins the p≥5 range (PSL(2,2)≅S₃, PSL(2,3)≅A₄ not perfect). File 855→885 L / 0 sorry / 0 axiom; every Mathlib lemma checked vs pinned local mathlib source.",
     "insights": [
       "Perfectness lifts cleanly from the cover to the quotient: for any surjective φ:G↠H, map φ (commutator G) = commutator H (Subgroup.map_commutator + map_top_of_surjective), so a perfect group has perfect quotients. Applied to mk':SL(2,p)↠PSL(2,p)=SL/Z this turns commutator (SL)=⊤ into commutator (PSL)=⊤ — the Iwasawa perfectness hypothesis for the actual simple-group candidate PSL(2,p), not just its cover.",
       "The right tool is Iwasawa's criterion, not raw Sylow counting: PSL(2,p) acts 2-transitively (hence primitively and faithfully) on the p+1 points of P¹(𝔽_p); the unipotent upper-triangular subgroup U = {[[1,t],[0,1]] : t ∈ 𝔽_p} is abelian, normal in the stabilizer of ∞, and its PSL-conjugates generate PSL(2,p); with perfectness for p ≥ 5, IwasawaStructure.isSimpleGroup concludes.",
@@ -74,10 +74,9 @@
       "No perfectness result commutator (PSL(2,p)) = ⊤ for p ≥ 5."
     ],
     "nextSteps": [
-      "VERIFY the Bruhat generation additions once Docker recovers (host containerd meta.db I/O error blocked the build this session; the earlier clean elaboration of the pre-fix version showed only tactic-automation gaps in torusDiag_eq_root_word / key, now addressed with full-simp index evaluation + uniform closers).",
-      "Package perfectness: with closure_rootGroups_eq_top plus exists_unipotent_isCommutator / exists_lowerUnipotent_isCommutator, prove commutator (SL(2,p)) = ⊤ for p≥5 (U,U⁻ generate and both lie in the derived subgroup ⇒ derived = ⊤). This is the perfectness input to Iwasawa in closed form.",
-      "BUILD |SL(2,𝔽_p)| = p(p²−1) (still absent from Mathlib) and derive |PSL(2,p)|.",
-      "BUILD the action of SL(2,𝔽_p) on P¹(𝔽_p), its 2-transitivity, and the Borel point-stabilizer — the remaining Iwasawa ingredient before IwasawaStructure.isSimpleGroup can be applied.",
+      "DERIVE |PSL(2,p)| = p(p²−1)/2 for p≥5: from card_SL2 and |Z(SL(2,p))| = 2 (center is {±I}, and −I≠I for p odd). Then unipotentSylow transports to a Sylow p-subgroup of PSL(2,p) (order p, since p ∤ (p²−1)/2 too). The Sylow-p order of the target group is a headline numeric fact in whyMatters.",
+      "COMPUTE the number of Sylow p-subgroups n_p of SL(2,p): by Sylow III n_p ≡ 1 mod p and n_p | (p²−1); the classical value is n_p = p+1 (the Borels / points of P¹). unipotentSylow now gives a concrete base point for the conjugation orbit.",
+      "BUILD the action of SL(2,𝔽_p) on P¹(𝔽_p), its 2-transitivity, and the Borel point-stabilizer — the remaining Iwasawa ingredient before IwasawaStructure.isSimpleGroup can be applied. (Perfectness commutator_eq_top / commutator_PSL_eq_top and card_SL2 are done and verified.)",
       "Assemble IwasawaStructure and conclude PSL(2,p) simple for p≥5."
     ],
     "builtItems": [
@@ -87,7 +86,8 @@
       "exists_unipotent_isCommutator (SylowTheoremOQ04OQ03.lean): p≥5 ⟹ every u(s) is a commutator [diag(2),u(t)] (perfectness input), VERIFIED 0/0",
       "unipotentUpper_inv (SylowTheoremOQ04OQ03.lean): (u(t))⁻¹ = u(−t) helper, VERIFIED 0/0",
       "closure_rootGroups_eq_top + weylW_eq_root_word + torusDiag_eq_root_word + mem_closure_of_lowerLeft_ne_zero + rootGroups + membership lemmas + lowerUnipotent_mul/_zero (SylowTheoremOQ04OQ03.lean, +~194 lines): Bruhat generation ⟨U,U⁻⟩ = SL(2,p). [UNVERIFIED — Docker daemon I/O corruption blocked the build; mathematically hand-checked, tactics mirror the file's verified matrix-identity idiom.]",
-      "subsingleton_abelianization + subsingleton_abelianization_PSL (SylowTheoremOQ04OQ03.lean): the G^{ab}=1 form of perfectness — Abelianization of SL(2,p) and of PSL(2,p) is a Subsingleton for p≥5, via commutator_eq_top / commutator_PSL_eq_top + QuotientGroup.subsingleton_quotient_top. [UNVERIFIED — Docker daemon down (containerd blob I/O); the 3-line proof pattern was independently confirmed to elaborate against the local pinned Mathlib on a generic perfect group.]"
+      "subsingleton_abelianization + subsingleton_abelianization_PSL (SylowTheoremOQ04OQ03.lean): the G^{ab}=1 form of perfectness — Abelianization of SL(2,p) and of PSL(2,p) is a Subsingleton for p≥5, via commutator_eq_top / commutator_PSL_eq_top + QuotientGroup.subsingleton_quotient_top. [UNVERIFIED — Docker daemon down (containerd blob I/O); the 3-line proof pattern was independently confirmed to elaborate against the local pinned Mathlib on a generic perfect group.]",
+      "card_unipotentHom_range + not_dvd_sq_sub_one + factorization_card_SL2 + unipotentSylow (SylowTheoremOQ04OQ03.lean, +60 lines): U = range unipotentHom is a genuine Sylow p-subgroup of SL(2,p). |U|=p (subgroup form of card_unipotent_range via MulEquiv.ofInjective); p∤p²−1 (p²−1≡−1 mod p); (|SL(2,p)|).factorization p = 1 from card_SL2 + Nat.factorization_mul, so the p-part is exactly p; unipotentSylow : Sylow p SL(2,p) via Sylow.ofCard. VERIFIED via Docker (7743 jobs), 0/0."
     ]
   },
   "leanFiles": [
@@ -237,10 +237,10 @@
     {
       "path": "Proofs/SylowTheoremOQ04OQ03.lean",
       "filename": "SylowTheoremOQ04OQ03.lean",
-      "lineCount": 978,
-      "theoremCount": 48,
+      "lineCount": 1038,
+      "theoremCount": 51,
       "axiomCount": 0,
-      "defCount": 8,
+      "defCount": 9,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SylowTheoremOQ04OQ03.lean"
