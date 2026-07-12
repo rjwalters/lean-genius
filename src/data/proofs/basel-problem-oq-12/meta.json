@@ -122,6 +122,16 @@
       "targetId": "basel-problem-oq-15",
       "relationship": "extendedBy",
       "description": "ζ(8) = π⁸/9450, the k = 4 case — the next even zeta value in Euler's family after this ζ(6), built from the same hasSum_zeta_nat template with B₈ = −1/30. It realises this entry's first open question (\"Can ζ(8) = π⁸/9450 be obtained the same way?\"), the B₈ recurrence consuming this entry's B₆ = 1/42 as a summand."
+    },
+    {
+      "targetId": "basel-problem-oq-01-oq-02",
+      "relationship": "related",
+      "description": "The arithmetic-nature companion to this explicit evaluation: it proves every even zeta value ζ(2n) is irrational (indeed transcendental, being a rational multiple of π^{2n} as ζ(6) = π⁶/945 witnesses here) and records that the odd case ζ(2n+1) remains open — the transcendence remark this entry's historical context raises, stated as a general theorem."
+    },
+    {
+      "targetId": "basel-problem-oq-01-oq-01-oq-02",
+      "relationship": "related",
+      "description": "The odd-zeta counterpoint referenced in this entry's historical context: Apéry's 1978 proof that ζ(3) is irrational — the sole odd zeta value whose arithmetic nature is settled, in stark contrast to the fully-understood even values like this ζ(6) = π⁶/945."
     }
   ],
   "sorries": 0,
