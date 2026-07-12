@@ -390,6 +390,96 @@ theorem isSolvable_of_card_eq_pq (p q : ℕ) (hp : p.Prime) (hq : q.Prime)
   exact solvable_of_ker_le_range (N.subtype) (QuotientGroup.mk' N)
     (le_of_eq (by rw [QuotientGroup.ker_mk', Subgroup.range_subtype]))
 
+/-
+═══════════════════════════════════════════════════════════════════════════════
+PART VII: THE SYLOW p-SIDE — THE `q ≢ 1 (mod p)` REGIME
+
+Everything above pins down the *top* Sylow prime `q`: its Sylow subgroup is always
+normal for `|G| = p·q`.  The *bottom* prime `p` is more delicate — its Sylow count
+`n_p ≡ 1 (mod p)` divides `[G:P] = q`, so `n_p ∈ {1, q}`, and `n_p = q` is possible
+precisely when `q ≡ 1 (mod p)` (e.g. `S₃` of order `2·3` has three Sylow 2-subgroups
+since `3 ≡ 1 mod 2`).  Under the *complementary* arithmetic hypothesis `q ≢ 1 (mod p)`
+the value `n_p = q` is excluded and the Sylow p-subgroup becomes normal too.  Together
+with the (unconditional) normal Sylow q-subgroup this is exactly the input for the full
+classification "`|G| = p·q` with `q ≢ 1 (mod p)` ⟹ `G` cyclic": two coprime normal
+subgroups whose orders multiply to `|G|`.  This section formalises the p-side, the
+symmetric counterpart of Part VI.
+═══════════════════════════════════════════════════════════════════════════════ -/
+
+/-- Symmetric to `card_sylow_q_of_card_eq_pq`: in a group of order `p·q` with `p < q`
+    prime, the *bottom* prime `p` divides `|G|` to the first power only, so the Sylow
+    p-subgroup has order exactly `p`.  (From `sylow_card_eq`: `|P| = p^(vₚ(|G|))` and
+    `v_p(p·q) = 1` since `p ∤ q`, as `p < q` are distinct primes.) -/
+theorem card_sylow_p_of_card_eq_pq (p q : ℕ) (hp : p.Prime) (hq : q.Prime)
+    (hpq : p < q) (P : Sylow p G) (hG : Nat.card G = p * q) :
+    Nat.card P = p := by
+  haveI : Fact p.Prime := ⟨hp⟩
+  have hpnq : ¬ p ∣ q := fun hdvd =>
+    absurd ((Nat.prime_dvd_prime_iff_eq hp hq).mp hdvd) (ne_of_lt hpq)
+  have hfact : (Nat.card G).factorization p = 1 := by
+    rw [hG, Nat.factorization_mul hp.pos.ne' hq.pos.ne', Finsupp.add_apply,
+      hp.factorization_self, Nat.factorization_eq_zero_of_not_dvd hpnq, add_zero]
+  rw [sylow_card_eq, hfact, pow_one]
+
+/-- **The Sylow p-subgroup is normal when `q ≢ 1 (mod p)`** (`p < q` prime, `|G| = p·q`).
+    Symmetric counterpart of `sylow_q_normal_of_card_eq_pq` for the *bottom* prime.
+
+    Proof: `n_p ∣ [G:P]` and `[G:P] = q` (Lagrange, since `|P| = p`), so `n_p ∣ q`
+    and hence `n_p ∈ {1, q}` (`sylow_count_eq_one_or_prime`).  But `n_p ≡ 1 (mod p)`
+    (`sylow_count_mod_p`), so `n_p = q` would force `q ≡ 1 (mod p)`, excluded by the
+    hypothesis `q % p ≠ 1`.  Therefore `n_p = 1`, and `P` is normal by the normality
+    criterion (`sylow_normal_iff_card_eq_one`).  (The hypothesis is essential: `S₃` has
+    order `2·3` with `3 % 2 = 1`, and its Sylow 2-subgroups are *not* normal.) -/
+theorem sylow_p_normal_of_card_eq_pq (p q : ℕ) (hp : p.Prime) (hq : q.Prime)
+    (hpq : p < q) (hmod : q % p ≠ 1) (P : Sylow p G) (hG : Nat.card G = p * q) :
+    P.Normal := by
+  haveI : Fact p.Prime := ⟨hp⟩
+  -- The index [G : P] equals q (Lagrange with |P| = p).
+  have hcardP : Nat.card P.toSubgroup = p := card_sylow_p_of_card_eq_pq p q hp hq hpq P hG
+  have hidx : P.toSubgroup.index = q := by
+    have hlag := lagrange_index P.toSubgroup
+    rw [hcardP, hG] at hlag
+    exact (Nat.eq_of_mul_eq_mul_left hp.pos hlag).symm
+  -- n_p divides q.
+  have hdvd : Nat.card (Sylow p G) ∣ q := by
+    have h := sylow_count_dvd_index (G := G) p P
+    rwa [hidx] at h
+  -- n_p = 1 or n_p = q; the latter would give q ≡ 1 (mod p), excluded by hypothesis.
+  rcases sylow_count_eq_one_or_prime (G := G) p q hq hdvd with h1 | hqeq
+  · exact (sylow_normal_iff_card_eq_one (G := G) p P).mpr h1
+  · exfalso
+    have hm := sylow_count_mod_p (G := G) p
+    rw [hqeq] at hm
+    exact hmod hm
+
+/-- **The Sylow p-subgroup of a group of order `p·q` is unique** (`n_p = 1`) when
+    `q ≢ 1 (mod p)`.  Symmetric counterpart of `card_sylow_q_eq_one_of_card_eq_pq`:
+    immediate from p-side normality (`sylow_p_normal_of_card_eq_pq`) via the normality
+    criterion.  With both `n_p = 1` and `n_q = 1` the group has a unique subgroup of each
+    prime order — the counting input to the internal-direct-product decomposition. -/
+theorem card_sylow_p_eq_one_of_card_eq_pq (p q : ℕ) (hp : p.Prime) (hq : q.Prime)
+    (hpq : p < q) (hmod : q % p ≠ 1) (P : Sylow p G) (hG : Nat.card G = p * q) :
+    Nat.card (Sylow p G) = 1 := by
+  haveI : Fact p.Prime := ⟨hp⟩
+  exact (sylow_normal_iff_card_eq_one p P).mp
+    (sylow_p_normal_of_card_eq_pq p q hp hq hpq hmod P hG)
+
+/-- **A group of order `p·q` with `q ≢ 1 (mod p)` has a normal subgroup of order `p`.**
+    Existence form of `sylow_p_normal_of_card_eq_pq`, symmetric to
+    `exists_normal_subgroup_card_eq_pq`.  Combined with the unconditional normal subgroup of
+    order `q` (Part VI), the group possesses normal subgroups of *both* prime orders — two
+    coprime normal subgroups whose orders multiply to `|G|`.  This is exactly the hypothesis
+    package from which the internal direct product `G ≅ (ℤ/p) × (ℤ/q) ≅ ℤ/pq` follows, i.e.
+    the classification "`|G| = p·q`, `q ≢ 1 (mod p)` ⟹ `G` cyclic". -/
+theorem exists_normal_subgroup_card_eq_p_of_card_eq_pq (p q : ℕ) (hp : p.Prime)
+    (hq : q.Prime) (hpq : p < q) (hmod : q % p ≠ 1) (hG : Nat.card G = p * q) :
+    ∃ H : Subgroup G, H.Normal ∧ Nat.card H = p := by
+  haveI : Fact p.Prime := ⟨hp⟩
+  obtain ⟨P⟩ := sylow_exists (G := G) p
+  exact ⟨P.toSubgroup,
+    sylow_p_normal_of_card_eq_pq p q hp hq hpq hmod P hG,
+    card_sylow_p_of_card_eq_pq p q hp hq hpq P hG⟩
+
 end LagrangeOQ01
 
 /-
@@ -412,6 +502,10 @@ end LagrangeOQ01
   - Solvability capstone: groups of order p·q (p < q) are solvable (IsSolvable G) —
     the normal N (order q) and quotient G ⧸ N (order p) are both cyclic hence
     solvable, and solvability lifts along 1 → N → G → G ⧸ N → 1
+  - Sylow p-side (q ≢ 1 mod p regime): |P| = p, and when q ≢ 1 (mod p) the Sylow
+    p-subgroup is normal (n_p = 1) with a normal subgroup of order p — the symmetric
+    counterpart of the q-side and the coprime-normal-subgroup input for the full
+    "p·q with q ≢ 1 mod p ⟹ cyclic" classification
 
   **Status**: Verified, 0 sorries, 0 axioms
 -/
