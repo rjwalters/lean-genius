@@ -222,3 +222,50 @@ theory, Tao 2025, absent from Mathlib).
 **Files Modified:** proofs/Proofs/Erdos1038WIP01.lean (+2 thms; 747→772 lines). Gallery meta
 (`src/data/proofs/erdos-1038/meta.json`) tracks the 93-line stub `Erdos1038Problem.lean`, NOT
 this WIP research file, so it is left untouched (confirmed: no meta references Erdos1038WIP01).
+
+## Session 2026-07-12 (researcher-2) — the GENERAL faithful quadratic + exact degree-2 spectrum, degree-2 infimum = 2
+
+**Mode:** REVISIT (RICH, saturated re-serve of COMPLETED). **Outcome:** +12 decls
+(3 defs, 9 theorems), 0 axioms / 0 sorries, VERIFIED host lean 4.26.0
+(`#print axioms` = [propext, Classical.choice, Quot.sound] on all new results). File
+888→1094 lines.
+
+All prior quadratic work was on *special* families: the **centred** `X² − d` (roots `±√d`,
+symmetric about `0`) and the **clustered** `(X − c)^n` (single root, multiplicity `n`). The
+**general** monic real quadratic with two roots in `[-1,1]` — `(X − a)(X − b)` for arbitrary
+`a, b ∈ [-1,1]` — was never formalized. Completing the square
+`(X − a)(X − b) = (X − m)² − ((a−b)/2)²` (`m = (a+b)/2`) reduces it to the centred family
+shifted by `m`. Added:
+
+- `quadraticGen a b := (X − C a)(X − C b)`, with `quadraticGen_eval`, `quadraticGen_monic`,
+  `quadraticGen_natDegree` (= 2 via `compute_degree!`), and `quadraticGen_admissible'`
+  (faithful for `a,b ∈ [-1,1]`: `roots_mul` + `roots_X_sub_C` twice ⟹ roots `= {a,b}`,
+  card 2 = natDegree).
+- `sublevelMeasure_quadraticGen : sublevelMeasure (quadraticGen a b) = ofReal √((a−b)²+4)`
+  — **closed form for the ENTIRE degree-2 spectrum** in terms of root separation `|a−b|`
+  alone. Proof: sandwich `Ioo lo hi \ {m} ⊆ sublevelSet ⊆ Ioo lo hi` with
+  `lo,hi = (a+b ∓ s)/2`, `s = √((a−b)²+4)`; the centre `m` is punctured only when
+  `{a,b}={±1}` (measure-0, killed by `measure_diff_null (measure_singleton _)`). Equals `2`
+  at `a=b`, `2√2` at `{a,b}={−1,1}`. Re-derives the `X²−d` sweep without the `d<1` cutoff.
+- `sublevelMeasure_quadraticGen_ge_two` — proved *independently* (simpler length-2 punctured
+  interval `(m−1,m+1)\{m}`, no √) so the infimum result never depends on the exact formula.
+- `MonicRealRootedIn01Deg2` (= faithful ∧ natDegree = 2), `sublevelInfDeg2`, and
+  `two_le_sublevelMeasure_of_deg2` (every faithful deg-2 `f` factors as `(X−a)(X−b)` via
+  `prod_multiset_X_sub_C_of_monic_of_roots_card_eq` + `Multiset.card_eq_two`), giving
+  `sublevelInfDeg2_le_two` (double root `X²`) and **`sublevelInfDeg2_eq_two`** (exact).
+
+**Upshot:** the degree-2 slice of the extremal problem is now *completely* solved
+elementarily — exact per-polynomial measure AND the exact infimum `= 2`. This **sharply
+separates** the elementary degree-2 world from the conjectured true infimum
+`2^(4/3)−1 ≈ 1.52 < 2`: small-measure witnesses **provably cannot be quadratic**, they need
+degree → ∞ (unboundedly many distinct roots). The genuine open items (`sublevelSup'=2√2`
+upper bound, exact `sublevelInfPos = 2^(4/3)−1`) still need logarithmic potential theory
+(Tao 2025), untouched.
+
+**GOTCHAS:** (1) `simp only [Multiset.map_cons,...]` on a `{a,b}` literal makes NO progress —
+the literal is `insert a {b}`, must prepend `Multiset.insert_eq_cons`. (2) `0 < e^2` from
+`e ≠ 0`: `(sq_nonneg _).lt_of_ne (Ne.symm (pow_ne_zero 2 h))` (positivity can't read the hyp).
+(3) `measure_diff_null (measure_singleton _)` is the clean way to drop the punctured centre.
+
+**Files Modified:** proofs/Proofs/Erdos1038WIP01.lean (+12 decls; 888→1094 lines). Gallery
+meta untouched (still tracks the stub `Erdos1038Problem.lean`, not this WIP file).
