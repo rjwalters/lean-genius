@@ -30,6 +30,9 @@
 import Mathlib
 import Proofs.Erdos1039Problem
 
+/-- v4.31 migration compat: `Complex.abs` was removed from Mathlib in favor of `‖·‖`. -/
+noncomputable def Complex.abs (z : ℂ) : ℝ := ‖z‖
+
 namespace Erdos1039Aristotle
 
 open Erdos1039 Complex Metric

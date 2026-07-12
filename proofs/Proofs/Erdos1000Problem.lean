@@ -461,7 +461,7 @@ theorem densityRatio_complement (A : IncreasingSeq) (k : ℕ) :
     densityRatio A k = 1 - (usedSum A k : ℝ) / (A.seq k : ℝ) := by
   unfold densityRatio
   have hn : (A.seq k : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (A.pos k).ne'
-  rw [eq_sub_iff_add_eq, div_add_div_same, ← Nat.cast_add, phiA_add_usedSum]
+  rw [eq_sub_iff_add_eq, ← add_div, ← Nat.cast_add, phiA_add_usedSum]
   exact div_self hn
 
 /-- At most k divisors of n_k can be "used" — each maps to a unique j < k

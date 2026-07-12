@@ -304,3 +304,1674 @@ error: Proofs/Erdos990Problem.lean:60:35: Unknown identifier `arg`
 error: Proofs/Erdos990Problem.lean:60:54: Unknown identifier `π`
 error: Proofs/Erdos990Problem.lean:70:21: Unknown constant `Complex.abs`
 error: Proofs/Erdos990Problem.lean:74:12: Unknown constant `Complex.abs`
+===== ErdosMordellChordIdentity
+error: Proofs/ErdosMordellChordIdentity.lean:274:45: Unknown identifier `div_add_div_same`
+warning: Proofs/ErdosMordellChordIdentity.lean:334:10: This simp argument is unused:
+  finrank_euclideanSpace_fin
+error: Proofs/ErdosMordellChordIdentity.lean:397:45: Unknown identifier `div_add_div_same`
+error: Proofs/ErdosMordellChordIdentity.lean:552:4: `grind` failed
+case grind.1.1.1.1.2.1.1.2.1.1.1.1.1.2.1
+X Y Z P : EuclideanSpace ℝ (Fin 2)
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.ErdosMordellChordIdentity
+===== ErdosMordellInequalityOQ01
+error: Proofs/ErdosMordellChordIdentity.lean:274:45: Unknown identifier `div_add_div_same`
+warning: Proofs/ErdosMordellChordIdentity.lean:334:10: This simp argument is unused:
+  finrank_euclideanSpace_fin
+error: Proofs/ErdosMordellChordIdentity.lean:397:45: Unknown identifier `div_add_div_same`
+error: Proofs/ErdosMordellChordIdentity.lean:552:4: `grind` failed
+case grind.1.1.1.1.2.1.1.2.1.1.1.1.1.2.1
+X Y Z P : EuclideanSpace ℝ (Fin 2)
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.ErdosMordellChordIdentity
+===== ErdosRamseyLowerBound
+error: Proofs/ErdosRamseyLowerBound.lean:138:46: Application type mismatch: The argument
+  e
+has type
+error: Proofs/ErdosRamseyLowerBound.lean:141:70: Application type mismatch: The argument
+  Sym2.mk
+has type
+error: Proofs/ErdosRamseyLowerBound.lean:207:48: Application type mismatch: The argument
+  Sym2.mk (x, y)
+has type
+error: Proofs/ErdosRamseyLowerBound.lean:210:37: Application type mismatch: The argument
+  Sym2.mk (x, y)
+has type
+===== ETranscendentalOQ03OQ01
+error: Proofs/ETranscendentalOQ03OQ01.lean:47:45: Function expected at
+  of
+but this term has type
+error: Proofs/ETranscendentalOQ03OQ01.lean:48:10: Function expected at
+  of
+but this term has type
+error: Proofs/ETranscendentalOQ03OQ01.lean:48:33: Function expected at
+  of
+but this term has type
+error: Proofs/ETranscendentalOQ03OQ01.lean:49:46: Unknown identifier `n`
+error: Proofs/ETranscendentalOQ03OQ01.lean:51:25: Unknown identifier `n`
+error: Proofs/ETranscendentalOQ03OQ01.lean:51:45: Function expected at
+===== ETranscendentalOQ03Reduction
+error: Proofs/ETranscendentalOQ03Reduction.lean:76:11: Unknown constant `Real.tendsto_rpow_atTop`
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.ETranscendentalOQ03Reduction
+error: build failed
+===== EulerIdentityOQ01
+error: Proofs/EulerIdentityOQ01.lean:87:53: unsolved goals
+z : ℂ
+n : ℕ
+error: Proofs/EulerIdentityOQ01.lean:107:2: No goals to be solved
+error: Proofs/EulerIdentityOQ01.lean:131:7: Ambiguous term
+  cos
+Possible interpretations:
+error: Proofs/EulerIdentityOQ01.lean:139:7: Ambiguous term
+  sin
+Possible interpretations:
+===== EulerIdentityOQ01OQ02OQ01
+error: Proofs/EulerIdentityOQ01OQ02OQ01.lean:83:40: Type mismatch
+  z * I
+has type
+error: Proofs/EulerIdentityOQ01OQ02OQ01.lean:83:12: failed to synthesize instance of type class
+  NormedDivisionRing Type
+
+error: Proofs/EulerIdentityOQ01OQ02OQ01.lean:81:31: unsolved goals
+z : ℂ
+⊢ HasSum (fun k => (-1) ^ k * z ^ (2 * k) / ↑(2 * k)! + I * ((-1) ^ k * z ^ (2 * k + 1) / ↑(2 * k + 1)!))
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.EulerIdentityOQ01OQ02OQ01
+===== EulerPolyhedralFormula
+error: Proofs/EulerPolyhedralFormula.lean:979:4: linarith failed to find a contradiction
+case h1
+R : RegularPolyhedron
+error: Proofs/EulerPolyhedralFormula.lean:980:43: failed to prove strict positivity, but it would be possible to prove nonnegativity if desired
+error: Proofs/EulerPolyhedralFormula.lean:991:2: linarith failed to find a contradiction
+case h1
+R : RegularPolyhedron
+error: Proofs/EulerPolyhedralFormula.lean:1038:4: Tactic `subst` failed: invalid equality proof, it is not of the form (x = t) or (t = x)
+  R.p = 3
+
+===== EulerPolyhedralFormulaOQ01OQ02
+error: Proofs/EulerPolyhedralFormulaOQ01OQ02.lean:58:8: Unknown constant `SimpleGraph.Colorable.mk`
+error: Proofs/EulerPolyhedralFormulaOQ01OQ02.lean:64:8: Unknown constant `SimpleGraph.Colorable.mk`
+info: Proofs/EulerPolyhedralFormulaOQ01OQ02.lean:138:0: SimpleGraph.Colorable.{u} {V : Type u} (G : SimpleGraph V) (n : ℕ) : Prop
+info: Proofs/EulerPolyhedralFormulaOQ01OQ02.lean:139:0: SimpleGraph.Coloring.{u, v} {V : Type u} (G : SimpleGraph V) (α : Type v) : Type (max u v)
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.EulerPolyhedralFormulaOQ01OQ02
+error: build failed
+===== EulerPolyhedralOQ01OQ04
+error: Proofs/EulerPolyhedralOQ01OQ04.lean:79:10: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+
+V : Type u_1
+error: Proofs/EulerPolyhedralOQ01OQ04.lean:83:23: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+
+V : Type u_1
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.EulerPolyhedralOQ01OQ04
+error: build failed
+===== EulerTotientOQ01OQ01OQ01
+error: Proofs/EulerTotientOQ01OQ01OQ01.lean:62:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  carmichael (p ^ k)
+in the target expression
+error: Proofs/EulerTotientOQ01OQ01OQ01.lean:80:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  carmichael n
+in the target expression
+error: Proofs/EulerTotientOQ01OQ01OQ01.lean:114:38: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  carmichael (?m.23 * ?m.24)
+in the target expression
+error: Proofs/EulerTotientOQ01OQ01OQ01.lean:123:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  carmichael (?m.29 * ?m.30)
+in the target expression
+===== EulerTotientOQ01OQ02OQ01
+error: Proofs/EulerTotientOQ01OQ02OQ01.lean:72:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  carmichael (p ^ k)
+in the target expression
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.EulerTotientOQ01OQ02OQ01
+error: build failed
+===== EulerTotientOQ01OQ02OQ02
+error: Proofs/EulerTotientOQ01OQ02OQ02.lean:94:33: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Carmichael (2 ^ k)
+in the target expression
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.EulerTotientOQ01OQ02OQ02
+error: build failed
+===== EulerTotientOQ01OQ02OQ03
+error: Proofs/EulerTotientOQ01OQ02OQ03.lean:81:2: Type mismatch: After simplification, term
+  pow_dvd_pow 2
+    (have this := Decidable.byContradiction fun a => dvd4._proof_1_1 n a;
+error: Proofs/EulerTotientOQ01OQ02OQ03.lean:151:4: Function expected at
+  IsComplement'
+but this term has type
+error: Proofs/EulerTotientOQ01OQ02OQ03.lean:152:8: Unknown identifier `isComplement'_of_card_mul_and_disjoint`
+error: Proofs/EulerTotientOQ01OQ02OQ03.lean:153:2: No goals to be solved
+warning: Proofs/EulerTotientOQ01OQ02OQ03.lean:162:29: `ArithmeticFunction.Carmichael` has been deprecated: Use `ArithmeticFunction.carmichael` instead
+error: Proofs/EulerTotientOQ01OQ02OQ03.lean:164:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+===== EulerTotientOQ02OQ01
+error: Proofs/EulerTotientOQ02OQ01.lean:186:47: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ↑n / ↑n
+in the target expression
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.EulerTotientOQ02OQ01
+error: build failed
+===== EulerTotientOQ02OQ02OQ01
+error: Proofs/EulerTotientOQ02OQ02OQ01.lean:75:50: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ?a ^ carmichael ?m.28
+in the target expression
+error: Proofs/EulerTotientOQ02OQ02OQ01.lean:80:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  carmichael ?n
+in the target expression
+error: Proofs/EulerTotientOQ02OQ02OQ01.lean:100:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  carmichael ?n
+in the target expression
+error: Proofs/EulerTotientOQ02OQ02OQ01.lean:144:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  carmichael ?n
+in the target expression
+===== EulerTotientOQ06OQ02
+error: Proofs/EulerTotientOQ06OQ02.lean:99:26: Application type mismatch: The argument
+  Nat.Prime.ne_zero hp
+has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.EulerTotientOQ06OQ02
+error: build failed
+===== FactorRemainderNullstellensatzOQ01
+error: Proofs/FactorRemainderNullstellensatzOQ01.lean:35:20: failed to synthesize instance of type class
+  Field ↑↑I
+
+error: Proofs/FactorRemainderNullstellensatzOQ01.lean:36:2: failed to synthesize instance of type class
+  Finite σ
+
+error: Proofs/FactorRemainderNullstellensatzOQ01.lean:46:5: failed to synthesize instance of type class
+  Field ↑↑I
+
+error: Proofs/FactorRemainderNullstellensatzOQ01.lean:56:24: failed to synthesize instance of type class
+  Field ↑↑I
+
+===== FactorRemainderTheorem
+error: Proofs/FactorRemainderTheorem.lean:123:41: Application type mismatch: The argument
+  h
+has type
+error: Proofs/FactorRemainderTheorem.lean:121:55: unsolved goals
+R : Type u_1
+inst✝ : CommRing R
+error: Proofs/FactorRemainderTheorem.lean:158:26: unexpected token '('; expected ','
+info: Proofs/FactorRemainderTheorem.lean:254:0: FactorRemainderTheorem.factor_theorem.{u_1} {R : Type u_1} [CommRing R] (p : R[X]) (a : R) : X - C a ∣ p ↔ eval a p = 0
+info: Proofs/FactorRemainderTheorem.lean:255:0: FactorRemainderTheorem.remainder_theorem.{u_1} {R : Type u_1} [CommRing R] (p : R[X]) (a : R) :
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.FactorRemainderTheorem
+===== FactorRemainderTheoremOQ01OQ01OQ02
+error: Proofs/FactorRemainderTheoremOQ01OQ01OQ02.lean:92:84: `simp` made no progress
+error: Proofs/FactorRemainderTheoremOQ01OQ01OQ02.lean:152:51: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 0
+error: Proofs/FactorRemainderTheoremOQ01OQ01OQ02.lean:159:51: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 0
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.FactorRemainderTheoremOQ01OQ01OQ02
+===== FactorRemainderTheoremOQ02
+error: Proofs/FactorRemainderTheoremOQ02.lean:58:27: Function expected at
+  IsInteger
+but this term has type
+error: Proofs/FactorRemainderTheoremOQ02.lean:71:44: unsolved goals
+f : ℤ[X]
+r : ℚ
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.FactorRemainderTheoremOQ02
+error: build failed
+===== FairGamesTheoremOQ02
+error: Proofs/FairGamesTheoremOQ02.lean:19:5: unknown namespace `FairGamesOQ01`
+error: Proofs/FairGamesTheoremOQ02.lean:29:29: invalid {...} notation, expected type is not of the form (C ...)
+  GamblersRuin
+error: Proofs/FairGamesTheoremOQ02.lean:37:29: Function expected at
+  ruinProbWin
+but this term has type
+error: Proofs/FairGamesTheoremOQ02.lean:38:8: Invalid argument: Variable `ruinProbWin` is not a proposition or let-declaration
+error: Proofs/FairGamesTheoremOQ02.lean:37:62: unsolved goals
+x✝ : Sort u_1
+===== FairGamesTheoremOQ02OQ01
+error: Proofs/FairGamesTheoremOQ03.lean:153:44: Function expected at
+  zero_le
+but this term has type
+error: Proofs/FairGamesTheoremOQ03.lean:156:44: Function expected at
+  zero_le
+but this term has type
+error: Proofs/FairGamesTheoremOQ03.lean:158:2: linarith failed to find a contradiction
+case h1
+Ω : Type u_1
+error: Proofs/FairGamesTheoremOQ03.lean:236:51: Application type mismatch: The argument
+  hadapt
+has type
+===== FairGamesTheoremOQ02OQ01OQ01
+error: Proofs/FairGamesTheoremOQ03.lean:153:44: Function expected at
+  zero_le
+but this term has type
+error: Proofs/FairGamesTheoremOQ03.lean:156:44: Function expected at
+  zero_le
+but this term has type
+error: Proofs/FairGamesTheoremOQ03.lean:158:2: linarith failed to find a contradiction
+case h1
+Ω : Type u_1
+error: Proofs/FairGamesTheoremOQ03.lean:236:51: Application type mismatch: The argument
+  hadapt
+has type
+===== FairGamesTheoremOQ03
+error: Proofs/FairGamesTheoremOQ03.lean:153:44: Function expected at
+  zero_le
+but this term has type
+error: Proofs/FairGamesTheoremOQ03.lean:156:44: Function expected at
+  zero_le
+but this term has type
+error: Proofs/FairGamesTheoremOQ03.lean:158:2: linarith failed to find a contradiction
+case h1
+Ω : Type u_1
+error: Proofs/FairGamesTheoremOQ03.lean:236:51: Application type mismatch: The argument
+  hadapt
+has type
+===== FatouLemmaOQ01OQ02
+error: Proofs/FatouLemmaOQ01OQ02.lean:90:10: Function expected at
+  zero_le
+but this term has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.FatouLemmaOQ01OQ02
+error: build failed
+===== FermatTwoSquaresOQ04
+error: Proofs/FermatTwoSquaresOQ04.lean:150:4: Type mismatch: After simplification, term
+  prod_nonneg fun p hp => jacobiSum_prime_pow_nonneg (Nat.prime_of_mem_primeFactors hp) (n.factorization p)
+ has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.FermatTwoSquaresOQ04
+error: build failed
+===== FermatTwoSquaresOQ04OQ01
+error: Proofs/FermatTwoSquaresOQ04.lean:150:4: Type mismatch: After simplification, term
+  prod_nonneg fun p hp => jacobiSum_prime_pow_nonneg (Nat.prime_of_mem_primeFactors hp) (n.factorization p)
+ has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.FermatTwoSquaresOQ04
+error: build failed
+===== FeuerbachsTheoremDefsOQ04
+error: Proofs/FeuerbachsTheoremDefsOQ04.lean:64:58: Type mismatch
+  ![P.1, P.2]
+has type
+error: Proofs/FeuerbachsTheoremDefsOQ04.lean:73:56: unsolved goals
+P Q : Point
+⊢ (sorry - sorry).ofLp 0 ^ 2 + (sorry - sorry).ofLp 1 ^ 2 =
+error: Proofs/FeuerbachsTheoremDefsOQ04.lean:86:71: unsolved goals
+P C : Point
+r : ℝ
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.FeuerbachsTheoremDefsOQ04
+===== FeuerbachsTheoremOQ01Aristotle
+error: Proofs/FeuerbachsTheoremOQ01Aristotle.lean:27:36: unexpected token 'set_option'; expected 'lemma'
+error: Proofs/FeuerbachsTheoremOQ01Aristotle.lean:48:36: unexpected token 'set_option'; expected 'lemma'
+warning: Proofs/FeuerbachsTheoremOQ01Aristotle.lean:134:2: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+error: Proofs/FeuerbachsTheoremOQ01Aristotle.lean:144:30: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ?a * 0
+in the target expression
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.FeuerbachsTheoremOQ01Aristotle
+===== FeuerbachsTheoremOQ01OQ03
+error: Proofs/FeuerbachsTheoremOQ01OQ03.lean:62:10: Insufficient number of fields for `⟨...⟩` constructor: Constructor `Eq.refl` does not have explicit fields, but 2 were provided
+error: Proofs/FeuerbachsTheoremOQ01OQ03.lean:64:27: Unknown identifier `h1`
+error: Proofs/FeuerbachsTheoremOQ01OQ03.lean:64:31: Unknown identifier `h2`
+warning: Proofs/FeuerbachsTheoremOQ01OQ03.lean:59:21: This simp argument is unused:
+  Prod.mk.injEq
+error: Proofs/FeuerbachsTheoremOQ01OQ03.lean:81:75: No goals to be solved
+error: Proofs/FeuerbachsTheoremOQ01OQ03.lean:88:8: Insufficient number of fields for `⟨...⟩` constructor: Constructor `Eq.refl` does not have explicit fields, but 2 were provided
+error: Proofs/FeuerbachsTheoremOQ01OQ03.lean:93:57: No goals to be solved
+===== FeuerbachsTheoremOQ04TangentLine
+error: Proofs/FeuerbachsTheoremOQ04TangentLine.lean:166:62: unsolved goals
+E : Type u_1
+inst✝¹ : NormedAddCommGroup E
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.FeuerbachsTheoremOQ04TangentLine
+error: build failed
+===== FeuerbachsTheoremOQ05
+error: Proofs/FeuerbachsTheoremOQ05.lean:86:31: Invalid field `feuerbachPoint`: The environment does not contain `FeuerbachsTheorem.Triangle.feuerbachPoint`, so it is not possible to project the field `feuerbachPoint` from an expression
+  T
+of type `Triangle`
+error: Proofs/FeuerbachsTheoremOQ05.lean:104:24: Invalid field `feuerbachPoint`: The environment does not contain `FeuerbachsTheorem.Triangle.feuerbachPoint`, so it is not possible to project the field `feuerbachPoint` from an expression
+  T
+of type `Triangle`
+error: Proofs/FeuerbachsTheoremOQ05.lean:162:7: invalid 'calc' step, left-hand side is
+  2 * (k ^ 2 / dist2_sq O P * (P.1 - O.1) * (C.1 - O.1) + k ^ 2 / dist2_sq O P * (P.2 - O.2) * (C.2 - O.2)) : ℝ
+but is expected to be
+error: Proofs/FeuerbachsTheoremOQ05.lean:178:25: Invalid field `feuerbachPoint`: The environment does not contain `FeuerbachsTheorem.Triangle.feuerbachPoint`, so it is not possible to project the field `feuerbachPoint` from an expression
+  T
+of type `Triangle`
+===== FibonacciIdentitiesOQ02
+error: Proofs/FibonacciIdentitiesOQ02.lean:75:6: Type mismatch: After simplification, term
+  this
+ has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.FibonacciIdentitiesOQ02
+error: build failed
+===== FibonacciIdentitiesOQ02OQ02PrimeIndex
+error: Proofs/FibonacciIdentitiesOQ02OQ02PrimeIndex.lean:72:4: Type mismatch: After simplification, term
+  this
+ has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.FibonacciIdentitiesOQ02OQ02PrimeIndex
+error: build failed
+===== FiveColorTheorem
+error: Proofs/FiveColorTheorem.lean:225:38: Function expected at
+  G.symm
+but this term has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.FiveColorTheorem
+error: build failed
+===== FourierSeriesOQ02
+error: Proofs/FourierSeriesOQ02Incomplete01.lean:128:30: No applicable extensionality theorem found for type
+  AddCommMonoid ℝ
+
+error: Proofs/FourierSeriesOQ02Incomplete01.lean:131:30: No applicable extensionality theorem found for type
+  AddCommMonoid ℝ
+
+error: Proofs/FourierSeriesOQ02Incomplete01.lean:356:2: `simp` made no progress
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.FourierSeriesOQ02Incomplete01
+===== FourierSeriesOQ02Incomplete01
+error: Proofs/FourierSeriesOQ02Incomplete01.lean:128:30: No applicable extensionality theorem found for type
+  AddCommMonoid ℝ
+
+error: Proofs/FourierSeriesOQ02Incomplete01.lean:131:30: No applicable extensionality theorem found for type
+  AddCommMonoid ℝ
+
+error: Proofs/FourierSeriesOQ02Incomplete01.lean:356:2: `simp` made no progress
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.FourierSeriesOQ02Incomplete01
+===== FourierSeriesOQ02OQ02
+error: Proofs/FourierSeriesOQ02Incomplete01.lean:128:30: No applicable extensionality theorem found for type
+  AddCommMonoid ℝ
+
+error: Proofs/FourierSeriesOQ02Incomplete01.lean:131:30: No applicable extensionality theorem found for type
+  AddCommMonoid ℝ
+
+error: Proofs/FourierSeriesOQ02Incomplete01.lean:356:2: `simp` made no progress
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.FourierSeriesOQ02Incomplete01
+===== FourierSeriesOQ02OQ03OQ02
+error: Proofs/FourierSeriesOQ02OQ03OQ02.lean:120:8: Unknown constant `Real.exp_le_one_of_nonpos`
+error: Proofs/FourierSeriesOQ02OQ03OQ02.lean:121:2: No goals to be solved
+error: Proofs/FourierSeriesOQ02OQ03OQ02.lean:132:38: typeclass instance problem is stuck
+  CharZero ?m.92
+
+error: Proofs/FourierSeriesOQ02OQ03OQ02.lean:141:28: failed to prove positivity/nonnegativity/nonzeroness
+error: Proofs/FourierSeriesOQ02OQ03OQ02.lean:176:62: typeclass instance problem is stuck
+  Fact (0 < ?m.102)
+===== FourierSeriesOQ02OQ03WIP01
+error: Proofs/FourierSeriesOQ02Incomplete01.lean:128:30: No applicable extensionality theorem found for type
+  AddCommMonoid ℝ
+
+error: Proofs/FourierSeriesOQ02Incomplete01.lean:131:30: No applicable extensionality theorem found for type
+  AddCommMonoid ℝ
+
+error: Proofs/FourierSeriesOQ02Incomplete01.lean:356:2: `simp` made no progress
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.FourierSeriesOQ02Incomplete01
+===== FourierSeriesOQ02OQ04
+error: Proofs/FourierSeriesOQ02Incomplete01.lean:128:30: No applicable extensionality theorem found for type
+  AddCommMonoid ℝ
+
+error: Proofs/FourierSeriesOQ02Incomplete01.lean:131:30: No applicable extensionality theorem found for type
+  AddCommMonoid ℝ
+
+error: Proofs/FourierSeriesOQ02Incomplete01.lean:356:2: `simp` made no progress
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.FourierSeriesOQ02Incomplete01
+===== FourierSeriesOQ04OQ01
+error: Proofs/FourierSeriesOQ04OQ01.lean:554:14: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ↑↑(UnitAddTorus.mFourierCoeff (↑↑fhat) k • UnitAddTorus.mFourierLp 2 k) x
+in the target expression
+Full error:
+  Application type mismatch: The argument
+    UnitAddTorus.mFourierCoeff (↑↑fhat) k • UnitAddTorus.mFourierLp 2 k
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.FourierSeriesOQ04OQ01
+error: build failed
+===== FourierSeriesOQ04OQ01Incomplete01
+error: Proofs/FourierSeriesOQ04OQ01.lean:554:14: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ↑↑(UnitAddTorus.mFourierCoeff (↑↑fhat) k • UnitAddTorus.mFourierLp 2 k) x
+in the target expression
+Full error:
+  Application type mismatch: The argument
+    UnitAddTorus.mFourierCoeff (↑↑fhat) k • UnitAddTorus.mFourierLp 2 k
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.FourierSeriesOQ04OQ01
+error: build failed
+===== FourSquareDistributionOQ01
+error: Proofs/FourSquareDistributionOQ01.lean:2661:48: unsolved goals
+v : Fin 4 → ℤ
+i : Fin 4
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.FourSquareDistributionOQ01
+error: build failed
+===== FourthRoot2Degree4OQ02
+error: Proofs/FourthRoot2Degree4OQ02.lean:154:22: expected token
+error: Proofs/FourthRoot2Degree4OQ02.lean:205:49: expected token
+error: Proofs/FourthRoot2Degree4OQ02.lean:220:47: expected token
+info: Proofs/FourthRoot2Degree4OQ02.lean:231:0: 'FourthRoot2Degree4OQ02.irreducible_X_pow_sub_C_int' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Proofs/FourthRoot2Degree4OQ02.lean:232:0: 'FourthRoot2Degree4OQ02.irreducible_X_pow_sub_C_rat' depends on axioms: [propext, Classical.choice, Quot.sound]
+error: Proofs/FourthRoot2Degree4OQ02.lean:233:14: Unknown constant `FourthRoot2Degree4OQ02.finrank_adjoin_eq`
+error: Proofs/FourthRoot2Degree4OQ02.lean:234:14: Unknown constant `FourthRoot2Degree4OQ02.finrank_adjoin_fr2`
+error: Proofs/FourthRoot2Degree4OQ02.lean:235:14: Unknown constant `FourthRoot2Degree4OQ02.finrank_adjoin_sqrt2`
+===== FourthRoot2SplittingFieldOQ01
+error: Proofs/InverseGaloisD4.lean:60:5: failed to synthesize instance of type class
+  IsCyclotomicExtension {p} ℚ (CyclotomicField p ℚ)
+
+error: Proofs/InverseGaloisD4.lean:63:6: failed to synthesize
+  Fintype (ZMod ?n)ˣ
+
+error: Proofs/InverseGaloisD4.lean:70:5: failed to synthesize instance of type class
+  IsCyclotomicExtension {p} ℚ (CyclotomicField p ℚ)
+
+error: Proofs/InverseGaloisD4.lean:67:48: unsolved goals
+p : ℕ
+hp : Fact (Nat.Prime p)
+===== FriendshipTheorem
+error: Proofs/FriendshipTheoremOQ01.lean:106:8: Function expected at
+  G.loopless
+but this term has type
+error: Proofs/FriendshipTheoremOQ01.lean:114:8: Function expected at
+  G.loopless
+but this term has type
+error: Proofs/FriendshipTheoremOQ01.lean:404:37: Function expected at
+  G.loopless
+but this term has type
+error: Proofs/FriendshipTheoremOQ01.lean:607:11: Function expected at
+  G.loopless
+but this term has type
+===== FriendshipTheoremOQ01
+error: Proofs/FriendshipTheoremOQ01.lean:106:8: Function expected at
+  G.loopless
+but this term has type
+error: Proofs/FriendshipTheoremOQ01.lean:114:8: Function expected at
+  G.loopless
+but this term has type
+error: Proofs/FriendshipTheoremOQ01.lean:404:37: Function expected at
+  G.loopless
+but this term has type
+error: Proofs/FriendshipTheoremOQ01.lean:607:11: Function expected at
+  G.loopless
+but this term has type
+===== FriendshipTheoremOQ01OQ02
+error: Proofs/FriendshipTheoremOQ01OQ02.lean:97:50: unsolved goals
+V : Type u
+R : Type v
+error: Proofs/FriendshipTheoremOQ01OQ02.lean:130:56: Function expected at
+  G.symm
+but this term has type
+error: Proofs/FriendshipTheoremOQ01OQ02.lean:127:87: unsolved goals
+V : Type u
+inst✝ : Fintype V
+error: Proofs/FriendshipTheoremOQ01OQ02.lean:188:45: Function expected at
+  G.symm
+but this term has type
+===== FriendshipTheoremOQ04
+error: Proofs/FriendshipTheoremOQ01.lean:106:8: Function expected at
+  G.loopless
+but this term has type
+error: Proofs/FriendshipTheoremOQ01.lean:114:8: Function expected at
+  G.loopless
+but this term has type
+error: Proofs/FriendshipTheoremOQ01.lean:404:37: Function expected at
+  G.loopless
+but this term has type
+error: Proofs/FriendshipTheoremOQ01.lean:607:11: Function expected at
+  G.loopless
+but this term has type
+===== FriendshipTheoremOQ04Amalgam
+error: Proofs/FriendshipTheoremOQ04Amalgam.lean:93:10: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+
+V : Type u_1
+error: Proofs/FriendshipTheoremOQ04Amalgam.lean:96:10: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+
+V : Type u_1
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.FriendshipTheoremOQ04Amalgam
+error: build failed
+===== FriendshipTheoremOQ04Universal
+error: Proofs/FriendshipTheoremOQ01.lean:106:8: Function expected at
+  G.loopless
+but this term has type
+error: Proofs/FriendshipTheoremOQ01.lean:114:8: Function expected at
+  G.loopless
+but this term has type
+error: Proofs/FriendshipTheoremOQ01.lean:404:37: Function expected at
+  G.loopless
+but this term has type
+error: Proofs/FriendshipTheoremOQ01.lean:607:11: Function expected at
+  G.loopless
+but this term has type
+===== FrobeniusNumberOQ01
+error: Proofs/FrobeniusNumberOQ01.lean:69:30: Application type mismatch: The argument
+  hka
+has type
+error: Proofs/FrobeniusNumberOQ01.lean:76:67: No goals to be solved
+error: Proofs/FrobeniusNumberOQ01.lean:76:25: unsolved goals
+a b : ℕ
+hab : a.Coprime b
+error: Proofs/FrobeniusNumberOQ01.lean:88:65: linarith failed to find a contradiction
+a b : ℕ
+hab : a.Coprime b
+===== FundamentalArithmetic
+error: Proofs/FundamentalArithmetic.lean:78:23: Invalid field `Sorted`: The environment does not contain `List.Sorted`, so it is not possible to project the field `Sorted` from an expression
+  n.primeFactorsList
+of type `List ℕ`
+error: Proofs/FundamentalArithmetic.lean:121:8: Invalid field `Sorted`: The environment does not contain `List.Sorted`, so it is not possible to project the field `Sorted` from an expression
+  l
+of type `List ℕ`
+error: Proofs/FundamentalArithmetic.lean:170:36: Invalid field `Sorted`: The environment does not contain `List.Sorted`, so it is not possible to project the field `Sorted` from an expression
+  Nat.primeFactorsList 60
+of type `List ℕ`
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.FundamentalArithmetic
+===== FundamentalArithmeticOQ01
+error: Proofs/FundamentalArithmeticOQ01.lean:54:2: Unknown constant `Nat.coprime_iff_disjoint.mp`
+warning: Proofs/FundamentalArithmeticOQ01.lean:61:2: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+error: Proofs/FundamentalArithmeticOQ01.lean:64:8: Application type mismatch: The argument
+  factorization_disjoint_of_coprime m n hcop
+has type
+error: Proofs/FundamentalArithmeticOQ01.lean:104:27: Type mismatch
+  List.map Nat.factorization l
+has type
+error: Proofs/FundamentalArithmeticOQ01.lean:106:8: unsolved goals
+case nil
+hpos : ∀ x ∈ [], x ≠ 0
+===== FundamentalArithmeticOQ02
+error: Proofs/FundamentalArithmeticOQ02.lean:42:21: Unknown constant `Zsqrtd.mul_def`
+info: Proofs/FundamentalArithmeticOQ02.lean:43:2: Try this:
+  [apply] ring_nf
+error: Proofs/FundamentalArithmeticOQ02.lean:41:76: unsolved goals
+z w : ℤ√(-5)
+⊢ (z * w).re ^ 2 + (z * w).im ^ 2 * 5 =
+error: Proofs/FundamentalArithmeticOQ02.lean:49:59: Application type mismatch: The argument
+  u
+has type
+error: Proofs/FundamentalArithmeticOQ02.lean:46:79: unsolved goals
+u : (ℤ√(-5))ˣ
+h : normZ5 (↑u * u.inv) = normZ5 ↑u * normZ5 u.inv
+===== FundamentalTheoremAlgebra
+error: Proofs/FundamentalTheoremAlgebra.lean:116:41: Function expected at
+  Splits ?m.5
+but this term has type
+error: Proofs/FundamentalTheoremAlgebra.lean:116:48: Application type mismatch: The argument
+  RingHom.id ℂ
+has type
+error: Proofs/FundamentalTheoremAlgebra.lean:135:16: Function expected at
+  Splits ?m.16
+but this term has type
+error: Proofs/FundamentalTheoremAlgebra.lean:135:23: Application type mismatch: The argument
+  RingHom.id ℂ
+has type
+===== FundamentalTheoremAlgebraOQ04OQ03OQ01OQ01
+error: Proofs/FundamentalTheoremAlgebraOQ04OQ03OQ01OQ01.lean:109:2: invalid `▸` notation, failed to compute motive for the substitution
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.FundamentalTheoremAlgebraOQ04OQ03OQ01OQ01
+error: build failed
+===== FundamentalTheoremAlgebraOQ04OQ03OQ01OQ02
+error: Proofs/FundamentalTheoremAlgebraOQ04OQ03OQ01OQ02.lean:96:2: invalid `▸` notation, failed to compute motive for the substitution
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.FundamentalTheoremAlgebraOQ04OQ03OQ01OQ02
+error: build failed
+===== FundamentalTheoremAlgebraOQ04OQ04
+error: Proofs/FundamentalTheoremAlgebraOQ04OQ04.lean:127:32: `simp` made no progress
+warning: Proofs/FundamentalTheoremAlgebraOQ04OQ04.lean:125:10: This simp argument is unused:
+  natDegree_C
+error: Proofs/FundamentalTheoremAlgebraOQ04OQ04.lean:185:47: unexpected token '('; expected ')'
+error: Proofs/FundamentalTheoremAlgebraOQ04OQ04.lean:191:47: unexpected token '('; expected ')'
+error: Proofs/FundamentalTheoremAlgebraOQ04OQ04.lean:201:65: unexpected token '('; expected ')'
+info: Proofs/FundamentalTheoremAlgebraOQ04OQ04.lean:211:0: PadicAlgClosureContrast.real_complex_finrank : Module.finrank ℝ ℂ = 2
+info: Proofs/FundamentalTheoremAlgebraOQ04OQ04.lean:212:0: @PadicAlgClosureContrast.padic_root_extension_finrank : ∀ {p : ℕ} [inst : Fact (Nat.Prime p)] (n : ℕ),
+===== FundamentalTheoremCalculus
+error: Proofs/FundamentalTheoremCalculus.lean:69:2: Unknown identifier `integral_hasDerivAt_right`
+error: Proofs/FundamentalTheoremCalculus.lean:97:2: Unknown identifier `integral_eq_sub_of_hasDerivAt_of_le`
+error: Proofs/FundamentalTheoremCalculus.lean:105:2: Unknown identifier `integral_eq_sub_of_hasDeriv_right`
+info: Proofs/FundamentalTheoremCalculus.lean:162:0: FundamentalTheoremCalculus.ftc_part1 {f : ℝ → ℝ} {a b : ℝ} (hf_cont : ContinuousAt f b)
+  (hf_int : IntervalIntegrable f volume a b) (hf_meas : StronglyMeasurableAtFilter f (𝓝 b) volume) :
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.FundamentalTheoremCalculus
+===== FundamentalTheoremCalculusOQ04
+error: Proofs/FundamentalTheoremCalculusOQ04.lean:120:9: Unknown identifier `is_const_of_deriv_eq_zero`
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.FundamentalTheoremCalculusOQ04
+error: build failed
+===== FundamentalTheoremCalculusStokes
+error: Proofs/FundamentalTheoremCalculusStokes.lean:110:8: typeclass instance problem is stuck
+  NormedSpace ℝ ?m.7
+
+error: Proofs/FundamentalTheoremCalculusStokes.lean:213:27: Application type mismatch: The argument
+  le_rfl
+has type
+error: Proofs/FundamentalTheoremCalculusStokes.lean:217:51: Function expected at
+  hasFDerivAt_id ℝ
+but this term has type
+error: Proofs/FundamentalTheoremCalculusStokes.lean:217:24: Application type mismatch: The argument
+  hasFDerivAt_const p.2 x
+has type
+===== FundamentalTheoremCalculusStokesAristotle
+error: Proofs/FundamentalTheoremCalculusStokesAristotle.lean:63:27: Application type mismatch: The argument
+  le_rfl
+has type
+error: Proofs/FundamentalTheoremCalculusStokesAristotle.lean:68:51: Function expected at
+  hasFDerivAt_id ℝ
+but this term has type
+error: Proofs/FundamentalTheoremCalculusStokesAristotle.lean:68:24: Application type mismatch: The argument
+  hasFDerivAt_const p.2 x
+has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.FundamentalTheoremCalculusStokesAristotle
+===== FurstenbergCorrespondence
+error: Proofs/FurstenbergCorrespondence.lean:56:15: failed to synthesize instance of type class
+  DecidablePred fun x => x ∈ A
+
+error: Proofs/FurstenbergCorrespondence.lean:166:16: failed to infer universe levels in `have` declaration type
+  DFunLike.coe.{?u.29 + 1, ?u.29 + 1, 1} (System.μ.{?u.29} sys) (System.B.{?u.29} sys) ≠ 0
+error: Proofs/FurstenbergCorrespondence.lean:230:4: Type mismatch
+  hreturnk k n hk hn_pos hn_meas
+has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.FurstenbergCorrespondence
+===== FurstenbergCorrespondenceOQ02
+error: Proofs/FurstenbergCorrespondenceOQ02.lean:91:5: Invalid field `preErgodic`: The environment does not contain `Ergodic.preErgodic`, so it is not possible to project the field `preErgodic` from an expression
+  hE
+of type `Ergodic T μ`
+error: Proofs/FurstenbergCorrespondenceOQ02.lean:145:5: Invalid field `rnDeriv_comp_eq`: The environment does not contain `MeasureTheory.MeasurePreserving.rnDeriv_comp_eq`, so it is not possible to project the field `rnDeriv_comp_eq` from an expression
+  hμ
+of type `MeasurePreserving T μ μ`
+error: Proofs/FurstenbergCorrespondenceOQ02.lean:162:5: Invalid field `ae_eq_const`: The environment does not contain `Ergodic.ae_eq_const`, so it is not possible to project the field `ae_eq_const` from an expression
+  hE
+of type `Ergodic T μ`
+error: Proofs/FurstenbergCorrespondenceOQ02.lean:214:23: unexpected token '⟨'; expected structInstFieldDecl
+error: Proofs/FurstenbergCorrespondenceOQ02.lean:230:14: Invalid projection: Projection operates on types of the form `C ...` where C is a constant. The expression
+  hs
+===== GCDAlgorithmOQ01OQ03OQ01
+error: Proofs/GCDAlgorithmOQ01OQ03OQ01.lean:156:19: Type mismatch: After simplification, term
+  hb
+ has type
+error: Proofs/GCDAlgorithmOQ01OQ03OQ01.lean:158:8: Type mismatch: After simplification, term
+  this
+ has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.GCDAlgorithmOQ01OQ03OQ01
+error: build failed
+===== GCDAlgorithmOQ01OQ03OQ01OQ01
+error: Proofs/GCDAlgorithmOQ01OQ03OQ01.lean:156:19: Type mismatch: After simplification, term
+  hb
+ has type
+error: Proofs/GCDAlgorithmOQ01OQ03OQ01.lean:158:8: Type mismatch: After simplification, term
+  this
+ has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.GCDAlgorithmOQ01OQ03OQ01
+error: build failed
+===== GcdAlgorithmOQ02
+error: Proofs/GcdAlgorithmOQ02.lean:41:35: Application type mismatch: The argument
+  h1
+has type
+error: Proofs/GcdAlgorithmOQ02.lean:51:58: Application type mismatch: The argument
+  hb
+has type
+error: Proofs/GcdAlgorithmOQ02.lean:52:2: Type mismatch
+  Eq.symm (Nat.Coprime.gcd_mul_left_cancel a hcop)
+has type
+error: Proofs/GcdAlgorithmOQ02.lean:95:17: Unknown identifier `a`
+error: Proofs/GcdAlgorithmOQ02.lean:113:47: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+===== GcdAlgorithmOQ02OQ01
+error: Proofs/GcdAlgorithmOQ02OQ01.lean:103:4: Type mismatch: After simplification, term
+  size_pos.mpr h
+ has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.GcdAlgorithmOQ02OQ01
+error: build failed
+===== GeneralQuartic
+error: Proofs/GeneralQuartic.lean:361:4: `simp` made no progress
+warning: Proofs/GeneralQuartic.lean:354:15: This simp argument is unused:
+  quarticPoly
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.GeneralQuartic
+error: build failed
+===== GeneralQuarticAxiomsDischarge
+error: Proofs/GeneralQuartic.lean:361:4: `simp` made no progress
+warning: Proofs/GeneralQuartic.lean:354:15: This simp argument is unused:
+  quarticPoly
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.GeneralQuartic
+error: build failed
+===== GeometricSeriesOQ02OQ03
+error: Proofs/GeometricSeriesOQ02OQ03.lean:59:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ↑u⁻¹ * (A - B)
+in the target expression
+error: Proofs/GeometricSeriesOQ02OQ03.lean:82:36: `ring_nf` made no progress on the goal
+error: Proofs/GeometricSeriesOQ02OQ03.lean:143:14: Unknown identifier `inv_anti_of_pos`
+error: Proofs/GeometricSeriesOQ02OQ03.lean:144:8: No goals to be solved
+error: Proofs/GeometricSeriesOQ02OQ03.lean:153:2: Type mismatch
+  right_inverse_identity (1 - B) hB
+===== GeometricSeriesOQ07
+error: Proofs/GeometricSeriesOQ07.lean:119:2: `field_simp` made no progress on the goal
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.GeometricSeriesOQ07
+error: build failed
+===== GeometricSeriesOQ07OQ01OQ01OQ01OQ06OQ01
+error: Proofs/GeometricSeriesOQ07OQ01OQ01OQ01OQ06OQ01.lean:70:31: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Ico ?m.138 ?m.139 ∪ Ico ?m.139 ?m.140
+in the target expression
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.GeometricSeriesOQ07OQ01OQ01OQ01OQ06OQ01
+error: build failed
+===== GeometricSeriesOQ07OQ02
+error: Proofs/GeometricSeriesOQ07.lean:119:2: `field_simp` made no progress on the goal
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.GeometricSeriesOQ07
+error: build failed
+===== GeometricSeriesOQ10
+error: Proofs/GeometricSeriesOQ10.lean:148:2: `field_simp` made no progress on the goal
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.GeometricSeriesOQ10
+error: build failed
+===== GraphCore
+error: Proofs/GraphCore.lean:74:16: Function expected at
+  G.symm
+but this term has type
+error: Proofs/GraphCore.lean:75:18: Function expected at
+  G.loopless
+but this term has type
+error: Proofs/GraphCore.lean:146:58: Application type mismatch: The argument
+  hadj
+has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.GraphCore
+===== GreensTheoremOQ01OQ01OQ01OQ01
+error: Proofs/GreensTheoremOQ01OQ01OQ01OQ01.lean:466:10: unsolved goals
+case succ.one
+n : ℕ
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.GreensTheoremOQ01OQ01OQ01OQ01
+error: build failed
+===== GreensTheoremOQ01OQ01OQ02OQ03
+error: Proofs/GreensTheoremOQ01OQ01OQ02OQ03.lean:70:15: failed to synthesize instance of type class
+  MeasurableSpace E
+
+error: Proofs/GreensTheoremOQ01OQ01OQ02OQ03.lean:79:25: Unknown constant `MeasureTheory.Measure.prod_mono`
+warning: Proofs/GreensTheoremOQ01OQ01OQ02OQ03.lean:88:8: automatically included section variable(s) unused in theorem `_private.Proofs.GreensTheoremOQ01OQ01OQ02OQ03.0.GreensTheoremOQ01OQ01OQ02OQ03.flip_bounds_E`:
+  [CompleteSpace E]
+error: Proofs/GreensTheoremOQ01OQ01OQ02OQ03.lean:96:2: Function expected at
+  intervalIntegral.integral_neg
+but this term has type
+error: Proofs/GreensTheoremOQ01OQ01OQ02OQ03.lean:115:15: failed to synthesize instance of type class
+  MeasurableSpace E
+
+===== GreensTheoremOQ01OQ01OQ03
+error: Proofs/GreensTheoremOQ01OQ01OQ03.lean:122:25: Unknown constant `MeasureTheory.Measure.prod_mono`
+warning: Proofs/GreensTheoremOQ01OQ01OQ03.lean:252:12: `Set.mem_diff` has been deprecated: Use `Set.mem_sdiff` instead
+warning: Proofs/GreensTheoremOQ01OQ01OQ03.lean:255:8: `push_neg` has been deprecated. Prefer using `push Not` instead.
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.GreensTheoremOQ01OQ01OQ03
+error: build failed
+===== GreensTheoremOQ04
+error: Proofs/GreensTheoremOQ04.lean:93:41: Application type mismatch: The argument
+  List.not_mem_nil ?m.8
+has type
+error: Proofs/GreensTheoremOQ04.lean:103:28: Application type mismatch: The argument
+  Fin [].length
+has type
+error: Proofs/GreensTheoremOQ04.lean:107:45: unsolved goals
+R : TypeIRegion
+⊢ (simplyConnectedOf R).outer.toSet = R.toSet
+error: Proofs/GreensTheoremOQ04.lean:134:43: unsolved goals
+R : TypeIRegion
+⊢ (simplyConnectedOf R).outer.area = R.area
+===== GroupOrderPrimeSquaredAbelianIsoOQ01OQ01OQ02
+error: Proofs/GroupOrderPrimeSquaredAbelianIsoOQ01OQ01OQ02.lean:118:65: Application type mismatch: The argument
+  hfree
+has type
+error: Proofs/GroupOrderPrimeSquaredAbelianIsoOQ01OQ01OQ02.lean:118:60: Application type mismatch: The argument
+  inst
+has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.GroupOrderPrimeSquaredAbelianIsoOQ01OQ01OQ02
+error: build failed
+===== HarmonicDivergence
+error: Proofs/HarmonicDivergence.lean:142:4: linarith failed to find a contradiction
+case h1
+k : ℕ
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.HarmonicDivergence
+error: build failed
+===== HarmonicDivergenceOQ02
+error: Proofs/HarmonicDivergenceOQ02.lean:76:69: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  0 ≤ b ≤ 1
+error: Proofs/HarmonicDivergenceOQ02.lean:102:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ↑(?m ^ ?n)
+in the target expression
+error: Proofs/HarmonicDivergenceOQ02.lean:104:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  log (2 ^ k)
+in the target expression
+error: Proofs/HarmonicDivergenceOQ02.lean:119:6: Type mismatch
+  fun k => if k = 0 then 2 ^ 0 * logHarmonic (2 ^ 0) else 1 / (k * log 2)
+has type
+===== HarmonicDivergenceOQ04
+error: Proofs/HarmonicDivergenceOQ04.lean:68:2: Unknown identifier `not_summable_const_of_ne_zero`
+error: Proofs/HarmonicDivergenceOQ04.lean:74:2: This extensionality tactic only applies to equalities, not
+  (Summable fun k => 2 ^ k * (1 / 2 ^ k)) ↔ Summable fun x => 1
+error: Proofs/HarmonicDivergenceOQ04.lean:81:2: This extensionality tactic only applies to equalities, not
+  (Summable fun k => 2 ^ k * (1 / ↑(2 ^ k))) ↔ Summable fun k => 2 ^ k * (1 / 2 ^ k)
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.HarmonicDivergenceOQ04
+===== HermiteFloorIdentity
+error: Proofs/HermiteFloorIdentity.lean:59:4: `simp` made no progress
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.HermiteFloorIdentity
+error: build failed
+===== HermiteFloorIdentityOQ01
+error: Proofs/HermiteFloorIdentityOQ01.lean:66:4: `simp` made no progress
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.HermiteFloorIdentityOQ01
+error: build failed
+===== HermiteFloorIdentityOQ02
+error: Proofs/HermiteFloorIdentityOQ02.lean:117:4: `simp` made no progress
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.HermiteFloorIdentityOQ02
+error: build failed
+===== HermiteFloorIdentityOQ03
+error: Proofs/HermiteFloorIdentity.lean:59:4: `simp` made no progress
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.HermiteFloorIdentity
+error: build failed
+===== HermiteLegendreFactorial
+error: Proofs/HermiteFloorIdentity.lean:59:4: `simp` made no progress
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.HermiteFloorIdentity
+error: build failed
+===== HermiteLegendreFactorialOQ01
+error: Proofs/HermiteFloorIdentity.lean:59:4: `simp` made no progress
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.HermiteFloorIdentity
+error: build failed
+===== HermiteLegendreFactorialOQ02
+error: Proofs/HermiteLegendreFactorialOQ02.lean:47:8: Unknown constant `Nat.Ico_succ_right`
+error: Proofs/HermiteLegendreFactorialOQ02.lean:46:78: unsolved goals
+n p : ℕ
+⊢ n.factorial.factorization p = ∑ k ∈ Icc 1 n, k.factorization p
+error: Proofs/HermiteLegendreFactorialOQ02.lean:65:27: Type mismatch: After simplification, term
+  hp
+ has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.HermiteLegendreFactorialOQ02
+===== HermiteSawtoothIdentity
+error: Proofs/HermiteFloorIdentity.lean:59:4: `simp` made no progress
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.HermiteFloorIdentity
+error: build failed
+===== HermiteSawtoothIdentityOQ02
+error: Proofs/HermiteFloorIdentity.lean:59:4: `simp` made no progress
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.HermiteFloorIdentity
+error: build failed
+===== HeronsFormulaOQ01
+error: Proofs/HeronsFormulaOQ01.lean:130:43: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  (?a ^ ?m) ^ ?n
+in the target expression
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.HeronsFormulaOQ01
+error: build failed
+===== HierholzerAlgorithm
+error: Proofs/HierholzerAlgorithm.lean:169:2: Type mismatch
+  Eq.symm (Finset.filter_card_add_filter_neg_card_eq_card fun w => s(v, w) ∈ S)
+has type
+error: Proofs/HierholzerAlgorithm.lean:189:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  (List.filter ?m.48 ?m.49).length
+in the target expression
+error: Proofs/HierholzerAlgorithm.lean:288:19: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+
+⊢ Std.Symm fun v w => triangleAdj v w
+error: Proofs/HierholzerAlgorithm.lean:289:23: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+
+⊢ Std.Irrefl fun v w => triangleAdj v w
+===== Hilbert11_QuadraticFormsAristotle
+error: /workspace/proofs/Proofs/Hilbert11_QuadraticFormsAristotle.lean:288:0: unterminated comment
+Some required targets logged failures:
+- Proofs.Hilbert11_QuadraticFormsAristotle
+error: build failed
+===== Hilbert15OQ02OQ03OQ01
+error: Proofs/Hilbert15OQ02OQ03OQ01.lean:547:8: Function expected at
+  List.take_left
+but this term has type
+error: Proofs/Hilbert15OQ02OQ03OQ01.lean:552:8: Function expected at
+  List.drop_left
+but this term has type
+error: Proofs/Hilbert15OQ02OQ03OQ01.lean:722:26: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  List.concat ?m.50 ?m.51
+in the target expression
+error: Proofs/Hilbert15OQ02OQ03OQ01.lean:1196:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  List.map (Function.const ?m.351 ?m.354) ?m.353
+in the target expression
+===== Hilbert15SchubertCalculusOQ01
+error: Proofs/Hilbert15SchubertCalculusOQ01.lean:77:35: Unknown identifier `finrank`
+warning: Proofs/Hilbert15SchubertCalculusOQ01.lean:79:0: declaration uses `sorry`
+error: Proofs/Hilbert15SchubertCalculusOQ01.lean:84:31: Function expected at
+  finrank
+but this term has type
+error: Proofs/Hilbert15SchubertCalculusOQ01.lean:101:2: Unknown identifier `finrank`
+error: Proofs/Hilbert15SchubertCalculusOQ01.lean:130:12: Unknown identifier `finrank`
+error: Proofs/Hilbert15SchubertCalculusOQ01.lean:131:12: Unknown identifier `finrank`
+error: Proofs/Hilbert15SchubertCalculusOQ01.lean:133:14: Unknown identifier `finrank`
+===== Hilbert16
+error: Proofs/Hilbert16.lean:108:2: Type mismatch
+  ![(MvPolynomial.eval ![p.ofLp 0, p.ofLp 1]) F.P, (MvPolynomial.eval ![p.ofLp 0, p.ofLp 1]) F.Q]
+has type
+error: Proofs/Hilbert16.lean:241:2: Type mismatch
+  L.matrix.mulVec p.ofLp
+has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.Hilbert16
+error: build failed
+===== Hilbert17RobinsonRationalSOS
+error: Proofs/Hilbert17RobinsonRationalSOS.lean:142:47: unsolved goals
+h : multiplier = 0
+this : (4 + if 2 = 0 then 4 else 0) = 0
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.Hilbert17RobinsonRationalSOS
+error: build failed
+===== Hilbert19Regularity
+error: Proofs/Hilbert19Regularity.lean:84:2: expected token
+warning: Proofs/Hilbert19Regularity.lean:88:21: Variable name `L` is not explicitly referenced.
+
+error: Proofs/Hilbert19Regularity.lean:273:11: Unknown constant `ContDiff.mul`
+error: Proofs/Hilbert19Regularity.lean:274:4: No goals to be solved
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.Hilbert19Regularity
+===== Hilbert20LocalSolvability
+error: Proofs/Hilbert20LocalSolvability.lean:71:2: failed to synthesize instance of type class
+  Fintype (MultiIndex n)
+
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.Hilbert20LocalSolvability
+error: build failed
+===== Hilbert20OQ01OQ03
+error: Proofs/Hilbert20OQ01OQ03.lean:62:2: failed to synthesize instance of type class
+  Fintype (MultiIndex n)
+
+error: Proofs/Hilbert20OQ01OQ03.lean:102:28: unsolved goals
+n m : ℕ
+P : LinearPDO n m
+error: Proofs/Hilbert20OQ01OQ03.lean:124:2: No applicable extensionality theorem found for type
+  LinearPDO n m
+
+error: Proofs/Hilbert20OQ01OQ03.lean:131:2: No applicable extensionality theorem found for type
+  LinearPDO n m
+
+===== Hilbert20OQ01OQ03Aristotle
+error: Proofs/Hilbert20OQ01OQ03Aristotle.lean:44:27: Application type mismatch: The argument
+  ha
+has type
+error: Proofs/Hilbert20OQ01OQ03Aristotle.lean:40:55: unsolved goals
+case inst
+ι : Type u_1
+error: Proofs/Hilbert20OQ01OQ03Aristotle.lean:64:2: `simp` made no progress
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.Hilbert20OQ01OQ03Aristotle
+===== Hilbert22OQ01OQ03
+error: Proofs/Hilbert22OQ01OQ03.lean:138:64: Function expected at
+  zero_le
+but this term has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.Hilbert22OQ01OQ03
+error: build failed
+===== Hilbert22OQ01OQ03Pseudohyperbolic
+error: Proofs/Hilbert22OQ01OQ03Pseudohyperbolic.lean:155:52: Application type mismatch: The argument
+  hmaps
+has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.Hilbert22OQ01OQ03Pseudohyperbolic
+error: build failed
+===== Hilbert22OQ01OQ03Universal
+error: Proofs/Hilbert22OQ01OQ03.lean:138:64: Function expected at
+  zero_le
+but this term has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.Hilbert22OQ01OQ03
+error: build failed
+===== Hilbert23CalculusVariationsOQ01
+error: Proofs/Hilbert23CalculusVariationsOQ01.lean:75:42: Unknown identifier `Ici_diff_left`
+error: Proofs/Hilbert23CalculusVariationsOQ01.lean:63:22: unsolved goals
+E : Type u_1
+inst✝¹ : AddCommGroup E
+error: Proofs/Hilbert23CalculusVariationsOQ01.lean:92:42: Unknown identifier `Ici_diff_left`
+error: Proofs/Hilbert23CalculusVariationsOQ01.lean:91:13: unsolved goals
+E : Type u_1
+inst✝¹ : AddCommGroup E
+===== Hilbert4Geodesics
+error: Proofs/Hilbert4Geodesics.lean:157:12: failed to synthesize instance of type class
+  NormedAddCommGroup M.carrier
+
+error: Proofs/Hilbert4Geodesics.lean:158:16: failed to synthesize instance of type class
+  HSub M.carrier M.carrier ?m.12
+
+error: Proofs/Hilbert4Geodesics.lean:158:33: failed to synthesize instance of type class
+  HSub M.carrier M.carrier ?m.16
+
+error: Proofs/Hilbert4Geodesics.lean:158:50: failed to synthesize instance of type class
+  HSub M.carrier M.carrier ?m.20
+
+===== Hilbert5LieGroups
+error: Proofs/Hilbert5LieGroups.lean:98:53: invalid binder annotation, type is not a class instance
+  ?m.2
+
+error: Proofs/Hilbert5LieGroups.lean:145:66: invalid binder annotation, type is not a class instance
+  ?m.2
+
+error: Proofs/Hilbert5LieGroups.lean:162:66: invalid binder annotation, type is not a class instance
+  ?m.2
+
+error: Proofs/Hilbert5LieGroups.lean:195:5: invalid binder annotation, type is not a class instance
+  ?m.2
+
+===== Hilbert5OQ02
+error: Proofs/Hilbert5OQ02.lean:86:4: Function expected at
+  exp ℝ
+but this term has type
+error: Proofs/Hilbert5OQ02.lean:86:20: Function expected at
+  exp ℝ
+but this term has type
+error: Proofs/Hilbert5OQ02.lean:86:30: Function expected at
+  exp ℝ
+but this term has type
+error: Proofs/Hilbert5OQ02.lean:87:2: failed to synthesize instance of type class
+  NormedAlgebra ℚ 𝔸
+
+===== Hilbert6PhysicsAxioms
+error: Proofs/Hilbert6PhysicsAxioms.lean:91:51: Application type mismatch: The argument
+  Disjoint on ?m.12
+has type
+error: Proofs/Hilbert6PhysicsAxioms.lean:97:2: Function expected at
+  zero_le
+but this term has type
+error: Proofs/Hilbert6PhysicsAxioms.lean:151:26: Application type mismatch: The argument
+  Disjoint on ?m.14
+has type
+error: Proofs/Hilbert6PhysicsAxioms.lean:180:24: Application type mismatch: The argument
+  ψ.vector
+has type
+===== Hilbert9Reciprocity
+error: Proofs/Hilbert9Reciprocity.lean:213:81: unexpected token '/-!'; expected 'lemma'
+info: Proofs/Hilbert9Reciprocity.lean:254:0: Hilbert9Reciprocity.quadratic_reciprocity {p q : ℕ} [Fact (Nat.Prime p)] [Fact (Nat.Prime q)] (hp : p ≠ 2) (hq : q ≠ 2)
+  (hpq : p ≠ q) : legendreSym q ↑p * legendreSym p ↑q = (-1) ^ (p / 2 * (q / 2))
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.Hilbert9Reciprocity
+error: build failed
+===== HodgeConjecture
+error: Proofs/HodgeConjecture.lean:1446:25: unsolved goals
+k : ℕ
+H₁ : PureHodgeStructure k
+error: Proofs/HodgeConjecture.lean:1459:25: unsolved goals
+k : ℕ
+H₁ : PureHodgeStructure k
+error: Proofs/HodgeConjecture.lean:1475:25: unsolved goals
+k : ℕ
+H₁ : PureHodgeStructure k
+error: Proofs/HodgeConjecture.lean:1488:25: unsolved goals
+k : ℕ
+H₁ : PureHodgeStructure k
+===== HurwitzTheoremOQ04
+===== IncidenceCauchySchwarzDual
+error: Proofs/IncidenceCauchySchwarzDual.lean:60:68: unsolved goals
+P : Type u_1
+L : Type u_2
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.IncidenceCauchySchwarzDual
+error: build failed
+===== InclusionExclusion
+error: Proofs/InclusionExclusion.lean:179:13: Function expected at
+  card_sdiff
+but this term has type
+error: Proofs/InclusionExclusion.lean:189:13: Function expected at
+  card_sdiff
+but this term has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.InclusionExclusion
+error: build failed
+===== InfinitudePrimes4k1
+error: Proofs/InfinitudePrimes4k1.lean:70:15: Unknown constant `Nat.Prime.mod_four_ne_three_of_dvd_isSquare_neg_one`
+error: Proofs/InfinitudePrimes4k1.lean:49:42: unsolved goals
+p k : ℕ
+hp : Nat.Prime p
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.InfinitudePrimes4k1
+error: build failed
+===== InfinitudePrimes4k1OQ03
+error: Proofs/InfinitudePrimes4k1.lean:70:15: Unknown constant `Nat.Prime.mod_four_ne_three_of_dvd_isSquare_neg_one`
+error: Proofs/InfinitudePrimes4k1.lean:49:42: unsolved goals
+p k : ℕ
+hp : Nat.Prime p
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.InfinitudePrimes4k1
+error: build failed
+===== InfinitudePrimes4k3OQ01
+error: Proofs/DirichletsTheorem.lean:124:38: Application type mismatch: The argument
+  a
+has type
+error: Proofs/DirichletsTheorem.lean:140:39: Application type mismatch: The argument
+  hq
+has type
+error: Proofs/DirichletsTheorem.lean:148:40: Application type mismatch: The argument
+  hq
+has type
+error: Proofs/DirichletsTheorem.lean:178:85: unexpected token '#check'; expected 'lemma'
+info: Proofs/DirichletsTheorem.lean:179:0: DirichletCharacter.LFunction {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) (s : ℂ) : ℂ
+error: Proofs/DirichletsTheorem.lean:186:74: unexpected token '#check'; expected 'lemma'
+===== InfinitudePrimes4k3OQ01Q12Q24
+error: Proofs/DirichletsTheorem.lean:124:38: Application type mismatch: The argument
+  a
+has type
+error: Proofs/DirichletsTheorem.lean:140:39: Application type mismatch: The argument
+  hq
+has type
+error: Proofs/DirichletsTheorem.lean:148:40: Application type mismatch: The argument
+  hq
+has type
+error: Proofs/DirichletsTheorem.lean:178:85: unexpected token '#check'; expected 'lemma'
+info: Proofs/DirichletsTheorem.lean:179:0: DirichletCharacter.LFunction {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) (s : ℂ) : ℂ
+error: Proofs/DirichletsTheorem.lean:186:74: unexpected token '#check'; expected 'lemma'
+===== InfinitudePrimes4k3OQ03
+error: Proofs/InfinitudePrimes4k1.lean:70:15: Unknown constant `Nat.Prime.mod_four_ne_three_of_dvd_isSquare_neg_one`
+error: Proofs/InfinitudePrimes4k1.lean:49:42: unsolved goals
+p k : ℕ
+hp : Nat.Prime p
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.InfinitudePrimes4k1
+error: build failed
+===== InfinitudePrimesOQ01
+error: Proofs/InfinitudePrimesOQ01.lean:114:2: Type mismatch: After simplification, term
+  this
+ has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.InfinitudePrimesOQ01
+error: build failed
+===== IntermediateValueTheoremOQ03
+error: Proofs/IntermediateValueTheoremOQ03.lean:46:31: Unknown identifier `intermediate_value_zero_of_le`
+error: Proofs/IntermediateValueTheoremOQ03.lean:46:9: Tactic `rcases` failed: `x✝ : ?m.102` is not an inductive datatype
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.IntermediateValueTheoremOQ03
+error: build failed
+===== InverseGaloisA5Dedekind
+error: Proofs/InverseGaloisA5.lean:225:2: Type mismatch: After simplification, term
+  hdvd
+ has type
+error: Proofs/InverseGaloisA5.lean:426:42: unsolved goals
+H : Subgroup (Equiv.Perm (Fin 5))
+hcard : Nat.card ↥H = 15
+error: Proofs/InverseGaloisA5.lean:559:40: failed to synthesize instance of type class
+  Normal ℚ q.SplittingField
+
+error: Proofs/InverseGaloisA5.lean:1505:2: failed to synthesize instance of type class
+  IsSplittingField ℚ q.SplittingField q
+
+===== InverseGaloisA5DedekindInstantiation
+error: Proofs/DedekindFrobeniusBridge.lean:55:86: unsolved goals
+R : Type u_1
+S : Type u_2
+error: Proofs/DedekindFrobeniusBridge.lean:58:7: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Ideal.map ((MulSemiringAction.toRingAut G S) (arithFrobAt R G Q))
+    (comap ((MulSemiringAction.toRingAut G S) (arithFrobAt R G Q)) ?I)
+error: Proofs/DedekindFrobeniusBridge.lean:82:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  (Submodule.toAddSubgroup Q).inertia G
+in the target expression
+error: Lean exited with code 1
+✖ [8577/8578] Building Proofs.InverseGaloisA5 (4.9s)
+trace: .> LEAN_PATH=/workspace/proofs/.lake/packages/Cli/.lake/build/lib/lean:/workspace/proofs/.lake/packages/batteries/.lake/build/lib/lean:/workspace/proofs/.lake/packages/Qq/.lake/build/lib/lean:/workspace/proofs/.lake/packages/aesop/.lake/build/lib/lean:/workspace/proofs/.lake/packages/proofwidgets/.lake/build/lib/lean:/workspace/proofs/.lake/packages/importGraph/.lake/build/lib/lean:/workspace/proofs/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/workspace/proofs/.lake/packages/plausible/.lake/build/lib/lean:/workspace/proofs/.lake/packages/mathlib/.lake/build/lib/lean:/workspace/proofs/.lake/build/lib/lean /root/.elan/toolchains/leanprover--lean4---v4.31.0/bin/lean /workspace/proofs/Proofs/InverseGaloisA5.lean -o /workspace/proofs/.lake/build/lib/lean/Proofs/InverseGaloisA5.olean -i /workspace/proofs/.lake/build/lib/lean/Proofs/InverseGaloisA5.ilean -c /workspace/proofs/.lake/build/ir/Proofs/InverseGaloisA5.c --setup /workspace/proofs/.lake/build/ir/Proofs/InverseGaloisA5.setup.json --json
+===== InverseGaloisA5DedekindMod7
+error: Proofs/InverseGaloisA5.lean:225:2: Type mismatch: After simplification, term
+  hdvd
+ has type
+error: Proofs/InverseGaloisA5.lean:426:42: unsolved goals
+H : Subgroup (Equiv.Perm (Fin 5))
+hcard : Nat.card ↥H = 15
+error: Proofs/InverseGaloisA5.lean:559:40: failed to synthesize instance of type class
+  Normal ℚ q.SplittingField
+
+error: Proofs/InverseGaloisA5.lean:1505:2: failed to synthesize instance of type class
+  IsSplittingField ℚ q.SplittingField q
+
+===== InverseGaloisA5OQ02
+error: Proofs/InverseGaloisA5OQ02.lean:195:8: synthesized type class instance is not definitionally equal to expression inferred by typing rules, synthesized
+  this✝
+inferred
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.InverseGaloisA5OQ02
+error: build failed
+===== InverseGaloisD4
+error: Proofs/InverseGaloisD4.lean:60:5: failed to synthesize instance of type class
+  IsCyclotomicExtension {p} ℚ (CyclotomicField p ℚ)
+
+error: Proofs/InverseGaloisD4.lean:63:6: failed to synthesize
+  Fintype (ZMod ?n)ˣ
+
+error: Proofs/InverseGaloisD4.lean:70:5: failed to synthesize instance of type class
+  IsCyclotomicExtension {p} ℚ (CyclotomicField p ℚ)
+
+error: Proofs/InverseGaloisD4.lean:67:48: unsolved goals
+p : ℕ
+hp : Fact (Nat.Prime p)
+===== InverseGaloisD4OQ01
+error: Proofs/InverseGaloisD4.lean:60:5: failed to synthesize instance of type class
+  IsCyclotomicExtension {p} ℚ (CyclotomicField p ℚ)
+
+error: Proofs/InverseGaloisD4.lean:63:6: failed to synthesize
+  Fintype (ZMod ?n)ˣ
+
+error: Proofs/InverseGaloisD4.lean:70:5: failed to synthesize instance of type class
+  IsCyclotomicExtension {p} ℚ (CyclotomicField p ℚ)
+
+error: Proofs/InverseGaloisD4.lean:67:48: unsolved goals
+p : ℕ
+hp : Fact (Nat.Prime p)
+===== InverseGaloisD4OQ01External
+error: Proofs/InverseGaloisD4.lean:60:5: failed to synthesize instance of type class
+  IsCyclotomicExtension {p} ℚ (CyclotomicField p ℚ)
+
+error: Proofs/InverseGaloisD4.lean:63:6: failed to synthesize
+  Fintype (ZMod ?n)ˣ
+
+error: Proofs/InverseGaloisD4.lean:70:5: failed to synthesize instance of type class
+  IsCyclotomicExtension {p} ℚ (CyclotomicField p ℚ)
+
+error: Proofs/InverseGaloisD4.lean:67:48: unsolved goals
+p : ℕ
+hp : Fact (Nat.Prime p)
+===== InverseGaloisD4OQ02
+error: Proofs/InverseGaloisD4.lean:60:5: failed to synthesize instance of type class
+  IsCyclotomicExtension {p} ℚ (CyclotomicField p ℚ)
+
+error: Proofs/InverseGaloisD4.lean:63:6: failed to synthesize
+  Fintype (ZMod ?n)ˣ
+
+error: Proofs/InverseGaloisD4.lean:70:5: failed to synthesize instance of type class
+  IsCyclotomicExtension {p} ℚ (CyclotomicField p ℚ)
+
+error: Proofs/InverseGaloisD4.lean:67:48: unsolved goals
+p : ℕ
+hp : Fact (Nat.Prime p)
+===== InverseGaloisD4OQ02OQ03
+error: Proofs/InverseGaloisD4.lean:60:5: failed to synthesize instance of type class
+  IsCyclotomicExtension {p} ℚ (CyclotomicField p ℚ)
+
+error: Proofs/InverseGaloisD4.lean:63:6: failed to synthesize
+  Fintype (ZMod ?n)ˣ
+
+error: Proofs/InverseGaloisD4.lean:70:5: failed to synthesize instance of type class
+  IsCyclotomicExtension {p} ℚ (CyclotomicField p ℚ)
+
+error: Proofs/InverseGaloisD4.lean:67:48: unsolved goals
+p : ℕ
+hp : Fact (Nat.Prime p)
+===== InverseGaloisD4OQ02OQ03OQ01
+error: Proofs/InverseGaloisD4.lean:60:5: failed to synthesize instance of type class
+  IsCyclotomicExtension {p} ℚ (CyclotomicField p ℚ)
+
+error: Proofs/InverseGaloisD4.lean:63:6: failed to synthesize
+  Fintype (ZMod ?n)ˣ
+
+error: Proofs/InverseGaloisD4.lean:70:5: failed to synthesize instance of type class
+  IsCyclotomicExtension {p} ℚ (CyclotomicField p ℚ)
+
+error: Proofs/InverseGaloisD4.lean:67:48: unsolved goals
+p : ℕ
+hp : Fact (Nat.Prime p)
+===== InverseGaloisD4OQ02OQ03OQ01OQ01
+error: Proofs/InverseGaloisD4.lean:60:5: failed to synthesize instance of type class
+  IsCyclotomicExtension {p} ℚ (CyclotomicField p ℚ)
+
+error: Proofs/InverseGaloisD4.lean:63:6: failed to synthesize
+  Fintype (ZMod ?n)ˣ
+
+error: Proofs/InverseGaloisD4.lean:70:5: failed to synthesize instance of type class
+  IsCyclotomicExtension {p} ℚ (CyclotomicField p ℚ)
+
+error: Proofs/InverseGaloisD4.lean:67:48: unsolved goals
+p : ℕ
+hp : Fact (Nat.Prime p)
+===== InverseGaloisD4OQ02OQ03OQ01OQ01OQ01
+error: Proofs/InverseGaloisD4.lean:60:5: failed to synthesize instance of type class
+  IsCyclotomicExtension {p} ℚ (CyclotomicField p ℚ)
+
+error: Proofs/InverseGaloisD4.lean:63:6: failed to synthesize
+  Fintype (ZMod ?n)ˣ
+
+error: Proofs/InverseGaloisD4.lean:70:5: failed to synthesize instance of type class
+  IsCyclotomicExtension {p} ℚ (CyclotomicField p ℚ)
+
+error: Proofs/InverseGaloisD4.lean:67:48: unsolved goals
+p : ℕ
+hp : Fact (Nat.Prime p)
+===== InverseGaloisD4OQ02OQ04
+error: Proofs/InverseGaloisD4.lean:60:5: failed to synthesize instance of type class
+  IsCyclotomicExtension {p} ℚ (CyclotomicField p ℚ)
+
+error: Proofs/InverseGaloisD4.lean:63:6: failed to synthesize
+  Fintype (ZMod ?n)ˣ
+
+error: Proofs/InverseGaloisD4.lean:70:5: failed to synthesize instance of type class
+  IsCyclotomicExtension {p} ℚ (CyclotomicField p ℚ)
+
+error: Proofs/InverseGaloisD4.lean:67:48: unsolved goals
+p : ℕ
+hp : Fact (Nat.Prime p)
+===== InverseGaloisD4OQ03
+error: Proofs/InverseGaloisD4.lean:60:5: failed to synthesize instance of type class
+  IsCyclotomicExtension {p} ℚ (CyclotomicField p ℚ)
+
+error: Proofs/InverseGaloisD4.lean:63:6: failed to synthesize
+  Fintype (ZMod ?n)ˣ
+
+error: Proofs/InverseGaloisD4.lean:70:5: failed to synthesize instance of type class
+  IsCyclotomicExtension {p} ℚ (CyclotomicField p ℚ)
+
+error: Proofs/InverseGaloisD4.lean:67:48: unsolved goals
+p : ℕ
+hp : Fact (Nat.Prime p)
+===== InverseGaloisF20
+error: Proofs/InverseGaloisF20.lean:84:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Fintype.card ↑((X ^ 5 - C 2).rootSet p.SplittingField)
+in the target expression
+error: Proofs/InverseGaloisF20.lean:88:2: Type mismatch: After simplification, term
+  hdvd
+ has type
+error: Proofs/InverseGaloisF20.lean:113:32: unexpected token '('; expected ')'
+error: Proofs/InverseGaloisF20.lean:176:20: Unknown identifier `cyclotomic_5_has_root_in_splitting_field`
+error: Proofs/InverseGaloisF20.lean:176:9: Tactic `rcases` failed: `x✝ : ?m.36` is not an inductive datatype
+error: Proofs/InverseGaloisF20.lean:385:4: failed to synthesize instance of type class
+===== InverseGaloisF20OQ02
+error: Proofs/InverseGaloisF20OQ02.lean:162:46: Tactic `rewrite` failed: motive is not type correct:
+  fun _a => σ ^ (i % _a) = σ ^ i
+Error: Application type mismatch: The argument
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.InverseGaloisF20OQ02
+error: build failed
+===== InverseGaloisOQ02
+error: Proofs/InverseGaloisA5.lean:225:2: Type mismatch: After simplification, term
+  hdvd
+ has type
+error: Proofs/InverseGaloisA5.lean:426:42: unsolved goals
+H : Subgroup (Equiv.Perm (Fin 5))
+hcard : Nat.card ↥H = 15
+error: Proofs/InverseGaloisA5.lean:559:40: failed to synthesize instance of type class
+  Normal ℚ q.SplittingField
+
+error: Proofs/InverseGaloisA5.lean:1505:2: failed to synthesize instance of type class
+  IsSplittingField ℚ q.SplittingField q
+
+===== InverseGaloisOQ03
+error: Proofs/InverseGaloisA5.lean:225:2: Type mismatch: After simplification, term
+  hdvd
+ has type
+error: Proofs/InverseGaloisA5.lean:426:42: unsolved goals
+H : Subgroup (Equiv.Perm (Fin 5))
+hcard : Nat.card ↥H = 15
+error: Proofs/InverseGaloisA5.lean:559:40: failed to synthesize instance of type class
+  Normal ℚ q.SplittingField
+
+error: Proofs/InverseGaloisA5.lean:1505:2: failed to synthesize instance of type class
+  IsSplittingField ℚ q.SplittingField q
+
+===== InverseGaloisOQ06OQ01
+error: Proofs/InverseGaloisA5.lean:225:2: Type mismatch: After simplification, term
+  hdvd
+ has type
+error: Proofs/InverseGaloisA5.lean:426:42: unsolved goals
+H : Subgroup (Equiv.Perm (Fin 5))
+hcard : Nat.card ↥H = 15
+error: Proofs/InverseGaloisA5.lean:559:40: failed to synthesize instance of type class
+  Normal ℚ q.SplittingField
+
+error: Proofs/InverseGaloisA5.lean:1505:2: failed to synthesize instance of type class
+  IsSplittingField ℚ q.SplittingField q
+
+===== InverseGaloisOQ06OQ02
+error: Proofs/InverseGaloisA5.lean:225:2: Type mismatch: After simplification, term
+  hdvd
+ has type
+error: Proofs/InverseGaloisA5.lean:426:42: unsolved goals
+H : Subgroup (Equiv.Perm (Fin 5))
+hcard : Nat.card ↥H = 15
+error: Proofs/InverseGaloisA5.lean:559:40: failed to synthesize instance of type class
+  Normal ℚ q.SplittingField
+
+error: Proofs/InverseGaloisA5.lean:1505:2: failed to synthesize instance of type class
+  IsSplittingField ℚ q.SplittingField q
+
+===== InverseGaloisOQ06OQ02GalBridge
+error: Proofs/InverseGaloisA5.lean:225:2: Type mismatch: After simplification, term
+  hdvd
+ has type
+error: Proofs/InverseGaloisA5.lean:426:42: unsolved goals
+H : Subgroup (Equiv.Perm (Fin 5))
+hcard : Nat.card ↥H = 15
+error: Proofs/InverseGaloisA5.lean:559:40: failed to synthesize instance of type class
+  Normal ℚ q.SplittingField
+
+error: Proofs/InverseGaloisA5.lean:1505:2: failed to synthesize instance of type class
+  IsSplittingField ℚ q.SplittingField q
+
+===== InverseGaloisOQ06OQ02GapChar
+error: Proofs/InverseGaloisA5.lean:225:2: Type mismatch: After simplification, term
+  hdvd
+ has type
+error: Proofs/InverseGaloisA5.lean:426:42: unsolved goals
+H : Subgroup (Equiv.Perm (Fin 5))
+hcard : Nat.card ↥H = 15
+error: Proofs/InverseGaloisA5.lean:559:40: failed to synthesize instance of type class
+  Normal ℚ q.SplittingField
+
+error: Proofs/InverseGaloisA5.lean:1505:2: failed to synthesize instance of type class
+  IsSplittingField ℚ q.SplittingField q
+
+===== InverseGaloisOQ06OQ02P11
+error: Proofs/InverseGaloisA5.lean:225:2: Type mismatch: After simplification, term
+  hdvd
+ has type
+error: Proofs/InverseGaloisA5.lean:426:42: unsolved goals
+H : Subgroup (Equiv.Perm (Fin 5))
+hcard : Nat.card ↥H = 15
+error: Proofs/InverseGaloisA5.lean:559:40: failed to synthesize instance of type class
+  Normal ℚ q.SplittingField
+
+error: Proofs/InverseGaloisA5.lean:1505:2: failed to synthesize instance of type class
+  IsSplittingField ℚ q.SplittingField q
+
+===== IsoperimetricTheoremOQ01
+error: Proofs/IsoperimetricTheoremOQ01.lean:80:10: Unknown identifier `cos_lt_one_of_ne_zero`
+error: Proofs/IsoperimetricTheoremOQ01.lean:136:2: linarith failed to find a contradiction
+case h1
+c : SphericalCap
+error: Proofs/IsoperimetricTheoremOQ01.lean:164:10: Unknown identifier `one_lt_cosh`
+error: Proofs/IsoperimetricTheoremOQ01.lean:171:36: Unknown identifier `sinh_pos_of_pos`
+error: Proofs/IsoperimetricTheoremOQ01.lean:220:2: linarith failed to find a contradiction
+case h1
+===== KnightsTourObliqueOQ01
+error: Proofs/KnightsTourObliqueOQ01.lean:68:10: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+
+n : ℕ
+error: Proofs/KnightsTourObliqueOQ01.lean:75:10: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+
+n : ℕ
+error: Proofs/KnightsTourObliqueOQ01.lean:229:43: Function expected at
+  (knightGraphN n).symm
+but this term has type
+error: Proofs/KnightsTourObliqueOQ01.lean:251:43: Function expected at
+  (knightGraphN n).symm
+but this term has type
+===== KnightsTourObliqueOQ01OQ02
+error: Proofs/KnightsTourObliqueOQ01OQ02.lean:76:10: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+
+m n : ℕ
+error: Proofs/KnightsTourObliqueOQ01OQ02.lean:83:10: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+
+m n : ℕ
+error: Proofs/KnightsTourObliqueOQ01OQ02.lean:238:48: Function expected at
+  (knightGraphMN m n).symm
+but this term has type
+error: Proofs/KnightsTourObliqueOQ01OQ02.lean:258:48: Function expected at
+  (knightGraphMN m n).symm
+but this term has type
+===== KnightsTourObliqueOQ02
+error: Proofs/KnightsTourOblique.lean:87:10: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+
+⊢ Std.Symm knightAdj
+error: Proofs/KnightsTourOblique.lean:94:10: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+
+⊢ Std.Irrefl knightAdj
+error: Proofs/KnightsTourOblique.lean:986:26: Unknown constant `Finset.eq_empty_of_forall_not_mem`
+warning: Proofs/KnightsTourOblique.lean:1014:48: This simp argument is unused:
+  and_imp
+error: Proofs/KnightsTourOblique.lean:1493:13: `simp` made no progress
+error: Proofs/KnightsTourOblique.lean:1493:13: `simp` made no progress
+error: Proofs/KnightsTourOblique.lean:1493:13: `simp` made no progress
+===== KnightsTourObliqueOQ02Order16
+error: Proofs/KnightsTourOblique.lean:87:10: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+
+⊢ Std.Symm knightAdj
+error: Proofs/KnightsTourOblique.lean:94:10: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+
+⊢ Std.Irrefl knightAdj
+error: Proofs/KnightsTourOblique.lean:986:26: Unknown constant `Finset.eq_empty_of_forall_not_mem`
+warning: Proofs/KnightsTourOblique.lean:1014:48: This simp argument is unused:
+  and_imp
+error: Proofs/KnightsTourOblique.lean:1493:13: `simp` made no progress
+error: Proofs/KnightsTourOblique.lean:1493:13: `simp` made no progress
+error: Proofs/KnightsTourOblique.lean:1493:13: `simp` made no progress
+===== KnightsTourObliqueOQ02Palindrome
+error: Proofs/KnightsTourOblique.lean:87:10: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+
+⊢ Std.Symm knightAdj
+error: Proofs/KnightsTourOblique.lean:94:10: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+
+⊢ Std.Irrefl knightAdj
+error: Proofs/KnightsTourOblique.lean:986:26: Unknown constant `Finset.eq_empty_of_forall_not_mem`
+warning: Proofs/KnightsTourOblique.lean:1014:48: This simp argument is unused:
+  and_imp
+error: Proofs/KnightsTourOblique.lean:1493:13: `simp` made no progress
+error: Proofs/KnightsTourOblique.lean:1493:13: `simp` made no progress
+error: Proofs/KnightsTourOblique.lean:1493:13: `simp` made no progress
+===== KnightsTourObliqueOQ02Reverse
+error: Proofs/KnightsTourOblique.lean:87:10: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+
+⊢ Std.Symm knightAdj
+error: Proofs/KnightsTourOblique.lean:94:10: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+
+⊢ Std.Irrefl knightAdj
+error: Proofs/KnightsTourOblique.lean:986:26: Unknown constant `Finset.eq_empty_of_forall_not_mem`
+warning: Proofs/KnightsTourOblique.lean:1014:48: This simp argument is unused:
+  and_imp
+error: Proofs/KnightsTourOblique.lean:1493:13: `simp` made no progress
+error: Proofs/KnightsTourOblique.lean:1493:13: `simp` made no progress
+error: Proofs/KnightsTourOblique.lean:1493:13: `simp` made no progress
+===== KnightsTourObliqueOQ02ReverseCount
+error: Proofs/KnightsTourOblique.lean:87:10: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+
+⊢ Std.Symm knightAdj
+error: Proofs/KnightsTourOblique.lean:94:10: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+
+⊢ Std.Irrefl knightAdj
+error: Proofs/KnightsTourOblique.lean:986:26: Unknown constant `Finset.eq_empty_of_forall_not_mem`
+warning: Proofs/KnightsTourOblique.lean:1014:48: This simp argument is unused:
+  and_imp
+error: Proofs/KnightsTourOblique.lean:1493:13: `simp` made no progress
+error: Proofs/KnightsTourOblique.lean:1493:13: `simp` made no progress
+error: Proofs/KnightsTourOblique.lean:1493:13: `simp` made no progress
+===== KnightsTourObliqueOQ03
+error: Proofs/KnightsTourOblique.lean:87:10: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+
+⊢ Std.Symm knightAdj
+error: Proofs/KnightsTourOblique.lean:94:10: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+
+⊢ Std.Irrefl knightAdj
+error: Proofs/KnightsTourOblique.lean:986:26: Unknown constant `Finset.eq_empty_of_forall_not_mem`
+warning: Proofs/KnightsTourOblique.lean:1014:48: This simp argument is unused:
+  and_imp
+error: Proofs/KnightsTourOblique.lean:1493:13: `simp` made no progress
+error: Proofs/KnightsTourOblique.lean:1493:13: `simp` made no progress
+error: Proofs/KnightsTourOblique.lean:1493:13: `simp` made no progress

@@ -85,17 +85,9 @@ Then |p^s| = p^{s.re}. -/
 lemma prime_cpow_norm_eq (p : Nat.Primes) (s : ℂ) :
     ‖(p : ℂ) ^ s‖ = (p : ℝ) ^ s.re := by
   have hp_pos : (0 : ℝ) < (p : ℝ) := prime_cast_pos p
-  -- Cast p through ℝ → ℂ
+  -- Cast p through ℝ → ℂ and apply the v4.31 norm formula for positive real bases
   have hcast : (p : ℂ) = ((p : ℝ) : ℂ) := by norm_cast
-  have hp_ne : ((p : ℝ) : ℂ) ≠ 0 := by exact_mod_cast hp_pos.ne'
-  rw [Complex.norm_eq_abs, hcast]
-  -- Apply the complex power norm formula: |z^w| = |z|^{w.re} · exp(-w.im · z.arg)
-  rw [Complex.abs_cpow_mul_exp_log_re hp_ne]
-  -- For a positive real, arg = 0: exp(-(w.im · 0)) = exp(0) = 1
-  have harg : ((p : ℝ) : ℂ).arg = 0 :=
-    Complex.arg_ofReal_of_nonneg (le_of_lt hp_pos)
-  -- Simplify: the exp factor vanishes, and abs of positive real = itself
-  simp [harg, Complex.abs_ofReal, abs_of_pos hp_pos]
+  rw [hcast, Complex.norm_cpow_eq_rpow_re_of_pos hp_pos]
 
 /-! ## Part 3: Convergence of Each Euler Factor -/
 

@@ -50,7 +50,7 @@ namespace Erdos344
 **Counting function:**
 |A ∩ {1,...,N}| counts elements of A up to N.
 -/
-def countingFunction (A : Set ℕ) (N : ℕ) : ℕ :=
+noncomputable def countingFunction (A : Set ℕ) (N : ℕ) : ℕ :=
   (Finset.range (N + 1)).filter (· ∈ A) |>.card
 
 /--

@@ -66,14 +66,14 @@ structure EdgeColoring (α : Type*) where
 /-- The red graph: edges with color = true. -/
 def EdgeColoring.redGraph (c : EdgeColoring α) : SimpleGraph α where
   Adj x y := c.color x y = true ∧ x ≠ y
-  symm x y h := ⟨by rw [c.symm]; exact h.1, h.2.symm⟩
-  loopless x h := by simp [c.irrefl] at h
+  symm.symm x y h := ⟨by rw [c.symm]; exact h.1, h.2.symm⟩
+  loopless.irrefl x h := by simp [c.irrefl] at h
 
 /-- The blue graph: edges with color = false. -/
 def EdgeColoring.blueGraph (c : EdgeColoring α) : SimpleGraph α where
   Adj x y := c.color x y = false ∧ x ≠ y
-  symm x y h := ⟨by rw [c.symm]; exact h.1, h.2.symm⟩
-  loopless x h := by simp at h
+  symm.symm x y h := ⟨by rw [c.symm]; exact h.1, h.2.symm⟩
+  loopless.irrefl x h := by simp at h
 
 /-- A red clique: all pairs have red edges. -/
 def IsRedClique (c : EdgeColoring α) (s : Finset α) : Prop :=

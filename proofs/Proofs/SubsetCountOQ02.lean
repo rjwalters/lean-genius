@@ -74,7 +74,7 @@ theorem multiset_choose_card {α : Type*} (s : Multiset α) (k : ℕ) :
 theorem powersetCard_empty_of_lt {α : Type*} (s : Multiset α) (k : ℕ)
     (hk : Multiset.card s < k) :
     Multiset.powersetCard k s = 0 := by
-  rw [eq_zero_iff_forall_not_mem]
+  rw [eq_zero_iff_forall_notMem]
   intro t ht
   rw [Multiset.mem_powersetCard] at ht
   have := Multiset.card_le_card ht.1

@@ -37,6 +37,9 @@ import Mathlib.Topology.MetricSpace.Basic
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Finset.Basic
 
+/-- v4.31 migration compat: `Complex.abs` was removed from Mathlib in favor of `‖·‖`. -/
+noncomputable def Complex.abs (z : ℂ) : ℝ := ‖z‖
+
 open Real
 
 namespace Erdos465

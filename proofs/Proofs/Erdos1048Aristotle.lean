@@ -11,6 +11,9 @@
 -/
 import Mathlib
 
+/-- v4.31 migration compat: `Complex.abs` was removed from Mathlib in favor of `‖·‖`. -/
+noncomputable def Complex.abs (z : ℂ) : ℝ := ‖z‖
+
 namespace Erdos1048Aristotle
 
 open Complex Polynomial Set Metric

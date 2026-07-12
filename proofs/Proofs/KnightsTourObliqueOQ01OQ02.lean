@@ -73,6 +73,7 @@ theorem neg_knight_offset {dx dy : Int} (h : isKnightOffset dx dy = true) :
 def knightGraphMN (m n : ℕ) : SimpleGraph (SquareMN m n) where
   Adj := knightAdjMN m n
   symm := by
+    constructor
     intro s1 s2 h
     simp only [knightAdjMN] at h ⊢
     have hdx : (s1.1 : Int) - (s2.1 : Int) = -((s2.1 : Int) - (s1.1 : Int)) := by ring
@@ -80,6 +81,7 @@ def knightGraphMN (m n : ℕ) : SimpleGraph (SquareMN m n) where
     rw [hdx, hdy]
     exact neg_knight_offset h
   loopless := by
+    constructor
     intro s h
     simp only [knightAdjMN, isKnightOffset, knightOffsets] at h
     simp at h

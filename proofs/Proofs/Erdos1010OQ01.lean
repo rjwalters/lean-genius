@@ -131,8 +131,8 @@ def Mbool : Fin 6 → Fin 6 → Bool := ![
 /-- The witness graph `Gw = K_{2,4} + C₄(B)` on `Fin 6`. -/
 def Gw : SimpleGraph (Fin 6) where
   Adj a b := Mbool a b = true
-  symm := by unfold Symmetric; decide
-  loopless := by unfold Irreflexive; decide
+  symm := by constructor; decide
+  loopless := by constructor; decide
 
 instance : DecidableRel Gw.Adj :=
   fun a b => inferInstanceAs (Decidable (Mbool a b = true))

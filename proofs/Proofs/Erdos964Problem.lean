@@ -155,8 +155,8 @@ theorem rationals_dense_in_positives :
   have hceil_lt : (↑p : ℝ) < r * ↑q + 1 := Nat.ceil_lt_add_one (le_of_lt hrq_pos)
   -- 1/q < ε since q > 1/ε
   have h_inv_lt : 1 / (↑q : ℝ) < ε := by
-    rw [div_lt_iff hq_pos, mul_comm ε ↑q]
-    exact (div_lt_iff hε).mp (lt_of_le_of_lt (le_max_left _ _) hq)
+    rw [div_lt_iff₀ hq_pos, mul_comm ε ↑q]
+    exact (div_lt_iff₀ hε).mp (lt_of_le_of_lt (le_max_left _ _) hq)
   use ↑p / ↑q
   refine ⟨⟨p, q, hp_ge, hq_ge, rfl⟩, ?_⟩
   -- |p/q - r| = p/q - r (since p/q ≥ r) and p/q - r < 1/q < ε

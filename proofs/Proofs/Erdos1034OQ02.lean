@@ -160,8 +160,8 @@ instance : DecidableRel isEdge := fun _ _ => inferInstanceAs (Decidable (_ ∨ _
 /-- The pure book graph on `Fin 5`. -/
 def bookG : SimpleGraph (Fin 5) where
   Adj := isEdge
-  symm := by intro i j h; exact h.symm
-  loopless := by intro i; fin_cases i <;> decide
+  symm := by constructor; intro i j h; exact h.symm
+  loopless := by constructor; intro i; fin_cases i <;> decide
 
 instance : DecidableRel bookG.Adj := fun i j => inferInstanceAs (Decidable (isEdge i j))
 

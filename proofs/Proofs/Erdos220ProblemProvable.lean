@@ -184,7 +184,7 @@ theorem primorial_case :
 
 /-- Connection to Jacobsthal's function g(n): maximum gap. -/
 noncomputable def jacobsthal (n : ℕ) : ℕ :=
-  (gapList n).maximum?.getD 0
+  (gapList n).max?.getD 0
 
 /-- The maximum gap is at most n/φ(n) · (log n)² asymptotically. -/
 theorem maximum_gap_bound (n : ℕ) (hn : n ≥ 2) : := by sorry

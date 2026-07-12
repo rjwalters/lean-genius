@@ -186,8 +186,8 @@ theorem sparse_case (n : ℕ) (G : SimpleGraph (Fin n)) [DecidableRel G.Adj]
 /-- The Turán graph T(n,3) is K₄-free and has minimum triangle-free induced subgraph. -/
 def turanGraph3 (n : ℕ) : SimpleGraph (Fin n) where
   Adj i j := i.val % 3 ≠ j.val % 3
-  symm := by intro i j h; exact Ne.symm h
-  loopless := by intro i h; exact h rfl
+  symm := by constructor; intro i j h; exact Ne.symm h
+  loopless := by constructor; intro i h; exact h rfl
 
 theorem turan_is_K4Free (n : ℕ) : K4Free (turanGraph3 n) := by
   rintro ⟨a, b, c, d, -, -, -, -, -, -, hab, hac, had, hbc, hbd, hcd⟩

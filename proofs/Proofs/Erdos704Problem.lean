@@ -36,12 +36,14 @@ For general n: exponential growth is known, but the exact base is open.
 def UnitDistanceGraph (n : ℕ) : SimpleGraph (EuclideanSpace ℝ (Fin n)) where
   Adj x y := ‖x - y‖ = 1 ∧ x ≠ y
   symm := by
+    constructor
     intro x y ⟨h1, h2⟩
     constructor
     · simp only [norm_sub_rev]
       exact h1
     · exact h2.symm
   loopless := by
+    constructor
     intro x ⟨_, h⟩
     exact h rfl
 

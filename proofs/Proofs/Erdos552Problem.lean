@@ -40,8 +40,9 @@ open SimpleGraph Finset
 /-- The cycle graph C_n on n vertices. -/
 def cycleGraph (n : ℕ) : SimpleGraph (Fin n) where
   Adj := fun i j => (i.val + 1) % n = j.val ∨ (j.val + 1) % n = i.val
-  symm := by intro i j h; cases h <;> (right; assumption) <|> (left; assumption)
+  symm := by constructor; intro i j h; cases h <;> (right; assumption) <|> (left; assumption)
   loopless := by
+    constructor
     intro i h
     cases h with
     | inl h => simp at h; omega
@@ -53,8 +54,8 @@ def C4 : SimpleGraph (Fin 4) := cycleGraph 4
 /-- The star graph S_n = K_{1,n} on n+1 vertices (center + n leaves). -/
 def starGraph (n : ℕ) : SimpleGraph (Fin (n + 1)) where
   Adj := fun i j => (i.val = 0 ∧ j.val ≠ 0) ∨ (j.val = 0 ∧ i.val ≠ 0)
-  symm := by intro i j h; cases h <;> (right; exact ⟨‹_›.1, ‹_›.2⟩) <|> (left; exact ⟨‹_›.1, ‹_›.2⟩)
-  loopless := by intro i h; cases h <;> omega
+  symm := by constructor; intro i j h; cases h <;> (right; exact ⟨‹_›.1, ‹_›.2⟩) <|> (left; exact ⟨‹_›.1, ‹_›.2⟩)
+  loopless := by constructor; intro i h; cases h <;> omega
 
 /- ## Part II: Ramsey Numbers -/
 
@@ -66,8 +67,8 @@ def ContainsSubgraph {V W : Type*} [Fintype V] [Fintype W]
 /-- The complement of a graph. -/
 def complement {V : Type*} (G : SimpleGraph V) : SimpleGraph V where
   Adj := fun u v => u ≠ v ∧ ¬G.Adj u v
-  symm := by intro u v ⟨hne, hadj⟩; exact ⟨hne.symm, fun h => hadj (G.symm h)⟩
-  loopless := by intro v ⟨hne, _⟩; exact hne rfl
+  symm := by constructor; intro u v ⟨hne, hadj⟩; exact ⟨hne.symm, fun h => hadj (G.symm h)⟩
+  loopless := by constructor; intro v ⟨hne, _⟩; exact hne rfl
 
 /-- R(H₁, H₂) = minimum N such that every 2-coloring of K_N contains
     monochromatic H₁ (color 1) or monochromatic H₂ (color 2). -/

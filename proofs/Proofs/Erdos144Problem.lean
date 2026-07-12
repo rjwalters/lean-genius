@@ -89,7 +89,7 @@ axiom maier_tenenbaum_strong : ∀ c : ℝ, erdos_144_strong_conjecture c
 
 /-- **The critical exponent:**
     β* = log 3 - 1 ≈ 0.0986 is the threshold for the refined version. -/
-def criticalExponent : ℝ := Real.log 3 - 1
+noncomputable def criticalExponent : ℝ := Real.log 3 - 1
 
 /-- **Refined close divisors with log factor:**
     n has (β)-close divisors if there exist d₁ < d₂ with

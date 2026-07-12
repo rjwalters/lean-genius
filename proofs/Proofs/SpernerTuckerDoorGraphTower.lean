@@ -104,9 +104,11 @@ the unique neighbor of `(i, a)` is `(i, !a)`. -/
 def matchingGraph (m : ℕ) : SimpleGraph (Fin m × Bool) where
   Adj p q := p.1 = q.1 ∧ p.2 ≠ q.2
   symm := by
+    constructor
     rintro p q ⟨h1, h2⟩
     exact ⟨h1.symm, fun h => h2 h.symm⟩
   loopless := by
+    constructor
     rintro p ⟨_, h2⟩
     exact h2 rfl
 

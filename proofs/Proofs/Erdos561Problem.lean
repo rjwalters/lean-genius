@@ -127,7 +127,7 @@ noncomputable def maxForIndexSum (F₁ F₂ : StarUnion) (k : ℕ) : ℕ :=
     if i ≤ F₁.stars.length ∧ j ≤ F₂.stars.length
     then some ((F₁.stars.getD (i - 1) 0) + (F₂.stars.getD (j - 1) 0) - 1)
     else none)
-  values.maximum?.getD 0
+  values.max?.getD 0
 
 /-- **The Conjectured Formula:**
 R̂(F₁, F₂) = Σ_{k=2}^{s+t} max{n_i + m_j - 1 : i + j = k} -/

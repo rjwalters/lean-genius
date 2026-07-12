@@ -175,7 +175,7 @@ axiom bucic_montgomery_bound :
 /--
 **Minimum Degree:**
 -/
-def minDegree (G : Graph V) : ℕ :=
+noncomputable def minDegree (G : Graph V) : ℕ :=
   (Finset.univ.image (fun v => G.degree v)).min' (by simp [Finset.image_nonempty])
 
 /--

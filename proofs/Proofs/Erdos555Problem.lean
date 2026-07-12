@@ -43,9 +43,10 @@ def EdgeColoring (m k : ℕ) :=
 def monochromaticGraph (χ : EdgeColoring m k) (c : Fin k) : SimpleGraph (Fin m) where
   Adj u v := u ≠ v ∧ χ (min u v) (max u v) = c
   symm := by
+    constructor
     intro u v ⟨hne, hc⟩
     exact ⟨hne.symm, by rwa [min_comm, max_comm]⟩
-  loopless := by intro v ⟨h, _⟩; exact h rfl
+  loopless := by constructor; intro v ⟨h, _⟩; exact h rfl
 
 /- ## Ramsey Number for Even Cycles -/
 

@@ -481,7 +481,7 @@ theorem centralizer_pcycle_eq_zpowers
     body now just delegates to it, so Step 4 is `sorry`-free. -/
 theorem normalizer_iso_AGL1Z
     (σ : Equiv.Perm (ZMod p)) (_hσ : σ.IsCycle) (_hσ_card : σ.support.card = p) :
-    ∃ φ : Subgroup.normalizer (Subgroup.zpowers σ) →* AGL1Z p,
+    ∃ φ : Subgroup.normalizer (Subgroup.zpowers σ : Set (Equiv.Perm (ZMod p))) →* AGL1Z p,
       Function.Injective φ ∧ Function.Surjective φ :=
   AbelRuffiniGaloisExtensionsOQ06GaloisDirectionStep4.normalizer_iso_AGL1Z
     σ _hσ _hσ_card
@@ -581,7 +581,7 @@ theorem H_le_normalizer
     (hgen : ∀ g : P, (H.subtype.comp (P : Subgroup H).subtype) g ∈
       Subgroup.zpowers σ)
     (hσH : σ ∈ H) :
-    H ≤ Subgroup.normalizer (Subgroup.zpowers σ) := by
+    H ≤ Subgroup.normalizer (Subgroup.zpowers σ : Set (Equiv.Perm (ZMod p))) := by
   -- ⟨σ⟩ ≤ H, from σ ∈ H (Subgroup.zpowers_le).
   have hle : Subgroup.zpowers σ ≤ H := Subgroup.zpowers_le.mpr hσH
   -- orderOf σ = p: a cycle's order is its support cardinality (IsCycle.orderOf).

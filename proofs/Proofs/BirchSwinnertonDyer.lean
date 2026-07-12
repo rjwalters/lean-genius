@@ -129,7 +129,7 @@ theorem EllipticCurveQ.ext {E1 E2 : EllipticCurveQ}
   obtain ⟨a2, b2, h2⟩ := E2
   simp only [EllipticCurveQ.a, EllipticCurveQ.b] at ha hb
   subst ha; subst hb
-  exact congrArg (EllipticCurveQ.mk a1 b1) (proofIrrel h1 h2)
+  exact congrArg (EllipticCurveQ.mk a1 b1) (Subsingleton.elim h1 h2)
 
 /-- The discriminant Δ = -16(4a³ + 27b²) of an elliptic curve -/
 def discriminant (E : EllipticCurveQ) : ℚ :=

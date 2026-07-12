@@ -65,9 +65,11 @@ door (a complementary facet). -/
 def doorGraph : SimpleGraph V where
   Adj v w := v ≠ w ∧ ∃ d, inc v d ∧ inc w d
   symm := by
+    constructor
     rintro v w ⟨hne, d, hv, hw⟩
     exact ⟨hne.symm, d, hw, hv⟩
   loopless := by
+    constructor
     rintro v ⟨hne, _⟩
     exact hne rfl
 

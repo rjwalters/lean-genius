@@ -180,7 +180,7 @@ axiom erdos_pach_upper_bound (n : ℕ) (hn : n ≥ 2) :
     (h n : ℝ) ≤ 2 * n^(4/3 : ℝ)
 
 /-- The upper bound exponent is 4/3. -/
-def upper_exponent : ℝ := 4/3
+noncomputable def upper_exponent : ℝ := 4/3
 
 /-
 ## Part VII: General Convex Sets (Non-Translates)

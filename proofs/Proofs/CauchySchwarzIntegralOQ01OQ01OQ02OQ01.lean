@@ -731,7 +731,7 @@ private theorem holder_extremizer_lq_bound [IsFiniteMeasure μ] [SigmaFinite μ]
             E.indicator (fun _ => c) a := fun a => by
           by_cases h : a ∈ E <;>
             simp [SimpleFunc.coe_piecewise, SimpleFunc.coe_const, SimpleFunc.coe_zero,
-                  Set.indicator_apply, Set.piecewise_eq_of_mem, Set.piecewise_eq_of_not_mem, h]
+                  Set.indicator_apply, Set.piecewise_eq_of_mem, Set.piecewise_eq_of_notMem, h]
         have hE_fin : μ E ≠ ⊤ := measure_ne_top μ E
         have hind : MemLp (E.indicator (fun _ => (1 : ℝ))) p μ :=
           indicator_memLp hE hE_fin p (le_of_lt hp1) hptop
@@ -749,7 +749,7 @@ private theorem holder_extremizer_lq_bound [IsFiniteMeasure μ] [SigmaFinite μ]
         rw [hphi_ind, rnDeriv_integral_eq ν hac hE]
         simp only [hcoe]
         calc c * ∫ a in E, g a ∂μ
-            = ∫ a in E, c * g a ∂μ := (integral_mul_left c (fun a => g a)).symm
+            = ∫ a in E, c * g a ∂μ := (integral_const_mul c (fun a => g a)).symm
           _ = ∫ a, E.indicator (fun _ => c * g a) a ∂μ := (integral_indicator hE).symm
           _ = ∫ a, E.indicator (fun _ => c) a * g a ∂μ := by
                 congr 1; ext a

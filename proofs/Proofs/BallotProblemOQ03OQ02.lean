@@ -412,7 +412,7 @@ private noncomputable def pathMN_split (m n : ℕ) :
     PathMN (m + 1) (n + 1) ≃ PathMN m (n + 1) ⊕ PathMN (m + 1) n where
   toFun := fun ⟨l, hlen, heast⟩ => by
     match l with
-    | [] => exact absurd hlen (by simp; omega)
+    | [] => exact absurd hlen (by simp)
     | false :: xs =>
       have heast' : xs.countP (· = false) = m := by
         rw [countP_false_cons_false] at heast; omega
@@ -433,7 +433,7 @@ private noncomputable def pathMN_split (m n : ℕ) :
       exact ⟨true :: xs, by simp; omega, heast'⟩
   left_inv := fun ⟨l, hlen, _⟩ => by
     match l with
-    | [] => exact absurd hlen (by simp; omega)
+    | [] => exact absurd hlen (by simp)
     | false :: _ => rfl
     | true :: _ => rfl
   right_inv := fun s => by

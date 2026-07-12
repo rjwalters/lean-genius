@@ -87,7 +87,7 @@ def HasLinearGrowthBounded (A : ℕ → Finset ℕ) (c : ℝ) : Prop :=
 /--
 **For infinite sets:** We consider sets A ⊆ ℕ via their truncations to [0, n].
 -/
-def truncate (A : Set ℕ) (n : ℕ) : Finset ℕ :=
+noncomputable def truncate (A : Set ℕ) (n : ℕ) : Finset ℕ :=
   (Finset.range (n + 1)).filter (· ∈ A)
 
 /-

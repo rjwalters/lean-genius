@@ -71,9 +71,11 @@ An infinite graph where m ~ n iff m + n is a perfect square.
 def squareGraph : SimpleGraph ℕ where
   Adj m n := m ≠ n ∧ IsPerfectSquare (m + n)
   symm := by
+    constructor
     intro m n ⟨hne, hsq⟩
     exact ⟨hne.symm, by rw [add_comm]; exact hsq⟩
   loopless := by
+    constructor
     intro m ⟨hne, _⟩
     exact hne rfl
 
@@ -168,9 +170,11 @@ An infinite graph where m ~ n iff m + n is a k-th power.
 def kthPowerGraph (k : ℕ) : SimpleGraph ℕ where
   Adj m n := m ≠ n ∧ IsKthPower (m + n) k
   symm := by
+    constructor
     intro m n ⟨hne, hpow⟩
     exact ⟨hne.symm, by rw [add_comm]; exact hpow⟩
   loopless := by
+    constructor
     intro m ⟨hne, _⟩
     exact hne rfl
 

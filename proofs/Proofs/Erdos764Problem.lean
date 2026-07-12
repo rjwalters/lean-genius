@@ -34,15 +34,15 @@ Characteristic functions and convolutions.
 -/
 
 /-- Characteristic function of a set A ⊆ ℕ. -/
-def charFun (A : Set ℕ) (n : ℕ) : ℕ := if n ∈ A then 1 else 0
+noncomputable def charFun (A : Set ℕ) (n : ℕ) : ℕ := if n ∈ A then 1 else 0
 
 /-- 2-fold convolution: (1_A * 1_A)(n) = #{(a,b) ∈ A × A : a + b = n}. -/
-def conv2 (A : Set ℕ) (n : ℕ) : ℕ :=
+noncomputable def conv2 (A : Set ℕ) (n : ℕ) : ℕ :=
   Finset.card (Finset.filter (fun p : ℕ × ℕ => p.1 ∈ A ∧ p.2 ∈ A ∧ p.1 + p.2 = n)
     (Finset.product (Finset.range (n + 1)) (Finset.range (n + 1))))
 
 /-- 3-fold convolution: (1_A * 1_A * 1_A)(n) = #{(a,b,c) ∈ A³ : a + b + c = n}. -/
-def conv3 (A : Set ℕ) (n : ℕ) : ℕ :=
+noncomputable def conv3 (A : Set ℕ) (n : ℕ) : ℕ :=
   Finset.card (Finset.filter (fun t : ℕ × ℕ × ℕ =>
     t.1 ∈ A ∧ t.2.1 ∈ A ∧ t.2.2 ∈ A ∧ t.1 + t.2.1 + t.2.2 = n)
     (Finset.product (Finset.range (n + 1))
@@ -56,11 +56,11 @@ Axiomatized because the general definition requires dependent types.
 axiom convH (h : ℕ) (A : Set ℕ) (n : ℕ) : ℕ
 
 /-- Cumulative sum of 2-fold convolution up to N. -/
-def sumConv2 (A : Set ℕ) (N : ℕ) : ℕ :=
+noncomputable def sumConv2 (A : Set ℕ) (N : ℕ) : ℕ :=
   Finset.sum (Finset.range (N + 1)) (conv2 A)
 
 /-- Cumulative sum of 3-fold convolution up to N. -/
-def sumConv3 (A : Set ℕ) (N : ℕ) : ℕ :=
+noncomputable def sumConv3 (A : Set ℕ) (N : ℕ) : ℕ :=
   Finset.sum (Finset.range (N + 1)) (conv3 A)
 
 /- ## Part II: The Linear Growth Property

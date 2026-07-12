@@ -138,7 +138,7 @@ axiom single_powers_not_complete :
 -/
 
 /-- Elements up to N in powerSet a b -/
-def powerSetUpTo (a b N : ℕ) : Finset ℕ :=
+noncomputable def powerSetUpTo (a b N : ℕ) : Finset ℕ :=
   Finset.filter (· ∈ powerSet a b) (Finset.range (N + 1))
 
 /-
@@ -146,7 +146,7 @@ def powerSetUpTo (a b N : ℕ) : Finset ℕ :=
 -/
 
 /-- Number of representations of n -/
-def numRepresentations (a b n : ℕ) : ℕ :=
+noncomputable def numRepresentations (a b n : ℕ) : ℕ :=
   (Finset.filter
     (fun T : Finset ℕ => (∀ x ∈ T, x ∈ powerSet a b) ∧ T.sum id = n)
     (Finset.powerset (powerSetUpTo a b n))).card

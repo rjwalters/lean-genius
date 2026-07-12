@@ -57,11 +57,13 @@ axiom tree_edge_count {T : SimpleGraph V} (hT : IsTree T) (hn : Fintype.card V =
 def pathGraph (n : ℕ) : SimpleGraph (Fin n) where
   Adj i j := (i.val + 1 = j.val) ∨ (j.val + 1 = i.val)
   symm := by
+    constructor
     intro i j h
     cases h with
     | inl h => right; exact h
     | inr h => left; exact h
   loopless := by
+    constructor
     intro i h
     cases h with
     | inl h => omega
@@ -71,11 +73,13 @@ def pathGraph (n : ℕ) : SimpleGraph (Fin n) where
 def starGraph (k : ℕ) : SimpleGraph (Fin (k + 1)) where
   Adj i j := (i.val = 0 ∧ j.val ≠ 0) ∨ (j.val = 0 ∧ i.val ≠ 0)
   symm := by
+    constructor
     intro i j h
     cases h with
     | inl h => right; exact ⟨h.2, h.1⟩
     | inr h => left; exact ⟨h.2, h.1⟩
   loopless := by
+    constructor
     intro i h
     cases h with
     | inl h => exact h.2 h.1
@@ -191,9 +195,11 @@ axiom sacle_wozniak (n k : ℕ) (hn : n ≥ k + 1)
 def complement (G : SimpleGraph V) : SimpleGraph V where
   Adj v w := v ≠ w ∧ ¬G.Adj v w
   symm := by
+    constructor
     intro v w ⟨hne, hnadj⟩
     exact ⟨hne.symm, fun h => hnadj (G.symm h)⟩
   loopless := by
+    constructor
     intro v ⟨hne, _⟩
     exact hne rfl
 

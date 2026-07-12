@@ -56,7 +56,7 @@ lemma cross2D_antisymm (u v : Vec2) : cross2D u v = -cross2D v u := by
     Proof by ring in Fin 2 coordinates. -/
 theorem lagrange_2d (u v : Vec2) :
     ‖u‖ ^ 2 * ‖v‖ ^ 2 = (@inner ℝ _ _ u v) ^ 2 + cross2D u v ^ 2 := by
-  simp only [EuclideanSpace.norm_sq_apply, EuclideanSpace.inner_apply,
+  simp only [EuclideanSpace.norm_sq_eq, EuclideanSpace.inner_apply,
              cross2D, Fin.sum_univ_two]
   ring
 

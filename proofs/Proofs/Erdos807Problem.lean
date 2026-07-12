@@ -50,7 +50,7 @@ variable {V : Type*} [Fintype V] [DecidableEq V]
 The size of the largest independent set in G.
 An independent set is a set of vertices with no edges between them.
 -/
-def independenceNumber (G : SimpleGraph V) : ℕ :=
+noncomputable def independenceNumber (G : SimpleGraph V) : ℕ :=
   Finset.univ.sup fun S => if G.IsClique Sᶜ then S.card else 0
 
 /--
@@ -80,7 +80,7 @@ structure BipartiteCover (G : SimpleGraph V) where
 The smallest number of pairwise edge-disjoint complete bipartite subgraphs
 whose union covers all edges of G.
 -/
-def bipartitionNumber (G : SimpleGraph V) : ℕ :=
+noncomputable def bipartitionNumber (G : SimpleGraph V) : ℕ :=
   sInf {k : ℕ | ∃ cover : BipartiteCover G, cover.parts.card = k}
 
 /-

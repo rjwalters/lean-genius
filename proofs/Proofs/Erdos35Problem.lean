@@ -42,7 +42,7 @@ open Set
 /- ## Part I: Schnirelmann Density -/
 
 /-- The counting function: number of elements of A in {1, ..., N}. -/
-def countingFunction (A : Set ℕ) (N : ℕ) : ℕ :=
+noncomputable def countingFunction (A : Set ℕ) (N : ℕ) : ℕ :=
   (Finset.filter (· ∈ A) (Finset.range (N + 1) \ {0})).card
 
 /-- The ratio |A ∩ {1,...,N}| / N for N ≥ 1. -/

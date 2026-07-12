@@ -66,7 +66,7 @@ def IsNonAveraging' (A : Finset ℕ) : Prop :=
 /--
 **F(N):** The maximum size of a non-averaging subset of {1,...,N}.
 -/
-def F (N : ℕ) : ℕ :=
+noncomputable def F (N : ℕ) : ℕ :=
   Finset.sup (Finset.filter (fun A : Finset ℕ => IsNonAveraging A ∧ A ⊆ Finset.range (N + 1))
     (Finset.powerset (Finset.range (N + 1)))) Finset.card
 

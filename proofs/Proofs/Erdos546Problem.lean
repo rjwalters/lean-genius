@@ -46,8 +46,8 @@ def NoIsolatedVertices (G : SimpleGraph V) : Prop :=
 /-- The complement graph: edges between non-adjacent distinct vertices. -/
 def complementGraph (G : SimpleGraph V) : SimpleGraph V where
   Adj v w := v ≠ w ∧ ¬G.Adj v w
-  symm := by intro v w ⟨hne, hnadj⟩; exact ⟨hne.symm, fun h => hnadj (G.symm h)⟩
-  loopless := by intro v ⟨hne, _⟩; exact hne rfl
+  symm := by constructor; intro v w ⟨hne, hnadj⟩; exact ⟨hne.symm, fun h => hnadj (G.symm h)⟩
+  loopless := by constructor; intro v ⟨hne, _⟩; exact hne rfl
 
 /-- A bipartite graph (2-colorable): vertex set splits into parts A, B
     such that all edges cross between A and B. -/
@@ -123,14 +123,14 @@ def ThreeColorConjecture : Prop := MultiColorConjecture 3
 /-- Path graph P_n on n vertices: i ~ j iff |i - j| = 1. -/
 def pathGraph (n : ℕ) : SimpleGraph (Fin n) where
   Adj i j := (i.val + 1 = j.val) ∨ (j.val + 1 = i.val)
-  symm := by intro i j h; cases h with | inl h => right; exact h | inr h => left; exact h
-  loopless := by intro i h; cases h with | inl h => omega | inr h => omega
+  symm := by constructor; intro i j h; cases h with | inl h => right; exact h | inr h => left; exact h
+  loopless := by constructor; intro i h; cases h with | inl h => omega | inr h => omega
 
 /-- Cycle graph C_n on n ≥ 3 vertices: modular adjacency closing the path into a cycle. -/
 def cycleGraph (n : ℕ) (hn : n ≥ 3) : SimpleGraph (Fin n) where
   Adj i j := (i.val + 1 = j.val % n) ∨ (j.val + 1 = i.val % n)
-  symm := by intro i j h; cases h with | inl h => right; exact h | inr h => left; exact h
-  loopless := by intro i h; cases h with | inl h => simp at h | inr h => simp at h
+  symm := by constructor; intro i j h; cases h with | inl h => right; exact h | inr h => left; exact h
+  loopless := by constructor; intro i h; cases h with | inl h => simp at h | inr h => simp at h
 
 /-- Complete bipartite graph K_{a,b}: left part Fin a, right part Fin b,
     all cross-edges present. -/
@@ -139,8 +139,8 @@ def completeBipartite (a b : ℕ) : SimpleGraph (Fin a ⊕ Fin b) where
     | Sum.inl _, Sum.inr _ => true
     | Sum.inr _, Sum.inl _ => true
     | _, _ => false
-  symm := by intro x y; simp only; cases x <;> cases y <;> simp
-  loopless := by intro x; cases x <;> simp
+  symm := by constructor; intro x y; simp only; cases x <;> cases y <;> simp
+  loopless := by constructor; intro x; cases x <;> simp
 
 /-- Path P_n has exactly n - 1 edges. -/
 axiom path_edge_count (n : ℕ) (hn : n ≥ 1) : edgeCount (pathGraph n) = n - 1

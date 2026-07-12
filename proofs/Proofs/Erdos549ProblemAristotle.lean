@@ -23,8 +23,8 @@ namespace Erdos549.Aristotle
 
 def starGraph (n : ℕ) : SimpleGraph (Fin (n + 1)) where
   Adj u v := (u = 0 ∧ v ≠ 0) ∨ (v = 0 ∧ u ≠ 0)
-  symm := by intro u v; simp [or_comm, and_comm]
-  loopless := by intro u; simp
+  symm := by constructor; intro u v; simp [or_comm, and_comm]
+  loopless := by constructor; intro u; simp
 
 -- Star graph vertex count
 theorem star_vertex_count (n : ℕ) :
@@ -97,8 +97,8 @@ theorem formula_lt_constant_times_k (k : ℕ) (hk : k ≥ 100) :
 
 def pathGraph (n : ℕ) : SimpleGraph (Fin n) where
   Adj u v := (u.val + 1 = v.val) ∨ (v.val + 1 = u.val)
-  symm := by intro u v; simp [or_comm]
-  loopless := by intro u; simp; omega
+  symm := by constructor; intro u v; simp [or_comm]
+  loopless := by constructor; intro u; simp; omega
 
 -- Path endpoints (first and last vertex)
 theorem path_first_last_adj (n : ℕ) (hn : n ≥ 2) :
@@ -121,8 +121,8 @@ def broomGraph (pathLen starSize : ℕ) : SimpleGraph (Fin (pathLen + starSize))
           (v.val + 1 = u.val ∧ u.val < pathLen) ∨
           (u.val = pathLen - 1 ∧ v.val ≥ pathLen) ∨
           (v.val = pathLen - 1 ∧ u.val ≥ pathLen)
-  symm := by intro u v; simp [or_comm, and_comm]
-  loopless := by intro u; simp; omega
+  symm := by constructor; intro u v; simp [or_comm, and_comm]
+  loopless := by constructor; intro u; simp; omega
 
 -- Broom vertex count
 theorem broom_vertex_count (a b : ℕ) :

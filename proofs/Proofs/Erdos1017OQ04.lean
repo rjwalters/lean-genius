@@ -439,9 +439,10 @@ Hence `cc(B2) <= 2 < 3 <= cp(B2)`, a *verified* strict gap.
 def bookGraph : SimpleGraph (Fin 4) where
   Adj a b := a ≠ b ∧ ¬ (a = 2 ∧ b = 3) ∧ ¬ (a = 3 ∧ b = 2)
   symm := by
+    constructor
     intro a b h
     exact ⟨h.1.symm, fun hc => h.2.2 ⟨hc.2, hc.1⟩, fun hc => h.2.1 ⟨hc.2, hc.1⟩⟩
-  loopless := by intro a h; exact h.1 rfl
+  loopless := by constructor; intro a h; exact h.1 rfl
 
 instance : DecidableRel bookGraph.Adj := fun a b =>
   inferInstanceAs (Decidable (a ≠ b ∧ ¬ (a = 2 ∧ b = 3) ∧ ¬ (a = 3 ∧ b = 2)))

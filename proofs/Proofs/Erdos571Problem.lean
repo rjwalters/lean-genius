@@ -48,7 +48,7 @@ def IsBipartite {V : Type*} [DecidableEq V] (G : Graph V) : Prop :=
     ∀ u v, G.adj u v → (u ∈ A ∧ v ∈ B) ∨ (u ∈ B ∧ v ∈ A)
 
 /-- The edge count of a finite graph -/
-def edgeCount {V : Type*} [Fintype V] [DecidableEq V]
+noncomputable def edgeCount {V : Type*} [Fintype V] [DecidableEq V]
     (G : Graph V) [DecidableRel G.adj] : ℕ :=
   (Finset.filter (fun p : V × V => p.1 < p.2 ∧ G.adj p.1 p.2)
     Finset.univ).card

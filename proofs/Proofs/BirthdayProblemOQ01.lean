@@ -414,7 +414,7 @@ theorem three_mul_choose_three (n : ℕ) (hn : 2 ≤ n) :
       have e1 : m + 2 - 1 = m + 1 := by omega
       have e0 : m + 2 - 0 = m + 2 := by omega
       rw [e2, e1, e0] at h
-      have hf : (3 : ℕ)! = 6 := rfl
+      have hf : Nat.factorial 3 = 6 := rfl
       rw [hf] at h
       rw [← h]; ring
     -- Now: 3 * C(m+2, 3) = (m+2)*(m+1)*m/2

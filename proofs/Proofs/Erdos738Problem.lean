@@ -67,14 +67,14 @@ def SimpleGraph.HasInducedCopy {V : Type*} {n : ℕ}
 /-- A path on n vertices: vertex i is adjacent to vertex i+1. -/
 def pathGraph (n : ℕ) : SimpleGraph (Fin n) where
   Adj i j := (i.val + 1 = j.val) ∨ (j.val + 1 = i.val)
-  symm := by intro i j h; cases h with | inl h => right; exact h | inr h => left; exact h
-  loopless := by intro i h; cases h with | inl h => omega | inr h => omega
+  symm := by constructor; intro i j h; cases h with | inl h => right; exact h | inr h => left; exact h
+  loopless := by constructor; intro i h; cases h with | inl h => omega | inr h => omega
 
 /-- A star on n+1 vertices: one center (vertex 0) adjacent to n leaves. -/
 def starGraph (n : ℕ) : SimpleGraph (Fin (n + 1)) where
   Adj i j := (i.val = 0 ∧ j.val ≠ 0) ∨ (j.val = 0 ∧ i.val ≠ 0)
-  symm := by intro i j h; cases h with | inl h => right; exact h | inr h => left; exact h
-  loopless := by intro i h; cases h with | inl h => exact h.2 h.1 | inr h => exact h.2 h.1
+  symm := by constructor; intro i j h; cases h with | inl h => right; exact h | inr h => left; exact h
+  loopless := by constructor; intro i h; cases h with | inl h => exact h.2 h.1 | inr h => exact h.2 h.1
 
 /- ## Triangle-Freeness of Constructions -/
 

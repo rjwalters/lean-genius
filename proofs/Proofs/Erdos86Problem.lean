@@ -64,12 +64,14 @@ def hypercubeAdj (n : ℕ) (u v : HypercubeVertex n) : Prop :=
 def hypercubeGraph (n : ℕ) : SimpleGraph (HypercubeVertex n) where
   Adj := hypercubeAdj n
   symm := by
+    constructor
     intro u v h
     simp only [hypercubeAdj] at h ⊢
     convert h using 2
     ext i
     constructor <;> (intro h'; exact h'.symm)
   loopless := by
+    constructor
     intro v h
     simp only [hypercubeAdj] at h
     have : (Finset.univ.filter (fun i => v i ≠ v i)).card = 0 := by

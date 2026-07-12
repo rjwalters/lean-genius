@@ -36,9 +36,11 @@ def hypercubeAdj (n : ℕ) (u v : Fin (2 ^ n)) : Prop :=
 def hypercubeGraph (n : ℕ) : SimpleGraph (Fin (2 ^ n)) where
   Adj := hypercubeAdj n
   symm := by
+    constructor
     intro u v ⟨hne, k, hk⟩
     exact ⟨hne.symm, k, by rw [Nat.xor_comm]; exact hk⟩
   loopless := by
+    constructor
     intro v ⟨hne, _⟩
     exact hne rfl
 

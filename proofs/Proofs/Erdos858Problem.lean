@@ -258,7 +258,7 @@ The set of all integers in [√N, N] divisible by some prime > √N.
 
 This set achieves a relatively large weighted sum while satisfying the condition.
 -/
-def exampleSet (N : ℕ) : Finset ℕ :=
+noncomputable def exampleSet (N : ℕ) : Finset ℕ :=
   (range (N + 1)).filter (fun n =>
     n ≥ Nat.sqrt N ∧ ∃ p : ℕ, p.Prime ∧ p > Nat.sqrt N ∧ p ∣ n)
 

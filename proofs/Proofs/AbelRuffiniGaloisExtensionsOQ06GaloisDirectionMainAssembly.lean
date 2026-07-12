@@ -75,7 +75,7 @@ theorem primitive_solvable_subgroup_embeds_AGL1Z_assembly
   -- Step 3: a p-cycle σ generating ι(P), and (newly exported) σ ∈ H.
   obtain ⟨σ, hσcyc, hσcard, hgen, hσH⟩ := sylow_p_is_pcycle H hPrim hSolv P
   -- Step 5: H normalises ⟨σ⟩.
-  have hHle : H ≤ Subgroup.normalizer (Subgroup.zpowers σ) :=
+  have hHle : H ≤ Subgroup.normalizer (Subgroup.zpowers σ : Set (Equiv.Perm (ZMod p))) :=
     H_le_normalizer H P hPnorm σ hσcyc hσcard hgen hσH
   -- Step 4: N(⟨σ⟩) ≅ AGL(1, p); the injective half is all we need.
   obtain ⟨φ, hφinj, _hφsurj⟩ := normalizer_iso_AGL1Z σ hσcyc hσcard

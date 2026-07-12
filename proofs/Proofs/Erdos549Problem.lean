@@ -87,8 +87,8 @@ def IsRamseyNumber {W : Type*} (H : SimpleGraph W) (n : ℕ) : Prop :=
 /-- The star graph S_n with n leaves (n+1 vertices total) -/
 def starGraph (n : ℕ) : SimpleGraph (Fin (n + 1)) where
   Adj u v := (u = 0 ∧ v ≠ 0) ∨ (v = 0 ∧ u ≠ 0)
-  symm := by intro u v; simp [or_comm, and_comm]
-  loopless := by intro u; simp
+  symm := by constructor; intro u v; simp [or_comm, and_comm]
+  loopless := by constructor; intro u; simp
 
 /-- The double star: connect centers of S_k and S_{2k} -/
 def doubleStar (k : ℕ) : SimpleGraph (Fin (3 * k + 2)) where
@@ -100,8 +100,8 @@ def doubleStar (k : ℕ) : SimpleGraph (Fin (3 * k + 2)) where
           (v = 0 ∧ (1 ≤ u.val ∧ u.val ≤ k ∨ u.val = k + 1)) ∨
           (u.val = k + 1 ∧ k + 2 ≤ v.val) ∨
           (v.val = k + 1 ∧ k + 2 ≤ u.val)
-  symm := by intro u v; simp [or_comm, and_comm]
-  loopless := by intro u; simp; omega
+  symm := by constructor; intro u v; simp [or_comm, and_comm]
+  loopless := by constructor; intro u; simp; omega
 
 /-- The double star has 3k + 2 vertices -/
 theorem doubleStar_vertices (k : ℕ) : Fintype.card (Fin (3 * k + 2)) = 3 * k + 2 := by
@@ -153,8 +153,8 @@ theorem bounds_gap : flagAlgebraConstant - norinSunZhaoConstant < 0.02 := by
 /-- The path graph P_n -/
 def pathGraph (n : ℕ) : SimpleGraph (Fin n) where
   Adj u v := (u.val + 1 = v.val) ∨ (v.val + 1 = u.val)
-  symm := by intro u v; simp [or_comm]
-  loopless := by intro u; simp; omega
+  symm := by constructor; intro u v; simp [or_comm]
+  loopless := by constructor; intro u; simp; omega
 
 /-- A broom: a path with a star at one end -/
 def broomGraph (pathLen starSize : ℕ) : SimpleGraph (Fin (pathLen + starSize)) where
@@ -165,8 +165,8 @@ def broomGraph (pathLen starSize : ℕ) : SimpleGraph (Fin (pathLen + starSize))
           (v.val + 1 = u.val ∧ u.val < pathLen) ∨
           (u.val = pathLen - 1 ∧ v.val ≥ pathLen) ∨
           (v.val = pathLen - 1 ∧ u.val ≥ pathLen)
-  symm := by intro u v; simp [or_comm, and_comm]
-  loopless := by intro u; simp; omega
+  symm := by constructor; intro u v; simp [or_comm, and_comm]
+  loopless := by constructor; intro u; simp; omega
 
 /-- Trees with bounded maximum degree satisfy the conjecture -/
 theorem bounded_degree_conjecture (Δ : ℕ) : ∃ K : ℕ, ∀ k ≥ K,

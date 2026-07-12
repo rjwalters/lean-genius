@@ -194,8 +194,8 @@ theorem triangleFree_iff_cliqueFree3 {V : Type*} [Fintype V] [DecidableEq V]
                Set.mem_singleton_iff] at hx hy
     rcases hx with rfl | rfl | rfl <;> rcases hy with rfl | rfl | rfl <;>
       first | exact absurd rfl hxy | exact hadj_ab | exact hadj_ac |
-              exact hadj_bc | exact G.symm hadj_ab | exact G.symm hadj_ac |
-              exact G.symm hadj_bc
+              exact hadj_bc | exact hadj_ab.symm | exact hadj_ac.symm |
+              exact hadj_bc.symm
 
 /-- The complete graph on n ≥ 3 vertices contains triangles. -/
 theorem complete_has_triangles {n : ℕ} (hn : 3 ≤ n) :

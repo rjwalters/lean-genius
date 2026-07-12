@@ -50,8 +50,9 @@ def IsBipartite (G : SimpleGraph V) : Prop :=
 /-- The cycle graph C_n on Fin n. Vertex i is adjacent to vertex (i+1) mod n. -/
 def cycleGraph (n : ℕ) (hn : 3 ≤ n) : SimpleGraph (Fin n) where
   Adj i j := (i.val + 1) % n = j.val ∨ (j.val + 1) % n = i.val
-  symm := by intro i j h; cases h with | inl h => exact Or.inr h | inr h => exact Or.inl h
+  symm := by constructor; intro i j h; cases h with | inl h => exact Or.inr h | inr h => exact Or.inl h
   loopless := by
+    constructor
     intro ⟨i, hi⟩ h
     simp only at h
     have h' : (i + 1) % n = i := h.elim id id

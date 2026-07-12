@@ -1,5 +1,8 @@
 import Mathlib
 
+/-- v4.31 migration compat: `Complex.abs` was removed from Mathlib in favor of `‖·‖`. -/
+noncomputable def Complex.abs (z : ℂ) : ℝ := ‖z‖
+
 /-
 # Erdős 525 — OQ-02: Higher-Dimensional Littlewood Polynomials
 

@@ -58,8 +58,8 @@ instance sqAdjDec : DecidableRel sqAdj := fun a b => by
 @[simps]
 def sqGraph : SimpleGraph SqVerts where
   Adj v w := sqAdj v w
-  symm := by intro a b h; cases a <;> cases b <;> simp_all [sqAdj]
-  loopless := by intro a h; cases a <;> simp_all [sqAdj]
+  symm := by constructor; intro a b h; cases a <;> cases b <;> simp_all [sqAdj]
+  loopless := by constructor; intro a h; cases a <;> simp_all [sqAdj]
 
 instance : DecidableRel sqGraph.Adj := sqAdjDec
 
@@ -137,8 +137,8 @@ instance pentAdjDec : DecidableRel pentAdj := fun a b => by
 @[simps]
 def pentGraph : SimpleGraph PentVerts where
   Adj v w := pentAdj v w
-  symm := by intro a b h; cases a <;> cases b <;> simp_all [pentAdj]
-  loopless := by intro a h; cases a <;> simp_all [pentAdj]
+  symm := by constructor; intro a b h; cases a <;> cases b <;> simp_all [pentAdj]
+  loopless := by constructor; intro a h; cases a <;> simp_all [pentAdj]
 
 instance : DecidableRel pentGraph.Adj := pentAdjDec
 
@@ -218,8 +218,8 @@ instance k4AdjDec : DecidableRel k4Adj := fun a b => by
 @[simps]
 def k4Graph : SimpleGraph K4Verts where
   Adj v w := k4Adj v w
-  symm := by intro a b h; cases a <;> cases b <;> simp_all [k4Adj]
-  loopless := by intro a h; cases a <;> simp_all [k4Adj]
+  symm := by constructor; intro a b h; cases a <;> cases b <;> simp_all [k4Adj]
+  loopless := by constructor; intro a h; cases a <;> simp_all [k4Adj]
 
 instance : DecidableRel k4Graph.Adj := k4AdjDec
 

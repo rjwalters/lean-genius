@@ -52,7 +52,7 @@ noncomputable def vertexDegree (G : SimpleGraph V) (v : V) : ℕ :=
 **High-Degree Vertices:**
 The set of vertices in G with degree at least k.
 -/
-def highDegreeVertices (G : SimpleGraph V) (k : ℕ) : Finset V :=
+noncomputable def highDegreeVertices (G : SimpleGraph V) (k : ℕ) : Finset V :=
   Finset.univ.filter (fun v => vertexDegree G v ≥ k)
 
 /--

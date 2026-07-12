@@ -1,0 +1,998 @@
+===== ShannonEntropyOQ02
+error: Proofs/ShannonEntropyOQ02.lean:163:2: linarith failed to find a contradiction
+n : ℕ
+p : Fin n → ℝ
+error: Proofs/ShannonEntropyOQ02.lean:258:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ∑ x ∈ ?m.474, -?f x
+in the target expression
+error: Proofs/ShannonEntropyOQ02.lean:308:6: linarith failed to find a contradiction
+n : ℕ
+p : Fin n → ℝ
+error: Proofs/ShannonEntropyOQ02.lean:358:15: `simp` made no progress
+error: Proofs/ShannonEntropyOQ02.lean:380:20: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  shannonEntropy p
+===== ShannonSourceCodingOQ01
+error: Proofs/ShannonSourceCodingOQ01.lean:69:8: Unknown identifier `InformationTheory.mutualInformation`
+warning: Proofs/ShannonSourceCodingOQ01.lean:125:10: declaration uses `sorry`
+warning: Proofs/ShannonSourceCodingOQ01.lean:121:8: declaration uses `sorry`
+error: Proofs/ShannonSourceCodingOQ01.lean:137:4: `simp` made no progress
+warning: Proofs/ShannonSourceCodingOQ01.lean:143:13: declaration uses `sorry`
+warning: Proofs/ShannonSourceCodingOQ01.lean:149:13: declaration uses `sorry`
+error: Proofs/ShannonSourceCodingOQ01.lean:178:45: linarith failed to find a contradiction
+p : ℝ
+hp0 : 0 ≤ p
+error: Proofs/ShannonSourceCodingOQ01.lean:207:29: unexpected token '²'; expected ')'
+error: Proofs/ShannonSourceCodingOQ01.lean:215:33: unexpected token '²'; expected ')'
+error: Proofs/ShannonSourceCodingOQ01.lean:226:34: unexpected token '²'; expected ')'
+===== ShannonSourceCodingOQ03
+error: Proofs/ShannonSourceCodingOQ03.lean:78:31: Function expected at
+  single_le_sum (fun j x => D.nonneg j) ?m.68
+but this term has type
+error: Proofs/ShannonSourceCodingOQ03.lean:99:8: Unknown constant `Fintype.sum_piFinset_succ`
+error: Proofs/ShannonSourceCodingOQ03.lean:115:9: Function expected at
+  log_prod ?m.45
+but this term has type
+error: Proofs/ShannonSourceCodingOQ03.lean:142:72: unsolved goals
+k : ℕ
+hk : NeZero k
+===== ShapleyFolkmanAristotle
+error: Proofs/ShapleyFolkmanAristotle.lean:57:20: Invalid field `fintype_card_le_finrank_succ`: The environment does not contain `Function.fintype_card_le_finrank_succ`, so it is not possible to project the field `fintype_card_le_finrank_succ` from an expression
+  haf
+of type
+error: Proofs/ShapleyFolkmanAristotle.lean:55:30: unsolved goals
+E : Type u_1
+inst✝² : AddCommGroup E
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.ShapleyFolkmanAristotle
+error: build failed
+===== ShapleyFolkmanOQ01
+error: Proofs/ShapleyFolkmanOQ01.lean:68:19: Tactic `rewrite` failed: motive is not type correct:
+  fun _a => ∑ i ∈ t, f (D.point i) = f _a
+Error: Application type mismatch: The argument
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.ShapleyFolkmanOQ01
+error: build failed
+===== SkolemNoetherMatrixAut
+error: Proofs/SkolemNoetherMatrixAut.lean:101:4: Unknown constant `Matrix.stdBasisMatrix`
+error: Proofs/SkolemNoetherMatrixAut.lean:102:8: Unknown constant `Matrix.stdBasisMatrix`
+error: Proofs/SkolemNoetherMatrixAut.lean:101:80: unsolved goals
+K : Type u_1
+inst✝² : Field K
+error: Proofs/SkolemNoetherMatrixAut.lean:105:4: Unknown constant `Matrix.stdBasisMatrix`
+error: Proofs/SkolemNoetherMatrixAut.lean:105:40: Unknown constant `Matrix.stdBasisMatrix`
+error: Proofs/SkolemNoetherMatrixAut.lean:106:20: Unknown constant `Matrix.stdBasisMatrix`
+===== SkolemNoetherMatrixAutAristotle
+error: Proofs/SkolemNoetherMatrixAutAristotle.lean:90:34: Unknown constant `Matrix.dotProduct`
+error: Proofs/SkolemNoetherMatrixAutAristotle.lean:89:79: unsolved goals
+K : Type u_1
+inst✝² : Field K
+error: Proofs/SkolemNoetherMatrixAutAristotle.lean:93:11: Type mismatch
+  sub_eq_zero.mpr (Eq.symm (hcoeff j))
+has type
+error: Proofs/SkolemNoetherMatrixAutAristotle.lean:98:7: Unknown constant `Matrix.isUnit_det_iff_isUnit_mulVecLin`
+error: Proofs/SkolemNoetherMatrixAutAristotle.lean:81:16: unsolved goals
+K : Type u_1
+===== SolutionOfCubicOQ03OQ01
+error: Proofs/SolutionOfCubicOQ03OQ01.lean:54:24: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  -(x₁ * x₂ * x₃)
+in the target expression
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.SolutionOfCubicOQ03OQ01
+error: build failed
+===== SolutionOfCubicOQ03OQ03
+error: Proofs/SolutionOfCubicOQ03OQ03.lean:57:2: ring failed, ring expressions not equal
+p q r m : ℂ
+h : 8 * m ^ 3 + 20 * p * m ^ 2 + (16 * p ^ 2 - 8 * r) * m + (4 * p ^ 3 - 4 * p * r - q ^ 2) = 0
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.SolutionOfCubicOQ03OQ03
+error: build failed
+===== SolutionOfCubicOQ03OQ05
+error: Proofs/SolutionOfCubicOQ03OQ05.lean:34:35: unsolved goals
+R : Type u_1
+inst✝ : CommRing R
+error: Proofs/SolutionOfCubicOQ03OQ05.lean:52:2: linarith failed to find a contradiction
+R : Type u_1
+inst✝ : CommRing R
+error: Proofs/SolutionOfCubicOQ03OQ05.lean:65:2: linarith failed to find a contradiction
+R : Type u_1
+inst✝ : CommRing R
+error: Proofs/SolutionOfCubicOQ03OQ05.lean:78:2: linarith failed to find a contradiction
+R : Type u_1
+inst✝ : CommRing R
+===== SolutionOfCubicOQ05
+error: Proofs/GeneralQuartic.lean:361:4: `simp` made no progress
+warning: Proofs/GeneralQuartic.lean:354:15: This simp argument is unused:
+  quarticPoly
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.GeneralQuartic
+error: build failed
+===== SophieGermainOQ02
+error: Proofs/SophieGermainOQ02.lean:85:2: interval_cases failed: unsupported type Nat.Prime 0
+error: Proofs/SophieGermainOQ02.lean:142:47: Invalid field `mod_cast_eq`: The environment does not contain `Exists.mod_cast_eq`, so it is not possible to project the field `mod_cast_eq` from an expression
+  Nat.Prime.odd_of_ne_two hp.left this
+of type `∃ k, p = 2 * k + 1`
+error: Proofs/SophieGermainOQ02.lean:154:20: No goals to be solved
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.SophieGermainOQ02
+===== SpectralTraceDetEigenvaluesOQ01OQ01
+error: Proofs/SpectralTraceDetEigenvaluesOQ01OQ01.lean:305:26: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  (↑?M * ?N * (↑?M)⁻¹).charpoly
+in the target expression
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.SpectralTraceDetEigenvaluesOQ01OQ01
+error: build failed
+===== SpectralTraceDetEigenvaluesOQ01OQ01OQ02OQ02
+error: Proofs/SpectralTraceDetEigenvaluesOQ01OQ01OQ02OQ02.lean:136:12: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  (↑?M * ?N * (↑?M)⁻¹).charpoly
+in the target expression
+error: Proofs/SpectralTraceDetEigenvaluesOQ01OQ01OQ02OQ02.lean:149:12: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  (↑?M * ?N * (↑?M)⁻¹).charpoly
+in the target expression
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.SpectralTraceDetEigenvaluesOQ01OQ01OQ02OQ02
+error: build failed
+===== SpectralTraceDetEigenvaluesOQ02
+error: Proofs/SpectralTraceDetEigenvaluesOQ02.lean:132:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ((↑?M)⁻¹ * ?N * ↑?M).charpoly
+in the target expression
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.SpectralTraceDetEigenvaluesOQ02
+error: build failed
+===== SpernerFreudenthal
+error: Proofs/SpernerMathlib4.lean:545:27: Type mismatch
+  Option.noConfusion
+has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.SpernerMathlib4
+error: build failed
+===== SpernerFreudenthalSimplex
+error: Proofs/SpernerMathlib4.lean:545:27: Type mismatch
+  Option.noConfusion
+has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.SpernerMathlib4
+error: build failed
+===== SpernerGrid
+error: Proofs/SpernerGrid.lean:679:10: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  i ≥ 0
+error: Proofs/SpernerGrid.lean:1070:76: No goals to be solved
+warning: Proofs/SpernerGrid.lean:1140:8: declaration uses `sorry`
+warning: Proofs/SpernerGrid.lean:1137:14: declaration uses `sorry`
+error: Proofs/SpernerGrid.lean:1204:29: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 0
+error: Proofs/SpernerGrid.lean:1222:6: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  g ≥ 0
+===== SpernerGridAristotle
+error: Proofs/SpernerGrid.lean:679:10: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  i ≥ 0
+error: Proofs/SpernerGrid.lean:1070:76: No goals to be solved
+warning: Proofs/SpernerGrid.lean:1140:8: declaration uses `sorry`
+warning: Proofs/SpernerGrid.lean:1137:14: declaration uses `sorry`
+error: Proofs/SpernerGrid.lean:1204:29: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 0
+error: Proofs/SpernerGrid.lean:1222:6: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  g ≥ 0
+===== SpernerGridBase
+error: Proofs/SpernerGridBase.lean:430:30: Type mismatch: After simplification, term
+  hm
+ has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.SpernerGridBase
+error: build failed
+===== SpernerGridCell
+error: Proofs/SpernerGridBase.lean:430:30: Type mismatch: After simplification, term
+  hm
+ has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.SpernerGridBase
+error: build failed
+===== SpernerMathlib
+error: Proofs/SpernerMathlib.lean:457:25: Type mismatch
+  Option.noConfusion
+has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.SpernerMathlib
+error: build failed
+===== SpernerMathlib4
+error: Proofs/SpernerMathlib4.lean:545:27: Type mismatch
+  Option.noConfusion
+has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.SpernerMathlib4
+error: build failed
+===== SpernerMathlib4OQ03
+error: Proofs/SpernerMathlib4.lean:545:27: Type mismatch
+  Option.noConfusion
+has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.SpernerMathlib4
+error: build failed
+===== SpernerMathlibHyper
+error: Proofs/SpernerMathlib.lean:457:25: Type mismatch
+  Option.noConfusion
+has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.SpernerMathlib
+error: build failed
+===== SpernerMathlibOQ02
+error: Proofs/SpernerMathlib.lean:457:25: Type mismatch
+  Option.noConfusion
+has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.SpernerMathlib
+error: build failed
+===== SpernerMathlibOQ03
+error: Proofs/SpernerMathlib.lean:457:25: Type mismatch
+  Option.noConfusion
+has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.SpernerMathlib
+error: build failed
+===== SpernerNDim
+error: Proofs/SpernerNDim.lean:39:18: Type mismatch: After simplification, term
+  Eq.symm hval
+ has type
+error: Proofs/SpernerNDim.lean:458:66: Type mismatch
+  Option.noConfusion
+has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.SpernerNDim
+error: build failed
+===== SpernerNDimMathlib
+error: Proofs/SpernerNDimMathlib.lean:46:18: Type mismatch: After simplification, term
+  Eq.symm hval
+ has type
+error: Proofs/SpernerNDimMathlib.lean:395:66: Type mismatch
+  Option.noConfusion
+has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.SpernerNDimMathlib
+error: build failed
+===== SpernerNDimMathlibOQ01
+error: Proofs/SpernerNDimMathlib.lean:46:18: Type mismatch: After simplification, term
+  Eq.symm hval
+ has type
+error: Proofs/SpernerNDimMathlib.lean:395:66: Type mismatch
+  Option.noConfusion
+has type
+error: Lean exited with code 1
+✖ [8577/8578] Building Proofs.SpernerNDimOQ01 (2.0s)
+trace: .> LEAN_PATH=/workspace/proofs/.lake/packages/Cli/.lake/build/lib/lean:/workspace/proofs/.lake/packages/batteries/.lake/build/lib/lean:/workspace/proofs/.lake/packages/Qq/.lake/build/lib/lean:/workspace/proofs/.lake/packages/aesop/.lake/build/lib/lean:/workspace/proofs/.lake/packages/proofwidgets/.lake/build/lib/lean:/workspace/proofs/.lake/packages/importGraph/.lake/build/lib/lean:/workspace/proofs/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/workspace/proofs/.lake/packages/plausible/.lake/build/lib/lean:/workspace/proofs/.lake/packages/mathlib/.lake/build/lib/lean:/workspace/proofs/.lake/build/lib/lean /root/.elan/toolchains/leanprover--lean4---v4.31.0/bin/lean /workspace/proofs/Proofs/SpernerNDimOQ01.lean -o /workspace/proofs/.lake/build/lib/lean/Proofs/SpernerNDimOQ01.olean -i /workspace/proofs/.lake/build/lib/lean/Proofs/SpernerNDimOQ01.ilean -c /workspace/proofs/.lake/build/ir/Proofs/SpernerNDimOQ01.c --setup /workspace/proofs/.lake/build/ir/Proofs/SpernerNDimOQ01.setup.json --json
+error: Proofs/SpernerNDimOQ01.lean:49:53: Function expected at
+  Pairwise.take hl
+but this term has type
+===== SpernerNDimMathlibOQ01OQ04
+error: Proofs/SpernerNDimMathlib.lean:46:18: Type mismatch: After simplification, term
+  Eq.symm hval
+ has type
+error: Proofs/SpernerNDimMathlib.lean:395:66: Type mismatch
+  Option.noConfusion
+has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.SpernerNDimMathlib
+error: build failed
+===== SpernerNDimMathlibOQ02
+error: Proofs/SpernerNDimMathlibOQ02.lean:253:13: Type mismatch
+  hpanch (N + 1) (Nat.succ_pos N)
+has type
+error: Proofs/SpernerNDimMathlibOQ02.lean:298:8: No goals to be solved
+error: Proofs/SpernerNDimMathlibOQ02.lean:304:8: Tactic `assumption` failed
+
+case a
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.SpernerNDimMathlibOQ02
+===== SpernerNDimOQ02
+error: Proofs/SpernerGridBase.lean:430:30: Type mismatch: After simplification, term
+  hm
+ has type
+error: Lean exited with code 1
+✖ [8577/8578] Building Proofs.SpernerNDim (2.0s)
+trace: .> LEAN_PATH=/workspace/proofs/.lake/packages/Cli/.lake/build/lib/lean:/workspace/proofs/.lake/packages/batteries/.lake/build/lib/lean:/workspace/proofs/.lake/packages/Qq/.lake/build/lib/lean:/workspace/proofs/.lake/packages/aesop/.lake/build/lib/lean:/workspace/proofs/.lake/packages/proofwidgets/.lake/build/lib/lean:/workspace/proofs/.lake/packages/importGraph/.lake/build/lib/lean:/workspace/proofs/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/workspace/proofs/.lake/packages/plausible/.lake/build/lib/lean:/workspace/proofs/.lake/packages/mathlib/.lake/build/lib/lean:/workspace/proofs/.lake/build/lib/lean /root/.elan/toolchains/leanprover--lean4---v4.31.0/bin/lean /workspace/proofs/Proofs/SpernerNDim.lean -o /workspace/proofs/.lake/build/lib/lean/Proofs/SpernerNDim.olean -i /workspace/proofs/.lake/build/lib/lean/Proofs/SpernerNDim.ilean -c /workspace/proofs/.lake/build/ir/Proofs/SpernerNDim.c --setup /workspace/proofs/.lake/build/ir/Proofs/SpernerNDim.setup.json --json
+error: Proofs/SpernerNDim.lean:39:18: Type mismatch: After simplification, term
+  Eq.symm hval
+ has type
+error: Proofs/SpernerNDim.lean:458:66: Type mismatch
+  Option.noConfusion
+has type
+===== SpernerNDimOQ02Cell
+error: Proofs/SpernerGridBase.lean:430:30: Type mismatch: After simplification, term
+  hm
+ has type
+error: Lean exited with code 1
+✖ [8578/8580] Building Proofs.SpernerNDim (3.0s)
+trace: .> LEAN_PATH=/workspace/proofs/.lake/packages/Cli/.lake/build/lib/lean:/workspace/proofs/.lake/packages/batteries/.lake/build/lib/lean:/workspace/proofs/.lake/packages/Qq/.lake/build/lib/lean:/workspace/proofs/.lake/packages/aesop/.lake/build/lib/lean:/workspace/proofs/.lake/packages/proofwidgets/.lake/build/lib/lean:/workspace/proofs/.lake/packages/importGraph/.lake/build/lib/lean:/workspace/proofs/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/workspace/proofs/.lake/packages/plausible/.lake/build/lib/lean:/workspace/proofs/.lake/packages/mathlib/.lake/build/lib/lean:/workspace/proofs/.lake/build/lib/lean /root/.elan/toolchains/leanprover--lean4---v4.31.0/bin/lean /workspace/proofs/Proofs/SpernerNDim.lean -o /workspace/proofs/.lake/build/lib/lean/Proofs/SpernerNDim.olean -i /workspace/proofs/.lake/build/lib/lean/Proofs/SpernerNDim.ilean -c /workspace/proofs/.lake/build/ir/Proofs/SpernerNDim.c --setup /workspace/proofs/.lake/build/ir/Proofs/SpernerNDim.setup.json --json
+error: Proofs/SpernerNDim.lean:39:18: Type mismatch: After simplification, term
+  Eq.symm hval
+ has type
+error: Proofs/SpernerNDim.lean:458:66: Type mismatch
+  Option.noConfusion
+has type
+===== SpernerNDimOQ02Obstruction
+error: Proofs/SpernerGridBase.lean:430:30: Type mismatch: After simplification, term
+  hm
+ has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.SpernerGridBase
+error: build failed
+===== SpernerNDimOQ03
+error: Proofs/SpernerNDim.lean:39:18: Type mismatch: After simplification, term
+  Eq.symm hval
+ has type
+error: Proofs/SpernerNDim.lean:458:66: Type mismatch
+  Option.noConfusion
+has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.SpernerNDim
+error: build failed
+===== SpernerNDimOQ03OQ01
+error: Proofs/SpernerNDimOQ03OQ01.lean:46:23: Application type mismatch: The argument
+  le_rfl
+has type
+error: Proofs/SpernerNDimOQ03OQ01.lean:68:12: Function expected at
+  mul_lt_of_lt_one_right ?m.128 ?m.134
+but this term has type
+error: Proofs/SpernerNDimOQ03OQ01.lean:78:41: Application type mismatch: The argument
+  x₀
+has type
+error: Proofs/SpernerNDimOQ03OQ01.lean:78:64: Application type mismatch: The argument
+  p
+has type
+===== SpernerNDimOQ04
+error: Proofs/SpernerNDim.lean:39:18: Type mismatch: After simplification, term
+  Eq.symm hval
+ has type
+error: Proofs/SpernerNDim.lean:458:66: Type mismatch
+  Option.noConfusion
+has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.SpernerNDim
+error: build failed
+===== SpernerNDimOQ06
+error: Proofs/SpernerNDimOQ06.lean:235:27: Application type mismatch: The argument
+  hp
+has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.SpernerNDimOQ06
+error: build failed
+===== SpernerSimplicialBridge
+error: Proofs/SpernerMathlib.lean:457:25: Type mismatch
+  Option.noConfusion
+has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.SpernerMathlib
+error: build failed
+===== SpernerSimplicialBridgeOQ01
+error: Proofs/SpernerMathlib.lean:457:25: Type mismatch
+  Option.noConfusion
+has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.SpernerMathlib
+error: build failed
+===== SpernerSimplicialBridgeOQ02
+error: Proofs/SpernerMathlib.lean:457:25: Type mismatch
+  Option.noConfusion
+has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.SpernerMathlib
+error: build failed
+===== SpernerSimplicialBridgeOQ03
+error: Proofs/SpernerMathlib.lean:457:25: Type mismatch
+  Option.noConfusion
+has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.SpernerMathlib
+error: build failed
+===== SpernerSimplicialInstance
+error: Proofs/SpernerMathlib4.lean:545:27: Type mismatch
+  Option.noConfusion
+has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.SpernerMathlib4
+error: build failed
+===== SpernerSimplicialInstanceOQ01
+error: Proofs/SpernerMathlib4.lean:545:27: Type mismatch
+  Option.noConfusion
+has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.SpernerMathlib4
+error: build failed
+===== SpernerSimplicialInstanceOQ03
+error: Proofs/SpernerNDim.lean:39:18: Type mismatch: After simplification, term
+  Eq.symm hval
+ has type
+error: Proofs/SpernerNDim.lean:458:66: Type mismatch
+  Option.noConfusion
+has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.SpernerNDim
+error: build failed
+===== SpernerSimplicialInstanceOQ03Tower
+error: Proofs/SpernerNDim.lean:39:18: Type mismatch: After simplification, term
+  Eq.symm hval
+ has type
+error: Proofs/SpernerNDim.lean:458:66: Type mismatch
+  Option.noConfusion
+has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.SpernerNDim
+error: build failed
+===== SpernerSimplicialInstanceOQ04
+error: Proofs/SpernerMathlib4.lean:545:27: Type mismatch
+  Option.noConfusion
+has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.SpernerMathlib4
+error: build failed
+===== SpernerSimplicialInstanceOQ05
+error: Proofs/SpernerMathlib4.lean:545:27: Type mismatch
+  Option.noConfusion
+has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.SpernerMathlib4
+error: build failed
+===== SpernerSimplicialInstanceOQ05Scarf1d
+error: Proofs/SpernerMathlib4.lean:545:27: Type mismatch
+  Option.noConfusion
+has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.SpernerMathlib4
+error: build failed
+===== SpernerTuckerCrossPolytopeBoundary
+error: Proofs/SpernerTuckerCrossPolytopeBoundary.lean:144:10: Type mismatch
+  crossAdj_symm n
+has type
+error: Proofs/SpernerTuckerCrossPolytopeBoundary.lean:145:14: Type mismatch
+  crossAdj_irrefl n
+has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.SpernerTuckerCrossPolytopeBoundary
+error: build failed
+===== SpernerTuckerCrossPolytopeConnected
+error: Proofs/SpernerTuckerCrossPolytopeBoundary.lean:144:10: Type mismatch
+  crossAdj_symm n
+has type
+error: Proofs/SpernerTuckerCrossPolytopeBoundary.lean:145:14: Type mismatch
+  crossAdj_irrefl n
+has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.SpernerTuckerCrossPolytopeBoundary
+error: build failed
+===== SpernerTuckerCrossPolytopeEdgeCount
+error: Proofs/SpernerTuckerCrossPolytopeBoundary.lean:144:10: Type mismatch
+  crossAdj_symm n
+has type
+error: Proofs/SpernerTuckerCrossPolytopeBoundary.lean:145:14: Type mismatch
+  crossAdj_irrefl n
+has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.SpernerTuckerCrossPolytopeBoundary
+error: build failed
+===== SpernerTuckerCrossPolytopeEquator
+error: Proofs/SpernerTuckerCrossPolytopeBoundary.lean:144:10: Type mismatch
+  crossAdj_symm n
+has type
+error: Proofs/SpernerTuckerCrossPolytopeBoundary.lean:145:14: Type mismatch
+  crossAdj_irrefl n
+has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.SpernerTuckerCrossPolytopeBoundary
+error: build failed
+===== SpernerTuckerCrossPolytopeEquatorAut
+error: Proofs/SpernerTuckerCrossPolytopeBoundary.lean:144:10: Type mismatch
+  crossAdj_symm n
+has type
+error: Proofs/SpernerTuckerCrossPolytopeBoundary.lean:145:14: Type mismatch
+  crossAdj_irrefl n
+has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.SpernerTuckerCrossPolytopeBoundary
+error: build failed
+===== SpernerTuckerCrossPolytopeHemisphere
+error: Proofs/SpernerTuckerCrossPolytopeBoundary.lean:144:10: Type mismatch
+  crossAdj_symm n
+has type
+error: Proofs/SpernerTuckerCrossPolytopeBoundary.lean:145:14: Type mismatch
+  crossAdj_irrefl n
+has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.SpernerTuckerCrossPolytopeBoundary
+error: build failed
+===== SpernerTuckerCrossPolytopeHemisphereIso
+error: Proofs/SpernerTuckerCrossPolytopeBoundary.lean:144:10: Type mismatch
+  crossAdj_symm n
+has type
+error: Proofs/SpernerTuckerCrossPolytopeBoundary.lean:145:14: Type mismatch
+  crossAdj_irrefl n
+has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.SpernerTuckerCrossPolytopeBoundary
+error: build failed
+===== SpernerTuckerCrossPolytopeLabelling
+error: Proofs/SpernerTuckerCrossPolytopeBoundary.lean:144:10: Type mismatch
+  crossAdj_symm n
+has type
+error: Proofs/SpernerTuckerCrossPolytopeBoundary.lean:145:14: Type mismatch
+  crossAdj_irrefl n
+has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.SpernerTuckerCrossPolytopeBoundary
+error: build failed
+===== SpernerTuckerDoorGraph
+error: Proofs/SpernerTuckerDoorGraph.lean:288:6: `dsimp` made no progress
+warning: Proofs/SpernerTuckerDoorGraph.lean:351:20: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.SpernerTuckerDoorGraph
+error: build failed
+===== SpernerTuckerEndpointTransport
+error: Proofs/SpernerTuckerCrossPolytopeBoundary.lean:144:10: Type mismatch
+  crossAdj_symm n
+has type
+error: Proofs/SpernerTuckerCrossPolytopeBoundary.lean:145:14: Type mismatch
+  crossAdj_irrefl n
+has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.SpernerTuckerCrossPolytopeBoundary
+error: build failed
+===== SpernerTuckerEquatorMatchingGraph
+error: Proofs/SpernerTuckerCrossPolytopeBoundary.lean:144:10: Type mismatch
+  crossAdj_symm n
+has type
+error: Proofs/SpernerTuckerCrossPolytopeBoundary.lean:145:14: Type mismatch
+  crossAdj_irrefl n
+has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.SpernerTuckerCrossPolytopeBoundary
+error: build failed
+===== SpernerTuckerHexagonDirectedEngine
+error: Proofs/SpernerTuckerDoorGraph.lean:288:6: `dsimp` made no progress
+warning: Proofs/SpernerTuckerDoorGraph.lean:351:20: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.SpernerTuckerDoorGraph
+error: build failed
+===== SpernerTuckerHexagonPseudomanifold
+error: Proofs/SpernerTuckerDoorGraph.lean:288:6: `dsimp` made no progress
+warning: Proofs/SpernerTuckerDoorGraph.lean:351:20: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.SpernerTuckerDoorGraph
+error: build failed
+===== SpernerTuckerSimplexBoundaryDoorGraph
+error: Proofs/SpernerTuckerDoorGraph.lean:288:6: `dsimp` made no progress
+warning: Proofs/SpernerTuckerDoorGraph.lean:351:20: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.SpernerTuckerDoorGraph
+error: build failed
+===== SpernerTuckerSimplexBoundaryPseudomanifold
+error: Proofs/SpernerTuckerDoorGraph.lean:288:6: `dsimp` made no progress
+warning: Proofs/SpernerTuckerDoorGraph.lean:351:20: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.SpernerTuckerDoorGraph
+error: build failed
+===== SpernerTuckerSimplexFacetPair
+error: Proofs/SpernerTuckerDoorGraph.lean:288:6: `dsimp` made no progress
+warning: Proofs/SpernerTuckerDoorGraph.lean:351:20: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.SpernerTuckerDoorGraph
+error: build failed
+===== Sqrt2MinpolyOQ01
+error: Proofs/Sqrt2MinpolyOQ01.lean:162:10: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ↑k
+in the target expression
+error: Proofs/Sqrt2MinpolyOQ01.lean:167:15: Unknown constant `Int.natAbs_ofNat`
+error: Proofs/Sqrt2MinpolyOQ01.lean:192:4: Type mismatch: After simplification, term
+  this
+ has type
+error: Proofs/Sqrt2MinpolyOQ01.lean:203:10: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  C a * X + C ha
+in the target expression
+===== Sqrt2MinpolyOQ01OQ02
+error: Proofs/Sqrt2MinpolyOQ01OQ02.lean:99:10: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  C a * X + C ha
+in the target expression
+error: Proofs/Sqrt2MinpolyOQ01OQ02.lean:103:13: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  1 * ?a
+in the target expression
+error: Proofs/Sqrt2MinpolyOQ01OQ02.lean:132:2: unsolved goals
+case mp
+r : ℚ
+error: Proofs/Sqrt2MinpolyOQ01OQ02.lean:156:2: `simp` made no progress
+error: Lean exited with code 1
+Some required targets logged failures:
+===== Sqrt2OQ01
+error: Proofs/Sqrt2OQ01.lean:26:43: invalid binder annotation, type is not a class instance
+  ?m.2
+
+error: Proofs/Sqrt2OQ01.lean:30:39: invalid binder annotation, type is not a class instance
+  ?m.2
+
+error: Proofs/Sqrt2OQ01.lean:38:49: Unknown identifier `square_nonneg_general`
+error: Proofs/Sqrt2OQ01.lean:41:49: Unknown identifier `square_nonneg_general`
+error: Proofs/Sqrt2OQ01.lean:44:50: Unknown identifier `square_nonneg_general`
+error: Proofs/Sqrt2OQ01.lean:47:49: Unknown identifier `square_nonneg_general`
+===== StirlingExpansion
+error: Proofs/StirlingExpansion.lean:115:30: `ring_nf` made no progress on the goal
+error: Proofs/StirlingExpansion.lean:118:30: `ring_nf` made no progress on the goal
+error: Proofs/StirlingExpansion.lean:112:86: unsolved goals
+case e'_4
+x : ℝ
+error: Proofs/StirlingExpansion.lean:186:72: `ring_nf` made no progress on the goal
+error: Proofs/StirlingExpansion.lean:188:72: `ring_nf` made no progress on the goal
+error: Proofs/StirlingExpansion.lean:190:72: `ring_nf` made no progress on the goal
+===== StirlingExpansionAristotle
+error: Proofs/StirlingExpansion.lean:115:30: `ring_nf` made no progress on the goal
+error: Proofs/StirlingExpansion.lean:118:30: `ring_nf` made no progress on the goal
+error: Proofs/StirlingExpansion.lean:112:86: unsolved goals
+case e'_4
+x : ℝ
+error: Proofs/StirlingExpansion.lean:186:72: `ring_nf` made no progress on the goal
+error: Proofs/StirlingExpansion.lean:188:72: `ring_nf` made no progress on the goal
+error: Proofs/StirlingExpansion.lean:190:72: `ring_nf` made no progress on the goal
+===== StirlingFormulaOQ02OQ01
+error: Proofs/StirlingFormulaOQ02OQ01.lean:222:4: Type mismatch: After simplification, term
+  h
+ has type
+error: Proofs/StirlingFormulaOQ02OQ01.lean:256:4: Type mismatch: After simplification, term
+  h
+ has type
+error: Proofs/StirlingFormulaOQ02OQ01.lean:387:6: Type mismatch: After simplification, term
+  h
+ has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.StirlingFormulaOQ02OQ01
+===== SubsetCountOQ02OQ01
+error: Proofs/SubsetCountOQ02OQ01.lean:74:64: unsolved goals
+α : Type u_1
+inst✝ : DecidableEq α
+error: Proofs/SubsetCountOQ02OQ01.lean:148:31: Unknown constant `Finset.disjoint_comm.mp`
+warning: Proofs/SubsetCountOQ02OQ01.lean:135:40: This simp argument is unused:
+  Multiset.mem_add
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.SubsetCountOQ02OQ01
+error: build failed
+===== SumOfDivisorsOQ01SpecialPrime
+error: Proofs/SumOfDivisorsOQ01SpecialPrime.lean:75:6: Unknown identifier `not_even_iff_odd`
+error: Proofs/SumOfDivisorsOQ01SpecialPrime.lean:70:53: unsolved goals
+N : ℕ
+hodd : Odd N
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.SumOfDivisorsOQ01SpecialPrime
+error: build failed
+===== SumOfKthPowers
+error: Proofs/SumOfKthPowers.lean:526:2: Unknown constant `Finset.sum_range_pow`
+error: Proofs/SumOfKthPowers.lean:534:2: Unknown constant `Finset.sum_range_pow_eq_bernoulli_sub`
+error: Proofs/SumOfKthPowers.lean:548:2: linarith failed to find a contradiction
+case h1
+n : ℕ
+error: Proofs/SumOfKthPowers.lean:570:2: Unknown constant `Nat.bernoulli_odd_eq_zero`
+error: Proofs/SumOfKthPowers.lean:585:35: unexpected identifier after decimal point; consider parenthesizing the number
+error: Proofs/SumOfKthPowers.lean:594:35: unexpected identifier after decimal point; consider parenthesizing the number
+===== SumOfKthPowersOQ03
+error: Proofs/SumOfKthPowersOQ03.lean:110:10: typeclass instance problem is stuck
+  AddCommMonoid ?m.124
+
+error: Proofs/SumOfKthPowersOQ03.lean:128:10: typeclass instance problem is stuck
+  AddCommMonoid ?m.76
+
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.SumOfKthPowersOQ03
+error: build failed
+===== SumOfKthPowersOQ04
+error: Proofs/SumOfKthPowersOQ04.lean:98:29: Application type mismatch: The argument
+  fun i hi => const_div_pow_tendsto_zero' (q.coeff i) (d - i) (Nat.sub_pos_of_lt (mem_range.mp hi))
+has type
+error: Proofs/SumOfKthPowersOQ04.lean:107:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  eval ?m.183 ?m.182
+in the target expression
+error: Proofs/SumOfKthPowersOQ04.lean:107:37: Application type mismatch: The argument
+  hdeg
+has type
+error: Proofs/SumOfKthPowersOQ04.lean:146:50: Application type mismatch: The argument
+  hcoeff
+has type
+===== SumOfKthPowersOQ05
+error: Proofs/SumOfKthPowersOQ05.lean:56:8: Type mismatch: After simplification, term
+  isUnit_iff_ne_zero
+ has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.SumOfKthPowersOQ05
+error: build failed
+===== SumOfKthPowersOQ05OQ01
+error: Proofs/SumOfKthPowersOQ05.lean:56:8: Type mismatch: After simplification, term
+  isUnit_iff_ne_zero
+ has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.SumOfKthPowersOQ05
+error: build failed
+===== SumOfKthPowersOQ05OQ01OQ01
+error: Proofs/SumOfKthPowersOQ05.lean:56:8: Type mismatch: After simplification, term
+  isUnit_iff_ne_zero
+ has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.SumOfKthPowersOQ05
+error: build failed
+===== SylowTheorem
+error: Proofs/SylowTheorem.lean:148:2: Unknown identifier `card_sylow_dvd_index`
+error: Proofs/SylowTheorem.lean:159:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ⊤
+in the target expression
+error: Proofs/SylowTheorem.lean:203:8: failed to synthesize instance of type class
+  Fact (Nat.Prime (Nat.card G))
+
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.SylowTheorem
+===== SylowTheoremOQ01
+error: Proofs/SylowTheoremOQ01.lean:58:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  if h.q = h.p then ?m.74 else ?m.75
+in the target expression
+error: Proofs/SylowTheoremOQ01.lean:112:16: Function expected at
+  Sylow.nonempty
+but this term has type
+error: Proofs/SylowTheoremOQ01.lean:112:9: Tactic `rcases` failed: `x✝ : ?m.30` is not an inductive datatype
+error: Proofs/SylowTheoremOQ01.lean:132:16: Function expected at
+  Sylow.nonempty
+but this term has type
+===== SylowTheoremOQ02
+error: Proofs/SylowTheoremOQ02.lean:255:4: `dsimp` made no progress
+info: Proofs/SylowTheoremOQ02.lean:358:0: @sylowProP_existence : ∀ {G : Type u_1} [inst : Group G] [inst_1 : TopologicalSpace G],
+  IsProfiniteGroup G → ∀ (p : ℕ), Fact (Nat.Prime p) → Nonempty (SylowProP G p)
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.SylowTheoremOQ02
+error: build failed
+===== SylowTheoremOQ02OQ01Nilpotent
+error: Proofs/SylowTheoremOQ02OQ01Nilpotent.lean:67:24: Application type mismatch: The argument
+  ↑P
+has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.SylowTheoremOQ02OQ01Nilpotent
+error: build failed
+===== SylowTheoremOQ02Orbit
+error: Proofs/SylowTheoremOQ02Orbit.lean:66:2: Unknown constant `Sylow.exists_smul_eq`
+warning: Proofs/SylowTheoremOQ02Orbit.lean:81:0: automatically included section variable(s) unused in theorem `SylowOrbitEnum.stabilizer_eq_normalizer`:
+  [Fintype G]
+error: Proofs/SylowTheoremOQ02Orbit.lean:101:48: Application type mismatch: The argument
+  P
+has type
+error: Proofs/SylowTheoremOQ02Orbit.lean:130:70: Application type mismatch: The argument
+  P
+has type
+error: Proofs/SylowTheoremOQ02Orbit.lean:150:6: Unknown identifier `sylow_count_eq_normalizer_index`
+error: Proofs/SylowTheoremOQ02Orbit.lean:149:58: unsolved goals
+G : Type u_1
+===== SylowTheoremOQ03
+error: Proofs/SylowTheoremOQ02.lean:255:4: `dsimp` made no progress
+info: Proofs/SylowTheoremOQ02.lean:358:0: @sylowProP_existence : ∀ {G : Type u_1} [inst : Group G] [inst_1 : TopologicalSpace G],
+  IsProfiniteGroup G → ∀ (p : ℕ), Fact (Nat.Prime p) → Nonempty (SylowProP G p)
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.SylowTheoremOQ02
+error: build failed
+===== SylowTheoremOQ03B
+error: Proofs/SylowTheoremOQ02.lean:255:4: `dsimp` made no progress
+info: Proofs/SylowTheoremOQ02.lean:358:0: @sylowProP_existence : ∀ {G : Type u_1} [inst : Group G] [inst_1 : TopologicalSpace G],
+  IsProfiniteGroup G → ∀ (p : ℕ), Fact (Nat.Prime p) → Nonempty (SylowProP G p)
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.SylowTheoremOQ02
+error: build failed
+===== SylowTheoremOQ04OQ03
+error: Proofs/SylowTheoremOQ04OQ03.lean:611:53: unexpected token 'set_option'; expected 'lemma'
+error: Proofs/SylowTheoremOQ04OQ03.lean:628:4: Tactic `simp` failed with a nested error:
+maximum recursion depth has been reached
+use `set_option maxRecDepth <num>` to increase limit
+error: Proofs/SylowTheoremOQ04OQ03.lean:663:79: unexpected token 'set_option'; expected 'lemma'
+info: Proofs/SylowTheoremOQ04OQ03.lean:686:10: Try this:
+  [apply] ring_nf
+error: Proofs/SylowTheoremOQ04OQ03.lean:678:50: unsolved goals
+case «0».«1»
+p : ℕ
+===== SylowTheoremOQ05
+error: Proofs/SylowTheoremOQ05.lean:106:5: unknown tactic
+error: Proofs/SylowTheoremOQ05.lean:102:2: unsolved goals
+case inl
+G : Type u_1
+error: Proofs/SylowTheoremOQ05.lean:97:52: unsolved goals
+case inr
+G : Type u_1
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.SylowTheoremOQ05
+===== SylowTheoremsOQ05
+error: Proofs/SylowTheoremsOQ05.lean:149:51: (deterministic) timeout at `whnf`, maximum number of heartbeats (200000) has been reached
+
+Note: Use `set_option maxHeartbeats <num>` to set the limit.
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.SylowTheoremsOQ05
+error: build failed
+===== SylvesterSequenceOQ01OQ03
+error: Proofs/SylvesterSequenceOQ01OQ03.lean:128:15: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 0
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.SylvesterSequenceOQ01OQ03
+error: build failed
+===== SynthesisCurvaturePtolemy
+error: Proofs/PtolemysTheoremOQ01OQ02.lean:79:9: expected token
+error: Proofs/PtolemysTheoremOQ01OQ02.lean:102:41: expected token
+error: Proofs/PtolemysTheoremOQ01OQ02.lean:171:26: expected token
+error: Proofs/PtolemysTheoremOQ01OQ02.lean:267:8: Unknown identifier `spherical_ptolemy`
+info: Proofs/PtolemysTheoremOQ01OQ02.lean:268:0: @unit_sphere_chord_via_sin : ∀ {V : Type u_2} [inst : NormedAddCommGroup V] [InnerProductSpace ℝ V] {a b : V},
+  ‖a‖ = 1 → ‖b‖ = 1 → ‖a - b‖ = 2 * sin (arccos sorry)
+===== SynthesisCurvaturePtolemyOQ01
+error: Proofs/PtolemysTheoremOQ01OQ02.lean:79:9: expected token
+error: Proofs/PtolemysTheoremOQ01OQ02.lean:102:41: expected token
+error: Proofs/PtolemysTheoremOQ01OQ02.lean:171:26: expected token
+error: Proofs/PtolemysTheoremOQ01OQ02.lean:267:8: Unknown identifier `spherical_ptolemy`
+info: Proofs/PtolemysTheoremOQ01OQ02.lean:268:0: @unit_sphere_chord_via_sin : ∀ {V : Type u_2} [inst : NormedAddCommGroup V] [InnerProductSpace ℝ V] {a b : V},
+  ‖a‖ = 1 → ‖b‖ = 1 → ‖a - b‖ = 2 * sin (arccos sorry)
+===== SynthesisCurvaturePtolemyOQ02
+error: Proofs/SynthesisCurvaturePtolemyOQ02.lean:156:4: No goals to be solved
+error: Proofs/SynthesisCurvaturePtolemyOQ02.lean:163:4: No goals to be solved
+error: Proofs/SynthesisCurvaturePtolemyOQ02.lean:170:4: No goals to be solved
+error: Proofs/SynthesisCurvaturePtolemyOQ02.lean:171:30: Unknown identifier `div_add_div_same`
+error: Proofs/SynthesisCurvaturePtolemyOQ02.lean:140:49: unsolved goals
+z₁ z₂ z₃ z₄ : ℂ
+===== SzemerediCoreOQ01
+error: Proofs/SzemerediCoreOQ01.lean:552:24: Unknown constant `Finset.mem_empty_iff_false`
+error: Proofs/SzemerediCoreOQ01.lean:552:13: `simp` made no progress
+warning: Proofs/SzemerediCoreOQ01.lean:769:17: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.SzemerediCoreOQ01
+error: build failed
+===== SzemerediCoreOQ01Aristotle
+error: Proofs/SzemerediCoreOQ01.lean:552:24: Unknown constant `Finset.mem_empty_iff_false`
+error: Proofs/SzemerediCoreOQ01.lean:552:13: `simp` made no progress
+warning: Proofs/SzemerediCoreOQ01.lean:769:17: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.SzemerediCoreOQ01
+error: build failed
+===== SzemerediCounting
+error: Proofs/SzemerediCounting.lean:468:18: Function expected at
+  G.loopless
+but this term has type
+error: Proofs/SzemerediCounting.lean:467:16: Invalid `⟨...⟩` notation: The expected type of this term could not be determined
+error: Proofs/SzemerediCounting.lean:494:50: Invalid projection: Projection operates on types of the form `C ...` where C is a constant. The expression
+  h.left
+has type
+error: Proofs/SzemerediCounting.lean:666:9: Invalid projection: Projection operates on types of the form `C ...` where C is a constant. The expression
+  hab
+has type `(removeEdges G ↑∅).1 a b` which does not have the necessary form.
+===== SzemerediHypergraphCore
+error: Proofs/SzemerediHypergraphCore.lean:98:2: Tactic `split_ifs` failed: no if-then-else conditions to split
+
+V : Type u_1
+error: Proofs/SzemerediHypergraphCore.lean:108:2: Tactic `split_ifs` failed: no if-then-else conditions to split
+
+V : Type u_1
+error: Proofs/SzemerediHypergraphCore.lean:138:28: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 0
+error: Proofs/SzemerediHypergraphCore.lean:138:58: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 0
+===== SzemerediHypergraphGowers
+error: Proofs/SzemerediHypergraphCore.lean:98:2: Tactic `split_ifs` failed: no if-then-else conditions to split
+
+V : Type u_1
+error: Proofs/SzemerediHypergraphCore.lean:108:2: Tactic `split_ifs` failed: no if-then-else conditions to split
+
+V : Type u_1
+error: Proofs/SzemerediHypergraphCore.lean:138:28: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 0
+error: Proofs/SzemerediHypergraphCore.lean:138:58: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 0
+===== SzemerediRegularityOQ01Trivial
+error: Proofs/SzemerediRegularityOQ01Trivial.lean:50:8: `Szemeredi.Regularity.OQ01.isEpsilonRegular_of_one_le` has already been declared
+error: Proofs/SzemerediRegularityOQ01Trivial.lean:63:8: `Szemeredi.Regularity.OQ01.irregularOrderedPairs_eq_empty_of_one_le` has already been declared
+error: Proofs/SzemerediRegularityOQ01Trivial.lean:75:8: `Szemeredi.Regularity.OQ01.card_irregularOrderedPairs_eq_zero_of_one_le` has already been declared
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.SzemerediRegularityOQ01Trivial
+===== SzemerediRegularityOQ02
+error: Proofs/SzemerediRegularityOQ02.lean:110:50: Tactic `simp` failed with a nested error:
+maximum recursion depth has been reached
+use `set_option maxRecDepth <num>` to increase limit
+error: Proofs/SzemerediRegularityOQ02.lean:112:8: Tactic `simp` failed with a nested error:
+maximum recursion depth has been reached
+use `set_option maxRecDepth <num>` to increase limit
+error: Proofs/SzemerediRegularityOQ02.lean:117:50: Tactic `simp` failed with a nested error:
+maximum recursion depth has been reached
+use `set_option maxRecDepth <num>` to increase limit
+error: Proofs/SzemerediRegularityOQ02.lean:119:8: Tactic `simp` failed with a nested error:
+maximum recursion depth has been reached
+use `set_option maxRecDepth <num>` to increase limit
+===== SzemerediRegularityOQ02OQ02
+error: Proofs/SzemerediRegularityOQ02.lean:110:50: Tactic `simp` failed with a nested error:
+maximum recursion depth has been reached
+use `set_option maxRecDepth <num>` to increase limit
+error: Proofs/SzemerediRegularityOQ02.lean:112:8: Tactic `simp` failed with a nested error:
+maximum recursion depth has been reached
+use `set_option maxRecDepth <num>` to increase limit
+error: Proofs/SzemerediRegularityOQ02.lean:117:50: Tactic `simp` failed with a nested error:
+maximum recursion depth has been reached
+use `set_option maxRecDepth <num>` to increase limit
+error: Proofs/SzemerediRegularityOQ02.lean:119:8: Tactic `simp` failed with a nested error:
+maximum recursion depth has been reached
+use `set_option maxRecDepth <num>` to increase limit

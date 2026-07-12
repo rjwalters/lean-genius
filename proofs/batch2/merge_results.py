@@ -36,6 +36,17 @@ def classify(errs):
         return 'proof-drift'
     if 'Invalid field' in txt: return 'dot-notation-drift'
     if 'noncomputable' in txt: return 'noncomputable'
+    if 'Function expected' in txt or 'Application type mismatch' in txt:
+        return 'signature-drift'
+    if re.search(r'Unknown identifier|unknown identifier', txt): return 'unknown-ident'
+    if 'fail to show termination' in txt or 'termination' in txt: return 'termination-drift'
+    if 'No goals to be solved' in txt or 'no goals' in txt: return 'proof-drift'
+    if 'could not synthesize default value' in txt: return 'autoparam-drift'
+    if re.search(r"don't know how to synthesize|universe level metavariables|Invalid pattern|Invalid `⟨\.\.\.⟩` notation|invalid", txt):
+        return 'elab-drift'
+    if 'sorry' in txt: return 'uses-sorry'
+    if 'TIMEOUT' in txt or 'timeout' in txt: return 'slow-timeout'
+    if re.search(r'Tactic .* failed|tactic .* failed', txt): return 'proof-drift'
     return 'unclassified'
 
 args = sys.argv[1:]

@@ -1,5 +1,9 @@
 import Mathlib
 
+/-- v4.31 compat: `Nat.Ico_succ_right` was removed. -/
+theorem Nat.Ico_succ_right {a b : ℕ} : Finset.Ico a (b + 1) = Finset.Icc a b := by
+  ext x; simp [Nat.lt_succ_iff]
+
 /-!
 # Row sums of Catalan's triangle: `Σₖ T(n,k) = catalan (n+1)`
 
