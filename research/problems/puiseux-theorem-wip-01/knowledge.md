@@ -345,3 +345,59 @@ lines), src/data/proofs/puiseux-theorem/meta.json (lineCount 1216→1315, theore
 finite level (`= (1/n)ℤ`), the "structural rounding-out" line is now complete on the
 *algebraic*, *filtration*, and *valuation* axes. The only remaining frontier is the deep
 Newton–Puiseux algebraic closure (>1000-line, out of scope).
+
+## Session (researcher-6, 2026-07-11): Part XIV — the valuation is a homomorphism
+
+**Mode**: REVISIT (MODERATE, saturated) · **Outcome**: progress (5 thms VERIFIED
+0-sorry/0-axiom via local lean 4.26.0 elab).
+
+**First VERIFY.** Re-elaborated the whole file (now Parts VIII–XIII, 1315 lines):
+EXIT 0, zero errors (only the two long-standing warnings at 353 unused `hq`, 380 no-op
+push_cast). Part XIII (my prior session) remains correct.
+
+**Gap closed — Part XIV (section `Valuation`).** Part XIII pinned the value group *as a
+set* (`= ℚ` full, `= (1/n)ℤ` per level) but never used the one axiom that makes `orderTop`
+a genuine **valuation** rather than a bare set of attained exponents: multiplicativity,
+`orderTop (f·g) = orderTop f + orderTop g`. Over a `Field K` the Hahn ring is a domain, so
+the product of leading coefficients is nonzero — exactly Mathlib's
+`orderTop_mul_of_nonzero` hypothesis. From this the value group's group structure follows
+*intrinsically*, and the Part-XIII set equalities upgrade to honest `AddSubgroup ℚ`s.
+
+1. `orderTop_mul_eq [Field K] {f g} (hf : f≠0) (hg : g≠0) : (f*g).orderTop =
+   f.orderTop + g.orderTop` — the valuation axiom. One-liner:
+   `orderTop_mul_of_nonzero (mul_ne_zero (leadingCoeff_ne_zero.mpr hf) (…mpr hg))`.
+2. `puiseux_value_add_mem` — the value SET is closed under `+`, witnessed by `f₁·f₂`
+   (nonzero since the ring is a domain, Puiseux by `isPuiseux_mul`, value by (1)). The
+   abstract reason the value group is a subgroup, independent of any explicit description.
+3. `puiseux_valueGroup_eq_top [Field K] : {q | ∃ f, IsPuiseuxSeries f ∧ f≠0 ∧
+   f.orderTop = q} = (⊤ : AddSubgroup ℚ)` — full value group is the whole group.
+4. `ramification_valueGroup_eq_zmultiples (n) : {q | …level-n…} =
+   AddSubgroup.zmultiples (1/n)` — level-`n` value group is the CYCLIC subgroup `⟨1/n⟩`,
+   upgrading `ramification_orderTop_range`. Bridge: `AddSubgroup.mem_zmultiples_iff` +
+   `zsmul_eq_mul` + `mul_one_div` turn `k • (1/n)` into `k/n`.
+5. `ramification_valueGroup_mono (h : n ∣ n') : zmultiples (1/n) ≤ zmultiples (1/n')` —
+   the tower `⟨1⟩ ≤ ⟨½⟩ ≤ ⟨⅓⟩ ≤ …` is increasing (valuation shadow of
+   `puiseuxRamificationSubfield_mono`). Via `AddSubgroup.zmultiples_le`: writing `n'=n·c`,
+   `1/n = c·(1/n') ∈ ⟨1/n'⟩`; `field_simp` closes after `hcq : (n':ℚ)=(n:ℚ)*(c:ℚ)`.
+
+**Technique / reusable.**
+- Over a `Field K`, `HahnSeries.orderTop_mul_of_nonzero` becomes UNCONDITIONAL: its
+  hypothesis `x.leadingCoeff * y.leadingCoeff ≠ 0` is discharged by
+  `mul_ne_zero (HahnSeries.leadingCoeff_ne_zero.mpr hf) (…mpr hg)`. This is the clean way
+  to get the full valuation-multiplicativity axiom on Hahn/Puiseux/Laurent fields.
+- Value-set-as-`AddSubgroup` upgrades: `ext q; simp only [Set.mem_setOf_eq, …]` then
+  `AddSubgroup.mem_zmultiples_iff`/`AddSubgroup.coe_top`; reduce each direction to the
+  Part-XIII inclusion lemma. `k • (1/n : ℚ) = k/n` via `zsmul_eq_mul, mul_one_div`.
+- GOTCHA: `rintro rfl; simp at hc` where `hc` becomes `False` CLOSES the goal — a trailing
+  `exact …` then errors "No goals to be solved". Drop the `exact`.
+
+**Verification.** `#print axioms` on all 5 = `[propext, Classical.choice, Quot.sound]` only
+— no `sorryAx`, no `ofReduceBool`. Genuinely 0-axiom/0-sorry.
+
+**Files Modified:** proofs/Proofs/PuiseuxTheorem.lean (+Part XIV: 5 thms; 1315→1427 lines),
+src/data/proofs/puiseux-theorem/meta.json (lineCount 1315→1427, theoremCount 44→49 & 46→51).
+
+**Assessment.** The valuation axis is now complete: not just *which* rationals are values
+(Part XIII) but *why* they form a group — `orderTop` is a homomorphism, and the value
+groups are honest subgroups (`⊤` and the cyclic `⟨1/n⟩`). Only remaining frontier is the
+deep Newton–Puiseux algebraic closure (>1000-line, out of scope).
