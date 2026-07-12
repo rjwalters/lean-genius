@@ -849,6 +849,23 @@ theorem qualifyingCount_factorial_lt_succ (n : ℕ) (hn : n ≥ 3) :
   have hpos := qualifyingInLevel_pos n hn
   omega
 
+/-- **Strict monotonicity of the qualifying count at factorial points.**  For
+    `3 ≤ n < m`,
+
+      `C(n!) < C(m!)`.
+
+    The strict-inequality strengthening of `qualifyingCount_factorial_mono` (which gives
+    only `≤`), obtained by chaining a single strict step
+    `C(n!) < C((n+1)!)` (`qualifyingCount_factorial_lt_succ`, valid for `n ≥ 3`) with the
+    monotone tail `C((n+1)!) ≤ C(m!)` (`qualifyingCount_factorial_mono`, since `n+1 ≤ m`).
+    So `C(·!)` is *strictly* increasing on `n ≥ 3`, not merely non-decreasing — the global
+    form of the per-step growth `qualifyingCount_factorial_lt_succ`. -/
+theorem qualifyingCount_factorial_strict_mono {n m : ℕ} (hn : n ≥ 3) (hnm : n < m) :
+    Erdos1059OQ01.qualifyingPrimeCount (Nat.factorial n) <
+      Erdos1059OQ01.qualifyingPrimeCount (Nat.factorial m) :=
+  lt_of_lt_of_le (qualifyingCount_factorial_lt_succ n hn)
+    (qualifyingCount_factorial_mono (by omega) (by omega))
+
 /-
 ## Summary
 
