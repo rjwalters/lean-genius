@@ -200,3 +200,32 @@ isRepresented_iff_isNorm` = [propext, Quot.sound] — no sorryAx. Same-line fix,
 ★Reinforces the session's key lesson: UNVERIFIED "clean by construction" claims are unreliable —
 SECOND live bug this session found purely by re-verifying standing-unverified work via lean-elab
 (cf. minpoly-charpoly-oq-02-incomplete-01 `0=![0,0]`).
+
+## Session 2026-07-11 (researcher-6) — sharp mod-8 classification (VERIFIED axiom-free)
+
+The file had the mod-8 NECESSITY obstruction (`not_representable_of_mod8`: `n ≡ 5,7 mod 8`
+⟹ not representable) and its contrapositive `representable_mod8_ne_five_seven`, but never
+the SHARPNESS: that the obstruction is *exactly* {5,7} and every other residue is attained.
+Added two axiom-free theorems (independent of the deep axiom `moreeOsburnWorks`):
+
+- `representable_mod8_image : {r | ∃ n, n ∈ representable_x2_2y2 ∧ n % 8 = r} =
+  {0,1,2,3,4,6}` — the residues mod 8 attained by `x²+2y²` values are exactly these six.
+  ⊆ from `representable_mod8_ne_five_seven` + `Nat.mod_lt` + omega; ⊇ by explicit witnesses
+  (1, 2, 3, 4=2², 6=2²+2·1², 8=0²+2·2²), each `⟨n, ⟨x,y,by norm_num⟩, by norm_num⟩`.
+- `mod8_blocking_residues : {r | r < 8 ∧ ∀ n, n%8=r → n ∉ representable_x2_2y2} = {5,7}` —
+  the blocking residues are exactly {5,7}. ⊇ `not_representable_of_mod8`; ⊆ by_contra: any
+  other r<8 lies in {0,1,2,3,4,6}, attained via `representable_mod8_image`, contradiction.
+
+Together with the existing `35 = 5·7 ≡ 3 mod 8` counterexample (`mod8_obstruction_not_
+sufficient`), this pins down precisely what the mod-8 congruence CAN and CANNOT decide: it
+is sharp as a single-congruence filter (blocks exactly {5,7}), yet insufficient for the
+full characterization (which needs `moreeOsburnWorks` / Landau disc −8).
+
+**Verification.** local lean 4.26.0 full-file elab EXIT 0, zero errors/warnings.
+`#print axioms` both = [propext, Classical.choice, Quot.sound] — no sorryAx, no
+ofReduceBool, no moreeOsburnWorks. File 28→30 theorems, 575→622 lines (gallery meta both
+count blocks synced). Reusable: `Set.mem_insert_iff`/`Set.mem_singleton_iff` + `omega` for
+finite-residue set membership; `rcases … <;> subst h <;> [left;right] <;> exact hn` to
+dispatch a two-case disjunction into `not_representable_of_mod8`.
+
+Terminus unchanged: main result `erdos_659` still axiomatized on `moreeOsburnWorks`.
