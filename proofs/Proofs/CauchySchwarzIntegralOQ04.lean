@@ -33,6 +33,9 @@
   * `robertson_std_form` / `heisenberg_std_form` / `heisenberg_canonical_std` — the
     literal *standard-deviation* form `Δx·Δp ≥ ½‖⟪[A,B]⟫‖`, i.e. `Δx·Δp ≥ ℏ/2`,
     obtained by taking square roots of the (squared) variance bounds above.
+  * `robertson_sum_form` / `heisenberg_sum_form` / `heisenberg_canonical_sum` — the
+    additive form `Var(A) + Var(B) ≥ ‖⟪[A,B]⟫‖`, the AM–GM consequence of the
+    product bound.
 
   All results are fully machine-checked (0 axioms, 0 sorries).
 
@@ -606,6 +609,73 @@ theorem heisenberg_canonical_std {A B : E →ₗ[𝕜] E} (hA : A.IsSymmetric)
       RCLike.norm_ofReal, abs_of_nonneg (norm_nonneg ψ), hψ, one_pow, mul_one]
   rw [hnorm] at h
   linarith [h]
+
+/-! ## The additive (sum) uncertainty relation `Var(A) + Var(B) ≥ ‖⟪ψ,[A,B]ψ⟫‖`
+
+All the forms above are *multiplicative*: they bound the **product** of the
+variances (or of the standard deviations).  A genuinely distinct, weaker-but-often
+handier consequence is the **sum** (additive) uncertainty relation
+
+  `‖(A−a)ψ‖² + ‖(B−b)ψ‖² ≥ ‖⟪ψ, (AB−BA)ψ⟫‖`,
+
+i.e. `Var(A) + Var(B) ≥ ‖⟪[A,B]⟫‖` at the expectation values.  It follows from the
+product form by AM–GM: `‖u‖² + ‖v‖² ≥ 2‖u‖·‖v‖ ≥ ‖⟪ψ,[A,B]ψ⟫‖`, the last step being
+the standard-deviation bound `robertson_std_form`.  Unlike the product relation the
+right-hand side is *linear* in the commutator norm (no square root), and the bound is
+non-vacuous even when one variance is small provided the other compensates additively;
+it underlies sum-form / state-independent uncertainty discussions. -/
+
+/-- **Robertson uncertainty relation, additive (sum) form.**  For symmetric `A, B`,
+any state `ψ` and any real shifts `a, b`, the *sum* of the squared centred norms
+dominates the commutator norm:
+
+  `‖⟪ψ, (AB−BA)ψ⟫‖ ≤ ‖(A−a)ψ‖² + ‖(B−b)ψ‖²`.
+
+This is the additive counterpart of the multiplicative `robertson_uncertainty`,
+obtained from the standard-deviation form `robertson_std_form` by AM–GM
+`2‖u‖‖v‖ ≤ ‖u‖² + ‖v‖²`. -/
+theorem robertson_sum_form {A B : E →ₗ[𝕜] E} (hA : A.IsSymmetric)
+    (hB : B.IsSymmetric) (ψ : E) (a b : ℝ) :
+    ‖inner 𝕜 ψ (A (B ψ) - B (A ψ))‖
+      ≤ ‖A ψ - (a : 𝕜) • ψ‖ ^ 2 + ‖B ψ - (b : 𝕜) • ψ‖ ^ 2 := by
+  have hstd := robertson_std_form hA hB ψ a b
+  nlinarith [hstd, sq_nonneg (‖A ψ - (a : 𝕜) • ψ‖ - ‖B ψ - (b : 𝕜) • ψ‖),
+    norm_nonneg (inner 𝕜 ψ (A (B ψ) - B (A ψ)))]
+
+/-- **Heisenberg uncertainty principle, additive (sum) form.**  Instantiating
+`robertson_sum_form` at the expectation values `⟨A⟩ = Re⟪ψ,Aψ⟫`, `⟨B⟩ = Re⟪ψ,Bψ⟫`
+makes each summand a variance, giving
+
+  `Var_ψ(A) + Var_ψ(B) ≥ ‖⟪ψ, (AB−BA)ψ⟫‖`. -/
+theorem heisenberg_sum_form {A B : E →ₗ[𝕜] E} (hA : A.IsSymmetric)
+    (hB : B.IsSymmetric) (ψ : E) :
+    ‖inner 𝕜 ψ (A (B ψ) - B (A ψ))‖
+      ≤ ‖A ψ - ((RCLike.re (inner 𝕜 ψ (A ψ)) : ℝ) : 𝕜) • ψ‖ ^ 2
+        + ‖B ψ - ((RCLike.re (inner 𝕜 ψ (B ψ)) : ℝ) : 𝕜) • ψ‖ ^ 2 :=
+  robertson_sum_form hA hB ψ (RCLike.re (inner 𝕜 ψ (A ψ)))
+    (RCLike.re (inner 𝕜 ψ (B ψ)))
+
+/-- **Additive Heisenberg bound under a canonical commutation relation.**  For a
+normalized state `‖ψ‖ = 1` obeying `(AB − BA)ψ = c • ψ` (abstractly `[x, p] = iℏ`,
+so `‖c‖ = ℏ`), the sum of variances is bounded below by the commutator scalar:
+
+  `Var_ψ(A) + Var_ψ(B) ≥ ‖c‖`.
+
+The additive companion of `heisenberg_canonical`; for `‖c‖ = ℏ` it reads
+`Var(A) + Var(B) ≥ ℏ`, the sum-form of `Δx·Δp ≥ ℏ/2` (indeed AM–GM turns one into
+the other). -/
+theorem heisenberg_canonical_sum {A B : E →ₗ[𝕜] E} (hA : A.IsSymmetric)
+    (hB : B.IsSymmetric) (ψ : E) (hψ : ‖ψ‖ = 1) (c : 𝕜)
+    (hc : A (B ψ) - B (A ψ) = c • ψ) :
+    ‖c‖
+      ≤ ‖A ψ - ((RCLike.re (inner 𝕜 ψ (A ψ)) : ℝ) : 𝕜) • ψ‖ ^ 2
+        + ‖B ψ - ((RCLike.re (inner 𝕜 ψ (B ψ)) : ℝ) : 𝕜) • ψ‖ ^ 2 := by
+  have h := heisenberg_sum_form hA hB ψ
+  have hnorm : ‖inner 𝕜 ψ (A (B ψ) - B (A ψ))‖ = ‖c‖ := by
+    rw [hc, inner_smul_right, norm_mul, inner_self_eq_norm_sq_to_K, norm_pow,
+      RCLike.norm_ofReal, abs_of_nonneg (norm_nonneg ψ), hψ, one_pow, mul_one]
+  rw [hnorm] at h
+  exact h
 
 end CauchySchwarzIntegralOQ04
 
