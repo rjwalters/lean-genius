@@ -533,4 +533,22 @@ consecutive `m`). The deep asymptotics (the matching `(1/2 + o(1)) n / log n` lo
 bounds) are not addressed here.
 -/
 
+/-- **Subset-sum monotonicity.**  Enlarging the ground set can only add subset sums:
+`S ⊆ T ⟹ subsetSums S ⊆ subsetSums T`.  Every subset of `S` is a subset of `T`, so its
+sum is already a `T`-subset-sum.  The structural backbone of the avoidance ladder. -/
+theorem subsetSums_mono {S T : Finset ℕ} (h : S ⊆ T) : subsetSums S ⊆ subsetSums T := by
+  unfold subsetSums
+  apply Finset.filter_subset_filter
+  apply Finset.image_subset_image
+  exact Finset.powerset_mono.mpr h
+
+/-- **Avoidance is downward closed.**  If the larger set `T` avoids the sum `m`, then so
+does every subset `S ⊆ T`: `AvoidSum T m ⟹ AvoidSum S m`.  Contrapositive of
+`subsetSums_mono` — a subset of a sum-`m`-avoiding set still avoids `m`, so the avoidance
+property is inherited by all subsets (the reason maximal avoiding sets are the object of
+interest). -/
+theorem AvoidSum_antitone {S T : Finset ℕ} (h : S ⊆ T) {m : ℕ} (hT : AvoidSum T m) :
+    AvoidSum S m :=
+  fun hS => hT (subsetSums_mono h hS)
+
 end Erdos771Construction
