@@ -421,6 +421,52 @@ theorem foot_divides_hypotenuse_sq_ratio (hperp : ⟪A - C, B - C⟫ = (0 : ℝ)
   have hgB := geometric_mean_B A B C hAB hperp
   rw [hgA, hgB]; ring
 
+include hAB in
+/-- **The altitude realises the Pythagorean split from `C` to the hypotenuse line.**  For the
+foot `H = altitudeFoot A B C` and *any* point `P = A + s·(B − A)` on the hypotenuse line, the
+squared distance from `C` to `P` decomposes orthogonally as
+`|CP|² = |CH|² + |HP|².`
+Because `H − P = (t − s)·(B − A)` is parallel to the hypotenuse and `⟪C − H, A − B⟫ = 0`
+(`foot_perp`), the cross term in `‖(C − H) + (H − P)‖²` vanishes.  This is the Pythagorean
+theorem applied to the right sub-triangle `C H P` (right angle at the foot `H`), and it is the
+engine behind the extremal property `altitude_foot_minimizes`. -/
+theorem altitude_foot_dist_split (hperp : ⟪A - C, B - C⟫ = (0 : ℝ)) (s : ℝ) :
+    ‖C - (A + s • (B - A))‖ ^ 2
+      = ‖C - altitudeFoot A B C‖ ^ 2
+        + ‖altitudeFoot A B C - (A + s • (B - A))‖ ^ 2 := by
+  have hCHperp : ⟪C - altitudeFoot A B C, A - B⟫ = (0 : ℝ) := foot_perp A B C hAB hperp
+  have hHP : altitudeFoot A B C - (A + s • (B - A))
+      = (‖A - C‖ ^ 2 / ‖A - B‖ ^ 2 - s) • (B - A) := by
+    unfold altitudeFoot; module
+  have hperp2 : ⟪C - altitudeFoot A B C, altitudeFoot A B C - (A + s • (B - A))⟫ = (0 : ℝ) := by
+    rw [hHP, real_inner_smul_right]
+    have hBA : (B - A : F) = -(A - B) := by abel
+    rw [hBA, inner_neg_right, hCHperp, neg_zero, mul_zero]
+  have hsplit : C - (A + s • (B - A))
+      = (C - altitudeFoot A B C) + (altitudeFoot A B C - (A + s • (B - A))) := by abel
+  rw [hsplit, norm_add_sq_real, hperp2]; ring
+
+include hAB in
+/-- **The altitude is the shortest segment from `C` to the hypotenuse line.**  Among *all*
+points `P = A + s·(B − A)` on the line through the hypotenuse `AB`, the foot of the altitude
+`H = altitudeFoot A B C` minimises the distance to the right-angle vertex `C`:
+`|CH| ≤ |CP|`  for every `s`.
+This is the extremal (orthogonal-projection) characterisation of the altitude foot — the
+perpendicular from a point to a line is the shortest path to it.  Immediate from the orthogonal
+split `altitude_foot_dist_split`: `|CP|² = |CH|² + |HP|² ≥ |CH|²`, and both sides are
+non-negative, so the same order holds for the norms themselves. -/
+theorem altitude_foot_minimizes (hperp : ⟪A - C, B - C⟫ = (0 : ℝ)) (s : ℝ) :
+    ‖C - altitudeFoot A B C‖ ≤ ‖C - (A + s • (B - A))‖ := by
+  have hsplit := altitude_foot_dist_split A B C hAB hperp s
+  have ha : (0 : ℝ) ≤ ‖C - altitudeFoot A B C‖ := norm_nonneg _
+  have hb : (0 : ℝ) ≤ ‖C - (A + s • (B - A))‖ := norm_nonneg _
+  have h1 : ‖C - altitudeFoot A B C‖ ^ 2 ≤ ‖C - (A + s • (B - A))‖ ^ 2 := by
+    rw [hsplit]; nlinarith [sq_nonneg ‖altitudeFoot A B C - (A + s • (B - A))‖]
+  calc ‖C - altitudeFoot A B C‖
+      = Real.sqrt (‖C - altitudeFoot A B C‖ ^ 2) := (Real.sqrt_sq ha).symm
+    _ ≤ Real.sqrt (‖C - (A + s • (B - A))‖ ^ 2) := Real.sqrt_le_sqrt h1
+    _ = ‖C - (A + s • (B - A))‖ := Real.sqrt_sq hb
+
 end Geometric
 
 -- ============================================================
@@ -579,6 +625,25 @@ theorem law_of_cosines (A B C : F) :
     ‖A - B‖ ^ 2 = ‖A - C‖ ^ 2 + ‖B - C‖ ^ 2 - 2 * ⟪A - C, B - C⟫ := by
   have hAB : A - B = (A - C) - (B - C) := by abel
   rw [hAB, norm_sub_sq_real]; ring
+
+/-- **Apollonius' theorem (the median-length formula).**  For *any* triangle `A B C` — no right
+angle assumed — the two sides meeting at `C` and the median `C M` to the midpoint
+`M = A + ½·(B − A)` of the opposite side are related by
+`|CA|² + |CB|² = 2·|CM|² + ½·|AB|².`
+Writing `A − C = (M − C) + ½·(A − B)` and `B − C = (M − C) − ½·(A − B)` and adding the two
+`norm_add/sub_sq_real` expansions, the cross terms `±2⟪M − C, A − B⟫` cancel, leaving twice the
+median square plus half the base square.  In the right-angled case the median to the hypotenuse
+has length `|CM| = ½|AB|` (`thales_circumradius`), and substituting collapses Apollonius back to
+Pythagoras `|CA|² + |CB|² = |AB|²`. -/
+theorem median_apollonius (A B C : F) :
+    ‖A - C‖ ^ 2 + ‖B - C‖ ^ 2
+      = 2 * ‖(A + (2⁻¹ : ℝ) • (B - A)) - C‖ ^ 2 + ‖A - B‖ ^ 2 / 2 := by
+  set M : F := A + (2⁻¹ : ℝ) • (B - A) with hM
+  have hAC : A - C = (M - C) + (2⁻¹ : ℝ) • (A - B) := by rw [hM]; module
+  have hBC : B - C = (M - C) - (2⁻¹ : ℝ) • (A - B) := by rw [hM]; module
+  have hy : ‖(2⁻¹ : ℝ) • (A - B)‖ ^ 2 = ‖A - B‖ ^ 2 / 4 := by
+    rw [norm_smul, Real.norm_eq_abs, abs_of_pos (by norm_num : (0 : ℝ) < 2⁻¹)]; ring
+  rw [hAC, hBC, norm_add_sq_real, norm_sub_sq_real, hy]; ring
 
 /-- **Acute angle ⇔ sub-Pythagorean.**  Generalizing `pythagorean_core_iff` to the acute case:
 the angle at `C` is acute (`⟪A − C, B − C⟫ > 0`) iff the side opposite `C` is *shorter* than the
