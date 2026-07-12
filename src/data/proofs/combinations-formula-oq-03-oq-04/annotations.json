@@ -1,0 +1,119 @@
+[
+  {
+    "id": "ann-qbinom-palindromy-overview",
+    "proofId": "combinations-formula-oq-03-oq-04",
+    "range": { "startLine": 3, "endLine": 43 },
+    "type": "concept",
+    "title": "Palindromy: the symmetric half of Sylvester's theorem",
+    "content": "The module docstring frames the target. The Gaussian binomial [n,k]_q is a polynomial in q of degree k(n-k) with nonnegative integer coefficients; Sylvester (1878) proved its coefficient sequence is symmetric AND unimodal. This file formalizes only the symmetric (palindromic) half — the elementary precursor — and is scrupulously honest that unimodality (the hard half, Proctor 1982 via sl₂) is NOT proved. Over a field, palindromy is packaged as the algebraic identity below rather than as a coefficient statement, which keeps the whole proof inside elementary power arithmetic.",
+    "mathContext": "$\\genfrac{[}{]}{0pt}{}{n}{k}_q = q^{k(n-k)}\\,\\genfrac{[}{]}{0pt}{}{n}{k}_{q^{-1}}$, i.e. $a_j = a_{k(n-k)-j}$ for the coefficient sequence.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Gaussian q-binomial coefficient",
+      "Sylvester's unimodality theorem (1878)",
+      "palindromic (self-reciprocal) polynomial",
+      "honest scoping of partial progress"
+    ],
+    "prerequisites": [
+      "q-binomial coefficients (parent combinations-formula-oq-03)",
+      "polynomial degree and coefficient symmetry"
+    ]
+  },
+  {
+    "id": "ann-qbinom-field-setup",
+    "proofId": "combinations-formula-oq-03-oq-04",
+    "range": { "startLine": 45, "endLine": 49 },
+    "type": "definition",
+    "title": "Working over a field so q⁻¹ exists",
+    "content": "The namespace opens `Nat` and fixes `[Field R]`. The field hypothesis is not cosmetic: the reflection substitutes q ↦ q⁻¹, so q must be invertible to even state the identity, and the closing cancellation q^{k+1}·(q⁻¹)^{k+1} = 1 needs a genuine inverse. Over a general commutative ring one would instead phrase palindromy as a polynomial coefficient-reversal; the field formulation trades that generality for a short, purely arithmetic proof.",
+    "mathContext": "$R$ a field, $q \\in R$ with $q \\neq 0$ so that $q^{-1}$ and $q^{k}\\,(q^{-1})^{k} = 1$ make sense.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "field of fractions vs polynomial reversal",
+      "invertibility of q",
+      "q-binomial over a commutative ring (parent)"
+    ],
+    "prerequisites": [
+      "fields and multiplicative inverses",
+      "the parent's ring-level q-binomial definition"
+    ]
+  },
+  {
+    "id": "ann-qbinom-reciprocal-main",
+    "proofId": "combinations-formula-oq-03-oq-04",
+    "range": { "startLine": 51, "endLine": 104 },
+    "type": "theorem",
+    "title": "qBinom_reciprocal: the palindromy identity by induction on n",
+    "content": "The headline theorem, proved by well-founded recursion on (n,k). Boundary cases are direct: k=0 and k>n both simp away, and the diagonal k=n makes both q-binomials equal 1. The generic interior case k<n is the heart: the LEFT side [n+1,k+1]_q is expanded by the SECOND q-Pascal identity (qBinom_pascal'), while the reflected RIGHT side [n+1,k+1]_{q⁻¹} is expanded by the FIRST (qBinom_pascal). After substituting the induction hypothesis at (n,k) and (n,k+1), the two coefficient atoms A = [n,k]_{q⁻¹} and B = [n,k+1]_{q⁻¹} are matched term-by-term (eA, eB) and closed by ring.",
+    "mathContext": "Interior step: $\\genfrac{[}{]}{0pt}{}{n+1}{k+1}_q = q^{n-k}\\genfrac{[}{]}{0pt}{}{n}{k}_q + \\genfrac{[}{]}{0pt}{}{n}{k+1}_q$ vs. the reflected $\\genfrac{[}{]}{0pt}{}{n+1}{k+1}_{q^{-1}} = \\genfrac{[}{]}{0pt}{}{n}{k}_{q^{-1}} + q^{k+1}\\genfrac{[}{]}{0pt}{}{n}{k+1}_{q^{-1}}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "q-Pascal recurrences (P1 qBinom_pascal, P2 qBinom_pascal')",
+      "strong induction / well-founded recursion",
+      "case split on boundary vs interior",
+      "qBinom_eq_zero_of_lt"
+    ],
+    "prerequisites": [
+      "both q-Pascal identities from the parent",
+      "induction on natural numbers in Lean",
+      "rewriting with an induction hypothesis"
+    ]
+  },
+  {
+    "id": "ann-qbinom-both-pascals",
+    "proofId": "combinations-formula-oq-03-oq-04",
+    "range": { "startLine": 75, "endLine": 81 },
+    "type": "insight",
+    "title": "Why BOTH q-Pascal identities are needed",
+    "content": "The single most important structural fact of the proof: expanding the original by P2 and the reflection by P1 is what makes the two sides agree coefficient-by-coefficient. Using the SAME Pascal identity on both sides would NOT produce a termwise match — the reflected recurrence only lines up with the original because qBinom_pascal and qBinom_pascal' are two decompositions of the very same q-binomial. This asymmetry (P2 for the q-side, P1 for the q⁻¹-side) is the mechanism of palindromy.",
+    "mathContext": "The two Pascal identities are related by $q \\mapsto q^{-1}$ up to the $q^{k(n-k)}$ twist; applying the twisted one to each side is exactly the reflection symmetry.",
+    "significance": "key",
+    "relatedConcepts": [
+      "two forms of the q-Pascal recurrence",
+      "reflection q ↦ q⁻¹",
+      "termwise coefficient agreement"
+    ],
+    "prerequisites": [
+      "the two q-Pascal identities",
+      "the palindromy statement"
+    ]
+  },
+  {
+    "id": "ann-qbinom-power-cancellation",
+    "proofId": "combinations-formula-oq-03-oq-04",
+    "range": { "startLine": 85, "endLine": 97 },
+    "type": "technique",
+    "title": "The two coefficient matches eA and eB",
+    "content": "The coefficient of A collapses by additivity of exponents: q^{n-k}·q^{k(n-k)} = q^{(k+1)(n-k)} (hexpA proved by ring, eA by pow_add). The coefficient of B is the delicate one: it requires q^{(k+1)(n-k-1)} = q^{(k+1)(n-k)}·(q⁻¹)^{k+1}, i.e. cancelling a factor of q^{k+1}, which is exactly where q ≠ 0 is used via mul_inv_cancel_left₀ (pow_ne_zero (k+1) hq). The rewrite n-k = (n-k-1)+1 (hsplit) is legal precisely because the branch is k<n, so ℕ truncated subtraction is exact here.",
+    "mathContext": "$q^{(k+1)(n-k)}\\,(q^{-1})^{k+1} = q^{(k+1)(n-k-1)}$, valid since $q^{k+1} \\neq 0$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "pow_add / inv_pow / mul_inv_cancel_left₀",
+      "pow_ne_zero",
+      "ℕ truncated subtraction (omega)"
+    ],
+    "prerequisites": [
+      "laws of exponents in a field",
+      "cancellation of nonzero powers"
+    ]
+  },
+  {
+    "id": "ann-qbinom-reflect-involutive",
+    "proofId": "combinations-formula-oq-03-oq-04",
+    "range": { "startLine": 106, "endLine": 121 },
+    "type": "theorem",
+    "title": "Reflected form and involutivity sanity check",
+    "content": "Two corollaries. qBinom_reflect is qBinom_reciprocal read right-to-left (q^{k(n-k)}·[n,k]_{q⁻¹} = [n,k]_q), packaged for downstream convenience. qBinom_reciprocal_involutive confirms the twisted reflection q ↦ q⁻¹ is an involution: applying it twice returns the original because q^{k(n-k)}·(q⁻¹)^{k(n-k)} = 1 (mul_inv_cancel₀ under mul_pow). Any genuine palindrome reflection must square to the identity, so this is the expected consistency check.",
+    "mathContext": "$q^{k(n-k)}\\,(q^{-1})^{k(n-k)} = (q\\,q^{-1})^{k(n-k)} = 1$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "involution",
+      "mul_inv_cancel₀ / mul_pow",
+      "reflection consistency"
+    ],
+    "prerequisites": [
+      "the main reciprocity identity",
+      "involutions and self-inverse maps"
+    ]
+  }
+]
