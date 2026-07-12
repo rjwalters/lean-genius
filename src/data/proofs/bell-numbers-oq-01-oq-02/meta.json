@@ -13,7 +13,8 @@
       "The combinatorial engine is the falling-factorial expansion kⁿ = ∑_{j≤n} S(n,j)·(k)_j, the defining property of the Stirling numbers of the second kind; it is proved cleanly by induction from the Stirling recurrence, with the pointwise identity k·(k)_j = (k)_{j+1} + j·(k)_j reassembling the two shifted blocks.",
       "Dividing by k! makes each falling-factorial series telescope: (k)_j/k! = 1/(k−j)! for k ≥ j (and 0 below), so ∑_k (k)_j/k! is a reindexed copy of ∑_m 1/m! = e, independent of j.",
       "Once each inner sum is the same constant e, the outer sum ∑_j S(n,j)·e factors as e·∑_j S(n,j), and the finite row-sum identity Bₙ = ∑_j S(n,j) (proved in the parent entry) closes the argument — Dobiński's formula is thus the analytic shadow of a finite combinatorial identity.",
-      "The whole proof is elementary and generating-function-free: convergence is handled by Real.summable_pow_div_factorial and a HasSum index shift, and the double sum is interchanged with Summable.tsum_finsetSum since the j-index ranges over a finite set."
+      "The whole proof is elementary and generating-function-free: convergence is handled by Real.summable_pow_div_factorial and a HasSum index shift, and the double sum is interchanged with Summable.tsum_finsetSum since the j-index ranges over a finite set.",
+      "Probabilistically the identity is a moment computation: if X is Poisson-distributed with mean 1, then P(X = k) = e⁻¹/k!, so Bₙ = e⁻¹·∑_k kⁿ/k! = E[Xⁿ] is exactly the n-th moment of the unit Poisson law — the Bell numbers are the Poisson(1) moments, and the falling-factorial telescoping ∑_k (k)_j/k! = e is the statement that all its factorial moments E[(X)_j] equal 1."
     ],
     "prerequisites": [
       "Stirling numbers of the second kind Nat.stirlingSecond and their recurrence (stirlingSecond_succ_succ, stirlingSecond_eq_zero_of_lt)",
@@ -48,12 +49,20 @@
       "mathContext": "(m+j)_j/(m+j)! = 1/m! via Nat.factorial_mul_descFactorial; the terms below k = j vanish, and the shift k = m+j (hasSum_nat_add_iff') turns the series into ∑_m 1/m! = e, evaluated with NormedSpace.exp_eq_tsum_div."
     },
     {
-      "id": "dobinski",
-      "title": "Section III: Assembling Dobiński's Formula",
+      "id": "product-form",
+      "title": "Section III: The Product Form e·Bₙ = ∑ₖ kⁿ/k!",
       "startLine": 169,
+      "endLine": 202,
+      "summary": "exp_mul_bell: e·Bₙ = ∑_k kⁿ/k!. Substitutes the Stirling power expansion kⁿ = ∑_j S(n,j)·(k)_j, interchanges the finite j-sum with the infinite k-sum (Summable.tsum_finsetSum), replaces each inner series by e (tsum_descFactorial_div_factorial with tsum_mul_left), and collapses ∑_j S(n,j) to Bₙ via BellNumbersOQ01.bell_eq_sum_stirlingSecond.",
+      "mathContext": "e·Bₙ = ∑_j S(n,j)·(∑_k (k)_j/k!) = ∑_j S(n,j)·e = e·∑_j S(n,j) = e·Bₙ: the analytic sum is the row-sum identity in disguise, the product form avoiding any division by e."
+    },
+    {
+      "id": "dobinski",
+      "title": "Section IV: Dobiński's Formula",
+      "startLine": 203,
       "endLine": 207,
-      "summary": "exp_mul_bell: e·Bₙ = ∑_k kⁿ/k!; dobinski: Bₙ = e⁻¹·∑_k kⁿ/k!.",
-      "mathContext": "Substitute the power expansion, interchange the finite j-sum with the infinite k-sum (Summable.tsum_finsetSum), replace each inner series by e (tsum_mul_left), and collapse ∑_j S(n,j) to Bₙ via BellNumbersOQ01.bell_eq_sum_stirlingSecond; dividing by e uses e⁻¹·e = 1."
+      "summary": "dobinski: Bₙ = e⁻¹·∑_k kⁿ/k!, obtained from the product form by multiplying through by e⁻¹ (e⁻¹·e = 1 since e ≠ 0).",
+      "mathContext": "$B_n = e^{-1}\\sum_{k=0}^{\\infty} k^n/k!$ — Dobiński's 1877 closed form, expressing each Bell number as a convergent series with no free variables."
     }
   ],
   "conclusion": {
