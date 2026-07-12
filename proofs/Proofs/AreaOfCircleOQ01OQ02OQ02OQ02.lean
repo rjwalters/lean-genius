@@ -313,4 +313,57 @@ theorem sq_mul_norm_fourierCoeffOn_le_deriv2 (f : ℝ → ℝ) (hf : ContDiff �
       nlinarith [sq_abs (n : ℝ), abs_nonneg (n : ℝ), Nat.cast_nonneg (α := ℝ) m, hmle]
     nlinarith [norm_nonneg (fourierCoeffOn hab (ofReal ∘ f) n), hmsq]
 
+/-- **Zero mode: the second derivative kills the mean.**  Every theorem above requires
+    `n ≠ 0`, because the eigenvalue route divides by `n`.  The remaining mode `n = 0` is
+    governed instead by the Fundamental Theorem of Calculus: `ĉ₀(g)` is the period-average
+    `(2π)⁻¹∫₀^{2π} g`, and for `g = f''` this integral is `f'(2π) − f'(0) = 0` by the
+    periodicity of `f'` (`deriv_periodic_of_periodic`).  Hence
+
+        ĉ₀(f'') = 0.
+
+    This is the `n = 0` companion of the `−n²` eigenvalue identity, completing the
+    differentiation spectrum: the second derivative annihilates the mean (`n = 0`) and
+    scales every mode `n ≠ 0` by `−n²`.  The mean of `f` itself is the unconstrained
+    kernel — the additive constant lost by differentiating. -/
+theorem fourierCoeffOn_deriv2_zero (f : ℝ → ℝ) (hf : ContDiff ℝ 2 f)
+    (hperiod : ∀ t, f (t + 2 * π) = f t) (hab : (0 : ℝ) < 2 * π) :
+    fourierCoeffOn hab (ofReal ∘ deriv (deriv f)) 0 = 0 := by
+  have hdf1 : ContDiff ℝ 1 (deriv f) :=
+    (contDiff_succ_iff_deriv (n := 1)).mp hf |>.2.2
+  have hdf_diff : ∀ x, DifferentiableAt ℝ (deriv f) x :=
+    fun x => (hdf1.differentiable (le_refl 1)).differentiableAt
+  have hcont : Continuous (deriv (deriv f)) := hdf1.continuous_deriv (le_refl 1)
+  have hint : IntervalIntegrable (deriv (deriv f)) volume 0 (2 * π) :=
+    hcont.intervalIntegrable 0 (2 * π)
+  have hreal : ∫ x in (0)..(2 * π), deriv (deriv f) x = 0 := by
+    rw [intervalIntegral.integral_deriv_eq_sub (fun x _ => hdf_diff x) hint]
+    have h := deriv_periodic_of_periodic f (2 * π) hperiod 0
+    rw [zero_add] at h
+    rw [h, sub_self]
+  rw [fourierCoeffOn_eq_integral]
+  simp only [neg_zero, fourier_zero, one_smul, Function.comp_apply]
+  rw [intervalIntegral.integral_ofReal, hreal]
+  simp
+
+/-- **The `−n²` eigenvalue identity, unconditionally over the whole spectrum.**  Merging
+    `fourierCoeffOn_deriv2_periodic` (the `n ≠ 0` case) with the zero-mode annihilation
+    `fourierCoeffOn_deriv2_zero`, the second-derivative Fourier identity
+
+        ĉₙ(f'') = −n² · ĉₙ(f)
+
+    holds for **every** `n : ℤ` — no `n ≠ 0` side condition.  The `n = 0` instance is the
+    degenerate eigenvalue `0`: both sides vanish (`ĉ₀(f'') = 0` and `−0²·ĉ₀(f) = 0`), so the
+    mean sits in the kernel.  This is the clean, hypothesis-free operator statement: `d²/dt²`
+    acts on the Fourier basis diagonally with eigenvalues `−n²`, the whole spectrum in one
+    line, driving the Wirtinger/Hurwitz isoperimetric analysis without a separate zero-mode
+    carve-out. -/
+theorem fourierCoeffOn_deriv2_periodic_all (f : ℝ → ℝ) (hf : ContDiff ℝ 2 f)
+    (hperiod : ∀ t, f (t + 2 * π) = f t)
+    (hab : (0 : ℝ) < 2 * π) (n : ℤ) :
+    fourierCoeffOn hab (ofReal ∘ deriv (deriv f)) n =
+      -(n : ℂ) ^ 2 * fourierCoeffOn hab (ofReal ∘ f) n := by
+  rcases eq_or_ne n 0 with rfl | hn
+  · rw [fourierCoeffOn_deriv2_zero f hf hperiod hab]; simp
+  · exact fourierCoeffOn_deriv2_periodic f hf hperiod hab n hn
+
 end IsoperimetricFourier
