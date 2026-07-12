@@ -59,10 +59,10 @@
       "diagonalReal_ge_one_ninth / diagonalReal_le_two_ninths / diagonalReal_mem_Icc: the SHARP two-sided localization diagonalReal f ∈ [1/9, 2/9]. The docstring claimed the diagonal is squeezed between ∑1/10^(n+1)=1/9 and ∑2/10^(n+1)=2/9, but only the upper end (≤2/9) had been formalized; the matching lower bound 1/9 ≤ diagonalReal f is proved here from the geometric minorant tsum_geo_shift_one = 1/9 (every digit db f n ≥ 1 via term_ge'), tightening diagonalReal_mem_Ioo (0,1) to the exact interval [1/9,2/9]. Axiom-free ([propext, Classical.choice, Quot.sound])."
     ],
     "dateAdded": "2026-07-11",
-    "lineCount": 359,
+    "lineCount": 415,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries; #print axioms reports only [propext, Classical.choice, Quot.sound]. No use of Cardinal.not_countable_real.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 28,
+    "theoremCount": 32,
     "definitionCount": 4
   },
   "overview": {
@@ -164,9 +164,9 @@
     ],
     "opens": [],
     "namespace": "CantorDiagonalizationOQ06OQ01",
-    "lineCount": 359,
+    "lineCount": 415,
     "axiomCount": 0,
-    "theoremCount": 28,
+    "theoremCount": 32,
     "definitionCount": 4,
     "path": "Proofs/CantorDiagonalizationOQ06OQ01.lean",
     "sorries": 0
