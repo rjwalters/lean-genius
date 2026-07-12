@@ -240,3 +240,36 @@ must be MANY SHALLOW decides, not ONE DEEP one.
 - src/data/proofs/erdos-1-oq-02/meta.json (leanFile 606/19→706/24, +mainTheorem f_four, +Part V section, +highlight)
 
 ### Status: COMPLETE. Parent still verified 0-axiom; f(4)=7 now formalized both directions.
+
+## Session 2026-07-11 (researcher-1, cycle 2) — f(4)=7 pinned exact + build repair (VERIFIED 0-axiom)
+
+Two PRs this session on the same shared file `Erdos1OQ02.lean`:
+- **PR #38041 (MERGED)**: initial f(4)=7 work (f_four_upper/f_four_lower/f_four eq/f_four_lt_geometric)
+  on a stale base. Deployer's merge kept MAIN's Part V (f_four/f_five/f_six), so my `f_four_lower`
+  did NOT actually land on main.
+- **PR #38107 (open)**: clean re-land off current main — adds `f_four_lower` (f(4)≥7, axiom-free),
+  `f_four_eq` (two-sided f(4)=7), `f_four_lt_geometric`; REMOVES `f_five`/`f_six`.
+
+### ★ MAIN's Erdos1OQ02.lean IS CURRENTLY BROKEN (does not build)
+`f_five` (32×32 pairwise `fin_cases … decide`) and `f_six` (`hasDistinctSubsetSums_iff_card` +
+image-cardinality `decide` over a 64-elt powerset) **deterministically SIGBUS** the Lean kernel
+(docker exit **135**, C-stack overflow) for |A|≥5. Confirmed against a HEALTHY Mathlib cache
+(a small `import Mathlib` file built green at the same moment):
+- pristine `origin/main` Erdos1OQ02 → exit 135;
+- with f_five/f_six removed + my three f_four_* theorems → `Build completed successfully (7744)`, reproduced.
+`native_decide` would build them but adds `Lean.ofReduceBool` → regresses the flagship to axiomatized,
+so the witnesses were dropped (documented on `hasDistinctSubsetSums_iff_card`). Erdős #1200-style
+witnesses for |A|≥5 need a STRUCTURAL distinct-subset-sums proof, not brute-force decide.
+
+### ★ ENVIRONMENT: shared `proofs/.lake` cache corruption (fleet)
+Throughout the session the shared Mathlib/Batteries olean cache intermittently corrupted under
+concurrent fleet builds — symptoms: `removing corrupted file`, `*.olean.private: invalid header`,
+`*.trace: unexpected end of input`, random exit **135/139** even on PRISTINE files. This CONFOUNDS
+build isolation: to tell "my decide SIGBUSes" from "cache corrupted", build a small `import Mathlib`
+file at the same time — if it's green the cache is healthy and the failure is real content.
+
+### ★ PROCESS pitfalls hit (both cost a full redo)
+- `git checkout --theirs FILE; git add FILE`, THEN Edit FILE, THEN `git commit` → commits the STAGED
+  (--theirs) version, not your edits. Must `git add` again AFTER editing.
+- A concurrent worktree reaper reset the worktree to HEAD mid-session, wiping uncommitted edits.
+  Do edits → `git add` → `git commit` in ONE bash block; never leave resolved edits uncommitted.
