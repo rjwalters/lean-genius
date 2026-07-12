@@ -40,10 +40,10 @@
     "badge": "wip",
     "sorries": 0,
     "axiomCount": 0,
-    "theoremCount": 12,
+    "theoremCount": 14,
     "defCount": 0,
     "definitionCount": 0,
-    "lineCount": 182,
+    "lineCount": 206,
     "dateAdded": "2026-07-11",
     "assumptions": "0 axioms, 0 sorries — every result is machine-verified from the parent file's public API (propext, Classical.choice, Quot.sound only; the two kronecker2 results use only propext). Status is kept 'wip'/'axiomatized' to match the parent: the file proves genuine new lemmas (numerator periodicity of (a/n) for odd positive n via kronecker_congr_left / kronecker_add_mul_left / kronecker_periodic_left, and full period-8 periodicity of the (a/2) character via kronecker2_congr / kronecker2_add_mul_eight, plus the exact conductor 8 / primitivity of (·/2) via kronecker2_not_period_four / kronecker2_not_period_two / kronecker2_conductor_eight) but the broader open target — wiring kronecker2 into the definition at even moduli and generalized quadratic reciprocity for arbitrary fundamental discriminants — remains unformalized, exactly as documented in the parent's module note. Nothing new is assumed.",
     "mathlibDependencies": [
@@ -208,6 +208,16 @@
       "name": "kronecker2_eq_neg_one_iff",
       "statement": "kronecker2 a = -1 ↔ a % 8 = 3 ∨ a % 8 = 5",
       "description": "The value -1 of χ₈=(·/2) occurs exactly on residues 3,5 mod 8. With kronecker2_eq_one_iff and kronecker2_eq_zero_iff this is the complete residue-level character table: 0 on evens, +1 on {1,7}, -1 on {3,5} mod 8."
+    },
+    {
+      "name": "kronecker2_abs_le_one",
+      "statement": "|kronecker2 a| ≤ 1",
+      "description": "χ₈=(·/2) is bounded by 1 in absolute value, since it takes values in {−1, 0, 1}. The pointwise bound a character sum consumes term-by-term — the elementary input to the Gauss-sum / Pólya–Vinogradov estimates of the generalized-reciprocity route."
+    },
+    {
+      "name": "kronecker2_sum_period",
+      "statement": "(∑ a ∈ Finset.range 8, kronecker2 (a : ℤ)) = 0",
+      "description": "Orthogonality: χ₈=(·/2) sums to zero over a full period (0 + 1 + 0 − 1 + 0 − 1 + 0 + 1 = 0), the defining property of a non-principal Dirichlet character. This is the orthogonality relation that opens the Gauss-sum evaluation: the mean of χ₈ is 0."
     }
   ]
 }
