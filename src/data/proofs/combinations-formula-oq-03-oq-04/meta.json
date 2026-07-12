@@ -2,7 +2,7 @@
   "id": "combinations-formula-oq-03-oq-04",
   "title": "Self-Reciprocity (Palindromy) of Gaussian q-Binomial Coefficients",
   "slug": "combinations-formula-oq-03-oq-04",
-  "description": "Proves that the Gaussian (q-)binomial coefficient [n choose k]_q, viewed as a polynomial in q, is palindromic (self-reciprocal) of degree k·(n-k). Over a field this is the clean algebraic identity [n,k]_q = q^{k(n-k)}·[n,k]_{q⁻¹}, equivalently that the coefficient sequence reads the same forwards and backwards (a_j = a_{k(n-k)-j}). This palindromy is the symmetric half of Sylvester's theorem (1878) that the coefficient sequence is symmetric and unimodal; unimodality itself (Proctor 1982, via sl₂) is the substantive open question and is NOT proved here. Built on the parent's recurrence-defined q-binomial library via both q-Pascal identities. 3 theorems, 0 sorries, 0 axioms — verified over a field.",
+  "description": "Proves that the Gaussian (q-)binomial coefficient [n choose k]_q, viewed as a polynomial in q, is palindromic (self-reciprocal) of degree k·(n-k). Over a field this is the clean algebraic identity [n,k]_q = q^{k(n-k)}·[n,k]_{q⁻¹}, equivalently that the coefficient sequence reads the same forwards and backwards (a_j = a_{k(n-k)-j}). Adds a Gaussian-polynomial layer over ℤ[X] (q = X): by induction on the q-Pascal recurrence the polynomial qBinom X n k is monic of natDegree k·(n-k), has constant term 1, has nonnegative coefficients, and hence both extreme coefficients are pinned to 1 — the structural scaffolding of Sylvester's coefficient array. This palindromy plus the pinned ends is the symmetric half of Sylvester's theorem (1878) that the coefficient sequence is symmetric and unimodal; unimodality itself (Proctor 1982, via sl₂) is the substantive open question and is NOT proved here. Built on the parent's recurrence-defined q-binomial library via both q-Pascal identities. 10 theorems, 0 sorries, 0 axioms — verified.",
   "meta": {
     "author": "Lean Genius Researcher",
     "status": "verified",
@@ -10,10 +10,10 @@
     "badge": "original",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 121,
-    "theoremCount": 3,
+    "lineCount": 262,
+    "theoremCount": 10,
     "definitionCount": 0,
-    "assumptions": "The reciprocity identity is proved over an arbitrary field R for any nonzero q (invertibility of q is genuinely needed to form q⁻¹ and to cancel q^{k+1}·(q⁻¹)^{k+1} = 1). No characteristic or positivity hypotheses. The underlying q-binomial coefficients are the parent's, defined over an arbitrary commutative ring via the q-Pascal recurrence. #print axioms reports only the foundational propext / Classical.choice / Quot.sound — no sorryAx, no Lean.ofReduceBool.",
+    "assumptions": "The reciprocity identity is proved over an arbitrary field R for any nonzero q (invertibility of q is genuinely needed to form q⁻¹ and to cancel q^{k+1}·(q⁻¹)^{k+1} = 1). The Gaussian-polynomial layer (degree, monicity, constant term, coefficient nonnegativity, pinned extreme coefficients) is proved over ℤ[X] with q = X — no field hypothesis there, since it inducts directly on the q-Pascal recurrence over the ordered ring ℤ. No characteristic or positivity hypotheses on R. The underlying q-binomial coefficients are the parent's, defined over an arbitrary commutative ring via the q-Pascal recurrence. #print axioms reports only the foundational propext / Classical.choice / Quot.sound — no sorryAx, no Lean.ofReduceBool.",
     "tags": [
       "combinatorics",
       "q-analogs",
@@ -30,7 +30,9 @@
       "Machine-checked self-reciprocity (palindromy) of the Gaussian binomial: [n,k]_q = q^{k(n-k)}·[n,k]_{q⁻¹} over an arbitrary field, proved by induction on n using BOTH parent q-Pascal identities (the first for the reflected side, the second for the original)",
       "Identification of the exact algebraic mechanism of palindromy: the reflected recurrence matches the original because expanding the left by the second q-Pascal identity and the reflected right by the first q-Pascal identity produces termwise-equal sides after the cancellation q^{(k+1)(n-k)}·(q⁻¹)^{k+1} = q^{(k+1)(n-k-1)}",
       "Reflected convenience form q^{k(n-k)}·[n,k]_{q⁻¹} = [n,k]_q and an involutivity sanity check confirming the twisted reflection q ↦ q⁻¹ is an involution",
-      "Explicit, honestly-scoped separation of the symmetric (palindromy) half of Sylvester's theorem — proved here — from the unimodal half, which remains open"
+      "Explicit, honestly-scoped separation of the symmetric (palindromy) half of Sylvester's theorem — proved here — from the unimodal half, which remains open",
+      "Gaussian-polynomial layer over ℤ[X] (q = X): a single induction on the q-Pascal recurrence proves qBinom X n k is monic with natDegree = k·(n-k) (the X^{k+1}-shifted summand strictly dominates in degree whenever n-k ≥ 1, supplying both the degree and the monic leading term), has constant term 1, and has coefficientwise-nonnegative coefficients",
+      "Pinned extreme coefficients: combining monicity (top coefficient at degree k(n-k) equals 1) with the constant-term computation gives qBinom_X_extreme_coeffs — both ends of the coefficient array equal 1 — which together with nonnegativity and palindromy is the exact structural precursor to Sylvester's symmetric-unimodal shape"
     ],
     "prerequisites": [
       "Gaussian (q-)binomial coefficients and the two q-Pascal recurrences (parent entry combinations-formula-oq-03)",
@@ -43,8 +45,8 @@
     "namespace": "QBinomialCoefficients",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 121,
-    "theoremCount": 3,
+    "lineCount": 262,
+    "theoremCount": 10,
     "definitionCount": 0
   },
   "overview": {
@@ -55,7 +57,9 @@
       "**Palindromy is the symmetric half of unimodality**: A symmetric unimodal sequence is the conclusion of Sylvester's theorem. The symmetry a_j = a_{k(n-k)-j} — proved here — is elementary and reduces to the two q-Pascal recurrences; the unimodality (the actual rise-then-fall) is the hard half and stays open. Separating the two cleanly is the honest way to report partial progress on the open question.",
       "**Both q-Pascal identities together produce termwise agreement**: The single most important structural fact is that expanding the original by the second q-Pascal identity and the reflection by the first q-Pascal identity yields two expressions that agree coefficient-by-coefficient after collecting powers of q. Using the same Pascal identity on both sides does NOT give a termwise match — the two forms are consistent only because qBinom_pascal and qBinom_pascal' compute the same q-binomial.",
       "**Invertibility of q is essential, not cosmetic**: The reflection substitutes q ↦ q⁻¹ and relies on q^{k+1}·(q⁻¹)^{k+1} = 1, so the identity is naturally a field statement with q ≠ 0. Over a general ring one would instead pass to a polynomial reversal; the field formulation keeps the proof to elementary power arithmetic (pow_add, inv_pow, mul_inv_cancel_left₀).",
-      "**Truncated subtraction never bites**: The exponents k(n-k), (k+1)(n-k), and (k+1)(n-k-1) use ℕ subtraction, but the delicate step (writing n-k = (n-k-1)+1) is only taken in the branch k<n where n-k ≥ 1, so the subtraction is exact exactly where it is used; the diagonal and above-diagonal cases are dispatched before any such rewrite."
+      "**Truncated subtraction never bites**: The exponents k(n-k), (k+1)(n-k), and (k+1)(n-k-1) use ℕ subtraction, but the delicate step (writing n-k = (n-k-1)+1) is only taken in the branch k<n where n-k ≥ 1, so the subtraction is exact exactly where it is used; the diagonal and above-diagonal cases are dispatched before any such rewrite.",
+      "**The degree comes from the shifted summand, not the sum**: In the q-Pascal recurrence qBinom X (n+1)(k+1) = A + X^{k+1}·B with A = qBinom X n k and B = qBinom X n (k+1), the shifted term X^{k+1}·B has natDegree (k+1)(n-k), strictly above deg A = k(n-k) whenever n-k ≥ 1. So the sum's degree and leading (monic) coefficient are inherited entirely from X^{k+1}·B (degree_add_eq_left_of_degree_lt / Monic.add_of_left after add_comm); the interior induction never needs to reason about a potential cancellation of leading terms. This is the polynomial-over-ℤ[X] counterpart of the field palindromy: the field proof uses q⁻¹, but the coefficient-array structure lives over ℤ and needs no inverses.",
+      "**Extreme coefficients are pinned but the middle is open**: Monicity fixes the top coefficient (degree k(n-k)) to 1 and coeff_mul_X_pow' fixes the constant term to 1, so qBinom_X_extreme_coeffs closes both ends of the array. With coefficient nonnegativity and the palindromy this is the entire symmetric skeleton — everything except the actual rise-then-fall of the interior coefficients, which is exactly Sylvester's unimodality and stays open."
     ],
     "prerequisites": [
       "Gaussian (q-)binomial coefficients and the two q-Pascal recurrences (parent entry combinations-formula-oq-03)",
@@ -90,8 +94,16 @@
       "id": "corollaries",
       "title": "Reflected Form and Involutivity",
       "startLine": 106,
-      "endLine": 121,
+      "endLine": 136,
       "summary": "qBinom_reflect (the right-to-left convenience form q^{k(n-k)}·[n,k]_{q⁻¹} = [n,k]_q) and qBinom_reciprocal_involutive (applying the twisted reflection twice returns the original, confirming it is an involution as any palindrome reflection must be)."
+    },
+    {
+      "id": "gaussian-polynomial",
+      "title": "The Gaussian polynomial over ℤ[X]: degree, monicity, coefficients",
+      "startLine": 137,
+      "endLine": 262,
+      "summary": "Specialising the ambient ring to ℤ[X] with q = X turns qBinom X n k into the Gaussian polynomial whose coefficient sequence Sylvester's theorem concerns. qBinom_X_monic_natDegree proves it monic of natDegree k·(n-k) by induction on q-Pascal (the X^{k+1}·qBinom X n (k+1) summand strictly dominates in degree when n-k ≥ 1, via degree_add_eq_left_of_degree_lt and Monic.add_of_left). qBinom_X_coeff_zero pins the constant term to 1 (the shifted summand contributes nothing at coefficient 0). qBinom_X_coeff_nonneg shows every coefficient is ≥ 0 over the ordered ring ℤ. The convenience corollaries qBinom_X_monic / qBinom_X_natDegree / qBinom_X_coeff_top and the capstone qBinom_X_extreme_coeffs pin both ends of the coefficient array to 1.",
+      "mathContext": "qBinom (X : ℤ[X]) n k : ℤ[X]; coeff_mul_X_pow', natDegree_mul, natDegree_X_pow, degree_lt_degree, Monic.add_of_left over the ordered ring ℤ."
     }
   ],
   "conclusion": {
@@ -99,7 +111,7 @@
     "implications": "Palindromy is exactly the piece of Sylvester's theorem that is elementary, and isolating it cleanly turns the open unimodality question into 'a symmetric sequence is unimodal', halving what remains to be proved. The identity also encodes the geometric duality between k-dimensional subspaces of 𝔽_qⁿ and their (n−k)-dimensional annihilators (which reverses the q-grading), and it is the q-analogue of the ordinary binomial symmetry C(n,k) = C(n,n−k) recovered at q = 1. Because the argument is purely arithmetic over a field, it is robust and reusable as a lemma toward any future unimodality formalization.",
     "openQuestions": [
       "Unimodality of the coefficient sequence of [n,k]_q — the substantive half of Sylvester's theorem — requiring either an sl₂-action (Proctor 1982) or an explicit injection between adjacent coefficient levels (O'Hara 1990). This is the actual content of the open question and is not attempted here.",
-      "Recast palindromy as a genuine coefficient-reversal statement over ℤ[q] (rather than the field identity with q⁻¹), so that it composes directly with a coefficient-level unimodality argument.",
+      "Recast palindromy as a genuine coefficient-reversal statement over ℤ[X] (rather than the field identity with q⁻¹) — coeff j = coeff (k(n-k) - j) — so that it composes directly with a coefficient-level unimodality argument. The Gaussian-polynomial layer here supplies the ambient ℤ[X] object and pins its extreme coefficients, but the internal reversal symmetry of the coefficient array is not yet formalized.",
       "Formalize the subspace-counting interpretation, deriving palindromy from the bijection between k- and (n−k)-dimensional subspaces of 𝔽_qⁿ instead of from the recurrence."
     ]
   },
