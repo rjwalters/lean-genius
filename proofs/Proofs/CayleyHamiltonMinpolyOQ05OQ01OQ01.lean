@@ -242,7 +242,7 @@ theorem nonderogatory_has_cyclic_vector_fin
   -- Phase 1.5: Bound the number of factors by degree (≤ n)
   have h_nf_card : nf.card ≤ n := by
     calc nf.card ≤ (normalizedFactors μ).card :=
-          Multiset.toFinset_card_le_card _
+          Multiset.toFinset_card_le _
       _ ≤ μ.natDegree := by
           -- Each irreducible factor has degree ≥ 1; sum of degrees = μ.natDegree
           suffices hsuff : ∀ (s : Multiset K[X]),

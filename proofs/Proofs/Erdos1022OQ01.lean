@@ -133,7 +133,7 @@ theorem propertyB_iff_propertyBK_two [Fintype α] {F : Finset (Finset α)}
 theorem hasPropertyBK_card_le_one [Fintype α] {F : Finset (Finset α)} {k : ℕ}
     (hsize : ∀ f ∈ F, 2 ≤ f.card) (hk : 2 ≤ k)
     (hF : F.card ≤ 1) : HasPropertyBK F k := by
-  rcases Nat.eq_or_gt_of_le (Nat.zero_le F.card) with h | h
+  rcases Nat.eq_or_lt_of_le (Nat.zero_le F.card) with h | h
   · rw [Finset.card_eq_zero.mp h]; exact hasPropertyBK_empty k
   · obtain ⟨f, hf⟩ := Finset.card_eq_one.mp (by omega : F.card = 1)
     rw [hf]; exact hasPropertyBK_singleton (hsize f (hf ▸ Finset.mem_singleton_self f)) hk

@@ -79,7 +79,7 @@ Proved via Nat.nth_mem_of_infinite. (Previously axiom.)
 -/
 theorem nthPrime_is_prime (n : ℕ) (hn : n ≥ 1) : (nthPrime n).Prime := by
   unfold nthPrime
-  simp [Nat.not_eq_zero_of_lt (by omega : 0 < n)]
+  simp [(by omega : n ≠ 0)]
   exact Nat.nth_mem_of_infinite Nat.infinite_setOf_prime (n - 1)
 
 /--

@@ -224,7 +224,7 @@ theorem nk_three : minimalNk 3 = 3 := by
   apply Nat.le_antisymm _ (nk_ge_k 3 (by omega))
   apply Nat.sInf_le
   intro S hGP hCard
-  obtain ⟨T, hTS, hTcard⟩ := Finset.exists_smaller_set S 3 hCard
+  obtain ⟨T, hTS, hTcard⟩ := Finset.exists_subset_card_eq hCard
   exact ⟨T, hTS, hTcard, allDistinctCircumradii_of_card_three hTcard⟩
 
 /- ## Monotonicity -/
@@ -240,7 +240,7 @@ theorem nk_monotone (k₁ k₂ : ℕ) (h : k₁ ≤ k₂) (hk : 3 ≤ k₁) :
   intro S hGP hCard
   have hk2 : 3 ≤ k₂ := le_trans hk h
   obtain ⟨T, hTS, hTcard, hTgood⟩ := minimalNk_valid k₂ hk2 S hGP hCard
-  obtain ⟨T', hT'T, hT'card⟩ := Finset.exists_smaller_set T k₁ (by omega)
+  obtain ⟨T', hT'T, hT'card⟩ := Finset.exists_subset_card_eq (by omega)
   exact ⟨T', Finset.Subset.trans hT'T hTS, hT'card, allDistinctCircumradii_subset hT'T hTgood⟩
 
 /- ## Structural Properties -/

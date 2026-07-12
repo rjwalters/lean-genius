@@ -180,10 +180,10 @@ theorem liouville_approximation_theorem_axiom
     -- Goal : |α - ↑p / ↑q| > 1 / (2 * A) / (↑q : ℝ) ^ n
     have hqn_pos : (0 : ℝ) < (↑q : ℝ) ^ n := pow_pos hq_pos n
     rw [div_div]
-    rw [gt_iff_lt, lt_div_iff (by positivity : 0 < 2 * A * (↑q : ℝ) ^ n)]
+    rw [gt_iff_lt, lt_div_iff₀ (by positivity : 0 < 2 * A * (↑q : ℝ) ^ n)]
     -- Goal : 1 < |α - ↑p / ↑q| * (2 * A * ↑q ^ n)
     have h1 : |α - ↑p / ↑q| * A ≥ 1 / (↑q : ℝ) ^ n := by
-      rwa [ge_iff_le, div_le_iff hqn_pos, mul_comm]
+      rwa [ge_iff_le, div_le_iff₀ hqn_pos, mul_comm]
     calc 1 = 1 * 1 := by ring
       _ < 2 * (|α - ↑p / ↑q| * A * (↑q : ℝ) ^ n) := by
           have := mul_le_mul_of_nonneg_right h1 (le_of_lt hqn_pos)

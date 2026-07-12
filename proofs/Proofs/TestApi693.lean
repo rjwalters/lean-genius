@@ -7,7 +7,7 @@ import Mathlib.Data.Real.Basic
 import Mathlib.Tactic
 
 -- Test Finset.Icc card
-#check @Finset.card_Icc
+#check @Nat.card_Icc
 #check @Nat.card_Icc
 
 -- Test Set.Finite

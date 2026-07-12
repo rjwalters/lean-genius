@@ -75,7 +75,7 @@ theorem erdos_lower_bound : ∀ n : ℕ, n ≥ 1 → (f n : ℝ) ≥ n / 3 := by
   have hnat : n ≤ (n + 2) / 3 * 3 := by omega
   have h1 : (f n : ℝ) ≥ ↑((n + 2) / 3) := by exact_mod_cast hb
   have h2 : (↑n : ℝ) / 3 ≤ ↑((n + 2) / 3) := by
-    rw [div_le_iff (by norm_num : (3 : ℝ) > 0)]
+    rw [div_le_iff₀ (by norm_num : (3 : ℝ) > 0)]
     exact_mod_cast hnat
   linarith
 

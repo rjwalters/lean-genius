@@ -81,7 +81,7 @@ theorem ratio_set_full (p : ℕ) [hp : Fact (Nat.Prime p)] :
     exact ⟨k - 1, by omega, by congr 1; omega⟩
   · -- (k-1)! ∈ factorialResidueSet p
     simp only [factorialResidueSet, Finset.mem_image, Finset.mem_range]
-    rcases Nat.eq_or_gt_of_le hk_pos with rfl | hk2
+    rcases Nat.eq_or_lt_of_le hk_pos with rfl | hk2
     · exact ⟨0, by omega, by simp⟩  -- k=1: 0! = 1 = 1!
     · exact ⟨k - 2, by omega, by congr 1; omega⟩  -- k≥2: (k-1)! = ((k-2)+1)!
   · -- k! = r * (k-1)! in ZMod p

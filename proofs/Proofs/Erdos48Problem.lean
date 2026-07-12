@@ -78,7 +78,7 @@ theorem sumDivisors_one : σ(1) = 1 := by
 
 /-- σ(p) = 1 + p for prime p -/
 theorem sumDivisors_prime (p : ℕ) (hp : p.Prime) : σ(p) = 1 + p := by
-  simp only [sumDivisors, Nat.divisors_prime_eq hp, Finset.sum_pair hp.one_lt.ne', id]
+  simp only [sumDivisors, Nat.Prime.divisors hp, Finset.sum_pair hp.one_lt.ne', id]
 
 /-- σ(n) ≥ n for all n ≥ 1 -/
 theorem sumDivisors_ge (n : ℕ) (hn : n ≥ 1) : σ(n) ≥ n := by

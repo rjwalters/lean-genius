@@ -38,7 +38,7 @@ For n = 1, we define P(1) = 1 (convention).
 -/
 noncomputable def largestPrimeFactor (n : ℕ) : ℕ :=
   if n ≤ 1 then 1
-  else (n.primeFactors).max' (Nat.primeFactors_nonempty (by omega))
+  else (n.primeFactors).max' (Nat.nonempty_primeFactors.mpr (by omega))
 
 -- Convenient notation
 notation "P" => largestPrimeFactor
@@ -57,7 +57,7 @@ P(n) divides n for n > 1.
 theorem largestPrimeFactor_dvd {n : ℕ} (hn : n > 1) : P n ∣ n := by
   unfold largestPrimeFactor
   simp [hn]
-  have := Finset.max'_mem (n.primeFactors) (Nat.primeFactors_nonempty (by omega))
+  have := Finset.max'_mem (n.primeFactors) (Nat.nonempty_primeFactors.mpr (by omega))
   exact Nat.dvd_of_mem_primeFactors this
 
 /--

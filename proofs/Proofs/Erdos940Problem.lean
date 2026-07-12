@@ -73,7 +73,7 @@ theorem power_isPowerful (r n : ℕ) (hr : r ≥ 1) (hn : n ≥ 1) :
     have : p ∣ n := by
       have := hp.dvd_of_dvd_pow hdiv
       exact this
-    exact Nat.pow_dvd_pow_of_dvd this r
+    exact pow_dvd_pow_of_dvd this r
 
 /- ## Part II: The Set of Sums -/
 

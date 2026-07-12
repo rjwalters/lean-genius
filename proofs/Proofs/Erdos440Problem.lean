@@ -77,7 +77,7 @@ lcm(n, n+1) = n(n+1) since gcd(n, n+1) = 1.
 -/
 theorem lcm_consecutive (n : ℕ) (hn : n > 0) :
     Nat.lcm n (n + 1) = n * (n + 1) := by
-  have : Nat.gcd n (n + 1) = 1 := Nat.coprime_self_add_one n
+  have : Nat.gcd n (n + 1) = 1 := (Nat.coprime_self_add_right.mpr (Nat.coprime_one_right n))
   simp [Nat.lcm, this]
 
 /- 

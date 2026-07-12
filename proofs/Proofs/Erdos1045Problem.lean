@@ -24,10 +24,10 @@
 -/
 
 import Mathlib
-import Mathlib.Analysis.Complex.Basic
-import Mathlib.Analysis.SpecialFunctions.Complex.Log
-import Mathlib.Data.Real.Basic
-import Mathlib.Data.Finset.Basic
+
+/-- v4.31 migration compat: `Complex.abs` was removed from Mathlib in favor of `‖·‖`. -/
+noncomputable def Complex.abs (z : ℂ) : ℝ := ‖z‖
+
 
 namespace Erdos1045
 

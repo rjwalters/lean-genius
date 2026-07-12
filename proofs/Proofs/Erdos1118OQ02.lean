@@ -1,5 +1,9 @@
 import Mathlib
 
+/-- v4.31 migration compat: `Complex.abs` was removed from Mathlib in favor of `‖·‖`. -/
+noncomputable def Complex.abs (z : ℂ) : ℝ := ‖z‖
+
+
 /-
 # Erdős 1118 — OQ-02: Superlevel Sets in Several Complex Variables
 

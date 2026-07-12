@@ -193,7 +193,7 @@ theorem factorial_lower_bound (n : ℕ) (hn : 1 ≤ n) :
   -- stirlingSeq n ≥ √π means n!/[√(2n)·(n/e)^n] ≥ √π
   -- So n! ≥ √π · √(2n) · (n/e)^n
   rw [hseq_def] at hsqrt
-  have h := (le_div_iff hpos).mp hsqrt
+  have h := (le_div_iff₀ hpos).mp hsqrt
   -- h : √π * (√(2n) · (n/e)^n) ≤ n!
   -- √(2πn) = √π · √(2n)
   have hsqrt_eq : Real.sqrt (2 * π * n) = Real.sqrt π * Real.sqrt (2 * n) := by
@@ -415,7 +415,7 @@ theorem stirling_error_bound_ge_2 (n : ℕ) (hn : n ≥ 2) :
     rw [hx_def, div_lt_one (by positivity : (0 : ℝ) < 4 * ↑m)]; linarith
   have h1mx : 0 < 1 - x := by linarith
   have hexp_inv : Real.exp x ≤ 1 / (1 - x) := by
-    rw [le_div_iff h1mx]
+    rw [le_div_iff₀ h1mx]
     exact one_sub_mul_exp_le_one (le_of_lt hx_pos)
   -- Step 4: r - 1 ≤ x/(1-x)
   have hr_bound : r - 1 ≤ x / (1 - x) := by

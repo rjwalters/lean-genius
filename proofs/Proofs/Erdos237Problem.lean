@@ -149,7 +149,7 @@ theorem erdos_conjecture_true : ErdosConjecture := by
         lt_of_le_of_lt (le_max_right _ _) hN
       have h := Real.log_lt_log (Real.exp_pos _) hN_exp
       rw [Real.log_exp] at h
-      rw [div_lt_iff hc] at h
+      rw [div_lt_iff₀ hc] at h
       linarith [mul_comm (Real.log ↑N) c]
     -- hDense says (C : ℝ) ≥ c * log N, but c * log N > C. Contradiction.
     have hdens := hDense N hN_N0

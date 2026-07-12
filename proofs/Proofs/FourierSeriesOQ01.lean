@@ -246,7 +246,7 @@ private theorem fourierCoeff_of_trigPoly_sum (M : ℕ) (c : ℤ → ℂ) (n : �
           Complex.ofReal_one, mul_one]
     · exact integral_eq_zero_of_add_right_eq_neg (fourier_add_half_inv_index hm hT.out)
   -- Simplify: c k * ∫ fourier(k-n) = c k * (if k = n then 1 else 0) = if k = n then c k else 0
-  simp_rw [integral_mul_left, fourier_integral]
+  simp_rw [integral_const_mul, fourier_integral]
   simp_rw [show ∀ k : ℤ, (k + -n = 0) ↔ (k = n) from fun k => by constructor <;> intro h <;> omega]
   simp_rw [mul_ite, mul_one, mul_zero]
   simp only [Finset.sum_ite_eq']

@@ -156,7 +156,7 @@ private lemma b2g_counting_sq_bound (A : Set ℕ) (g N : ℕ) (hN : N ≥ 1)
   -- Fiber decomposition by sum: map (a,b) ↦ a+b into [2, 2N]
   set T := Finset.Icc 2 (2 * N)
   have hT_card : T.card = 2 * N - 1 := by
-    simp only [T, Finset.card_Icc]; omega
+    simp only [T, Nat.card_Icc]; omega
   have hf : ∀ p ∈ S ×ˢ S, p.1 + p.2 ∈ T := by
     intro ⟨a, b⟩ hp
     obtain ⟨haS, hbS⟩ := Finset.mem_product.mp hp

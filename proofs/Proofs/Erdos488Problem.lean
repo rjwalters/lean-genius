@@ -243,7 +243,7 @@ private theorem multiplesCount_div_mod (A : Finset ℕ) (hA : ∀ a ∈ A, 1 ≤
 private lemma multiplesCount_le (A : Finset ℕ) (N : ℕ) : multiplesCount A N ≤ N := by
   unfold multiplesCount
   calc ((Finset.Icc 1 N).filter _).card ≤ (Finset.Icc 1 N).card := Finset.card_filter_le _ _
-    _ = N := by simp [Finset.card_Icc]; omega
+    _ = N := by simp [Nat.card_Icc]; omega
 
 /-- The asymptotic density of `B(A)` exists and equals `count(P)/P` where `P = lcm(A)`.
 

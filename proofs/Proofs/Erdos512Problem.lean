@@ -24,10 +24,10 @@
 -/
 
 import Mathlib
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Analysis.SpecialFunctions.Complex.Log
+
+/-- v4.31 migration compat: `Complex.abs` was removed from Mathlib in favor of `‖·‖`. -/
+noncomputable def Complex.abs (z : ℂ) : ℝ := ‖z‖
+
 
 open Real Complex MeasureTheory
 
@@ -49,7 +49,7 @@ theorem expTwoPiI_periodic (x : ℝ) : expTwoPiI (x + 1) = expTwoPiI x := by
 
 /-- |e(x)| = 1 for all x. -/
 theorem expTwoPiI_norm (x : ℝ) : Complex.abs (expTwoPiI x) = 1 := by
-  simp [expTwoPiI, Complex.abs_exp]
+  simp [expTwoPiI, Complex.norm_exp]
 
 /-- e(x + y) = e(x) · e(y). -/
 theorem expTwoPiI_add (x y : ℝ) : expTwoPiI (x + y) = expTwoPiI x * expTwoPiI y := by
@@ -78,7 +78,7 @@ theorem expSum_bound (A : Finset ℤ) (θ : ℝ) :
     expSumNorm A θ ≤ A.card := by
   unfold expSumNorm expSum
   calc Complex.abs (A.sum (fun n => expTwoPiI (n * θ)))
-      ≤ A.sum (fun n => Complex.abs (expTwoPiI (n * θ))) := Complex.abs.sum_le _ _
+      ≤ A.sum (fun n => Complex.abs (expTwoPiI (n * θ))) := norm_sum_le _ _
     _ = A.sum (fun _ => 1) := by simp [expTwoPiI_norm]
     _ = A.card := by simp
 
@@ -95,7 +95,7 @@ theorem L1norm_nonneg (A : Finset ℤ) : L1norm A ≥ 0 := by
   unfold L1norm
   apply integral_nonneg
   intro θ
-  exact Complex.abs.nonneg _
+  exact norm_nonneg _
 
 /-- The L¹ norm is at most |A| (trivial upper bound). -/
 theorem L1norm_upper_bound (A : Finset ℤ) : L1norm A ≤ A.card := by
@@ -211,7 +211,7 @@ private lemma expSumNorm_sq_double (A : Finset ℤ) (θ : ℝ) :
       ∑ mn ∈ A ×ˢ A, Real.cos (2 * Real.pi * ((mn.1 : ℝ) - (mn.2 : ℝ)) * θ) := by
   -- Step 1: |S|^2 = (S * conj S).re
   have key : (expSumNorm A θ)^2 = (expSum A θ * starRingEnd ℂ (expSum A θ)).re := by
-    rw [expSumNorm, Complex.sq_abs]
+    rw [expSumNorm, Complex.sq_norm]
     simp only [Complex.normSq_apply, Complex.mul_re, starRingEnd_apply,
                Complex.conj_re, Complex.conj_im]
     ring

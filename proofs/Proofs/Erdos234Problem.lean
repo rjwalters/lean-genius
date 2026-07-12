@@ -164,7 +164,7 @@ private lemma finset_markov_bound (N : ℕ) (c : ℝ) (hc : c > 0) :
     _ ≤ ∑ n ∈ (Finset.range N).filter (fun n => ¬(normalizedGap n < c)), normalizedGap n := by
         apply Finset.sum_le_sum
         intro n hn
-        exact le_of_not_lt (Finset.mem_filter.mp hn).2
+        exact le_of_not_gt (Finset.mem_filter.mp hn).2
     _ ≤ ∑ n ∈ Finset.range N, normalizedGap n := by
         apply Finset.sum_le_sum_of_subset_of_nonneg (Finset.filter_subset _ _)
         intro i _ _

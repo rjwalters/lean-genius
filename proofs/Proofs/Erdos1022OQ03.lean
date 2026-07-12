@@ -386,7 +386,7 @@ theorem propertyB_of_disjoint [Fintype α] (F : Finset (Finset α))
         refine ⟨S'.erase a, fun f hf => ?_⟩
         rcases mem_insert.mp hf with rfl | hf
         · exact ⟨⟨b, mem_inter.mpr ⟨hb, mem_erase.mpr ⟨hba, hf₀_sub b hb⟩⟩⟩,
-                 ⟨a, mem_sdiff.mpr ⟨ha, not_mem_erase a S'⟩⟩⟩
+                 ⟨a, mem_sdiff.mpr ⟨ha, notMem_erase a S'⟩⟩⟩
         · have ha_not : a ∉ f := Finset.disjoint_left.mp (hf₀_disj f hf) ha
           constructor
           · obtain ⟨c, hc⟩ := (hS' f hf).1

@@ -156,7 +156,7 @@ private lemma gcd_mul_left_eq {d₁ d₂ m : ℕ} (hd₁ : d₁ ∣ m) (hcop : d
 private lemma div_gcd_dvd_right {m n d : ℕ} (hm : 0 < m) (hcop : m.Coprime n) (hd : d ∣ m * n) :
     d / d.gcd m ∣ n := by
   have hg_pos : 0 < d.gcd m := by
-    rcases Nat.eq_or_gt_of_le (Nat.zero_le (d.gcd m)) with h | h
+    rcases Nat.eq_or_lt_of_le (Nat.zero_le (d.gcd m)) with h | h
     · rw [← h, Nat.gcd_eq_zero_iff] at *; omega
     · exact h
   have hcop_quot := Nat.coprime_div_gcd_div_gcd hg_pos
@@ -175,7 +175,7 @@ private lemma gcd_coprime_div_of_unitary {m n d : ℕ} (hm : 0 < m) (hn : 0 < n)
     (hcop : m.Coprime n) (hd : d ∣ m * n) (hunit : d.Coprime (m * n / d)) :
     (d.gcd m).Coprime (m / d.gcd m) := by
   have hg_pos : 0 < d.gcd m := by
-    rcases Nat.eq_or_gt_of_le (Nat.zero_le (d.gcd m)) with h | h
+    rcases Nat.eq_or_lt_of_le (Nat.zero_le (d.gcd m)) with h | h
     · rw [← h, Nat.gcd_eq_zero_iff] at *; omega
     · exact h
   have h1 : (d.gcd m).Coprime (m * n / d) :=
@@ -194,7 +194,7 @@ private lemma div_gcd_coprime_div_of_unitary {m n d : ℕ} (hm : 0 < m) (hn : 0 
     (hcop : m.Coprime n) (hd : d ∣ m * n) (hunit : d.Coprime (m * n / d)) :
     (d / d.gcd m).Coprime (n / (d / d.gcd m)) := by
   have hg_pos : 0 < d.gcd m := by
-    rcases Nat.eq_or_gt_of_le (Nat.zero_le (d.gcd m)) with h | h
+    rcases Nat.eq_or_lt_of_le (Nat.zero_le (d.gcd m)) with h | h
     · rw [← h, Nat.gcd_eq_zero_iff] at *; omega
     · exact h
   have h1 : (d / d.gcd m).Coprime (m * n / d) :=
@@ -298,7 +298,7 @@ theorem unitaryDivisorSum_mul_coprime {m n : ℕ} (hm : 0 < m) (hn : 0 < n) (hco
     obtain ⟨⟨hd_pos, hd_le⟩, hd_dvd, hd_cop⟩ := hd
     rw [Finset.mem_product]
     have hg_pos : 0 < d.gcd m := by
-      rcases Nat.eq_or_gt_of_le (Nat.zero_le (d.gcd m)) with h | h
+      rcases Nat.eq_or_lt_of_le (Nat.zero_le (d.gcd m)) with h | h
       · rw [← h, Nat.gcd_eq_zero_iff] at *; omega
       · exact h
     have h_div_n := div_gcd_dvd_right hm hcop hd_dvd

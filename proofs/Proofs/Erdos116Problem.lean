@@ -17,11 +17,11 @@ A conjecture of Erdős, Herzog, and Piranian.
 Reference: https://erdosproblems.com/116
 -/
 
-import Mathlib.Analysis.SpecialFunctions.Complex.Circle
-import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
-import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.Data.Complex.Basic
-import Mathlib.Tactic
+import Mathlib
+
+/-- v4.31 migration compat: `Complex.abs` was removed from Mathlib in favor of `‖·‖`. -/
+noncomputable def Complex.abs (z : ℂ) : ℝ := ‖z‖
+
 
 /- ## Monic Polynomials with Roots in the Unit Disk -/
 

@@ -212,7 +212,7 @@ theorem density_univ : upperDensity Set.univ = 1 := by
   have hIic : (Set.Iic n : Set ℕ).ncard = n + 1 := by
     rw [show (Set.Iic n : Set ℕ) = ↑(Finset.range (n + 1)) from by
           ext m; simp [Finset.mem_range, Nat.lt_succ_iff]]
-    rw [Set.ncard_coe_Finset, Finset.card_range]
+    rw [Set.ncard_coe_finset, Finset.card_range]
   rw [hIic, div_eq_one_iff_eq hn]
   push_cast; ring
 
@@ -278,7 +278,7 @@ theorem cofinite_density_one {S : Set ℕ} (h : ∀ᶠ n in atTop, n ∈ S) :
       simp only [Finset.coe_Icc, Set.mem_Icc] at hm
       exact ⟨hN₀ m hm.1, hm.2⟩
     calc n - N₀ + 1 = (Finset.Icc N₀ n).card := by simp [Finset.card_Icc]; omega
-      _ = ((Finset.Icc N₀ n : Set ℕ)).ncard := (Set.ncard_coe_Finset _).symm
+      _ = ((Finset.Icc N₀ n : Set ℕ)).ncard := (Set.ncard_coe_finset _).symm
       _ ≤ (S ∩ Set.Iic n).ncard := Set.ncard_le_ncard hincl hfin
   -- The ratio sequence is eventually ≥ 1 - N₀/(n+1)
   have hlb : ∀ᶠ n : ℕ in Filter.atTop,

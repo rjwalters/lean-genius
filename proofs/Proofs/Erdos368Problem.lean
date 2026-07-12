@@ -47,7 +47,7 @@ namespace Erdos368
 The largest prime dividing n, or 0 if n ≤ 1.
 -/
 noncomputable def largestPrimeFactor (n : ℕ) : ℕ :=
-  if h : n > 1 then (n.primeFactors.max' (Nat.primeFactors_nonempty h))
+  if h : n > 1 then (n.primeFactors.max' (Nat.nonempty_primeFactors.mpr h))
   else 0
 
 /-- Notation for largest prime factor. -/
@@ -76,7 +76,7 @@ lemma product_ge_two (n : ℕ) (hn : n ≥ 1) : n * (n + 1) ≥ 2 := by
 n and n+1 share no common prime factor.
 -/
 theorem consecutive_coprime (n : ℕ) : Nat.Coprime n (n + 1) :=
-  Nat.coprime_self_add_one n
+  (Nat.coprime_self_add_right.mpr (Nat.coprime_one_right n))
 
 /--
 **Coprimality Consequence:**

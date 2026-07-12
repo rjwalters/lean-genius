@@ -55,7 +55,7 @@ P(n) = max{p prime : p | n}, with P(1) = 1 by convention.
 -/
 def greatestPrimeDivisor (n : ℕ) : ℕ :=
   if n ≤ 1 then 1
-  else Nat.factors n |>.maximum? |>.getD 1
+  else Nat.primeFactorsList n |>.maximum? |>.getD 1
 
 /--
 **The function F_f(n):**

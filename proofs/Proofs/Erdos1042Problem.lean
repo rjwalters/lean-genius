@@ -20,13 +20,10 @@ References:
 -/
 
 import Mathlib
-import Mathlib.Data.Complex.Basic
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Topology.Basic
-import Mathlib.Analysis.Complex.Basic
-import Mathlib.Topology.Connected.Clopen
-import Mathlib.SetTheory.Cardinal.Finite
+
+/-- v4.31 migration compat: `Complex.abs` was removed from Mathlib in favor of `‖·‖`. -/
+noncomputable def Complex.abs (z : ℂ) : ℝ := ‖z‖
+
 
 open Complex BigOperators
 

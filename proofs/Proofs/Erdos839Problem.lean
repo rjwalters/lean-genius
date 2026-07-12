@@ -172,7 +172,7 @@ private lemma frequently_lt_of_lt_limsup (a : ValidSeq) (c : ℝ)
   by_contra h
   rw [Filter.not_frequently] at h
   have h_ev : ∀ᶠ N in Filter.atTop, countRatio a N ≤ c :=
-    h.mono fun _ hn => le_of_not_lt hn
+    h.mono fun _ hn => le_of_not_gt hn
   linarith [Filter.limsup_le_of_le (countRatio_isCoboundedUnder a) h_ev]
 
 /-- For a strictly increasing sequence, if the counting function at N

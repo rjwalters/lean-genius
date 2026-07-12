@@ -54,13 +54,13 @@ def IsPowerfulAlt (n : ℕ) : Prop :=
 theorem square_is_powerful (k : ℕ) (hk : k ≥ 1) : IsPowerful (k^2) := by
   refine ⟨by positivity, fun p hp hdvd => ?_⟩
   have hpk : p ∣ k := hp.dvd_of_dvd_pow hdvd
-  exact dvd_pow_self p 2 |>.trans (Nat.pow_dvd_pow_of_dvd hpk 2)
+  exact dvd_pow_self p 2 |>.trans (pow_dvd_pow_of_dvd hpk 2)
 
 /-- Every perfect cube is powerful. -/
 theorem cube_is_powerful (k : ℕ) (hk : k ≥ 1) : IsPowerful (k^3) := by
   refine ⟨by positivity, fun p hp hdvd => ?_⟩
   have hpk : p ∣ k := hp.dvd_of_dvd_pow hdvd
-  calc p ^ 2 ∣ k ^ 2 := Nat.pow_dvd_pow_of_dvd hpk 2
+  calc p ^ 2 ∣ k ^ 2 := pow_dvd_pow_of_dvd hpk 2
     _ ∣ k ^ 3 := ⟨k, by ring⟩
 
 /- ## Part II: Consecutive Powerful Numbers -/

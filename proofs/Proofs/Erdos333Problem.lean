@@ -193,7 +193,7 @@ Take A to be integers with at most (log n)² prime factors.
 This has zero density (Prime Number Theorem), but is "dense within zero density".
 -/
 def almostPrimeFree (k : ℕ) : Set ℕ :=
-  {n : ℕ | n ≥ 1 ∧ (Nat.factors n).length ≤ k}
+  {n : ℕ | n ≥ 1 ∧ (Nat.primeFactorsList n).length ≤ k}
 
 /-
 ## Part VI: Connections

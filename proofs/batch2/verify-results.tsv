@@ -84,7 +84,7 @@ Erdos1008ProblemProvable	RESIDUAL	instance-synth
 Erdos1010Problem	GREEN	
 Erdos1012OQ03	RESIDUAL	doctor-unclassified
 Erdos1013Problem	GREEN	
-Erdos1015Problem	RESIDUAL	unknown-const:n
+Erdos1015Problem	PRE-EXISTING	never-compiled:n
 Erdos1017OQ04	RESIDUAL	unclassified
 Erdos1018OQ04Incomplete01	RESIDUAL	rewrite-drift
 Erdos1020Problem	RESIDUAL	unclassified
@@ -114,19 +114,19 @@ Erdos104Problem	RESIDUAL	doctor-unclassified
 Erdos1052Problem	RESIDUAL	unknown-const:Nat.eq_or_gt_of_le
 Erdos1053Problem	RESIDUAL	doctor-unclassified
 Erdos1054OQ01	RESIDUAL	doctor-unclassified
-Erdos1054OQ02	RESIDUAL	unknown-const:q
+Erdos1054OQ02	PRE-EXISTING	never-compiled:q
 Erdos1056Problem	RESIDUAL	instance-synth
 Erdos1057Problem	RESIDUAL	doctor-unclassified
 Erdos1059OQ04	RESIDUAL	unknown-const:AllFactorialSubtractionsComposite
 Erdos1060Problem	RESIDUAL	doctor-unclassified
 Erdos1062OQ04	GREEN	
 Erdos1062Problem	RESIDUAL	doctor-unclassified
-Erdos1066Problem	RESIDUAL	unknown-const:n
+Erdos1066Problem	PRE-EXISTING	never-compiled:n
 Erdos1067Problem	RESIDUAL	doctor-unclassified
 Erdos1068Problem	RESIDUAL	doctor-unclassified
 Erdos106Problem	RESIDUAL	doctor-unclassified
 Erdos1070Problem	RESIDUAL	doctor-unclassified
-Erdos1071Problem	RESIDUAL	unknown-const:s
+Erdos1071Problem	PRE-EXISTING	never-compiled:s
 Erdos1073Problem	RESIDUAL	decide-maxrecdepth
 Erdos1081Problem	RESIDUAL	doctor-unclassified
 Erdos1087Problem	RESIDUAL	doctor-unclassified
@@ -139,8 +139,8 @@ Erdos1098OQ03	RESIDUAL	proof-drift
 Erdos1098Problem	RESIDUAL	instance-synth
 Erdos109OQ01	RESIDUAL	unknown-const:Set.ncard_Icc
 Erdos10Problem	RESIDUAL	instance-synth
-Erdos1100Problem	RESIDUAL	unknown-const:p
-Erdos1100ProblemProvable	RESIDUAL	unknown-const:p
+Erdos1100Problem	PRE-EXISTING	never-compiled:p
+Erdos1100ProblemProvable	PRE-EXISTING	never-compiled:p
 Erdos1101Problem	GREEN	
 Erdos1103Problem	RESIDUAL	instance-synth
 Erdos1104Problem	RESIDUAL	doctor-unclassified
@@ -152,7 +152,7 @@ Erdos1113Problem	RESIDUAL	unclassified
 Erdos1114Problem	RESIDUAL	type-mismatch
 Erdos1117Problem	GREEN	
 Erdos1118OQ02	RESIDUAL	unknown-const:Complex.abs
-Erdos1119Problem	RESIDUAL	unknown-const:ι
+Erdos1119Problem	PRE-EXISTING	never-compiled:ι
 Erdos111Problem	GREEN	
 Erdos1120Problem	RESIDUAL	instance-synth
 Erdos1121Problem	RESIDUAL	instance-synth
@@ -171,7 +171,7 @@ Erdos1142Problem	RESIDUAL	type-mismatch
 Erdos1145Problem	RESIDUAL	type-mismatch
 Erdos1150Problem	RESIDUAL	unknown-const:parseval_ratio_ge_one
 Erdos1151Problem	RESIDUAL	proof-drift
-Erdos1153Problem	RESIDUAL	unknown-const:k
+Erdos1153Problem	PRE-EXISTING	never-compiled:k
 Erdos1157Problem	RESIDUAL	unknown-const:delcourt_postle_theorem
 Erdos115OQ01Problem	GREEN	
 Erdos115Problem	RESIDUAL	proof-drift
@@ -385,7 +385,7 @@ Erdos402Problem	RESIDUAL	type-mismatch
 Erdos403Problem	RESIDUAL	proof-drift
 Erdos407Problem	RESIDUAL	proof-drift
 Erdos408Problem	RESIDUAL	dot-notation-drift
-Erdos409Problem	RESIDUAL	unknown-const:p
+Erdos409Problem	PRE-EXISTING	never-compiled:p
 Erdos40Problem	RESIDUAL	unknown-const:Finset.card_Icc
 Erdos415Problem	RESIDUAL	instance-synth
 Erdos416Problem	RESIDUAL	proof-drift
@@ -394,7 +394,7 @@ Erdos419Problem	RESIDUAL	unclassified
 Erdos41Problem	GREEN	
 Erdos420Problem	RESIDUAL	unknown-const:Nat.divisors_prime
 Erdos422Problem	GREEN	
-Erdos423Problem	RESIDUAL	unknown-const:n
+Erdos423Problem	PRE-EXISTING	never-compiled:n
 Erdos424Problem	RESIDUAL	unknown-const:sequence_monotone
 Erdos425Problem	RESIDUAL	unknown-const:Real.log
 Erdos426Problem	RESIDUAL	instance-synth
@@ -415,7 +415,7 @@ Erdos445Problem	RESIDUAL	unknown-const:Complex.abs
 Erdos446Problem	RESIDUAL	type-mismatch
 Erdos447Problem	RESIDUAL	instance-synth
 Erdos449Problem	GREEN	
-Erdos451Problem	RESIDUAL	unknown-const:hp
+Erdos451Problem	PRE-EXISTING	never-compiled:hp
 Erdos452Problem	RESIDUAL	instance-synth
 Erdos453Problem	RESIDUAL	unknown-const:Nat.not_eq_zero_of_lt
 Erdos454Aristotle	RESIDUAL	unknown-const:Nat.nth_prime_strictMono
@@ -429,14 +429,14 @@ Erdos46Problem	GREEN
 Erdos471Problem	RESIDUAL	unknown-const:Set.Finite.of_finset
 Erdos473Problem	GREEN	
 Erdos474Problem	RESIDUAL	parse-error
-Erdos476Problem	RESIDUAL	unknown-const:B
+Erdos476Problem	PRE-EXISTING	never-compiled:B
 Erdos477Problem	RESIDUAL	unknown-const:Set.Finite.of_not_infinite
 Erdos478Problem	RESIDUAL	unknown-const:Nat.eq_or_gt_of_le
 Erdos479Problem	RESIDUAL	unknown-const:fermat_little
 Erdos47Problem	GREEN	
 Erdos481Problem	RESIDUAL	dot-notation-drift
 Erdos484Problem	RESIDUAL	unknown-const:Finset.univ
-Erdos485OQ01	RESIDUAL	unknown-const:d
+Erdos485OQ01	PRE-EXISTING	never-compiled:d
 Erdos485Problem	RESIDUAL	proof-drift
 Erdos486Problem	GREEN	
 Erdos487Problem	RESIDUAL	instance-synth
@@ -472,7 +472,7 @@ Erdos524Problem	GREEN
 Erdos525Problem	RESIDUAL	instance-synth
 Erdos526Problem	GREEN	
 Erdos527Problem	RESIDUAL	unknown-const:Complex.abs
-Erdos529Problem	RESIDUAL	unknown-const:d_2
+Erdos529Problem	PRE-EXISTING	never-compiled:d_2
 Erdos52Problem	RESIDUAL	parse-error
 Erdos531Problem	GREEN	
 Erdos532Problem	RESIDUAL	proof-drift
@@ -586,7 +586,7 @@ Erdos696Problem	GREEN
 Erdos697Problem	RESIDUAL	unknown-const:Real.exp_one_gt_d9
 Erdos698Problem	GREEN	
 Erdos6Problem	GREEN	
-Erdos701Problem	RESIDUAL	unknown-const:A
+Erdos701Problem	PRE-EXISTING	never-compiled:A
 Erdos704Problem	RESIDUAL	type-mismatch
 Erdos705Problem	RESIDUAL	type-mismatch
 Erdos706Problem	GREEN	
@@ -597,13 +597,13 @@ Erdos70Problem	GREEN
 Erdos710Problem	RESIDUAL	instance-synth
 Erdos711Problem	RESIDUAL	instance-synth
 Erdos712Problem	RESIDUAL	proof-drift
-Erdos713Problem	RESIDUAL	unknown-const:n
+Erdos713Problem	PRE-EXISTING	never-compiled:n
 Erdos714Problem	RESIDUAL	instance-synth
 Erdos715Problem	RESIDUAL	instance-synth
 Erdos716Problem	RESIDUAL	noncomputable
 Erdos717Problem	RESIDUAL	parse-error
 Erdos718Problem	RESIDUAL	instance-synth
-Erdos719Problem	RESIDUAL	unknown-const:H.edges
+Erdos719Problem	PRE-EXISTING	never-compiled:H.edges
 Erdos71Problem	RESIDUAL	proof-drift
 Erdos720Problem	RESIDUAL	instance-synth
 Erdos721Problem	GREEN	
@@ -633,7 +633,7 @@ Erdos765Problem	RESIDUAL	proof-drift
 Erdos766Problem	RESIDUAL	parse-error
 Erdos767Problem	RESIDUAL	proof-drift
 Erdos768Problem	RESIDUAL	parse-error
-Erdos770Problem	RESIDUAL	unknown-const:X
+Erdos770Problem	PRE-EXISTING	never-compiled:X
 Erdos772Problem	RESIDUAL	dot-notation-drift
 Erdos773Problem	RESIDUAL	instance-synth
 Erdos774Problem	RESIDUAL	unknown-const:Complex.abs
@@ -677,8 +677,8 @@ Erdos827Problem	RESIDUAL	unknown-const:Finset.exists_smaller_set
 Erdos829Problem	RESIDUAL	unknown-const:hardy_ramanujan_1729
 Erdos82Problem	RESIDUAL	instance-synth
 Erdos830Problem	GREEN	
-Erdos831Problem	RESIDUAL	unknown-const:p_e1
-Erdos832Problem	RESIDUAL	unknown-const:V
+Erdos831Problem	PRE-EXISTING	never-compiled:p_e1
+Erdos832Problem	PRE-EXISTING	never-compiled:V
 Erdos834Problem	RESIDUAL	instance-synth
 Erdos836Problem	RESIDUAL	instance-synth
 Erdos839Problem	RESIDUAL	unknown-const:le_of_not_lt
@@ -692,7 +692,7 @@ Erdos84Problem	RESIDUAL	unclassified
 Erdos851Problem	GREEN	
 Erdos854Problem	RESIDUAL	unknown-const:Nat.nth_prime_strictMono
 Erdos855Problem	GREEN	
-Erdos856Problem	RESIDUAL	unknown-const:A
+Erdos856Problem	PRE-EXISTING	never-compiled:A
 Erdos857Problem	RESIDUAL	unknown-const:mem_empty_iff_false
 Erdos858Problem	RESIDUAL	unknown-const:Nat.one_lt_iff_ne_one.mp
 Erdos859Problem	RESIDUAL	unknown-const:𝓝
@@ -718,7 +718,7 @@ Erdos878Problem	RESIDUAL	instance-synth
 Erdos879Problem	RESIDUAL	proof-drift
 Erdos87Problem	GREEN	
 Erdos880Problem	RESIDUAL	type-mismatch
-Erdos882ProblemOQ03	RESIDUAL	unknown-const:a
+Erdos882ProblemOQ03	PRE-EXISTING	never-compiled:a
 Erdos883Problem	RESIDUAL	type-mismatch
 Erdos885Problem	GREEN	
 Erdos886Problem	RESIDUAL	noncomputable
@@ -855,7 +855,7 @@ KnightsTourOblique	RESIDUAL	unknown-const:Finset.eq_empty_of_forall_not_mem
 KonigsbergOQ01OQ02	RESIDUAL	proof-drift
 KonigsbergOQ01OQ02Recipe	GREEN	
 KummerTheorem	GREEN	
-KummerTheoremOQ02	RESIDUAL	unknown-const:n
+KummerTheoremOQ02	PRE-EXISTING	never-compiled:n
 LagrangeTheoremOQ01OQ01OQ01ApproachB	RESIDUAL	instance-synth
 LawOfSinesOQ06	RESIDUAL	unknown-const:EuclideanSpace.norm_sq_apply
 LawsOfLargeNumbers	GREEN	
@@ -884,7 +884,7 @@ ProbMethodExpectationOQ04	GREEN
 PuiseuxTheoremOQ02	RESIDUAL	instance-synth
 RamseyHypergraph	RESIDUAL	type-mismatch
 RamseysTheorem	RESIDUAL	type-mismatch
-RamseysTheoremOQ04	RESIDUAL	unknown-const:n
+RamseysTheoremOQ04	PRE-EXISTING	never-compiled:n
 RandomizedMaxCut	GREEN	
 RandomizedMaxcutOQ02	GREEN	
 RiemannHypothesis	GREEN	

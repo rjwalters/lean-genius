@@ -148,7 +148,7 @@ theorem sumset_density_constraint (A B C : Set ℕ)
       rcases Nat.eq_zero_or_pos b₀ with rfl | hb₀_pos
       · simp
       · have : (Set.Icc (N + 1) (N + b₀)).ncard = b₀ := by
-          rw [Set.ncard_Icc (by omega)]; omega
+          rw [Set.ncard_Icc_nat]; omega
         omega
     calc (A ∩ Set.Icc 1 (N + b₀)).ncard
         ≤ ((A ∩ Set.Icc 1 N) ∪ Set.Icc (N + 1) (N + b₀)).ncard :=
@@ -208,7 +208,7 @@ theorem sumset_density_constraint (A B C : Set ℕ)
         have h1 : (A ∩ Set.Icc 1 N).ncard ≤ (Set.Icc 1 N).ncard :=
           Set.ncard_le_ncard Set.inter_subset_right (Set.finite_Icc 1 N)
         have h2 : (Set.Icc 1 N).ncard = N := by
-          rw [Set.ncard_Icc]; omega
+          rw [Set.ncard_Icc_nat]; omega
         exact_mod_cast h1.trans_eq h2)⟩
   -- upperDensity is sInf of eventual upper bounds
   have hC_simp : upperDensity C = sInf S_C := by

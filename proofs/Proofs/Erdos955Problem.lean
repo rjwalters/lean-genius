@@ -25,11 +25,7 @@ References:
 Tags: number-theory, divisor-functions, density, arithmetic-functions
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.NumberTheory.Divisors
-import Mathlib.Data.Real.Basic
-import Mathlib.Order.Filter.Basic
+import Mathlib
 
 open Nat Finset Real Filter
 

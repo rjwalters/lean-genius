@@ -77,7 +77,7 @@ theorem example_t6_product : 6 * 8 * 12 = 24 * 24 := by native_decide
 
 /-- P(n): The largest prime divisor of n (0 if n ≤ 1) -/
 noncomputable def largestPrimeDivisor (n : ℕ) : ℕ :=
-  if h : n > 1 then (n.primeFactors).max' (Nat.primeFactors_nonempty.mpr h)
+  if h : n > 1 then (n.primeFactors).max' (Nat.nonempty_primeFactors.mpr h)
   else 0
 
 /-- The trivial lower bound: t_n ≥ P(n) -/

@@ -23,11 +23,7 @@ References:
 Tags: combinatorics, extremal-graph-theory, triangle-counting
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Combinatorics.SimpleGraph.Basic
-import Mathlib.Order.Filter.Basic
+import Mathlib
 
 open Nat Finset Filter
 

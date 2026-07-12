@@ -144,7 +144,7 @@ lemma consecutiveSquareProduct_pos {p k : ℕ} (hp : p.Prime) :
 
 lemma consecutiveSquareProduct_ne_zero {p k : ℕ} (hp : p.Prime) :
     consecutiveSquareProduct p k ≠ 0 := by
-  exact Nat.not_eq_zero_of_lt (consecutiveSquareProduct_pos hp)
+  exact ((consecutiveSquareProduct_pos hp)).ne'
 
 -- For k = 0: p is 0-good since p² has p as its only prime factor
 theorem zero_good (p : ℕ) (hp : p.Prime) : isKGood p 0 := by

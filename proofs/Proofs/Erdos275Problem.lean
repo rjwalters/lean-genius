@@ -103,7 +103,7 @@ def OptimalExample (r : ℕ) : CoveringSystem where
   size := r
   residues := fun i => 2^(i : ℕ)
   moduli := fun i => 2^((i : ℕ) + 1)
-  moduli_pos := fun i => by simp [Nat.pos_pow_of_pos]
+  moduli_pos := fun i => by positivity
 
 /- 
 **What the Optimal Example Covers:**

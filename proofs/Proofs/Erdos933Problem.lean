@@ -131,7 +131,7 @@ def LTEConnection : Prop :=
 
 /-- n and n+1 are coprime. -/
 theorem consecutive_coprime (n : ℕ) : Nat.Coprime n (n + 1) :=
-  Nat.coprime_self_add_one n
+  (Nat.coprime_self_add_right.mpr (Nat.coprime_one_right n))
 
 /-- The power of 2 in n(n+1) comes from exactly one of n or n+1. -/
 theorem power2_consecutive (n : ℕ) :

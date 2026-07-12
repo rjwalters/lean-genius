@@ -250,6 +250,36 @@ These names do not exist in Mathlib `2df2f0150c27` either; the files referencing
 - **Double set-binder regex hits prose**: `[∀∃] \w+ \w+ ∈` matches inside doc comments/prose (BertrandsPostulateOQ03OQ04OQ01, PartitionTheoremOQ01) — do NOT blind-sweep; fix code sites by hand (5 sites: Erdos174Problem, Erdos339Problem ×2, Erdos434Problem, Erdos434Frobenius — the latter flipped green immediately).
 - **`IsSolvable (ZMod n)` was never legal** (ZMod n has no multiplicative `Group` instance) — retype to `Multiplicative (ZMod n)` (AbelRuffiniGaloisExtensionsOQ05 `cyclic_group_realizable`).
 
+### Batch-5 resolutions (grep-verified in v4.31 Mathlib source in-container)
+
+Singleton unknown-const renames applied + verified in wave S (68 files edited):
+
+| old | new | notes |
+|---|---|---|
+| `Nat.factors` | `Nat.primeFactorsList` | |
+| `le_of_not_lt` | `le_of_not_gt` | same statement mod `>` notation |
+| `Nat.eq_or_gt_of_le` | `Nat.eq_or_lt_of_le` | disjunct order/form identical |
+| `Nat.primeFactors_nonempty h` | `Nat.nonempty_primeFactors.mpr h` | new form is iff `… ↔ 1 < n` (Data/Nat/PrimeFin.lean:88) |
+| `Finset.card_Icc` | `Nat.card_Icc` | ℕ-intervals; confirmed again (batch-3 entry) |
+| `div_le_iff`/`le_div_iff`/`lt_div_iff`/`div_lt_iff`/`div_lt_div_iff` | `…₀` | positivity-hypothesis family |
+| `pow_lt_one`/`pow_le_pow_right` | `pow_lt_one₀`/`pow_le_pow_right₀` | bare (non-`Nat.`) forms only |
+| `Multiset.toFinset_card_le_card` | `Multiset.toFinset_card_le` | Data/Finset/Card.lean:192 |
+| `integral_mul_left` | `integral_const_mul` | Bochner/Basic.lean:292 |
+| `Set.ncard_coe_Finset` | `Set.ncard_coe_finset` | case-only rename, Data/Set/Card.lean:681 |
+| `Set.ncard_Icc` (ℕ) | `Set.ncard_Icc_nat` | no hypothesis arg anymore (simp lemma, Order/Interval/Set/Nat.lean:22) |
+| `Nat.pow_dvd_pow_of_dvd` | `pow_dvd_pow_of_dvd` | root-level generic, same arg order |
+| `Nat.one_lt_iff_ne_one.mp h` | `h.ne'` | for `h : 1 < n` |
+| `Nat.coprime_self_add_one n` | `Nat.coprime_self_add_right.mpr (Nat.coprime_one_right n)` | no direct replacement lemma found |
+| `Nat.divisors_prime` / `Nat.divisors_prime_eq` | `Nat.Prime.divisors` | `divisors p = {1, p}` (NumberTheory/Divisors.lean:416); `Nat.divisors_prime_pow` unchanged |
+| `Finset.exists_smaller_set s i h` | `Finset.exists_subset_card_eq h` | s, i now implicit |
+| `Nat.pos_pow_of_pos n h` | `Nat.pow_pos h` | or `positivity` in simp positions |
+| `Nat.not_eq_zero_of_lt h` | `h.ne'` | for `h : a < b` gives `b ≠ 0` |
+| `not_mem_erase` | `notMem_erase` | notMem wave (§1c) |
+| `Complex.abs` | **compat shim** | removed from Mathlib (norm `‖·‖` everywhere). 14 affected files got `noncomputable def Complex.abs (z : ℂ) : ℝ := ‖z‖` + umbrella import; `Complex.abs_apply z` restorable as `Complex.norm_def z`; `Complex.sq_abs`→`Complex.sq_norm`, `Complex.abs_exp`→`Complex.norm_exp`, `Complex.abs.nonneg`→`norm_nonneg`, `Complex.abs.sum_le`→`norm_sum_le` |
+| `atTop` / `EuclideanSpace` unknown-const | umbrella `import Mathlib` | contents moved out of the imported modules (Order.Filter.Basic / InnerProductSpace.Basic); §3 class |
+
+Left unresolved for Doctor (#38065): `Nat.nth_prime_strictMono`/`nth_prime_zero`/`Nat.Prime.nthPrime` (v4.31 only has `Nat.nth_prime_zero_eq_two`-style numerals), `GeometricSeriesOQ03` (`Complex.abs_cpow_mul_exp_log_re` removed, needs proof rework), `ChebyshevPNTBridgeOQ01` (PartENat removal), `Nat.find`/`Fintype`/`Finset.univ`-style unknown-consts (likely deeper/never-compiled), `Real.*`/`Ordinal.*` singletons, project-local unknown names (`white_lower`, `fan_lower`, `halasz_theorem`, …).
+
 ## Summary counts
 
 - **Confident mappings (§1):** 48 pairs (incl. 6 notMem-wave + 4 sdiff-wave entries), of which 8 also need API-level attention (§5).

@@ -26,11 +26,11 @@ References:
 - erdosproblems.com/514
 -/
 
-import Mathlib.Analysis.Complex.Basic
-import Mathlib.Analysis.SpecialFunctions.Pow.Complex
-import Mathlib.Analysis.Calculus.ContDiff.Basic
-import Mathlib.Data.Complex.Basic
-import Mathlib.Topology.Basic
+import Mathlib
+
+/-- v4.31 migration compat: `Complex.abs` was removed from Mathlib in favor of `‖·‖`. -/
+noncomputable def Complex.abs (z : ℂ) : ℝ := ‖z‖
+
 
 open Complex Set Filter Topology
 

@@ -66,7 +66,7 @@ The smallest prime factor is prime for n > 1.
 theorem smallestPrimeFactor_prime (n : ℕ) (hn : n > 1) :
     (smallestPrimeFactor n).Prime := by
   simp only [smallestPrimeFactor, hn, dif_pos]
-  exact Nat.minFac_prime (Nat.one_lt_iff_ne_one.mp hn)
+  exact Nat.minFac_prime (hn.ne')
 
 /--
 The smallest prime factor is at least 2.

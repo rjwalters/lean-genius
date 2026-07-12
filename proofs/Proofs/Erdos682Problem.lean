@@ -70,7 +70,7 @@ noncomputable def leastPrimeFactor (m : ℕ) : ℕ :=
 theorem leastPrimeFactor_prime (m : ℕ) (hm : m > 1) :
     Nat.Prime (leastPrimeFactor m) := by
   simp [leastPrimeFactor, hm]
-  exact Nat.minFac_prime (Nat.one_lt_iff_ne_one.mp hm)
+  exact Nat.minFac_prime (hm.ne')
 
 /--
 **Least Prime Factor Divides:**

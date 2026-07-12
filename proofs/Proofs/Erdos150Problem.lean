@@ -187,7 +187,7 @@ theorem alpha_less_than_two : α < 2 := by
     -- Goal: log 3 / log 2 - 2/3 < 1, i.e., log 3 / log 2 < 5/3
     have hlog2_pos : (0 : ℝ) < Real.log 2 := Real.log_pos (by norm_num)
     suffices h : Real.log 3 / Real.log 2 < 5 / 3 by linarith
-    rw [div_lt_div_iff hlog2_pos (by norm_num : (0 : ℝ) < 3)]
+    rw [div_lt_div_iff₀ hlog2_pos (by norm_num : (0 : ℝ) < 3)]
     -- Goal: log 3 * 3 < 5 * log 2, i.e., log(27) < log(32)
     have h27 : Real.log (27 : ℝ) = Real.log ((3 : ℝ) ^ (3 : ℕ)) := by norm_num
     have h32 : Real.log (32 : ℝ) = Real.log ((2 : ℝ) ^ (5 : ℕ)) := by norm_num

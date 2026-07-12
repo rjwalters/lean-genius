@@ -119,7 +119,7 @@ theorem sum_sq_le_quartic (k : ℕ) (hk : 1 ≤ k) :
   have hsum : ∑ i ∈ Finset.range k, (i : ℝ) ^ 2 = (k : ℝ) * (k - 1) * (2 * k - 1) / 6 := by
     linarith
   rw [hsum]
-  rcases Nat.eq_or_gt_of_le hk with rfl | hk2
+  rcases Nat.eq_or_lt_of_le hk with rfl | hk2
   · simp
   · push_cast
     have hk1 : (1 : ℝ) ≤ (k : ℝ) := by exact_mod_cast hk

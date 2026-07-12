@@ -153,7 +153,7 @@ The divisors of p are {1, p}, so σ_k(p) = 1^k + p^k = 1 + p^k.
 -/
 theorem sigma_prime (p : ℕ) (hp : p.Prime) (k : ℕ) :
     sigma k p = 1 + p ^ k := by
-  simp only [sigma_apply, Nat.divisors_prime_eq hp, Finset.sum_pair hp.one_lt.ne', one_pow]
+  simp only [sigma_apply, Nat.Prime.divisors hp, Finset.sum_pair hp.one_lt.ne', one_pow]
 
 /- ## Convergence
 

@@ -107,7 +107,7 @@ theorem isClique_subset {n : ℕ} (G : SGraph n) (S T : Finset (Fin n))
 theorem hasClique_mono {n : ℕ} (G : SGraph n) {j k : ℕ} (hjk : j ≤ k)
     (hk : HasClique G k) : HasClique G j := by
   obtain ⟨S, hcard, hclique⟩ := hk
-  obtain ⟨T, hTS, hTcard⟩ := Finset.exists_smaller_set S j (hcard ▸ hjk)
+  obtain ⟨T, hTS, hTcard⟩ := Finset.exists_subset_card_eq (hcard ▸ hjk)
   exact ⟨T, hTcard, isClique_subset G S T hTS hclique⟩
 
 /-- Every graph has a 0-clique (empty set) -/

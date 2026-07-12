@@ -68,7 +68,7 @@ noncomputable def gaussBinom (n k : ℕ) (q : ℝ) : ℝ :=
 
 lemma one_sub_pow_pos {q : ℝ} (hq0 : 0 < q) (hq1 : q < 1) {m : ℕ} (hm : 1 ≤ m) :
     0 < 1 - q ^ m := by
-  linarith [pow_lt_one hq0.le hq1 (by omega : m ≠ 0)]
+  linarith [pow_lt_one₀ hq0.le hq1 (by omega : m ≠ 0)]
 
 lemma qPoch_pos {q : ℝ} (hq0 : 0 < q) (hq1 : q < 1) (n : ℕ) : 0 < qPoch n q :=
   Finset.prod_pos _ (fun i _ => one_sub_pow_pos hq0 hq1 (by omega))

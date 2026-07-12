@@ -101,7 +101,7 @@ theorem integral_sampleMean
     (hℒp : ∀ i, MemLp (X i) 2 volume) :
     ∫ ω, sampleMean X n ω = mean := by
   simp only [sampleMean]
-  rw [integral_mul_left]
+  rw [integral_const_mul]
   rw [integral_finset_sum _ (fun i _ => (hℒp i).integrable one_le_two)]
   simp only [h_mean, Finset.sum_const, Finset.card_range, nsmul_eq_mul]
   field_simp
@@ -345,7 +345,7 @@ theorem chebyshev_rate_implies_convergence
     characteristic functions but not the CLT itself).
 
     Proved in this file:
-    - integral_sampleMean: linearity of expectation (integral_mul_left + integral_finset_sum)
+    - integral_sampleMean: linearity of expectation (integral_const_mul + integral_finset_sum)
     - sampleMean_memLp: L² closure via memLp_finset_sum + MemLp.const_mul
     - variance_sampleMean: Var(X̄ₙ) = σ²/n (S2 ACT 2026-05-13; was axiom)
     - chebyshev_convergence_rate: from Chebyshev inequality + variance_sampleMean

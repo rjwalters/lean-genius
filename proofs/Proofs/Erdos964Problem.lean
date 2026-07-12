@@ -55,7 +55,7 @@ theorem tau_one : tau 1 = 1 := by
   simp [tau, Nat.divisors]
 
 theorem tau_prime (p : ℕ) (hp : Nat.Prime p) : tau p = 2 := by
-  simp [tau, Nat.divisors_prime hp]
+  simp [tau, Nat.Prime.divisors hp]
 
 theorem tau_prime_power (p k : ℕ) (hp : Nat.Prime p) :
     tau (p ^ k) = k + 1 := by

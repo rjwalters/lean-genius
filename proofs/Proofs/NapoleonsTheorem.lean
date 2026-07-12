@@ -1,9 +1,12 @@
 import Mathlib
-import Mathlib.Analysis.SpecialFunctions.Complex.Circle
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
-import Mathlib.Data.Complex.Basic
-import Mathlib.Data.Real.Sqrt
-import Mathlib.Tactic
+
+/-- v4.31 migration compat: `Complex.abs` was removed from Mathlib in favor of `‖·‖`. -/
+noncomputable def Complex.abs (z : ℂ) : ℝ := ‖z‖
+
+/-- v4.31 compat: restore `Complex.abs_apply`. -/
+lemma Complex.abs_apply (z : ℂ) : Complex.abs z = Real.sqrt (Complex.normSq z) :=
+  Complex.norm_def z
+
 
 /-
 # Napoleon's Theorem

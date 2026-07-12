@@ -36,10 +36,11 @@ References:
 - See also Problem #498
 -/
 
-import Mathlib.Analysis.Complex.Basic
-import Mathlib.Analysis.Normed.Field.Basic
-import Mathlib.Probability.ProbabilityMassFunction.Basic
-import Mathlib.Data.Complex.Basic
+import Mathlib
+
+/-- v4.31 migration compat: `Complex.abs` was removed from Mathlib in favor of `‖·‖`. -/
+noncomputable def Complex.abs (z : ℂ) : ℝ := ‖z‖
+
 
 open Complex
 

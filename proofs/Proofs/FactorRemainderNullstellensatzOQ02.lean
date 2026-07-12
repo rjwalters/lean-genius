@@ -71,7 +71,7 @@ theorem exists_eval_ne_zero [DecidableEq F]
     exact h s hs
   have h1 : S.card ≤ f.roots.toFinset.card := card_le_card hroot
   have h2 : f.roots.toFinset.card ≤ Multiset.card f.roots :=
-    Multiset.toFinset_card_le_card f.roots
+    Multiset.toFinset_card_le f.roots
   have h3 : Multiset.card f.roots ≤ f.natDegree := card_roots_le_degree f
   omega
 

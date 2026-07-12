@@ -114,7 +114,7 @@ lemma m_of_n_ge (n : ℕ) (hn : n ≥ 1) : m_of_n n ≥ n := by
 private lemma partialHarmonicSum_split_last (n m : ℕ) (hm : m ≥ n) :
     partialHarmonicSum n m = partialHarmonicSum n (m - 1) + (1 : ℝ) / m := by
   unfold partialHarmonicSum
-  rcases Nat.eq_or_gt_of_le hm with rfl | hgt
+  rcases Nat.eq_or_lt_of_le hm with rfl | hgt
   · -- m = n: Icc n (n-1) is empty, Icc n n is {n}
     simp [Finset.Icc_eq_empty (by omega : ¬(n ≤ n - 1)), Finset.sum_empty]
   · -- m > n: split off last element

@@ -188,7 +188,7 @@ theorem exponential_cdf_continuous : Continuous exponentialCDF := by
   have key : exponentialCDF = fun c => 1 - Real.exp (-max c 0) := by
     ext c; simp only [exponentialCDF]; split_ifs with hc
     · rw [max_eq_right (le_of_lt hc), neg_zero, Real.exp_zero, sub_self]
-    · rw [max_eq_left (le_of_not_lt hc)]
+    · rw [max_eq_left (le_of_not_gt hc)]
   rw [key]
   exact continuous_const.sub
     (Real.continuous_exp.comp ((continuous_id.max continuous_const).neg))

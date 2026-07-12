@@ -14,10 +14,11 @@ Reference: https://erdosproblems.com/498
 Sources: [Er45], [Er61], [Kl65], [Kl70]
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Nat.Choose.Basic
-import Mathlib.Data.Complex.Basic
-import Mathlib.Tactic
+import Mathlib
+
+/-- v4.31 migration compat: `Complex.abs` was removed from Mathlib in favor of `‖·‖`. -/
+noncomputable def Complex.abs (z : ℂ) : ℝ := ‖z‖
+
 
 /- ## Definitions -/
 

@@ -15,10 +15,7 @@ A problem of Erdős and Pach.
 Reference: https://erdosproblems.com/655
 -/
 
-import Mathlib.Analysis.InnerProductSpace.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Finset.Card
-import Mathlib.Tactic
+import Mathlib
 
 /- ## Point Configurations and Distances -/
 

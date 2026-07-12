@@ -81,14 +81,14 @@ def HasConvergentMean (f : ℕ → ℤ) : Prop :=
 
 /-- The Liouville function λ(n) = (-1)^Ω(n) where Ω counts prime factors with multiplicity. -/
 def liouville (n : ℕ) : ℤ :=
-  if n = 0 then 0 else (-1) ^ (Nat.factors n).length
+  if n = 0 then 0 else (-1) ^ (Nat.primeFactorsList n).length
 
 /-- The Möbius function μ restricted to squarefree numbers gives ±1. -/
 def mobiusSign (n : ℕ) : ℤ :=
   if n = 0 then 0
   else if n = 1 then 1
   else if ¬Squarefree n then 0
-  else (-1) ^ (Nat.factors n).length
+  else (-1) ^ (Nat.primeFactorsList n).length
 
 /-- Liouville function is multiplicative. -/
 axiom liouville_multiplicative : IsMultiplicative liouville
