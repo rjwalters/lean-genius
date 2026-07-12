@@ -119,6 +119,11 @@
       "targetId": "newton-inductive-step",
       "relationship": "related",
       "description": "The binomial-coefficient log-concavity inductive step (bc³ + adc² + ac³ ≥ 2b²cd + b³d for consecutive binomials) underpinning the general Newton log-concavity theorem; here the cleared constant 3(n−1)/(2(n−2)) is the same binomial ratio C(n,2)²/(C(n,1)C(n,3))."
+    },
+    {
+      "targetId": "amgm-inequality-oq-02-oq-03-oq-03-oq-01",
+      "relationship": "complements",
+      "description": "The reciprocal 'Newton identities carry no order content' entry, which resolves whether maclaurin_step follows from Mathlib's NewtonIdentities (No) and de-axiomatizes the k=1 rung S₁² ≥ S₂ via Cauchy-Schwarz. Together the two make the point precisely: each Newton rung needs its own order certificate — Cauchy-Schwarz for k=1 there, the explicit sum-of-squares certificate here for k=2 — because the ring identities alone can never furnish a nonnegativity witness."
     }
   ],
   "references": [
