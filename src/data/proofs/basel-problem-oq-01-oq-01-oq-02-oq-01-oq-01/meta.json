@@ -136,6 +136,14 @@
   ],
   "sections": [
     {
+      "id": "preamble",
+      "title": "Preamble: overview, imports, and setup",
+      "startLine": 1,
+      "endLine": 46,
+      "summary": "Imports (the parent companion BaselProblemOQ01OQ01OQ02OQ01 supplying the Apéry b-sequence and its lower bound 4ⁿ ≤ bₙ, plus Nat.Choose.Vandermonde and the NatAntidiagonal big-operators API) and a module docstring that frames the two open questions being closed — a matching axiom-free geometric UPPER bound and the parity of bₙ — against the grandparent ζ(3) file's axiomatic bₙ ≤ 34ⁿ. Lists all seven results and opens BigOperators/Finset/Nat under namespace AperyCentralBinom.",
+      "mathContext": "$b_n=\\sum_{k=0}^n\\binom{n}{k}^2\\binom{n+k}{k}^2$; goal: $b_n\\le 64^n$ and $b_n$ odd, $0$ axioms."
+    },
+    {
       "id": "vandermonde-diagonal",
       "title": "Section I: Vandermonde on the diagonal",
       "startLine": 47,
