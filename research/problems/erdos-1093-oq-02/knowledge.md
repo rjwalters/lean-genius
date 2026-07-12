@@ -1,5 +1,53 @@
 # Erdős #1093 — OQ-02: Is d(284,28)=9 the maximal deficiency?
 
+## Session 2026-07-12 (researcher-5) — Section XXXV: window-check closes k=34 → frontier k≥35
+
+**Mode:** REVISIT (RICH tier). **Outcome:** strict but MARGINAL advance (frontier `k ≥ 34 → k ≥ 35`),
+one more slice of the elementary window-check ladder. The Lean file had already advanced through
+Sections XXXIII (k=32) and XXXIV (k=33) past this knowledge.md's Section XXXII (k=31) entry; this
+continues the identical pattern one slice further.
+
+### Numeric input (Python-verified sharp)
+Deficiency `≥ 10` at `k = 34` forces `(n-33)^{10} ≤ 34!`, and `34! < 7031^{10}` is sharp:
+`34! = 295232799039604140847618609643520000000 < 295237133028067705118634149496938950801 = 7031^{10}`,
+while `7030^{10} = 294817493935202715907278900490000000000 ≤ 34!`. So `n - 33 < 7031 ⟹ n ≤ 7063`.
+Floor `n ≥ 68 (= 2·34)` gives the window `n ∈ {68,…,7063}` (6996 values). Python: the window is
+**empty of admissible pairs** — every `m` has some prime `p ∈ {2,3,5,7,11,13,17,19,23,29,31}`
+dividing `C(m,34)`. `34 = 2·17` is composite, so the prime set is UNCHANGED from k=33 (largest
+prime `≤ 34` is still 31).
+
+### What I did — Section XXXV (5 theorems, 0 sorry, 0 new axioms), VERIFIED
+- `factorial_34_lt_7031_pow_ten` — `34! < 7031^10` (kernel `decide`, `[propext]`, ofReduceBool-free).
+- `window_k34_admissible_deficiency_le_nine` — the single `native_decide` fact over the
+  6996-value window (full-file build ~27s including this).
+- `admissible_k34_window_deficiency_le_nine` — admissible ⟹ divisibility impossible ⟹
+  `deficiency ≤ 9` (11-prime `rcases`, each `h p prime hd; omega`).
+- `deficiency_le_nine_of_k_eq_34` — one-line instantiation of the window-check engine
+  `deficiency_le_nine_of_location_window` at `k=34, M=7031`.
+- `deficiency_le_nine_of_k_le_34`, `maximalDeficiencyIs_nine_iff_kGe35`.
+
+### Verification (Docker-free, `proofs/bin/lake env lean` v4.26.0, prebuilt oleans)
+Full file compiles clean (exit 0, 27s). `#print axioms`: `factorial_34_lt_7031_pow_ten` = `[propext]`;
+`deficiency_le_nine_of_k_eq_34` / `maximalDeficiencyIs_nine_iff_kGe35` carry
+`[propext, Classical.choice, Lean.ofReduceBool, Lean.trustCompiler, Quot.sound]` — the
+`ofReduceBool`/`trustCompiler` from the single `native_decide` window fact, exactly as every prior
+section. **No new axiom declaration; 0 sorry** (file still `grep -c '^axiom '` = 0).
+
+### Honesty note
+Marginal incremental advance — same window-check ladder that closes one `k` per session and can
+NEVER finish by elementary means: `k ≥ 35` still has infinitely many `k`, and the irreducibly
+analytic Erdős–Lacampagne–Selfridge input (`els_upper_bound`, NON-EFFECTIVE constant `n ≪ 2^k√k`)
+governs all large `k` uniformly. The window native_decide also grows (860 values at k=28 → 6996 at
+k=34, `(k!)^{1/10}`-sized) and will eventually become infeasible. Value is one more concrete `k`
+discharged, record-slice reach now `k ≤ 34`. NO follow-up OQ generated (depth-1 slug, but the
+follow-up would just re-ask the same open universal bound — degenerate; the ladder itself is the
+only elementary continuation).
+
+### Files Modified
+- `proofs/Proofs/Erdos1093ProblemOQ02.lean` (Section XXXV, +97 lines, +5 theorems)
+
+---
+
 ## Session 2026-07-11 (researcher-6) — Section XXXII: window-check closes k=31 → frontier k≥32
 
 **Mode:** REVISIT (RICH tier). **Outcome:** strict advance (frontier `k ≥ 31 → k ≥ 32`),
