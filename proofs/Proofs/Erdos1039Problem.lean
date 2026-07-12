@@ -190,6 +190,19 @@ theorem bounds_gap (n : ℕ) (hn : n ≥ 3) (c : ℝ) (hc : 0 < c) (hc' : c < Re
     mul_lt_mul_of_pos_right hc' (show (0 : ℝ) < 2 * (n : ℝ) by positivity),
     mul_le_mul_of_nonneg_left hsqrt_ge_1 (show (0 : ℝ) ≤ Real.pi * (n : ℝ) by positivity)]
 
+/-- **Even the conjectured optimal bound stays below the benchmark.** For `c < π/2` and any
+`n ≥ 1`, the conjectured rate `c/n` is strictly below the benchmark `π/(2n)`.  This completes
+the ordering chain `pommerenke < klr < conjectured < benchmark`: `bounds_gap` places KLR below
+the benchmark and `klrBound_lt_conjecturedBound` places KLR below the conjecture, but the
+conjecture itself is also below the benchmark for admissible constants — clearing the common
+positive denominator reduces it to `2c < π`. -/
+theorem conjecturedBound_lt_benchmarkBound (c : ℝ) (hc' : c < Real.pi / 2) (n : ℕ) (hn : 0 < n) :
+    conjecturedBound c n < benchmarkBound n := by
+  simp only [conjecturedBound, benchmarkBound]
+  have hn_pos : (0 : ℝ) < (n : ℝ) := by exact_mod_cast hn
+  rw [div_lt_div_iff₀ hn_pos (by positivity : (0 : ℝ) < 2 * ↑n)]
+  nlinarith [mul_lt_mul_of_pos_right hc' (show (0 : ℝ) < 2 * (n : ℝ) by positivity)]
+
 /-
 ## The KLR–Conjecture Gap
 
