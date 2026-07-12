@@ -92,10 +92,18 @@
     {
       "id": "docstring",
       "title": "Module Docstring: Correcting the Naive Asymptotic",
-      "startLine": 5,
+      "startLine": 1,
       "endLine": 52,
       "summary": "States the result B(n+1/2,n+1/2) ~ √(π/n)·4^(-n) and explains why the parent's conjectured √(π/n) is wrong: the central binomial grows only like 4^n against the 4^(2n) denominator, so an exponential factor 4^(-n) survives. Notes the agreement with the classical B(x,x) ~ 2^(1-2x)·√(π/x) at x=n+1/2 and outlines the pure-field-identity assembly from the parent value and the central binomial asymptotic.",
       "mathContext": "$B(n+\\tfrac12,n+\\tfrac12) \\sim \\sqrt{\\tfrac{\\pi}{n}}\\,4^{-n}$, not $\\sqrt{\\pi/n}$."
+    },
+    {
+      "id": "setup",
+      "title": "Setup: filter/asymptotics opens and namespace",
+      "startLine": 53,
+      "endLine": 58,
+      "summary": "Opens Filter, Topology, Asymptotics (for Tendsto / IsEquivalent / atTop) and the Real and Nat scoped notations, then enters namespace BetaIntegralRecurrenceOQ01OQ02OQ01OQ01. These opens fix the vocabulary in which the asymptotic is later stated as an Asymptotics.IsEquivalent over the atTop filter.",
+      "mathContext": "Asymptotics vocabulary: IsEquivalent, Tendsto, atTop — the setting for f ~ g."
     },
     {
       "id": "real-form",
