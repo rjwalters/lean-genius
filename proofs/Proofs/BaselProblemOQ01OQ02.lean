@@ -406,7 +406,7 @@ theorem zeta_even_weighted_prod_eq_rat_mul_pi_pow {ι : Type*} (f g : ι → ℕ
       obtain ⟨qa, hqa, hqaeq⟩ :=
         zeta_even_pow_eq_rat_mul_pi_pow (f a) (g a)
           (hf a (Finset.mem_insert_self a s)) (hg a (Finset.mem_insert_self a s))
-      refine ⟨qa ^ g a * q, mul_ne_zero (pow_ne_zero _ hqa) hq, ?_⟩
+      refine ⟨qa * q, mul_ne_zero hqa hq, ?_⟩
       rw [Finset.prod_insert ha, Finset.sum_insert ha, hqeq, hqaeq, mul_add, pow_add]
       push_cast; ring
 
@@ -428,6 +428,41 @@ theorem zeta_even_weighted_prod_transcendental {ι : Type*} (f g : ι → ℕ) (
   have hpos : 0 < ∑ i ∈ s, f i * g i :=
     Finset.sum_pos (fun i hi => Nat.mul_pos (hf i hi) (hg i hi)) hs
   omega
+
+/-- **Translation by a rational preserves transcendence over ℚ — axiom-free.**
+
+    The *additive* companion of `transcendental_ratCast_mul`: if `x` is transcendental over
+    ℚ and `q ∈ ℚ`, then `x + q` is transcendental.  Were `x + q` algebraic, then so would be
+    `x = (x + q) + (−q)` (a sum of algebraics, since `−q` is rational hence algebraic),
+    contradicting transcendence of `x`.  Note this needs **no** nonzero hypothesis on `q`
+    (unlike the multiplicative engine): the identity is the reason the even zeta values remain
+    transcendental after any rational shift, even though the multiplicative class `ℚ∖{0}·π^even`
+    is itself *not* closed under addition. -/
+theorem transcendental_add_ratCast {x : ℝ} (hx : Transcendental ℚ x) (q : ℚ) :
+    Transcendental ℚ (x + (q : ℝ)) := by
+  intro halg
+  apply hx
+  have hnq : IsAlgebraic ℚ ((-q : ℚ) : ℝ) := isAlgebraic_algebraMap (-q : ℚ)
+  have hadd := halg.add hnq
+  rwa [show x + (q : ℝ) + ((-q : ℚ) : ℝ) = x from by push_cast; ring] at hadd
+
+/-- **Even zeta values stay transcendental under any rational shift.**  For `n ≥ 1` and any
+    `q ∈ ℚ`, `ζ(2n) + q` is transcendental over ℚ — the additive-frontier statement of the
+    even-zeta transcendence result.  Immediate from `zeta_even_transcendental` and the additive
+    engine `transcendental_add_ratCast`.  This is the additive analogue of
+    `zeta_even_ratCast_mul_transcendental` (`c·ζ(2n)`): no rational translate of an even zeta
+    value can be algebraic.
+
+    **Assumption:** `hermite_lindemann` (transcendence of π). -/
+theorem zeta_even_add_ratCast_transcendental (n : ℕ) (hn : 0 < n) (q : ℚ) :
+    Transcendental ℚ ((∑' k : ℕ, 1 / (k : ℝ) ^ (2 * n)) + (q : ℝ)) :=
+  transcendental_add_ratCast (zeta_even_transcendental n hn) q
+
+/-- **ζ(2) + 1 is transcendental over ℚ** — a concrete rational shift of the Basel value. -/
+theorem zeta_two_add_one_transcendental :
+    Transcendental ℚ ((∑' k : ℕ, 1 / (k : ℝ) ^ 2) + 1) := by
+  have := zeta_even_add_ratCast_transcendental 1 one_pos 1
+  simpa using this
 
 /-!
 ## The open odd case (documentation only)
