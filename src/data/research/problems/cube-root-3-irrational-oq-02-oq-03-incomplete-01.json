@@ -1,7 +1,7 @@
 {
   "slug": "cube-root-3-irrational-oq-02-oq-03-incomplete-01",
   "title": "Complete proof of Vahlen–Capelli Criterion for Binomial Irreducibility (1 sorries)",
-  "phase": "NEW",
+  "phase": "ACT",
   "status": "available",
   "tier": "B",
   "path": "full",
@@ -16,24 +16,40 @@
     "goal": "Eliminate the 1 remaining sorry statement(s) in the parent formalization."
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "ACT",
     "since": "2026-07-09T00:00:00.000Z",
-    "iteration": 0,
-    "focus": "Initial exploration of the problem.",
+    "iteration": 1,
+    "focus": "Added positive-radicand criterion (sorry-free, PR #38109); open even-case descent remains.",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 0,
+      "total": 1,
       "currentApproach": 0,
       "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "AVAILABLE: parent formalization has 1 open sorry statement(s) to complete.",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": []
+    "progressSummary": "PROGRESS (open sorry unchanged): added 5 sorry-free theorems (PR #38109) showing the even-case obstruction is vacuous over ordered fields; full positive-radicand criterion vahlen_capelli_pos is machine-checked. Remaining sorry = Lang VI section 9 descent (Mathlib open TODO).",
+    "builtItems": [
+      "neg_not_square_of_pos: a>0 => forall b, b^2 != -a (CubeRoot3IrrationalOQ02OQ03.lean)",
+      "capelli_cond_two_of_pos: a>0 => forall b, a != -(4*b^4) (condition 2 vacuous)",
+      "two_power_capelli_pos: ordered field, a>0 non-square => Irreducible(X^(2^k)-C a) for k>=1, SORRY-FREE",
+      "vahlen_capelli_pos: full iff criterion for a>0: Irreducible(X^n-C a) <-> forall p prime p|n, forall b, b^p != a, SORRY-FREE",
+      "vahlen_capelli_pos_two_pow: prime-power exponent 2^k corollary, Irreducible(X^(2^k)-C a) <-> forall b, b^2 != a"
+    ],
+    "insights": [
+      "The sole remaining sorry (line 707, two_power_capelli) is the -a in K^2 branch of the pure 2-power base X^(2^k)-C a, k>=3 (8|n): the classical Lang VI section 9 Galois descent over L=K(i). It is EXACTLY Mathlibs open TODO (X_pow_sub_C_irreducible_of_prime_pow restricted to p != 2). Not one-session closeable manually.",
+      "STRUCTURAL/SHARP-BOUNDARY RESULT: over any ordered field ([Field]+[LinearOrder]+[IsStrictOrderedRing]) the -4K^4 obstruction (condition 2) is VACUOUS for a>0, since -a<0 is never a square and -(4b^4)<=0<a. Hence the entire even-case difficulty (the open sorry) is a purely non-formally-real phenomenon; for positive radicands the criterion is unconditional (condition 1 alone).",
+      "The full vahlen_capelli proof invokes the sorry at exactly ONE line (the 8|n branch, via two_power_capelli); every other branch is already sorry-free. Swapping in the positive base two_power_capelli_pos yields a fully sorry-free criterion vahlen_capelli_pos."
+    ],
+    "mathlibGaps": [
+      "Mathlib FieldTheory/KummerExtension.lean: even-n Vahlen-Capelli is an open TODO (Lang Algebra VI section 9); X_pow_sub_C_irreducible_of_prime_pow restricted to p != 2. The -a in K^2, 8|n descent over K(i) remains unformalized.",
+      "LinearOrderedField was REMOVED from this Mathlib (v4.26.0 era); use [Field K] [LinearOrder K] [IsStrictOrderedRing K]."
+    ],
+    "nextSteps": [
+      "To close the last sorry: formalize the Lang VI section 9 descent. Via X_pow_mul_sub_C_irreducible reduce to: base root x (x^(2^(k-1))=a) is not a square in K(x); when -a in K^2 the norm argument is inconclusive, and condition (2) forbids x=y^2. Uses L=K(i) (-1 not a square here, already proved as neg_one_not_square_of_not_square_of_neg_square) + Galois/conjugate-factor descent (~150-300 lines). Best delegated to Aristotle when the MCP server is healthy (returned Resource not found all session).",
+      "Optionally add a concrete Q instance of vahlen_capelli_pos (needs a clean not-a-perfect-p-th-power in Q lemma)."
+    ]
   },
   "tags": [
     "seeker-selected",
@@ -54,7 +70,7 @@
     "mathlib": []
   },
   "started": "2026-07-09T00:00:00.000Z",
-  "lastUpdate": "2026-07-09T00:00:00.000Z",
+  "lastUpdate": "2026-07-11T00:00:00.000Z",
   "significance": 7,
   "tractability": 7
 }
