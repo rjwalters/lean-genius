@@ -1384,6 +1384,83 @@ theorem sharpRequiredBound_mono {k m : ℕ} (hkm : k ≤ m)
   filter_upwards [hev] with N hN
   exact le_trans (by exact_mod_cast rothNumber_mono hkm) hN
 
+/-- **The super-sharp threshold hypothesis is downward-closed in the length.**
+    `SuperSharpRequiredBound m` implies `SuperSharpRequiredBound k` for every `k ≤ m`: the
+    same witnesses `δ, C` work because `r_k(N) ≤ r_m(N)` by `rothNumber_mono`, and the
+    (double-iterated-log) denominator is unchanged. Completes the monotonicity row of the
+    threshold lattice alongside `strongRequiredBound_mono`, `sharpRequiredBound_mono`, and
+    `requiredBound_mono`. Axiom-free. -/
+theorem superSharpRequiredBound_mono {k m : ℕ} (hkm : k ≤ m)
+    (h : SuperSharpRequiredBound m) : SuperSharpRequiredBound k := by
+  obtain ⟨δ, hδ, C, hC, hev⟩ := h
+  refine ⟨δ, hδ, C, hC, ?_⟩
+  filter_upwards [hev] with N hN
+  exact le_trans (by exact_mod_cast rothNumber_mono hkm) hN
+
+/-- **The sharp threshold implies the super-sharp threshold.**
+    `SharpRequiredBound k` (`r_k(N) = O(N/(log N · (log log N)^{1+δ}))`) implies
+    `SuperSharpRequiredBound k` (`r_k(N) = O(N/(log N · log log N · (log log log N)^{1+δ'}))`).
+    Setting `M = log log N`, the super-sharp denominator `log N · M · (log M)^2` is dominated
+    by the sharp one `log N · M^{1+δ}` because `(log M)^2 ≤ M^δ` eventually: `log M = o(M^{δ/2})`
+    (`isLittleO_log_rpow_atTop` with exponent `δ/2 > 0`, composed with `log log N → ∞`), and
+    squaring gives the bound. A bigger denominator makes a smaller quotient, so the sharp
+    bound transfers.
+
+    This is the exact analogue of `strongRequiredBound_implies_sharpRequiredBound` one
+    iterated logarithm lower, formalizing the ordering asserted in the
+    `SuperSharpRequiredBound` docstring (`SharpRequiredBound ⇒ SuperSharpRequiredBound`,
+    converse fails) and extending the implication lattice to
+    `StrongRequiredBound ⇒ SharpRequiredBound ⇒ SuperSharpRequiredBound`. It certifies that
+    `superSharp_required_bound_implies_conjecture` genuinely sharpens
+    `sharp_required_bound_implies_conjecture`: its hypothesis is *implied by* — hence no
+    stronger than — the sharp one. Axiom-free. -/
+theorem sharpRequiredBound_implies_superSharpRequiredBound {k : ℕ}
+    (h : SharpRequiredBound k) : SuperSharpRequiredBound k := by
+  obtain ⟨δ, hδ, C, hC, hev⟩ := h
+  refine ⟨1, one_pos, C, hC, ?_⟩
+  -- `log N → ∞`, hence `log log N → ∞`, so `log (log log N) = o((log log N)^{δ/2})`.
+  have hlog : Filter.Tendsto (fun N : ℕ => Real.log (N : ℝ)) Filter.atTop Filter.atTop :=
+    Real.tendsto_log_atTop.comp tendsto_natCast_atTop_atTop
+  have hloglog : Filter.Tendsto (fun N : ℕ => Real.log (Real.log (N : ℝ)))
+      Filter.atTop Filter.atTop := Real.tendsto_log_atTop.comp hlog
+  have hr : (0 : ℝ) < δ / 2 := by linarith
+  have hlittle := (isLittleO_log_rpow_atTop hr).comp_tendsto hloglog
+  have hbound := Asymptotics.isLittleO_iff.mp hlittle (one_pos)
+  simp only [Function.comp_apply] at hbound
+  have hLgt : ∀ᶠ N : ℕ in Filter.atTop, 1 < Real.log (N : ℝ) :=
+    hlog.eventually (eventually_gt_atTop 1)
+  have hMgt : ∀ᶠ N : ℕ in Filter.atTop, 1 < Real.log (Real.log (N : ℝ)) :=
+    hloglog.eventually (eventually_gt_atTop 1)
+  filter_upwards [hev, hbound, hLgt, hMgt] with N hN hb hL hM
+  set L : ℝ := Real.log (N : ℝ) with hLdef
+  set M : ℝ := Real.log L with hMdef
+  have hL0 : 0 < L := lt_trans one_pos hL
+  have hM0 : 0 < M := lt_trans one_pos hM
+  have hLM0 : 0 < Real.log M := Real.log_pos hM
+  have hpow0 : (0 : ℝ) < M ^ (δ / 2) := Real.rpow_pos_of_pos hM0 _
+  rw [one_mul, Real.norm_of_nonneg hLM0.le, Real.norm_of_nonneg hpow0.le] at hb
+  -- `(log M)^2 ≤ (M^{δ/2})^2 = M^δ`.
+  have hstep : (Real.log M) ^ (1 + 1 : ℝ) ≤ (M ^ (δ / 2)) ^ (1 + 1 : ℝ) :=
+    Real.rpow_le_rpow hLM0.le hb (by norm_num)
+  have hcollapse : (M ^ (δ / 2)) ^ (1 + 1 : ℝ) = M ^ δ := by
+    rw [← Real.rpow_mul hM0.le]; congr 1; ring
+  have hpow_le : (Real.log M) ^ (1 + 1 : ℝ) ≤ M ^ δ := hcollapse ▸ hstep
+  -- The super-sharp denominator is dominated by the sharp one: `L·M·(log M)^2 ≤ L·M^{1+δ}`.
+  have hMd : M * M ^ δ = M ^ (1 + δ) := by rw [Real.rpow_add hM0, Real.rpow_one]
+  have hdenom_le : L * M * (Real.log M) ^ (1 + 1 : ℝ) ≤ L * M ^ (1 + δ) := by
+    calc L * M * (Real.log M) ^ (1 + 1 : ℝ)
+          ≤ L * M * M ^ δ :=
+            mul_le_mul_of_nonneg_left hpow_le (mul_nonneg hL0.le hM0.le)
+      _ = L * M ^ (1 + δ) := by rw [mul_assoc, hMd]
+  -- Bigger denominator ⇒ smaller quotient, so the sharp bound `hN` transfers.
+  refine le_trans hN ?_
+  have hsharp_pos : (0 : ℝ) < L * M ^ (1 + δ) :=
+    mul_pos hL0 (Real.rpow_pos_of_pos hM0 _)
+  have hsuper_pos : (0 : ℝ) < L * M * (Real.log M) ^ (1 + 1 : ℝ) :=
+    mul_pos (mul_pos hL0 hM0) (Real.rpow_pos_of_pos hLM0 _)
+  rw [div_le_div_iff₀ hsharp_pos hsuper_pos]
+  exact mul_le_mul_of_nonneg_left hdenom_le (mul_nonneg hC.le (Nat.cast_nonneg N))
+
 /-- **The weak threshold hypothesis is downward-closed in the length.**
     `RequiredBound m` implies `RequiredBound k` for every `k ≤ m`, again by `rothNumber_mono`
     (for each `c > 0`, `r_k(N) ≤ r_m(N) ≤ c·N/log N`). Axiom-free. -/
