@@ -101,4 +101,98 @@ theorem partitionEnergy_prod_gain_eps4_of_partition
     hAunion hBunion hdisjA hdisjB hAins hBR hA₁ins hA₂ins hB₁ins hB₂R
     eps hε hcardA hcardB hdev
 
+-- ═══════════════════════════════════════════════════════════════════
+-- ITERATION-COUNT CAPSTONE, FRESHNESS DISCHARGED FROM A PARTITION MODEL
+-- ═══════════════════════════════════════════════════════════════════
+
+/-- **Sharp AFKS iteration count from a per-step *partition-model* witness.**  This is the
+freshness-discharged twin of `afks_sharp_energy_iteration_count_of_prod_witness`
+(`SzemerediRegularityOQ04Assembly`): the per-step witness's six `∉`-freshness bookkeeping
+side-conditions are **replaced** by the genuine partition data they follow from, exactly as
+`partitionEnergy_prod_gain_eps4_of_partition` does for a single step.
+
+At each of the first `N` steps the partition `parts n = insert A (insert B R)` refines into the
+sharp `2×2` grid `parts (n+1) = insert A₁ (insert A₂ (insert B₁ (insert B₂ R)))`, where the four
+cells are nonempty, `A₁ ∪ A₂ = A` and `B₁ ∪ B₂ = B` with disjoint halves, the two coarse blocks
+satisfy `Disjoint A B`, and every remaining block `Q ∈ R` is disjoint from both `A` and `B`.
+The witness cell `A₁ × B₁` carries the `ε`-irregularity (`|A₁| ≥ ε|A|`, `|B₁| ≥ ε|B|`,
+`|d(A₁,B₁) − d(A,B)| ≥ ε`) and every refined block has mass `≥ m`.  Each step then realizes the
+sharp no-loss floor `ε⁴·m²/n²` — obtained here through `partitionEnergy_prod_gain_eps4_of_partition`
+rather than the freshness-laden base lemma — so the `[0,1]`-potential termination engine caps
+
+`N ≤ n² / (ε⁴·m²)`.
+
+Only the analytic size floors and the partition model remain; the set-theoretic freshness
+bookkeeping present in `afks_sharp_energy_iteration_count_of_prod_witness` has been fully
+discharged. -/
+theorem afks_sharp_energy_iteration_count_of_partition_witness
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (parts : ℕ → Finset (Finset V)) (N : ℕ) (eps m : ℚ)
+    (hε : 0 < eps) (hm : 0 < m) (hcard : 0 < (Fintype.card V : ℚ))
+    (hcover : ∀ n, ∀ v : V, ∃ P ∈ parts n, v ∈ P)
+    (hdisjoint : ∀ n, ∀ P Q : Finset V, P ∈ parts n → Q ∈ parts n → P ≠ Q →
+      Disjoint P Q)
+    (hwit : ∀ n, n < N → ∃ R : Finset (Finset V), ∃ A B A₁ A₂ B₁ B₂ : Finset V,
+      parts n = insert A (insert B R) ∧
+      parts (n + 1) = insert A₁ (insert A₂ (insert B₁ (insert B₂ R))) ∧
+      A₁ ∪ A₂ = A ∧ B₁ ∪ B₂ = B ∧ Disjoint A₁ A₂ ∧ Disjoint B₁ B₂ ∧
+      A₁.Nonempty ∧ A₂.Nonempty ∧ B₁.Nonempty ∧ B₂.Nonempty ∧
+      Disjoint A B ∧ (∀ Q ∈ R, Disjoint Q A) ∧ (∀ Q ∈ R, Disjoint Q B) ∧
+      m ≤ (A.card : ℚ) ∧ m ≤ (B.card : ℚ) ∧
+      eps * A.card ≤ (A₁.card : ℚ) ∧ eps * B.card ≤ (B₁.card : ℚ) ∧
+      eps ≤ |edgeDensity G A₁ B₁ - edgeDensity G A B|) :
+    (N : ℚ) ≤ (Fintype.card V : ℚ) ^ 2 / (eps ^ 4 * m ^ 2) := by
+  refine afks_sharp_energy_iteration_count G parts N eps (m ^ 2) hε
+    (by positivity) hcard hcover hdisjoint ?_
+  intro n hn
+  obtain ⟨R, A, B, A₁, A₂, B₁, B₂, hpn, hpn1, hAu, hBu, hdA, hdB,
+    hA₁, hA₂, hB₁, hB₂, hAB, hRA, hRB, hmA, hmB, hcA, hcB, hdev⟩ := hwit n hn
+  rw [hpn, hpn1]
+  -- Sharp gain via the freshness-discharged floor (partition model, no `∉`-conditions).
+  have hgain := partitionEnergy_prod_gain_eps4_of_partition G R A B A₁ A₂ B₁ B₂
+    hAu hBu hdA hdB hA₁ hA₂ hB₁ hB₂ hAB hRA hRB eps hε.le hcA hcB hdev
+  -- Floor the pair mass `|A||B| ≥ m²`, so the uniform floor `ε⁴·m²/n²` is dominated.
+  have hmass : m ^ 2 ≤ (A.card : ℚ) * B.card := by nlinarith [hmA, hmB, hm.le]
+  have hfloor : eps ^ 4 * m ^ 2 / (Fintype.card V : ℚ) ^ 2 ≤
+      eps ^ 4 * ((A.card : ℚ) * B.card) / (Fintype.card V : ℚ) ^ 2 := by
+    gcongr
+  linarith [hgain, hfloor]
+
+/-- **AFKS termination from a partition model / a regular step is reached in bounded time.**
+The freshness-discharged twin of `afks_regular_step_within_bound`: for any horizon `N` exceeding
+the sharp iteration bound `n²/(ε⁴·m²)`, some step `n < N` is **not** a mass-`m`, `ε`-irregular
+sharp `2×2` split *of the partition-model form* — the six `∉`-freshness bookkeeping conditions of
+the original capstone are replaced here by the genuine partition data (nonempty disjoint cells
+tiling two disjoint coarse blocks fresh against `R`).
+
+Since `afks_sharp_energy_iteration_count_of_partition_witness` shows every such witnessed step
+raises `partitionEnergy` by the fixed no-loss floor `ε⁴·m²/n²`, and energy is capped at `1`, an
+all-witnessed refinement chain longer than the energy budget allows is impossible; a horizon
+exceeding `n²/(ε⁴·m²)` must contain a step whose refined pair is already `ε`-regular (or has a
+part of mass `< m`).  This is the strong-regularity termination statement with the set-theoretic
+freshness realizability discharged into the partition model. -/
+theorem afks_regular_step_within_bound_of_partition
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (parts : ℕ → Finset (Finset V)) (N : ℕ) (eps m : ℚ)
+    (hε : 0 < eps) (hm : 0 < m) (hcard : 0 < (Fintype.card V : ℚ))
+    (hcover : ∀ n, ∀ v : V, ∃ P ∈ parts n, v ∈ P)
+    (hdisjoint : ∀ n, ∀ P Q : Finset V, P ∈ parts n → Q ∈ parts n → P ≠ Q →
+      Disjoint P Q)
+    (hN : (Fintype.card V : ℚ) ^ 2 / (eps ^ 4 * m ^ 2) < N) :
+    ∃ n < N, ¬ (∃ R : Finset (Finset V), ∃ A B A₁ A₂ B₁ B₂ : Finset V,
+      parts n = insert A (insert B R) ∧
+      parts (n + 1) = insert A₁ (insert A₂ (insert B₁ (insert B₂ R))) ∧
+      A₁ ∪ A₂ = A ∧ B₁ ∪ B₂ = B ∧ Disjoint A₁ A₂ ∧ Disjoint B₁ B₂ ∧
+      A₁.Nonempty ∧ A₂.Nonempty ∧ B₁.Nonempty ∧ B₂.Nonempty ∧
+      Disjoint A B ∧ (∀ Q ∈ R, Disjoint Q A) ∧ (∀ Q ∈ R, Disjoint Q B) ∧
+      m ≤ (A.card : ℚ) ∧ m ≤ (B.card : ℚ) ∧
+      eps * A.card ≤ (A₁.card : ℚ) ∧ eps * B.card ≤ (B₁.card : ℚ) ∧
+      eps ≤ |edgeDensity G A₁ B₁ - edgeDensity G A B|) := by
+  by_contra hcon
+  push_neg at hcon
+  -- `hcon` is exactly the per-step partition-model witness for every `n < N`.
+  have hle := afks_sharp_energy_iteration_count_of_partition_witness
+    G parts N eps m hε hm hcard hcover hdisjoint (fun n hn => hcon n hn)
+  exact absurd hle (not_le.mpr hN)
+
 end Szemeredi.RegularityOQ04Fresh
