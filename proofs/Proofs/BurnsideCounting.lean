@@ -692,6 +692,34 @@ theorem prime_dvd_pow_sub_self {p : ℕ} (hp : p.Prime) (k : ℕ) : p ∣ k ^ p 
   rw [hrw]
   exact Nat.dvd_sub hdvd1 hdvd2
 
+/-- **Explicit prime-length necklace count.**  Dividing the multiplicative identity
+`|necklaces| · p = kᵖ + (p−1)·k` (`necklaces_prime_length_mul`) through by the prime
+`p` gives the closed form
+
+  `|necklaces| = (kᵖ − k) / p + k`.
+
+The division is exact because `p ∣ kᵖ − k` (`prime_dvd_pow_sub_self`), so the `k` free
+orbits (the constant colorings, each a singleton necklace) sit on top of the
+`(kᵖ − k) / p` orbits of size exactly `p` into which the cyclic group partitions the
+non-constant colorings.  For binary length `2` this reads `(4 − 2)/2 + 2 = 3`, and for
+`p = 3` `(k³ − k)/3 + k`, recovering `binary_necklaces_3 = 4` at `k = 2`. -/
+theorem card_necklaces_prime_length {p : ℕ} [NeZero p] (hp : p.Prime) (k : ℕ) :
+    @Fintype.card (Quotient (@coloringSetoid p k _)) (coloringQuotientFintype p k)
+      = (k ^ p - k) / p + k := by
+  obtain ⟨d, hd⟩ := prime_dvd_pow_sub_self hp k
+  have hkp : k ≤ k ^ p := Nat.le_self_pow hp.pos.ne' k
+  have hddiv : (k ^ p - k) / p = d := by rw [hd, Nat.mul_div_cancel_left d hp.pos]
+  rw [hddiv]
+  have hmul := necklaces_prime_length_mul hp k
+  have hkpe : k ^ p = p * d + k := by omega
+  have hpk : (p - 1) * k + k = p * k := by
+    rw [Nat.sub_one_mul, Nat.sub_add_cancel (Nat.le_mul_of_pos_left k hp.pos)]
+  have hexp : (d + k) * p = p * d + p * k := by ring
+  have key : (@Fintype.card (Quotient (@coloringSetoid p k _)) (coloringQuotientFintype p k)) * p
+      = (d + k) * p := by
+    rw [hmul, hexp, hkpe]; omega
+  exact Nat.eq_of_mul_eq_mul_right hp.pos key
+
 /-- **Fermat's little theorem, congruence form.**  The divisibility `p ∣ kᵖ − k` proved
     combinatorially above (`prime_dvd_pow_sub_self`) is exactly the modular statement
     `kᵖ ≡ k [MOD p]`.  We transfer it via `Nat.modEq_iff_dvd'`, using `k ≤ kᵖ` (`p ≠ 0`).
