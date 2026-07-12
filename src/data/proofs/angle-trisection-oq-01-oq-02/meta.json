@@ -69,7 +69,8 @@
       "The geometric constructibility question collapses, via [ℚ(ζₙ):ℚ] = φ(n), to a pure divisibility question about the totient — this entry isolates and proves that divisibility content.",
       "The odd-prime case is the crux and is exactly Mathlib's pow_of_pow_add_prime: a prime of the form 2ˢ+1 must be a Fermat number 2^(2^m)+1.",
       "Multiplicity control is automatic: if an odd prime p divides n to a power ≥ 2 then p itself divides p^(eₚ−1)(p−1) ∣ φ(n), forcing p = 2 — a contradiction — so every odd Fermat factor is squarefree in n.",
-      "The whole classification is 0-axiom over ℕ; the only unformalized link to geometry is the constructibility ⟺ (φ(n) a power of two) bridge, which awaits compass-and-straightedge constructibility in Mathlib."
+      "The whole classification is 0-axiom over ℕ; the only unformalized link to geometry is the constructibility ⟺ (φ(n) a power of two) bridge, which awaits compass-and-straightedge constructibility in Mathlib.",
+      "The prime specialization prime_totient_isTwoPow_iff is Gauss's own theorem: a regular p-gon (p prime) is constructible iff p is a Fermat prime — the statement that let the 19-year-old Gauss construct the regular 17-gon (17 = F₂ = 2^{2²}+1) in 1796. Only five Fermat primes are known (3, 5, 17, 257, 65537), so the constructible odd-prime polygons form a finite (conjecturally complete) list."
     ],
     "prerequisites": [
       "Euler's totient function and its multiplicativity / prime-power values",
@@ -106,9 +107,21 @@
       "targetId": "angle-trisection",
       "relationship": "related",
       "description": "The impossibility of trisecting a general angle (Wantzel 1837) is proved in the same work that completes the Gauss–Wantzel polygon classification formalized here."
+    },
+    {
+      "targetId": "angle-trisection-cos-20-gal-oq-02",
+      "relationship": "related",
+      "description": "The field-degree companion: [ℚ(cos 2π/n):ℚ] = φ(n)/2. Constructibility of the regular n-gon is exactly that degree being a power of 2, i.e. φ(n) a power of 2 — the totient criterion proved here — so the two entries are the arithmetic and field-theoretic faces of the same constructibility test."
     }
   ],
   "sections": [
+    {
+      "title": "Docstring, Imports, and Namespace",
+      "startLine": 1,
+      "endLine": 46,
+      "summary": "Module docstring stating the Gauss–Wantzel theorem and the arithmetic main result totient_isTwoPow_iff: a regular n-gon is constructible iff φ(n) is a power of two, iff n = 2^k·(distinct Fermat primes). import Mathlib, open Nat Finset and scoped Classical, namespace AngleTrisectionOQ01OQ02.",
+      "mathContext": "Gauss–Wantzel: regular $n$-gon constructible $\\iff \\varphi(n)$ is a power of $2$."
+    },
     {
       "title": "Fermat primes and powers of two",
       "startLine": 47,
@@ -130,8 +143,16 @@
     {
       "title": "The arithmetic Gauss–Wantzel criterion",
       "startLine": 103,
+      "endLine": 156,
+      "summary": "totient_isTwoPow_iff: φ(n) is a power of two iff every prime factor of n is 2 or a Fermat prime dividing n to the first power. Assembled from the totient product formula and the local prime criterion, quantifying over n.primeFactors.",
+      "mathContext": "$\\varphi(n)$ is a power of $2 \\iff$ each odd prime factor is a first-power Fermat prime."
+    },
+    {
+      "title": "Prime specialization (regular p-gon)",
+      "startLine": 157,
       "endLine": 172,
-      "summary": "totient_isTwoPow_iff: φ(n) is a power of two iff every prime factor is 2 or a first-power Fermat prime; and prime_totient_isTwoPow_iff, the prime specialization giving the regular-p-gon constructibility condition."
+      "summary": "prime_totient_isTwoPow_iff: for a prime p, φ(p) is a power of two iff p = 2 or p is a Fermat prime — the constructibility condition for a regular p-gon, recovering Gauss's 1796 result that the 17-gon (17 = F₂) is constructible.",
+      "mathContext": "For prime $p$: regular $p$-gon constructible $\\iff p=2$ or $p$ is a Fermat prime."
     }
   ],
   "sorries": []
