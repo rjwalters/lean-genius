@@ -1,7 +1,7 @@
 {
   "slug": "combinations-formula-oq-03-oq-04",
   "title": "Unimodality of Gaussian (q-)binomial coefficients",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -86,7 +86,8 @@
     "combinations-formula-oq-09",
     "combinations-formula-oq-09-oq-01",
     "combinations-formula-oq-10",
-    "combinations-formula-oq-10-oq-01"
+    "combinations-formula-oq-10-oq-01",
+    "combinations-formula-oq-03-oq-04"
   ],
   "references": {
     "papers": [],
@@ -662,6 +663,42 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CombinationsFormulaOQ10OQ01.lean"
+    },
+    {
+      "path": "Proofs/CombinationsFormulaOQ03OQ04.lean",
+      "filename": "CombinationsFormulaOQ03OQ04.lean",
+      "lineCount": 121,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CombinationsFormulaOQ03OQ04.lean"
     }
-  ]
+  ],
+  "knowledge": {
+    "insights": [
+      "The Gaussian q-binomial [n,k]_q is a PALINDROMIC polynomial of degree k(n-k): coefficient sequence a_j = a_{k(n-k)-j}. Over a field this is the reciprocity identity [n,k]_q = q^{k(n-k)} times [n,k]_{q inverse} (q nonzero).",
+      "Palindromy is exactly the SYMMETRIC half of Sylvester (1878): the coefficient sequence is symmetric AND unimodal. Unimodality is the hard half (Proctor 1982 via sl_2) and remains OPEN.",
+      "KEY MECHANISM: expand the original [n+1,k+1]_q by the SECOND q-Pascal identity and the reflected [n+1,k+1]_{q inverse} by the FIRST q-Pascal identity; the two sides then agree TERM-BY-TERM after the induction hypothesis. Using the same Pascal on both sides does NOT give a termwise match.",
+      "Invertibility of q is essential (not cosmetic): the reflection uses q^{k+1} times (q inverse)^{k+1} = 1, so the natural home is a field with q nonzero. Over a general ring one would instead use a polynomial reversal.",
+      "Truncated natural-subtraction never bites: the delicate rewrite n-k = (n-k-1)+1 is used only in the branch k<n where n-k >= 1; the diagonal (k=n, both sides 1) and above-diagonal (k>n, both vanish) are dispatched first."
+    ],
+    "builtItems": [
+      "qBinom_reciprocal (CombinationsFormulaOQ03OQ04.lean): [n,k]_q = q^{k(n-k)} times [n,k]_{q inverse} over a field, induction on n using both q-Pascal identities",
+      "qBinom_reflect: right-to-left convenience form",
+      "qBinom_reciprocal_involutive: the twisted reflection q to q inverse is an involution",
+      "meta.json gallery entry (verified, 3 thm, 0 sorry, 0 axiom)"
+    ],
+    "mathlibGaps": [
+      "No direct need: proof uses only parent q-binomial API plus elementary field/power lemmas (mul_inv_cancel_left_zero, inv_pow, pow_ne_zero, pow_add).",
+      "For a COEFFICIENT-LEVEL palindromy over the polynomial ring (Polynomial.reflect), the parent q-binomial would need specializing to Polynomial over the integers with q = X; not done here (field formulation avoids Polynomial machinery)."
+    ],
+    "nextSteps": [
+      "Attempt the UNIMODALITY half: the real open question. Routes are (a) sl_2 raising/lowering operator action on the subspace lattice (Proctor 1982), (b) O'Hara-style explicit injection between coefficient levels. Both substantial; assess buildability first.",
+      "Cheaper structural step: formalize DEGREE = k(n-k) and NONNEGATIVITY of coefficients over the polynomial ring (specialize parent to Polynomial over the integers, q = X); with palindromy this pins the extreme coefficients.",
+      "Cross-check: palindromy plus the parent qBinom_symm ([n,k] = [n,n-k]) give the full symmetry group of the coefficient array."
+    ],
+    "progressSummary": "PROGRESS: palindromy/self-reciprocity of q-binomial proved and verified (PR#38119). Unimodality (Sylvester/Proctor) remains OPEN, the substantive content."
+  }
 }

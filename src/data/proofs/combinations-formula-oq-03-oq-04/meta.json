@@ -1,0 +1,89 @@
+{
+  "id": "combinations-formula-oq-03-oq-04",
+  "title": "Self-Reciprocity (Palindromy) of Gaussian q-Binomial Coefficients",
+  "slug": "combinations-formula-oq-03-oq-04",
+  "description": "Proves that the Gaussian (q-)binomial coefficient [n choose k]_q, viewed as a polynomial in q, is palindromic (self-reciprocal) of degree k·(n-k). Over a field this is the clean algebraic identity [n,k]_q = q^{k(n-k)}·[n,k]_{q⁻¹}, equivalently that the coefficient sequence reads the same forwards and backwards (a_j = a_{k(n-k)-j}). This palindromy is the symmetric half of Sylvester's theorem (1878) that the coefficient sequence is symmetric and unimodal; unimodality itself (Proctor 1982, via sl₂) is the substantive open question and is NOT proved here. Built on the parent's recurrence-defined q-binomial library via both q-Pascal identities. 3 theorems, 0 sorries, 0 axioms — verified over a field.",
+  "meta": {
+    "author": "Lean Genius Researcher",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CombinationsFormulaOQ03OQ04.lean",
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 121,
+    "theoremCount": 3,
+    "definitionCount": 0,
+    "assumptions": "The reciprocity identity is proved over an arbitrary field R for any nonzero q (invertibility of q is genuinely needed to form q⁻¹ and to cancel q^{k+1}·(q⁻¹)^{k+1} = 1). No characteristic or positivity hypotheses. The underlying q-binomial coefficients are the parent's, defined over an arbitrary commutative ring via the q-Pascal recurrence. #print axioms reports only the foundational propext / Classical.choice / Quot.sound — no sorryAx, no Lean.ofReduceBool.",
+    "tags": [
+      "combinatorics",
+      "q-analogs",
+      "gaussian-binomial",
+      "palindromic-polynomial",
+      "unimodality",
+      "sylvester",
+      "number-theory",
+      "quantum-groups"
+    ],
+    "dateAdded": "2026-07-11",
+    "mathlib_version": "4.26.0",
+    "originalContributions": [
+      "Machine-checked self-reciprocity (palindromy) of the Gaussian binomial: [n,k]_q = q^{k(n-k)}·[n,k]_{q⁻¹} over an arbitrary field, proved by induction on n using BOTH parent q-Pascal identities (the first for the reflected side, the second for the original)",
+      "Identification of the exact algebraic mechanism of palindromy: the reflected recurrence matches the original because expanding the left by the second q-Pascal identity and the reflected right by the first q-Pascal identity produces termwise-equal sides after the cancellation q^{(k+1)(n-k)}·(q⁻¹)^{k+1} = q^{(k+1)(n-k-1)}",
+      "Reflected convenience form q^{k(n-k)}·[n,k]_{q⁻¹} = [n,k]_q and an involutivity sanity check confirming the twisted reflection q ↦ q⁻¹ is an involution",
+      "Explicit, honestly-scoped separation of the symmetric (palindromy) half of Sylvester's theorem — proved here — from the unimodal half, which remains open"
+    ],
+    "prerequisites": [
+      "Gaussian (q-)binomial coefficients and the two q-Pascal recurrences (parent entry combinations-formula-oq-03)",
+      "Field arithmetic with inverses (mul_inv_cancel₀, mul_inv_cancel_left₀, inv_pow, pow_ne_zero)",
+      "Natural-number arithmetic with truncated subtraction (omega) and the ring tactic on ℕ exponents"
+    ]
+  },
+  "leanFile": {
+    "path": "Proofs/CombinationsFormulaOQ03OQ04.lean",
+    "namespace": "QBinomialCoefficients",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 121,
+    "theoremCount": 3,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The Gaussian binomial coefficient [n choose k]_q was studied by Gauss as the generating polynomial counting k-dimensional subspaces of an n-dimensional vector space over F_q. As a polynomial in q it has degree k(n-k) and nonnegative integer coefficients. In 1878 J. J. Sylvester proved, in the course of his work on invariant theory and the resolution of a conjecture of Cayley, that this coefficient sequence is not merely symmetric but unimodal — it rises to a peak and then falls. The symmetry (palindromy) is elementary and classical; the unimodality is deep. The first fully rigorous proof of unimodality was given by R. Proctor in 1982 using the representation theory of sl₂ (a 'raising/lowering operator' argument), following K. O'Hara's later combinatorial proof (1990). Sylvester's theorem is the prototype for a large family of unimodality results in algebraic combinatorics.",
+    "problemStatement": "The seeker's open question combinations-formula-oq-03-oq-04 asks to establish unimodality of the Gaussian q-binomial coefficients on top of the parent's q-binomial library. Full unimodality is the substantive, hard content (it requires an sl₂-action or an explicit injection between coefficient levels) and is not attempted here. This entry rigorously formalizes the symmetric precursor: the coefficient sequence is palindromic, stated over a field as [n,k]_q = q^{k(n-k)}·[n,k]_{q⁻¹}.",
+    "proofStrategy": "The palindromy identity is proved by induction on n with a case split on k. The boundary cases k=0, the diagonal k=n (both q-binomials equal 1), and k>n (both vanish) are direct. In the generic interior case k<n, the left side [n+1,k+1]_q is expanded by the SECOND q-Pascal identity qBinom_pascal' ([n+1,k+1]_q = q^{n-k}·[n,k]_q + [n,k+1]_q) while the reflected right side [n+1,k+1]_{q⁻¹} is expanded by the FIRST q-Pascal identity qBinom_pascal ([n+1,k+1]_q = [n,k]_q + q^{k+1}·[n,k+1]_q). Substituting the induction hypothesis at (n,k) and (n,k+1) makes the two sides coincide term-by-term: the coefficient of the reflected [n,k]_{q⁻¹} matches after q^{n-k}·q^{k(n-k)} = q^{(k+1)(n-k)}, and the coefficient of [n,k+1]_{q⁻¹} matches after the cancellation q^{(k+1)(n-k)}·(q⁻¹)^{k+1} = q^{(k+1)(n-k-1)}, valid since q ≠ 0.",
+    "keyInsights": [
+      "**Palindromy is the symmetric half of unimodality**: A symmetric unimodal sequence is the conclusion of Sylvester's theorem. The symmetry a_j = a_{k(n-k)-j} — proved here — is elementary and reduces to the two q-Pascal recurrences; the unimodality (the actual rise-then-fall) is the hard half and stays open. Separating the two cleanly is the honest way to report partial progress on the open question.",
+      "**Both q-Pascal identities together produce termwise agreement**: The single most important structural fact is that expanding the original by the second q-Pascal identity and the reflection by the first q-Pascal identity yields two expressions that agree coefficient-by-coefficient after collecting powers of q. Using the same Pascal identity on both sides does NOT give a termwise match — the two forms are consistent only because qBinom_pascal and qBinom_pascal' compute the same q-binomial.",
+      "**Invertibility of q is essential, not cosmetic**: The reflection substitutes q ↦ q⁻¹ and relies on q^{k+1}·(q⁻¹)^{k+1} = 1, so the identity is naturally a field statement with q ≠ 0. Over a general ring one would instead pass to a polynomial reversal; the field formulation keeps the proof to elementary power arithmetic (pow_add, inv_pow, mul_inv_cancel_left₀).",
+      "**Truncated subtraction never bites**: The exponents k(n-k), (k+1)(n-k), and (k+1)(n-k-1) use ℕ subtraction, but the delicate step (writing n-k = (n-k-1)+1) is only taken in the branch k<n where n-k ≥ 1, so the subtraction is exact exactly where it is used; the diagonal and above-diagonal cases are dispatched before any such rewrite."
+    ],
+    "prerequisites": [
+      "Gaussian (q-)binomial coefficients and the two q-Pascal recurrences (parent entry combinations-formula-oq-03)",
+      "Field arithmetic with inverses and powers (mul_inv_cancel_left₀, inv_pow, pow_ne_zero, pow_add)",
+      "Natural-number truncated subtraction and the omega / ring tactics"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Open Question and Mathematical Context",
+      "startLine": 1,
+      "endLine": 44,
+      "summary": "Module docstring stating the target (palindromy of Gaussian q-binomials as the symmetric half of Sylvester's unimodality theorem), the proof outline via both q-Pascal identities, and an explicit honesty note that unimodality itself is NOT proved."
+    },
+    {
+      "id": "reciprocal",
+      "title": "Main — Self-Reciprocity / Palindromy",
+      "startLine": 51,
+      "endLine": 104,
+      "summary": "qBinom_reciprocal: [n,k]_q = q^{k(n-k)}·[n,k]_{q⁻¹} over a field for q ≠ 0, by induction on n. Interior case k<n expands the left by qBinom_pascal' and the reflected right by qBinom_pascal, applies the induction hypothesis, and closes by the power cancellation q^{(k+1)(n-k)}·(q⁻¹)^{k+1} = q^{(k+1)(n-k-1)}; boundary/diagonal/vanishing cases are direct."
+    },
+    {
+      "id": "corollaries",
+      "title": "Reflected Form and Involutivity",
+      "startLine": 106,
+      "endLine": 121,
+      "summary": "qBinom_reflect (the right-to-left convenience form q^{k(n-k)}·[n,k]_{q⁻¹} = [n,k]_q) and qBinom_reciprocal_involutive (applying the twisted reflection twice returns the original, confirming it is an involution as any palindrome reflection must be)."
+    }
+  ]
+}
