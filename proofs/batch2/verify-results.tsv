@@ -1,45 +1,87 @@
+AbelRuffiniGaloisExtensionsOQ03	RESIDUAL	doctor-unclassified
+AbelRuffiniGaloisExtensionsOQ03OQ01	RESIDUAL	doctor-unclassified
+AbelRuffiniGaloisExtensionsOQ05	RESIDUAL	doctor-unclassified
+AbelRuffiniOQ04OQ01	RESIDUAL	doctor-unclassified
+AbelRuffiniOQ04OQ02OQ02OQ06	RESIDUAL	doctor-unclassified
+AbelRuffiniOQ10	RESIDUAL	doctor-unclassified
+AbundantNumberOQ0102	GREEN	
+AlgebraicNumbersCountableOQ02	GREEN	
+AlgebraicNumbersCountableOQ02OQ02	RESIDUAL	doctor-unclassified
+AlgebraicNumbersCountableOQ02OQ03	RESIDUAL	doctor-unclassified
+AlgebraicRealsNull	RESIDUAL	doctor-unclassified
 AngleTrisectionOQ02OQ01OQ02	RESIDUAL	doctor-unclassified
+ArchimedesMethodOfExhaustion	RESIDUAL	doctor-unclassified
 AreaOfCircleOQ01OQ02OQ01OQ01	RESIDUAL	doctor-unclassified
+AreaOfCircleOQ05OQ04	GREEN	
 ArithmeticSeriesOQ02OQ03	RESIDUAL	unknown-const:Nat.choose_two_middle
+BaselProblemOQ01OQ01OQ02OQ03	RESIDUAL	doctor-unclassified
 BinomialTheorem	GREEN	
+BirthdayProblemOQ02OQ01	RESIDUAL	doctor-unclassified
+BirthdayProblemOQ03OQ01OQ02	RESIDUAL	doctor-unclassified
 BirthdayProblemOQ03OQ03	RESIDUAL	doctor-unclassified
+BoundedPrimeGapsOQ03OQ01	GREEN	
 BoundedPrimeGapsOQ04	RESIDUAL	lambda-reserved-token
 BoundedPrimeGapsOQ04OQ01	RESIDUAL	type-mismatch
+BrouwerFixedPointOQ02OQ01	RESIDUAL	doctor-unclassified
+CantorsTheoremOQ01	GREEN	
+CauchySchwarzIntegralOQ01OQ01OQ02OQ01	RESIDUAL	doctor-unclassified
 CayleyHamiltonMinpolyOQ04Backward	RESIDUAL	type-mismatch
+CayleyHamiltonMinpolyOQ05OQ01OQ01	RESIDUAL	doctor-unclassified
 CentralLimitTheoremOQ03	GREEN	
 ChebyshevPNTBridgeOQ01	RESIDUAL	partenat-removal
 ChineseRemainderConstructiveOQ03	RESIDUAL	doctor-unclassified
 CollatzStructuredOQ03	RESIDUAL	unknown-const:Nat.find_eq_iff.mpr
+ContinuumHypothesisOQ02OQ01	RESIDUAL	doctor-unclassified
 CramersRuleOQ01OQ03	RESIDUAL	type-mismatch
+DenumerabilityRationalsOQ01	RESIDUAL	doctor-unclassified
+DiniTheorem	GREEN	
+DissectionOfCubesOQ01OQ02	GREEN	
 DivisibilityByThreeOQ02	RESIDUAL	doctor-unclassified
 ElementaryQuadraticReciprocityOQ03OQ03	RESIDUAL	doctor-unclassified
+Erdos1000Problem	RESIDUAL	doctor-unclassified
 Erdos1002OQ01	RESIDUAL	proof-drift
 Erdos1006OQ02	RESIDUAL	doctor-unclassified
+Erdos1006Problem	RESIDUAL	doctor-unclassified
+Erdos1008ProblemProvable	RESIDUAL	doctor-unclassified
 Erdos1010Problem	RESIDUAL	doctor-unclassified
 Erdos1012OQ03	RESIDUAL	doctor-unclassified
 Erdos1013Problem	GREEN	
 Erdos1015Problem	RESIDUAL	doctor-unclassified
+Erdos1017OQ04	RESIDUAL	doctor-unclassified
 Erdos1020Problem	RESIDUAL	doctor-unclassified
+Erdos1022OQ01	RESIDUAL	doctor-unclassified
+Erdos1022OQ03	RESIDUAL	doctor-unclassified
+Erdos1022Problem	GREEN	
 Erdos1024Problem	RESIDUAL	doctor-unclassified
 Erdos1026Problem	RESIDUAL	doctor-unclassified
 Erdos1027OQ03	RESIDUAL	doctor-unclassified
 Erdos1028Problem	RESIDUAL	doctor-unclassified
 Erdos102Problem	RESIDUAL	doctor-unclassified
 Erdos1031Problem	RESIDUAL	doctor-unclassified
+Erdos1033Problem	RESIDUAL	doctor-unclassified
+Erdos1034Aristotle	RESIDUAL	doctor-unclassified
 Erdos1034Problem	RESIDUAL	doctor-unclassified
+Erdos1036OQ01	RESIDUAL	doctor-unclassified
 Erdos1038Problem	RESIDUAL	doctor-unclassified
+Erdos1040Aristotle	RESIDUAL	doctor-unclassified
 Erdos1040Problem	RESIDUAL	doctor-unclassified
 Erdos1041Problem	GREEN	
+Erdos1049Problem	RESIDUAL	doctor-unclassified
 Erdos104Problem	RESIDUAL	doctor-unclassified
+Erdos1052Problem	RESIDUAL	doctor-unclassified
 Erdos1053Problem	RESIDUAL	doctor-unclassified
 Erdos1054OQ01	RESIDUAL	doctor-unclassified
+Erdos1054OQ02	RESIDUAL	doctor-unclassified
+Erdos1056Problem	RESIDUAL	doctor-unclassified
 Erdos1057Problem	RESIDUAL	doctor-unclassified
 Erdos1060Problem	RESIDUAL	doctor-unclassified
+Erdos1062OQ04	GREEN	
 Erdos1062Problem	RESIDUAL	doctor-unclassified
 Erdos1067Problem	RESIDUAL	doctor-unclassified
 Erdos1068Problem	RESIDUAL	doctor-unclassified
 Erdos106Problem	RESIDUAL	doctor-unclassified
 Erdos1070Problem	RESIDUAL	doctor-unclassified
+Erdos1071Problem	RESIDUAL	doctor-unclassified
 Erdos1081Problem	RESIDUAL	doctor-unclassified
 Erdos1087Problem	RESIDUAL	doctor-unclassified
 Erdos1088Problem	RESIDUAL	doctor-unclassified
@@ -47,22 +89,140 @@ Erdos1089Problem	RESIDUAL	doctor-unclassified
 Erdos1096Problem	RESIDUAL	doctor-unclassified
 Erdos109OQ01	RESIDUAL	doctor-unclassified
 Erdos10Problem	RESIDUAL	doctor-unclassified
+Erdos1100Problem	RESIDUAL	doctor-unclassified
+Erdos1100ProblemProvable	RESIDUAL	doctor-unclassified
 Erdos1101Problem	RESIDUAL	doctor-unclassified
+Erdos1103Problem	RESIDUAL	doctor-unclassified
 Erdos1104Problem	RESIDUAL	doctor-unclassified
 Erdos1108Problem	GREEN	
+Erdos1136Problem	RESIDUAL	doctor-unclassified
 Erdos1151Problem	RESIDUAL	proof-drift
 Erdos1153Problem	RESIDUAL	unknown-const:k
+Erdos1157Problem	RESIDUAL	doctor-unclassified
+Erdos1161Problem	RESIDUAL	doctor-unclassified
+Erdos1168Problem	RESIDUAL	doctor-unclassified
+Erdos1173Problem	RESIDUAL	doctor-unclassified
+Erdos1201Problem	RESIDUAL	doctor-unclassified
+Erdos140Problem	RESIDUAL	doctor-unclassified
+Erdos155Problem	RESIDUAL	doctor-unclassified
+Erdos186Problem	RESIDUAL	doctor-unclassified
 Erdos1OQ03Aristotle	RESIDUAL	type-mismatch
+Erdos1OQ04	RESIDUAL	doctor-unclassified
+Erdos1Wip01	RESIDUAL	doctor-unclassified
+Erdos207Problem	RESIDUAL	doctor-unclassified
+Erdos232Problem	RESIDUAL	doctor-unclassified
+Erdos235Problem	RESIDUAL	doctor-unclassified
+Erdos25Abel	RESIDUAL	doctor-unclassified
 Erdos260Aristotle	RESIDUAL	unknown-const:Real.tendsto_log_nat_atTop
+Erdos261Problem	RESIDUAL	doctor-unclassified
+Erdos268Problem	RESIDUAL	doctor-unclassified
 Erdos307Aristotle	GREEN	
 Erdos307OQ02	RESIDUAL	unknown-const:inv_le_inv_of_le
+Erdos30Problem	GREEN	
+Erdos318Aristotle	GREEN	
+Erdos318Problem	GREEN	
+Erdos332Problem	GREEN	
+Erdos340GreedySidon	GREEN	
+Erdos340GreedySidonExtension	GREEN	
+Erdos348Problem	RESIDUAL	doctor-unclassified
+Erdos36Problem	RESIDUAL	doctor-unclassified
+Erdos371Problem	GREEN	
 Erdos383Problem	RESIDUAL	unknown-const:Nat.not_eq_zero_of_lt
+Erdos402Problem	RESIDUAL	doctor-unclassified
 Erdos40Problem	RESIDUAL	unknown-const:Finset.card_Icc
+Erdos426Problem	RESIDUAL	doctor-unclassified
+Erdos428Problem	RESIDUAL	doctor-unclassified
+Erdos454Aristotle	RESIDUAL	doctor-unclassified
+Erdos454Problem	RESIDUAL	doctor-unclassified
+Erdos485OQ01	RESIDUAL	doctor-unclassified
+Erdos488Problem	RESIDUAL	doctor-unclassified
 Erdos521Problem	RESIDUAL	unknown-const:Real.pi
 Erdos524Problem	GREEN	
+Erdos533Problem	RESIDUAL	doctor-unclassified
+Erdos538Problem	GREEN	
+Erdos545Problem	RESIDUAL	doctor-unclassified
+Erdos546Problem	RESIDUAL	doctor-unclassified
+Erdos571Problem	RESIDUAL	doctor-unclassified
+Erdos572Problem	RESIDUAL	doctor-unclassified
+Erdos57Problem	RESIDUAL	doctor-unclassified
+Erdos585Problem	RESIDUAL	doctor-unclassified
+Erdos603Problem	GREEN	
+Erdos610Problem	RESIDUAL	doctor-unclassified
+Erdos611Problem	RESIDUAL	doctor-unclassified
+Erdos612Problem	RESIDUAL	doctor-unclassified
+Erdos613Problem	RESIDUAL	doctor-unclassified
+Erdos614Problem	RESIDUAL	doctor-unclassified
+Erdos616Problem	RESIDUAL	doctor-unclassified
+Erdos621Problem	GREEN	
+Erdos635Problem	RESIDUAL	doctor-unclassified
+Erdos637Problem	RESIDUAL	doctor-unclassified
+Erdos668Problem	RESIDUAL	doctor-unclassified
+Erdos677Problem	RESIDUAL	doctor-unclassified
+Erdos678Problem	GREEN	
 Erdos683Problem	RESIDUAL	unknown-const:Nat.one_lt_iff_ne_one.mp
+Erdos687Problem	RESIDUAL	doctor-unclassified
+Erdos714Problem	RESIDUAL	doctor-unclassified
+Erdos715Problem	RESIDUAL	doctor-unclassified
+Erdos719Problem	RESIDUAL	doctor-unclassified
+Erdos73Problem	RESIDUAL	doctor-unclassified
+Erdos743Problem	RESIDUAL	doctor-unclassified
+Erdos757Problem	RESIDUAL	doctor-unclassified
+Erdos760Problem	RESIDUAL	doctor-unclassified
+Erdos770Problem	RESIDUAL	doctor-unclassified
+Erdos787Problem	RESIDUAL	doctor-unclassified
+Erdos803Problem	RESIDUAL	doctor-unclassified
+Erdos817Aristotle	RESIDUAL	doctor-unclassified
+Erdos827Problem	RESIDUAL	doctor-unclassified
+Erdos834Problem	RESIDUAL	doctor-unclassified
+Erdos846Problem	RESIDUAL	doctor-unclassified
+Erdos854Problem	RESIDUAL	doctor-unclassified
+Erdos857Problem	RESIDUAL	doctor-unclassified
+Erdos863Problem	RESIDUAL	doctor-unclassified
+Erdos864Problem	RESIDUAL	doctor-unclassified
+Erdos873ProblemProvable	RESIDUAL	doctor-unclassified
+Erdos877ProblemAristotle	GREEN	
+Erdos882ProblemOQ03	RESIDUAL	doctor-unclassified
+Erdos896Problem	RESIDUAL	doctor-unclassified
+Erdos922Problem	RESIDUAL	doctor-unclassified
 Erdos948Problem	RESIDUAL	instance-synth
+Erdos959Problem	RESIDUAL	doctor-unclassified
+Erdos963Problem	RESIDUAL	doctor-unclassified
+Erdos975Problem	GREEN	
+FactorRemainderTheoremOQ03	RESIDUAL	doctor-unclassified
+FairGamesTheoremOQ03Aristotle	RESIDUAL	doctor-unclassified
+FourColorTheoremOQ01	RESIDUAL	doctor-unclassified
+FourierSeriesOQ01	RESIDUAL	doctor-unclassified
+FurstenbergCorrespondenceOQ01	RESIDUAL	doctor-unclassified
+GoemansWilliamsonMaxCut	GREEN	
+Hilbert21RiemannHilbert	RESIDUAL	doctor-unclassified
+InclusionExclusionSecondBonferroni	RESIDUAL	doctor-unclassified
+InverseGaloisA5	RESIDUAL	doctor-unclassified
+InverseGaloisOQ01	RESIDUAL	doctor-unclassified
+IsoperimetricTheoremOQ02	RESIDUAL	doctor-unclassified
+KnightsTourOblique	RESIDUAL	doctor-unclassified
+KonigsbergOQ01OQ02	RESIDUAL	doctor-unclassified
+KonigsbergOQ01OQ02Recipe	GREEN	
 KummerTheorem	RESIDUAL	unknown-const:Nat.Prime.multiplicity_choose
+LawsOfLargeNumbers	GREEN	
+LawsOfLargeNumbersOQ01	RESIDUAL	doctor-unclassified
+PartitionTheoremOQ01	RESIDUAL	doctor-unclassified
+PartitionTheoremOQ04	GREEN	
+ProbMethodAlterationOQ03	RESIDUAL	doctor-unclassified
+ProbMethodExpectationOQ04	GREEN	
+RamseysTheorem	RESIDUAL	doctor-unclassified
+RamseysTheoremOQ04	RESIDUAL	doctor-unclassified
+RandomizedMaxCut	GREEN	
 RandomizedMaxcutOQ02	GREEN	
 ShannonSourceCodingOQ02	RESIDUAL	type-mismatch
+SpernerNDimOQ01	RESIDUAL	doctor-unclassified
+SpernerTuckerAntipodalParityEngine	GREEN	
+SubsetCount	RESIDUAL	doctor-unclassified
+SubsetCountOQ02	RESIDUAL	doctor-unclassified
+SylowTheoremOQ04	RESIDUAL	doctor-unclassified
+SzemerediRegularity	GREEN	
+TestApi361	RESIDUAL	doctor-unclassified
+TestApi963	RESIDUAL	doctor-unclassified
+TestDerangConvApi	RESIDUAL	doctor-unclassified
+TestHolderApi	RESIDUAL	doctor-unclassified
 TriangularReciprocalGeneralized	RESIDUAL	instance-synth
+WilsonsTheoremOQ02Ext	RESIDUAL	doctor-unclassified
