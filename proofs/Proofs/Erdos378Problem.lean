@@ -634,4 +634,36 @@ theorem erdos_378_density_antitone {r r' : ℕ} {d d' : ℝ} (hr : r ≤ r')
     (hd' : NaturalDensity (atLeastSquarefree r') d') : d' ≤ d :=
   natDensity_mono (atLeastSquarefree_antitone hr) hd' hd
 
+/-- **The density is constant across each odd → even threshold pair.**  The Granville–Ramaré
+value `erdos_378_density_eq` is `density(r) = 1 − Σ_{m ≤ (r-1)/2} η_m`, whose summation range
+bound `(r-1)/2 + 1` takes the *same* value `t + 1` at both `r = 2t+1` and `r = 2t+2` (integer
+division: `(2t)/2 = (2t+1)/2 = t`).  Hence the answer sets at an odd threshold and the next even
+threshold have **identical density** `1 − Σ_{m<t+1} η_m`.  Combined with the antitone profile
+`erdos_378_density_antitone`, this pins down the shape of `r ↦ density(r)`: a descending step
+function that drops only at *odd* thresholds and is flat across each `2t+1 → 2t+2` step. -/
+theorem erdos_378_density_odd_even_pair (t : ℕ) :
+    NaturalDensity (atLeastSquarefree (2 * t + 1))
+        (1 - ∑ m ∈ range (t + 1), eta m)
+      ∧ NaturalDensity (atLeastSquarefree (2 * t + 2))
+        (1 - ∑ m ∈ range (t + 1), eta m) := by
+  refine ⟨?_, ?_⟩
+  · have h := erdos_378_density_eq (2 * t + 1)
+    have he : (2 * t + 1 - 1) / 2 + 1 = t + 1 := by omega
+    rwa [he] at h
+  · have h := erdos_378_density_eq (2 * t + 2)
+    have he : (2 * t + 2 - 1) / 2 + 1 = t + 1 := by omega
+    rwa [he] at h
+
+/-- **Odd and next-even thresholds share every density.**  Corollary of
+`erdos_378_density_odd_even_pair` via `naturalDensity_unique`: any density of
+`atLeastSquarefree (2t+1)` is also a density of `atLeastSquarefree (2t+2)` (they are equal as
+real numbers).  So the strict drops in the Erdős #378 density profile can occur only at even
+→ odd transitions, never across an odd → even step. -/
+theorem atLeastSquarefree_density_odd_even_agree (t : ℕ) {d : ℝ}
+    (h : NaturalDensity (atLeastSquarefree (2 * t + 1)) d) :
+    NaturalDensity (atLeastSquarefree (2 * t + 2)) d := by
+  obtain ⟨h1, h2⟩ := erdos_378_density_odd_even_pair t
+  have hd : d = 1 - ∑ m ∈ range (t + 1), eta m := naturalDensity_unique h h1
+  rwa [hd]
+
 end Erdos378
