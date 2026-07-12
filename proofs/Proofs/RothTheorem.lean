@@ -2281,6 +2281,80 @@ theorem sqGaussSum_normSq_le_third_of_odd {N : ℕ} [NeZero N] (hodd : Odd N) {r
       ≤ (N : ℝ) * ((N : ℝ) / 3) := mul_le_mul_of_nonneg_left hgle hNnn
     _ = (N : ℝ) ^ 2 / 3 := by ring
 
+/-- A proper divisor `d ∣ N` with `0 < d < N` is bounded by `N / minFac N`: writing
+`N = d·k` the cofactor `k = N/d` is `> 1`, hence a nontrivial divisor of `N`, so
+`minFac N ≤ k` (`Nat.minFac_le_of_dvd`) and `d·minFac N ≤ d·k = N`.  This is the exact
+arithmetic that pins the largest attainable value of `gcd((2r).val, N)` for a nonzero
+frequency to the largest proper divisor `N / minFac N`. -/
+private theorem minFac_mul_le_of_dvd_lt {d N : ℕ} (hdvd : d ∣ N) (hpos : 0 < d)
+    (hlt : d < N) : d * N.minFac ≤ N := by
+  obtain ⟨k, hk⟩ := hdvd
+  have hk2 : 2 ≤ k := by
+    rcases Nat.lt_or_ge k 2 with h | h
+    · exfalso; interval_cases k <;> omega
+    · exact h
+  have hkdvd : k ∣ N := ⟨d, by rw [hk]; ring⟩
+  have hmf : N.minFac ≤ k := Nat.minFac_le_of_dvd hk2 hkdvd
+  calc d * N.minFac ≤ d * k := Nat.mul_le_mul_left d hmf
+    _ = N := hk.symm
+
+/-- **Sharp sub-maximal magnitude at odd moduli (smallest prime factor).**  For odd `N`
+and any nonzero `r`, the exact value `sqGaussSum_normSq_eq_gcd_of_odd` combined with the
+divisor bound `minFac_mul_le_of_dvd_lt` gives
+
+`‖G(r)‖² ≤ N² / minFac N`.
+
+Since an odd `N` has `minFac N ≥ 3`, this subsumes `sqGaussSum_normSq_le_third_of_odd`
+(`≤ N²/3`) and is *strictly* stronger whenever the smallest prime factor exceeds `3`
+(e.g. `N = 25` gives `‖G(r)‖² ≤ N²/5`, `N = 49` gives `≤ N²/7`).  It is sharp: the value
+`N²/minFac N` is attained at a frequency lying over the largest proper divisor
+`N / minFac N`. -/
+theorem sqGaussSum_normSq_le_minFac_of_odd {N : ℕ} [NeZero N] (hodd : Odd N) {r : ZMod N}
+    (hr : r ≠ 0) : ‖sqGaussSum r‖ ^ 2 ≤ (N : ℝ) ^ 2 / N.minFac := by
+  have h2 : IsUnit (2 : ZMod N) := by
+    have hcast : ((2 : ℕ) : ZMod N) = (2 : ZMod N) := by norm_cast
+    rw [← hcast, ZMod.isUnit_iff_coprime]
+    have hnd : ¬ (2 ∣ N) := by rw [Nat.dvd_iff_mod_eq_zero, Nat.odd_iff.mp hodd]; omega
+    exact (Nat.prime_two.coprime_iff_not_dvd).mpr hnd
+  have h2r : 2 * r ≠ 0 := by
+    intro h
+    obtain ⟨u, hu⟩ := h2
+    have hz : (↑u⁻¹ : ZMod N) * (2 * r) = 0 := by rw [h, mul_zero]
+    rw [← mul_assoc, ← hu, Units.inv_mul, one_mul] at hz
+    exact hr hz
+  have hNpos : 0 < N := Nat.pos_of_ne_zero (NeZero.ne N)
+  have hpos : 0 < (2 * r).val := ZMod.val_pos.mpr h2r
+  have hlt : (2 * r).val < N := ZMod.val_lt (2 * r)
+  set d := Nat.gcd (2 * r).val N with hd
+  have hdvd : d ∣ N := Nat.gcd_dvd_right _ _
+  have hdpos : 0 < d := Nat.gcd_pos_of_pos_right _ hNpos
+  have hdlt : d < N := lt_of_le_of_lt (Nat.gcd_le_left N hpos) hlt
+  have hkey : d * N.minFac ≤ N := minFac_mul_le_of_dvd_lt hdvd hdpos hdlt
+  have hmfpos : (0 : ℝ) < (N.minFac : ℝ) := by exact_mod_cast Nat.minFac_pos N
+  rw [sqGaussSum_normSq_eq_gcd_of_odd hodd r, ← hd, le_div_iff₀ hmfpos]
+  have hcast : (d : ℝ) * (N.minFac : ℝ) ≤ (N : ℝ) := by exact_mod_cast hkey
+  have hNnn : (0 : ℝ) ≤ (N : ℝ) := Nat.cast_nonneg N
+  nlinarith [hcast, hNnn]
+
+/-- **Square-root form of the smallest-prime-factor bound.**  `‖G(r)‖ ≤ N / √(minFac N)`
+for odd `N` and nonzero `r`.  This is the constant `M = N/√(minFac N)` supplied to
+`sqDiffFree_density_bound`; for odd prime `N` it recovers the sharp `√N`. -/
+theorem sqGaussSum_norm_le_minFac_of_odd {N : ℕ} [NeZero N] (hodd : Odd N) {r : ZMod N}
+    (hr : r ≠ 0) : ‖sqGaussSum r‖ ≤ (N : ℝ) / Real.sqrt (N.minFac) := by
+  have hmfpos : (0 : ℝ) < (N.minFac : ℝ) := by exact_mod_cast Nat.minFac_pos N
+  have hsqrtpos : 0 < Real.sqrt (N.minFac) := Real.sqrt_pos.mpr hmfpos
+  have hbound := sqGaussSum_normSq_le_minFac_of_odd hodd hr
+  have hnn : (0 : ℝ) ≤ ‖sqGaussSum r‖ := norm_nonneg _
+  rw [le_div_iff₀ hsqrtpos]
+  have hsq : (‖sqGaussSum r‖ * Real.sqrt (N.minFac)) ^ 2 ≤ ((N : ℝ)) ^ 2 := by
+    rw [mul_pow, Real.sq_sqrt (le_of_lt hmfpos)]
+    rw [le_div_iff₀ hmfpos] at hbound
+    linarith [hbound]
+  have hrhsnn : (0 : ℝ) ≤ (N : ℝ) := Nat.cast_nonneg N
+  have hlhsnn : (0 : ℝ) ≤ ‖sqGaussSum r‖ * Real.sqrt (N.minFac) :=
+    mul_nonneg hnn (le_of_lt hsqrtpos)
+  nlinarith [hsq, hlhsnn, hrhsnn]
+
 /-! ### Even moduli at unit frequencies: the qualitatively new phenomena
 
 The odd-modulus theory above is complete: `‖G(r)‖² = N·gcd((2r).val, N)` with no
@@ -2483,4 +2557,5 @@ theorem sqGaussSum_eq_zero_of_mod_four_two {N : ℕ} [NeZero N] (h : N % 4 = 2) 
   exact norm_eq_zero.mp hnorm0
 
 end Szemeredi.Roth
+
 
