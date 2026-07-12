@@ -259,4 +259,49 @@ theorem qBinom_X_extreme_coeffs {n k : ℕ} (h : k ≤ n) :
     (qBinom (X : ℤ[X]) n k).coeff (k * (n - k)) = 1 :=
   ⟨qBinom_X_coeff_zero n k h, qBinom_X_coeff_top h⟩
 
+/-! ### Base change: specializing the Gaussian polynomial
+
+The `q`-binomial is assembled purely from the ring operations of the `q`-Pascal recurrence,
+so it commutes with any ring homomorphism (`qBinom_map`).  Two instances tie the polynomial
+layer above back to scalars: evaluating `qBinom X n k ∈ ℤ[X]` at a point `c` recovers the
+scalar `q`-binomial `qBinom c n k` (`qBinom_X_eval`), and at `c = 1` it degenerates to the
+ordinary binomial coefficient `C(n,k)` (`qBinom_X_eval_one`) — equivalently, the coefficients
+of the Gaussian polynomial sum to `C(n,k)`, the `q = 1` shadow at the root of the whole
+`combinations-formula` lineage. -/
+
+/-- **`qBinom` commutes with ring homomorphisms.** For a ring hom `f : A →+* B` and `q : A`,
+`f ([n choose k]_q) = [n choose k]_{f q}`.  The `q`-binomial is built solely from `+`, `*`,
+`^` via the `q`-Pascal recurrence, so any ring hom carries it through; this is the uniform
+base-change statement of which the scalar specialization `qBinom_at_one` and the polynomial
+evaluation `qBinom_X_eval` are instances. -/
+theorem qBinom_map {A B : Type*} [CommRing A] [CommRing B] (f : A →+* B) (q : A) :
+    ∀ n k : ℕ, f (qBinom q n k) = qBinom (f q) n k
+  | _, 0 => by rw [qBinom_zero_right, qBinom_zero_right, map_one]
+  | 0, _ + 1 => by rw [qBinom_zero_succ, qBinom_zero_succ, map_zero]
+  | n + 1, k + 1 => by
+    rw [qBinom_pascal, map_add, map_mul, map_pow,
+        qBinom_map f q n k, qBinom_map f q n (k + 1), qBinom_pascal]
+
+open Polynomial in
+/-- **Evaluation of the Gaussian polynomial recovers the scalar `q`-binomial.**
+`([n choose k]_X).eval c = [n choose k]_c` for every `c : ℤ`.  Evaluation at `c` is the ring
+hom `evalRingHom c`, so `qBinom_map` turns it into `qBinom (eval c X) n k = qBinom c n k` —
+the bridge between the polynomial layer of this file and the scalar `q`-binomials of the
+parent. -/
+theorem qBinom_X_eval (c : ℤ) (n k : ℕ) :
+    (qBinom (X : ℤ[X]) n k).eval c = qBinom c n k := by
+  have h := qBinom_map (evalRingHom c) (X : ℤ[X]) n k
+  rwa [coe_evalRingHom, eval_X] at h
+
+open Polynomial in
+/-- **The Gaussian polynomial degenerates to the ordinary binomial at `q = 1`.**
+`([n choose k]_X).eval 1 = C(n,k)`, combining `qBinom_X_eval` at `c = 1` with the scalar
+specialization `qBinom_at_one`.  Since a polynomial's value at `1` is the sum of its
+coefficients, this says the coefficient sequence of the palindromic Gaussian polynomial
+`qBinom X n k` sums to the ordinary combination count `C(n,k)` — the `q = 1` degeneration at
+the root of the `combinations-formula` lineage. -/
+theorem qBinom_X_eval_one (n k : ℕ) :
+    (qBinom (X : ℤ[X]) n k).eval 1 = (Nat.choose n k : ℤ) := by
+  rw [qBinom_X_eval, qBinom_at_one]
+
 end QBinomialCoefficients
