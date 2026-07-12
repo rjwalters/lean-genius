@@ -22,6 +22,51 @@
     ]
   },
   {
+    "id": "ann-kron-wip01-full-period",
+    "proofId": "elementary-quadratic-reciprocity-oq-03-oq-02-wip-01",
+    "range": {
+      "startLine": 68,
+      "endLine": 77
+    },
+    "type": "technique",
+    "title": "Full period n from a single residue identity",
+    "content": "`kronecker_add_mul_left` upgrades the residue-class dependence `kronecker_congr_left` to full periodicity: `(a + n·k / n) = (a/n)` for every integer k. The entire content is the one-line arithmetic fact `(a + n·k) % n = a % n` (`Int.add_mul_emod_self_left`) fed into `kronecker_congr_left` — no case analysis on n is needed. `kronecker_periodic_left` is then just the k = 1 specialization (`simpa`), the textbook 'period n' statement. Notably the value is preserved for arbitrary integer k, including negative shifts, so (·/n) is genuinely a function on ℤ/nℤ.",
+    "mathContext": "$(a + nk\\,/\\,n) = (a/n)$ for all $k \\in \\mathbb{Z}$, from $(a+nk)\\bmod n = a\\bmod n$; the $k=1$ case is the character period.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "full periodicity",
+      "Int.add_mul_emod_self_left",
+      "ℤ/nℤ",
+      "period of a Dirichlet character"
+    ],
+    "prerequisites": [
+      "modular arithmetic",
+      "residue-class dependence (kronecker_congr_left)"
+    ]
+  },
+  {
+    "id": "ann-kron-wip01-mod-eight-helper",
+    "proofId": "elementary-quadratic-reciprocity-oq-03-oq-02-wip-01",
+    "range": {
+      "startLine": 83,
+      "endLine": 95
+    },
+    "type": "technique",
+    "title": "Reducing kronecker2 to a function of a mod 8",
+    "content": "The private helper `kronecker2_mod_eight` re-derives that `kronecker2 x = kronecker2 (x % 8)` by unfolding the definition and collapsing the nested moduli with `Int.emod_emod_of_dvd` (using 2 ∣ 8 and 8 ∣ 8). This is the pivot that turns period-8 periodicity into pure arithmetic: once kronecker2 is known to factor through `x % 8`, `kronecker2_congr` (equal values on congruent-mod-8 inputs) is a two-line rewrite. The reduction to residues, rather than a direct computation, is what makes the subsequent full-period statement free.",
+    "mathContext": "$\\mathrm{kronecker2}(x) = \\mathrm{kronecker2}(x \\bmod 8)$; with $(x\\bmod 8)\\bmod 2 = x\\bmod 2$ and $(x\\bmod 8)\\bmod 8 = x\\bmod 8$.",
+    "significance": "technical",
+    "relatedConcepts": [
+      "Int.emod_emod_of_dvd",
+      "nested modulus reduction",
+      "factoring through ℤ/8ℤ"
+    ],
+    "prerequisites": [
+      "the definition of kronecker2",
+      "divisibility of moduli"
+    ]
+  },
+  {
     "id": "ann-kron-wip01-kronecker2-period",
     "proofId": "elementary-quadratic-reciprocity-oq-03-oq-02-wip-01",
     "range": {
