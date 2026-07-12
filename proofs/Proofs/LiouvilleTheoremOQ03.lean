@@ -555,4 +555,36 @@ theorem wellApprox_residual_and_volume_zero {τ : ℝ} (hτ : 2 < τ) :
     wellApprox τ ∈ residual ℝ ∧ volume (wellApprox τ) = 0 :=
   ⟨wellApprox_residual τ, volume_wellApprox_eq_zero hτ⟩
 
+/-- **The Liouville numbers are residual (comeagre).**  A named restatement of Mathlib's
+`eventually_residual_liouville` as set membership: `{x | Liouville x} ∈ residual ℝ`.  So the
+*topologically typical* real is Liouville — despite the Liouville set being both
+Hausdorff-dimension `0` (`dimH_liouville_eq_zero`) and Lebesgue-null
+(`volume_liouville_eq_zero`).  Axiom-free (pure Baire category). -/
+theorem liouville_residual : {x : ℝ | Liouville x} ∈ residual ℝ :=
+  eventually_residual_liouville
+
+/-- **The non-Liouville reals are meagre.**  `{x | Liouville x}ᶜ` is first category: the
+transcendence-generic (non-Liouville) reals form a meagre set, even though they are
+Lebesgue-conull and dimension-`1`.  Immediate from `liouville_residual`; axiom-free. -/
+theorem meagre_compl_liouville : IsMeagre {x : ℝ | Liouville x}ᶜ := by
+  rw [IsMeagre, compl_compl]; exact liouville_residual
+
+open MeasureTheory in
+/-- **The Liouville measure/category/dimension trichotomy.**  The set of Liouville numbers is
+*simultaneously* Hausdorff-dimension `0`, Lebesgue-null, and comeagre (residual):
+
+    dimH {x | Liouville x} = 0  ∧  volume {x | Liouville x} = 0  ∧  {x | Liouville x} ∈ residual ℝ.
+
+So both classical notions of "smallness" — dimension and measure — declare the Liouville set
+negligible, while Baire category declares it *generic*: the sharpest form of the
+measure-versus-category disagreement, now for the Liouville set itself (the file's
+`wellApprox_residual_and_volume_zero` states the two-way version for `W τ`, `τ > 2`).  The
+dimension component rests on the entry's Jarník–Besicovitch axiom (via
+`dimH_liouville_eq_zero`); the measure and category components are axiom-free. -/
+theorem liouville_dimzero_null_yet_residual :
+    dimH {x : ℝ | Liouville x} = 0 ∧
+      volume {x : ℝ | Liouville x} = 0 ∧
+      {x : ℝ | Liouville x} ∈ residual ℝ :=
+  ⟨dimH_liouville_eq_zero, volume_liouville_eq_zero, liouville_residual⟩
+
 end LiouvilleTheoremOQ03
