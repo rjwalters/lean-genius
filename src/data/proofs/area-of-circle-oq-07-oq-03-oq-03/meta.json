@@ -77,12 +77,28 @@
       "mathContext": "$\\int_{x>0} x^{2n} e^{-x^2}\\,dx = \\tfrac12\\Gamma(n+\\tfrac12)$; evenness doubles it."
     },
     {
-      "id": "closed-and-values",
-      "title": "Closed Form and Base Cases",
-      "startLine": 91,
+      "id": "closed-form",
+      "title": "The Double-Factorial Closed Form",
+      "startLine": 90,
+      "endLine": 94,
+      "summary": "gaussian_moment_closed turns the Gamma-valued ladder into an elementary closed form: ∫_ℝ x^{2n} e^{-x²} dx = (2n-1)‼·√π/2ⁿ. A one-line proof — rewrite by the ladder identity, then by Mathlib's Real.Gamma_nat_add_half, which supplies Γ(n + 1/2) = (2n-1)‼·√π/2ⁿ.",
+      "mathContext": "$\\Gamma(n+\\tfrac12) = (2n-1)!!\\,\\sqrt\\pi/2^n$, so the even Gaussian moment is elementary in $n$."
+    },
+    {
+      "id": "base-zero",
+      "title": "Base Case n = 0: Recovering the Parent √π",
+      "startLine": 96,
+      "endLine": 100,
+      "summary": "gaussian_moment_zero specializes the ladder at n = 0 to recover the parent entry's Gaussian integral ∫_ℝ e^{-x²} dx = √π, using Γ(1/2) = √π (Real.Gamma_one_half_eq). The zeroth even moment is the total mass of the Gaussian weight.",
+      "mathContext": "$\\int_{\\mathbb R} x^{0} e^{-x^2}\\,dx = \\Gamma(\\tfrac12) = \\sqrt\\pi$."
+    },
+    {
+      "id": "base-two",
+      "title": "Base Case n = 1: The Second Even Moment √π/2",
+      "startLine": 102,
       "endLine": 109,
-      "summary": "gaussian_moment_closed gives the double-factorial form (2n-1)‼·√π/2ⁿ via Real.Gamma_nat_add_half. gaussian_moment_zero recovers the parent's ∫_ℝ e^{-x²} dx = √π, and gaussian_moment_two gives ∫_ℝ x² e^{-x²} dx = √π/2 (from Γ(3/2) = √π/2).",
-      "mathContext": "$\\Gamma(\\tfrac12)=\\sqrt\\pi$, $\\Gamma(\\tfrac32)=\\tfrac{\\sqrt\\pi}2$."
+      "summary": "gaussian_moment_two specializes at n = 1: ∫_ℝ x² e^{-x²} dx = √π/2. The proof reduces Γ(3/2) via Γ(s+1) = s·Γ(s) (Real.Gamma_add_one) to (1/2)·Γ(1/2) = √π/2. This second moment is the (unnormalized) variance datum of the Gaussian weight.",
+      "mathContext": "$\\int_{\\mathbb R} x^{2} e^{-x^2}\\,dx = \\Gamma(\\tfrac32) = \\tfrac12\\Gamma(\\tfrac12) = \\tfrac{\\sqrt\\pi}{2}$."
     }
   ],
   "openQuestions": [
