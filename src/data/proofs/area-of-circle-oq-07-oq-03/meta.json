@@ -127,6 +127,26 @@
       "targetId": "area-of-circle-oq-07",
       "relationship": "extends",
       "description": "Parent. The parent proves ∫_ℝ e^{-x²} = √π; this entry exhibits the same number as the Euler Gamma value Γ(1/2), with gamma_one_half_eq_gaussian making the identification explicit and gamma_one_half_eq_two_mul_gaussian_Ioi recording the half-line substitution u = x² that underlies Mathlib's proof of Γ(1/2) = √π."
+    },
+    {
+      "targetId": "area-of-circle-oq-07-oq-03-oq-01",
+      "relationship": "extended by",
+      "description": "Direct child answering this entry's first open question. It climbs the whole half-integer Gamma ladder Γ(n+1/2) = (2n−1)‼·√π/2ⁿ and identifies each rung with an even Gaussian moment ∫_ℝ x^{2n} e^{-x²} dx — extending the single value Γ(1/2) = √π isolated here to the full tower."
+    },
+    {
+      "targetId": "area-of-circle-oq-07-oq-03-oq-02",
+      "relationship": "extended by",
+      "description": "Direct child answering this entry's second open question. It gives an independent, Beta-function derivation of Γ(1/2)² = π via Mathlib's Beta–Gamma relation and B(1/2,1/2) = π (the arcsine density) — a route that, unlike gamma_one_half_sq here, does not pass through the Gaussian integral."
+    },
+    {
+      "targetId": "gamma-reflection-formula-oq-01",
+      "relationship": "related",
+      "description": "Euler's reflection formula Γ(s)Γ(1−s) = π/sin(πs) at s = 1/2 gives Γ(1/2)² = π directly — the same squared identity proved here as gamma_one_half_sq, reached from functional-equation symmetry rather than from the Gaussian integral."
+    },
+    {
+      "targetId": "area-of-circle-oq-07-oq-02",
+      "relationship": "related",
+      "description": "Sibling under the same parent. It evaluates the half-line Gaussian ∫_{x>0} e^{-x²} = √π/2 — exactly the integral appearing in this entry's gamma_one_half_eq_two_mul_gaussian_Ioi (Γ(1/2) = 2·∫_{x>0} e^{-x²}), the half-line form produced by the u = x² substitution."
     }
   ],
   "references": [
