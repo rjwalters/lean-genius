@@ -176,6 +176,17 @@ theorem geometric_root_seq_const {r : ℝ} (hr : 0 < r) (k : ℕ) :
   rw [show ((k : ℝ) + 1) = ((k + 1 : ℕ) : ℝ) by push_cast; ring]
   exact rpow_pow_root_self hr (by omega : 0 < k + 1)
 
+/-- **The geometric ratio sequence is constant.** For `r > 0` the consecutive-ratio
+sequence `m ↦ r^(m+1) / r^m` of a geometric sequence is the constant `r`. This is the
+ratio-form companion of `geometric_root_seq_const`: on the geometric sequence both the
+root means and the consecutive ratios collapse to `r`, so the ratio-antitone
+characterisation `logConcave_iff_ratio_antitone` is saturated (flat) exactly as the
+root-mean chain is. -/
+theorem geometric_ratio_const {r : ℝ} (hr : 0 < r) (m : ℕ) :
+    r ^ (m + 1) / r ^ m = r := by
+  have h : r ^ m ≠ 0 := pow_ne_zero m hr.ne'
+  rw [pow_succ, mul_comm, mul_div_assoc, div_self h, mul_one]
+
 /-! ## Strict monotonicity under strict log-concavity
 
 The sharpness section shows the abstract chain is *flat* exactly on geometric sequences
@@ -269,6 +280,24 @@ theorem logConcave_root_antitone_seq_strict (p : ℕ → ℝ) (hp0 : p 0 = 1)
   intro k
   simpa using
     logConcave_root_antitone_strict p hp0 hpos hlc hstrict (k + 1) (Nat.succ_pos k)
+
+/-- **Strict upper bound: every later root mean is strictly below the first term.**
+For a positive, *strictly* log-concave sequence with `p 0 = 1`, the root mean
+`p (k+1)^{1/(k+1)}` is strictly smaller than `p 1` for every `k ≥ 1`. The strict
+companion of `logConcave_root_le_first`: where the non-strict engine only gives
+`≤ p 1`, strict log-concavity makes the inequality strict past the first index.
+Immediate from the strict chain `logConcave_root_antitone_seq_strict` evaluated at
+`0 < k`. Specialised to `p k = eₖ/C(n,k)` with distinct inputs, this is `Mₖ₊₁ < M₁`:
+the arithmetic mean strictly dominates every later Maclaurin mean. -/
+theorem logConcave_root_lt_first (p : ℕ → ℝ) (hp0 : p 0 = 1)
+    (hpos : ∀ j, 0 < p j)
+    (hlc : ∀ m, p m * p (m + 2) ≤ (p (m + 1)) ^ 2)
+    (hstrict : ∀ m, p m * p (m + 2) < (p (m + 1)) ^ 2)
+    (k : ℕ) (hk : 0 < k) :
+    p (k + 1) ^ ((1 : ℝ) / (k + 1)) < p 1 := by
+  have hsa := logConcave_root_antitone_seq_strict p hp0 hpos hlc hstrict
+  have h := hsa hk
+  simpa using h
 
 /-! ## Ratio form: log-concavity ⟺ the consecutive-ratio sequence is antitone
 
