@@ -7497,4 +7497,143 @@ theorem sqDiffFree_exists_large_fourier_coeff {N : ℕ} [NeZero N] {M : ℝ}
   have hBle : B ≤ M * P := by rw [← hSB, mul_comm]; exact hchain
   linarith
 
+/-! ### Part LXI — the even modulus: the factor of `2` is irrelevant
+
+Every cardinality bound above (`sqDiffFree_card_le_add_of_odd`, `maxSqDiffFreeCard_le_of_squarefree_odd`,
+the prime `√N` capstone) requires the modulus to be **odd**, because the Weyl/Gauss-sum machinery needs
+`2` to be a unit; the whole even case was untouched.  This part settles it structurally.
+
+Write `N = 2·M` with `M` odd.  The Chinese Remainder ring isomorphism
+`e : ℤ/2Mℤ ≃+* ℤ/2ℤ × ℤ/Mℤ` carries squares to componentwise squares, and **every element of `ℤ/2ℤ`
+is a square** (`0 = 0²`, `1 = 1²`).  So the `ℤ/2ℤ` coordinate imposes *no* square-difference
+constraint — it only forbids two set elements from sharing an `ℤ/Mℤ` coordinate.  Hence the extremal
+count is completely insensitive to the factor of `2`:
+
+    maxSqDiffFreeCard (2·M) = maxSqDiffFreeCard M      (M odd).
+
+* `≤`: for square-difference-free `A ⊆ ℤ/2Mℤ`, the projection `z ↦ (e z).2` is injective on `A` (two
+  elements sharing an `ℤ/Mℤ` coordinate differ by `e⁻¹(1,0) = (e⁻¹(1,0))²`, a nonzero square) and its
+  image is square-difference-free (any `ℤ/2ℤ` coordinate is a square, so an `ℤ/Mℤ`-square difference
+  upstairs lifts to a genuine square difference in `A`).
+* `≥`: a square-difference-free `S ⊆ ℤ/Mℤ` lifts through `s ↦ e⁻¹(0, s)` to a set of the same size; a
+  nonzero square difference downstairs would force a nonzero square difference in `S`.
+
+This transports every odd-modulus bound to twice an odd modulus, e.g.
+`maxSqDiffFreeCard (2p) = maxSqDiffFreeCard p ≤ 1 + √p` for an odd prime `p` — the first even-modulus
+Sárközy bound in the development.  0 axioms; the `ℤ/2ℤ` facts (`c² = c`, `c² = 0 → c = 0`) are `decide`.
+Honest scope: this is a *reduction*, not a new analytic input — it says nothing about `4 ∣ N` or the
+bounded-`minFac` multi-scale barrier of Part XXVII. -/
+theorem maxSqDiffFreeCard_two_mul_of_odd {M : ℕ} [NeZero M] (hodd : Odd M) :
+    maxSqDiffFreeCard (2 * M) = maxSqDiffFreeCard M := by
+  have hMmod : M % 2 = 1 := Nat.odd_iff.mp hodd
+  have hcop : Nat.Coprime 2 M :=
+    (Nat.prime_two.coprime_iff_not_dvd).mpr (by rw [Nat.dvd_iff_mod_eq_zero]; omega)
+  set e := ZMod.chineseRemainder hcop with he
+  have hsq2 : ∀ c : ZMod 2, c ^ 2 = c := by decide
+  have hz2 : ∀ c : ZMod 2, c ^ 2 = 0 → c = 0 := by decide
+  refine le_antisymm ?_ ?_
+  · -- `maxSqDiffFreeCard (2*M) ≤ maxSqDiffFreeCard M`
+    obtain ⟨A, hAfree, hAcard⟩ := exists_isSqDiffFree_card_eq_max (2 * M)
+    set π : ZMod (2 * M) → ZMod M := fun z => (e z).2 with hπ
+    have hπinj : Set.InjOn π A := by
+      intro x hx y hy hxy
+      by_contra hne
+      have hd_ne : x - y ≠ 0 := sub_ne_zero.mpr hne
+      have hedsnd : (e (x - y)).2 = 0 := by
+        rw [map_sub, Prod.snd_sub]
+        simp only [hπ] at hxy
+        exact sub_eq_zero.mpr hxy
+      have hed : e (x - y) ≠ 0 :=
+        fun h => hd_ne (e.injective (h.trans (map_zero e).symm))
+      have hedfst : (e (x - y)).1 ≠ 0 := fun h => hed (Prod.ext_iff.mpr ⟨h, hedsnd⟩)
+      have h21 : ∀ c : ZMod 2, c ≠ 0 → c = 1 := by decide
+      have hd_eq : x - y = e.symm ((1 : ZMod 2), (0 : ZMod M)) := by
+        have hedval : e (x - y) = ((1 : ZMod 2), (0 : ZMod M)) :=
+          Prod.ext_iff.mpr ⟨h21 _ hedfst, hedsnd⟩
+        rw [← hedval, e.symm_apply_apply]
+      have hsq10 : (((1 : ZMod 2), (0 : ZMod M)) : ZMod 2 × ZMod M) ^ 2 = (1, 0) := by
+        rw [pow_two, Prod.mk_mul_mk]; norm_num
+      have hnsq : (e.symm ((1 : ZMod 2), (0 : ZMod M))) ^ 2 = x - y := by
+        rw [← map_pow, hsq10, ← hd_eq]
+      have hnsq_ne : (e.symm ((1 : ZMod 2), (0 : ZMod M))) ^ 2 ≠ 0 := by
+        rw [hnsq]; exact hd_ne
+      have hmemA : y + (e.symm ((1 : ZMod 2), (0 : ZMod M))) ^ 2 ∈ A := by
+        rw [hnsq, show y + (x - y) = x from by ring]; exact hx
+      exact hAfree y hy _ hnsq_ne hmemA
+    have hSfree : IsSqDiffFree (A.image π) := by
+      intro s hs m hm hmem
+      rw [Finset.mem_image] at hs
+      obtain ⟨x, hxA, rfl⟩ := hs
+      rw [Finset.mem_image] at hmem
+      obtain ⟨y, hyA, hyeq⟩ := hmem
+      have hcoord2 : (e (y - x)).2 = m ^ 2 := by
+        rw [map_sub, Prod.snd_sub]
+        simp only [hπ] at hyeq
+        rw [hyeq]; ring
+      have hp2 : (((e (y - x)).1, m) : ZMod 2 × ZMod M) ^ 2 = e (y - x) := by
+        rw [pow_two, Prod.mk_mul_mk]
+        refine Prod.ext_iff.mpr ⟨?_, ?_⟩
+        · show (e (y - x)).1 * (e (y - x)).1 = (e (y - x)).1
+          have h := hsq2 ((e (y - x)).1); rw [pow_two] at h; exact h
+        · show m * m = (e (y - x)).2
+          rw [← pow_two, hcoord2]
+      have hnsq : (e.symm ((e (y - x)).1, m)) ^ 2 = y - x := by
+        rw [← map_pow, hp2, e.symm_apply_apply]
+      have hyx_ne : y - x ≠ 0 := by
+        intro h
+        apply hm
+        have hz : (e (y - x)).2 = 0 := by rw [h]; simp
+        rw [hcoord2] at hz; exact hz
+      have hnsq_ne : (e.symm ((e (y - x)).1, m)) ^ 2 ≠ 0 := by rw [hnsq]; exact hyx_ne
+      have hmemA : x + (e.symm ((e (y - x)).1, m)) ^ 2 ∈ A := by
+        rw [hnsq, show x + (y - x) = y from by ring]; exact hyA
+      exact hAfree x hxA _ hnsq_ne hmemA
+    have hScard : (A.image π).card = A.card := Finset.card_image_of_injOn hπinj
+    rw [← hAcard, ← hScard]
+    exact le_maxSqDiffFreeCard_of_isSqDiffFree hSfree
+  · -- `maxSqDiffFreeCard M ≤ maxSqDiffFreeCard (2*M)`
+    obtain ⟨S, hSfree, hScard⟩ := exists_isSqDiffFree_card_eq_max M
+    set ι : ZMod M → ZMod (2 * M) := fun s => e.symm ((0 : ZMod 2), s) with hι
+    have hιinj : Function.Injective ι := by
+      intro a b hab
+      simp only [hι] at hab
+      have h := e.symm.injective hab
+      exact (Prod.ext_iff.mp h).2
+    have hAfree : IsSqDiffFree (S.image ι) := by
+      intro a ha n hn hmem
+      rw [Finset.mem_image] at ha
+      obtain ⟨s, hsS, rfl⟩ := ha
+      rw [Finset.mem_image] at hmem
+      obtain ⟨t, htS, hteq⟩ := hmem
+      have hn2 : n ^ 2 = e.symm ((0 : ZMod 2), t - s) := by
+        have hpair : ((0 : ZMod 2), t) - ((0 : ZMod 2), s) = ((0 : ZMod 2), t - s) := by
+          rw [Prod.mk_sub_mk, sub_self]
+        have h1 : ι t - ι s = e.symm ((0 : ZMod 2), t - s) := by
+          simp only [hι]
+          rw [← map_sub, hpair]
+        rw [show n ^ 2 = ι t - ι s from by rw [hteq]; ring, h1]
+      have hkey : (e n) ^ 2 = ((0 : ZMod 2), t - s) := by
+        rw [show (e n) ^ 2 = e (n ^ 2) from (map_pow e n 2).symm, hn2, e.apply_symm_apply]
+      have hsnd : (e n).2 ^ 2 = t - s := by
+        have h := congrArg Prod.snd hkey; rw [Prod.pow_snd] at h; exact h
+      have hts_ne : t - s ≠ 0 := fun h => hn (by simp [hn2, h])
+      have hmemS : s + (e n).2 ^ 2 ∈ S := by
+        rw [hsnd, show s + (t - s) = t from by ring]; exact htS
+      have hsq_ne : (e n).2 ^ 2 ≠ 0 := by rw [hsnd]; exact hts_ne
+      exact hSfree s hsS _ hsq_ne hmemS
+    have hAcard : (S.image ι).card = S.card := Finset.card_image_of_injective _ hιinj
+    rw [← hScard, ← hAcard]
+    exact le_maxSqDiffFreeCard_of_isSqDiffFree hAfree
+
+/-- **Even-modulus prime bound.**  For an odd prime `p`, `maxSqDiffFreeCard (2p) ≤ 1 + √p`: the
+Sárközy cardinality decay transported from the odd prime `p` to the even modulus `2p` via
+`maxSqDiffFreeCard_two_mul_of_odd` and `maxSqDiffFreeCard_le_of_squarefree_odd`
+(using `minFac p = p`, so `p/√p = √p`). -/
+theorem maxSqDiffFreeCard_two_mul_prime_le {p : ℕ} [NeZero p] (hp : p.Prime) (hodd : Odd p) :
+    (maxSqDiffFreeCard (2 * p) : ℝ) ≤ 1 + Real.sqrt p := by
+  rw [maxSqDiffFreeCard_two_mul_of_odd hodd]
+  have hb := maxSqDiffFreeCard_le_of_squarefree_odd hodd hp.squarefree hp.one_lt
+  rw [(Nat.prime_def_minFac.mp hp).2] at hb
+  rwa [Real.div_sqrt] at hb
+
 end Szemeredi.Roth
