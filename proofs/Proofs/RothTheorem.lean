@@ -7402,4 +7402,99 @@ theorem sqDiffFree_badMass_pos {N : ℕ} [NeZero N] (A : Finset (ZMod N))
     rw [abs_pos]; exact sub_ne_zero.mpr hlt.ne'
   exact mul_pos hNpos (mul_pos hApos habs)
 
+/-! ### Part LX — extracting a single large Fourier coefficient (the density-increment input)
+
+Part LVIII pinned the exact deficit `‖Σ_{r≠0} ‖Â(r)‖²·G(r)‖ = N·|A|·||A| − κ|` and Part LIX pinned
+`κ ≤ √N`, so a square-difference-free `A` with `|A| > κ` carries a *definite* amount of
+Gauss-weighted nonzero-frequency mass.  That mass is spread over the `N − 1` nonzero frequencies,
+each weighted by `‖G(r)‖ ≤ M`.  The next step of the classical density-increment argument is the
+**L∞ pigeonhole**: some *single* frequency `r ≠ 0` must carry a proportionate share, so
+
+    ∃ r ≠ 0,     N·|A|·(|A| − κ)   ≤   (N − 1)·M·‖Â(r)‖² .
+
+Rearranged this is `‖Â(r)‖² ≥ N·|A|·(|A|−κ) / ((N−1)·M)`, the large Fourier coefficient a density
+increment consumes.  With the exact prime magnitude `M = √N` and `|A| = δN` it gives
+`‖Â(r)‖ ≳ δ·N^{3/4}`, i.e. a relative Fourier increment `‖Â(r)‖/|A| ≳ N^{−1/4}` — precisely the
+Sárközy single-scale gain.
+
+The proof is a pure pigeonhole: `‖S‖ ≤ Σ_{r≠0} ‖Â(r)‖²·‖G(r)‖ ≤ M·Σ_{r≠0}‖Â(r)‖²`
+(`norm_sum_le` + `hG`), and if *every* nonzero frequency had `(N−1)·M·‖Â(r)‖² < N·|A|·(|A|−κ)`
+then summing the `N−1` strict inequalities would give `M·Σ‖Â(r)‖² < N·|A|·(|A|−κ) = ‖S‖`,
+contradicting the lower bound.
+
+Honesty: this is the *single-scale* extraction only.  Converting the large coefficient into a genuine
+density increment on a sub-structure, and iterating, still runs into the coset-descent obstruction
+documented in Part LVII (square-difference-freeness does not descend along `g·ZMod N` cosets), and no
+fixed single-scale `M` reaches `o(N)` (Part XLVII).  So this supplies the standard analytic input
+without closing the `o(N)` Sárközy bound.  Everything is 0-axiom, built on `sqDiffFree_badMass_norm`
+(Part LVIII). -/
+theorem sqDiffFree_exists_large_fourier_coeff {N : ℕ} [NeZero N] {M : ℝ}
+    (A : Finset (ZMod N))
+    (hG : ∀ r : ZMod N, r ≠ 0 → ‖sqGaussSum r‖ ≤ M)
+    (hfree : ∀ x ∈ A, ∀ n : ZMod N, n ^ 2 ≠ 0 → x + n ^ 2 ∉ A)
+    (hbig : (Finset.univ.filter (fun n : ZMod N => n ^ 2 = 0)).card < A.card) :
+    ∃ r : ZMod N, r ≠ 0 ∧
+      (N : ℝ) * A.card
+          * ((A.card : ℝ) - ((Finset.univ.filter (fun n : ZMod N => n ^ 2 = 0)).card : ℝ))
+        ≤ ((N : ℝ) - 1) * M * ‖fourierCoeff A r‖ ^ 2 := by
+  classical
+  set κ := (Finset.univ.filter (fun n : ZMod N => n ^ 2 = 0)).card with hκ
+  -- basic sizes
+  have hκpos : 1 ≤ κ := Finset.card_pos.mpr ⟨0, by simp⟩
+  have hAN : A.card ≤ N := by simpa [ZMod.card] using Finset.card_le_card (Finset.subset_univ A)
+  have hN2 : 2 ≤ N := by omega
+  have hκR : (κ : ℝ) < (A.card : ℝ) := by exact_mod_cast hbig
+  have hApos : (0 : ℝ) < A.card := by
+    have : (1 : ℝ) ≤ (κ : ℝ) := by exact_mod_cast hκpos
+    linarith
+  have hNm1 : (0 : ℝ) < (N : ℝ) - 1 := by
+    have : (2 : ℝ) ≤ (N : ℝ) := by exact_mod_cast hN2
+    linarith
+  set B := (N : ℝ) * A.card * ((A.card : ℝ) - (κ : ℝ)) with hBdef
+  set T := Finset.univ \ {(0 : ZMod N)} with hT
+  set S := T.sum (fun r : ZMod N => (↑(‖fourierCoeff A r‖ ^ 2) : ℂ) * sqGaussSum r) with hS
+  set P := T.sum (fun r : ZMod N => ‖fourierCoeff A r‖ ^ 2) with hP
+  have hTcard : T.card = N - 1 := by
+    rw [hT, show Finset.univ \ {(0 : ZMod N)} = Finset.univ.erase 0 from
+      Finset.sdiff_singleton_eq_erase _ _,
+      Finset.card_erase_of_mem (Finset.mem_univ _), Finset.card_univ, ZMod.card]
+  have hTne : T.Nonempty := Finset.card_pos.mp (by rw [hTcard]; omega)
+  -- membership ⇒ nonzero
+  have hmem0 : ∀ r ∈ T, r ≠ 0 := by
+    intro r hr
+    rw [hT, Finset.mem_sdiff, Finset.mem_singleton] at hr; exact hr.2
+  -- exact lower bound: ‖S‖ = B
+  have hnormS : ‖S‖ = (N : ℝ) * ((A.card : ℝ) * |(A.card : ℝ) - (κ : ℝ)|) :=
+    sqDiffFree_badMass_norm A hfree
+  have habs : |(A.card : ℝ) - (κ : ℝ)| = (A.card : ℝ) - (κ : ℝ) :=
+    abs_of_nonneg (by linarith)
+  have hSB : ‖S‖ = B := by rw [hnormS, habs, hBdef]; ring
+  -- upper bound: ‖S‖ ≤ P·M
+  have hchain : ‖S‖ ≤ P * M := by
+    calc ‖S‖ ≤ T.sum (fun r : ZMod N => ‖(↑(‖fourierCoeff A r‖ ^ 2) : ℂ) * sqGaussSum r‖) := by
+            rw [hS]; exact norm_sum_le T _
+      _ = T.sum (fun r : ZMod N => ‖fourierCoeff A r‖ ^ 2 * ‖sqGaussSum r‖) := by
+            apply Finset.sum_congr rfl; intro r _
+            rw [norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (by positivity)]
+      _ ≤ T.sum (fun r : ZMod N => ‖fourierCoeff A r‖ ^ 2 * M) := by
+            apply Finset.sum_le_sum; intro r hr
+            exact mul_le_mul_of_nonneg_left (hG r (hmem0 r hr)) (by positivity)
+      _ = P * M := by rw [hP, ← Finset.sum_mul]
+  -- pigeonhole
+  by_contra hcon
+  push_neg at hcon
+  have hlt : T.sum (fun r : ZMod N => ((N : ℝ) - 1) * M * ‖fourierCoeff A r‖ ^ 2)
+      < T.sum (fun _ : ZMod N => B) := by
+    apply Finset.sum_lt_sum_of_nonempty hTne
+    intro r hr
+    exact hcon r (hmem0 r hr)
+  have hsumL : T.sum (fun r : ZMod N => ((N : ℝ) - 1) * M * ‖fourierCoeff A r‖ ^ 2)
+      = ((N : ℝ) - 1) * M * P := by rw [hP, ← Finset.mul_sum]
+  have hsumB : T.sum (fun _ : ZMod N => B) = ((N : ℝ) - 1) * B := by
+    rw [Finset.sum_const, hTcard, nsmul_eq_mul, Nat.cast_sub (by omega : 1 ≤ N)]; push_cast; ring
+  rw [hsumL, hsumB, mul_assoc] at hlt
+  have hMP : M * P < B := lt_of_mul_lt_mul_left hlt (le_of_lt hNm1)
+  have hBle : B ≤ M * P := by rw [← hSB, mul_comm]; exact hchain
+  linarith
+
 end Szemeredi.Roth
