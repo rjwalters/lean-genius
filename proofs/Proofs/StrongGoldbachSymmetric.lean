@@ -1098,4 +1098,57 @@ example : ((Finset.range 5).filter (fun k => 6 ∣ k)).card = 1 := by decide
 example : symmetricPairCount 25 ≤ ((Finset.range 25).filter (fun k => 6 ∣ k)).card + 1 :=
   symmetricPairCount_le_card_dvd_six_succ (by decide) (by decide)
 
+/-- **Count of multiples of `6` below `m`.**  For `m ≥ 1` there are exactly
+`(m - 1) / 6 + 1` multiples of `6` in `range m` (the offsets `0, 6, 12, …`).  This is the
+finite arithmetic behind the "roughly `m/6`" language accompanying the hexagonal ceiling:
+splitting off the always-present offset `k = 0` reduces the count to the positive
+multiples counted by `Nat.card_multiples'`. -/
+theorem card_range_filter_dvd_six {m : ℕ} (hm : 0 < m) :
+    ((Finset.range m).filter (fun k => 6 ∣ k)).card = (m - 1) / 6 + 1 := by
+  have hsplit : (Finset.range m).filter (fun k => 6 ∣ k)
+      = insert 0 ((Finset.range m).filter (fun k => k ≠ 0 ∧ 6 ∣ k)) := by
+    ext k
+    simp only [Finset.mem_insert, Finset.mem_filter, Finset.mem_range]
+    constructor
+    · rintro ⟨hk, hd⟩
+      rcases eq_or_ne k 0 with rfl | hne
+      · exact Or.inl rfl
+      · exact Or.inr ⟨hk, hne, hd⟩
+    · rintro (rfl | ⟨hk, _, hd⟩)
+      · exact ⟨hm, dvd_zero 6⟩
+      · exact ⟨hk, hd⟩
+  rw [hsplit, Finset.card_insert_of_notMem (by simp)]
+  have hkey := Nat.card_multiples' (m - 1) 6
+  rw [Nat.succ_eq_add_one, Nat.sub_add_cancel hm] at hkey
+  rw [hkey]
+
+/-- **Closed-form hexagonal ceiling on the comet height.**  For odd `m` coprime to `3`,
+
+    symmetricPairCount m ≤ (m - 1) / 6 + 2.
+
+This is the explicit `≈ m / 6` form of the period-`6` banding
+(`symmetricPairCount_le_card_dvd_six_succ`), obtained by evaluating the count of
+multiples of `6` below `m` via `card_range_filter_dvd_six`.  It is a threefold
+sharpening of the parity ceiling `symmetricPairCount m ≤ ⌈m/2⌉`
+(`symmetricPairCount_le_half`), and at midpoints coprime to `6` beats the half-totient
+ceiling `symmetricPairCount_le_half_totient_succ_of_odd` as well. -/
+theorem symmetricPairCount_le_div_six {m : ℕ} (hm : Odd m) (hm3 : ¬ 3 ∣ m) :
+    symmetricPairCount m ≤ (m - 1) / 6 + 2 := by
+  have hpos : 0 < m := by obtain ⟨j, hj⟩ := hm; omega
+  calc symmetricPairCount m
+      ≤ ((Finset.range m).filter (fun k => 6 ∣ k)).card + 1 :=
+        symmetricPairCount_le_card_dvd_six_succ hm hm3
+    _ = (m - 1) / 6 + 1 + 1 := by rw [card_range_filter_dvd_six hpos]
+    _ = (m - 1) / 6 + 2 := rfl
+
+-- `m = 5`: `(5 - 1) / 6 + 2 = 0 + 2 = 2`, matching the exact height `2`
+-- (`10 = 5 + 5 = 3 + 7`) and sharper than the half-totient ceiling `φ(5)/2 + 1 = 3`.
+example : symmetricPairCount 5 ≤ (5 - 1) / 6 + 2 :=
+  symmetricPairCount_le_div_six (by decide) (by decide)
+
+-- `m = 25`: `(25 - 1) / 6 + 2 = 4 + 2 = 6`, matching the hexagonal-count ceiling and
+-- bounding the actual height `4`.
+example : symmetricPairCount 25 ≤ (25 - 1) / 6 + 2 :=
+  symmetricPairCount_le_div_six (by decide) (by decide)
+
 end StrongGoldbach
