@@ -60,13 +60,16 @@
       "card_colorings_cut: for u ≠ v, exactly half of the 2^|V| two-colorings separate the edge {u,v} (2·|{c | c u ≠ c v}| = |all colorings|), proved by the involution that flips the color of u alone — a bijection between the separating and non-separating colorings.",
       "two_mul_sum_bichromaticEdges: the Fubini/averaging identity 2·∑_c bichromaticEdges G c = edgeCount G · 2^|V|, obtained by swapping the sum over colorings with the sum over edges and applying the per-edge count.",
       "edgeCount_le_two_mul_maxCut: Erdős's max-cut bound — every graph has a 2-coloring separating at least half of its edges (edgeCount G ≤ 2·maxCut G), by max ≥ average over all colorings; ℕ-valued with denominators cleared, axiom-free.",
-      "bipartitionNumber_le_maxCut: dual of the max-cut bound — at most half of the edges must be deleted to make G bipartite (bipartitionNumber G ≤ maxCut G), immediate from the bound and the complementarity bipartitionNumber + maxCut = edgeCount."
+      "bipartitionNumber_le_maxCut: dual of the max-cut bound — at most half of the edges must be deleted to make G bipartite (bipartitionNumber G ≤ maxCut G), immediate from the bound and the complementarity bipartitionNumber + maxCut = edgeCount.",
+      "monochromaticEdges_add_edge_le / bichromaticEdges_add_edge_le: single-edge step bounds — adding one edge {a,b} raises the monochromatic (resp. bichromatic) count of any fixed 2-coloring by at most one (the added ordered pair is the only pair that can change), via a Finset insert/card_insert_le argument; axiom-free.",
+      "bipartitionNumber_add_edge_le / maxCut_add_edge_le: adding one edge raises bipartitionNumber (resp. maxCut) by at most one, by transferring the per-coloring step bound through the optimal coloring; axiom-free.",
+      "bipartitionNumber_add_edge_sandwich / maxCut_add_edge_sandwich: both extremal invariants are 1-Lipschitz under a single-edge edit — if H = G + {a,b} then the invariant lands in {value(G), value(G)+1}. Sharpens the earlier monotonicity (which only gave the lower bound ≥) with a matching +1 upper bound; the exact modulus of continuity for the edge-edit metric. Axiom-free."
     ],
     "axiomCount": 1,
-    "lineCount": 634,
+    "lineCount": 948,
     "assumptions": "1 axiom: rodl_tuza_theorem (the deep Rödl–Tuza 1985 result, stated as an assumption since a full formalization of the extremal argument is out of scope). The chromatic number is now defined intrinsically (least number of colors admitting a proper coloring) rather than axiomatized, and is proved well-defined by chromaticNumber_le_card. 0 sorries.",
-    "theoremCount": 18,
-    "definitionCount": 14
+    "theoremCount": 37,
+    "definitionCount": 13
   },
   "overview": {
     "historicalContext": "Erdős Problem #744 originates from a question posed by Erdős, Hajnal, and Szemerédi in the early 1980s (references [Er81] and [EHS82]). The problem concerns a fundamental question about the structure of k-chromatic critical graphs: how many edges must be removed to make such a graph bipartite? The function f_k(n) measures the minimum number of edge deletions needed across all k-critical graphs on n vertices.\n\nThe case k = 3 is trivial: the only 3-critical graphs are odd cycles, and removing any single edge yields a path (which is bipartite), so f_3(n) = 1. For k ≥ 4, early results were encouraging for the conjecture. Gallai (1968) established that f_4(n) ≤ O(√n), and Lovász extended this to f_k(n) ≤ O(n^{1-1/(k-2)}) for general k. Erdős and collaborators conjectured that f_k(n) → ∞ as n → ∞, and specifically asked whether f_4(n) grows at least as fast as log(n).\n\nIn a surprising turn, Rödl and Tuza disproved the conjecture entirely in 1985. They showed that for every fixed k ≥ 3, the function f_k(n) is eventually constant: f_k(n) = C(k-1, 2) = (k-1)(k-2)/2 for all sufficiently large n. This means the non-bipartiteness of large k-critical graphs is concentrated in a bounded substructure, regardless of the total graph size.",
@@ -189,10 +192,10 @@
       "Finset"
     ],
     "namespace": "Erdos744",
-    "lineCount": 634,
+    "lineCount": 948,
     "axiomCount": 1,
-    "theoremCount": 22,
-    "definitionCount": 15,
+    "theoremCount": 37,
+    "definitionCount": 13,
     "path": "Proofs/Erdos744Problem.lean",
     "sorries": 0
   },

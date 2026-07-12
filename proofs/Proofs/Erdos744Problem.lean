@@ -590,6 +590,126 @@ theorem two_mul_bipartitionNumber_le_edgeCount {V : Type*} [Fintype V] [LinearOr
   have hle := bipartitionNumber_le_maxCut G
   omega
 
+/-
+# Part 3d: Single-edge Lipschitz continuity
+
+Monotonicity (`bipartitionNumber_mono`, `maxCut_mono`) says both extremal
+invariants can only *grow* when edges are added, but says nothing about how
+*fast*. The sharp statement is that they are **1-Lipschitz** for the single-edge
+edit: adding one edge `{a,b}` changes each invariant by *at most one*. The only
+new monochromatic (resp. bichromatic) pair a fixed colouring `c` can acquire is
+the added ordered pair `(a,b)` itself, so its count rises by at most one; passing
+to the optimal colouring transfers the bound to the invariant. Combined with
+monotonicity this pins `bipartitionNumber H ∈ {bipartitionNumber G,
+bipartitionNumber G + 1}` when `H = G + {a,b}` (and likewise for `maxCut`). All
+axiom-free.
+-/
+
+/-- **Single-edge step bound for monochromatic edges.** If every edge of `H` is
+either an edge of `G` or the single new edge `{a,b}` (with `a < b`), then for any
+fixed 2-colouring the monochromatic-edge count of `H` exceeds that of `G` by at
+most one — the added ordered pair `(a,b)` is the only pair that can become
+monochromatic. -/
+theorem monochromaticEdges_add_edge_le {V : Type*} [Fintype V] [LinearOrder V]
+    (G H : SimpleGraph' V) [DecidableRel G.Adj] [DecidableRel H.Adj]
+    (a b : V) (hab : a < b)
+    (hnew : ∀ u v, H.Adj u v → G.Adj u v ∨ (u = a ∧ v = b) ∨ (u = b ∧ v = a))
+    (c : V → Bool) :
+    monochromaticEdges H c ≤ monochromaticEdges G c + 1 := by
+  unfold monochromaticEdges
+  refine le_trans (Finset.card_le_card ?_) (Finset.card_insert_le (a, b) _)
+  intro p hp
+  simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hp
+  obtain ⟨hlt, hadj, hc⟩ := hp
+  rcases hnew p.1 p.2 hadj with hG | ⟨h1, h2⟩ | ⟨h1, h2⟩
+  · apply Finset.mem_insert_of_mem
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and]
+    exact ⟨hlt, hG, hc⟩
+  · have hp_eq : p = (a, b) := Prod.ext_iff.mpr ⟨h1, h2⟩
+    rw [hp_eq]; exact Finset.mem_insert_self _ _
+  · exfalso; rw [h1, h2] at hlt; exact absurd hlt (not_lt.mpr hab.le)
+
+/-- **Single-edge step bound for bichromatic edges.** Dual of
+`monochromaticEdges_add_edge_le`: adding the edge `{a,b}` (with `a < b`) raises
+the cut size of any fixed colouring by at most one, the added pair `(a,b)` being
+the only pair that can become newly separated. -/
+theorem bichromaticEdges_add_edge_le {V : Type*} [Fintype V] [LinearOrder V]
+    (G H : SimpleGraph' V) [DecidableRel G.Adj] [DecidableRel H.Adj]
+    (a b : V) (hab : a < b)
+    (hnew : ∀ u v, H.Adj u v → G.Adj u v ∨ (u = a ∧ v = b) ∨ (u = b ∧ v = a))
+    (c : V → Bool) :
+    bichromaticEdges H c ≤ bichromaticEdges G c + 1 := by
+  unfold bichromaticEdges
+  refine le_trans (Finset.card_le_card ?_) (Finset.card_insert_le (a, b) _)
+  intro p hp
+  simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hp
+  obtain ⟨hlt, hadj, hc⟩ := hp
+  rcases hnew p.1 p.2 hadj with hG | ⟨h1, h2⟩ | ⟨h1, h2⟩
+  · apply Finset.mem_insert_of_mem
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and]
+    exact ⟨hlt, hG, hc⟩
+  · have hp_eq : p = (a, b) := Prod.ext_iff.mpr ⟨h1, h2⟩
+    rw [hp_eq]; exact Finset.mem_insert_self _ _
+  · exfalso; rw [h1, h2] at hlt; exact absurd hlt (not_lt.mpr hab.le)
+
+/-- **Adding one edge raises the bipartition number by at most one.** If `H` is
+`G` together with a single edge `{a,b}`, then `bipartitionNumber H ≤
+bipartitionNumber G + 1`: transfer the per-colouring step bound
+(`monochromaticEdges_add_edge_le`) through the `G`-optimal colouring. -/
+theorem bipartitionNumber_add_edge_le {V : Type*} [Fintype V] [LinearOrder V]
+    (G H : SimpleGraph' V) [DecidableRel G.Adj] [DecidableRel H.Adj]
+    (a b : V) (hab : a < b)
+    (hnew : ∀ u v, H.Adj u v → G.Adj u v ∨ (u = a ∧ v = b) ∨ (u = b ∧ v = a)) :
+    bipartitionNumber H ≤ bipartitionNumber G + 1 := by
+  obtain ⟨c, hc⟩ := exists_coloring_eq_bipartitionNumber G
+  calc bipartitionNumber H ≤ monochromaticEdges H c := bipartitionNumber_le H c
+    _ ≤ monochromaticEdges G c + 1 := monochromaticEdges_add_edge_le G H a b hab hnew c
+    _ = bipartitionNumber G + 1 := by rw [hc]
+
+/-- **Adding one edge raises the max-cut by at most one.** Dual of
+`bipartitionNumber_add_edge_le`: `maxCut H ≤ maxCut G + 1`, via the `H`-optimal
+cut and the per-colouring step bound `bichromaticEdges_add_edge_le`. -/
+theorem maxCut_add_edge_le {V : Type*} [Fintype V] [LinearOrder V]
+    (G H : SimpleGraph' V) [DecidableRel G.Adj] [DecidableRel H.Adj]
+    (a b : V) (hab : a < b)
+    (hnew : ∀ u v, H.Adj u v → G.Adj u v ∨ (u = a ∧ v = b) ∨ (u = b ∧ v = a)) :
+    maxCut H ≤ maxCut G + 1 := by
+  unfold maxCut
+  obtain ⟨c, -, hc⟩ :=
+    Finset.exists_mem_eq_sup' (Finset.univ_nonempty (α := V → Bool)) (bichromaticEdges H)
+  rw [hc]
+  have hstep := bichromaticEdges_add_edge_le G H a b hab hnew c
+  have hle : bichromaticEdges G c
+      ≤ (Finset.univ : Finset (V → Bool)).sup' Finset.univ_nonempty (bichromaticEdges G) :=
+    Finset.le_sup' (bichromaticEdges G) (Finset.mem_univ c)
+  omega
+
+/-- **The bipartition number is 1-Lipschitz under a single-edge edit.** If `H` is
+`G` with one edge `{a,b}` added (`G ⊆ H` and `H` adds nothing beyond `{a,b}`),
+then `bipartitionNumber H` is either `bipartitionNumber G` or `bipartitionNumber
+G + 1`. The lower bound is monotonicity (`bipartitionNumber_mono`); the upper
+bound is the single-edge step `bipartitionNumber_add_edge_le`. -/
+theorem bipartitionNumber_add_edge_sandwich {V : Type*} [Fintype V] [LinearOrder V]
+    (G H : SimpleGraph' V) [DecidableRel G.Adj] [DecidableRel H.Adj]
+    (a b : V) (hab : a < b)
+    (hsub : ∀ u v, G.Adj u v → H.Adj u v)
+    (hnew : ∀ u v, H.Adj u v → G.Adj u v ∨ (u = a ∧ v = b) ∨ (u = b ∧ v = a)) :
+    bipartitionNumber G ≤ bipartitionNumber H ∧
+      bipartitionNumber H ≤ bipartitionNumber G + 1 :=
+  ⟨bipartitionNumber_mono G H hsub, bipartitionNumber_add_edge_le G H a b hab hnew⟩
+
+/-- **The max-cut is 1-Lipschitz under a single-edge edit.** Dual of
+`bipartitionNumber_add_edge_sandwich`: adding one edge `{a,b}` leaves `maxCut H`
+either equal to `maxCut G` or one larger. Lower bound `maxCut_mono`, upper bound
+`maxCut_add_edge_le`. -/
+theorem maxCut_add_edge_sandwich {V : Type*} [Fintype V] [LinearOrder V]
+    (G H : SimpleGraph' V) [DecidableRel G.Adj] [DecidableRel H.Adj]
+    (a b : V) (hab : a < b)
+    (hsub : ∀ u v, G.Adj u v → H.Adj u v)
+    (hnew : ∀ u v, H.Adj u v → G.Adj u v ∨ (u = a ∧ v = b) ∨ (u = b ∧ v = a)) :
+    maxCut G ≤ maxCut H ∧ maxCut H ≤ maxCut G + 1 :=
+  ⟨maxCut_mono G H hsub, maxCut_add_edge_le G H a b hab hnew⟩
+
 /--
 **The f_k(n) Function**
 
