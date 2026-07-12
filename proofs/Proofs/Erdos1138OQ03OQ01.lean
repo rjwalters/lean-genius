@@ -449,4 +449,39 @@ theorem consecutive_gap_div_le_rpow_sub_one_of_bound {θ : ℝ} {x p q : ℕ}
       ≤ (x : ℝ) ^ θ / x := by gcongr
     _ = (x : ℝ) ^ (θ - 1) := hdiv
 
+/-- **θ-generic effective individual-gap bound.** The θ-generic counterpart of
+`consecutive_gap_le_eps_effective`, completing the θ-generic gap-level trilogy alongside
+`consecutive_gap_le_rpow_of_bound` (`≤ x^θ`) and `consecutive_gap_div_le_rpow_sub_one_of_bound`
+(`/x ≤ x^(θ-1)`).  Given *any* sup-level power bound `maxPrimeGap x ≤ x^θ` at a point `x > 0`
+and the explicit threshold `1 ≤ ε · x^(1-θ)` — the exponent-generic form of the concrete
+`1 ≤ ε · x^0.475` (with `0.475 = 1 - 0.525`), equivalently `x^(θ-1) ≤ ε`, the point at which the
+normalised envelope `x^(θ-1)` has dropped below `ε` — every consecutive-prime gap `q - p` with
+`q ≤ x` already satisfies `q - p ≤ ε · x`.  The arithmetic input (the exponent `θ` and the bound)
+is decoupled from the sup→gap bridge exactly as in the rest of the `_of_bound` family;
+`consecutive_gap_le_eps_effective` is the instance `θ = 0.525` with the bound supplied by
+`baker_harman_pintz`.  Positivity of `ε` is not assumed — it is forced by the threshold, since
+`x^(1-θ) > 0`. -/
+theorem consecutive_gap_le_eps_effective_of_bound {θ : ℝ} {x p q : ℕ} (ε : ℝ)
+    (hx : 0 < x) (hbound : (maxPrimeGap x : ℝ) ≤ (x : ℝ) ^ θ)
+    (hthr : 1 ≤ ε * (x : ℝ) ^ (1 - θ))
+    (hp : Nat.Prime p) (hq : Nat.Prime q) (hpq : p < q) (hqx : q ≤ x)
+    (hcons : ∀ r, Nat.Prime r → p < r → q ≤ r) :
+    ((q - p : ℕ) : ℝ) ≤ ε * x := by
+  have hx_pos : (0 : ℝ) < (x : ℝ) := by exact_mod_cast hx
+  -- Gap-level bound: q - p ≤ x^θ.
+  have h1 : ((q - p : ℕ) : ℝ) ≤ (x : ℝ) ^ θ :=
+    consecutive_gap_le_rpow_of_bound hbound hp hq hpq hqx hcons
+  -- x^θ · x^(1-θ) = x^1 = x, so multiplying the threshold by x^θ ≥ 0 gives x^θ ≤ ε · x.
+  have hθnn : (0 : ℝ) ≤ (x : ℝ) ^ θ := Real.rpow_nonneg (le_of_lt hx_pos) _
+  have hmul : (x : ℝ) ^ θ * (x : ℝ) ^ (1 - θ) = x := by
+    rw [← Real.rpow_add hx_pos, show θ + (1 - θ) = 1 by ring, Real.rpow_one]
+  have h2 : (x : ℝ) ^ θ ≤ ε * x := by
+    calc (x : ℝ) ^ θ
+        = (x : ℝ) ^ θ * 1 := by ring
+      _ ≤ (x : ℝ) ^ θ * (ε * (x : ℝ) ^ (1 - θ)) :=
+          mul_le_mul_of_nonneg_left hthr hθnn
+      _ = ε * ((x : ℝ) ^ θ * (x : ℝ) ^ (1 - θ)) := by ring
+      _ = ε * x := by rw [hmul]
+  exact le_trans h1 h2
+
 end Erdos1138OQ03
