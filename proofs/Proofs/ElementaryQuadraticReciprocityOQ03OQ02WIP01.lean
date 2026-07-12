@@ -177,6 +177,6 @@ theorem kronecker2_eq_neg_one_iff (a : ℤ) : kronecker2 a = -1 ↔ a % 8 = 3 �
   split_ifs with h1 h2
   · exact ⟨fun h => by norm_num at h, fun h => by omega⟩
   · exact ⟨fun h => by norm_num at h, fun h => by omega⟩
-  · exact ⟨fun _ => rfl, fun _ => by omega⟩
+  · exact ⟨fun _ => by omega, fun _ => rfl⟩
 
 end KroneckerSymbol
