@@ -93,9 +93,12 @@ retrieve_solution() {
     tmp_dir=$(mktemp -d "${TMPDIR:-/tmp}/aristotle-retrieve-XXXXXX")
     local archive_path="$tmp_dir/result.tar.gz"
 
-    # Download the result archive
+    # Download the result archive.
+    # v2 (issue #38098): `aristotle result` was removed; `aristotle download
+    # <project_id> --destination <path>` is the v2 equivalent (verified via
+    # `aristotle download --help`).
     local cli_output
-    cli_output=$(uvx --from aristotlelib aristotle result "$project_id" --destination "$archive_path" 2>&1) || {
+    cli_output=$(uvx --from aristotlelib aristotle download "$project_id" --destination "$archive_path" 2>&1) || {
         rm -rf "$tmp_dir"
         # Check for common error patterns
         if echo "$cli_output" | grep -qi "not found\|404\|does not exist"; then
@@ -411,10 +414,18 @@ recover_server_completed() {
     echo -e "${BLUE}=== Recovering Completed Server Jobs ===${NC}"
     echo ""
 
-    # Get completed projects from server
+    # Get finished projects from server.
+    # v2 (issue #38098): the v1 project-level COMPLETE enum was removed; a
+    # project whose solve task has finished reports project status IDLE
+    # (the fine-grained COMPLETE / COMPLETE_WITH_ERRORS / FAILED distinction
+    # lives under `aristotle tasks <project-id>`). We list IDLE projects here
+    # and let the downstream sorry-count comparison decide whether each
+    # downloaded result is actually an improvement — a FAILED project simply
+    # yields "no improvement" and is skipped, so listing IDLE (rather than
+    # per-task filtering) is both correct and cheaper on API calls.
     local output
-    output=$(uvx --from aristotlelib aristotle list --status COMPLETE --limit 100 2>&1) || {
-        echo -e "${RED}Failed to query server for completed projects${NC}"
+    output=$(uvx --from aristotlelib aristotle list --status IDLE --limit 100 2>&1) || {
+        echo -e "${RED}Failed to query server for finished projects${NC}"
         return 1
     }
 
@@ -423,13 +434,13 @@ recover_server_completed() {
     server_ids=$(echo "$output" | grep -oE '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}' 2>/dev/null || true)
 
     if [[ -z "$server_ids" ]]; then
-        echo "No completed projects found on server"
+        echo "No finished projects found on server"
         return 0
     fi
 
     local total_server
     total_server=$(echo "$server_ids" | wc -l | tr -d ' ')
-    echo "Found $total_server completed projects on server"
+    echo "Found $total_server finished (IDLE) projects on server"
 
     # Get locally tracked project IDs
     local tracked_ids
