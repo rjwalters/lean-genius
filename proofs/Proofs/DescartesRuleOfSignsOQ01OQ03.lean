@@ -1041,4 +1041,72 @@ theorem signChangesInCoeffs_reverse_smul {c : ℝ} (hc : c ≠ 0) {p : ℝ[X]}
     rw [coeff_smul, smul_eq_mul]; exact mul_ne_zero hc h0
   rw [signChangesInCoeffs_reverse h0', signChangesInCoeffs_smul hc]
 
+/-- **Invariance under a pointwise-positive weight.**  Multiplying a sequence entrywise by
+*any* strictly positive weight `g i > 0` leaves the number of sign changes unchanged: the
+non-vanishing pattern is preserved (a positive factor cannot create or destroy a zero) and each
+`oppositeSign` test `g i·f i · (g j·f j) = (g i·g j)·(f i·f j) < 0` has the same truth value as
+`f i·f j < 0` because `g i·g j > 0`.  This strictly generalises the positive case of
+`countSignChanges_const_smul` (constant weight `g ≡ c`) to a *per-index* positive weight, and is
+the combinatorial engine behind dilation invariance `signChangesInCoeffs_comp_C_mul_X`.
+Axiom-free, general in `n`. -/
+theorem countSignChanges_mul_pos {n : ℕ} {g : Fin n → ℝ} (hg : ∀ i, 0 < g i) (f : Fin n → ℝ) :
+    DescartesRuleOfSigns.countSignChanges (fun i => g i * f i)
+      = DescartesRuleOfSigns.countSignChanges f := by
+  unfold DescartesRuleOfSigns.countSignChanges
+  congr 1
+  ext ⟨i, j⟩
+  simp only [Finset.mem_filter, Finset.mem_univ, true_and, decide_eq_true_eq,
+    DescartesRuleOfSigns.SignChangeBetween, DescartesRuleOfSigns.oppositeSign]
+  constructor
+  · rintro ⟨hij, hi, hj, hbtw, hopp⟩
+    refine ⟨hij, ?_, ?_, ?_, ?_⟩
+    · exact fun h => hi (by rw [h, mul_zero])
+    · exact fun h => hj (by rw [h, mul_zero])
+    · intro k hk1 hk2
+      exact (mul_eq_zero.mp (hbtw k hk1 hk2)).resolve_left (hg k).ne'
+    · have e : g i * f i * (g j * f j) = g i * g j * (f i * f j) := by ring
+      rw [e] at hopp
+      by_contra hcon
+      push_neg at hcon
+      exact absurd hopp (not_lt.mpr (mul_nonneg (mul_pos (hg i) (hg j)).le hcon))
+  · rintro ⟨hij, hi, hj, hbtw, hopp⟩
+    refine ⟨hij, mul_ne_zero (hg i).ne' hi, mul_ne_zero (hg j).ne' hj, ?_, ?_⟩
+    · intro k hk1 hk2
+      rw [hbtw k hk1 hk2, mul_zero]
+    · have e : g i * f i * (g j * f j) = g i * g j * (f i * f j) := by ring
+      rw [e]
+      exact mul_neg_of_pos_of_neg (mul_pos (hg i) (hg j)) hopp
+
+/-- **Positive-dilation invariance: `V(p(cX)) = V(p)` for `c > 0`.**  Descartes' sign-change
+count is unchanged by a positive rescaling of the variable `p(X) ↦ p(cX)`.  Indeed
+`(p(cX)).coeff k = c^k · p.coeff k` (`comp_C_mul_X_coeff`), so the coefficient sequence is the
+original scaled entrywise by the strictly positive weights `c^{d-i}`; `countSignChanges_mul_pos`
+then leaves the count fixed.  Classically this reflects that `p(cX)` has positive roots `r/c` —
+the positive roots of `p` scaled by `1/c > 0` — so both the positive-root count and its Descartes
+bound `V` are preserved.  This completes the invariance family alongside scaling
+(`signChangesInCoeffs_smul`), negation (`signChangesInCoeffs_neg`), and reversal
+(`signChangesInCoeffs_reverse`).  Axiom-free. -/
+theorem signChangesInCoeffs_comp_C_mul_X {c : ℝ} (hc : 0 < c) (p : ℝ[X]) :
+    DescartesRuleOfSigns.signChangesInCoeffs (p.comp (C c * X))
+      = DescartesRuleOfSigns.signChangesInCoeffs p := by
+  unfold DescartesRuleOfSigns.signChangesInCoeffs
+  by_cases hp : p = 0
+  · subst hp; simp
+  · have hc0 : c ≠ 0 := hc.ne'
+    have hcomp0 : p.comp (C c * X) ≠ 0 := by
+      rw [Ne, comp_C_mul_X_eq_zero_iff (mem_nonZeroDivisors_of_ne_zero hc0)]
+      exact hp
+    have hdeg : (p.comp (C c * X)).natDegree = p.natDegree := by
+      rw [natDegree_comp, natDegree_C_mul_X c hc0, mul_one]
+    rw [dif_neg hcomp0, dif_neg hp, hdeg]
+    have hcoe : DescartesRuleOfSigns.coeffSequence (p.comp (C c * X)) p.natDegree
+        = fun i => c ^ (p.natDegree - i.val) *
+            DescartesRuleOfSigns.coeffSequence p p.natDegree i := by
+      funext i
+      simp only [DescartesRuleOfSigns.coeffSequence]
+      rw [comp_C_mul_X_coeff]
+      ring
+    rw [hcoe]
+    exact countSignChanges_mul_pos (fun i => pow_pos hc _) _
+
 end DescartesRuleOfSignsOQ01OQ03
