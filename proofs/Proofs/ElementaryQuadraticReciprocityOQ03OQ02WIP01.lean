@@ -103,4 +103,40 @@ theorem kronecker2_add_mul_eight (a k : ℤ) :
     kronecker2 (a + 8 * k) = kronecker2 a :=
   kronecker2_congr (by rw [Int.add_mul_emod_self_left])
 
+-- ============================================================
+-- Section C: `8` is the *minimal* period — `(·/2)` is primitive (conductor `8`)
+-- ============================================================
+
+/-- **`kronecker2` is not `4`-periodic.**  `kronecker2 (a + 4) = kronecker2 a` fails —
+    witnessed at `a = 1`, where `kronecker2 5 = −1 ≠ 1 = kronecker2 1`
+    (`kronecker2_five`, `kronecker2_one`).  So the period-`8` character `(·/2)` does not
+    descend to a character mod `4`. -/
+theorem kronecker2_not_period_four : ¬ ∀ a : ℤ, kronecker2 (a + 4) = kronecker2 a := by
+  intro h
+  have h1 := h 1
+  rw [show (1 : ℤ) + 4 = 5 by norm_num, kronecker2_five, kronecker2_one] at h1
+  norm_num at h1
+
+/-- **`kronecker2` is not `2`-periodic.**  `kronecker2 (a + 2) = kronecker2 a` fails at
+    `a = 1`: `kronecker2 3 = −1 ≠ 1 = kronecker2 1` (`kronecker2_three`,
+    `kronecker2_one`).  A fortiori `(·/2)` is not `1`-periodic either. -/
+theorem kronecker2_not_period_two : ¬ ∀ a : ℤ, kronecker2 (a + 2) = kronecker2 a := by
+  intro h
+  have h1 := h 1
+  rw [show (1 : ℤ) + 2 = 3 by norm_num, kronecker2_three, kronecker2_one] at h1
+  norm_num at h1
+
+/-- **`8` is the exact conductor of `(·/2)`: primitivity.**  The `(·/2)` character
+    `kronecker2` is periodic with period `8` (`kronecker2_add_mul_eight`) but with no
+    proper divisor of `8` as a period — neither `4` (`kronecker2_not_period_four`) nor `2`
+    (`kronecker2_not_period_two`).  Hence `8` is its *minimal* period: `χ₈ = (·/2)` is a
+    **primitive** Dirichlet character mod `8`, not induced from a character of any smaller
+    modulus.  This upgrades the period-`8` statement to the sharp conductor, the input the
+    Gauss-sum route needs (only primitive characters have nonvanishing Gauss sums). -/
+theorem kronecker2_conductor_eight :
+    (∀ a k : ℤ, kronecker2 (a + 8 * k) = kronecker2 a) ∧
+      (¬ ∀ a : ℤ, kronecker2 (a + 4) = kronecker2 a) ∧
+      (¬ ∀ a : ℤ, kronecker2 (a + 2) = kronecker2 a) :=
+  ⟨kronecker2_add_mul_eight, kronecker2_not_period_four, kronecker2_not_period_two⟩
+
 end KroneckerSymbol

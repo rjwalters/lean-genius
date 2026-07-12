@@ -40,10 +40,10 @@
     "badge": "wip",
     "sorries": 0,
     "axiomCount": 0,
-    "theoremCount": 5,
+    "theoremCount": 8,
     "defCount": 0,
     "definitionCount": 0,
-    "lineCount": 106,
+    "lineCount": 142,
     "dateAdded": "2026-07-11",
     "assumptions": "0 axioms, 0 sorries — every result is machine-verified from the parent file's public API (propext, Classical.choice, Quot.sound only; the two kronecker2 results use only propext). Status is kept 'wip'/'axiomatized' to match the parent: the file proves genuine new lemmas (numerator periodicity of (a/n) for odd positive n via kronecker_congr_left / kronecker_add_mul_left / kronecker_periodic_left, and full period-8 periodicity of the (a/2) character via kronecker2_congr / kronecker2_add_mul_eight) but the broader open target — wiring kronecker2 into the definition at even moduli and generalized quadratic reciprocity for arbitrary fundamental discriminants — remains unformalized, exactly as documented in the parent's module note. Nothing new is assumed.",
     "mathlib_version": "4.26.0"
