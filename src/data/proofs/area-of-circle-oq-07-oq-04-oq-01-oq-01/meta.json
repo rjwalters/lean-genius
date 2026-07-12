@@ -95,9 +95,16 @@
   },
   "sections": [
     {
+      "id": "setup-separable-gaussian",
+      "title": "Setup: the separable Gaussian over ℝⁿ",
+      "startLine": 1,
+      "endLine": 45,
+      "summary": "Imports, docstring, and namespace preamble. The load-bearing import is Mathlib.MeasureTheory.Integral.Pi (integral_fintype_prod_volume_eq_pow), which supplies the n-dimensional Fubini engine; GaussianIntegral supplies the base line integral. ℝⁿ is modeled as Fin n → ℝ under the product Lebesgue measure and ∑ᵢ xᵢ² is the squared Euclidean norm ‖x‖². The docstring frames the entry as the arbitrary-dimension generalization of the parent's 2-D polar evaluation, resting on the single structural fact that e^{-b∑xᵢ²} is separable."
+    },
+    {
       "id": "product-fubini",
       "title": "The product–Fubini step (arbitrary dimension)",
-      "startLine": 1,
+      "startLine": 46,
       "endLine": 60,
       "summary": "gaussian_pow_eq_integral_pi: ∫_{ℝⁿ} e^{-b∑xᵢ²} = (∫_ℝ e^{-b t²})ⁿ. The separable integrand factors via Real.exp_sum + Finset.mul_sum into ∏ᵢ e^{-b xᵢ²}, and integral_fintype_prod_volume_eq_pow collapses the product integral to a power. Holds for every real b."
     },
