@@ -77,14 +77,22 @@
       "Γ(1/2) = √π and the Gaussian ∫_ℝ e^{−x²} = √π are the SAME number, not merely numerically equal: the substitution u = x² maps Γ(1/2) = ∫₀^∞ u^{−1/2} e^{−u} du onto 2∫₀^∞ e^{−x²} = ∫_ℝ e^{−x²}.",
       "The half-line form Γ(1/2) = 2·∫_{x>0} e^{−x²} is the faithful image of that substitution — it is where the change of variables lands before even symmetry folds it into the full line.",
       "Squaring gives Γ(1/2)² = π, the Gamma-side counterpart of the parent's (∫_ℝ e^{−x²})² = π, both surfacing the circle constant π from a 1-D exponential integral.",
-      "The entry is deliberately honest about provenance: badge 'mathlib' (Tier B), because Real.Gamma_one_half_eq already proves the headline; the contribution is the explicit identification with the parent Gaussian, not an independent derivation."
+      "The entry is deliberately honest about provenance: badge 'mathlib' (Tier B), because Real.Gamma_one_half_eq already proves the headline; the contribution is the explicit identification with the parent Gaussian, not an independent derivation.",
+      "Γ(1/2)² = π is also the s = 1/2 case of Euler's reflection formula Γ(s)·Γ(1−s) = π / sin(πs): at s = 1/2 the right side is π/sin(π/2) = π, so the functional equation alone forces Γ(1/2) = √π (up to sign, fixed by positivity of the Gamma integral) — a purely algebraic route to the same value that the analytic Gaussian computation must, and does, agree with."
     ]
   },
   "sections": [
     {
+      "id": "derivation",
+      "title": "The Substitution u = x²: From Gamma to Gaussian",
+      "startLine": 1,
+      "endLine": 33,
+      "summary": "The header docstring frames the open question and derives the identity: Γ(1/2) = ∫₀^∞ u^{−1/2} e^{−u} du, and the substitution u = x² (du = 2x dx, u^{−1/2} = x⁻¹) turns it into 2∫₀^∞ e^{−x²} dx = ∫_ℝ e^{−x²} dx = √π. Mathlib packages exactly this substitution inside Real.Gamma_one_half_eq. The imports pull in only the Gaussian-integral file and Tactic."
+    },
+    {
       "id": "special-value",
       "title": "The Special Value Γ(1/2) = √π",
-      "startLine": 1,
+      "startLine": 35,
       "endLine": 37,
       "summary": "gamma_one_half_eq_sqrt_pi restates Mathlib's Real.Gamma_one_half_eq: the Euler Gamma function at 1/2 evaluates to √π. The headline identity, recorded as the anchor for the Gaussian bridges that follow."
     },
