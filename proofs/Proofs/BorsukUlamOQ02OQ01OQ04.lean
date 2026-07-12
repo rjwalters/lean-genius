@@ -22,8 +22,8 @@ References:
 - Volovikov, "On the index of G-spaces" (1996)
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Order.CompleteLattice
 import Mathlib.Tactic
 import Proofs.BorsukUlamOQ02OQ01
 

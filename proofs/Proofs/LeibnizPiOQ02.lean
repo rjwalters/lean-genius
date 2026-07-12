@@ -1,6 +1,6 @@
+import Mathlib
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Arctan
 import Mathlib.Analysis.SpecialFunctions.Log.Deriv
-import Mathlib.Data.Real.Pi.Leibniz
 import Mathlib.Topology.Algebra.InfiniteSum.Basic
 import Mathlib.Tactic
 

@@ -26,9 +26,9 @@ References:
 - https://erdosproblems.com/1059
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Data.Nat.Prime.Infinite
-import Mathlib.Data.Set.Finite
 import Mathlib.Data.Finset.Card
 import Mathlib.Tactic
 import Proofs.Erdos1059OQ01

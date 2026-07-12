@@ -32,11 +32,10 @@ References:
 Tags: diophantine-approximation, metric-number-theory, measure-theory
 -/
 
-import Mathlib.NumberTheory.ArithmeticFunction
+import Mathlib
 import Mathlib.Topology.MetricSpace.Basic
 import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
 import Mathlib.Data.Real.Basic
-import Mathlib.Algebra.BigOperators.Group.Finset
 
 open scoped Nat
 

@@ -11,10 +11,10 @@ in every 3-uniform hypergraph of chromatic number > ℵ₀.
 - Erdős–Galvin–Hajnal, investigations on similar problems (1975)
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Set.Basic
-import Mathlib.Data.Set.Finite
 import Mathlib.SetTheory.Cardinal.Basic
 import Mathlib.Tactic
 

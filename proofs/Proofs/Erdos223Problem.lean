@@ -18,8 +18,8 @@ Reference: https://erdosproblems.com/223
 Originally a conjecture of Vázsonyi.
 -/
 
+import Mathlib
 import Mathlib.Analysis.InnerProductSpace.PiL2
-import Mathlib.Analysis.NormedSpace.Basic
 import Mathlib.Topology.MetricSpace.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card

@@ -22,9 +22,9 @@ Background:
 Tags: number-theory, prime-factors, analytic-number-theory
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Data.Finset.Card
-import Mathlib.NumberTheory.ArithmeticFunction
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 
 namespace Erdos452

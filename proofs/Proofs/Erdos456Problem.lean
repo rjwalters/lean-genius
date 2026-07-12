@@ -32,10 +32,10 @@ Final: 0 axioms, 0 sorries. All infrastructure fully verified.
 Adapted from erdosproblems.com (Apache 2.0 License)
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Data.Nat.Totient
 import Mathlib.Order.ConditionallyCompleteLattice.Basic
-import Mathlib.Data.Rat.Order
 import Mathlib.Data.Finset.Card
 import Mathlib.NumberTheory.LSeries.PrimesInAP
 

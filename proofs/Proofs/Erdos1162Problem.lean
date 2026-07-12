@@ -26,12 +26,11 @@ References:
 - [RoTr25] Roney-Dougal-Tracey, "The number of subgroups of the symmetric group" (2025)
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.GroupTheory.Perm.Basic
 import Mathlib.GroupTheory.Perm.Finite
-import Mathlib.GroupTheory.Subgroup.Basic
-import Mathlib.GroupTheory.Subgroup.Finite
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Order.Filter.Basic
 import Mathlib.Topology.Basic

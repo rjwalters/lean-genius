@@ -29,9 +29,9 @@ References:
 - OEIS A098990: Related sequence
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.NumberTheory.LegendreSymbol.Basic
-import Mathlib.Analysis.Asymptotics.Asymptotics
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Data.Real.Basic
 

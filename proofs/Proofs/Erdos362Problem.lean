@@ -20,14 +20,12 @@ Key Results:
 Tags: additive-combinatorics, subset-sum, concentration, counting
 -/
 
-import Mathlib.Algebra.BigOperators.Group.Finset
+import Mathlib
 import Mathlib.Algebra.BigOperators.Ring.Finset
 import Mathlib.Data.Finset.Card
 import Mathlib.Data.Finset.Powerset
 import Mathlib.Data.Nat.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.Order.Filter.AtTopBot
-import Mathlib.Analysis.SpecialFunctions.Integrals
 
 namespace Erdos362
 

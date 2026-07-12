@@ -1,5 +1,4 @@
-import Mathlib.Combinatorics.Enumerative.Partition
-import Mathlib.Combinatorics.Enumerative.Partition
+import Mathlib
 import Mathlib.Tactic
 
 /-!

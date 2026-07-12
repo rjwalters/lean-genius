@@ -1,9 +1,8 @@
+import Mathlib
 import Mathlib.RingTheory.Polynomial.Basic
 import Mathlib.RingTheory.Ideal.Quotient.Basic
 import Mathlib.RingTheory.Ideal.Basic
 import Mathlib.Data.ZMod.Basic
-import Mathlib.Data.Polynomial.Basic
-import Mathlib.Data.Polynomial.Degree.Definitions
 import Mathlib.Tactic
 import Proofs.BorsukUlamOQ02OQ01OQ04
 

@@ -27,7 +27,7 @@ rather than the direct `irrational_nrt_of_notint_nrt` approach.
 -/
 
 import Proofs.CubeRoot2IrrationalOQ03
-import Mathlib.Data.Real.Irrational
+import Mathlib
 
 open Polynomial CubeRoot2IrrationalOQ03
 

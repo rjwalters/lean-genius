@@ -29,12 +29,12 @@ References:
          arXiv:2409.02974 (2024).
 -/
 
+import Mathlib
 import Mathlib.Combinatorics.SimpleGraph.Basic
 import Mathlib.Combinatorics.SimpleGraph.Connectivity.Subgraph
 import Mathlib.Data.Set.Card
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Mathlib.Topology.Instances.Real
 
 open Set Real SimpleGraph
 

@@ -14,7 +14,7 @@ divisors of n (excluding 1) in increasing order.
 Reference: https://erdosproblems.com/468
 -/
 
-import Mathlib.Data.Nat.Divisors
+import Mathlib
 import Mathlib.Data.Finset.Card
 import Mathlib.Data.Finset.Sort
 import Mathlib.Data.Nat.Basic

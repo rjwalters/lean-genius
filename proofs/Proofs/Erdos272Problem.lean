@@ -18,11 +18,11 @@ Szabó (1999) resolved the asymptotic: t = N²/2 + O(N^(5/3)(log N)³).
 Tags: combinatorics, intersection-theory, arithmetic-progressions
 -/
 
+import Mathlib
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Real.Basic
-import Mathlib.Algebra.Order.Floor
 
 namespace Erdos272
 

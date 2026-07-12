@@ -1,10 +1,10 @@
+import Mathlib
 import Mathlib.RingTheory.Polynomial.Basic
 import Mathlib.RingTheory.Noetherian.Basic
 import Mathlib.RingTheory.FiniteType
 import Mathlib.Algebra.MvPolynomial.Basic
 import Mathlib.Algebra.Group.Defs
 import Mathlib.GroupTheory.GroupAction.Basic
-import Mathlib.GroupTheory.Subgroup.Basic
 import Mathlib.Tactic
 
 /-!

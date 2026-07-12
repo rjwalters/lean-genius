@@ -23,11 +23,11 @@ axiomatize the ESS partial results and the Khalfalah-Szemerédi theorem,
 then derive the summary combining all results.
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Int.Basic
 import Mathlib.Data.Fintype.Basic
 import Mathlib.Combinatorics.SimpleGraph.Basic
-import Mathlib.Algebra.BigOperators.Group.Finset
 
 open Finset
 

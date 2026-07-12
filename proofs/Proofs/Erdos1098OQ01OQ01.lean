@@ -36,7 +36,7 @@ Classification (axiomatized):
 Erdős, non-commuting-graph, clique-number, group-theory, classification, dihedral
 -/
 
-import Mathlib.GroupTheory.Subgroup.Basic
+import Mathlib
 import Mathlib.GroupTheory.Subgroup.Center
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Finset.Card

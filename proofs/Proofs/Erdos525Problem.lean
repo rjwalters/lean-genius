@@ -29,11 +29,11 @@ References:
 Tags: polynomials, random-polynomials, littlewood, minimum-modulus, probability
 -/
 
+import Mathlib
 import Mathlib.Analysis.Complex.Basic
 import Mathlib.Analysis.SpecialFunctions.Complex.Circle
 import Mathlib.Probability.ProbabilityMassFunction.Basic
 import Mathlib.Algebra.Polynomial.Basic
-import Mathlib.Data.Complex.Exponential
 import Mathlib.Analysis.Normed.Field.Basic
 
 open Complex Polynomial

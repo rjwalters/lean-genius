@@ -20,7 +20,7 @@ Known:
 Reference: https://erdosproblems.com/562
 -/
 
-import Mathlib.Combinatorics.Ramsey
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Tactic
 

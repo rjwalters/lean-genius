@@ -1,4 +1,5 @@
 -- Test API availability for Erdős #312
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Real.Basic
@@ -6,7 +7,6 @@ import Mathlib.Analysis.SpecialFunctions.ExpDeriv
 import Mathlib.Analysis.SpecialFunctions.Log.Deriv
 import Mathlib.Topology.Algebra.Order.LiminfLimsup
 import Mathlib.Order.Filter.Basic
-import Mathlib.Analysis.Asymptotics.Asymptotics
 
 -- Check if harmonic series divergence is available
 #check Real.tendsto_sum_range_one_div_nat_succ_atTop

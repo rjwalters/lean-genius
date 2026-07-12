@@ -1,5 +1,5 @@
 import Proofs.TwinPrimes
-import Mathlib.Data.Finset.Lattice
+import Mathlib
 import Mathlib.Tactic
 
 /-

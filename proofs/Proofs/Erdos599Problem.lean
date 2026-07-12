@@ -24,11 +24,10 @@
   - [Er81] Erdős 1981, [Er87] Erdős 1987
 -/
 
+import Mathlib
 import Mathlib.Data.Set.Basic
-import Mathlib.Data.Set.Finite
 import Mathlib.Data.Finset.Basic
 import Mathlib.Combinatorics.SimpleGraph.Basic
-import Mathlib.Combinatorics.SimpleGraph.Connectivity
 
 open Set
 

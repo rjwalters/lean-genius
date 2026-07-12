@@ -30,11 +30,11 @@ References:
 Tags: additive-combinatorics, sumsets, additive-bases, number-theory
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
 import Mathlib.Data.Set.Basic
-import Mathlib.Algebra.BigOperators.Group.Finset
 
 open Nat Finset Set
 

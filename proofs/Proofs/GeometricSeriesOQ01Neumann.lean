@@ -1,5 +1,5 @@
+import Mathlib
 import Mathlib.Analysis.SpecificLimits.Normed
-import Mathlib.Analysis.NormedSpace.OperatorNorm.Basic
 import Mathlib.Topology.Algebra.InfiniteSum.Basic
 import Mathlib.Tactic
 

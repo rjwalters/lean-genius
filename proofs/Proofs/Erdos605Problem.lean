@@ -25,13 +25,13 @@ References:
 - Swanepoel, Valtr (2004): "The unit distance problem on spheres"
 -/
 
+import Mathlib
 import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.Topology.MetricSpace.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Real.Sqrt
 import Mathlib.Data.Finset.Card
 import Mathlib.Data.Fintype.Basic
-import Mathlib.Order.Filter.AtTopBot
 
 open Real Finset
 

@@ -30,17 +30,16 @@
   - Dyachenko, E., arXiv:2511.07465 (2025), Theorem 9.21
 -/
 
+import Mathlib
 import Mathlib.Tactic.Ring
 import Mathlib.Tactic.Linarith
 import Mathlib.Tactic.FieldSimp
 import Mathlib.Tactic.Positivity
-import Mathlib.Tactic.Omega
 import Mathlib.Tactic.NormNum
 import Mathlib.Tactic.IntervalCases
 import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Data.Nat.GCD.Basic
 import Mathlib.Data.Int.Basic
-import Mathlib.Data.Rat.Basic
 import Mathlib.NumberTheory.SumTwoSquares
 import Mathlib.Data.ZMod.Basic
 

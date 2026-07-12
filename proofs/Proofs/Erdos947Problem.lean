@@ -33,12 +33,11 @@ References:
 Tags: number-theory, covering-systems, congruences, modular-arithmetic
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Int.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.ZMod.Basic
-import Mathlib.Data.Rat.Basic
-import Mathlib.Algebra.BigOperators.Group.Finset
 
 open Finset BigOperators
 

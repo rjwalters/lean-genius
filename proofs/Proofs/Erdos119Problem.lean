@@ -19,12 +19,11 @@ for all large $n$?
 *Reference:* [erdosproblems.com/119](https://www.erdosproblems.com/119)
 -/
 
+import Mathlib
 import Mathlib.Analysis.SpecialFunctions.Complex.Circle
-import Mathlib.Analysis.NormedSpace.Basic
 import Mathlib.Order.Filter.Basic
 import Mathlib.Topology.Algebra.Order.LiminfLimsup
 import Mathlib.Topology.Order.Basic
-import Mathlib.Algebra.BigOperators.Group.Finset
 
 open Filter Finset
 

@@ -23,8 +23,8 @@ Origin: [EFRS93] - Erdős, Faudree, Rousseau, Schelp (1993)
 Tags: ramsey-theory, graph-theory, odd-cycles, extremal-graph-theory
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Nat.Defs
 import Mathlib.Combinatorics.SimpleGraph.Basic
 import Mathlib.Order.Bounds.Basic
 

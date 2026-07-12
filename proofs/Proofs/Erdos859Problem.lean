@@ -31,10 +31,10 @@
   Tags: number-theory, divisors, density, asymptotics
 -/
 
+import Mathlib
 import Mathlib.NumberTheory.Divisors
 import Mathlib.Data.Finset.Basic
 import Mathlib.Topology.Algebra.InfiniteSum.Real
-import Mathlib.Analysis.Asymptotics.Asymptotics
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Order.Filter.Basic
 import Mathlib.Tactic

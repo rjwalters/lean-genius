@@ -27,10 +27,10 @@ References:
 - OEIS: A186736
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.GCD.Basic
 import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Data.Finset.Basic
-import Mathlib.NumberTheory.ArithmeticFunction
 
 open Nat Finset BigOperators
 

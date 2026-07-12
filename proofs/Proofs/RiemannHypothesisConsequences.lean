@@ -18,13 +18,12 @@ See: Mathlib/NumberTheory/LSeries/RiemannZeta.lean
 - p_{n+1} - p_n = O(√p_n log p_n)
 -/
 
+import Mathlib
 import Mathlib.NumberTheory.LSeries.RiemannZeta
 import Mathlib.NumberTheory.LSeries.Nonvanishing
 import Mathlib.NumberTheory.LSeries.HurwitzZetaValues
 import Mathlib.NumberTheory.LSeries.Dirichlet
 import Mathlib.NumberTheory.EulerProduct.DirichletLSeries
-import Mathlib.NumberTheory.ArithmeticFunction
-import Mathlib.NumberTheory.VonMangoldt
 import Mathlib.NumberTheory.PrimeCounting
 import Mathlib.Data.Real.Sqrt
 import Mathlib.Tactic

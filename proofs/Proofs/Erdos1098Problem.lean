@@ -29,8 +29,8 @@ References:
 Tags: group-theory, graph-theory, non-commuting-graph
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
-import Mathlib.GroupTheory.Subgroup.Basic
 import Mathlib.GroupTheory.Index
 import Mathlib.GroupTheory.QuotientGroup.Basic
 

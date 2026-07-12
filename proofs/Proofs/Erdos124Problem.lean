@@ -15,10 +15,9 @@ Conjectured by Burr, Erdős, Graham, and Li [BEGL96].
 Reference: https://erdosproblems.com/124
 -/
 
-import Mathlib.Data.Nat.Digits
+import Mathlib
 import Mathlib.Data.Nat.GCD.Basic
 import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Rat.Basic
 import Mathlib.Order.Filter.Basic
 import Mathlib.Tactic
 

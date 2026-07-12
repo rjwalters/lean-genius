@@ -22,7 +22,7 @@
   Tags: hypergraph, coloring, property-b, combinatorics
 -/
 
-import Mathlib.Combinatorics.SetFamily.Basic
+import Mathlib
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Fintype.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic

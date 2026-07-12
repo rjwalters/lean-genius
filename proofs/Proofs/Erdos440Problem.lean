@@ -25,11 +25,11 @@ References:
 - van Doorn: Sharp constant
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Nat.GCD.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Real.Sqrt
-import Mathlib.Algebra.BigOperators.Group.Finset
 
 namespace Erdos440
 

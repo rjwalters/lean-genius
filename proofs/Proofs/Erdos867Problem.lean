@@ -28,10 +28,10 @@ References:
 - D. Coppersmith, S. Phillips, "On a question of Erdős on subsequence sums", SIAM J. Discrete Math. (1996)
 -/
 
+import Mathlib
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
 import Mathlib.Data.Finset.Interval
-import Mathlib.Data.Nat.Interval
 import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 import Mathlib.Order.Interval.Finset.Nat
 import Mathlib.Data.Real.Basic

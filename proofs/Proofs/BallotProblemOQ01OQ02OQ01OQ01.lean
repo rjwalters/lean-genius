@@ -1,6 +1,6 @@
+import Mathlib
 import Mathlib.Data.Set.Card
 import Mathlib.Data.Set.Finite.Basic
-import Mathlib.Algebra.BigOperators.Group.Finset
 import Proofs.BallotProblemOQ01OQ02OQ01
 
 /-

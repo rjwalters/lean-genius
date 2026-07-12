@@ -18,11 +18,10 @@ References:
 - https://erdosproblems.com/293
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Rat.Basic
 import Mathlib.Data.Real.Basic
-import Mathlib.Algebra.BigOperators.Group.Finset
 
 open Finset BigOperators
 

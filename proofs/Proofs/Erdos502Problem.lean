@@ -15,8 +15,8 @@ The problem was posed to Erdős by Coxeter.
 Reference: https://erdosproblems.com/502
 -/
 
+import Mathlib
 import Mathlib.Analysis.InnerProductSpace.Basic
-import Mathlib.Combinatorics.Choose.Basic
 import Mathlib.Data.Finset.Card
 import Mathlib.Data.Real.Basic
 import Mathlib.Tactic

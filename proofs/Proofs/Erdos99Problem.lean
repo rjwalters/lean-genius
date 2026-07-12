@@ -25,12 +25,12 @@ References: [Er94b], [Er95], [Er97e]
 Related: Problem #103
 -/
 
+import Mathlib
 import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.Topology.MetricSpace.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Real.Sqrt
 import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Set.Finite
 
 open Real Set Finset
 

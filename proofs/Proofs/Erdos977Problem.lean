@@ -17,10 +17,10 @@
   Tags: number-theory, prime-factors, mersenne
 -/
 
+import Mathlib
 import Mathlib.NumberTheory.Primorial
 import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.Topology.Instances.Real
 import Mathlib.Tactic
 
 namespace Erdos977

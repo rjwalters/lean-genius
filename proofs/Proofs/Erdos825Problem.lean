@@ -17,10 +17,10 @@ sufficiently high abundancy forces semiperfectness.
 Reference: https://erdosproblems.com/825
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
-import Mathlib.Data.Rat.Basic
 import Mathlib.Tactic
 
 /- ## Divisor-sum and proper divisors -/

@@ -31,9 +31,9 @@ References:
 - Erdős [Er81, p.26]
 -/
 
+import Mathlib
 import Mathlib.Data.Set.Basic
 import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Set.Finite
 
 open Set Finset
 

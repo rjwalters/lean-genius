@@ -25,8 +25,8 @@
   Tags: number-theory, powerful-numbers, density, additive-combinatorics
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.NumberTheory.Squarefree
 import Mathlib.Data.Multiset.Basic
 import Mathlib.Order.Filter.Basic
 import Mathlib.Data.Real.Basic

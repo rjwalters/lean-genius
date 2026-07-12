@@ -24,10 +24,10 @@ all ≈n²/6 lines through pairs contain exactly 3 points.
 Tags: combinatorics, incidence-geometry, beck-theorem, szemerédi-trotter
 -/
 
+import Mathlib
 import Mathlib.Data.Set.Card
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Real.Basic
-import Mathlib.Algebra.Order.Ring.Lemmas
 
 namespace Erdos211
 

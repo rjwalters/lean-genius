@@ -29,11 +29,10 @@ References:
 - OEIS A390246: Related sequence
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Nat.Interval
 import Mathlib.Order.Interval.Finset.Nat
-import Mathlib.Algebra.Order.Floor
 
 open Nat Finset
 

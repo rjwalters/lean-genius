@@ -23,10 +23,10 @@ Key Results:
 Tags: additive-combinatorics, sumsets, complement-sets
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Set.Basic
 import Mathlib.Data.Finset.Basic
-import Mathlib.Analysis.Asymptotics.Asymptotics
 
 open Nat Set Finset
 

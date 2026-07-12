@@ -17,8 +17,8 @@ Known bounds:
 Reference: https://erdosproblems.com/115
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Rat.Basic
 import Mathlib.Tactic
 
 /- ## Polynomial and Lemniscate Abstractions -/

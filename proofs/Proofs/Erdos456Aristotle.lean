@@ -10,10 +10,10 @@
   - No axioms (use theorem ... := by sorry instead)
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Data.Nat.Totient
 import Mathlib.Order.ConditionallyCompleteLattice.Basic
-import Mathlib.Data.Rat.Order
 import Mathlib.Data.Finset.Card
 
 open Nat Set

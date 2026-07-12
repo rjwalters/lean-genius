@@ -24,12 +24,12 @@
   Tags: hypergraph, turán-number, extremal-combinatorics
 -/
 
+import Mathlib
 import Mathlib.Combinatorics.SimpleGraph.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
 import Mathlib.Data.Nat.Choose.Basic
 import Mathlib.Data.Real.Basic
-import Mathlib.Topology.Instances.Real
 
 namespace Erdos712
 

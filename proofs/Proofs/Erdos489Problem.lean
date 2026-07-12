@@ -19,10 +19,9 @@ References:
   Magyar Tud. Akad. Mat. Kutató Int. Közl. (1961), 221-254.
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Real.Basic
-import Mathlib.Analysis.Asymptotics.Asymptotics
-import Mathlib.NumberTheory.Squarefree
 
 open Asymptotics Filter
 

@@ -1,7 +1,7 @@
 -- Test API availability for Erdős 301
+import Mathlib
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Rat.Defs
-import Mathlib.Data.Rat.Order
 import Mathlib.Order.Filter.Basic
 import Mathlib.Tactic
 

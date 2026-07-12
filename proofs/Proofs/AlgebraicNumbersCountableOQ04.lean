@@ -1,9 +1,8 @@
+import Mathlib
 import Mathlib.RingTheory.Algebraic.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Analysis.SpecialFunctions.ExpDeriv
-import Mathlib.Data.Complex.Exponential
 import Mathlib.LinearAlgebra.LinearIndependent.Basic
-import Mathlib.Data.Real.Irrational
 import Mathlib.Data.Nat.Prime.Infinite
 import Mathlib.Tactic
 

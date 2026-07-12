@@ -17,12 +17,11 @@ Reference: https://erdosproblems.com/339
 restricted addition and further results", J. Reine Angew. Math. (2003), 199-220.
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
-import Mathlib.Data.Set.Finite
 import Mathlib.Data.Real.Basic
-import Mathlib.Order.Filter.AtTopBot
 
 open Finset Set Filter
 

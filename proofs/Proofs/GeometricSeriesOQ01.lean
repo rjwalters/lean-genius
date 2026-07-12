@@ -1,4 +1,4 @@
-import Mathlib.Algebra.GeomSum
+import Mathlib
 import Mathlib.Analysis.SpecificLimits.Normed
 import Mathlib.Topology.Algebra.InfiniteSum.Basic
 import Mathlib.Tactic

@@ -28,11 +28,10 @@ References:
          (addresses an alternative formulation)
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Data.ZMod.Basic
 import Mathlib.NumberTheory.LegendreSymbol.Basic
-import Mathlib.Analysis.Asymptotics.Asymptotics
-import Mathlib.Order.Filter.AtTopBot
 
 open Filter Asymptotics Nat
 

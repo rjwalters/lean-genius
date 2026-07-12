@@ -23,11 +23,11 @@
   - [Er92f] L. Erdős, "On some problems of P. Turán" (1992)
 -/
 
+import Mathlib
 import Mathlib.Data.Complex.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Analysis.Complex.Basic
 import Mathlib.Data.Finset.Basic
-import Mathlib.Algebra.BigOperators.Group.Finset
 
 open Complex Finset BigOperators
 

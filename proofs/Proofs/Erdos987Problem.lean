@@ -28,11 +28,10 @@ is pinpointed up to a √(log k) factor.
 Reference: https://erdosproblems.com/987
 -/
 
+import Mathlib
 import Mathlib.Analysis.SpecialFunctions.Complex.Circle
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
-import Mathlib.Topology.Instances.Real
 import Mathlib.Data.Real.Basic
-import Mathlib.Data.Complex.Exponential
 
 open Complex Real Filter
 

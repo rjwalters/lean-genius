@@ -27,12 +27,12 @@ References:
 Tags: geometry, distances, discrete-geometry, solved
 -/
 
+import Mathlib
 import Mathlib.Analysis.InnerProductSpace.EuclideanDist
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Real.Sqrt
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
-import Mathlib.Algebra.BigOperators.Group.Finset
 
 open Finset Real
 

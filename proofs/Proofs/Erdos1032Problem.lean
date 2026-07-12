@@ -19,9 +19,9 @@ Every 4-chromatic critical graph on n vertices has ≥ (5/3 + o(1))n edges.
 Reference: https://erdosproblems.com/1032
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Rat.Basic
 import Mathlib.Tactic
 
 /- ## Graph properties (axiomatised) -/

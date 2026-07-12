@@ -15,7 +15,7 @@ Status: OPEN
 Reference: https://erdosproblems.com/117
 -/
 
-import Mathlib.GroupTheory.Subgroup.Basic
+import Mathlib
 import Mathlib.Data.Finset.Card
 import Mathlib.Data.Nat.Basic
 import Mathlib.Tactic

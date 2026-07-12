@@ -19,6 +19,7 @@ References:
 - https://erdosproblems.com/1042
 -/
 
+import Mathlib
 import Mathlib.Data.Complex.Basic
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Real.Basic
@@ -26,7 +27,6 @@ import Mathlib.Topology.Basic
 import Mathlib.Analysis.Complex.Basic
 import Mathlib.Topology.Connected.Clopen
 import Mathlib.SetTheory.Cardinal.Finite
-import Mathlib.Algebra.BigOperators.Group.Finset
 
 open Complex BigOperators
 

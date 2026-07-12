@@ -29,8 +29,8 @@ References:
 - Elsholtz-Planitzer [ElPl21]: Upper bounds
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Rat.Basic
 import Mathlib.Data.Finset.Card
 import Mathlib.Data.Set.Finite.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic

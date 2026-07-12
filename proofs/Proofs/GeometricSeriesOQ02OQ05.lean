@@ -24,7 +24,7 @@
 -/
 
 import Proofs.GeometricSeriesOQ02
-import Mathlib.Analysis.NormedSpace.Basic
+import Mathlib
 
 open NeumannSeries Topology Filter
 

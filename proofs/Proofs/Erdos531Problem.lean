@@ -11,11 +11,11 @@ of size k such that all non-empty subset sums are monochromatic. Estimate F(k).
 Reference: https://erdosproblems.com/531
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Powerset
 import Mathlib.Data.Set.Basic
-import Mathlib.Combinatorics.Additive.SalemSpencer
 import Mathlib.Order.BoundedOrder.Basic
 
 namespace Erdos531

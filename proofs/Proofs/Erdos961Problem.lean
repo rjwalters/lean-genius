@@ -25,12 +25,11 @@
   Tags: number-theory, smooth-numbers, prime-factors, analytic-number-theory
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Factorization.Basic
 import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.NumberTheory.SmoothNumbers
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.Analysis.Asymptotics.Asymptotics
-import Mathlib.Order.Filter.AtTopBot
 import Mathlib.Tactic
 
 namespace Erdos961

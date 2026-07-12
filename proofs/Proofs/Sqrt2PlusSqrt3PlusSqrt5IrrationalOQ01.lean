@@ -41,7 +41,7 @@ in by the S2 PREP iteration (#18353 sessions doc).
 - [x] `irrational_sqrt2_plus_sqrt3_plus_sqrt5` — proven (`eq_div_iff` + `push_cast` + `irrational_sqrt_thirty`)
 -/
 
-import Mathlib.Data.Real.Irrational
+import Mathlib
 import Mathlib.Data.Real.Sqrt
 import Mathlib.Tactic
 import Proofs.Sqrt2PlusSqrt3Irrational

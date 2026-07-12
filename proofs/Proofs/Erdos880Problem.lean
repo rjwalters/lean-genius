@@ -18,10 +18,10 @@ References:
 - Hegyvári-Hennecart-Plagne [HHP07]: Complete resolution (2007)
 -/
 
+import Mathlib
 import Mathlib.Data.Set.Basic
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Finset.Basic
-import Mathlib.Order.Filter.AtTopBot
 
 namespace Erdos880
 

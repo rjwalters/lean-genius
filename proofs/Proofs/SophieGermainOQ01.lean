@@ -1,7 +1,7 @@
 import Proofs.SophieGermain
 import Proofs.SophieGermainOQ02
+import Mathlib
 import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Finset.Lattice
 import Mathlib.Tactic
 
 /-

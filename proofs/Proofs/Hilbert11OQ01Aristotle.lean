@@ -7,9 +7,9 @@
   for each i : Fin n, define ev_i : A ⊗[ℚ] (Fin n → ℚ) →ₗ[ℚ] A by a ⊗ₜ w ↦ a * (w i : A).
   Then ev_i(1 ⊗ₜ v) = (v i : A), giving v i = w i from 1 ⊗ₜ v = 1 ⊗ₜ w.
 -/
+import Mathlib
 import Mathlib.LinearAlgebra.QuadraticForm.TensorProduct
 import Mathlib.RingTheory.TensorProduct.Basic
-import Mathlib.Algebra.Module.Flat.Basic
 import Mathlib.Algebra.Algebra.Rat
 import Mathlib.NumberTheory.Padics.PadicNumbers
 import Mathlib.Tactic

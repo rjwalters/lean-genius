@@ -31,7 +31,7 @@ References:
 - Falikman, D. I. (1981): "Proof of the van der Waerden conjecture"
 -/
 
-import Mathlib.LinearAlgebra.Matrix.DoublyStochastic
+import Mathlib
 import Mathlib.LinearAlgebra.Matrix.Permanent
 import Mathlib.Data.Real.Basic
 import Mathlib.Algebra.BigOperators.Group.Finset.Basic

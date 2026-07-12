@@ -16,8 +16,8 @@ Reference:
 - [He86] Hegyvári, 1986
 -/
 
+import Mathlib
 import Mathlib.Data.Finset.Basic
-import Mathlib.Algebra.BigOperators.Group.Finset
 
 open Finset BigOperators
 

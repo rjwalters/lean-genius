@@ -1,10 +1,8 @@
+import Mathlib
 import Mathlib.RingTheory.Algebraic.Basic
 import Mathlib.Analysis.SpecialFunctions.ExpDeriv
 import Mathlib.Analysis.SpecialFunctions.Complex.Analytic
 import Mathlib.Analysis.SpecialFunctions.Pow.Complex
-import Mathlib.Data.Real.Pi.Bounds
-import Mathlib.Data.Complex.Exponential
-import Mathlib.Data.Real.Irrational
 import Mathlib.Tactic
 
 /-!

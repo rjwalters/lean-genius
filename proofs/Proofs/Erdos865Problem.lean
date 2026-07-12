@@ -22,9 +22,9 @@ Known Results:
 Reference: https://erdosproblems.com/865
 -/
 
+import Mathlib
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Rat.Basic
 
 open Finset Nat
 

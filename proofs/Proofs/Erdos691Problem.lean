@@ -15,12 +15,12 @@ Known results:
 Reference: https://erdosproblems.com/691
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Set.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
 import Mathlib.Data.Real.Basic
-import Mathlib.Order.Filter.AtTopBot
 import Mathlib.Tactic
 
 open Finset Set Filter

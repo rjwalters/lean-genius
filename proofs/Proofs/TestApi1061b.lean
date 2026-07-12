@@ -1,6 +1,6 @@
 -- Test API availability for erdos-1061 multiplicativity approach
+import Mathlib
 import Mathlib.NumberTheory.Divisors
-import Mathlib.NumberTheory.ArithmeticFunction
 import Mathlib.Data.Nat.Prime.Basic
 
 open Nat BigOperators Finset ArithmeticFunction

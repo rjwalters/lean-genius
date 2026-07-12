@@ -21,10 +21,9 @@ References:
 - Liu and Sawhney [LiSa24]: "On further questions regarding unit fractions" (2024)
 -/
 
+import Mathlib
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
-import Mathlib.Data.Rat.Basic
-import Mathlib.Data.Rat.Order
 import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 import Mathlib.Data.Real.Basic
 

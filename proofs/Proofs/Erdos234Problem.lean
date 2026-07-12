@@ -12,6 +12,7 @@ For every c ≥ 0, the density f(c) of integers n for which
 - Erdős, "On the difference of consecutive primes" (1935, 1940)
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Data.Nat.Nth
@@ -23,7 +24,6 @@ import Mathlib.Analysis.SpecialFunctions.ExpDeriv
 import Mathlib.Topology.Order.Basic
 import Mathlib.Topology.Algebra.Order.LiminfLimsup
 import Mathlib.Order.Filter.Basic
-import Mathlib.Order.Filter.AtTopBot
 import Mathlib.Tactic
 import Proofs.RiemannHypothesis
 

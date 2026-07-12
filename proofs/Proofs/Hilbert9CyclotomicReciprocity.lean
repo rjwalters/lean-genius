@@ -1,5 +1,5 @@
+import Mathlib
 import Mathlib.NumberTheory.Cyclotomic.Gal
-import Mathlib.NumberTheory.Cyclotomic.Rat
 import Mathlib.Data.Nat.Totient
 import Mathlib.SetTheory.Cardinal.Finite
 import Mathlib.Tactic.NormNum

@@ -24,10 +24,10 @@ Vjekoslav Kovač, and independently by Noga Alon.
 - Mrazović-Kovač, Alon: Resolution
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
-import Mathlib.Data.Set.Finite
 
 namespace Erdos471
 

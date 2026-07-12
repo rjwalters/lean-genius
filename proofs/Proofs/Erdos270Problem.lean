@@ -35,11 +35,10 @@ References:
 - Crmarić-Kovač [CrKo25]: Disproof - any α ∈ (0,∞) is achievable
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Real.Basic
-import Mathlib.Data.Rat.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Mathlib.Topology.Instances.Real
 import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
 
 open Real Nat

@@ -1,8 +1,7 @@
+import Mathlib
 import Mathlib.Analysis.SpecialFunctions.Stirling
 import Mathlib.Analysis.Asymptotics.Defs
 import Mathlib.Data.Real.Basic
-import Mathlib.Data.Complex.ExponentialBounds
-import Mathlib.Data.Real.Pi.Bounds
 import Mathlib.Tactic
 
 /-!

@@ -23,9 +23,9 @@ Find the asymptotic formula for general k and n relationship.
 Tags: combinatorics, latin-rectangles, asymptotic-enumeration
 -/
 
+import Mathlib
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Real.Basic
-import Mathlib.Analysis.Asymptotics.Asymptotics
 import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 
 namespace Erdos725

@@ -40,7 +40,7 @@ result connecting the binomial and Poisson distributions; this supplies it.
 - [x] 0 sorries, 0 axioms
 -/
 
-import Mathlib.Probability.Distributions.Poisson
+import Mathlib
 import Mathlib.Analysis.SpecialFunctions.Complex.LogBounds
 import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Data.Nat.Factorial.BigOperators

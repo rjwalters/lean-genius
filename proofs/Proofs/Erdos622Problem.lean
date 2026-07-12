@@ -17,10 +17,10 @@
   Tags: graph-theory, extremal-combinatorics, cycles
 -/
 
+import Mathlib
 import Mathlib.Combinatorics.SimpleGraph.Basic
 import Mathlib.Combinatorics.SimpleGraph.Connectivity.WalkCounting
 import Mathlib.Data.Fintype.Basic
-import Mathlib.Analysis.Asymptotics.Asymptotics
 import Mathlib.Tactic
 
 namespace Erdos622

@@ -34,11 +34,11 @@ References:
 - Erdős [Er61, p.236], [Er65b, p.228]
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Nat.GCD.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Real.Basic
-import Mathlib.Analysis.Asymptotics.Asymptotics
 
 open Nat Finset
 

@@ -22,10 +22,10 @@ this divergence alone suffices.
 Reference: https://erdosproblems.com/281
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
-import Mathlib.Data.Rat.Basic
 import Mathlib.Tactic
 
 open Finset

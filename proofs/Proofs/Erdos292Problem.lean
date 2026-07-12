@@ -27,11 +27,10 @@ References:
 Tags: number-theory, egyptian-fractions, density, unit-fractions
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Rat.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Real.Basic
-import Mathlib.Algebra.BigOperators.Group.Finset
 
 namespace Erdos292
 

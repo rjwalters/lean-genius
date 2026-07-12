@@ -20,10 +20,10 @@ Recent Development:
 Tags: discrepancy, balancing, infinite-sequences, combinatorics
 -/
 
+import Mathlib
 import Mathlib.Data.Int.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Set.Basic
-import Mathlib.Order.Filter.AtTopBot
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 
 namespace Erdos178

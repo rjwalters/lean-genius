@@ -74,7 +74,6 @@ If you add the comment "-- Harmonic `generalize_proofs` tactic" to your file, we
 import Mathlib
 
 
-import Mathlib.Tactic.GeneralizeProofs
 
 namespace Harmonic.GeneralizeProofs
 -- Harmonic `generalize_proofs` tactic

@@ -1,7 +1,7 @@
+import Mathlib
 import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Data.List.Basic
 import Mathlib.Tactic
-import Mathlib.Data.Nat.Parity
 
 -- Test basic decidability for small prime checks
 example : (3 : ℕ).Prime := by decide

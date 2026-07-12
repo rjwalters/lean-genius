@@ -19,9 +19,9 @@ disposal."
 Reference: https://erdosproblems.com/323
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Rat.Basic
 import Mathlib.Tactic
 
 /- ## Sums of k-th powers -/

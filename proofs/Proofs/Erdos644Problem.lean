@@ -22,9 +22,9 @@
   Tags: combinatorics, set-systems, covering
 -/
 
+import Mathlib
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
-import Mathlib.Data.Set.Finite
 import Mathlib.Combinatorics.SetFamily.Intersecting
 import Mathlib.Tactic
 

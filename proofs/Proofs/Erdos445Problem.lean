@@ -20,7 +20,7 @@ References:
 Tags: number-theory, modular-arithmetic, kloosterman-sums
 -/
 
-import Mathlib.NumberTheory.Padics.PadicVal
+import Mathlib
 import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Data.ZMod.Basic
 import Mathlib.Data.Real.Basic

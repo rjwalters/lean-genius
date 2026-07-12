@@ -31,12 +31,12 @@ References:
 Tags: number-theory, factorials, prime-factorization, exponents
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Nat.Factorial.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.NumberTheory.Padics.PadicVal
 
 open Finset BigOperators
 

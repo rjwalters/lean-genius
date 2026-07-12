@@ -30,11 +30,11 @@
   This file formalizes the problem statement and key definitions.
 -/
 
+import Mathlib
 import Mathlib.SetTheory.Cardinal.Basic
 import Mathlib.SetTheory.Cardinal.Ordinal
 import Mathlib.Combinatorics.SimpleGraph.Basic
 import Mathlib.Combinatorics.SimpleGraph.Coloring
-import Mathlib.Data.Nat.Parity
 
 open Cardinal Set SimpleGraph
 

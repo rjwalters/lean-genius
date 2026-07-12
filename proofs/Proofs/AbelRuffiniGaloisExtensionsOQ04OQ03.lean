@@ -50,9 +50,9 @@
   fully-specified obligation, not as an axiom.
 -/
 
+import Mathlib
 import Mathlib.Tactic
 import Mathlib.GroupTheory.QuotientGroup.Basic
-import Mathlib.GroupTheory.Subgroup.Basic
 
 namespace AbelRuffiniGaloisExtensionsOQ04OQ03
 

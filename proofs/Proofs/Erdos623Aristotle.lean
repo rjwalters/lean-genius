@@ -12,10 +12,10 @@
   - No axioms
   - No definition sorries
 -/
+import Mathlib
 import Mathlib.SetTheory.Cardinal.Ordinal
 import Mathlib.SetTheory.Cardinal.Cofinality
 import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Set.Finite
 import Mathlib.Tactic
 
 namespace Erdos623Aristotle

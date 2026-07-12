@@ -26,10 +26,10 @@ References:
 - See also Erdős Problem #333
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Set.Basic
 import Mathlib.Data.Set.Card
-import Mathlib.Data.Set.Finite
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
 

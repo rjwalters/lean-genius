@@ -31,10 +31,9 @@ Reference:
 - Erdős: "Some of my favourite problems..." Resenhas (1995)
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Set.Finite
-import Mathlib.Algebra.BigOperators.Group.Finset
 import Mathlib.NumberTheory.SumFourSquares
 
 open Nat Finset

@@ -30,12 +30,11 @@ References:
 Tags: number-theory, complete-sequences, arithmetic-progressions, subset-sums
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Set.Basic
-import Mathlib.Algebra.BigOperators.Group.Finset
 import Mathlib.Data.Real.Basic
-import Mathlib.Analysis.Asymptotics.Asymptotics
 
 open Finset BigOperators
 

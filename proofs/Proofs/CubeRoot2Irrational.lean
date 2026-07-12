@@ -4,7 +4,7 @@ Date: 2025-12-30
 Research: cube-root-2-irrational, approach-01, attempt-01
 -/
 
-import Mathlib.Data.Real.Irrational
+import Mathlib
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Tactic
 

@@ -25,11 +25,11 @@ References:
 Tags: geometry, circles, covering, convexity
 -/
 
+import Mathlib
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Topology.MetricSpace.Basic
-import Mathlib.Algebra.BigOperators.Group.Finset
 
 open Finset BigOperators
 

@@ -1,6 +1,6 @@
+import Mathlib
 import Mathlib.Data.Finset.Powerset
 import Mathlib.Data.Finset.Card
-import Mathlib.Data.Finset.Map
 import Mathlib.Data.Fintype.Card
 import Mathlib.Data.Fin.Basic
 import Mathlib.Order.ConditionallyCompleteLattice.Basic

@@ -1,10 +1,10 @@
+import Mathlib
 import Mathlib.NumberTheory.Transcendental.Liouville.Basic
 import Mathlib.NumberTheory.Transcendental.Liouville.LiouvilleNumber
 import Mathlib.NumberTheory.Transcendental.Liouville.LiouvilleWith
 import Mathlib.NumberTheory.Transcendental.Liouville.Residual
 import Mathlib.Topology.Algebra.Module.PerfectSpace
 import Mathlib.RingTheory.Algebraic.Basic
-import Mathlib.Data.Real.Irrational
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Tactic
 

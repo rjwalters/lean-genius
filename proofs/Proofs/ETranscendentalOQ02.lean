@@ -1,7 +1,6 @@
+import Mathlib
 import Mathlib.RingTheory.Algebraic.Basic
 import Mathlib.Analysis.SpecialFunctions.ExpDeriv
-import Mathlib.Data.Complex.ExponentialBounds
-import Mathlib.Data.Real.Irrational
 import Mathlib.Topology.Algebra.Order.Floor
 import Mathlib.Order.Filter.Basic
 import Mathlib.NumberTheory.Transcendental.Liouville.LiouvilleNumber

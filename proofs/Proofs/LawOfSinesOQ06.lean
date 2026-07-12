@@ -27,9 +27,9 @@ Formalized using:
 - SphericalLawOfSines.lean (spherical version)
 -/
 
+import Mathlib
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.InnerProductSpace.PiL2
-import Mathlib.Analysis.InnerProductSpace.Angle
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
 import Mathlib.Tactic
 

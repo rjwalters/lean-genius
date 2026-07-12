@@ -1,10 +1,9 @@
+import Mathlib
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.InnerProductSpace.PiL2
-import Mathlib.Analysis.InnerProductSpace.Projection
 import Mathlib.Analysis.Normed.Field.Basic
 import Mathlib.Topology.MetricSpace.Basic
 import Mathlib.Topology.Algebra.Module.Basic
-import Mathlib.LinearAlgebra.Dual
 import Mathlib.Tactic
 
 /-!

@@ -18,8 +18,8 @@ Status: OPEN
 Reference: https://erdosproblems.com/319
 -/
 
+import Mathlib
 import Mathlib.Data.Finset.Card
-import Mathlib.Data.Rat.Basic
 import Mathlib.Data.Nat.Basic
 import Mathlib.Tactic
 

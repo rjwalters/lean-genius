@@ -27,13 +27,12 @@
   Tags: extremal-graph-theory, hypercube, turan-number
 -/
 
+import Mathlib
 import Mathlib.Combinatorics.SimpleGraph.Basic
 import Mathlib.Combinatorics.SimpleGraph.Subgraph
 import Mathlib.Combinatorics.SimpleGraph.Maps
 import Mathlib.Data.Fintype.Card
 import Mathlib.Data.Real.Basic
-import Mathlib.Analysis.Asymptotics.Asymptotics
-import Mathlib.Order.Filter.AtTopBot
 
 namespace Erdos576
 

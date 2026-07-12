@@ -95,10 +95,10 @@ demonstrating how the abstract theorem applies to concrete groups.
     Proof: ℤ/nℤ is abelian, hence solvable; apply Shafarevich. -/
 theorem cyclic_group_realizable (n : ℕ) (hn : 0 < n) :
     ∃ (L : Type*) (_ : Field L) (_ : Algebra ℚ L) (_ : IsGalois ℚ L),
-      Nonempty (ZMod n ≃* (L ≃ₐ[ℚ] L)) := by
+      Nonempty (Multiplicative (ZMod n) ≃* (L ≃ₐ[ℚ] L)) := by
   haveI hne : NeZero n := ⟨by omega⟩
-  haveI : IsSolvable (ZMod n) := inferInstance
-  obtain ⟨L, _, _, _, _, hiso⟩ := @shafarevich_inverse_galois (ZMod n) _ _ _
+  haveI : IsSolvable (Multiplicative (ZMod n)) := inferInstance
+  obtain ⟨L, _, _, _, _, hiso⟩ := @shafarevich_inverse_galois (Multiplicative (ZMod n)) _ _ _
   exact ⟨L, inferInstance, inferInstance, inferInstance, hiso⟩
 
 /-- Every finite abelian group is realizable as a Galois group over ℚ.
@@ -148,8 +148,9 @@ theorem subgroup_of_solvable_realizable {G : Type*} [Group G] [Fintype G]
     [IsSolvable G] (H : Subgroup G) :
     ∃ (L : Type*) (_ : Field L) (_ : Algebra ℚ L) (_ : IsGalois ℚ L),
       Nonempty (H ≃* (L ≃ₐ[ℚ] L)) := by
-  haveI : IsSolvable H := subgroup_solvable_of_solvable H
-  obtain ⟨L, _, _, _, _, hiso⟩ := @shafarevich_inverse_galois H _ _ _
+  haveI : IsSolvable H := AbelRuffiniGaloisExtensions.subgroup_solvable_of_solvable H
+  haveI : Fintype ↥H := Fintype.ofFinite ↥H
+  obtain ⟨L, _, _, _, _, hiso⟩ := @shafarevich_inverse_galois ↥H _ _ _
   exact ⟨L, inferInstance, inferInstance, inferInstance, hiso⟩
 
 /-- Every quotient of a realizable solvable group is also realizable.
@@ -159,6 +160,7 @@ theorem quotient_of_solvable_realizable {G : Type*} [Group G] [Fintype G]
     ∃ (L : Type*) (_ : Field L) (_ : Algebra ℚ L) (_ : IsGalois ℚ L),
       Nonempty (G ⧸ N ≃* (L ≃ₐ[ℚ] L)) := by
   haveI : IsSolvable (G ⧸ N) := quotient_solvable_of_solvable N
+  haveI : Fintype (G ⧸ N) := Fintype.ofFinite (G ⧸ N)
   obtain ⟨L, _, _, _, _, hiso⟩ := @shafarevich_inverse_galois (G ⧸ N) _ _ _
   exact ⟨L, inferInstance, inferInstance, inferInstance, hiso⟩
 

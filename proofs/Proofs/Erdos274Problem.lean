@@ -15,12 +15,11 @@ Reference: https://erdosproblems.com/274
 Wikipedia: https://en.wikipedia.org/wiki/Herzog–Schönheim_conjecture
 -/
 
+import Mathlib
 import Mathlib.GroupTheory.Coset.Basic
 import Mathlib.GroupTheory.Index
 import Mathlib.Algebra.Group.Subgroup.Basic
 import Mathlib.Data.Fintype.Card
-import Mathlib.Data.Rat.Basic
-import Mathlib.Algebra.BigOperators.Group.Finset
 
 open Subgroup BigOperators
 

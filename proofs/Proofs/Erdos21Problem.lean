@@ -24,7 +24,7 @@ Conjectured: f(n) = 3n + O(1)
 Tags: combinatorics, intersecting-families, projective-planes, probabilistic-method
 -/
 
-import Mathlib.Combinatorics.SetFamily.Basic
+import Mathlib
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
 import Mathlib.Data.Nat.Basic

@@ -23,9 +23,9 @@
   Tags: complex-analysis, optimization, polynomial, geometry
 -/
 
+import Mathlib
 import Mathlib.Analysis.Complex.Basic
 import Mathlib.Analysis.SpecialFunctions.Complex.Log
-import Mathlib.Data.Complex.Exponential
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Finset.Basic
 

@@ -26,9 +26,9 @@ References:
 - Bredon, "Introduction to Compact Transformation Groups" (1972)
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Data.Nat.PrimeFin
-import Mathlib.Data.Finset.Lattice
 import Mathlib.Tactic
 import Proofs.BorsukUlamOQ02OQ01
 import Proofs.BorsukUlamOQ02OQ01OQ01

@@ -29,11 +29,10 @@ References:
 - Related: Erdős Problem #571
 -/
 
+import Mathlib
 import Mathlib.Combinatorics.SimpleGraph.Basic
 import Mathlib.Combinatorics.SimpleGraph.Subgraph
 import Mathlib.Data.Real.Basic
-import Mathlib.Analysis.Asymptotics.Asymptotics
-import Mathlib.Data.Rat.Basic
 
 open SimpleGraph Asymptotics
 

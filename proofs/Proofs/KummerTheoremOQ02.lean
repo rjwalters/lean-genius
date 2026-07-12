@@ -25,8 +25,8 @@ References:
 - Konvalinka, Pak (2007): "Non-commutative extensions of the MacMahon..."
 -/
 
+import Mathlib
 import Mathlib.RingTheory.Polynomial.Cyclotomic.Basic
-import Mathlib.Algebra.GeomSum
 import Mathlib.Data.Nat.Choose.Basic
 import Mathlib.Tactic
 import Proofs.KummerTheorem

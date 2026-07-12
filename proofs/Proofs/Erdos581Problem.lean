@@ -19,11 +19,11 @@ The answer is f(m) = m/2 + Θ(m^{4/5}).
 Reference: https://erdosproblems.com/581
 -/
 
+import Mathlib
 import Mathlib.Combinatorics.SimpleGraph.Basic
 import Mathlib.Combinatorics.SimpleGraph.Subgraph
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Nat.Basic
-import Mathlib.Algebra.Order.Ring.Lemmas
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 
 open SimpleGraph Real

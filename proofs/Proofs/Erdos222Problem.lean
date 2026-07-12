@@ -27,13 +27,12 @@ References:
 - Dietmann-Elsholtz-Kalmynin-Konyagin-Maynard [DEKKM22]
 -/
 
+import Mathlib
 import Mathlib.NumberTheory.SumTwoSquares
 import Mathlib.NumberTheory.Divisors
 import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Data.Int.Basic
-import Mathlib.Algebra.Order.Floor
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.Order.Filter.AtTopBot
 
 namespace Erdos222
 

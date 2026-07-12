@@ -1,11 +1,10 @@
+import Mathlib
 import Mathlib.RingTheory.PrincipalIdealDomain
-import Mathlib.RingTheory.GCDMonoid.Basic
 import Mathlib.Algebra.GCDMonoid.Basic
 import Mathlib.Data.Matrix.Basic
 import Mathlib.Data.Matrix.Diagonal
 import Mathlib.LinearAlgebra.Matrix.Diagonal
 import Mathlib.LinearAlgebra.Matrix.IsDiag
-import Mathlib.LinearAlgebra.Matrix.Determinant
 import Mathlib.Tactic
 
 /-

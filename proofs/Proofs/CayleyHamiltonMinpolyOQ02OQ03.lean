@@ -1,4 +1,4 @@
-import Mathlib.LinearAlgebra.Matrix.CharacteristicPolynomial
+import Mathlib
 import Mathlib.LinearAlgebra.Charpoly.Basic
 import Mathlib.Tactic
 

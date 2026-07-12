@@ -19,9 +19,9 @@ Are there infinitely many n such that P(n) > P(n+1) > P(n+2)?
 **Reference:** https://erdosproblems.com/372
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Data.Nat.Factorization.Basic
-import Mathlib.Order.Filter.AtTopBot
 import Mathlib.Topology.Instances.Nat
 import Mathlib.Data.Real.Basic
 

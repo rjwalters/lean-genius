@@ -3,10 +3,10 @@
   Routine supporting lemmas for automated proof search.
   See Erdos674Problem.lean for the main formalization.
 -/
+import Mathlib
 import Mathlib.NumberTheory.Divisors
 import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Data.Nat.GCD.Basic
-import Mathlib.Algebra.Order.Ring.Lemmas
 import Mathlib.Tactic
 
 namespace Erdos674.Aristotle

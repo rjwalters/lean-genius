@@ -26,11 +26,10 @@ Reference: [FuPa84], [Es16], [Er84], [ErPu95b]
 See also: Erdős Problem #960
 -/
 
+import Mathlib
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
-import Mathlib.Data.Set.Finite
-import Mathlib.LinearAlgebra.AffineSpace.AffineSubspace
 import Mathlib.Geometry.Euclidean.Basic
 
 open Set Finset

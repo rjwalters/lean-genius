@@ -18,9 +18,8 @@ then A has lower density 0 (proved) and density 0 (conjectured), and Σ 1/aₙ c
 - https://erdosproblems.com/357
 -/
 
-import Mathlib.Algebra.BigOperators.Group.Finset
+import Mathlib
 import Mathlib.Order.Filter.Basic
-import Mathlib.Analysis.Asymptotics.Asymptotics
 import Mathlib.Analysis.Asymptotics.Lemmas
 import Mathlib.Tactic
 

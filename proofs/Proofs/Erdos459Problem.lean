@@ -18,10 +18,10 @@ Reference: https://erdosproblems.com/459
 OEIS: A289280
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Data.Nat.Factorization.Basic
 import Mathlib.Data.Finset.Basic
-import Mathlib.Order.Filter.AtTopBot
 import Mathlib.Data.Real.Basic
 
 open Finset Nat

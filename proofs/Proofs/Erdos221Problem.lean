@@ -31,11 +31,11 @@ References:
 Tags: additive-number-theory, additive-complements, powers-of-2, primitive-roots
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Set.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.NumberTheory.ZetaFunction
 
 open Real Set
 

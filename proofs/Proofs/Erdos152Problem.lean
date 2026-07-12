@@ -35,10 +35,9 @@ Sidon sumsets that are independent of the APN port.
 - arXiv:2605.22763v1 (2026), "AlphaProof Nexus"
 -/
 
-import Mathlib.Combinatorics.Additive.Sidon
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Finset.Pointwise
 import Mathlib.Order.Filter.Basic
 import Mathlib.Tactic
 

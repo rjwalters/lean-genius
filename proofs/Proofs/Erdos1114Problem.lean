@@ -30,8 +30,7 @@ References:
 Tags: polynomials, analysis, critical-points
 -/
 
-import Mathlib.Data.Polynomial.Basic
-import Mathlib.Data.Polynomial.Derivative
+import Mathlib
 import Mathlib.Data.Real.Basic
 import Mathlib.Analysis.Calculus.MeanValue
 

@@ -19,10 +19,9 @@
   Tags: number-theory, divisor-function, factorial, limit-points, solved
 -/
 
+import Mathlib
 import Mathlib.NumberTheory.Divisors
-import Mathlib.NumberTheory.ArithmeticFunction
 import Mathlib.Data.Nat.Factorial.Basic
-import Mathlib.NumberTheory.Padics.PadicVal
 import Mathlib.Analysis.SpecificLimits.Basic
 
 namespace Erdos419

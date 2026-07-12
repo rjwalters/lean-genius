@@ -1,4 +1,4 @@
-import Mathlib.NumberTheory.ArithmeticFunction
+import Mathlib
 import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Tactic
 

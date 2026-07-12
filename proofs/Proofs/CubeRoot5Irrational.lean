@@ -6,7 +6,7 @@ Goal: Prove Irrational ((5 : ℝ) ^ (1/3 : ℝ))
 Status: DERIVED (needs verification)
 -/
 
-import Mathlib.Data.Real.Irrational
+import Mathlib
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Tactic
 

@@ -24,9 +24,9 @@
     - Parent: Proofs.VietasFormulas (Vieta's formulas via Multiset.esymm)
 -/
 
+import Mathlib
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Fintype.BigOperators
-import Mathlib.Algebra.BigOperators.Group.Finset
 import Mathlib.Tactic
 
 open Finset BigOperators

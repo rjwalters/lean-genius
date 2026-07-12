@@ -23,9 +23,9 @@ Related: #301, #303, #327
 Tags: number-theory, unit-fractions, extremal-combinatorics, sum-free-sets
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Rat.Basic
 import Mathlib.Algebra.Order.Field.Basic
 
 namespace Erdos302

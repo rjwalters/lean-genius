@@ -1,9 +1,9 @@
 -- Test API availability for Erdos43 fixes
+import Mathlib
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
 import Mathlib.Data.Int.Basic
 import Mathlib.Tactic
-import Mathlib.Order.LocallyFiniteOrder
 
 -- Test: What's the ℤ Icc card API?
 #check @Int.Icc_toFinset_card

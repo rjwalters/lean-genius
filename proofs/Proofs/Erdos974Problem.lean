@@ -17,11 +17,9 @@ Reference: https://erdosproblems.com/974
 Tijdeman, R., "On a conjecture of Turán and Erdős", Indag. Math. (1966), 374-383.
 -/
 
+import Mathlib
 import Mathlib.Analysis.Complex.Basic
-import Mathlib.Analysis.Complex.RootsOfUnity
-import Mathlib.Data.Complex.Exponential
 import Mathlib.Data.Finset.Basic
-import Mathlib.Algebra.BigOperators.Group.Finset
 
 open Complex Finset BigOperators
 

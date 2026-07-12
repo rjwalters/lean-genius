@@ -18,7 +18,7 @@
   Tags: number-theory, prime-factors, omega-function
 -/
 
-import Mathlib.NumberTheory.ArithmeticFunction
+import Mathlib
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Topology.Instances.Real.Lemmas
 import Mathlib.Data.Nat.Nth

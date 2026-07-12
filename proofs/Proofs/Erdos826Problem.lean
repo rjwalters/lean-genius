@@ -21,10 +21,8 @@ Source: [Er74b]
 Adapted from formal-conjectures (Apache 2.0 License)
 -/
 
-import Mathlib.NumberTheory.ArithmeticFunction
-import Mathlib.Data.Nat.Defs
+import Mathlib
 import Mathlib.Data.Real.Basic
-import Mathlib.Data.Set.Infinite
 import Mathlib.Tactic
 
 open scoped ArithmeticFunction

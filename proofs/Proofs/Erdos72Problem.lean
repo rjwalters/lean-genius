@@ -25,12 +25,11 @@
   Tags: graph-theory, extremal-combinatorics, cycles, density
 -/
 
+import Mathlib
 import Mathlib.Combinatorics.SimpleGraph.Basic
 import Mathlib.Combinatorics.SimpleGraph.Connectivity.WalkCounting
 import Mathlib.Combinatorics.SimpleGraph.Subgraph
 import Mathlib.Data.Finset.Card
-import Mathlib.Analysis.Asymptotics.Asymptotics
-import Mathlib.Topology.Instances.Real
 import Mathlib.Tactic
 
 namespace Erdos72

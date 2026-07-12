@@ -39,10 +39,10 @@ witness expected by `approx_fixedpoint_implies_fixedpoint`.
 Parent: SchauderFixedPointOQ03.lean (Kakutani framework)
 -/
 
+import Mathlib
 import Mathlib.Topology.MetricSpace.Basic
 import Mathlib.Topology.Order.Basic
 import Mathlib.Analysis.InnerProductSpace.EuclideanDist
-import Mathlib.Analysis.InnerProductSpace.Projection
 import Mathlib.Analysis.Convex.Basic
 import Mathlib.Analysis.Convex.Combination
 import Mathlib.Topology.MetricSpace.HausdorffDistance

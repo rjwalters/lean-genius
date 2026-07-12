@@ -31,12 +31,10 @@ References:
 - OEIS A217693: Related sequence
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
-import Mathlib.Data.Rat.Basic
-import Mathlib.Data.Rat.Order
-import Mathlib.Algebra.BigOperators.Group.Finset
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 
 open Finset BigOperators Real

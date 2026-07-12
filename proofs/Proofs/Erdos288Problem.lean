@@ -16,10 +16,9 @@ intervals replaced by any k intervals.
 Reference: [ErGr80]
 -/
 
-import Mathlib.Data.Rat.Basic
+import Mathlib
 import Mathlib.Data.PNat.Basic
 import Mathlib.Data.Set.Finite.Basic
-import Mathlib.Algebra.BigOperators.Group.Finset
 import Mathlib.Order.Interval.Finset.Nat
 import Mathlib.Tactic
 

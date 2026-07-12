@@ -29,11 +29,9 @@ a₁ ∈ S₁,...,aₙ ∈ Sₙ with f(a₁,...,aₙ) ≠ 0.
 Parent: FactorRemainderNullstellensatzOQ01.lean (Strong Nullstellensatz)
 -/
 
+import Mathlib
 import Mathlib.RingTheory.Polynomial.Basic
 import Mathlib.RingTheory.MvPolynomial.Basic
-import Mathlib.Data.MvPolynomial.CommRing
-import Mathlib.Data.MvPolynomial.Eval
-import Mathlib.Data.Polynomial.RingDivision
 import Mathlib.Data.Finsupp.Basic
 import Mathlib.Data.Finsupp.Defs
 import Mathlib.Tactic

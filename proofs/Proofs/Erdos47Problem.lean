@@ -22,9 +22,9 @@ density) and state Bloom's theorem and the Liu–Sawhney improvement
 as axioms. The density threshold is captured via the reciprocal sum.
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Rat.Basic
 import Mathlib.Analysis.SpecificLimits.Basic
 import Mathlib.Order.Filter.Basic
 import Mathlib.Tactic

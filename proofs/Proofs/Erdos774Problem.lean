@@ -27,12 +27,11 @@
   - [NRS24] Nešetřil-Rödl-Sales, "On Pisier type theorems" (2024)
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
-import Mathlib.Data.Set.Finite
 import Mathlib.Data.Real.Basic
-import Mathlib.Data.Complex.Exponential
 
 open Finset Set
 

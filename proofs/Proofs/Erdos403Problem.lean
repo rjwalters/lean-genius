@@ -22,10 +22,10 @@ distinct factorials." Bell Laboratories internal memorandum (1960).
 Also in Erdős-Graham [ErGr80, p.79].
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Factorial.Basic
 import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Data.Finset.Basic
-import Mathlib.Algebra.BigOperators.Group.Finset
 
 open Finset Nat BigOperators
 

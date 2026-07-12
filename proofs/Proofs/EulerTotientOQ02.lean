@@ -1,6 +1,6 @@
+import Mathlib
 import Mathlib.Data.Nat.Totient
 import Mathlib.Data.ZMod.Basic
-import Mathlib.Data.ZMod.Quotient
 import Mathlib.RingTheory.Int.Basic
 import Mathlib.Tactic
 

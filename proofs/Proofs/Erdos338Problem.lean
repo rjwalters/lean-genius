@@ -31,10 +31,9 @@ Open Questions:
 Tags: number-theory, additive-bases, restricted-order, combinatorics
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Set.Finite
-import Mathlib.Algebra.BigOperators.Group.Finset
 
 open Finset BigOperators
 

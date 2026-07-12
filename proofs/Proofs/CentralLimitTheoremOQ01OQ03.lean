@@ -1,4 +1,4 @@
-import Mathlib.Probability.Variance
+import Mathlib
 import Mathlib.Tactic
 
 /-

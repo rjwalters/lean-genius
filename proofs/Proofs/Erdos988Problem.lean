@@ -16,11 +16,11 @@ where the maximum is over all spherical caps C, and αC is the normalized measur
 Reference: https://erdosproblems.com/988
 -/
 
+import Mathlib
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
 import Mathlib.Data.Real.Basic
-import Mathlib.Order.Filter.AtTopBot
 import Mathlib.Topology.MetricSpace.Basic
 
 open Filter Set

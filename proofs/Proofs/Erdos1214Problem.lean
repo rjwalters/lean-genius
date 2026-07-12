@@ -19,12 +19,11 @@ References:
   Journal of Number Theory 64(2), 276–290.
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Data.Nat.Factors
-import Mathlib.Algebra.GeomSum
 import Mathlib.Data.ZMod.Basic
 import Mathlib.GroupTheory.OrderOfElement
-import Mathlib.Data.Int.Order
 import Mathlib.Tactic
 
 namespace Erdos1214Problem

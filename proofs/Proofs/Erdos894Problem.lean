@@ -24,10 +24,10 @@
   - [PeSc10] Peres-Schlag, "Two Erdős problems on lacunary sequences" (2010)
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Finset.Basic
-import Mathlib.Algebra.Order.Floor.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Tactic
 

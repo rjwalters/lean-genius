@@ -21,10 +21,9 @@ Also Problem 1 on Ben Green's open problems list.
 Reference: https://erdosproblems.com/792
 -/
 
+import Mathlib
 import Mathlib.Data.Int.Basic
 import Mathlib.Data.Finset.Card
-import Mathlib.Data.Finset.Lattice
-import Mathlib.Order.Filter.AtTopBot
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Topology.Order.Basic
 

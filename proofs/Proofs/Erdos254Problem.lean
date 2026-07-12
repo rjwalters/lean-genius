@@ -24,10 +24,10 @@ References:
 Tags: number-theory, sumsets, subset-sums, open
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Finset.Basic
-import Mathlib.Topology.Instances.Real
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 
 open Nat Real Set

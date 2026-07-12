@@ -34,10 +34,10 @@ References:
 Tags: number-theory, complete-sequences, additive-combinatorics, exponential-sequences
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Nat.GCD.Basic
 import Mathlib.Data.Finset.Basic
-import Mathlib.Algebra.BigOperators.Group.Finset
 import Mathlib.Data.Set.Basic
 
 namespace Erdos246

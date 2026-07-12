@@ -24,10 +24,10 @@ References:
 - Nešetřil-Rödl [NeRo85]: Complete negative answer
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Set.Basic
 import Mathlib.Data.Finset.Basic
-import Mathlib.Algebra.BigOperators.Group.Finset
 
 namespace Erdos328
 

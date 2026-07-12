@@ -27,8 +27,8 @@ References:
   American Mathematical Monthly, 921-925
 -/
 
+import Mathlib
 import Mathlib.Data.Real.Basic
-import Mathlib.Data.Rat.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Order.Basic
 

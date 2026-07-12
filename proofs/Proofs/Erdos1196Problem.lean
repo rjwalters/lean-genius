@@ -42,8 +42,7 @@ References:
   Proc. AMS Ser. B 6 (2019)
 -/
 
-import Mathlib.NumberTheory.VonMangoldt
-import Mathlib.NumberTheory.ArithmeticFunction
+import Mathlib
 import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Order.Filter.Basic

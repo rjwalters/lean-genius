@@ -23,10 +23,10 @@ The threshold at linear density is sharp.
 Reference: Erdős-Graham [ErGr80, p.54], Folkman [Fo66], Szemerédi-Vu [SzVu06]
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Real.Basic
-import Mathlib.Algebra.BigOperators.Group.Finset
 
 open Nat Finset BigOperators
 

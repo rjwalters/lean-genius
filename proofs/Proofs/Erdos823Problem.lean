@@ -25,11 +25,10 @@ References:
 Tags: number-theory, sum-of-divisors, sequences, limits
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Real.Basic
-import Mathlib.NumberTheory.ArithmeticFunction
 import Mathlib.Topology.Basic
-import Mathlib.Topology.Instances.Real
 
 namespace Erdos823
 

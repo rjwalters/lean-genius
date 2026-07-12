@@ -21,10 +21,10 @@ References:
 - Kolpakov-Talambutsa [KoTa22]: Generalization
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.List.Basic
 import Mathlib.Data.Finset.Basic
-import Mathlib.Algebra.BigOperators.Group.Finset
 
 namespace Erdos481
 

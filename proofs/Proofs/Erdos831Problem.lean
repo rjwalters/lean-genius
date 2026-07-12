@@ -29,11 +29,11 @@ References:
 - [Er92e] Erdős 1992
 -/
 
+import Mathlib
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Set.Basic
-import Mathlib.Data.Set.Finite
 import Mathlib.Data.Finset.Card
 
 open Set Finset

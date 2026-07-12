@@ -19,9 +19,9 @@
             J. Indian Math. Soc. (N.S.) (1948), 63-66.
 -/
 
+import Mathlib
 import Mathlib.NumberTheory.Divisors
 import Mathlib.Topology.Algebra.InfiniteSum.Real
-import Mathlib.Data.Real.Irrational
 import Mathlib.Algebra.Order.Floor.Div
 
 namespace Erdos257

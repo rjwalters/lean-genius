@@ -47,8 +47,7 @@ References:
 -/
 
 import Archive.Wiedijk100Theorems.BallotProblem
-import Mathlib.Data.Rat.Basic
-import Mathlib.Data.List.BigOperators.Basic
+import Mathlib
 import Mathlib.Tactic
 
 namespace WeightedBallot

@@ -25,11 +25,11 @@
   - [Ha73] Halász, "On a result of Salem and Zygmund..." (1973)
 -/
 
+import Mathlib
 import Mathlib.Data.Complex.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Data.Finset.Basic
-import Mathlib.Algebra.BigOperators.Group.Finset
 
 open Complex Finset BigOperators Real
 

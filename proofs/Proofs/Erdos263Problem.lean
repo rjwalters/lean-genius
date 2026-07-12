@@ -20,8 +20,8 @@
   Tags: number-theory, irrationality, sequences, analysis
 -/
 
+import Mathlib
 import Mathlib.Data.Real.Basic
-import Mathlib.Data.Real.Irrational
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Tactic
 

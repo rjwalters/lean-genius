@@ -24,10 +24,10 @@ Related: Erdős Problem #236
 Tags: number-theory, primes, additive-combinatorics, representations
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Data.Set.Card
 import Mathlib.Order.Filter.Basic
-import Mathlib.Topology.Instances.Real
 
 namespace Erdos237
 

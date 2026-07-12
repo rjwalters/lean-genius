@@ -17,10 +17,10 @@ lim a_{n+1}/a_n = φ = (1 + √5)/2?
 Reference: https://erdosproblems.com/346
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Nat.Fib.Basic
 import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Rat.Basic
 import Mathlib.Tactic
 
 /- ## Complete sequences -/

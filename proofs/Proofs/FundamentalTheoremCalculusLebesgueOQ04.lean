@@ -35,9 +35,9 @@ The proof follows the same partition argument as the real-valued case
 -/
 
 import Proofs.FundamentalTheoremCalculusLebesgue
+import Mathlib
 import Mathlib.Analysis.BoundedVariation
 import Mathlib.Topology.EMetricSpace.BoundedVariation
-import Mathlib.Analysis.NormedSpace.Basic
 import Mathlib.Tactic
 
 open Set ENNReal Finset FTCLebesgue

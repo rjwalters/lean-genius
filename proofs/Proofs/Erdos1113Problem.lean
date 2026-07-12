@@ -30,10 +30,10 @@ References:
 - [ErGr80] Erdős-Graham (1980)
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Nat.Parity
 
 namespace Erdos1113
 

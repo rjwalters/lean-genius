@@ -24,9 +24,9 @@
   Tags: number-theory, additive-combinatorics, density
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Real.Basic
-import Mathlib.Data.Set.Finite
 import Mathlib.Order.Filter.Basic
 import Mathlib.NumberTheory.SumFourSquares
 import Mathlib.Analysis.SpecialFunctions.Log.Basic

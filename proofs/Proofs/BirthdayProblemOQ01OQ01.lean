@@ -37,11 +37,11 @@
   - E[X] = C(n,2)/d: PROVED (via double counting)
 -/
 
+import Mathlib
 import Mathlib.Data.Fintype.Card
 import Mathlib.Data.Fintype.Pi
 import Mathlib.Data.Nat.Choose.Basic
 import Mathlib.Data.Nat.Factorial.Basic
-import Mathlib.Algebra.BigOperators.Group.Finset
 import Mathlib.Tactic
 import Proofs.BirthdayProblemOQ01
 

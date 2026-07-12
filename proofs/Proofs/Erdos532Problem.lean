@@ -37,12 +37,11 @@ Related Problems:
 Tags: ramsey-theory, combinatorics, number-theory, IP-sets
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
-import Mathlib.Data.Set.Finite
 import Mathlib.Data.Set.Function
-import Mathlib.Algebra.BigOperators.Group.Finset
 
 open Finset BigOperators
 

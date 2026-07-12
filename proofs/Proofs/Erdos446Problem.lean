@@ -25,10 +25,10 @@ References:
 - https://erdosproblems.com/446
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.Topology.Instances.Real
 
 namespace Erdos446
 

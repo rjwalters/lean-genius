@@ -24,11 +24,11 @@
   - Related: Problem #135
 -/
 
+import Mathlib
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Data.Set.Card
-import Mathlib.Algebra.BigOperators.Group.Finset
 
 open Finset BigOperators Real
 

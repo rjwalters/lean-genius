@@ -29,11 +29,10 @@ Further: Cambie showed δ₁(n,m) has superpolynomially many local maxima.
 Reference: https://erdosproblems.com/692
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Nat.Divisors
-import Mathlib.Topology.Instances.Real
 import Mathlib.Order.Filter.Basic
 
 open Nat Real Filter Finset

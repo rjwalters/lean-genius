@@ -1,4 +1,4 @@
-import Mathlib.Data.Rat.Basic
+import Mathlib
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Sort
 import Mathlib.Tactic

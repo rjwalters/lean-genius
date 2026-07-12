@@ -27,8 +27,8 @@ References:
 - Champagne-Le-Liu-Wooley [CLLW24], arXiv:2406.19491
 -/
 
+import Mathlib
 import Mathlib.Data.Real.Basic
-import Mathlib.Data.Set.Intervals.Basic
 import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.NumberTheory.Primorial
 import Mathlib.Topology.Algebra.Order.Floor

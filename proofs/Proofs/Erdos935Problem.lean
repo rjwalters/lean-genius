@@ -21,9 +21,9 @@ lim sup Q₂(n(n+1)⋯(n+ℓ)) / n² ≥ 1.
 Reference: https://erdosproblems.com/935
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Factorization.Basic
 import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Rat.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Tactic
 

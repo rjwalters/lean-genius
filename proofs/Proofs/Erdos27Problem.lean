@@ -31,11 +31,11 @@
               minimum modulus bound of 616,000 for perfect covering systems.
 -/
 
+import Mathlib
 import Mathlib.Data.Int.ModEq
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.Topology.Instances.Real
 import Mathlib.Tactic
 
 namespace Erdos27

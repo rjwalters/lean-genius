@@ -28,9 +28,9 @@
   - [BaHa98] Baker-Harman (1998)
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Real.Basic
-import Mathlib.NumberTheory.EulerPhi.Basic
 import Mathlib.Order.Filter.Basic
 
 open Nat Real Filter

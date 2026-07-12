@@ -26,6 +26,7 @@ Reference: [AlSu07] Alon-Sudakov (2007), [Er91] Erdős (1991)
 See also: Erdős Problem #805
 -/
 
+import Mathlib
 import Mathlib.Combinatorics.SimpleGraph.Basic
 import Mathlib.Combinatorics.SimpleGraph.Finite
 import Mathlib.Combinatorics.SimpleGraph.Subgraph
@@ -33,7 +34,6 @@ import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
 import Mathlib.Data.Set.Card
-import Mathlib.Order.Filter.AtTopBot
 
 open Nat Finset Set Filter SimpleGraph
 

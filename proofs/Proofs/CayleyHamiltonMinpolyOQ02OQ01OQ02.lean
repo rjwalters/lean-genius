@@ -24,10 +24,10 @@
   ## Axioms: 0  |  Sorries: 0
 -/
 
+import Mathlib
 import Mathlib.FieldTheory.Minpoly.Basic
 import Mathlib.FieldTheory.Minpoly.Field
 import Mathlib.Algebra.Polynomial.Monic
-import Mathlib.Algebra.Associated.Basic
 import Mathlib.Tactic
 
 open Polynomial minpoly

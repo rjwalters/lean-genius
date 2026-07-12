@@ -22,8 +22,8 @@ such that |x² + y² − z²α| < ε.
 - <https://erdosproblems.com/496>
 -/
 
+import Mathlib
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Mathlib.Data.Real.Irrational
 import Mathlib.Tactic
 
 /- ## Core Definitions -/

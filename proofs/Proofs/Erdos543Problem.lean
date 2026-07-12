@@ -26,8 +26,8 @@ Erdős Problem #543: Random Subset Sums in Abelian Groups
   - [ErHa78] Erdős-Hall (1978)
 -/
 
+import Mathlib
 import Mathlib.Algebra.Group.Subgroup.Basic
-import Mathlib.Algebra.Group.Fintype
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Powerset
 import Mathlib.Data.Real.Basic

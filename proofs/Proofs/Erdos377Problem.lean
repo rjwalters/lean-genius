@@ -18,8 +18,8 @@
   Key paper: Erdős-Graham-Ruzsa-Straus, "On the prime factors of C(2n,n)" (1975)
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Choose.Central
-import Mathlib.NumberTheory.ArithmeticFunction
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Topology.Algebra.InfiniteSum.Real
 import Mathlib.Order.Filter.Cofinite

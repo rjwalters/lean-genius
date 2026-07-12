@@ -104,7 +104,7 @@ theorem threeCycle_normal_eq_top
   have hgeq : (⟨(g : Perm α), hg.mem_alternatingGroup⟩ : alternatingGroup α) = g :=
     Subtype.ext rfl
   have htop : normalClosure ({g} : Set (alternatingGroup α)) = ⊤ := by
-    rw [← hgeq]; exact hg.alternating_normalClosure h5
+    rw [← hgeq]; exact hg.alternating_normalClosure (by simpa using h5)
   rw [htop] at hclosed
   exact top_le_iff.1 hclosed
 
@@ -115,7 +115,7 @@ theorem isSimpleGroup_of_forall_normal_contains_threeCycle
     (hcrux : ∀ (H : Subgroup (alternatingGroup α)), H.Normal → H ≠ ⊥ →
         ∃ g : alternatingGroup α, IsThreeCycle (g : Perm α) ∧ g ∈ H) :
     IsSimpleGroup (alternatingGroup α) := by
-  haveI : Nontrivial (alternatingGroup α) := nontrivial_of_three_le_card (by omega)
+  haveI : Nontrivial (alternatingGroup α) := nontrivial_of_three_le_card (by rw [Nat.card_eq_fintype_card]; omega)
   refine ⟨fun H hHn => ?_⟩
   rcases eq_or_ne H ⊥ with h | h
   · exact Or.inl h

@@ -25,8 +25,8 @@ the family be closed under taking unions.
 Reference: [Er78, p.39], https://erdosproblems.com/1183
 -/
 
+import Mathlib
 import Mathlib.Data.Finset.Powerset
-import Mathlib.Data.Finset.Lattice
 import Mathlib.Data.Fintype.Basic
 import Mathlib.Order.ConditionallyCompleteLattice.Basic
 import Mathlib.Tactic

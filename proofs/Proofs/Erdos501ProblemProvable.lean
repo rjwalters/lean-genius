@@ -23,10 +23,9 @@
   Tags: set-theory, measure-theory, combinatorics, independence
 -/
 
+import Mathlib
 import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
-import Mathlib.MeasureTheory.Measure.OuterMeasure.Basic
 import Mathlib.Topology.MetricSpace.Basic
-import Mathlib.Data.Set.Finite
 import Mathlib.SetTheory.Cardinal.Continuum
 import Mathlib.Tactic
 

@@ -25,10 +25,10 @@ References:
   Int. Math. Res. Not. IMRN (2008), Art. ID rnn040, 11.
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.Algebra.BigOperators.Group.Finset
 import Mathlib.Data.Finset.Basic
 
 open Real BigOperators

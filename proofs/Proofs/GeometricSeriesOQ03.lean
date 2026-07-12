@@ -1,6 +1,6 @@
+import Mathlib
 import Mathlib.NumberTheory.LSeries.RiemannZeta
 import Mathlib.NumberTheory.EulerProduct.DirichletLSeries
-import Mathlib.Algebra.GeomSum
 import Mathlib.Analysis.SpecificLimits.Normed
 import Mathlib.Analysis.SpecialFunctions.Pow.Complex
 import Mathlib.Analysis.SpecialFunctions.Pow.Real

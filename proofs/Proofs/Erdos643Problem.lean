@@ -88,10 +88,8 @@ on n vertices with at least f(n;t) edges must contain four edges A,B,C,D with:
 Reference: https://erdosproblems.com/643
 -/
 
-import Mathlib
 
 
-import Mathlib.Tactic.GeneralizeProofs
 
 namespace Harmonic.GeneralizeProofs
 -- Harmonic `generalize_proofs` tactic

@@ -16,8 +16,8 @@ References:
 - Erdős: Lower bound of ≥ 2 (no consecutive integer reciprocals sum to 1)
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Rat.Basic
 import Mathlib.Data.List.Basic
 
 namespace Erdos287

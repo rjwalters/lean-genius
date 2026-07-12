@@ -33,11 +33,10 @@ References:
 Tags: number-theory, divisors, density
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Nat.Divisors
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Real.Basic
-import Mathlib.NumberTheory.ArithmeticFunction
 
 open Finset Nat ArithmeticFunction
 

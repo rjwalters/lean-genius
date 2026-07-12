@@ -16,7 +16,7 @@
              arXiv:2406.17593 (2024)
 -/
 
-import Mathlib.Data.Real.Irrational
+import Mathlib
 import Mathlib.Topology.Algebra.InfiniteSum.Real
 import Mathlib.Order.Filter.Basic
 import Mathlib.Data.Set.Function

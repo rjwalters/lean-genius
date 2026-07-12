@@ -1,5 +1,5 @@
+import Mathlib
 import Mathlib.Logic.Function.Basic
-import Mathlib.Order.BooleanAlgebra
 
 /-
 # Lawvere Fixed-Point Theorem and Cantor's Theorem

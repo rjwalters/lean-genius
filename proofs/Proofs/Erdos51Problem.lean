@@ -22,9 +22,9 @@ n_a / a → ∞ as a → ∞?
 - <https://erdosproblems.com/51>
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Totient
 import Mathlib.Order.Filter.Basic
-import Mathlib.Order.Filter.AtTopBot
 import Mathlib.Topology.Order.Basic
 import Mathlib.Tactic
 

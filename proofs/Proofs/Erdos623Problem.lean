@@ -24,10 +24,10 @@
   Tags: set-theory, cardinals, combinatorics, independence
 -/
 
+import Mathlib
 import Mathlib.SetTheory.Cardinal.Ordinal
 import Mathlib.SetTheory.Cardinal.Cofinality
 import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Set.Finite
 import Mathlib.Tactic
 
 namespace Erdos623

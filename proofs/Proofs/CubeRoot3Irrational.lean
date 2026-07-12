@@ -5,7 +5,7 @@ Research: cube-root-3-irrational, approach-01, attempt-01
 Pattern: Direct application from cube-root-2-irrational knowledge base
 -/
 
-import Mathlib.Data.Real.Irrational
+import Mathlib
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Tactic
 

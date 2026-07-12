@@ -24,12 +24,12 @@ References:
 Tags: number-theory, divisibility, consecutive-integers, asymptotics
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Data.Nat.Factorial.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.Algebra.BigOperators.Group.Finset
 
 open Nat Real Finset BigOperators
 

@@ -17,10 +17,10 @@ Known results:
 Reference: https://erdosproblems.com/506
 -/
 
+import Mathlib
 import Mathlib.Tactic
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Finset.Basic
-import Mathlib.LinearAlgebra.AffineSpace.Basic
 
 /- ## Definitions -/
 

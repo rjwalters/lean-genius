@@ -21,11 +21,11 @@
   - Mahler's theorem on S-unit equations
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Nat.Factorization.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.NumberTheory.Padics.PadicVal
 
 open Nat Real
 

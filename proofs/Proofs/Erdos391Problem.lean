@@ -26,12 +26,12 @@ Additional Results (ACRSTUV25):
 Tags: number-theory, factorial, factorization, limits
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Factorial.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Analysis.SpecialFunctions.ExpDeriv
 import Mathlib.Data.Finset.Basic
-import Mathlib.Algebra.BigOperators.Group.Finset
 
 open Finset BigOperators Real
 

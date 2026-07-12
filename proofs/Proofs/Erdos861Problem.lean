@@ -32,11 +32,11 @@ References:
 Tags: combinatorics, Sidon-sets, additive-combinatorics, counting
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Mathlib.Algebra.BigOperators.Group.Finset
 
 open Finset BigOperators
 

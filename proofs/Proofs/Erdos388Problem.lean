@@ -29,9 +29,9 @@ to the Brocard–Ramanujan problem and Erdős–Selfridge theorem.
 *Reference:* [erdosproblems.com/388](https://www.erdosproblems.com/388)
 -/
 
+import Mathlib
 import Mathlib.Tactic
 import Mathlib.Data.Nat.Factorial.Basic
-import Mathlib.Data.Finset.LocallyFinite
 
 open Finset BigOperators
 

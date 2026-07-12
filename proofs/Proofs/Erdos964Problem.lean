@@ -25,11 +25,10 @@ Historical:
 Tags: number-theory, divisor-function, density
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Nat.Divisors
 import Mathlib.Data.Real.Basic
 import Mathlib.Topology.Basic
-import Mathlib.Topology.Instances.Real
 import Mathlib.Topology.Order.Basic
 
 open Set Real

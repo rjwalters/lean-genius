@@ -31,12 +31,12 @@
     [PA95]  Pach, Agarwal, "Combinatorial Geometry" (1995)
 -/
 
+import Mathlib
 import Mathlib.Analysis.InnerProductSpace.EuclideanDist
 import Mathlib.Data.Multiset.Basic
 import Mathlib.Data.Nat.Choose.Basic
 import Mathlib.Analysis.SpecialFunctions.Exp
 import Mathlib.Analysis.SpecialFunctions.Sqrt
-import Mathlib.Order.Filter.AtTopBot
 
 open Real Filter
 

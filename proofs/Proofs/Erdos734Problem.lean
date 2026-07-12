@@ -25,10 +25,10 @@ References:
 - de Bruijn-Erdős (1948): "On a combinatorial problem"
 -/
 
+import Mathlib
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
 import Mathlib.Data.Fintype.Basic
-import Mathlib.Algebra.BigOperators.Group.Finset
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 
 open Finset BigOperators

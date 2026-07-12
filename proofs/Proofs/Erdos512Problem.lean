@@ -23,12 +23,11 @@
     exponential sums" (1981)
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Real.Basic
-import Mathlib.Data.Complex.Exponential
 import Mathlib.Data.Finset.Basic
 import Mathlib.Analysis.SpecialFunctions.Complex.Log
-import Mathlib.MeasureTheory.Integral.Bochner
 
 open Real Complex MeasureTheory
 

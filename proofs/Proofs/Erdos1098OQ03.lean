@@ -17,9 +17,8 @@
   Tags: group-theory, graph-theory, non-commuting-graph, ring-theory
 -/
 
-import Mathlib.RingTheory.Subring.Center
+import Mathlib
 import Mathlib.GroupTheory.Subgroup.Center
-import Mathlib.RingTheory.Subring.Basic
 import Mathlib.Tactic
 
 namespace Erdos1098OQ03

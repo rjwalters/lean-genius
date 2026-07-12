@@ -26,11 +26,11 @@ References:
 - Guy's Unsolved Problems in Number Theory, B32
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.NumberTheory.Divisors
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
-import Mathlib.Algebra.Order.Ring.Lemmas
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 
 open Nat Finset

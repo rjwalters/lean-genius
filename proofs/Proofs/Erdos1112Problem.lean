@@ -27,9 +27,9 @@ References:
 - Tang-Yang [TaYa21]: Further non-existence results
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Set.Basic
-import Mathlib.Data.Set.Finite
 
 open Set Nat
 

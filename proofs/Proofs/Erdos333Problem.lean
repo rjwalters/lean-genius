@@ -26,11 +26,10 @@ Related: Problem #806
 Tags: additive-combinatorics, sumsets, density
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Real.Basic
-import Mathlib.Analysis.Asymptotics.Asymptotics
-import Mathlib.Algebra.BigOperators.Group.Finset
 import Mathlib.Data.Set.Card
 
 open Asymptotics Filter

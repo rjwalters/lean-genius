@@ -25,9 +25,9 @@
   Tags: functional-equations, continuity, additive-functions, de-bruijn
 -/
 
+import Mathlib
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Topology.Basic
-import Mathlib.Topology.ContinuousFunction.Basic
 import Mathlib.Topology.Order.Basic
 import Mathlib.Algebra.Group.Defs
 import Mathlib.Data.Real.Basic

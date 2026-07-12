@@ -16,12 +16,12 @@ Reference: https://erdosproblems.com/126
 Source: [ErTu34], [Er95c], [Er97], [Er97e]
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
 import Mathlib.Analysis.SpecificLimits.Basic
 import Mathlib.Order.Filter.Basic
-import Mathlib.Analysis.Asymptotics.Asymptotics
 import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Tactic
 

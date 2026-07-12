@@ -16,8 +16,8 @@ Status: OPEN
 Reference: https://erdosproblems.com/321
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Rat.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Tactic
 

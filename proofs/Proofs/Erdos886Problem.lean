@@ -23,13 +23,12 @@ See also Problem #887.
 Tags: Number theory, Divisors, Distribution of divisors
 -/
 
-import Mathlib.Data.Nat.Divisors
+import Mathlib
 import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Real.Sqrt
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
-import Mathlib.Algebra.Order.Floor
 
 open Nat Finset Real
 

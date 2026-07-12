@@ -36,10 +36,10 @@ Related: Erdős Problem #907 (on additive functions)
 Tags: analysis, measure-theory, additive-functions, functional-equations
 -/
 
+import Mathlib
 import Mathlib.MeasureTheory.Function.AEMeasurableOrder
 import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
 import Mathlib.Topology.Algebra.ContinuousAffineMap
-import Mathlib.Analysis.SpecialFunctions.Integrals
 import Mathlib.Algebra.Group.Basic
 
 open MeasureTheory Set

@@ -24,10 +24,10 @@ References:
 Tags: set-theory, boolean-algebras, density, independence
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Set.Basic
 import Mathlib.Data.Real.Basic
-import Mathlib.Order.BooleanAlgebra
 import Mathlib.Topology.Basic
 
 namespace Erdos1123

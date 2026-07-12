@@ -8,10 +8,10 @@ how many composites share this property. Known composites: 25, 121, 169, 437, ..
 
 *Reference:* [erdosproblems.com/1073](https://www.erdosproblems.com/1073) -/
 
+import Mathlib
 import Mathlib.NumberTheory.Wilson
 import Mathlib.Data.Nat.Factorial.Basic
 import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Nat.ModCast
 import Mathlib.Data.ZMod.Basic
 import Mathlib.Order.Filter.Basic
 import Mathlib.Tactic

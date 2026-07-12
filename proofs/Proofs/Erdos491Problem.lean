@@ -23,7 +23,7 @@
   Tags: number-theory, additive-functions, logarithm, characterization
 -/
 
-import Mathlib.NumberTheory.ArithmeticFunction
+import Mathlib
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Nat.GCD.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic

@@ -27,12 +27,11 @@ References:
 - Related: Problem #134, Problem #619
 -/
 
+import Mathlib
 import Mathlib.Combinatorics.SimpleGraph.Basic
-import Mathlib.Combinatorics.SimpleGraph.Connectivity.Metric
 import Mathlib.Combinatorics.SimpleGraph.Clique
 import Mathlib.Data.Nat.Basic
 import Mathlib.Order.Filter.Basic
-import Mathlib.Topology.Instances.Real
 
 open SimpleGraph Asymptotics Filter
 

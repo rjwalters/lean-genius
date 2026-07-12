@@ -26,12 +26,12 @@ References:
 - Schmidt [Sc69]: "Disproof of some conjectures on Diophantine approximations"
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Set.Basic
 import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Mathlib.Topology.Instances.Real
 
 open Set Real MeasureTheory
 

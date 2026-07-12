@@ -34,10 +34,10 @@ References:
 Tags: number-theory, multiplicative-functions, analytic-number-theory, mean-values
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Int.Basic
-import Mathlib.Algebra.BigOperators.Group.Finset
 
 open Nat Real BigOperators Finset
 

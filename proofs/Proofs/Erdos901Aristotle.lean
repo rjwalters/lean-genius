@@ -10,7 +10,7 @@
   - No axiom declarations
   - No open conjectures
 -/
-import Mathlib.Combinatorics.SetFamily.Basic
+import Mathlib
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Fintype.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic

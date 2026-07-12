@@ -18,10 +18,8 @@ References:
   - Swan (1962): Hilbert's theorem on positive ternary quartics (simplified proof)
 -/
 
+import Mathlib
 import Mathlib.Data.Real.Basic
-import Mathlib.Data.Polynomial.Basic
-import Mathlib.Data.Polynomial.Eval
-import Mathlib.Algebra.BigOperators.Group.Finset
 import Mathlib.Tactic
 
 open Polynomial Finset

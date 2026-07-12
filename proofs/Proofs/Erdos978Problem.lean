@@ -30,9 +30,9 @@ References:
 - Browning, T.D., "Power-free values of polynomials." Arch. Math. (2011).
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Int.Basic
-import Mathlib.Data.Polynomial.Basic
 import Mathlib.Data.Nat.Prime.Defs
 import Mathlib.Data.Real.Basic
 

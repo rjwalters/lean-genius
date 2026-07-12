@@ -40,8 +40,8 @@ This is the q-analog of the ordinary binomial C(n,k), counting k-dim subspaces o
 combinatorics, q-analogs, log-concavity, gaussian-binomial, newton-inequality
 -/
 
+import Mathlib
 import Mathlib.Data.Real.Basic
-import Mathlib.Algebra.BigOperators.Group.Finset
 import Mathlib.Algebra.Order.Field.Basic
 import Mathlib.Tactic
 

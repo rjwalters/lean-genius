@@ -48,7 +48,7 @@ All axioms eliminated:
 - Mathlib: `ArithmeticFunction.moebius_mul_coe_zeta`, `riemannZeta_two`
 -/
 
-import Mathlib.NumberTheory.ArithmeticFunction
+import Mathlib
 import Mathlib.NumberTheory.ZetaValues
 import Mathlib.NumberTheory.LSeries.HurwitzZetaValues
 import Mathlib.NumberTheory.EulerProduct.DirichletLSeries

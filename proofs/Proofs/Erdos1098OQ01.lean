@@ -15,7 +15,7 @@ References:
 - Abdollahi, Akbari, Maimani (2006): Non-commuting graph classification
 -/
 
-import Mathlib.GroupTheory.Subgroup.Basic
+import Mathlib
 import Mathlib.GroupTheory.Subgroup.Center
 import Mathlib.Data.Nat.Basic
 import Mathlib.Tactic

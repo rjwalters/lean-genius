@@ -14,7 +14,7 @@ have positive density?
 - Hasler–Melfi (2024): improved to x^{0.9777}, upper density ≤ 0.696
 -/
 
-import Mathlib.Data.Nat.Digits
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Real.Basic

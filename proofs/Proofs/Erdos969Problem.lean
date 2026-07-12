@@ -23,13 +23,10 @@
   Tags: squarefree, error-term, analytic-number-theory, riemann-hypothesis
 -/
 
+import Mathlib
 import Mathlib.NumberTheory.Divisors
-import Mathlib.NumberTheory.ArithmeticFunction
 import Mathlib.Data.Nat.Squarefree
 import Mathlib.Data.Real.Basic
-import Mathlib.Data.Real.Pi.Bounds
-import Mathlib.Analysis.Asymptotics.Asymptotics
-import Mathlib.Order.Filter.AtTopBot
 import Mathlib.Topology.Algebra.InfiniteSum.Basic
 
 namespace Erdos969

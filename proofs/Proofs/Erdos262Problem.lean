@@ -28,9 +28,9 @@ References:
 Tags: irrationality, transcendence, number-theory, infinite-series
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Real.Basic
-import Mathlib.Data.Real.Irrational
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Topology.Algebra.InfiniteSum.Basic
 

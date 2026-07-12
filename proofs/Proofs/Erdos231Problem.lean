@@ -34,10 +34,10 @@ References:
 - See also Problem #192
 -/
 
+import Mathlib
 import Mathlib.Data.List.Basic
 import Mathlib.Data.Finset.Card
 import Mathlib.Data.Nat.Basic
-import Mathlib.Algebra.BigOperators.Group.List
 
 open List Finset
 

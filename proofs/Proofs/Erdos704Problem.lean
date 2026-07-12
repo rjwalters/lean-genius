@@ -12,11 +12,11 @@ if and only if the distance between them is 1. Estimate χ(Gₙ).
 Reference: https://erdosproblems.com/704
 -/
 
+import Mathlib
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Nat.Basic
 import Mathlib.Analysis.Normed.Field.Basic
 import Mathlib.Topology.MetricSpace.Basic
-import Mathlib.Order.Filter.AtTopBot
 import Mathlib.Combinatorics.SimpleGraph.Basic
 
 namespace Erdos704

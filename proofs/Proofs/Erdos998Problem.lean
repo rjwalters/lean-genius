@@ -30,11 +30,10 @@ References:
 Tags: analysis, diophantine-approximation, equidistribution
 -/
 
+import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Set.Basic
-import Mathlib.Analysis.SpecialFunctions.Integrals
-import Mathlib.Algebra.Order.Floor
 
 open Set
 

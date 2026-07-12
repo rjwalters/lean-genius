@@ -25,11 +25,10 @@ References:
 - See also Problem #764 for generalization to more summands
 -/
 
+import Mathlib
 import Mathlib.Data.Finset.Card
 import Mathlib.Data.Nat.Basic
 import Mathlib.Algebra.BigOperators.Group.Finset.Basic
-import Mathlib.Analysis.Asymptotics.Asymptotics
-import Mathlib.Order.Filter.AtTopBot
 import Mathlib.Data.Set.Function
 
 open Finset BigOperators Filter Asymptotics
