@@ -526,6 +526,52 @@ theorem forwardDiff_simplexNumber (d n : ℕ) :
   simp only [forwardDiff]
   rw [simplexNumber_succ_succ, Nat.add_sub_cancel_left]
 
+/-- **Reverse discrete Fundamental Theorem of Calculus (summing a difference telescopes).**
+The running total of the forward differences of a *monotone* sequence recovers the
+sequence, up to the boundary value `f 0`:
+
+`∑_{j=0}^{n} Δf(j) + f 0 = f (n + 1)`,  i.e.  `partialSum (Δf) n = f(n+1) − f 0`.
+
+This is the antiderivative-of-derivative half of the discrete FTC — the exact converse of
+`forwardDiff_partialSum` (`Δ ∘ ∑ = shift`), completing the `∑ ↔ Δ` duality in *both*
+directions. Monotonicity makes every truncated `ℕ`-subtraction `Δf(j) = f(j+1) − f(j)`
+exact, so the alternating cancellation telescopes cleanly. Proved by induction on `n`,
+peeling the last summand with `Finset.sum_range_succ` and closing each step by `omega` from
+the two-point monotonicity `f(n+1) ≤ f(n+2)`. -/
+theorem partialSum_forwardDiff {f : ℕ → ℕ} (hf : Monotone f) (n : ℕ) :
+    partialSum (forwardDiff f) n + f 0 = f (n + 1) := by
+  induction n with
+  | zero =>
+    show (∑ j ∈ range 1, forwardDiff f j) + f 0 = f 1
+    rw [Finset.sum_range_one]
+    have h01 : f 0 ≤ f 1 := hf (Nat.le_succ 0)
+    have hd : forwardDiff f 0 = f 1 - f 0 := rfl
+    omega
+  | succ n ih =>
+    show (∑ j ∈ range (n + 1 + 1), forwardDiff f j) + f 0 = f (n + 1 + 1)
+    rw [Finset.sum_range_succ]
+    have hd : forwardDiff f (n + 1) = f (n + 1 + 1) - f (n + 1) := rfl
+    have hmono : f (n + 1) ≤ f (n + 1 + 1) := hf (Nat.le_succ (n + 1))
+    unfold partialSum at ih
+    omega
+
+/-- **Reverse discrete FTC on the figurate ladder.** Specialising `partialSum_forwardDiff`
+to the (size-monotone) simplex sequence `P_d`, whose boundary value is `P_d(0) = 1`:
+
+`partialSum (Δ P_d) n + 1 = P_d(n + 1)`.
+
+So summing the first differences of the `d`-dimensional ladder rebuilds it (offset by the
+constant `1 = P_d(0)`), the exact counterpart of `sum_simplex` (`∑ P_d = P_{d+1}`) read
+through the difference operator. -/
+theorem partialSum_forwardDiff_simplexNumber (d n : ℕ) :
+    partialSum (forwardDiff (simplexNumber d)) n + 1 = simplexNumber d (n + 1) := by
+  have h0 : simplexNumber d 0 = 1 := by
+    simp only [simplexNumber, Nat.zero_add, Nat.choose_self]
+  have hmono : Monotone (simplexNumber d) := fun _ _ h => simplexNumber_mono_size d h
+  have hkey := partialSum_forwardDiff hmono n
+  rw [h0] at hkey
+  exact hkey
+
 
 /-! ### Linearity of the discrete Cauchy transform
 
