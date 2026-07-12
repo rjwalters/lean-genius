@@ -44,7 +44,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE (verified fragment). Part XIV closes the value-group side of the field colimit: ramification_valueGroup_mono (chain ℤ⊆½ℤ⊆... under divisibility) + iUnion_ramification_valueGroup (union = ℚ), both VERIFIED 0-sorry/0-axiom (propext/Classical.choice/Quot.sound only). File remains 0/0. Full Newton–Puiseux (arbitrary polynomials + char-0 convergence) is NOT in Mathlib and remains the genuine open remainder.",
+    "progressSummary": "COMPLETE (verified fragment). Part XIV closes the value-group side of the field colimit: ramification_valueGroup_mono (chain ℤ⊆½ℤ⊆... under divisibility) + iUnion_ramification_valueGroup (union = ℚ), both VERIFIED 0-sorry/0-axiom (propext/Classical.choice/Quot.sound only). File remains 0/0. Full Newton–Puiseux (arbitrary polynomials + char-0 convergence) is NOT in Mathlib and remains the genuine open remainder. | Session (researcher-5, 2026-07-11): added Part XV — the value group as an honest AddSubgroup ℚ. ramificationValueSubgroup n := AddSubgroup.zmultiples (n⁻¹) = (1/n)ℤ; mem_ramificationValueSubgroup (carrier = {k/n:k∈ℤ}, matching ramification_orderTop_range); ramificationValueSubgroup_mono + directed_ramificationValueSubgroup (tower ℤ⊆½ℤ⊆…); iSup_ramificationValueSubgroup = ⊤ (=ℚ, the AddSubgroup refinement of iUnion_ramification_valueGroup and value-group image of iSup_puiseuxRamificationSubring). 1 def + 4 theorems, all axiom-free [propext,Classical.choice,Quot.sound], host-lean EXIT 0. File 1440→1517 lines, 50→54 theorems. Purely intrinsic to ℚ (no coefficient field K).",
     "builtItems": [
       "puiseux_binomial_isRoot in proofs/Proofs/PuiseuxTheorem.lean (binomial Puiseux root as Polynomial.IsRoot of Xⁿ-C(single m c); verified, 0 substantive axioms)",
       "puiseuxSubalgebra (K:CommRing): the Puiseux series form a K-subalgebra of HahnSeries Q K, upgrading the Subring; algebraMap_mem via isPuiseux_algebraMap (algebraMap = C = single 0) [VERIFIED]",
@@ -59,7 +59,8 @@
       "IsPuiseuxSeries(single m a) holds with ramification m.den via Rat.num_div_den (isPuiseux_single); PNat coercion ((⟨d,h⟩:ℕ+):ℚ) is defeq (d:ℚ) so use `exact (Rat.num_div_den _).symm` rather than `rw` (rw fails on the anonymous-constructor proof term).",
       "Part XIII computed each level value group (1/n)ℤ separately and the full group ℚ, but the DOCSTRING-claimed chain ℤ⊆½ℤ⊆... with union ℚ was never proven at the valuation level. Part XIV supplies exactly the two missing statements (monotonicity under divisibility + union=ℚ), completing the value-group mirror of the field colimit.",
       "Value-group monotonicity is cleanest via the SAME series, not arithmetic on k/n: rintro v ⟨f,hf,hf0,rfl⟩ then ⟨f, hf.mono hdvd, hf0, rfl⟩ — IsPuiseuxOfRamification.mono reindexes f without moving its orderTop.",
-      "Union backward direction: for q:ℚ realize at level ⟨q.den,q.pos⟩:ℕ+ with k=q.num; the inner ℚ-equality (q.num:ℚ)/((⟨q.den,q.pos⟩:ℕ+):ℚ)=q is exactly Rat.num_div_den q (PNat cast defeq to Nat cast), lifted to WithTop via exact_mod_cast."
+      "Union backward direction: for q:ℚ realize at level ⟨q.den,q.pos⟩:ℕ+ with k=q.num; the inner ℚ-equality (q.num:ℚ)/((⟨q.den,q.pos⟩:ℕ+):ℚ)=q is exactly Rat.num_div_den q (PNat cast defeq to Nat cast), lifted to WithTop via exact_mod_cast.",
+      "STRUCTURE (researcher-5, 2026-07-11): the level-n value group, previously only a raw Set (WithTop ℚ) of attained orderTop values, is literally the cyclic AddSubgroup.zmultiples ((n:ℚ)⁻¹) of ℚ. mem via AddSubgroup.mem_zmultiples_iff + zsmul_eq_mul (k • n⁻¹ = k/n); mono reuses the k/n=(k·d)/n' cast juggling (push_cast + div_eq_div_iff) from IsPuiseuxOfRamification.mono; iSup=⊤ realizes each q at level q.den via Rat.num_div_den. Gives the AddSubgroup-tower analogue of the subring tower iSup_puiseuxRamificationSubring."
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -85,5 +86,6 @@
     "urls": [],
     "mathlib": []
   },
-  "started": "2026-04-21T16:44:08+02:00"
+  "started": "2026-04-21T16:44:08+02:00",
+  "lastUpdate": "2026-07-11"
 }
