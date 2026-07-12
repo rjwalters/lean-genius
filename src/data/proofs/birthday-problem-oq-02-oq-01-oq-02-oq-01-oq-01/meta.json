@@ -54,27 +54,43 @@
   },
   "sections": [
     {
-      "id": "header-imports",
-      "title": "Module Header and Imports",
+      "id": "overview-docstring",
+      "title": "Overview Docstring: Statement and Strategy",
       "startLine": 1,
-      "endLine": 68,
-      "summary": "Imports Mathlib. Module docstring explaining the globalization of the parent's local smoothing step into the doubly-stochastic (Hardy–Littlewood–Pólya) form of Schur-convexity. Opens Finset and Matrix and the BirthdaySchurConvexity namespace.",
+      "endLine": 55,
+      "summary": "Module docstring explaining the globalization of the parent chain's local smoothing step: instead of one pairwise averaging move, the collision probability C(p) = ∑ᵢ pᵢ² decreases under ANY doubly-stochastic averaging Dq, which by the Hardy–Littlewood–Pólya theorem is exactly the majorization order p ≺ q. Lays out the two-step plan: prove the global inequality ∑(Dq)ᵢ² ≤ ∑qᵢ², then instantiate D as the all-1/d matrix to recover the sharp uniform-minimizer endpoint.",
       "mathContext": "Collision probability $C(p) = \\sum_i p_i^2$; by the Hardy–Littlewood–Pólya theorem $p \\prec q$ (p majorized by q) $\\iff p = Dq$ for some doubly stochastic $D$."
+    },
+    {
+      "id": "imports-setup",
+      "title": "Imports, Namespace, and Setup",
+      "startLine": 56,
+      "endLine": 68,
+      "summary": "Imports Mathlib, opens Finset and Matrix (for the doublyStochastic API and mulVec notation *ᵥ), enters the BirthdaySchurConvexity namespace, and fixes the outcome count via `variable {d : ℕ}`.",
+      "mathContext": "Works over `Fin d` outcomes; `doublyStochastic ℝ (Fin d)` is Mathlib's set of nonnegative matrices with all row and column sums equal to 1, and `D *ᵥ q` is matrix–vector multiplication."
     },
     {
       "id": "global-inequality",
       "title": "The Global Schur-Convexity Inequality",
       "startLine": 69,
-      "endLine": 96,
+      "endLine": 95,
       "summary": "sum_sq_mulVec_le_of_mem_doublyStochastic: for doubly stochastic D, ∑ᵢ (Dq)ᵢ² ≤ ∑ᵢ qᵢ². Per-row Jensen (convexity of x², row sums = 1) followed by a sum_comm swap and column-sum collapse.",
       "mathContext": "$\\sum_i (Dq)_i^2 \\le \\sum_i q_i^2$ for doubly stochastic $D$: per-row Jensen $(Dq)_i^2 = \\bigl(\\sum_j D_{ij} q_j\\bigr)^2 \\le \\sum_j D_{ij} q_j^2$, then column-stochasticity $\\sum_i D_{ij} = 1$ collapses the double sum."
     },
     {
+      "id": "uniform-matrix",
+      "title": "The All-1/d Matrix Is Doubly Stochastic",
+      "startLine": 96,
+      "endLine": 114,
+      "summary": "uniformAveraging_mem_doublyStochastic: the constant matrix J with every entry 1/d is doubly stochastic (for d ≥ 1) — entries are nonnegative and each of the d entries in a row/column sums to d·(1/d) = 1 (mem_doublyStochastic_iff_sum, then field_simp). This J is the averaging operator whose output is the uniform vector.",
+      "mathContext": "$J_{ij} = 1/d$ for all $i,j$; row and column sums are $d \\cdot \\tfrac1d = 1$, so $J \\in \\mathrm{doublyStochastic}\\,\\mathbb{R}\\,(\\mathrm{Fin}\\,d)$."
+    },
+    {
       "id": "uniform-endpoint",
-      "title": "Recovering the Uniform-Minimizer Endpoint",
-      "startLine": 97,
+      "title": "The Uniform Distribution Minimizes Collision Probability",
+      "startLine": 115,
       "endLine": 135,
-      "summary": "uniformAveraging_mem_doublyStochastic: the all-1/d matrix is doubly stochastic. one_div_card_le_sum_sq: 1/d ≤ ∑ qᵢ² for probability vectors, obtained by applying the global inequality to the all-1/d matrix whose output is the uniform vector.",
+      "summary": "one_div_card_le_sum_sq: 1/d ≤ ∑ᵢ qᵢ² for every probability vector q. Applying the global inequality to J (whose output Jq is the constant uniform vector, since ∑q = 1) gives ∑(Jq)ᵢ² = d·(1/d)² = 1/d on the left, so 1/d ≤ ∑qᵢ² — the majorization endpoint, recovering the parent chain's sharp lower bound.",
       "mathContext": "The all-$1/d$ matrix $J$ is doubly stochastic and $Jq$ = the uniform vector, so the global inequality gives $1/d \\le \\sum_i q_i^2$ — the uniform distribution uniquely minimizes collision probability."
     }
   ],
