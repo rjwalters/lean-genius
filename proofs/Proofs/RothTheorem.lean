@@ -5319,4 +5319,132 @@ theorem maxSqDiffFreeCard_eq_one_of_mod_four_eq_three' {p : ℕ} (hp : p.Prime) 
   rw [maxSqDiffFreeCard_eq_one_iff]
   exact fun d hd => isSquare_or_isSquare_neg_of_mod_four_eq_three h3 hd
 
+/-! ### Part XL — the doubling law `maxSqDiffFreeCard (2N) = maxSqDiffFreeCard N` for odd `N`
+
+Parts XXXIV–XXXV established *super*-multiplicativity of the extremal count across coprime
+factors, `maxSqDiffFreeCard M · maxSqDiffFreeCard N ≤ maxSqDiffFreeCard (M·N)`, and recorded
+that the reverse inequality can *fail* (`maxSqDiffFreeCard (3·7) ≥ 3 > 1 = 1·1`).  The factor
+`2` is a genuine exception: because **every residue mod `2` is a square** (`0 = 0²`, `1 = 1²`),
+the `ℤ/2ℤ`-component of the Chinese Remainder isomorphism `ℤ/2Nℤ ≃+* ℤ/2ℤ × ℤ/Nℤ` imposes no
+constraint, so the reduction `ℤ/2Nℤ → ℤ/Nℤ` reflects nonzero squares.  This makes the reverse
+inequality `maxSqDiffFreeCard (2N) ≤ maxSqDiffFreeCard N` hold, and combined with
+super-multiplicativity gives the exact **doubling law**
+
+  `maxSqDiffFreeCard (2N) = maxSqDiffFreeCard N`   for every odd `N`.
+
+Consequently the value-`1` collapse is *stable under doubling*: `maxSqDiffFreeCard (2p) = 1`
+for every prime `p ≡ 3 (mod 4)`, an infinite composite family (`6, 14, 22, 38, 46, 62, …`)
+promoting the isolated `decide`-only witness `maxSqDiffFreeCard 6 = 1` to a theorem.  In fact
+the numerics show the full value-`1` locus is exactly `{1, 2} ∪ {p, 2p : p prime ≡ 3 mod 4}`,
+and the doubling law supplies its composite half. -/
+
+/-- **The reduction `ℤ/2Nℤ → ℤ/Nℤ` reflects squares** (for `N` odd).  Under the Chinese
+Remainder isomorphism `e : ℤ/2Nℤ ≃+* ℤ/2ℤ × ℤ/Nℤ`, an element `y` is a square as soon as its
+`ℤ/Nℤ`-component `(e y).2` is: the `ℤ/2ℤ`-component `(e y).1` is *automatically* a square
+(every residue mod `2` equals `0²` or `1²`), so both components of `e y` are squares, whence
+`e y` — and therefore `y = e.symm (e y)` — is a square. -/
+theorem isSquare_of_chineseRemainder_snd {N : ℕ} [NeZero N] (hcop : Nat.Coprime 2 N)
+    {y : ZMod (2 * N)} (h : IsSquare ((ZMod.chineseRemainder hcop y).2)) : IsSquare y := by
+  have h1 : IsSquare ((ZMod.chineseRemainder hcop y).1) :=
+    (by decide : ∀ z : ZMod 2, IsSquare z) _
+  obtain ⟨s, hs⟩ := h1
+  obtain ⟨t, ht⟩ := h
+  refine ⟨(ZMod.chineseRemainder hcop).symm (s, t), ?_⟩
+  have hey : ZMod.chineseRemainder hcop y = (s, t) * (s, t) := by
+    rw [Prod.mk_mul_mk]
+    exact Prod.ext_iff.mpr ⟨hs, ht⟩
+  calc y = (ZMod.chineseRemainder hcop).symm (ZMod.chineseRemainder hcop y) :=
+          ((ZMod.chineseRemainder hcop).symm_apply_apply y).symm
+    _ = (ZMod.chineseRemainder hcop).symm ((s, t) * (s, t)) := by rw [hey]
+    _ = (ZMod.chineseRemainder hcop).symm (s, t) * (ZMod.chineseRemainder hcop).symm (s, t) :=
+          map_mul _ _ _
+
+/-- In a square-difference-free set, **two distinct elements never differ by a square**: if
+`a, b ∈ A` and `b - a` is a square then, being nonzero (as `a ≠ b`), it is a *nonzero* square
+`m²`, so `a + m² = b ∈ A` contradicts freeness at `a`. -/
+theorem not_isSquare_sub_of_sqDiffFree {N : ℕ} [NeZero N] {A : Finset (ZMod N)}
+    (hA : IsSqDiffFree A) {a b : ZMod N} (ha : a ∈ A) (hb : b ∈ A) (hne : a ≠ b) :
+    ¬ IsSquare (b - a) := by
+  rintro ⟨m, hm⟩
+  have hsq : b - a = m ^ 2 := by rw [hm, pow_two]
+  have hne0 : m ^ 2 ≠ 0 := by
+    rw [← hsq]; intro h; exact hne (sub_eq_zero.mp h).symm
+  have hnot : a + m ^ 2 ∉ A := hA a ha m hne0
+  apply hnot
+  have : a + m ^ 2 = b := by rw [← hsq]; ring
+  rw [this]; exact hb
+
+/-- **The `≤` half of the doubling law.**  For odd `N`, projecting a maximal
+square-difference-free set `A ⊆ ℤ/2Nℤ` onto the `ℤ/Nℤ`-component of the Chinese Remainder
+isomorphism is injective on `A` (a collision would be a difference `N`, a nonzero square in
+`ℤ/2Nℤ`) and the image is again square-difference-free (a square difference downstairs lifts
+to one upstairs by `isSquare_of_chineseRemainder_snd`), so
+`maxSqDiffFreeCard (2N) ≤ maxSqDiffFreeCard N`. -/
+theorem maxSqDiffFreeCard_two_mul_le {N : ℕ} [NeZero N] (hodd : Odd N) :
+    maxSqDiffFreeCard (2 * N) ≤ maxSqDiffFreeCard N := by
+  haveI : NeZero (2 * N) := ⟨Nat.mul_ne_zero (by norm_num) (NeZero.ne N)⟩
+  have hcop : Nat.Coprime 2 N := Nat.coprime_two_left.mpr hodd
+  obtain ⟨A, hAfree, hAcard⟩ := exists_isSqDiffFree_card_eq_max (2 * N)
+  -- distinct `A`-elements never have a square projection-difference
+  have key : ∀ a ∈ A, ∀ b ∈ A,
+      IsSquare ((ZMod.chineseRemainder hcop b).2 - (ZMod.chineseRemainder hcop a).2) → a = b := by
+    intro a ha b hb hsq
+    by_contra hne
+    have hsub : (ZMod.chineseRemainder hcop (b - a)).2
+        = (ZMod.chineseRemainder hcop b).2 - (ZMod.chineseRemainder hcop a).2 := by
+      rw [map_sub]; rfl
+    have hsqd : IsSquare (b - a) :=
+      isSquare_of_chineseRemainder_snd hcop (by rw [hsub]; exact hsq)
+    exact not_isSquare_sub_of_sqDiffFree hAfree ha hb hne hsqd
+  -- the projection is injective on `A`
+  have hinj : Set.InjOn (fun y => (ZMod.chineseRemainder hcop y).2) (A : Set (ZMod (2 * N))) := by
+    intro a ha b hb hfab
+    have hfab' : (ZMod.chineseRemainder hcop a).2 = (ZMod.chineseRemainder hcop b).2 := hfab
+    exact key a (Finset.mem_coe.mp ha) b (Finset.mem_coe.mp hb)
+      (by rw [hfab', sub_self]; exact IsSquare.zero)
+  -- the projected image is square-difference-free
+  have hBfree : IsSqDiffFree (A.image (fun y => (ZMod.chineseRemainder hcop y).2)) := by
+    intro x hx n hn hcon
+    rw [Finset.mem_image] at hx hcon
+    obtain ⟨a, ha, rfl⟩ := hx
+    obtain ⟨b, hb, hb2⟩ := hcon
+    have hb2' : (ZMod.chineseRemainder hcop b).2
+        = (ZMod.chineseRemainder hcop a).2 + n ^ 2 := hb2
+    have hd : (ZMod.chineseRemainder hcop b).2 - (ZMod.chineseRemainder hcop a).2 = n ^ 2 := by
+      rw [hb2']; ring
+    have hsqd : IsSquare ((ZMod.chineseRemainder hcop b).2
+        - (ZMod.chineseRemainder hcop a).2) := by rw [hd]; exact ⟨n, pow_two n⟩
+    have hab : a = b := key a ha b hb hsqd
+    apply hn
+    rw [← hd, hab, sub_self]
+  have hle : (A.image (fun y => (ZMod.chineseRemainder hcop y).2)).card ≤ maxSqDiffFreeCard N :=
+    le_maxSqDiffFreeCard_of_isSqDiffFree hBfree
+  rwa [Finset.card_image_of_injOn hinj, hAcard] at hle
+
+/-- **The doubling law.**  For every odd `N`, `maxSqDiffFreeCard (2N) = maxSqDiffFreeCard N`:
+the `≤` direction is `maxSqDiffFreeCard_two_mul_le`, the `≥` direction is coprime
+super-multiplicativity `maxSqDiffFreeCard_mul_ge_of_coprime` with the trivial factor
+`maxSqDiffFreeCard 2 = 1`.  The factor `2` is thus "free" — it neither shrinks nor grows the
+extremal square-difference-free count. -/
+theorem maxSqDiffFreeCard_two_mul {N : ℕ} [NeZero N] (hodd : Odd N) :
+    maxSqDiffFreeCard (2 * N) = maxSqDiffFreeCard N := by
+  haveI : NeZero (2 * N) := ⟨Nat.mul_ne_zero (by norm_num) (NeZero.ne N)⟩
+  refine le_antisymm (maxSqDiffFreeCard_two_mul_le hodd) ?_
+  have hcop : Nat.Coprime 2 N := Nat.coprime_two_left.mpr hodd
+  have h2 : maxSqDiffFreeCard 2 = 1 := maxSqDiffFreeCard_eq_one_iff.mpr (by decide)
+  have hge := maxSqDiffFreeCard_mul_ge_of_coprime hcop
+  rwa [h2, one_mul] at hge
+
+/-- **Composite value-`1` collapse `maxSqDiffFreeCard (2p) = 1` for every prime `p ≡ 3 (mod 4)`.**
+The doubling law reduces `2p` to `p`, where the Part XXXVI collapse
+`maxSqDiffFreeCard_eq_one_of_mod_four_eq_three` applies.  This upgrades the isolated
+`decide`-only fact `maxSqDiffFreeCard 6 = 1` (the `p = 3` case) to an infinite family
+`6, 14, 22, 38, 46, 62, …`, the composite half of the value-`1` locus
+`{1, 2} ∪ {p, 2p : p prime ≡ 3 mod 4}`. -/
+theorem maxSqDiffFreeCard_two_mul_prime_eq_one {p : ℕ} (hp : p.Prime) [NeZero p]
+    (h3 : p % 4 = 3) : maxSqDiffFreeCard (2 * p) = 1 := by
+  have hodd : Odd p := Nat.odd_iff.mpr (by omega)
+  rw [maxSqDiffFreeCard_two_mul hodd]
+  exact maxSqDiffFreeCard_eq_one_of_mod_four_eq_three hp h3
+
 end Szemeredi.Roth
