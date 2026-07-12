@@ -593,4 +593,73 @@ theorem scaledLattice_realizes_sqrt_two :
   refine ⟨p, q, hp, hq, ?_⟩
   rw [h]; congr 1; norm_num
 
+
+/-- **A prime `r ≡ 3 (mod 4)` dividing a sum of two squares divides each summand.**
+If `r ∣ u² + v²` then `r ∣ u` and `r ∣ v`.  This is the structural heart of Fermat's
+two-square theorem: `-1` is a quadratic non-residue mod such an `r`, so working in the
+field `ZMod r` the relation `u² ≡ -v²` forces both `u ≡ 0` and `v ≡ 0`.  It generalizes
+`sq_add_sq_three_dvd` (the `r = 3` instance) to *every* prime `≡ 3 (mod 4)`. -/
+theorem sq_add_sq_prime_dvd {r : ℕ} [Fact r.Prime] (hr : r % 4 = 3)
+    (u v : ℤ) (h : (r : ℤ) ∣ (u ^ 2 + v ^ 2)) : (r : ℤ) ∣ u ∧ (r : ℤ) ∣ v := by
+  have hcast : ((u : ZMod r)) ^ 2 = -((v : ZMod r)) ^ 2 := by
+    have hz : ((u ^ 2 + v ^ 2 : ℤ) : ZMod r) = 0 := by
+      rw [ZMod.intCast_zmod_eq_zero_iff_dvd]; exact_mod_cast h
+    push_cast at hz
+    linear_combination hz
+  refine ⟨?_, ?_⟩
+  · rw [← ZMod.intCast_zmod_eq_zero_iff_dvd]
+    by_contra hu
+    exact (ZMod.mod_four_ne_three_of_sq_eq_neg_sq hu hcast) hr
+  · rw [← ZMod.intCast_zmod_eq_zero_iff_dvd]
+    by_contra hv
+    have hcast' : ((v : ZMod r)) ^ 2 = -((u : ZMod r)) ^ 2 := by rw [hcast]; ring
+    exact (ZMod.mod_four_ne_three_of_sq_eq_neg_sq hv hcast') hr
+
+/-- **`√2·ℤ²` avoids `√n` whenever a prime `r ≡ 3 (mod 4)` divides `n` to an *odd* power**
+(concretely `r ∣ n` but `r² ∤ n`).  From `dist² = 2·(u² + v²) = n` and `r` odd we get
+`r ∣ u² + v²`; then `sq_add_sq_prime_dvd` forces `r ∣ u`, `r ∣ v`, whence `r² ∣ u² + v²`
+and so `r² ∣ n` — contradiction.  This is the general odd-prime obstruction of which
+`scaledLattice_dist_ne_sqrt_of_three_dvd_not_nine` (`r = 3`) is the first instance; taking
+`r = 7, 11, 19, …` yields infinitely many further avoided families (`√7, √11, √28, …`). -/
+theorem scaledLattice_dist_ne_sqrt_of_prime_dvd_not_sq {p q : Plane}
+    (hp : p ∈ ScaledLattice) (hq : q ∈ ScaledLattice)
+    {r n : ℕ} [Fact r.Prime] (hr : r % 4 = 3)
+    (hdvd : r ∣ n) (hnsq : ¬ (r ^ 2 ∣ n)) : dist p q ≠ Real.sqrt n := by
+  intro h
+  obtain ⟨u, v, huv⟩ := scaledLattice_dist_sq_two_mul_sq_add_sq hp hq
+  have hsq : dist p q ^ 2 = (n : ℝ) := by rw [h, Real.sq_sqrt (by positivity)]
+  rw [hsq] at huv
+  have hz : (n : ℤ) = 2 * (u ^ 2 + v ^ 2) := by exact_mod_cast huv
+  have hrn : (r : ℤ) ∣ (n : ℤ) := by exact_mod_cast hdvd
+  -- r is prime and odd, r ∣ 2·(u²+v²) ⟹ r ∣ u²+v²
+  have hrp : Prime (r : ℤ) := Nat.prime_iff_prime_int.mp (Fact.out)
+  have hrmul : (r : ℤ) ∣ 2 * (u ^ 2 + v ^ 2) := by rw [← hz]; exact hrn
+  have hrs : (r : ℤ) ∣ (u ^ 2 + v ^ 2) := by
+    rcases (hrp.dvd_mul.mp hrmul) with h2 | hs
+    · exfalso
+      have : (r : ℤ) ∣ (2 : ℤ) := h2
+      have hle : r ∣ 2 := by exact_mod_cast this
+      have : r ≤ 2 := Nat.le_of_dvd (by norm_num) hle
+      omega
+    · exact hs
+  obtain ⟨hu, hv⟩ := sq_add_sq_prime_dvd hr u v hrs
+  obtain ⟨a, ha⟩ := hu
+  obtain ⟨b, hb⟩ := hv
+  have hr2s : (r : ℤ) ^ 2 ∣ (u ^ 2 + v ^ 2) := ⟨a ^ 2 + b ^ 2, by rw [ha, hb]; ring⟩
+  obtain ⟨c, hc⟩ := hr2s
+  have hr2n : (r : ℤ) ^ 2 ∣ (n : ℤ) := ⟨2 * c, by rw [hz, hc]; ring⟩
+  exact hnsq (by exact_mod_cast hr2n)
+
+/-- **Concrete instance beyond `r = 3`:** no two points of `√2·ℤ²` are at distance `√56`.
+Here `56 = 2³·7` with `7 ≡ 3 (mod 4)` dividing `56` but `49 ∤ 56`, so `√56` is avoided by the
+`r = 7` obstruction.  It is caught by *none* of the earlier families: `56 ≡ 0 (mod 8)` is an
+*achievable* residue, `56 ≡ 8 (mod 16)` escapes the `n ≡ 12 (mod 16)` family, and `3 ∤ 56`
+escapes the `r = 3` theorem — the general odd-prime obstruction reaches strictly further. -/
+theorem scaledLattice_dist_ne_sqrt_fiftysix {p q : Plane}
+    (hp : p ∈ ScaledLattice) (hq : q ∈ ScaledLattice) :
+    dist p q ≠ Real.sqrt 56 := by
+  haveI : Fact (Nat.Prime 7) := ⟨by norm_num⟩
+  exact scaledLattice_dist_ne_sqrt_of_prime_dvd_not_sq hp hq (r := 7) (n := 56)
+    (by decide) (by decide) (by decide)
+
 end Erdos214Incomplete01OQ01
