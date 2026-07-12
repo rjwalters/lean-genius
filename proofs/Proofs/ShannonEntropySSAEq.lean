@@ -671,4 +671,45 @@ theorem ssa_deficit_reflectXZ {α β γ : Type*}
   have hpr : ∀ xyz, 0 ≤ reflectXZ pXYZ xyz := fun _ => hp _
   rw [ssa_deficit_eq_cmi hpr, ssa_deficit_eq_cmi hp, cmiSum_reflectXZ]
 
+-- ═══════════════════════════════════════════════════════════════
+-- PART VII: Reversibility of the Markov condition  (X–Y–Z ⟺ Z–Y–X)
+-- ═══════════════════════════════════════════════════════════════
+
+/-- The `X ↔ Z` reflection preserves the total mass: `∑ reflectXZ p = ∑ p`.
+    It merely permutes the summation index `(z,y,x) ↦ (x,y,z)`, so in particular a
+    probability law reflects to a probability law. -/
+private lemma reflectXZ_sum {α β γ : Type*}
+    [Fintype α] [Fintype β] [Fintype γ] (pXYZ : α × β × γ → ℝ) :
+    (∑ q : γ × β × α, reflectXZ pXYZ q) = ∑ w : α × β × γ, pXYZ w :=
+  Fintype.sum_equiv
+    { toFun := fun (q : γ × β × α) => (q.2.2, q.2.1, q.1)
+      invFun := fun (w : α × β × γ) => (w.2.2, w.2.1, w.1)
+      left_inv := fun ⟨_, _, _⟩ => rfl
+      right_inv := fun ⟨_, _, _⟩ => rfl } _ _ (fun ⟨_, _, _⟩ => rfl)
+
+/-- **Reversibility of the Markov condition.**  `X – Y – Z` is a Markov chain iff
+    `Z – Y – X` is: the conditional-independence factorization
+
+      `p(x,y,z)·p_Y(y) = p_{XY}(x,y)·p_{YZ}(y,z)`
+
+    holds for the joint law `p` exactly when the corresponding factorization holds
+    for its `X ↔ Z` reflection `reflectXZ p`.  This is the classical fact that
+    Markov chains are reversible, obtained here as a direct consequence of the
+    symmetry of conditional mutual information: both factorizations are equivalent
+    to their respective CMI vanishing (`ssa_cmi_eq_zero_iff`), and
+    `cmiSum_reflectXZ` identifies the two CMIs.  So conditional independence of the
+    outer variables given the middle one is a symmetric relation, as it must be. -/
+theorem markov_reflectXZ_iff {α β γ : Type*}
+    [Fintype α] [Fintype β] [Fintype γ]
+    [DecidableEq α] [DecidableEq β] [DecidableEq γ]
+    {pXYZ : α × β × γ → ℝ} (hp : ∀ xyz, 0 ≤ pXYZ xyz)
+    (hsum : ∑ xyz : α × β × γ, pXYZ xyz = 1) :
+    (∀ x y z, pXYZ (x, y, z) * marginalY_3 pXYZ y
+        = marginalXY pXYZ (x, y) * marginalYZ pXYZ (y, z))
+    ↔ (∀ x y z, reflectXZ pXYZ (x, y, z) * marginalY_3 (reflectXZ pXYZ) y
+        = marginalXY (reflectXZ pXYZ) (x, y) * marginalYZ (reflectXZ pXYZ) (y, z)) := by
+  have hpr : ∀ xyz, 0 ≤ reflectXZ pXYZ xyz := fun _ => hp _
+  have hsumr : ∑ q : γ × β × α, reflectXZ pXYZ q = 1 := (reflectXZ_sum pXYZ).trans hsum
+  rw [← ssa_cmi_eq_zero_iff hp hsum, ← ssa_cmi_eq_zero_iff hpr hsumr, cmiSum_reflectXZ]
+
 end InformationTheory
