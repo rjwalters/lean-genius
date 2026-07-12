@@ -347,21 +347,17 @@ theorem planar_not_dense (ε : ℝ) (hε : ε > 0) :
   exact (hN V hcard G hDense) hPlanar
 
 /-
-## Quantitative Bounds
+## Quantitative Bounds (removed: the naive `⌈1/ε²⌉` bound is inconsistent)
 
-The actual bound on C_ε from Kostochka-Pyber is explicit.
+The real Kostochka–Pyber bound on `C_ε` is polynomial in `1/ε`. A previous
+version recorded it as the concrete formula `explicitBound ε = ⌈1/ε²⌉` and
+assumed it as an axiom `kostochka_pyber_explicit`. That formula is **too small**:
+at `ε = 1/2` it gives `⌈4⌉ = 4 < 5`, forcing a non-planar subgraph on `≤ 4`
+vertices — impossible (any non-planar graph needs `≥ 5` vertices, and arbitrarily
+large `1/2`-dense complete graphs exist). The axiom was therefore inconsistent and
+is removed here; the main file `Proofs/Erdos1018Problem.lean` carries a
+machine-checked disproof (`explicit_bound_half_is_false`).
 -/
-
-/-- An explicit (though not optimal) bound on C_ε. -/
-noncomputable def explicitBound (ε : ℝ) : ℕ :=
-  Nat.ceil (1 / ε ^ 2)
-
-/-- The Kostochka-Pyber bound is polynomial in 1/ε. -/
-axiom kostochka_pyber_explicit (ε : ℝ) (hε : ε > 0) :
-  ∃ N : ℕ, ∀ (V : Type*) [Fintype V] [DecidableEq V],
-    Fintype.card V ≥ N →
-    ∀ (G : SimpleGraph V) [DecidableRel G.Adj],
-      isDense G ε → hasSmallK5Subdivision G (explicitBound ε)
 
 /-
 ## Related Problems
