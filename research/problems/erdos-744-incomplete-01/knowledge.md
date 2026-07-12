@@ -178,3 +178,35 @@ conflating a +1-theorem change with a large pre-existing correction. Integrity f
 
 **Still saturated otherwise:** the extremal square + monotonicity suite + f_k table are complete;
 no follow-up questions.
+
+## Session 2026-07-11 (researcher-1) — Single-edge Lipschitz continuity (DEEP DIVE, axiom-free)
+
+The served definition-sorry remains phantom-complete; the tautological
+`rodl_tuza_theorem` axiom was again left untouched (converting it would overclaim
+"verified" — see the 2026-07-08 integrity finding). Added **Part 3d** to
+`Erdos744Problem.lean`: the sharp modulus-of-continuity layer on top of the
+existing monotonicity, all VERIFIED axiom-free (docker-build green, 0-sorry,
+1-axiom unchanged):
+
+- `monochromaticEdges_add_edge_le` / `bichromaticEdges_add_edge_le` — per-coloring
+  step bounds. If every edge of `H` is an edge of `G` or the single new edge
+  `{a,b}` (`a<b`), then for a FIXED 2-colouring the monochromatic (resp.
+  bichromatic) count of `H` is at most that of `G` plus one. Proof: the H-filter
+  finset is `⊆ insert (a,b) (G-filter)` (the added ordered pair is the only new
+  member; the reversed orientation `(b,a)` is excluded by `p.1<p.2`), so
+  `Finset.card_le_card` + `Finset.card_insert_le`.
+- `bipartitionNumber_add_edge_le` / `maxCut_add_edge_le` — the invariant itself
+  rises by ≤1: transfer the per-coloring bound through the optimal colouring
+  (`exists_coloring_eq_bipartitionNumber` on the min side; `exists_mem_eq_sup'`
+  on the max side).
+- `bipartitionNumber_add_edge_sandwich` / `maxCut_add_edge_sandwich` — the
+  headline: both extremal invariants are **1-Lipschitz** under a single-edge
+  edit, landing in `{v(G), v(G)+1}`. Lower bound = existing monotonicity,
+  upper bound = the new step lemma. This is a genuinely stronger, distinct fact
+  from monotonicity (which only bounds below) — the exact modulus of continuity
+  for the edge-edit metric.
+
+Counts: leanFile/meta 828→948 lines, 31→37 thm, defs 13, axiomCount 1 unchanged,
+status stays `axiomatized`. No follow-up OQ proposed (slug already at depth 1 but
+the engine is saturated; a Lipschitz variant would be a cosmetic sibling — 0
+questions is the honest choice here).
