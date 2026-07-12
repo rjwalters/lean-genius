@@ -1,5 +1,50 @@
 # Erdős #1093 — OQ-02: Is d(284,28)=9 the maximal deficiency?
 
+## Session 2026-07-11 (researcher-6) — Section XXXII: window-check closes k=31 → frontier k≥32
+
+**Mode:** REVISIT (RICH tier). **Outcome:** strict advance (frontier `k ≥ 31 → k ≥ 32`),
+one more slice of the elementary ladder. NOTE: this knowledge.md was behind the Lean file —
+the file had already advanced through Sections XXX (k=29) and XXXI (k=30) since the Section XXIX
+entry below. Section XXXII continues the established window-check pattern one slice further.
+
+### Numeric input (Python-verified sharp)
+Deficiency `≥ 10` at `k = 31` forces `(n-30)^{10} ≤ 31!`, and `31! < 2464^{10}` is sharp:
+`31! = 8222838654177922817725562880000000 < 8249108861550475694138713729662976 = 2464^{10}`,
+while `2463^{10} = 8215691410991820804190254776742849 ≤ 31!`. So `n - 30 < 2464 ⟹ n ≤ 2493`.
+Floor `n ≥ 62 (= 2·31)` gives the window `n ∈ {62,…,2493}` (2432 values). Python: the window
+is **empty of admissible pairs** — every `m` has some prime `p ∈ {2,3,5,7,11,13,17,19,23,29,31}`
+dividing `C(m,31)`. `31` is prime, so the prime set gains `31` relative to `k = 30`.
+
+### What I did — Section XXXII (5 theorems, 0 sorry, 0 new axioms), VERIFIED
+- `factorial_31_lt_2464_pow_ten` — `31! < 2464^10` (kernel `decide`, `[propext]`, ofReduceBool-free).
+- `window_k31_admissible_deficiency_le_nine` — the single `native_decide` fact over the
+  2432-value window (full-file build ~21s including this).
+- `admissible_k31_window_deficiency_le_nine` — admissible ⟹ divisibility impossible ⟹
+  `deficiency ≤ 9` (11-prime `rcases`, each `h p prime hd; omega`; adds the `31` branch).
+- `deficiency_le_nine_of_k_eq_31` — one-line instantiation of the window-check engine
+  `deficiency_le_nine_of_location_window` at `k=31, M=2464`.
+- `deficiency_le_nine_of_k_le_31`, `maximalDeficiencyIs_nine_iff_kGe32`.
+
+### Verification (Docker-free, `proofs/bin/lake env lean` v4.26.0, prebuilt oleans)
+Full file compiles clean (exit 0). `#print axioms`: `factorial_31_lt_2464_pow_ten` = `[propext]`;
+structural engine `deficiency_le_nine_of_location_window` = `[propext, Classical.choice, Quot.sound]`
+(ofReduceBool-free); `deficiency_le_nine_of_k_eq_31` / `maximalDeficiencyIs_nine_iff_kGe32` carry
+`[propext, Classical.choice, Lean.ofReduceBool, Lean.trustCompiler, Quot.sound]` — the
+`ofReduceBool`/`trustCompiler` from the single `native_decide` window fact, exactly as every prior
+section. **No new axiom declaration; 0 sorry.**
+
+### Honesty note
+This is a genuinely strict but **marginal** advance: the window-check ladder closes one `k` per
+section and can never finish by elementary means (`k ≥ 32` still has infinitely many `k`; the
+irreducibly analytic Erdős–Lacampagne–Selfridge input governs all large `k` uniformly). Each slice
+also costs a growing `native_decide` window (2432 values here) that will eventually become
+infeasible. Value is incremental — one more concrete `k` discharged, record-slice reach now `k ≤ 31`.
+
+### Files Modified
+- `proofs/Proofs/Erdos1093ProblemOQ02.lean` (Section XXXII, +5 theorems)
+
+---
+
 ## Session 2026-07-11 (researcher-6) — Section XXIX: window-check CLOSES k=28 (the record slice!) → frontier k≥29
 
 **Mode:** REVISIT (RICH tier). **Outcome:** BREAKTHROUGH — closes `k = 28`, the slice
