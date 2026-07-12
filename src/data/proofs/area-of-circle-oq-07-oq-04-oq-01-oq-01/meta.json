@@ -84,7 +84,8 @@
       "**Separability is the whole engine.** Because e^{-b∑xᵢ²} = ∏ᵢ e^{-b xᵢ²}, the n-dimensional integral is forced to be the n-th power of the line integral — Fubini over a product measure does the rest. The radial symmetry that makes polar coordinates work in 2D is, in n dimensions, just this product structure.",
       "**The product step needs no positivity.** gaussian_pow_eq_integral_pi holds for every real b (both sides are 0 when b ≤ 0); only the final closed form (π/b)^{n/2}, which uses a real exponent, requires b > 0 so that π/b ≥ 0.",
       "**It unifies the family.** n = 1 recovers Mathlib's base ∫_ℝ e^{-b x²} = √(π/b); n = 2 recovers the parent's literal 2-D area identity (∫_ℝ e^{-b x²})² = π/b. This entry is the arbitrary-dimension generalization of that polar evaluation.",
-      "**The √(·)ⁿ → (π/b)^{n/2} conversion is the only real subtlety.** Turning a natural-power of a square root into a single rpow requires Real.sqrt_eq_rpow and Real.rpow_mul on a nonnegative base, which is exactly where the b > 0 hypothesis enters."
+      "**The √(·)ⁿ → (π/b)^{n/2} conversion is the only real subtlety.** Turning a natural-power of a square root into a single rpow requires Real.sqrt_eq_rpow and Real.rpow_mul on a nonnegative base, which is exactly where the b > 0 hypothesis enters.",
+      "**The formula is well-behaved at the n = 0 boundary.** For n = 0, ℝ⁰ = Fin 0 → ℝ is a one-point space carrying the empty product measure of total mass 1; the integrand e^{-b·∑_{i∈∅}} collapses to e⁰ = 1, so the integral is 1, matching (∫_ℝ e^{-b t²})⁰ = 1 and (π/b)^{0/2} = 1. Because the statements are quantified over every n : ℕ, this empty-dimensional base case is subsumed for free — a small witness that the product–Fubini route, unlike a polar-coordinate argument, degenerates cleanly."
     ],
     "prerequisites": [
       "Integration over a product measure on Fin n → ℝ (MeasureTheory, Fubini)",
