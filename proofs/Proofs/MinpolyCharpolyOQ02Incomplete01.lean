@@ -696,7 +696,7 @@ theorem listProd_diagonal {ι : Type*} (L : List ι) (g : ι → n → K) :
   rw [hhom]
   congr 1
   funext i
-  rw [Pi.list_prod_apply, List.map_map]
+  simp only [Pi.list_prod_apply, List.map_map, Function.comp]
 
 /-- **The splitting annihilator of a diagonalizable matrix.**  If `P` diagonalizes `M`
     (so `D = P⁻¹MP` is diagonal), then `M` is annihilated by the ordered product
@@ -711,7 +711,7 @@ theorem listProd_diagonal {ι : Type*} (L : List ι) (g : ι → n → K) :
     The factors range over the *image* of the diagonal, i.e. the **distinct** eigenvalues,
     so `∏_{λ ∈ S}(X − λ)` is a squarefree polynomial: this is the concrete content behind
     the parent's `Matrix.IsDiagonalizable.squarefree_minpoly`. -/
-theorem prod_sub_eigen_smul_eq_zero {M P : Matrix n n K} (hP : IsUnit P.det)
+theorem prod_sub_eigen_smul_eq_zero [DecidableEq K] {M P : Matrix n n K} (hP : IsUnit P.det)
     (hD : (P⁻¹ * M * P).IsDiag) :
     (((Finset.image (fun i => (P⁻¹ * M * P) i i) Finset.univ).toList).map
         (fun s => M - s • (1 : Matrix n n K))).prod = 0 := by
@@ -748,7 +748,7 @@ theorem prod_sub_eigen_smul_eq_zero {M P : Matrix n n K} (hP : IsUnit P.det)
     funext i
     apply List.prod_eq_zero
     rw [List.mem_map]
-    exact ⟨D i i, Finset.mem_toList.mpr (Finset.mem_image_of_mem _ (Finset.mem_univ i)),
+    exact ⟨D i i, Finset.mem_toList.mpr (Finset.mem_image.mpr ⟨i, Finset.mem_univ i, rfl⟩),
       sub_self _⟩
   rw [hzero, Matrix.diagonal_zero] at hconj2
   -- undo the conjugation: from `P⁻¹ · prod · P = 0` conclude `prod = 0`
@@ -773,6 +773,7 @@ theorem prod_sub_eigen_smul_eq_zero {M P : Matrix n n K} (hP : IsUnit P.det)
 theorem IsDiagonalizable.exists_prod_linear_factors_eq_zero {M : Matrix n n K}
     (hM : M.IsDiagonalizable) :
     ∃ S : Finset K, (S.toList.map (fun s => M - s • (1 : Matrix n n K))).prod = 0 := by
+  classical
   obtain ⟨P, hP, hD⟩ := hM
   have hPdet : IsUnit P.det := (Matrix.isUnit_iff_isUnit_det P).mp hP
   exact ⟨Finset.image (fun i => (P⁻¹ * M * P) i i) Finset.univ,
