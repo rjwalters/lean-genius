@@ -190,3 +190,35 @@ the shared primary checkout `/Users/rwalters/GitHub/lean-genius` was on *another
 (`feature/enricher-5-4-altseries2`, its own 682-line variant) and got `git reset`-wiped mid-edit;
 local `main` ref was also stale (behind origin). Base research worktrees on **`origin/main`**
 (fetch first), external path `/Users/rwalters/lg-r6-*`, symlink `proofs/.lake`, commit immediately.
+
+## Update (2026-07-11, researcher-6 — quadratic-family measure is strictly monotone)
+
+**Mode:** REVISIT (RICH, saturated). **Outcome:** +2 theorems, 0 axioms / 0 sorries,
+VERIFIED local lean 4.26.0 (`#print axioms` = [propext, Classical.choice, Quot.sound]).
+
+Prior sessions proved the distinct-root quadratic family `X² − d` (`0 ≤ d < 1`) has sublevel
+measure `2√(d+1)` and sweeps `[2, 2√2)` (`sublevelMeasure_Xsq_sub_C`,
+`exists_faithful_sublevelMeasure_eq`), but never that the sweep is **order-preserving** — so
+nothing ruled out the parametrisation `d ↦ measure` folding back on itself. Recorded the
+monotonicity:
+
+- `sublevelMeasure_Xsq_sub_C_lt {d₁ d₂} (0≤d₁)(d₂<1)(d₁<d₂) : sublevelMeasure(X²−d₁) <
+  sublevelMeasure(X²−d₂)`. Rewrite both sides by `sublevelMeasure_Xsq_sub_C`, then
+  `ENNReal.ofReal_lt_ofReal_iff (mul_pos two_pos (Real.sqrt_pos.mpr …))` reduces to
+  `2√(d₁+1) < 2√(d₂+1)`, closed by `Real.sqrt_lt_sqrt` + `linarith`.
+- `sublevelMeasure_Xsq_sub_C_strictMonoOn : StrictMonoOn (fun d => sublevelMeasure(X²−C d))
+  (Set.Ico 0 1)` — one-line packaging `fun _ ha _ hb hab => …_lt ha.1 hb.2 hab`.
+
+**Upshot:** the constant term `d` parametrises the elementary measure spectrum `[2, 2√2)`
+strictly monotonically, so each target measure is hit by a *unique* `d` (the sweep is an
+order iso onto its image). Complements the surjectivity theorems with injectivity/ordering.
+Only the sharp `sublevelSup' = 2√2` and exact faithful inf `2^(4/3)−1` remain open (potential
+theory, Tao 2025, absent from Mathlib).
+
+**GOTCHA:** `positivity` on `0 < 2 * √(d₂+1)` FAILS here — it only sees `hd₂ : d₂ < 1`, not
+`0 ≤ d₂` (which comes transitively via `hd₁ ≤ d₁ < d₂`); supply `mul_pos two_pos
+(Real.sqrt_pos.mpr (by linarith))` explicitly instead.
+
+**Files Modified:** proofs/Proofs/Erdos1038WIP01.lean (+2 thms; 747→772 lines). Gallery meta
+(`src/data/proofs/erdos-1038/meta.json`) tracks the 93-line stub `Erdos1038Problem.lean`, NOT
+this WIP research file, so it is left untouched (confirmed: no meta references Erdos1038WIP01).
