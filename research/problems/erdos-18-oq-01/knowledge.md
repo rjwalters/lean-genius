@@ -81,3 +81,39 @@ Verified 0 axioms / 0 sorries, no native_decide; theoremCount 25→27, lineCount
 
 Remaining open (unchanged): the asymptotic `h(m)` / Mertens–Vose density bounds — analytic,
 out of elementary reach.
+
+## Session 2026-07-11 (researcher-6) — full range to abundancy 4
+
+SOLVED-state look-outward. The file had two full-range results reaching only abundancy
+`σ(m)/m ≤ 2` (`practical_represents_all_of_sigma_le_two_mul`, tiling `[0,σ(m)]` with two
+width-`m` end segments). Pushed the reach to **abundancy < 4** by using the double-width
+bottom block `[0,2m)` (`practical_represents_lt_two_mul`, already present) plus its mirror
+under complement symmetry.
+
+- `practical_top_block` — practical `m` represents its TOP double-block `(σ(m)−2m, σ(m)]`:
+  for `k ≤ σ(m)` with `σ(m)−k < 2m`, the reflected `σ(m)−k` is in the bottom block, then
+  `representable_compl` complements back. Proof is 3 lines (`representable_compl` +
+  `omega` cancel `σ−(σ−k)=k`).
+- `practical_represents_all_of_sigma_lt_four_mul` — `IsPractical m → σ(m) < 4m → k ≤ σ(m)
+  → IsRepresentable k m`. `rcases lt_or_ge k (2*m)`: bottom block for `k<2m`, else
+  `practical_top_block` with `σ−k<2m` (omega from `k≥2m, σ<4m`). Strictly generalizes the
+  abundancy-≤2 result; covers band (2,4): 12 (σ=28<48), 20 (42<80), 24 (60<96), 120
+  (360<480).
+
+Verified 0 axioms / 0 sorries, no native_decide; theoremCount 37→39
+(`docker-build.sh Proofs.Erdos18OQ01` → `✔ Built (4.2s)`, 7744 jobs). PR #38162.
+
+★Gotchas / ops:
+- ★★.loom worktree REAPED TWICE mid-session (once mid docker-build → wiped uncommitted
+  edits + working tree clean; once the whole dir deleted → cwd recovered to /Users/rwalters).
+  Fix confirmed: EXTERNAL `git worktree add /Users/rwalters/lg-r6-erdos18` + COMMIT before
+  building. docker-build uses its own Azure cache volume, works fine from external worktree.
+- Dropped a concrete `twelve_represents_all` corollary that needed `(divisors 12).sum id =
+  28 := by decide` — the decide risks heavy kernel reduction (exit 135/SIGBUS ambiguity);
+  the docstring lists the σ values as illustration instead. Kept file 0-axiom.
+- Pre-existing `le_or_lt` deprecation warning at line 318 (in the abundancy-≤2 theorem, not
+  mine) — harmless, left as-is.
+
+Remaining open (unchanged): abundancy ≥ 4 full range needs the greedy sorted-divisor
+characterization (d_{i+1} ≤ σ_i+1), a larger project; asymptotic h(m)/Vose density stays
+out of elementary reach.

@@ -359,6 +359,45 @@ theorem practical_two_mul_pred_le_sigma {m : ℕ} (hm : 1 ≤ m) (hp : IsPractic
     2 * m - 1 ≤ (divisors m).sum id :=
   representable_le_sigma (practical_represents_lt_two_mul hp (by omega))
 
+/-! ## Full-range representation up to abundancy `4`
+
+`practical_represents_all_of_sigma_le_two_mul` shows a practical `m` represents the
+*whole* range `[0, σ(m)]` when its abundancy `σ(m)/m` is at most `2`, by tiling with
+the two width-`m` end segments.  The bottom *double*-block `[0, 2m)`
+(`practical_represents_lt_two_mul`) is twice as wide, and reflecting it through the
+complement symmetry `representable_compl` gives an equally wide top block; the two
+together reach all the way up to abundancy `4`.  This band `(2, 4)` contains the bulk
+of the small practicals not already covered (e.g. `12, 20, 24, 120`). -/
+
+/-- **Practical numbers represent their entire TOP double-block `(σ(m) − 2m, σ(m)]`.**
+    Reflecting the bottom double-block `[0, 2m)` (`practical_represents_lt_two_mul`)
+    through the complement symmetry `representable_compl` yields a width-`2m` top
+    block — twice the width of `practical_top_segment`.  Concretely, whenever
+    `σ(m) − k < 2m` (with `k ≤ σ(m)`), the reflected value `σ(m) − k` lies in the
+    bottom block and is representable, and complementing it back recovers `k`. -/
+theorem practical_top_block {m : ℕ} (hp : IsPractical m) {k : ℕ}
+    (hk : k ≤ (divisors m).sum id) (hlo : (divisors m).sum id - k < 2 * m) :
+    IsRepresentable k m := by
+  have hrep := representable_compl (practical_represents_lt_two_mul hp hlo)
+  have hcancel : (divisors m).sum id - ((divisors m).sum id - k) = k := by omega
+  rwa [hcancel] at hrep
+
+/-- **Full-range representation when the abundancy is below `4`.**  The bottom
+    double-block `[0, 2m)` (`practical_represents_lt_two_mul`) and its mirror image
+    the top double-block `(σ(m) − 2m, σ(m)]` (`practical_top_block`) overlap — and so
+    tile the whole range `[0, σ(m)]` — exactly when `σ(m) − 2m < 2m`, that is
+    `σ(m) < 4m` (abundancy `σ(m)/m < 4`).  Under that hypothesis a practical `m`
+    represents *every* `k ≤ σ(m)`.  This strictly strengthens
+    `practical_represents_all_of_sigma_le_two_mul` (abundancy `≤ 2`): it additionally
+    covers the band `(2, 4)`, e.g. `12` (`σ = 28 < 48`), `20` (`σ = 42 < 80`),
+    `24` (`σ = 60 < 96`), and `120` (`σ = 360 < 480`). -/
+theorem practical_represents_all_of_sigma_lt_four_mul {m : ℕ} (hp : IsPractical m)
+    (hσ : (divisors m).sum id < 4 * m) {k : ℕ} (hk : k ≤ (divisors m).sum id) :
+    IsRepresentable k m := by
+  rcases lt_or_ge k (2 * m) with hlt | hge
+  · exact practical_represents_lt_two_mul hp hlt
+  · exact practical_top_block hp hk (by omega)
+
 /-! ## Multiplicative closure under doubling
 
 If `m` is practical, so is `2m`.  This is the smallest case of the
