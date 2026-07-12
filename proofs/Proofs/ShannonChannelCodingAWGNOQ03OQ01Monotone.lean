@@ -98,6 +98,26 @@ theorem parallelRate_antitone_noise (P N₁ N₂ : ι → ℝ) (hP : ∀ i, 0 �
   unfold parallelRate
   exact Finset.sum_le_sum fun i _ => perUseCapacity_antitone_noise (hP i) (hN₁ i) (h i)
 
+/-- **The parallel-Gaussian rate is monotone in the power profile.**  At a *fixed* noise
+profile `N`, allocating pointwise more (nonnegative) power `P₁ ≤ P₂` never decreases the
+total rate `∑ᵢ ½ log(1 + Pᵢ/Nᵢ)` — a term-by-term consequence of `perUseCapacity_mono`.
+The power-side companion of `parallelRate_antitone_noise` (which is antitone in the noise),
+lifting the single-channel `perUseCapacity_mono` to the multi-channel sum. -/
+theorem parallelRate_mono_power (N : ι → ℝ) (hN : ∀ i, 0 < N i)
+    {P₁ P₂ : ι → ℝ} (hP₁ : ∀ i, 0 ≤ P₁ i) (h : ∀ i, P₁ i ≤ P₂ i) :
+    parallelRate N P₁ ≤ parallelRate N P₂ := by
+  unfold parallelRate
+  exact Finset.sum_le_sum fun i _ => perUseCapacity_mono (hN i) (hP₁ i) (h i)
+
+/-- **The parallel-Gaussian rate is nonnegative.**  For a positive noise profile and any
+nonnegative power allocation, the total rate `∑ᵢ ½ log(1 + Pᵢ/Nᵢ) ≥ 0` — the term-by-term
+sum of `perUseCapacity_nonneg`.  The generic (arbitrary-allocation) form of the floor,
+specializing to `rate_waterAlloc_nonneg` at the water-filling depths. -/
+theorem parallelRate_nonneg (N P : ι → ℝ) (hN : ∀ i, 0 < N i) (hP : ∀ i, 0 ≤ P i) :
+    0 ≤ parallelRate N P := by
+  unfold parallelRate
+  exact Finset.sum_nonneg fun i _ => perUseCapacity_nonneg (hP i) (hN i)
+
 /-! ## Per-channel rate: strict positivity and its zero set -/
 
 /-- **A single sub-channel with positive power has strictly positive rate.**  For
