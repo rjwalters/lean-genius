@@ -844,6 +844,219 @@ theorem law_of_sines_common_ratio_symm (t : HyperbolicTriangle) :
   · rw [← hyperbolic_law_of_sines_ac t]; exact ha
 
 -- ============================================================
+-- PART 9b: The FIRST law of cosines (dual identity, derived from the second)
+-- ============================================================
+
+/-- **Square-root extraction of the Gram numerator along side `b`.** The `b`-companion of
+    `sinh_a_mul_sin_eq_sqrt_gram`: since `sinh b · sin A · sin C > 0` and its square is the
+    Gram numerator, it is the positive square root `√(gramNumerator)`. -/
+theorem sinh_b_mul_sin_eq_sqrt_gram (t : HyperbolicTriangle) :
+    Real.sinh t.b * (Real.sin t.A * Real.sin t.C) = Real.sqrt (gramNumerator t) := by
+  have hpos : 0 < Real.sinh t.b * (Real.sin t.A * Real.sin t.C) :=
+    mul_pos (sinh_b_pos t) (mul_pos (sin_A_pos t) (sin_C_pos t))
+  rw [← sinh_b_num_sq t, Real.sqrt_sq hpos.le]
+
+/-- **Square-root extraction of the Gram numerator along side `c`.** The `c`-companion of
+    `sinh_a_mul_sin_eq_sqrt_gram`. -/
+theorem sinh_c_mul_sin_eq_sqrt_gram (t : HyperbolicTriangle) :
+    Real.sinh t.c * (Real.sin t.A * Real.sin t.B) = Real.sqrt (gramNumerator t) := by
+  have hpos : 0 < Real.sinh t.c * (Real.sin t.A * Real.sin t.B) :=
+    mul_pos (sinh_c_pos t) (mul_pos (sin_A_pos t) (sin_B_pos t))
+  rw [← sinh_c_num_sq t, Real.sqrt_sq hpos.le]
+
+/-- **First law of cosines at vertex `C`.** The classical hyperbolic identity dual to the
+    second law encoded in the triangle structure:
+
+      cosh c = cosh a · cosh b − sinh a · sinh b · cos C.
+
+    Unlike the second law (`lawA/lawB/lawC`, which give angles from sides), this expresses
+    a side directly from the other two sides and the included angle. It is *derived* from
+    the second-law structure: clearing denominators in the angle-only side formulas
+    (`cosh_a_eq`, `cosh_b_eq`, `cosh_c_eq`) and using that the two `sinh`-numerators share
+    the Gram numerator (`√gram · √gram = gram`) reduces the whole identity to the polynomial
+    Gram relation `(cos C + cos A cos B)(1 − cos²C) = NA·NB − gram·cos C`. Together with the
+    second law and the law of sines this closes the elementary trigonometry of the
+    hyperbolic triangle. -/
+theorem first_law_of_cosines_C (t : HyperbolicTriangle) :
+    Real.cosh t.c
+      = Real.cosh t.a * Real.cosh t.b - Real.sinh t.a * Real.sinh t.b * Real.cos t.C := by
+  have hsA := (sin_A_pos t).ne'
+  have hsB := (sin_B_pos t).ne'
+  have hsC := (sin_C_pos t).ne'
+  have h_a : Real.cosh t.a * (Real.sin t.B * Real.sin t.C)
+      = Real.cos t.A + Real.cos t.B * Real.cos t.C :=
+    (eq_div_iff (mul_ne_zero hsB hsC)).mp (cosh_a_eq t)
+  have h_b : Real.cosh t.b * (Real.sin t.A * Real.sin t.C)
+      = Real.cos t.B + Real.cos t.A * Real.cos t.C :=
+    (eq_div_iff (mul_ne_zero hsA hsC)).mp (cosh_b_eq t)
+  have h_c : Real.cosh t.c * (Real.sin t.A * Real.sin t.B)
+      = Real.cos t.C + Real.cos t.A * Real.cos t.B :=
+    (eq_div_iff (mul_ne_zero hsA hsB)).mp (cosh_c_eq t)
+  have hprod : (Real.sinh t.a * (Real.sin t.B * Real.sin t.C))
+      * (Real.sinh t.b * (Real.sin t.A * Real.sin t.C)) = gramNumerator t := by
+    rw [sinh_a_mul_sin_eq_sqrt_gram t, sinh_b_mul_sin_eq_sqrt_gram t]
+    exact Real.mul_self_sqrt (gramNumerator_nonneg t)
+  have hden : Real.sin t.A * Real.sin t.B * Real.sin t.C ^ 2 ≠ 0 :=
+    mul_ne_zero (mul_ne_zero hsA hsB) (pow_ne_zero 2 hsC)
+  have hab : Real.cosh t.a * Real.cosh t.b
+        * (Real.sin t.A * Real.sin t.B * Real.sin t.C ^ 2)
+      = (Real.cos t.A + Real.cos t.B * Real.cos t.C)
+          * (Real.cos t.B + Real.cos t.A * Real.cos t.C) := by
+    have e : Real.cosh t.a * Real.cosh t.b
+          * (Real.sin t.A * Real.sin t.B * Real.sin t.C ^ 2)
+        = (Real.cosh t.a * (Real.sin t.B * Real.sin t.C))
+            * (Real.cosh t.b * (Real.sin t.A * Real.sin t.C)) := by ring
+    rw [e, h_a, h_b]
+  have hsab : Real.sinh t.a * Real.sinh t.b
+        * (Real.sin t.A * Real.sin t.B * Real.sin t.C ^ 2) = gramNumerator t := by
+    have e : Real.sinh t.a * Real.sinh t.b
+          * (Real.sin t.A * Real.sin t.B * Real.sin t.C ^ 2)
+        = (Real.sinh t.a * (Real.sin t.B * Real.sin t.C))
+            * (Real.sinh t.b * (Real.sin t.A * Real.sin t.C)) := by ring
+    rw [e, hprod]
+  have key : Real.cosh t.c * (Real.sin t.A * Real.sin t.B * Real.sin t.C ^ 2)
+      = (Real.cos t.A + Real.cos t.B * Real.cos t.C)
+          * (Real.cos t.B + Real.cos t.A * Real.cos t.C)
+        - gramNumerator t * Real.cos t.C := by
+    have pC : Real.sin t.C ^ 2 = 1 - Real.cos t.C ^ 2 := by
+      have := Real.sin_sq_add_cos_sq t.C; linarith
+    rw [pC]; unfold gramNumerator
+    linear_combination (1 - Real.cos t.C ^ 2) * h_c
+  have hfin : Real.cosh t.c * (Real.sin t.A * Real.sin t.B * Real.sin t.C ^ 2)
+      = (Real.cosh t.a * Real.cosh t.b - Real.sinh t.a * Real.sinh t.b * Real.cos t.C)
+          * (Real.sin t.A * Real.sin t.B * Real.sin t.C ^ 2) := by
+    rw [key, show (Real.cosh t.a * Real.cosh t.b
+              - Real.sinh t.a * Real.sinh t.b * Real.cos t.C)
+            * (Real.sin t.A * Real.sin t.B * Real.sin t.C ^ 2)
+          = Real.cosh t.a * Real.cosh t.b
+              * (Real.sin t.A * Real.sin t.B * Real.sin t.C ^ 2)
+            - Real.sinh t.a * Real.sinh t.b
+                * (Real.sin t.A * Real.sin t.B * Real.sin t.C ^ 2) * Real.cos t.C from by ring,
+      hab, hsab]
+  exact mul_right_cancel₀ hden hfin
+
+/-- **First law of cosines at vertex `A`.** `cosh a = cosh b · cosh c − sinh b · sinh c · cos A`.
+    The vertex-`A` instance of `first_law_of_cosines_C`, obtained by the same
+    denominator-clearing reduction to the Gram relation `NA·(1 − cos²A) = NB·NC − gram·cos A`. -/
+theorem first_law_of_cosines_A (t : HyperbolicTriangle) :
+    Real.cosh t.a
+      = Real.cosh t.b * Real.cosh t.c - Real.sinh t.b * Real.sinh t.c * Real.cos t.A := by
+  have hsA := (sin_A_pos t).ne'
+  have hsB := (sin_B_pos t).ne'
+  have hsC := (sin_C_pos t).ne'
+  have h_a : Real.cosh t.a * (Real.sin t.B * Real.sin t.C)
+      = Real.cos t.A + Real.cos t.B * Real.cos t.C :=
+    (eq_div_iff (mul_ne_zero hsB hsC)).mp (cosh_a_eq t)
+  have h_b : Real.cosh t.b * (Real.sin t.A * Real.sin t.C)
+      = Real.cos t.B + Real.cos t.A * Real.cos t.C :=
+    (eq_div_iff (mul_ne_zero hsA hsC)).mp (cosh_b_eq t)
+  have h_c : Real.cosh t.c * (Real.sin t.A * Real.sin t.B)
+      = Real.cos t.C + Real.cos t.A * Real.cos t.B :=
+    (eq_div_iff (mul_ne_zero hsA hsB)).mp (cosh_c_eq t)
+  have hprod : (Real.sinh t.b * (Real.sin t.A * Real.sin t.C))
+      * (Real.sinh t.c * (Real.sin t.A * Real.sin t.B)) = gramNumerator t := by
+    rw [sinh_b_mul_sin_eq_sqrt_gram t, sinh_c_mul_sin_eq_sqrt_gram t]
+    exact Real.mul_self_sqrt (gramNumerator_nonneg t)
+  have hden : Real.sin t.A ^ 2 * Real.sin t.B * Real.sin t.C ≠ 0 :=
+    mul_ne_zero (mul_ne_zero (pow_ne_zero 2 hsA) hsB) hsC
+  have hbc : Real.cosh t.b * Real.cosh t.c
+        * (Real.sin t.A ^ 2 * Real.sin t.B * Real.sin t.C)
+      = (Real.cos t.B + Real.cos t.A * Real.cos t.C)
+          * (Real.cos t.C + Real.cos t.A * Real.cos t.B) := by
+    have e : Real.cosh t.b * Real.cosh t.c
+          * (Real.sin t.A ^ 2 * Real.sin t.B * Real.sin t.C)
+        = (Real.cosh t.b * (Real.sin t.A * Real.sin t.C))
+            * (Real.cosh t.c * (Real.sin t.A * Real.sin t.B)) := by ring
+    rw [e, h_b, h_c]
+  have hsbc : Real.sinh t.b * Real.sinh t.c
+        * (Real.sin t.A ^ 2 * Real.sin t.B * Real.sin t.C) = gramNumerator t := by
+    have e : Real.sinh t.b * Real.sinh t.c
+          * (Real.sin t.A ^ 2 * Real.sin t.B * Real.sin t.C)
+        = (Real.sinh t.b * (Real.sin t.A * Real.sin t.C))
+            * (Real.sinh t.c * (Real.sin t.A * Real.sin t.B)) := by ring
+    rw [e, hprod]
+  have key : Real.cosh t.a * (Real.sin t.A ^ 2 * Real.sin t.B * Real.sin t.C)
+      = (Real.cos t.B + Real.cos t.A * Real.cos t.C)
+          * (Real.cos t.C + Real.cos t.A * Real.cos t.B)
+        - gramNumerator t * Real.cos t.A := by
+    have pA : Real.sin t.A ^ 2 = 1 - Real.cos t.A ^ 2 := by
+      have := Real.sin_sq_add_cos_sq t.A; linarith
+    rw [pA]; unfold gramNumerator
+    linear_combination (1 - Real.cos t.A ^ 2) * h_a
+  have hfin : Real.cosh t.a * (Real.sin t.A ^ 2 * Real.sin t.B * Real.sin t.C)
+      = (Real.cosh t.b * Real.cosh t.c - Real.sinh t.b * Real.sinh t.c * Real.cos t.A)
+          * (Real.sin t.A ^ 2 * Real.sin t.B * Real.sin t.C) := by
+    rw [key, show (Real.cosh t.b * Real.cosh t.c
+              - Real.sinh t.b * Real.sinh t.c * Real.cos t.A)
+            * (Real.sin t.A ^ 2 * Real.sin t.B * Real.sin t.C)
+          = Real.cosh t.b * Real.cosh t.c
+              * (Real.sin t.A ^ 2 * Real.sin t.B * Real.sin t.C)
+            - Real.sinh t.b * Real.sinh t.c
+                * (Real.sin t.A ^ 2 * Real.sin t.B * Real.sin t.C) * Real.cos t.A from by ring,
+      hbc, hsbc]
+  exact mul_right_cancel₀ hden hfin
+
+/-- **First law of cosines at vertex `B`.** `cosh b = cosh a · cosh c − sinh a · sinh c · cos B`.
+    The vertex-`B` instance, via the Gram relation `NB·(1 − cos²B) = NA·NC − gram·cos B`. -/
+theorem first_law_of_cosines_B (t : HyperbolicTriangle) :
+    Real.cosh t.b
+      = Real.cosh t.a * Real.cosh t.c - Real.sinh t.a * Real.sinh t.c * Real.cos t.B := by
+  have hsA := (sin_A_pos t).ne'
+  have hsB := (sin_B_pos t).ne'
+  have hsC := (sin_C_pos t).ne'
+  have h_a : Real.cosh t.a * (Real.sin t.B * Real.sin t.C)
+      = Real.cos t.A + Real.cos t.B * Real.cos t.C :=
+    (eq_div_iff (mul_ne_zero hsB hsC)).mp (cosh_a_eq t)
+  have h_b : Real.cosh t.b * (Real.sin t.A * Real.sin t.C)
+      = Real.cos t.B + Real.cos t.A * Real.cos t.C :=
+    (eq_div_iff (mul_ne_zero hsA hsC)).mp (cosh_b_eq t)
+  have h_c : Real.cosh t.c * (Real.sin t.A * Real.sin t.B)
+      = Real.cos t.C + Real.cos t.A * Real.cos t.B :=
+    (eq_div_iff (mul_ne_zero hsA hsB)).mp (cosh_c_eq t)
+  have hprod : (Real.sinh t.a * (Real.sin t.B * Real.sin t.C))
+      * (Real.sinh t.c * (Real.sin t.A * Real.sin t.B)) = gramNumerator t := by
+    rw [sinh_a_mul_sin_eq_sqrt_gram t, sinh_c_mul_sin_eq_sqrt_gram t]
+    exact Real.mul_self_sqrt (gramNumerator_nonneg t)
+  have hden : Real.sin t.A * Real.sin t.B ^ 2 * Real.sin t.C ≠ 0 :=
+    mul_ne_zero (mul_ne_zero hsA (pow_ne_zero 2 hsB)) hsC
+  have hac : Real.cosh t.a * Real.cosh t.c
+        * (Real.sin t.A * Real.sin t.B ^ 2 * Real.sin t.C)
+      = (Real.cos t.A + Real.cos t.B * Real.cos t.C)
+          * (Real.cos t.C + Real.cos t.A * Real.cos t.B) := by
+    have e : Real.cosh t.a * Real.cosh t.c
+          * (Real.sin t.A * Real.sin t.B ^ 2 * Real.sin t.C)
+        = (Real.cosh t.a * (Real.sin t.B * Real.sin t.C))
+            * (Real.cosh t.c * (Real.sin t.A * Real.sin t.B)) := by ring
+    rw [e, h_a, h_c]
+  have hsac : Real.sinh t.a * Real.sinh t.c
+        * (Real.sin t.A * Real.sin t.B ^ 2 * Real.sin t.C) = gramNumerator t := by
+    have e : Real.sinh t.a * Real.sinh t.c
+          * (Real.sin t.A * Real.sin t.B ^ 2 * Real.sin t.C)
+        = (Real.sinh t.a * (Real.sin t.B * Real.sin t.C))
+            * (Real.sinh t.c * (Real.sin t.A * Real.sin t.B)) := by ring
+    rw [e, hprod]
+  have key : Real.cosh t.b * (Real.sin t.A * Real.sin t.B ^ 2 * Real.sin t.C)
+      = (Real.cos t.A + Real.cos t.B * Real.cos t.C)
+          * (Real.cos t.C + Real.cos t.A * Real.cos t.B)
+        - gramNumerator t * Real.cos t.B := by
+    have pB : Real.sin t.B ^ 2 = 1 - Real.cos t.B ^ 2 := by
+      have := Real.sin_sq_add_cos_sq t.B; linarith
+    rw [pB]; unfold gramNumerator
+    linear_combination (1 - Real.cos t.B ^ 2) * h_b
+  have hfin : Real.cosh t.b * (Real.sin t.A * Real.sin t.B ^ 2 * Real.sin t.C)
+      = (Real.cosh t.a * Real.cosh t.c - Real.sinh t.a * Real.sinh t.c * Real.cos t.B)
+          * (Real.sin t.A * Real.sin t.B ^ 2 * Real.sin t.C) := by
+    rw [key, show (Real.cosh t.a * Real.cosh t.c
+              - Real.sinh t.a * Real.sinh t.c * Real.cos t.B)
+            * (Real.sin t.A * Real.sin t.B ^ 2 * Real.sin t.C)
+          = Real.cosh t.a * Real.cosh t.c
+              * (Real.sin t.A * Real.sin t.B ^ 2 * Real.sin t.C)
+            - Real.sinh t.a * Real.sinh t.c
+                * (Real.sin t.A * Real.sin t.B ^ 2 * Real.sin t.C) * Real.cos t.B from by ring,
+      hac, hsac]
+  exact mul_right_cancel₀ hden hfin
+
+-- ============================================================
 -- PART 10: Realizability — the defect condition A+B+C<π is SUFFICIENT
 -- ============================================================
 
