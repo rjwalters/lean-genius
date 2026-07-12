@@ -39,7 +39,8 @@
     "builtItems": [
       "cmiSum def + ssa_deficit_eq_cmi + ssa_cmi_eq_zero_iff + strong_subadditivity_eq_iff + cmiSum_nonneg + ssa_inequality (#35820) in Proofs/ShannonEntropySSAEq.lean (self-contained, 0 sorry/0 axiom)",
       "reflectXZ def + cmiSum_reflectXZ (I(X;Z|Y)=I(Z;X|Y), symmetry of CMI) + ssa_deficit_reflectXZ (SSA deficit symmetric in X,Z on entropy side) in Proofs/ShannonEntropySSAEq.lean (axiom-free [propext,Classical.choice,Quot.sound]); helper private lemma triple_sum_prod flattens triple Finset-sum to product for equiv reindexing",
-      "cmiSlice (def), cmiSum_eq_sum_cmiSlice, cmiSlice_nonneg, ssa_deficit_eq_sum_cmiSlice in ShannonEntropySSAEq.lean"
+      "cmiSlice (def), cmiSum_eq_sum_cmiSlice, cmiSlice_nonneg, ssa_deficit_eq_sum_cmiSlice in ShannonEntropySSAEq.lean",
+      "markov_reflectXZ_iff (+ helper reflectXZ_sum) in Proofs/ShannonEntropySSAEq.lean: REVERSIBILITY of the Markov condition — X–Y–Z is a Markov chain iff Z–Y–X is (p(x,y,z)p_Y=p_XY p_YZ holds for p iff for reflectXZ p). Direct corollary of cmiSum_reflectXZ + ssa_cmi_eq_zero_iff on both laws. Axiom-free [propext,Classical.choice,Quot.sound]; docker green (7743 jobs, 6.1s)."
     ],
     "insights": [
       "Suggested proof route: rewrite the entropy deficit as conditional mutual information and discharge nonnegativity via KL divergence.",
@@ -49,7 +50,8 @@
       "v4.26.0: `hp _` underscore fails to infer in single_le_sum hint lists (need explicit triples); local universe-poly `have` leaks a 4th universe param (extract top-level); conv `ext y` fails on Finset.sum.",
       "Conditional mutual information is symmetric in its outer arguments: I(X;Z|Y) = I(Z;X|Y). Formalized as cmiSum_reflectXZ — reflecting the joint law by (z,y,x)↦(x,y,z) leaves cmiSum invariant. The defining summand is invariant because its numerator p·p_Y is symmetric and its denominator p_XY·p_YZ merely commutes; proof reindexes the triple sum by the X↔Z coordinate transposition (Fintype.sum_equiv over α×β×γ ≃ γ×β×α).",
       "cmiSlice_nonneg (researcher-10): per-conditioning-value refinement of SSA. cmiSum_nonneg only bounds the average of I(X;Z|Y=y) over y; the per-y slice p_Y(y)·I(X;Z|Y=y) is INDIVIDUALLY ≥0. Same Gibbs bound p−q≤p·log(p/q) as cmiSum_nonneg but summed over (x,z) at fixed y, with q having the same (x,z)-mass as p at that y so the linear lower bound telescopes to 0. SSA holds locally at every conditioning value, not just on aggregate.",
-      "ssa_deficit_eq_sum_cmiSlice (researcher-10): the entropy deficit H(XY)+H(YZ)−H(XYZ)−H(Y) = ∑_y cmiSlice(y), a sum of nonnegative per-y contributions — finer than ssa_inequality: the deficit is a nonneg combination indexed by conditioning value, vanishing iff every slice vanishes."
+      "ssa_deficit_eq_sum_cmiSlice (researcher-10): the entropy deficit H(XY)+H(YZ)−H(XYZ)−H(Y) = ∑_y cmiSlice(y), a sum of nonnegative per-y contributions — finer than ssa_inequality: the deficit is a nonneg combination indexed by conditioning value, vanishing iff every slice vanishes.",
+      "Conditional independence of the outer variables given the middle one is a SYMMETRIC relation: X⊥Z|Y ⟺ Z⊥X|Y (Markov reversibility). Formalized via markov_reflectXZ_iff by pushing both Markov factorizations to their (equal, by cmiSum_reflectXZ) conditional-mutual-informations vanishing; reflectXZ_sum shows the coordinate reflection preserves total mass so ssa_cmi_eq_zero_iff applies to the reflected law."
     ],
     "mathlibGaps": [
       "No SSA equality-case lemma in Mathlib; KL equality (klDivergence_eq_zero_iff) exists in ShannonEntropy.lean but is private and the file conflicts."
