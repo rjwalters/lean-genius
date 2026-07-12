@@ -129,24 +129,24 @@
       "description": "Parent. The parent proves ∫_ℝ e^{-x²} = √π; this entry exhibits the same number as the Euler Gamma value Γ(1/2), with gamma_one_half_eq_gaussian making the identification explicit and gamma_one_half_eq_two_mul_gaussian_Ioi recording the half-line substitution u = x² that underlies Mathlib's proof of Γ(1/2) = √π."
     },
     {
+      "targetId": "area-of-circle-oq-07-oq-02",
+      "relationship": "builds on",
+      "description": "Sibling. 'The Half-Line Gaussian Integral' establishes ∫_{x>0} e^{-x²} = √π/2 — exactly the quantity that gamma_one_half_eq_two_mul_gaussian_Ioi multiplies by 2 to recover Γ(1/2). The half-line integral is the natural landing point of the substitution u = x² before even symmetry folds it onto the full line."
+    },
+    {
       "targetId": "area-of-circle-oq-07-oq-03-oq-01",
-      "relationship": "extended by",
-      "description": "Direct child answering this entry's first open question. It climbs the whole half-integer Gamma ladder Γ(n+1/2) = (2n−1)‼·√π/2ⁿ and identifies each rung with an even Gaussian moment ∫_ℝ x^{2n} e^{-x²} dx — extending the single value Γ(1/2) = √π isolated here to the full tower."
+      "relationship": "generalized by",
+      "description": "Child answering this entry's first open question. It climbs the entire half-integer Gamma ladder Γ(n+1/2) = (2n−1)‼·√π/2ⁿ and identifies each rung with an even Gaussian moment ∫_ℝ x^{2n} e^{-x²} dx, extending the single √π of Γ(1/2) recorded here to the whole tower."
     },
     {
       "targetId": "area-of-circle-oq-07-oq-03-oq-02",
-      "relationship": "extended by",
-      "description": "Direct child answering this entry's second open question. It gives an independent, Beta-function derivation of Γ(1/2)² = π via Mathlib's Beta–Gamma relation and B(1/2,1/2) = π (the arcsine density) — a route that, unlike gamma_one_half_sq here, does not pass through the Gaussian integral."
+      "relationship": "complemented by",
+      "description": "Child answering this entry's second open question with an independent derivation of Γ(1/2)² = π: via Mathlib's Beta–Gamma relation, Γ(1/2)² = B(1/2,1/2) = π (the arcsine-density normalization), a route that avoids the Gaussian integral by which Mathlib's own Real.Gamma_one_half_eq is proved."
     },
     {
       "targetId": "gamma-reflection-formula-oq-01",
       "relationship": "related",
-      "description": "Euler's reflection formula Γ(s)Γ(1−s) = π/sin(πs) at s = 1/2 gives Γ(1/2)² = π directly — the same squared identity proved here as gamma_one_half_sq, reached from functional-equation symmetry rather than from the Gaussian integral."
-    },
-    {
-      "targetId": "area-of-circle-oq-07-oq-02",
-      "relationship": "related",
-      "description": "Sibling under the same parent. It evaluates the half-line Gaussian ∫_{x>0} e^{-x²} = √π/2 — exactly the integral appearing in this entry's gamma_one_half_eq_two_mul_gaussian_Ioi (Γ(1/2) = 2·∫_{x>0} e^{-x²}), the half-line form produced by the u = x² substitution."
+      "description": "A third, orthogonal route to gamma_one_half_sq. Euler's reflection formula Γ(s)Γ(1−s) = π/sin(πs) specializes at s = 1/2 to Γ(1/2)² = π/sin(π/2) = π — recovering the squared identity proved here from the functional-equation side rather than the Gaussian side."
     }
   ],
   "references": [
@@ -163,6 +163,20 @@
       "year": "1729",
       "venue": "correspondence with Goldbach",
       "description": "Origin of the Gamma function interpolating the factorial; Γ(1/2) = √π is its archetypal non-integer special value."
+    },
+    {
+      "title": "The Gamma Function",
+      "author": "Emil Artin",
+      "year": "1964",
+      "venue": "Holt, Rinehart and Winston (trans. Michael Butler)",
+      "description": "The canonical short monograph on Γ. Derives Γ(1/2) = √π and the Bohr–Mollerup characterization; §2 obtains the value precisely through the u = x² reduction to the Gaussian integral surfaced by this entry."
+    },
+    {
+      "title": "A Course of Modern Analysis (4th ed.), §12.14",
+      "author": "E. T. Whittaker and G. N. Watson",
+      "year": "1927",
+      "venue": "Cambridge University Press",
+      "description": "Classical reference for the Gamma function's special values and Euler's reflection formula Γ(s)Γ(1−s) = π/sin(πs), whose s = 1/2 case gives Γ(1/2)² = π independently of the Gaussian route."
     }
   ],
   "sorries": 0,
