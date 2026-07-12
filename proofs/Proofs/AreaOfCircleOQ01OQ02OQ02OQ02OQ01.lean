@@ -1786,4 +1786,178 @@ theorem two_mul_normSq_fourierCoeffOn_le_isoperimetric_deficit
   rw [hLHS] at hmul
   exact hmul
 
+-- ============================================================
+-- SECTION XVI: aggregate (global) quantitative stability
+--   — summing the per-mode Fuglede bounds into a single
+--     L²-distance-to-circle estimate controlled by the deficit
+-- ============================================================
+
+/-- **Nonnegativity of the harmonic weight `|n|²−|n|`.**  For every integer `n`,
+    `0 ≤ |n|² − |n|`.  The weight is `|n|·(|n|−1)`, which is `0` at `n = 0` and at
+    `|n| = 1` (the mean and first harmonics — the circle modes) and strictly positive on
+    `|n| ≥ 2`.  This is the coefficient in the aggregate stability sum. -/
+private theorem deficit_gap_coef_nonneg (n : ℤ) :
+    (0 : ℝ) ≤ |(n : ℝ)| ^ 2 - |(n : ℝ)| := by
+  rcases eq_or_ne n 0 with rfl | hn
+  · simp
+  · have h1 : (1 : ℝ) ≤ |(n : ℝ)| := by
+      rw [← Int.cast_abs]; exact_mod_cast Int.one_le_abs hn
+    nlinarith [h1]
+
+/-- **Termwise domination of the deficit summand by the aggregate-stability summand.**  For
+    the frequency-`n` Fourier coefficients `a = ĉₙ(f)`, `b = ĉₙ(g)`, the nonnegative gap term
+    `(|n|²−|n|)(‖a‖²+‖b‖²)` lies below the `n`-th Hurwitz deficit summand
+    `n²‖a‖²+n²‖b‖² − 2·(n·Im(a·conj b))`.  This is `area_deficit_summand_ge_gap` written in the
+    exact shape of the deficit `HasSum` produced by `(HSf.add HSg).sub (HSA.mul_left 2)`, so it
+    slots directly into the comparison test. -/
+private theorem gap_le_deficit_summand {f g : ℝ → ℝ} (hab : (0 : ℝ) < 2 * π) (n : ℤ) :
+    (|(n : ℝ)| ^ 2 - |(n : ℝ)|)
+        * (‖fourierCoeffOn hab (ofReal ∘ f) n‖ ^ 2
+            + ‖fourierCoeffOn hab (ofReal ∘ g) n‖ ^ 2)
+      ≤ ((n : ℝ) ^ 2 * ‖fourierCoeffOn hab (ofReal ∘ f) n‖ ^ 2
+          + (n : ℝ) ^ 2 * ‖fourierCoeffOn hab (ofReal ∘ g) n‖ ^ 2)
+        - 2 * ((n : ℝ) * (fourierCoeffOn hab (ofReal ∘ f) n
+            * conj (fourierCoeffOn hab (ofReal ∘ g) n)).im) := by
+  calc (|(n : ℝ)| ^ 2 - |(n : ℝ)|)
+          * (‖fourierCoeffOn hab (ofReal ∘ f) n‖ ^ 2
+              + ‖fourierCoeffOn hab (ofReal ∘ g) n‖ ^ 2)
+        ≤ (n : ℝ) ^ 2 * ‖fourierCoeffOn hab (ofReal ∘ f) n‖ ^ 2
+            + (n : ℝ) ^ 2 * ‖fourierCoeffOn hab (ofReal ∘ g) n‖ ^ 2
+            - 2 * (n : ℝ) * (fourierCoeffOn hab (ofReal ∘ f) n
+                * conj (fourierCoeffOn hab (ofReal ∘ g) n)).im :=
+          area_deficit_summand_ge_gap (fourierCoeffOn hab (ofReal ∘ f) n)
+            (fourierCoeffOn hab (ofReal ∘ g) n) n
+      _ = _ := by ring
+
+/-- **Aggregate stability energy is summable.**  For smooth (`C^∞`) period-`2π` coordinates
+    `f, g`, the frequency-weighted higher-harmonic energy
+
+        ∑ₙ (|n|² − |n|)·(‖ĉₙ(f)‖² + ‖ĉₙ(g)‖²)
+
+    converges.  The summand vanishes on the circle modes `n ∈ {−1, 0, 1}` (where `|n|²−|n| = 0`),
+    so this is exactly the `H¹`-type squared distance of the curve from the family of circles.
+    Summability follows from the comparison test: each term is nonnegative
+    (`deficit_gap_coef_nonneg`) and dominated (`gap_le_deficit_summand`) by the `n`-th term of the
+    convergent Hurwitz deficit series `(HSf.add HSg).sub (HSA.mul_left 2)`. -/
+theorem summable_gap_normSq_fourierCoeffOn
+    {f g : ℝ → ℝ} (hf : ContDiff ℝ ∞ f) (hg : ContDiff ℝ ∞ g)
+    (hfper : ∀ t, f (t + 2 * π) = f t) (hgper : ∀ t, g (t + 2 * π) = g t)
+    (hab : (0 : ℝ) < 2 * π) :
+    Summable (fun n : ℤ => (|(n : ℝ)| ^ 2 - |(n : ℝ)|)
+        * (‖fourierCoeffOn hab (ofReal ∘ f) n‖ ^ 2
+            + ‖fourierCoeffOn hab (ofReal ∘ g) n‖ ^ 2)) := by
+  have HSf := hasSum_nsq_normSq_fourierCoeffOn hf hfper hab
+  have HSg := hasSum_nsq_normSq_fourierCoeffOn hg hgper hab
+  have HSA := hasSum_fourier_area_formula hf.continuous hg hgper hab
+  have HSdef := (HSf.add HSg).sub (HSA.mul_left 2)
+  refine Summable.of_nonneg_of_le (fun n => ?_) (fun n => gap_le_deficit_summand hab n)
+    HSdef.summable
+  exact mul_nonneg (deficit_gap_coef_nonneg n) (by positivity)
+
+/-- **Aggregate (global) quantitative isoperimetric stability — analytic form.**  For smooth
+    (`C^∞`) period-`2π` real coordinates `f, g` of a closed plane curve, the *entire*
+    higher-harmonic energy is bounded by the normalized Hurwitz deficit:
+
+        ∑ₙ (|n|² − |n|)·(‖ĉₙ(f)‖² + ‖ĉₙ(g)‖²)
+          ≤  (2π)⁻¹ · [ ∫₀^{2π}((f')²+(g')²) − 2 ∫₀^{2π} f·g' ] .
+
+    This is the global companion of the per-mode bound
+    `two_mul_normSq_fourierCoeffOn_le_normalized_deficit`: instead of controlling one harmonic at
+    a time, it sums the sharp per-mode gaps into a single inequality.  Because the weight
+    `|n|²−|n|` vanishes for `n ∈ {−1, 0, 1}`, the left side is precisely the squared
+    `L²`/`H¹`-distance of the curve from the family of circles, accumulated over *all* modes at
+    once.  Setting the deficit to `0` forces every higher harmonic to vanish
+    (`isoperimetric_saturation_iff_circle`), recovering the rigidity theorem as the degenerate
+    `deficit = 0` case.
+
+    Proof.  The right side is the total of the nonnegative Hurwitz deficit `HasSum`
+    `HSdef := (HSf.add HSg).sub (HSA.mul_left 2)`.  Termwise the aggregate summand is nonnegative
+    (`deficit_gap_coef_nonneg`) and `≤` the deficit summand (`gap_le_deficit_summand`), so the
+    comparison test gives summability (`summable_gap_normSq_fourierCoeffOn`) and `tsum_le_tsum`
+    dominates the aggregate tsum by the deficit total; rewriting the total into normalized form
+    (clearing the `(2π)⁻¹` scaling and splitting the perimeter integral) finishes. -/
+theorem tsum_gap_normSq_fourierCoeffOn_le_normalized_deficit
+    {f g : ℝ → ℝ} (hf : ContDiff ℝ ∞ f) (hg : ContDiff ℝ ∞ g)
+    (hfper : ∀ t, f (t + 2 * π) = f t) (hgper : ∀ t, g (t + 2 * π) = g t)
+    (hab : (0 : ℝ) < 2 * π) :
+    ∑' n : ℤ, (|(n : ℝ)| ^ 2 - |(n : ℝ)|)
+        * (‖fourierCoeffOn hab (ofReal ∘ f) n‖ ^ 2
+            + ‖fourierCoeffOn hab (ofReal ∘ g) n‖ ^ 2)
+      ≤ (2 * π)⁻¹ * ((∫ x in (0 : ℝ)..(2 * π), ((deriv f x) ^ 2 + (deriv g x) ^ 2))
+          - 2 * ∫ x in (0 : ℝ)..(2 * π), f x * deriv g x) := by
+  have HSf := hasSum_nsq_normSq_fourierCoeffOn hf hfper hab
+  have HSg := hasSum_nsq_normSq_fourierCoeffOn hg hgper hab
+  have HSA := hasSum_fourier_area_formula hf.continuous hg hgper hab
+  have HSdef := (HSf.add HSg).sub (HSA.mul_left 2)
+  have hsum_gap := summable_gap_normSq_fourierCoeffOn hf hg hfper hgper hab
+  have hcmp := Summable.tsum_le_tsum (fun n => gap_le_deficit_summand hab n) hsum_gap
+    HSdef.summable
+  rw [HSdef.tsum_eq] at hcmp
+  simp only [smul_eq_mul, sub_zero] at hcmp
+  set If := ∫ x in (0 : ℝ)..(2 * π), (deriv f x) ^ 2 with hIf
+  set Ig := ∫ x in (0 : ℝ)..(2 * π), (deriv g x) ^ 2 with hIg
+  set IA := ∫ x in (0 : ℝ)..(2 * π), f x * deriv g x with hIA
+  have hdfc : Continuous (deriv f) := by
+    have h := (contDiff_infty_iterate_deriv f hf 1).continuous
+    rwa [Function.iterate_one] at h
+  have hdgc : Continuous (deriv g) := by
+    have h := (contDiff_infty_iterate_deriv g hg 1).continuous
+    rwa [Function.iterate_one] at h
+  have hsplit : (∫ x in (0 : ℝ)..(2 * π), ((deriv f x) ^ 2 + (deriv g x) ^ 2)) = If + Ig := by
+    rw [hIf, hIg]
+    exact intervalIntegral.integral_add
+      ((hdfc.pow 2).intervalIntegrable _ _) ((hdgc.pow 2).intervalIntegrable _ _)
+  rw [hsplit]
+  have hcomb : (2 * π)⁻¹ * ((If + Ig) - 2 * IA)
+      = (2 * π)⁻¹ * If + (2 * π)⁻¹ * Ig - 2 * ((2 * π)⁻¹ * IA) := by ring
+  rw [hcomb]
+  exact hcmp
+
+/-- **Aggregate (global) quantitative isoperimetric stability — geometric (Bonnesen/Fuglede)
+    form.**  For a smooth period-`2π` closed curve `t ↦ (f(t), g(t))` parametrized with
+    *constant speed* `(f')² + (g')² = c` — so `L² = (2π)²·c` and `A = ∫₀^{2π} f·g'` — the total
+    higher-harmonic energy is controlled by the isoperimetric deficit `L² − 4πA`:
+
+        (2π)² · ∑ₙ (|n|² − |n|)·(‖ĉₙ(f)‖² + ‖ĉₙ(g)‖²)  ≤  L² − 4πA .
+
+    The left side is `(2π)²` times the squared distance of the curve from the family of circles
+    (the weight `|n|²−|n|` kills the three circle modes `n ∈ {−1,0,1}`), so this is the sharp
+    *global* stability statement: the isoperimetric deficit dominates the total `L²`-deviation of
+    the curve from a circle, all harmonics summed.  In particular `L² − 4πA ≥ 0`, with equality
+    **iff** every higher harmonic vanishes — the circle (`isoperimetric_saturation_iff_circle`).
+
+    Proof.  Scale the analytic aggregate bound
+    `tsum_gap_normSq_fourierCoeffOn_le_normalized_deficit` by `(2π)² > 0`, evaluate the
+    constant-speed perimeter energy `∫((f')²+(g')²) = 2π·c`, and simplify
+    `(2π)²·(2π)⁻¹ = 2π`. -/
+theorem tsum_gap_normSq_fourierCoeffOn_le_isoperimetric_deficit
+    {f g : ℝ → ℝ} (hf : ContDiff ℝ ∞ f) (hg : ContDiff ℝ ∞ g)
+    (hfper : ∀ t, f (t + 2 * π) = f t) (hgper : ∀ t, g (t + 2 * π) = g t)
+    (hab : (0 : ℝ) < 2 * π) {c : ℝ}
+    (hspeed : ∀ t, (deriv f t) ^ 2 + (deriv g t) ^ 2 = c) :
+    (2 * π) ^ 2 * ∑' n : ℤ, (|(n : ℝ)| ^ 2 - |(n : ℝ)|)
+        * (‖fourierCoeffOn hab (ofReal ∘ f) n‖ ^ 2
+            + ‖fourierCoeffOn hab (ofReal ∘ g) n‖ ^ 2)
+      ≤ (2 * π) ^ 2 * c - 4 * π * ∫ x in (0 : ℝ)..(2 * π), f x * deriv g x := by
+  have hcore := tsum_gap_normSq_fourierCoeffOn_le_normalized_deficit hf hg hfper hgper hab
+  have hperim : (∫ x in (0 : ℝ)..(2 * π), ((deriv f x) ^ 2 + (deriv g x) ^ 2)) = (2 * π) * c := by
+    have hEqOn : Set.EqOn (fun x => (deriv f x) ^ 2 + (deriv g x) ^ 2) (fun _ => c)
+        (Set.uIcc 0 (2 * π)) := fun x _ => hspeed x
+    rw [intervalIntegral.integral_congr hEqOn, intervalIntegral.integral_const]
+    simp
+  rw [hperim] at hcore
+  set S := ∑' n : ℤ, (|(n : ℝ)| ^ 2 - |(n : ℝ)|)
+      * (‖fourierCoeffOn hab (ofReal ∘ f) n‖ ^ 2
+          + ‖fourierCoeffOn hab (ofReal ∘ g) n‖ ^ 2) with hS
+  set IA := ∫ x in (0 : ℝ)..(2 * π), f x * deriv g x with hIA
+  have hpos : (0 : ℝ) < (2 * π) ^ 2 := by positivity
+  have hmul := mul_le_mul_of_nonneg_left hcore (le_of_lt hpos)
+  have h2πne : (2 * π) ≠ 0 := ne_of_gt hab
+  have hRHS : (2 * π) ^ 2 * ((2 * π)⁻¹ * ((2 * π) * c - 2 * IA))
+      = (2 * π) ^ 2 * c - 4 * π * IA := by
+    field_simp
+    ring
+  rw [hRHS] at hmul
+  exact hmul
+
 end IsoperimetricFourier
