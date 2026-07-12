@@ -597,24 +597,64 @@ theorem f_four :
   have hT' : T ∈ ({3, 5, 6, 7} : Finset ℕ).powerset := Finset.mem_powerset.mpr hT
   fin_cases hS' <;> fin_cases hT' <;> revert heq <;> decide
 
-/-- f(5) = 13: the Conway–Guy set `{6, 9, 11, 12, 13}` has `2⁵ = 32` distinct subset
-    sums with maximum element `13`.  This is the `n = 5` entry of OEIS A005318,
-    continuing `f_zero`…`f_four`, and the margin over the greedy powers-of-two witness
-    widens further: `{1, 2, 4, 8, 16}` also has distinct subset sums but maximum `16`,
-    so `f(5) = 13 < 16 = 2⁴`.  Together with `f_four` (`f(4) = 7 < 8`) this shows the
-    doubling construction is strictly beaten for every `n ≥ 4`, and the gap `2ⁿ⁻¹ − f(n)`
-    grows (`8 − 7 = 1` at `n = 4`, `16 − 13 = 3` at `n = 5`) — the phenomenon whose
-    asymptotics the DFX bound `dfx_lower_bound` quantifies.  The
-    `hasDistinctSubsetSums {6,9,11,12,13}` obligation is discharged by enumerating the
-    thirty-two subsets (`fin_cases` over the powerset) and deciding each subset-pair sum
-    comparison, exactly as in `f_two_max`…`f_four`. -/
-theorem f_five :
-    ∃ (A : Finset ℕ), A.card = 5 ∧ hasDistinctSubsetSums A ∧ A.sup id = 13 := by
-  refine ⟨{6, 9, 11, 12, 13}, by decide, ?_, by decide⟩
-  intro S T hS hT heq
-  have hS' : S ∈ ({6, 9, 11, 12, 13} : Finset ℕ).powerset := Finset.mem_powerset.mpr hS
-  have hT' : T ∈ ({6, 9, 11, 12, 13} : Finset ℕ).powerset := Finset.mem_powerset.mpr hT
-  fin_cases hS' <;> fin_cases hT' <;> revert heq <;> decide
+/-- **`f(4) ≥ 7`: no four-element set with maximum `≤ 6` has distinct subset sums.**
+    Since distinct subset sums force `0 ∉ A`, a counterexample would be a four-element
+    subset of `{1,…,6}`; the finite check over those subsets (enumerated by `fin_cases`,
+    each refuted by `card ≠ 4` or an explicit subset-sum collision via the bounded,
+    decidable form of the hypothesis) rules them all out.  This is the matching lower
+    bound that upgrades the upper witness `f_four` to the exact value `f_four_eq`.
+
+    The enumeration is deliberately kept as many *shallow* `decide`s (one per case), not
+    one deep `decide` over the whole powerset: the latter overflows the Lean kernel's C
+    stack (SIGBUS / build exit code 135). -/
+theorem f_four_lower {A : Finset ℕ} (h4 : A.card = 4)
+    (hDSS : hasDistinctSubsetSums A) : 7 ≤ A.sup id := by
+  by_contra hlt
+  push_neg at hlt
+  -- Distinct subset sums force `0 ∉ A` (else `∅` and `{0}` collide).
+  have h0 : (0 : ℕ) ∉ A := by
+    intro h0A
+    have hcollide : (∅ : Finset ℕ) = {0} :=
+      hDSS ∅ {0} (Finset.empty_subset _)
+        (by simpa [Finset.singleton_subset_iff] using h0A) (by simp)
+    simp at hcollide
+  -- Hence every element lies in `[1, 6]`, so `A ⊆ Icc 1 6`.
+  have hsub : A ⊆ Finset.Icc 1 6 := by
+    intro a ha
+    rw [Finset.mem_Icc]
+    refine ⟨?_, ?_⟩
+    · rcases Nat.eq_zero_or_pos a with h | h
+      · exact absurd (h ▸ ha) h0
+      · exact h
+    · have hle : a ≤ A.sup id := Finset.le_sup (f := id) ha
+      omega
+  have hmem : A ∈ (Finset.Icc 1 6).powerset := Finset.mem_powerset.mpr hsub
+  -- Bounded (hence decidable) form of the distinct-subset-sums hypothesis.
+  have hDSS' : ∀ S ∈ A.powerset, ∀ T ∈ A.powerset, S.sum id = T.sum id → S = T :=
+    fun S hS T hT h => hDSS S T (Finset.mem_powerset.mp hS) (Finset.mem_powerset.mp hT) h
+  fin_cases hmem <;>
+    first
+      | exact absurd h4 (by decide)
+      | exact absurd hDSS' (by decide)
+
+/-- **`f(4) = 7` (OEIS A005318, `n = 4`).**  The minimal possible largest element of a
+    four-element distinct-subset-sums set is exactly `7`: attained by `{3,5,6,7}`
+    (`f_four`) and by no set with maximum `≤ 6` (`f_four_lower`).  This pins the `n = 4`
+    value of the Erdős distinct-subset-sums extremal function, the first case where the
+    powers-of-two witness `{1,2,4,8}` (maximum `8`) is not optimal. -/
+theorem f_four_eq :
+    (∃ (A : Finset ℕ), A.card = 4 ∧ hasDistinctSubsetSums A ∧ A.sup id = 7) ∧
+      (∀ (A : Finset ℕ), A.card = 4 → hasDistinctSubsetSums A → 7 ≤ A.sup id) :=
+  ⟨f_four, fun _A h hDSS => f_four_lower h hDSS⟩
+
+/-- **Powers of two are not extremal at `n = 4`.**  The witness `{3,5,6,7}` has distinct
+    subset sums with maximum `7 < 8 = 2^{4-1}`, so the minimal largest element drops
+    strictly below the powers-of-two value `2^{n-1}` — the first `n` where the geometric
+    construction of `Erdos1OQ02OQ01` (max `= 2^{n-1}`) is beaten (Conway–Guy). -/
+theorem f_four_lt_geometric :
+    ∃ (A : Finset ℕ), A.card = 4 ∧ hasDistinctSubsetSums A ∧ A.sup id < 2 ^ (4 - 1) := by
+  obtain ⟨A, hcard, hDSS, hsup⟩ := f_four
+  exact ⟨A, hcard, hDSS, by rw [hsup]; norm_num⟩
 
 /-- **Cardinality certificate for distinct subset sums (0 axioms).**  A finite set `A`
     has distinct subset sums exactly when the subset-sum map `S ↦ ∑_{i∈S} i` is injective
@@ -622,7 +662,15 @@ theorem f_five :
     This converts the `∀ S T` distinctness obligation into a *single* decidable
     cardinality equality, which `decide` checks by computing the `2^|A|` subset sums and
     counting distinct values — cheap where the quadratic `fin_cases` over pairs
-    (`2^|A| × 2^|A|` cases) becomes intractable (e.g. `|A| = 6`). -/
+    (`2^|A| × 2^|A|` cases) becomes intractable (e.g. `|A| = 6`).
+
+    NOTE: verifying that equality by `decide` still evaluates a `Finset.image` dedup over
+    the whole `2^|A|`-element powerset, which overflows the Lean kernel's C stack (SIGBUS /
+    build exit code 135) once `|A| ≥ 5` — as does the pairwise `fin_cases` route.  The
+    larger Conway–Guy witnesses `f(5) = 13`, `f(6) = 24` therefore cannot be certified
+    axiom-free by brute force (only via `native_decide`, which would add `Lean.ofReduceBool`
+    and forfeit the file's 0-axiom status); a robust proof for `|A| ≥ 5` needs a structural
+    argument. -/
 theorem hasDistinctSubsetSums_iff_card (A : Finset ℕ) :
     hasDistinctSubsetSums A ↔
     (A.powerset.image (fun S => S.sum id)).card = A.powerset.card := by
@@ -633,22 +681,6 @@ theorem hasDistinctSubsetSums_iff_card (A : Finset ℕ) :
   · intro h S T hS hT heq
     exact h (Finset.mem_powerset.mpr hS) (Finset.mem_powerset.mpr hT) heq
 
-/-- f(6) = 24: the Conway–Guy set `{11, 17, 20, 22, 23, 24}` has `2⁶ = 64` distinct
-    subset sums with maximum element `24`.  This is the `n = 6` entry of OEIS A005318,
-    continuing `f_zero`…`f_five`.  The margin over the greedy powers-of-two witness
-    keeps widening: `{1, 2, 4, 8, 16, 32}` also has distinct subset sums but maximum
-    `32`, so `f(6) = 24 < 32 = 2⁵` and the gap `2ⁿ⁻¹ − f(n)` grows again
-    (`8 − 7 = 1`, `16 − 13 = 3`, `32 − 24 = 8`).  The `hasDistinctSubsetSums` obligation
-    is discharged through `hasDistinctSubsetSums_iff_card`: the pairwise `fin_cases` used
-    for `f_two_max`…`f_five` blows up to `64 × 64 = 4096` cases at `n = 6` (heartbeat
-    timeout), so we instead `decide` the single cardinality equality
-    `|image of the 64 subset sums| = 64`. -/
-theorem f_six :
-    ∃ (A : Finset ℕ), A.card = 6 ∧ hasDistinctSubsetSums A ∧ A.sup id = 24 := by
-  refine ⟨{11, 17, 20, 22, 23, 24}, by decide, ?_, by decide⟩
-  rw [hasDistinctSubsetSums_iff_card]
-  decide
-
 /-! ## Conclusion
 
 The DFX framework is formalized with:
@@ -656,13 +688,14 @@ The DFX framework is formalized with:
   fully proved theorem `anticoncentration_bound`, no longer an axiom)
 - 0 sorries (dfx_lower_bound fully proved)
 - Variance bounds and Cauchy–Schwarz (proved)
-- Small case verifications `f_zero`…`f_six` (proved; `f_four` shows `f(4)=7`
-  beats the greedy powers-of-two witness `{1,2,4,8}` of maximum `8`, `f_five`
-  shows `f(5)=13 < 16` via the Conway–Guy set `{6,9,11,12,13}`, and `f_six`
-  shows `f(6)=24 < 32` via `{11,17,20,22,23,24}`; from `f_four` on, the gap
-  `2ⁿ⁻¹ − f(n)` grows `1, 3, 8`). The reusable certificate
-  `hasDistinctSubsetSums_iff_card` reduces distinctness to one decidable
-  cardinality check, sidestepping the quadratic `fin_cases` blow-up.
+- Small case verifications `f_zero`…`f_four` (proved).  `f_four` shows `f(4) ≤ 7`
+  via the Conway–Guy witness `{3,5,6,7}`, beating the powers-of-two witness `{1,2,4,8}`
+  of maximum `8`; the matching lower bound `f_four_lower` upgrades this to the exact
+  `f(4) = 7` (`f_four_eq`), and `f_four_lt_geometric` records `7 < 2^{4-1}` — the first
+  `n` where powers of two are not extremal (Conway–Guy).  The larger witnesses
+  `f(5) = 13`, `f(6) = 24` are not included: their `fin_cases` / image-cardinality
+  `decide` certifications overflow the kernel C stack for `|A| ≥ 5` (SIGBUS / build exit
+  135), so they cannot be built axiom-free (see `hasDistinctSubsetSums_iff_card`).
 
 The anticoncentration bound is discharged entirely by the probability-free CORE
 built up in the "Verified ingredients toward discharging" section

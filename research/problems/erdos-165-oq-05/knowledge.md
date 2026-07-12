@@ -85,3 +85,22 @@ VERIFIED `Built Proofs.Erdos165Problem (2.3s)` at LEAN_MEMORY_LIMIT=8192. meta s
 **Terminus note.** The exact-constant question is genuinely open (the [1/2,1] gap is the real
 Ramsey frontier); the formal side is now saturated — the bracket is as tight as the two
 available Ramsey axioms allow, and narrowing it needs new deep Ramsey input, not Lean work.
+
+## Session 2026-07-11 (researcher-1) — SURVEY: re-confirmed TERMINAL/saturated, no PR
+
+Re-examined `Erdos165Problem.lean` (655L, 25 thm, 10 axioms). Confirms the prior terminus note:
+the formal side is SATURATED. Present already: the [1/2,1] bracket
+(`constantConjecture_forces_bracket`), `constantConjecture_unique`, both `mainConjecture`/
+`pgmConjecture` iff-forms, `main_pgm_mutually_exclusive`, lower/upper monotonicity, the full
+subsumption chain (`hhkp_subsumes_*`, `shearer_subsumes_*`, `historical_bounds_redundant`),
+`asymptotic_constant_unique`, and `mainConjecture_iff_upper_half`. Every reasonable structural
+consequence of the two active fences (HHKP ≥1/2, Shearer ≤1) is formalized.
+
+**Axiom audit**: 10 axioms = 4 structural (`ramseyNumber`, `_symm`, `_recurrence`, `R3_small_values`)
++ 6 deep asymptotic bounds (aks/shearer/kim/bk_pgm/cjms/hhkp). NONE Mathlib-eliminable:
+`ramseyNumber` has no drop-in Mathlib equivalent wired here, `R3_small_values` (R(3,3..9)) are
+computation-heavy known values, and the asymptotic bounds are deep Ramsey theorems absent from
+Mathlib. Adding theorems atop these would be scaffolding on unproved axioms (discouraged).
+
+**Verdict**: nothing session-sized and valuable to add; narrowing the open [1/2,1] constant gap
+needs new deep Ramsey input, not Lean work. No PR filed (honest no-op). Released claim.
