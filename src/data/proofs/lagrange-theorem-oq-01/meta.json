@@ -20,15 +20,16 @@
     "sorries": 0,
     "dateAdded": "2026-04-04",
     "axiomCount": 0,
-    "lineCount": 210,
-    "theoremCount": 16,
+    "lineCount": 344,
+    "theoremCount": 24,
     "definitionCount": 0,
     "assumptions": "None.",
     "originalContributions": [
       "Unified formal presentation of all three Sylow theorems connecting to Lagrange's theorem context",
       "Explicit statement that n_p ≡ 1 mod p using Sylow.card_sylow_modEq_one",
       "Partial converse to Lagrange: p^k | |G| implies subgroup of order p^k via Sylow.exists_subgroup_card_pow_prime",
-      "Cauchy's theorem as corollary of Sylow existence"
+      "Cauchy's theorem as corollary of Sylow existence",
+      "REPAIR + capstone: the file had bit-rotted against a Mathlib bump (Fintype.card/[Fintype G] → Nat.card/[Finite G], and Sylow API renames conj_eq→MulAction.exists_smul_eq, card_sylow_dvd_index→Sylow.card_dvd_index, Sylow.card_sylow_modEq_one→card_sylow_modEq_one, exists_prime_orderOf_dvd_card→_card') — migrated all 22 theorems back to a clean compile, then added exists_normal_subgroup_card_eq_pq (a normal subgroup of order q always exists) and not_isSimpleGroup_of_card_eq_pq (¬ IsSimpleGroup G for |G|=pq), the headline non-simplicity capstone. Axiom-free."
     ]
   },
   "overview": {
@@ -151,9 +152,9 @@
   ],
   "leanFile": {
     "namespace": "LagrangeOQ01",
-    "lineCount": 227,
+    "lineCount": 344,
     "axiomCount": 0,
-    "theoremCount": 18,
+    "theoremCount": 24,
     "definitionCount": 0,
     "path": "Proofs/LagrangeTheoremOQ01.lean",
     "sorries": 0
