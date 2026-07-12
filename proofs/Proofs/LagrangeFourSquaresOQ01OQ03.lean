@@ -37,7 +37,13 @@ divisor-sum formula reproduces the brute-force lattice count for a range of smal
    `4 ∤ n` the filter is vacuous, so `jacobiCount n = 8·σ(n)`. The doubling relation
    `jacobiCount_two_mul` (0-axiom, **general**) gives `jacobiCount (2·m) = 3·jacobiCount m`
    for odd `m`, and `jacobiCount_two_mul_odd_eq` its closed form `24·σ(m)` — the classical
-   `r₄(2m)` value, matching the oracle (`r4 6 = 96 = 24·σ(3)`).
+   `r₄(2m)` value, matching the oracle (`r4 6 = 96 = 24·σ(3)`).  The complementary
+   `4 ∤ n` restriction (2-adic valuation `≤ 1`) is `jacobiCount_of_not_four_dvd`; the
+   remaining **`4 ∣ n`** case is `jacobiCount_four_dvd` (0-axiom, **general**), the even-side
+   recursion `jacobiCount n + 32·σ(n/4) = 8·σ(n)` — its arithmetic core is that the excluded
+   `4 ∣ d` divisors sum to `4·σ(n/4)` (`sum_divisors_four_dvd`).  `eight_le_jacobiCount`
+   (0-axiom, **general**) records `8 ≤ jacobiCount n` for `n ≥ 1` (the divisor `1` always
+   survives the filter), whence `jacobiCount_pos`.
 4. `naive_sigma_fails` (0-axiom): the naive `8·σ(4) = 56` is WRONG; the true count
    is `r4 4 = 24`. The `4∤d` exclusion is load-bearing — this guards the convention.
 5. `jacobi_oracle` : `r4 n = jacobiCount n` for `1 ≤ n ≤ 24`, by `native_decide`
@@ -189,6 +195,85 @@ half of Jacobi's formula: on `n = 2^a·m` with `a ≤ 1` the count is a pure mul
 theorem jacobiCount_two_mul_odd_eq {m : ℕ} (hm : Odd m) :
     jacobiCount (2 * m) = 24 * ∑ d ∈ m.divisors, d := by
   rw [jacobiCount_two_mul hm, jacobiCount_odd hm]; ring
+
+/-- **The `4 ∣ d` divisors scale down to the divisors of `n / 4` (0-axiom, general).**
+For `4 ∣ n` (`n ≠ 0`), the map `d ↦ d / 4` is a bijection between the divisors of `n`
+divisible by `4` and *all* divisors of `n / 4`, so their sum scales by exactly `4`:
+`Σ_{d ∣ n, 4 ∣ d} d = 4 · σ(n / 4)`. This is the arithmetic core of the `4 ∣ n` case of
+Jacobi's count below — the excluded ("`4 ∣ d`") part of `σ(n)` is a clean multiple of
+`σ(n / 4)`. -/
+theorem sum_divisors_four_dvd {n : ℕ} (h4 : 4 ∣ n) (hn : n ≠ 0) :
+    ∑ d ∈ n.divisors.filter (fun d => 4 ∣ d), d = 4 * ∑ e ∈ (n / 4).divisors, e := by
+  rw [Finset.mul_sum]
+  have hn4 : n / 4 ≠ 0 := by
+    rw [Ne, Nat.div_eq_zero_iff]; push_neg
+    exact ⟨by norm_num, Nat.le_of_dvd (Nat.pos_of_ne_zero hn) h4⟩
+  apply Finset.sum_nbij' (i := fun d => d / 4) (j := fun e => 4 * e)
+  · intro d hd
+    rw [Finset.mem_filter, Nat.mem_divisors] at hd
+    obtain ⟨⟨hdvd, _⟩, h4d⟩ := hd
+    rw [Nat.mem_divisors]
+    refine ⟨?_, hn4⟩
+    obtain ⟨k, rfl⟩ := h4d
+    rw [Nat.mul_div_cancel_left k (by norm_num)]
+    obtain ⟨m, hm⟩ := h4
+    have hkm : 4 * k ∣ 4 * m := hm ▸ hdvd
+    rw [hm, Nat.mul_div_cancel_left m (by norm_num)]
+    exact (mul_dvd_mul_iff_left (by norm_num : (4:ℕ) ≠ 0)).mp hkm
+  · intro e he
+    rw [Nat.mem_divisors] at he
+    obtain ⟨hedvd, _⟩ := he
+    rw [Finset.mem_filter, Nat.mem_divisors]
+    refine ⟨⟨?_, hn⟩, ⟨e, rfl⟩⟩
+    calc 4 * e ∣ 4 * (n / 4) := mul_dvd_mul_left 4 hedvd
+      _ = n := Nat.mul_div_cancel' h4
+  · intro d hd
+    rw [Finset.mem_filter] at hd
+    exact Nat.mul_div_cancel' hd.2
+  · intro e _
+    exact Nat.mul_div_cancel_left e (by norm_num)
+  · intro d hd
+    rw [Finset.mem_filter] at hd
+    exact (Nat.mul_div_cancel' hd.2).symm
+
+/-- **The `4 ∣ n` case of Jacobi's count (0-axiom, general).** Complementary to
+`jacobiCount_of_not_four_dvd` (which handles 2-adic valuation `≤ 1`): whenever `4 ∣ n`
+(`n ≠ 0`) the excluded divisors contribute exactly `4·σ(n/4)`, giving the identity
+`jacobiCount n + 32·σ(n/4) = 8·σ(n)`.  Equivalently `jacobiCount n = 8·(σ(n) − 4·σ(n/4))`.
+This is the general even-side recursion: it reduces the count on `n` to the plain
+divisor-sums of `n` and `n/4`.  It matches the oracle — e.g. `n = 4`:
+`24 + 32·σ(1) = 24 + 32 = 56 = 8·σ(4)`; `n = 8`: `24 + 32·σ(2) = 24 + 96 = 120 = 8·σ(8)`. -/
+theorem jacobiCount_four_dvd {n : ℕ} (h4 : 4 ∣ n) (hn : n ≠ 0) :
+    jacobiCount n + 32 * ∑ e ∈ (n / 4).divisors, e = 8 * ∑ d ∈ n.divisors, d := by
+  have hsplit : (∑ d ∈ n.divisors.filter (fun d => 4 ∣ d), d)
+      + ∑ d ∈ n.divisors.filter (fun d => ¬ 4 ∣ d), d = ∑ d ∈ n.divisors, d :=
+    Finset.sum_filter_add_sum_filter_not n.divisors (fun d => 4 ∣ d) (fun d => d)
+  have hB : ∑ d ∈ n.divisors.filter (fun d => 4 ∣ d), d = 4 * ∑ e ∈ (n / 4).divisors, e :=
+    sum_divisors_four_dvd h4 hn
+  unfold jacobiCount
+  omega
+
+/-- **Jacobi's count is at least `8` on every positive `n` (0-axiom, general).** The
+divisor `d = 1` is always present and never divisible by `4`, so it survives the `4 ∤ d`
+filter and contributes `8·1 = 8`.  Hence `8 ≤ jacobiCount n` for all `n ≥ 1` — the formula
+predicts every positive integer has at least the `8` "trivial" signed four-square
+representations `(±1,0,0,0)` and permutations, consistent with the oracle
+(`r4 1 = 8`). -/
+theorem eight_le_jacobiCount {n : ℕ} (hn : 1 ≤ n) : 8 ≤ jacobiCount n := by
+  unfold jacobiCount
+  have h1mem : (1 : ℕ) ∈ n.divisors.filter (fun d => ¬ 4 ∣ d) := by
+    rw [Finset.mem_filter, Nat.mem_divisors]
+    exact ⟨⟨one_dvd _, Nat.one_le_iff_ne_zero.mp hn⟩, by decide⟩
+  have hsum : 1 ≤ ∑ d ∈ n.divisors.filter (fun d => ¬ 4 ∣ d), d :=
+    Finset.single_le_sum (f := fun d => d) (fun i _ => Nat.zero_le i) h1mem
+  calc 8 = 8 * 1 := by norm_num
+    _ ≤ 8 * _ := Nat.mul_le_mul_left 8 hsum
+
+/-- **Jacobi's count is positive on every positive `n` (0-axiom).** Immediate from
+`eight_le_jacobiCount`; the counting side of "every positive integer is a sum of four
+squares" — `r₄(n) > 0` — is predicted by the formula for all `n ≥ 1`. -/
+theorem jacobiCount_pos {n : ℕ} (hn : 1 ≤ n) : 0 < jacobiCount n :=
+  lt_of_lt_of_le (by norm_num) (eight_le_jacobiCount hn)
 
 /-- **Convention guard (0-axiom).** The naive formula `8·σ(n)` is WRONG for `n = 4`:
 `8·σ(4) = 8·(1+2+4) = 56`, whereas the true count is `r4 4 = 24`. Equivalently the
