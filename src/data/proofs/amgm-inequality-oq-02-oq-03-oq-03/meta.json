@@ -68,7 +68,7 @@
       "id": "header",
       "title": "Module Header: Three-Tier Architecture",
       "startLine": 1,
-      "endLine": 28,
+      "endLine": 29,
       "summary": "Documents the three-tier Maclaurin formalization hierarchy: AmgmInequalityOQ02 (axiomatic step), AmgmInequalityOQ02OQ03 (Newton-proved step), and this file (full chain from steps). Lists the three main results: `maclaurin_chain_aux`, `maclaurin_full_chain`, `maclaurin_m1_ge_mn`.",
       "mathContext": "The chain $M_1 \\geq M_2 \\geq \\cdots \\geq M_n$ is built from $n-1$ applications of the step $M_k \\geq M_{k+1}$. The modular design allows the chain to be verified regardless of how the step is proved."
     },
@@ -84,7 +84,7 @@
       "id": "aux-lemma",
       "title": "maclaurin_chain_aux: Induction on Gap",
       "startLine": 39,
-      "endLine": 52,
+      "endLine": 53,
       "summary": "Private lemma: Mⱼ ≥ Mⱼ₊ₐ for arbitrary gap d, proved by induction on d. Base case: reflexivity. Inductive case: apply IH then maclaurin_step, close by calc transitivity.",
       "mathContext": "$M_j \\geq M_{j+d}$ by induction: base $M_j \\geq M_j$ trivial; step uses IH $M_j \\geq M_{j+m}$ and maclaurin_step $M_{j+m} \\geq M_{j+m+1}$, combined by transitivity."
     },
@@ -92,7 +92,7 @@
       "id": "main-theorem",
       "title": "maclaurin_full_chain: Full Chain Theorem",
       "startLine": 54,
-      "endLine": 59,
+      "endLine": 60,
       "summary": "Main exported theorem: for 0 < j ≤ k ≤ n, Mⱼ ≥ Mₖ. Uses Nat.exists_eq_add_of_le to extract the gap d from j ≤ k, then delegates to maclaurin_chain_aux.",
       "mathContext": "`Nat.exists_eq_add_of_le hjk` gives `d` with `k = j + d`. The `obtain ⟨d, rfl⟩` pattern rewrites k everywhere. The omega call closes `j + d ≤ n` from `hkn`."
     },
@@ -100,7 +100,7 @@
       "id": "corollary",
       "title": "maclaurin_m1_ge_mn: AM ≥ GM Corollary",
       "startLine": 61,
-      "endLine": 64,
+      "endLine": 66,
       "summary": "Specializes maclaurin_full_chain to j=1, k=n. One-liner proof: three library lemmas (Nat.one_pos, hn, le_refl). This recovers AM ≥ GM for non-negative reals.",
       "mathContext": "$M_1 = \\frac{1}{n}\\sum x_i$ (arithmetic mean), $M_n = (\\prod x_i)^{1/n}$ (geometric mean). So $M_1 \\geq M_n$ is AM ≥ GM. The Maclaurin chain gives $n-1$ intermediate means between them."
     }
