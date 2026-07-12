@@ -1,35 +1,34 @@
-# Batch 2/3/4 verification state (updated batch 4, 2026-07-12)
+# Batch 2/3/4/5 verification state (updated batch 5, 2026-07-12)
 
-## BATCH 4 NUMBERS (waves F/G merged; wave H = bad-import repair, results in results-H1/H2)
-- verify-results.tsv: 658 tracked files — 190 GREEN / 468 RESIDUAL (before wave H merge)
-- Wave F 159 (repo-wide orphan-doc sweep 129 + double-binder 4 + autoImplicit 11 + import-Mathlib 16): 47 green
-- Wave G 8 (AbelRuffini): 2 green (OQ03, OQ03OQ01 via Nat.card retype)
-- Wave H 298 COMPLETE: 74 green (38 H1 + 36 H2, 25%); MERGED into tsv: 928 tracked, 264 GREEN.
-- fails-D.txt (134) DIAGNOSED: diag-D1/D2.txt, classes merged into tsv. Mostly Doctor-class
-  (instance-synth 27, proof-drift 25, type-mismatch 19, parse 9, singleton drift ~30).
+## BATCH 5 NUMBERS (final Mechanic batch)
 
-## Key batch-4 discoveries (details in rename map §6 batch-4)
+- Wave T (zero-edit re-verify of the 333 transitive-dep-failed inventory files; 72 already
+  GREEN in ledger were skipped → 261 targets): results in `results-T1/T2.txt`, merged.
+- Wave S (singleton unknown-const renames, 68 files edited + NapoleonsTheoremOQ02 = 69
+  targets): results in `results-S1/S2.txt`.
+- 24 never-compiled files (single-letter free vars in def bodies) reclassified
+  `PRE-EXISTING` / `never-compiled:*` in the ledger — excluded from migration counts.
+- Merge command (idempotent, safe to re-run):
 
-1. **BAD-IMPORT CLASS**: 294 not-yet-green files import Mathlib modules removed in v4.31
-   (BigOperators.Group.Finset, Data.Rat.Basic, Order.Filter.AtTopBot, Data.Set.Finite, ...).
-   Repaired wave H: bad imports dropped + umbrella `import Mathlib` prepended.
-   Module list: `docker run --rm -v lean-mathlib-packages-v431:/pkgs alpine sh -c "cd /pkgs/mathlib && find Mathlib -name '*.lean'"`
-2. **NEVER-COMPILED CLASS**: single-letter unknown-identifier files (ι/n/p/k/A/B/X/V) have free
-   vars in def BODIES — `set_option autoImplicit true` does NOT fix (0/11). Landed unverified
-   in ENOSPC eras; never compiled on v4.26. Doctor/out-of-scope tier.
-3. Nat.card migration (alternatingGroup lemmas), Fintype.ofFinite for subgroup/quotient,
-   convert→convert! Archive drift — see map.
+```
+cd proofs/batch2 && python3 merge_results.py \
+  --results results-T1.txt results-T2.txt results-S1.txt results-S2.txt \
+  --diag diag-T1.txt diag-T2.txt diag-S1.txt diag-S2.txt
+```
 
-## Backlog for batch 5
+Final totals: see the close-out comment on #38064 and the seeding comment on #38065.
 
-1. Merge wave-H results if not merged (command above); fix its near-misses — files whose only
-   remaining error is a shallow rename now that imports resolve.
-2. AbelRuffini remaining: OQ05+OQ10 (layer-3 check pending in wave H), OQ04OQ01 (3 deep drift
-   sites), InverseGalois (re-target module name `InverseGalois`, NOT AbelRuffiniInverseGalois),
-   LagrangeTheoremOQ01OQ01OQ01ApproachB (unitToAddAut arg rename + instance-synth — Doctor).
-3. Residual-class work is now predominantly Doctor-tier: instance-synth 110, type-mismatch 48,
-   proof-drift 43, unclassified 44 → hand off to #38065 unless wave H unmasks new mechanical
-   classes.
+## Backlog → Doctor (#38065)
+
+1. Residual classes (ledger `verify-results.tsv`, RESIDUAL rows): instance-synth,
+   type-mismatch, proof-drift, parse survivors, remaining unknown-const singletons
+   (true removals: `Nat.nth_prime_*`, `Complex.abs_cpow_mul_exp_log_re`, PartENat
+   in ChebyshevPNTBridgeOQ01, project-local missing names).
+2. AbelRuffini remaining: OQ10 (native_decide×noncomputable catch-22), OQ04OQ01
+   (3 deep drift sites), InverseGalois (module name `InverseGalois`),
+   LagrangeTheoremOQ01OQ01OQ01ApproachB (unitToAddAut arg rename + instance-synth).
+3. Never-compiled files (PRE-EXISTING rows): route to a separate rewrite/cleanup issue,
+   not #38065 — they never compiled on v4.26 either.
 
 ## Verification recipe (unchanged)
 
