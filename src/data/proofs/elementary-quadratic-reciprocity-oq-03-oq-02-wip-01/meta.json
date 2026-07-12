@@ -40,10 +40,10 @@
     "badge": "wip",
     "sorries": 0,
     "axiomCount": 0,
-    "theoremCount": 8,
+    "theoremCount": 12,
     "defCount": 0,
     "definitionCount": 0,
-    "lineCount": 142,
+    "lineCount": 182,
     "dateAdded": "2026-07-11",
     "assumptions": "0 axioms, 0 sorries — every result is machine-verified from the parent file's public API (propext, Classical.choice, Quot.sound only; the two kronecker2 results use only propext). Status is kept 'wip'/'axiomatized' to match the parent: the file proves genuine new lemmas (numerator periodicity of (a/n) for odd positive n via kronecker_congr_left / kronecker_add_mul_left / kronecker_periodic_left, and full period-8 periodicity of the (a/2) character via kronecker2_congr / kronecker2_add_mul_eight, plus the exact conductor 8 / primitivity of (·/2) via kronecker2_not_period_four / kronecker2_not_period_two / kronecker2_conductor_eight) but the broader open target — wiring kronecker2 into the definition at even moduli and generalized quadratic reciprocity for arbitrary fundamental discriminants — remains unformalized, exactly as documented in the parent's module note. Nothing new is assumed.",
     "mathlibDependencies": [
@@ -188,6 +188,26 @@
       "name": "kronecker2_conductor_eight",
       "statement": "(∀ a k : ℤ, kronecker2 (a + 8 * k) = kronecker2 a) ∧ (¬ ∀ a : ℤ, kronecker2 (a + 4) = kronecker2 a) ∧ (¬ ∀ a : ℤ, kronecker2 (a + 2) = kronecker2 a)",
       "description": "8 is the exact conductor of (·/2): full period 8 together with the failure of periods 4 and 2 shows 8 is the minimal period, so χ₈ = (·/2) is a primitive Dirichlet character mod 8. This is the sharp input the Gauss-sum route to reciprocity needs, since only primitive characters have nonvanishing Gauss sums."
+    },
+    {
+      "name": "kronecker2_eq_zero_iff",
+      "statement": "kronecker2 a = 0 ↔ a % 2 = 0",
+      "description": "The (·/2) character vanishes exactly on the even residues. Proved by squaring (kronecker2_sq: (a/2)²=0 on evens, 1 on odds) and mul_self_eq_zero (over ℤ a value squares to 0 iff it is 0), pinning the support of the character."
+    },
+    {
+      "name": "kronecker2_ne_zero_iff",
+      "statement": "kronecker2 a ≠ 0 ↔ a % 2 = 1",
+      "description": "The (·/2) character is a unit (±1) exactly on the odd residues — the complement of kronecker2_eq_zero_iff, the units mod 2."
+    },
+    {
+      "name": "kronecker2_eq_one_iff",
+      "statement": "kronecker2 a = 1 ↔ a % 8 = 1 ∨ a % 8 = 7",
+      "description": "The value +1 of the primitive character χ₈=(·/2) occurs exactly on residues 1,7 mod 8. Direct from the definition; the a%8=-1 disjunct is vacuous since Int.emod by 8 lands in [0,8)."
+    },
+    {
+      "name": "kronecker2_eq_neg_one_iff",
+      "statement": "kronecker2 a = -1 ↔ a % 8 = 3 ∨ a % 8 = 5",
+      "description": "The value -1 of χ₈=(·/2) occurs exactly on residues 3,5 mod 8. With kronecker2_eq_one_iff and kronecker2_eq_zero_iff this is the complete residue-level character table: 0 on evens, +1 on {1,7}, -1 on {3,5} mod 8."
     }
   ]
 }
