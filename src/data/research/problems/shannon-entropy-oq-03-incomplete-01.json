@@ -35,16 +35,18 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: the premise (a remaining SSA sorry) is FALSE — SSA is fully proven in ShannonEntropy.lean (strong_subadditivity). Every thread is now closed on main: (1) the SSA EQUALITY CONDITION (Markov-chain characterization) shipped as self-contained ShannonEntropySSAEq.lean → gallery shannon-entropy-oq-03-oq-01; (2) #35820 added the self-contained SSA inequality (cmiSum_nonneg + ssa_inequality) to that same file; (3) ShannonEntropySSA.lean (gallery oq-03) was REPAIRED — the old dup-decl conflict is gone, it now sits in namespace InformationTheory.SSA, re-exports the verified parent SSA, and adds conditioning_reduces_entropy_general + conditional_mi_nonneg (axiom-free). The 'broken file / repoint gallery' Mechanic nextStep is therefore already done and needs no action.",
+    "progressSummary": "COMPLETE (main SSA inequality + equality/Markov characterization proven axiom-free). This session added the structural SYMMETRY of conditional mutual information I(X;Z|Y)=I(Z;X|Y) (cmiSum_reflectXZ) and its entropy-side deficit form (ssa_deficit_reflectXZ) to gallery oq-03-oq-01. Only remaining open direction is a quantitative/stability (Pinsker-type) SSA, blocked on Mathlib Pinsker usability.",
     "builtItems": [
-      "cmiSum def + ssa_deficit_eq_cmi + ssa_cmi_eq_zero_iff + strong_subadditivity_eq_iff + cmiSum_nonneg + ssa_inequality (#35820) in Proofs/ShannonEntropySSAEq.lean (self-contained, 0 sorry/0 axiom)"
+      "cmiSum def + ssa_deficit_eq_cmi + ssa_cmi_eq_zero_iff + strong_subadditivity_eq_iff + cmiSum_nonneg + ssa_inequality (#35820) in Proofs/ShannonEntropySSAEq.lean (self-contained, 0 sorry/0 axiom)",
+      "reflectXZ def + cmiSum_reflectXZ (I(X;Z|Y)=I(Z;X|Y), symmetry of CMI) + ssa_deficit_reflectXZ (SSA deficit symmetric in X,Z on entropy side) in Proofs/ShannonEntropySSAEq.lean (axiom-free [propext,Classical.choice,Quot.sound]); helper private lemma triple_sum_prod flattens triple Finset-sum to product for equiv reindexing"
     ],
     "insights": [
       "Suggested proof route: rewrite the entropy deficit as conditional mutual information and discharge nonnegativity via KL divergence.",
       "ShannonEntropySSA.lean was REPAIRED (no longer conflicts): it now uses namespace InformationTheory.SSA, imports and re-exports the parent's verified strong_subadditivity, and adds two three-variable corollaries (conditioning_reduces_entropy_general, conditional_mi_nonneg); axiom-free. Historical note: an older revision re-declared marginalXY/marginalYZ/strong_subadditivity in the parent's namespace and failed to elaborate. SSA is genuinely proven in ShannonEntropy.lean.",
       "SSA deficit = conditional mutual information I(X;Z|Y) exactly (ssa_deficit_eq_cmi).",
       "I(X;Z|Y)=0 iff the division-free Markov factorization p·p_Y = p_XY·p_YZ holds everywhere; forward via the STRICT KL bound, backward by substitution.",
-      "v4.26.0: `hp _` underscore fails to infer in single_le_sum hint lists (need explicit triples); local universe-poly `have` leaks a 4th universe param (extract top-level); conv `ext y` fails on Finset.sum."
+      "v4.26.0: `hp _` underscore fails to infer in single_le_sum hint lists (need explicit triples); local universe-poly `have` leaks a 4th universe param (extract top-level); conv `ext y` fails on Finset.sum.",
+      "Conditional mutual information is symmetric in its outer arguments: I(X;Z|Y) = I(Z;X|Y). Formalized as cmiSum_reflectXZ — reflecting the joint law by (z,y,x)↦(x,y,z) leaves cmiSum invariant. The defining summand is invariant because its numerator p·p_Y is symmetric and its denominator p_XY·p_YZ merely commutes; proof reindexes the triple sum by the X↔Z coordinate transposition (Fintype.sum_equiv over α×β×γ ≃ γ×β×α)."
     ],
     "mathlibGaps": [
       "No SSA equality-case lemma in Mathlib; KL equality (klDivergence_eq_zero_iff) exists in ShannonEntropy.lean but is private and the file conflicts."

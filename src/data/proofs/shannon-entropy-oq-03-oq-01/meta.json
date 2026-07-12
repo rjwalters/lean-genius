@@ -146,10 +146,10 @@
       "Finset"
     ],
     "namespace": "InformationTheory",
-    "lineCount": 603,
+    "lineCount": 674,
     "axiomCount": 0,
-    "theoremCount": 9,
-    "definitionCount": 5,
+    "theoremCount": 12,
+    "definitionCount": 6,
     "path": "Proofs/ShannonEntropySSAEq.lean",
     "sorries": 0
   },
@@ -171,6 +171,18 @@
       "type": "core",
       "description": "SSA holds with equality iff X–Y–Z is a Markov chain",
       "leanType": "(shannonEntropy' pXYZ + shannonEntropy' (marginalY_3 pXYZ) = shannonEntropy' (marginalXY pXYZ) + shannonEntropy' (marginalYZ pXYZ)) ↔ (∀ x y z, pXYZ (x,y,z) * marginalY_3 pXYZ y = marginalXY pXYZ (x,y) * marginalYZ pXYZ (y,z))"
+    },
+    {
+      "name": "cmiSum_reflectXZ",
+      "type": "core",
+      "description": "Symmetry of conditional mutual information: I(X;Z|Y) = I(Z;X|Y); reflecting the joint law by (z,y,x) to (x,y,z) leaves cmiSum invariant",
+      "leanType": "cmiSum (reflectXZ pXYZ) = cmiSum pXYZ"
+    },
+    {
+      "name": "ssa_deficit_reflectXZ",
+      "type": "supporting",
+      "description": "The strong-subadditivity deficit is symmetric under swapping the outer variables X and Z, stated on Shannon entropies of the reflected law",
+      "leanType": "shannonEntropy' (marginalXY (reflectXZ pXYZ)) + shannonEntropy' (marginalYZ (reflectXZ pXYZ)) - shannonEntropy' (reflectXZ pXYZ) - shannonEntropy' (marginalY_3 (reflectXZ pXYZ)) = shannonEntropy' (marginalXY pXYZ) + shannonEntropy' (marginalYZ pXYZ) - shannonEntropy' pXYZ - shannonEntropy' (marginalY_3 pXYZ)"
     }
   ],
   "sorries": 0
