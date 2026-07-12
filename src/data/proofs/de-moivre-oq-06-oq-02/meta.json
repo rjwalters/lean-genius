@@ -1,0 +1,176 @@
+{
+  "id": "de-moivre-oq-06-oq-02",
+  "title": "De Moivre OQ-06-OQ-02: Uniform Dirichlet-Kernel Bounds Away from the Singularities",
+  "slug": "de-moivre-oq-06-oq-02",
+  "description": "Lifts the pointwise Dirichlet-kernel estimates of the parent (de-moivre-oq-06) to a bound uniform in both n and θ on a compact arc θ ∈ [δ, 2π−δ] bounded away from the singularities θ ∈ 2πℤ. The geometric heart is the endpoint lower bound sin(θ/2) ≥ sin(δ/2), obtained from the product identity sin x − sin y = 2 sin((x−y)/2) cos((x+y)/2); feeding it into the pointwise bounds removes the θ-dependence and yields a single constant C = 1/sin(δ/2) controlling every cosine and sine partial sum simultaneously — the quantitative input to Dirichlet's convergence test.",
+  "meta": {
+    "author": "Formalized in Lean 4 (Mathlib)",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/DeMoivreOQ06OQ02.lean",
+    "tags": [
+      "complex-analysis",
+      "trigonometry",
+      "dirichlet-kernel",
+      "fourier-analysis",
+      "uniform-bound",
+      "de-moivre"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.sin_sub_sin",
+        "description": "sin x − sin y = 2 sin((x−y)/2) cos((x+y)/2), the product identity that clears the difference sin(θ/2) − sin(δ/2) into a product of two nonnegative factors",
+        "module": "Mathlib.Analysis.Complex.Trigonometric"
+      },
+      {
+        "theorem": "Real.sin_nonneg_of_nonneg_of_le_pi",
+        "description": "0 ≤ x ≤ π ⇒ 0 ≤ sin x, giving nonnegativity of the first product factor sin((θ−δ)/4)",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
+      },
+      {
+        "theorem": "Real.cos_nonneg_of_neg_pi_div_two_le_of_le",
+        "description": "−π/2 ≤ x ≤ π/2 ⇒ 0 ≤ cos x, giving nonnegativity of the second product factor cos((θ+δ)/4)",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
+      },
+      {
+        "theorem": "Real.sin_pos_of_pos_of_lt_pi",
+        "description": "0 < x < π ⇒ 0 < sin x, giving strict positivity of the uniform denominator sin(δ/2)",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
+      },
+      {
+        "theorem": "one_div_le_one_div_of_le",
+        "description": "0 < a, a ≤ b ⇒ 1/b ≤ 1/a, the monotonicity that replaces the θ-dependent denominator sin(θ/2) by the uniform sin(δ/2)",
+        "module": "Mathlib.Algebra.Order.Field.Basic"
+      }
+    ],
+    "originalContributions": [
+      "sin_half_ge_of_mem_arc: on the arc θ ∈ [δ, 2π−δ] with 0 < δ ≤ π, the half-angle sine satisfies sin(δ/2) ≤ sin(θ/2) — the endpoint minimum of sin over [δ/2, π−δ/2], proved by the product identity with both factors forced nonnegative by argument range",
+      "dirichlet_kernel_uniform_bound: |∑_{k=0}^{n} cos(kθ) − 1/2| ≤ 1/(2 sin(δ/2)) uniformly in n and in θ ∈ [δ, 2π−δ], upgrading the parent's pointwise 1/(2|sin(θ/2)|) to a θ-free constant",
+      "dirichlet_conjugate_uniform_bound: |∑_{k=0}^{n} sin(kθ)| ≤ 1/sin(δ/2) uniformly in n and θ on the arc",
+      "dirichlet_partial_sums_uniformly_bounded: the packaged ∃ C > 0, ∀ n θ statement — a single constant C = 1/sin(δ/2) simultaneously bounds every cosine partial sum (centred at 1/2) and every sine partial sum on the arc, the exact uniform-boundedness hypothesis behind Dirichlet's test"
+    ],
+    "dateAdded": "2026-07-11",
+    "mathlib_version": "4.26.0",
+    "axiomCount": 0,
+    "lineCount": 135,
+    "assumptions": "0 axioms, 0 sorries. Builds on the parent de-moivre-oq-06 (dirichlet_kernel_bound, dirichlet_conjugate_bound). The uniform estimates require 0 < δ ≤ π (so the arc [δ, 2π−δ] is nonempty and sin(δ/2) > 0) and θ ∈ [δ, 2π−δ]; Mathlib supplies the product identity, the sin/cos sign lemmas, and reciprocal monotonicity.",
+    "theoremCount": 5,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The Dirichlet kernel $D_n(\\theta)$ governs the convergence of Fourier series. The parent formalization (de-moivre-oq-06) records the pointwise bounds $|\\sum_{k\\le n}\\cos(k\\theta)-\\tfrac12|\\le\\frac{1}{2|\\sin(\\theta/2)|}$ and $|\\sum_{k\\le n}\\sin(k\\theta)|\\le\\frac{1}{|\\sin(\\theta/2)|}$, which blow up as $\\theta\\to 0\\ (\\mathrm{mod}\\ 2\\pi)$. The form actually used in analysis — the one that powers Dirichlet's test for the uniform convergence of Fourier series — is the estimate made uniform in both $n$ and $\\theta$ on a compact interval bounded away from the singularities $\\theta\\in 2\\pi\\mathbb{Z}$. This is the classical 'uniformly bounded away from the origin' property of the Dirichlet kernel.",
+    "problemStatement": "**Open Question (de-moivre-oq-06-oq-02)**: Bound the Dirichlet kernel uniformly and derive the classical consequence. \n\n**Result**: On the arc $\\theta\\in[\\delta,2\\pi-\\delta]$ with $0<\\delta\\le\\pi$, both the cosine partial sums (centred at $\\tfrac12$) and the sine partial sums are bounded by the single constant $C=1/\\sin(\\delta/2)$, uniformly in $n$ and $\\theta$: $|\\sum_{k\\le n}\\cos(k\\theta)-\\tfrac12|\\le\\frac{1}{2\\sin(\\delta/2)}$ and $|\\sum_{k\\le n}\\sin(k\\theta)|\\le\\frac{1}{\\sin(\\delta/2)}$.",
+    "text": "Uniform (n- and θ-independent) Dirichlet-kernel bounds on a compact arc away from the singularities, obtained from the endpoint lower bound sin(θ/2) ≥ sin(δ/2) for the half-angle sine.",
+    "proofStrategy": "The single geometric input is that $\\sin$ attains its minimum $\\sin(\\delta/2)$ over the half-angle range $[\\delta/2,\\pi-\\delta/2]$ at both endpoints. This is proved by clearing $\\sin(\\theta/2)-\\sin(\\delta/2)$ through the product-to-sum identity $\\sin x-\\sin y=2\\sin(\\tfrac{x-y}{2})\\cos(\\tfrac{x+y}{2})$: with $x=\\theta/2,\\ y=\\delta/2$ the factor $\\sin(\\tfrac{\\theta-\\delta}{4})\\ge0$ (argument in $[0,\\pi/2]$) and $\\cos(\\tfrac{\\theta+\\delta}{4})\\ge0$ (argument in $[0,\\pi/2]$), so the difference is nonnegative. Since $|\\sin(\\theta/2)|=\\sin(\\theta/2)\\ge\\sin(\\delta/2)>0$, reciprocal monotonicity replaces the $\\theta$-dependent denominator in the parent's pointwise bounds by the uniform constant. The packaged existential takes $C=1/\\sin(\\delta/2)$, which dominates the cosine constant $1/(2\\sin(\\delta/2))$.",
+    "keyInsights": [
+      "The blow-up of the pointwise Dirichlet bound at θ ∈ 2πℤ is the only obstruction to uniformity; excising a δ-neighbourhood of the singularities makes the bound uniform with an explicit δ-dependent constant",
+      "sin(θ/2) ≥ sin(δ/2) on the arc is an endpoint-minimum fact: sin is concave on [0, π] with equal values sin(δ/2) at the two endpoints δ/2 and π−δ/2 of the half-angle range, so the minimum sits at the boundary",
+      "The product identity sin x − sin y = 2 sin((x−y)/2) cos((x+y)/2) turns the monotonicity claim into a sign check on two factors, each pinned nonnegative purely by its argument lying in [0, π/2]",
+      "A single constant C = 1/sin(δ/2) governs both the cosine and sine families at once — the ∃ C, ∀ n θ shape is exactly the uniform-boundedness hypothesis of Dirichlet's test for the convergence of Fourier series"
+    ],
+    "prerequisites": [
+      "Parent formalization de-moivre-oq-06 (pointwise Dirichlet kernel bounds)",
+      "Product-to-sum trigonometric identities",
+      "Monotonicity of sin on [0, π/2] and its reflection symmetry about π/2",
+      "Reciprocal monotonicity of x ↦ 1/x on the positive reals"
+    ]
+  },
+  "sections": [
+    {
+      "id": "preamble",
+      "title": "Preamble and Problem Statement",
+      "summary": "Module docstring: the pointwise-to-uniform upgrade, the singularities θ ∈ 2πℤ, and the four results",
+      "startLine": 1,
+      "endLine": 50,
+      "mathContext": "**Goal**: make the Dirichlet-kernel partial-sum bounds uniform in n and θ on θ ∈ [δ, 2π−δ]."
+    },
+    {
+      "id": "endpoint-lower-bound",
+      "title": "Part I: Endpoint Lower Bound for the Half-Angle Sine",
+      "summary": "sin_half_ge_of_mem_arc: sin(δ/2) ≤ sin(θ/2) on θ ∈ [δ, 2π−δ], via sin x − sin y = 2 sin((x−y)/2) cos((x+y)/2) with both factors nonnegative",
+      "startLine": 52,
+      "endLine": 76,
+      "mathContext": "$\\sin(\\theta/2)-\\sin(\\delta/2)=2\\sin(\\tfrac{\\theta-\\delta}{4})\\cos(\\tfrac{\\theta+\\delta}{4})\\ge0$."
+    },
+    {
+      "id": "uniform-bounds",
+      "title": "Part II: Uniform Dirichlet-Kernel Bounds",
+      "summary": "dirichlet_kernel_uniform_bound and dirichlet_conjugate_uniform_bound: the cosine and sine partial sums bounded by 1/(2 sin(δ/2)) and 1/sin(δ/2) uniformly in n and θ, from the parent's pointwise bounds plus reciprocal monotonicity",
+      "startLine": 78,
+      "endLine": 118,
+      "mathContext": "$|\\sin(\\theta/2)|=\\sin(\\theta/2)\\ge\\sin(\\delta/2)>0\\Rightarrow \\tfrac{1}{2\\sin(\\theta/2)}\\le\\tfrac{1}{2\\sin(\\delta/2)}$."
+    },
+    {
+      "id": "packaged-uniform-boundedness",
+      "title": "Part III: Packaged Uniform Boundedness",
+      "summary": "dirichlet_partial_sums_uniformly_bounded: ∃ C > 0, ∀ n θ on the arc, both partial-sum families are bounded by C = 1/sin(δ/2) — the uniform-boundedness input to Dirichlet's test",
+      "startLine": 120,
+      "endLine": 135,
+      "mathContext": "One constant $C=1/\\sin(\\delta/2)$ dominates both $1/(2\\sin(\\delta/2))$ and $1/\\sin(\\delta/2)$."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization upgrades the parent's pointwise Dirichlet-kernel estimates to bounds uniform in both n and θ on a compact arc [δ, 2π−δ] away from the singularities θ ∈ 2πℤ. The geometric core is the endpoint lower bound sin(θ/2) ≥ sin(δ/2), proved by the product-to-sum identity with both factors forced nonnegative. All four theorems are fully proved with zero sorries and zero axioms.",
+    "implications": "The packaged ∃ C, ∀ n θ statement is exactly the uniform-boundedness hypothesis that, combined with Abel summation, yields Dirichlet's test for the convergence of Fourier series and of trigonometric series ∑ a_k cos(kθ), ∑ a_k sin(kθ) with a_k monotone tending to 0. The explicit constant 1/sin(δ/2) makes the dependence on the excised neighbourhood quantitative.",
+    "openQuestions": [
+      "Derive Dirichlet's test itself: for a_k antitone with a_k → 0, ∑ a_k sin(kθ) converges uniformly on [δ, 2π−δ], via Abel summation against the uniformly bounded conjugate partial sums",
+      "The L¹ growth ‖D_n‖₁ ∼ (4/π²) log n (the Lebesgue constants), the complementary non-uniform statement over the full period",
+      "The Fejér kernel as the Cesàro average of the Dirichlet kernels and its uniform nonnegative bound"
+    ]
+  },
+  "relatedProblems": [
+    {
+      "id": "de-moivre-oq-06",
+      "relationship": "Parent: supplies the pointwise Dirichlet-kernel bounds dirichlet_kernel_bound and dirichlet_conjugate_bound that this file makes uniform in θ"
+    },
+    {
+      "id": "de-moivre-oq-05",
+      "relationship": "Sibling in the De Moivre geometric-sum family (roots-of-unity vanishing sum)"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Proofs.DeMoivreOQ06",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "DeMoivreOQ06OQ02",
+    "lineCount": 135,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "path": "Proofs/DeMoivreOQ06OQ02.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Peter Gustav Lejeune Dirichlet",
+      "title": "Sur la convergence des séries trigonométriques (the Dirichlet kernel and the convergence test)",
+      "year": "1829",
+      "venue": "Journal für die reine und angewandte Mathematik"
+    },
+    {
+      "authors": "Antoni Zygmund",
+      "title": "Trigonometric Series (uniform boundedness of the Dirichlet kernel away from the origin)",
+      "year": "2002",
+      "venue": "Cambridge University Press"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "de-moivre-oq-06",
+      "relationship": "extends",
+      "description": "Parent formalization; this file lifts its pointwise Dirichlet-kernel bounds to uniform-in-(n, θ) bounds on a compact arc away from the singularities."
+    },
+    {
+      "targetId": "de-moivre-oq-05",
+      "relationship": "sibling",
+      "description": "Companion in the De Moivre geometric-sum family."
+    }
+  ],
+  "sorries": 0
+}

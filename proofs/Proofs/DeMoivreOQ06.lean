@@ -153,7 +153,7 @@ theorem dirichlet_kernel_bound (θ : ℝ) (hθ : Real.sin (θ / 2) ≠ 0) (n : �
       = Real.sin (((n : ℝ) + 1 / 2) * θ) / (2 * Real.sin (θ / 2)) := by ring
   rw [hrw, abs_div, abs_mul, abs_two]
   have hden : (0 : ℝ) < 2 * |Real.sin (θ / 2)| := mul_pos two_pos (abs_pos.mpr hθ)
-  rw [div_le_div_iff hden hden]
+  rw [div_le_div_iff₀ hden hden]
   have hnum : |Real.sin (((n : ℝ) + 1 / 2) * θ)| ≤ 1 :=
     abs_le.mpr ⟨Real.neg_one_le_sin _, Real.sin_le_one _⟩
   nlinarith [mul_le_mul_of_nonneg_right hnum (le_of_lt hden)]
@@ -167,15 +167,13 @@ theorem dirichlet_conjugate_bound (θ : ℝ) (hθ : Real.sin (θ / 2) ≠ 0) (n 
       ≤ 1 / |Real.sin (θ / 2)| := by
   have hA : (0 : ℝ) < |Real.sin (θ / 2)| := abs_pos.mpr hθ
   rw [lagrange_sin_sum θ hθ n, abs_div, abs_mul, abs_two]
-  rw [div_le_div_iff (mul_pos two_pos hA) hA]
-  have hnum : |Real.cos (θ / 2) - Real.cos (((n : ℝ) + 1 / 2) * θ)| ≤ 2 :=
-    abs_le.mpr ⟨by
-      have := Real.cos_le_one (θ / 2)
-      have := Real.neg_one_le_cos (((n : ℝ) + 1 / 2) * θ)
-      linarith, by
-      have := Real.neg_one_le_cos (θ / 2)
-      have := Real.cos_le_one (((n : ℝ) + 1 / 2) * θ)
-      linarith⟩
+  rw [div_le_div_iff₀ (mul_pos two_pos hA) hA]
+  have hnum : |Real.cos (θ / 2) - Real.cos (((n : ℝ) + 1 / 2) * θ)| ≤ 2 := by
+    have a1 := Real.neg_one_le_cos (θ / 2)
+    have a2 := Real.cos_le_one (θ / 2)
+    have a3 := Real.neg_one_le_cos (((n : ℝ) + 1 / 2) * θ)
+    have a4 := Real.cos_le_one (((n : ℝ) + 1 / 2) * θ)
+    rw [abs_le]; constructor <;> linarith
   nlinarith [mul_le_mul_of_nonneg_right hnum (le_of_lt hA)]
 
 end DeMoivreOQ06
