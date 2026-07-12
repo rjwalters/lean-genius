@@ -96,25 +96,33 @@
       "id": "symmetry",
       "title": "Part III: Core Symmetry via sum_image",
       "startLine": 71,
-      "endLine": 99,
+      "endLine": 98,
       "summary": "sum_lower_eq_sum_upper: ∑_{j<i} f = ∑_{i<j} f for symmetric f. Uses sum_image with swap injectivity.",
       "mathContext": "For $f(i,j) = f(j,i)$: $\\sum_{j<i} f(i,j) = \\sum_{i<j} f(i,j)$."
     },
     {
       "id": "main-theorem",
       "title": "Part IV: Main Theorem",
-      "startLine": 100,
-      "endLine": 117,
+      "startLine": 99,
+      "endLine": 115,
       "summary": "sum_offDiag_eq_two_mul_sum_upper: Σ_{i≠j} f = 2·Σ_{i<j} f. Combines decomposition + symmetry.",
       "mathContext": "$\\sum_{i \\neq j} f(i,j) = 2 \\sum_{i < j} f(i,j)$."
     },
     {
       "id": "application",
-      "title": "Part V: Application and Examples",
-      "startLine": 118,
-      "endLine": 138,
-      "summary": "offDiag_prod_eq_two_mul_e2: specialization to xᵢxⱼ. Concrete ring examples verified by ring.",
+      "title": "Part V: Application to Products xᵢxⱼ",
+      "startLine": 116,
+      "endLine": 126,
+      "summary": "offDiag_prod_eq_two_mul_e2: specialization of the main theorem to f(i,j) = xᵢxⱼ, giving Σ_{i≠j} xᵢxⱼ = 2·Σ_{i<j} xᵢxⱼ = 2e₂ — the identity linking the off-diagonal sum to the elementary symmetric polynomial e₂.",
       "mathContext": "$\\sum_{i \\neq j} x_i x_j = 2 \\sum_{i < j} x_i x_j = 2 e_2$."
+    },
+    {
+      "id": "examples",
+      "title": "Part VI: Concrete Examples",
+      "startLine": 127,
+      "endLine": 138,
+      "summary": "Two concrete `example`s verified by `ring`: the three-element off-diagonal product sum (a·b + a·c + b·a + b·c + c·a + c·b = 2(ab + ac + bc)) and the binomial square (a+b)² = a² + b² + 2ab, illustrating the 2× off-diagonal identity on small cases. Closes the namespace.",
+      "mathContext": "$(a+b)^2 = a^2 + b^2 + 2ab$ and the 3-element off-diagonal product sum as concrete instances of $\\sum_{i\\neq j} = 2\\sum_{i<j}$."
     }
   ],
   "conclusion": {
