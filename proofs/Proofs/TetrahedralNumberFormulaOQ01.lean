@@ -2,6 +2,8 @@ import Mathlib.Data.Nat.Choose.Sum
 import Mathlib.Data.Nat.Factorial.BigOperators
 import Mathlib.Algebra.BigOperators.Intervals
 import Mathlib.Data.Sym.Card
+import Mathlib.Data.Nat.Choose.Central
+import Mathlib.Combinatorics.Enumerative.Catalan
 import Mathlib.Tactic
 
 /-
@@ -431,6 +433,33 @@ index shift. -/
 example (n : ℕ) :
     ∑ k ∈ range (n + 1), (k + 2).choose 2 = (n + 3).choose 3 := by
   simpa [simplexNumber] using sum_simplex 2 n
+
+/-! ### The diagonal: central binomial coefficients
+
+The reflection symmetry `simplexNumber_symm` (`P_d(n) = P_n(d)`) fixes the diagonal
+`d = n`, where `P_n(n) = C(2n, n)` is the central binomial coefficient.  This links the
+figurate ladder to two classical sequences: the central binomials themselves and (through
+them) the Catalan numbers. -/
+
+/-- **Diagonal = central binomial coefficient.**  On the symmetric diagonal `d = n` the
+simplex number is the central binomial coefficient: `P_n(n) = C(2n, n) = centralBinom n`.
+This is the fixed line of the reflection symmetry `simplexNumber_symm`. -/
+theorem simplexNumber_diag (n : ℕ) : simplexNumber n n = Nat.centralBinom n := by
+  rw [simplexNumber, Nat.centralBinom_eq_two_mul_choose, two_mul]
+
+/-- **Catalan bridge on the diagonal.**  `(n+1)·Cₙ = P_n(n)`, where `Cₙ` is the `n`-th
+Catalan number: the diagonal simplex number is `(n+1)` times the Catalan number.  Combines
+`simplexNumber_diag` with Mathlib's `succ_mul_catalan_eq_centralBinom`. -/
+theorem succ_mul_catalan_eq_simplexNumber_diag (n : ℕ) :
+    (n + 1) * catalan n = simplexNumber n n := by
+  rw [simplexNumber_diag, succ_mul_catalan_eq_centralBinom]
+
+/-- **The diagonal is even off the origin.**  `2 ∣ P_{n+1}(n+1)`: every central binomial
+coefficient `C(2m, m)` with `m ≥ 1` is even, so the diagonal simplex numbers are even from
+`d = n = 1` onward.  From `simplexNumber_diag` and `Nat.two_dvd_centralBinom_succ`. -/
+theorem two_dvd_simplexNumber_diag_succ (n : ℕ) :
+    2 ∣ simplexNumber (n + 1) (n + 1) := by
+  rw [simplexNumber_diag]; exact Nat.two_dvd_centralBinom_succ n
 
 /-! ### Positivity and monotonicity of the figurate ladder
 
