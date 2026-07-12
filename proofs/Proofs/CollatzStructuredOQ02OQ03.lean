@@ -2276,4 +2276,51 @@ theorem affOrbit_realize_append {v w : List Bool} {c d : ℕ} (hv : AffValid v c
   rw [List.length_append, affOrbit_append] at h
   exact h
 
+/-- **Suffixes of a valid certificate are valid at the hand-off class.**  Dropping the first
+`i` parities of a certified window `v` leaves a certificate `v.drop i` valid for the affine
+class the prefix `v.take i` produces — namely `(affOrbit (v.take i) (c, d)).1 · m +
+(affOrbit (v.take i) (c, d)).2`.  This is the genuine slicing dual of `affValid_append`
+(which *glues* two windows at their hand-off): a suffix is a bona fide certificate starting
+where the prefix left off, complementing the prefix-validity `affValid_take`.  Proof by
+induction on the certificate, splitting `i` at each step exactly as `affValid_take` does —
+the `affOrbit (v.take i) (c, d)` coefficients evolve by `affStep` in lockstep with the
+`AffValid.odd`/`even` recursion, so the interior hand-off is precisely the induction
+hypothesis. -/
+theorem affValid_drop : ∀ {v : List Bool} {c d : ℕ}, AffValid v c d →
+    ∀ i : ℕ, AffValid (v.drop i)
+      (affOrbit (v.take i) (c, d)).1 (affOrbit (v.take i) (c, d)).2 := by
+  intro v c d hv
+  induction hv with
+  | nil =>
+    intro i
+    simp only [List.drop_nil, List.take_nil]
+    exact AffValid.nil
+  | @odd v c d hc hd hrec ih =>
+    intro i
+    cases i with
+    | zero => exact AffValid.odd hc hd hrec
+    | succ j =>
+      simp only [List.drop_succ_cons, List.take_succ_cons]
+      exact ih j
+  | @even v c d hc hd hrec ih =>
+    intro i
+    cases i with
+    | zero => exact AffValid.even hc hd hrec
+    | succ j =>
+      simp only [List.drop_succ_cons, List.take_succ_cons]
+      exact ih j
+
+/-- **Certificate splitting law.**  Every certified window splits at any position `i` into a
+valid prefix and a valid suffix that meet at the affine hand-off class:
+`v.take i` is valid for the original class `c·m + d`, and `v.drop i` is valid for the class
+`(affOrbit (v.take i) (c, d))` that the prefix hands off.  This is the exact inverse of the
+gluing law `affValid_append` (there `v ++ w` is assembled from two windows meeting at a
+hand-off; here one window is cut into two at a hand-off), packaging `affValid_take` with
+`affValid_drop`.  Since `v.take i ++ v.drop i = v`, feeding the two halves back into
+`affValid_append` reconstructs the original certificate. -/
+theorem affValid_split {v : List Bool} {c d : ℕ} (hv : AffValid v c d) (i : ℕ) :
+    AffValid (v.take i) c d ∧
+      AffValid (v.drop i) (affOrbit (v.take i) (c, d)).1 (affOrbit (v.take i) (c, d)).2 :=
+  ⟨affValid_take hv i, affValid_drop hv i⟩
+
 end CollatzStructuredOQ02OQ03
