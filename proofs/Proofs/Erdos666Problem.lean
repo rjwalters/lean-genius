@@ -140,6 +140,30 @@ recoverable from `|E(Qₙ)|`. -/
 theorem hypercubeEdges_strictMono : StrictMono hypercubeEdges :=
   strictMono_nat_of_lt_succ hypercubeEdges_lt_succ
 
+/-- **The vertex count strictly grows with each dimension:** `|V(Qₙ)| < |V(Q_{n+1})|`.  The
+vertex-count analogue of `hypercubeEdges_lt_succ`: passing to `Q_{n+1}` glues two copies of
+`Qₙ` (`hypercubeVertices_succ`), and since `Qₙ` has at least one vertex the count strictly
+increases. -/
+theorem hypercubeVertices_lt_succ (n : ℕ) :
+    hypercubeVertices n < hypercubeVertices (n + 1) := by
+  rw [hypercubeVertices_succ]
+  have hv : 0 < hypercubeVertices n := hypercubeVertices_pos n
+  omega
+
+/-- **`hypercubeVertices` is strictly monotone:** `m < n → |V(Q_m)| < |V(Qₙ)|`.  The
+vertex-count companion of `hypercubeEdges_strictMono`; like the edge count, `|V(Qₙ)| = 2ⁿ`
+is strictly increasing, so the dimension `n` is recoverable from the vertex count alone
+(`hypercubeVertices_injective`). -/
+theorem hypercubeVertices_strictMono : StrictMono hypercubeVertices :=
+  strictMono_nat_of_lt_succ hypercubeVertices_lt_succ
+
+/-- **The dimension is recoverable from the vertex count:** `hypercubeVertices` is injective.
+Immediate from `hypercubeVertices_strictMono`; the sibling of the edge-count fact implicit in
+`hypercubeEdges_strictMono`, making explicit that distinct-dimensional hypercubes never share a
+vertex count. -/
+theorem hypercubeVertices_injective : Function.Injective hypercubeVertices :=
+  hypercubeVertices_strictMono.injective
+
 /-
 **Degree in Qₙ:** every vertex has degree n.
 -/
