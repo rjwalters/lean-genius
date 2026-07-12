@@ -123,6 +123,38 @@ theorem multiplier_isSumOfSquares : IsSumOfSquaresMv multiplier := by
   simp only [multiplier]
   ring
 
+/-! ### The certificate proves nonnegativity (the Positivstellensatz payoff)
+
+A sum-of-squares Positivstellensatz certificate `s·M = Σ squares` with a strictly
+positive multiplier `s` is not merely a curiosity: it is a *proof* that `M` is
+nonnegative.  Here the multiplier `4 + 4x² + 4y² ≥ 4 > 0` never vanishes, so
+evaluating the certificate at any real point `v` gives
+`s(v)·M(v) = Σ (Gᵢ(v))² ≥ 0` with `s(v) > 0`, whence `M(v) ≥ 0`.  This recovers
+Motzkin nonnegativity (`Hilbert17SumOfSquares.motzkin_nonneg`, proved there by a
+direct AM–GM `nlinarith`) as a *corollary of the exhibited certificate* — the
+logical reason the certificate is worth having. -/
+
+/-- The multiplier `4 + 4x² + 4y²` is strictly positive at every real point
+(its value is at least its constant term `4`). -/
+theorem multiplier_eval_pos (v : Fin 2 → ℝ) : 0 < eval v multiplier := by
+  simp only [multiplier, map_add, map_mul, map_pow, map_ofNat, eval_X]
+  nlinarith [sq_nonneg (v 0), sq_nonneg (v 1)]
+
+/-- **Certificate-based nonnegativity of Motzkin.**  For every real point `v`,
+`M(v) ≥ 0`, derived from the SOS certificate `multiplier·M = Σ Gᵢ²` and the strict
+positivity of the multiplier.  (Independent route to `motzkin_nonneg`.) -/
+theorem motzkin_eval_nonneg (v : Fin 2 → ℝ) : 0 ≤ eval v motzkin := by
+  have hpos := multiplier_eval_pos v
+  have key : eval v multiplier * eval v motzkin
+      = (eval v G0) ^ 2 + (eval v G0) ^ 2 + (eval v G0) ^ 2 + (eval v G1) ^ 2
+        + (eval v G2) ^ 2 + (eval v G3) ^ 2 + (eval v G4) ^ 2 := by
+    have h := congrArg (eval v) multiplier_mul_motzkin_eq
+    simpa only [map_mul, map_add, map_pow] using h
+  have hrhs : 0 ≤ eval v multiplier * eval v motzkin := by rw [key]; positivity
+  rcases le_or_gt 0 (eval v motzkin) with h | h
+  · exact h
+  · exact absurd hrhs (not_le.mpr (mul_neg_of_pos_of_neg hpos h))
+
 /-! ### The rational-function corollary (Artin for Motzkin, constructively) -/
 
 /-- The multiplier is nonzero in `ℝ[x, y]` (its constant term is `4`). -/
