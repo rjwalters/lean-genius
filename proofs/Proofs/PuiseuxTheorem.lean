@@ -1358,6 +1358,37 @@ theorem iUnion_ramification_valueGroup {K : Type*} [Field K] :
     have hq : ((q.num : ℚ) / ((⟨q.den, q.pos⟩ : ℕ+) : ℚ)) = q := Rat.num_div_den q
     exact_mod_cast hq
 
+/-- **Directedness of the value-group tower (explicit common refinement).** For any two
+levels `n, m` the union of the level-`n` and level-`m` value groups is contained in the
+level-`(n*m)` value group: `(1/n)ℤ ∪ (1/m)ℤ ⊆ (1/(n*m))ℤ`. This is the valuation-theoretic
+shadow of `exists_common_ramification` (any two Puiseux series share the common ramification
+`n*m`), refining `ramification_valueGroup_mono` from a single divisibility inclusion to a
+join. Both inclusions are the *same series* reindexed via `IsPuiseuxOfRamification.mono`. -/
+theorem ramification_valueGroup_directed {K : Type*} [Field K] (n m : ℕ+) :
+    {v : WithTop ℚ |
+        ∃ f : HahnSeries ℚ K, IsPuiseuxOfRamification n f ∧ f ≠ 0 ∧ f.orderTop = v}
+      ∪ {v : WithTop ℚ |
+        ∃ f : HahnSeries ℚ K, IsPuiseuxOfRamification m f ∧ f ≠ 0 ∧ f.orderTop = v}
+      ⊆ {v : WithTop ℚ |
+        ∃ f : HahnSeries ℚ K, IsPuiseuxOfRamification (n * m) f ∧ f ≠ 0 ∧ f.orderTop = v} := by
+  rw [Set.union_subset_iff]
+  exact ⟨ramification_valueGroup_mono (dvd_mul_right n m),
+    ramification_valueGroup_mono (dvd_mul_left m n)⟩
+
+/-- **The value-group tower is a directed family.** Abstractly, `n ↦ (level-n value group)`
+is `Directed (· ⊆ ·)`: any two levels have an upper bound `n*m` under inclusion. This packages
+`ramification_valueGroup_directed` as the order-theoretic hypothesis needed to treat the tower
+as a genuine directed colimit of value groups (the valuation shadow of the directed field
+system `puiseuxRamificationSubfield`), and is exactly the directedness that makes
+`iUnion_ramification_valueGroup` a filtered union rather than an arbitrary one. -/
+theorem directed_ramification_valueGroup {K : Type*} [Field K] :
+    Directed (· ⊆ ·) (fun n : ℕ+ =>
+      {v : WithTop ℚ |
+        ∃ f : HahnSeries ℚ K, IsPuiseuxOfRamification n f ∧ f ≠ 0 ∧ f.orderTop = v}) := by
+  intro n m
+  exact ⟨n * m, ramification_valueGroup_mono (dvd_mul_right n m),
+    ramification_valueGroup_mono (dvd_mul_left m n)⟩
+
 end ValueGroupTower
 
 /-! ═══════════════════════════════════════════════════════════════════════════════
