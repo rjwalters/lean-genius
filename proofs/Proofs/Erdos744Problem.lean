@@ -574,6 +574,22 @@ theorem bipartitionNumber_le_maxCut {V : Type*} [Fintype V] [LinearOrder V]
   have hbound := edgeCount_le_two_mul_maxCut G
   omega
 
+/-- **At most half of the edges are monochromatic under the best 2-coloring:**
+`2 · bipartitionNumber G ≤ edgeCount G`.  This is the min-uncut dual of Erdős's
+max-cut half-bound `edgeCount_le_two_mul_maxCut` (`edgeCount G ≤ 2 · maxCut G`): the
+same averaging argument that guarantees a cut separating at least half the edges
+guarantees a 2-coloring leaving at most half monochromatic.  Immediate from
+`bipartitionNumber_le_maxCut` and the complementarity
+`bipartitionNumber G + maxCut G = edgeCount G` (`2·bip ≤ bip + maxCut = edgeCount`).
+Together with `edgeCount_le_two_mul_maxCut` it packages the two-sided
+`edgeCount/2`-sandwich `bipartitionNumber ≤ edgeCount/2 ≤ maxCut`. -/
+theorem two_mul_bipartitionNumber_le_edgeCount {V : Type*} [Fintype V] [LinearOrder V]
+    (G : SimpleGraph' V) [DecidableRel G.Adj] :
+    2 * bipartitionNumber G ≤ edgeCount G := by
+  have hcomp := bipartitionNumber_add_maxCut G
+  have hle := bipartitionNumber_le_maxCut G
+  omega
+
 /--
 **The f_k(n) Function**
 
