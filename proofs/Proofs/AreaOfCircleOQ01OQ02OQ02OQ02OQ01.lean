@@ -438,4 +438,88 @@ theorem norm_fourierCoeffOn_lt_iteratedDeriv_iff
     have h1lt : 1 < |(n : ℝ)| ^ k := (one_lt_abs_intCast_pow_iff n k hk).mpr h1
     nlinarith [hpos, h1lt]
 
+-- ============================================================
+-- SECTION VI: lifting the equality case to the Parseval sum level
+--             (only the first harmonic survives — the circle)
+-- ============================================================
+
+/-- **Equality case of a termwise-dominated `HasSum` (abstract glue).**  If `a i ≤ b i`
+    pointwise and both families sum to the *same* total `S`, then they agree termwise:
+    `a i = b i` for every `i`.  The nonnegative slack `b − a` sums to `0`, and a
+    nonnegative family with vanishing sum is zero at each index (`le_hasSum` applied to the
+    difference).  This is the discrete "equality forces termwise equality" principle used to
+    turn a global energy identity into per-frequency information. -/
+private theorem hasSum_eq_termwise_of_le {ι : Type*} {a b : ι → ℝ} {S : ℝ}
+    (hle : ∀ i, a i ≤ b i) (ha : HasSum a S) (hb : HasSum b S) (i : ι) :
+    a i = b i := by
+  have hd : HasSum (fun j => b j - a j) (S - S) := hb.sub ha
+  rw [sub_self] at hd
+  have hnn : ∀ j, 0 ≤ b j - a j := fun j => sub_nonneg.mpr (hle j)
+  have hle0 : b i - a i ≤ 0 := by
+    have := le_hasSum hd i (fun j _ => hnn j)
+    simpa using this
+  linarith [hle i]
+
+/-- **The Parseval-sum equality case: only the first harmonic survives (the circle).**
+    Fix a smooth period-`2π` function `f` with zero mean (`ĉ₀(f) = 0`) and an order `k ≥ 1`.
+    Suppose the derivative `f⁽ᵏ⁾` has the *same* total spectral energy as `f`, expressed as
+    the two coefficient-square families summing to a common value `S`:
+
+        ∑ₙ ‖ĉₙ(f)‖²  =  S  =  ∑ₙ ‖ĉₙ(f⁽ᵏ⁾)‖² .
+
+    Then **every mode other than the first harmonic is absent**:
+
+        ∀ n, |n| ≠ 1 → ĉₙ(f) = 0 ,
+
+    i.e. `f(t) = a·cos t + b·sin t`.  This is the coefficient form of the equality case of
+    Wirtinger's inequality `∫f² ≤ ∫(f')²` (and its higher-order analogues), the spectral heart
+    of the Hurwitz proof that the isoperimetric bound is attained *only* by the circle.
+
+    Proof.  The per-mode magnitude law gives termwise domination `‖ĉₙ(f)‖² ≤ ‖ĉₙ(f⁽ᵏ⁾)‖²`
+    (with `≥ 1` scaling on `n ≠ 0` and the zero-mean hypothesis covering `n = 0`).  Equal sums
+    then force termwise equality of the squares (`hasSum_eq_termwise_of_le`), hence equality of
+    the norms `‖ĉₙ(f⁽ᵏ⁾)‖ = ‖ĉₙ(f)‖`; the per-mode equality iff
+    `norm_fourierCoeffOn_iteratedDeriv_eq_self_iff` reads off `|n| = 1 ∨ ĉₙ(f) = 0`, and the
+    hypothesis `|n| ≠ 1` selects the second disjunct.
+
+    Scope note (honesty).  The two `HasSum` hypotheses *are* the Parseval identities
+    `∑ₙ ‖ĉₙ(g)‖² = (2π)⁻¹∫₀^{2π}|g|²` for `g = f, f⁽ᵏ⁾`; taking them as hypotheses isolates the
+    equality-case combinatorics (the content of this file).  The remaining gap to a fully
+    self-contained integral statement `∫(f⁽ᵏ⁾)² = ∫f² ⟹ f` is a first harmonic is exactly
+    *discharging Parseval for `fourierCoeffOn`* (bridging to Mathlib's `tsum_sq_fourierCoeff`
+    on `AddCircle`). -/
+theorem fourierCoeffOn_eq_zero_of_iteratedDeriv_energy_eq
+    (f : ℝ → ℝ) (hf : ContDiff ℝ ∞ f) (hper : ∀ t, f (t + 2 * π) = f t)
+    (hab : (0 : ℝ) < 2 * π) (k : ℕ) (hk : 1 ≤ k)
+    (hmean : fourierCoeffOn hab (ofReal ∘ f) 0 = 0)
+    {S : ℝ}
+    (hfS : HasSum (fun n : ℤ => ‖fourierCoeffOn hab (ofReal ∘ f) n‖ ^ 2) S)
+    (hdS : HasSum (fun n : ℤ => ‖fourierCoeffOn hab (ofReal ∘ deriv^[k] f) n‖ ^ 2) S) :
+    ∀ n : ℤ, n.natAbs ≠ 1 → fourierCoeffOn hab (ofReal ∘ f) n = 0 := by
+  -- Termwise domination of the coefficient squares.
+  have hdom : ∀ n : ℤ, ‖fourierCoeffOn hab (ofReal ∘ f) n‖ ^ 2
+      ≤ ‖fourierCoeffOn hab (ofReal ∘ deriv^[k] f) n‖ ^ 2 := by
+    intro n
+    rw [norm_fourierCoeffOn_iteratedDeriv_all f hf hper hab n k, mul_pow]
+    rcases eq_or_ne n 0 with rfl | hn
+    · rw [hmean]; simp
+    · have h1n : (1 : ℝ) ≤ |(n : ℝ)| := by
+        rw [← Int.cast_abs]; exact_mod_cast Int.one_le_abs hn
+      have h1 : (1 : ℝ) ≤ |(n : ℝ)| ^ k := one_le_pow₀ h1n
+      have h1sq : (1 : ℝ) ≤ (|(n : ℝ)| ^ k) ^ 2 := by nlinarith [h1]
+      nlinarith [h1sq, sq_nonneg (‖fourierCoeffOn hab (ofReal ∘ f) n‖)]
+  -- Equal sums ⇒ termwise equality of the squares.
+  intro n hn1
+  have heqsq := hasSum_eq_termwise_of_le hdom hfS hdS n
+  -- Equal nonnegative squares ⇒ equal norms.
+  have hnn_c : (0 : ℝ) ≤ ‖fourierCoeffOn hab (ofReal ∘ f) n‖ := norm_nonneg _
+  have hnn_d : (0 : ℝ) ≤ ‖fourierCoeffOn hab (ofReal ∘ deriv^[k] f) n‖ := norm_nonneg _
+  have hnorm : ‖fourierCoeffOn hab (ofReal ∘ deriv^[k] f) n‖
+      = ‖fourierCoeffOn hab (ofReal ∘ f) n‖ := by
+    rw [← Real.sqrt_sq hnn_d, ← Real.sqrt_sq hnn_c, heqsq]
+  -- Per-mode equality case, then discard the `|n| = 1` alternative.
+  rcases (norm_fourierCoeffOn_iteratedDeriv_eq_self_iff f hf hper hab n k hk).mp hnorm with h | h
+  · exact absurd h hn1
+  · exact h
+
 end IsoperimetricFourier

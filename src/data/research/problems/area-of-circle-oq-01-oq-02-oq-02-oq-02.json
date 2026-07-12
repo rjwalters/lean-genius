@@ -16,7 +16,8 @@
       "Hurwitz assembly: the analytic Wirtinger inequality (∫f² ≤ ∫(f′)²) yields the isoperimetric area bound A ≤ π in one line via 0 ≤ ∫(y′−x)², which expands to 2A ≤ ∫(y′)²+∫x²; Wirtinger upgrades ∫x² to ∫(x′)² and the arc-length normalisation ∫((x′)²+(y′)²)=2π collapses the RHS to 2π.",
       "The k-th derivative eigenvalue ĉₙ(f⁽ᵏ⁾)=(i·n)ᵏ·ĉₙ(f) makes ALL magnitude/kernel/damping corollaries order-uniform, erasing the hardcoded k=2,4 split: ‖(i·n)ᵏ‖=|n|ᵏ (norm_mul, Complex.norm_I, Complex.norm_intCast) gives ‖ĉₙ(f⁽ᵏ⁾)‖=|n|ᵏ·‖ĉₙ(f)‖ (even AND odd orders, since the modulus erases the phase iᵏ); (i·n)ᵏ≠0 gives the shared nonzero-mode kernel; |n|ᵏ≥1 for n≠0 (one_le_pow₀ ∘ Int.one_le_abs) gives the all-orders damping ‖ĉₙ(f)‖≤‖ĉₙ(f⁽ᵏ⁾)‖. 0 custom axioms (PR#38382).",
       "The n≠0 hypothesis on the k-th derivative eigenvalue identity is removable: at n=0 the eigenvalue (i·0)^k is 1 for k=0 (identity) and 0 for k≥1, exactly matching ĉ₀(f^(k))=0. So dᵏ/dtᵏ acts diagonally with eigenvalue (i·n)^k across the ENTIRE integer spectrum in one hypothesis-free statement.",
-      "Phase classification by parity of order k is now complete: even order 2m gives real eigenvalue (-1)^m n^(2m); odd order 2m+1 gives pure-imaginary (-1)^m·i·n^(2m+1). The magnitude |n|^k erases the phase, so both parities share the same damping law."
+      "Phase classification by parity of order k is now complete: even order 2m gives real eigenvalue (-1)^m n^(2m); odd order 2m+1 gives pure-imaginary (-1)^m·i·n^(2m+1). The magnitude |n|^k erases the phase, so both parities share the same damping law.",
+      "Sum-level lift of the per-mode Wirtinger equality case: equal spectral energy ∑‖ĉₙ‖² of f and f⁽ᵏ⁾ forces every mode |n|≠1 to vanish (mean-zero covers n=0, |n|ᵏ≥1 covers n≠0). This is the coefficient form of the Hurwitz circle characterization — reduces the isoperimetric equality case to Parseval convergence."
     ],
     "builtItems": [
       "AreaOfCircleOQ01OQ02OQ02OQ02.lean: 2 theorems, 0 axioms, 0 sorries, imports and reuses the parent IBP identity.",
@@ -29,16 +30,19 @@
       "iterate_deriv_periodic + contDiff_infty_iterate_deriv (AreaOfCircleOQ01OQ02OQ02OQ02OQ01.lean): periodicity & C^∞ preserved by every iterate of deriv (induction via deriv_periodic_of_periodic / contDiff_infty_iff_deriv)",
       "fourierCoeffOn_iteratedDeriv_zero (same file): ĉ₀(f^(k+1))=0 — positive-order derivatives annihilate the mean, all-orders generalization of fourierCoeffOn_deriv2_zero (FTC + periodicity)",
       "fourierCoeffOn_iteratedDeriv_all (same file): UNCONDITIONAL whole-spectrum identity ĉₙ(f^(k))=(i·n)^k·ĉₙ(f) for EVERY n:ℤ (no n≠0), merging nonzero-mode identity with zero-mode annihilation",
-      "norm_fourierCoeffOn_iteratedDeriv_all + fourierCoeffOn_iteratedDeriv_odd (same file): whole-spectrum magnitude ‖ĉₙ(f^(k))‖=|n|^k‖ĉₙ(f)‖ (drops n≠0) and odd-order pure-imaginary phase (i·n)^(2m+1)=(-1)^m·i·n^(2m+1)"
+      "norm_fourierCoeffOn_iteratedDeriv_all + fourierCoeffOn_iteratedDeriv_odd (same file): whole-spectrum magnitude ‖ĉₙ(f^(k))‖=|n|^k‖ĉₙ(f)‖ (drops n≠0) and odd-order pure-imaginary phase (i·n)^(2m+1)=(-1)^m·i·n^(2m+1)",
+      "fourierCoeffOn_eq_zero_of_iteratedDeriv_energy_eq (AreaOfCircleOQ01OQ02OQ02OQ02OQ01.lean SECTION VI): Parseval-sum equality case — if ∑‖ĉₙ(f)‖²=∑‖ĉₙ(f⁽ᵏ⁾)‖² (equal total spectral energy) and ĉ₀(f)=0, then ĉₙ(f)=0 for all |n|≠1, i.e. only the first harmonic survives (the circle). VERIFIED 0-axiom.",
+      "hasSum_eq_termwise_of_le helper (abstract glue): termwise-dominated a≤b with equal sums ⟹ a=b termwise, via le_hasSum on the nonneg slack b−a summing to 0. VERIFIED 0-axiom."
     ],
-    "progressSummary": "PROGRESS: SECTION IV closes the whole-spectrum gap — the k-th derivative Fourier eigenvalue identity ĉₙ(f⁽ᵏ⁾)=(i·n)ᵏ·ĉₙ(f) now holds UNCONDITIONALLY for every n:ℤ (n=0 handled via new zero-mode annihilation ĉ₀(f⁽ᵏ⁺¹⁾)=0), plus whole-spectrum magnitude and odd-order phase. 6 new thms, all 0-axiom [propext/Classical.choice/Quot.sound], PR#38382. Infra: periodicity & C^∞ preserved by deriv^[k].",
+    "progressSummary": "PROGRESS: SECTION VI lifts the per-mode Wirtinger equality case to the Parseval SUM level (2 thms, 0-axiom): equal spectral energy ∑‖ĉₙ(f)‖²=∑‖ĉₙ(f⁽ᵏ⁾)‖² + zero mean ⟹ ĉₙ(f)=0 for all |n|≠1 (only first harmonic = the circle), via an abstract dominated-HasSum equality-case glue lemma. Remaining gap: discharge the two HasSum hyps = Parseval for fourierCoeffOn (bridge to Mathlib tsum_sq_fourierCoeff).",
     "nextSteps": [
       "Assemble the full isoperimetric inequality C²≥4πA: express area A and perimeter C via Fourier coefficients of the (mean-adjusted) boundary parametrisation and apply wirtinger_inequality mode-by-mode; equality iff only n=±1 harmonics survive (circle). Requires Greens-theorem area formula A=½∮(x dy − y dx) in Fourier form.",
       "Characterise the equality case of wirtinger_inequality: ∫f²=∫(f')² iff ĉₙ(f)=0 for all |n|≥2 (only the first harmonic), i.e. f(t)=a cos t + b sin t.",
       "Equality/circle characterisation: A = π forces y′ = x pointwise (from ∫(y′−x)²=0) and Wirtinger equality (only the first harmonic survives) → the curve is a circle.",
       "General scale-invariant form L² ≥ 4πA: drop the arc-length normalisation and relate L² to 2π·∫((x′)²+(y′)²) via Cauchy–Schwarz.",
       "Assemble Wirtinger over the whole spectrum via Parseval using fourierCoeffOn_iteratedDeriv_all at k=1: ∫(f)² = Σ n⁴‖ĉₙ‖² etc., now with n=0 handled uniformly (mean drops automatically).",
-      "Even-order whole-spectrum companion: fourierCoeffOn_iteratedDeriv_even_all (drop n≠0 from _even) is now immediate from _all + (i·0)^(2m)=0 for m≥1."
+      "Even-order whole-spectrum companion: fourierCoeffOn_iteratedDeriv_even_all (drop n≠0 from _even) is now immediate from _all + (i·0)^(2m)=0 for m≥1.",
+      "Discharge the two HasSum hypotheses of fourierCoeffOn_eq_zero_of_iteratedDeriv_energy_eq (Parseval for fourierCoeffOn): bridge to Mathlib tsum_sq_fourierCoeff on AddCircle, converting ∫₀^2π|g|²=2π·∑‖ĉₙ(g)‖² so the equality case becomes a fully self-contained integral statement ∫(f⁽ᵏ⁾)²=∫f² ⟹ f is a first harmonic."
     ],
     "mathlibGaps": [
       "Mathlib has Parseval on an interval (hasSum_sq_fourierCoeffOn / tsum_sq_fourierCoeffOn, AddCircle.lean) — no gap; the L² isometry is available directly, so Wirtinger did NOT need custom infrastructure."
