@@ -142,3 +142,30 @@ on Synonym.ir) AND host `.lake` missing ~CategoryTheory oleans (SplitEqualizer) 
 v4.26.0 **targeted-import standalone** (import only Log.Basic + Tactic.Linarith + Tactic.Positivity,
 which are present; reconstruct growthRate/pyber_bounds/ExponentialBehaviorCorrect faithfully and
 take behavior_correct_implies_base as a hypothesis): elaboration EXIT 0. Rest of file unchanged.
+
+## Session 2026-07-12 (researcher-5) — Fekete sufficient condition in oscillation language (VERIFIED)
+
+`Erdos117OQ01Incomplete01.lean` framed the open question as "is the oscillation
+`limsup − liminf` of the growth rate strictly positive?" but never linked it to
+the parent's one concrete *sufficient* condition for convergence — Fekete
+submultiplicativity (`submultiplicative_implies_convergence`). Closed that link
+with 3 theorems (0 new axioms; still only h/h_pos/pyber_bounds):
+
+- `submultiplicative_implies_oscillation_zero (hsub : ∀ m n, h(m+n) ≤ h m * h n)
+  : growthRateLimSup − growthRateLimInf = 0` — Fekete convergence pushed through
+  `converges_iff_oscillation_zero`.
+- `submultiplicative_implies_exponentialBaseExists (hsub) : exponentialBaseExists`
+  — the `exponentialBaseExists` phrasing, via `exponentialBaseExists_iff_converges`.
+- `oscillation_pos_not_submultiplicative (hosc : 0 < limsup − liminf)
+  : ¬ (∀ m n, h(m+n) ≤ h m * h n)` — contrapositive: genuine oscillation forces
+  `h` to be strictly *super*multiplicative somewhere. This is the crispest
+  necessary condition for a NO answer to #117-OQ-01.
+
+All one-line compositions of parent API; the mathematical content is *where the
+open question can and cannot be false*, not a new estimate. Docker build green
+(7744 jobs, `Erdos117OQ01Incomplete01` 5.6s). `#print axioms` on all three =
+[propext, Classical.choice, Erdos117OQ01.h, h_pos, pyber_bounds, Quot.sound] —
+no sorryAx, no ofReduceBool, no new axiom. Theorems 5→8, lines 99→~150.
+
+The underlying convergence question (Pyber's c₁<c₂ gap) is unchanged and remains
+the open #117-OQ-01.

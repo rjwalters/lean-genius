@@ -29,6 +29,13 @@
   * `not_exponentialBaseExists_iff_oscillation_pos` — the negation: **no** single
     base exists iff the oscillation is strictly positive (`0 < limsup − liminf`),
     the crispest form of "does the limit fail to exist?".
+  * `submultiplicative_implies_oscillation_zero` /
+    `submultiplicative_implies_exponentialBaseExists` — the parent's Fekete
+    sufficient condition in oscillation/base language: submultiplicativity of `h`
+    collapses the oscillation to `0` and forces a single exponential base.
+  * `oscillation_pos_not_submultiplicative` — its contrapositive: genuine
+    oscillation obstructs submultiplicativity, so a "no" answer to #117-OQ-01
+    would require `h` to be strictly supermultiplicative somewhere.
 
   Parent: Erdos117OQ01.lean
 -/
@@ -95,5 +102,52 @@ theorem limInf_limSup_mem_window :
   obtain ⟨c₁, c₂, hc1, hc12, hlo, hhi⟩ := limInfLimSup_window
   have hle := limInf_le_limSup
   exact ⟨c₁, c₂, hc1, hc12, ⟨hlo, hle.trans hhi⟩, ⟨hlo.trans hle, hhi⟩⟩
+
+/-! ### A concrete sufficient condition, in oscillation language
+
+The parent proves one concrete hypothesis under which the open question resolves
+*positively*: if `h` is genuinely submultiplicative (`h(m+n) ≤ h(m)·h(n)`) then
+Fekete's lemma forces the growth rate to converge
+(`submultiplicative_implies_convergence`).  The three results below re-express
+that sufficient condition in *this* file's oscillation vocabulary, and take the
+contrapositive: genuine oscillation is a hard obstruction to submultiplicativity.
+-/
+
+/-- **Submultiplicativity kills the oscillation.**  If `h` is submultiplicative
+(`h(m+n) ≤ h(m)·h(n)` for all `m,n`), the oscillation `limsup − liminf` of the
+growth rate is exactly `0`.  Chaining the parent's Fekete convergence
+(`submultiplicative_implies_convergence`) with `converges_iff_oscillation_zero`:
+Fekete's subadditivity of `log ∘ h` collapses the entire Pyber window to a single
+cluster value.  The oscillation-language form of the parent's `growthRateConverges`
+conclusion. -/
+theorem submultiplicative_implies_oscillation_zero
+    (hsub : ∀ m n : ℕ, h (m + n) ≤ h m * h n) :
+    growthRateLimSup - growthRateLimInf = 0 :=
+  converges_iff_oscillation_zero.mp (submultiplicative_implies_convergence hsub)
+
+/-- **Submultiplicativity forces a single exponential base.**  If `h` is
+submultiplicative then the exponential base of `h` exists — i.e. Erdős #117-OQ-01
+resolves affirmatively for every submultiplicative covering number.  This is the
+`exponentialBaseExists` phrasing of `submultiplicative_implies_convergence`, via
+`exponentialBaseExists_iff_converges`.  It isolates the exact analytic hypothesis
+under which the open question is a theorem: submultiplicativity is the standard
+Fekete route to a single base. -/
+theorem submultiplicative_implies_exponentialBaseExists
+    (hsub : ∀ m n : ℕ, h (m + n) ≤ h m * h n) :
+    exponentialBaseExists :=
+  exponentialBaseExists_iff_converges.mpr (submultiplicative_implies_convergence hsub)
+
+/-- **Genuine oscillation obstructs submultiplicativity.**  Contrapositive of
+`submultiplicative_implies_oscillation_zero`: if the oscillation is strictly
+positive (`0 < limsup − liminf`, i.e. the growth rate genuinely oscillates within
+Pyber's window and the limit fails to exist), then `h` *cannot* be
+submultiplicative.  Since the only established sufficient condition for the open
+question is Fekete submultiplicativity, this pins down what a "no" answer to
+#117-OQ-01 would require: `h(m+n) > h(m)·h(n)` for some `m,n` — the covering number
+must be strictly *super*multiplicative somewhere. -/
+theorem oscillation_pos_not_submultiplicative
+    (hosc : 0 < growthRateLimSup - growthRateLimInf) :
+    ¬ (∀ m n : ℕ, h (m + n) ≤ h m * h n) :=
+  fun hsub => hosc.ne' (submultiplicative_implies_oscillation_zero hsub)
 
 end Erdos117OQ01Incomplete01
