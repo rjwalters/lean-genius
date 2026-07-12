@@ -37,7 +37,7 @@
       {
         "theorem": "MeasureTheory.integral_indicator",
         "description": "Converts indicator integral to set integral: ∫ s.indicator f = ∫ in s, f",
-        "module": "Mathlib.MeasureTheory.Integral.SetIntegral"
+        "module": "Mathlib.MeasureTheory.Integral.Bochner.Set"
       },
       {
         "theorem": "MeasureTheory.integral_const",
