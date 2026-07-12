@@ -6615,4 +6615,152 @@ theorem sqDiffFree_badFreqMass_bound_squarefree {N : ℕ} [NeZero N] (hodd : Odd
   rw [sq_eq_zero_filter_card_eq_one_of_squarefree hsf] at h
   simpa using h
 
+/-! ### Part LIV — Subgroup Parseval: the frequency-subgroup Fourier energy is a coset energy
+
+Part LIII isolated the entire `o(N)` obstruction into `badFreqMass`, whose non-unit frequencies
+`r` (with `gcd(r.val, N) = d > 1`) live in proper *subgroups* of the frequency group.  The
+multi-scale density increment needs to read the Fourier mass carried by such a subgroup as
+structural information about `A` on the *dual* cosets.  This part supplies exactly that dictionary.
+
+For `g ∣ N`, write `M = N / g`.  The frequencies `{r : M ∣ r.val}` form the order-`g` subgroup of
+`ZMod N` (the annihilator of the index-`g` subgroup `g·ZMod N`).  The **subgroup character
+orthogonality**
+
+    Σ_{r : M ∣ r.val} ψ(r·c) = g·[g ∣ c.val]
+
+(the geometric-series collapse of a character summed over a subgroup) upgrades, via the
+`Â(r)·conj Â(r)` expansion, to the **subgroup Parseval / coset-energy identity**
+
+    Σ_{r : M ∣ r.val} ‖Â(r)‖² = g · Σ_{j < g} (#{x ∈ A : x.val ≡ j mod g})²,
+
+i.e. the Fourier energy on the frequency subgroup equals `g` times the `ℓ²` energy of the coset
+occupation counts of `A` modulo `g`.  At `g = N` (`M = 1`) this is the full Parseval identity
+`Σ_r ‖Â(r)‖² = N·|A|`; at `g = 1` (`M = N`) it is the `r = 0` term `‖Â(0)‖² = |A|²`.  This is the
+exact density-increment input: a large subgroup Fourier energy is equivalent to `A` concentrating
+on a coset of `g·ZMod N`, the entry point for descending the Sárközy problem to the modulus `g`.
+Everything here is 0-axiom. -/
+
+/-- **Subgroup character orthogonality.**  For `g ∣ N` and `M = N/g`, summing the additive
+character `ψ(·c)` over the order-`g` frequency subgroup `{r : M ∣ r.val}` gives `g` when `g ∣ c.val`
+and `0` otherwise — the geometric-series collapse `Σ_{k<g} ω^k` with `ω = ψ(M·c)` a `g`-th root of
+unity (`ω^g = ψ(N·c) = 1`), which is `1` exactly when `g ∣ c.val`. -/
+private lemma subgroup_char_orthogonality {N : ℕ} [NeZero N] {g : ℕ} (hg : 0 < g)
+    (hgN : g ∣ N) (c : ZMod N) :
+    (Finset.univ.filter (fun r : ZMod N => (N / g) ∣ ZMod.val r)).sum (fun r => ψ (r * c))
+      = if g ∣ ZMod.val c then (g : ℂ) else 0 := by
+  set M := N / g with hM_def
+  have hMg : M * g = N := Nat.div_mul_cancel hgN
+  have hM_pos : 0 < M := Nat.div_pos (Nat.le_of_dvd (NeZero.pos N) hgN) hg
+  -- The frequency subgroup is the injective image of `k ↦ (k·M : ZMod N)`, `k < g`.
+  have himg : (Finset.univ.filter (fun r : ZMod N => M ∣ ZMod.val r))
+      = (Finset.range g).image (fun k => ((k * M : ℕ) : ZMod N)) := by
+    ext r
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_image, Finset.mem_range]
+    constructor
+    · rintro ⟨t, ht⟩
+      have htlt : t < g := by
+        have hrN : ZMod.val r < N := ZMod.val_lt r
+        rw [ht, ← hMg] at hrN
+        exact lt_of_mul_lt_mul_left hrN (Nat.zero_le M)
+      exact ⟨t, htlt, by rw [mul_comm t M, ← ht, ZMod.natCast_val, ZMod.cast_id]⟩
+    · rintro ⟨k, hk, rfl⟩
+      have hlt : k * M < N := by
+        rw [← hMg, mul_comm M g]; exact (Nat.mul_lt_mul_right hM_pos).mpr hk
+      rw [ZMod.val_natCast_of_lt hlt]
+      exact dvd_mul_left M k
+  rw [himg, Finset.sum_image]
+  · -- Reindex the subgroup sum to a geometric series in `ω = ψ(M·c)`.
+    set ω := ψ (((M : ℕ) : ZMod N) * c) with hω_def
+    have hterm : ∀ k : ℕ, ψ (((k * M : ℕ) : ZMod N) * c) = ω ^ k := by
+      intro k
+      induction k with
+      | zero => simp [psi_zero]
+      | succ n ih =>
+        have hsplit : (((n + 1) * M : ℕ) : ZMod N) * c
+            = ((n * M : ℕ) : ZMod N) * c + ((M : ℕ) : ZMod N) * c := by push_cast; ring
+        rw [hsplit, psi_add, ih, ← hω_def, pow_succ]
+    simp_rw [hterm]
+    -- `ω^g = 1` since `(g·M : ZMod N) = (N : ZMod N) = 0`.
+    have hωg : ω ^ g = 1 := by
+      rw [← hterm g,
+        show ((g * M : ℕ) : ZMod N) = 0 by
+          rw [mul_comm, hMg, ZMod.natCast_self], zero_mul, psi_zero]
+    -- `M·c = (M·c.val : ZMod N)`, so `ω = 1 ↔ N ∣ M·c.val ↔ g ∣ c.val`.
+    have hpsi_iff : ∀ x : ZMod N, ψ x = 1 ↔ x = 0 := by
+      intro x
+      constructor
+      · intro h; by_contra hx; exact psi_ne_one x hx h
+      · intro h; rw [h, psi_zero]
+    have hMc : ((M : ℕ) : ZMod N) * c = ((M * ZMod.val c : ℕ) : ZMod N) := by
+      conv_lhs => rw [show c = ((ZMod.val c : ℕ) : ZMod N) from by
+        rw [ZMod.natCast_val, ZMod.cast_id]]
+      push_cast; ring
+    have hMc_zero : ((M : ℕ) : ZMod N) * c = 0 ↔ g ∣ ZMod.val c := by
+      rw [hMc, ZMod.natCast_eq_zero_iff]
+      set v := ZMod.val c with hv
+      rw [← hMg, Nat.mul_dvd_mul_iff_left hM_pos]
+    have hω1_iff : ω = 1 ↔ g ∣ ZMod.val c := by
+      rw [hω_def, hpsi_iff, hMc_zero]
+    by_cases hdvd : g ∣ ZMod.val c
+    · rw [if_pos hdvd, hω1_iff.mpr hdvd]
+      simp only [one_pow, Finset.sum_const, Finset.card_range, nsmul_eq_mul, mul_one]
+    · rw [if_neg hdvd]
+      exact root_unity_sum_zero ω g hωg (fun h => hdvd (hω1_iff.mp h))
+  · -- Injectivity of `k ↦ (k·M : ZMod N)` on `range g`.
+    intro a ha b hb hab
+    simp only [Finset.mem_coe, Finset.mem_range] at ha hb
+    have haN : a * M < N := by
+      rw [← hMg, mul_comm M g]; exact (Nat.mul_lt_mul_right hM_pos).mpr ha
+    have hbN : b * M < N := by
+      rw [← hMg, mul_comm M g]; exact (Nat.mul_lt_mul_right hM_pos).mpr hb
+    have : a * M = b * M := by
+      have := congrArg ZMod.val hab
+      rwa [ZMod.val_natCast_of_lt haN, ZMod.val_natCast_of_lt hbN] at this
+    exact Nat.eq_of_mul_eq_mul_right hM_pos this
+
+/-- **Subgroup Parseval / coset additive-energy identity.**  The Fourier energy carried by the
+order-`g` frequency subgroup `{r : (N/g) ∣ r.val}` equals `g` times the *subgroup additive energy*
+of `A` — the number of pairs `(x, x') ∈ A × A` congruent modulo `g` (i.e. `g ∣ (x − x').val`):
+
+    Σ_{r : (N/g) ∣ r.val} ‖Â(r)‖² = g · #{(x, x') ∈ A × A : g ∣ (x − x').val}.
+
+Proof: expand `‖Â(r)‖² = Σ_{x,x'} ψ(r·(x−x'))`, swap the order of summation, and apply the
+subgroup character orthogonality `subgroup_char_orthogonality` to the inner `r`-sum, collapsing it to
+`g` on the congruent pairs and `0` otherwise.  This is the exact density-increment dictionary:
+a large left-hand side forces the right-hand side (many congruent pairs), i.e. `A` concentrating on
+cosets of `g·ZMod N` — the structural input that lets the Sárközy problem descend to modulus `g`.
+
+Sanity checks: at `g = N` (whole group) it is the Parseval identity `Σ_r ‖Â(r)‖² = N·|A|` (every
+pair is congruent mod `N`, giving `N·|A×A ∩ diagonal| = N·|A|`); at `g = 1` it is the zero-frequency
+term `‖Â(0)‖² = |A|²` (all pairs congruent mod `1`). -/
+theorem subgroup_parseval_energy {N : ℕ} [NeZero N] {g : ℕ} (hg : 0 < g) (hgN : g ∣ N)
+    (A : Finset (ZMod N)) :
+    (Finset.univ.filter (fun r : ZMod N => (N / g) ∣ ZMod.val r)).sum
+        (fun r => ‖fourierCoeff A r‖ ^ 2)
+      = (g : ℝ) * (((A ×ˢ A).filter
+          (fun p : ZMod N × ZMod N => g ∣ ZMod.val (p.1 - p.2))).card) := by
+  -- Per-frequency expansion `‖Â(r)‖² = Σ_{(x,x')} ψ(r·(x−x'))` (in ℂ).
+  have key : ∀ r : ZMod N, (↑(‖fourierCoeff A r‖ ^ 2) : ℂ)
+      = (A ×ˢ A).sum (fun p => ψ (r * (p.1 - p.2))) := by
+    intro r
+    rw [show (↑(‖fourierCoeff A r‖ ^ 2) : ℂ)
+        = fourierCoeff A r * starRingEnd ℂ (fourierCoeff A r) from by
+      rw [Complex.mul_conj, Complex.normSq_eq_norm_sq]]
+    rw [fourierCoeff_eq_sum_psi, map_sum (starRingEnd ℂ)]
+    simp_rw [conj_psi]
+    rw [Finset.sum_mul_sum, Finset.sum_product]
+    refine Finset.sum_congr rfl (fun x _ => Finset.sum_congr rfl (fun x' _ => ?_))
+    rw [← psi_add, show r * x + -(r * x') = r * (x - x') from by ring]
+  -- Descend from ℂ: build the complex identity, then cast back.
+  have hcomplex : (↑((Finset.univ.filter (fun r : ZMod N => (N / g) ∣ ZMod.val r)).sum
+        (fun r => ‖fourierCoeff A r‖ ^ 2)) : ℂ)
+      = (g : ℂ) * (((A ×ˢ A).filter
+          (fun p : ZMod N × ZMod N => g ∣ ZMod.val (p.1 - p.2))).card) := by
+    rw [Complex.ofReal_sum]
+    simp_rw [key]
+    rw [Finset.sum_comm]
+    simp_rw [subgroup_char_orthogonality hg hgN]
+    rw [← Finset.sum_filter, Finset.sum_const, nsmul_eq_mul, mul_comm]
+  exact_mod_cast hcomplex
+
 end Szemeredi.Roth
