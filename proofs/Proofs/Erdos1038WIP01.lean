@@ -46,7 +46,22 @@
                                       exact property `X² + 1` fails (degree `2`, no real root,
                                       empty sublevel set) — the driver of `sublevelInf_eq_zero`.
   * `sublevelInf'` / `sublevelInf'_le_two` — the faithful infimum object and its linear
-                                      witness bound `≤ 2`, now free of the rootless collapse.
+                                      witness bound `≤ 2`, free of the *positive-degree*
+                                      rootless witness `X² + 1`.
+
+  But faithfulness alone is still not enough — the degree-`0` constant `1` slips through:
+
+  * `sublevelInf'_eq_zero`         — `sublevelInf' = 0` (exact): the monic constant `1`
+                                    (no roots, `roots.card = 0 = natDegree`) is faithfully
+                                    admissible with an empty sublevel set, so the *faithful*
+                                    infimum also collapses — parallel to `sublevelInf_eq_zero`.
+                                    The genuinely non-degenerate object needs `1 ≤ natDegree`.
+  * `MonicRealRootedIn01Pos` / `sublevelInfPos` — the positive-degree faithful predicate and
+                                    its infimum, excluding *both* `X² + 1` (non-splitting) and
+                                    `1` (degree `0`).  Every witness has positive measure
+                                    (`sublevelMeasurePos_pos`); `sublevelInfPos ≤ 2` and
+                                    `sublevelInf' ≤ sublevelInfPos`.  This is the object for
+                                    which the conjectured `2^(4/3) − 1` is the intended value.
 
   All results are fully machine-checked (0 axioms, 0 sorries).
 
@@ -768,5 +783,106 @@ theorem sublevelSup'_lt_top : sublevelSup' < ⊤ :=
 `sublevelSup'_lt_top`. -/
 theorem sublevelSup'_ne_top : sublevelSup' ≠ ⊤ :=
   sublevelSup'_lt_top.ne
+
+/-! ### Faithfulness alone is still not enough: `sublevelInf' = 0` via the constant `1`
+
+The faithful predicate `MonicRealRootedIn01'` excludes the rootless *positive-degree*
+witness `X² + 1` (`sq_add_one_not_admissible'`), which is why `faithful_sublevelMeasure_pos`
+needs the hypothesis `1 ≤ f.natDegree`.  But the predicate does **not** exclude the
+degree-`0` constant polynomial `1`: it is monic, has no real roots, and trivially splits
+(`roots.card = 0 = natDegree`).  Its sublevel set `{x : |1| < 1}` is empty, so — exactly
+as on the literal side (`sublevelInf_eq_zero`) — the *faithful* infimum still degenerates:
+`sublevelInf' = 0`.  The genuinely non-degenerate object therefore needs the additional
+constraint `1 ≤ f.natDegree` (positive degree), under which every witness has positive
+measure.  This isolates the last faithfulness gap. -/
+
+/-- **The constant `1` is faithfully admissible**: monic, no roots, `roots.card = 0 =
+    natDegree`.  It is the degree-`0` witness the faithful predicate fails to exclude
+    (mirroring how the literal predicate fails to exclude the rootless `X² + 1`). -/
+theorem one_admissible' : MonicRealRootedIn01' (1 : Polynomial ℝ) := by
+  refine ⟨⟨monic_one, ?_⟩, ?_⟩
+  · intro r hr
+    simp at hr
+  · simp
+
+/-- **The sublevel set of the constant `1` is empty**: `|1| < 1` is false. -/
+theorem sublevelSet_one : sublevelSet (1 : Polynomial ℝ) = ∅ := by
+  ext x
+  simp [sublevelSet]
+
+/-- **The sublevel set of the constant `1` has Lebesgue measure `0`.** -/
+theorem sublevelMeasure_one : sublevelMeasure (1 : Polynomial ℝ) = 0 := by
+  unfold sublevelMeasure
+  rw [sublevelSet_one, measure_empty]
+
+/-- **The faithful infimum still collapses: `sublevelInf' = 0`.**  Parallel to
+    `sublevelInf_eq_zero` on the literal side — the degree-`0` constant `1` is faithfully
+    admissible with an empty (measure-`0`) sublevel set, so `sublevelInf' = 0`.  This
+    sharpens `sublevelInf'_le_two` and shows faithfulness *alone* does not restore the
+    intended infimum geometry: the rootless collapse is only pushed from the positive-degree
+    `X² + 1` down to the degree-`0` constant `1`.  Excluding it needs the extra hypothesis
+    `1 ≤ f.natDegree` (see `sublevelInfPos`). -/
+theorem sublevelInf'_eq_zero : sublevelInf' = 0 :=
+  le_antisymm
+    (iInf_le_of_le 1 (iInf_le_of_le one_admissible' sublevelMeasure_one.le))
+    (zero_le _)
+
+/-! ### The genuinely non-degenerate object: positive-degree faithful admissibility
+
+`sublevelInf'_eq_zero` shows the faithful predicate is *still* too weak on the infimum
+side.  The correct restriction adds `1 ≤ f.natDegree`, excluding *both* the non-splitting
+`X² + 1` (via faithfulness) and the degree-`0` constant `1` (via positive degree).  Over
+this class every witness has *positive* sublevel measure (`faithful_sublevelMeasure_pos`),
+so no single polynomial drags the infimum to `0`; this is the object for which the
+conjectured elementary infimum `2^(4/3) − 1 ≈ 1.52` is the intended value. -/
+
+/-- **Positive-degree faithful admissibility.**  The faithful predicate together with
+    `1 ≤ f.natDegree`: monic, complete real splitting with all roots in `[-1,1]`, and degree
+    at least `1`.  Excludes both the non-splitting `X² + 1` and the degree-`0` constant `1`,
+    leaving exactly the polynomials for which the sublevel geometry is non-degenerate. -/
+def MonicRealRootedIn01Pos (f : Polynomial ℝ) : Prop :=
+  MonicRealRootedIn01' f ∧ 1 ≤ f.natDegree
+
+/-- The linear polynomial `X` is positive-degree faithfully admissible (degree `1`). -/
+theorem linear_admissiblePos : MonicRealRootedIn01Pos (X : Polynomial ℝ) :=
+  ⟨linear_admissible', by simp⟩
+
+/-- The extremal quadratic `q = X² − 1` is positive-degree faithfully admissible (degree `2`). -/
+theorem quadratic_admissiblePos : MonicRealRootedIn01Pos q := by
+  refine ⟨quadratic_admissible', ?_⟩
+  have hnd : q.natDegree = 2 := by simp only [q]; compute_degree!
+  omega
+
+/-- **Every positive-degree faithful witness has positive sublevel measure.**  Immediate
+    from `faithful_sublevelMeasure_pos`: the degree constraint forces a real root, which lies
+    in the *open* sublevel set, making it nonempty and hence of positive Lebesgue measure. -/
+theorem sublevelMeasurePos_pos {f : Polynomial ℝ} (hf : MonicRealRootedIn01Pos f) :
+    0 < sublevelMeasure f :=
+  faithful_sublevelMeasure_pos f hf.1 hf.2
+
+/-- The **positive-degree faithful infimum**: the infimum of `sublevelMeasure` over monic
+    polynomials that split completely into real roots in `[-1,1]` *and* have positive degree.
+    Unlike `sublevelInf'` (which collapses to `0` via the constant `1`, `sublevelInf'_eq_zero`),
+    every witness here has positive measure (`sublevelMeasurePos_pos`); this is the object for
+    which the conjectured `2^(4/3) − 1` is the intended value.  Its exact value still needs
+    logarithmic potential theory beyond Mathlib. -/
+noncomputable def sublevelInfPos : ℝ≥0∞ :=
+  ⨅ (f : Polynomial ℝ) (_ : MonicRealRootedIn01Pos f), sublevelMeasure f
+
+/-- **Upper bound `sublevelInfPos ≤ 2`.**  The linear `X` is positive-degree faithfully
+    admissible with sublevel measure `2`, so the positive-degree infimum is at most `2`.
+    Unlike `sublevelInf'_le_two`, this bound is *not* undercut to `0` by a degenerate witness
+    (`sublevelInf'_eq_zero`); the true value `2^(4/3) − 1 < 2` lies below it but beyond the
+    elementary witnesses available here. -/
+theorem sublevelInfPos_le_two : sublevelInfPos ≤ ENNReal.ofReal 2 :=
+  iInf_le_of_le X (iInf_le_of_le linear_admissiblePos sublevelMeasure_linear.le)
+
+/-- **`sublevelInf' ≤ sublevelInfPos`.**  The positive-degree family is a *subset* of the
+    faithful family, so the infimum over it is at least the faithful infimum.  Combined with
+    `sublevelInf'_eq_zero` this shows `0 = sublevelInf' ≤ sublevelInfPos ≤ 2`, with the crucial
+    qualitative difference that — unlike `sublevelInf'` — no *single* witness of `sublevelInfPos`
+    has measure `0` (`sublevelMeasurePos_pos`). -/
+theorem sublevelInf'_le_sublevelInfPos : sublevelInf' ≤ sublevelInfPos :=
+  le_iInf fun f => le_iInf fun hf => iInf_le_of_le f (iInf_le_of_le hf.1 le_rfl)
 
 end Erdos1038WIP01
