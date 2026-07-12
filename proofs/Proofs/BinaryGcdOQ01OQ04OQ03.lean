@@ -979,4 +979,101 @@ theorem log_add_one_le_totalSteps (a N : ℕ) (ha : 1 ≤ a) (hN : 1 ≤ N) :
   have h := single_le_totalSteps (a := a) (k := 1) (N := N) le_rfl hN
   rwa [binaryGcdSteps_a_one a ha] at h
 
+-- ═══════════════════════════════════════════════════════════════════
+-- PART XV: CONCENTRATION OF THE a = 1 STEP COUNT AROUND ITS PER-ROW MAX
+-- ═══════════════════════════════════════════════════════════════════
+--
+-- Every size bound so far controls the a = 1 *average* against `log₂ N`, and the
+-- unbounded result (`avgSteps_one_unbounded`) shows it diverges.  A sharper
+-- *qualitative* fact is that the average sits within an additive constant of the
+-- per-row *maximum* step count — the step-count distribution over `b ∈ [1, N]` is
+-- *concentrated*: no single argument costs more than a bounded amount above the mean.
+--
+-- The maximum is exact, `max_{b ∈ [1,N]} binaryGcdSteps 1 b = log₂ N + 1`, attained at
+-- `b = N` (indeed at every `b ∈ [2^{⌊log₂N⌋}, N]`), because the per-`b` count
+-- `binaryGcdSteps 1 b = log₂ b + 1` is monotone in `b`.  The strict floor
+-- `avgSteps_one_gt` (avg > log₂N − 1) then gives  0 ≤ max − avg < 2  at every N ≥ 1:
+-- on the a = 1 row the mean and the max agree to within an additive `2`.  This is the
+-- "no heavy tail" companion to the strict Θ(log N) sandwich
+-- (`avgSteps_one_sandwich_strict`): the average-case cost is not merely of the same
+-- *order* as the per-row worst case, it is within a bounded additive gap of it.
+
+/-- **Exact per-row maximum (a = 1 row).**  The largest binary-GCD step count over
+    `b ∈ [1, N]` on the `a = 1` row is exactly `log₂ N + 1`:
+
+      max_{b ∈ [1,N]} binaryGcdSteps 1 b = log₂ N + 1.
+
+    The per-`b` value `binaryGcdSteps 1 b = log₂ b + 1` (`binaryGcdSteps_one_eq_log`)
+    is monotone in `b` (`Nat.log_mono_right`), so it is bounded above by its value at
+    the top `b = N`, which is attained. Formalised with `Finset.sup` (default `⊥ = 0`),
+    via `Finset.sup_le` for the upper bound and `Finset.le_sup` at `b = N`. -/
+theorem maxSteps_one_eq (N : ℕ) (hN : 1 ≤ N) :
+    (Finset.Icc 1 N).sup (binaryGcdSteps 1) = Nat.log 2 N + 1 := by
+  apply le_antisymm
+  · apply Finset.sup_le
+    intro b hb
+    rw [Finset.mem_Icc] at hb
+    rw [binaryGcdSteps_one_eq_log b hb.1]
+    have hbN : Nat.log 2 b ≤ Nat.log 2 N := Nat.log_mono_right hb.2
+    omega
+  · have hmem : N ∈ Finset.Icc 1 N := by rw [Finset.mem_Icc]; omega
+    have hle := Finset.le_sup (f := binaryGcdSteps 1) hmem
+    rwa [binaryGcdSteps_one_eq_log N hN] at hle
+
+/-- **The `a = 1` average never exceeds the per-row maximum.**  The lower half of the
+    concentration statement: dividing the total by `N` cannot exceed the pointwise
+    maximum `log₂ N + 1` (`maxSteps_one_eq`). Immediate from `avgSteps_one_le`. -/
+theorem avgSteps_one_le_max (N : ℕ) (hN : 1 ≤ N) :
+    (totalSteps 1 N : ℚ) / (N : ℚ)
+      ≤ (((Finset.Icc 1 N).sup (binaryGcdSteps 1) : ℕ) : ℚ) := by
+  rw [maxSteps_one_eq N hN]
+  push_cast
+  exact avgSteps_one_le N hN
+
+/-- **The `a = 1` average is within an additive `2` of the per-row maximum.** For
+    every `N ≥ 1`,
+
+      max_{b ∈ [1,N]} binaryGcdSteps 1 b  −  (totalSteps 1 N) / N  <  2.
+
+    The maximum is `log₂ N + 1` (`maxSteps_one_eq`) and the average strictly exceeds
+    `log₂ N − 1` (`avgSteps_one_gt`), so their gap is strictly below
+    `(log₂N + 1) − (log₂N − 1) = 2`. The mean and the worst case within the row agree
+    to within a constant. -/
+theorem avgSteps_one_within_two_of_max (N : ℕ) (hN : 1 ≤ N) :
+    (((Finset.Icc 1 N).sup (binaryGcdSteps 1) : ℕ) : ℚ)
+      - (totalSteps 1 N : ℚ) / (N : ℚ) < 2 := by
+  rw [maxSteps_one_eq N hN]
+  push_cast
+  have hgt := avgSteps_one_gt N hN
+  linarith
+
+/-- **Concentration of the `a = 1` step count (every `N ≥ 1`).**  The average-case
+    step count on the `a = 1` row lies within an additive band `[0, 2)` below the
+    per-row maximum:
+
+      0  ≤  max_{b ∈ [1,N]} binaryGcdSteps 1 b  −  (totalSteps 1 N) / N  <  2.
+
+    Equivalently the mean and the worst case within the row differ by less than `2` at
+    every `N`. This "no heavy tail" fact is the qualitative companion to the strict
+    Θ(log N) sandwich (`avgSteps_one_sandwich_strict`): the average-case cost is not just
+    of the same order as, but within a bounded additive gap of, the per-row worst case.
+    Combines `avgSteps_one_le_max` and `avgSteps_one_within_two_of_max`. -/
+theorem avgSteps_one_concentration (N : ℕ) (hN : 1 ≤ N) :
+    0 ≤ (((Finset.Icc 1 N).sup (binaryGcdSteps 1) : ℕ) : ℚ)
+          - (totalSteps 1 N : ℚ) / (N : ℚ) ∧
+    (((Finset.Icc 1 N).sup (binaryGcdSteps 1) : ℕ) : ℚ)
+          - (totalSteps 1 N : ℚ) / (N : ℚ) < 2 := by
+  refine ⟨?_, avgSteps_one_within_two_of_max N hN⟩
+  have hle := avgSteps_one_le_max N hN
+  linarith
+
+-- Concrete check of concentration (a = 1, N = 100): max = log₂100 + 1 = 7,
+--   avg = 29/5 = 5.8, so max − avg = 6/5 = 1.2 ∈ [0, 2).
+example :
+    0 ≤ (((Finset.Icc 1 100).sup (binaryGcdSteps 1) : ℕ) : ℚ)
+          - (totalSteps 1 100 : ℚ) / (100 : ℚ) ∧
+    (((Finset.Icc 1 100).sup (binaryGcdSteps 1) : ℕ) : ℚ)
+          - (totalSteps 1 100 : ℚ) / (100 : ℚ) < 2 :=
+  avgSteps_one_concentration 100 (by norm_num)
+
 end BinaryGcdOQ01OQ04OQ03
