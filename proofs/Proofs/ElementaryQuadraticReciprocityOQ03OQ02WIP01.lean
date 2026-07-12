@@ -139,4 +139,44 @@ theorem kronecker2_conductor_eight :
       (¬ ∀ a : ℤ, kronecker2 (a + 2) = kronecker2 a) :=
   ⟨kronecker2_add_mul_eight, kronecker2_not_period_four, kronecker2_not_period_two⟩
 
+-- ============================================================
+-- Section D: The residue-level character table of `(·/2)`
+-- ============================================================
+
+/-- **`(·/2)` vanishes exactly on the even residues.**  `kronecker2 a = 0 ↔ a` even.
+    Squaring `(·/2)` collapses its two unit classes onto the principal character mod `2`
+    (`kronecker2_sq`: `(a/2)² = 0` on evens, `1` on odds), and over `ℤ` a value squares to
+    `0` iff it is `0` (`mul_self_eq_zero`).  This pins the *support* of the character. -/
+theorem kronecker2_eq_zero_iff (a : ℤ) : kronecker2 a = 0 ↔ a % 2 = 0 := by
+  rw [← mul_self_eq_zero, kronecker2_sq]
+  split_ifs with h <;> simp [h]
+
+/-- **`(·/2)` is a unit exactly on the odd residues.**  `kronecker2 a ≠ 0 ↔ a` odd — the
+    complement of `kronecker2_eq_zero_iff`, stating that `(·/2)` takes an invertible value
+    `±1` precisely on the units mod `2`. -/
+theorem kronecker2_ne_zero_iff (a : ℤ) : kronecker2 a ≠ 0 ↔ a % 2 = 1 := by
+  rw [ne_eq, kronecker2_eq_zero_iff]; omega
+
+/-- **`(·/2)` takes the value `+1` exactly on the residues `1, 7 (mod 8)`.**  The upper
+    unit class of the primitive character `χ₈ = (·/2)`.  Direct from the definition: the
+    `a % 8 = -1` disjunct is vacuous since `Int.emod` by `8` lands in `[0, 8)`, so the
+    positive branch fires precisely on `a % 8 ∈ {1, 7}`. -/
+theorem kronecker2_eq_one_iff (a : ℤ) : kronecker2 a = 1 ↔ a % 8 = 1 ∨ a % 8 = 7 := by
+  unfold kronecker2
+  split_ifs with h1 h2
+  · exact ⟨fun h => by norm_num at h, fun h => by omega⟩
+  · exact ⟨fun _ => by omega, fun _ => rfl⟩
+  · exact ⟨fun h => by norm_num at h, fun h => by omega⟩
+
+/-- **`(·/2)` takes the value `−1` exactly on the residues `3, 5 (mod 8)`.**  The lower
+    unit class of `χ₈ = (·/2)`.  Together with `kronecker2_eq_one_iff` and
+    `kronecker2_eq_zero_iff` this is the complete residue-level character table of the
+    `(·/2)` symbol: `0` on evens, `+1` on `{1,7}`, `−1` on `{3,5}` mod `8`. -/
+theorem kronecker2_eq_neg_one_iff (a : ℤ) : kronecker2 a = -1 ↔ a % 8 = 3 ∨ a % 8 = 5 := by
+  unfold kronecker2
+  split_ifs with h1 h2
+  · exact ⟨fun h => by norm_num at h, fun h => by omega⟩
+  · exact ⟨fun h => by norm_num at h, fun h => by omega⟩
+  · exact ⟨fun _ => rfl, fun _ => by omega⟩
+
 end KroneckerSymbol
