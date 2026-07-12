@@ -55,9 +55,9 @@
       "not_unboundedOnPrimePowers_add / _min_left / _min_right: PROVED the MEET (min) and ADDITIVE closure of the failing class, completing the lattice picture. The O(log)-on-prime-powers functions form a genuine order IDEAL — closed under max of two AND min with any function — that is additionally an additive convex cone (f ≤ Mf·log, g ≤ Mg·log ⟹ f+g ≤ (Mf+Mg)·log, no sign input needed). Dual to the filter side, which is only join-closed (never meet-closed). Axiom-free."
     ],
     "axiomCount": 0,
-    "lineCount": 650,
+    "lineCount": 741,
     "assumptions": "None. Fully machine-checked with 0 axioms and 0 sorries; proofs use no native_decide (so #print axioms shows only propext/Classical.choice/Quot.sound). Part I of Erdős #897 — whether the prime-power growth hypothesis forces limsup_n (f(n+1)-f(n))/log n = ∞ — remains OPEN and is NOT asserted; this entry proves only the verified surrounding theory (non-vacuity, selectivity, plain unboundedness, and the strongly-additive reduction).",
-    "theoremCount": 29,
+    "theoremCount": 37,
     "definitionCount": 1
   },
   "overview": {
@@ -131,11 +131,11 @@
       "Finset"
     ],
     "namespace": "Erdos897",
-    "lineCount": 650,
+    "lineCount": 741,
     "axiomCount": 0,
     "sorries": 0,
     "definitionCount": 1,
-    "theoremCount": 31
+    "theoremCount": 37
   },
   "crossReferences": [
     {

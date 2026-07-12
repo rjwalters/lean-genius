@@ -695,4 +695,47 @@ theorem not_unboundedOnPrimePowers_min_right {f g : ℕ → ℝ}
     ¬ UnboundedOnPrimePowers (fun n => min (f n) (g n)) :=
   not_unboundedOnPrimePowers_of_le hg (fun _ _ _ _ => min_le_right _ _)
 
+/-
+## Positive-affine invariance of the unbounded-on-prime-powers class
+
+`unboundedOnPrimePowers_add_bddBelow` shows the class is insensitive to any
+bounded-below perturbation.  The following record the exact algebraic invariance this
+gives: the class is preserved by *subtracting* anything bounded above (the mirror of
+`add_bddBelow`), by adding any constant, and — combining with the positive scaling
+`unboundedOnPrimePowers_smul` — by every strictly-positive affine map `f ↦ c·f + d`
+(`c > 0`).  So the Erdős #897 hypothesis is a property of `f` modulo the positive-affine
+group, exactly as one expects of an "unbounded ratio to `log`" condition.
+-/
+
+/-- **Closure under subtracting a function bounded above on prime powers** (mirror of
+`unboundedOnPrimePowers_add_bddBelow`).  If `f` is unbounded on prime powers and `g` has a
+ceiling `g(p^k) ≤ C` at every prime power, then `f − g` is still unbounded on prime powers:
+`f − g ≥ f − C`, and subtracting a constant cannot spoil the unbounded ratio.  The dual of
+the bounded-below closure, obtained from it via `g ↦ −g`. -/
+theorem unboundedOnPrimePowers_sub_bddAbove {f g : ℕ → ℝ} {C : ℝ} (hC : 0 ≤ C)
+    (hf : UnboundedOnPrimePowers f)
+    (hg : ∀ p k : ℕ, p.Prime → 1 ≤ k → g (p ^ k) ≤ C) :
+    UnboundedOnPrimePowers (fun n => f n - g n) := by
+  have h := unboundedOnPrimePowers_add_bddBelow (C := C) hC hf (g := fun n => - g n)
+    (fun p k hp hk => by show -C ≤ - g (p ^ k); linarith [hg p k hp hk])
+  simpa [sub_eq_add_neg] using h
+
+/-- **Closure under an additive constant.**  `f` unbounded on prime powers ⟹ `f + c` is,
+for every real `c` (positive or negative).  The `g ≡ c` case of
+`unboundedOnPrimePowers_add_bddBelow` with floor `−|c| ≤ c`: a constant shift never changes
+whether `f(p^k)/log(p^k)` is unbounded. -/
+theorem unboundedOnPrimePowers_add_const {f : ℕ → ℝ} (hf : UnboundedOnPrimePowers f)
+    (c : ℝ) : UnboundedOnPrimePowers (fun n => f n + c) :=
+  unboundedOnPrimePowers_add_bddBelow (C := |c|) (abs_nonneg c) hf
+    (fun _ _ _ _ => neg_abs_le c)
+
+/-- **Positive-affine invariance.**  For `c > 0` and any `d`, `f` unbounded on prime powers
+⟹ `c·f + d` is.  Combining positive scaling (`unboundedOnPrimePowers_smul`) with the
+constant shift (`unboundedOnPrimePowers_add_const`): the Erdős #897 hypothesis depends on
+`f` only through its class under the strictly-positive affine group `f ↦ c·f + d`, `c > 0`.
+So a witness may be normalized (`c = 1`, `d = 0`) without loss of generality. -/
+theorem unboundedOnPrimePowers_affine {f : ℕ → ℝ} (hf : UnboundedOnPrimePowers f)
+    {c d : ℝ} (hc : 0 < c) : UnboundedOnPrimePowers (fun n => c * f n + d) :=
+  unboundedOnPrimePowers_add_const (unboundedOnPrimePowers_smul hf hc) d
+
 end Erdos897
