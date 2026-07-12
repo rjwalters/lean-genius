@@ -92,22 +92,30 @@
       "id": "bridge",
       "title": "The ℂ → ℝ bridge",
       "startLine": 1,
-      "endLine": 53,
+      "endLine": 52,
       "summary": "Docstring framing the real-variable goal and the relation to the complex siblings. ofReal_integral_diag unfolds Complex.betaIntegral on the diagonal: the exponent (n+1)-1 reduces to n, Complex.cpow_natCast collapses the complex powers to monoid powers, the integrand becomes a cast real polynomial, and intervalIntegral.integral_ofReal (via integral_congr on [0,1]) descends the integral to ↑(∫₀¹ xⁿ(1-x)ⁿ).",
       "mathContext": "Complex.betaIntegral (n+1)(n+1) = ↑(∫ x in 0..1, xⁿ(1-x)ⁿ)."
     },
     {
       "id": "real-value",
-      "title": "The real Euler integral and central-binomial form",
-      "startLine": 54,
-      "endLine": 83,
-      "summary": "integral_diag_eq_factorial rewrites the bridged identity with the parent betaIntegral_nat_nat to get ∫₀¹ xⁿ(1-x)ⁿ = (n!)²/(2n+1)! over ℝ (exact_mod_cast through the ℝ→ℂ cast). integral_diag_central_binom converts this to 1/((2n+1)·C(2n,n)) using the sibling factorial factorization and field_simp.",
-      "mathContext": "∫₀¹ xⁿ(1-x)ⁿ = (n!)²/(2n+1)! = 1/((2n+1)·C(2n,n))."
+      "title": "The real Euler integral (factorial form)",
+      "startLine": 53,
+      "endLine": 66,
+      "summary": "integral_diag_eq_factorial rewrites the bridged complex identity with the parent betaIntegral_nat_nat to obtain the real Euler integral ∫₀¹ xⁿ(1-x)ⁿ = (n!)²/(2n+1)!. The complex closed form n!·n!/(n+n+1)! is repackaged as the cast of the real value (two_mul; push_cast; ring), then descended through the ℝ→ℂ injection by exact_mod_cast.",
+      "mathContext": "∫₀¹ xⁿ(1-x)ⁿ = (n!)²/(2n+1)!."
+    },
+    {
+      "id": "central-binom",
+      "title": "The central-binomial reciprocal form",
+      "startLine": 67,
+      "endLine": 81,
+      "summary": "integral_diag_central_binom converts the factorial value into the central-binomial reciprocal 1/((2n+1)·C(2n,n)). It reuses the sibling BetaCentralBinomial.factorial_two_mul_succ factorization (2n+1)! = (2n+1)·C(2n,n)·(n!·n!), casts it to ℝ, and clears denominators with field_simp using n! > 0.",
+      "mathContext": "∫₀¹ xⁿ(1-x)ⁿ = 1/((2n+1)·C(2n,n))."
     },
     {
       "id": "density",
       "title": "Normalization of the symmetric Beta density",
-      "startLine": 84,
+      "startLine": 82,
       "endLine": 94,
       "summary": "betaDensity_integral_eq_one pulls the constant normalizer B = (n!)²/(2n+1)! out of the integral (intervalIntegral.integral_div), substitutes the integral's value, and finishes with B/B = 1 (B > 0 by factorial positivity), establishing that x ↦ xⁿ(1-x)ⁿ/B is a probability density on [0,1].",
       "mathContext": "∫₀¹ xⁿ(1-x)ⁿ / B = 1: the Beta(n+1,n+1) density normalizes."
