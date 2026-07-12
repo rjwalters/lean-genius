@@ -38,7 +38,7 @@
       {
         "theorem": "mul_le_mul_of_nonneg_left",
         "description": "From b ≤ c and 0 ≤ a, deduce a·b ≤ a·c. With c = 1 this is the one-step monotonicity P(k)·(1 − k/d) ≤ P(k).",
-        "module": "Mathlib.Algebra.Order.Ring.Lemmas"
+        "module": "Mathlib.Algebra.Order.GroupWithZero.Unbundled.Defs"
       }
     ],
     "originalContributions": [

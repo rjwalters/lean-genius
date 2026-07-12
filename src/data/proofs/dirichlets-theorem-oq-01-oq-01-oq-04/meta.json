@@ -31,12 +31,12 @@
       {
         "theorem": "le_of_mul_le_mul_left",
         "description": "a * b ≤ a * c → 0 < a → b ≤ c",
-        "module": "Mathlib.Algebra.Order.Ring.Lemmas"
+        "module": "Mathlib.Algebra.Order.GroupWithZero.Unbundled.Defs"
       },
       {
         "theorem": "mul_le_mul_of_nonneg_left",
         "description": "b ≤ c → 0 ≤ a → a * b ≤ a * c",
-        "module": "Mathlib.Algebra.Order.Ring.Lemmas"
+        "module": "Mathlib.Algebra.Order.GroupWithZero.Unbundled.Defs"
       },
       {
         "theorem": "div_le_iff₀",

@@ -40,7 +40,7 @@
       {
         "theorem": "sq_nonneg",
         "description": "0 ≤ x² for all real x; combined with le_antisymm it pins x² = 0 in the origin case (x²+y²+z² = 0), where every monomial of CL then vanishes by ring.",
-        "module": "Mathlib.Algebra.Order.Ring.Lemmas"
+        "module": "Mathlib.Algebra.Order.Ring.Unbundled.Basic"
       }
     ],
     "originalContributions": [

@@ -29,7 +29,7 @@
       {
         "theorem": "mul_lt_mul_of_pos_right",
         "description": "a < b → 0 < c → a·c < b·c. Multiplies the classical criterion edges.card < 2^{k−1} by the positive factor 2^{|V|−k+1} to reach edges.card·2^{|V|−k+1} < 2^{k−1}·2^{|V|−k+1}.",
-        "module": "Mathlib.Algebra.Order.Ring.Lemmas"
+        "module": "Mathlib.Algebra.Order.GroupWithZero.Unbundled.Defs"
       },
       {
         "theorem": "pow_add",
