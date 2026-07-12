@@ -229,3 +229,4 @@ theorem sq_moment_sum_simplex (d N : ℕ) (h : 2 ≤ N) :
     Nat.zero_mul, Nat.one_mul, Nat.zero_add]
 
 end TetrahedralNumberFormulaOQ01
+
