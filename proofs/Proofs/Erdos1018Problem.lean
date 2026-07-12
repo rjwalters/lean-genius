@@ -218,6 +218,25 @@ theorem nonPlanar_imp_five_le_card (G : SimpleGraph V) (h : isNonPlanar G) :
     simp only [Fintype.card_sum, Fintype.card_fin] at hc
     omega
 
+/-- **Graphs on at most four vertices are planar.** The exact converse of
+    `nonPlanar_imp_five_le_card`: since non-planarity forces `5 ≤ card V`, any graph
+    whose vertex set has `≤ 4` elements cannot be non-planar, hence is planar. This
+    recovers the classical fact that `K₄` and every smaller graph is planar, and — paired
+    with `K5_nonplanar` — shows the vertex threshold for non-planarity is *exactly* five. -/
+theorem card_le_four_isPlanar (G : SimpleGraph V) (h : Fintype.card V ≤ 4) :
+    isPlanar G := by
+  by_contra hcon
+  -- `hcon : ¬ isPlanar G` is definitionally `isNonPlanar G`.
+  have h5 : 5 ≤ Fintype.card V := nonPlanar_imp_five_le_card G hcon
+  omega
+
+/-- **K₄ is planar.** The concrete witness that the vertex-count floor from
+    `nonPlanar_imp_five_le_card` is sharp: `completeGraph 4` has four vertices, so
+    `card_le_four_isPlanar` makes it planar — while `K5_nonplanar` shows five vertices
+    already suffice for non-planarity. -/
+theorem completeGraph_four_isPlanar : isPlanar (completeGraph 4) :=
+  card_le_four_isPlanar (completeGraph 4) (by simp [Fintype.card_fin])
+
 omit [Fintype V] [DecidableEq V] in
 /-- **Sufficient condition for non-planarity (K₅ branch).** A graph that contains a
     subdivision of `K₅` is non-planar. This is the forward half of Kuratowski's

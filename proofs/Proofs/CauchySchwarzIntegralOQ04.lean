@@ -856,8 +856,85 @@ theorem norm_inner_commutator_eq (hI : (RCLike.I : 𝕜) ≠ 0) {A B : E →ₗ[
     RCLike.norm_I_of_ne_zero hI, mul_one, abs_mul]
   norm_num
 
+/-! ## The commutator as an operator: `i[A,B]` is Hermitian
+
+The results above describe the commutator only through its *expectation*
+`⟪ψ,[A,B]ψ⟫` — that it is purely imaginary (`re_inner_commutator_eq_zero`), equals
+`↑(2·Im⟪Aψ,Bψ⟫)·i` (`inner_commutator_eq_ofReal_mul_I`), and has norm `2|Im⟪Aψ,Bψ⟫|`
+(`norm_inner_commutator_eq`).  Here we lift this to the **operator** level, which is
+the structural reason those expectation facts hold.
+
+For symmetric `A, B` the bare commutator `[A,B] = AB − BA` is **anti-symmetric**
+(anti-Hermitian): `⟪[A,B]x, y⟫ = −⟪x, [A,B]y⟫`.  Multiplying by the imaginary unit
+therefore produces a **symmetric** (Hermitian) operator `i[A,B]`: a genuine
+observable.  This is the operator-theoretic content of "the commutator of two
+observables, times `i`, is again an observable" — and it is exactly why the
+right-hand side of the uncertainty relation is the expectation of a *real* quantity.
+The expectation reality (`re_inner_commutator_eq_zero`, here recovered as the
+`im`-vanishing of `⟪ψ, (i[A,B])ψ⟫`) is then an immediate corollary of operator
+symmetry, rather than a separate computation. -/
+
+/-- **The commutator of two symmetric operators is anti-Hermitian.**  For symmetric
+`A, B`, the bare commutator `[A,B] = A∘B − B∘A` satisfies
+
+  `⟪[A,B]x, y⟫ = −⟪x, [A,B]y⟫`
+
+for all `x, y`.  Moving each operator across the inner product with `hA`, `hB`
+introduces two transpositions whose composite flips the sign: `⟪ABx,y⟫ = ⟪x,BAy⟫`
+and `⟪BAx,y⟫ = ⟪x,ABy⟫`, so the difference negates.  This anti-symmetry is the
+operator-level source of the purely-imaginary commutator expectation
+`re_inner_commutator_eq_zero`. -/
+theorem commutator_isAntisymmetric {A B : E →ₗ[𝕜] E} (hA : A.IsSymmetric)
+    (hB : B.IsSymmetric) (x y : E) :
+    inner 𝕜 ((A.comp B - B.comp A) x) y
+      = - inner 𝕜 x ((A.comp B - B.comp A) y) := by
+  simp only [LinearMap.sub_apply, LinearMap.comp_apply, inner_sub_left, inner_sub_right]
+  rw [hA (B x) y, hB x (A y), hB (A x) y, hA x (B y)]
+  ring
+
+/-- **`i[A,B]` is a symmetric (Hermitian) operator.**  For symmetric `A, B`, the
+operator `i·(A∘B − B∘A)` is symmetric:
+
+  `⟪(i[A,B])x, y⟫ = ⟪x, (i[A,B])y⟫`.
+
+This is the operator-theoretic heart of the uncertainty principle: while `A` and `B`
+need not commute, the scaled commutator `i[A,B]` is a bona fide observable, and it is
+*its* expectation (a real number) that lower-bounds the variance product.  The proof
+combines the anti-Hermiticity of the bare commutator
+(`commutator_isAntisymmetric`) with `conj i = −i` (`RCLike.conj_I`): the conjugate
+from `inner_smul_left` and the sign flip from anti-symmetry cancel to give symmetry.
+Over `ℝ` (`i = 0`) the operator is `0`, trivially symmetric. -/
+theorem commutator_smul_I_isSymmetric {A B : E →ₗ[𝕜] E} (hA : A.IsSymmetric)
+    (hB : B.IsSymmetric) :
+    ((RCLike.I : 𝕜) • (A.comp B - B.comp A)).IsSymmetric := by
+  intro x y
+  have hanti := commutator_isAntisymmetric hA hB x y
+  simp only [LinearMap.smul_apply, inner_smul_left, inner_smul_right]
+  rw [hanti, RCLike.conj_I]
+  ring
+
+/-- **The `i[A,B]` expectation is real — operator-symmetry proof.**  Because
+`i[A,B]` is a symmetric operator (`commutator_smul_I_isSymmetric`), its expectation
+at any state is real: `Im⟪ψ, (i[A,B])ψ⟫ = 0`.  This recovers the expectation-level
+fact `re_inner_commutator_eq_zero` (purely-imaginary bare commutator) as a one-line
+corollary of operator Hermiticity — a symmetric operator has real diagonal
+expectations because `⟪Cψ,ψ⟫ = ⟪ψ,Cψ⟫` while `⟪Cψ,ψ⟫ = conj⟪ψ,Cψ⟫`, forcing
+`conj z = z`. -/
+theorem inner_commutator_smul_I_isReal {A B : E →ₗ[𝕜] E} (hA : A.IsSymmetric)
+    (hB : B.IsSymmetric) (ψ : E) :
+    RCLike.im (inner 𝕜 ψ (((RCLike.I : 𝕜) • (A.comp B - B.comp A)) ψ)) = 0 := by
+  set C := (RCLike.I : 𝕜) • (A.comp B - B.comp A) with hC
+  have hsym := commutator_smul_I_isSymmetric hA hB
+  have heq : inner 𝕜 (C ψ) ψ = inner 𝕜 ψ (C ψ) := hsym ψ ψ
+  have hconj : inner 𝕜 (C ψ) ψ = (starRingEnd 𝕜) (inner 𝕜 ψ (C ψ)) :=
+    (inner_conj_symm (C ψ) ψ).symm
+  have hz : (starRingEnd 𝕜) (inner 𝕜 ψ (C ψ)) = inner 𝕜 ψ (C ψ) := by rw [← hconj, heq]
+  exact RCLike.conj_eq_iff_im.mp hz
+
 end CauchySchwarzIntegralOQ04
 
 #print axioms CauchySchwarzIntegralOQ04.gram_eq_iff_parallel
 #print axioms CauchySchwarzIntegralOQ04.inner_commutator_eq_ofReal_mul_I
 #print axioms CauchySchwarzIntegralOQ04.norm_inner_commutator_eq
+#print axioms CauchySchwarzIntegralOQ04.commutator_smul_I_isSymmetric
+#print axioms CauchySchwarzIntegralOQ04.inner_commutator_smul_I_isReal
