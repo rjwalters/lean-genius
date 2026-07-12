@@ -555,4 +555,47 @@ theorem iterate_lipschitz (f : ℝ → ℝ) (L : ℝ) (hL0 : 0 ≤ L)
       _ ≤ L * (L ^ n * |x - y|) := mul_le_mul_of_nonneg_left ih hL0
       _ = L ^ (n + 1) * |x - y| := by ring
 
+/-! ### The fundamental (Ostrowski) a posteriori estimate at an arbitrary point
+
+Every a posteriori bound above is stated along the iteration `xₙ₊₁ = f xₙ`, controlling
+`|xₙ − x*|` by the observable increment `|xₙ₊₁ − xₙ|`. The underlying inequality holds at
+*any* single point, with no sequence structure: for arbitrary `x`,
+
+    |x − x*| ≤ |x − f x| / (1 − L).
+
+This is the fundamental error estimate (Ostrowski): one residual evaluation `|x − f x|`
+bounds the whole distance to the fixed point. `aposteriori_estimate` is its specialization
+to `x = xₙ` (then `f x = xₙ₊₁`), and `apriori_estimate` at `n = 0` is the same bound along
+a launched sequence; stating it pointwise frees it from the `x : ℕ → ℝ` scaffold. Proof:
+`|x − x*| ≤ |x − f x| + |f x − f x*|` (triangle, `x* = f x*`) `≤ |x − f x| + L|x − x*|`. -/
+
+/-- **Fundamental (Ostrowski) error estimate at an arbitrary point.**  For a contraction
+    with `L < 1` and any fixed point `x*`, every point `x` satisfies
+    `|x − x*| ≤ |x − f x| / (1 − L)`: a single residual `|x − f x|` bounds the distance to
+    `x*`, with no iteration sequence required.  The pointwise form the iterate a posteriori
+    bounds `aposteriori_estimate` specialize. -/
+theorem fundamental_error_estimate (f : ℝ → ℝ) (L : ℝ) (hL1 : L < 1)
+    (hf : ∀ x y, |f x - f y| ≤ L * |x - y|)
+    (xstar : ℝ) (hfp : f xstar = xstar) (x : ℝ) :
+    |x - xstar| ≤ |x - f x| / (1 - L) := by
+  have hpos : (0 : ℝ) < 1 - L := by linarith
+  have hstep : |f x - xstar| ≤ L * |x - xstar| := by
+    have h := hf x xstar
+    rw [hfp] at h
+    exact h
+  have ht : |x - xstar| ≤ |x - f x| + |f x - xstar| := abs_sub_le _ _ _
+  rw [le_div_iff₀ hpos]
+  nlinarith [ht, hstep]
+
+/-- **Unconditional fundamental error estimate.**  With no assumed fixed point: a
+    contraction on `ℝ` has a fixed point `x*` (the unique one) for which
+    `|x − x*| ≤ |x − f x| / (1 − L)` holds at *every* point `x`.  The hypothesis-free form
+    of `fundamental_error_estimate`, produced by threading `exists_fixed_point`; a single
+    residual evaluation certifies proximity to `x*` knowing only `f` and `L`. -/
+theorem fundamental_error_estimate_unconditional (f : ℝ → ℝ) (L : ℝ) (hL0 : 0 ≤ L)
+    (hL1 : L < 1) (hf : ∀ x y, |f x - f y| ≤ L * |x - y|) :
+    ∃ xstar : ℝ, f xstar = xstar ∧ ∀ x, |x - xstar| ≤ |x - f x| / (1 - L) := by
+  obtain ⟨xstar, hfp⟩ := exists_fixed_point f L hL0 hL1 hf
+  exact ⟨xstar, hfp, fun x => fundamental_error_estimate f L hL1 hf xstar hfp x⟩
+
 end BrouwerOQ02OQ02OQ01
