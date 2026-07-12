@@ -556,6 +556,41 @@ theorem commonNbrs_subset_of_le {G H : SimpleGraph V} [DecidableRel G.Adj] [Deci
   simp only [commonNbrs, Finset.mem_inter, SimpleGraph.mem_neighborFinset] at hv ⊢
   exact ⟨hle hv.1, hle hv.2⟩
 
+/-- **`K_{2,t}`-containment via the codegree Finset.**  The forbidden-subgraph definition
+`HasK2t` (a distinct pair with a witness set `T` of `≥ t` common neighbours) is equivalent
+to the concrete codegree statement `∃ a ≠ b, t ≤ (commonNbrs G a b).card`.  Forward: any
+witness `T` embeds into `commonNbrs G a b` (`mem_commonNbrs`), so `t ≤ |T| ≤ |commonNbrs|`;
+backward: `commonNbrs G a b` *is* a valid witness set.  This is the bridge between the
+abstract `HasK2t` used in the monotonicity API and the concrete `(commonNbrs · ·).card`
+codegree quantity the Kővári–Sós–Turán counting bounds are stated in — it internalises the
+ad-hoc packing done inside `commonNbrs_card_lt_of_free`. -/
+theorem hasK2t_iff_exists_commonNbrs (G : SimpleGraph V) [DecidableRel G.Adj] (t : ℕ) :
+    HasK2t G t ↔ ∃ a b : V, a ≠ b ∧ t ≤ (commonNbrs G a b).card := by
+  constructor
+  · rintro ⟨a, b, T, hab, htc, hadj⟩
+    refine ⟨a, b, hab, le_trans htc (Finset.card_le_card ?_)⟩
+    intro y hy
+    rw [mem_commonNbrs]
+    exact hadj y hy
+  · rintro ⟨a, b, hab, hcard⟩
+    refine ⟨a, b, commonNbrs G a b, hab, hcard, fun y hy => ?_⟩
+    rw [mem_commonNbrs] at hy
+    exact hy
+
+/-- **The `t = 0` base case: `K_{2,0}` is contained iff the graph has ≥ 2 vertices.**
+`HasK2t G 0` asks only for a distinct pair `a ≠ b` (the empty common-neighbour set `T = ∅`
+vacuously satisfies the `0 ≤ |T|` and adjacency requirements), so it holds exactly when `V`
+is `Nontrivial`.  This is the bottom of the antitone-in-`t` tower (`hasK2t_mono`): every
+graph on two or more vertices contains `K_{2,0}`, and the content only begins at `t ≥ 1`
+where actual common neighbours are required. -/
+theorem hasK2t_zero_iff (G : SimpleGraph V) : HasK2t G 0 ↔ Nontrivial V := by
+  rw [nontrivial_iff]
+  constructor
+  · rintro ⟨a, b, _, hab, -, -⟩
+    exact ⟨a, b, hab⟩
+  · rintro ⟨a, b, hab⟩
+    exact ⟨a, b, ∅, hab, Nat.zero_le _, by simp⟩
+
 /-- **K_{2,t}-free edge bound.**  A genuinely K_{2,t}-free nonempty graph
 (`t ≥ 1`) satisfies the classical Kővári–Sós–Turán bound
 
