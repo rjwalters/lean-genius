@@ -1121,4 +1121,24 @@ above.
 -- #print axioms kronecker_quadratic_reciprocity
 -- #print axioms kronecker_reciprocity_one_mod_four
 
+/-- **Value at the modulus `n = -1` (definitional bridge).**  The `n = -1` branch of
+`kronecker` is exactly the sign character `kroneckerNeg1`: the symbol `(a ∣ -1)` equals
+`kroneckerNeg1 a`.  This exposes as a named theorem the boundary case only implicit in
+the definition, alongside the existing `kronecker_one_right` (`(a ∣ 1) = 1`). -/
+theorem kronecker_neg_one_right_eq_kroneckerNeg1 (a : ℤ) :
+    kronecker a (-1) = kroneckerNeg1 a := by
+  simp [kronecker]
+
+/-- **The symbol at `n = -1` is the sign character.**  `(a ∣ -1) = 1` for `a ≥ 0` and
+`-1` for `a < 0` — the archimedean/real place of the Kronecker symbol.  Completes the
+boundary-value table `n = 0, 1, -1`:  `kronecker_one_right` gives `(a ∣ 1) = 1`, and
+this gives the sign at `n = -1`, matching the `sign(n)` factor of the normal form
+`kronecker_eq_sign_jacobi`. -/
+theorem kronecker_neg_one_right (a : ℤ) :
+    kronecker a (-1) = if 0 ≤ a then 1 else -1 := by
+  rw [kronecker_neg_one_right_eq_kroneckerNeg1]
+  rcases le_or_lt 0 a with h | h
+  · rw [if_pos h, kroneckerNeg1_nonneg a h]
+  · rw [if_neg (not_le.mpr h), kroneckerNeg1_neg a h]
+
 end KroneckerSymbol
