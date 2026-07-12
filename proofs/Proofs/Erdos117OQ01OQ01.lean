@@ -236,4 +236,52 @@ theorem exponentialBehaviorCorrect_base_unique {c₁ c₂ : ℝ} (hc₁ : c₁ >
       (behavior_correct_implies_base c₂ hc₂ h₂)
   exact Real.log_injOn_pos (Set.mem_Ioi.mpr (by linarith)) (Set.mem_Ioi.mpr (by linarith)) hlog
 
+/-! ## The exponential base is localized to Pyber's window -/
+
+/-- **The exponential base lies in the Pyber window `[c₁, c₂]`.**  Pyber's bounds
+(`pyber_bounds`) trap `h` between `c₁ⁿ` and `c₂ⁿ` (with `1 < c₁ < c₂`), so the normalized
+growth rate stays in `[log c₁, log c₂]` for every `n ≥ 1`.  If `h` moreover exhibits the
+corrected exponential behavior at some base `c > 1`, then `growthRate → log c`
+(`behavior_correct_implies_base`), and a limit of a sequence confined to `[log c₁, log c₂]`
+stays in that interval — hence `c₁ ≤ c ≤ c₂`.
+
+The (hypothetical) exponential base is therefore not arbitrary: it is pinned to the explicit
+interval `[c₁, c₂]` furnished by Pyber's theorem.  This ties the abstract invariant `c` of
+`exponentialBehaviorCorrect_base_unique` to concrete constants — and, contrapositively, no `h`
+can exhibit exponential behavior at a base outside its own Pyber window. -/
+theorem base_mem_pyber_window (c : ℝ) (hc : c > 1)
+    (hbehav : ExponentialBehaviorCorrect c) :
+    ∃ c₁ c₂ : ℝ, 1 < c₁ ∧ c₁ < c₂ ∧ c₁ ≤ c ∧ c ≤ c₂ := by
+  obtain ⟨c₁, c₂, hc₁, hc₁c₂, hbounds⟩ := pyber_bounds
+  have hconv : Tendsto growthRate atTop (𝓝 (Real.log c)) :=
+    behavior_correct_implies_base c hc hbehav
+  -- The growth rate is confined to `[log c₁, log c₂]` for every `n ≥ 1`.
+  have hev_l : ∀ᶠ n : ℕ in atTop, Real.log c₁ ≤ growthRate n := by
+    refine Filter.eventually_atTop.mpr ⟨1, fun n hn => ?_⟩
+    have hn_pos : (0 : ℝ) < n := Nat.cast_pos.mpr (by omega)
+    rw [growthRate_eq' n hn, le_div_iff₀ hn_pos]
+    have hcpow : (c₁ : ℝ) ^ n ≤ (h n : ℝ) := by exact_mod_cast (hbounds n hn).1
+    calc Real.log c₁ * ↑n = ↑n * Real.log c₁ := mul_comm _ _
+      _ = Real.log (c₁ ^ n) := (Real.log_pow c₁ n).symm
+      _ ≤ Real.log ↑(h n) := Real.log_le_log (by positivity) hcpow
+  have hev_u : ∀ᶠ n : ℕ in atTop, growthRate n ≤ Real.log c₂ := by
+    refine Filter.eventually_atTop.mpr ⟨1, fun n hn => ?_⟩
+    have hn_pos : (0 : ℝ) < n := Nat.cast_pos.mpr (by omega)
+    rw [growthRate_eq' n hn, div_le_iff₀ hn_pos]
+    have hcpow : (h n : ℝ) ≤ (c₂ : ℝ) ^ n := by exact_mod_cast (hbounds n hn).2
+    calc Real.log ↑(h n) ≤ Real.log (c₂ ^ n) := Real.log_le_log (h_pos_real n hn) hcpow
+      _ = ↑n * Real.log c₂ := by rw [Real.log_pow]
+      _ = Real.log c₂ * ↑n := mul_comm _ _
+  -- Pass to the limit: `log c ∈ [log c₁, log c₂]`.
+  have hlog_l : Real.log c₁ ≤ Real.log c := ge_of_tendsto hconv hev_l
+  have hlog_u : Real.log c ≤ Real.log c₂ := le_of_tendsto hconv hev_u
+  -- Exponentiate back through the strictly positive bases.
+  refine ⟨c₁, c₂, hc₁, hc₁c₂, ?_, ?_⟩
+  · calc c₁ = Real.exp (Real.log c₁) := (Real.exp_log (by linarith)).symm
+      _ ≤ Real.exp (Real.log c) := Real.exp_le_exp.mpr hlog_l
+      _ = c := Real.exp_log (by linarith)
+  · calc c = Real.exp (Real.log c) := (Real.exp_log (by linarith)).symm
+      _ ≤ Real.exp (Real.log c₂) := Real.exp_le_exp.mpr hlog_u
+      _ = c₂ := Real.exp_log (by linarith)
+
 end Erdos117OQ01OQ01
