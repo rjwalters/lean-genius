@@ -548,6 +548,39 @@ theorem le_sublevelSup'_of_mem {m : ℝ} (hm : 2 ≤ m) (hm2 : m < 2 * Real.sqrt
   rw [← hmeas]
   exact le_iSup_of_le f (le_iSup_of_le hf le_rfl)
 
+/-- **The distinct-root measure is strictly monotone in `d`.**  As `d` increases
+    over `[0, 1)` the sublevel measure `2√(d+1)` of `X² − d` strictly increases: the
+    prose "sweeps continuously from `2` up towards `2√2`" is made precise as strict
+    monotonicity, so distinct values of `d` give genuinely distinct measures (the family
+    `X² − d` is a strictly monotone parametrisation of `[2, 2√2)`). -/
+theorem sublevelMeasure_Xsq_sub_C_strictMono {d₁ d₂ : ℝ}
+    (hd1 : 0 ≤ d₁) (hlt : d₁ < d₂) (hd2 : d₂ < 1) :
+    sublevelMeasure (X ^ 2 - C d₁) < sublevelMeasure (X ^ 2 - C d₂) := by
+  rw [sublevelMeasure_Xsq_sub_C hd1 (by linarith),
+    sublevelMeasure_Xsq_sub_C (by linarith) hd2]
+  have hpos : (0 : ℝ) < 2 * Real.sqrt (d₂ + 1) := by
+    have := Real.sqrt_pos.mpr (show (0 : ℝ) < d₂ + 1 by linarith)
+    linarith
+  rw [ENNReal.ofReal_lt_ofReal_iff hpos]
+  have hsqrt : Real.sqrt (d₁ + 1) < Real.sqrt (d₂ + 1) :=
+    Real.sqrt_lt_sqrt (by linarith) (by linarith)
+  linarith
+
+/-- **The full attained faithful spectrum is the closed interval `[2, 2√2]`.**  The
+    half-open version `exists_faithful_sublevelMeasure_eq` realises every `m ∈ [2, 2√2)`
+    by a distinct-root quadratic `X² − (m²/4 − 1)`; here we add the closed right endpoint
+    `m = 2√2`, realised by the extremal `q = X² − 1` (which sits at the limiting `d = 1`,
+    where the sublevel set loses the single point `0` yet keeps measure `2√2`).  Thus every
+    value in the *closed* interval `[2, 2√2]` is an attained faithful sublevel measure —
+    the complete elementary lower spectrum, endpoints included. -/
+theorem exists_faithful_sublevelMeasure_eq_closed {m : ℝ} (hm : 2 ≤ m)
+    (hm2 : m ≤ 2 * Real.sqrt 2) :
+    ∃ f : Polynomial ℝ, MonicRealRootedIn01' f ∧
+      sublevelMeasure f = ENNReal.ofReal m := by
+  rcases lt_or_eq_of_le hm2 with hlt | heq
+  · exact exists_faithful_sublevelMeasure_eq hm hlt
+  · exact ⟨q, quadratic_admissible', by rw [sublevelMeasure_quadratic, heq]⟩
+
 /-! ### The faithful and literal extremal objects are ordered
 
 The faithful predicate `MonicRealRootedIn01'` is *stronger* than `MonicRealRootedIn01`
