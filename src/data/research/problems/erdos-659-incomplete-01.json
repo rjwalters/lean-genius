@@ -29,24 +29,30 @@
     }
   },
   "knowledge": {
-    "progressSummary": "AT AXIOMATIZED TERMINUS. All 5 Erdos659 files sorry-free (the 'incomplete-01/1 sorry' title is a stale false positive — grep matches only docstring 'sorry-free'; real sorry resolved 2026-06-25). Remaining assumptions = deep Landau density axioms, out of reach in Mathlib 4.26. researcher-3 (2026-07-09) added isRepresented_iff_isNorm to Erdos659OQ05.lean: represented integers = norm image of ℤ[√-2] (the conceptual source of multiplicative closure). 1 theorem, 0 axioms, 0 sorries. UNVERIFIED-by-build (docker containerd meta.db I/O corruption fleet-wide); high elaboration confidence (rintro + existing Q_eq_zsqrtd_norm, structure eta on Zsqrtd).",
+    "progressSummary": "AT AXIOMATIZED TERMINUS (deep Landau/Moree-Osburn axioms). 2026-07-12 (researcher-5): turned the previously prose-only Chebyshev-vs-Euclidean metric caveat into 4 machine-checked lemmas (0 axioms) and introduced euclSq, the correct Euclidean squared distance, proving it restricts to the lattice form x²+2y² and giving the first metric-correct unit-square 2-distance witness. This is a soundness/rigor contribution on the geometric layer feeding moreeOsburnWorks, NOT a discharge of the deep axioms.",
     "builtItems": [
       "latticeDistSq_symm / latticeDistSq_nonneg / latticeDistSq_eq_zero_iff in Erdos659Problem.lean (positive-definiteness of x²+2y²)",
       "Verified fourPointProperty_from_avoiding_configs (0 sorries) with explicit lower-bound hypothesis",
       "sq_representable / representable_pow / two_pow_representable: closure of the x²+2y² representable set under squares and powers; completes the 'every power of 2 is representable' claim from the representable_mul docstring.",
-      "isRepresented_iff_isNorm (researcher-3, 2026-07-09) in Erdos659OQ05.lean: IsRepresented n ↔ ∃ z:ℤ√(-2), Zsqrtd.norm z = n — identifies represented integers with the norm image of ℤ[√-2] (conceptual reason for isRepresented_mul: norm is a monoid hom)."
+      "isRepresented_iff_isNorm (researcher-3, 2026-07-09) in Erdos659OQ05.lean: IsRepresented n ↔ ∃ z:ℤ√(-2), Zsqrtd.norm z = n — identifies represented integers with the norm image of ℤ[√-2] (conceptual reason for isRepresented_mul: norm is a monoid hom).",
+      "euclSq (p q : ℝ×ℝ) := (p.1-q.1)^2+(p.2-q.2)^2 — the correct Euclidean squared distance, added to Erdos659Problem.lean (~line 724)",
+      "euclSq_latticePoint: euclSq(latticePoint a₁ b₁)(latticePoint a₂ b₂) = latticeDistSq a₁ b₁ a₂ b₂ — the general Euclidean metric restricts to the lattice form x²+2y², explaining why the latticeDistSq API is Euclidean-faithful while ambient dist is not",
+      "unitSquare_sides / unitSquare_diagonals: the unit square realises exactly 2 Euclidean distances (sides²=1, diagonals²=2) — first metric-correct concrete 2-distance square witness",
+      "chebyshev_ne_euclidean_distinctness: ∃ p q r, dist p q = dist p r ∧ euclSq p q ≠ euclSq p r — verified proof the sup metric conflates distances Euclidean separates. All 4 thms 0 axioms beyond propext/Classical.choice/Quot.sound, independent of moreeOsburnWorks."
     ],
     "insights": [
       "The original fourPointProperty_from_avoiding_configs was false under the product/Chebyshev metric on ℝ×ℝ: unit-square corners (0,0),(1,0),(0,1),(1,1) are mutually equidistant (sup-distance 1), so distinctDistances=1 while avoiding every named 2-distance config. A geometric lower bound (2 ≤ distinctDistances on 4-subsets) is required and now explicit.",
       "The defining form x²+2y² is positive-definite over ℤ (latticeDistSq_eq_zero_iff), so distinct lattice points have positive squared distance — verified independently of the deep axiom.",
-      "The 'incomplete-01 (1 sorry)' label is STALE/FALSE: all 5 Erdos659 files (Problem/OQ01/OQ01OQ02/OQ05/OQ06) are genuinely sorry-free (grep 'sorry' matches only docstring 'sorry-free'). The real sorry was resolved 2026-06-25 (researcher-10). Remaining assumptions are deep Landau density axioms (moreeOsburnWorks, uniform_landau_lower_bound, moreeosburn_upper_bound) — out of reach in Mathlib."
+      "The 'incomplete-01 (1 sorry)' label is STALE/FALSE: all 5 Erdos659 files (Problem/OQ01/OQ01OQ02/OQ05/OQ06) are genuinely sorry-free (grep 'sorry' matches only docstring 'sorry-free'). The real sorry was resolved 2026-06-25 (researcher-10). Remaining assumptions are deep Landau density axioms (moreeOsburnWorks, uniform_landau_lower_bound, moreeosburn_upper_bound) — out of reach in Mathlib.",
+      "The distinctDistances/isConfiguration/fourPointProperty layer is phrased through Mathlib dist on ℝ×ℝ = the SUP (Chebyshev) metric, NOT Euclidean. This is now a MACHINE-CHECKED soundness caveat: on the unit square (0,0),(1,0),(1,1),(0,1) a side and a diagonal from (0,0) have EQUAL Chebyshev length 1 (chebyshev_conflates_square_side_and_diagonal) but Euclidean squared lengths 1 vs 2 (euclid_separates). So the dist-based distinct-distance count is not the Euclidean count (chebyshev_ne_euclidean_distinctness). A faithful Euclidean two-distance classification must be phrased over euclSq, not dist."
     ],
     "mathlibGaps": [
       "Landau (1908) asymptotic count of integers representable as x²+2y² (~N/√log N) — not in Mathlib 4.26; blocks eliminating moreeOsburnWorks"
     ],
     "nextSteps": [
       "Formalize Landau count for x²+2y² to discharge moreeOsburnWorks (major analytic NT project)",
-      "Replace the three True placeholders in isConfiguration (isoTrap1/isoTrap2/kite) with genuine Euclidean characterizations and prove the 2-distance classification"
+      "Replace the three True placeholders in isConfiguration (isoTrap1/isoTrap2/kite) with genuine Euclidean characterizations and prove the 2-distance classification",
+      "Reformulate isConfiguration (.square/.rhombus/.pentagonSubset and the isoTrap/kite placeholders) over euclSq instead of ambient dist, then attempt the Euclidean 4-point 2-distance classification. The dist-based fourPointProperty_from_avoiding_configs currently only exploits the card=4 ∧ dist=2 conjuncts; a euclSq version would need the genuine geometric characterizations."
     ]
   },
   "tags": [
@@ -65,7 +71,7 @@
     "mathlib": []
   },
   "started": "2026-04-03T12:23:52.516Z",
-  "lastUpdate": "2026-07-08",
+  "lastUpdate": "2026-07-12",
   "significance": 7,
   "tractability": 6
 }
