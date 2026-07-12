@@ -2309,13 +2309,17 @@ The single decidable fact `window_k28_admissible_deficiency_le_nine` records exa
 — for each `m` in the window, either a small prime divides `C(m,28)` or `deficiency m 28 ≤ 9`
 — and closes the slice.
 
-This is the true terminus of the elementary ladder: `k = 28` is the slice that *contains*
+This is the *record* slice of the elementary ladder: `k = 28` is the slice that *contains*
 the record, and the argument works precisely because the location window isolates the
 record as the **unique** admissible pair, whose deficiency is the record value `9`.  For
-`k ≥ 29` the record pair is gone, no analogous unique-admissible-pair phenomenon is known,
-and the remaining universal bound is the irreducibly analytic Erdős–Lacampagne–Selfridge
-input.  The elementary resolution of OQ-02 now covers **all `k ≤ 28`**, moving the open
-frontier to `k ≥ 29`.  As before the `(k!)²` factorial method is powerless here
+`k ≥ 29` the record pair is gone, so no *unique-admissible-pair* phenomenon is available;
+one might expect the remaining universal bound to require the analytic Erdős–Lacampagne–
+Selfridge input.  Section XXX below shows the window-check engine nonetheless still closes
+`k = 29` computationally: across the (larger) `k = 29` window every admissible pair — not
+just a single record — has deficiency `≤ 9`, verified by one `native_decide`.  So the
+elementary resolution of OQ-02 now covers **all `k ≤ 29`** (see
+`deficiency_le_nine_of_k_le_29`), moving the open frontier to `k ≥ 30`.  As before the
+`(k!)²` factorial method is powerless here
 (`sharp_bound_permits_deficiency_ten` permits deficiency `10` for every `k ≥ 16`); only the
 window-check refinement of the *location* bound closes the slice.  The structural results
 remain `ofReduceBool`-free; only the concrete window fact uses `native_decide`. -/
@@ -2430,4 +2434,94 @@ theorem maximalDeficiencyIs_nine_iff_kGe29 :
   · intro h n k hv
     by_cases hk : k ≤ 28
     · exact deficiency_le_nine_of_k_le_28 hv.1 hv.2 hk
+    · exact h n k (by omega) hv
+
+/-! ### Section XXX: the window check closes `k = 29`
+
+The `k = 28` slice was the record slice; for `k = 29` the record pair `(284, 28)` is
+gone, but the *window-check* engine still applies computationally.  A deficiency `≥ 10`
+at `k = 29` forces `(n - 28)^{10} ≤ 29!`, and `29! < 1244^{10}`
+(`factorial_29_lt_1244_pow_ten`), so `n - 28 < 1244`, i.e. `n ≤ 1271`.  With the floor
+`n ≥ 58 (= 2·29)` this leaves the finite window `n ∈ {58, …, 1271}` (1214 values), and a
+single `native_decide` verifies that across the whole window every admissible pair has
+deficiency `≤ 9` — so the slice closes.  This pushes the elementary resolution of OQ-02 to
+**all `k ≤ 29`**, one slice past the record.  As always only the concrete window fact uses
+`native_decide` (⇒ `Lean.ofReduceBool`); the structural engine
+`deficiency_le_nine_of_location_window` is `ofReduceBool`-free. -/
+
+/-- `29! < 1244^10`, the numeric input pinning the `k = 29` window: `(n-28)^{10} ≤ 29!`
+forces `n - 28 < 1244`.  `ofReduceBool`-free (kernel `decide`). -/
+theorem factorial_29_lt_1244_pow_ten : Nat.factorial 29 < 1244 ^ 10 := by decide
+
+/-- **The `k = 29` window check.**  For every `m` in the location window `58 ≤ m ≤ 1271`
+either some prime `p ∈ {2,3,5,7,11,13,17,19,23,29}` (each `≤ 29`) divides `C(m,29)` — so
+`m` is inadmissible — or `deficiency m 29 ≤ 9`.  Uses `native_decide` (⇒ `Lean.ofReduceBool`):
+computing `C(m,29)` and `deficiency m 29` for the 1214 values is infeasible for kernel
+`decide`. -/
+theorem window_k29_admissible_deficiency_le_nine :
+    ∀ m ∈ Finset.Icc 58 1271,
+      (2 ∣ Nat.choose m 29 ∨ 3 ∣ Nat.choose m 29 ∨ 5 ∣ Nat.choose m 29 ∨
+       7 ∣ Nat.choose m 29 ∨ 11 ∣ Nat.choose m 29 ∨ 13 ∣ Nat.choose m 29 ∨
+       17 ∣ Nat.choose m 29 ∨ 19 ∣ Nat.choose m 29 ∨ 23 ∣ Nat.choose m 29 ∨
+       29 ∣ Nat.choose m 29)
+      ∨ deficiency m 29 ≤ 9 := by
+  native_decide
+
+/-- Every *admissible* pair in the `k = 29` location window has deficiency `≤ 9`.  From the
+window check: an admissible `m` cannot have any prime `≤ 29` dividing `C(m,29)`, so the
+divisibility disjunction is impossible and `deficiency m 29 ≤ 9` remains. -/
+theorem admissible_k29_window_deficiency_le_nine {m : ℕ} (hlo : 58 ≤ m) (hhi : m ≤ 1271)
+    (h : NoSmallPrimeFactors m 29) : deficiency m 29 ≤ 9 := by
+  have hm : m ∈ Finset.Icc 58 1271 := Finset.mem_Icc.mpr ⟨hlo, hhi⟩
+  rcases window_k29_admissible_deficiency_le_nine m hm with hdvd | hdef
+  · exfalso
+    rcases hdvd with hd | hd | hd | hd | hd | hd | hd | hd | hd | hd
+    · have := h 2 Nat.prime_two hd; omega
+    · have := h 3 Nat.prime_three hd; omega
+    · have := h 5 (by norm_num) hd; omega
+    · have := h 7 (by norm_num) hd; omega
+    · have := h 11 (by norm_num) hd; omega
+    · have := h 13 (by norm_num) hd; omega
+    · have := h 17 (by norm_num) hd; omega
+    · have := h 19 (by norm_num) hd; omega
+    · have := h 23 (by norm_num) hd; omega
+    · have := h 29 (by norm_num) hd; omega
+  · exact hdef
+
+/-- **The location bound closes `k = 29`.**  A one-line instantiation of the window-check
+engine `deficiency_le_nine_of_location_window` at `k = 29, M = 1244`.  This is the first
+slice *past* the record pair — the window is no longer inhabited by a record, yet the
+computational check still caps every admissible pair's deficiency at `9`. -/
+theorem deficiency_le_nine_of_k_eq_29 {n : ℕ} (hn : 58 ≤ n)
+    (h : NoSmallPrimeFactors n 29) : deficiency n 29 ≤ 9 :=
+  deficiency_le_nine_of_location_window (k := 29) (M := 1244) (by omega) h
+    factorial_29_lt_1244_pow_ten
+    (fun m hlo hhi hadm => admissible_k29_window_deficiency_le_nine (by omega) (by omega) hadm)
+
+/-- **Elementary resolution of OQ-02 for all `k ≤ 29`.**  Combines the `k ≤ 28` reach
+(`deficiency_le_nine_of_k_le_28`) with the window-check bound at `k = 29`
+(`deficiency_le_nine_of_k_eq_29`).  Extends the record slice by one. -/
+theorem deficiency_le_nine_of_k_le_29 {n k : ℕ} (hn : 2 * k ≤ n)
+    (h : NoSmallPrimeFactors n k) (hk : k ≤ 29) : deficiency n k ≤ 9 := by
+  by_cases hk28 : k ≤ 28
+  · exact deficiency_le_nine_of_k_le_28 hn h hk28
+  · have hk29 : k = 29 := by omega
+    subst hk29
+    exact deficiency_le_nine_of_k_eq_29 (by omega) h
+
+/-- **Sharpened reduction to `k ≥ 30`.**  `MaximalDeficiencyIs 9` is equivalent to the open
+universal bound restricted to `k ≥ 30`: the cases `k ≤ 29` are now discharged, the `k = 29`
+slice by the window-check location bound `deficiency_le_nine_of_k_le_29`.  Strictly sharper
+than `maximalDeficiencyIs_nine_iff_kGe29`: the window-check engine closes `k = 29`
+computationally even though no record pair survives there, so the remaining open content of
+OQ-02 lives entirely at `k ≥ 30`. -/
+theorem maximalDeficiencyIs_nine_iff_kGe30 :
+    MaximalDeficiencyIs 9 ↔
+      ∀ n k, 30 ≤ k → ValidDeficiencyExample n k → deficiency n k ≤ 9 := by
+  rw [maximalDeficiencyIs_nine_iff_upperBound]
+  constructor
+  · intro h n k _ hv; exact h n k hv
+  · intro h n k hv
+    by_cases hk : k ≤ 29
+    · exact deficiency_le_nine_of_k_le_29 hv.1 hv.2 hk
     · exact h n k (by omega) hv
