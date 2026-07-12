@@ -931,6 +931,38 @@ theorem inner_commutator_smul_I_isReal {A B : E →ₗ[𝕜] E} (hA : A.IsSymmet
   have hz : (starRingEnd 𝕜) (inner 𝕜 ψ (C ψ)) = inner 𝕜 ψ (C ψ) := by rw [← hconj, heq]
   exact RCLike.conj_eq_iff_im.mp hz
 
+/-- **The anticommutator `{A,B} = A∘B + B∘A` is symmetric.**  For symmetric `A, B` the
+anticommutator is a genuine symmetric (Hermitian) operator: `⟪{A,B}x, y⟫ = ⟪x, {A,B}y⟫`.
+Unlike the commutator (which is *anti*-symmetric, `commutator_isAntisymmetric`, and needs
+the `i` twist to become Hermitian), the anticommutator is Hermitian on the nose.  Its
+expectation is the symmetrized covariance `Re⟪(A−a)ψ,(B−b)ψ⟫` that appears as the extra
+non-negative term in the Schrödinger refinement of the Robertson bound.  Proof is the
+sign-flipped twin of `commutator_isAntisymmetric`, moving each factor across the inner
+product by `IsSymmetric`. -/
+theorem anticommutator_isSymmetric {A B : E →ₗ[𝕜] E} (hA : A.IsSymmetric)
+    (hB : B.IsSymmetric) : (A.comp B + B.comp A).IsSymmetric := by
+  intro x y
+  simp only [LinearMap.add_apply, LinearMap.comp_apply, inner_add_left, inner_add_right]
+  rw [hA (B x) y, hB x (A y), hB (A x) y, hA x (B y)]
+  ring
+
+/-- **The anticommutator expectation is real.**  Because `{A,B}` is a symmetric operator
+(`anticommutator_isSymmetric`), its diagonal expectation is real: `Im⟪ψ, {A,B}ψ⟫ = 0`.
+The Hermitian counterpart of `inner_commutator_smul_I_isReal` — the symmetrized covariance
+`Re⟪ψ,{A,B}ψ⟫` carries the entire expectation, with no imaginary part.  Same one-line
+argument: a symmetric operator satisfies `⟪Cψ,ψ⟫ = ⟪ψ,Cψ⟫ = conj⟪ψ,Cψ⟫`, forcing the
+expectation to equal its own conjugate. -/
+theorem inner_anticommutator_isReal {A B : E →ₗ[𝕜] E} (hA : A.IsSymmetric)
+    (hB : B.IsSymmetric) (ψ : E) :
+    RCLike.im (inner 𝕜 ψ ((A.comp B + B.comp A) ψ)) = 0 := by
+  set C := A.comp B + B.comp A with hC
+  have hsym := anticommutator_isSymmetric hA hB
+  have heq : inner 𝕜 (C ψ) ψ = inner 𝕜 ψ (C ψ) := hsym ψ ψ
+  have hconj : inner 𝕜 (C ψ) ψ = (starRingEnd 𝕜) (inner 𝕜 ψ (C ψ)) :=
+    (inner_conj_symm (C ψ) ψ).symm
+  have hz : (starRingEnd 𝕜) (inner 𝕜 ψ (C ψ)) = inner 𝕜 ψ (C ψ) := by rw [← hconj, heq]
+  exact RCLike.conj_eq_iff_im.mp hz
+
 /-! ## Saturation of the operator-level Robertson inequality
 
     The file characterizes saturation of the *abstract* Cauchy–Schwarz step
