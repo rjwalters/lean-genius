@@ -149,6 +149,33 @@ theorem jacobiCount_two_pow_const {j k : ℕ} (hj : 1 ≤ j) (hk : 1 ≤ k) :
     jacobiCount (2 ^ j) = jacobiCount (2 ^ k) := by
   rw [jacobiCount_two_pow hj, jacobiCount_two_pow hk]
 
+/-- **Odd prime powers (0-axiom, general).** For an odd prime `p` every power `p^k`
+is odd, so the `4 ∤ d` filter is vacuous and Jacobi's count is `8·σ(p^k)`; since the
+divisors of `p^k` are exactly `1, p, …, p^k`, this is the finite geometric sum
+`jacobiCount (p^k) = 8·Σ_{i=0}^{k} p^i`.  This is the missing prime-power case that
+sits between `jacobiCount_prime` (`k = 1`, giving `8·(p+1)`) and `jacobiCount_two_pow`
+(`p = 2`, giving the constant `24`).  Together with the multiplicativity of the
+normalized count `r₄/8 = Σ_{d|n, 4∤d} d` (`jacobiCount_mul_coprime`), the values on
+prime powers determine `jacobiCount` on every `n` from its factorization. -/
+theorem jacobiCount_odd_prime_pow {p : ℕ} (hp : p.Prime) (hodd : Odd p) (k : ℕ) :
+    jacobiCount (p ^ k) = 8 * ∑ i ∈ Finset.range (k + 1), p ^ i := by
+  rw [jacobiCount_odd hodd.pow, Nat.sum_divisors_prime_pow hp]
+
+/-- **Geometric closed form for odd prime powers (0-axiom, general).** Summing the
+geometric series `Σ_{i=0}^{k} p^i = (p^{k+1} − 1)/(p − 1)` (valid since an odd prime
+has `p ≥ 2`) turns `jacobiCount_odd_prime_pow` into the textbook divisor-sum closed
+form `jacobiCount (p^k) = 8·(p^{k+1} − 1)/(p − 1)`.  For `k = 1` this recovers
+`jacobiCount_prime`'s `8·(p+1) = 8·(p²−1)/(p−1)`. -/
+theorem jacobiCount_odd_prime_pow_geom {p : ℕ} (hp : p.Prime) (hodd : Odd p) (k : ℕ) :
+    jacobiCount (p ^ k) = 8 * ((p ^ (k + 1) - 1) / (p - 1)) := by
+  rw [jacobiCount_odd_prime_pow hp hodd, Nat.geomSum_eq hp.two_le (k + 1)]
+
+/-- **Prime-power anchor (0-axiom).** `jacobiCount (3²) = 8·(1+3+9) = 104`.  Since
+`9 ≤ 24` this is pinned by the oracle: `r4 9 = jacobiCount 9 = 104 = 8·σ(9)`, the
+first odd prime-power value beyond `jacobiCount_prime`'s primes. -/
+theorem jacobiCount_nine : jacobiCount (3 ^ 2) = 104 := by
+  rw [jacobiCount_odd_prime_pow (by norm_num) (by decide)]; decide
+
 /-- **General filter-vacuous lemma (0-axiom).** If `4 ∤ n` then *no* divisor of `n` is
 divisible by `4` (a divisor of `4` in `n` would force `4 ∣ n`), so the `4 ∤ d` exclusion
 is vacuous and `jacobiCount n = 8·σ(n)`. This is the common root of both `jacobiCount_odd`
