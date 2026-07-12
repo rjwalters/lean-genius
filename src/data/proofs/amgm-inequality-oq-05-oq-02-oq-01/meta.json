@@ -86,6 +86,13 @@
   ],
   "sections": [
     {
+      "id": "preamble",
+      "title": "Preamble: from weighted to classical AM-GM",
+      "startLine": 1,
+      "endLine": 39,
+      "summary": "Module docstring recalling the parent's weighted equality case ∏ xᵢ^{wᵢ} = ∑ wᵢxᵢ ↔ all xⱼ equal, and framing this entry's task (its first open question): specialise to equal weights wᵢ = 1/n and read off the classical statement (∏ xᵢ)^{1/n} ≤ (∑ xᵢ)/n, with equality iff the xᵢ coincide. Imports Mathlib and opens Real, Finset."
+    },
+    {
       "id": "engine",
       "title": "Self-contained weighted equality-case engine",
       "startLine": 40,
