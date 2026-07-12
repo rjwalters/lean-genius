@@ -1077,4 +1077,133 @@ theorem kAPCount_indicator_neg {N : ℕ} [NeZero N] (k : ℕ) (A : Finset (ZMod 
       = kAPCount k (fun _ : Fin k => indicatorZMod A) := by
   rw [kAPCount_indicator_eq_count, kAPCount_indicator_eq_count, kAPCount_count_neg]
 
+/-- **Dilation invariance of the `k`-AP count.**  Scaling the set by a unit `c ∈ (ℤ/N)ˣ`,
+    `A ↦ c·A`, preserves the number of `k`-APs: the map `(x, d) ↦ (c·x, c·d)` is a bijection
+    on pairs (as `c` is invertible) sending a progression `x, x+d, …` inside `c·A` to the
+    progression `c⁻¹x, c⁻¹x + c⁻¹d, …` inside `A` (common difference scaled by `c⁻¹`).
+    Together with `kAPCount_count_translate` this exhibits the full affine symmetry
+    `x ↦ c·x + t` — the action of `AGL(1, ℤ/N)` — on the count; the reflection
+    `kAPCount_count_neg` is exactly the special case `c = -1`. -/
+theorem kAPCount_count_dilate {N : ℕ} [NeZero N] {k : ℕ} (A : Finset (ZMod N))
+    (c : (ZMod N)ˣ) :
+    (Finset.univ.filter (fun p : ZMod N × ZMod N =>
+        ∀ i : Fin k, p.1 + i.val • p.2 ∈ A.image (fun a => (c : ZMod N) * a))).card
+      = (Finset.univ.filter (fun p : ZMod N × ZMod N =>
+          ∀ i : Fin k, p.1 + i.val • p.2 ∈ A)).card := by
+  classical
+  -- `x ∈ c·A` iff `c⁻¹·x ∈ A`.
+  have hmem : ∀ (x : ZMod N),
+      x ∈ A.image (fun a => (c : ZMod N) * a) ↔ (↑c⁻¹ : ZMod N) * x ∈ A := by
+    intro x
+    rw [Finset.mem_image]
+    constructor
+    · rintro ⟨a, ha, rfl⟩
+      rwa [← mul_assoc, Units.inv_mul, one_mul]
+    · intro h
+      exact ⟨(↑c⁻¹ : ZMod N) * x, h, by rw [← mul_assoc, Units.mul_inv, one_mul]⟩
+  -- Scaling commutes with forming the progression `x + i·d`.
+  have hshift : ∀ (s y d : ZMod N) (i : Fin k),
+      (s * y) + i.val • (s * d) = s * (y + i.val • d) := by
+    intro s y d i; simp only [nsmul_eq_mul]; ring
+  have hset :
+      (Finset.univ.filter (fun p : ZMod N × ZMod N =>
+          ∀ i : Fin k, p.1 + i.val • p.2 ∈ A.image (fun a => (c : ZMod N) * a)))
+        = (Finset.univ.filter (fun p : ZMod N × ZMod N =>
+            ∀ i : Fin k, p.1 + i.val • p.2 ∈ A)).image
+              (fun p => ((c : ZMod N) * p.1, (c : ZMod N) * p.2)) := by
+    ext p
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_image, hmem]
+    constructor
+    · intro h
+      refine ⟨((↑c⁻¹ : ZMod N) * p.1, (↑c⁻¹ : ZMod N) * p.2), fun i => ?_, ?_⟩
+      · rw [hshift (↑c⁻¹ : ZMod N) p.1 p.2 i]; exact h i
+      · have e1 : (c : ZMod N) * ((↑c⁻¹ : ZMod N) * p.1) = p.1 := by
+          rw [← mul_assoc, Units.mul_inv, one_mul]
+        have e2 : (c : ZMod N) * ((↑c⁻¹ : ZMod N) * p.2) = p.2 := by
+          rw [← mul_assoc, Units.mul_inv, one_mul]
+        rw [Prod.ext_iff]; exact ⟨e1, e2⟩
+    · rintro ⟨q, hq, rfl⟩ i
+      rw [hshift (c : ZMod N) q.1 q.2 i, ← mul_assoc, Units.inv_mul, one_mul]
+      exact hq i
+  rw [hset, Finset.card_image_of_injective]
+  intro a b hab
+  simp only [Prod.mk.injEq] at hab
+  have hinj : ∀ {x y : ZMod N}, (c : ZMod N) * x = (c : ZMod N) * y → x = y := by
+    intro x y h
+    have h2 := congrArg (fun z => (↑c⁻¹ : ZMod N) * z) h
+    rwa [← mul_assoc, Units.inv_mul, one_mul, ← mul_assoc, Units.inv_mul, one_mul] at h2
+  exact Prod.ext (hinj hab.1) (hinj hab.2)
+
+/-- **Dilation invariance of the nondegenerate `k`-AP count.**  The `d ≠ 0` restriction of
+    `kAPCount_count_dilate`: since `c` is a unit, `c·d = 0 ↔ d = 0`, so the bijection
+    `(x, d) ↦ (c·x, c·d)` preserves nondegeneracy.  Hence the genuine (nondiagonal) `k`-AP
+    count that Roth's theorem controls is invariant under scaling the set by any unit. -/
+theorem kAPCount_nondeg_dilate {N : ℕ} [NeZero N] {k : ℕ} (A : Finset (ZMod N))
+    (c : (ZMod N)ˣ) :
+    (Finset.univ.filter (fun p : ZMod N × ZMod N =>
+        (∀ i : Fin k, p.1 + i.val • p.2 ∈ A.image (fun a => (c : ZMod N) * a)) ∧ p.2 ≠ 0)).card
+      = (Finset.univ.filter (fun p : ZMod N × ZMod N =>
+          (∀ i : Fin k, p.1 + i.val • p.2 ∈ A) ∧ p.2 ≠ 0)).card := by
+  classical
+  have hmem : ∀ (x : ZMod N),
+      x ∈ A.image (fun a => (c : ZMod N) * a) ↔ (↑c⁻¹ : ZMod N) * x ∈ A := by
+    intro x
+    rw [Finset.mem_image]
+    constructor
+    · rintro ⟨a, ha, rfl⟩
+      rwa [← mul_assoc, Units.inv_mul, one_mul]
+    · intro h
+      exact ⟨(↑c⁻¹ : ZMod N) * x, h, by rw [← mul_assoc, Units.mul_inv, one_mul]⟩
+  have hshift : ∀ (s y d : ZMod N) (i : Fin k),
+      (s * y) + i.val • (s * d) = s * (y + i.val • d) := by
+    intro s y d i; simp only [nsmul_eq_mul]; ring
+  -- A unit never sends a nonzero element to `0`.
+  have hmul_ne : ∀ (u : (ZMod N)ˣ) {y : ZMod N}, y ≠ 0 → (↑u : ZMod N) * y ≠ 0 := by
+    intro u y hy hcy
+    apply hy
+    have h2 := congrArg (fun z => (↑u⁻¹ : ZMod N) * z) hcy
+    rwa [← mul_assoc, Units.inv_mul, one_mul, mul_zero] at h2
+  have hset :
+      (Finset.univ.filter (fun p : ZMod N × ZMod N =>
+          (∀ i : Fin k, p.1 + i.val • p.2 ∈ A.image (fun a => (c : ZMod N) * a)) ∧ p.2 ≠ 0))
+        = (Finset.univ.filter (fun p : ZMod N × ZMod N =>
+            (∀ i : Fin k, p.1 + i.val • p.2 ∈ A) ∧ p.2 ≠ 0)).image
+              (fun p => ((c : ZMod N) * p.1, (c : ZMod N) * p.2)) := by
+    ext p
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_image, hmem]
+    constructor
+    · rintro ⟨h, hd⟩
+      refine ⟨((↑c⁻¹ : ZMod N) * p.1, (↑c⁻¹ : ZMod N) * p.2), ⟨fun i => ?_, ?_⟩, ?_⟩
+      · rw [hshift (↑c⁻¹ : ZMod N) p.1 p.2 i]; exact h i
+      · exact hmul_ne c⁻¹ hd
+      · have e1 : (c : ZMod N) * ((↑c⁻¹ : ZMod N) * p.1) = p.1 := by
+          rw [← mul_assoc, Units.mul_inv, one_mul]
+        have e2 : (c : ZMod N) * ((↑c⁻¹ : ZMod N) * p.2) = p.2 := by
+          rw [← mul_assoc, Units.mul_inv, one_mul]
+        rw [Prod.ext_iff]; exact ⟨e1, e2⟩
+    · rintro ⟨q, ⟨hq, hd⟩, rfl⟩
+      refine ⟨fun i => ?_, ?_⟩
+      · rw [hshift (c : ZMod N) q.1 q.2 i, ← mul_assoc, Units.inv_mul, one_mul]
+        exact hq i
+      · exact hmul_ne c hd
+  rw [hset, Finset.card_image_of_injective]
+  intro a b hab
+  simp only [Prod.mk.injEq] at hab
+  have hinj : ∀ {x y : ZMod N}, (c : ZMod N) * x = (c : ZMod N) * y → x = y := by
+    intro x y h
+    have h2 := congrArg (fun z => (↑c⁻¹ : ZMod N) * z) h
+    rwa [← mul_assoc, Units.inv_mul, one_mul, ← mul_assoc, Units.inv_mul, one_mul] at h2
+  exact Prod.ext (hinj hab.1) (hinj hab.2)
+
+/-- **Analytic dilation invariance.**  The normalized `k`-AP operator on an indicator is
+    unchanged by scaling the set by a unit: `Λ_k(1_{c·A}) = Λ_k(1_A)` for `c ∈ (ℤ/N)ˣ`.
+    Immediate from the combinatorial bridge `kAPCount_indicator_eq_count` and
+    `kAPCount_count_dilate`.  This is the multiplicative half of the affine invariance of the
+    density-`k`-AP-count functional at the heart of the density-increment argument. -/
+theorem kAPCount_indicator_dilate {N : ℕ} [NeZero N] (k : ℕ) (A : Finset (ZMod N))
+    (c : (ZMod N)ˣ) :
+    kAPCount k (fun _ : Fin k => indicatorZMod (A.image (fun a => (c : ZMod N) * a)))
+      = kAPCount k (fun _ : Fin k => indicatorZMod A) := by
+  rw [kAPCount_indicator_eq_count, kAPCount_indicator_eq_count, kAPCount_count_dilate]
+
 end RothTheoremOQ03OQ01
