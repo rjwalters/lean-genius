@@ -328,4 +328,44 @@ theorem rate_equalNoise_strictConcaveOn_power [Nonempty ι] {c : ℝ} (hc : 0 < 
         mul_lt_mul_of_pos_left hstep hNpos
     _ = (Fintype.card ι : ℝ) / 2 * Real.log (1 + (a * x + b * y) / k) := by rw [hsum]
 
+
+/-! ## The wideband (infinite-channel) limit `C → P/(2c)` -/
+
+/-- **Wideband capacity limit.**  As the number `n` of identical parallel Gaussian
+    channels of noise `c > 0` grows, the equal-noise capacity converges to the
+    bandwidth-independent ceiling:
+    `(n/2)·log(1 + P/(n·c)) → P/(2c)` as `n → ∞`.
+
+    Together with `rate_equalNoise_le_wideband` (which caps *every* finite `n` at
+    `P/(2c)`), this shows the wideband bound is **sharp**: `P/(2c)` is exactly the
+    supremum of the achievable equal-noise rates as a fixed power budget `P` is
+    spread over more and more sub-channels — Shannon's infinite-bandwidth AWGN
+    limit, `C_∞ = P/(2c)` nats.  No sign hypothesis on `P` is needed.
+
+    The proof rewrites `n·log(1 + P/(n·c)) = log((1 + (P/c)/n)^n)` (via `Real.log_pow`)
+    and passes to the limit through `Real.tendsto_one_add_div_pow_exp`
+    (`(1 + t/n)^n → exp t`) composed with continuity of `Real.log` at `exp(P/c) > 0`,
+    then scales by `1/2`. -/
+theorem rate_equalNoise_tendsto_wideband {c : ℝ} (hc : 0 < c) (P : ℝ) :
+    Filter.Tendsto (fun n : ℕ => (n : ℝ) / 2 * Real.log (1 + P / (n * c)))
+      Filter.atTop (nhds (P / (2 * c))) := by
+  have hcne : c ≠ 0 := hc.ne'
+  -- Base limit `(1 + (P/c)/n)^n → exp(P/c)`.
+  have hbase := Real.tendsto_one_add_div_pow_exp (P / c)
+  -- Compose with the continuous `log` at `exp(P/c) ≠ 0`, using `log (exp _) = _`.
+  have hlog : Filter.Tendsto
+      (fun n : ℕ => Real.log ((1 + (P / c) / n) ^ n)) Filter.atTop (nhds (P / c)) := by
+    have h := ((Real.continuousAt_log (Real.exp_ne_zero (P / c))).tendsto).comp hbase
+    rwa [Real.log_exp] at h
+  -- `log((1 + (P/c)/n)^n) = n · log(1 + P/(n·c))`.
+  have hmain : Filter.Tendsto
+      (fun n : ℕ => (n : ℝ) * Real.log (1 + P / (n * c))) Filter.atTop (nhds (P / c)) := by
+    refine hlog.congr (fun n => ?_)
+    rw [Real.log_pow, div_div, mul_comm c (n : ℝ)]
+  -- Scale by `1/2` and simplify the constant `(1/2)·(P/c) = P/(2c)`.
+  have key : Filter.Tendsto (fun n : ℕ => (n : ℝ) / 2 * Real.log (1 + P / (n * c)))
+      Filter.atTop (nhds ((1 / 2 : ℝ) * (P / c))) :=
+    (hmain.const_mul (1 / 2 : ℝ)).congr (fun n => by ring)
+  rwa [show (1 / 2 : ℝ) * (P / c) = P / (2 * c) from by ring] at key
+
 end ShannonWaterFilling
