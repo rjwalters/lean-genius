@@ -816,4 +816,125 @@ theorem vahlen_capelli {K : Type*} [Field K] {n : ℕ} (hn : 1 ≤ n) {a : K} :
             (fun q hq hqt b => hcond.1 q hq (hqt.trans ⟨2, by ring⟩) b)
     · exact (vahlen_capelli_odd ho).mpr hcond
 
+-- ============================================================
+-- PART 7: Positive radicands over ordered fields
+-- (the −4·K⁴ obstruction is vacuous ⇒ the criterion is unconditional,
+--  and the sole open even-case `sorry` is bypassed entirely)
+-- ============================================================
+
+/-- Over a `LinearOrderedField`, a **positive** element is never the negative of a square:
+squares are `≥ 0`, so `b² = −a` would force `−a ≥ 0`, i.e. `a ≤ 0`.
+
+This is the field-order input that makes the entire even-case difficulty disappear for
+`a > 0`: the residual `−a ∈ K²` branch of `two_power_capelli` (the open Lang VI §9 descent,
+the file's sole `sorry`) is exactly the case ruled out here. -/
+theorem neg_not_square_of_pos {K : Type*} [LinearOrderedField K] {a : K} (ha : 0 < a) :
+    ∀ b : K, b ^ 2 ≠ -a := by
+  intro b hb
+  have hb2 : (0 : K) ≤ b ^ 2 := sq_nonneg b
+  rw [hb] at hb2
+  linarith
+
+/-- **Capelli condition (2) is vacuous for positive radicands.** If `a > 0` then
+`a ≠ −(4·b⁴)` for every `b`, since `4·b⁴ ≥ 0` forces `−(4·b⁴) ≤ 0 < a`. So the `−4·K⁴`
+obstruction — the genuinely two-dimensional content of the criterion — is a purely
+non-formally-real phenomenon. -/
+theorem capelli_cond_two_of_pos {K : Type*} [LinearOrderedField K] {a : K} (ha : 0 < a) :
+    ∀ b : K, a ≠ -(4 * b ^ 4) := by
+  intro b hb
+  have h4 : (0 : K) ≤ 4 * b ^ 4 := by positivity
+  rw [hb] at ha
+  linarith
+
+/-- **Pure `2`-power base for positive radicands (unconditional, `sorry`-free).**
+Over a `LinearOrderedField`, if `a > 0` is not a square then `X^(2^k) − C a` is irreducible
+for every `k ≥ 1`.
+
+The open even-case obstruction (`−a ∈ K²`, the `−4·K⁴` descent of Lang VI §9 — the sole
+`sorry` in `two_power_capelli`) never arises here: `−a < 0` cannot be a square, so the
+norm-descent keystone `two_power_capelli_of_neg_not_square` applies directly, with condition
+(2) unused. Thus the whole Capelli even-case difficulty is confined to non-real fields. -/
+theorem two_power_capelli_pos {K : Type*} [LinearOrderedField K] {k : ℕ} (hk : 1 ≤ k)
+    {a : K} (ha : 0 < a) (h1 : ∀ b : K, b ^ 2 ≠ a) :
+    Irreducible (X ^ 2 ^ k - C a : K[X]) :=
+  two_power_capelli_of_neg_not_square hk h1 (neg_not_square_of_pos ha)
+
+/-- **Vahlen–Capelli criterion for positive radicands (full `iff`, `sorry`-free).**
+Over a `LinearOrderedField`, for `a > 0` and `n ≥ 1`,
+
+  `Irreducible (X^n − C a) ↔ ∀ p prime, p ∣ n → ∀ b, b^p ≠ a`.
+
+Condition (2) (the `−4·K⁴` obstruction) drops out entirely because `a > 0`, so the criterion
+is the clean "not a prime power" condition (1) alone. Unlike the general `vahlen_capelli`,
+this is **fully machine-checked with no `sorry`**: the only place the general proof invokes
+the open even-case lemma `two_power_capelli` is the `8 ∣ n` branch, and there the pure
+`2`-power base is discharged unconditionally by `two_power_capelli_pos`. -/
+theorem vahlen_capelli_pos {K : Type*} [LinearOrderedField K] {n : ℕ} (hn : 1 ≤ n)
+    {a : K} (ha : 0 < a) :
+    Irreducible (X ^ n - C a) ↔ ∀ p : ℕ, Nat.Prime p → p ∣ n → ∀ b : K, b ^ p ≠ a := by
+  have hcap : (4 ∣ n → ∀ b : K, a ≠ -(4 * b ^ 4)) := fun _ => capelli_cond_two_of_pos ha
+  constructor
+  · intro h p hp hpn
+    exact (vahlen_capelli_necessity hn h).1 p hp hpn
+  · intro hcond1
+    have hcond : VahlenCapelliCond K n a := ⟨hcond1, hcap⟩
+    rcases Nat.even_or_odd n with he | ho
+    · by_cases h8 : 8 ∣ n
+      · have hn0 : n ≠ 0 := by omega
+        obtain ⟨k, t, ht_odd, ht_eq⟩ := Nat.exists_eq_two_pow_mul_odd hn0
+        have h2t : ¬ 2 ∣ t := by rcases ht_odd with ⟨j, rfl⟩; omega
+        have hcop : Nat.Coprime (2 ^ 3) t :=
+          ((Nat.Prime.coprime_iff_not_dvd Nat.prime_two).mpr h2t).pow_left 3
+        have hdvd : (2 : ℕ) ^ 3 ∣ 2 ^ k := by
+          apply Nat.Coprime.dvd_of_dvd_mul_right hcop
+          rw [← ht_eq, show (2 : ℕ) ^ 3 = 8 from by norm_num]; exact h8
+        have hk3 : 3 ≤ k := by
+          by_contra hk; push_neg at hk; interval_cases k <;> revert hdvd <;> norm_num
+        have hbase : Irreducible (X ^ 2 ^ k - C a : K[X]) :=
+          two_power_capelli_pos (by omega) ha
+            (hcond.1 2 Nat.prime_two ((by norm_num : (2 : ℕ) ∣ 8).trans h8))
+        have hm_even : Even (2 ^ k) := by rw [Nat.even_pow]; exact ⟨even_two, by omega⟩
+        rw [ht_eq]
+        exact vahlen_capelli_even_mul_odd hm_even (pow_ne_zero k (by norm_num)) ht_odd hbase
+          (fun q hq hqt b => hcond.1 q hq (by rw [ht_eq]; exact hqt.mul_left _) b)
+      · by_cases h4 : 4 ∣ n
+        · obtain ⟨t, rfl⟩ := h4
+          have ht : Odd t := by
+            rcases Nat.even_or_odd t with ⟨s, rfl⟩ | ho
+            · exact absurd (⟨s, by ring⟩ : (8 : ℕ) ∣ 4 * (s + s)) h8
+            · exact ho
+          have hbase : Irreducible (X ^ 4 - C a : K[X]) :=
+            vahlen_capelli_four_suff
+              (hcond.1 2 Nat.prime_two ⟨2 * t, by ring⟩)
+              (hcond.2 ⟨t, rfl⟩)
+          exact vahlen_capelli_even_mul_odd (by decide) (by norm_num) ht hbase
+            (fun q hq hqt b => hcond.1 q hq (hqt.trans ⟨4, by ring⟩) b)
+        · obtain ⟨t, rfl⟩ := even_iff_two_dvd.mp he
+          have ht : Odd t := by
+            rcases Nat.even_or_odd t with ⟨s, rfl⟩ | ho
+            · exact absurd (⟨s, by ring⟩ : (4 : ℕ) ∣ 2 * (s + s)) h4
+            · exact ho
+          have hbase : Irreducible (X ^ 2 - C a : K[X]) :=
+            (X_pow_sub_C_irreducible_iff_of_prime Nat.prime_two).mpr
+              (hcond.1 2 Nat.prime_two ⟨t, rfl⟩)
+          exact vahlen_capelli_even_mul_odd (by decide) (by norm_num) ht hbase
+            (fun q hq hqt b => hcond.1 q hq (hqt.trans ⟨2, by ring⟩) b)
+    · exact (vahlen_capelli_odd ho).mpr hcond
+
+/-- **Prime-power exponent, positive radicand.** For `n = 2^k` the only prime divisor is `2`,
+so condition (1) collapses to "not a square": over a `LinearOrderedField` with `a > 0`,
+
+  `Irreducible (X^(2^k) − C a) ↔ ∀ b, b² ≠ a`.
+
+A clean corollary of `vahlen_capelli_pos` / `two_power_capelli_pos`; e.g. over `ℚ` it makes
+`X² − a`, `X⁴ − a`, `X⁸ − a`, … simultaneously irreducible for any positive non-square `a`. -/
+theorem vahlen_capelli_pos_two_pow {K : Type*} [LinearOrderedField K] {k : ℕ} (hk : 1 ≤ k)
+    {a : K} (ha : 0 < a) :
+    Irreducible (X ^ 2 ^ k - C a) ↔ ∀ b : K, b ^ 2 ≠ a := by
+  constructor
+  · intro h b
+    exact (vahlen_capelli_pos (Nat.one_le_pow k 2 (by norm_num)) ha).mp h 2 Nat.prime_two
+      (dvd_pow_self 2 (by omega)) b
+  · exact two_power_capelli_pos hk ha
+
 end CubeRoot3IrrationalOQ02OQ03
