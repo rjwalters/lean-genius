@@ -55,28 +55,32 @@
       "title": "The Inner Angular Integral",
       "startLine": 48,
       "endLine": 52,
-      "summary": "innerAngular A B t := ∫₀^π |A(t)·sin θ + B(t)·cos θ| dθ — the integrand of the outer integral in concreteSmoothExpectedCrossings, with A = γ'₁, B = γ'₂."
+      "summary": "innerAngular A B t := ∫₀^π |A(t)·sin θ + B(t)·cos θ| dθ — the integrand of the outer integral in concreteSmoothExpectedCrossings, with A = γ'₁, B = γ'₂.",
+      "mathContext": "$\\mathrm{innerAngular}\\,A\\,B\\,t = \\int_0^\\pi |A(t)\\sin\\theta + B(t)\\cos\\theta|\\,d\\theta$, evaluated at $A = \\gamma_1'$, $B = \\gamma_2'$."
     },
     {
       "id": "continuity",
       "title": "Continuity of the Parametric Integral",
       "startLine": 54,
       "endLine": 73,
-      "summary": "innerAngular_continuous: from continuity of A, B and joint continuity of (t, θ) ↦ |A(t)·sin θ + B(t)·cos θ|, continuous_parametric_intervalIntegral_of_continuous' gives continuity of the inner angular integral in t."
+      "summary": "innerAngular_continuous: from continuity of A, B and joint continuity of (t, θ) ↦ |A(t)·sin θ + B(t)·cos θ|, continuous_parametric_intervalIntegral_of_continuous' gives continuity of the inner angular integral in t.",
+      "mathContext": "$(t,\\theta) \\mapsto |A(t)\\sin\\theta + B(t)\\cos\\theta|$ jointly continuous $\\Rightarrow t \\mapsto \\int_0^\\pi |A(t)\\sin\\theta + B(t)\\cos\\theta|\\,d\\theta$ continuous (parametric interval integral over the fixed compact $[0,\\pi]$)."
     },
     {
       "id": "integrability",
       "title": "Interval-Integrability",
       "startLine": 75,
       "endLine": 95,
-      "summary": "innerAngular_intervalIntegrable and hInnerInt_of_continuous_deriv: continuity on the compact interval [a, b] yields interval-integrability — exactly the hInnerInt hypothesis required by the parent's buffon_smooth_full."
+      "summary": "innerAngular_intervalIntegrable and hInnerInt_of_continuous_deriv: continuity on the compact interval [a, b] yields interval-integrability — exactly the hInnerInt hypothesis required by the parent's buffon_smooth_full.",
+      "mathContext": "Continuity of $t \\mapsto \\mathrm{innerAngular}\\,A\\,B\\,t$ on the compact $[a,b]$ $\\Rightarrow$ interval-integrability on $[a,b]$ — the hInnerInt hypothesis of buffon_smooth_full, now derived rather than assumed."
     },
     {
       "id": "capstone",
       "title": "Buffon–Barbier with the Integrability Hypothesis Removed",
       "startLine": 97,
       "endLine": 114,
-      "summary": "buffon_smooth_C1: applies buffon_smooth_full with hInnerInt derived from continuity of the velocity, giving the Buffon–Barbier identity for an arbitrary C¹ curve with no integrability assumption."
+      "summary": "buffon_smooth_C1: applies buffon_smooth_full with hInnerInt derived from continuity of the velocity, giving the Buffon–Barbier identity for an arbitrary C¹ curve with no integrability assumption.",
+      "mathContext": "buffon_smooth_C1: for any C¹ curve γ (velocity γ' continuous), the parent's Buffon–Barbier crossing identity holds with the integrability side-condition discharged — the expected number of line crossings depends only on the curve's arc length (the 2/π Barbier constant)."
     }
   ],
   "conclusion": {
