@@ -471,6 +471,32 @@ theorem semicircles_on_sides (A B C : F) (hperp : ⟪A - C, B - C⟫ = (0 : ℝ)
     (fun s => by ring) A B C hperp
   simpa using h
 
+/-- **Hippocrates' quadrature of the lunes.**  Erect a semicircle outward on each *leg*
+(diameters `CA`, `CB`) and the semicircle on the hypotenuse `AB` on the side of the triangle —
+by Thales the latter passes through the right-angle vertex `C`, so it decomposes into the
+triangle `ABC` plus the two circular *segments* cut off by the chords `CA` and `CB`:
+
+`(area of semicircle on AB)  =  (area of triangle ABC)  +  segA  +  segB`   (`hbig`).
+
+Each **lune** is the sliver between a leg-semicircle and the hypotenuse-semicircle, i.e.
+`luneA = (semicircle on CA) − segA` and `luneB = (semicircle on CB) − segB`.  Hippocrates'
+celebrated theorem (c. 440 BC — the first rigorous quadrature of a curvilinear region) is that
+the two lunes together have the **rectilinear** area of the triangle:
+
+`luneA + luneB  =  area of triangle ABC.`
+
+The proof is the algebraic heart of the classical argument: by `semicircles_on_sides` the two
+leg-semicircles sum to the hypotenuse-semicircle, so
+`luneA + luneB = (semiCA + semiCB) − segA − segB = semiAB − segA − segB = triArea` by `hbig`.
+Only this decomposition `hbig` carries geometric content (the Thales inscription of `C`); the
+quadrature identity itself is forced by the Pythagorean additivity of the semicircles. -/
+theorem hippocrates_lunes (A B C : F) (hperp : ⟪A - C, B - C⟫ = (0 : ℝ))
+    (triArea segA segB : ℝ)
+    (hbig : Real.pi * ‖A - B‖ ^ 2 / 8 = triArea + segA + segB) :
+    (Real.pi * ‖A - C‖ ^ 2 / 8 - segA) + (Real.pi * ‖B - C‖ ^ 2 / 8 - segB) = triArea := by
+  have hsemi := semicircles_on_sides A B C hperp
+  linarith
+
 #check @einstein_pythagorean
 #check @pythagorean_via_altitude
 #check @geometric_mean_A
