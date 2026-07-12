@@ -497,6 +497,90 @@ theorem fp_sum_binary4_kernel :
       polya_cyclic_fixed_count, polya_cyclic_fixed_count]
   decide
 
+/-! ## §9: Prime Specialization and the Necklace Proof of Fermat's Little Theorem
+
+For a **prime** length `p` the reindexing identity `polya_sum_identity` collapses to a
+two-term sum, because `divisors p = {1, p}`. This yields the closed form
+  `Σ_{r : Fin p} k^gcd(r, p) = kᵖ + (p − 1)·k`
+(the identity rotation `r = 0` contributes `k^gcd(0,p) = kᵖ`; each of the `p − 1` nonzero
+rotations is coprime to `p` and contributes `k^1 = k`).
+
+Feeding this closed form into Burnside's lemma gives the classical *combinatorial* proof of
+Fermat's little theorem: since the number of `k`-colored necklaces of prime length `p` is an
+integer (it counts orbits), `p ∣ kᵖ + (p − 1)k`, and as `(p − 1)k = pk − k` this forces
+`p ∣ kᵖ − k`. Crucially the divisibility is supplied by the orbit count (Burnside's lemma),
+**not** by any number-theoretic lemma such as `ZMod.pow_card` — here Fermat's little theorem is
+a *consequence* of the counting, not an input to it. -/
+
+/-- **Prime specialization of the Pólya sum.** For a prime `p`, the divisor sum of
+    `polya_sum_identity` has only the two terms `d = 1` and `d = p`, giving the closed form
+      `Σ_{r : Fin p} k^gcd(r, p) = kᵖ + (p − 1)·k`. -/
+theorem polya_sum_prime (p k : ℕ) (hp : p.Prime) :
+    ∑ r : Fin p, k ^ Nat.gcd r.val p = k ^ p + (p - 1) * k := by
+  rw [polya_sum_identity p k hp.pos, hp.divisors, Finset.sum_pair hp.one_lt.ne,
+      Nat.div_one, Nat.div_self hp.pos, Nat.totient_prime hp, Nat.totient_one,
+      pow_one, one_mul]
+  exact Nat.add_comm _ _
+
+/-- The prime specialization at `p = 3, k = 2`: `Σ_{r : Fin 3} 2^gcd(r,3) = 2³ + 2·2 = 12`.
+    A direct numeric instance of `polya_sum_prime` (no `native_decide`). -/
+theorem polya_sum_three_binary : ∑ r : Fin 3, (2 : ℕ) ^ Nat.gcd r.val 3 = 12 :=
+  polya_sum_prime 3 2 (by norm_num)
+
+/-- **Fermat's Little Theorem via necklace counting (Burnside ⇒ FLT).**
+    Suppose Burnside's lemma holds for the `Z_p` rotation action on `k`-colorings, i.e. the
+    fixed-point sum equals `p · necklace_count` for some `necklace_count : ℕ` (the number of
+    orbits). Then `p ∣ kᵖ − k`.
+
+    This is the classical combinatorial proof of Fermat's little theorem. By `polya_sum_prime`
+    the fixed-point sum is `kᵖ + (p − 1)k`, so `p ∣ kᵖ + (p − 1)k`; rewriting
+    `(p − 1)k + k = p·k` and cancelling the `p·k` term gives `p ∣ kᵖ − k`. The divisibility
+    input is the orbit count alone; no `ZMod.pow_card` or other number-theoretic fact is used. -/
+theorem fermat_little_of_burnside (p k : ℕ) [NeZero p] (hp : p.Prime)
+    (necklace_count : ℕ)
+    (h_burnside : p * necklace_count =
+      ∑ r : Fin p, Fintype.card {c : Fin p → Fin k // IsFixed p k r c}) :
+    p ∣ k ^ p - k := by
+  -- The fixed-point sum equals `p · necklace_count` and (by `polya_sum_prime`) `kᵖ + (p−1)k`.
+  have hsum : ∑ r : Fin p, k ^ Nat.gcd r.val p = p * necklace_count := by
+    rw [h_burnside]
+    exact Finset.sum_congr rfl (fun r _ => (polya_cyclic_fixed_count p k r).symm)
+  have hdvd : p ∣ k ^ p + (p - 1) * k := by
+    rw [← polya_sum_prime p k hp, hsum]; exact dvd_mul_right p necklace_count
+  -- Arithmetic: `kᵖ + (p−1)k = (kᵖ − k) + p·k`, using `k ≤ kᵖ` and `(p−1)k + k = p·k`.
+  have hk : k ≤ k ^ p := Nat.le_self_pow hp.pos.ne' k
+  have hpm : (p - 1) * k + k = p * k := by
+    cases p with
+    | zero => exact (hp.pos.ne' rfl).elim
+    | succ q => rw [Nat.add_sub_cancel, add_mul, one_mul]
+  have heq : k ^ p + (p - 1) * k = (k ^ p - k) + p * k := by omega
+  rw [heq] at hdvd
+  exact (dvd_add_right (dvd_mul_right p k)).mp (by rwa [Nat.add_comm] at hdvd)
+
+/-! ## §10: Binary 6-Necklaces (concrete `n = 6` instance, OEIS A000031(6) = 14) -/
+
+/-- Pólya fixed-point sum for `Z_6` on binary colorings:
+    `Σ_{r : Fin 6} 2^gcd(r,6) = 2⁶ + 2¹ + 2² + 2³ + 2² + 2¹ = 64+2+4+8+4+2 = 84`. -/
+theorem polya_sum_Z6_binary : ∑ r : Fin 6, (2 : ℕ) ^ Nat.gcd r.val 6 = 84 := by
+  native_decide
+
+/-- Divisor-sum form for `n = 6, k = 2`:
+    `Σ_{d | 6} φ(6/d)·2^d = φ(6)·2 + φ(3)·4 + φ(2)·8 + φ(1)·64 = 4+8+8+64 = 84`. -/
+theorem polya_divisor_sum_Z6_binary :
+    ∑ d ∈ Nat.divisors 6, Nat.totient (6 / d) * 2 ^ d = 84 := by
+  native_decide
+
+/-- The two formulations agree for `n = 6, k = 2`. -/
+theorem polya_sum_equiv_6_2 :
+    ∑ r : Fin 6, (2 : ℕ) ^ Nat.gcd r.val 6 =
+    ∑ d ∈ Nat.divisors 6, Nat.totient (6 / d) * 2 ^ d := by
+  native_decide
+
+/-- The Pólya formula gives `84 / 6 = 14` binary necklaces of length 6 (OEIS A000031). -/
+theorem polya_binary6_necklace_count :
+    (∑ r : Fin 6, (2 : ℕ) ^ Nat.gcd r.val 6) / 6 = 14 := by
+  simp [polya_sum_Z6_binary]
+
 #check @MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group
 #check ZMod.addOrderOf_coe
 #check ZMod.natCast_zmod_val
