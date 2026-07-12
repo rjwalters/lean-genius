@@ -29,18 +29,22 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED+extended: Sylow theorems + normality criterion + capstone (order-pq non-simplicity). 0 sorries, 0 axioms. Math argument verified against local Mathlib (EXIT=0).",
+    "progressSummary": "PROGRESS (researcher-9, 2026-07-11): added isSolvable_of_card_eq_pq — groups of order p·q (p<q prime) are SOLVABLE, strictly strengthening the existing not_isSimpleGroup_of_card_eq_pq. Normal N (order q) and quotient G⧸N (order p) are both cyclic hence solvable; solvability lifts along the short exact sequence via solvable_of_ker_le_range. New reasoning VERIFIED via host lean minimal-import standalone (EXIT 0); full-file import-Mathlib docker build blocked by a shared .lake .ir codegen corruption (SIGBUS on Mathlib/Algebra/Order/Ring/Synonym.ir), an infra regression independent of the proof — rest of file byte-identical to verified origin/main.",
     "builtItems": [
       "LagrangeTheoremOQ01.lean: ~140 lines, 11 theorems, 0 sorries, 0 axioms",
       "Parts I-V: Lagrange, Sylow existence, conjugacy, counting, partial converse + Cauchy",
-      "LagrangeTheoremOQ01.lean: +2 thms — card_sylow_q_of_card_eq_pq (|Q|=q via factorization(pq)=1) and sylow_q_normal_of_card_eq_pq (order-pq groups have normal Sylow q-subgroup)"
+      "LagrangeTheoremOQ01.lean: +2 thms — card_sylow_q_of_card_eq_pq (|Q|=q via factorization(pq)=1) and sylow_q_normal_of_card_eq_pq (order-pq groups have normal Sylow q-subgroup)",
+      "LagrangeTheoremOQ01.lean: isSolvable_of_card_eq_pq — groups of order p·q (p<q prime) are solvable (IsSolvable G), via cyclic N and G⧸N + solvable_of_ker_le_range. New reasoning VERIFIED host lean v4.26.0 minimal-import standalone (type-check EXIT 0); full-file docker build blocked by shared .lake .ir codegen corruption (infra)."
     ],
     "insights": [
       "Sylow theorems are fully in Mathlib — file wraps existing API in gallery format",
       "Key Mathlib lemmas: Sylow.nonempty, Sylow.card_eq_multiplicity, Sylow.conj_eq",
       "Sylow.card_sylow_dvd_index, Sylow.card_sylow_modEq_one, exists_prime_orderOf_dvd_card",
       "Partial converse: Sylow.exists_subgroup_card_pow_prime gives p^k | |G| → ∃ H of order p^k",
-      "Capstone application: n_q ≡ 1 mod q + n_q | [G:Q]=p forces n_q=1 for |G|=pq (p<q), so the Sylow q-subgroup is normal — groups of order pq are not simple. Uses only the file's own Sylow wrappers."
+      "Capstone application: n_q ≡ 1 mod q + n_q | [G:Q]=p forces n_q=1 for |G|=pq (p<q), so the Sylow q-subgroup is normal — groups of order pq are not simple. Uses only the file's own Sylow wrappers.",
+      "Groups of order p·q (p<q prime) are SOLVABLE (isSolvable_of_card_eq_pq): strictly strengthens not_isSimpleGroup_of_card_eq_pq. Proof: the normal N (order q) is prime-order hence cyclic hence abelian hence solvable; quotient G⧸N has order p (card_eq_card_quotient_mul_card_subgroup) hence also cyclic/solvable; solvability lifts along 1→N→G→G⧸N→1 via solvable_of_ker_le_range with ker(mk N)=N=range(N.subtype).",
+      "Lean recipe: IsSolvable of a prime-order subgroup N — isCyclic_of_prime_card gives IsCyclic N, then isSolvable_of_comm (fun a b => by letI := IsCyclic.commGroup (α:=N); exact mul_comm a b). NOTE: the shorter `letI := IsCyclic.commGroup; inferInstance` route FAILS to synthesize IsSolvable (Group/CommGroup instance diamond) — extract commutativity explicitly and feed isSolvable_of_comm instead.",
+      "solvable_of_ker_le_range f g (hfg: g.ker ≤ f.range) with f=N.subtype, g=QuotientGroup.mk N: discharge hfg by le_of_eq (rw [QuotientGroup.ker_mk, Subgroup.range_subtype]) — both sides collapse to N."
     ],
     "mathlibGaps": [],
     "nextSteps": []

@@ -355,6 +355,41 @@ theorem not_isSimpleGroup_of_card_eq_pq (p q : ℕ) (hp : p.Prime) (hq : q.Prime
     rw [htop, Subgroup.card_top, hG] at hHcard
     exact hp.one_lt.ne' (Nat.eq_of_mul_eq_mul_right hq.pos (hHcard.trans (one_mul q).symm))
 
+/-- **Every group of order `p·q` (with `p < q` prime) is solvable.**  From
+    `exists_normal_subgroup_card_eq_pq` we obtain a normal subgroup `N` of order `q`; being of
+    prime order it is cyclic (`isCyclic_of_prime_card`), hence abelian, hence solvable.  The
+    quotient `G ⧸ N` then has order `p` by Lagrange (`card_eq_card_quotient_mul_card_subgroup`),
+    so it too is of prime order, cyclic, and solvable.  Solvability lifts along the short exact
+    sequence `1 → N → G → G ⧸ N → 1` via `solvable_of_ker_le_range` (with `ker (mk' N) = N =
+    range N.subtype`).
+
+    This strictly strengthens `not_isSimpleGroup_of_card_eq_pq`: groups of order `p·q` are not
+    merely non-simple but genuinely solvable — with the `p·q` case now fully resolved, the
+    smallest composite orders `6, 10, 14, 15, 21, …` are all solvable, a hands-on instance of
+    the Feit–Thompson landscape (every group of odd — indeed here arbitrary — order `p·q` is
+    solvable). -/
+theorem isSolvable_of_card_eq_pq (p q : ℕ) (hp : p.Prime) (hq : q.Prime)
+    (hpq : p < q) (hG : Nat.card G = p * q) : IsSolvable G := by
+  haveI : Fact p.Prime := ⟨hp⟩
+  haveI : Fact q.Prime := ⟨hq⟩
+  obtain ⟨N, hNnorm, hNcard⟩ := exists_normal_subgroup_card_eq_pq p q hp hq hpq hG
+  haveI : N.Normal := hNnorm
+  -- `N` has prime order `q`, hence is cyclic, hence abelian, hence solvable.
+  haveI : IsCyclic N := isCyclic_of_prime_card (p := q) hNcard
+  haveI : IsSolvable N :=
+    isSolvable_of_comm (fun a b => by letI := IsCyclic.commGroup (α := N); exact mul_comm a b)
+  -- The quotient `G ⧸ N` has order `p` (Lagrange), hence is cyclic, hence solvable.
+  have hquot : Nat.card (G ⧸ N) = p := by
+    have hcard := Subgroup.card_eq_card_quotient_mul_card_subgroup N
+    rw [hG, hNcard] at hcard
+    exact Nat.eq_of_mul_eq_mul_right hq.pos hcard.symm
+  haveI : IsCyclic (G ⧸ N) := isCyclic_of_prime_card (p := p) hquot
+  haveI : IsSolvable (G ⧸ N) :=
+    isSolvable_of_comm (fun a b => by letI := IsCyclic.commGroup (α := G ⧸ N); exact mul_comm a b)
+  -- Lift solvability along `1 → N → G → G ⧸ N → 1`.
+  exact solvable_of_ker_le_range (N.subtype) (QuotientGroup.mk' N)
+    (le_of_eq (by rw [QuotientGroup.ker_mk', Subgroup.range_subtype]))
+
 end LagrangeOQ01
 
 /-
@@ -374,6 +409,9 @@ end LagrangeOQ01
   - Capstone: groups of order p·q (p < q) have a normal Sylow q-subgroup, hence a
     normal subgroup of order q, hence are NOT simple (¬ IsSimpleGroup) — a genuine
     structural consequence of Sylow III
+  - Solvability capstone: groups of order p·q (p < q) are solvable (IsSolvable G) —
+    the normal N (order q) and quotient G ⧸ N (order p) are both cyclic hence
+    solvable, and solvability lifts along 1 → N → G → G ⧸ N → 1
 
   **Status**: Verified, 0 sorries, 0 axioms
 -/
