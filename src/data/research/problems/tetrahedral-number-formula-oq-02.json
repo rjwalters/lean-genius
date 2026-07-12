@@ -29,23 +29,31 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: uniform cleared-denominator polynomial form for the figurate partial sum proved (0 sorries, 0 custom axioms).",
+    "progressSummary": "COMPLETE (VERIFIED 0-axiom): cleared figurate-sum form upgraded to a first-class monic Polynomial ℤ (figuratePoly) with proved monicity, degree d+1, and evaluation Q_d(n)=(d+1)!·S_d(n); closes the sole remaining Polynomial nextStep of OQ02.",
     "builtItems": [
       "factorial_mul_sum_simplex (TetrahedralNumberFormulaOQ02.lean:82): (d+1)!·∑_{k≤n}C(k+d,d) = ∏_{i<d+1}(n+1+i), the uniform cleared-denominator polynomial form for every dimension d",
       "factorial_mul_sum_simplex_asc (TetrahedralNumberFormulaOQ02.lean:88): same via ascending factorial (n+1).ascFactorial (d+1)",
       "sum_simplex_closed (TetrahedralNumberFormulaOQ02.lean:96): S_d(n) = C(n+d+1, d+1)",
       "factorial_dvd_prod_consec (TetrahedralNumberFormulaOQ02.lean:104): (d+1)! ∣ ∏_{i<d+1}(n+1+i) — integrality of product of d+1 consecutive integers, as a corollary",
       "sum_simplex_eq_prod_div (TetrahedralNumberFormulaOQ02.lean:111): division form with exact division proved",
-      "sum_simplex_two / sum_simplex_three (TetrahedralNumberFormulaOQ02.lean:119,130): d=2,3 rungs 6·S_2=(n+1)(n+2)(n+3), 24·S_3=(n+1)(n+2)(n+3)(n+4)"
+      "sum_simplex_two / sum_simplex_three (TetrahedralNumberFormulaOQ02.lean:119,130): d=2,3 rungs 6·S_2=(n+1)(n+2)(n+3), 24·S_3=(n+1)(n+2)(n+3)(n+4)",
+      "figuratePoly (d) : Polynomial ℤ = ∏_{i<d+1}(X + C(i+1)), first-class Mathlib Polynomial for the cleared figurate-sum form (TetrahedralNumberFormulaOQ02Polynomial.lean)",
+      "figuratePoly_monic: Q_d is monic (monic_prod_of_monic of monic_X_add_C factors)",
+      "figuratePoly_natDegree: Q_d has natDegree exactly d+1 (natDegree_prod_of_monic + sum of unit degrees)",
+      "figuratePoly_eval: Q_d.eval (n:ℤ) = (d+1)!·S_d(n) — evaluation bridge back to factorial_mul_sum_simplex",
+      "figuratePoly_factorial_dvd_eval: (d+1)! ∣ Q_d.eval(n) — integrality read off the polynomial"
     ],
     "insights": [
       "The oq-02 target (uniform cleared-denominator form of the partial SUM) is an immediate but previously-unrecorded composition of two OQ01 lemmas kept separate there: sum_simplex (hockey stick) and factorial_mul_simplexNumber_prod (cleared closed form). Composing at dimension d+1 gives (d+1)!·S_d(n)=∏(n+1+i).",
       "The cleared identity yields the classical integrality fact (d+1)!∣(product of d+1 consecutive integers) for free, since the exact quotient is the natural number S_d(n).",
-      "Uses OQ01 simplexNumber convention P_d(k)=C(k+d,d) (so P_2 is triangular T_{k+1}); the d=2/d=3 rungs are the tetrahedral pattern one dimension up from the parent entry, not the parent's index-shifted C(k+1,2) convention."
+      "Uses OQ01 simplexNumber convention P_d(k)=C(k+d,d) (so P_2 is triangular T_{k+1}); the d=2/d=3 rungs are the tetrahedral pattern one dimension up from the parent entry, not the parent's index-shifted C(k+1,2) convention.",
+      "The OQ02 cleared form ∏(n+1+i) is literally a monic degree-(d+1) Polynomial ℤ; packaging it as figuratePoly makes monicity/degree theorems rather than prose, with eval reproducing (d+1)!·S_d(n).",
+      "simp gotcha: full simp normalizes C(a+b) via C_add/map_add and destroys the X+C _ shape needed by natDegree_X_add_C; use simp only [natDegree_X_add_C, sum_const, card_range, ...]."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Optional: express (d+1)!·S_d(n) as an explicit Polynomial ℤ (monic degree d+1) to make the 'polynomial form' a first-class Mathlib Polynomial rather than a product expression."
+      "Optional: relate figuratePoly to a shifted binomial/Pochhammer Polynomial and derive its coefficients (Stirling numbers of the first kind) explicitly.",
+      "Optional: express S_d itself (not just (d+1)!·S_d) as a Polynomial ℚ of degree d+1 via the (d+1)! scalar, tying to the Bernoulli/Faulhaber viewpoint."
     ],
     "markdown": "# Knowledge Base: tetrahedral-number-formula-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
