@@ -648,6 +648,39 @@ theorem isCoverGraph_cliqueFree_three [Fintype V] (h : isCoverGraph G) :
     G.CliqueFree 3 :=
   robust_cliqueFree_three (cover_graph_characterization.mpr h)
 
+/-- **Every bipartite graph is a cover graph (no axiom).** The poset-facing form of
+    `bipartite_admits_robust`: a bipartite graph is the Hasse diagram of a (height-2)
+    partial order. Where the `isCoverGraph` API so far records only *obstructions*
+    (`isCoverGraph_of_triangle`, `isCoverGraph_cliqueFree_three`), this is a positive
+    construction — a large, easily-recognised family that *is* realised as cover graphs.
+    Immediate from `bipartite_admits_robust` through the forward direction of
+    `cover_graph_characterization`. -/
+theorem isCoverGraph_of_bipartite [Fintype V] (hbip : isBipartite' G) :
+    isCoverGraph G :=
+  cover_graph_characterization.mp (bipartite_admits_robust hbip)
+
+/-- **Every edgeless graph is a cover graph (no axiom).** The poset-facing form of
+    `edgeless_admits_robust`: a graph with no edges is the Hasse diagram of an antichain
+    (the discrete order). The smallest positive cover-graph family, and the base of the
+    subgraph-closure `isCoverGraph_mono`. Immediate from `edgeless_admits_robust` through
+    `cover_graph_characterization`. -/
+theorem isCoverGraph_of_edgeless [Fintype V] (h : ∀ u v, ¬ G.Adj u v) :
+    isCoverGraph G :=
+  cover_graph_characterization.mp (edgeless_admits_robust h)
+
+/-- **Cover graphs are closed under subgraphs (no axiom).** If `H ≤ G` (same vertex set,
+    fewer edges) and `G` is a cover graph, then so is `H`. This lifts the
+    robust-orientation monotonicity `admitsRobust_mono` to the poset level via
+    `cover_graph_characterization` (both directions), formalizing the structural fact that
+    the docstring of `admitsRobust_mono` states informally — *"every subgraph of a cover
+    graph is again a cover graph"*. Combined with the triangle obstruction it is exactly
+    why triangle-freeness is only the *first*, non-characterizing, necessary condition
+    (Nešetřil–Rödl): the class is subgraph-closed yet has no finite forbidden-subgraph
+    description. -/
+theorem isCoverGraph_mono [Fintype V] {G H : SimpleGraph V} (hHG : H ≤ G)
+    (hG : isCoverGraph G) : isCoverGraph H :=
+  cover_graph_characterization.mp (admitsRobust_mono hHG (cover_graph_characterization.mpr hG))
+
 /-- **Complete graphs `Kₙ` with `n ≥ 3` admit no robustly acyclic orientation
     (no axiom).** Generalises `triangle_not_robust` (the case `V = Fin 3`) to the
     complete graph on any finite type with at least three vertices: pick three
@@ -725,6 +758,14 @@ axiom nesetril_rodl_counterexample (g : ℕ) (hg : g ≥ 3) :
     0 or ≥ g" phrasing of girth is unsound: a length-2 backtrack forces the
     graph edgeless, hence robust. Motivates the `egirth` (shortest-cycle)
     formalization of the two axioms below.
+12a. `isCoverGraph_of_bipartite` - **Every bipartite graph is a cover graph**
+    (poset-level form of `bipartite_admits_robust`; the first *positive*
+    construction in the `isCoverGraph` API).
+12b. `isCoverGraph_of_edgeless` - Every edgeless graph is a cover graph (Hasse
+    diagram of an antichain).
+12c. `isCoverGraph_mono` - **Cover graphs are closed under subgraphs**: `H ≤ G`
+    and `G` a cover graph ⟹ `H` a cover graph (poset-level lift of
+    `admitsRobust_mono`, formalizing the closure its docstring states informally).
 
 ### Axiomatized (deep results, girth via `SimpleGraph.egirth`):
 13. `chromatic_lt_girth_implies_robust` - χ(G) < girth(G) suffices
