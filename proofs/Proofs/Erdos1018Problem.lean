@@ -62,6 +62,26 @@ theorem isDense_of_le (G : SimpleGraph V) [DecidableRel G.Adj] {ε ε' : ℝ}
     Real.rpow_le_rpow_of_exponent_le hV (by linarith)
   linarith
 
+/-- **Edge count is monotone under adding edges.** If `G ≤ H` (every edge of `G` is an edge
+    of `H`, on the same vertex set), then `edgeCount G ≤ edgeCount H`: the edge sets are
+    nested (`SimpleGraph.edgeFinset_mono`), so their cardinalities are ordered. -/
+theorem edgeCount_mono {G H : SimpleGraph V} [DecidableRel G.Adj] [DecidableRel H.Adj]
+    (h : G ≤ H) : edgeCount G ≤ edgeCount H :=
+  Finset.card_le_card (SimpleGraph.edgeFinset_mono h)
+
+/-- **Density is monotone under adding edges.** On a fixed vertex set, a supergraph of a dense
+    graph is dense: if `G ≤ H` and `G` is `(1+ε)`-dense, so is `H`. The density threshold
+    `n^(1+ε)` depends only on the (shared) vertex count, and `edgeCount H ≥ edgeCount G`
+    (`edgeCount_mono`) keeps the edge bound satisfied. The graph-monotone companion of the
+    exponent-monotone `isDense_of_le`; in particular every graph containing a dense subgraph on
+    the same vertices — up to the complete graph `⊤` — is itself dense. -/
+theorem isDense_mono_graph {G H : SimpleGraph V} [DecidableRel G.Adj] [DecidableRel H.Adj]
+    {ε : ℝ} (hGH : G ≤ H) (h : isDense G ε) : isDense H ε := by
+  unfold isDense at h ⊢
+  have hle : (edgeCount G : ℝ) ≤ (edgeCount H : ℝ) := by
+    exact_mod_cast edgeCount_mono hGH
+  linarith
+
 /-
 ## Complete Graphs K₅ and K₃,₃
 
