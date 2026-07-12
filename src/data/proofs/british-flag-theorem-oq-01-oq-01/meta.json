@@ -96,6 +96,21 @@
       "targetId": "british-flag-theorem-oq-01",
       "relationship": "extends",
       "description": "Parent: the British Flag Theorem in the coordinate plane ℝ². This entry generalizes it to an arbitrary parallelogram in any real inner product space, with the defect 2⟪u,v⟫ measuring the deviation from a right angle — the parent's first open question."
+    },
+    {
+      "targetId": "british-flag-theorem-oq-01-oq-02",
+      "relationship": "related",
+      "description": "Sibling that answers this entry's first open question (orthotopes vs. parallelepipeds): it pushes the same norm-expansion identity from the 4-vertex parallelogram to an n-dimensional box, summing squared distances over the 2ⁿ vertices with alternating signs and expressing the defect through the pairwise edge inner products Σ_{i<j} ±2⟪uᵢ,uⱼ⟫. This 2-D parallelogram case is the n = 2 instance."
+    },
+    {
+      "targetId": "british-flag-theorem-oq-01-oq-01-oq-02",
+      "relationship": "extended by",
+      "description": "Direct child answering this entry's second open question (weighted / affine-combination version): the Weighted Leibniz identity replaces the four parallelogram corners by a weighted affine simplex, connecting the defect to the Leibniz / Stewart relations and absorbing the parallelogram identity proved here as a special case."
+    },
+    {
+      "targetId": "law-of-cosines",
+      "relationship": "related",
+      "description": "The defect value 2⟪u,v⟫ isolated here is exactly the cross term of the law of cosines (|A+u|² relative to |A|² and ‖u‖² differs by 2⟪·,u⟫). The British-flag defect vanishes precisely when u ⊥ v — the same orthogonality that collapses the cosine term — so the rectangle case of the theorem is the law of cosines with a right angle."
     }
   ],
   "conclusion": {
