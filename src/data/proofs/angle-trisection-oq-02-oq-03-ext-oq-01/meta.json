@@ -165,6 +165,20 @@
       "significance": "Reduces Gauss–Wantzel to odd prime powers when combined with coprime multiplicativity"
     },
     {
+      "name": "totient_pow2_iff_odd_part",
+      "type": "core",
+      "statement": "n = 2^a * m → (TotientIsPow2 n ↔ TotientIsPow2 m)",
+      "description": "Reduction to the odd part: writing n = 2^a·m, the regular n-gon is constructible iff the regular m-gon is. A one-line corollary of the 2-power invariance (rw ∘ totient_pow2_two_pow_mul_iff).",
+      "significance": "The clean statement of keyInsight #3 — every factor of 2 in n is inert, so only the odd part carries constructibility information"
+    },
+    {
+      "name": "constructible_two_pow_mul_fifteen",
+      "type": "corollary",
+      "statement": "∀ a, TotientIsPow2 (2^a * 15)",
+      "description": "Every 2^a·15-gon (15, 30, 60, 120, …) is constructible, from the single input φ(15) = 2^3 propagated by the 2-power invariance.",
+      "significance": "Positive counterpart to the 7-gon obstruction: one odd base computation generates an infinite constructible tower via bisection"
+    },
+    {
       "name": "not_constructible_two_pow_mul_seven",
       "type": "corollary",
       "statement": "∀ a, ¬ TotientIsPow2 (2^a * 7)",
