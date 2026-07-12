@@ -445,4 +445,80 @@ theorem main_pgm_mutually_exclusive : ¬ (mainConjecture ∧ pgmConjecture) := b
   2-coloring of K_n if the graph is not triangle-free?
 -/
 
+/- ## Part VIII: Minimality of the axiom set
+
+The file declares ten axioms, but four of the six *analytic* ones carry no logical
+content beyond the two sharpest bounds.  The historical lower bounds form an increasing
+chain of leading constants `1/162 → 1/4 → 1/3 → 1/2`, and a first-order lower bound of
+the shape `R(3,k) ≥ (c−ε)·k²/log k` is monotone in `c`: a bound with the larger constant
+formally implies every bound with a smaller one.  Hence Kim, Bohman–Keevash/PGM and CJMS
+are all consequences of `hhkp_bound`.  Dually, the AKS `O(k²/log k)` upper bound is the
+`ε = 1` instance of Shearer's sharper `(1+o(1))` bound.  So the genuine analytic
+assumptions are exactly `hhkp_bound` and `shearer_upper_bound` (atop the Ramsey-number
+scaffolding); the other four are documentation of the historical record, not independent
+hypotheses.  Nothing below introduces a new axiom. -/
+
+/-- **Monotone weakening of a first-order lower bound.**  If `R(3,k) ≥ (a−ε)·k²/log k`
+    holds eventually for every `ε > 0`, then the same shape holds with any *smaller* leading
+    constant `a' ≤ a`.  The mechanism is the eventual nonnegativity of the atom `k²/log k`
+    (for `k ≥ 2`, where `log k > 0`), which transports `a'−ε ≤ a−ε` through the
+    multiplication.  This is the engine making every pre-HHKP lower bound a formal
+    consequence of the strongest one. -/
+theorem lower_bound_mono {a a' : ℝ} (haa : a' ≤ a)
+    (h : ∀ ε > 0, ∃ k₀ : ℕ, ∀ k : ℕ, k ≥ k₀ →
+        (R3 k : ℝ) ≥ (a - ε) * k^2 / log k) :
+    ∀ ε > 0, ∃ k₀ : ℕ, ∀ k : ℕ, k ≥ k₀ →
+        (R3 k : ℝ) ≥ (a' - ε) * k^2 / log k := by
+  intro ε hε
+  obtain ⟨k₀, hk₀⟩ := h ε hε
+  refine ⟨max k₀ 2, fun k hk => ?_⟩
+  have hk0 : k ≥ k₀ := le_of_max_le_left hk
+  have hk2 : k ≥ 2 := le_of_max_le_right hk
+  have h2k : (2:ℝ) ≤ (k:ℝ) := by exact_mod_cast hk2
+  have hlog : 0 < log k := Real.log_pos (by linarith)
+  have hatom : 0 ≤ (k:ℝ)^2 / log k := le_of_lt (div_pos (by positivity) hlog)
+  have hmono : (a' - ε) * k^2 / log k ≤ (a - ε) * k^2 / log k := by
+    rw [mul_div_assoc, mul_div_assoc]
+    exact mul_le_mul_of_nonneg_right (by linarith) hatom
+  exact le_trans hmono (hk₀ k hk0)
+
+/-- **HHKP subsumes CJMS (`1/3`).**  The Campos–Jenssen–Michelen–Sahasrabudhe lower bound is a
+    formal consequence of `hhkp_bound`, since `1/3 ≤ 1/2`. -/
+theorem hhkp_subsumes_cjms :
+    ∀ ε > 0, ∃ k₀ : ℕ, ∀ k : ℕ, k ≥ k₀ →
+        (R3 k : ℝ) ≥ (1/3 - ε) * k^2 / log k :=
+  lower_bound_mono (by norm_num) hhkp_bound
+
+/-- **HHKP subsumes Bohman–Keevash / PGM (`1/4`).**  Consequence of `hhkp_bound`, `1/4 ≤ 1/2`. -/
+theorem hhkp_subsumes_bk_pgm :
+    ∀ ε > 0, ∃ k₀ : ℕ, ∀ k : ℕ, k ≥ k₀ →
+        (R3 k : ℝ) ≥ (1/4 - ε) * k^2 / log k :=
+  lower_bound_mono (by norm_num) hhkp_bound
+
+/-- **HHKP subsumes Kim (`1/162`).**  Consequence of `hhkp_bound`, `1/162 ≤ 1/2`. -/
+theorem hhkp_subsumes_kim :
+    ∀ ε > 0, ∃ k₀ : ℕ, ∀ k : ℕ, k ≥ k₀ →
+        (R3 k : ℝ) ≥ (1/162 - ε) * k^2 / log k :=
+  lower_bound_mono (by norm_num) hhkp_bound
+
+/-- **Shearer subsumes AKS.**  The AKS upper bound (`R(3,k) = O(k²/log k)` for *some* `C>0`) is
+    the `ε = 1` instance of Shearer's sharper `(1+o(1))` bound: take `C = 1+1 = 2`. -/
+theorem shearer_subsumes_aks :
+    ∃ C : ℝ, C > 0 ∧ ∃ k₀ : ℕ, ∀ k : ℕ, k ≥ k₀ →
+      (R3 k : ℝ) ≤ C * k^2 / log k :=
+  ⟨1 + 1, by norm_num, shearer_upper_bound 1 (by norm_num)⟩
+
+/-- **Four of the ten axioms are logically redundant.**  Every pre-HHKP lower bound (Kim
+    `1/162`, Bohman–Keevash / PGM `1/4`, CJMS `1/3`) is a consequence of `hhkp_bound` (`1/2`),
+    and the AKS upper bound is a consequence of `shearer_upper_bound`.  So the effective
+    analytic assumption set is just `{hhkp_bound, shearer_upper_bound}`: the exact statements of
+    `kim_lower_bound`, `bk_pgm_bound`, `cjms_bound` and `aks_upper_bound` are all *proved* below
+    without invoking those four axioms. -/
+theorem historical_bounds_redundant :
+    (∀ ε > 0, ∃ k₀ : ℕ, ∀ k : ℕ, k ≥ k₀ → (R3 k : ℝ) ≥ (1/162 - ε) * k^2 / log k) ∧
+    (∀ ε > 0, ∃ k₀ : ℕ, ∀ k : ℕ, k ≥ k₀ → (R3 k : ℝ) ≥ (1/4 - ε) * k^2 / log k) ∧
+    (∀ ε > 0, ∃ k₀ : ℕ, ∀ k : ℕ, k ≥ k₀ → (R3 k : ℝ) ≥ (1/3 - ε) * k^2 / log k) ∧
+    (∃ C : ℝ, C > 0 ∧ ∃ k₀ : ℕ, ∀ k : ℕ, k ≥ k₀ → (R3 k : ℝ) ≤ C * k^2 / log k) :=
+  ⟨hhkp_subsumes_kim, hhkp_subsumes_bk_pgm, hhkp_subsumes_cjms, shearer_subsumes_aks⟩
+
 end Erdos165
