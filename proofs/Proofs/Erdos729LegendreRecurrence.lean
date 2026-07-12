@@ -125,6 +125,28 @@ theorem v2_factorial_eq_pred_iff (n : ℕ) (hn : 1 ≤ n) :
   rw [hL]
   omega
 
+/-- **Single-step recurrence.** `v₂((n+1)!) = v₂(n+1) + v₂(n!)`.
+
+The fundamental one-step form underlying the doubling (`v2_factorial_two_mul`)
+and odd-step (`v2_factorial_two_mul_add_one`) recurrences: passing from `n!` to
+`(n+1)!` multiplies by `n+1`, adding exactly `v₂(n+1)` factors of two.  Immediate
+from `Nat.factorial_succ` and additivity of `padicValNat` over products. -/
+theorem v2_factorial_succ (n : ℕ) :
+    padicValNat 2 (n + 1).factorial
+      = padicValNat 2 (n + 1) + padicValNat 2 n.factorial := by
+  haveI : Fact (Nat.Prime 2) := ⟨Nat.prime_two⟩
+  rw [Nat.factorial_succ,
+    padicValNat.mul (Nat.succ_ne_zero n) (Nat.factorial_ne_zero n)]
+
+/-- **Monotonicity of the 2-adic valuation of factorials.** `n ↦ v₂(n!)` is
+`Monotone`: the valuation never decreases as `n` grows, since each step from `n!`
+to `(n+1)!` adds the nonnegative amount `v₂(n+1)` (`v2_factorial_succ`).  The
+qualitative envelope of the exact doubling/odd-step recurrences above. -/
+theorem v2_factorial_monotone :
+    Monotone (fun n => padicValNat 2 (Nat.factorial n)) :=
+  monotone_nat_of_le_succ fun n => by
+    rw [v2_factorial_succ]; omega
+
 #check @v2_factorial_two_mul
 #check @v2_factorial_two_mul_add_one
 #check @v2_factorial_eq_pred_iff
