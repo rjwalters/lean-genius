@@ -835,7 +835,7 @@ theorem admissibleCoeff_ge_iff_clog_le (hV : 0 < Fintype.card V) (N t : ℕ) :
       ↔ Nat.clog 2 (N * Fintype.card V) ≤ t - 1 := by
   rw [admissibleCoeff_ge_iff hV]
   unfold firstMomentThreshold
-  exact Nat.le_pow_iff_clog_le (by norm_num)
+  exact (Nat.clog_le_iff_le_pow (by norm_num)).symm
 
 /-- **The logarithmic modulus (forward form).**  Reading
     `admissibleCoeff_ge_iff_clog_le` forwards: the target coefficient `N` is reached
