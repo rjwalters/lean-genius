@@ -514,4 +514,25 @@ theorem expectedMonoCliques_nonneg (n k : ℕ) : 0 ≤ expectedMonoCliques n k :
   unfold expectedMonoCliques
   exact mul_nonneg (Nat.cast_nonneg _) (zpow_nonneg (by norm_num : (0 : ℚ) ≤ 2) _)
 
+/-- **The diagonal is already sub-threshold: `E(k,k) < 1` for `k ≥ 3`.**  Turning the
+`expectedMonoCliques_self` docstring remark into a theorem: at `n = k` the single potential
+clique is monochromatic with probability `2^{1−C(k,2)}`, and for `k ≥ 3` (so `C(k,2) ≥ 3`)
+this is at most `2^{−2} = ¼ < 1`.  Via `E(k,k) = 2 / 2^{C(k,2)}` (`expectedMonoCliques_eq_div`
+at `C(k,k) = 1`) the bound reduces to `2 < 2^{C(k,2)}`.  This is the trivial Ramsey endpoint
+`R(k,k) > k` — the `n = k` base value underneath the asymptotic `2^{k/2}` bounds
+(`expectedMonoCliques_lt_one_pow`): the expected count is `< 1` already on the diagonal, so
+first-moment yields a good colouring of `K_k`. -/
+theorem expectedMonoCliques_self_lt_one {k : ℕ} (hk : 3 ≤ k) :
+    expectedMonoCliques k k < 1 := by
+  rw [expectedMonoCliques_eq_div, Nat.choose_self, Nat.cast_one, one_mul]
+  have h3 : 3 ≤ k.choose 2 := by
+    calc 3 = (3 : ℕ).choose 2 := by decide
+      _ ≤ k.choose 2 := Nat.choose_le_choose 2 hk
+  have hden : (2 : ℚ) < (2 : ℚ) ^ (k.choose 2) := by
+    calc (2 : ℚ) = 2 ^ 1 := (pow_one 2).symm
+      _ < 2 ^ (k.choose 2) := by
+          apply pow_lt_pow_right₀ (by norm_num : (1 : ℚ) < 2); omega
+  rw [div_lt_one (by positivity)]
+  exact hden
+
 end ProbMethod.ExpectationOQ04
