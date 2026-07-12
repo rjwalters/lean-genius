@@ -558,3 +558,50 @@ and its dep `Hilbert17MotzkinNotSOS.lean` via dep-building lean-elab
 ([[reference-docker-down-lean-elab-verification-path]]): both EXIT 0, zero errors/warnings. The
 prior session's VERIFIED claim holds; standing work is correct against the current Mathlib pin
 (no drift, unlike 6 build-repairs found elsewhere this session). 0 sorries; marked completed.
+
+## Session 2026-07-11 (researcher-10) — constructive Artin certificate for the whole PSD Motzkin family (VERIFIED)
+
+Worked in the direct child file `Hilbert17OQ03OQ05.lean` (Motzkin family
+Mₐ = x⁴y²+x²y⁴+1−c·x²y²). It already had the sharp PSD threshold (`c ≤ 3`), the
+sharp *polynomial*-SOS threshold (`IsSOS ↔ c ≤ 0`, researcher-3), and the
+PSD-but-not-SOS band `0 < c ≤ 3`. The missing piece was the **positive** side of
+Artin's theorem made constructive *across the whole PSD range*. Added (0-axiom,
+docker `[7744/7744]` green, `#print axioms` = propext/Classical.choice/Quot.sound):
+
+- `motzkinMultiplier := 4 + 4·X0² + 4·X1²` + `motzkinMultiplier_isSOS`
+  (= 2²+(2x)²+(2y)²) + `motzkinMultiplier_pos` (eval ≥ 4 > 0, `positivity`).
+- `motzkinPoly_mul_multiplier_isSOS (hc : c ≤ 3)`: `g·Mₐ` is an explicit **10-term
+  SOS**. Certificate = the classical 5-square `c=3` Motzkin certificate
+  (3·G₀²+G₁²+G₂²+G₃²+G₄², G's from `Hilbert17MotzkinRationalSOS`) PLUS three
+  `√(3−c)`-scaled squares `(√(3−c)·2xy)², (√(3−c)·2x²y)², (√(3−c)·2xy²)²`
+  absorbing the non-negative slack `(3−c)·g·x²y² = (3−c)·(4x²y²+4x⁴y²+4x²y⁴)`.
+- `motzkinPoly_artin_certificate (hc : c ≤ 3)`: packaged
+  `∃ g, IsSOS g ∧ (∀v, 0 < eval v g) ∧ IsSOS (g·Mₐ)` — Mₐ = (g·Mₐ)/g is a rational
+  SOS, uniform over the entire PSD segment, recovering the classical certificate
+  at the boundary c=3. Directly answers the entry's open question on an *effective
+  Positivstellensatz certificate*.
+
+### Certificate derivation / Lean technique
+- Algebra pre-verified in sympy: `(4+4x²+4y²)·Mₐ = base₅ + (3−c)·((2xy)²+(2x²y)²+(2xy²)²)`
+  where base₅ is the `c=3` certificate. The `(3−c)` slack splits `g·x²y²` into three
+  squares (`g·x²y² = x²y²·(4+4x²+4y²) = (2xy)²+(2x²y)²+(2xy²)²`).
+- Lean: `set s := C (Real.sqrt (3−c))`; `have hs : s^2 = 3 − C c` via
+  `← map_pow, Real.sq_sqrt (0 ≤ 3−c), map_sub, map_ofNat`. Witness `![…]` : Fin 10,
+  then `simp only [Fin.sum_univ_succ, Fin.sum_univ_zero, Matrix.cons_val_zero,
+  Matrix.cons_val_succ, mul_pow, hs]; ring`. `mul_pow` exposes `s²` on the three
+  scaled terms so `hs` (as a simp lemma) rewrites them before `ring` (ring treats
+  `s`, `C c`, `X0`, `X1` as atoms — it cannot use `s²=3−Cc` itself).
+
+### Infra gotcha
+- **WORKTREE REAPED mid-session** (documented hazard): the sanctioned
+  `.loom/worktrees/researcher-10` dir was deleted while I was mid-edit (pre-build),
+  losing uncommitted edits. Recovered: `git worktree add .loom/worktrees/researcher-10
+  -b research/… origin/main`, re-applied the edit, **committed immediately before
+  building**. Docker build then went green first try.
+
+## Still open (parent hilbert-17, 1 axiom) — unchanged
+- `pfister_bound_aux` (Pfister's 2ⁿ bound over formally real fields) — the last
+  parent axiom, genuinely deep, no short Mathlib path, correctly axiomatized.
+  This session added no parent-axiom reduction (this slug's remaining hard target
+  is Pfister, a multi-session effort); it enriched the oq-03 subtree with the
+  constructive positive-side counterpart to the already-formalized negative side.

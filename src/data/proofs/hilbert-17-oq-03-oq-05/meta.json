@@ -48,7 +48,7 @@
       "The arithmetic–geometric mean (AM–GM) inequality and sum-of-squares certificates for non-negativity.",
       "Evaluation of multivariate polynomials and the PSD predicate ∀ v, 0 ≤ eval v p."
     ],
-    "lineCount": 533,
+    "lineCount": 619,
     "relatedProblems": [
       {
         "id": "hilbert-17-oq-03-oq-02",
@@ -68,20 +68,20 @@
       }
     ],
     "assumptions": "0 axioms. #print axioms reports only propext, Classical.choice, Quot.sound for motzkinFun_psd_iff, motzkinPoly_psd_iff, three_is_sharp, and motzkin_amgm. No sorryAx, no native_decide / Lean.ofReduceBool. The MvPolynomial PSD predicate IsPSDMv matches the parent entry's IsPositiveSemidefiniteMv definitionally.",
-    "theoremCount": 36,
-    "definitionCount": 3,
+    "theoremCount": 40,
+    "definitionCount": 4,
     "additionalFiles": []
   },
   "leanFile": {
-    "lineCount": 533,
+    "lineCount": 619,
     "namespace": "Hilbert17OQ03OQ05",
     "opens": [
       "MvPolynomial"
     ],
     "structureCount": 0,
     "axiomCount": 0,
-    "theoremCount": 36,
-    "substantiveTheoremCount": 9,
+    "theoremCount": 40,
+    "substantiveTheoremCount": 11,
     "computationalVerifications": 0,
     "lemmaCount": 0,
     "imports": [
@@ -89,7 +89,7 @@
     ],
     "path": "Proofs/Hilbert17OQ03OQ05.lean",
     "sorries": 0,
-    "definitionCount": 3,
+    "definitionCount": 4,
     "additionalFiles": []
   },
   "sorries": 0,
@@ -147,6 +147,12 @@
       "type": "theorem",
       "description": "Generalised degree bound: if ∑ qᵢ² = p with totalDegree p ≤ 6, then every qᵢ has total degree ≤ 3 (the top homogeneous component of a sum of squares is itself a sum of squares, so it vanishes above the target degree).",
       "leanType": "p.totalDegree ≤ 6 → (∑ i, q i ^ 2 = p) → (q j).totalDegree ≤ 3"
+    },
+    {
+      "name": "motzkinPoly_artin_certificate",
+      "type": "theorem",
+      "description": "Constructive Artin certificate for the whole PSD Motzkin family: for every c ≤ 3 there is a strictly positive sum-of-squares multiplier g = 4 + 4x² + 4y² with g·Mₐ an explicit sum of 10 squares. Hence Mₐ = (g·Mₐ)/g is a sum of squares of rational functions — a uniform instance of Artins theorem across the entire PSD segment, complementing the polynomial-SOS failure on 0 < c ≤ 3 and recovering the classical Motzkin certificate at c = 3.",
+      "leanType": "c ≤ 3 → ∃ g, IsSOS g ∧ (∀ v, 0 < eval v g) ∧ IsSOS (g * motzkinPoly c)"
     }
   ],
   "overview": {
@@ -162,8 +168,8 @@
     ]
   },
   "conclusion": {
-    "summary": "A 142-line, 0-sorry, 0-axiom formalization establishing the sharp PSD threshold of the Motzkin family: x⁴y² + x²y⁴ + 1 − c·x²y² is positive-semidefinite on ℝ² if and only if c ≤ 3, in both real-function and MvPolynomial forms. The Motzkin polynomial (c = 3) is the extremal PSD member.",
-    "implications": "By exhibiting the Motzkin coefficient 3 as an exact threshold rather than a fixed constant, the entry quantifies — for the canonical example — where the PSD/SOS gap of the parent open question opens: the family stays PSD up to c = 3, and the boundary member is exactly the one that fails to be a sum of squares of polynomials. The sufficient direction is a genuine SOS certificate for the affine form, complementing the sibling non-SOS result for the homogeneous Motzkin polynomial.",
+    "summary": "A 619-line, 0-sorry, 0-axiom formalization of the Motzkin family x⁴y² + x²y⁴ + 1 − c·x²y². It establishes the sharp PSD threshold (PSD on ℝ² ⟺ c ≤ 3, in both real-function and MvPolynomial forms; c = 3 is the extremal PSD member), the sharp polynomial-SOS threshold (IsSOS ⟺ c ≤ 0), and a constructive Artin certificate covering the whole PSD range: for every c ≤ 3 the positive SOS multiplier g = 4 + 4x² + 4y² makes g·Mₐ an explicit 10-term sum of squares, so Mₐ is a sum of squares of rational functions.",
+    "implications": "By exhibiting the Motzkin coefficient 3 as an exact threshold rather than a fixed constant, the entry quantifies — for the canonical example — where the PSD/SOS gap of the parent open question opens: the family stays PSD up to c = 3, but leaves the polynomial-SOS cone already at c = 0, so the entire segment 0 < c ≤ 3 is PSD-but-not-SOS. The complementary constructive Artin certificate (motzkinPoly_artin_certificate) makes the positive resolution explicit across that whole segment — an effective Positivstellensatz multiplier g with g·Mₐ a sum of 10 squares — recovering the classical single-c=3 Motzkin certificate as the boundary case and directly answering the entry's open question on an effective certificate quantifying SOS-membership.",
     "openQuestions": [
       "The sharp threshold isolates c = 3 as the PSD boundary; can it be paired with a formalized non-SOS proof AT c = 3 to certify, fully in Lean, that the boundary of the PSD cone is exactly where the family leaves the SOS cone for this family?",
       "Does the threshold generalize to the n-variable affine Motzkin-type families x₁⁴x₂² + ⋯ + 1 − c·∏xᵢ² — is the sharp coefficient always the number of AM–GM terms, and is the boundary member always non-SOS?",
