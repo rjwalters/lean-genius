@@ -4956,4 +4956,82 @@ theorem le_maxSqDiffFreeCard_mod_1105 : 12 ≤ maxSqDiffFreeCard (5 * 13 * 17) :
   have := le_trans (Nat.mul_le_mul h65 h17) step1
   omega
 
+/-! ### Part XXXVI — the sharp UPPER bound at primes `p ≡ 3 (mod 4)`
+
+Every result so far (Parts XXX–XXXV) is a *lower* bound: the coset lifts and the
+coprime-multiplicative law all *build* large square-difference-free sets, and every concrete
+witness used a prime `p ≡ 1 (mod 4)` (`5, 13, 17, …`).  That was not an accident.  Here we
+prove the complementary *upper* bound, which is as sharp as possible: at a prime
+`p ≡ 3 (mod 4)` the extremal count **collapses to `1`**,
+  `maxSqDiffFreeCard p = 1`,
+so the only square-difference-free sets are the singletons and the empty set.
+
+The mechanism is the quadratic character.  When `p ≡ 3 (mod 4)`, `-1` is a *non-residue*
+(`ZMod.exists_sq_eq_neg_one_iff`), so for every nonzero `d` exactly one of `d`, `-d` is a
+nonzero square (the quadratic character is multiplicative and `χ(-1) = -1`, hence
+`χ(-d) = -χ(d)`).  Consequently **any** two distinct residues `a ≠ b` differ by a nonzero
+square in one of the two directions `b - a`, `a - b`, and a square-difference-free set can
+therefore contain at most one element.  This is the modular Sárközy phenomenon in its
+extreme form: at half of all primes the square-difference graph is so dense (it is a
+*tournament*-like orientation of the complete graph — every pair adjacent) that its
+independence number is `1`, and the whole lower-bound construction is vacuous there. -/
+
+/-- **At a prime `p ≡ 3 (mod 4)`, one of `d`, `-d` is a square for every nonzero `d`.**
+Because `-1` is a non-residue (`ZMod.exists_sq_eq_neg_one_iff`), the quadratic character
+satisfies `χ(-d) = χ(-1)·χ(d) = -χ(d)`, so `d` and `-d` have opposite characters and one of
+them is `+1` (a nonzero square). -/
+private lemma isSquare_or_isSquare_neg_of_mod_four_eq_three {p : ℕ} [Fact p.Prime] [NeZero p]
+    (h3 : p % 4 = 3) {d : ZMod p} (hd : d ≠ 0) : IsSquare d ∨ IsSquare (-d) := by
+  by_cases hsq : IsSquare d
+  · exact Or.inl hsq
+  · refine Or.inr ?_
+    have hchar : (quadraticChar (ZMod p)) d = -1 :=
+      quadraticChar_neg_one_iff_not_isSquare.mpr hsq
+    have hne1 : ¬ IsSquare (-1 : ZMod p) := by
+      rw [ZMod.exists_sq_eq_neg_one_iff]; omega
+    have hcharm1 : (quadraticChar (ZMod p)) (-1 : ZMod p) = -1 :=
+      quadraticChar_neg_one_iff_not_isSquare.mpr hne1
+    have hnd : (-d) ≠ 0 := neg_ne_zero.mpr hd
+    have hchar_neg : (quadraticChar (ZMod p)) (-d) = 1 := by
+      have hrw : (-d) = (-1 : ZMod p) * d := by ring
+      rw [hrw, map_mul, hchar, hcharm1]; norm_num
+    exact (quadraticChar_one_iff_isSquare hnd).mp hchar_neg
+
+/-- **The extremal square-difference-free count is exactly `1` at every prime `p ≡ 3 (mod 4)`.**
+Any square-difference-free set with two distinct elements `a ≠ b` would have `b - a` or
+`a - b` equal to a nonzero square (`isSquare_or_isSquare_neg_of_mod_four_eq_three`),
+contradicting square-difference-freeness in one of the two directions.  Hence every
+square-difference-free set is a singleton or empty, and `maxSqDiffFreeCard p = 1` (the lower
+bound `≥ 1` is `one_le_maxSqDiffFreeCard`).  This is the sharp upper bound complementing the
+Part XXX–XXXV lower-bound constructions, and it pins the Paley independence number at these
+primes to `1`. -/
+theorem maxSqDiffFreeCard_eq_one_of_mod_four_eq_three {p : ℕ} (hp : p.Prime) [NeZero p]
+    (h3 : p % 4 = 3) : maxSqDiffFreeCard p = 1 := by
+  haveI := Fact.mk hp
+  refine le_antisymm ?_ (one_le_maxSqDiffFreeCard p)
+  obtain ⟨A, hAfree, hAcard⟩ := exists_isSqDiffFree_card_eq_max p
+  rw [← hAcard, Finset.card_le_one]
+  intro a ha b hb
+  by_contra hne
+  have hd : b - a ≠ 0 := sub_ne_zero.mpr (fun h => hne h.symm)
+  rcases isSquare_or_isSquare_neg_of_mod_four_eq_three h3 hd with hsq | hsq
+  · obtain ⟨r, hr⟩ := hsq
+    have hn2 : r ^ 2 ≠ 0 := by rw [pow_two, ← hr]; exact hd
+    have hbeq : a + r ^ 2 = b := by rw [pow_two, ← hr]; ring
+    exact hAfree a ha r hn2 (by rw [hbeq]; exact hb)
+  · obtain ⟨r, hr⟩ := hsq
+    have hn2 : r ^ 2 ≠ 0 := by rw [pow_two, ← hr]; exact neg_ne_zero.mpr hd
+    have haeq : b + r ^ 2 = a := by rw [pow_two, ← hr]; ring
+    exact hAfree b hb r hn2 (by rw [haeq]; exact ha)
+
+/-- **Concrete collapse at `p = 7`.**  Since `7 ≡ 3 (mod 4)`, the square-difference graph on
+`ℤ/7ℤ` has independence number `1`: no two distinct residues are square-difference-free.
+Contrast with `maxSqDiffFreeCard 5 ≥ 2` (Part XXXV), where `5 ≡ 1 (mod 4)`. -/
+theorem maxSqDiffFreeCard_seven : maxSqDiffFreeCard 7 = 1 :=
+  maxSqDiffFreeCard_eq_one_of_mod_four_eq_three (by norm_num) (by norm_num)
+
+/-- **Concrete collapse at `p = 11`.**  `11 ≡ 3 (mod 4)`, so `maxSqDiffFreeCard 11 = 1`. -/
+theorem maxSqDiffFreeCard_eleven : maxSqDiffFreeCard 11 = 1 :=
+  maxSqDiffFreeCard_eq_one_of_mod_four_eq_three (by norm_num) (by norm_num)
+
 end Szemeredi.Roth
