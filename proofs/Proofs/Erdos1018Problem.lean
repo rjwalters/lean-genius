@@ -20,6 +20,7 @@ import Mathlib.Data.Real.Basic
 import Mathlib.Data.Fintype.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Algebra.Order.Floor.Semiring
+import Mathlib.Data.Nat.Choose.Cast
 
 open SimpleGraph
 
@@ -459,37 +460,96 @@ theorem planar_not_dense (ε : ℝ) (hε : ε > 0) :
   exact (hN V hcard G hDense) hPlanar
 
 /-
-## Quantitative Bounds
+## Quantitative bounds — the naive `⌈1/ε²⌉` explicit bound is *false*
 
-The actual bound on C_ε from Kostochka-Pyber is explicit.
+Erdős's affirmative answer (Kostochka–Pyber) does give an *explicit* bound on
+`C_ε` that is polynomial in `1/ε`. A previous version of this file recorded that
+bound as the concrete formula `explicitBound ε = ⌈1/ε²⌉` and *assumed* it via an
+assumed statement `kostochka_pyber_explicit`. That specific formula is **too
+small**, and the assumption was **inconsistent**: at `ε = 1/2` it reads
+`⌈1/(1/2)²⌉ = ⌈4⌉ = 4`, so
+it would force every `1/2`-dense graph to contain a `K₅`-subdivision — hence a
+non-planar subgraph — on `≤ 4` vertices. That is impossible: `nonPlanar_needs_five`
+shows any non-planar graph needs `≥ 5` vertices, and arbitrarily large `1/2`-dense
+graphs exist (complete graphs `Kₙ` have `n(n-1)/2 ≥ n^{3/2}` edges for `n ≥ 6`).
+Keeping the axiom would let the file's axiom set derive `False`, so we **remove**
+it and record a machine-checked disproof of its `ε = 1/2` instance
+(`explicit_bound_half_is_false`), exactly as was done for the earlier mis-stated
+`constant_grows` axiom.
+
+The genuine Kostochka–Pyber explicit bound is a larger polynomial in `1/ε`
+(necessarily `≥ 5`); formalizing it needs the quantitative dense-subgraph theory
+absent from Mathlib 4.26. Only the mis-stated `⌈1/ε²⌉` formula is refuted here;
+`explicitBound` is retained as a definition for the disproof and for the analytic
+facts in the `Erdos1018Aristotle` companion.
 -/
 
-/-- An explicit (though not optimal) bound on C_ε. -/
+/-- An explicit (though, as shown by `explicit_bound_half_is_false`, *too small*)
+    candidate bound `⌈1/ε²⌉` on `C_ε`. -/
 noncomputable def explicitBound (ε : ℝ) : ℕ :=
   Nat.ceil (1 / ε ^ 2)
 
-/-- The Kostochka-Pyber bound is polynomial in 1/ε. -/
-axiom kostochka_pyber_explicit (ε : ℝ) (hε : ε > 0) :
-  ∃ N : ℕ, ∀ (V : Type*) [Fintype V] [DecidableEq V],
-    Fintype.card V ≥ N →
-    ∀ (G : SimpleGraph V) [DecidableRel G.Adj],
-      isDense G ε → hasSmallK5Subdivision G (explicitBound ε)
+/-- **Complete graphs are `1/2`-dense.** For `n ≥ 16` the complete graph `Kₙ` has
+    `n.choose 2 = n(n-1)/2 ≥ n^{3/2}` edges (the crossover already holds from
+    `n = 6`; `16` is a comfortable margin), so it is `(1/2)`-dense. This supplies
+    arbitrarily large dense graphs to refute the `⌈1/ε²⌉` bound below. -/
+theorem complete_graph_half_dense (n : ℕ) (hn : 16 ≤ n) :
+    isDense (⊤ : SimpleGraph (Fin n)) (1 / 2) := by
+  unfold isDense edgeCount
+  rw [card_edgeFinset_top_eq_card_choose_two, Fintype.card_fin, ge_iff_le]
+  -- goal: `(n : ℝ) ^ (1 + 1/2) ≤ (n.choose 2 : ℝ)`
+  have h32 : (1 : ℝ) + 1 / 2 = 3 / 2 := by norm_num
+  rw [h32]
+  -- core inequality `n^{3/2} ≤ n.choose 2`, proved by squaring both sides
+  have hx : (16 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn
+  set x : ℝ := (n : ℝ) with hxdef
+  have hx0 : (0 : ℝ) ≤ x := by linarith
+  have hL : (0 : ℝ) ≤ x ^ ((3 : ℝ) / 2) := Real.rpow_nonneg hx0 _
+  have hchoose : (n.choose 2 : ℝ) = x * (x - 1) / 2 := by rw [Nat.cast_choose_two]
+  have hR : (0 : ℝ) ≤ (n.choose 2 : ℝ) := by positivity
+  have hLsq : (x ^ ((3 : ℝ) / 2)) ^ 2 = x ^ 3 := by
+    rw [← Real.rpow_natCast (x ^ ((3 : ℝ) / 2)) 2, ← Real.rpow_mul hx0]; norm_num
+  have hkey : x ^ 3 ≤ (n.choose 2 : ℝ) ^ 2 := by
+    rw [hchoose]
+    have h1 : (x * (x - 1) / 2) ^ 2 = x ^ 2 * (x - 1) ^ 2 / 4 := by ring
+    rw [h1]
+    nlinarith [sq_nonneg (x - 1),
+      mul_pos (mul_pos (by linarith : (0 : ℝ) < x) (by linarith : (0 : ℝ) < x))
+        (by linarith : (0 : ℝ) < x)]
+  have hpow : (x ^ ((3 : ℝ) / 2)) ^ 2 ≤ (n.choose 2 : ℝ) ^ 2 := by rw [hLsq]; exact hkey
+  exact le_of_pow_le_pow_left₀ (by norm_num) hR hpow
 
-/-- **Explicit-bound form of the main theorem.** Beyond a threshold `N`, every
-    ε-dense graph has a non-planar subgraph on at most `explicitBound ε = ⌈1/ε²⌉`
-    vertices. This is the quantitative refinement of `erdos_1018_solved`, which
-    only asserts existence of *some* bounding constant `C`; here the constant is
-    the explicit Kostochka–Pyber bound. Obtained by feeding the explicit-bound
-    axiom through the same `smallK5_forces_smallNonPlanar` bridge. -/
-theorem explicit_small_nonplanar (ε : ℝ) (hε : ε > 0) :
-    ∃ N : ℕ, ∀ (V : Type*) [Fintype V] [DecidableEq V],
-      Fintype.card V ≥ N →
-      ∀ (G : SimpleGraph V) [DecidableRel G.Adj],
-        isDense G ε → hasSmallNonPlanarSubgraph G (explicitBound ε) := by
-  obtain ⟨N, hN⟩ := kostochka_pyber_explicit ε hε
-  refine ⟨N, ?_⟩
-  intro V _ _ hcard G _ hDense
-  exact smallK5_forces_smallNonPlanar G (explicitBound ε) (hN V hcard G hDense)
+/-- **The `⌈1/ε²⌉` explicit bound is inconsistent — machine-checked disproof of
+    the removed `kostochka_pyber_explicit` axiom.** The axiom claimed, for every
+    `ε > 0`, a threshold beyond which every `ε`-dense graph has a `K₅`-subdivision
+    on `≤ explicitBound ε = ⌈1/ε²⌉` vertices. At `ε = 1/2` that bound is
+    `⌈1/(1/2)²⌉ = 4`, but a `K₅`-subdivision needs `5` branch vertices and
+    arbitrarily large `1/2`-dense graphs exist (`complete_graph_half_dense`), so
+    the claim is refuted. (Had the axiom been kept, specializing it to `ε = 1/2`
+    and the universe-`0` instance would contradict this theorem — i.e. the axiom
+    made the file's axiom set inconsistent.) -/
+theorem explicit_bound_half_is_false :
+    ¬ (∃ N : ℕ, ∀ (V : Type) [Fintype V] [DecidableEq V],
+        Fintype.card V ≥ N →
+        ∀ (G : SimpleGraph V) [DecidableRel G.Adj],
+          isDense G (1 / 2) → hasSmallK5Subdivision G (explicitBound (1 / 2))) := by
+  rintro ⟨N, hN⟩
+  -- a large complete graph: `n = N + 16 ≥ 16` and `≥ N`.
+  have hdense : isDense (⊤ : SimpleGraph (Fin (N + 16))) (1 / 2) :=
+    complete_graph_half_dense (N + 16) (by omega)
+  have hcard : Fintype.card (Fin (N + 16)) ≥ N := by rw [Fintype.card_fin]; omega
+  have hsmall := hN (Fin (N + 16)) hcard (⊤ : SimpleGraph (Fin (N + 16))) hdense
+  -- a small `K₅`-subdivision is a small non-planar subgraph, so needs `≥ 5` vertices
+  have h5 : 5 ≤ explicitBound (1 / 2) :=
+    bounding_constant_ge_five
+      (smallK5_forces_smallNonPlanar (⊤ : SimpleGraph (Fin (N + 16)))
+        (explicitBound (1 / 2)) hsmall)
+  -- but `explicitBound (1/2) = ⌈4⌉ = 4`
+  have hb : explicitBound (1 / 2) ≤ 4 := by
+    unfold explicitBound
+    rw [Nat.ceil_le]
+    norm_num
+  omega
 
 /-
 ## Related Problems
